@@ -4,108 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BE0BCCD18B
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED30FCCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:07:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86C5E8E0017; Wed,  8 Oct 2025 21:07:25 -0400 (EDT)
+	id 24A8C8E0019; Wed,  8 Oct 2025 21:07:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6B28E0002; Wed,  8 Oct 2025 21:07:25 -0400 (EDT)
+	id 1FB5A8E0002; Wed,  8 Oct 2025 21:07:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD428E0017; Wed,  8 Oct 2025 21:07:25 -0400 (EDT)
+	id 138548E0019; Wed,  8 Oct 2025 21:07:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FFC08E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:07:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3CD9BBBB8
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:24 +0000 (UTC)
-X-FDA: 83976787608.14.0A84404
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E2AE214000C
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QW2Xq7fb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759972043; a=rsa-sha256;
-	cv=none;
-	b=8mygoujBOGGzpKeHXWzp+pihneph45UU76FiIYH9x89ehJnI95jku+lzTOJZOYtVucYq6s
-	WcrJB/TPx+WV/zZhA/zKpxeS2mkZ+N0EaQcg6UN8Zy1HA2HhkDJYCQmDAdIADnX2yCmCop
-	loyf0kKybZSQMuyjaudgwsYNrmASkXM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QW2Xq7fb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03B478E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:07:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 89B768849B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:48 +0000 (UTC)
+X-FDA: 83976788616.15.FED9981
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E3247120004
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:46 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RmoNemMU;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759972043;
+	s=arc-20220608; t=1759972067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7VBPwGyoeD8uP185Gv+2G5xRNeY5xlzR+XoG36QLrYY=;
-	b=6MVrW6XIMgG9Ra08krMX4jsCWHZ70CWyvE/hKgdhhQuNXhoIH6PKqSfjxQQiwev/RxKUe3
-	6m9wgTBY9uDGmuGg/G7Ry9J0L/X9R9SPOvOg8qLSX5eOEvj6XR0eIyv+ce0hsH4uz5JDJj
-	vM1oUfb51jtrC7xrK0cqWRmpzMKo4ec=
-Message-ID: <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759972039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7VBPwGyoeD8uP185Gv+2G5xRNeY5xlzR+XoG36QLrYY=;
-	b=QW2Xq7fb/0R8eSRnkRtiWsJZ71xUtS6VNS3PESNmVdcnpqsCZzuAjKaee6Nev31bfcYbFc
-	I6A01Up3Gl//GX2irEKLkdDHDTXBESO0d6dXHrZMgfmBIgIR3stAsDlmWpY9ivV3ZBpK9J
-	12HYXF03sV4fbLu0WH0H0gXW3v6xTBk=
-Date: Wed, 8 Oct 2025 18:07:00 -0700
-MIME-Version: 1.0
-Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state
- monitoring
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
- jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
- rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
- rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
- kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
- masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
- yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
- chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
- jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
- dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org,
- rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org,
- zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org,
- cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com,
- Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
- aleksander.lobakin@intel.com, ira.weiny@intel.com,
- andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
- bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
- stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
- brauner@kernel.org, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, ajayachandra@nvidia.com,
- jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-20-pasha.tatashin@soleen.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "yanjun.zhu" <yanjun.zhu@linux.dev>
-In-Reply-To: <20250807014442.3829950-20-pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	bh=KD5cxroVw2bq0vRFFh3JOWosLq19draSMV5zCV6Bx9M=;
+	b=LUeBM12gS5M80VbeuddHIca493H2N2xBOlXfAFuX5Afnh/xoLdSamb/gZ/w0d/WmcvPD6E
+	iaEKzCWOMQVqqJSMr1IbtJXPxP01QJLwV6XPwL3tYUJfcIqMeZNQQLsd6yS7P+f+kyy0Xw
+	iczT1I6QO1oyvub2cfEdivW09ppvQUI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RmoNemMU;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759972067; a=rsa-sha256;
+	cv=none;
+	b=k0KAaJRW47XTE44mk/lJ4rL69mBmepargX7SBoYoXM3rRA0l6ObxcTEau4Be6zKLUCuTfe
+	nhdzHeBwpIfL4sL/HHmLdRRi+XJC/eH3bdq13zVHwqBE01CjBzFUKyVwe94W2plKtiqlkK
+	bvkG7G+I9knYAXXlHFr2loGP4yxwiXw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 367E062137;
+	Thu,  9 Oct 2025 01:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AC7C4CEE7;
+	Thu,  9 Oct 2025 01:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759972065;
+	bh=wUrk6XKY/1u2QS7MA+SbXv3W7CyWgdmZhrUV2O13MM4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RmoNemMUl1sw1JOPWhVSmESnBtwY1VrPO/I9sWWI9ZARdWfoHuKCcSDnVrOkHjazk
+	 z2i+CNKwtjiY+GMjqll+fCd7a2Iimzob44CQSFXocON4Qe2xHIP8L3AO0n7ZN+BP1x
+	 eIQnQNCUW88YNkR19rYBD6YtlIfmvSYo0Q+FOf1M=
+Date: Wed, 8 Oct 2025 18:07:44 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, richard.weiyang@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH mm-new v3 3/3] mm/khugepaged: merge PTE scanning logic
+ into a new helper
+Message-Id: <20251008180744.008424134fbc29e9616899ad@linux-foundation.org>
+In-Reply-To: <20251008043748.45554-4-lance.yang@linux.dev>
+References: <20251008043748.45554-1-lance.yang@linux.dev>
+	<20251008043748.45554-4-lance.yang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E3247120004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E2AE214000C
-X-Stat-Signature: x1npo3z6tezhh4krt7red5nkytg6maea
-X-HE-Tag: 1759972042-772398
-X-HE-Meta: U2FsdGVkX1+eSuuDsqNNeqeNHaovhUqpak9g/NOvjzy7K5kVdINvTqo5zbVQejqKEbomTF5Q8Sq4V/kfHKOpEm5OI5605EH6rRoD2EsJK4PVimlBB+jtXXcaargDW3reCd+NTpvS5VLMA+ct+hZruKz3IxmgcRj6aKTaTeIZJT6nLDGw103zQZyiAfZ9GN/UH6wxiTsxgxDv8W6EriBSDsI/9rdoXaBp8dRRx7SoyhqHmbWQn84xxRx7pkLuDqYRlTtKaKAf5k7d8rHh0VNsdKErjVvrD+XIsdg5Y1pdWBlc70sziW9A8POxNF7VnZbgnzlhJh0MvZkbE8F7Mun8l8xyJIqLBq9WM/uQXFpWp8FTI16+317C+kWCW6zfu4nhmwUr68LzYQEfaguTt16DzXd8CeDtHqD7hhPh6XssF/VG7bU831PuVPChtCvP1PpLfqyUqPRfSpEazlBe7XjsNifQ4JcJ6cC4jd+6L30oHHFQvYDhTA/9xfFDmxPMgL87+P8w4QDhQh2QqaXuseb2sDfB9DTSJZ+5NHUc4U97u8BCQZj1+u9EwG5/3Xd2roOFXwRSHofw81K9HlrfQgZNmnuipeH9u0ArcBZlKorE/2lbF5tyapyjWqThi4GP296xV4idKob/YbNkSAHkoe61OtpzxbTjDApPjro7O0pM/ib5Fe6zSBgxXeKo/KpqLywNECnPGH6AdXPUzlcFyH3Io2pn0tEQA9aGUhoItJtR31n/fqbw3aMVnrI3Omo1B2BJfvSPgEFELgaWsutHRzGIYSokLq+VWB4nF0cDfyqoh03OSp153XR0me7xTVMWdAySViJcD++unwuPbwV0Y9RGJYtcrUlh24CugHjOYwH7Mdgz/FnbFG2ptM+FkG9HapuWl59UX5gHY6l/1QdcGTty1HS6l3rV0ouDEXUh75mfNqyP+kitaX3xUkVMu3DMwTrFpI7InZFh/AA42rGgamT
- g+ueoFJu
- /Kx9GMM9ppAguen9x0nxUszqJEXKPzfItjo9jvHOcQnCxNHRc8pJoGYyK5b1JYC+HXmq5QNdnkYFNyIlN6z1HKUTHEbVGBSjIG1tFqGOTuU5pLA+Yr5GQ4wafmkYHTqWuECmXVu2hUPG5BJbWYf7wmBp7TuUFi9ErngDUSHuPBM+q33OQmWEj64TzZwYXF8F3rmzJtyUwUF/jne1U+grnO1Sg+D0voODyQBCsnTk/2MRhINkqtpxWWv95DDgzPa6VstzRSxIbLzG58XNfU5NDAx5dcQp1I20rKxupgcGv593vZbME1Ud10EgQQK2oWAZK40Bse63ECSo5J/SWGumi1WYYqVpCO8/TSDxn
+X-Stat-Signature: 3773gb4t1e48bbequcp4pob59bmxsks3
+X-HE-Tag: 1759972066-892464
+X-HE-Meta: U2FsdGVkX1+h45pSHwMkO+J9/VBRAQUIFe39q92ftGgwoAx31sG+LYc1CULjbLOlwB4xqxme0gigt2prRFYJLCCMXAWhLS4XNlaY+NAttbJPa2tvNbB6VkUjkdVEajp/x8Rjac6xomthfuBtdxIzl4pqh+/kMOIpZSFijsMkFHGiygUx2oHJazRn9Au9TISiuU+rPWJDy1NXTNxoocyP9joW5a9oaDK87UyWS1LWjg278+uVB462aW5GDYWiqVQrnWl+5YXqhpUZ8uztjqDVcXu7Fo0G2wjBJUzFzcHqJATZCVRxXUVb33PZQmtVn+g1tjg5f175GookRilfcccV/EQdllyyOssunBgK8Hhj2jwz7F1pQ4BBef+vN3jTPuhDd+aYJHq9R9PW8Zx7QCc5Ju7MpLFbPCUIaiQNM0w93yG4yMUtGIvLduP+dNyTEgU2a/4uSI0webvY7j/K528hIlmN1/hI4dBvAmUF1CH8UYTWGQ13Jo/QhOZyS3/7fSZV20lRYndaipRUz6jOFVkp1Jm9tlHi6bJYCLlG1pJdKb7Q9EVaXAjCzrbVs9sn1du6Q3tVog/+muSqfqKx0JdN0QnFzvCaS5DOyc1nVSnkchtUXca4vDCHPwO2x0EYTor/3CKqL0ZN31cTOVNOPyQHdTJyUSa04/yPwHfjoHLxHYWbzbM1iPSK8ezCN9z3ftSTL0Nxfkd8nu2lTMzelx/+iAw3f4iIKJwTmmo8kb3kSVybtIgXXrnk+JNo7JhaW2u3Tj8UOgtJxVGZo0+t6PjLiMGrE9hRNyYXrjWxo5jRlb7BG9wWs5AKFgaoINr5RgS9K6Wf8348RTis+SqP3nxlO2lBwzXqXa8tTsApmj5eeEbo0Mst/9Wppjhh9ijj1yhVx6sWmBePgmS/rxfLgOeh1Oj/dKCOcL7F7A0hipAkPVKu00aJ0hAthIGxg4v8eYPbvPtmK/1TEODrqS4VqiM
+ R3TgfWwK
+ T1ufXF7NnY/3PvL3KDlAEwJZWtxCXGINSHLjMbnj5Po6HiqeQxVks03DF/ALyZ7uhAJvJbyuBQEPbIP7djSDlr4Pyh/fnaaB5jwDsM1b3qpJKWTSdcmUT5mRnQ6GmpcPopx2EQiDwZsHcu0deNYwpXmnMMTOa9mTBFAPVtESiPXgCc/qWGiwjvMiPkt312/pksFz+/boZCgbzLsMEbry38HlcLHxawiiV3bqs1OQwganH6PSP5k/9LWkAqrf7dNr23SRSAupXaKBeBfeb8rEY0wjod0S55dLrIzRvxJEGvVWsXoe01FjXpM/ZDFABudjttkAdodbprYDTumFv6AKPT3Ca5L8RZnA+mZgLQf+pN9DQ0NI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,286 +95,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/6/25 6:44 PM, Pasha Tatashin wrote:
-> Introduce a sysfs interface for the Live Update Orchestrator
-> under /sys/kernel/liveupdate/. This interface provides a way for
-> userspace tools and scripts to monitor the current state of the LUO
-> state machine.
-> 
-> The main feature is a read-only file, state, which displays the
-> current LUO state as a string ("normal", "prepared", "frozen",
-> "updated"). The interface uses sysfs_notify to allow userspace
-> listeners (e.g., via poll) to be efficiently notified of state changes.
-> 
-> ABI documentation for this new sysfs interface is added in
-> Documentation/ABI/testing/sysfs-kernel-liveupdate.
-> 
-> This read-only sysfs interface complements the main ioctl interface
-> provided by /dev/liveupdate, which handles LUO control operations and
-> resource management.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->   .../ABI/testing/sysfs-kernel-liveupdate       | 51 ++++++++++
->   kernel/liveupdate/Kconfig                     | 18 ++++
->   kernel/liveupdate/Makefile                    |  1 +
->   kernel/liveupdate/luo_core.c                  |  1 +
->   kernel/liveupdate/luo_internal.h              |  6 ++
->   kernel/liveupdate/luo_sysfs.c                 | 92 +++++++++++++++++++
->   6 files changed, 169 insertions(+)
->   create mode 100644 Documentation/ABI/testing/sysfs-kernel-liveupdate
->   create mode 100644 kernel/liveupdate/luo_sysfs.c
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-liveupdate b/Documentation/ABI/testing/sysfs-kernel-liveupdate
-> new file mode 100644
-> index 000000000000..bb85cbae4943
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-kernel-liveupdate
-> @@ -0,0 +1,51 @@
-> +What:		/sys/kernel/liveupdate/
-> +Date:		May 2025
-> +KernelVersion:	6.16.0
-> +Contact:	pasha.tatashin@soleen.com
-> +Description:	Directory containing interfaces to query the live
-> +		update orchestrator. Live update is the ability to reboot the
-> +		host kernel (e.g., via kexec, without a full power cycle) while
-> +		keeping specifically designated devices operational ("alive")
-> +		across the transition. After the new kernel boots, these devices
-> +		can be re-attached to their original workloads (e.g., virtual
-> +		machines) with their state preserved. This is particularly
-> +		useful, for example, for quick hypervisor updates without
-> +		terminating running virtual machines.
-> +
-> +
-> +What:		/sys/kernel/liveupdate/state
-> +Date:		May 2025
-> +KernelVersion:	6.16.0
-> +Contact:	pasha.tatashin@soleen.com
-> +Description:	Read-only file that displays the current state of the live
-> +		update orchestrator as a string. Possible values are:
-> +
-> +		"normal"	No live update operation is in progress. This is
-> +				the default operational state.
-> +
-> +		"prepared"	The live update preparation phase has completed
-> +				successfully (e.g., triggered via the
-> +				/dev/liveupdate event). Kernel subsystems have
-> +				been notified via the %LIVEUPDATE_PREPARE
-> +				event/callback and should have initiated state
-> +				saving. User workloads (e.g., VMs) are generally
-> +				still running, but some operations (like device
-> +				unbinding or new DMA mappings) might be
-> +				restricted. The system is ready for the reboot
-> +				trigger.
-> +
-> +		"frozen"	The final reboot notification has been sent
-> +				(e.g., triggered via the 'reboot()' syscall),
-> +				corresponding to the %LIVEUPDATE_REBOOT kernel
-> +				event. Subsystems have had their final chance to
-> +				save state. User workloads must be suspended.
-> +				The system is about to execute the reboot into
-> +				the new kernel (imminent kexec). This state
-> +				corresponds to the "blackout window".
-> +
-> +		"updated"	The system has successfully rebooted into the
-> +				new kernel via live update. Restoration of
-> +				preserved resources can now occur (typically via
-> +				ioctl commands). The system is awaiting the
-> +				final 'finish' signal after user space completes
-> +				restoration tasks.
-> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> index f6b0bde188d9..75a17ca8a592 100644
-> --- a/kernel/liveupdate/Kconfig
-> +++ b/kernel/liveupdate/Kconfig
-> @@ -29,6 +29,24 @@ config LIVEUPDATE
->   
->   	  If unsure, say N.
->   
-> +config LIVEUPDATE_SYSFS_API
-> +	bool "Live Update sysfs monitoring interface"
-> +	depends on SYSFS
-> +	depends on LIVEUPDATE
-> +	help
-> +	  Enable a sysfs interface for the Live Update Orchestrator
-> +	  at /sys/kernel/liveupdate/.
-> +
-> +	  This allows monitoring the LUO state ('normal', 'prepared',
-> +	  'frozen', 'updated') via the read-only 'state' file.
-> +
-> +	  This interface complements the primary /dev/liveupdate ioctl
-> +	  interface, which handles the full update process.
-> +	  This sysfs API may be useful for scripting, or userspace monitoring
-> +	  needed to coordinate application restarts and minimize downtime.
-> +
-> +	  If unsure, say N.
-> +
->   config KEXEC_HANDOVER
->   	bool "kexec handover"
->   	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
-> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-> index c67fa2797796..47f5d0378a75 100644
-> --- a/kernel/liveupdate/Makefile
-> +++ b/kernel/liveupdate/Makefile
-> @@ -13,3 +13,4 @@ obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
->   obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
->   
->   obj-$(CONFIG_LIVEUPDATE)		+= luo.o
-> +obj-$(CONFIG_LIVEUPDATE_SYSFS_API)	+= luo_sysfs.o
-> diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-> index 64d53b31d6d8..bd07ee859112 100644
-> --- a/kernel/liveupdate/luo_core.c
-> +++ b/kernel/liveupdate/luo_core.c
-> @@ -100,6 +100,7 @@ static inline bool is_current_luo_state(enum liveupdate_state expected_state)
->   static void __luo_set_state(enum liveupdate_state state)
->   {
->   	WRITE_ONCE(luo_state, state);
-> +	luo_sysfs_notify();
->   }
->   
->   static inline void luo_set_state(enum liveupdate_state state)
-> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-> index 01bd0d3b023b..9091ed04c606 100644
-> --- a/kernel/liveupdate/luo_internal.h
-> +++ b/kernel/liveupdate/luo_internal.h
-> @@ -47,4 +47,10 @@ int luo_file_freeze(u64 token);
->   int luo_file_cancel(u64 token);
->   int luo_file_finish(u64 token);
->   
-> +#ifdef CONFIG_LIVEUPDATE_SYSFS_API
-> +void luo_sysfs_notify(void);
-> +#else
-> +static inline void luo_sysfs_notify(void) {}
-> +#endif
-> +
->   #endif /* _LINUX_LUO_INTERNAL_H */
-> diff --git a/kernel/liveupdate/luo_sysfs.c b/kernel/liveupdate/luo_sysfs.c
-> new file mode 100644
-> index 000000000000..935946bb741b
-> --- /dev/null
-> +++ b/kernel/liveupdate/luo_sysfs.c
-> @@ -0,0 +1,92 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (c) 2025, Google LLC.
-> + * Pasha Tatashin <pasha.tatashin@soleen.com>
-> + */
-> +
-> +/**
-> + * DOC: LUO sysfs interface
-> + *
-> + * Provides a sysfs interface at ``/sys/kernel/liveupdate/`` for monitoring LUO
-> + * state.  Live update allows rebooting the kernel (via kexec) while preserving
-> + * designated device state for attached workloads (e.g., VMs), useful for
-> + * minimizing downtime during hypervisor updates.
-> + *
-> + * /sys/kernel/liveupdate/state
-> + * ----------------------------
-> + * - Permissions:  Read-only
-> + * - Description:  Displays the current LUO state string.
-> + * - Valid States:
-> + *     @normal
-> + *       Idle state.
-> + *     @prepared
-> + *       Preparation phase complete (triggered via '/dev/liveupdate'). Resources
-> + *       checked, state saving initiated via %LIVEUPDATE_PREPARE event.
-> + *       Workloads mostly running but may be restricted. Ready forreboot
-> + *       trigger.
-> + *     @frozen
-> + *       Final reboot notification sent (triggered via 'reboot'). Corresponds to
-> + *       %LIVEUPDATE_REBOOT event. Final state saving. Workloads must be
-> + *       suspended. System about to kexec ("blackout window").
-> + *     @updated
-> + *       New kernel booted via live update. Awaiting 'finish' signal.
-> + *
-> + * Userspace Interaction & Blackout Window Reduction
-> + * -------------------------------------------------
-> + * Userspace monitors the ``state`` file to coordinate actions:
-> + *   - Suspend workloads before @frozen state is entered.
-> + *   - Initiate resource restoration upon entering @updated state.
-> + *   - Resume workloads after restoration, minimizing downtime.
-> + */
-> +
-> +#include <linux/kobject.h>
-> +#include <linux/liveupdate.h>
-> +#include <linux/sysfs.h>
-> +#include "luo_internal.h"
-> +
-> +static bool luo_sysfs_initialized;
-> +
-> +#define LUO_DIR_NAME	"liveupdate"
-> +
-> +void luo_sysfs_notify(void)
-> +{
-> +	if (luo_sysfs_initialized)
-> +		sysfs_notify(kernel_kobj, LUO_DIR_NAME, "state");
-> +}
-> +
-> +/* Show the current live update state */
-> +static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *attr,
-> +			  char *buf)
-> +{
-> +	return sysfs_emit(buf, "%s\n", luo_current_state_str());
+On Wed,  8 Oct 2025 12:37:48 +0800 Lance Yang <lance.yang@linux.dev> wrote:
 
-Because the window of kernel live update is short, it is difficult to 
-statistics how many times the kernel is live updated.
+> +		if (!cc->is_khugepaged ||
+> +		    *unmapped <= khugepaged_max_ptes_swap) {
+> +			/*
+> +			 * Always be strict with uffd-wp enabled swap
+> +			 * entries. Please see comment below for
+> +			 * pte_uffd_wp().
+> +			 */
+> +			if (pte_swp_uffd_wp(pte)) {
+> +				*scan_result = SCAN_PTE_UFFD_WP;
+> +				return PTE_CHECK_FAIL;
+> +			}
+> +			return PTE_CHECK_CONTINUE;
+> +		} else {
+> +			*scan_result = SCAN_EXCEED_SWAP_PTE;
+> +			count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+> +			return PTE_CHECK_FAIL;
+> +		}
 
-Is it possible to add a variable to statistics the times that the kernel 
-is live updated?
+I'm inclined to agree with checkpatch here.
 
-For example, define a global variable of type atomic_t or u64 in the 
-core module:
+WARNING: else is not generally useful after a break or return
+#81: FILE: mm/khugepaged.c:574:
++			return PTE_CHECK_CONTINUE;
++		} else {
 
-#include <linux/atomic.h>
+did you see this and disagree or did you forget to run checkpatch?
 
-static atomic_t klu_counter = ATOMIC_INIT(0);
-
-
-Every time a live update completes successfully, increment the counter:
-
-atomic_inc(&klu_counter);
-
-Then exporting this value through /proc or /sys so that user space can 
-check it:
-
-static ssize_t klu_counter_show(struct kobject *kobj, struct 
-kobj_attribute *attr, char *buf)
-{
-     return sprintf(buf, "%d\n", atomic_read(&klu_counter));
-}
-
-Yanjun.Zhu
-
-
-> +}
-> +
-> +static struct kobj_attribute state_attribute = __ATTR_RO(state);
-> +
-> +static struct attribute *luo_attrs[] = {
-> +	&state_attribute.attr,
-> +	NULL
-> +};
-> +
-> +static struct attribute_group luo_attr_group = {
-> +	.attrs = luo_attrs,
-> +	.name = LUO_DIR_NAME,
-> +};
-> +
-> +static int __init luo_init(void)
-> +{
-> +	int ret;
-> +
-> +	ret = sysfs_create_group(kernel_kobj, &luo_attr_group);
-> +	if (ret) {
-> +		pr_err("Failed to create group\n");
-> +		return ret;
-> +	}
-> +
-> +	luo_sysfs_initialized = true;
-> +	pr_info("Initialized\n");
-> +
-> +	return 0;
-> +}
-> +subsys_initcall(luo_init);
+--- a/mm/khugepaged.c~mm-khugepaged-merge-pte-scanning-logic-into-a-new-helper-checkpatch-fixes
++++ a/mm/khugepaged.c
+@@ -571,11 +571,10 @@ static inline int thp_collapse_check_pte
+ 		    (!cc->is_khugepaged ||
+ 		     *none_or_zero <= khugepaged_max_ptes_none)) {
+ 			return PTE_CHECK_CONTINUE;
+-		} else {
+-			*scan_result = SCAN_EXCEED_NONE_PTE;
+-			count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+-			return PTE_CHECK_FAIL;
+ 		}
++		*scan_result = SCAN_EXCEED_NONE_PTE;
++		count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++		return PTE_CHECK_FAIL;
+ 	} else if (!pte_present(pte)) {
+ 		if (!unmapped) {
+ 			*scan_result = SCAN_PTE_NON_PRESENT;
+@@ -600,11 +599,10 @@ static inline int thp_collapse_check_pte
+ 				return PTE_CHECK_FAIL;
+ 			}
+ 			return PTE_CHECK_CONTINUE;
+-		} else {
+-			*scan_result = SCAN_EXCEED_SWAP_PTE;
+-			count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
+-			return PTE_CHECK_FAIL;
+ 		}
++		*scan_result = SCAN_EXCEED_SWAP_PTE;
++		count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
++		return PTE_CHECK_FAIL;
+ 	} else if (pte_uffd_wp(pte)) {
+ 		/*
+ 		 * Don't collapse the page if any of the small PTEs are
+_
 
 
