@@ -4,127 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FC9BCCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BEF3CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:32:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CDC98E001A; Thu,  9 Oct 2025 11:30:03 -0400 (EDT)
+	id D686C8E002A; Thu,  9 Oct 2025 11:32:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8574F8E0008; Thu,  9 Oct 2025 11:30:03 -0400 (EDT)
+	id D1DBC8E0008; Thu,  9 Oct 2025 11:32:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 746758E001A; Thu,  9 Oct 2025 11:30:03 -0400 (EDT)
+	id C554F8E002A; Thu,  9 Oct 2025 11:32:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E2068E0008
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:30:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B10F11B0DB
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:30:03 +0000 (UTC)
-X-FDA: 83978961486.11.6746324
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 159F61C0014
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:30:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="K9/gKAhv";
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B23638E0008
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:32:41 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6AC19461F6
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:32:41 +0000 (UTC)
+X-FDA: 83978968122.02.B440792
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7EF7820014
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:32:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dvObJYKt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760023801;
+	s=arc-20220608; t=1760023959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5KXAYePP4BLP0oPw4Oo2yec/zLTGELhv7tKRSHRmraM=;
-	b=dBiw6d1ejbVtDOUaAFKcUJ7b2cUVi4SyxwoW9t7KMzqeoIqX+lOVIYrIyTU6w54Xg+9/vO
-	WPdrw4kRj/wsS6i8JGk61ceMWlkYxVkQo9BC6Ifcq591YbWGze8EECuaduu2OqS5BOL4dA
-	b80zvrWWQihT2sPukfp0i0DUQ246BDc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760023801; a=rsa-sha256;
+	bh=ar5DXhZwopHAzrQe7Nhnw3uLFpeXIHyKZmHhawwMIWU=;
+	b=ysuWnn0cE2iGdFzhw4C073PaNuSJGLJgRWORORSi9GAHtmutrv0jNIKYhqexSQ4AErhyqp
+	lHCOyOayFqhY8fG8GykVIJFFLS2p4NBMa4ICpLMyN2hWT0fD9nK9olJSrxCXfoE1h49TbE
+	iOQ72kWLaabEd92FRmtouVFID6aYFWo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760023959; a=rsa-sha256;
 	cv=none;
-	b=6u1dM9Ez/9lq/hWEFq+lMeE/0VhedGTJR0MLJnCmsK83XHXa00IIN6X3D5cRXDIR2t91TZ
-	8M4T/XboNy6I2UdYcyD0Pr7SuvW57m6yiBDgQIYwxZEZIAt0XzVM7V6OuCQxd0uubVLLBX
-	sDk0DoCfDBY8TrI/y2HUBPtn2CwjLPQ=
+	b=ndgvxKw6Y5EcoZsvi5u8JQoUQcxe44hkYBpHwGGV27fLZ3xkqtYvGzHUZ16UzXd+lXhLiB
+	M6b1xV4nr0887vj8yMfVueFC7zvPb2N+UHgwRKMViOY6BprRn+hxU04iZ2kz/fx/010Tqu
+	gBzq4nWGIbZNeKGwYZkyeB2Qg4TY4CM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="K9/gKAhv";
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.45 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-7946137e7a2so12826946d6.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 08:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760023800; x=1760628600; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5KXAYePP4BLP0oPw4Oo2yec/zLTGELhv7tKRSHRmraM=;
-        b=K9/gKAhv/HxSzZVHuIA32lyXyYD6pZfp6DeppFd47Q08XRWDpyk1j85z2ln5DsU4A0
-         4s39ZX/n44HYicZ9WAKzKmTAXZ76yplbG+4OLkFW9D7GaNsaPkGawHZV+n02DMoBJbVF
-         E44J9qFRc9S2mxMPvfbl7ngvj09DLiZzPpLydF0i1y7K7tVwiAzlEfhUgAZsdxhgoQmg
-         NPruMJnMoB84BBr9Xl8FFUAqaI5lyGm9W5sdU+bVrAXmZ5MzUyLBDSA+H8E2QNCZ9j+z
-         87BasWM3f/F8I7W2j3oDV3WhmkGOh0bo694WtXLMo0eQJ0QK8h141L9Q6O4BbJRrjPLS
-         q5Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760023800; x=1760628600;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KXAYePP4BLP0oPw4Oo2yec/zLTGELhv7tKRSHRmraM=;
-        b=s3KsXIbDLCBc2h4HqBWz8fRrQVRxizfn+sUoTijF+bwAoMexrhL4gnrzdue6w8cEqk
-         MbWPNhnis0ohVvY4+rlq0JjdtXTxrcCz/V2/0DjBE5jXMvi6y6L9BSZ2lC/bKtcD+LTb
-         nEjlx+UJoty48BxlpxAIxD7EwN73sM2MvIDwQO4hBtrcgJJi2lGvXfkxz7ncmouKOc1s
-         FnxOfg93twJ6CifuJ4F3YxJEUw21EONO/QJeRtlmycIyyEcMC1fiB8KK7fMazaSRB4fk
-         Nb23TkusQEKJVTX4tmtQEPFny7gW6elQd1trGPlGO0vLeSvBd1uQxAihKgYz5o0mWfYT
-         ERNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpj5lNd4lGQxg0SC3UxKOFV5gDG3a/smUe8BI8xTWH9fZ1/wf/s0TIKHvZALpgjKgSrJAhMDuSxA==@kvack.org
-X-Gm-Message-State: AOJu0YzaA2tKmVZnmDeyhAI1GKSGU10oscqsKroJZ8GDDqABk1dHXy1l
-	lk9lk5LD/apvAoeR2ddnN1jGydFUJ6cpgrer2Oyv/3lkgmDkF4W7H00qZBIE0CR2O0A=
-X-Gm-Gg: ASbGncshZzfCMAWij3gooydKUeynkid70GHoSR8hB86m/lT7gPxdAVNAPkyZ63y6TKu
-	Fhkejk6pgRahlznT4b12GHCd9gAaNQnf/pkDmJBxApJU3EpM/0Wp6xE7iDdQhSbfIug/6gd8oZL
-	B7YvHUtMuuWfgPp3U87j1EEX7/1gSjToOGe/g+RCCm1roRUilHUx6DWAKFs2xYghP06njKcKzM1
-	mekmJbim16bnZqgWVH2qfGyPGNJ5c0tkw7ueQLIAuVIkZRA28XtN8MVa8gKhqSdPwHO8WBH4jid
-	/E5PGa3uax3dehmOeZ+6F9WEFclBhKLtHl/lAFmkrOFB5JUAdVaGu8Wu2vgIYvFcbMzrVet6EqS
-	5ROeo3GxGQobYPXHkIPttOdYsIcm4o/AYoFtD5uRuMALMAbL2eHtWnrkqb+B3ly2Hrtu0q9twSf
-	dMbIlLZmObgaF3vj9uAmOVk9vDXraDGg==
-X-Google-Smtp-Source: AGHT+IFdgTVH9uyu/5o64basHMKsbAG88LBs1aBY1NSyzfZE3IVT45kHm7IlO9M72p9+htOIi0Mntg==
-X-Received: by 2002:a05:6214:29cd:b0:772:4853:48 with SMTP id 6a1803df08f44-87b21002ac1mr103016176d6.8.1760023799963;
-        Thu, 09 Oct 2025 08:29:59 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bae60c89sm179458576d6.12.2025.10.09.08.29.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 08:29:59 -0700 (PDT)
-Date: Thu, 9 Oct 2025 11:29:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Michal Hocko <mhocko@suse.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-	corbet@lwn.net, muchun.song@linux.dev, osalvador@suse.de,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, laoar.shao@gmail.com,
-	brauner@kernel.org, mclapinski@google.com, joel.granados@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mel Gorman <mgorman@suse.de>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-Message-ID: <aOfU9YTKMPWzYOta@gourry-fedora-PF4VCD3F>
-References: <20251007214412.3832340-1-gourry@gourry.net>
- <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
- <aOZ8PPWMchRN_t5-@tiehlicka>
- <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
- <aOaCAG6e5a7BDUxK@tiehlicka>
- <83e33641-8c42-4341-8e6e-5c75d00f93b9@redhat.com>
- <aOaR2gXBX_bOpG61@gourry-fedora-PF4VCD3F>
- <aOdSvriKRoCR5IUs@tiehlicka>
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dvObJYKt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760023956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ar5DXhZwopHAzrQe7Nhnw3uLFpeXIHyKZmHhawwMIWU=;
+	b=dvObJYKtcK1ChPuL5tvzQaR6EnoAGGZhmQEEIEXoDr/1yYtpNAnUnCYHxMgj38b6l9mov0
+	LsbZFVNDM3eH35oGiLpDApraYsWmRU3XCc57vv+oSVGixLEZfYcF5MsvgamAAkCTEWEGEP
+	cZ4KuIePH+I1bi6kYe6Dsh5rGPJDA3s=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jonathan Corbet
+ <corbet@lwn.net>,  Neal Cardwell <ncardwell@google.com>,  Kuniyuki
+ Iwashima <kuniyu@google.com>,  David Ahern <dsahern@kernel.org>,  Andrew
+ Morton <akpm@linux-foundation.org>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Yosry Ahmed <yosry.ahmed@linux.dev>,
+  linux-mm@kvack.org,  netdev@vger.kernel.org,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Tejun Heo
+ <tj@kernel.org>,  Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+  Matyas Hurtik
+ <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+In-Reply-To: <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com> (Daniel Sedlak's
+	message of "Thu, 9 Oct 2025 16:44:04 +0200")
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+	<87qzvdqkyh.fsf@linux.dev>
+	<13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+Date: Thu, 09 Oct 2025 08:32:27 -0700
+Message-ID: <87o6qgnl9w.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOdSvriKRoCR5IUs@tiehlicka>
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 159F61C0014
+X-Rspamd-Queue-Id: 7EF7820014
 X-Rspamd-Server: rspam02
-X-Stat-Signature: p531b49ht8ewonrrc5sugpdoqtr9gxfg
-X-HE-Tag: 1760023800-573689
-X-HE-Meta: U2FsdGVkX19jIpTecmEMG+g9mGhNIOB4rou+8PRP6zoEgy0XoKb2TczJAVZ0ZkBRV7V3Z0VA+wtHzuYPM8p2tz53pJsFl8iISGz12xxZC6jYy5zzJ/s1udm79SBMSq/D24CZc471SehZ/LPAq7nhrTx3/R8GWyA3/jWdfk7OVNeiiZWl+VvKYxJE/UPcdMjfXuLTK8sAhFzCXoDydH+JIOieE4QWzo8ziMqsbACsy92PJk7Ahd0adCSVP7zQmoJELPqDi26DRWpF39OS7dob+u1V4B079NQOHSe0ITWgmprSbnonT0hXGgO/24fJlDFK3wOomRcZvPUZ/tzj8jKcC2W9EJxFMRlh8rN0e+/xKanyFr3BxxRH0+/5l4dumng1R5PCAorSttNKLdbAtvcK64Pdne60kd1ircBzJF7aSDA9/+Uu3RIq4MnJ2Eudu+BmICvIs85sry08d90X5Ars7eI/Bq82aFm8ZF7+iSAcJY4JiSmeOUF04JybN1JcuUaj/fEd7Lq8S/fIz7Qt3/K2N0WxdXBPmlIlb4RuAPqjg6NfKIwqkjZFN775t/x/RjPEbFEsivTQ+ViRt2wqz38CfP+5KrXvFDxsdrV1TlGc5i/CA21PqozkAg5XOv/X4r4xN5Bh+t0KOY6U4k9Tu3eTGXm1I6OC/ZCoPuSZBAbDrEFbEuCGFkdCqpyLLCVeYF8462r8pq1iCD/aMa/3nPFcEaNwGD8DMF3aZ4jJgDvDQCkWGr1LHnfXyZG8eAcunkvJOMzR0U4Y3qQ4S9GSpj7rjznhd2mNmJIGuA6j8VNPZwyeiYObB8fpMlLv9xcDtXyQS3oBnJzugtX4hOH5nOmOfUbK1xAYA+Nr+uzXzoVfLFKdL0dxJ8wwRsGX5d0pawJkKROw1XPJos1eWkbITJbYDy9Oup9Vm3ECZ5+OO7t7A46Ed5WzH6gGeMZYvwZqIqhrKBC4clGl0LJA88kFXHR
- noNWVIp8
- Y3SAJjJ4dSooqOHBh62haGbX9QqLEq1T3XR1pjIRSR2fBG+Y0S0yEm0+GuasgxQB5wh+heSM/wc0BtK0G5Ph9GFvD+FRTHmE5ZSyPO2/8t1CmfN/+xg/Ta8Bz10u+Pcs+NvvuU60bHSD0HcfUoQzkCMjI7RIKJgmzVWwYCITTjmWoyHtpabYvx6WF50G9aVZ6vuEHvd4AU2fFdvb3NXEQcbqzOd2Or0gybjm7n9FrzFpD/0i2oZzWh6CHIXPHob3QwHqGWaR2Q0QWNByM/MI5jJ6qYcsG6zL1wfRc4iyvYyPyN3WjZZzjeqpxAHemDO44O46vQ+j2fIsECMw++TXu6w5FFeVjACbU3HOYOQeBcvQrnaPkNBQepxXXqfH3xp/42TrUtbVjbrUMb7/fPtzfM0l/rZ+kO1ZZ6Gf/q7tdu6mWiXUlJ+9HqoX6GoCLYx8V+/ghxmKkc7KoI3dYC0xOFtCalZR0P97DKdQaNpkWYm40PDw=
+X-Stat-Signature: j7aesyyhfbex3jti7jsfx5inawerjdnn
+X-HE-Tag: 1760023959-792467
+X-HE-Meta: U2FsdGVkX1+Yti80rpULGYkIhDR1fPRBPTn9w+ScoA7JATeyR2Kd4kqfQOUbUGioyWACdJ9r4VuYPnE3yi8Mii+xKizuAmavXDWkANb5uBk6qhTgA8M7BhtqbcUOlMZ4KA5rY611WGWxltICaCFbzrSN81mDgfc7FK11qfFEkG3AZzkhc1lxKTGII86ZxSOcyctTFtR7xeYqCLrgLtpbl95qP22OYEkL4SFtJcPaIVI4y6UU+bDsatspPePZBPzCVtMGS0jo9lNpn+7sldtnj/kW9XIChLCEqnL9UUDFe7bsT5GYQGUEMSqUQ89YYHwdY2kgoaPibBjKigjni66hNPwrzqzxA064W/1NVmT6LYkfrjppFsS1q5sTre9F40ewRd3cMbHqmBe9c3hvvzN/kmgKxtmDgW/FpFUYv3taIufdCHSSCEZPeDsvz7cBz0zdICJYiixppxJUuXJu81cMwdDhlUXHsk4P+au7LLHM0lSbbxf3uvSaaeM8rf3yzVKItExFhu+ctwIpPgJ6H92GSURw6KzQ8cLZDRo1BWUvWpVlHlH2WGz/vL3cKGYlJXCzjoLw1FY+jZA1qP4n0WgFybYFAKjzcf30OUidm/IugcKrBatkF2d/Y59Non64qGl+sjBGMuMdkI9A0iGupMCuC3scUlX1gczoqH83EyOGBK1OhMDPbAMsI88/mG0PRomqMfOUrK9kQJrLx3m/8tgeW7eoPMa2Sn8E87Bw5ok0tAbpVH3UqUzJDmxPipJF+U7Mc2awJImYkD+sDAJGH4v24T5necTeES9GoJasna26e420XDo6dPHXpEPj7djflcHkA0AUvnJvQbMqNTM6YtmhshUZaOAPk5WZT+QNHdzmVnDYGMYvLVfo7GSV0YM7XrPTr9cflzsgHbsRRktx+oc3nvX3l2RhaWcMUmRQ8HSsDbagZ9oQrGeIDU2ZsssuFReIBCXE3K3Hg92O1BY8uwW
+ 10DYBC5D
+ 9AGTCLLdk9YIa0ntmLl7yDa9ffkLLSfDogAwTnax1OOkq5sRJRjIwsGzEeKzEem/43W4Vv4ek29IVHU3XMZ4XmaKbTGFBCldiVq67REnCpt9DhguLl5VzWC3A8V/n9cMAU5E7OsI4Sc80oYB3nmbIPZd5Gcsqc3OW6R5zVe9/l91PuuReG7GyyTo/FObc3AY+l4c6g+olyPXuPqttm2SI5N6Gs/thCPE50WxZsK76xWXGetAvAbID9it2bnWzvNNCyAxsWjl2ZoxOW03X8vMFzUoN5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,52 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 08:14:22AM +0200, Michal Hocko wrote:
-> On Wed 08-10-25 12:31:22, Gregory Price wrote:
-> > > I'm not quite clear yet on the use case, though. If all the user allocations
-> > > end up fragmenting the memory, there is also not a lot of benefit to be had
-> > > from that zone long term.
-> > >
-> > 
-> > The only real use case i've seen is exactly: 
-> >  - Don't want random GFP_KERNEL to land there
-> >  - Might want it to be pinnable
-> > 
-> > I think that covers what you've described above.
-> > 
-> > But adding an entire zone felt a bit heavy handed.  Allowing gigantic in
-> > movable seemed less - immediately - offensive.
-> 
-> The question is whether we need a full zone for that or we can control
-> those allocation constrains on per memory block bases to override
-> otherwise default. So it wouldn't be MOVABLE but rather something like
-> USER zone.
+Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
 
+> Hi Roman,
+>
+> On 10/8/25 8:58 PM, Roman Gushchin wrote:
+>>> This patch exposes a new file for each cgroup in sysfs which is a
+>>> read-only single value file showing how many microseconds this cgroup
+>>> contributed to throttling the throughput of network sockets. The file is
+>>> accessible in the following path.
+>>>
+>>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+>> Hi Daniel!
+>> How this value is going to be used? In other words, do you need an
+>> exact number or something like memory.events::net_throttled would be
+>> enough for your case?
+>
+> Just incrementing a counter each time the vmpressure() happens IMO
+> provides bad semantics of what is actually happening, because it can
+> hide important details, mainly the _time_ for how long the network
+> traffic was slowed down.
+>
+> For example, when memory.events::net_throttled=1000, it can mean that
+> the network was slowed down for 1 second or 1000 seconds or something
+> between, and the memory.net.throttled_usec proposed by this patch
+> disambiguates it.
+>
+> In addition, v1/v2 of this series started that way, then from v3 we
+> rewrote it to calculate the duration instead, which proved to be
+> better information for debugging, as it is easier to understand
+> implications.
 
-Mild ignorance here - but I don't think the buddy allocator currently
-differentiates chunks of memory based on block membership, it just eats
-folios from certain zones/nodes.
+But how are you planning to use this information? Is this just
+"networking is under pressure for non-trivial amount of time ->
+raise the memcg limit" or something more complicated?
 
-I'm scratching my head trying to think of the discrete mechanism to do
-this that doesn't inject significantly more complexity into the buddy
-allocator.
+I am bit concerned about making this metric the part of cgroup API
+simple because it's too implementation-defined and in my opinion
+lack the fundamental meaning.
 
-Looking at the recent[1] THP support for ZONE_DEVICE, I wonder if we end
-up with something more along these lines?  But this aschews the other
-requirement of wanting the memory to be otherwise general purpose.
+Vmpressure is calculated based on scanned/reclaimed ratio (which is
+also not always the best proxy for the memory pressure level), then
+if it reaches some level we basically throttle networking for 1s.
+So it's all very arbitrary.
 
-https://lore.kernel.org/linux-mm/20251001065707.920170-1-balbirs@nvidia.com/
+I totally get it from the debugging perspective, but not sure about
+usefulness of it as a permanent metric. This is why I'm asking if there
+are lighter alternatives, e.g. memory.events or maybe even tracepoints.
 
-ZONE_USER does feel like the most natural solution.  Literally just
-(ZONE_NORMAL - GFP_KERNEL).  This might need a new GFP flag for certain
-use cases like KVM (GFP_USER) to denote certain "This isn't technically
-kernel memory, but it needs to be pinnable".  That would slot right
-between ZONE_NORMAL and ZONE_MOVABLE.
-
-Alternatively we could go the opposite way and introduce ZONE_KERNEL
-below ZONE_NORMAL and disallow GFP_KERNEL from ZONE_NORMAL - then have
-strict watermarks on ZONE_KERNEL to ensure the kernel is always able
-to get memory. 
-
-~Gregory
+Thanks!
 
