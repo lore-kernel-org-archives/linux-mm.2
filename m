@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AB2CCD185
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:40:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A6B4CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 468E78E0091; Thu,  9 Oct 2025 08:40:51 -0400 (EDT)
+	id 5EEEE8E0093; Thu,  9 Oct 2025 08:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4119A8E0002; Thu,  9 Oct 2025 08:40:51 -0400 (EDT)
+	id 59EEA8E0002; Thu,  9 Oct 2025 08:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 300C78E0091; Thu,  9 Oct 2025 08:40:51 -0400 (EDT)
+	id 48E2B8E0093; Thu,  9 Oct 2025 08:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CE028E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:40:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DAE98160875
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:40:50 +0000 (UTC)
-X-FDA: 83978535060.24.7FF52C5
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B137010000D
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:40:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=aAzNxfuy;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 3750C8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:59:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA59E13BEF1
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:59:47 +0000 (UTC)
+X-FDA: 83978582814.08.B9E9A65
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BE0D814000D
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:59:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=X2hT8cny;
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760013649;
+	s=arc-20220608; t=1760014786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=71oi71RI5Ip+tb5/vUqCU8Khwnwi7PpDvomKjg1Up1U=;
-	b=aOOaN4hamnCcN1AX2MdsFGBZ7uuANxSDZXszcIakg6zJGRy6r560jkHgQqPHSRj9fYHJE8
-	0lSHUXs4IKuvVTQkWJxiaS7Vhfj/ovYy58RddwIp9kYUiyJ1Hi8AuXhDFQsk2Z64NagWg0
-	YV38vbuACBeIzEeXt15iscARw7mQs7Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760013649; a=rsa-sha256;
-	cv=none;
-	b=un3Cyy91eIw9UHFsK8fMuDydgIYrDm3+DN3UbLyVxLqBjKn+itBRn5bJim4KvuLEhd4L4g
-	rfXuaA2l7u5G24Iec7Chi/lIxLzBgHg9nLiUnM7GEhbt3RroNpUUuAIUzk6Q5KG16O7KtD
-	3h+yxaCcwmr3NRXumimi3dB/16B+orM=
+	bh=3nmdPEBMpnlMRC3jTqPQ13Bh9/rsLEkTB0f8spndDN4=;
+	b=MHRSAAd6/gcL4Nix1gDJGVX/ZjKGaFyYCFkn+RCrPkJ1jc44fOsUIdNeMw9si8RJTLyfs8
+	+N8WxfEU9FYfA+zIyk0bR/osKzdcC6Ts/ABkdjugZ3U32czqbPquUoLGbeQs84WoU5E41/
+	i0Vhbw1Hvs6ievinwbyrupUoAjdmQRM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=aAzNxfuy;
-	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=X2hT8cny;
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760014786; a=rsa-sha256;
+	cv=none;
+	b=Ym665PvoOgwMDDHGwhUI4qQG9Ud9XO5vuWwYK2q8p59IAi35kZ6Vqxi/kaEvlGir6kYFiW
+	8lHgnd5Orz3UPZ4gBCrE8piKifSRUOlPCCJ0IjBrbCxfEP+IAlRwh24UOM+d5PxuGavxce
+	Ckh+1BMxFG4cd9BzNZKvTtOsZDqvVfo=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=71oi71RI5Ip+tb5/vUqCU8Khwnwi7PpDvomKjg1Up1U=;
-	b=aAzNxfuyREnNYoOvBy5D5gknS0Ek01S+29dgeFNhOwcq46k/cdpaMqabRGY1amnePmpvs08Cu
-	p067ZOWOcZ2qNTI6fh00ASx01YBLO2V6cRU3LRMpLUxbQrx+Af3TJb9UCyB+bZSuPptEKXm48Tg
-	aAntvVTkFLc3b1zhDo2uqRo=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4cj8bJ0gCTzpT1Y;
-	Thu,  9 Oct 2025 20:39:56 +0800 (CST)
+	bh=3nmdPEBMpnlMRC3jTqPQ13Bh9/rsLEkTB0f8spndDN4=;
+	b=X2hT8cnyKta4IwPwwuurm1oCq3sApJSZWuoiELhh29MSmC6YSU5I6mgBYCVBUqZSQpEQ6kplk
+	UEldQqV3rsvxJrXn6NK3gDGywYIa27vH0RmlquJajeFGKU/tAmBx/Sjt4Ddr+PxRaHtrOelMP+o
+	7fddfCPGYNYVTEX8NiLpgfI=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4cj8c14qYJzRhrC;
+	Thu,  9 Oct 2025 20:40:33 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9AC8618006C;
-	Thu,  9 Oct 2025 20:40:40 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 81248180485;
+	Thu,  9 Oct 2025 20:40:50 +0800 (CST)
 Received: from [10.174.177.243] (10.174.177.243) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 9 Oct 2025 20:40:39 +0800
-Message-ID: <8689fc00-f0c1-41af-b8c5-aa7970a3746d@huawei.com>
-Date: Thu, 9 Oct 2025 20:40:36 +0800
+ 15.2.1544.11; Thu, 9 Oct 2025 20:40:49 +0800
+Message-ID: <af6aedde-a4fc-453e-a393-3526a1399522@huawei.com>
+Date: Thu, 9 Oct 2025 20:40:45 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: Re: [PATCH v2 2/8] mm: hugetlb: optimize
- replace_free_hugepage_folios()
+Subject: Re: [PATCH v2 4/8] mm: page_alloc: add split_non_compound_page()
 To: David Hildenbrand <david@redhat.com>, Andrew Morton
 	<akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
 	<muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, Matthew Wilcox
@@ -81,23 +80,23 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Vlastimil Babka
 	<vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
 	<hannes@cmpxchg.org>, <linux-mm@kvack.org>
 References: <20250918132000.1951232-1-wangkefeng.wang@huawei.com>
- <20250918132000.1951232-3-wangkefeng.wang@huawei.com>
- <c925f44f-f0e8-42fa-94e6-24a02f9df28f@redhat.com>
+ <20250918132000.1951232-5-wangkefeng.wang@huawei.com>
+ <d075fb47-5f87-44e1-8d04-b3311c7b7bc6@redhat.com>
 Content-Language: en-US
-In-Reply-To: <c925f44f-f0e8-42fa-94e6-24a02f9df28f@redhat.com>
+In-Reply-To: <d075fb47-5f87-44e1-8d04-b3311c7b7bc6@redhat.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.174.177.243]
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hbpej8fcogzpfd5qdn1auij3dhi71ejb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BE0D814000D
+X-Stat-Signature: 1118saam54hyiukazm67bx6cqjrwae5k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B137010000D
-X-HE-Tag: 1760013647-770587
-X-HE-Meta: U2FsdGVkX19yDlh3NFYNFpAKabvtqckzWWd4cl9D9qYlESmbTyZFQ0uXUz1e0gMxIrswQhCoCvtEw4gxevD+cpDUyO2XsGuY7aaYeFYHABXuw/310Vd9ruEY1iZumycsjiPEo69Jwyh9HdIUZOjvfaGG4OrVF+RerzQaYn86yfN0n3fyHN5XQoZGrVnnfb3LzgroZo/Sratauu4ZW24NSePya8/45s+BmGXw/znJC0726z5QUTjp5SQqPp1nip4+Q9HzyOhG4PzPmQdG1AXpmC69EjLVd3Gx2wprp3aHAWqDfMhWmPNOwKn8xijEOTF+Y4MsC+e99v+wAv38iSvtAbaZuYgT3r1/hHPPD62hYaZRp62x3wloNFlvetMNfhq2wF6K2acP/kaZWJ48hArsSbF3PpK1R48N942vX+PkAJ79OwML3u2DVmFq7+xER/YPhODxayz/uzUADHJbSE9Suh3nQZ8JWOZ4Q4D5XWHyjF0XoFm940JGoa/TP+CT2CzDxPlHWKsAr3sfzA3s5GyhggEWlQWm0c2IXPTL3JXHRDxZyp6ceMWQlvaA4x3hbMF3AkwJ22g8cDmvbPxbYJIq/rK/D7GfB/9kL1/2V8KyVnuGCKJY0YgdtqLRIU8bAbkyGLOM0BC1ftxsGoLPXFea2tz2S9JNZq9CuqF6yTP4z2fy1Fxxi0Z9BKR1TBuDCa7sBGvd7oVAQUjSab6H2zLbPC3r/uIVgZSdKRY4SqXa4iqN9uLgZDtsSanGDsXfq/0UjZblgUblBvVtyGlHkQj0aDn7iCZ20lcC/z81B0SXVJiyCmc0agLKPSAoUB1XjTX6Axn8f5eOfZdBPVqM3ObLZ5AWJtFngq0BOC74eP9hr9BHLVe2W/ikceKB3KAWeDMkRsgAfmZ3LUVJU0iv5IMXZb8dFtH7+xtXk8hPc0t0zPR8HPR0Q6p4SBwZBhMS9peSTvy32yKp/j0/B7jlZx6
- VcDoZ3nK
- TktnIum2hh1+3dHirjONItY2o6GoTdr9sW8EwG7ie9mGSp49qnEPc/ZsK1bh1iggX3pUJeGwdrkAtDSfoTXNVxNRUHy1I+d6ei5K7Kp5T71qPm3rTg86Uy0xpjJ3x8E1auqJlVrNkiwUVT1V5GuFWNBxNUcGvh6EAMj18fRC2I79oVqjVgkmKfp0exrGqv9Y/0BZnh24XPZyYd0KJPH7DOT5IvvYtpmGdJwGoL+G4xYr8l2xT2yg3h1XkOtTRnOamim24a4MSTIg3XGolHaO+JCA4BSMNxoc9HF+ok6Q2zQMKMMu6PtrvX1C7Ty/hm1jgrSB7cenwf1Dplx+VmQcHZ/l165j2arsMXHwXHKNdPmCa9Dwp3Wr0leWyqCcFNFAesGW6MNj1nRXhfZI=
+X-HE-Tag: 1760014784-107206
+X-HE-Meta: U2FsdGVkX1/4wN8XMoX0wZHyi/HPZi0Gmf0angcTYX3JI//BJR4xd/Z8V/0dh7zsoa2B+jFcDm080f6csNqqCmzFGm+zUNmfflQZWCqW0kq33GEzI7soiH42Mh8hMAlq9a4Zxp04izzyUROyspjzAVR03fZDA8DCNer9UzML3NxpeX+6BD8VNEGw3SlfsglHh2bP9ylWCBDG+DcYwI6MD84+JzjqruyLFwooKDvj/W9ZK/7AyMWlKY+WVOkxLR/xaYiWdY/hIOE1QiZlBWwbW7sYXiFhHnAf0eBAJR2Ev4yjiAJuqwDexiYv4WNMRaDRD6hIE0ZIfzaCb6Q/fRx3mW/QS3OJZUkAa2trp8qOCJ4T/L+QMC+ZOGhdK+iFbyub9NrhNCf6UsKUas+aTfACDvpZYhVdw5rk2wPu7d0Mc78GXG3ysbjtn/Xma6/kZx8CzqDMjbEIbC5IXNLVp/dOqstZekpk1E0e1N3uENBvS032sWLfgfpePAMTIrHbTjqskNKY2f0n0zzDGU29aUpnvBNzqkF069Y16Ei+UVUGaaAzlIqn5nrvR74ILK3pn2Nfs5+knWcbEaQ7dPkZvRhjoZve4wwOZm48a2Ne/eXQNgY4nY6T5nJZB9c1tSi+4+iNB71zQh353VBitCID6Z6LDp9soUtMw3hdl3svtV0iEP6E9ZAMMx7CM8PfJxtv5YxrKiDYXRcbytityncQBFYQk71tL0BRozRQ4wUvnoan9zSC4lmzw7BZIXTymJbt4AgfqT+gWvDyrem461aH5b3qa55sWunUQfegTwlZOvUkFX9JFTwFAARWS3w3v+/9vNHBOPoav8qIQTzP9m1gq72lri7khM1KDWB84ZwV7ybRAdwBds5tbNdVmLADVI1K5QQW23RCTwewjQEcrdoaDjHfR3cC3BMfVycRwybfQlpVJYjJirzGJ0SHLeQifu80bu6fNiL1jtCYA7su2FvmVy3
+ q1bijqI0
+ EZvVDpqEBuQZLUghFvBLXIvbFducDI69t4HCtONqBD2/bVxA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,27 +107,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/9/30 17:57, David Hildenbrand wrote:
+On 2025/9/30 18:06, David Hildenbrand wrote:
 > On 18.09.25 15:19, Kefeng Wang wrote:
->> No need to replace free hugepage folios if no free hugetlb folios,
->> we don't replace gigantic folio, so use isolate_or_dissolve_huge_folio(),
->> also skip some pfn iterations for compound pages such as THP and
->> non-compound high order buddy to save time.
+>> Add new split_non_compound_page() to simplify make_alloc_exact().
 >>
->> A simple test on machine with 116G free memory, allocate 120 * 1G
->> HugeTLB folios(107 successfully returned),
->>
->>    time echo 120 > /sys/kernel/mm/hugepages/hugepages-1048576kB/ 
->> nr_hugepages
->>
->> Before: 0m0.602s
->> After:  0m0.429s
 > 
-> Also this patch feels misplaced in this series. I suggest you send that 
-> out separately.
-> 
-> Or is there anything important that I am missing?
+> "Factor out the splitting of non-compound page from make_alloc_exact() 
+> and split_page() into a new helper function split_non_compound_page()".
 > 
 
-Sure, let me do it separately.
+Thanks, will update the changelog.
+
+> Not sure I enjoy the name "split_non_compound_page()", but it matches 
+> the existing theme of split_page(): we're not really splitting any 
+> pages, we're just adjusting tracking metadata for pages part of the 
+> original-higher-order-page so it can be freed separately later.
+> 
+> But now I think of it, the terminology is bad if you look at the 
+> description of split_page(): "split_page takes a non-compound higher- 
+> order page, and splits it into n (1<<order) sub-pages: page[0..n]". It's 
+> unclear how split_non_compound_page() would really differ.
+> 
+> I would suggest you call the new helper simply "__split_page" ?
+> 
+> 
+
+OK, the naming always beats me, will change it.
+
 
