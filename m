@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F197CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B01AECCD187
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:01:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866278E0010; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
+	id 754738E0044; Thu,  9 Oct 2025 03:01:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8164F8E0002; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
+	id 72C858E0002; Thu,  9 Oct 2025 03:01:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753708E0010; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
+	id 530FF8E0044; Thu,  9 Oct 2025 03:01:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 660E28E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07763160AB5
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:04 +0000 (UTC)
-X-FDA: 83977678848.08.7FBB71D
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8D0BD8001B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Qs1pKDhn;
-	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44C918E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:01:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F177C0AAF
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:05 +0000 (UTC)
+X-FDA: 83977678890.07.3C2E67A
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 86A1940012
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=B0BPfyJp;
+	spf=pass (imf04.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759993262;
+	s=arc-20220608; t=1759993263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pIOoMBHNJqhZ5/ofJCwBqb0XpdSUUA4WlCEvJNRfdzA=;
-	b=mk2TK//0QucvtAzwVe/ObYSiARVoDBtxnYTwJ+i4KYvjaZlAEEXc23Q3DoCrIzPL+2cL/k
-	I9zRqAfaY92xYRt3AsCk8i2+zzlT/qi5wyaqlETuGdMD4msBk9gscYlCtnG3cU7jOwon+7
-	8Vt2+AsvQGRiuzQOl/r4UvgaxLy/hAI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6NVwQNPurC1JbCrgHJgbE/7etOjmRopqYYw6BDynSEE=;
+	b=BvUiisNFIICUQ1yHmeVc6PrbukLWUQvlgIBB4MQmdYAxaJ14GOJGoBjy1Q1rao6D4gOnrG
+	6YgMf/ZeZT7A7+Ck3jYanknMSwb0lHiFhkSYgzkRbGv8LyeP4st9JxVp5WbNYHc3tlwxH6
+	EKk0iY+jTFhVLQikFlAAX5HVl5KzVxM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=Qs1pKDhn;
-	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=B0BPfyJp;
+	spf=pass (imf04.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
 	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759993262; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759993263; a=rsa-sha256;
 	cv=none;
-	b=kMAfch4k9QZ7axnNv2Tl7G/gw1t5roCsjzI+z89SuHL87jqY09J272jl8ttWdEUFLTCeY5
-	tTJOAieCW4VvZqBlI/NiQbxUJghnB+rcuIfqQPC4MfptGt00GxXV7cw554c9QO0srtYmVc
-	ex2lC2ZCDrtrSAxvW2baJngFsjzBCYE=
+	b=BDGriqMuxuJ2EoDfiTkPoD8y2wphXdYM+GW7cAZv5MDrxyVzFTEtigHpxEb5FiYvyfHhDp
+	RFbxzIR8VDmOvQB8x0qGU4qoVVf3inUJBTezFGscpAEG4nA58V/LFVZxbyswyHlJ9dulqm
+	0E9pxAC+07UDeomUYmrLN8xvsT1f09w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=pI
-	OoMBHNJqhZ5/ofJCwBqb0XpdSUUA4WlCEvJNRfdzA=; b=Qs1pKDhnSwbOU7TR/a
-	CObdNqoykid8FPCZuyLMJZnprncQxkN/Yw2poc0B/EBhtW37WAWbtJhwJypwcKzc
-	e7nch8ng5uTnHGOKR0JplYpoqeySfDFBt6pD/RMZzTJ1mG5oFHatIwxsr+o/HUw2
-	GVsIuDJkkhdqHeQ+enp7OQ9a0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6N
+	VwQNPurC1JbCrgHJgbE/7etOjmRopqYYw6BDynSEE=; b=B0BPfyJpezjQgAer1i
+	O0ox7bG5oR4rW3jbigNoEIvY96rhXzDwn9koNCFd8ow8upXHyHDfRRbM+ulLOM4g
+	XC7QmxtUugzLWfv1qxVTGi35A/ZnF67DP3hVOTBi8/2SJE0iygqW/aIo56xcI06Q
+	R8KjFh9q7ebOCM3RRmVO08dt8=
 Received: from XLL-9950X.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgAnV+CjXedocoQYBg--.7355S2;
-	Thu, 09 Oct 2025 15:00:52 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgAnV+CjXedocoQYBg--.7355S3;
+	Thu, 09 Oct 2025 15:00:53 +0800 (CST)
 From: Longlong Xia <xialonglong2025@163.com>
 To: linmiaohe@huawei.com,
 	nao.horiguchi@gmail.com
@@ -67,27 +67,29 @@ Cc: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Longlong Xia <xialonglong@kylinos.cn>
-Subject: [PATCH RFC 0/1] mm/ksm: Add recovery mechanism for memory failures
-Date: Thu,  9 Oct 2025 15:00:44 +0800
-Message-ID: <20251009070045.2011920-1-xialonglong2025@163.com>
+Subject: [PATCH RFC 1/1] mm/ksm: Add recovery mechanism for memory failures
+Date: Thu,  9 Oct 2025 15:00:45 +0800
+Message-ID: <20251009070045.2011920-2-xialonglong2025@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251009070045.2011920-1-xialonglong2025@163.com>
+References: <20251009070045.2011920-1-xialonglong2025@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgAnV+CjXedocoQYBg--.7355S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr4DGw1kKr4kKF47uw1UGFg_yoWrJw17pF
-	W3Kan3KrW8Ka1fW3WSqw1xC3Wagas5Gr47Kwn7u3y0kr1Ygryvyr4kCr48JF47Gr48Jay5
-	J3ykXr9rCa15taUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jRyIUUUUUU=
+X-CM-TRANSID:PCgvCgAnV+CjXedocoQYBg--.7355S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtw4kuF4xZF1xCr48Cr48JFb_yoWxXryxpa
+	y5K3s0krWkJryIgr1xtay0kryFg34kWw4UJFWfCanak3WYqrWvgFW8Xay7JFy5Jr48Ga9a
+	gF4DKF1UWF4rtrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07beOJ5UUUUU=
 X-Originating-IP: [112.64.161.44]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbBcwXh+GjnU5rzZAAAs+
-X-Rspamd-Queue-Id: 8D0BD8001B
-X-Rspamd-Server: rspam11
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbBgAjh+GjnWsxDdAAAs-
+X-Stat-Signature: ugnr5xqmye6om8hmqn4f4g7xu7ixb7n9
+X-Rspamd-Queue-Id: 86A1940012
 X-Rspam-User: 
-X-Stat-Signature: si7hb1hhngt7i79seb41e5bqa7sq1req
-X-HE-Tag: 1759993261-308601
-X-HE-Meta: U2FsdGVkX18/BJmMOLbJP9gZged5Trd37Gct0/vK7v0wEkBDMBk6Uweuz46hgAvP67yLuW0UydQ2e2jKo3VrZvToS3QZAzOvlQryaPN1mSUvXPZNsYRN4A/EsFsHw3tSmIplQNOcHwlwR6eqjVl9EgixvwZRsHDRXEWsFNlYWaGUn6Oj0LlxAsQdTcdtvpDphh4IlLlT0S+TM5PDZBaybbGMB6EJKgh7MVNffOMUK1/k4maJGP8fdxcOMe+CJJTVkvhjzluW+1cImctk4LmoOF1i1pjgAeq9bFJZ76iXMOtyv9IRzykTzyxIZI4zYvP1QXjYHsikfwIAN8XF/vgQGTyLvn9Qsh0LOT6QYDLY5OuRKhpe2mvhcI3QxCP/c0qLRMRNnVem1QvXHmEN8JtwrXref/9+5Lp3X+LX22KAMIj1ahzGh9FWdIplUXNYbJ+REFeHhGsPMYyYrOJhaDF7gBgPdCnzVn2ystXv4oIXIN9zntVrYEfe8UY2r4x5KjFnnfx4DCyAwJAeNifbzidI28SjbCOz2d3e2vVsNvKxp+9oS4EUGQChRvm64OhqmNde7DRBRCsPD622X96LP8wnC+TV7x8VmNVgi1S2f7/q0HU2zz4VaS3GbW56n0oFa7oVa2/6unvejSsYYoTOrO4JrCPz97uFAUD9FkAz6odM+uCQAUWbOU/5tyv2aj1RO/pqTUL7HSuIRRT5Pal3K+iGYdcoMPHBM1dKl3/z/g8BArnJq38kIXrGmiSvILEgfxxhI0mIgkwAtORVZTTftRdo0dJZTCPKUom2GXKQx+EjHscNIM2NqvKcWZcvfQWmXtd8tF8tnyukp2goSHgaHcvrlPYdE9k+5VKLLeTgBBIExg7/FxF/B+1VnegzxxPMQRuo8JyEPSquv+aqDZx8Rv1vbnJProfSngbfG3YRT7yN67M8vDtJlSd319/0LmRkGjMt50Xk8tNc9igwG0rUxOv
- aA95rVQr
- uaeh9nu1+yhXBJshdayVm14DBuLQd7h7pSaji1ZdqhZ7d4DSzKwLv1dnmKKfNFtnQynVFrWQWnSqDCMBRzr4G+OHuApAwTjaxRddpuZ9lXms2SzPGWB7y9KONc8bm7qFhdE2+HipMeO7MBp4ng3+F/dgxePpwWoOKI2qRL7/wnaaDUkMKhQdZ7m42yMZLEuO04odYdnqXMeYVxwi3lSlbnUMJpoWGXbhUBxc4TbT8eJBGe4qeI7xJUMfBHjaew+R5AB7gb3I042TqBScdT3crYeAjxFn28V3L7WZK93k4q/g11vCsmYjLrtn1YpBctHCKFK9jBf4nP/5i9CkLQuOUZtOwbJ80/dGHu3QCjcXz6YrWE8ol2Ocl1CZh+k0fXCtJpLLOyiJHrU6vGSxXNdR7DAYkqf1XH4bf0XSmoD06gcuKPP2OIRkSi4JAzw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759993262-10867
+X-HE-Meta: U2FsdGVkX18YOPyYKyly7ctCtIR4VQ2fM/evDWqmd7i0greV03/4sPAnBBbaZTLL90789RxxItLcdh2MALHBjwpW5GpxHtA2h8/3jrwsI+DXWcaI5cP643TrxzgdCg6eOlDBBNRaN8Ro32QyGDBihc5eTOA7u3/zjcZ2pY3FKN8LuedZKNY36B7Ey6OFvClTiUi/1v6kZ8k/NNTKZuho3f7csY7/2jxSjsFCMjZoQ+YeN5BrtX3zi7pVhgxpJtUzYh5kEETodFNiODZ4g0An1w+DsjVOLE/xOk0Chu+MMRtLuRPTvz9Y22UUnDT9mGWarImc1XPlFSFr1gcA75H590/TUcHPTh8F2YoE6Jpt0tsejHRzD5aSWqzqlnVSCaSfayr3eMc+GO72aUVpGXPlhFQKzqQ7XxVVjS5Rom7GixP1y3paOGipe48waDjL0UcXdQIrs76hOVs/hGlFiXpTpp6RStJsM+nyCKRv1QzEiXD5137P70d2Vj+z1gi2fEy0v1TfN+N1N6ITc+KsKBkfJvTV806OmOKukv8DSoIAx4qa8luQ6hEyqe8E81Ksra0T9xk0WzD9JMkKF17ZJNxKSaw4SrSIllL2QpRmuGh486LTSHlgXXwiBuFwIGNOZcxTrGw6/OXrfsGi56I9ZEUO7IDa14euHJJs9AggTrYJTMFAYb6NZcTFK/u4hy9k41J2a76uLu7t+b9B2E8ZD1safU1YM8OVbs8DXdKbVvREVxug3JSTiTZLR4YfCKegJajN59q1eeV8kJ72fVfpSujYMb36aDdnEKY8qE4bH3al04DWt8SRnDLipRkRMCgXwZJFlqX8pauuC0YIYWRe26QVRsnMkbIp35UEYzzfLE5hX7Zao0Ze6Iybou8y2LJzYIiKhsVCOCHVHHqi+VfrxJ7xYo2szm4+CdkmzgcZppl+7iCXcxD5pBCcdGaiwhkCKbIimo5gqzfzdCyAB5IehEp
+ 7OM/KMac
+ MVI+enrZM+HfxYFpV3+M3QuGTaA2VoVDYV5Qirvhz2SmtkvkHWEBrX3jd5eDpOlCkvHxeTgBNkoIh9R4TK6k2EJJiMrcEFHoV8AF701dhTPip+nBXCJharj4pDN2Qb7DnT8KNhzdgveo7YwZqQJuxqpLZLV6xT4SczRmJ3QQB5AQBtGylwar7HiHuq2/zsDctx7Ng3p6wPx7OFPRxs3MWy2xPwcHP0YWYUj8V5jvrDFyof8bY+to3rJcKo1N9DCjbJUnp8Ycq9rJR5dDuy2Nozt7zP2iSW30z56wQoxtWhwXcbTAw5B6ZSEWUHnM2sNGiQ7iwZenRVWdsbr5ajxjzQDHj8N/8T7Hr9YQ7f2kCzDPxJ4ta531Zet+kJgfZmrYciXXCTQOZOIfWZ5sSF8rQSIoKA1nmQZRIlwBM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,76 +106,225 @@ be overly aggressive when KSM has multiple duplicate pages in
 a chain where other duplicates are still healthy.
 
 This patch introduces a recovery mechanism that attempts to migrate
-mappings from the failing page to another healthy duplicate within
+mappings from the failing KSM page to another healthy KSM page within
 the same chain before resorting to killing processes.
 
 The recovery process works as follows:
 1. When a memory failure is detected on a KSM page, identify if the
-failing node is part of a chain (has duplicates) (maybe add dup_haed
-item to save head_node to struct stable_node?, saving searching
-the whole stable tree, or other way to find head_node)
-2. Search for another healthy duplicate page within the same chain
+failing node is part of a chain (has duplicates)
+2. Search for another healthy KSM page within the same chain
 3. For each process mapping the failing page:
-- Update the PTE to point to the healthy duplicate page ( maybe reuse
-replace_page?, or split repalce_page into smaller function and use the
-common part)
+- Update the PTE to point to the healthy KSM page
 - Migrate the rmap_item to the new stable node
 4. If all migrations succeed, remove the failing node from the chain
 5. Only kill processes if recovery is impossible or fails
 
-The original idea came from Naoya Horiguchi.
-https://lore.kernel.org/all/20230331054243.GB1435482@hori.linux.bs1.fc.nec.co.jp/
-
-I test it with /sys/kernel/debug/hwpoison/corrupt-pfn in qemu-x86_64.
-here is my test steps and result:
-
-1. alloc 1024 page with same content and enable KSM to merge
-after merge (same phy_addr only print once)
- a. virtual addr = 0x7e4c68a00000  phy_addr =0x10e802000
- b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
- c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000
- d. virtual addr = 0x7e4c68d20000  phy_addr =0x10eb02000
-
-2. echo 0x10e802 > /sys/kernel/debug/hwpoison/corrupt-pfn
- a. virtual addr = 0x7e4c68a00000  phy_addr =0x10eb02000
- b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
- c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000
- d. virtual addr = 0x7e4c68d20000  phy_addr =0x10eb02000 (share with a)
-
-3.echo 0x10eb02 > /sys/kernel/debug/hwpoison/corrupt-pfn
- a. virtual addr = 0x7e4c68a00000  phy_addr =0x10ea02000
- b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
- c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000 (share with a)
- d. virtual addr = 0x7e4c68c58000  phy_addr =0x10ea02000 (share with a)
-
-4.echo 0x10ea02 > /sys/kernel/debug/hwpoison/corrupt-pfn
- a. virtual addr = 0x7e4c68a00000  phy_addr =0x10e902000
- b. virtual addr = 0x7e4c68a32000  phy_addr =0x10e902000(share with a)
- c. virtual addr = 0x7e4c68a64000  phy_addr =0x10e902000(share with a)
- d. virtual addr = 0x7e4c68a96000  phy_addr =0x10e902000(share with a)
-
-5.echo 0x10e902 > /sys/kernel/debug/hwpoison/corrupt-pfn
-MCE: Killing ksm_test:531 due to hardware memory corruption fault at 7e4c68a00000
-
-kernel-log:
-Injecting memory failure at pfn 0x10e802
-Memory failure: 0x10e802: recovery action for dirty LRU page: Recovered
-Injecting memory failure at pfn 0x10eb02
-Memory failure: 0x10eb02: recovery action for dirty LRU page: Recovered
-Injecting memory failure at pfn 0x10ea02
-Memory failure: 0x10ea02: recovery action for dirty LRU page: Recovered
-Injecting memory failure at pfn 0x10e902
-Memory failure: 0x10e902: recovery action for dirty LRU page: Recovered
-MCE: Killing ksm_test:531 due to hardware memory corruption fault at 7e4c68a00000
-
-Thanks for review and comments!
-
-Longlong Xia (1):
-  mm/ksm: Add recovery mechanism for memory failures
-
+Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+---
  mm/ksm.c | 183 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 183 insertions(+)
 
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 160787bb121c..590d30cfe800 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3084,6 +3084,183 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ }
+ 
+ #ifdef CONFIG_MEMORY_FAILURE
++static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
++{
++	struct ksm_stable_node *stable_node, *dup;
++	struct rb_node *node;
++	int nid;
++
++	if (!is_stable_node_dup(dup_node))
++		return NULL;
++
++	for (nid = 0; nid < ksm_nr_node_ids; nid++) {
++		node = rb_first(root_stable_tree + nid);
++		for (; node; node = rb_next(node)) {
++			stable_node = rb_entry(node,
++					       struct ksm_stable_node,
++					       node);
++
++			if (!is_stable_node_chain(stable_node))
++				continue;
++
++			hlist_for_each_entry(dup, &stable_node->hlist,
++					     hlist_dup) {
++				if (dup == dup_node)
++					return stable_node;
++			}
++		}
++	}
++
++	return NULL;
++}
++
++static struct folio *
++find_target_folio(struct ksm_stable_node *failing_node, struct ksm_stable_node **target_dup)
++{
++	struct ksm_stable_node *chain_head, *dup;
++	struct hlist_node *hlist_safe;
++	struct folio *target_folio;
++
++	if (!is_stable_node_dup(failing_node))
++		return NULL;
++
++	chain_head = find_chain_head(failing_node);
++	if (!chain_head)
++		return NULL;
++
++	hlist_for_each_entry_safe(dup, hlist_safe, &chain_head->hlist, hlist_dup) {
++		if (dup == failing_node)
++			continue;
++
++		target_folio = ksm_get_folio(dup, KSM_GET_FOLIO_TRYLOCK);
++		if (target_folio) {
++			*target_dup = dup;
++			return target_folio;
++		}
++	}
++
++	return NULL;
++}
++
++static int replace_failing_page(struct vm_area_struct *vma, struct page *page,
++			struct page *kpage, unsigned long addr)
++{
++	struct folio *kfolio = page_folio(kpage);
++	struct mm_struct *mm = vma->vm_mm;
++	struct folio *folio = page_folio(page);
++	pmd_t *pmd;
++	pte_t *ptep;
++	pte_t newpte;
++	spinlock_t *ptl;
++	int err = -EFAULT;
++	struct mmu_notifier_range range;
++
++	pmd = mm_find_pmd(mm, addr);
++	if (!pmd)
++		goto out;
++
++	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
++				addr + PAGE_SIZE);
++	mmu_notifier_invalidate_range_start(&range);
++
++	ptep = pte_offset_map_lock(mm, pmd, addr, &ptl);
++	if (!ptep)
++		goto out_mn;
++
++	if (!is_zero_pfn(page_to_pfn(kpage))) {
++		folio_get(kfolio);
++		folio_add_anon_rmap_pte(kfolio, kpage, vma, addr, RMAP_NONE);
++		newpte = mk_pte(kpage, vma->vm_page_prot);
++	} else {
++		newpte = pte_mkdirty(pte_mkspecial(pfn_pte(page_to_pfn(kpage), vma->vm_page_prot)));
++		ksm_map_zero_page(mm);
++		dec_mm_counter(mm, MM_ANONPAGES);
++	}
++
++	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
++	ptep_clear_flush(vma, addr, ptep);
++	set_pte_at(mm, addr, ptep, newpte);
++
++	folio_remove_rmap_pte(folio, page, vma);
++	if (!folio_mapped(folio))
++		folio_free_swap(folio);
++	folio_put(folio);
++
++	pte_unmap_unlock(ptep, ptl);
++	err = 0;
++out_mn:
++	mmu_notifier_invalidate_range_end(&range);
++out:
++	return err;
++}
++
++static bool ksm_recover_within_chain(struct ksm_stable_node *failing_node)
++{
++	struct ksm_rmap_item *rmap_item;
++	struct hlist_node *hlist_safe;
++	struct folio *failing_folio = NULL;
++	struct folio *target_folio = NULL;
++	struct ksm_stable_node *target_dup = NULL;
++	int err;
++
++	if (!is_stable_node_dup(failing_node))
++		return false;
++
++	failing_folio = ksm_get_folio(failing_node, KSM_GET_FOLIO_NOLOCK);
++	if (!failing_folio)
++		return false;
++
++	target_folio = find_target_folio(failing_node, &target_dup);
++	if (!target_folio) {
++		folio_put(failing_folio);
++		return false;
++	}
++
++	hlist_for_each_entry_safe(rmap_item, hlist_safe, &failing_node->hlist, hlist) {
++		struct mm_struct *mm = rmap_item->mm;
++		unsigned long addr = rmap_item->address & PAGE_MASK;
++		struct vm_area_struct *vma;
++
++		mmap_read_lock(mm);
++		if (ksm_test_exit(mm)) {
++			mmap_read_unlock(mm);
++			continue;
++		}
++
++		vma = vma_lookup(mm, addr);
++		if (!vma) {
++			mmap_read_unlock(mm);
++			continue;
++		}
++
++		/* Update PTE to point to target_folio's page */
++		err = replace_failing_page(vma, &failing_folio->page,
++					     &target_folio->page, addr);
++		if (!err) {
++			hlist_del(&rmap_item->hlist);
++			rmap_item->head = target_dup;
++			hlist_add_head(&rmap_item->hlist, &target_dup->hlist);
++			target_dup->rmap_hlist_len++;
++			failing_node->rmap_hlist_len--;
++
++		}
++
++		mmap_read_unlock(mm);
++	}
++
++	folio_unlock(target_folio);
++	folio_put(target_folio);
++	folio_put(failing_folio);
++
++	if (failing_node->rmap_hlist_len == 0) {
++		__stable_node_dup_del(failing_node);
++		free_stable_node(failing_node);
++		return true;
++	}
++
++	return false;
++}
++
+ /*
+  * Collect processes when the error hit an ksm page.
+  */
+@@ -3098,6 +3275,12 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+ 	stable_node = folio_stable_node(folio);
+ 	if (!stable_node)
+ 		return;
++
++	if (ksm_recover_within_chain(stable_node)) {
++		pr_debug("recovery within chain successful, no need to kill processes\n");
++		return;
++	}
++
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+ 		struct anon_vma *av = rmap_item->anon_vma;
+ 
 -- 
 2.43.0
 
