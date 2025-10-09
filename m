@@ -4,92 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10B3ACCD187
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 11:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBADCCD185
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 12:01:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D25D8E0036; Thu,  9 Oct 2025 07:36:08 -0400 (EDT)
+	id 484898E0085; Thu,  9 Oct 2025 08:01:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3830F8E0002; Thu,  9 Oct 2025 07:36:08 -0400 (EDT)
+	id 434C98E0002; Thu,  9 Oct 2025 08:01:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 299278E0036; Thu,  9 Oct 2025 07:36:08 -0400 (EDT)
+	id 324168E0085; Thu,  9 Oct 2025 08:01:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 14AB18E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:36:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 79A4711AFE7
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:36:07 +0000 (UTC)
-X-FDA: 83978371974.17.BF893CA
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 52230140007
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:36:05 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lLWLBamo;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 18F678E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:01:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 82EE2140906
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:01:58 +0000 (UTC)
+X-FDA: 83978437116.29.FF31FA3
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B84AB10000C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 12:01:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QrGpZH7I;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760009765;
+	s=arc-20220608; t=1760011316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V5FQj+qs6DmW6o9C6/UxAhR39wjcn7nWtLY34WIZgGw=;
-	b=kSy/OqUM+opIbm/XpT+OCQhfkQrEJevFquPg2meXxazNSEM37niymsOu0qdXXM2xRJpA+w
-	fZu04MCrNJJxdzXXundAVh0k9ONF5cjoftwpCaPAuaLZs230UGPqIMiqsErtotaEekuhzw
-	F51w8jiAfxvpPOZLyMIuWYjWsIJKxh0=
+	bh=GM7HHu3HbolbVRGEPyllWwUcu2/FcpmuCKiQlqwBpNU=;
+	b=GT+aF0efrGiS/3XFMbDZGywdLzIn04N8Mc+bvTDPiJ4xbT0QswlASinYgtKeHCmgRBRcQo
+	Z5mZgKCPAxI5nuNjvGxqJhrT7jhKKXXtKOj4xThgvsU6ywAcqO1v9VbBq2EMWkrPrDt2R5
+	Okpz2OnuCvQwYdAQy7KkIw7eZkJJDng=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lLWLBamo;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760009765; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QrGpZH7I;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760011316; a=rsa-sha256;
 	cv=none;
-	b=cLSImKQ0xI0HPiTqjUvpX+VtxEEptVHFVf4S8z5+3YAk3sJ5zE8HLYc0nDl8PnqUd0GhNu
-	KQOrqfIah7MMFWTmVdYqDoMIy9arFwSXf5RIwe7TyTjwQasT5zUSbU+WHTFY0w0tsz1koW
-	G8/Qa0fCUbxGZn2jdMo4bDLbodY5nBs=
-X-Gm-Message-State: AOJu0Ywiz0N60tuu1RZiKs75RYwTLBBiJhO48AS6D07QOKwQNhVCP+bI
-	ULH2CCt+3NmyNCoAudLix/yNsVZNeL98W/eJ1UcNjfN2WYB4QbhoDMsJQYrC87O2Xka19CHNT0C
-	N3lduwfPV3iAtisTA7/eaWs8GPFPOceM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760009763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V5FQj+qs6DmW6o9C6/UxAhR39wjcn7nWtLY34WIZgGw=;
-	b=lLWLBamoZ9Vze3bbffxc2NqDZEkTkmP5NueaLuRLtDk6TDt6G0WH/OCkcluwDVjtDzhbu9
-	EnucY5dxtbCFT9qoGLojckSegsaErZzsjCuDeonorqG51W6AIjVVoGGjxFgMmgrzuYD07l
-	rzomPzGOmXyhJTfOi/yfr74DarXFxD8=
-X-Google-Smtp-Source: AGHT+IEn6DfUJzTF+qrN0U8A3hpm9iF5aoWwXO0T2nuUH9Z0DtFZJPr2qGDgZztcydKq4KsrmSpqANEY2EpX+r8m+YY=
-X-Received: by 2002:a0c:f701:0:b0:87b:b6ad:e647 with SMTP id
- 6a1803df08f44-87bb6ade751mr19703066d6.6.1760009759425; Thu, 09 Oct 2025
- 04:35:59 -0700 (PDT)
+	b=ab0jUxdz7kpKEB09A9CGzNN8eR84+jRef4hkkP/Y/H5AYN1y7ltW95mviMZATD8bIZlSTE
+	od7BK/y/0fhbZNizKu5oFHZZDuTiWyLKoqv9pWjFfu9S8RTk85UvDg6j0XflIXrzoP3Vnf
+	R7pJaHng2nnyaaOeEsATKqSEstAdQVw=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4da7a3d0402so12685931cf.0
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 05:01:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1760011316; x=1760616116; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GM7HHu3HbolbVRGEPyllWwUcu2/FcpmuCKiQlqwBpNU=;
+        b=QrGpZH7IJQLGrPRUTJF7IugYzZD8qLPpEnOtHefcEc57gPu/I56zLKb9mS7M2OPC8T
+         zrYHsoA4LYXcrRLAycC8rrOpqlPlxeUDiU5qHkZrah1butZug64r/F1Su7JuP/h57lAs
+         NV6myR3MAe+RMhLIPtLDX16esQHFFkyiU/8OqUY8pB5ucahULZVZqDdXB9i4ND26sdiO
+         tq2uwdBY/XqXD3gSgT6+5ybTyIwHBhBZAYkbwAUEXqhvDxYF9+fZzzrh5+2morFoKNBF
+         Ly90aBfI5keZ4sJqFBFbMAs6pmf6FqBM63/O8i2iwDFRYtGb9t5NTaB/hZspXKdF61HD
+         qQaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760011316; x=1760616116;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GM7HHu3HbolbVRGEPyllWwUcu2/FcpmuCKiQlqwBpNU=;
+        b=mOLw5KQxSKT5S6QX0QxO/v6O+tYuq9GhXbWnxbePYGegMBspted+V4F6IH+ax0QEPT
+         jCLaujg43ooorNqk3spQ63XLfLehzjp8bVVrSatdLZxwq0ODFp5n2PGEbtuErSRmUNsu
+         ribUzimD/Y6dTM0f7EpOxu6N6SIbei7MfQ6PyIPIK7kbiRAEEQDMk9LSwL6p86CFQfxf
+         OP2j7RMxMiIn98yLPbUkawu7EITjXah8ngHmP8d4g36HCf3yvVg6sxvCNNqC171metPL
+         AQBW7U7/q3Js18juCESjaZPF8hELQitPu+kvDibMxrGDxMj5emQyy+H8eWZwZCeUa30z
+         q0ww==
+X-Forwarded-Encrypted: i=1; AJvYcCVTyJ3ICcHX5noOacx4xlsN0E4gXn/RLvXkp6BIwkAK+BH3/DKGjNiHAFNtVuCz5/pZBe/Xa/tghw==@kvack.org
+X-Gm-Message-State: AOJu0YyNl9sJEsSxzvQWjVp9+PRaAqbs2lwhiZi7Tfl2JQf1RkUweB1J
+	D6c6+nA7SJMh8S29AYaviSUctfldJgB2tSIPWFB35DnGtH3I4sgmoAvC1XgZUBzt5WPYDp27mYG
+	6ZEjKHaUhJDfm1Zx/m0ozVcwhM3qejFsuOezup0WGWQ==
+X-Gm-Gg: ASbGncumfS+ZXBlQpf4DWHFvajMqVJ1OaHlFFFAEBFf0EJN7+Rfwg+j3xt/NRiOnVwu
+	yMx8+JvsD1DvP+Z+KXO4KrWI+xw9v0kEa6QNwGTgDc1KTXOPIt86Z+LARL2PLDNN++uFqWoDnTq
+	VfzPXw9WVSCbodVNq8FuDl4//olQOder1zA7SBP5zHBaWJ+etjEdYEPDJ1sXeGJTGyFNiS8dcXY
+	7E6C7PVa/xkXCdqIjAUto+M99rF
+X-Google-Smtp-Source: AGHT+IE9zb3wwXEpUh5P+ZmZZJCDFFOKUQIOo3/6KsN55Cs1OSGbV39rZ1DIVG9kDY7HFP8FPvwlsRPNuhjvFarm0hU=
+X-Received: by 2002:ac8:5d4d:0:b0:4d2:ba6f:28fa with SMTP id
+ d75a77b69052e-4e6de8b5d39mr171303161cf.34.1760011310206; Thu, 09 Oct 2025
+ 05:01:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251007063100.2396936-1-anshuman.khandual@arm.com>
-In-Reply-To: <20251007063100.2396936-1-anshuman.khandual@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-Date: Thu, 9 Oct 2025 19:35:22 +0800
-X-Gmail-Original-Message-ID: <CABzRoyZZKACWQ4jeOUmHS-0-7t8ELjD-GMZ-RpiYDGL=T6PZCg@mail.gmail.com>
-X-Gm-Features: AS18NWBdt3Xvr1mjG1xmHMEbEeTM17-hxQa2VvgahlWoWMB1DxgCulMHrUr3oNU
-Message-ID: <CABzRoyZZKACWQ4jeOUmHS-0-7t8ELjD-GMZ-RpiYDGL=T6PZCg@mail.gmail.com>
-Subject: Re: [PATCH] mm: Replace READ_ONCE() with standard page table accessors
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-20-pasha.tatashin@soleen.com> <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
+ <mafs0qzvcmje2.fsf@kernel.org>
+In-Reply-To: <mafs0qzvcmje2.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 9 Oct 2025 08:01:13 -0400
+X-Gm-Features: AS18NWB0gqbxGnAmt0TyUGPWI9yXOeOjTQwVBIB2xaJy4b4dnuqgnZXYRRh26fc
+Message-ID: <CA+CK2bCx=kTVORq9dRE2h3Z4QQ-ggxanY2tDPRy13_ARhc+TqA@mail.gmail.com>
+Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state monitoring
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: "yanjun.zhu" <yanjun.zhu@linux.dev>, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 52230140007
-X-Stat-Signature: qgzf75ngct59145kdrq5hjkycfyt34wd
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B84AB10000C
+X-Stat-Signature: b6gxosd3e38uyg8gmomixqah6ed7hhra
 X-Rspam-User: 
-X-HE-Tag: 1760009765-175520
-X-HE-Meta: U2FsdGVkX19uB5ECq+qm6TXkk27s/Nm0rjhHTyuMQqL70z0bkymDFQop8Svz+pbOczqqW/KwwQSkKSudmrkTMfAZJtLAhgpm2ELw2vlBuaMa8VPnKjph1p/elAiFu+eu0Zvo6caQ2nKAZur8f5cLrjH+IvXQbt9FE/jB2JdYcI//u8B6bcWDrWjvU55+Nd+0qJn5uWa1TdQSgW93hFpp3pEMy0pMxqxJDdbJWHEE/pWgPHYwV0YE2Ib148K5QKEdSoHxtov++N3gMW4AUFftoDvGInydV30bfPSA80HwYA78d7+uhgR5lbWFd4SERx8MtOroFhEzAGEI1tPviEL4CTZWHa59zFvTQPwyin/FTO5JtKDxWQzl7LbcuXX0sIZk4w53G+8lnhja5GYS+x4mVSwHlXmNNbJsO9jt7Qos5yDh1DFtpcTcXM/+IZrs4bC4QxSSQC9gQFQegXedMye3ZIGlMerk/0sBRrNA796u/2Aw4Va7nxWgYrTmscB+Ap9AHoHUFPT0Eb+qVCAVhOiQ0ITlq0qBWGM2H6RLkP2crfe8+jqZ0nBRei5m8Yc0mqEhghlzCpSt5ih2iaaNErLHy+jLYZnHNlhuUNKp7av1Se/rw1zhwOEriLKaZ+h5gxBHxjB2G226fDHcuYONMMaYXLhng20m/Qcg9EV9o2kS1koEf2HDf68aw1IUfF4flc90ad33hM+2l3QevqPCWGMn16wiVLlOMomwh97oZJ7pbhauxRbsF1tSq1eYkcHWxj9n7KhrDeVON+qq9EEiQl1rjVlC6t+JSiNKxRf4fGg4SEvDNu9+MuiCSxKhVYOMnXYjhRRB9TBKoQjLloM5XvZwzlmev215rSwGomgCfDndNNiA2fYnZiB1CzHLlFCknjKSdjiCupgBDM3H4HhFdWTGUrbPWrVa7Kmo0/8TI0MFbTmCIj7rImp2rpuW00u11lAWR0SF7QjgPAFr1g4hqWR
- JUpGSUEn
- Hd1MJMb+Uekg5daY4T2GJTJ7HKPBHDlvxNtEQw0YOz1CadGHjHmxq4IUlisXh1D70Wrc8pEhIxXq2r343MjSmiSxqYnUf1nKP8wl1LIDqDqlztkoTjSlrqk2/1FksXKDY83DqGFufyaddgKLmemRDfOR/IJBXx82gL//c9jWP4Dqa/bIHAzEfJfujlaVAT4NBFLPeZGAV17C+TZCOhBf4x0wzDoh5eCHWToYPyIb3MaQX1YB4KDTRIavqSFxjAL4TnuzqysEXDdNfs7x0wPKP6UHDudVPmRxi13mUTvGKCaDZjaQHbwhuubtdmGluxnxOZ+3rnh9vUNPGHsDSox9iYW6eHph6pdwKA//Uv0zEgTFDe8GqBEjfB11Hj+obrreqM/dUQ/HWPFR9VErzdXLQpNcvsGca22RowVKauqoBeIuWJoWXw3fQbAHuMQ==
+X-HE-Tag: 1760011316-968968
+X-HE-Meta: U2FsdGVkX18084VGVXhdYg8+N737OBD0Cix03kmU974gB5vPuKxEe+UcNRHL9PJOIvZZ47Q24nRQWhq3VLhgmh0XhOG5onicarqxCCfjfwECMxb9AgM0BpO6vlGq0IdJcLXbhjTPFgS56l8Pou7sqablL/O7+HGupsWDHvuWm7E9of+qsD1TchcshoH7O/DDNTCBAflpsIi9z225F6Sx4Brc4krF7yqQYZwjedy1G8IIJsxff6JaYmCQ9AMsotbakkHxDQ51VoMX0juSA1Rg4WbiW0DCFeirIwjSsds27RS2kZqprf0NgIqQ5vL13cHNVh++aCSVtCHwK92a6bD6MaMN9DGIfHa0zGHXgiCwfrfblQWCs4y8WUsEUdrPzQ4Fo6XtH7yXrj/Ap/6Lz1AdoRA33GGQuohq+p/ZwNcOU4goEfMpNYlRxU4xy9TFfG38+g96Uv2VK/gB/ukt+I9EHmswGHe0qgso5XIjEPHAzq2cW0iy5PD4tyMDKZ8E0hqvYe8qoXZWLtn0mz/c2Il0ZJDNjHbPAmv7m/5Bq5pxU4FgvVLF4diS3OP/KvoFuVh34lVUcPhsWESR8tLwpRslpufWWuFY9/SZjv1VsfZcEr5wL2dd8IFtEYYh9a3pud7wJZvGtgZwJJ7CQDXjGUuur7yIcHWsyRwsp6paOvtDjLtaMezsObWzdxCD3y2TumCJbylmEdu+WcglNXxsH031XnvNgqWcrjpyNbkHp4Dt+3suOoa4lZQx0+pHAhMtPoTM1sProcWZ6dKqGugrbEJWAYf/SrQSSHrrGgYAVv5qK3NIdQo7TdrNVemA0h+UA7GBDEuhzAxHkBdo2yDFmA+M48NEf3c06OsSe3QDohUU/LY2g42Rn5pFl+05Z0a4/nicSjo9KGhdwJu7PhW363SzWTMbnO0c6jiGyB9YFYvfZO1ZKSjuidKPUQTCCCD6xiRluwUrFcKzIaV87ss+qXI
+ EIETIRf3
+ q9C011dNVgw/rhRWL6kYzzL8so/4UlSip0kjEj8IsBniQJN8Zf2wZAY22hg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,21 +137,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 7, 2025 at 2:31=E2=80=AFPM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
+> > Because the window of kernel live update is short, it is difficult to statistics
+> > how many times the kernel is live updated.
+> >
+> > Is it possible to add a variable to statistics the times that the kernel is live
+> > updated?
 >
-> Replace all READ_ONCE() with a standard page table accessors i.e pxdp_get=
-()
-> that defaults into READ_ONCE() in cases where platform does not override.
+> The kernel doesn't do the live update on its own. The process is driven
+> and sequenced by userspace. So if you want to keep statistics, you
+> should do it from your userspace (luod maybe?). I don't see any need for
+> this in the kernel.
 >
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
 
-LGTM. I still assume it is a no-op change :)
+One use case I can think of is including information in kdump or the
+backtrace warning/panic messages about how many times this machine has
+been live-updated. In the past, I've seen bugs (related to memory
+corruption) that occurred only after several kexecs, not on the first
+one. With live updates, especially while the code is being stabilized,
+I imagine we might have a similar situation. For that reason, it could
+be useful to have a count in the dmesg logs showing how many times
+this machine has been live-updated. While this information is also
+available in userspace, it would be simpler for kernel developers
+triaging these issues if everything were in one place.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Pasha
 
