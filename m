@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39067CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:23:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C818FCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7835B8E00A9; Thu,  9 Oct 2025 15:23:45 -0400 (EDT)
+	id 2F11D8E00AA; Thu,  9 Oct 2025 15:24:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 734778E0002; Thu,  9 Oct 2025 15:23:45 -0400 (EDT)
+	id 27B3B8E0002; Thu,  9 Oct 2025 15:24:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6232D8E00A9; Thu,  9 Oct 2025 15:23:45 -0400 (EDT)
+	id 143548E00AA; Thu,  9 Oct 2025 15:24:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DCAC8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:23:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA2211B2A9
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:23:44 +0000 (UTC)
-X-FDA: 83979550368.20.4C42365
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F3B778E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:24:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AEF4788610
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:24:37 +0000 (UTC)
+X-FDA: 83979552594.28.74D7F96
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3DD66C0011
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:23:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W+qzwOKD;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf12.hostedemail.com (Postfix) with ESMTP id F206040016
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:24:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E6A7cs0s;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760037823;
+	s=arc-20220608; t=1760037876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jp7RtX8QrWLsQRUW1xantQ7VQ3O2n8MHqV4fLYQadGs=;
-	b=UKVVAKcagdoBWmm8weSYDxWLXjRfkBiKSwV8agDtO+6dkZf+R7Wyt/P2BL9nrvWXUbZnss
-	cTpVYfuxJEgzPyAFZJvOhP/uokDtNBZNWf3gGu2ScaYSC7eOK3XWO93sisP1E/rphfwQD7
-	VNKjFSBnYNRR6ilWbPfUMqPEQvA2PFM=
+	bh=xaZG7jkXgOP4+NVZUId5p5W7Wf8gz0gVX+CZPEW0a9E=;
+	b=y09ihZu0y1ZDh4VX4hUWnLpOyR9mSCxm91V1Sz/xyWOVm5XL9ImsFz65vCsr92ZihEjcRU
+	HLJ/sX74B+HZIWYyVO9H4wSTn9+BDGYS7doC0Q/17sfbMCfs5q8+biSECK2gxUbSetXDLE
+	uT7jMuJ/ohnU/dVYy1erwLljKY081OQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=W+qzwOKD;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760037823; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E6A7cs0s;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760037876; a=rsa-sha256;
 	cv=none;
-	b=04ND5kX90VMgXH+jje7ABbUbKAOiwd2mJSq3XRrE/Yv6mA62QojFbEh3GpaKARWRJNC3V+
-	dZAVE0HJlPT1vPgLhW4AEEQ35r7+HlnHa7cE1demgDn7vXyC6OSs0bAVdn1isL/uB6Zil9
-	Kr9tPiTwwqZa6IF0V3ZXEWNAnJQEvdw=
+	b=J17jIm6Yvfs8Zs2Mqk0b01WOxJeT90g+sUkGsiwxj2zlbUjQzc514khqaDAOanvS2l6aZH
+	G0u+2nxalDiAaImE8ic5HVJ1QJmdQsokD0inIxT18WtOeBuYRsaRXS8jq8GshZxetIZVSh
+	lzOO7v2dHub8tsyoE9pHJG/OTXxCiHg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27CA243C76;
-	Thu,  9 Oct 2025 19:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6511C4CEE7;
-	Thu,  9 Oct 2025 19:23:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760037822;
-	bh=kN26N6ZmdmvX5qUDg8eseKZvC9NjXY9htPd4izOs1eE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W+qzwOKD7LRnjfSpXzUu6om7UswEqD8HLdCsM/+u/n8oO3rdwUyqIOEEAsn1wcTWQ
-	 ux2WxjE2f+tixZ/NzFmZCgI+z8Vaq6eITcRyuiGr/sAh47UFRRDYEo/0C8RWvxFrRq
-	 JtTFYlNRn9Fd75WeTsza0G11QZ27dDhBZn7xE/HU=
-Date: Thu, 9 Oct 2025 12:23:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, Jakub Acs <acsjakub@amazon.de>,
- llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Linux Memory
- Management List <linux-mm@kvack.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [akpm-mm:mm-new 36/102] error[E0425]: cannot find value
- `VM_READ` in crate `bindings`
-Message-Id: <20251009122341.fc4a804c1893d987cec75567@linux-foundation.org>
-In-Reply-To: <CANiq72kTPjukgmAxDfLg2s4JHdaKaw=bY4DLVjTr7-9bqv5D3A@mail.gmail.com>
-References: <202510100127.yuqhg8uo-lkp@intel.com>
-	<20251009110555.29a67af19f5cc4d40e66713c@linux-foundation.org>
-	<CANiq72kKSz=UK+O4tnV0Kmw_HmJhJJ+KNZnUBWtOWqanrG+7Vg@mail.gmail.com>
-	<CANiq72kTPjukgmAxDfLg2s4JHdaKaw=bY4DLVjTr7-9bqv5D3A@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	by sea.source.kernel.org (Postfix) with ESMTP id EB0F640C17;
+	Thu,  9 Oct 2025 19:24:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9663C4CEE7;
+	Thu,  9 Oct 2025 19:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760037874;
+	bh=R7UMgm5DhR2eirTXtSm8DLpDeVeW5tIj/PilGVHqk+4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E6A7cs0s3J8ts2bx4mCJCxa4hzcNkg26elMzG7vV5kvuxpFQs8MLO+81GrRw32lLP
+	 veXWheAK7H4A8HoxVgMq2nbZEqPoRnZsNST4zfgHM+hyrSZUBQ4cYhn4pRg7GsGkl1
+	 HrYzG6TFTh7WBNeapiE5KiC18YBMIurgCb/afeD3ohLqGVB8lxl/G7JYKcXV82YKkW
+	 9neydoNB/d3jfvGzU3oLiGjOIj17wMqcox+AN/gwVpC4gRfNPLTtP/KLp7CeAb9JUJ
+	 JY3kzT4hCfVz8AYIun17ngtITZPBHhbidZsIfGKozX656RjJ6SQOkKh3maYulmYk62
+	 nZfpGBLoE0AxA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Usama Arif <usamaarif642@gmail.com>,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	shakeel.butt@linux.dev,
+	linux-mm@kvack.org,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	kas@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 1/2] mm/hugetlb: create hstate_is_gigantic_no_runtime helper
+Date: Thu,  9 Oct 2025 12:24:29 -0700
+Message-Id: <20251009192429.57910-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251009191149.57652-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3DD66C0011
-X-Stat-Signature: y88gkh1b87xnjwsp4k6ep6e7b43h5p84
+X-Rspamd-Queue-Id: F206040016
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760037823-490461
-X-HE-Meta: U2FsdGVkX19EHoDG321OI7XD3OKkeoz986BzxTvr9I1F9i9ZZzwLIwr+3JZ+2ZviSadRLH3IkEyxv3ymTSYEjcUrDVXg6zLwkOcnfthD6kFHKHyHEpbWRvljqREyER2plbIVUGTO7VvmzKZ3pdlXMtNICMGmV2wTIHD1WTEtrj3oDj3yQh28mf1Sw404OwI2dzzK4yuGvaPAs5k45sM43QbU00FyF5ZzL29VLOWiO32ngd2GmEUX2V50Rl8FrfqyxYNRoP6rd8eM+/o2XsyprV5Dj8HDW+orHuIOO35UME5Ay4nVN4s1o2+/4DbYY05OQtJgmUf/UEnPPpw94syYyOItZnEDy83W/xxq3XDDL+mPK0M7zCHyNtIuZzD2keQwjTsbp4B7hP/GSYtCo/uwR4DYyhA6fxlLzdWWFvnDCwY1wyl4D0KtGoyTOLcxdAJ0vgC73MofZx74elXrbSWPt7S3QpSC71p68QP9WaZpH+aRmdM4/hkkcUH9UWIaXuVgOwuzAEM5uM2ZFVrY9TWfH40YZBqYWZxIjZOf+iBjv+5O6hhFxOxJPgncDxVQOmj7euz44HLGaD3HlPa7VCJLoFwcKCE76rNIp+BsAG+ixjQH/7DHvBJFHFL04Ki9s/StRXvT4JD/ARNnkYkA35YtwpyOFdwfWH3fsG2v/QlYd3HsQ/coL07hE3FXkN36mrBgJFBRmsd041fQ0EOw7t7a3wLeqKQTxTCGoqAnZewFZ+KSEcad/rUgyKTdB4XxQOHMJRuiVkdbMuDUqjTHfBX6bcKlMaTEHmNzPeF8AnE2jPmWxHH8spp+cj0L0JzHXkkTTKOZMxUMV5NHXr3xH7kt1vZPBbxjY7JcfVkdtTkiKdfS17rg6ZrgKAZu7NcT+gX3SOfyHXQ99y+AnIYQwAKrG3LhrErhI6csIeimYMmidWsh8KZ/aqHbxmT2i7MLtHdyrCcu4NG7OYIS+Kwrmnk
- R+POEKuJ
- p7cgHS7SRTLupf248tIz47WVrTSo77dp9tZkFTIkBkg825xNCthX8tQR/CBJh3nGsvzBLfNsrahUSW3u7lcwSj3+iuQeofVniaAz+bwGw24yNEfiG5fUUgWArgAUIbDvC5Vg/uxHSp4Yjh+kj55NsjOcrHOZWaY8E3fCOtnr9T9eb6A6tOQf3y9aBoqX9k/qD7LLTJ5VZCZaiTmDSe94uZip98Jo3o24WjKGlFzbRJyEkKgsyiHOl8qJJ1+63l1HuNhJ887PMDxgKdtrDd+nF/l7B/oZvGRy/Upa4CLX/zwSp2icB5psVu/HiQt12heUhbunxamVLjJtSu4j/n+RTURPbuGgpmNxafMKSdLqwD+bHBqUAjawJc4HU23pn91JHcfGZlqQ502cdoW45JgMXDE9RHc9Jy04NZN3Q8JcTdrEsVfToC3hl5DR5EQ==
+X-Stat-Signature: ycqd6sc4o17n6g5ugyzhtqsixzs4f5ty
+X-HE-Tag: 1760037875-718641
+X-HE-Meta: U2FsdGVkX18Wxh4tzBD2XVRTb0CyEidRJBrvJMDlX3XuvM9wMRwmi7Z/+YiTCSMWgzpJORIf6o781joilXQ7ZxtiSfrvFyALfYEyVu4vJF6Ax61Ca8oRPJPxB0edd48wF98ksdRfuo/kAv9Z+/QIT5fBfaeSxGR28FghRrq03Xi6ezOaTBY9tz/5njCjM5SBWdPpXzd2m3bPGOG2M+/siwpttjvYl584GQ2Zy2qpyl2T62IaXgk+FYttkVzZ4iE/SN4lQA7YVgvXFXbKk0ii+ePEOX6DW1mNlOkRffaE5OVZZVsbf7oVvTChNMuJucLsYHe9B41uZyWfQWbWB8KdUOwaZOizsQ3ivLPftys82yrLFGg/2IZOZCwCAqTEGQtgfz9nlQ7I+ZG6nWy/jr/VCi9lBU4bpS+qEu8ltbTcmc/mfdeemqm5xb5yZBnYAcTGMfuYS9ep0H3FdDCgCtw434lJFAHTHXZ9pRB/ayvff4L6kMDsIjyi2ZhSK6zhCUyFbctin8cB4bzYA6oCraiZO+5fGF0RbNQsdiQzzGK8COs0HXeqyo2x/4dWUehf5jH5Hz2OYV7Dr2EvPDFU7gOOAlsUJUkaTfblZNl3hnCnHxDtlSliK8g0yznIob31fUaYGAg9eidkz+OWocw6fT0wZ+Ze8/dwUdrhyeG2cSGz72beJ6bD/3Hvl2/a0TJnUjluOUnImam7zsz+09JRDml4qTr0acAG93Gw8DtdytI/Ak35aHkRPdOxi1z4hcji9qVonXkQZ06OQvH6zpZDY80IDIMfLpITud0Qvon16SX7EHjTBZGVrSE55PaMXTJ0aVJyKdlaN6XnO36KPuDwGO1+0u+VgQQcm070PyhXxHOhLJ57ZWb9JsuBJ4FPo1AU/GJZfUM9WgvZtxyItoxBxQYb1ev7VvSgHjP4+mpScxTCs32pK1GR1nBxSekAYJ8B4yORnUuuXqkOuD/91nYqPik
+ VlHABvn3
+ r9fORsY919tCYW5K4h914at1ldPrQp5SGL0t7SwNEjdcmZHUTFY8FvEB64O+hac7Dm4q9wjvV281S2APGlH7IirmTPkc8gHeI7WGqnlLUcCs9sEt7BHAqVQyCOduXifAF+3Jp2RwVIlvlmTDL2RqRHhXXU43Kylc8MS9drUCemPferPTs2m3CtLnZwHWm8PnQfHCh8C+IB2wzSAEmx/ou1t5y5Mh6pdybmaxzuh1ZAFbfgXaJjfSb4qYxtY7tHD8fM3YpRCJ4yfADFGcRlZxtIZtJTNlOKX0fuaqX+T8BVfAnvVHVXeOVh/DKhbm2/5aRQQIQ4cqOWf7tmasXN6ZeMXp/rC8cfzz95s/PlTjkacC7hOx+8XN+SEAX3ODmwQPRJdbh5hUn8t3vKsQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,24 +101,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 9 Oct 2025 20:15:06 +0200 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu,  9 Oct 2025 12:11:49 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> On Thu, Oct 9, 2025 at 8:14 PM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > We can either define helper constants in
-> > `rust/bindings/bindings_helper.h` for the ones that the Rust side is
-> > already using (like last time) or use `enum`s on the C header.
-> >
-> > If you have it in a branch, I can prepare a quick diff for you to fold.
+> Hi Usama,
 > 
-> Should I test on
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new?
+> On Thu,  9 Oct 2025 18:24:30 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
 > 
+> > This is a common condition used to skip operations that cannot
+> > be performed on gigantic pages when runtime support is disabled.
+> > This helper is introduced as the condition will exist even more
+> > when allowing "overcommit" of gigantic hugepages.
+> > No functional change intended with this patch.
+[...] 
+> It seems the new helper could be used for three more cases.
+> 
+> On mm-new:
+> 
+>     $ git grep gigantic_page_runtime_supported mm/hugetlb.c
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:           if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> 
+> After applying this patch on top of mm-new:
+> 
+>     $ git grep gigantic_page_runtime_supported mm/hugetlb.c
+>     mm/hugetlb.c:   return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+>     mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> 
+> I'm curious if you are planning to do the conversion later, or there is a
+> reason why this patch is keeping those as is but I'm missing.
 
-Yes please.  That's the only place where this patch is hosted.
+Ah, seems like that's because the v1 [1] of this series is already merged into
+mm-new.
 
-mm-new is for "new" material and is held out of linux-next until the
-end of the merge window.
+Please ignore the above question unless I'm wrong.
 
+[1] https://patch.msgid.link/20251009172433.4158118-1-usamaarif642@gmail.com
+
+
+Thanks,
+SJ
+
+[...]
 
