@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1840CCD18A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F0D3CAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:58:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCA568E0035; Wed,  8 Oct 2025 21:58:50 -0400 (EDT)
+	id BB9138E0037; Wed,  8 Oct 2025 21:58:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C84478E0002; Wed,  8 Oct 2025 21:58:50 -0400 (EDT)
+	id B91E18E0002; Wed,  8 Oct 2025 21:58:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A59768E0035; Wed,  8 Oct 2025 21:58:50 -0400 (EDT)
+	id A0B378E0037; Wed,  8 Oct 2025 21:58:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91DBC8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:58:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35117460CF
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:50 +0000 (UTC)
-X-FDA: 83976917220.25.705D0FB
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 583228000A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=dEDM7Iqj;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf02.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DCE18E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:58:51 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 53C9D160919
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:51 +0000 (UTC)
+X-FDA: 83976917262.21.617C7E6
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7360EA000A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b="J/wn6IIG";
+	spf=pass (imf15.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759975128;
+	s=arc-20220608; t=1759975129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lp2v9w2qTrkESoVDLPmv+GpD3nzqMphlK45S5OJoAnI=;
-	b=Nr/o7DnzeHECc+B8ASMMAkOBrIQt+bWvBz4qFl4+wKn0FH0xISuAg3p1Iwfew+iuaAKcIO
-	XsD3o3AX4xW3Gg2kaMsEEdKGl6kqAZiVAr9zMlwSLaMMugrxOd7QE4fXkzoJjL2KOjxPb9
-	YrZgNlmnTIQsGwRZZ9KZT1qptWSaQRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759975128; a=rsa-sha256;
-	cv=none;
-	b=QnLYqkhapjg4VDAoFcJOhwlh9a+BcQQBN/244auMRdwmTzz0IgkIydLD0JZlz8wIUNgaku
-	oGVCyFRrP3qZ9oRp/JGlK3K1nY489v4lN1As6Yh2bo2VWDzzUnfXk9s5Re7CAC8nYha0W+
-	hv0HxVr0jzo6x7Ji/JmiCI4CUQLTwss=
+	bh=3Q8oT6hoS6cxQomKzX1vfx1V3ZAPioXY327lRhg5E1A=;
+	b=XwsJnyTokkSSjmgz2C4dYqrgJo6DgNBJcJo18W/ZHEujiwtYGswQWpis2SqZu1xXELiIi8
+	O0YsKE78fd7cSI3tNsql3WsowV/ufBXHufwLxPOfGjDG1qrYpoI2Jw5AzyWnipWfCSlnE6
+	C5X79A0I6M+fyPk+hZ5PeP1nrx0txEM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=dEDM7Iqj;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf02.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b62fcddfa21so267438a12.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 18:58:48 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b="J/wn6IIG";
+	spf=pass (imf15.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759975129; a=rsa-sha256;
+	cv=none;
+	b=xDl7En1udTu/C+8vkGKbRIEd4lrQ31ibh2Vqqah3kDaSfwCtkKINUkMTwpnBrS7TymjeRN
+	undaPraWVOquIIGJBte2Tva5OTENLalEZxBwBSjj5MxC0OKTc040NE3rmxo5nmV+3xy1Pk
+	+F3q1dJLcCnknVSSGZR015SQTBX28nY=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-27d4d6b7ab5so6246105ad.2
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 18:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1759975127; x=1760579927; darn=kvack.org;
+        d=sifive.com; s=google; t=1759975128; x=1760579928; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lp2v9w2qTrkESoVDLPmv+GpD3nzqMphlK45S5OJoAnI=;
-        b=dEDM7IqjggSI1ZGuzUjQwIlNTonevsTQ5FqlhvqINYwUwJQKo3USieHbWIf0m0+QUI
-         TOQ2A5p+jmDHtwPsIq/7ldAMemtgpe/FvnZ8WXrsQy3o98mrXi9AJzRLmnCA0wnhbJN7
-         IQtJ+auE/cNfezcRP8xM8iUzGVtl24JTqHWKkLEFC3puRepn/adAUhBJHKfg2TPXBbpR
-         cuG8RpaywchyFZ1bDJRS6X/szxMsN/OrzNv/WPbAm0sUxPs+ozbjlhgyRxuGysWbcG1a
-         qYKVJIsPSo1K1EQoKcIfYuqfpYX6YwHuEVSRI4E0AkPaGDnjwTxk6qTxFP/x0qnKxrwy
-         +G9w==
+        bh=3Q8oT6hoS6cxQomKzX1vfx1V3ZAPioXY327lRhg5E1A=;
+        b=J/wn6IIGAb1kYJkTT/HegIqxSX1I3eX63UfmCqf0EUY/v8KDgVWG088kuYe1EAv3xM
+         evdudX1HmzcU7HsBjo6yacndWQR+5QZNbbo7FKRI3Mh3ykZckbmVrqthE8UkBUEj6S8d
+         BTJwNisX7aoutJJO6tkLZ5FWB+EDFPnc0jWSEyNdPlsIgA0d1OH8IA5LFabqiOjJQ+5o
+         Ms/2gE1nrdvEY8Hvdbsk4d52xlIK2rJzgijFsHnSkoI6B55w1MuWqR9L53XJ9gfX+uPs
+         Rufn12xFB8MODlkVOkWFvOM6QsEHwj0FbJIEg0KWqZi08suUyEOOzddfl2Bz2LHhaydX
+         OIfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759975127; x=1760579927;
+        d=1e100.net; s=20230601; t=1759975128; x=1760579928;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lp2v9w2qTrkESoVDLPmv+GpD3nzqMphlK45S5OJoAnI=;
-        b=lTxFs+uC8IPswGMPNCI4TOHo0VVPGz/S9SKyXjzh6ib1KKbvWDeA0exqU2BrYU8HLr
-         buV7oN4H8Ixrw/FRwi3yRWRh49N99taKPtGjUUdE+bUs4HDE7yXgUd6gndF+pYIDjy9q
-         QonhbAVSQ3guraPm8xvsNeE9P56hjlbeOwKcOMa80qw0h7RS5u9StsPAb2C+kN++apC9
-         QW/uVOdDiZvyVU07Lp3Ffh8zgeZW9UUNBL6KJQC+EESortnnfWu+1QfQ4zNY0BG5lnI0
-         GUrY3tAXJhBTzmg98rmj4MvvIyAWDcKgOKpfXYnekMbYqjW6ELS9ieLYVJn0N57Pv4py
-         DNiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcJo/g5FYO1ARdNQjsp+3f38h5N+QtSLBJjmT9omLYCaX21B+zkiT+K2S40HxKOAoTr2BHgOf/pA==@kvack.org
-X-Gm-Message-State: AOJu0YyIsPpmdXxR9wMkZ2XLLfmNlyRa8gZbp93kVZrrPhedlkjD+B56
-	gzuMXdV03ZB4/SD2xi77sgIDWlHnAIWWpIGpDOzdbVjX15x1fhy5luR9Y2JzCFhXH7I=
-X-Gm-Gg: ASbGncv4KtGBMSSd3N0whMngEzY1nQ6QJ42crQehzeLBbPlB58JUkn9tk6mTA8IHm26
-	BIM0bfWnbCi/VhwVEBp09vODVhJt78zIzvoJZ4lXMDztIiBHrhJipQESydj5az1jk0tD2RUNMkA
-	GcTTTGRYKDkFSOERUB3FTa9sjiagYqRI9VEliImTc/5TuhFuhFitRP1Xq/UPMSZKMYiIdnd13lx
-	fMc5GOHR87RpoZ7X9lhRl2c81b0OZn64yoxOuFps+LaTNJ8XVvFJpPl2NXWX8LefCLOc2FVC2o8
-	xt5HDtWVlxwG6xSblz+yUwSskYQXIIe7Tp/9yhW3E1tnDsvcSA3B/gV66msV1bQ5yNw3zbWGFHE
-	MoWkzvTlRJD+wtf2vD6uD/dLsclLK/zwQy0w0mPoydiKJ8vcuo3+/AApixnzw/JAZajRyFwASi9
-	XGIxI=
-X-Google-Smtp-Source: AGHT+IE+agqXEhLEONLyA5d2qyFrvAw1S+1pygAwMmWTwUwpcKU01+ZnN2Cp743AX1wJ7euQQmxe/A==
-X-Received: by 2002:a17:903:2292:b0:24c:bc02:788b with SMTP id d9443c01a7336-290272e3debmr85255285ad.44.1759975127215;
-        Wed, 08 Oct 2025 18:58:47 -0700 (PDT)
+        bh=3Q8oT6hoS6cxQomKzX1vfx1V3ZAPioXY327lRhg5E1A=;
+        b=fOIbNT7NvGLgwfMp9lJyblrsKCTShKgp3cKKWGldPWl6ZnA+NdLt71jCEWC3MOFOGr
+         70APc7eP7Gkf1m429uW9GgdMUIlGyAgW2jCUCPdIFY5QL1JL1RgbNCSx6giFbX1WMudM
+         g23PzLW53NJHMdOP3S1i5LVdZSKNG19Pb2NJVNXAO1tuj58FrSQeGPAO/w4tEvWX7tfu
+         P2eVs+qCJtv27Y/K7PN2MpIlRQbyKboS+qVIpy76E2Vy8k0AQUCifxRj3dzUndBN7+fp
+         qDYPJtQL+S32QXwgZz+Ppdn+F+hhT3zPXeuOiFpWiZhJ0yI6ivERQFQA2KdaITb7Qi/D
+         1wWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1LYHMUdcelaXFVRt4Pv/DT5KIHKtsPQBzt3Ybn/atlx1krm3VZq4CSUc/uqJitdz2NmPGdf60ZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yww+cIYKYYgYKBTwr3KerUSaQuz0JN6gpF1LTZtGdG6xEni8Jtz
+	BLOQ5TB+GI27Ui1/zhMjz2cQdGnLxNFugkSv0byk76TixBkneGqAmxVgCGYWQ37ZolM=
+X-Gm-Gg: ASbGnctFGzzcVYz2ExyMjtPwB+Kmqu4AGQFQF0YoU6DvE3nJlWr2/a95zpgVvJK8mSZ
+	ogY3tu9PJRWfkQmFfrGuf6KVRzbcXI0IZyQ24yYTUJcdx9Wep79bVcnjyZeH65IeEeau4cCKzJI
+	AwDeYQrY5iwlY46lX89b2SHwhspIoN9VtQprPFdQ4Uw311zITG4AtSjdNkoMrGVDE82ieTfDRZ5
+	GfeXzg5aHZ6ZFmkOnXtjS5xCdoWWiyjEj0Ml/tHnDS8ZE5Fs9dXEnhfd+k6CEa5n07H6k+Wk55M
+	dfZP83GrZlNgng/T5dMB7/BdmUPbl7P0f/RuVrRMXIC6vbm7Bgwb8kurAsWBJsWkdogq3/VZdNG
+	NcItsnDUdooGg8ODF/pgVbEKdA2Z7iPVpuM6UFd54Xp6qpwXx35tsvr5wDN+QCtqW9lKeKk38nS
+	3AkU4=
+X-Google-Smtp-Source: AGHT+IHLtMfpsASWG7S0cjFNRLXUMrAvJHuz2m4ALPRQp+i8q8lJn/YDkN/bQbSK1wXLrkajg3vnmg==
+X-Received: by 2002:a17:903:11cf:b0:269:63ea:6d4e with SMTP id d9443c01a7336-290272c1aa5mr61891525ad.37.1759975128385;
+        Wed, 08 Oct 2025 18:58:48 -0700 (PDT)
 Received: from sw06.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de53f9sm11033585ad.14.2025.10.08.18.58.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de53f9sm11033585ad.14.2025.10.08.18.58.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 18:58:46 -0700 (PDT)
+        Wed, 08 Oct 2025 18:58:48 -0700 (PDT)
 From: Samuel Holland <samuel.holland@sifive.com>
 To: Palmer Dabbelt <palmer@dabbelt.com>,
 	Paul Walmsley <pjw@kernel.org>,
@@ -105,22 +105,22 @@ Cc: devicetree@vger.kernel.org,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH v2 05/18] mm: Allow page table accessors to be non-idempotent
-Date: Wed,  8 Oct 2025 18:57:41 -0700
-Message-ID: <20251009015839.3460231-6-samuel.holland@sifive.com>
+Subject: [PATCH v2 06/18] riscv: hibernate: Replace open-coded pXXp_get()
+Date: Wed,  8 Oct 2025 18:57:42 -0700
+Message-ID: <20251009015839.3460231-7-samuel.holland@sifive.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20251009015839.3460231-1-samuel.holland@sifive.com>
 References: <20251009015839.3460231-1-samuel.holland@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qdz3wi9jt5hihjugx6bckf71tafsxatw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 583228000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: xfequq1m8ck3qfne8k8wgup6j3drjafu
-X-HE-Tag: 1759975128-733794
-X-HE-Meta: U2FsdGVkX19es/IcFxB6e6HYIfgmGBmzdoUPabR2utNd/eGsOjAsVN0MYnRJGu1qJumtEgmYWXfPGUO0QFuxanitOA3ulCfTh/cH6LI5AhvYxDxwEFHiTbi7ogt15GyfYtwf5k/b9EFTGBvrzIaT68PKS9de99Ju0P/rEW8omM4PP9QMEPGZnXSJkBXZ+FA6ILlSNLsXycIf988z3y5KtDNeIFMF2axtyJdI2Ky9MWKw/PXmbQqabPiwRUn284uLys3NDihPI6UYpeA3nH3yO4Nq2gvqrjgxSBukKgfHSb1K1FVCtuBfuhBTJ1/EaAPcftwMPNAAp6bVUc/Xq5Jtj7b+xiOp7mu7PuVczOdxqvAxrbmr9rPbBrzkegZOs1Xc5hzAp3FVuw1mBgCiARbmzIQiL1FpEiK0iPEmAFiK57MT3YEPzld8DOPMqCHomPa4bLEpB/sGP1sb+26R93juXWmogJoH5iXGb+5wOx3TwMSP8TWR88GcJdeFHt4F0w/K7fV2PzGOECv6MNo7uMpennF7PmPw07mHesho+YrPyNKogtfWIhUzxssD2KghpCLpZXZVw3wNghJM/mO0+xmaCYhJkjo9xpIyYRec+VhjmE+OlGmooUcqV3Hvcz/tqITKcntHFFbrKin/KosKZpqm0xLpwVh4+NQnJZTTJTiMECEiPlb5NyHWr/vKFPq55hf6T6lf+ZejZPwgSUnbUtHhNOsEb+zbGTdzL6e42AWbBpCeTVQ8n1jeUHw1FQ4ChInuwoKEL+a1oZI5cHbKFgDHj2UbcM7dx9ag2wpkuRWIpWwl/oReXw9z/UK0+qVP0uwu+JhmDN7XotCKDaiJqyZw1iMFiIzM89/LBlHCKZT4CZnPf9NvX8b7cD42lfyS/Jqw5zZj8o3E0mfttCNwOtpQhaW3vhnaUz+33V41TSZ/G0Cohz+29l//QjQwbLdCG7VB1M8NHxuyHbJd7Yg0Lt2
- hXXW/wVt
- Coex9BX+hGg+x4CER4jfHyT/4j5644cIhMJEhYWjTOhEBT/Z/5Qo0Mt5phaSq05d/9KbsdevQ0iiC3oukuMGsIxnLeQLJ6CjdpjxMAJO/lV4RJSwHpotN0mqDr809Z/kgAYB1q4CbEGjmeF+NS61O7rU9VTORdoRZxfoNRV8iRC4etY0HStuzDLiiHFys9Ui418UgV+XuAcv1am0moJP30V2FjLCH+FVoH80nJ/HPAwQ+OBAcWYHK1Xi0+Zebg77rNWx+U8Sc4RkQI6Hvtr+x98+mJzeXDiR3fq+/50TiQz1fNlvi7B7DRlYJi/OVKvBzGW84WDJXNDuo4loYYgm0HZFUSlNyVxAb5m0adNA3GS4j69rZ8wU3x4yVKGmomR+HAMfKQfEwRkMk9D3kW3PtD7R1/w7mbyl8W4ManHowBiqjTScoqYERmx6UmA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7360EA000A
+X-HE-Tag: 1759975129-906463
+X-HE-Meta: U2FsdGVkX1/t0Bd+Ye76PwIG5M4yvlIpkGAOdvwxpEXYlrrqgFo4h3AjDBkr05KB5Wo4fnNXvzHcrPsj6yRSRiFPApphwSxXKoT/9dAW8j10DtBSSYXzrMIqj6J71zGqck7NaW5Sk5MD6Gc0dkegYbtYULU2Jv2ZgKwv1Tkyr1t/YyKsA/rg4DLDBPYFooRnWU+b0xs/l1MdNzBJJOzAl44uhlNf38SLNAFWd9rc7KA0C/s5qVgo6m/afFg9dSfUVg8ZIARs9OKARpvMONKfuE+5JSJMQ7gkZlgX649TGnToL0Md6bWIrt7uaD5XQV3zEnV55/pjW8d++xDJlf6wpMpuNXFy9SeCInphErc5a5V7ylUWNt8EIZb2TMCTkuiwxe2On7qAt2SSM2c22f7a90uFHsIVWJ4rVNFiqBdDBiy56d+B+rOiPk/r+Tv620cHMr1A7i9HFmpUraDKuVFlu0G8uIPoMFOW9g+2mub/PkVKT2CO4i6R1Wzc/q6pT63vgenfPXO5L4co3xBSfZpKF6wj9uqPwGqETxsAu/aevjUC9hYW+qDEbpP4+FDPZ5fTYhpk8iodbGMtHL0Kv1M+nZcW2trwv13zFVvgAXViCN7Vg2ScyzHZkSEz+4ghxniN2QLNGnh61Hz+eZf0aIoB17cQCokPbe/uLkiW5eHnD3q6lEKefwp/kS7km7TR9nUhx3wr8HEI4o6qJgps16c95cV14kiUcI/RMMpsN7qienZSQasFFnGCAVfWiUuYJyEA56pfV46gaBb219FSTJAFZyDSFQBpflhCopiMYskMmXhlNCW+uEhELB4cuhBrlEL5BzbweM3gv/+Bjnmg64NcCi+IqBLQWk+UIPPnxppwFXj8OTI4kuan6/hluCkqJmIb8XokdduNN5Z00jdQj0ydRD5nE+vKUbddU3dL2jUABInP3D6eq/Z0Xn7nDJ42JwufYFaQX1bzwilbKU6YTvD
+ ZkedBaQR
+ 09DqFLmPUIqsUwWJ8W47xTeGqXrJaeQV5eDZveYSqDeWm9kBn/8rHJkzFK6nBuh9VodmxgPBEIiM2VeJgyI3Z0kBhVNU/R1tlCr0hyPZDFDAVBah4MRaFHRyc1Otj33VUvedi9/GceclTQQ/pYVsodkJ83nfEk5pcs7V0H6zH226SJK/URKHM+braBEmq5FM1ciX2kZnRHeWJsnEdAhUE/gBwXMfEkdMv/7hYRwl0/RktjkwDjdyrSvTgek+FhRZ8YjvzWZqYz9E9tyhENM97ZrQ77U0+g5zXMVpdYhJTmocJ93JIHbf1fa4A26ZhHcwHLm3eqJs20ypryl8D2h0tCsdSZYMIAT21bjk5S+j6Rwuq3cDvEotuzGw1Oi+/8lfJWRFz4uNNMdJDYulT6PaeaCGazihwN7z3GkJi4cV0Fp6QLhHDwbMOt4k2i38NBqaQYH5X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,16 +129,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, some functions such as pte_offset_map() are passed both
-pointers to hardware page tables, and pointers to previously-read PMD
-entries on the stack. To ensure correctness in the first case, these
-functions must use the page table accessor function (pmdp_get()) to
-dereference the supplied pointer. However, this means pmdp_get() is
-called twice in the second case. This double call must be avoided if
-pmdp_get() applies some non-idempotent transformation to the value.
-
-Avoid the double transformation by calling set_pmd() on the stack
-variables where necessary to keep set_pmd()/pmdp_get() calls balanced.
+Use the semantically appropriate accessor function instead of open
+coding the implementation. This will become important once these
+functions start transforming the PTE value on some platforms.
 
 Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 ---
@@ -146,93 +139,94 @@ Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 Changes in v2:
  - New patch for v2
 
- kernel/events/core.c  | 2 ++
- mm/gup.c              | 3 +++
- mm/khugepaged.c       | 6 ++++--
- mm/page_table_check.c | 3 +++
- mm/pgtable-generic.c  | 2 ++
- 5 files changed, 14 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/hibernate.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 952ba4e3d8815..d75be3d9e0405 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -8142,6 +8142,8 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
- 	if (pmd_leaf(pmd))
- 		return pmd_leaf_size(pmd);
+diff --git a/arch/riscv/kernel/hibernate.c b/arch/riscv/kernel/hibernate.c
+index 671b686c01587..2a9bc9d9e776e 100644
+--- a/arch/riscv/kernel/hibernate.c
++++ b/arch/riscv/kernel/hibernate.c
+@@ -171,7 +171,7 @@ static int temp_pgtable_map_pte(pmd_t *dst_pmdp, pmd_t *src_pmdp, unsigned long
+ 	pte_t *src_ptep;
+ 	pte_t *dst_ptep;
  
-+	/* transform pmd as if &pmd pointed to a hardware page table */
-+	set_pmd(&pmd, pmd);
- 	ptep = pte_offset_map(&pmd, addr);
- 	if (!ptep)
- 		goto again;
-diff --git a/mm/gup.c b/mm/gup.c
-index f5676a3aa525d..34d1b59bd59c1 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2865,7 +2865,10 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
- 	int ret = 0;
- 	pte_t *ptep, *ptem;
+-	if (pmd_none(READ_ONCE(*dst_pmdp))) {
++	if (pmd_none(pmdp_get(dst_pmdp))) {
+ 		dst_ptep = (pte_t *)get_safe_page(GFP_ATOMIC);
+ 		if (!dst_ptep)
+ 			return -ENOMEM;
+@@ -183,7 +183,7 @@ static int temp_pgtable_map_pte(pmd_t *dst_pmdp, pmd_t *src_pmdp, unsigned long
+ 	src_ptep = pte_offset_kernel(src_pmdp, start);
  
-+	/* transform pmd as if &pmd pointed to a hardware page table */
-+	set_pmd(&pmd, pmd);
- 	ptem = ptep = pte_offset_map(&pmd, addr);
-+	pmd = pmdp_get(&pmd);
- 	if (!ptep)
- 		return 0;
  	do {
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index acc620158696e..d8c22ef8406bd 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1731,7 +1731,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 		struct mmu_notifier_range range;
- 		struct mm_struct *mm;
- 		unsigned long addr;
--		pmd_t *pmd, pgt_pmd;
-+		pmd_t *pmd, pgt_pmd, pmdval;
- 		spinlock_t *pml;
- 		spinlock_t *ptl;
- 		bool success = false;
-@@ -1784,7 +1784,9 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 		 */
- 		if (check_pmd_state(pmd) != SCAN_SUCCEED)
- 			goto drop_pml;
--		ptl = pte_lockptr(mm, pmd);
-+		/* pte_lockptr() needs a value, not a pointer to a page table */
-+		pmdval = pmdp_get(pmd);
-+		ptl = pte_lockptr(mm, &pmdval);
- 		if (ptl != pml)
- 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+-		pte_t pte = READ_ONCE(*src_ptep);
++		pte_t pte = ptep_get(src_ptep);
  
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 31f4c39d20ef9..77d6688db0de9 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -260,7 +260,10 @@ void __page_table_check_pte_clear_range(struct mm_struct *mm,
- 		return;
+ 		if (pte_present(pte))
+ 			set_pte(dst_ptep, __pte(pte_val(pte) | pgprot_val(prot)));
+@@ -200,7 +200,7 @@ static int temp_pgtable_map_pmd(pud_t *dst_pudp, pud_t *src_pudp, unsigned long
+ 	pmd_t *src_pmdp;
+ 	pmd_t *dst_pmdp;
  
- 	if (!pmd_bad(pmd) && !pmd_leaf(pmd)) {
-+		/* transform pmd as if &pmd pointed to a hardware page table */
-+		set_pmd(&pmd, pmd);
- 		pte_t *ptep = pte_offset_map(&pmd, addr);
-+		pmd = pmdp_get(&pmd);
- 		unsigned long i;
+-	if (pud_none(READ_ONCE(*dst_pudp))) {
++	if (pud_none(pudp_get(dst_pudp))) {
+ 		dst_pmdp = (pmd_t *)get_safe_page(GFP_ATOMIC);
+ 		if (!dst_pmdp)
+ 			return -ENOMEM;
+@@ -212,7 +212,7 @@ static int temp_pgtable_map_pmd(pud_t *dst_pudp, pud_t *src_pudp, unsigned long
+ 	src_pmdp = pmd_offset(src_pudp, start);
  
- 		if (WARN_ON(!ptep))
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 63a573306bfa2..6602deb002f10 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -299,6 +299,8 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
- 		pmd_clear_bad(pmd);
- 		goto nomap;
- 	}
-+	/* transform pmdval as if &pmdval pointed to a hardware page table */
-+	set_pmd(&pmdval, pmdval);
- 	return __pte_map(&pmdval, addr);
- nomap:
- 	rcu_read_unlock();
+ 	do {
+-		pmd_t pmd = READ_ONCE(*src_pmdp);
++		pmd_t pmd = pmdp_get(src_pmdp);
+ 
+ 		next = pmd_addr_end(start, end);
+ 
+@@ -239,7 +239,7 @@ static int temp_pgtable_map_pud(p4d_t *dst_p4dp, p4d_t *src_p4dp, unsigned long
+ 	pud_t *dst_pudp;
+ 	pud_t *src_pudp;
+ 
+-	if (p4d_none(READ_ONCE(*dst_p4dp))) {
++	if (p4d_none(p4dp_get(dst_p4dp))) {
+ 		dst_pudp = (pud_t *)get_safe_page(GFP_ATOMIC);
+ 		if (!dst_pudp)
+ 			return -ENOMEM;
+@@ -251,7 +251,7 @@ static int temp_pgtable_map_pud(p4d_t *dst_p4dp, p4d_t *src_p4dp, unsigned long
+ 	src_pudp = pud_offset(src_p4dp, start);
+ 
+ 	do {
+-		pud_t pud = READ_ONCE(*src_pudp);
++		pud_t pud = pudp_get(src_pudp);
+ 
+ 		next = pud_addr_end(start, end);
+ 
+@@ -278,7 +278,7 @@ static int temp_pgtable_map_p4d(pgd_t *dst_pgdp, pgd_t *src_pgdp, unsigned long
+ 	p4d_t *dst_p4dp;
+ 	p4d_t *src_p4dp;
+ 
+-	if (pgd_none(READ_ONCE(*dst_pgdp))) {
++	if (pgd_none(pgdp_get(dst_pgdp))) {
+ 		dst_p4dp = (p4d_t *)get_safe_page(GFP_ATOMIC);
+ 		if (!dst_p4dp)
+ 			return -ENOMEM;
+@@ -290,7 +290,7 @@ static int temp_pgtable_map_p4d(pgd_t *dst_pgdp, pgd_t *src_pgdp, unsigned long
+ 	src_p4dp = p4d_offset(src_pgdp, start);
+ 
+ 	do {
+-		p4d_t p4d = READ_ONCE(*src_p4dp);
++		p4d_t p4d = p4dp_get(src_p4dp);
+ 
+ 		next = p4d_addr_end(start, end);
+ 
+@@ -317,7 +317,7 @@ static int temp_pgtable_mapping(pgd_t *pgdp, unsigned long start, unsigned long
+ 	unsigned long ret;
+ 
+ 	do {
+-		pgd_t pgd = READ_ONCE(*src_pgdp);
++		pgd_t pgd = pgdp_get(src_pgdp);
+ 
+ 		next = pgd_addr_end(start, end);
+ 
 -- 
 2.47.2
 
