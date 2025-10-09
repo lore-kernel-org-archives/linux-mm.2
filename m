@@ -4,115 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AD12CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 22:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 075CDCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 22:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936128E0072; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
+	id 4A1C08E006E; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E6368E0002; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
+	id 451EF8E0002; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5088E0072; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
+	id 319958E006E; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66B318E0002
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9198E0002
 	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:58:03 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D1E7160B86
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 22:58:03 +0000 (UTC)
-X-FDA: 83980090446.15.D05EA65
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 91FFF1C0006
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 22:58:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fsmcUkZG;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760050681; a=rsa-sha256;
-	cv=none;
-	b=i3IUdLHukzJTZ/UFJnncZa8nzl3Hs14tUCHNY0TO/DJRY+5uO42pqeUaE35w0W1baBYdSY
-	lRL8D6T1/+8iWdNrWknLeiXEh17PgzcONt8GA4k+gGrVp/SmeU+93nUZngfe+Tt8NbJCP8
-	Q+IiPydrPY6UL6WYpR9fMvkwPisbO/M=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fsmcUkZG;
-	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3821A0AF1
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 22:58:02 +0000 (UTC)
+X-FDA: 83980090404.15.83E9F6D
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CA9EC80008
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 22:58:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UFHCzXeZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=vipinsh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760050681;
+	s=arc-20220608; t=1760050680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kkSoRWXLCiOf1zQD79CdE7JWEoKvrS8nIAxN07SrUfo=;
-	b=o+G+fDZWR+7a33iuHw8YBY0W0DZfwcgUolnxXCflZtKf2Ey4dbqDMEih+KziCVm5xHIYjK
-	+SVxrHxMOoTXHKQtu0wo9XngZo9ec1bKnCBlTXjqPn9+CJhQp5kQt6YGRgFq+UFcbpZEd/
-	7LvcqvBIplFhDSU+ct2yjkkUW9TWGTg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A91860097;
-	Thu,  9 Oct 2025 22:58:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A298AC4CEF8;
-	Thu,  9 Oct 2025 22:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760050680;
-	bh=jy9n9D7ZYvmVySH2g9tp3Ckzl9GwzPglDdLRQQiCCGs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fsmcUkZG+rOzdyBxI+7M0RRHI8iCH0InxqtSmP9yNCDhGt1Bbr4/Jf2pXUvkz4j88
-	 UDj2naNsOi0VQHsRuuZ+XVqfnznHDoZklQlLmEsL1ZH+zujftUroGA4CagCopBN4Xz
-	 vj1DTaBppGaXMLutBIo9nTWjzscI3qQWSu5T1LRFqzKqosPAtOS1racXWU9cDYO26z
-	 zCNFcdY+M8/5R/4MrzEIPk/9YZpX2joKXVX8G1bcNmk+IR5U392qHwGGDcH6PgYjxP
-	 +NCkkidu7Ix4EvUC/ZUg3baYkFdaMKgtVHuHpeJMGOFww7i1eR6wjV06LGsYJUWNsK
-	 LpFjSmrYG04DQ==
-From: Pratyush Yadav <pratyush@kernel.org>
+	bh=TS3X0oB2KcD5loH5VjDML1tNfmcYzwsUaHGn/yfIcO4=;
+	b=2Kf7Pw/Fk6ji/hCwoSX6xjTpH9rRSuI0cVhmio3T5WKz8I8j1nnMEpE8XWy7yrbjeyk1Fs
+	7QvlCcbDXMPMu+DTSs4P2x+jTIWLmy1HZTMRUFGvsrE0E+d9XqukR6kZqaVdkaWl5sKbO/
+	jhYnfbsL/JXsrFpd7xduT0y242GwUqs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760050680; a=rsa-sha256;
+	cv=none;
+	b=zwuQB4xWcPGhq1sYFJKvVKh/OfHO8YPaS8WTMfs95vNnsu4MQh1oAVMEE0KFMK11An+Cm8
+	WmpA2zHKb9PFVl3VCCC3zDnJS/vCg6wKrl1v9iTCQUi3TzzuIMSXQ/ql8KIJxyCLXFDxtB
+	4XabcediyLilqz6vAUdiUmUdX10Dbik=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UFHCzXeZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=vipinsh@google.com
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2731ff54949so40625ad.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 15:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760050680; x=1760655480; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TS3X0oB2KcD5loH5VjDML1tNfmcYzwsUaHGn/yfIcO4=;
+        b=UFHCzXeZi6Nfjyfs+H8KNVMR/cdBgfngAe2i1pPYOhglKDObsH5bT+8cBnXOg0Gq7U
+         8p222XxVSCrLniM+0zMlHWyUC0OTULJGyyy6HjFQibxDjnfHcuQyV8gUja0Op8Z91wVq
+         H0pSpCFMlPsU/AC9jLLtbrTUJWtcJ3RcRdfGeOjUNhBLsQP+ltyJWqxij2GfYuP1HGwW
+         FuqfsbohuFCNJMjSTDpj+nH4ygwYWEq1N9Juho21wZxw89i+JsOrgRsUkAl7ZyeAnxNU
+         4vAKti0ra5o6D0xkzVg8v1zv7kRmeO0vZbgB2ac8NOFRGvwqjPrOeLtqRIEMb4JkCPKd
+         /c2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760050680; x=1760655480;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TS3X0oB2KcD5loH5VjDML1tNfmcYzwsUaHGn/yfIcO4=;
+        b=Tcs6tqul7/6teS9m/5nBnUY9/dUO1cIv0TQA1iCFDURBYtc0XcyQ6SpDFPULBpXHNT
+         0KgQF2JoUssTFKTXXCirP5xNwq3gTHf2u+R6/nuKoZOPcg/TeJQlvAuRZEt9Qm4HhRnA
+         rhPkzlRo1OvKee3G5VqxQGUNEx7Dh6Y+NkwwFcjoAtp62W+AqUyVcdTUhGAsAJe6Wmr0
+         Fmz/FMyP3QfnxQBqpJcizsHhh8VgY6MCAAXjwb4m0xAU9UVMytsMXBOErXxtjMLcwC9Z
+         nBwnqGdcc28sXG5X4KTaQdvX5OjT9O/JNFclo8gzaySVYTdWKf+wPqFWaT7KBYlpmzzh
+         7YmA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+1xVFD8YTnre+A3pWlb4St3/iDkHjF50IdvLwE509iQttc0WXRPKjo4gN1P6/ZCmJhYS762qzIw==@kvack.org
+X-Gm-Message-State: AOJu0YyNCaq0YyWGu0DyQMAQ+UfuG93Bf6+ZV5F4988auCM5URVUBytO
+	dx2qlMrqkJgb0saUNpQt7TWrR2wPoJ8Rfd/zg/FZ3XaXd0SaTyVJWsWxSSvMBFz2Qg==
+X-Gm-Gg: ASbGncuVB5eVcaYsLijfonsVmV4cbwk3V2X7AQjm96xiIBqn6mqifrb0QzAIRIB/iHp
+	mg9DZ8SymNOHcJ+WMIi5O+IUjS1/8RRFw7fu4P+ims/mjnMvRQQHosZw1VgDKEdSkkIHH/nkVvq
+	5G9Za8MpktVnY8cjL/sqz9ZwC7VXxGSAycF+E1h6dSeWasBk6/smVp7MdU/KlxgO5dITk7JaOJH
+	Vb0xqO8ZAFW25MwRcMjvHo1B9LVsoN2Y2u8TvxTsCisioQbHMsp+Vd0DWadO+KLcDHt24d0lRiS
+	+6wC8FTk6bZRgxIdOz4UI4JAH+6MSC7NmEuRNCH9uY2wfNSdEIvBN8Hh9FNLGo+gOKR0LU6qEFG
+	PNYJx3Vir39pU5UNVjL3WQMi4jZaK7L9j/eriTisz71FrS45Hxix0Uu8dFHMQqbW8z+van6/p/n
+	Nq7ekkgfhiInc=
+X-Google-Smtp-Source: AGHT+IEUelxecU4Ltxm3QGl/GGQDXbTCrG57RujR1Y9rUZidwWpY6H+v0tk5x12Foy4wJMi0lrd0zA==
+X-Received: by 2002:a17:902:ce06:b0:269:63ea:6d3f with SMTP id d9443c01a7336-29027613a04mr13422595ad.8.1760050679106;
+        Thu, 09 Oct 2025 15:57:59 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b252f23sm847400b3a.6.2025.10.09.15.57.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Oct 2025 15:57:58 -0700 (PDT)
+Date: Thu, 9 Oct 2025 15:57:48 -0700
+From: Vipin Sharma <vipinsh@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
-  steven.sistare@oracle.com
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-In-Reply-To: <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
-	(Pasha Tatashin's message of "Tue, 7 Oct 2025 13:10:30 -0400")
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com,
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com,
+	skhawaja@google.com, chrisl@kernel.org, steven.sistare@oracle.com
+Subject: Re: [PATCH v4 26/30] selftests/liveupdate: Add multi-kexec session
+ lifecycle test
+Message-ID: <20251009225748.GA2098969.vipinsh@google.com>
 References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
-Date: Fri, 10 Oct 2025 00:57:49 +0200
-Message-ID: <mafs0ms5zn0nm.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <20250929010321.3462457-27-pasha.tatashin@soleen.com>
+ <20251003225120.GA2035091.vipinsh@google.com>
+ <CA+CK2bBuO5YaL8MNqb5Xo_us600vTe2SF_yMNU-O9D2_RBoMag@mail.gmail.com>
+ <CA+CK2bBSObHG=9Rj623mahyhE81DhhKbN09aHS96p==8y_mCGw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+CK2bBSObHG=9Rj623mahyhE81DhhKbN09aHS96p==8y_mCGw@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 435j347xyhgcqrk8hz81zxc4nhdy89yw
 X-Rspam-User: 
-X-Stat-Signature: 1pufpp7zh74bb3dioh6whxe9chji3j4m
-X-Rspamd-Queue-Id: 91FFF1C0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760050681-873053
-X-HE-Meta: U2FsdGVkX18NZNlCD6Q4WQ8U2FrqFrQ9C0zPcaEjN8Ms6GIxUUcvD7pswKXZPG9Nv1/BXIJ8BBM/p2f0dH5UZhWQsB3E2ISpndNasy1/uJpHKOp7YIpJdquaeHktx/KE+7nMLe0g4HDNYv2zLc0lf3XotBJWHXyIqyb8XSy5hcsptLHHIlFZ9BZqXfFA/Zy++IplUP96trgSwGnbYPGhleb7uE7oMEI5wY9VCFIDqG3KMS22pYTRHblE8gzbVDr0YXAgJoiNUWDpvJm8lhRwPtbWsmQZrJ7ZXS10q69vD12eC9gdDzbS+Ph+Rw+QHDu/LYUuGnRNSZqcxl3hGp+hXXe3+lQ6TKbNZOTC+Yj0/9v/jVVylK9dNTuc0T7vNimyxQF1KEZzLcreKoB5+ShVJ5MUcQhwaz/rpWmEyjricEnWtntLmjH0iQySCRyE/uS55UKuzAxWvUs+KHO2AX0njsFVXHY3ORRhPURTwNzDOBMUDWwNizAkDozSr1+ika5SKm8m8/sgr+gt2qjOJWXszHxDvH2Sgjj0EigBDH2q/ZV8bJHRVESLsxTVZhx0vX/xEijZ8lbcl0QTb1Pfcjt2y3ATe8PyqTp10tlA2zSW/LHJCWfWw40COL9tnCGBHRdQ6NMhoxFcj+TFDZmOUPs8vNX73lp96MrqLg6y8BH4dM9gEquGzpuicfb0J7ok3NQNgqhgsEv+z2kenJ15fRZlh71f+xmsBQC1sqckHGDM/LlSZ3/uHBoGSUHNqG4/+L4RkiacxhfCVBRSxdEdRfbapDYCDyT7EEbxbc11odZkXKZ7I20lrI8ZudPUdyPuFq3mRDxK6kydo1aVzriTyQ87nex8bO4flF9BS1IqBUEm7/xxiM8Jl5ReaY6+tA069Raz9+8RID0QLMp9XvXcIO+ykZPDIerNVZcPRv/vXuIXwjRnYn2jqqSJIGb3fBfn7uisc2TjWBGoObvMki/8b1E
- x679cZvZ
- UoEVzlKTkHsxU1yIyVzqxlud2bApvHpIQuEDDU0n2yFE6Ts5V2j69lDOycBkDQi50MxAvkRFIg8kYr+qHMHgrKmr+B/e/3N53fpIh2NLNvEAh360zYjTVVj4O9nzZxR6l5tB+PLIU2etsEylbqViYY2fn7JzJq9iKfKZTBoeiyPK834ZX2Je6ewoWceKNYRgx/rOX5bfqeyEWun6Vn61e30TjcnHdCn58Fw4Z5VDCFLDOlHFMU1IaW+XlPiK6sqPrmOIzx7P2qM8x2vqXHhm6fiwUbpI/Tee+PBZ81FiEsdEVsoMwoP63cKjGBs3HHMzHJHcQa2KIro2LmMgsLckkJ71PoEBJhZFNaZyz
+X-Rspamd-Queue-Id: CA9EC80008
+X-HE-Tag: 1760050680-56764
+X-HE-Meta: U2FsdGVkX1/AiUYhwVLBiFh1b6P+grcu8Xb3dKdmQg/7frdaN+zh2Eaj5v82H5Af9aW7M6rdscpP0m3waIUDYx79dG0lKad4eRC1AAXRkFWMZwi2U2AO8zVuir7Fsx4tADw0rZ3usrpZ2K1HObNwexD9TIhlyE2kyYxd5Cl9YZZJEChWJGnUgTpLP1EwIVGwyEzTZOEOC+IjeilgNpvc1xi8cllnFMSVYR4eM9ZZGG2j2LAS09Ab8+OoT4/QJFHvvcaDtVdwGTiUMQsxtibtxyy1iFSsX5m0fcKxj3weZXV1FJOppcCBJdkVAmc/hdYshXC1KRBaPDBVK6uCGekUbLCzi8vEF6BnhYp7UASUHDaCqfa/B4zprE5ZLkACwYW7hgfPlq7UwCj8P4ptfycrMq7wzoHBkc57NyEC3bp+p5mxNjrBiTTmMVOulLL6X36ifZeGZBsgHX4AvO1jKbkrz9KcwURBWTnAUd6RRZ2zffsQf6JqoDSyZoL5nYdv22o1yOVM5pIfhmPzVfAQI8qELcIm0mFe6h0tiKa+GH4xfn4q6Kh8hMftGAsiTdhtLJhNz2iGi6O2SFiht+Jklx3CmXrjTK5CC2k3E3gaytFqCYA65b0fYxs9Uz5+caZyTzAKXPmpV7qblJ/+npvoUqN+65gN6ZvNjpfCCNNW+fqfhyMo3BY1Gh5cQKWqR2/T0NaIS3kj4JSN73Ca5OoRTSLWk3qZDLZWpLdRlzoDJIuirwzkjkziYrQi8//4WhasaSRXXLd21NSIQ+4e1+Szvm38ijbz7uJJmPQCFoUM7HcqLeq0ZFWgo0ew3vCk3ePWirlBpaFUkOBGiZAa9ZCyW85PwPjwtctizbbm3XfgTjg047vMqgZGsLnZkH84GdG+YdzAWmuGvqw4QOk3GQPumzdapF83T3HdyiYTfCopRJpp2ORRox1Iixs+S/u/p+8NLa07d3Vk7w+K8OADd+xe9vR
+ PeHjzyVH
+ 9ePYFgpI+CQekuTGV8R2voeeNXQb/CfF+iYI71sB1mF7/i8qmupHD5ej73Wso69YYDuu6D7jsBU4UjzkPR3Z7RDJZXVywufR2vkfnFEgjYOlx3ZJ8jCb1+qzmnmeVBUQaWqTHkk/lkYV/GogRj++KNUwjm46y9W/PzybxO06FlsDMIhHryXONP4H02upoFPoRAuEFRlBfOJdeZOwju5sFTEEzjNEpuSW6teILbzHQVB+R82FzixmbbzzoHT7CUe4UeEbo01Fcbm/GU4mjtdeK8aSOeYC3l1FG04Nkt6dYVHWrZ5QEMjj8VVxWXOwL3sh49Nrbfw5D8YTs/NX+DZl4/VpPVWF+U1Mpu0s/NM5BvdWBc+/r0xkIstc7oDRMSh3Vir5wY9LmOY8VLQ06HQGtxrkb9nSFrZrD6eiq+JBVmXn8PFZ8jcVj+1j/CgTHHNv+yFTu/KDxvgtMUX1KcXV5zwP97PfHEiz8ZRZYexp7/w6nxDniT5VC8N7MPORP0/6FhrUzjqUj92uGDVROmLgiddgvJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,194 +150,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07 2025, Pasha Tatashin wrote:
+On 2025-10-03 22:37:10, Pasha Tatashin wrote:
+> > > > --- a/tools/testing/selftests/liveupdate/Makefile
+> > > > +++ b/tools/testing/selftests/liveupdate/Makefile
+> > > > @@ -1,7 +1,38 @@
+> > > >  # SPDX-License-Identifier: GPL-2.0-only
+> > > > +
+> > > > +KHDR_INCLUDES ?= -I../../../usr/include
+> > >
+> > > If make is run from the tools/testing/selftests/liveupdate directory, this
+> > > will not work because it needs one more "..".
 
-> On Sun, Sep 28, 2025 at 9:03=E2=80=AFPM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
->>
-[...]
-> 4. New File-Lifecycle-Bound Global State
-> ----------------------------------------
-> A new mechanism for managing global state was proposed, designed to be
-> tied to the lifecycle of the preserved files themselves. This would
-> allow a file owner (e.g., the IOMMU subsystem) to save and retrieve
-> global state that is only relevant when one or more of its FDs are
-> being managed by LUO.
+This causes a build issue, see my response at the bottom.
 
-Is this going to replace LUO subsystems? If yes, then why? The global
-state will likely need to have its own lifecycle just like the FDs, and
-subsystems are a simple and clean abstraction to control that. I get the
-idea of only "activating" a subsystem when one or more of its FDs are
-participating in LUO, but we can do that while keeping subsystems
-around.
+> > >
+> > > If this is built using selftest Makefile from root directory
+> > >
+> > >   make -C tools/testing/selftests TARGETS=liveupdate
+> > >
+> > > there will not be build errors because tools/testing/selftests/Makefile
+> > > defines KHDR_INCLUDES, so above definition will never happen.
+> > >
 
->
-> The key characteristics of this new mechanism are:
-> The global state is optionally created on the first preserve() call
-> for a given file handler.
-> The state can be updated on subsequent preserve() calls.
-> The state is destroyed when the last corresponding file is unpreserved
-> or finished.
-> The data can be accessed during boot.
->
-> I am thinking of an API like this.
->
-> 1. Add three more callbacks to liveupdate_file_ops:
-> /*
->  * Optional. Called by LUO during first get global state call.
->  * The handler should allocate/KHO preserve its global state object and r=
-eturn a
->  * pointer to it via 'obj'. It must also provide a u64 handle (e.g., a ph=
-ysical
->  * address of preserved memory) via 'data_handle' that LUO will save.
->  * Return: 0 on success.
->  */
-> int (*global_state_create)(struct liveupdate_file_handler *h,
->                            void **obj, u64 *data_handle);
->
-> /*
->  * Optional. Called by LUO in the new kernel
->  * before the first access to the global state. The handler receives
->  * the preserved u64 data_handle and should use it to reconstruct its
->  * global state object, returning a pointer to it via 'obj'.
->  * Return: 0 on success.
->  */
-> int (*global_state_restore)(struct liveupdate_file_handler *h,
->                             u64 data_handle, void **obj);
->
-> /*
->  * Optional. Called by LUO after the last
->  * file for this handler is unpreserved or finished. The handler
->  * must free its global state object and any associated resources.
->  */
-> void (*global_state_destroy)(struct liveupdate_file_handler *h, void *obj=
-);
->
-> The get/put global state data:
->
-> /* Get and lock the data with file_handler scoped lock */
-> int liveupdate_fh_global_state_get(struct liveupdate_file_handler *h,
->                                    void **obj);
->
-> /* Unlock the data */
-> void liveupdate_fh_global_state_put(struct liveupdate_file_handler *h);
+If one is just building test using the above make command (without
+install) we don't see other liveupdate test binaries.
 
-IMHO this looks clunky and overcomplicated. Each LUO FD type knows what
-its subsystem is. It should talk to it directly. I don't get why we are
-adding this intermediate step.
+> > > > +# --- Test Configuration (Edit this section when adding new tests) ---
+> > > > +LUO_SHARED_SRCS := luo_test_utils.c
+> > > > +LUO_SHARED_HDRS += luo_test_utils.h
+> > > > +
+> > > > +LUO_MANUAL_TESTS += luo_multi_kexec
+> > > > +
+> > > > +TEST_FILES += do_kexec.sh
+> > > >
+> > > >  TEST_GEN_PROGS += liveupdate
+> > > >
+> > > > +# --- Automatic Rule Generation (Do not edit below) ---
+> > > > +
+> > > > +TEST_GEN_PROGS_EXTENDED += $(LUO_MANUAL_TESTS)
+> > > > +
+> > > > +# Define the full list of sources for each manual test.
+> > > > +$(foreach test,$(LUO_MANUAL_TESTS), \
+> > > > +     $(eval $(test)_SOURCES := $(test).c $(LUO_SHARED_SRCS)))
+> > > > +
+> > > > +# This loop automatically generates an explicit build rule for each manual test.
+> > > > +# It includes dependencies on the shared headers and makes the output
+> > > > +# executable.
+> > > > +# Note the use of '$$' to escape automatic variables for the 'eval' command.
+> > > > +$(foreach test,$(LUO_MANUAL_TESTS), \
+> > > > +     $(eval $(OUTPUT)/$(test): $($(test)_SOURCES) $(LUO_SHARED_HDRS) \
+> > > > +             $(call msg,LINK,,$$@) ; \
+> > > > +             $(Q)$(LINK.c) $$^ $(LDLIBS) -o $$@ ; \
+> > > > +             $(Q)chmod +x $$@ \
+> > > > +     ) \
+> > > > +)
+> > > > +
+> > > >  include ../lib.mk
+> > >
+> > > make is not building LUO_MANUAL_TESTS, it is only building liveupdate.
+> > > How to build them?
+> >
+> > I am building them out of tree:
+> > make O=x86_64 -s -C tools/testing/selftests TARGETS=liveupdate install
+> > make O=x86_64 -s -C tools/testing/selftests TARGETS=kho install
+> 
+> Actually, I just tested in-tree and everything works for me, could you
+> please verify:
+> 
+> make mrproper  # Clean the tree
+> cat tools/testing/selftests/liveupdate/config > .config # Copy LUO depends.
+> make olddefconfig  # make a def config with LUO
+> make kvm_guest.config # Build minimal KVM guest with LUO
+> make headers # Make uAPI headers
+> make -C tools/testing/selftests TARGETS=liveupdate install # make and
+> install liveupdate selftests
 
-Here is how I imagine the proposed API would compare against subsystems
-with hugetlb as an example (hugetlb support is still WIP, so I'm still
-not clear on specifics, but this is how I imagine it will work):
+Yes, this one builds the tests.
 
-- Hugetlb subsystem needs to track its huge page pools and which pages
-  are allocated and free. This is its global state. The pools get
-  reconstructed after kexec. Post-kexec, the free pages are ready for
-  allocation from other "regular" files and the pages used in LUO files
-  are reserved.
+However, if instead of using the above make command, we do
 
-- Pre-kexec, when a hugetlb FD is preserved, it marks that as preserved
-  in hugetlb's global data structure tracking this. This is runtime data
-  (say xarray), and _not_ serialized data. Reason being, there are
-  likely more FDs to come so no point in wasting time serializing just
-  yet.
+  cd tools/testing/selftests/liveupdate
+  make
 
-  This can look something like:
+This will error out
 
-  hugetlb_luo_preserve_folio(folio, ...);
+    LINK     liveupdate
+  liveupdate.c:19:10: fatal error: linux/liveupdate.h: No such file or directory
+     19 | #include <linux/liveupdate.h>
+        |          ^~~~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  In file included from luo_test_utils.c:21:
+  luo_test_utils.h:13:10: fatal error: linux/liveupdate.h: No such file or directory
+     13 | #include <linux/liveupdate.h>
+        |          ^~~~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  In file included from <command-line>:
+  /usr/include/stdc-predef.h:1: fatal error: cannot create precompiled header /liveupdate: Permission denied
+      1 | /* Copyright (C) 1991-2025 Free Software Foundation, Inc.
+  compilation terminated.
+  make: *** [Makefile:30: /liveupdate] Error 1
 
-  Nice and simple.
+Reason for this build error is KHDR_INCLUDES in the selftest/liveupdate/Makefile
 
-  Compare this with the new proposed API:
+Following fix resolves this above two "No such file or directory" error.
 
-  liveupdate_fh_global_state_get(h, &hugetlb_data);
-  // This will have update serialized state now.
-  hugetlb_luo_preserve_folio(hugetlb_data, folio, ...);
-  liveupdate_fh_global_state_put(h);
+diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
+index 25a6dec790bb..6507682addac 100644
+--- a/tools/testing/selftests/liveupdate/Makefile
++++ b/tools/testing/selftests/liveupdate/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
 
-  We do the same thing but in a very complicated way.
+-KHDR_INCLUDES ?= -I../../../usr/include
++KHDR_INCLUDES ?= -I../../../../usr/include
+ CFLAGS += -Wall -O2 -Wno-unused-function
+ CFLAGS += $(KHDR_INCLUDES)
+ LDFLAGS += -static
 
-- When the system-wide preserve happens, the hugetlb subsystem gets a
-  callback to serialize. It converts its runtime global state to
-  serialized state since now it knows no more FDs will be added.
+My git diff in the first response fixes build issue and generate tests.
+https://lore.kernel.org/linux-mm/20251003225120.GA2035091.vipinsh@google.com/
 
-  With the new API, this doesn't need to be done since each FD prepare
-  already updates serialized state.
+I am used to kvm and vfio selftests. They both build all their binaries
+by running 'make' from their directories. That's why I found it odd that
+liveupdate is behaving differently.
 
-- If there are no hugetlb FDs, then the hugetlb subsystem doesn't put
-  anything in LUO. This is same as new API.
-
-- If some hugetlb FDs are not restored after liveupdate and the finish
-  event is triggered, the subsystem gets its finish() handler called and
-  it can free things up.
-
-  I don't get how that would work with the new API.
-
-My point is, I see subsystems working perfectly fine here and I don't
-get how the proposed API is any better.
-
-Am I missing something?
-
->
-> Execution Flow:
-> 1. Outgoing Kernel (First preserve() call):
-> 2. Handler's preserve() is called. It needs the global state, so it calls
->    liveupdate_fh_global_state_get(&h, &obj). LUO acquires h->global_state=
-_lock.
->    It sees h->global_state_obj is NULL.
->    LUO calls h->ops->global_state_create(h, &h->global_state_obj, &handle=
-).
->    The handler allocates its state, preserves it with KHO, and returns it=
-s live
->    pointer and a u64 handle.
-> 3. LUO stores the handle internally for later serialization.
-> 4. LUO sets *obj =3D h->global_state_obj and returns 0 with the lock stil=
-l held.
-> 5. The preserve() callback does its work using the obj.
-> 6. It calls liveupdate_fh_global_state_put(h), which releases the lock.
->
-> Global PREPARE:
-> 1. LUO iterates handlers. If h->count > 0, it writes the stored data_hand=
-le into
->    the LUO FDT.
->
-> Incoming Kernel (First access):
-> 1. When liveupdate_fh_global_state_get(&h, &obj) is called the first time=
-. LUO
->    acquires h->global_state_lock.
-
-The huge page pools are allocated early-ish in boot. On x86, the 1 GiB
-pages are allocated from setup_arch(). Other sizes are allocated later
-in boot from a subsys_initcall. This is way before the first FD gets
-restored, and in 1 GiB case even before LUO gets initialized.
-
-At that point, it would be great if the hugetlb preserved data can be
-retrieved. If not, then there needs to at least be some indication that
-LUO brings huge pages with it, so that the kernel can trust that it will
-be able to successfully get the pages later in boot.
-
-This flow is tricky to implement in the proposed model. With subsystems,
-it might just end up working with some early boot tricks to fetch LUO
-data.
-
-> 2. It sees h->global_state_obj is NULL, but it knows it has a preserved u=
-64
->    handle from the FDT. LUO calls h->ops->global_state_restore()
-> 3. Reconstructs its state object, and returns the live pointer.
-> 4. LUO sets *obj =3D h->global_state_obj and returns 0 with the lock held.
-> 5. The caller does its work.
-> 6. It calls liveupdate_fh_global_state_put(h) to release the lock.
->
-> Last File Cleanup (in unpreserve or finish):
-> 1. LUO decrements h->count to 0.
-> 2. This triggers the cleanup logic.
-> 3. LUO calls h->ops->global_state_destroy(h, h->global_state_obj).
-> 4. The handler frees its memory and resources.
-> 5. LUO sets h->global_state_obj =3D NULL, resetting it for a future live =
-update
->    cycle.
-
---=20
-Regards,
-Pratyush Yadav
 
