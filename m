@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C0CCCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 02:10:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A063ECCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 02:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AB5A8E005E; Wed,  8 Oct 2025 22:10:20 -0400 (EDT)
+	id DB6EE8E0003; Wed,  8 Oct 2025 22:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 282798E0002; Wed,  8 Oct 2025 22:10:20 -0400 (EDT)
+	id D8EC58E0002; Wed,  8 Oct 2025 22:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BFAB8E005E; Wed,  8 Oct 2025 22:10:20 -0400 (EDT)
+	id CCBB78E0003; Wed,  8 Oct 2025 22:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C6FC8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 22:10:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2A691A0890
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:10:19 +0000 (UTC)
-X-FDA: 83976946158.05.413A061
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EB3F7120007
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:10:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BBBA28E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 22:32:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7079B160943
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:32:27 +0000 (UTC)
+X-FDA: 83977001934.12.6920BE0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AE79014000F
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:32:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ObfaIH+t;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759975818;
+	s=arc-20220608; t=1759977145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xgZom7xpWp/qR2Y91TVHKC9tjRGVEXTCKsbJ2b8YVG0=;
-	b=Mh/KoGNbBsznihoHCoofbVI630DNktcbjN5YjyYL//eeT9SWG5UdkyeHp1MNY0qlw8Z62b
-	WmpBKTAQXlZOToE8unA2FSCrpHvRtAmTfxyYgxZcl0taAoRITfDf2LWflnGxGJKfKudye4
-	D0ZylhI8818G/k8eMLMqA3UBMR478B4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759975818; a=rsa-sha256;
-	cv=none;
-	b=dfKoNwuLWnBLHEsrDxtYoaMgpF1uVNt+8k16mvcUB3srTm+Jn31rdKfiailt4llLhC+gxS
-	QYrGuYv59QPtUOB1YqNe2xkepVO1R4l0xGTeEMFsX9SQeu3dNToBb79cn91Z/Mif3BBA+c
-	fVA6Un2Kj14N6eCcH8Pii4A9tQbMpOA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=me+xgUYiPoNs4Y8f7cgQi9gpB/DOKMVgl8RRqzxMFdo=;
+	b=k4q2OyddH6U4B3VwXF8DzY+Efw7QbJnJVzY/TSQOHWRIeaFCz1oT2DosKHD4HGcgsvXaLX
+	nGMAr7wI3yH9oaMMD5Vtzk55VOXjzJ3T6FIkIQiYDdksjrsSl8sQXMX5qW9RifbOKL4dTI
+	kL5tFxjNOBpZ/VbvGqZnV6Fr8xLJZaY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06F7422FC;
-	Wed,  8 Oct 2025 19:10:09 -0700 (PDT)
-Received: from [10.163.35.84] (unknown [10.163.35.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4DDB43F738;
-	Wed,  8 Oct 2025 19:10:13 -0700 (PDT)
-Message-ID: <c6371fa1-af9c-47b0-988f-aae3d7fd58e7@arm.com>
-Date: Thu, 9 Oct 2025 07:40:10 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/18] mm: Always use page table accessor functions
-To: Samuel Holland <samuel.holland@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Conor Dooley <conor@kernel.org>,
- Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
- Andrew Morton <akpm@linux-foundation.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-References: <20251009015839.3460231-1-samuel.holland@sifive.com>
- <20251009015839.3460231-5-samuel.holland@sifive.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20251009015839.3460231-5-samuel.holland@sifive.com>
-Content-Type: text/plain; charset=UTF-8
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ObfaIH+t;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759977145; a=rsa-sha256;
+	cv=none;
+	b=KJ0FBjNh5AlNPeSbC1pCVZeAzsuRT4HmSMSXxhnz+/0Fh+64mYMHUXOkCDiEAB4v+5pM/J
+	MyR7CAuUQ9xa9k0zW52bIL+9FpdYOOQYTTXwicfPfzM35OHuJ7N3iCdaeFpQM2I2o+qfJz
+	xKBssU/HpQj/xoEW6vAXZFSYeZBCfiE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BCB9B62158;
+	Thu,  9 Oct 2025 02:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DCEC4CEE7;
+	Thu,  9 Oct 2025 02:32:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1759977144;
+	bh=aANUMzra9J3BotN1T1buLbHq3slzrJ2oZxv61EPpeoQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ObfaIH+txn/i4w0eUr3hbUPklaxbCmSwjEVRn+6Aq5Bxyd/+REQ3ZA15m3bEeIdKa
+	 XrXESA/rhCbSKSDChWkZ3NqpJ9lotRfe+kHClC3klKTTUrXJZv3GoK+P4OZEVpRB76
+	 DU0gAKxwezMq6Oo2XeSq8iaradXWQ0tngo+lfLUs=
+Date: Wed, 8 Oct 2025 19:32:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar
+ Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH v2 0/5] mm/page_owner: add debugfs files 'show_handles'
+ and 'show_stacks_handles'
+Message-Id: <20251008193223.f0e7c243bef94b7db22070fb@linux-foundation.org>
+In-Reply-To: <20251001175611.575861-1-mfo@igalia.com>
+References: <20251001175611.575861-1-mfo@igalia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AE79014000F
+X-Stat-Signature: 6epebnwkeoze3quchngrbqk3meips4tq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB3F7120007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: yphyith6beiebjcawrdm7x4ggy4tf8x7
-X-HE-Tag: 1759975817-320873
-X-HE-Meta: U2FsdGVkX18QMgEk44VmJMx8vrGgHopvHE4GHDd2uRxMykfijZziRRueGAZhiCqjyjksujE1Vp9IK3xQMo8/Nb9HtE4VEdSn2oqg3DAdEgm/AHLPCLEmGhnxxdS0DPWy9fT0BuVF/alFCT2WIQGLYbtnW2RSBny8PR4/Jv0vQvrQ1LkK4AGEXtTWP7rg77X+/9ub+HfrhnTAae0XARZsesm5lXnVzL1UjWDG/Min7n1LuY6u5OY7ySYVWptv2qkUBLhrnEWm/Fu7oWD27j97LEbolUAvobrMm0BacEc9Z8G/xuJ1eEKZu7I/oT+9/5e4Rsx9MEFGfpDlbHdVkJvXqpZu93XerNGZaa2pLbPIBHK7+51vTsppt385qOBJAqvb2z8HJ5stbcZrHlZC2J8J94ZpWU1wBFxwktxzlvIQ1JwtIXODNyqqSI91d7J0s22ywCXzSsh2R3p2tQKypKt7rXQl4EORGA8PldSBilbfK8xxhMLfK8LYgDlh0Q1c4Kl5NH61gHF5gLcBJBD7hwTUOtI94uZlEGZR8u+MbXB/cFfNFvLcpuiFyreNKLa4X7SMvdn7oLVlv+01Sx+J29DT+FSiTUaPjSxFJYQssVozQyWSu/kYjM4OY94MBD5mRD6qTPLcDQu/DMoCUKk3cjhrN3REkFCb05EskofxVeHhPPofEqA360QiewagcMZTPhektg9aGnWh77XzywikK/ppDBpnIzun+ySKutYyKn2cqcFssgFTIugd9v62PicOTNVIqK/oHm+npy5ydQYD0xwEHC6HZc2LwdC0OX4cVulyWVLRqSraaeq7Ptv965doh9skoG8sOXq+7+qHHn9LifLeFuisiiChouFZBTI6+7RdJUBNxkJ+UthR5zpcPSA/RBCa9dB/9yBdn9m0gzgIosnLQu19tBHH4pa48PkGEiWxibkQeZ+HbPbCVOjlRUWhJJx2jGTVHwoZuLayM3rA+Ru
- HMpWeksL
- PqkLVOpwrawc06k9Cp1MDxe12m3iErNHQjaSjkwzR1whKpWNrR3HgnO6NmlyW5UEdOZCZ7ruYeZ4e7MSHYrAn0Y6qLJ7bYIGUtGwH1Z3n79ft5lDbqCvDzHMGdZUFUePh3ICSghEU4TY50Yr4jHucEvUArEHQebwRxGIvxDg9B7ohlLONoCAFc2fQ6ThR3xxUrGT3d5GY/ndCSkkbBnK4XZB3KTizlm1O3fV8AQmC2MdUiPW10l+Oyx+bM+ZmDIgABiu5goLEfl+8IiiZkGlgl+sWEx0dCZpywNeu0QAKt1opXl5NhxT2+NF2DwVVq1iY8kTyruxq6b/VcV4LItGmmVpUwCehV4fFfEHqdwU+c8xxx20=
+X-HE-Tag: 1759977145-991213
+X-HE-Meta: U2FsdGVkX1/aDH5PhNwqe2v2Bn2rQbOtxHn3hWayylsJ2gofTpLH409nOfgKBB6WQxulKTvoDC+Hmvkv7A/xeB+QHZiGxkP8hQJZUlJWIS1M+8l5IxbWJfy6y9Q8x5ia3oW82q0eraMISnJNca/qkTeGuzU/yML0Mgf2JDbnSI0j/DrloYySzc0ngEBihhCzt0tl68mKNFaIVKQgwFZ2Awso756HS6Wsd83hEndQuqZ/1iksjpeeFT4jEx/eVGZdf3DZ2Hz3bwteFTTlMty57QZspN47eD+oqhSjVIMvz1tSN3CEypYVIQq7zOevnTiiOTl/HtIscR3nzhIQGnOzILxi5CXG39TTW7WPDfTU+bFgpwWdwy/85gT86LWDB8vUV9D1i4uE3q94oAa7cbPZTMhfXgQywthzPoVhhAHU/ANDs35t68QcJIKK5U3vwBg1QriLjeCVPZ4VrbO5oNoji6UIZOdCio77KnvaWvAMMZcVWvJbXuthTdF10QM1DQISQDexGCNegmckU278YWSejkpyXjuV1ARoDcR7xdlwqCWZO5lrATZz/gi9+TOW09O0Zyriu0Iog+pcfQmXp1BEJkiSbFA53VZGu6ftr3bGqyK29wlJg3ONhMi/fg1z9uqjMjhapHRos8sWtBm06v0/R9yZD6MTtoa9PCTBCQL0+KzwoUo43/IKM4SpEGFeiQfOFBpasDglBl/YAb+/ZZAQBJjPuT4Eyisj0KnhfuDy2+yMpaygTL1i36fK//hR+so37txBlO5DQTsc0GRxxvVVxW0fE2ddjVrbzHBeHvGZXSJ9hGczxFovEDDu6p3eQiD+5bj2s8U7UjBu4ZGN+gV0me0UyvbhyyhQEvFo96ETel5BAy6MzRd9IMAHZXIfnV2R8nCQXiva5frHToIKTGWsOsjOBuAzXJn2AjIgDOUWi5pWDr1ky4FSlqL/ahY8D6jFnK6WYu/r1JoA5CatcjT
+ cfe1hIdo
+ XUT92omCRixhKwtALVhv3bkQiehIGLRRZS+urJi1kB7dJedUF2rou7Ryp52G+W3Tc4KV7wVv8Hu5kkCxPhtnHUw4Q9G+itdCM6F5+k9eXhmL3mr1b/Y9Py+dB5v45B2KumUyibEdxRXQHmqWn0ehKrfiKYaphKCish8pYHMoHLoczid6+slgyX/PrqnDc69M3KLb7S9SpLOe0OT+bQSViazhk4UTGpGYC6UPRl6u2l00gyR6DN8jqzXXcPvidLkub5OfVbOkVtiHVL2WxVmp8uHecKw1s9ldsK95yZOXT89yyO/DkiNWMiflUroZV9Q+ZpQCLeNUyvOOXIAESOfcIZ6j/5ivRCz63IAL+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,108 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed,  1 Oct 2025 14:56:06 -0300 Mauricio Faria de Oliveira <mfo@igalia.com> wrote:
 
+> Fortunately, the kernel can provide a unique identifier for stack traces
+> in page_owner, which is the handle number in stackdepot. This eliminates
+> the need for creating keys (hashing) in userspace during post-processing.
 
-On 09/10/25 7:27 AM, Samuel Holland wrote:
-> Some platforms need to fix up the values when reading or writing page
-> tables. Because of this, the accessors must always be used; it is not
-> valid to simply dereference a pXX_t pointer.
-> 
-> Fix all of the instances of this pattern in generic code, mostly by
-> applying the below coccinelle semantic patch, repeated for each page
-> table level. Some additional fixes were applied manually, mostly to
-> macros where type information is unavailable.
-> 
-> In a few places, a `pte_t *` or `pmd_t *` is actually a pointer to a PTE
-> or PMDE value stored on the stack, not a pointer to a page table. In
-> those cases, it is not appropriate to use the accessors, because the
-> value is not globally visible, and any transformation from pXXp_get()
-> has already been applied. Those places are marked by naming the pointer
-> `ptentp` or `pmdvalp`, as opposed to `ptep` or `pmdp`.
-> 
-> @@
-> pte_t *P;
-> expression E;
-> expression I;
-> @@
-> - P[I] = E
-> + set_pte(P + I, E)
-> 
-> @@
-> pte_t *P;
-> expression E;
-> @@
-> (
-> - WRITE_ONCE(*P, E)
-> + set_pte(P, E)
-> |
-> - *P = E
-> + set_pte(P, E)
-> )
-> 
-> @@
-> pte_t *P;
-> expression I;
-> @@
-> (
->   &P[I]
-> |
-> - READ_ONCE(P[I])
-> + ptep_get(P + I)
-> |
-> - P[I]
-> + ptep_get(P + I)
-> )
-> 
-> @@
-> pte_t *P;
-> @@
-> (
-> - READ_ONCE(*P)
-> + ptep_get(P)
-> |
-> - *P
-> + ptep_get(P)
-> )
-> 
-> Additionally, the following semantic patch was used to convert PMD and
-> PUD references inside struct vm_fault:
-> 
-> @@
-> struct vm_fault vmf;
-> @@
-> (
-> - *vmf.pmd
-> + pmdp_get(vmf.pmd)
-> |
-> - *vmf.pud
-> + pudp_get(vmf.pud)
-> )
-> 
-> @@
-> struct vm_fault *vmf;
-> @@
-> (
-> - *vmf->pmd
-> + pmdp_get(vmf->pmd)
-> |
-> - *vmf->pud
-> + pudp_get(vmf->pud)
-> )
-> 
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
-> This commit covers some of the same changes as an existing series from
-> Anshuman Khandual[1]. Unlike that series, this commit is a purely
-> mechanical conversion to demonstrate the RISC-V changes, so it does not
-> insert local variables to avoid redundant calls to the accessors. A
-> manual conversion like in that series could improve performance.
-> 
-> [1]: https://lore.kernel.org/linux-mm/20240917073117.1531207-1-anshuman.khandual@arm.com/
+Looks nice, thanks.
 
-Portions of the changes proposed here are already in discussion
-and fetched for testing via mm-new/everything.
-
-https://lore.kernel.org/linux-mm/20251007063100.2396936-1-anshuman.khandual@arm.com/
-https://lore.kernel.org/linux-mm/20251006055214.1845342-1-anshuman.khandual@arm.com/
+I'm surprised that our in-tree userspace tooling for page_owner seems
+rather weak.  Nobody has touched tools/mm/page_owner_sort.c in two
+years.
 
