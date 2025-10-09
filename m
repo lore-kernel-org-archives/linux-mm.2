@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA976CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 17:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CFC5CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 17:25:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BE388E009E; Thu,  9 Oct 2025 13:25:03 -0400 (EDT)
+	id 73D208E009F; Thu,  9 Oct 2025 13:25:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36AF08E002C; Thu,  9 Oct 2025 13:25:03 -0400 (EDT)
+	id 714928E002C; Thu,  9 Oct 2025 13:25:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25A078E009E; Thu,  9 Oct 2025 13:25:03 -0400 (EDT)
+	id 5DC598E009F; Thu,  9 Oct 2025 13:25:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 13A6A8E002C
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 13:25:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 34DE28E002C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 13:25:04 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCCAC11B251
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:25:02 +0000 (UTC)
-X-FDA: 83979251244.16.E27ECDA
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 022FC4000A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:25:00 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hxTx2buj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB79E1A067B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:25:03 +0000 (UTC)
+X-FDA: 83979251286.16.17129C6
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0B92CC000B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:25:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=W7IhF4XX;
+	spf=pass (imf22.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760030702; a=rsa-sha256;
+	cv=none;
+	b=gvlk+LTVI4QgLy+IksCaXpCJ7LdIQoLO0q8GwUjTmqEBrRq/xrO03IOw+oUj00tP1YYjB7
+	7MmTnMhXR5HdbwmdRnVz7ryC8sauDjP1IJVEDa/0NvmHa9FFjorhGBCGFXuxxApTRKeRiv
+	cEAZ50D9VgjjgLc7TUsjcXtV0542/Uw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=W7IhF4XX;
+	spf=pass (imf22.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760030701;
+	s=arc-20220608; t=1760030702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GDbuLJWcV0DP64SCpKYdu9KRYGqMQUurSvhwqHHtxbw=;
-	b=oJ2aXeFTH29jOa7pCovTiUwVCI3xxrrNX5RM3wEL+MeB0y15ZUSyHYUYEXGBu79s3TsQVw
-	BATpQpekK1elOOpyS4hstMNDi/ksKe+/IaUpQ6mG6h0f8nX5ONuJ7r4OnBjlwfZGqdXkqe
-	60JYCH+L83UNpB+6vhzWLLlj09y+s2I=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hxTx2buj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760030701; a=rsa-sha256;
-	cv=none;
-	b=cv9MyEKCjcq5nYgmtdUX5lac+eYk54wDRFDuScODfNsWAe0m0gNLHWIq9pu7qMIfs+otND
-	gt5rHb171rzHI2myrx1nQf9sHuBSDsJDnEFx/DwnSICJzhtZQddFGmEG+dl4Z+0c+Uf7VI
-	LRPis4VHlxVS1jf11z0Z4sCjTmlFPsk=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-723ad237d1eso11689667b3.1
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 10:25:00 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nHs3vTEzsqX/lrSosRYA6lDBYTRtFs3F8Lz2Rdvx8rc=;
+	b=QlS8TlbKLpi4T+w4PDWt+QZG7Ev+ZckT2/VDYuzKS99BTZRWHZyhzBCsQ6I8tvBYdODs7U
+	zkD9uaUlbZLd7CtD4wgDj/baXBvsBitPrDJSiap9punq+dUMdkyLz35j4kg85TW8bNwgm3
+	kEchz0WIYIgHTx+coljLYpQcG5JKa60=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-780fe73e337so8855017b3.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 10:25:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760030700; x=1760635500; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GDbuLJWcV0DP64SCpKYdu9KRYGqMQUurSvhwqHHtxbw=;
-        b=hxTx2bujZP4al7m/iubS0/6QtmbTDuRAJlsy8Stw4VhWBYOCW3A/X/sAK4IBJ8n2Mf
-         WdT/+o7+fNTskzMMg/3BjtLt/96eqNAU484lhSKzlwGS9EmtFNpQSdkeFzeR9JzG6UZk
-         HQtOWte3Qbh7yDbXF5GcsQzAu6Ltu+ov0yT0BX1J9FlMkO7aKFGiaAclMjhElIkG8Fc1
-         o4kpiGVXvj+m5gOo2qE/3ui7e0vpWick7bg0znyKzYmeyyFrfeTfn7G1g6TW9VSekVbF
-         1wpUVE+Wad/zBJZrtWSdc6XZHd1GP01R6pXUfULrraXnwm7uuBdF3plngWHRWc7aJdHI
-         9IlA==
+        d=gmail.com; s=20230601; t=1760030701; x=1760635501; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nHs3vTEzsqX/lrSosRYA6lDBYTRtFs3F8Lz2Rdvx8rc=;
+        b=W7IhF4XXGz7C9CeCIiD6rTZi1G9OtfWRZL8Z35dKZhaTNT+lysGrRfM7w1c0gAnCal
+         O5jRJYE/IxQ6S5c8Nbj68qlBHPTDXgBPNW7O2jd9xZ3AVJ3tJQzE1M3ybrVMCw0hftq4
+         SfQwgFAEeP+o04ZOMzRU/BqHRIoNURivH25xVkFhsBC0ZR6eXVAAXGUPc/zW2szFu1eJ
+         ABMuZOr1nWeqxxLJHeuoc8uQp4jEMEYqBLQ0bBb3RTLz63MgcOnbICfdjvXm/0+Vc9Fe
+         IFoci5A8coEaK6fDDe1orOKBGyD9YonPyNXAncbMpv/eySa8Ey25+rAbBv//zRp8210P
+         ptbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760030700; x=1760635500;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GDbuLJWcV0DP64SCpKYdu9KRYGqMQUurSvhwqHHtxbw=;
-        b=xHJD8V470h/md0XH7NGOV9Vc/5C+WFQCk0nE0HgI+HxO4UQxl5ehKj2g9vAiWuUW3s
-         k+LrZxm84VE5+Pobpz3OB0ZkUYxoo3PDoXev0O5ID///pGlkP+vO1qr53EtgM7M/Yd/l
-         TYCV4rQyRnmATQiI6iwnwDC5OAdFGEhGWrjim5kpLWIlaYy7cq7w/OvE8S08rOlAP8rg
-         on1aDD6LnZUhu7SshS83Yy0D7Hhr0s94u0mewPPoTQDK/v/4BvocBlzZdqzpKdXfxGgw
-         /6tg6feK4n8RXQs8f14M2oiXglX/DCl4LXS1fod9e3IVy5MeMK5O2VcCicoy/2h/c35X
-         m2Kg==
-X-Forwarded-Encrypted: i=1; AJvYcCVSldSk7Zs+H8caWL1YToknTg+rYY0W/QWN7YCk5T0cWj6yXaJNP9kZCzGelWBQzN83g80mkt+Giw==@kvack.org
-X-Gm-Message-State: AOJu0YxS+mO94RmrVIePWBXwP9R13ORi5prRvFCHaNvcjPejXhSWKR4B
-	VicxI+YuHMC+6P8iLDtcsS2iX8ikYtUSpIvWFm6qvduxbkpocOf3J3V3
-X-Gm-Gg: ASbGncsIC3n2XlVlMdrxVDAKNUB3AK7hLGR8fA+nGCFA92RpEIHqt6GXb9dPEF5i4b+
-	TW2//Xe7TviSrDLF+040iuk3VFu/jtZ7XtOSIS1jOe+tPhSlTnYoBbGXUXdTOhCnVm/fflIpu2P
-	P3OfvsQ8VmH2i/miF+kJDJleJYpt20bqWtO9iUYvoRoiHYmenJnjBdSbVDz9DR/wq/KxEuDnfqY
-	8PKHgQ3n56LHIh8ogVQJ+ejzyJFFjh7tQ9oCZlAOKI5052UnuBRT+cOFZSiB5H0hmPLJTuuPY42
-	hwf3wDi2oIbnmInXfiPqavitepdu4/luHMqtvUH5TOThCYO2KHkFq7hTVweu7fn+a+tBPlQDp7b
-	c9TefwqiM049EsiQ6XmCqLMyaJi7KuWpoxn9eAGMRZsl3T0Wu24Bga0eNq77Ed1tVCFk=
-X-Google-Smtp-Source: AGHT+IE0HeRkcSWt/qNt+REpafTXmTS86WuRWboi7HnZzYqvTb7JpaI32/8qMbasmYlxV/NiCrYEFA==
-X-Received: by 2002:a53:dd01:0:b0:63b:9ebe:faec with SMTP id 956f58d0204a3-63ccb90ae68mr5781162d50.26.1760030699978;
-        Thu, 09 Oct 2025 10:24:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:72::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7810724444bsm181727b3.43.2025.10.09.10.24.59
+        d=1e100.net; s=20230601; t=1760030701; x=1760635501;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nHs3vTEzsqX/lrSosRYA6lDBYTRtFs3F8Lz2Rdvx8rc=;
+        b=nAFVvROPhXZ3Ma43RmiohEH/wWs8O9kouFY4hrVGeCf3dGbGkWKQgr0UIr1oYj+WRT
+         RMhexd0e7OY7DLKtHbD388zosknMyngWUb0Bw6c6kWY5R3mmdl6+08sLNsm55NoFpqCl
+         r8oyWnu0pgU0Fzy9fJHMmbYIF4DFmaQ6SpdH+DXxqrELKknIlzcqTQb+nmRlntCv9i4N
+         lTJ9yjZladcXKwMvYO6ZAYXMsxuaww7NZkMWM9e+7mRZNqWsjIrgktpRAIj2fRvGWy5f
+         wJ85/tOM8gjQGMiDxs2N3uav3Z705OZYcEQkYHaINUds4lnXUbufMWorTmecHr67IhT5
+         4m9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0h1LJJju6+rQqS79NgaBPtPBv3bIxXvRRBj8AdZdJSm9XdxjqvF5+gKv6igRKKxpwTd4R8qhCvQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzets4RtfZDrRmF98Fns1SF8wY0y4ZiqOJUXW04M7uDcLEZ3LUf
+	WeEeqCQbqV/Ji8ae+wXOox+6WGG710s2OSUZaxHErjAZmg/qQpah/snQ
+X-Gm-Gg: ASbGncsz/hXRUQdM+vcsWpHzAdKx1L7h0ugdr2J53Gsat8Dy+MDEt8MC6nZkeQNv76P
+	Q7KBbVgoU+IzYaAKmYFOqyOWxriqBcLvEfolg2v0nxYGVHlkfHH+WVATT7xpEY0ZoWdoFALOFUA
+	g6Ko6e5cZ40M8yj10GAkhppEl+gcgw3f5AnunA9Ku/7lVrcPjDXmMIqDHvHOxygeLDa5pB+WnGS
+	wgSvlltXT06tOnAlDaPbr2WSgUUdJbn2yGRYW8prVyn59I8Rh4oHVURAHK8NA59cTvemMxf5p76
+	0/YrjsIns9YsnTqgFea9tO2U9cV67VJRNMbds6GEzUUHf9MgmTxLSprNHgrAZwRIATiKF1XdErU
+	yOyEq7oYed2weYUkcPz7YVNQiDoWL2pIi1oLdwjXKZgkEN7MSF8p7iAJLVRmoeLmlk4c=
+X-Google-Smtp-Source: AGHT+IFbZgedcNYqQke+1OXZPO57fV833IqHejgnCHT1x/Sq25k96WuYViPRYem6oJhVnlQqCgXoAg==
+X-Received: by 2002:a53:de52:0:b0:62f:c634:4b3f with SMTP id 956f58d0204a3-63ccb7ea499mr5757999d50.7.1760030700990;
+        Thu, 09 Oct 2025 10:25:00 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:53::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cd952e09bsm1029933d50.11.2025.10.09.10.25.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 10:24:59 -0700 (PDT)
+        Thu, 09 Oct 2025 10:25:00 -0700 (PDT)
 From: Usama Arif <usamaarif642@gmail.com>
 To: muchun.song@linux.dev,
 	osalvador@suse.de,
@@ -102,20 +103,22 @@ Cc: shakeel.butt@linux.dev,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v2 1/2] mm/hugetlb: create hstate_is_gigantic_no_runtime helper
-Date: Thu,  9 Oct 2025 18:24:30 +0100
-Message-ID: <20251009172433.4158118-1-usamaarif642@gmail.com>
+Subject: [PATCH v2 2/2] mm/hugetlb: allow overcommitting gigantic hugepages
+Date: Thu,  9 Oct 2025 18:24:31 +0100
+Message-ID: <20251009172433.4158118-2-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251009172433.4158118-1-usamaarif642@gmail.com>
+References: <20251009172433.4158118-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 022FC4000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: zjxe63uhgde94poex13sgoz316cjd6gr
-X-HE-Tag: 1760030700-294399
-X-HE-Meta: U2FsdGVkX18+6ENbLS7Y33qNr2WxJUIPb9TbLcZyEfjiextqsMHjYlEHTYO1+TXITEFM2hCGJ8nunT61yeUQIgYDhdtSiNgbNhrK/zV/fvl1HEOhtOggPX0VXfvFBO3B4ee/VbXbephWAgbbdyvm5vg4+e4ocaRdxTQ63FwMdgBhk/XGz3RurnTclGV0t+u1guZFy8qBkk95H7vLUSpBmQ4OKZaliMh47btnbLGHwRmtiZOLE4Mo58oWLZXHMb75ERd62hQ+v1C2Eo15UnNVIFglvcbWieeQyZBmEUe0S8GgVPjv048nNc2ImCo2fYo+4iu2TvZALDyGowm9QDaKt0dek4QrtLpmhZFnYjLUYeVhsDLCHrVKjOCUslrFHhN1bRG29fYRFxaPTkLlLoNkk7Mrg7MbRSttVTqymqaK/BRDJOYGUt71Aedty71lahUFczr9QwhQca7H2pbVBXPtphFDX64jZe2u2Tqxx0i04ZR5L9c4ml8m6SUnwAcBln2TdRJWJuO9nuhAO0P8ms3Mtuu4CLvH3Y6CnI/AwWUqNwCxOs3dCgBCZZ3SqBD4yAcHNOgaLk0awIjtWaHO8XwE+8SijOghNMqPUDmkHneDqvst6Wdn2y2pFsifwuAX3uI3+Haeg7dC8sMd3ayXqQZQxZBslwtATc5Mh9kYiQxv354xGydwiL3QoS2ReuJ2QXLwzjLBGz7JU07sr2TzeBRruL1cHTjL6d8zsiXAwEa4cKll2u8GsTBVY+R+4UcVF7xzl7jSzjbcotNBDA6JHxMBDw4Bd+0B1McfdpEzi5nvTaxkI43mhWweGpyseRVivtNQADK1GZad+LMxyL5WDccgiQ4kw5ZqNft9biViEQvMJOSGtV/iiZtfMexmHFTMac/tuSHEesSpLtXl5yQL0tPhIPDHFUp0+PyIP/ekQazSdI+MdWB2Gssmntg+3tcUicDSLYp2qIoOAZ/yuFd4U3/
- pgmCvw3+
- FfA7gwmrfomYsUo3BRCHKXvjx/3lBkT5naOcGKavucBLDBGIjwVfQYZ9PH0luxlLVJMxcVSU9x+Phr8A7bXh77w+JLEIe8mtsa/1COibQigwSEUt5/DUcpP2fnSjXO6HzIsHdNgmiK5fxSet1zd5RnQSKVA8aXRZ3dCBjyJ5t5kXKy09UpSOoa8d9HobxzLsh8sKcVBdOE5dhKE1Df4n0g0vNVXiEQSAP1Bgs2jgFV0QfgWeTc9PHCRMD4sDHoce+itz08Sq2cbvIjz/bkcrsLXlRfCQNG2ZzlO1p0CoDIJ8MfvhUbTxbt4JfHcCfPbCYwxGLkycv+cGcwXwIspzNY5bY2btm/YChS8OotUsgDBrE0XKHhy4z8Srh/jDQEutU/PmXl9W040l6U4WnLMQZ90BfbVfYMpygdpf+o25ZyR13k5iOdfHIDtXcR8kQhfPcwvi6SlcOlebR9L24pOpyenHd0Wosl9ryFMh17fI9zHsPfHPz6A+Im43WMU2C1VWYuLFrusNQjLZb8/G/SP5EYUPwv8I8qugNP4G8CrtQ82bVWJleRiLY+xRMcOFmuXq4S8TnI4PSo5HxjoCX/amxYpl80O3fqB72uDG3
+X-Stat-Signature: 8ux1e3n88pjy4shg58sr63dcguxiy1ck
+X-Rspamd-Queue-Id: 0B92CC000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760030701-348524
+X-HE-Meta: U2FsdGVkX1/DKhrSPpTn9C8x7zmv+SmMEvRbAPjmRNb5aAgXodkikNcSB0Gk+lzHJqzzrJh2R3D3vx7FGDJlNSRpTG5EQNG8fxG5TizZpGNTcTMlMMCjkTC04HkDPrJyJHTEDZn8GE23mnbrXSIZKtYMe/Ps4ErUe/itlXU/pbv9gPZToFoo/zt3edvekAC446Nh8DW3PpDsIasK0xc2UZDX4ReIWBZjKrJTHhp/u/G9m7eHokmQNRZrhsMx3b95OiBgjQfFJ86fehF6WUiWQB3/Zxocsh6gxpqj4+0j7Nsp/XXaS86H0E5AFbMFD24KPY9boPvDrbNzLw9UOsGL6jT20pMRoMg45JXrjv0vk+CtBZy/kxOHPQY2B4o8INvMEcHKZbfspotCzwQWNgYAlK/9yB/w5nrB0ZfdaM1q9QoDcEgcIo1tHy4Li3m/O2lt27Z40YVhl43ctF6Y2gkS9CXPQRFJ9pO0Hpo3Ody9d8zJtJyF0drDI2rqkPCjeQnuOIABMzL4R21nL6/R+o/VKlVpUYqaAqwp1KNMtKKioG+PU+8iN5rWlFmMEti0WfFUOz/EB6QcTYuq8UtZQd8ZwvlTIGCt7Wgcf3l2rSnRus9xWwdQWvBkH5DzpU9By8qV0+SHFSuwT95PH8raQhBXxYKA/i4uRA592mbolfWCpxaU93z8wWZOH/0Ya26gw70+JEiH+YxIdCkkNYc16T6NauS05NwXje7ZYBYi6MFpMj1z9N7JqVLD0Tr563p9k7e8sBRPO7Rj4mj21Q885dirsjrQqLtP8qOiBRQS3dRod5yWp63nH1cB4A1kp3X/MI6HWFG/9Jd+0+ArWciDsiKE37bkRSGjvWiz+7gvNOS+FSVQjjjSSziDFUtc9QKtudaikw5B56Q4RdE8C3lNcX+W5dDHkMxMN2cDgp8eXGjoxzkoYcUHn/2JtbYnYVrd7vkZhBwLoTn9vp6io5rcv40
+ nFXUQeJs
+ bCwLMFOvs65EYGqOE3c3tsbb/mfZoT5aDYh88ZzPD7ndnJKdxthADY9oLmXFkmDh8oBHozi48wC1xW0//W3ODT73JrJRaq1XGVvm+WrLcwezpHRS0yFZGsDhmUy/gXB8X7VqGXkRoseorzQueK0sD/XmhMbhvjru8cbYbld6/FLUVvkNhdP30VYdI1vMtWlQXArD7OywPlxjYfEDI/H7Nf2UTlzH3cBInWcPzoebkLhm5dn7vhPaqeEF2Bk3TcmVEgrzgh0PCaFZZAPU2xEYRFlCrtL7kBEBeK5cn67sd/FLOhuFboofeAEhInfumux1mTzJlt3uiJ52iPkBNgquepPztkbVXKKEWYxOzZ7Jw1NfwKV14r1dCdz/uH7Q5t9s7v8afV0QsDs+O3vIzZYwTibKM8uaitmsopNLGGMwuStgmq18JSMtFNPnnnlIFcpmjU3+EUja4B2M9E8vmnH2NWPG5qkfFScPx9ZNitxwo4LJeTXHl5PZiSNkjPSNQwz+zKEdEpwspyv6BNxGVV7JsxNty1eDhDnfXkeB4U4oQSE2Q5K4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,85 +127,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a common condition used to skip operations that cannot
-be performed on gigantic pages when runtime support is disabled.
-This helper is introduced as the condition will exist even more
-when allowing "overcommit" of gigantic hugepages.
-No functional change intended with this patch.
+Currently, gigantic hugepages cannot use the overcommit mechanism
+(nr_overcommit_hugepages), forcing users to permanently reserve memory via
+nr_hugepages even when pages might not be actively used.
 
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+The restriction was added in 2011 [1], which was before there was support
+for reserving 1G hugepages at runtime.
+Remove this blanket restriction on gigantic hugepage overcommit.
+This will bring the same benefits to gigantic pages as hugepages:
+
+- Memory is only taken out of regular use when actually needed
+- Unused surplus pages can be returned to the system
+- Better memory utilization, especially with CMA backing which can
+  significantly increase the changes of hugepage allocation
+
+Without this patch:
+echo 3 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_overcommit_hugepages
+bash: echo: write error: Invalid argument
+
+With this patch:
+echo 3 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_overcommit_hugepages
+./mmap_hugetlb_test
+Successfully allocated huge pages at address: 0x7f9d40000000
+
+cat mmap_hugetlb_test.c
+...
+    unsigned long ALLOC_SIZE = 3 * (unsigned long) HUGE_PAGE_SIZE;
+    addr = mmap(NULL,
+                ALLOC_SIZE, // 3GB
+                PROT_READ | PROT_WRITE,
+                MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | MAP_HUGE_1GB,
+                -1,
+                0);
+
+    if (addr == MAP_FAILED) {
+        fprintf(stderr, "mmap failed: %s\n", strerror(errno));
+        return 1;
+    }
+    printf("Successfully allocated huge pages at address: %p\n", addr);
+...
+
+[1] https://git.zx2c4.com/linux-rng/commit/mm/hugetlb.c?id=adbe8726dc2a3805630d517270db17e3af86e526
+
 Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 ---
- mm/hugetlb.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ mm/hugetlb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c07b7192aff26..e74e41386b100 100644
+index e74e41386b100..c0036c0775d75 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -134,6 +134,17 @@ static void hugetlb_free_folio(struct folio *folio)
- 	folio_put(folio);
- }
- 
-+/*
-+ * Check if the hstate represents gigantic pages but gigantic page
-+ * runtime support is not available. This is a common condition used to
-+ * skip operations that cannot be performed on gigantic pages when runtime
-+ * support is disabled.
-+ */
-+static inline bool hstate_is_gigantic_no_runtime(struct hstate *h)
-+{
-+	return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
-+}
-+
- static inline bool subpool_is_free(struct hugepage_subpool *spool)
+@@ -2243,7 +2243,7 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
  {
- 	if (spool->count)
-@@ -1555,7 +1566,7 @@ static void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
- 	VM_BUG_ON_FOLIO(hugetlb_cgroup_from_folio_rsvd(folio), folio);
+ 	struct folio *folio = NULL;
  
- 	lockdep_assert_held(&hugetlb_lock);
--	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+-	if (hstate_is_gigantic(h))
 +	if (hstate_is_gigantic_no_runtime(h))
- 		return;
+ 		return NULL;
  
- 	list_del(&folio->lru);
-@@ -1617,7 +1628,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
- {
- 	bool clear_flag = folio_test_hugetlb_vmemmap_optimized(folio);
+ 	spin_lock_irq(&hugetlb_lock);
+@@ -4305,7 +4305,7 @@ static ssize_t nr_overcommit_hugepages_store(struct kobject *kobj,
+ 	unsigned long input;
+ 	struct hstate *h = kobj_to_hstate(kobj, NULL);
  
--	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-+	if (hstate_is_gigantic_no_runtime(h))
- 		return;
- 
- 	/*
-@@ -2511,7 +2522,7 @@ static void return_unused_surplus_pages(struct hstate *h,
- 	/* Uncommit the reservation */
- 	h->resv_huge_pages -= unused_resv_pages;
- 
--	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-+	if (hstate_is_gigantic_no_runtime(h))
- 		goto out;
- 
- 	/*
-@@ -3725,7 +3736,7 @@ static void __init hugetlb_init_hstates(void)
- 		 * - If CMA allocation is possible, we can not demote
- 		 *   HUGETLB_PAGE_ORDER or smaller size pages.
- 		 */
--		if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-+		if (hstate_is_gigantic_no_runtime(h))
- 			continue;
- 		if (hugetlb_cma_total_size() && h->order <= HUGETLB_PAGE_ORDER)
- 			continue;
-@@ -4202,7 +4213,7 @@ static ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
- 	int err;
- 	nodemask_t nodes_allowed, *n_mask;
- 
--	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+-	if (hstate_is_gigantic(h))
 +	if (hstate_is_gigantic_no_runtime(h))
  		return -EINVAL;
  
- 	if (nid == NUMA_NO_NODE) {
+ 	err = kstrtoul(buf, 10, &input);
+@@ -5192,7 +5192,7 @@ static int hugetlb_overcommit_handler(const struct ctl_table *table, int write,
+ 
+ 	tmp = h->nr_overcommit_huge_pages;
+ 
+-	if (write && hstate_is_gigantic(h))
++	if (write && hstate_is_gigantic_no_runtime(h))
+ 		return -EINVAL;
+ 
+ 	ret = proc_hugetlb_doulongvec_minmax(table, write, buffer, length, ppos,
 -- 
 2.47.3
 
