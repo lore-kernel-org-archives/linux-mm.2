@@ -4,127 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E7DCCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 10:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E41CCD18A
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 10:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B4B8E0066; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
+	id AC1578E0074; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF2BA8E0002; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
+	id A99868E0002; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08228E0066; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
+	id 9AF7B8E0074; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFD578E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F2634639B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:00:13 +0000 (UTC)
-X-FDA: 83978130306.25.235CDBB
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6080A1A0016
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:00:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N9ddSwHj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760004011; a=rsa-sha256;
-	cv=none;
-	b=kN2MrWK3DwmOo0nFl/7UfZvmAfcR5XNBxD6J+sU7pn8ivsRc9dcI9OCmTWPsoVVxzoSqsF
-	edRPaqT3WN7+J/abmHVZdzgVy/R3fBLxFBBEQczO4vESahk26SYv7EX7eCf8C66zs33Hs5
-	TLtSkFqG7i9o9SnLg5XZkq1rVtBd/K8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N9ddSwHj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 886EC8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1831E1A0790
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:01:16 +0000 (UTC)
+X-FDA: 83978132952.22.6FDAA55
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C3967180014
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:01:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf16.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760004011;
+	s=arc-20220608; t=1760004074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
-	b=djijFL+arkiNvbKO+mvXHTB5/b1LndIDCcrjzXNjDjltEADTdAuskH1kVuaqXrVpbiMOdl
-	T6tnH/6LKSIYJtFn4mq6PZT7wa1WMqTRsaZ/spLZCXBqx82dSqzIChMeejjx47UDXPBNmG
-	d9WXCDY+8WQmJrA1BsurZ3SDyR0JaXw=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-7f7835f4478so6171386d6.1
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 03:00:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760004010; x=1760608810; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
-        b=N9ddSwHj3dwfuWpA+ReP7LxFpIOhjCPJV7DWnuBcC7OUDnASAEPIs5Z3wcRiR7rALM
-         UmXN05KPP5Au9j6YvANtAqvrWmxrIjY3U/S6/M4ZL/12V2+smE555O+YK68AUiTKvM5l
-         jDxW5jgdUcW/VLVIwaIlmXioXoiH0un7DzRD+fgHLJ6Hpit8UnOQlSbvdfH2OqLI/PQ3
-         /mEp3zGDJHsgPE1nWKFd2c/RYqMx9LhU/7a25twhRAztJGaylKZGYB9hGwswIcg8bjHn
-         3v32VUSS1fuLMj7Co+jmiU/EdLrjSNLL74C8vC2MpvffdpgwgiCxjeG9aJ8jwm5Oie2o
-         8CHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760004010; x=1760608810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
-        b=AyAZK4nHrrQ6/SvizzrcTYg6xS8WCV8xYgPOG+BNtKP9MpWmCfL/BVn7tgVZlMQiav
-         OqBDPrACln0qJQApiSJrsyY2kJo7LXZ2LnGQkWX5JviK8CpBrsYSGI95FGTr+nDXovIa
-         8GLxsxVWsuFbOHCxeZ98OBDzL0j/kwezvnVHzZFVnzW6kNZZy3wXbsFjVGIEN9hsEyh/
-         35xg8s/YfoJU3eZkT/UaDbHe1S2rn5ZNfg10x1jZaLN5NEo9b/c2zasvLX+wRFc7QK49
-         SkVvPeT8N6Ig4FAjTkh7eXYE8ZT50OpXPrrO0gz5YMvxSo/6odCui6m2PeazeF3QYHdu
-         O7vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYSAOsf2rmIhyiyJ4FMXEPdm9wAQF1Vt/uDujvvn8uNsB4DjLXFANbHB5fg2ItceNp9g5gXTu+4g==@kvack.org
-X-Gm-Message-State: AOJu0YynY88JUTyaaLoK3loMfgj3qyjVWqv7cTLLKf2sUQtbZ6ZHThOq
-	4cqUD/GgX7dSi21UiMg+Dr30g2h9ZuZAsqk8m+xfPMg3vB6zqY7bb/v3NI4M4/g6d1Uqgn1RNYE
-	/C8IPqOYtTE60imCfv9A6o0glvdsnXLk=
-X-Gm-Gg: ASbGnctj9TLW5SH31duO068Hk2y1BUHOgWG7aQlcTICN6zMqkz3Kt3Zgs9/m3K485mY
-	NgrVCqrPR0PpeUlIF/HD+duTG9xQjwHarzUFyugjMmFesRdzOobCNsZ+Ep8YYbJ60+BYccq1fHO
-	vvS5pQxv0yU4laFT/rMl7PbQk5xoHURw33WlHN77SoRkUZWjaF1DTy6PmjCAvkn0flQLJAEJSdU
-	/qxhxuJMzHybvTGw5J4IYo/PQ6UMfwADMnfpZkd3pka5NkaV83SVS6q7hHWTVnv60D7f5U87rZa
-	CgsICGZNqQ==
-X-Google-Smtp-Source: AGHT+IETxQVsMJZ6FUrqxCOJXTq/1lBKlldBdCCphIo2WiWqP2OQZ5MBwrkw2Mvl/zoM5NqKDP1WjJ0VU5dCT5Ozh/c=
-X-Received: by 2002:a05:6214:4003:b0:850:d233:62ab with SMTP id
- 6a1803df08f44-87b2ef73213mr99406266d6.63.1760004010105; Thu, 09 Oct 2025
- 03:00:10 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mviit9av+xJ2i1UCKCKoymOIpaOEjjA1p687Sppc3JU=;
+	b=f7lezPQjFhGlVSTChiXM0Vgdk6ToKAVMhNKjHXc4Ohc4ROsb+vt5taoBOSgfE/xiv3sjY2
+	ExSflurUwISuT8nZugMPXk5THj37shGblcDPHJCjZPzsp8MaoX1AC809FCNrtlT2iXix9C
+	8ZWV/hf4QFWbt1JihMvkCNcXG9itgrM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf16.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760004074; a=rsa-sha256;
+	cv=none;
+	b=lHqYO24UV3AV7S2XefGujqxd6XdEp48W9BT4pWi+bVtZOH9vFjCg4VeSn6cShquoUpTvRM
+	rEBEOX3gfJ0Ar9FbCnIz6IPcysBhL2agM7L71QG6aPOlyIcaMX1fEbxb3BEYL2yO58xYfo
+	UzLIQy98kbaUxCFIsTEDT/pjRPLXFX0=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj548110xz9sSL;
+	Thu,  9 Oct 2025 12:01:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qOLNCcqM6pFr; Thu,  9 Oct 2025 12:01:12 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj5476tjqz9sSC;
+	Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D06108B76C;
+	Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id MfDghYtIuYkA; Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 776CE8B767;
+	Thu,  9 Oct 2025 12:01:09 +0200 (CEST)
+Message-ID: <0c730c52-97ee-43ea-9697-ac11d2880ab7@csgroup.eu>
+Date: Thu, 9 Oct 2025 12:01:08 +0200
 MIME-Version: 1.0
-References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
- <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
- <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com> <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
- <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com> <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
- <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com> <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
- <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com> <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
-In-Reply-To: <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 9 Oct 2025 17:59:33 +0800
-X-Gm-Features: AS18NWBlPtBCYqodlkqsQpTW3fhlgQOczuwvYOS9Vl81gX2DcaljddI-xWUUb9I
-Message-ID: <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
-Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
- order selection
-To: David Hildenbrand <david@redhat.com>
-Cc: Zi Yan <ziy@nvidia.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	Matthew Wilcox <willy@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, Randy Dunlap <rdunlap@infradead.org>, 
-	bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+ <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+ <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+ <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
+ <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C3967180014
+X-Stat-Signature: rsotbqm94aj7r4tbrzt7w416sh5fhejs
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6080A1A0016
-X-Stat-Signature: dr5cc8j168e4bge6osjsc96dy4dpzwfo
-X-HE-Tag: 1760004011-467665
-X-HE-Meta: U2FsdGVkX1+jek3RofyQHyHsr2yPeHvYHTYxFOh2gVpnhcykISdVj6G4gBR8FGSUrvmX5xkntsLhM6pm3kXs+ORE2n+SIFrnUSPbFkgDTEL+qT3UGGVoJnnlm/XNITFkuZ2flLZumn7fxzqryFufemPxc3cYkxjOBDGW19/cUu/uU/lGofnCkDh52582/vYRaQI/ZS5WxTrRmhWSIdg7QWS+teyGsfeuteGv0hceyBKiAqCOx0Tu+nWHyDVIvyW+JWfSC1IxK7Ru2fxuY/g3AhP+vEtwXOwMGNqg8Y513/VFV3W/cbs7b0b+SMGz28vPMdNyGWx8fIHuBrMMzEP0GFFpbj+TJA56w9Ym2sUXVbGXax+Ny61BLPjvrWXDiO3J+NgXYjBjmZWFfZCFHoo0LF5fvSp2sxdfcXpfZ97ofWikv8JWY25ruVqH+/jpLFE47MkMZUivzfs0buTisubKZECmy/Q27tKnlI92igr38PdqCgNcYawecr/jDzhbQuUU9bW0hTptYmda0xW6Q6xIjOOmckfE2QRgFYqpn2nHv0wrwWXk/617BgoRecciJBs+4lcJ0rtD/2l+Aqx8H98T0CQgl5Mn0/yf9EgKhu2VXy63Bbo5vOZygxrla35/Uyy9ZZTO6flL6zL47QCeyfGnZhY7TCxa0N5z9jUr6/d93v5yUzNKqGsNzajXlVEbyjriMuQNjvQUQjhxnE/PbmcWsFYfDcYkEcdzemUfmdThwK8Z2HTEuUr7WPDe3Qkyr7HXozM3tta6hSTDL9EjlGgRClZnM8Z7ouipWSacQ8e44OwO18QUtI7bhYqotMpngoRRmskXcgVJ3UGd3+ehL1LT1WwfB1VK32qig6EgwupXkvj1+qEJ/Gz4F+ixcK0/fZicwf5k4EGpxphiJ6xyE/zhBQV89ZGRiOGhMeSIh1K2a8bvEE4HPLNAOsUhsDUPdU1i0tRJc0fWC02YZC+SILv
- QlYrdDXu
- nsTSszeXuvz+YIaNWsEfxZlzyQ/Nexhir59cXrObrrhq5TKYMvlGBDmCiL/MFVYLjScTRVsv6D0CyCTboMMDjU7ve0+Qzw4idphRAKR6glod1qjKofVgDSUG7xw==
+X-HE-Tag: 1760004073-373490
+X-HE-Meta: U2FsdGVkX1/z/X1o9oStMhDBabjfRmEj3i60N/JEFeiYGN3SRDu7yaxX5idgpCvCw6JY+4Dy57406WO0lE66HKhmV+v7OL39dV+xJKEn2LdJRo0z78Veb2RYYyuq4TK/Vl7apJAEfiSw1wAC5UI8qy0P/35slrmOzIL35g3z0tWPgzzcRFEDfJhlVkuMIutjwzwiOXue1pRX7LA9mwQHvTJMgioZjTPl6USY+xyn8mk8Npwr5nB/AZ8IwdQdru2BAu4kERPKPUXd7Bw70+B37HrJ0QqMVo9xpa/3aReU67mwliA2sLzUUwTMMvD3KLce2DBYkEtrXBJK7yJXK9hP6+8/JkAVlog6NzSWQ+/7ur1NmBoVe82t/ifELv8sWULKgEt7LjcUnnv5tP8kcXA76i9woxVh+X8qaPcNjJHa44GF7OXzfMwTYP6sjkVgl0HeFxCmC/FsxZ/fB/LkBcIh1Tj1pZXSIvkQVyAalsahmn2lVCep4dnd/ZSNm3cVOF8OK+pbG9hGxKohEvhfGIvamMCZCgfH/Ddyfy5m/fY9cLx1Ql3uK9PwURwSA6s6L7yYdGec/oKawcv4/DSqIzINx2/lHkMSBVlURMBx/2PJz29SNto0M4mjX7LBxD/bNcj8q99d+zUCKqUdfaIXhgGWvSO5VFu5OLjs/zhFtIt/D+CxIVXSSlRrPAnqc0CYIUfDUGsLnJoqdxPofx972G/OS2fBUrGgQ9FEtB/aHMlbPo5kVdHkauUncxWhwutnMZy7JMJ0rrMQxhGPLN7ifz2h0t+pkPHipPLhq4tmgYP7agIcTA7rfydBbkNYZ+VwL4j8WknL4ymGozq6HzEGTojjqw+jtW4Zz/XQw6SktrK0nmcDhwt5hjUCeKVyGilnkFjQ43yeKE7MSQwYT5y9p0om0QVk79HDIbjNsD5kcJnOUJI5FymAsctc1cgjNGTISA2obtP792ZYILUnvGe52zL
+ ooukvwGe
+ udYl8cGPuPq1WlXty1aOUMszdJR+XtZjZkC7EZHNCHN/1l0dVYRPViOiySzcsiZ84msc2XWHSQEvXJ2anmAfhNFdWucsW75IHQsN667QgrLfqFo4wlIWzXypT0Izrfg0ti7ZRYyQNryo/qn8pu67qiWD14DDJx8ewvvygtWxc7l+WmdVnR0x+qpDA33pVOXFcBFTgisM3AMw939sCqx8tIoPSRCG1NosSII/SjjZQpmauEEE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,192 +130,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 9, 2025 at 5:19=E2=80=AFPM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 08.10.25 15:11, Yafang Shao wrote:
-> > On Wed, Oct 8, 2025 at 8:07=E2=80=AFPM David Hildenbrand <david@redhat.=
-com> wrote:
-> >>
-> >> On 08.10.25 13:27, Zi Yan wrote:
-> >>> On 8 Oct 2025, at 5:04, Yafang Shao wrote:
-> >>>
-> >>>> On Wed, Oct 8, 2025 at 4:28=E2=80=AFPM David Hildenbrand <david@redh=
-at.com> wrote:
-> >>>>>
-> >>>>> On 08.10.25 10:18, Yafang Shao wrote:
-> >>>>>> On Wed, Oct 8, 2025 at 4:08=E2=80=AFPM David Hildenbrand <david@re=
-dhat.com> wrote:
-> >>>>>>>
-> >>>>>>> On 03.10.25 04:18, Alexei Starovoitov wrote:
-> >>>>>>>> On Mon, Sep 29, 2025 at 10:59=E2=80=AFPM Yafang Shao <laoar.shao=
-@gmail.com> wrote:
-> >>>>>>>>>
-> >>>>>>>>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *v=
-ma,
-> >>>>>>>>> +                                     enum tva_type type,
-> >>>>>>>>> +                                     unsigned long orders)
-> >>>>>>>>> +{
-> >>>>>>>>> +       thp_order_fn_t *bpf_hook_thp_get_order;
-> >>>>>>>>> +       int bpf_order;
-> >>>>>>>>> +
-> >>>>>>>>> +       /* No BPF program is attached */
-> >>>>>>>>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
-> >>>>>>>>> +                     &transparent_hugepage_flags))
-> >>>>>>>>> +               return orders;
-> >>>>>>>>> +
-> >>>>>>>>> +       rcu_read_lock();
-> >>>>>>>>> +       bpf_hook_thp_get_order =3D rcu_dereference(bpf_thp.thp_=
-get_order);
-> >>>>>>>>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
-> >>>>>>>>> +               goto out;
-> >>>>>>>>> +
-> >>>>>>>>> +       bpf_order =3D bpf_hook_thp_get_order(vma, type, orders)=
-;
-> >>>>>>>>> +       orders &=3D BIT(bpf_order);
-> >>>>>>>>> +
-> >>>>>>>>> +out:
-> >>>>>>>>> +       rcu_read_unlock();
-> >>>>>>>>> +       return orders;
-> >>>>>>>>> +}
-> >>>>>>>>
-> >>>>>>>> I thought I explained it earlier.
-> >>>>>>>> Nack to a single global prog approach.
-> >>>>>>>
-> >>>>>>> I agree. We should have the option to either specify a policy glo=
-bally,
-> >>>>>>> or more refined for cgroups/processes.
-> >>>>>>>
-> >>>>>>> It's an interesting question if a program would ever want to ship=
- its
-> >>>>>>> own policy: I can see use cases for that.
-> >>>>>>>
-> >>>>>>> So I agree that we should make it more flexible right from the st=
-art.
-> >>>>>>
-> >>>>>> To achieve per-process granularity, the struct-ops must be embedde=
-d
-> >>>>>> within the mm_struct as follows:
-> >>>>>>
-> >>>>>> +#ifdef CONFIG_BPF_MM
-> >>>>>> +struct bpf_mm_ops {
-> >>>>>> +#ifdef CONFIG_BPF_THP
-> >>>>>> +       struct bpf_thp_ops bpf_thp;
-> >>>>>> +#endif
-> >>>>>> +};
-> >>>>>> +#endif
-> >>>>>> +
-> >>>>>>     /*
-> >>>>>>      * Opaque type representing current mm_struct flag state. Must=
- be accessed via
-> >>>>>>      * mm_flags_xxx() helper functions.
-> >>>>>> @@ -1268,6 +1281,10 @@ struct mm_struct {
-> >>>>>>     #ifdef CONFIG_MM_ID
-> >>>>>>                    mm_id_t mm_id;
-> >>>>>>     #endif /* CONFIG_MM_ID */
-> >>>>>> +
-> >>>>>> +#ifdef CONFIG_BPF_MM
-> >>>>>> +               struct bpf_mm_ops bpf_mm;
-> >>>>>> +#endif
-> >>>>>>            } __randomize_layout;
-> >>>>>>
-> >>>>>> We should be aware that this will involve extensive changes in mm/=
-.
-> >>>>>
-> >>>>> That's what we do on linux-mm :)
-> >>>>>
-> >>>>> It would be great to use Alexei's feedback/experience to come up wi=
-th
-> >>>>> something that is flexible for various use cases.
-> >>>>
-> >>>> I'm still not entirely convinced that allowing individual processes =
-or
-> >>>> cgroups to run independent progs is a valid use case. However, since
-> >>>> we have a consensus that this is the right direction, I will proceed
-> >>>> with this approach.
-> >>>>
-> >>>>>
-> >>>>> So I think this is likely the right direction.
-> >>>>>
-> >>>>> It would be great to evaluate which scenarios we could unlock with =
-this
-> >>>>> (global vs. per-process vs. per-cgroup) approach, and how
-> >>>>> extensive/involved the changes will be.
-> >>>>
-> >>>> 1. Global Approach
-> >>>>      - Pros:
-> >>>>        Simple;
-> >>>>        Can manage different THP policies for different cgroups or pr=
-ocesses.
-> >>>>     - Cons:
-> >>>>        Does not allow individual processes to run their own BPF prog=
-rams.
-> >>>>
-> >>>> 2. Per-Process Approach
-> >>>>       - Pros:
-> >>>>         Enables each process to run its own BPF program.
-> >>>>       - Cons:
-> >>>>         Introduces significant complexity, as it requires handling t=
-he
-> >>>> BPF program's lifecycle (creation, destruction, inheritance) within
-> >>>> every mm_struct.
-> >>>>
-> >>>> 3. Per-Cgroup Approach
-> >>>>       - Pros:
-> >>>>          Allows individual cgroups to run their own BPF programs.
-> >>>>          Less complex than the per-process model, as it can leverage=
- the
-> >>>> existing cgroup operations structure.
-> >>>>       - Cons:
-> >>>>          Creates a dependency on the cgroup subsystem.
-> >>>>          might not be easy to control at the per-process level.
-> >>>
-> >>> Another issue is that how and who to deal with hierarchical cgroup, w=
-here one
-> >>> cgroup is a parent of another. Should bpf program to do that or mm co=
-de
-> >>> to do that? I remember hierarchical cgroup is the main reason THP con=
-trol
-> >>> at cgroup level is rejected. If we do per-cgroup bpf control, wouldn'=
-t we
-> >>> get the same rejection from cgroup folks?
-> >>
-> >> Valid point.
-> >>
-> >> I do wonder if that problem was already encountered elsewhere with bpf
-> >> and if there is already a solution.
-> >
-> > Our standard is to run only one instance of a BPF program type
-> > system-wide to avoid conflicts. For example, we can't have both
-> > systemd and a container runtime running bpf-thp simultaneously.
->
-> Right, it's a good question how to combine policies, or "who wins".
 
-From my perspective, the ideal approach is to have one BPF-THP
-instance per mm_struct. This allows for separate managers in different
-domains, such as systemd managing BPF-THP for system processes and
-containerd for container processes, while ensuring that any single
-process is managed by only one BPF-THP.
 
->
-> >
-> > Perhaps Alexei can enlighten us, though we'd need to read between his
-> > characteristically brief lines. ;-)
->
-> There might be some insights to be had in the bpf OOM discussion at
->
-> https://lkml.kernel.org/r/CAEf4BzafXv-PstSAP6krers=3DS74ri1+zTB4Y2oT6f+33=
-yznqsA@mail.gmail.com
->
-> I didn't completely read through that, but that discussion also seems to
-> be about interaction between cgroups and bpd programs.
+Le 09/10/2025 à 11:20, David Hildenbrand a écrit :
+> On 09.10.25 11:16, Christophe Leroy wrote:
+>>
+>>
+>> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
+>>> On 09.10.25 10:04, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+>>>>> On 09.10.25 09:14, Christophe Leroy wrote:
+>>>>>> Hi David,
+>>>>>>
+>>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>>>>>> --- a/mm/hugetlb.c
+>>>>>>> +++ b/mm/hugetlb.c
+>>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>>>>>          BUILD_BUG_ON(sizeof_field(struct page, private) *
+>>>>>>> BITS_PER_BYTE <
+>>>>>>>                  __NR_HPAGEFLAGS);
+>>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>>>>>          if (!hugepages_supported()) {
+>>>>>>>              if (hugetlb_max_hstate || 
+>>>>>>> default_hstate_max_huge_pages)
+>>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
+>>>>>>> order)
+>>>>>>>          }
+>>>>>>>          BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>>>>>          BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>>>>>          h = &hstates[hugetlb_max_hstate++];
+>>>>>>>          __mutex_init(&h->resize_lock, "resize mutex", &h- 
+>>>>>>> >resize_key);
+>>>>>>>          h->order = order;
+>>>>>
+>>>>> We end up registering hugetlb folios that are bigger than
+>>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger 
+>>>>> that
+>>>>> (and if we have to support that).
+>>>>>
+>>>>
+>>>> MAX_FOLIO_ORDER is defined as:
+>>>>
+>>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>>>> #define MAX_FOLIO_ORDER        PUD_ORDER
+>>>> #else
+>>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>>>> #endif
+>>>>
+>>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
+>>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
+>>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+>>>>
+>>>>      hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+>>>>
+>>>> Gives:
+>>>>
+>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+>>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+>>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+>>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+>>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+>>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+>>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+>>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+>>>
+>>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing
+>>> folio_dump() code would not handle it correctly as well.
+>>
+>> I'm trying to dig into history and when looking at commit 4eb0716e868e
+>> ("hugetlb: allow to free gigantic pages regardless of the
+>> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
+>> needed to be able to allocate gigantic pages at runtime. It is not
+>> needed to reserve gigantic pages at boottime.
+>>
+>> What am I missing ?
+> 
+> That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its 
+> name.
 
-I have reviewed the discussions.
+In its name for sure, but the commit I mention says:
 
-Given that the OOM might be cgroup-specific, implementing a
-cgroup-based BPF-OOM handler makes sense.
+     On systems without CONTIG_ALLOC activated but that support gigantic 
+pages,
+     boottime reserved gigantic pages can not be freed at all.  This patch
+     simply enables the possibility to hand back those pages to memory
+     allocator.
 
---=20
-Regards
-Yafang
+And one of the hunks is:
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 7f7fbd8bd9d5b..7a1aa53d188d3 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -19,7 +19,7 @@ config ARM64
+         select ARCH_HAS_FAST_MULTIPLIER
+         select ARCH_HAS_FORTIFY_SOURCE
+         select ARCH_HAS_GCOV_PROFILE_ALL
+-       select ARCH_HAS_GIGANTIC_PAGE if CONTIG_ALLOC
++       select ARCH_HAS_GIGANTIC_PAGE
+         select ARCH_HAS_KCOV
+         select ARCH_HAS_KEEPINITRD
+         select ARCH_HAS_MEMBARRIER_SYNC_CORE
+
+So I understand from the commit message that it was possible at that 
+time to have gigantic pages without ARCH_HAS_GIGANTIC_PAGE as long as 
+you didn't have to be able to free them during runtime.
+
+> 
+> Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant 
+> hugetlb config that allows for *gigantic pages*.
+> 
+
+We probably can, but I'd really like to understand history and how we 
+ended up in the situation we are now.
+Because blind fixes often lead to more problems.
+
+If I follow things correctly I see a helper gigantic_page_supported() 
+added by commit 944d9fec8d7a ("hugetlb: add support for gigantic page 
+allocation at runtime").
+
+And then commit 461a7184320a ("mm/hugetlb: introduce 
+ARCH_HAS_GIGANTIC_PAGE") is added to wrap gigantic_page_supported()
+
+Then commit 4eb0716e868e ("hugetlb: allow to free gigantic pages 
+regardless of the configuration") changed gigantic_page_supported() to 
+gigantic_page_runtime_supported()
+
+So where are we now ?
+
+Christophe
 
