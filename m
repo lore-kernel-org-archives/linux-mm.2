@@ -4,114 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52637CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:34:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C00CCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:35:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E88D8E006E; Thu,  9 Oct 2025 11:33:59 -0400 (EDT)
+	id EF48F8E008C; Thu,  9 Oct 2025 11:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BFD58E0008; Thu,  9 Oct 2025 11:33:59 -0400 (EDT)
+	id EA4A08E0008; Thu,  9 Oct 2025 11:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D64C8E006E; Thu,  9 Oct 2025 11:33:59 -0400 (EDT)
+	id D93D98E008C; Thu,  9 Oct 2025 11:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 771128E0008
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:33:59 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CEC2B46371
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:33:58 +0000 (UTC)
-X-FDA: 83978971356.01.2E29DD3
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id ED35C8000B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:33:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/FuL2WP";
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C54C48E0008
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:35:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 508B11A0880
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:35:15 +0000 (UTC)
+X-FDA: 83978974590.25.D1FC710
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 898E5C0014
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:35:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QqWq1/bD";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760024113; a=rsa-sha256;
+	cv=none;
+	b=GWj7c28YogKXr4UzibuP5kIUbUEy7lVu3rOGo3VvxzQRxmtlMXLTpYlfcSCK/ove7JJpIQ
+	GKB+jrdy9cHqZPT2ZmUZwTLJ0CI0QLmIQJzZgRdMMqQnCQov0uLlQGUkXOh+6LZfA3D76H
+	4gVtWNpPjGW3Cx/TYNzJ4qh2BCGZjts=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="QqWq1/bD";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760024037;
+	s=arc-20220608; t=1760024113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tSXhHm/5nIOgPjlJwTx67zGytbtuMVojQkXq2p4N9O4=;
-	b=sU1UK5F98BhskySkz13cNRo3sLgYHIa6+zanJ1/OiSa/WNnHQ7YBqDk9bIJ4hSBwHKRmP5
-	Y6jHLEz9+JbNr3ITb1EelAkS1sY9Y4Srn3bDfbf+bEH7oScYGaTDmlnw7NbxMNVT0Uf2K9
-	MwGQle0nYgl9WcnHEX63hWFQfdztb+k=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="e/FuL2WP";
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760024037; a=rsa-sha256;
-	cv=none;
-	b=VQF14a+O9MKMWmcOb8UhXWfUW0qRCaIIqHYR/wFRNdMca3sHeFV1lOImIXT6Yun/CnntGw
-	ML4lnqhr6YKkQuw5Go0JV/1lKrRzLfSICIiaXhrxOx2TKgxI4C7bwPMH0PZRVinK2Dx2tk
-	+VD9/eYVqdVJKGhh/3eLTqb/ox3t3vs=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7322da8so199299366b.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 08:33:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760024035; x=1760628835; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tSXhHm/5nIOgPjlJwTx67zGytbtuMVojQkXq2p4N9O4=;
-        b=e/FuL2WP3M3mLyC3A92oFTlPWCk7PadYxPj6rAStTxGOosYwUeD2O7u73xyZ0rsP5/
-         tok0bg2t1sn8hKuBIHwX1afCAD/2VIJdjNFFsgheFaCeWPBiyUjVpO5gahvOcJw5D7Pv
-         dkpee0nYgzvDEonU1rjAuN9wu4h+0Ju7/6bs52tu8bmDzzZ4GPBsr9QXkYUjw79MxRRg
-         1iEM5NBI0l1XHq9RSy1sXrZ01rO3YxHCrcRruRXVcuMK7WJBPTEqXm5unLWKrnX3DMtF
-         naTJXUSn6ZfCWyNMCZeVrMXab/01fmH1RkpqK6iRF9KKnbig2wD3B7864p5215JuJQxR
-         IYCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760024035; x=1760628835;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tSXhHm/5nIOgPjlJwTx67zGytbtuMVojQkXq2p4N9O4=;
-        b=eggxj5wcKHu252VFgpQFW/Mf4onWH3ZPugAxRqdEQY+MSy/ITrajYyxZXBrvWw8pTH
-         bIYnBWnZHUdGnHDe2KvAR4Y6NNqoYSnvboEq3WQqGJZHu14PsZB2EX4NGtL9hJVo7yEE
-         rPTEj1yq3oopc03oIGeJGqfznKhs4+QiuAYui5JQuqZ2vddceIIxalJixiG3zzsEMP8J
-         QwlgfKjNfHlKjp1M47oLxZurzhAJcIXwGQ0XSZ86/Q141FO3wenRKexHGAN/FveKfPtQ
-         pF9HgewBB14rNteIiAxeRFxRPMPAqh+lXoE4fYPzL79/ogM2H+AswvUnm4C8L6Sb7kOP
-         KVQA==
-X-Gm-Message-State: AOJu0YxfQrsLArzJc9EFsu8XKl9NBlJBljOwgFq+z53fAgVoAo4uOUzO
-	ttPhR3UgU92oQYD/7kTamZ07TGxsm9Z3JkdE1Fc8MZh54AKq3IUZNnN+xngRVPrOS7xZRQXYTAI
-	b82txYT8vVcpCxWX9DFQHb3I0nutpAFY=
-X-Gm-Gg: ASbGncuSdUBoWuUbwqXA7Q2+3uLO7OmK5JouzLy241sKn/dAseAi6lG15sJynNT7wW3
-	lUN017VmshJIj9KbRvGLw9VUk2wr+WjxoT8s2X6QnD1uZNExbcoXppHriXjPWmwXdvsGQ8W02rF
-	KYUFa23iTQjWHdlWEpE+hwQ7UbLxCvd/g7cj++5oBvSfMu/78Gz3hDr8+cmj8NXufyeB8nSrqPi
-	8KJjLWwRBTAxAexAf95j5EoNLtCu/wulRb50btV+g==
-X-Google-Smtp-Source: AGHT+IH6/BnweZ3mNzMlMJsoDTrD5kw2wuxUnnf/fUi4kLw7k5i81wPVfRT8YaOXTjGWMzidnp8/KhRKuG28inavPMc=
-X-Received: by 2002:a17:907:9287:b0:b0a:aa7e:a191 with SMTP id
- a640c23a62f3a-b50aca0b70cmr976959166b.57.1760024035254; Thu, 09 Oct 2025
- 08:33:55 -0700 (PDT)
+	bh=yFgQ+7gYZsvROerfNe0yh1z4oSCTjP80VqQTNRlYmQE=;
+	b=VcGYxDFjESPiqgtT4jYlxev9eD9fSYYASsj5HA5+Y8+5A/P/VPZZgwWyIn/ZZrEMgEwp1b
+	Y9+wZzTHsgERab1jz3JShnXv0X/wJNUtsdwXGD4AOxI5rR6PAfgh6Fvcq0yFDaxXapW3I4
+	5emd6GY6H6P/I+rSEgrIPf7YH30VIhU=
+Message-ID: <dc71808c-c6a4-434a-aee9-b97601814c92@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760024108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yFgQ+7gYZsvROerfNe0yh1z4oSCTjP80VqQTNRlYmQE=;
+	b=QqWq1/bDCQ9wrcuY1e4iXNgAoOLqxLWvI/2t1eY4xJDbCp7+DH9xa/5TFEjwt5ubuVgWgJ
+	MGhj34pZv8qeKmjQKwN2cQNbV1e4c2EUQfGpdEf9KG6vXuv1Bxy1j2IIAxxpkXwWURmbXD
+	sXd3/hCh+JpQpcRffrQU8OvwFU18vsI=
+Date: Thu, 9 Oct 2025 08:34:50 -0700
 MIME-Version: 1.0
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com> <CAKEwX=OfcTDH08VrTMFL-uQyBay11H=NccYWVo73XNHVVf7bEw@mail.gmail.com>
-In-Reply-To: <CAKEwX=OfcTDH08VrTMFL-uQyBay11H=NccYWVo73XNHVVf7bEw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 9 Oct 2025 23:33:18 +0800
-X-Gm-Features: AS18NWA71dHoM0Fug4D0KAccZRzH9_6Mg6UINYPbSGRBRYQlJKeWYjPjVsp-Kn4
-Message-ID: <CAMgjq7DTLxr4t0wvCDDzeY8wwjk_-1zS2yqVbNYvrc=6DAnXbg@mail.gmail.com>
-Subject: Re: [PATCH 4/4] mm/migrate, swap: drop usage of folio_index
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wxnespn4gcfcrmagp6bshsta3wtgahg5
+Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state
+ monitoring
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>
+Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+ rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+ rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+ kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+ masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+ yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+ chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+ jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+ dan.j.williams@intel.com, david@redhat.com, joel.granados@kernel.org,
+ rostedt@goodmis.org, anna.schumaker@oracle.com, song@kernel.org,
+ zhangguopeng@kylinos.cn, linux@weissschuh.net, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org,
+ cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+ Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+ aleksander.lobakin@intel.com, ira.weiny@intel.com,
+ andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+ bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+ stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+ ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+ leonro@nvidia.com, witu@nvidia.com
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-20-pasha.tatashin@soleen.com>
+ <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
+ <mafs0qzvcmje2.fsf@kernel.org>
+ <CA+CK2bCx=kTVORq9dRE2h3Z4QQ-ggxanY2tDPRy13_ARhc+TqA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <CA+CK2bCx=kTVORq9dRE2h3Z4QQ-ggxanY2tDPRy13_ARhc+TqA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ofg5bwqbejrkemrght761dpaihyfectg
+X-Rspamd-Queue-Id: 898E5C0014
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: ED35C8000B
-X-HE-Tag: 1760024036-827487
-X-HE-Meta: U2FsdGVkX187jdMM4FrN+2r7E0ErY60W967nxhkdRoP87Y14BXgd1JHmDFuwB0Aj+NL19oEMZvp999S2Q9k/hDh/WN5nR5jUWzY5AIF/CJVlDpcGoj5+F+4I6/fJZNgjNiTxXz0qIyARxqLHWA87sUJJdhFU+0S/0EEGoZD1ZpE0Fqp34OT30TY8s/wASbh2aBP79h80pGnS5MFh2nnDM2SexWlNUX3mQU24jUTyNM5AtRp8IDbGYIBNhAn1mpJi2Mkyv9BhSS3yuClYia1qC5pWmaBuvC2jcAiJG9GBgSqhiiMqnHVMhD4vf1G939tH2mWjb1LQlbpc36LeY+Wjn05h6uV54WcLshT2RM5fS7aNSOh3tKSb/3FP/Czrw8gshSww407/waLfS8V4KJcjoGKVstNRLpBOZrP5/E7vzLeNBz52eenis5lIO3gDr1VVIrfIsR0e6ETYv/Uk0b9rMDhg1NxdKc7r5lGs4qOBzvCSk7kyGPudclTDZfjlI0/AQjRRzzCfxFZaOFGXbxTG+o1AyRzaONiXLDYmeQ/WlKtcx+2uBuDZRwCh77nnePCATfJGnCHMg4tjgz+xsBsJYdjrcg4VkDE4ydOVreRJwCL2XrVeE3rxSpI+x81YkhyP2Um5Co+p3K7khp9XUM8MLdzqX0zGudSxU+yKKOEAxjI9eWVhR8z5yyudOan/Gtqp0vpwSh59Uflx3C0kRwoOmdknxvkBX+6wKeB+knDG2knNVRNCINFf6psHhnxJffG3sUbLqdxpUp63cZdVTRHR66+dl/c6i4ysrw0HNZUgcbQhTIWwsFPA4g12gcVI95BLjcHew1/3Iwdb60ArxHEkly/7qVdmVBFX81v1ETUUAqehmBkIXF3HszQV0kXrHV5xu+2fj1RzjAGgU2LqDMYR/LUcXO00W8O0ixC35WQvQz1lhqhAr0F6atUt57V0DPr0yyFQ4bhYNITbFA4B5uJ
- bxYobta1
- TqfPLwNxqya2nauLwmZe22EwFwOmRufdxdutyR/WeFbpCztUlaH7uB6CCrpDjA1ln9VGpmH4g+MaYd6MQ6GJZ5kaIqprg20x8DrrUhLxzc32Vx4etvY1EoJtJ/E7PlB/mc7VmWiptCC8Z2RqKvAI9rkiTg2L3EY9407GXFOxXYGeaogI8FJYIc973R5RfGod6GyvAqRTy98ywUM8eBMxSdJPD5oT9mnYpjTXdl/8mDH1ykwKzCFKt+6bwnvb9ReaTiPjZmnUR083azEcj51tJABCdwjWIBauCaNigjG1TucK8cu0unilTe1pzaZ2lyenMkfpvwUxbi3qgva0NTBc4Dmuy9U84dBEX2RoFhMdLdhig/MlIw+wo/GjJP685aroexhh7C3IhzpAZLbnayXgN4svKwVFB4+kzPqOdA2OTmXuye5vzvx6w+nMn7blqLU4FX5YA9/c1kevzNIA=
+X-HE-Tag: 1760024113-387293
+X-HE-Meta: U2FsdGVkX19KKz70/0KgfebpKBdb81SEXvwjpV+6IWxbnsnz3w5DFbWm0s/9dlbugrIfLbEF7S99jAXzBzrM5H5//HEdVB4hMX9UGaH0QOwl3/mLROArshwpQlt1qg3dz5SU9TJDIHAa+VE5pfrKypgCeZFPLd1JCh1xqUjPOeSgfAxOQ1d8kMjPFwhUJPCzVV6/68OfQoPR++GS9TDVE5aJXMS6XaoAyO/h6YwWpRouuQNuTDqI2N4/6o5HNeNrcU0tC/FT/VRHz6tY8I4PWB046n4hpbEas7l/jOE1mz5xi5hbjGR5QScBJbi5WKy/Pz7hLOdq/9dTTbPSXc5JB7G7EtUCq2J2rDszCFrfYKvlxiCuiznWj8xs1LI11WWhWYqwCwLt9jSIL5cok9SHOD6qix4r4ywiPcDGI0YUQzAPRPwNDuNw+PD9mB9SObjlawpi4Oxl3pI9yZnb5pQQ1FGdbGkXg80UkSx15w5fzg4cTJSjP9ZgDB3XqyWNERMqgbuvBP943fr+g0zdHiMirY+dUNuWYCnL1tF6GVz9wnQwax4ilVNVvia6wRCASV+dycUce32Li3FFoSnaoOv0HKJEymjm5A/HBqr/7XHi/MolF8fxBZ6bANqd8yqOnXYCSFFjxzSK1Ow1+SGR2pFk8LEQ86F4BxtuGtgAVFvDIDpmQmePatM7JJb8YwMQmTLnyxXJV0dlt1ZFdA3ebNZ/QLSo9to+RzmIdM158o3rrJeD7nMgTJeaB4OuIruUnP0pPx9324/xMVwcgDeshVXrBRvLLEgv03vmeOwSIsPO+NhN884077owI4D2LzzTJIkT7iL7M+fwbfVcfYHkUv8/Rir3YyfW+8Xy487b/ExufGEhSVNQlB+rhK1XgdJGsg49weOnh+z+vgJfcBbeAwKqRSSUoLfIAizeRpA7+fOG71GMmcoN6/8aO9kkjpmJyM7akF237r+OjMH8etFpSR2
+ Bn1uYV+e
+ BqyOX+xyB3BsHsVBKp3S7Yg8vr/Vj9VG/Lp9vmWmosN68ztASljqcI5VZTdRMDEzt4IVh21O6BTSxY+/iNHMqFgRKxFJsUZ/Xhc62wpnYBHE0+G2SwTGHUTtwJY0B29S07b/wm/V3d3Gje6GXuqTwl/xu3vRX7z0M01pK5h0UmIV/RQ/IuM4s3uTLjjsf+ks9lUglX2gPprS9Tzx/c2q/cZak/MuN617Z6xN0QcMuHKYLzkg7PeU9n5RDwsd+P9bg4d/vkz1vkmSXOPXgtzkaZGVe5MPzIY6SmxtFowwcSwhUI0+KZ9N7ZMminV/GYSenMdmIh5U5r8Aa+C1q8zgcmdOT8voZB+S6tTRV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,21 +117,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 8, 2025 at 7:48=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> On Mon, Oct 6, 2025 at 1:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
-te:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > This helper was used when swap cache was mixed with swap cache. Now the=
-y
->
-> mixed with page cache? ;)
 
-Yes you're right :), thanks!
+在 2025/10/9 5:01, Pasha Tatashin 写道:
+>>> Because the window of kernel live update is short, it is difficult to statistics
+>>> how many times the kernel is live updated.
+>>>
+>>> Is it possible to add a variable to statistics the times that the kernel is live
+>>> updated?
+>> The kernel doesn't do the live update on its own. The process is driven
+>> and sequenced by userspace. So if you want to keep statistics, you
+>> should do it from your userspace (luod maybe?). I don't see any need for
+>> this in the kernel.
+>>
+> One use case I can think of is including information in kdump or the
+> backtrace warning/panic messages about how many times this machine has
+> been live-updated. In the past, I've seen bugs (related to memory
+> corruption) that occurred only after several kexecs, not on the first
+> one. With live updates, especially while the code is being stabilized,
+> I imagine we might have a similar situation. For that reason, it could
+> be useful to have a count in the dmesg logs showing how many times
+> this machine has been live-updated. While this information is also
+> available in userspace, it would be simpler for kernel developers
+> triaging these issues if everything were in one place.
+I’m considering this issue from a system security perspective. After the 
+kernel is automatically updated, user-space applications are usually 
+unaware of the change. In one possible scenario, an attacker could 
+replace the kernel with a compromised version, while user-space 
+applications remain unaware of it — which poses a potential security risk.
+
+To mitigate this, it would be useful to expose the number of kernel 
+updates through a sysfs interface, so that we can detect whether the 
+kernel has been updated and then collect information about the new 
+kernel to check for possible security issues.
+
+Of course, there are other ways to detect kernel updates — for example, 
+by using ftrace to monitor functions involved in live kernel updates — 
+but such approaches tend to have a higher performance overhead. In 
+contrast, adding a simple update counter to track live kernel updates 
+would provide similar monitoring capability with minimal overhead.
+
+Yanjun.Zhu
+
 >
-> With that nit fixed:
->
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> Pasha
+
+-- 
+Best Regards,
+Yanjun.Zhu
+
 
