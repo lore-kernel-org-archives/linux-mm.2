@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7CF0CCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F79CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 15:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229698E0095; Thu,  9 Oct 2025 11:54:21 -0400 (EDT)
+	id 389458E0098; Thu,  9 Oct 2025 11:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B5238E0008; Thu,  9 Oct 2025 11:54:21 -0400 (EDT)
+	id 311C28E0008; Thu,  9 Oct 2025 11:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A1F28E0095; Thu,  9 Oct 2025 11:54:21 -0400 (EDT)
+	id 1B31C8E0098; Thu,  9 Oct 2025 11:54:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E6DD28E0008
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:54:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D4F95C08E
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:54:20 +0000 (UTC)
-X-FDA: 83979022680.26.93F6657
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 668D84000B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:54:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vd1WT8zK;
-	spf=pass (imf27.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760025258; a=rsa-sha256;
-	cv=none;
-	b=LEAExc9eOBzBxxCXHS0ZR69G3lJc/9791k75KGEYF1KdOL7XZdRIiBqoB7wqbJvOsDEWIT
-	VSPX59DBCOnoXCIGakXuQQgHWwQpKCGDuy5I3DK2PjbSjInQuJIn6ZeEDYpwl6kSQK2vQy
-	bD8MfkuzKqWZexUjVjXb5biV1GoPicg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vd1WT8zK;
-	spf=pass (imf27.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 02AAA8E0008
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 11:54:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 956E988375
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:54:23 +0000 (UTC)
+X-FDA: 83979022806.18.5852E13
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A0E66C000D
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:54:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fAsaWlUD;
+	spf=pass (imf10.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760025258;
+	s=arc-20220608; t=1760025261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fCQnX2ZVKzE0uz1WnlkQnY2HwKIpXcbR9mszFR+OOY=;
-	b=evfTgiLt08Pw6/YKd2pYMK6WWHgMPzs6Jtm79TZRFVVQnm3OFThEB2IwgM/SjnVepIAmEl
-	iCDCEae/Anv2idgzpKOqUBFOPLLLujF9F8rDAp+fCbu+GGj2Qq4hGJYFxC5J3hWITIM37K
-	WhqphjqYf0c2aD/D8FFGDAOJuVHsJC0=
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-373ac916b35so17586631fa.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 08:54:18 -0700 (PDT)
+	bh=h3jD6Srgk8c77Z/UJ+8ukqBQAN6er5a/zSDavY8QJGM=;
+	b=dsDouudEp5Ly9NBNPaxLbNYVF/hXbRFU+NTgvlClbz54EGkHnrd8bAtYZeScveVuvgGJ8l
+	iUaPTN2Pxk3qpynxtOcTU+5PVlV3dsJLmIFIK8oI+BA+mkJYqejPaMwDysNQybuyHzuc2X
+	5V34Ns21VUKx8O5pHLEoarshXK+nitc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760025261; a=rsa-sha256;
+	cv=none;
+	b=kHH2X5PSunR4UF82Hep8q/rwphi90H/OkiAfyyWk14Sk3pPU50yjIw6Dgj6n0wSCEgtGNt
+	kX9L9t2p5U0gju3fWUpvmCKMeSZWbRFZ5nVXnkbAJUTPA2nMra1ZaNI5vn8l5cDuuxH5BD
+	396+xph8d4EbckZqyn/d1jl1oiebSt8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fAsaWlUD;
+	spf=pass (imf10.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-362e291924aso7235681fa.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 08:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760025257; x=1760630057; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760025260; x=1760630060; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7fCQnX2ZVKzE0uz1WnlkQnY2HwKIpXcbR9mszFR+OOY=;
-        b=Vd1WT8zKEiR3nZ1Eg5KRDyy+EKQGpU7iM9nb3R2uvHAsxcsU5D3ugSb0/P9asWPAXD
-         F480PfeM3/vPF4xjvQOPcIYOTT28qXBqpHDU9qr/2TJujwhBy/G79XK9vbq6SnIfn2bx
-         CCVeNBNLnFzxOiQmCDU4XLM24km6jyLbFQcBvLxWbW+FNI1UGwFUM/EhBg2FRE4f55y0
-         Ua84HIBwQt9Q8tvHaQDFP56FlXjkwDqqU4fup6X5846mU4LggnuaNDatNzy2ieN0jtUf
-         Mfm6PPDVtUM35JNqGAQf5W6gqeB18KVdbOUf7Sys98fAht9N7MhKvO5VzLkZmFMgzdiM
-         LtiA==
+        bh=h3jD6Srgk8c77Z/UJ+8ukqBQAN6er5a/zSDavY8QJGM=;
+        b=fAsaWlUDv5rzcu98sxgGAkXmMR4RP0G67ZG6Bbb/SXxVixWj7i9ki93roA6a9c3Kbx
+         +eW0JqYQFPpoX8JO0LW5cYkemBJ2mP6DEj8h5f8VUlxH/iJHKM++rs7YkmdiNp1MaWp1
+         w0MUUSydQYLrRBFALNHfuimDnEXgdW5NKmLl+b22Idf9JkS5Fj0F/risW/RF8e4UKmzm
+         1MlaP49Q74ktC27kE5Ka5YLb6jpvAMhRPbkjMhTV7SwMiUjumx06769jksiHR/FRICsW
+         S3wEflH4RwD5iOhrZf/YhlJRUBzdEIz3iOe9UC88wJl9CTmoTjb3FR2xuYbpZO9PYqJ7
+         hUHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760025257; x=1760630057;
+        d=1e100.net; s=20230601; t=1760025260; x=1760630060;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7fCQnX2ZVKzE0uz1WnlkQnY2HwKIpXcbR9mszFR+OOY=;
-        b=jMynZBxixNanCWNrV9MV/xbhTXnLjIwU5wsl8fl98i5A88sHcJhmKdGWeA3rraYg9l
-         j6u0ew4yCerEvqTE0M2f33cPXhR/1BCmF5rXNTKdZDczrmDGSjG6l/RtAtxHcJ6QcMER
-         hp8CZBLXN0tzbGcICnA3D6ApBYmyx2OOJ/39YCqEzxIKhhZmsoyL+suzt/z/rzOxim1b
-         F0NWYJSUnGc6VABRvcMDGZJMr0d4tY5P5xtw+A6KaNq+MlUM3gokDNMAuTvq+OzyOaTZ
-         4eYJaTwQ1XnNGrDWjc4XLWYd1djT7uLHRkEGKl2horeuZZZ0mXNKtH5E4qUun4prkmg6
-         ATfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnkrceAjfjCkZW0HFdZIkEGOZtVBkw1sXvWjtVxeI2tb5nsCP1/tpCMlX9T5bZO3bJHGey+Sgi+Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw0yzcDohRx+INKR/HD3Cql65NlV4Or546PgVaZAG7Szu1jYN9m
-	LUN4WY4OoLRoKXEHUM8KXuSVOKW71Q7tBykJD8mF8v+MibRIRtl63V5/
-X-Gm-Gg: ASbGncuwid7iHb1eUdt61XHo6LNhP99C4V07KC5vmAIp54HGV7Rtz8yO66f4UT1qhn5
-	lpRXC3IiWzGu1FLjiRsYtSPzeUAtYU+SxJNe96P73I54h81uls2Bxr72F/i1wgTKNlEUrjIMKNC
-	Zs4wW8ZgTQdI/zAwuoulW4VrSK2f99rK6AFpIcK41nvxnsbcNw9ZgtFSc4dcMdJec75ee8rF/vO
-	RjdEzQYHFDbJ5WmhZoJHmE0nJeWivhKO9KfdkMeRw4Vkc7yfRdQp9ARr1VwGoaVcBFj5tF3RGs/
-	ky1eHGWRGQI1/M/i3cmV7XTc106Yl9bRwI2LKLAm6urqZYeb3iEtrjDcMS5nVo8SfDlch67daJv
-	63wDd4IZMeTnp1A/g++hw8nbW8bX7D3+k/ANBf6Q2g2omlLvcBHziVSkgSv2Sp5UvsELbegjoLG
-	dUlzyqsC9g
-X-Google-Smtp-Source: AGHT+IG5zD/iaWcaQEpSQxQ0CS24v+eDZidfw5pMSXEN19I74TQY1ivV+1T/jtwqPwPDcSEDgzcY8Q==
-X-Received: by 2002:a05:651c:1509:b0:336:d0f8:5a7a with SMTP id 38308e7fff4ca-3760a2f9e1dmr20889251fa.6.1760025256534;
-        Thu, 09 Oct 2025 08:54:16 -0700 (PDT)
+        bh=h3jD6Srgk8c77Z/UJ+8ukqBQAN6er5a/zSDavY8QJGM=;
+        b=YovV68MV3IcJyz/djzOnw0KXjz+7QybksiRaK++JFC3fvAFwYUjMVlAucnX7fDssGD
+         1fZOGnuohJQHcYV/SmeU/n6maQoHrhYxKaXghc7DrYACbwayP/IFLohLnksiV7zyI/vp
+         N9LHLjTp9L1oA+fNSo6fAlktwxhFz/QkQ2WEyYtRdAeiL3Sy/Egv6OoMYpvvVhFWkx2i
+         b1AbhZ+wUC4HAQ8q4aPHo/QLaoyPl/8DZgvHZeJG9yYC/CQFgiwj/D3+yrMsriTS68bG
+         0akVXxEeP3V2xOtksIK53mfdst4nE6MDPXqyPNX1z74oUBYHLvWmYEkhL3XM2s0AZtdI
+         h/1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXgYLqTad88FPg/8KUxCISKSvjXNpMKzbkwFo7HOAst9SkCZ6lW57IuQS8vmQJibWUtXg0ojCExpw==@kvack.org
+X-Gm-Message-State: AOJu0YyuKIi6vxT2EGNJomWSkQN6yGuULaUUY4hIuatvlLpDKnu7kmoP
+	zRouSpb7GS8k6A5Csq9pJrJfoCJZspkL9DDIUFAbiy3G+bhM7k4K5nmm
+X-Gm-Gg: ASbGnct+zqS/DGmcGcH8cHZk8V+qr91wK2hS5Wr5QvjA2yuoGn5yIyGXhjM0qL3lhc8
+	0B084bF1MjIWFkXbW6oHHN+AANCW4QjuVIOIhbTxOeR80RjBu7GQ/7FxTXqujDXwf4pH+4tbtam
+	5f5kxy1yvC/9C9rkK0s0P8BF5JTvdzqqiC2pGa9edO8Tlophp0hQsC361wvGpmV4aM4zdo0il5Q
+	ChbbcKN/VELOVGDD9jV2WMeP7fnPjm5BOgawEuCAGShcYzbPCtZIRjgz/alETNAE+fABhZKCAZv
+	RXdrNp/6o1dD85MOL590gUGYTSbl8c8hcpXvGc3Gv3icI97gAGVQ2zafSToJLpxDhc/Q18w3euY
+	OxIWtZ1QbSLr5SMVMKetWe61jVeggdPpDlcCCEdYHZzCYwzpB6g6bmms3OKeLUda8eW8AUl4XEw
+	==
+X-Google-Smtp-Source: AGHT+IEw+s+w6dsCMs+FyUWCNhIcM01oy6wj30FcD6bZDLMLaZbzcGhDGKpIi8Zl/WSuXa35QvXIUw==
+X-Received: by 2002:a05:651c:2210:b0:373:a537:6a19 with SMTP id 38308e7fff4ca-37609cf869emr22052341fa.2.1760025259655;
+        Thu, 09 Oct 2025 08:54:19 -0700 (PDT)
 Received: from fedora (178.90.89.143.dynamic.telecom.kz. [178.90.89.143])
-        by smtp.googlemail.com with ESMTPSA id 38308e7fff4ca-375f3bcd2a8sm29499831fa.55.2025.10.09.08.54.14
+        by smtp.googlemail.com with ESMTPSA id 38308e7fff4ca-375f3bcd2a8sm29499831fa.55.2025.10.09.08.54.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 08:54:16 -0700 (PDT)
+        Thu, 09 Oct 2025 08:54:19 -0700 (PDT)
 From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 To: andreyknvl@gmail.com,
 	ryabinin.a.a@gmail.com,
@@ -105,22 +105,22 @@ Cc: christophe.leroy@csgroup.eu,
 	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] kasan: remove __kasan_save_free_info wrapper
-Date: Thu,  9 Oct 2025 20:54:02 +0500
-Message-ID: <20251009155403.1379150-2-snovitoll@gmail.com>
+Subject: [PATCH 2/2] kasan: cleanup of kasan_enabled() checks
+Date: Thu,  9 Oct 2025 20:54:03 +0500
+Message-ID: <20251009155403.1379150-3-snovitoll@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009155403.1379150-1-snovitoll@gmail.com>
 References: <20251009155403.1379150-1-snovitoll@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: j3zkg3adnidi7norcs9f6xfzybjff78a
 X-Rspam-User: 
-X-Stat-Signature: oeyrnkc5fr7mq3n4orm5pa39xz5sk6qi
-X-Rspamd-Queue-Id: 668D84000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760025258-641551
-X-HE-Meta: U2FsdGVkX1+RsaWnqov5545UIm58wxwCl95ucWHsw1lcpfvB2dolex/xibDjCH8aupTqHvfSb5zEZvgVope1CUTN9ESYL+qceZW/q8ppSJGtxsE0qKuGrBtbELtC5D5K5Mis5ZK39tnhzGl0zRfZDETuYi9RXhNQz0qnaqVw2NiEHEutTM8rwREhis9ZgQz+/lZsG3kThMjUs75DwloQHZTYisol3eXCjvz701dvVgg/2pq8NX6EIjCcQiDICc7myp/85F3IN6N7Csr9Urlmgc0GnvN6xefkRwxX/3/vQYW+L5X6n9ySTgzv2GMbMjNMyFGjEg1bgh7FHnEKAqCl2UAgzoQGaLlZK7WuUZmgx7Zw9cZNUqPKBbB+3td8sXP6BB3kCNRJIKohGdugmcc6OwGUswJyJkIdBZIhY4KtII7FxPG9TFQUK2QAa+lNaC4vnudJDQq4lRAzF8F3w/YYf7wmz5APz1p5QL3+hhtGBsDVtC3iIQXKMGgN2GvvS0KS/lIjITpLbRtOibK5IrizDUmrJvYlaPLDMcFKHk1GDSz4i80KsDNmI0+n8p7AO7rKF1ma4OmPDn/pTIX0WKh5KGGz3RN0lt22U7czBkbbYuVVPJY7K2F2ExF/BDmDE4Dv0Y2zAv5qrbZq9+0ay1c+fwKXtIZF2zaERA29Tr93qofyERIysh09CVLu8F6SpEMvx8D7slW3QkYc7lF6PG3WgJAvkFunozIqWUc8+sXn6oUXwT8o7ak8u9PruRsytX0168E2JADsiCYhaZbjOTMXZHrMvPZGoghmfxY3ClBnGeHstp/4UOm4Ra/1StAQ2DZw3UdA3sxE0JvAgdMeLOoW03GWTBSSgOTh2I4Yc/9hta8ytA2krRBT8auqUijjCrP5VSt3V2iYbAQrV5oVaAj7v/SCuF6xnNArzhVjMUrQGeAe9WT68LQi78O0LsjOKlNyxY6FLclJCnTryOe9YDk
- jcuw4wBU
- rVDpZIikzh2fjPEAYRCSLlYpFEMz891wCc5OXNfNLOsYwaAEhH3eAb+HgdGgSPue5wAdJQYWMX3fZ4Vkmg6qampcjt72XF+0BZ8OhESqu+NajClXSIPXRMFK3rzrwHIhCV4dzbxeC5oAUQm4ecCt/Ym33gPV6T0cugnRBbICmw/JhIqbI4j4SI7ar1TUWEKsw9nUIANjc+3w7mnxQdyNSMXWg3IVK18VRBYUmSCS8erE9M7oAK8ENeCPQs96DK6cOTPfurUxTHZo+Kp4vzsUakn1xMpuYKqM+zhfmqo5+qqtl7ycCoHU24IMQeProwWorlA2WZqElfBISCapUM+N/k3NlOFMZ3j9hyz4RIZp58BC3trLdMQ1n07lPZ20sOK4XrMrkcgeC1lR4T+tE5s430JhLHIh33iZqOUkJ6VqvohnVGnehH58MKNBEs+P/AF2jjIqioYtZNbVj6k2ze/1IZFQ++1KZ7r7jI+EZnvqK61Ow1F0=
+X-Rspamd-Queue-Id: A0E66C000D
+X-HE-Tag: 1760025261-81366
+X-HE-Meta: U2FsdGVkX19ebtQCNFGt0dI11BGIbjj81LqjgX20Lk3bwl2meQFyuMbcJC1iozn8W4XwRSDBojYrIqg3MfxEnT4BvG6c6UFU2dXcd80T1qE6vBl7V0PJVsDdnsL09L2ext48qNQ5aGUxufv4AFIvIeEHYJwQo+sd9D7inJ3jW/Xwwr1aq+PgrsRzzqNeecVVdndmz2T/Skgb7aiJDYIgaHMOj+2TsOAx+3c6Qw1bANTeE7DAt91H6SxsQkFvyEJnR9qPxFSwcIQuhsF3kQi4wtrqGzX7vpLhRZyxrh7enGwdSQTK1IKjZt9b0BYIgpyjTo1rEV9xHPMcG7xBUk8U9Ba+jmz5lsK0wtJKcSSS3Q0+Efmv0ghJP2WtOyrhYwRat2MuM7wz1Y2kkjaJX9Atm/PbrQtch2JUa8MsLIA3gXI4eGysjmwtn3rcDWWdV745oDU21I78RFOaU+TZeqqykbAm4R+82pJOxYz1Qa9mMivxJZb4+j94LA8aOaQ4N+h/mK+w0EKbrx+mLDehPPSP2bcZbX3pnPIn1LCePwSdswSj7nAAgemTU4loX83BUQuVW5RGO62/pjx1nfAZfq6p0+1ePpykyfR+LTthOVeV6yzU/uHauPmrIoNxxoTgrrniD2+z6b8sJ1NY5iUST4yLcFqZ47lyXMYdrENRhi4vsmjIw25pXHEZHGP9KHw25gfTKc5Sx8gfTfuE6CX2Mcu3cXH3HKycUZ49byo4gVa3/zSYl1RS1YyVQPAHhizkFIfPp+S3AKc6ESym16GbCnYDI5ZR0+iCHh+EQcN4G4ddZamZv51uEnFx7RPE0sDWLQt9eaJKP2jYn+SvasWVPxW5v0Qr2QnbfBUYYhUVT99UMIpB/Qyec/dmMkd5HrQGcVSG9ugfav8QHiRaJ2fCeEWJIQbukleQ5BkDG6vLhv2CRZN6gpOH9p0kP9aMPjICUZQXrVXAEscOx5I5nFnN70U
+ Vgg+L/bE
+ tNrcsy7xj9YYZIdteNdv/Qn6kyJBuZI5yuZmJe6/xBHAl3zLAd/t/DA0yv/MhNqHwZGPBOBeCkRaXWEwZIBb2s6rsn3nO98kwmiVl2jv7pL3btii9DfhQn41b1kwUeVP7keZmCnuB7oOnaqVfmyVJji8l5fuLw1V9wtFPzdHOs8OqPZjA1zIZio2NNmciOYxT17cQmz/wP4icnhVW6dW40OKmSitQ2bstJm3Kgc3+UaaSI0+TigwWF0EzFWN5XwubB7uiks5TqBrFXJMg1+qvfjO+xWjvKbVLm4hS2/jbRalyKm2rzEG5uCp36gu2/b5C8iJQ3pd2cibvWKmU8XpPXVFcT3TMvWVqWN2crqXp/KSQhBby+jwZ7zkstFqabVeVlA/ZUMEMyL3fjiuT4XWkDP0Scd9JoxkvHE/csMA5qSQsLPWi0il5Dhps50dgAVUeZX0tP+khJ3VOGRMcmk/De/WbAJZsrowxWVUQwzC8F/DFCgZLBwQi+lleoeJc/DdugAHVBJGiJRJAOtQGun46AfVeDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,63 +129,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We don't need a kasan_enabled() check in
-kasan_save_free_info() at all. Both the higher level paths
-(kasan_slab_free and kasan_mempool_poison_object) already contain this
-check. Therefore, remove the __wrapper.
+Deduplication of kasan_enabled() checks which are already used by callers.
+
+* Altered functions:
+
+check_page_allocation
+	Delete the check because callers have it already in __wrappers in
+	include/linux/kasan.h:
+		__kasan_kfree_large
+		__kasan_mempool_poison_pages
+		__kasan_mempool_poison_object
+
+kasan_populate_vmalloc, kasan_release_vmalloc
+	Add __wrappers in include/linux/kasan.h.
+	They are called externally in mm/vmalloc.c.
+
+__kasan_unpoison_vmalloc, __kasan_poison_vmalloc
+	Delete checks because there're already kasan_enabled() checks
+	in respective __wrappers in include/linux/kasan.h.
+
+release_free_meta -- Delete the check because the higher caller path
+	has it already. See the stack trace:
+
+	__kasan_slab_free -- has the check already
+	__kasan_mempool_poison_object -- has the check already
+		poison_slab_object
+			kasan_save_free_info
+				release_free_meta
+					kasan_enabled() -- Delete here
 
 Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Fixes: 1e338f4d99e6 ("kasan: introduce ARCH_DEFER_KASAN and unify static key across modes")
 ---
- mm/kasan/generic.c | 2 +-
- mm/kasan/kasan.h   | 7 +------
- mm/kasan/tags.c    | 2 +-
- 3 files changed, 3 insertions(+), 8 deletions(-)
+ include/linux/kasan.h | 20 ++++++++++++++++++--
+ mm/kasan/common.c     |  3 ---
+ mm/kasan/generic.c    |  3 ---
+ mm/kasan/shadow.c     | 20 ++++----------------
+ 4 files changed, 22 insertions(+), 24 deletions(-)
 
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index d12e1a5f5a9..f335c1d7b61 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -571,11 +571,27 @@ static inline void kasan_init_hw_tags(void) { }
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ 
+ void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
+-void kasan_release_vmalloc(unsigned long start, unsigned long end,
++int __kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
++static inline int kasan_populate_vmalloc(unsigned long addr,
++					 unsigned long size, gfp_t gfp_mask)
++{
++	if (kasan_enabled())
++		return __kasan_populate_vmalloc(addr, size, gfp_mask);
++	return 0;
++}
++void __kasan_release_vmalloc(unsigned long start, unsigned long end,
+ 			   unsigned long free_region_start,
+ 			   unsigned long free_region_end,
+ 			   unsigned long flags);
++static inline void kasan_release_vmalloc(unsigned long start, unsigned long end,
++			   unsigned long free_region_start,
++			   unsigned long free_region_end,
++			   unsigned long flags)
++{
++	if (kasan_enabled())
++		return __kasan_release_vmalloc(start, end, free_region_start,
++					 free_region_end, flags);
++}
+ 
+ #else /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+ 
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index d4c14359fea..22e5d67ff06 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -305,9 +305,6 @@ bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
+ 
+ static inline bool check_page_allocation(void *ptr, unsigned long ip)
+ {
+-	if (!kasan_enabled())
+-		return false;
+-
+ 	if (ptr != page_address(virt_to_head_page(ptr))) {
+ 		kasan_report_invalid_free(ptr, ip, KASAN_REPORT_INVALID_FREE);
+ 		return true;
 diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-index b413c46b3e0..516b49accc4 100644
+index 516b49accc4..2b8e73f5f6a 100644
 --- a/mm/kasan/generic.c
 +++ b/mm/kasan/generic.c
-@@ -573,7 +573,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t flags)
- 	kasan_save_track(&alloc_meta->alloc_track, flags);
- }
+@@ -506,9 +506,6 @@ static void release_alloc_meta(struct kasan_alloc_meta *meta)
  
--void __kasan_save_free_info(struct kmem_cache *cache, void *object)
-+void kasan_save_free_info(struct kmem_cache *cache, void *object)
+ static void release_free_meta(const void *object, struct kasan_free_meta *meta)
  {
- 	struct kasan_free_meta *free_meta;
- 
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 07fa7375a84..fc9169a5476 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -399,12 +399,7 @@ void kasan_set_track(struct kasan_track *track, depot_stack_handle_t stack);
- void kasan_save_track(struct kasan_track *track, gfp_t flags);
- void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t flags);
- 
--void __kasan_save_free_info(struct kmem_cache *cache, void *object);
--static inline void kasan_save_free_info(struct kmem_cache *cache, void *object)
--{
--	if (kasan_enabled())
--		__kasan_save_free_info(cache, object);
--}
-+void kasan_save_free_info(struct kmem_cache *cache, void *object);
- 
- #ifdef CONFIG_KASAN_GENERIC
- bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
-diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
-index b9f31293622..d65d48b85f9 100644
---- a/mm/kasan/tags.c
-+++ b/mm/kasan/tags.c
-@@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t flags)
- 	save_stack_info(cache, object, flags, false);
+-	if (!kasan_enabled())
+-		return;
+-
+ 	/* Check if free meta is valid. */
+ 	if (*(u8 *)kasan_mem_to_shadow(object) != KASAN_SLAB_FREE_META)
+ 		return;
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index 5d2a876035d..cf842b620a2 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -354,7 +354,7 @@ static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask
+ 	return 0;
  }
  
--void __kasan_save_free_info(struct kmem_cache *cache, void *object)
-+void kasan_save_free_info(struct kmem_cache *cache, void *object)
+-static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
++static int __kasan_populate_vmalloc_do(unsigned long start, unsigned long end, gfp_t gfp_mask)
  {
- 	save_stack_info(cache, object, 0, true);
+ 	unsigned long nr_pages, nr_total = PFN_UP(end - start);
+ 	struct vmalloc_populate_data data;
+@@ -403,14 +403,11 @@ static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_
+ 	return ret;
  }
+ 
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
++int __kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
+ {
+ 	unsigned long shadow_start, shadow_end;
+ 	int ret;
+ 
+-	if (!kasan_enabled())
+-		return 0;
+-
+ 	if (!is_vmalloc_or_module_addr((void *)addr))
+ 		return 0;
+ 
+@@ -432,7 +429,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mas
+ 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
+ 	shadow_end = PAGE_ALIGN(shadow_end);
+ 
+-	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
++	ret = __kasan_populate_vmalloc_do(shadow_start, shadow_end, gfp_mask);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -574,7 +571,7 @@ static int kasan_depopulate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+  * pages entirely covered by the free region, we will not run in to any
+  * trouble - any simultaneous allocations will be for disjoint regions.
+  */
+-void kasan_release_vmalloc(unsigned long start, unsigned long end,
++void __kasan_release_vmalloc(unsigned long start, unsigned long end,
+ 			   unsigned long free_region_start,
+ 			   unsigned long free_region_end,
+ 			   unsigned long flags)
+@@ -583,9 +580,6 @@ void kasan_release_vmalloc(unsigned long start, unsigned long end,
+ 	unsigned long region_start, region_end;
+ 	unsigned long size;
+ 
+-	if (!kasan_enabled())
+-		return;
+-
+ 	region_start = ALIGN(start, KASAN_MEMORY_PER_SHADOW_PAGE);
+ 	region_end = ALIGN_DOWN(end, KASAN_MEMORY_PER_SHADOW_PAGE);
+ 
+@@ -634,9 +628,6 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+ 	 * with setting memory tags, so the KASAN_VMALLOC_INIT flag is ignored.
+ 	 */
+ 
+-	if (!kasan_enabled())
+-		return (void *)start;
+-
+ 	if (!is_vmalloc_or_module_addr(start))
+ 		return (void *)start;
+ 
+@@ -659,9 +650,6 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+  */
+ void __kasan_poison_vmalloc(const void *start, unsigned long size)
+ {
+-	if (!kasan_enabled())
+-		return;
+-
+ 	if (!is_vmalloc_or_module_addr(start))
+ 		return;
+ 
 -- 
 2.34.1
 
