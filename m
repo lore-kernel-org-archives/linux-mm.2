@@ -4,81 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52E41CCD18A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 10:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DEB4CCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 10:26:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC1578E0074; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
+	id 6DF938E0046; Thu,  9 Oct 2025 06:26:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A99868E0002; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
+	id 68FB18E0002; Thu,  9 Oct 2025 06:26:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AF7B8E0074; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
+	id 530718E0046; Thu,  9 Oct 2025 06:26:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 886EC8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:01:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1831E1A0790
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:01:16 +0000 (UTC)
-X-FDA: 83978132952.22.6FDAA55
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C3967180014
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:01:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf16.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760004074;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EA5B8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:26:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8917BB601
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:26:03 +0000 (UTC)
+X-FDA: 83978195406.02.9626952
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010069.outbound.protection.outlook.com [52.101.85.69])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E08FA40013
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:26:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AEkkbBeT;
+	spf=pass (imf27.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.69 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760005561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mviit9av+xJ2i1UCKCKoymOIpaOEjjA1p687Sppc3JU=;
-	b=f7lezPQjFhGlVSTChiXM0Vgdk6ToKAVMhNKjHXc4Ohc4ROsb+vt5taoBOSgfE/xiv3sjY2
-	ExSflurUwISuT8nZugMPXk5THj37shGblcDPHJCjZPzsp8MaoX1AC809FCNrtlT2iXix9C
-	8ZWV/hf4QFWbt1JihMvkCNcXG9itgrM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf16.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760004074; a=rsa-sha256;
-	cv=none;
-	b=lHqYO24UV3AV7S2XefGujqxd6XdEp48W9BT4pWi+bVtZOH9vFjCg4VeSn6cShquoUpTvRM
-	rEBEOX3gfJ0Ar9FbCnIz6IPcysBhL2agM7L71QG6aPOlyIcaMX1fEbxb3BEYL2yO58xYfo
-	UzLIQy98kbaUxCFIsTEDT/pjRPLXFX0=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cj548110xz9sSL;
-	Thu,  9 Oct 2025 12:01:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id qOLNCcqM6pFr; Thu,  9 Oct 2025 12:01:12 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj5476tjqz9sSC;
-	Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D06108B76C;
-	Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id MfDghYtIuYkA; Thu,  9 Oct 2025 12:01:11 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 776CE8B767;
-	Thu,  9 Oct 2025 12:01:09 +0200 (CEST)
-Message-ID: <0c730c52-97ee-43ea-9697-ac11d2880ab7@csgroup.eu>
-Date: Thu, 9 Oct 2025 12:01:08 +0200
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=biWLAK0VQUxowCTa/aYyaJoQmxJX91FUNylh8OApvso=;
+	b=s2wrHIqKo8IVG+llpbmG5zCeWtNnd2OdWzg8qkXiqpvG4X8X9+xG1ZJ4c8b3Wksc/8sMRK
+	zVA8hWg5YUPRg9vrNBIiEg0qOuVdaUDuFwabZX/9+6tuxyznkQyb9UGEzdrMTLcptPSVjm
+	/o09wvuhEiJ1kLnWZp2SbLpl5CqWvp0=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AEkkbBeT;
+	spf=pass (imf27.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.69 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760005561; a=rsa-sha256;
+	cv=pass;
+	b=lPrEEuy07miLUvvY/BeInDcSpu5D+vKbdjnFRB8RpNWiqKmvS3KJ4sA4jKXzISZis4Flwc
+	/rjZdwW9y1ygLIyM8VpiywguFJWk862VSPOm4lXeDe3BTCCy8YmxXcFhG3oHzSGECgO/uG
+	tSjFBeIHraZxppLvYymnfPOlnJUJQKI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LPJawCBvlNpu1oP6SlGKaWPBKvCgBaXt5knCw9W5wgVd4wWV/8/e41tFIaVtoi+DvySnbctSfvpq7CECOAGMhSQXGPyfG0dmZfULenc+8E/EbDX2c/JaEwDcWcCP/XJZ5N+a14wbVJTurk/LGUkmprOT8gMmrpszr1b0ZPZN6sUXDfMDdraTBYS194onXyzh33kANiy+N5W8iPhufLHhMyl2z64WF4KY3UlAO7/qMKO2ELzMOEDjHVLqa/HeHgtpvgDM7dlOEvWlbDSGlkiNkcHIXaSCgCsQP0lX7NnsC/3OPHks/xXQXgsCGJ+YTQaLanVWz/zIseYB+0qm6J7jTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=biWLAK0VQUxowCTa/aYyaJoQmxJX91FUNylh8OApvso=;
+ b=tjsBr5Rnu5JUB2YChOCfBtXX1sASbxwpxG4kkVS/3ae+g8Ju5Kn9TG8CzxtNbWIAIFml5MdvccRpjTvwATmwbSlkEaqrtu92jb5mQsvvDu5ezwU8QbBAAzqZMvxmJz34C3Od8JUbZipM9hXblov1PorErrfKBa+xtpzUuA6vT4/XtD8l0xMqkJjQ7RhY/BQtCpgUM9U1R+YORnhMFuojrgNxUTVtqQzBsIW5+9emmTow1BETlURWrQ+fA4TWh0H1eTgs3miNOVB4nHwuxVnLAe+qjqgafrccFVwqktIW1+3qCLkaujFBiU5nDGg/sfs/TwL+Fz3y2zJH7Fk9fULZiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=biWLAK0VQUxowCTa/aYyaJoQmxJX91FUNylh8OApvso=;
+ b=AEkkbBeTUwol5us3ROkbAmaPeGD0TxWx7uK/Xhn979IVUSv40JhSvCk/PHINPD0K4Yhh8kJOjqI6kChQWkCoEQSPnI7Kfmy41Dkv8SkFswT6QuT2zDqyxn+pVTWvvQEBprczJIxe/R9J+niSahd8ZULkHPDrK+/lKQlPQ5zS+DDNKxmAqQo5VoIpnMo3/7L5z9bDGcd/l5e9Jo0P9AY3J1J8kmIrRVgj58qDpngRt/xxtCA0UCWAVPWw8B0YPp96RNamkFAYdwcvp1DDofkmPEgFmzM+qKpm+GwU16NLEvkbwrf5EcL7eaes6mlWYrzsRybtxiOuHY9YWDkXMK4VCQ==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by PH7PR12MB7455.namprd12.prod.outlook.com (2603:10b6:510:20e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Thu, 9 Oct
+ 2025 10:25:53 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9203.009; Thu, 9 Oct 2025
+ 10:25:53 +0000
+Message-ID: <a04d8499-85ad-40b4-8173-dcc81a5a71bf@nvidia.com>
+Date: Thu, 9 Oct 2025 21:25:42 +1100
 User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
+Subject: Re: [PATCH RFC 06/35] mm/page_alloc: reject unreasonable
+ folio/compound page sizes in alloc_contig_range_noprof()
 To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
+Cc: Alexander Potapenko <glider@google.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
  Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
@@ -87,41 +90,135 @@ Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
  Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
  kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
  linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
  linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
  linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
- <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
- <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
- <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <1db15a30-72d6-4045-8aa1-68bd8411b0ba@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-7-david@redhat.com>
+ <fa2e262c-d732-48e3-9c59-6ed7c684572c@nvidia.com>
+ <5a5013ca-e976-4622-b881-290eb0d78b44@redhat.com>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <5a5013ca-e976-4622-b881-290eb0d78b44@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C3967180014
-X-Stat-Signature: rsotbqm94aj7r4tbrzt7w416sh5fhejs
+X-ClientProxiedBy: SJ0PR03CA0191.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::16) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|PH7PR12MB7455:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc042970-8d41-4fd6-bef1-08de071e3985
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZUpVelpzcVYydjk3V1lyTVk2cGpJZmZuUUFOUnRScHhGUis1L25Ra3pEQVU4?=
+ =?utf-8?B?L1BZREhsQ1o3WEc3VXdoRHIrMUdCeitRRmYxeTlONlhyRWFoYUlXQVNxVVE2?=
+ =?utf-8?B?b1ZLaW9KR1RmUzA5bW5BOHdvTUt1c3h4a1F1ZUVRa0dUMCtjSjVmZjZsVGR4?=
+ =?utf-8?B?WFJkWUZXT29IRUN1U2ZSMHh2VWlVMG9GSlM0MVVtYkZ3bEpER1ZTMm9jeWcw?=
+ =?utf-8?B?RGVZakJ4bURmVGVJM05MMjgxT3FlTFlQNEY4SGtnM1F5ZEp0Z2Vjd0VQZi9r?=
+ =?utf-8?B?cFlqMWt6bzRuQk5qdHZ2MGlVWkFBQmRVWjRFRUVrZ1d6blgxdlR4cDJhT3d5?=
+ =?utf-8?B?Yi9VZVl5T1g2MUpHYm96N2c2M2tyS2djWDFoSENRTUpLZ3J3OE5qcElWQnlp?=
+ =?utf-8?B?QjBKWnFwZ3E3bVAxOVM3WEhPVHhMQTNFV050aHdjalJMLzNQQnEvOXJ4c2lD?=
+ =?utf-8?B?UlAxQTFaQ3krQTZiN25YS3duN3ZxclVUMjdINnQ3UGVUMzRFb0JHdGp4bjdE?=
+ =?utf-8?B?Ym9wakZhQ1FkZlNBRGxhNmcwNHVDZ3Ywbno3bGIyZ3NUT1RBbXgxTmN0QWdj?=
+ =?utf-8?B?OXRxMis4TWk4OUhPTHRTQmRld2FMb2FnYlZSN0J6L1Q5eUJ2Wm05RUdZdUhZ?=
+ =?utf-8?B?ZXZadVVsdlJZUHVTeVhmNSsvdGY2eVJtbnVtQktsOWIxUHJiU3M2K2tPTXJK?=
+ =?utf-8?B?a1YrVVcvS3RHZ21oSmgxYVZoZjBWRC9jY0ZlOXd5bFlyK0x1VVFHcElxejFv?=
+ =?utf-8?B?M095d25yeW80R2x6V0JGb3c2WUhaa1JMaS8zbmg4ajM0dGZzdlZ6cDJuSjNJ?=
+ =?utf-8?B?NVVoOFpKR0xlSnlaTmFJRURXNHdRdzRLRnduREk0eFVOcjNhaGVCcEQwZ0tp?=
+ =?utf-8?B?WDhCaUFpZzlvQ0ZmQ2QyeGFmNm9uT2VhaC92SmJ3OFV6Vi93Mmx0d2FZeDU3?=
+ =?utf-8?B?RzBTZHZSdVhtU3BnMHJKV2JpaVRpbGYwbVJ0REg5YVZ0MEg3cG5XVjJkY01h?=
+ =?utf-8?B?c3hSMzVvR0Job2xVWlV3SElGVG84QytVUC8vbnF1UTFhVXExRCsrcVpTTTBv?=
+ =?utf-8?B?SENKL2d5UnBLc3hjdWpsVjF5V2F0YjI5T2xsdzNIcGcxYlFqK09nN1pjdzhm?=
+ =?utf-8?B?U1M2R1N3L3g4ZjRvajlwbXJxYmhKVW5ZRTVtRjRWb0Q1WnVJTmJWWXQvRjdV?=
+ =?utf-8?B?TlVnWVRTWGdlTkUwS0F1ejQ5VWl6bkc5b0paREhLR3NFeWxJNTVSak8wSHUr?=
+ =?utf-8?B?ZDVoMElwZzlSZmI3K05kNkQ4MFlKc3hxcDlNS0hyUFhCQjlMUzUwd1UrRHRL?=
+ =?utf-8?B?NzEzcks2eU9jaFpGVkVTamt0Q1NwYzIrb1I4U1F1UU5HaVM3alNHTGhnaVYw?=
+ =?utf-8?B?S0ZsUmpWTW9ZUUtHZVg2THVoTDRzVnQwS0NRSHlPZXBRYW5obmYrLzZPcGNm?=
+ =?utf-8?B?MW40QXJLc1B3Z3dDRlN1aHNkZnFKNHg0VU5wYU9FT2xGbk9GSUlXM2RKclYv?=
+ =?utf-8?B?MVA3cG03Q2xJeDEyZEtIOEwrYUlqbW5FS2w5ZkRuNkd3Zm9BTjNuWlFzZDVM?=
+ =?utf-8?B?RkMyNjdIOGlTMWc5NTl2djNPRlZxY1hDZFJhRXgvV0REdDZITTg0TkE5ZC9D?=
+ =?utf-8?B?WWdldmhzRVl1V3hmMVBGTjF4Y2thS2lrTGh6RjA2d29wNklCcUNaNE9lUjFk?=
+ =?utf-8?B?R0tzQkR4bitDYUZwQVgzamNQTlVUUlBJYi96N1N0bTZEV2t5VXRRSjR4SHZ2?=
+ =?utf-8?B?eTlUNmFyUWt0WnZDZU5kYWVRYlBLb0FTZVNlOEF2WWtNRTdUNWRVZllsbWp2?=
+ =?utf-8?B?YUo0SVZuQTRkNWdLZUd4cy9rSHFMYUIwTFBkRGZENTZOdjU4UHl5L0I5N0hM?=
+ =?utf-8?B?SWtGaGVLUXlMR0grcmd1a0dYOHZORHM3d3Ivbm4xSGpqM1F5ejE4S2tjSEhZ?=
+ =?utf-8?Q?RIki05ZQBRLqC4OWQsYahsTOprT9c9ID?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dlFSQlFOSzNOSHBwYXBRZm5xNWRYa0M0KzdRR0JoTzRaVXFPR2VFNmNHV2hG?=
+ =?utf-8?B?M0t5WW03V1FvVnJKTXVWVDIweWt6cDJ6RmlrdnoxMGVpYjUxRXN4VjQxUU15?=
+ =?utf-8?B?cTRFWWp5Ukd0azJmZ0cxTjdlS2JWR1YwVnV3VCtjSU9Qa1dwTEpHSW5EVDE3?=
+ =?utf-8?B?Ry9GVUJ5eE5mWXpORnpHSUZLMHBRVmxDNTY4V2xjYjlZaXJqWEtEaDJLVGU3?=
+ =?utf-8?B?NFNIbXk1MUh6dThIRkw4WmlXWjJLaVdaWDIxNlhMQ2wzVll0ZFg1VDVVOW5s?=
+ =?utf-8?B?ZmNwbXorRzVoUzVZQWVJSWJ1RnpwNHozOXJ5ZDdhMDN2TzFyNjF0WFVrTnl1?=
+ =?utf-8?B?N3k0UUdTMzQyT2lpMWJDRjB4S3JmMTVheWtDajA2M0RYeFhIYW5VR240dC9a?=
+ =?utf-8?B?UVhjMlc2a2xaUHIvUjQyVGxOS01GaXJHdytlMEVyYkRtWXJCckF4SXlUMSs4?=
+ =?utf-8?B?M0hEWStPWnI1Mlc2QmVlTTBhTC95VE4zZk5STE1pTE1aOWlKT1RXM1BvMTdP?=
+ =?utf-8?B?RFFMSFlvT0tURmtaYzdEaVBRWmVTK2ZyNS9EU0dzQy9oUHZFVkN4QlIvaDVR?=
+ =?utf-8?B?ZndBQm1vMnBjM1BEN0orZXNhcUdEQThxYzRQSTVhTUI2VkJHaCt0L1F2L2ZL?=
+ =?utf-8?B?L1NNQVhSTlhRVUVXQTJOZUlrUy9KeEpKRnhIZ29wVzFvM0hXNDFiOW5mcEJ1?=
+ =?utf-8?B?N056YWQxQUxHNm41MzIwSERsNjI3NG9OVGdMaWRJcjU1TElHY21acEFPclBB?=
+ =?utf-8?B?NklLc2JrVzZVcTVLMWh1WVNxZ2JRMmJ5TXZvZ2h5bHliQ2pvZzR3RFdKRDBu?=
+ =?utf-8?B?ZkZCb1N4TGt2MTEyWnBXTDNQaFZZc1VEaHoyb3paTGhQK1FkSHFsQzNHQ0Uz?=
+ =?utf-8?B?WmN6eHZuMXdFU2dFeE9laU0zek1oZ0pMU3REaW42WkZJTWpQK1A2cDIvdDk4?=
+ =?utf-8?B?T3pnZks4cThmc2pxZUY4UllZK2JBT3h4a1VMT3p5MVVrUGdHOEx3bDhyUnFm?=
+ =?utf-8?B?U1pKQVgvUTdwd3d0Rm1LYkJ1RXJCejNOVlVvVmtlUDg2ZTVTU3ZBaVRJaGxh?=
+ =?utf-8?B?RmFiU1RIOTVlR2diNi91UUFMUFhYWEJJcytlazdjbkJxRWJyRUVUMGtzUFg2?=
+ =?utf-8?B?WG9kMS9aNkJybVRDNGJTUnFCd21TcjBFNXFFaUZHd0Y5cE5GUTNHVGtZbDRh?=
+ =?utf-8?B?Z2h3d0dYUWg2MG5aZlBJTWpYSnJ6RGpoNXVjdTJ0NzlBQWRmaERvWVJYN25R?=
+ =?utf-8?B?SnRnS0VXRjNkVndpQVFRNFg1YnFpak5aNTVZSHF2bDAwRTdlNWFxd3ZpYTNL?=
+ =?utf-8?B?OUpPRVNtS1JyRWorL2RYWTlrYktzMmxlZWtzTTF4WW5TY1BpU3d6U2pvRFpT?=
+ =?utf-8?B?bVNVM2lxaDl4U0s0OXlHODVQWS9GdjkrSW1LcW05bDROeHlqOE5tQ3EraERJ?=
+ =?utf-8?B?bHp3VkFySnBHTkpYS1dYRHZvWFcxVlRibkZqZHEyMlo3dGNtazJGM2RxTkN6?=
+ =?utf-8?B?MFFybFRoV2NjUXlhelRqTUlObGszSjcvT3ordnZrcGVKVmN3RUc3TzgwMjl3?=
+ =?utf-8?B?SmR5SlhRU1pPZDJ6QWxaeHhqdm1oL1NEcEc3c2ErS2pjckFKV285bURldERa?=
+ =?utf-8?B?aDg3TEltTHlQdFc2MTROVW9DUDN4OXArQUNVNmtveU5hZjlkRkwwQVRmcEgy?=
+ =?utf-8?B?cmU0TDhVOWoxRUJqTlBXQ1o5eW5uMVEyaWZUamNOb3hQOGx6K2RwT0xpTlpT?=
+ =?utf-8?B?VVBBNjBZN3h6TGtYL25VMXNkK1VnZVVzS2NZU2grZ1A0TytxT3F3MVhaWkpv?=
+ =?utf-8?B?eHl0MElDN2UyNnZOaDh5cXUyMUp5eE1TQVN3TGhjOHJJbUpBNk1xWVpselFG?=
+ =?utf-8?B?Tkp2cnd5U2dJSEU2ZkpIbzF3Y29pK3RVanRXVUcxRVRDeEI3WlBLb1N5bFpz?=
+ =?utf-8?B?ZkRvN1FkYWNtMksvUUlveTRCMXdiRXgyalJRSDZnTmlWSU5JbGhFN1RiRWZx?=
+ =?utf-8?B?TC9hRU9XWFVSTnZ5MnJ2YThBRG1EYjlyb0dtYm1EU0twUW5xMTlZODBjWHdk?=
+ =?utf-8?B?ZVBQRmh5MVpweE44ZHNMV1dGZ09aa1ZPNHg4SE9iOENIbEYzSHlxd1RXbStm?=
+ =?utf-8?B?K1phdm5PS2pQc2w3dFdMT1U1OU1XTlVUcVZHRHBMdzArM1hRS2RVYWhYZXk0?=
+ =?utf-8?Q?efW3/6z1peeZJ05KBnsNhLkPgCVix25OmEHkOeTGaYh2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc042970-8d41-4fd6-bef1-08de071e3985
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 10:25:53.1264
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L959gJC8jrvJvfIb4iQtdd7P0YXxd978MySa+fAzHqrX3t6Dj+mRSWeQoKjvNjEI4YvCngzAp2V3GSUCLThCkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7455
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E08FA40013
+X-Stat-Signature: a95gxtg589drkdbpg8niwkd193p84hss
 X-Rspam-User: 
-X-HE-Tag: 1760004073-373490
-X-HE-Meta: U2FsdGVkX1/z/X1o9oStMhDBabjfRmEj3i60N/JEFeiYGN3SRDu7yaxX5idgpCvCw6JY+4Dy57406WO0lE66HKhmV+v7OL39dV+xJKEn2LdJRo0z78Veb2RYYyuq4TK/Vl7apJAEfiSw1wAC5UI8qy0P/35slrmOzIL35g3z0tWPgzzcRFEDfJhlVkuMIutjwzwiOXue1pRX7LA9mwQHvTJMgioZjTPl6USY+xyn8mk8Npwr5nB/AZ8IwdQdru2BAu4kERPKPUXd7Bw70+B37HrJ0QqMVo9xpa/3aReU67mwliA2sLzUUwTMMvD3KLce2DBYkEtrXBJK7yJXK9hP6+8/JkAVlog6NzSWQ+/7ur1NmBoVe82t/ifELv8sWULKgEt7LjcUnnv5tP8kcXA76i9woxVh+X8qaPcNjJHa44GF7OXzfMwTYP6sjkVgl0HeFxCmC/FsxZ/fB/LkBcIh1Tj1pZXSIvkQVyAalsahmn2lVCep4dnd/ZSNm3cVOF8OK+pbG9hGxKohEvhfGIvamMCZCgfH/Ddyfy5m/fY9cLx1Ql3uK9PwURwSA6s6L7yYdGec/oKawcv4/DSqIzINx2/lHkMSBVlURMBx/2PJz29SNto0M4mjX7LBxD/bNcj8q99d+zUCKqUdfaIXhgGWvSO5VFu5OLjs/zhFtIt/D+CxIVXSSlRrPAnqc0CYIUfDUGsLnJoqdxPofx972G/OS2fBUrGgQ9FEtB/aHMlbPo5kVdHkauUncxWhwutnMZy7JMJ0rrMQxhGPLN7ifz2h0t+pkPHipPLhq4tmgYP7agIcTA7rfydBbkNYZ+VwL4j8WknL4ymGozq6HzEGTojjqw+jtW4Zz/XQw6SktrK0nmcDhwt5hjUCeKVyGilnkFjQ43yeKE7MSQwYT5y9p0om0QVk79HDIbjNsD5kcJnOUJI5FymAsctc1cgjNGTISA2obtP792ZYILUnvGe52zL
- ooukvwGe
- udYl8cGPuPq1WlXty1aOUMszdJR+XtZjZkC7EZHNCHN/1l0dVYRPViOiySzcsiZ84msc2XWHSQEvXJ2anmAfhNFdWucsW75IHQsN667QgrLfqFo4wlIWzXypT0Izrfg0ti7ZRYyQNryo/qn8pu67qiWD14DDJx8ewvvygtWxc7l+WmdVnR0x+qpDA33pVOXFcBFTgisM3AMw939sCqx8tIoPSRCG1NosSII/SjjZQpmauEEE=
+X-HE-Tag: 1760005560-156518
+X-HE-Meta: U2FsdGVkX18E+sEek+t5byRMtnOg/UW7il5drNmNDQHHXZ+foO8iU4BwydsUUOqSppBRw2vGLLZuYKVeoGjWEDyjai3tZ2ABW42aWaSLA1Ox/WRMj0M5FqcdrvJ8zh8tPjkgr35rB4sdhMr2o9N//CeM6B1uFqq9RKUXCLGzr3zLw8wVnw6o1jS5Sl5GR19fjPbTZciZ2pa4FQjcvdUMUl+ODoLlu7h3A2gFs9uGIvoOuBSLkGvZbBkFC0hpxrqYUCH4B215QCfNSJknNdGLucxxwpW4V2l1ubLOInxayabau02VulhidMXeCrHenty9iNl5oQK0GiOwkCIeV6PA5kNjQZvqsts3tnINvsMjjRPK/tl8TDp13+vJO03hwr81nKdudGwqb340VoV/yWJX4Z2aQCjyooNoEpCfUWvcsPD5mj+0EkqrGhLEBtnzVgq5Px4ittmeqa37Dxbjd8snqHTb4eBZcLH2VPdXRWOAs8+P4biEXJiLyxld6yNF7eufuv5QGq/anRgoDt/VfjoQJdGe3Aw5fsCr/QyQvdPXJG0hoyUuS0j62aN36Tsp2hEEqpGc/uJ42teaFzk1rZ3zLV3FUGVGWuRV2sFLrHw5FOX1IZYW877yYdtRYDFdt9qPmOQX9w7jyutBIWfI/f5s2EMauTg+0NFkb7ATPDhTIX9jsDALON6CYULj2nHu4+bI01XvC5oGPSdR8bicGTJSSSlIC9UbyuiBAAdsgV3tXwwQrm8o2osGF3tlzazapBBvpdA9+WKRDgTOBjBdxdo+3pGfFR58ZiUvjlHcYeiEjuDiZ1vm+y3HOmX6Zkms87Mx45ASf/avU/rrRyZ102tdLkVR8x3lMZhsEFLRSB8/RxGrdqX45bASPWiOkkorAUd4m/ArTiOsV06f5vq9UJ9KYPuEaX0T3vh0cHWDjDp1Fn7hX2Bds+7DgJ2wvDuWgKIQ2PpHUyv3VkUTPjt8zmG
+ X/UXAISZ
+ Gq4j6HfcaB1hpj6MWX7n852jvktk/Y8pzUVqHaOICa+WfrEzPCgryiNQFjqcaeSAs/3VAnjPMnM1pyS8KDoXpDY5mJaaoAHR48UZ80x3eGszTN4sj/PLtw2YHZaXJ5yanj6pujBY7dkbO6wVwr8b8GP8GsNsFhzuAbDXbP/NlF3HMcE+Byy4Ai62SEpdkwt1sjgwsiwUR4wfz7H8ATUxqMTgwvmuWl1x/xW0iFGRvODwxHFlMBYDa73pOPHkSi+K4fSW68IZ88o6GLAGQ2jRvSTFnWH/3t1n1jStJWp6W/nybUoSJCwDdr9JqJZC6OPN2vwjEFtKADD5dfV02v7hbS4C19oskhieicWhKyO7FQK3DMjC6OnVtx3q+W2WHA0aFuxC9oQOGD6N8BHQ1O115Zd5ZakElBgN2Y7pzLv8JHzNETcvzNUt5MksYLVnKmD0bVK/QwZR5MgRsU+HiML9r26j6ZhyiUcokxv9MWtxnhx6XPuaa97/JF1udDrG762qOljYfH4eEoF32PmNtCfgBfjk/Re+5ZktFmXo7d8Joeorw8PF1GdyAUZGCbg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,140 +227,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-Le 09/10/2025 à 11:20, David Hildenbrand a écrit :
-> On 09.10.25 11:16, Christophe Leroy wrote:
->>
->>
->> Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
->>> On 09.10.25 10:04, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->>>>> On 09.10.25 09:14, Christophe Leroy wrote:
->>>>>> Hi David,
->>>>>>
->>>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>>>>> --- a/mm/hugetlb.c
->>>>>>> +++ b/mm/hugetlb.c
->>>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>>>>          BUILD_BUG_ON(sizeof_field(struct page, private) *
->>>>>>> BITS_PER_BYTE <
->>>>>>>                  __NR_HPAGEFLAGS);
->>>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>>>>          if (!hugepages_supported()) {
->>>>>>>              if (hugetlb_max_hstate || 
->>>>>>> default_hstate_max_huge_pages)
->>>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int
->>>>>>> order)
->>>>>>>          }
->>>>>>>          BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>>>>          BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>>>>          h = &hstates[hugetlb_max_hstate++];
->>>>>>>          __mutex_init(&h->resize_lock, "resize mutex", &h- 
->>>>>>> >resize_key);
->>>>>>>          h->order = order;
->>>>>
->>>>> We end up registering hugetlb folios that are bigger than
->>>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger 
->>>>> that
->>>>> (and if we have to support that).
->>>>>
->>>>
->>>> MAX_FOLIO_ORDER is defined as:
->>>>
->>>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->>>> #define MAX_FOLIO_ORDER        PUD_ORDER
->>>> #else
->>>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
->>>> #endif
->>>>
->>>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
->>>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
->>>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
->>>>
->>>>      hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
->>>>
->>>> Gives:
->>>>
->>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
->>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
->>>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
->>>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
->>>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
->>>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
->>>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
->>>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
->>>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
->>>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+On 10/9/25 17:12, David Hildenbrand wrote:
+> On 09.10.25 06:21, Balbir Singh wrote:
+>> On 8/22/25 06:06, David Hildenbrand wrote:
+>>> Let's reject them early, which in turn makes folio_alloc_gigantic() reject
+>>> them properly.
 >>>
->>> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing
->>> folio_dump() code would not handle it correctly as well.
+>>> To avoid converting from order to nr_pages, let's just add MAX_FOLIO_ORDER
+>>> and calculate MAX_FOLIO_NR_PAGES based on that.
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>   include/linux/mm.h | 6 ++++--
+>>>   mm/page_alloc.c    | 5 ++++-
+>>>   2 files changed, 8 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 00c8a54127d37..77737cbf2216a 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -2055,11 +2055,13 @@ static inline long folio_nr_pages(const struct folio *folio)
+>>>     /* Only hugetlbfs can allocate folios larger than MAX_ORDER */
+>>>   #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>>> -#define MAX_FOLIO_NR_PAGES    (1UL << PUD_ORDER)
+>>> +#define MAX_FOLIO_ORDER        PUD_ORDER
 >>
->> I'm trying to dig into history and when looking at commit 4eb0716e868e
->> ("hugetlb: allow to free gigantic pages regardless of the
->> configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is
->> needed to be able to allocate gigantic pages at runtime. It is not
->> needed to reserve gigantic pages at boottime.
+>> Do we need to check for CONTIG_ALLOC as well with CONFIG_ARCH_HAS_GIGANTIC_PAGE?
 >>
->> What am I missing ?
 > 
-> That CONFIG_ARCH_HAS_GIGANTIC_PAGE has nothing runtime-specific in its 
-> name.
-
-In its name for sure, but the commit I mention says:
-
-     On systems without CONTIG_ALLOC activated but that support gigantic 
-pages,
-     boottime reserved gigantic pages can not be freed at all.  This patch
-     simply enables the possibility to hand back those pages to memory
-     allocator.
-
-And one of the hunks is:
-
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 7f7fbd8bd9d5b..7a1aa53d188d3 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -19,7 +19,7 @@ config ARM64
-         select ARCH_HAS_FAST_MULTIPLIER
-         select ARCH_HAS_FORTIFY_SOURCE
-         select ARCH_HAS_GCOV_PROFILE_ALL
--       select ARCH_HAS_GIGANTIC_PAGE if CONTIG_ALLOC
-+       select ARCH_HAS_GIGANTIC_PAGE
-         select ARCH_HAS_KCOV
-         select ARCH_HAS_KEEPINITRD
-         select ARCH_HAS_MEMBARRIER_SYNC_CORE
-
-So I understand from the commit message that it was possible at that 
-time to have gigantic pages without ARCH_HAS_GIGANTIC_PAGE as long as 
-you didn't have to be able to free them during runtime.
-
-> 
-> Can't we just select CONFIG_ARCH_HAS_GIGANTIC_PAGE for the relevant 
-> hugetlb config that allows for *gigantic pages*.
+> I don't think so, can you elaborate?
 > 
 
-We probably can, but I'd really like to understand history and how we 
-ended up in the situation we are now.
-Because blind fixes often lead to more problems.
+The only way to allocate a gigantic page is to use CMA, IIRC, which is covered by CONTIG_ALLOC
 
-If I follow things correctly I see a helper gigantic_page_supported() 
-added by commit 944d9fec8d7a ("hugetlb: add support for gigantic page 
-allocation at runtime").
+>>>   #else
+>>> -#define MAX_FOLIO_NR_PAGES    MAX_ORDER_NR_PAGES
+>>> +#define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>>>   #endif
+>>>   +#define MAX_FOLIO_NR_PAGES    (1UL << MAX_FOLIO_ORDER)
+>>> +
+>>>   /*
+>>>    * compound_nr() returns the number of pages in this potentially compound
+>>>    * page.  compound_nr() can be called on a tail page, and is defined to
+>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>> index ca9e6b9633f79..1e6ae4c395b30 100644
+>>> --- a/mm/page_alloc.c
+>>> +++ b/mm/page_alloc.c
+>>> @@ -6833,6 +6833,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
+>>>   int alloc_contig_range_noprof(unsigned long start, unsigned long end,
+>>>                     acr_flags_t alloc_flags, gfp_t gfp_mask)
+>>>   {
+>>> +    const unsigned int order = ilog2(end - start);
+>>
+>> Do we need a VM_WARN_ON(end < start)?
+> 
+> I don't think so.
+> 
 
-And then commit 461a7184320a ("mm/hugetlb: introduce 
-ARCH_HAS_GIGANTIC_PAGE") is added to wrap gigantic_page_supported()
+end - start being < 0, completely breaks ilog2. But we would error out because ilog2 > MAX_FOLIO_ORDER, so we should fine
 
-Then commit 4eb0716e868e ("hugetlb: allow to free gigantic pages 
-regardless of the configuration") changed gigantic_page_supported() to 
-gigantic_page_runtime_supported()
+>>
+>>>       unsigned long outer_start, outer_end;
+>>>       int ret = 0;
+>>>   @@ -6850,6 +6851,9 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
+>>>                           PB_ISOLATE_MODE_CMA_ALLOC :
+>>>                           PB_ISOLATE_MODE_OTHER;
+>>>   +    if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
+>>> +        return -EINVAL;
+>>> +
+>>>       gfp_mask = current_gfp_context(gfp_mask);
+>>>       if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
+>>>           return -EINVAL;
+>>> @@ -6947,7 +6951,6 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
+>>>               free_contig_range(end, outer_end - end);
+>>>       } else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
+>>>           struct page *head = pfn_to_page(start);
+>>> -        int order = ilog2(end - start);
+>>>             check_new_pages(head, order);
+>>>           prep_new_page(head, order, gfp_mask, 0);
+>>
+>> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> 
+> Thanks for the review, but note that this is already upstream.
+> 
 
-So where are we now ?
+Sorry, this showed up in my updated mm thread and I ended up reviewing it, please ignore if it's upstream
 
-Christophe
+Balbir
 
