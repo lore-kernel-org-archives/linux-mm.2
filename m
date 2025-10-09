@@ -4,162 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F56ACCD187
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 09:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7283CCCD188
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 09:17:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D8C18E006E; Thu,  9 Oct 2025 05:13:03 -0400 (EDT)
+	id ADEE88E006F; Thu,  9 Oct 2025 05:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0218E0002; Thu,  9 Oct 2025 05:13:03 -0400 (EDT)
+	id A88948E0002; Thu,  9 Oct 2025 05:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C5AA8E006E; Thu,  9 Oct 2025 05:13:03 -0400 (EDT)
+	id 976F38E006F; Thu,  9 Oct 2025 05:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 49B1A8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:13:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 520031A06F6
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:13:02 +0000 (UTC)
-X-FDA: 83978011404.17.9D29E1D
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6A27810000A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:13:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/nD9o3V";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760001180; a=rsa-sha256;
-	cv=none;
-	b=089mPe1Sh1XUcGuBV6X4hroxUEFDaCcLsL1k7R6awsr0p41FRq0YVtjq+ATqE1WfIrInxe
-	Eo1hCvk/bNx/rjILAUYInqHLs+RQuuZ7OMqxnZK9UzkX0Y2sFA3uOKC1avN3ExqZScsovM
-	nf65a0UNMkmDNmxqc6k2kqXllJl8/+s=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="M/nD9o3V";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F3FB8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:16:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3512114058E
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:16:59 +0000 (UTC)
+X-FDA: 83978021358.03.03A2334
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf13.hostedemail.com (Postfix) with ESMTP id F11C020004
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:16:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760001180;
+	s=arc-20220608; t=1760001417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=noGJIDsEGpbT4mVPtLItOHBIizt5I7YMxK5vpTBOvYc=;
-	b=qRuYc9mCNzVinbuIBKxcW38gxhneggC5O7JnFKR7ev/5HNKfTLXrNXkByTD9hgF55y1CDj
-	A4iWpoSevvpiImfsN1FIpX9G4HNCxLP5RSCT19JvKB9QP3UpScl10xxoYgoHxpLSEXpyM7
-	j/OBiee8gUsvjkc1DNOjhDNCPDuexgs=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-271d1305ad7so11925255ad.2
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 02:13:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760001179; x=1760605979; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=noGJIDsEGpbT4mVPtLItOHBIizt5I7YMxK5vpTBOvYc=;
-        b=M/nD9o3V1LWfR/L7fo7thR+T6ZFtggw2KW/Zwdb6RLaFNQjbZZ5KcLJAaBIZ4f+KKr
-         fuWvIPQBV9aJwCJLOnXXVjJShcvnJhFuFURS1Xi99nYU35ik1T5jqltZcJU40MODJW6x
-         wKvVQl+rV8gEspFdUS+ky05Bbxzwzw8DVpKgwfNT45j7bNlqHQ9YhcanqsPbzst/9UQY
-         ym5cjSfoTNTxpVmJhiNgye7x2A7HAR8Fnuv1e8Za8bZdBHfCHVh+k/DAoYlYl5TUpUtT
-         cr8KDISvk4RJ3TZFuqSO5jPuF9F069gKdSeXpSbMkuhXjVCqYQLpal80j9RdQ4VQC1mJ
-         figQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760001179; x=1760605979;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=noGJIDsEGpbT4mVPtLItOHBIizt5I7YMxK5vpTBOvYc=;
-        b=ZQq0l2PUO0TyueORo4OsbJw0iJ4xGxUJoZlq+0J29wAKrCEG+X8IawtP21uAkb25Og
-         KuQOBC5cmQyM3Qo6bkdvBwHhWAmJY45OgjhCuMCN++O6siQ+uWAWw1N6BRmPWi6/rXIU
-         Z/o7lwuE6e7QxvNi2C2G5FbMOiilbaBpaKQen5Zzn3Yymh/BrizHynw2hjjxI+WnvKPK
-         ZvNIa36t9z/bVEzRPjiYrxp37V2Z2ODhpZZ8U6ZFKM4TANMqJc5yFazEkI/gCp84R+h8
-         QLMUH7w2SCcnUWdJ0yFAUovp3JqbDyPUxrq70vCTWq28NHLX5Q8+d4OSW8ZGsYFAXQEH
-         7Yeg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGYFzhnXSwNbkMWwwi1u0RwdhUywQvUrO8zUKd0A1f3ubSbmSdowdQOQbx2XlLGRf1QoWR06652g==@kvack.org
-X-Gm-Message-State: AOJu0YxwBx/34JLj1TQITawbMdXCSxUh9EXAjrtDrVBqG/ZGkf5PGjNh
-	tHzFXaLRJp2Txz+nr03ow629iOsgQ83toh0wtpQrpf1hlweWbgzFNCWJ
-X-Gm-Gg: ASbGncvl9UZFeB5UioSa19hZymyu1EdeASVcP7VRQxmclC4MRW5xGFh+hDQ0M6SbR08
-	XswCW9oo1IapGbvOoGhG+R7Af3dHS7c07OmPDSbBkjZHCMpeKfdqaAwgXlSPLhT//5oC81Ck+3k
-	Medc1YH2LaOwDS3i9NP29Agh8hGHEvXpujrkB/TuAEghIaikP6b1+7Z3Zmx5yh+mAc6t7B/8k0B
-	K8KZAZGrMQxLSIrlwifdBljM/BWmQL1ZrF4KsKQoodyGn8Q7MHPlXhzFt9xPx1TU15nzzUwtsVy
-	RJ33YUvmf1vN8WMe7Ubk+VkXRO1m+kkiz0RhOhAXytLPJ40oX89EjA5fHG0p1LY6cjzzhuvtrem
-	taLpIVoP6QQAmWVeRUy5FvypyTlZK6D0xUU9dty2bImmyS0CIsEa+0+nZtcc2QQ==
-X-Google-Smtp-Source: AGHT+IGgc722wX6cnZ4WMCp7pNtwV85yDs1WMyb3Ue3/XLDo0+KBsbutwCUcBiVTue/uMgVkYBWZbg==
-X-Received: by 2002:a17:903:8cc:b0:267:9c2f:4655 with SMTP id d9443c01a7336-290273ffcf6mr78713905ad.41.1760001179036;
-        Thu, 09 Oct 2025 02:12:59 -0700 (PDT)
-Received: from localhost ([45.142.167.196])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f3de4asm22026565ad.92.2025.10.09.02.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 02:12:58 -0700 (PDT)
-Date: Thu, 9 Oct 2025 17:12:50 +0800
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>, Rong Xu <xur@google.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>, Nam Cao <namcao@linutronix.de>,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-mm@kvack.org, llvm@lists.linux.dev,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com, "David S. Miller" <davem@davemloft.net>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 23/23] MAINTAINERS: add entry for KStackWatch
-Message-ID: <aOd8kvWYIROq99vx@mdev>
-References: <20250930024402.1043776-1-wangjinchao600@gmail.com>
- <20250930024402.1043776-24-wangjinchao600@gmail.com>
- <3913273d-12e2-426f-aec7-263b7f49008a@infradead.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SjzO/ywmFDyEDpAIYRGFQ4F67Mu4cfU8z7gpJNsGZLg=;
+	b=LrP70ZAeGdYOOFVh5vugPIYJlFmTHXI4WvIUGvaHjdBl22Q1oueDVzx5VqkmRXR+j36wub
+	22woGQ+dRkOkpDQ8Y+skkq5JyiPkj2pfh+A3YX/iwQObFYtDqgKU6agwjHW9qqfylgOqgn
+	I1q8BKV4h15ntH45Z9ub8YoUdpnu0MY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760001417; a=rsa-sha256;
+	cv=none;
+	b=KgUj1+7ksooV7LL4E5/aT9OEPrcyHM/AMWSpEnQsDD53XCy75Gh+8pK/ZVXc9vSzHiT5yK
+	S2ASqnUNjK7sqjEoyX9flOZmtFGcaQVRG65vH9xCeM7FvauHAE4cRsJ+2nT+/I5ZJJ2Zn5
+	gfkpNvaGV2+8RFhdNZbGvTKLa0UcEXw=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj4530nVNz9sSY;
+	Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 1xW49BLVjvgf; Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj4526L27z9sSX;
+	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC2658B773;
+	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ecZHQXz6ERX1; Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BE4258B770;
+	Thu,  9 Oct 2025 11:16:52 +0200 (CEST)
+Message-ID: <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
+Date: Thu, 9 Oct 2025 11:16:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3913273d-12e2-426f-aec7-263b7f49008a@infradead.org>
-X-Stat-Signature: o4goqskk8cd7xhezxk8449bygqt98ukk
-X-Rspamd-Queue-Id: 6A27810000A
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+ <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+ <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F11C020004
+X-Stat-Signature: 6wb3bifqihbgx3kkpa6puaygqsrinw7d
 X-Rspam-User: 
-X-HE-Tag: 1760001180-545065
-X-HE-Meta: U2FsdGVkX19mgYqy5qP2Pw+qXeHLob4NJK3jg9a69syS2tGk1C7ltqImmc5MjaTAwtt/N7OTou0Vc31Kc3G2eSqNiWx8dpnh+6/rDF5Nqp6lCbGDA8NJeshzojlRgvJUvU9TCHlKlpOVewA01u2Bl4EDw/NyuNy+Alwm041AIj2Vb1vptWDpVCnWc9XTiCR1BQbrjzIUJQkbMY1ACMxa5sHeQgr2RbFRvI2CjPZCcc5ut7jfw+MYUKkHbG3wS2mnn8TGRXgaX3lhyFfkMHJxz2ah/ytuzOLz1pdCCHkYntZnrE2TU/Gvl9xJ845lG56WyHy+D8FxyX5bLjNr6sy4Yvd7MH5xq79ghFFXBtpqWFMkVIpLkra1BHiUxHMz/QTqFOJ1p5KD6fT9S6j/A7VKq9SDYwmcNJVY/fkydMSIPdSzeItHpVucweLgRJF5a+KQ0J2ah5NoNhopwsxM3THOOQOAc+P2P62L+MJHL1YTpbaPGRbqhgx55KBSO6731FeWCQzCFJI60dqWol6aLCdig6UBSvVVk8f4iSe+DxNYaiIB10JtTtL4ccUxb5mOL0XOPGxHs5dX4R/SsLU8pKf6MRndENgQhwFZ9iuD8ceZPqWB831PSWFs2hHzSSk99duoCj1mRGj2z2SWp6mMeIDdo/ykuOBarmepMc6pVxEarstq4YqUad9SdMFgGQzJBEsRUtE+5UiVWXFR5rUrYRXaa9UvEt7zqkkV8wi9UR+DtHZgdf5UQfVB1DmsPGp9vM3Syh4HlhgVhNmzSsdpShNM8JFoCkTfgaryNrXMqwXXiX0RUdhgIiKAbedmFkSv72kWK3Ypouq17Uufd2jz33414iFCWY/M9UWjHDDe4v9k2l2MIApi4uXliBfMuRveWkr6lwSyiaT17TemqmMfQmGbOwTg8TKco7y9OsNVdIqhXBnRlVEUc1KgbhSBviwDGqWqiqrI/J/VrUyJjFww/12
- apfCiFPb
- 2fiSwtRSBwtzT8gQlQmnbbJzJvUhevhOLM8Yrm9Nu4ivIeDF6ulpViKjIMUghmQzvKi70MhUilgGUIU6wDe7OQ7yJHYKpMpUc+/JVOvIvst20BqGkAPdj4by83w0d2K0Ai4m58F69Q5/ZLhv//da291bq2hgVBgLxREKETsSr6kpuyr6jiNKdLdU7YolwPYAFFfEtN7sHblZMHRX7605v4O+aobJw/I0uBh/hoMs/zihtum+uhcmwXnjwocTNf9txO4h+7hEnsvW/+CNpFccgIUM6J60ajM8/OAzyfA3Q4CzJXfRzFH3As2jJY6t3I8anyT/QtC+sh1uSpcffDT733zGDyONn+Kwk34Dipf6NU8zy+pSIquBvd2C/p54k9FohdBMU2sgPSkQf9W1o1GSmJWOwamrz1arlxU/JIc+EKQ6d0YnlxGeRlAT+Tdkn7/v/eCJPpqreG3HM0YEoCCzgEdozyWYXKyW6YLcos9uUmICVMDRppvjHlItgQrG6Lww1igRwAC3ti/VACrpZhzpq15eP3XKq1McnkOODAR2Gb0AzWGMaxFPpvXOG94mg3YsthcpVBXbT3CoRAaaVVyLTTGFOrca9vqWc1TyED1NQ9mPTBIZujGfm88MtmVcjGNQaGmZ5/DWhDbjcV/JdRYsmYX/ukbLSX6+A5kerlDRFIJqOwOeQjk4h+b7hQg==
+X-HE-Tag: 1760001416-308034
+X-HE-Meta: U2FsdGVkX18+wF3OvBFFTIf3NuNb9UjKa1/ELaEXk8vTLIpCnRf/YmmVWoYCjgvluUDfVawDiM70fWEnP49F1zDDSml1fGj6bp8WeMBValn/YJFhW64ix43BAldyZe5uIoqISCr/n8sfezbSqg7P9oQ2fmoK8ZO04VGidWDy5R/fo/FFfIzbgT2U7wYevgfiKnJw/Pi9GS36qDmbfIPqgZrQVGBL3pEfhZYsJCyDdVxo87uPp2Tl6WERxOFURnXI1M1dwJwT+GPgQuieBWczTRL1xSEswXtOfNd4JKw0kItzWctzS9qlFhzz1SMakCjvhCcovlW1MsaVNffQcb4LkbuAnQ6/8BGbfmN8c04TpNKRff4cWZhhJtW/Zv5dz7xd+8CPzsBzRzDXuQr9OvTz0tqvx0ngYnA0B5DoXKbuNWOK+qP63foRpYkoY1Qg8oAZLQ8ViIq+PeuTtx5E75VlJxtJ1J9g9tsaOq2Z3nNIZA70OWwMZUzRmDbqQdvKw5Me4TTUZwfzXMSHb+LUJTMf3o0x4rr+NNid7MWYP5zZFQ4MwpEM8PfrrBEVVQhF1C1xSKzdTfRqP+iEcFgs1CWiR6DV/HCNgmHy5CI5uZXjdjgX+JwWw+VajV2FQ0DZhlF/GDKyqpe8j5EYnyVGy9F94AvTgRXh1JcVxE9ICmVAVhPGKR8W4suSe/4yXlQYuDskvExaDNz8nB/J6B6MVEx/pYQtOPxxEfvbn6SsNfr+19EmyHwNDA3EPK75XVpfj33lpsZ+E82//Km6XjaqEVFrZxHioRkLJ1l+ejfX/wxgYiK2wc2gdgm7jhATylWwCOSG0MzbbbsOSkKfjPU7pZwLKJLdKbEFYB3Zeuwe/Ew77tAPJZAVMoUomCTVqa5Wco8yULdgX2CXR9NM5Z5aqHpxPuU+zWROAfDUARCHBQsQLlqJzgQpBa0QVDXscX7UXJ3ipiZWSHhxxiBOSyxx1Tc
+ QS4DB21r
+ PagvcSowmzyuSfgjUeXi/18tVnkPuuIwkV5xJ5EDAU54Py3jVYdcE606b8RFor9oW0YtZMnFjQxtvlXEEtnl3i8JrYNTJ3kaYjfETHjfixXUtdSWeOWcKxh5tSamzpGbQL3dbaoK9qyEKnwA+wAJGqqprR+YuEIv+g8qcigRoypA37yWAEH9vTLRtJTnME7nwuAagR/UnMR/47+cfXUgtgF2VHW1W4zx22GeF2u93+/A+YyY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -168,45 +128,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 03, 2025 at 01:50:43PM -0700, Randy Dunlap wrote:
-> Hi,
+
+
+Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
+> On 09.10.25 10:04, Christophe Leroy wrote:
+>>
+>>
+>> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+>>> On 09.10.25 09:14, Christophe Leroy wrote:
+>>>> Hi David,
+>>>>
+>>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>>>> --- a/mm/hugetlb.c
+>>>>> +++ b/mm/hugetlb.c
+>>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>>>         BUILD_BUG_ON(sizeof_field(struct page, private) * 
+>>>>> BITS_PER_BYTE <
+>>>>>                 __NR_HPAGEFLAGS);
+>>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>>>         if (!hugepages_supported()) {
+>>>>>             if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+>>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int 
+>>>>> order)
+>>>>>         }
+>>>>>         BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>>>         BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>>>         h = &hstates[hugetlb_max_hstate++];
+>>>>>         __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+>>>>>         h->order = order;
+>>>
+>>> We end up registering hugetlb folios that are bigger than
+>>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
+>>> (and if we have to support that).
+>>>
+>>
+>> MAX_FOLIO_ORDER is defined as:
+>>
+>> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+>> #define MAX_FOLIO_ORDER        PUD_ORDER
+>> #else
+>> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
+>> #endif
+>>
+>> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
+>> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
+>> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+>>
+>>     hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+>>
+>> Gives:
+>>
+>> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+>> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+>> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+>> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+>> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
 > 
-> On 9/29/25 7:43 PM, Jinchao Wang wrote:
-> > Add a maintainer entry for Kernel Stack Watch.
-> > 
-> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> > ---
-> >  MAINTAINERS | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 520fb4e379a3..3d4811ff3631 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -13362,6 +13362,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git
-> >  F:	Documentation/dev-tools/kselftest*
-> >  F:	tools/testing/selftests/
-> >  
-> > +KERNEL STACK WATCH
-> > +M:	Jinchao Wang <wangjinchao600@gmail.com>
-> > +S:	Maintained
-> > +F:	Documentation/dev-tools/kstackwatch.rst
-> > +F:	include/linux/kstackwatch_types.h
-> > +F:	mm/kstackwatch/
-> > +F:	tools/kstackwatch/
-> > +
+> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing 
+> folio_dump() code would not handle it correctly as well.
+
+I'm trying to dig into history and when looking at commit 4eb0716e868e 
+("hugetlb: allow to free gigantic pages regardless of the 
+configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is 
+needed to be able to allocate gigantic pages at runtime. It is not 
+needed to reserve gigantic pages at boottime.
+
+What am I missing ?
+
 > 
-> Add entries in alphabetical order, please.
-> 
-> >  KERNEL SMB3 SERVER (KSMBD)
-> >  M:	Namjae Jeon <linkinjeon@kernel.org>
-> >  M:	Namjae Jeon <linkinjeon@samba.org>
-> 
-Thanks, will be fixed in next version.
-> -- 
-> ~Randy
+> See how snapshot_page() uses MAX_FOLIO_NR_PAGES.
 > 
 
--- 
-Jinchao
 
