@@ -4,120 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB9B2CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29287CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E3BB8E0068; Thu,  9 Oct 2025 03:44:38 -0400 (EDT)
+	id 83C3B8E0069; Thu,  9 Oct 2025 03:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BBB38E0002; Thu,  9 Oct 2025 03:44:38 -0400 (EDT)
+	id 8132B8E0002; Thu,  9 Oct 2025 03:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F13108E0068; Thu,  9 Oct 2025 03:44:37 -0400 (EDT)
+	id 750288E0069; Thu,  9 Oct 2025 03:47:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E0DFD8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:44:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 627771A0A95
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:44:37 +0000 (UTC)
-X-FDA: 83977788594.15.A8D6B32
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 324601C000F
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:44:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+	by kanga.kvack.org (Postfix) with ESMTP id 63CF58E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:47:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 361741A06E9
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:47:20 +0000 (UTC)
+X-FDA: 83977795440.05.9B7A786
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 366EA40011
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:47:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4bKavl9;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759995875;
+	s=arc-20220608; t=1759996038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s+XtmwdKc8QKMPTZ9xcrxbfmEnkdKPymPLn6kJMJIBg=;
-	b=Fp7HG+/hhWtw77Zf1YiTTEvqa1EdL1AwtScx3XH9LE1ejz9VdM6vNQgemhPw5XzTFwzncR
-	x9HiizBP0JTLGxZNv9g0HGG/MYutOrtvqaTR+MkRmKCTXhpjI/26z/CRjbV3v9Iw0TPkyN
-	3HwEccp9l4Q4VQIYOtrVLlxHNhiTIxI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759995875; a=rsa-sha256;
-	cv=none;
-	b=BmraJvo+bA5daoV5QSKXBf8ZYrjiRe0kyhgkxNBE9FUHvlZVdbd895AqjIz0Di0MCzqmwA
-	aih6sP+ny7Ztsyh45dZOPSld+kscAZX9VYWqLQuNgY1uEa1IXctCgY7MMUhFhusWRrbwiy
-	WN4fWtlGe3nZmBWkc7yF0N73EK4c+Tw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hJrU1kH+cSMClo3PqqrUhN/o3xmqIZllEcLYKdMP18g=;
+	b=EgDYod2iC7Jni3ec/MzBYu+ZiU+TyBPOiORCDBIUmn9xFvrjF0odgEZTdHoUvuz0rPWUUL
+	r2dzRDHXCMo+Hyn5WzzKGcXRglr4Zm01Ws18w/Pb09COCmDr3oU7kANCp2oFvKMF9JUfUl
+	+i62RcTPXf6tCG9WUW4new8sVEIWxTA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cj22T4GVLz9sSy;
-	Thu,  9 Oct 2025 09:44:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id e-hrpkSiMM5A; Thu,  9 Oct 2025 09:44:33 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj22T2bCVz9sSq;
-	Thu,  9 Oct 2025 09:44:33 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E1858B768;
-	Thu,  9 Oct 2025 09:44:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id iEsvyTlwygx4; Thu,  9 Oct 2025 09:44:33 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4940A8B767;
-	Thu,  9 Oct 2025 09:44:31 +0200 (CEST)
-Message-ID: <1fb2259f-65e1-4cd0-ae70-b355843970e4@csgroup.eu>
-Date: Thu, 9 Oct 2025 09:44:30 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a4bKavl9;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759996038; a=rsa-sha256;
+	cv=none;
+	b=ir6cfmnLrAhYbuLtQTzlA7gUMLg/HKYm+cmwBgquNu/S0Yzfp5QjjEuz5qt8+Kw/pYrZ6O
+	Grk9s4WmYoW4+RDBypO45db6GABeI34ZDY4DzCo62EZKXs6cvrDrhgFWR3X1yelSpWfSuJ
+	VOkM7OUXVqwh38p38UeMbsHPOSyNycw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759996037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hJrU1kH+cSMClo3PqqrUhN/o3xmqIZllEcLYKdMP18g=;
+	b=a4bKavl9q9An2cNLFoavHTkfSdwb3cvN503U2aHHO0t91Aqp8yTa56j8/7GBg4fWhmDqZA
+	m6bcNjnERtDP+7wP3OL71dyCWVyMGF7074YIH1FCcJgiEG+uUhuB+8fArY9R2JiZiR/XvS
+	+Sx8l0qzCMKw0FlUrr2r/LyUTGwPUrs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-413-fWfkfZxTP5uGWxTWXDMMEg-1; Thu,
+ 09 Oct 2025 03:47:14 -0400
+X-MC-Unique: fWfkfZxTP5uGWxTWXDMMEg-1
+X-Mimecast-MFC-AGG-ID: fWfkfZxTP5uGWxTWXDMMEg_1759996033
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 392C11955F0D;
+	Thu,  9 Oct 2025 07:47:12 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.98])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 86CEC1800576;
+	Thu,  9 Oct 2025 07:47:10 +0000 (UTC)
+Date: Thu, 9 Oct 2025 15:47:06 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, chrisl@kernel.org, kasong@tencent.com,
+	baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
+Subject: Re: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
+Message-ID: <aOdoehPH1O2vJnqv@MiWiFi-R3L-srv>
+References: <20251001043436.41338-1-bhe@redhat.com>
+ <20251001043436.41338-4-bhe@redhat.com>
+ <20251008202623.1ef2ac29af9b9c3d53aca4b2@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251008202623.1ef2ac29af9b9c3d53aca4b2@linux-foundation.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 59o5lfK3ulVf1VBqmAOfdD8spqJ06lETWCS95LYO55o_1759996033
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 366EA40011
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 324601C000F
-X-Rspamd-Server: rspam02
-X-Stat-Signature: xhcm8jp88c1478xzqxbeeh34dr5567d1
-X-HE-Tag: 1759995874-264736
-X-HE-Meta: U2FsdGVkX1/P5Y57C5CGCAYMmqadvwUKMNsPP1pMST0V7csHc34d4W2XO7u0GXg+a0659I0x+fAKkYcT/ACzyAdkFeRnQa7AKixFcIMI3PCee9grBbv2sDsQ5iPcnfjaJ/BmcCqlBE86uMxsYoEQJrQodgto7fbBQaa3pH2VB53Floo4lgi8dzyQVf9zoimd6g++sjrLfn8cWqnhSjU9DKt1IZSvhTGzvuAze8+gCbfLnDwcnHR/NV4+KQyYi85TNmUUOJ39JO6t2ESP2CmyGPGz0XXvo40VmCJuJvttH11w7UU1N3uqI0UaXbpaFTikTH7qacqLOtgxEhcJqxa219DwgDmilqM4lbEvxNy3cMPbjWAJmUZu7wctouh+WWltl0i6LSxVSGbvbH8k4fsi0lwxbWE96WCWyaTsJ0nr7aTCMwvvV0O21al/GXGY24EpJNiYPVg4mm6I8M4UTFdxTcHkTxVybYF+kE8HARxQ0uPwHVgS77tq9dpYlAoOdkb6GvGKF+Jyh7De6otXJSeyVgNHL0UHdMv5vXupYe3FK64smyFEt2mtWEIXHDR36gh/iqIw92xxVpMhg3AITBUoi7VuLKV4PS+UhiDUBQC4U4yUe/wNtBxZMK7NqxDQsh9LhUgF+EU8L6Lp21/ZVkaosyWHG9ga+clko7k5t/EHRZjUPah4GLjNrVXf1ZMcacHBMnl/ywvGV7VkvX1EnHe3HaOMDnZuqMgFvHhDY9QHuyvD18pgKym4zgzyqtJncWgUUgpmRm3wxtiYmSjxuhZCFljMnltF2YtOz34/AQRj5P9lI1MZU4D3G0A/aluFgFX7oIl5bkS3vhg1qVvWfbZQyUQmxAi1rZeI4iua6MPocCtx70fqZLCcm5GXTFadZZJbmZtcgYNUMSsc2Zim9C2/c3P7jk+yuRT0Fia2jO4tbBb0YzrE/JP7PsGRIG6kG/w0jkv+c+0JrTepgzcNxpV
- ZpGWhf2Y
- Lpbj/MLTLKDTegJS8v/mQeQi+nnH6vIXXu2tmAlAb/0V0OBmR1PIBANSxza6j8jFxUoSTjg18dZDbSUKqx73qqc3sdZ+7hkAOeC4St/U7QDHpYL97XwdEbjc1OKDLkPlq5z7SOR5XlV0PPXE0/boQ5SA0DxQ0FIkklatAzlUZ2XlDytE9kJZ3ol1mroTVfSwQVB+3vQ+76Hc4rTac2EFrwF0X9XcmVa/bLjN1JmVYbEpaw6Lt8iZVP1Dqew1e6Bne+zXcaeIL8h9lIObb9f7F1TQgwcJPgAtB3Y49WiCuhqb3FQ8=
+X-Stat-Signature: qosy94i91w4q79ubmgnmk9rri6o4mtu7
+X-HE-Tag: 1759996038-263844
+X-HE-Meta: U2FsdGVkX18Ni41/tNBtlVaMTyp8BOHZBZLqqnqWyXTAWlSu+bq7+7hcpMyY6XDbMvjC8t/SUR3/2ANhlOkxM43YtiHgYybUPtcVxmI9KZtmMTHyHG4KV+Y0EyO3mE+Nv2fP/htPevcqlMNhXQtIoQGwIFxL7QlPf8itkQhzxRMUqv56sVKW+SRpHXMKWjxCIVb4WdFzUJc0J1JWIeAvaetvKdb0JX/PDcmVJtlRWOaX5ggRR/ycNXU8vvwTCufnO7+ceR2dBzC9DIyW5pwMB9gypRl70/XB8h8O+bMj4tzLLLjXQO7tcrcgymhT8+Iei8F39edXmKXBZKYMVgZ5odcAva4JjP0ErQ/NH2NvQS8hBmKg5iiwIO4oTWqhgWr/9cr7SV1IQ9BbmY2Fz8pbSRE+SdhK43bOpw7YKQPcRMmK0PXr8Rfz/vs/SoW0/qacJdhk4ZHRS38ov/rYgD3+p7xWJAgUs6PJIGI8seDj4MOBp+l0DkoEzBBLwgSMegmnK2gAnhxsBuxtKTbADAiQdTPkp3qru/Drwa0GJAgn0hRLdzgpfHr8nIs/UC0vGcs4TmNxsCF29vkbQyzQtHlHVYz/HkG3drRIfWLgKyTAIYIpprO9opAYrNKKcJA4laour5Bsx1piJTGHpUUx2WY61qRxop3tqnlqxOF+AB71lykCricJHsfvl2P+6/xJGw4i8p7ebY8Ekmkk7WVN7HUehnE8UwcnVc0md35u/ia4jmrQEHcx5PBKJ5dox04mzgae5llRBOq37eEWCSRYbhDCCMEnIZkZO49yIUOSCioCTnSEYRaTb1HfDxyRi98d84q6AKcxf9S7veypesKCOAoIMEz54uxIx8EaxQWx3N5r5yX3XaOf04BFmx1BwyEHoNBGRrREbBmOaOP4lFvr2T9YzPaXVlKThHpDy4QPZt/lwC0qwRi6wLnKkudCYboElik8U7Khz2Rv1poNZd0eyLc
+ NzIawwUN
+ +2wUKiVZicpyY/8C/k68onsAHEP8Hfd0mBBVbIZA8/QJkG14JiCz/L1KFMJdTQDBrefn6SoEPoyQB8al4KKhknNwJn+Uqrz2KsTcsZ4yan/oDzcbIDYmTXnvSLhg6hzu+VR0vniw3sCPp7HTPuA+mRlPhQDRhiJeaZY6gi+3S934HwdGhuPgp8bbenzj6FTG03TTtnssxMqhhRrVc+Xd1ldVqdgCYsto+NcwxNKz9rRn4wXj2u6ppQoJMRv6S8NQclgLrt+rs+CwtzC4WbKT0Y3Bkq+uuuFPICDBApK8cGkM/SeZNnhfVLr3Gcnpw20FuhsKQck/1zBMahTSqjKKmWKArRPgATrpfUZd0zlThwOWtFlFqrAs701GfRUhU8WCAIBJBb7HiY/7REK7HKinSu5vZ6A628DefD+dWKeA2eaFHSjOC7gHVnFBxLN6oFm5Xx9XVr5N+bQpy1P7y4ZbPp30Gflp0PBwEMc/z5hkc7YoqYm61UDmVAEUmVFkyZgNLwii7uj1o/yYF2m8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,47 +107,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
-> On 09.10.25 09:14, Christophe Leroy wrote:
->> Hi David,
->>
->> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>> Let's check that no hstate that corresponds to an unreasonable folio 
->>> size
->>> is registered by an architecture. If we were to succeed registering, we
->>> could later try allocating an unsupported gigantic folio size.
->>>
->>> Further, let's add a BUILD_BUG_ON() for checking that HUGETLB_PAGE_ORDER
->>> is sane at build time. As HUGETLB_PAGE_ORDER is dynamic on powerpc, 
->>> we have
->>> to use a BUILD_BUG_ON_INVALID() to make it compile.
->>>
->>> No existing kernel configuration should be able to trigger this check:
->>> either SPARSEMEM without SPARSEMEM_VMEMMAP cannot be configured or
->>> gigantic folios will not exceed a memory section (the case on sparse).
->>>
->>> Reviewed-by: Zi Yan <ziy@nvidia.com>
->>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>
->> I get following warning on powerpc with linus tree, bisected to commit
->> 7b4f21f5e038 ("mm/hugetlb: check for unreasonable folio sizes when
->> registering hstate")
+On 10/08/25 at 08:26pm, Andrew Morton wrote:
+> On Wed,  1 Oct 2025 12:34:36 +0800 Baoquan He <bhe@redhat.com> wrote:
 > 
-> Do you have the kernel config around? Is it 32bit?
+> > There's no user of swap_active_head, remove it now.
+> > 
+> > ...
+> >
+> > @@ -2553,8 +2545,6 @@ static void _enable_swap_info(struct swap_info_struct *si)
+> >  
+> >  	assert_spin_locked(&swap_lock);
+> >  
+> > -	plist_add(&si->list, &swap_active_head);
+> > -
 > 
-> That would be helpful.
+> There's a large comment in _enable_swap_info() which needs to be
+> removed or updated?
 
-That's corenet64_smp_defconfig
+This patchset depends on below patchset:
+[PATCH v3 0/2] mm/swapfile.c: select the swap device with default priority round robin
 
-Boot on QEMU with:
+That large comment in _enable_swap_info() has been removed in
+"[PATCH v3 0/2] mm/swapfile.c: select the swap device with default
+priority round robin"
+> 
+> >  	/* Add back to available list */
+> >  	add_to_avail_list(si, true);
+> >  }
+> 
+> I fixed the rejects and my swapfile.c still has a couple of references
+> to swap_active_head.  Can we please have a redo&resend against mm-new?
 
-	qemu-system-ppc64 -smp 2 -nographic -M ppce500 -cpu e5500 -m 1G
+not sure if it's caused by the dependency on "[PATCH v3 0/2] mm/swapfile.c:
+select the swap device with default priority round robin". I will rebase
+it on mm-new to see.
 
+By the way, Chris worried the plist swap_active_head could be reused by
+the ongoing swap-tier work and suggested to hold off this patchset till
+swap-tier work is clear. Now seems it won't impact swap-tier, I will
+send a v2 against mm-new.
 
+Thanks a lot.
 
-Christophe
 
