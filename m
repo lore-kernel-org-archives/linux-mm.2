@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EB2CCD189
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C4FCCD187
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:59:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A69A8E0039; Wed,  8 Oct 2025 21:58:53 -0400 (EDT)
+	id 37B988E003D; Wed,  8 Oct 2025 21:58:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AE7C8E0002; Wed,  8 Oct 2025 21:58:53 -0400 (EDT)
+	id 32C758E0002; Wed,  8 Oct 2025 21:58:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0678E0039; Wed,  8 Oct 2025 21:58:53 -0400 (EDT)
+	id 1CD4A8E003D; Wed,  8 Oct 2025 21:58:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 373D48E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:58:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8C3B16091B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:52 +0000 (UTC)
-X-FDA: 83976917304.28.3996170
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E73EA1C0006
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=QpiXq7CO;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf18.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 048CE8E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:58:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C5AA21A0882
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:53 +0000 (UTC)
+X-FDA: 83976917346.12.B697989
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E513510000A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:58:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=dIaSPQG8;
+	spf=pass (imf05.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759975131;
+	s=arc-20220608; t=1759975132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ec90szP6RRRVh+VBwVOMiqXzA3Ep/76H50/prlBRjCs=;
-	b=MUH104R+TW5Z9sknZIbf/NFTj9JSHRezCzDJd9YdJSFHOeAOLjs7VxtSOnl5tR3gOpGXbw
-	5ALJPBhiUz3+CB/ylHR73XAhFfYnChch0xd+Lm8foqfW2CKFbMQE5O6tH2z36t9dlhlMOM
-	h4BhV2mSRRSMKuBeM356Re9MJtihJnU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759975131; a=rsa-sha256;
-	cv=none;
-	b=b1G035UjLHqxTQShNcNZ8v2Phhs5QR18D0CZWQvrfg6EN/1MYQfgHil0FntZPaslILrf29
-	3vi/jWo8ddgddJFWqClm2rspEmqlB2jM3vXpkUKkNVXjTvLzYn2Q3DqF0wI39F3pApEaKw
-	X1GDDmGk/HGrPgX24gIrfe7A3h7HWE4=
+	bh=6MxHL3qUwy+t0aO6eARfxrO+qA5Rm8YXQr0n5njGXfs=;
+	b=UA1qgd7G5Di2dWraEAFeCluwkyhV6t6qZki8ROn3Q4LIwB6I+QgR20ZXcz3BOGDZFnlMAp
+	GjrLUaIwg2QbY2gj4vs2PWxb6gLvmG3egV53GGSAKQAFUmqQDhQlHhhjqUW39840OI/4aA
+	hg+9igd429tbcfwXqor/XqTOLtaPXNA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=QpiXq7CO;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf18.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-28832ad6f64so4949625ad.1
-        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 18:58:50 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=dIaSPQG8;
+	spf=pass (imf05.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759975132; a=rsa-sha256;
+	cv=none;
+	b=e5WIiImeZ0GIR7xzluTh2QVUM3AaE0Tob1Vp3xfAsan8e0EQPYUagKXg7Slyiq8ALXgywR
+	JL96bDlErd9Z4xQEmnhP/cqw5FZipuenQ5oPHZxfiJb1tzrKk/+yFsBpSP8VAsYnKE+O68
+	9vA3cdbodquZ0cL/Ig/yqagmXAW/VdM=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-28e8c5d64d8so4006595ad.1
+        for <linux-mm@kvack.org>; Wed, 08 Oct 2025 18:58:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1759975130; x=1760579930; darn=kvack.org;
+        d=sifive.com; s=google; t=1759975131; x=1760579931; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ec90szP6RRRVh+VBwVOMiqXzA3Ep/76H50/prlBRjCs=;
-        b=QpiXq7CO36Ix+7PFN7UufEpB5COGctQfqIwrcRMfsPoI9MxmTd/aqodCzlv9LlpBSp
-         35D1PGTIwcVyU5RbGePK2vs67GoM/EGhj8ZcI7WMuZZqkYUSCFi9r2D9nk016J5HpFeK
-         OovKpvfA52hy2qNSQRC73AXUP0t97nAwsrHgWMMTRaiHM4IFoLhBlwbVBBDvBECw912I
-         n+/xl7mcvZUEsWrFV7os8fMHYIM+iLRPsPxTg0zTfzfAVcJHvdUMnahuEqaFcK9HRFwI
-         Y+0iHrVRVRdcYjjfM35r4WqA5bKHc2tBeyVN0bkULwFxKGm/wm5zRhr3xzmhUdXVBrAU
-         sSMg==
+        bh=6MxHL3qUwy+t0aO6eARfxrO+qA5Rm8YXQr0n5njGXfs=;
+        b=dIaSPQG85PykcdQNgGCEh905kW3qynddpO5rZD90UUGI5IB3uvBEHW8uc6kusRJTcR
+         FmH71cxiNiKn/sSP5WWhpCWc9EEbe79C/JIGTMX9VB87+KaWTSFEHwPgrJjXKiiWvV74
+         nL37UrwbtVALlTIyUax9hzQZ8MH7Ey3WuJDQk1g/MaitlHC8TBQFa4lD8YoY2O1e9cHP
+         4Crf6VR2yeaHI15Hp/0+OFvtbVEiVYBDddgKmlAokb9nB3lJYt7uURYoMXRUwtjcCsOa
+         eA7vu1XG+VY2H2CT+EShhdEdwRvxqF7XZ6B20uriK2QqzLJehrO4j8YjEhx2SzTtu/kd
+         zjoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759975130; x=1760579930;
+        d=1e100.net; s=20230601; t=1759975131; x=1760579931;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ec90szP6RRRVh+VBwVOMiqXzA3Ep/76H50/prlBRjCs=;
-        b=fVLnzFgSJRMeQ2TCvoPEkcMZONe1j0mNFe4mK4Cqwl4E9j/6HwLdBWPW0XSOJqd6Cu
-         dH8XeEVCCCGy4fJ1Jdh1zt0LEgUTTwH7OBCvEKdo+ilvkw8Ry+5/7roQSCYEn7Bojg8X
-         /Y4gvhIIRHpEvu4RurM74cswSWw0Bx72zcn2uMf+/w6ejB8CrifSn2mcc4FXSQ0tM9G2
-         DFwGXEM4YYXJ4oBhAb6rqWmXfGvTLsKDDbJmj2PPbPqn6Q0URXJyXhcJ8x1wKe+advHh
-         x8RRXYVq6zi1yZA+t3I95siCS7+gob+qJiz2+KnJXlEfaqMmdVv+oxF8kdi1ixp4e54k
-         Ms/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUSzhXpDdGrUUjM/NhHriR/Tn4MdqHnwcv5PbE75x3IeW8rYzxjo/G7gOCyI8JlmvgptE4H4uv48A==@kvack.org
-X-Gm-Message-State: AOJu0YwXkwUMs8p8iZ2HEGgLcJbOtNWMSsPhwawlLUA8Rqnifn5044rm
-	AjgsM4QqjeSeLebnNzH/vbWFQRsch3Yr6d7nLXxPTYB5/lIiYDfkSKL585kagAH2sVM=
-X-Gm-Gg: ASbGnct2qjNHBNnHIrsr5Ulq3VaBPl05MPLiSCKAWRjE183U9Ziu1TH8FSUUrMSF12R
-	w0Wl3df9ysnFWc2FZLzxjO+aaC4r2j54rjboDAHM3/uLGC/iet8qseyJfc7KaTjy3JpAG12N4Gh
-	xkgB5vPA/4RMpPXaoa10Sx+4QcxlAD0iwWrHGdiPHAiKZevyqVWFWrHkB9sQmNq5dNvPPMgJJkp
-	Ub8v5LcuEY+ZganIp+jUkJ9HScGG1yb7kMq7DM/ndxxIbh1hraubzSHla9sD0ZMzliCcRQF7lIU
-	s8wpfiJQU2w3E3asdOcUQDeNeo4wdk35GeeIhI6cFpBCGXbTySkm7KErZ3/6CiMAQ5gi4sOrpe0
-	q8pkJV5U1fnvgUAuY8F3R8vickrjpiSxFNySEawbAzZmnntYMUqj0e7Gs96mPN2EuT0Tl
-X-Google-Smtp-Source: AGHT+IGpkTz+5DqTXkYh21z2iDwfeA2aj1AmfA+AuBtWgtsAEZk0JO74N45z8X0OyPDJv6obEnt7aQ==
-X-Received: by 2002:a17:903:8cd:b0:269:8d85:2249 with SMTP id d9443c01a7336-29027240d03mr62723845ad.22.1759975129634;
-        Wed, 08 Oct 2025 18:58:49 -0700 (PDT)
+        bh=6MxHL3qUwy+t0aO6eARfxrO+qA5Rm8YXQr0n5njGXfs=;
+        b=q3S8oO/zJphuP44XEpFHXVq7fMsXAK/CcUfJFUfn2GYR8bJvieY3GX04c2yErT1mWT
+         JGAhrvgm3sWL9zKpEoOBu5utURDyOaHyVNEpvxCnM0pLInOmaXM4VLkUfrgtYU9P2lCF
+         kxfykhpm5ll2bBJ0wiaB07WIlH+K3zsMgMy5fDVRTdfcsgmUkN5RZifWx+Sn5TpvK271
+         mXvoUiBGSlXrLUieKfigomPL5Uowpmg/RHu6ePxaeLjmBnxvMcVMR90LGcKnG3CKItXy
+         RIL7h9V4+alh+tBy7nUzTa6JdIbwmWdgfKKacADjbTuTnddYRnKtuPDliX7P7imnMw9J
+         qdQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKlvjKZMASQt+VsR2YKpNec5OGTksV6iK4r5lZcS0EINThDe7hit7Xf7mhy17ywAseMl33vIY9gg==@kvack.org
+X-Gm-Message-State: AOJu0Yyfjtwr/E2Sl+bNNoO7dQEqTIsbF+1QF+yJqKQGePOFY9Gq/IUU
+	BN/p27uBMhdSuQovCXTPo80GaB1wFdLU+jF7ce8AK9JMxeA4PoBmvrhquy92GTlSEVQ=
+X-Gm-Gg: ASbGncvYyUIYkKHGJZHzZccrxmTb25d5+bn4GadLI61JHgiN5Q/6WE0MvwUGipeE9n/
+	C7QIepPXjxmbwjBRi0xRt27lGWtokkQhfhdVQ2wb5mto7lKm3J5GzwRSHcNysQWQmGU6aC4DR8r
+	0CzU51i0YCgl+YIMhoIYbhw0UzBSFuNPNBgcUqiEnGkTbwRKuPGqqrUSs/gHh/yfAO88TPVcUpq
+	jiBW7F/QLiQiZuEAimi5I5PiHXnmbS196HCuktJXSSytVNgCx9EcX7OrWdubNT5/sRz2doB5eSB
+	N/8D7poBKbhqcASQz8gFUM9RhlTqi2al8NBGdr5VjSUHn6SN3IX1nHlHcd//apESQCmofHNHoMf
+	z1BiXJe7IAaPIUhLTC1Rjs1QAR1l6vXq3UMBpgHfZc1BdBLcXymn1hVlagtwJZYKT+Cje
+X-Google-Smtp-Source: AGHT+IFWANPjuzJhuuxubYaVO2GJhHx+Uq0HfBlhgHOgbCi5OPe5NLGhSbpBSxbnLiNpsX7PUf8iug==
+X-Received: by 2002:a17:902:d592:b0:240:48f4:40f7 with SMTP id d9443c01a7336-290273edf23mr67433045ad.39.1759975130859;
+        Wed, 08 Oct 2025 18:58:50 -0700 (PDT)
 Received: from sw06.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de53f9sm11033585ad.14.2025.10.08.18.58.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034de53f9sm11033585ad.14.2025.10.08.18.58.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 18:58:49 -0700 (PDT)
+        Wed, 08 Oct 2025 18:58:50 -0700 (PDT)
 From: Samuel Holland <samuel.holland@sifive.com>
 To: Palmer Dabbelt <palmer@dabbelt.com>,
 	Paul Walmsley <pjw@kernel.org>,
@@ -104,22 +104,22 @@ Cc: devicetree@vger.kernel.org,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Samuel Holland <samuel.holland@sifive.com>
-Subject: [PATCH v2 07/18] riscv: mm: Always use page table accessor functions
-Date: Wed,  8 Oct 2025 18:57:43 -0700
-Message-ID: <20251009015839.3460231-8-samuel.holland@sifive.com>
+Subject: [PATCH v2 08/18] riscv: mm: Simplify set_p4d() and set_pgd()
+Date: Wed,  8 Oct 2025 18:57:44 -0700
+Message-ID: <20251009015839.3460231-9-samuel.holland@sifive.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20251009015839.3460231-1-samuel.holland@sifive.com>
 References: <20251009015839.3460231-1-samuel.holland@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6rrip9yq14nas776p9444op8gngn4yhs
+X-Rspamd-Queue-Id: E513510000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E73EA1C0006
-X-Rspamd-Server: rspam02
-X-Stat-Signature: edk4su3m1weddtqtjain1n871xxucy73
-X-HE-Tag: 1759975130-439189
-X-HE-Meta: U2FsdGVkX1+kjfqntXplNbVK0e74jOiIyxBgK95jcbWOffVAgEWN7JKjrb3aRtc5/zm2N6o7P7xB4laeL0M6kKen3hZxqsIKOoi0BJ+9xyLA1nGJApRg3bDxvC/WnpmdoD7FEVGw0toeyfcgqr8qvn8/r7oraz56D7o5SYSnswhHh4rxW5cZgzexsubQ9uucA8ZC985MzjqNcDs/cgtw8T9GduvEzfYv92cx3YmhaBGljd3mIBuwgOPklIh1qIfDAL8zoW4JEhAqc5KGk+4V8pVMPYDYlNSTugAp/ZGjhGL+KdmEch9Hst2u+az7HYiUq8oDVUtvzfwkpto33w6UjYxkyIGFL0NGcroW1hjJjAs9Dd+GyH8yQUwZaJIt1M05UAjmKaaVgyAAPNDP3c9txb5+Y+Ku6nv5iloHhBKwDKUKd5WdZg9mBN3JrtqQvWUiEpOPWN3B+qN/IcdwzOJ61jbpkRKA+Ccp+CwQBrl/ISVLmmkjSO27cx35guiuxOJ1PXsq7xER9E6Oy1L9vnx+RbofcgEHqkEI3PefvGFgrGwqsRst7MP0Ug9Xbb3Q3FNt47jiFnwxVNX6U9TDnNLP4rkCG++mUWJdDlAcEU9YF+EkXdh+EHCwhw36ZLZ568xacRasf1dDM74WNl40PQgC7HUqnKn7gpFIjODe0m/gDwWqc44SCAU0ShidIc9aAguFhVUi3v19I0hAdtCMtyfDfPBdsOjpIdqW4qjmB/IbyKslE5rBQ63mEgW5LouAbnCeQkFBTEVOqzYzCnodB9Oh4ScrZ1z0jDpVwynsNldUjPRjBSZniuoJVAzhaHpCg4iG8ahIP86kTkXV1Cp/3P6cTD4TaijJQW4943r/D8zkOYcfqW5YmHZblofrUpmdLWaALenf0OpKKNeBLOTVIUpk5sQYRCx9MR4s7hJcXF7FZ7Qox7k72Y0HhDLpoAo2jPpxqG/wgeYUruALLnw7CZk
- SWf90UZv
- H/ob3QwhwwveFXdPSEviXh1nE76OCDFQS9pUWzy2RwiEg4/My/Oode9VtbxDgKKczTAW827bvl1O6tcjnx6ePwhZ6+0MQlG4tf/3T25mzux+jNtMbrscOKf9Y4f0TP8dbkOt/2a9ReDuITMkWng5YnxdIxAsQetpRJSWE70Ls/12uqR00PHX2cq1VhEmhC3hjXYCFVGwyCHom/azUR8GMftulPi1F2xRu0PXkYcNsspP7F1pC5WwIHFjEdhkn+lvGyO1lp4VHEI7xvUw1EiottHi8n+Ja0e1GJb1lk3Hs8PRq0KGTho0vpSqD7FRweVXmwjrrSg7k5VgNDMCQCAl44a+SwrePHD/zmKBUHaaPY5ELCoiZF4zBEj8tl+YEe8cGMH+Tdl1zVmwDdDFm0k94ycblLw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1759975131-610699
+X-HE-Meta: U2FsdGVkX1/9NT22smkBf5g5tTGAZj5jPyZxENgqdZqIItebdj4vKBRx1ybw/qYK7lpAj6rcx29/1ns2aivkGyhPkURgrojHmFqBkE7KAK39HWtVI3kMh550MZX/VVEITWqz4y7GhxKCSV71sK1IZMOhXtx25oehR9pycI8aQITWZbQsU/rguUbdYiN9fXZX26132V92BBeQrCjxP8bkkKFb3uic+d/UUz6DoB5qL7FTzSJ5F+uLKJIxuJedyv9kYbo/38H3rA9qjl+L+0RWPbsl+ws37NJRTZm6QOYL2i+tpOGML3qp1zYKFNCzHdbgcQff05cDHSw1tGRIMJtak166VRYA9z8Q42f482Wk+eDkqvly2S172EKlg9tlZQNIHadJA2XkRy1vXfwiSFNaameKeIY+ikmWb/vy2pHyvYoSKFjcnnWIu2G66WbazojSmG1ttRvqpVrcHx4p4A8BBl15MfzZAOq8ZMFGBKg9bztIe44EAFZ8tRAOjINdxmThc+cc2JhNWxyjDxHzAzxr/KA6mvJcOFjGfKwzsfY8yerJC6G1D0uViHtwbMmORswwwi421eCrGvOQP5WPnG3yBPqrpNi8Qx9rYP4aP7u//n829fxHj6D4MmhSimMk4/3txKIKOGx4M/XRHeP89e4YcdKUuYEGlIFsvp1ijYwxsYFObfiiLcqxm54UXhczAfC9XIXhlYK2GexYUjWRZyNFU2KqTc79Kg2fZtetHH2sFj4UcvGq3I0zeUiUwyFLG+6GjEjOB8IiFcLttLbscVgg/zg1Lk7V56LwK0sZOPD+Ij/OQm/02JkMRGTz3LDOfqri2QW3mQ+voaXaxY9K5iuiT15vvq0tFfdqKueZbJW8sNfjRO9nD9AIuRaOOMILY5/AYvzwLf67ptrgVtsMiWM8PZyQjOgsYqNLVTzLu26xCf03BVV+aldNai7eD9WhRyX9cBQ0TThal9Ztw5AoAAg
+ 2Aqqi/Ha
+ ZEdBNT50IIS/m6sYXAQe7CerakVL2rhFmF0hjWOb8n/Fg1BI3lPBd6vI2xonLOWWLNCDHhGl+v3zSiY9uFBQvSLXd/5a3NBKEJvidi/GJguz6g0fsiQdiExtC/GwX6MmuDsI/Srqf/f+g4kbs5cFDgOCOOGiQIhrYF7gEkLAOCmJ5ReNpTNxmOBOwZC5zoQMvie7SfRDdrLyCLNOJMEMVyH9zsGum/ByQXsVftERWoxQ/zNS9flIs10qLbjCP+eoq7jzy9lL8GkcPJBxUB6Ct4hVs3XJMo8yoyP2JSdLhJyoCWnVN50FcNwUMGiha+JmKe7Gb3Vfv5eyI2VxRhmjGu+560s0ZFbpNg0XAG569ZkXTMWUX8/0abMseP/GoWEirRl85mKUXSFmeOWzJfgiLTtaM1qbBpk3UNVOPmeHL/xzseH1mFGKBw5G4eRiAaLqMLlDu/t+TJHmqAayY2p0fpNi2uczCGgGXCqNeJ9rtz8qnAWU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,9 +128,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the semantically appropriate accessor function instead of a raw
-pointer dereference. This will become important once these functions
-start transforming the PTE value on some platforms.
+RISC-V uses the same page table entry format and has the same atomicity
+requirements at all page table levels, so these setter functions use the
+same underlying implementation at all levels. Checking the translation
+mode to pick between two identical branches only serves to make these
+functions less efficient.
 
 Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 ---
@@ -138,294 +140,37 @@ Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 Changes in v2:
  - New patch for v2
 
- arch/riscv/include/asm/pgtable.h |  8 ++--
- arch/riscv/kvm/gstage.c          |  6 +--
- arch/riscv/mm/init.c             | 68 +++++++++++++++++---------------
- arch/riscv/mm/pgtable.c          |  9 +++--
- 4 files changed, 49 insertions(+), 42 deletions(-)
+ arch/riscv/include/asm/pgtable-64.h | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 8150677429398..2bc89e36406da 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -949,7 +949,7 @@ static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
- #ifdef CONFIG_SMP
- 	pud_t pud = __pud(xchg(&pudp->pud, 0));
- #else
--	pud_t pud = *pudp;
-+	pud_t pud = pudp_get(pudp);
+diff --git a/arch/riscv/include/asm/pgtable-64.h b/arch/riscv/include/asm/pgtable-64.h
+index 1018d22169013..7eb23c24310f9 100644
+--- a/arch/riscv/include/asm/pgtable-64.h
++++ b/arch/riscv/include/asm/pgtable-64.h
+@@ -273,10 +273,7 @@ static inline unsigned long _pmd_pfn(pmd_t pmd)
  
- 	pud_clear(pudp);
- #endif
-@@ -1126,13 +1126,15 @@ extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
-  */
- #define set_p4d_safe(p4dp, p4d) \
- ({ \
--	WARN_ON_ONCE(p4d_present(*p4dp) && !p4d_same(*p4dp, p4d)); \
-+	p4d_t old = p4dp_get(p4dp); \
-+	WARN_ON_ONCE(p4d_present(old) && !p4d_same(old, p4d)); \
- 	set_p4d(p4dp, p4d); \
- })
- 
- #define set_pgd_safe(pgdp, pgd) \
- ({ \
--	WARN_ON_ONCE(pgd_present(*pgdp) && !pgd_same(*pgdp, pgd)); \
-+	pgd_t old = pgdp_get(pgdp); \
-+	WARN_ON_ONCE(pgd_present(old) && !pgd_same(old, pgd)); \
- 	set_pgd(pgdp, pgd); \
- })
- #endif /* !__ASSEMBLY__ */
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index 24c270d6d0e27..ea298097fa403 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -154,7 +154,7 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
- 		ptep = &next_ptep[gstage_pte_index(map->addr, current_level)];
- 	}
- 
--	if (pte_val(*ptep) != pte_val(map->pte)) {
-+	if (pte_val(ptep_get(ptep)) != pte_val(map->pte)) {
- 		set_pte(ptep, map->pte);
- 		if (gstage_pte_leaf(ptep))
- 			gstage_tlb_flush(gstage, current_level, map->addr);
-@@ -241,12 +241,12 @@ void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- 		if (op == GSTAGE_OP_CLEAR)
- 			put_page(virt_to_page(next_ptep));
- 	} else {
--		old_pte = *ptep;
-+		old_pte = ptep_get(ptep);
- 		if (op == GSTAGE_OP_CLEAR)
- 			set_pte(ptep, __pte(0));
- 		else if (op == GSTAGE_OP_WP)
- 			set_pte(ptep, __pte(pte_val(ptep_get(ptep)) & ~_PAGE_WRITE));
--		if (pte_val(*ptep) != pte_val(old_pte))
-+		if (pte_val(ptep_get(ptep)) != pte_val(old_pte))
- 			gstage_tlb_flush(gstage, ptep_level, addr);
- 	}
- }
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 15683ae13fa5d..d951a354c216d 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -458,8 +458,8 @@ static void __meminit create_pte_mapping(pte_t *ptep, uintptr_t va, phys_addr_t
- 
- 	BUG_ON(sz != PAGE_SIZE);
- 
--	if (pte_none(ptep[pte_idx]))
--		ptep[pte_idx] = pfn_pte(PFN_DOWN(pa), prot);
-+	if (pte_none(ptep_get(ptep + pte_idx)))
-+		set_pte(ptep + pte_idx, pfn_pte(PFN_DOWN(pa), prot));
+ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+ {
+-	if (pgtable_l4_enabled)
+-		WRITE_ONCE(*p4dp, p4d);
+-	else
+-		set_pud((pud_t *)p4dp, (pud_t){ p4d_val(p4d) });
++	WRITE_ONCE(*p4dp, p4d);
  }
  
- #ifndef __PAGETABLE_PMD_FOLDED
-@@ -541,18 +541,19 @@ static void __meminit create_pmd_mapping(pmd_t *pmdp,
- 	uintptr_t pmd_idx = pmd_index(va);
+ static inline int p4d_none(p4d_t p4d)
+@@ -340,10 +337,7 @@ pud_t *pud_offset(p4d_t *p4d, unsigned long address);
  
- 	if (sz == PMD_SIZE) {
--		if (pmd_none(pmdp[pmd_idx]))
--			pmdp[pmd_idx] = pfn_pmd(PFN_DOWN(pa), prot);
-+		if (pmd_none(pmdp_get(pmdp + pmd_idx)))
-+			set_pmd(pmdp + pmd_idx, pfn_pmd(PFN_DOWN(pa), prot));
- 		return;
- 	}
- 
--	if (pmd_none(pmdp[pmd_idx])) {
-+	if (pmd_none(pmdp_get(pmdp + pmd_idx))) {
- 		pte_phys = pt_ops.alloc_pte(va);
--		pmdp[pmd_idx] = pfn_pmd(PFN_DOWN(pte_phys), PAGE_TABLE);
-+		set_pmd(pmdp + pmd_idx,
-+			pfn_pmd(PFN_DOWN(pte_phys), PAGE_TABLE));
- 		ptep = pt_ops.get_pte_virt(pte_phys);
- 		memset(ptep, 0, PAGE_SIZE);
- 	} else {
--		pte_phys = PFN_PHYS(_pmd_pfn(pmdp[pmd_idx]));
-+		pte_phys = PFN_PHYS(_pmd_pfn(pmdp_get(pmdp + pmd_idx)));
- 		ptep = pt_ops.get_pte_virt(pte_phys);
- 	}
- 
-@@ -643,18 +644,19 @@ static void __meminit create_pud_mapping(pud_t *pudp, uintptr_t va, phys_addr_t
- 	uintptr_t pud_index = pud_index(va);
- 
- 	if (sz == PUD_SIZE) {
--		if (pud_val(pudp[pud_index]) == 0)
--			pudp[pud_index] = pfn_pud(PFN_DOWN(pa), prot);
-+		if (pud_val(pudp_get(pudp + pud_index)) == 0)
-+			set_pud(pudp + pud_index, pfn_pud(PFN_DOWN(pa), prot));
- 		return;
- 	}
- 
--	if (pud_val(pudp[pud_index]) == 0) {
-+	if (pud_val(pudp_get(pudp + pud_index)) == 0) {
- 		next_phys = pt_ops.alloc_pmd(va);
--		pudp[pud_index] = pfn_pud(PFN_DOWN(next_phys), PAGE_TABLE);
-+		set_pud(pudp + pud_index,
-+			pfn_pud(PFN_DOWN(next_phys), PAGE_TABLE));
- 		nextp = pt_ops.get_pmd_virt(next_phys);
- 		memset(nextp, 0, PAGE_SIZE);
- 	} else {
--		next_phys = PFN_PHYS(_pud_pfn(pudp[pud_index]));
-+		next_phys = PFN_PHYS(_pud_pfn(pudp_get(pudp + pud_index)));
- 		nextp = pt_ops.get_pmd_virt(next_phys);
- 	}
- 
-@@ -669,18 +671,19 @@ static void __meminit create_p4d_mapping(p4d_t *p4dp, uintptr_t va, phys_addr_t
- 	uintptr_t p4d_index = p4d_index(va);
- 
- 	if (sz == P4D_SIZE) {
--		if (p4d_val(p4dp[p4d_index]) == 0)
--			p4dp[p4d_index] = pfn_p4d(PFN_DOWN(pa), prot);
-+		if (p4d_val(p4dp_get(p4dp + p4d_index)) == 0)
-+			set_p4d(p4dp + p4d_index, pfn_p4d(PFN_DOWN(pa), prot));
- 		return;
- 	}
- 
--	if (p4d_val(p4dp[p4d_index]) == 0) {
-+	if (p4d_val(p4dp_get(p4dp + p4d_index)) == 0) {
- 		next_phys = pt_ops.alloc_pud(va);
--		p4dp[p4d_index] = pfn_p4d(PFN_DOWN(next_phys), PAGE_TABLE);
-+		set_p4d(p4dp + p4d_index,
-+			pfn_p4d(PFN_DOWN(next_phys), PAGE_TABLE));
- 		nextp = pt_ops.get_pud_virt(next_phys);
- 		memset(nextp, 0, PAGE_SIZE);
- 	} else {
--		next_phys = PFN_PHYS(_p4d_pfn(p4dp[p4d_index]));
-+		next_phys = PFN_PHYS(_p4d_pfn(p4dp_get(p4dp + p4d_index)));
- 		nextp = pt_ops.get_pud_virt(next_phys);
- 	}
- 
-@@ -726,18 +729,19 @@ void __meminit create_pgd_mapping(pgd_t *pgdp, uintptr_t va, phys_addr_t pa, phy
- 	uintptr_t pgd_idx = pgd_index(va);
- 
- 	if (sz == PGDIR_SIZE) {
--		if (pgd_val(pgdp[pgd_idx]) == 0)
--			pgdp[pgd_idx] = pfn_pgd(PFN_DOWN(pa), prot);
-+		if (pgd_val(pgdp_get(pgdp + pgd_idx)) == 0)
-+			set_pgd(pgdp + pgd_idx, pfn_pgd(PFN_DOWN(pa), prot));
- 		return;
- 	}
- 
--	if (pgd_val(pgdp[pgd_idx]) == 0) {
-+	if (pgd_val(pgdp_get(pgdp + pgd_idx)) == 0) {
- 		next_phys = alloc_pgd_next(va);
--		pgdp[pgd_idx] = pfn_pgd(PFN_DOWN(next_phys), PAGE_TABLE);
-+		set_pgd(pgdp + pgd_idx,
-+			pfn_pgd(PFN_DOWN(next_phys), PAGE_TABLE));
- 		nextp = get_pgd_next_virt(next_phys);
- 		memset(nextp, 0, PAGE_SIZE);
- 	} else {
--		next_phys = PFN_PHYS(_pgd_pfn(pgdp[pgd_idx]));
-+		next_phys = PFN_PHYS(_pgd_pfn(pgdp_get(pgdp + pgd_idx)));
- 		nextp = get_pgd_next_virt(next_phys);
- 	}
- 
-@@ -1568,14 +1572,14 @@ struct execmem_info __init *execmem_arch_setup(void)
- #ifdef CONFIG_MEMORY_HOTPLUG
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
+ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
  {
--	struct page *page = pmd_page(*pmd);
-+	struct page *page = pmd_page(pmdp_get(pmd));
- 	struct ptdesc *ptdesc = page_ptdesc(page);
- 	pte_t *pte;
- 	int i;
+-	if (pgtable_l5_enabled)
+-		WRITE_ONCE(*pgdp, pgd);
+-	else
+-		set_p4d((p4d_t *)pgdp, (p4d_t){ pgd_val(pgd) });
++	WRITE_ONCE(*pgdp, pgd);
+ }
  
- 	for (i = 0; i < PTRS_PER_PTE; i++) {
- 		pte = pte_start + i;
--		if (!pte_none(*pte))
-+		if (!pte_none(ptep_get(pte)))
- 			return;
- 	}
- 
-@@ -1589,14 +1593,14 @@ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
- 
- static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemmap)
- {
--	struct page *page = pud_page(*pud);
-+	struct page *page = pud_page(pudp_get(pud));
- 	struct ptdesc *ptdesc = page_ptdesc(page);
- 	pmd_t *pmd;
- 	int i;
- 
- 	for (i = 0; i < PTRS_PER_PMD; i++) {
- 		pmd = pmd_start + i;
--		if (!pmd_none(*pmd))
-+		if (!pmd_none(pmdp_get(pmd)))
- 			return;
- 	}
- 
-@@ -1611,13 +1615,13 @@ static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemm
- 
- static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
- {
--	struct page *page = p4d_page(*p4d);
-+	struct page *page = p4d_page(p4dp_get(p4d));
- 	pud_t *pud;
- 	int i;
- 
- 	for (i = 0; i < PTRS_PER_PUD; i++) {
- 		pud = pud_start + i;
--		if (!pud_none(*pud))
-+		if (!pud_none(pudp_get(pud)))
- 			return;
- 	}
- 
-@@ -1662,7 +1666,7 @@ static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, un
- 
- 		ptep = pte_base + pte_index(addr);
- 		pte = ptep_get(ptep);
--		if (!pte_present(*ptep))
-+		if (!pte_present(ptep_get(ptep)))
- 			continue;
- 
- 		pte_clear(&init_mm, addr, ptep);
-@@ -1692,7 +1696,7 @@ static void __meminit remove_pmd_mapping(pmd_t *pmd_base, unsigned long addr, un
- 			continue;
- 		}
- 
--		pte_base = (pte_t *)pmd_page_vaddr(*pmdp);
-+		pte_base = (pte_t *)pmd_page_vaddr(pmdp_get(pmdp));
- 		remove_pte_mapping(pte_base, addr, next, is_vmemmap, altmap);
- 		free_pte_table(pte_base, pmdp);
- 	}
-@@ -1771,10 +1775,10 @@ static void __meminit remove_pgd_mapping(unsigned long va, unsigned long end, bo
- 		next = pgd_addr_end(addr, end);
- 		pgd = pgd_offset_k(addr);
- 
--		if (!pgd_present(*pgd))
-+		if (!pgd_present(pgdp_get(pgd)))
- 			continue;
- 
--		if (pgd_leaf(*pgd))
-+		if (pgd_leaf(pgdp_get(pgd)))
- 			continue;
- 
- 		p4d_base = p4d_offset(pgd, 0);
-diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
-index 8b6c0a112a8db..c4b85a828797e 100644
---- a/arch/riscv/mm/pgtable.c
-+++ b/arch/riscv/mm/pgtable.c
-@@ -95,8 +95,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
- 	flush_tlb_kernel_range(addr, addr + PUD_SIZE);
- 
- 	for (i = 0; i < PTRS_PER_PMD; i++) {
--		if (!pmd_none(pmd[i])) {
--			pte_t *pte = (pte_t *)pmd_page_vaddr(pmd[i]);
-+		if (!pmd_none(pmdp_get(pmd + i))) {
-+			pte_t *pte = (pte_t *)pmd_page_vaddr(pmdp_get(pmd + i));
- 
- 			pte_free_kernel(NULL, pte);
- 		}
-@@ -158,8 +158,9 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
- pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 		      pud_t *pudp)
- {
--	VM_WARN_ON_ONCE(!pud_present(*pudp));
--	pud_t old = pudp_establish(vma, address, pudp, pud_mkinvalid(*pudp));
-+	VM_WARN_ON_ONCE(!pud_present(pudp_get(pudp)));
-+	pud_t old = pudp_establish(vma, address, pudp,
-+				   pud_mkinvalid(pudp_get(pudp)));
- 
- 	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
- 	return old;
+ static inline int pgd_none(pgd_t pgd)
 -- 
 2.47.2
 
