@@ -4,94 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBB0CCCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 18:33:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 859CDCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 18:38:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F8308E0006; Thu,  9 Oct 2025 14:33:08 -0400 (EDT)
+	id CC3358E0015; Thu,  9 Oct 2025 14:38:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 081208E0002; Thu,  9 Oct 2025 14:33:08 -0400 (EDT)
+	id C74098E0002; Thu,  9 Oct 2025 14:38:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB25C8E0006; Thu,  9 Oct 2025 14:33:07 -0400 (EDT)
+	id B62A18E0015; Thu,  9 Oct 2025 14:38:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D526C8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:33:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80E1E13C0BE
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:33:07 +0000 (UTC)
-X-FDA: 83979422814.04.F77E15B
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5D7FC16000E
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:33:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fMwvbgW5;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A0E3A8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:38:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58E8EBCD2C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:38:26 +0000 (UTC)
+X-FDA: 83979436212.07.6F8AEED
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6950220009
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:38:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=a8D7hYty;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760035104; a=rsa-sha256;
+	cv=none;
+	b=0NFmGyoLzTgli33AGzTD42xs3ZCkO3+HsTZGQRfH4vFgliLw1T/WOhlq215/JTtNaY/3Ia
+	oUwqA9WENZmN5hCFJMpp5WM/59lTeGfmtFs9DucNBt0/ZouAe51ovbKYiQFzULczTHwJoD
+	VVr/a5lAFURuiL44ZTVVTEeqyMdARBA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=a8D7hYty;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf13.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760034785;
+	s=arc-20220608; t=1760035104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0GKlNRtXQVWz7matsuaXITEJm/SgqFeAxjg040aWhIc=;
-	b=sFNZMdVaRloadqFo6zOyU+qB6nXqytq/l1fJ4kEV48WES6Y8DRniLeWOW7qWO+HdDtzw5Y
-	A9KnGR74qdPDooKK4K1/VaFmtD8bPVpKFgdbGXKf78eKmOpFHckqPaFx5C5PGPOHsU//Cw
-	BsWbcWlPGxhUCeSy85LyU3MDVYuSXQY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760034785; a=rsa-sha256;
-	cv=none;
-	b=sLq9XuK40iOJ4WJD7JG6cbYolffRRRUMdkrKaadUjWFpFswcyV76KFHhmrkVVZiEG7kxL4
-	Mn70k18Fvb26+jkXBsMF7DNA4eFNrW5i78CBjoiAbvhYPtoHCOFhNyvFSEoIxj9XMcVMms
-	1NIHUkx9LvtOsNzrafoJI/AF7vehPe8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fMwvbgW5;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Thu, 9 Oct 2025 11:32:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760034783;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0GKlNRtXQVWz7matsuaXITEJm/SgqFeAxjg040aWhIc=;
-	b=fMwvbgW5NU8rfyCYDx/y79epIaulMjI73DtKanxOs0MWufrPjUL1RpX2fJdHa3DAICZgSZ
-	znPirEdk5QR80c8V/42Qq+CTKidwg6e0BRzzD7dkt74X6GMALkDzkR9TpZAIQrFPN9Wb3z
-	hIr3m5lCDzg+c8LlEPpCy4hjX2zvNas=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
-Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-Message-ID: <qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
-References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
- <87qzvdqkyh.fsf@linux.dev>
- <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
- <87o6qgnl9w.fsf@linux.dev>
- <tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
- <87a5205544.fsf@linux.dev>
+	bh=81ILHOUYQAEk70D7TUtGk2AtcHVEKY4trbt5HGWeKE8=;
+	b=Z2a2v2g+i5ODp3c/KrYuV3uS0qbTr0fVU/xR6h7BC+Ok3TvZ2zfT18dDGTOCCmYOJFLuoE
+	lsFCAfnCZhG8e9yZSaTjIsIrxrudw1emrb9DpAcdE7FZkZJaVsULs60QEvbSOCKlrBzZjv
+	Rdur1IZE9khsISipaWUVslcd3Q0piD4=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4e3117ea7a2so17557181cf.2
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 11:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1760035103; x=1760639903; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=81ILHOUYQAEk70D7TUtGk2AtcHVEKY4trbt5HGWeKE8=;
+        b=a8D7hYtywAP902PXs/UfEcoehB7K8q6WbYib757B3SKGw+JH+/Q2ByeXRFHyOTVANV
+         ZDJTGV3+ojBNvZ97YctA4fcZU8GJb+3pTd/vaKgTAXM44PjzzQiCrOB4OBdjRzxj+HEt
+         GVjPVLE+/rMZAwJMJS/65tkoWJziJOvnWNA8SUM+dGe1M0JvB7O2f2AnD8zqktrPtnir
+         gl+FN0yYMJ+Xs7Js2/cdK1k9Ld16w2QXBOYI/cuUVaTTzG7RRZhxu4SfjQ3oKTt0o0nO
+         et1t4X8xeQwKIvC0rLYKBXDVmJMdRz+MaRMIWsd573VZumvjCMC8TGVKDhfgCaHPjEze
+         ssYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760035103; x=1760639903;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=81ILHOUYQAEk70D7TUtGk2AtcHVEKY4trbt5HGWeKE8=;
+        b=WvcXsGsdEFjQ0CZltZHqkLNowEIx5Ga6mVP9iRUsmo8iOxsR/w/gDggjbZqK0qQfxk
+         rBpaBMskgwk1srLPzlLuJX+sMZ6RX+D7F24cbdcmjEMot1S+CeOn+tSoO0Zwqa3AraQI
+         xMQAGRlzd3JDLgm6UBXoX3f8TQn2rjhylb9BoY7y9N4/ufbc+AjdHrjOUO7lCb5ckTDb
+         X5eua/WNZZ1b07ymn+XdcGOvbcckxfEB/q4XAcMoKoiu7wOrVKbDSYDnDtDNNC4NNgvx
+         MuIxRJWI1yMY3CjYnGcQqZlPclMscaeFabeWU0IzdnnpENikJUVyS/+MIXSl/5F0+XQe
+         n3Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHxcbVmDtHjqdxh0a/0bir91xFJcquud1qe8N1Qfy4mQAm8KOEnt1FWb9q8EX0drXubS+IBnyMhw==@kvack.org
+X-Gm-Message-State: AOJu0Yx20KYKZJzJf3o17G/fIfiFWNInyKHdTvqrNrQw+DLXoLAJhL3I
+	4uDepIgKAZH5146MTIGp1qIh4ty9KDj1/r4E/b4elJLMk+fdRa8LO74tiucFfKVx/mCn2VD6nyR
+	MRaN8aitbBB3kcnvnzJzqJOd+20rpVNi3daxeRyp2TQ==
+X-Gm-Gg: ASbGncvHfgSS3MDMJlayMGwKeyQihvCOFUt5YV5LZO4urlnwPWQJaUzy+memyB3rLVt
+	3pOFrAMlF8tqrGAL4JE4EzuAZuc99jAxhZwhCUEG4Vimjzt/+s92te9kNWSuwAu623aHqCWLgIR
+	Kq74iecr6s7e1UC76TblnbWoe+tIgZgb7CIAYhyf3tYJiphpCQz4KyimksscQM6nH9zaxiIqK1t
+	Z8G/Oiqexazug5QM6+Luh9lkr9W
+X-Google-Smtp-Source: AGHT+IFTvUtN/rpWG7psFmkleFQat5OJKejLftUiIf/dP75zdni12r9jj+HSaQKLJe6iZf61h/vhuCDqOsTOwxoEzRc=
+X-Received: by 2002:a05:622a:5517:b0:4b6:15d:b3f7 with SMTP id
+ d75a77b69052e-4e6eaccd340mr110183671cf.12.1760035103219; Thu, 09 Oct 2025
+ 11:38:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5205544.fsf@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4sfin4fzokoh6w79j1ixco83e8k7pgnq
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
+ <CAAywjhSP=ugnSJOHPGmTUPGh82wt+qnaqZAqo99EfhF-XHD5Sg@mail.gmail.com>
+ <CA+CK2bAG+YAS7oSpdrZYDK0LU2mhfRuj2qTJtT-Hn8FLUbt=Dw@mail.gmail.com>
+ <20251008193551.GA3839422@nvidia.com> <CA+CK2bDs1JsRCNFXkdUhdu5V-KMJXVTgETSHPvCtXKjkpD79Sw@mail.gmail.com>
+ <20251009144822.GD3839422@nvidia.com> <CA+CK2bC_m5GRxCa1szw1v24Ssq8EnCWp4e985RJ5RRCdhztQWg@mail.gmail.com>
+ <20251009173914.GA3899236@nvidia.com>
+In-Reply-To: <20251009173914.GA3899236@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 9 Oct 2025 14:37:44 -0400
+X-Gm-Features: AS18NWCn4swK0ST2nIuzLp0_IoWDyMPKV38mC4btlFHmbHQv1r2bdrSfddLjGqM
+Message-ID: <CA+CK2bBtrkdos6YmCatggS19rwWYBXXDLwiUWmUrs2+ye23cXA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>, pratyush@kernel.org, jasonmiu@google.com, 
+	graf@amazon.com, changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, chrisl@kernel.org, 
+	steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: s1fr79x9coorwaz6o36xqwuq4ddnbrtm
+X-Rspamd-Queue-Id: 6950220009
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D7FC16000E
-X-HE-Tag: 1760034785-804115
-X-HE-Meta: U2FsdGVkX1/N/F6hVjG5D7ifUU/lvU2+8hF6qljDbXQQcB8fuAIRXroMVI5aYN3ulR09PIsU8gfLj3m87pOAExjmKjTwt6jzP7uFA3SfLeu2obI0mgWNHUr32Mg/ZIsjejOD8ji0pp5MhHBcWyAY/KJe6Ex4RYEI+/CYE7RfZ0J0TUkcgj2DL1QYdGOqdmndwaI2Tvq8XLHwYORJxNbWZCrXydn8LRgjR+nZ4T4iZFWqhBeBXOuiPP+xN3ommBwYW8kgiUYd7GifaLdvum6d9TqbZnaaWhMI9NIcIms5eie2I4pDM5OrA6JrBteFB3V4FaEKsl67XHZjgFj9O8KmS8hTL6yKgXOdTfgS5mX0KkwVUJNL+vE0Ehnqqjp+WM+1HDzmzc0xMslciDPAU91u4vHyVkklqtuNHEdKTU2uyEvG63v9NKBnrFyfb9pQQcpus0Q99oWnDEuCkZJbW2uG/JShI/J4GMwMAPyV6/xrTos1hEhEBMvL8k3gZB+bauiZ230GCLBpY6gxc7E46kT+GcNsCqmW8xQVDW4sMmkxm4QRXPB6oENa0b+6rTxb0R//eJKmMiMcujtE1UjPDES6cHWlYXT24mC1l5atzVu3XglscKF7ZKeVL78r9YqwMv5+2mHwhIvnJNrbrd7xWkc6s7HJc+GWunoZHFFVF5MHrH37VzBfpb9yjgQhXE7teuOVaCp3gvOvOSvJ43U2qO96tOslg9svyGDNdMFrEZYRHK0WtW6zb+xv6/i0sQ80jlj03TyPUHhD1w9KlU0nR554WIgAXw4PeM+2epJowQAwV4e9ZqwNfuLyo7mumIbV8O5ypzTr8mDW27Zfb5tzJFtAra0EG7tpF3S4iJBLcDyzbZy/XZrGZkDg7YJ+kHgBA+abqLLDhC+FuRL4/AdjNo7KOGxCmVMHpmPQXLrIpnQDTv5CE/g3kUV11j0VJ2thvUZYbIBl/KeFWOl1boZkmv9
- 8cxDJLSq
- pWFpuOYDuPdUvZWTFIb53PhMnmKPlWM+2d31KDcpsZDav8ANKn46lizOSnv9qBtVqw002+T/jQ9eehyERmvImsUsC5/Bil8ltUZpcHaOkV1UEhXozScfe5MDwBWpeugmJqfmnHcMYRFQtPXiFo0UOFTGlZuXe5FRgoUkjzwNy+o/RbQhlsAmRGeu96tw8p9gCDGkpDjlyO5GfZqEY9WXQf7WZ+JsFESbeXxkkMJkcbdnI8j/EivUzWDGV4wZ3r+1ZKNXnXA7QUZ7thHhvYIbqtJBLyThKc/YH+kpNwy/Jl1fegWahqGPGD1A1qGBM9s7CkMcYSpud8EhdvYk=
+X-HE-Tag: 1760035104-806450
+X-HE-Meta: U2FsdGVkX1/X58VskuZuLT8Ll++pzvGerTjBR41W3BTLvonbPcTvb1t95Gjg4TDBvJDydj/eJCSn0htDqxw1AzGZV7t6JRN7ZmCfzIZtSXOzTf1Kz/PuPn5UoUQkac5rne3MFRceWYcVpkH/dhdc/c2ONb2Iero15HG3wbKj5pWpp6hkRZRNoDhDBqKnBXuZDS7/TV1TbgZ7ysncQwNgiDtHNUGLGra0YRN87F53epOm3QVj+iVok4trk/1g7KGszgEVowzALbOYrwz3YfN3+bkukyAhQKJsOLMSfDMr7O8Y/WD9kYZ/piWt1kikXeff5e883hlJ4HpYsf4Fc6txavDKs6jkqhG9r7Tm1tFOdtpDFvQiV1++XVPRMfvP4lKXMbc+K5HcxhQXtQ1pGhCN8h6TPDZ1M2o3ydVee59cI7TRtT022YIvnl7dd4qy0P8LbCc4Hp7C9swVbLBKdyxRanFh4bsmQqz0afj7PK/3SvKTEu0AbVqFot0XoNL2mREhs8iNIQABt9xARr5pXa6tzKd4ASOHFqVvJ02g3Q3TgKD1jy9bCD15xU/tZrCIdPsfsqUlS6AcQLVuDtXa3hlnCxsqVXA8HmPfbjzVwgOqDqi38QzOdbxkONNvipbb+H43hyGmsmyV+vVWB1THsMhCqR2bJjmtM4y0a3wM0CoTT38XTDzr0yDdjt/ymp/jgbn23KdlDbVfbI454Zi0TxbHoa9+VHHBF5dRBRprGW+9AQOacOiPsL6WUimTVrlIytDy3C02I9BP2p96fpkyZ6jpy6fOgic5ti0HKnNiRlk09Od4rxFCTqP4O95N4kYnfZQaTRh0HV8/8e9+dU3ksSsQ4IfroPXN0Pg6zp03LA6sK/E9fW3AOolWMDrOCYX2SrZHptNKSG+OqNE/hr9gvrIeHtwe8Ly6wMMgqdR7etP6cv1BYkrAiM5x//6RxQm+lFEt4gxevYHCjF8dttsPsZz
+ 5ViKLUoX
+ eV/AMtDgB8YxDk/0iJGtxiJIKlCddWgPSzRzVyfCtteEjPFirg+m5sqqgjfDOHGLauRuJ4gF9fsrXnW/n2JO9yWGJggNDBM8S6gtT/1drrKhIB8JK3RK2GSegR7doqyXASYo1N/1d0L/IjLoHVpHU0FUzMPIeCDcEA1zM9QuuxVS7TA2vfx03d0Hfbh+KdLuDgGpCST/itbAoc39KYqRJbVO3kKuL+TpykCNmqLNJqsRNQ+rVymQBMXX1BAJia6yVFGbZp+HCmD5L/rz/2+epF6NJVKsPdmBq2u7/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,86 +145,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 10:58:51AM -0700, Roman Gushchin wrote:
-> Shakeel Butt <shakeel.butt@linux.dev> writes:
-> 
-> > On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
-> >> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
-> >> 
-> >> > Hi Roman,
-> >> >
-> >> > On 10/8/25 8:58 PM, Roman Gushchin wrote:
-> >> >>> This patch exposes a new file for each cgroup in sysfs which is a
-> >> >>> read-only single value file showing how many microseconds this cgroup
-> >> >>> contributed to throttling the throughput of network sockets. The file is
-> >> >>> accessible in the following path.
-> >> >>>
-> >> >>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
-> >> >> Hi Daniel!
-> >> >> How this value is going to be used? In other words, do you need an
-> >> >> exact number or something like memory.events::net_throttled would be
-> >> >> enough for your case?
-> >> >
-> >> > Just incrementing a counter each time the vmpressure() happens IMO
-> >> > provides bad semantics of what is actually happening, because it can
-> >> > hide important details, mainly the _time_ for how long the network
-> >> > traffic was slowed down.
-> >> >
-> >> > For example, when memory.events::net_throttled=1000, it can mean that
-> >> > the network was slowed down for 1 second or 1000 seconds or something
-> >> > between, and the memory.net.throttled_usec proposed by this patch
-> >> > disambiguates it.
-> >> >
-> >> > In addition, v1/v2 of this series started that way, then from v3 we
-> >> > rewrote it to calculate the duration instead, which proved to be
-> >> > better information for debugging, as it is easier to understand
-> >> > implications.
-> >> 
-> >> But how are you planning to use this information? Is this just
-> >> "networking is under pressure for non-trivial amount of time ->
-> >> raise the memcg limit" or something more complicated?
-> >> 
-> >> I am bit concerned about making this metric the part of cgroup API
-> >> simple because it's too implementation-defined and in my opinion
-> >> lack the fundamental meaning.
-> >> 
-> >> Vmpressure is calculated based on scanned/reclaimed ratio (which is
-> >> also not always the best proxy for the memory pressure level), then
-> >> if it reaches some level we basically throttle networking for 1s.
-> >> So it's all very arbitrary.
-> >> 
-> >> I totally get it from the debugging perspective, but not sure about
-> >> usefulness of it as a permanent metric. This is why I'm asking if there
-> >> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
-> >> 
+On Thu, Oct 9, 2025 at 1:39=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wro=
+te:
+>
+> On Thu, Oct 09, 2025 at 11:01:25AM -0400, Pasha Tatashin wrote:
+> > In this case we can enforce strict
+> > ordering during retrieval. If "struct file" can be retrieved by
+> > anything within the kernel, then that could be any kernel process
+> > during boot, meaning that charging is not going to be properly applied
+> > when kernel allocations are performed.
+>
+> Ugh, yeah, OK that's irritating and might burn us, but we did decide
+> on that strategy.
+>
+> > > I would argue it should always cause a preservation...
+> > >
+> > > But this is still backwards, what we need is something like
+> > >
+> > > liveupdate_preserve_file(session, file, &token);
+> > > my_preserve_blob.file_token =3D token
 > >
-> > I also have a very similar opinion that if we expose the current
-> > implementation detail through a stable interface, we might get stuck
-> > with this implementation and I want to change this in future.
-> >
-> > Coming back to what information should we expose that will be helpful
-> > for Daniel & Matyas and will be beneficial in general. After giving some
-> > thought, I think the time "network was slowed down" or more specifically
-> > time window when mem_cgroup_sk_under_memory_pressure() returns true
-> > might not be that useful without the actual network activity. Basically
-> > if no one is calling mem_cgroup_sk_under_memory_pressure() and doing
-> > some actions, the time window is not that useful.
-> >
-> > How about we track the actions taken by the callers of
-> > mem_cgroup_sk_under_memory_pressure()? Basically if network stack
-> > reduces the buffer size or whatever the other actions it may take when
-> > mem_cgroup_sk_under_memory_pressure() returns, tracking those actions
-> > is what I think is needed here, at least for the debugging use-case.
-> >
-> > WDYT?
-> 
-> I feel like if it's mostly intended for debugging purposes,
-> a combination of a trace point and bpftrace can work pretty well,
-> so there is no need to create a new sysfs interface.
-> 
+> > We cannot do that, the user should have already preserved that file
+> > and provided us with a token to use, if that file was not preserved by
+> > the user it is a bug. With this proposal, we would have to generate a
+> > token, and it was argued that the kernel should not do that.
+>
+> The token is the label used as ABI across the kexec. Each entity doing
+> a serialization can operate it's labels however it needs.
+>
+> Here I am suggeting that when a kernel entity goes to record a struct
+> file in a kernel ABI structure it can get a kernel generated token for
+> it.
 
-Definitely not a new interface but I think having such information in
-memory.events or memory.stat would be more convenient. Basically the
-number of times the sockets in this memcg have to be clamped due to
-memory pressure would be useful in general.
+Sure, we can consider allowing the kernel to preserve dependent FDs
+automatically in the future, but is there a compelling use case that
+requires it right now?
+
+For the initial implementation, I think we should stick to the
+simpler, agreed-upon plan: preservation order is explicitly defined by
+userspace. If a preserve() call fails due to an unmet dependency, the
+error is returned to the user, who is then responsible for correcting
+the order. This keeps the kernel logic straightforward and places the
+preservation responsibility squarely in userspace, where it belongs.
+
+Pasha
 
