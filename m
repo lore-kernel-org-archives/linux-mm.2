@@ -4,176 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59D4CCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8492CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA638E005A; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
+	id 238C68E0068; Thu,  9 Oct 2025 15:11:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E81BC8E0002; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
+	id 210F48E0002; Thu,  9 Oct 2025 15:11:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D703B8E005A; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
+	id 14D788E0068; Thu,  9 Oct 2025 15:11:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C67EE8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:03:40 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9306CBCCB6
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:03:40 +0000 (UTC)
-X-FDA: 83979499800.18.9CCC0EB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F2A2D4000D
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:03:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LzY8HEM6;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0331B8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:11:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9E9591409A2
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:11:56 +0000 (UTC)
+X-FDA: 83979520632.10.A398889
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D39AF180006
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:11:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NuQKWRfz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760037115; a=rsa-sha256;
+	cv=none;
+	b=0QQmdAnIY1M796OwB/rD5VAQ3YUx5eq6EoJPbWkczKmKeUOQHniM1LB+3bwSDH0Ulfh4pf
+	YIRAziCJ0NYhQvWzMXC5zUlog1VCKD+4BhvPYNE4rKcTtOaCQj8fitQ58ppSIakVAn6PW7
+	wpHoGKBD89TYCAWBQO4CqnV3DftYJJ4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NuQKWRfz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760036618;
+	s=arc-20220608; t=1760037115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
-	b=eYMKts4eTE5BY5dkQA2YENWUKONlU308XVWNR9Tq7A0uHLtM5DQawqX0fKfv1YMFVVcH6F
-	yFpyZ7KgOzs2H4xK4GmimHUXimC8rZa9TJ2PW35RyAoHdLgMtKsALk531VK7x1KSHyIlxp
-	75G7IxUIJOBzBu8YkcD9Bbb4HvzDWEA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LzY8HEM6;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036618; a=rsa-sha256;
-	cv=none;
-	b=t2TLwPKCufhzx2CERTtK6X7UsKYv+g3ch5m5Zc9llsYCegmNqPWWIuwMMBwdxVP97gpGha
-	74YCl9XZlT+IvvBMl1cNbTR8ycJ/rnVQU9CUrGhSZTiO+JvCOAwcYSOHhEIffSIg8bbAts
-	mmo83NVsCHNVZ8uSut5H+c3TPDH1YIk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760036617;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
-	b=LzY8HEM657UM8F5BhNcwW9BNcNr/dhsiuPlzXajZEngN4NyYsYGu61502QupZMvM+8u393
-	1wUjxM8dmPJX8lECSusVvCs34IGiCF63FQSmflhiGv4Kcl24ZJ7GnUPW6sTKWHXL3fzu/K
-	5RuMQb7qXILBs7PIsnDl2Fp/3NnDeAk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-151-tBZufaDHN32p-J0RxUSoFw-1; Thu, 09 Oct 2025 15:03:36 -0400
-X-MC-Unique: tBZufaDHN32p-J0RxUSoFw-1
-X-Mimecast-MFC-AGG-ID: tBZufaDHN32p-J0RxUSoFw_1760036615
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e35baddc1so12490085e9.2
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 12:03:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760036615; x=1760641415;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v/ssIfgtDfZ/vZQpJbYy04kO6t4txkot0+r1aHEyw0s=;
-        b=HmHPg11IUtZq1EkO8KrAYe8fhAn+cTtytxOowY3G2Fy+S5eHWd5KgT/Ju9t496jZMg
-         OVulBZSoZqQUDSHGq7yeEDiCcN/CKgVNtddiwo8QXLYBXwObm/BAJPL0ci67CyY0DoFb
-         5BZWtDqHEiF3BTC4klRlMrKCSIhmhyaQXQ+yCVq7A9m5zzn8g8JpEhietebjjEUD2BEO
-         gi2/D+eYrsnrKjpkfihH3KsLiDFiTHR51b1GrPoP+Xqig4H4Uhp/yJafFUksssLSmXjX
-         OI4Ws6PM5Xq2Ki1/xOA1frUU4CZjR7mPpTw1Q4DqC2wtsSAbKqPWx2vTC9mkVOKTE8Pb
-         aMPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNMC5tvGmS6RBf44+uyOpwXDjBVlFX0Q+WfSBRgjdOU0ISVDBYe3Rj73cZNbABDfFIv069Cq3WRg==@kvack.org
-X-Gm-Message-State: AOJu0Yx3xl4H2OKExlrMT0caN4nem6BO3fWckegJJjy21MVwOJX1nt7d
-	FpSjqdDsfAuE5eeyco2Hxl9s45b9qC36kcsaLuMkIMfFPDK1DbpiZkc8hA0jYVyHnQWYQXk0RRq
-	nhrqEBBeKSqo05btAO+ENHR9cuCgRMPPHBdTmvTVo7rbL688jqG/NI4xLVwbe
-X-Gm-Gg: ASbGncsRe0rQbJHyypVgK6G1Zn4bSr4FUOz43wOw1BsG2Ew1DFsqGr28o0kAnNEXuzY
-	mr9Kn/YI9hmpKGr0TozDcxwvMthq4M7nlfRcE4p54i+zIussMjjucLtST1LowirRNDevpLgt0Gs
-	PxSKMd26B3zkukUg1KXD1Dm/oZLj2IjoDp46RK77T2iNTZSoLtBXzJ/CXsADMEiKL6EQPseEH45
-	y68XPC6IUfxgr6oshK/xLlmONrWoJAGkB4j1sgQunmtYgw98ldgWpYRH0DxAOxqyh5EKA08Jhfe
-	YFTHS9g+FjsGc8wNR1jpywiUvevOzxvNN5TzfLGDcpGsrpjHe1/HSHAkxjNcaFaL6ovBiGSQz4G
-	85oGWRdpP
-X-Received: by 2002:a05:600c:6287:b0:46f:b42e:edcd with SMTP id 5b1f17b1804b1-46fb42eee07mr11006335e9.38.1760036614783;
-        Thu, 09 Oct 2025 12:03:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKJxh6vFQ36gJauYPkq/a3ScSVmIoEQBpQlpefqbtkRe6rn2htikCoXY1hIWlxMFsl+Gqqiw==
-X-Received: by 2002:a05:600c:6287:b0:46f:b42e:edcd with SMTP id 5b1f17b1804b1-46fb42eee07mr11006155e9.38.1760036614381;
-        Thu, 09 Oct 2025 12:03:34 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cfe4esm352054f8f.26.2025.10.09.12.03.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 12:03:33 -0700 (PDT)
-Message-ID: <da27231d-e8dc-41f1-b5bd-e32b5eed52f3@redhat.com>
-Date: Thu, 9 Oct 2025 21:03:31 +0200
+	bh=J7HBbauRVjtLxT/2KqWAHpd85frdweQH7T0ABnBZNzU=;
+	b=dYd20tcdwAmdoiyh5xZHPdL4HZ8u2uaGmTTlED4YwDjB4evundA8RKTPh0Hv6WMFazfw7+
+	15XATOvBlVKIo1b3xFJ3L8+bOLboodLlosgn8hAXTFvGw9zpUWdBhyUAO1RTiYCG7s2oGb
+	0rhpZO5d3OliYUMEsUTXPvhnpaRit4E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 678A1459F1;
+	Thu,  9 Oct 2025 19:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D44C4CEE7;
+	Thu,  9 Oct 2025 19:11:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760037113;
+	bh=6DwPMa+Wql2BSz1ZhMVyoJpuMWrdGiCDNvWyDRowITo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NuQKWRfzxA6IS/MRDXbYxHjq+bGfXpIWBY8+7wLZeZ8FOFcDXG34cW7gWwjmX3k7j
+	 GjZHs1x588d+C2H2iIT7mwhrsTHJfWd+IUj1XRTlFBtmFxP5sWLq6KfchIgWRNRC1e
+	 SMI/GrGb4Sm3EhB+ZEsIK3EUvOI2h/+z5rPgL3bFB3dYv54tcaEdCWvhfkL6mXHAeA
+	 R3YKDadCNsIQ/1aq98CE2GPEuG71IZjhBKbta5KB/JlKwrxExMq+hY0ddTs5m6Br4k
+	 lAFdyzym8bbKXxmEHjHs1N/1zDIzyycI8hDQfObUHCKxZubqPTI8g78N2DaqMvD9m5
+	 W22CHEnOvITZQ==
+From: SeongJae Park <sj@kernel.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	shakeel.butt@linux.dev,
+	linux-mm@kvack.org,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	kas@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 1/2] mm/hugetlb: create hstate_is_gigantic_no_runtime helper
+Date: Thu,  9 Oct 2025 12:11:49 -0700
+Message-Id: <20251009191149.57652-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251009172433.4158118-1-usamaarif642@gmail.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm/memory_hotplug: Remove
- MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers
-To: Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20251009131839.3739108-1-sumanthk@linux.ibm.com>
- <20251009131839.3739108-5-sumanthk@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251009131839.3739108-5-sumanthk@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UFiqLEcj2UWbXMAImL2M3XdDuAy991ic65bZjv5IyQw_1760036615
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F2A2D4000D
-X-Stat-Signature: 3a1suhi7ab3uhr1pawg3zmnhs6ezpj7b
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1760036617-391591
-X-HE-Meta: U2FsdGVkX19eBU6yCPesAzIo7onvgcHMs/vIrh9qo7kumzpnXCkhHRgz07Rc/k25jDcEnJFZtwxyM02dDOmrtpkUv+W05VbHs83um88J94tMVKhgGwFnnBwaRZVmfC0Z3epOUQ0CseAAe0idCvMifnS6AgShZH7b2eyyZlwWJci/bL7mJH6QOUXNvDWWfFLFUAZAh1n3sN1Z3qwm2SnVW1yWBwupE+dIhAIqA8/cnOTRdnfiwiRzjdaU9GhEUdllvK+/bPl2UH1NaIw8sn+KJU2MQLfNRQThJkaZfawoB6s4CMlm94EVv4GEAd7/Uodv5Vs0qUajv6Twv2d7Cgf5NwIIxDgpTaReGWiwfYMDikl7qqcV4NYHs7jxvrYa6715Veu2UYjh8XqLvJhYBO2kVVmSE0a8CMczcfgplQ/C6AsMJj2+iNBXTfBnetDfIhqH0eeBe589A0VXJMBkPQ/+gh5FQylp3nR7gPQIuytx0zqh5rrx3oAAujiR3tUKQxEsbjLUQZlEQKNnWdUt6DQsDI8BzzsxeQJgB5XRyLvsxLk6WIrXHXz/eUNEnhiuLbm3cp7GoJbuEGj2kgkFNdu5h2v+p2OMqsjCfNyX2kxjmI1FNOVj4wZf31eiq4xzfdPpHMMRWx0s7XQKpXuWFmDOuSJ9cZdkKp4xxZ+Lue4Q8dGemDOrV2hKONqmbCp7wMPjKeZIxcJYj6KrtMnAjZfegICnUEhdEy8bG0fGf+VuX2N5d9oPWQhQ2TE2xG6VtXZXlnfxBSfwGzXkCXhXKRMlSbFbb4rxq9h7A8Xhy+rmURiBPEaiG3ANzK9Y39JJ/k0ztBscdvjI8TqHT6faJ0Tha2AHVA5v3LEzp58zZyRIyGrEFnPMLYf5jnFvlOKMde/AI6Kq+LI9sFWk1tP5wAPWpPYjePSo7m+5lgh+LdSXvPhgUIGtu2Dy1pGOqU8ghhTvE6OMCFd2oisU/gCMgc6
- psqzY3bV
- ciec3SkBwxdOIUw+NdgqcYEjHF6PeP95b2h2MtwhsAe8MPJJDDyGayUXYBo+lqUy3Y8XFo2o2v2m5lFgeYdyQDKyKI6ZL2uqylnAI9qf1q/V1W0p8ujJwWBq/0Zh1giP1DLqZSzK82nThE0kx8Oz2eP+wy8c4qbqlcuen+PNwMPydWTNYvwpQWqDUSulHZorTb9/adrolD66ynWAX10qt4swYk/hSK7N1x8z1CWolv+ADIl1wNDaExwGRKuriAZQMjNKIi/owf0GFNFerfMg8OsMwKpQCVjg6izqhUNfpj6QowTOpkB3hTVjgWXtyjem5Zdme+AgFt69TeUQRwovTENKiK57CSPmNqM8pxxbuFXJiycn/Znq04ZfxgCuuG6NlQlwiOFCJXCHKFxEJcvZ6ssy1EruqdK04HPdUugqAOTaTasUbDIhWGwbPFIpAxsbdzDZNHb+VhSFYgefosoW3TmOxGhU4ei5QlED8W/NPzRMo4wod5kuHUmwdogtU6IGmOZ1ceu0ktXWaUsDX+b//amQE5rul1IR1QcN9FjPjEXRmkwNe9JR/Kw0pOQDDx5vGfxkJxdD+mr7oe3WnWa0k9OaFrpWEQ6pHq+OcrGBGl13cqLqqAKmw5SWfa3NRYPx+8LDvFXOQmpH+hMmaDXwhAvgkVg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D39AF180006
+X-Stat-Signature: uf3o1rj3jugziyeswhybm4tniprju7ey
+X-HE-Tag: 1760037114-73114
+X-HE-Meta: U2FsdGVkX1/ky+VRe2YgyQokKfcwxl9Z9d2m4C+cfPxDTpZ59wXhGIRJBXwNieBHu079SlA1wLQA7PKOEJRPtm6exwKawit1yTDg284fmGawXdQ7o0frPdNAKs7qmaHK2QRGLZbG+MIpXegvGgJARU7UpmxxSngpay96ftnKPs0TxZzaUPh8a+ZkSAfojguuenTKFzAYiYXSBjlMyQMf4hx18Rf4A0KtOLEKTUs0jZ2IdjJypR5PuyDvQtSGWKcD7+w5DP0tu5GQ2igIwbPbG6FFg8Hszy4tOtUIAmBcfDzY/+xSx2rEnWS8BGcDL7CtIJVtuJdlnQ1AaJDOlJE0KXGu72qf0QXPqTEXEjbz5YBET4XtXZ3Vx4Ew7lApBTeApPYzzNr1VsHIxN5RAlcI9jATqh7CZrF1TBVJt+wzUFLUra7F5nkqOCvhp482mpbOxi1qPguIPOeh9zfSTN8f+tnkF+phpvZx0LU//61CBVTfQgBi8pXhc+j0dkVyEts4nyTdKv1e/LGqLjrRbt+1AxI8urNxg4LFNM1+LfmyOOqMi7pWo50UB7YcMC/ceIrtydxgwKgS0KsQQhv5pIX18/+YDm8jUL2dXiIfexuwq4r8QiGvWjBBhna+qVfGuMRNBzQze4cmi52PcB14U9BmoBLgBKyJNjIhvs/ss9I15hxQ0w3gvcow4Vw1ptHipMjz3s5lE/i0YHaycdVpxFEx+xlHaqJEEno2gXm4yrmQAmcAZFhkEaYg9cV+OX7oACrjRsZDLmsqa3JfgSR7G9NlUk3XfLlPEt2WZmVnSzLCfI0vRwTfu9x0NZ+n/NGET5z2FFiLeEsp2OILp+6i9/KkkED/j1Gkg1QYSvPyeDYUIvmxm5hT3brzyWujPga3kmHNWx+BS+gTDeJK2bb1BavEcVupISOllbbELGYNlsrwgLZ7VHztHsJFg8Qrsl8Bek6KxW5aZxyi0g1CXvIMYFs
+ 2g0/YcVU
+ ZyyVbtK7hcBGYAyKva7IEo/D7wMjl3Scovz8TjFSuvVtrtbkcUcrFgiGTK+OFQ2MI7r8KrkhFyO5SbYEQZk60tR6nTg9hSnUjorHwkK4oxd2LB9jYocfX1ROyVSjAVK+WCLIzwOXKqhohtkA+PC4nd1iKEB8eu3U/A/2XZ4LVcSMXq5YNu4jX/6EueUsADUxeQIJo1JkMuralyxZLUtJQLLF9yyFjH3sMoXZ202VD795yZv7DmPUI52bAK8Tzyhhn/leMPOZZkYXjjJ+lL5/6GelqbZ/zLfj0OGXlRTp/7PyK6bglfcF2dGUx0isvPNOtlvmVlLqV+fLpjoHiSEpd9RGhMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,32 +101,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.10.25 15:18, Sumanth Korikkar wrote:
-> MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory notifiers were introduced
-> to prepare the transition of memory to and from a physically accessible
-> state. This enhancement was crucial for implementing the "memmap on memory"
-> feature for s390.
+Hi Usama,
+
+On Thu,  9 Oct 2025 18:24:30 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
+
+> This is a common condition used to skip operations that cannot
+> be performed on gigantic pages when runtime support is disabled.
+> This helper is introduced as the condition will exist even more
+> when allowing "overcommit" of gigantic hugepages.
+> No functional change intended with this patch.
+
+The change looks good to me.  I have a couple of trivial comments below.
+
 > 
-> With introduction of dynamic (de)configuration of hotpluggable memory,
-> memory can be brought to accessible state before add_memory(). Memory
-> can be brought to inaccessible state before remove_memory(). Hence,
-> there is no need of MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE memory
-> notifiers anymore.
-> 
-> This basically reverts commit
-> c5f1e2d18909 ("mm/memory_hotplug: introduce MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers")
-> Additionally, apply minor adjustments to the function parameters of
-> move_pfn_range_to_zone() and mhp_supports_memmap_on_memory() to ensure
-> compatibility with the latest branch.
-> 
-> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 > ---
 
-Acked-by: David Hildenbrand <david@redhat.com>
+I think adding a change log since v1 here, or adding a cover letter with it
+would be nice.
 
--- 
-Cheers
+>  mm/hugetlb.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index c07b7192aff26..e74e41386b100 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -134,6 +134,17 @@ static void hugetlb_free_folio(struct folio *folio)
+>  	folio_put(folio);
+>  }
+>  
+> +/*
+> + * Check if the hstate represents gigantic pages but gigantic page
+> + * runtime support is not available. This is a common condition used to
+> + * skip operations that cannot be performed on gigantic pages when runtime
+> + * support is disabled.
+> + */
+> +static inline bool hstate_is_gigantic_no_runtime(struct hstate *h)
+> +{
+> +	return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
+> +}
+> +
+>  static inline bool subpool_is_free(struct hugepage_subpool *spool)
+>  {
+>  	if (spool->count)
+> @@ -1555,7 +1566,7 @@ static void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+>  	VM_BUG_ON_FOLIO(hugetlb_cgroup_from_folio_rsvd(folio), folio);
+>  
+>  	lockdep_assert_held(&hugetlb_lock);
+> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> +	if (hstate_is_gigantic_no_runtime(h))
+>  		return;
+>  
+>  	list_del(&folio->lru);
+> @@ -1617,7 +1628,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+>  {
+>  	bool clear_flag = folio_test_hugetlb_vmemmap_optimized(folio);
+>  
+> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> +	if (hstate_is_gigantic_no_runtime(h))
+>  		return;
+>  
+>  	/*
+> @@ -2511,7 +2522,7 @@ static void return_unused_surplus_pages(struct hstate *h,
+>  	/* Uncommit the reservation */
+>  	h->resv_huge_pages -= unused_resv_pages;
+>  
+> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> +	if (hstate_is_gigantic_no_runtime(h))
+>  		goto out;
+>  
+>  	/*
+> @@ -3725,7 +3736,7 @@ static void __init hugetlb_init_hstates(void)
+>  		 * - If CMA allocation is possible, we can not demote
+>  		 *   HUGETLB_PAGE_ORDER or smaller size pages.
+>  		 */
+> -		if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> +		if (hstate_is_gigantic_no_runtime(h))
+>  			continue;
+>  		if (hugetlb_cma_total_size() && h->order <= HUGETLB_PAGE_ORDER)
+>  			continue;
+> @@ -4202,7 +4213,7 @@ static ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
+>  	int err;
+>  	nodemask_t nodes_allowed, *n_mask;
+>  
+> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+> +	if (hstate_is_gigantic_no_runtime(h))
+>  		return -EINVAL;
+>  
+>  	if (nid == NUMA_NO_NODE) {
+> -- 
+> 2.47.3
 
-David / dhildenb
+It seems the new helper could be used for three more cases.
 
+On mm-new:
+
+    $ git grep gigantic_page_runtime_supported mm/hugetlb.c
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:           if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+
+After applying this patch on top of mm-new:
+
+    $ git grep gigantic_page_runtime_supported mm/hugetlb.c
+    mm/hugetlb.c:   return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+    mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+
+I'm curious if you are planning to do the conversion later, or there is a
+reason why this patch is keeping those as is but I'm missing.
+
+
+Thanks,
+SJ
 
