@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A73CAC5BB
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 00:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2294CCD185
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 01:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A4608E000E; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
+	id C36678E000F; Wed,  8 Oct 2025 21:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27C5E8E0002; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
+	id C0C8F8E0002; Wed,  8 Oct 2025 21:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B9078E000E; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
+	id B492B8E000F; Wed,  8 Oct 2025 21:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B12A8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 20:37:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A49F2C087F
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 00:37:36 +0000 (UTC)
-X-FDA: 83976712512.23.FF8B68F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0D83C1C0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 00:37:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lU8Vc//i";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A28648E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 21:07:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A8BA11B01B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:21 +0000 (UTC)
+X-FDA: 83976787482.18.EFF6C33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8864E1A000F
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 01:07:19 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mgLCEG1p;
+	spf=pass (imf19.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759970255;
+	s=arc-20220608; t=1759972039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XAVEk9ZlINYUZSI/Z+UbjV2R3S7MJO8aGsqUxU36kSM=;
-	b=6Qo37KC9ilCP/vClbIwMCGAFcoXKkhRwMON9FWIesp6wlmNRVbPmgz+PLOqEdnuk9T3vvy
-	JsbL7lF1RZ9Wndmun8BzGyS3YKW39jJBUIHpiS5JGbMGQcYCPWrp31NXfxjxDaC0faXxcv
-	smHgKkckAfBSzSBO2MmXo7+ZVX20Cj0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759970255; a=rsa-sha256;
-	cv=none;
-	b=k2ttqsyltRHEGD/emqzNTMMkHeTluPjp3bTWLRQuourTYITiMsRNESyfAzFu2bvPeF8zWA
-	vCit3HR6zD8Je20AFIxy3aLCI6LTQkLE3PW0/EiuqgiFdYTF9T06bSbN4GNuJlyS3ay104
-	1Js9A9bIpIS6SjpViKNSpmfqEdxDOYc=
+	bh=1QmteHczt4IB2OaGgMcuo7lCBy1YKUcT8nLt2LHCF7g=;
+	b=vWoZkmeV1zXl/wAjgbjSZD3r/VAvGW2inqRVVv+uzu71bba0DuGsdD+dN3MqZVl2DiFfsy
+	HTN6U3UF+LQlFKsM9m2eQ2/RccaLlLTFbWH2VCBR0UsNQmwebpzZhaR/MSDFnefvAc9ZmQ
+	/UWC47C9ywmhKVjh1fAERWRucVSoF7U=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lU8Vc//i";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mgLCEG1p;
+	spf=pass (imf19.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759972039; a=rsa-sha256;
+	cv=none;
+	b=49jJyPMcd5GzdOPhwgk25yCNe9K9A5kLmbdy6/qWdottyuRmcJMGVnC9SH4t8+pWAZHCwy
+	we3+zEGkzwG5xJ9s5Rvx1WUcbQ7n1tNEB8SH9gcXk+trhj9sLHxEzhLsSTSawayFs5sVPh
+	zLZomHbn5rbAWkFcL1tkputNViDyVdg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22D6860285;
-	Thu,  9 Oct 2025 00:37:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9590C4CEE7;
-	Thu,  9 Oct 2025 00:37:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 32835450E2;
+	Thu,  9 Oct 2025 01:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1021AC4CEE7;
+	Thu,  9 Oct 2025 01:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759970253;
-	bh=nFcAr73rD+SuRsT7M4DFUoPCwzGKkb7ROVMuAUGKA6U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lU8Vc//iypA7RNySYz3PTvHx5w9B82WDq/loSga5PhvX66TLaTlDAvmlWqnlHhqE9
-	 pD/curjEAsHaBxGAwKNQXoUlLvXEoTPP5iUBvrcO/pxTz1Kq10Jo19FiT/XNcPeCld
-	 YKH77j5UkWkKz0oyrnq7LzPskzT8+l+D4w7E+ElzYIZy/C/+0/MM84sw0h7yljKItu
-	 b5dkLLjko6d7/aLTXbTRDRdUDr90YVN5hCjL8O4gJCCAyqRiFH82f2+NuXjOx8Fmfu
-	 Cl2GgcXGqkEIwEF+MXGMtW5K7NQGpiFfWLCfts6PjXrB6uRMN0CCJiAtJkOgvJ5/nR
-	 +6qrO3pQgpCvA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 02/11] mm/damon: add a new DAMOS quota goal metric for cgroup on node memory usage
-Date: Wed,  8 Oct 2025 17:37:29 -0700
-Message-Id: <20251009003729.14889-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250619220023.24023-3-sj@kernel.org>
-References: 
+	s=k20201202; t=1759972038;
+	bh=0pQ9vc0S7+W0X1K4N+Om/UUij1yWdKMoXEP+Dp45E6A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=mgLCEG1psTMeWNX86G6Tj93NFOr9A6HPWBooqhDsK/peZJiDr0z/lTt34SW/uV2wG
+	 K2KA79ATbUyDb+QTtCiIb37Rmvl0ZB6h8EYOw6lZaU8PA4YEraSK96r4wnFJg5DgK6
+	 px0wfbyKDtcXRuIuG3T18Ewh+okDNXN4RBEutXF8zlOxKiOztQ3FRVjOkE20nlpwGX
+	 YhuXK6buub3FK7cN2EWSYIN6r/pZvCaQavyztMciWzkDa46lDOV/dfEDrzjJFL6sad
+	 0NMFuRS+cJkrvvNwdswXaYRikNalB+yZpqvN9LdbCi0fl6LsirGqURxRennMUrvEHk
+	 ipzxebesp0GnQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF8C3A41017;
+	Thu,  9 Oct 2025 01:07:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: gcedjbmsb9ny6dn4ht4qwjda89n3w9q8
+Subject: Re: [PATCH v6 0/2] kasan: unify kasan_enabled() and remove
+ arch-specific
+ implementations
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175997202628.3661959.104646439887808862.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Oct 2025 01:07:06 +0000
+References: <20250810125746.1105476-1-snovitoll@gmail.com>
+In-Reply-To: <20250810125746.1105476-1-snovitoll@gmail.com>
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: linux-riscv@lists.infradead.org, ryabinin.a.a@gmail.com,
+ christophe.leroy@csgroup.eu, bhe@redhat.com, hca@linux.ibm.com,
+ andreyknvl@gmail.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
+ chenhuacai@loongson.cn, davidgow@google.com, glider@google.com,
+ dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr,
+ agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com,
+ kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-mm@kvack.org
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8864E1A000F
+X-Stat-Signature: 6iq6qsom3nnckdpzj5rqhude1fp6f9jn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D83C1C0002
-X-HE-Tag: 1759970254-388454
-X-HE-Meta: U2FsdGVkX18n2vVJl4g3z8fl4RC/8hpsrKQ+dYQjw61uO7zCP+yImJBeaySiYUQj79hS7bbMy2hDKVtrY0WlWOAoHeEFnG2ho+xPRH7lkOxw3pVI9Z+qYTN53fdWP9nJfMDH5UaqhUFrMyaFIV3q7Yv0PFOPP56hjr1Ppl/oXGPtejYoGFNQFsNNztv5KCxYWz89i5VCaeLOVXGPcqessFKq+pNFk/YjYvARwhaQmdmYy0nZb9HYeHgmRK3wqVd9rp9+6/PcS96T5A9FCUEym/ekb3bZ+cV7gZoRKamjyb7AhCbCGUMV0IKUaXDCXnrtCfmfl6ChUv/y5lD8VdcOO0UiG7N41P8jSCj7ISmjL2EUgvHlhT/fJeir+zGI12ZywG+FNDveAIP1IjK4/OPf4NeDquY54LXImo2wlJoULOGJENWQ0W1KOhLFB+6Wxk+Rm1M08aQlFbluFwksX2GyFlztt8J/xjuTymjWfqRePpYMlqvqGnV/kbozs/WyjH/7tk3Iipm0VpfN7lRWE2jcVJ7g0miChb3MrwmhMFvNa0zgTbQwS3uRNDa4idfF5jtAXa14gnSfhVP2NO8yegf41ab0rEXK+nXwqnf/AhRJyjFWiLP1e1F/wwdmrZvfNmnWpoM+c41wFxSUESCfeBp5q2q9VVBUEOFQXPUCjCYWWPeD2pvcmWh7szHlxqpZhbnxSLMSAl5mzsTJfuOWmE80NnG6jb67sb1RFPlwwTibJCc7OHYpRGiTdZWUNs3DEe+p14fXR3sUaPbufjF8Uy6C6ht73AAjPoucHWzR+kxYZy2h6+TEPzy6p2ZZtmrjzXQkWcrXq4yOxL0jD2rNOGGnZ2dIcWDxTEhUeaGWNHYauYJxrHz61tflN5wjycXKntLmX11ELL0eaNmzbRvxjFrQkMy0vFzAtiHQaG0t4EIuUtDzkkOYiED1BrsbFKoZ5CyI2f0Y8NRTpmGPv4t1jU5
- OGiT8XVv
- jInS+63JmId/55Y2Mmfqu1bgAhKWh2i85CcyW3rNiUKWAjFJXC4DB5/ePUVNY4ww5pPS5ZUzSEFxg9D91TLhUrjeS4vRwzL4LKBd3TZQOMGadhJTp2fq3F1oQzmlm9NLU/89LMVPSeL6Rv8DgFDdHU3XhAwT+ipOYENv/82F5ygkHLy7r2WKI7iRZyYjkOvj4J7jAC+Z5bEn5SQAkambX6FN5DFLOXVVUkN2rISborPNHH50xw86zgrks3skJziiWQugUGUtWH3ubSCo=
+X-HE-Tag: 1759972039-670011
+X-HE-Meta: U2FsdGVkX193AFLtnw9kGAZDsfhRdEoDcnuh/v85EmF25kP7km7kv59aCQQkFJrWhc+/X/QuCP6MXTuBdlpqhDtpRk6Y97Wb0yUchJRA4MY5YhJpbWRkjKkGsnH8v2OBEiQL1oiB5jEXHjIYt0+nWt1yBpgIpjOmj+WuHEzjd+pMGHnlpwjTHeWD8KBpi7tOezudhXP5F8+rj+IkrdCg39eX6cS07yATJovFgEDkUbhdsLdAYseMY06qmVbHs0rKyhBSy+oujeKx7QgbZkcOxDjzqvRXuy751Nt+79xlKJG+iaZXYcpFg1GdVQdj8qqqHeD1cdEsVST1joitlfiY5XOrDY/YaFzl9BYVGhqiXPnvkK2YuEY/sasNwzQO2x5n1ONCzMC0ei1hOEUwAOLE9vZNro/uww+RNGRsf6PZ2WVhEaSxD81Zk9lOhiLLrhUOuREBqUPmq3Qq97FvPMoHmq+GBhKQIb2rtP2iSa8nBTw0PzJdoKU68VhxBZSzx+svbz+edIMr2iGOH3qH7pxMdLBa+6ej7JeNzdEak36NCtWovEDpFpAi87yoIzQ4x0ydhLuAggl3etgnUkf+N5/GUZXvEMIb3jXp/x65iYdYqMg5z0wE2HpPGkx99gnDLSi2ZrxX8sMbNU/DvIxCAoL0iAozDV8uvRGBqJ1iFUQTF1KxHlzH3NaJKPBx0+brUgcp5IxIRjEqvjiKM5jQxN/fiD8wprQMTAJmG4yBvK1EuTPwTy1gQzn0fCA1Ggf6i4eEB8mT+h+nMgUZQh8t4iy5ccrZ+3rMpAn+c23hjmEdn6+CKlm2C2bRXdFY1mgqWfmDOtTyEOp8igWGJZxCRRXA5m5HSNIQqdoe+Qq2GzNJeJFpYRSQzmYqoBh0H7nYsvzSOYUbvm/ojlnzTsXn5dOn8p0Faw4QEoDZzYvkOW3PDSfMlFFx1TWznOMyyzBWAuiAkz2SdR5bWyjKOjOVocO
+ HVoNJBeW
+ 8zZMvzEtQMz/9CqAqwxJfxOZLnaGXA/QvG1/NliM244BhcvGwZpxrThk9ITkVTWbRG3/0VgX/7nxtEzXXGIsWpDO2LtkR+q2OzDbKmZHA9tTUCw7baMGqUjp+68R0VOnvA3ZbkBruVCmluQP0DYqz/EMdwhE2JuxK1ur4ER1t1SqpNA+ahj7sBt3N3/hs9t6DMCFMO5sGDco1/dtHvWIEts3DD3baCdSZe92ahqPM1PwKs+2yoyq5wB3C1egue45G9aHcao3+ZKwHCUwT7ZoPj6UZKNlKrS5XcwUwv6l1YeqGnHJHrAcmyGIHN7hBt0yqJfNYCZt35SWFyg8IvemylRVVdeHsJXwO/x+KYY7xtjYvbv8zXhCaH/txvH1D8S1r0hL9rOc1xEU5S+tLTXOwEg1leJ9uUYSd8gvrz6BLvYvefNtpn8Tfd3hUnLA1Al/YWAwvq5CPaj1g3UqiguRcah+Mqk01I42azEHg2z+FFp3DPpgXzdawgX45sMy2YL6bYIDb2c2I4dodadKv3w9knar7OZMwlzX6inficOHdIDpZ4AM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,79 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 19 Jun 2025 15:00:14 -0700 SeongJae Park <sj@kernel.org> wrote:
+Hello:
 
-> Define a new DAMOS quota auto-tuning target metrics for per-cgroup
-> per-node memory usage.  Also extend damos_quota_goal struct to have a
-> field for specifying the cgroup of the interest.
+This series was applied to riscv/linux.git (for-next)
+by Andrew Morton <akpm@linux-foundation.org>:
+
+On Sun, 10 Aug 2025 17:57:44 +0500 you wrote:
+> This patch series addresses the fragmentation in KASAN initialization
+> across architectures by introducing a unified approach that eliminates
+> duplicate static keys and arch-specific kasan_arch_is_ready()
+> implementations.
 > 
-> Note that this commit is only for DAMON kernel API extension.  Real
-> behavior of the new metric will be implemented by a following commit.
+> The core issue is that different architectures have inconsistent approaches
+> to KASAN readiness tracking:
+> - PowerPC, LoongArch, and UML arch, each implement own kasan_arch_is_ready()
+> - Only HW_TAGS mode had a unified static key (kasan_flag_enabled)
+> - Generic and SW_TAGS modes relied on arch-specific solutions
+>   or always-on behavior
 > 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> ---
->  include/linux/damon.h | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 39b835dd3c4d..43aef959d357 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -175,6 +175,7 @@ enum damos_action {
->   * @DAMOS_QUOTA_SOME_MEM_PSI_US:	System level some memory PSI in us.
->   * @DAMOS_QUOTA_NODE_MEM_USED_BP:	MemUsed ratio of a node.
->   * @DAMOS_QUOTA_NODE_MEM_FREE_BP:	MemFree ratio of a node.
-> + * @DAMOS_QUOTA_NODE_MEMCG_USED_BP:	MemUsed ratio of a node for a cgroup.
->   * @DAMOS_QUOTA_ACTIVE_MEM_BP:		Active to inactive memory ratio.
->   * @NR_DAMOS_QUOTA_GOAL_METRICS:	Number of DAMOS quota goal metrics.
->   *
-> @@ -185,6 +186,7 @@ enum damos_quota_goal_metric {
->  	DAMOS_QUOTA_SOME_MEM_PSI_US,
->  	DAMOS_QUOTA_NODE_MEM_USED_BP,
->  	DAMOS_QUOTA_NODE_MEM_FREE_BP,
-> +	DAMOS_QUOTA_NODE_MEMCG_USED_BP,
->  	DAMOS_QUOTA_ACTIVE_MEM_BP,
->  	NR_DAMOS_QUOTA_GOAL_METRICS,
->  };
-> @@ -196,6 +198,7 @@ enum damos_quota_goal_metric {
->   * @current_value:	Current value of @metric.
->   * @last_psi_total:	Last measured total PSI
->   * @nid:		Node id.
-> + * @memcg:		Memcg id.
+> [...]
 
-The name of the field is not memcg but memcg_id.  I will fix this in the next
-version.
+Here is the summary with links:
+  - [v6,1/2] kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
+    https://git.kernel.org/riscv/c/1e338f4d99e6
+  - [v6,2/2] kasan: call kasan_init_generic in kasan_init
+    https://git.kernel.org/riscv/c/e45085f2673b
 
->   * @list:		List head for siblings.
->   *
->   * Data structure for getting the current score of the quota tuning goal.  The
-> @@ -209,6 +212,9 @@ enum damos_quota_goal_metric {
->   *
->   * If @metric is DAMOS_QUOTA_NODE_MEM_{USED,FREE}_BP, @nid represents the node
->   * id of the target node to account the used/free memory.
-> + *
-> + * If @metric is DAMOS_QUOTA_NODE_MEMCG_USED_BP, @nid and @memcg_id represents
-> + * the node id and the cgroup to account the used memory for.
->   */
->  struct damos_quota_goal {
->  	enum damos_quota_goal_metric metric;
-> @@ -217,7 +223,10 @@ struct damos_quota_goal {
->  	/* metric-dependent fields */
->  	union {
->  		u64 last_psi_total;
-> -		int nid;
-> +		struct {
-> +			int nid;
-> +			unsigned short memcg_id;
-> +		};
->  	};
->  	struct list_head list;
->  };
-> -- 
-> 2.39.5
-> 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Thanks,
-SJ
 
