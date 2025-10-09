@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 632E0CCD18A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A12FCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 19:32:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3E408E0037; Thu,  9 Oct 2025 15:31:34 -0400 (EDT)
+	id 6D4008E0091; Thu,  9 Oct 2025 15:32:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEE6D8E0002; Thu,  9 Oct 2025 15:31:34 -0400 (EDT)
+	id 6831C8E0002; Thu,  9 Oct 2025 15:32:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BD4B8E0037; Thu,  9 Oct 2025 15:31:34 -0400 (EDT)
+	id 54BDF8E0091; Thu,  9 Oct 2025 15:32:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8906E8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:31:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 541E0BCB7C
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:31:34 +0000 (UTC)
-X-FDA: 83979570108.18.B90465E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 411438E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 15:32:15 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E13B15C411
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:32:14 +0000 (UTC)
+X-FDA: 83979571788.10.52043EA
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6BD6B140009
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:31:31 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lLIc5Num;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6EE9718000C
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:32:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ntGbiAl/";
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760038292;
+	s=arc-20220608; t=1760038332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVbPuzfP09yvB5jPXyqUbKYRv2EI0OjhEBPN2fTD9cQ=;
-	b=JiBtiZOjVoFh4KvVt8DWZWPEDH1LqO6JmkOJF16BW+oBNerIaVev3Irjg8I/E0zK9CSVoi
-	rDvAQj0GZAfdz94s1QpEnc1e49Zv2uueKNYA4GguWphX5lPrr8FIMr0tPzmq02lQLoBl2g
-	y7N8tLqLmLKl0zmkSiAwj7dCCJBEZEc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760038292; a=rsa-sha256;
+	bh=+BfdDdHsvIg5pohaQk6z4UjY6nDAvslbjwgC/1ieyR8=;
+	b=IAahnwVO7/9ZULy6Uy1LWQmRfhx1my7y+1pUw8L/J9W9mnztxpBs3eQ/Of1F2dnfDsHFeA
+	jczflxFOBdZ3dyQ3c16qDQIrzdEVvEP1IQY3XdpJuSP224yPgEhcPQbEyg8S+ts+ipnbGC
+	9hdWOqPy3LULWwW9V1QReSLrJKCAYrc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760038332; a=rsa-sha256;
 	cv=none;
-	b=hbferpse0bf71AoASaPkSCEbjNwnk/GSCX5dzeMuKCN/RBXVytMgkdjb2qjPovx2plFJaa
-	SgFNXypNbpzrMQ3nd3iCptxtG8y97rxkOg7Q51PK5ThgydivDzLAicWwtRlL4Mx/+03gqq
-	3aRfQe4sPZnqulTw1OHC96XmEyc1J+4=
+	b=LxiPRy8y8b8lZFyCKjOHus5U4VA/7N2jnNzI9VmeFkuC3ddjD/ipQ4QwIT7DZ107WZnHQH
+	PzwES+2AmSfvLLd/IqlpTD8LDjFH5ugHZKi6d/TJxf8gGHX0foJCsl5lflnSSSnjhWXSjM
+	XWCkYqZdzQptmNRUNRVgO8F02pmCsYs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lLIc5Num;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="ntGbiAl/";
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760038291; x=1791574291;
+  t=1760038332; x=1791574332;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=lQaJx5mf2Mcb86lyOVhEpWWdXR0OG4rqbcrV0v1p+lk=;
-  b=lLIc5NumyuNDL58lCGimUBGIxKM3DzWDanO0T0iO196hdHcOMIHDF1mw
-   eI5xmy1e/554SxmW1e+JRb0Z+2jJJ2YiPvDVAFRe0JDkoKw7+WFUXvazn
-   28j4HVoMAaeizV1TVSzvQ10w8O/9Oqq0hnjPYneHGkQSntlr371Kdmudi
-   X1j/SzIChz8abTJtx1heaNoztIF0Hp/W7mkilsY1oPXfObTH8X1yGw5jH
-   VGc6kstqHJ0yoprCsgB2O9/D5Ipp24obj0MCuI9Ev0LWDMsgHPIzJoso7
-   w4dKfiPlxzR5/0WN+hiZPXxV+e/K09pkQhhfcl0MvV+h4R8ELmUqIFGJ8
-   Q==;
-X-CSE-ConnectionGUID: vaC1gziATF+qMncyS/6Z8Q==
-X-CSE-MsgGUID: AWvVSG1KTceK9m3Dm48dow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="62286509"
+  bh=QTIZB4cXar6tcTAPv6wGI1eBlG8KHsLbakGl0mcnySY=;
+  b=ntGbiAl/Ih02aBgGZArtzulDgrRe6Qpw1aAEN5nWYn6xhsIaMHHb4lo6
+   g19HoY+c3uc2Oz4/9dttosYPREA8cZ3Gm4fNyobtw+kCzC3a7ucoKPfny
+   Xswg6DgWusHVOgB2ZnV9aSclzR1yXTJ+uLxIu1yllh1/Ef5zbBWuSS2k5
+   D72Lq1DsCX/MfSwTYPBkzpskctSxkK35FlMLMYi2ibClVcPFcKpy0Hy9j
+   zRhiXE8yF++08hjVpFHL4mYZBNJY3M4lWo4AYIMwrIIOpxfI8zpR0cAGl
+   xom2mjnc2JjGknw8Zf7viFRv4x+ExpBFC6um8HJ5i3gFQtQOHkEVHlFnr
+   w==;
+X-CSE-ConnectionGUID: CiqCFTNJSYWxaWoPCiv5ag==
+X-CSE-MsgGUID: ASrDFYAwTzmEYL5gDov2KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="62286578"
 X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; 
-   d="scan'208";a="62286509"
+   d="scan'208";a="62286578"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 12:31:30 -0700
-X-CSE-ConnectionGUID: KuJYPbv8RnaazmneQeRSDw==
-X-CSE-MsgGUID: 974nS1LmTwKbUepnyb6Zaw==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 12:32:05 -0700
+X-CSE-ConnectionGUID: 2dIFX4OXSYKjl+0raW5S5A==
+X-CSE-MsgGUID: ibQ1W0FOTVqpk0fcIifTxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,217,1754982000"; 
-   d="scan'208";a="180814987"
+   d="scan'208";a="180815015"
 Received: from unknown (HELO [10.24.81.144]) ([10.24.81.144])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 12:31:29 -0700
-Message-ID: <e4c0c578-50e9-4e65-8e7f-7a6d995b22e0@intel.com>
-Date: Thu, 9 Oct 2025 12:31:28 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 12:32:02 -0700
+Message-ID: <aefa20f8-49d4-4fa9-9d18-39b7b0ffebf3@intel.com>
+Date: Thu, 9 Oct 2025 12:32:01 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/8] x86/mm: Use 'ptdesc' when freeing PMD pages
+Subject: Re: [PATCH v5 6/8] mm: Introduce deferred freeing for kernel page
+ tables
 To: David Hildenbrand <david@redhat.com>, Lu Baolu
  <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
  Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
@@ -95,10 +96,10 @@ Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>
 References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-4-baolu.lu@linux.intel.com>
- <9648e990-18e0-4aed-8110-b02f4b45aa47@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20250919054007.472493-7-baolu.lu@linux.intel.com>
+ <4858074d-f058-41ec-a581-a8254b8cc2d7@redhat.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -142,17 +143,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <9648e990-18e0-4aed-8110-b02f4b45aa47@redhat.com>
+In-Reply-To: <4858074d-f058-41ec-a581-a8254b8cc2d7@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: de5kkyikirnrrxg6cr1kqxghfgcyqt41
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6BD6B140009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: etr9wtihzgbwt6d18ffy4xxijdyfrmwd
-X-HE-Tag: 1760038291-978915
-X-HE-Meta: U2FsdGVkX1+J56htzE/wnp6uvWX4cdWoK36qFfI+VD/gWiQ3R7mH99oRluV1v9Wan2eJTwaRjT/ljcaeh3Cplq2tuIYvMtEjWph74gA89SDxobJ7FFJBh23auvNfY0NaY4Am1pJI+hXllbjbJnfH9useL43XJHKt4gCJKMvS7OoNlV7rTVII2VIEJ4ZFqLNHn1bvghO1GkaHDrqNWkLuiHInmLhEyMaa7Mb9lbsQ5s826fl2sK48c6qIJvyWiuvFUt8zO9cs03wFAlkHVisAEMdGsBXA0ektGBiCQ8z5tt1WPcJ1oipSFxdk1UinkgQJTE5ZMPJpD21QhxmE4Ke6ZY9Z7ZhS+p7O+jDS4sFxs0SiRtgEkoCYLgJvI78HQEkzvNhfIwcLaRobOPpDrqas6G4gD7BfobU27C3+kZJSJOR+0F61kysNOAzp7hMk3ClMJOjI/mtt3DZKnMtu6r+uaR+hiKuA/TXwWwK9LGcekhovQKTOeA4kXpH889TBj5NFOTo70pihLlrdbiQ5D46Ccl4N4j7je4DjMIlWJyAp3Vf0LISWKZjRZ5YmPsultjp+8inySVztkcc2uevh9SHFVoXChJM8p9MBFxkHIDm0Bl94e4TR0ibprc33HO1lu/Ow4fuiLSVKiR3tZVBmen91suZQLmSpC463l5MCM8NCslysiRebL2K+fdPdkwkqjhFjK3RvQfdfuFHzDIjhHpU+I6vNJp36Ol8vNvX7yKLakwoVfqjCpc9vhX9nnmnFE3iq2oosItciXbHiYl4zEW/VHh9jqqV/MkNoj9HgFdMCRHd8lO3clx9LCM9VYKElH+FQgDXFYQQiCIIv4xaxPqm/iDXMOdGQ4gpPMLCALJAh1ZR1Oh/JWLRA8juaPMUFlWHzTkMcJvbimKfRY2NiKSlvyZ00TDCxTJr+MJCqtnyhnsGzOCuTTDGv3LUFfKB/w5RzflgV8JZ0JMgvnYtxCMp
- P4OTlzgx
- 4cIkxG9WR1z7a78wSThYIFhjuGWnFDiVxm54i9XZKh68vvoRgPKkWJ+U7df/CMAzrledXe0rnJWgkJHxqRp4idLlcXhiK2lAjiBkVAqHC7/qDbhsijW4UbuHur/3rINc7xN+2sYovLAUu+KqjIpljy5yBkMkJdUnvG/ZEKlkOoTKOpfNgL/zkaHkiUMMEZqp7OkcVC0UbVkpV4unV/669k6sqcWKafkiHABGXnax2kC0VqRHmSD24Wzc9rF1VFBWkuA4iW/JR6pJFt2NLBDCt3L5Q2g==
+X-Rspamd-Queue-Id: 6EE9718000C
+X-HE-Tag: 1760038332-430387
+X-HE-Meta: U2FsdGVkX1/ktxqZ4ZxbAtBcJvjj5LTkH5505oWP2b3WRfe5nGGGyy4H98QGMmh4EwYeqq5GjZvzHWPc9/vrB87Xvk5MKxzYO4fxkSTwzlbY7O81OGRaYqcJEOtlSlrQgLVo1RHkSuGo3jyqQz/U6XRhLWy0KjZhmEHDaBZXmHvyRRtVNgdSchA8oqx2ljYap27I2Aq7xiZ9YIijJjUWHQ8VVraYXm83JJmdUIscN81hp46D7hE9oEUIdaH3TIeTR8ixEXgtn1oC3arXl8dR5PgeJw+JANThkp9s3ukbWb/sWulBLs8xfAKrY/ivgbt5gwHRZgQ1rs+9dgPIkmf9DKXCa+wkT7vE4OwbrXgkPT31yROcjQ3YKEEk32fKe0XMhQboi1vSsBDvWO8vJWiP6amTTBU5YSKMGR+ry5GHZqAbdR55L3ZeMI1zVsVwZ/9OWpkcHmV6CPle5eirKBeQIDVlmCCynvAXQdb9r8xWzRTCpD004HtxiimJ/a20oPQ/up3A5Q2DSsxDnDjGTtlX+H2KmrjLcBiaf8Yd0dgDIyZYNc2Gqg9LraTJimfMr3wQ4IX5UlznjKdi8HRdH2X/ckf/8SEtQ2QSf9EwJvzUZv9KV2QT2j9TkrgR2SIw99Td1oqT99NqmtmZYZWa8JKlzovjmsUneIzOvxZ4lSgFPhS9MylCbTKHI0yCLf5WdbI/xBIdyBJLYJixeF0dfrDlXhLS4OZ5OiyucULa6fmEq5DOOlmwVh3WQaZsIzXJfTkuWwQRje8yrhr68FUZrGUMYUQgdBk6BlpU9giyGKFZjAhcVSAE4ZOUUcChfGU6S5quBGzq2eifqr+rT5/82xtud0YOIJxP1UOnylqgo7ZsJDrwU9RtbDjtUoatEOrP7tGqcEZVmc2GWcqM+Pe9zsJZQM1/WJ8V0pbomMGqMlOh0Lctsg1eybZpOjbSG8VUXi9WB/G7o1O0BCZ9M8fDPzJ
+ UDGQvidh
+ PVDvHNnU6MQddgj5hsJT9DjzYkuqPG90F0dJrWql7lu6aZ+knlTUi0ev1CXmyBVEN4tMg85ZZJnEekRQTEFG2c2E/N1xSxqiJMXCenYaohPZiqohMm3bcB5Kqwe2wR2vMBRZZq3ENcLiKjP/u9Dcgl4mTSa+kjVNR5bovDw8DMMFwoUQQdsp+azpQDpEgWVaqjhB+6lyQWAzfuNIRuV6sSpcY5gtlXk5TmEFq+oY9NcckyWWMKA1GaZiSQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,26 +162,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/25 12:25, David Hildenbrand wrote:
->>
->> @@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
->>         for (i = 0; i < PTRS_PER_PMD; i++) {
->>           if (!pmd_none(pmd_sv[i])) {
->> -            pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
->> -            pte_free_kernel(&init_mm, pte);
->> +            pt = page_ptdesc(pmd_page(pmd_sv[i]));
->> +            pagetable_dtor_free(pt);
+On 10/9/25 12:28, David Hildenbrand wrote:
+...
+> Can we please squash #7 in here and make sure to call the config knob
+> something that indicates that it is for *kernel* page tables only?
 > 
-> There is pmd_ptdesc() which does
-> 
->     page_ptdesc(pmd_pgtable_page(pmd));
-> 
-> It's buried in a
-> 
->     #if defined(CONFIG_SPLIT_PMD_PTLOCKS)
-> 
-> Can't we just make that always available so we can use it here?
+> ASYNC_KERNEL_PGTABLE_FREE
 
-Yes, that looks like a good idea. I never noticed pmd_ptdesc() when I
-was writing this for sure.
+I'm fine with both of those. That name ^ looks fine to me too.
 
