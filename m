@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D733CAC5BB
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 03:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCD1CCAC5BB
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 03:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C318E0061; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
+	id 2253C8E0062; Wed,  8 Oct 2025 23:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93C458E0002; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
+	id 1D4C38E0002; Wed,  8 Oct 2025 23:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82BA98E0061; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
+	id 0C5258E0062; Wed,  8 Oct 2025 23:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7069A8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:17:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0555C13BF32
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:17:44 +0000 (UTC)
-X-FDA: 83977116090.09.09784A9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4F4B520002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:17:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyPm4yay;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759979863; a=rsa-sha256;
-	cv=none;
-	b=AJXT5IP0Cp4x1tCj7v+7PeK/jIponar5mFWjA50mrA/Qsv5YTxddBS5KEVABLmHO+4tAMG
-	YH5LCyU/HsjIVldQ2VHta7GpWtmV8j3ZkgpiIDfpTmHO/ERBF/IGJokNn7p+6tqCssLED4
-	d1574VmUN3tmPvT1KnnMYWth44w8KYc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AyPm4yay;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EE7358E0002
+	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 23:26:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AA1313BF35
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:26:26 +0000 (UTC)
+X-FDA: 83977137972.13.67FC8BC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 06DB1C000A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:26:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uLZ0r32s;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759979863;
+	s=arc-20220608; t=1759980385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EeYH8DtDhKNv/7S6bbr+/OqhmdAFbE3SUfdoOHi3UT4=;
-	b=VBDFe2HAE6lDDQ0IGst9qKONV0pk+H3FGSApy8TejaevGh+NADQi/VK7aIoPgd2Mw61kmk
-	FOc4L4C9EnVqhO2f4El37q6nYBhgj2mRDi5xLFwvqLzqx8CyXXTNlZfRYRXq9zAdCNHiyj
-	tZur2To1EVO+ZVANoKmYItdNFXgmVDA=
+	bh=sztrkZ0dvGu1LNVu72SHZo2kRGyJZdC4I/52Rn5pnlc=;
+	b=Q88yAiSiNNVs1vSe3uclDaB5KnhW5LWB41T4VXVsAN3ybWEHcexRCCGLyPuhqz+oRkmlZC
+	X0hEdZagkY/47pqT9JF4YuucGCkeswWaXFGUZqWpkaLvfHLaxFBpRUBGnbt//Q7EgcptMn
+	VtMnXNlygP0AnucFhgFGuef9e69UGBc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uLZ0r32s;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759980385; a=rsa-sha256;
+	cv=none;
+	b=T0jecb3PPU1TMsFIbL5LnkQV5p20qqsN9sTd/YMkocP0xZEO2btS45SKkvCCxx7yVTSaNy
+	7MEllIle38VxAWQKv8azybLQzxF7BzAjWvprHDLBDxOpEGvYNiuKfwVNR3WrIOD2/oOS3c
+	iYpByS7kxNjd71W9uJHIiKpYzJi80w8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6F4041790;
-	Thu,  9 Oct 2025 03:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F6BC4CEF5;
-	Thu,  9 Oct 2025 03:17:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 65000611E9;
+	Thu,  9 Oct 2025 03:26:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF450C4CEE7;
+	Thu,  9 Oct 2025 03:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1759979861;
-	bh=wPJ3c+Eh/QNy+wErZtTJ6qcki/ipw0RIOm8hLXCgx9Q=;
+	s=korg; t=1759980384;
+	bh=UG6j0xKfRK4Twe0WeMBR88qjTv/yVujqo3MVZkkPibY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AyPm4yayNVHdTNj2bvS0OKDp+PvHhdOn440JVw+h+XkAavnCmVibloeRaBO8okAdC
-	 KEYcw2Nx0sDWNxQyvFV/DqDCm3xbgzlspwEDTi8aQngtRsH+1+5hHecjBtK+lcyphZ
-	 qRgwUAnTrM/DleGHi8A6MrCv0kwhLLhmt3CrLvok=
-Date: Wed, 8 Oct 2025 20:17:40 -0700
+	b=uLZ0r32sy4OW9OvQb48l8SGwkY8hr08t1jTufxml0fZgQtITqW1nGE8v6PyqrTa6W
+	 Mm37iLuw//Le53zz8Pc0oISQa5sqZiFOVM7+7K0o7HQ5oqy6Zwrw0MX/I0fXs8NhRO
+	 uSMui1DtCXiPW0Pa67Nx1c4Z2PUwJlEtT2k/sNxk=
+Date: Wed, 8 Oct 2025 20:26:23 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, David Hildenbrand <david@redhat.com>, Zi Yan
- <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
- <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>, Mika
- =?ISO-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>, Matthew Brost
- <matthew.brost@intel.com>, Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [v7 00/16] mm: support device-private THP
-Message-Id: <20251008201740.d9507f4807a73058d4da23a8@linux-foundation.org>
-In-Reply-To: <20251001065707.920170-1-balbirs@nvidia.com>
-References: <20251001065707.920170-1-balbirs@nvidia.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, chrisl@kernel.org, kasong@tencent.com,
+ baohua@kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com
+Subject: Re: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
+Message-Id: <20251008202623.1ef2ac29af9b9c3d53aca4b2@linux-foundation.org>
+In-Reply-To: <20251001043436.41338-4-bhe@redhat.com>
+References: <20251001043436.41338-1-bhe@redhat.com>
+	<20251001043436.41338-4-bhe@redhat.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: p3cbteuca7qhn73krdgggiu46fs8cqgn
-X-Rspamd-Queue-Id: 4F4B520002
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 06DB1C000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1759979863-906181
-X-HE-Meta: U2FsdGVkX1/ydKZD0/csl8wYPj7nIR9hSys9sJpniyg9tJr8jMb/UkP2vg3UWcPY3vENGclOPV/DLiz+FX9MDBvXVAk4hj0+Bw3BUWeJojP/0FTyxEB1jbx8wKLscrEWLVGheKN5pVxPIh4FxbLbXDpWFgV9Rc7sv5xtuyC9d0EhgS2VYAM8Dk01hAOJZ3HfzHXfzuSrndgDIclpaEVnQnmXGJnpffdyAbMTTk6vyWhex5Iov9Pe7MFnmzVHcZpJQ2azWkNW/oIxyBowd/+CcA6CE7SFed1NTQiyyVpi7ykEJCbsoUY238nUMqsxMjzDSU5ono8CnSkGBfcv2Xz6pwn6VLFS5SKohuw84wpBzMEfeMMVzqt0h+ZjiH8S85ZxP3CHCBdCUGO6Q6gTsJu+Wl/H+gs1zp6HMsnJNOcQlgxPALJ8OW+yP9W//2u7OiHr/wnx0cR/m3NPTgwXAw3c/Pb7B7tGaRAZIdGETGcK80RrPuspwHKeEPjscL2uF+rNL78jyGsiRZk+vm5dugewgdOhvngUwB5TaFBLri8Vl/FPcORoyXhxUzkDw98dmxeca83Wief3FiW6BF9h+4XCBY/xD1CxiESuD/nlHOeTChft9aF2RFxg8laPj8F9+LMTb5wR0nzsi3oqksS8fiPamzRo+UXtwukDjj2/Kmgp1P73/eWw9IktB12l42Wnuw5v1mHTr954qWgGdprBh5uJKEMxpYLjq3ihRkfRjir3AZudhnfdFAI8LJGMcNst8KGV41AuM02NcJpvFJFMhG+mnYwXiLkbJ2hOfYmSmLZjqIw8dsnQFI+W2ng98Kr+vm3nPQT4lbBR41RirFIm7yJSS5Uh+xPtx8B3gVZXTL5aXKRYqXrboCxuNIatYo2btucN8c9Fqa+yymwSLANqNA2//PNy5r4dIHHB7GMa+J+b8vJOeZKeUIkp386DQCnzJxbRIFcoAzJweSIQskiSN91
- 9xwW86UG
- zJcsIxfcOjA0HAXCPhtDA1qMeUYG82jq+McOKPgheu9jqB5GI0PcJQRP8A1R2v+AqpXVKn7loKuhHIOoyqkyPI7dj0wyo/7wW6/cxgmd6i6ASE/L4kXE4c4DGlCmC+FPPd5SscmgZhdq44ba7v4jqS1ki5o/mMHwFXkWhn9MHtHET6VovS+Y2aBe0QFA4UPLwAhiKjP6Tb/uRrF3TtV+0ZbDa9VzGUZa0UlDAW0edueBpoyFUWxAMhyNmXxfT7vnDTGcS9Gcs+Im4z8l2Hk75ZUeq7qaLohiiAMwfuRnzwjmB8L02AMTLFrZ/fg==
+X-Stat-Signature: 9jyzcb9rhwjhx7nymndawjze4dogz9cs
+X-HE-Tag: 1759980384-928327
+X-HE-Meta: U2FsdGVkX1/nqlNon7XE6mNSR7HQrZMGYFMdTQ6UZG8Nvio8ICvMdlBBp7bhx7OJAUUnwq8VlFVG25mWDkGN3ZK/mT/GSGn694+5tNYEhu/gn1qx8b1J+R6vHycd+/XdKkieFNv/YXXD6BEm767RzTEq4sh4gdwJCgpNUqdmeJ78jV4v0CmiEIAPlaqAB9jw1NnjqPhX+1R1B+f49DTOQB+DqF7n0LiG9+5vlCUi95Rd8ey0HtFaFvO+aT2iiu0XVa4XGxf1HQs/dtJyNIG743lS190b3CDLLmu/1lzrGIZ8eQLM+q06BqRIQNqt7wuTGth8yNsFyeIUJs4zDgWjn9AO3Q8W2uLUM2C6cG6K0kI3JA0sxPu94Et4rapVhVeF1PKnl8GnfOS1EZXmvT/Jb63mDcMmAB86BYs/AV0OFy0rm94FU8iqwX/l1W7qF3fyfrwndph0dAi6ei+d20URCkrWbFUMgrbuHYqWKJcqZRlBHi9omhxJlPQBjRhndiW01fuVft4bE6f/wMCN6jRfDr8e0QBcpibzSASR/hv5nN9ee3zLwn+Y66h7V20SU/SMu2oXaLA+14NDxPJOzUUYiwb9encsNq6Jl3/I3EeArWagWXv0g11LeP8b5cmmXs88xifHaVtXuOnsqM5P3HzB8Rut0pHpF1j76of8+v9EQdavsp4nqEWVXRRIc8CNwVO4i0p5fkcfEyPInJLSlu/hzsDBQSMEp3j/5H6u/z06AmP8zH+3lwbId6Dr/hyxGhGdAyHmGhoCAVM4sSbLKAxFrTStF2jSoJt9X+MlLPtRDkF04vOrVugj409BJW9FkQWVCnik0UYXxxweiMP1rq9O5YnMh18T/sHSyjhpQou1ALTu4V7uwmoTJHUCA9jU3UGo4i8TUK4uyrOtahEIyPNhrwI066Bu6j022XO3gBusAzgJkH040/Adp58CMCQjNPvg2CqiBebeZa29dNYnEv7
+ yPVmvi3p
+ s7aOp6EDatRC47oh7Q0f1T7WJJRvAoXVbf7ntI5DynqIeXjnQANC4zMyDfaCuPaEfkKJHsuIFY7K879dwHuu5di1ZBcWiDkvMBNEKy/HSZ2bTXnuUDo0EsYlFT8pksMXFwHZhfPbAKMpxUdBwPDvJzMmpdEvf1Xe+8zi64QwKUcGxHkB6kxSHhOmZK56dIl0CV5G9HbHdcoq7eVlFngVlw205n6eU54vrOIc5BcR6nXSnYRCgvUxHgkeA5URNQpLcSZmDb1qGKgmz/iR6fRRlw3UtDGWUDVbYIQXFPqn5xoAWYQHPG20w19Ps0GDZn1TyD4ut
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,19 +91,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  1 Oct 2025 16:56:51 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
+On Wed,  1 Oct 2025 12:34:36 +0800 Baoquan He <bhe@redhat.com> wrote:
 
-> This patch series introduces support for Transparent Huge Page
-> (THP) migration in zone device-private memory. The implementation enables
-> efficient migration of large folios between system memory and
-> device-private memory
-
-Lots of chatter for the v6 series, but none for v7.  I hope that's a
-good sign.
-
+> There's no user of swap_active_head, remove it now.
 > 
-> HMM support for large folios, patches are already posted and in
-> mm-unstable.
+> ...
+>
+> @@ -2553,8 +2545,6 @@ static void _enable_swap_info(struct swap_info_struct *si)
+>  
+>  	assert_spin_locked(&swap_lock);
+>  
+> -	plist_add(&si->list, &swap_active_head);
+> -
 
-Not any more.  Which series was this?
+There's a large comment in _enable_swap_info() which needs to be
+removed or updated?
+
+>  	/* Add back to available list */
+>  	add_to_avail_list(si, true);
+>  }
+
+I fixed the rejects and my swapfile.c still has a couple of references
+to swap_active_head.  Can we please have a redo&resend against mm-new?
 
