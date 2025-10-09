@@ -4,113 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DF5CCD187
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 09:46:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E7DCCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 10:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 128608E0073; Thu,  9 Oct 2025 05:46:15 -0400 (EDT)
+	id E1B4B8E0066; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D9B18E0002; Thu,  9 Oct 2025 05:46:15 -0400 (EDT)
+	id DF2BA8E0002; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31488E0073; Thu,  9 Oct 2025 05:46:14 -0400 (EDT)
+	id D08228E0066; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF8D38E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 05:46:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8634B5AEFB
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:46:14 +0000 (UTC)
-X-FDA: 83978095068.04.64536D8
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 901EA4000A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 09:46:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxMGoY8o;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BFD578E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:00:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1F2634639B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:00:13 +0000 (UTC)
+X-FDA: 83978130306.25.235CDBB
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6080A1A0016
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:00:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N9ddSwHj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760004011; a=rsa-sha256;
+	cv=none;
+	b=kN2MrWK3DwmOo0nFl/7UfZvmAfcR5XNBxD6J+sU7pn8ivsRc9dcI9OCmTWPsoVVxzoSqsF
+	edRPaqT3WN7+J/abmHVZdzgVy/R3fBLxFBBEQczO4vESahk26SYv7EX7eCf8C66zs33Hs5
+	TLtSkFqG7i9o9SnLg5XZkq1rVtBd/K8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N9ddSwHj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760003172;
+	s=arc-20220608; t=1760004011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n2ege6p4pcLOxc2jHHJkbOlbvAgh1MwdywY3Y/8BKGY=;
-	b=Ey0qFNNFz0vQeardKwRy/F9CKJiWK6+CFatzHq7QntugG3tfkUg+k9JR2sTU6mXTig8ZKc
-	GosmWN/XHLB3gug4EyQrZ8sWrAg/xzEH3y2MOchUyqSearEFh+ZFqHAJF2wtGOROD9S6Eu
-	64/0+m3FQcnJffG0w01tcMrmjBMr1cA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxMGoY8o;
-	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760003172; a=rsa-sha256;
-	cv=none;
-	b=gW0GExKsxo0BRSEeyJkCHlovut9Cg6tf6UOPmtX5xpwAmNuh54gohY1JRsMGf7ItOCKiC5
-	SSKy5hkQ8QthKUrdG6SNJxVFGdqcVdBfxEOHtUpjhUJDnJtAACfi38XZRSkOHQRU0NPrC+
-	sfcKfaQDCWSoz0UT+IeNUxzv8prMWE8=
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-362acd22c78so6120661fa.2
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 02:46:12 -0700 (PDT)
+	bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
+	b=djijFL+arkiNvbKO+mvXHTB5/b1LndIDCcrjzXNjDjltEADTdAuskH1kVuaqXrVpbiMOdl
+	T6tnH/6LKSIYJtFn4mq6PZT7wa1WMqTRsaZ/spLZCXBqx82dSqzIChMeejjx47UDXPBNmG
+	d9WXCDY+8WQmJrA1BsurZ3SDyR0JaXw=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-7f7835f4478so6171386d6.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 03:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760003171; x=1760607971; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=n2ege6p4pcLOxc2jHHJkbOlbvAgh1MwdywY3Y/8BKGY=;
-        b=HxMGoY8oxq8q2cg0u84rtihBxv7iP4atK9c2wacOGBs40nqAeHmo3Nq+mf7sXAJNSO
-         SUY7DDPKtxCHxKJoet5cNk5l2XlPdANN86hxX5aRsKHc7055LIAGJGvLqATtTH8+6Q0o
-         FtpUQpgYOK92JLDCF1QCpJPlHr4cc/JHZ8Vcgabw7JAWfcmC1TmKh2OWmTK5gC+Uzyj/
-         4g/lrewAfGbjKCoqj+AsYHx/O0BhS+714CMnPObGyZUZGyyp3u4wTCd8vuzBBbQADst3
-         g+y+bY9h0tG/TX4KZoBU2UU4pCVeTicjFmAiAM2XbaMPazCJqDzQVTAS4B0mXloQY65I
-         BRWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760003171; x=1760607971;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1760004010; x=1760608810; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n2ege6p4pcLOxc2jHHJkbOlbvAgh1MwdywY3Y/8BKGY=;
-        b=Kq0te96NSD3GKCi/JX7f4rfNRivwMKjmxDrQy0mgLYgmD2QB74z5FDbbbw2p+2A0F5
-         AaeKekyZAtDEj1Z2Hjk0Up76AKuamzYIo0dcE/THqEp8ZG+L44iUjtW/+Jozu5JqZA3f
-         Wlfzzxl2cC7NRNaDt4VhHUuhwBalyIb5ctoHCZF3p/htchTtRxhdS8h12MfSQHLFcHu6
-         vSBnCEEbkJS9ckEus5en1FplQYTFDd5gdorlwAtSxUCvIiOSVzAPFNkBwO4GTHdFWsIh
-         l7VSOk3JL199F9OyCLTMzRe0O513aNqcqTnIWODpsRZUNHeF/JIsAaMhmdDcvF4DWbG9
-         /mgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQaL0VRs95pBvSYlnAjoeKCKEL3+Ezsube2lzqF9UXbSw4ChqhcFev8W3bSwwE5ZcybcTHFquDwQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz+YIAFqDDvICg0nkKO8t6ALyUodCLdWZTyDCLcHbJ8DCv+nWRG
-	GuLh9hXsymfNz5iNwqUClA2IEe4YzJUgofwg6QWS1Ip2FuFt9avGKu3/
-X-Gm-Gg: ASbGncuPZm0br/BW9yss2iH9jHINJiXf0jGG0y5X1IztXrObobOHSDBYkUv+ALLdqbb
-	32qMHzpzca781TTVx15Yt6L8MaIerHn8m+0CE+51NYVFw8FfmUBi07U1JxARA8HFOB9iD4zudVP
-	0Ks6qy58Wv2tj7x3lEi+Z/bQSfpoqjiwsbi+eVDVHA4E7Q1pTmg37Jmpg8ntywhBZhevy1kZbW0
-	t/L703Z6ccv7ntJOlYktzdjyXOSKw+SPyOm6kgtyPsRdDMOvhNhS+T5Tv+z8ZrdasyzXVi4Owe7
-	decs8htedj4ktVFXk8aAdxu3dgAaZhew/TOivAfsuqdrplKwib69ATtX15C4Xh+dMnGgBPCL0Bq
-	Jys94T71WW+KaKg==
-X-Google-Smtp-Source: AGHT+IHIGQmG8W0O+2Vu70RarOUbKPKl/GJ5/m7NuOCVAVqJsmpKi2KtI5lu/0gEjf9/tM0Q/oJFGA==
-X-Received: by 2002:a05:651c:984:b0:372:8cce:2360 with SMTP id 38308e7fff4ca-37609d685d1mr14651341fa.14.1760003170463;
-        Thu, 09 Oct 2025 02:46:10 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5907aeb6b29sm857369e87.130.2025.10.09.02.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 02:46:09 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 9 Oct 2025 11:46:08 +0200
-To: Yadong Qi <yadong.qi@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ying.huang@linux.alibaba.com
-Subject: Re: [PATCH v3] mm: vmalloc: WARN_ON if mapping size is not PAGE_SIZE
- aligned
-Message-ID: <aOeEYHzXUVOpu174@milan>
-References: <20251009093707.868-1-yadong.qi@linux.alibaba.com>
+        bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
+        b=N9ddSwHj3dwfuWpA+ReP7LxFpIOhjCPJV7DWnuBcC7OUDnASAEPIs5Z3wcRiR7rALM
+         UmXN05KPP5Au9j6YvANtAqvrWmxrIjY3U/S6/M4ZL/12V2+smE555O+YK68AUiTKvM5l
+         jDxW5jgdUcW/VLVIwaIlmXioXoiH0un7DzRD+fgHLJ6Hpit8UnOQlSbvdfH2OqLI/PQ3
+         /mEp3zGDJHsgPE1nWKFd2c/RYqMx9LhU/7a25twhRAztJGaylKZGYB9hGwswIcg8bjHn
+         3v32VUSS1fuLMj7Co+jmiU/EdLrjSNLL74C8vC2MpvffdpgwgiCxjeG9aJ8jwm5Oie2o
+         8CHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760004010; x=1760608810;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BsHNfh2cevZ8eaqWHX2Uah677Z7UfWqdMMb2SSbci5w=;
+        b=AyAZK4nHrrQ6/SvizzrcTYg6xS8WCV8xYgPOG+BNtKP9MpWmCfL/BVn7tgVZlMQiav
+         OqBDPrACln0qJQApiSJrsyY2kJo7LXZ2LnGQkWX5JviK8CpBrsYSGI95FGTr+nDXovIa
+         8GLxsxVWsuFbOHCxeZ98OBDzL0j/kwezvnVHzZFVnzW6kNZZy3wXbsFjVGIEN9hsEyh/
+         35xg8s/YfoJU3eZkT/UaDbHe1S2rn5ZNfg10x1jZaLN5NEo9b/c2zasvLX+wRFc7QK49
+         SkVvPeT8N6Ig4FAjTkh7eXYE8ZT50OpXPrrO0gz5YMvxSo/6odCui6m2PeazeF3QYHdu
+         O7vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYSAOsf2rmIhyiyJ4FMXEPdm9wAQF1Vt/uDujvvn8uNsB4DjLXFANbHB5fg2ItceNp9g5gXTu+4g==@kvack.org
+X-Gm-Message-State: AOJu0YynY88JUTyaaLoK3loMfgj3qyjVWqv7cTLLKf2sUQtbZ6ZHThOq
+	4cqUD/GgX7dSi21UiMg+Dr30g2h9ZuZAsqk8m+xfPMg3vB6zqY7bb/v3NI4M4/g6d1Uqgn1RNYE
+	/C8IPqOYtTE60imCfv9A6o0glvdsnXLk=
+X-Gm-Gg: ASbGnctj9TLW5SH31duO068Hk2y1BUHOgWG7aQlcTICN6zMqkz3Kt3Zgs9/m3K485mY
+	NgrVCqrPR0PpeUlIF/HD+duTG9xQjwHarzUFyugjMmFesRdzOobCNsZ+Ep8YYbJ60+BYccq1fHO
+	vvS5pQxv0yU4laFT/rMl7PbQk5xoHURw33WlHN77SoRkUZWjaF1DTy6PmjCAvkn0flQLJAEJSdU
+	/qxhxuJMzHybvTGw5J4IYo/PQ6UMfwADMnfpZkd3pka5NkaV83SVS6q7hHWTVnv60D7f5U87rZa
+	CgsICGZNqQ==
+X-Google-Smtp-Source: AGHT+IETxQVsMJZ6FUrqxCOJXTq/1lBKlldBdCCphIo2WiWqP2OQZ5MBwrkw2Mvl/zoM5NqKDP1WjJ0VU5dCT5Ozh/c=
+X-Received: by 2002:a05:6214:4003:b0:850:d233:62ab with SMTP id
+ 6a1803df08f44-87b2ef73213mr99406266d6.63.1760004010105; Thu, 09 Oct 2025
+ 03:00:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009093707.868-1-yadong.qi@linux.alibaba.com>
-X-Stat-Signature: tpoc3ad85diuh8j1dtskfk1m9zp3i7w6
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+ <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com> <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
+ <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com> <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
+ <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com> <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
+ <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com> <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
+In-Reply-To: <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 9 Oct 2025 17:59:33 +0800
+X-Gm-Features: AS18NWBlPtBCYqodlkqsQpTW3fhlgQOczuwvYOS9Vl81gX2DcaljddI-xWUUb9I
+Message-ID: <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: David Hildenbrand <david@redhat.com>
+Cc: Zi Yan <ziy@nvidia.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	Matthew Wilcox <willy@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, Randy Dunlap <rdunlap@infradead.org>, 
+	bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 901EA4000A
-X-HE-Tag: 1760003172-589854
-X-HE-Meta: U2FsdGVkX1/aAi9klOx8NWIA4ZMygXxglISJpz4aBY6n7ghYUF+qea+3UFapun2ikFsqPyHRHusooeloTQhY686rIjIcA2aub2ksv9A1+1EOhcg3j1tHRrmrLZR8Safb5+OecC1qpZeh9xXAsVnsM/thn09ebceLUnDLSqyJEq+9XBGfQBWjAf65eRAGTJTt84T/XjUn4V0w5RtHfAxRF2DiI2HZ6ddOqlcPU1rEnW/lvGYrwrgqdWagffbcVqGCY49cOJak91Zv7Mv1KGK8AOlSuJFFNTUx6UboM5bF1YHSFbkI4nv7AYut0O6UV4G6AOLcFHI7DzaCxdZ6VbngLXtDpwKGHkZpZsAy/pYTKxWamk6kB3QBc1/YEqvTx0ABLQzQovCcsG4zjPD1RmNcLAzlBe/FWQK5L7EtG/SZJKooAhKvRVcF5foHr+ROyyOepkmYC+HT/88t9D/2hpwfJfBH2Am5IHLss01a8BoH93dD4P1ShHSgKzcZLCuke2TXwhpcTm4DBl3Pq7n3Q3T8rmEZjwP6spfU61INaFnidDwd8pbnO4isA/Jw+fTGvldVY01FHh1UF3vhghQK9mqLXaXfyfUl0kcgHKIV9bTNXDJ9wYw57c23FT9DQsdrTooQcDFC4ZzppXF/lBg7+nMltJGLye3J7LAb6avsM2OWOGBU3WD9jZXi0Q7anNLY44ug0nR7WLGTaP0GZg6U0s0M+gW6zuiagkHqDDC5lRmqiGXvqT87DkfjSXhxAX6JspOhvvkqefIJdcKr5FObS/6XJ+mhYG8Z0Wm7//Xn/jA+hUykozTqyZ0t5FpAY9rFm6mVeUody4rZbwS2rtIDYI7T1obIHDD4RL6jlFaebkErTW05M0wXoKr+tIP3mcFVf7OZK9/UPB8P8RN0BAeYEpKQZ6itQjD6wriuVOkH+fgs13ei5UEE9HIvHUPwYlL1Le5UvxbtLV9JBD2reDisTHt
- mChRnfbp
- b5wH3n8dKl7wdGxHbebNTKMeBEDMlJO9lGhbYkgqdVSNvl1T7rCNZ5eCkicnQSxnZKj456Ek0btPeFloxfRYn0r1rb3u4JATceos8D7lDaYClSFBJH8TGfqO2IDwpw6eTUJtEccz0k5ClKjc1cxOMivAiljobIo/veRNoyXf4kRbRNeVjq6mg7n2B7zn7uIde4geN6hSJyGiS/6Tbl4su80KDBoSc+ShlAjsL//ufa974b50zEa7Co/0VKkqIBsoSkONsArd/h70aZCEsxBZVmkVXNulTt25mS4XVQG6/MhWQrpMpDM4sDNx2Kd8BnszRPhPdM5EtNup4QqIJdcldZBP9iIhit+Tpgv7OpuYVHz2/LFXaji25urrLvD3q2kYcfsl+mC9trcacDTPSwW/HbSFzqP9rB3fnlNyDZsPsX9dLIewI+QGvFtERNAKsKsP9GJVYAjwfub83/nQbrJauQAG6fQQoAolE4vRziexpePNOErcGQXkd4+earv8JrQOFiEpN9fUaEvM5i7NUKNzo/b/DCV67WCqMUtzq
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6080A1A0016
+X-Stat-Signature: dr5cc8j168e4bge6osjsc96dy4dpzwfo
+X-HE-Tag: 1760004011-467665
+X-HE-Meta: U2FsdGVkX1+jek3RofyQHyHsr2yPeHvYHTYxFOh2gVpnhcykISdVj6G4gBR8FGSUrvmX5xkntsLhM6pm3kXs+ORE2n+SIFrnUSPbFkgDTEL+qT3UGGVoJnnlm/XNITFkuZ2flLZumn7fxzqryFufemPxc3cYkxjOBDGW19/cUu/uU/lGofnCkDh52582/vYRaQI/ZS5WxTrRmhWSIdg7QWS+teyGsfeuteGv0hceyBKiAqCOx0Tu+nWHyDVIvyW+JWfSC1IxK7Ru2fxuY/g3AhP+vEtwXOwMGNqg8Y513/VFV3W/cbs7b0b+SMGz28vPMdNyGWx8fIHuBrMMzEP0GFFpbj+TJA56w9Ym2sUXVbGXax+Ny61BLPjvrWXDiO3J+NgXYjBjmZWFfZCFHoo0LF5fvSp2sxdfcXpfZ97ofWikv8JWY25ruVqH+/jpLFE47MkMZUivzfs0buTisubKZECmy/Q27tKnlI92igr38PdqCgNcYawecr/jDzhbQuUU9bW0hTptYmda0xW6Q6xIjOOmckfE2QRgFYqpn2nHv0wrwWXk/617BgoRecciJBs+4lcJ0rtD/2l+Aqx8H98T0CQgl5Mn0/yf9EgKhu2VXy63Bbo5vOZygxrla35/Uyy9ZZTO6flL6zL47QCeyfGnZhY7TCxa0N5z9jUr6/d93v5yUzNKqGsNzajXlVEbyjriMuQNjvQUQjhxnE/PbmcWsFYfDcYkEcdzemUfmdThwK8Z2HTEuUr7WPDe3Qkyr7HXozM3tta6hSTDL9EjlGgRClZnM8Z7ouipWSacQ8e44OwO18QUtI7bhYqotMpngoRRmskXcgVJ3UGd3+ehL1LT1WwfB1VK32qig6EgwupXkvj1+qEJ/Gz4F+ixcK0/fZicwf5k4EGpxphiJ6xyE/zhBQV89ZGRiOGhMeSIh1K2a8bvEE4HPLNAOsUhsDUPdU1i0tRJc0fWC02YZC+SILv
+ QlYrdDXu
+ nsTSszeXuvz+YIaNWsEfxZlzyQ/Nexhir59cXrObrrhq5TKYMvlGBDmCiL/MFVYLjScTRVsv6D0CyCTboMMDjU7ve0+Qzw4idphRAKR6glod1qjKofVgDSUG7xw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,45 +133,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 05:37:06PM +0800, Yadong Qi wrote:
-> In mm/vmalloc.c, the function vmap_pte_range() assumes that the
-> mapping size is aligned to PAGE_SIZE. If this assumption is
-> violated, the loop will become infinite because the termination
-> condition (`addr != end`) will never be met. This can lead to
-> overwriting other VA ranges and/or random pages physically follow
-> the page table.
-> 
-> It's the caller's responsibility to ensure that the mapping size
-> is aligned to PAGE_SIZE. However, the memory corruption is hard
-> to root cause. To identify the programming error in the caller
-> easier, check whether the mapping size is PAGE_SIZE aligned with
-> WARN_ON().
-> 
-> Signed-off-by: Yadong Qi <yadong.qi@linux.alibaba.com>
-> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-> ---
-> v2 -> v3:
->   * change error code from ENOMEM to EINVAL
->   * modify callers of vmap_pte_range to handle return code
-> v1 -> v2:
->   * Use WARN_ON instead of BUG_ON
-> ---
->  mm/vmalloc.c | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 5edd536ba9d2..1fa52f203795 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -100,6 +100,9 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	struct page *page;
->  	unsigned long size = PAGE_SIZE;
->  
-> +	if (WARN_ON(!PAGE_ALIGNED(end - addr)))
+On Thu, Oct 9, 2025 at 5:19=E2=80=AFPM David Hildenbrand <david@redhat.com>=
+ wrote:
 >
-And it might be worth to use WARN_ON_ONCE() otherwise there is a risk
-that a kernel buffer would contain only such warnings.
+> On 08.10.25 15:11, Yafang Shao wrote:
+> > On Wed, Oct 8, 2025 at 8:07=E2=80=AFPM David Hildenbrand <david@redhat.=
+com> wrote:
+> >>
+> >> On 08.10.25 13:27, Zi Yan wrote:
+> >>> On 8 Oct 2025, at 5:04, Yafang Shao wrote:
+> >>>
+> >>>> On Wed, Oct 8, 2025 at 4:28=E2=80=AFPM David Hildenbrand <david@redh=
+at.com> wrote:
+> >>>>>
+> >>>>> On 08.10.25 10:18, Yafang Shao wrote:
+> >>>>>> On Wed, Oct 8, 2025 at 4:08=E2=80=AFPM David Hildenbrand <david@re=
+dhat.com> wrote:
+> >>>>>>>
+> >>>>>>> On 03.10.25 04:18, Alexei Starovoitov wrote:
+> >>>>>>>> On Mon, Sep 29, 2025 at 10:59=E2=80=AFPM Yafang Shao <laoar.shao=
+@gmail.com> wrote:
+> >>>>>>>>>
+> >>>>>>>>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *v=
+ma,
+> >>>>>>>>> +                                     enum tva_type type,
+> >>>>>>>>> +                                     unsigned long orders)
+> >>>>>>>>> +{
+> >>>>>>>>> +       thp_order_fn_t *bpf_hook_thp_get_order;
+> >>>>>>>>> +       int bpf_order;
+> >>>>>>>>> +
+> >>>>>>>>> +       /* No BPF program is attached */
+> >>>>>>>>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> >>>>>>>>> +                     &transparent_hugepage_flags))
+> >>>>>>>>> +               return orders;
+> >>>>>>>>> +
+> >>>>>>>>> +       rcu_read_lock();
+> >>>>>>>>> +       bpf_hook_thp_get_order =3D rcu_dereference(bpf_thp.thp_=
+get_order);
+> >>>>>>>>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
+> >>>>>>>>> +               goto out;
+> >>>>>>>>> +
+> >>>>>>>>> +       bpf_order =3D bpf_hook_thp_get_order(vma, type, orders)=
+;
+> >>>>>>>>> +       orders &=3D BIT(bpf_order);
+> >>>>>>>>> +
+> >>>>>>>>> +out:
+> >>>>>>>>> +       rcu_read_unlock();
+> >>>>>>>>> +       return orders;
+> >>>>>>>>> +}
+> >>>>>>>>
+> >>>>>>>> I thought I explained it earlier.
+> >>>>>>>> Nack to a single global prog approach.
+> >>>>>>>
+> >>>>>>> I agree. We should have the option to either specify a policy glo=
+bally,
+> >>>>>>> or more refined for cgroups/processes.
+> >>>>>>>
+> >>>>>>> It's an interesting question if a program would ever want to ship=
+ its
+> >>>>>>> own policy: I can see use cases for that.
+> >>>>>>>
+> >>>>>>> So I agree that we should make it more flexible right from the st=
+art.
+> >>>>>>
+> >>>>>> To achieve per-process granularity, the struct-ops must be embedde=
+d
+> >>>>>> within the mm_struct as follows:
+> >>>>>>
+> >>>>>> +#ifdef CONFIG_BPF_MM
+> >>>>>> +struct bpf_mm_ops {
+> >>>>>> +#ifdef CONFIG_BPF_THP
+> >>>>>> +       struct bpf_thp_ops bpf_thp;
+> >>>>>> +#endif
+> >>>>>> +};
+> >>>>>> +#endif
+> >>>>>> +
+> >>>>>>     /*
+> >>>>>>      * Opaque type representing current mm_struct flag state. Must=
+ be accessed via
+> >>>>>>      * mm_flags_xxx() helper functions.
+> >>>>>> @@ -1268,6 +1281,10 @@ struct mm_struct {
+> >>>>>>     #ifdef CONFIG_MM_ID
+> >>>>>>                    mm_id_t mm_id;
+> >>>>>>     #endif /* CONFIG_MM_ID */
+> >>>>>> +
+> >>>>>> +#ifdef CONFIG_BPF_MM
+> >>>>>> +               struct bpf_mm_ops bpf_mm;
+> >>>>>> +#endif
+> >>>>>>            } __randomize_layout;
+> >>>>>>
+> >>>>>> We should be aware that this will involve extensive changes in mm/=
+.
+> >>>>>
+> >>>>> That's what we do on linux-mm :)
+> >>>>>
+> >>>>> It would be great to use Alexei's feedback/experience to come up wi=
+th
+> >>>>> something that is flexible for various use cases.
+> >>>>
+> >>>> I'm still not entirely convinced that allowing individual processes =
+or
+> >>>> cgroups to run independent progs is a valid use case. However, since
+> >>>> we have a consensus that this is the right direction, I will proceed
+> >>>> with this approach.
+> >>>>
+> >>>>>
+> >>>>> So I think this is likely the right direction.
+> >>>>>
+> >>>>> It would be great to evaluate which scenarios we could unlock with =
+this
+> >>>>> (global vs. per-process vs. per-cgroup) approach, and how
+> >>>>> extensive/involved the changes will be.
+> >>>>
+> >>>> 1. Global Approach
+> >>>>      - Pros:
+> >>>>        Simple;
+> >>>>        Can manage different THP policies for different cgroups or pr=
+ocesses.
+> >>>>     - Cons:
+> >>>>        Does not allow individual processes to run their own BPF prog=
+rams.
+> >>>>
+> >>>> 2. Per-Process Approach
+> >>>>       - Pros:
+> >>>>         Enables each process to run its own BPF program.
+> >>>>       - Cons:
+> >>>>         Introduces significant complexity, as it requires handling t=
+he
+> >>>> BPF program's lifecycle (creation, destruction, inheritance) within
+> >>>> every mm_struct.
+> >>>>
+> >>>> 3. Per-Cgroup Approach
+> >>>>       - Pros:
+> >>>>          Allows individual cgroups to run their own BPF programs.
+> >>>>          Less complex than the per-process model, as it can leverage=
+ the
+> >>>> existing cgroup operations structure.
+> >>>>       - Cons:
+> >>>>          Creates a dependency on the cgroup subsystem.
+> >>>>          might not be easy to control at the per-process level.
+> >>>
+> >>> Another issue is that how and who to deal with hierarchical cgroup, w=
+here one
+> >>> cgroup is a parent of another. Should bpf program to do that or mm co=
+de
+> >>> to do that? I remember hierarchical cgroup is the main reason THP con=
+trol
+> >>> at cgroup level is rejected. If we do per-cgroup bpf control, wouldn'=
+t we
+> >>> get the same rejection from cgroup folks?
+> >>
+> >> Valid point.
+> >>
+> >> I do wonder if that problem was already encountered elsewhere with bpf
+> >> and if there is already a solution.
+> >
+> > Our standard is to run only one instance of a BPF program type
+> > system-wide to avoid conflicts. For example, we can't have both
+> > systemd and a container runtime running bpf-thp simultaneously.
+>
+> Right, it's a good question how to combine policies, or "who wins".
 
---
-Uladzislau Rezki
+From my perspective, the ideal approach is to have one BPF-THP
+instance per mm_struct. This allows for separate managers in different
+domains, such as systemd managing BPF-THP for system processes and
+containerd for container processes, while ensuring that any single
+process is managed by only one BPF-THP.
+
+>
+> >
+> > Perhaps Alexei can enlighten us, though we'd need to read between his
+> > characteristically brief lines. ;-)
+>
+> There might be some insights to be had in the bpf OOM discussion at
+>
+> https://lkml.kernel.org/r/CAEf4BzafXv-PstSAP6krers=3DS74ri1+zTB4Y2oT6f+33=
+yznqsA@mail.gmail.com
+>
+> I didn't completely read through that, but that discussion also seems to
+> be about interaction between cgroups and bpd programs.
+
+I have reviewed the discussions.
+
+Given that the OOM might be cgroup-specific, implementing a
+cgroup-based BPF-OOM handler makes sense.
+
+--=20
+Regards
+Yafang
 
