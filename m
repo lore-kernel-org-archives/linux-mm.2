@@ -4,122 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C652FCCD184
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 18:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15662CCD183
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 18:57:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 197528E003B; Thu,  9 Oct 2025 14:52:04 -0400 (EDT)
+	id 54DBB8E003E; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 148258E0002; Thu,  9 Oct 2025 14:52:04 -0400 (EDT)
+	id 4FE2E8E0002; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00F6D8E003B; Thu,  9 Oct 2025 14:52:03 -0400 (EDT)
+	id 413958E003E; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E15ED8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:52:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 305328E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:57:30 -0400 (EDT)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 81E3D46956
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:52:03 +0000 (UTC)
-X-FDA: 83979470526.25.E1E1A3A
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAFCA140B07
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:57:29 +0000 (UTC)
+X-FDA: 83979484218.25.EB3E693
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 24C7FC0012
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:52:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A3nOgkcb;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6CD2F40008
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 18:57:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d3Q8Hln+;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760035921;
+	s=arc-20220608; t=1760036247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JuM/xy0uDi2aKWqEBu4ShLZn7rdYhN1RSBK1xoj3T/Q=;
-	b=kdBW34G4BJMUV5J+B7N19qq57Vq7iH7eKqKEj8kFaEOyxyCwDKiV8fDhl9uLR5YHZ7PKMq
-	aO9OihHK0wpdxAIqP4T+ghvpupjOpzWl9b6iql21VHc8TVOK51dRMLwG3wpsQI0OZ0UzHZ
-	NoEIxWrNZUOH5YkrsT25HxyXT4/hG0E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760035921; a=rsa-sha256;
-	cv=none;
-	b=liZsjJ/a3Q/QsBoyDGjY5m+4aekSi89aYh7StTwaTTz3ZtV0lcPpwzXhhNlnQxzBqHqxbQ
-	Jt2E1Qjc8UgnhJm7VbrilX1GlC4P/GDQ8yRCFiUusGzsrb3D9o2iBVd8NWErxqG2z/7ini
-	/A7XrmL2n9koobuVpRy9ZcOtGdVP6r0=
+	bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
+	b=uT1+qb53Y3O+TmxkkYEbWdtCkJpnx0lt2LrSdS1Hc7vEmAPSadL0v11hrMXmxWY2U6tED4
+	bpfMyXLMQ+YYB2IUUsv+cImTh03U1+ukyku5C+PU3n1C0LN8i4IJkMnH+grThjOzxlBYo0
+	I/TEFVtvXqgeZz4vrBbc/V5M7Ii+U74=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A3nOgkcb;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d3Q8Hln+;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760036247; a=rsa-sha256;
+	cv=none;
+	b=Ntcq1IHss7wNscCsrGDy3HRTKAxhz4J779P4hKC5uiDP2sP3rbiXI7Ft0tMz+IY2JBW9vQ
+	0Gv0/X14XnaFp5JU/xEVQRbNCSs1GXXmVvRwm7JlzkipQa9dp255n4EnMOvANXxnM1EfQQ
+	SvMh69SdqAc+ra3s/C39HLk3n9Y7FgI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760035920;
+	s=mimecast20190719; t=1760036246;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JuM/xy0uDi2aKWqEBu4ShLZn7rdYhN1RSBK1xoj3T/Q=;
-	b=A3nOgkcbhgoczA4ZT1S9tbGhuIEYYKpADGmedn8krgR1NspnvKWoTVWpOsPm1PxOZozj+x
-	9WJAy+4Kbqw2/IA1I/4DD63othwnS2ofnhjUR9jtrGvBrP4e34i3UofMyifrNnTmXLKq+E
-	S/1FqbZq7I6ZVwScfMd5vP31HhmxY8I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
+	b=d3Q8Hln+8cfRzhbBk1f44gDV9fxnc3OQ82VUabbY7IZj1TNgc0V0z48DsK94IQ8jFVSq8c
+	LX3rgaVtiUqJMfTSNbN+n3rD/jPodoXJmEckQH/stR79JVo4FaX1vgustu3tAGHVdWrRwV
+	NhCEv4atwIMW9R7mUeJ4RdYd9hueaJM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-7SjCUKV5N5iVo--WaY2sRQ-1; Thu, 09 Oct 2025 14:51:59 -0400
-X-MC-Unique: 7SjCUKV5N5iVo--WaY2sRQ-1
-X-Mimecast-MFC-AGG-ID: 7SjCUKV5N5iVo--WaY2sRQ_1760035918
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3f3c118cbb3so1333221f8f.3
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 11:51:58 -0700 (PDT)
+ us-mta-676-u77PreJ1MoON0rtGVYHjyw-1; Thu, 09 Oct 2025 14:57:25 -0400
+X-MC-Unique: u77PreJ1MoON0rtGVYHjyw-1
+X-Mimecast-MFC-AGG-ID: u77PreJ1MoON0rtGVYHjyw_1760036244
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e502a37cdso8743325e9.0
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 11:57:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760035918; x=1760640718;
+        d=1e100.net; s=20230601; t=1760036244; x=1760641044;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JuM/xy0uDi2aKWqEBu4ShLZn7rdYhN1RSBK1xoj3T/Q=;
-        b=rZ9koBOh2xbOIfEx6YtZ/OPkN1IYq3PMx19aFHyL2ujUHmnRiHA54bpucWMEZ++zyY
-         hpTElQpWVvAbrqmK5uZl/uchx9CVP3TdtBfHPyv9pft/LDp2nvTQOjlIm5yj7o+IkyKE
-         zHKJXTx6YbDe54thi4QplF+U9obeMQ1P6EKSRK1LDJVp1EBSfbyWkpOsSZGzEQvyzNjJ
-         pvPegNEGiZV6yWGc2srub0MHSx6r31Ha2C8B7+k6RsfMgY0HDKwUmjfVndOx7ulha5cX
-         IZ8WoE/cb4Hcso9mc/xIAJUo2h2bGR4pFE8+nWaDlDwR2xTy8kf8yBh2XiOZ6YWN4Isg
-         mMDg==
-X-Gm-Message-State: AOJu0Yzv7hHg80nKefg6PySTDUXpW2jE5B1ulXsQuUpUwWiPU7YDyHve
-	Oo8EMVB9JB43a/WzaAnrYfmUvtf4zbrrRqgTM35/qWCd4gkFEN+d9XWKP2h2SYfqpQ4X2/rjWJC
-	ycJRuL+3rKDyMaKFDNEzkOEjW7d8ZXshASdAhfaQl5PRR6b9EPkMo
-X-Gm-Gg: ASbGncv8vL24l95/jT8v9Xp2e8xSvGRlJwSd+fLmblbopBHKPnDyw7rmt+y8+tM5Ihc
-	FEPVBnrKlxSlmGnwf7wqUbyNi+cdTdg3AEI6USRCFQF9LEj9lDeQ+7TLgZprJB5UxFTX41uRlte
-	ScG/wXyffgNKazAQfSjNL0ap3dKEXs1uh4JUh5kZSCGdMaIEOf/Og9PeUILaX/IMN3ODFqp71VE
-	Z9TBPux54xAOckMahFXVtNgpzpmuZgEy4yx5KTuH56FrRjAKhWvIdg6plS+4Z7ElRh37mFUFEmT
-	KEOblM/MfyXkBMZLd2uX59/T4Htp4BRBQQA0AURdZSUvgkDhMRzSOSm1SU+SDLrGQdG2ZFQl7S8
-	8lXGHIfj3
-X-Received: by 2002:a05:6000:607:b0:424:211a:4141 with SMTP id ffacd0b85a97d-4266e7c61a2mr6181022f8f.27.1760035917767;
-        Thu, 09 Oct 2025 11:51:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9phgoJQqtDuGkZ35opgptVXsnLjQkrMgDx7RkFdRbInqtHP9Q7Mvdzi6WvZ+AZV1w4gKU3Q==
-X-Received: by 2002:a05:6000:607:b0:424:211a:4141 with SMTP id ffacd0b85a97d-4266e7c61a2mr6180982f8f.27.1760035917202;
-        Thu, 09 Oct 2025 11:51:57 -0700 (PDT)
+        bh=4iAzp85+07WQisNUePEagQ4q/g20R/GAnT+gB8Cya3Q=;
+        b=CEFHMuv4gns1Mve21S2AdeedBQbHuk8cjYOzKhMFCsQT/MvCTfKPWDiRUE75mRqLak
+         MdRB8ip6z0etb5Tl0DGFjakaDwVeAuZKQQXcGFazQE6WvP7EuWgINI4rT8e6wDCSmL46
+         S/xA7pAy0aDlVYzxCgTQCPa2104zZ6gM8ZAkLJ3oUoTsohxMFGwYhHRtMba5SkXnL1d8
+         fa05EMuCVOB1Ua7zo6crA8gNhYxj3MOyUvWfmTB+/0bOPI5yYQ32S92840+o3RCyRHm1
+         dLDXaN5KAG0RwfyVHW42Xw4NSFScYk6b/T+Bc+qEtXh+HXB+DtYDRwcd/wtRyCmwRzVs
+         Bh2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXpY0eU6Gj1+mo0285f+6II8rr+SHMFfSRJtfZZjzg9bAhmwUzSmXtl+cN8lF8VRJW28EZJTx6BlQ==@kvack.org
+X-Gm-Message-State: AOJu0YwnnmejOD8xY1uPsvE9vUbb3AfvHLa9Bi9c9fSQ9ZSn5uE4IxPp
+	RPpave0VJn0Tnc9DNsRVU84hN5lznaBbwkh++ClNO2lvhUGPdJKpF1lw+OE8EY8mBfoVxKFPZaZ
+	/ulcER2zg3gkzSZGcxR8N2QXRKSxdrIRG2D8t3/Zs7rL8iWqkCtCCpOHcPrPq
+X-Gm-Gg: ASbGncsTQTc0XZ/GYiVIoGl7CxADGTmeES4Vfi+OeJkADdShrYXA+zSM+SKvspmKPdM
+	Oqzwr4Xzt24gPLihQyZP0TVpwuUwVm0kN4rGvm/CrlwerMNZ2610bXtDIccAQVa8KeDdcm5Tzdu
+	aOLZqmMT27LyJSgKF7XE3Tp+7NV3O7Y+8orNhfZORItqJX0j2WXoWrkewcTnfnVzbDzjnN7JZLC
+	onHgSPnV0RQnC42m5LMR0n0pndIIr6qL3VY9w6LtFRrzncz160U01RNGrGfQvgROnjzzhm2vAVM
+	fBhB2ucWbQxzg8oJ5+bgnxM8GCyGjAVAl/3cTgIotQUyGY99myopR7+BGEtRbYzWvWNv0b+Ei7s
+	1v0pgMXES
+X-Received: by 2002:a05:600c:628e:b0:46e:4cd3:7d6e with SMTP id 5b1f17b1804b1-46fa9aa0b49mr56621355e9.9.1760036244338;
+        Thu, 09 Oct 2025 11:57:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7mys4/FDaXY2OCEWr6mej6Wrn1zZXPoZ5aHypkrEDlOnaV1ENckumi+N7FGBDiTJ4jMRNYA==
+X-Received: by 2002:a05:600c:628e:b0:46e:4cd3:7d6e with SMTP id 5b1f17b1804b1-46fa9aa0b49mr56621255e9.9.1760036243964;
+        Thu, 09 Oct 2025 11:57:23 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce589a21sm383854f8f.23.2025.10.09.11.51.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb4982b30sm8459955e9.6.2025.10.09.11.57.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Oct 2025 11:51:56 -0700 (PDT)
-Message-ID: <ac0393c7-9c0c-4b4d-8b35-5e6369e5431b@redhat.com>
-Date: Thu, 9 Oct 2025 20:51:54 +0200
+        Thu, 09 Oct 2025 11:57:23 -0700 (PDT)
+Message-ID: <8c4d8ebe-885e-40f0-a10e-7290067c7b96@redhat.com>
+Date: Thu, 9 Oct 2025 20:57:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-To: Gregory Price <gourry@gourry.net>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, corbet@lwn.net, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org, hannes@cmpxchg.org,
- laoar.shao@gmail.com, brauner@kernel.org, mclapinski@google.com,
- joel.granados@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
- Alexandru Moise <00moses.alexander00@gmail.com>,
- Mike Kravetz <mike.kravetz@oracle.com>, David Rientjes <rientjes@google.com>
-References: <20251007214412.3832340-1-gourry@gourry.net>
- <402170e6-c49f-4d28-a010-eb253fc2f923@redhat.com>
- <aOZ8PPWMchRN_t5-@tiehlicka>
- <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
- <aOaCAG6e5a7BDUxK@tiehlicka>
- <83e33641-8c42-4341-8e6e-5c75d00f93b9@redhat.com>
- <aOaR2gXBX_bOpG61@gourry-fedora-PF4VCD3F> <aOdSvriKRoCR5IUs@tiehlicka>
- <aOfU9YTKMPWzYOta@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH RFC 0/1] mm/ksm: Add recovery mechanism for memory
+ failures
+To: Longlong Xia <xialonglong2025@163.com>, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com
+Cc: akpm@linux-foundation.org, wangkefeng.wang@huawei.com,
+ xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20251009070045.2011920-1-xialonglong2025@163.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aOfU9YTKMPWzYOta@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20251009070045.2011920-1-xialonglong2025@163.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: k3LauTw1jiP72a0ufNxVeOmvnENIoY5E0htw6cjIoQ8_1760035918
+X-Mimecast-MFC-PROC-ID: ia2CCvFJm70pv-ySeCSu2v-heSft-1R-1mQPySS6SEo_1760036244
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: dtsjiz3pjwjyzn8fqfzmnyonmneth6s9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6CD2F40008
+X-Stat-Signature: cfukrtzwpighm4xu71c1ody65s33qqs3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 24C7FC0012
-X-HE-Tag: 1760035920-284098
-X-HE-Meta: U2FsdGVkX1/g+dgxMX+7ezJqgnrSKsS+MmTnuUZtSRKdfM0P/fepLekqCkZ6UOmPAwsVsZtqSAsP69jA0NFlMsKFJQni+vi4lfVUto8gxjTcbPK4k5k5uVWaalaOhmKxHBnN2kVrKSuQDwO1R3KQMgtD/0b61yw/56TJApATlUCcUagaMeFq+tB8SyUviPGC876PDmPs4LJx53JRGA23WfV2sDJbuOrDanm5QwEfpOQvbuA6b7NWMSaflKCpIUGhoX0+yivFfEdOooMF8CN8J5yO7SlbRrVQsJBuDZKCrLxoc3a+aenn7xOTYO/rRsDTLTc2HBuwjeyXvsihsYyTCvg//tT1w3MZWdfulwKu48UfPxmaCrA+if6EbZDhAwNjlJXPBgt9uQOl5vQe8PBEUZapOEvsxpsq+q2kuLyB0vQ88MUH45cu5FiWbeRXu+zY3BF9+yELw8M9RHBOYDia2Vmvp6WNqoq+rAghn3zJZrjJ3dX8oahiU+1AkYsE+u2Iy3LIvoNZX1aYlFexT8p/P/Olh5itWh8xcDdqhPBFd/zZRSh5nUt1VLgDAC3GMeBg7jK6003FMeSdqKnVG8ZlvHnzZ8c3i/kXAYaMwTQGrF1Nw2rULVO6Z9+J3eb17u3SPXHz5QtMOeFxlSPVHTld2sqBmX2fRXDxdsyJpwsNxORrs/6CViZa7NQ6rmjXP9GB/23Z3TFJ5qX4HhDhI1a/z4AjUzhkpmmJGf2yioI2Mxcbo+hn0PSBy1RAqMDO9IqOYfJXvlRiTbCgAj5TrjRyTJI2nFBzYWBpc/7Kgukrd5jBdpk7MwAB5aytZL5e5V8/nlbGti3qRUP+bqUEpHnWBbTsaYJlKZk4OmvtIgoHB9EAAWJ31Qd2zCcSHeYxHddEliLd3gkIywz/ery/iCLbGfJWKZ5bKSLzzGrrdO5v345yTGVYNF9hG0bOirOETmxqbxJM0U4Mkhtw1Wk2tWT
- coOMi3NL
- +SU2JVBiRqtpmd7PHVrnW/zAVh3SYSLEbJf+JVMCfKLxyAb3SmKQwZOufMqjpUQxXjnQ9FrYgi9zAwa3Xvaj1V76U+KT+8ePWf9v/Sy6VC35hvHKwDBxolTgeQgvNZJT5BDxYJ7I/XIJleg820f/6r6XIS8y3jlI7L9cZ1Pp1p2yeRFpptGBem2zAAjBtvZD9fGvso3WL3lA4hLUUslgZx+L1u2GdwGsYSmq7IjE1PGzgi6p4OaN2DTQqlO4T+12mq1zJJZe5/k6Q3ybcNYHcBcsIe9EAGIALQbVqpjMsezr7C7I7ITyosY8m5KbTPGKa8+GPQiN5qEnsUe7YDwLUy1uz4f8wvimxlwVu3EIcbrFpQOPU8S8d7BvnHC1lNsH/rLWSxKnuUnBClpsA4jlVpeQblA5pa5IYAHGcJTzyuGKwq51MYCkw57t7nifatG5itao180wc7Sac+JvuUW4MzLQSvn6lmLehmms6MhOxP7UkicXLGYTIYrvOUNmtwT875Bgm8scANdb+tRbxn+OHZbq/digLinQIGb2ofJpewkgfPchipPbkDciX/RgCObbKYHrlPPHpeunWFf90fhJsELm92RdrZ0NHjCTVB9S5AHv3HJhKtkz7t6TA+7uNsrkwFA05ON28iYGPg1rOglsU3Hdt1POp8DKOo+dx4phXX/Yh/JzlJHI/H+fGDqyFHblXz8ku6SAsQJWKUpQ=
+X-HE-Tag: 1760036247-684073
+X-HE-Meta: U2FsdGVkX18r09X32mq6s4um5cseyhCJ13j96v011Fevd2aqmyqrFpIqfN53IDdYS3ROI4Hm33UroEKNXPivFG4G31B2VkOxHBADEqToW6xgfVJO5nSqKOguTgtgp8bDe5BsI04ob3w+QpDijnBU7ZsNnbZIWQ8SxpbssCiH6Rv5somxpVDL7wsjj81d+Z3LFdaXsoVQflvTN5kolAK1NldnXO4o7as8FUCtiz76C+x8bPosneZ0f0aqSrwVVtDwnhNMRpHJ0QVy6eGOfSgZZBCRZxbB4aHbaamWmJeqs3EJjWMEwXzlBR3lTTYJQBxOfB7ZYaFY7SwKQx69X8SKV6C3CGRPD0U6f/vkyOpxVv+BEbsK99Ynf8DHKN4QaIJOwj+zFw7eelG/oykrwep9AuzAbsNgp+fT358m52NNUHNk7BG/OzT+vxO49nxfXUv3CakDsmmV97WBlw0c/y5GMf8BmGIiQlwYTiOF7SuHyE804KX+aO/nv6kKwAk7luSQPSCtKFwijGa8fx1RWXLlOjvEo0c/kDQX3VatVg9Pigw/PHOIkCSje/zgBlLBcxRECooo0qHYdDJzPvww2ObnaUWAxFLNeZ1a9mY9ZS5aS2ORmkp9/ssUVWjUAVjhOPq4CYqoEQufkuQHf+f+LAzbXaI9866ccFHyMdRDTPo4eXHV4a78PTK6mqZzzVp1CP0YtOE6EGR3gNlOQTelTdqTJfqqhRGBPDYcJn+1OrWbJHe3lbcKt8Lzk2Wrx9JZLbFPsykwUcztzsi/Tp2KM6mrtVqlJKpLM5Iw6TkX5ED+n2+ak9HTHxaxZbIf/YHBJTEsSExt3Up68YRLIXjCS9PSQQLxcYXJ+l1PyrLhZeDwOznlw2AzHncAZGg2YomYXuFHyzTfSRjc1YQkWlu9QJO/Ikh4uw24O+G1/qFduIusFtvxDxM8GJ8NbfMO2qwnqcy8gM1LjqSM2hB2XWZVTq3
+ /QmghWAg
+ qnsD9UkfGaLHZYlZoHwcDsFsYODK72jWFdiwHKkVzFRmWLlUiexkZ58uKBVt7s6iq11+jF32VLRIrG31eqcmBKj2zmazW/icRio8PPpyQFEDdSlOsJL6KYGYu89uAqwU1phFKVh2dkyvDIFwn1Eu19Fw2fxDdBnXwaocucqKhDYSTuA6byczs75bJRhHxp3ps26lquoivWCx1PGyDr8whgpaZSmMlzuiKlFYn2zBeYejNejyB3mb70OLWetinEvKrWNeKMGfOljYf2Lg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,75 +179,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09.10.25 17:29, Gregory Price wrote:
-> On Thu, Oct 09, 2025 at 08:14:22AM +0200, Michal Hocko wrote:
->> On Wed 08-10-25 12:31:22, Gregory Price wrote:
->>>> I'm not quite clear yet on the use case, though. If all the user allocations
->>>> end up fragmenting the memory, there is also not a lot of benefit to be had
->>>> from that zone long term.
->>>>
->>>
->>> The only real use case i've seen is exactly:
->>>   - Don't want random GFP_KERNEL to land there
->>>   - Might want it to be pinnable
->>>
->>> I think that covers what you've described above.
->>>
->>> But adding an entire zone felt a bit heavy handed.  Allowing gigantic in
->>> movable seemed less - immediately - offensive.
->>
->> The question is whether we need a full zone for that or we can control
->> those allocation constrains on per memory block bases to override
->> otherwise default. So it wouldn't be MOVABLE but rather something like
->> USER zone.
+On 09.10.25 09:00, Longlong Xia wrote:
+> From: Longlong Xia <xialonglong@kylinos.cn>
 > 
+> When a hardware memory error occurs on a KSM page, the current
+> behavior is to kill all processes mapping that page. This can
+> be overly aggressive when KSM has multiple duplicate pages in
+> a chain where other duplicates are still healthy.
 > 
-> Mild ignorance here - but I don't think the buddy allocator currently
-> differentiates chunks of memory based on block membership, it just eats
-> folios from certain zones/nodes.
+> This patch introduces a recovery mechanism that attempts to migrate
+> mappings from the failing page to another healthy duplicate within
+> the same chain before resorting to killing processes.
+
+An alternative could be to allocate a new page and effectively migrate 
+from the old (degraded) page to the new page by copying page content 
+from one of the healty duplicates.
+
+That would keep the #mappings per page in the chain balanced.
+
 > 
-> I'm scratching my head trying to think of the discrete mechanism to do
-> this that doesn't inject significantly more complexity into the buddy
-> allocator.
-> 
-> Looking at the recent[1] THP support for ZONE_DEVICE, I wonder if we end
-> up with something more along these lines?  But this aschews the other
-> requirement of wanting the memory to be otherwise general purpose.
-> 
-> https://lore.kernel.org/linux-mm/20251001065707.920170-1-balbirs@nvidia.com/
-> 
-> ZONE_USER does feel like the most natural solution.  Literally just
-> (ZONE_NORMAL - GFP_KERNEL).  This might need a new GFP flag for certain
-> use cases like KVM (GFP_USER) to denote certain "This isn't technically
-> kernel memory, but it needs to be pinnable".  That would slot right
-> between ZONE_NORMAL and ZONE_MOVABLE.
-> 
-> Alternatively we could go the opposite way and introduce ZONE_KERNEL
-> below ZONE_NORMAL and disallow GFP_KERNEL from ZONE_NORMAL - then have
-> strict watermarks on ZONE_KERNEL to ensure the kernel is always able
-> to get memory.
+> The recovery process works as follows:
+> 1. When a memory failure is detected on a KSM page, identify if the
+> failing node is part of a chain (has duplicates) (maybe add dup_haed
+> item to save head_node to struct stable_node?, saving searching
+> the whole stable tree, or other way to find head_node)
+> 2. Search for another healthy duplicate page within the same chain
+> 3. For each process mapping the failing page:
+> - Update the PTE to point to the healthy duplicate page ( maybe reuse
+> replace_page?, or split repalce_page into smaller function and use the
+> common part)
+> - Migrate the rmap_item to the new stable node
+> 4. If all migrations succeed, remove the failing node from the chain
+> 5. Only kill processes if recovery is impossible or fails
 
-I'm afraid any new zone will be highly controversial and take a long 
-time to get accepted, if ever :)
+Does not sound too crazy.
 
-The real question is: would we really need a system where we mix e.g., 
-ZONE_USER with ZONE_MOVABLE?
+But how realistic do we consider that in practice? We need quite a bunch 
+of processes to dedup the same page to end up getting duplicates in the 
+chain IIRC.
 
-Or would it be sufficient to selectively enable (explicit opt-in) some 
-user pages to end up on ZONE_MOVABLE? IOW, change the semantics of the 
-zone by an admin.
-
-Like, allowing longterm pinning on ZONE_MOVABLE.
-
-Sure, it would degrade memory hotunplug (until the relevant applications 
-are shut down) and probably some other things.
-
-Further, I am not so sure about the value of having ZONE_MOVABLE 
-sprinkled with small unmovable allocations (same concern regarding any 
-such zone that allows for unmovable things). Kind of against the whole 
-concept.
-
-But I mean, if the admin decides to do that (opt in), so he is to blame.
+So isn't this rather an improvement only for less likely scenarios in 
+practice?
 
 -- 
 Cheers
