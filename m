@@ -4,130 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 478C2CCA470
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 08:01:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6403CCD187
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 08:04:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 434DC8E0036; Thu,  9 Oct 2025 04:01:41 -0400 (EDT)
+	id 39E838E006A; Thu,  9 Oct 2025 04:04:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CF08E0002; Thu,  9 Oct 2025 04:01:41 -0400 (EDT)
+	id 354788E0002; Thu,  9 Oct 2025 04:04:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323C08E0036; Thu,  9 Oct 2025 04:01:41 -0400 (EDT)
+	id 264658E006A; Thu,  9 Oct 2025 04:04:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ED068E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 04:01:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C80A111A7D6
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:01:40 +0000 (UTC)
-X-FDA: 83977831560.23.305D7CC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A318680017
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:01:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Y9ZWb5GX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rifxSvZ+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZxIoF4LO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yK4OMB9e;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 12D238E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 04:04:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9FCD2882B1
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:04:40 +0000 (UTC)
+X-FDA: 83977839120.10.9A046E1
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6B5B51C000F
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 08:04:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759996898;
+	s=arc-20220608; t=1759997078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LxltF4dkzdwh6jot7QMtNml0hcUKaWzZhVwWOrFpfOk=;
-	b=tYSwtV6BFqCM2ukjguF7PmLQNzpSpHtqiByhe1zUhTeBvQDP5XCH3lWVsd9lz2U1ZEtbhL
-	VBNRgXu8c+7sZWSqxO4a4U0LojKZIIGgZae4EQ1bJcuhdTGwJRJ+/NwYYK2+afWxBMtyO0
-	d1vLRWhJ8KRn3ilFlRj4R9GL5tkVJPU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xbw+RhCM/KhKNE+NeIDOVsuF3+v6zQfqYVSxtVn6guE=;
+	b=Csih3JtFHqaG3oWDsRR23kCRe8PO3YPJ3COxJ5RuqLUnveSOfnoRQ+5avL93093UaA4qb4
+	lOM5sH2vqhKQg4FFX1QNTM7RPOSxAOpjf0fcFAErirC73hWX6VIqlPMYwFrylIHSDbuRNT
+	uYS6eWgU751bdFxhYSmczzNpRmulgrM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Y9ZWb5GX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rifxSvZ+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZxIoF4LO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yK4OMB9e;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759996899; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
+	spf=pass (imf20.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759997078; a=rsa-sha256;
 	cv=none;
-	b=hMZzofOTCUi8aFUNznHEirabhVXsuMAx08riQBmfR0b72+fQ+mmCZQ0fVU3cAIH2VadzQ6
-	4/WkxK6efA5NCrM5oyerIL3tZTSI9AvUrt/YnMZgzbtI4a15PaStMYvkJWEVi/yr6NfPo6
-	TjpZraETX03pF8XgfHBoDy7wcjuQNKw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3C5152245E;
-	Thu,  9 Oct 2025 08:01:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1759996892; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxltF4dkzdwh6jot7QMtNml0hcUKaWzZhVwWOrFpfOk=;
-	b=Y9ZWb5GXyC7HLDHnuy3lGQZgvXzHlmQtuYSXnrJ0ZWYmdzaUj4CfZAGjoAJfGQUX3JLrW5
-	ane2RhKtAzQITCXc+bpOuCoX5XddEIiyd1dnDVjz8bfX501p0ZGP6P7fnk/2nvKFXS49oz
-	NABSJyWvOWkmrd9BHOh6w61lrltHsx4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1759996892;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxltF4dkzdwh6jot7QMtNml0hcUKaWzZhVwWOrFpfOk=;
-	b=rifxSvZ+fbU/gYJ/h1EEg83AXCdY5jTDt9lXvzpyMXfkVy+zqhY4uLzs3VR3C6fPkuT47p
-	OZ3EKQcQIyIUf0DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1759996887; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxltF4dkzdwh6jot7QMtNml0hcUKaWzZhVwWOrFpfOk=;
-	b=ZxIoF4LOjZ3VshzQhSmJwnmcNKEUApnXVcbWo+6zhdja2EAR5eCza6N1vGYvd4j1mxdaP9
-	GQHBsbxIQHQa5acXI/yc6VOQrLtsWNZuqfxqKCKT5ohxEgukwJ1+AimW/lZFVzmZScG9if
-	ZgP1uvKS1cI8W66Lz/x6jYDC9MN+o8w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1759996887;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxltF4dkzdwh6jot7QMtNml0hcUKaWzZhVwWOrFpfOk=;
-	b=yK4OMB9ewdh/PY1JGi6fU+gIHv+ZPZC5ucv28NWOq4GH48AvW//T2S/bKl/Xi0Pq7NrJeG
-	U32+FeIrBgkC3/Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 83AEB13AAC;
-	Thu,  9 Oct 2025 08:01:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Q6ZsHdZr52j2DQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Thu, 09 Oct 2025 08:01:26 +0000
-Date: Thu, 9 Oct 2025 10:01:16 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Mauricio Faria de Oliveira <mfo@igalia.com>
-Cc: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-dev@igalia.com
-Subject: Re: [PATCH v2 1/5] mm/page_owner: introduce struct stack_print_ctx
-Message-ID: <aOdrzAmu5zgCqT6m@localhost.localdomain>
-References: <20251001175611.575861-1-mfo@igalia.com>
- <20251001175611.575861-2-mfo@igalia.com>
+	b=N3LewYoq9K3OGeEsXxIOX8su2PwLL5baf3PsxioXCfE+AvzfjqUbM4WQfvboWx7zrlIkIC
+	TqKG4UjhM3bxXfZ+V6Tvckj+odm5FCKYFJO53jxpZKXv9k2xLvasxPKyXGD+YcKEZott7r
+	fORszGiSljBgHAKKtFGVAvKPmnaB48Y=
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj2Td0Mj6z9sSL;
+	Thu,  9 Oct 2025 10:04:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qQ36Dhni13kk; Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj2Tc5kJ8z9sSC;
+	Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A8FDF8B770;
+	Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CnXkw3FAfnqR; Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id AE04F8B76D;
+	Thu,  9 Oct 2025 10:04:34 +0200 (CEST)
+Message-ID: <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+Date: Thu, 9 Oct 2025 10:04:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001175611.575861-2-mfo@igalia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6B5B51C000F
+X-Stat-Signature: g65kw6f6u98k1sk6uds3yxoqnuwrhiea
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A318680017
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 49drtxusftfd3e8og9j95hy1iy33cdwq
-X-HE-Tag: 1759996898-647372
-X-HE-Meta: U2FsdGVkX19PjB3ELgPcMZ9GVpO1OQSWacngr6zCnimTmoxNFpKbBhyzYboo/9r2XEPlfy5Fih3wdE+3KKr5bKEXI0gLHLywWlWVPXQlrMPPgN1N9tQVxcNOlgCXRBIN+eylYSwP9CgVoT9kdCj63WWc4FuVEL7AsOPHR866+zkoAMiSMbKYE8dyE7JtX6nQF1yXMHZ+2/6hOSlgmd4VYGml/wi7DOh/BFibjjZNL6vYxJ/zd0v83A1zbQf9D0It8dm2bo7Kco0RyFekKA+u+dJvy6QkLW8iwGFKkROU9yIBwaRFvkqELwMtABMTHFhX7sGqd5nV9gUabMPCW0tw6X4Oa5+iX2B5fXJBBhTCUMS8S/F5JLn4HMlvtf45wfTF07uI52eiSdsc2pp5+Say89jlRUjd+YrGZLOkeVppVu0Cmbc0xiW0Gj4ESE/xPpCoVywU5bfGbjjJHm3MMbP3IiPkdnAqY7uXt4Br1GlFSEBP/46RV6zt92TSHOJd9BlDNtc/Wc4tEQhZutAZKWBcUfdyAiNNZLfNki+UKpDHsa2rN8Q8p1IwYhuO3evT/qCcFiCPYZOOSRdQhHpqFpqFrhF1mWm0xE0DNjN4/xk2+Z4HA7lwRU6yS6kK2nDfF8eqQGaRtSi8+PxoZ3yqn/KG9QzpQHMIvO4e4jSblzT9TndGSb5w16Fl9sSMXuFC0JwsB7HDpJ0OabmxWymud8B8d6sRV4CPnMB61d4FwVkcV633JBacY0P2TzC1vrxqIoZr7TcRN5/NM1SAOk/G0DAn8hFb/EgoSFlIevrs2SsjlEwrEX5GrQfY3lE6sU5mOAO/VmY23NQ7JUtPVSRQN3rWTbkzizR0NEa/Arr4nMtiI87i/DUWB1KqewD3Ne+7sNhEXh6g3izDIumi7bTQxDlsxk7C/CJqTU/KZx26o4Ev+yvul0Q1X/tYZ3uZG/S37Opi/uwP2RsObRhvc6Ml/aZ
- ROyS2z3H
- QVuk80GZbcCpY/N1hy3fSohdA6FWG/LF2boYQdLNwbaCQCxnTm/eDArnspI6Vcjtb0sJOhFvxhyyLhcfhceJAper7piqClPSP8iCYAeHMueykQ3pKodg0Ld2+3E6im1HVOUAKQBuOGotCBqVQ83YvCMyCvHGlf32xLFUfjbaEemdN7e0lZsHmJkt2vv4wDLfa2NrHTakw7d6su1ebYuR9wOVIWjD3E8qcPrv95rDNUai9R1zs26H1vxjd2ca5Tftz2XB8oxF7yoMBZJlGD0XTYOWOGC4N41rzORylC/A+Kj+MUkv9Igl57rF5FUiDH4NPmkSVb20q1SRYd4jAiUDpMWaw1aUP5bqSpJrqozm5CtQW8IPzRIJ5Txl7Ig==
+X-HE-Tag: 1759997078-712261
+X-HE-Meta: U2FsdGVkX19yXSWc1zcW4mXo+6hXFDDbdQ0AiVbuHVMfZV9Wko7YUDqhLb0zQhgXcGEDrs8CT4RYSIsuCNb+eLPDcWZCfSP+SR0mgT44V/7585mX6bvV9ctgCTadQYKVC2DUElK2NKm/Fa0ZzNApJa9U8RKsBTZGmuxrgO4tu9xpbIcHYMwP63sGFSCXd16LH10Y6gs9lrtoyV+ohjQJvxQPw8P8geJEjacAP/tQfy5FV9PbI9VdNfj2z9SBhW8h0eWSMbM34K8MF9KA0H1/NvY6j3/ibwMZkPm9LFfHATsSMWBzIc2Cjtz50HBt4jRt91DUCS136CSMvPltLId25rNOTDEuHERfOD774xgSGbUhTe9XRw0h177JUP/x4TiXp7HEq6I/jrVtjSzfv/38iQnfMAkytfY4ENtMuED82kzTouUZsuMG2WwCJVhFCjGk1mRmZ6mS2QmQX708le8C0wQ6zQ/pATsPIVZBtRSxm0HcrU7glg6LGQ3p29Z9R5KK5RLy8lwImY6iQovGJiPRUBmiz6fsihHEt7juRXQygaGwhuKCd7qkK9eBxmGBxJSAJ39DR1U2tUpRZEEyjabbs9yHl//3K9CxTOK21tPysrSzms5eaA2iTTKuckehCQkMR93BovZiFd/GSldX1uLuAImeOrvR4ThiYM06coA3YPtYtIcLWnJgtfQI0HzSB8LKbOVB3DTg6ELd8nyRU819S+MsIOeX/CNqc4/J6hiH+exum4Wm4qF/1/GobC9l9pD+bO3kOOG/DxqtYWlB3OCQk5yVVU4nZJ2vZ0piRhtX5Zn86ypXuAceS81SV2R9nFIsol5HE8p4M/u+HeCzgDzdKozczonRtQDvTtgGmrkjVpMH4dsO0FAfpTJMgk+zUtovE8kSYHHCwv7SrYun9w2Rq2ci2PCwlN0vMgmgPQvEsiVDKk58aoAaYgDz3G6uU3wxpBlujYFJgZiCwx1S6xN
+ +8jzSaJE
+ WpGtnlabWcS+5FwYNmnfzMj8LCjQmWeL344+1TkjDxNSii7bgRI4Jxtx0t3qwIUCiGp5OC5J6u29JZ9tYT6Ezvdo4sfUscUDkTJFrL9HZovR2OpBByTV1hiyUT7fs5E2CiQjcN2NvTykbonx5R72lUGlnP8A5zWr7qyieqY0yif/Kx69xz/emdJKWUjCqL3MnWN1Z85Bs0c3S7F+Ga0y4dQovdPIgiqDE8EgH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,24 +126,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 01, 2025 at 02:56:07PM -0300, Mauricio Faria de Oliveira wrote:
-> Currently, struct seq_file.private is used as an iterator in stack_list
-> by stack_start|next(), for stack_print().
-> 
-> Create a context struct for this, in order to add another field next.
-> 
-> No behavior change intended.
-> 
-> P.S.: page_owner_stack_open() is expanded with separate statements for
-> variable definition and return just in preparation for the next patch.
-> 
-> Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
- 
+Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+> On 09.10.25 09:14, Christophe Leroy wrote:
+>> Hi David,
+>>
+>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>        BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+>>>                __NR_HPAGEFLAGS);
+>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>        if (!hugepages_supported()) {
+>>>            if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
+>>>        }
+>>>        BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>        BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>        h = &hstates[hugetlb_max_hstate++];
+>>>        __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+>>>        h->order = order;
+> 
+> We end up registering hugetlb folios that are bigger than 
+> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that 
+> (and if we have to support that).
+> 
 
--- 
-Oscar Salvador
-SUSE Labs
+MAX_FOLIO_ORDER is defined as:
+
+#ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+#define MAX_FOLIO_ORDER		PUD_ORDER
+#else
+#define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
+#endif
+
+MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via 
+/sys/kernel/mm/hugepages/ but bigger pages can be created at boottime 
+with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+
+   hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+
+Gives:
+
+HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+
+
+Christophe
 
