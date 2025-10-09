@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1607CCD18A
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 21:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4659BCCD184
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 21:21:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DE248E00B1; Thu,  9 Oct 2025 17:20:55 -0400 (EDT)
+	id 758188E00B2; Thu,  9 Oct 2025 17:20:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 867B88E0002; Thu,  9 Oct 2025 17:20:55 -0400 (EDT)
+	id 730578E0002; Thu,  9 Oct 2025 17:20:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A4BE8E00B1; Thu,  9 Oct 2025 17:20:55 -0400 (EDT)
+	id 5AA828E00B2; Thu,  9 Oct 2025 17:20:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6403A8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:20:55 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3923046A1B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3050F8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 17:20:56 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD5E8BD1DD
 	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:20:55 +0000 (UTC)
-X-FDA: 83979845670.09.A1FDCA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9715C10000D
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:20:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F4s7+kv8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+X-FDA: 83979845670.12.653BF16
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 652A980010
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:20:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwwztoHQ;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760044853;
+	s=arc-20220608; t=1760044854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNU0Z1gXN555yaj/FCQFe78utr8NmTahzs6cVbvl5E0=;
-	b=vQQjARJ0hpL/JY1c2CmFSY8cPy7mtWKz2q7RYorI4cMTnW7bScZp64KFMXpvmvytN6Y7Kn
-	ItHgiV771IsfUnnYMYEpytdug7mV0nWMecRLvbGO0pjzjMYkeObN+rg47cEWArQfWdFblJ
-	RY3UlwAtU4xRd8ASXttIqO99n0go2CE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760044853; a=rsa-sha256;
-	cv=none;
-	b=OvbItV0nrbXk2LYCvSjYtyLikew/NL7pn24fBZNgXjJxaNLVifBQ6yrN9fFsxrhZuKcXAC
-	ZBVM62t+kz9Ky5tn8+06KCFFhMCnRDI+4NB2Rrks5fTD7T7sGMUVJXOJaW1OpBKetmpWFn
-	7gIcRgvp/f/wBc+YFbmjmCHHX4K4eQo=
+	bh=WmloNy9hmOA6N/9Pp4Wt7SLFwcCoUc3bRTsbzbgtvnQ=;
+	b=Nk+NLFSPu8ohSD/Za7Td+87PXN4iVvppc8A11fLFzsqWMggWhSOY99u5Zwwu/IEAHwjnpe
+	zNHJB55+IQvLtuA17q017aXZi8iOIdwBz3IYM5RjFvLhQVP8a1qNkchRKsk07r3/sH6NXA
+	Dyg7SmqoZMnewdvTt6TiaREsQrbOqCk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F4s7+kv8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwwztoHQ;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760044854; a=rsa-sha256;
+	cv=none;
+	b=ToFhM9Q7RDhbflxiggsZKnIu7kK9sC4d11IaaiZEsM/Rm+JtiBPPMhktZcy5paAW1+qdDd
+	5Mfl0etjWWAd4mYKxRVx4doSdm5oWBPNkhItKPPpcvntFeW+tl7b7T3AU4iSL9F0K4MuoN
+	O0cskrzCLMzktlq4K0ZwWLSiCyxAa88=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0E7040880;
-	Thu,  9 Oct 2025 21:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5466AC116B1;
-	Thu,  9 Oct 2025 21:20:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C195562420;
+	Thu,  9 Oct 2025 21:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678EAC116B1;
+	Thu,  9 Oct 2025 21:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760044852;
-	bh=lWuxWajqY0wRfIc7Y8gXn7A3jSIMXiwp/Agt3iLR4VI=;
+	s=k20201202; t=1760044853;
+	bh=HTdQH6mS8J+MYD3Rj6pztEN9kH+IjfPCcbROi0+eWaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4s7+kv8TSItrEO/33Tty5z6jdTawVF4XjHqmKPEv748eygzP5rt46knLZjDqjSNq
-	 9CjXV+5I0EkFy+mj/YSUJ1pMEdbw3hbijefv3pyYfmQ2lRT/mKomhuGb7keuaOLVnG
-	 gEZX/KgthWsRjb+91b3zKHQbCfi/3Z+rq1wwEmCZb2f/dMOjqwX8vDf8Lq7I1SbbBN
-	 nr3kHS+RcLRNnx95v/Uq15OAQrK34oPCVAAPCdsnFpRUvHo/M9KaLWDJa2i9skPz7H
-	 slvKE12ysSoF2MAoOeX3vv1bH4kFDtlw12H6lQkeoAUt6X4VN0ZPG5bXmSQfD0O83Y
-	 I7RyBduEJ9g2g==
+	b=cwwztoHQq0gOcUnJhit9e34YwWQL1uZxDEk3qMp3ncNP0zWYl+8aCxSBwwT/s171Y
+	 pN3DDPCQayfFcwVCLZc3jsdyFnVGQ1rLXDNPoTjBK/rquZ/pFLQw2UIuyTJnkhGfT+
+	 CvuTkinu3pEdQkgy2C+GSfZ1qJNmJnNsuzakgsM9c8wAm6uilNyWneV5KX5L2KnDqc
+	 W8w6P8XPeQPCVFRjwQ8IRe1bQR8n1nxzY0IJrd64qV3I3QWafo2bCYYrxA/2l1xjEX
+	 bzPdq7GL3XSozfrTBGW3QRrCJX96184b+EKytuCv5b8BmevNQxMlA4Vtnsafcm5f9D
+	 iCC9XZQOc5dgQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 04/10] mm/damon/sysfs-schemes: implement path file under quota goal directory
-Date: Thu,  9 Oct 2025 14:20:36 -0700
-Message-Id: <20251009212042.60084-5-sj@kernel.org>
+Subject: [RFC PATCH v2 05/10] mm/damon/sysfs-schemes: support DAMOS_QUOTA_NODE_MEMCG_USED_BP
+Date: Thu,  9 Oct 2025 14:20:37 -0700
+Message-Id: <20251009212042.60084-6-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251009212042.60084-1-sj@kernel.org>
 References: <20251009212042.60084-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 652A980010
+X-Stat-Signature: 161jypdqndnit4466fneru9d3imcm37i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9715C10000D
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 539mn9aeoqyt81u8p5xer9g1pnbcq5xs
-X-HE-Tag: 1760044853-415199
-X-HE-Meta: U2FsdGVkX1+eJrtaRIELBocEFMvI55BwtOBIkrJyjyIMEaUaY+Te0iLemBvQZuEDA7IPZ+Uk4AFA6KKkbc9uZQ4ggnRG2GBBPJHoiyTu5L8+0XL+dWYW2LtMvh9Dk871QEfm7FDyo8ifkrOAb89w55ZxmR1H7DEfUF12TFOf3AExSoElFISNUjaCoyaT6W26qjRcpl3ENvCX9CIyshujJVH9EkmF+5LjIpOAd0YndihqnuhF4nXrc3+ivRyLGPi/RQhsCTW5Lb7ePOr/ouDYbjr+eClgI4r2ugjHjDn5eG3NKY4tH4O+emUGTn2iAU7JqzSS8wi+BgkrJAmKBROJZLhIKfRX8iQeFFAJfdA+O3meg/XlffezbbXVI4k/SWCmZnxgwlBHW4NIUjvJZweIylLLJuCA1wGb8sRfyGmpV5ReOnSYn0380UfFjie90y1zxFCD+MqJ6uaZdr/hosRzc6kmctxiAA+QNfQ/LqMiYU5JKvCt90W6In6Bn4KQIZ3p6EoXICSAcRIvoqiH998qsD7CqH+khrP3ATkCxBUzuZ2feqH8zocIVl+L6Cq6H/tk9zfacsg2eSAwTnedAFCXHcVOQirniW/qtnF/gCRsDQvkKgLJLWd9tkybzcfHpSTLm/fGob1MQlJREKZTgqrmssI5Vd46sm6v1CXPzFt9m6AcytIr79ynF7oRH8y18k0G6h9TJuzzeDQKBC88Ci23cHQNX+KCfO83Ma3MZdYd1DAiSmGViSY2oQbMWw/1TTMtpZkLsbx9THtKs4oaJmpj/dO/G+DmrI+xVwVhztqXKWfpa/K57yrP9b1xRLHkTVOznXJo8xge+MXfQ6g5mNYhmg2EmW5y6ZcB/WLaQSoio6N5tfOzuuziODv4oqES4wdTx10BK7L7qCiODtCeoZM8RqHhuqIu3FewjkVf4vycA88rWqF6oSkz2WgZNVyjQ3hVMgCIOhdPdUl4AJdfCJg
- +ZojLGVu
- 06kuxhrF6ge2SeSZ5RwMibDIxlVrrunwklNA8a+5niecvfEwwY+TWS4trWEe6aGcKkyCvKGU97QSLILQLaRW0XxbY3WjfDTlMSRqPTDc4/6HDH16+y86OvhjrecyO3qhN0bS65f9v9f0jaiF9Y/yJxME7GlpQJwRrog+HD+6PKMchDZwcnWPc10pNBbpjFWR0kDG2CtsOcBOIa8VwWUPJRzWbDf0jbzEji0RgzVIo2HjrBS+H4HZHrR3yUwN+uz3DbdDKubCT+JYMOsA=
+X-HE-Tag: 1760044854-750443
+X-HE-Meta: U2FsdGVkX1+xeBwyS6xZdLkOepLK8WcaOtiEpjJZuliG+LSL5KH35O9XoApDbzf2Ew5G/+mYe5ZeA/0zOxX4LK4q36YD2cZwoAl4azUjZJU26eduwMKYWDKPkHJyDsuhwqtoYJhzeVywB5kU0liqS0EaHZRnWEWIz109oWlXahww1IddhsE3+Xw5wJraboMNxAoSoWIlzCpYZG3DYWw3SP2+ygj3CiKuw9rNTl3yr2Tha0H5xhPSGcS+hySPt/4l/SCrBi3tZifi6uvBND6jdyp9BCO6qCh6GlarF+gkriWRU5e5caXovhTQd3m2k6lzMOBdibLiX9LvG1ayDFs/v0wHC5UOOnR5lUzF0yduzlj45z9J0tMxDwY3ZDisSkbcDyjnNnXTCzaU/Q1h6eeGqJMtAyed9uFUKFrgdVG96JQQmLzDVW27y66H4tPoCMfDl89EPKLv69La2VIzO8SdRn/fEIZf84x4QE2b5r2goWEZavDrcXvz552Unpu4bf0i6QFTWV2J2i8rpA+BY30UosIF4NEKWUeowQQ3d0f9nk2e9Br9636WxhuPfIuHrWVC/EJFF0k3Y2/u8OscQmvYym7y/tR01BwZKCWtoUvqCeQuEiLKrryqWnr/18MS1QH5mfmbFceysjVgj9hh7nHqJyZY6jXJctf9SdKpXO1zGBSaicPG+ONi3YRSplr8+vscLXT6aVQJA5R4+pMPEfXaWKMIp7sNoGaAtouf6M1kvLmv43JxSDP96xK02S6FCAQokKO+C4jkVtU1E/2BmaUvJgRzouVVL81EsiLq70UmDj44JMWEFWGNV2qxJjjnZhaU8H27u6DIw0iwFQ8MAtCPRaBOBq9tOUo6VX+lOu5l4xY+2wSrXsirBVbYDOhsUNSGm6dULYnQI7Q3NFsbQcg3vwyCKncQr5jR5LadmFXOb0d21lPbOZloRPevaX+z94wN954nPZI9HQwDKogGHVK
+ S7tk13an
+ 00lI7jmMp3mAU5Z6nTR1Wdzs4OVUJS7HYkA3wVPLItMQVTrv5L9gFEjsWPoupazcfJ/D5S7vl5CSLABB0Hp/7LNJce31c8yswPyabzi9r9BPZ6ax8I7UrezBfz73qfhLG5EA+A2gk8dA+wd7V0E9Zz3bfIdSu04k0JtbZ0JzJdqrKmonCqw2uko8wW86eNa0ib8mVPzy4xaAP/r2rtcdAXCWVw6/kVBD3MFgSswR3f1MSZJn0TE3OW3m6+LfsGp8D1q1EH/S6wMWZ75pi2jTM1el6Ew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,84 +95,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a DAMOS sysfs file for specifying the cgroup of the interest for
-DAMOS_QUOTA_NODE_MEMCG_USED_BP.
+Add support of DAMOS_QUOTA_NODE_MEMCG_USED_BP.  For this, extend quota
+goal metric inputs for the new metric, and update DAMOS core layer
+request construction logic to set the target cgroup, which is specified
+by the user, via the 'path' file.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+ mm/damon/sysfs-schemes.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 6536f16006c9..2c440a2b80e6 100644
+index 2c440a2b80e6..c679e62fd4b9 100644
 --- a/mm/damon/sysfs-schemes.c
 +++ b/mm/damon/sysfs-schemes.c
-@@ -999,6 +999,7 @@ struct damos_sysfs_quota_goal {
- 	unsigned long target_value;
- 	unsigned long current_value;
- 	int nid;
-+	char *path;
+@@ -1030,6 +1030,10 @@ struct damos_sysfs_qgoal_metric_name damos_sysfs_qgoal_metric_names[] = {
+ 		.metric = DAMOS_QUOTA_NODE_MEM_FREE_BP,
+ 		.name = "node_mem_free_bp",
+ 	},
++	{
++		.metric = DAMOS_QUOTA_NODE_MEMCG_USED_BP,
++		.name = "node_memcg_used_bp",
++	},
  };
  
- static struct damos_sysfs_quota_goal *damos_sysfs_quota_goal_alloc(void)
-@@ -1128,10 +1129,39 @@ static ssize_t nid_store(struct kobject *kobj,
- 	return err ? err : count;
- }
- 
-+static ssize_t path_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damos_sysfs_quota_goal *goal = container_of(kobj,
-+			struct damos_sysfs_quota_goal, kobj);
-+
-+	return sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
-+}
-+
-+static ssize_t path_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
-+{
-+	struct damos_sysfs_quota_goal *goal = container_of(kobj,
-+			struct damos_sysfs_quota_goal, kobj);
-+	char *path = kmalloc_array(size_add(count, 1), sizeof(*path),
-+				   GFP_KERNEL);
-+
-+	if (!path)
-+		return -ENOMEM;
-+
-+	strscpy(path, buf, count + 1);
-+	kfree(goal->path);
-+	goal->path = path;
-+	return count;
-+}
-+
- static void damos_sysfs_quota_goal_release(struct kobject *kobj)
+ static ssize_t target_metric_show(struct kobject *kobj,
+@@ -2526,7 +2530,7 @@ static int damos_sysfs_add_quota_score(
+ 		struct damos_quota *quota)
  {
--	/* or, notify this release to the feed callback */
--	kfree(container_of(kobj, struct damos_sysfs_quota_goal, kobj));
-+	struct damos_sysfs_quota_goal *goal = container_of(kobj,
-+			struct damos_sysfs_quota_goal, kobj);
-+
-+	kfree(goal->path);
-+	kfree(goal);
- }
+ 	struct damos_quota_goal *goal;
+-	int i;
++	int i, err;
  
- static struct kobj_attribute damos_sysfs_quota_goal_target_metric_attr =
-@@ -1146,11 +1176,15 @@ static struct kobj_attribute damos_sysfs_quota_goal_current_value_attr =
- static struct kobj_attribute damos_sysfs_quota_goal_nid_attr =
- 		__ATTR_RW_MODE(nid, 0600);
- 
-+static struct kobj_attribute damos_sysfs_quota_goal_path_attr =
-+		__ATTR_RW_MODE(path, 0600);
-+
- static struct attribute *damos_sysfs_quota_goal_attrs[] = {
- 	&damos_sysfs_quota_goal_target_metric_attr.attr,
- 	&damos_sysfs_quota_goal_target_value_attr.attr,
- 	&damos_sysfs_quota_goal_current_value_attr.attr,
- 	&damos_sysfs_quota_goal_nid_attr.attr,
-+	&damos_sysfs_quota_goal_path_attr.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(damos_sysfs_quota_goal);
+ 	for (i = 0; i < sysfs_goals->nr; i++) {
+ 		struct damos_sysfs_quota_goal *sysfs_goal =
+@@ -2547,6 +2551,15 @@ static int damos_sysfs_add_quota_score(
+ 		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+ 			goal->nid = sysfs_goal->nid;
+ 			break;
++		case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
++			err = damon_sysfs_memcg_path_to_id(
++					sysfs_goal->path, &goal->memcg_id);
++			if (err) {
++				damos_destroy_quota_goal(goal);
++				return err;
++			}
++			goal->nid = sysfs_goal->nid;
++			break;
+ 		default:
+ 			break;
+ 		}
 -- 
 2.39.5
 
