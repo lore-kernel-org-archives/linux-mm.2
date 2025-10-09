@@ -4,121 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39F8CCD185
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 14:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4FCCCD185
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 14:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6A458E003F; Thu,  9 Oct 2025 10:41:58 -0400 (EDT)
+	id B218A8E0035; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41A08E001A; Thu,  9 Oct 2025 10:41:58 -0400 (EDT)
+	id AD11A8E001A; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57DF8E003F; Thu,  9 Oct 2025 10:41:58 -0400 (EDT)
+	id 9C0118E0035; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 93BC88E001A
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:41:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 170C95BCB5
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:41:58 +0000 (UTC)
-X-FDA: 83978840316.10.BA66600
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2F3BA18000B
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:41:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l9EzCAos;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 881BE8E001A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 10:44:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 54A005BD1A
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:44:10 +0000 (UTC)
+X-FDA: 83978845860.09.05D83AF
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 17B7F40005
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 14:44:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=4Sa3zM8D;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com;
+	spf=pass (imf04.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760020916;
+	s=arc-20220608; t=1760021048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i5fH3ttKU7y+blOL+SyOyeselah91xmMAP+YR9bbmUk=;
-	b=k4YpUhxmYmrM16lh3kDICp+h4V9gP8BCxXhtNR6qC2XQQ8yvMys/5h+XZbRulbmPqK0brI
-	hE/51SMKNvRtctPtIvpzqWerY6KABDPmhIi/Fc9CtLdXVT9UCqX9+hsWemLK8JSRMV5IDR
-	LRUZTLcgJNzdWRo0esi6wjXujG2y0Vc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760020916; a=rsa-sha256;
+	bh=ToT0NvhlqFGtmHqtaoOHWloSTlf7psIb/sdAF5TIfxc=;
+	b=eGFvXzn0jVARdZ3lJXIzqDoRpFAHoGD4KGyoQo5rWl6bf25n0A2Wr/YXzbPYksYkmTulYf
+	2woKBGWUtv0CUtMXJDUcuB1NLu4ueYDxYdqgSx8PZtloKqGK5mt+Yfb/9nFepX8Uf0qBOt
+	/gKr1uWr4CSE3XiBQjEiMmc/7QSzoUo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760021048; a=rsa-sha256;
 	cv=none;
-	b=Z9HP5cCQYbtvoMEhLi5YzFvq9usGe7+JNoPfF2dbvItDP2KlLM1LrfKh66VCnuxnocJFoZ
-	HYqNzN3W9qy1svbaJ+XUgnTDK+yQw27/vyH3d7cfoF1dlqYgoSTYkW/GrKWxxoFXmyTbO0
-	HE29UrGJes3URV2jokPSalXWHJL+UP4=
+	b=z0XtPyf7LKbZ2eVDPz/nyTMEbcf+gpvez2Y7o/LeXP/+iphuqGptXo7i9mr/0U78eOw3wF
+	jzrnOq1bfDsT3NlCfIgdmizMbzg4Z7owArbWLJsdssOgtHRgmM9krsFUmAlQGwd+heasK9
+	n6PKoy+vQSQTZWluGSr97jr4Dpj1iwA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=l9EzCAos;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-71d71bcac45so11372717b3.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 07:41:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760020915; x=1760625715; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i5fH3ttKU7y+blOL+SyOyeselah91xmMAP+YR9bbmUk=;
-        b=l9EzCAosCW0PAmXWjB0ljTsPl+r1RtGbDuL4LTpVQqQOnTFERRbLAYjeAGkkz2KJvC
-         DeRjEsgJpvkOuF3bk9XZBokJfIjnJmwmfSZXxPcibj7hywEdA3fAvVronpXEuGpkj4Bg
-         t2RVm9VorxVk9zfRZW+0i0iGe/BemsPZpty4nekBpwdbMK1Rysa546qOGuYmzBxnBTCP
-         qJVCbEN9UG4sGB9cBOoHM1WtEWzc2AbQNiW2zygpzSYp1eXRA+AZcIsgUOIS9SntV03p
-         xUg2V49EZYMOqz9ldPkA0VVTfo4x1bnwuFdcZyhxpSv+B2ul+bQZbfWo965iOP7a0Qfk
-         7BNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760020915; x=1760625715;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i5fH3ttKU7y+blOL+SyOyeselah91xmMAP+YR9bbmUk=;
-        b=ko+Ub73tyqyBWhOY5Hvs9rG2oTfbl9ByfK/wXL1E0mSIDMW210ldo+vKxLAbRwwIIz
-         SD4cyz2YRXrmeswB86QNjhfk5tI971XrCwW1jZaHtrAHSUG20aXGTJdrwvirfSwnCfkp
-         PvB90yG0MaZRnUEQWr7k0awR0CbQLioWkmzdxuA3BBHxn4zWlNdvFgnALIs9XjBMGqYw
-         ZPktj2QWlg96rdXhzs8k0nAsjMAlVIDkPWKDpGTGb6PF7PD3u4DEYjJ3F7rUp9C34sVx
-         JBQyyOamk8Fq1JfAnmG9Rt8MbSPn2jDmVvAfp00BOlIf7eN4c0LMASfD0zSttjUDrury
-         jsAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVto7bPSIcFku0e0Z1kIXIzm54kEhQwGIO3RJnKo/kF/uNv1atvNu8l595qXn/Dxq5Hm2O/YMcK6A==@kvack.org
-X-Gm-Message-State: AOJu0YwjL20thSpEuCtwhEmx9Gv7SuAL5wt4d5iBq7dSLkXpo/n6DgVo
-	t9+c6g+ZDpp7aEqQJgsJrRWC6y4NOpdwaHAIGTOfYXf+2nAUqhSWVIF8
-X-Gm-Gg: ASbGncubg1OjLjcjKUhhux5B53Vj012K9ORypFoaJVaXlIenHL4Ige2PQloKIS8eiVE
-	QseJd2800xz0HcvElyp56spP613njshxH3ituRj45eOYGnXoVzKNnqxGZHcne/HoDfeJSv2Ju58
-	xwIjBocSrMvYGQlTWPNN0ulFZLQfkCX/WA19/wjlQLgjHCBJqPLT73lsKbiCgg9MvU/87bJxAJm
-	pIjmchslMWP1iX+AqlFddN+ZpC8RawfT1S2WCTwTE1PLnxeXqie6+mea1y/RTBW/y2kVAcy3ePw
-	e5WvzMTbfCndZ4QR2tNLWB25bfLfAML6EV3dVIkB6LbfJsOMMyrUeiGeWgNc27i0Qfqy8r7RZLH
-	SYBfrD0SaOOmon/Q/GLm531YBM/5T16qSXOdeIOAbWsSgFCAvNWdFcghLWu0opShs7lPW2FqQIY
-	vP3Xbup75YDXF/NfJGfk3ZG0Md
-X-Google-Smtp-Source: AGHT+IGJSwqoQuFYtwut/GSunHlbpgz+UchKDD+A+mimo1XFZik/IcNM0hD34iJY6+QugyEnsKPPBw==
-X-Received: by 2002:a05:690e:428e:20b0:636:1844:119 with SMTP id 956f58d0204a3-63ccb82530bmr6320760d50.3.1760020915011;
-        Thu, 09 Oct 2025 07:41:55 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:44::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cd9516074sm922826d50.4.2025.10.09.07.41.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 07:41:54 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC] [PATCH] mm/page_alloc: pcp->batch tuning
-Date: Thu,  9 Oct 2025 07:41:51 -0700
-Message-ID: <20251009144152.909709-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <87ms60wzni.fsf@DESKTOP-5N7EMDA>
-References: 
+	imf04.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=4Sa3zM8D;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com;
+	spf=pass (imf04.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com
+DKIM-Signature: a=rsa-sha256; t=1760021046; x=1760625846; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=ToT0NvhlqFGtmHqtaoOHWloSTlf7psIb/sdAF5TIfxc=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=4Sa3zM8DcUS5rZ3SLc/w5A+CEPjq7es5HLlbIW2+08+b4NY32YTRJyokfqJFtHcRpGJ6HiIZYCZ16+lP9nsssmpXcE4ZS5JvB23bxUOFfZfAMujFDMIipf9jCXfpedIp3Z+FZQ/4AdsdVi8bwTbVFdKCt0yPZYbgvateGqvTEXs=
+Received: from [10.26.3.35] ([80.250.18.198])
+        by mail.sh.cz (14.1.0 build 17 ) with ASMTP (SSL) id 202510091644051992;
+        Thu, 09 Oct 2025 16:44:05 +0200
+Message-ID: <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+Date: Thu, 9 Oct 2025 16:44:04 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: steqsf4pni5abr4q9pf4g4gebya4fddo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ linux-mm@kvack.org, netdev@vger.kernel.org,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Matyas Hurtik <matyas.hurtik@cdn77.com>
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+ <87qzvdqkyh.fsf@linux.dev>
+Content-Language: en-US
+From: Daniel Sedlak <daniel.sedlak@cdn77.com>
+In-Reply-To: <87qzvdqkyh.fsf@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CTCH: RefID="str=0001.0A2D0305.68E7CA35.0040,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F3BA18000B
-X-HE-Tag: 1760020916-715127
-X-HE-Meta: U2FsdGVkX18w3QAL48bIVEpCy6pNoxSO8RunwCN1kiBPwP26d9JANBmISXJFi2AxVoh2lOtclRfyoLZDpk2fW7Lm89MKYBLvKQhoWk1+L4A/16cZbSLYWPDr1BZBi/JRD2ZrNXmM6oaO/YZd8qg3wpgp9RJOeFNkxqsMjov55LjIDwzLCdriZ+RYqjdAGBGtdOU6Y/wFFuNPGz0HKTYoPdN4bhJ+8A2wOx3AYl9cB9He1AKuuEiT//Gjf1KVIcWkqRlOwRMIUPt+5WpFCJML1QN3lfPHNY3E7BdgQf2zVR2AK2Qxn62nNYoHGn0d2GcqdNx2HSuwl64esJlBH1oW661mpemr8/D873zWap6xPLIEfA5zTBsNMhpG7tIzHQwOgsqRzg0g5GXINMrnr7Aw3hICDE/oqcFyDFiEE4mcIfZA01wnR5n2dutBRvoi/bcMC3iICe3TAy70xsalrRNR5Uu8qx9Rg/avWf+4nhZE4w6mMvfAAK8z0wBx+r+YqA7iNWPSoc/9pSrTcGKpx16Rb1PA8W2HUh91wdWGRh3SCig2iup9HUXMjZWl8VfiGyu/3akFM6VvakcfaEqy9+DPbhymGI4G/YrPnd90jprD6enHsqxvIBQyaf7I1sw/YHI7VDpYF8QooVVeCwaybRlFgc5RjF3S3f919x2D0VO30k/OumsvGbC1DZQVqUli9v5jrC7QICj9Hlo++/Vljpl7nfB4I28jnGXMNDdCkDC2D7HOYuHkmBkf1nQTgpsGnNEEo2A9unV3zlsrGj+QEXYOaVM+F9fmBh5sXdfkGTSg5vw5+rjO9LWLSpHjh1oWFi6rALOtTyWq08RsUeay+It549OYi6X9GZC1XCkbWYvFx1zm0wehgqIdvpzi8e6s8lchRyVMzT6WPdOzPvTvA26ydvNhnNd42EVViB5Dps6RE9bPIhulgvzq7+hORK/UduVwrjJCaRQJJ7/80mJObJM
- 9IAw8Bi4
- BIXQfl52MRIPQwRN1vI+jCbh/y4dRqI+7jEx17vlUVi4lJ5efVr2gTpIpr1JsPPkQ+IXsYsVGbydG4IljRFVo13ZsJVlwfUW6tGaHavAkE3dWCpiYVtzIMpA6/uoRMCFcU37ZiDpEYZVfrKC4T7LzFPCkd6Rthy6YQo+4uFnLzGh9fKCLnW8h5UHJzd0C0IGUzdwKTcEYcJHFyIgdZ7CGwI4Nshx5Ao7jNcqECyVjyM6m54bcn1se7ZL41iTxQxy5fmW/p7qz65uUdoLCcR3udcgUyCTYbpVkEI5ZAbDO09Vnb2tSa3rfIE1nPe8bl33Qj1p1xUubaK79TFx3ANMr7m+rs+zZhcJoO2kXUAzDGilTdDzYR/69of2MjKn3BQlCCSLfrjI6VOIEAxwJ2x+OXd3/L84S1qfcxKN4l3R1eLy+QL68tk/4I2uhqKJ13ObJOqRbckjRfUHsPN1T9jkJnLTE0VmL0jZ8/k8AYeJbVlTXYQtqh9O5A6BbRDpZwemoWW4ox5SSYHs57fhDV1XoPVzZMq0qwY73ZUWCJg78hsVWKS//mV1yi80jslbsxvLOfBy7aCYZzt0p+4aOvD2ShSbNxg==
+X-Rspamd-Queue-Id: 17B7F40005
+X-Rspamd-Server: rspam02
+X-Stat-Signature: n41p9d49dmkhc5i7nhgp7sa8d7e36dh9
+X-HE-Tag: 1760021047-100095
+X-HE-Meta: U2FsdGVkX1+3iKPwSMcy3Wdzkp+SEKs52FnrkC6H32CW6EtT5/Ww5MdVfKZFy4kFqCBb59OySE42egPwmrgM4LTuB+0vzPA8skAMFnnwn4whlMyqqpikNi2HnjUsaCHJNgEDDZ9H+wEnrd3HIvsqpCbp7+1dTs/l8BTCoA/RHmd5LBpM+p3Gw/RIa7Thm45ZpKyZUbSty+br4+CS0CLkF9jwqWwgOAl0jk3EESgHe5r8G1AxwwXvT/XAETnf6K97FsD7SIVkoJWl9qOkGUFM8TeSmz9Xl881G21uaF9MjlaCAOt2c6IpFaqYn/SWr8ptk1b1ay8m0YqnUdwTt5HtZuk+Jkri0okyGn6qvKT8eA0EpAnzsh6SbWhCQ15qMXzET6h/TBLWBO/D9F5Ixi0bHjvGhhI083/TsXGyoaz3S5f1cXPkW3h2u/oJNnfYSda0s6UHOCkZLJ7dLuXxPjIngiGOLMLrL53boKtAurYKKQc7FU8wPDkJZ7em7zAYxJG3ZyCp5+oyFxRiNm36wD63rpHGjW3q7r9gyaBOpyqKvnycCaBdqhVvXrD4JC9ZSHGeHhP5mXre+syzOYLIC96L2CCRnefyTUF91U5vh/6NuUQO8CArRwuxRQeuiZDU+1b28VHfR+8a73wiWUSmiFB6By4WCaozqLpkoFFFz2lebQoqZSVugz7AUoKvR0CVv/IQgIfl/Irt5LBIwpzN++qKpPxJIC12qr91tYMGaztAn18Jqhs8A4ZFfDzLVoLl7tVapvant2NVo/frsTBji+FTof8MiH88zsp46wXqv473dtrgoIvxl/yXIkFSkGdUdG1FKezmVcWQWn7LivcPGmCO2/7qtNjHXuJRRVkipovBt9Qj+GaGGNq5vwFrBCE9DPibFKtQ3f99/pEDj6jvgfxgnjNng307aJ/2ALvee7eLKNFDhZDzsixQEqZ3TNAz9ufAYGChr+FRSlg9m/dclIz
+ fpnWXzXX
+ 27zu0IX/VSPWEbYZ/Tz1iVUKJdc3dTfoTvGZyryEZ4KhXdLsdV6f8eRiYkyr3gW9rKH7wRlLr4XSEzvxpbTcaRPYJZYT3ZrPaJwiaH6p7aMJTuhA93hTttRJaeV2wcqrjIYfeBj4V0faTVSWgjgOca+HT85fp2M2f3CH7JNJy0CQ8VLD6F79Asy/OTGD37Aii4OAEWHdPBWK18faASIiznxN27igR0LzMiWo91yRchKosS+skMF6Q/ShIXvIU60CU/eBczkiG43pgTOY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,123 +96,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 09 Oct 2025 10:57:05 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
+Hi Roman,
 
-> Hi, Joshua,
+On 10/8/25 8:58 PM, Roman Gushchin wrote:
+>> This patch exposes a new file for each cgroup in sysfs which is a
+>> read-only single value file showing how many microseconds this cgroup
+>> contributed to throttling the throughput of network sockets. The file is
+>> accessible in the following path.
+>>
+>>    /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
 > 
-> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+> Hi Daniel!
 > 
-> > On Wed, 8 Oct 2025 08:34:21 -0700 Dave Hansen <dave.hansen@intel.com> wrote:
-> >
-> > Hello Dave, thank you for your feedback!
-> >
-> >> First of all, I do agree that the comment should go away or get fixed up.
-> >> 
-> >> But...
-> >> 
-> >> On 10/6/25 07:54, Joshua Hahn wrote:
-> >> > This leaves us with a /= 4 with no corresponding *= 4 anywhere, which
-> >> > leaves pcp->batch mistuned from the original intent when it was
-> >> > introduced. This is made worse by the fact that pcp lists are generally
-> >> > larger today than they were in 2013, meaning batch sizes should have
-> >> > increased, not decreased.
-> >> 
-> >> pcp->batch and pcp->high do very different things. pcp->high is a limit
-> >> on the amount of memory that can be tied up. pcp->batch balances
-> >> throughput with latency. I'm not sure I buy the idea that a higher
-> >> pcp->high means we should necessarily do larger batches.
-> >
-> > I agree with your observation that a higher pcp->high doesn't mean we should
-> > do larger batches. I think what I was trying to get at here was that if
-> > pcp lists are bigger, some other values might want to scale.
-> >
-> > For instance, in nr_pcp_free, pcp->batch is used to determine how many
-> > pages should be left in the pcplist (and the rest be freed). Should this
-> > value scale with a bigger pcp? (This is not a rhetorical question, I really
-> > do want to understand what the implications are here).
-> >
-> > Another thing that I would like to note is that pcp->high is actually at
-> > least in part a function of pcp->batch. In decay_pcp_high, we set
-> >
-> > pcp->high = max3(pcp->count - (batch << CONFIG_PCP_BATCH_SCALE_MAX), ...)
-> >
-> > So here, it seems like a higher batch value would actually lead to a much
-> > lower pcp->high instead. This actually seems actively harmful to the system.
+> How this value is going to be used? In other words, do you need an
+> exact number or something like memory.events::net_throttled would be
+> enough for your case?
 
-Hi Ying, thank you for your feedback, as always!
+Just incrementing a counter each time the vmpressure() happens IMO 
+provides bad semantics of what is actually happening, because it can 
+hide important details, mainly the _time_ for how long the network 
+traffic was slowed down.
 
-> Batch here is used to control the latency to free the pages from PCP to
-> buddy.  Larger batch will lead to larger latency, however it helps to
-> reduce the size of PCP more quickly when it becomes idle.  So, we need
-> to balance here.
+For example, when memory.events::net_throttled=1000, it can mean that 
+the network was slowed down for 1 second or 1000 seconds or something 
+between, and the memory.net.throttled_usec proposed by this patch 
+disambiguates it.
 
-Yes, this makes sense to me. I think one thing that I overlooked when I
-initially submitted this patch was that even though the pcp size may have
-grown in recent times, the tolerance for the latency associated with freeing
-it may have not.
+In addition, v1/v2 of this series started that way, then from v3 we 
+rewrote it to calculate the duration instead, which proved to be better 
+information for debugging, as it is easier to understand implications.
 
-> > So I'll do a take two of this patch and take your advice below and instead
-> > of getting rid of the /= 4, just fold it in (or add a better explanation)
-> > as to why we do this. Another candidate place to do this seems to be
-> > where we do the rounddown_pow_of_two.
-> >
-> >> So I dunno... f someone wanted to alter the initial batch size, they'd
-> >> ideally repeat some of Ying's experiments from: 52166607ecc9 ("mm:
-> >> restrict the pcp batch scale factor to avoid too long latency").
-> >
-> > I ran a few very naive and quick tests on kernel builds, and it seems like
-> > for larger machines (1TB memory, 316 processors), this leads to a very
-> > significant speedup in system time during a kernel compilation (~10%).
-> >
-> > But for smaller machines (250G memory, 176 processors) and (62G memory and 36
-> > processors), this leads to quite a regression (~5%).
-> >
-> > So maybe the answer is that this should actually be defined by the machine's
-> > size. In zone_batchsize, we set the value of the batch to: 
-> >
-> > min(zone_managed_pages(zone) >> 10, SZ_1M / PAGE_SIZE)
-> >
-> > But maybe it makes sense to let this value grow bigger for larger machines? If
-> > anything, I think that the experiment results above do show that batch size does
-> > have an impact on the performance, and the effect can either be positive or
-> > negative based on the machine's size. I can run some more experiments to 
-> > see if there's an opportunity to better tune pcp->batch.
-> 
-> In fact, we do have some mechanism to scale batch size dynamically
-> already, via pcp->alloc_factor and pcp->free_count.
-> 
-> You could further tune them.  Per my understanding, it should be a
-> balance between throughput and latency.
+Thanks!
+Daniel
 
-Sounds good with me! I can try to do some tuning to change alloc_factor
-and free_count, or see how they currently behave in the system to see if it
-is already providing a good balance of throughput and latency.
 
-> >> Better yet, just absorb the /=4 into the two existing batch assignments.
-> >> It will probably compile to exactly the same code and have no functional
-> >> changes and get rid of the comment.
-> >> 
-> >> Wouldn't this compile to the same thing?
-> >> 
-> >>         batch = zone->managed_pages / 4096;
-> >>         if (batch * PAGE_SIZE > 128 * 1024)
-> >>                 batch = (128 * 1024) / PAGE_SIZE;
-> >
-> > But for now, this seems good to me. I'll get rid of the confusing comment,
-> > and try to fold in the batch value and leave a new comment leaving this
-> > as an explanation. 
-> >
-> > Thank you for your thoughtful review, Dave. I hope you have a great day!
-> > Joshua
-> 
-> ---
-> Best Regards,
-> Huang, Ying
-
-Thank you, Ying. For now, I'll just submit a new version of this patch that
-doesn't drop the /= 4, but just fold it into the lines below so that there
-is no more confusion about the comment.
-
-I hope you have a great day!
-Joshua
 
