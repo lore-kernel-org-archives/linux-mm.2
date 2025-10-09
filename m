@@ -4,80 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1BF5CCA471
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 06:38:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F197CCA470
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 07:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA6E38E0008; Thu,  9 Oct 2025 02:38:36 -0400 (EDT)
+	id 866278E0010; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FD88E0002; Thu,  9 Oct 2025 02:38:36 -0400 (EDT)
+	id 8164F8E0002; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF8F58E0008; Thu,  9 Oct 2025 02:38:36 -0400 (EDT)
+	id 753708E0010; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A7E38E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 02:38:36 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 209D713C051
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:38:36 +0000 (UTC)
-X-FDA: 83977622232.22.9F799C8
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3ED1140005
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 06:38:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=a9d11YKi;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759991914; a=rsa-sha256;
-	cv=none;
-	b=F13iQB84Wg6Bx2GGIk2IhkgTwKLUC/0mpImjCeFR5C6apU3cMZLceWWofPx/UijmyMVvZs
-	RDahq8poeCa6ryHAAvZhigWhPSat2fIWY2xIwG9K6b2HaMbKwW32UH7sTRhWg52zVx2xJ3
-	l3LmoR8KSNrrqCYDSsFfUWikagYVhT8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=a9d11YKi;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 660E28E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 03:01:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07763160AB5
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:04 +0000 (UTC)
+X-FDA: 83977678848.08.7FBB71D
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8D0BD8001B
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 07:01:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Qs1pKDhn;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759991914;
+	s=arc-20220608; t=1759993262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A7uF0ypIDD4ce4JFBz4t/KnVpqhkIM1GtfoljNrd+fM=;
-	b=luPS/5OTff9NtyFstEEn3wBOfBQmORRZMpnkn8qZHUCrA9sU8GDTf7/At7k/8ooycHP9N9
-	998yzgmCwFJOo5ZFjt8yUwrXC2DOvAaHlC9BZ198bwR0U9IBC0V+OIeMKAZZS2y+fbaIt5
-	uOMm2qaKi6F7Ci98mt/KWVTwer8cvto=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1759991909; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=A7uF0ypIDD4ce4JFBz4t/KnVpqhkIM1GtfoljNrd+fM=;
-	b=a9d11YKiqRgbOM2CbBKQlQU38a2sjhXQpTvI3B0Cicu67A02ZqhhQlnc9Oy7IsZbkcuo5jmKmGeG/6O21izL+TK2E6zEfXq7E6uzA3xg7L9SMdCTPq0AVfjqxq+LVcYjQEUUPl/bBJDxqgcy6ndl7obWMl9+I1NhL+x6zDyVERg=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wpj7cTa_1759991908 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 09 Oct 2025 14:38:28 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Yadong Qi <yadong.qi@linux.alibaba.com>
-Cc: akpm@linux-foundation.org,  urezki@gmail.com,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: vmalloc: WARN_ON if mapping size is not
- PAGE_SIZE aligned
-In-Reply-To: <20251009061410.820-1-yadong.qi@linux.alibaba.com> (Yadong Qi's
-	message of "Thu, 9 Oct 2025 14:14:10 +0800")
-References: <20251009061410.820-1-yadong.qi@linux.alibaba.com>
-Date: Thu, 09 Oct 2025 14:38:27 +0800
-Message-ID: <87zfa0tw9o.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pIOoMBHNJqhZ5/ofJCwBqb0XpdSUUA4WlCEvJNRfdzA=;
+	b=mk2TK//0QucvtAzwVe/ObYSiARVoDBtxnYTwJ+i4KYvjaZlAEEXc23Q3DoCrIzPL+2cL/k
+	I9zRqAfaY92xYRt3AsCk8i2+zzlT/qi5wyaqlETuGdMD4msBk9gscYlCtnG3cU7jOwon+7
+	8Vt2+AsvQGRiuzQOl/r4UvgaxLy/hAI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Qs1pKDhn;
+	spf=pass (imf02.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759993262; a=rsa-sha256;
+	cv=none;
+	b=kMAfch4k9QZ7axnNv2Tl7G/gw1t5roCsjzI+z89SuHL87jqY09J272jl8ttWdEUFLTCeY5
+	tTJOAieCW4VvZqBlI/NiQbxUJghnB+rcuIfqQPC4MfptGt00GxXV7cw554c9QO0srtYmVc
+	ex2lC2ZCDrtrSAxvW2baJngFsjzBCYE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=pI
+	OoMBHNJqhZ5/ofJCwBqb0XpdSUUA4WlCEvJNRfdzA=; b=Qs1pKDhnSwbOU7TR/a
+	CObdNqoykid8FPCZuyLMJZnprncQxkN/Yw2poc0B/EBhtW37WAWbtJhwJypwcKzc
+	e7nch8ng5uTnHGOKR0JplYpoqeySfDFBt6pD/RMZzTJ1mG5oFHatIwxsr+o/HUw2
+	GVsIuDJkkhdqHeQ+enp7OQ9a0=
+Received: from XLL-9950X.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgAnV+CjXedocoQYBg--.7355S2;
+	Thu, 09 Oct 2025 15:00:52 +0800 (CST)
+From: Longlong Xia <xialonglong2025@163.com>
+To: linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com
+Cc: akpm@linux-foundation.org,
+	david@redhat.com,
+	wangkefeng.wang@huawei.com,
+	xu.xin16@zte.com.cn,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Longlong Xia <xialonglong@kylinos.cn>
+Subject: [PATCH RFC 0/1] mm/ksm: Add recovery mechanism for memory failures
+Date: Thu,  9 Oct 2025 15:00:44 +0800
+Message-ID: <20251009070045.2011920-1-xialonglong2025@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: ze6e79kgf1pnk6aktixysrgp413hcyac
-X-Rspamd-Queue-Id: 3ED1140005
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgAnV+CjXedocoQYBg--.7355S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr4DGw1kKr4kKF47uw1UGFg_yoWrJw17pF
+	W3Kan3KrW8Ka1fW3WSqw1xC3Wagas5Gr47Kwn7u3y0kr1Ygryvyr4kCr48JF47Gr48Jay5
+	J3ykXr9rCa15taUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jRyIUUUUUU=
+X-Originating-IP: [112.64.161.44]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbBcwXh+GjnU5rzZAAAs+
+X-Rspamd-Queue-Id: 8D0BD8001B
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1759991912-831681
-X-HE-Meta: U2FsdGVkX1/JsE01MXItzUOHief9sqHI/TeYsWi0Y2FDvqDa3K2dhqTPhGSpdavg/xmSYPfGRNmOgDvahGO24MqPhdVpcvrIUBQ/4R3cctLZculi6JBd/x6+W4Zdqo2gwSGWEolck9LXwgqZ7tgAixC2WF7FjXlG2VZwMx8GdbbmqQmyIG5oCDQN6oa2tFwWeJR0D6QoeZh583htebFKCrtk41WpLxJFa7c2u5driPzD8B+euB+YkIF8I7opVw+9sl5B1JKL60iTRbK67Jxv7h3oUNiEyCvUP20pnh4dVjQjscQxgWCyxDbLCp6hfyrpYxeHwsV9scLPSKWve1ytKexdD3vZzV2rcr2Xs5Ghwe+r79HHo+P3PwyNpkAUmnOyto7IU7VopVAghMRmaOmtZjFGlP3hn4xgvYObsAukuok2V6HN2G6veY4OaQy/2eC2YZjt1stqgCYh9v77dlFitY1DSlE6IurtnhJSY1wyw+E2MggJEzh+neKC3aNXpu4ZtQbmrceTF+xZEYHgs4EKBvrEhXW+0BHNgr+1m7NmjB7GF5ivl8+3SMmB/HWq6ud+5H6E104cLj0DWfsew0vuEJzR6PrN2SUcHTD6auQMpOw8NxpNIWLCj5lrbQfVVGZZq6cfarf4WN4hkbEQXtUnfbJxbuj81X3Ko43U4fHx5zVKLbQF0u0xGzBhdpEwLLySJz71FZsv1tTDjP3ShfnpXxVfu756Uox9h+KqaZxJ/qa3kcTJa5fI7cALumTQ7LYgVD9DqCZLZbm9DgaT5SQ+Bxb5cWV0D9eUkPLKcVLtpCtloYXUDeHW+jLMCi6vkbdstKmkFdp0YK4r33NpGHjMdg+kvxRqZIYyIGhD7wc2cUO3xLBVN0qxrw2Qq5NJxiCd14ObCj7jTrsgT0husOgYOE+ilgYcBvwwvrBLOrBMb35IzdB4ZlNyuli5watEy3PvGQodSsnHBnKB6ZXAloX
- eUIKJ3E6
- buLWfFIhMSeXb5xLuF81j+QaBMJKMuTY5UuqRz/+qblYRT+Oe9yRee4SMyWPqoPjS8VmZ2v9FLw0B1NXfwbAl9+iV3SBPmE69jRjwxVQD7H8gRw7uD85+enPkTAOd0K8yYilJOFOu1K/TafGYyGfKwyM6JyDyh5OqCq+yS1uvznxKY5vUPGoqjWom0RYy/5suwjNFmx3qf8oNMC+OhdFZirMdv+YzRHtTbpdNnlGAdC32B8RnT0YFs+XaAvwFUfLO0c+yBrXyVmGS51jxi6FCzpRS8T3lM1hx8I+rB2Z652T3Fz5LWwHC+UITczoaX1OWBLgEy5iDVTFkfFCOOJbQu7ms2gIX5MS+gldDMi+5Yu86TjSGMRVrch1NAA==
+X-Stat-Signature: si7hb1hhngt7i79seb41e5bqa7sq1req
+X-HE-Tag: 1759993261-308601
+X-HE-Meta: U2FsdGVkX18/BJmMOLbJP9gZged5Trd37Gct0/vK7v0wEkBDMBk6Uweuz46hgAvP67yLuW0UydQ2e2jKo3VrZvToS3QZAzOvlQryaPN1mSUvXPZNsYRN4A/EsFsHw3tSmIplQNOcHwlwR6eqjVl9EgixvwZRsHDRXEWsFNlYWaGUn6Oj0LlxAsQdTcdtvpDphh4IlLlT0S+TM5PDZBaybbGMB6EJKgh7MVNffOMUK1/k4maJGP8fdxcOMe+CJJTVkvhjzluW+1cImctk4LmoOF1i1pjgAeq9bFJZ76iXMOtyv9IRzykTzyxIZI4zYvP1QXjYHsikfwIAN8XF/vgQGTyLvn9Qsh0LOT6QYDLY5OuRKhpe2mvhcI3QxCP/c0qLRMRNnVem1QvXHmEN8JtwrXref/9+5Lp3X+LX22KAMIj1ahzGh9FWdIplUXNYbJ+REFeHhGsPMYyYrOJhaDF7gBgPdCnzVn2ystXv4oIXIN9zntVrYEfe8UY2r4x5KjFnnfx4DCyAwJAeNifbzidI28SjbCOz2d3e2vVsNvKxp+9oS4EUGQChRvm64OhqmNde7DRBRCsPD622X96LP8wnC+TV7x8VmNVgi1S2f7/q0HU2zz4VaS3GbW56n0oFa7oVa2/6unvejSsYYoTOrO4JrCPz97uFAUD9FkAz6odM+uCQAUWbOU/5tyv2aj1RO/pqTUL7HSuIRRT5Pal3K+iGYdcoMPHBM1dKl3/z/g8BArnJq38kIXrGmiSvILEgfxxhI0mIgkwAtORVZTTftRdo0dJZTCPKUom2GXKQx+EjHscNIM2NqvKcWZcvfQWmXtd8tF8tnyukp2goSHgaHcvrlPYdE9k+5VKLLeTgBBIExg7/FxF/B+1VnegzxxPMQRuo8JyEPSquv+aqDZx8Rv1vbnJProfSngbfG3YRT7yN67M8vDtJlSd319/0LmRkGjMt50Xk8tNc9igwG0rUxOv
+ aA95rVQr
+ uaeh9nu1+yhXBJshdayVm14DBuLQd7h7pSaji1ZdqhZ7d4DSzKwLv1dnmKKfNFtnQynVFrWQWnSqDCMBRzr4G+OHuApAwTjaxRddpuZ9lXms2SzPGWB7y9KONc8bm7qFhdE2+HipMeO7MBp4ng3+F/dgxePpwWoOKI2qRL7/wnaaDUkMKhQdZ7m42yMZLEuO04odYdnqXMeYVxwi3lSlbnUMJpoWGXbhUBxc4TbT8eJBGe4qeI7xJUMfBHjaew+R5AB7gb3I042TqBScdT3crYeAjxFn28V3L7WZK93k4q/g11vCsmYjLrtn1YpBctHCKFK9jBf4nP/5i9CkLQuOUZtOwbJ80/dGHu3QCjcXz6YrWE8ol2Ocl1CZh+k0fXCtJpLLOyiJHrU6vGSxXNdR7DAYkqf1XH4bf0XSmoD06gcuKPP2OIRkSi4JAzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,49 +96,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yadong Qi <yadong.qi@linux.alibaba.com> writes:
+From: Longlong Xia <xialonglong@kylinos.cn>
 
-> In mm/vmalloc.c, the function vmap_pte_range() assumes that the
-> mapping size is aligned to PAGE_SIZE. If this assumption is
-> violated, the loop will become infinite because the termination
-> condition (`addr != end`) will never be met. This can lead to
-> overwriting other VA ranges and/or random pages physically follow
-> the page table.
->
-> It's the caller's responsibility to ensure that the mapping size
-> is aligned to PAGE_SIZE. However, the memory corruption is hard
-> to root cause. To identify the programming error in the caller
-> easier, check whether the mapping size is PAGE_SIZE aligned with
-> WARN_ON().
->
-> Signed-off-by: Yadong Qi <yadong.qi@linux.alibaba.com>
-> Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-> ---
-> v1 -> v2:
->   * Use WARN_ON instead of BUG_ON
-> ---
->  mm/vmalloc.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 5edd536ba9d2..2cad593e4677 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -100,6 +100,9 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  	struct page *page;
->  	unsigned long size = PAGE_SIZE;
->  
-> +	if (WARN_ON(!PAGE_ALIGNED(end - addr)))
-> +		return -ENOMEM;
-> +
+When a hardware memory error occurs on a KSM page, the current
+behavior is to kill all processes mapping that page. This can
+be overly aggressive when KSM has multiple duplicate pages in
+a chain where other duplicates are still healthy.
 
-EINVAL?
+This patch introduces a recovery mechanism that attempts to migrate
+mappings from the failing page to another healthy duplicate within
+the same chain before resorting to killing processes.
 
->  	pfn = phys_addr >> PAGE_SHIFT;
->  	pte = pte_alloc_kernel_track(pmd, addr, mask);
->  	if (!pte)
+The recovery process works as follows:
+1. When a memory failure is detected on a KSM page, identify if the
+failing node is part of a chain (has duplicates) (maybe add dup_haed
+item to save head_node to struct stable_node?, saving searching
+the whole stable tree, or other way to find head_node)
+2. Search for another healthy duplicate page within the same chain
+3. For each process mapping the failing page:
+- Update the PTE to point to the healthy duplicate page ( maybe reuse
+replace_page?, or split repalce_page into smaller function and use the
+common part)
+- Migrate the rmap_item to the new stable node
+4. If all migrations succeed, remove the failing node from the chain
+5. Only kill processes if recovery is impossible or fails
 
----
-Best Regards,
-Huang, Ying
+The original idea came from Naoya Horiguchi.
+https://lore.kernel.org/all/20230331054243.GB1435482@hori.linux.bs1.fc.nec.co.jp/
+
+I test it with /sys/kernel/debug/hwpoison/corrupt-pfn in qemu-x86_64.
+here is my test steps and result:
+
+1. alloc 1024 page with same content and enable KSM to merge
+after merge (same phy_addr only print once)
+ a. virtual addr = 0x7e4c68a00000  phy_addr =0x10e802000
+ b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
+ c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000
+ d. virtual addr = 0x7e4c68d20000  phy_addr =0x10eb02000
+
+2. echo 0x10e802 > /sys/kernel/debug/hwpoison/corrupt-pfn
+ a. virtual addr = 0x7e4c68a00000  phy_addr =0x10eb02000
+ b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
+ c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000
+ d. virtual addr = 0x7e4c68d20000  phy_addr =0x10eb02000 (share with a)
+
+3.echo 0x10eb02 > /sys/kernel/debug/hwpoison/corrupt-pfn
+ a. virtual addr = 0x7e4c68a00000  phy_addr =0x10ea02000
+ b. virtual addr = 0x7e4c68b2c000  phy_addr =0x10e902000
+ c. virtual addr = 0x7e4c68c26000  phy_addr =0x10ea02000 (share with a)
+ d. virtual addr = 0x7e4c68c58000  phy_addr =0x10ea02000 (share with a)
+
+4.echo 0x10ea02 > /sys/kernel/debug/hwpoison/corrupt-pfn
+ a. virtual addr = 0x7e4c68a00000  phy_addr =0x10e902000
+ b. virtual addr = 0x7e4c68a32000  phy_addr =0x10e902000(share with a)
+ c. virtual addr = 0x7e4c68a64000  phy_addr =0x10e902000(share with a)
+ d. virtual addr = 0x7e4c68a96000  phy_addr =0x10e902000(share with a)
+
+5.echo 0x10e902 > /sys/kernel/debug/hwpoison/corrupt-pfn
+MCE: Killing ksm_test:531 due to hardware memory corruption fault at 7e4c68a00000
+
+kernel-log:
+Injecting memory failure at pfn 0x10e802
+Memory failure: 0x10e802: recovery action for dirty LRU page: Recovered
+Injecting memory failure at pfn 0x10eb02
+Memory failure: 0x10eb02: recovery action for dirty LRU page: Recovered
+Injecting memory failure at pfn 0x10ea02
+Memory failure: 0x10ea02: recovery action for dirty LRU page: Recovered
+Injecting memory failure at pfn 0x10e902
+Memory failure: 0x10e902: recovery action for dirty LRU page: Recovered
+MCE: Killing ksm_test:531 due to hardware memory corruption fault at 7e4c68a00000
+
+Thanks for review and comments!
+
+Longlong Xia (1):
+  mm/ksm: Add recovery mechanism for memory failures
+
+ mm/ksm.c | 183 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 183 insertions(+)
+
+-- 
+2.43.0
+
 
