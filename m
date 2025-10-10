@@ -4,122 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D66CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C8CCCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 792198E0022; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
+	id EF7BC8E0023; Fri, 10 Oct 2025 11:21:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 769F68E0003; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
+	id ECF178E0003; Fri, 10 Oct 2025 11:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A65C8E0022; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
+	id DBE348E0023; Fri, 10 Oct 2025 11:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B6408E0003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAA0E140382
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:14:04 +0000 (UTC)
-X-FDA: 83982550008.17.9CEEEE1
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 45B14100013
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:14:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=krGdNEuD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760109243; a=rsa-sha256;
-	cv=none;
-	b=hM/heke07tsPuQwgVSIcCeF6SIdrjgc9NR0wq6r+2E4kMFuB9T/9l+J2uhOwTrS8uR7BMQ
-	Y5d3qhMPmOZAWJ9FxEOp0Nfy8byTNPqa5NuBSFt8uYlhrAORz9xukjp0b7keKaUlPbqrDp
-	oYAAefrQ3eEyIrxWQG+5BrHta7ZhNpc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=krGdNEuD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760109243;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C4FBB8E0003
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:21:47 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77971160353
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:21:47 +0000 (UTC)
+X-FDA: 83982569454.09.9AF9381
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011032.outbound.protection.outlook.com [40.107.208.32])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 94A5D1C000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:21:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GMxAzb2e;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760109704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
-	b=0Wvd63ykFMot8WmbXvVRG2dyZlxzAWC8t0V10X1qgPS8wSoqnNXUv8wXWp6OwDbomFiuW8
-	ag3sxMbk+dtnxQWP7L1+An/8ybmJJ/biSu6SFBqzBysfFh9CaAVyr6DSnzOVqU12b6MQBp
-	WKUox4/Z4gtcILNLjD99RRzHN1ofp6o=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-74f6974175dso23104997b3.3
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:14:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760109242; x=1760714042; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
-        b=krGdNEuDiOuWWtwGa10t0Zdgps7VoQOgLLzYkeOitbq/uH8XpcgDtPdoEseJQAWHOh
-         H0fd4uLL2Ri3Yv/DpkALE15Mj+dJHaj1gPchpD7NfNSmYC2isfUyQfkPQ4FhNngLHOaO
-         RJ9nPW7TpmauSiqfAG9KE4bpbZGhbcVijO/KpdJHXDeZi+FrY/xDwhG9mQF3GfSX3qiG
-         qEtYOCxy33bjB48N4/06ii5jCqed7wfEzTzEmmK1ZNPyDQJI+bvFW62JlzleZ6py+/T0
-         WA1Lxs6W2vXg34EjOD/C1xCE2QfIf1UpEYd2AKMXHGCvYRtn7wg1cdZJEHsWP3GJbcIg
-         RlJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760109242; x=1760714042;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
-        b=srJ1DVB3/zRhii6VpE4gwMrnIjzmhyROM/mCetuaSJ9WB+ZFa8A4PLazrph6D63/O+
-         IjDFfdr1arCT9qbPxGZsMwfPdYM66aO0hq5yoBgQpE85mkNeWRzpPkrC2/4OyNe8aqtg
-         4GSy2K1CD466tfbks6iVDaqHraFwNn9kEseYuXtiZ86YnKHaIWIW4qLwFVCSTmlOYGrL
-         WXJ5xI7NG/FW/esbsrnWd/Mn1K2IDWJgTkOf8YO2/ub4Z+uQRpvBLRLUmN9mpv/uwYaz
-         QOkVorK0Oo666HGt3q9BH9iL6aBDkHMqJmA/eIp+AGQKiTm3vCWVJKoTCr4TCSwZmQPf
-         jHCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTTz0nfpqYhi/S4PmgLtysVg+Lp5nAHrATOlO+RVIqUWHZpg9MV5CHZw4Jc5Reb1/F6KrSKt4Nsg==@kvack.org
-X-Gm-Message-State: AOJu0YzxsfGF+RfMSuOBpCbcqN8Y/f+RyQVfSGB+lPauMVtRatBouc6r
-	lmpLzsNsHVjRmKmtrELBQCd/zl8+Di3mS17CeNeSddsl3oSRaNnK1upy
-X-Gm-Gg: ASbGncsACxgI4hFat3usAQuiZYx8Gq7fJlyVEyn4PbGg1BKxS8V29c9HEQ+xHLJw/CF
-	zShVrt3ObeLfmX+u0PpDOrSF3Q9am9yyS9c+cRKZkYLHDIU7WzSTvxyZQpZAiHfE2M0KTnq6g+4
-	bc6mOwery6DmhYrsppB4fiEcxqYhd20OSbmHLOALTnrlsGDJBQv2iA2m7GTc7QFlJhe6nhR9pQ9
-	aTmfuWbzDSZ8faxW9KFegdsXJRf0l1+/AVymzFOPOOQONWflS7DqiAr7Stc8MBtceEX1eEsXpsp
-	Caxd8zgms70mQ1sl+JlwFr1XP13q9/iw8d4lHx5gIytJ4TZCTrTPr7fAuF3XOFbS+ovnjQjobkv
-	nKrLQhewkE2GEmerrFUK9oFwXoWHHrAqF6H+puBI43bb3vxSsctygCj9Ned7CBuKklFa3CI8iJG
-	DdF1tZqOdJA6GkEsbbPA==
-X-Google-Smtp-Source: AGHT+IGl9qnBMei/PCnRuefDn/nGk1brpz0LjP5GS9OBntxd0TvfpQuY0J02WWnj0+QmTUzyq7Q1Zg==
-X-Received: by 2002:a05:690c:a083:10b0:781:64f:2b3e with SMTP id 00721157ae682-781064f390dmr37402917b3.64.1760109242149;
-        Fri, 10 Oct 2025 08:14:02 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:7::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-781071fa127sm6387437b3.37.2025.10.10.08.14.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 08:14:01 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
-Date: Fri, 10 Oct 2025 08:13:59 -0700
-Message-ID: <20251010151400.1925642-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <c48ae6d5-3a04-4c32-8084-33d2e10d8d2e@suse.cz>
-References: 
+	bh=YQl3bPZbAwkdYjKQRCUPCIXl4fn8COa/BRyYVijLDog=;
+	b=z2L4Q89YvWvn5IJrohP7M7y8FD7mxj0E1MIl9QVGzmsAsMI+b5ltEWNl/KfJaIxhWhbmZM
+	kRffuyDtVrxknhG+FcdUwAdOb4jwhedy4GVpcIX6YiL7RsrbimHTvcndOh3Koosa4ofpKn
+	36yKloYpBRlyb7JjINMFFMRk1g511Uw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760109704; a=rsa-sha256;
+	cv=pass;
+	b=AVAKngwFJWkfiuEk+YrnPQRi2C+V/k9bpb4+ankqYWfkgC5geV+xARv2Okn9CYihwdm/LW
+	8u44jg6i8sZ9mdE+952ri6xFFQwz5OaAg6gqYtOY9yqGkSV5SalqHjfVKlVWIolvDxWV/D
+	qvPzl5K9xvBsPZP2nOTMuTX/dYWO5OM=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GMxAzb2e;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JclX7SvnFhMK1UI8/MnGoCl0xzkmkDX3ThJhTH+eluX43/zHnYx86ebQ4AUNcNhBOoSwJr5MKTnALWVciAncAl03DFSu39BWfCSUqkd2smcEMnV4pzo0OiIH3QchxUquPxqCL9d+p3XzHryFaqe5vGzPoBKSngCOAF3eZgexBJpv+g662IOXG4vQt8rD2he6E3oWXhpfyknRloRoEauT5ECVjjLU/gMMDPB8qBbiBR3rvW6KlRN8GWjqIhqRqiY69ddwFfP69q5FxscJChZlE8pV+h3h7ypAZ9FH8sz/GheWWSWLmIivo4QOo5asUEs29LVTdn/lz+M5WfMJ1jHlUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YQl3bPZbAwkdYjKQRCUPCIXl4fn8COa/BRyYVijLDog=;
+ b=GsJpGVxgHTo0Zx+/IGBTCswO12GZ/8ISYjsjfEeRBB377IyJnO7W337aqx71lmzLaWvEMouSqT+iqecxVSF5Hm1FpsNSIgHb78mYGid5gzkzK79HTkNZ+uEERrmsRMCX7HrMuRPOihYYuwaa3n5mQobMXRMIrHSx9zS+5+J5N18zR39eef0bBG7kt0IoWxKpZUWqSbgtCOaf3Onic7IsNVpVujyJNOq/VaLsRfhttbddRgH6tvC4CKWFkvzjeDXw1Lo6kzFPnQFMrVqRe2oixpNeHOXZxVPN4WdoR14/jocFeMQaQ+5lQFjPeUpykHun9bDuvv1cELXSyJC5Q+BlOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YQl3bPZbAwkdYjKQRCUPCIXl4fn8COa/BRyYVijLDog=;
+ b=GMxAzb2etJYJRuEgJ0s1j5LeLv/Hy/0zW/vJthPHFZ7PS3doDK54FeKj1pYwNJ+WTxsBJC31sPckgIWqIs6NcRgSqZaIc2ba55gkkHd7bXzf6wxXXLXden6QybRW3WdQVNq1rYk+JAxppXxIEL9ZbM48tM/MIMz1J4WaXDahgSvAEnRFAuHts9u/QChYkyLcBB6eI8taSZcvJQpv/KwfxcnB35cLPQge7bOgxNmlX1mqkyvg3KsMweh60F8yiIQHKJiCgC4s3V7Uloj7WXb4vL/IDxUXPo1PCljno35vbdiLGENb0dJMyEofeA9QXOH91TTY221Ki8KbtO1u4x/lfQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS2PR12MB9687.namprd12.prod.outlook.com (2603:10b6:8:27b::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.10; Fri, 10 Oct 2025 15:21:40 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Fri, 10 Oct 2025
+ 15:21:40 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ dev.jain@arm.com, hughd@google.com, ioworker0@gmail.com,
+ kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mpenttil@redhat.com, npache@redhat.com, ryan.roberts@arm.com,
+ richard.weiyang@gmail.com
+Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+Date: Fri, 10 Oct 2025 11:21:37 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <3ABDAD81-A650-4C9A-BB4B-5515180F0743@nvidia.com>
+In-Reply-To: <20251008032657.72406-1-lance.yang@linux.dev>
+References: <20251008032657.72406-1-lance.yang@linux.dev>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN2PR14CA0007.namprd14.prod.outlook.com
+ (2603:10b6:208:23e::12) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS2PR12MB9687:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04ae5557-7a12-4a60-8cd7-08de0810b5f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+Sz2fvXaqM29LBafUiOEG141Mxn4Rj8OgKYnq6CTCvlWTrbw3EVJMPqHr8hO?=
+ =?us-ascii?Q?jz0UjTM6S87tn9/SfpJDOPraIOpp4v5WM6t2KDpT1fxBtBeTXtSmFp3BDvV7?=
+ =?us-ascii?Q?EVddpeWOtt6+9W1VlP4pvBw3k22PSxKQtVoerwb7gISyjvjNq4JEF1reaRSY?=
+ =?us-ascii?Q?sE3f5eDZzerT89FINbKNkvKeT3Rdi7rQOVNL9VVMxLC6j2jRdY76WU/9YeRZ?=
+ =?us-ascii?Q?bXtUcnBaLmLEmfJCIETQxsNwfOCValUJ8UIjB7D77GGpRsAZtdXNac1PfgPr?=
+ =?us-ascii?Q?Rj15n/rXIvCmf6UNjbviO5z6KWoP7+mQ02FONxPUazetFvlKkzYAxT5Rv/R2?=
+ =?us-ascii?Q?0VzGeA3MrDsroFGTXwCFav/GpEaNYl9+v2laPY8yDC2C4CyjcPvSZDREIlxd?=
+ =?us-ascii?Q?/bWZ85P2l99B1eVk2unHATxweo3vYkENiK0nIhV7eu1mC0D0SSdGXIoUsCBa?=
+ =?us-ascii?Q?XJyA6tpiLPXfINYI+syxKoEwIEEaTO69sb4mpJgNKOpHfLbtIMIDrB2PDZBt?=
+ =?us-ascii?Q?Chen56nmZDYgZXCpYE1ST2Fdv3Vpz50h+EY4PEGckMiC18XldN7ZwXDKetgh?=
+ =?us-ascii?Q?IKWPk68KB7c02V2YndASIn2gf4yHdnAK6k2sDlVDweBlF1D1/2sHfDR/06yh?=
+ =?us-ascii?Q?FjKckVt6HGOR61zJDlP+SA02AjL0w7MOyVwMUrCJ5XyFiUUwZH3dcrRNVxr1?=
+ =?us-ascii?Q?mOhqOIeGgX7VpNp5YVUdDvr9SfpwkRTXU63P1ZDbcrz5vDnF3WJJsYIpEnuv?=
+ =?us-ascii?Q?Z/bdwBYXDcgFmYzA3Yi4g9BiSqCYO/8O3qMBkOpC6nszprajQ5i7cxSoXWa7?=
+ =?us-ascii?Q?11aPdL2+CmkulpoIxLOTS0DCo2qKBs5lneAvWC1TVzZkIfKTtNdKhnwSsh+w?=
+ =?us-ascii?Q?eO/QCzAEzr5D/agA9ya7hsw90F+H3UWCJK+S8KmUxPnEDdF9+ZrexmDhgoEu?=
+ =?us-ascii?Q?NrrCbBu8voIXjuYS1F/GHUrPlsvhl+y0+SbccVDT4U2FCeXbLGa3WwfYfdDj?=
+ =?us-ascii?Q?q0yWWNEEMTGn2MKlDqi4j8p8rL8LLYxTYWtLmvk61tYUyUKyAYev9dTBm9n/?=
+ =?us-ascii?Q?jIGISsrtO13iujMEOlNdKTTh/8pKp+x8WNL5XWgL7mbrOdUFdTkkotpKlDRB?=
+ =?us-ascii?Q?nvuu3CGzo6FE3o6qWwm0VD4FV0zqPcVbDnvruxJ9A3NlB8pZkRS4hk+aDKlt?=
+ =?us-ascii?Q?j0FcoFtTeKUh1i7+dANY4DIqQlTw5mt1I+FfIZV6iC0EzjHfh9FTY5YS0DMa?=
+ =?us-ascii?Q?Qz7SNiidzI05Cc4iJpCccqJ6Set6Etpp/PtSWJvUYW8dT58lGctdquYXo1pP?=
+ =?us-ascii?Q?bKkwsdXjUDRWPT3656Fr/WgrDVwdNIZFwjZ+LplZr2NwuOzCvDKgt7+QDc46?=
+ =?us-ascii?Q?HXMrQWTdIJXzi5xwnTblWqW1T9UkTlu/WP/ajnXMJ124NoYyMYzY2ARvA5bJ?=
+ =?us-ascii?Q?Zkse3q1KjaKxqsgEuE1q+3t9dQH5u+NNo9/9XzLb2RlPjLLkTL143A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6FerM2nxvkoG7HS0getC2E31/kp5CckAHS7rS9AZj0RVNc2vLNhpH4PrkqrD?=
+ =?us-ascii?Q?twxs7bU1dTFvnGMKlAmVMKIH0Z4Dr6KxiXNBkTY5rK2yB4cybFlw6vXUk4xd?=
+ =?us-ascii?Q?I1gXUW+91QntV/VDtP0vTA1E0joxyLMNLqJibj5qr5EycWJSlr9vlwnExZY0?=
+ =?us-ascii?Q?uoW0TgjvNvNs1b51N2lP09d3M4v5d/QT/E2gJMHEWtHI1FDlqq1IdPAd/tLm?=
+ =?us-ascii?Q?lBR0neIT5Thfz+gkar27bf89SAqLXRXwE42awNrzrjHUkuD3LPhsxoC9s+Z6?=
+ =?us-ascii?Q?vtP0+/cp+Q945YLFdCildbQuBj3dmNOp4Ue6kTsHcoGf+gy0TKu8LBtm3B5e?=
+ =?us-ascii?Q?mffY/N0tLT6tSvvWf6sGTotGg9F2kREMJRHo5gfqjghRdsf2YT5gKAtQliZB?=
+ =?us-ascii?Q?ehO4V/+CROEtZ4Arvl0CDfAGZd2SWAEUihOcLs/6EAgc67hVf/dbhPho8lhE?=
+ =?us-ascii?Q?sMhGolSt4Mlb6KKNUMZvoB7943YhghAFRSvgbsHNOqsXi82HtyMf8cXJXGXB?=
+ =?us-ascii?Q?V1qazYMal5EKmy+FM4M+GE/jCNUSFtB2Zs/QLHb9+UB71rv2ITQZxliMd+KF?=
+ =?us-ascii?Q?gzIjPNZq9AHN1TV1usMSBaTvJHL0UPmqf4H5RVZyeC4fx7826NgoU0ba2nE0?=
+ =?us-ascii?Q?R7lcz0xe60Hegov25sLSqAgl+hq080Bx7c+XOuHwNx3d4TpWsy0SHlwfogCh?=
+ =?us-ascii?Q?SU8XkzubcSa0tX9Tti8tP561cL8kfq1u4/qMkQ8TlxzbodR9TKv9FWT4dAA7?=
+ =?us-ascii?Q?d7jKDQctoMsCcHxum7OicP+S5xY1gd+QD5Q22P1svno65Wu43pL3yXwqGgg9?=
+ =?us-ascii?Q?xrYPVl4s50J+qYsKNnVzoZ8595goAfJQS/PDphvPTp/nPA4egfcK3Av60CWb?=
+ =?us-ascii?Q?eORcxPQjQra6WAqLQYX66G/zWe9cQf2hwfjBikBi7JvN7ZueDsYJDbLk11Ao?=
+ =?us-ascii?Q?wXBp9JtKcAzyFQ0EdclEgHJY7tblQowOqpbl7zqF7xeQ51Av8OqlT3X46V7T?=
+ =?us-ascii?Q?iH/YTfDzON3NkzpJmsTXdVOLH1j8wVDzpV2EKAJXQaikRDVv+4O9O/ZdQPw6?=
+ =?us-ascii?Q?M+QdpUej+/LK/7OnymrY0ZLmqDVs2K7vo4fRwa/9uY8K/hxUCEdNDNBTOrhB?=
+ =?us-ascii?Q?8nnYJCgjw3fSX03MsncY/+euKhb7QA+P0rN3U5yGR1rQ9JE0Tesrqx0PUGSj?=
+ =?us-ascii?Q?Bgb5Lppt8XvQYw2gY6LvIPCBGpPtrNKjf7XTUYrZobzhmH9uJz/FxYk9mZd5?=
+ =?us-ascii?Q?nbsmVK3YK5jhuMLNctNB9dWjsR1ZrvG3MpNHgXTK/Mxb/w0b9fcbch/m6hBT?=
+ =?us-ascii?Q?2jOVIa2wOzJBuwfmzR0zCPJWSUKBU1JZ2UBGqGF0g/eCQg+ZqwNyuoCvCth4?=
+ =?us-ascii?Q?BkeLZgDyJ54YVB4XMgaRfbBR8+S2Vdt2VppsJ6IEGtwwMaA3K5+8yLrQPdxt?=
+ =?us-ascii?Q?qrfUxKalI3DdCGp2FMBEk4V40GLMSecgqcoJJyOF433l2QNFR00pAGIPF+cP?=
+ =?us-ascii?Q?I4T4OM5r1vaLp9rMNxyqAH5V1LlFSKXqBGFsf8l6mjzIiAG5XDLLjg3QYuYT?=
+ =?us-ascii?Q?MuIzqEpuHGk6gIWV7r4YgjkF0ZPp5ZMSNbIVvnT8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04ae5557-7a12-4a60-8cd7-08de0810b5f8
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 15:21:40.0376
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 08NDqRV+s3bxYhM+YWq2dcB2FELmwD4yy2ZFyk44Vkr2p57pk/3ef1qvtlj8ER4E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9687
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qkjoje6ieszp5kdxi7xor6ownu1yjkba
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 45B14100013
-X-Stat-Signature: sokbhobd83eeraqr737eqzcbg6b8kegs
-X-HE-Tag: 1760109243-2008
-X-HE-Meta: U2FsdGVkX1/rTr/29trdlfoVU+i7MhgBj4iNktxdUcvmoyq9NKB5pGa++BL2FrvPThsRJND29WA2n6UTge4sAEHm6MnjjrRwwwuJRWi7uoqpJpsemD1UXHu9XoNkyAdAGFT9dWoCwYifyAn1/GJY7oBOOpe/RYPyl+GASNXo2tfQWQPYMEwk9D1wfJsMwOUCpiDXYDI48dyskFh0+Vv01Xb4EhYdyBKHpYqvYyIj/ZyxCEhTo7/W2+fi8hU1lpTPJqo35WoPThJE80zejnVea7wW5zfq5RUeseJNRaTNymu4LR9aPfyI4G3n1qytY7ybbVXQ2xYlQ9+TTEOZ63mqV6vG1dqLZv+/k5ohoA1qVi/oKEvVCzftZVCvhWhSEj9Lut1ijzoHRZO7KtJNfImRXHHQNXGptwWPtEZk4iMdXTuKmsRTjEimB2kmb+Fg6T3Uilvsyp/CwvqrTuGRGSSEYMVqNCKoxkALO+JestaLut554yx1rjovpaOouf/c6NMd1XzY36i/vCgZqBNv4F+eZw+v/HsVOXzOxJyT98cJckla9BD1E24i66mIF/8xdA5pPmKfecE5ySAvtAnL+HPkkkxRspTtptR9N/SdZ721C6W4XDmfjlnAUMzlKss/VZfrkduTweKg35c0g0NZvjMURZwTBGqzHzi0HXElBniRX87Yuw0gUIqC7L9SpgwKIR2HjNIYihqnt1KlJUb9uYcYUSg5/ubhY84ffiFE2UyB4x7JvfzJ30PkzSBlQz79793JOYXqsN1+l/7T+a5UrAQTmyucbhtqdRVx5ilegi1TAuKKkjlKUtIL8rA5fR+ZhKO27oLJZfSM1Aap3GwyELstYKvsnLYOfly79kIUA+Iy1Nua/6PSJ/MNt/C0pZcS9rDd5gQm6kXPq0y1AoDmctZ/eziqPoXZFQW7Kd+PjodZClAIaJV4Cm3gYYCNfNvEkJZq9XTxFE/U0CRf6X2NInO
- XdrfyTyW
- SdJ8nuHpMyuwoxHYCKAQhiyqEk+2Wh6eH2Xjd1p1OzioRy1LhZHRb4ydjuDzDQ45+czCL+3HzwNZ5rOJRGlkD4f+ZaKG2+DueP1oIoTye43PVaUVNGwyQ6bk94MW2yT04gvr8JRoLDC+d3sCxKvN2rKGpiC+6Ipe7GKWn+qP0b45CIU2WwVi0fPY4Bg==
+X-Rspamd-Queue-Id: 94A5D1C000A
+X-HE-Tag: 1760109704-187494
+X-HE-Meta: U2FsdGVkX18rdnbH14qGZTz5HZNuEhdzBYSd9qx209buXPYmO5zvth+DSKggyMSNc7wkNqHxTSmaq/ITUJjpW9skvu3KXEjkDexBqIfu8VnIFdEjR+Vx0JNz99sDZ4UXSO/HcFqQQ02BL+qb0jykQWGHxfl1PAjaKmlFlWKWXKjAko4WTRIYCB5VerYGi/uZLKH74mqe8ee0cl+TXBABuiv3X6Jw7YwuY9spv8eSKjgSpM/i8u//m+10GfirLuHG0r783OV4nfof2/dgf+01iCzA2Br5KivqRJRWH+zQrhUZe3nDsGcvRnh56ZhTfS7ueN0PsauNfmFbOIqyJKE+nUhCZj503Xa+r/D4eqQUcHUgBvwsEBWIXPhmgSi2Vo9yvgvbVNw1Xme+tEyNPF3QiBd5ENbBq0Yx/bR2br8kfjb3yTJ1159gJD4EviACRZWRUuPU7jJD4EfZ/XxjT2R7tg+7et6CrQyVdm8/Uj9HuzPfEXAmBLZwtaF42pNinx4RYjsGIfjGVUmzH032wvvLEVznztMFkosJlay2IepYTS0BitxxZj3NPMW3iJrM3vMpQrCxz1C5fKwn0ubdBzhh0ias7skGBHQRjwx/MH/C9uVgYcnl14XZXL8CpIliKRN5uGZWFpEhDSeQI8KlNoDuqfKdy9VQC/gh0PL2T/eLnCU5qnSw0k7DPr2GdNeVB6Zx8SgKt5oc+tZ1BykO+FbjshbmjoPcTkZJt/ZU77/cFkI/8ppWqs/lPumfaPo3SDR6YCo89DCPIatEAuw+YBmC5bGSP6WYDbLbHAfKfFYDOACmoqM/yWUOcOopmXB4sT4UyX5NFTJDXf5JvYr403+ZaFqB78hkvcuUjVuiXmJfRAfHi+A/48w4Val3W6DxlT/fzWd3QDx7nhM/4dLNWU1N7/bvBMVt6Jk1+AI7PHjlBbT1IMlh4TqNjXcUNFK0r0eLbMZw7TfYxVXAZV+70mz
+ RIETggls
+ mEPZBbjtovWBqoSSbYFzvuI4OhCEWQxr6h7uDl5NMiDnTRft9laocJvfHKYjovjMuVWaGstlmexpXgw7nbUNh8HRaYhrZjoWFX7ppizAbs40F6fCvA+ZPcnQsEDNwFbOhpCUTy9l9QTxWn4pp8UGggRFhjEyqVTKW7j6v7Hwr5u6oKj7AVDop8mfBf0mFtHg+dU2xsFIa766XsPxjryHLkJUeVt7rfsl3ArIe/fc81uO7yL4U4VQGlcibfswF/oVgLhuhAamowINGQIBcqHY3+v2BDp1j33GY9yWxE4vMsG5q32DXjL4Y32vbqHCNLaEklNxLSuj6ONfc0cemm90pzq4QytA7euDBBrE4JIR9SCmUbus9XBAS046vikUR+Lk7HTFP51/8+rmaiGna41u55N/oV7F5KP1fudfMrHFTBZjB+g66M/oA4SDu5EqdvcutWeZ9dQ/S9oZMM85ZaYQEh8r1Y2gcHozubxHnyC2FyroCmtJ4mC7E/33XAf0moyxtEUetFz/LYeBax2nDFrgmpCSa4Hx7+Wm4Z+19uvYyyijVr8ifuP/N5fDBuBp2WNGJyezHJEdurU6E3gI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,149 +186,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Oct 2025 15:37:23 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
+On 7 Oct 2025, at 23:26, Lance Yang wrote:
 
-[...snip...]
+> From: Lance Yang <lance.yang@linux.dev>
+>
+> Currently, special non-swap entries (like PTE markers) are not caught
+> early in hpage_collapse_scan_pmd(), leading to failures deep in the
+> swap-in logic.
+>
+> A function that is called __collapse_huge_page_swapin() and documented
+> to "Bring missing pages in from swap" will handle other types as well.
+>
+> As analyzed by David[1], we could have ended up with the following
+> entry types right before do_swap_page():
+>
+>   (1) Migration entries. We would have waited.
+>       -> Maybe worth it to wait, maybe not. We suspect we don't stumble=
 
-> >  	high = nr_pcp_high(pcp, zone, batch, free_high);
-> >  	if (pcp->count < high)
-> > -		return;
-> > +		return true;
-> > +
-> > +	to_free = nr_pcp_free(pcp, batch, high, free_high);
-> > +	if (to_free == 0)
-> > +		return true;
-> >  
-> > -	free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
-> > -			   pcp, pindex);
-> > +free_batch:
-> > +	to_free_batched = min(to_free, batch);
-> > +	free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
-> >  	if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
+>          into that frequently such that we don't care. We could always
+>          unlock this separately later.
+>
+>   (2) Device-exclusive entries. We would have converted to non-exclusiv=
+e.
+>       -> See make_device_exclusive(), we cannot tolerate PMD entries an=
+d
+>          have to split them through FOLL_SPLIT_PMD. As popped up during=
 
-Hello Vlastimil, thank you for your review!
+>          a recent discussion, collapsing here is actually
+>          counter-productive, because the next conversion will PTE-map
+>          it again.
+>       -> Ok to not collapse.
+>
+>   (3) Device-private entries. We would have migrated to RAM.
+>       -> Device-private still does not support THPs, so collapsing righ=
+t
+>          now just means that the next device access would split the
+>          folio again.
+>       -> Ok to not collapse.
+>
+>   (4) HWPoison entries
+>       -> Cannot collapse
+>
+>   (5) Markers
+>       -> Cannot collapse
+>
+> First, this patch adds an early check for these non-swap entries. If
+> any one is found, the scan is aborted immediately with the
+> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+> work. While at it, convert pte_swp_uffd_wp_any() to pte_swp_uffd_wp()
+> since we are in the swap pte branch.
+>
+> Second, as Wei pointed out[3], we may have a chance to get a non-swap
+> entry, since we will drop and re-acquire the mmap lock before
+> __collapse_huge_page_swapin(). To handle this, we also add a
+> non_swap_entry() check there.
+>
+> Note that we can unlock later what we really need, and not account it
+> towards max_swap_ptes.
+>
+> [1] https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f=
+1e@redhat.com
+> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8=
+bd@lucifer.local
+> [3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@ma=
+ster
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
+> v2 -> v3:
+>  - Collect Acked-by from David - thanks!
+>  - Collect Reviewed-by from Wei and Dev - thanks!
+>  - Add a non_swap_entry() check in __collapse_huge_page_swapin() (per W=
+ei
+>    and David) - thanks!
+>  - Rework the changelog to incorporate David's detailed analysis of
+>    non-swap entry types - thanks!!!
+>  - https://lore.kernel.org/linux-mm/20251001032251.85888-1-lance.yang@l=
+inux.dev/
+>
+> v1 -> v2:
+>  - Skip all non-present entries except swap entries (per David) thanks!=
 
-> We could do this handling once after all batches. But maybe it's better to
-> act as soon as it becomes true, and checking once ber batch isn't measurably
-> slower, dunno.
+>  - https://lore.kernel.org/linux-mm/20250924100207.28332-1-lance.yang@l=
+inux.dev/
+>
+>  mm/khugepaged.c | 37 +++++++++++++++++++++++--------------
+>  1 file changed, 23 insertions(+), 14 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index abe54f0043c7..bec3e268dc76 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1020,6 +1020,11 @@ static int __collapse_huge_page_swapin(struct mm=
+_struct *mm,
+>  		if (!is_swap_pte(vmf.orig_pte))
+>  			continue;
+>
+> +		if (non_swap_entry(pte_to_swp_entry(vmf.orig_pte))) {
+> +			result =3D SCAN_PTE_NON_PRESENT;
+> +			goto out;
+> +		}
+> +
+>  		vmf.pte =3D pte;
+>  		vmf.ptl =3D ptl;
+>  		ret =3D do_swap_page(&vmf);
+> @@ -1281,7 +1286,23 @@ static int hpage_collapse_scan_pmd(struct mm_str=
+uct *mm,
+>  	for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR;
+>  	     _pte++, addr +=3D PAGE_SIZE) {
+>  		pte_t pteval =3D ptep_get(_pte);
+> -		if (is_swap_pte(pteval)) {
+> +		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> +			++none_or_zero;
+> +			if (!userfaultfd_armed(vma) &&
+> +			    (!cc->is_khugepaged ||
+> +			     none_or_zero <=3D khugepaged_max_ptes_none)) {
+> +				continue;
+> +			} else {
+> +				result =3D SCAN_EXCEED_NONE_PTE;
+> +				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> +				goto out_unmap;
+> +			}
+> +		} else if (!pte_present(pteval)) {
+> +			if (non_swap_entry(pte_to_swp_entry(pteval))) {
+> +				result =3D SCAN_PTE_NON_PRESENT;
+> +				goto out_unmap;
+> +			}
+> +
+>  			++unmapped;
+>  			if (!cc->is_khugepaged ||
+>  			    unmapped <=3D khugepaged_max_ptes_swap) {
+> @@ -1290,7 +1311,7 @@ static int hpage_collapse_scan_pmd(struct mm_stru=
+ct *mm,
+>  				 * enabled swap entries.  Please see
+>  				 * comment below for pte_uffd_wp().
+>  				 */
+> -				if (pte_swp_uffd_wp_any(pteval)) {
+> +				if (pte_swp_uffd_wp(pteval)) {
 
-My thinking was that if we are to release the pcp and zone lock and another
-task remotely inspects this pcp in the middle of the loop, I would want the
-ZONE_BELOW_HIGH bit to reflect the correct state of the pcp, as opposed to
-doing it once at the end.
+pte_swp_uffd_wp_any() returns true for both pte_swp_uffd_wp() and
+pte_marker_uffd_wp(). Why is it OK to just check pte_swp_uffd_wp() here?
 
-> >  	    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
-> >  			      ZONE_MOVABLE, 0)) {
-> > @@ -2887,6 +2901,35 @@ static void free_frozen_page_commit(struct zone *zone,
-> >  		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
-> >  			atomic_set(&pgdat->kswapd_failures, 0);
-> >  	}
-> > +	high = nr_pcp_high(pcp, zone, batch, free_high);
-> 
-> It's not clear why we recalculate this. Ah I see, the calculation involves a
-> ZONE_BELOW_HIGH check which we might have changed above. So as a result ths
-> patch isn't a straightforward "we free the same amount of pages but in
-> smaller batches" but something different (and I'm not immediately sure what
-> exactly).
+>  					result =3D SCAN_PTE_UFFD_WP;
+>  					goto out_unmap;
+>  				}
+> @@ -1301,18 +1322,6 @@ static int hpage_collapse_scan_pmd(struct mm_str=
+uct *mm,
+>  				goto out_unmap;
+>  			}
+>  		}
+> -		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+> -			++none_or_zero;
+> -			if (!userfaultfd_armed(vma) &&
+> -			    (!cc->is_khugepaged ||
+> -			     none_or_zero <=3D khugepaged_max_ptes_none)) {
+> -				continue;
+> -			} else {
+> -				result =3D SCAN_EXCEED_NONE_PTE;
+> -				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+> -				goto out_unmap;
+> -			}
+> -		}
+>  		if (pte_uffd_wp(pteval)) {
+>  			/*
+>  			 * Don't collapse the page if any of the small
+> -- =
 
-Yes! So nr_pcp_high will check if we are now below high, and see what the
-new high should be, and see if we need to free some more pages. My goal was
-to prevent having to call free_frozen_page_commit again in the future once
-we realize that there are still pages yet to be freed, and handle that case
-within this loop as if it was what we originally decided to free.
+> 2.49.0
 
-> I think it's an argument for doing the ZONE_BELOW_HIGH test above just once
-> in the end, and not recalculating "high" here. I'd just stick to the
-> "to_free" calculated uprofront and decreasing it by "to_free_batched" each
-> round.
 
-Yes, this makes sense to me. The last sentence in my paragraph above seems
-a little sneaky in doing more work than it originally was called to do, so
-I do agree that we should do the ZONE_BELOW_HIGH check once, and also
-calculate how many pages to free at once in the beginning.
-
-> We should maybe also check that pcp->count went to 0 and bail out so we
-> don't make useless iterations in rare cases when someone else drains the pcp
-> between our batches (free_pcppages_bulk() protects itself from passing too
-> high "count" so it would be just some wasted cpu otherwise, not a disaster).
-
-Hopefully the check below is enough to handle this race case. When it
-determines whether to iterate through in the loop again, we check that
-to_free > 0 && pcp->count >= high, so if someone else were to drain the
-drain the pcp->count, it would go under high (I don't think it's possible
-for high to become negative here) it would break this check and prevent
-another iteration. 
-
-> > +	to_free -= to_free_batched;
-> > +	if (pcp->count >= high) {
-> > +		pcp_spin_unlock(pcp);
-> > +		pcp_trylock_finish(*UP_flags);
-> > +
-> > +		pcp_trylock_prepare(*UP_flags);
-> > +		pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-> > +		if (!pcp) {
-> > +			pcp_trylock_finish(*UP_flags);
-> > +			return false;
-> > +		}
-> > +
-> > +		/*
-> > +		 * Check if this thread has been migrated to a different
-> > +		 * CPU. If that is the case, give up and indicate that
-> > +		 * the pcp is returned in an unlocked state.
-> > +		 */
-> > +		if (smp_processor_id() != cpu) {
-> 
-> We could have remembered the old pcp pointer and compare that instead of
-> doing smp_processor_id(), although that should also work.
-
-I think that would have also worked. To be completely honest, I wasn't
-sure if there was some pcp stuff inside that would change the pointer,
-so just went with using the CPU int instead. 
-
-> > +			pcp_spin_unlock(pcp);
-> > +			pcp_trylock_finish(*UP_flags);
-> > +			return false;
-> > +		}
-> > +	}
-> > +
-> > +	if (to_free > 0 && pcp->count >= high)
-
-           Check is here:  ^^^^^^^^^^^^^^^^^^
-
-> > +		goto free_batch;
-> > +
-> > +	return true;
-> >  }
-> >  
-> >  /*
-> > @@ -2934,7 +2977,9 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
-> >  	pcp_trylock_prepare(UP_flags);
-> >  	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-> >  	if (pcp) {
-> > -		free_frozen_page_commit(zone, pcp, page, migratetype, order, fpi_flags);
-> > +		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
-> > +						order, fpi_flags, &UP_flags))
-> > +			return;
-> >  		pcp_spin_unlock(pcp);
-> >  	} else {
-> >  		free_one_page(zone, page, pfn, order, fpi_flags);
-> > @@ -3034,8 +3079,11 @@ void free_unref_folios(struct folio_batch *folios)
-> >  			migratetype = MIGRATE_MOVABLE;
-> >  
-> >  		trace_mm_page_free_batched(&folio->page);
-> > -		free_frozen_page_commit(zone, pcp, &folio->page, migratetype,
-> > -					order, FPI_NONE);
-> > +		if (!free_frozen_page_commit(zone, pcp, &folio->page,
-> > +				migratetype, order, FPI_NONE, &UP_flags)) {
-> > +			pcp = NULL;
-> > +			locked_zone = NULL;
-> > +		}
-> >  	}
-> >  
-> >  	if (pcp) {
-
-Thank you again for your review, Vlastimil. I agree with all of your
-feedback, so I will make those changes (as well as the commit message
-change for patch 2/3) and submit a new version. I hope you have a great day!
-Joshua
+--
+Best Regards,
+Yan, Zi
 
