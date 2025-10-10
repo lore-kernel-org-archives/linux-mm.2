@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C623FCCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182E6CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:46:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D5538E0039; Fri, 10 Oct 2025 11:46:28 -0400 (EDT)
+	id 6A6AA8E003A; Fri, 10 Oct 2025 11:46:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 285908E002C; Fri, 10 Oct 2025 11:46:28 -0400 (EDT)
+	id 6563B8E002C; Fri, 10 Oct 2025 11:46:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14D848E0039; Fri, 10 Oct 2025 11:46:28 -0400 (EDT)
+	id 51E478E003A; Fri, 10 Oct 2025 11:46:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F29238E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:46:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98F5DB738D
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:27 +0000 (UTC)
-X-FDA: 83982631614.08.93603DE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BCAAE40016
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WKYBy68o;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111185; a=rsa-sha256;
-	cv=none;
-	b=vhMvrQ72xUj9aOX7l6TbKiCRK5stytdzWItOH91DBYqtWCwxt+3aoVPOqnTKEQsH4OU5+R
-	sMindTagt2035MWONICQZKQoFGxdcuRbL5Uj+Az69HcPcjc04rdGUO//GgZwkYdaI+4Hv3
-	ekz4qWIhNlYYlKzaX6zvaSCbAlgDcd0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WKYBy68o;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2D25D8E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:46:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E55C158927
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:36 +0000 (UTC)
+X-FDA: 83982631992.23.A177F37
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4E123100002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M4isaMR4;
+	spf=pass (imf14.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760111185;
+	s=arc-20220608; t=1760111195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UPZv8Yt3Z1GTk239rq3qhOft3L3qjra9j0XUjf/3DuQ=;
-	b=mOBgma6kDPzfFqHuPlxq/3PLZomTDoGhxvY/rEv9wM+4lBgIy/ypzzQ1P36Yq0EBIs1VhW
-	t/s0IAEbfolORx8XtNjhZD9kPatHou5oME4a5YoeQZ6xJ6ZVJVajKPLCS04fQ8zPREhkA9
-	L62VYwbT/aCjYg/l2H3zZVshP5QhrMQ=
+	bh=DmfQcjlYeeIizFh9KNcYaRTP3GIRysvYsOZwFKMgxYk=;
+	b=nBCU9IaidbLDFBKcy9BsRW3qlOLq4Y3DRva6BB8zjz0GwuQJdNKUMAxGpagX45FNN/I7zm
+	3R0qJf/yPUD60uPO58HEGnuCMUkBp/ffgSI6tG1FBGzWOW5dpNQKO+ME3K3g7h0v6WuhwP
+	uUAmX7deNPOw5aGk2frXnBMaYII4sMo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M4isaMR4;
+	spf=pass (imf14.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111195; a=rsa-sha256;
+	cv=none;
+	b=bcy8/gnS1KjyBgYQhvD/b9ht85ez+yubrv/lPCBEKah1JbLTRGgFN7gbYkyKijEi6IcbaZ
+	pxQZVPTnSA8n79FvtoP9h+5xMU+iy2IrFAo3m3wCK63PQ0f5dSnlv+lubKxkJKnr+0RJBN
+	815uU6oWHF5E1egGzblUV6C9tN01cQ8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760111185;
+	s=mimecast20190719; t=1760111194;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UPZv8Yt3Z1GTk239rq3qhOft3L3qjra9j0XUjf/3DuQ=;
-	b=WKYBy68ovda7W/DkGy9zT8wi8YaAc9MJIn9Dw/XnPiec8ycV8nG9CBgPVBi+XQvmpfke4H
-	6WB/c+/He/fQDHxNLq5w52QJhbkaoI+GqPu4x63UkqnJ/oWgoADLNYCYuQjzGx6qoLvfMI
-	7vZzQ7E5kr8vmKCSfjEVvW5kr8KD2oI=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=DmfQcjlYeeIizFh9KNcYaRTP3GIRysvYsOZwFKMgxYk=;
+	b=M4isaMR4ut14vEdwm0a+/PKWTIxJdr89jwtQVD4WIJZwUAzz4rUUKQjRk9y9nkThRUyU+W
+	mBKVawKtf+kmmTSmo6vadDt4W24E+ZIGiome9SK+Qt8SKYNOYSTCrXe1oGmPcrp7iGXIRz
+	8Q8RHjUHOxF6/fhzaFToPA8irdEocB8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-U0gzSy2MPKuacYOZX-I0xg-1; Fri,
- 10 Oct 2025 11:46:23 -0400
-X-MC-Unique: U0gzSy2MPKuacYOZX-I0xg-1
-X-Mimecast-MFC-AGG-ID: U0gzSy2MPKuacYOZX-I0xg_1760111174
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-rJr-IMpFPEaorCSwgGDLpA-1; Fri,
+ 10 Oct 2025 11:46:31 -0400
+X-MC-Unique: rJr-IMpFPEaorCSwgGDLpA-1
+X-Mimecast-MFC-AGG-ID: rJr-IMpFPEaorCSwgGDLpA_1760111187
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F120819560AF;
-	Fri, 10 Oct 2025 15:46:11 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF761180034A;
+	Fri, 10 Oct 2025 15:46:26 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.224.29])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7184B1800576;
-	Fri, 10 Oct 2025 15:45:57 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 655E0180035E;
+	Fri, 10 Oct 2025 15:46:12 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -84,8 +84,7 @@ To: linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -93,6 +92,7 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Frederic Weisbecker <frederic@kernel.org>,
@@ -122,22 +122,22 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>
-Subject: [PATCH v6 21/29] objtool: Add noinstr validation for static branches/calls
-Date: Fri, 10 Oct 2025 17:38:31 +0200
-Message-ID: <20251010153839.151763-22-vschneid@redhat.com>
+Subject: [PATCH v6 22/29] module: Add MOD_NOINSTR_TEXT mem_type
+Date: Fri, 10 Oct 2025 17:38:32 +0200
+Message-ID: <20251010153839.151763-23-vschneid@redhat.com>
 In-Reply-To: <20251010153839.151763-1-vschneid@redhat.com>
 References: <20251010153839.151763-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Stat-Signature: k6bwhzpd7mqcwh3scyjo84b63eftcy31
-X-Rspamd-Queue-Id: BCAAE40016
-X-Rspamd-Server: rspam06
+X-Stat-Signature: o7cyj1je6w4b5z1ex8j8wd7dzabrdpae
+X-Rspamd-Queue-Id: 4E123100002
 X-Rspam-User: 
-X-HE-Tag: 1760111185-763491
-X-HE-Meta: U2FsdGVkX19pBRxxA3vzQcpmOMrkU0ezNrvvdjvoYWuQm92sTNFqrLivT+8mJ7uWjIhsDbaz1qUJzSD2b+GLuoQjnMMX5f/CsCqlr8qB3O0FzYchndiv95AR/dd3h/ka9GzzvK/NgRfGcoJT26UbH/kAernim9OMhPJAy9g0eQgxAPNywyH2pt1XXhVRPcMN5b4btpO0O/2T1Dg1Ez9zJrQAxJIzR2GTcKbntsWH8kjFFozct1Dci/osTcoLa7cYgxLOmVtLEUFDH0M8ZHLP0m1x/rJq7LzEZMIaifr6oadam3I1zftuwUX5bvN4TiMQPvH7kcV2xKJv7tKXUffX7k9pDMIK/1r7zZihdlIzqxVsHtAtXOOHIlPiLF1Qg9iWarqofgG3v0RjuwK4jkYhzaZw1PqidjtY2J/W7S7YyQCYQ1is+QsTSt8XbE+IQW8XiljwDCUX1bWg7s1OrtOgYVyr6i35L6q5KM7Fpu9BY4pVBFLVUGdMmbfPKu+cArt6R/lGFfvWMMBlNMeeRuAVxPV+39EntrV6vd4g43fZmIB1+A0BSWGoNo+3UxDwZVLJBK2oIf/SIjNT08001QLxjUdbF8lJgBPmzwO9xnG8oy5Ti7bMNI0Ue9MNRNaVlH2DGtrqn5t9w9xHZbER26jGKjW0T/PBi+B3G4ybIC7e37W5mYwEqmHY0sNw9afmUuFr84uWdyOY1oEaMIfKWSlZm165GGakaaqNkHDgpD26n+AlnoyQSPILfHzhifktBIZLK2nKq/uk/e0/H8I2XY4nUEWIiNJBSy1Lw07bZ4W34X1W3zu4Q0ZNwjVsLYL6y+oFMDwzCMPZSuwzn534HUo1utAru9/NCueiHXhdWB5kxcPjZGRQ5aRYm2Ej6C5YMMe3ZD2dERcswNWO5/yYgxLUZRifgjfaIrNDZXgBMN7o3ArHo08kiGI+QqH3H9ROH1MtwUFuaHDEonuETTujSxS
- mab4fXdw
- xYJqFINNsbL5yvi9YmgHWVFX3uQIk7Zj1SByufsrBqAQpGwOC+aCFVStOj0yLCzBcIbW713AGf5BfQS4PLc+ogPK3BpGz5toZynUU0syDZPQdlBe38Clx3M8OCKdTLW+UIqz68CzfvgGlTSydBUyo8RQbArDzgqno8/Kddb4qSQIWjMhswp/pk4nduO1gViN5YRJs/oWFoWId4g/o2wZMwPVrUfwemTNnmo83Z17ZmOing877kEGr/VVhYspuckZry6Lu32NtXse2kinofWZ4VfLTrBCfg18qV2wxNSPFI9G/tE7FwA/+5jP17v+zmQJdaAZeFDpuXbfh16GWj4pMbJNKIozA5FxSjsQ/xNWr1Co4V7+NjbtosdL/YUIvBHqHEjdJ9/O47xt4xExc8Z7NQEUApeHv5W69eIZWpmUgvUjIT/tDJzvyS/Mkb9CYRfU1hHAA
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760111195-704939
+X-HE-Meta: U2FsdGVkX19mflLtgmb8ZtqpPjs9jXaSFERZllODdJjL4jEShruDyrJwoIH9BeYrWJloRlLfmGugWG2fRz3KBSInt5V9g6JRvX1W9Z+bgLGS+AwS63L5FIvbxUp4aATk97mwXJBNZHzBHebjjGcUzeqsAC4sn9Sy2lAaDN6pwZRT8PCMnOOJJRqjT2Le/m8tl5AU2BRLYg4tvWy9iMxpVvPJMowKut7OwMp3Mt2hB/UHpP7zX7Ms7amL4QSaynOp6S4iiFNjrVqTbjhqcp/nYitVHTW5CKxfIfDE4pnJQ/B4AMg8NzpU4ZROQL6cagEVhMDSoAIEnicGX0iy9akkMs9H5qqo+aBRXak9zlBQmR7yfH2xq71Exmighl2w6bd6GtOKfsK68DLm9+Tbsj6TJ7wQkXBu6BgehZR65KitdLGyTQgyU+Nb059ifqtDnk+TvfGN8XCol9TernnXtLHEhvsod+RoyzGs2EvUae6ovPDyVDuup9P+k4TeUIxn8i/4vvIp3bLl1DPnX6Xq4uC+03XLi79CPZEhBYTgyQov3vPSst0YdNAQc4Yqryzy/ueE4y/Q4WJnuPIGetRM0mTc3TpEX44ZNstxpiR+LilGbTEgVXQlyavVLxaBfgepN32NYJfm9awxNottCnIxzCiHEvdI2MEtIe6alGWsebVl5qeL/8ijbc9OLlrS0qJYhYiKehCYgPbc+U2UftFp4TOVcwDLSxRJftsfkv+OOBIvUKSgUy1knDAoGGiS5bxeU5/ZWzDaWYEbkBQdzAA+rCBaQaTyNq/4KANQxj8wWMZM+Nw8qx47IyLaXWypVLq+Wp/dWMA8OsKrvDKH2LecYgR3YJD2tGRdzaiiRp9oVj7spdQTPAe6dF4Qj54EoH4vw57m4dn4I0f4ReOt4RIdY/WKZ+q1mwbL50JPYxatvq+EIUCcmZ3cYNPWHo0WSlptT6PMU8kgfsxLSsXI9Y8OOr3
+ kYR1Zqwa
+ cRc/hOy1Sqg4dBgn9d4nXFE2iVXBLqiXwOrE71RYZssbkdT8ulh4D2ntnGrmzBB0t/g/6NISzK3q70x5WQ50aHTHe2drOGcDw1ridVYY2wjVZ3dNkrVsRi+aY7JnNZ72k6hXVERQr5ozXzkqZVOOoVcZMxCN7HfR2f+uLKXqKAL+BtlLKUuGyOFlgAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,402 +146,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+As pointed out by Sean [1], is_kernel_noinstr_text() will return false for
+an address contained within a module's .noinstr.text section. A later patch
+will require checking whether a text address is noinstr, and this can
+unfortunately be the case of modules - KVM is one such case.
 
-Warn about static branches/calls in noinstr regions, unless the
-corresponding key is RO-after-init or has been manually whitelisted with
-DEFINE_STATIC_KEY_*_NOINSTR(().
+A module's .noinstr.text section is already tracked as of commit
+  66e9b0717102 ("kprobes: Prevent probes in .noinstr.text section")
+for kprobe blacklisting purposes, but via an ad-hoc mechanism.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[Added NULL check for insn_call_dest() return value]
+Add a MOD_NOINSTR_TEXT mem_type, and reorganize __layout_sections() so that
+it maps all the sections in a single invocation.
+
+[1]: http://lore.kernel.org/r/Z4qQL89GZ_gk0vpu@google.com
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- include/linux/jump_label.h              | 17 +++--
- include/linux/objtool.h                 |  7 ++
- include/linux/static_call.h             |  3 +
- tools/objtool/Documentation/objtool.txt | 34 +++++++++
- tools/objtool/check.c                   | 92 ++++++++++++++++++++++---
- tools/objtool/include/objtool/check.h   |  1 +
- tools/objtool/include/objtool/elf.h     |  1 +
- tools/objtool/include/objtool/special.h |  1 +
- tools/objtool/special.c                 | 15 +++-
- 9 files changed, 155 insertions(+), 16 deletions(-)
+ include/linux/module.h |  6 ++--
+ kernel/kprobes.c       |  8 ++---
+ kernel/module/main.c   | 76 ++++++++++++++++++++++++++++++++----------
+ 3 files changed, 66 insertions(+), 24 deletions(-)
 
-diff --git a/include/linux/jump_label.h b/include/linux/jump_label.h
-index c4f6240ff4d95..0ea203ebbc493 100644
---- a/include/linux/jump_label.h
-+++ b/include/linux/jump_label.h
-@@ -76,6 +76,7 @@
- #include <linux/types.h>
- #include <linux/compiler.h>
- #include <linux/cleanup.h>
-+#include <linux/objtool.h>
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 3319a5269d286..825e2a072184a 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -314,6 +314,7 @@ struct mod_tree_node {
  
- extern bool static_key_initialized;
+ enum mod_mem_type {
+ 	MOD_TEXT = 0,
++	MOD_NOINSTR_TEXT,
+ 	MOD_DATA,
+ 	MOD_RODATA,
+ 	MOD_RO_AFTER_INIT,
+@@ -484,8 +485,6 @@ struct module {
+ 	void __percpu *percpu;
+ 	unsigned int percpu_size;
+ #endif
+-	void *noinstr_text_start;
+-	unsigned int noinstr_text_size;
  
-@@ -376,8 +377,9 @@ struct static_key_false {
- #define DEFINE_STATIC_KEY_TRUE(name)	\
- 	struct static_key_true name = STATIC_KEY_TRUE_INIT
- 
--#define DEFINE_STATIC_KEY_TRUE_RO(name)	\
--	struct static_key_true name __ro_after_init = STATIC_KEY_TRUE_INIT
-+#define DEFINE_STATIC_KEY_TRUE_RO(name)						\
-+	struct static_key_true name __ro_after_init = STATIC_KEY_TRUE_INIT;	\
-+	ANNOTATE_NOINSTR_ALLOWED(name)
- 
- #define DECLARE_STATIC_KEY_TRUE(name)	\
- 	extern struct static_key_true name
-@@ -385,8 +387,9 @@ struct static_key_false {
- #define DEFINE_STATIC_KEY_FALSE(name)	\
- 	struct static_key_false name = STATIC_KEY_FALSE_INIT
- 
--#define DEFINE_STATIC_KEY_FALSE_RO(name)	\
--	struct static_key_false name __ro_after_init = STATIC_KEY_FALSE_INIT
-+#define DEFINE_STATIC_KEY_FALSE_RO(name)					\
-+	struct static_key_false name __ro_after_init = STATIC_KEY_FALSE_INIT;	\
-+	ANNOTATE_NOINSTR_ALLOWED(name)
- 
- /*
-  * The _NOINSTR variants are used to tell objtool the static key is allowed to
-@@ -400,10 +403,12 @@ struct static_key_false {
-  * definition with the rationale.
-  */
- #define DEFINE_STATIC_KEY_TRUE_NOINSTR(name)					\
--	DEFINE_STATIC_KEY_TRUE(name)
-+	DEFINE_STATIC_KEY_TRUE(name);						\
-+	ANNOTATE_NOINSTR_ALLOWED(name)
- 
- #define DEFINE_STATIC_KEY_FALSE_NOINSTR(name)					\
--	DEFINE_STATIC_KEY_FALSE(name)
-+	DEFINE_STATIC_KEY_FALSE(name);						\
-+	ANNOTATE_NOINSTR_ALLOWED(name)
- 
- #define DECLARE_STATIC_KEY_FALSE(name)	\
- 	extern struct static_key_false name
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 366ad004d794b..2d3661de4cf95 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -34,6 +34,12 @@
- 	static void __used __section(".discard.func_stack_frame_non_standard") \
- 		*__func_stack_frame_non_standard_##func = func
- 
-+#define __ANNOTATE_NOINSTR_ALLOWED(key) \
-+	static void __used __section(".discard.noinstr_allowed") \
-+		*__annotate_noinstr_allowed_##key = &key
-+
-+#define ANNOTATE_NOINSTR_ALLOWED(key) __ANNOTATE_NOINSTR_ALLOWED(key)
-+
- /*
-  * STACK_FRAME_NON_STANDARD_FP() is a frame-pointer-specific function ignore
-  * for the case where a function is intentionally missing frame pointer setup,
-@@ -130,6 +136,7 @@
- #define STACK_FRAME_NON_STANDARD_FP(func)
- #define __ASM_ANNOTATE(label, type) ""
- #define ASM_ANNOTATE(type)
-+#define ANNOTATE_NOINSTR_ALLOWED(key)
- #else
- .macro UNWIND_HINT type:req sp_reg=0 sp_offset=0 signal=0
- .endm
-diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-index ea6ca57e2a829..0d4b16d348501 100644
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -133,6 +133,7 @@
- 
- #include <linux/types.h>
- #include <linux/cpu.h>
-+#include <linux/objtool.h>
- #include <linux/static_call_types.h>
- 
- #ifdef CONFIG_HAVE_STATIC_CALL
-@@ -198,6 +199,7 @@ extern long __static_call_return0(void);
- 		.func = _func,						\
- 		.type = 1,						\
- 	};								\
-+	ANNOTATE_NOINSTR_ALLOWED(STATIC_CALL_TRAMP(name));		\
- 	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func)
- 
- #define DEFINE_STATIC_CALL_NULL(name, _func)				\
-@@ -214,6 +216,7 @@ extern long __static_call_return0(void);
- 		.func = NULL,						\
- 		.type = 1,						\
- 	};								\
-+	ANNOTATE_NOINSTR_ALLOWED(STATIC_CALL_TRAMP(name));		\
- 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
- 
- #define DEFINE_STATIC_CALL_RET0(name, _func)				\
-diff --git a/tools/objtool/Documentation/objtool.txt b/tools/objtool/Documentation/objtool.txt
-index 9e97fc25b2d8a..991e085e10d95 100644
---- a/tools/objtool/Documentation/objtool.txt
-+++ b/tools/objtool/Documentation/objtool.txt
-@@ -456,6 +456,40 @@ the objtool maintainers.
-     these special names and does not use module_init() / module_exit()
-     macros to create them.
- 
-+13. file.o: warning: func()+0x2a: key: non-RO static key usage in noinstr code
-+    file.o: warning: func()+0x2a: key: non-RO static call usage in noinstr code
-+
-+  This means that noinstr function func() uses a static key or
-+  static call named 'key' which can be modified at runtime.  This is
-+  discouraged because it prevents code patching IPIs from being
-+  deferred.
-+
-+  You have the following options:
-+
-+  1) Check whether the static key/call in question is only modified
-+     during init.  If so, define it as read-only-after-init with
-+     DEFINE_STATIC_KEY_*_RO() or DEFINE_STATIC_CALL_RO().
-+
-+  2) Avoid the runtime patching.  For static keys this can be done by
-+     using static_key_enabled() or by getting rid of the static key
-+     altogether if performance is not a concern.
-+
-+     For static calls, something like the following could be done:
-+
-+       target = static_call_query(foo);
-+       if (target == func1)
-+	       func1();
-+	else if (target == func2)
-+		func2();
-+	...
-+
-+  3) Silence the warning by defining the static key/call with
-+     DEFINE_STATIC_*_NOINSTR().  This decision should not
-+     be taken lightly as it may result in code patching IPIs getting
-+     sent to isolated NOHZ_FULL CPUs running in pure userspace.  A
-+     comment should be added above the definition explaining the
-+     rationale for the decision.
-+
- 
- If the error doesn't seem to make sense, it could be a bug in objtool.
- Feel free to ask objtool maintainers for help.
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index fa9e64a38b2b6..b749f13251a6f 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -981,6 +981,45 @@ static int create_direct_call_sections(struct objtool_file *file)
- 	return 0;
+ #ifdef CONFIG_TRACEPOINTS
+ 	unsigned int num_tracepoints;
+@@ -614,12 +613,13 @@ static inline bool module_is_coming(struct module *mod)
+         return mod->state == MODULE_STATE_COMING;
  }
  
-+static int read_noinstr_allowed(struct objtool_file *file)
-+{
-+	struct section *rsec;
-+	struct symbol *sym;
-+	struct reloc *reloc;
-+
-+	rsec = find_section_by_name(file->elf, ".rela.discard.noinstr_allowed");
-+	if (!rsec)
-+		return 0;
-+
-+	for_each_reloc(rsec, reloc) {
-+		switch (reloc->sym->type) {
-+		case STT_OBJECT:
-+		case STT_FUNC:
-+			sym = reloc->sym;
-+			break;
-+
-+		case STT_SECTION:
-+			sym = find_symbol_by_offset(reloc->sym->sec,
-+						    reloc_addend(reloc));
-+			if (!sym) {
-+				WARN_FUNC(reloc->sym->sec, reloc_addend(reloc),
-+					  "can't find static key/call symbol");
-+				return -1;
-+			}
-+			break;
-+
-+		default:
-+			WARN("unexpected relocation symbol type in %s: %d",
-+			     rsec->name, reloc->sym->type);
-+			return -1;
-+		}
-+
-+		sym->noinstr_allowed = 1;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * Warnings shouldn't be reported for ignored functions.
-  */
-@@ -1867,6 +1906,8 @@ static int handle_jump_alt(struct objtool_file *file,
- 		return -1;
+-struct module *__module_text_address(unsigned long addr);
+ struct module *__module_address(unsigned long addr);
++struct module *__module_text_address(unsigned long addr);
+ bool is_module_address(unsigned long addr);
+ bool __is_module_percpu_address(unsigned long addr, unsigned long *can_addr);
+ bool is_module_percpu_address(unsigned long addr);
+ bool is_module_text_address(unsigned long addr);
++bool is_module_noinstr_text_address(unsigned long addr);
+ 
+ static inline bool within_module_mem_type(unsigned long addr,
+ 					  const struct module *mod,
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index ab8f9fc1f0d17..d60560dddec56 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -2551,9 +2551,9 @@ static void add_module_kprobe_blacklist(struct module *mod)
+ 		kprobe_add_area_blacklist(start, end);
  	}
  
-+	orig_insn->key = special_alt->key;
-+
- 	if (opts.hack_jump_label && special_alt->key_addend & 2) {
- 		struct reloc *reloc = insn_reloc(file, orig_insn);
+-	start = (unsigned long)mod->noinstr_text_start;
++	start = (unsigned long)mod->mem[MOD_NOINSTR_TEXT].base;
+ 	if (start) {
+-		end = start + mod->noinstr_text_size;
++		end = start + mod->mem[MOD_NOINSTR_TEXT].size;
+ 		kprobe_add_area_blacklist(start, end);
+ 	}
+ }
+@@ -2574,9 +2574,9 @@ static void remove_module_kprobe_blacklist(struct module *mod)
+ 		kprobe_remove_area_blacklist(start, end);
+ 	}
  
-@@ -2600,6 +2641,10 @@ static int decode_sections(struct objtool_file *file)
- 	if (ret)
- 		return ret;
- 
-+	ret = read_noinstr_allowed(file);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
+-	start = (unsigned long)mod->noinstr_text_start;
++	start = (unsigned long)mod->mem[MOD_NOINSTR_TEXT].base;
+ 	if (start) {
+-		end = start + mod->noinstr_text_size;
++		end = start + mod->mem[MOD_NOINSTR_TEXT].size;
+ 		kprobe_remove_area_blacklist(start, end);
+ 	}
+ }
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index c66b261849362..1f5bfdbb956a7 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1653,7 +1653,17 @@ bool module_init_layout_section(const char *sname)
+ 	return module_init_section(sname);
  }
  
-@@ -3369,9 +3414,9 @@ static bool pv_call_dest(struct objtool_file *file, struct instruction *insn)
- 	return file->pv_ops[idx].clean;
- }
- 
--static inline bool noinstr_call_dest(struct objtool_file *file,
--				     struct instruction *insn,
--				     struct symbol *func)
-+static inline bool noinstr_call_allowed(struct objtool_file *file,
-+					struct instruction *insn,
-+					struct symbol *func)
+-static void __layout_sections(struct module *mod, struct load_info *info, bool is_init)
++static bool module_noinstr_layout_section(const char *sname)
++{
++	return strstarts(sname, ".noinstr");
++}
++
++static bool module_default_layout_section(const char *sname)
++{
++	return !module_init_layout_section(sname) && !module_noinstr_layout_section(sname);
++}
++
++static void __layout_sections(struct module *mod, struct load_info *info)
  {
- 	/*
- 	 * We can't deal with indirect function calls at present;
-@@ -3391,10 +3436,10 @@ static inline bool noinstr_call_dest(struct objtool_file *file,
- 		return true;
+ 	unsigned int m, i;
  
- 	/*
--	 * If the symbol is a static_call trampoline, we can't tell.
-+	 * Only DEFINE_STATIC_CALL_*_RO allowed.
+@@ -1662,20 +1672,44 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ 	 *   Mask of excluded section header flags }
  	 */
- 	if (func->static_call_tramp)
--		return true;
-+		return func->noinstr_allowed;
+ 	static const unsigned long masks[][2] = {
++		/* Core */
++		{ SHF_EXECINSTR | SHF_ALLOC, ARCH_SHF_SMALL },
++		{ SHF_EXECINSTR | SHF_ALLOC, ARCH_SHF_SMALL },
++		{ SHF_ALLOC, SHF_WRITE | ARCH_SHF_SMALL },
++		{ SHF_RO_AFTER_INIT | SHF_ALLOC, ARCH_SHF_SMALL },
++		{ SHF_WRITE | SHF_ALLOC, ARCH_SHF_SMALL },
++		{ ARCH_SHF_SMALL | SHF_ALLOC, 0 },
++		/* Init */
+ 		{ SHF_EXECINSTR | SHF_ALLOC, ARCH_SHF_SMALL },
+ 		{ SHF_ALLOC, SHF_WRITE | ARCH_SHF_SMALL },
+ 		{ SHF_RO_AFTER_INIT | SHF_ALLOC, ARCH_SHF_SMALL },
+ 		{ SHF_WRITE | SHF_ALLOC, ARCH_SHF_SMALL },
+-		{ ARCH_SHF_SMALL | SHF_ALLOC, 0 }
++		{ ARCH_SHF_SMALL | SHF_ALLOC, 0 },
+ 	};
+-	static const int core_m_to_mem_type[] = {
++	static bool (*const section_filter[])(const char *) = {
++		/* Core */
++		module_default_layout_section,
++		module_noinstr_layout_section,
++		module_default_layout_section,
++		module_default_layout_section,
++		module_default_layout_section,
++		module_default_layout_section,
++		/* Init */
++		module_init_layout_section,
++		module_init_layout_section,
++		module_init_layout_section,
++		module_init_layout_section,
++		module_init_layout_section,
++	};
++	static const int mem_type_map[] = {
++		/* Core */
+ 		MOD_TEXT,
++		MOD_NOINSTR_TEXT,
+ 		MOD_RODATA,
+ 		MOD_RO_AFTER_INIT,
+ 		MOD_DATA,
+ 		MOD_DATA,
+-	};
+-	static const int init_m_to_mem_type[] = {
++		/* Init */
+ 		MOD_INIT_TEXT,
+ 		MOD_INIT_RODATA,
+ 		MOD_INVALID,
+@@ -1684,16 +1718,16 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ 	};
  
- 	/*
- 	 * The __ubsan_handle_*() calls are like WARN(), they only happen when
-@@ -3407,14 +3452,29 @@ static inline bool noinstr_call_dest(struct objtool_file *file,
- 	return false;
+ 	for (m = 0; m < ARRAY_SIZE(masks); ++m) {
+-		enum mod_mem_type type = is_init ? init_m_to_mem_type[m] : core_m_to_mem_type[m];
++		enum mod_mem_type type = mem_type_map[m];
+ 
+ 		for (i = 0; i < info->hdr->e_shnum; ++i) {
+ 			Elf_Shdr *s = &info->sechdrs[i];
+ 			const char *sname = info->secstrings + s->sh_name;
+ 
+-			if ((s->sh_flags & masks[m][0]) != masks[m][0]
+-			    || (s->sh_flags & masks[m][1])
+-			    || s->sh_entsize != ~0UL
+-			    || is_init != module_init_layout_section(sname))
++			if ((s->sh_flags & masks[m][0]) != masks[m][0] ||
++			    (s->sh_flags & masks[m][1])                ||
++			    s->sh_entsize != ~0UL                      ||
++			    !section_filter[m](sname))
+ 				continue;
+ 
+ 			if (WARN_ON_ONCE(type == MOD_INVALID))
+@@ -1733,10 +1767,7 @@ static void layout_sections(struct module *mod, struct load_info *info)
+ 		info->sechdrs[i].sh_entsize = ~0UL;
+ 
+ 	pr_debug("Core section allocation order for %s:\n", mod->name);
+-	__layout_sections(mod, info, false);
+-
+-	pr_debug("Init section allocation order for %s:\n", mod->name);
+-	__layout_sections(mod, info, true);
++	__layout_sections(mod, info);
  }
  
-+static char *static_call_name(struct symbol *func)
-+{
-+	return func->name + strlen("__SCT__");
-+}
-+
- static int validate_call(struct objtool_file *file,
- 			 struct instruction *insn,
- 			 struct insn_state *state)
- {
--	if (state->noinstr && state->instr <= 0 &&
--	    !noinstr_call_dest(file, insn, insn_call_dest(insn))) {
--		WARN_INSN(insn, "call to %s() leaves .noinstr.text section", call_dest_name(file, insn));
--		return 1;
-+	if (state->noinstr && state->instr <= 0) {
-+		struct symbol *dest = insn_call_dest(insn);
-+
-+		if (dest && dest->static_call_tramp) {
-+			if (!dest->noinstr_allowed) {
-+				WARN_INSN(insn, "%s: non-RO static call usage in noinstr",
-+					  static_call_name(dest));
-+			}
-+
-+		} else if (dest && !noinstr_call_allowed(file, insn, dest)) {
-+			WARN_INSN(insn, "call to %s() leaves .noinstr.text section",
-+				  call_dest_name(file, insn));
-+			return 1;
-+		}
+ static void module_license_taint_check(struct module *mod, const char *license)
+@@ -2625,9 +2656,6 @@ static int find_module_sections(struct module *mod, struct load_info *info)
  	}
+ #endif
  
- 	if (state->uaccess && !func_uaccess_safe(insn_call_dest(insn))) {
-@@ -3479,6 +3539,17 @@ static int validate_return(struct symbol *func, struct instruction *insn, struct
- 	return 0;
+-	mod->noinstr_text_start = section_objs(info, ".noinstr.text", 1,
+-						&mod->noinstr_text_size);
+-
+ #ifdef CONFIG_TRACEPOINTS
+ 	mod->tracepoints_ptrs = section_objs(info, "__tracepoints_ptrs",
+ 					     sizeof(*mod->tracepoints_ptrs),
+@@ -3872,12 +3900,26 @@ struct module *__module_text_address(unsigned long addr)
+ 	if (mod) {
+ 		/* Make sure it's within the text section. */
+ 		if (!within_module_mem_type(addr, mod, MOD_TEXT) &&
++		    !within_module_mem_type(addr, mod, MOD_NOINSTR_TEXT) &&
+ 		    !within_module_mem_type(addr, mod, MOD_INIT_TEXT))
+ 			mod = NULL;
+ 	}
+ 	return mod;
  }
  
-+static int validate_static_key(struct instruction *insn, struct insn_state *state)
++bool is_module_noinstr_text_address(unsigned long addr)
 +{
-+	if (state->noinstr && state->instr <= 0 && !insn->key->noinstr_allowed) {
-+		WARN_INSN(insn, "%s: non-RO static key usage in noinstr",
-+			  insn->key->name);
-+		return 1;
++	scoped_guard(preempt) {
++		struct module *mod = __module_address(addr);
++
++		/* Make sure it's within the .noinstr.text section. */
++		if (mod)
++			return within_module_mem_type(addr, mod, MOD_NOINSTR_TEXT);
 +	}
 +
-+	return 0;
++	return false;
 +}
 +
- static struct instruction *next_insn_to_validate(struct objtool_file *file,
- 						 struct instruction *insn)
+ /* Don't grab lock, we're oopsing. */
+ void print_modules(void)
  {
-@@ -3666,6 +3737,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 		if (handle_insn_ops(insn, next_insn, &state))
- 			return 1;
- 
-+		if (insn->key)
-+			validate_static_key(insn, &state);
-+
- 		switch (insn->type) {
- 
- 		case INSN_RETURN:
-diff --git a/tools/objtool/include/objtool/check.h b/tools/objtool/include/objtool/check.h
-index 00fb745e72339..d79b08f55bcbc 100644
---- a/tools/objtool/include/objtool/check.h
-+++ b/tools/objtool/include/objtool/check.h
-@@ -81,6 +81,7 @@ struct instruction {
- 	struct symbol *sym;
- 	struct stack_op *stack_ops;
- 	struct cfi_state *cfi;
-+	struct symbol *key;
- };
- 
- static inline struct symbol *insn_func(struct instruction *insn)
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index 0a2fa3ac00793..acd610ad26f17 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -70,6 +70,7 @@ struct symbol {
- 	u8 local_label       : 1;
- 	u8 frame_pointer     : 1;
- 	u8 ignore	     : 1;
-+	u8 noinstr_allowed   : 1;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
- 	struct section *group_sec;
-diff --git a/tools/objtool/include/objtool/special.h b/tools/objtool/include/objtool/special.h
-index 72d09c0adf1a1..e84d704f3f20e 100644
---- a/tools/objtool/include/objtool/special.h
-+++ b/tools/objtool/include/objtool/special.h
-@@ -18,6 +18,7 @@ struct special_alt {
- 	bool group;
- 	bool jump_or_nop;
- 	u8 key_addend;
-+	struct symbol *key;
- 
- 	struct section *orig_sec;
- 	unsigned long orig_off;
-diff --git a/tools/objtool/special.c b/tools/objtool/special.c
-index c80fed8a840ee..d77f3fa4bbbc9 100644
---- a/tools/objtool/special.c
-+++ b/tools/objtool/special.c
-@@ -110,13 +110,26 @@ static int get_alt_entry(struct elf *elf, const struct special_entry *entry,
- 
- 	if (entry->key) {
- 		struct reloc *key_reloc;
-+		struct symbol *key;
-+		s64 key_addend;
- 
- 		key_reloc = find_reloc_by_dest(elf, sec, offset + entry->key);
- 		if (!key_reloc) {
- 			ERROR_FUNC(sec, offset + entry->key, "can't find key reloc");
- 			return -1;
- 		}
--		alt->key_addend = reloc_addend(key_reloc);
-+
-+		key = key_reloc->sym;
-+		key_addend = reloc_addend(key_reloc);
-+
-+		if (key->type == STT_SECTION)
-+			key = find_symbol_by_offset(key->sec, key_addend & ~3);
-+
-+		/* embedded keys not supported */
-+		if (key) {
-+			alt->key = key;
-+			alt->key_addend = key_addend;
-+		}
- 	}
- 
- 	return 0;
 -- 
 2.51.0
 
