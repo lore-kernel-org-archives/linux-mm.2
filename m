@@ -4,119 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6966BCCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 06:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5FECAC5BB
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 06:59:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DA048E0003; Fri, 10 Oct 2025 02:39:47 -0400 (EDT)
+	id 11DC68E0006; Fri, 10 Oct 2025 02:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B2698E0002; Fri, 10 Oct 2025 02:39:47 -0400 (EDT)
+	id 0CDED8E0002; Fri, 10 Oct 2025 02:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7C48E0003; Fri, 10 Oct 2025 02:39:47 -0400 (EDT)
+	id F25548E0006; Fri, 10 Oct 2025 02:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B8498E0002
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:39:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1507184EB0
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 06:39:47 +0000 (UTC)
-X-FDA: 83981254014.16.0727FC2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 55975180003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 06:39:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="E/E4XC0O";
-	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE0678E0002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:59:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65B28852FC
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 06:59:22 +0000 (UTC)
+X-FDA: 83981303364.19.50173F8
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 86C692000B
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 06:59:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+Rw5ZxS;
+	spf=pass (imf13.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760078385;
+	s=arc-20220608; t=1760079560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7F3semd1DicSpX/Uh0XFyLtxDOVKVv9cLtfJqZqr310=;
-	b=i7dn744azTuXcLuBX8OWy5n248fkh157V+wkTxl8IzGMm/qgtyr/pmySNBp2Yilq2Qa9CC
-	YthnmfkVAwS4Z36zxgWmRZmCBzla2fMkZB9A/Fx70NIJiU5j0kgtB1/5bEPBIzt8Obidye
-	LC5t4ujjHhVKkSRv1P1ZpQmp2czxRFk=
+	bh=s/KsRtAPQyYYfQyL6T3MHYdC3MZg30zHcUpFS/EA2b8=;
+	b=E+PSJPv+6saoZWRecPsWUb8D/n7zLoLuFrUjV21puR0pzAJRlS/03BpkXX7Chxu+DVTsC9
+	lS3ELPIJ7+lw79xy974BiNqb5PEHIScL/b8KXAkkhDHltRBZhfTQvE2ZbGHIVZ7O93B2qp
+	BVXqt0blFqROr9vNKEPOxW2wXoZjBKY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="E/E4XC0O";
-	spf=pass (imf24.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760078385; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+Rw5ZxS;
+	spf=pass (imf13.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760079560; a=rsa-sha256;
 	cv=none;
-	b=qsLyzNfRYkMKNXWyyHgRIq9/WXjmXkgUh13NZbOPZGy4u+F2CM5BbgCANa3KaQztaVQZJq
-	qMB+u6IFgeg2l26mwQMVE8kOHJPNOC72YaWd3vKVJcNZHassKC96V68qMEgo7UEjQZbmQK
-	S3uxb3zv6do+PEBU32P/1AElkInOO/I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5AFF56020A;
-	Fri, 10 Oct 2025 06:39:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC42C4CEF1;
-	Fri, 10 Oct 2025 06:39:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760078383;
-	bh=f275Z6QBP1oJ7FjNXnqjQQ3arZ+vlTTlgIAxDsW1u1A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E/E4XC0OPvNpqewhJaQ4nGbxL62esjMmVSltK67IIVcxdGmwf16INSfid2uo26dGR
-	 963ucB1qo46+2lEPEd8aGn9IMZVMQdo+3Nh0mpr8weqS34CQPv1YYWugKh2Yv1Gp4g
-	 sL2c6uu2EtJaHZ8tcsdSndMcHFBEBMyTE7XCuZh8=
-Date: Fri, 10 Oct 2025 08:39:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: "Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, jasonmiu@google.com,
-	graf@amazon.com, changyuanl@google.com, rppt@kernel.org,
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
-	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
-	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
-	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
-	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
-	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com
-Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state
- monitoring
-Message-ID: <2025101001-sandpit-setup-7424@gregkh>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-20-pasha.tatashin@soleen.com>
- <a27f9f8f-dc03-441b-8aa7-7daeff6c82ae@linux.dev>
- <mafs0qzvcmje2.fsf@kernel.org>
- <CA+CK2bCx=kTVORq9dRE2h3Z4QQ-ggxanY2tDPRy13_ARhc+TqA@mail.gmail.com>
- <dc71808c-c6a4-434a-aee9-b97601814c92@linux.dev>
- <CA+CK2bBz3NvDmwUjCPiyTPH9yL6YpZ+vX=o2TkC2C7aViXO-pQ@mail.gmail.com>
- <d09881f5-0e0b-4795-99bf-cd3711ee48ab@linux.dev>
- <mafs0ecrbmzzh.fsf@kernel.org>
+	b=Os7dTcbPNRMs57uvZsZUgX9fkF2BRE5QmC7luHaVe2c9f7MhozCvtQikCVEG7RcDlZe0YS
+	DG0c8uql3WH+gtG7GxvwohI7B4yeELqClzqOg8BBxgGRtm94NW7ek1p1jngurezRMJBLUK
+	jW2PCaPz4t1Nzlj5GQOjJg+vhrje3r8=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-26808b24a00so2773865ad.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 23:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760079559; x=1760684359; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s/KsRtAPQyYYfQyL6T3MHYdC3MZg30zHcUpFS/EA2b8=;
+        b=Z+Rw5ZxSWY7JgfwmSEdxRW17MCP+Y1u85gCLhSw2XIAd/tnSUFSZGfv1NsYZSPgs+s
+         LGUABD6fMxPA8r+UbmcF/hYekS11XAFuFV6TRKYNfsZ1GVvIJdS34tmBCcKG3kQx3Kim
+         3WYsk715urH+VdZgqyDLcBNAKG9eaX3/qBtD8rIde91hzltVAiWDdBe0QRP73/M1ehup
+         nVXd6Bdpyt6Im+k2nsU8tTa5wyujw+XmuAAbF635+WDGLPC1x+DKa8Ia46mN8NFrwV2F
+         7Tn7/t+rEPFYIvBpEKP1Y7kLQYVssZZ2kk/LSz5pRghqsoiKYmQOan/fz8zBIfHkAlCb
+         CTWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760079559; x=1760684359;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s/KsRtAPQyYYfQyL6T3MHYdC3MZg30zHcUpFS/EA2b8=;
+        b=qaHKqq6RfI3ct1Ajduel06acqiwQLTZA+DqgelHIFmCzuCz3I9gbRjR682YyEiDqfb
+         CwJ/FYRLY09qefzkx2SfPuFlEt7nLWMLE8rMT6EC+6ibOwv3i9NcE/h25ziEu+/DSoiO
+         gxD+PR++pALrEUQgTmVUFLBMJGG2HxeSpfnxjI+1y6mopjyB0BYBthvEYyI8d6XWJQ2V
+         DcUhrKVTfOQwUJyAbsyGcxUmff+Vt1lKFfS8WeBRh7K8uslQdbvnw0c3LUAro/HyB+lR
+         gMoNEuxx7qFzuCt3l87uZ64oNAAS2uZ+2SsJXEmbxlZ/OwwRJRomNX90eyVI+Qb5hrbc
+         aRoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMigVOxvso4s9Ir9SZWgfXu2k8XeNIbHk0jkNOR4zho8hbLMyhpaY4i7gFVixK5TrLABImdyhoiQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxlm3tU9zOkRsbktOonmjbYAqGRMfe4AfyylRyua6JhB7UrQl4v
+	xAJ4RuUM7BuiS9FItbP/tajehGEaDPF/aA9DRhPkIGplrP/yUOtiGeGThf7cZYyua8VouiUbgh4
+	82kMiwslSvUlQsF4c5j4/SeboNz2MtNY=
+X-Gm-Gg: ASbGncvbZl6Cv5ndI0L8iA5Rwbtg5+M9dxch8I+kWANg7EePV9m//eg1NRu1jPuHflb
+	rVBO9Yqs27qrTlcMeN73DmtlkUxM/WHR1BSkgxR9SeB9oPAf9PACF1KbEFUcBsCUfrEBAH8qPNS
+	7reQiv8EQYUNPQKmhzwuoOB5uoa3MRNBCDAI9ey6iUpfmeGpHAwPO36hEIIG5MeF0J3XSaF2shD
+	PoBSv4Gb9hQIZXPkc6JjERNkbo2NaYchmgV7EgEeLHDKa0132SO5GhB1/qaitlvRn2+Z7rOG0m6
+	UcpVP/LQfpy79YfcKEb94/oUpPhpSlxm5x1yZc6SN4Oc
+X-Google-Smtp-Source: AGHT+IEUQCZh2bXNZHQ88G1WlQFzYGLfnLI6ghhtXSvp0Cccxl6SfEYz7wbupJhdzFbhRIa9rBWq/hVI+k012AHDODc=
+X-Received: by 2002:a17:902:ce87:b0:27e:eabe:7604 with SMTP id
+ d9443c01a7336-29027449af2mr78609005ad.9.1760079559298; Thu, 09 Oct 2025
+ 23:59:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <mafs0ecrbmzzh.fsf@kernel.org>
-X-Stat-Signature: wm7abbr54ctpt3ojr37kmdrccguyqx9z
+References: <202510100127.yuqhg8uo-lkp@intel.com> <20251009110555.29a67af19f5cc4d40e66713c@linux-foundation.org>
+ <CANiq72kKSz=UK+O4tnV0Kmw_HmJhJJ+KNZnUBWtOWqanrG+7Vg@mail.gmail.com> <20251010060618.GA80465@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+In-Reply-To: <20251010060618.GA80465@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 10 Oct 2025 08:59:06 +0200
+X-Gm-Features: AS18NWBsqvp1_UAZLl54SYhCuFPQy0caeuUUUgRAWv4x_WbqElbX_D_UZSSrijI
+Message-ID: <CANiq72kndiqwEm-OZLd6JumAaBy7KrzYf_rDjwhtw5Uh4vdTCg@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-new 36/102] error[E0425]: cannot find value `VM_READ`
+ in crate `bindings`
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, kernel test robot <lkp@intel.com>, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 86C692000B
+X-Stat-Signature: d8idpfoaaxtswb3mxfnbxeu6ttexmxws
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 55975180003
-X-HE-Tag: 1760078385-732994
-X-HE-Meta: U2FsdGVkX1/Te0BvgrcVqd7rlINOhHT8NhnLLipysQRyM3Vq3MmPzy+TAOG0FLAem4WB5NqxJoGFX63/X9U9qNDdvhjayo+ioB2VP1HcWCoyrOlgNR2Du9VE/e1ioQn7K3kbblJevoRKyPInQL4+b2DzTGpXtoXpO5bfdHyUW6nbHgXhHjXN3Qez41JwTgH+/5mh+lAp8Tf2qNcC28EkpYC5jdU/MCfe9IRugg9pi7dDPCImxvnLgorW60HK834DrOi97mCZknTRzRXxJvDW8eOIQIvXU5yhpxXOZtdjRHkoZixNVJn9xSIBOpLFFblDnqHhyevFOzbJmaXr8K29M9jaziHObJjjlFrYKXl4VPVVA4BsDrQ/NDi5VFDlur0TTiBE7aT4gVLSpHWj9EynyMJx4jL6ZSt8sEHI5G/X3F0rx29LuZJbI34G8HxXVtXmLQFBje3jrkZdgZqMUaULEXR17X5/g3J/eZWQaCx0cAEQNzu1PaGwTutLwr87b9p/w28tAvYnxZ1EgxoAUOEwTWfwTZ9qnqWxu9/OBM7gJdi5PuBJqikSSkWOX7QiUlLSJZ5g7aEBkRhfA5WkzdJ99+VLtAMzapDwNg5M5C5TiLni6vIUD32nj6wPPQz3kJz0vXXWzAHbl8f5AEgt1Gs+RT+lAF/b+4a3y2g7E0TlAl/RKDOkkjdce3mTDSpqlEDmVZZS+w3NXFqOgM1zJNUKqsNJrPGiaLjRUz4NAyLnmT24Ix9+8DsvrgHYATX4F0ShKyJIffpcAqcBeucQBCtzF6eSE3NlRd/vJP4ZpIabMI29lIGin5Ix+rAvLx2Ymatm0JQgwJdqzD4QAlomd/lXyV26ymNL04R3wTHt2aIY7fCZoxlZHU3k8CHVWI30Qumm7trC0i0wZgw1PlXUDiiBFXEG+aE9oosb0n3h64QkWI26JvybKXmFg17uZ/lanbCk2Agy9dPFOfMYpxJlM+A
- a5Si7tMD
- 33FWe8omTMv6j+DmgHPJFU5oJpqKXLBekFyHS5SwqMoffjxRkkDSY/VzAqRa+JcW/kWgFecZEBmx+xZ5ZF9lHIqsLHzr1IAFLcmq7ZZp2FHGQ/O2VFKZya4jTBJsI/WTlX4RdUZ354sSXgUxYxmYA4yQrmR+LKlVEGaJK9S0oqaoVl12OmYQVm2W0Jrynoi8cpWwGdBW4DoQaFuLDDjg8rIYjkdQrLAsiQTajF5ngAU+qiDPGGj8aofQGaabseUqZfubqMSgLwuNwcBTTWVqdgUNzLG5Q4Xc9n7MDpFTDUpbAENwErWU7er3fg2yC8vAcdX1D7XjkrTHv0DR0n28E1dNChZxJBuig955X0EfkRAefXP4g/wNjoKj1cItKKKrpaGurLLJXCNW01a76Ff3w7OT5vEqannX8MVCuE5lpbSfs367kJCakDOT6jpPlOvkiLK2OHWL4rWTA76cb815r+UPFlg==
+X-HE-Tag: 1760079560-124681
+X-HE-Meta: U2FsdGVkX1/zJJ/D1IwJ5dJvSOCFpHIdX8t5QvaE3hobuvQVLhbtHkoaFmwggjpCn1T9RcAf6f8pwMEoZqUo9ZaJykRMI/vvcKK8dyquLdqRmpUD+N+sut9fbs935/57SuxGoTHkpDeCcjHFMe/EzgllJIncGCAjkxSc/RrVPjI0Nn9l3FOi18M2kvzb9iD0ye3wjhgZHGfJlEq+lq+hpTmeiRVngD1WdRBrmtRyqsqYMBa1iI7XSJiKReGry8zsRyRRv0k9tIjWuNrQ6B+nA/8pG+Blx0tzgCk/bbqKj6cNxiRIOoa+YaNBhtB0b+PeGv5GSiIn3sDacN97dpmOx/NYx8t5WkHt2RxN0lCe46XOfw8c0SHRgpWTpt2KZquwcAnsBG/+tIN7ziu1UD/4Jo+aArRgh6YS383iL1V9+b7u5jVWOC1UXUPJsEbP+Uoxt8S8oBzziZrA0Fm0RosqQRIS48RqkrEXSMJ84Wz4aWyfkmloLYZ02G0LfaE67wJyzgW+yVoz0MEDB7hYZFLqSJt3p0uNDJm/o3ojX844Ob6j54TAx/sjnPjSuvpSqjpY5Xr4lmUpZ4U6mpBwIEj1tAPcibhDQr8CxYtpvYBT9R6nNSSZsZ2EsrNxymEwOrxZ7FjFpZQ5wQ9czj4YDupRn+gM41lIZ9N7iqxYN9HJ0Bvk+GXiPg0ZhlrKUhRgLbAdmI8iw660cfNTuTQ/X0ExVzd6/B0Bj8W+0ptgk9vhk37iOue4zb/UqT6RmYxCgIBKGealuIk6EIZuE+cC8QGGhuI5qS0HXYIl+TFhoxt+zf6efqIehTmxLsckUxlZdaIv/e1T4206tfg7vYZ1HOrEv3jq8tYn+RQb17MpaU9McA7HpcYqbkf5fazOVCN7bGi+xRnN7yDWS2fZYz6B4grjjwcgr+bc0OaaFgVM+BQ8kD8SPbOk9+243t4wsf2uok+FGmSjl01uEcvXvCx4XwN
+ C4dK8Vae
+ iKSXf4mK0xMT3n5VLLnhxua6aLZfl1rxe9xBWO7R62ZelGzDeZ2SQw4RFH1OO/4MzAmtGL8i0S97r3NGvwNScEt4sk3P5YpilkNvGi0MNzD/fL0a9XHm5L56TepalUvL2wyMa2VU70KA0n5nUaxCPkYZ1MS0HhBy39gUu3eMZ11n1eMTySfMUL7kteM8105oZAYstfRsAcc/HwNYxKKlaL2gQIjD+GQgqBq9NQmZ+9Y352ody3qbUqhh15Zlzb4REu97G6K8V/ZarFiTI+eTXF1xlAZdhLHrzH/LnU28XQBxRnvzmilSzrd7gH0OlsRTmzFaFjC81qyT2nVc/wbYQ8KJJDW6vQPdAtoEc6FcReRa98a0yzv7iKCnVfgp8KZF3/ejg480TcTSn+K75WYp/FDOkQJOh/YRsmOa7/LhIo1yPeOJ8bHEYK//H7uVEHUG1Eh/oz+eEWeVkyKw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,74 +120,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 01:12:18AM +0200, Pratyush Yadav wrote:
-> On Thu, Oct 09 2025, Yanjun.Zhu wrote:
-> 
-> > On 10/9/25 10:04 AM, Pasha Tatashin wrote:
-> >> On Thu, Oct 9, 2025 at 11:35 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
-> >>>
-> >>> 在 2025/10/9 5:01, Pasha Tatashin 写道:
-> >>>>>> Because the window of kernel live update is short, it is difficult to statistics
-> >>>>>> how many times the kernel is live updated.
-> >>>>>>
-> >>>>>> Is it possible to add a variable to statistics the times that the kernel is live
-> >>>>>> updated?
-> >>>>> The kernel doesn't do the live update on its own. The process is driven
-> >>>>> and sequenced by userspace. So if you want to keep statistics, you
-> >>>>> should do it from your userspace (luod maybe?). I don't see any need for
-> >>>>> this in the kernel.
-> >>>>>
-> >>>> One use case I can think of is including information in kdump or the
-> >>>> backtrace warning/panic messages about how many times this machine has
-> >>>> been live-updated. In the past, I've seen bugs (related to memory
-> >>>> corruption) that occurred only after several kexecs, not on the first
-> >>>> one. With live updates, especially while the code is being stabilized,
-> >>>> I imagine we might have a similar situation. For that reason, it could
-> >>>> be useful to have a count in the dmesg logs showing how many times
-> >>>> this machine has been live-updated. While this information is also
-> >>>> available in userspace, it would be simpler for kernel developers
-> >>>> triaging these issues if everything were in one place.
-> 
-> Hmm, good point.
-> 
-> >>> I’m considering this issue from a system security perspective. After the
-> >>> kernel is automatically updated, user-space applications are usually
-> >>> unaware of the change. In one possible scenario, an attacker could
-> >>> replace the kernel with a compromised version, while user-space
-> >>> applications remain unaware of it — which poses a potential security risk.
-> 
-> Wouldn't signing be the way to avoid that? Because if the kernel is
-> compromised then it can very well fake the reboot count as well.
-> 
-> >>>
-> >>> To mitigate this, it would be useful to expose the number of kernel
-> >>> updates through a sysfs interface, so that we can detect whether the
-> >>> kernel has been updated and then collect information about the new
-> >>> kernel to check for possible security issues.
-> >>>
-> >>> Of course, there are other ways to detect kernel updates — for example,
-> >>> by using ftrace to monitor functions involved in live kernel updates —
-> >>> but such approaches tend to have a higher performance overhead. In
-> >>> contrast, adding a simple update counter to track live kernel updates
-> >>> would provide similar monitoring capability with minimal overhead.
-> >> Would a print during boot, i.e. when we print that this kernel is live
-> >> updating, we could include the number, work for you? Otherwise, we
-> >> could export this number in a debugfs.
-> > Since I received a notification that my previous message was not sent
-> > successfully, I am resending it.
-> >
-> > IMO, it would be better to export this number via debugfs. This approach reduces
-> > the overhead involved in detecting a kernel live update.
-> > If the number is printed in logs instead, the overhead would be higher compared
-> > to using debugfs.
-> 
-> Yeah, debugfs sounds fine. No ABI at least.
+On Fri, Oct 10, 2025 at 8:07=E2=80=AFAM Jakub Acs <acsjakub@amazon.de> wrot=
+e:
+>
+> FWIW Alice suggested the enum version and we discussed adjustment to the
+> patch in thread [1]. I was going to send new version of the patch as
+> soon as I figure out how to test for the issue pointed out by Derrick in
+> [2].
+>
+> Please let me know if that is desired or whether you're taking care of
+> it here. And/or how else I can help.
 
-Do not provide any functionality in debugfs that userspace relies on at
-all, as odds are, it will not be able to be accessed by most/all of
-userspace on many systems.  It is for debugging only.
+The `enum` approach is what we usually suggest if possible, and in
+this case it also avoids having to replicate conditional compilation
+on the Rust side, which is good.
 
-thanks,
+However, using it here as-is means the resulting type of
+`VM_MERGEABLE` is `unsigned int`, not `unsigned long` -- but wasn't
+that an issue? i.e.
 
-greg k-h
+    https://lore.kernel.org/all/20250930130023.60106-1-acsjakub@amazon.de/
+
+We may be able to use a dummy larger constant to force the compiler to
+pick a bigger underlying type, e.g. something like:
+
+    __VM_FLAGS_FORCE_UL    =3D BIT(63),
+
+But note that older versions of GCC and Clang keep the smaller `enum`
+constants as `int` (i.e. small and signed), even if they will pick
+`unsigned long` for the bigger ones. Newer versions will pick
+`unsigned long` for all.
+
+The best would be to use C23-like `enum : unsigned long { ... }`, but
+sadly we don't have a recent enough GCC as a minimum in the kernel
+(GCC 13).
+
+If there are extra complications with the `enum` approach (i.e. second
+link), then perhaps just replicating it on the Rust side is simpler.
+
+Cheers,
+Miguel
 
