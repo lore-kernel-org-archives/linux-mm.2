@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3899CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 20:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD89CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 20:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B58D8E0040; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
+	id 8A6128E0048; Fri, 10 Oct 2025 16:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 466198E000A; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
+	id 856BB8E000A; Fri, 10 Oct 2025 16:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 354928E0040; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
+	id 746438E0048; Fri, 10 Oct 2025 16:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FCAA8E000A
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F8BFB98F5
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:07:13 +0000 (UTC)
-X-FDA: 83983288746.11.7F34070
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3A3CD100007
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:07:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=dki5f6iw;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.166.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 63DB58E000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 16:20:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5D4214047C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:20:41 +0000 (UTC)
+X-FDA: 83983322682.14.7575DC0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 38C6AA000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:20:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndUXUFIr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760126831;
+	s=arc-20220608; t=1760127640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
-	b=sKURQLKyIqul00oJwuLGxB+eF/bnWPAbDLxoMXRa8ekdYvp5Y3NMyK0sIA9ZvpfRc7GXS+
-	FKGOsgifRAJK5QhiPqa/lV88RQzpz5JLaQYhBwmf/9/v31/+1uWserB4RVdZIacrpTLpW3
-	QJAVljljYplz9fc33WMgPLlaCFC4BvI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760126831; a=rsa-sha256;
+	bh=44S4HUU/AQh1f5II8gvjr0MywuiUNWIQ+934btjm1wQ=;
+	b=r9X7DfZ62wPcMintrEUk05yBOc5aDLJJCFmjmrWby8T//T/FZDxqmp57JLBcqR1n9MXyFO
+	1IdLUDFZFDHFwwdfZ33cc+LGQGHZ7zVWGVNqam1+b+sapP7K6IqRgQ4NSFWRoHD80EqF5b
+	6kRp27mI6MEFVmIWesOJsqm7tpNQXUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760127640; a=rsa-sha256;
 	cv=none;
-	b=Mu5cYcJ7EWJEcvaO0+40ykTGHvx34i+InZrdRQfqoWUfNCSQa2tK/j0CJ/mbyNwJTDdnJ9
-	4YiIa91Sjd4Q9Kzx4hLbwf8XqohTNKHaEdNaGX6g58DzVTlNazyyM73jP3j0ab+Tz77rRO
-	afdQnAQ48by038k+frmsUGB5q/AuXwQ=
+	b=k9sbI6bmE2nuB/jdJIpNO7sHryLfJQog+fDc+i1kn9Zg42R2KMxrF3fmCqkU84qDdvwq51
+	KtwtOoitY1XbYqkSX2RFTgkgAQqpjvX+Cb1NDI1n2TVvvKMJoqQ2Q1Wk8ixVboLfLB0cvV
+	4A+Bqm889QIZNOo/myFrWTaoDpHvbqg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=dki5f6iw;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.166.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-93b9022d037so101780339f.2
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 13:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1760126830; x=1760731630; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
-        b=dki5f6iwfJcQfOWHVK8cihPsCXXrUH7X4D5dwU4gN9xA4vJeiweZiLyqCS3N/d0V2t
-         t4j1Gie3wlfPT3JT2WpknFXGyLOzoDCg675AXUEDTn0evscOkhR8sWSg6DEQ2oWL/lxA
-         rGCRCcQmazUcs3T50uLFd05b5XkRXjUnEhNKA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760126830; x=1760731630;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
-        b=cD/fRDJvHpDPNz64KgBVsu9+MQAqUNR7qiKmv8yZTyiEneT/n2q4s4S6suNwZEq/Uu
-         kZFBZkw6AUNLphtIvhUbhyGRydu0DeJVCDr3CgIxJteUSpwEXXpJYz83wfXA+jIwpaRK
-         D3qfO0pdBU4UojRHguumAGlp/8cJ4QhFpG1XOFMLjS7H62iBidj4QhC3gB95WKvFLOap
-         zsN/rRythElO68jDjARsRlFojtupyG9TaW9Y8ZUzXx064X2dvP8t3sRfydwEbRUc0bAt
-         px55Lw1NHOLyl6qDL2T7DFyYdvWO7A7fmrsVF2DclBnwIrOhImvIp1g4Fhv58DXyx5Lp
-         VfHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKk5s9Ph380myarZZvTWzEjqboOLJNBO7H+fXTSINOMW+WS6jifzi8ipFsyAz+PMqbwQrtU2Ny8Q==@kvack.org
-X-Gm-Message-State: AOJu0YwpTmj0mXTQiroXqqW2gob/wmN7QYWk2uI8nuHg7cU6r1Zl/Lmv
-	qImbK6YN9WBQ0R/I3iQCIbpatF+mEgcr94oAZIaBJJZ9axqyFN8NekmHUO8DISDFyDo=
-X-Gm-Gg: ASbGncsMqhqyVuUQacZUYfLOdmHI/K6l/Fya9zcrYDqtRP0HYwjyjSxaJnPdAGRFRAG
-	rA14y2kZfB9EoToyiHzSJzp6RMMj3quOku+xdzTYkylE17NHv1GUoEC/sij5OIEJHjwKW2T9RYk
-	5XKSzBRZGVtxDcqrCRTN9CPmLVIPDOKdlap/q3vwYp7+EEU2LegpxXdhg3HDbD+pTFAiFwCa2Kh
-	e+5+PAJd3qhAv8K6i0Qut8gaLqMRXMtSPt19C7p8ibYKTyXLyyBvLMLvs3UJuiq7hHC8KXYfwxs
-	k4PUZvz6+AhMnVtS+Ke8l12evNFIFir7vQjC8hhQ8Fi6YJDjH3RQa+fREXHBr4Ag7K+vZpvgqYb
-	xlfBqyzKM1ddTy+TN+nzUVPd3z19Hk+NaE7b9DMG0guCbL40LpbrqVQ==
-X-Google-Smtp-Source: AGHT+IF47OBorJnDZLxogs92bg9DbP41Re55bcWPxH2LtcWYwZh2W54OFZb8SOadJVjAyPp0dDz4Zg==
-X-Received: by 2002:a05:6e02:2186:b0:42e:6e45:e0a3 with SMTP id e9e14a558f8ab-42f873544bfmr138691105ab.2.1760126829993;
-        Fri, 10 Oct 2025 13:07:09 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42f9036cee5sm23494755ab.32.2025.10.10.13.07.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Oct 2025 13:07:09 -0700 (PDT)
-Message-ID: <75584276-6d30-4e35-9e59-e084c60d1c5f@linuxfoundation.org>
-Date: Fri, 10 Oct 2025 14:07:08 -0600
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndUXUFIr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 043CA417F3;
+	Fri, 10 Oct 2025 20:20:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9D9C4CEF1;
+	Fri, 10 Oct 2025 20:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760127638;
+	bh=uVkz8lpHC9sRqbxmG0cbQgUT9iFYMlmYAvK7Zotg0qI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ndUXUFIrDC4sy+YuQodWLx1NncOMGEi6Ntd5aZvhTNWsNDQaAPxewqEYUeMV09/Ku
+	 YRH+TZg8HA/2chtSyilVNZpHT53rdKAfleUV94QOMXIEa1o7By8QktAbfxOWx1ZG1R
+	 1CTZEMay805+PBoPLgXOWOYA/u+H3OlmWCsx0hBKE/k/Rl5azUvLVWTqEGJ9yjLEH8
+	 JpDxQFed9N0KEiiENMtfEs6WsTKSXkPagVoYOJt8bd0Wpb/p+2q5Gmu/5ihNvknD95
+	 cupul+zpPbCfBdnZwS073t/xfaGc4MlUbco+Dlzb/PQzGJGOXBLwKhOeJHXCB7L9XM
+	 1AFubXAW7f21w==
+From: SeongJae Park <sj@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	alexandru.elisei@arm.com,
+	peterx@redhat.com,
+	rppt@kernel.org,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	axboe@kernel.dk,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	hch@infradead.org,
+	jack@suse.cz,
+	willy@infradead.org,
+	m.szyprowski@samsung.com,
+	robin.murphy@arm.com,
+	hannes@cmpxchg.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	minchan@kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH 6/8] add cleancache documentation
+Date: Fri, 10 Oct 2025 13:20:34 -0700
+Message-Id: <20251010202034.58002-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251010011951.2136980-7-surenb@google.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] selftests: cachestat: Fix warning on declaration under
- label
-To: hannes@cmpxchg.org, nphamcs@gmail.com
-Cc: nathan@kernel.org, shuah@kernel.org, morbo@google.com,
- justinstitt@google.com, nick.desaulniers+lkml@gmail.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, david.hunter.linux@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>,
- Sidharth Seela <sidharthseela@gmail.com>, SeongJae Park <sj@kernel.org>
-References: <20250929172724.75108-1-sj@kernel.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250929172724.75108-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: gkeanw1oecfnrakcka4ge7ew6hu3ibmf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A3CD100007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: yhqhj1tkzc3pe54jks57g7h8hyehh7xo
-X-HE-Tag: 1760126831-184969
-X-HE-Meta: U2FsdGVkX1+C62ooWiWjWHeFJ5GvRRRr/tbPG57Imc7+bDIUmuN9yE1G4hDeAAZtJRcplIcIHXd3x5OhUtXxE8Qt1oELhA/+ShIQgjWnj1o36sq+bbx6dVFSALw+GMvbAl0rWyfUT0wjWkULslH1wCCtIxfzXLd1LbXKYFMSlvwhhsy1dTbfzepiAjL0Odul7cVlrx6B3fm72hgFlWQOTt8pnD8mO9A8ErUdIVe2q2U77exEMvyPtWkNLnX8sYzCmQvfCZrpJL+KZNyrcXyg2n2Uzzjf99ZKH68Lx69eUQ1H9EBUrT5FlnbymugtyyIS5LqYCSZ4obvjIz+lrJ8LTEgOlc0yyDeQuTlBc/xwTmxdFdUKkrxQLXMbzEFbQ/6NUx6KGJZ90DwxYm1wAMm4+KRHlSzq3/+BJTj6WLaD5tN15CtBppF7Q0vxzLeUDvdcqSNFJj5cbDfgCldexgozT8OjXb2TIuyLKndmfTgiy1ntil44Ua9X8FVIq7TMrtx66ptmcDsQgUQsA5EBYwPXJv3XtaU0sFGzDmSpdJ86FqfifPdnIAcH7bL1sYi00cuR3DPY5RMj9f7STEmT79M85ZbUH0Q0N3DA9NaYBBjkoUHxkhZN6halusnce/hWhTeJ0Oc5h2hqQZ1jZoHWbaXRUonxNKeM7FConbQ44w2p1mWf8riJP/S6a1UeScRtQMbTXcllRq3fc/1DGW14fTdo/A3s9Y35MMzelcyUlJfSy1rCfE7OrtctlFnLRrk5rJl7yP80APPbrHKJcOWX0XrC2SJ9rJZBkcy7794aREyxTKIu4+O+fxVxrewmFEWxPNDfFEf6Y0gDqn3KumXVNy36H4dbc/lIgUI8p77fqyzpTYezFOopPUfFmxPSNpWlMi37opkIQ6O5YdLvdFzVjScuEoF96fA2foBK4UrOI1NJ04lrKNqGdd7ZVKkAGTlnr0ONsQgzBHsDbGRPDVdHbhf
- JFiooC3h
- qjzkITNFX+hnmyecKRc+evtpZu7OSgmyt5+/1RIFKIjO1BvUarTw2Hl7fFAJkqtpVHqyKg9B5KLHyGZuG/zdjiD6g3LiniXj0WkJtVNaYxuQAcrAMNYqstQQpVNZH5COnLjYGlFr4cMSb2vzV4R8LDR+yJs8ms504wWObNHQwFnH9i3htogFE6fkq7OZjo9VqS6Lyliiv7ireCdUEAvkIqJId0JW0DIEd6iq+jeL6mr5vgvtA0I4pj+wAhPcmc7V9un5Ykee5+amzeF2h2b25GqvMDoQry8Ic8apZJqOvqA1GKAIeCW781jzLRkj8WmXUVJSNITLl4i5+E5xc6KeppLCTEAjcfeV0v3qsMWp5ZKmZq0fq4z6+CTptCJdMeCZaatCcM9HQv5Inu7j16CHKvLXDu11/f7xc444sQsIt25LrdKoe4RuPukrjcIXBLcmZcuM2EfWz2rAka2xWJVIdUYseMUiOkQTSGFjcUhC1s+67sEd5sp4mLPva7kmGbbLwwJTqC9oVNFG3OinJ3sEfoWJ7kQ==
+X-Rspamd-Queue-Id: 38C6AA000A
+X-HE-Tag: 1760127639-352437
+X-HE-Meta: U2FsdGVkX19LZrpRZk95+zRNcbpSB2tOTe7+Zszfpa9W217RusFVpe1+zTS19msKkMfmoPennvUU0dsznvB9nixtvjMUq1ugPXrd67F37wJ1x3UVXv0iDahMK35wv398ojUmQsTY+GoFCmONY/8e9euNc+nowvPjpedqC2DQCw3uHvm3iGMc2w2EpWQgdS/FgTCKmpIdvY25k8//aMkzduz41Ro8tofWN+EOPpsSFklUt3/wE9vhVo5gfipdqHnifqI4o5SejTncy5yvg1rlgnJK9fnOd0qYA4alfFaGuDRTBMXHhQF2Ua/mo9GGSno6ENUYZ/iFYiLWFPartL35yrorOCnDHyRiCYPmesNdnUAlDa8rIJZArI5dNO+enn0u9Urj1Z2APStqkmafLLQNfyNHIvPpjexjY6nowoFN0Ep6QkJ85X7lK4EbtjrSVwPOm5lJLBvR5bVwa6SWPLwT6yddBUiCGaT7XLHCU0zlWfsXGOZpclltjVTKJ2znDtUCaEDmvEA7AfVa5vylk9gFcDrsy03Sx6K7gQd85EJcWHu+yzlJE6jfUnoZbz2IAjGJ2tqd9XlaNNdwBr/UNg3rZpjlsFZ+7HgFgAsYuYsV3QRfgvcyp60joilNZFMRCTAB3Dhm7m/q40KiDvZ8ga+tYAFNE2L3Hb7lwEBk/Nj0oTP/uCc42w+7N3sY21hXT0p+gDOaPXo9WdbyDT2uyBrXGLh8LCwTgUTsbWNqOpJC3VP/A3V30URmpbLdcc8TlGnVaeFKJoEd8PO0dSGWSFX51CZQ2TqBdkFH+i6ExRC5P++yL5REv6J+rDKf7oId8PBAKWQ6cbKqaNOmjnLW5oSId7hH8Ro8J/7Qji3Uu2Jf8U7SoUabc0qkV5JkPqPPoMkrR13fJeCNAkYiLDG7hMAndNYfyYO5IhfT3fqwbJ0Guh1pxWNoe5m6+fwEVVvZptf42T7T6r9vS19oi1Qac69
+ NOOYNrRv
+ ohngze7U+7GsZTm2oqOnGFtzQdtwyUNNury7E/B2z9bZXUNxpcag68ig3nyDmFzEhneyWJH5T3WqSlcwySNtZ0QpU2J/EAg4fnKrnx6OBRShOLkbVF03M1r3UYOl/6Xx8+Mc1F5QIrJsSdzgDJ1CKgQ9+Mamh0n7hrS/Kd3a5+AlR6RdcryW9YoV2VWkzUSwuvyC1nqFV/VYUx7IJ53Mp3e+GIAdNdweNN/AI4NzdxF503fvAYmBvXnZrGrXKrJkhLKJZJK3KrGr4LyVwVm+j66vqmMUJCPa26+Pd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,31 +121,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/25 11:27, SeongJae Park wrote:
-> On Mon, 29 Sep 2025 17:24:06 +0530 Sidharth Seela <sidharthseela@gmail.com> wrote:
+Hello Suren,
+
+On Thu,  9 Oct 2025 18:19:49 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
+
+> Document cleancache, it's APIs and sysfs interface.
 > 
->> Fix warning caused from declaration under a case label. The proper way
->> is to declare variable at the beginning of the function. The warning
->> came from running clang using LLVM=1; and is as follows:
->> --
->> -test_cachestat.c:260:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
->>    260 |                 char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
->>        |
->>
->> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  Documentation/mm/cleancache.rst | 112 ++++++++++++++++++++++++++++++++
+>  MAINTAINERS                     |   1 +
+
+I think this great document is better to be linked on mm/index.rst.
+
+Also, would it make sense to split the sysfs interface part and put under
+Documentation/admin-guide/mm/ ?
+
+>  2 files changed, 113 insertions(+)
+>  create mode 100644 Documentation/mm/cleancache.rst
 > 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> 
-> 
+> diff --git a/Documentation/mm/cleancache.rst b/Documentation/mm/cleancache.rst
+> new file mode 100644
+> index 000000000000..deaf7de51829
+> --- /dev/null
+> +++ b/Documentation/mm/cleancache.rst
+> @@ -0,0 +1,112 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +==========
+> +Cleancache
+> +==========
+> +
+> +Motivation
+> +==========
+> +
+> +Cleancache is a feature to utilize unused reserved memory for extending
+> +page cache.
+> +
+> +Cleancache can be thought of as a folio-granularity victim cache for clean
+> +file-backed pages that the kernel's pageframe replacement algorithm (PFRA)
+> +would like to keep around, but can't since there isn't enough memory. So
+> +when the PFRA "evicts" a folio, it stores the data contained in the folio
+> +into cleancache memory which is not directly accessible or addressable by
+> +the kernel (transcendent memory) and is of unknown and possibly
+> +time-varying size.
 
-Johannes and Nhat,
+IMHO, "(transcendent memory)" better to be dropped, as it has removed by commit
+814bbf49dcd0 ("xen: remove tmem driver").
 
-Assuming this will go through cachestat tree
+> +
+> +Later, when a filesystem wishes to access a folio in a file on disk, it
+> +first checks cleancache to see if it already contains required data; if it
+> +does, the folio data is copied into the kernel and a disk access is
+> +avoided.
+> +
+> +The memory cleancache uses is donated by other system components, which
+> +reserve memory not directly addressable by the kernel. By donating this
+> +memory to cleancache, the memory owner enables its utilization while it
+> +is not used. Memory donation is done using cleancache backend API and any
+> +donated memory can be taken back at any time by its donor without no delay
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+"without delay" or "with no delay" ?
 
-Let me know if you would like me to take this through my tree.
+> +and with guarantees success. Since cleancache uses this memory only to
+> +store clean file-backed data, it can be dropped at any time and therefore
+> +the donor's request to take back the memory can be always satisfied.
+> +
+> +Implementation Overview
+> +=======================
+> +
+> +Cleancache "backend" (donor that provides transcendent memory), registers
 
-thanks,
--- Shuah
+Again, "transcendent memory" part seems better to be dropped.
+
+> +itself with cleancache "frontend" and received a unique pool_id which it
+> +can use in all later API calls to identify the pool of folios it donates.
+> +Once registered, backend can call cleancache_backend_put_folio() or
+> +cleancache_backend_put_folios() to donate memory to cleancache. Note that
+> +cleancache currently supports only 0-order folios and will not accept
+> +larger-order ones. Once the backend needs that memory back, it can get it
+> +by calling cleancache_backend_get_folio(). Only the original backend can
+> +take the folio it donated from the cleancache.
+> +
+> +Kernel uses cleancache by first calling cleancache_add_fs() to register
+> +each file system and then using a combination of cleancache_store_folio(),
+> +cleancache_restore_folio(), cleancache_invalidate_{folio|inode} to store,
+> +restore and invalidate folio content.
+> +cleancache_{start|end}_inode_walk() are used to walk over folios inside
+> +an inode and cleancache_restore_from_inode() is used to restore folios
+> +during such walks.
+> +
+> +From kernel's point of view folios which are copied into cleancache have
+> +an indefinite lifetime which is completely unknowable by the kernel and so
+> +may or may not still be in cleancache at any later time. Thus, as its name
+> +implies, cleancache is not suitable for dirty folios. Cleancache has
+> +complete discretion over what folios to preserve and what folios to discard
+> +and when.
+> +
+> +Cleancache Performance Metrics
+> +==============================
+> +
+> +If CONFIG_CLEANCACHE_SYSFS is enabled, monitoring of cleancache performance
+> +can be done via sysfs in the `/sys/kernel/mm/cleancache` directory.
+> +The effectiveness of cleancache can be measured (across all filesystems)
+> +with provided stats.
+> +Global stats are published directly under `/sys/kernel/mm/cleancache` and
+> +include:
+
+``/sys/kernel/mm/cleancache`` ?
+
+> +
+> +``stored``
+> +	number of successful cleancache folio stores.
+> +
+> +``skipped``
+> +	number of folios skipped during cleancache store operation.
+> +
+> +``restored``
+> +	number of successful cleancache folio restore operations.
+> +
+> +``missed``
+> +	number of failed cleancache folio restore operations.
+> +
+> +``reclaimed``
+> +	number of folios reclaimed from the cleancache due to insufficient
+> +	memory.
+> +
+> +``recalled``
+> +	number of times cleancache folio content was discarded as a result
+> +	of the cleancache backend taking the folio back.
+> +
+> +``invalidated``
+> +	number of times cleancache folio content was discarded as a result
+> +	of invalidation.
+> +
+> +``cached``
+> +	number of folios currently cached in the cleancache.
+> +
+> +Per-pool stats are published under `/sys/kernel/mm/cleancache/<pool name>`
+
+``/sys/kernel/mm/cleancache/<pool name>`` ?
+
+> +where "pool name" is the name pool was registered under. These stats
+> +include:
+> +
+> +``size``
+> +	number of folios donated to this pool.
+> +
+> +``cached``
+> +	number of folios currently cached in the pool.
+> +
+> +``recalled``
+> +	number of times cleancache folio content was discarded as a result
+> +	of the cleancache backend taking the folio back from the pool.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 1c97227e7ffa..441e68c94177 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6053,6 +6053,7 @@ CLEANCACHE
+>  M:	Suren Baghdasaryan <surenb@google.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +F:	Documentation/mm/cleancache.rst
+>  F:	include/linux/cleancache.h
+>  F:	mm/cleancache.c
+>  F:	mm/cleancache_sysfs.c
+> -- 
+> 2.51.0.740.g6adb054d12-goog
+
+
+Thanks,
+SJ
 
