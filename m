@@ -4,92 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1DD2CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:11:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47D66CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 394448E0021; Fri, 10 Oct 2025 11:11:30 -0400 (EDT)
+	id 792198E0022; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345518E0003; Fri, 10 Oct 2025 11:11:30 -0400 (EDT)
+	id 769F68E0003; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2822D8E0021; Fri, 10 Oct 2025 11:11:30 -0400 (EDT)
+	id 6A65C8E0022; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 154F78E0003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:11:30 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E38BBB8579
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:11:29 +0000 (UTC)
-X-FDA: 83982543498.29.6E5CC32
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3D86340014
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:11:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MHNVUNKV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of pauld@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pauld@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B6408E0003
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:14:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EAA0E140382
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:14:04 +0000 (UTC)
+X-FDA: 83982550008.17.9CEEEE1
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 45B14100013
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:14:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=krGdNEuD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760109243; a=rsa-sha256;
+	cv=none;
+	b=hM/heke07tsPuQwgVSIcCeF6SIdrjgc9NR0wq6r+2E4kMFuB9T/9l+J2uhOwTrS8uR7BMQ
+	Y5d3qhMPmOZAWJ9FxEOp0Nfy8byTNPqa5NuBSFt8uYlhrAORz9xukjp0b7keKaUlPbqrDp
+	oYAAefrQ3eEyIrxWQG+5BrHta7ZhNpc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=krGdNEuD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760109088;
+	s=arc-20220608; t=1760109243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Hkwe0HXYTdkIs3L64rGDlFlcugiInGwyJxYOBEB+ivc=;
-	b=uHJmY0wjhcJb6kw9uFiF6VpoZvgm04xlzODI+MCSpQWRRr5xcGMnHOGPy5LYlxtlaJw3un
-	jFKfRaWNKnEd852qYaS4FQMEf1RWvyrA5DV4mzhoF3frKSEGXcy2yxo6PWrRfvdr18PFDX
-	KTyqcnZa0TR6lAxqnJTCZFESEpzNQZk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760109088; a=rsa-sha256;
-	cv=none;
-	b=2oC3ndlAnrHSLXzO792S5vLkusB8gwc7kJBvdrdDBbqvS0Ao4L5umIRHQkUJCJ/qMR5RGT
-	i4G/XddGuoC0ELG4C4LBW+YTwKUnp3ip+cX/EVQYTX0epjxGuFwp3WvhDmsjz+pfroYhjK
-	yD5w+IBvUBCYR2aB1kBxylkic47F3AU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MHNVUNKV;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of pauld@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pauld@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760109087;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=Hkwe0HXYTdkIs3L64rGDlFlcugiInGwyJxYOBEB+ivc=;
-	b=MHNVUNKVwgTpchk51ad7d2FWQ33KCNJ4TakwQPSSMwivTBpGLO+JVqafGqi/0aKKf1s5EX
-	CErmj0tM36xwMJutkkUW/TzBVHQmiudx9unZm8VJ/1YkOjO5hsv/m4R4oT8IfZX+VorAea
-	D+dPgrks/NGeP8Vnx5pRtBAMKf4uE34=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-7kbsAIoUM8egW-kb3SsjoA-1; Fri,
- 10 Oct 2025 11:11:23 -0400
-X-MC-Unique: 7kbsAIoUM8egW-kb3SsjoA-1
-X-Mimecast-MFC-AGG-ID: 7kbsAIoUM8egW-kb3SsjoA_1760109082
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DB7E61800295;
-	Fri, 10 Oct 2025 15:11:21 +0000 (UTC)
-Received: from pauld.westford.csb (unknown [10.22.90.6])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 32A5B180047F;
-	Fri, 10 Oct 2025 15:11:19 +0000 (UTC)
-Date: Fri, 10 Oct 2025 11:11:16 -0400
-From: Phil Auld <pauld@redhat.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
+	b=0Wvd63ykFMot8WmbXvVRG2dyZlxzAWC8t0V10X1qgPS8wSoqnNXUv8wXWp6OwDbomFiuW8
+	ag3sxMbk+dtnxQWP7L1+An/8ybmJJ/biSu6SFBqzBysfFh9CaAVyr6DSnzOVqU12b6MQBp
+	WKUox4/Z4gtcILNLjD99RRzHN1ofp6o=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-74f6974175dso23104997b3.3
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760109242; x=1760714042; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
+        b=krGdNEuDiOuWWtwGa10t0Zdgps7VoQOgLLzYkeOitbq/uH8XpcgDtPdoEseJQAWHOh
+         H0fd4uLL2Ri3Yv/DpkALE15Mj+dJHaj1gPchpD7NfNSmYC2isfUyQfkPQ4FhNngLHOaO
+         RJ9nPW7TpmauSiqfAG9KE4bpbZGhbcVijO/KpdJHXDeZi+FrY/xDwhG9mQF3GfSX3qiG
+         qEtYOCxy33bjB48N4/06ii5jCqed7wfEzTzEmmK1ZNPyDQJI+bvFW62JlzleZ6py+/T0
+         WA1Lxs6W2vXg34EjOD/C1xCE2QfIf1UpEYd2AKMXHGCvYRtn7wg1cdZJEHsWP3GJbcIg
+         RlJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760109242; x=1760714042;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tu3w7uzl84l8Ft0YZbH5YNQMm501F7O/lzUqK1Lwx90=;
+        b=srJ1DVB3/zRhii6VpE4gwMrnIjzmhyROM/mCetuaSJ9WB+ZFa8A4PLazrph6D63/O+
+         IjDFfdr1arCT9qbPxGZsMwfPdYM66aO0hq5yoBgQpE85mkNeWRzpPkrC2/4OyNe8aqtg
+         4GSy2K1CD466tfbks6iVDaqHraFwNn9kEseYuXtiZ86YnKHaIWIW4qLwFVCSTmlOYGrL
+         WXJ5xI7NG/FW/esbsrnWd/Mn1K2IDWJgTkOf8YO2/ub4Z+uQRpvBLRLUmN9mpv/uwYaz
+         QOkVorK0Oo666HGt3q9BH9iL6aBDkHMqJmA/eIp+AGQKiTm3vCWVJKoTCr4TCSwZmQPf
+         jHCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTTz0nfpqYhi/S4PmgLtysVg+Lp5nAHrATOlO+RVIqUWHZpg9MV5CHZw4Jc5Reb1/F6KrSKt4Nsg==@kvack.org
+X-Gm-Message-State: AOJu0YzxsfGF+RfMSuOBpCbcqN8Y/f+RyQVfSGB+lPauMVtRatBouc6r
+	lmpLzsNsHVjRmKmtrELBQCd/zl8+Di3mS17CeNeSddsl3oSRaNnK1upy
+X-Gm-Gg: ASbGncsACxgI4hFat3usAQuiZYx8Gq7fJlyVEyn4PbGg1BKxS8V29c9HEQ+xHLJw/CF
+	zShVrt3ObeLfmX+u0PpDOrSF3Q9am9yyS9c+cRKZkYLHDIU7WzSTvxyZQpZAiHfE2M0KTnq6g+4
+	bc6mOwery6DmhYrsppB4fiEcxqYhd20OSbmHLOALTnrlsGDJBQv2iA2m7GTc7QFlJhe6nhR9pQ9
+	aTmfuWbzDSZ8faxW9KFegdsXJRf0l1+/AVymzFOPOOQONWflS7DqiAr7Stc8MBtceEX1eEsXpsp
+	Caxd8zgms70mQ1sl+JlwFr1XP13q9/iw8d4lHx5gIytJ4TZCTrTPr7fAuF3XOFbS+ovnjQjobkv
+	nKrLQhewkE2GEmerrFUK9oFwXoWHHrAqF6H+puBI43bb3vxSsctygCj9Ned7CBuKklFa3CI8iJG
+	DdF1tZqOdJA6GkEsbbPA==
+X-Google-Smtp-Source: AGHT+IGl9qnBMei/PCnRuefDn/nGk1brpz0LjP5GS9OBntxd0TvfpQuY0J02WWnj0+QmTUzyq7Q1Zg==
+X-Received: by 2002:a05:690c:a083:10b0:781:64f:2b3e with SMTP id 00721157ae682-781064f390dmr37402917b3.64.1760109242149;
+        Fri, 10 Oct 2025 08:14:02 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:7::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-781071fa127sm6387437b3.37.2025.10.10.08.14.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 08:14:01 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Vlastimil Babka <vbabka@suse.cz>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org,
+	Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, pauld@redhat.com
-Subject: Boot fails with 59faa4da7cd4 and 3accabda4da1
-Message-ID: <20251010151116.GA436967@pauld.westford.csb>
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
+Date: Fri, 10 Oct 2025 08:13:59 -0700
+Message-ID: <20251010151400.1925642-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <c48ae6d5-3a04-4c32-8084-33d2e10d8d2e@suse.cz>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D86340014
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hxy83n593t13tdhoixpytsu3qonboi4z
-X-HE-Tag: 1760109088-970023
-X-HE-Meta: U2FsdGVkX1+dlJJ3e13LOp8/cup0s0NnJqdQIQMiutdHLK8o85boFC9JWaw14HTBTBHNw0+lRasrqZKIzYi9xi6t8V4C/gm36bPxYzyr/fiRj7z0c2FDbcf8+BFvjsnhdjXH3qm3YMcuvXYcgSWLSEuXgdE8DwjXP4JxzAMSeF8V0yz/PrucahTT9ci56ldNmg3Zkf8BqUmVadetQLuc8L6NZZXXofpqKAkByNQWTojy5UZLq8UQXmosxHyrN0+6JCQvQBcxuVvtMlzBCAVBreo15tUf7C7rcy4NcLmkntu/Pj/wzCWFCpYxGLaCQdhrEMtW5U/kFnt7TLSZrs/2mAk/2EuBb4vrXK7mtKBUd5HF0Oc3DRMVBpWeh/4u9cpGn3t4fLKbQkRnRaMf4EFBKjpCV5PLIdiQXuHRDz35MkMed55F+zpKVYmEPnbg6RL1mB9/dyuMTbk5auT6mo5aIlP2bNqZDX/zbq74B6uiPPKcTMP6AnByKHZNUu1I82xdFnyG87KyO4N0fCF3rPkHc/a95zBjzPxumrEA/Euw3yplE+hMkrpVSmvL+uxmVBV7Uk12Hltz+GJ+gYO4Uv2xysB9OJPTOysSCjxt13HJQ8vdT0DJmMgcCtRa3w6sXAxOPv8quXj0R00ZFaK0477Y4gw28Z/xZtr+fDm4fdA+GdR5mr3rGme4NTypHXIfxItCl2I6PJsiaRjEkfkgkrydFKfSbjkJ3Nb0SBUzMKeUjBNNXEjkFWxYdDI0jWBq0VIy1eVEhuBgtpdcpW1FQocBPE6A3QkVDsC1Yr08iPHmlvo72XGQKbi/kkp4aaiicFz9o/80VBt1/0zLhtSGRjpBOQd8Wqz6zEN4qdzJ6Ll+1VaVD/gzSdt6tL6+IkwSxu8Zyu1P+SNHUq6LOyt9z0hijSFd9IUETRpEuXD7L3/uwafm/zhNhJzv4UyMcE9y1zP/bD1F5gZvVqc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 45B14100013
+X-Stat-Signature: sokbhobd83eeraqr737eqzcbg6b8kegs
+X-HE-Tag: 1760109243-2008
+X-HE-Meta: U2FsdGVkX1/rTr/29trdlfoVU+i7MhgBj4iNktxdUcvmoyq9NKB5pGa++BL2FrvPThsRJND29WA2n6UTge4sAEHm6MnjjrRwwwuJRWi7uoqpJpsemD1UXHu9XoNkyAdAGFT9dWoCwYifyAn1/GJY7oBOOpe/RYPyl+GASNXo2tfQWQPYMEwk9D1wfJsMwOUCpiDXYDI48dyskFh0+Vv01Xb4EhYdyBKHpYqvYyIj/ZyxCEhTo7/W2+fi8hU1lpTPJqo35WoPThJE80zejnVea7wW5zfq5RUeseJNRaTNymu4LR9aPfyI4G3n1qytY7ybbVXQ2xYlQ9+TTEOZ63mqV6vG1dqLZv+/k5ohoA1qVi/oKEvVCzftZVCvhWhSEj9Lut1ijzoHRZO7KtJNfImRXHHQNXGptwWPtEZk4iMdXTuKmsRTjEimB2kmb+Fg6T3Uilvsyp/CwvqrTuGRGSSEYMVqNCKoxkALO+JestaLut554yx1rjovpaOouf/c6NMd1XzY36i/vCgZqBNv4F+eZw+v/HsVOXzOxJyT98cJckla9BD1E24i66mIF/8xdA5pPmKfecE5ySAvtAnL+HPkkkxRspTtptR9N/SdZ721C6W4XDmfjlnAUMzlKss/VZfrkduTweKg35c0g0NZvjMURZwTBGqzHzi0HXElBniRX87Yuw0gUIqC7L9SpgwKIR2HjNIYihqnt1KlJUb9uYcYUSg5/ubhY84ffiFE2UyB4x7JvfzJ30PkzSBlQz79793JOYXqsN1+l/7T+a5UrAQTmyucbhtqdRVx5ilegi1TAuKKkjlKUtIL8rA5fR+ZhKO27oLJZfSM1Aap3GwyELstYKvsnLYOfly79kIUA+Iy1Nua/6PSJ/MNt/C0pZcS9rDd5gQm6kXPq0y1AoDmctZ/eziqPoXZFQW7Kd+PjodZClAIaJV4Cm3gYYCNfNvEkJZq9XTxFE/U0CRf6X2NInO
+ XdrfyTyW
+ SdJ8nuHpMyuwoxHYCKAQhiyqEk+2Wh6eH2Xjd1p1OzioRy1LhZHRb4ydjuDzDQ45+czCL+3HzwNZ5rOJRGlkD4f+ZaKG2+DueP1oIoTye43PVaUVNGwyQ6bk94MW2yT04gvr8JRoLDC+d3sCxKvN2rKGpiC+6Ipe7GKWn+qP0b45CIU2WwVi0fPY4Bg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,120 +128,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, 10 Oct 2025 15:37:23 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-After several days of failed boots I've gotten it down to these two
-commits.
+[...snip...]
 
-59faa4da7cd4 maple_tree: use percpu sheaves for maple_node_cache
-3accabda4da1 mm, vma: use percpu sheaves for vm_area_struct cache
+> >  	high = nr_pcp_high(pcp, zone, batch, free_high);
+> >  	if (pcp->count < high)
+> > -		return;
+> > +		return true;
+> > +
+> > +	to_free = nr_pcp_free(pcp, batch, high, free_high);
+> > +	if (to_free == 0)
+> > +		return true;
+> >  
+> > -	free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
+> > -			   pcp, pindex);
+> > +free_batch:
+> > +	to_free_batched = min(to_free, batch);
+> > +	free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+> >  	if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
 
-The first is such an early failure it's silent. With just 3acca I
-get :
+Hello Vlastimil, thank you for your review!
 
-[    9.341152] BUG: kernel NULL pointer dereference, address: 0000000000000040
-[    9.348115] #PF: supervisor read access in kernel mode
-[    9.353264] #PF: error_code(0x0000) - not-present page
-[    9.358413] PGD 0 P4D 0
-[    9.360959] Oops: Oops: 0000 [#1] SMP NOPTI
-[    9.365154] CPU: 21 UID: 0 PID: 818 Comm: kworker/u398:0 Not tainted 6.17.0-rc3.slab+ #5 PREEMPT(voluntary)
-[    9.374982] Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.26.0 07/30/2025
-[    9.382641] RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
-[    9.388048] Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
-[    9.406794] RSP: 0018:ffffd2d10950bdb0 EFLAGS: 00010246
-[    9.412022] RAX: 0000000000000000 RBX: ffff8a775dab74b0 RCX: 00000000ffffffff
-[    9.419156] RDX: 0000000000000cc0 RSI: ffff8a6800804000 RDI: ffff8a680004e300
-[    9.426297] RBP: ffffd2d10950be40 R08: 0000000000000060 R09: ffffffffb9367388
-[    9.433427] R10: 00000000000149e8 R11: ffff8a6f87a38000 R12: 0000000000000cc0
-[    9.440562] R13: 0000000000000cc0 R14: ffff8a680004e300 R15: 00000000000000c0
-[    9.447696] FS:  0000000000000000(0000) GS:ffff8a77a3541000(0000) knlGS:0000000000000000
-[    9.455788] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    9.461535] CR2: 0000000000000040 CR3: 0000000e1aa24000 CR4: 00000000003506f0
-[    9.468665] Call Trace:
-[    9.471123]  <TASK>
-[    9.473233]  ? srso_return_thunk+0x5/0x5f
-[    9.477258]  ? vm_area_alloc+0x1e/0x60
-[    9.481020]  kmem_cache_alloc_noprof+0x4ec/0x5b0
-[    9.485647]  vm_area_alloc+0x1e/0x60
-[    9.489235]  create_init_stack_vma+0x26/0x210
-[    9.493605]  alloc_bprm+0x139/0x200
-[    9.497104]  kernel_execve+0x4a/0x140
-[    9.500779]  call_usermodehelper_exec_async+0xd0/0x190
-[    9.505923]  ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-[    9.511670]  ret_from_fork+0xf0/0x110
-[    9.515346]  ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-[    9.521095]  ret_from_fork_asm+0x1a/0x30
-[    9.525035]  </TASK>
-[    9.527225] Modules linked in:
-[    9.530290] CR2: 0000000000000040
-[    9.533617] ---[ end trace 0000000000000000 ]---
-[    9.538245] RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
-[    9.543653] Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
-[    9.562405] RSP: 0018:ffffd2d10950bdb0 EFLAGS: 00010246
-[    9.567634] RAX: 0000000000000000 RBX: ffff8a775dab74b0 RCX: 00000000ffffffff
-[    9.574774] RDX: 0000000000000cc0 RSI: ffff8a6800804000 RDI: ffff8a680004e300
-[    9.581908] RBP: ffffd2d10950be40 R08: 0000000000000060 R09: ffffffffb9367388
-[    9.589048] R10: 00000000000149e8 R11: ffff8a6f87a38000 R12: 0000000000000cc0
-[    9.596178] R13: 0000000000000cc0 R14: ffff8a680004e300 R15: 00000000000000c0
-[    9.603313] FS:  0000000000000000(0000) GS:ffff8a77a3541000(0000) knlGS:0000000000000000
-[    9.611399] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    9.617145] CR2: 0000000000000040 CR3: 0000000e1aa24000 CR4: 00000000003506f0
-[    9.624278] Kernel panic - not syncing: Fatal exception
-[    9.631463] Kernel Offset: 0x36a00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-[    9.642244] ---[ end Kernel panic - not syncing: Fatal exception ]---
+> We could do this handling once after all batches. But maybe it's better to
+> act as soon as it becomes true, and checking once ber batch isn't measurably
+> slower, dunno.
 
+My thinking was that if we are to release the pcp and zone lock and another
+task remotely inspects this pcp in the middle of the loop, I would want the
+ZONE_BELOW_HIGH bit to reflect the correct state of the pcp, as opposed to
+doing it once at the end.
 
-Reverting both produces a working kernel.
+> >  	    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
+> >  			      ZONE_MOVABLE, 0)) {
+> > @@ -2887,6 +2901,35 @@ static void free_frozen_page_commit(struct zone *zone,
+> >  		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
+> >  			atomic_set(&pgdat->kswapd_failures, 0);
+> >  	}
+> > +	high = nr_pcp_high(pcp, zone, batch, free_high);
+> 
+> It's not clear why we recalculate this. Ah I see, the calculation involves a
+> ZONE_BELOW_HIGH check which we might have changed above. So as a result ths
+> patch isn't a straightforward "we free the same amount of pages but in
+> smaller batches" but something different (and I'm not immediately sure what
+> exactly).
 
-I have not looked into what the percpu sheaves thing is actually doing but
-this is an AMD EPYC 7401 with 8 NUMA nodes configured such that memory is
-only on 2 of them.  
+Yes! So nr_pcp_high will check if we are now below high, and see what the
+new high should be, and see if we need to free some more pages. My goal was
+to prevent having to call free_frozen_page_commit again in the future once
+we realize that there are still pages yet to be freed, and handle that case
+within this loop as if it was what we originally decided to free.
 
-# numactl --hardware
-available: 8 nodes (0-7)
-node 0 cpus: 0 8 16 24 32 40 48 56 64 72 80 88
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 1 cpus: 2 10 18 26 34 42 50 58 66 74 82 90
-node 1 size: 31584 MB
-node 1 free: 30397 MB
-node 2 cpus: 4 12 20 28 36 44 52 60 68 76 84 92
-node 2 size: 0 MB
-node 2 free: 0 MB
-node 3 cpus: 6 14 22 30 38 46 54 62 70 78 86 94
-node 3 size: 0 MB
-node 3 free: 0 MB
-node 4 cpus: 1 9 17 25 33 41 49 57 65 73 81 89
-node 4 size: 0 MB
-node 4 free: 0 MB
-node 5 cpus: 3 11 19 27 35 43 51 59 67 75 83 91
-node 5 size: 32214 MB
-node 5 free: 31625 MB
-node 6 cpus: 5 13 21 29 37 45 53 61 69 77 85 93
-node 6 size: 0 MB
-node 6 free: 0 MB
-node 7 cpus: 7 15 23 31 39 47 55 63 71 79 87 95
-node 7 size: 0 MB
-node 7 free: 0 MB
-node distances:
-node     0    1    2    3    4    5    6    7 
-   0:   10   16   16   16   28   28   22   28 
-   1:   16   10   16   16   28   28   28   22 
-   2:   16   16   10   16   22   28   28   28 
-   3:   16   16   16   10   28   22   28   28 
-   4:   28   28   22   28   10   16   16   16 
-   5:   28   28   28   22   16   10   16   16 
-   6:   22   28   28   28   16   16   10   16 
-   7:   28   22   28   28   16   16   16   10 
+> I think it's an argument for doing the ZONE_BELOW_HIGH test above just once
+> in the end, and not recalculating "high" here. I'd just stick to the
+> "to_free" calculated uprofront and decreasing it by "to_free_batched" each
+> round.
 
+Yes, this makes sense to me. The last sentence in my paragraph above seems
+a little sneaky in doing more work than it originally was called to do, so
+I do agree that we should do the ZONE_BELOW_HIGH check once, and also
+calculate how many pages to free at once in the beginning.
 
-Let me know if I can provide any more information.
+> We should maybe also check that pcp->count went to 0 and bail out so we
+> don't make useless iterations in rare cases when someone else drains the pcp
+> between our batches (free_pcppages_bulk() protects itself from passing too
+> high "count" so it would be just some wasted cpu otherwise, not a disaster).
 
+Hopefully the check below is enough to handle this race case. When it
+determines whether to iterate through in the loop again, we check that
+to_free > 0 && pcp->count >= high, so if someone else were to drain the
+drain the pcp->count, it would go under high (I don't think it's possible
+for high to become negative here) it would break this check and prevent
+another iteration. 
 
-Thanks,
-Phil
+> > +	to_free -= to_free_batched;
+> > +	if (pcp->count >= high) {
+> > +		pcp_spin_unlock(pcp);
+> > +		pcp_trylock_finish(*UP_flags);
+> > +
+> > +		pcp_trylock_prepare(*UP_flags);
+> > +		pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+> > +		if (!pcp) {
+> > +			pcp_trylock_finish(*UP_flags);
+> > +			return false;
+> > +		}
+> > +
+> > +		/*
+> > +		 * Check if this thread has been migrated to a different
+> > +		 * CPU. If that is the case, give up and indicate that
+> > +		 * the pcp is returned in an unlocked state.
+> > +		 */
+> > +		if (smp_processor_id() != cpu) {
+> 
+> We could have remembered the old pcp pointer and compare that instead of
+> doing smp_processor_id(), although that should also work.
 
+I think that would have also worked. To be completely honest, I wasn't
+sure if there was some pcp stuff inside that would change the pointer,
+so just went with using the CPU int instead. 
 
--- 
+> > +			pcp_spin_unlock(pcp);
+> > +			pcp_trylock_finish(*UP_flags);
+> > +			return false;
+> > +		}
+> > +	}
+> > +
+> > +	if (to_free > 0 && pcp->count >= high)
 
+           Check is here:  ^^^^^^^^^^^^^^^^^^
+
+> > +		goto free_batch;
+> > +
+> > +	return true;
+> >  }
+> >  
+> >  /*
+> > @@ -2934,7 +2977,9 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
+> >  	pcp_trylock_prepare(UP_flags);
+> >  	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+> >  	if (pcp) {
+> > -		free_frozen_page_commit(zone, pcp, page, migratetype, order, fpi_flags);
+> > +		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
+> > +						order, fpi_flags, &UP_flags))
+> > +			return;
+> >  		pcp_spin_unlock(pcp);
+> >  	} else {
+> >  		free_one_page(zone, page, pfn, order, fpi_flags);
+> > @@ -3034,8 +3079,11 @@ void free_unref_folios(struct folio_batch *folios)
+> >  			migratetype = MIGRATE_MOVABLE;
+> >  
+> >  		trace_mm_page_free_batched(&folio->page);
+> > -		free_frozen_page_commit(zone, pcp, &folio->page, migratetype,
+> > -					order, FPI_NONE);
+> > +		if (!free_frozen_page_commit(zone, pcp, &folio->page,
+> > +				migratetype, order, FPI_NONE, &UP_flags)) {
+> > +			pcp = NULL;
+> > +			locked_zone = NULL;
+> > +		}
+> >  	}
+> >  
+> >  	if (pcp) {
+
+Thank you again for your review, Vlastimil. I agree with all of your
+feedback, so I will make those changes (as well as the commit message
+change for patch 2/3) and submit a new version. I hope you have a great day!
+Joshua
 
