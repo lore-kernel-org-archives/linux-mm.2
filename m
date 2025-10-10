@@ -4,126 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED555CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 07:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADF93CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 07:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F4DF8E000D; Fri, 10 Oct 2025 03:49:16 -0400 (EDT)
+	id DA5488E000E; Fri, 10 Oct 2025 03:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A6278E0002; Fri, 10 Oct 2025 03:49:16 -0400 (EDT)
+	id D514A8E0002; Fri, 10 Oct 2025 03:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 294D28E000D; Fri, 10 Oct 2025 03:49:16 -0400 (EDT)
+	id BF0EA8E000E; Fri, 10 Oct 2025 03:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14CE88E0002
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 03:49:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AF045855AD
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:49:15 +0000 (UTC)
-X-FDA: 83981429070.10.B19C01D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0E0DE140003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:49:12 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jmp8Nj20;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7CF78E0002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 03:55:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 356EF85625
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:55:00 +0000 (UTC)
+X-FDA: 83981443560.22.C1A37CC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C8FEB100009
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:54:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DtUab8bh;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760082553;
+	s=arc-20220608; t=1760082897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D0yBhefqPVlfdaiWs+lWrTKwHncS2FoO8a/JR8uKlUo=;
-	b=t6YdGxHVK/kuNCVliFrXkdxaO3Hx8rsZSPMJSzNMDTsuq8QA0XorYJN95tJX1z+K1xeImO
-	u4Wwk8sOPUrVVJfTLgPjLlQyoDMZvwdAiUK6MlUYL0wGQwktbqPm7w3pvhiB4QHYYAe1Ca
-	s1JuJsVI9GuxOoOIaWSKhe1/aQAW8jI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760082553; a=rsa-sha256;
-	cv=none;
-	b=KLxdV3r/pyFeLv0wIbJsOh5pFAuLhENuweIlBANzNo/StJLJlIXPbtssFRokmRm+7HO3IY
-	1J7wt4ZynqFPOAbUvszcqniecCqOuclucxBWYOXLbE33eBbiC/WOAdXW4racL3ahXY9efP
-	iKD6mvnP3tl1cG04Gmbh/cAPiWwEwfw=
+	bh=M+pjFKpPGhPGCb6BNB3UehKfe41+RfPzqJkeretXuck=;
+	b=kFMie7vfgONUKyHgcVSehiLJpBYZVa/Qj/S+M06DRpEbBNl8KYWuafvZIZ/OnP7DehMu5+
+	AQkU1nyiMMBaSqguKHiY+cmO4i4c0hKKb8tHrvlq55lcejHKOdVpVy9jO+troHFD3f3tix
+	OMDprMvlDNZtsJax7E1yRLxCzPEohwE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jmp8Nj20;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760082553; x=1791618553;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=WITPA9UX0mo7jnNcZhH/peun2UL7jtO3QDe+jYYMhxE=;
-  b=jmp8Nj20C6jBYDyzxnq2ACLcUwa7Z8CxVTxQhI+qrw++xd5/S14aGcco
-   4l8S3sttjzIiOFfUkqoHembeWwHJZGekKaPv7qhr5eyOnSNW0L/8QGQ3o
-   aYdDFErML3cHfqcHW/BJkb9fOBP7sN+MYMv0jyeNmI+cyEoLZrdyaJ/E6
-   d++EXlXVbP0uo8pBuDBT3UuZHVEHq2q7Ltqps+cr+lL8SO3eDBBYnrqp4
-   wLsPkcwoMfnCse5bNAqJTDI9WfJ5QxjVqgcLT2K6m1mUBwA/y7TwmlP5u
-   2/r4J2/pDUEfguiQnSuVTzF8jpOqRnndsQLxzSWhFv/zQMvmU7uAwQJzm
-   A==;
-X-CSE-ConnectionGUID: ebSrsyBZTFmXAbjq0cg7xg==
-X-CSE-MsgGUID: N+jRGKKNQ0GBot47sO2EZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="64921811"
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
-   d="scan'208";a="64921811"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 00:49:12 -0700
-X-CSE-ConnectionGUID: mXA4EAEiTXqigEW2vYLEcw==
-X-CSE-MsgGUID: PgyogO0/TP2+AFnJYA+RAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
-   d="scan'208";a="185304299"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Oct 2025 00:49:05 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v77s6-0002Ql-34;
-	Fri, 10 Oct 2025 07:49:02 +0000
-Date: Fri, 10 Oct 2025 15:48:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Christopher Healy <healych@amazon.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, kernel@collabora.com
-Subject: Re: [PATCH v3 02/10] drm/gem: Introduce drm_gem_get_unmapped_area()
- fop
-Message-ID: <202510101507.UiRzhiAP-lkp@intel.com>
-References: <20251004093054.21388-3-loic.molinari@collabora.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DtUab8bh;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760082897; a=rsa-sha256;
+	cv=none;
+	b=C2qcgkmUPcfXH+Dq3hHc0s0XJt+2qnPRI6I5Tuds0eXkAbhRGGqcXrvYVBgZfqANw15Fqu
+	H+C/zjuFgO7FrifPePA4xLLRYytN4K4dH2cOgYlsuGm0pBAiHzJ/4FvIOJoMbZBpAHqfi0
+	H176INixGMmh28zrHQFPwr4JZErlMCo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760082897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M+pjFKpPGhPGCb6BNB3UehKfe41+RfPzqJkeretXuck=;
+	b=DtUab8bhf8tK91VdWbE7Nq5fBW6qLMGWK1MB3we4NEmxi60ABd11FKSjYyj1uKfodqYXm2
+	pq0bV9GOnBVZUfhjU24lUtcGdDCg3wd9UKGkcujb5tXu4bxYLY+3CvDfE4semfcYJI9nhk
+	4hCvdDh5D4Yx+X3XtOYPASvVn0ssczY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-663-nqlScR4xPK2UZDlkGRbBUw-1; Fri, 10 Oct 2025 03:54:55 -0400
+X-MC-Unique: nqlScR4xPK2UZDlkGRbBUw-1
+X-Mimecast-MFC-AGG-ID: nqlScR4xPK2UZDlkGRbBUw_1760082895
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-41066f050a4so1005288f8f.1
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 00:54:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760082894; x=1760687694;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M+pjFKpPGhPGCb6BNB3UehKfe41+RfPzqJkeretXuck=;
+        b=ZNDEh2iyX+eE7I/ukEKGL5SWO9O5OHHEl+N+yrV+CyBuguJPbphVxBTfDm+p9ftd1a
+         4KQ51k3rD15QRyRS1+VECYD2YXVcXdlIWuOKBY3HUQk7lCotVBzEE8RvSCM+WIRfCo1h
+         0jUcjqe/8OI9rJ+qCn2k+yrTNFhEqa0UFxLCvOaYyWFQCQ0GVaL2RyPn2/LQqSWFsoCy
+         2ZwvdtOVGbiuPRlc4vJJ33Zi8EFK+BhlecZcCQcleibce1QienvGQ4pDI4Yd1I875FM+
+         fmJXZ872Vb9oGxG0NM/Bpz8LbqckU9oUZiPhrpxFKrp5yeCj4czSkh+WXKPnFon9H0xo
+         DOYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjm8kMFzdXvuaMwSlZvnsQgos0LutXFTj5hP8+eUmGODB+KsGtBoVFm/rfq5KVlfQuIeHhgAFI9g==@kvack.org
+X-Gm-Message-State: AOJu0YyXyznz9/YnoaCylsVd2QeCh90YNCqkwjul5K0jR49F0BBAH43W
+	WCE5RXIiSjW9yeAkGegRoUeI93hGWOelOx7s1VA5M0f7sovOPy0Q6wni4WmKTKZowTBr4YUN0KA
+	5cWR8xgjh3qcCi3XmW2XLtXJowepGiFHQu0wc0fsFintSJUlmY6Si
+X-Gm-Gg: ASbGncuJ5RfOHKJnBFuVaa2cKyKNT2jxchmYi4mq8GWT6jG5NkYoyTZFnDQ347Zrr0N
+	LLmESnZ+NAarBwfAlT+94T5RS39S+FRy/795rSDrSyIazgBDW6OfrHL6iitJqRowksQt4VOXB4v
+	xhKytdoRepNX5MQ+C0ouCXPNFilMpj/W5FFZ1OgMrIKOyTbvIZBaX82dCpn0EGYKGA4VtsW3prt
+	s6q67BjF8O9S+FVnv1zaj8gSIK6UX7ALpF4WTZ1oy0aQQf4SD9iy9KdxeSohvlrM7/82tTVJ0CV
+	rbYIvkbl4Fd4t30MnNgVPhJhhmLh0OktplyF/bsBv4xMAhcy8Fu8v9w/ebeCaQT3Xway6PV2FEh
+	Q8YA=
+X-Received: by 2002:a05:6000:26c2:b0:3e7:5f26:f1e5 with SMTP id ffacd0b85a97d-4266e7beb57mr6225767f8f.23.1760082894491;
+        Fri, 10 Oct 2025 00:54:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTTPZj7hzRMoj+OIEk2jkUAprMdCN7KGM1KZIMXJPUWlJSecGQKX1yuYPKejz1THVQLE0NVA==
+X-Received: by 2002:a05:6000:26c2:b0:3e7:5f26:f1e5 with SMTP id ffacd0b85a97d-4266e7beb57mr6225728f8f.23.1760082893829;
+        Fri, 10 Oct 2025 00:54:53 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb482b9easm35213505e9.1.2025.10.10.00.54.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 00:54:53 -0700 (PDT)
+Message-ID: <3577f7fd-429a-49c5-973b-38174a67be15@redhat.com>
+Date: Fri, 10 Oct 2025 09:54:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Alexei Starovoitov
+ <alexei.starovoitov@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>, baolin.wang@linux.alibaba.com,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>,
+ Tejun Heo <tj@kernel.org>, lance.yang@linux.dev,
+ Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20250930055826.9810-1-laoar.shao@gmail.com>
+ <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+ <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com>
+ <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
+ <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com>
+ <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
+ <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com>
+ <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
+ <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com>
+ <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com>
+ <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: niMshsndk_y0FhVnX46bsP3HlXCzRUeTawEA_0nsiRQ_1760082895
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251004093054.21388-3-loic.molinari@collabora.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6cz63iosc1ysoskg4j75mxxjn1jpq6n9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C8FEB100009
+X-Stat-Signature: pmiqxtokdy3j9qr6rfh1cmhnazas4tqe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E0DE140003
-X-HE-Tag: 1760082552-856578
-X-HE-Meta: U2FsdGVkX19e+LmoFftOHHubbjrsflHBELrzXIiJ3jJLzY7jShFMwWNwMfpmwjJDUmZXWwohLSy9eyaEJhMIxczegffOhpKZWGhLUiBd9MOldsoCd+HKlEwYMvenJ43cpM/UPSzCFCbZYxbyX8YgE6W2Aykhpgw6HGNzxcMrcUwyD2r9MgN8tqqgH9/CqqIBR34rm7FS+6fL2efdnbxzLI+ZA2JN/Lw1RBxjmTnTdVgr6tjVF7NXT88BlIczd8L2I8CFV3ZAjZCdqc/AGczDzttlrSMMdmj7CfLGeyZ6YI8faZeNR5Fd3prJ5aNNh6eY/w2tsXZeD5MHtMhS2eJzEXuALUCYT3ot61qFiA5y19C0PECpGaPZwtmlWNZyJw2B6LgNdTjEmdqgsiXEpwVa/iKnLdtuJQwvwxpmKXDTHv/st9NpT+SEuHO5Lq/Xs/rnL7/QMztBZRp0j8l60BgxuSKb6FF51l396Cpzh0Nhcj0psQdVE52/dFAU7VyH1XINFgG+mmVrwHbJKJexxrdgqiay8MEUIXm4U4pjIbNf9OLmLh8Rt/lyT2/Myc/vIsvX+fyBzwrUlamWDB9r1dqRVqTJJb8RobBzcgS/FMb23OOugFTbygKdnDT/et1hWBAw6n+i85b8kleaFpBuqxmfv591SfLBHlsmSfYC9I3FYMz3N433NsvqgOSbV1xKY6My7CFiJDktWySU3PzFN7soE1js81qIc5bovYHw1HRF/nxcAT1bEEAulIPFb2WLbp7cfoTzPmVXfEp7r+bfWXTuRBZ5CxBjsIpv/4pJD8OkbhbKiJF3KkGk9tHTzaq/b1ZifO2Ap+V8iaJ7Pmcz6IcNI6vZJsreu4YBvLyz7I2BPm2VxHQBbanhRC4HufWMJcsxGkagOlBGb9Nhvnh46xEivCBDFLCbZchWKD7ZkksY/YPRY+/X1vuKAdBXDD7aL1C/vhYhTR9aodExtB6T3IY
- rvYNmXeL
- rFP/3DXqzcOzbkVHED9L/+YXoMSMGcKRAU+NCWDe4hYfeKXQ2TdUBcR8Atd0FF59gnOPHJkcKRoEtIWYJNJSsmG+F/COS8MqQ8dZfQNz5aBtn3bNakm7JXHBWTmx1iIx0i01PL3pUplgWmLS0/94Gy+rN+xd0U5+rCXnd2uQK7d11kInY9m8ihFnR/nOtzoaY22dwZ0EFa49TEeCnInwRd3G+RRVGfdpgsV/W4VSjAzxo1XGE/vb5O5rynJc5JCB60DCoEDvFdKcKSk8YPA49OD/UtdojIZ4UDqr8RqOPufgjBbqErHDKvhg2XWaC8dTv+D/7l6zwrt3Pmijd/QHWamJRB/RnUP+Kc/avtGzNhwGAhv7c/DnlLJgCqsavN3VWHXsMkpz7703wgTWcqLG8vJTocfyW+msRbPrcOlRAhnY03WHjub+OUMkriPcnQBYA716UKWuiytMKAMUwej/jdmn+hIx6cU1Aqgn98jDSNeFBX/Gl7S2SJtIpfd12AMzD3EzvrIF+O1YCaZNQZ3bAz871PirasYczibaDS6W/eaownXQ=
+X-HE-Tag: 1760082897-776718
+X-HE-Meta: U2FsdGVkX18muXq5RdqDDWL9R6QqvV7PYs1egmtHKSbe/CNI0KEAdwofj5ud67Oa5tEDHkKPkFtz+xK2mHAXXYiW9qUnqrhzG6umh7rSzF7zqoDCKICEbaEYBVFOpe6T8js5iHFF6Zanhh/u+PNOmMsgFeUcOerilFfNeW23PYqcXjVkaQXyql5e76uoHjKeku6xdzIukagsmcvsIhb3AvKIF6RsLRHS5ICljf/gOEwIg+TjEixCvWdmbiSVRtVqXmABVFYpnl3uPRG9ceR2sYe8JH9QA1FPP8/vBOHyvXsXdGgPpfmy5ZIp5ZWl15vMYXZuYua1j2o97iknooPobfMocmwrPeXuMVZvEdKUrBBs2tK/mnfZqlFedVRbBs4WMNh//4vks851auSld/4x3C5LlFXDyXiPbT4W3XnvAQKaWQ8HvOxJ+dcN2E1/Gk4viQwpsbct4VHHn0yLsl3OZv4EWZKavJZBGn1Jlb3BDCpg8JnFzCd/GH2BkDnWUAFEZ0JsZDILmf1UGMy8jY0F4jliXrggfWtHVqHlhtISTIRjRkgSdQsXs2QRfInGLhq3Xcka/wi+RoVyPoqVjwae29Fiqji36vQU/4fdSMCO9QMfOxTefMHczlWGCadMR6Ce8qLUKiM0PD/s9ofiWA1uWrQ3f87j9DUYF7JRZrHMb/JCdQW7Q3agh4Dr3KnM7H1MaWGlaXeQi0XZGBTHxzTjTIrkEI2L2p7v5hUxFZ3qrOQHwh+VCYRwI9mtHsh9w2iAOy/y8tEdNOFTvsbPeQoM7Xdth2GSI8O5w/gjU8oBeya0LJ5s+Fg4KpP4slNhXR0cBHSCXAWUqespVSoc8/lr5mBjmLwsFKiiAvUklq7Qc1EG9n2lMk8XyzixnzY7hKylB+KX0H1jUazQXpB3sQuOdErCQZmk9h5CN7j1soji5I+l1ngCJQF7qs5dzgMAcL+yhBgzXA55xNHl00B2Ma8
+ 3sMPkbIU
+ sYSIob6EhXpxs78/KmkpX5sMpPuqbcfZmMZRHhhz29creDBD4aomUJ7KieNvUZ5bU0H/Zd0OhHORMMAM2sFrFk8iEKGQJwytB9qecDPKOxhw6JTdMF4q6QIsRsx71DeeWOriCs8DWitEuGViw6zJFy2EYXg9WRAR/iz31czlISX0Y98dWpLE+/6o9suJhHsmj+FKIdsEx4VMSktpG5uuFt3wAh0hdTmK+G1d/oPPMv1iTwHdGBNylkcwZoZv+cygqUSwYCMiCkq7C1RdTm1aZyJ5jR41zXRfnlvP2bahaPZUMD8fhlAH3pUFJPKJExpQI/CN+YMdXzpRtXs4ZMDQF8EipBjppKw1jsBebh0uhtzvjKSU59+DHNUb8PzR6rIG9hdaCEwPbr8o/e+DGvYofn8L8xKgs5EsAWmGHeAd0ZtEHGjhWjAiqop8ZRGcjRKUnSWaB0CE5xj1Kii//401MMR4Xp7QKUiYN5UCrra9Zh/ZOp/f63Yku9Sx5Mr/YdOT05CVBmhUZxy+cExoetD7QL28Y7vJT+9Z9jqKQQZfkDvk4Mf84Ueku2MUpklEyGe2PAgKgZLCMGpqUwWEp5Oxxl6iWJ0ldRb2Hs6j5CF0B6em8ewfk9eXtPoD+7NeWTqlqdc2LHdtcQ083agsUDzXF98QtTtUZBqkmUmsofQyRlp0GrMk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,163 +202,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lo�c,
+On 09.10.25 11:59, Yafang Shao wrote:
+> On Thu, Oct 9, 2025 at 5:19 PM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 08.10.25 15:11, Yafang Shao wrote:
+>>> On Wed, Oct 8, 2025 at 8:07 PM David Hildenbrand <david@redhat.com> wrote:
+>>>>
+>>>> On 08.10.25 13:27, Zi Yan wrote:
+>>>>> On 8 Oct 2025, at 5:04, Yafang Shao wrote:
+>>>>>
+>>>>>> On Wed, Oct 8, 2025 at 4:28 PM David Hildenbrand <david@redhat.com> wrote:
+>>>>>>>
+>>>>>>> On 08.10.25 10:18, Yafang Shao wrote:
+>>>>>>>> On Wed, Oct 8, 2025 at 4:08 PM David Hildenbrand <david@redhat.com> wrote:
+>>>>>>>>>
+>>>>>>>>> On 03.10.25 04:18, Alexei Starovoitov wrote:
+>>>>>>>>>> On Mon, Sep 29, 2025 at 10:59 PM Yafang Shao <laoar.shao@gmail.com> wrote:
+>>>>>>>>>>>
+>>>>>>>>>>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
+>>>>>>>>>>> +                                     enum tva_type type,
+>>>>>>>>>>> +                                     unsigned long orders)
+>>>>>>>>>>> +{
+>>>>>>>>>>> +       thp_order_fn_t *bpf_hook_thp_get_order;
+>>>>>>>>>>> +       int bpf_order;
+>>>>>>>>>>> +
+>>>>>>>>>>> +       /* No BPF program is attached */
+>>>>>>>>>>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+>>>>>>>>>>> +                     &transparent_hugepage_flags))
+>>>>>>>>>>> +               return orders;
+>>>>>>>>>>> +
+>>>>>>>>>>> +       rcu_read_lock();
+>>>>>>>>>>> +       bpf_hook_thp_get_order = rcu_dereference(bpf_thp.thp_get_order);
+>>>>>>>>>>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
+>>>>>>>>>>> +               goto out;
+>>>>>>>>>>> +
+>>>>>>>>>>> +       bpf_order = bpf_hook_thp_get_order(vma, type, orders);
+>>>>>>>>>>> +       orders &= BIT(bpf_order);
+>>>>>>>>>>> +
+>>>>>>>>>>> +out:
+>>>>>>>>>>> +       rcu_read_unlock();
+>>>>>>>>>>> +       return orders;
+>>>>>>>>>>> +}
+>>>>>>>>>>
+>>>>>>>>>> I thought I explained it earlier.
+>>>>>>>>>> Nack to a single global prog approach.
+>>>>>>>>>
+>>>>>>>>> I agree. We should have the option to either specify a policy globally,
+>>>>>>>>> or more refined for cgroups/processes.
+>>>>>>>>>
+>>>>>>>>> It's an interesting question if a program would ever want to ship its
+>>>>>>>>> own policy: I can see use cases for that.
+>>>>>>>>>
+>>>>>>>>> So I agree that we should make it more flexible right from the start.
+>>>>>>>>
+>>>>>>>> To achieve per-process granularity, the struct-ops must be embedded
+>>>>>>>> within the mm_struct as follows:
+>>>>>>>>
+>>>>>>>> +#ifdef CONFIG_BPF_MM
+>>>>>>>> +struct bpf_mm_ops {
+>>>>>>>> +#ifdef CONFIG_BPF_THP
+>>>>>>>> +       struct bpf_thp_ops bpf_thp;
+>>>>>>>> +#endif
+>>>>>>>> +};
+>>>>>>>> +#endif
+>>>>>>>> +
+>>>>>>>>      /*
+>>>>>>>>       * Opaque type representing current mm_struct flag state. Must be accessed via
+>>>>>>>>       * mm_flags_xxx() helper functions.
+>>>>>>>> @@ -1268,6 +1281,10 @@ struct mm_struct {
+>>>>>>>>      #ifdef CONFIG_MM_ID
+>>>>>>>>                     mm_id_t mm_id;
+>>>>>>>>      #endif /* CONFIG_MM_ID */
+>>>>>>>> +
+>>>>>>>> +#ifdef CONFIG_BPF_MM
+>>>>>>>> +               struct bpf_mm_ops bpf_mm;
+>>>>>>>> +#endif
+>>>>>>>>             } __randomize_layout;
+>>>>>>>>
+>>>>>>>> We should be aware that this will involve extensive changes in mm/.
+>>>>>>>
+>>>>>>> That's what we do on linux-mm :)
+>>>>>>>
+>>>>>>> It would be great to use Alexei's feedback/experience to come up with
+>>>>>>> something that is flexible for various use cases.
+>>>>>>
+>>>>>> I'm still not entirely convinced that allowing individual processes or
+>>>>>> cgroups to run independent progs is a valid use case. However, since
+>>>>>> we have a consensus that this is the right direction, I will proceed
+>>>>>> with this approach.
+>>>>>>
+>>>>>>>
+>>>>>>> So I think this is likely the right direction.
+>>>>>>>
+>>>>>>> It would be great to evaluate which scenarios we could unlock with this
+>>>>>>> (global vs. per-process vs. per-cgroup) approach, and how
+>>>>>>> extensive/involved the changes will be.
+>>>>>>
+>>>>>> 1. Global Approach
+>>>>>>       - Pros:
+>>>>>>         Simple;
+>>>>>>         Can manage different THP policies for different cgroups or processes.
+>>>>>>      - Cons:
+>>>>>>         Does not allow individual processes to run their own BPF programs.
+>>>>>>
+>>>>>> 2. Per-Process Approach
+>>>>>>        - Pros:
+>>>>>>          Enables each process to run its own BPF program.
+>>>>>>        - Cons:
+>>>>>>          Introduces significant complexity, as it requires handling the
+>>>>>> BPF program's lifecycle (creation, destruction, inheritance) within
+>>>>>> every mm_struct.
+>>>>>>
+>>>>>> 3. Per-Cgroup Approach
+>>>>>>        - Pros:
+>>>>>>           Allows individual cgroups to run their own BPF programs.
+>>>>>>           Less complex than the per-process model, as it can leverage the
+>>>>>> existing cgroup operations structure.
+>>>>>>        - Cons:
+>>>>>>           Creates a dependency on the cgroup subsystem.
+>>>>>>           might not be easy to control at the per-process level.
+>>>>>
+>>>>> Another issue is that how and who to deal with hierarchical cgroup, where one
+>>>>> cgroup is a parent of another. Should bpf program to do that or mm code
+>>>>> to do that? I remember hierarchical cgroup is the main reason THP control
+>>>>> at cgroup level is rejected. If we do per-cgroup bpf control, wouldn't we
+>>>>> get the same rejection from cgroup folks?
+>>>>
+>>>> Valid point.
+>>>>
+>>>> I do wonder if that problem was already encountered elsewhere with bpf
+>>>> and if there is already a solution.
+>>>
+>>> Our standard is to run only one instance of a BPF program type
+>>> system-wide to avoid conflicts. For example, we can't have both
+>>> systemd and a container runtime running bpf-thp simultaneously.
+>>
+>> Right, it's a good question how to combine policies, or "who wins".
+> 
+>  From my perspective, the ideal approach is to have one BPF-THP
+> instance per mm_struct. This allows for separate managers in different
+> domains, such as systemd managing BPF-THP for system processes and
+> containerd for container processes, while ensuring that any single
+> process is managed by only one BPF-THP.
 
-kernel test robot noticed the following build errors:
+I came to the same conclusion. At least it's a valid start.
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[also build test ERROR on linus/master v6.17 next-20251009]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Maybe we would later want a global fallback BPF-THP prog if none was 
+enabled for a specific MM.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lo-c-Molinari/drm-shmem-helper-Add-huge-page-fault-handler/20251004-173347
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20251004093054.21388-3-loic.molinari%40collabora.com
-patch subject: [PATCH v3 02/10] drm/gem: Introduce drm_gem_get_unmapped_area() fop
-config: riscv-randconfig-001-20251010 (https://download.01.org/0day-ci/archive/20251010/202510101507.UiRzhiAP-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 39f292ffa13d7ca0d1edff27ac8fd55024bb4d19)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251010/202510101507.UiRzhiAP-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510101507.UiRzhiAP-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:804:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     804 |         insb(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:104:53: note: expanded from macro 'insb'
-     104 | #define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:812:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     812 |         insw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:105:53: note: expanded from macro 'insw'
-     105 | #define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:820:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     820 |         insl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:106:53: note: expanded from macro 'insl'
-     106 | #define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:829:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     829 |         outsb(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:118:55: note: expanded from macro 'outsb'
-     118 | #define outsb(addr, buffer, count) __outsb(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:838:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     838 |         outsw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:119:55: note: expanded from macro 'outsw'
-     119 | #define outsw(addr, buffer, count) __outsw(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:847:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     847 |         outsl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:120:55: note: expanded from macro 'outsl'
-     120 | #define outsl(addr, buffer, count) __outsl(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/gpu/drm/drm_gem.c:28:
-   In file included from include/linux/dma-buf.h:16:
-   In file included from include/linux/iosys-map.h:10:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:1175:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-    1175 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
-         |                                                   ~~~~~~~~~~ ^
->> drivers/gpu/drm/drm_gem.c:1271:10: error: call to undeclared function 'mm_get_unmapped_area'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1271 |                 return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
-         |                        ^
-   drivers/gpu/drm/drm_gem.c:1271:10: note: did you mean '__get_unmapped_area'?
-   include/linux/mm.h:3337:1: note: '__get_unmapped_area' declared here
-    3337 | __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
-         | ^
-   7 warnings and 1 error generated.
-
-
-vim +/mm_get_unmapped_area +1271 drivers/gpu/drm/drm_gem.c
-
-  1239	
-  1240	/**
-  1241	 * drm_gem_get_unmapped_area - get memory mapping region routine for GEM objects
-  1242	 * @filp: DRM file pointer
-  1243	 * @uaddr: User address hint
-  1244	 * @len: Mapping length
-  1245	 * @pgoff: Offset (in pages)
-  1246	 * @flags: Mapping flags
-  1247	 *
-  1248	 * If a driver supports GEM object mapping, before ending up in drm_gem_mmap(),
-  1249	 * mmap calls on the DRM file descriptor will first try to find a free linear
-  1250	 * address space large enough for a mapping. Since GEM objects are backed by
-  1251	 * shmem buffers, this should preferably be handled by the shmem virtual memory
-  1252	 * filesystem which can appropriately align addresses to huge page sizes when
-  1253	 * needed.
-  1254	 *
-  1255	 * Look up the GEM object based on the offset passed in (vma->vm_pgoff will
-  1256	 * contain the fake offset we created) and call shmem_get_unmapped_area() with
-  1257	 * the right file pointer.
-  1258	 *
-  1259	 * If a GEM object is not available at the given offset or if the caller is not
-  1260	 * granted access to it, fall back to mm_get_unmapped_area().
-  1261	 */
-  1262	unsigned long drm_gem_get_unmapped_area(struct file *filp, unsigned long uaddr,
-  1263						unsigned long len, unsigned long pgoff,
-  1264						unsigned long flags)
-  1265	{
-  1266		struct drm_gem_object *obj;
-  1267		unsigned long ret;
-  1268	
-  1269		obj = drm_gem_object_lookup_from_offset(filp, pgoff, len >> PAGE_SHIFT);
-  1270		if (IS_ERR(obj))
-> 1271			return mm_get_unmapped_area(current->mm, filp, uaddr, len, 0,
-  1272						    flags);
-  1273	
-  1274		ret = shmem_get_unmapped_area(obj->filp, uaddr, len, 0, flags);
-  1275	
-  1276		drm_gem_object_put(obj);
-  1277	
-  1278		return ret;
-  1279	}
-  1280	EXPORT_SYMBOL(drm_gem_get_unmapped_area);
-  1281	
+But I would expect to start with a per MM way of doing it, it gives you 
+way more flexibility in the long run.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers
+
+David / dhildenb
+
 
