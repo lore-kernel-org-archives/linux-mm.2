@@ -4,119 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D10DCCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 22:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8F0CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 22:22:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ABFE8E0002; Fri, 10 Oct 2025 18:09:33 -0400 (EDT)
+	id 681D98E004E; Fri, 10 Oct 2025 18:22:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85CD98E004D; Fri, 10 Oct 2025 18:09:33 -0400 (EDT)
+	id 659C08E004D; Fri, 10 Oct 2025 18:22:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 778AD8E0002; Fri, 10 Oct 2025 18:09:33 -0400 (EDT)
+	id 547C68E004E; Fri, 10 Oct 2025 18:22:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6562E8E0002
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:09:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 060731404CA
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 22:09:33 +0000 (UTC)
-X-FDA: 83983597026.03.4B0E745
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2F398180006
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 22:09:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cFAWM9mU;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.166.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A1B78E004D
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:22:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE3CF13B0D8
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 22:22:43 +0000 (UTC)
+X-FDA: 83983630206.11.03C9B7B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 66DA6C0003
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 22:22:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wQnbXGxa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+vXJ0/lx";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wQnbXGxa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+vXJ0/lx";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760134171;
+	s=arc-20220608; t=1760134961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWDl81NsDb6bdxq6lZZ3Oo5fI0gR9e+s7CI7q6rmrnY=;
-	b=OeX0nGH6pec1C50Dymuwl2OjQpPCmA1TulC8lXqAj0wdt+ZTWsGx4mWRE6zJAamKK58rQH
-	uolg2nlyeBbTNyjtitCc72BkQZ1rkmrP2DgMteeEClJkQVqAtxm+YbuQaSekWVrFRUPMIa
-	7wgND8YBS9kJIHiBCe9sWWRAql37EbI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cFAWM9mU;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.166.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760134171; a=rsa-sha256;
+	bh=2CoidhoAJMSRHlOc80UKzkj3wdpRYS95gkUwEBw2geM=;
+	b=AcHJQCTEvvVgJSrIa3yahQJfJ7Lg5vWxOoTEIlViXU7e8i+ffgRFrTiahJOs/wNxSEwnXI
+	fqnaRcvMnI/m/OC+p8tCUkXsBqPpa8Cf8vEfyUnPvZ1kWgdn2TrYk/A7iCm31BCoiaskdU
+	Cv/cf+a0v8eDliz+8ttZnFnAMrTKPhs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760134961; a=rsa-sha256;
 	cv=none;
-	b=hb/XTmlWlKOjMxFhDApiCJw3dIzZcAPnroEQRWoAQ7Ds2i/ZzUStwklTEM/3SQWtiaXfCe
-	RiOo3s/apMHvWgyW4slmm/Nz6yHcByGt142hln50WTCDo5jSrV2CXMXbd7u/OcJsZc1851
-	g/kHcC89xayTkl4VJPO2aVz+wt9WwCg=
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-42d7d0c58f9so33145ab.1
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760134170; x=1760738970; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LWDl81NsDb6bdxq6lZZ3Oo5fI0gR9e+s7CI7q6rmrnY=;
-        b=cFAWM9mU7n6qS9yEJFrPIM7G7SzjzpDs53t25wqKnVO+hiF2RG3AyCUKSqLPM6CoRz
-         9Rb+n7vZvCpEexAAKxEfd5OYG/WDK7lSejuvXVFUjp0rr4FsXwMQnz86Iyinn2B6FBkC
-         rC0QHT0MQo1ZaRqEy1Mt5M2eI/ym3YCVzT/7q0KS5TXgKOUqQgHB4K+SRke64Q/vI66s
-         kAVebwF40i9xu/SN0hQI+Pmdapue5QFaAZ0p0dooa0Meg/EHmvYOJ9JFglK9FZRz6c9+
-         CvjMlsakBqZc148xkMjt26vGIZabNt3nz32Ci26ZxhJgS6EwdlXGzPW5ocSXGCVkhh7u
-         2bFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760134170; x=1760738970;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LWDl81NsDb6bdxq6lZZ3Oo5fI0gR9e+s7CI7q6rmrnY=;
-        b=FxGeJ6WF/GpTecgbu44LM4cN6lMS2ndqWIU/58000T4daHOgLyLIsXdVTrEUUukKiu
-         JL2AbUt37z2uug0AO5ZakjGWbr2PzQaz33h/4OUF6QaBBxJtva/Fux1OC8XFyAJrt9GZ
-         2hc+YSwzkZ0c7Hdx0zdJtMX3r68346hVrhgM1an5zdvkxiK/vZCi+dLOda58zS+8dkI5
-         k6OJCmLkLCJpHBtWS6Oe9yeyuNPn1/uCS/vS/8oNawaeJK3tadiQtrh3Z0SvtyPvpEtc
-         F0tZWHmwZimv8gY2S4FdJv/ddX9gaKzWDU4kMcJwDnWfgzKScf5bFM0Duf5VJ7XNDxQh
-         3wpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuT9DMb4reBmDsjWAlb5SpJwM9jn/RUphWvrSd3TGo+Qco1deDcQd+46ASHL0k77gbGV85rEzGaA==@kvack.org
-X-Gm-Message-State: AOJu0YwHpcqGLGCmozW0K4v/Q0ueRcbLZEzIeGzZuNUi/q7zvAPaec44
-	98zWIewudyJDT6FRDEfgl5oN7D0pJytSHuVq6mwmfq+tuWGJIL/jklR2WMj7FGWxeYodSVm/OA8
-	4Hg+tqBvKIK9RddOsPjlv8sUYOFCa6O2RMn7jeQG7
-X-Gm-Gg: ASbGncuJ2N0zo8I8p4Hf5abB+tgpPgcMNYX+bJp+YoZMOBSbUbR+ZAeBM00OpfRPBzX
-	zHFzD2qtjqTbfkwLjnLtxWXAKN6W3CiUMuLkKykiNILyOLLku5GllibxQ37gIsxJLeXDIaUcpt2
-	XsXLZiyp9IEsbx2anemIzhuJ/HIn3pRDfEV32ZK21d+3mhCrnlRPa7fVpnSwU0+/xp7L0aC4XrU
-	Br/bnJ9OUznVbBbWKr4U+ql15NtPy8=
-X-Google-Smtp-Source: AGHT+IEheEysfffoa2UToJd25UhCG01OYZFDrESO0ecdrZ/jfSjqLqSlKoaOdjO8BC9OyiGuvNfvS8dJfmUrxJvS6qg=
-X-Received: by 2002:a05:622a:1111:b0:4b3:1617:e617 with SMTP id
- d75a77b69052e-4e6eabcef17mr26585351cf.11.1760134169530; Fri, 10 Oct 2025
- 15:09:29 -0700 (PDT)
+	b=hHpnJxBHY7P9v1fT+Xv+YKBa/BujwtANqZ5PdUi75V0dmMr1Cig1H1yzfywTCNQ+vLBa14
+	bMzHtmGPDjDKPc8NFGBdwp6b6oKHr2n95S74WmTrwvFiuvuqfGDw3cFnhJaRdE8DFIOfds
+	1+lX92I5ppmIcQuspqGWC981r2P8x6w=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wQnbXGxa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+vXJ0/lx";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wQnbXGxa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+vXJ0/lx";
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8E9C721296;
+	Fri, 10 Oct 2025 22:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760134959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2CoidhoAJMSRHlOc80UKzkj3wdpRYS95gkUwEBw2geM=;
+	b=wQnbXGxavvVRIPwBWqxS4dmndlHd8frgaINOfWP/mUP2Cx9w2kOSnVCrlq6SZDZvXXO31g
+	aNfY5RwUAdK6gflQm+X60bCn6Ytt7fy/RY0ruN+kUOzZJ5Z/eI1hI29Z7uKJpP+4FbYdsp
+	ASsWR0rzzQvyrnnXGQcjRVH+zORXTmc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760134959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2CoidhoAJMSRHlOc80UKzkj3wdpRYS95gkUwEBw2geM=;
+	b=+vXJ0/lxsMo+WUC2cvqXnw/4jrzn34kKJ8Xr2P9rGhSkY+67FrDJhyQE5V9ZcA0AvgnH7R
+	32uPE+0Yd0cBUkCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760134959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2CoidhoAJMSRHlOc80UKzkj3wdpRYS95gkUwEBw2geM=;
+	b=wQnbXGxavvVRIPwBWqxS4dmndlHd8frgaINOfWP/mUP2Cx9w2kOSnVCrlq6SZDZvXXO31g
+	aNfY5RwUAdK6gflQm+X60bCn6Ytt7fy/RY0ruN+kUOzZJ5Z/eI1hI29Z7uKJpP+4FbYdsp
+	ASsWR0rzzQvyrnnXGQcjRVH+zORXTmc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760134959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2CoidhoAJMSRHlOc80UKzkj3wdpRYS95gkUwEBw2geM=;
+	b=+vXJ0/lxsMo+WUC2cvqXnw/4jrzn34kKJ8Xr2P9rGhSkY+67FrDJhyQE5V9ZcA0AvgnH7R
+	32uPE+0Yd0cBUkCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7DA911375D;
+	Fri, 10 Oct 2025 22:22:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YYxXHi+H6WgGTgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 10 Oct 2025 22:22:39 +0000
+Message-ID: <b63f1f40-a8f5-4b54-b025-d8d1daf78c9b@suse.cz>
+Date: Sat, 11 Oct 2025 00:22:39 +0200
 MIME-Version: 1.0
-References: <20251010011951.2136980-7-surenb@google.com> <20251010202034.58002-1-sj@kernel.org>
-In-Reply-To: <20251010202034.58002-1-sj@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 10 Oct 2025 15:09:18 -0700
-X-Gm-Features: AS18NWAqrvtXxssXuPoUdtLG3YkWXccAtAeaTjudhXcSXDHpPbRX_NTpHoxKXI4
-Message-ID: <CAJuCfpHmLpE-7U2_efn9XqK=3SM+zRw-jUkDgJRBW=2tWZTepg@mail.gmail.com>
-Subject: Re: [PATCH 6/8] add cleancache documentation
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com, 
-	peterx@redhat.com, rppt@kernel.org, mhocko@suse.com, corbet@lwn.net, 
-	axboe@kernel.dk, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	hch@infradead.org, jack@suse.cz, willy@infradead.org, 
-	m.szyprowski@samsung.com, robin.murphy@arm.com, hannes@cmpxchg.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, minchan@kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2F398180006
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: Boot fails with 59faa4da7cd4 and 3accabda4da1
+Content-Language: en-US
+To: Phil Auld <pauld@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>
+References: <20251010151116.GA436967@pauld.westford.csb>
+ <CAHk-=wg1xK+Br=FJ5QipVhzCvq7uQVPt5Prze6HDhQQ=QD_BcQ@mail.gmail.com>
+ <e4f2a3e3-649a-423b-9696-6406ef56340f@suse.cz>
+ <20251010184259.GB436967@pauld.westford.csb>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251010184259.GB436967@pauld.westford.csb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ykmbg9syfq8cwg3d8qj9tqhxsem6dqte
 X-Rspam-User: 
-X-Stat-Signature: jm5it6es79dc1qy9s69ky99i9cahdu7k
-X-HE-Tag: 1760134171-931688
-X-HE-Meta: U2FsdGVkX1+SBwig/j6tVEtRpbFF0O1odJk8OQaT2gJyIYP7gAmJBMdp+eaVEZ7R0sicVgHwW3cGzGfTK16aU+fEMhJqx0RFm5pqlPaRYqHPaQRAaUsjiwPhmjhd++oYHDftHMv/vnUgQR3bGKmjhQtny/XlDRFIyW9aM+I/qCLLcQhtSJDdNKKPB4Nu3NYBzofeeS3ou2BO3qf/+jW5naPWbHjEU1rw0hnJx5pV86Q/oBDFw0KuDsvH8AChebNQQnS4KqhU4ja1a9R9SmXlLNAXg7f1wlaOCc/6+ym6jRlig5YZDGNey/HnwgvokUa+ClG8jzr9LTxNZs+NZCo/UTqe+QiIjm6q/hBvTjvtsIjRjSPgbRXdRUqd7pAYpNKKU5hHMqJJqbgpleFw30K0qB0VUJDsjI0gOBicD12oPAx9q+OU5oXBnQdCgfkWHe+gf3ZBd0il4mrW36JFkkATG8PhqPb8HGDAtlgfzueCiRWHKm8akVlHOAr8krSZ5aRzqYJfwrAtrAfsVgWT7RZoSWUMeu2oKF17GLyuHLeeE6hUZ0maBgBrBMBPFflZ/7bYiUDAKUIgR3J9zZtt8eNGhNIY8rra7OOg9TryPaY8q3jJALQpF1H9BQweinPoEt5XTv4KC/PSe8y5VeuK/zg0JoLVAvYMeeKUH+3bx4xMmrGCYYl03itUtB+tVTu2NsUd/wjX482p1FG3odE/JdAFnH/iZoBIUTDCO37B8Z8L563Ee+Xq6a/4Pex8KA8dL5SIBTJMj+WJ55FUyM0HkuL6H7s9qbQoEzWebM5xut+6zeFYHMKGfl3xNO6+brxe9yuI7HsD3NlWSY9LEmMWwCJ103zGvr/vR1CyRNbVxwvt88gLSnf5rTes206SNmkeIc21Zf+w5ceha9ogn2iY5b1rwuxSxS8db+WYFAkXIVUGk6MzSyLLLzJ407nd+yUl2D6E8DHZxz7v/9kzo6Vw7Re
- kmD97qHz
- vuIzHN4GweYy9tdKC91T38/qCy4vzi8+FSY1qgnC7lcmCWCcrJ2hwkzadhiGgB3vXPidjiDEK41OKOzTXe7B7aEovXfsiwLVFvhf/DT/T87V843XwsDLIlEVcgiID0q3yzl0V4nCNNQVUMIKRBljnc1RKCGOxwtirNcM74LcBQY7wwub2l/5OXgM93VwdYnOTLdK5vPuP+XEbqP3UU5qTgn5UYnsBIE1RVPsGLL0EXCGpD84tzf2t0iAUlw6JOjnMYJcAGHmvSh1x9vFI7sjpaVkiyov4KEgIUlXauz3dl6kMOgw=
+X-Rspamd-Queue-Id: 66DA6C0003
+X-HE-Tag: 1760134961-89325
+X-HE-Meta: U2FsdGVkX1+EuklvMiuglLmkOFFT5/Afu+lnQjezbvQtzuz4O5uhVhCBLZJj468+DjF0CQAZnWq8aljotTqCZ5QezrtjhfRXxGkSmNxTdG/F5oeDrU5aYEjLmySzJ/apQfVkzSBTN9LD3gSGzsvpkFNMYKNcpUZew07NaqUsTbbStzvv72VCGRXA+scS9c6xMGaGLU9TvvJhPkvaO9AyYrRjBTKQoc7ZqtRu1dT7XX9gKw4Wyy2uQM/ehVxS4L3rgnmKycMvkCXEHF5GLriYgT6N2ZVc3+Jsadoa8HdXLrO6MjFq4nbw+byGOyoolC7X8zg39QBLI9JJlqtOKYDSq5VeCIX+GK05atEOjI1FX6u22EgSj4cUJHonJgDK591+gUIUM6gBoXr59aI8as1I5Rt61g5VReK+oUG6v3SXOsXgXl1uFMno5J5ckyB6OqFS3Ahs2lQKtYWiJXZGqORuYIP0h9jBImHRQUrLUCMEfrTsrZfX1O9L6UlQ4xun7EAgm0ATHYYOvdd/PT6EufK1SspicwR5rDpswOTsTB9TIYSss9YtFICm1XLt0caYEmKf0nxOGULAXuVCtvvxxqdbEzDKb5zkvch2GoqJgNXpfTa2TbkxtV4sjlrbgSD5xTVDmY37bnAVorroN3wkEuAFONndq5OulrcoZTTUtU9cnyd4WchbY9HZhbQIcGvwstFw1T2KVNCBL+tuB9qeWYTYLVfeoYhoNtTSCLe4nRydL3KlnHb8RCc1TP3B9cZVOWVQ6ApJniWAqY+GWsr6udZJNqW1xOXiWvL8L+gsNLc+e8OCrmy/nW55oKGNzwgfaKMghiGoBvt9CVxwWQFkpX9o88bkOK6PW4Wu79tPIdNJxcnPwHHDH9U5vMcUn7EXQlaZxwerTnLv6+W3rfSvQ1Pr2aLDz1JBXKOhby4BUKS+cy062wVLiS91HQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,244 +180,292 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 1:20=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
-:
->
-> Hello Suren,
+On 10/10/25 20:42, Phil Auld wrote:
+> On Fri, Oct 10, 2025 at 08:27:30PM +0200 Vlastimil Babka wrote:
+>> On 10/10/25 20:19, Linus Torvalds wrote:
+>> > On Fri, 10 Oct 2025 at 08:11, Phil Auld <pauld@redhat.com> wrote:
+>> >>
+>> >> After several days of failed boots I've gotten it down to these two
+>> >> commits.
+>> >>
+>> >> 59faa4da7cd4 maple_tree: use percpu sheaves for maple_node_cache
+>> >> 3accabda4da1 mm, vma: use percpu sheaves for vm_area_struct cache
+>> >>
+>> >> The first is such an early failure it's silent. With just 3acca I
+>> >> get :
+>> >>
+>> >> [    9.341152] BUG: kernel NULL pointer dereference, address: 0000000000000040
+>> >> [    9.348115] #PF: supervisor read access in kernel mode
+>> >> [    9.353264] #PF: error_code(0x0000) - not-present page
+>> >> [    9.358413] PGD 0 P4D 0
+>> >> [    9.360959] Oops: Oops: 0000 [#1] SMP NOPTI
+>> >> [    9.365154] CPU: 21 UID: 0 PID: 818 Comm: kworker/u398:0 Not tainted 6.17.0-rc3.slab+ #5 PREEMPT(voluntary)
+>> >> [    9.374982] Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.26.0 07/30/2025
+>> >> [    9.382641] RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
+>> >> [    9.388048] Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
+>> > 
+>> > That decodes to
+>> > 
+>> >    0:           mov    0x10(%rsi),%rax
+>> >    4:           mov    0x8(%rsi),%rsi
+>> >    8:           test   %rax,%rax
+>> >    b:           je     0x18
+>> >    d:           mov    0x18(%rax),%ecx
+>> >   10:           test   %ecx,%ecx
+>> >   12:           jne    0xfd
+>> >   18:           movslq %gs:0x250eee4(%rip),%rax
+>> >   20:           mov    0xe0(%r14,%rax,8),%rax
+>> >   28:*          mov    0x40(%rax),%r13          <-- trapping instruction
+>> >   2c:           mov    %r13,%rdi
+>> >   2f:           call   0xffffffffffff81e4
+>> >   34:           mov    %rax,%rbp
+>> >   37:           test   %rax,%rax
+>> >   3a:           je     0x59
+>> > 
+>> > which is the code around that barn_replace_empty_sheaf() call.
+>> > 
+>> > In particular, the trapping instruction is from get_barn(), it's the "->barn" in
+>> > 
+>> >         return get_node(s, numa_mem_id())->barn;
+>> > 
+>> > so it looks like 'get_node()' is returning NULL here:
+>> > 
+>> >         return s->node[node];
+>> > 
+>> > That 0x250eee4(%rip) is from "get_node()" becoming
+>> > 
+>> >   18:           movslq  %gs:numa_node(%rip), %rax  # node
+>> >   20:           mov    0xe0(%r14,%rax,8),%rax # ->node[node]
+>> > 
+>> > instruction, and then that ->barn dereference is the trapping
+>> > instruction that tries to read node->barn:
+>> > 
+>> >   28:*          mov    0x40(%rax),%r13   # node->barn
+>> > 
+>> > but I did *not* look into why s->node[node] would be NULL.
+>> > 
+>> > Over to you Vlastimil,
+>> 
+>> Thanks, yeah will look ASAP. I suspect the "nodes with zero memory" is
+>> something that might not be handled well in general on x86. I know powerpc
+>> used to do these kind of setups first and they have some special handling,
+>> so numa_mem_id() would give you the closest node with memory in there and I
+>> suspect it's not happening here. CPU 21 is node 6 so it's one of those
+>> without memory. I'll see if I can simulate this with QEMU and what's the
+>> most sensible fix
+>>
+> 
+> Thanks for taking a look.  I thought the NPS4 thing might be playing a role.
 
-Hi SJ!
+From what I quickly found I understood that NPS4 is supposed to create extra
+numa nodes per socket (4 instead of 1) and interleave the memory between
+them. So it seems weird to me it would assign everything to one node and
+leave 3 others memoryless?
 
->
-> On Thu,  9 Oct 2025 18:19:49 -0700 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > Document cleancache, it's APIs and sysfs interface.
-> >
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  Documentation/mm/cleancache.rst | 112 ++++++++++++++++++++++++++++++++
-> >  MAINTAINERS                     |   1 +
->
-> I think this great document is better to be linked on mm/index.rst.
+> I'm happy to take any test/fix code you have for a spin on this system. 
+ 
+Thanks. Here's a candidate fix in case you can test. I'll finalize it
+tomorrow. The slab performance won't be optimal on cpus on those memoryless
+nodes, that's why I'd like to figure out if it's a BIOS bug or not. If
+memoryless nodes are really intended we should look into initializing things
+so that numa_mem_id() works as expected and points to nearest populated
+node.
 
-Ack.
+----8<----
+From 097c6251882bf5537162d17b6726575288ba9715 Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Sat, 11 Oct 2025 00:13:20 +0200
+Subject: [PATCH] slab: fix NULL pointer when trying to access barn
 
->
-> Also, would it make sense to split the sysfs interface part and put under
-> Documentation/admin-guide/mm/ ?
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+ mm/slub.c | 60 +++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 47 insertions(+), 13 deletions(-)
 
-Hmm. I guess that makes sense.
+diff --git a/mm/slub.c b/mm/slub.c
+index 135c408e0515..bd3c2821e6c3 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -507,7 +507,12 @@ static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
+ /* Get the barn of the current cpu's memory node */
+ static inline struct node_barn *get_barn(struct kmem_cache *s)
+ {
+-	return get_node(s, numa_mem_id())->barn;
++	struct kmem_cache_node *n = get_node(s, numa_mem_id());
++
++	if (!n)
++		return NULL;
++
++	return n->barn;
+ }
+ 
+ /*
+@@ -4982,6 +4987,10 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	}
+ 
+ 	barn = get_barn(s);
++	if (!barn) {
++		local_unlock(&s->cpu_sheaves->lock);
++		return NULL;
++	}
+ 
+ 	full = barn_replace_empty_sheaf(barn, pcs->main);
+ 
+@@ -5153,13 +5162,20 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 	if (unlikely(pcs->main->size == 0)) {
+ 
+ 		struct slab_sheaf *full;
++		struct node_barn *barn;
+ 
+ 		if (pcs->spare && pcs->spare->size > 0) {
+ 			swap(pcs->main, pcs->spare);
+ 			goto do_alloc;
+ 		}
+ 
+-		full = barn_replace_empty_sheaf(get_barn(s), pcs->main);
++		barn = get_barn(s);
++		if (!barn) {
++			local_unlock(&s->cpu_sheaves->lock);
++			return allocated;
++		}
++
++		full = barn_replace_empty_sheaf(barn, pcs->main);
+ 
+ 		if (full) {
+ 			stat(s, BARN_GET);
+@@ -5314,6 +5330,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+ {
+ 	struct slub_percpu_sheaves *pcs;
+ 	struct slab_sheaf *sheaf = NULL;
++	struct node_barn *barn;
+ 
+ 	if (unlikely(size > s->sheaf_capacity)) {
+ 
+@@ -5355,8 +5372,11 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+ 		pcs->spare = NULL;
+ 		stat(s, SHEAF_PREFILL_FAST);
+ 	} else {
++		barn = get_barn(s);
++
+ 		stat(s, SHEAF_PREFILL_SLOW);
+-		sheaf = barn_get_full_or_empty_sheaf(get_barn(s));
++		if (barn)
++			sheaf = barn_get_full_or_empty_sheaf(barn);
+ 		if (sheaf && sheaf->size)
+ 			stat(s, BARN_GET);
+ 		else
+@@ -5426,7 +5446,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	 * If the barn has too many full sheaves or we fail to refill the sheaf,
+ 	 * simply flush and free it.
+ 	 */
+-	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
++	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
+ 	    refill_sheaf(s, sheaf, gfp)) {
+ 		sheaf_flush_unused(s, sheaf);
+ 		free_empty_sheaf(s, sheaf);
+@@ -5943,10 +5963,9 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+  * put the full sheaf there.
+  */
+ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
+-		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty)
++		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
++		struct node_barn *barn)
+ {
+-	struct node_barn *barn;
+-
+ 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	/* This is what we expect to find if nobody interrupted us. */
+@@ -5956,8 +5975,6 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
+ 		return;
+ 	}
+ 
+-	barn = get_barn(s);
+-
+ 	/*
+ 	 * Unlikely because if the main sheaf had space, we would have just
+ 	 * freed to it. Get rid of our empty sheaf.
+@@ -6002,6 +6019,11 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+ 
+ 	barn = get_barn(s);
++	if (!barn) {
++		local_unlock(&s->cpu_sheaves->lock);
++		return NULL;
++	}
++
+ 	put_fail = false;
+ 
+ 	if (!pcs->spare) {
+@@ -6084,7 +6106,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+ 	}
+ 
+ 	pcs = this_cpu_ptr(s->cpu_sheaves);
+-	__pcs_install_empty_sheaf(s, pcs, empty);
++	__pcs_install_empty_sheaf(s, pcs, empty, barn);
+ 
+ 	return pcs;
+ }
+@@ -6121,8 +6143,9 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
+ 
+ static void rcu_free_sheaf(struct rcu_head *head)
+ {
++	struct kmem_cache_node *n;
+ 	struct slab_sheaf *sheaf;
+-	struct node_barn *barn;
++	struct node_barn *barn = NULL;
+ 	struct kmem_cache *s;
+ 
+ 	sheaf = container_of(head, struct slab_sheaf, rcu_head);
+@@ -6139,7 +6162,11 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	 */
+ 	__rcu_free_sheaf_prepare(s, sheaf);
+ 
+-	barn = get_node(s, sheaf->node)->barn;
++	n = get_node(s, sheaf->node);
++	if (!n)
++		goto flush;
++
++	barn = n->barn;
+ 
+ 	/* due to slab_free_hook() */
+ 	if (unlikely(sheaf->size == 0))
+@@ -6157,11 +6184,12 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 		return;
+ 	}
+ 
++flush:
+ 	stat(s, BARN_PUT_FAIL);
+ 	sheaf_flush_unused(s, sheaf);
+ 
+ empty:
+-	if (data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
++	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
+ 		barn_put_empty_sheaf(barn, sheaf);
+ 		return;
+ 	}
+@@ -6191,6 +6219,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+ 		}
+ 
+ 		barn = get_barn(s);
++		if (!barn) {
++			local_unlock(&s->cpu_sheaves->lock);
++			goto fail;
++		}
+ 
+ 		empty = barn_get_empty_sheaf(barn);
+ 
+@@ -6304,6 +6336,8 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 		goto do_free;
+ 
+ 	barn = get_barn(s);
++	if (!barn)
++		goto no_empty;
+ 
+ 	if (!pcs->spare) {
+ 		empty = barn_get_empty_sheaf(barn);
+-- 
+2.51.0
 
->
-> >  2 files changed, 113 insertions(+)
-> >  create mode 100644 Documentation/mm/cleancache.rst
-> >
-> > diff --git a/Documentation/mm/cleancache.rst b/Documentation/mm/cleanca=
-che.rst
-> > new file mode 100644
-> > index 000000000000..deaf7de51829
-> > --- /dev/null
-> > +++ b/Documentation/mm/cleancache.rst
-> > @@ -0,0 +1,112 @@
-> > +.. SPDX-License-Identifier: GPL-2.0
-> > +
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +Cleancache
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +Motivation
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +Cleancache is a feature to utilize unused reserved memory for extendin=
-g
-> > +page cache.
-> > +
-> > +Cleancache can be thought of as a folio-granularity victim cache for c=
-lean
-> > +file-backed pages that the kernel's pageframe replacement algorithm (P=
-FRA)
-> > +would like to keep around, but can't since there isn't enough memory. =
-So
-> > +when the PFRA "evicts" a folio, it stores the data contained in the fo=
-lio
-> > +into cleancache memory which is not directly accessible or addressable=
- by
-> > +the kernel (transcendent memory) and is of unknown and possibly
-> > +time-varying size.
->
-> IMHO, "(transcendent memory)" better to be dropped, as it has removed by =
-commit
-> 814bbf49dcd0 ("xen: remove tmem driver").
 
-Ah, good point. Will remove.
-
->
-> > +
-> > +Later, when a filesystem wishes to access a folio in a file on disk, i=
-t
-> > +first checks cleancache to see if it already contains required data; i=
-f it
-> > +does, the folio data is copied into the kernel and a disk access is
-> > +avoided.
-> > +
-> > +The memory cleancache uses is donated by other system components, whic=
-h
-> > +reserve memory not directly addressable by the kernel. By donating thi=
-s
-> > +memory to cleancache, the memory owner enables its utilization while i=
-t
-> > +is not used. Memory donation is done using cleancache backend API and =
-any
-> > +donated memory can be taken back at any time by its donor without no d=
-elay
->
-> "without delay" or "with no delay" ?
-
-Ack. Will change to "without delay"
-
->
-> > +and with guarantees success. Since cleancache uses this memory only to
-> > +store clean file-backed data, it can be dropped at any time and theref=
-ore
-> > +the donor's request to take back the memory can be always satisfied.
-> > +
-> > +Implementation Overview
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +Cleancache "backend" (donor that provides transcendent memory), regist=
-ers
->
-> Again, "transcendent memory" part seems better to be dropped.
-
-Ack.
-
->
-> > +itself with cleancache "frontend" and received a unique pool_id which =
-it
-> > +can use in all later API calls to identify the pool of folios it donat=
-es.
-> > +Once registered, backend can call cleancache_backend_put_folio() or
-> > +cleancache_backend_put_folios() to donate memory to cleancache. Note t=
-hat
-> > +cleancache currently supports only 0-order folios and will not accept
-> > +larger-order ones. Once the backend needs that memory back, it can get=
- it
-> > +by calling cleancache_backend_get_folio(). Only the original backend c=
-an
-> > +take the folio it donated from the cleancache.
-> > +
-> > +Kernel uses cleancache by first calling cleancache_add_fs() to registe=
-r
-> > +each file system and then using a combination of cleancache_store_foli=
-o(),
-> > +cleancache_restore_folio(), cleancache_invalidate_{folio|inode} to sto=
-re,
-> > +restore and invalidate folio content.
-> > +cleancache_{start|end}_inode_walk() are used to walk over folios insid=
-e
-> > +an inode and cleancache_restore_from_inode() is used to restore folios
-> > +during such walks.
-> > +
-> > +From kernel's point of view folios which are copied into cleancache ha=
-ve
-> > +an indefinite lifetime which is completely unknowable by the kernel an=
-d so
-> > +may or may not still be in cleancache at any later time. Thus, as its =
-name
-> > +implies, cleancache is not suitable for dirty folios. Cleancache has
-> > +complete discretion over what folios to preserve and what folios to di=
-scard
-> > +and when.
-> > +
-> > +Cleancache Performance Metrics
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +If CONFIG_CLEANCACHE_SYSFS is enabled, monitoring of cleancache perfor=
-mance
-> > +can be done via sysfs in the `/sys/kernel/mm/cleancache` directory.
-> > +The effectiveness of cleancache can be measured (across all filesystem=
-s)
-> > +with provided stats.
-> > +Global stats are published directly under `/sys/kernel/mm/cleancache` =
-and
-> > +include:
->
-> ``/sys/kernel/mm/cleancache`` ?
-
-Ack.
-
->
-> > +
-> > +``stored``
-> > +     number of successful cleancache folio stores.
-> > +
-> > +``skipped``
-> > +     number of folios skipped during cleancache store operation.
-> > +
-> > +``restored``
-> > +     number of successful cleancache folio restore operations.
-> > +
-> > +``missed``
-> > +     number of failed cleancache folio restore operations.
-> > +
-> > +``reclaimed``
-> > +     number of folios reclaimed from the cleancache due to insufficien=
-t
-> > +     memory.
-> > +
-> > +``recalled``
-> > +     number of times cleancache folio content was discarded as a resul=
-t
-> > +     of the cleancache backend taking the folio back.
-> > +
-> > +``invalidated``
-> > +     number of times cleancache folio content was discarded as a resul=
-t
-> > +     of invalidation.
-> > +
-> > +``cached``
-> > +     number of folios currently cached in the cleancache.
-> > +
-> > +Per-pool stats are published under `/sys/kernel/mm/cleancache/<pool na=
-me>`
->
-> ``/sys/kernel/mm/cleancache/<pool name>`` ?
-
-Ack.
-
->
-> > +where "pool name" is the name pool was registered under. These stats
-> > +include:
-> > +
-> > +``size``
-> > +     number of folios donated to this pool.
-> > +
-> > +``cached``
-> > +     number of folios currently cached in the pool.
-> > +
-> > +``recalled``
-> > +     number of times cleancache folio content was discarded as a resul=
-t
-> > +     of the cleancache backend taking the folio back from the pool.
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 1c97227e7ffa..441e68c94177 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -6053,6 +6053,7 @@ CLEANCACHE
-> >  M:   Suren Baghdasaryan <surenb@google.com>
-> >  L:   linux-mm@kvack.org
-> >  S:   Maintained
-> > +F:   Documentation/mm/cleancache.rst
-> >  F:   include/linux/cleancache.h
-> >  F:   mm/cleancache.c
-> >  F:   mm/cleancache_sysfs.c
-> > --
-> > 2.51.0.740.g6adb054d12-goog
->
->
-> Thanks,
-> SJ
-
-Thanks for the review!
 
