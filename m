@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B269CCD184
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 01:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61997CCD183
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 01:20:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F372A8E00BD; Thu,  9 Oct 2025 21:20:14 -0400 (EDT)
+	id 265DC8E00BE; Thu,  9 Oct 2025 21:20:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE7C38E0002; Thu,  9 Oct 2025 21:20:14 -0400 (EDT)
+	id 215C58E0002; Thu,  9 Oct 2025 21:20:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAF988E00BD; Thu,  9 Oct 2025 21:20:14 -0400 (EDT)
+	id 0DDCF8E00BE; Thu,  9 Oct 2025 21:20:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5038E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:20:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E22C1166F3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E87B98E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:20:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE2C4116C52
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:20:16 +0000 (UTC)
+X-FDA: 83980448832.20.DF493DD
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf13.hostedemail.com (Postfix) with ESMTP id F22752000A
 	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:20:14 +0000 (UTC)
-X-FDA: 83980448748.11.51F26F3
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B6EE012000C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:20:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=D6dd1GRH;
-	spf=pass (imf29.hostedemail.com: domain of 3S1_oaAYKCPgxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3S1_oaAYKCPgxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Ot5sKEjC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3TV_oaAYKCPouwtgpdiqqing.eqonkpwz-oomxcem.qti@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3TV_oaAYKCPouwtgpdiqqing.eqonkpwz-oomxcem.qti@flex--surenb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760059212;
+	s=arc-20220608; t=1760059215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BMspCuJAq7oIjVtiLnvMgH+BOK3foud4K2myRpZR2Ss=;
-	b=38H4C4/62T9HR3LOh3V50wpJWri3dAbbmyo0Q08y1rG5EtHCKf3Q/MD2wfInGyZIIsv4Mf
-	CIbzyL6IHB67Ziv5m4WE3G8/Qzo4lUilRQnIk4AyIfvY7R6gYGCV4ACQ8Wvyt99JnUauJY
-	OpmmDaDNoKtJxTub2PwQP118kop1j/I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=D6dd1GRH;
-	spf=pass (imf29.hostedemail.com: domain of 3S1_oaAYKCPgxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3S1_oaAYKCPgxzwjsglttlqj.htrqnsz2-rrp0fhp.twl@flex--surenb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760059212; a=rsa-sha256;
+	bh=Vrde2qlU5hqI2CpGGepvHr5s2l9yi26YQf6xU7aW9eE=;
+	b=wUNahptXZD0PEVlcIWUIvTnJxayhwiRsdoIfachUd3L1jLMe2mjYFQxAOlAZ9wRUCCy98S
+	4TpWAkU/RZQBQiSfw0ZA54ic23j9LdOSpFSZ8MvRej8MB8bjgjQCb2EtqIfzAlzhfOomrk
+	4NOSRG+9s/aqgObrCPcLv4V8gUbYmRI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760059215; a=rsa-sha256;
 	cv=none;
-	b=eOz6+DAZFwr0GtFqFRaEuBjkfg6YtvtfDxpDBn4DSzB4WyLTSakkZ0x9C+8pwjmMcTmZ/4
-	OK7bNnpgR2eGQGMvovriQFNvB9DLxJft46AuCNE444aHsaGTI10rg3BnVusTZyAxdKIOBY
-	BIj7j1p2wadKWyAvSaOnTyhj8V92TNU=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-277f0ea6fbaso35616975ad.0
-        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 18:20:12 -0700 (PDT)
+	b=il2v2SS8ZRVbBMrFfydlufEMfqUzUOFplMLnSdfraAAEA/S9BRWmtgnNKi2Mk0OkeSYcOj
+	D91uV+5SQAQEbjFP2r7zlxc9IVbAzK3bAioLQ04azo2uyucpLORd/N3Z3GmzB+bzzoCUEr
+	0epQ9z5qKXXqsbnnguzFb0P8YuVbaBs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Ot5sKEjC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf13.hostedemail.com: domain of 3TV_oaAYKCPouwtgpdiqqing.eqonkpwz-oomxcem.qti@flex--surenb.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3TV_oaAYKCPouwtgpdiqqing.eqonkpwz-oomxcem.qti@flex--surenb.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b5a013bc46dso2543567a12.1
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 18:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760059211; x=1760664011; darn=kvack.org;
+        d=google.com; s=20230601; t=1760059214; x=1760664014; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BMspCuJAq7oIjVtiLnvMgH+BOK3foud4K2myRpZR2Ss=;
-        b=D6dd1GRHJr0FP484yuCRBdt9N9rHcho//s6QJw+fzP3HS9l9MjD8eTreqdP+Yvq3SO
-         QkwyV1HMKE24wqkMSrZH1YGZzAMmvuaa6VnXCN+ISjAX63nxV2KWx5yncfhppNlrEQ+y
-         JaMewXfgn88/DAXp4/n8DB0EfMwlwp4G/VZapoa4LGPG9uW6dxaVbO6mV4xMyobBj5IL
-         m5wlye5A9mxAcB3eWpf3BPo26PzyvXMujkh3EXwmPU0bVCzllzghdnCrVPOdnfEU3TjA
-         avzSTnIfDIQ0xF6EF2R+OERl5gC1YjXmxjf8cX1oPLuQGn6Du8a1rQq0rKFKPvVQjln0
-         tu1A==
+        bh=Vrde2qlU5hqI2CpGGepvHr5s2l9yi26YQf6xU7aW9eE=;
+        b=Ot5sKEjC4T5SrQlwh39f41ftN60a+OxqMZm3REO/re9jjZhaDRq2Q6e9JKh/Z/U8If
+         klSieJQtp7ZVtJh5hXTfdeR5AZHCRtx3+BtJ+DndEIq8tfAhVd46OfGUrpeOmDCQAaw9
+         xVnJEMOMwtrXyFgu3kLxTJkXtI5LejGEokEahbSRmggDyHS5REOS6HnOR851day2Y/Dy
+         z1jHaCdMbezdpwoMweMjUDN9RzhZ68JGNNMwZWV2F4QB7j0Hj0RwNlhaSh0mR87pxPmc
+         NnklArWYEkA1dNWXN4W2xND+EjR8psOzjTxQqmtVOH0h8cRcjXlEVh/8B5qSZiVare8X
+         JKww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760059211; x=1760664011;
+        d=1e100.net; s=20230601; t=1760059214; x=1760664014;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BMspCuJAq7oIjVtiLnvMgH+BOK3foud4K2myRpZR2Ss=;
-        b=JbzbFYwMAfNJKEayyecod1pJj7VPY0bef4hxowrLlZpCct6oLtat8VlwaAZNWqjSl9
-         lzOImVIQ3KRCjccwYXi2zB+rphkIn1RonlV7hYo1bXkFttGtx71e6DvHCtA+nG1IGnDK
-         OMsHh5JwFz9BziaUz2Y4FBaWvTnqDS0X6OXjqZE4WQwbgEOk1eOjLWhqJkPy4T6qfFLk
-         GbketILwZd6j7YLn4/4zouu9xjpkwuQXoSvUJEBF8hwUBvA6DmeQU0w8VkGCGqYDn1jg
-         Yfl4OVuTozd14A9CfWFil6FXkWHGsSqzgNGZmQHzwSgNCg6TGhcxnLALjUJPANyxbp9W
-         3TkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFg5kPx/Y5zY4dwRmZ/QyE8tumA4QthMQMoQ/SKV2Z0MZ7Wso8ED5ghXPiskZF3E+LtBCpAaq96w==@kvack.org
-X-Gm-Message-State: AOJu0YyIv+MiRcJWp0rID/KIg4kl5wKTuqIkHkBciBIrf4U7dtyQO9m/
-	zYnwPmsfqGG/viFa7ayrs4ZQUqGR0ZOnxUlcb+mCPTCYHWoQF45BNJoudDkk0KA7ZDqjHcmk0TD
-	oODcg0w==
-X-Google-Smtp-Source: AGHT+IEWKkEivo5xkxXtogAKm07PhNF4ozYnoXCJEzQk/zOL2Y/TNZ+SlYrB9tiZy0+b63lcurI0GuhAwZk=
-X-Received: from plas15.prod.google.com ([2002:a17:903:200f:b0:25f:48ba:97e1])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2d0:b0:25e:78db:4a0d
- with SMTP id d9443c01a7336-290273eddd5mr117013065ad.36.1760059211496; Thu, 09
- Oct 2025 18:20:11 -0700 (PDT)
-Date: Thu,  9 Oct 2025 18:19:50 -0700
+        bh=Vrde2qlU5hqI2CpGGepvHr5s2l9yi26YQf6xU7aW9eE=;
+        b=JQmhLToi5Ralwd2+E3rWBhMmJQF07DUdV8gXgY5j23whXYQbrBtJNK1XNf+s5AazQI
+         atD3l9tT7MS6i2NFtehNyTg6nyL5fnUIZWFOv4NNI4I+a9jBaAXM0EN8PHkYYp1Y9zjt
+         vmU/8JdSNj5ndlYyGeYCRsI2lKDTPFGIM4jSzSOAgktbhVS49X55IbNUn6O3Qu+ayclq
+         jQFiu097u6rqCNcZn8Ak36ORLtLdnmlqypFtRElGaeh6nJ2A5WRvCoDojl3oprex5DC+
+         hxcH5xGt4cHwmjnjuRDk/4f/ahgM18iii3NVEl83V9GIG2dQ3gLAFUfIETVlCVLYa8wZ
+         UvwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDMZSBTyA3SPObMKkhqQUboRoAWeIIMZ2oXDiSeOI1asz+USpvP2BXajx24zIfNUKkEpLss7KQhw==@kvack.org
+X-Gm-Message-State: AOJu0YxNotAvtrcVkVB8XrZ1zbTtIgAReUcasLv132L+i6KW2wGTt5cG
+	cZsL3CMjN0FtG7sHfkvkiHOfZkvKXVwv9JgQtVKWvGApEKh9JYN/9RYRgyJWvcMqxojwXq+Px8J
+	eGePWVw==
+X-Google-Smtp-Source: AGHT+IHv8uHGO40bLuN/jD5N/hL/DXXvgcz7LG4u+TAflEKVP3j7kuuG1LjFXB0Jk3SVlTNaWflJDBbA6Ac=
+X-Received: from pgew27.prod.google.com ([2002:a63:af1b:0:b0:b55:794f:64bb])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12ce:b0:309:48d8:cf0a
+ with SMTP id adf61e73a8af0-32da8462fb2mr12231761637.54.1760059213708; Thu, 09
+ Oct 2025 18:20:13 -0700 (PDT)
+Date: Thu,  9 Oct 2025 18:19:51 -0700
 In-Reply-To: <20251010011951.2136980-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20251010011951.2136980-1-surenb@google.com>
 X-Mailer: git-send-email 2.51.0.740.g6adb054d12-goog
-Message-ID: <20251010011951.2136980-8-surenb@google.com>
-Subject: [PATCH 7/8] mm: introduce GCMA
+Message-ID: <20251010011951.2136980-9-surenb@google.com>
+Subject: [PATCH 8/8] mm: integrate GCMA with CMA using dt-bindings
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
@@ -102,14 +102,14 @@ Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
 	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	iommu@lists.linux.dev, Minchan Kim <minchan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: B6EE012000C
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam01
+X-Stat-Signature: xhjm9kti1iqs6xb5s16nbz5x7fpffk7c
 X-Rspam-User: 
-X-Stat-Signature: feomxakcoitgps17eeopf8q6kr8ti97e
-X-HE-Tag: 1760059212-416591
-X-HE-Meta: U2FsdGVkX19fh+u0EH+dMCmKBVRr3SF+IlmL9q0jCiZpBj4/VS8WvazreU9T6wXcYTaHgDPIMAmxERj9HlFR8ZdZIdda9SAdyslKm6ysEB47ReO4ZLyDCGsW1ZRUW/Udw0bPEzPNBZZLKEATA3h2FXEdPQbiDp4Svlc0zcDT6TXH7ojZVC0r8QZKGTDYjVSTNY5oLojRK2xAEilDtnFjypowqPWw5ihUM1GjONEoIiB7YupwtkCuWdEtLs1l9rrSpqraXGRvAJ7aao0cDjpJeN3jgETqP5LPQDBSXDUohB9uaWtSWni2Tjq9ijlcYEY/Kdz34pPNQqCSbuebWxZ5Zug0M4IG1FzaKTttN4ql3r46Cqy+PMlGpF1spqQiw1rAyRrt6UdVJrRL8rgx/EQGyZTZF4dVYE8YqHMCFtva3jE7HHdlwt4QK5MbwR9w/Ge8XM4MnnvM/6+fDlwUHKjCwjik8G3fjtF5OtBXGpQlvaPLKsBVz6R9xe+jgKMhcw0XSqOzlsKa+nSsbLIGloIdBTJ30PcFSZ7Pgv5apWuiLJoyKs73H6hoR+wanM6spfoI62hQO34YWGDAwRLQorJAWH5Z/DCPEC9wqPcsR6SkFfhlfx4HbWeCuyUpbVYti/7iY5KcHQR/u6/4jzeW19kV43ECr3eLyG5Mm+MBvcnGQhRW3Tdrwoh+MfqzFH/OJT9Y2aVfN04CgPCTjNlvjnU51rcHKM3GFFbojhfgj5eDe38E4ZElKVf59o45e8U9MaEVtexRFaK2kc6p5qqJptkIWgpeSTGhq6lo4D2UCCIQBPiuEq4d1LsghA2VRxbfnUJV2ZsKhfr9/E0JOF7jN/HxnzZu0VH6DVn1noVBO0koeYlc/35YqMy0K3NQJYV0pH44i++2PNN7m+mrGBA1B0F2vI/C6sDbRJLEAVNy8ylV400zofh0ecYkF85eg33Yh2gMKclQ9+iwPMChR0FyajH
- 8aL27/YQ
- Er6h3Rf1V3I8BEL449ygv+EajmEJ9ux9XKHpGF8XetkaxovKa22MWDvoYWub+dMY4J2EfQJxRvGXkX3VJxe3ZfPITkGSCPn4n0jONem17tMqcItDoPjzerwV8CqILbc9+uvTK+EcqPDiFMHKyQLZFhI7tTLvkFaNe890sRzqy9DSJ6n2OVSuGtBJ0J+C4urozC0ARJ2t3G1kZflki3Jn3nDuLxV0/aRJk0ve1nGIPRtvAm1MfWMH3KUznVa31HaL4P8zM20uGi8wvJfqbtnDM+nbEUJKy7VLdopLS37toOH8g4yLcpI+tYlHcP4mD1Eb9tBSeo2DjPC1wYFvthScKQx1MfuXnNSr+98ROuZNDq3DjjLSwHF+BKIMWhmZuB5TC1slKVrNAPWyHl8W5lGXibU5DOh0hI4nwR+OJeVbJLJGEEi2xhDDWQXN9tvvedQJxZr782NrT7W2OrdwX8i7hCRMMxrMIUtcnobK5z4+VzPpGrq3IGxrLSYwZT40c1jcHXXcC1sROS1133H7RORVbV4QAn0MN1Gm6fY02NtSm+ANQ0gB5kRx5bDEJbBehmT+eU5dcxmZ2ts0iiKAxIEUY9LhYok0uILK7ZfQWfqN0K+J3t7ikia+pQKahPjhKh8rVyLs4l5BJM0pCxeLMW4YR6CP+HQcHQA5i5jxxeaWgeitqv91zKlBRTcTCI+BRDp614fAI
+X-Rspamd-Queue-Id: F22752000A
+X-HE-Tag: 1760059214-328340
+X-HE-Meta: U2FsdGVkX19e+kguTOOBkEtnd6fYCvbT39AaDrm9LJJHFKQAm/2Ot3/0Z9cwEtqCd/XYOZwrT6cGFGlDAQF9zgAza4pOqZkCis10l/MQyJJDXowygEwwNyBIoaPcavR4IKfwdtpDMcDA47qd8SDUN4jdZf5Pfz7P4/Caco1RY1QuiP/wA1BHx1aiZWrMrma+/dOUN6qS9G7OAw3lM8sBD77msn29Q3BUN19V6Sv321oDeVxIPszEqpp01XERGmHMW/s9A2ZQ94vTXe2WKZVeU/lfpK7nh9edCPyvEQl4BiAn9NqyA4NgUW/FAUJw1ut+6UaVAqDmT0aM97udi62Z2z3jXWlwSkoUOcdRHREIQDG3vvExPkWEhDulCXjLs/iudJahQLaz5w4qicOxCAxb91Kfy7ksoRJtBaqXsLYMw3GfubKInEmOhyZIMnHevYAFivV1Vq6IqyfEGxuoHGUHdEd42c6xOvYyzdOnH/bb2Ip4i9TYLu5oHTP4b0eugWI3Jnpl7pJJvfDHlKFlGsWsNvWyrGLun+XgQpFLQ3/DCwh+NQabJxPxK2gxh7dNKKo/oMnZyQdztaKxwDTVhVJYHkygx2YzbateOt3BrWFDbyqldEkwvZDokNVvHl0Pv+ZXOYfyQ5TVi1ee3IQMUkBjhpyZVe+wIJb8cnk2mjlvP+3GwmhJ/oensHL7Uo8m8F+5RtLx4RaTRKqzusNhZq0++gcUx2Gi6ZIo95S+34jGLcMJESmOkkItOgGA6OJ1MUKx3pHn+wz26tjE3kgwo6JEohUcHjLNz73E1xPox6iL96O/RbPWs28rA/IJA/kJYAMC7Jjl4e9wL0RmHZMxodeOdfzwdlY82CyGdIeGVLGXCI/MQQI2KLdWQ/tCZiIQ9y1oLcZ0wRvGsmVhlaUb8JevqwD5Cyvob9jRG2QY3TFuwmKqG44Prh7jKFT4A3PuqmqAEshde0OfVf8koewR+P2
+ VIOTfNxl
+ rQnx2/OtOideW0FfBN/IKxf/wi5VeAbzYfQyBcJwHTfaSUGvcLmY3vi/76O51yA7SW/Bp6ZfBY3QEOxcZp/ENS0DknJEUYvTR4p/SiP4Xa+y6EQM52ZrjDyAbSOkgKbneJoHgl5T45BRyH9OaekaImFfiS1oLXkXlN+nQ9/gyCbb0wujdk10R7EUuyv9kh4a8YFEhSQdWInulJfB0eemUduRdyc07DhWmscjYRNt7RjqGVZ/GDu4FnxuAcZvdzRoPbHWmoJfP2LLkg8p0xN9ICHQxqTWdFZVWXgfYkrhRY7rbhIsnlwBZCpfWYGXrjXtd1kx/EXJj31mOEBMYqRqPHAZkatK7JUW8Rde+2CW2uto44N4s7iWLIwYeHRsTM69YRVOHXI5CRiN2Ijbf4NaAQDCP2Uuv5rDTOEaviZMkozTcCM2+CpFS3YRtkeDz1xdXpxiZcy6aV46nPdZG0baGFFrSJtOqkAYMLoDVTy/PgnhLedG+XBnguNFegAaIHuhq5U+Lnyj591+8qpCfS2Xm+I4Ggu0S4bQIbKMabdIHS1OKSngXf2sjM0RtQ6V3S3H4wWiO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,368 +118,241 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Minchan Kim <minchan@google.com>
+Introduce a new "guarantee" property for shared-dma-pool to enable
+GCMA-backed memory pools. Memory allocations from such pools will
+have low latency and will be guaranteed to succeed as long as there
+is contiguous space inside the reservation.
+dt-schema for shared-dma-pool [1] will need to be updated once this
+patch is accepted.
 
-This patch introduces GCMA (Guaranteed Contiguous Memory Allocator)
-cleacache backend which reserves some amount of memory at the boot
-and then donates it to store clean file-backed pages in the cleancache.
-GCMA aims to guarantee contiguous memory allocation success as well as
-low and deterministic allocation latency.
-
-Notes:
-Originally, the idea was posted by SeongJae Park and Minchan Kim [1].
-Later Minchan reworked it to be used in Android as a reference for
-Android vendors to use [2].
-
-[1] https://lwn.net/Articles/619865/
-[2] https://android-review.googlesource.com/q/topic:%22gcma_6.12%22
+[1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/reserved-memory/shared-dma-pool.yaml
 
 Signed-off-by: Minchan Kim <minchan@google.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- MAINTAINERS          |   2 +
- include/linux/gcma.h |  36 +++++++
- mm/Kconfig           |  15 +++
- mm/Makefile          |   1 +
- mm/gcma.c            | 231 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 285 insertions(+)
- create mode 100644 include/linux/gcma.h
- create mode 100644 mm/gcma.c
+ include/linux/cma.h     | 11 +++++++++--
+ kernel/dma/contiguous.c | 11 ++++++++++-
+ mm/Kconfig              |  2 +-
+ mm/cma.c                | 37 +++++++++++++++++++++++++++----------
+ mm/cma.h                |  1 +
+ mm/cma_sysfs.c          | 10 ++++++++++
+ mm/gcma.c               |  2 +-
+ 7 files changed, 59 insertions(+), 15 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 441e68c94177..95b5ad26ec11 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16361,6 +16361,7 @@ F:	Documentation/admin-guide/mm/
- F:	Documentation/mm/
- F:	include/linux/cma.h
- F:	include/linux/dmapool.h
-+F:	include/linux/gcma.h
- F:	include/linux/ioremap.h
- F:	include/linux/memory-tiers.h
- F:	include/linux/page_idle.h
-@@ -16372,6 +16373,7 @@ F:	mm/dmapool.c
- F:	mm/dmapool_test.c
- F:	mm/early_ioremap.c
- F:	mm/fadvise.c
-+F:	mm/gcma.c
- F:	mm/ioremap.c
- F:	mm/mapping_dirty_helpers.c
- F:	mm/memory-tiers.c
-diff --git a/include/linux/gcma.h b/include/linux/gcma.h
-new file mode 100644
-index 000000000000..20b2c85de87b
---- /dev/null
-+++ b/include/linux/gcma.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __GCMA_H__
-+#define __GCMA_H__
-+
-+#include <linux/types.h>
-+
-+#ifdef CONFIG_GCMA
-+
-+int gcma_register_area(const char *name,
-+		       unsigned long start_pfn, unsigned long count);
-+
-+/*
-+ * NOTE: allocated pages are still marked reserved and when freeing them
-+ * the caller should ensure they are isolated and not referenced by anyone
-+ * other than the caller.
-+ */
-+int gcma_alloc_range(unsigned long start_pfn, unsigned long count, gfp_t gfp);
-+int gcma_free_range(unsigned long start_pfn, unsigned long count);
-+
-+#else /* CONFIG_GCMA */
-+
-+static inline int gcma_register_area(const char *name,
-+				     unsigned long start_pfn,
-+				     unsigned long count)
-+		{ return -EOPNOTSUPP; }
-+static inline int gcma_alloc_range(unsigned long start_pfn,
-+				   unsigned long count, gfp_t gfp)
-+		{ return -EOPNOTSUPP; }
-+
-+static inline int gcma_free_range(unsigned long start_pfn,
-+				   unsigned long count)
-+		{ return -EOPNOTSUPP; }
-+
-+#endif /* CONFIG_GCMA */
-+
-+#endif /* __GCMA_H__ */
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 62d9c1cf6326..3ec2e76a8666 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -43,10 +43,17 @@ static inline int __init cma_declare_contiguous(phys_addr_t base,
+ extern int __init cma_declare_contiguous_multi(phys_addr_t size,
+ 			phys_addr_t align, unsigned int order_per_bit,
+ 			const char *name, struct cma **res_cma, int nid);
+-extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
++extern int __cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 					unsigned int order_per_bit,
+ 					const char *name,
+-					struct cma **res_cma);
++					struct cma **res_cma, bool gcma);
++static inline int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
++					unsigned int order_per_bit,
++					const char *name,
++					struct cma **res_cma)
++{
++	return __cma_init_reserved_mem(base, size, order_per_bit, name, res_cma, false);
++}
+ extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
+ 			      bool no_warn);
+ extern bool cma_pages_valid(struct cma *cma, const struct page *pages, unsigned long count);
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index d9b9dcba6ff7..73a699ef0377 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -461,6 +461,7 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
+ 	unsigned long node = rmem->fdt_node;
+ 	bool default_cma = of_get_flat_dt_prop(node, "linux,cma-default", NULL);
+ 	struct cma *cma;
++	bool gcma;
+ 	int err;
+ 
+ 	if (size_cmdline != -1 && default_cma) {
+@@ -478,7 +479,15 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
+ 		return -EINVAL;
+ 	}
+ 
+-	err = cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &cma);
++	gcma = !!of_get_flat_dt_prop(node, "guarantee", NULL);
++#ifndef CONFIG_GCMA
++	if (gcma) {
++		pr_err("Reserved memory: unable to setup GCMA region, GCMA is not enabled\n");
++		return -EINVAL;
++	}
++#endif
++	err = __cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name,
++				      &cma, gcma);
+ 	if (err) {
+ 		pr_err("Reserved memory: unable to setup CMA region\n");
+ 		return err;
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 9f4da8a848f4..41ce5ef8db55 100644
+index 41ce5ef8db55..729f150369cc 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -1013,6 +1013,21 @@ config CMA_AREAS
+@@ -1015,7 +1015,7 @@ config CMA_AREAS
  
- 	  If unsure, leave the default value "8" in UMA and "20" in NUMA.
- 
-+config GCMA
-+       bool "GCMA (Guaranteed Contiguous Memory Allocator)"
-+       depends on CLEANCACHE
-+	help
-+	  This enables the Guaranteed Contiguous Memory Allocator to allow
-+	  low latency guaranteed contiguous memory allocations. Memory
-+	  reserved by GCMA is donated to cleancache to be used as pagecache
-+	  extension. Once GCMA allocation is requested, necessary pages are
-+	  taken back from the cleancache and used to satisfy the request.
-+	  Cleancache guarantees low latency successful allocation as long
-+	  as the total size of GCMA allocations does not exceed the size of
-+	  the memory donated to the cleancache.
-+
-+	  If unsure, say "N".
-+
- #
- # Select this config option from the architecture Kconfig, if available, to set
- # the max page order for physically contiguous allocations.
-diff --git a/mm/Makefile b/mm/Makefile
-index 845841a140e3..05aee66a8b07 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -149,3 +149,4 @@ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
- obj-$(CONFIG_CLEANCACHE) += cleancache.o
- obj-$(CONFIG_CLEANCACHE_SYSFS)	+= cleancache_sysfs.o
-+obj-$(CONFIG_GCMA)	+= gcma.o
-diff --git a/mm/gcma.c b/mm/gcma.c
-new file mode 100644
-index 000000000000..3ee0e1340db3
---- /dev/null
-+++ b/mm/gcma.c
-@@ -0,0 +1,231 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * GCMA (Guaranteed Contiguous Memory Allocator)
-+ *
-+ */
-+
-+#define pr_fmt(fmt) "gcma: " fmt
-+
-+#include <linux/cleancache.h>
+ config GCMA
+        bool "GCMA (Guaranteed Contiguous Memory Allocator)"
+-       depends on CLEANCACHE
++       depends on CLEANCACHE && CMA
+ 	help
+ 	  This enables the Guaranteed Contiguous Memory Allocator to allow
+ 	  low latency guaranteed contiguous memory allocations. Memory
+diff --git a/mm/cma.c b/mm/cma.c
+index 813e6dc7b095..71fb494ef2a4 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -28,6 +28,7 @@
+ #include <linux/highmem.h>
+ #include <linux/io.h>
+ #include <linux/kmemleak.h>
 +#include <linux/gcma.h>
-+#include <linux/hashtable.h>
-+#include <linux/highmem.h>
-+#include <linux/idr.h>
-+#include <linux/slab.h>
-+#include <linux/xarray.h>
-+#include "internal.h"
-+
-+#define MAX_GCMA_AREAS		64
-+#define GCMA_AREA_NAME_MAX_LEN	32
-+
-+struct gcma_area {
-+	int pool_id;
-+	unsigned long start_pfn;
-+	unsigned long end_pfn;
-+	char name[GCMA_AREA_NAME_MAX_LEN];
-+};
-+
-+static struct gcma_area areas[MAX_GCMA_AREAS];
-+static atomic_t nr_gcma_area = ATOMIC_INIT(0);
-+static DEFINE_SPINLOCK(gcma_area_lock);
-+
-+static int free_folio_range(struct gcma_area *area,
-+			     unsigned long start_pfn, unsigned long end_pfn)
-+{
-+	unsigned long scanned = 0;
-+	struct folio *folio;
-+	unsigned long pfn;
-+
-+	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
-+		int err;
-+
-+		if (!(++scanned % XA_CHECK_SCHED))
-+			cond_resched();
-+
-+		folio = pfn_folio(pfn);
-+		err = cleancache_backend_put_folio(area->pool_id, folio);
-+		if (WARN(err, "PFN %lu: folio is still in use\n", pfn))
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int alloc_folio_range(struct gcma_area *area,
-+			      unsigned long start_pfn, unsigned long end_pfn,
-+			      gfp_t gfp)
-+{
-+	unsigned long scanned = 0;
-+	unsigned long pfn;
-+
-+	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
-+		int err;
-+
-+		if (!(++scanned % XA_CHECK_SCHED))
-+			cond_resched();
-+
-+		err = cleancache_backend_get_folio(area->pool_id, pfn_folio(pfn));
-+		if (err) {
-+			free_folio_range(area, start_pfn, pfn);
-+			return err;
+ #include <trace/events/cma.h>
+ 
+ #include "internal.h"
+@@ -161,11 +162,18 @@ static void __init cma_activate_area(struct cma *cma)
+ 			count = early_pfn[r] - cmr->base_pfn;
+ 			bitmap_count = cma_bitmap_pages_to_bits(cma, count);
+ 			bitmap_set(cmr->bitmap, 0, bitmap_count);
++		} else {
++			count = 0;
+ 		}
+ 
+-		for (pfn = early_pfn[r]; pfn < cmr->base_pfn + cmr->count;
+-		     pfn += pageblock_nr_pages)
+-			init_cma_reserved_pageblock(pfn_to_page(pfn));
++		if (cma->gcma) {
++			gcma_register_area(cma->name, early_pfn[r],
++					   cma->count - count);
++		} else {
++			for (pfn = early_pfn[r]; pfn < cmr->base_pfn + cmr->count;
++			     pfn += pageblock_nr_pages)
++				init_cma_reserved_pageblock(pfn_to_page(pfn));
 +		}
-+	}
-+
-+	return 0;
-+}
-+
-+static struct gcma_area *find_area(unsigned long start_pfn, unsigned long end_pfn)
+ 	}
+ 
+ 	spin_lock_init(&cma->lock);
+@@ -252,7 +260,7 @@ static void __init cma_drop_area(struct cma *cma)
+ }
+ 
+ /**
+- * cma_init_reserved_mem() - create custom contiguous area from reserved memory
++ * __cma_init_reserved_mem() - create custom contiguous area from reserved memory
+  * @base: Base address of the reserved area
+  * @size: Size of the reserved area (in bytes),
+  * @order_per_bit: Order of pages represented by one bit on bitmap.
+@@ -260,13 +268,14 @@ static void __init cma_drop_area(struct cma *cma)
+  *        the area will be set to "cmaN", where N is a running counter of
+  *        used areas.
+  * @res_cma: Pointer to store the created cma region.
++ * @gcma: Flag to reserve guaranteed reserved memory area.
+  *
+  * This function creates custom contiguous area from already reserved memory.
+  */
+-int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+-				 unsigned int order_per_bit,
+-				 const char *name,
+-				 struct cma **res_cma)
++int __init __cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
++				   unsigned int order_per_bit,
++				   const char *name,
++				   struct cma **res_cma, bool gcma)
+ {
+ 	struct cma *cma;
+ 	int ret;
+@@ -297,6 +306,7 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 	cma->ranges[0].count = cma->count;
+ 	cma->nranges = 1;
+ 	cma->nid = NUMA_NO_NODE;
++	cma->gcma = gcma;
+ 
+ 	*res_cma = cma;
+ 
+@@ -836,7 +846,11 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+ 		spin_unlock_irq(&cma->lock);
+ 
+ 		mutex_lock(&cma->alloc_mutex);
+-		ret = alloc_contig_range(pfn, pfn + count, ACR_FLAGS_CMA, gfp);
++		if (cma->gcma)
++			ret = gcma_alloc_range(pfn, count, gfp);
++		else
++			ret = alloc_contig_range(pfn, pfn + count,
++						 ACR_FLAGS_CMA, gfp);
+ 		mutex_unlock(&cma->alloc_mutex);
+ 		if (!ret)
+ 			break;
+@@ -1009,7 +1023,10 @@ bool cma_release(struct cma *cma, const struct page *pages,
+ 	if (r == cma->nranges)
+ 		return false;
+ 
+-	free_contig_range(pfn, count);
++	if (cma->gcma)
++		gcma_free_range(pfn, count);
++	else
++		free_contig_range(pfn, count);
+ 	cma_clear_bitmap(cma, cmr, pfn, count);
+ 	cma_sysfs_account_release_pages(cma, count);
+ 	trace_cma_release(cma->name, pfn, pages, count);
+diff --git a/mm/cma.h b/mm/cma.h
+index c70180c36559..3b09e8619082 100644
+--- a/mm/cma.h
++++ b/mm/cma.h
+@@ -49,6 +49,7 @@ struct cma {
+ 	char name[CMA_MAX_NAME];
+ 	int nranges;
+ 	struct cma_memrange ranges[CMA_MAX_RANGES];
++	bool gcma;
+ #ifdef CONFIG_CMA_SYSFS
+ 	/* the number of CMA page successful allocations */
+ 	atomic64_t nr_pages_succeeded;
+diff --git a/mm/cma_sysfs.c b/mm/cma_sysfs.c
+index 97acd3e5a6a5..4ecc36270a4d 100644
+--- a/mm/cma_sysfs.c
++++ b/mm/cma_sysfs.c
+@@ -80,6 +80,15 @@ static ssize_t available_pages_show(struct kobject *kobj,
+ }
+ CMA_ATTR_RO(available_pages);
+ 
++static ssize_t gcma_show(struct kobject *kobj,
++			 struct kobj_attribute *attr, char *buf)
 +{
-+	int nr_area = atomic_read_acquire(&nr_gcma_area);
-+	int i;
++	struct cma *cma = cma_from_kobj(kobj);
 +
-+	for (i = 0; i < nr_area; i++) {
-+		struct gcma_area *area = &areas[i];
-+
-+		if (area->end_pfn <= start_pfn)
-+			continue;
-+
-+		if (area->start_pfn > end_pfn)
-+			continue;
-+
-+		/* The entire range should belong to a single area */
-+		if (start_pfn < area->start_pfn || end_pfn > area->end_pfn)
-+			break;
-+
-+		/* Found the area containing the entire range */
-+		return area;
-+	}
-+
-+	return NULL;
++	return sysfs_emit(buf, "%d\n", cma->gcma);
 +}
++CMA_ATTR_RO(gcma);
 +
-+int gcma_register_area(const char *name,
-+		       unsigned long start_pfn, unsigned long count)
-+{
-+	LIST_HEAD(folios);
-+	int i, pool_id;
-+	int nr_area;
-+	int ret = 0;
-+
-+	pool_id = cleancache_backend_register_pool(name);
-+	if (pool_id < 0)
-+		return pool_id;
-+
-+	for (i = 0; i < count; i++) {
-+		struct folio *folio;
-+
-+		folio = pfn_folio(start_pfn + i);
-+		folio_clear_reserved(folio);
-+		folio_set_count(folio, 0);
-+		list_add(&folio->lru, &folios);
-+	}
-+
-+	cleancache_backend_put_folios(pool_id, &folios);
-+
-+	spin_lock(&gcma_area_lock);
-+
-+	nr_area = atomic_read(&nr_gcma_area);
-+	if (nr_area < MAX_GCMA_AREAS) {
-+		struct gcma_area *area = &areas[nr_area];
-+
-+		area->pool_id = pool_id;
-+		area->start_pfn = start_pfn;
-+		area->end_pfn = start_pfn + count;
-+		strscpy(area->name, name);
-+		/* Ensure above stores complete before we increase the count */
-+		atomic_set_release(&nr_gcma_area, nr_area + 1);
-+	} else {
-+		ret = -ENOMEM;
-+	}
-+
-+	spin_unlock(&gcma_area_lock);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(gcma_register_area);
-+
-+int gcma_alloc_range(unsigned long start_pfn, unsigned long count, gfp_t gfp)
-+{
-+	unsigned long end_pfn = start_pfn + count;
-+	struct gcma_area *area;
-+	struct folio *folio;
-+	int err, order = 0;
-+
-+	gfp = current_gfp_context(gfp);
-+	if (gfp & __GFP_COMP) {
-+		if (!is_power_of_2(count))
-+			return -EINVAL;
-+
-+		order = ilog2(count);
-+		if (order >= MAX_PAGE_ORDER)
-+			return -EINVAL;
-+	}
-+
-+	area = find_area(start_pfn, end_pfn);
-+	if (!area)
-+		return -EINVAL;
-+
-+	err = alloc_folio_range(area, start_pfn, end_pfn, gfp);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * GCMA returns pages with refcount 1 and expects them to have
-+	 * the same refcount 1 when they are freed.
-+	 */
-+	if (order) {
-+		folio = pfn_folio(start_pfn);
-+		set_page_count(&folio->page, 1);
-+		prep_compound_page(&folio->page, order);
-+	} else {
-+		for (unsigned long pfn = start_pfn; pfn < end_pfn; pfn++) {
-+			folio = pfn_folio(pfn);
-+			set_page_count(&folio->page, 1);
-+		}
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gcma_alloc_range);
-+
-+int gcma_free_range(unsigned long start_pfn, unsigned long count)
-+{
-+	unsigned long end_pfn = start_pfn + count;
-+	struct gcma_area *area;
-+	struct folio *folio;
-+
-+	area = find_area(start_pfn, end_pfn);
-+	if (!area)
-+		return -EINVAL;
-+
-+	folio = pfn_folio(start_pfn);
-+	if (folio_test_large(folio)) {
-+		int expected = folio_nr_pages(folio);
-+
-+		if (WARN(count != expected, "PFN %lu: count %lu != expected %d\n",
-+			  start_pfn, count, expected))
-+			return -EINVAL;
-+
-+		if (WARN(!folio_ref_dec_and_test(folio),
-+			 "PFN %lu: invalid folio refcount when freeing\n", start_pfn))
-+			return -EINVAL;
-+
-+		free_pages_prepare(&folio->page, folio_order(folio));
-+	} else {
-+		for (unsigned long pfn = start_pfn; pfn < end_pfn; pfn++) {
-+			folio = pfn_folio(pfn);
-+			if (folio_nr_pages(folio) == 1)
-+				count--;
-+
-+			if (WARN(!folio_ref_dec_and_test(folio),
-+				 "PFN %lu: invalid folio refcount when freeing\n", pfn))
-+				return -EINVAL;
-+
-+			free_pages_prepare(&folio->page, 0);
-+		}
-+		WARN(count != 0, "%lu pages are still in use!\n", count);
-+	}
-+
-+	return free_folio_range(area, start_pfn, end_pfn);
-+}
-+EXPORT_SYMBOL_GPL(gcma_free_range);
+ static void cma_kobj_release(struct kobject *kobj)
+ {
+ 	struct cma *cma = cma_from_kobj(kobj);
+@@ -95,6 +104,7 @@ static struct attribute *cma_attrs[] = {
+ 	&release_pages_success_attr.attr,
+ 	&total_pages_attr.attr,
+ 	&available_pages_attr.attr,
++	&gcma_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(cma);
+diff --git a/mm/gcma.c b/mm/gcma.c
+index 3ee0e1340db3..8e7d7a829b49 100644
+--- a/mm/gcma.c
++++ b/mm/gcma.c
+@@ -119,7 +119,7 @@ int gcma_register_area(const char *name,
+ 		folio_set_count(folio, 0);
+ 		list_add(&folio->lru, &folios);
+ 	}
+-
++	folio_zone(pfn_folio(start_pfn))->cma_pages += count;
+ 	cleancache_backend_put_folios(pool_id, &folios);
+ 
+ 	spin_lock(&gcma_area_lock);
 -- 
 2.51.0.740.g6adb054d12-goog
 
