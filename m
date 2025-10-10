@@ -4,127 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19B0CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 17:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECDD1CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 18:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3384C8E0039; Fri, 10 Oct 2025 13:52:04 -0400 (EDT)
+	id 3EAAA8E000C; Fri, 10 Oct 2025 14:01:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30FAD8E000C; Fri, 10 Oct 2025 13:52:04 -0400 (EDT)
+	id 3C3E78E000A; Fri, 10 Oct 2025 14:01:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24CA88E0039; Fri, 10 Oct 2025 13:52:04 -0400 (EDT)
+	id 2D7C28E000C; Fri, 10 Oct 2025 14:01:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AA98E000C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 13:52:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBD671DFEFE
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 17:52:03 +0000 (UTC)
-X-FDA: 83982948126.14.94A5DBD
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 945F040016
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 17:52:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=GKL2uFU3;
-	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.48 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E89A8E000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:01:41 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3F1211A192
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:01:40 +0000 (UTC)
+X-FDA: 83982972360.12.2915FDE
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9015640019
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:01:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=mCeoaMhF;
+	spf=pass (imf04.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.46 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760119298; a=rsa-sha256;
+	cv=none;
+	b=E9F2QSb6x+UQA3nLSgGtc5CD7Mca0eZ0XX/zMb/rIFbmkkHmqZcyAAjpGoXvX5lH7/qjGw
+	E4FSzuNTgvP2mxspIo3UWuyqOywnTgS/ngAjBX8pNh5um+mIUHtDIeSfNDqrCZ3V7KJHXk
+	8Q6+rS21YArETBAeUkJ0148iEAP6ZiQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=mCeoaMhF;
+	spf=pass (imf04.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.46 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760118721;
+	s=arc-20220608; t=1760119298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QvQdAr9DjpPt7bc+ApQ1ILGDgUPpqYxsi4QQUD3UZbU=;
-	b=v6XUslN47fXbwCV/KD3RL+u/OHaJuTrzK4qdSdvdoUPjBC9Y9uGXU7eY6VKwO5SNq8kiHG
-	yth+e/HKumXy/B39BS/s5YgODiLWl4OFXRIa9fOG6MW73/x5PtqqppE/kV47sj9tULsIQa
-	Mjf6aXhcKEDglgryGbEs4f85WFJrjcM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=GKL2uFU3;
-	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.48 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760118721; a=rsa-sha256;
-	cv=none;
-	b=1AbcwLe72vLXa51QXZlvB0bMgPnXE53xF9YTH6GbjoWilS3AzC74DcAR39+pSDvcSrUqJt
-	+c1ZrUZ0UmpqgEBObVsa0/FNp+HKX/lB+NK+okIPzC7VWXAQLIpFQh1KGdW9/sCcQBQJ6B
-	XgYjymQQYCmNj8vp4yIyQelqEs1L3KI=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-637e74e9104so3097474a12.1
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:52:01 -0700 (PDT)
+	bh=LcZRKSK4PXETXkF9exJHZznRCpFqtWz78yHtguUg1Eg=;
+	b=SkFn8nyUKG2GLc6ejKApiiG7M5bG/QfrcpjPFIucJJgadVt6fDtWv/e/4Lfg58S3Y22wDP
+	1zDZUFLyh8xCnVj65bHFpPqtYHXMzqs38C1NXmBsE2DIYKgwQq32GtVFyjOn3EJkcazalS
+	LHQc+ySRbF6n6KLnOL29Uasoa7A96Ps=
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-9298eba27c2so101269039f.3
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1760118720; x=1760723520; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QvQdAr9DjpPt7bc+ApQ1ILGDgUPpqYxsi4QQUD3UZbU=;
-        b=GKL2uFU3zRqFGNl3Oag9qw/AI3sdAyTC2ODhx5qaW0wci0FRpxDvPhGuBmxKxmgLCV
-         mlNF7a/f9wR87FE7NKmyW2LZYHppohKo9xQSMcXu6uCYNg33McfJkwLNWwWEscc4Nk7J
-         dh+Tf8+GyGFNcztDXdk5rGe8rVrK1ytmKBL/c=
+        d=sifive.com; s=google; t=1760119297; x=1760724097; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LcZRKSK4PXETXkF9exJHZznRCpFqtWz78yHtguUg1Eg=;
+        b=mCeoaMhFYvszv8RNDRXKWFWRKQj1689WPTOlrtrWuQ/76Hk36sHgztPWGGQm2nZxik
+         zTrmOK62vA1U8xRXZt2IsU4VD2BOyoDZzy+G7umHUWPGgaX0BYOPYme7YCvfbGzYAs/L
+         Z/9L3Vj/siIpOLAhGHBrFCI0Ap9c/kMejdP4y+KoTPw/0joCJH5FskgOJtRCo96cwF1R
+         hyEDykMyRJke9c/FpG+i1rOHOauzFa9b9xrC0aZG/MDWbyTrIulPEfe9WlsH2t25hV31
+         gpyyjHa3gnaPSQX0wO5REYekcn2RtQAisInQpIIbMCyotcn+IdEPFNw6taK2ucyfnSOr
+         LCyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760118720; x=1760723520;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QvQdAr9DjpPt7bc+ApQ1ILGDgUPpqYxsi4QQUD3UZbU=;
-        b=g8S30ytbKZG0hZfeEHVBtHYvfQsAJclN+ImBHuAnrz6BA792daQkSBKwTMfupty1b7
-         9HNO35XAc3s7lIyR1HsoIVL/WtmCMwtK7CGrbnDe2q2id6kdngETR9miaUrTIxvy9pcT
-         WWOE4DyoIScGzb5YYY/Bg07Ou1xwkHPuGSkBLXlsywS9NRqwHGhEbY+6t3ylb95eVK4U
-         xpVLuJJXT6UhJQxFP4CzoRn5VgRN9dVbl0E+JReb+q1ydocrJODIfKgsvtDfx7ERuIwj
-         e5eY8gzYfIcQmRJ/CMNBsBGPbjmTKlTPqyLEd456gkpHdNByajh2ToNiozuc3VAyYBKd
-         6TLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVP6RvIJASyYb/0a45oIOLOwhXOGb65VxSBS8Yyd23cFY+KvlD7jdyj5SmesRau23M28WowBZXiYA==@kvack.org
-X-Gm-Message-State: AOJu0Yx+u1tz9U4hXZaZMJPGCtDdzmFRsrcpv3ZqUew/RmYKnaUquvQk
-	+RBvn9Nh+Oej1kUPONgoGxvTFdyD40qOTDH5MB3hlCVarsvyJatviWWE8/5TJq5ALWuEAelYb2z
-	ydO80/B4=
-X-Gm-Gg: ASbGncskPWoxvAT4jdUWx0RzBqT8o6ctew8XCkTt4uYnqXjKwnnto6JFFvGlLMshJOU
-	D/YpHVPqRn04qzZhqW3C5GwZuXPQzNib9SCcYdO4Ew/AsHedsWOt7SOFb6iYMaKirIVdglTxAH9
-	seps/Kg538DXmQ2OV0ghD1a65YO4DJHQ1832tTCnuGTpKMr5K9cAJwhLVgXTKv9w87+sKKSMB2K
-	oQi7UZddUdpU5ZJuQMS+ZQh9pIoI6fYid6wmId2GhchLoM1mX97veVRhYCCv8wirFoFhP41qUMW
-	kNZfiLNz5ovaooC50e02Hjd4GE6jFZlblnOouDhALRp4RzJBJhN4aZWuRD5Nxs5b3YnyIEEQOCx
-	tKynfdvqkj3Txe5EiyZQIA7R4m5oboqbWR8hbjausODFY1Rvffx3EF/wnRK7IJpQfgHZ89qbVcl
-	GENvhskW/IyE5Y1zDuSk6FOevb7g==
-X-Google-Smtp-Source: AGHT+IHDlV5dQwzVgKt8spC2bH9eh75by7kIM4Q18pMump2ATNo0CBdM43XT+gmqHN1NB1MumEVmZA==
-X-Received: by 2002:a17:907:3f1c:b0:b47:2be3:bc75 with SMTP id a640c23a62f3a-b50ac5d1dd9mr1350259066b.60.1760118719546;
-        Fri, 10 Oct 2025 10:51:59 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a5c132567sm2816474a12.33.2025.10.10.10.51.58
-        for <linux-mm@kvack.org>
+        d=1e100.net; s=20230601; t=1760119297; x=1760724097;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LcZRKSK4PXETXkF9exJHZznRCpFqtWz78yHtguUg1Eg=;
+        b=Z1KTmT1jsEjGP+xw3HWUFAMc8lAR65kPoIU5bI3TCqvmPVhAqEa8Nkh7HLsIetPfnv
+         7OZeaO0M+zNQiAPenvtemdGHJqzjk+xYemnrTOXvEfGr+8yuZtFpXwSuWW2XYiYHf7+D
+         fIhKcAOhvOH7P5KQit8UfTnX9ZbHwv6Asj6O0v0fUP4O4/B5TCAaQu877AyXMo1NIbqI
+         pwfPRouNiJvViiBDRu5foblAIqMqBwG7N4WOzVLHSE8arxVlN81Dwmh7zSuQOQi90O9P
+         VlkuPKBxbjppxyoxNKYW4NThkKQ77IbP1ufKlZOFrsLh6nFs8lm6vkhUCBz1sHE4wekh
+         TamQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtVilKAyEHr3v54TmMPFvxVYITrbnoz1t6ISSBM8SvUXkxw5d4U82ghhlbdZn+0b4bH28yZyDUjA==@kvack.org
+X-Gm-Message-State: AOJu0Ywo442wEOzqdPZnDFqtwZsMoYIOtmeL927phDZ01EnEvTAN5Jx6
+	j+KkhGCw+MuDRHT26ENsGVHGtgzquaSgUO9T7UxoSwRg7I58qSVxtebBhm/i2+4XEqs=
+X-Gm-Gg: ASbGnct1hX+cEY78YyCTa1tmlIYnJk8BwRj3RL6I7mm0NJL7Gsy54D9xChfdoHqjJve
+	3YYL+ew3nrk08Xg8mp2eAhq7C2Hg8E4SvspnMUTKqvkd3nZdCuZ/hMZei3amG3PTwGgOUdwzbCP
+	T1nzqye+oEXMmgjctnjD06xREx0xjafbtTjBkxDh83cBCO3ygM8+Z00PoZXOi+HXrb0S83MFTrd
+	y7pKjsqYVno2oFXOuGsUjl1eZChQOOl2rKdN1cH1sjh9F7hIIJDNcXuI/XMmrmSUNRza70IlR0b
+	gJfzF6YbeMTJR2aR+fNvkmDdL372eyOsTp++77mDufzjdM4kzlih2ryG7VRZSQu2hp9/f5imJYD
+	0a5p0Mtg7M0JhfYHsm4CuSWAWIs1Hn72ptpspSOhl9BWICl98I1ObRoydOw==
+X-Google-Smtp-Source: AGHT+IEBjqYLg0XLwORZyVN3qQnBYBCNWqLCOzyqFwj64pAzvRZBLWpl1DIWXO+pr6Q6ErFNviLU5w==
+X-Received: by 2002:a05:6602:b91:b0:93b:c3cf:9873 with SMTP id ca18e2360f4ac-93bd17ec199mr1511233839f.8.1760119297356;
+        Fri, 10 Oct 2025 11:01:37 -0700 (PDT)
+Received: from [100.64.0.1] ([170.85.6.207])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-93e25a95cbbsm116859739f.22.2025.10.10.11.01.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Oct 2025 10:51:58 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-639102bba31so4653035a12.2
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:51:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUpukZYf7lCO6fBn0f8UEWCUgfRFYaHfFRsx1poEJF/3+mEGY38mICD9w8eiQgEroVpXPRVNvkl6Q==@kvack.org
-X-Received: by 2002:a05:6402:90c:b0:634:cb54:810e with SMTP id
- 4fb4d7f45d1cf-639d5c57aa7mr10472315a12.31.1760118718242; Fri, 10 Oct 2025
- 10:51:58 -0700 (PDT)
+        Fri, 10 Oct 2025 11:01:36 -0700 (PDT)
+Message-ID: <178f4daf-c752-457b-8f0c-c6273f3a63dd@sifive.com>
+Date: Fri, 10 Oct 2025 13:01:35 -0500
 MIME-Version: 1.0
-References: <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
- <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
- <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
- <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
- <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
- <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp>
- <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
- <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
- <nhrb37zzltn5hi3h5phwprtmkj2z2wb4gchvp725bwcnsgvjyf@eohezc2gouwr>
- <CAHk-=wi1rrcijcD0i7V7JD6bLL-yKHUX-hcxtLx=BUd34phdug@mail.gmail.com> <qasdw5uxymstppbxvqrfs5nquf2rqczmzu5yhbvn6brqm5w6sw@ax6o4q2xkh3t>
-In-Reply-To: <qasdw5uxymstppbxvqrfs5nquf2rqczmzu5yhbvn6brqm5w6sw@ax6o4q2xkh3t>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 10 Oct 2025 10:51:40 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg0r_xsB0RQ+35WPHwPb9b9drJEfGL-hByBZRmPbSy0rQ@mail.gmail.com>
-X-Gm-Features: AS18NWDeOGtC5F9tBQ5g_zOvePSOzRo7FmLhKL0Jh1LjZOkog6ZFSNNw2rY-UUo
-Message-ID: <CAHk-=wg0r_xsB0RQ+35WPHwPb9b9drJEfGL-hByBZRmPbSy0rQ@mail.gmail.com>
-Subject: Re: Optimizing small reads
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 945F040016
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 16/18] riscv: mm: Use physical memory aliases to apply
+ PMAs
+To: Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ linux-riscv@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Conor Dooley <conor@kernel.org>,
+ Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>,
+ Andrew Morton <akpm@linux-foundation.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+References: <20251009015839.3460231-1-samuel.holland@sifive.com>
+ <20251009015839.3460231-17-samuel.holland@sifive.com>
+ <CAJM55Z9kRpc53s3Kip=U-CcDxAX0UZD5AbTBy_owU8xPEYH5MA@mail.gmail.com>
+ <6fa3c728-5048-4d26-9b6f-21757320caad@sifive.com>
+ <CAJM55Z8masgGn4vVe_2g1e9WXnLu0Vf5oGxbiniGpsbOhYPLRw@mail.gmail.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <CAJM55Z8masgGn4vVe_2g1e9WXnLu0Vf5oGxbiniGpsbOhYPLRw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: a49rfr44wpgfok7xy663m1w39nw6ekm9
-X-HE-Tag: 1760118721-692376
-X-HE-Meta: U2FsdGVkX1++WQsV9/fpvewtJuUTfwQDPyusaZQwzACAlqtldADDizvWFfzkRPebI24aCNuuXhYDTusNggACXIs2AZXoIs7hUa/ta4VaFED+1Yj+dni16xraHa32FiO5KgH4GOJjq3wO9aaW0c28m8j2dW+MiFCm1fthX7aPAstUKOyeucFZedju53adfC3QzqMAmXvppjdoBf/wROd18v3Co9GPb7lD91CmzROpoEYADkcPOEz8Tu+nSHSERAQISoOasXvSYcs1EigxF1MFEz9PpadmNqlmqmKtRGs+phUfJe6Ms49r4yjknDC+ZEEkrxLQTl5X8weQfx6kULHdWI2kiyX5EzTToxfT9OWgHBAVitdDC3qkkLI/vnzxPWGbQWM/C7DTzFpVk95UBwFZAwmemPUYd4Y63ro4JyetsGzI1DG6nAWFCspVcsPDe69Nw4iTNop2Vv4yJvxMythrYwF/sg5Rx+5rXc+AQ0cSK7PNmY/ZhOBD8QP1WeX29m88z8Kjpj260hhEIjKu+gCzt9fYtPwXusuRuPIeL1w4iKU/k+FlDipUejV7aSSWeeZ7t3mXVvOKmVljH6HUbKCukoV3qOrG97Cp7Gsmz69EUYOVLXozmxodPRcMu+v9rlbyk6V/lGQ/6nU1EODxZiCsBI3cXQsfk+u1HAx/nMb1+dMrZK51gojyew+IcHyCK1fuia3nFdLekVf9QrC58AKvZLf1qoOIqXhe1HYNMVScULFYCLtbsH1j9jQe67p6TgLJlh61dqFvqBOAijLRyoAnnSQtC1eFNzDqk0EnD4+QG8grJi+AqZjPOamrU62kcnVsAds1lqHyozqS+xbLIs79d4cGhTbYCBKHKfe8zPMssDyWS+A2WR7CgIaXLoSyZIilac/YMV4knohngy7sL2chnKhjegf9+DzIjj1dmH6GREDwADC47doJUxnd2S7t6AEsl63V8Q4EkgWgecQ6UKl
- 815Pp+8v
- 0xjr9kodZQ10ekOvkgTIF8HAWbNefVH/8PskxtqjISmiPUvuEncQZE4GZzgZbSTOZdvYbLHK5kPtpVUXzDKX5cONL0n0Qx2Bst2ru+j9cHX0uW8wTDpGVDlJo+qI78OJAvVwrBWPwfko45MXRfBOHgnSibqclzPU/GbZFKITIzBvn/Bkrj89qDp4zBaRRmBL4pEsSgbLR3CEb5LxWIm1LIEwc1B3jD6o6fjnRZGabyZ670KLDkoWCICwzWnYxKV71+zbUL6SHO3aM5pzJfJxa21f/ScFoQOyOAXXH5GyD+2WLPjuMrwBbt//cC/eW9A//s8mAAx8L+pw4vJ0Gjv0pr2y/oU7yWA8FUzICZ/J8wWqsVw76wT/oWymLP4W/j/oceVW6SdnKHOjG2ZfHJYjVGIpSZ+jHmPIp6fGIQJ1eEcon3gwiBc4MVXR4nPa/OStc9QZjTyHPPWIVSR0dIApptU7p+epUzzk6YOLwTqGVDg8JuGzRxFXl2/P52th7lr0vCk5e
+X-Stat-Signature: xhapc1cz6jdeaf1oznyqbwd4ojspddru
+X-Rspamd-Queue-Id: 9015640019
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760119298-867733
+X-HE-Meta: U2FsdGVkX1+DS+szegqgrLbXsiwCysDHfY/WHt0Rn2FbbfwiUrcxvn2eW/S74jkG4MdryPqK3BJEM0u+/vhrcr8iIPvjQwe3X/DhhLZ7H7XEhLSbIFizR25A9la/rfRZdtM/abPVLqB7Yh4LoeZZZChg1qJh1o1slu/BeJC+cIOnHj9VF5Heyb6MgrqcBfiEkaNFNZvDvKc0b2auLP16FvcwWWyFgNE5uCPd5QJa7njoNEdfo7H2cLk8B8CIVd6fi1Mx9zF5pli7FEnHrpRjyqScL4qO8YpdF/WCoIoL6layscDRDXspZIlNVoB46OAwz3PesRILKLbWS9e4M9SMunGCwMBrfxENZNOQUIA2Ak51E5ZQxQYLjLfTkmURUBkKx4t2pzYO5I7m6yvtYQksu1nYzSs0ve2ndQLUEAu7yqxDa+UOlq7xm2Hf8Zbg5xlzAho5UQ2DcKmkqCN2rQxAZ25/L0XPyigeIIjGjAvrCkWYpBaGRGRk5/4RkWML9vlWp7QfU33L3iRDrQthcK994oh5pFyCzELnYc9KzDLDjDVYRdjCImJOH24afNh30QgqbUoEVJbHX35DyyBTw8YmVyIauAFVRyOFj8FYYoXdUKDrqTlcy4gBK6TQjFoxUjI9NIy+bX1TfVpiJYZPCMQDPK6tUVZGrlhjBW1GmeWjkdk7T5+qZc4sco54GqlShpUG9Y0ABnIuA3H10ic+zkRCW5VBDla4icRHcm2kSoWzjXCT5B3UGXXjZO3PfLIO3URkr1sbVqP5EjQ6oYxo4q4YnAUV3jsmiJf7WprRUpDDJthgL8NbaOE2MkgFyz/Ur08hezJsi9813G3BAhHQELXqdlYR68lwE4DCbmEY2RgKM8svdNtOZg7z7hPQh3lKhuWEa+Y0P5jeX+GhKAEywnnQjv6utcheho843hB6CASSAThRzXscn53R8WMIENHOAYzauiWEwnbEJl3rY5pLupy
+ cJXEIrRP
+ o4OQ8i4YW8o86fsPgrPzER7rDfnwgRW0ETMXBL6ncUGQ3HMikd8FOJ6k6mJIDPnAfEVd5reHHvTbppy1dbVTcXTuFbxqs9iPxqebd2k2YLt7O9vCjdR09ef+jhV55Aa5JD8Qs0OUEr44VEfc2gz6jatAls6EmTClmbxJYHeLSt0vbOBFDK8rKasqsFsUzmjlIRNnlDj4X7SlhK2KG+I2mkzRSb9aa0CN9QS8458R0+lDw9Djy71BArpidx1BuDbEsTsfdNMqMp6924pyxDkRbok5ewRv1EAGcmSGaNCOiuT69XqjuwPKuDk3cbran9Z7XhbCQdwmcn/qpyzQXSPqhUZMdRLpsdaS3R606/QeX9vau8vPzFc/lrhfF7ISmhQxA+Fl05wnOm/K7824=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,64 +131,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Oct 2025 at 03:10, Kiryl Shutsemau <kirill@shutemov.name> wrote:
->
-> > So honestly I'd be inclined to go back to "just deal with the
-> > trivially small reads", and scratch this extra complexity.
->
-> I will play with it a bit more, but, yes, this my feel too.
+On 2025-10-10 12:04 PM, Emil Renner Berthing wrote:
+> Samuel Holland wrote:
+>> Hi Emil,
+>>
+>> Thanks for testing!
+>>
+>> On 2025-10-10 10:06 AM, Emil Renner Berthing wrote:
+>>> Samuel Holland wrote:
+> [ .. ]
+>>>> +
+>>>> +void __init riscv_init_memory_alias(void)
+>>>> +{
+>>>> +	int na = of_n_addr_cells(of_root);
+>>>> +	int ns = of_n_size_cells(of_root);
+>>>> +	int nc = na + ns + 2;
+>>>> +	const __be32 *prop;
+>>>> +	int pairs = 0;
+>>>> +	int len;
+>>>> +
+>>>> +	prop = of_get_property(of_root, "riscv,physical-memory-regions", &len);
+>>>> +	if (!prop)
+>>>> +		return;
+>>>> +
+>>>> +	len /= sizeof(__be32);
+>>>> +	for (int i = 0; len >= nc; i++, prop += nc, len -= nc) {
+>>>> +		unsigned long base = of_read_ulong(prop, na);
+>>>> +		unsigned long size = of_read_ulong(prop + na, ns);
+>>>> +		unsigned long flags = be32_to_cpup(prop + na + ns);
+>>>> +		struct memory_alias_pair *pair;
+>>>> +		int alias;
+>>>> +
+>>>> +		/* We only care about non-coherent memory. */
+>>>> +		if ((flags & PMA_ORDER_MASK) != PMA_ORDER_MEMORY || (flags & PMA_COHERENT))
+>>>> +			continue;
+>>>> +
+>>>> +		/* The cacheable alias must be usable memory. */
+>>>> +		if ((flags & PMA_CACHEABLE) &&
+>>>> +		    !memblock_overlaps_region(&memblock.memory, base, size))
+>>>> +			continue;
+>>>> +
+>>>> +		alias = FIELD_GET(PMR_ALIAS_MASK, flags);
+>>>> +		if (alias) {
+>>>> +			pair = NULL;
+>>>> +			for (int j = 0; j < pairs; j++) {
+>>>> +				if (alias == memory_alias_pairs[j].index) {
+>>>> +					pair = &memory_alias_pairs[j];
+>>>> +					break;
+>>>> +				}
+>>>> +			}
+>>>> +			if (!pair)
+>>>> +				continue;
+>>>> +		} else {
+>>>> +			/* Leave room for the null sentinel. */
+>>>> +			if (pairs == ARRAY_SIZE(memory_alias_pairs) - 1)
+>>>> +				continue;
+>>>> +			pair = &memory_alias_pairs[pairs++];
+>>>> +			pair->index = i;
+>>>
+>>> I think this needs to be pair->index = i + 1, so PMA_ALIAS(1) can refer to the
+>>> first entry (i = 0).
+>>
+>> The code here is as intended. It's the PMA_ALIAS(1) in the DT that I should have
+>> changed to PMA_ALIAS(0) after I removed the special first entry from the
+>> riscv,physical-memory-regions property. Patch 18 also needs this fix.
+> 
+> Hmm.. that doesn't quite work for me though. Then the "if (alias)" above won't
+> trigger with PMR_ALIAS(0) right?
 
-There's a couple of reasons I think this optimization ends up being
-irrelevant for larger reads, with the obvious one being that ocne you
-have bigger reads, the cost of the copy will swamp the other latency
-issues.
+Yes, you're right. My fault for trying to be clever last time, where the special
+first entry meant PMR_ALIAS(0) would never be used. (And for not testing with
+the same DT as I sent, since EIC7700 needs downstream DT changes to integrate
+noncoherent peripherals.)
 
-But perhaps most importantly, if you do reads that are page-sized (or
-bigger), you by definition are no longer doing the thing that started
-this whole thing in the first place: hammering over and over on the
-same page reference count in multiple threads.
+For v3, I plan to make PMR_ALIAS(0) set a flag so it will be distinct from lack
+of PMR_ALIAS, and keep the indexes zero-based. For now, you should be able to
+test by keeping PMR_ALIAS(1) and adding a dummy entry at the beginning (for
+example by copying the first entry).
 
-(Of course, you can do exactly one page read over and over again, but
-at some point it just has to be called outright stupid and an
-artificial load)
+Regards,
+Samuel
 
-IOW, I think the only reasonable way that you actually get that
-cacheline ping-pong case is that you have some load that really does
-access some *small* data in a file from multiple threads, where there
-is then patterns where there are lots of those small fields on the
-same page (eg it's some metadata that everybody ends up accessing).
-
-If I recall correctly, the case Willy had a customer doing was reading
-64-byte entries in a page. And then I really can see multiple threads
-just reading the same page concurrently.
-
-But even if the entries are "just" one page in size, suddenly it makes
-no sense for a half-way competent app to re-read the whole page over
-and over and over again in threads. If an application really does
-that, then it's on the application to fix its silly behavior, not the
-kernel to try to optimize for that insanity.
-
-So that's why I think that original "just 256 bytes" is likely
-perfectly sufficient.
-
-Bigger IO simply doesn't make much sense for this particular "avoid
-reference counting", and while the RCU path is certainly clever and
-low-latency, and avoiding atomics is always a good thing, at the same
-time it's also a very limited thing that then can't do some basic
-things (like the whole "mark page accessed" etc)
-
-Anyway, I may well be wrong, but let's start out with a minimal patch.
-I think your first version with just the sequence number fixed would
-likely be perfectly fine for integration into 6.19 - possibly with any
-tweaking you come up with.
-
-And any benchmarking should probably do exactly that "threaded 64-byte
-read" that Willy had a real use-case for.
-
-Then, if people come up with actual real loads where it would make
-sense to expand on this, we can do so later.
-
-Sounds like a plan?
-
-                Linus
 
