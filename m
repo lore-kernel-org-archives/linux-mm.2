@@ -4,119 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C45FFCCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 11:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D21CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 12:44:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5A878E0005; Fri, 10 Oct 2025 07:53:52 -0400 (EDT)
+	id B0B568E0005; Fri, 10 Oct 2025 08:44:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C31868E0003; Fri, 10 Oct 2025 07:53:52 -0400 (EDT)
+	id AB4938E0003; Fri, 10 Oct 2025 08:44:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B474F8E0005; Fri, 10 Oct 2025 07:53:52 -0400 (EDT)
+	id 97BE28E0005; Fri, 10 Oct 2025 08:44:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9CD8E0003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:53:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0E741602B4
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:53:51 +0000 (UTC)
-X-FDA: 83982045462.02.34D9E86
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DCE92140003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:53:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e8i7CC21;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760097230; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CA618E0003
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:44:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F13641A01D8
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 12:44:28 +0000 (UTC)
+X-FDA: 83982173016.16.F24A6C8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 72C6718000B
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 12:44:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aMcmjXyb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIGYfyQX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aMcmjXyb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIGYfyQX;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760100266; a=rsa-sha256;
 	cv=none;
-	b=Sfj/yWloHbrnogVLI9IsuJBI/kA52IlGeF3xTh5jyY2T36e9BkXqabDBg4MkadP8vD20UI
-	rnJh6eSoq+tYYFJ+ZPpc0xBM60N1PLOl8rQF+dyt1Xz6ChKJD18u18RpQliS2zUzAXBH9y
-	muX0IObglD0Q6PzuC3NbvgC5ShCUqGs=
+	b=JiqQRwrBt1DW3Tu3z0SfgqiYzW5Fbnq51AXOeOmnn/K61cVYqyxNIEw/3mArqXx+/D4BKd
+	4LwTG7BhtocTH/fu73J9hFyRvxbN2A+ooLOw9Agyram0TGFgXIT/wd6ALt0pX89LlWH8A7
+	Ya6PvYODDCg+P6sgXA6DLcDYVL15LkQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e8i7CC21;
-	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aMcmjXyb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIGYfyQX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aMcmjXyb;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIGYfyQX;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760097230;
+	s=arc-20220608; t=1760100266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ve5GXmWmpHi33tEgDSRm/w0MXIwLW/4OvMnLFhI0YcI=;
-	b=GzCGDXFD1r6SlZ1BRWx1tPkt/NqO2Ydn1vk3Kgv/BVE723TccjFC1A9bK3Sh6vm8A/j5H5
-	go/eRYND7Ts38MKqTsfuip8u4GrCcvHGzJEfSQ36VXmIE2popO8UvEE0SjwQXqapUF896Q
-	YGVze77UmhkQF3L5uePdp9QB/DLIpqo=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso1847061f8f.2
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 04:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760097228; x=1760702028; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ve5GXmWmpHi33tEgDSRm/w0MXIwLW/4OvMnLFhI0YcI=;
-        b=e8i7CC21rrmzYPFOZTLV/Pfbl4hILVwiOxCYnsnlkRVI8GzTwqL+HXWkF5ATsJJsIe
-         SzD8+9t/DtWgxgtRELesNkobV+7oMfUokmglCjMEfO1Mnx2Yn6QzLViSkqvV2boPmVBb
-         LRHkkT+92Ousf8jVvKrv1EsZ65PB8SAsfkjsbrsZYYQtnRsT2zlZwlet+vplG6h45IkG
-         Wob/wlIv86dRie+saw9X1AZ7XHHtJio3DW7imEjda3MogA6/8XexyVEQE4LLquAtEMGV
-         xrDeCwUD66E0deZRe0mWrupioCo57aYWMxpCP6sSpgz1Kx0cS8FbEvsX6cv+gM2ScfQZ
-         IqWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760097228; x=1760702028;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ve5GXmWmpHi33tEgDSRm/w0MXIwLW/4OvMnLFhI0YcI=;
-        b=BzFO44WEd/hC8mlq4tPn68jnGee5mPO+esl5FGNM9+aTq15nC/TV5ZL7gessozyX11
-         UNY2uLyhFrD914aiXBuKTBk23Bz52fedpBzdi3PKqRft8WnWqlB28eR+ohPHNZg09RAK
-         roOziOUA1+Wx1Zb9Q5Lhqljq+kX5Nsb0v2yYdj0nhqpNoyZuddsJe8umuI09k+Cyi0uC
-         VVom/VKBVuouHySmmUK9aMoplreCxCY9nmkkRZz33SO445W80gng+c9KL4mFRpuI8m5F
-         +N5ao0TzeYGptnQxGbBC2Jg0Q7NsiEo4EB8Gcvsuv/fSGd27ByD8seSGPoZVl26XbKeZ
-         nrvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXI4/wXAyFgSZ+vG3sKhi+aBEgh9f8hq8K35XVLZQH2hOa/BsmTGRoyaTZ40vpDmshsknZf5f+k7w==@kvack.org
-X-Gm-Message-State: AOJu0YwD1TkBEh5TZ10kdd3+wLSL2cWbwxuJ3Ya0iuI5Oa8qU2bckrG9
-	QXbneg7h+vITEOZ0eucXv1Ktab6SZwUwMgXziJG1tItKZoLSnJg2mf29
-X-Gm-Gg: ASbGncsv5Iiws9Ex5FztUIO4wR8QmgHG3Utfka1r+Rl8GW1D5jG0OcGn9IW1Oj4TTfj
-	YuctGA+xE64VaTFcbvvCFo53e9TeBwY2UBSpi4VPxVOq5rbjNCW5ez9njeVzSfr8I702DfaxqEw
-	Bi0ktadlyoWWeo1BQnEbtP6jVyu5CehWGUTOaO12KwJIE3leivXtlf5jea8Rj0a6b8euHUTgrOH
-	wzscePa4aLkF/OTn/MwfOxZOuF3spn1iUWSeSQY44OmpvpAQ+37aWWOivoenzVoSuAnqxHL2iqK
-	iyZlVsEsymYUsxtwVZjDOPyfr7bqe4qLXK2KJRvRt9gY+n+sPpnj1r57mJPbqZr3MsgDCoAucau
-	evAylPwWBAapGaLNkFbM/MyATb2VfldXXzogi0Tyk+WNvxB4o9RvYsYRchZltC2oxOH1pzcIFID
-	M/S1mvtgZCzVMnxHQeiEsx51DBmmeUj0/utTJoWfKiAHj7HS8=
-X-Google-Smtp-Source: AGHT+IHsXGyGUJgVXz0ORzGntp6Fic3WHYvB2TK+Q4dKvGuhyzAZu9fH59b5KbN+KiLfkQOaaFGi+w==
-X-Received: by 2002:a5d:64c5:0:b0:3d2:9cbf:5b73 with SMTP id ffacd0b85a97d-42666ab9929mr5654537f8f.6.1760097227913;
-        Fri, 10 Oct 2025 04:53:47 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5? ([2a02:6b6f:e750:1b00:1cfc:9209:4810:3ae5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5dfc43sm3722424f8f.36.2025.10.10.04.53.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Oct 2025 04:53:47 -0700 (PDT)
-Message-ID: <fb33f2e1-b0fb-49b5-a804-2239ae517aaa@gmail.com>
-Date: Fri, 10 Oct 2025 12:53:46 +0100
+	bh=awaJTA4euvd5lWlQz6drPQdT+/x9DxKM967nJbwqyJA=;
+	b=GlABRl6O1soOMhZPmnY4TnhIELKyjlAc/pjytjXTE72HE3Oe3nnHzUlUCsZxpEccDgzAMj
+	m0ohPbUdBa475XrXVRPjn2oDumcrozbiTfimOrX0pgkWwnpN+kPAePaLLDw++ePoXDpx89
+	O/s7fkNk6Y6HsFw9dcBbLK66S/GGMyw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 866941F397;
+	Fri, 10 Oct 2025 12:44:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760100264; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=awaJTA4euvd5lWlQz6drPQdT+/x9DxKM967nJbwqyJA=;
+	b=aMcmjXybuhGMjvoSZ2v55NNCCUBta265KnO0fR9LQU4/NWxbGaJv04t7MItuKGgxSPxqi6
+	RL6dFzJD8+giHqquaVFbly1RutVAQG3No/Uit59wUDNNlA3ePQ5rauMocaG4E0/YhCHE9F
+	Nmu1kkovm6UXxD09eSWl0IpnaqdTMQI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760100264;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=awaJTA4euvd5lWlQz6drPQdT+/x9DxKM967nJbwqyJA=;
+	b=TIGYfyQXlEc9HheRyn7V4Dl0en9QAZjlnaew+k2xwodKXAlcbBZw4m3XjtewrzhebirOlB
+	XW3YLN9SbI1fGdCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760100264; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=awaJTA4euvd5lWlQz6drPQdT+/x9DxKM967nJbwqyJA=;
+	b=aMcmjXybuhGMjvoSZ2v55NNCCUBta265KnO0fR9LQU4/NWxbGaJv04t7MItuKGgxSPxqi6
+	RL6dFzJD8+giHqquaVFbly1RutVAQG3No/Uit59wUDNNlA3ePQ5rauMocaG4E0/YhCHE9F
+	Nmu1kkovm6UXxD09eSWl0IpnaqdTMQI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760100264;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=awaJTA4euvd5lWlQz6drPQdT+/x9DxKM967nJbwqyJA=;
+	b=TIGYfyQXlEc9HheRyn7V4Dl0en9QAZjlnaew+k2xwodKXAlcbBZw4m3XjtewrzhebirOlB
+	XW3YLN9SbI1fGdCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 618C613A40;
+	Fri, 10 Oct 2025 12:44:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id M24xF6j/6GgvMgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 10 Oct 2025 12:44:24 +0000
+Message-ID: <ceb8c9dc-2492-406d-b0b0-ccba3a77f144@suse.cz>
+Date: Fri, 10 Oct 2025 14:44:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/hugetlb: create hstate_is_gigantic_no_runtime
- helper
-Content-Language: en-GB
-To: SeongJae Park <sj@kernel.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com,
- Andrew Morton <akpm@linux-foundation.org>, shakeel.butt@linux.dev,
- linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com, kas@kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20251009191149.57652-1-sj@kernel.org>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20251009191149.57652-1-sj@kernel.org>
+Subject: Re: [PATCH v3 1/3] mm/page_alloc/vmstat: Simplify
+ refresh_cpu_vm_stats change detection
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Mason <clm@fb.com>, Kiryl Shutsemau <kirill@shutemov.name>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@redhat.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
+References: <20251002204636.4016712-1-joshua.hahnjy@gmail.com>
+ <20251002204636.4016712-2-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251002204636.4016712-2-joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9jh4xse7o3q6pwgd73asgxjec1t4hsss
-X-Rspamd-Queue-Id: DCE92140003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760097229-368648
-X-HE-Meta: U2FsdGVkX195HpPejPQKA8Fa1GHWX83af0Nq5BD2tt9LVfs1qcNF3X3Ntk32ryN65pDvdeJGs90ilcUIoSoKjW9+cFj2QVk/sk7c4HZECi80xE+Q5LhtjqP/2H9s62WOMtvIuF2ptUMnRVA2CHJdMNC62zOi+VRApU9kdbt3BEN4PkOOvL01uGlLrCg9mO8d1ofHD1xzu/CqX9fhS+dvQyWbAqKqZkWf1vQJwmUqLhRsUs+YWuQQsz+z6VYT9dGQ1qwczuseyABuTk5C6+l0fUMd7YxO6uPO8Opxa8BwjtxsN4KBAw7RIAkE1mnB3+qiDk1KdfGiiH9elvvYqKp9rRxZA2QitcPzRVkb3Diy44w6SctfB7Mt9lcf4VPJzd96oFVcYUtzcZcSPWxrIC/OGuzd82oHqnQm9S5pGxIJMWvmdJLL8IPvNQkSRKV5NuaP6VNwJnYNGDbege1dSOUDChgKIgjuicH3IIqFvEKS+yQN/UBRA6rMVn9GiNFBWElp6aMzj0UKuYK3EXP0a7tO3DtoRtbsqRlYXdME2pHb+qZ81QzKSsOBSz/Dbn5LQxZmQC9PwpfkJNpuxb1xZf0I0cNN1zqlcJN6CL1qhtCgo/J3XIm1e5ehJAM1QSH/7AbLQLhK39UCYlZIT+53GhrprQnOmpJJJWUSMwHVKyNZtjDXJHaJzK+0hkHn7FuZ1vDWodb8ST2qxMYkKBWabpptV+jm9eHvgZSi4Cc+0SoK8cHNbUHDzT6+MzOIvv/IHPsf7OrbZ0V9dXogXTm8sQgNXElF/f4Q+K3icMOx4290TsMFP8KlqnaxBbfx1Q/pBH5iC/0R9P/62wQgk1f94WMHPJ5IbqujlUS8gZfVJBIYAf/HR0c36MbP2eu59RDLss+m6ITOdO976TkjEiJ8oJiRuGQyR0HQYUcgwvhqiY/gO7TzSTZjGWEJB5E1HeJqpCBqWxIq7y6zs/5kT9cvjCq
- z+aswd31
- 1/VpUkgVeGOraRIRInzgE33W632079zBBYVHYQ2uoE6nI3Q8KdAxZhGQ2BfJnyGH57cI1dbQFK1oozn9wdjl2KVQiuxv00BIg4h/6cQaAc6+xKKmzHkZxc3QUoMuefRQY1gryzhZA9mL76kj1S8S6kaeh3uXPksPc4mha1rJJD+Bfj/4ESlyes54sdSjnWu2LYZFMxZVriZVQRUOq0FiHq5jzJG5HWSI8M1z6T2Qjs6PqYGKAOIH3R8ko5NZnR7bieKkzLj28ph1RxA4Cbrqmg6SwJCca6He+PlM1sNzhS4mfi9Wuta/vTFVtLesfGwnUBZNU6EpReIfZXmcgoJ9oL1gjjZ1qAYkb/zFZPoj42PxaphFFDEyVXu8a1O33MePFzdjdL2muJHY71X5BBCEvO+O/aCXse5Nh1bEUDA+kZiN66XdqdX4XilZdV42Yx19wvM901w1icX7PnO9fRkNye4LV2GhbILRlJMukA0ZC3SIFWXys1C5fZqNVNXuT+Hcve6OKxJi86uy3o0uX/D77neB0yFezoeZcudARdFYmfVorIeBz+AHenKuaalZx529EPsSpU/t9uHQYE7TTzr0wuaEf9Pjno4mpFuBO
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 72C6718000B
+X-Stat-Signature: bw5iwpj5zdbogdb4q4cedr3mysmyw9b3
+X-HE-Tag: 1760100266-332965
+X-HE-Meta: U2FsdGVkX19dXz0mFjuzWtpkcAvsX5pxY3uw2vGxjzQ04qWc189BR65QRp0ylMuBYQYU2U62WVvR35I6TkcDVO8xyNE8klisbGeRg38SfSFLinocREsQDVlmJNdrF/Lr+ZNz+LVGIKHK/XzMLcsiFUt+1Gpo79iPIv2Tmxe1iR9wvJ/Ltq2o5y20CB3R+cpW/NrwjM0FJTqVN/tDFG3QqSs2QFho7ju8rU14qEVtfDmFjDM3ylzoOs9zhMzsQpSr3ntOQEbJeA5MnDii//OxZ/0vNRIf5d45aOES228g2jyDZZwEqj/I0qsHkqE6kU9tOdwXeMXC1Qq42aJr3ultUgXSYnL1ybXTFY3gQfpT3h7M4YhX9ZgaF3ELJOWnKKm3NtnuV9eZJCk4IjBR3gF3UDPlOcj+DNyguO8lAb7DljqIHA0WVOS/fYpL5c0U/iuylwQlcNPTqgKTqgZMct+0iUoKTLlKx0u2Ba9ayiNYfkrZBsbYO4jHXqXZy6DRC5sWAt8DdrWWm+3aNQE4p41rMo84VBBEj5NZZJ68RcMBovshRK7I9LVZaBrXFlvI7Ccf34eziLSx6mTBpQgseneWjZ9QSTEU34+7tw58SsP/hDnqGdNX+zYBvdl9DsyOjgH4eHmL/0pCkFsbT1nl9e27rWr5lLG2mm3lLNnzdV8eYP91ptmrVqoLudVs/sumnvRcG1mxHqBvXSbK1HIGdNIMa0vSjzMdYNy5ETFt+B0Not6jKbdu1GJ42mu6gj8GyzsxbLQmSAZ7e5fO9AEfZOmdHgIJlmxy632ozyj+uwwcEDLGhmGvJPKF8PTivApEkdNSzg4bJqUYVSUHxl6qNZxdhwbFdRrmJ2VsFU6tOdpK3oHSgY5HEgicU7PdEwpdImznpLgRcjaIdk9C5xAEymVFuag0gb832W1HZw6AcGKJss3iWZIhfCpUdraM/GiDscr0dbLsEpgCijIyGo3UNHg
+ 4ybER8Qo
+ VyAHwBGS8eKIiOY8dh3+oQgSE0/1cI0S75ytxiiUIuaFOEWpPMLUNm0q88yT0cZnvc3DWco7EWJ6OKDXEon6rGXP2kHez3zgPMlxPUTgE3w6gKovtVoyUtBALrvY1tYPupgDgMUDEBdhMyL6FS3R5urOgM8cLSS+gElGH7lTqJT3GHxpHoFycE/XORDxqISE1+/xLaa21IutWmAOxWLq2zJkUlfky4VSvUDto8WA5fE2EquXWHVI2LfmXQcV0kc8Ob7l+s/PvFbpxkuijK29Us6P/VzsjoeH3e1cF5qhSptyqsi57J+0CtTy1dxAGtM4e7Kn8qioYquqApzk7mf61kl7BlNYnWtlF23EZmEIphvPIj1KyVabSIjesfqoQF5svXL2hLA/sA+sqGx2A/6Imha9pVUFB5s71N5MN73EfI/NbcRE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,140 +185,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 10/2/25 22:46, Joshua Hahn wrote:
+> Currently, refresh_cpu_vm_stats returns an int, indicating how many
+> changes were made during its updates. Using this information, callers
+> like vmstat_update can heuristically determine if more work will be done
+> in the future.
+> 
+> However, all of refresh_cpu_vm_stats's callers either (a) ignore the
+> result, only caring about performing the updates, or (b) only care about
+> whether changes were made, but not *how many* changes were made.
+> 
+> Simplify the code by returning a bool instead to indicate if updates
+> were made.
+> 
+> In addition, simplify fold_diff and decay_pcp_high to return a bool
+> for the same reason.
+> 
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-
-On 09/10/2025 20:11, SeongJae Park wrote:
-> Hi Usama,
-> 
-> On Thu,  9 Oct 2025 18:24:30 +0100 Usama Arif <usamaarif642@gmail.com> wrote:
-> 
->> This is a common condition used to skip operations that cannot
->> be performed on gigantic pages when runtime support is disabled.
->> This helper is introduced as the condition will exist even more
->> when allowing "overcommit" of gigantic hugepages.
->> No functional change intended with this patch.
-> 
-> The change looks good to me.  I have a couple of trivial comments below.
-> 
->>
->> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
->> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
->> ---
-> 
-> I think adding a change log since v1 here, or adding a cover letter with it
-> would be nice.
-> 
-
-I thought everything needed for the change is there in the commit message for patch 2,
-and the first patch was trivial, so didnt add a cover letter. The change from v1 was
-trivial as well.
-
->>  mm/hugetlb.c | 21 ++++++++++++++++-----
->>  1 file changed, 16 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index c07b7192aff26..e74e41386b100 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -134,6 +134,17 @@ static void hugetlb_free_folio(struct folio *folio)
->>  	folio_put(folio);
->>  }
->>  
->> +/*
->> + * Check if the hstate represents gigantic pages but gigantic page
->> + * runtime support is not available. This is a common condition used to
->> + * skip operations that cannot be performed on gigantic pages when runtime
->> + * support is disabled.
->> + */
->> +static inline bool hstate_is_gigantic_no_runtime(struct hstate *h)
->> +{
->> +	return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
->> +}
->> +
->>  static inline bool subpool_is_free(struct hugepage_subpool *spool)
->>  {
->>  	if (spool->count)
->> @@ -1555,7 +1566,7 @@ static void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
->>  	VM_BUG_ON_FOLIO(hugetlb_cgroup_from_folio_rsvd(folio), folio);
->>  
->>  	lockdep_assert_held(&hugetlb_lock);
->> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->> +	if (hstate_is_gigantic_no_runtime(h))
->>  		return;
->>  
->>  	list_del(&folio->lru);
->> @@ -1617,7 +1628,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
->>  {
->>  	bool clear_flag = folio_test_hugetlb_vmemmap_optimized(folio);
->>  
->> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->> +	if (hstate_is_gigantic_no_runtime(h))
->>  		return;
->>  
->>  	/*
->> @@ -2511,7 +2522,7 @@ static void return_unused_surplus_pages(struct hstate *h,
->>  	/* Uncommit the reservation */
->>  	h->resv_huge_pages -= unused_resv_pages;
->>  
->> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->> +	if (hstate_is_gigantic_no_runtime(h))
->>  		goto out;
->>  
->>  	/*
->> @@ -3725,7 +3736,7 @@ static void __init hugetlb_init_hstates(void)
->>  		 * - If CMA allocation is possible, we can not demote
->>  		 *   HUGETLB_PAGE_ORDER or smaller size pages.
->>  		 */
->> -		if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->> +		if (hstate_is_gigantic_no_runtime(h))
->>  			continue;
->>  		if (hugetlb_cma_total_size() && h->order <= HUGETLB_PAGE_ORDER)
->>  			continue;
->> @@ -4202,7 +4213,7 @@ static ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
->>  	int err;
->>  	nodemask_t nodes_allowed, *n_mask;
->>  
->> -	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->> +	if (hstate_is_gigantic_no_runtime(h))
->>  		return -EINVAL;
->>  
->>  	if (nid == NUMA_NO_NODE) {
->> -- 
->> 2.47.3
-> 
-> It seems the new helper could be used for three more cases.
-> 
-> On mm-new:
-> 
->     $ git grep gigantic_page_runtime_supported mm/hugetlb.c
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:           if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-> 
-> After applying this patch on top of mm-new:
-> 
->     $ git grep gigantic_page_runtime_supported mm/hugetlb.c
->     mm/hugetlb.c:   return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
->     mm/hugetlb.c:   if (write && hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-> 
-> I'm curious if you are planning to do the conversion later, or there is a
-> reason why this patch is keeping those as is but I'm missing.
-> 
-
-Yeah what you said in the followup email. I think should be ok now as Andrew has added v2
-to mm-new.
-
-Thanks!
-Usama
-> 
-> Thanks,
-> SJ
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
 
