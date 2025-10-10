@@ -4,182 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E4BCCD18A
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89265CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A76BE8E003F; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
+	id D37A48E0040; Fri, 10 Oct 2025 11:47:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DB778E002C; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
+	id CC3668E002C; Fri, 10 Oct 2025 11:47:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1308E003F; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
+	id AEDD38E0040; Fri, 10 Oct 2025 11:47:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 510858E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 123111403AC
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:38 +0000 (UTC)
-X-FDA: 83982634596.11.80C775B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 95FA48E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:47:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F30013AA2C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:41 +0000 (UTC)
+X-FDA: 83982634722.22.47BEDC0
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C0A76140008
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:35 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BV5scgNn;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf17.hostedemail.com (Postfix) with ESMTP id BACEB40007
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GVGEogVZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760111255;
+	s=arc-20220608; t=1760111259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
-	b=IpmIlBHXm0Uv31+WqzoIjDSYLFcY7B+wnbU+GEuMyo7035tYFl2Uk8YbC7oT4073ZpCEIE
-	jH1ztc6y03DLiqwo0gcXmBEiRx5lHhNdp3+ybxoEF6mbIj4UWeytobp8crV90pL64QgawY
-	zaqglSguhp20tnCQKtEtYBL0ifyR2U8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BV5scgNn;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111255; a=rsa-sha256;
+	bh=tZSxQNDyqaqLbPz4fQtAMe+wkuer6c/+cc0bKB75WPM=;
+	b=MqglD36A/jEFJA8BlMFqeA9xyH5k243kB12nEYH0NEbHR34ozrzctK0ZVkM1uXu2CDY7/I
+	1qkEWRFR8aXlpXS2MRwUvSz83aQ4YUjlS3LL9unEyPPpzNHSMDNLOPuttgo31frVt8XNzU
+	0W3RSFOWK1CkLH3hCeuMxQBppFvFf38=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111259; a=rsa-sha256;
 	cv=none;
-	b=fkNrxxrXDAnpRknLJ393c+zyYtJz/apX454OfYNeAey9p1v42d4JVFq05eJboPw6Sf51ze
-	HbiS+iPiFcy0GrPBejUjnHOep/Ph3ZtWSclsTbdcFzbvegtUZ4rfSNQQtGBrnAVKE26Q7+
-	lQFZaRnHJUQBhZu7z4pQGhyg5RIh3U8=
+	b=CbuVN0NlioDIUQQGCwfbyFuNtyEI5az8Gq9ZhNp7TI4C294/bT0h0nhQDq/Zy42jwb90nS
+	a4aJg8g+Ee9Icg1qqF5xr/2bEe4rgBWHJNquYjhYi0LjB/f9T4DqqSZT9KejGdTBS7Vyok
+	28Ns1M1Nnnt6h+B1k+qp4XFkVXhjBcI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GVGEogVZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760111255;
+	s=mimecast20190719; t=1760111259;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
-	b=BV5scgNnvMb7PrM6rvQbaI1Px6eztLmLo2eBEX2UrQApBRfacCP8WmzTSPtaT5KOic+sA2
-	6FeNbkumaKd0Q9ZE0Jt1491IUnhwwSnlqFEYyL5wzH9bNhwqio/vAj3LaQS36SGRovipzQ
-	BYVnB6/OEPshZ3LTXJvj56QajhDeeBA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-JHO1MmSaPrmBpa2IF2pdhg-1; Fri, 10 Oct 2025 11:47:32 -0400
-X-MC-Unique: JHO1MmSaPrmBpa2IF2pdhg-1
-X-Mimecast-MFC-AGG-ID: JHO1MmSaPrmBpa2IF2pdhg_1760111251
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3fba0d9eb87so1230828f8f.0
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:47:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760111251; x=1760716051;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
-        b=lnvIf0lTH8O74eg8oGd02A88XVGQfLgV/bwUQLkZvKpj3y/v8cUuqzhNqXm1EYzZpm
-         l/UGRxggg7OCmPZYbbAG6fiXEQaEJydeOO07NenvdoBNPC1Ka2RGWi+e3+BkdCqxdLdw
-         wStW3qL+gNTdrxSWRURSVEJhlKV0P3mSiUTQz8OsbEyOMQ9iyDKFCW7Ck8raR5jcwN3F
-         LiLh05uyfnCW9xtCJAz9IbgZrzIQp7irUTnDoBirKWhArlapaan8S61zdycwBXD/A2F/
-         DAXbANU/5JBMXr/PAH4QBArVZcpDE+KrAeRHPq/R/Qn4Vx3q9iTL4ZE8tpnOkv1iAwRy
-         tAmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBl8/UUanPztp31p42wNI/eKnwvJtHJzh1RYyFlea8NPC5VWSIgjT2OyN8T4hawuGlAS3iqw646g==@kvack.org
-X-Gm-Message-State: AOJu0Yz+IcosurFr0vFRTJ2Zq03i+2MYZbCh3Mmugjdj4D9Q1KjWwsDK
-	7KVoTLe+0UTL/7gSdxUM2z6d9kFKwgiFzacN/pSokUghmoGsEBopURw3ScpjhiYuiGc8iRjwMHs
-	iRFUur8DCdybPSX2LHELgAYQ7IZSOwdxIWnfM9wLeGuTCLQPhxnN4
-X-Gm-Gg: ASbGnculDKcw/ZXanNhXSeI5STgooCEinu4zFtZqHxtVEO2kZ2zqlzBbQBKicTWIKSk
-	7+cXEzyD3VKXr38eTDmv3ddfU7ggokNuQUI96bZ6phaR0iAYjN10M/iyf8egVZfX+SiJr99GSao
-	Ipp/Su9QVqNVprnathdetqCAW4OcWfwp/h4fINvAIYbO9ifzX94Rnm3RqYP0HKGpvYhkNfk19VF
-	Gs7joRScAquKMY/wULGLTlARjMCEDBZTAqjuEW50kCB04pblkEnPh67vAwGQhv2l67U3ujht2rZ
-	8cl+/6aojsMNioZxGzplJUBBvJLqeiaexj3O9/EYNadhzXXYbZ9EwlHQlrqORw/GfTk6xgIeTNI
-	uvmc=
-X-Received: by 2002:a05:6000:4313:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-42666ab29d5mr6668200f8f.2.1760111250788;
-        Fri, 10 Oct 2025 08:47:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHqhMbEUgBI/Iv97iNeHuLMcRgPyI5xUWfi2ZMDm/sSHI/GStcIbfl5wXKZP1H533gyi729Q==
-X-Received: by 2002:a05:6000:4313:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-42666ab29d5mr6668179f8f.2.1760111250365;
-        Fri, 10 Oct 2025 08:47:30 -0700 (PDT)
-Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5833dcsm4829510f8f.19.2025.10.10.08.47.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Oct 2025 08:47:29 -0700 (PDT)
-Message-ID: <5b494700-a3af-4feb-8c5f-1ca424ad9841@redhat.com>
-Date: Fri, 10 Oct 2025 17:47:25 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=tZSxQNDyqaqLbPz4fQtAMe+wkuer6c/+cc0bKB75WPM=;
+	b=GVGEogVZR9EjJDklOSXn6CbcSImq9E/l99Bood7dXlO2xD2BkEk0iME50F5VmTTv243bhc
+	ryqQ4WPkwy1QB8/mzEVt6qzFq/Gw7iu+yW227JaFqwHHDRgRNuCjdgylaHxU/HPAdgLeuF
+	/1femitW8IZPLFXgwuV5KDVC3YdewM0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-gHsLeaZYN2q0fujOe0R-ug-1; Fri,
+ 10 Oct 2025 11:47:35 -0400
+X-MC-Unique: gHsLeaZYN2q0fujOe0R-ug-1
+X-Mimecast-MFC-AGG-ID: gHsLeaZYN2q0fujOe0R-ug_1760111251
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0A791956096;
+	Fri, 10 Oct 2025 15:47:30 +0000 (UTC)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.224.29])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EDAAF180035E;
+	Fri, 10 Oct 2025 15:47:15 +0000 (UTC)
+From: Valentin Schneider <vschneid@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rcu@vger.kernel.org,
+	x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>,
+	Petr Tesarik <ptesarik@suse.com>
+Subject: [RFC PATCH v6 26/29] x86/mm/pti: Introduce a kernel/user CR3 software signal
+Date: Fri, 10 Oct 2025 17:38:36 +0200
+Message-ID: <20251010153839.151763-27-vschneid@redhat.com>
+In-Reply-To: <20251010153839.151763-1-vschneid@redhat.com>
+References: <20251010153839.151763-1-vschneid@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/8] mm: Introduce deferred freeing for kernel page
- tables
-To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
- Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>
-Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>
-References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-7-baolu.lu@linux.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250919054007.472493-7-baolu.lu@linux.intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: i4IyNc89GJXMWhrWOENySyqiv4M5nlo00Li4Mk1vCJk_1760111251
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C0A76140008
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
-X-Stat-Signature: tkptd5tykmzef4py3haws78x76krebnp
-X-HE-Tag: 1760111255-606752
-X-HE-Meta: U2FsdGVkX1/svfQVBkHXbM+fw7J1JChZMgOl2ORaaXAiuB8ZQBUKUv6ldeO8+QDNHdpWcmGjcWkGg/5dNzC4JUmZb317B22HhzoVuF+SzjTXbelkIXmcj+C+ks8WFnSpQE11bcabj5lxuavOPyN87JV2rLq4r8y/G+aCzPuiLIc4UiEFztHncEG7tHAmgWSRFJV8IMY9gFwtb+k7+KHTCKZNvt10oxBqmSfS7nK+qxZJvJiqSxUGxzy3xm/PuAxOUpps9H/8eG0RPKcJPYhlz1/uE7SC/W7ihOODosY8sUCrupGV1q8wog9jqX4IbQAV6vonz9UvwWfzMeFfZzK4S4G97xVQMU1pxYEWIwAdXvLh5p+KXnBxuf56p2YDiod1Uc+MPRoeekgaWUrLqEhSFenhwsK90A7/UoXGfDNHORhdR70mVTp8lmBGJ4iepuhdjJpS0AsAEu9nXJCJsf2d+48QF2GfSPviatvNobzx0bkdkiiWcAihD7v+3Khb3g5rzkXHQW7RiNLCHpT3AZ1WyC+86AD3PzlkEgRKYqVAW4GDZuiZJwxGD47ONMDC+YrZ+sLNHbqzJJKgU7rcjE0tYosk6DTAuO6b0oRzYVCiybWeAmdkdVnaXeiszNHlDEsbHNIYdmpnHcbH/ExitxV5lp8eu/n0xEH6Hr25LFwMOG37KPGBHeHRRJ39GCryDBKjuu7gjV29gAyab58mXqBv9XHailS7fXXKUzHEiu0c6rd4M0izdkRNeUFNPeuy6MV4mO3OCb4onBrnJaPR4RbjFmwW9fnBUUU59L1hP1wxr1pjbT94dvEtS9RSZ910filszfM1CeAjVzBRP/OdLCLHiH2bjELKuUrGBMktXBVavSpONoGoBzmRZjGtc8iNcyJHNmAkIJE5uTXHxM1/twdgyrGg2VLStu/5j74P2aa6cmPzwzcTKtUwN1i4fPujqw/ISOXK9mt3bIS/Du8r6Px
- 8yQXBMA7
- 7hbNWX3+1MjW1eE4oMEkwJGWxQdz6bSgUoJ3udCd7U/BUQcPK7vXcgo1AfRYaWfybvxLAVqnPuewzYE6edxBAIcmH9wepFGqgrtY+eWW0YeZTQEdPBqzC2aR7O27Ud4qt5CjEqi5SDTwAd4YzFE8/PmVnINutVyQ1mRNpmVtsuLDlD4enSEaxQLm/UzUf23xBamasHvTdHnRNYhx7JTX74C6jBagtaAdMwJsPMWm/5pTfD6sOAwtPPhMVK0RBruO9EmF2xlPx72J4pW93tzCqcfI7WeN0Qai/WMrsLJH13YGqNmH5SeEnDmU4ctv3FfzBCeoP/54mvsTK0EUycxh2DR4I1b+m78Cjkww8nOCHs8tl33qC98K9TMykX8ZwniqxvvXBxx6eJKqyvq14fem9B017KgJi8/fVvn3wJ9N/x34EGbPWyPu/yLntg/KM12Y/Ek/d+Tbtk8e2G8jz1lm2HmQrA964jKr0riaMDtodqzgejml5CtpkfpQIQA==
+X-Rspamd-Queue-Id: BACEB40007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 9w5y53u8fp9q9kmui8geessr145cykud
+X-HE-Tag: 1760111259-441449
+X-HE-Meta: U2FsdGVkX18p8ULf2crTVVsnBRvyvcvSHkjTlVV2mwUgq6Kq8nGYswWwcdx4jfOudyn4jGwwFKi7JESYKMc0BJ3f+WvFrR3VRp+Zr59KgWDTBxCpsBYNtaTK7ZjMyH0RhT0QCTiXV7PRPI4LE5B/86KAY8syZnz62Y2WKWL/Hz77yC5nd+SKbi4jE4ElKKOfYzoaQUWrJNjNU19HTVD9uDvemnLmrpoAmnhUdyXEN9e/ogKG2rZJXOb13dYjQLcW1rtorxfexcNyyZRY/noa4AopjJhN/ZBrnNa1HC2XNG9n4o0VfIgMxkIYyJ0sdDnyHaS6uNCZwLqCeVKRj60iSQPnyQB189ntwMS1g/5lbQHaghpKKZjj1Fg3VoxdQfZ0CHUS6vjEKj+eDx7vO85SuMJHyedNRD5OGCbCmuvazkJ0Y+TA49EIfwQwgf/2iAG0H25ETG2g7Rw1+MMhEXF6IbzWF1jjiIXpmSWrjLjru1LxWNNGSMPfmuTfhjiwh55ACQCl2NqL9LjoW0aQLAIyX4/fa4hU3Oc5Ux05tqfkT4cmC9/Kk8pNdhd+3Y2xkIsKjnzzczZjGFQiUOB5fjAxNxk/EHEjP7I+DTgHhFR+rQtpwzR8Cf4vZd6a04wSMTZhwYT7e7g2HQ9Mb8beps/q+1VCLcz+tmNUNMFckkxfSWAW2xMpZkSgFSrU/XSYMCDdhXntyuKT0T9JGR5RXzIDK9oxyBQQa/Y9/bhqSIDhaRIs+Ja53RnGzqqN5bl82KoCxEXgdLA00m4spvKbhdiTmBEzbL0dbb/j2XKjDyqFY3D+AKmyuQKz0JqK6MTUpc79i51JasNL9Fz4IXwUVmF9daInReVphBejmAzhwoKYfbm0BpfMtiB+xzJpysGsIFXTJ/Gi0BW/pg692Mi1njMHTHDRmA3mD0eYB85psyJfkjGGd473gFU+9TTyGiJ3wvBkuZSSfWGD2eCFIDDxixd
+ JjiXbgOX
+ wWRMWIU1w/7zo27mzf8oELA9Ro2DDPjJc3bpUsvu/tVjHM9OPYgZJUeHkLkE8oDFsljAv/XjBMsr88+Wxh5hUwFsqhTgWcZxSbcZOCHxCq+6GQlUdG0jWocvcfnfjigiSxvoW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,31 +146,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.09.25 07:40, Lu Baolu wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> This introduces a conditional asynchronous mechanism, enabled by
-> CONFIG_ASYNC_PGTABLE_FREE. When enabled, this mechanism defers the freeing
-> of pages that are used as page tables for kernel address mappings. These
-> pages are now queued to a work struct instead of being freed immediately.
-> 
+Later commits will rely on this information to defer kernel TLB flush
+IPIs. Update it when switching to and from the kernel CR3.
 
-Okay, I now looked at patch #8 and I think the whole reason of this 
-patch is "batch-free page tables to minimize the impact of an expensive 
-cross-page table operation" which is a single TLB flush.
+This will only be really useful for NOHZ_FULL CPUs, but it should be
+cheaper to unconditionally update a never-used per-CPU variable living in
+its own cacheline than to check a shared cpumask such as
+  housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
+at every entry.
 
-> This deferred freeing provides a safe context for a future patch to add
+Note that the COALESCE_TLBI config option is introduced in a later commit,
+when the whole feature is implemented.
 
-So I would claridy here instead something like
+Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+---
+Per the cover letter, I really hate this, but couldn't come up with
+anything better.
+---
+ arch/x86/entry/calling.h        | 16 ++++++++++++++++
+ arch/x86/entry/syscall_64.c     |  4 ++++
+ arch/x86/include/asm/tlbflush.h |  3 +++
+ 3 files changed, 23 insertions(+)
 
-"This deferred freeing allows for batch-freeing of page tables, 
-providing a safe context for performing a single expensive operation 
-(TLB flush) for a batch of kernel page tables instead of performing that 
-expensive operation for each page table."
+diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
+index 94519688b0071..813451b1ddecc 100644
+--- a/arch/x86/entry/calling.h
++++ b/arch/x86/entry/calling.h
+@@ -171,11 +171,24 @@ For 32-bit we have the following conventions - kernel is built with
+	andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
+ .endm
 
--- 
-Cheers
++.macro COALESCE_TLBI
++#ifdef CONFIG_COALESCE_TLBI
++	movl     $1, PER_CPU_VAR(kernel_cr3_loaded)
++#endif // CONFIG_COALESCE_TLBI
++.endm
++
++.macro NOTE_SWITCH_TO_USER_CR3
++#ifdef CONFIG_COALESCE_TLBI
++	movl     $0, PER_CPU_VAR(kernel_cr3_loaded)
++#endif // CONFIG_COALESCE_TLBI
++.endm
++
+ .macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
+	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
+	mov	%cr3, \scratch_reg
+	ADJUST_KERNEL_CR3 \scratch_reg
+	mov	\scratch_reg, %cr3
++	COALESCE_TLBI
+ .Lend_\@:
+ .endm
 
-David / dhildenb
+@@ -183,6 +196,7 @@ For 32-bit we have the following conventions - kernel is built with
+	PER_CPU_VAR(cpu_tlbstate + TLB_STATE_user_pcid_flush_mask)
+
+ .macro SWITCH_TO_USER_CR3 scratch_reg:req scratch_reg2:req
++	NOTE_SWITCH_TO_USER_CR3
+	mov	%cr3, \scratch_reg
+
+	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+@@ -242,6 +256,7 @@ For 32-bit we have the following conventions - kernel is built with
+
+	ADJUST_KERNEL_CR3 \scratch_reg
+	movq	\scratch_reg, %cr3
++	COALESCE_TLBI
+
+ .Ldone_\@:
+ .endm
+@@ -258,6 +273,7 @@ For 32-bit we have the following conventions - kernel is built with
+	bt	$PTI_USER_PGTABLE_BIT, \save_reg
+	jnc	.Lend_\@
+
++	NOTE_SWITCH_TO_USER_CR3
+	ALTERNATIVE "jmp .Lwrcr3_\@", "", X86_FEATURE_PCID
+
+	/*
+diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
+index b6e68ea98b839..2589d232e0ba1 100644
+--- a/arch/x86/entry/syscall_64.c
++++ b/arch/x86/entry/syscall_64.c
+@@ -83,6 +83,10 @@ static __always_inline bool do_syscall_x32(struct pt_regs *regs, int nr)
+	return false;
+ }
+
++#ifdef CONFIG_COALESCE_TLBI
++DEFINE_PER_CPU(bool, kernel_cr3_loaded) = true;
++#endif
++
+ /* Returns true to return using SYSRET, or false to use IRET */
+ __visible noinstr bool do_syscall_64(struct pt_regs *regs, int nr)
+ {
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 00daedfefc1b0..e39ae95b85072 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -17,6 +17,9 @@
+ #include <asm/pgtable.h>
+
+ DECLARE_PER_CPU(u64, tlbstate_untag_mask);
++#ifdef CONFIG_COALESCE_TLBI
++DECLARE_PER_CPU(bool, kernel_cr3_loaded);
++#endif
+
+ void __flush_tlb_all(void);
+
+--
+2.51.0
 
 
