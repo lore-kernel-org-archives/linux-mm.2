@@ -4,135 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8821CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 08:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49D98CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 08:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0564A8E0011; Fri, 10 Oct 2025 04:09:43 -0400 (EDT)
+	id 8E8C08E0012; Fri, 10 Oct 2025 04:13:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 007698E0002; Fri, 10 Oct 2025 04:09:42 -0400 (EDT)
+	id 899A88E0002; Fri, 10 Oct 2025 04:13:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5EFB8E0011; Fri, 10 Oct 2025 04:09:42 -0400 (EDT)
+	id 760B18E0012; Fri, 10 Oct 2025 04:13:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC9B8E0002
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 04:09:42 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 75FE58542F
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:09:42 +0000 (UTC)
-X-FDA: 83981480604.28.E7882AB
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3A8F8C0008
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:09:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=MHp7l3M4;
-	spf=pass (imf28.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58AD58E0002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 04:13:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07FC8856EF
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:13:20 +0000 (UTC)
+X-FDA: 83981489760.10.E3A6EF5
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1CF0414000E
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:13:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OWUeGoeX;
+	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760083780;
+	s=arc-20220608; t=1760083998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gzdv8UWdEnCN56xKeWjK1CJF5EdNSu3Q50DKVSJHF8M=;
-	b=sbQsnMNmsLY8mbr4z0f+9ygvZ76P8sqCFehWfTA/Kj/RHPMfz4mwUD+5jh+sMIyUYIqptP
-	zrjErLSJgxorNpIlRUafVUAk4r6QeYtDCSFj7U/MH/Io9FFdqZzQZebjVECS2jti37Sp8I
-	tJ1FMR9x9qh/M/iG1QSVHsMJnKlPLv8=
+	bh=+wM+C8meSFUf89iBos4e9b9ElmXv19ZrqBcY5kPeD/U=;
+	b=FdxtoqczJ73DSHWr7mxfewKbHXVwL6GywcYe3NEC+d7vTZZDM7XpwugboeTrvW6xpnza20
+	/SEHokDK/vECy/rugwY+QevadXTYlQDhzS9Df02yurFCulDFrU8NOiVSlZb/BJIq9Ycgwr
+	O62CKSQWMGC7gPbU0JttbaiZnLg97Hs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=MHp7l3M4;
-	spf=pass (imf28.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760083780; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OWUeGoeX;
+	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760083998; a=rsa-sha256;
 	cv=none;
-	b=CSC0alTRRAzJpr1Sn6xwnCl+7PItwUae8xu5xisJPnpkMtv3XI5UvpwrGtKGWYMXVhpbzw
-	oLZRBCjLBH8nEBidtPn9nFkaqm4a0qErA7tjhpcyTne4Id7pCeq0esVs6L3Lx5IzwjQvt7
-	wa/zhrtL0+hV0Ueth1Jv9PeLtKF/6Qo=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59A7QtOa031098;
-	Fri, 10 Oct 2025 08:09:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Gzdv8UWdEnCN56xKeWjK1CJF5EdNSu
-	3Q50DKVSJHF8M=; b=MHp7l3M4ztwAPc0fyybEazxaTSzDl6k40j9mZAP1C/tJ7U
-	kbUp5DQOuIUQaxmLdGMjXvHerAo2ErrM29R6Ik/+YSmJ+YMChSrEVPbaIDIqlq8y
-	OSekPQHyHiTzxEoSQ7MkkPayXXkvEb0Fq8ivunbIBLGkwmlIQO581cbcJ+9UKPW6
-	VgJPqFFpabjODT6p2qZt889z/Rt1W8EqV/V4VaXhbnKIvDwe0gPVTCmziqy9UPvf
-	U/DUeF6YbxaACXToUWMuQjApqkzAJZm7464jFNigAO8WUkwYNHPXUjTJmr6mM/eP
-	BP7ljBDvLNk8MNO3reP5Rp0Axk1Lti5ciTjIN+TA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv81sa32-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Oct 2025 08:09:39 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59A812mC012997;
-	Fri, 10 Oct 2025 08:09:38 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 49nvan0uqv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Oct 2025 08:09:38 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59A89YVN38338946
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Oct 2025 08:09:34 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7A0B320183;
-	Fri, 10 Oct 2025 08:09:34 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1BC6320181;
-	Fri, 10 Oct 2025 08:09:34 +0000 (GMT)
-Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.111.54.55])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Oct 2025 08:09:34 +0000 (GMT)
-Date: Fri, 10 Oct 2025 10:09:32 +0200
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH v2 2/4] s390/sclp: Add support for dynamic
- (de)configuration of memory
-Message-ID: <aOi_PL68QaY2YIAg@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
-References: <20251009131839.3739108-1-sumanthk@linux.ibm.com>
- <20251009131839.3739108-3-sumanthk@linux.ibm.com>
- <ed7db8b9-e828-420d-a8b2-3e1b8aa8c95c@redhat.com>
+	b=TbUl9feJDptYNLZuE1tQ90Xdl0vp548jz2aHatHKAr/hf3JhK2y/1qD+FmNfPcLF+IhP69
+	xjS6vEqXxP4UpNOJEWZG8wBbjSzSc1AcbYZ57jqSdn42JN9uszRMLHKSoujGR7hgShL7YQ
+	Dgjy0N5uCfIzJO6SwTRX/15vaKSRoNo=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-27ec3db6131so3547295ad.1
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:13:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760083997; x=1760688797; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+wM+C8meSFUf89iBos4e9b9ElmXv19ZrqBcY5kPeD/U=;
+        b=OWUeGoeXoxUjKav+xcLFPiB0Ch1Ql+D4AqkkxBvL+SPcpMIFkWggBF1vnuX8ItXW6i
+         lkLVsEfOLaK6h83KflOHgMzVPWoBiTE/uhkzlsrNTp3pC3cUq6O2BtSrG/3mGRr+8PGD
+         GfPTEmW7uHR/NdtyBnujSLwam+rCtObO7BmCPdiHtlarSjYP6sJOnjBgTfie6yE2U5la
+         nXuY9aX1rgze/gr7A57EvMj/UmCQbNu+8Lh1/LxW+zi348Q/md1lVPKin75PPAlERx+7
+         0G2cLaa2kxV+jHKF2nkbQsIrL/354DWiHYcb07jEFbqwuf+Pj/azSRWX5xkEQX4xCbKa
+         t3jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760083997; x=1760688797;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+wM+C8meSFUf89iBos4e9b9ElmXv19ZrqBcY5kPeD/U=;
+        b=WRLe1zrIsNABd47DrznCGggPDijhqo79rqAJ6vwXYyMC2vcWpEVl829+CQH2E3rnrz
+         VQeSiBfq5QIrA+HNGq7m2yJIU6THftdmC3U9O9V7MpPoYKMAT1ODmpWw0G7BxoWsQaSh
+         jPMj9H2hCxi/Nnb4GdmOW/EKfaFCD0c3CT2TEr66lPuIG4GV104RGfa7kbZ2sKz94g67
+         ofI/swxUWxuYzpUjsDEaE2Mro6bG+om3x4oBA8Ko4Ytig+NEuCOFFOQQymUxQC3KJ+gY
+         mybEGIjqAoTPlbeEghlwYmMQjiMvWfkjoDV1V2vUI5ay7Y/RduSjmwqTAsxZI/YlN+fS
+         1WKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVYALQRfNeUeZIj82o+4dOD2k9mwQxT8YyLBdKMSvCcIMNyLxIClt9faL9g52O+n0bINnBZQpHHw==@kvack.org
+X-Gm-Message-State: AOJu0YwaNu2zOY6HjIHA2cAmIhah/CqgkPawS4NPBTw7CmzVqIHH+tsz
+	AhzW37MWppIzoOqagjUSmdZ7gDgEW0FO1YLv5SscX5mPaMRamVZW4mdgGjQhUGRK9zSmGOZipEi
+	dB7nElE8/Jkl5/yMp6J1yOF34qnWKlsM=
+X-Gm-Gg: ASbGncu7DHu4Br8wZ5qh3ImKSR/SEY7X0QvqBnl+7kDhkoDMws5z3b5to1lGjr36Bq4
+	joI50FME8Ur09dPbZcLUNJodL4H38RPWeP2GP1r/bo/ZcwtvpGxOEa7diX8Mw5ey6rZKGMpWuYg
+	Na46k+isMVoVgyVa4u1Q1mFw0uL05Jmfzc/T6Ow+yYihjz5cPzJq14182iHy4qkayKNfMHSDfCf
+	D6OguRvWGTuYQpfn97MVuCcexwQLlm3rc6VejJwACduZuxzPpHvfA3f5Ta1QFZIPK84TixfHDaf
+	hcORZ3/GreLwuorj04xnOqOFz9irwrEx7GMSBWkeWPs4
+X-Google-Smtp-Source: AGHT+IFdkga+t+zjNZdz4Z2XPhEtJNUAlFk/vUhhv9BDFlxUqeNhsotPLJ09GEKkawpw/ItDjLsilTqPl3STcyuQYOU=
+X-Received: by 2002:a17:902:d4d2:b0:25c:9c28:b425 with SMTP id
+ d9443c01a7336-2902745c0a2mr89160145ad.11.1760083996696; Fri, 10 Oct 2025
+ 01:13:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ed7db8b9-e828-420d-a8b2-3e1b8aa8c95c@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IudfyhWzW7_jQh-hdHIgBVZ2osLZPOxi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfXyOplaghO3qUJ
- L75RtbN4mdBJFl14fqQH9v9Drb1zLgcbQrLPimgMiwkCY960GAY6pmTWsEv/n/mo04QazaooSg3
- 3yFExSyAe5HMF8elHfGe+Croi+Ksdez4HldSerO0JrFdjnTDLkBMahK1Mp/MDNcWN/Gkxlk+LBV
- Z4hUYneSqMJrxExsO8wvAe8ajYAaXpQ3E32y0SNoSyInb/OzxT63lKTMloTXFs8xzeEjNHn7Mx8
- jsfjg6zk08whGJWpPUjv/25mVgXNGLg8HKoXXGOdN1zyhwKjipq4Y1+YgtcSPHYJtWhb2T1hVV8
- xJCxTveeuy+a3gB0+aA/3b7Hh6Q92RdtjC0OMgTwWNhI8gA24i1M4kuDXceuxARfzgispzC8qUm
- crltVkOGrjwd8N43EDcH6jn/rs/07A==
-X-Authority-Analysis: v=2.4 cv=cKntc1eN c=1 sm=1 tr=0 ts=68e8bf43 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=Fw4thcao37LPlByLA-sA:9
- a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: IudfyhWzW7_jQh-hdHIgBVZ2osLZPOxi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-10_01,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
+References: <202510100127.yuqhg8uo-lkp@intel.com> <20251009110555.29a67af19f5cc4d40e66713c@linux-foundation.org>
+ <CANiq72kKSz=UK+O4tnV0Kmw_HmJhJJ+KNZnUBWtOWqanrG+7Vg@mail.gmail.com>
+ <20251010060618.GA80465@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+ <CANiq72kndiqwEm-OZLd6JumAaBy7KrzYf_rDjwhtw5Uh4vdTCg@mail.gmail.com> <20251010074458.GA91144@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+In-Reply-To: <20251010074458.GA91144@dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 10 Oct 2025 10:13:03 +0200
+X-Gm-Features: AS18NWCKK8TWzVbSWJUkTcYGK_N5_ArO41xibbqihc9xfH2UWC9bF9H18mvQyqc
+Message-ID: <CANiq72mzrJNTe6aw5zJ_vyhXO1jDR96hmvQEXPkqFj=dnwSnSA@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-new 36/102] error[E0425]: cannot find value `VM_READ`
+ in crate `bindings`
+To: Jakub Acs <acsjakub@amazon.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, kernel test robot <lkp@intel.com>, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3A8F8C0008
-X-Stat-Signature: n3xga87zctsg66pt3enptjfpeud8uhwe
+X-Rspamd-Queue-Id: 1CF0414000E
+X-Stat-Signature: fgp9unpdyoskbedtqogeybrua171guaw
 X-Rspam-User: 
-X-HE-Tag: 1760083780-275163
-X-HE-Meta: U2FsdGVkX1+L7E+TIYbp5uVYMQ4lv/PVCdBd83lUiP+rBYbW9DoLUVyYUFE5iNE6U+FfF4PsVxPplEhVtr2oXV1F0/5AsioS4DNskp4Y2qBV8QXorqG0Pfoq1k2f8lpxhn3H7uk1RIHBfERyVFkvKrqg+mEOUS1jzsVj58HCmHrGhjGY3Kx2WutK9+coudal1Pfkn78YnP2QOEk55GgQuxkrJRS6JOOcmDasdiUIJyW5ZG4R7KfqX6ZkTUZI7+9FoDd7HNi4jHoH04lCnOCyEYC3MS4saWCc8hUiASHOwvo+c0dmfO3bIwIvBW1qws9rtfQn0tFD5lBoGYWHIeCz58HwU3nZ5tqlzJPRlaY8bwR59jQlZ4kQsVR12ccUyxD+dCmMU3vOFJvYgsqOVNBGxsTSK2qyGsXxoG2InfbyM7m2VJYAbovHduayq0Xe10i4Q++jxl+nYjUdQs8pwCGK5rIYMwR/pfh7NPOp4eYcZ7KV0LKFatYhxI5uI547aPKcCNysmqK40SuEC6mNBgO0c+5DXL4PtpqxSAodnO8LHywg7wGjmBS+92tiK6plR7xkYVYovslAJPGzfRzAmUuHf7eNZjutAwJ5EB/JGErSit20b7JG/4oAUkfYOyRdB/q6ei2SinZZNCjVeLFGvHt3d73VfElmTlBZulaKYmD+YbOI1HOnJLN3JGgQrDvOZyYQCa5kqpPSMqpmoxGkIj5g80o64u8A25WrasHCV/g832jmAeOGYZ21mjJjnw/GU/TFAHJmMzjcSb1bJP8spo6RzmUukqeWRiQTnHm+YpD4fsiY5mctsGQqYww/yb/2BRTIBloUWneU+OAiYgJEsxrFQwhY/pYDokOhOqDVnnh30drMdl6dlvaBDFdVeElk9bbqkRp9PhzYBfSewTElwHQZ8OWVVZSXHfevIPOcS3vz5WZGYtxa9/u6Jl3gW9hDeUN7PiFHK15K8dNRZS2LM3c
- 8LwIXydZ
- S3au0bgy2H+2Mk68Rt07vjdRmV9/GwOg5pemZzZPtiZOpmF25IWZZYINIHrCZA6Tw3EGhHh/vLmwUZx7xfksVWlJf8GZ21gc8hEM003KMm4syqDTmEWcg/45tJQaTFQMNr2C3QcB+jj7QTOGCpRHubc1mz8gvzrKHoiUfx9Hpgnnf2azg4fd9mD4oB5bI1wJIAfzJXwgOJkuVRkp7Mr2t6S/ZbdLz9yp7TP9MUv9lzgt+mv0Q82Bw0K6NsIos1Ujuthcjs4KLE9Zh+aEGuKIlkcjKgs4K8UZGbPRoDg30O4JOZC2EGwVw3VnLt5U7SQ/KcQp8
+X-HE-Tag: 1760083997-636586
+X-HE-Meta: U2FsdGVkX187mgW4I95OIBWuN/IEHMu9LOoHrDjX/Si8nrNJ4JFLL7cw5Q34l0Pb9mWjVv2t0cRHwvMSn71jarSeotGLPJMt2/ZTgCVSacrWGSZTYCSiWvgdGxPgR+pGxEXVuyLDm5fQGzQI29M6YEhGFxFHRjVZFkuySTFO5uyNb2WzSd/A5vOIN2J716ltjOlmNboxjeTHWZb8C++7C6l24XiLy7RN6WMQ3KYHD9NibyxRGmQscGAaz/pjjtcomTBFJc6cAFrDi0Vzs4SCRforWnLVX+7mibTwEduWIIistnl2NPWX5O5lxBS2CE+JsVonnBnFM+WPeMJG6nznzQpNqM8LWL2zF1h3qx33JX8DROE7h3HHMXfOS4fCm41+2swaehC3FXFic2k/PX0rchsgFlFoGOX1VPyFjKQkvZDw4a4L8BJbR+0gkau13xGYgTwyjeMHd/csYGaJZUpLzmrMLXgTYlOtCNGTpGv/KOMDehEA+q3MBpWLTFV+HTjkqBBJcJfB7YkpHnx6cYZiam7mZnGLQNLMZ1n2c1NAhlcP8oHE7910qCm/SRai2wPVhmi1WVeIs/pkhYg7EcOTHyy4OSvICyhdWa4QMf8cLoD3WIAdH9+rpyxecjFNUzJaA0KZqUoW/Ns4jayEPAil3utnrLCEJUmL1bK2mxPDx+vsMFlZSZormL1R4IAg9OqFEGdvVyUkdsRnALKdORW6hBcIRlF/OYfSGPOGktfohErWghVNppgGZ6v0RVvox7rUYgC90fSXH+0G/Xj0JnvXqeJ0sophzrFoCe3K+hUy9CWNC7sSdwcoK8aR53ISE27n4JC5nd/WOfwAIsTJURogOD4Y46EDcAnqSif6BAN8edGBjWzWuaTMqT/FKhqCNpvaI6nRHGakYAP8P6+7t8YVJ/sr27FWLTeAqjnPoaykuxybEpXw1rl+UuAL5AutB4LdaehWUBWB4yiLvckAnyv
+ 9roouUXw
+ K6TjPpxuCxjCPwYj5BuxgZoxbKSlCMyc3XjZqlrs/O4vcivACnECvm3j70rRCH6+3dJ1n7eizHJMa8w3vs/2049vnEaEgUZFMhK684WfglWvbDwOw7JBNgvgdWQEXtscXa4oTO0IIhZIxMMt8iNlfjRGvFavJ+4ajE8bOzRM3GdzTb0s1xNvfVjRgtj6zPxhdef6/7jQJbRUE7/tObrhpH1owXxfuN+F4BQfYhkoYv95pX4UeNXEhLI2iyhoDB5YWh+29om4MxmoPxOjdauw4q2ir2t14Hcv6/fbyqizVpFtHpAtrsX0KeSAEx7YHW8GW7z+CVaV/5tUIlvmaDEzxYUKzSWBlAPq+PVmCj7eYiQPdM7fHwcUJ9vWfyZDfFyoYG6FQho2OKcNSyre77KEGIOHjdB8VezIvooZbmhOpnCVxfB6xlFM57fXhLQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,83 +122,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > +struct sclp_mem {
-> > +	struct kobject kobj;
-> > +	unsigned int id;
-> > +	unsigned int memmap_on_memory;
-> > +	unsigned int config;
-> > +};
-> > +
-> > +struct sclp_mem_arg {
-> > +	struct sclp_mem *sclp_mems;
-> > +	struct kset *kset;
-> > +};
-> 
-> Just one thought: if you keep either as global variable you wouldn't need
-> this. (I would just keep both as globals, but whatever you prefer)
-> 
-> Whatever you prefer.
+On Fri, Oct 10, 2025 at 9:45=E2=80=AFAM Jakub Acs <acsjakub@amazon.de> wrot=
+e:
+>
+> This is a tricky one - VM_MERGEABLE being `unsigned int` is only an issue
+> if there are flags using any of the upper 32 bits. And if that is the
+> case, CONFIG_ARCH_USES_HIGH_VMA_FLAGS has to be 'y', -> thus the enum
+> will also have BIT(33), BIT(34), and so on. So from that perspective
+> we're ok (checked by running a reproducer).
 
-Hi David,
+Ah, good, that simplifies things, yeah. A comment about the fact that
+we rely on higher ones existing on the enum may make sense to add.
 
-I prefer to preserve the ones we have.
+Or, even better, an static assert testing the type of `VM_MERGEABLE`.
 
-> > -static void __init sclp_add_standby_memory(void)
-> > +static int __init create_standby_sclp_mems(struct sclp_mem *sclp_mems, struct kset *kset)
-> >   {
-> >   	struct memory_increment *incr;
-> > +	int rc = 0;
-> >   	list_for_each_entry(incr, &sclp_mem_list, list) {
-> >   		if (incr->standby)
-> > -			add_memory_merged(incr->rn);
-> > +			rc = create_standby_sclp_mems_merged(sclp_mems, kset, incr->rn);
-> > +		if (rc)
-> > +			goto out;
-> 
-> Why not "return rc;" to avoid the goto label?
+> This ofc remains true, I'm not yet sure how to test that complication.
 
-Sure. Will add it.
+If we keep the macros, then I was thinking we can avoid replicating a
+bit of conditional compilation elsewhere by blackboxing the zeros,
+e.g.
 
-> >   	}
-> > -	add_memory_merged(0);
-> > +	rc = create_standby_sclp_mems_merged(sclp_mems, kset, 0);
-> > +out:
-> > +	return rc;
-> > +}
-> > +
-> > +static int __init init_sclp_mem(void)
-> > +{
-> > +	const u64 block_size = memory_block_size_bytes();
-> 
-> Instead of "u64" maybe "unsigned long" like memory_block_size_bytes()
-> returns?
+    # define VM_SOFTDIRTY  BINDGEN_BLACKBOX(0)
 
-Noted.
+That way we can keep dummier lists on the Rust helpers. But it does
+look a bit out of place (though it is a smaller change than the whole
+`enum` thing).
 
-> > +	const u64 max_sclp_mems = roundup(sclp.rnmax * sclp.rzm, block_size) / block_size;
-> 
-> Instead of u64 maybe "unsigned int" like the ids you store per sclp_mem?
+Otherwise, for the moment we can go with [1]. It is just a single `#ifdef`.
 
-Sure.
+Cheers,
+Miguel
 
-> > +	struct sclp_mem *sclp_mems;
-> > +	struct sclp_mem_arg arg;
-> > +	struct kset *kset;
-> > +	int rc;
-> > +
-> > +	/* Allocate memory for all blocks ahead of time. */
-> > +	sclp_mems = kcalloc(max_sclp_mems, sizeof(struct sclp_mem), GFP_KERNEL);
-> > +	if (!sclp_mems)
-> > +		return -ENOMEM;
-> > +
-> > +	kset = kset_create_and_add("memory", NULL, firmware_kobj);
-> > +	if (!kset)
-> > +		return -ENOMEM;
-> 
-> I guess we don't care about freeing sclp_mems in that case? Likely it should
-> never ever happen either way.
+[1]
 
-Right. We dont care about freeing sclp_mems here.
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helpe=
+r.h
+index 2e43c66635a2..3c3a03051060 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -108,6 +108,33 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT =3D XA_PR=
+ESENT;
 
-Thank you.
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
++
++const vm_flags_t RUST_CONST_HELPER_VM_READ =3D VM_READ;
++const vm_flags_t RUST_CONST_HELPER_VM_WRITE =3D VM_WRITE;
++const vm_flags_t RUST_CONST_HELPER_VM_EXEC =3D VM_EXEC;
++const vm_flags_t RUST_CONST_HELPER_VM_SHARED =3D VM_SHARED;
++const vm_flags_t RUST_CONST_HELPER_VM_MAYREAD =3D VM_MAYREAD;
++const vm_flags_t RUST_CONST_HELPER_VM_MAYWRITE =3D VM_MAYWRITE;
++const vm_flags_t RUST_CONST_HELPER_VM_MAYEXEC =3D VM_MAYEXEC;
++const vm_flags_t RUST_CONST_HELPER_VM_MAYSHARE =3D VM_MAYSHARE;
++const vm_flags_t RUST_CONST_HELPER_VM_PFNMAP =3D VM_PFNMAP;
++const vm_flags_t RUST_CONST_HELPER_VM_IO =3D VM_IO;
++const vm_flags_t RUST_CONST_HELPER_VM_DONTCOPY =3D VM_DONTCOPY;
++const vm_flags_t RUST_CONST_HELPER_VM_DONTEXPAND =3D VM_DONTEXPAND;
++const vm_flags_t RUST_CONST_HELPER_VM_LOCKONFAULT =3D VM_LOCKONFAULT;
++const vm_flags_t RUST_CONST_HELPER_VM_ACCOUNT =3D VM_ACCOUNT;
++const vm_flags_t RUST_CONST_HELPER_VM_NORESERVE =3D VM_NORESERVE;
++const vm_flags_t RUST_CONST_HELPER_VM_HUGETLB =3D VM_HUGETLB;
++const vm_flags_t RUST_CONST_HELPER_VM_SYNC =3D VM_SYNC;
++const vm_flags_t RUST_CONST_HELPER_VM_ARCH_1 =3D VM_ARCH_1;
++const vm_flags_t RUST_CONST_HELPER_VM_WIPEONFORK =3D VM_WIPEONFORK;
++const vm_flags_t RUST_CONST_HELPER_VM_DONTDUMP =3D VM_DONTDUMP;
++#ifdef CONFIG_MEM_SOFT_DIRTY
++const vm_flags_t RUST_CONST_HELPER_VM_SOFTDIRTY =3D VM_SOFTDIRTY;
++#endif
++const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP =3D VM_MIXEDMAP;
++const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE =3D VM_HUGEPAGE;
++const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE =3D VM_NOHUGEPAGE;
+ const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE =3D VM_MERGEABLE;
+
+ #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
 
