@@ -4,108 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BBC0CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 09:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A638CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 10:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD78E8E001E; Fri, 10 Oct 2025 05:34:08 -0400 (EDT)
+	id DC0CB8E001F; Fri, 10 Oct 2025 06:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A87F38E0018; Fri, 10 Oct 2025 05:34:08 -0400 (EDT)
+	id D981C8E0018; Fri, 10 Oct 2025 06:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94F728E001E; Fri, 10 Oct 2025 05:34:08 -0400 (EDT)
+	id CADFC8E001F; Fri, 10 Oct 2025 06:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 764068E0018
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 05:34:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19088B7132
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 09:34:08 +0000 (UTC)
-X-FDA: 83981693376.06.65A5D25
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2747310000E
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 09:34:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EB08E0018
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 06:10:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EECC119227
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:10:53 +0000 (UTC)
+X-FDA: 83981785986.24.E1F313B
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0E019180010
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:10:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y /gMdJQ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=sXhKftPZ;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760091051; a=rsa-sha256;
+	cv=none;
+	b=pZ1nXQ5jBP2douP4eXJsxIftVDG5r1pOhRJV6D0kR/hTh09E7Vf3FJFe5Z3qsayCdANYcl
+	nYZCYutfYulQlR2EBYAW+rfgdkdeAqG3LH6XNO+YKcSL57BDy97mkmP8kbkmyDvY11zGEV
+	bFewQ6l8OalsCmMoi5AZ2N4uzGDq1MU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y /gMdJQ";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=sXhKftPZ;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.155 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760088845;
+	s=arc-20220608; t=1760091051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cv4nEj7UBTV72f1gU8wuBa1ut3a9qHUaWAVjisQOCJo=;
-	b=nucNWUnbw18wTds8b9mAabs+DmBOUoXWemS8JuZut+mvcytJulgJQ061JvEblX6uZGKmBV
-	MdSYimSoyKyMAPU01UugWpE6wHFb5VvSRnPAlf1VIy38bcgiTd5rEUF0D1jt0V/Vucl5lE
-	x5bxuLvnhyNGvgjfXc/+rl9HUohQNbs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760088845; a=rsa-sha256;
-	cv=none;
-	b=4wbVKmAPYgc7ydzSI2d80rMC9XHjj/f7KXoekVYEM/g92UIPYLtlWh7/uDEWgoTy92DBJ2
-	y5EzPdB0vphXishfy5ZFog8dp/blZZht2agWhsc3LgyZ8uYd8ITmr7RMV33SzYSF2LRt6D
-	pJvu8guG8IHJ7KaUsWrn1M+rzycCqmI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
-	dmarc=none
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b4f323cf89bso326147266b.2
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:34:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760088843; x=1760693643;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cv4nEj7UBTV72f1gU8wuBa1ut3a9qHUaWAVjisQOCJo=;
-        b=GFTi4VB/M2TRxI+dD200SJ2dhq+vBrpwt5n3pCn+6g34rKUxIV0d9jykT3LW9j6mml
-         PD/XbNIbXj9KsFNxTwT+K2mB5JF0IUJXLBCuhY7CkGfHJBMivq0cs36PTbk/UUdKd6i3
-         FBIMVk13tNsCSDSZ5gyUubPTRwl6FklDjC/2DJGV30wAR+JW6mgW7Ix/KMZ0KkUGsb74
-         NRtZJo1Xdo7n4wESdm95GfF4TKTUNuMI1+pyElMOxHKXeg4AD2q2RWIg5/uBz4/8QoQa
-         MyIEV5V/K8ZNg7G0wSRf9Pb7nnk+KyXyDFHc0s065qxbLgN1lhP6bL1nNkdoZMW1M8FO
-         9CQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUN2G7gtKZjYTntgMQZAZ95nsLC576RnuQPbQmz5ICeVU10RIScH0pM+3FAMimNUx0lHjImxqv5Tg==@kvack.org
-X-Gm-Message-State: AOJu0YyoKBPC0euTywqcgKtUSf4ghpSlb8DRGVSuEdVZLopHnAI6SRyW
-	Yf5Rz+AJ1ED6EwkLgaL0qYmxTRfZs/8itP1tK7Te6Bq/Bd0N3WOvx3dy
-X-Gm-Gg: ASbGncuAl2I/FZuwDYbyw9Sw84JvwhFIxWekwfuRrUfAHBSroYSQwHzzSA954FwAyT/
-	MIQcH0VG49+194ATwfOZlAJqF8owe0nZO/pfNnDYFphuxhWJuCdjGcxEHwKSF0gLggaXR5Zj87b
-	PuXmlxqUFaSsFMPS03qy+AvE2FGgcs/yPhQPfGMKh1pEgRUwstCAiWid0EzsYuaW7987tmH+s46
-	Ggz1Xw3qulsLpKVLfnqkeORvz57RkhB+jRIIbcY/4k+egnj27tVzX/lqEGz1lefoRAOBfONKAGX
-	rbGaUA31rcANFoJcco7s2h0g2aoRdMC4Taf3t4DN6/Z6raUd7HiShDxopUZkys7Q22lujG7JXhS
-	Wg8v3fH4V8PzVxM4pnEw/0ZuCPJLGBqUmRolz
-X-Google-Smtp-Source: AGHT+IHJJZYzLmff6dVgniqDgTA9wuOtJBZMe0+HaoaCcR6f3ALYVARpNqjkBuP0lUSeRtOHCgzETA==
-X-Received: by 2002:a17:906:6b9a:b0:b45:1063:fb65 with SMTP id a640c23a62f3a-b50abaafd40mr960927966b.39.1760088843318;
-        Fri, 10 Oct 2025 02:34:03 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:70::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d9a3fc41sm190057566b.87.2025.10.10.02.34.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 02:34:02 -0700 (PDT)
-Date: Fri, 10 Oct 2025 02:33:59 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Changyuan Lyu <changyuanl@google.com>, rppt@kernel.org
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	anthony.yznaga@oracle.com, arnd@arndb.de, ashish.kalra@amd.com, benh@kernel.crashing.org, 
-	bp@alien8.de, catalin.marinas@arm.com, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, devicetree@vger.kernel.org, dwmw2@infradead.org, 
-	ebiederm@xmission.com, graf@amazon.com, hpa@zytor.com, jgowans@amazon.com, 
-	kexec@lists.infradead.org, krzk@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org, mark.rutland@arm.com, 
-	mingo@redhat.com, pasha.tatashin@soleen.com, pbonzini@redhat.com, 
-	peterz@infradead.org, ptyadav@amazon.de, robh@kernel.org, rostedt@goodmis.org, 
-	rppt@kernel.org, saravanak@google.com, skinsburskii@linux.microsoft.com, 
-	tglx@linutronix.de, thomas.lendacky@amd.com, will@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
-Message-ID: <ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
-References: <20250509074635.3187114-1-changyuanl@google.com>
- <20250509074635.3187114-2-changyuanl@google.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XfIFhXkqL2PFnCgdILYUcOyv0W/EfJPQuh46n0RKDcg=;
+	b=NiAzC5x2W3uDzij5aggBlScwrO+ib9NryJDNbDyUNQOaA37Hu79A4KOICT0TFeyuZrRyqk
+	rYk6ycVNfpjM7hWNhEuRk2BhnOcTmU4y5fCa//zCV481ExTjiFoxHRjsOQFCp18QITNdZw
+	pUMFN/M6KNkuxWJ2XZU3nHzkDKxqnOE=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 072E77A0030;
+	Fri, 10 Oct 2025 06:10:50 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 10 Oct 2025 06:10:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1760091049; x=
+	1760177449; bh=XfIFhXkqL2PFnCgdILYUcOyv0W/EfJPQuh46n0RKDcg=; b=Y
+	/gMdJQ7dmpRjmxhGyjGVTvs+cMiTiVrBW3nVQ9p1Y2S++vPFL8oFpl51HWPnMZRN
+	jHc2hKABIujbKs5Equp0lGTYxsgKJ+3rNUCK4V49nEpNWRfQOaWjZlUTBFKRoyLc
+	xYTpc6uT/+/1yUk2K5biHstrf+zOYicuvAq251pcn1g8WtGjsjMmH4GZKZpB0AvI
+	tzYm9EJjO95PehQ9tLmRGqmeP2g7PdhXNV6OrTDSjwZOPvpbdZVAsKXX7rAkgJop
+	vA8dPytPMXZA1RUtuWgbVjOLFeiKvXXwirMUS0CW/mdLRLkrXuPQILPkWl5UfdZc
+	lwnS26/V+3zbwwQKXmx/g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1760091049; x=1760177449; bh=XfIFhXkqL2PFnCgdILYUcOyv0W/EfJPQuh4
+	6n0RKDcg=; b=sXhKftPZZQZuAqpgzn7uqlV9dsaBAyflc0xFVZwUDMUN3KP1KDE
+	pcLP8r05ZPWL6q9JoEw/I4ZG2sQzzMtyrVtG80NceRqYVZDoiBg6oOoeEBaTUKgT
+	crJnLSZThPN+LI7l5YgUnyvqwvcYFStAqvt98Q1Jge4iU7c+AGPsL3a7L4dbqgk6
+	Jtj8OYbALjj07qzIWK2ZQz41LtikEEBz98hSRQryQQ6hbLlWz/s4c/wz6e/Spil6
+	xL46C6zF4BfAXKBEpBBm0Ww1QhzbdJaWs0XGZJv0gPWPvb9br8D4nvUezP3eRRt4
+	ofZom/XoszK9wtWhnfOHJFUjp8gnj3QPm6g==
+X-ME-Sender: <xms:qdvoaLTA0DmiR3A3Jimuzh4CNm1ic2qaQP6iJQL25his8fzI1Agnng>
+    <xme:qdvoaP3FaBkHrNo4e_y5HdYfbmBKBH99pcwA0vPGN9nmSPP293zgLOTxpSKfE88rz
+    VJx-OQkwsYhHZiYcwLfWUyT33MBnPLYYp_eKce4zJx0lFDc8O6RBic>
+X-ME-Received: <xmr:qdvoaLdy1zoJHdAIGUOBYLCDmzZVNPeeiFiEzl2fr5CrGBKeb1sSHkNYcVLIdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdekjeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthhorhhvrghlughssehlihhnuh
+    igqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgr
+    uggvrggurdhorhhgpdhrtghpthhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:qdvoaHO5gur1DQ1oEMhP4W-DDHCjRSZEF0BneZVG0LWmjdiOg1u75g>
+    <xmx:qdvoaPWwCpB4MOxR9IlBV3-7164wSNVyyjNrQ-mTkM7QXyQNhc-Nqw>
+    <xmx:qdvoaPyG10ko6xwXsU6aZtRSlHpwkA0Dj3hjZyoCXerPdpDx9luIaQ>
+    <xmx:qdvoaG-j1ZUNz8qfhIA0LAVA1xy5okBB7R6Z22jOcWIEcn27Y23Vhg>
+    <xmx:qdvoaP2TgJhEvd9Z6dnWteQPHeb02xh6RqJCVwIcmM8eDZyxlparZvbP>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Oct 2025 06:10:48 -0400 (EDT)
+Date: Fri, 10 Oct 2025 11:10:46 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
+Subject: Re: Optimizing small reads
+Message-ID: <qasdw5uxymstppbxvqrfs5nquf2rqczmzu5yhbvn6brqm5w6sw@ax6o4q2xkh3t>
+References: <5zq4qlllkr7zlif3dohwuraa7rukykkuu6khifumnwoltcijfc@po27djfyqbka>
+ <CAHk-=wjDvkQ9H9kEv-wWKTzdBsnCWpwgnvkaknv4rjSdLErG0g@mail.gmail.com>
+ <CAHk-=wiTqdaadro3ACg6vJWtazNn6sKyLuHHMn=1va2+DVPafw@mail.gmail.com>
+ <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
+ <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
+ <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp>
+ <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
+ <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
+ <nhrb37zzltn5hi3h5phwprtmkj2z2wb4gchvp725bwcnsgvjyf@eohezc2gouwr>
+ <CAHk-=wi1rrcijcD0i7V7JD6bLL-yKHUX-hcxtLx=BUd34phdug@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250509074635.3187114-2-changyuanl@google.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7ny7gefw7rsb67omnm4z5fqp5fy5uwoy
+In-Reply-To: <CAHk-=wi1rrcijcD0i7V7JD6bLL-yKHUX-hcxtLx=BUd34phdug@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2747310000E
-X-HE-Tag: 1760088844-993913
-X-HE-Meta: U2FsdGVkX1/LzyuHl2qYRCBJh+UqwuuOnfnUyhxAQwJq2jNCYXZHMAw1QLRg61DrgDcHyd8SLvU0sORc/Qe/2HG1qXh2tMdefyCAGbXxkT2LxbvtqhJYs2ZXCw3RS8t5emnbsCkPVT0UQmxL9X0Sm8kYHP3xv8qRc5oXs2QohhdzWkmqNwbNvVoJ7dofsxvgh4MGIXZSJA4NkaDELw1BJE4alTZrcoueR0Ldr0STJ1vliGhwbeqZmzLYJSGFMmSmxYkSloIwWIvAn/0dQyWBxed7buE4jadkSoftQ72PWYquQt5nd88bFFpxfbKgSdAxH5tsaGiGnt1PvMVQcJ61SUSmn7dbIwijbADR7mUl5iIIfXW1vf+z7I6rfIWNlR4waIBrNtciXQIEddS33hv8V5pS04laFBJw+UHyb4+kAFjmZSpu1Hku/r5NbtXFqB1NhkiOfv+EZUJFNVkOxUHmKGwNfkl+5rsaguV4IEmyImH3XEIM+5LIVWqqneCwuoOnfOi5SJjq6AZ9gMU0qmSGUjjOpG52HWDxFNSMJZrBjBju5wFAfSBdfgKZDgh8S6BR76cNLSf+yCXGy66X9rw3jyYy4M/Qzhw3K5wd/dNA61WlVeufL9p1bB1xibZNzb/turhuKhd/MBImZZ6Gg9wPKUdqNFwK3FrYTw6+s7dpyWoMCB/nidF4odEwhP2t0n4q2w+2N5Jsir4RwxEQUSQhCkyKFYjlVZJXT1B7/ycqCGBPd/NhRD08UAw8PA+rMQCTW7wOzXaXiFGrwsTbmfozsNco6rSSyf9ToDSq5DWcwILME8+/nW4StcDxss37M6tZrhnHmhH5rfrSNG63C8e+8RxxIORxO962KLnUPoYa0luTFZ4gh/ulPRqK7ga8neLXqU2Gm2peOXlYBzscjEgwoHpx2p0teDe4c+vsSbhv8NPQUMfyhAgo+Di4bs8dT/a36FNPwVGGZlnmbtYhtjS
- xDbHn0ir
- 6E7x/z4sgfTlmvxGy1a/h9rphr5YJ94GxAMjPjHXt6+nR8Y/19HhUqXGCCftaoBz6h+yoc3G5y3azr09QIF+TbeHwdpZD/IXnOe5AXNzgmE93upeZ+YcPpWOFh7TkjrwhSgCnBQQRrzrPQyBl0pwTzqEArpQmujgEtPJ2dutztYT+iNNRCbBQuGc1kJr7N0B1uovPu1kguJsXPj6w4qLEnLTcH1SN8QFtXaY/JwKia71lhcXjWDT15bNR0nhj5ifdxigOpbG5IMe/R9wdPJRCwdzaUBO5g7nxih0hcHRw1lgMrmB4Yx+rnFz+jfptTkdlWqK1BF5DI+Opx9IvBkrVZKfpQfA3YJm5owe5fMwly41e3jYnB3rBHSNyVweDuliZIvu4m6usWzuu5chcsgce/xBmNHjNqyrjbdQoV6heDpriK3+5kWNS1sav16tWOoQL1UsZXIl6VornXBw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0E019180010
+X-Stat-Signature: 4cgkf6djdis9wrz3cjick6p173wg4uqy
+X-HE-Tag: 1760091050-806468
+X-HE-Meta: U2FsdGVkX18NyCPu5bqicgKNA1vhuptOm9qo5Gm24MT+N10FCNjWfM9NFl3vZNTVfeAixtKVFXNn0AQtgP0botBRCy9r8FprrRleEg9wmHm9okE8dfzx4TymgaWrNhqDgXcwN2gdTYGlI8JPB8j2+AaLKtSyO5JSTGCyvOUL6I0Zy8AKtDptdPjiy5z7L3+T5QktfMCFRFS2f5F887XuqAWH0b1iFuoiq0N2/zc62zfC3Kj3cnTP0tXdYUPF5CCStbeR3prD05ue18/rJAmWUu6+rniWr/kiztCzoRRJFfvtfKkCjtnMrk8U/YRlCx5MwY2OATV0qlkENQ/jjb98Se8MEj6dszwmrhfewvmMmOolx+WHz+0X05MkCKIcPIcU3OHEMLDfbWGiaxCGU8vfwbo9x+TLGjv3uU81DGYqV5PHJpJ/ymjuX9WTjlBmEoK73tXkzv4vXaFbgOUajTySZmxvy0iobl0dX3yX/0SZ2gca485h4/ByPSmjmB2kLVVh9FQVbSygn9mIzEq8GIIpbgvFiwd0ebf9oMqGLoPbYNZSxu+DEXGqjKYzaf2DLhMHwLO7li505VQKu8niX6qmgh9RWBSAoSNWBqoEW/+CL3HbKDGus9Hd2rkYQStMI2Hqs94G4rbnmrI8EDfS7v1q7Wopt9SjYQAxU2qw3xL58ck9II9pdBTt1YZL4m0A9Txe021d9vtyaY6CSeFH9STlqDGGBBcP18HdH1byJVX4PAKImF9h/H7upSU0sGpTX33bkhi+r6iMsLdE4G2cLLkUy4Rb1puDHIukT4l204PgDLE0qm50r7tUpyvBkq4DTea4ChcdEtPt/kYyAyZhjNktTh60tfV2e4HWKoJWsni/Zy6XUznyU+ngbQE9RcRuwNoGn4x42tRIRWvMu83fxaTfXF3U2SC2btO/0MO2YP8rHD0J808Ot2/TKqyc7kZdxtQ1iKsrS9i0L+KXp2IW7t8
+ BwmzThsW
+ Q1ckbTqcqBStm/HFW5ezz4/2xc/cGgRhOLtTe29Erh8/modXLOV/8W9Fihf91lgpqMUQuhLeig0zKf67S0i1pFv/6HDPSC8cbD0UebrJw0eo6gzNkLDQPp8iHsEtcMfiJn5RG20AGf5f0uHH8UfL0QWBzCQTm1HBtNRPwqDVkbb2pEGn7iDzxNV4XX3yPs1oUFKtDs/4+EabbR93+QRA8HyPTNzlFLVeEOaO/Ysccyypu0LsAOOrCyag30tHioEldB2PZpzXFaplZiIT+xBHAXgZ2UkOyIRufzrjZto+Z+V0GN6JPadhA6+nav7mOlYhFRv4cmmizp/3c1oAxbKTnKc7LLtTMG7W1X1d5Bmc/a2ySB8V8qgZs5hdoHxOD/RBdYX3mXvWF49p9bsCDEETIQmqumw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,129 +140,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Chanyuan, Mike,
+On Thu, Oct 09, 2025 at 10:29:12AM -0700, Linus Torvalds wrote:
+> On Thu, 9 Oct 2025 at 09:22, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> >
+> > Objtool is not happy about calling random stuff within UACCESS. I
+> > ignored it for now.
+> 
+> Yeah, that needs to be done inside the other stuff - including, very
+> much, the folio lookup.
+> 
+> > I am not sure if I use user_access_begin()/_end() correctly. Let me know
+> > if I misunderstood or misimplemented your idea.
+> 
+> Close. Except I'd have gotten rid of the iov stuff by making the inner
+> helper just get a 'void __user *' pointer and a length, and then
+> updating the iov state outside that helper.
+> 
+> > This patch brings 4k reads from 512k files to ~60GiB/s. Making the
+> > buffer 4k, brings it ~95GiB/s (baseline is 100GiB/s).
+> 
+> Note that right now, 'unsafe_copy_to_user()' is a horrible thing. It's
+> almost entirely unoptimized, see the hacky unsafe_copy_loop
+> implementation in <asm/uaccess.h>.
 
-On Fri, May 09, 2025 at 12:46:19AM -0700, Changyuan Lyu wrote:
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -492,7 +492,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
->  	 * needn't do it
->  	 */
->  	if (!use_slab)
-> -		BUG_ON(memblock_reserve(addr, new_alloc_size));
-> +		BUG_ON(memblock_reserve_kern(addr, new_alloc_size));
->  
->  	/* Update slab flag */
->  	*in_slab = use_slab;
-> @@ -642,7 +642,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  #ifdef CONFIG_NUMA
->  			WARN_ON(nid != memblock_get_region_node(rgn));
->  #endif
-> -			WARN_ON(flags != rgn->flags);
-> +			WARN_ON(flags != MEMBLOCK_NONE && flags != rgn->flags);
+Right. The patch below brings numbers to to 64GiB/s with 256 bytes
+buffer and 109GiB/s with 4k buffer. 1k buffer breaks even with
+unpatched kernel at ~100GiB/s.
 
-I am hitting some sporadic warnings at early boot on a production kernel
-(6.16). Unfortunately this issue is not easily reproduce for me to test on
-upstream.
+> So honestly I'd be inclined to go back to "just deal with the
+> trivially small reads", and scratch this extra complexity.
 
-	09:14:44  BIOS-provided physical RAM map:
-	09:14:44  BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
-	09:14:44  BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000000100000-0x0000000064cb7fff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000064cb8000-0x0000000064dc3fff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000064dc4000-0x0000000065b13fff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000065b14000-0x0000000065b61fff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000065b62000-0x0000000065ed0fff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000065ed1000-0x0000000065f2bfff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000065f2c000-0x0000000066621fff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000066622000-0x0000000066630fff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000066631000-0x0000000068107fff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000068108000-0x000000006819dfff] ACPI data
-	09:14:44  BIOS-e820: [mem 0x000000006819e000-0x000000006a48cfff] usable
-	09:14:44  BIOS-e820: [mem 0x000000006a48d000-0x000000006c58cfff] reserved
-	09:14:44  BIOS-e820: [mem 0x000000006c58d000-0x000000006c5dcfff] ACPI data
-	09:14:44  BIOS-e820: [mem 0x000000006c5dd000-0x000000006cfdcfff] ACPI NVS
-	09:14:44  BIOS-e820: [mem 0x000000006cfdd000-0x000000006e9fcfff] reserved
-	09:14:44  BIOS-e820: [mem 0x000000006e9fd000-0x000000006fffffff] usable
-	09:14:44  BIOS-e820: [mem 0x0000000070000000-0x000000008fffffff] reserved
-	09:14:44  BIOS-e820: [mem 0x00000000fd000000-0x00000000fe7fffff] reserved
-	09:14:44  BIOS-e820: [mem 0x00000000fed20000-0x00000000fed44fff] reserved
-	09:14:44  BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
-	09:14:44  BIOS-e820: [mem 0x0000000100000000-0x000000107fff655f] usable
-	09:14:44  BIOS-e820: [mem 0x000000107fff6560-0x000000107fff656f] type 128
-	09:14:44  BIOS-e820: [mem 0x000000107fff6570-0x000000107fffffff] usable
-	09:14:44  random: crng init done
-	09:14:44  ------------[ cut here ]------------
-	09:14:44 WARNING: CPU: 0 PID: 0 at mm/memblock.c:668 memblock_add_range (mm/memblock.c:668)
-	09:14:44  Modules linked in:
-	09:14:44  Tainted: [S]=CPU_OUT_OF_SPEC
-	09:14:44 RIP: 0010:memblock_add_range (mm/memblock.c:668)
-	09:14:44 Code: 28 80 3c 01 00 0f 84 04 fd ff ff 4c 89 ef e8 6c 77 09 00 e9 f7 fc ff ff 0f 0b 83 7c 24 1c 00 0f 85 9c fd ff ff e9 c5 fd ff ff <0f> 0b e9 be fd ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c 6b fd
-	All code
-	========
-	0:    28 80 3c 01 00 0f        sub    %al,0xf00013c(%rax)
-	6:    84 04 fd ff ff 4c 89     test   %al,-0x76b30001(,%rdi,8)
-	d:    ef                       out    %eax,(%dx)
-	e:    e8 6c 77 09 00           call   0x9777f
-	13:    e9 f7 fc ff ff           jmp    0xfffffffffffffd0f
-	18:    0f 0b                    ud2
-	1a:    83 7c 24 1c 00           cmpl   $0x0,0x1c(%rsp)
-	1f:    0f 85 9c fd ff ff        jne    0xfffffffffffffdc1
-	25:    e9 c5 fd ff ff           jmp    0xfffffffffffffdef
-	2a:*    0f 0b                    ud2            <-- trapping instruction
-	2c:    e9 be fd ff ff           jmp    0xfffffffffffffdef
-	31:    44 89 f1                 mov    %r14d,%ecx
-	34:    80 e1 07                 and    $0x7,%cl
-	37:    80 c1 03                 add    $0x3,%cl
-	3a:    38 c1                    cmp    %al,%cl
-	3c:    0f                       .byte 0xf
-	3d:    8c 6b fd                 mov    %gs,-0x3(%rbx)
+I will play with it a bit more, but, yes, this my feel too.
 
-	Code starting with the faulting instruction
-	===========================================
-	0:    0f 0b                    ud2
-	2:    e9 be fd ff ff           jmp    0xfffffffffffffdc5
-	7:    44 89 f1                 mov    %r14d,%ecx
-	a:    80 e1 07                 and    $0x7,%cl
-	d:    80 c1 03                 add    $0x3,%cl
-	10:    38 c1                    cmp    %al,%cl
-	12:    0f                       .byte 0xf
-	13:    8c 6b fd                 mov    %gs,-0x3(%rbx)
-	09:14:44  RSP: 0000:ffffffff85e07d48 EFLAGS: 00010083 ORIG_RAX: 0000000000000000
-	09:14:44  RAX: 0000000000000020 RBX: 0000000000001c00 RCX: dffffc0000000000
-	09:14:44  RDX: 000000000009f000 RSI: 000000000009d000 RDI: ffffffff8685ebf8
-	09:14:44  RBP: 0000000000000002 R08: 0000000000000020 R09: 0000000000000000
-	09:14:44  R10: ffffffffff200570 R11: fffffbffffe400b2 R12: 000000000009d000
-	09:14:44  R13: 0000000000100000 R14: ffffffff8edf5ce4 R15: ffffffff8edf5ce0
-	09:14:44  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
-	09:14:44  CR2: ffff888059e2dff8 CR3: 000000005bc1d000 CR4: 00000000000000b0
-	09:14:44  Call Trace:
-	09:14:44   <TASK>
-	09:14:44 ? __memblock_reserve (mm/memblock.c:936)
-	09:14:44 ? add_early_ima_buffer (arch/x86/kernel/setup.c:413)
-	09:14:44 ? parse_setup_data (arch/x86/kernel/setup.c:500)
-	09:14:44 ? setup_arch (arch/x86/kernel/setup.c:245 arch/x86/kernel/setup.c:958)
-	09:14:44 ? start_kernel (init/main.c:922)
-	09:14:44 ? x86_64_start_reservations (arch/x86/kernel/ebda.c:57)
-	09:14:44 ? x86_64_start_kernel (arch/x86/kernel/head64.c:231)
-	09:14:44 ? common_startup_64 (arch/x86/kernel/head_64.S:419)
-	09:14:44   </TASK>
-	....
-	Memory: 49640988K/66772816K available (54946K kernel code, 19058K rwdata, 22636K rodata, 2940K init, 120968K bss, 10650188K reserved, 6291456K cma-reserved)
-
-So, there is a memory override, and I am curious about it. Do you think it
-would be useful to expand this warning to dump more information about the
-issue? (only compiled tested)
-
-	if (flags != MEMBLOCK_NONE && flags != rgn->flags) {
-		pr_warn("memblock: Flag mismatch at region [%pa-%pa]\n",
-			&rgn->base, &rend);
-		pr_warn("  Existing region flags: %#x\n", rgn->flags);
-		pr_warn("  New range flags: %#x\n", flags);
-		pr_warn("  New range: [%pa-%pa]\n", &base, &end);
-		WARN_ON_ONCE(1);
-	}
-
-Thanks
---breno
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 3a7755c1a441..ae09777d96d7 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -612,10 +612,12 @@ do {									\
+ 	char __user *__ucu_dst = (_dst);				\
+ 	const char *__ucu_src = (_src);					\
+ 	size_t __ucu_len = (_len);					\
+-	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u64, label);	\
+-	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u32, label);	\
+-	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u16, label);	\
+-	unsafe_copy_loop(__ucu_dst, __ucu_src, __ucu_len, u8, label);	\
++	asm goto(							\
++		     "1:	rep movsb\n"				\
++		     _ASM_EXTABLE_UA(1b, %l[label])			\
++		     : "+D" (__ucu_dst), "+S" (__ucu_src),		\
++		       "+c" (__ucu_len)					\
++		     : : "memory" : label);				\
+ } while (0)
+ 
+ #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
