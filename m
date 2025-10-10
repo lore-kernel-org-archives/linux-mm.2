@@ -4,88 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D46ACCD183
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Oct 2025 23:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 389EECCD183
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 00:26:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74E018E0099; Thu,  9 Oct 2025 19:52:45 -0400 (EDT)
+	id 4A1648E0079; Thu,  9 Oct 2025 20:26:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D0DC8E0002; Thu,  9 Oct 2025 19:52:45 -0400 (EDT)
+	id 4791E8E0002; Thu,  9 Oct 2025 20:26:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BEC58E0099; Thu,  9 Oct 2025 19:52:45 -0400 (EDT)
+	id 38ED38E0079; Thu,  9 Oct 2025 20:26:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A788E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 19:52:45 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC4E246A58
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 23:52:44 +0000 (UTC)
-X-FDA: 83980228248.10.BA8B35A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 18568140004
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 23:52:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G6s6Box/";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760053963; a=rsa-sha256;
-	cv=none;
-	b=f3svgyqk4Oq7W+JzRI0V+vTcyl+DNq63mX237gE0Ah0adCXms81/Sn040JA95iFDtVkgPp
-	2muUOvvA9jzJwMmsFE0InqMMZbpOoHeykIOLL07909Xz27FAcJZ8XT0PSZAwnj55GcKCZh
-	FNpgw9Qdts4pJ8C3uT4jW/9/E87edLY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="G6s6Box/";
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 268F88E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 20:26:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE65B829C0
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 00:26:36 +0000 (UTC)
+X-FDA: 83980313592.03.E4F4830
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DD7F5C000C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 00:26:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=REiBgGHL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760053963;
+	s=arc-20220608; t=1760055995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F51wzqUInruJdW6x7xm+LbNPvsmJhwUuJ8+FPdriRX4=;
-	b=oi3T0GTnlnnWeWszh9UWSTqsxJDFbhQbrjYoEZ3NHqxYfc/hi7tKk2WOIa9G5Hq5GPBxAU
-	VUP+dr8sVur2adrxrWmpDv3Z96kMudHW8CF3WdQALlQ/6MpwNDsQTSBG3yfe/jX6nIiHiN
-	FC4u0uPFWKxDRFggvUIt9e0Dvo4hpR4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7118860213;
-	Thu,  9 Oct 2025 23:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3062C4CEE7;
-	Thu,  9 Oct 2025 23:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760053962;
-	bh=aclcowRnCRjDzdCXUKxS7c1y/kSBL8GwCiCk4RkNDDk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=G6s6Box/nOEmZzPU6orctfugCEwp72/oiDoYfjzs2pM1NL/tD+dCoI+u6V9gYHNay
-	 bt6nYp3yXO3YbaVCDr8Xq+2gEUKprKhDQXubbLNWVyiaiup8BnMGGpn96hXcN9tf85
-	 2K38SGHkxwiKLPuM8iUAFmPYwtElGD3w1BKt7hKw=
-Date: Thu, 9 Oct 2025 16:52:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com>
-Cc: hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@suse.com, netdev@vger.kernel.org,
- surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz,
- ziy@nvidia.com, bpf@vger.kernel.org
+	bh=zUW4z5PB2uYt+UHHfwXSoWrNlo9PxYnuvCzympehrHU=;
+	b=oWsq43FvRcdBKFK0/vJqYx+xgSPG+83eZUJX9bXL/QAJP2oAuj8wo2Urp/wYFXZmSZC/Y9
+	igxFfrLKmv9Fk8akk04ZPD7KsqeBUzEVkub97eVd4KME7/VpH6Ch1I2kI9vtPEh+gJCrKT
+	VWmo6l7rp4NSf0usK3mo3oU6vs2YWwY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=REiBgGHL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760055995; a=rsa-sha256;
+	cv=none;
+	b=eKsum1AyQTZ/Lk0MltD07X2Cglg2cHW0BuZSPne7MQwJwclqhd01o+b6ykxdXRWLZ0dP8W
+	hq41DQ5nk2ZxcudITFAO6wqIJ9puuFv/GD3/9+KvhwPQUckAeq3Cg0pdl6RTmRfrykMI0Y
+	O8X8AdR8mBI7PJm+/zB9wfxj2X1mRyM=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e3af7889fso8244925e9.2
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 17:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760055993; x=1760660793; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zUW4z5PB2uYt+UHHfwXSoWrNlo9PxYnuvCzympehrHU=;
+        b=REiBgGHLQGlraKhnaYNlHicIxf0A7PK0KrRvTWy1BT9ItjZPzDL2Az5yep0nOmsHuw
+         Y8KAB6+bhkwTyAumuY6zjIVWY2ytF1zvlWOrNjM49uFfvPPMNosBIjgdT10H97Kw7xXT
+         yO1vMDN2PPNLC5bgeOfprVBeAoGaKkqx9/UcwSAu6JWV2wkCw9wNAcbMtmxAokPfSh3S
+         mVEmSa1Z4ZQHJTyb0YGSUSMGhcDOh6s/oTOzxejmRa9H1ixieackuEepfcRkBSpPSvTh
+         sK/j4ZvSCaifukHLCTeYhaVxScEqGasrgUQ6kb62JeSlZ+oQU4sk9X9rYw1b9NgbuMdf
+         uZ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760055993; x=1760660793;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zUW4z5PB2uYt+UHHfwXSoWrNlo9PxYnuvCzympehrHU=;
+        b=Zofp8W/4gNWiP1SoU/jaxYyLjahtvbA/dOAWkRbzk+z+qQ7YzB6QsqJnINlu5BG6Mb
+         3Qnj2SCzAqlzz/7zjNWD/4rUNz1x7iTV/ix/ZcbXsK6+6BFlGqG+6UFoT0Gja8uolxNb
+         Ocg5xUMcV0RSlz5XMuRwUjwaZlJuiJgme2r7B3ViLH6Nm4qLg5TC5GjtuQSnrMEZ070r
+         BxtwbyCeb0BjK+NRY5ghQQu0A2B5SH5B3Ut3xEQ7MpiJ9MgzJIjYyeJYjYaxbFYnZt9P
+         Ka96Rk+3hHH+WFmTGWR557jdeAusVzXYbBwiHF+gDmMX4akvJZTbsw/+zk0+tP/1RLC1
+         qyrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTnl2wU1ywDqg87RK34NH0JNZDMaPQpyIVYMwH5NuixthxKCjI9q3kQB/rQkPAb9nldJqTC1UmZA==@kvack.org
+X-Gm-Message-State: AOJu0YxjW88CE1GBWiplUJitUOGlCI4UPJujZ8nivdrNZns0IE8nFz81
+	MqFtX0QQGTCfo6NYODpD3FNvpy4/dXbhm7/u+TKUpHGzKwInzldlBj8U/x5v5SgblQQLeQySf7A
+	tNBvO4UFbwt3W5z/lB/xxijB1QfWOWY4=
+X-Gm-Gg: ASbGncsIXpT2QPzSL8ca+eQc1VQ9hQEZKjqhWJVebVrQP8duBqUK+TXgkda33icn7uB
+	VD9jl9+kqA5E3Y1fi4FEJzrTHOwqfTnUy3jFtwPoZKoHKktV7ElW6kKTYHM8EEVujeMFVm6+RMz
+	UzyWiPGj4s4PcjcI1sTTTyHMBgErzzhmL2/+9453O/imDiAzvwKDr8DG6Bmn9Ip1esDxk0d4uJ8
+	+2xZfuoCfXumtF8jqUCPP7QccI7neW09HFG/WUhH2s6lpX4pyc+KAHFNSPgqkZ6
+X-Google-Smtp-Source: AGHT+IEKhtlRs7io6HG8uJV/pO+2akEGSzzZFCHHiFDcUno2eR4NPpeVNsPtm6HRWIbw/xBK09T31f2XH3b4EnhpJ1g=
+X-Received: by 2002:a05:600c:4506:b0:45b:8a0e:cda9 with SMTP id
+ 5b1f17b1804b1-46fa9a8638dmr69082915e9.2.1760055993199; Thu, 09 Oct 2025
+ 17:26:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <68e7e6ad.a70a0220.126b66.0043.GAE@google.com> <20251009165241.4d78dc5d9fa5525d988806b5@linux-foundation.org>
+In-Reply-To: <20251009165241.4d78dc5d9fa5525d988806b5@linux-foundation.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 9 Oct 2025 17:26:21 -0700
+X-Gm-Features: AS18NWBxXjf9R6H60KDIOONvstVA7iwAST5osQQuEMTaL13eeM1e3CKmUs6Ja48
+Message-ID: <CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com>
 Subject: Re: [syzbot] [mm?] WARNING: locking bug in __set_page_owner (2)
-Message-Id: <20251009165241.4d78dc5d9fa5525d988806b5@linux-foundation.org>
-In-Reply-To: <68e7e6ad.a70a0220.126b66.0043.GAE@google.com>
-References: <68e7e6ad.a70a0220.126b66.0043.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uakz8kkew8huyrayyq61usdz98nonbd4
-X-Rspamd-Queue-Id: 18568140004
-X-Rspamd-Server: rspam06
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brendan Jackman <jackmanb@google.com>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Michal Hocko <mhocko@suse.com>, Network Development <netdev@vger.kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, syzkaller-bugs <syzkaller-bugs@googlegroups.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, ziy@nvidia.com, bpf <bpf@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="000000000000428a840640c2f8e6"
 X-Rspam-User: 
-X-HE-Tag: 1760053962-982992
-X-HE-Meta: U2FsdGVkX1+UsGuAPeQSD90+RXujU9PA/fw8HyK4Wou1EAuqaUWMxyZKIzloKJcqJIM7WDg4QjcNcDXhuGxyp4JhhtQYXAtBIepNnz1tfJIX54iYXeXxHDFNFy4gwlIdSD+JJxP2W5AGogvOA/e6kyDfq5HVDPA90mTcKCz8bp4rioVx4QxTol9GehGoF146deRJ/iOGMI7mH6OQ4E5R335vCc8zccNzmfjBi628wbiFE4D1za97CqcdxOXZkF6bPn608j+DXngw3tagDmUehLHHdfb3j89Nolx1u0zZWphnXsdW8v6om7BfCX35xJVamUARNl1zOSJWGfGlXivsbS0hFrwnjh4D06kyRA9FHbEvDYg1zwH16lQKm1bPj+jqWXxWZrYxz84uaQO//isQHJ0M5QZNOf0eox1mOlqponNct5JoClW8dqKW47FqPSNDySgJqoXVMS7ASFerb9F91vgP2CBvy6/clz2gXNoANzTMXHu09VUudY8ZdmrSEDYa7SZE/YCYqwax1J2+kyGMxsIMly66SY2XRXvbL0QkT67pFCmHK67FAPJiCab96PPmulN4k7d1Rzu0L/LESBCWjMzH8QAZ3OdNCAZBqhG0p9+nD0Aao5kUpxcCAzHwofP8HGh+BoxMpc0mGmE92eYdffaRmKQMxXhJVYTrPcydxlC+z+xIoCs/xIwq8pDzx3fBsMOk1zAw4tCx1YgmGMkq7aWZi6NM9vq4wf2tNxab4r1vztlO5laJpKzN1rSlhuen0LG6M70qe5iX6UycT20dboXx5+0/tfmt5JzEe9SBvA2+iUQHSdQgUwB7sKE7bntH68er+AhGeNwrJkqGelZG+UpFf3VXtFf5pkm5LQKtK4h1lpKpwVPqo21XkYwUAWucEQaJSdQl7mFWokAOlkQkeoXdHN+nsL8rj/M++PP6xr8iyfgB/epGWW8rQ8tHTMFtFJ35swDi5zMZ9Uf8kJN
- die1XvqI
- 1IkclYhV66RqPEmZ/W8xP0dQNZeMosupsSl/4cC8uy8/trEyKCFicbFwX3VEQsEn8dEzS/353hTJRAH3+VFQk8ANAdXaB8IiFCptQKLUuFL5HuKlnKaiHZQ+DfQu8OeObXj6vHhGZQvwX7kvqGwEzNR3GXOq+Nde627LHn4EBniw1UHFPR4XbEKN2mSc/qZnVg4wx+jP4CT9/eHq/GBcn1k/1LFqAIQUf4PWiB4z2B9rlEO9hEmOgmmqV3JHfUsbTlka7KEzNnskBcRnN59BK0IyBWkAIUGHCtiI9rZBilQfpVAU50JY6Z27MbWxmJYITeSF78Jqp04k4nOltgRNkje/gBjwI4FgC4bGoBqzTOmUkHNiM8RvzasFNtEyBka0sfgRNqBs+AUVsDMjV+pYWkljF6xZj5Ai6Or9beLhOtoV0ba6PNo729/+vM7ZdoRLV5Fge8U7lx3UqaN22gs3KBLbLs0mTS7hnZVX38KX6DGmmxZaTWqRXz1Hj+ms4jPKulmQzXfuVoYbt51ETNDqBCugBc/delaQIEVY8hOEx/9wYifKM1VLWsNREpi+ok2U/CIZIG9iYipO1QLji9TlX+GK+17iQBhO6ryuEyLuYC7uB/21ZdTBGqFMSOKW1jsMLE8RzcMN4QLz3WHa0vmlCcgEUHvi+KUHSmmuxItY232h84Pkm+i4fTiyDAybeyUSQAjOaU9ylydmU0e3l8HBOyQRtTcG6An9ZRUoL/s4nyyXI1JQbZP3MnxOjDXF73a1qMpucjinl/H/K5K5gFwXsXzkq5fObJKgsT3QJgMRUfH6hiE0etTPJa0Uvjc7oxwp0tdh3jsCwV9rYz3f7uzb8U6AxznzlMdqF/PA2y5Auf+S35NQp+s7bS2g9FRRnRbnl66+trNiVnVS610bBMirQsgAtrrwBV+m0NPoXzxelVbHyl3F3j8ovb7r8r7RyU5ulmnfDb0dzoCAoemR0RBP3s2tgpAUW
- QZliNL4E
- 9x0JgDLZDNN2cRpS61qISjKRnQp2qayMZ/aTz+2T043A3zp3ox7iQsOUbq+CIYkHMTC/k2JDU7Xh+OsMTWkNsuPxzzx05zergPfFQPQMunjHUfMAs47wQPvQ5CnE4BR3
+X-Rspamd-Queue-Id: DD7F5C000C
+X-Rspamd-Server: rspam03
+X-Stat-Signature: r7nqiagnhszd3p6yk8i1t8z843rbzs3d
+X-HE-Tag: 1760055994-433705
+X-HE-Meta: U2FsdGVkX1/zA64f7qkk82rhEnHWSqVdYgugzd3IPkIn9XRasZuATnZp70DkpNxYyJfxokVCdweDF+B6rLNgHFLFZkHSzgDjJdJ22+jzwXIZkilB5NK/eITjCTwbal/d3+Y2PqfbLcGVqiRcBZPZfZaCZvR8CihnvsoQ/DMLWUQTZ8XqhIvJT3qvBLO10VeLYN2QMJHwP6GDZfiMh1mtX1hGaKlML2+38UjWvaB74rzXGj7HiQytlSKTQ2MFcQeKLhOP0jwmR82dQ12+ZhQuXnDykLn+QiXH94inWYio4qGdhp4HWlg2l/yu3Wp/SZmSzrNNocsFrVixWd9kz5rNWplXkIwqOCBA79LKdNv787cSjGHclxQlFZLaLxPB5nPHRn4PC2yrvScEDgdD0uDClJB69V+h2tpyCk6bA8flTk1ErHGIKapf08yi1q820qolQAbWfNTXTX9qlGkgJL+zzTRdVWszIgQ0j9ri1d7DqysmBYMiiA/keqtQos5OPFczdsR9Y7IwuPDR0t2plA0nOAfrYDbs5Q52YbeoFc7EoJTRDQ0yVyrXjrvZO9WxoaEkd+fhgdMld33YyyZRfqoM0Q3UVDf7AmazEda9+S7U+xBXAXBKv4sVXvNlisZbHAtm2KZ7TzIb+DFXIhz4XPNRSpy/5KUo9J52qOi9g+y7fF2DKVNn/pKJqNvbdCaMxvE4+/S4wQb7yMS8YoaD4Kx9dN2h9YOLPINg+gzJ94MtlQ0Od7P1OVXbvJrgw+x5YLCEVPAigR7RkGOvAz+AK8XmYORQuqykSF0rxLnWVKjE/BCaiNChzHIpaSaIClFcJjWE0Gwd5r1uDI9X04mN9OT0mTKrmWUQ/jrXqFOL8cMIvvUhqWjvrS25jX3mguTJRX1WPLgJEdZlYKGR7gC3SgbAyBhdREdr2563BEwX9GPnSezDjtlh1ZTtTerGELU2/+TCQFWJ/aI4E9AZEvzyHU7
+ hdhPfAv/
+ Kzkn/Hhu+zAoWVta+Dj6JMgCx2KA/jL0ZYi9ibu+bYZ8kvqHWMtC3ujgE9wpgEv9FIZUAyqDpvqqSHg6nA3pVHYDcgk41XmXB/XRcg/exejU+ZN8/k/1mGZ4XpVPgT/ba/ScX9ZPkZhtXKmqK6vhEHeJMWMW96T+0A/o0LnjzfgG+CAbRWi+Kj/oPocr40R96wCzWkjT/OKk7cYt/fcUvXvAhqTcUpPhX3MQ+PjdU2W5eGewm4ED0lyqZqDxg5K+cHKfMTHglkDX2FIeA4xwgM1iPb2ZN42b8y3Dgm9s6MD4s99q5a9GtkKlOCIYdpU8DZapJLBBWElBfGcJ5JurB4GNh5wWbWoz/CmLr2qgIXvKydgyA1lRWYOFYBRze6uDGHNCTxzJpARYlvL+i4QxVAM6J9M3W2mpo41TwTCwztwANT/d0Z2QOZVRcyifdm0uKM1k6x8xy7DYKgp4lX7LgHC6f9rt+2R6aXtT+0zQC5CTWyIPf21lw5cl5nL0/1ftiMtbCBhOs3hcrAlTE4u7mFvY8DNZxKFYdoHgkjjmZMaYVJL0eStP9AKjugEH3aoG7arxu3Chis3TKFFJbuVa0qR27RTvZ8k7g8oiM4aAG60sFff2jniXMG2oVLsXkgqGyVsMb1dslu4gT115OOjol8vKAXrn1W/CL32fImWn4Z6SZKu9lHWPLIiiSQ0NNQydHEitDyP3DCtfNgu2hd2Z+xjw/qEdQFhKzPA8brwpOb5a2dja56Hkrjj1ffPm4maMr8Lm/HxbzuRukw6uRqIH+08cw8nEEkOAoUYhXPMMxZtU25O6mWFesEyoRCV0n+NNYRPp43tzaqG3auuu62cCDkpLKhJeilsjH99g0MaEkbGwbVc3lZ2AklOvccJDoi9c14WC89Exb1vrJZqKvDMg10lJMPp5oxyPnDD2yJWFUR2b0OtDfIBrIJwr0lF+ASiVIL3l+n5vFaW404XpyhXZGteBzev0S
+ fXN4ojoc
+ o1Aqu3XQvWeG9yzURsbocD7vjSurRnWf7unmGOOoPPWcDZ4mOh/i1i0vzDBVBNJNHnsRM9P6G3qDH91t6lqBrzP7ALrxv7pdBTkaWOuPp9oZmcW4F61f39rRAnJRVM46AI862CE8EhpnKjhp/ZMbML1/1dji6xechqokIIsNQylM67YcXpzvUSm8DxVnqxMgNIIxl0RK9XWHCG7HVp3Ydtfu1qiFzoxBR7zQNW7SOO8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,191 +119,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 09 Oct 2025 09:45:33 -0700 syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com> wrote:
+--000000000000428a840640c2f8e6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    2c95a756e0cf net: pse-pd: tps23881: Fix current measuremen..
-> git tree:       net
-> console output: https://syzkaller.appspot.com/x/log.txt?x=16e1852f980000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5bcbbf19237350b5
-> dashboard link: https://syzkaller.appspot.com/bug?extid=8259e1d0e3ae8ed0c490
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/8272657e4298/disk-2c95a756.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/4e53ba690f28/vmlinux-2c95a756.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/6112d620d6fc/bzImage-2c95a756.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
+On Thu, Oct 9, 2025 at 4:52=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Thu, 09 Oct 2025 09:45:33 -0700 syzbot <syzbot+8259e1d0e3ae8ed0c490@sy=
+zkaller.appspotmail.com> wrote:
+>
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    2c95a756e0cf net: pse-pd: tps23881: Fix current measure=
+men..
+> > git tree:       net
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D16e1852f980=
+000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D5bcbbf19237=
+350b5
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D8259e1d0e3ae8=
+ed0c490
+> > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7=
+976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> >
+> > Unfortunately, I don't have any reproducer for this issue yet.
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/8272657e4298/d=
+isk-2c95a756.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/4e53ba690f28/vmli=
+nux-2c95a756.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/6112d620d6fc=
+/bzImage-2c95a756.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
+>
+> At 2c95a756e0cf, page_owner.c hasn't been modified in a couple of years.
+>
+> How can add_stack_record_to_list()'s spin_lock_irqsave() be "invalid
+> wait context"?  In NMI, yes, but the trace doesn't indicate that we're
+> in an NMI.
+>
+> Confused.  I'm suspecting BPF involvement.  Cc'ed for help, please.
 
-At 2c95a756e0cf, page_owner.c hasn't been modified in a couple of years.
+The attached patch should fix it.
+There are different options, but this one is the simplest.
 
-How can add_stack_record_to_list()'s spin_lock_irqsave() be "invalid
-wait context"?  In NMI, yes, but the trace doesn't indicate that we're
-in an NMI.
+--000000000000428a840640c2f8e6
+Content-Type: application/octet-stream; 
+	name="0001-mm-Don-t-spin-in-add_stack_record-when-gfp-flags-don.patch"
+Content-Disposition: attachment; 
+	filename="0001-mm-Don-t-spin-in-add_stack_record-when-gfp-flags-don.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mgk3vgkn0>
+X-Attachment-Id: f_mgk3vgkn0
 
-Confused.  I'm suspecting BPF involvement.  Cc'ed for help, please.
-
-
-> =============================
-> [ BUG: Invalid wait context ]
-> syzkaller #0 Not tainted
-> -----------------------------
-> syz.3.7709/29103 is trying to lock:
-> ffffffff8e276d58 (stack_list_lock){-.-.}-{3:3}, at: add_stack_record_to_list mm/page_owner.c:182 [inline]
-> ffffffff8e276d58 (stack_list_lock){-.-.}-{3:3}, at: inc_stack_record_count mm/page_owner.c:214 [inline]
-> ffffffff8e276d58 (stack_list_lock){-.-.}-{3:3}, at: __set_page_owner+0x2c3/0x4a0 mm/page_owner.c:333
-> other info that might help us debug this:
-> context-{2:2}
-> 6 locks held by syz.3.7709/29103:
->  #0: ffffffff8e190068 (tracepoints_mutex){+.+.}-{4:4}, at: tracepoint_probe_register_prio_may_exist+0x43/0xa0 kernel/tracepoint.c:431
->  #1: ffffffff8dfd2a70 (cpu_hotplug_lock){++++}-{0:0}, at: static_key_enable+0x12/0x20 kernel/jump_label.c:222
->  #2: ffffffff8e1f5748 (jump_label_mutex){+.+.}-{4:4}, at: jump_label_lock kernel/jump_label.c:27 [inline]
->  #2: ffffffff8e1f5748 (jump_label_mutex){+.+.}-{4:4}, at: static_key_enable_cpuslocked+0xcb/0x250 kernel/jump_label.c:207
->  #3: ffffffff8dfe5e68 (text_mutex){+.+.}-{4:4}, at: arch_jump_label_transform_apply+0x17/0x30 arch/x86/kernel/jump_label.c:145
->  #4: ffffffff8e13a960 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
->  #4: ffffffff8e13a960 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
->  #4: ffffffff8e13a960 (rcu_read_lock){....}-{1:3}, at: __bpf_trace_run kernel/trace/bpf_trace.c:2074 [inline]
->  #4: ffffffff8e13a960 (rcu_read_lock){....}-{1:3}, at: bpf_trace_run2+0x186/0x4b0 kernel/trace/bpf_trace.c:2116
->  #5: ffff8880b8632780 ((stream_local_lock).llock){....}-{3:3}, at: local_trylock_acquire include/linux/local_lock_internal.h:45 [inline]
->  #5: ffff8880b8632780 ((stream_local_lock).llock){....}-{3:3}, at: bpf_stream_page_local_lock kernel/bpf/stream.c:46 [inline]
->  #5: ffff8880b8632780 ((stream_local_lock).llock){....}-{3:3}, at: bpf_stream_elem_alloc kernel/bpf/stream.c:175 [inline]
->  #5: ffff8880b8632780 ((stream_local_lock).llock){....}-{3:3}, at: __bpf_stream_push_str+0x1db/0xc90 kernel/bpf/stream.c:190
-> stack backtrace:
-> CPU: 0 UID: 0 PID: 29103 Comm: syz.3.7709 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-> Call Trace:
->  <IRQ>
->  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
->  print_lock_invalid_wait_context kernel/locking/lockdep.c:4830 [inline]
->  check_wait_context kernel/locking/lockdep.c:4902 [inline]
->  __lock_acquire+0xbcb/0xd20 kernel/locking/lockdep.c:5187
->  lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
->  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
->  _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
->  add_stack_record_to_list mm/page_owner.c:182 [inline]
->  inc_stack_record_count mm/page_owner.c:214 [inline]
->  __set_page_owner+0x2c3/0x4a0 mm/page_owner.c:333
->  set_page_owner include/linux/page_owner.h:32 [inline]
->  post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
->  prep_new_page mm/page_alloc.c:1859 [inline]
->  get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
->  alloc_pages_nolock_noprof+0x94/0x120 mm/page_alloc.c:7554
->  bpf_stream_page_replace+0x17/0x1e0 kernel/bpf/stream.c:86
->  bpf_stream_page_reserve_elem kernel/bpf/stream.c:148 [inline]
->  bpf_stream_elem_alloc kernel/bpf/stream.c:177 [inline]
->  __bpf_stream_push_str+0x3db/0xc90 kernel/bpf/stream.c:190
->  bpf_stream_stage_printk+0x14e/0x1c0 kernel/bpf/stream.c:448
->  dump_stack_cb+0x2b6/0x350 kernel/bpf/stream.c:505
->  arch_bpf_stack_walk+0xe2/0x170 arch/x86/net/bpf_jit_comp.c:3945
->  bpf_stream_stage_dump_stack+0x167/0x220 kernel/bpf/stream.c:522
->  bpf_prog_report_may_goto_violation+0xcc/0x190 kernel/bpf/core.c:3181
->  bpf_check_timed_may_goto+0xaa/0xb0 kernel/bpf/core.c:3199
->  arch_bpf_timed_may_goto+0x21/0x40 arch/x86/net/bpf_timed_may_goto.S:40
->  bpf_prog_6fd842a53d323cc5+0x53/0x5f
->  bpf_dispatcher_nop_func include/linux/bpf.h:1350 [inline]
->  __bpf_prog_run include/linux/filter.h:721 [inline]
->  bpf_prog_run include/linux/filter.h:728 [inline]
->  __bpf_trace_run kernel/trace/bpf_trace.c:2075 [inline]
->  bpf_trace_run2+0x281/0x4b0 kernel/trace/bpf_trace.c:2116
->  __bpf_trace_hrtimer_expire_entry+0x102/0x160 include/trace/events/timer.h:259
->  __do_trace_hrtimer_expire_entry include/trace/events/timer.h:259 [inline]
->  trace_hrtimer_expire_entry include/trace/events/timer.h:259 [inline]
->  __run_hrtimer kernel/time/hrtimer.c:1774 [inline]
->  __hrtimer_run_queues+0xa03/0xc60 kernel/time/hrtimer.c:1841
->  hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
->  local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
->  __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:1058
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
->  sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-> RIP: 0010:csd_lock_wait kernel/smp.c:342 [inline]
-> RIP: 0010:smp_call_function_many_cond+0xd33/0x12d0 kernel/smp.c:877
-> Code: 45 8b 2c 24 44 89 ee 83 e6 01 31 ff e8 a6 73 0b 00 41 83 e5 01 49 bd 00 00 00 00 00 fc ff df 75 07 e8 51 6f 0b 00 eb 38 f3 90 <42> 0f b6 04 2b 84 c0 75 11 41 f7 04 24 01 00 00 00 74 1e e8 35 6f
-> RSP: 0018:ffffc90010c17760 EFLAGS: 00000287
-> RAX: ffffffff81b3ac3b RBX: 1ffff110170e7f69 RCX: 0000000000080000
-> RDX: ffffc9001b9a2000 RSI: 00000000000060c8 RDI: 00000000000060c9
-> RBP: ffffc90010c178e0 R08: ffffffff8f9d4c37 R09: 1ffffffff1f3a986
-> R10: dffffc0000000000 R11: fffffbfff1f3a987 R12: ffff8880b873fb48
-> R13: dffffc0000000000 R14: ffff8880b863b200 R15: 0000000000000001
->  on_each_cpu_cond_mask+0x3f/0x80 kernel/smp.c:1043
->  on_each_cpu include/linux/smp.h:71 [inline]
->  smp_text_poke_sync_each_cpu arch/x86/kernel/alternative.c:2653 [inline]
->  smp_text_poke_batch_finish+0x5f9/0x1130 arch/x86/kernel/alternative.c:2863
->  arch_jump_label_transform_apply+0x1c/0x30 arch/x86/kernel/jump_label.c:146
->  static_key_enable_cpuslocked+0x128/0x250 kernel/jump_label.c:210
->  static_key_enable+0x1a/0x20 kernel/jump_label.c:223
->  tracepoint_add_func+0x994/0xa10 kernel/tracepoint.c:315
->  tracepoint_probe_register_prio_may_exist+0x5f/0xa0 kernel/tracepoint.c:435
->  bpf_raw_tp_link_attach+0x4f0/0x6c0 kernel/bpf/syscall.c:4235
->  bpf_raw_tracepoint_open+0x1b2/0x220 kernel/bpf/syscall.c:4266
->  __sys_bpf+0x73e/0x860 kernel/bpf/syscall.c:6176
->  __do_sys_bpf kernel/bpf/syscall.c:6244 [inline]
->  __se_sys_bpf kernel/bpf/syscall.c:6242 [inline]
->  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6242
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7fe963b8eec9
-> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fe964a02038 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-> RAX: ffffffffffffffda RBX: 00007fe963de6090 RCX: 00007fe963b8eec9
-> RDX: 0000000000000018 RSI: 00002000000000c0 RDI: 0000000000000011
-> RBP: 00007fe963c11f91 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007fe963de6128 R14: 00007fe963de6090 R15: 00007ffc809e0088
->  </TASK>
-> ----------------
-> Code disassembly (best guess):
->    0:	45 8b 2c 24          	mov    (%r12),%r13d
->    4:	44 89 ee             	mov    %r13d,%esi
->    7:	83 e6 01             	and    $0x1,%esi
->    a:	31 ff                	xor    %edi,%edi
->    c:	e8 a6 73 0b 00       	call   0xb73b7
->   11:	41 83 e5 01          	and    $0x1,%r13d
->   15:	49 bd 00 00 00 00 00 	movabs $0xdffffc0000000000,%r13
->   1c:	fc ff df
->   1f:	75 07                	jne    0x28
->   21:	e8 51 6f 0b 00       	call   0xb6f77
->   26:	eb 38                	jmp    0x60
->   28:	f3 90                	pause
-> * 2a:	42 0f b6 04 2b       	movzbl (%rbx,%r13,1),%eax <-- trapping instruction
->   2f:	84 c0                	test   %al,%al
->   31:	75 11                	jne    0x44
->   33:	41 f7 04 24 01 00 00 	testl  $0x1,(%r12)
->   3a:	00
->   3b:	74 1e                	je     0x5b
->   3d:	e8                   	.byte 0xe8
->   3e:	35                   	.byte 0x35
->   3f:	6f                   	outsl  %ds:(%rsi),(%dx)
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
+RnJvbSAzODNhOTllYTlhMjM4MWQ4Y2VlMzk3Y2RjM2M4YTA5NmE5ZTVkN2NkIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBBbGV4ZWkgU3Rhcm92b2l0b3YgPGFzdEBrZXJuZWwub3JnPgpE
+YXRlOiBUaHUsIDkgT2N0IDIwMjUgMTc6MTU6MTMgLTA3MDAKU3ViamVjdDogW1BBVENIIG1tXSBt
+bTogRG9uJ3Qgc3BpbiBpbiBhZGRfc3RhY2tfcmVjb3JkIHdoZW4gZ2ZwIGZsYWdzIGRvbid0CiBh
+bGxvdwoKc3l6Ym90IHdhcyBhYmxlIHRvIGZpbmQgdGhlIGZvbGxvd2luZyBwYXRoOgogIGFkZF9z
+dGFja19yZWNvcmRfdG9fbGlzdCBtbS9wYWdlX293bmVyLmM6MTgyIFtpbmxpbmVdCiAgaW5jX3N0
+YWNrX3JlY29yZF9jb3VudCBtbS9wYWdlX293bmVyLmM6MjE0IFtpbmxpbmVdCiAgX19zZXRfcGFn
+ZV9vd25lcisweDJjMy8weDRhMCBtbS9wYWdlX293bmVyLmM6MzMzCiAgc2V0X3BhZ2Vfb3duZXIg
+aW5jbHVkZS9saW51eC9wYWdlX293bmVyLmg6MzIgW2lubGluZV0KICBwb3N0X2FsbG9jX2hvb2sr
+MHgyNDAvMHgyYTAgbW0vcGFnZV9hbGxvYy5jOjE4NTEKICBwcmVwX25ld19wYWdlIG1tL3BhZ2Vf
+YWxsb2MuYzoxODU5IFtpbmxpbmVdCiAgZ2V0X3BhZ2VfZnJvbV9mcmVlbGlzdCsweDIxZTQvMHgy
+MmMwIG1tL3BhZ2VfYWxsb2MuYzozODU4CiAgYWxsb2NfcGFnZXNfbm9sb2NrX25vcHJvZisweDk0
+LzB4MTIwIG1tL3BhZ2VfYWxsb2MuYzo3NTU0CgpEb24ndCBzcGluIGluIGFkZF9zdGFja19yZWNv
+cmRfdG9fbGlzdCgpIHdoZW4gaXQgaXMgY2FsbGVkCmZyb20gKl9ub2xvY2soKSBjb250ZXh0LgoK
+UmVwb3J0ZWQtYnk6IHN5emJvdCs4MjU5ZTFkMGUzYWU4ZWQwYzQ5MEBzeXprYWxsZXIuYXBwc3Bv
+dG1haWwuY29tClJlcG9ydGVkLWJ5OiBzeXpib3QrNjY1NzM5ZjQ1NmIyOGYzMmIyM2RAc3l6a2Fs
+bGVyLmFwcHNwb3RtYWlsLmNvbQpTaWduZWQtb2ZmLWJ5OiBBbGV4ZWkgU3Rhcm92b2l0b3YgPGFz
+dEBrZXJuZWwub3JnPgotLS0KIG1tL3BhZ2Vfb3duZXIuYyB8IDMgKysrCiAxIGZpbGUgY2hhbmdl
+ZCwgMyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvbW0vcGFnZV9vd25lci5jIGIvbW0vcGFn
+ZV9vd25lci5jCmluZGV4IGMzY2EyMTEzMmMyYy4uNTg5ZWMzN2M5NGFhIDEwMDY0NAotLS0gYS9t
+bS9wYWdlX293bmVyLmMKKysrIGIvbW0vcGFnZV9vd25lci5jCkBAIC0xNjgsNiArMTY4LDkgQEAg
+c3RhdGljIHZvaWQgYWRkX3N0YWNrX3JlY29yZF90b19saXN0KHN0cnVjdCBzdGFja19yZWNvcmQg
+KnN0YWNrX3JlY29yZCwKIAl1bnNpZ25lZCBsb25nIGZsYWdzOwogCXN0cnVjdCBzdGFjayAqc3Rh
+Y2s7CiAKKwlpZiAoIWdmcGZsYWdzX2FsbG93X3NwaW5uaW5nKGdmcF9tYXNrKSkKKwkJcmV0dXJu
+OworCiAJc2V0X2N1cnJlbnRfaW5fcGFnZV9vd25lcigpOwogCXN0YWNrID0ga21hbGxvYyhzaXpl
+b2YoKnN0YWNrKSwgZ2ZwX25lc3RlZF9tYXNrKGdmcF9tYXNrKSk7CiAJaWYgKCFzdGFjaykgewot
+LSAKMi40Ny4zCgo=
+--000000000000428a840640c2f8e6--
 
