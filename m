@@ -4,81 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E23CCD183
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 02:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E687CAC5BB
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 03:44:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BAC58E000D; Thu,  9 Oct 2025 22:56:37 -0400 (EDT)
+	id D67798E0009; Thu,  9 Oct 2025 23:44:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844478E0002; Thu,  9 Oct 2025 22:56:37 -0400 (EDT)
+	id D3DC28E0002; Thu,  9 Oct 2025 23:44:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7335F8E000D; Thu,  9 Oct 2025 22:56:37 -0400 (EDT)
+	id C534E8E0009; Thu,  9 Oct 2025 23:44:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E5818E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 22:56:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED9D21A012F
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:56:36 +0000 (UTC)
-X-FDA: 83980691592.05.F3AF7CD
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 85633120005
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:56:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B4E0F8E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 23:44:55 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C5681DB0CE
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 03:44:55 +0000 (UTC)
+X-FDA: 83980813350.10.EF6044B
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 55869C0007
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 03:44:53 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lQwoEZGK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760067893; a=rsa-sha256;
+	cv=none;
+	b=ia8MJ+WiXYcvwpY/0VDgvMftLKGAqyfUxuiiXCU9QhEEwWe0kHDnN0P6npVAi/whOLyJDU
+	61tqyC/KKHXc0Uf0DHODOVt1c46xojYuhfqJNxrKcgCsaM+qBAavUgy8xjFtqKM7f3lOvX
+	RIQRdVk+Wvv+FMYImim5BZYUI1ihmzk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lQwoEZGK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760064995;
+	s=arc-20220608; t=1760067893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+V6njfA+CchsIKhHVoblfZJHstWgq9ADH6BL8PwwxlI=;
-	b=l5WE9bDUfj5rJ8ulHFf+S4nyWVzWlN5bhsqQmoeNu2GqEm1CdE6nm5T920pOLQDGclArti
-	YWVH0wFIRd1YQTFp6nqzUAfkz+UFZ0XwacwpHexsowhDW4Qni6aEaf2LNkE+hGF1yQhRXM
-	k1rBzsNi0LPgJp2MlqFs/gUHDFmGXLI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760064995; a=rsa-sha256;
-	cv=none;
-	b=B/JTCHsL0k67ESVGvY/uWsEZzcDLIoeZBFyA+xi6IRlRfScPqym0/KS5TFoW4ry7U6U624
-	KUW2QJ8hSCFOI1MkOM+wFnJFmuLgYGCjuNxcVvVEclxzY0/svIHEd7s5tJGUpLxfU1L31q
-	yh/wIWkBFB1lnveKATl+BwBSc072Kkg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 10 Oct 2025 11:56:29 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 10 Oct 2025 11:56:29 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, kasong@tencent.com, baohua@kernel.org,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com
-Subject: Re: [PATCH 3/3] mm/swap: remove unneeded swap_active_head
-Message-ID: <aOh13R8OwgnGNryo@yjaykim-PowerEdge-T330>
-References: <20251001043436.41338-1-bhe@redhat.com>
- <20251001043436.41338-4-bhe@redhat.com>
- <20251008202623.1ef2ac29af9b9c3d53aca4b2@linux-foundation.org>
- <aOdoehPH1O2vJnqv@MiWiFi-R3L-srv>
- <CACePvbVV7b+o4x04JS_SiQv1f8=gZv-fr-EhFT=AjkEsfg35qw@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lrCDic28MJQLcI4hxPoUYdgbfh8YLLZbssre5IwVfkk=;
+	b=kCEcPEmYI2553otVRxQi1OibUM/SxJ3ARLtjWPEDLnrhBqTGTFBdN7IMleWkKgsubTuLXJ
+	6VrqUN0CpJwVvLbBW9woUrD5zoio4V6KOgBLIXi661Hxyi74uQlgvAhF5RnjcNH2JkJdH+
+	05GprllUOi2w4Alh45UWxGKmSkqkmAU=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-87a092251eeso27564086d6.0
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 20:44:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760067892; x=1760672692; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lrCDic28MJQLcI4hxPoUYdgbfh8YLLZbssre5IwVfkk=;
+        b=lQwoEZGKN24aCpnA8RN0/wbdsDnCtzlyf9drfuQufh9coYS1zMsj6B92fvClP2g4ct
+         cf0Revty7K05JqzulcD+pWmK6A1EOgnLl1+3yHgrZZ/lFQMugqicTTgMEg6N1v5X6U69
+         gYY4lg7AXrLzc4wk1BIwhuX1cZ+Ice6jY9LTRTucxEPUco8/kLzOIAbp2Ca9RwJhFEcr
+         pYfsxjIZRnCdRXoT1ip/sISyL0OG6WVobsNsKKm3xL8ba7nOW5y4IvNJAEantZrBTb5F
+         m3tBh50kQA4G1MyRcfEaJvJVq1Yq0tSHEoQfgcArogaxtVEtmfGGf0nQ3T+mEAlVrOeZ
+         t6vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760067892; x=1760672692;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lrCDic28MJQLcI4hxPoUYdgbfh8YLLZbssre5IwVfkk=;
+        b=Q4wpKOlQZx9FaPBn8TH3oofFQD9cIqzU+xzwRwFqKbyaGjE/VwjAymJ4aPH7iZMu/Z
+         IT9JZZzZZ2k1KeQd8tW1JcIG5RaCRZM4JOXXZuen/jRdiNjjNBnO9is9PkmlTzdk4FHn
+         Sdqw6xDy7H2bmnZ12Ypncj9StPWJjh8L+LYTTDe5aucJSxJLaHp+1jKlnnaMmq4Y0I8i
+         /AAtZaKelUFiBLBt93hhTeFhO/lLeBYZxu7R6AC8XFVlq2w7/Cj53P+/EmEaZ92z0NTz
+         ZfA1eFKWS3qq8bEL3MwWvoQY5qqvAU080KKrljrhUT70Ut6541/yiYt3qyvAmBMhc3Hc
+         r05Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVFlCH7XecpKlnoXAjuE1T5Qkx7tjblj9WC1rsCKcZtZR3YNgkSDIYch9m0WlFckCuDDANhDV3FeQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCVE/yh2Lw2gfNK+T0EtMnXJ1k53yGYDVFmh8SgRZcScRm64v+
+	o84HYVw0Z8ytNBJlKNsncojKGbq5ExQOVivPiUSDqyYbPATchUcK2pFx2Q6vPnE0WDF0Y9ro87L
+	cJOAP8BPqd971eu5SvYeJWZ5AkgBaKUY=
+X-Gm-Gg: ASbGncuQoHE2Mgtcr+Xa8x6FP43auAqvrlBc0ce2rumtcj5pDFSUl8X6aXCYh+7nGcq
+	uQhis8Qlz8ysvne/UB9YoA2w7D3h/3v1dIgsofYJJePDdQGTfLBwPGZxCyFHKxc6X/i1nwY+UHQ
+	hC0/F6i8aJnWBOysyapt1/ayDpLqfWaeZ2/aM1oe5wZj3yxVQOQlXvgF/QRua54zbniKSgdY0kX
+	2Dl9Vvq2e+WKRQKdbqH6QEti9Nr8I6SdgFtlkfaLsEyINIvccB0WMmsFq1u
+X-Google-Smtp-Source: AGHT+IFt9dPrNwZtvTc/2n0761h7JBS7U/UywR1UhWegFqqLZQNzDDQzTRrENgTAYeGsX+9n/owRJEuybLV7L5kg/Ak=
+X-Received: by 2002:a0c:fbcf:0:b0:87a:6b6:d107 with SMTP id
+ 6a1803df08f44-87a06b6d175mr116737256d6.17.1760067892162; Thu, 09 Oct 2025
+ 20:44:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbVV7b+o4x04JS_SiQv1f8=gZv-fr-EhFT=AjkEsfg35qw@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 68q1mt18s3ayx5iu6p4rmc4j89aguax5
+References: <20251008032657.72406-1-lance.yang@linux.dev>
+In-Reply-To: <20251008032657.72406-1-lance.yang@linux.dev>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 10 Oct 2025 11:44:40 +0800
+X-Gm-Features: AS18NWBU91fuBdxwWqHXshtBB35dHf5N-qCYNjdXGhtMxOLtFEEsBf9YCOoHrLY
+Message-ID: <CAGsJ_4zp1HSQbSjrt8ftmzdGXxU-ENJX1VfC6Ah+QvhXgzQfVg@mail.gmail.com>
+Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, baolin.wang@linux.alibaba.com, dev.jain@arm.com, 
+	hughd@google.com, ioworker0@gmail.com, kirill@shutemov.name, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mpenttil@redhat.com, 
+	npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com, 
+	richard.weiyang@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: sfcsany6p9pmbf11u5rds4p9z1sfmi8h
+X-Rspamd-Queue-Id: 55869C0007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85633120005
-X-HE-Tag: 1760064993-88992
-X-HE-Meta: U2FsdGVkX18Om9gaXnJpw4QqE/SZ0tbjLK1IV3wxBykFVy2SVB2HhrGWsepGYp7UbUe6uOk8oR1/6YUCAa/qY9fa85GquUL1ch/5mFUk1as0PrO6tgbg0Bw6aUhogXf1ZYdeDnXvFDAzqFFXyR9XdTnzp6JuosdNhihZxZF5CWET/fZ/N+V2wm0mk4SBuv5/ztOy3yWFmUY8eDQQvPaHIrbdNMrJ7j5gLORR/3H1X5N2HHpeZOTvThsFUUU1I8yxJZNDTwQ3WhpF0MY8jUEAPS0ktlHYIu2XZg+VaUlTP8p6D62Mqs9sQHEl4dH0qcF7wmdSOPdZ87n9xqy/gUoFkCP8Mv86MvAxl2o0xd+ChHoxOZIZydLVX+DK1qT4W3Azmut20NQT+oKmwPVgYm8ehMX+VSY8rzM8gBLC39ptFVfumeULuRyq/X5gN5BZio2DeDxCCKheu2NgqpipSA4mD27myP107X853ovzSSuPOqOFWcu6EcRsiStS0oY3pJvcob99KgZL0sRylrkMuBItYRqcTkdnpZIqBlyrSqXMPPIgVQ95thIJmXGwnH3GdI0hrt0BD/L7hZNFi/CAgJ8ikjkGiEe90wgJfy5STOF2dD4eZ6l161CwmyVKx/gqCCKJuoVo/9HUbOss1o2ea2/Ihaygax8sYOyDWUrHCtU1KkTAWuafzYaefYzZVnSkA29QFPgfH6MnJgVUl98UVJmShFqVes/ZUrOBiVaP56C+WhR2bZQPsrpjOMDjLmDM/7V0lt0HSPP1WArV90mrbdpkRfno2KLBUZhlL33TOgcp9YQalF0ROfog4v1TAzDZRTCHR8/3S/w5Y96yFM3TJwnI3l0ge/hso1c2BtA6Up6zAqudwd8KL5mKHV36CMaGcH5SavOFg0OEiMFnwQ2AcT7xFYvc8tA9rq6wJhqZhuolvypEV/EnLa6Ug89QlIr4NTC2OX5uM/NUozbgysvyaw7
- ravcyri/
- HSs+3a9PcIoL0fCrLTcDjbPn8iKZ+/6Yw0HAAufoMTu04p04dL5WxV4sTbKkdvr3BTcljypijUGgLqI1h4VeB1DSeZh+OiforfAQvsgxTphbai4raVkZnSAL+Er2g4sE8jeUp+iIeo30nqejD3usECBvDrDHDk+Wut5NBphppqqgQBO5cxX1mOCZL29Rcy5EHOewOl7PkPbjVNxvD4J2FNlh1AoGquook4b5O1Mtkcl8p+bZyn3ONsCQwFU1BFUap+vK5JjLa9VH+KMDsSst8psgr40SYt4bI4gIG/tsBwv8FUCLmSlMonHB5EQ==
+X-HE-Tag: 1760067893-509957
+X-HE-Meta: U2FsdGVkX19BKNyzAdP6jUynKhO7Rt6XgIxHTCqo29RWSknaMfsjWIku63+PhussKPIErayjhZuWd8vMS3DBRzlAEAQse3BO5SiFD5u49M7adFkOwPCTLJWC5aPZS64Qrte6aekYSLxRI3bQMmxwP3WXxdA13gzUSyqvGQn9BzMNiN3R/CCOZN06c5dkh2v10tvSV8NcsKtrdljgqLygVsRrsY8gIYS48UgcJZyMdHUZe2V79VrQUXpMooZ2HA6mf5OJNxgTUIdHQkgyx1KQejMoClSOg8U6AtYd4qlp5+SH53fCKyq4ItTGQRCKiixX2t+YeWoGkVf8tKDDbxypju0wAJPiUrf/jkl1lQjtw9HwOuTwBPZi/AowXiQixDsRUBY1sj2xKdHHJ6rcKOxIHSCN0OD4+cYjRI+y6nnFToO8I+RVDOhxCEnLRXErXMg1mDYAu4Q/gfdheBYWILPEGJVzG5oVG6G8IYCZZkirAPQLk285Nwm1bprDqrL+MEIVlwSZAT6iKaDhXvj6Pxu4FFz6iNNTv4m93h5JA1tzE6ELUSVPYJFx/v4t7rNWqZMZ2iklf5RI1LW2Gf9Vp9JzUbT504cnHrgwlq4YKz9XHY4JkXO+7OmErp99ehzxPZUZxmoZNj+k8rWAptsx10nlucjU231tX9Gt3O6tH5CnlX1RAo5nMW5O4uM89valHkGZ2GqTjc9O8lSgOxsGeAOWhQLbwroS1H3hLwzAYz/70HphXuo4amezsN17ahBmwJT3Y3nVtPHcerv95DEWhumNQf8C18lxCQD0gHMK9Xd5KPabC5kfKv/KV40A2oeFZrJgZW78bDo9jiy3/Xz8NAaYfGJ37VGLfo9rE7lHrqNywf7XaPAvUW5/w1y0OYqRnl3GNBYlSfW4cpLUOBooYki739n/iDVeVZ2A7oCo4LDZsI+EGLWhZ9k8Ybz/jZVe+z3EMVuzzqh7ucJqE0VIl12
+ R7QZKeyj
+ bqWKDtgYBLqJnm44H8SgHE0Tb25MVIlKy256T65N1C6SkZ3lvnUyPb2JVUnBBXf72QkrDkUIi0a7tkgBf6+1i+iha0awNZXux0dO3fN3Nn7lJh+MlmgaaG1/+2lEJxYlz2tTf/+ebNZEHBuWvTUfJsnjjI4jg511mOXiTFfa2G7MQB6WOEj8J6hMhXxYGasLZEKvHScul28JqP1Z8/TOeVw6YuSX+4B3Q4LJCdCiRU6PZxluFAzyxjzf2IhB71a0W0wGK2QxIy157aik5gwkUF1o+sUNy7Dlc2yxSwGzH/i4iJ6Vu8FBlSZghqWNLEODmW8oeN1mtRtZMhOZIaCQHFOB/7xYcU+bVVjF8L5YZkgqplfeIhhqgSD4vsYPeFieuuWjuQyFkEyTXc7jr+Kmxsha3VIl+g2lS09pysb9Vuc0UP0PgI0Csd/FemmmZQS3UppFrOuyVmfuV9iPH/BjOZHsvs9einRS5eE0kW1t3gk/fwx7q3LhRJdBugdPN/4im7Znw0BDgM1TUkQp6TEIhV/sPqrBKEj21/lxt37NosZ1q7ZEvC18F/UwcvixI0LimYexR85IwCvm4BWo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,50 +121,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 10:09:56AM -0700, Chris Li wrote:
-> Hi Baoquan,
-> 
-> On Thu, Oct 9, 2025 at 12:47 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > By the way, Chris worried the plist swap_active_head could be reused by
-> > the ongoing swap-tier work and suggested to hold off this patchset till
-> > swap-tier work is clear. Now seems it won't impact swap-tier, I will
-> > send a v2 against mm-new.
-> 
-> Sorry I haven't made it clear earlier. I withdraw the NACK because
-> that is my misunderstanding of the code behavior. It does not mean I
-> clear the swap tiers will not use swap_active_head yet, I actually
-> haven't done that investigation.
-> 
-> I still suggest deferring this series which deletes the
-> "swap_active_head". Wait until YoungPark's swap tiers to be sent out
+On Thu, Oct 9, 2025 at 3:56=E2=80=AFAM Lance Yang <lance.yang@linux.dev> wr=
+ote:
+>
+> From: Lance Yang <lance.yang@linux.dev>
+>
+> Currently, special non-swap entries (like PTE markers) are not caught
+> early in hpage_collapse_scan_pmd(), leading to failures deep in the
+> swap-in logic.
+>
+> A function that is called __collapse_huge_page_swapin() and documented
+> to "Bring missing pages in from swap" will handle other types as well.
+>
+> As analyzed by David[1], we could have ended up with the following
+> entry types right before do_swap_page():
+>
+>   (1) Migration entries. We would have waited.
+>       -> Maybe worth it to wait, maybe not. We suspect we don't stumble
+>          into that frequently such that we don't care. We could always
+>          unlock this separately later.
+>
 
-Thanks Chris. 
-"swap_active_head" is used on my current working patch.
+On phones, we=E2=80=99ve actually observed user-visible stutters when the
+migration process gets preempted and a foreground app is waiting for
+do_swap_page() to complete. Anyway, that=E2=80=99s a separate issue we migh=
+t
+address later.
 
-> on the list. Let's wait for about 1 month or so, we should have a much
+>   (2) Device-exclusive entries. We would have converted to non-exclusive.
+>       -> See make_device_exclusive(), we cannot tolerate PMD entries and
+>          have to split them through FOLL_SPLIT_PMD. As popped up during
+>          a recent discussion, collapsing here is actually
+>          counter-productive, because the next conversion will PTE-map
+>          it again.
+>       -> Ok to not collapse.
+>
+>   (3) Device-private entries. We would have migrated to RAM.
+>       -> Device-private still does not support THPs, so collapsing right
+>          now just means that the next device access would split the
+>          folio again.
+>       -> Ok to not collapse.
+>
+>   (4) HWPoison entries
+>       -> Cannot collapse
+>
+>   (5) Markers
+>       -> Cannot collapse
+>
+> First, this patch adds an early check for these non-swap entries. If
+> any one is found, the scan is aborted immediately with the
+> SCAN_PTE_NON_PRESENT result, as Lorenzo suggested[2], avoiding wasted
+> work. While at it, convert pte_swp_uffd_wp_any() to pte_swp_uffd_wp()
+> since we are in the swap pte branch.
+>
+> Second, as Wei pointed out[3], we may have a chance to get a non-swap
+> entry, since we will drop and re-acquire the mmap lock before
+> __collapse_huge_page_swapin(). To handle this, we also add a
+> non_swap_entry() check there.
+>
+> Note that we can unlock later what we really need, and not account it
+> towards max_swap_ptes.
+>
+> [1] https://lore.kernel.org/linux-mm/09eaca7b-9988-41c7-8d6e-4802055b3f1e=
+@redhat.com
+> [2] https://lore.kernel.org/linux-mm/7df49fe7-c6b7-426a-8680-dcd55219c8bd=
+@lucifer.local
+> [3] https://lore.kernel.org/linux-mm/20251005010511.ysek2nqojebqngf3@mast=
+er
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-Yes, I am on the construct writing swap tier RFC.
-it takes a few weeks to share on LKML.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-> better understanding if the swap tiers series needs to use the
-> "swap_active_head". We are not in a hurry to remove it, right? The
-> earliest this can go into the official tree is 6.19 anyway. We still
-> have some time.
-> YoungPark, do you know if you want to use "swap_active_head" in your
-
-On current version of my patch, I use "swap_active_head" 
-on swap_tier assignment logic when traversing current swapfile.
-It is efficient to use "swap_active_head" on traversing the swapfile 
-in priority order.
-
-I think about more on this part.
-
-> pending patch series? Even better send your pending RFC patches to the
-> list and Baoquan can collaborate on it.
-
-As mentioned above, share it a few weeks later.
-
-Thanks,
-Youngjun Park
+Thanks
+Barry
 
