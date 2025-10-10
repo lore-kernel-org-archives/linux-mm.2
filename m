@@ -4,133 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55B46CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 08:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EDA2CAC5BB
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 09:02:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08B0F8E0002; Fri, 10 Oct 2025 04:52:11 -0400 (EDT)
+	id 77AA28E001B; Fri, 10 Oct 2025 05:02:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2D1C8E001B; Fri, 10 Oct 2025 04:52:10 -0400 (EDT)
+	id 752528E0018; Fri, 10 Oct 2025 05:02:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EBA58E0018; Fri, 10 Oct 2025 04:52:10 -0400 (EDT)
+	id 6682D8E001B; Fri, 10 Oct 2025 05:02:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 54DD78E0018
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 04:52:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21FA21DD9EC
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:52:10 +0000 (UTC)
-X-FDA: 83981587620.08.F52D7CD
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B93F5100007
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:52:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=tQ2eik3t;
-	spf=pass (imf14.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 535DE8E0018
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 05:02:49 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4BDB1399CC
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 09:02:48 +0000 (UTC)
+X-FDA: 83981614416.04.9CA3C84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 64408180018
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 09:02:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FKHVvXpP;
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760086327;
+	s=arc-20220608; t=1760086965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y8z4PXcHP8B5u9iITK0Sb1JPJ9Ukzhrfsj7UNFUahYQ=;
-	b=oPDMPli2JSfQIr7sim18bRg1qES7AUD2HWBhQs5991YsClKM7nLbv7q3yiQHxY2W/fnRXE
-	0+wRYjheKzklVfGclevyRPmoytaOG/lFAu80xAHa+n2aY5qc6caV616YimAeVA8NpkviG/
-	o0laOViYgMVhz5pTSGxqfLulgm4UJk8=
+	bh=HW5td0SWXdCvZ05NdV55x6S0j9wHlZDx+Tv+YWgnDiE=;
+	b=FXGd/ZvOUQeG8WiI773K9recbjUcjKJGwb1nLtG1nmMK3Pcy7sOw0AV0hoLP1XQKipf3Iu
+	cOHLhZq8uAwX7brcusQf8mOokzNXi541XRZm0dTtnal4mPEEf0yP/V79onVwqKJAR17Zjy
+	x9y4ZNc/lvRpbdWpR5gAm6mf1owE4v0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=tQ2eik3t;
-	spf=pass (imf14.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760086327; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FKHVvXpP;
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760086965; a=rsa-sha256;
 	cv=none;
-	b=uOecDcpd3Q6jDTx/miN9ZB4OsRdKzu5psDgZ5N+vettqOz38HVlRg1Sb8/FVmX6AOew9N1
-	D+aL0L5VDYQ2Tl18neTdRh6grW1XzBo+p+SWtlaEfvWMXWc0VdJLW19PwXSPMqQTc+OUuo
-	7y1Cft+RxB17MLW0uABtx3Wupbo02Z4=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 599NTexq012322;
-	Fri, 10 Oct 2025 08:52:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Y8z4PXcHP8B5u9iIT
-	K0Sb1JPJ9Ukzhrfsj7UNFUahYQ=; b=tQ2eik3tpKCncq3NkFmCKvNhGP5oVo4FZ
-	mKyTRT0js2VHBmbqzOi90SAqmk9PoCpAHbbuYN6rG0hTyfPKJSw/oXfnVe4wUF+S
-	QvqHZYWJ9UP2AAU0U63yN2DksV6KxyKQPZ9S8cmoUUQln97Hf075IEdKFrgsOZXT
-	UH1+4ezLBwS3hYLNoLx1WXLXNXzeyDXhP3nM6qw2JbTbE7K6piEAaTDUtPwnmBzc
-	DROgs6RK38SGdSmq/bIj7VVhz9h8F3uXE4oD7t/x37AoL3Ttkx9KLZVSvm7XXGHs
-	vJKFRqONYE6uHlnCggMGKKVXwppVL0vS2TMN+vEfQxEwQ608oqEVA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49nv7yhq4b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Oct 2025 08:52:06 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59A83uKZ021009;
-	Fri, 10 Oct 2025 08:52:05 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49nv8ss0f7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Oct 2025 08:52:05 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59A8q1AS56361224
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Oct 2025 08:52:01 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 905352008C;
-	Fri, 10 Oct 2025 08:52:01 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 513E920091;
-	Fri, 10 Oct 2025 08:52:01 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Oct 2025 08:52:01 +0000 (GMT)
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>, linux-mm <linux-mm@kvack.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: [PATCH v3 2/4] s390/sclp: Add support for dynamic (de)configuration of memory
-Date: Fri, 10 Oct 2025 10:51:45 +0200
-Message-ID: <20251010085147.2175918-3-sumanthk@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251010085147.2175918-1-sumanthk@linux.ibm.com>
-References: <20251010085147.2175918-1-sumanthk@linux.ibm.com>
+	b=M29SILigsw56iP+VKoRgTeItXr0eB2eNWEvNif5twyJt5xzt73kJE+dfYtlhiru+AW2/WQ
+	CUcwOnKj7GaeZJyKFyogJi3RzCMYqoBtjbBe3840qlvCntvJuHwFukPAit2LVPND+eKGXb
+	UHH7QbhN/Tjp8lwBboHlRFFTVkoVck8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760086964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HW5td0SWXdCvZ05NdV55x6S0j9wHlZDx+Tv+YWgnDiE=;
+	b=FKHVvXpPkUklVX0DZ5zs/NW5uYSsehElA3c9OSnOWg+5P9ArrfEF2A0lchuBKs3XWJbCpP
+	xLs5vlFhRASMU6MhjHOGHADdV4q83IfNgNIsm40rxS1lDI2a3aEa/1CC9lMOAZlhDz7dKA
+	ft0A55IV2jNxFrPMUXfgEP+Sdw5q1YA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-108-lCv27Z5lMWOsbgxYT0TGhw-1; Fri, 10 Oct 2025 05:02:43 -0400
+X-MC-Unique: lCv27Z5lMWOsbgxYT0TGhw-1
+X-Mimecast-MFC-AGG-ID: lCv27Z5lMWOsbgxYT0TGhw_1760086962
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46fa88b5760so6016685e9.3
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 02:02:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760086962; x=1760691762;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HW5td0SWXdCvZ05NdV55x6S0j9wHlZDx+Tv+YWgnDiE=;
+        b=Yw5c1FDF+eIHiMLcVTivtesjzGK5w1yQODwNNfC+SeTCPsp+S6f+luNKXfiKOObg4O
+         B9fsBmhPrgYlsX79IefiiyiNTYqsVUN4hhBdQ7tobJmA6vSq1pcewrIsXO3sM3UVi24p
+         iU7i+t/rWt542AVC2nfQqxDwWWLsOUkKZEgOg3t4dRqFelhClJBorY/UXmbkyr+C7pxY
+         B/7KwqRI2x3mpDhZms3Ql2uQFPTo5VhJkpEzZTsGLT5Y/B/pwfEfGTP6whMv1Df+ZWV0
+         Q8boy3EmnznhV9jX0O44C3cjnY+PPSF6Y1QSKX9+XucjNiHKnhXNMf+lsBON8yqWMve4
+         botg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7sezwYFUoP/fgA0SWREfvJpxse9e5F846/5pcyqh+iEXG+8UjKg7PKyyRzIi9/63zpiVfeoQm5A==@kvack.org
+X-Gm-Message-State: AOJu0Yw35dAycrzVxy06MEQsTeXSLM4TG0eQYFCo1e8GNpwr9QmVO/se
+	r9+zy2IWgOczh7m2H698Ppn4hk55k6pzjkEsCt12AYK8gTKvbZ7r+dNlrddZ5B7QoJx+gJj2tah
+	dhogzQ9S3l4nYbPAMpTxACLgBd5NRouiHrGVHFwz6Xio9jTlpn7z1
+X-Gm-Gg: ASbGncv09MbPHtANc5wIsmkYuo7ay+eWdG2aaUioayS+vCQvRQaNy7wVBbdLqBE+OZ4
+	fAFRjVRCj5N98e4syzmPsZs0YnjrPeQkvn5ghU2vJmcR2ZvJTXho0wW4YG/vgZccbM8WtuhdDP6
+	BogcD/BBnEPG7DMpIRzvmjjjW4vfYrlCSIQTcPfvl7jJAEZdN2pjgDDippFsz+rXCulf57sec0L
+	7SADEGmD+Gj77YoCtwHbx3CFVjgM9SaJSuoPE95Mp0hPMdDhQb59PnaOnieL6qlcH//FKLiy+rk
+	Ax5X4yfLbm8z0G5JiFmALv47yury7i+TIJ8tcz9t+ozh3404jsJK4QLHd7tAGSbyf6GsYFE8+y5
+	3vHQ=
+X-Received: by 2002:a05:600c:621b:b0:45d:d609:1199 with SMTP id 5b1f17b1804b1-46fa9b08c13mr80512835e9.30.1760086961949;
+        Fri, 10 Oct 2025 02:02:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcNFVwacUWgdTF5cZzdAVjtZQjHGkGYmsKNypeybnL+F7IrjK7WBQw0hVHz78I8+aMAo3glA==
+X-Received: by 2002:a05:600c:621b:b0:45d:d609:1199 with SMTP id 5b1f17b1804b1-46fa9b08c13mr80512595e9.30.1760086961539;
+        Fri, 10 Oct 2025 02:02:41 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb48a6069sm36473545e9.20.2025.10.10.02.02.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 02:02:38 -0700 (PDT)
+Message-ID: <1be7d08f-7de4-4f7d-8897-ef90d2188d5a@redhat.com>
+Date: Fri, 10 Oct 2025 11:02:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Asv3mS31ELzuEAuOig8qjHDXmdPo9I3q
-X-Proofpoint-ORIG-GUID: Asv3mS31ELzuEAuOig8qjHDXmdPo9I3q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDEyMSBTYWx0ZWRfX73JB1GOEYknL
- +MD1P5mkimGR/2ye8jQo2PQmAf5Yrc5Hk8QR2ATujKISPxXphkPr1G/+PPfApx+dFogpEGt5yhA
- DWQTJrSnRx/1BVIoLt+0T2bA4TkjE2g8jEWpkQvwZm6n8De+/fXsu4TLWNSdmNkkIu04SfepYg+
- Ydcv8Krjek3ZwArbGal567ZZm2wqpFtT8KTkdInG0QM69EiLSe+57r1Ppf4HdzTn77YTrjU9TQl
- W0eqQxhQ36WHLKAmwUh09xuh6EvaHPMXgAq5SVOZQo8zgv1Vbl6R2BK8s6oD8I9ZhtRRCmBwB3/
- o2OGaCgY1FMenyJMyaJ8eGAZvKsSPBu8uRm3Vt9jTQgDuswHligyUqee/T/PDlrPzvgCHoV4qbE
- qolTKO7TLEekYAoRVZWJSuvOtiroqQ==
-X-Authority-Analysis: v=2.4 cv=FtwIPmrq c=1 sm=1 tr=0 ts=68e8c936 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=GHt7ZKPcJgLmr8k-lvIA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-10_01,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 clxscore=1015 phishscore=0 spamscore=0
- bulkscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510080121
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B93F5100007
-X-Stat-Signature: hqhnh3pfxnfjzyiai5cm1pek674swmwu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] Support dynamic (de)configuration of memory
+To: Heiko Carstens <hca@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>, linux-mm <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-s390
+ <linux-s390@vger.kernel.org>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20251009131839.3739108-1-sumanthk@linux.ibm.com>
+ <20251010082422.9132Ab1-hca@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251010082422.9132Ab1-hca@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: IG5ow0g1S03E9nvtNhV3_Kn1YeQF7FAlgu3jj4LaZ-0_1760086962
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8tyan3bcij3456yxbmca66jps51ipobp
 X-Rspam-User: 
-X-HE-Tag: 1760086327-29207
-X-HE-Meta: U2FsdGVkX195B2PEe9NHsdEZL1KMConArsA4nONRnrfHRTBdpbbeUBEsGw3TLF5kOE+6BBMd/wQG6IDRybB0I8ONXlkBaaoIrS5qfqm6wFIYZVDoT8CBevkbWKTCInr5gGjCf+zDDdM3fsIJuJ4NZ3rY7XMxy7HjrEHwmnVfuUVh9h6J/FYJZ+nu51Tyl2i/UUnIfRavauJQdsechUvhbQaXDezDtkGhZ0hhzB8D0P0IuQb7yTA8DwULyE6E79x7pib0wTH8HZ+gjEsOCPoUYTBaoPw/hUfNT6HQXb7dNbbXgDchNTOpFqQCyght4f8D1DS2SjcF0YDjRYcaR3hU2chvKCsK92uZWU7dA/tTJF0A8r4o/tIIQSgmDYKl5ArLsspLZdKnvgNC6NfbJBiJaOuAlxT5Gl+pobg4RjCXbGuVY1wIISq7DXbLB4JhJMMK2dobQ5vcf0kXICcosFrjHGqoQU7+FgHCYEGZz5n0sDbnCwQF243FIa4LVrK8ACyIM5ZqyABfa2QhfzvtcURs7KLwVDes0PHBJw6Iuag1IhtQSKuOHEK2Isg8ggrcQ9d/yQvxlNON5dGfcfkpg9kzsmrlMNrqpm+GjO2I9b/yDdh1XGyu73Ixoh8qauQVSkVX0d/UZVNaWbzU14TMIn6fKtE9HT2cwxL9zfXWnuXjUxeCQleQl/aVoXgzdXaDavK4UieXP+954W01enu0IzbQiAUaaiiGpmq/cCKnUQw2YvUwHJVQ1wp+hHaO10s80E+MfZW5rqT4XTbfldoaJL9pNK1vKlojdg/N/mZWzr0T+v15BZfolFztnL7HK8q3/09qoMIAXbiaCyo705MerMTXH1GzM6kw+/ul7bjzhHK1Mxzw9ICueElilKUkSY7vrEH0BFUp8WFwhZZRqFnt4AZJWQrUsmJzk1kciuivORp9N0f2iZleTcJguU9dyDLzx2dSIXi6YiWsz42bHD/uBd+
- FDQbh6+5
- FJ5Bk0O7nqm4/eYb99Do8e7XH6ZZyXj+7YqDKtBO8CAnwjlD+wlBYh7UBttQhhNRm9nlbq8lB6XeQaKApfRvMeeC+H4t+iFKSSxA72UXEOp122emijRDOA/UXEpjfce1zZO4/mUVP/ZECv/hg3fw8ssGdUht6aFCIGqgIhnykQ7NIIQDBB207TVs9PQH+yA4+zdoPhtntI4auK9HUMTtmIigZwfhImPmVk+kvL/jWE5oaOyRiMMqbDKay1HnxfN8tTG586CXT3g/toU/EbPCODpiYvLyrp1nZMs/4+cEFvo9/LfYkYIdlpMf5XqMhMUSfE5jwoj6MUDSiojWn2pBPSvt8AQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64408180018
+X-HE-Tag: 1760086965-130403
+X-HE-Meta: U2FsdGVkX1/s8mWghVCkau6CkgHGNSwO2hpY1KlJlQAi9QIfdymMgjuR110NvL0nTnQVNtkkAJg3rfFZ1vH0dInSksl5O6XwLxDO+D9RqD9wtT6R/MJakSBxtlI4Yn0ckn+ksQvVGB4zK1vUNyK3H7Auv9gZLlpnxxMj7PLXs9KLVuNlxiklvBU1K5cfokXPFMWW9M8GB4vvilInzppWQkSaWercR/XXlYi7dQWoYcwbm5YEcduI9EFo10E33gmWtfxADicq1KTWn/lZcX1u4XruUae9dq3MJ3tTgnYJGTXw48X7jLolhErLrVBRXwnSAGW0JkRE+IY4cla/nR+CSIRcBo4Xl0atPxqkf9DOJyNz6iiHo7aSFX3gfH/gq0OapIWk2j/assffEegev6XKzk6YqoCupu1br4Zg9I7vCToneYxviB/iFS3s9H0Ox/Aq1JlBQDTFqEKp7QYuA/yS1aj5V8XCKFh8lGN58I18XJIx1OeJghScRw+FLNT1mtkSvae4U0Lduz8JOjoVlD2ExwrzNo4GRDQzwe4uAeKNHc0hi7QOkqT9zkZzvsHfq5ihsNiDiVhOIfUuR+42VN3TfQ1RbeA022ZF6+yhzqX1CazgHxpUZEvFjQdlp5VrOtY6xoNQpNgv0r43K+O5JcrZbWXOwhta8OmO8jA+D/aXRaQ//TWf1Q3JZLW6P8lqg1inG0vEylajsF5hffGoSuS3VIvqyPQD7fj5FOcCbfJ6MCVjljauBQtabKTeIAgtdwFmeaMxz4e9iwsoCb0jM0tT+bEzFVnhJOk0hmJz5jx1/7rddy6QAIzmIecDj5/kcmKuIfmUQ2DyE5ElHft7Kgx18FCD/IjJiLKrHHTyY9aKK0B75igNckhEbAlGCn8XZBnPhdBm7+tx8JDwsLC8af3Moibfl8wj2VwWEDlCNVKdnLbE9vgk5exlGzdFq+niWOM5tdC1lmu5njcxjYR0aSE
+ n9yrep+K
+ F2G+/XgVscc0/Z4l72+i75xZUM3Qm9XoilQjdmgXWx8Q+xlJ08fys9NnuDsvU1D4w8nPBR2ghDRPlPNS2tLr20LBF4GoXZYnFjlVHhDPgeF1LOzkMDGbueNXv2hdbQl/5d+4nbiLWMolBxmqPObHH8eSNv05mOMv4HdxqRXX+6HJxeZqYu91W6KNbJXQXNJLsbJ9GAmPBTX3rNFyinxShz3H+OL5dJwZDDPlO+iGLxN5r/Op2afDrlatknGQ4ZNpMdP+Bh42iur1fpmY747dCvWAdg7eKyvBeXCLz7OEmDX7MBpPZGjBnl/IFrQP8kGrbvEaRwSgjsxf9UWBHYDe8gQV5NEx86gOsARHl2Tsih1qqkNyRjx7e4rVZ0Ax4mj/gC4gKQpyZEyR9hiTQiHR7lfy/n7116jP/USjIgThwbfNtHiRss3yPgnwLcNa8MnJS1i+WBanZoz/1PPu86fcJcZ3ikKguV6Iocz1TnKAV3nKLrt+JUXMtSBTZvkmxdyU9z+9r52WUr9J9DanSLFSa4iwRiflDLfVNP/A6PCNg3oTC122xqW7PVXzz6W3A5c/FsW33eWSgkWQbn1fxy8QwggW+bTin20ka2xUg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,499 +181,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide a new interface for dynamic configuration and deconfiguration of
-hotplug memory, allowing with/without memmap_on_memory support. It is a
-follow up on the discussion with David when introducing memmap_on_memory
-support for s390 and support dynamic (de)configuration of memory:
-https://lore.kernel.org/all/ee492da8-74b4-4a97-8b24-73e07257f01d@redhat.com/
-https://lore.kernel.org/all/20241202082732.3959803-1-sumanthk@linux.ibm.com/
+On 10.10.25 10:24, Heiko Carstens wrote:
+> On Thu, Oct 09, 2025 at 03:18:35PM +0200, Sumanth Korikkar wrote:
+>> Hi,
+>>
+>> Patchset provides a new interface for dynamic configuration and
+>> deconfiguration of hotplug memory on s390, allowing with/without
+>> memmap_on_memory support. It is a follow up on the discussion with David
+>> when introducing memmap_on_memory support for s390 and support dynamic
+>> (de)configuration of memory:
+>> https://lore.kernel.org/all/ee492da8-74b4-4a97-8b24-73e07257f01d@redhat.com/
+>> https://lore.kernel.org/all/20241202082732.3959803-1-sumanthk@linux.ibm.com/
+> 
+> Andrew, David, we would like to carry this series via the s390 tree,
+> including the fourth patch, which is common code only.
+> 
+> Is this ok for both of you?
 
-The original motivation for introducing memmap_on_memory on s390 was to
-avoid using online memory to store struct pages metadata, particularly
-for standby memory blocks. This became critical in cases where there was
-an imbalance between standby and online memory, potentially leading to
-boot failures due to insufficient memory for metadata allocation.
+Fine with me, I don't expect a lot of memory hotplug changes that could 
+interact.
 
-To address this, memmap_on_memory was utilized on s390. However, in its
-current form, it adds struct pages metadata at the start of each memory
-block at the time of addition and this configuration is static. It
-cannot be changed at runtime. (When the user needs continuous physical
-memory).
+As an alternative, we could route #4 separately later through mm.
 
-Inorder to provide more flexibility to the user and overcome the above
-limitation, add option to dynamically configure and deconfigure
-hotpluggable memory block with/without memmap_on_memory.
+But this one feels like it can just all go through the mm tree if Andrew 
+is fine with it.
 
-With the new interface, s390 will not add all possible hotplug memory in
-advance, like before, to make it visible in sysfs for online/offline
-actions. Instead, before memory block can be set online, it has to be
-configured via a new interface in /sys/firmware/memory/memoryX/config,
-which makes s390 similar to others.  i.e. Adding of hotpluggable memory is
-controlled by the user instead of adding it at boottime.
-
-The s390 kernel sysfs interface to configure and deconfigure memory is
-as follows (considering the upcoming lsmem changes):
-
-* Initial memory layout:
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                 SIZE   STATE BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x7fffffff   2G  online 0-15  yes        no
-0x80000000-0xffffffff   2G offline 16-31 no         yes
-
-* Configure memory
-sys="/sys"
-echo 1 > $sys/firmware/memory/memory16/config
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                  SIZE  STATE   BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x7fffffff    2G  online  0-15  yes        no
-0x80000000-0x87ffffff  128M offline    16  yes        yes
-0x88000000-0xffffffff  1.9G offline 17-31  no         yes
-
-* Deconfigure memory
-echo 0 > $sys/firmware/memory/memory16/config
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                 SIZE   STATE BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x7fffffff   2G  online 0-15  yes        no
-0x80000000-0xffffffff   2G offline 16-31 no         yes
-
-3. Enable memmap_on_memory and online it.
-echo 0 > $sys/devices/system/memory/memory5/online
-echo 0 > $sys/firmware/memory/memory5/config
-
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                  SIZE  STATE  BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x27ffffff  640M  online 0-4   yes        no
-0x28000000-0x2fffffff  128M offline 5     no         no
-0x30000000-0x7fffffff  1.3G  online 6-15  yes        no
-0x80000000-0xffffffff    2G offline 16-31 no         yes
-
-echo 1 > $sys/firmware/memory/memory5/memmap_on_memory
-echo 1 > $sys/firmware/memory/memory5/config
-echo 1 > $sys/devices/system/memory/memory5/online
-
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                  SIZE  STATE   BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x27ffffff  640M  online  0-4   yes        no
-0x28000000-0x2fffffff  128M  online  5     yes        yes
-0x30000000-0x7fffffff  1.3G  online  6-15  yes        no
-0x80000000-0xffffffff    2G  offline 16-31 no         yes
-
-4. Disable memmap_on_memory and online it.
-echo 0 > $sys/devices/system/memory/memory5/online
-echo 0 > $sys/firmware/memory/memory5/config
-
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                  SIZE  STATE  BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x27ffffff  640M  online 0-4   yes        no
-0x28000000-0x2fffffff  128M offline 5     no         yes
-0x30000000-0x7fffffff  1.3G  online 6-15  yes        no
-0x80000000-0xffffffff    2G offline 16-31 no         yes
-
-echo 0 > $sys/firmware/memory/memory5/memmap_on_memory
-echo 1 > $sys/firmware/memory/memory5/config
-echo 1 > $sys/devices/system/memory/memory5/online
-
-lsmem -o RANGE,SIZE,STATE,BLOCK,CONFIGURED,MEMMAP_ON_MEMORY
-RANGE                  SIZE  STATE   BLOCK CONFIGURED MEMMAP_ON_MEMORY
-0x00000000-0x7fffffff  2G    online  0-15  yes        no
-0x80000000-0xffffffff  2G    offline 16-31 no         yes
-
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
----
- drivers/s390/char/sclp_mem.c | 288 +++++++++++++++++++++++++----------
- 1 file changed, 205 insertions(+), 83 deletions(-)
-
-diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-index 27f49f5fd358..e44b3b01dae6 100644
---- a/drivers/s390/char/sclp_mem.c
-+++ b/drivers/s390/char/sclp_mem.c
-@@ -9,9 +9,12 @@
- #define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
- 
- #include <linux/cpufeature.h>
-+#include <linux/container_of.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/init.h>
-+#include <linux/kobject.h>
-+#include <linux/kstrtox.h>
- #include <linux/memory.h>
- #include <linux/memory_hotplug.h>
- #include <linux/mm.h>
-@@ -27,7 +30,6 @@
- #define SCLP_CMDW_ASSIGN_STORAGE		0x000d0001
- #define SCLP_CMDW_UNASSIGN_STORAGE		0x000c0001
- 
--static DEFINE_MUTEX(sclp_mem_mutex);
- static LIST_HEAD(sclp_mem_list);
- static u8 sclp_max_storage_id;
- static DECLARE_BITMAP(sclp_storage_ids, 256);
-@@ -38,6 +40,18 @@ struct memory_increment {
- 	int standby;
- };
- 
-+struct sclp_mem {
-+	struct kobject kobj;
-+	unsigned int id;
-+	unsigned int memmap_on_memory;
-+	unsigned int config;
-+};
-+
-+struct sclp_mem_arg {
-+	struct sclp_mem *sclp_mems;
-+	struct kset *kset;
-+};
-+
- struct assign_storage_sccb {
- 	struct sccb_header header;
- 	u16 rn;
-@@ -163,92 +177,165 @@ static int sclp_mem_change_state(unsigned long start, unsigned long size,
- 	return rc ? -EIO : 0;
- }
- 
--static bool contains_standby_increment(unsigned long start, unsigned long end)
-+static ssize_t config_sclp_mem_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
- {
--	struct memory_increment *incr;
--	unsigned long istart;
-+	struct sclp_mem *sclp_mem = container_of(kobj, struct sclp_mem, kobj);
- 
--	list_for_each_entry(incr, &sclp_mem_list, list) {
--		istart = rn2addr(incr->rn);
--		if (end - 1 < istart)
--			continue;
--		if (start > istart + sclp.rzm - 1)
--			continue;
--		if (incr->standby)
--			return true;
--	}
--	return false;
-+	return sysfs_emit(buf, "%u\n", READ_ONCE(sclp_mem->config));
- }
- 
--static int sclp_mem_notifier(struct notifier_block *nb,
--			     unsigned long action, void *data)
-+static ssize_t config_sclp_mem_store(struct kobject *kobj, struct kobj_attribute *attr,
-+				     const char *buf, size_t count)
- {
--	unsigned long start, size;
--	struct memory_notify *arg;
-+	unsigned long addr, block_size;
-+	struct sclp_mem *sclp_mem;
-+	struct memory_block *mem;
- 	unsigned char id;
--	int rc = 0;
-+	bool value;
-+	int rc;
- 
--	arg = data;
--	start = arg->start_pfn << PAGE_SHIFT;
--	size = arg->nr_pages << PAGE_SHIFT;
--	mutex_lock(&sclp_mem_mutex);
-+	rc = kstrtobool(buf, &value);
-+	if (rc)
-+		return rc;
-+	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-+	block_size = memory_block_size_bytes();
-+	addr = sclp_mem->id * block_size;
-+	/*
-+	 * Hold device_hotplug_lock when adding/removing memory blocks.
-+	 * Additionally, also protect calls to find_memory_block() and
-+	 * sclp_attach_storage().
-+	 */
-+	rc = lock_device_hotplug_sysfs();
-+	if (rc)
-+		goto out;
- 	for_each_clear_bit(id, sclp_storage_ids, sclp_max_storage_id + 1)
- 		sclp_attach_storage(id);
--	switch (action) {
--	case MEM_GOING_OFFLINE:
--		/*
--		 * Do not allow to set memory blocks offline that contain
--		 * standby memory. This is done to simplify the "memory online"
--		 * case.
--		 */
--		if (contains_standby_increment(start, start + size))
--			rc = -EPERM;
--		break;
--	case MEM_PREPARE_ONLINE:
-+	if (value) {
-+		if (sclp_mem->config)
-+			goto out_unlock;
-+		rc = sclp_mem_change_state(addr, block_size, 1);
-+		if (rc)
-+			goto out_unlock;
- 		/*
--		 * Access the altmap_start_pfn and altmap_nr_pages fields
--		 * within the struct memory_notify specifically when dealing
--		 * with only MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers.
--		 *
--		 * When altmap is in use, take the specified memory range
--		 * online, which includes the altmap.
-+		 * Set entire memory block CMMA state to nodat. Later, when
-+		 * page tables pages are allocated via __add_memory(), those
-+		 * regions are marked __arch_set_page_dat().
- 		 */
--		if (arg->altmap_nr_pages) {
--			start = PFN_PHYS(arg->altmap_start_pfn);
--			size += PFN_PHYS(arg->altmap_nr_pages);
-+		__arch_set_page_nodat((void *)__va(addr), block_size >> PAGE_SHIFT);
-+		rc = __add_memory(0, addr, block_size,
-+				  sclp_mem->memmap_on_memory ?
-+				  MHP_MEMMAP_ON_MEMORY | MHP_OFFLINE_INACCESSIBLE : MHP_NONE);
-+		if (rc) {
-+			sclp_mem_change_state(addr, block_size, 0);
-+			goto out_unlock;
- 		}
--		rc = sclp_mem_change_state(start, size, 1);
--		if (rc || !arg->altmap_nr_pages)
--			break;
--		/*
--		 * Set CMMA state to nodat here, since the struct page memory
--		 * at the beginning of the memory block will not go through the
--		 * buddy allocator later.
--		 */
--		__arch_set_page_nodat((void *)__va(start), arg->altmap_nr_pages);
--		break;
--	case MEM_FINISH_OFFLINE:
--		/*
--		 * When altmap is in use, take the specified memory range
--		 * offline, which includes the altmap.
--		 */
--		if (arg->altmap_nr_pages) {
--			start = PFN_PHYS(arg->altmap_start_pfn);
--			size += PFN_PHYS(arg->altmap_nr_pages);
-+		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-+		put_device(&mem->dev);
-+		WRITE_ONCE(sclp_mem->config, 1);
-+	} else {
-+		if (!sclp_mem->config)
-+			goto out_unlock;
-+		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-+		if (mem->state != MEM_OFFLINE) {
-+			put_device(&mem->dev);
-+			rc = -EBUSY;
-+			goto out_unlock;
- 		}
--		sclp_mem_change_state(start, size, 0);
--		break;
--	default:
--		break;
-+		/* drop the ref just got via find_memory_block() */
-+		put_device(&mem->dev);
-+		sclp_mem_change_state(addr, block_size, 0);
-+		__remove_memory(addr, block_size);
-+		WRITE_ONCE(sclp_mem->config, 0);
-+	}
-+out_unlock:
-+	unlock_device_hotplug();
-+out:
-+	return rc ? rc : count;
-+}
-+
-+static ssize_t memmap_on_memory_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
-+{
-+	struct sclp_mem *sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-+
-+	return sysfs_emit(buf, "%u\n", READ_ONCE(sclp_mem->memmap_on_memory));
-+}
-+
-+static ssize_t memmap_on_memory_store(struct kobject *kobj, struct kobj_attribute *attr,
-+				      const char *buf, size_t count)
-+{
-+	struct sclp_mem *sclp_mem;
-+	unsigned long block_size;
-+	struct memory_block *mem;
-+	bool value;
-+	int rc;
-+
-+	rc = kstrtobool(buf, &value);
-+	if (rc)
-+		return rc;
-+	rc = lock_device_hotplug_sysfs();
-+	if (rc)
-+		return rc;
-+	block_size = memory_block_size_bytes();
-+	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-+	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
-+	if (!mem) {
-+		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
-+	} else {
-+		put_device(&mem->dev);
-+		rc = -EBUSY;
- 	}
--	mutex_unlock(&sclp_mem_mutex);
--	return rc ? NOTIFY_BAD : NOTIFY_OK;
-+	unlock_device_hotplug();
-+	return rc ? rc : count;
- }
- 
--static struct notifier_block sclp_mem_nb = {
--	.notifier_call = sclp_mem_notifier,
-+static const struct kobj_type ktype = {
-+	.sysfs_ops = &kobj_sysfs_ops,
-+};
-+
-+static struct kobj_attribute memmap_attr =
-+	__ATTR(memmap_on_memory, 0644, memmap_on_memory_show, memmap_on_memory_store);
-+static struct kobj_attribute config_attr =
-+	__ATTR(config, 0644, config_sclp_mem_show, config_sclp_mem_store);
-+
-+static struct attribute *sclp_mem_attrs[] = {
-+	&memmap_attr.attr,
-+	&config_attr.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group sclp_mem_attr_group = {
-+	.attrs = sclp_mem_attrs,
- };
- 
-+static int create_sclp_mem(struct sclp_mem *sclp_mem, struct kset *kset,
-+			   unsigned int id, bool config, bool memmap_on_memory)
-+{
-+	int rc;
-+
-+	sclp_mem->memmap_on_memory = memmap_on_memory;
-+	sclp_mem->config = config;
-+	sclp_mem->id = id;
-+	kobject_init(&sclp_mem->kobj, &ktype);
-+	rc = kobject_add(&sclp_mem->kobj, &kset->kobj, "memory%d", id);
-+	if (rc)
-+		return rc;
-+	return sysfs_create_group(&sclp_mem->kobj, &sclp_mem_attr_group);
-+}
-+
-+static int create_configured_sclp_mem(struct memory_block *mem, void *argument)
-+{
-+	struct sclp_mem *sclp_mems;
-+	struct sclp_mem_arg *arg;
-+	struct kset *kset;
-+	unsigned int id;
-+
-+	id = mem->dev.id;
-+	arg = (struct sclp_mem_arg *)argument;
-+	sclp_mems = arg->sclp_mems;
-+	kset = arg->kset;
-+	return create_sclp_mem(&sclp_mems[id], kset, id, true, false);
-+}
-+
- static void __init align_to_block_size(unsigned long *start,
- 				       unsigned long *size,
- 				       unsigned long alignment)
-@@ -264,14 +351,17 @@ static void __init align_to_block_size(unsigned long *start,
- 	*size = size_align;
- }
- 
--static void __init add_memory_merged(u16 rn)
-+static int __init create_standby_sclp_mems_merged(struct sclp_mem *sclp_mems,
-+						  struct kset *kset, u16 rn)
- {
- 	unsigned long start, size, addr, block_size;
- 	static u16 first_rn, num;
-+	unsigned int id;
-+	int rc = 0;
- 
- 	if (rn && first_rn && (first_rn + num == rn)) {
- 		num++;
--		return;
-+		return rc;
- 	}
- 	if (!first_rn)
- 		goto skip_add;
-@@ -286,24 +376,59 @@ static void __init add_memory_merged(u16 rn)
- 	if (!size)
- 		goto skip_add;
- 	for (addr = start; addr < start + size; addr += block_size) {
--		add_memory(0, addr, block_size,
--			   cpu_has_edat1() ?
--			   MHP_MEMMAP_ON_MEMORY | MHP_OFFLINE_INACCESSIBLE : MHP_NONE);
-+		id = addr / block_size;
-+		rc = create_sclp_mem(&sclp_mems[id], kset, id, false,
-+				     mhp_supports_memmap_on_memory());
-+		if (rc)
-+			break;
- 	}
- skip_add:
- 	first_rn = rn;
- 	num = 1;
-+	return rc;
- }
- 
--static void __init sclp_add_standby_memory(void)
-+static int __init create_standby_sclp_mems(struct sclp_mem *sclp_mems, struct kset *kset)
- {
- 	struct memory_increment *incr;
-+	int rc = 0;
- 
- 	list_for_each_entry(incr, &sclp_mem_list, list) {
- 		if (incr->standby)
--			add_memory_merged(incr->rn);
-+			rc = create_standby_sclp_mems_merged(sclp_mems, kset, incr->rn);
-+		if (rc)
-+			return rc;
- 	}
--	add_memory_merged(0);
-+	return create_standby_sclp_mems_merged(sclp_mems, kset, 0);
-+}
-+
-+static int __init init_sclp_mem(void)
-+{
-+	const unsigned long block_size = memory_block_size_bytes();
-+	const unsigned int max_sclp_mems = roundup(sclp.rnmax * sclp.rzm, block_size) / block_size;
-+	struct sclp_mem *sclp_mems;
-+	struct sclp_mem_arg arg;
-+	struct kset *kset;
-+	int rc;
-+
-+	/* Allocate memory for all blocks ahead of time. */
-+	sclp_mems = kcalloc(max_sclp_mems, sizeof(struct sclp_mem), GFP_KERNEL);
-+	if (!sclp_mems)
-+		return -ENOMEM;
-+
-+	kset = kset_create_and_add("memory", NULL, firmware_kobj);
-+	if (!kset)
-+		return -ENOMEM;
-+
-+	/* Initial memory is in the "configured" state already. */
-+	arg.sclp_mems = sclp_mems;
-+	arg.kset = kset;
-+	rc = for_each_memory_block(&arg, create_configured_sclp_mem);
-+	if (rc)
-+		return rc;
-+
-+	/* Standby memory is "deconfigured". */
-+	return create_standby_sclp_mems(sclp_mems, kset);
- }
- 
- static void __init insert_increment(u16 rn, int standby, int assigned)
-@@ -336,7 +461,7 @@ static void __init insert_increment(u16 rn, int standby, int assigned)
- 	list_add(&new_incr->list, prev);
- }
- 
--static int __init sclp_detect_standby_memory(void)
-+static int __init sclp_setup_memory(void)
- {
- 	struct read_storage_sccb *sccb;
- 	int i, id, assigned, rc;
-@@ -388,12 +513,9 @@ static int __init sclp_detect_standby_memory(void)
- 		goto out;
- 	for (i = 1; i <= sclp.rnmax - assigned; i++)
- 		insert_increment(0, 1, 0);
--	rc = register_memory_notifier(&sclp_mem_nb);
--	if (rc)
--		goto out;
--	sclp_add_standby_memory();
-+	rc = init_sclp_mem();
- out:
- 	free_page((unsigned long)sccb);
- 	return rc;
- }
--__initcall(sclp_detect_standby_memory);
-+__initcall(sclp_setup_memory);
 -- 
-2.48.1
+Cheers
+
+David / dhildenb
 
 
