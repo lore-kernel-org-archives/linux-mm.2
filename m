@@ -4,129 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20B3BCCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 18:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD666CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 19:55:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36A858E002A; Fri, 10 Oct 2025 14:53:37 -0400 (EDT)
+	id 7F5138E0021; Fri, 10 Oct 2025 15:55:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 341EA8E000A; Fri, 10 Oct 2025 14:53:37 -0400 (EDT)
+	id 7CCDA8E000A; Fri, 10 Oct 2025 15:55:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2313E8E002A; Fri, 10 Oct 2025 14:53:37 -0400 (EDT)
+	id 6E2798E0021; Fri, 10 Oct 2025 15:55:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 083388E000A
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:53:37 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0028E000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:55:21 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6C68C01D0
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:53:36 +0000 (UTC)
-X-FDA: 83983103232.08.3ED057C
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BF57840010
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 18:53:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uqhE9McU;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D804B140201
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 19:55:20 +0000 (UTC)
+X-FDA: 83983258800.08.185E3D4
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 804BE40010
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 19:55:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=i7QtjhtD;
+	dmarc=pass (policy=none) header.from=canonical.com;
+	spf=pass (imf04.hostedemail.com: domain of emil.renner.berthing@canonical.com designates 185.125.188.122 as permitted sender) smtp.mailfrom=emil.renner.berthing@canonical.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760122414;
+	s=arc-20220608; t=1760126118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yvk9+2uf5Jy110s1EexKEDqunnlIUh4JFbrOdrqUH1o=;
-	b=Kv4gSHABi89uMLnMJKBcdjgaToYPFOuseb3YCDvRs9LkVvgHdFWBJ+PcGmdrumiGjjqXpD
-	AXtVi1DSAF/stf9ZRPdqlMu5NoF/hLBPe7wuXjmJu4GQjaKmkZcOD/kX1ok7od9yyUEw8j
-	RTdSg/m3k0NTWMVoASZlRrOWhSZ/qV8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760122414; a=rsa-sha256;
+	bh=kPhA/oNdZoYVHAUf6Erq79uJcMcXf1/DDMPMdaotDWc=;
+	b=as/F4cdISk4AOQKa+mi6hJkQ3W4D7szoR1XJgBunjbZBVmqwIECLkNh2AKDu3i7GnlxAfu
+	XWkDZ2FEReiGFOZO02q1fuAZBMpd8o8afaqteAJmSg7O0/B7hGF4ODc0cXqW0HT9B0XQ/X
+	01UaSVYW2idSKBfuvQWgRQykMb9B8Hc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760126118; a=rsa-sha256;
 	cv=none;
-	b=4DBLmlKBYqKxHx9Pw97TIK2tYHq3Hqmy3CKUTPNxr9PSxuYuhNMMg2udHAlRvLRDuOgfQM
-	PM1JmcHSEvKaUJeDwB7F9qwRogANZFoP4LoTLZpP+YJTv+grnto85DPlv15eor3eO9kzgx
-	xCmfirzf4X8/csmNXPVFnfKRB6AbKJY=
+	b=3iQUxZDaFANXGpmqS+4IGSpZkRBpAmSrXytR1N3AuCHdiYp5xczjlUBKgz9uiYrXuOWd3b
+	MZJG7FaXxVXuHJ1roKqmN/ecmuA8AcANg9ib8PJcQ34+JLiLMREZRh9cKR0rqmBMXieN06
+	LSDxz27nGZvDfrH3xuo+wFSo7/vORbE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uqhE9McU;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-85ed0a1b35dso211088885a.2
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:53:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760122414; x=1760727214; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yvk9+2uf5Jy110s1EexKEDqunnlIUh4JFbrOdrqUH1o=;
-        b=uqhE9McUG199E+pEHnPY92jKHAHEFZqogqbAQosAyMZY5ZWxRr6QLFlE3nwDSqhDdT
-         FplbFjGyL8yllpe/CgzhWgs2RFCkdr/Mm9hiadeOw0fUy+qNjfrhXWSvCjsOpYOm3aku
-         LDreAFIhPekRvYrrx+fuwOJAyR+DYzDd7YiA9UBUHBU0uxpGJIjaWqLZ6jlWEOKYVyzq
-         kS/IliN248rXqtg/wi84cA41KXgs71yypr1EABaoe4yrUwBgMfpBh3oNxzp/uO7gE4t+
-         8g9oKU1VKTH061MP6e/cEHcSzR/lpG3fxgzoGbNQVfHhFzKHL8L0uHQX004bFa8+yaPP
-         8QyQ==
+	imf04.hostedemail.com;
+	dkim=pass header.d=canonical.com header.s=20251003 header.b=i7QtjhtD;
+	dmarc=pass (policy=none) header.from=canonical.com;
+	spf=pass (imf04.hostedemail.com: domain of emil.renner.berthing@canonical.com designates 185.125.188.122 as permitted sender) smtp.mailfrom=emil.renner.berthing@canonical.com
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 598903F7D9
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 19:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1760126114;
+	bh=kPhA/oNdZoYVHAUf6Erq79uJcMcXf1/DDMPMdaotDWc=;
+	h=From:In-Reply-To:References:Mime-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=i7QtjhtDDDMyUzT0k9YybFFk4K9MHOcnmTAcstEnRpga5gtMVMbCUSDlLEq+eUhqJ
+	 5XQs+Wzu08h9HHpsIaoBx9RyIBnQmfEqdiswLx1tQe8Fh3hUKDyHn4kgLdx34iNOYd
+	 4sREcbUAvIGp1Q5/UQLoDscAkr88ILh3H8F8QhCMG2VmXvJBR6q2LPNEZqiIETnW1m
+	 p8gCpO4q7QNq59dSSstPgEt5mM5nJMXid+OdX/c7IbSfVs2zFWxm6oU0Duqg8g+fO8
+	 Xts00WvyiD/tOMfGFpwuHM3cKfyRZKYokrdWS7OINvuN20mri60o1Vu1m0rNOdnJmJ
+	 jORswfSkjfX2SvtAKo2d9GMmjwcL/g96QaJHsKgt8bK6IUZHYgqCCPmoKP+kIMcN2q
+	 aM5I3N5CBgFntyBuwwfpDBREanOD0BSCme1qS31GGNdnATQ48O04Mnrnt3muTqF0cM
+	 zzkR8iioGvqRILvj0qY+p3creBeGqfhrF8MjKBLbVUH7jRJrsAvbTgKEGHCA0Ll2jQ
+	 x65016tuyIbY/08hljj7SME88bxxODGwWvCUcjXd3sSrGxkM8ICfjREJ2MMFHGTB0y
+	 yhxbaSDwJmNg67tDsOTl1eNsMTP3jMnC//LnV1k5DzajF5lGyNPTTmNeUicFkvfrzB
+	 iIGjMlvVta1eEmPjJgjxYa8A=
+Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-50f890ddef8so1844549137.1
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 12:55:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760122414; x=1760727214;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yvk9+2uf5Jy110s1EexKEDqunnlIUh4JFbrOdrqUH1o=;
-        b=jmCQIOfa/dmCch1kx2NJzK8ZFk6iNSlL+n9z4ORl76f8Af0F4TTrwX05tptSQs6D61
-         oJGg1Di6jYZXXCNLp29KEnZa8jsEpNIxk1RJZQukpZIzhJV7JrDz3Wgj3LZx5Ga2Xd7F
-         1FMBBE5ewjlbeAgh0r3KykChIfP1GQmKw8Nq1OAyYdRUqHHSFVLpCmgotFB81xmqdJ7j
-         vwBnJgAeDB07d3XyZ+4sb2YVdR6vcwCBROwtwfB59oOTD++QO+B5l7LTpx08PiP0vltp
-         UbmqqeY7sRZ+Fbqo/TNgWtc0e3kgKM2zmam40eP59BrO5tUNImJfMElmznwvLZnoPf8s
-         XoQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ4S9Cu4FgVNUi26qw94m5ADAQ4V7iX0z/VRVB8ns7M4bH69YJzXCxaicgdCqnYp15U2x61e2Ixw==@kvack.org
-X-Gm-Message-State: AOJu0YzjLJquEwz4XMdNM7K81UFCxkL8/IPpRM51wMx1V8pNPyEpERSC
-	OsmCwJ8WQuyAmRUtlTAfuuN8wlcXqNd2DMy/P2+frNFvUvBwkO1egVdGYUbSea9v8TM=
-X-Gm-Gg: ASbGncuIqZTKQtCOEDHF2lJ5ilUQRrZWXJQs0F+5BkQBzD13w1GGUn9Dx1OyIZUOWUU
-	RLrflcEb7K10wSTSBJXw7TCYn5Dm0VKjusuchm2QMM6pG39hYQD9q3StDTam2INc5Vk44RFCgeg
-	xiL5sV0kybNl2/lzcqQ5Xs80wU6nwfXrPIigXfuktkSISZY3KvATHx2ZF3TY1qfgdH56HgV9u30
-	TH+kBJ2Ea5yxZa0gFfnpvPzoM6iSqu3Hx5AoHBWU5npkrguVurriJO2Y4nah9GjJcslhCom+6nf
-	rzF24KM+GMLfKWjTsaDCjAn/ZdNevk0iEXoHAS+K4IMD6/XlUGwCqcDQ3+c95HPCQAoVWuqYKYZ
-	uDceHYaAwHGi67ApZBaCSr5WzQrU1RvgaJLo2yoB4QhtoigcGGHcubwCHSzp0gIjEh/6PFNT/+m
-	isplM3ESRItql+8cPDXE10LeTleXIyg9AsTT8=
-X-Google-Smtp-Source: AGHT+IFw83apThwu3Bu6mVESZP4W93bdkR0fqUQg02zKaUQROrWdoFXC8bV8nX7m1XqGZM4W610+FA==
-X-Received: by 2002:a05:620a:179f:b0:849:21b9:478f with SMTP id af79cd13be357-883534624f4mr1914757385a.35.1760122413577;
-        Fri, 10 Oct 2025 11:53:33 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f9ae48fsm459499385a.24.2025.10.10.11.53.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 11:53:32 -0700 (PDT)
-Date: Fri, 10 Oct 2025 14:53:30 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Hildenbrand <david@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, corbet@lwn.net,
-	muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-	hannes@cmpxchg.org, laoar.shao@gmail.com, brauner@kernel.org,
-	mclapinski@google.com, joel.granados@kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mel Gorman <mgorman@suse.de>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH] Revert "mm, hugetlb: remove hugepages_treat_as_movable
- sysctl"
-Message-ID: <aOlWKqyN5P_kaoHc@gourry-fedora-PF4VCD3F>
-References: <aOZ8PPWMchRN_t5-@tiehlicka>
- <271f9af4-695c-4aa5-9249-2d21ad3db76e@redhat.com>
- <aOaCAG6e5a7BDUxK@tiehlicka>
- <83e33641-8c42-4341-8e6e-5c75d00f93b9@redhat.com>
- <aOaR2gXBX_bOpG61@gourry-fedora-PF4VCD3F>
- <aOdSvriKRoCR5IUs@tiehlicka>
- <aOfU9YTKMPWzYOta@gourry-fedora-PF4VCD3F>
- <ac0393c7-9c0c-4b4d-8b35-5e6369e5431b@redhat.com>
- <aOgpz6no2Jx2-Y8Z@gourry-fedora-PF4VCD3F>
- <1d7476e6-5c6d-4175-b28d-3622222ea8e6@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1d7476e6-5c6d-4175-b28d-3622222ea8e6@redhat.com>
+        d=1e100.net; s=20230601; t=1760126113; x=1760730913;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPhA/oNdZoYVHAUf6Erq79uJcMcXf1/DDMPMdaotDWc=;
+        b=tc8dCYy05LaUttUA+Hrxfx1CdH0f6lHHWYqgbz7EO9qzE/6QHiGYDo17BtTKM7e8nM
+         IZ7OfeoVpRxf9/qGSFqlqVG7DNW5RCWfgqLiKrZDb6nGPdRNpLDgjSsHIFBl+gCQf/c/
+         F/KfjX9BChJ46y/kmnIfTQcYRbsgs7LhM3JkatdX/cigXUPCQi88WTLSEjDR6YHNTgwq
+         pxif9xv9NWJt8H4cCUw6naTl5vH0uLwPI3EBSJvK2sPQuQ+ykd8DEq9LKVVsOKo7DVdp
+         155O5av6mi7jiKE5Jy5V7R0D1Y546sS16Jr8bV95/poyk1Cc1Z6jwCxxg2LkuCzWFyt+
+         7uWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ6JF6t9X+vadgPte/9MDaaSF9sIpNuFkK26tcdjLkjaJRzO0zIi30+apG8qWuD5OuilJ7PEv44w==@kvack.org
+X-Gm-Message-State: AOJu0YxoFN0c/CjgM8Us9wzWRC6noaGGNbcbHeQkeS9xBHy1t7HuBvyY
+	/AWDos7Cm5kLp5eXctr+espk0G/7IfnBkadMdiSbh86YUNbtmxsjIkhzziv/72NrjfSrwrSjFA1
+	fVmOQOF4jSr/3gdSmibXxPJaBB+PralXLVOekFDZtmBphkHKLvO7v+87UPdadXVqxLPBaH60epZ
+	57b+be2Km4bhHVFb39m5e1PgrwZjcHXEQWi0oFykWusoA=
+X-Gm-Gg: ASbGnct3vBslIsqcRoPP+sQLjg7xk5YyKY6lSVUlXXubETFq3ksX1bmewpSmU42Hw5A
+	6KoBNoUJGz/rZtSMiVk8ZOhdIonIm4Hp4GLB2zgDQtimRFXCdaarEY+cxB2Rj0E0c4kfIVofx8k
+	ryCfXXeT6Q/j/zrlJ/jCE=
+X-Received: by 2002:a05:6102:162c:b0:5d5:f6ae:74b4 with SMTP id ada2fe7eead31-5d5f6ae7587mr2959674137.40.1760126113160;
+        Fri, 10 Oct 2025 12:55:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGl7uSNVMd1/CraY5eNdtkJsmXLfjZq71soXKG1D0wdaThXC8TnpM49Ya9Dq+mRSUiBMq5+qPE5yVu6PxXKKHU=
+X-Received: by 2002:a05:6102:162c:b0:5d5:f6ae:74b4 with SMTP id
+ ada2fe7eead31-5d5f6ae7587mr2959658137.40.1760126112724; Fri, 10 Oct 2025
+ 12:55:12 -0700 (PDT)
+Received: from 348282803490 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 10 Oct 2025 14:55:12 -0500
+Received: from 348282803490 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 10 Oct 2025 14:55:12 -0500
+From: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+In-Reply-To: <178f4daf-c752-457b-8f0c-c6273f3a63dd@sifive.com>
+References: <20251009015839.3460231-1-samuel.holland@sifive.com>
+ <20251009015839.3460231-17-samuel.holland@sifive.com> <CAJM55Z9kRpc53s3Kip=U-CcDxAX0UZD5AbTBy_owU8xPEYH5MA@mail.gmail.com>
+ <6fa3c728-5048-4d26-9b6f-21757320caad@sifive.com> <CAJM55Z8masgGn4vVe_2g1e9WXnLu0Vf5oGxbiniGpsbOhYPLRw@mail.gmail.com>
+ <178f4daf-c752-457b-8f0c-c6273f3a63dd@sifive.com>
+Mime-Version: 1.0
+Date: Fri, 10 Oct 2025 14:55:12 -0500
+X-Gm-Features: AS18NWAlCRC7l99R73r3woSIp-vlQ76Jq27BWW9v6hsv7x0ENpHaGmY-XmjOCps
+Message-ID: <CAJM55Z_wOkC767T1p749aVzAL5uQD5Lw6D6eqHb9wp-f=nAO0g@mail.gmail.com>
+Subject: Re: [PATCH v2 16/18] riscv: mm: Use physical memory aliases to apply PMAs
+To: Samuel Holland <samuel.holland@sifive.com>, 
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Conor Dooley <conor@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam01
-X-Stat-Signature: 1w83ipedr71g576s5nx7aet46848b8xc
+X-Stat-Signature: wbsto1g9kehbdtn9gx6whkfpbq8wxr5w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF57840010
-X-HE-Tag: 1760122414-558118
-X-HE-Meta: U2FsdGVkX1+XUhxuVbuW3whiCBFF8eOmppLFyNN4jOHuftTevOhZwQKfjyX29L46m3yjbxHS/xEZsVF0m4GzF9UcESr2bhHdF6DXwde5MODyp9ZLx8hQdnmCtCMJ6wJwu4kerucUek6CjtXj0FITXJS3mejGj0B5BEsm3F/+44kQPh9YDIP93SGNfss7sUG0m69Fsu3ooHv3o0paPa9aEMOzeNUp3Ryz4fJx5opx5/UqASaWA7ih+xeEpUMenK+hfb4GQf9IfDgarfwWkTWU9V4QtKYAg2EAV0UycGlM61sCJ01ULZ1lIT/xHXTjAmE4VMxnrsvjbacuJ6OK/6wmB4xuuT68Xgr2d9Vo1Qc0GetH9lxKR+lgJDqcqRY63fuAeyMihY0Hvy9i8hePJo8JCuJKt/4zjCs7iddS0mbnnAcsjAQi+k3hN7WsJtbQlNVdw009Jja9Jfc50JSPSM3ClL4bZIC/I4nYMduWR5mrOCvUPOcz0aXssHIfWneu3NvWQsiC9wu2oEkX6RYbUakL9cRK86O1PATlolqbuJbsYNmLu4fQIIxLWDwY+PKbro4bEe3JbCR5ER+wWvJv7GvZRh9+94kHgaaR2KfECeLJLFojzwq7gjQdtCwufPawDRfHQFGFKLSmSbxGpjta9PwtcApsJivtXteQL2FgQvcpH2T1wZcIsI3VbsvXBSBq3YVTt8GwEOguWzi95DG40ZZ2PyKpXK11qnnK88wjmVeevhOTrAR5VPrPImTe3BHTWrd8vhKZqiQdazb3ItoWVBwvFF/gk/m7UeugJDIsVWcSeAh2KwMS4OcN8tylgNWTfElOJte7yD5lXFrvWDHEDteECuUuZppF9famm0/JFIipkd45NawmfoasmPL790sorvcp1VQwtrpkXgNRNJeMe8uz83zKudvwpRah6odjMOkNjQK4dL7eX1bDRhl+l8EAWWFNX7JQzrIzPCz50D0LSk5
- P88nGMFU
- hrhWDilnXy4JgUfrKxqHFRFq+NSHxvmC0uBf6zjA3iwnCnw9NlYoBv8yK3VctUDxlYh3Ru4wlWBPKrCilaSduFzvDH/luklkDerdN4vZgsno2WJbc5Ny5FtRApjsZbrTJbJfXd/ArOn3fNqFpbKHlTTvNRjQdUxRdT6sluRxf08gIEDyy7w3yDiXtkrcJRYOl651cHfS9Ltvvjxel2Lpr43uMrNI3qztJUip7Jer9+MP4gnNWyiYx9+tvdMFrOzpXUpZ0Z6N6ezlb0TzuMKk6ffr+UVkstXMj18LpaN/UvaeY5yHQMhAtEaLyuNJ08ZTv40QnDh2ndTbodAdiXGQ0KOpyw5SKKQXUqV7JiEzAy9eZg75sLP82PgkfzesnCpq4RDJRLsmyuuc9csc1ukHJ3aGoniNoZzetOHtYFtdJTbQ72F6Zj65E6WMPcaLaUDeeqmwppUOQ67O/3VZCI3r9E/ARYDhuDfp2GFrGqyyObhlhtYjBrNMkItk7NM/TqXrYbvPAH1UrfpWQkrm1MkZUTkuE6A==
+X-Rspamd-Queue-Id: 804BE40010
+X-HE-Tag: 1760126118-916445
+X-HE-Meta: U2FsdGVkX18qb3/apUNq+cA8U3WmN/6ZwO5RqnK8zTwImvI6SmU7uj7cnCVYbRJI17xrSfmNHc9qPvE6c4YSV5ODdxzpIiD4X+hSincWB+KEQ1mKcLwMAXvCHk7y+XEw14lq3FmWKIeJziK1kPAHuN1GMWBqivc2OD4MXwsXfiaaX74soBB0YLWqHd4BmOiDApObRMgDA8k+UE7nMyWV9/J9PrZr0abyQsgTPTqU/HZNDZoV34JihmpZTXAlzjrcqmN8z1+mfqwoDx7+ZOhlNsKu5QEN6EJVzadjcgSbC3W81UiI3WFg0QMT8eEPMi3xfDw/6NJNteYqf8hBs+xBDuLDCkYrLM9fae01rponeV9OPRwMDCqN09n6SvVS97964PADhe/63jLkj/thGhxMB0Kjk/aBm+YpM5Zq/j6kmZwy554SlT1srv4ubQrml6Hq0e7HyMINECaQf6paoK6pE3dtAcoDbc6S7SUYdRW8xhmrw6voWXMjd0TXeZMvyIB7YIL/RkgfWR2A+CRnRnba5HC/DkNCdWcHN8hvcSshOp8iQXPLoKmNDmg30vv3LGJh/jSnuj+BJRTCW2dy32an4LsYTiQ2LAtO7fpjGAbBeN2I1j8fX8c02l6gndt0LWKK33ovFtK+nj6oI/AGWHlFWWzjS1mCgW07a5OBlbT4PIFFFZa/6leiNiDqSaYdcibzGK2cvBx7HseXF7jJpn+uYLOzHCgn1X1aoKjDJUvv4kS/zcRtmN8aCy8VT1gY5e2K47qBnxjdIGNtjAYQkpHIr3zf37ad16g2ytUFtFxoGUz0YYXWkoNnzFI51vdjtPsEq/JCLLfndVqR0b2U/vaBcG9FXzzKxxsWeyK2hd+LpoavSX5scJ0XxjmAhJsUB8OZMt+SUYd47srWPP5pfhYpqhzMNvfwz7tGEWagZfmWJgpYS2TCWMcb+fVW1wofG+3LodOm7luIpxIFOlEJj9L
+ 8iQ/+bEu
+ yL0jfoWthJk9cdv1dmGh+Uzju/IWeN9N4UHgBafPipGUG3xp/yktBLLt5V3EA6OOnscT6/k51sdA+/l5eaxnvs/j+90J+FgpLQzabOr7ESGsZBwMunz6aXV34VULlwHjVGKrX48uO0JoVjurPujVFBb49H7BPZYfqIjICB+9xnX/3cz++K5uO8g6pvmqGOttWpaBc7xul1Lwyute60ZjchIHuqvS15NGN92nfeHMECfFiB899ObYmIog+wERij5vwJFe3+8AiFG57VJXMj5Q9chemiNVst9tSU+k9eupmzzX9sdU2TVg0TW62IsW9r2gD6tftvmC4PLogS9NsORZpmdZGWaYyAiPd2U3EOjlSayVXv4Bk447CuZsq/93tF5RmQQIQreQLPpVEEZclYqMdIcuuiMlViQaba2DDp538ggMfsws06jgxs9onbx1G16cVGobS3fQStYTlfcR7hFXHTZp5S8chi2vASSNB9kswznXTh7NihugwIryhGQAowZmLxkXl0ZdT5O4V/T3m+WarpDgUVcAkl5d2qiP0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,37 +136,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 09:40:29AM +0200, David Hildenbrand wrote:
-> > 
-> > Seems like this is pretty stable tbh.  Obviously if you hack off the
-> > node0 hugepages migration fails - but I feel like you're signing up for
-> > that when you turn the bit on.
-> 
-> Right, just needs to be documented thoroughly IMHO.
-> 
+Samuel Holland wrote:
+> On 2025-10-10 12:04 PM, Emil Renner Berthing wrote:
+> > Samuel Holland wrote:
+> >> Hi Emil,
+> >>
+> >> Thanks for testing!
+> >>
+> >> On 2025-10-10 10:06 AM, Emil Renner Berthing wrote:
+> >>> Samuel Holland wrote:
+> > [ .. ]
+> >>>> +
+> >>>> +void __init riscv_init_memory_alias(void)
+> >>>> +{
+> >>>> +	int na = of_n_addr_cells(of_root);
+> >>>> +	int ns = of_n_size_cells(of_root);
+> >>>> +	int nc = na + ns + 2;
+> >>>> +	const __be32 *prop;
+> >>>> +	int pairs = 0;
+> >>>> +	int len;
+> >>>> +
+> >>>> +	prop = of_get_property(of_root, "riscv,physical-memory-regions", &len);
+> >>>> +	if (!prop)
+> >>>> +		return;
+> >>>> +
+> >>>> +	len /= sizeof(__be32);
+> >>>> +	for (int i = 0; len >= nc; i++, prop += nc, len -= nc) {
+> >>>> +		unsigned long base = of_read_ulong(prop, na);
+> >>>> +		unsigned long size = of_read_ulong(prop + na, ns);
+> >>>> +		unsigned long flags = be32_to_cpup(prop + na + ns);
+> >>>> +		struct memory_alias_pair *pair;
+> >>>> +		int alias;
+> >>>> +
+> >>>> +		/* We only care about non-coherent memory. */
+> >>>> +		if ((flags & PMA_ORDER_MASK) != PMA_ORDER_MEMORY || (flags & PMA_COHERENT))
+> >>>> +			continue;
+> >>>> +
+> >>>> +		/* The cacheable alias must be usable memory. */
+> >>>> +		if ((flags & PMA_CACHEABLE) &&
+> >>>> +		    !memblock_overlaps_region(&memblock.memory, base, size))
+> >>>> +			continue;
+> >>>> +
+> >>>> +		alias = FIELD_GET(PMR_ALIAS_MASK, flags);
+> >>>> +		if (alias) {
+> >>>> +			pair = NULL;
+> >>>> +			for (int j = 0; j < pairs; j++) {
+> >>>> +				if (alias == memory_alias_pairs[j].index) {
+> >>>> +					pair = &memory_alias_pairs[j];
+> >>>> +					break;
+> >>>> +				}
+> >>>> +			}
+> >>>> +			if (!pair)
+> >>>> +				continue;
+> >>>> +		} else {
+> >>>> +			/* Leave room for the null sentinel. */
+> >>>> +			if (pairs == ARRAY_SIZE(memory_alias_pairs) - 1)
+> >>>> +				continue;
+> >>>> +			pair = &memory_alias_pairs[pairs++];
+> >>>> +			pair->index = i;
+> >>>
+> >>> I think this needs to be pair->index = i + 1, so PMA_ALIAS(1) can refer to the
+> >>> first entry (i = 0).
+> >>
+> >> The code here is as intended. It's the PMA_ALIAS(1) in the DT that I should have
+> >> changed to PMA_ALIAS(0) after I removed the special first entry from the
+> >> riscv,physical-memory-regions property. Patch 18 also needs this fix.
+> >
+> > Hmm.. that doesn't quite work for me though. Then the "if (alias)" above won't
+> > trigger with PMR_ALIAS(0) right?
+>
+> Yes, you're right. My fault for trying to be clever last time, where the special
+> first entry meant PMR_ALIAS(0) would never be used. (And for not testing with
+> the same DT as I sent, since EIC7700 needs downstream DT changes to integrate
+> noncoherent peripherals.)
+>
+> For v3, I plan to make PMR_ALIAS(0) set a flag so it will be distinct from lack
+> of PMR_ALIAS, and keep the indexes zero-based. For now, you should be able to
+> test by keeping PMR_ALIAS(1) and adding a dummy entry at the beginning (for
+> example by copying the first entry).
 
-happy to make any doc adjustments.
-
-Better to move any notes every here though:
-
-https://lore.kernel.org/linux-mm/20251009161515.422292-1-gourry@gourry.net/T/#u
-
----
-
-Maybe worth finding some time at plumbers to discuss block-level
-allocation twiddly bits.  Still not quite clear how this would pan
-out.  Maybe it's as simple as adding GFP flags to blocks and having
-something like:
-
-echo NO_KERNEL > sys/bus/node/devices/node0/memory1234/eligibility
-echo PINNABLE > sys/bus/node/devices/node0/memory1234/eligibility
-
-folio_to_block(folio)->eligible(gfp)
-
-The issue here is obviously that it's clearly racey, in that a bit
-twiddle can change the eligibility mid-allocation.  
-
-I'll think a bit more about this.
-
-~Gregory
+Great that also works. To be clear the JH7100 also boots with the pair->index =
+i + 1 solution above.
 
