@@ -4,156 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CD29CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 20:02:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3899CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 20:07:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0B38E003C; Fri, 10 Oct 2025 16:02:34 -0400 (EDT)
+	id 4B58D8E0040; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C983D8E000A; Fri, 10 Oct 2025 16:02:34 -0400 (EDT)
+	id 466198E000A; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BADF68E003C; Fri, 10 Oct 2025 16:02:34 -0400 (EDT)
+	id 354928E0040; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5BA8E000A
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 16:02:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4901316044A
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:02:34 +0000 (UTC)
-X-FDA: 83983277028.09.36B5CBB
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2AA0140017
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:02:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760126552; a=rsa-sha256;
-	cv=pass;
-	b=nzBMWSoINleIsPgVP+Wa63jkeCaBTDKZyiNTBWwo89Gwm+/rJyNavKtJdOE65hmFpHtIfM
-	uXo6uvxt0zIIPvsiysfE8vowDSjBpTZ72dlvL+wQ72fZL4oA2RZs9NLK8QPJPYIFsbnEnR
-	bLI+WB4YbxQxYer8r9gJQg0lk0ozx7o=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760126552;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1uOItTL0KBTFqu9SxT/ohOMw6976arZ30lgBj7Y1/To=;
-	b=fFLVGkEkREXKXw2jC4BYQQPtrIqMu2BCU/8rt2DD2aHgmkbTzza+veKFGJDi4Ps+YkbJZb
-	ARHVh2CDlOdeoEgDSqv2CeVDnw2kIBKz/Uy4dTn4HjqZtPDsbDQDnChm94W4ff2DSZkzBE
-	rA52nlvcOT2FaS/Qazwxza6mAXgbwLk=
-Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 769BE1DFED0
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:02:31 +0000 (UTC)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 44A7D58E6D
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:02:31 +0000 (UTC)
-X-FDA: 83983276902.17.EB87179
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DDE60140009
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:02:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FCAA8E000A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 16:07:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F8BFB98F5
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:07:13 +0000 (UTC)
+X-FDA: 83983288746.11.7F34070
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3A3CD100007
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:07:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=dki5f6iw;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.166.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760126549;
+	s=arc-20220608; t=1760126831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1uOItTL0KBTFqu9SxT/ohOMw6976arZ30lgBj7Y1/To=;
-	b=25qrFTvFa3IyHSDdEXHnPK2L5PQOkWYYW8WRZN6gtPF4/3X31fvM5c3i9el6rkR8gklkCk
-	4yVenSMjlEYi/AeE6T8k8O/bfEiSH3epMDYvO9ZzSFkgnbvgQ20KNnc8kgKbcJ3eJO9ALj
-	/Ir6LgGGjT8tbu62IB//oFPLOwyQaQ4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Avo+7IaE;
-	spf=none (imf23.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760126549; a=rsa-sha256;
+	bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
+	b=sKURQLKyIqul00oJwuLGxB+eF/bnWPAbDLxoMXRa8ekdYvp5Y3NMyK0sIA9ZvpfRc7GXS+
+	FKGOsgifRAJK5QhiPqa/lV88RQzpz5JLaQYhBwmf/9/v31/+1uWserB4RVdZIacrpTLpW3
+	QJAVljljYplz9fc33WMgPLlaCFC4BvI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760126831; a=rsa-sha256;
 	cv=none;
-	b=FOnZuSMxlEm9LLPJlPZwsXGM2oHGUcNtTFSGVQ0hgJvtYgJHzsLit2iYFxppM8SKHzzh0l
-	yzSHVj0cnPsbRygrjaSocTfVwsRhEgWq/OUHagi0arx4zxqcOtKNWXqqwUxqetHhgdZPM3
-	kp5JX2oMYc4Uk/Ye5XtMte9LmaEe+3s=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
-	bh=1uOItTL0KBTFqu9SxT/ohOMw6976arZ30lgBj7Y1/To=; b=Avo+7IaE91NLFjM4HOJOUnOGLL
-	579y9RDwAw7L205S678TugPGGJueV/XNuSmkwxei4bF6/2W5x2VWUnbbqFLsBbXbeTAzX9Oa1uZld
-	YjIbaZKfyuJOSs6+hja6mjaZfDPm2qk03Q/mtIgTM5vmnNklwo2byLo4ZYWpP4RF/H3JN7TSM/ka6
-	2/InTtiMWRIs2bw+SE9iTahmLMs0c3T5iEQBBcJb9OjV5XJ4kyNWfuOf5SvoqqoBlyD4unvQNTRFh
-	JFzLZKTphPb+Fw+WCUpW9lU986SZmFhw0U+sXf8mBU7+ecoo6KsCLQLI679yMaPn254rqJRJz6AZc
-	y7T7E4/A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v7JJb-00000009HMt-11L2;
-	Fri, 10 Oct 2025 20:02:11 +0000
-Message-ID: <c1b2ec8c-0c09-4356-819c-7d2ee28b47f2@infradead.org>
-Date: Fri, 10 Oct 2025 13:02:09 -0700
+	b=Mu5cYcJ7EWJEcvaO0+40ykTGHvx34i+InZrdRQfqoWUfNCSQa2tK/j0CJ/mbyNwJTDdnJ9
+	4YiIa91Sjd4Q9Kzx4hLbwf8XqohTNKHaEdNaGX6g58DzVTlNazyyM73jP3j0ab+Tz77rRO
+	afdQnAQ48by038k+frmsUGB5q/AuXwQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=dki5f6iw;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf14.hostedemail.com: domain of skhan@linuxfoundation.org designates 209.85.166.41 as permitted sender) smtp.mailfrom=skhan@linuxfoundation.org
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-93b9022d037so101780339f.2
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 13:07:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1760126830; x=1760731630; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
+        b=dki5f6iwfJcQfOWHVK8cihPsCXXrUH7X4D5dwU4gN9xA4vJeiweZiLyqCS3N/d0V2t
+         t4j1Gie3wlfPT3JT2WpknFXGyLOzoDCg675AXUEDTn0evscOkhR8sWSg6DEQ2oWL/lxA
+         rGCRCcQmazUcs3T50uLFd05b5XkRXjUnEhNKA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760126830; x=1760731630;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1C9TGYFUXxVemAwR89Ulh9sGzSp7qA+8XlrADAfHgVc=;
+        b=cD/fRDJvHpDPNz64KgBVsu9+MQAqUNR7qiKmv8yZTyiEneT/n2q4s4S6suNwZEq/Uu
+         kZFBZkw6AUNLphtIvhUbhyGRydu0DeJVCDr3CgIxJteUSpwEXXpJYz83wfXA+jIwpaRK
+         D3qfO0pdBU4UojRHguumAGlp/8cJ4QhFpG1XOFMLjS7H62iBidj4QhC3gB95WKvFLOap
+         zsN/rRythElO68jDjARsRlFojtupyG9TaW9Y8ZUzXx064X2dvP8t3sRfydwEbRUc0bAt
+         px55Lw1NHOLyl6qDL2T7DFyYdvWO7A7fmrsVF2DclBnwIrOhImvIp1g4Fhv58DXyx5Lp
+         VfHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKk5s9Ph380myarZZvTWzEjqboOLJNBO7H+fXTSINOMW+WS6jifzi8ipFsyAz+PMqbwQrtU2Ny8Q==@kvack.org
+X-Gm-Message-State: AOJu0YwpTmj0mXTQiroXqqW2gob/wmN7QYWk2uI8nuHg7cU6r1Zl/Lmv
+	qImbK6YN9WBQ0R/I3iQCIbpatF+mEgcr94oAZIaBJJZ9axqyFN8NekmHUO8DISDFyDo=
+X-Gm-Gg: ASbGncsMqhqyVuUQacZUYfLOdmHI/K6l/Fya9zcrYDqtRP0HYwjyjSxaJnPdAGRFRAG
+	rA14y2kZfB9EoToyiHzSJzp6RMMj3quOku+xdzTYkylE17NHv1GUoEC/sij5OIEJHjwKW2T9RYk
+	5XKSzBRZGVtxDcqrCRTN9CPmLVIPDOKdlap/q3vwYp7+EEU2LegpxXdhg3HDbD+pTFAiFwCa2Kh
+	e+5+PAJd3qhAv8K6i0Qut8gaLqMRXMtSPt19C7p8ibYKTyXLyyBvLMLvs3UJuiq7hHC8KXYfwxs
+	k4PUZvz6+AhMnVtS+Ke8l12evNFIFir7vQjC8hhQ8Fi6YJDjH3RQa+fREXHBr4Ag7K+vZpvgqYb
+	xlfBqyzKM1ddTy+TN+nzUVPd3z19Hk+NaE7b9DMG0guCbL40LpbrqVQ==
+X-Google-Smtp-Source: AGHT+IF47OBorJnDZLxogs92bg9DbP41Re55bcWPxH2LtcWYwZh2W54OFZb8SOadJVjAyPp0dDz4Zg==
+X-Received: by 2002:a05:6e02:2186:b0:42e:6e45:e0a3 with SMTP id e9e14a558f8ab-42f873544bfmr138691105ab.2.1760126829993;
+        Fri, 10 Oct 2025 13:07:09 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.187.108])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42f9036cee5sm23494755ab.32.2025.10.10.13.07.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 13:07:09 -0700 (PDT)
+Message-ID: <75584276-6d30-4e35-9e59-e084c60d1c5f@linuxfoundation.org>
+Date: Fri, 10 Oct 2025 14:07:08 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 22/23] docs: add KStackWatch document
-To: Jinchao Wang <wangjinchao600@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Rong Xu <xur@google.com>,
- Naveen N Rao <naveen@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
- Nam Cao <namcao@linutronix.de>, workflows@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
- "David S. Miller" <davem@davemloft.net>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-trace-kernel@vger.kernel.org
-References: <20251009105650.168917-1-wangjinchao600@gmail.com>
- <20251009105650.168917-23-wangjinchao600@gmail.com>
+Subject: Re: [PATCH v1] selftests: cachestat: Fix warning on declaration under
+ label
+To: hannes@cmpxchg.org, nphamcs@gmail.com
+Cc: nathan@kernel.org, shuah@kernel.org, morbo@google.com,
+ justinstitt@google.com, nick.desaulniers+lkml@gmail.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, david.hunter.linux@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Sidharth Seela <sidharthseela@gmail.com>, SeongJae Park <sj@kernel.org>
+References: <20250929172724.75108-1-sj@kernel.org>
 Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251009105650.168917-23-wangjinchao600@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250929172724.75108-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-HE-Meta: U2FsdGVkX18xPnMewkE6hPLne1y/peS9e4vZndfsmRB5BBFsW4Vki31WC4jlJ61PwslMfdVsfNTvDdDKPaFpIOQwkBF8eXoXsCYia8/iT8iTvB4HUzt5WidVpVMA6qiYWjooPrA4tXZUG+bG8wcWEuy7nlj4LNjC/1Oe/Caqj3ywp9MxesPDN3oS4ZAApebXeQcN3eryEN02Y5YlknAezVEsY4vcgkJrKOuA+pUGO+m4S0xMP0qBRA8od1KwkymvTN74Pe3emUhgqeQXnpYEtk/d3aSgUMOlwW3Td7nRya18mf33uhrxwTZLH70HsOaTRZppHz7YY4uGorKreIjKlnyGrOmZsEFOF+7ntaPJip1k4B79N8uxTfF5N2qsgtyFUmf06rg/dxITMDxAe8eif3c9IU9OjSVZCl+uBVMwEyn3xt3yUYrDU2ArZ7TNT5bCBSP4JUchoUa5by01555jt2QJ4Qi+594bCX5DSNCsunu/KRIV3j5/d0viw6w2XCD16Outb2ifUgm++/mq0f8kVSTcnHY8e9eHSKIfQP5B/Ic2aCnBWeNtNVtLBMLSpSbGQqAoayvwm16SQJ5X1+ueZtWE31yVVxkn2hpZPNUmdzUeo+zEQWY7pW9cQLqlG5QOBLkySbu5EGpnZkAaN0B2EZdJES0xV322P+r3Py5phVk/DwidfnNJ3oT6/m1ApUb/PYNrDppTuqYvUZv8TZ06fokqYZsshBx1Mto9E+21NZeHjl9QHNcIDDpXSWhv5QI7WO5W34hA0za3bw+gTYmI/4hMG23WLgyDx8FQz1jM2HH5T+d6UH2b3z75LvjZ/LJUt4mAjF5fxiGmOLEYPtnHUYoE+HXWzl+tjvYza9Igxdy9nQ6mlwQUx38y/iBk0G/rB8Q9I24l2iSvkZRQGYCC90CapBko2yq8drhlzoAUWVhi2N5EsDcEpA5XbNoas+hvW7SJel5rQvpXH53BAkR
- 74DzBiso
- PEMqasVXdIU1Pt58phy796RIDyQ3F8MhoAS2axFL6eVB2ivIfTrUnD+x1TplgL5r4PQLdqEJcEknZBOAg3BR0w2I0vL2bL/Scs8aBMGTM2NeHJaEtwKipTX1R5VFZQXJP+UYpk2gi1BEpQN6B8L/GzKayMmveBiihpVqkb/BOdvI1LghLbxjBfgHHYwAQrtB5I9jwQrgn4l5wVUCqjfH8K2jQDkZPA/qaGpJrFUmKsR8VlL1BTI+gcA20RfvutxLoUVNJ/MJy3zEo1lHvP8IfjeQ4vyzIRmvibXJBoAP77jlpMWu1aTb5HpP9i+mWTAk0nakDCl6Y/p6ZhMH35yRKETsfqyC7YC2ev2ETs2PLjaDdnMn3j8yyML3YoxRAAbomTGpA
-X-HE-Tag-Orig: 1760126548-164543
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2AA0140017
-X-Stat-Signature: whpfbjb8zuso7oeiya4pdaahj7dt88ig
-X-HE-Tag: 1760126551-168740
-X-HE-Meta: U2FsdGVkX1/yQDU5vbmSnT7LFZ99/hfUUjb6O2Mko9aOpCvf5uhvQSK7p+vVhWBA1/2WdbTczM+G1CK97Of+BV+Fe19Ir1VhmJKBB5x1D+rvkIaWeFmwlTVNe1omjBttIJwVIa5jF0TkH83UsS3Nhd3ylw0LeNhFTV4G4tTjbSwzk1zwItbfMKcHUZ5HfWAuYl3A0Jipo4h9JKFUDC9u6iBs0KfPKUOXVwGp9Jo5D3NX9XpTgDQDSwv/jXTsvdImkou0yp+Xo0+CisZ8wBczW8ClTPvG85jWXOhLVd9B1RroLLMmlX3JaNy84NijCrZf7otsBsZyFvNb71m2AYOGhE5w4KynnzFqhqwk0ySKgGXydAp5fKTsHumQc5PZugzHlr44+TJFzT0Jo/PBb6qidWIMUsPU7zhV+yCeg9GPaJrLAan9nEiAUlQyJcWkWW+MX38MuO74Nmnp6+yNQBN/sIcRWZWqdEeNBeMNSAb3liU5vZsC2muBtPK2Yv63fwDxSoTNWumT7pQAoDTCfVnxN1SLnQBPnSmVvM/vsWbzfd5sPBSnqBL+P4k7F2uu/qlHF216Xk5sScqSmS73mBR0HoxGGZ2vwv7XfRTP19ScrTbm4KuOfXvSeFIEYZxJibMr8JJ0rfR9k9RkCBYWmtKT97Igsqg4P/EKOxZjLEsN3wkM/O8O1PTjgPEhzGYbPjsaNx1xq8iY5yUQ9qxbhYJVmkkjhuSGkMK0M7rWsOckyOICXyyx354pSF8zWL3WBxRJ9yTQr9dgFblxyke3OVIIWf9Utf24N9DrOsAcbcE24qrz3yhN3zVahPhs6mTJFkg4UcQHQFQ8Q+OSAuu0SsOKSqKCVC05Hk4V8rCJUWB21yKGqSq2IFg8U/9duSyz7ynwvWQy1bsny0vUFjcvW+pAEotZtmIGYY8/MwMupbIb9jrb2XIdRnON5aVYz1BSmAZFCh3tCaMN0y6IPCOQCCU
- 0AkKn1Th
- OeqxfFuowqbewsghjsxko3PPWK/CmlhmNKTPopgPH64w1LUjau5NiF6WMZYZ8U3r3B49XSDeCnXzExoNjsH67BPBpCyO6ECKsFKWGgc2Zd8bu96Ami6IIuW8CRjfvrTgYefUSBUSHomn7K1nxNVLvNRHFot9H/lGRd7iDESNDwGuCRNbjcQMit5Czhu5WSJPOUcjKZxnl+DekdKnA/XnCRs4FoV3ASiqKL7RohGHMBt28mFBxvxjlQ7hF0trgUCd9/HSMyHnkPhqUfqzk7/KHwMhcQes5qMbi8ZrB++3KipEilOAz6ByezpMh8PzpUCFgbWbLmkRqfi5vENHKW602cOCxxbpty5nOrH+eC0roeEefDAQ=
+X-Rspamd-Queue-Id: 3A3CD100007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: yhqhj1tkzc3pe54jks57g7h8hyehh7xo
+X-HE-Tag: 1760126831-184969
+X-HE-Meta: U2FsdGVkX1+C62ooWiWjWHeFJ5GvRRRr/tbPG57Imc7+bDIUmuN9yE1G4hDeAAZtJRcplIcIHXd3x5OhUtXxE8Qt1oELhA/+ShIQgjWnj1o36sq+bbx6dVFSALw+GMvbAl0rWyfUT0wjWkULslH1wCCtIxfzXLd1LbXKYFMSlvwhhsy1dTbfzepiAjL0Odul7cVlrx6B3fm72hgFlWQOTt8pnD8mO9A8ErUdIVe2q2U77exEMvyPtWkNLnX8sYzCmQvfCZrpJL+KZNyrcXyg2n2Uzzjf99ZKH68Lx69eUQ1H9EBUrT5FlnbymugtyyIS5LqYCSZ4obvjIz+lrJ8LTEgOlc0yyDeQuTlBc/xwTmxdFdUKkrxQLXMbzEFbQ/6NUx6KGJZ90DwxYm1wAMm4+KRHlSzq3/+BJTj6WLaD5tN15CtBppF7Q0vxzLeUDvdcqSNFJj5cbDfgCldexgozT8OjXb2TIuyLKndmfTgiy1ntil44Ua9X8FVIq7TMrtx66ptmcDsQgUQsA5EBYwPXJv3XtaU0sFGzDmSpdJ86FqfifPdnIAcH7bL1sYi00cuR3DPY5RMj9f7STEmT79M85ZbUH0Q0N3DA9NaYBBjkoUHxkhZN6halusnce/hWhTeJ0Oc5h2hqQZ1jZoHWbaXRUonxNKeM7FConbQ44w2p1mWf8riJP/S6a1UeScRtQMbTXcllRq3fc/1DGW14fTdo/A3s9Y35MMzelcyUlJfSy1rCfE7OrtctlFnLRrk5rJl7yP80APPbrHKJcOWX0XrC2SJ9rJZBkcy7794aREyxTKIu4+O+fxVxrewmFEWxPNDfFEf6Y0gDqn3KumXVNy36H4dbc/lIgUI8p77fqyzpTYezFOopPUfFmxPSNpWlMi37opkIQ6O5YdLvdFzVjScuEoF96fA2foBK4UrOI1NJ04lrKNqGdd7ZVKkAGTlnr0ONsQgzBHsDbGRPDVdHbhf
+ JFiooC3h
+ qjzkITNFX+hnmyecKRc+evtpZu7OSgmyt5+/1RIFKIjO1BvUarTw2Hl7fFAJkqtpVHqyKg9B5KLHyGZuG/zdjiD6g3LiniXj0WkJtVNaYxuQAcrAMNYqstQQpVNZH5COnLjYGlFr4cMSb2vzV4R8LDR+yJs8ms504wWObNHQwFnH9i3htogFE6fkq7OZjo9VqS6Lyliiv7ireCdUEAvkIqJId0JW0DIEd6iq+jeL6mr5vgvtA0I4pj+wAhPcmc7V9un5Ykee5+amzeF2h2b25GqvMDoQry8Ic8apZJqOvqA1GKAIeCW781jzLRkj8WmXUVJSNITLl4i5+E5xc6KeppLCTEAjcfeV0v3qsMWp5ZKmZq0fq4z6+CTptCJdMeCZaatCcM9HQv5Inu7j16CHKvLXDu11/f7xc444sQsIt25LrdKoe4RuPukrjcIXBLcmZcuM2EfWz2rAka2xWJVIdUYseMUiOkQTSGFjcUhC1s+67sEd5sp4mLPva7kmGbbLwwJTqC9oVNFG3OinJ3sEfoWJ7kQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,28 +123,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 10/9/25 3:55 AM, Jinchao Wang wrote:
-> Add documentation for KStackWatch under Documentation/.
+On 9/29/25 11:27, SeongJae Park wrote:
+> On Mon, 29 Sep 2025 17:24:06 +0530 Sidharth Seela <sidharthseela@gmail.com> wrote:
 > 
-> It provides an overview, main features, usage details, configuration
-> parameters, and example scenarios with test cases. The document also
-> explains how to locate function offsets and interpret logs.
+>> Fix warning caused from declaration under a case label. The proper way
+>> is to declare variable at the beginning of the function. The warning
+>> came from running clang using LLVM=1; and is as follows:
+>> --
+>> -test_cachestat.c:260:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
+>>    260 |                 char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
+>>        |
+>>
+>> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
 > 
-> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> ---
->  Documentation/dev-tools/index.rst       |   1 +
->  Documentation/dev-tools/kstackwatch.rst | 314 ++++++++++++++++++++++++
->  2 files changed, 315 insertions(+)
->  create mode 100644 Documentation/dev-tools/kstackwatch.rst
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
 > 
 
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Johannes and Nhat,
 
-Thanks.
+Assuming this will go through cachestat tree
 
--- 
-~Randy
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
+Let me know if you would like me to take this through my tree.
+
+thanks,
+-- Shuah
 
