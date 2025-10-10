@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87DB6CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:46:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01727CCD185
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:47:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D84848E003B; Fri, 10 Oct 2025 11:46:57 -0400 (EDT)
+	id 527AA8E003C; Fri, 10 Oct 2025 11:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D349E8E002C; Fri, 10 Oct 2025 11:46:57 -0400 (EDT)
+	id 4D0E58E002C; Fri, 10 Oct 2025 11:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFD118E003B; Fri, 10 Oct 2025 11:46:57 -0400 (EDT)
+	id 3995C8E003C; Fri, 10 Oct 2025 11:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A74418E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:46:57 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 702CC119D14
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:57 +0000 (UTC)
-X-FDA: 83982632874.06.8BAA625
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 246DD8E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:47:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7422C039C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:11 +0000 (UTC)
+X-FDA: 83982633462.03.19B368A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 479AB140013
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y6sb//9S";
-	spf=pass (imf26.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id BCD571C001A
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:09 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LHQDQpE5;
+	spf=pass (imf21.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760111215;
+	s=arc-20220608; t=1760111229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/bKKG2BLugSLsi1IIecZxqhro79DHlH2Jj6gDNDl6Ik=;
-	b=6raNCrKSEYUR4zhq0lpHF6MIn2es7IzA/S+ca+iDox1sXU6q1GtE4drYt8kJWjFSqs7Khw
-	04UJlM6QajXh4NDEWg+RLyDY+G0Vgr/Wd1inDVKntt8ZpAZGRthsD/qm/BsxMTS8rIqap4
-	vCH7cgTO4c9uM73Qv8ZYN2RSx+1Io20=
+	bh=KAE4BGzwUqBmQVf4HU1DeXa/8jpyKHrNy0TfmV5JHYg=;
+	b=XtGrWzyXX2dzHRIYs6affB2YNny23suAxmLyDzBi/isn1wv7vn26tN2ptlNBn5nZh8BJl2
+	GqYgHr7tZh/mjuslhuAVfxltbJFwBRnwVZ8gIl30GXbxmJ0ELDpowTEdGabDV5sY16Df4G
+	WslHjMfudF0Nlmuz0U7Sve0hYdAQX/A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Y6sb//9S";
-	spf=pass (imf26.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LHQDQpE5;
+	spf=pass (imf21.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111215; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111229; a=rsa-sha256;
 	cv=none;
-	b=McqlDuqfbouhp/5yTFszSZZFdAv3nv4h0kfTyKRAwgSJwqTaqvhvSDww9esFz1M9yBHQOC
-	RmsaJB7Cgpxhn1p7yDY8pTuKsZNwRwqMR8YQCurCc3adFzJFMiZVUcM1WcGfyXnrppeHQH
-	0WYuOv80NteowxqS0EpGrbSB6UD2L4A=
+	b=F6/Fwe9r+d56oTbGooANP60tcVtzLX3/KUstPEFVXkP8sN6Q5fVvWBvxJVz/0xEHIzEKby
+	MsTDXfV/PIet/+wiT7ckvZ5oJStFKjEde1SbvDAl3AvP3FHmjt8Bt4tEgwCOT8I+YGeTfq
+	HCZSkPt13DeaoVZ9WKcyZz50L2FiSeo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760111214;
+	s=mimecast20190719; t=1760111229;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/bKKG2BLugSLsi1IIecZxqhro79DHlH2Jj6gDNDl6Ik=;
-	b=Y6sb//9SvNZU2NPMRGMYw7wXGETuSvrr1FUKe1X0Zkt/YsAIq1eRvv7+0jtj+eFLWGAynW
-	MN2R4/euNEwjB+w9ilWQyJVODIwIGpeSwJs5QopruNL6Er6WAFWpB1s8mG1AI+to/w0Pdc
-	11Ps5Fgm9eWHXsqRvUtpf8mfYnbTRdU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=KAE4BGzwUqBmQVf4HU1DeXa/8jpyKHrNy0TfmV5JHYg=;
+	b=LHQDQpE5ZJ/hvf5S6LfzYK2VqqejpiDFScoRzgN5NrvsHMVgl8oIF3VceMvxNJfacZDW8Q
+	fSnBIkHSyoDDebD2WWPZ5woB+s0M6O9nVFeQdpGVQ4gLgoQFS7AunUPPZl0XTPi9D8mmxK
+	YTBVHWp2DexDyLdJ8tgNp4mB9CiBong=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-gIGuSa3pMa61kkcjeZHMyA-1; Fri,
- 10 Oct 2025 11:46:51 -0400
-X-MC-Unique: gIGuSa3pMa61kkcjeZHMyA-1
-X-Mimecast-MFC-AGG-ID: gIGuSa3pMa61kkcjeZHMyA_1760111203
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-hWPLBEZOPFmjletMFat6lw-1; Fri,
+ 10 Oct 2025 11:47:06 -0400
+X-MC-Unique: hWPLBEZOPFmjletMFat6lw-1
+X-Mimecast-MFC-AGG-ID: hWPLBEZOPFmjletMFat6lw_1760111219
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 462FF195608E;
-	Fri, 10 Oct 2025 15:46:43 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B813419560AE;
+	Fri, 10 Oct 2025 15:46:59 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.224.29])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8BE671800576;
-	Fri, 10 Oct 2025 15:46:27 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D0A501800578;
+	Fri, 10 Oct 2025 15:46:43 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -84,14 +84,14 @@ To: linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Cc: Nicolas Saenz Julienne <nsaenzju@redhat.com>,
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@kernel.org>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -123,22 +123,22 @@ Cc: Nicolas Saenz Julienne <nsaenzju@redhat.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>
-Subject: [PATCH v6 23/29] context-tracking: Introduce work deferral infrastructure
-Date: Fri, 10 Oct 2025 17:38:33 +0200
-Message-ID: <20251010153839.151763-24-vschneid@redhat.com>
+Subject: [PATCH v6 24/29] context_tracking,x86: Defer kernel text patching IPIs
+Date: Fri, 10 Oct 2025 17:38:34 +0200
+Message-ID: <20251010153839.151763-25-vschneid@redhat.com>
 In-Reply-To: <20251010153839.151763-1-vschneid@redhat.com>
 References: <20251010153839.151763-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Stat-Signature: 66ebqztagt9xdr81htm3uc54xkkczfkd
+X-Rspamd-Queue-Id: BCD571C001A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 479AB140013
-X-HE-Tag: 1760111215-538909
-X-HE-Meta: U2FsdGVkX19Q0SXAmUmj3kM4SllAIOF7JcP8IE/C0sJyvgVAyyR8C2AejDmVWwIeqmxoQnwLba2R+GFOtktPYjjbGos2NEL6bZgLSQqIepa2XbjgxmY8sllnNpJQFtuG0age37h4810DxEA9Bir5TqT1z8Amj/0Inj8xa6/8gNSiB7NiSprRDrpGO+8HjUyJViupdwS8RrlcIhCX2p3+8ifrxHuyFqIiDlZhxI/AwawHoHuebp4axczDzRstWk00rWjjdF5DmG3NT4aqsaXnw1ar6SXvsodr+pfbmslK6K49nS+Sp/36Ptn3v7YQkOF6sWTtbZ0j3DAd8C+RGbJ6ANQ2kNokoEDL23zqxvcc/P+dGKUSuFXAALSvAEkeOi5baK3meuJipKpwl/3p3Sp7A3AToG3GcLpxMp7RVtAJSG0djEUt+t87KynAjouyp11AprAXSzBG3VtMK/FtM2+Ho4mOtT2Aa0gCnOAQ69/eqbrZ3ecTZ4q05Tsta7xpxkD1ZAQagsmF2VUMbMpht6oUkwziwQx369zvBf6MgMR9Uyjmq2MyiXsOVvx51YHiCcgsAPg4BD4A4S8EQ4JISA0zrJiMXG1waUQ6FCz27GKrveu5IhYomih2qoVLP+ewjSoOo/ySPKOq2IIRJo0XV40deLbPVXADoceliP3LHGFgUr461iWDpMikSWjQsXFcGhOpiin6W2jv3Qv27sC9JicYn60IvVr1fFVOPW6ig6DknoRIHLDw651zqWXC6HeMs7kGl4DCoU/ul7lftEQbUpSuKQXdqnZICB9gqGj4P4fzirmbk2daLbiqOk9fLRuBI9sWwnMz7S2dV4i5QZoEyoX7BDJyiwJvmpYiXD1vYdGrP4UNIDTap5Ia4vz54glauHQ6gsYADxUDgXVEOppd7tB98xUxo4+AuNoFAaLdbuV6BZUYMatRm76mVkyf41N1wanpcAeA4IaTd+KzrJSAWJB
- VvFlySUS
- PC/bwOGXwiiIySJwZm5fFykyOPvsZ59PwWpkagud2Po5nC0jXtWQoZm48suzDLUhI5TouPWGenZniD8NOuXHxdI067kAaJnPGOXPXCmREzfJnSI3LLPRtlmT0NiiXyIIoI/9gVDLnbZqPh85Dcze+pdRiawkf3i2HmGSQrwzU/IbMxZqIxK9jAG4MCAusZQjUWputdquhWGYUKZWfpN0tS4fVhb/0mLLRVDk5+EFc97WY+HmQig3ViwHL6c+/NiHipjgqWWlKzN9fsD0/X9Hft4gVBmc2MWKUAigBqYHjqyvFq5w3lCq98WmAW/HnGPHdyfnEtmAmCXVN9l+B/J7AGygskxEosEZB6NNiyO+rpP492RRqoefIKr2wq8Z/bgHKwbI9RgpxMqSzFcQUhJlN4GkmWn8ATK99ol0hLaRWN466xRHVSCDB9U8DDudwSFKPzPAe0qJAa1BlDod4OdX0EkKljzFFQ+TanJpJzXE3UDCnJ0vza3ctYuRNtuyZxebT+GZ3
+X-Stat-Signature: j9y9wrewci77xcoxoba54mn4nm9tbidk
+X-HE-Tag: 1760111229-94333
+X-HE-Meta: U2FsdGVkX18px9aiOnAHhBYpbdqxrWp1qOX1Y5LZ3njszjrtp4RrJp3jMbMsb2GyhFZZi2UqesVGt8rUkcCm7omVeb0YxOV7yVMxSzun4Nb7MmNduSRBNooHvzio5LDtsbDKTK02UI8ctyqLEo0YmrpVcV5yxpErR8FskhkWpVFZPrl1kOnJpDoreF8mYC7M0bW9kMN6/M8r0+lT5AO1z0WEGnJyjYV/Y9k7Oi3RHe5q+/j8tBKDoqoqz7pmtSTPS971Ng6xuJB/O25ECDtI3zCxd9oAOtExZSt4aT6gNp4ZAhjJ74catuQYWHnbXFUs+aelh70oFV42S0jdXnZFVubEELNIKvbP/y1CFPf8okzm6qgczkrLStiy9aLxrxUzpHtXN0qj73FcaLKo6pL/FMzPGQuDfSN/xzg+ib3su6j0yhSJc8B86qBZbs7FUS2VUAaEb0u0OACtyY29uO6l3gV7qNcbtQgeeEXhnkYkvALU9BEbA7oM72M175sIAdyU815nNWijsRxPY7kOObOQ3lJaKfv4C7qNz56wF0K1N4h142K4+p+9RFFeLjO5G0/xBW/uKtYuIzeTFNzT/YYLMAWLB+m0W9rOgK9ax2HWhqKXvO7KaOsELBgdd9oYS/TaMZDe9wohD/2V8Ww8DQlVDPckJ2/OIer1Yywhytov/8zaQmQZ7PTYstOTjaP/3jT8ZHg1+cd6PDQmLbTMeTrqHswq7Fs2Ps0YVHNBnjZ8iIcdKl+XylrKvo3tsewFRE62ISxRKn3Z8Kk1FbTz1+KE2CwqfEdGiC2fk8hzXy/Lj4TSKWlR8SsvrM4X2jpE2X/mW5vyZVRhHTNPViJJdR9dwXnjPi/phmPfHxHYc6BrTt7xH4XEIrOnNf6tpzAQxOCz4xhBV2gtK8yydCpwYPnLWjVvKWAlg/aJNgoeJOVQMjTE84Suo3kYHeMMwkUMJQ3f+deUfIu1a1EPdl1/0YS
+ 1DrIHjNl
+ NEnv38Sy1QT3zl0BzLpCb/TD5H8xJD+crfFr2vNO7vTX334WMvHb03Pv4zA+PEzlI41N4j9o3KA88rIhVsNIKNoITtnqLIvHoGB8YAT5UHdOoH0n48nyKV4q1AmjOVLOuQzNwDZohC8/VlxICc6yJv5Z4LoeoIIPScE9C801wUeBtvanWmO42VFSnMLKnRwf8K09e9H8Z+Faaw7iU/ot55koSDm/SkXcfSSSMlXJ+Og3uGUNESYVYIPlsu9Bb+8q0FP0ru3PFAa409/XXG2NnKr6xXisbwuiBS3hiAVKlVd5kGeZ7lD7Nf4YRrEv0orLqn3Np627auUGxQV/xsRD7QmXvz/OCyvfLr2MGuiBM0LEpOMqfcaKR/H1xCAdU5Sv4OJlriB+m+UYEDIVE+QkcOJh5e3C1IJ94ZYAuh+UA+Vaz1VWncTleiJIQHaFXkseUZEEoY3sm+B6WON8+WNIS25nnL0L9k987AHR8iTGUFfLCc+jLEdvBWEVcZ+PwNCGiY89v5bb5urHuP5Lr1FmSnXpDnQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,354 +147,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-smp_call_function() & friends have the unfortunate habit of sending IPIs to
-isolated, NOHZ_FULL, in-userspace CPUs, as they blindly target all online
-CPUs.
+text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
+them vs the newly patched instruction. CPUs that are executing in userspace
+do not need this synchronization to happen immediately, and this is
+actually harmful interference for NOHZ_FULL CPUs.
 
-Some callsites can be bent into doing the right, such as done by commit:
+As the synchronization IPIs are sent using a blocking call, returning from
+text_poke_bp_batch() implies all CPUs will observe the patched
+instruction(s), and this should be preserved even if the IPI is deferred.
+In other words, to safely defer this synchronization, any kernel
+instruction leading to the execution of the deferred instruction
+sync (ct_work_flush()) must *not* be mutable (patchable) at runtime.
 
-  cc9e303c91f5 ("x86/cpu: Disable frequency requests via aperfmperf IPI for nohz_full CPUs")
+This means we must pay attention to mutable instructions in the early entry
+code:
+- alternatives
+- static keys
+- static calls
+- all sorts of probes (kprobes/ftrace/bpf/???)
 
-Unfortunately, not all SMP callbacks can be omitted in this
-fashion. However, some of them only affect execution in kernelspace, which
-means they don't have to be executed *immediately* if the target CPU is in
-userspace: stashing the callback and executing it upon the next kernel entry
-would suffice. x86 kernel instruction patching or kernel TLB invalidation
-are prime examples of it.
+The early entry code leading to ct_work_flush() is noinstr, which gets rid
+of the probes.
 
-Reduce the RCU dynticks counter width to free up some bits to be used as a
-deferred callback bitmask. Add some build-time checks to validate that
-setup.
+Alternatives are safe, because it's boot-time patching (before SMP is
+even brought up) which is before any IPI deferral can happen.
 
-Presence of CT_RCU_WATCHING in the ct_state prevents queuing deferred work.
+This leaves us with static keys and static calls.
 
-Later commits introduce the bit:callback mappings.
+Any static key used in early entry code should be only forever-enabled at
+boot time, IOW __ro_after_init (pretty much like alternatives). Exceptions
+are explicitly marked as allowed in .noinstr and will always generate an
+IPI when flipped.
 
-Link: https://lore.kernel.org/all/20210929151723.162004989@infradead.org/
+The same applies to static calls - they should be only updated at boot
+time, or manually marked as an exception.
+
+Objtool is now able to point at static keys/calls that don't respect this,
+and all static keys/calls used in early entry code have now been verified
+as behaving appropriately.
+
+Leverage the new context_tracking infrastructure to defer sync_core() IPIs
+to a target CPU's next kernel entry.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/Kconfig                                 |  9 +++
- arch/x86/Kconfig                             |  1 +
- arch/x86/include/asm/context_tracking_work.h | 16 +++++
- include/linux/context_tracking.h             | 21 ++++++
- include/linux/context_tracking_state.h       | 30 ++++++---
- include/linux/context_tracking_work.h        | 26 ++++++++
- kernel/context_tracking.c                    | 69 +++++++++++++++++++-
- kernel/time/Kconfig                          |  5 ++
- 8 files changed, 165 insertions(+), 12 deletions(-)
- create mode 100644 arch/x86/include/asm/context_tracking_work.h
- create mode 100644 include/linux/context_tracking_work.h
+ arch/x86/include/asm/context_tracking_work.h |  6 ++-
+ arch/x86/include/asm/text-patching.h         |  1 +
+ arch/x86/kernel/alternative.c                | 39 +++++++++++++++++---
+ arch/x86/kernel/kprobes/core.c               |  4 +-
+ arch/x86/kernel/kprobes/opt.c                |  4 +-
+ arch/x86/kernel/module.c                     |  2 +-
+ include/asm-generic/sections.h               | 15 ++++++++
+ include/linux/context_tracking_work.h        |  4 +-
+ 8 files changed, 60 insertions(+), 15 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index d1b4ffd6e0856..a33229e017467 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -968,6 +968,15 @@ config HAVE_CONTEXT_TRACKING_USER_OFFSTACK
- 	  - No use of instrumentation, unless instrumentation_begin() got
- 	    called.
- 
-+config HAVE_CONTEXT_TRACKING_WORK
-+	bool
-+	help
-+	  Architecture supports deferring work while not in kernel context.
-+	  This is especially useful on setups with isolated CPUs that might
-+	  want to avoid being interrupted to perform housekeeping tasks (for
-+	  ex. TLB invalidation or icache invalidation). The housekeeping
-+	  operations are performed upon re-entering the kernel.
-+
- config HAVE_TIF_NOHZ
- 	bool
- 	help
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 05880301212e3..3f1557b7acd8f 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -222,6 +222,7 @@ config X86
- 	select HAVE_CMPXCHG_LOCAL
- 	select HAVE_CONTEXT_TRACKING_USER		if X86_64
- 	select HAVE_CONTEXT_TRACKING_USER_OFFSTACK	if HAVE_CONTEXT_TRACKING_USER
-+	select HAVE_CONTEXT_TRACKING_WORK		if X86_64
- 	select HAVE_C_RECORDMCOUNT
- 	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
- 	select HAVE_OBJTOOL_NOP_MCOUNT		if HAVE_OBJTOOL_MCOUNT
 diff --git a/arch/x86/include/asm/context_tracking_work.h b/arch/x86/include/asm/context_tracking_work.h
-new file mode 100644
-index 0000000000000..5f3b2d0977235
---- /dev/null
+index 5f3b2d0977235..485b32881fde5 100644
+--- a/arch/x86/include/asm/context_tracking_work.h
 +++ b/arch/x86/include/asm/context_tracking_work.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_CONTEXT_TRACKING_WORK_H
-+#define _ASM_X86_CONTEXT_TRACKING_WORK_H
-+
-+static __always_inline void arch_context_tracking_work(enum ct_work work)
-+{
-+	switch (work) {
-+	case CT_WORK_n:
-+		// Do work...
-+		break;
-+	case CT_WORK_MAX:
-+		WARN_ON_ONCE(true);
-+	}
-+}
-+
-+#endif
-diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
-index af9fe87a09225..0b0faa040e9b5 100644
---- a/include/linux/context_tracking.h
-+++ b/include/linux/context_tracking.h
-@@ -5,6 +5,7 @@
- #include <linux/sched.h>
- #include <linux/vtime.h>
- #include <linux/context_tracking_state.h>
-+#include <linux/context_tracking_work.h>
- #include <linux/instrumentation.h>
+@@ -2,11 +2,13 @@
+ #ifndef _ASM_X86_CONTEXT_TRACKING_WORK_H
+ #define _ASM_X86_CONTEXT_TRACKING_WORK_H
  
- #include <asm/ptrace.h>
-@@ -137,6 +138,26 @@ static __always_inline unsigned long ct_state_inc(int incby)
- 	return raw_atomic_add_return(incby, this_cpu_ptr(&context_tracking.state));
++#include <asm/sync_core.h>
++
+ static __always_inline void arch_context_tracking_work(enum ct_work work)
+ {
+ 	switch (work) {
+-	case CT_WORK_n:
+-		// Do work...
++	case CT_WORK_SYNC:
++		sync_core();
+ 		break;
+ 	case CT_WORK_MAX:
+ 		WARN_ON_ONCE(true);
+diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text-patching.h
+index 5337f1be18f6e..a33541ab210db 100644
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -33,6 +33,7 @@ extern void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t i
+  */
+ extern void *text_poke(void *addr, const void *opcode, size_t len);
+ extern void smp_text_poke_sync_each_cpu(void);
++extern void smp_text_poke_sync_each_cpu_deferrable(void);
+ extern void *text_poke_kgdb(void *addr, const void *opcode, size_t len);
+ extern void *text_poke_copy(void *addr, const void *opcode, size_t len);
+ #define text_poke_copy text_poke_copy
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 7bde68247b5fc..07c91f0a30eaf 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -6,6 +6,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/memory.h>
+ #include <linux/execmem.h>
++#include <linux/context_tracking.h>
+ 
+ #include <asm/text-patching.h>
+ #include <asm/insn.h>
+@@ -2648,9 +2649,24 @@ static void do_sync_core(void *info)
+ 	sync_core();
  }
  
-+#ifdef CONFIG_CONTEXT_TRACKING_WORK
-+static __always_inline unsigned long ct_state_inc_clear_work(int incby)
++static bool do_sync_core_defer_cond(int cpu, void *info)
 +{
-+	struct context_tracking *ct = this_cpu_ptr(&context_tracking);
-+	unsigned long new, old, state;
-+
-+	state = arch_atomic_read(&ct->state);
-+	do {
-+		old = state;
-+		new = old & ~CT_WORK_MASK;
-+		new += incby;
-+		state = arch_atomic_cmpxchg(&ct->state, old, new);
-+	} while (old != state);
-+
-+	return new;
++	return !ct_set_cpu_work(cpu, CT_WORK_SYNC);
 +}
-+#else
-+#define ct_state_inc_clear_work(x) ct_state_inc(x)
-+#endif
 +
- static __always_inline bool warn_rcu_enter(void)
++static void __smp_text_poke_sync_each_cpu(smp_cond_func_t cond_func)
++{
++	on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
++}
++
+ void smp_text_poke_sync_each_cpu(void)
  {
- 	bool ret = false;
-diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
-index 0b81248aa03e2..d2c302133672f 100644
---- a/include/linux/context_tracking_state.h
-+++ b/include/linux/context_tracking_state.h
-@@ -5,6 +5,7 @@
- #include <linux/percpu.h>
- #include <linux/static_key.h>
- #include <linux/context_tracking_irq.h>
-+#include <linux/context_tracking_work.h>
- 
- /* Offset to allow distinguishing irq vs. task-based idle entry/exit. */
- #define CT_NESTING_IRQ_NONIDLE	((LONG_MAX / 2) + 1)
-@@ -39,16 +40,19 @@ struct context_tracking {
- };
+-	on_each_cpu(do_sync_core, NULL, 1);
++	__smp_text_poke_sync_each_cpu(NULL);
++}
++
++void smp_text_poke_sync_each_cpu_deferrable(void)
++{
++	__smp_text_poke_sync_each_cpu(do_sync_core_defer_cond);
+ }
  
  /*
-- * We cram two different things within the same atomic variable:
-+ * We cram up to three different things within the same atomic variable:
-  *
-- *                     CT_RCU_WATCHING_START  CT_STATE_START
-- *                                |                |
-- *                                v                v
-- *     MSB [ RCU watching counter ][ context_state ] LSB
-- *         ^                       ^
-- *         |                       |
-- * CT_RCU_WATCHING_END        CT_STATE_END
-+ *                     CT_RCU_WATCHING_START                  CT_STATE_START
-+ *                                |         CT_WORK_START          |
-+ *                                |               |                |
-+ *                                v               v                v
-+ *     MSB [ RCU watching counter ][ context work ][ context_state ] LSB
-+ *         ^                       ^               ^
-+ *         |                       |               |
-+ *         |                  CT_WORK_END          |
-+ * CT_RCU_WATCHING_END                        CT_STATE_END
-  *
-+ * The [ context work ] region spans 0 bits if CONFIG_CONTEXT_WORK=n
-  * Bits are used from the LSB upwards, so unused bits (if any) will always be in
-  * upper bits of the variable.
+@@ -2820,6 +2836,7 @@ noinstr int smp_text_poke_int3_handler(struct pt_regs *regs)
   */
-@@ -59,18 +63,24 @@ struct context_tracking {
- #define CT_STATE_START 0
- #define CT_STATE_END   (CT_STATE_START + CT_STATE_WIDTH - 1)
- 
--#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_STATE_WIDTH)
-+#define CT_WORK_WIDTH (IS_ENABLED(CONFIG_CONTEXT_TRACKING_WORK) ? CT_WORK_MAX_OFFSET : 0)
-+#define	CT_WORK_START (CT_STATE_END + 1)
-+#define CT_WORK_END   (CT_WORK_START + CT_WORK_WIDTH - 1)
-+
-+#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_WORK_WIDTH - CT_STATE_WIDTH)
- #define CT_RCU_WATCHING_WIDTH     (IS_ENABLED(CONFIG_RCU_DYNTICKS_TORTURE) ? 2 : CT_RCU_WATCHING_MAX_WIDTH)
--#define CT_RCU_WATCHING_START     (CT_STATE_END + 1)
-+#define CT_RCU_WATCHING_START     (CT_WORK_END + 1)
- #define CT_RCU_WATCHING_END       (CT_RCU_WATCHING_START + CT_RCU_WATCHING_WIDTH - 1)
- #define CT_RCU_WATCHING           BIT(CT_RCU_WATCHING_START)
- 
- #define CT_STATE_MASK        GENMASK(CT_STATE_END,        CT_STATE_START)
-+#define CT_WORK_MASK         GENMASK(CT_WORK_END,         CT_WORK_START)
- #define CT_RCU_WATCHING_MASK GENMASK(CT_RCU_WATCHING_END, CT_RCU_WATCHING_START)
- 
- #define CT_UNUSED_WIDTH (CT_RCU_WATCHING_MAX_WIDTH - CT_RCU_WATCHING_WIDTH)
- 
- static_assert(CT_STATE_WIDTH        +
-+	      CT_WORK_WIDTH         +
- 	      CT_RCU_WATCHING_WIDTH +
- 	      CT_UNUSED_WIDTH       ==
- 	      CT_SIZE);
-diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
-new file mode 100644
-index 0000000000000..c68245f8d77c5
---- /dev/null
-+++ b/include/linux/context_tracking_work.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_CONTEXT_TRACKING_WORK_H
-+#define _LINUX_CONTEXT_TRACKING_WORK_H
-+
-+#include <linux/bitops.h>
-+
-+enum {
-+	CT_WORK_n_OFFSET,
-+	CT_WORK_MAX_OFFSET
-+};
-+
-+enum ct_work {
-+	CT_WORK_n        = BIT(CT_WORK_n_OFFSET),
-+	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
-+};
-+
-+#include <asm/context_tracking_work.h>
-+
-+#ifdef CONFIG_CONTEXT_TRACKING_WORK
-+extern bool ct_set_cpu_work(unsigned int cpu, enum ct_work work);
-+#else
-+static inline bool
-+ct_set_cpu_work(unsigned int cpu, unsigned int work) { return false; }
-+#endif
-+
-+#endif
-diff --git a/kernel/context_tracking.c b/kernel/context_tracking.c
-index fb5be6e9b423f..3238bb1f41ff4 100644
---- a/kernel/context_tracking.c
-+++ b/kernel/context_tracking.c
-@@ -72,6 +72,70 @@ static __always_inline void rcu_task_trace_heavyweight_exit(void)
- #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
- }
- 
-+#ifdef CONFIG_CONTEXT_TRACKING_WORK
-+static noinstr void ct_work_flush(unsigned long seq)
-+{
-+	int bit;
-+
-+	seq = (seq & CT_WORK_MASK) >> CT_WORK_START;
-+
-+	/*
-+	 * arch_context_tracking_work() must be noinstr, non-blocking,
-+	 * and NMI safe.
-+	 */
-+	for_each_set_bit(bit, &seq, CT_WORK_MAX)
-+		arch_context_tracking_work(BIT(bit));
-+}
-+
-+/**
-+ * ct_set_cpu_work - set work to be run at next kernel context entry
-+ *
-+ * If @cpu is not currently executing in kernelspace, it will execute the
-+ * callback mapped to @work (see arch_context_tracking_work()) at its next
-+ * entry into ct_kernel_enter_state().
-+ *
-+ * If it is already executing in kernelspace, this will be a no-op.
-+ */
-+bool ct_set_cpu_work(unsigned int cpu, enum ct_work work)
-+{
-+	struct context_tracking *ct = per_cpu_ptr(&context_tracking, cpu);
-+	unsigned int old;
-+	bool ret = false;
-+
-+	if (!ct->active)
-+		return false;
-+
-+	preempt_disable();
-+
-+	old = atomic_read(&ct->state);
-+
-+	/*
-+	 * The work bit must only be set if the target CPU is not executing
-+	 * in kernelspace.
-+	 * CT_RCU_WATCHING is used as a proxy for that - if the bit is set, we
-+	 * know for sure the CPU is executing in the kernel whether that be in
-+	 * NMI, IRQ or process context.
-+	 * Set CT_RCU_WATCHING here and let the cmpxchg do the check for us;
-+	 * the state could change between the atomic_read() and the cmpxchg().
-+	 */
-+	old |= CT_RCU_WATCHING;
-+	/*
-+	 * Try setting the work until either
-+	 * - the target CPU has entered kernelspace
-+	 * - the work has been set
-+	 */
-+	do {
-+		ret = atomic_try_cmpxchg(&ct->state, &old, old | (work << CT_WORK_START));
-+	} while (!ret && !(old & CT_RCU_WATCHING));
-+
-+	preempt_enable();
-+	return ret;
-+}
-+#else
-+static __always_inline void ct_work_flush(unsigned long work) { }
-+static __always_inline void ct_work_clear(struct context_tracking *ct) { }
-+#endif
-+
- /*
-  * Record entry into an extended quiescent state.  This is only to be
-  * called when not already in an extended quiescent state, that is,
-@@ -88,7 +152,7 @@ static noinstr void ct_kernel_exit_state(int offset)
- 	rcu_task_trace_heavyweight_enter();  // Before CT state update!
- 	// RCU is still watching.  Better not be in extended quiescent state!
- 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !rcu_is_watching_curr_cpu());
--	(void)ct_state_inc(offset);
-+	(void)ct_state_inc_clear_work(offset);
- 	// RCU is no longer watching.
- }
- 
-@@ -99,7 +163,7 @@ static noinstr void ct_kernel_exit_state(int offset)
-  */
- static noinstr void ct_kernel_enter_state(int offset)
+ void smp_text_poke_batch_finish(void)
  {
--	int seq;
-+	unsigned long seq;
++	smp_cond_func_t cond = do_sync_core_defer_cond;
+ 	unsigned char int3 = INT3_INSN_OPCODE;
+ 	unsigned int i;
+ 	int do_sync;
+@@ -2856,11 +2873,21 @@ void smp_text_poke_batch_finish(void)
+ 	 * First step: add a INT3 trap to the address that will be patched.
+ 	 */
+ 	for (i = 0; i < text_poke_array.nr_entries; i++) {
+-		text_poke_array.vec[i].old = *(u8 *)text_poke_addr(&text_poke_array.vec[i]);
+-		text_poke(text_poke_addr(&text_poke_array.vec[i]), &int3, INT3_INSN_SIZE);
++		void *addr = text_poke_addr(&text_poke_array.vec[i]);
++
++		/*
++		 * There's no safe way to defer IPIs for patching text in
++		 * .noinstr, record whether there is at least one such poke.
++		 */
++		if (is_kernel_noinstr_text((unsigned long)addr) ||
++		    is_module_noinstr_text_address((unsigned long)addr))
++			cond = NULL;
++
++		text_poke_array.vec[i].old = *((u8 *)addr);
++		text_poke(addr, &int3, INT3_INSN_SIZE);
+ 	}
+ 
+-	smp_text_poke_sync_each_cpu();
++	__smp_text_poke_sync_each_cpu(cond);
  
  	/*
- 	 * CPUs seeing atomic_add_return() must see prior idle sojourns,
-@@ -107,6 +171,7 @@ static noinstr void ct_kernel_enter_state(int offset)
- 	 * critical section.
- 	 */
- 	seq = ct_state_inc(offset);
-+	ct_work_flush(seq);
- 	// RCU is now watching.  Better not be in an extended quiescent state!
- 	rcu_task_trace_heavyweight_exit();  // After CT state update!
- 	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !(seq & CT_RCU_WATCHING));
-diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-index 7c6a52f7836ce..1a0c027aad141 100644
---- a/kernel/time/Kconfig
-+++ b/kernel/time/Kconfig
-@@ -181,6 +181,11 @@ config CONTEXT_TRACKING_USER_FORCE
- 	  Say N otherwise, this option brings an overhead that you
- 	  don't want in production.
+ 	 * Second step: update all but the first byte of the patched range.
+@@ -2922,7 +2949,7 @@ void smp_text_poke_batch_finish(void)
+ 		 * not necessary and we'd be safe even without it. But
+ 		 * better safe than sorry (plus there's not only Intel).
+ 		 */
+-		smp_text_poke_sync_each_cpu();
++		__smp_text_poke_sync_each_cpu(cond);
+ 	}
  
-+config CONTEXT_TRACKING_WORK
-+	bool
-+	depends on HAVE_CONTEXT_TRACKING_WORK && CONTEXT_TRACKING_USER
-+	default y
+ 	/*
+@@ -2943,7 +2970,7 @@ void smp_text_poke_batch_finish(void)
+ 	}
+ 
+ 	if (do_sync)
+-		smp_text_poke_sync_each_cpu();
++		__smp_text_poke_sync_each_cpu(cond);
+ 
+ 	/*
+ 	 * Remove and wait for refs to be zero.
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 6079d15dab8ca..cce08add9aa0e 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -790,7 +790,7 @@ void arch_arm_kprobe(struct kprobe *p)
+ 	u8 int3 = INT3_INSN_OPCODE;
+ 
+ 	text_poke(p->addr, &int3, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 	perf_event_text_poke(p->addr, &p->opcode, 1, &int3, 1);
+ }
+ 
+@@ -800,7 +800,7 @@ void arch_disarm_kprobe(struct kprobe *p)
+ 
+ 	perf_event_text_poke(p->addr, &int3, 1, &p->opcode, 1);
+ 	text_poke(p->addr, &p->opcode, 1);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ }
+ 
+ void arch_remove_kprobe(struct kprobe *p)
+diff --git a/arch/x86/kernel/kprobes/opt.c b/arch/x86/kernel/kprobes/opt.c
+index 0aabd4c4e2c4f..eada8dca1c2e8 100644
+--- a/arch/x86/kernel/kprobes/opt.c
++++ b/arch/x86/kernel/kprobes/opt.c
+@@ -513,11 +513,11 @@ void arch_unoptimize_kprobe(struct optimized_kprobe *op)
+ 	       JMP32_INSN_SIZE - INT3_INSN_SIZE);
+ 
+ 	text_poke(addr, new, INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 	text_poke(addr + INT3_INSN_SIZE,
+ 		  new + INT3_INSN_SIZE,
+ 		  JMP32_INSN_SIZE - INT3_INSN_SIZE);
+-	smp_text_poke_sync_each_cpu();
++	smp_text_poke_sync_each_cpu_deferrable();
+ 
+ 	perf_event_text_poke(op->kp.addr, old, JMP32_INSN_SIZE, new, JMP32_INSN_SIZE);
+ }
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 0ffbae902e2fe..c6c4f391eb465 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -206,7 +206,7 @@ static int write_relocate_add(Elf64_Shdr *sechdrs,
+ 				   write, apply);
+ 
+ 	if (!early) {
+-		smp_text_poke_sync_each_cpu();
++		smp_text_poke_sync_each_cpu_deferrable();
+ 		mutex_unlock(&text_mutex);
+ 	}
+ 
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index 0755bc39b0d80..7d2403014010e 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -199,6 +199,21 @@ static inline bool is_kernel_inittext(unsigned long addr)
+ 	       addr < (unsigned long)_einittext;
+ }
+ 
 +
- config NO_HZ
- 	bool "Old Idle dynticks config"
- 	help
++/**
++ * is_kernel_noinstr_text - checks if the pointer address is located in the
++ *                    .noinstr section
++ *
++ * @addr: address to check
++ *
++ * Returns: true if the address is located in .noinstr, false otherwise.
++ */
++static inline bool is_kernel_noinstr_text(unsigned long addr)
++{
++	return addr >= (unsigned long)__noinstr_text_start &&
++	       addr < (unsigned long)__noinstr_text_end;
++}
++
+ /**
+  * __is_kernel_text - checks if the pointer address is located in the
+  *                    .text section
+diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
+index c68245f8d77c5..2facc621be067 100644
+--- a/include/linux/context_tracking_work.h
++++ b/include/linux/context_tracking_work.h
+@@ -5,12 +5,12 @@
+ #include <linux/bitops.h>
+ 
+ enum {
+-	CT_WORK_n_OFFSET,
++	CT_WORK_SYNC_OFFSET,
+ 	CT_WORK_MAX_OFFSET
+ };
+ 
+ enum ct_work {
+-	CT_WORK_n        = BIT(CT_WORK_n_OFFSET),
++	CT_WORK_SYNC     = BIT(CT_WORK_SYNC_OFFSET),
+ 	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
+ };
+ 
 -- 
 2.51.0
 
