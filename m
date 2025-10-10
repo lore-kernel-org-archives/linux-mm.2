@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29F10CCD183
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 00:51:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F01CCD183
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 01:02:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 662968E00A2; Thu,  9 Oct 2025 20:51:14 -0400 (EDT)
+	id 7428F8E00A5; Thu,  9 Oct 2025 21:02:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 639A38E0002; Thu,  9 Oct 2025 20:51:14 -0400 (EDT)
+	id 719C48E0002; Thu,  9 Oct 2025 21:02:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52BE88E00A2; Thu,  9 Oct 2025 20:51:14 -0400 (EDT)
+	id 62F5B8E00A5; Thu,  9 Oct 2025 21:02:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4058F8E0002
-	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 20:51:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B118B137A2D
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 00:51:13 +0000 (UTC)
-X-FDA: 83980375626.10.C4E3A19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E66FF180008
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 00:51:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2JktYbzm;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760057472; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 524188E0002
+	for <linux-mm@kvack.org>; Thu,  9 Oct 2025 21:02:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2AD9837C9
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:02:31 +0000 (UTC)
+X-FDA: 83980404102.05.657B9D8
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C2E3A1A0002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 01:02:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V31qK56h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760058149; a=rsa-sha256;
 	cv=none;
-	b=2ah9+p48+w9gyf03JKwcGaeGCT96xAl15pc1mSYnvmLEBzongr0s1i9T9y6DiqLFgZ51KX
-	4KEMZlb58hQ7ZiPmDV5MREjgMt1tuWyMjxh1RKG06yenEX92rGADXN4pHHLJfJn+0FVrcw
-	8BL2PTllc6X4slyh4+dCBFXXmwcyDOM=
+	b=6GGamehff6pGCkusqINDV1sK7Fh+h0A7jxGY6tB14pgl+j41ZDniDhcxprFcRJIZFuNUVd
+	FPZ8omaRNtDTYAP/EbCdcKgEGjl7eeXIljNXEJNp7wazJN3nGcV66wtwd+OkA+ZVBYf5q4
+	6t4jFFy+RD0i2J7tiUSM0vr5NOjO7TE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2JktYbzm;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V31qK56h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760057472;
+	s=arc-20220608; t=1760058149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ixaQLTg3CkcDLvWdQYxVSRQH9QTFlcattUSgzftfR1c=;
-	b=U6O54++exMAkq32ddTBU04Ire9um7u3jhfqSXtHQHqrh4vlhG2y4OIyFCHVBran71vqCEf
-	B9iSz/4TJWhoWcCoaTALH5XFQz8qo/iT8Cy3dFS9g6BprJDjJg+azQbN/vdLESitBVczuQ
-	KXc0fPEJYEYH/5dUFVOlO5veIZTOf0s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3176543F7C;
-	Fri, 10 Oct 2025 00:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24497C4CEE7;
-	Fri, 10 Oct 2025 00:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760057470;
-	bh=A3UrofGwAstq0M2Uw/J4CU3Y1letTXoVhhSuZWoGGb8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2JktYbzmhzcnUjZxn4TJsLrCa4CdQmyNAz48GhTm60ifXFoRmbMF9Tc/M9RRLbvJV
-	 OTvz7R6JSbLUT9mEhQjhUsNNq5Xpz4vLivUTBLXDvZAdv81wS0YgNddSVET7bP2mj+
-	 E2cRLHzPEXFAzCsftZVpoY141RGvPOXXQkXJVlZA=
-Date: Thu, 9 Oct 2025 17:51:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mike Rapoport <rppt@kernel.org>, Alexander
- Potapenko <glider@google.com>, Randy Dunlap <rdunlap@infradead.org>, Marco
- Elver <elver@google.com>, Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben
- Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- "Liang, Kan" <kan.liang@linux.intel.com>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Sami Tolvanen <samitolvanen@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Rong Xu
- <xur@google.com>, Naveen N Rao <naveen@kernel.org>, David Kaplan
- <david.kaplan@amd.com>, Andrii Nakryiko <andrii@kernel.org>, Jinjie Ruan
- <ruanjinjie@huawei.com>, Nam Cao <namcao@linutronix.de>,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-mm@kvack.org, llvm@lists.linux.dev, Andrey Ryabinin
- <ryabinin.a.a@gmail.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
- kasan-dev@googlegroups.com, "David S. Miller" <davem@davemloft.net>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 00/23] mm/ksw: Introduce real-time KStackWatch
- debugging tool
-Message-Id: <20251009175107.ee07228e3253afca5b487316@linux-foundation.org>
-In-Reply-To: <20251009105650.168917-1-wangjinchao600@gmail.com>
-References: <20251009105650.168917-1-wangjinchao600@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	bh=FnR0uJiI/epmSV/1cEgYnUQ4eWwUQy0eIshJnBoMl6Y=;
+	b=YHu7G784mHITQwcSit8u6olA4uPAgpC8qiNLLr5m6wT59E8Z13T9nkI38doMIyeVO7jxZb
+	fXqRWfEy6Y8M3NYB/4VprxlsQAH6Is8SoZUHC/3+soyWOaop8L3IX7Zoi5TJjtldMfbX+B
+	2fcTWVsSQKXJ3+IqFmRX9IiRKB0Jj8c=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3f42b54d1b9so1345494f8f.0
+        for <linux-mm@kvack.org>; Thu, 09 Oct 2025 18:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760058148; x=1760662948; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FnR0uJiI/epmSV/1cEgYnUQ4eWwUQy0eIshJnBoMl6Y=;
+        b=V31qK56h0b9TKTRWp5pPY448x7pOH/2mMFzyibmbfGO2U2VcLa6GDKz+Vb+ChDDuee
+         d2suBufISZLwwtWA3BoWoEacse5Jt1kl52wA77cvrdQRZWgfe4A6g/1NCZ/BTJW5NPFk
+         RbsNRtM62CVvtEut3jbadfTn6lnl1mN7ZhKLuJCKsqQZZfuwocz7m5fynqIsVjwf0Aig
+         Z7uIFjBzcJSegXb61Fc/je+/OPNxhjm0KpD9CURb/B/HJIKo1II3PPvQ4v2N8ce7TPy9
+         ho0cAnZLmndp2bvdvaTni8+nZipsFRVWpgofD5ulylCL1XKYmgjPZ0gl0wzjLWLVu9QH
+         GRJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760058148; x=1760662948;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FnR0uJiI/epmSV/1cEgYnUQ4eWwUQy0eIshJnBoMl6Y=;
+        b=aIpK/lzBI2zVvtyCKFBnkgeZt7kjmlQQ4tjK3qS3i2sQbdqmD+TI2GIXWsjhC5cofV
+         syYMllsv755oAxyvrYrPNT8k/l0Zn9gYnwGItJUSO6B/YML7FQ9qNWNZNAQ0R7hVckGN
+         dAFv9ESCoeULM7JKv0orZ/E71s1BHgopTNTzGykWKLIaN9X2M25JP9oBgAtoQtyP9ZqC
+         6Wwz8MhIQHH9IrxwpsS5y2zAaWaoJE7NaU3mO55iE1ufnILbTeEliK8tdyNtcozi1YMm
+         LkEIzyXAMy1L+u9iXrNi+3zOkcajkqACnfiCTol/fRk0WS1TP6e1UBTei0NuLbKngaXE
+         0AeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXMoqQa87G3Y2LCX4I4QJCylD/3WllyUDYgya3dxJnFqKgol8lFaGB+HNudeDdk69xM2TzZwz33/Q==@kvack.org
+X-Gm-Message-State: AOJu0YzHKYDfTP3ODa6iWaoE6X41FTeeeh516p/bXXLGJmhQwsKDkqrv
+	6TY9WD9SPZqdsZFClWyL5hNpwjK9SMEije6VG5Fwx1hrO/WM/4YtfxYrWoJi2DJuucUh3dkiJIs
+	gEWhWMZH7uvdNTXxe0XYXiseyMjzfHrk=
+X-Gm-Gg: ASbGncviH6XDyT2zKbnd/bpJWFXfxLsr+HqX5CHpwR7VgSY48ZUyxeMa6WtP8J2QshC
+	m4hzHVtA5LfSV+NA9MwLGufUyGvpymEp0teTJWyPWnv6Wp9H1PStgnFMnBEiFzjt5j/aFIeZpMK
+	WcbZM6tO4a/mkOwHBjTKn/StVsDloW1t879vnpzmlz4wwp9R3frYPqpT8TcdkJqtUye3qEt5uZ/
+	BQTYLlc1TYquS7QPXTf/hpkSQxwmKMmw4ygmeq/gf11JL/az0mFCCwnZOYINDI8
+X-Google-Smtp-Source: AGHT+IGH4L1PsW2HSLnPT1b+FvAV7y3XviS/A+70p3mDX7ru+D0SLH/bqU8GIUNA4SjlCEDYSkoogFsoO2+4hU5l5hI=
+X-Received: by 2002:a05:6000:1863:b0:3f6:9c5a:e1ff with SMTP id
+ ffacd0b85a97d-4266e7dfda8mr6665630f8f.39.1760058148046; Thu, 09 Oct 2025
+ 18:02:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <68e7e6ad.a70a0220.126b66.0043.GAE@google.com> <20251009165241.4d78dc5d9fa5525d988806b5@linux-foundation.org>
+ <CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com> <20251009174108.ad6fea5b1e4bb84b8e2e223b@linux-foundation.org>
+In-Reply-To: <20251009174108.ad6fea5b1e4bb84b8e2e223b@linux-foundation.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 9 Oct 2025 18:02:17 -0700
+X-Gm-Features: AS18NWAbHuQ_j1bUNdwnvSYqJz0NpolTFAn_Q_jw8qP8y-DnFQMt1Zor-q5enF4
+Message-ID: <CAADnVQKkLyJ0cbLet3q3X+X70FPAejcqTxP66d82WTO82c16rw@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] WARNING: locking bug in __set_page_owner (2)
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brendan Jackman <jackmanb@google.com>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Michal Hocko <mhocko@suse.com>, Network Development <netdev@vger.kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, syzkaller-bugs <syzkaller-bugs@googlegroups.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, ziy@nvidia.com, bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: stthjtxkkbqawoxb8chdx7c8jikcun7g
+X-Rspamd-Queue-Id: C2E3A1A0002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E66FF180008
-X-Stat-Signature: n6xdf97gbn8arex9smsso8a5s84uf8xz
-X-HE-Tag: 1760057471-737134
-X-HE-Meta: U2FsdGVkX19K6yNvkMEFEc834i6lD54o7owiNxppOQL+TODemGdJ070LZSGWZGsR4KGw0wwQ3t5j9s4ru75pPRByuwVVoweaOBUlrfzk/LaOF1AsBKSLdyBXQA4AjGqycHwOV5GmWtmXRfCH/eKcAkWfubaNTK0tdf/m0U1P/BfKOicpvQXq/hOBLVb7GUunad3C1iCN9uDx6ORFvIaQpSpwCdSSdIOZ+hBmMGN3shAPXJ5/O7gi7V2ec5v37sZ5Vc8edqU65I5h2auRR5qHI9q1sI/0VQIVSjY6Iog/NLVSIw8RugbwnMvkBlcySh959VSYP+6XDBkxti0bhb20G/sTd2SU49w3vAeBcKxblUp4DhYypnxZtisRqMTlYFRjt9W74xmCL3cf5DytcQBD/U4RQfN8pUlcXadQdpvK84eXLyB3amSP9HV2hh3DbLPiXyU1pp82M/ucu9OrNd4TPHkErO0NgARyK/AJJJYCsScitrQiNx/LPJXO/aS1F/fHQCRUnwAjqhLUJUVDmkDEWpzCo8RFy6mYrnga+LXwmvLZLcmPFp9ZuYF6hE/W0QISCZtkBKq1Iw8DltLZenZAd5lqpxeOiGcKl0RZo1CTfUiy4In9quRoZc0xMXu4K6xfvSlwHotOsQJWRAtb1t8v8I64Yl1h1uG1Ehh68Le288ugOV6SHkdaJU3MNrQ0DJomiBorCDdI3ylBjln78TdUlEHVL5UZB6d6FUfvxJ+2HIvo7OfKR/6IRELSjV9RvDScyHHW6Tb+hMpnj+mDNT59QctQLIgEAidL6JFOO238sTuJ2nmWpLnJxCNwzSet6viRciu79quHEUdblW04yBnF7cRwcPzsdPvq6jtDc8d8PdXD58gjxtXdNFYVepuq84R+3pvMaUCAG6KNht4vdSpo7RAPCQ2ZZ5dmDdJ+0Hb2hiBhISNMF/fHBQT9YNdRSsVzstjsl0XPVw+vQ/pyljv
- 8xKgeQyL
- hAI5P2fNmB+szPho+417DgTljaASUosw2fh6g1qbLmuf1DqBLzToZVjzR5lsTQENyrBEAVbJKuzJI644wXTgZwXl/reQeQpm6Sw7aUmpU3EdIta5mnXkOTeqFgTSVDsbFVfTkW2HU6vdxME2N4nvq+QIdIuw0bP0JcsaDKvkJCr3mSDiJPP5P4iv0LbtPUOtRgRSqHOj3wfkd0ryf8hJy/smcxUT0MlHgrRyEzk12FEsG/7BI93bIKAwazsTZ1Z4dRAtMk9GqMdg3JamD9RMry86r0AIVnCUWIR8ysgPVPBLdELiA6gN+nEGy+3JzBOb2tqB26r9ZoCeEJWoJm+9HKCYWan+zH7bBKocLo3zVJ5DS0oyb0l91kTZFzg==
+X-HE-Tag: 1760058149-811975
+X-HE-Meta: U2FsdGVkX1+cI2QloqYfBii5sHpufuzQO19nTWWUjKMtRzknCYIBa6VulM++aXoj+VbwwG/jvEDrHv4hCL0jr1CiP/VECDxe6ww4r3GWXQsxvpXqlZf/dYhPBv1RAjtjM7RH8NuX0MlV9/DjfCENAmeavKdvCIyBbzm7pZriCB3w8BShZtKeVC4W1cK49RLVzovbQOASOcl+EBzZphNtx5Vlpz8SoveUs2p/3ZIpceJlKivgVuvGfib5JIqpWFKaQWW/eyEvyGjPvDIqeCNPDeOPGgh+A5l60IcXFcBeQNOwUF5i5drYOwJIvFIYJEFcYmc9SdFtf9gHj54MQirOprddaw7ZxCcK3IDGP0/2xtUn7If23U5iQAPGpm/M1Llwlof7g+vdPI2nxfJn9T4F/+iAONxGVUYZHroCz5VtWRbOkg786RrUtpg0VDqTH+nZLNrhIhjJnRKtl3XeF1F5Fyz7DYpWEOvW0tflf4tmGRIh/PcTlFRk71vsDfEm5xMwYI2H4hwdLEAl2j3r1f72c4kE4D8rO/Vdpz/7eOivNPf4ie4DwJ81FFm8BnnG/Ri7kK8zGvShkS/txyL+25oq1ii2BkMH2d14J77l/d1ZR2NjP1Ru9Bssjyd5RYkwTL1Esl2vKFQMTXAgbbvSXFYFEWa0CNcjKpLdZz887hRvyvBBi33//5qK89FLdywhcUJMshaV6Se9gUgZHOygI7l+1nmnu6lDFsJmr4qzfG99YFMgbXTE59tTWYb5mmgXQPTP25O6mGFRNElUOR4xyTCdpQAwEBXaArl11aTr1xMIq+i9Hh3VhcAOQs6DBiIbs+UC7cgstznMcc+K6WClGgO9ZbRH1ZIizXYch+2JEO1uJknU7grz3lg1Vn0M630scT0UWWqzYyvhbxkQ6CPx7U+TMmw6Cj6+M4csPlrqhe0jKZJmf4/qQ/zEhrrP3lF4oJlpJSJmK5nWR4k6DapzEft
+ V38olZFP
+ eWcZHrGd8vBf0SdT2AMxsJTn5Qz6aftW6fm0QreSnVwzQ+GJyF3zCLKD83DB/njuGONYK70zZm19guAB7u0g9FDeRKG1ZuAqaX4o/eEjMmQN67iHpEyB2hDSDnE+Tgf9KYgiy/4aqc9es5cHIysDquaNHOiYF7dK4Or1/LqtlPAwlHSy6VKiJaZhMkgRdRzUSTyyJCrpxcaWnU8D76tTElqQtB7YwZ09y3spAbbRHv1aofdFZ+BrsCVOnpALNjqwejeqUFOoA2SIPdNLpWj7f5CuYY3LOVpFXgVwPFMZu6FZPTXf22eQKl4FjoV3rjSv22C86FT30lhImHf5qfgtYM7j0kKOgt9wm3NisjcznWMQ+X4b4/cq55/Kj3t+83dGkyb93jx1IXOmmQhBS6IcNAhu74+3dbhnQXgixg2avY8j6C8oxaMjWx8oToWBcb+l/NvLBOkgCdkWKROObpwUXhDaWBF0ueYM5Iw0gGH3E+1zzxmV1PCZ+P5B39caBKTbCyFD+ymwvv8xJ/BWNZ/44xFJCl7x+ux0T5jwVipyV68ZoeE09NbLoUkVWw/ra97dhHgWtASUDC+0H8Ef+2/1MNWORWoHJBJzTlJ+BN/ejg05elKU1hM8A1U23LIUWXpVpAVMrkVz+VMx7qaEvoneuReb2uHqPWtRK1Zm/lORsBOoq+nQooKP5ZG8WSo7PeSvyHjs2Czuj6f1dVMVGeDXKtXMZ+7cBxZ2T5nexYrji7/SW75iffxoHe+GFt/SVMipvAbPl+aTtZSQcwIruV6zFiU9lSILQjtDUXhDFN/0z7/eMao9qbty7TcPgHq6HiHANTsD9my/TCYrV4uidj1oS8M2rMli4ylpytzCNIpTsiDvCG4yBEsuY2myuxtAuNOj+TvNPILS1ZXWd1pk15veQVws77pAPjXrpcWpzVO7HFpxJy4BaUU3EfiMbqOAsyGuvjE4YalaJ3Q1MUqOArxE4hAw8//EI
+ i0CTNLiV
+ J3+fFIYtdo2Ah+cGwlFVBrnCkwS0/19xHG2sDetsF+hdlRCyS59aCcohAHlZbLGMVJZngBNYLGP83IiL87WEGEpWqIk9uCrHQRMrY/7bn8JBAuuE+/yMCajPKv11s0l0nkPxfXnoVWwYuK/dVHqzOqDTXnUiF8yqyBGMaKU6cA8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,40 +123,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Oct 2025 18:55:36 +0800 Jinchao Wang <wangjinchao600@gmail.com> wrote:
-
-> This patch series introduces KStackWatch, a lightweight debugging tool to detect
-> kernel stack corruption in real time. It installs a hardware breakpoint
-> (watchpoint) at a function's specified offset using `kprobe.post_handler` and
-> removes it in `fprobe.exit_handler`. This covers the full execution window and
-> reports corruption immediately with time, location, and a call stack.
-> 
-> The motivation comes from scenarios where corruption occurs silently in one
-> function but manifests later in another, without a direct call trace linking
-> the two. Such bugs are often extremely hard to debug with existing tools.
-> These scenarios are demonstrated in test 3–5 (silent corruption test, patch 20).
-> 
-> ...
+On Thu, Oct 9, 2025 at 5:41=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
 >
->  20 files changed, 1809 insertions(+), 62 deletions(-)
+> On Thu, 9 Oct 2025 17:26:21 -0700 Alexei Starovoitov <alexei.starovoitov@=
+gmail.com> wrote:
+>
+> > On Thu, Oct 9, 2025 at 4:52=E2=80=AFPM Andrew Morton <akpm@linux-founda=
+tion.org> wrote:
+> > >
+> > > On Thu, 09 Oct 2025 09:45:33 -0700 syzbot <syzbot+8259e1d0e3ae8ed0c49=
+0@syzkaller.appspotmail.com> wrote:
+> > >
+> > > > Hello,
+> > > >
+> > > > syzbot found the following issue on:
+> > > >
+> > > > HEAD commit:    2c95a756e0cf net: pse-pd: tps23881: Fix current mea=
+suremen..
+> > > > git tree:       net
+> > > > console output: https://syzkaller.appspot.com/x/log.txt?x=3D16e1852=
+f980000
+> > > > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D5bcbbf1=
+9237350b5
+> > > > dashboard link: https://syzkaller.appspot.com/bug?extid=3D8259e1d0e=
+3ae8ed0c490
+> > > > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f9=
+09b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> > > >
+> > > > Unfortunately, I don't have any reproducer for this issue yet.
+> > > >
+> > > > Downloadable assets:
+> > > > disk image: https://storage.googleapis.com/syzbot-assets/8272657e42=
+98/disk-2c95a756.raw.xz
+> > > > vmlinux: https://storage.googleapis.com/syzbot-assets/4e53ba690f28/=
+vmlinux-2c95a756.xz
+> > > > kernel image: https://storage.googleapis.com/syzbot-assets/6112d620=
+d6fc/bzImage-2c95a756.xz
+> > > >
+> > > > IMPORTANT: if you fix the issue, please add the following tag to th=
+e commit:
+> > > > Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
+> > >
+> > > At 2c95a756e0cf, page_owner.c hasn't been modified in a couple of yea=
+rs.
+> > >
+> > > How can add_stack_record_to_list()'s spin_lock_irqsave() be "invalid
+> > > wait context"?  In NMI, yes, but the trace doesn't indicate that we'r=
+e
+> > > in an NMI.
+> > >
+> > > Confused.  I'm suspecting BPF involvement.  Cc'ed for help, please.
+> >
+> > The attached patch should fix it.
+> > There are different options, but this one is the simplest.
+>
+> Cool, thanks.
+>
+> > From: Alexei Starovoitov <ast@kernel.org>
+> > Subject: mm: don't spin in add_stack_record when gfp flags don't allow
+> > Date: Thu, 9 Oct 2025 17:15:13 -0700
+> >
+> > syzbot was able to find the following path:
+> >   add_stack_record_to_list mm/page_owner.c:182 [inline]
+> >   inc_stack_record_count mm/page_owner.c:214 [inline]
+> >   __set_page_owner+0x2c3/0x4a0 mm/page_owner.c:333
+> >   set_page_owner include/linux/page_owner.h:32 [inline]
+> >   post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1851
+> >   prep_new_page mm/page_alloc.c:1859 [inline]
+> >   get_page_from_freelist+0x21e4/0x22c0 mm/page_alloc.c:3858
+> >   alloc_pages_nolock_noprof+0x94/0x120 mm/page_alloc.c:7554
+> >
+> > Don't spin in add_stack_record_to_list() when it is called
+> > from *_nolock() context.
+>
+> Seems 6.18 will need this.  Do you think it is needed in earlier kernel
+> versions?
 
-It's obviously a substantial project.  We need to decide whether to add
-this to Linux.
-
-There are some really important [0/N] changelog details which I'm not
-immediately seeing:
-
-Am I correct in thinking that it's x86-only?  If so, what's involved in
-enabling other architectures?  Is there any such work in progress?
-
-What motivated the work?  Was there some particular class of failures
-which you were persistently seeing and wished to fix more efficiently?
-
-Has this code (or something like it) been used in production systems? 
-If so, by whom and with what results?
-
-Has it actually found some kernel bugs yet?  If so, details please.
-
-Can this be enabled on production systems?  If so, what is the
-measured runtime overhead?
+Maybe. I need to study the git history of that code to see
+whether it's a new path or I simply missed it earlier.
 
