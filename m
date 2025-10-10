@@ -4,120 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41322CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 14:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3226ECCD18A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 14:58:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AFC28E0013; Fri, 10 Oct 2025 10:54:11 -0400 (EDT)
+	id 76D8E8E0017; Fri, 10 Oct 2025 10:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 760C68E0003; Fri, 10 Oct 2025 10:54:11 -0400 (EDT)
+	id 7455D8E0003; Fri, 10 Oct 2025 10:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 676658E0013; Fri, 10 Oct 2025 10:54:11 -0400 (EDT)
+	id 65ABC8E0017; Fri, 10 Oct 2025 10:58:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 508718E0003
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:54:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0644158624
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:54:11 +0000 (UTC)
-X-FDA: 83982499902.09.D265D1D
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 231C940018
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:54:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kNh2ac//";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 52AA88E0003
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 10:58:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE7A386DE1
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:58:40 +0000 (UTC)
+X-FDA: 83982511200.25.0894045
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E1FB840007
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 14:58:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jQopEoGk;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760108049;
+	s=arc-20220608; t=1760108319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0DpdiimUJLGEL9YZv8OhwGPgsBnQcaD8Xj4apakBfn0=;
-	b=DUZqSZkBc4pqqbQSeC0U3G+8N7UgvnnQ3GzDjrFTKPkKUO7pEt3BG2Jpwy6TyjrVi1UIK3
-	I+0HnWS+XvP7mMxHS3cP9fKv+XD0BqW10hmYfoMNHcGeiufY1alCmndkgEJoMvGWO+iJmI
-	sZBiewyI6np7xkyZ4wIlweJRavNwL6E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760108049; a=rsa-sha256;
-	cv=none;
-	b=XyajAorvvRrWy1xC0aYX7K9WaIr0/2uicc3Co8d0PFvSnHqmsV+r5EkBs4se7LgHjcntvV
-	STiW3dWs3Zg7163Tu8rH6nkPPJZUJjkhpwtboGBhGUNGjY2Xvilmu+Oue5wsqy9Xv3goB/
-	ltfTa2nTmiZYp+lSvrLQXKOZocZpBh4=
+	bh=O/f5MiBij3IECEF2d6NbqhVZBoXbyknaX3YNy+v2jBg=;
+	b=1Fzi/d89Ef7MjhhND4Hoi3d2zJGUhNLsd+rn20tfwofckR9t+K2kcy4/8W/NyJqBnXYMQ+
+	eYEgRRijdRGmSL+JJoJZjkq+ai3WBdTESZAzQ20XngwCeGBeWoWgU8FwneFBq0R+CZl91S
+	2AmhUWBXuNdlkxFimvEvTYyqQ123dVo=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kNh2ac//";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4df3fabe9c2so377341cf.1
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:54:08 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=jQopEoGk;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760108319; a=rsa-sha256;
+	cv=none;
+	b=CZUbxRzU8D4ItB3GEP6/zmf7VxAUyBosIsuWP61MmvzIQ0+7QDkfXrprfKRGxL4l0s4aCC
+	fqJXuaLT7n2R8QGf+arOxnJRjPgDmq4M6iuC7dxFiSQ27T0cTMh2X15dLjWxuLx75tC61q
+	kWZKoUlvObZgStG6j649+RNNsk0mXnQ=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4da894db6e9so21023081cf.0
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 07:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760108048; x=1760712848; darn=kvack.org;
+        d=soleen.com; s=google; t=1760108318; x=1760713118; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0DpdiimUJLGEL9YZv8OhwGPgsBnQcaD8Xj4apakBfn0=;
-        b=kNh2ac//jiSgZfL8Ps6+WKnMwPssD0odp8cmeoro9J4xRy/jMUtrQX/Hd0SJLceKEy
-         yzjNp5ea5JSYS70zQy219cdUa5dK6/BmBH6Jwh1BwMLKXZGyO5BBlCHfDEXfJHdOc9jS
-         eMNHBkSCQXjoOXrS7TaPCMceTdvHkRvpu4kiQckieJrSu3Sa4AqjMoTP9VqyQJLFHits
-         c2rAM04aA7m02lfblMPR3grQwWa34w0a24JvglcTsZ5XDSUsvdeBXrFlv891k6ZOln+q
-         pDdbJ5ie8a2ocUtWYe6PHDx3ebgJMB2reUgx8mWhzCKfK3eObrXBUTjn+vxXgSXPbUzr
-         Lwkw==
+        bh=O/f5MiBij3IECEF2d6NbqhVZBoXbyknaX3YNy+v2jBg=;
+        b=jQopEoGkBkJFujhtkRmwK2J/Gnwiwd5Dh5senv7zQWKtGL94+97r8kXzKQD4j3XmwO
+         8uxLRaEpAWYsgMQeNgOMM6QgzsMVz83Wo6Mucp+psUSt23v3quZXgNcKY8Nu8VjrAjes
+         GJXuoeaaLrU7KjN9XYLopf+TaJ4jJxxq6OawoStZYLSCLk7a0EEBbsFMxiIErZYLB/os
+         JL2z66BIhadmWXmOh5LHGc+p1QnTpWgAhNedOezKV8xDnBANVuRikRkhFto4tQQEP6+S
+         fLAqlMZjfuz0zVp08dCHoAlt/xcKonZjUgStMiLvYV39mkm4BZKxCqV8raoe4R/U14hL
+         JfxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760108048; x=1760712848;
+        d=1e100.net; s=20230601; t=1760108318; x=1760713118;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0DpdiimUJLGEL9YZv8OhwGPgsBnQcaD8Xj4apakBfn0=;
-        b=l1g24nXUJncDdPU8spWyaqCpQ/YdtfqS7U90MyHI5U3qaX/dP3hx3iXWmss4rpv8DR
-         38HnpxXVappCmG9KYtHQZZOcohW9EI3I7hUsxhqu79F2OMUYOBLJ205mBCXVuzf/d/DL
-         mGq58EFBygX2WG/cBPgagwZKlfwpXAK5o4bT8NDD/Mm/pg8mTugGsCJR6idJpzk6doTR
-         /fVxID2A8qYviqZSgfuwALoEkdduykstI4F/acTP7O1UXHojkCYMgeRBskdLRRzdy7Be
-         epsdHz3/BceFsNK2ddLIE5+9+hqeG6dw9jrvjG2gxIB5q/znzdPqm5xQP7OF/8tRHGNc
-         2GAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpbDYK43jSHd8enrxsm1AAxDYPk965ynWAYIG2qqC9KicJtRHyCdV0LXmABJGhKTtY4YCTkyUJ8w==@kvack.org
-X-Gm-Message-State: AOJu0Yw+7VolQ7YSoBItxq6a4hmvZ//NR2VSteZYTlWTBBVNt4yUqUqS
-	LwE4/IupWG2+tJMDehaAFxA7xg0Vhf2Nv+UDqMQ2idjZ5dENkaVKdFGrxqP2z4MApumHo0Cl/8k
-	3D/MVX3XsJUEYKlbq4wpi7agdf5ksXS0NFzYZm1Wd
-X-Gm-Gg: ASbGnctBpn6fMvyuQ5KvJYNy+8PNtXNmb9iScA9IFfagrCmkrRWrNX3ZUAAKGZXo3IQ
-	0i7SgBHdXijJHxxkwe8KzWGJwLKUoeuutP+6a6Yo6qXAGJQd+4FNV44u/7GzTvhbyOM3T4jJhX7
-	GvvKsTfam3RM9SPhyJAJciQZrkSholZM+AgCVCEcOqiwqSB7o/EAZRfg6MmictZAt83DFYhbEHu
-	okKYGXnyA9LuuhUG5DLZEJF/WgmCX9K/1ndU+2E4WNJCfW57eap
-X-Google-Smtp-Source: AGHT+IELG1HO5re9l71qV16AXiLCV5TxV3n/x4fv7b1UlE7oKp+shLXPJ4Ui15bl56g81Rjif4tTmM3A2oXDy0V1pv8=
-X-Received: by 2002:a05:622a:50:b0:4d0:dff9:9518 with SMTP id
- d75a77b69052e-4e6eabcf616mr24839371cf.12.1760108047605; Fri, 10 Oct 2025
- 07:54:07 -0700 (PDT)
+        bh=O/f5MiBij3IECEF2d6NbqhVZBoXbyknaX3YNy+v2jBg=;
+        b=QUJyWLSHE4oJZWVGwqP+1PuVg0bnwWB5DYm8IdsHg9PtJclDeJ1lWQWpBnbPcg3mQA
+         Z1mpaw8pLzdiiF/V6jzghDSLk8FKxuPCcxDnXaFlOUxRfiNzMg6UuaHvzIRICSZsvyL2
+         XWR7adL56FjK23iF6FYGEt3I62f7mfA75joX5PUU9L8EDyJc8QWID8yBhmvSO831R4QX
+         X92vRG2lP8+jWmpqLz3ZSThCfvDvoOJg1y3x3yYfPWjbodFE4W76OUqWQ/JUuXvknFUt
+         TWPmOR9vKWJ9ovIt210vRSfYf6avCv0DYzdGqWUhaCrxZJ5LhA+ax6Aywlnow8x8sHoW
+         tSlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfIBPT/0+G6O14iTvXotMFeb7p27V5UwJv60zZY8lyZe/Gk8kKYDeS/wPlmcF91xj11vlToKf+Wg==@kvack.org
+X-Gm-Message-State: AOJu0Yzd9GjaHq3BCTdO+XSkoCKm2Eiwu/2hL+IpBlBG4rdbKg6r9o+4
+	WSD4NCKCti0WkpfX6FqcxxYOmyBi+b5Ah/t/V+BojMhfdpzUJYQ+L/g+yuPIyiKJedXW4MxZxr+
+	XgeTcVOdScdIOXgSUp6S9RXPuXYLY3fItl/hFlyFF2A==
+X-Gm-Gg: ASbGncswEsazxiY3QvWXwLbp2woSTjHDXVjBVbimKLeqXjfySbUYBfu/PkL2RWROX3T
+	JY1Ex8pXkSK3mFLUGzXIKZV8bFP5+ML65MYls2ZkPcZKeRRnkwlo62yoJs9SeeQjqemxo1DQ8jT
+	UzKHUPtSFadhsX3nB5Enc89eV0dGvNdnsiqOYmo6iTMntfhbfJGENZHr9pkYqH36O6iWLfRJLQA
+	30vhj4SsiU8P/oswY9eSAc=
+X-Google-Smtp-Source: AGHT+IE0WXDhjauHLcC2POBv0t7LgQCplfzbTEHy7h2aL8mobxzYVpt1EHLlI6ZDdZuKo41ZojriIaW0+E5fBHESUrw=
+X-Received: by 2002:a05:622a:90f:b0:4b9:b915:a26f with SMTP id
+ d75a77b69052e-4e6ead514a2mr181154551cf.52.1760108317513; Fri, 10 Oct 2025
+ 07:58:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251010011951.2136980-1-surenb@google.com> <20251010011951.2136980-2-surenb@google.com>
- <aOhx9Zj1a6feN8wC@casper.infradead.org>
-In-Reply-To: <aOhx9Zj1a6feN8wC@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 10 Oct 2025 07:53:56 -0700
-X-Gm-Features: AS18NWBSQfAZ95bfn8zHE7YuLwgx02HxJfLsEBTBLUde_yaDHMul1ATmajxkrCY
-Message-ID: <CAJuCfpH85Ns8_+JNG4HS6TnFMUN0si+mcLXxUxedhQh1c0CSEw@mail.gmail.com>
-Subject: Re: [PATCH 1/8] mm: implement cleancache
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com, 
-	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com, 
-	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	hch@infradead.org, jack@suse.cz, m.szyprowski@samsung.com, 
-	robin.murphy@arm.com, hannes@cmpxchg.org, zhengqi.arch@bytedance.com, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, minchan@kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev, Minchan Kim <minchan@google.com>
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
+ <CAAywjhT_9vV-V+BBs1_=QqhCGQqHo89qWy7r5zW1ej51yHPGJA@mail.gmail.com>
+ <CA+CK2bAe3yk4NocURmihcuTNPUcb2-K0JCaQQ5GJ4B58YLEwEw@mail.gmail.com> <20251010144248.GB3901471@nvidia.com>
+In-Reply-To: <20251010144248.GB3901471@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 10 Oct 2025 10:58:00 -0400
+X-Gm-Features: AS18NWBORXQFPGvPP__b4olxbKs0hTzftz4XLJRMqdjSudzyOrwIdA4I2ICtXVo
+Message-ID: <CA+CK2bBxMpb=jXy3-i19PdBHqxLoLrMMg1sOnditOYwNe1Fr+w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>, pratyush@kernel.org, jasonmiu@google.com, 
+	graf@amazon.com, changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, chrisl@kernel.org, 
+	steven.sistare@oracle.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E1FB840007
+X-Stat-Signature: zmcuczy4hztzo4ip64nnfpwkji6k8bpm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 231C940018
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 1k4kkupf9z3ej195jojdnr5dyaofg4xd
-X-HE-Tag: 1760108048-391720
-X-HE-Meta: U2FsdGVkX183pbL02Ufu8fZO1KK9h3fG/4RxJXx53vtuUVBJGuZH92cVwPJqjIR72C6jUYaXzd/gK94Fc+BxY7ccvJcbaDFBRuv8IaUtWMD7fEdHWLb3HIkzBDV9DQwdfJZ8GII3zkdiupUqieODmSzDmLYpaRFbdDHLnqjPvOEU3FaUG1aL/K8iqlSh/+W3+FN3fZxKlZ2HVel1XKqIXlbD+vTJxSkOdqfl89g2kaKpyIZGF30i/i9q8W0MaJ9UIoBkqPDy4d/DtFAPUdcOTIWQc5ZKfzqjS68Zh6i2U6tlfdQ7JbJtscWeCWCbBzdYQZBTGuy9xIws2sqDyiLP+IG1z+/uB2tUOUf8B0NP4A9unCX37hKTvTW3fXMLiZ3WQBfL2uvbe2uotj6lG6tGOQZ7zmSAM3GWhpfVf8IDj8rgXDkNqyyDAhQli1+tY45gFeOitldSxCtwcoiJRHqraNpWBJHYByc6pNMHCM/eW/aB/JdmRN3v51viEk/6feGClFcz9MHdRGsrUW49/49MQ1w3eGKyGJHEYhkB+LjjUZWATuHyzV7v0W8wy6hmTVaq9LsHU9xhYqAX2JKSOXa8p5lbNN/kJmDK5iXN2IQZlPVzX9St01iVIDCPtUP7z+q6qq9VaFL2u8mclaUcnMITSbQxcu+6RMmg2dZEmPS9+Cm1H1UV3M8HqINeA1tKf4OoGru18Q9aj98gHsibREP/yGBHYE0paLivaxNDcpPnIZOt4pJMOs65ThYJy1VolZOWVaPEOzPl6qFG5uj7wAvfBmYtg58luPKdMtaxfGYqcNAVkeYe1SLg0evINgeS8Gwepd1lQs8KGrVuK/U00aotiIxmOXT2Oun61m19+XkhRXStcoC+GwPV4ktpL6OVhYtmvchAhZkbKr6J/J4Fi6cesFLVExJIZdVHBoyognJ5f4RK0fe/+9rav+bT76+fU3zaPRpfWPU98Y0FvKe4RXu
- 9xVi0oYg
- v/wChJSWiO25BovtginZS0swwzbTicySL7JG0i2uk4spl4qcJbZmxXiuobekQRUjc1EDA2u+AkKTZ3apAzFNkMSnw1tIWUVLMADF7M+10DTEaj/GiIthtnnkF3Wy/RD8S7ThawE/my8CYwEVEknfq+dRiEWd7LiS8V8dHbzswJPpgit8wyWGPJejAkFShRErfX3dhLPdpVoJxdt14/W+taJwcWT48AGGmzY9EIG46zwJGUnV53o14Twwgyl7sWwc0BnaR
+X-HE-Tag: 1760108318-13967
+X-HE-Meta: U2FsdGVkX18+PGJK3UV5ODKE80xPZDvci6/MefNMTGBFyFjnfdPnsEIh8lIxc0ZCihyfaNivqYpS+DA5dnAapYBlSN6LRhkyy0YzEVyn4g4Ha9Z5vxHGazIVe0eWdRrLx35FIOV5SeGalbZRFkWNvkYCEyFMDRmByoRYqLo6bteoX/531eS0pQOUhDAAOpSYqYUyCyWeIpHObb6K+9lGrUQ0/WQ8Wq1MksFTtIsMewiWOdYHeaC6wV5HTwOJ/54/Nn5I8UI2kWafOb6o4I4J6PmHZqdsdxfw0sgPKrauLtTClzvU6Qdyc5FNt6S63NhXOtyvQR4lGj/qt+Q5Qf20mkPmI7OhYEdThqLM6DhO0ss7TyrCQdzTLvtk7VWF9ZDy7zQYNfldXhfg7crTN9clsaM27+s2FCKvzr5XN2ZI1nWwr0Jrrzu815wbCqgt1bbSPB79LKlUOMMjLN6TsxG9lh3gXUe3zi1xNgUkVMFdTP5BvrJMEDVHlmQQ9OIzjfa8zQb4VbwXLeiTcyAcEfIe4+SwYtlDZoKd8y76aslQOv5+fY0yJs4Ay0Co2VdL+4Epbn4VfISHV9OL1d+wxrcdLaIwbI8um/ysKB7L1bZsaFLN/r2mRfIQv8Dq6xoyDdt2hDkuRB81DDQ2Wu1bKrB5zKiNauDw/OMWl8eECr7Qt5yEZx4VjmFfDaRkhUX6O1+6EwU6TvSfmzCZeUwqV4RlnF6KF3DGiUwrenEG/JCFejXsYvdVn7ZYupAcq8hbsrNvxH2n0EfBifZwHBOTUa/8sdEzAMRascmnifQfPLeLeEXmLo/0Xpfjad9UqjKkWo83mnUBkrTuehjKxkf176b7nXrpUBlbpnvZdKE6DbHOJ9sbJh7FU+yNGWXqai/DMAKNL9IQG9Bm5IjXfiHwh6++0Y5KuHghVZbotQtujh81EJjK2qTYIVmXlR73HkwU9lrnwUayYUuSPaqL+bXKo1F
+ Rsvmf1WX
+ WxOkd//A0IsqWo9NkCghg4C6ZivGWlUSHvm8qtW+3WrWzB+d47wuA/OfJu0kR3lnI9UsST/vKtLRJlTAcSHxg5r/yrhhGsyfHNFNLeNWpAyldgVG25RIine7zN7Mlky1csSDMsCcU6CdvHc3md7byfrkhgSRBfVwCaOPCwZyVExzz/gC/cXOSgEGBuQvG07ZtKBbWR1rqU9MAmza38Nu+LF2G5JDFX2plXUSxf1xA+BdLjIMpj8goPyzuscyJrQ3lkPXDjPRbIkNHqJYAIFkBfouKJnpOYebODkoN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,89 +142,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 9, 2025 at 7:39=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
- wrote:
+On Fri, Oct 10, 2025 at 10:42=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> w=
+rote:
 >
-> On Thu, Oct 09, 2025 at 06:19:44PM -0700, Suren Baghdasaryan wrote:
-> > +     /*
-> > +      * 99% of the time, we don't need to flush the cleancache on the =
-bdev.
-> > +      * But, for the strange corners, lets be cautious
-> > +      */
-> > +     cleancache_invalidate_inode(mapping, mapping->host);
+> On Thu, Oct 09, 2025 at 06:42:09PM -0400, Pasha Tatashin wrote:
+> >
+> > It looks like the combination of an enforced ordering:
+> > Preservation: A->B->C->D
+> > Un-preservation: D->C->B->A
+> > Retrieval: A->B->C->D
+> >
+> > and the FLB Global State (where data is automatically created and
+> > destroyed when a particular file type participates in a live update)
+> > solves the need for this query mechanism. For example, the IOMMU
+> > driver/core can add its data only when an iommufd is preserved and add
+> > more data as more iommufds are added. The preserved data is also
+> > automatically removed once the live update is finished or canceled.
 >
-> Why do we need to pass in both address_space and inode?
+> IDK I think we should try to be flexible on the restoration order.
 
-Ah, you mean why I don't use inode->i_mapping to get to its address
-space? I think I can. I'll try, and unless something blows up, I'll
-apply the change in the next version.
+It is easier to be inflexible at first and then relax the requirement
+than the other way around. I think it is alright to enforce the order
+for now, as it is driven only by userspace.
 
+> Eg, if we project ahead to when we might need to preserve kvm and
+> iommufd FDs as well, the order would likely be:
 >
-> > +/*
-> > + * Backend API
-> > + *
-> > + * Cleancache does not touch page reference. Page refcount should be 1=
- when
-> > + * page is placed or returned into cleancache and pages obtained from
-> > + * cleancache will also have their refcount at 1.
->
-> I don't like these references to page refcount.  Surely you mean folio
-> refcount?
+> Preservation: memfd -> kvm -> iommufd -> vfio
+> Retrieval: iommud_domain (early boot) kvm -> iommufd -> vfio -> memfd
 
-Yes, mea culpa :) Will fix.
+At some point, we will implement orphaned VMs, where a VM can run
+without a VMM during the live-update period. This would allow us to
+reduce the blackout time and later enable vCPUs to keep running even
+during kexec.
 
->
-> > +     help
-> > +       Cleancache can be thought of as a page-granularity victim cache
-> > +       for clean pages that the kernel's pageframe replacement algorit=
-hm
-> > +       (PFRA) would like to keep around, but can't since there isn't e=
-nough
->
-> PFRA seems to be an acronym you've just made up.  Why?
+With that, I would assume KVM itself would drive the live update and
+would make LUO calls to preserve the resources in an orderly fashion
+and then restore them in the same order during boot.
 
-Inherited from the original cleancache documentation. Will remove.
-
->
-> > +struct cleancache_inode {
-> > +     struct inode *inode;
-> > +     struct hlist_node hash;
-> > +     refcount_t ref_count;
-> > +     struct xarray folios; /* protected by folios.xa_lock */
->
-> This is a pointless comment.  All xarrays are protected by their own
-> xa_lock.
-
-Ack.
-
->
-> > +static DEFINE_IDR(fs_idr);
->
-> No.  The IDR is deprecated.  Use an allocating XArray.
-
-Ah, good to know. I'll change to xarray.
-
->
-> > +/*
-> > + * Folio attributes:
-> > + *   folio->_mapcount - pool_id
-> > + *   folio->mapping - ccinode reference or NULL if folio is unused
-> > + *   folio->index - file offset
->
-> No.  Don't reuse fields for something entirely different.  Put a
-> properly named field in the union.
-
-Ack.
-
->
-> > +static void folio_attachment(struct folio *folio, struct cleancache_in=
-ode **ccinode,
->
-> Unnecessarily long line
-
-Ack.
-
-Thanks for the feedback, Matthew!
-
->
+Pasha
 
