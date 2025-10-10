@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54ABCCCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6760CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0E948E0032; Fri, 10 Oct 2025 11:44:52 -0400 (EDT)
+	id 172488E0033; Fri, 10 Oct 2025 11:45:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABF028E002C; Fri, 10 Oct 2025 11:44:52 -0400 (EDT)
+	id 122FA8E002C; Fri, 10 Oct 2025 11:45:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE458E0032; Fri, 10 Oct 2025 11:44:52 -0400 (EDT)
+	id 011F28E0033; Fri, 10 Oct 2025 11:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8446E8E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:44:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D26DC036A
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:44:52 +0000 (UTC)
-X-FDA: 83982627624.09.D4315B5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 53440140002
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:44:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dsuX1LoS;
-	spf=pass (imf09.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111090; a=rsa-sha256;
-	cv=none;
-	b=WudDe+ck42TrOdQPR9fUuVco73IgkE9+kO1jbPxNSahY5RQpNwF3/JHpPGjq3hyK15fV0h
-	K+L4Zg6vl6ZNb5g5hA8HtA3lZD0IBSley63Bmhzd3YAi5XwFTo7HhTe8jUninfKY+V3cDD
-	nwh32b6sEoCcsV++g8a2BQCYW5T1CBU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dsuX1LoS;
-	spf=pass (imf09.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2508E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:45:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5552140376
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:45:06 +0000 (UTC)
+X-FDA: 83982628212.21.EBB8A7D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BCECF1A0014
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:45:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P+7vPmSh;
+	spf=pass (imf19.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760111090;
+	s=arc-20220608; t=1760111104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s5bTE2UFDn4FhRjqFPlcPPiaXyzSIXCKwLwP8uiIlgI=;
-	b=JwjMTPxn88d4US5Qlxyp/SbpWd06gO2fH9xIBQqqskIpN0I3iVlFKNjG1nT3CMjMMjzVpk
-	4IfewUiNkr0IJEKciRHnpA/+5ZU7Hz9v1S2kCWq6FCHBHlYt0ofFrLLHamdY2kR2qqTrDv
-	baq9iHtvYLfPX06mr962Br+8F0MKgsM=
+	bh=lA5CHRSnZ1rgFxjlHeMvJuEi1mBcTnDR9FDgvniUAeE=;
+	b=d9YpI9sadc0cjeMzaWVMxiN5kspKHyfDmqn6GL9mwfWD8UMoj6wGeyy3tZKR+GPtFQP5hN
+	4YeHD3YDOW+LIIeAQYT6E2tSZR6cy1PkH9OX7nFiCppPIQetDhRDXvNRgf+nXbXg+Rqvd4
+	L1jZA6yECSU9Wy/Q5tMBKQOm9om/Ass=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111104; a=rsa-sha256;
+	cv=none;
+	b=OPPYMj8A6uLxAHgpNUun2xMJVPHhWvFU2o4ptqYn0+nlf+T5ESwv0YuHp3M44DjW9iiOdb
+	A2pALMaMifnl0Mv1VhekkkcVkdUK0F+O9JUfnF/1PIlnKXMpC+zHkypKAN0S8jqp4pHo6O
+	oHQAiEzld6OQiAqs3CTxl/JbwXh7Dsw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P+7vPmSh;
+	spf=pass (imf19.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760111089;
+	s=mimecast20190719; t=1760111104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s5bTE2UFDn4FhRjqFPlcPPiaXyzSIXCKwLwP8uiIlgI=;
-	b=dsuX1LoSVuwOPfDItSebt/z7uGHeIRmYmdu2C2lgf7lUQZxOT+sOUR4WS4P/MItq3KWtEt
-	xp3x+n+v9MaX4mCWWB/c6q+FWOWzq59qVg2S54FQHIRvG801R5yFcSwpHF2WjLBOixbEt6
-	m2okf/N63r58M1k5CuUIYxCV4Bbr5zI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=lA5CHRSnZ1rgFxjlHeMvJuEi1mBcTnDR9FDgvniUAeE=;
+	b=P+7vPmShHfieUVDAE9kypwNMg8a1HnUMjACNuIxfTTQGeHNxJhbkR7Jps61/uuDXoFT9a9
+	wbbGeYNIE+6RtmRgPkR/3KjMEoTVynu/CL8Ip6yc54IBF2cVhGGQsiRe8XtyiswZE1Tdl0
+	89Ve+wk30U9ZE2uQDdVH0FGllibliMA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-35CwgeqANnqyTiiCVHZwvA-1; Fri,
- 10 Oct 2025 11:44:44 -0400
-X-MC-Unique: 35CwgeqANnqyTiiCVHZwvA-1
-X-Mimecast-MFC-AGG-ID: 35CwgeqANnqyTiiCVHZwvA_1760111080
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-205-1nR1k9OtNHyFHWxfDt3B_A-1; Fri,
+ 10 Oct 2025 11:45:00 -0400
+X-MC-Unique: 1nR1k9OtNHyFHWxfDt3B_A-1
+X-Mimecast-MFC-AGG-ID: 1nR1k9OtNHyFHWxfDt3B_A_1760111095
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BFACA1800562;
-	Fri, 10 Oct 2025 15:44:39 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 372811800343;
+	Fri, 10 Oct 2025 15:44:55 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.224.29])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB6231800578;
-	Fri, 10 Oct 2025 15:44:24 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C27A18004D8;
+	Fri, 10 Oct 2025 15:44:40 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -84,7 +84,8 @@ To: linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
+Cc: Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -122,22 +123,22 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>
-Subject: [PATCH v6 15/29] sched/clock: Mark sched_clock_running key as __ro_after_init
-Date: Fri, 10 Oct 2025 17:38:25 +0200
-Message-ID: <20251010153839.151763-16-vschneid@redhat.com>
+Subject: [PATCH v6 16/29] KVM: VMX: Mark __kvm_is_using_evmcs static key as __ro_after_init
+Date: Fri, 10 Oct 2025 17:38:26 +0200
+Message-ID: <20251010153839.151763-17-vschneid@redhat.com>
 In-Reply-To: <20251010153839.151763-1-vschneid@redhat.com>
 References: <20251010153839.151763-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 441q5xap6rgu9c36rjeaky4imdminswj
 X-Rspam-User: 
-X-Stat-Signature: jtfnoew6y6mydcpb8uh9f1kpt658g1fn
-X-Rspamd-Queue-Id: 53440140002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760111090-166957
-X-HE-Meta: U2FsdGVkX1+uqzadXJ98hX00PWRTZmi6bjTrxl2P9Nv2p4RJ5fmz+3Htb6XpLRwXD6z+dTEYpp43/oJ9BMRQhFO2M6rqX216QzuRAzNGRX/hTMln0JVYSkmVmTCgSD1urCrk48S2H2mMI19OAtzX1x1J5TmwjRS2AsSR4OGMHe38gpH0ef5fJFX0lVeZTmwkFQ3oYsDjCA8ELnQSXp2bKei1Hkh5OkdRHsPwVE+sMrHQAioleWGXdFVYXJBKKySwg7WvdRVqJqEq7HrcUKbF8CBi3sukAGn5VcwZKu+rswyJrHHUOuBKTS+tGseUujUTjoWyA9pTNCDyRGnzqCoU2FVFIXKFuGpofXftg6hOJ8g5TubRVt6QJ2Rngt8I4EidatL9zbT/5NIyFbX6FktJeyL7HVrl1ioQf/xoKPb1xe6A4HPD42g4LtUXu0FLD0fVCX3hjIe9BYq8lnggqpzbv0j++c/Ymo/ULtFvoTCrfptwAWdN30ML4kEhJR35T/A8zjxWMIpED66zf9d8xMQc0H6Qiij5pDHwMZFlItlOzIlwlg1/hBBM2jDM2u3pEe6BnIodg7e928iuM94RZAAJPvZLP+zeHkjvUtby22o1bgAV91Kvypc0yoW5d2/WQ6/j0oKIHvIHHd4dQPfhMM1cCZaL0d0yiGtTZWuORJcdTMmps/kjfw48JKZkgCN4rZMxPZYS71+mQ74zG+0coAT0SDUpsA3eDJT868P6HeIxycJrkfwsmCXsejTqGRwduXHlWU2CiVaLVD9PFwCecmDXjrUJQOItBXkxClXrcmzFnT3sZ5zbOT+ib+xkw0lh4Yq9HvffG474GMxKY8tDQ1FUxgHhgADa9t1ut6agRUooYqvqoFzYFVSEY5nPqKIhFv43m/6t3S1ht2HsDVEKwU64JOtAkrlyAW1EgdtkgYJdVs1btGyItG+c4gzwMWVE57jhnZMaEgL0s9aIZQpk/e0
- Hm7vbxQL
- PKY7hNrcaMuLQ5ybztsxPlgDpUsS/xzAZbA2ULR06WWSPRZQQJJ+vcpe2+3GC/n9CpoNxQ3BUrUvm4VtDK2zmUSrE7mOdY3jR8LaWpFiQs1uF3TUcmK9A/QdGiQsGaA5JJJiHYa0T3yMGV6ItQr5IfqL+4lRR6eTPHyOTYxX6NGEI0OM3H3lZhM7WAvJhhymR/AyZAtiuHXlVUjBx4IfCs62H3ZGWwfQUMA6E6+on0/nXTMydDUNvJmFIOI05PESJ23A65Fi/1kwTRZOX3Oecc9QBfyJ4hVj9NSESMW+66Ak/7/7JyfW98MlNRS509DI5mQlAtVCqHUjYWbHW5PmY7r6QuLyGIOLRTi3EpFcFBbFXtyJGkECdo9fjFv8TcEJxDCUjQR8kF6Sghp9AdW8vY4BIFk2UzYInJtjqI5hkltc0QGlimFcj2G5NRXKsfCqeh/8neXjz5KF3NqF3H62ff+CLxIDpKhwu9AlA
+X-Rspamd-Queue-Id: BCECF1A0014
+X-HE-Tag: 1760111104-411785
+X-HE-Meta: U2FsdGVkX1/vs4kNAdVECJdUXnQG0Bx1mFpCAWKUNkqP6phGnil0PNTVbDcpam7PU8l+/d5mzlqHGb8DnXtDh/9jcq7fru4vSX9ZGihX+XVC1gY9qFn32DfFoHSZrW8AsX5DVyt3bBOOwDxOzvItgvgFrrdWpjVZ+wW9LFN9xSLAnNjaKlG+FX02ey/8SbcmEwZrHqz7fq2sAYsV59QjymE8nHiWEbrqE//P1K3ulfqRhyF5UaXnx7JGnC36fAHehDl8lhO/kEKqRcb1CjSNLgv9CjqqpoeG4YwAQy0WhLmqPeL82hy0p1Fojqbqbidkd7a5lKQOafMfctmQD4+koP0suJYQJe0tGUfEMDGuoG5XR8zkv7jQCshQSfhaKEq8qV13yJmIn95DfTCm6ZRFzdWGM2AxAhSB0Q/OFxpMHvju/qiBOsZC6UzMrWHJbt6ea3HLtbmXYcr/OqQnqDoswjnCq8YwemxhdZrUTtvTicXXtrUSmVqnfnGqATbHFjhPc0kcUHSir2iiu2V73tVKo0eHI3RaUEMxc/IVt5RoFhnk2AsxnWIY8QQ+ZwjA1WsH61jaMQTpd326HYo6DmC9D+AeglfidPDeaKVcFy5QDLqlCAgQMY2QbQc6hUTi1rk0CRhb7Xv3KQe2Hq4XNncJnMuS+th5IwPLRrwqty4Lzh087jCiFomV05LPiZOKDKIIEVE1IgtzKPtZKhzU17Jc0WUL4S5aPOXqX5QZ6oH1fmgUMZpW0NiROrCIcPDjWbcLwP9AvnT56EOIxT9aTbspPqlTOf/r+DHxgjx0MTf31q0hntvjY3la537rivsDLTFlGcZXamay8DmpucOFUHADeU0zPYlgYvr2v8rSUXVEW/xFls7HR0FzRMKUlHY0xsTFLFT+fmF/ZemLSB/wHlKdPYZmm3mFB9XUdX9jZDcyF2Q3fA/gjaiepH2xzjHoQaS4FhjiZb9CM072w9cd4GO
+ Ho6f13hj
+ AL2fcbfuMLWugwe6O/NLHLg/pUMEyT7PBoJuTdVqGr2UojRisMtf72DDAXoS7LlV1ViDlF4oQEYRCbZSZ5fIeeHV7LC9qX3fy7nkUZbbct4ntafMT6VR47d/qNFj+rQOWPsg+pvPQKMkpd25HZaORC7voYuJIWid+Cy09bH2Ohrx+zpCrHjPXEtSEFhyz8I7jgMyjskDXn37UBAp2zMjHMtCywtzcVsk43f1mWnxyZwzNImQtIszo7jlWiKmfF0FkunqxXWlEweTdUE3lBHG+UFUI2R8pY/6xnGOoOxMABpVT7Hk3fCNvID3BwsT6r+RgicMKDtpV4RhANef//2tuvu2Tlw/BHeBKXwBDgkURTPmIYomv5H+pm17p6fH7qdWkYHxGCevtWstxYCqu8Sp6t/GbBhRx6WGZCTArCYZ4K8H6AcaJKKmc40tamEQO1u1TdNtQwoCCwic0CfygJjOYm8LTEFPNhNqBXzrLlO5XY40X0Zh6IDxOPM2+FA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,28 +147,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sched_clock_running is only ever enabled in the __init functions
-sched_clock_init() and sched_clock_init_late(), and is never disabled. Mark
-it __ro_after_init.
+The static key is only ever enabled in
 
+  __init hv_init_evmcs()
+
+so mark it appropriately as __ro_after_init.
+
+Reported-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- kernel/sched/clock.c | 2 +-
+ arch/x86/kvm/vmx/vmx_onhyperv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/clock.c b/kernel/sched/clock.c
-index f5e6dd6a6b3af..c1a028e99d2cd 100644
---- a/kernel/sched/clock.c
-+++ b/kernel/sched/clock.c
-@@ -69,7 +69,7 @@ notrace unsigned long long __weak sched_clock(void)
- }
- EXPORT_SYMBOL_GPL(sched_clock);
+diff --git a/arch/x86/kvm/vmx/vmx_onhyperv.c b/arch/x86/kvm/vmx/vmx_onhyperv.c
+index b9a8b91166d02..ff3d80c9565bb 100644
+--- a/arch/x86/kvm/vmx/vmx_onhyperv.c
++++ b/arch/x86/kvm/vmx/vmx_onhyperv.c
+@@ -3,7 +3,7 @@
+ #include "capabilities.h"
+ #include "vmx_onhyperv.h"
  
--static DEFINE_STATIC_KEY_FALSE(sched_clock_running);
-+static DEFINE_STATIC_KEY_FALSE_RO(sched_clock_running);
+-DEFINE_STATIC_KEY_FALSE(__kvm_is_using_evmcs);
++DEFINE_STATIC_KEY_FALSE_RO(__kvm_is_using_evmcs);
  
- #ifdef CONFIG_HAVE_UNSTABLE_SCHED_CLOCK
  /*
+  * KVM on Hyper-V always uses the latest known eVMCSv1 revision, the assumption
 -- 
 2.51.0
 
