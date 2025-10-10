@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABD25CCA476
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E4BCCD18A
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33DC8E003E; Fri, 10 Oct 2025 11:47:37 -0400 (EDT)
+	id A76BE8E003F; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0BBC8E002C; Fri, 10 Oct 2025 11:47:37 -0400 (EDT)
+	id 9DB778E002C; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E217D8E003E; Fri, 10 Oct 2025 11:47:37 -0400 (EDT)
+	id 7E1308E003F; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CEE448E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:47:37 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3304B8B3E
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:37 +0000 (UTC)
-X-FDA: 83982634554.06.2EC1D0A
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C086DC0006
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 510858E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:47:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 123111403AC
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:38 +0000 (UTC)
+X-FDA: 83982634596.11.80C775B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C0A76140008
 	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:47:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WLGKSLkI;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BV5scgNn;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760111255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,93 +35,151 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nn21ru+6IYq3SaeNjiz8pwX5xTmh6Plv4aw/vIBloTA=;
-	b=bsd6rqtZXN7zQ4IHIbvlEvPW8tpGPbrkyWGEWWDITPCN4e5rmqSnH+aPacLfGhdGRLaKjy
-	hB02E+4+MfJV+b5jGj3Dn7rRICGzlCmTOoYlznMcNyPj1NHQymfNZoMhhTeWePHbmsLPbA
-	2zbZfRvrOWw9GvjBt7rXylAh1LGq6D0=
+	bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
+	b=IpmIlBHXm0Uv31+WqzoIjDSYLFcY7B+wnbU+GEuMyo7035tYFl2Uk8YbC7oT4073ZpCEIE
+	jH1ztc6y03DLiqwo0gcXmBEiRx5lHhNdp3+ybxoEF6mbIj4UWeytobp8crV90pL64QgawY
+	zaqglSguhp20tnCQKtEtYBL0ifyR2U8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WLGKSLkI;
-	spf=pass (imf28.hostedemail.com: domain of surenb@google.com designates 209.85.166.175 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BV5scgNn;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111255; a=rsa-sha256;
 	cv=none;
-	b=372bbRypuvDW13JKLF1yyqCF4Ptzcax2irQXuqqi+HR6TKuO+H/T/ZncjQcjGuQPKX0KVr
-	75UmcwhRxWP8Y+rxpl4LZjYaMBrwRMNOh7D1gCYNVJ8DhZMkaQOvS+FmXA0BS4yT9Zg/AS
-	1+nWJvJeczVF08Fc0Eab7HSVOXlhjkA=
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-42d7d0c58f9so161185ab.1
-        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:47:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760111255; x=1760716055; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nn21ru+6IYq3SaeNjiz8pwX5xTmh6Plv4aw/vIBloTA=;
-        b=WLGKSLkIefJAsV3lSTyYjZvU0NBFszUAcAQxGaR4aFLSeQH47UklCFxCGFFDhIOQqS
-         YM7EswCqBKgSeZPa/fqNkhrsGfP1CfU+tUgtJ/Xal0BcNYrfc5meu4o4VbQLul2eClyP
-         UYDtWiKSRAnk13TNCQUd0gz9olsliZD+UYmrF2yrHZzBEp82VR7vW/CTUybx5odDBTfT
-         XDZJFP3bcFsOkQ1ytmbj0QXho7D22ySwUkcT8rKmLVrfySyWlX2Ma0cJhNSwOgAyFYJe
-         7bH1ait26BfDYK1IHmPpqpM5N94k+vLkzgKSvQzfj29or9x6wiej6yH553RPcMqumffA
-         87Fg==
+	b=fkNrxxrXDAnpRknLJ393c+zyYtJz/apX454OfYNeAey9p1v42d4JVFq05eJboPw6Sf51ze
+	HbiS+iPiFcy0GrPBejUjnHOep/Ph3ZtWSclsTbdcFzbvegtUZ4rfSNQQtGBrnAVKE26Q7+
+	lQFZaRnHJUQBhZu7z4pQGhyg5RIh3U8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760111255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
+	b=BV5scgNnvMb7PrM6rvQbaI1Px6eztLmLo2eBEX2UrQApBRfacCP8WmzTSPtaT5KOic+sA2
+	6FeNbkumaKd0Q9ZE0Jt1491IUnhwwSnlqFEYyL5wzH9bNhwqio/vAj3LaQS36SGRovipzQ
+	BYVnB6/OEPshZ3LTXJvj56QajhDeeBA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-JHO1MmSaPrmBpa2IF2pdhg-1; Fri, 10 Oct 2025 11:47:32 -0400
+X-MC-Unique: JHO1MmSaPrmBpa2IF2pdhg-1
+X-Mimecast-MFC-AGG-ID: JHO1MmSaPrmBpa2IF2pdhg_1760111251
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3fba0d9eb87so1230828f8f.0
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 08:47:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760111255; x=1760716055;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nn21ru+6IYq3SaeNjiz8pwX5xTmh6Plv4aw/vIBloTA=;
-        b=ijrBSJS7t0TCqRw6pNLiyOvtJLjJx6u0jKcQmay4WdWTmAiF2eaqlmCeyApz+2+WLa
-         0004WSDIlsfXfgoSXTieJLKyxrqCV5xOn4Czz3uDjhSwMU+LqjU2qXicxmk1QycFEno6
-         +/4DRVy9w1bUHQBlueiwWw4iZ4Ly+Q3vEgzmoEQYAIQGdlRPDkUpzHYOLidRoF+tTjs6
-         I9LBITOHaGmI9VaMBADruceEvwn2LH8zNiKH1j5Bx1yMJGh9uXURn+uQMXLWiXn4//7t
-         6p4erGbzoi8leLi5cJYIxtsmrXrySitaLvyX+uvv8kKE96aIwhmbty0gefbdyU3/h3Km
-         nydw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+DPp3inZ59Qfm7l4BIAYeemwkBL4wU0t29RuWyeCKQO0wu14aMvW5dgA4xxGGeS23bPOK1jcq+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxGRr+un8E1H5amsDGQOFvXVMNDr7RUQ2CQdi6F+w09nH6GQGzO
-	c578TJ8rtitx5GfqM/LlTtz6aRv2ZSBFA1tYnY3A4gAUvLW3i2Sx6y2tr2HCtrVphilpr11NGDW
-	ExB6IQFVU9zcM7ejmsFayaVRaxTDDQCmqwsrnyw6S
-X-Gm-Gg: ASbGncvvU34LjKuyPk9nJD0O2NRl7/TS7yHVqVzPwKjhW1cCyLFMcIfIdejVLDMtZKi
-	xpD7F4Tf1LtXoU54HKg/5lW2T4iX/QxJbUW6fEFI1YXUdB3KAvWw/zJ9YA/jBGX4pJ9mHKqrX42
-	LxKCk1V/Psy+D4OJH/7QkxFhiDbufk5KZxf9+/hafLT34Ol6cCeAbEpKh0L3co3ww0kBEsPaC0r
-	Q1uMmLNBcVlSd0GOoR+PlcbvxaXXao=
-X-Google-Smtp-Source: AGHT+IFhNvdXLUfN8AwQth4W32cKw2Fo5qWzAO7pSq4jYjYRTt95cZW3Ga7cw49IWvnxZ6mp6u76mcRdcsC0AlxmAwI=
-X-Received: by 2002:ac8:5f13:0:b0:4e4:d480:ef3a with SMTP id
- d75a77b69052e-4e6eabefc7bmr22994041cf.13.1760111254053; Fri, 10 Oct 2025
- 08:47:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760111251; x=1760716051;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FYxcb8Ei/Xcr+4iQKa4We4Vrj2RcYDCtpxX0z6XF/kU=;
+        b=lnvIf0lTH8O74eg8oGd02A88XVGQfLgV/bwUQLkZvKpj3y/v8cUuqzhNqXm1EYzZpm
+         l/UGRxggg7OCmPZYbbAG6fiXEQaEJydeOO07NenvdoBNPC1Ka2RGWi+e3+BkdCqxdLdw
+         wStW3qL+gNTdrxSWRURSVEJhlKV0P3mSiUTQz8OsbEyOMQ9iyDKFCW7Ck8raR5jcwN3F
+         LiLh05uyfnCW9xtCJAz9IbgZrzIQp7irUTnDoBirKWhArlapaan8S61zdycwBXD/A2F/
+         DAXbANU/5JBMXr/PAH4QBArVZcpDE+KrAeRHPq/R/Qn4Vx3q9iTL4ZE8tpnOkv1iAwRy
+         tAmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBl8/UUanPztp31p42wNI/eKnwvJtHJzh1RYyFlea8NPC5VWSIgjT2OyN8T4hawuGlAS3iqw646g==@kvack.org
+X-Gm-Message-State: AOJu0Yz+IcosurFr0vFRTJ2Zq03i+2MYZbCh3Mmugjdj4D9Q1KjWwsDK
+	7KVoTLe+0UTL/7gSdxUM2z6d9kFKwgiFzacN/pSokUghmoGsEBopURw3ScpjhiYuiGc8iRjwMHs
+	iRFUur8DCdybPSX2LHELgAYQ7IZSOwdxIWnfM9wLeGuTCLQPhxnN4
+X-Gm-Gg: ASbGnculDKcw/ZXanNhXSeI5STgooCEinu4zFtZqHxtVEO2kZ2zqlzBbQBKicTWIKSk
+	7+cXEzyD3VKXr38eTDmv3ddfU7ggokNuQUI96bZ6phaR0iAYjN10M/iyf8egVZfX+SiJr99GSao
+	Ipp/Su9QVqNVprnathdetqCAW4OcWfwp/h4fINvAIYbO9ifzX94Rnm3RqYP0HKGpvYhkNfk19VF
+	Gs7joRScAquKMY/wULGLTlARjMCEDBZTAqjuEW50kCB04pblkEnPh67vAwGQhv2l67U3ujht2rZ
+	8cl+/6aojsMNioZxGzplJUBBvJLqeiaexj3O9/EYNadhzXXYbZ9EwlHQlrqORw/GfTk6xgIeTNI
+	uvmc=
+X-Received: by 2002:a05:6000:4313:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-42666ab29d5mr6668200f8f.2.1760111250788;
+        Fri, 10 Oct 2025 08:47:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHqhMbEUgBI/Iv97iNeHuLMcRgPyI5xUWfi2ZMDm/sSHI/GStcIbfl5wXKZP1H533gyi729Q==
+X-Received: by 2002:a05:6000:4313:b0:3ea:6680:8fb5 with SMTP id ffacd0b85a97d-42666ab29d5mr6668179f8f.2.1760111250365;
+        Fri, 10 Oct 2025 08:47:30 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5833dcsm4829510f8f.19.2025.10.10.08.47.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 08:47:29 -0700 (PDT)
+Message-ID: <5b494700-a3af-4feb-8c5f-1ca424ad9841@redhat.com>
+Date: Fri, 10 Oct 2025 17:47:25 +0200
 MIME-Version: 1.0
-References: <CAJuCfpEWVEqsivd7oTvp4foEho_HaD1XNP8KTeKWzG_X2skfGQ@mail.gmail.com>
- <7944006e-8209-4074-85da-14f5545cd8b6@redhat.com> <Z6H4qCZDthSpI3nN@raptor>
- <CAJuCfpHZFAH4YvzekBgL2Np9UE95tw6ueevxapFzLXpf8UeoqA@mail.gmail.com>
- <CAJuCfpFyJBf1PX_d6NKDVSgg3EhXcbebVCYjMMpti6d5VnAJwg@mail.gmail.com>
- <CAJuCfpGghAELOpAxcUrAsGt86th-faAdOebw0SfYesS0+2cGmg@mail.gmail.com>
- <CAJuCfpEXBMBTPB6j3OS9uaKT_NbyqivnpA35hRYRiPikgyO6AQ@mail.gmail.com>
- <d3177175-86d6-437b-8084-9d3521161146@redhat.com> <CAJuCfpFBgYrOsAD5JbuBOMUVJo7H5e_qDxjxPsqHH1SSQum9Xg@mail.gmail.com>
- <ef8b8fe0-be77-429c-a474-be7b7f8be587@redhat.com> <CAJuCfpG+bXMDzfDRAZwhTX2CNu+yA12PVVV6sWcbWvJAsKvUww@mail.gmail.com>
- <ddde064a-3297-4da1-bd2f-b3fbc2384e1f@redhat.com> <CAJuCfpGHZFmSV9ZDXc_CxxACzq-TjVudnCT3thn_Ok6S4nm3eQ@mail.gmail.com>
- <5c3fc24c-dfbf-4d59-bda0-8726d2eaa78a@redhat.com>
-In-Reply-To: <5c3fc24c-dfbf-4d59-bda0-8726d2eaa78a@redhat.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 10 Oct 2025 08:47:22 -0700
-X-Gm-Features: AS18NWDso4Sq1vuiMj1fngD3BtbeVxkDxq_7HZihr-hQ1MkXkPjbj8exZFRdfkg
-Message-ID: <CAJuCfpGLsN32Tq6BBzgbxBSBu7Ogxy5d+3-TE4+jCKgGfaHLvA@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Guaranteed CMA
-To: David Hildenbrand <david@redhat.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, lsf-pc@lists.linux-foundation.org, 
-	SeongJae Park <sj@kernel.org>, Minchan Kim <minchan@kernel.org>, m.szyprowski@samsung.com, 
-	aneesh.kumar@kernel.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>, mina86@mina86.com, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
-	Michal Hocko <mhocko@kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	android-kernel-team <android-kernel-team@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ymuh8qizn7w8tz5bgqguymr5d3f5r3fo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/8] mm: Introduce deferred freeing for kernel page
+ tables
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>
+Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
+ <20250919054007.472493-7-baolu.lu@linux.intel.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250919054007.472493-7-baolu.lu@linux.intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: i4IyNc89GJXMWhrWOENySyqiv4M5nlo00Li4Mk1vCJk_1760111251
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C0A76140008
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C086DC0006
-X-HE-Tag: 1760111255-908903
-X-HE-Meta: U2FsdGVkX1/0v2ciBCVTMx6tn6q4fo31yWCTdX8hk7XhJTqnZHTm7ppPXgHuyr5IWGXh9CCQRguRmV7WsT0ycrGX97kYw1vqPvr4LaXK8kOnhrtTSUNtTmmNl626vrJ6lHi7sTcCffsMh2vATKS1Xe8j2+e9I2woC+mwUe1JJ7l6tpNWY3wI7W9rxDkhV/OhlkJPEFXF0iBhwTpdclFs0E3tce9zCQgkJKQFWOhrvMswJGFXghmRD4mh7h+6uLDSiid7+LY+OAg7Qq65ZrYEcsa/m1fn/VMG5j//rkMFxq5p02vpE5eGs+CjGGsIom7XyVQ2e5PXss8p0TgwsDgZ9otacl7bZ8tyMOELWtJFq0YeN3EXvYdEF87WziZ8c0pPIq9TSWq4+2FmVMnHVLPR1SurCpk07f8z/S+EFAw828E/9ht+MHOgcmCQr6oo9+OOJwn+zIdVdswZVF/s1ZLX8fKOLbvE//v9NT6xGIjxKUn7L0PhDoDaWT2dtUlfruO9FKuYSfS3vZuOidSxX09AyIBHJPHlNuqhts0Tv/pUDveUcEtmER5hn5+sZAhGLQuCW3FqjE3wQQOU4G9oMhpLRCFzBrlwLvn3nLl/OdhrHCQxAlaLkI7snHmhEeFFv+0noPbHaaDdMbSY/K6ywcqzXlbQIs+LySvO1AlN/ZbwMGAHH9m8yAgk4PmjMBfvj+6cCYSA5MbwqB7wZhU21cgfpXR+28I90u1RQJRxp9oh3zSRGJsbUr5tSm3qu5RrZlGnwQ2znQe6ow4fHs4sohwigJgN256WuMiHbJH4yMktu8sUopPNWXowCki0o51+SdcHkhn8cYIl6dEsK6tazHoCM5UiL4/xfdw3Jw3jgm7toRHUnp+/ZUqWMW0fXk6QuOh0Uu+CLnMtZxcL3VShuAwt5OeNwFSkanh3ZfYNkG8d+vv7o2EXypXGyhC+wmK/P79piEhQF3K9si8SHWIhM95
- ywRSLNnt
- sHBmTUQxNphbewNbypu37tniOeVrwCJleEjRfuaj2+O++7xWFjC/WWng17MeQzRdwzGW3Cx8FLLVyq9/c5n2xgUw6D3x2k1jbY813KEfI/y/3TkgfwxwNxSm98uWL9ZrySea1Br987pxKU5wci421IEz4upfCnwPQk0DLIx7oH8Bu3hJeUeTJ6ACI8sBTm3wUlge+l5HyziwciBEKQwqAAwKA1jvSBnngLjROoBB0925WKKtJtXUkdN1akpiSqB/r9ijqKGXIpdr4Wm3Eu57F5H8KMmJtd4wfgAVZ93XDz6UAT0+XrpYBjltpIvoeC4Rc1anBcuP1ObiJz4w=
+X-Stat-Signature: tkptd5tykmzef4py3haws78x76krebnp
+X-HE-Tag: 1760111255-606752
+X-HE-Meta: U2FsdGVkX1/svfQVBkHXbM+fw7J1JChZMgOl2ORaaXAiuB8ZQBUKUv6ldeO8+QDNHdpWcmGjcWkGg/5dNzC4JUmZb317B22HhzoVuF+SzjTXbelkIXmcj+C+ks8WFnSpQE11bcabj5lxuavOPyN87JV2rLq4r8y/G+aCzPuiLIc4UiEFztHncEG7tHAmgWSRFJV8IMY9gFwtb+k7+KHTCKZNvt10oxBqmSfS7nK+qxZJvJiqSxUGxzy3xm/PuAxOUpps9H/8eG0RPKcJPYhlz1/uE7SC/W7ihOODosY8sUCrupGV1q8wog9jqX4IbQAV6vonz9UvwWfzMeFfZzK4S4G97xVQMU1pxYEWIwAdXvLh5p+KXnBxuf56p2YDiod1Uc+MPRoeekgaWUrLqEhSFenhwsK90A7/UoXGfDNHORhdR70mVTp8lmBGJ4iepuhdjJpS0AsAEu9nXJCJsf2d+48QF2GfSPviatvNobzx0bkdkiiWcAihD7v+3Khb3g5rzkXHQW7RiNLCHpT3AZ1WyC+86AD3PzlkEgRKYqVAW4GDZuiZJwxGD47ONMDC+YrZ+sLNHbqzJJKgU7rcjE0tYosk6DTAuO6b0oRzYVCiybWeAmdkdVnaXeiszNHlDEsbHNIYdmpnHcbH/ExitxV5lp8eu/n0xEH6Hr25LFwMOG37KPGBHeHRRJ39GCryDBKjuu7gjV29gAyab58mXqBv9XHailS7fXXKUzHEiu0c6rd4M0izdkRNeUFNPeuy6MV4mO3OCb4onBrnJaPR4RbjFmwW9fnBUUU59L1hP1wxr1pjbT94dvEtS9RSZ910filszfM1CeAjVzBRP/OdLCLHiH2bjELKuUrGBMktXBVavSpONoGoBzmRZjGtc8iNcyJHNmAkIJE5uTXHxM1/twdgyrGg2VLStu/5j74P2aa6cmPzwzcTKtUwN1i4fPujqw/ISOXK9mt3bIS/Du8r6Px
+ 8yQXBMA7
+ 7hbNWX3+1MjW1eE4oMEkwJGWxQdz6bSgUoJ3udCd7U/BUQcPK7vXcgo1AfRYaWfybvxLAVqnPuewzYE6edxBAIcmH9wepFGqgrtY+eWW0YeZTQEdPBqzC2aR7O27Ud4qt5CjEqi5SDTwAd4YzFE8/PmVnINutVyQ1mRNpmVtsuLDlD4enSEaxQLm/UzUf23xBamasHvTdHnRNYhx7JTX74C6jBagtaAdMwJsPMWm/5pTfD6sOAwtPPhMVK0RBruO9EmF2xlPx72J4pW93tzCqcfI7WeN0Qai/WMrsLJH13YGqNmH5SeEnDmU4ctv3FfzBCeoP/54mvsTK0EUycxh2DR4I1b+m78Cjkww8nOCHs8tl33qC98K9TMykX8ZwniqxvvXBxx6eJKqyvq14fem9B017KgJi8/fVvn3wJ9N/x34EGbPWyPu/yLntg/KM12Y/Ek/d+Tbtk8e2G8jz1lm2HmQrA964jKr0riaMDtodqzgejml5CtpkfpQIQA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,290 +188,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 8:37=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 10.10.25 17:07, Suren Baghdasaryan wrote:
-> > On Fri, Oct 10, 2025 at 6:58=E2=80=AFAM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >> On 10.10.25 03:30, Suren Baghdasaryan wrote:
-> >>> On Mon, Sep 1, 2025 at 9:01=E2=80=AFAM David Hildenbrand <david@redha=
-t.com> wrote:
-> >>>>
-> >>>> On 27.08.25 02:17, Suren Baghdasaryan wrote:
-> >>>>> On Tue, Aug 26, 2025 at 1:58=E2=80=AFAM David Hildenbrand <david@re=
-dhat.com> wrote:
-> >>>>>>
-> >>>>>> On 23.08.25 00:14, Suren Baghdasaryan wrote:
-> >>>>>>> On Wed, Apr 2, 2025 at 9:35=E2=80=AFAM Suren Baghdasaryan <surenb=
-@google.com> wrote:
-> >>>>>>>>
-> >>>>>>>> On Thu, Mar 20, 2025 at 11:06=E2=80=AFAM Suren Baghdasaryan <sur=
-enb@google.com> wrote:
-> >>>>>>>>>
-> >>>>>>>>> On Tue, Feb 4, 2025 at 8:33=E2=80=AFAM Suren Baghdasaryan <sure=
-nb@google.com> wrote:
-> >>>>>>>>>>
-> >>>>>>>>>> On Tue, Feb 4, 2025 at 3:23=E2=80=AFAM Alexandru Elisei
-> >>>>>>>>>> <alexandru.elisei@arm.com> wrote:
-> >>>>>>>>>>>
-> >>>>>>>>>>> Hi,
-> >>>>>>>>>>>
-> >>>>>>>>>>> On Tue, Feb 04, 2025 at 09:18:20AM +0100, David Hildenbrand w=
-rote:
-> >>>>>>>>>>>> On 02.02.25 01:19, Suren Baghdasaryan wrote:
-> >>>>>>>>>>>>> Hi,
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> Hi,
-> >>>>>>>>>>>>
-> >>>>>>>>>>>>> I would like to discuss the Guaranteed Contiguous Memory Al=
-locator
-> >>>>>>>>>>>>> (GCMA) mechanism that is being used by many Android vendors=
- as an
-> >>>>>>>>>>>>> out-of-tree feature, collect input on its possible usefulne=
-ss for
-> >>>>>>>>>>>>> others, feasibility to upstream and suggestions for possibl=
-e better
-> >>>>>>>>>>>>> alternatives.
-> >>>>>>>>>>>>>
-> >>>>>>>>>>>>> Problem statement: Some workloads/hardware require physical=
-ly
-> >>>>>>>>>>>>> contiguous memory and carving out reserved memory areas for=
- such
-> >>>>>>>>>>>>> allocations often lead to inefficient usage of those carveo=
-uts. CMA
-> >>>>>>>>>>>>> was designed to solve this inefficiency by allowing movable=
- memory
-> >>>>>>>>>>>>> allocations to use this reserved memory when it=E2=80=99s o=
-therwise unused.
-> >>>>>>>>>>>>> When a contiguous memory allocation is requested, CMA finds=
- the
-> >>>>>>>>>>>>> requested contiguous area, possibly migrating some of the m=
-ovable
-> >>>>>>>>>>>>> pages out of that area.
-> >>>>>>>>>>>>> In latency-sensitive use cases, like face unlock on phones,=
- we need to
-> >>>>>>>>>>>>> allocate contiguous memory quickly and page migration in CM=
-A takes
-> >>>>>>>>>>>>> enough time to cause user-perceptible lag. Such allocations=
- can also
-> >>>>>>>>>>>>> fail if page migration is not possible.
-> >>>>>>>>>>>>>
-> >>>>>>>>>>>>> GCMA (Guaranteed CMA) is a mechanism previously proposed in=
- [1] which
-> >>>>>>>>>>>>> was not upstreamed but got adopted later by many Android ve=
-ndors as an
-> >>>>>>>>>>>>> out-of-tree feature. It is similar to CMA but backing memor=
-y is
-> >>>>>>>>>>>>> cleancache backend, containing only clean file-backed pages=
-. Most
-> >>>>>>>>>>>>> importantly, the kernel can=E2=80=99t take a reference to p=
-ages from the
-> >>>>>>>>>>>>> cleancache, therefore can=E2=80=99t prevent GCMA from quick=
-ly dropping them
-> >>>>>>>>>>>>> when required. This guarantees GCMA low allocation latency =
-and
-> >>>>>>>>>>>>> improves allocation success rate.
-> >>>>>>>>>>>>>
-> >>>>>>>>>>>>> We would like to standardize GCMA implementation and upstre=
-am it since
-> >>>>>>>>>>>>> many Android vendors are asking to include it as a generic =
-feature.
-> >>>>>>>>>>>>>
-> >>>>>>>>>>>>> Note: removal of cleancache in 5.17 kernel due to no users =
-(sorry, we
-> >>>>>>>>>>>>> didn=E2=80=99t know at the time about this use case) might =
-complicate
-> >>>>>>>>>>>>> upstreaming.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> we discussed another possible user last year: using MTE tag =
-storage memory
-> >>>>>>>>>>>> while the storage is not getting used to store MTE tags [1].
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> As long as the "ordinary RAM" that maps to a given MTE tag s=
-torage area does
-> >>>>>>>>>>>> not use MTE tagging, we can reuse the MTE tag storage ("almo=
-st ordinary RAM,
-> >>>>>>>>>>>> just that it doesn't support MTE itself") for different purp=
-oses.
-> >>>>>>>>>>>>
-> >>>>>>>>>>>> We need a guarantee that that memory can be freed up / migra=
-ted once the tag
-> >>>>>>>>>>>> storage gets activated.
-> >>>>>>>>>>>
-> >>>>>>>>>>> If I remember correctly, one of the issues with the MTE proje=
-ct that might be
-> >>>>>>>>>>> relevant to GCMA, was that userspace, once it gets a hold of =
-a page, it can pin
-> >>>>>>>>>>> it for a very long time without specifying FOLL_LONGTERM.
-> >>>>>>>>>>>
-> >>>>>>>>>>> If I remember things correctly, there were two examples given=
- for this; there
-> >>>>>>>>>>> might be more, or they might have been eliminated since then:
-> >>>>>>>>>>>
-> >>>>>>>>>>> * The page is used as a buffer for accesses to a file opened =
-with
-> >>>>>>>>>>>       O_DIRECT.
-> >>>>>>>>>>>
-> >>>>>>>>>>> * 'vmsplice() can pin pages forever and doesn't use FOLL_LONG=
-TERM yet' - that's
-> >>>>>>>>>>>       a direct quote from David [1].
-> >>>>>>>>>>>
-> >>>>>>>>>>> Depending on your usecases, failing the allocation might be a=
-cceptable, but for
-> >>>>>>>>>>> MTE that wasn't the case.
-> >>>>>>>>>>>
-> >>>>>>>>>>> Hope some of this is useful.
-> >>>>>>>>>>>
-> >>>>>>>>>>> [1] https://lore.kernel.org/linux-arm-kernel/4e7a4054-092c-4e=
-34-ae00-0105d7c9343c@redhat.com/
-> >>>>>>>>>>
-> >>>>>>>>>> Thanks for the references! I'll read through these discussions=
- to see
-> >>>>>>>>>> how much useful information for GCMA I can extract.
-> >>>>>>>>>
-> >>>>>>>>> I wanted to get an RFC code ahead of LSF/MM and just finished p=
-utting
-> >>>>>>>>> it together. Sorry for the last minute posting. You can find it=
- here:
-> >>>>>>>>> https://lore.kernel.org/all/20250320173931.1583800-1-surenb@goo=
-gle.com/
-> >>>>>>>>
-> >>>>>>>> Sorry about the delay. Attached are the slides from my GCMA
-> >>>>>>>> presentation at the conference.
-> >>>>>>>
-> >>>>>>> Hi Folks,
-> >>>>>>
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>>> As I'm getting close to finalizing the GCMA patchset, one questio=
-n
-> >>>>>>> keeps bugging me. How do we account the memory that is allocated =
-from
-> >>>>>>> GCMA... In case of CMA allocations, they are backed by the system
-> >>>>>>> memory, so accounting is straightforward, allocations contribute =
-to
-> >>>>>>> RSS, counted towards memcg limits, etc. In case of GCMA, the back=
-ing
-> >>>>>>> memory is reserved memory (a carveout) not directly accessible by=
- the
-> >>>>>>> rest of the system and not part of the total_memory. So, if a pro=
-cess
-> >>>>>>> allocates a buffer from GCMA, should it be accounted as a normal
-> >>>>>>> allocation from system memory or as something else entirely? Any
-> >>>>>>> thoughts?
-> >>>>>>
-> >>>>>> You mean, an application allocates the memory and maps it into its=
- page
-> >>>>>> tables?
-> >>>>>
-> >>>>> Allocation will happen via cma_alloc() or a similar interface, so
-> >>>>> applications would have to use some driver to allocate from GCMA. O=
-nce
-> >>>>> allocated, an application can map that memory if the driver support=
-s
-> >>>>> mapping.
-> >>>>
-> >>>> Right, and that might happen either through a VM_PFNMAP or !VM_PFNMA=
-P
-> >>>> (ordinarily ref- and currently map-counted).
-> >>>>
-> >>>> In the insert_page() case we do an inc_mm_counter, which increases t=
-he RSS.
-> >>>>
-> >>>> That could happen with pages from carevouts (memblock allocations)
-> >>>> already, but we don't run into that in general I assume.
-> >>>>
-> >>>>>
-> >>>>>>
-> >>>>>> Can that memory get reclaimed somehow?
-> >>>>>
-> >>>>> Hmm. I assume that once a driver allocates pages from GCMA it won't
-> >>>>> put them into system-managed LRU or free them into buddy allocator =
-for
-> >>>>> kernel to use. If it does then at the time of cma_release() it can'=
-t
-> >>>>> guarantee there are no more users for such pages.
-> >>>>>
-> >>>>>>
-> >>>>>> How would we be mapping these pages into processes (VM_PFNMAP or
-> >>>>>> "normal" mappings)?
-> >>>>>
-> >>>>> They would be normal mappings as the pages do have `struct page` bu=
-t I
-> >>>>> expect these pages to be managed by the driver that allocated them
-> >>>>> rather than the core kernel itself.
-> >>>>>
-> >>>>> I was trying to design GCMA to be used as close to CMA as possible =
-so
-> >>>>> that we can use the same cma_alloc/cma_release API and reuse CMA's
-> >>>>> page management code but the fact that CMA is backed by the system
-> >>>>> memory and GCMA is backed by a carveout makes it a bit difficult.
-> >>>>
-> >>>> Makes sense. So I assume memcg does not apply here already -- memcg =
-does
-> >>>> not apply on the CMA layer IIRC.
-> >>>>
-> >>>> The RSS is a bit tricky. We would have to modify things like
-> >>>> inc_mm_counter() to special-case on these things.
-> >>>>
-> >>>> But then, smaps output would still count these pages towards the rss=
-/pss
-> >>>> (e.g., mss->resident). So that needs care as well ...
-> >>>
-> >>> In the end I decided to follow CMA as closely as possible, including
-> >>> accounting. GCMA and CMA both use reserved area and the difference is
-> >>> that CMA donates its memory to kernel to use for movable allocations
-> >>> while GCMA donates it to the cleancache. But once that donation is
-> >>> taken back by CMA/GCMA to satisfy cma_alloc() request, the memory
-> >>> usage is pretty much the same and therefore accounting should probabl=
-y
-> >>> be the same. Anyway, that was the reasoning I eventually arrived at. =
-I
-> >>> posted the GCMA patchset at [1] and included this reasoning in the
-> >>> cover letter. Happy to discuss this further in that patchset.
-> >>
-> >> Right, probably best to keep it simple. Will these GCMA pages be
-> >> accounted towards MemTotal like CMA pages would?
-> >
-> > I thought CMA pages are accounted towards CmaTotal and if that's what
-> > you mean then yes, they are added to that metric in the patch [1], see
-> > the change in gcma_register_area(). I'm not adding the GcmaTotal
-> > metric because I think it's simpler to consider GCMA as just a flavor
-> > of CMA, as both are used via the same API (cma_alloc/cma_release) and
-> > serve the same purpose. The GCMA area can be distinguished from the
-> > CMA area using the /sys/kernel/mm/cma/<area>/gcma attribute, but
-> > otherwise, it should appear to users as yet another CMA area. Does
-> > that make sense?
->
-> I was rather wondering whether these pages will be part of /proc/meminfo
-> MemTotal: so that totalram_pages_add() is called for them.
->
-> For ordinary CMA that happens in cma_activate_area() ->
-> init_cma_reserved_pageblock() through adjust_managed_page_count(), where
-> we also have the __free_pages() call.
+On 19.09.25 07:40, Lu Baolu wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> This introduces a conditional asynchronous mechanism, enabled by
+> CONFIG_ASYNC_PGTABLE_FREE. When enabled, this mechanism defers the freeing
+> of pages that are used as page tables for kernel address mappings. These
+> pages are now queued to a work struct instead of being freed immediately.
+> 
 
-Ah, ok I see what you mean. IIUC this combination of __free_pages() +
-adjust_managed_page_count() means the pages from the CMA area are
-donated to the system, and therefore the MemTotal is increased. Since
-GCMA does not donate its memory to the system (it donates to the
-cleancache instead), we do not increase MemTotal.
+Okay, I now looked at patch #8 and I think the whole reason of this 
+patch is "batch-free page tables to minimize the impact of an expensive 
+cross-page table operation" which is a single TLB flush.
 
->
-> If nothing changed on that front, then yes, it would behave just like
-> ordinary CMA.
->
-> I should probably take a look at your v1, unfortunately that might have
-> to wait for next week as I'm out of review capacity for today I'm afraid.
+> This deferred freeing provides a safe context for a future patch to add
 
-No worries, I appreciate your input whenever it arrives.
-Thanks!
+So I would claridy here instead something like
 
->
-> --
-> Cheers
->
-> David / dhildenb
->
+"This deferred freeing allows for batch-freeing of page tables, 
+providing a safe context for performing a single expensive operation 
+(TLB flush) for a batch of kernel page tables instead of performing that 
+expensive operation for each page table."
+
+-- 
+Cheers
+
+David / dhildenb
+
 
