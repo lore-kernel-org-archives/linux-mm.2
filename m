@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD09CCD185
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:45:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F36CCA476
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Oct 2025 15:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A74EF8E0037; Fri, 10 Oct 2025 11:45:57 -0400 (EDT)
+	id 174CD8E0038; Fri, 10 Oct 2025 11:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A257E8E002C; Fri, 10 Oct 2025 11:45:57 -0400 (EDT)
+	id 125F48E002C; Fri, 10 Oct 2025 11:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9147E8E0037; Fri, 10 Oct 2025 11:45:57 -0400 (EDT)
+	id F2FAB8E0038; Fri, 10 Oct 2025 11:46:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AECE8E002C
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:45:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4030B58876
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:45:57 +0000 (UTC)
-X-FDA: 83982630354.12.ED57281
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 51C182000F
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:45:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pg2zUujy;
+	by kanga.kvack.org (Postfix) with ESMTP id DFC9C8E002C
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 11:46:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF1BF1DFD21
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:15 +0000 (UTC)
+X-FDA: 83982631110.18.0CAA38A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E9E73C0002
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 15:46:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnQxuHix;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111174; a=rsa-sha256;
+	cv=none;
+	b=NxynhjBZSsxnaX8AWrBN68lWNj33HJAfJgtWiigFKb+M2EcKdXkp4+XmxGBELjmUYUqzVd
+	KY8Bcdb1m2anX2LoeISlpjbCxIW48Vnm+asgC1QZSTvT0dcBSXZZmjLJeYrguLsBXxkXQU
+	qWzuLDTwayJbhh9D3PjN0AQsEXrUfkI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DnQxuHix;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760111155;
+	s=arc-20220608; t=1760111174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uA/joIxupKiXJwORpnKdW+bHmjp4JFkmsKHil6Ud81E=;
-	b=iWQGquDL7SC4H48YXRjuLUHPk+cKUHsSaZ2jSEpruc7n+gbbCw5RmLH+payBsepwyCy97C
-	AuSGZ+OenyoZTfiM+qaPCmmxscSQn+BQhAM3sWAV5YnJZ/ZQI2soEnNceLaWrdQv5beAzU
-	hZDSypodPoC2cz0xTA22nEOMi6kK2BU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760111155; a=rsa-sha256;
-	cv=none;
-	b=rAGCoPSR3GwMe32kwYkFhPZUvkgbg74qNdDcAXoAaE0vq7sJJEUWqacWFwyPdRoe9iqFSJ
-	64budEnnbdhwGxdpbnd2AufRXLzNZdMhBMr/aDv5dGT5xRsNv65QCvcuT2nVpzWGy6vuSP
-	RlKOJfSDnip1ESYiivlZbHCyFWPyBpw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pg2zUujy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+	bh=iD33w+Kf1PLBTVwd7Gs6fvxUpUzwmU6xc5WkYASPV+Q=;
+	b=Ko3pD18jaV38b+g/RpIhf4EKrQdgjwEtrms/yWf9bP7uGNRsiM6pHyiC10Yh/JXyFvdH8Q
+	6GlEEAZtJc6JzhZl3XKEeRy73m8oyQ1C+9hSrr5bXBBipBIcIo+pmaflPBLqgYG55SYM54
+	12xvOs8y4O6fKIVqonev8yZziP8yGoM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760111154;
+	s=mimecast20190719; t=1760111173;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uA/joIxupKiXJwORpnKdW+bHmjp4JFkmsKHil6Ud81E=;
-	b=Pg2zUujyM+jqHLS4ku+ps6l0nDheucz6+SBf8mqPeu7wUgSEYCNxsyYXgZSX5e/15si3ZZ
-	MPvHFxgx6WkOSKXlTxnvFUllVaoTCWb137sPS7AFlequtgwFFh1sh8EKrEBldIYoaRrZv3
-	7XzeSXv6F2nc7IxGF8iNx1jFTElOPGk=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=iD33w+Kf1PLBTVwd7Gs6fvxUpUzwmU6xc5WkYASPV+Q=;
+	b=DnQxuHixh+d/pfaHwKbJSkO4dJqY1LCVXadsxVt+tfuGpT81rWBl9e8hnxpEtGK+2/1v4J
+	jCz1Hvyn6KYadd18cd2tCGnJAmL4Fm6riB/DK7cng/YIhqWaKk7DgtBEXv65wG4vAEIs0R
+	uyPN+HzaB2VlboJGlx93PZUUybMwjuY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-b-Sr8LpaOGShfFTrtDDmzw-1; Fri,
- 10 Oct 2025 11:45:51 -0400
-X-MC-Unique: b-Sr8LpaOGShfFTrtDDmzw-1
-X-Mimecast-MFC-AGG-ID: b-Sr8LpaOGShfFTrtDDmzw_1760111141
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-YyfYK7fpOPCOQwG47iM_TQ-1; Fri,
+ 10 Oct 2025 11:46:09 -0400
+X-MC-Unique: YyfYK7fpOPCOQwG47iM_TQ-1
+X-Mimecast-MFC-AGG-ID: YyfYK7fpOPCOQwG47iM_TQ_1760111157
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4EA4319560BB;
-	Fri, 10 Oct 2025 15:45:41 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DCF321800290;
+	Fri, 10 Oct 2025 15:45:56 +0000 (UTC)
 Received: from vschneid-thinkpadt14sgen2i.remote.csb (unknown [10.45.224.29])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 84AAE180035E;
-	Fri, 10 Oct 2025 15:45:26 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CBC601800576;
+	Fri, 10 Oct 2025 15:45:41 +0000 (UTC)
 From: Valentin Schneider <vschneid@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -122,22 +122,22 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Daniel Wagner <dwagner@suse.de>,
 	Petr Tesarik <ptesarik@suse.com>
-Subject: [PATCH v6 19/29] KVM: VMX: Mark vmx_l1d_should flush and vmx_l1d_flush_cond keys as allowed in .noinstr
-Date: Fri, 10 Oct 2025 17:38:29 +0200
-Message-ID: <20251010153839.151763-20-vschneid@redhat.com>
+Subject: [PATCH v6 20/29] stackleack: Mark stack_erasing_bypass key as allowed in .noinstr
+Date: Fri, 10 Oct 2025 17:38:30 +0200
+Message-ID: <20251010153839.151763-21-vschneid@redhat.com>
 In-Reply-To: <20251010153839.151763-1-vschneid@redhat.com>
 References: <20251010153839.151763-1-vschneid@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam01
-X-Stat-Signature: dyuqfpwy16aonqz4fx6epb595sig3bx8
+X-Stat-Signature: pxypgbpqf4bgq4ix7rof856tzj5ngyfm
+X-Rspamd-Queue-Id: E9E73C0002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51C182000F
-X-HE-Tag: 1760111155-812822
-X-HE-Meta: U2FsdGVkX1/adCzhlsq4Sl0n6RIG8Ij0KQpQi6OVmwHA+iILI0ehqWFRQcr4fRDUxw6WuaP5FU0WQTcxJS1VeBfNPiRrcDle0l5j07zsz7o7bvHIZLstYRXIuOGIpjsE9NaageNjw4JcozhSOOiGQrnF15KyO+ddpXJ2uZnXtWq6D9EnDLA+9AtkhX5nsKY/vDiiKyXQ3TbiddoVh8IVv1K3stj8WABp0HsRCzxzfWOTe1KCvSNUX4PXHZOkS3ZaGSBBVHSzJfyFRd7wLDYKpp2W6oMAsj7ebyeQn+NHcwDD+uscV14ewwuJiQULgirT8Ygx3eE3A4v3DKXDmvCCOfeMCVbwwJogRi2Et7/TbIzS6yiQ+u7IV6gbA6ZuZrjUXd54G7MBve/aYOaDBnKcNBy7E6Njc+3hKKtAFQINxgi4ZlyUCO4hVlI6CnGNoIqALlQZ3h1uzh79eKuyVuihawROfFibRu4eII9H3auArt3Jd3/sAk30wR34Dy08VCrRm6m3xnMlEfugy5AGykq1/123ByPqqbocfAbffy7Wx8VwO1LbNH3Dul68q+wbrLRo/ESzizUA7Ti1nK/KA/bcJsAmhhh5isNNd+K93XGSWhcY87QoICDWvwZQuMsb3kDQ+MRXNxgf3HMzNv33VT2V3PzjuMERr6QghQ5xVz4PHtRX83k+VNiDx+ASwcCa6Svo3O/i6YmvGmAy1ItvzT+MrhRISuFDrfH/5lXWf4KSj2vbyBllbzoaNuxld4Uny7bVhYRkNDRp+BWjLgdy1hzVsME3IjhJEDKGsnfjuL+iOBFjjeRAyu1Q2ACho7jNb1xm7QvBzTIkT/2LGeSJ2GZkYu6sceqWSsK4lDuYgXWWDnVyPUhOjM67LirknrcuDfk3DHZA7lFPBZRAWyHH5D6kzSJl7QjMFfj59G3dfvut4ZiEa5r7444HVkY9p5wXRWK2LnQUJ9xG40nMkeQXC2B
- w46hVWYe
- SFMGmEQR6W1Yf1FRCPYswT/2pJc3214XEhftnGhJUHme0aMrLh1MdReOEiBzYZyT5wO0rJyq5qGSvy7/6edKUUYkpZs0PGxHQj+obs1k+Ej2qGp4Ou8q1lTmmA/Z2012Xs5vW42nsJpMETIvHQQeQwZlvGRAAdTsu3BIDmJJvC+FeDpZvYcFOukOqjT+wfuw5ZRmlvFFGJKIgZ8pQFNX9Oj2WYwenFUAdzUJfyq/QDQTT9OM7mJyG9Y2XMCwZbYsisFUjgEZgrPh6bJMD2HnA9Dx5WtXWhpDkVmZ1gXZhj78js/Jmv1sqqsatWuhtA1beBAD5U5x1kZOFOi0hWwRIcNHXOZjXLxZFGLKiV64zuFQgXMcz5zygcCFAbM5Ka1vZefAXDAurO6Wh48qSmXliC5a7aAn9QIqd83w02W81kG4FVTldDoMLRsBNW6Ir6uxgdI09JlGgg7HS/4mRFhxzD5L0NDJesSIuk86Ao1X9kkUThOGrD4ua8UPRcA==
+X-HE-Tag: 1760111173-36007
+X-HE-Meta: U2FsdGVkX1+vQBcdV4BZgqjrRCHNQNJZwQxgJ5vtrHjR9Uaz6R+Mk4nfqxq/NV/2s8W0yVzdBnlrSBARsa/f2kh7t/oas75CtO0fgtuth8de/TAT4raTDO79BZUJhs6UrYGMWgYR8t7/YRxWBfTcOSvV9497EMyszG4UYhKpua4AA+ClfJRKYSNwcQeiaAGc8yE6jv+IWFsh1eUTHULJB/Xs/hywjbEzk3GaaCza8O33XsJ2nWp++gN2WOjKA0Qr6a3QGgjc00agUWuGJrdERFOWssxWAfPeN4CI0CBWyD6KOBCiVFVqckLMNYYghOzbANEUrRPaMD+L3MR44cKt28IyfvRDdxV5S8UmSnvAHo9la508TYnm0okx1u8YM+8ROnUcaA2l5gROcYDZoGwYmwcu2u3KX8D6DVDVvJ/EWj3hGRSdNcDr5R86UEtfoZpAGV0OZBWchFGQBy7TxAwAX3JPpWScqJ0CLdxh/ZP1sJNPKnQvLaZcssw14MHcyCE4E7XDQSDwmeQRTP76ykH+z3wV4XdO92MZgLJ7TlZwy0o+Ya1KMSOL6yzaUjg8eEmPvelzD/PKi56z9/qIeuKtwMYcL5ICPQx16074ch79UCh0/tt6MJLz7nVjWYd2P8fVc1SPq4lVl6ovop4V8aEPPlRBTJxaaYJm1Fj3Ot8gFnN5YwHVEAxTQe7ABnvBybu76RJPuOFaOwZduH+rmgfmrXosgL+7lYAACblyQPO0VGIvd96/zXtZD74BbJiMU1n44zYBgtIINys2CUJ9/N3NjuDT7xQTaN8k3cg+1xVLq7hoV8YHSvUegqo88AVj4w8FCWqE5jsvUTchN4LIEUNRE7fQ1fXttmkf+xnZTTxzKQqCzHabO4paA+kOQk/sI9KClU3CxwkFCXJoWeFmJNK9yaW9UpBDSpM2+ith9lIChCcRVFpX/qYW5LXb9Rq3bjjNokZ6CKq37RXHQtgLfFY
+ t92YS710
+ JVfaUCh+rP5Lgkb+QSwU3cq8ePItvmhMUmcEfX6aFx4HvXMGe+U4hUd3aXlxBrwDFIAGMFsNAfrqIsSOZFHhVBPaaMTjlGF/j0eG7NvIxmjLpuufxd6cTHPK7Xk4MYX0JvwSd+QC+fUT3uf1fDtQTDwAseTxwcRUh2vW7j5jlSdtOAVdK9GDPvsJPHGZYRwoEWYekyv6EB/m3MM5KvohD8j7DPz/Q7siPeB8K2piCcw0PVE7gbf79Vt7oCzykE8qDo6PB1FTIyw9P8ywGPu9SDpgkjiH2zsnudcdGWrZjxxJEAcoxT5sufJAbL2oDltJUre7OvTKollEjhDRtBLwsFXFqcOmkZ/Y8yAQ5axuAaLGHO4vfbSZ+8XhZ7hkyt7yK61Ad9nCzoracbBGNRyH09mfn+Y0c45VbWtxjBP76iX83ybA6oDr+i0ZkeVwgxuRPdwRtOylOaJnqKuIPkRUKKK2PO6QIOqj2Xuakg5wUBu8I/iLQGLkJnk2sYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,41 +150,36 @@ Later commits will cause objtool to warn about static keys being used in
 .noinstr sections in order to safely defer instruction patching IPIs
 targeted at NOHZ_FULL CPUs.
 
-These keys are used in .noinstr code, and can be modified at runtime
-(/proc/kernel/vmx* write). However it is not expected that they will be
-flipped during latency-sensitive operations, and thus shouldn't be a source
-of interference wrt the text patching IPI.
+stack_erasing_bypass is used in .noinstr code, and can be modified at runtime
+(proc/sys/kernel/stack_erasing write). However it is not expected that it
+will be  flipped during latency-sensitive operations, and thus shouldn't be
+a source of interference wrt the text patching IPI.
 
 Mark it to let objtool know not to warn about it.
 
 Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 ---
- arch/x86/kvm/vmx/vmx.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ kernel/kstack_erase.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index aa157fe5b7b31..dce2bd7375ec8 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -204,8 +204,15 @@ module_param(pt_mode, int, S_IRUGO);
+diff --git a/kernel/kstack_erase.c b/kernel/kstack_erase.c
+index e49bb88b4f0a3..1abc94a38ce14 100644
+--- a/kernel/kstack_erase.c
++++ b/kernel/kstack_erase.c
+@@ -19,7 +19,11 @@
+ #include <linux/sysctl.h>
+ #include <linux/init.h>
  
- struct x86_pmu_lbr __ro_after_init vmx_lbr_caps;
- 
--static DEFINE_STATIC_KEY_FALSE(vmx_l1d_should_flush);
--static DEFINE_STATIC_KEY_FALSE(vmx_l1d_flush_cond);
+-static DEFINE_STATIC_KEY_FALSE(stack_erasing_bypass);
 +/*
-+ * Both of these static keys end up being used in .noinstr sections, however
-+ * they are only modified:
-+ * - at init
-+ * - from a /proc/kernel/vmx* write
-+ * thus during latency-sensitive operations they should remain stable.
++ * This static key can only be modified via its sysctl interface. It is
++ * expected it will remain stable during latency-senstive operations.
 + */
-+static DEFINE_STATIC_KEY_FALSE_NOINSTR(vmx_l1d_should_flush);
-+static DEFINE_STATIC_KEY_FALSE_NOINSTR(vmx_l1d_flush_cond);
- static DEFINE_MUTEX(vmx_l1d_flush_mutex);
++static DEFINE_STATIC_KEY_FALSE_NOINSTR(stack_erasing_bypass);
  
- /* Storage for pre module init parameter parsing */
+ #ifdef CONFIG_SYSCTL
+ static int stack_erasing_sysctl(const struct ctl_table *table, int write,
 -- 
 2.51.0
 
