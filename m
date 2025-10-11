@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC5A1CCA476
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96ECCCCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:44:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17DD98E000D; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
+	id EF64D8E000E; Sat, 11 Oct 2025 14:44:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 154288E0002; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
+	id EA6F68E0002; Sat, 11 Oct 2025 14:44:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091B68E000D; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
+	id DBCE18E000E; Sat, 11 Oct 2025 14:44:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7ECC8E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:39:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CB64F8E0002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:44:30 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A772011ABA5
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:39:11 +0000 (UTC)
-X-FDA: 83986695702.01.A73E3F2
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BD2D1606CD
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:44:30 +0000 (UTC)
+X-FDA: 83986709100.01.F51BB04
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C5818140002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:39:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pI6ooHSW;
-	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760207949; a=rsa-sha256;
-	cv=none;
-	b=4LV+Ww4eXlkR6OqboNdwRZ3si4w+DEXo5XjX/rUVmoBlK4TB74SgTXQosdhR9Px+6KfOLm
-	TAuf+fhgsfJ9/FCUsikgI228r5M0LT5OdRHj7ZAiwNr87Fp5SHIzDEP61XgmEoP3voY1mH
-	+LxL4Z2RWoCZMuRhrcF0I5EUwmyAvBs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pI6ooHSW;
-	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id B8DADC0003
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:44:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zFYmH1VC;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760207949;
+	s=arc-20220608; t=1760208268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=WkkjFKUK1gUeTI1ZlEihuytMR+/VJ0H0WJuNTIulvv4=;
-	b=4mlIwzq+U15lIQIk12/IHbGZqOLQpXa3RgWIvLU3lvht1jzQmWqORBdin9tJEU4Yg514cU
-	hFdbYxfvo8/X1KcWgCmz4TvfnDQup95ArLW56a7oTBcyvMcKBRb8X/y/9HS5LaoPURttJ7
-	7F83o6qpjFU8vCQ6aCzQgt6Dz2ps8Fc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SyKmG2NMZIp8tNU47MlQsA0tLkXuXLPU3556mToeZ6o=;
+	b=hSDos5Q0umQUkSdZYCjRB/CyPzNn7bcvDoyx5HE/Hdv9F0JuT+Ztp1R4JSP17ab+7A9rJK
+	vJCs2fsB8r9nEg53ud6z6d6mmCEKT/bCdHDPYnG5/UWffJNuewi+AJZXoTjx++iJVzkkb2
+	aw+esYwwpkmywIUGjevlvGG1dV7ARv4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zFYmH1VC;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760208268; a=rsa-sha256;
+	cv=none;
+	b=CQcmOHzsH0hHUzngfNv27yH/AwncR4RpLFOmBqT+9DhO7xhS/n9+XxeK6uf2rvJDvaFMV3
+	Stqll0quS8VwmDZ435g1afhUaOF8chq3xOP5RrWsSuk+5GPA8aMDzvjGDPzb9K+YyHu9fI
+	M/i8ItkhKSVJd8gHcxrM5Xf7M4Sr9hk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3E29424C9;
-	Sat, 11 Oct 2025 18:39:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEDAC4CEF4;
-	Sat, 11 Oct 2025 18:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760207948;
-	bh=KAgZNqLRf6v402fttGAcQQ8JplK5/o1bJIvo50jWFZw=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=pI6ooHSWAe61lHVuvpCcXL83TGGhCbbfwa81ake47VktMhrjPXtsQxzrdzjpN/io4
-	 S8925DkgALTzkjQfxuSNYuyOod1Zzgkh8IuaXBsCRw1WKawzQ/CWuiTF/EjIl4KFau
-	 bFVPaYLuutmE+pHvfCyvA8ZdSFSmUvkRCsDYcIB0y0kIx7OB6Z4m/H7kJZyf5tEnCb
-	 lN62MH3wPikF66VaRESMX8WOdPdS2lpF/3CUGNNauPXxjWH9IZ7ME/ydLtVAqvas4R
-	 beMEtkiEJ/gSmZFJTOrDqmqsw0Ce2ZKbBgfVF4rqahf6+7UII/6yNFkVnp1Y3zKoK9
-	 zWySNWCdB+atA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 957993809A18;
-	Sat, 11 Oct 2025 18:38:56 +0000 (UTC)
-Subject: Re: [GIT PULL] slab hotfix for 6.18-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
-References: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc1-hotfix
-X-PR-Tracked-Commit-Id: fd6db58867924d2bfbc4ece4b0092f697f9fc31c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6bb71f0fe57bb77ca484352a66aeb02e3a8ce697
-Message-Id: <176020793526.1422231.5596134982561087922.pr-tracker-bot@kernel.org>
-Date: Sat, 11 Oct 2025 18:38:55 +0000
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Phil Auld <pauld@redhat.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B54E4191E;
+	Sat, 11 Oct 2025 18:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23738C4CEF4;
+	Sat, 11 Oct 2025 18:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760208267;
+	bh=1p8xeKkByaFAhzoZotQIc5TBKhsxRGdNh53mRIgRCcY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=zFYmH1VCQ/IBqhPNUa6SXH6vlSm9qm7zALTXxZycHwKXH8zMFEqqzNZsDPcJlBmIo
+	 36bmMJbb6vw6mmTeR/OIryN3IU5jInqbZQWf9gEp3myog6tlv+X2nAu4zkPAVOgxCX
+	 yqN2HWe7/17Of/QgMGb0aprUKGer7RSAQeurSMWA=
+Date: Sat, 11 Oct 2025 11:44:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-s390
+ <linux-s390@vger.kernel.org>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH v3 0/4] Support dynamic (de)configuration of memory
+Message-Id: <20251011114426.5313b7cb6951618c20ab62ca@linux-foundation.org>
+In-Reply-To: <20251010085147.2175918-1-sumanthk@linux.ibm.com>
+References: <20251010085147.2175918-1-sumanthk@linux.ibm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nh3siqtcxcgm1axhkccp1bosxkro4y1a
+X-Rspamd-Queue-Id: B8DADC0003
 X-Rspam-User: 
-X-Stat-Signature: mzuhe3ae8m5rm5wzgp94a61hpzmdbc1q
-X-Rspamd-Queue-Id: C5818140002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760207949-875807
-X-HE-Meta: U2FsdGVkX1/d0Y9t/SXBkfHTwXEJHeEE/D1js6bmeill976HrScITsBwOUrM5CADmt6gFqYHU6gJthK9qUBXlP0ogP/hxQYZ+Lw+OSgd2orb391PnnZW4xc/H4WTidctXiRxpXNJYIj50WUailTRey0BFNYRO9KEko1yG5++hnuGwOmkBeP2C6z9y3oW0AG4aJHGD88fFsfwQ5nsPsqc7nuroL5CjgkKl/gBp3KYaactAQO8wNxR7TjO9tzWp8C0hjWtHnwjDmJFDA2HbQq+qzTq54A0MsZ9raQzp/YKBIfAjRWtjv8azR8QkVpSTLbIfxKxYSE6iCODUTJg38B92xPddU5YY9a5fRmcGKuHepX8KQBuV9sUt0qwk0uOYbnXA6tO1n3I6w3jMi33OJQ6FLQl61Jxcuorbg4fE2kE7ZGdkwJpb20rzrZHI8oeAb6V7sKVrcQAyq2oFr025fcc7On79otFdp41jlWEEnhgaR+MrpO5gSJV6aSqmkrRKxABwHCUs9lBvY3c8D5++anEeWvWoRZdauujueju1hG3cFL3LSo4Gq12uRWKOMKddoOiD4EQkOOEHxzamEzljDlXUg9WQMwBa4FGzLT1yBV9IQLUy/IWvwTfRyFSIWIh+ll5le3dXRVCLxKKwX8/HqmiN8Dg4GRyXnJ4/1TXmLEehgFjLzZYFZKX2tipp+PwRHmAXTF/Echl89JECnjhUWUQKmVQLUrDtIVXXVLsyvTAjVj72+WEzZhhVt08n3rU6CIFi9SBsiG2mg+t3tDKjt0Jz00e9EBmkZDFQtuQlronuqAL+GfSaebxPNwWUohTG8GyehcYbOg6VjgjkcWaJW3cevHWx7kOi6xbXBcBtvXYcAk06QEH5huURO4p89qMCKrkBwBL/e+mShi0nXlgmu8z0XPi+7kGx/n7vz3F3EV8cfByfNMfVDQDvLg3saE19Fx6hobyHr12hCRnRNIyGi5
- M83J7iCW
- itBQUc8Z7MKh1RA9MN3OLSpJGTYpUQ+QvUYDMxS3bshDfCPbeLuKvSXER7cSHgnWbAkzmuP5eQBf+El3vJ42gx4wJOMdzkobQmgR4HHCleKGg8CIZgKT6hjE0BZNWUpDoa6xK12sS36UGcA7iebCY6CJYc4YwDNpdnQ/c86t0svCzbpNNcYZGmXU5JgMsy/zPXNpGHtJauL28ZlqkCa0E7XU/FT6AXkPomXwmI2FTkm2Pe5MwykfJa0BIgJ44w7DPNbIxUrAndA1yxv6oEJLJPmQvyuVBoRCBn865fFR1eCO3ajI8cRbdHuRGfYEL/F+nu069
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760208268-285903
+X-HE-Meta: U2FsdGVkX18miHuZxWF3U4pfTTjjhIzpmnY+MQLRWPFddpvFFMTRGbmVrbTH25fGrkMMed2lpbzHkFJactYn+PJ8w6SfgIoM5L4Zp8Rpdv+Iz8elSKMis+9DGfbMbWVjeMGcVGJPu6QgXKttC3fjNGeng/uoullRGALzo3J9xHDIZmP+/Ss//PXZTATfNpIcOIRp+OE3yB0/L6gDQfifHcTq7aedf+L/vnll9w3sbcw/rZetDV6aaJISiZvvp3TOyCdM16kRPBYhhGf0BIduhn0wB6xWZfVwXIdbJTo4aVh2HT6MJjuPNzOWB0/HDET2IKU6KyWX61Cd2v8sXaavc2g/wBg0EJZ7gcDdc8QfHEJz6adsF8euBRcIvnJmVZcnWRM0BDSa/ys1YGgrkIKH3I5UJRf3VMP/AaYDamHQ4yN6XXcsEaP9b0fbD2y5cazYaEUDCw0c5EOBvib+UwRCasYnsvFA2+9eFol8MR2RWRCvafLNGgsb0RO4BHzAAo0oTxlNjoKgk4uiEyifbq4aiA80joXBc+ABA5MbkIWyudE0FmWsPOc4+Zwo6e6rksYkitS3pp6zCJdmFJyGroUmbVdpgoPujcWAW67U0MEOwVRO1bfIA+ZNjaQFsg80A3wp6GKRzs3Jd/Nu6+rpr1Pj4656bhmb7y5ZHHM38EZY2jB2vsBg2xQzQ+ZIO8krZcmHUjuOKmttc13O5zVoYkqSrHx/lnkSqUq9Ds3NmXNRzeLghxFGVZMF2vdEm3NlOT8yrnwgJAjTVykSznchvAVIJe3IdFd2Qlz2OtbgP3W/jv/vehVbyWHuYByUKR9SEE9Vl8hsYg5/1GZjIqNu8LKcEVdoQvXHGMrrNG2YxsKh9rrSAhP5YOknlcHNLzneloMOleWidT88K2ErlnUx5IKgGCpWLk7nuEBSa47Dzfh1kaupmK0eE5CcOYX35GDNqVOMwkTNZLjQOm1FMjcQjJZ
+ Eq7BPZxP
+ /M9R6tloSSFIbfNatrWHwEzGvZxZUYWrw+TZkkoV4lZIzS4S8d8dgr+Qn+OBEJdvRU2r1Npy/BVk3Sd+X3LTrTITAWP+/JATZRW9IC8vzCnr7XtRS2xWrERDM2sSr5Von8oVAaosjO8wUWVFuVIZug8OTiW3Vko8rbBENYV9DEXFRj/BZoL9CYsd21YHzb6hVjbk4XGjEtGSd3/juP4te98QmCjq5hT75l6ylYvuuDsLgjRU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Sat, 11 Oct 2025 11:01:40 +0200:
+On Fri, 10 Oct 2025 10:51:43 +0200 Sumanth Korikkar <sumanthk@linux.ibm.com> wrote:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc1-hotfix
+> Hi,
+> 
+> Patchset provides a new interface for dynamic configuration and
+> deconfiguration of hotplug memory on s390, allowing with/without
+> memmap_on_memory support. It is a follow up on the discussion with David
+> when introducing memmap_on_memory support for s390 and support dynamic
+> (de)configuration of memory:
+> 
+> ...
+>
+>  arch/s390/mm/pgalloc.c         |   2 +
+>  arch/s390/mm/vmem.c            |  21 +--
+>  drivers/base/memory.c          |  23 +--
+>  drivers/s390/char/sclp_mem.c   | 288 +++++++++++++++++++++++----------
+>  include/linux/memory.h         |   9 --
+>  include/linux/memory_hotplug.h |  18 +--
+>  include/linux/memremap.h       |   1 -
+>  mm/memory_hotplug.c            |  17 +-
+>  mm/sparse.c                    |   3 +-
+>  9 files changed, 225 insertions(+), 157 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6bb71f0fe57bb77ca484352a66aeb02e3a8ce697
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+I can add this to mm.git in the usual fashion, but the s390 tree would
+be a better place from a testing point of view?
 
