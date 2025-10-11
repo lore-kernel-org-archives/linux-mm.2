@@ -4,104 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9588DCCA476
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 20:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E735FCCA476
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 21:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 531708E0009; Sat, 11 Oct 2025 16:45:41 -0400 (EDT)
+	id C678F8E0007; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E2228E0002; Sat, 11 Oct 2025 16:45:41 -0400 (EDT)
+	id C18A98E0002; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F7D18E0009; Sat, 11 Oct 2025 16:45:41 -0400 (EDT)
+	id B07318E0007; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 294318E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 16:45:41 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8476E5A896
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 20:45:40 +0000 (UTC)
-X-FDA: 83987014440.18.DA072DE
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9A7B64000D
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 20:45:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Up3x5dEN;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AFFD8E0002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC4B046BDA
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:47:38 +0000 (UTC)
+X-FDA: 83987170596.07.8273013
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 20DCC100002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:47:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VKymfAhz;
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760219257; a=rsa-sha256;
+	cv=none;
+	b=gtRyFYr7C//+vKnqNTfNtICNDibm9WeBtRZCmgD5773p004Q85YKk8dPPx0BXKyrwnP/wV
+	NmP8reATp8BBNwnzQZFOjXeLK1zRClHQvSdoSYzZeDlmlxzuVI1tRl5OoMhMOSyoaghn9M
+	YML9aFS0fhakwlCWzqwxaOIx+WSX4Tk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VKymfAhz;
+	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760215538;
+	s=arc-20220608; t=1760219257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n06QTXtl3a/wrs0lAAObale3FnA8jpmm1gsucfwf+g8=;
-	b=sUXrn7QBTjWSkQV8IkKCVFHGvfFcNbD9zKymP7ybXXzx9f7At/xNfAQ2nXwbuDOds8N7oN
-	KLhnzc9vJqWdBp70Zu3e/Gj0lQxCE52axst5GHIabAf8rPqcR1vbkfDlPInlYAsDvBUHF7
-	q6yjCgq7f1TsvzXqJva4R7Qf7uJ4dQY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Up3x5dEN;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760215538; a=rsa-sha256;
-	cv=none;
-	b=RzB8nFzIe1SSkl3cxLE7xHri0U+AS65xA5HbXS1Y3PPYL2wqdNA2OTcpcjPB+0GdMyBFnb
-	Z+EA+qcEEvM4upkAZG7e8lf6R8qnlW8O9x5W5cgzoiNUwMhXyO7HZeniTp6uyKoVpXb2z1
-	xd1ixRSmhuSuzdEX6p0JhF4T5tQ1Dz4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760215538; x=1791751538;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+EZDHLX+jXHaVPDuh39qXsqEU1NcxfapBxnx8UnMJQI=;
-  b=Up3x5dENYbyh9dYrRf/NyiT3UZmgCp2aO1Wgc0Bexww+TSlFQ3SvuQYF
-   4dGicVpGr63MhI7RfglBanduMWbTewK78SQB/rR6kOqvJqgcpyrv3ywgU
-   jGGhqhGPnjtp5NoHPSjYG81hPfOlyYs6sQDU0sQr67KctWO67u6r2FD6f
-   knsgtxgHLsiezd0G0yZ3mUq19xks447HpMxD2jk8Sg5fNmrQI9pFnNDcR
-   X5jPacDglfh69rRWWH0J1cEjJ1xvsbTkoXhtrDqELSvYJm0xriuWTYAMq
-   L+HHULIEIt0RM/BZmsYQwNNT+QCaOoyqIYn4HxyXZLlqemnIZZb76aXDx
-   w==;
-X-CSE-ConnectionGUID: Qwiv0IGASZ+T74DXNd+75w==
-X-CSE-MsgGUID: qWN8zeBNSI+HSgW9ujJY1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11579"; a="73011069"
-X-IronPort-AV: E=Sophos;i="6.19,221,1754982000"; 
-   d="scan'208";a="73011069"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 13:45:35 -0700
-X-CSE-ConnectionGUID: l3RXPPrnQH2puA+IW1Seog==
-X-CSE-MsgGUID: TTsSoK8gRDSRzaKMrBoMfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,221,1754982000"; 
-   d="scan'208";a="181668638"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 11 Oct 2025 13:45:32 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v7gT4-0003z5-1b;
-	Sat, 11 Oct 2025 20:45:30 +0000
-Date: Sun, 12 Oct 2025 04:45:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
-	chrisl@kernel.org, kasong@tencent.com, youngjun.park@lge.com,
-	baohua@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
- according to numa node
-Message-ID: <202510120456.vTSygUXV-lkp@intel.com>
-References: <20251011081624.224202-2-bhe@redhat.com>
+	bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
+	b=m+Kn++WQ03grWXHd/NxHe+/EjkvTK0BomSb5vYa3Q/xciaSk1Kq/ixIF5i+Rk7HpAIlsiQ
+	OHTNv5QBJh8PzuIJxUsnCXuXzohv8Pr8lVHSH+zeSoqCfg9jz0LM7PKokpbzRuk/kpya7/
+	5Detbge1eBcwxT/0R/JkiFguolkHsKI=
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-42d7d0c58f9so212845ab.1
+        for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760219256; x=1760824056; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
+        b=VKymfAhzex/VEv5UuDc2MFm7HczyFMjdLBe6CZSxoIyGwvgyNjeiCHUFRRLcEfEaez
+         IHfOC+CQXPBwlFGCDiZIg8ApvPl/KxgAmD6EnCTLPT/88vVqF0tgwKKyO37Ycx96V0Ge
+         ziaIes0ln2086y4E0kcAESmtuMewN0jdIisj/mmqIvPZsOuoXtP5W6UMbuoOVUl0QTk8
+         5U7+NMFf9W9DsPVebKXRZppS+RfyLN2g7Gb5lhpSiPsqzj1LiOWenLGGSg0HzqAcgEXF
+         DKIPhCwi0+ClU9h3E53BUw5d/QjeHWR290yVcwc1uryKqsXw3uNrt0XHIc/7awQeAgNc
+         kJ4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760219256; x=1760824056;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
+        b=hzl3qwotfzy+H9mXVyuC0/GFUjJ2HGIZah5mI4HS3HMjme1VE0jq6wI4+fnQUqLwFs
+         XO3fD0FPYIui+ISd9ieyy92vacT8oBOVt48q70U5Bb9o3tZ82vhdeiDEuxxeNsMHhG8Z
+         eAHyx7XfbOly7fOQDSLKJmTIZLB7hpp8+pvzyEYpCwUlyAANPqBLOOez5gIusr57r0TR
+         khqwGCxnK00RVOB+6kZZzdAoyyD3M9zyOga/ZrjjmHezrMZ/P37AX7EJslIfULCA3OGP
+         P8jkC6DEv7IRZ66W0yBrBiBHwhm/MLTNif4pjZlkIBIgVwAkLoCrMKpsIShCFgaybd7f
+         We+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUq6/KaYfLy6PexxhWMHlISTvRnk8bSQlFIVPZ3zLJepZsvjz+ylPDWddbj3dybu8JE/hQnzJTVWQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz0cCrWqDlg7tTO0tgrvfLzWntJFCozyOxbt2hbiglhj7uiuDfC
+	ML6MZWWnewWTjr5MXjoL8OLnDBVY4eDtNiucFmZ97sSLKcFa//kSKn6olHSMYLQ3Y72BhuzWaUb
+	gQ6uIhMOZ/N3CaGCuuCzfksYzVETOFNRvvJeGg1Qi
+X-Gm-Gg: ASbGncu4adqyzIggRshzGvH8BQvdmO5RYLCT/agA8pq/VtKP7bmkSJEgxNPQ/pMh9HM
+	+FmC1JEXbpfEA/9JMjbj9GZm33YCKGS05n3m+j61/7IyKOowUCGxyEoitGTZ0U0PmfjwgT684Mq
+	iNuziymjBQAfm7KD6mH2NsNY7nfLH4ln8UjDE2FdLbCNkQcz/FI7ip2MikZ2W7KuQgWO49FgQcX
+	9MVad/DuC9PFDtka2AyYnZzbpRwEV0=
+X-Google-Smtp-Source: AGHT+IFFaqWGr6zppAMQlQaEOPe0SaZYdxA84DzbcLcqHShRGwrEbPejok43SDIXTETu3rLoVc/dTHFUc/Jq0m7QB2s=
+X-Received: by 2002:a05:622a:808d:b0:4e6:eaea:af3f with SMTP id
+ d75a77b69052e-4e6eaeaaf5dmr21268691cf.3.1760219255521; Sat, 11 Oct 2025
+ 14:47:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251011081624.224202-2-bhe@redhat.com>
-X-Stat-Signature: o9t9hq496hccoe1mrex55z8n7j7k1um4
-X-Rspamd-Queue-Id: 9A7B64000D
+References: <20251010011951.2136980-6-surenb@google.com> <202510111059.aKceYLLH-lkp@intel.com>
+In-Reply-To: <202510111059.aKceYLLH-lkp@intel.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 11 Oct 2025 14:47:24 -0700
+X-Gm-Features: AS18NWDufVi4cEGnv1sKGIKBBNV8Et6IGfR8sPmz2Ei8b77bsJTwPJgzvhpHvVI
+Message-ID: <CAJuCfpHKr392MiS=gnjpomwdzTnesgBpXSkVk5h87wLJwo7qVQ@mail.gmail.com>
+Subject: Re: [PATCH 5/8] mm/tests: add cleancache kunit test
+To: kernel test robot <lkp@intel.com>
+Cc: akpm@linux-foundation.org, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com, 
+	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	hch@infradead.org, jack@suse.cz, willy@infradead.org, 
+	m.szyprowski@samsung.com, robin.murphy@arm.com, hannes@cmpxchg.org, 
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, minchan@kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760215537-352435
-X-HE-Meta: U2FsdGVkX1/wDLNvjRaDC/ndo6gO3uAlqd4dsFUh6YOPuBXNvQ3HE9bWYnNSHUua1oQn7ccGd2TD3iXT93nTfbv/xGswhcRKz2JzYDdV/nxd3xCggvqSxOkPHBYYmT528FMQASmjIvoH5/5ZWBtzmUt1BYLxEoIkCZ7wcxtdUPTX1+ogUA0RGKDPI5BGnaZzVMOoaycAQlv6w5i/09VJ09r8qk0Gf5FoZTNgyY1y4LULM1Fu56BP1T6IrSEOSKlGwusTv99954n5l0Z3cXkm3uSiRpq2XENx3rpqCKDtZq0vYdac+4Xnoakb08TEt3KEnjceIyY1QrnEMlIPMW5GzGn4b7P9pB9Fo4lmiIs5HeCnik9pLSbqsbhJZl3HXvD7CvZhYPgWQ/zyz640dS7Jdhqt3OJGHhHdDOPBbrACnQGQp2B51IJOBLhPrCW5XrdUQ+52AwtOmFfWCh3wUZMmKkTYtkCxLvWyQDoJLkbUMsNnk559uFpqKg//KBlfpu4c3Lvn33809dZEN+a9kDY3OV8SAfyfMwLD/KeN4dlcAlDgzk3SC85ZVp5KIQ9+HY+8QoB47CQ0idTb2F3QYngQhXlQxovvlMQplZQ9Ve899Q2y4mlV2j/RB2bHuIMmgTjNCp5x2ICyk2Bd3/hijqt4CBeB0kWFM7wGbmjc8n3HSkNBzX4yiEVHpT7Z1U+4GxF/UmaGvH110gQubbPZnjlfRyLbA7Ut3wRE8idtJtql+VAwVkXUyJp9IXsaz/ecBOV/dq6eekJVjzUOCfmjJCphfjFJBg5rA6MB2sNCiUAGxXg48gW1ek1gm2XGHRAs8/wwJJBxDirTsdFEiaPRLHTosIJXLKCmE7gKvnRq+DLdx6uu2HLuX1rzIlVF36yXvAPxkGL99hfVksTftD0rzpX+KixKHnM84cO/4D9+ZlfamCHdGW4OGPBjmItofaBBVQshr8/d/iskSiWxU7UE5Gh
- CF7ZbReG
- xrAXD5SQJTS8++zjG8YawVyzfbsRD0rHYoM7RYtr1CRf0n7kT2bvHaviK/gnVEbX2lf7Br+vmDtyEqoRNF0HucQPi6FKfeiafeyDcNd4Ksdx3EoPscQFK+1OMcTNGh7rzS4kfoUcdX9w8WwR0M9QZkDJ+WjXSrfurqBSpjYGwjBpw/5o1c3SvnpUzd36m1rItMNbZFmlfFSqPqNsT9hxmFc9vLkEIOLu1zwlEI/J4+PP8O+XtN+GEKfVNiqzw+4lvMwHg0AtiUkTy5/WntdJZCoM4J1hsSira/ccRTfRaiKg434x6RzZWX07fYU+kViCSdncqiMLhNiJ46eq19X0UBScMKEIbKbzqRl4u
+X-Stat-Signature: hct56y6gwgwkkx3gf5heha4mmui85cm6
+X-Rspamd-Queue-Id: 20DCC100002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760219256-18415
+X-HE-Meta: U2FsdGVkX18OXp+G6P9rHVA0Y+NPrCd6CfCogDjR+FYmQGJ2MDEnwGRhU8DD01TRriBhmObNASyv4cbWko5GmkMwNn7zlL18I/0zHCvDLiPEhLeO8jyXZysTjb1Nx9SeTUr5XwOmUf6cITMOKEgrkrNJm8DfLG+SKHJgfpo9eEjCuvCx+QNC0+aEH/+IGorGjA1vnNNqhCrS+ShGjWcbcevRdjiEKvYFgrYPNoOBFPN+R5Fhg8fFMKLiArR2AcErGqaOWUPc8F+KspjH/qFtbmFGUbB68jJPF/ioKqRkgmTiQDBzgDdoMAx6GWq6uWoadD/551B+TIUxY1rIAPnNuWVLVAvT9s+eiVrlHR7q9pNkE9zi9jYVVjYxwSbLNfVdODBFJnBKeR7f93TpezH7sv2D35/RooqQ2GQiLARS1YAqdGsiYhE9IiNiCTqrQJnjOK/3RYQUtK6zhdnrTb60jHB85sJZtUuDtKhiHEL684CcbybLkdGr3VxYEkrV/ZmFaA9BQCX4GNu6vVQ+aMouziaehzeq0E/GfWOKkukYsKs9PC1DOP5j0dhwxGlvbpQhuQLgOHsdy5utO3fmO5cqC20MQYsigoSJO+N/P82vdU8rxWUX0iK1P7WPof6RpmoBYRddwJFV43OBGVUZgtuSxeBKBuDRuN4IIaCVoqhyjIgvtgVBKhyyWac4I+A7cBeWby+VPK1q77t4sLMdxmd31U6AaY5RztL9MPXPwu4EqeEmoIgb4gzjaQrGYKFeBSBO/KzqG59JQUkviskwQM+CbaShHKgyNfB1IFuu+6vw9ib6lRpln7ih8Jsr/6UzM6hbKdHjxj2hCJ2hTYgrzDmxSSeZadOQFr6Omk4FTJO7uKnE8XV+WeBcWbon7x6t5WtMj5/UDFcHBNiNYqKyC85uw2b74Bpb5YOZEZI1unHy97s+DU8JiNAILWKILSawEfTeZTsvrj0QfPKyNXFcCDY
+ eBO3ER0v
+ ZfnfSuvM8calS6hiCBYhrtx+pCHs5XhuYC6nvpwy3suRHMNhqvWCfi/TaLXwb1gdsRRaaxMVRs3L3FWrcbqW+tM2/x5uiPUY3Qj1p+tjJfTJKictsKb2xnbb64qnzk5bjjAjQrQHkYLSzwtbvc439L/ym9jt+WT3W8vyfYXHN4ZD3HFAbGRR9Vd2IshSweOZs8EzGAn/5aX+opKSx+CNP2v4U/ZXhSrhTRpbogSN0DCsd0kvGYNzKHM7kFMNcAvHPXdUPC3j2aZEDh59IWnuPC9nXQvFTPVK8w2rbVbd6l7LfdUCHfOWqN1YrLQpOfS89UmqbNbR7bzOyERngUTBlr37Z99OGy7OfXOkY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,515 +124,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Baoquan,
+On Fri, Oct 10, 2025 at 7:58=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
+>
+> Hi Suren,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on 70478cb9da6fc4e7b987219173ba1681d5f7dd3d]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan=
+/mm-implement-cleancache/20251010-134501
+> base:   70478cb9da6fc4e7b987219173ba1681d5f7dd3d
+> patch link:    https://lore.kernel.org/r/20251010011951.2136980-6-surenb%=
+40google.com
+> patch subject: [PATCH 5/8] mm/tests: add cleancache kunit test
+> config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/2=
+0251011/202510111059.aKceYLLH-lkp@intel.com/config)
+> compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd70=
+8029e0b2869e80abe31ddb175f7c35361f90)
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20251011/202510111059.aKceYLLH-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510111059.aKceYLLH-lkp=
+@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+> >> mm/tests/cleancache_kunit.c:358:6: warning: variable 'unused' set but =
+not used [-Wunused-but-set-variable]
+>      358 |         int unused =3D 0;
+>          |             ^
+>    1 warning generated.
 
-kernel test robot noticed the following build errors:
+Right, I'll remove it.
 
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-swap-do-not-choose-swap-device-according-to-numa-node/20251011-161743
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251011081624.224202-2-bhe%40redhat.com
-patch subject: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device according to numa node
-config: i386-buildonly-randconfig-003-20251012 (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510120456.vTSygUXV-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from include/linux/list.h:5,
-                    from include/linux/wait.h:7,
-                    from include/linux/wait_bit.h:8,
-                    from include/linux/fs.h:7,
-                    from include/linux/highmem.h:5,
-                    from include/linux/bvec.h:10,
-                    from include/linux/blk_types.h:10,
-                    from include/linux/blkdev.h:9,
-                    from mm/swapfile.c:9:
-   mm/swapfile.c: In function 'swap_sync_discard':
->> mm/swapfile.c:1395:46: error: 'swap_avail_heads' undeclared (first use in this function); did you mean 'swap_avail_head'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                              ^~~~~~~~~~~~~~~~
-   include/linux/container_of.h:20:33: note: in definition of macro 'container_of'
-      20 |         void *__mptr = (void *)(ptr);                                   \
-         |                                 ^~~
-   include/linux/list.h:620:9: note: in expansion of macro 'list_entry'
-     620 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:869:20: note: in expansion of macro 'list_first_entry'
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:46: note: each undeclared identifier is reported only once for each function it appears in
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                              ^~~~~~~~~~~~~~~~
-   include/linux/container_of.h:20:33: note: in definition of macro 'container_of'
-      20 |         void *__mptr = (void *)(ptr);                                   \
-         |                                 ^~~
-   include/linux/list.h:620:9: note: in expansion of macro 'list_entry'
-     620 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:869:20: note: in expansion of macro 'list_first_entry'
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from include/linux/init.h:5,
-                    from include/linux/printk.h:6,
-                    from include/asm-generic/bug.h:22,
-                    from arch/x86/include/asm/bug.h:103,
-                    from include/linux/bug.h:5,
-                    from include/linux/vfsdebug.h:5,
-                    from include/linux/fs.h:5:
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:620:9: note: in expansion of macro 'list_entry'
-     620 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:869:20: note: in expansion of macro 'list_first_entry'
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:530:27: error: expression in static assertion is not an integer
-     530 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:620:9: note: in expansion of macro 'list_entry'
-     620 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:869:20: note: in expansion of macro 'list_first_entry'
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from include/uapi/linux/posix_types.h:5,
-                    from include/uapi/linux/types.h:14,
-                    from include/linux/types.h:6,
-                    from include/linux/blkdev.h:8:
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/stddef.h:16:58: note: in definition of macro 'offsetof'
-      16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-         |                                                          ^~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:620:9: note: in expansion of macro 'list_entry'
-     620 |         list_entry((ptr)->next, type, member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:869:20: note: in expansion of macro 'list_first_entry'
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                    ^~~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/container_of.h:20:33: note: in definition of macro 'container_of'
-      20 |         void *__mptr = (void *)(ptr);                                   \
-         |                                 ^~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:22:23: note: in expansion of macro '__same_type'
-      22 |                       __same_type(*(ptr), void),                        \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:530:27: error: expression in static assertion is not an integer
-     530 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/stddef.h:16:58: note: in definition of macro 'offsetof'
-      16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-         |                                                          ^~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:870:21: note: in expansion of macro 'list_next_entry'
-     870 |                 n = list_next_entry(pos, member);                       \
-         |                     ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/list.h:869:64: warning: left-hand operand of comma expression has no effect [-Wunused-value]
-     869 |         for (pos = list_first_entry(head, typeof(*pos), member),        \
-         |                                                                ^
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/list.h:773:28: note: in definition of macro 'list_entry_is_head'
-     773 |         list_is_head(&pos->member, (head))
-         |                            ^~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/container_of.h:20:33: note: in definition of macro 'container_of'
-      20 |         void *__mptr = (void *)(ptr);                                   \
-         |                                 ^~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:22:23: note: in expansion of macro '__same_type'
-      22 |                       __same_type(*(ptr), void),                        \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:530:27: error: expression in static assertion is not an integer
-     530 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:21:9: note: in expansion of macro 'static_assert'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1395:69: error: 'struct swap_info_struct' has no member named 'avail_lists'; did you mean 'avail_list'?
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |                                                                     ^~~~~~~~~~~
-   include/linux/stddef.h:16:58: note: in definition of macro 'offsetof'
-      16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-         |                                                          ^~~~~~
-   include/linux/list.h:609:9: note: in expansion of macro 'container_of'
-     609 |         container_of(ptr, type, member)
-         |         ^~~~~~~~~~~~
-   include/linux/list.h:667:9: note: in expansion of macro 'list_entry'
-     667 |         list_entry((pos)->member.next, typeof(*(pos)), member)
-         |         ^~~~~~~~~~
-   include/linux/list.h:872:27: note: in expansion of macro 'list_next_entry'
-     872 |              pos = n, n = list_next_entry(n, member))
-         |                           ^~~~~~~~~~~~~~~
-   include/linux/plist.h:197:9: note: in expansion of macro 'list_for_each_entry_safe'
-     197 |         list_for_each_entry_safe(pos, n, &(head)->node_list, m.node_list)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~
-   mm/swapfile.c:1395:9: note: in expansion of macro 'plist_for_each_entry_safe'
-    1395 |         plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->> mm/swapfile.c:1391:13: warning: variable 'nid' set but not used [-Wunused-but-set-variable]
-    1391 |         int nid = numa_node_id();
-         |             ^~~
-   mm/swapfile.c: In function '__do_sys_swapoff':
-   mm/swapfile.c:2893:21: warning: unused variable 'nid' [-Wunused-variable]
-    2893 |                 int nid;
-         |                     ^~~
-
-
-vim +1395 mm/swapfile.c
-
-b487a2da3575b6 Kairui Song 2025-03-14  1383  
-74cdc690138b65 Kairui Song 2025-10-07  1384  /*
-74cdc690138b65 Kairui Song 2025-10-07  1385   * Discard pending clusters in a synchronized way when under high pressure.
-74cdc690138b65 Kairui Song 2025-10-07  1386   * Return: true if any cluster is discarded.
-74cdc690138b65 Kairui Song 2025-10-07  1387   */
-74cdc690138b65 Kairui Song 2025-10-07  1388  static bool swap_sync_discard(void)
-74cdc690138b65 Kairui Song 2025-10-07  1389  {
-74cdc690138b65 Kairui Song 2025-10-07  1390  	bool ret = false;
-74cdc690138b65 Kairui Song 2025-10-07 @1391  	int nid = numa_node_id();
-74cdc690138b65 Kairui Song 2025-10-07  1392  	struct swap_info_struct *si, *next;
-74cdc690138b65 Kairui Song 2025-10-07  1393  
-74cdc690138b65 Kairui Song 2025-10-07  1394  	spin_lock(&swap_avail_lock);
-74cdc690138b65 Kairui Song 2025-10-07 @1395  	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-74cdc690138b65 Kairui Song 2025-10-07  1396  		spin_unlock(&swap_avail_lock);
-74cdc690138b65 Kairui Song 2025-10-07  1397  		if (get_swap_device_info(si)) {
-74cdc690138b65 Kairui Song 2025-10-07  1398  			if (si->flags & SWP_PAGE_DISCARD)
-74cdc690138b65 Kairui Song 2025-10-07  1399  				ret = swap_do_scheduled_discard(si);
-74cdc690138b65 Kairui Song 2025-10-07  1400  			put_swap_device(si);
-74cdc690138b65 Kairui Song 2025-10-07  1401  		}
-74cdc690138b65 Kairui Song 2025-10-07  1402  		if (ret)
-74cdc690138b65 Kairui Song 2025-10-07  1403  			break;
-74cdc690138b65 Kairui Song 2025-10-07  1404  		spin_lock(&swap_avail_lock);
-74cdc690138b65 Kairui Song 2025-10-07  1405  	}
-74cdc690138b65 Kairui Song 2025-10-07  1406  	spin_unlock(&swap_avail_lock);
-74cdc690138b65 Kairui Song 2025-10-07  1407  
-74cdc690138b65 Kairui Song 2025-10-07  1408  	return ret;
-74cdc690138b65 Kairui Song 2025-10-07  1409  }
-74cdc690138b65 Kairui Song 2025-10-07  1410  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+>
+> vim +/unused +358 mm/tests/cleancache_kunit.c
+>
+>    353
+>    354  static void cleancache_backend_api_test(struct kunit *test)
+>    355  {
+>    356          struct folio *folio;
+>    357          LIST_HEAD(folios);
+>  > 358          int unused =3D 0;
+>    359          int used =3D 0;
+>    360
+>    361          /* Store inode folios into cleancache */
+>    362          fill_cleancache(test);
+>    363
+>    364          /* Get all donated folios back */
+>    365          for (int fidx =3D 0; fidx < FOLIO_COUNT; fidx++) {
+>    366                  KUNIT_EXPECT_EQ(test, cleancache_backend_get_foli=
+o(test_data.pool_id,
+>    367                                                  test_data.pool_fo=
+lios[fidx]),  0);
+>    368                  set_page_refcounted(&test_data.pool_folios[fidx]-=
+>page);
+>    369          }
+>    370
+>    371          /* Try putting a refcounted folio */
+>    372          KUNIT_EXPECT_NE(test, cleancache_backend_put_folio(test_d=
+ata.pool_id,
+>    373                                          test_data.pool_folios[0])=
+, 0);
+>    374
+>    375          /* Put some of the folios back into cleancache */
+>    376          for (int fidx =3D 0; fidx < FOLIOS_PER_INODE; fidx++) {
+>    377                  folio_ref_freeze(test_data.pool_folios[fidx], 1);
+>    378                  KUNIT_EXPECT_EQ(test, cleancache_backend_put_foli=
+o(test_data.pool_id,
+>    379                                                  test_data.pool_fo=
+lios[fidx]), 0);
+>    380          }
+>    381
+>    382          /* Put the rest back into cleancache but keep half of fol=
+ios still refcounted */
+>    383          for (int fidx =3D FOLIOS_PER_INODE; fidx < FOLIO_COUNT; f=
+idx++) {
+>    384                  if (fidx % 2) {
+>    385                          folio_ref_freeze(test_data.pool_folios[fi=
+dx], 1);
+>    386                          unused++;
+>    387                  } else {
+>    388                          used++;
+>    389                  }
+>    390                  list_add(&test_data.pool_folios[fidx]->lru, &foli=
+os);
+>    391          }
+>    392          KUNIT_EXPECT_NE(test, cleancache_backend_put_folios(test_=
+data.pool_id,
+>    393                                          &folios), 0);
+>    394          /* Used folios should be still in the list */
+>    395          KUNIT_EXPECT_EQ(test, list_count_nodes(&folios), used);
+>    396
+>    397          /* Release refcounts and put the remaining folios into cl=
+eancache */
+>    398          list_for_each_entry(folio, &folios, lru)
+>    399                  folio_ref_freeze(folio, 1);
+>    400          KUNIT_EXPECT_EQ(test, cleancache_backend_put_folios(test_=
+data.pool_id,
+>    401                                          &folios), 0);
+>    402          KUNIT_EXPECT_TRUE(test, list_empty(&folios));
+>    403  }
+>    404
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
