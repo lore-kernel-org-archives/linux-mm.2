@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64872CCD183
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 07:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 540D6CCD183
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 08:16:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5ECF8E0022; Sat, 11 Oct 2025 03:57:28 -0400 (EDT)
+	id 8CBEB8E002C; Sat, 11 Oct 2025 04:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B35248E000E; Sat, 11 Oct 2025 03:57:28 -0400 (EDT)
+	id 8A1928E000E; Sat, 11 Oct 2025 04:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71D58E0022; Sat, 11 Oct 2025 03:57:28 -0400 (EDT)
+	id 7DE268E002C; Sat, 11 Oct 2025 04:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 932418E000E
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 03:57:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 208A7463C9
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 07:57:28 +0000 (UTC)
-X-FDA: 83985078576.29.0B70589
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4201F14000D
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 07:57:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=L3hpBzN4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760169446; a=rsa-sha256;
-	cv=none;
-	b=Igoi42MonaVAyP9SCPeVBVv2PQOiCmXcHQ0zT8TXc4DA1CBl/WfJwHJxqZBC5g3b792tuz
-	TNLaxNOSVBiXhzHY9/RUudLkoqli4bckr+/jm1efuPB/vrjhooxF5QzIce5MN2MdN+nsGr
-	CJ4n3v1qSZ+HHwWI6blrDa0iZWcKlZU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=L3hpBzN4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 69C538E000E
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 04:16:41 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBB9B1405C7
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 08:16:40 +0000 (UTC)
+X-FDA: 83985126960.23.6E9382D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C167E40004
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 08:16:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Fvu/BBqG";
+	spf=pass (imf17.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760169446;
+	s=arc-20220608; t=1760170598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjl9wv0Cjt6vOeGjbZmdk0zIfEn5wfSJabLYFk4eoRo=;
-	b=Be+NwONHlqyMJti9VwpXpkTYckV2N4b+HQV5K6GMRrw8DpB7jm5Zv/O/EV6iSRqP/0A4Jz
-	+QDzQrQ6lcF5CWiIXUwSVOmbIK04LWlHab2N5tjdMMHzRC69DXJXxN1hqBmb/hv4WHlL40
-	Be5un80CBcZgiTQV1nMhPUyL/EEMLqw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760169445; x=1791705445;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VZeBBNGnMP2xHvygAST1ORNwMzxG9wGMo9aWFTR0gjQ=;
-  b=L3hpBzN4vWGrr0O4x6isBsjU7GrdQZj+YQyWR17KsFc72xTno9rSUqJZ
-   KZSgG/ZhGThaE++rDrvEagttP80zfYjZ2UTz7eRdA3GYV4+xk7XbIkjFZ
-   39h+OZPW83pW6GTfb1+irBKbHaBWdekloDhiiZ/bKDaPrnjhXLyk+32cc
-   e9KIqoWQ6eGrkuGy8WnWiCTpHuOkyShfJ04W0cvIZ1emFxrhU72iUjerw
-   qTNT+Z6NBJLtf9FmpTUuEFINqd9JGeFIWF5+zm3fw4NEP4oXWbsFVFhB1
-   AArve8ZVekCeCStJ9sX/61ewpUUNRPhTTINC/K9o42l6IDh6hxQXjCJtq
-   w==;
-X-CSE-ConnectionGUID: ks58r/5YRk6JVc1v/IPFYQ==
-X-CSE-MsgGUID: CCUZHWKKTESJfvVEevKdZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="73720053"
-X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="73720053"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 00:57:23 -0700
-X-CSE-ConnectionGUID: f4aFtuF4Q7Oimd3Bl0Dp7Q==
-X-CSE-MsgGUID: yRxpbkLMQm+ToIR+7324Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="180742084"
-Received: from qiuxu-clx.sh.intel.com ([10.239.53.109])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 00:57:19 -0700
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	linmiaohe@huawei.com,
-	tony.luck@intel.com
-Cc: qiuxu.zhuo@intel.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Km0X4w+q4IbUyROQU7uukkPjVvewhvy5flqs5vfPfb0=;
+	b=tiLbsvF+CtISulBqJkRHxdo89tkgUx1wrPwZHN55dN43loXYTeYCJn0TC2E/ErtlEfAUVt
+	IFVLtIPtjAyJ1Chq7+f1Aab76bO0XZkL8nGMJHAfIbOYoPq4gpl/TmVFVgCAfqu8q3xIOU
+	XiO89Jwh3RT2yR+r3X8WwmpKtS4+k2s=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Fvu/BBqG";
+	spf=pass (imf17.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760170598; a=rsa-sha256;
+	cv=none;
+	b=MX4UF6VXzLazjHfFF4FMGTGBu20LE2UlRw1xI+vKv2Rw959TvMh2oS2wcfk98VF3jHfpxR
+	M+zXecP3ED9X+uSJNlZd9h+Sl6IAoWDNNI6QLRtddkcF+dIfxltNuG1Chg7j1nWx2ry3bq
+	mrTN1C9XSTEkyKtrqphnN8CuVC+M9uA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760170597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Km0X4w+q4IbUyROQU7uukkPjVvewhvy5flqs5vfPfb0=;
+	b=Fvu/BBqGhp/Oz/fkD9u59u3307MhIH21RYR3kzB/5PiIp6DA8xW+iR68vagWi6XbCVrTjl
+	jbX2L6NQrT2gEsZH21ruInfyZRnaqGioJZi3TJ02exVlW5ZUf1Tc4vdZ4bWoN5okDP/ztH
+	KCicUz9/qqdcnKEQaaeU8/rLpxQtgxo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-Ptmjh-y5N6y--q0d0LHWVw-1; Sat,
+ 11 Oct 2025 04:16:35 -0400
+X-MC-Unique: Ptmjh-y5N6y--q0d0LHWVw-1
+X-Mimecast-MFC-AGG-ID: Ptmjh-y5N6y--q0d0LHWVw_1760170593
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5DAB11800451;
+	Sat, 11 Oct 2025 08:16:33 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.60])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0FD361955F42;
+	Sat, 11 Oct 2025 08:16:27 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	youngjun.park@lge.com,
+	aaron.lu@intel.com,
 	baohua@kernel.org,
-	nao.horiguchi@gmail.com,
-	farrah.chen@intel.com,
-	jiaqiyan@google.com,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] mm: prevent poison consumption when splitting THP
-Date: Sat, 11 Oct 2025 15:55:19 +0800
-Message-ID: <20251011075520.320862-1-qiuxu.zhuo@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
-References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH v4 mm-new 0/2] mm/swapfile.c: select the swap device with default priority round robin
+Date: Sat, 11 Oct 2025 16:16:22 +0800
+Message-ID: <20251011081624.224202-1-bhe@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6b0CpSj9u3DmX3t14LyinPFHSkTI4_AUs_Qa0qQ2kw4_1760170593
+X-Mimecast-Originator: redhat.com
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: efbtb1fcakez4yey1b5nj68suf8h94bm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4201F14000D
-X-Stat-Signature: kcrsfapntz3bspqi6rskc7ndcfu7u8cg
-X-HE-Tag: 1760169445-576099
-X-HE-Meta: U2FsdGVkX18i6qn5kQRB3ip9re8MVmHtbAtchdkmB4QW3+H83FZIvbAzSTDVHAt1EhM3btw9oMbPtkAI1RlBhGAIkTaX+axIB1cwQ+L8GgPfbdpg4AK4gVGKZHUCpNJ7qc1x34pfhIlHqqGOquRP9LUIdoqkaeWpkicrZSOOuSkclm4t/9QORiailyN9011fLbtnZc6hwPpYbLOvgCjEJOVZ9GbxpH6zI7tGbIQ3XtSgwCREB6jOZ0rJ/sZVbvzz4Hz1vc4d2E/d5AOxFuyZ8XUVE6TZyGYNCKnRrF90y+HQk2bVzPiXfNyhCMrlYMXteenagdPYuei9HU+ENBqXyADERvRiHbqO5q8VzxEtrhWOUTY9lXbtPM9QgVOwvncVQ36+CT6mPqcZ/qlc3hFe0z6J3iHH0SqJ+BbNJVIq/xcI9ddyt+hy2ILdL4it3VypRd01qaV0Hukobk0RvlDmvd/esY7vrMZctASxVnqGvT0lzVR1rDqLLqeTD6y0Pa6GC0NB0Io6hAmt212jkfZHHxwtVrWlxTjoTq81bPF6EZnVYX7bcoxW1jKMa3jE2fdi4xohjSgv8agRYV3iliuupQzmZGWPaXVM9or0LToTiaKFfFsfoUU2TBEOihk2vH7lP3cNDUyvvOyNM3ScLN29HnpL4oNnm2qxxaUasJfgjf8Ry45Pd386pAfGZa2d1erMd3C81yUATO4Lh5854E3RrLH2ccTAsjIxHK98AL7EH1awIcSzBj7MFFQl53EKIr/L22SZnBZlak4a7z15rZT0H8a4Ruu0i06QGSz/LQDPnUV55/gpjgV6mC6RHvMvlCD8pesy0TGdF1K0tQHbf7bUQj/wmnHhurkPmdYr3gItii/knopc8jgJndRJRmN1wJp2AInBfipoHr1tL17NSmbxuQZ/24KsPUPsSSMUFyOuJvqYxPRgY6ZblVQIsiKN2WukOzU6/6sAGS+s3lni7Tm
- qPfXHmam
- 0mCmei4JapFJr/AVMwlRzjyUKPigVRw5eCmyr2sbmiOMIrDRboRHOwAHy1wrQYbSuN6VW19t+iysf0NR4AeeHRIHIDqS8oadHF/tvgIAMTZZQ2hNHuNZvVqHmqaJKY8ZyMwh/JtXoW6BfrB3ihatGfuW0qSN2nj6ZeFY7V4MlVSw637RH65blyG57p5aG+zCv/qyOBj32pdiWUicOJlInUU92M4P4kso4IM2DiwijWy9jB8Y1la6kz6hhfo9Ta5XxghLeWJCvPooCviktd9C+ZfkaGA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C167E40004
+X-HE-Tag: 1760170597-473819
+X-HE-Meta: U2FsdGVkX1/xsULzuCxLHZSMo0QQXn8hrVyhv/mVvW1MAivHLJ6N3IpEmCu+JYIlsquFEPWQimApgHGrHwum9xdP07QtmKC4HyNpTDS8H0dUsB9GIQt3sxUguTSU3sW09f5ItfgLHrYAMn9WUnwiTvGbEa0Lt4bvMN/9Y2JeY6G182xdjsBZG1nHNg5u/eMFr0H8HznZQO8VKSqm/1B+EqVFKw+6SYiwrmdJepGYV6GDvWgc4FAXErCl9xDdPMXm9OfWFmx5yjYxIjzatLADedDbpcKe/mJakkOOHUq9rCtHGYzTb+eeZBcBJFlQjVZigZ2fiGHI0Xz8b83T/hYh8/ZBjDnwpFvv2D9ieaf+PMew7ze0tJumjqqleY8RgHvfmZg90HF7A3/E1hHuCJP1zv/FnLv4TIZkW45gkHY198Y+3Bmh0iHEr2hoxAAtWgOUe9lcRE+VcTNQ1vBeptare8nOTWaGuXHORD8y3/hlaS2XMmnthyFNCxtlhkVi2DRYQEblHDgrXzVghddi/LXiX54NO4o3djiontSGziiD2vMLp4mWx/7J+RY/N9O3ikRlZjUWGWp9JKW4TZq3DgLPGy7iQMcekKQ1TF71ZtQbAWrEIAlmN81DbeN9klN/85fgAAlQX5FRJqo+vqMruOUtd1hJN1tci4EkyjsxoOWSi68aHK8KRVjzDcdHalcnIuex7Q8+R9WPSotYJIBWhtGGdP7X7BawTtq7fmvpuzrsaeRl3Y41kLWgXEty6FrDxB9uH9OoDZLXdDPyPrltgQ2JQk8lHPZHVnwEOYHFY9nuy2dKrhSxxSIwsVASS92phyP3C3O6EAtSVKkbLDWLrRAmQFBizTgGF0SX4hX0vxLK/gLEcrgw7NsNKH49bkbuR/tCVk0EqN2A0YaBqaavvX6xm9hqmgB1/FXwMdAmk/+OkXAOCBPa74dQR6GtjylTJPTgylyBlnrD2hS/mgF909U
+ lSC/VXWx
+ sknXOl7xmrUIyqT+eFfU/ck14A+TPXoPrxdyOUshN0qoLaz7biAc+HPGlztOyooKjwSQ36QRohcqhdIjtKHdbL+cyWqqlPXIdqk3X6Lz2ksIznY5xVAPihLnR3xZsiZn1ZZmNYuPMR2vqj5Rjnfdwmr70IdpJIWl2GSdijuqxUayrXYPItbsQ9UaxCw3sWaYAQYt2XtgD6waFIZDraIPrG1jMPX179fBwI8uOrbmQHw1Qk1M9cz71MBFGKwmNKRvPKC4do3hPBcewB7JgwLVuqnhCmeZLNQpamqfNbVg/BJaRHOdbCTS9MlkXQ9wPcJy3AbTwRwe1soe92YOrgi1e9kXp+TQu3LTRDM2n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,122 +110,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When performing memory error injection on a THP (Transparent Huge Page)
-mapped to userspace on an x86 server, the kernel panics with the following
-trace. The expected behavior is to terminate the affected process instead
-of panicking the kernel, as the x86 Machine Check code can recover from an
-in-userspace #MC.
+Currently, on system with multiple swap devices, swap allocation will
+select one swap device according to priority. The swap device with the
+highest priority will be chosen to allocate firstly.
 
-  mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
-  mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
-  mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
-  mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
-  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
-  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
-  Kernel panic - not syncing: Fatal local machine check
+People can specify a priority from 0 to 32767 when swapon a swap device,
+or the system will set it from -2 then downwards by default. Meanwhile,
+on NUMA system, the swap device with node_id will be considered first
+on that NUMA node of the node_id.
 
-The root cause of this panic is that handling a memory failure triggered by
-an in-userspace #MC necessitates splitting the THP. The splitting process
-employs a mechanism, implemented in try_to_map_unused_to_zeropage(), which
-reads the sub-pages of the THP to identify zero-filled pages. However,
-reading the sub-pages results in a second in-kernel #MC, occurring before
-the initial memory_failure() completes, ultimately leading to a kernel
-panic. See the kernel panic call trace on the two #MCs.
+In the current code, an array of plist, swap_avail_heads[nid], is used
+to organize swap devices on each NUMA node. For each NUMA node, there
+is a plist organizing all swap devices. The 'prio' value in the plist
+is the negated value of the device's priority due to plist being sorted
+from low to high. The swap device owning one node_id will be promoted to
+the front position on that NUMA node, then other swap devices are put in
+order of their default priority.
 
-  First Machine Check occurs // [1]
-    memory_failure()         // [2]
-      try_to_split_thp_page()
-        split_huge_page()
-          split_huge_page_to_list_to_order()
-            __folio_split()  // [3]
-              remap_page()
-                remove_migration_ptes()
-                  remove_migration_pte()
-                    try_to_map_unused_to_zeropage()  // [4]
-                      memchr_inv()                   // [5]
-                        Second Machine Check occurs  // [6]
-                          Kernel panic
+E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
+swap devices.
 
-[1] Triggered by accessing a hardware-poisoned THP in userspace, which is
-    typically recoverable by terminating the affected process.
+Current behaviour:
+their priorities will be(note that -1 is skipped):
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition  16G   0B   -2
+/dev/zram1 partition  16G   0B   -3
+/dev/zram2 partition  16G   0B   -4
+/dev/zram3 partition  16G   0B   -5
 
-[2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
+And their positions in the 8 swap_avail_lists[nid] will be:
+swap_avail_lists[0]: /* node 0's available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:1     prio:3     prio:4     prio:5
+swap_avali_lists[1]: /* node 1's available swap device list */
+zram1   -> zram0   -> zram2   -> zram3
+prio:1     prio:2     prio:4     prio:5
+swap_avail_lists[2]: /* node 2's available swap device list */
+zram2   -> zram0   -> zram1   -> zram3
+prio:1     prio:2     prio:3     prio:5
+swap_avail_lists[3]: /* node 3's available swap device list */
+zram3   -> zram0   -> zram1   -> zram2
+prio:1     prio:2     prio:3     prio:4
+swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:2     prio:3     prio:4     prio:5
 
-[3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
+The adjustment for swap device with node_id intended to decrease the
+pressure of lock contention for one swap device by taking different
+swap device on different node. The adjustment was introduced in commit
+a2468cc9bfdf ("swap: choose swap device according to numa node").
+However, the adjustment is a little coarse-grained. On the node, the swap
+device sharing the node's id will always be selected firstly by node's CPUs
+until exhausted, then next one. And on other nodes where no swap device
+shares its node id, swap device with priority '-2' will be selected firstly
+until exhausted, then next with priority '-3'.
 
-[4] Try to map the unused THP to zeropage.
+This is the swapon output during the process high pressure vm-scability
+test is being taken. It's clearly showing zram0 is heavily exploited until
+exhausted.
 
-[5] Re-access sub-pages of the hw-poisoned THP in the kernel.
+===================================
+[root@hp-dl385g10-03 ~]# swapon
+NAME       TYPE      SIZE  USED PRIO
+/dev/zram0 partition  16G 15.7G   -2
+/dev/zram1 partition  16G  3.4G   -3
+/dev/zram2 partition  16G  3.4G   -4
+/dev/zram3 partition  16G  2.6G   -5
 
-[6] Triggered in-kernel, leading to a panic kernel.
+The node based strategy on selecting swap device is much better then the
+old way one by one selecting swap device. However it is still unreasonable
+because swap devices are assumed to have similar accessing speed if no
+priority is specified when swapon. It's unfair and doesn't make sense just
+because one swap device is swapped on firstly, its priority will be higher
+than the one swapped on later.
 
-In Step[2], memory_failure() sets the poisoned flag on the sub-page of the
-THP by TestSetPageHWPoison() before calling try_to_split_thp_page().
+So in this patchset, change is made to select the swap device round robin
+if default priority. In code, the plist array swap_avail_heads[nid] is replaced
+with a plist swap_avail_head which reverts commit a2468cc9bfdf. Meanwhile,
+on top of the revert, further change is taken to make any device w/o
+specified priority get the same default priority '-1'. Surely, swap device
+with specified priority are always put foremost, this is not impacted. If
+you care about their different accessing speed, then use 'swapon -p xx' to
+deploy priority for your swap devices.
 
-As suggested by David Hildenbrand, fix this panic by not accessing to the
-poisoned sub-page of the THP during zeropage identification, while
-continuing to scan unaffected sub-pages of the THP for possible zeropage
-mapping. This prevents a second in-kernel #MC that would cause kernel
-panic in Step[4].
+New behaviour:
 
-[ Credits to Andrew Zaborowski <andrew.zaborowski@intel.com> for his
-  original fix that prevents passing the RMP_USE_SHARED_ZEROPAGE flag
-  to remap_page() in Step[3] if the THP has the has_hwpoisoned flag set,
-  avoiding access to the entire THP for zero-page identification. ]
+swap_avail_list: /* one global available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:1     prio:1     prio:1     prio:1
 
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
----
-v1 -> v2:
-  - Apply David Hildenbrand's fix suggestion.
+This is the swapon output during the process high pressure vm-scability
+being taken, all is selected round robin:
+=======================================
+[root@hp-dl385g10-03 linux]# swapon
+NAME       TYPE      SIZE  USED PRIO
+/dev/zram0 partition  16G 12.6G   -1
+/dev/zram1 partition  16G 12.6G   -1
+/dev/zram2 partition  16G 12.6G   -1
+/dev/zram3 partition  16G 12.6G   -1
 
-  - Update the commit message to reflect the new fix.
+With the change, we can see about 18% efficiency promotion as below:
 
-  - Add David Hildenbrand's "Suggested-by:" tag.
+vm-scability test:
+==================
+Test with:
+usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
+                           Before:          After:
+System time:               637.92 s         526.74 s      (lower is better)
+Sum Throughput:            3546.56 MB/s     4207.56 MB/s  (higher is better)
+Single process Throughput: 114.40 MB/s      135.72 MB/s   (higher is better)
+free latency:              10138455.99 us   6810119.01 us (low is better)
 
-  - Remove Andrew Zaborowski's SoB but add credits to him in the commit message.
-    [ I cannot reach him to get his SoB for the completely rewritten commit
-      message and new fix approach. ]
+Changelog:
+==========
+v3->v4:
+------
+- Rebase on the latest mm-new;
+- Add Chris's Suggested-by and Acked-by.
 
- mm/huge_memory.c | 3 +++
- mm/migrate.c     | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+v2->v3:
+-------
+- Split the v2 patch into two parts, one is reverting commit
+  a2468cc9bfdf, the 2nd is making change to set default priority as -1
+  for all swap devices which makes swapping out select swap device round
+  robin. This eases patch reviewing which is suggested by Chris, thanks.
+- Fix a LKP reported issue I mistakenly added other debugging code into
+  v2 patch. clean that up.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c38a95e9f09..2bf5178cca96 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4121,6 +4121,9 @@ static bool thp_underused(struct folio *folio)
- 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
- 		return false;
- 
-+	if (folio_contain_hwpoisoned_page(folio))
-+		return false;
-+
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
- 		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
- 		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 9e5ef39ce73a..393fc2ffc96e 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -305,8 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 	pte_t newpte;
- 	void *addr;
- 
--	if (PageCompound(page))
-+	if (PageCompound(page) || PageHWPoison(page))
- 		return false;
-+
- 	VM_BUG_ON_PAGE(!PageAnon(page), page);
- 	VM_BUG_ON_PAGE(!PageLocked(page), page);
- 	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+v1->v2:
+-------
+- Remove Documentation/admin-guide/mm/swap_numa.rst;
+- Add back mistakenly removed lockdep_assert_held() line;
+- Remove the unneeded code comment in _enable_swap_info().
+  Thanks a lot for careful reviewing from Chris, YoungJun and Kairui.
 
-base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+Baoquan He (2):
+  mm/swap: do not choose swap device according to numa node
+  mm/swap: select swap device with default priority round robin
+
+ Documentation/admin-guide/mm/swap_numa.rst |  78 ----------------
+ include/linux/swap.h                       |  11 +--
+ mm/swapfile.c                              | 103 +++------------------
+ 3 files changed, 16 insertions(+), 176 deletions(-)
+ delete mode 100644 Documentation/admin-guide/mm/swap_numa.rst
+
 -- 
-2.43.0
+2.41.0
 
 
