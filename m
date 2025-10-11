@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F994CCA476
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97BECCCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 979E68E0006; Sat, 11 Oct 2025 14:28:24 -0400 (EDT)
+	id F0E2A8E000A; Sat, 11 Oct 2025 14:38:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92AA18E0002; Sat, 11 Oct 2025 14:28:24 -0400 (EDT)
+	id EBF438E0002; Sat, 11 Oct 2025 14:38:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8402D8E0006; Sat, 11 Oct 2025 14:28:24 -0400 (EDT)
+	id DAF818E000A; Sat, 11 Oct 2025 14:38:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 746BB8E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:28:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 060B987F1F
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:28:24 +0000 (UTC)
-X-FDA: 83986668528.18.A343CEC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 65B5AC0009
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:28:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AfBnhG7x;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2E8C8E0002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:38:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BEB2140714
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:38:05 +0000 (UTC)
+X-FDA: 83986692930.03.E885DA4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6E316100006
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:38:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fHkqSFvs;
+	spf=pass (imf05.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760207302;
+	s=arc-20220608; t=1760207883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zaa9ob2Gc8VfTWIIcb5czAvOx1Y9VyhgIMC1bISdV2I=;
-	b=mkTfZAAccdV/I50edYXYYa2LbjC9Fn8gpWCJ8s87T9aF+LQFioCPVhXezFw4HDbLzjlCCq
-	N/+RtY0xwPX5KN9isLk0XLv1rum4/z/0i9W4fyDcNZentU+jPNOb3rDZbKiqaVVyvJJm9t
-	jo1C54c8+sDkHjswnhTzfbf46wy5lsQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760207302; a=rsa-sha256;
-	cv=none;
-	b=fIazqfW6FngCtwVQsGoQvFI5pP1h2o6tzU929RIYgD42UoFmTJDRVIjo5ocxFO6EtRXEaJ
-	qf1zA4iDr0jwQQSXGe9tANpZcUT2xQK8wrnOab5JRm9KVcZC0jIPIdUaeNUQAWC/0Kx4O9
-	c6/GExqD7fw56pRkEtkqZIlixdYFmMs=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=mxXinw3NcLSewP77YI5Ch7mCV3rQCdC/qg6nJ/5wvkU=;
+	b=FMvUNplmpVkqB1ENgyair6NIkQbNRe+P2WJjOHbp09yqv1/aQmss1OWD4F5sIzBj+OM3pf
+	yRII1zqU49gvA85hWOE0JtO916irj++IiC2LxJPszAHBqZIIfiawcietWsAjAh0u+q3ryK
+	/8zrkTsbGfCFm/Eyv1dWFLegZGUNbI4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AfBnhG7x;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fHkqSFvs;
+	spf=pass (imf05.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760207883; a=rsa-sha256;
+	cv=none;
+	b=jHF0eqzLHo6uqvGKrXYNPud3TY0RdETr7WRT6YCIK4re3DEo7QLIu+YrKm3b5uQK8Kzf7X
+	rACnYigWE687/c+nKrtWtWosfw+3tcOSJUey1aNPWKx7/SkyY+sOkSq8WNs+7G/oxfrVaM
+	5oP0jT/J9ikI/gpGtywXhWGSqwZ1H9A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B85B96038A;
-	Sat, 11 Oct 2025 18:28:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8115C4CEF4;
-	Sat, 11 Oct 2025 18:28:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760207301;
-	bh=FgUWvbT3ZDva6ywfxCHqenEXxBKR7Oh/eD/SLOX+5Yk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AfBnhG7xlmLmfVUbFGyjQ78bq1XHYdU9flYoPoaBuGBTWGnKucM2jmCncWuX7rT71
-	 FlTSAz4fuLUwls7McF1/JtXOxaFcu7efZoCive7juPExhTihyq837YdT4cuC3G8aUc
-	 dD5+OvKwL0z2YPpBYYro/adbqLfXaRiZQllp+pP8=
-Date: Sat, 11 Oct 2025 11:28:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Zi Yan <ziy@nvidia.com>, hannes@cmpxchg.org, hughd@google.com,
- mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
- harry.yoo@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 0/4] reparent the THP split queue
-Message-Id: <20251011112820.0bd349399187a5eb662024b9@linux-foundation.org>
-In-Reply-To: <4a134193-ee55-434c-98a9-ca3052bab11b@linux.dev>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
-	<925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
-	<4a134193-ee55-434c-98a9-ca3052bab11b@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 19h544syzsydbnhgy9ida49p5bcf4dt8
+	by sea.source.kernel.org (Postfix) with ESMTP id 0AB96436AF;
+	Sat, 11 Oct 2025 18:38:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA74DC4CEF4;
+	Sat, 11 Oct 2025 18:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760207881;
+	bh=+4I6/7gKW49KdhJ+r5k2IKqth6kx2WhiqWw0C5OIRM4=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=fHkqSFvsp6R/eFe3n/3aGYcqhzP8pn3NyoPej8FXvcqfrTG8+e9cdEyyzgL21R6PG
+	 dLhWsg2W1lOXSaaO28PWR5xS4Pw987x3qS5juHWhVTwfNTmZoPHjWXrGdvR30YVEDr
+	 oSpdurw9ZS5Xp9fHRDfwxg/I2NHgMAjGD//EhIvdWJG3Igs0+7lezqs/I/AIu4sdQ3
+	 F2IPKLDgrfk8ekvpEH+6DgC7g6WDzjVLG01ZL8mfp30tv/24YSZTbIHqZYIOwVeqYl
+	 PPyWbNjK9C0W7NXfNkceTNxlTHIM+q76yLYYiJdZzvMJUcVjoWLtA29tugHBhQADt1
+	 2vprsZEjtt6Iw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB2493809A18;
+	Sat, 11 Oct 2025 18:37:49 +0000 (UTC)
+Subject: Re: [GIT PULL] hotfixes for 6.18-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20251010150323.2d73ad0f6fa1c49fbb7d9870@linux-foundation.org>
+References: <20251010150323.2d73ad0f6fa1c49fbb7d9870@linux-foundation.org>
+X-PR-Tracked-List-Id: <mm-commits.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20251010150323.2d73ad0f6fa1c49fbb7d9870@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-10-10-15-00
+X-PR-Tracked-Commit-Id: f52ce0ea90c83a28904c7cc203a70e6434adfecb
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 971370a88c3b1be1144c11468b4c84e3ed17af6d
+Message-Id: <176020786851.1422231.15209279275130489404.pr-tracker-bot@kernel.org>
+Date: Sat, 11 Oct 2025 18:37:48 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Stat-Signature: w9ttobrrguq8x88himnbguztepox1p1z
+X-Rspamd-Queue-Id: 6E316100006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 65B5AC0009
-X-HE-Tag: 1760207302-970594
-X-HE-Meta: U2FsdGVkX1/MmZquF+4sbf5x1WBzB5vAGN0GNUdGcTUenOUaVdCYRu5r4Og0+OLHEm6C3zk1adJc5zAbCsxcnn0XYmD7HBXQlKqle0jLo/Z4PWvpZiqeWk35sIH+q7pGpHwPc+g/YYdMSM0IJ/HoAFBPJLNBXX8Q3N9C1G33lIYIioChurcoVpBYjkniZb1QmVqWs83N2astmKWvRl/GaXkjjVm1rlopwHe0LAG//Cj9C2+PZkpjH7Lr9Klcl00DtCMernzRphE+q1iiHvY5e0zatZ3gSznnzNI/k9iotch4pzOLInW7vBjMhMFQt9/oqPG9MwpowTYSIFBCau1HresbRMraC14pryvtD00roXNzec9QXePWsPnVAfMxAsjwGu+uFKyhM54jYmlN/89V0npZXZzxgiWWlqCN9GlFur535s+xpD1JOIcbmf3NtmhqfQ0p6QJOvM4w4XiV//soxuwmTFLK0FfJVADTaZ2aCT27IDuyQ4Y/Ru9f70SurlH9m5grQKDOF4B1PfDX4TX0EkduWyhj0jADSiMhmQ/f64ra+8iGj/hQjctEDg33JBGo1/RSxGnt+DJtw0JnJvr9cH2hU0MQv1XlaKylro1WNUMCsWE4k9R/vneZdFnkA/1xbHLerZPmKccdIUPHtrrTNf0JA6zx5o3dwy+7c9MH/WToiE0vdG2ovAYbpRa2kQdXaMUNGF0opPTAeqXMEPa/ZpVrjpmOF17zCofwHHZis9s4RtEeK1fxtmk78rznwZnclXp4QooIYB4Zwn+W0hfW0iojCqY1XJWxS3M6x0AyDNhae6Zer/FAbZblOfW1stPyY9PPQFvMyb4UptUBMiKBtGPpwRQFb1EHwrqFzK3W5n6eXYAtPD02Z2IZ5+chyRhfBJOLWK3T4UMdwOWbhLJXkiqmTyErod5xNBduAADtWSILC2JsCp4K79XLWTWl4LZVGP/lnfV6gWSVlJkxwob
- 0JZPTCEx
- UNWic889NQyZUTQhAF0sTco3X/EeNObQ3rpQ9BqItNfYXAD3SopcT07b4mjrHHG9iP90SjnlkUQ0VgJM7z5cZJbvAE3fHUKf5lq3oLUaMh3oCVzX9dreMWDXaopPE5zO75Z9tvIwkP9cqN77Ypj4+ochlJanryqlex2eb3mLlS0Vg3pspCrt8zJ1eq92vGW10wSozsngq+Cmu3+5WeQ06+sXChEMnM/k1FUDTLIoKb8BK9PK0lJ1UFq0Uyw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760207883-989714
+X-HE-Meta: U2FsdGVkX18pLk/TKzd49UAhQBPxw0gtKhffNRN2EPBJrLWiwS+E+a97l+nrj8+LVqc9CnhRppkq0QG640faYGes6WFONfcvyXkk3q6/J3E9iSFsuUuI74W9IWPhg97O9nvxoVWyzpOIGTJaHDXxT6GL3bx8VDXEMj8NLLJkWd9mtLW4+l1k+Bw4aqyT2SCmcNTJEt0ZL5LkxkgVI+8LlGo/1gxQuizeszpjo4IVgfwUdqIx6t49xYdk25aXoiagMVxCm9hxoKvsItR8Hn76ifKx52dnoNplwS8H8V3VrafVz+KZyurCXSpB8kEvy7bYPJd+w2r2yHGiKoSJXmnzP3YZf3Pca4kGokWiz5obzlKA5zrHnzYey/Mm/ezWbTJK4Olued3MUIReepfQRqv7Ju/M+IJLSoytxf/1I3cAx6DHv1GJYUt7OZ4VWT0Z9CxPCej48cTeQ5+qk7+eOH5t5UbAM0NIKPcldEvBGBvILyPemvRXnWZso57LUlt3of+7NDQAaU85Ax8O7eDpfjkmNnmzxYNwludQc2aZUu7E/xxHsgZcDmHlGCzcup+5cZJE9ZJnWK++oU/4fpv5q9SIm0VcWzqf7AW0upNXOT37j2QRoOnaEPshSV/YZwYQNS3aOaLXUnoXiXgXuOMrm4PLmUqZkZuLo8+EI2bDSrnjYAwYJK0BFOUT2q4hu9FpIY81oicg4Ehdcj8X2M8h23nYIOoNO3Mkr3fidzGeGh8BgjtK+ysXMb95CVWpj1nlWJPMd/c3w5b5p0TA9LGrbPOW12WNa+9FbkQ9f9ovoginyWTkKGjKjmwK31MlCumlilJQs+Hi1fYePfWoTjf/G70lVUXZ+NKqphh9Kt9umL9a3X/hqHWXCLgRdgmDFgqTE2OXv0zEpvMwiTwhGVJ+m3qscKR+Flz9j22x2VNNwyWEh3jR8rOXZKarJ6qzNBpZtgKaCYPzurxNr/wUNaB2VjU
+ grO7H1OC
+ wYeEHQzsEwFnG6Co18vygb5rfzhJxfvjMnLDcRHdMJ1PrreI74nLyaC1yIq31IWGH2rmDYbmyY54LWnQUk2aAi5K7jMd11oa67K+6LfxlJrkcyXlnERw2JQ1UCDFv+SfM1La6N88FGYUudKRfQlnXa9Rm3IT2FhZwLv6PKDamdSYTphhxSLw1uwmlAmeEVVLp+vU+/K75ibBe4uZB/TdI/hYf5xxUAbYLfea0FJL2QPBQ1NkjOKp5wB1f+R7ecJwH7t7+qxu4a+sh8FWhvry66kPmsOvEBAUxdeNtL0ZRzbOp8VrgikWvtLlqatrCw+MiSkvxFxVMh3ejQPGrvGjJxUhP/VhFQiz0icjEmZZ8tqkKb5PzRFVfK1NlrGzZFOr0AYA6eB/Xzyn2z10=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,25 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 11 Oct 2025 08:51:21 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+The pull request you sent on Fri, 10 Oct 2025 15:03:23 -0700:
 
-> Hi Zi,
-> 
-> On 10/11/25 12:25 AM, Zi Yan wrote:
-> > On 3 Oct 2025, at 12:53, Qi Zheng wrote:
-> > 
-> 
-> [snip]
-> 
-> >>
-> > 
-> > Hi Qi,
-> > 
-> > I got CPU soft locks when run "echo 3 | sudo tee /proc/sys/vm/drop_caches"
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-10-10-15-00
 
-Thanks for testing.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/971370a88c3b1be1144c11468b4c84e3ed17af6d
 
-> And hi Andrew, please help drop this patch set from mm-new first.
+Thank you!
 
-Gone.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
