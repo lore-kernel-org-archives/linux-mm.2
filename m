@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E538CCD183
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 06:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D503CCD183
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 06:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBAFD8E002E; Sat, 11 Oct 2025 02:28:24 -0400 (EDT)
+	id 9DBB28E0035; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C926A8E000E; Sat, 11 Oct 2025 02:28:24 -0400 (EDT)
+	id 98A888E000E; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCFBF8E002E; Sat, 11 Oct 2025 02:28:24 -0400 (EDT)
+	id 8A0878E0035; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A63C88E000E
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:28:24 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49B2A14055F
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:28:24 +0000 (UTC)
-X-FDA: 83984854128.09.D0630F0
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6C7CC100009
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:28:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VatXPrGG;
-	spf=pass (imf14.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 775528E000E
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0933CC055A
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:30:35 +0000 (UTC)
+X-FDA: 83984859630.16.CA96E1C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C1DBD160006
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:30:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KlZ3fPib;
+	spf=pass (imf08.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760164102;
+	s=arc-20220608; t=1760164232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/JCRyAnmokJayy/TZ9IjsmBaCJ6vmXBQql3AFCgnx0c=;
-	b=biEhsQP93TnWvNi39Amp9ljKmsxmAeaMAmf4vabpUmt8PCzNK+6R6gG0j0fq2ztjAEvkaa
-	hwZ9fUFAsmldIulbZwSR1HQvQB0q4RVWCOVKdJN/SrIc6oz85VeVpMI12zVKqZfEDQsj51
-	yu84CJ0rbXsIJvlf3lRK3bAors4Oi4k=
+	bh=FCxpy90P/aXymTR+8lrsDCRYM9btfhKuXlW7Y96vB6I=;
+	b=i+F54jjR938oS3eR9sfPSxXzbk1q6DNK1MtB86w3/ZJuK/n7p7o2V4RkrXcWkwPcG9XEtM
+	Jux781JHGBqGyCyE+6Fs0fTvZHFZ0rfX71MpWA3TRUt4MhVhvBIw1MxdOjt+hKWPl6CEqs
+	dxmt+Cd3OytNVImL9W0uPJp0MihvFo0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VatXPrGG;
-	spf=pass (imf14.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KlZ3fPib;
+	spf=pass (imf08.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760164102; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760164233; a=rsa-sha256;
 	cv=none;
-	b=FiwuS3lkVfALgucdlPnhP79YwBbAZSsZGj3yhg3IceZumxKzXFSHQ7HCvXrSqg3+WHWFg/
-	68dso5Dhe3NZ7F27ngN0+MRuYPz9AtpwoxvcuEbac5Qykd3nTWWDn+pTtl2PgylyvJGRW9
-	VKNQAfc166fOKeLgC6LOlqx0ji+FY3w=
+	b=HdyFw3GxKmApKkpEsexLOIPPgnsLn+dx/w/eGlplrR6N3+RrItAZ946+puPt/JZnhvUyjp
+	5c+RtHQ/21SY9L3WMcmMz/NHhUKq9KoazyEtLq3GyBu9AIxMTvpd8MfvOaRR26s0oPErFp
+	PN2e1rX9mbo5I9SBjdEPpPl8Pmp6EqQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760164101; x=1791700101;
+  t=1760164233; x=1791700233;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=JmDOfQUbMEHiVtzCQOOrc24XvL9I3YKy6Q+bCgh3a1o=;
-  b=VatXPrGGd6inhjlcQX3/6woHzxD2gvPzRFOeeKu2wGyNJYnB2Mf4TvvS
-   AA/RBzh0aCcsVmka0BC3eGuvnLJkvVrBI2o3JIJmIeHkLyyOHN1Sk2+5u
-   +30U52UG6J2lab3dR7MND+VFS0H/kEaA3s5jCoZNATvDEFK6hbJUj3qGW
-   R5SMc2HGaQah9oQrG0VR+XGcLLDz/9iCapHCWi89zzjDx5hYqbjOqv2Pp
-   5RoUihTSLs+Lh2wP3eGMVbcH1fP7KWzTxADuMt+cIr1udxC76QLFYhxbV
-   3X0qG191VP3mknLWFS5bb1Wo0dLQJPG57VLMlAcqKei3HH93K6ST66QaZ
-   w==;
-X-CSE-ConnectionGUID: Nqr2Hhl4QSKIFj4Lj7OHyw==
-X-CSE-MsgGUID: I/yGvG9kSfaUefEm8Ngf+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="62258570"
-X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="62258570"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:28:20 -0700
-X-CSE-ConnectionGUID: ak6XigH/QdeMlk+cNQCyDA==
-X-CSE-MsgGUID: +31j5JXqT2muzztIzmPLXQ==
+  bh=864487Lbses3g7FYfEk5gBAA1Q+2nTEqyXpo9mwJjwM=;
+  b=KlZ3fPibvjP7Ixt+esQFdd3jIuDFu8eOXyN7plWYigXU0T36ew505skt
+   NPauY8frIRxmdSO5cCBTHIXUbEUAUdp5Q1K/cezXBHuHWjasC+I12x7NA
+   2WZciLGMT2NZs0vkzCwkaQWoZ1589TShSwLCEJVtIba4JN8nRvTzV91d+
+   feT9v3qSwU85n2fcRMz7EgfNjBcE0ceiiR+2kAlOHSRdUo/uEGzcMbmKd
+   sEs9f2i5hxJElqRBvJ4OJtXlOsko/Tu1JOOVGnsxsIJzY7/zh62oJ7OT1
+   nJtDc6UUqWMBdyx/qQon2nw9vKoyE/nLqKqBH88aGYQ0pysxKpEWgpY4Q
+   Q==;
+X-CSE-ConnectionGUID: LQAicygySZeB9sGxYmEQWQ==
+X-CSE-MsgGUID: MuQrLs7sRkOAjsFWa4DrDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62295790"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62295790"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:30:32 -0700
+X-CSE-ConnectionGUID: lPvOecqbQc6xhQki/BPBGg==
+X-CSE-MsgGUID: AgL/RN86S3CGZ7GQ+tjQxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="180257706"
+   d="scan'208";a="180389437"
 Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:28:14 -0700
-Message-ID: <3971a3fd-c733-4864-851a-87dc9d3f686a@linux.intel.com>
-Date: Sat, 11 Oct 2025 14:24:41 +0800
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:30:26 -0700
+Message-ID: <ce126bc8-7672-4071-96b5-9652e736175b@linux.intel.com>
+Date: Sat, 11 Oct 2025 14:26:53 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/8] mm: Add a ptdesc flag to mark kernel page tables
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jann Horn <jannh@google.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@intel.com>, Alistair Popple <apopple@nvidia.com>,
+Subject: Re: [PATCH v5 3/8] x86/mm: Use 'ptdesc' when freeing PMD pages
+To: Dave Hansen <dave.hansen@intel.com>, David Hildenbrand
+ <david@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Alistair Popple <apopple@nvidia.com>,
  Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
  Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
- iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>
+Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>
 References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-2-baolu.lu@linux.intel.com>
- <aObCAwbf1-Sxepni@casper.infradead.org>
+ <20250919054007.472493-4-baolu.lu@linux.intel.com>
+ <9648e990-18e0-4aed-8110-b02f4b45aa47@redhat.com>
+ <e4c0c578-50e9-4e65-8e7f-7a6d995b22e0@intel.com>
 Content-Language: en-US
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <aObCAwbf1-Sxepni@casper.infradead.org>
+In-Reply-To: <e4c0c578-50e9-4e65-8e7f-7a6d995b22e0@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6C7CC100009
-X-Stat-Signature: mhehj7uurppng5so1eoqy87ksmyfsnnh
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C1DBD160006
+X-Stat-Signature: kfa9sjpsmgebkbi9rhqhu4b6rw98bf8t
 X-Rspam-User: 
-X-HE-Tag: 1760164101-230741
-X-HE-Meta: U2FsdGVkX19VVXwL4BtSQl7iBdhp7k0ZbNCg4cLFwkxlshQSsUyR3Fbm3oZgpzgwV0LZ28bvV2w+O450i9SY7FK6P3E0CAWub6XFiqg2Nvbne2UYDuRp9OksdKgjXA5i2m0pDnzTaop6oqCva0KgCPndUsiVBMr5MbXQ/VhoiTQJCkcjYIA/dPnahBThHlUD0zH7dDzjvmEg/2wyLWq6zijj4Gq4suup0E0NieWfdYFnUbkVnlVDW756uEMFuUI9FlMwZerYlNTTik0J/ZsjGOAVNemJUnGixSeWAHTT7ZT18LgYTGzUvE9zwG+iNqRzx7RQoVGu6YXoG45/ZBATAuI9GpBSIwpVGEswy/ucLKdQyiplsGcU064cJI6KrCjfhPA58RYxGzYHbFL31f4/9VkfO6FMXrzzLU9tUTaoNp5Ud7xKTp1iiarNijOLtEkVQw1o0stpCpATtTq/3nqftQq3Uf1PocA1wKTv2lthIN5Oa/4U3K9/oM8X9M0Mqzx9P1LloHT9uhIF5YggNyQQiFqsNYZCnQAP/W2fhBir9Jkc3gBjcWi0XycXmmKKB8aFUetIUgK7MJ4RzkKoEUlaS579+bCGBB9SrLnCPaTYpU72ldk9mWld9RVJWeOk62C/3zciBlA2Fr2IU672xbGOjZoia9Nw+wSuxxiiCumq1ILU8Rz4D1/oKdmfkcPrDVFBLCMMxKHSZ9o23d7axXyek4ji7/ydhH1WhY7lnaBcHTwaerAW+UioZc31njFd4O7qXwQ7wmRbr0mGJBMw2xDPFLtduTxg3rcXnyYQGtJwW0LS9f9/hLaLhTHFN6TM8xSmHl12fFg/1cZfUuRw04FRczXGBG4AUTRShIHaMEIQZGowECI+iXBzrmQTjjL3yWNL7CwIP5hlgGKgsZJp4hqd7iiyoFlVOPdJeV6EOm8kdgChDmH3BsXDtNYma1k0G+43Ew0RMG1svURgDEFGbzC
- pwqxrK0s
- KaGWXXiVOo6nms9FTQQcW3w3EXabnEu4yqMHDNTrmzEi/nZL992T2HTn2lLoYjWFEdGh5TlUduZ003mjLkHhRZWJNV+mMid4PQ3Uc/ObUIm1WDLNR2+ImThUY958JBKVrkpICxbi0pt/R0oTFwk12Tvwqj4awHXLdH90V4gSgIft6uoCvsZXnzlNaR4n6aMZFA6e2yg/HizfAlee1z6LcD5i5WUWyLZjyOeqPd2uu5oh8DcU=
+X-HE-Tag: 1760164232-598667
+X-HE-Meta: U2FsdGVkX18t9AXKp4mNXZra/thGeaHJR0RyNQ+NK+CroyuC1rWfTh6vS+VBv3lYaqLQkGfqmXZJLnEVgHjQ78nTdLNkwTaQbhKMe5TvMcT7K4KPW6zqSzH1VNXX+Zs+kILzPAoS0VkY8yLgNV4LmVM+V3gGoMzqWhhvPynf/0oXYElN8KyXp+gopv7cdioPflqC07dVehYnPrbTccZMRuLmGZXiWTNm95IkbyNK8w/o1YM0RfdlQ9voPRviA0tef8rAQWLJqBtNXS5tMWjtBXWyBPo1xBHPP06zWSOEtTxosqyILiB6wq4iEReePqQ7IQVP66HNAuhELQWEO2+9t2J2b9iWSCJEXVaLJbKu8m/7rxb0OzJLXdaYYqFOFd9WBPZn/t/yQINkh82XX8K7+qLnCskgufLRBOGjrM8WqqusziJvm0t4ilfAjny8m86PTm5Fns02EWmGNwx1Yy3D/05/BKD20ZHgxqQWIR/0WJkjcPuPZ+tzrTRJK3MzozZrHwdiCpirTGKwGfiRuiOJrlQI5kJKU/wlWR/YXfCcYqOMi2zvHfpxwAdsuCTECiEGQEUSh6ojLr3g0pxz+5R1NM3aExr51bOQMQqS4bqWP7EDtWdRWg9T7n01fCcWgvtjsftn+rt5DU3VkyUDRrVufSyQ39AONacR89vpm54zoQ13C6nQMlwus2TpoJl8PR3uJfKQSOyA5pJDTxg1bplABticB/tC9ffFcj41e6quSaGVFNpgDcKQD+QrxPyFKcrGZji7zQzjs3UcZ3nCO5ZcKZj+P4E+HHa140FD5ETcajnDueOEAv/SQ7plaDTGtRkiWE65JBC4cbR/jHhm921KBBtyCoUxNptEGZwdSb8/oWKbaTBaABaArCOiZMGf0RfM/AFe5q8NJJvJaM122oVp1fM9IaUSaXURJEocpDauWTpabQJWp0o6EeSODj9gHIrBdnvciVcX5hiFs9ftmKf
+ n3YJWihR
+ xjS3P3HxTpYSPqtzCLngogHll7PZpe2oxEB5RWu9AZi4em4KyCmjPVGUDE7lbLiBgeIu4e91zBYW2p/pp86HUEhoAtzbTqTkVxjQAiUkZS2cPs+QK+fWyKoCjB4RIkj5N9n3FNllp02P7xwD0pJb2JS4MsB2lBOz+5bV4gtRmcK6Vx5GBto2kLmFfKK+iax9e+qPSWZ26bIbHckNr8DJliySbmg+rEE7P1Fpho23vtGs1aQ2YcksYzjl+YktCPgK7sHiT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,93 +119,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/25 03:56, Matthew Wilcox wrote:
-> On Fri, Sep 19, 2025 at 01:39:59PM +0800, Lu Baolu wrote:
->> +static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
->> +{
->> +	struct folio *folio = ptdesc_folio(ptdesc);
->> +
->> +	folio_set_referenced(folio);
->> +}
-> So this was the right way to do this at the time.  However, if you look
-> at commit 522abd92279a this should now be ...
+On 10/10/25 03:31, Dave Hansen wrote:
+> On 10/9/25 12:25, David Hildenbrand wrote:
+>>>
+>>> @@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+>>>          for (i = 0; i < PTRS_PER_PMD; i++) {
+>>>            if (!pmd_none(pmd_sv[i])) {
+>>> -            pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
+>>> -            pte_free_kernel(&init_mm, pte);
+>>> +            pt = page_ptdesc(pmd_page(pmd_sv[i]));
+>>> +            pagetable_dtor_free(pt);
+>>
+>> There is pmd_ptdesc() which does
+>>
+>>      page_ptdesc(pmd_pgtable_page(pmd));
+>>
+>> It's buried in a
+>>
+>>      #if defined(CONFIG_SPLIT_PMD_PTLOCKS)
+>>
+>> Can't we just make that always available so we can use it here?
 > 
->   enum pt_flags {
->   	PT_reserved = PG_reserved,
-> +	PT_kernel = PG_referenced,
->   	/* High bits are used for zone/node/section */
->   };
-> [...]
-> 
-> +static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
-> +{
-> +	set_bit(PT_kernel, &pt->pt_flags.f);
-> +}
+> Yes, that looks like a good idea. I never noticed pmd_ptdesc() when I
+> was writing this for sure.
 
-Thank you for the review comment. I updated the patch like the
-following:
+I updated the patch like this,
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index a3f97c551ad8..5abd427b6202 100644
+index 6a0bb7fc3148..a0850dc6878e 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2940,6 +2940,7 @@ static inline pmd_t *pmd_alloc(struct mm_struct 
-*mm, pud_t *pud, unsigned long a
-  #endif /* CONFIG_MMU */
+@@ -3203,8 +3203,6 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct 
+*mm, pmd_t *pmd,
+         ((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
+                 NULL: pte_offset_kernel(pmd, address))
 
-  enum pt_flags {
-+       PT_kernel = PG_referenced,
-         PT_reserved = PG_reserved,
-         /* High bits are used for zone/node/section */
-  };
-@@ -2965,6 +2966,46 @@ static inline bool pagetable_is_reserved(struct 
-ptdesc *pt)
-         return test_bit(PT_reserved, &pt->pt_flags.f);
+-#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
+-
+  static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+  {
+         unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+@@ -3216,6 +3214,8 @@ static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+         return page_ptdesc(pmd_pgtable_page(pmd));
   }
 
-+/**
-+ * ptdesc_set_kernel - Mark a ptdesc used to map the kernel
-+ * @ptdesc: The ptdesc to be marked
-+ *
-+ * Kernel page tables often need special handling. Set a flag so that
-+ * the handling code knows this ptdesc will not be used for userspace.
-+ */
-+static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
-+{
-+       set_bit(PT_kernel, &ptdesc->pt_flags.f);
-+}
++#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
 +
-+/**
-+ * ptdesc_clear_kernel - Mark a ptdesc as no longer used to map the kernel
-+ * @ptdesc: The ptdesc to be unmarked
-+ *
-+ * Use when the ptdesc is no longer used to map the kernel and no longer
-+ * needs special handling.
-+ */
-+static inline void ptdesc_clear_kernel(struct ptdesc *ptdesc)
-+{
-+       /*
-+        * Note: the 'PG_referenced' bit does not strictly need to be
-+        * cleared before freeing the page. But this is nice for
-+        * symmetry.
-+        */
-+       clear_bit(PT_kernel, &ptdesc->pt_flags.f);
-+}
-+
-+/**
-+ * ptdesc_test_kernel - Check if a ptdesc is used to map the kernel
-+ * @ptdesc: The ptdesc being tested
-+ *
-+ * Call to tell if the ptdesc used to map the kernel.
-+ */
-+static inline bool ptdesc_test_kernel(struct ptdesc *ptdesc)
-+{
-+       return test_bit(PT_kernel, &ptdesc->pt_flags.f);
-+}
-+
-  /**
-   * pagetable_alloc - Allocate pagetables
-   * @gfp:    GFP flags
+  static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
+  {
+         return ptlock_ptr(pmd_ptdesc(pmd));
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index ddf248c3ee7d..c830ccbc2fd8 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -729,7 +729,7 @@ int pmd_clear_huge(pmd_t *pmd)
+  int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+  {
+         pmd_t *pmd, *pmd_sv;
+-       pte_t *pte;
++       struct ptdesc *pt;
+         int i;
+
+         pmd = pud_pgtable(*pud);
+@@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+
+         for (i = 0; i < PTRS_PER_PMD; i++) {
+                 if (!pmd_none(pmd_sv[i])) {
+-                       pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
+-                       pte_free_kernel(&init_mm, pte);
++                       pt = pmd_ptdesc(&pmd_sv[i]);
++                       pagetable_dtor_free(pt);
+                 }
+         }
+
+@@ -772,15 +772,15 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+   */
+  int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
+  {
+-       pte_t *pte;
++       struct ptdesc *pt;
+
+-       pte = (pte_t *)pmd_page_vaddr(*pmd);
++       pt = pmd_ptdesc(pmd);
+         pmd_clear(pmd);
+
+         /* INVLPG to clear all paging-structure caches */
+         flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
+
+-       pte_free_kernel(&init_mm, pte);
++       pagetable_dtor_free(pt);
+
+         return 1;
+  }
 
 Thanks,
 baolu
