@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680ACCCD187
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 00:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 370D8CCD187
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 02:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A10818E0032; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
+	id 290C88E0014; Fri, 10 Oct 2025 22:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E8A98E001F; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
+	id 268858E0011; Fri, 10 Oct 2025 22:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 925AB8E0032; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
+	id 17E498E0014; Fri, 10 Oct 2025 22:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 80FCB8E001F
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 17BDE8789C
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:51:42 +0000 (UTC)
-X-FDA: 83984005644.13.6FA6AE6
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 00EAF4000E
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:51:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JFicWbmx;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 06CEB8E0011
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 22:14:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E1861DE9DF
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:14:27 +0000 (UTC)
+X-FDA: 83984214174.10.CC12C06
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ADD192000C
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:14:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ct+2C7JC;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760143900;
+	s=arc-20220608; t=1760148865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PIam4ujNL/Ie85vosujHwjjM/d/jgUrGDFalDqtFhCU=;
-	b=26j7pFR8OeM19MwhotSXYUgZ0gffcIwBJ94JCw7BaLBtkET25zIrAS54LNidAJ7mIAIr5+
-	VZ33smwTnUOuCG+TIFR2M1B2A/kBUD35pNgTnNotmJKDhoDV2dikpd8azt0wUpBUhIm8Fx
-	GPE0fp9WY8Ecs829KJnPJzWoxtOVSeU=
+	bh=OjM7Uo7QXRSYcqIINz76pFr6NJAIPUeKl8+ji06M7jI=;
+	b=nvbJJdfsQgDF8/OwdjPEe5tGSg/E7c/MpdsmV7VSxPP/Yj2oP5VU9IJ/I7SYxTAaWTQM8G
+	ZDlbS/GNExAqtPXOA1TXQhXuplZVHvcoQJsUaR3h1W/EL+udlpDHau6PbbcgCIkY148DEf
+	gENEzKTtLZmAepKEz92ocQigHD2VSmI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JFicWbmx;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760143900; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ct+2C7JC;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760148865; a=rsa-sha256;
 	cv=none;
-	b=yAgUNzf5ow2QrZKvVwllTHrHrq86dviKE79oWAPZvq4jm1s+q/Mk1nsrIT3McWjw3ktl0P
-	cK9xnG1X/o1Y6nylfIbPvzmdffgP0xstw+VE/FROd9gOKwMyTZboYB6anyMoqjAKXmaG0r
-	Y+vatwVOXOGfbs8YmxJURUEeAOGIs+c=
-Message-ID: <4a134193-ee55-434c-98a9-ca3052bab11b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760143897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PIam4ujNL/Ie85vosujHwjjM/d/jgUrGDFalDqtFhCU=;
-	b=JFicWbmx54XTw/3fjNm3twhl80Llah6xCiNTVQWu57Zfig07BK7KIF1sA5K+kWewZWoWcQ
-	627kNzvNqbtU7YIE8uduiQAaIo241BI2XIQ6bkOhkvV0FD1Ka5I3VAkvkctMG2brKhnYGL
-	q7tp57h1/xyuEBS0FsiiITxLfQFoCV4=
-Date: Sat, 11 Oct 2025 08:51:21 +0800
+	b=HmtY/QN2cnZLQwmD1DDnNPsnaW8sV3t37hbCQ5Iug9VqNRUXvoTP90qDEBvKdm0Mt8pngW
+	W9WS+a5Ia8sFyYe5uRa9pv0ER0AKxEX1FzR/Q1YFoCNm4mJ0bXcYIdYqRxBRZeZdP905xu
+	dBqbgMuT0dslhPZwsXgZTuQJwC1bMGA=
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-78e4056623fso29164186d6.2
+        for <linux-mm@kvack.org>; Fri, 10 Oct 2025 19:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760148865; x=1760753665; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OjM7Uo7QXRSYcqIINz76pFr6NJAIPUeKl8+ji06M7jI=;
+        b=Ct+2C7JCSgKaqZ/OXKbh+BdqQJNT4gEQnvr306hXvTGdbAhdZvWsPwSWwIuvA/hFHY
+         W1sythTdAVEz4a+8MWHDiiEtmlOknfhQj7SSS3rr/ZkW3+fgWC3AbPKuZGwoy+g41ECg
+         q9ENSy/u0abubZOieDfuSI+F5o8ZzHyW6Yjog1x4ekBXFzAm62fLsO/bLAqX7d7pPR5X
+         bkjX8ykGdGWyi1KOv3YBEEH9Va7qxqTVT9kI3g4ZUGfJXrTiWPal6fWSlHfxKt/Fm8W5
+         a1nYe1/hDzdG3JwqO4XcrWAkd3LwIUDKH2wt+o2vOGf4A/Abo7Dk+d7cEHs8ZnmdOGtU
+         3sxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760148865; x=1760753665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OjM7Uo7QXRSYcqIINz76pFr6NJAIPUeKl8+ji06M7jI=;
+        b=oez6LOseP+ywKqsvr3rmfYNmig56Ge3N/D10mxsnaPwFXHxBPIpj6VWNWv/3bKCh1h
+         gR/54S6PeEW5cIJcUZnzaSGPfxhx051mT63MfN5OpwULhiS9U4PMrPwR/NJuaVvhsmDg
+         1KsSfoxH660p8Brx3pP+f0Sce29/STJiD2roMpcSTZMhByc/WrvBoIVf+hgArgTOBDKC
+         r1frWwkHqBGxuGsCvU16+LtCUbRPXGZsc3Ke/hcdWSlOHkHaemmkTsDvG+pwNuclckZE
+         n6D+OvAHI2X+z/BA6qYGCN4CIiOeo5SZyrlG0mjIJuuuD/tbxZXB6X2H3+JH0iYL72TK
+         dtLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWW7g67ewXFYaziYHfHXsw5bulGPpm8aGxLVuacEcgRAyu9dwcEQz+2NrRyUyQLM+MgA0818NVF/A==@kvack.org
+X-Gm-Message-State: AOJu0YzstrmxySsDb4aYykPPTEFWvO8z9i1UB6xjVgPW6xxK+kqlfcut
+	dI8DLjSfm0zP+xCfhCiXuMpd81l1chRthmP4cSeTEv11aIQHzAkqyj6kDGiYPPwpZY+iwPr98Hn
+	+Blr7vNocNVqsH3GsnknXaWjLYNCqvCk=
+X-Gm-Gg: ASbGnctODmjGXjo7xVulmJxN2FBEpTpPaGNkR4kOPfmrn/MgKvkZ5hiRUEMeC96ZVdR
+	kYd+K2u7VbrwtxLtZ+f8/YymsIv4zc3CFUtEPyIXvc3ryxgogAmAIX+95QVzxexfEUTtKysMd7k
+	VEKThVKpR4GBH5nWCoVbLceEXVyElMtdFW7nKrOzMypJl/buiNSQaEAX7qVhEXitP8f/HlkVvsS
+	7bz8vasu14NP3+aXSFxm+CMDSXVdilKP/06cTf/znSqK4aT3Z01rK7yoXQ=
+X-Google-Smtp-Source: AGHT+IGaeWexa9bzckVo2Zuz8KIURfJ9ec0dzy2/uD8zB9hlaiwuFTNQBQBPWfvTfKv9XXFEhBIN1ZQ9u4RYMWr8GwE=
+X-Received: by 2002:a05:6214:250d:b0:72a:ba05:7759 with SMTP id
+ 6a1803df08f44-87b2105abd3mr248316426d6.28.1760148864567; Fri, 10 Oct 2025
+ 19:14:24 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 0/4] reparent the THP split queue
-To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, harry.yoo@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
- <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 00EAF4000E
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+ <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com> <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
+ <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com> <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
+ <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com> <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
+ <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com>
+ <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com> <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
+ <3577f7fd-429a-49c5-973b-38174a67be15@redhat.com>
+In-Reply-To: <3577f7fd-429a-49c5-973b-38174a67be15@redhat.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Sat, 11 Oct 2025 10:13:48 +0800
+X-Gm-Features: AS18NWCAaE3m0s9H3fRQL4N3FgUc6r2BHuW_Zdib2ILLDEDUTnQn0cQOhl7yXZI
+Message-ID: <CALOAHbAeS2HzQN96UZNOCuME098=GvXBUh1P4UwUJr0U-bB5EQ@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: David Hildenbrand <david@redhat.com>, Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Zi Yan <ziy@nvidia.com>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	baolin.wang@linux.alibaba.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	Matthew Wilcox <willy@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, Shakeel Butt <shakeel.butt@linux.dev>, 
+	lance.yang@linux.dev, Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: ADD192000C
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 8eqcmgnyojxgienq7z15df6m5g3id75d
-X-HE-Tag: 1760143899-995598
-X-HE-Meta: U2FsdGVkX181e7xvcsE1K87s5iUjFK37TIv8/koDrHhrp0sEkbf/ZA3gQQNXL6q87Lbr5vER6ZqBOS7HI/RFiETZdrAJd+a/355gZqFqSRt5e1/eXfrUGQGRK1dgrqWAdXjF90sEzNEmNG364LUMiyjoxaRXm19CxOhilh3LC4suVLUEF4EJcTATeAzDyAt8ztBkksTj59SXANkL6IW4rJd2MeNL/5YMObuwl64TOWI0uPzOy82qGGV6lfoZKLbaGvZq363ggr1DOmAPtAnLcxfEwDQ7itjV81PDLgr0S63Ep0ymTKx35KD+KPzNwcutxfoSEFFfZ5Q8Zlryu14BkAqDyt0g69wnXFygjnUlp4pFJBiu+eGa6Xr25HQyP6MGWT6vvg5y4DisOKlORq4871lmqh3E57Vc3b74iqMsekabYJtT6d9ko/52iXPzUVx84pJx9jjkT1CxTgtWbIYMyrZFTfcc6oXYk/esTYWnFerW2G69s1iEOXXAG23hfOEJS8WcvpoYz5tlfOv9clvWBuPlkvev08UWNQOssWyhkCn360HTth3ew7v1n933c0rPOH58TzUzOjPfAQVnjkvLZ8M5OpZTcLDxnPvrHPWQsQMmo6fyxskWSfVI5yTxCN/6fjH3EbMnOaCwHVcp7qWpWcHpkADgKVqMota3S7UXdSmY9G6TDBpQGSP5KJu0LtZc0QrarDHaHKjbqmvqlFW2AiRAUGCc3sAf8WjRFWKPDELJ1LVFRTCiwtNenGfHDTgTyACbhuNm2X/5pDUeX4OvXfFjrxMO4iwyh/JJPh2hcXcKqjk1V/J7TMY5ohYdl7VrBh9vGrtVYKV8KMlqxl6+lHWlRLzP55SItx57Yn0h2194xJs3fRHE8MklWklrlUYtMuxPWAZX3JXyUTIlBgMvQIx9IHJAIkrEJjyGhc5Nwag6zW290UrkSAhnwBqR1GN31Q1m7FH7G3E+tEWzbjK
- TR/14BWU
- 8f06Nuk9ZAZTYqfJJl++JP7r7/zEHBK9/6XcXUXCu06yjffWWTTaA0Q3PP/LpzhwacQwTBG4s6JS0/lLVyCJDfp9MBzDRaXPiH/I14wNEaX0/amO+Yt4gkyZyH1xVBwLQvHVEWWtIpQpf6wI1tSW5NZiooQ8uiU/J9jxdSKAYhNYesbD4a/Rjk9E0YfePOY45rL0NYFLo7sAFLT++Es53SjaZrA==
+X-Stat-Signature: m76o9jbf6qhnhi9ckpk7w9txk89w19sm
+X-HE-Tag: 1760148865-600136
+X-HE-Meta: U2FsdGVkX1+P7NRHe7+xpVmwlDVymAT+mWdCKEsIDM7i1/DX3rA0cknVXZIxVpD9h4aQvXJSdyB092/FyheDo6xjFjkPKwhTeij9a1ptTakypPM1oWEfQ9W0QRs60gI7uDoiZJ+857ncs4CGSBIaRDdAhAt8kpDr+exYT5Am0DUkFQGdqzS2gbtZXIYaGAA0aK9Zwz4LQCSVpAz+7TdaKe7mYxJygekS9sbVzyB1ouib3cr172pgIKNEKEKFySwjzc+B08ofrClrVbX7N07LutYeU0tiaafFQwhp5xYswFTVr7COo7ygJtsyKVjrw4S+qZdO1Oy+FD4cn/5PnTTgHnz4JQbqFxrI4f0DNoBd/UrYB6QygQn9BYVYYY6OZgEJAGa6q7noxPJeV2KrR+qehg9oTiY/3OQs4UNaAmDYCKU3EswzCf34wpUBO28RpSmzJBtQNlafMdvmyGIGUVGwS5SJkhCTTEB/FdvvimBowXzosCdtS53JAXj5JuHyWhRkFNwdvvHpkB2U8yLplxfqf4z7/8FOQNrCzylxJeRVysWqELFVJ3D+OeFd/hIWaaR75CRcqhiNd6DtrFd6YXjRj9ZZsHyCuxhaTVUPAkreWmhij9JB71CFyS50gOzDuDn+EVXDXcUWHdzPUb0/qtJK90GwFPGvQ0lT0XKJ8qgmWnbTABKLchXmsk3ebLRjXI2J8TzG8lLazmsJFzsnyhNU5FIR/L7IJvLSGJ08PGBVXjH4KjfOv7pqgRgdD69CplludgFywrbk4at8su6Lr+Zqjv//O0wxyVyy3Q//JLKhmvPcElEuRhQgrHiiQjpz7ZdhoQ7MuDr0IgvtMflznOVR/nidP6+edMZFBYiF8muk7RtrNafJe6JtOBD+Qg7JJ7C4TqCZs+M5ehu1OZbNUhODUBrwlVPQqPiumbzkqvppI84qbPEgLcBLYXEi3XoeQvPgHqpn6//I9ypsjmZlLeO
+ 8S9fh2EP
+ w8rwId5+cvcWCGHMhEc7GFGfxUu/Ton+R4BkpagRRur9ziByoYmYH2KV6mzS3t5EgmHDyFbMehmK+DUmmSrCSBCj+VHkCqH3reriAYYmvEDEiGOEeARMKjQ1+BeXjJRZXEK1Ntd2Dh5uP/HH4DY7DgAWuKiDOx1EmLA9eZfsswCbr8U+bMZsa9tB3CtqQSDxmzxo65TGeM/Fj1G1QRn1Pe4unLO3r6rWu0a8SB1o63goe9KaRBDnlO/zDzTNbvMuKZdBfPF4I/eaA7p9pdVwVvwlPC+cDeEXHQ8RfkwWUw9g+A4fhcJvvkNgwWDC8KvO/8p/fzu6KMYkfOulYtGipaqj3WRQPMRarftOKrKbjMre6loIBeIPa5VZOXOu6T+wRJrUyU1I2cbEo/a4+ftsOaumC4u2RGN+CBuLSjgUOXVtiIV2YSFnIjtTPjdiF8FUSHwH7qXeDwvqwLD0F0nPoMAskucBh3sw2oaVw/yRlDs4FNSE3BpC+EZi76N//p+rzWL7NEMYZ33+AX2u9J/f/JpqacfDoweIN+vTyN2vZ8mlKHjYYej+yO1zV8Ze6Kxiq/sEDtNH9qLLczJ8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,125 +135,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Zi,
+On Fri, Oct 10, 2025 at 3:54=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 09.10.25 11:59, Yafang Shao wrote:
+> > On Thu, Oct 9, 2025 at 5:19=E2=80=AFPM David Hildenbrand <david@redhat.=
+com> wrote:
+> >>
+> >> On 08.10.25 15:11, Yafang Shao wrote:
+> >>> On Wed, Oct 8, 2025 at 8:07=E2=80=AFPM David Hildenbrand <david@redha=
+t.com> wrote:
+> >>>>
+> >>>> On 08.10.25 13:27, Zi Yan wrote:
+> >>>>> On 8 Oct 2025, at 5:04, Yafang Shao wrote:
+> >>>>>
+> >>>>>> On Wed, Oct 8, 2025 at 4:28=E2=80=AFPM David Hildenbrand <david@re=
+dhat.com> wrote:
+> >>>>>>>
+> >>>>>>> On 08.10.25 10:18, Yafang Shao wrote:
+> >>>>>>>> On Wed, Oct 8, 2025 at 4:08=E2=80=AFPM David Hildenbrand <david@=
+redhat.com> wrote:
+> >>>>>>>>>
+> >>>>>>>>> On 03.10.25 04:18, Alexei Starovoitov wrote:
+> >>>>>>>>>> On Mon, Sep 29, 2025 at 10:59=E2=80=AFPM Yafang Shao <laoar.sh=
+ao@gmail.com> wrote:
+> >>>>>>>>>>>
+> >>>>>>>>>>> +unsigned long bpf_hook_thp_get_orders(struct vm_area_struct =
+*vma,
+> >>>>>>>>>>> +                                     enum tva_type type,
+> >>>>>>>>>>> +                                     unsigned long orders)
+> >>>>>>>>>>> +{
+> >>>>>>>>>>> +       thp_order_fn_t *bpf_hook_thp_get_order;
+> >>>>>>>>>>> +       int bpf_order;
+> >>>>>>>>>>> +
+> >>>>>>>>>>> +       /* No BPF program is attached */
+> >>>>>>>>>>> +       if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> >>>>>>>>>>> +                     &transparent_hugepage_flags))
+> >>>>>>>>>>> +               return orders;
+> >>>>>>>>>>> +
+> >>>>>>>>>>> +       rcu_read_lock();
+> >>>>>>>>>>> +       bpf_hook_thp_get_order =3D rcu_dereference(bpf_thp.th=
+p_get_order);
+> >>>>>>>>>>> +       if (WARN_ON_ONCE(!bpf_hook_thp_get_order))
+> >>>>>>>>>>> +               goto out;
+> >>>>>>>>>>> +
+> >>>>>>>>>>> +       bpf_order =3D bpf_hook_thp_get_order(vma, type, order=
+s);
+> >>>>>>>>>>> +       orders &=3D BIT(bpf_order);
+> >>>>>>>>>>> +
+> >>>>>>>>>>> +out:
+> >>>>>>>>>>> +       rcu_read_unlock();
+> >>>>>>>>>>> +       return orders;
+> >>>>>>>>>>> +}
+> >>>>>>>>>>
+> >>>>>>>>>> I thought I explained it earlier.
+> >>>>>>>>>> Nack to a single global prog approach.
+> >>>>>>>>>
+> >>>>>>>>> I agree. We should have the option to either specify a policy g=
+lobally,
+> >>>>>>>>> or more refined for cgroups/processes.
+> >>>>>>>>>
+> >>>>>>>>> It's an interesting question if a program would ever want to sh=
+ip its
+> >>>>>>>>> own policy: I can see use cases for that.
+> >>>>>>>>>
+> >>>>>>>>> So I agree that we should make it more flexible right from the =
+start.
+> >>>>>>>>
+> >>>>>>>> To achieve per-process granularity, the struct-ops must be embed=
+ded
+> >>>>>>>> within the mm_struct as follows:
+> >>>>>>>>
+> >>>>>>>> +#ifdef CONFIG_BPF_MM
+> >>>>>>>> +struct bpf_mm_ops {
+> >>>>>>>> +#ifdef CONFIG_BPF_THP
+> >>>>>>>> +       struct bpf_thp_ops bpf_thp;
+> >>>>>>>> +#endif
+> >>>>>>>> +};
+> >>>>>>>> +#endif
+> >>>>>>>> +
+> >>>>>>>>      /*
+> >>>>>>>>       * Opaque type representing current mm_struct flag state. M=
+ust be accessed via
+> >>>>>>>>       * mm_flags_xxx() helper functions.
+> >>>>>>>> @@ -1268,6 +1281,10 @@ struct mm_struct {
+> >>>>>>>>      #ifdef CONFIG_MM_ID
+> >>>>>>>>                     mm_id_t mm_id;
+> >>>>>>>>      #endif /* CONFIG_MM_ID */
+> >>>>>>>> +
+> >>>>>>>> +#ifdef CONFIG_BPF_MM
+> >>>>>>>> +               struct bpf_mm_ops bpf_mm;
+> >>>>>>>> +#endif
+> >>>>>>>>             } __randomize_layout;
+> >>>>>>>>
+> >>>>>>>> We should be aware that this will involve extensive changes in m=
+m/.
+> >>>>>>>
+> >>>>>>> That's what we do on linux-mm :)
+> >>>>>>>
+> >>>>>>> It would be great to use Alexei's feedback/experience to come up =
+with
+> >>>>>>> something that is flexible for various use cases.
+> >>>>>>
+> >>>>>> I'm still not entirely convinced that allowing individual processe=
+s or
+> >>>>>> cgroups to run independent progs is a valid use case. However, sin=
+ce
+> >>>>>> we have a consensus that this is the right direction, I will proce=
+ed
+> >>>>>> with this approach.
+> >>>>>>
+> >>>>>>>
+> >>>>>>> So I think this is likely the right direction.
+> >>>>>>>
+> >>>>>>> It would be great to evaluate which scenarios we could unlock wit=
+h this
+> >>>>>>> (global vs. per-process vs. per-cgroup) approach, and how
+> >>>>>>> extensive/involved the changes will be.
+> >>>>>>
+> >>>>>> 1. Global Approach
+> >>>>>>       - Pros:
+> >>>>>>         Simple;
+> >>>>>>         Can manage different THP policies for different cgroups or=
+ processes.
+> >>>>>>      - Cons:
+> >>>>>>         Does not allow individual processes to run their own BPF p=
+rograms.
+> >>>>>>
+> >>>>>> 2. Per-Process Approach
+> >>>>>>        - Pros:
+> >>>>>>          Enables each process to run its own BPF program.
+> >>>>>>        - Cons:
+> >>>>>>          Introduces significant complexity, as it requires handlin=
+g the
+> >>>>>> BPF program's lifecycle (creation, destruction, inheritance) withi=
+n
+> >>>>>> every mm_struct.
+> >>>>>>
+> >>>>>> 3. Per-Cgroup Approach
+> >>>>>>        - Pros:
+> >>>>>>           Allows individual cgroups to run their own BPF programs.
+> >>>>>>           Less complex than the per-process model, as it can lever=
+age the
+> >>>>>> existing cgroup operations structure.
+> >>>>>>        - Cons:
+> >>>>>>           Creates a dependency on the cgroup subsystem.
+> >>>>>>           might not be easy to control at the per-process level.
+> >>>>>
+> >>>>> Another issue is that how and who to deal with hierarchical cgroup,=
+ where one
+> >>>>> cgroup is a parent of another. Should bpf program to do that or mm =
+code
+> >>>>> to do that? I remember hierarchical cgroup is the main reason THP c=
+ontrol
+> >>>>> at cgroup level is rejected. If we do per-cgroup bpf control, would=
+n't we
+> >>>>> get the same rejection from cgroup folks?
+> >>>>
+> >>>> Valid point.
+> >>>>
+> >>>> I do wonder if that problem was already encountered elsewhere with b=
+pf
+> >>>> and if there is already a solution.
+> >>>
+> >>> Our standard is to run only one instance of a BPF program type
+> >>> system-wide to avoid conflicts. For example, we can't have both
+> >>> systemd and a container runtime running bpf-thp simultaneously.
+> >>
+> >> Right, it's a good question how to combine policies, or "who wins".
+> >
+> >  From my perspective, the ideal approach is to have one BPF-THP
+> > instance per mm_struct. This allows for separate managers in different
+> > domains, such as systemd managing BPF-THP for system processes and
+> > containerd for container processes, while ensuring that any single
+> > process is managed by only one BPF-THP.
+>
+> I came to the same conclusion. At least it's a valid start.
+>
+> Maybe we would later want a global fallback BPF-THP prog if none was
+> enabled for a specific MM.
 
-On 10/11/25 12:25 AM, Zi Yan wrote:
-> On 3 Oct 2025, at 12:53, Qi Zheng wrote:
-> 
+good idea. We can fallback to the global model when attaching pid 1.
 
-[snip]
+>
+> But I would expect to start with a per MM way of doing it, it gives you
+> way more flexibility in the long run.
 
->>
-> 
-> Hi Qi,
-> 
-> I got CPU soft locks when run "echo 3 | sudo tee /proc/sys/vm/drop_caches"
-> with today's mm-new on a freshly booted system. Reverting Patch 3 (and Patch 4)
-> of your patchset solves the issue.
-> 
-> My config file is attached. My kernel relevant kernel parameters are:
-> "cgroup_no_v1=all transparent_hugepage=always thp_shmem=2M:always".
-> The machine is a 8GB 8-core x86_64 VM.
+THP, such as shmem and file-backed THP, are shareable across multiple
+processes and cgroups. If we allow different BPF-THP policies to be
+applied to these shared resources, it could lead to policy
+inconsistencies. This would ultimately recreate a long-standing issue
+in memcg, which still lacks a robust solution for this problem [0].
 
-Thanks for your report. I'm on vacation and will be back in two days,
-I'll try to reproduce it locally and fix it.
+This suggests that applying SCOPED policies to SHAREABLE memory may be
+fundamentally flawed ;-)
 
-And hi Andrew, please help drop this patch set from mm-new first.
+[0]. https://lore.kernel.org/linux-mm/YwNold0GMOappUxc@slm.duckdns.org/
 
-Thanks,
-Qi
+(Added the maintainers from the old discussion to this thread.)
 
-> 
-> The kernel log:
-> 
-> [   36.441539] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [tee:810]
-> [   36.441549] Modules linked in:
-> [   36.441566] CPU: 0 UID: 0 PID: 810 Comm: tee Not tainted 6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
-> [   36.441570] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-> [   36.441574] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
-> [   36.441592] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
-> [   36.441594] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
-> [   36.441598] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff888101168670
-> [   36.441601] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff888101168658
-> [   36.441602] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 0000000000000000
-> [   36.441603] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff8881011685e0
-> [   36.441604] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc900029afd60
-> [   36.441606] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) knlGS:0000000000000000
-> [   36.441607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   36.441608] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 0000000000370ef0
-> [   36.441614] Call Trace:
-> [   36.441616]  <TASK>
-> [   36.441619]  deferred_split_scan+0x1e0/0x480
-> [   36.441627]  ? _raw_spin_unlock_irqrestore+0xe/0x40
-> [   36.441630]  ? kvfree_rcu_queue_batch+0x96/0x1c0
-> [   36.441634]  ? do_raw_spin_unlock+0x46/0xd0
-> [   36.441639]  ? kfree_rcu_monitor+0x1da/0x2c0
-> [   36.441641]  ? list_lru_count_one+0x47/0x90
-> [   36.441644]  do_shrink_slab+0x153/0x360
-> [   36.441649]  shrink_slab+0xd3/0x390
-> [   36.441652]  drop_slab+0x7d/0x130
-> [   36.441655]  drop_caches_sysctl_handler+0x98/0xb0
-> [   36.441660]  proc_sys_call_handler+0x1c7/0x2c0
-> [   36.441664]  vfs_write+0x221/0x450
-> [   36.441669]  ksys_write+0x6c/0xe0
-> [   36.441672]  do_syscall_64+0x50/0x200
-> [   36.441675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   36.441678] RIP: 0033:0x7f7fe36e7687
-> [   36.441685] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-> [   36.441686] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-> [   36.441688] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f7fe36e7687
-> [   36.441689] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 0000000000000003
-> [   36.441690] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 0000000000000000
-> [   36.441691] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000002
-> [   36.441692] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 0000000000000002
-> [   36.441694]  </TASK>
-> [   64.441531] watchdog: BUG: soft lockup - CPU#0 stuck for 53s! [tee:810]
-> [   64.441537] Modules linked in:
-> [   64.441545] CPU: 0 UID: 0 PID: 810 Comm: tee Tainted: G             L      6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
-> [   64.441548] Tainted: [L]=SOFTLOCKUP
-> [   64.441552] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-> [   64.441555] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
-> [   64.441565] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
-> [   64.441566] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
-> [   64.441568] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff888101168670
-> [   64.441570] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff888101168658
-> [   64.441571] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 0000000000000000
-> [   64.441572] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff8881011685e0
-> [   64.441573] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc900029afd60
-> [   64.441574] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) knlGS:0000000000000000
-> [   64.441576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   64.441577] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 0000000000370ef0
-> [   64.441581] Call Trace:
-> [   64.441583]  <TASK>
-> [   64.441591]  deferred_split_scan+0x1e0/0x480
-> [   64.441598]  ? _raw_spin_unlock_irqrestore+0xe/0x40
-> [   64.441599]  ? kvfree_rcu_queue_batch+0x96/0x1c0
-> [   64.441603]  ? do_raw_spin_unlock+0x46/0xd0
-> [   64.441607]  ? kfree_rcu_monitor+0x1da/0x2c0
-> [   64.441610]  ? list_lru_count_one+0x47/0x90
-> [   64.441613]  do_shrink_slab+0x153/0x360
-> [   64.441618]  shrink_slab+0xd3/0x390
-> [   64.441621]  drop_slab+0x7d/0x130
-> [   64.441624]  drop_caches_sysctl_handler+0x98/0xb0
-> [   64.441629]  proc_sys_call_handler+0x1c7/0x2c0
-> [   64.441632]  vfs_write+0x221/0x450
-> [   64.441638]  ksys_write+0x6c/0xe0
-> [   64.441641]  do_syscall_64+0x50/0x200
-> [   64.441645]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   64.441648] RIP: 0033:0x7f7fe36e7687
-> [   64.441654] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-> [   64.441656] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-> [   64.441658] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f7fe36e7687
-> [   64.441659] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 0000000000000003
-> [   64.441660] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 0000000000000000
-> [   64.441661] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000002
-> [   64.441662] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 0000000000000002
-> [   64.441663]  </TASK>
-> 
-> 
-> 
-> --
-> Best Regards,
-> Yan, Zi
-
+--=20
+Regards
+Yafang
 
