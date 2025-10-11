@@ -4,118 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E735FCCA476
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 21:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0635FCCA476
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 22:04:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C678F8E0007; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
+	id 16B1C8E000C; Sat, 11 Oct 2025 18:04:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C18A98E0002; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
+	id 11C288E0002; Sat, 11 Oct 2025 18:04:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B07318E0007; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
+	id 031448E000C; Sat, 11 Oct 2025 18:04:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AFFD8E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 17:47:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC4B046BDA
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:47:38 +0000 (UTC)
-X-FDA: 83987170596.07.8273013
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 20DCC100002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:47:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VKymfAhz;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760219257; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E8ED58E0002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:04:12 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99ECE13B9F6
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 22:04:12 +0000 (UTC)
+X-FDA: 83987212344.09.856E2F3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B76841C0013
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 22:04:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qSKUSl/e";
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760220251; a=rsa-sha256;
 	cv=none;
-	b=gtRyFYr7C//+vKnqNTfNtICNDibm9WeBtRZCmgD5773p004Q85YKk8dPPx0BXKyrwnP/wV
-	NmP8reATp8BBNwnzQZFOjXeLK1zRClHQvSdoSYzZeDlmlxzuVI1tRl5OoMhMOSyoaghn9M
-	YML9aFS0fhakwlCWzqwxaOIx+WSX4Tk=
+	b=yH8V62CPZbhBTOPBfQVelOwtC1kxSahXwvQReGQVev2rEz6VBbPHzv2+1MXWr6M/6Z4yn8
+	cAD9Qqk62fnwoM9UmATwGvmihQnFXilX8oHbu4ihimR9Vi+7iTAazdp5VdaIiPV0h6MhC0
+	sGKaBTIeJiblMDbGg+2FfPg9GWy2yqI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VKymfAhz;
-	spf=pass (imf14.hostedemail.com: domain of surenb@google.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="qSKUSl/e";
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760219257;
+	s=arc-20220608; t=1760220251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
-	b=m+Kn++WQ03grWXHd/NxHe+/EjkvTK0BomSb5vYa3Q/xciaSk1Kq/ixIF5i+Rk7HpAIlsiQ
-	OHTNv5QBJh8PzuIJxUsnCXuXzohv8Pr8lVHSH+zeSoqCfg9jz0LM7PKokpbzRuk/kpya7/
-	5Detbge1eBcwxT/0R/JkiFguolkHsKI=
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-42d7d0c58f9so212845ab.1
-        for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:47:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760219256; x=1760824056; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
-        b=VKymfAhzex/VEv5UuDc2MFm7HczyFMjdLBe6CZSxoIyGwvgyNjeiCHUFRRLcEfEaez
-         IHfOC+CQXPBwlFGCDiZIg8ApvPl/KxgAmD6EnCTLPT/88vVqF0tgwKKyO37Ycx96V0Ge
-         ziaIes0ln2086y4E0kcAESmtuMewN0jdIisj/mmqIvPZsOuoXtP5W6UMbuoOVUl0QTk8
-         5U7+NMFf9W9DsPVebKXRZppS+RfyLN2g7Gb5lhpSiPsqzj1LiOWenLGGSg0HzqAcgEXF
-         DKIPhCwi0+ClU9h3E53BUw5d/QjeHWR290yVcwc1uryKqsXw3uNrt0XHIc/7awQeAgNc
-         kJ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760219256; x=1760824056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=edG0NGbrr85u0FtLnw6wkiSc/A0YKw/98Yub9scsGaw=;
-        b=hzl3qwotfzy+H9mXVyuC0/GFUjJ2HGIZah5mI4HS3HMjme1VE0jq6wI4+fnQUqLwFs
-         XO3fD0FPYIui+ISd9ieyy92vacT8oBOVt48q70U5Bb9o3tZ82vhdeiDEuxxeNsMHhG8Z
-         eAHyx7XfbOly7fOQDSLKJmTIZLB7hpp8+pvzyEYpCwUlyAANPqBLOOez5gIusr57r0TR
-         khqwGCxnK00RVOB+6kZZzdAoyyD3M9zyOga/ZrjjmHezrMZ/P37AX7EJslIfULCA3OGP
-         P8jkC6DEv7IRZ66W0yBrBiBHwhm/MLTNif4pjZlkIBIgVwAkLoCrMKpsIShCFgaybd7f
-         We+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUq6/KaYfLy6PexxhWMHlISTvRnk8bSQlFIVPZ3zLJepZsvjz+ylPDWddbj3dybu8JE/hQnzJTVWQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz0cCrWqDlg7tTO0tgrvfLzWntJFCozyOxbt2hbiglhj7uiuDfC
-	ML6MZWWnewWTjr5MXjoL8OLnDBVY4eDtNiucFmZ97sSLKcFa//kSKn6olHSMYLQ3Y72BhuzWaUb
-	gQ6uIhMOZ/N3CaGCuuCzfksYzVETOFNRvvJeGg1Qi
-X-Gm-Gg: ASbGncu4adqyzIggRshzGvH8BQvdmO5RYLCT/agA8pq/VtKP7bmkSJEgxNPQ/pMh9HM
-	+FmC1JEXbpfEA/9JMjbj9GZm33YCKGS05n3m+j61/7IyKOowUCGxyEoitGTZ0U0PmfjwgT684Mq
-	iNuziymjBQAfm7KD6mH2NsNY7nfLH4ln8UjDE2FdLbCNkQcz/FI7ip2MikZ2W7KuQgWO49FgQcX
-	9MVad/DuC9PFDtka2AyYnZzbpRwEV0=
-X-Google-Smtp-Source: AGHT+IFFaqWGr6zppAMQlQaEOPe0SaZYdxA84DzbcLcqHShRGwrEbPejok43SDIXTETu3rLoVc/dTHFUc/Jq0m7QB2s=
-X-Received: by 2002:a05:622a:808d:b0:4e6:eaea:af3f with SMTP id
- d75a77b69052e-4e6eaeaaf5dmr21268691cf.3.1760219255521; Sat, 11 Oct 2025
- 14:47:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20251010011951.2136980-6-surenb@google.com> <202510111059.aKceYLLH-lkp@intel.com>
-In-Reply-To: <202510111059.aKceYLLH-lkp@intel.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 11 Oct 2025 14:47:24 -0700
-X-Gm-Features: AS18NWDufVi4cEGnv1sKGIKBBNV8Et6IGfR8sPmz2Ei8b77bsJTwPJgzvhpHvVI
-Message-ID: <CAJuCfpHKr392MiS=gnjpomwdzTnesgBpXSkVk5h87wLJwo7qVQ@mail.gmail.com>
-Subject: Re: [PATCH 5/8] mm/tests: add cleancache kunit test
+	bh=sC57DeSdoulcbAA81+rCcFtw1hbEA+GeV9/vRAxQ8FE=;
+	b=pNTQ18JubFtHxEINPR2hiYKuvREy/5aHDrvKiWtdc1tb5vc16TwsbwdXGUQaaxbmhgvEas
+	IWiZVyjGA8oYBt5nThSHFgllFxg8CWk4Rh3g9VsmZsN8LTb76zt7O7JbXG93GIIG5r8kmi
+	xftkQQOVBUMBR5Os17iD3NCHeKdnFSQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C49B43A82;
+	Sat, 11 Oct 2025 22:04:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DEEC4CEF4;
+	Sat, 11 Oct 2025 22:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760220249;
+	bh=i7Jgr7fdDvNL25cRTpbIZFz0XW9pXyGITE2m+CfhP+E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qSKUSl/eTQ5ivoH4pFV14ujJlqK3eYh+4YOokcp1S7cm1Rp7lv43wi6ZYOWFbteLe
+	 VrhxyCQkLIsQE0OC2h1dsVmZsWGddu8XTj6XEnn06IPYYXrb01tc7d966oKhkCMSzP
+	 cFIoobUGLuElwOxs39Pe9rnX/3QG2bgtiHA4TC1E=
+Date: Sat, 11 Oct 2025 15:04:08 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
 To: kernel test robot <lkp@intel.com>
-Cc: akpm@linux-foundation.org, llvm@lists.linux.dev, 
-	oe-kbuild-all@lists.linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com, 
-	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com, 
-	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	hch@infradead.org, jack@suse.cz, willy@infradead.org, 
-	m.szyprowski@samsung.com, robin.murphy@arm.com, hannes@cmpxchg.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, minchan@kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org,
+ oe-kbuild-all@lists.linux.dev, chrisl@kernel.org, kasong@tencent.com,
+ youngjun.park@lge.com, baohua@kernel.org, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com
+Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
+ according to numa node
+Message-Id: <20251011150408.b865cffc3a8fb8bf834067f7@linux-foundation.org>
+In-Reply-To: <202510120456.vTSygUXV-lkp@intel.com>
+References: <20251011081624.224202-2-bhe@redhat.com>
+	<202510120456.vTSygUXV-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: hct56y6gwgwkkx3gf5heha4mmui85cm6
-X-Rspamd-Queue-Id: 20DCC100002
+X-Stat-Signature: n4aoggp37x4todrg84jz9f3csets1wn4
+X-Rspamd-Queue-Id: B76841C0013
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1760219256-18415
-X-HE-Meta: U2FsdGVkX18OXp+G6P9rHVA0Y+NPrCd6CfCogDjR+FYmQGJ2MDEnwGRhU8DD01TRriBhmObNASyv4cbWko5GmkMwNn7zlL18I/0zHCvDLiPEhLeO8jyXZysTjb1Nx9SeTUr5XwOmUf6cITMOKEgrkrNJm8DfLG+SKHJgfpo9eEjCuvCx+QNC0+aEH/+IGorGjA1vnNNqhCrS+ShGjWcbcevRdjiEKvYFgrYPNoOBFPN+R5Fhg8fFMKLiArR2AcErGqaOWUPc8F+KspjH/qFtbmFGUbB68jJPF/ioKqRkgmTiQDBzgDdoMAx6GWq6uWoadD/551B+TIUxY1rIAPnNuWVLVAvT9s+eiVrlHR7q9pNkE9zi9jYVVjYxwSbLNfVdODBFJnBKeR7f93TpezH7sv2D35/RooqQ2GQiLARS1YAqdGsiYhE9IiNiCTqrQJnjOK/3RYQUtK6zhdnrTb60jHB85sJZtUuDtKhiHEL684CcbybLkdGr3VxYEkrV/ZmFaA9BQCX4GNu6vVQ+aMouziaehzeq0E/GfWOKkukYsKs9PC1DOP5j0dhwxGlvbpQhuQLgOHsdy5utO3fmO5cqC20MQYsigoSJO+N/P82vdU8rxWUX0iK1P7WPof6RpmoBYRddwJFV43OBGVUZgtuSxeBKBuDRuN4IIaCVoqhyjIgvtgVBKhyyWac4I+A7cBeWby+VPK1q77t4sLMdxmd31U6AaY5RztL9MPXPwu4EqeEmoIgb4gzjaQrGYKFeBSBO/KzqG59JQUkviskwQM+CbaShHKgyNfB1IFuu+6vw9ib6lRpln7ih8Jsr/6UzM6hbKdHjxj2hCJ2hTYgrzDmxSSeZadOQFr6Omk4FTJO7uKnE8XV+WeBcWbon7x6t5WtMj5/UDFcHBNiNYqKyC85uw2b74Bpb5YOZEZI1unHy97s+DU8JiNAILWKILSawEfTeZTsvrj0QfPKyNXFcCDY
- eBO3ER0v
- ZfnfSuvM8calS6hiCBYhrtx+pCHs5XhuYC6nvpwy3suRHMNhqvWCfi/TaLXwb1gdsRRaaxMVRs3L3FWrcbqW+tM2/x5uiPUY3Qj1p+tjJfTJKictsKb2xnbb64qnzk5bjjAjQrQHkYLSzwtbvc439L/ym9jt+WT3W8vyfYXHN4ZD3HFAbGRR9Vd2IshSweOZs8EzGAn/5aX+opKSx+CNP2v4U/ZXhSrhTRpbogSN0DCsd0kvGYNzKHM7kFMNcAvHPXdUPC3j2aZEDh59IWnuPC9nXQvFTPVK8w2rbVbd6l7LfdUCHfOWqN1YrLQpOfS89UmqbNbR7bzOyERngUTBlr37Z99OGy7OfXOkY
+X-HE-Tag: 1760220250-294239
+X-HE-Meta: U2FsdGVkX1/CD51hcKMoEoj9YO65G0YLsELp0RuRQDAG6O9epn8Zyf/9DLs0Ag2/lTT2zR12WiRH8F5Zn2x5Qx18CTEtrzjQe3O95B25tQEypkWQmCu3ULzC63LHEhi7k3BPCiUWG3rIabKjKDSP2eB2CnPEGcs5vp1h6qWt5jhQkOEORJzH5/fjxtyUrj3Xl/AUUAqJl45F8I0wWmXOAiDgdl/5FumIAnRqLcjcYXJOca8e8TtluFjJhql/+On30n9y2cv9V5gveEfGwigc9QWA3i/kyrkJT4PueoUtWC24je7U1P+EXM9FEIc3lxyabLuV63gCzaRvqiHa42e/rKuYB6h5SqsWc9m2v/TCFLEE758ldCCwbXzJ9N3ZQ2QuEA/0XSevuOk+XHsKTRZLCAsRYSP+jtqvJwtv5ktMUZiC0zjWzWmcudhKhuFkWPftG7zN8w/RmNKi9/vwAPod6i2qBXlBj438XGZVra9ChgFGYaV7iDZbnU1LcXSUqEH7E1z1EAWHQZRiiV2E8HdCwl4gPb/F0lrN+5mqSUh4BOFEvOvEXHCivyGdgy26YmhrZsuEtTRk1pxZ5/fPureSfsAYy+T7LufG0ybtEs/0XUI2ZRS3Fkst9YChxHJBN7+SSz19Ouxwd2DTLPeSBDdb3AqkAyJpcc0D2EQWGxkjuowlYObrlWeXIWNLuSS0F52dB629ESewguLm7BehauMUPBtsoI+tYz2lvokcTAZoRONr2pajjurl86BHHvt0KWKDF9SjqGBiSEqgLeEjUJjlvJKm8VDC5Fy/0PPQsrVQ4HlkNtxB3e5JW0neyqEUQWPvBf8WHLS3+S+AEY9r7FirC5gTM94vAAKrS6uTzNPhlgV5d9pWYXkPY8XOVkyyLXhMLu+v3m/j5arQaeQNbWBCLbwRMNARlLVlLOts4vxOFpvQkOlpNM5s/c+DW/Ce03VhCGr3sffSs3qR6qV6mIS
+ XwPItJYJ
+ e0fg+38BJLaXsHhplf53QwqfnyTRJ2MYPKAQh7z4dZyYg+Saf8M/Uy9G9qhVmcUBpB60SCJAkYs/Mdn06a2ieKZBtdyELyfpLx0bvXv51wnuoZ/BL66lc/Ra4+Tb248wz0nrguUijwBe2h2qQcf9CvLEEsoftQwYhsHJGooooU7DaNrcKq4u4ZJj8YYEw0WyCl2FoKckCQFtUDXrwL5R+/ZytAT4nrByqkNS+BZBVoe3rHV5rENQ3mHQKM79sIep1YUtspGcjtxyxKgdIJCjrJ5EV0rMQhtnXlN+XRnc5kDq/lwb2MoBqyOMQSgx6s8VMTu/ffMOzmsyGuBOmf0zijNTF3BHhmIrp+qe9Dw3s/QthG9cv1kxWgY3JnFKz3p4M3NqaCRDhDfwxc3pgvMhz1FzMDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,117 +94,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 7:58=E2=80=AFPM kernel test robot <lkp@intel.com> w=
-rote:
->
-> Hi Suren,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on 70478cb9da6fc4e7b987219173ba1681d5f7dd3d]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Suren-Baghdasaryan=
-/mm-implement-cleancache/20251010-134501
-> base:   70478cb9da6fc4e7b987219173ba1681d5f7dd3d
-> patch link:    https://lore.kernel.org/r/20251010011951.2136980-6-surenb%=
-40google.com
-> patch subject: [PATCH 5/8] mm/tests: add cleancache kunit test
-> config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/2=
-0251011/202510111059.aKceYLLH-lkp@intel.com/config)
-> compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd70=
-8029e0b2869e80abe31ddb175f7c35361f90)
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20251011/202510111059.aKceYLLH-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
+On Sun, 12 Oct 2025 04:45:07 +0800 kernel test robot <lkp@intel.com> wrote:
+
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on akpm-mm/mm-everything]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-swap-do-not-choose-swap-device-according-to-numa-node/20251011-161743
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/20251011081624.224202-2-bhe%40redhat.com
+> patch subject: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device according to numa node
+> config: i386-buildonly-randconfig-003-20251012 (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
 > the same patch/commit), kindly add following tags
 > | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202510111059.aKceYLLH-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
-> >> mm/tests/cleancache_kunit.c:358:6: warning: variable 'unused' set but =
-not used [-Wunused-but-set-variable]
->      358 |         int unused =3D 0;
->          |             ^
->    1 warning generated.
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510120456.vTSygUXV-lkp@intel.com/
+> 
+> All error/warnings (new ones prefixed by >>):
+> 
+>    In file included from include/linux/list.h:5,
+>                     from include/linux/wait.h:7,
+>                     from include/linux/wait_bit.h:8,
+>                     from include/linux/fs.h:7,
+>                     from include/linux/highmem.h:5,
+>                     from include/linux/bvec.h:10,
+>                     from include/linux/blk_types.h:10,
+>                     from include/linux/blkdev.h:9,
+>                     from mm/swapfile.c:9:
 
-Right, I'll remove it.
+Thanks.  I did this.  Baoquan, please review and retest?
 
->
->
-> vim +/unused +358 mm/tests/cleancache_kunit.c
->
->    353
->    354  static void cleancache_backend_api_test(struct kunit *test)
->    355  {
->    356          struct folio *folio;
->    357          LIST_HEAD(folios);
->  > 358          int unused =3D 0;
->    359          int used =3D 0;
->    360
->    361          /* Store inode folios into cleancache */
->    362          fill_cleancache(test);
->    363
->    364          /* Get all donated folios back */
->    365          for (int fidx =3D 0; fidx < FOLIO_COUNT; fidx++) {
->    366                  KUNIT_EXPECT_EQ(test, cleancache_backend_get_foli=
-o(test_data.pool_id,
->    367                                                  test_data.pool_fo=
-lios[fidx]),  0);
->    368                  set_page_refcounted(&test_data.pool_folios[fidx]-=
->page);
->    369          }
->    370
->    371          /* Try putting a refcounted folio */
->    372          KUNIT_EXPECT_NE(test, cleancache_backend_put_folio(test_d=
-ata.pool_id,
->    373                                          test_data.pool_folios[0])=
-, 0);
->    374
->    375          /* Put some of the folios back into cleancache */
->    376          for (int fidx =3D 0; fidx < FOLIOS_PER_INODE; fidx++) {
->    377                  folio_ref_freeze(test_data.pool_folios[fidx], 1);
->    378                  KUNIT_EXPECT_EQ(test, cleancache_backend_put_foli=
-o(test_data.pool_id,
->    379                                                  test_data.pool_fo=
-lios[fidx]), 0);
->    380          }
->    381
->    382          /* Put the rest back into cleancache but keep half of fol=
-ios still refcounted */
->    383          for (int fidx =3D FOLIOS_PER_INODE; fidx < FOLIO_COUNT; f=
-idx++) {
->    384                  if (fidx % 2) {
->    385                          folio_ref_freeze(test_data.pool_folios[fi=
-dx], 1);
->    386                          unused++;
->    387                  } else {
->    388                          used++;
->    389                  }
->    390                  list_add(&test_data.pool_folios[fidx]->lru, &foli=
-os);
->    391          }
->    392          KUNIT_EXPECT_NE(test, cleancache_backend_put_folios(test_=
-data.pool_id,
->    393                                          &folios), 0);
->    394          /* Used folios should be still in the list */
->    395          KUNIT_EXPECT_EQ(test, list_count_nodes(&folios), used);
->    396
->    397          /* Release refcounts and put the remaining folios into cl=
-eancache */
->    398          list_for_each_entry(folio, &folios, lru)
->    399                  folio_ref_freeze(folio, 1);
->    400          KUNIT_EXPECT_EQ(test, cleancache_backend_put_folios(test_=
-data.pool_id,
->    401                                          &folios), 0);
->    402          KUNIT_EXPECT_TRUE(test, list_empty(&folios));
->    403  }
->    404
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+
+--- a/mm/swapfile.c~mm-swap-do-not-choose-swap-device-according-to-numa-node-fix
++++ a/mm/swapfile.c
+@@ -1388,11 +1388,10 @@ start_over:
+ static bool swap_sync_discard(void)
+ {
+ 	bool ret = false;
+-	int nid = numa_node_id();
+ 	struct swap_info_struct *si, *next;
+ 
+ 	spin_lock(&swap_avail_lock);
+-	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
++	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
+ 		spin_unlock(&swap_avail_lock);
+ 		if (get_swap_device_info(si)) {
+ 			if (si->flags & SWP_PAGE_DISCARD)
+@@ -2890,7 +2889,6 @@ SYSCALL_DEFINE1(swapoff, const char __us
+ 	del_from_avail_list(p, true);
+ 	if (p->prio < 0) {
+ 		struct swap_info_struct *si = p;
+-		int nid;
+ 
+ 		plist_for_each_entry_continue(si, &swap_active_head, list) {
+ 			si->prio++;
+_
+
 
