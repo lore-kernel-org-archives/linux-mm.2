@@ -4,105 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15122CCD185
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 00:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 680ACCCD187
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 00:51:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57AFF8E002B; Fri, 10 Oct 2025 20:50:54 -0400 (EDT)
+	id A10818E0032; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 554118E001F; Fri, 10 Oct 2025 20:50:54 -0400 (EDT)
+	id 9E8A98E001F; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48F548E002B; Fri, 10 Oct 2025 20:50:54 -0400 (EDT)
+	id 925AB8E0032; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 376938E001F
-	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:50:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D31218789B
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:50:53 +0000 (UTC)
-X-FDA: 83984003586.07.AF4AC43
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7904A1A000F
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:50:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X1NYdcbS;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 80FCB8E001F
+	for <linux-mm@kvack.org>; Fri, 10 Oct 2025 20:51:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 17BDE8789C
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:51:42 +0000 (UTC)
+X-FDA: 83984005644.13.6FA6AE6
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 00EAF4000E
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 00:51:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JFicWbmx;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760143851;
+	s=arc-20220608; t=1760143900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCx0DwPLyiYTCyxjHZTHjELRamDb4oB9DsTmhXZlf+E=;
-	b=mrPH+uDq9SqaA5cOdWIPB/37X02Z17EAY04ecJ7Gz3Y+Z7Qzh4UJ+sa+uXP+ku/rrd1cnj
-	wp6Sh5FIg8/KmpSGCKQRDtc0133DPIgbdT6vAdFXANFDGPTIPIwOTW+xTPE3b3HmXRLeaZ
-	NrHi/czdPblYed/qQh83JdYc/gXyD0E=
+	bh=PIam4ujNL/Ie85vosujHwjjM/d/jgUrGDFalDqtFhCU=;
+	b=26j7pFR8OeM19MwhotSXYUgZ0gffcIwBJ94JCw7BaLBtkET25zIrAS54LNidAJ7mIAIr5+
+	VZ33smwTnUOuCG+TIFR2M1B2A/kBUD35pNgTnNotmJKDhoDV2dikpd8azt0wUpBUhIm8Fx
+	GPE0fp9WY8Ecs829KJnPJzWoxtOVSeU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X1NYdcbS;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760143851; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JFicWbmx;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760143900; a=rsa-sha256;
 	cv=none;
-	b=uSMDpsglumqFRW8xbFKHEeTMhtVkEm7CzdZ9ynMWxstzVw2snUyNjo9+OesaE0OtCbmZrR
-	1QMpxrWqhtINwFIcP8hMC/djpW6LbZUGzFUAoiCzzATi4Sl+19s+rk7t2x8/kOgCZbopFB
-	v7xUGaNAgLU/yenMMEIdE71Q7w9s66k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760143852; x=1791679852;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9mgsASjVFIeADDVrI9fvFoRPP0l3FSfJJNlhNk/Q2lY=;
-  b=X1NYdcbS+uPxmSmOGtE9Aq8ltCJfGCIi/0qQNAl34Q8XpZrjETwlz5/E
-   ZVORv0Kd1jsUiOORl/SOnYWkXWOrJEZZNhc5y3zEQ6Pd1k4KWXbi/jlM9
-   Lekd2KSKiwaA0dZD66P70NJNQnVm6hobFj6Y/aWgKRKfmBztFO7fQHfsh
-   9bmCAOhDxlwiOPViRv3LchfEy0nWRoc+EIquq4anHOYiMYK2L/1V0S+w9
-   /FBBTXJYzfj6OITMzzf9vlBB08+1cPmtUifIWtnn/t6z+WyxZJLOtdoAo
-   OulrAJO5aL8Mc0KBBBFoHJqAZ/mw/QUro3/clzF9vQhKWEYYwTyJNmY6w
-   g==;
-X-CSE-ConnectionGUID: vw0lGEMTQ7io8Ui/WcPqzg==
-X-CSE-MsgGUID: WMjiA4fwTCqTkF9+Y3JDKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66194855"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66194855"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 17:50:50 -0700
-X-CSE-ConnectionGUID: XAAY603OTAq3vXDWwrrrVg==
-X-CSE-MsgGUID: j9ZDNPDASAWyNKWZhItqmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="181529200"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 10 Oct 2025 17:50:46 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v7Noq-0003LT-2A;
-	Sat, 11 Oct 2025 00:50:44 +0000
-Date: Sat, 11 Oct 2025 08:50:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, acsjakub@amazon.de
-Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
-	axelrasmussen@google.com, chengming.zhou@linux.dev,
-	david@redhat.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, peterx@redhat.com,
-	xu.xin16@zte.com.cn, rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH] mm: use enum for vm_flags
-Message-ID: <202510110850.4VXzbsF7-lkp@intel.com>
-References: <20251007162136.1885546-1-aliceryhl@google.com>
+	b=yAgUNzf5ow2QrZKvVwllTHrHrq86dviKE79oWAPZvq4jm1s+q/Mk1nsrIT3McWjw3ktl0P
+	cK9xnG1X/o1Y6nylfIbPvzmdffgP0xstw+VE/FROd9gOKwMyTZboYB6anyMoqjAKXmaG0r
+	Y+vatwVOXOGfbs8YmxJURUEeAOGIs+c=
+Message-ID: <4a134193-ee55-434c-98a9-ca3052bab11b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760143897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIam4ujNL/Ie85vosujHwjjM/d/jgUrGDFalDqtFhCU=;
+	b=JFicWbmx54XTw/3fjNm3twhl80Llah6xCiNTVQWu57Zfig07BK7KIF1sA5K+kWewZWoWcQ
+	627kNzvNqbtU7YIE8uduiQAaIo241BI2XIQ6bkOhkvV0FD1Ka5I3VAkvkctMG2brKhnYGL
+	q7tp57h1/xyuEBS0FsiiITxLfQFoCV4=
+Date: Sat, 11 Oct 2025 08:51:21 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251007162136.1885546-1-aliceryhl@google.com>
-X-Stat-Signature: 7ez1cg7usjc7ryt31k6fi6z5o773k9c9
-X-Rspamd-Queue-Id: 7904A1A000F
+Subject: Re: [PATCH v4 0/4] reparent the THP split queue
+To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, harry.yoo@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+ <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 00EAF4000E
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760143851-37689
-X-HE-Meta: U2FsdGVkX18+RC8TfKcB/Buie7Pk9AbGHcH/Hx5Udyga2z6VKobFUJHCfO2vhKIfR2T5RmFtt9ttudnHmI2XFzX6mhULYvSYrWZxvfh4uOHf0s05wogoaReZeflXLHU8Audz+BzsIKtDWR5a0liJKFsbpijD1GPmgxhKV0JbXjWMXalYkaaoILMfAVEs66DXLgFLIIDZJs0Kt+1Ez7Gly8i6vDHO+YnJTJkd4jkOlQAiAQH6WjeUpMFzECa/sMm6wSsoh15MzOzjB+Yp7fv9L13RfQEqNGQK23qHAJ719plyxxPivCjppT8TKeJoCW+tuy1HLm3AAxe5oKae0aMqBHD+waLedtJlOfq5qXgn32JzWKjpbRVOh4GctfxWrWdii+AWXDD4cgbXh8cOnB/hUyL4pPjhi9JxD+DSPiIf99vigydKQst1sNbd/HG94i4y6IDiC0QNPXXQkhukX9WuELq5yICRs8KBJeG3CKZlbY/af6W7eckbPssDkXIeIbRwRDFSbEl3bNGXAUopiYu7XBJqN5l/UGXl9YW0o+TYrBCYr7dbpUv9+hu6Ty5dFbGw+kKU2utLxxAW8euLuL3ToUlMtWCuGbhSrGvqhpgZcJ6wE3tLtpO1+MovFJJ7b+nZkciD7rx5GCyGCcgOhifjpy+THN0ASZMSR7sBGznB/XnzZF6qOoYLEHmIpzHfN37UL6XTlhesE/3PbXOp9e1CRLXQO+KzjGlXyLcE1aF//Us8LiV3xQl4bu8LcRBsnEbQQLWsrKsbiYnmK2IgEkg4nfr/k8KOgfdTNqQczavlexFwColmMOGCq2VKRW8v5mCGcArg+XvwmgD/5CRAQNa3Ys9BPCZAyBWtuiGwqxjUsQCWW8P60i+D+9TYNL910G0CYnakKwQkZdgR6bl8NGAiC01JHUFYpLbpQMyXASJgxuOTJh0on8TMA9ZaD85JuOcAiWcrN6uk+bQn+V2dc8R
- LP7Puiob
- TEeoN5UsUyQEwoBqsQuJvgivQLCGUFJogbbrLX2sv98H/qPQWXMdBZdFRauSZkLsH70fu6P49ljjDPsJigUuhOeaM2P6b+CEw36pVT3tlZVbIs50CDWTiCZVHltLuBcbzyecFxIAziMiNP5yh2265IHCaTjJl488vDcNrVfVX2MHjg/J/hMCGu+l7P4N6Y47kKlDtEulKQxEz2MpCb15kb4UJETGmuhjasQ7KHc5CMID8DEDe67vDeKM+llKPe6PY4kCUXNvekBtUt2W8mGALHXOArPwbAWKfS+wrzd8CEGfUE+4vKIqdRqlLGt19klU8uYZHnhXfSfRX3DlpLj0xuMcgVxyxrAxmEMKTRHQUoEp++/xLYzdubSZP5u2dbiiQ+Q82lLti9Fa2ZRuLh91Nfsz2aQ==
+X-Stat-Signature: 8eqcmgnyojxgienq7z15df6m5g3id75d
+X-HE-Tag: 1760143899-995598
+X-HE-Meta: U2FsdGVkX181e7xvcsE1K87s5iUjFK37TIv8/koDrHhrp0sEkbf/ZA3gQQNXL6q87Lbr5vER6ZqBOS7HI/RFiETZdrAJd+a/355gZqFqSRt5e1/eXfrUGQGRK1dgrqWAdXjF90sEzNEmNG364LUMiyjoxaRXm19CxOhilh3LC4suVLUEF4EJcTATeAzDyAt8ztBkksTj59SXANkL6IW4rJd2MeNL/5YMObuwl64TOWI0uPzOy82qGGV6lfoZKLbaGvZq363ggr1DOmAPtAnLcxfEwDQ7itjV81PDLgr0S63Ep0ymTKx35KD+KPzNwcutxfoSEFFfZ5Q8Zlryu14BkAqDyt0g69wnXFygjnUlp4pFJBiu+eGa6Xr25HQyP6MGWT6vvg5y4DisOKlORq4871lmqh3E57Vc3b74iqMsekabYJtT6d9ko/52iXPzUVx84pJx9jjkT1CxTgtWbIYMyrZFTfcc6oXYk/esTYWnFerW2G69s1iEOXXAG23hfOEJS8WcvpoYz5tlfOv9clvWBuPlkvev08UWNQOssWyhkCn360HTth3ew7v1n933c0rPOH58TzUzOjPfAQVnjkvLZ8M5OpZTcLDxnPvrHPWQsQMmo6fyxskWSfVI5yTxCN/6fjH3EbMnOaCwHVcp7qWpWcHpkADgKVqMota3S7UXdSmY9G6TDBpQGSP5KJu0LtZc0QrarDHaHKjbqmvqlFW2AiRAUGCc3sAf8WjRFWKPDELJ1LVFRTCiwtNenGfHDTgTyACbhuNm2X/5pDUeX4OvXfFjrxMO4iwyh/JJPh2hcXcKqjk1V/J7TMY5ohYdl7VrBh9vGrtVYKV8KMlqxl6+lHWlRLzP55SItx57Yn0h2194xJs3fRHE8MklWklrlUYtMuxPWAZX3JXyUTIlBgMvQIx9IHJAIkrEJjyGhc5Nwag6zW290UrkSAhnwBqR1GN31Q1m7FH7G3E+tEWzbjK
+ TR/14BWU
+ 8f06Nuk9ZAZTYqfJJl++JP7r7/zEHBK9/6XcXUXCu06yjffWWTTaA0Q3PP/LpzhwacQwTBG4s6JS0/lLVyCJDfp9MBzDRaXPiH/I14wNEaX0/amO+Yt4gkyZyH1xVBwLQvHVEWWtIpQpf6wI1tSW5NZiooQ8uiU/J9jxdSKAYhNYesbD4a/Rjk9E0YfePOY45rL0NYFLo7sAFLT++Es53SjaZrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,133 +95,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Alice,
+Hi Zi,
 
-kernel test robot noticed the following build warnings:
+On 10/11/25 12:25 AM, Zi Yan wrote:
+> On 3 Oct 2025, at 12:53, Qi Zheng wrote:
+> 
 
-[auto build test WARNING on akpm-mm/mm-everything]
+[snip]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/mm-use-enum-for-vm_flags/20251010-095004
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251007162136.1885546-1-aliceryhl%40google.com
-patch subject: [PATCH] mm: use enum for vm_flags
-config: powerpc64-randconfig-r111-20251011 (https://download.01.org/0day-ci/archive/20251011/202510110850.4VXzbsF7-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251011/202510110850.4VXzbsF7-lkp@intel.com/reproduce)
+>>
+> 
+> Hi Qi,
+> 
+> I got CPU soft locks when run "echo 3 | sudo tee /proc/sys/vm/drop_caches"
+> with today's mm-new on a freshly booted system. Reverting Patch 3 (and Patch 4)
+> of your patchset solves the issue.
+> 
+> My config file is attached. My kernel relevant kernel parameters are:
+> "cgroup_no_v1=all transparent_hugepage=always thp_shmem=2M:always".
+> The machine is a 8GB 8-core x86_64 VM.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510110850.4VXzbsF7-lkp@intel.com/
+Thanks for your report. I'm on vacation and will be back in two days,
+I'll try to reproduce it locally and fix it.
 
-sparse warnings: (new ones prefixed by >>)
->> fs/proc/task_mmu.c:1184:5: sparse: sparse: undefined preprocessor identifier 'VM_HIGH_ARCH_3'
->> fs/proc/task_mmu.c:1187:5: sparse: sparse: undefined preprocessor identifier 'VM_HIGH_ARCH_4'
-   fs/proc/task_mmu.c: note: in included file (through include/linux/rbtree.h, include/linux/mm_types.h, include/linux/mmzone.h, ...):
-   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'proc_get_vma' - unexpected unlock
-   fs/proc/task_mmu.c:309:9: sparse: sparse: context imbalance in 'm_start' - different lock contexts for basic block
-   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'm_stop' - unexpected unlock
+And hi Andrew, please help drop this patch set from mm-new first.
 
-vim +/VM_HIGH_ARCH_3 +1184 fs/proc/task_mmu.c
+Thanks,
+Qi
 
-e070ad49f31155 Mauricio Lin       2005-09-03  1120  
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1121  static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1122  {
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1123  	/*
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1124  	 * Don't forget to update Documentation/ on changes.
-5778ace04e6f07 Brahmajit Das      2024-10-05  1125  	 *
-5778ace04e6f07 Brahmajit Das      2024-10-05  1126  	 * The length of the second argument of mnemonics[]
-5778ace04e6f07 Brahmajit Das      2024-10-05  1127  	 * needs to be 3 instead of previously set 2
-5778ace04e6f07 Brahmajit Das      2024-10-05  1128  	 * (i.e. from [BITS_PER_LONG][2] to [BITS_PER_LONG][3])
-5778ace04e6f07 Brahmajit Das      2024-10-05  1129  	 * to avoid spurious
-5778ace04e6f07 Brahmajit Das      2024-10-05  1130  	 * -Werror=unterminated-string-initialization warning
-5778ace04e6f07 Brahmajit Das      2024-10-05  1131  	 *  with GCC 15
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1132  	 */
-5778ace04e6f07 Brahmajit Das      2024-10-05  1133  	static const char mnemonics[BITS_PER_LONG][3] = {
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1134  		/*
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1135  		 * In case if we meet a flag we don't know about.
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1136  		 */
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1137  		[0 ... (BITS_PER_LONG-1)] = "??",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1138  
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1139  		[ilog2(VM_READ)]	= "rd",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1140  		[ilog2(VM_WRITE)]	= "wr",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1141  		[ilog2(VM_EXEC)]	= "ex",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1142  		[ilog2(VM_SHARED)]	= "sh",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1143  		[ilog2(VM_MAYREAD)]	= "mr",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1144  		[ilog2(VM_MAYWRITE)]	= "mw",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1145  		[ilog2(VM_MAYEXEC)]	= "me",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1146  		[ilog2(VM_MAYSHARE)]	= "ms",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1147  		[ilog2(VM_GROWSDOWN)]	= "gd",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1148  		[ilog2(VM_PFNMAP)]	= "pf",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1149  		[ilog2(VM_LOCKED)]	= "lo",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1150  		[ilog2(VM_IO)]		= "io",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1151  		[ilog2(VM_SEQ_READ)]	= "sr",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1152  		[ilog2(VM_RAND_READ)]	= "rr",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1153  		[ilog2(VM_DONTCOPY)]	= "dc",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1154  		[ilog2(VM_DONTEXPAND)]	= "de",
-8614d6c5eda005 Jason A. Donenfeld 2022-12-05  1155  		[ilog2(VM_LOCKONFAULT)]	= "lf",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1156  		[ilog2(VM_ACCOUNT)]	= "ac",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1157  		[ilog2(VM_NORESERVE)]	= "nr",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1158  		[ilog2(VM_HUGETLB)]	= "ht",
-b6fb293f2497a9 Jan Kara           2017-11-01  1159  		[ilog2(VM_SYNC)]	= "sf",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1160  		[ilog2(VM_ARCH_1)]	= "ar",
-d2cd9ede6e193d Rik van Riel       2017-09-06  1161  		[ilog2(VM_WIPEONFORK)]	= "wf",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1162  		[ilog2(VM_DONTDUMP)]	= "dd",
-424037b77519d1 Daniel Kiss        2020-03-16  1163  #ifdef CONFIG_ARM64_BTI
-424037b77519d1 Daniel Kiss        2020-03-16  1164  		[ilog2(VM_ARM64_BTI)]	= "bt",
-424037b77519d1 Daniel Kiss        2020-03-16  1165  #endif
-ec8e41aec13005 Naoya Horiguchi    2013-11-12  1166  #ifdef CONFIG_MEM_SOFT_DIRTY
-ec8e41aec13005 Naoya Horiguchi    2013-11-12  1167  		[ilog2(VM_SOFTDIRTY)]	= "sd",
-ec8e41aec13005 Naoya Horiguchi    2013-11-12  1168  #endif
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1169  		[ilog2(VM_MIXEDMAP)]	= "mm",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1170  		[ilog2(VM_HUGEPAGE)]	= "hg",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1171  		[ilog2(VM_NOHUGEPAGE)]	= "nh",
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1172  		[ilog2(VM_MERGEABLE)]	= "mg",
-16ba6f811dfe44 Andrea Arcangeli   2015-09-04  1173  		[ilog2(VM_UFFD_MISSING)]= "um",
-16ba6f811dfe44 Andrea Arcangeli   2015-09-04  1174  		[ilog2(VM_UFFD_WP)]	= "uw",
-9f3419315f3cdc Catalin Marinas    2019-11-27  1175  #ifdef CONFIG_ARM64_MTE
-9f3419315f3cdc Catalin Marinas    2019-11-27  1176  		[ilog2(VM_MTE)]		= "mt",
-9f3419315f3cdc Catalin Marinas    2019-11-27  1177  		[ilog2(VM_MTE_ALLOWED)]	= "",
-9f3419315f3cdc Catalin Marinas    2019-11-27  1178  #endif
-5212213aa5a235 Ram Pai            2018-03-27  1179  #ifdef CONFIG_ARCH_HAS_PKEYS
-c1192f84284146 Dave Hansen        2016-02-12  1180  		/* These come out via ProtectionKey: */
-c1192f84284146 Dave Hansen        2016-02-12  1181  		[ilog2(VM_PKEY_BIT0)]	= "",
-c1192f84284146 Dave Hansen        2016-02-12  1182  		[ilog2(VM_PKEY_BIT1)]	= "",
-c1192f84284146 Dave Hansen        2016-02-12  1183  		[ilog2(VM_PKEY_BIT2)]	= "",
-9f82f15ddfdd60 Joey Gouly         2024-08-22 @1184  #if VM_PKEY_BIT3
-c1192f84284146 Dave Hansen        2016-02-12  1185  		[ilog2(VM_PKEY_BIT3)]	= "",
-9f82f15ddfdd60 Joey Gouly         2024-08-22  1186  #endif
-2c9e0a6fa2bb75 Ram Pai            2018-03-27 @1187  #if VM_PKEY_BIT4
-2c9e0a6fa2bb75 Ram Pai            2018-03-27  1188  		[ilog2(VM_PKEY_BIT4)]	= "",
-c1192f84284146 Dave Hansen        2016-02-12  1189  #endif
-5212213aa5a235 Ram Pai            2018-03-27  1190  #endif /* CONFIG_ARCH_HAS_PKEYS */
-7677f7fd8be766 Axel Rasmussen     2021-05-04  1191  #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
-7677f7fd8be766 Axel Rasmussen     2021-05-04  1192  		[ilog2(VM_UFFD_MINOR)]	= "ui",
-7677f7fd8be766 Axel Rasmussen     2021-05-04  1193  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
-bcc9d04e749a8c Mark Brown         2024-10-01  1194  #ifdef CONFIG_ARCH_HAS_USER_SHADOW_STACK
-54007f818206dc Yu-cheng Yu        2023-06-12  1195  		[ilog2(VM_SHADOW_STACK)] = "ss",
-399ab86ea55039 Jeff Xu            2024-06-14  1196  #endif
-d175ee98fe545d Christophe Leroy   2024-09-02  1197  #if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
-9651fcedf7b92d Jason A. Donenfeld 2022-12-08  1198  		[ilog2(VM_DROPPABLE)] = "dp",
-d175ee98fe545d Christophe Leroy   2024-09-02  1199  #endif
-d175ee98fe545d Christophe Leroy   2024-09-02  1200  #ifdef CONFIG_64BIT
-399ab86ea55039 Jeff Xu            2024-06-14  1201  		[ilog2(VM_SEALED)] = "sl",
-54007f818206dc Yu-cheng Yu        2023-06-12  1202  #endif
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1203  	};
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1204  	size_t i;
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1205  
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1206  	seq_puts(m, "VmFlags: ");
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1207  	for (i = 0; i < BITS_PER_LONG; i++) {
-c1192f84284146 Dave Hansen        2016-02-12  1208  		if (!mnemonics[i][0])
-c1192f84284146 Dave Hansen        2016-02-12  1209  			continue;
-5778ace04e6f07 Brahmajit Das      2024-10-05  1210  		if (vma->vm_flags & (1UL << i))
-5778ace04e6f07 Brahmajit Das      2024-10-05  1211  			seq_printf(m, "%s ", mnemonics[i]);
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1212  	}
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1213  	seq_putc(m, '\n');
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1214  }
-834f82e2aa9a8e Cyrill Gorcunov    2012-12-17  1215  
+> 
+> The kernel log:
+> 
+> [   36.441539] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [tee:810]
+> [   36.441549] Modules linked in:
+> [   36.441566] CPU: 0 UID: 0 PID: 810 Comm: tee Not tainted 6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
+> [   36.441570] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+> [   36.441574] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
+> [   36.441592] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
+> [   36.441594] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
+> [   36.441598] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff888101168670
+> [   36.441601] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff888101168658
+> [   36.441602] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 0000000000000000
+> [   36.441603] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff8881011685e0
+> [   36.441604] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc900029afd60
+> [   36.441606] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) knlGS:0000000000000000
+> [   36.441607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   36.441608] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 0000000000370ef0
+> [   36.441614] Call Trace:
+> [   36.441616]  <TASK>
+> [   36.441619]  deferred_split_scan+0x1e0/0x480
+> [   36.441627]  ? _raw_spin_unlock_irqrestore+0xe/0x40
+> [   36.441630]  ? kvfree_rcu_queue_batch+0x96/0x1c0
+> [   36.441634]  ? do_raw_spin_unlock+0x46/0xd0
+> [   36.441639]  ? kfree_rcu_monitor+0x1da/0x2c0
+> [   36.441641]  ? list_lru_count_one+0x47/0x90
+> [   36.441644]  do_shrink_slab+0x153/0x360
+> [   36.441649]  shrink_slab+0xd3/0x390
+> [   36.441652]  drop_slab+0x7d/0x130
+> [   36.441655]  drop_caches_sysctl_handler+0x98/0xb0
+> [   36.441660]  proc_sys_call_handler+0x1c7/0x2c0
+> [   36.441664]  vfs_write+0x221/0x450
+> [   36.441669]  ksys_write+0x6c/0xe0
+> [   36.441672]  do_syscall_64+0x50/0x200
+> [   36.441675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   36.441678] RIP: 0033:0x7f7fe36e7687
+> [   36.441685] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+> [   36.441686] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+> [   36.441688] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f7fe36e7687
+> [   36.441689] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 0000000000000003
+> [   36.441690] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 0000000000000000
+> [   36.441691] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000002
+> [   36.441692] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 0000000000000002
+> [   36.441694]  </TASK>
+> [   64.441531] watchdog: BUG: soft lockup - CPU#0 stuck for 53s! [tee:810]
+> [   64.441537] Modules linked in:
+> [   64.441545] CPU: 0 UID: 0 PID: 810 Comm: tee Tainted: G             L      6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
+> [   64.441548] Tainted: [L]=SOFTLOCKUP
+> [   64.441552] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+> [   64.441555] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
+> [   64.441565] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
+> [   64.441566] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
+> [   64.441568] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff888101168670
+> [   64.441570] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff888101168658
+> [   64.441571] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 0000000000000000
+> [   64.441572] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff8881011685e0
+> [   64.441573] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc900029afd60
+> [   64.441574] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) knlGS:0000000000000000
+> [   64.441576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   64.441577] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 0000000000370ef0
+> [   64.441581] Call Trace:
+> [   64.441583]  <TASK>
+> [   64.441591]  deferred_split_scan+0x1e0/0x480
+> [   64.441598]  ? _raw_spin_unlock_irqrestore+0xe/0x40
+> [   64.441599]  ? kvfree_rcu_queue_batch+0x96/0x1c0
+> [   64.441603]  ? do_raw_spin_unlock+0x46/0xd0
+> [   64.441607]  ? kfree_rcu_monitor+0x1da/0x2c0
+> [   64.441610]  ? list_lru_count_one+0x47/0x90
+> [   64.441613]  do_shrink_slab+0x153/0x360
+> [   64.441618]  shrink_slab+0xd3/0x390
+> [   64.441621]  drop_slab+0x7d/0x130
+> [   64.441624]  drop_caches_sysctl_handler+0x98/0xb0
+> [   64.441629]  proc_sys_call_handler+0x1c7/0x2c0
+> [   64.441632]  vfs_write+0x221/0x450
+> [   64.441638]  ksys_write+0x6c/0xe0
+> [   64.441641]  do_syscall_64+0x50/0x200
+> [   64.441645]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   64.441648] RIP: 0033:0x7f7fe36e7687
+> [   64.441654] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+> [   64.441656] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+> [   64.441658] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f7fe36e7687
+> [   64.441659] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 0000000000000003
+> [   64.441660] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 0000000000000000
+> [   64.441661] R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000002
+> [   64.441662] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 0000000000000002
+> [   64.441663]  </TASK>
+> 
+> 
+> 
+> --
+> Best Regards,
+> Yan, Zi
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
