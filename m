@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DAB8CCD184
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 09:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D637CCCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 10:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2B08E0019; Sat, 11 Oct 2025 05:42:52 -0400 (EDT)
+	id C7B988E003C; Sat, 11 Oct 2025 06:23:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D530A8E0005; Sat, 11 Oct 2025 05:42:52 -0400 (EDT)
+	id C2CAB8E0005; Sat, 11 Oct 2025 06:23:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C419D8E0019; Sat, 11 Oct 2025 05:42:52 -0400 (EDT)
+	id B1B158E003C; Sat, 11 Oct 2025 06:23:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFC118E0005
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 05:42:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 674361605A8
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:42:52 +0000 (UTC)
-X-FDA: 83985344184.13.C9FC117
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F63D100006
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:42:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hNbF8qm3;
-	spf=pass (imf05.hostedemail.com: domain of edumazet@google.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=edumazet@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DF918E0005
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:23:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2ABE8C047E
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 10:23:51 +0000 (UTC)
+X-FDA: 83985447462.15.69E602B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5CE94A0007
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 10:23:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Y7fhJUD9;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760178229; a=rsa-sha256;
+	cv=none;
+	b=YdNJhSl4DuLaMSLrEZ5rA9iqetRJeDlr62u+uj0rOrlTocmKtUsyZq5JqLbIa2s3PpvpKB
+	DiIdzkG6Qv8qvXj0u7XelqkJ8ZyePgsTdvi0gZ6s4qE08jBWdOQdcH99IjdBVX1I8xmsvQ
+	OfPpaUQk0fk2WxbZznLeHFzbDi+rGRc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Y7fhJUD9;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760175770;
+	s=arc-20220608; t=1760178229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2KA5u3TUp00NYLA35LfzmhRHb51uTtRNeQp/w7ddecs=;
-	b=XllnsieOPhru3+s5iCeewPvrgs7OqFFuP9lDmaW4c7TFREtB0kKubX28DYwpzB3ar+5Nlw
-	Zar5lhRkmpycUI4Mk3K+u4GlpjFFULH2Wl53E9iPkdjkloItcBOIBLv1h2VMf6t4Du2SnB
-	ScuqQFV0cDpcs6D9eV/4NPijDUk2pAU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760175770; a=rsa-sha256;
-	cv=none;
-	b=OtSbrUM+XrpCu/2qtTW71afCzFw1axuT3o4MtSqqv9m/wxdj/O5P/B3N0xDVp0qP0A/8z3
-	lVB+B/bbRVQ3nNHh3UvLwZ3bkXV88SmrOcY6ZKXK5FBbA5obUBzrP332qcuMRQf/JreyYa
-	zcSUlH2LUeR0hz31BKFKoMvFfuhGWVY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=hNbF8qm3;
-	spf=pass (imf05.hostedemail.com: domain of edumazet@google.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=edumazet@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-85c66a8a462so458254485a.0
-        for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:42:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760175770; x=1760780570; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2KA5u3TUp00NYLA35LfzmhRHb51uTtRNeQp/w7ddecs=;
-        b=hNbF8qm35UFy7E7qWfjyhVexa+IeU/OX0itfDOxhfXWDJ0ES/fHU5rQuzT6iemvwM+
-         qrFCyVLn8OUBrfIkSLySVlgfjSUpj+9o7Y1FpKDVGbX+DZV8dihO5wOOl0CM10yFOIHW
-         Qx/96ddIi7/vcR3PUi/FLTaj6v3fD5OmdkBi3btzlG5CzxvPM/w1MWEj7tpau7ARGuZI
-         Yn+XWSf2MwVySh58sFpULdwOvA1ppXsX0I1mvBG1nsOkEZ9AUF60rg9KiIQgJuzeOZ3y
-         N5We68xWKgl4FeIVRLgsOCgFGfwmOd5wkJLm/N3ncdgiAUQyu5KoVD6PnS/ZmbkIl6Hc
-         +arQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760175770; x=1760780570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2KA5u3TUp00NYLA35LfzmhRHb51uTtRNeQp/w7ddecs=;
-        b=MRynBfu2zpwIL8p+giiLiHoxcHasnZrQ4iKLkOVwD2/Jdlg19b27t3X5WpRh4Yv6JJ
-         MXV5XMKstOL9XefjlwAsQGB601rw1v8OzDwDIz57AZmdPP0Z+ts/6CW4UHjdPMAGMabs
-         UaTnPSHwMZezIk6qR9tk1mhp6ganukXdaJN7Oaw+kricc3Yx01XD9jr6KJuolAiL+rlV
-         Bz4KJDorUStE8w4SOS6P4pRKdtpE5y0FGreidZ+AY4QQQNUUWP3C1ILI0GV2WhiPoXtO
-         utQZACMjdNW916LzyGWSbb+FhXCSbIkAK/SBaW1wxkbHEgJKxV8UhXe4R2OnL8T8coM5
-         JMzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPna6cAVAFnrKS7hNyz9VBv7/I5ic7UoxW+2CegTOl50DvFzEZRbn2yzlJLh++BAOZ2vE/RNnuBA==@kvack.org
-X-Gm-Message-State: AOJu0YxUy/Mds37A4+Zg3mMGoWlC//nb2G+2QWzecQvmgdGH+KHTk1u9
-	XiAo/jrin1e8e97UFoXoyYcd8UX28bhZ47LQM4Tb6fjE814wzpkw10DxSq7d30WbU0dBDgz644p
-	fD9EOlOfss9DzSKkeVn5UKYBWrTRd31IwXM0db7Lf
-X-Gm-Gg: ASbGnctilLkTunMWLqKwse93ZqM+Wx4wxntuDQTiF1MwWCnZ2T47z2tZdyabmo37RGW
-	3zvzoIRrzEhB3oiQTkeDZ4TweuWitHCIA10k5Sgl65VEN3lWsbEPsfZBX50usWtbxq496lyWTD7
-	UAOkDegXDLEXFOyHllTWZ+mn9tHv5qVk5AgbHeWXsTSwVwVefg3ebaKY0bM6pZzS5/aCikq5pgI
-	N0PrdyuAp5X9AX6AsYVGEHseaceqt+c
-X-Google-Smtp-Source: AGHT+IEED7dHBeVXIcW+XT93z7Hf3i3zMcQ6Vt38katNZs1vD6UoQfiDEwwBOYw5pzjJNb5ZZ/ccNgaRmmC/Kn11320=
-X-Received: by 2002:a05:622a:1301:b0:4e0:296e:8cbb with SMTP id
- d75a77b69052e-4e6ead5c713mr201176921cf.64.1760175769177; Sat, 11 Oct 2025
- 02:42:49 -0700 (PDT)
+	bh=rLjVzzVXA+L/jwz+zxs4dji9ua1PFfCLrtcqbeb3QY0=;
+	b=Z5KXF5qZpba7rTbhIad3v44o47OHq3gGAvAgsD8NwSehIB70UjM121XYUTN9YfmI1ZO8bS
+	qV+OgBIFS0w9Dtj2VB1lIw1Dn+Dyk3eKo3vkaUorFSqE8vGIWxWTNelr9L+D/yL8H+Jf7A
+	GuxAYV1gZm/QyTNHfaEospPWQJjLhzE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760178228; x=1791714228;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7xxrjwQLnAEK+AEZDLjrFqRqjtY9w5ULoaYVjJZBy7I=;
+  b=Y7fhJUD9n03djIw14hIYoOWPZhWhayNm5HTueHn0PipO3KK4ExvZtxE8
+   4ZCXzltT4gVO/kLveiEEBzTKZ2IFfE83KK25hz6j3jyBDlwOwlJfj3NBI
+   ddDDbhVugRTNzUS1Tv8wZa9jzkORdqUN8JspflbPyatq0AMzzFUApyDgW
+   A8asD6pDkXgKMN14fTeAhZzandRgXgG9NPPHerbg5GagqigeUvhE6zIvo
+   bo/ePvJod7U3G9CFCKqyRXpNoqiCHuakRbNFeDgJ/ps5bpOc46CTs6a6N
+   GzxEFR3jaa3CZ6eyXiWecXyfP4g2/vDMwcayPEky67WHJ4e27TzfEo7fE
+   Q==;
+X-CSE-ConnectionGUID: PtVkUWqUQ7mWwjoAHd4nHA==
+X-CSE-MsgGUID: pUjxciZeSaST1IBOxQxXTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="73068042"
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="73068042"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 03:23:46 -0700
+X-CSE-ConnectionGUID: q15MogiAQ/m4KIDBFh45bg==
+X-CSE-MsgGUID: +j2+D1jDREGAw53FMXAyQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="186459433"
+Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 11 Oct 2025 03:23:41 -0700
+Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v7WlG-0003hz-2R;
+	Sat, 11 Oct 2025 10:23:38 +0000
+Date: Sat, 11 Oct 2025 18:23:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, david@redhat.com,
+	jane.chu@oracle.com, kernel@pankajraghav.com,
+	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com
+Cc: oe-kbuild-all@lists.linux.dev, ziy@nvidia.com,
+	akpm@linux-foundation.org, mcgrof@kernel.org,
+	nao.horiguchi@gmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] mm/memory-failure: improve large block size folio
+ handling.
+Message-ID: <202510111805.rg0AewVk-lkp@intel.com>
+References: <20251010173906.3128789-3-ziy@nvidia.com>
 MIME-Version: 1.0
-References: <681a1770.050a0220.a19a9.000d.GAE@google.com> <68ea0a24.050a0220.91a22.01ca.GAE@google.com>
-In-Reply-To: <68ea0a24.050a0220.91a22.01ca.GAE@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 11 Oct 2025 02:42:37 -0700
-X-Gm-Features: AS18NWA0areIK1P_LAC0ovg1dEL8hxEocjKD533OSOIsICc3MFc3HHnf4RoapQo
-Message-ID: <CANn89iLjjtXV3ZMxfQDb1bbsVJ6a_Chexu4FwqeejxGTwsR_kg@mail.gmail.com>
-Subject: Re: [syzbot] [net?] [mm?] INFO: rcu detected stall in
- inet_rtm_newaddr (2)
-To: syzbot <syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com>, 
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, hdanton@sina.com, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com, tglx@linutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jjoa3fq1xyajipiotpfpcnszjj56oero
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251010173906.3128789-3-ziy@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F63D100006
-X-HE-Tag: 1760175770-723816
-X-HE-Meta: U2FsdGVkX19YKqblQaCe9a91ufY74kzRSrk//dZiwpVapowCdjOhgzfoIEIdx9OXZUFy9YaPjx/Rcz2pxj0HnpaiQJL0Fz/GGr1+pS/+ObCclRC/VnKdKoTbnGv8w2eU83DpWX96Pd0URG74TXfbb6zOONvtQ3dVvOc4gQQibyArmKBSUmTEnrzjmHoNAUAj5Ss/UQuPFLoM23AJaEYxqaiSkqns9q2U9f0x2k2IgIce56EZFJzDqzMkzAK5NoYtWW8KDbiqj3+fnLgYH/y0bWk+3gl54JhXjFyqBjA3tm7PNIE7AbiFBieUh1H9J8hGlLU2nUvm8rmbVqYjXGeONFxDw7GjG3olVow7MV7653EUjZpYyg8zVeYBHHChe26ApGYbxLUUyjBSg/bOCdMAw0jcZDvvJbggvYPpBUysR30afmkICwNmUi3VhWD827HH7BXH8AgJPsV1LC2CmrDlWDZZHIHgXATpyrZaoZxF0bmWXYwMk1TNS0qWKCBjIiMsAh5osQzDzn4Cy86tmwJhC7jS/CuIgF6jtKEj71GY5C6jflR8PNfbZbAO1BE0W2lawbMknS5sOp2YGPl8QJsDER6ne0s5lwFeWQsWREPlpEphJ1RBOkYVjWfl7nF9duW++vnAPZ37hG8dIvUigk4BG6oq45qlkj2BOBrSs4MaqoWnuaGHsIEKq+S2ewObxpT+fbslJcIENUjSUP5kQJLrNFcR3QMdqn6ZS4RahVSe8+etCzGkTTVWp85PqoYsk4DprjZDMlFbj/vU/2FH6MV7TmR5lIX+Mw6KEDl1pnJiKMImtYcB0ON8AFwmp4YWsCuCHVyMhFZZrdZVh0gWvDwYTsBCBQ5xg9YaX4Fy4Cs2edSI6bLQvRiVE9bRRCzpTFhTPVuGYDQ/tooe8NiLsoR/bRvf/1DJp7Rrxui6xTvHyYGniC1axg1lwovAAiqY7J+viDJoFs4RNLocmsqH35E
- frXPZCl0
- tuzeXNDt5422/YbRbxCfLui+tODIzy9Cgnqbj4BkED4cWl0MqoTxa2gJYBVwLWT2948rbAzia7k2SeXLOZBG+Wv6hZ59TCw3nuMviWEWOncEO4pHAuAj1T4vEyTLLZNTLB1a+8Z9QMP81A06mHw4Y7pq+GQoQaKqE+nDdaAokRuT2Hziru7TI9B3u/Zpcvom3FECbrmhW7pAVGJIRNMnEIWpJjfEeybdkd1XgEj9tXtK+uR4PubfxypvrJXBxH8RtjquJp38gUP2ifXZhF/RMJTdDubFjbF/kfJWpvG8G90k4fsoB3dAAQDvOObbkp54RdoJ9AI/tJFnbr8r7UEgtcvMDK1oU+rSwk+mhtnyTZ1PzdXvDiDfW1bBttYe/MIwHbePn7OuKDFSv0m56KvU+X+U+1gVmhbEC2mE0x/UgPIbtJUM8ei6r1rljCbsSOJJDO5b1kF/koet6zdMKeBy5yAoI6//idWIXfT/7vvNstyKz4jmFuC+RcON6amPM1pFNRLRwi/WDuu7kDxej5lmk+YwfI4QpVjHfTAIf2r9HcYrqV52ZoN8znQrHImVo0otok5Lz3+1OZzfyaGnp2zZhH1WzZH51tIH+/FZwOQmuIIMDB5RTLuVsp9DFrGHaxWiRU5784Agiu1gqGCY2JcdagydP9PHFxdXpYlj16VvOjPm4c6FazryFf5Bc2Xxx7+ilTEFiKF90OxJrOwr+HIyfBPVnFt/aol5uxGx451C6bbY6G8ZI47xNNMzGaI0Gr6+IwXV5nlPAjLjWW1/O/gp6LNtEtMBRgnm8Wm5HSOergBzcpWTq50+v6K2hOdewzh3mUUPFsJDmFxtbUs/4oiBnNFoO2jaEv9kxhwAEag6SeyshCeSlzPAOFRADVyC1oC4qZF+c
+X-Stat-Signature: 3j4cmk5y1s1ebw8fhtfknx95zgq4oymz
+X-Rspamd-Queue-Id: 5CE94A0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760178228-39481
+X-HE-Meta: U2FsdGVkX19O2KV2Si8xVNWXdefnIFBc8kedXd7XRNhZiu5DBTonEWk43cbvRsUlTyHrSqznQ/XrjwpeYNiSOvJCAYUI34iFjt+4PPM1MiC2n9Yh8YtiNxgQ0JXWrRo4cepvmuUqgjLkZ3lzDw0iNaHeMl/dGH+CDIkZbfoOHnqPODE4Zth+F9q4OJZGTBE+VV9MnEBe+41y0xbNYKatzurwWeFSeFUvWu14D36aU6mXICfboj8OvE92Ygw3bbdOJx/RsZMCR0cm+79M1ShJI7ox0fL3UHOKqBC89iggiFV6UmxE18jLfgHaJ9R42wejAVpRssdPTGrzCXGGHCjwYMforkrui6zrPBSqVGIykDAxHb8vm/hvfXYKcFZ3ek6baOCukr2Jn5PwlfYSRBMhd4jIgM+GTs6z3LFFHTi2Fnogj9RFtzn5EzX2I+EEAaI1TweMJDxeSoL3W18KZhNWnGbF704HpRVx/nXxHHE8zG4q/woiGm7CljVSqBT4qIoSIoT2JrbWi7S0K3nJg/r1LKr0tYUFLC5Gbn257JheSyXiEcVzxHrBgM71c+j/gR6y3K7u2WqVaplWTLboLmZUakQZyFB8KxLYFWWBHjFpro5HAB2TrbmRdkjAVnB9qHy+7KZgoQcpAPwgl3aKD9lL4LzzegLWAfTRtkq4xOj0nck8iKuXM85royFo+gxvVCdeFwxc1E1RXwekUKRBQp4MaH7hrKgCNj0kqM38cm5DeOW+RB9xoJCslMdKhR0yL1Z4kkoSCsyxmpWjeBiRvY0DFQm6b80TfYQGHza0xgwtdGv3XTn9x0Dj25Rjk5dGJK1n3iFHNxmmV7ylcwcYPGfpMG3p/yB/Fo5PsqPbxpVEAs3QMc5HEATfzazFc0GWq7TrCXGU7gVx1uaHnDkQW8+0IyT/Q8rgvFOXQTEKUKPBAM0OT/rI/AlbUJIzIDkLWoJqYVGcpb/Lhp2x4YrbZw9
+ GNm2mo0n
+ ofS/9XweIYHkPBStFs+S5jY4ueLizHDbaAjHAOXTEAKp80909U/ylfe4Ui2/za1Hj412328EQeIIrvA/6NI9vdcufVqSJZbs8VLD+pzpvItd72h7Wb0KXXXN5VQXO9Jd9GrTzs9DnKP0t0z8Sn9jCHFZmgrW79w12ykZFFSQSfw9FbFQ6lVTUjZYXlvxsYkG+SSk3cm3H/vNIjOTAuYTox46l8hqOcjrSch+JSleC1MCi2G6IXoomTMaz2OVDO6tzFNXvvrnzIBqAcPykAPo70cvDGD0uJLsvcg4smUo9f8IJSRM3iyF1ZxQiogBs6/BaeQJsSbekX3b5QF2SLgqPOetRALSmX8HK0nD9z2xZjWtz5FfSC/5/8CdBrtkZhkRqbVA4Mjnjia65hCcgFT7ZcuC9fvX9Gdv7xcvkPlJvKNd+qo/kioUpJS5fpzYksEt1nxPjlWRY8pgCDNufv0oBitSBcZkZLEMgNYDb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,158 +121,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 11, 2025 at 12:41=E2=80=AFAM syzbot
-<syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com> wrote:
->
-> syzbot has found a reproducer for the following issue on:
->
-> HEAD commit:    18a7e218cfcd Merge tag 'net-6.18-rc1' of git://git.kernel=
-...
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D12504dcd98000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D61ab7fa743df0=
-ec1
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3D51cd74c5dfeafd6=
-5e488
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b797=
-6-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D14d2a542580=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D142149e258000=
-0
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/7a01e6dce97e/dis=
-k-18a7e218.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/5e1b7e41427f/vmlinu=
-x-18a7e218.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/69b558601209/b=
-zImage-18a7e218.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com
->
-> sched: DL replenish lagged too much
-> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> rcu:    0-...!: (2 GPs behind) idle=3D7754/1/0x4000000000000000 softirq=
-=3D15464/15465 fqs=3D1
-> rcu:    (detected by 1, t=3D10502 jiffies, g=3D11321, q=3D371 ncpus=3D2)
-> Sending NMI from CPU 1 to CPUs 0:
-> NMI backtrace for cpu 0
-> CPU: 0 UID: 0 PID: 5948 Comm: syz-executor Not tainted syzkaller #0 PREEM=
-PT(full)
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 10/02/2025
-> RIP: 0010:rb_insert_color_cached include/linux/rbtree.h:113 [inline]
-> RIP: 0010:rb_add_cached include/linux/rbtree.h:183 [inline]
-> RIP: 0010:timerqueue_add+0x1a8/0x200 lib/timerqueue.c:40
-> Code: e7 31 f6 e8 6a 0c de f6 42 80 3c 2b 00 74 08 4c 89 f7 e8 7b 0a de f=
-6 4d 89 26 4d 8d 7e 08 4c 89 f8 48 c1 e8 03 42 80 3c 28 00 <74> 08 4c 89 ff=
- e8 5e 0a de f6 4d 89 27 4d 85 e4 40 0f 95 c5 eb 07
-> RSP: 0018:ffffc90000007cf0 EFLAGS: 00000046
-> RAX: 1ffff110170c4f83 RBX: 1ffff110170c4f82 RCX: 0000000000000000
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88805de72358
-> RBP: 0000000000000000 R08: ffff88805de72357 R09: 0000000000000000
-> R10: ffff88805de72340 R11: ffffed100bbce46b R12: ffff88805de72340
-> R13: dffffc0000000000 R14: ffff8880b8627c10 R15: ffff8880b8627c18
-> FS:  000055557c657500(0000) GS:ffff888125d0f000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000200000000600 CR3: 000000002ee76000 CR4: 00000000003526f0
-> Call Trace:
->  <IRQ>
->  __run_hrtimer kernel/time/hrtimer.c:1794 [inline]
->  __hrtimer_run_queues+0x656/0xc60 kernel/time/hrtimer.c:1841
->  hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
->  local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
->  __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:10=
-58
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inli=
-ne]
->  sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.=
-h:702
-> RIP: 0010:pv_vcpu_is_preempted arch/x86/include/asm/paravirt.h:579 [inlin=
-e]
-> RIP: 0010:vcpu_is_preempted arch/x86/include/asm/qspinlock.h:63 [inline]
-> RIP: 0010:owner_on_cpu include/linux/sched.h:2282 [inline]
-> RIP: 0010:mutex_spin_on_owner+0x189/0x360 kernel/locking/mutex.c:361
-> Code: b6 04 30 84 c0 0f 85 59 01 00 00 48 8b 44 24 08 8b 18 48 8b 44 24 4=
-8 42 80 3c 30 00 74 0c 48 c7 c7 90 8c fa 8d e8 a7 cd 88 00 <48> 83 3d ff 27=
- 5e 0c 00 0f 84 b9 01 00 00 48 89 df e8 41 e0 d5 ff
-> RSP: 0018:ffffc900034c7428 EFLAGS: 00000246
-> RAX: 1ffffffff1bf5192 RBX: 0000000000000001 RCX: ffffffff819c6588
-> RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffffff8f4df8a0
-> RBP: 1ffffffff1e9bf14 R08: ffffffff8f4df8a7 R09: 1ffffffff1e9bf14
-> R10: dffffc0000000000 R11: fffffbfff1e9bf15 R12: ffffffff8f4df8a0
-> R13: ffffffff8f4df8f0 R14: dffffc0000000000 R15: ffff8880267a9e40
->  mutex_optimistic_spin kernel/locking/mutex.c:464 [inline]
->  __mutex_lock_common kernel/locking/mutex.c:602 [inline]
->  __mutex_lock+0x311/0x1350 kernel/locking/mutex.c:760
->  rtnl_net_lock include/linux/rtnetlink.h:130 [inline]
->  inet_rtm_newaddr+0x3b0/0x18b0 net/ipv4/devinet.c:978
->  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6954
->  netlink_rcv_skb+0x205/0x470 net/netlink/af_netlink.c:2552
->  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
->  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
->  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
->  sock_sendmsg_nosec net/socket.c:727 [inline]
->  __sock_sendmsg+0x21c/0x270 net/socket.c:742
->  __sys_sendto+0x3bd/0x520 net/socket.c:2244
->  __do_sys_sendto net/socket.c:2251 [inline]
->  __se_sys_sendto net/socket.c:2247 [inline]
->  __x64_sys_sendto+0xde/0x100 net/socket.c:2247
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7faade790d5c
-> Code: 2a 5f 02 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c5 44 8b 54 24 28 48 8=
-b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff=
- ff 77 34 89 ef 48 89 44 24 08 e8 70 5f 02 00 48 8b
-> RSP: 002b:00007ffdd2e3b670 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-> RAX: ffffffffffffffda RBX: 00007faadf514620 RCX: 00007faade790d5c
-> RDX: 0000000000000028 RSI: 00007faadf514670 RDI: 0000000000000003
-> RBP: 0000000000000000 R08: 00007ffdd2e3b6c4 R09: 000000000000000c
-> R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000003
-> R13: 0000000000000000 R14: 00007faadf514670 R15: 0000000000000000
->  </TASK>
-> rcu: rcu_preempt kthread timer wakeup didn't happen for 10499 jiffies! g1=
-1321 f0x0 RCU_GP_WAIT_FQS(5) ->state=3D0x402
-> rcu:    Possible timer handling issue on cpu=3D0 timer-softirq=3D4286
-> rcu: rcu_preempt kthread starved for 10500 jiffies! g11321 f0x0 RCU_GP_WA=
-IT_FQS(5) ->state=3D0x402 ->cpu=3D0
-> rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is now e=
-xpected behavior.
-> rcu: RCU grace-period kthread stack dump:
-> task:rcu_preempt     state:I stack:27224 pid:16    tgid:16    ppid:2     =
- task_flags:0x208040 flags:0x00080000
-> Call Trace:
->  <TASK>
->  context_switch kernel/sched/core.c:5325 [inline]
->  __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
->  __schedule_loop kernel/sched/core.c:7011 [inline]
->  schedule+0x165/0x360 kernel/sched/core.c:7026
->  schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
->  rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
->  rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
->  kthread+0x711/0x8a0 kernel/kthread.c:463
->  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
->
->
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+Hi Zi,
 
-Yet another taprio report.
+kernel test robot noticed the following build errors:
 
-If taprio can not be fixed, perhaps we should remove it from the
-kernel, or clearly marked as broken.
-(Then ask syzbot to no longer include it)
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.17 next-20251010]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Zi-Yan/mm-huge_memory-do-not-change-split_huge_page-target-order-silently/20251011-014145
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20251010173906.3128789-3-ziy%40nvidia.com
+patch subject: [PATCH 2/2] mm/memory-failure: improve large block size folio handling.
+config: parisc-allmodconfig (https://download.01.org/0day-ci/archive/20251011/202510111805.rg0AewVk-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251011/202510111805.rg0AewVk-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510111805.rg0AewVk-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/memory-failure.c: In function 'memory_failure':
+>> mm/memory-failure.c:2278:33: error: implicit declaration of function 'min_order_for_split' [-Wimplicit-function-declaration]
+    2278 |                 int new_order = min_order_for_split(folio);
+         |                                 ^~~~~~~~~~~~~~~~~~~
+
+
+vim +/min_order_for_split +2278 mm/memory-failure.c
+
+  2147	
+  2148	/**
+  2149	 * memory_failure - Handle memory failure of a page.
+  2150	 * @pfn: Page Number of the corrupted page
+  2151	 * @flags: fine tune action taken
+  2152	 *
+  2153	 * This function is called by the low level machine check code
+  2154	 * of an architecture when it detects hardware memory corruption
+  2155	 * of a page. It tries its best to recover, which includes
+  2156	 * dropping pages, killing processes etc.
+  2157	 *
+  2158	 * The function is primarily of use for corruptions that
+  2159	 * happen outside the current execution context (e.g. when
+  2160	 * detected by a background scrubber)
+  2161	 *
+  2162	 * Must run in process context (e.g. a work queue) with interrupts
+  2163	 * enabled and no spinlocks held.
+  2164	 *
+  2165	 * Return:
+  2166	 *   0             - success,
+  2167	 *   -ENXIO        - memory not managed by the kernel
+  2168	 *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event,
+  2169	 *   -EHWPOISON    - the page was already poisoned, potentially
+  2170	 *                   kill process,
+  2171	 *   other negative values - failure.
+  2172	 */
+  2173	int memory_failure(unsigned long pfn, int flags)
+  2174	{
+  2175		struct page *p;
+  2176		struct folio *folio;
+  2177		struct dev_pagemap *pgmap;
+  2178		int res = 0;
+  2179		unsigned long page_flags;
+  2180		bool retry = true;
+  2181		int hugetlb = 0;
+  2182	
+  2183		if (!sysctl_memory_failure_recovery)
+  2184			panic("Memory failure on page %lx", pfn);
+  2185	
+  2186		mutex_lock(&mf_mutex);
+  2187	
+  2188		if (!(flags & MF_SW_SIMULATED))
+  2189			hw_memory_failure = true;
+  2190	
+  2191		p = pfn_to_online_page(pfn);
+  2192		if (!p) {
+  2193			res = arch_memory_failure(pfn, flags);
+  2194			if (res == 0)
+  2195				goto unlock_mutex;
+  2196	
+  2197			if (pfn_valid(pfn)) {
+  2198				pgmap = get_dev_pagemap(pfn);
+  2199				put_ref_page(pfn, flags);
+  2200				if (pgmap) {
+  2201					res = memory_failure_dev_pagemap(pfn, flags,
+  2202									 pgmap);
+  2203					goto unlock_mutex;
+  2204				}
+  2205			}
+  2206			pr_err("%#lx: memory outside kernel control\n", pfn);
+  2207			res = -ENXIO;
+  2208			goto unlock_mutex;
+  2209		}
+  2210	
+  2211	try_again:
+  2212		res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
+  2213		if (hugetlb)
+  2214			goto unlock_mutex;
+  2215	
+  2216		if (TestSetPageHWPoison(p)) {
+  2217			res = -EHWPOISON;
+  2218			if (flags & MF_ACTION_REQUIRED)
+  2219				res = kill_accessing_process(current, pfn, flags);
+  2220			if (flags & MF_COUNT_INCREASED)
+  2221				put_page(p);
+  2222			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+  2223			goto unlock_mutex;
+  2224		}
+  2225	
+  2226		/*
+  2227		 * We need/can do nothing about count=0 pages.
+  2228		 * 1) it's a free page, and therefore in safe hand:
+  2229		 *    check_new_page() will be the gate keeper.
+  2230		 * 2) it's part of a non-compound high order page.
+  2231		 *    Implies some kernel user: cannot stop them from
+  2232		 *    R/W the page; let's pray that the page has been
+  2233		 *    used and will be freed some time later.
+  2234		 * In fact it's dangerous to directly bump up page count from 0,
+  2235		 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+  2236		 */
+  2237		if (!(flags & MF_COUNT_INCREASED)) {
+  2238			res = get_hwpoison_page(p, flags);
+  2239			if (!res) {
+  2240				if (is_free_buddy_page(p)) {
+  2241					if (take_page_off_buddy(p)) {
+  2242						page_ref_inc(p);
+  2243						res = MF_RECOVERED;
+  2244					} else {
+  2245						/* We lost the race, try again */
+  2246						if (retry) {
+  2247							ClearPageHWPoison(p);
+  2248							retry = false;
+  2249							goto try_again;
+  2250						}
+  2251						res = MF_FAILED;
+  2252					}
+  2253					res = action_result(pfn, MF_MSG_BUDDY, res);
+  2254				} else {
+  2255					res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+  2256				}
+  2257				goto unlock_mutex;
+  2258			} else if (res < 0) {
+  2259				res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+  2260				goto unlock_mutex;
+  2261			}
+  2262		}
+  2263	
+  2264		folio = page_folio(p);
+  2265	
+  2266		/* filter pages that are protected from hwpoison test by users */
+  2267		folio_lock(folio);
+  2268		if (hwpoison_filter(p)) {
+  2269			ClearPageHWPoison(p);
+  2270			folio_unlock(folio);
+  2271			folio_put(folio);
+  2272			res = -EOPNOTSUPP;
+  2273			goto unlock_mutex;
+  2274		}
+  2275		folio_unlock(folio);
+  2276	
+  2277		if (folio_test_large(folio)) {
+> 2278			int new_order = min_order_for_split(folio);
+  2279			/*
+  2280			 * The flag must be set after the refcount is bumped
+  2281			 * otherwise it may race with THP split.
+  2282			 * And the flag can't be set in get_hwpoison_page() since
+  2283			 * it is called by soft offline too and it is just called
+  2284			 * for !MF_COUNT_INCREASED.  So here seems to be the best
+  2285			 * place.
+  2286			 *
+  2287			 * Don't need care about the above error handling paths for
+  2288			 * get_hwpoison_page() since they handle either free page
+  2289			 * or unhandlable page.  The refcount is bumped iff the
+  2290			 * page is a valid handlable page.
+  2291			 */
+  2292			folio_set_has_hwpoisoned(folio);
+  2293			/*
+  2294			 * If the folio cannot be split to order-0, kill the process,
+  2295			 * but split the folio anyway to minimize the amount of unusable
+  2296			 * pages.
+  2297			 */
+  2298			if (try_to_split_thp_page(p, new_order, false) || new_order) {
+  2299				/* get folio again in case the original one is split */
+  2300				folio = page_folio(p);
+  2301				res = -EHWPOISON;
+  2302				kill_procs_now(p, pfn, flags, folio);
+  2303				put_page(p);
+  2304				action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+  2305				goto unlock_mutex;
+  2306			}
+  2307			VM_BUG_ON_PAGE(!page_count(p), p);
+  2308			folio = page_folio(p);
+  2309		}
+  2310	
+  2311		/*
+  2312		 * We ignore non-LRU pages for good reasons.
+  2313		 * - PG_locked is only well defined for LRU pages and a few others
+  2314		 * - to avoid races with __SetPageLocked()
+  2315		 * - to avoid races with __SetPageSlab*() (and more non-atomic ops)
+  2316		 * The check (unnecessarily) ignores LRU pages being isolated and
+  2317		 * walked by the page reclaim code, however that's not a big loss.
+  2318		 */
+  2319		shake_folio(folio);
+  2320	
+  2321		folio_lock(folio);
+  2322	
+  2323		/*
+  2324		 * We're only intended to deal with the non-Compound page here.
+  2325		 * The page cannot become compound pages again as folio has been
+  2326		 * splited and extra refcnt is held.
+  2327		 */
+  2328		WARN_ON(folio_test_large(folio));
+  2329	
+  2330		/*
+  2331		 * We use page flags to determine what action should be taken, but
+  2332		 * the flags can be modified by the error containment action.  One
+  2333		 * example is an mlocked page, where PG_mlocked is cleared by
+  2334		 * folio_remove_rmap_*() in try_to_unmap_one(). So to determine page
+  2335		 * status correctly, we save a copy of the page flags at this time.
+  2336		 */
+  2337		page_flags = folio->flags.f;
+  2338	
+  2339		/*
+  2340		 * __munlock_folio() may clear a writeback folio's LRU flag without
+  2341		 * the folio lock. We need to wait for writeback completion for this
+  2342		 * folio or it may trigger a vfs BUG while evicting inode.
+  2343		 */
+  2344		if (!folio_test_lru(folio) && !folio_test_writeback(folio))
+  2345			goto identify_page_state;
+  2346	
+  2347		/*
+  2348		 * It's very difficult to mess with pages currently under IO
+  2349		 * and in many cases impossible, so we just avoid it here.
+  2350		 */
+  2351		folio_wait_writeback(folio);
+  2352	
+  2353		/*
+  2354		 * Now take care of user space mappings.
+  2355		 * Abort on fail: __filemap_remove_folio() assumes unmapped page.
+  2356		 */
+  2357		if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
+  2358			res = action_result(pfn, MF_MSG_UNMAP_FAILED, MF_FAILED);
+  2359			goto unlock_page;
+  2360		}
+  2361	
+  2362		/*
+  2363		 * Torn down by someone else?
+  2364		 */
+  2365		if (folio_test_lru(folio) && !folio_test_swapcache(folio) &&
+  2366		    folio->mapping == NULL) {
+  2367			res = action_result(pfn, MF_MSG_TRUNCATED_LRU, MF_IGNORED);
+  2368			goto unlock_page;
+  2369		}
+  2370	
+  2371	identify_page_state:
+  2372		res = identify_page_state(pfn, p, page_flags);
+  2373		mutex_unlock(&mf_mutex);
+  2374		return res;
+  2375	unlock_page:
+  2376		folio_unlock(folio);
+  2377	unlock_mutex:
+  2378		mutex_unlock(&mf_mutex);
+  2379		return res;
+  2380	}
+  2381	EXPORT_SYMBOL_GPL(memory_failure);
+  2382	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
