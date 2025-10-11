@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C9FCCA476
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:38:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC5A1CCA476
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 18:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32EB88E000C; Sat, 11 Oct 2025 14:38:07 -0400 (EDT)
+	id 17DD98E000D; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B1CF8E0002; Sat, 11 Oct 2025 14:38:07 -0400 (EDT)
+	id 154288E0002; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1527A8E000C; Sat, 11 Oct 2025 14:38:06 -0400 (EDT)
+	id 091B68E000D; Sat, 11 Oct 2025 14:39:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF49D8E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:38:06 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DDE05A556
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:38:06 +0000 (UTC)
-X-FDA: 83986692972.18.20D2265
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B1846140007
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:38:04 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/KaeOHS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760207884; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7ECC8E0002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 14:39:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A772011ABA5
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:39:11 +0000 (UTC)
+X-FDA: 83986695702.01.A73E3F2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C5818140002
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 18:39:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pI6ooHSW;
+	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760207949; a=rsa-sha256;
 	cv=none;
-	b=hKLbu+IRZdLmvSJlOomxBgl5FwZI8jWoSSDdRirHgKlv0jwWkGQ0pG9xI81iimSTi8if89
-	IfQdafzRx71D+o4TZ+WqBiIqTjEzWUB+kAovF4BXqTy5ZjwR6Y64AN7TxMeFSJqAxm70Y9
-	d7J2j2IftDSnFQxotGU6BHNrA0O/fJI=
+	b=4LV+Ww4eXlkR6OqboNdwRZ3si4w+DEXo5XjX/rUVmoBlK4TB74SgTXQosdhR9Px+6KfOLm
+	TAuf+fhgsfJ9/FCUsikgI228r5M0LT5OdRHj7ZAiwNr87Fp5SHIzDEP61XgmEoP3voY1mH
+	+LxL4Z2RWoCZMuRhrcF0I5EUwmyAvBs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="A/KaeOHS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pI6ooHSW;
+	spf=pass (imf09.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760207884;
+	s=arc-20220608; t=1760207949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=jtW9Gk/S0XB58MzYPY4kSF93Uk8zHdFEIkXYlft3Btk=;
-	b=UoH7N5vp/bldgzuZ7jUO+3KXFg83S95BHh/IiZjtPD/6rOnUeO0vAip19BUH/YDBjqTm/k
-	fFpFmDQUK+hssbFY65bocDnKXnXnW8j5Zed8N/t1EB5E3R/ipffCUEXuL3BvAimdCUcICE
-	qrYbY2xq6/byzjXfhkLPxqCzAcr7Hgw=
+	bh=WkkjFKUK1gUeTI1ZlEihuytMR+/VJ0H0WJuNTIulvv4=;
+	b=4mlIwzq+U15lIQIk12/IHbGZqOLQpXa3RgWIvLU3lvht1jzQmWqORBdin9tJEU4Yg514cU
+	hFdbYxfvo8/X1KcWgCmz4TvfnDQup95ArLW56a7oTBcyvMcKBRb8X/y/9HS5LaoPURttJ7
+	7F83o6qpjFU8vCQ6aCzQgt6Dz2ps8Fc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E0DD6046A;
-	Sat, 11 Oct 2025 18:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15F4C4CEF4;
-	Sat, 11 Oct 2025 18:38:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3E29424C9;
+	Sat, 11 Oct 2025 18:39:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEDAC4CEF4;
+	Sat, 11 Oct 2025 18:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760207883;
-	bh=nRjeBVE7S7W06TYisUW9cjD4R1lazQGWNP3bOhZYVRM=;
+	s=k20201202; t=1760207948;
+	bh=KAgZNqLRf6v402fttGAcQQ8JplK5/o1bJIvo50jWFZw=;
 	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=A/KaeOHSyO8pGw0GJTXAgRTGeOPJ36PqqGzlUw0SrKtjaMETHbMCu+KeFizk+apVO
-	 qcr1XNzfr0/3Z9+auob7JuCLB2i0q72UT1bfLn7Hz06qXg/yVuv6WJIBZq7e7eiHsH
-	 7k1HW7I+D0as8OU1HQYbeazVqj17VSI+SX8hpTtCHiaALB3ZuZZtTjdOjdoBMslBSV
-	 2DE6ahIdy1ZSvE3Y5NQuGC1pckZ2qFDeRO5B78+irSai96FEP09GHn/YLr0pj1O877
-	 iriCzslOfyeS72lStUkGHKA+kRGhV6FfU46qLRxOMZWvbUVSnduiSin8wjBNvefSfR
-	 tcnOiO9VFL9Ow==
+	b=pI6ooHSWAe61lHVuvpCcXL83TGGhCbbfwa81ake47VktMhrjPXtsQxzrdzjpN/io4
+	 S8925DkgALTzkjQfxuSNYuyOod1Zzgkh8IuaXBsCRw1WKawzQ/CWuiTF/EjIl4KFau
+	 bFVPaYLuutmE+pHvfCyvA8ZdSFSmUvkRCsDYcIB0y0kIx7OB6Z4m/H7kJZyf5tEnCb
+	 lN62MH3wPikF66VaRESMX8WOdPdS2lpF/3CUGNNauPXxjWH9IZ7ME/ydLtVAqvas4R
+	 beMEtkiEJ/gSmZFJTOrDqmqsw0Ce2ZKbBgfVF4rqahf6+7UII/6yNFkVnp1Y3zKoK9
+	 zWySNWCdB+atA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD993809A18;
-	Sat, 11 Oct 2025 18:37:51 +0000 (UTC)
-Subject: Re: [GIT PULL] additional non-MM updates for 6.18-rc1
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 957993809A18;
+	Sat, 11 Oct 2025 18:38:56 +0000 (UTC)
+Subject: Re: [GIT PULL] slab hotfix for 6.18-rc1
 From: pr-tracker-bot@kernel.org
-In-Reply-To: <20251010150844.1ac58a5f9b89aa1e7e260ace@linux-foundation.org>
-References: <20251010150844.1ac58a5f9b89aa1e7e260ace@linux-foundation.org>
-X-PR-Tracked-List-Id: <mm-commits.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20251010150844.1ac58a5f9b89aa1e7e260ace@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-10-10-15-03
-X-PR-Tracked-Commit-Id: 90eb9ae35727a662789c850efaf225ffe5511fae
+In-Reply-To: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
+References: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
+X-PR-Tracked-List-Id: <linux-mm.kvack.org>
+X-PR-Tracked-Message-Id: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc1-hotfix
+X-PR-Tracked-Commit-Id: fd6db58867924d2bfbc4ece4b0092f697f9fc31c
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ae13bd23102805383bf04f26e0b043f3d02c9b15
-Message-Id: <176020787065.1422231.10057956075404154756.pr-tracker-bot@kernel.org>
-Date: Sat, 11 Oct 2025 18:37:50 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Stat-Signature: ruy6i9ap9nqgctzmkth1gsz9fq5fa8nt
-X-Rspamd-Queue-Id: B1846140007
-X-Rspamd-Server: rspam06
+X-PR-Merge-Commit-Id: 6bb71f0fe57bb77ca484352a66aeb02e3a8ce697
+Message-Id: <176020793526.1422231.5596134982561087922.pr-tracker-bot@kernel.org>
+Date: Sat, 11 Oct 2025 18:38:55 +0000
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Phil Auld <pauld@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1760207884-19965
-X-HE-Meta: U2FsdGVkX1/DzgQg/DLjlD6N/LF0KRLp7FT+U7E+XbPsK3Am6ZTuaWBqaLYZh9zO5C4cbqY+UaudhDtsJ513ZOTq4ZEHI0Krmzm+yG2xLiAInN2ZqqgCQPr6PWtEce1puHMNAa2EJg5EjqPjaF2UUbO+YVOpOLRsZWVSfzb1CbFL4zZZrxijzG2+3rMScD7tL7AVd1o803FX4BzeoFlJVat68lLF1xnwMg9i2b6K7SE6Y4EEZ1d567cFQnFTw6zC5v59v1f6Qj40kfDxC8YsRzca6eNJGTmcKSP0Cv3ckc+On/X/phYYQ+eowSCXmjnwLatNU92zHRvwx7Ym2WjW3aPmi/xpxt+qK+5oiz93s52T/U/0/GIdIl2O3cHD6/lD1PaG27lUB12j94xck/3+uE1AsPnBSnaebPWmkCKt8iuKikM4qrb7v+ZIuttT3U/0xBJ5+1oFifaPl1eDFlh3XPBw7cyvSwTRPupDhS6sln7Vzuh0kPEHPZMToQ6enOAruD2Yl+uFzIs+V5VPofZF78fzAky7do3UaODwAEqtD9KiZwfMtanSVrWL4PMwTzypDJ+/NxbvTsV1erzSry9qPlKygHrHLbX5pEPgrpl6o0hbE38TOB8gcHupMMxW21McN/gBDCpXUzC64PbVGai9dDdmjGd29Dw8R3JfvDc/kHSykWcM5IuaQ+3+uvSMvI9sb6AbG0yIkDbrjePw5/aKho00d/jaD+rHvhzKdhCSBDtlI73h1pLB+ySmYhwT0tUL+emKFXrHP4RQzVHRvLuc2SbdtmqNFP2kOMUS0vtGT8KzZ1jGOBZ4AYw1DnaJSDyroBeQuAm3wr0gukOXiKl2a1yl5pHXQs8YKo9y/55MlIxrsn6vz9KJsyZ2d6qeds8f+03CqewL9sKJwadVUUbiWi7PJe/3NgC9PaJ0yo8gSfcFhlO6vihJE1Nfc+zWUiq7CoZct8bab+nL6cnAWXk
- Z8WvuqO+
- flNkcCUsVhVStVXQu22rxLgu0vcXb82ItmMGQaTvWaC3YmVZDaXqgqg5Hij6HIuyWNFTJV8AxjUJnp3Y5VYMJ0EkRBc7Oa5MBRJ764oWk9+KV8tv/JMJ87X9H8m62Qde0Bfn3TmsySyX74EjRU/lPsfR7jN3PM8EtX7tPoD0Jrru6GFtZQ9m26x5uVZGzIstR2K5G3ZZSSeiKOTJDecuSorn7mbqERDwMMpymxjNBaE01hp1zNKvjbiwleCHp3Ov0vTlnGgs8jubCbU3g4qntBILQa00UFxnIBWcTzdMehc1PRBPNAcnprDjMLt5TaLtb0pgG+H60cSpR2OT5UuQkOYPMMbeLJhP+oLTaYoEkvhd1udCPrNlKUHgZnWrfnE+BBkjiU+VqiDaZ3vs=
+X-Stat-Signature: mzuhe3ae8m5rm5wzgp94a61hpzmdbc1q
+X-Rspamd-Queue-Id: C5818140002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760207949-875807
+X-HE-Meta: U2FsdGVkX1/d0Y9t/SXBkfHTwXEJHeEE/D1js6bmeill976HrScITsBwOUrM5CADmt6gFqYHU6gJthK9qUBXlP0ogP/hxQYZ+Lw+OSgd2orb391PnnZW4xc/H4WTidctXiRxpXNJYIj50WUailTRey0BFNYRO9KEko1yG5++hnuGwOmkBeP2C6z9y3oW0AG4aJHGD88fFsfwQ5nsPsqc7nuroL5CjgkKl/gBp3KYaactAQO8wNxR7TjO9tzWp8C0hjWtHnwjDmJFDA2HbQq+qzTq54A0MsZ9raQzp/YKBIfAjRWtjv8azR8QkVpSTLbIfxKxYSE6iCODUTJg38B92xPddU5YY9a5fRmcGKuHepX8KQBuV9sUt0qwk0uOYbnXA6tO1n3I6w3jMi33OJQ6FLQl61Jxcuorbg4fE2kE7ZGdkwJpb20rzrZHI8oeAb6V7sKVrcQAyq2oFr025fcc7On79otFdp41jlWEEnhgaR+MrpO5gSJV6aSqmkrRKxABwHCUs9lBvY3c8D5++anEeWvWoRZdauujueju1hG3cFL3LSo4Gq12uRWKOMKddoOiD4EQkOOEHxzamEzljDlXUg9WQMwBa4FGzLT1yBV9IQLUy/IWvwTfRyFSIWIh+ll5le3dXRVCLxKKwX8/HqmiN8Dg4GRyXnJ4/1TXmLEehgFjLzZYFZKX2tipp+PwRHmAXTF/Echl89JECnjhUWUQKmVQLUrDtIVXXVLsyvTAjVj72+WEzZhhVt08n3rU6CIFi9SBsiG2mg+t3tDKjt0Jz00e9EBmkZDFQtuQlronuqAL+GfSaebxPNwWUohTG8GyehcYbOg6VjgjkcWaJW3cevHWx7kOi6xbXBcBtvXYcAk06QEH5huURO4p89qMCKrkBwBL/e+mShi0nXlgmu8z0XPi+7kGx/n7vz3F3EV8cfByfNMfVDQDvLg3saE19Fx6hobyHr12hCRnRNIyGi5
+ M83J7iCW
+ itBQUc8Z7MKh1RA9MN3OLSpJGTYpUQ+QvUYDMxS3bshDfCPbeLuKvSXER7cSHgnWbAkzmuP5eQBf+El3vJ42gx4wJOMdzkobQmgR4HHCleKGg8CIZgKT6hjE0BZNWUpDoa6xK12sS36UGcA7iebCY6CJYc4YwDNpdnQ/c86t0svCzbpNNcYZGmXU5JgMsy/zPXNpGHtJauL28ZlqkCa0E7XU/FT6AXkPomXwmI2FTkm2Pe5MwykfJa0BIgJ44w7DPNbIxUrAndA1yxv6oEJLJPmQvyuVBoRCBn865fFR1eCO3ajI8cRbdHuRGfYEL/F+nu069
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,12 +97,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Fri, 10 Oct 2025 15:08:44 -0700:
+The pull request you sent on Sat, 11 Oct 2025 11:01:40 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stable-2025-10-10-15-03
+> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc1-hotfix
 
 has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ae13bd23102805383bf04f26e0b043f3d02c9b15
+https://git.kernel.org/torvalds/c/6bb71f0fe57bb77ca484352a66aeb02e3a8ce697
 
 Thank you!
 
