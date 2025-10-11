@@ -4,144 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E703CCD183
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 08:45:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB30ACCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 09:00:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49F788E000E; Sat, 11 Oct 2025 04:45:58 -0400 (EDT)
+	id 18F6C8E0021; Sat, 11 Oct 2025 05:00:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 477598E0005; Sat, 11 Oct 2025 04:45:58 -0400 (EDT)
+	id 1667B8E0005; Sat, 11 Oct 2025 05:00:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38CB08E000E; Sat, 11 Oct 2025 04:45:58 -0400 (EDT)
+	id 0551B8E0021; Sat, 11 Oct 2025 05:00:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23DAC8E0005
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 04:45:58 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88EBB11A75C
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 08:45:57 +0000 (UTC)
-X-FDA: 83985200754.20.73919CC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2F2A780008
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 08:45:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AIKQhx7c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4wrBLIUc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AIKQhx7c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4wrBLIUc;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E304D8E0005
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 05:00:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 60E951A05CA
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:00:44 +0000 (UTC)
+X-FDA: 83985238008.08.3296E83
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7FF5F1C000A
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:00:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OfxBEWPv;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760172355;
+	s=arc-20220608; t=1760173242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RkiZAPfAoO2k8f8DYL/BSYfMmFd/L7etyt17voz3Rtk=;
-	b=CI2F22jv4PWmgneiEKidGpuI0c00khNnDmCAFFVhFWBS6RU2WaVIjqvk2YKIHvkSJHNuJD
-	3zGrdIFHpOjC25lUixrZki+RatB0tBV5dKSUCn1FI1b/LZEs70zPh6adrl9Rs3InHvslLj
-	xxXb6ZUQkaXMyY74xU+FdgSkbjwlu2Y=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AIKQhx7c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4wrBLIUc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AIKQhx7c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4wrBLIUc;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760172355; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QULWKdMmT0SjmQmKhqmiaBMuzwkTFLfjlsmYFW9HRtM=;
+	b=XnVaz5bXVof61xizmfebX7aKgahQAmbyGU7Q66I9H0bkFYpfJB6Ltn8j1qsmUND7c+HNRJ
+	F++TCLN5trcDX23HNZDxBdiKFmMtI9mBLKI191QP91y0ZI5YzqWAl9ndm0lknk6WQGh6Po
+	ReXZYik9igsJoEh0s7pCz1yy1KJ9PO8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760173242; a=rsa-sha256;
 	cv=none;
-	b=CWoj/r8op3VIWmdJ3yp5xOaC4yH8Fpx+6hRxkl0GCYURPgGFu4XeKjuVlcmmJDALkyLl3K
-	Uclp9xib6LDuQ2dnsFGGAwjO/ZJDaAaZvET10x6D7RzNoOwUZtkoPz/VtkkAiZr1CI1krP
-	8hPDJkkWF+iBMSmW71+K7IvmQqvwFD8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2ABA62121D;
-	Sat, 11 Oct 2025 08:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760172353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RkiZAPfAoO2k8f8DYL/BSYfMmFd/L7etyt17voz3Rtk=;
-	b=AIKQhx7ckTirsOU68KWn8yDe/eyEsVqHI6ChyldowkisZjFAxTF6Pg76zl1glZpuMv3FyZ
-	t5XHF6+g8+GZTueYrUrRUZlQyYkfHWo+wM9zL4AdiyEXwkzVC1NUQNSKOp5u+D136P0W8S
-	k1EsTY/sPuXpcrLyFzE1+HAUZtCSGYg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760172353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RkiZAPfAoO2k8f8DYL/BSYfMmFd/L7etyt17voz3Rtk=;
-	b=4wrBLIUcznfnH8+pKudmkb4vvtjo4Bam8x+1V+NIPjOB7Rcr6FatG6tKsxJJmvVVpCvErx
-	3bkxYcoAY1P5hQBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760172353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RkiZAPfAoO2k8f8DYL/BSYfMmFd/L7etyt17voz3Rtk=;
-	b=AIKQhx7ckTirsOU68KWn8yDe/eyEsVqHI6ChyldowkisZjFAxTF6Pg76zl1glZpuMv3FyZ
-	t5XHF6+g8+GZTueYrUrRUZlQyYkfHWo+wM9zL4AdiyEXwkzVC1NUQNSKOp5u+D136P0W8S
-	k1EsTY/sPuXpcrLyFzE1+HAUZtCSGYg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760172353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RkiZAPfAoO2k8f8DYL/BSYfMmFd/L7etyt17voz3Rtk=;
-	b=4wrBLIUcznfnH8+pKudmkb4vvtjo4Bam8x+1V+NIPjOB7Rcr6FatG6tKsxJJmvVVpCvErx
-	3bkxYcoAY1P5hQBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1585C13693;
-	Sat, 11 Oct 2025 08:45:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QI/kBEEZ6mi3CgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sat, 11 Oct 2025 08:45:53 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Sat, 11 Oct 2025 10:45:41 +0200
-Subject: [PATCH] slab: fix barn NULL pointer dereference on memoryless
- nodes
+	b=nf4qDDWNf7eNUXQQSR+GVdDlBjQL7n3kHUVFQEc2SCam191yyQW3/K9MhcoBLCx0Y3ZvJB
+	qHmSp0xEkEe3xyiaDJWrsrWvRRHwG7fXhunGM9cpO+Td/UswIWmsHSC8/24jG5lHQtmop/
+	Ysige7WuFzXq38DQ7phCRFB2KdTAucA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OfxBEWPv;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760173241; x=1791709241;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NmICyN7z5pd3yUB5P/aHf1eTN2vJpiuLtAiyWdk719s=;
+  b=OfxBEWPvucB9HGTXoh9O9ARboa7XhHXkYDKAdBAcM2ghE/o5COWTeesK
+   9VpElkak2p/kYuooLPu2IYHFe+fmiRi0HB5SNbUdTMyDSRl2XOxu3zFbC
+   APavLQjNJx3sP0f0Y8ERYdEMPVA0WSkAojrY8DoHdAzkJ2dpYrsdCpKmT
+   xFkzPjh9vCvMW5PF0xkTMYUoTCL2TWWAaDNzv54MUGW/Nw6cS3EJOVf7e
+   YWxAXvE5kl6hr+nG/XWkLitTOD86emAK3SqkXcnr7jSkXx/OPwH8pPXuS
+   JxYS2MGiiTrZldY/rq1pXyiY01p6agAe1GbJxCWM+x7XbOd1aDhq1eai1
+   Q==;
+X-CSE-ConnectionGUID: QLxFpnGUSiG8c69pyFMxcA==
+X-CSE-MsgGUID: 2+0abBhgSNaocqDHDFQ1uQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="62277606"
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="62277606"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2025 02:00:40 -0700
+X-CSE-ConnectionGUID: 4mnZvWzqSiqoAc10AJdWXw==
+X-CSE-MsgGUID: GTrHiaj5QCSB0FokPuEspA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="181590217"
+Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 11 Oct 2025 02:00:34 -0700
+Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v7VSq-0003f5-06;
+	Sat, 11 Oct 2025 09:00:32 +0000
+Date: Sat, 11 Oct 2025 17:00:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, david@redhat.com,
+	jane.chu@oracle.com, kernel@pankajraghav.com,
+	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com
+Cc: oe-kbuild-all@lists.linux.dev, ziy@nvidia.com,
+	akpm@linux-foundation.org, mcgrof@kernel.org,
+	nao.horiguchi@gmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/huge_memory: do not change split_huge_page*()
+ target order silently.
+Message-ID: <202510111633.onu4Yaey-lkp@intel.com>
+References: <20251010173906.3128789-2-ziy@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251011-null-barn-fix-v1-1-5fe5af5b8fd8@suse.cz>
-X-B4-Tracking: v=1; b=H4sIADQZ6mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDA0ND3bzSnBzdpMSiPN20zArdRGNzM1MLM6MUgzQTJaCegqJUoDDYvOj
- Y2loArihwS18AAAA=
-X-Change-ID: 20251011-null-barn-fix-a3765862d0f4
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
- Suren Baghdasaryan <surenb@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Linus Torvalds <torvalds@linux-foundation.org>, 
- Phil Auld <pauld@redhat.com>, Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11153; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=eSKr9IBJV+Ys3CLgeRLf2XJ08eOImR5qejaCPGUWui4=;
- b=owGbwMvMwMG4+8GG0kuuHbMYT6slMWS8krT5sVz+13z/Wk6DckWv1p+JzQ8/3Jva9EbNOb93p
- 5Lxt+ryTkZ/FgZGDgZLMUWW6t0nHEVnKntM8/D9CDOIlQlkirRIAwMQsDDw5SbmlRrpGOmZahvq
- GRrqAJkMXJwCMNUTGtj/ynMummQ1z/Ssqmq59HLv76Ki2t5fFPduuKaSOpfrnvq5hDcefNl3Lqd
- +PlZ6bLnfQwvPWO1nZ/kK3MWPbFCfcT955UO9Od0cEzwP/dMtfvr50QT25bv63/om/BJ5fPzwU7
- f3T8Pbas08r1zvln52e7+mgn3dfaeXiztXbXnyZuEj9/3VjZmxfN2TbaZvDNdM1Wy/3bczwzng3
- MzXLBnmT7tdZrLKZKo9/pvc7aHRPPPLjHJVbrYPiyedVa272ceqVq2SomNd/VI56OWHK1/mnM9s
- /v7wzuslHeLfjuhOPeqWqV7pGOolVZB1aMb8lc63Ps53nHZx2wUeZbeVHe7se9ivnQ7w+SYl62y
- 7oOKfJgA=
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Stat-Signature: o5dcgstgywc4r61j9kurz3ss66y8ytkh
-X-Rspamd-Queue-Id: 2F2A780008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251010173906.3128789-2-ziy@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: grwmutephdtrx1bdq61gipwcukd7n1ha
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760172354-737056
-X-HE-Meta: U2FsdGVkX19bflYxQTL1nwlbhX+9DkVVZiCrois0/ZfWK/vcljCLTvH0O1yifFmPW5Ql0QzDiTxOyralWmHwCL9F8101pHnPTtG2vWVAolbINX+pAjNo4ZOTrqAMDP+5nrgKGgn6delydy9wH08TZkg8qdqCnFcJckDPH+5m8Req1IeAeRExutNi858V2YRBdYc7/s/NMU0fZQKhryXUYNfGca5oqo0ZKMZw8JKqrdXzQR8dlujZ2cRROlJc+yNvHZHq8oMH9AqoLNESGbbo0Zmot/MlgkrCTgcEpoHxYXuogF3J3UWMMs8dEUj2i3oJp2sCtMlU3oHoGOnBFuGlgqQmXcTrlov7UhXX8REd+kflwOEOWSu7UOyUH4OmQ40xIgTCFpGUeNhtEJfLCTmcxfOJ+6IVZIY4IfRBq3Z49YPamX1eZZdQTVrgoWJQUYcJl0j5Td77yxxzMA3IGPao6HDEO7GA4wsaH5YALgzg+h+dj2bZ9Ds9riJmV97waUGFSnfcYORx4ULBKtJbWhodGiEo/x8NfEYE9N+jmxpdNoiLpIRFFZoye9ITTvMEfaSVELuENhNMmsjwPo+2XHUatZpT0zFctVsAUE/RbqQ76cGdMazBf7Vwz1UlpWCvxfiCVz7XbNyvjrP5cepxbWaA9i1V0A+QuqU/Uj3xLgdQCUhCLhgYv7aKFugacQ1lNLe8tkFrCxjZhJXj+hPfDdT8rxCxWVYPjONgHDwzd3JYqqqnWWyvphrVPA3jEa/8U+4fkl8PtiRNimYV6BLd23Sg1wt+m+4FWmS6b/gKaXwNuI2rEY5GSd4EntwlQKT1+o+YJzyKUKj1xVCME1dLXP6/XLfjWnOUei4X2SyJjjTIB73H1wA6ZRgmyXd57cBHl+a7Mib9xuNahGQabkDZdmOCGgTzl4uU/iqqJy2wXawpC9/Ds05QRn07YFgBBdciebj4sFLSCrGdY0dGtSCCU6R
- j3UHk7eb
- 4/fNBp9xYeNfHgUJCoPeQP8g9OUZAy2qvKo+Kt+zIT35eqSb0XR1Epge3yp1lacRx+oxRF1/tvkrRpah+/VawWVrJN2S5jxYEGV9zRGXGMlo+kyexprLf/DjJwO7BXxN3eSncH8OAl8vP+nrp9AzmslVP0NmdmdGt98dXbZbnqkqRWt1uHsHGUwh/4gOZ+1hYaph88KS0rPvPKg11Uyi9QGRbWbzAco9NduOEPyG2MOW0lpvJWvsdtLLgLjaLxOtXl5ZwSL5+//09k9sy2XNL/LM9Qa7vgm4U6sfOIm6wq6iijoMQ2FNrfKNXUc3hkdaDUBEgOxHw0RkJANTQJrrmU6Oo+GxZ8VMGVSQyZkG2vZTk/+ll/mWZCCqdd+qeqpqjWdbz
+X-Rspamd-Queue-Id: 7FF5F1C000A
+X-HE-Tag: 1760173241-387563
+X-HE-Meta: U2FsdGVkX1+aMUMwC4iMZxl1sdS4Mkh+bOpjqhyPeYHN2id+gtvS5x4pg4LlIuktCAKmdlc6toaUPrBWGrDEhfIjt98Egv054vFn+OOUXWv5NkMwplkWShGAcfzykphlLXKEyKhxKT94jqBq1eLFVowBEcKA8kfpwIAJ4ey98wTJFOab/PWpw39u1WMPLfNK7odGX4f+9cNAU0DYXreyjgigd1ERSkxOv6yy4Rkbzg6y3FsGWU9MdfpCYCbsJxvauGPvcNhdqZyL6OMcdxgu8aoNq5bQRbztuj6pSWhsM6hndPl/Y9pO2EJVYa3CqqiDd+jc2my6mvI89FWIYGOLFgwTscpjOGRTHOkT2IBPq90bU4OKCeDygl2B4rGYgpFEnIeSF4P3+4+91sPYC0YNRsLP5dGd0EDLEG6tDGu5edmrFafM6Vos0J6sYKM+391zfccSszR3hELEHf5ANDeqIeTCbFlyynd4lRmEid0SPVxScTsRzRnjoWz0i164Puk0wF5b9GKtwV4Sg+GZFFLp0vxVBJMPD+T7zNxqoQ9bNtupH3cOFNwF2/rcCoQWybuQpSBaRCnCCTHv/wBRtlEjkBVN6tkuQPFynwVZxtfFfe3NiJXXXbhW7djIaD68XSXc27my9qibTWSMWQW+K9GvadQVLwXNhugllhEoy7uRebj7FolqiwLePmHYXLq9BhsG3EUfnv8to6z767KHJdzPw/q6wizSbZ9WHHfmkEtxpp5JociJsb9uZAZOg+IyujYAD+7BKdMTUMmmlvY1d2jJ+ANqTrUBlkvPnr3lZ7Has3wyzUQ0Uv8J76jJaTmB5bzXJ3IN6aprAX60T4dWJZ2LEv2uJQrsX7yNgMacaiXW3lrTZBgHvUjN6HxJVAVQ6iyEHK5pQQ5KJG6tUUIh3QnzJMcAaSyo64AZvOqnL9mafw23hrIiWW1Mbxh+0ybnfgANiMnZHg7zL0QxhRmC41Z
+ dlzsv9Ww
+ CuYbfuBT8a7K2Gv+pPj7chEq37+xxZ0NGhFtgkC7p1uYyIs/OA2aH/myWoC73qpD73MAu9Eahwx+DaUwARh7KnfY+m4J47SP5MVa79qsrMnvgITwh9or6jVq5r6GwN+rNSJk+K2kFXGyOPr0mmwbFLsOvkaPEl8lir5VuwnncLI/jSlX/wW/6bF+HooAMNlRM0CzTH11sTNEiaIJe5NgPJQH86KSYkAa1hBNhkrsuuuEHToJdj2BREcWz16jEjD0uxW//gmEzTVkOMrBRRECNs74I8ugxMx5DHs3VuUqsbLdvIYiMhI0cPSnnEzhLXuAvpLAmmToxbdYL61532/agV3brXsz/Cy0sOMYJeKvOe7GlEioCZ/FdJRXjQqHWPYGkQqPjf3r7zDHsBkXz3AnPKPGNCePOk1tnHTP1bLLBxUO1QvDnNvpiLj7Gnv3tH32WGE4c7fMHLVeI2l80d6pXDGWQ/7jxLf1fm2bRYNlh+jfRnNLtiGNpBPtqwkn+yIk1WTg0ONWbauY/jg8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,317 +121,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Phil reported a boot failure once sheaves become used in commits
-59faa4da7cd4 ("maple_tree: use percpu sheaves for maple_node_cache") and
-3accabda4da1 ("mm, vma: use percpu sheaves for vm_area_struct cache"):
+Hi Zi,
 
- BUG: kernel NULL pointer dereference, address: 0000000000000040
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 21 UID: 0 PID: 818 Comm: kworker/u398:0 Not tainted 6.17.0-rc3.slab+ #5 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.26.0 07/30/2025
- RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
- Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
- RSP: 0018:ffffd2d10950bdb0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff8a775dab74b0 RCX: 00000000ffffffff
- RDX: 0000000000000cc0 RSI: ffff8a6800804000 RDI: ffff8a680004e300
- RBP: ffffd2d10950be40 R08: 0000000000000060 R09: ffffffffb9367388
- R10: 00000000000149e8 R11: ffff8a6f87a38000 R12: 0000000000000cc0
- R13: 0000000000000cc0 R14: ffff8a680004e300 R15: 00000000000000c0
- FS:  0000000000000000(0000) GS:ffff8a77a3541000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000040 CR3: 0000000e1aa24000 CR4: 00000000003506f0
- Call Trace:
-  <TASK>
-  ? srso_return_thunk+0x5/0x5f
-  ? vm_area_alloc+0x1e/0x60
-  kmem_cache_alloc_noprof+0x4ec/0x5b0
-  vm_area_alloc+0x1e/0x60
-  create_init_stack_vma+0x26/0x210
-  alloc_bprm+0x139/0x200
-  kernel_execve+0x4a/0x140
-  call_usermodehelper_exec_async+0xd0/0x190
-  ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-  ret_from_fork+0xf0/0x110
-  ? __pfx_call_usermodehelper_exec_async+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in:
- CR2: 0000000000000040
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
- Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
- RSP: 0018:ffffd2d10950bdb0 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff8a775dab74b0 RCX: 00000000ffffffff
- RDX: 0000000000000cc0 RSI: ffff8a6800804000 RDI: ffff8a680004e300
- RBP: ffffd2d10950be40 R08: 0000000000000060 R09: ffffffffb9367388
- R10: 00000000000149e8 R11: ffff8a6f87a38000 R12: 0000000000000cc0
- R13: 0000000000000cc0 R14: ffff8a680004e300 R15: 00000000000000c0
- FS:  0000000000000000(0000) GS:ffff8a77a3541000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000040 CR3: 0000000e1aa24000 CR4: 00000000003506f0
- Kernel panic - not syncing: Fatal exception
- Kernel Offset: 0x36a00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
- ---[ end Kernel panic - not syncing: Fatal exception ]---
+kernel test robot noticed the following build errors:
 
-And noted "this is an AMD EPYC 7401 with 8 NUMA nodes configured such
-that memory is only on 2 of them."
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.17 next-20251010]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
- # numactl --hardware
- available: 8 nodes (0-7)
- node 0 cpus: 0 8 16 24 32 40 48 56 64 72 80 88
- node 0 size: 0 MB
- node 0 free: 0 MB
- node 1 cpus: 2 10 18 26 34 42 50 58 66 74 82 90
- node 1 size: 31584 MB
- node 1 free: 30397 MB
- node 2 cpus: 4 12 20 28 36 44 52 60 68 76 84 92
- node 2 size: 0 MB
- node 2 free: 0 MB
- node 3 cpus: 6 14 22 30 38 46 54 62 70 78 86 94
- node 3 size: 0 MB
- node 3 free: 0 MB
- node 4 cpus: 1 9 17 25 33 41 49 57 65 73 81 89
- node 4 size: 0 MB
- node 4 free: 0 MB
- node 5 cpus: 3 11 19 27 35 43 51 59 67 75 83 91
- node 5 size: 32214 MB
- node 5 free: 31625 MB
- node 6 cpus: 5 13 21 29 37 45 53 61 69 77 85 93
- node 6 size: 0 MB
- node 6 free: 0 MB
- node 7 cpus: 7 15 23 31 39 47 55 63 71 79 87 95
- node 7 size: 0 MB
- node 7 free: 0 MB
+url:    https://github.com/intel-lab-lkp/linux/commits/Zi-Yan/mm-huge_memory-do-not-change-split_huge_page-target-order-silently/20251011-014145
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20251010173906.3128789-2-ziy%40nvidia.com
+patch subject: [PATCH 1/2] mm/huge_memory: do not change split_huge_page*() target order silently.
+config: parisc-allnoconfig (https://download.01.org/0day-ci/archive/20251011/202510111633.onu4Yaey-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251011/202510111633.onu4Yaey-lkp@intel.com/reproduce)
 
-Linus decoded the stacktrace to get_barn() and get_node() and determined
-that kmem_cache->node[numa_mem_id()] is NULL.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510111633.onu4Yaey-lkp@intel.com/
 
-The problem is due to a wrong assumption that memoryless nodes only
-exist on systems with CONFIG_HAVE_MEMORYLESS_NODES, where numa_mem_id()
-points to the nearest node that has memory. SLUB has been allocating its
-kmem_cache_node structures only on nodes with memory and so it does with
-struct node_barn.
+All errors (new ones prefixed by >>):
 
-For kmem_cache_node, get_partial_node() checks if get_node() result is
-not NULL, which I assumed was for protection from a bogus node id passed
-to kmalloc_node() but apparently it's also for systems where
-numa_mem_id() (used when no specific node is given) might return a
-memoryless node.
+   mm/truncate.c: In function 'truncate_inode_partial_folio':
+>> mm/truncate.c:229:14: error: too many arguments to function 'try_folio_split'; expected 3, have 4
+     229 |         if (!try_folio_split(folio, split_at, NULL, min_order)) {
+         |              ^~~~~~~~~~~~~~~                        ~~~~~~~~~
+   In file included from include/linux/mm.h:1081,
+                    from arch/parisc/include/asm/cacheflush.h:5,
+                    from include/linux/cacheflush.h:5,
+                    from include/linux/highmem.h:8,
+                    from include/linux/bvec.h:10,
+                    from include/linux/blk_types.h:10,
+                    from include/linux/writeback.h:13,
+                    from include/linux/backing-dev.h:16,
+                    from mm/truncate.c:12:
+   include/linux/huge_mm.h:588:19: note: declared here
+     588 | static inline int try_folio_split(struct folio *folio, struct page *page,
+         |                   ^~~~~~~~~~~~~~~
+   mm/truncate.c:259:25: error: too many arguments to function 'try_folio_split'; expected 3, have 4
+     259 |                         try_folio_split(folio2, split_at2, NULL, min_order);
+         |                         ^~~~~~~~~~~~~~~                          ~~~~~~~~~
+   include/linux/huge_mm.h:588:19: note: declared here
+     588 | static inline int try_folio_split(struct folio *folio, struct page *page,
+         |                   ^~~~~~~~~~~~~~~
 
-Fix the sheaves code the same way by checking the result of get_node()
-and bailing out if it's NULL. Note that cpus on such memoryless nodes
-will have degraded sheaves performance, which can be improved later,
-preferably by making numa_mem_id() work properly on such systems.
 
-Fixes: 2d517aa09bbc ("slab: add opt-in caching layer of percpu sheaves")
-Reported-and-tested-by: Phil Auld <pauld@redhat.com>
-Closes: https://lore.kernel.org/all/20251010151116.GA436967@pauld.westford.csb/
-Analyzed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-%3Dwg1xK%2BBr%3DFJ5QipVhzCvq7uQVPt5Prze6HDhQQ%3DQD_BcQ@mail.gmail.com/
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/slub.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 51 insertions(+), 14 deletions(-)
+vim +/try_folio_split +229 mm/truncate.c
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 135c408e0515..b1f15598fbfd 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -504,10 +504,18 @@ static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
- 	return s->node[node];
- }
- 
--/* Get the barn of the current cpu's memory node */
-+/*
-+ * Get the barn of the current cpu's closest memory node. It may not exist on
-+ * systems with memoryless nodes but without CONFIG_HAVE_MEMORYLESS_NODES
-+ */
- static inline struct node_barn *get_barn(struct kmem_cache *s)
- {
--	return get_node(s, numa_mem_id())->barn;
-+	struct kmem_cache_node *n = get_node(s, numa_mem_id());
-+
-+	if (!n)
-+		return NULL;
-+
-+	return n->barn;
- }
- 
- /*
-@@ -4982,6 +4990,10 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	}
- 
- 	barn = get_barn(s);
-+	if (!barn) {
-+		local_unlock(&s->cpu_sheaves->lock);
-+		return NULL;
-+	}
- 
- 	full = barn_replace_empty_sheaf(barn, pcs->main);
- 
-@@ -5153,13 +5165,20 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 	if (unlikely(pcs->main->size == 0)) {
- 
- 		struct slab_sheaf *full;
-+		struct node_barn *barn;
- 
- 		if (pcs->spare && pcs->spare->size > 0) {
- 			swap(pcs->main, pcs->spare);
- 			goto do_alloc;
- 		}
- 
--		full = barn_replace_empty_sheaf(get_barn(s), pcs->main);
-+		barn = get_barn(s);
-+		if (!barn) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			return allocated;
-+		}
-+
-+		full = barn_replace_empty_sheaf(barn, pcs->main);
- 
- 		if (full) {
- 			stat(s, BARN_GET);
-@@ -5314,6 +5333,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *sheaf = NULL;
-+	struct node_barn *barn;
- 
- 	if (unlikely(size > s->sheaf_capacity)) {
- 
-@@ -5355,8 +5375,11 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
- 		pcs->spare = NULL;
- 		stat(s, SHEAF_PREFILL_FAST);
- 	} else {
-+		barn = get_barn(s);
-+
- 		stat(s, SHEAF_PREFILL_SLOW);
--		sheaf = barn_get_full_or_empty_sheaf(get_barn(s));
-+		if (barn)
-+			sheaf = barn_get_full_or_empty_sheaf(barn);
- 		if (sheaf && sheaf->size)
- 			stat(s, BARN_GET);
- 		else
-@@ -5426,7 +5449,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
- 	 * If the barn has too many full sheaves or we fail to refill the sheaf,
- 	 * simply flush and free it.
- 	 */
--	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
-+	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
- 	    refill_sheaf(s, sheaf, gfp)) {
- 		sheaf_flush_unused(s, sheaf);
- 		free_empty_sheaf(s, sheaf);
-@@ -5943,10 +5966,9 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
-  * put the full sheaf there.
-  */
- static void __pcs_install_empty_sheaf(struct kmem_cache *s,
--		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty)
-+		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
-+		struct node_barn *barn)
- {
--	struct node_barn *barn;
--
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
- 	/* This is what we expect to find if nobody interrupted us. */
-@@ -5956,8 +5978,6 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
- 		return;
- 	}
- 
--	barn = get_barn(s);
--
- 	/*
- 	 * Unlikely because if the main sheaf had space, we would have just
- 	 * freed to it. Get rid of our empty sheaf.
-@@ -6002,6 +6022,11 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
- 	barn = get_barn(s);
-+	if (!barn) {
-+		local_unlock(&s->cpu_sheaves->lock);
-+		return NULL;
-+	}
-+
- 	put_fail = false;
- 
- 	if (!pcs->spare) {
-@@ -6084,7 +6109,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
- 	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
--	__pcs_install_empty_sheaf(s, pcs, empty);
-+	__pcs_install_empty_sheaf(s, pcs, empty, barn);
- 
- 	return pcs;
- }
-@@ -6121,8 +6146,9 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
- 
- static void rcu_free_sheaf(struct rcu_head *head)
- {
-+	struct kmem_cache_node *n;
- 	struct slab_sheaf *sheaf;
--	struct node_barn *barn;
-+	struct node_barn *barn = NULL;
- 	struct kmem_cache *s;
- 
- 	sheaf = container_of(head, struct slab_sheaf, rcu_head);
-@@ -6139,7 +6165,11 @@ static void rcu_free_sheaf(struct rcu_head *head)
- 	 */
- 	__rcu_free_sheaf_prepare(s, sheaf);
- 
--	barn = get_node(s, sheaf->node)->barn;
-+	n = get_node(s, sheaf->node);
-+	if (!n)
-+		goto flush;
-+
-+	barn = n->barn;
- 
- 	/* due to slab_free_hook() */
- 	if (unlikely(sheaf->size == 0))
-@@ -6157,11 +6187,12 @@ static void rcu_free_sheaf(struct rcu_head *head)
- 		return;
- 	}
- 
-+flush:
- 	stat(s, BARN_PUT_FAIL);
- 	sheaf_flush_unused(s, sheaf);
- 
- empty:
--	if (data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-+	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
- 		barn_put_empty_sheaf(barn, sheaf);
- 		return;
- 	}
-@@ -6191,6 +6222,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
- 		}
- 
- 		barn = get_barn(s);
-+		if (!barn) {
-+			local_unlock(&s->cpu_sheaves->lock);
-+			goto fail;
-+		}
- 
- 		empty = barn_get_empty_sheaf(barn);
- 
-@@ -6304,6 +6339,8 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		goto do_free;
- 
- 	barn = get_barn(s);
-+	if (!barn)
-+		goto no_empty;
- 
- 	if (!pcs->spare) {
- 		empty = barn_get_empty_sheaf(barn);
+   179	
+   180	/*
+   181	 * Handle partial folios.  The folio may be entirely within the
+   182	 * range if a split has raced with us.  If not, we zero the part of the
+   183	 * folio that's within the [start, end] range, and then split the folio if
+   184	 * it's large.  split_page_range() will discard pages which now lie beyond
+   185	 * i_size, and we rely on the caller to discard pages which lie within a
+   186	 * newly created hole.
+   187	 *
+   188	 * Returns false if splitting failed so the caller can avoid
+   189	 * discarding the entire folio which is stubbornly unsplit.
+   190	 */
+   191	bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+   192	{
+   193		loff_t pos = folio_pos(folio);
+   194		size_t size = folio_size(folio);
+   195		unsigned int offset, length;
+   196		struct page *split_at, *split_at2;
+   197		unsigned int min_order;
+   198	
+   199		if (pos < start)
+   200			offset = start - pos;
+   201		else
+   202			offset = 0;
+   203		if (pos + size <= (u64)end)
+   204			length = size - offset;
+   205		else
+   206			length = end + 1 - pos - offset;
+   207	
+   208		folio_wait_writeback(folio);
+   209		if (length == size) {
+   210			truncate_inode_folio(folio->mapping, folio);
+   211			return true;
+   212		}
+   213	
+   214		/*
+   215		 * We may be zeroing pages we're about to discard, but it avoids
+   216		 * doing a complex calculation here, and then doing the zeroing
+   217		 * anyway if the page split fails.
+   218		 */
+   219		if (!mapping_inaccessible(folio->mapping))
+   220			folio_zero_range(folio, offset, length);
+   221	
+   222		if (folio_needs_release(folio))
+   223			folio_invalidate(folio, offset, length);
+   224		if (!folio_test_large(folio))
+   225			return true;
+   226	
+   227		min_order = mapping_min_folio_order(folio->mapping);
+   228		split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+ > 229		if (!try_folio_split(folio, split_at, NULL, min_order)) {
+   230			/*
+   231			 * try to split at offset + length to make sure folios within
+   232			 * the range can be dropped, especially to avoid memory waste
+   233			 * for shmem truncate
+   234			 */
+   235			struct folio *folio2;
+   236	
+   237			if (offset + length == size)
+   238				goto no_split;
+   239	
+   240			split_at2 = folio_page(folio,
+   241					PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+   242			folio2 = page_folio(split_at2);
+   243	
+   244			if (!folio_try_get(folio2))
+   245				goto no_split;
+   246	
+   247			if (!folio_test_large(folio2))
+   248				goto out;
+   249	
+   250			if (!folio_trylock(folio2))
+   251				goto out;
+   252	
+   253			/*
+   254			 * make sure folio2 is large and does not change its mapping.
+   255			 * Its split result does not matter here.
+   256			 */
+   257			if (folio_test_large(folio2) &&
+   258			    folio2->mapping == folio->mapping)
+   259				try_folio_split(folio2, split_at2, NULL, min_order);
+   260	
+   261			folio_unlock(folio2);
+   262	out:
+   263			folio_put(folio2);
+   264	no_split:
+   265			return true;
+   266		}
+   267		if (folio_test_dirty(folio))
+   268			return false;
+   269		truncate_inode_folio(folio->mapping, folio);
+   270		return true;
+   271	}
+   272	
 
----
-base-commit: f76b1683d16dcd5299a9b67d8ef45fe8d29cb2e6
-change-id: 20251011-null-barn-fix-a3765862d0f4
-
-Best regards,
 -- 
-Vlastimil Babka <vbabka@suse.cz>
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
