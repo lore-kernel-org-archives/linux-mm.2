@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D503CCD183
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 06:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34EAECCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 06:34:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DBB28E0035; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
+	id 7974A8E0014; Sat, 11 Oct 2025 02:34:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98A888E000E; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
+	id 7485F8E000E; Sat, 11 Oct 2025 02:34:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0878E0035; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
+	id 65E3E8E0014; Sat, 11 Oct 2025 02:34:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 775528E000E
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:30:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0933CC055A
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:30:35 +0000 (UTC)
-X-FDA: 83984859630.16.CA96E1C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C1DBD160006
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:30:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KlZ3fPib;
-	spf=pass (imf08.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 556148E000E
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 02:34:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CADE05958C
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:34:35 +0000 (UTC)
+X-FDA: 83984869710.19.7090FDE
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7E3AF180003
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 06:34:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GpuRKwpb;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760164473; a=rsa-sha256;
+	cv=none;
+	b=dDDh7a66f/no+K5pTJWEY3TRNjKnJibMohKZtyLn2mDMRQirYKTqT5Ho9tZNelAEWq1M65
+	LA/8sg+wDnJpFRbk6X7TCZC2YSYt/q2B9XgQEzJNP65gTT3MNRNvLeX/K+ojymRA9kEgwX
+	+9G3J1Orvygmf6aj+B/iuPX2+h9kNx0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=GpuRKwpb;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760164232;
+	s=arc-20220608; t=1760164473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FCxpy90P/aXymTR+8lrsDCRYM9btfhKuXlW7Y96vB6I=;
-	b=i+F54jjR938oS3eR9sfPSxXzbk1q6DNK1MtB86w3/ZJuK/n7p7o2V4RkrXcWkwPcG9XEtM
-	Jux781JHGBqGyCyE+6Fs0fTvZHFZ0rfX71MpWA3TRUt4MhVhvBIw1MxdOjt+hKWPl6CEqs
-	dxmt+Cd3OytNVImL9W0uPJp0MihvFo0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KlZ3fPib;
-	spf=pass (imf08.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760164233; a=rsa-sha256;
-	cv=none;
-	b=HdyFw3GxKmApKkpEsexLOIPPgnsLn+dx/w/eGlplrR6N3+RrItAZ946+puPt/JZnhvUyjp
-	5c+RtHQ/21SY9L3WMcmMz/NHhUKq9KoazyEtLq3GyBu9AIxMTvpd8MfvOaRR26s0oPErFp
-	PN2e1rX9mbo5I9SBjdEPpPl8Pmp6EqQ=
+	bh=5xSKcJLMWroD8oOqsL5TJgpTOIHvIg05ecSG07oYy9s=;
+	b=2seMcd8rOAcyEn6IvwWN7C6ISRPcmSFn6NT/WMV14e02uVTuodyUmT7qk71LU4jBFtEniO
+	3+K1rkDrAa0L+E3xQ6QBFBuCh9hW6QGgoN+nTmJq/2iVIE6uW+a4TPVQ5Sk6PtobM1c/Jy
+	CjVhwNuOM26pzIE8lDw3ofp5WvCcZ6w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760164233; x=1791700233;
+  t=1760164473; x=1791700473;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=864487Lbses3g7FYfEk5gBAA1Q+2nTEqyXpo9mwJjwM=;
-  b=KlZ3fPibvjP7Ixt+esQFdd3jIuDFu8eOXyN7plWYigXU0T36ew505skt
-   NPauY8frIRxmdSO5cCBTHIXUbEUAUdp5Q1K/cezXBHuHWjasC+I12x7NA
-   2WZciLGMT2NZs0vkzCwkaQWoZ1589TShSwLCEJVtIba4JN8nRvTzV91d+
-   feT9v3qSwU85n2fcRMz7EgfNjBcE0ceiiR+2kAlOHSRdUo/uEGzcMbmKd
-   sEs9f2i5hxJElqRBvJ4OJtXlOsko/Tu1JOOVGnsxsIJzY7/zh62oJ7OT1
-   nJtDc6UUqWMBdyx/qQon2nw9vKoyE/nLqKqBH88aGYQ0pysxKpEWgpY4Q
+  bh=ZHoGBUbqzplr1SqOVtjjpzhNhjDVkJ8UthME/KpzTy8=;
+  b=GpuRKwpb5feBKRsoFo8CU4lzGAf7o8B9JPDmBlq9vLjFtgUypJexDd1M
+   hP3B/qb2ceBE8JOjPmKX+MRPrJbQbbas848jPnsT+KmUmeMmLqu41d6sj
+   0P0BwT+l2KCIdLBGhxfS1rk3QjQJkONSDWjIKra7Vi+0fmswPvLySsD9t
+   A/nTZm81q84KG0pjJun6n7uoGo22kLG+gM4smZ0BuZYsPaYgyqHDo15K9
+   pi8DbCMIghrTQ5+NrQHF1Jyaly3IGLw5BwIWu8EUj69jvCVYF+VBZMe9F
+   PIzOTYfkqdQ6Q5LxHcR5GARz9shDOFFV6ok0j2ATeOHVV7hlFh4UFuvXA
    Q==;
-X-CSE-ConnectionGUID: LQAicygySZeB9sGxYmEQWQ==
-X-CSE-MsgGUID: MuQrLs7sRkOAjsFWa4DrDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62295790"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62295790"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:30:32 -0700
-X-CSE-ConnectionGUID: lPvOecqbQc6xhQki/BPBGg==
-X-CSE-MsgGUID: AgL/RN86S3CGZ7GQ+tjQxg==
+X-CSE-ConnectionGUID: qpqNyGJTRPyhNydyRnRe2g==
+X-CSE-MsgGUID: FwFct6fCTfqy7FGckT1zZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11578"; a="87838068"
+X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
+   d="scan'208";a="87838068"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:34:32 -0700
+X-CSE-ConnectionGUID: VcSPh3W0SuyKVz7g68oZuw==
+X-CSE-MsgGUID: hnXs8JcbTyOib7kc4CEhjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,220,1754982000"; 
-   d="scan'208";a="180389437"
+   d="scan'208";a="204824426"
 Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:30:26 -0700
-Message-ID: <ce126bc8-7672-4071-96b5-9652e736175b@linux.intel.com>
-Date: Sat, 11 Oct 2025 14:26:53 +0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 23:34:27 -0700
+Message-ID: <7a001cb9-fb09-487c-bfa9-e2d329b0f6a8@linux.intel.com>
+Date: Sat, 11 Oct 2025 14:30:54 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/8] x86/mm: Use 'ptdesc' when freeing PMD pages
-To: Dave Hansen <dave.hansen@intel.com>, David Hildenbrand
- <david@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+Subject: Re: [PATCH v5 6/8] mm: Introduce deferred freeing for kernel page
+ tables
+To: David Hildenbrand <david@redhat.com>, Joerg Roedel <joro@8bytes.org>,
  Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
  Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Alistair Popple <apopple@nvidia.com>,
- Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
  Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>
 Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Dave Hansen <dave.hansen@linux.intel.com>
 References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-4-baolu.lu@linux.intel.com>
- <9648e990-18e0-4aed-8110-b02f4b45aa47@redhat.com>
- <e4c0c578-50e9-4e65-8e7f-7a6d995b22e0@intel.com>
+ <20250919054007.472493-7-baolu.lu@linux.intel.com>
+ <5b494700-a3af-4feb-8c5f-1ca424ad9841@redhat.com>
 Content-Language: en-US
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <e4c0c578-50e9-4e65-8e7f-7a6d995b22e0@intel.com>
+In-Reply-To: <5b494700-a3af-4feb-8c5f-1ca424ad9841@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C1DBD160006
-X-Stat-Signature: kfa9sjpsmgebkbi9rhqhu4b6rw98bf8t
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: su57j495ugbrh5yosj9c3s84mwqgn4yx
+X-Rspamd-Queue-Id: 7E3AF180003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760164232-598667
-X-HE-Meta: U2FsdGVkX18t9AXKp4mNXZra/thGeaHJR0RyNQ+NK+CroyuC1rWfTh6vS+VBv3lYaqLQkGfqmXZJLnEVgHjQ78nTdLNkwTaQbhKMe5TvMcT7K4KPW6zqSzH1VNXX+Zs+kILzPAoS0VkY8yLgNV4LmVM+V3gGoMzqWhhvPynf/0oXYElN8KyXp+gopv7cdioPflqC07dVehYnPrbTccZMRuLmGZXiWTNm95IkbyNK8w/o1YM0RfdlQ9voPRviA0tef8rAQWLJqBtNXS5tMWjtBXWyBPo1xBHPP06zWSOEtTxosqyILiB6wq4iEReePqQ7IQVP66HNAuhELQWEO2+9t2J2b9iWSCJEXVaLJbKu8m/7rxb0OzJLXdaYYqFOFd9WBPZn/t/yQINkh82XX8K7+qLnCskgufLRBOGjrM8WqqusziJvm0t4ilfAjny8m86PTm5Fns02EWmGNwx1Yy3D/05/BKD20ZHgxqQWIR/0WJkjcPuPZ+tzrTRJK3MzozZrHwdiCpirTGKwGfiRuiOJrlQI5kJKU/wlWR/YXfCcYqOMi2zvHfpxwAdsuCTECiEGQEUSh6ojLr3g0pxz+5R1NM3aExr51bOQMQqS4bqWP7EDtWdRWg9T7n01fCcWgvtjsftn+rt5DU3VkyUDRrVufSyQ39AONacR89vpm54zoQ13C6nQMlwus2TpoJl8PR3uJfKQSOyA5pJDTxg1bplABticB/tC9ffFcj41e6quSaGVFNpgDcKQD+QrxPyFKcrGZji7zQzjs3UcZ3nCO5ZcKZj+P4E+HHa140FD5ETcajnDueOEAv/SQ7plaDTGtRkiWE65JBC4cbR/jHhm921KBBtyCoUxNptEGZwdSb8/oWKbaTBaABaArCOiZMGf0RfM/AFe5q8NJJvJaM122oVp1fM9IaUSaXURJEocpDauWTpabQJWp0o6EeSODj9gHIrBdnvciVcX5hiFs9ftmKf
- n3YJWihR
- xjS3P3HxTpYSPqtzCLngogHll7PZpe2oxEB5RWu9AZi4em4KyCmjPVGUDE7lbLiBgeIu4e91zBYW2p/pp86HUEhoAtzbTqTkVxjQAiUkZS2cPs+QK+fWyKoCjB4RIkj5N9n3FNllp02P7xwD0pJb2JS4MsB2lBOz+5bV4gtRmcK6Vx5GBto2kLmFfKK+iax9e+qPSWZ26bIbHckNr8DJliySbmg+rEE7P1Fpho23vtGs1aQ2YcksYzjl+YktCPgK7sHiT
+X-HE-Tag: 1760164473-635714
+X-HE-Meta: U2FsdGVkX1+bJ1JcnxGWBV3MKyP4UrA9qz1sclN/d3yVUktGo4DhU6uDVCJCO+g6rH1YkP51Fe2wpF5JwSsI/LQdZXVAORwRqhM89B/u4JBXREeljO0/zNp5ZhXUZZX/kBKVxQO0Ue8z1a4RRRN1Hk1+NSKRUtva3XlNSvi5X5T/1Vd/O/3i+Wfg61z/5gkHsHNKY72RtaptaUzFKgcjSV3FxvRMgFMebkvqcY8N29DT/ma8juDR4BJpP+G3w0Gpg+AZPeLDR5ISfx7yDLZ4qjvPcDPuXEM4axEy3nmrp+tBR+iO/XB2OVi/uOG0pVvVIBWti6OvBbUfpe5XC9kFNZ5ykxUauAYRNOv0fMI/e6pWbMco9O8d4Przgx9jtbWiLtNeuKmeCVptJqE62k3dnyR9RAQ05Bfe304iqKyui83kSmtSe3qkPzU2r95HRQZ1BCvQuufxXtfJb8WtOv6bKWyP3y2Q8ZEwHdyonygaPeDPmzIx9STw0UIt6IJqsLrUxZ3K9GDCmUgD+WgzSJRZBOSaz0+Wp+221LcEMxN+ydMD7L5B6Z5epYSgntp0fUraQin+nUMPQZO4+bq2sdfDzCVmLUjsHrTKvEjBo4q8QKa5548xNkCnSfMkbw3OsHTGxlkh+Hm6RHVxHngm0YUZ1OnnhcWiJ4MjZG1qzXbyv52on/9FyGqXs/44FoHPQ08qmX46RakHGF+TSQvIH8Jmt9dOdIPwDPdy1tKb29u4qgQm21rnP3LbIv0WvpU6bt1+IqoXtZVSxCMnT/VH06PN+L5eeU91yHteq4fTE+KzkuCEJI1Lr0iTy9lY+hWzNuXZMZGN2dv2VSy7pghVtdD990BxaqlyZucPntVpJpnYyBPXxC58jQwqRIWMepFq2Ss0GuOTzQMyzN14N5L4/ZCd63dKQy1kQefFlsRBA7GkHwd6fX74ZViwSEzQMroM2QUz0gH8yn/oaNmrzcfeIg8
+ VW4skhph
+ 9cxqMYGywe7S7g6uqSVt6F2nt8CvzuhDEYsHhgyFPR3ilME36+c8EM7uOefOYiIqn2mwqDUmguGLSOLGh+tULqCl+cqK4TIGG8Hf3QuDCU2Eh7watWhWpXgQh4C/QP/KZ0iFyF/bONAnvN6L7lKeV0B0bFfUVCjjsAZVvIE+pYNNZbUhmw6XM1mNhkEKgWIalcOxC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,98 +119,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/25 03:31, Dave Hansen wrote:
-> On 10/9/25 12:25, David Hildenbrand wrote:
->>>
->>> @@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
->>>          for (i = 0; i < PTRS_PER_PMD; i++) {
->>>            if (!pmd_none(pmd_sv[i])) {
->>> -            pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
->>> -            pte_free_kernel(&init_mm, pte);
->>> +            pt = page_ptdesc(pmd_page(pmd_sv[i]));
->>> +            pagetable_dtor_free(pt);
+On 10/10/25 23:47, David Hildenbrand wrote:
+> On 19.09.25 07:40, Lu Baolu wrote:
+>> From: Dave Hansen <dave.hansen@linux.intel.com>
 >>
->> There is pmd_ptdesc() which does
+>> This introduces a conditional asynchronous mechanism, enabled by
+>> CONFIG_ASYNC_PGTABLE_FREE. When enabled, this mechanism defers the 
+>> freeing
+>> of pages that are used as page tables for kernel address mappings. These
+>> pages are now queued to a work struct instead of being freed immediately.
 >>
->>      page_ptdesc(pmd_pgtable_page(pmd));
->>
->> It's buried in a
->>
->>      #if defined(CONFIG_SPLIT_PMD_PTLOCKS)
->>
->> Can't we just make that always available so we can use it here?
 > 
-> Yes, that looks like a good idea. I never noticed pmd_ptdesc() when I
-> was writing this for sure.
+> Okay, I now looked at patch #8 and I think the whole reason of this 
+> patch is "batch-free page tables to minimize the impact of an expensive 
+> cross-page table operation" which is a single TLB flush.
+> 
+>> This deferred freeing provides a safe context for a future patch to add
+> 
+> So I would claridy here instead something like
+> 
+> "This deferred freeing allows for batch-freeing of page tables, 
+> providing a safe context for performing a single expensive operation 
+> (TLB flush) for a batch of kernel page tables instead of performing that 
+> expensive operation for each page table."
 
-I updated the patch like this,
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6a0bb7fc3148..a0850dc6878e 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3203,8 +3203,6 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct 
-*mm, pmd_t *pmd,
-         ((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
-                 NULL: pte_offset_kernel(pmd, address))
-
--#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
--
-  static inline struct page *pmd_pgtable_page(pmd_t *pmd)
-  {
-         unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
-@@ -3216,6 +3214,8 @@ static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
-         return page_ptdesc(pmd_pgtable_page(pmd));
-  }
-
-+#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
-+
-  static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
-  {
-         return ptlock_ptr(pmd_ptdesc(pmd));
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index ddf248c3ee7d..c830ccbc2fd8 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -729,7 +729,7 @@ int pmd_clear_huge(pmd_t *pmd)
-  int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-  {
-         pmd_t *pmd, *pmd_sv;
--       pte_t *pte;
-+       struct ptdesc *pt;
-         int i;
-
-         pmd = pud_pgtable(*pud);
-@@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-
-         for (i = 0; i < PTRS_PER_PMD; i++) {
-                 if (!pmd_none(pmd_sv[i])) {
--                       pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
--                       pte_free_kernel(&init_mm, pte);
-+                       pt = pmd_ptdesc(&pmd_sv[i]);
-+                       pagetable_dtor_free(pt);
-                 }
-         }
-
-@@ -772,15 +772,15 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-   */
-  int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
-  {
--       pte_t *pte;
-+       struct ptdesc *pt;
-
--       pte = (pte_t *)pmd_page_vaddr(*pmd);
-+       pt = pmd_ptdesc(pmd);
-         pmd_clear(pmd);
-
-         /* INVLPG to clear all paging-structure caches */
-         flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
-
--       pte_free_kernel(&init_mm, pte);
-+       pagetable_dtor_free(pt);
-
-         return 1;
-  }
+The commit message has been updated, and CONFIG_ASYNC_PGTABLE_FREE has
+been replaced with CONFIG_ASYNC_KERNEL_PGTABLE_FREE. Thank you for the
+comments.
 
 Thanks,
 baolu
