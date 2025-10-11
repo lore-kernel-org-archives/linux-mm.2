@@ -4,166 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF071CCD183
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 09:01:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E52ACCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Oct 2025 09:08:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27AF28E0024; Sat, 11 Oct 2025 05:01:46 -0400 (EDT)
+	id A9FFE8E003D; Sat, 11 Oct 2025 05:08:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22BBD8E0005; Sat, 11 Oct 2025 05:01:46 -0400 (EDT)
+	id A50DE8E0005; Sat, 11 Oct 2025 05:08:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11A2E8E0024; Sat, 11 Oct 2025 05:01:46 -0400 (EDT)
+	id 93F948E003D; Sat, 11 Oct 2025 05:08:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F19068E0005
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 05:01:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 85C1413B480
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:01:45 +0000 (UTC)
-X-FDA: 83985240570.20.2BD6145
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 26FD1180009
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:01:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdqX0Wlf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AIsr5yR7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdqX0Wlf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AIsr5yR7;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FC548E0005
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 05:08:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC5D387C3D
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:08:02 +0000 (UTC)
+X-FDA: 83985256404.30.24A246D
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 62F7F180005
+	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 09:07:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=dXgfOpNZ;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760173303;
+	s=arc-20220608; t=1760173681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eTLbl2b226xZ5INaE8Vg7caBgv/GfAbCanwyLTd4Am4=;
-	b=c0ewHApsIHHSe69E7S5fhrpqeHpY/yR1+e08JOcQYRiQql2nKLtW56H4/iDciyqUJlnOaC
-	kYK60dTzzZ9V30QEl3Sfun4iRH9GF0ex4juz0Ixh8Zi6M6/YwIsnE0EuZGin4EMx1zkvd+
-	r/99ydgGMilkeoGkcECAhNd94MHr8SU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9jpEyMrd3vnSjR1xZsepMLlxr22S8g5uYtrOEpK8mUw=;
+	b=iim+xVM1cq2GbYw23hu8pHjJnD/BhxOtns66m9dsP+9oviajMjt1U3kTQjaVBlPnZHpnMY
+	Fnj6u8PJuw25YYEMF23B9fWAfNcHC7Ugsq2hBkrvAtTAFpqJ91i9Q/tZ5hlNJ9COpkKbTN
+	opsUnLjz/9OnjfjwmbEt8tLv2XXm2Rg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdqX0Wlf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AIsr5yR7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zdqX0Wlf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AIsr5yR7;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760173303; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=dXgfOpNZ;
+	spf=pass (imf16.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760173681; a=rsa-sha256;
 	cv=none;
-	b=tKfQrZi/5AzQFI2Eim+IiQyHmWU9YeCX8DiyVtsJOqW7709lUwOoA78k8Shet0SgHL63ay
-	9Jp0+QrtwebtKhuvcGjWmxelD5l9FPKadspOBiiJUId4eagbRDwF48iL15yJuTASz4qtWh
-	g8c00e19SZ2qGJvyUcc2FHP/1PYKHTI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 58FF2211CF;
-	Sat, 11 Oct 2025 09:01:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760173301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=eTLbl2b226xZ5INaE8Vg7caBgv/GfAbCanwyLTd4Am4=;
-	b=zdqX0Wlfh27b/HrsFcWYeI3jzO8dLmYy9T/FLlTLzeDvZMMZO7eCn6bpl8CfmNw9L0dBLv
-	uelbDoL1xD6NCG4Vex6yYzVyL1xHNefAgi/umYEJgqOPq/b54xMkuSNFa18Uk7ImwgLcBu
-	afDpU2rBLj0W6upaIbT/9rCPn49098Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760173301;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=eTLbl2b226xZ5INaE8Vg7caBgv/GfAbCanwyLTd4Am4=;
-	b=AIsr5yR7jH/9JrOmyHYatE376cKsfC2/AhuxumCKisu+G5O11D3k9Gzns8jRcPLJcMDO+u
-	SqdLxzrfkSxH8GDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760173301; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=eTLbl2b226xZ5INaE8Vg7caBgv/GfAbCanwyLTd4Am4=;
-	b=zdqX0Wlfh27b/HrsFcWYeI3jzO8dLmYy9T/FLlTLzeDvZMMZO7eCn6bpl8CfmNw9L0dBLv
-	uelbDoL1xD6NCG4Vex6yYzVyL1xHNefAgi/umYEJgqOPq/b54xMkuSNFa18Uk7ImwgLcBu
-	afDpU2rBLj0W6upaIbT/9rCPn49098Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760173301;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=eTLbl2b226xZ5INaE8Vg7caBgv/GfAbCanwyLTd4Am4=;
-	b=AIsr5yR7jH/9JrOmyHYatE376cKsfC2/AhuxumCKisu+G5O11D3k9Gzns8jRcPLJcMDO+u
-	SqdLxzrfkSxH8GDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 37FF713693;
-	Sat, 11 Oct 2025 09:01:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aMrfDPUc6miCGAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sat, 11 Oct 2025 09:01:41 +0000
-Message-ID: <903ea271-9413-40ed-93cd-104062c18a84@suse.cz>
-Date: Sat, 11 Oct 2025 11:01:40 +0200
+	b=6VsxYyzjYjiqZ/gR81h6et9en7tVE53MY4TsGLim5Q1kIDeBJn/Dq4Jfn8cYG3CnGkX2v6
+	ku3uyT7Q58Xurvmr+4Ek80y/o5arRnKB/nKlNY6xMubklhpS5IsN6tswVVstNcHdm2ustM
+	v3IKUYFfIQcd+peV/6PnXoN9K8RMPGc=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9jpEyMrd3vnSjR1xZsepMLlxr22S8g5uYtrOEpK8mUw=;
+	b=dXgfOpNZIKxIEYfectR6rgBEK/xShe6Oqk8o0P9ZQhY5AT4FV2gWS2vwPs9xIQ2R0nKmQujlq
+	K37Ww7EE9AcBEwU3Zx88CXnZ3DF9I1rXF/TpyIUnnHLFBNCZGYt6sdM2rxVEybQdNTCZcYDlANo
+	bKX7s35pF2/5G1Pvgglyi80=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4ckHmq1wxHzpTKL;
+	Sat, 11 Oct 2025 17:07:07 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id EEA0C1401F4;
+	Sat, 11 Oct 2025 17:07:54 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 11 Oct 2025 17:07:40 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 11 Oct 2025 17:07:38 +0800
+Subject: Re: [PATCH 2/2] mm/memory-failure: improve large block size folio
+ handling.
+To: Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
+CC: <akpm@linux-foundation.org>, <mcgrof@kernel.org>,
+	<nao.horiguchi@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <david@redhat.com>, <jane.chu@oracle.com>,
+	<kernel@pankajraghav.com>,
+	<syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+	<syzkaller-bugs@googlegroups.com>
+References: <20251010173906.3128789-1-ziy@nvidia.com>
+ <20251010173906.3128789-3-ziy@nvidia.com>
+ <934db898-5244-50b9-7ef7-b42f1e40ddca@huawei.com>
+ <aOnkUxWPODofUnRy@casper.infradead.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <35d00740-0aa4-1d6d-87b8-ee973bcff792@huawei.com>
+Date: Sat, 11 Oct 2025 17:07:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [GIT PULL] slab hotfix for 6.18-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@gentwo.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, Phil Auld <pauld@redhat.com>
+In-Reply-To: <aOnkUxWPODofUnRy@casper.infradead.org>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 26FD1180009
-X-Stat-Signature: unmw6kxua1cqry99tu5t9tfg3kcn1995
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 62F7F180005
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760173302-202688
-X-HE-Meta: U2FsdGVkX1+rD7/5i+yNI2mZTloE4e0SQc1aq5kidMv4vN2MLa7sL5e/KOIikxeRpIPpnjErATMyc7W1aIPK2lGTmLzK9fl7ABA3AOKwRsEIjc2VcFgFJHCQ4v7TnK4433utLo+4J22q3rAQ/L0FvFPrdwKItOxeFn+LYBY5lshQV9GKL11gOtsHJFM500PwHSmptRxQw/YShCjCJPqWJSexW8I7ivjuTcQxQolY7TaQsmQoHj4wKt/FFEcNFR7pHfw4NSRjoLffPTnGt66/fCtXI2eacSdHrPUHbv0ooUhxM3LaB+NHJkzUxXqplEXFbMJ9XYFQV4Matc9NEg2+SdeDLQ/4RuH408HTKVr+Qw6sonB1xGjhGJRy82x3vlwWQ38O3+DIpTF8b6oKHf3OO0EG0GsiU99tRxew0aDEntotVToBkz6aOY4OV4ZjxjGBGK+ZdD4cyASX1T9PLlo9FW+3yN2HBQ5QF/++qhBq6dr4Hj/yxLxElZ6JjM2jHk38cqFpxAiB3qIUTudHDgpixFhPiIflO8wDYivshJuvfsoJJMdFBaHSG4gBRrJdlZ8qGVKnneqVJz0u6R1GxhOxVRQ9d87/ayfLigcWvgwzB1nO+FlX9Ab/A8F7EwO+Tz6EWSHOhG22kfIAcR4N/tque/LApjpdetiZKm0b9NVX0qfOo0/EHrBpudZ84YftQ0QNoMOVPsvUWFaK8lMSxN7E2/eo31eM9fKJb84FgV2at4PPsEH2UT1hZI6Aecw53kkcugNZUF023VOiDAuLpOf5r7sn4ZS4LiFkacnbIv0l8/Wvkz/97tR2PqCCTNFWkYt9CPi6J0ZzDWgTy6VHCMmCq8S4NoZ5I2ngIB9QvqyeE3LPp7nM0WkesvBTk1ghxH2rUVr328ITMmZhnpjgLeUyiEnGenk/4e+yn0vWJBbM/AKL++7LADtI0TQoOvwoXKl+BnrLR76amRKrUkuP1Pm
- cWSTdweN
- t8sqSlgxy6csh5IQKtmXR/lMtn5HxsmcwQrrBj6Vn2RqV6ohUE+8kqTr8PIPjdi6boY6tf3ZZk/jexlV6PiAviiFIAFR7mzkYjkG+zhV9FfSgozkEHiRJTj1TVSJWmFZuFUjK112Sa2nM/kchshMYSPjj/eYtuXBqf3lo8nsaxy/OiuY7DW7I80f7FCsJKMo5XjGpMQTmtfLmuC1HqSCODkqnK6OI7QPPSkRI4Om8nJBuIbQw7RHcHH/iU1A6+HIvZou1aPjNWjFXj1nxtGNXSTqobJmZIhvxRiFz/H07lJzbC3XR/v448LNJuofnms8JGD2rQhnp8VUW6sgHgUQr4/f+1oPr5CjJ9SUk
+X-Stat-Signature: qjajkxc4q5prsgae8zfii8yips7bcg9x
+X-HE-Tag: 1760173679-465546
+X-HE-Meta: U2FsdGVkX19AKPT7xH0p03HqxZtaFFY/civkvTayixwyBqicX68SdNwfgOqU+iAq+uBDwNDbikmp6/vHZAkejFe2dAZawI5zcjHXIwm48Ei9ErQ2RvpcflqOeru1dTngcrsSjOujwmuygqKEc4sCcDcZHNfGxoF8VXu+hU0LDD97C/G3FX0kLUb+GVmcmadR8SzK8Mq1VdhJX7d47wv+0aWB+EyoPyJqdYDVt0SFV00ccjVIOQ/wFLkx/Gc5hoJ4mi1++mz0Z+SeijFhgdFGAhC9kA79gJV30LoPw/QayqQvgB9x7kuDUMw9kTjV9tcjoe15n+CUw1pMrElFuo4/28S1VdgqSeWiFwVp/rDWwkvKSTi3GRlmIXSeF0J/q1A5cdgdW3Y7QsWI+yCqdxEVvyhe3PB1HUQJczn8o77J2NbktOThxCYdHqqcWUeD5cbyY4BGLKufK5tSRdespucKpHZVTrJvUFpcnRBo1GKdk9jhyNu9w2T3BqL06PqKEYNvHbQ1c+HDp4In9gUVX+6SfWr5L4QSPCt2eozZIF+RplJnIFiMjAFuBYws/iSUfec94c/+pBr495iSVVRQ7f8MEtg5nIbtSXFPKoC9wvzv+8Ssc+h5QR5mKZppiQ2WB7OXMlWI2e3zFz9Sdu0vhlGpYNxxxUC7VyiSlwSegHK9POEnJwITp8IMOjJsPNYoRXrUc9cMhqtauB0N3c51DZIazuJsGhlQtM8NfrkslT4ceqJXk29LOlMVljc9OTMsI6GocUdrIaOKfwxQOrTJQbBJSjh2jhSAZCxJOw/Qds/pHXIU/dHryg5dP17wZUQtidJN/VPBdRAA/AgQbZklJ4IzhgbEUNV2jljIkm/RiljwISn1JgXXL0bOoe/DHVGtzetcBv2EUQ8VX8KoYI7O3omUi4Yg2HDUN8eI+ERZIETR8CjEZWi/5XXbMpkWI2Z98KwJn5RH++rsLLa5Hahx0Az
+ 2BzGrwpI
+ HGTwPvpD+5RQ/1ZvoKtIoCg5MPTa4b8p0Y3EFr0DTB2R3svk80LmHirtwrXOZLj8cNap/Da9rS9CVWUo3xRa/0Dbwui70zBHEk2v6ehlK3YIhBqEb/YAY06pdfFdOXuzeYZhMU6MEGxCZHoy9nbHXxgJ0t7kPfWRvUdHnph05VFneJZe40vYzl3dSL7ZXRHSHC2nJhHrQvjobPiNvJWzNV29LjIr1KEx6n4qwDoU+A95gSyy1JOimn0pWo53U5vMHKduLolhf0JIx821eBtPLj2LIZ1N3ZHiuChC48c/wRvdQowLJIZxzfVTrEbyAOVGKJNUwcTtLAtnE61eVSAh/R9pwhK8kyEHEqODyk+ueh98ZuJ+Kg95nSVTGEA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -172,29 +117,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On 2025/10/11 13:00, Matthew Wilcox wrote:
+> On Sat, Oct 11, 2025 at 12:12:12PM +0800, Miaohe Lin wrote:
+>>>  		folio_set_has_hwpoisoned(folio);
+>>> -		if (try_to_split_thp_page(p, false) < 0) {
+>>> +		/*
+>>> +		 * If the folio cannot be split to order-0, kill the process,
+>>> +		 * but split the folio anyway to minimize the amount of unusable
+>>> +		 * pages.
+>>> +		 */
+>>> +		if (try_to_split_thp_page(p, new_order, false) || new_order) {
+>>> +			/* get folio again in case the original one is split */
+>>> +			folio = page_folio(p);
+>>
+>> If original folio A is split and the after-split new folio is B (A != B), will the
+>> refcnt of folio A held above be missing? I.e. get_hwpoison_page() held the extra refcnt
+>> of folio A, but we put the refcnt of folio B below. Is this a problem or am I miss
+>> something?
+> 
+> That's how split works.
 
-here's the NULL pointer deref hotfix in the form of a PR
+I read the code and see how split works. Thanks for point this out.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc1-hotfix
+> 
+> Zi Yan, the kernel-doc for folio_split() could use some attention.
 
-Obviously it wasn't in -next yet and was just sent out formally for review,
-and it's weekend so that's an unfortunate timing. Releasing rc1 might
-however mean more exposure to such memoryless node systems so I didn't want
-to delay. You can decide to pull or wait.
+That would be really helpful.
 
-Sorry for the trouble and thanks,
-Vlastimil
+Thanks.
+.
 
-======================================
+> First, it's not kernel-doc; the comment opens with /* instead of /**.
+> Second, it says:
+> 
+>  * After split, folio is left locked for caller.
+> 
+> which isn't actually true, right?  The folio which contains
+> @split_at will be locked.  Also, it will contain the additional
+> reference which was taken on @folio by the caller.
+> 
+> .
+> 
 
-* Fix for NULL pointer dereferences in sheaves code on some systems with
-  memoryless nodes (Vlastimil Babka)
-
-----------------------------------------------------------------
-Vlastimil Babka (1):
-      slab: fix barn NULL pointer dereference on memoryless nodes
-
- mm/slub.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 51 insertions(+), 14 deletions(-)
 
