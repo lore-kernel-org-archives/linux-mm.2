@@ -4,134 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0506CCD187
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 16:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EE16CCD187
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 20:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0B048E0007; Sun, 12 Oct 2025 12:53:21 -0400 (EDT)
+	id 3E8228E0005; Sun, 12 Oct 2025 16:41:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBB928E0002; Sun, 12 Oct 2025 12:53:21 -0400 (EDT)
+	id 398F68E0002; Sun, 12 Oct 2025 16:41:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAA278E0007; Sun, 12 Oct 2025 12:53:21 -0400 (EDT)
+	id 287908E0005; Sun, 12 Oct 2025 16:41:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C795E8E0002
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 12:53:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66E2484B71
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 16:53:21 +0000 (UTC)
-X-FDA: 83990057802.27.B4AF319
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0785314000E
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 16:53:18 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BEg4aZ4f;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760287999; a=rsa-sha256;
-	cv=none;
-	b=oW+vAvP3qpgi7uSzW1QQ9EI861jUsXj5V/mn2cL/0FDus0FxoNPAWOsMNzxFXTVcg3Yn1k
-	TSF53xndan+XACgmEIQYGQMCnUy4CPM4EeE6j4pQjd2sHxW9dqGSD9JMMuFCNRV/bpXGpd
-	nF2Eb9FvRXl44RdAGYcE/rC0ENTjZDg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BEg4aZ4f;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1277B8E0002
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 16:41:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 16BFE1DDC17
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 20:41:09 +0000 (UTC)
+X-FDA: 83990631858.04.B3F7DBB
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4ED17A0007
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 20:41:07 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WZVzV9Pf;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760287999;
+	s=arc-20220608; t=1760301667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k+IjG48gXSLZIvwDyRg49bJXm99WApKLTC/kWT+9feE=;
-	b=aIdqZECyXfQd90Hi6WQr2QebkShuJUiYlEiTs/bralz9ZkldJjNvGhzRfS4G18vjzBOkEN
-	gwZWsylNbUcnnO93RqUKpNWSq+Cx8I6WpPBeZW+iAFbsd1fCRUYpUHHzINE8k8Qgb+bauA
-	RtMfe1F8ljCer7DxPzrajxuD4WuiSBA=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59C2h43V008641;
-	Sun, 12 Oct 2025 16:53:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=k+IjG48gXSLZIvwDyRg49bJXm99WAp
-	KLTC/kWT+9feE=; b=BEg4aZ4fP6EnZ2EVZY0lRk8okP+8i9pqnPizPqbdniuclI
-	HgnzgWDzO4IzJdk/XINJDlUmfb8ov3rwfshO5yMlJLxJvIn8FA6OI4ydzJ0Cn9SK
-	pDSj4GhAJoV0LuSn/uU0oA9NGLx1xNOTdFhaRv4KiFHODTEK5pjr4YadUc6tEyoF
-	e6YJlhu3gMaWgLlbKilS3pHadoUZQbrBayKQXo1x+0KgrBRHc2LVbkCU9vOsCJxo
-	IfmW+pIOFct5PVFyVDqLNnABTC86FduF0q+GzmC/dksM+QHXGsvq+lAvEqSwtQO7
-	Y2hiot4VjSUUbndyBpnfxjQMUHEQGBZdf+Elwq/g==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qewtn9s0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 Oct 2025 16:53:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59CD761C019531;
-	Sun, 12 Oct 2025 16:53:16 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jma90h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 Oct 2025 16:53:16 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59CGrC1p8389034
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 12 Oct 2025 16:53:12 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A99120132;
-	Sun, 12 Oct 2025 16:53:12 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD0D920131;
-	Sun, 12 Oct 2025 16:53:11 +0000 (GMT)
-Received: from osiris (unknown [9.87.155.90])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sun, 12 Oct 2025 16:53:11 +0000 (GMT)
-Date: Sun, 12 Oct 2025 18:53:10 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>, linux-mm <linux-mm@kvack.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH v3 0/4] Support dynamic (de)configuration of memory
-Message-ID: <20251012165310.56572A3d-hca@linux.ibm.com>
-References: <20251010085147.2175918-1-sumanthk@linux.ibm.com>
- <20251011114426.5313b7cb6951618c20ab62ca@linux-foundation.org>
+	bh=fQHJ8QLx2geHeW6ZIJDpG39/R8n6Xfkfv+hR5rBK1gk=;
+	b=vl2aVxlZzKVr87WMeSgkCcFHkCnnnLiSXsQLOeNtTM2CQBxElNiJ8bVBwS2aOdv2o7WJYt
+	O3hXLRUG1EBTgpEImCTbLe4u26hZOZkEW0cQqbft1WCCSlbTJ1fxl0euE6tfVlcZwuzbiy
+	WIpNhRI8uqmMIScK9aFowwm99yUg5Cc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WZVzV9Pf;
+	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760301667; a=rsa-sha256;
+	cv=none;
+	b=3eRM2WsC1ioh/JLuMzrwgM5hJvX6w+fp4Ez+YhT9fq3SJWR+GlfM4V9iS5gnuqp5O8E0xN
+	snBHee0UmJVQGwfZVNlCbIT5a0JmAG1S/O/nFHGWvLVkTo+hbrkp8FmPLp+2UOXETTxxs1
+	L+R9iBP0E1sh0NOieJgrSTqPQSbACac=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-87bb66dd224so42968346d6.3
+        for <linux-mm@kvack.org>; Sun, 12 Oct 2025 13:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760301666; x=1760906466; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fQHJ8QLx2geHeW6ZIJDpG39/R8n6Xfkfv+hR5rBK1gk=;
+        b=WZVzV9PfG49LPiSUs0c6WgW7FAVKIjtitG15In58Z4gG5/Smqi1+bszJnsw0sqqj/u
+         0xgOTElWL4r0bl9KGhLyPfOgKADNWINs7RUVXygkrJ9EcHHDjV3L4+ORbYBFI7YfnZg2
+         pOXMb32vegWZQeQXPbDkm5yIfCE5+gz2mcvkWo3aRIbeV4Ni2rwScSEAZEu2Hq8rB6Nl
+         Qt+PUuIIBB1xMdjeR5ki1DCOlaYudkCo+RdlyTr337PBkcU4A8BN2NxZ2KO113L0vYYF
+         WRUTFz+C6ADdFS8WSIg19e8TIx1uTahRK1H7Bkczo8l/iVxwpCFHxdLWK38IFzgksqUk
+         mWfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760301666; x=1760906466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fQHJ8QLx2geHeW6ZIJDpG39/R8n6Xfkfv+hR5rBK1gk=;
+        b=RoP3Nt8+o3OueaT9R6QPIEeC4XFszKEySoouQ5hsO05XxJ/WFsZL/AkbJzuPDQSGtm
+         NGz9P9bQ13IG7GjD3upKKQRszVh19qUYM5Tx9lqwxDV3eTRpOyGn44pkRSfVn1bpzhzl
+         EjISuu2IFk03AK4XsZsfgt9ZWaJ7aqdsVrWpvUJJLpEGbJ0lmBpARrpPvP1GndVXZhhw
+         /19osNy2/iueDZBeFS2yX+yysoDyle8Y3ifiwAOtpBDe2TCz0Jl7s4Ao7iecyWq18Bjj
+         ihGRobUVaOjI9yImqUJ1zrFSHJ5J8ZJ0cnYlBFqJL3zqEVHLFMQmJ0ChOygiB/ztT7wa
+         5DRA==
+X-Gm-Message-State: AOJu0YzobOpTyYdiFUyqYkQPddkOQ8yTgSptQYoddBn/zmaH83bkubic
+	FkQfHH3NzeCFXaoL5LkcSgEoZX8+XjBE1NC6iMe3BgOFADfcnjue526RtAfP02/ngRnohzpza4p
+	dEw0eI2qrraVjTSz1/nU9WfG7tYl+XKs=
+X-Gm-Gg: ASbGncs075UiFwDwrgB+7yTh4YOW4hwLOmKVnJUnb0eIHLJ84Fb1J+Ct/WZhNZWao73
+	quw3KgjYm5ePIHSVF+0EHDcxw/UmmmZSYMSJum34ckEcJwAZMLkCR5Pp4Q8f2om0Ki+bXeh6vR5
+	3FrKrW32AA/GuANtKFtBNbshd4D+lmJ2tubds8VPhYxMquxwn6rjC4P+q/c6zSXdQjLkFBzdXsP
+	QR+YfVtGti7/oljhzAkaGljYsRPDGwp/2h2xnr9runAr9CVDUwNJJrVKw==
+X-Google-Smtp-Source: AGHT+IHABqgGwKiLbXi36FhtQ71YDJ+WKfQmCPBQ/yUQMsJ0jZDgpBJAuwgrwuU6/ddPjyXXVcN39doQ9pCA+vjHSk8=
+X-Received: by 2002:a05:6214:2629:b0:7a1:6f84:88fd with SMTP id
+ 6a1803df08f44-87b2ef92e38mr313434226d6.45.1760301666155; Sun, 12 Oct 2025
+ 13:41:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251011114426.5313b7cb6951618c20ab62ca@linux-foundation.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 01PQDja_xbgElKHR2TdnRKhXwIJDSUh8
-X-Authority-Analysis: v=2.4 cv=Kr1AGGWN c=1 sm=1 tr=0 ts=68ebdcfd cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=amVAB9R6KjWVUBAK2OEA:9
- a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 01PQDja_xbgElKHR2TdnRKhXwIJDSUh8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfX7ZI9a5FEts5A
- /3agJNK2lThnDOJjuxKDdY0M3Nw9T+g5llBvVulTJD0GcVMHJju+mWB8tDZeTXpdtgeDFesVfSm
- geySesNVRllwQdGCOeqfTlf4B49oLSNCwOG/cZtor6v4qfG+332qOdXRt5vY68xitl3P4J6GTJ8
- SB7QuV4dLJey6QPuTN5H8YzGZX5/0iSrkAgPosxwV9SjKdTigRZo2ZYVQhRjCx1jlbtcpPyndST
- NJFdjp6C7kQnCrj92j1xCDZrtTAssr+3i89A5mtoU9rEPVU2Lslb2knWUbJQKdWHIrjhV4UaKGd
- /P80iFEGTFdNFdaqFNmtyo0jwKlr+CqsYTKKrwZ3NJohJTRaUKfGTFPu+NvggQgwRbWRwQWfW5i
- ZC7M+S657oSeVpkQv08bZEglkEJZSg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-12_06,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0 adultscore=0
- phishscore=0 suspectscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
-X-Stat-Signature: zos7zc9r3azdf5yewaees63mxz8e9eyj
-X-Rspamd-Queue-Id: 0785314000E
-X-Rspamd-Server: rspam06
+References: <20251011081624.224202-1-bhe@redhat.com> <20251011081624.224202-3-bhe@redhat.com>
+In-Reply-To: <20251011081624.224202-3-bhe@redhat.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 13 Oct 2025 04:40:54 +0800
+X-Gm-Features: AS18NWDMFFIfVuRNn3FKOPIbqxi90GD7_EunJ-Z8Wurap9DCZm2jWlGrRyASNgk
+Message-ID: <CAGsJ_4y4CLu7qeHijhJtL+NDrehfiWpu9mtsVGxmn5rBy03v0w@mail.gmail.com>
+Subject: Re: [PATCH v4 mm-new 2/2] mm/swap: select swap device with default
+ priority round robin
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4ED17A0007
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760287998-368548
-X-HE-Meta: U2FsdGVkX193Bg9QRZpFa6f7bOeFc/4k9FNKF5d0z55n/8YCDnfOgrhsh7qzjbFGT36kpLShq7a1D/cqz/c7NfBhCb7j41IM6DOt05TFt7uq8jRNukJVAwP7gz0Rk1GUunSak++CT7Gs7guYHMVdiU8TBpOVTcWigXeeJuinRBIyN+cm6PwV0ttPNPhhjH0ixGgmUqC/e7/bicRHTSwvwTfrGoSR+vvpqw+IPLDE493styRYuS2WNo4rZTY7m+IPCQKaHw9Sh0jDsmL93ZD01C8xg495N7E3Ak3400UatZT73Yh4ulVJj3pTSaLalmwfnqX00YmpulZniIfcFBAnqo8csmwwo2bH0nn/a38AZPsO8a+jcNuJ4RcsMYXGUXjNDv83DMzVn4E7T7mvYZ18BRC2I8GPjj0iiSIkKCCja27pq5v4TxBm3T9RWVhdycjKVHer+dett3uTJmrQSLNu2RdyKTL9/AKeRQmne+Jb4MSsb89OjXzSZIEK+iSfBvWTs92q6DyxfqBE6Y5NGjBF52uPzY4O9FZFaDoxjXfZvwY4YLW2ujk5Gq519nRJ/U/5j9VeMw6MIKc0xHY+gxHMOxi9O6jLJfUdxaBKKiOB5A786sPHCba3hadBXTcA87EDOLDvn0DhHIxw16Xowmys41Cs1hMss8UohX+OnAuYprHV1+RtR6SSepF9HsPk81aNSzbhVuGwU6+Xy9P2U2hlGT5x/V7VIcCRGWE04ItmJNmkSb+osu5Xqk4uFMEck8uAlbdYvaPblEXDhJALaPgVvUariEdvq7laA/BE2ayNWkE3tMC7ddR99V68pvhx6YspvomP3fOgJrlFX64gx0t3mUUNKXaaK/0ieB2WTryacsLQV14P1dwsL6odHg9inXNnCJn2wl6HApZVhl0X2qSJIGzG8U3gHKOUPvv9RXZQ/jkA8iwkImMWQjlAwk3YEqeCLuNTzTtyJlpakYiDKZS
- GkAh0NQj
- 87PJagqruxEKgbwasK+8ZFAO42SatJuG7yZSHCiBZotBXzqjlh3p0GwBFwgjBIRWkumEm6TClt69luMEg42N4TCTNi/k3Yj5TA0CnOn2e4f7FsWnRRs/LyqLpzH0PYXOGmtWD0ZBkayAoJXfY6QfOjNcmwK/R3t3F/ijMKcyqeoYJL7kh7424Cb1YJgvYeQFBeK5c1LiOk0rdrqowyJZDCUj4y3pqvn7DZMD676NqwRGaF+Q=
+X-Stat-Signature: gytn5bmo19ie1e4czqytg817zhkrbqsg
+X-HE-Tag: 1760301667-421703
+X-HE-Meta: U2FsdGVkX19aswD6cGA109CWS3toqt/3FPiu9dohA2wgjdc2UCEsmdzRxsYtNDhagQ0FStCqEHHN6/xALnpO/fvmH6c7fbMi3yyO1BMtETlROVJMaVTifo1/xkx8N07KZy1TSLgCU8r2bGlFpEthl6PDaCSErcTa4EB3XI2io6wu+zLnBynrcFVzIVNVhZhXFKDSAJ7pcEo4gbgF+2bZ1lcZOhoecOdK5gufXfregvoxkn6K3rxJlG/zI8FyBwGjH9pDohMjfCuPFc4M5RV8uHI8DJHx0zDrr0oVACo9jHgIfSbSJVpWM77v9SQ3+2CLbHDKtBrquXpvTB+8u0cRMpdvnX/yv3ixxPevFLKAGxMUceKrWsFfEx0FJ8otZlsgGdlMrHijTVyjrnVSqccP1I60N8WbsnemrmR1oJWdQL5Kx2svYroiX+8bzUST8QegSMHcISasZaqyVtxOC/4xBTjWVG4PgXU4rF0nTuZ7yn/3oPxyqWhK/XPFBg3/5tKThcsck9JQWAJ5OHeiJmtWdYY+4ow8vk06Lb4bemMSrblOEnZ0WndcoqYZ2VzGr0saJ76DM6NIzcUFfvFlSeRpI8I4wZISAp2qpqlaAiVUGTkc+ZkrXII5ikocvqNy5DhCOQZ4y+90VVS9VqPtnf+7kPgdGVI5x62UwFCNVHRVcRBTHsu0pkNqmLCW3B5Bt1HxRNZ5USbJhLndB2HB/d8aAAoYMY83td07VdlAljLMZ38+hAA653lQsNylY/FoR5mYMFbn9DRr9jsL7hI1pDTOdc2akUg0PQgQZE/5MDPxihSOIHLSfhBvDVU8o21fZsWL2sLlCSTIA6tLtOZqom8PbLBsuZKFhpNGrpeoXf9XmKjT1oD08iDasy8zQ5wz9TVhqjJ2cbiAo+lVrYnEEGwuVE6ZUl/pq3YgavPdnjT6sA3jwyx2RyuBSoYm+fza9X9nUVWdzsU5aSDUyYqfSsZ
+ 7JAU74p+
+ hJ9ceMjRnhYbM91y5MQ4tXgQWvSYVexNqGhGhkw5/+wDpIoCdYvLJp/Tx0Py2yElbZ/aGz9iCAW0pz2j5L+BscDpqQtX98NX79S+rVWlZegBAlBKW43MJhyj/eg+nZnq0tV4VXW8l4cHve7hggUB3KE3c0B1BWTBHFSaV1Sk4CCCfqyEE6xNGFLi/PS4qK6S1W+KMkDcLsowTuxv3cTqujAYwZbDvGGewp1NyoIq5sGpXIY4Eehfedx37++ro/MqKI54kRSToWzFmAJPlOtk3zFirOK3VVEHgxH1W7TDLjkrorSThUdPuNtpV0Ff7oGVuDSlH2nALPsV8cm0a4UPoR+hS0f3KmtXtFzKE6IMjFGQuguYhWz5cHEIe7/jx0MwQFD9p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,34 +117,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 11, 2025 at 11:44:26AM -0700, Andrew Morton wrote:
-> On Fri, 10 Oct 2025 10:51:43 +0200 Sumanth Korikkar <sumanthk@linux.ibm.com> wrote:
-> > Patchset provides a new interface for dynamic configuration and
-> > deconfiguration of hotplug memory on s390, allowing with/without
-> > memmap_on_memory support. It is a follow up on the discussion with David
-> > when introducing memmap_on_memory support for s390 and support dynamic
-> > (de)configuration of memory:
-> > 
-> > ...
-> >
-> >  arch/s390/mm/pgalloc.c         |   2 +
-> >  arch/s390/mm/vmem.c            |  21 +--
-> >  drivers/base/memory.c          |  23 +--
-> >  drivers/s390/char/sclp_mem.c   | 288 +++++++++++++++++++++++----------
-> >  include/linux/memory.h         |   9 --
-> >  include/linux/memory_hotplug.h |  18 +--
-> >  include/linux/memremap.h       |   1 -
-> >  mm/memory_hotplug.c            |  17 +-
-> >  mm/sparse.c                    |   3 +-
-> >  9 files changed, 225 insertions(+), 157 deletions(-)
-> 
-> I can add this to mm.git in the usual fashion, but the s390 tree would
-> be a better place from a testing point of view?
+On Sun, Oct 12, 2025 at 5:14=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+>
+> Swap devices are assumed to have similar accessing speed if no priority
+> is specified when swapon. It's unfair and doesn't make sense just because
+> one swap device is swapped on firstly, its priority will be higher than
+> the one swapped on later.
+>
+> Here, set all swap devicess to have priority '-1' by default. With this
+> change, swap device with default priority will be selected round robin
+> when swapping out. This can improve the swapping efficiency a lot among
+> multiple swap devices with default priority.
+>
+> Below are swapon output during processes high pressure vm-scability test
+> is being taken:
+>
+> 1) This is pre-commit a2468cc9bfdf, swap device is selectd one by one by
+>    priority from high to low when one swap device is exhausted:
+> ------------------------------------
+> [root@hp-dl385g10-03 ~]# swapon
+> NAME       TYPE      SIZE   USED PRIO
+> /dev/zram0 partition  16G    16G   -1
+> /dev/zram1 partition  16G 966.2M   -2
+> /dev/zram2 partition  16G     0B   -3
+> /dev/zram3 partition  16G     0B   -4
+>
+> 2) This is behaviour with commit a2468cc9bfdf, on node, swap device
+>    sharing the same node id is selected firstly until exhausted; while
+>    on node no swap device sharing the node id it selects the one with
+>    highest priority until exhaustd:
+> ------------------------------------
+> [root@hp-dl385g10-03 ~]# swapon
+> NAME       TYPE      SIZE  USED PRIO
+> /dev/zram0 partition  16G 15.7G   -2
+> /dev/zram1 partition  16G  3.4G   -3
+> /dev/zram2 partition  16G  3.4G   -4
+> /dev/zram3 partition  16G  2.6G   -5
+>
+> 3) After this patch applied, swap devices with default priority are selec=
+td
+>    round robin:
+> ------------------------------------
+> [root@hp-dl385g10-03 block]# swapon
+> NAME       TYPE      SIZE USED PRIO
+> /dev/zram0 partition  16G 6.6G   -1
+> /dev/zram1 partition  16G 6.6G   -1
+> /dev/zram2 partition  16G 6.6G   -1
+> /dev/zram3 partition  16G 6.6G   -1
+>
+> With the change, we can see about 18% efficiency promotion relative to
+> node based way as below. (Surely, the pre-commit a2468cc9bfdf way is
+> the worst.)
+>
 
-It is not only about the testing point of view. We also want the
-correspondig util-linux changes upstream - there may (or much more likely
-may not) feedback which could require additional changes. Which means we
-would going back and forth.
+I=E2=80=99m not against the behavior change; but the swapon man page says:
+"
+       Each swap area has a priority, either high or low.  The default
+       priority is low.  Within the low-priority areas, newer areas are
+       even lower priority than older areas.
+"
+So my question is whether users still assume that newly added swap areas
+get a lower priority than the older ones?
 
-I think it is easiest to move forward with the s390 tree because of this.
+I assume the priority decrement isn=E2=80=99t a stable ABI, so this change =
+won=E2=80=99t
+break userspace?
+
+Or if someone sets up Linux assuming that a newer swap file will only be
+used after the older one is full, then this change would break those cases?
+
+Thanks
+Barry
 
