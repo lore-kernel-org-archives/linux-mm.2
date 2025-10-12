@@ -4,104 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710C2CCA476
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 02:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51422CCD187
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 04:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EB118E000F; Sat, 11 Oct 2025 22:09:00 -0400 (EDT)
+	id 497338E0003; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B5D8E0002; Sat, 11 Oct 2025 22:09:00 -0400 (EDT)
+	id 447A68E0002; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78A448E000F; Sat, 11 Oct 2025 22:09:00 -0400 (EDT)
+	id 3367C8E0003; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 620778E0002
-	for <linux-mm@kvack.org>; Sat, 11 Oct 2025 22:09:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0CF4511ADB9
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 02:09:00 +0000 (UTC)
-X-FDA: 83987829240.12.853C05E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C9D6540004
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 02:08:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Sx5/04B2";
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC2D8E0002
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A887C1407EB
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 04:24:05 +0000 (UTC)
+X-FDA: 83988169650.29.7EE56FC
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BA043C0002
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 04:24:03 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AGAI4F0g;
+	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760234938;
+	s=arc-20220608; t=1760243043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pYwW5kylGmaXKnmK0P7Fw+OgNfWxcAqI5580HTuaOhA=;
-	b=BsFq4NUXn1t54eAjZsAJdBUrSn4KUwe45WtPy6MxRciQAKwl3+/jpS3/fdqJ9xv9FhFYpz
-	/d63E+5wQRBSEUgTX8UHenhfXg6NrqUPY0B1pcD33O93smn0e1RSN9jCyW+ek9X/4jG0Kg
-	Pe21JTRQGDfqrQ4TrNOlEOF6eyKCyN8=
+	bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
+	b=7vxvWRUt97/LUwO5SkJp/LcIJZqU58nl7tGFIBtgurlN9mjZIr66WhcZ3bSWKch4R/+TVM
+	bFO2abQyQgddQ9Kb/aTvyk9qzP6iUibEa6lYyMzF0PvSHzf7KEckEOFpbFUL9hJ1b5BRNU
+	SyzqWHsjS00b4uRn52950PDLN3t6cuQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Sx5/04B2";
-	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760234938; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AGAI4F0g;
+	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760243043; a=rsa-sha256;
 	cv=none;
-	b=EnSgpt8d6JByjwa6T5IRYhJzjZiIetb5GhX65u9vT55+lo7wZMrGrFV43Jz9YMutnxwlsX
-	F7q98yb9NAEJPoRdSUqDHpsip9mORDMEMkRxb0DAAwGCl32jQhTw4RS2SigBUz2Zize8vm
-	uyZswHf2GpwPxLlHx5sl1w9nUU7qFFk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760234937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pYwW5kylGmaXKnmK0P7Fw+OgNfWxcAqI5580HTuaOhA=;
-	b=Sx5/04B20xzd5hTC44lZNeLLfss06JOKgTl9YYgYLrVtIJXdWniEWsQnc8cJ1pH4I5Cbt2
-	Fljscg2mEOeYXQvZ0DmiLql61LoKpOwlAS1q5qI4Nf5UsGr08y5oMupZURyB8KTxEs7dtI
-	30ij38PaF/2eH4rxLUvnBSBZVz54bO8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-fV6xpNoRMrGp8WJJFyoyEg-1; Sat,
- 11 Oct 2025 22:08:55 -0400
-X-MC-Unique: fV6xpNoRMrGp8WJJFyoyEg-1
-X-Mimecast-MFC-AGG-ID: fV6xpNoRMrGp8WJJFyoyEg_1760234934
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 888FE18004D4;
-	Sun, 12 Oct 2025 02:08:53 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.25])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A49D19560AB;
-	Sun, 12 Oct 2025 02:08:51 +0000 (UTC)
-Date: Sun, 12 Oct 2025 10:08:47 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, linux-mm@kvack.org,
-	oe-kbuild-all@lists.linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, youngjun.park@lge.com, baohua@kernel.org,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com
-Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
- according to numa node
-Message-ID: <aOsNrzBI8hSdnGQ1@MiWiFi-R3L-srv>
-References: <20251011081624.224202-2-bhe@redhat.com>
- <202510120456.vTSygUXV-lkp@intel.com>
- <20251011150408.b865cffc3a8fb8bf834067f7@linux-foundation.org>
+	b=BfJ7pJdNBZbqxOaMqJkNzSSbZftEQ3LNL2J47bDFF3nL8iiGxpUm1q6+rQOD7DYiyAnz+x
+	dOYNQPIB8TIFGAt7nIifaIEfapZy6snU93UTQI3IfRKI/r6uK87TypKKl1yfp5WIXlGpoN
+	J/H0nUEyyDEXMtZmRLyOOzuY/enSEcQ=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-46e3f213b59so53335e9.0
+        for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760243042; x=1760847842; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
+        b=AGAI4F0g43jsBwJpOC2bWZbSouRkOy1sCvF9ufjyeMbdGNBd0LJwA/IyOrBA/CRDSz
+         iUjqdf/b3+9sExb85iqZu9DYuaR6umjagn8Md9qZvWKvMAvZeA18WSYeiFa3pFoglUCj
+         FUQap7WdXrr2itaiYlzUbMcjNbRYoaMXTFMnSBKd06esZwhaEY4heCk14cGTZDKOjvaw
+         XaHlV1RIMwFyq2edW6XlptEV7UTKo2fBO1DjpVlUupxiHW5LSyNL9LeVgQxlWu5oGeQe
+         bJTDBlQJ4qH1JUsJ5hKgJbVKzbNDxxLxTnao3j9wdHBy1LDQ3KhK2tRClNOKKI4hj67K
+         KMeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760243042; x=1760847842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
+        b=EoveiOUwBGZq4WW1t+Nr9j3JSJS3RpnOZVkInM+ZUYSqpupxW5Ol+qiwBvx6/C295/
+         53JXCKKq720W/1/n5JyxYk/qXsftIhdmXecBe3zc53aWCz4jxQXm26fb81sbsgOZQqtl
+         jEF4x4N97gWmxl4HVFdeLzNOrJONKDNG3LPEp9s2yFSmtOgPSHjD9XgsEmSBIWfRl5Zt
+         6o5xrWS5Pd1Dddt3HBGYtXFI6lTcfplkqZiVBlTPkHBp94jMvNLmO8nXyURbgmI+Fs6B
+         PFRE+2vDEXzO66bAoorev48iEERO9sDUnQvuMve377FkWu1jmbXewsOOtM+PIsTdxNEk
+         U7Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCVk2+NCUyCWK2/ecF4jyQqq1FBbubMd2Du2YL7sz+/5O0JBFyXbuwRk6vBQh4v7908rdFif71b1yA==@kvack.org
+X-Gm-Message-State: AOJu0YzI5O8JEKXOfSG+dMZRZSovYamiKjhcbyB4t5uyYF0KbfnxQLWR
+	ckpfgDD7XJiHPqqrM9A0VtPBOr7TIp8BgdDehQN28FXv0xtLTJZCTO2cCkqe8828N4QudosqnV/
+	WWw6beRAwM/pwWjxp4adnVaa1J8trV+nvrfKZTruc
+X-Gm-Gg: ASbGncv5YKz7OZTFgxjWYje48obZKTwhw0gnmOnjKQGfqE1KewmKNNfVllbfl+S5gFq
+	++/pf/9hj5cNkZNSGxZPND0fIC1hBM9ntJAtbz70jEM6u6dgBILnD3bAYzBlFOrD2HqHwOZ7MyM
+	zCNKkt55CvPwcPv4OPuWT4tdFJTq8BFtaG9t0lGrAbEvFgiZUTcIM47m+l3QsKpSnbwayCZyhNr
+	m2MfMZ6/qR5pE5aTOi+MPV9GMlqcAtOmYM1Un8z1B2UGdviVV61wcnhyHPrRy68t4ib3rkiLid8
+X-Google-Smtp-Source: AGHT+IGvsstjeffMbp1ePFQhQfhyz1w3TBL7Vrpso3NyYJuEzW6XJ+XIKOWxbfWeymVsMQNNGLjg2FcyDIgoAeFr/5c=
+X-Received: by 2002:a05:600d:60d2:b0:45f:2e6d:c9ee with SMTP id
+ 5b1f17b1804b1-46fa9b5c782mr7327035e9.6.1760243041944; Sat, 11 Oct 2025
+ 21:24:01 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20251011150408.b865cffc3a8fb8bf834067f7@linux-foundation.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: D_Hq8unIaJ89IUuLYLs5dvZHLS9Lcp-2m8z30SDr9Ic_1760234934
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+ <8ef5e3fd-2ee8-453a-b8ae-584e3d606aa4@redhat.com> <20251012013707.ukkczekcmhntrot2@master>
+In-Reply-To: <20251012013707.ukkczekcmhntrot2@master>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Sat, 11 Oct 2025 21:23:49 -0700
+X-Gm-Features: AS18NWDNNlba9cWDLAJfo9IaE8VDGLe4DW6zFS7qQrYqn3KDTM-KUFsGnG9Bxpw
+Message-ID: <CACw3F53kD_Toxwvb-WXsfhxLYwKovGoPKVV5z-_r6S77a=hH-A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, tony.luck@intel.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	nao.horiguchi@gmail.com, farrah.chen@intel.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Andrew Zaborowski <andrew.zaborowski@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C9D6540004
-X-Stat-Signature: 34ggfesibgqb7q36cj4jpe4swgbphjik
+X-Rspamd-Queue-Id: BA043C0002
+X-Stat-Signature: 1mqof1i7tsw4ba9y96z7gk6bx4myhqwi
 X-Rspam-User: 
-X-HE-Tag: 1760234937-554496
-X-HE-Meta: U2FsdGVkX1+++rKycGrqe82yuXgoemuC+cLHcD8H6ZhZQCu+kCfdiZzp5wnr0C7EH83ZowRFBfxazm5+LLTA1tzq7hkAazWPeSnSMIyqIEH4vd8wjKYH2slwcBD0044cH+10sIx5FGXwlHs+qB543YPgsHkMn7SvQ3ls380FkFB5SpfJappgUqm3Ucx8EHGrDjOdNi3A//MHKC6HNeUCzykBaFiCg8Ruty2loBbuQWwFbBCU5fkWqLd2jXJd3eEeKgBfZUWTJTzbmcViD7cieTdn51WAeiSSynKTEUTLPrEkHPuN4OWVghTi+5sTTWMCvXuHk6XCEiQLIBD8lk0dP2ZGyG6UBbOWqKXwKlAHA1DAXLUmKvOR0NWEG6nuG4CwY+OlrZ3X7D1/HVUVTTBlbp+B5nuzJurRBuekkGPLzElajPlkKyJwDEGzhyTTixVlGb+40zcAIdpzRPBzruX3sWTJtLgH35GQ765i6+Qq1SX7AtwyAYSjhcBvgtFIiwLvBdEPNkDKMbdD1tQAz6wRb+vhSHUxnfFI/jC76R/aAxU1ANPbiYhyoGqICd8VY6geDQNT4tsXFhSdHocsB/7YCmk1SsvH/LJzzvFclPZpdkSdb1EFjUfTDbTTuWkjHxMDmdntouA3mTgb7p0UN1F++fJbL1XjFpi5ALeOIgdzYUh13TJFdmXFcYZzxUuCbGrpi9PvKxu9VSxgEJ9jLaBd/gZqpGpylX0SkjSmrVHpEK9lnPGelFRRXU4n7ABmvaqjO598fZ73nka5zpIO60N2+iQ0FHW7FgBz4FNkCh3EQSUruKEzOkuRA4Wo29aKbpUQ75seJYbNAD0JUGjHfeHvpyNNGUPKYZqkeW6i0DMyMyg2Su6npo/QElonS2kbpZ19o6H177UXxiVsHF0VKG6mSwbreEAO9ArkItiOB37BjcaF42LDqfc0cbjYyW5kb/ohDF0rE19CagKwPK0NCqL
- EzFIrWNQ
- QGG+aiKZe9C58eMMmGYXoVxv44njhaaYse4olG82WMnzUUn01dbRDCuMd8neF6zZCIrTXCDYOsJQIrQLez4GxjbUrjQHPHhkUMu/iFVZ6vHA6Qz5TB+eIi+0Lh+iNcaActK2PmxLkFmJPy9+qDY9dldIo/NnoMep/aiDRO/6F1UHL6D9ZjXR3KnwH8WBOM3/oI5Wgv0Hc5/jZqTWRiwtILkliyBRo8oKyzhIAMAvNOKk8sTDufq+4MBoRYM0G8AXegM4cMnAmZ11Pe/KI+DXSzrxMQjEvNmHZmXY83oLAw/EIl1UVdp64lwY5YBCdcbRynoBrtv/HRMFSKihHEHOX09ApJ60/veRRwrTqz/EE4JjHSFqu0dUAbxj12UiJxPcNXBMA1ofUS44PEDs8I73kRj38KypEmml6WwjYrEbfQ+OXT/GPBxtbnJ5a8Kjssz4tfRI1Bw4naDFFnD/vYRVbut3F2ws9Ea/q79/yFDvdHYbe3aPjhTYpqXhpWMGCOQ7nXleOS9Xvwt6OfLhNSTvrjyaQjzSoMu69lvUrKZNchUSkj8ayb0NWTqaQJODhqIVi0Lq7DbHVVMOnTB7olCIHcbktrFwsdHCzZ+AY
+X-HE-Tag: 1760243043-820663
+X-HE-Meta: U2FsdGVkX1/tf7+VNhIkJWiMsKi1jNLYCL4p6miXxcsiHpOQGcLj77fNSXHP4o/+lccSET1I1EljGAn04RWFI9OFlVcO2imqcBVhJalPwKRVWGq79cIGx6Y/L6wKvfr4IC40T2UPtCGvRzZ4zCxn/LJCxUSQc2MKuwidq/M/IIheXpE6ElEnylqOfHa5Cm4PDGjV87ILMQRHj3epiXCrfSxhzqumMczUbObJhEhd0JpkPZ4IltPmhctMRCNjUUuRITDWOuNaJhn/JQ/LaUO4SKzqbcL7qaz8rkm1szF+A3cwpBEQXqvyrpUlMSklE7n34/57UvxIKSVQk5JmMH6WneaDeo2ALP8jNNgRtoKJ0mROtQ6hnceeazeP6KfgYFt62J0qFSMAtjQiukWCHpCeDAVmsLgP7VZfmhDZlMM5+RxvgPWXePp5j2Laa11z49bjN9zkfNAi+hjEP90L+ojQbIhFMrN8s/3xQdnBgiDdBeHCWY8jdumYlaSI3VQslj9zWe2EqlskuXCN7BZSpPsuiD1s0Gar6CHKK+NpAqgCxhZDYECtUdPofv8XGaYTGMNsiww4kUH+RdFWXurEOMRlt/JC1nXx4Zsw2ZerAOuoqlQEGyE6lPSUyeoPkfiS8Tq+O1vU4pgeH7IlH6KmXtB4dgHqEVN62MLk/uR8J+5e8u/WbV/MQMEtTfhL9fQ5xmrsXe2fhX1dKnKQPhOI4cERgZ2VlH9eCUKtl7aMcVC91YL3OuBPPR0YRm8JgDm8aRi/GUhdlPv3cBgdafz99XHFsg/KHOJSZVXa7wdGWblAtUMfTobG0BTxnHA09eVYJ/EOO7NfW/hjSrYG8XL2YiCLxxNVNVcWXXQ8k1/KnpAQ+r6q47fLxEAUOv2F3iBCqkUltDDTZf7xe2YxqNo/qIuECaejTHeua19hR+2EUAhso3+SpCJwrgURdiFEy/a+ilSGsli83mxwQOanQIDyTa9
+ JdJzhalC
+ mEE5JsdPUU+J+coeS7KrTWJ8qLtIgDyP7YQYP73aewXionj+BtoSZl3S1hL+vYOFGUioK7OwXOcMiYUUzy8kL2xZzXQ+Mer9xrr3L7hz2GqPQLXsvz1pwzEue/6ssLiIWQXjARaNNDe2GNLTUseCx7M29xGrWe8an58pAaZvvxKGI60+bSuor9DkR1d2li+ZsYt5lLRquwpwY/2a/+O97OH1w3FuZ+Jpj5LX7C0Y5g/ofhjI3HmLOGSwzSu5cAEKqe/gH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,80 +121,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/11/25 at 03:04pm, Andrew Morton wrote:
-> On Sun, 12 Oct 2025 04:45:07 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
-> > Hi Baoquan,
-> > 
-> > kernel test robot noticed the following build errors:
-> > 
-> > [auto build test ERROR on akpm-mm/mm-everything]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/mm-swap-do-not-choose-swap-device-according-to-numa-node/20251011-161743
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> > patch link:    https://lore.kernel.org/r/20251011081624.224202-2-bhe%40redhat.com
-> > patch subject: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device according to numa node
-> > config: i386-buildonly-randconfig-003-20251012 (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/config)
-> > compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251012/202510120456.vTSygUXV-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202510120456.vTSygUXV-lkp@intel.com/
-> > 
-> > All error/warnings (new ones prefixed by >>):
-> > 
-> >    In file included from include/linux/list.h:5,
-> >                     from include/linux/wait.h:7,
-> >                     from include/linux/wait_bit.h:8,
-> >                     from include/linux/fs.h:7,
-> >                     from include/linux/highmem.h:5,
-> >                     from include/linux/bvec.h:10,
-> >                     from include/linux/blk_types.h:10,
-> >                     from include/linux/blkdev.h:9,
-> >                     from mm/swapfile.c:9:
-> 
-> Thanks.  I did this.  Baoquan, please review and retest?
-> 
-> 
-> --- a/mm/swapfile.c~mm-swap-do-not-choose-swap-device-according-to-numa-node-fix
-> +++ a/mm/swapfile.c
-> @@ -1388,11 +1388,10 @@ start_over:
->  static bool swap_sync_discard(void)
->  {
->  	bool ret = false;
-> -	int nid = numa_node_id();
->  	struct swap_info_struct *si, *next;
->  
->  	spin_lock(&swap_avail_lock);
-> -	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
-> +	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
->  		spin_unlock(&swap_avail_lock);
->  		if (get_swap_device_info(si)) {
->  			if (si->flags & SWP_PAGE_DISCARD)
-> @@ -2890,7 +2889,6 @@ SYSCALL_DEFINE1(swapoff, const char __us
->  	del_from_avail_list(p, true);
->  	if (p->prio < 0) {
->  		struct swap_info_struct *si = p;
-> -		int nid;
->  
->  		plist_for_each_entry_continue(si, &swap_active_head, list) {
->  			si->prio++;
+On Sat, Oct 11, 2025 at 6:37=E2=80=AFPM Wei Yang <richard.weiyang@gmail.com=
+> wrote:
+>
+> On Mon, Sep 29, 2025 at 09:34:12AM +0200, David Hildenbrand wrote:
+> >On 28.09.25 05:28, Qiuxu Zhuo wrote:
+> [...]
+> >
+> >Hm, I wonder if we should actually check in try_to_map_unused_to_zeropag=
+e()
+> >whether the page has the hwpoison flag set. Nothing wrong with scanning
+> >non-affected pages.
+> >
+> >In thp_underused() we should just skip the folio entirely I guess, so ke=
+ep
+> >it simple.
+> >
+> >So what about something like this:
+> >
+> >diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >index 9c38a95e9f091..d4109fd7fa1f2 100644
+> >--- a/mm/huge_memory.c
+> >+++ b/mm/huge_memory.c
+> >@@ -4121,6 +4121,9 @@ static bool thp_underused(struct folio *folio)
+> >        if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+> >                return false;
+> >+       folio_contain_hwpoisoned_page(folio)
+> >+               return false;
+> >+
+>
+> One question.
+>
+> When hardware detect error, it would immediately trigger memory_failure()=
+? Or
+> it will wait until the memory is accessed?
 
-The code change looks good to me, and I applied this on top of my
-patches and build, the building passed, while the link failed. I haven't
-got the reason. I will go outside now and will be back in the evening to
-fix the linking error and test.
+Hardware detecting a memory error usually results in a poison
+generation event. Kernel expects to receive such poison generation
+event from modern platforms, then kicks off memory_failure without any
+poison context, e.g. the current process cannot be assumed to be the
+"culprit".
 
-  SORTTAB vmlinux.unstripped
-incomplete ORC unwind tables in file: vmlinux.unstripped
-Failed to sort kernel tables
-make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
-
-Thanks
-Baoquan
-> _
-> 
-
+>
+> >        for (i =3D 0; i < folio_nr_pages(folio); i++) {
+> >                kaddr =3D kmap_local_folio(folio, i * PAGE_SIZE);
+> >                if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+> >diff --git a/mm/migrate.c b/mm/migrate.c
+> >index 9e5ef39ce73af..393fc2ffc96e5 100644
+> >--- a/mm/migrate.c
+> >+++ b/mm/migrate.c
+> >@@ -305,8 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct pag=
+e_vma_mapped_walk *pvmw,
+> >        pte_t newpte;
+> >        void *addr;
+> >-       if (PageCompound(page))
+> >+       if (PageCompound(page) || PageHWPoison(page))
+> >                return false;
+> >+
+> >        VM_BUG_ON_PAGE(!PageAnon(page), page);
+> >        VM_BUG_ON_PAGE(!PageLocked(page), page);
+> >        VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
+> >
+> >
+> >--
+> >Cheers
+> >
+> >David / dhildenb
+> >
+>
+> --
+> Wei Yang
+> Help you, Help me
+>
 
