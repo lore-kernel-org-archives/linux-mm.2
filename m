@@ -4,115 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51422CCD187
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 04:24:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA71CCD184
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Oct 2025 06:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 497338E0003; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
+	id AE3E78E0005; Sun, 12 Oct 2025 02:11:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 447A68E0002; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
+	id A8DDB8E0002; Sun, 12 Oct 2025 02:11:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3367C8E0003; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
+	id 97C6A8E0005; Sun, 12 Oct 2025 02:11:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BC2D8E0002
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 00:24:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F2DC8E0002
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 02:11:26 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A887C1407EB
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 04:24:05 +0000 (UTC)
-X-FDA: 83988169650.29.7EE56FC
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BA043C0002
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 04:24:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AGAI4F0g;
-	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27200C07D5
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 06:11:26 +0000 (UTC)
+X-FDA: 83988440172.29.B951FEA
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E8696A0005
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 06:11:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AmCm4OLd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760249484; a=rsa-sha256;
+	cv=none;
+	b=k+7tc2FGHHa/EgJNVT6q4kHJ6RuwltdCWtz7c7uHtRLWCe0MLZc/OXnt2KvsFgjin2O+JF
+	d/3rj0w2KPi8OpxTo57cQXKzXXqbSBWVvLaLIJihnL+dfvxkX1xBFogw8jB4VIsLQF1XaB
+	WJpus0a+SfTcveGiPS50p1w+7gF5/g8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AmCm4OLd;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760243043;
+	s=arc-20220608; t=1760249484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
-	b=7vxvWRUt97/LUwO5SkJp/LcIJZqU58nl7tGFIBtgurlN9mjZIr66WhcZ3bSWKch4R/+TVM
-	bFO2abQyQgddQ9Kb/aTvyk9qzP6iUibEa6lYyMzF0PvSHzf7KEckEOFpbFUL9hJ1b5BRNU
-	SyzqWHsjS00b4uRn52950PDLN3t6cuQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AGAI4F0g;
-	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760243043; a=rsa-sha256;
-	cv=none;
-	b=BfJ7pJdNBZbqxOaMqJkNzSSbZftEQ3LNL2J47bDFF3nL8iiGxpUm1q6+rQOD7DYiyAnz+x
-	dOYNQPIB8TIFGAt7nIifaIEfapZy6snU93UTQI3IfRKI/r6uK87TypKKl1yfp5WIXlGpoN
-	J/H0nUEyyDEXMtZmRLyOOzuY/enSEcQ=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-46e3f213b59so53335e9.0
-        for <linux-mm@kvack.org>; Sat, 11 Oct 2025 21:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760243042; x=1760847842; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
-        b=AGAI4F0g43jsBwJpOC2bWZbSouRkOy1sCvF9ufjyeMbdGNBd0LJwA/IyOrBA/CRDSz
-         iUjqdf/b3+9sExb85iqZu9DYuaR6umjagn8Md9qZvWKvMAvZeA18WSYeiFa3pFoglUCj
-         FUQap7WdXrr2itaiYlzUbMcjNbRYoaMXTFMnSBKd06esZwhaEY4heCk14cGTZDKOjvaw
-         XaHlV1RIMwFyq2edW6XlptEV7UTKo2fBO1DjpVlUupxiHW5LSyNL9LeVgQxlWu5oGeQe
-         bJTDBlQJ4qH1JUsJ5hKgJbVKzbNDxxLxTnao3j9wdHBy1LDQ3KhK2tRClNOKKI4hj67K
-         KMeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760243042; x=1760847842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q31C64dvExcLvA+pvLaqKGJxfqiu7mgCUQLhcnfrebk=;
-        b=EoveiOUwBGZq4WW1t+Nr9j3JSJS3RpnOZVkInM+ZUYSqpupxW5Ol+qiwBvx6/C295/
-         53JXCKKq720W/1/n5JyxYk/qXsftIhdmXecBe3zc53aWCz4jxQXm26fb81sbsgOZQqtl
-         jEF4x4N97gWmxl4HVFdeLzNOrJONKDNG3LPEp9s2yFSmtOgPSHjD9XgsEmSBIWfRl5Zt
-         6o5xrWS5Pd1Dddt3HBGYtXFI6lTcfplkqZiVBlTPkHBp94jMvNLmO8nXyURbgmI+Fs6B
-         PFRE+2vDEXzO66bAoorev48iEERO9sDUnQvuMve377FkWu1jmbXewsOOtM+PIsTdxNEk
-         U7Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCVk2+NCUyCWK2/ecF4jyQqq1FBbubMd2Du2YL7sz+/5O0JBFyXbuwRk6vBQh4v7908rdFif71b1yA==@kvack.org
-X-Gm-Message-State: AOJu0YzI5O8JEKXOfSG+dMZRZSovYamiKjhcbyB4t5uyYF0KbfnxQLWR
-	ckpfgDD7XJiHPqqrM9A0VtPBOr7TIp8BgdDehQN28FXv0xtLTJZCTO2cCkqe8828N4QudosqnV/
-	WWw6beRAwM/pwWjxp4adnVaa1J8trV+nvrfKZTruc
-X-Gm-Gg: ASbGncv5YKz7OZTFgxjWYje48obZKTwhw0gnmOnjKQGfqE1KewmKNNfVllbfl+S5gFq
-	++/pf/9hj5cNkZNSGxZPND0fIC1hBM9ntJAtbz70jEM6u6dgBILnD3bAYzBlFOrD2HqHwOZ7MyM
-	zCNKkt55CvPwcPv4OPuWT4tdFJTq8BFtaG9t0lGrAbEvFgiZUTcIM47m+l3QsKpSnbwayCZyhNr
-	m2MfMZ6/qR5pE5aTOi+MPV9GMlqcAtOmYM1Un8z1B2UGdviVV61wcnhyHPrRy68t4ib3rkiLid8
-X-Google-Smtp-Source: AGHT+IGvsstjeffMbp1ePFQhQfhyz1w3TBL7Vrpso3NyYJuEzW6XJ+XIKOWxbfWeymVsMQNNGLjg2FcyDIgoAeFr/5c=
-X-Received: by 2002:a05:600d:60d2:b0:45f:2e6d:c9ee with SMTP id
- 5b1f17b1804b1-46fa9b5c782mr7327035e9.6.1760243041944; Sat, 11 Oct 2025
- 21:24:01 -0700 (PDT)
+	bh=foNWJ4E25V51roHi1w2GGGZKjeKD6i3dCTeTVLACyRo=;
+	b=hKKzDrOQoprSnI0Ey1aEGJVnAWAFd1t2HkHSu6nQPksRnXFhsjjkoK8yLwgEi9K9Ba+4OH
+	Us+9E6CIoPewb/wEdQtAwh9+E2begMCVXNAW03nsMQRPa10XiuPVCkuPl1NSM2pSpDUhV3
+	wVcepK0O8sH/tnXBFAd3xaC88g5s6pU=
+X-Forwarded-Encrypted: i=1; AJvYcCUTE/4NKt4vo4McidoKHh+CpIV4VxB2Jtd1ZMAqb62tAmID/CNH8PbXCnuYZS18gf6VYZIcH+vdbw==@kvack.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760249481;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=foNWJ4E25V51roHi1w2GGGZKjeKD6i3dCTeTVLACyRo=;
+	b=AmCm4OLdBdqJRTSKZ0PkYqRKPYjzUZqX01C5LZUmqFHedTlI7wqVY6k+FHuIGzb97HZ0fT
+	xsJcz7/F1HAPxcstmf+uysirAQHmwZFhNll1W+mxiDrpcjm5W4Yh5vwdf0yerFDgnG1viM
+	yXL4mSqkWEwiItv9MxTFfjCMH2q38vg=
+X-Gm-Message-State: AOJu0YxjrjQbUXSwVRJz2avdp0Hi6Jwa/PxdW7GQMzwrTGHZE9PY6iTx
+	bLNRHWyIBttlmN/9ARr3dplQHvl8p2afj9zGnGDECQlD9f2UUoI6Gjx/AUdTVmYyW9/lcRtMDea
+	/2iHiKF1FCTcrVljwvsGcMe7iOos1hRc=
+X-Google-Smtp-Source: AGHT+IGS0m07WNkCv+xO8uTbgSUz2CohzI7fDRMEZdBsffTcs/wloxbDLAkjPyEDGkuh6+Hjmc9gNd3T1rXw4qkFyCk=
+X-Received: by 2002:ad4:5ca4:0:b0:77c:a783:c9c6 with SMTP id
+ 6a1803df08f44-87b21015103mr220167516d6.3.1760249475096; Sat, 11 Oct 2025
+ 23:11:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
- <8ef5e3fd-2ee8-453a-b8ae-584e3d606aa4@redhat.com> <20251012013707.ukkczekcmhntrot2@master>
-In-Reply-To: <20251012013707.ukkczekcmhntrot2@master>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Sat, 11 Oct 2025 21:23:49 -0700
-X-Gm-Features: AS18NWDNNlba9cWDLAJfo9IaE8VDGLe4DW6zFS7qQrYqn3KDTM-KUFsGnG9Bxpw
-Message-ID: <CACw3F53kD_Toxwvb-WXsfhxLYwKovGoPKVV5z-_r6S77a=hH-A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: prevent poison consumption when splitting THP
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, tony.luck@intel.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	nao.horiguchi@gmail.com, farrah.chen@intel.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Zaborowski <andrew.zaborowski@intel.com>
+References: <20251001065707.920170-1-balbirs@nvidia.com> <20251001065707.920170-2-balbirs@nvidia.com>
+In-Reply-To: <20251001065707.920170-2-balbirs@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Date: Sun, 12 Oct 2025 14:10:37 +0800
+X-Gmail-Original-Message-ID: <CABzRoyYJXVdgTdoz9uYxeYHeejU1bbe6_rQnvbKns7fjvz_kqQ@mail.gmail.com>
+X-Gm-Features: AS18NWC8_Z-3ZIKnbl1wff6T8kbSmzYyB0uKsUmMixJLXumxkUIzTUIiVVMKwFw
+Message-ID: <CABzRoyYJXVdgTdoz9uYxeYHeejU1bbe6_rQnvbKns7fjvz_kqQ@mail.gmail.com>
+Subject: Re: [v7 01/16] mm/zone_device: support large zone device private folios
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-mm@kvack.org, akpm@linux-foundation.org, 
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Ralph Campbell <rcampbell@nvidia.com>, =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Francois Dugast <francois.dugast@intel.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BA043C0002
-X-Stat-Signature: 1mqof1i7tsw4ba9y96z7gk6bx4myhqwi
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: isgw16guduujmd3eoameetszmdjfdhfr
+X-Rspamd-Queue-Id: E8696A0005
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760243043-820663
-X-HE-Meta: U2FsdGVkX1/tf7+VNhIkJWiMsKi1jNLYCL4p6miXxcsiHpOQGcLj77fNSXHP4o/+lccSET1I1EljGAn04RWFI9OFlVcO2imqcBVhJalPwKRVWGq79cIGx6Y/L6wKvfr4IC40T2UPtCGvRzZ4zCxn/LJCxUSQc2MKuwidq/M/IIheXpE6ElEnylqOfHa5Cm4PDGjV87ILMQRHj3epiXCrfSxhzqumMczUbObJhEhd0JpkPZ4IltPmhctMRCNjUUuRITDWOuNaJhn/JQ/LaUO4SKzqbcL7qaz8rkm1szF+A3cwpBEQXqvyrpUlMSklE7n34/57UvxIKSVQk5JmMH6WneaDeo2ALP8jNNgRtoKJ0mROtQ6hnceeazeP6KfgYFt62J0qFSMAtjQiukWCHpCeDAVmsLgP7VZfmhDZlMM5+RxvgPWXePp5j2Laa11z49bjN9zkfNAi+hjEP90L+ojQbIhFMrN8s/3xQdnBgiDdBeHCWY8jdumYlaSI3VQslj9zWe2EqlskuXCN7BZSpPsuiD1s0Gar6CHKK+NpAqgCxhZDYECtUdPofv8XGaYTGMNsiww4kUH+RdFWXurEOMRlt/JC1nXx4Zsw2ZerAOuoqlQEGyE6lPSUyeoPkfiS8Tq+O1vU4pgeH7IlH6KmXtB4dgHqEVN62MLk/uR8J+5e8u/WbV/MQMEtTfhL9fQ5xmrsXe2fhX1dKnKQPhOI4cERgZ2VlH9eCUKtl7aMcVC91YL3OuBPPR0YRm8JgDm8aRi/GUhdlPv3cBgdafz99XHFsg/KHOJSZVXa7wdGWblAtUMfTobG0BTxnHA09eVYJ/EOO7NfW/hjSrYG8XL2YiCLxxNVNVcWXXQ8k1/KnpAQ+r6q47fLxEAUOv2F3iBCqkUltDDTZf7xe2YxqNo/qIuECaejTHeua19hR+2EUAhso3+SpCJwrgURdiFEy/a+ilSGsli83mxwQOanQIDyTa9
- JdJzhalC
- mEE5JsdPUU+J+coeS7KrTWJ8qLtIgDyP7YQYP73aewXionj+BtoSZl3S1hL+vYOFGUioK7OwXOcMiYUUzy8kL2xZzXQ+Mer9xrr3L7hz2GqPQLXsvz1pwzEue/6ssLiIWQXjARaNNDe2GNLTUseCx7M29xGrWe8an58pAaZvvxKGI60+bSuor9DkR1d2li+ZsYt5lLRquwpwY/2a/+O97OH1w3FuZ+Jpj5LX7C0Y5g/ofhjI3HmLOGSwzSu5cAEKqe/gH
+X-HE-Tag: 1760249483-255940
+X-HE-Meta: U2FsdGVkX184ZCOcQOx0IWNtum/nP1vXK12OGu39cGVAGgLyVX3fY5TlRpftt3HW6O/zsDJs5svNPNdYuYQXockzwCGYmECc2i4JmjP1oDqnKsOdWxrESDloyQP/xjSxubzckmmNhETpgyvK9UXu1/FFUtt5teBoeF+cq5Dk7fdUH5qjpftVnZDFYRK0yREdr3JSvtBOreolBR7YwupJ+Tcjkd7ibW9SLEv4s4uJs106pguaqx8PtIgOnyTiAU9tKUTQy9lsz2rG23j9pQtS2nUX2mwXX/e7mBwW+etgpoqO8d/4gv+5a5aDSfliKg/DRF+KL1rybBxD4FOf9BSRE+Fi9ihsqTGXeZokqg8z1uoy42xd2Tn9u7D+H5nU2Omt0ioO29QUP2giUx6zPCoILt3Cgv2tjkqdKBRyIZq+eRtHcA2K8oQSuARkLdnhP5tLetgyZ5oHzH63n/uyTqMi51KE+sdbeg1OLqgOtAmKTAToHapn36lInWdmskUQTgjlW16cMSwJ/MHAT7IYNS9SSIVdGnPA8Rn5Zq6F6xSdSBMdfAPayckY165AxI1gyvpnhNZXk5Ocd2F1tn3PK31CHvATIk0irhODS3XzrfeuFYlHgsTqGErMzfMvf8POPOHRsIPwwN/mCICI0mRiB6KXfP3jeZAOWTeh9sEX6ZZ6BYVSuyzs7BjANuNEcVC1azMs+hPfTw4lx9IqKFzXDZmhsaYgNVbSHDsdlsbonH1D/0ujqOdwMb8r7x+RHqLAzIA8xQJvB+5qNcSiaQID5zm5snrvvXO763koTCcVJxCauxpCyZ/lHAbymvCJSWE6OgI1Sv7KzDSsIxsvpw0nW6NXRLXjtBpeokSJmzp+kZhKy64PovS8kl1E5DIWG/1+vlMIT18elr2259zcwnRPbSyNsFWBfDRF963VDkm17zYya8BEyJJgDbBGHrS20s7c/N67UyCUZEpWik09Wzu8E2D
+ vyFVs/fv
+ 3BB0nsMwNcqTUYnvvvTN5vfpS1BWNBFqDlhIMbGBfs8vMqO3gUmeNTu3JY3skmXE9MBUWFeStJOkTbyTCbgCONsNaW1qFiTJGgTvWrk5ODHKI3Qbhmbl60/3fe0K/wt9/DcvGU/+z8jlciCdzzFUGrIdOkrEFRwoFbP0kr9TW06CoQgIDMshqhpX27ZOYSH1U4ubJWYiwtJrtzaEt+TqdOEBt3srIXnmwraCLLSwrSFnNcZ78gNlixnm3AoVgxd4HLB8RHyDGGXTFdZTHqL2hAcAQE+/ELBScyDtgCZEHauxQthTdfiMv9cs2cgnH8hJGLoJiUkDLXapkR+1ZRTGpIONpd3Bmhf7z8NjqkO15tpuSfi/F/pZ/xyQ/TaeSCNu8AZUi7IrdnuEjm4XF4v4HwgSoRdCC4owKHvJrJaEGULBDwhPc95a/cYH0KcZT0k+ePiScXr4tPw3+G2vC0eNNT7Vr63seqZiB1C/wkjSyidalYpwC321AX0OsAa8on2PtvAr+udxbhdD/BsCmT2xdZpKmNHyCHygRYLPAXhBOQjJLhL2SZxP7zmQwGVqPbg4eGbKdg2zjOPV+HMFfPYrvNflS+5/p6lS28g1ZaEhsjJtEPek7L2RBXnx5iuARn+w+d4ZcJQilAEazcdQ+iCIEAen0P65OE1LqiODscEmIlv6WYC67AsXgnhKr8/Coyk6LP8vhzUoUNXUgFG/Kn2sxEmnJlqhE97N4VKpBr/vtOUcZIgXhT8ihLOUufVDvbnHZqrLKHo2vUbmQMRTcd1CVur5Er4spQBiIcXjB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,76 +112,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 11, 2025 at 6:37=E2=80=AFPM Wei Yang <richard.weiyang@gmail.com=
-> wrote:
->
-> On Mon, Sep 29, 2025 at 09:34:12AM +0200, David Hildenbrand wrote:
-> >On 28.09.25 05:28, Qiuxu Zhuo wrote:
-> [...]
-> >
-> >Hm, I wonder if we should actually check in try_to_map_unused_to_zeropag=
-e()
-> >whether the page has the hwpoison flag set. Nothing wrong with scanning
-> >non-affected pages.
-> >
-> >In thp_underused() we should just skip the folio entirely I guess, so ke=
-ep
-> >it simple.
-> >
-> >So what about something like this:
-> >
-> >diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >index 9c38a95e9f091..d4109fd7fa1f2 100644
-> >--- a/mm/huge_memory.c
-> >+++ b/mm/huge_memory.c
-> >@@ -4121,6 +4121,9 @@ static bool thp_underused(struct folio *folio)
-> >        if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> >                return false;
-> >+       folio_contain_hwpoisoned_page(folio)
-> >+               return false;
-> >+
->
-> One question.
->
-> When hardware detect error, it would immediately trigger memory_failure()=
-? Or
-> it will wait until the memory is accessed?
+Hi Balbir,
 
-Hardware detecting a memory error usually results in a poison
-generation event. Kernel expects to receive such poison generation
-event from modern platforms, then kicks off memory_failure without any
-poison context, e.g. the current process cannot be assumed to be the
-"culprit".
+Just one nit below :)
 
+On Wed, Oct 1, 2025 at 3:43=E2=80=AFPM Balbir Singh <balbirs@nvidia.com> wr=
+ote:
 >
-> >        for (i =3D 0; i < folio_nr_pages(folio); i++) {
-> >                kaddr =3D kmap_local_folio(folio, i * PAGE_SIZE);
-> >                if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
-> >diff --git a/mm/migrate.c b/mm/migrate.c
-> >index 9e5ef39ce73af..393fc2ffc96e5 100644
-> >--- a/mm/migrate.c
-> >+++ b/mm/migrate.c
-> >@@ -305,8 +305,9 @@ static bool try_to_map_unused_to_zeropage(struct pag=
-e_vma_mapped_walk *pvmw,
-> >        pte_t newpte;
-> >        void *addr;
-> >-       if (PageCompound(page))
-> >+       if (PageCompound(page) || PageHWPoison(page))
-> >                return false;
-> >+
-> >        VM_BUG_ON_PAGE(!PageAnon(page), page);
-> >        VM_BUG_ON_PAGE(!PageLocked(page), page);
-> >        VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
-> >
-> >
-> >--
-> >Cheers
-> >
-> >David / dhildenb
-> >
+> Add routines to support allocation of large order zone device folios
+> and helper functions for zone device folios, to check if a folio is
+> device private and helpers for setting zone device data.
 >
-> --
-> Wei Yang
-> Help you, Help me
+> When large folios are used, the existing page_free() callback in
+> pgmap is called when the folio is freed, this is true for both
+> PAGE_SIZE and higher order pages.
 >
+> Zone device private large folios do not support deferred split and
+> scan like normal THP folios.
+>
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttil=C3=A4 <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: "Christian K=C3=B6nig" <christian.koenig@amd.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+>  drivers/gpu/drm/drm_pagemap.c            |  2 +-
+>  drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+>  include/linux/memremap.h                 | 10 ++++++++-
+>  lib/test_hmm.c                           |  2 +-
+>  mm/memremap.c                            | 26 ++++++++++++++----------
+>  mm/rmap.c                                |  6 +++++-
+>  8 files changed, 34 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s=
+_hv_uvmem.c
+> index 03f8c34fa0a2..91f763410673 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -723,7 +723,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned lo=
+ng gpa, struct kvm *kvm)
+>
+>         dpage =3D pfn_to_page(uvmem_pfn);
+>         dpage->zone_device_data =3D pvt;
+> -       zone_device_page_init(dpage);
+> +       zone_device_page_init(dpage, 0);
+>         return dpage;
+>  out_clear:
+>         spin_lock(&kvmppc_uvmem_bitmap_lock);
+> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/a=
+md/amdkfd/kfd_migrate.c
+> index 79251f22b702..d0e2cae33035 100644
+> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> @@ -217,7 +217,7 @@ svm_migrate_get_vram_page(struct svm_range *prange, u=
+nsigned long pfn)
+>         page =3D pfn_to_page(pfn);
+>         svm_range_bo_ref(prange->svm_bo);
+>         page->zone_device_data =3D prange->svm_bo;
+> -       zone_device_page_init(page);
+> +       zone_device_page_init(page, 0);
+>  }
+>
+>  static void
+> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.=
+c
+> index 1da55322af12..31c53f724e25 100644
+> --- a/drivers/gpu/drm/drm_pagemap.c
+> +++ b/drivers/gpu/drm/drm_pagemap.c
+> @@ -196,7 +196,7 @@ static void drm_pagemap_get_devmem_page(struct page *=
+page,
+>                                         struct drm_pagemap_zdd *zdd)
+>  {
+>         page->zone_device_data =3D drm_pagemap_zdd_get(zdd);
+> -       zone_device_page_init(page);
+> +       zone_device_page_init(page, 0);
+>  }
+>
+>  /**
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nou=
+veau/nouveau_dmem.c
+> index ca4932a150e3..53cc1926b9da 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> @@ -318,7 +318,7 @@ nouveau_dmem_page_alloc_locked(struct nouveau_drm *dr=
+m)
+>                         return NULL;
+>         }
+>
+> -       zone_device_page_init(page);
+> +       zone_device_page_init(page, 0);
+>         return page;
+>  }
+>
+> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+> index e5951ba12a28..d2487a19cba2 100644
+> --- a/include/linux/memremap.h
+> +++ b/include/linux/memremap.h
+> @@ -206,7 +206,7 @@ static inline bool is_fsdax_page(const struct page *p=
+age)
+>  }
+>
+>  #ifdef CONFIG_ZONE_DEVICE
+> -void zone_device_page_init(struct page *page);
+> +void zone_device_page_init(struct page *page, unsigned int order);
+>  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
+>  void memunmap_pages(struct dev_pagemap *pgmap);
+>  void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)=
+;
+> @@ -215,6 +215,14 @@ struct dev_pagemap *get_dev_pagemap(unsigned long pf=
+n);
+>  bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
+>
+>  unsigned long memremap_compat_align(void);
+> +
+> +static inline void zone_device_folio_init(struct folio *folio, unsigned =
+int order)
+> +{
+> +       zone_device_page_init(&folio->page, order);
+> +       if (order)
+> +               folio_set_large_rmappable(folio);
+> +}
+> +
+>  #else
+>  static inline void *devm_memremap_pages(struct device *dev,
+>                 struct dev_pagemap *pgmap)
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index 83e3d8208a54..24d82121cde8 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -627,7 +627,7 @@ static struct page *dmirror_devmem_alloc_page(struct =
+dmirror_device *mdevice)
+>                         goto error;
+>         }
+>
+> -       zone_device_page_init(dpage);
+> +       zone_device_page_init(dpage, 0);
+>         dpage->zone_device_data =3D rpage;
+>         return dpage;
+>
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 46cb1b0b6f72..e45dfb568710 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -416,20 +416,19 @@ EXPORT_SYMBOL_GPL(get_dev_pagemap);
+>  void free_zone_device_folio(struct folio *folio)
+>  {
+>         struct dev_pagemap *pgmap =3D folio->pgmap;
+> +       unsigned long nr =3D folio_nr_pages(folio);
+> +       int i;
+>
+>         if (WARN_ON_ONCE(!pgmap))
+>                 return;
+>
+>         mem_cgroup_uncharge(folio);
+>
+> -       /*
+> -        * Note: we don't expect anonymous compound pages yet. Once suppo=
+rted
+> -        * and we could PTE-map them similar to THP, we'd have to clear
+> -        * PG_anon_exclusive on all tail pages.
+> -        */
+>         if (folio_test_anon(folio)) {
+> -               VM_BUG_ON_FOLIO(folio_test_large(folio), folio);
+> -               __ClearPageAnonExclusive(folio_page(folio, 0));
+> +               for (i =3D 0; i < nr; i++)
+> +                       __ClearPageAnonExclusive(folio_page(folio, i));
+> +       } else {
+> +               VM_WARN_ON_ONCE(folio_test_large(folio));
+>         }
+>
+>         /*
+> @@ -456,8 +455,8 @@ void free_zone_device_folio(struct folio *folio)
+>         case MEMORY_DEVICE_COHERENT:
+>                 if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->page_free))
+>                         break;
+> -               pgmap->ops->page_free(folio_page(folio, 0));
+> -               put_dev_pagemap(pgmap);
+> +               pgmap->ops->page_free(&folio->page);
+> +               percpu_ref_put_many(&folio->pgmap->ref, nr);
+
+Nit: &pgmap->ref here for consistency?
+
+Cheers,
+Lance
 
