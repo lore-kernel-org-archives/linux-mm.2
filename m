@@ -4,106 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6078CCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 21:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C9DCCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 21:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E72E48E008B; Mon, 13 Oct 2025 17:51:06 -0400 (EDT)
+	id 37C188E008E; Mon, 13 Oct 2025 17:53:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E49E38E0031; Mon, 13 Oct 2025 17:51:06 -0400 (EDT)
+	id 353A48E0031; Mon, 13 Oct 2025 17:53:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5FEA8E008B; Mon, 13 Oct 2025 17:51:06 -0400 (EDT)
+	id 269318E008E; Mon, 13 Oct 2025 17:53:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BFBF98E0031
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 17:51:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FC3F5A02A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:51:06 +0000 (UTC)
-X-FDA: 83994436932.04.ACAC714
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E2EE74000C
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:51:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S3Esw2xh;
-	spf=pass (imf07.hostedemail.com: domain of vinicius.gomes@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 156598E0031
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 17:53:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A283686F4C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:53:32 +0000 (UTC)
+X-FDA: 83994443064.19.E262CC1
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B1CE24000A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:53:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f2yjo8c7;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760392264;
+	s=arc-20220608; t=1760392410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QD3GG/DFmOJ80YKa4QZvcy3IZiuJ1Z4i3SHJaSjaTeA=;
-	b=QZkeml0GphjdGnnuClXQDioGef2ioKsXdfrOv0P4zurQSUCRFz50fcUtjoBadDVOnghclf
-	nP81hCknG8+g8dWpHGLeDLFXh6fCPf4ocPzGT/6Z+A5sEzXHzv1YVof77nUkIn4h2QPzYM
-	PvbCCzFeG1uXSpHCR/FU1kdw8QlQRv4=
+	bh=eznQkcbVB5NzB/bIiJpDdx0jzlo0Dnq+XZ627uhHJTw=;
+	b=taPY4PNa0vHPdLjPbbRDnNYUQrYQjFe4miLsdxIdnNrNZRcaXc63UDP6rDMZqm+0Mu3+5l
+	K1VSUCr3nOCrJeHg+BEmvZE2d3CZW5eHka0W7Ry5gXy0EQVw0E7goDK3isWO6gXNr8UbLW
+	CKkz9QjgcFlz89ZRv3UQoIIqM1DTVRU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S3Esw2xh;
-	spf=pass (imf07.hostedemail.com: domain of vinicius.gomes@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760392264; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=f2yjo8c7;
+	spf=pass (imf27.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760392410; a=rsa-sha256;
 	cv=none;
-	b=yEgeoLcOCwAfr/7z1X3pTW7aBMLyVcAo+QHznGsWw94GEdg3ZgptnE477FbhKJZeypAQDw
-	42m9DXyGe3XMH9K7rwTbbBs8x9QeA3C+uSMaK0PG2lK8vDLCLCvW+/1fp0wWLwzu3CHW7w
-	gngh4gOL8z7gPBpMnbTIX2ErdMQF7Ts=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760392262; x=1791928262;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=s/rWpAk/spLG7cGAgaAcB22SaCS3hyaO1JzxvOBN1UU=;
-  b=S3Esw2xhTDxoZbQhNw8K0K5aEVPqiC0KVJIeKH21kCcc4klAuMwncrGG
-   GUM9cpzdbydN/I1H+cgmEu+mGwwuPRMUNn/9J16BprqHYNIEW9259Q8uB
-   h/3mgeOrq1f6tSbVCg5q3H5oYyJhGBlnPd63K/NuOMudMgyhlzUqVIJhC
-   IYJ8cdipdDjo6lfc9FBmztZmXGcJrzdpVUCLIbv+mLii2p6AfGYGvm0W0
-   UfbsG+80ngsin7P1flEz/gD8PnEDENmfg6oS+NthJXSpgirDupb6K2hgy
-   OXei35wvMdqFyJs5ec/AnUgYvVWcf9UjQ3P10nT3mHUhmq91+5XoFoIc5
-   A==;
-X-CSE-ConnectionGUID: X0UBOkm9TnOIS1b+lghczQ==
-X-CSE-MsgGUID: pb2RGxM6Rtmpg36cE7n8sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="88004548"
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; 
-   d="scan'208";a="88004548"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 14:51:00 -0700
-X-CSE-ConnectionGUID: K2D8ox7WRo6Awe7td7rbkg==
-X-CSE-MsgGUID: Xg7zxYz8TLC+L6NGk6zaPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,226,1754982000"; 
-   d="scan'208";a="186809381"
-Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.88.27.140])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2025 14:51:00 -0700
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>, Eric Dumazet <edumazet@google.com>
-Cc: syzbot <syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com>,
- davem@davemloft.net, dsahern@kernel.org, hdanton@sina.com,
- horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, pabeni@redhat.com,
- syzkaller-bugs@googlegroups.com, tglx@linutronix.de
-Subject: Re: [syzbot] [net?] [mm?] INFO: rcu detected stall in
- inet_rtm_newaddr (2)
-In-Reply-To: <CAM0EoMnGLqKU7AnsgS00SEgU0eq71f-kiqNniCNyfiyAfNm8og@mail.gmail.com>
-References: <681a1770.050a0220.a19a9.000d.GAE@google.com>
- <68ea0a24.050a0220.91a22.01ca.GAE@google.com>
- <CANn89iLjjtXV3ZMxfQDb1bbsVJ6a_Chexu4FwqeejxGTwsR_kg@mail.gmail.com>
- <CAM0EoMnGLqKU7AnsgS00SEgU0eq71f-kiqNniCNyfiyAfNm8og@mail.gmail.com>
-Date: Mon, 13 Oct 2025 14:51:18 -0700
-Message-ID: <87347mmpwp.fsf@intel.com>
+	b=PsUlSeWQOLsu84k9h191wmsbpJaU5Yob/D1GBLgjjDnnDhmaknVsFCPTlOXbc34zzQeyak
+	u0ao5UPNVl20qnDr8Nq8dj5wsSFVnAPVosYmBzvipLXto+z6KS2XQyTax/WiSISpDdedcQ
+	exksUQR+I/M/1SVkP2TUfvQuyedk2yY=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e37d10ed2so43031785e9.2
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:53:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760392409; x=1760997209; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eznQkcbVB5NzB/bIiJpDdx0jzlo0Dnq+XZ627uhHJTw=;
+        b=f2yjo8c7kck3m1PZxN9kMlRyK7kLu+NW9Bmi/KGXKthoqphAOHHV3WC2aKt3B0iD5h
+         6nZUE7JZDwer460jkkKj7rWWJHhhdjwc2pkQSon4ZJAgRlO1mFWVD8PNsgHcOvknhKcv
+         nO2bkMEyJnp6561Ia1akj93zAL63ftyltvaSLjZ3zytgm6TmmqAp24CeG0yljFTzG8U7
+         IwiixMPTUF2aA76qrxAISt/yWqg4q14XxHE7iGPBpgUpVDKaM2fwqBthzOtRMoepKo/x
+         mb9GPDmCdY5ZhBMO6JqNSzcr5AIv8oCuPYQSS6pv+qwZhZrZYLf5dQ04E2wt9/TYUebs
+         aSXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760392409; x=1760997209;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eznQkcbVB5NzB/bIiJpDdx0jzlo0Dnq+XZ627uhHJTw=;
+        b=Zo89tM7HtOq+TXMXJnYLSVCedp59gWMk1usCYTdwCDdVfUvjyu2EYl1qMVUjZK9/0H
+         eSyOpLHP7JVz0NjNQmJ+GYcjlQtIu7APe7iOD51XOQ8OYRO7AekiJtq+vlWnm1N16d5n
+         ugUOX24x+i4DqnFZttJH0Nxn4N1eOPQKWwulgKofluBnFXgbH1ldC0xlnCuGLPB+hypW
+         JZh/BDVrPsYis5siWe5Fiv0BB463wN1d6K/Twty7FGBTIOoWx7vj+ilBTbA8QT8ZRmtN
+         3OskC2OeMmLMeuR45WLbCnogy0RwsP4tEOcSeSydXI1Xm+0T5JSU3qEEmN0fB4QiLo6g
+         3REw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuO2TNp4UkmpJvCX6cjIC74cbHmuCV0nDVEWWcPlTi8dyPoLQfXaYivfMuPLHFACZbNIlakrNpmg==@kvack.org
+X-Gm-Message-State: AOJu0Yyj0fcbQq3ip2rnH/P67nYFa1dd6QPnOhZVn6p2iHcX+p3fEtma
+	syqw0mZpLB6bxChoFLRoxD3KjC76NKCpD820MybTJDr/k9pPInGuxkogWQCWFRtuaVsT+HTn3BG
+	/HbyRA31RnnTnjXaMEQjYy79LV1XYQTo=
+X-Gm-Gg: ASbGncvRnsMetUCvJfA0VSdRxaerUzVhsfGPV8ceNL26kb4qiI9tyzuNEjpZVSR5/AL
+	4XzLjh1Dss0uiZXYu30rgalYv2h/Xa9bkaHPhTPSD5IgWWoDCF8D2QxCjdp4ChQYbyniDTckUZJ
+	y/cEt13tmRThD6TvuKNPlM8vakGZftxOx7uFpVceH8d4GT5Zar0YKAxJwCTgMdiVDLJfrfm0nku
+	jP5T+lKLLfYycZxrPiwmSMu1JytRu9MhCdn42lgI25WBasCNJpy6M+uqL8=
+X-Google-Smtp-Source: AGHT+IHjZPYSx/MFnDGMSVq+/lL2r95iSzOO5aOtH3FWckuHrmP+/J89/qhEWOR5QTdySxp5tyYSKjZsZl0Qibs5c9g=
+X-Received: by 2002:a05:6000:4283:b0:3e8:b4cb:c3dc with SMTP id
+ ffacd0b85a97d-4266e7ce955mr15411285f8f.3.1760392409074; Mon, 13 Oct 2025
+ 14:53:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251013101636.69220-1-21cnbao@gmail.com> <927bcdf7-1283-4ddd-bd5e-d2e399b26f7d@suse.cz>
+ <dhmafwxu2jj4lu6acoqdhqh46k33sbsj5jvepcfzly4c7dn2t7@ln5dgubll4ac>
+In-Reply-To: <dhmafwxu2jj4lu6acoqdhqh46k33sbsj5jvepcfzly4c7dn2t7@ln5dgubll4ac>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 13 Oct 2025 14:53:17 -0700
+X-Gm-Features: AS18NWCpJ5cNadN1PuP9X6HpkCgMz2QoMAjad8BXEm_SW3mlUtmGRuLdphkG_3M
+Message-ID: <CAADnVQKEhfFTSkn6f_PJr6xMcjB4d45E_+TsU6+945f2XD1SmA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Barry Song <21cnbao@gmail.com>, 
+	Network Development <netdev@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Matthew Wilcox <willy@infradead.org>, Roman Gushchin <roman.gushchin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E2EE74000C
-X-Stat-Signature: q71cng6tz41ongtaysf115qcm3kbink3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B1CE24000A
+X-Stat-Signature: zksqab6oni1jhf9shudcht5uwahun9rq
 X-Rspam-User: 
-X-HE-Tag: 1760392261-12905
-X-HE-Meta: U2FsdGVkX1+t8NsYBHfp09D6fgMNbeuRDi64txbViG48Tuwu6OT/EHmhV0Hub8vBJbSH8H3nFomLSUizHAI6UrRnfyf1x9FYGqpZI8HZerja66g5XpnK9demfHkPSSdOIyiAcZj7OwGssJSw3yG0QVG+xiqoT/lTgzvus/qYcA+DBbvDgigph4dtVl2ozOoXZp8IE74pynkrJMaOsCYXOH0C3lS6KKzKrLhxcgKLgvZ+oNFpyI4YyJ590VEACE3iPcb2sB4mPJRsKF00+XLyR7atr2nJaBSxpoWwNL5Hs+hw+ro208x3qK5gTuOkRWxPMy95xqNTM/CX24WfsbXf0vsKUtXs1k/DCPRAU8Wy1RCUMqlJnMataFmt3vdQPxBPQr9KL3LhopHTRP8CSaxSICJsVGRnOmrDFn42rXbNRKLpBSpY9wurhYqG3lIoMVUiuOt40Cbt7qc4QLSPK905PcBcQYZQ6ELIgD2R2+iU9vfVj4vtOq1NUzzBEKRpcj/gWfaj4pC3SszDJu27BmGb3Ku9VRDeCgjho4i45v0Y4w6J4WfhTHtNm0r7JwbjwpW/Vlmw1fJws0qU/i/2yD2ZNum7dQYNGuoXiFmLuGSJiM/EeIUU0Y8MD7kbAuAIwxiXO9KoWh9wer22b2Jpe+of4ya354VpR1BRQagKbPZtMppYfT/PZ5sKD7bJgSewM7hv99jN8tPoc4rAIht8tHjLE8vEX0UnEl6sdNop/j+ZQQm3KxfCT4CCDBHzACB54oBn+5PQ5DWB84HkgMDUoGk1o68DXrYXm+WDj/ygzEnPA0pfdctv22BModQcB8R0/o0QWtopYpejus1QGwkVWjANItOlOIpjm3HoZ5YIGRMq4cO4XSMLJ/6SpVsnZ2Qq+T2dUSmPcKz2POyMwMiJImrL675ZRIfHKNYbp9qPmoACPhCXcM3gMytoRd+eLwqOfMjkSo4BMrB1BsCLd3sgBMH
- VsnB9W23
- ENvQyIm/xJHiRCzAEbj/Y/X9K8Kn3g6XIcuncqS3CYqOdFqIpaO/+bduGYD+tba1fIYCfUBwcg5Evqkiuh/nbAogyO/CcgjAgLXmm8sdMJR00W5R+t/RCmJbfgtFBbAaIY7A21S7a42UP62tZF4O7PNqu3ilSQKBv2iFqZ0o8hPTYlFDCXsKizh0/qNRtEuXMZqUnjtJQMEbHoTjqYNAFv3yS4bvpyYtCOm/qvRwu9OygceolVW+eAZhq4vFVMtI/UHCTftTJuBjPse0kCoZSydmE+vAsE2pRE5F2o3SQvnAeoCTQ/Ku4TR1iPJETqkcAFznHSQDxL5kx4HrqZuFnBEVLViTz7zUW/vv8Qk5gZEQ8YxQpVqdPMQQJWvcz372N4qTrOk0OoFjUVGcsIsAyy6kkvr/S55FOIfeOYcu7n1nUvnu63qQUYaeuyAm4/GxvkvG5Et7DlkDGn40R5/Bv4vTKZQuBHdNHuoqxrUPnCA7ZeMqJuOInTd4qnn7Ex8hKFST/4X5NJR7nSBs3S7jr9CrM3tFFpeBYKwLrWHnsc4RAbVBLNejxRSP0ZMiyGY6snvlnLX2yReh2Y6G+F5qq6iKCxItMviL39v9ZM4F6jn9H50kfCU7YARnKTYqJ9va5Q3oUqR3Kd9R4rzsVZ+qvurCiQahfxyAcZK7uVMoF/6Z9iJqlo143P9SD5fe0XoWMsQP4Qn1nUFDFK8n+B1tSvVHo2oxRxey/e2gp+gDksxogiKkWH605L7xVQAriBHfhEqhcy5b3k3LN3XEUOHH3xY9G3WpOZD6OnoUrgFFDVW8r5d5SBxTJMUws4aAj18BSjyIDMgcW+1OdmAbf36VtPC7XMqFExGttRGhq9OhDWcpVwoyn/gWlDfHH6fndUdpwGugz6Tpj+vWy0wZqKObOZkJBgA46NwS0xBgd5UJ2FP3REqDXQl5dTjc8h5bD6X/g6SIStuglueuXKXj/aFrKf/Rdtxg4
- Rcx9QHAs
+X-HE-Tag: 1760392410-728947
+X-HE-Meta: U2FsdGVkX1/wtWUIzBbED+s5o1UE+rwNPp54DI3PS0OWU19PZaMQReOwY+aHu27XAT++1dtFXspEqmY8/7SoT/l43vxtIkKBzpzgcIg/OeHrMtFLgLLO8Fk8oonlMfr3Z1oKEcBSRfy8xVDE+KHPgzrxadxv+f4YXaGtCbUFeAR/4UzZuHigjuOTgO3VSrCODM2OqnOqIamIZdUeUpNFmd0UNGTOSP1exrTrYrVQBMuMsbmRKu2S+sHeHp5tOuU84v7AJb91cvl2WVPzddJAxYwHAzur8vWut33K5NncW/wKhlS1NJNXV1DjaA6U2mUT/nHxp62WWzF0xbySvbuaj5pZFVBKzG2EjnVhOFFJk9s7/ZjkEJt2jSqtfu7ub6vgrOd0hCqH5lym6xqioRH+RMHUO69IfoAlvSjWt1NoKA384WsCG+Lwk3N8AS4E/GRQRIrues2xdID283MIK/AEA8mO3RuUqfXwSO4rpvJB23Wh0pkXEyw1zn4yamH6DcQ7ABRe/9EPpXhe9sJGbMAHfebMz+uJmnSDUA7hEsafDPaKMpvs1dm9YIX00WgFYeWFCqyTXK/Br/V/q0SP/eOvIr8Pqw0flPyymAJs68TYEXKeapx1eAiKMHREEdU+hjqZuISv+OfagCRDHDSbeza9emVaPM9GVOu1yLYLEob9vMAVcqxjHFXQyoQZTzWP7O4WbLxg5VxXR6ItOA2f+HGpI9Yd/tIuIYcCN2Qz2fiDwmSfJP03WsqPP+OT0lup76yiVoByE0BZ3BUnLgt/0lIU3LL65qGxBMmkH5tNxlGTKxwNEjYgihXGWXx4DZfBcY/xASN6q+nt1anKrtnK8/8OjFKul/EP3X2yS8H+f2os+G4mqb/y6KnKFRYIyPXc22iPDpZgaxBQi092eiLdOnG7kWtrXS8Ykq6ZEFOuFRMZ+tJvuN/dLqicLMftkAhfy8Fgm1bA1m4E4hEP4fTQuBW
+ R39s67cs
+ 0kGYjLJ+u7U5uBbNIi02j/b/3tivCR9gI+/JgJp7wV2a2IYWy912XCgsMmcbLwMoXRTehSYIz327o66Y0Z5IaAvcgble0ITHNqJ8b1ySMGy54quPWu6KqqGvcFr6qg77k3EDenDJZFk39L8ZYu7cHH8NFe1LKqg9P5iXconPEIgNeVcifQbhC60bdau5oyya2Lysq74tVFyWBrwssNaw1+ZU6I1eNhvMboSVJNm8unooGj9VxHK6cvSG70qFv0SAcdxD9uLuSv2y45IsOaz8DAygo4lSbEmIHeEcO+xfR3pDPqrs6N2E4lJOWK/gsudH0oRwaESKVgOiS9OOWGejJ/4E3qU1banmxCw4hU1lYj4qrUPAVL4SyfwGcFFS0v5PXDickr+Wd5o9var7gy3hf19UTsWiJ5tlwLlIeNVKiKGYNPnoVTwgFnUwn/fU5IWP0cYIjf56NOfL2fgiPPRzIktC1Ii+85EtBVB6Cr3kTZ5ePRmyST4e9XqYuC9M5c1c8cLWsXIotDT5YQeLMUxwOYZuhnkAZ4eL30v8dYd3J0A0VqzmJ4B9gtC+P4ZDzvFhkiIuMkeo1gyFuoBw5hAO7HNJvBwQVt+kvbEVJ/e4zSUvszQKR8Dy7HlOMsACa0RawpbENyIrLFcLYIX3SV+TZ2CMBkaAQBZXK9U7Sh6pVvu0Mpaau/OBzgfZPGGoJZvqIcMgphqOEWPrtPbboGCR4kArXHMMVNTbAPITiLRyZ+Ers6SsVtfiqaZmZlTMjuGYCZdfDw+RCpP1TEMk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,189 +127,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jamal Hadi Salim <jhs@mojatatu.com> writes:
-
-> On Sat, Oct 11, 2025 at 5:42=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
->>
->> On Sat, Oct 11, 2025 at 12:41=E2=80=AFAM syzbot
->> <syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com> wrote:
->> >
->> > syzbot has found a reproducer for the following issue on:
->> >
->> > HEAD commit:    18a7e218cfcd Merge tag 'net-6.18-rc1' of git://git.ker=
-nel...
->> > git tree:       net-next
->> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D12504dcd98=
-0000
->> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D61ab7fa743=
-df0ec1
->> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D51cd74c5dfea=
-fd65e488
->> > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b=
-7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
->> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D14d2a542=
-580000
->> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D142149e258=
-0000
->> >
->> > Downloadable assets:
->> > disk image: https://storage.googleapis.com/syzbot-assets/7a01e6dce97e/=
-disk-18a7e218.raw.xz
->> > vmlinux: https://storage.googleapis.com/syzbot-assets/5e1b7e41427f/vml=
-inux-18a7e218.xz
->> > kernel image: https://storage.googleapis.com/syzbot-assets/69b55860120=
-9/bzImage-18a7e218.xz
->> >
->> > IMPORTANT: if you fix the issue, please add the following tag to the c=
-ommit:
->> > Reported-by: syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com
->> >
->> > sched: DL replenish lagged too much
->> > rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
->> > rcu:    0-...!: (2 GPs behind) idle=3D7754/1/0x4000000000000000 softir=
-q=3D15464/15465 fqs=3D1
->> > rcu:    (detected by 1, t=3D10502 jiffies, g=3D11321, q=3D371 ncpus=3D=
-2)
->> > Sending NMI from CPU 1 to CPUs 0:
->> > NMI backtrace for cpu 0
->> > CPU: 0 UID: 0 PID: 5948 Comm: syz-executor Not tainted syzkaller #0 PR=
-EEMPT(full)
->> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIO=
-S Google 10/02/2025
->> > RIP: 0010:rb_insert_color_cached include/linux/rbtree.h:113 [inline]
->> > RIP: 0010:rb_add_cached include/linux/rbtree.h:183 [inline]
->> > RIP: 0010:timerqueue_add+0x1a8/0x200 lib/timerqueue.c:40
->> > Code: e7 31 f6 e8 6a 0c de f6 42 80 3c 2b 00 74 08 4c 89 f7 e8 7b 0a d=
-e f6 4d 89 26 4d 8d 7e 08 4c 89 f8 48 c1 e8 03 42 80 3c 28 00 <74> 08 4c 89=
- ff e8 5e 0a de f6 4d 89 27 4d 85 e4 40 0f 95 c5 eb 07
->> > RSP: 0018:ffffc90000007cf0 EFLAGS: 00000046
->> > RAX: 1ffff110170c4f83 RBX: 1ffff110170c4f82 RCX: 0000000000000000
->> > RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88805de72358
->> > RBP: 0000000000000000 R08: ffff88805de72357 R09: 0000000000000000
->> > R10: ffff88805de72340 R11: ffffed100bbce46b R12: ffff88805de72340
->> > R13: dffffc0000000000 R14: ffff8880b8627c10 R15: ffff8880b8627c18
->> > FS:  000055557c657500(0000) GS:ffff888125d0f000(0000) knlGS:0000000000=
-000000
->> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> > CR2: 0000200000000600 CR3: 000000002ee76000 CR4: 00000000003526f0
->> > Call Trace:
->> >  <IRQ>
->> >  __run_hrtimer kernel/time/hrtimer.c:1794 [inline]
->> >  __hrtimer_run_queues+0x656/0xc60 kernel/time/hrtimer.c:1841
->> >  hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
->> >  local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
->> >  __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c=
-:1058
->> >  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [i=
-nline]
->> >  sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
->> >  </IRQ>
->> >  <TASK>
->> >  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtent=
-ry.h:702
->> > RIP: 0010:pv_vcpu_is_preempted arch/x86/include/asm/paravirt.h:579 [in=
-line]
->> > RIP: 0010:vcpu_is_preempted arch/x86/include/asm/qspinlock.h:63 [inlin=
-e]
->> > RIP: 0010:owner_on_cpu include/linux/sched.h:2282 [inline]
->> > RIP: 0010:mutex_spin_on_owner+0x189/0x360 kernel/locking/mutex.c:361
->> > Code: b6 04 30 84 c0 0f 85 59 01 00 00 48 8b 44 24 08 8b 18 48 8b 44 2=
-4 48 42 80 3c 30 00 74 0c 48 c7 c7 90 8c fa 8d e8 a7 cd 88 00 <48> 83 3d ff=
- 27 5e 0c 00 0f 84 b9 01 00 00 48 89 df e8 41 e0 d5 ff
->> > RSP: 0018:ffffc900034c7428 EFLAGS: 00000246
->> > RAX: 1ffffffff1bf5192 RBX: 0000000000000001 RCX: ffffffff819c6588
->> > RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffffff8f4df8a0
->> > RBP: 1ffffffff1e9bf14 R08: ffffffff8f4df8a7 R09: 1ffffffff1e9bf14
->> > R10: dffffc0000000000 R11: fffffbfff1e9bf15 R12: ffffffff8f4df8a0
->> > R13: ffffffff8f4df8f0 R14: dffffc0000000000 R15: ffff8880267a9e40
->> >  mutex_optimistic_spin kernel/locking/mutex.c:464 [inline]
->> >  __mutex_lock_common kernel/locking/mutex.c:602 [inline]
->> >  __mutex_lock+0x311/0x1350 kernel/locking/mutex.c:760
->> >  rtnl_net_lock include/linux/rtnetlink.h:130 [inline]
->> >  inet_rtm_newaddr+0x3b0/0x18b0 net/ipv4/devinet.c:978
->> >  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6954
->> >  netlink_rcv_skb+0x205/0x470 net/netlink/af_netlink.c:2552
->> >  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
->> >  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
->> >  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
->> >  sock_sendmsg_nosec net/socket.c:727 [inline]
->> >  __sock_sendmsg+0x21c/0x270 net/socket.c:742
->> >  __sys_sendto+0x3bd/0x520 net/socket.c:2244
->> >  __do_sys_sendto net/socket.c:2251 [inline]
->> >  __se_sys_sendto net/socket.c:2247 [inline]
->> >  __x64_sys_sendto+0xde/0x100 net/socket.c:2247
->> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->> >  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
->> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> > RIP: 0033:0x7faade790d5c
->> > Code: 2a 5f 02 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c5 44 8b 54 24 28 4=
-8 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0=
- ff ff 77 34 89 ef 48 89 44 24 08 e8 70 5f 02 00 48 8b
->> > RSP: 002b:00007ffdd2e3b670 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
->> > RAX: ffffffffffffffda RBX: 00007faadf514620 RCX: 00007faade790d5c
->> > RDX: 0000000000000028 RSI: 00007faadf514670 RDI: 0000000000000003
->> > RBP: 0000000000000000 R08: 00007ffdd2e3b6c4 R09: 000000000000000c
->> > R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000003
->> > R13: 0000000000000000 R14: 00007faadf514670 R15: 0000000000000000
->> >  </TASK>
->> > rcu: rcu_preempt kthread timer wakeup didn't happen for 10499 jiffies!=
- g11321 f0x0 RCU_GP_WAIT_FQS(5) ->state=3D0x402
->> > rcu:    Possible timer handling issue on cpu=3D0 timer-softirq=3D4286
->> > rcu: rcu_preempt kthread starved for 10500 jiffies! g11321 f0x0 RCU_GP=
-_WAIT_FQS(5) ->state=3D0x402 ->cpu=3D0
->> > rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is no=
-w expected behavior.
->> > rcu: RCU grace-period kthread stack dump:
->> > task:rcu_preempt     state:I stack:27224 pid:16    tgid:16    ppid:2  =
-    task_flags:0x208040 flags:0x00080000
->> > Call Trace:
->> >  <TASK>
->> >  context_switch kernel/sched/core.c:5325 [inline]
->> >  __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
->> >  __schedule_loop kernel/sched/core.c:7011 [inline]
->> >  schedule+0x165/0x360 kernel/sched/core.c:7026
->> >  schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
->> >  rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
->> >  rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
->> >  kthread+0x711/0x8a0 kernel/kthread.c:463
->> >  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
->> >  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->> >  </TASK>
->> >
->> >
->> > ---
->> > If you want syzbot to run the reproducer, reply with:
->> > #syz test: git://repo/address.git branch-or-commit-hash
->> > If you attach or paste a git patch, syzbot will apply it before testin=
-g.
->>
->> Yet another taprio report.
->>
->> If taprio can not be fixed, perhaps we should remove it from the
->> kernel, or clearly marked as broken.
->> (Then ask syzbot to no longer include it)
+On Mon, Oct 13, 2025 at 2:35=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
 >
-> Agreed on the challenge with taprio.
-> We need the stakeholders input: Vinicius - are you still working in
-> this space? Vladimir you also seem to have interest (or maybe nxp
-> does) in this?
-
-No, I am not working on this space anymore.
-
-I will talk with other Intel folks (and my manager) and see what we can
-do. But if others that find it useful can help even better.
-
-> At a minimum, we should mark it as broken unless the stakeholders want
-> to actively fix these issues.
-> Would syzbot still look at it if it was marked broken?
+> On Mon, Oct 13, 2025 at 08:30:13PM +0200, Vlastimil Babka wrote:
+> > On 10/13/25 12:16, Barry Song wrote:
+> > > From: Barry Song <v-songbaohua@oppo.com>
+> > >
+> > > On phones, we have observed significant phone heating when running ap=
+ps
+> > > with high network bandwidth. This is caused by the network stack freq=
+uently
+> > > waking kswapd for order-3 allocations. As a result, memory reclamatio=
+n becomes
+> > > constantly active, even though plenty of memory is still available fo=
+r network
+> > > allocations which can fall back to order-0.
+> > >
+> > > Commit ce27ec60648d ("net: add high_order_alloc_disable sysctl/static=
+ key")
+> > > introduced high_order_alloc_disable for the transmit (TX) path
+> > > (skb_page_frag_refill()) to mitigate some memory reclamation issues,
+> > > allowing the TX path to fall back to order-0 immediately, while leavi=
+ng the
+> > > receive (RX) path (__page_frag_cache_refill()) unaffected. Users are
+> > > generally unaware of the sysctl and cannot easily adjust it for speci=
+fic use
+> > > cases. Enabling high_order_alloc_disable also completely disables the
+> > > benefit of order-3 allocations. Additionally, the sysctl does not app=
+ly to the
+> > > RX path.
+> > >
+> > > An alternative approach is to disable kswapd for these frequent
+> > > allocations and provide best-effort order-3 service for both TX and R=
+X paths,
+> > > while removing the sysctl entirely.
+> > >
+> > > Cc: Jonathan Corbet <corbet@lwn.net>
+> > > Cc: Eric Dumazet <edumazet@google.com>
+> > > Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> > > Cc: Paolo Abeni <pabeni@redhat.com>
+> > > Cc: Willem de Bruijn <willemb@google.com>
+> > > Cc: "David S. Miller" <davem@davemloft.net>
+> > > Cc: Jakub Kicinski <kuba@kernel.org>
+> > > Cc: Simon Horman <horms@kernel.org>
+> > > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > > Cc: Suren Baghdasaryan <surenb@google.com>
+> > > Cc: Michal Hocko <mhocko@suse.com>
+> > > Cc: Brendan Jackman <jackmanb@google.com>
+> > > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> > > Cc: Zi Yan <ziy@nvidia.com>
+> > > Cc: Yunsheng Lin <linyunsheng@huawei.com>
+> > > Cc: Huacai Zhou <zhouhuacai@oppo.com>
+> > > Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+> > > ---
+> > >  Documentation/admin-guide/sysctl/net.rst | 12 ------------
+> > >  include/net/sock.h                       |  1 -
+> > >  mm/page_frag_cache.c                     |  2 +-
+> > >  net/core/sock.c                          |  8 ++------
+> > >  net/core/sysctl_net_core.c               |  7 -------
+> > >  5 files changed, 3 insertions(+), 27 deletions(-)
+> > >
+> > > diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation=
+/admin-guide/sysctl/net.rst
+> > > index 2ef50828aff1..b903bbae239c 100644
+> > > --- a/Documentation/admin-guide/sysctl/net.rst
+> > > +++ b/Documentation/admin-guide/sysctl/net.rst
+> > > @@ -415,18 +415,6 @@ GRO has decided not to coalesce, it is placed on=
+ a per-NAPI list. This
+> > >  list is then passed to the stack when the number of segments reaches=
+ the
+> > >  gro_normal_batch limit.
+> > >
+> > > -high_order_alloc_disable
+> > > -------------------------
+> > > -
+> > > -By default the allocator for page frags tries to use high order page=
+s (order-3
+> > > -on x86). While the default behavior gives good results in most cases=
+, some users
+> > > -might have hit a contention in page allocations/freeing. This was es=
+pecially
+> > > -true on older kernels (< 5.14) when high-order pages were not stored=
+ on per-cpu
+> > > -lists. This allows to opt-in for order-0 allocation instead but is n=
+ow mostly of
+> > > -historical importance.
+> > > -
+> > > -Default: 0
+> > > -
+> > >  2. /proc/sys/net/unix - Parameters for Unix domain sockets
+> > >  ----------------------------------------------------------
+> > >
+> > > diff --git a/include/net/sock.h b/include/net/sock.h
+> > > index 60bcb13f045c..62306c1095d5 100644
+> > > --- a/include/net/sock.h
+> > > +++ b/include/net/sock.h
+> > > @@ -3011,7 +3011,6 @@ extern __u32 sysctl_wmem_default;
+> > >  extern __u32 sysctl_rmem_default;
+> > >
+> > >  #define SKB_FRAG_PAGE_ORDER        get_order(32768)
+> > > -DECLARE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
+> > >
+> > >  static inline int sk_get_wmem0(const struct sock *sk, const struct p=
+roto *proto)
+> > >  {
+> > > diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+> > > index d2423f30577e..dd36114dd16f 100644
+> > > --- a/mm/page_frag_cache.c
+> > > +++ b/mm/page_frag_cache.c
+> > > @@ -54,7 +54,7 @@ static struct page *__page_frag_cache_refill(struct=
+ page_frag_cache *nc,
+> > >     gfp_t gfp =3D gfp_mask;
+> > >
+> > >  #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
+> > > -   gfp_mask =3D (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
+> > > +   gfp_mask =3D (gfp_mask & ~__GFP_RECLAIM) |  __GFP_COMP |
+> > >                __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
+> >
+> > I'm a bit worried about proliferating "~__GFP_RECLAIM" allocations now =
+that
+> > we introduced alloc_pages_nolock() and kmalloc_nolock() where it's
+> > interpreted as "cannot spin" - see gfpflags_allow_spinning(). Currently=
+ it's
+> > fine for the page allocator itself where we have a different entry poin=
+t
+> > that uses ALLOC_TRYLOCK, but it can affect nested allocations of all ki=
+nds
+> > of debugging and accounting metadata (page_owner, memcg, alloc tags for=
+ slab
+> > objects etc). kmalloc_nolock() relies on gfpflags_allow_spinning() full=
+y
+> >
+> > I wonder if we should either:
+> >
+> > 1) sacrifice a new __GFP flag specifically for "!allow_spin" case to
+> > determine it precisely.
+> >
+> > 2) keep __GFP_KSWAPD_RECLAIM for allocations that remove it for purpose=
+s of
+> > not being disturbing (like proposed here), but that can in fact allow
+> > spinning. Instead, decide to not wake up kswapd by those when other
+> > information indicates it's an opportunistic allocation
+> > (~__GFP_DIRECT_RECLAIM, _GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC,
+> > order > 0...)
+> >
+> > 3) something better?
+> >
 >
-> cheers,
-> jamal
->
+> For the !allow_spin allocations, I think we should just add a new __GFP
+> flag instead of adding more complexity to other allocators which may or
+> may not want kswapd wakeup for many different reasons.
 
-
-Cheers,
---=20
-Vinicius
+That's what I proposed long ago, but was convinced that the new flag
+adds more complexity. Looks like we walked this road far enough and
+the new flag will actually make things simpler.
+Back then I proposed __GFP_TRYLOCK which is not a good name.
+How about __GFP_NOLOCK ? or __GFP_NOSPIN ?
 
