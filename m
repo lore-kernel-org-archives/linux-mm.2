@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138AACCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A89CCCD18F
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FF3E8E008A; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
+	id BF2C18E008B; Mon, 13 Oct 2025 16:36:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AF7C8E0036; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
+	id BCA928E0036; Mon, 13 Oct 2025 16:36:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 477628E008A; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
+	id AE0C58E008B; Mon, 13 Oct 2025 16:36:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3143B8E0036
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F132347049
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:59 +0000 (UTC)
-X-FDA: 83994247638.15.3A1E821
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4EE7518000A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bhePkCQL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 988C28E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:36:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 705581DF953
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:36:07 +0000 (UTC)
+X-FDA: 83994247974.08.4D5B1EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id DD413180005
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:36:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d2HsIj0G;
+	spf=pass (imf16.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760387758;
+	s=arc-20220608; t=1760387765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4pak3PzWX14tdOV4jDxU4oibUGbKEwQFf+VrOwDwaVQ=;
-	b=fFuuRW3To6wzM5g1rsDplLiU0/CQbp2H8061oHPZdyz3LHNZ3Fa12ddJUELkGCQdbKtuCL
-	Y7Gd1seyaAsGsB5I2dJa5yt1CYfJOfL18TE5ncwNdCTyTzG3wCwuDdVNlt/3CES7Sf0Hhe
-	Tv5heUqHSt+ZVSeOW6OcngCpfUhqkXc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387758; a=rsa-sha256;
-	cv=none;
-	b=4HOxcODzQwyWcP+Q4h4RvwHImiXhTFRbPZePWwNc/ew3T8n8YQbnejv1vz0PVmKEDv0wza
-	oFt1sPH/ZbkmTwTwMa2ZEzCq51sWP3nZWBZnDX3xZYpwz9NQ266vZxg6FKSQ6vsm1DW0UO
-	TLSON9AhDXONAW8QWq8sZHLi/o+H7Qs=
+	bh=aGdj3UhN4DDaR9cP8b0NALwx4FhyUYgq9KowsMDlFqI=;
+	b=xEWAZP14u5IDi6tx1YXEa8MtBtZ628XGSZSRmFc6YsHgdJoZOB6wCHGrMN78CHJLqfBkkR
+	ImGoYwy8vUjd9ZPWLDUQyP+3wNC63OLK2qGkRC/vqQAAWD0mclvl6OiJHXT02NKLpyZPia
+	NVuwdYJRhcgoU/HtPRqR/jjyFuJfVQw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bhePkCQL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d2HsIj0G;
+	spf=pass (imf16.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387765; a=rsa-sha256;
+	cv=none;
+	b=pctAlQGgbzJSqhbZrtwNbHtqs7OvQUyS36T9++MtStoOC3tlmV89suFYKRi2NHlnTfPUkr
+	p/rxNNamRfydPsESyq0pp5/bXuvMjYrjsM8p5mRbt2zbpcxFqoEvO5v2o9sUkOiIWxbDo4
+	AYxkSagtAHQrbmD/Hnz+kVCIEsVJtCU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C55D43E98;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A80D61E71;
+	Mon, 13 Oct 2025 20:36:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2137C4CEE7;
 	Mon, 13 Oct 2025 20:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E744EC4CEFE;
-	Mon, 13 Oct 2025 20:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760387757;
-	bh=VRca4O5xWSvVtV07vu7T/vayv/vKzk4YtiAHpk59aYg=;
+	s=k20201202; t=1760387764;
+	bh=chMAaHPdvZjXfYZQTfmqroMaCahKvWi7hxvycGkBc0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhePkCQL/66n70lV9xZxYwRRP+VnIkS+CH6ARH9WtcldkTiOp5Ob386EHKyl3AMBa
-	 9RYk+wDM4ovm/56mZ6bzkEEh9UnuW+WYeuSJUUus+TACOJTuYhJNsvGA+p75if0nIr
-	 eF/1rT4tHcaKgPPXNTve99sj8RqEvhRdV8+5zdkPR+FLUveu003ODzhiA2YZdSiMzN
-	 L6N60HePBPGl52ouzhwYD9vF78x7wP2Yvg3D7LD2eoI4MiHO+TabowgoVKZ1e5gdiV
-	 DR0pYSljDpr9QuAxXqKVRzlLFoIoLIv9vydg718x4I1aBRpQXVEM3pIv7QhMJ6fOYq
-	 +KzLX6+lrv2Iw==
+	b=d2HsIj0GjEnJTG81nuvxt+rh9V8jVDkwbolK1vZjH/QLdrhSvnA4rL0lejyT03fUk
+	 AYQKAmOHXS+cRkZyMi+8eL/fcdpoD5VY6iC9oTM4NqHv00OF3hCY96KH1rhoGQ9WaS
+	 FAvGOoJh3cunza7z8okA+g3/wzRnll3xJH1fzYwKHMUEuxT9HranLKJnuHZYIdXZCl
+	 DAR47RiTFVA+tE01uD8gMxCMzvEl7IPtksM+od6OjCFZjAEroLlDCHRxcoddmDtTra
+	 uUCQU+FtsHyohiTXjUfWqTx58+dKEq/DSkCy0XlqFAOBoVjCCVB/zzVTbAzQ5eAKLi
+	 rFUdm4g/rBL6g==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -101,22 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 31/33] kthread: Document kthread_affine_preferred()
-Date: Mon, 13 Oct 2025 22:31:44 +0200
-Message-ID: <20251013203146.10162-32-frederic@kernel.org>
+Subject: [PATCH 32/33] genirq: Correctly handle preferred kthreads affinity
+Date: Mon, 13 Oct 2025 22:31:45 +0200
+Message-ID: <20251013203146.10162-33-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013203146.10162-1-frederic@kernel.org>
 References: <20251013203146.10162-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DD413180005
+X-Stat-Signature: kmrsya7azj18oyoi76f1hu3kncoqfb8w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4EE7518000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ob74fkt5yr7jy46fy9uyuowiewuox7bk
-X-HE-Tag: 1760387758-640339
-X-HE-Meta: U2FsdGVkX1+xG7Z7yqnzWPLX9hNsWNwPOii2Ck7MQcm+BB4jzTp+w770CBveBPyEFUt2L5uHywbBUhXi+MPHz4jIlkcKd8K+fZWrkX4MCWwJlN7jSmkohpUSTITgvNK33CTvWylrN4NBeNL/eq+O0dQH0C1zIbfozkP2/EfJJD8OQ23lsqQAxRx2cAvICoqNEUbtCyhbnPfUFAldSfkyxjddgGylm6M68MWyVdos98+HbE/MNBj1ONHGGY6nbGyCL0a1GvaJn8N67cBPcvB2R1VOSYpjIhhEs5bgrmnWaW1qTCoJBOcO0wwrvNnkViAw/MXT8j/2UWrJ/tiI0WNItMTs578AybcAdTjIPoQotoDvde/fR6wC37EgFWVtS0c419hE6YB8XjiGW1iZk5GHlAr6S4UjsDW2UyBx9sShHiSXwqZ85LfIegeLfTvnUWdab+n0xy0LCkQSQ8A/+1Mtpnxkh8hz8/kRlJgDuxBnHTMKAYsVXa0yLfl1EKctM23jvqyuRwkivCJxQXO4Eb/lyqDX9brvLUpKv3egkSuLQw1ZTYpFH+m5GA9Zf4YutaHsgt9AYYZ0gPice7XxMdbx1dBZ4DQnxt/ROA55aFXUWuQ0gBofGUqFLvJURCDrH/pwncsiyAOz9K+aO4oSrwVY/O94GBqmy/aL+RwSy4XYHAK74KbFo1TiYFNNMdH+qjunsvdepZypQEbBSGBGQZFo0ht9m1Qk7qLQ01AMld09zycG3emkvxJBY4/V+2s6qvla7gnLLIr5nY3xH96Vkc/Xr4pQJfPhiw7sW3lBMtzqLLaIf16O8+adQyedMUG1NvOCN8CrInYGzsm/VbS2FTY8+0ujS0AO/P4xz6g+Tj1UczPRS1djMgmIuTrAmE8tFEnLSjB0++DD7vhreDZPqOj2xrDrKlDMoWNiHoLiCUVp8MEMQNyQ/sL8HLytwlZUQ2842ROM3tc9g1PB6AqdM/j
- Gms5XHFn
- 7nG0lyVzRBsotw9sjyAiTlCnr4qWz4OjhpzMCcaxmUTp5iQ9gBNsHEGfNL9LJTxwJxr6yq4W+MYJEgvScmQZOV0xXbWvLWKnb8bnbljdEayLQi2ZMFFYXVB/y9wkPO6IHqHJIgJa69grQayKXUUOlB714yz+/jgrHE8MdeVUFlJBXni7C7Kh23VIg+0orMlf8AB9Xe5UoBPD1pVY6nVVyAmNSI/x6Ga6vbSEG3cTrYGAHoag1MoucBPwaU/f8XtRAHVER800Gb6epg+y7mvlBc87Guk1A5Cxz+nfg0AbC4tLQfbFCdlNkcCl1lJACztC7ObJM
+X-HE-Tag: 1760387765-269665
+X-HE-Meta: U2FsdGVkX1/+MyGziXqknccduurKg8LoKbezBVishz9lYKB+pJeU5GBCZHzikCaxhvXNT42AY04QB5NkhzOpY4i5SRpGoCWeRAehZN5HaKaKHBUcHCjnjnozsV/kCBUnNGmRusZIzwD4BhpRW4zvVIwHZYFA1Sa89hpai6A8LOwxMwQrbzO2h+KQDqotsLGJoLmK5B717ZlFdhs5sHxwukTkxhBxZ53upr+l+KfGsPe5e2gK806H5lKG4Pxwem+n4wSVItPCZay3pxhaLQm47Rze572lqZVPBXxUZ/nvzFSuVboMXub2KBKbC3A7GlRLJ+6G7sA1J3zsObDrfyRFIkh9bs7dyMgGeQmjCPFzu5BBIDMquhfYnCmx7FIoqRodFSbQ4EIBcPUxoj5ynvSKVUmpi7+jdovdouThZu8/N9isJHdfaqhUObKivGbtExfH4kQdTYYc1bzytteyraaeXtpdIsiRbwXM02mMd64tZOGjJVp3HQaqjwkrLmYaC9bx5wnVQHYWsZR4f2jU6AZy4QC8LHvQNvAFcwQ2MucVHl47tWrJyfiG/pMeNiAzu+XraWp/K7hBkt4S4s9mEze+F77z9NijojF7XeCE0K5jEoazQ5xaiZVvaYKI7EcJzL/Rz+RbTVGfPbHsIURZX7N/6RhmU528QzB9aZk/FNXem+CHhheWP54a3EMl9fIk7Mc/8sg500pwNFkLTNeGd2hd6CMgNVvXjwwdQ5ZzBWGE88EpcnQ4uorggYu/lGUHJ+L3wNVjchslwBnHOVlzqm/dvHOXp/IbpIwgxM5k4pfHutAPRDMq2gSJgJcat8dNIqZVWpapZbNBVzT1bwG2bDHxZtv43SMGcEtyE18/g8XKcI9orSlAyc6jlIfP3O3SEH0K9KsdKOssHnH+SnAhu7gqWH1lnOd3tWiPGo5CISjSNg1NgXkVhm4mkchUe1iAi2Vj8pGlkKMQhTiHn8L6FrO
+ h206rs4c
+ dQcGkVFsRQ1V/AV5NAlM72v+k9puQV4+1o3MyMRLCPYwMNxLjSgHHeTmOY+uDC4UDm8keAkFMG46RjcR+WlKNjWcaHCq6lP5mvn650C/X4XAqajNo234pl1fvTSSw+nU5WPXeCF+PxcdMetXqQFUWmwj142to37roZaiesrPTKBXHw7FQbi+VcvT3SpVYKFib1RkNMh9NV0eSJX73uytO25EjJi/r8si/Bps7ZFA+s3Zz9iKsEecqAhYaCYUrkdjriP+bKcDkmJxoT3U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,37 +125,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The documentation of this new API has been overlooked during its
-introduction. Fill the gap.
+[CHECKME: Do some IRQ threads have strong affinity requirements? In
+which case they should use kthread_bind()...]
+
+The affinity of IRQ threads is applied through a direct call to the
+scheduler. As a result this affinity may not be carried correctly across
+hotplug events, cpuset isolated partitions updates, or against
+housekeeping constraints.
+
+For example a simple creation of cpuset isolated partition will
+overwrite all IRQ threads affinity to the non isolated cpusets.
+
+To prevent from that, use the appropriate kthread affinity APIs that
+takes care of the preferred affinity during these kinds of events.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- kernel/kthread.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/irq/manage.c | 47 +++++++++++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index f3397cf7542a..b989aeaa441a 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -857,6 +857,18 @@ int kthreadd(void *unused)
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index c94837382037..d96f6675c888 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -176,15 +176,15 @@ bool irq_can_set_affinity_usr(unsigned int irq)
+ }
+ 
+ /**
+- * irq_set_thread_affinity - Notify irq threads to adjust affinity
++ * irq_thread_notify_affinity - Notify irq threads to adjust affinity
+  * @desc:	irq descriptor which has affinity changed
+  *
+  * Just set IRQTF_AFFINITY and delegate the affinity setting to the
+- * interrupt thread itself. We can not call set_cpus_allowed_ptr() here as
+- * we hold desc->lock and this code can be called from hard interrupt
++ * interrupt thread itself. We can not call kthread_affine_preferred_update()
++ * here as we hold desc->lock and this code can be called from hard interrupt
+  * context.
+  */
+-static void irq_set_thread_affinity(struct irq_desc *desc)
++static void irq_thread_notify_affinity(struct irq_desc *desc)
+ {
+ 	struct irqaction *action;
+ 
+@@ -283,7 +283,7 @@ int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
+ 		fallthrough;
+ 	case IRQ_SET_MASK_OK_NOCOPY:
+ 		irq_validate_effective_affinity(data);
+-		irq_set_thread_affinity(desc);
++		irq_thread_notify_affinity(desc);
+ 		ret = 0;
+ 	}
+ 
+@@ -1032,11 +1032,26 @@ static void irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *a
+ 	}
+ 
+ 	if (valid)
+-		set_cpus_allowed_ptr(current, mask);
++		kthread_affine_preferred_update(current, mask);
+ 	free_cpumask_var(mask);
+ }
++
++static inline void irq_thread_set_affinity(struct task_struct *t,
++					   struct irq_desc *desc)
++{
++	const struct cpumask *mask;
++
++	if (cpumask_available(desc->irq_common_data.affinity))
++		mask = irq_data_get_effective_affinity_mask(&desc->irq_data);
++	else
++		mask = cpu_possible_mask;
++
++	kthread_affine_preferred(t, mask);
++}
+ #else
+ static inline void irq_thread_check_affinity(struct irq_desc *desc, struct irqaction *action) { }
++static inline void irq_thread_set_affinity(struct task_struct *t,
++					   struct irq_desc *desc) { }
+ #endif
+ 
+ static int irq_wait_for_interrupt(struct irq_desc *desc,
+@@ -1384,7 +1399,8 @@ static void irq_nmi_teardown(struct irq_desc *desc)
+ }
+ 
+ static int
+-setup_irq_thread(struct irqaction *new, unsigned int irq, bool secondary)
++setup_irq_thread(struct irqaction *new, struct irq_desc *desc,
++		 unsigned int irq, bool secondary)
+ {
+ 	struct task_struct *t;
+ 
+@@ -1405,16 +1421,9 @@ setup_irq_thread(struct irqaction *new, unsigned int irq, bool secondary)
+ 	 * references an already freed task_struct.
+ 	 */
+ 	new->thread = get_task_struct(t);
+-	/*
+-	 * Tell the thread to set its affinity. This is
+-	 * important for shared interrupt handlers as we do
+-	 * not invoke setup_affinity() for the secondary
+-	 * handlers as everything is already set up. Even for
+-	 * interrupts marked with IRQF_NO_BALANCE this is
+-	 * correct as we want the thread to move to the cpu(s)
+-	 * on which the requesting code placed the interrupt.
+-	 */
+-	set_bit(IRQTF_AFFINITY, &new->thread_flags);
++
++	irq_thread_set_affinity(t, desc);
++
  	return 0;
  }
  
-+/**
-+ * kthread_affine_preferred - Define a kthread's preferred affinity
-+ * @p: thread created by kthread_create().
-+ * @cpumask: preferred mask of CPUs (might not be online, must be possible) for @k
-+ *           to run on.
-+ *
-+ * Similar to kthread_bind_mask() except that the affinity is not a requirement
-+ * but rather a preference that can be constrained by CPU isolation or CPU hotplug.
-+ * Must be called before the first wakeup of the kthread.
-+ *
-+ * Returns 0 if the affinity has been applied.
-+ */
- int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- {
- 	struct kthread *kthread = to_kthread(p);
+@@ -1486,11 +1495,11 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 	 * thread.
+ 	 */
+ 	if (new->thread_fn && !nested) {
+-		ret = setup_irq_thread(new, irq, false);
++		ret = setup_irq_thread(new, desc, irq, false);
+ 		if (ret)
+ 			goto out_mput;
+ 		if (new->secondary) {
+-			ret = setup_irq_thread(new->secondary, irq, true);
++			ret = setup_irq_thread(new->secondary, desc, irq, true);
+ 			if (ret)
+ 				goto out_thread;
+ 		}
 -- 
 2.51.0
 
