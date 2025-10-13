@@ -4,213 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C3EDCCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 22:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D55DCCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 23:08:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFEDB8E00AC; Mon, 13 Oct 2025 18:52:01 -0400 (EDT)
+	id 725388E00B1; Mon, 13 Oct 2025 19:08:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAACB8E0024; Mon, 13 Oct 2025 18:52:01 -0400 (EDT)
+	id 6D6E78E0024; Mon, 13 Oct 2025 19:08:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94BFB8E00AC; Mon, 13 Oct 2025 18:52:01 -0400 (EDT)
+	id 5C4F38E00B1; Mon, 13 Oct 2025 19:08:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EA568E0024
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 18:52:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 328EE1A0618
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:52:01 +0000 (UTC)
-X-FDA: 83994590442.21.98D3E49
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011020.outbound.protection.outlook.com [40.107.208.20])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3E46E1A0006
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:51:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="oz/OkYyA";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760395918;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A5B8E0024
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:08:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 49BD45A123
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:08:12 +0000 (UTC)
+X-FDA: 83994631224.27.F8CBE37
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 214B4A0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:08:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UwsZrgkO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760396890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLnUUAZXjqj7jQN+44+goSNdl0+/B1/OrJDcUY6yfas=;
-	b=ZZs3henTyv/BV5pwkq7XrKJ2KqF9UolzgwUZSn6s0CQE7nTD7mMOx76Bdcvfxndvmu/6KX
-	29S4QYoS+Wm2RPz8xKPyVhl9NNWl0ip153PodeMN4m/uAIcJsM01lzs6qGFwZIGJjbL8lf
-	xQnPy4PrHIosoVEDfF0X2MCX+8NpREU=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="oz/OkYyA";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760395918; a=rsa-sha256;
-	cv=pass;
-	b=Uu1huEWk86zln/QRIuLWpzPfMB3CuIxLGvlYsGXdD85UQ8241bE3XLZppu/TNrNPHS06vo
-	u6aLBNwjXaLGXLuwr0tdIBtpju0/0eWoZs0TCFnj+nCuiLoputXN5tW2Adiph/l3tMaWN5
-	iucPwpobxURoCIkYOpKAyDyPm/TAlx4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L74jl/i5V7BDn5XvAt81O4pdRquG3IRMQMzESqYppQ5vzfZjCNEvqH4fPEQAhzHRGkzgb4a7yZ9le4PWOPL1Ai7JT9SVs9sgRh262LBRKgH5iP/gYSDpbGb95f3Y4FTxj1u83p1gfAu48RNTVooD0ZYsgydaxZaoHTI90U47fhMA7JOQWYwvKSZAiXLfYfsPGgbH05qXbq1CsX2H3P1mHLGjDXt9QWLlgPee5qFVekzcWFtHAe7+ssXy7vZPBAgd2bQ7DLdLrxarMH6soIwLhPftm5ARyMBSQjkGxM9bRLL0DZ9AV6sEYai12ihkX1x/gvpBQpmTQo4+X+cpC1u6vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vLnUUAZXjqj7jQN+44+goSNdl0+/B1/OrJDcUY6yfas=;
- b=QeotAz9N/goPWGBr9wnxWl+sowV/eI6e8JK1JTZhxASIsbQEMQVvSq+acFQBBHCxT7MXyVjIfbvM3c+8S/pqitEw4nnldX8DMGa8lV9z/g4QTfaFFfDqOz4oqYkss6NJpyJ59b1p8DETmAnDLq8fFnuO0+EDB6zDBX8vCSkD+0AZ/6CuXryGm2lsvkImLJZKRaipCtnwM1GypAjuTQC0vbbI92s2LK2yMLQe+2i73DqvcSd52RsLwqWxUbZ08sF3YgH71pro2P6t5MHrthRzduJmlsfvCa2CTZ8ZErf+Y8dqmofB/I2By2d+MEqhVrI/V0G6YrOlSagwr5Ak+iPP2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vLnUUAZXjqj7jQN+44+goSNdl0+/B1/OrJDcUY6yfas=;
- b=oz/OkYyAGg1GValrE/sKVYuXdJJUKdx+8xfKnJestFpmkO1/Pk0aF57M0UDsKYDOjAG3TZV5dkMbm1Rt3h8kVvk3Zifa7bmdai/iDefW4M5Jz9gJpb+1ZlpbgSSXr0CxJUheFjMiGW63D8jeWWnqwqJh9RUKeh13Gv1NmvOKv38QbvIU6LAM4Yd8W0QyDYs8kmAapGGTDOlxMjf+yyUvxXUAaZcCkjnlB5JZBK356nDu8DfX+/cKgXjGjWJvtUuLZBjxk9jf4FKbuQNR24HRb9AEgk1L4xjR/bUjK5YwFj2nA0NW3DbYwuYWGYyXZbTP8uu0cMu16V+uPclz4xaJcQ==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SJ2PR12MB8652.namprd12.prod.outlook.com (2603:10b6:a03:53a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
- 2025 22:51:53 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
- 22:51:53 +0000
-Message-ID: <4667dcfb-e02a-44ba-9cca-f197a5aebe4e@nvidia.com>
-Date: Tue, 14 Oct 2025 09:51:45 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v7 00/16] mm: support device-private THP
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251001065707.920170-1-balbirs@nvidia.com>
- <20251008201740.d9507f4807a73058d4da23a8@linux-foundation.org>
- <a5992f11-5841-4bbf-b190-b5df41b68b0c@nvidia.com>
- <aOePfeoDuRW+prFq@lstrano-desk.jf.intel.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <aOePfeoDuRW+prFq@lstrano-desk.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0139.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::24) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=WsULGpTWYVJqyd+s2rzVYTRP+oWghbcs0VO7v3VHL6A=;
+	b=ApQtDvCoNcJYDSuxdlZm9N6QT1jJlHsv/NSGIo6lCUtPO9DGMs4RtRcT8GDXM16z0v5Y6V
+	8k5jbgR+7kiJFfiXWmVChhjT7YkEd9d98zToDXHpKQjaSRhSDMTseWsXTQpt2dm78AB2k7
+	68yU7O6VKpo8fjITs0+yKVzFu7Br97k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760396890; a=rsa-sha256;
+	cv=none;
+	b=4jxcyvaWm+Wsz7S52OScORgVZW9gvXQlMh78TF4fZdUaBR4qX+ZgJt/7KjDOtqtpDp6vfJ
+	E25YWUgvRlwuADjDoCLlNy2ywqSLpKX5QZc0vLdVvpyxEyqxB/8LDczMDx21hjiXkMB7Fa
+	p/FvV0eAriLEsJSHkKt2Fd3DJrDTEAw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UwsZrgkO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760396889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WsULGpTWYVJqyd+s2rzVYTRP+oWghbcs0VO7v3VHL6A=;
+	b=UwsZrgkO6o20OEUPAjmILTxhdhbXyY01+5QsyfIl0GXlYkR1IJ8pf2T0R09x+waKXT0Sr6
+	vnmC2En/xN+UyDuPghiJi0eKO9GFEFAs78SXrS2dbEI3dy9BRAmVOuqS8fSUcHb4cH4T7X
+	hlKfm6l79rQXW9SpaAlx/Sewb38yYQY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-qigN8ftcPrWxxfSpGsTOYA-1; Mon,
+ 13 Oct 2025 19:08:07 -0400
+X-MC-Unique: qigN8ftcPrWxxfSpGsTOYA-1
+X-Mimecast-MFC-AGG-ID: qigN8ftcPrWxxfSpGsTOYA_1760396886
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8D2EB1956089;
+	Mon, 13 Oct 2025 23:08:05 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.12])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A08D91801AD7;
+	Mon, 13 Oct 2025 23:08:03 +0000 (UTC)
+Date: Tue, 14 Oct 2025 07:07:59 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Subject: Re: [PATCH v4 mm-new 2/2] mm/swap: select swap device with default
+ priority round robin
+Message-ID: <aO2GT6qqOu5Qsy4X@MiWiFi-R3L-srv>
+References: <20251011081624.224202-1-bhe@redhat.com>
+ <20251011081624.224202-3-bhe@redhat.com>
+ <CAGsJ_4y4CLu7qeHijhJtL+NDrehfiWpu9mtsVGxmn5rBy03v0w@mail.gmail.com>
+ <aOx42iLkuyYqXBMW@MiWiFi-R3L-srv>
+ <CAGsJ_4zSeMfiy=9Pa3A3UtdNigOc=w4eWc1KQpkBbD4AdvmPTA@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SJ2PR12MB8652:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61da0198-6ff9-444d-f03c-08de0aab1a53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TXVMRVJNZjJjY3FUT2R0amtLV3F5NkEzamNpMjIzcUVTanZDOEYwZ1RkM0p0?=
- =?utf-8?B?OGZVeXQ1YUtXQnc4RkliOVp4eVhUMWRGNHk2cnI2K0ZsZXIzMkJZY0RtVHpT?=
- =?utf-8?B?Nm5JcVBrQVRTYW9oOElpRXBBekxZazVFV2dSaXhJVHVvc0ZMbDM3eGVWSzNC?=
- =?utf-8?B?Qm5vb2Q0QTJBcFBPNjRZTjhPZ2tYcUY0MVNhSTdxK09iREJqN2t3Z05yY1ZQ?=
- =?utf-8?B?Q1E2emJrNVJZT1NXaDhaaFkwTi93ZGV6NHhVMXZkYVFwSjI1WDFxUkdvTnJC?=
- =?utf-8?B?VjRjeldhNEZ0dCtORHVZQUJycjFWU3JRUjk2ODRjMFZVQSt0b3UwYnVzNkhh?=
- =?utf-8?B?dDVIMmJFOHBqZmJSclc1U0pUR1RDNHFURXpxN3ZEU1pYTEhmM3ZiWDZrc3g1?=
- =?utf-8?B?UW0xaEhQWmkrSWMwdE85S1pyVDcxMld1a1FGRUQxbm9uTDFMb1NCODJJNUEz?=
- =?utf-8?B?TytEeHMvRWVqM0dGU0JkQkh2ZDJYUldFLzdVM3NEbW1lUFFvYjYrT0xBdXBw?=
- =?utf-8?B?NXF6ajh4SHhKaWpxaGdraDRSUUdQWk9jR1g5TytkOVZoN3lieVBSYm5jUlB0?=
- =?utf-8?B?eUZzLzBibVVJN2hGd3FtRXljOEVaT2tpL25Eelhxa2JVa0Z2V0wxSzVEOGRW?=
- =?utf-8?B?VDVtRE84ZmVjSnBzNjhLK1NqYktIaXdBNjhqL2hkd3Zma1VidmkwcDg3Vzds?=
- =?utf-8?B?YjBrZlRGbEdGZk00bGQzTm5tSFB2TUsrdUNxbnBRcUNKbEF5RmRIRlU5aWI0?=
- =?utf-8?B?ZzZ6TG11MVdMY3gxckN3TmlZbUI4dDIyOVZUVkJOZ0xLbHdwZ2NGaEYxSjNN?=
- =?utf-8?B?UkpPcEsvRmozOUtpSXNnLzlQVjlNREtnRGVEYVVxb3dUZWQxZ3lneW5HdHE1?=
- =?utf-8?B?cUUzREJpQWFldy9qR1h3TnR2TTAzMmM0MWkwbzNEV0pqWjVUVjMvVjFTRmMz?=
- =?utf-8?B?R05hamhtRis1MWhPd1R4QjZCbjlHeEJSZ0ZSeGF0TXphSmI3c1BBQUpja1Nm?=
- =?utf-8?B?VzJ6SEo4SG5vTVRTcXdiZGgvdHpPbndiam9RWXNOcFdydEZQZCs0VzJRMmg5?=
- =?utf-8?B?cXNqVUtCOUxTM3d0WlV0UVhXb3BKRkc3YzZoN2dxV2ZEZDlyTzBRMUlxQkFN?=
- =?utf-8?B?citlTEtpNWplUi8rMVk2UmJLOS9YS2IxZE1Wa0VxSzEvSmdhZ1FlMUhtMUlT?=
- =?utf-8?B?Uk9rUWg0WUJqMmRQcnF2VGF6OUFRUWEySHQzVFF4MkhBcEJvNzBaYkFURjhh?=
- =?utf-8?B?MFlpVjM2d25MU1liTUdLZFNXakZUNURKVXV1b0J1a0xsZnFnZEt2ZXcwMGRk?=
- =?utf-8?B?ZW1jcGR2cVBSNExMNENpL2J3NEFOeWVzNmszMlA4UWVNTlFPSVYzM3BrYjh4?=
- =?utf-8?B?dWJpNEQ1YmN2djhZVWpaQ1N4aW9ZdjBEcVVZMmZDOEQ0dU83VWNIWGxyQXBC?=
- =?utf-8?B?bzlNNWo4a1pFVkN5R1h6K3NQRWdTZXpPWTFsOVczeGxSdXl1TVlyWEJ5VDVo?=
- =?utf-8?B?WjArWlVNSklWbEk2UXB1U2o5MVUwL2tnUWRRMEtSVUxvLzhmUDlPajVFYXd4?=
- =?utf-8?B?NDZXc3JVMHJlcFBqRUFaVmpYQm9EellkK2o1c1p3enJ0UmlDZEJGTFVVTkkv?=
- =?utf-8?B?cWFRRG9IQU1xbWp6cE1ybWp2dDNucU1ZbWNrSlhIYkxCNDR3S2JoTXNLSVNp?=
- =?utf-8?B?WTVqdlk1WUhDaTF5TDF0QklibnlYY3M1SmZ2eWY5U09IaE5ib2VRN3JzUHBl?=
- =?utf-8?B?MCt0cTgrUTRHTXR3R0tTcWN5WjN0aDJoY1ZCdWdZSzRTSGU3QVVzY3Z3WU5Q?=
- =?utf-8?B?OUxWNWtmb2NZS2xvdzR1bDk5UXZPVk1xc25EWTNGMjdQeFBBajI1a3JVeXZy?=
- =?utf-8?B?ZE4xcS9NWkxYNFFtaFc2ZGtRZ0Z0ZjBydHhmRkJIalRNVUI3K2VaNitNSHNp?=
- =?utf-8?B?ZFBtRDRvRDRmOVBmbGN3blQrQ2l6Uk9hTjNMTWx2T3A4TlFjTFRTYU43V1pB?=
- =?utf-8?B?dUxkckJLc0xBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzczNURjRGptWSs3UEtEcFRQWmxuU29ueXJ0c0hrSVFlZjJJSkRMTDMraWR6?=
- =?utf-8?B?QTRhU1hCUExhbDRZZ0dzV0NNZlcvVnlxL0Irc0hMRjNudkpFa1hraWF4cEdo?=
- =?utf-8?B?T1lmcFd2bTJBSU5ock1ET3B5ZVlSMG9LSzZNME1vMjZxU1h6MWVJMzk0Nytr?=
- =?utf-8?B?OGxMVmNyVE95cUFrM20ycnpKSitWM0ZGMTFPa3AyTmJHV3ZNUlNab2QxREc3?=
- =?utf-8?B?NGZyRDd3WXBxMkhZd1dOeDQ0WFhjK1UyalZ2Y0R6U3J3WnpzNldlV3Biajhw?=
- =?utf-8?B?RFk0U3hVVUdZRUFBRzlLcjhhZnZreVZ2ZHRDbW55TWpoOVh6R0FEeFJkczBj?=
- =?utf-8?B?bW80M3pqaHhrSFA1TTRxMUdsZ3JKZnNHTFlRbi90ckFlVXhudDFCOTJBVGFS?=
- =?utf-8?B?SmlveGU1RHo0a056YW8wZWJ2b3dFWjNBVGc4UzBLN0V6YkVBNklINm5lcktS?=
- =?utf-8?B?THE1ZWtlQ254b1h5OHBHOEJETlhuclNGMVo4QjYrbkl5NXMvckRYRk54SVZ5?=
- =?utf-8?B?eGI1SHJRMzhyNjY1S3ZMam1JYzVVWFhucUhLSlE0elgvNmpuSGNoV010ZWN3?=
- =?utf-8?B?Wk9ycy8wdTBxL2xla3dSaGV6all1cUUvU0xOZDBoWDIwamoxY2dRbExDNnZX?=
- =?utf-8?B?dGJ0eVFUdVdCQ3Z6bnIyaGcwUTVyMGk4anJEa01VNDZ4Vm1GOGpVSWJFOFo2?=
- =?utf-8?B?TkF5S1RzaytQdGE5Z1JwTEJWK2hIejgwTlRIL29ZNnh6eU02Q2VsZm0yTCti?=
- =?utf-8?B?cTRRdnM4dzlpek85R25Db2g2SlhxQWdmaTc3NXRHQjlxdjgyZHhobEM1b1Nn?=
- =?utf-8?B?cmFNelZzQXUvUCs3ZGtRU0d1ZHQ1Nk5XT0gxT2ZiV3NtWXRxSmkrYmQ4alNo?=
- =?utf-8?B?K2tZbGFHb0orZUlIOVl4LzVhb3hDTHNrY3JvZ0ZDT254d3ZEQnBueDZxWXBU?=
- =?utf-8?B?Qjh1ZkFRcnNWM2srYUtoRmF6SExVK0hzSy9Lb09KNXRnb1loV2VaZmp3S3NN?=
- =?utf-8?B?a3I0dzU1cVlPa1p5b1NHcFRZbmRma2ZESFFGbDNwaGdpNG5ZcGRmZHlQQUxX?=
- =?utf-8?B?TlFXa1M2bTV4SkFYMWx1WmhSWGROSll4TGlUTEY2T3RRblZqcXU0LzZHYmhG?=
- =?utf-8?B?M2JnZG91blJLUVRpWGxXVmpGTmZaSHlQM21FWXNEclNiSG0zdzkwQTJBSmNt?=
- =?utf-8?B?UFN3ek5mRnpOMUxSa2RCNTZtS1JrZDg2MjNBNnVRd1h0V21WeVljZlRvYVdH?=
- =?utf-8?B?Njc5Rzdra2pobGJ6U2FYaDZyYVFhcWppNzdjUzh5dXRaOVA5MEJqV2V1TzlR?=
- =?utf-8?B?eGxvb2R3Q0xHamxxK0prVE5kMzhoODJMUWhEd2NDaW02RVRaYUdkRkZXVWxs?=
- =?utf-8?B?UWJpMU1RejQyTTdpdWpiY2FPQ3U0clZ1UFh1bTFqd0gzYzM0TC9KamNLTkpr?=
- =?utf-8?B?U3REc0xyczQ0N0N1VVgxRm1waGFhOE05cTZIbkFwWnhFVk9EUWI0Zk01bkkv?=
- =?utf-8?B?cndDRFZFMzNzUktRWnQ0VC8vcXdmaEFzOUZjWGVCVzBvVTVDUU1HTGg3L2pi?=
- =?utf-8?B?bEpjS0x3UGk5Y0JvQmxlTHR1L1pjM0JlYUNobVVrSDRqZCtQdVF1d2hrTVIx?=
- =?utf-8?B?b1lyWExzdCtKRjBWZ0xQM09oWklYbElsUXhTVC9LMHFpOTZpNTRJOEZMcDg1?=
- =?utf-8?B?SG1GYjBwSXU3Y25oekRISS9ZemphdEZESG1GeGRUdmhGODNlcVNVQzg4ZnJi?=
- =?utf-8?B?NE90aDlZdEQ4Qkw4RXplUGJxQ2hFbU05aitSeVdIRExXV0NOaEVaSFhDQlVw?=
- =?utf-8?B?WUhFRmkyRHBBYjYreWR6T092TWFCOGtsOVh1VjJrTlJIVm5CVVAzMTMzdzI5?=
- =?utf-8?B?ZUhBcHRqdHVZelZWSGZpSWJHYTJBZUpXdWVFTUtMb0RVSnlRS3JSSmkxbGZ3?=
- =?utf-8?B?UTVMMS9EVC9Qd3JROWZzQ3V1S0RPYm01RDh5RElzbmpTTXRkN0JUTUFOM3FX?=
- =?utf-8?B?aVJVOWpCSzFMcmdoRkdjT3FrYnNqcnR4dUZiR1cydE4zUEtPNTZ6QXNwQVhG?=
- =?utf-8?B?Y3l5eDd4RGpUZjlJRlg2MmNlYnRHazNyOHFDV1N3cW5aKzhTdnBHWjhBVXdY?=
- =?utf-8?B?VWZGTHp0SWVWU21zWG91dEVUNzdJYWVvRDZWQ0xYQlFGdTdPb0tKcVhQaVlu?=
- =?utf-8?Q?3mKgYAumCej1RwgAMyF+JgdbYtpmY2iwQ70YfIh0SBU9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61da0198-6ff9-444d-f03c-08de0aab1a53
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 22:51:53.2974
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Sabe1xHZxk9aa9OpgMOxW4z1TkD7XIqCqipUE8qz4aHf0rV12qzcern7F/+oUHHwnkBj6dq5FqgDz6fqv7eHbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8652
+In-Reply-To: <CAGsJ_4zSeMfiy=9Pa3A3UtdNigOc=w4eWc1KQpkBbD4AdvmPTA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: C1Qt31ew2SnKSPBebArH9yf1hHbY3G7X5nyBlk26Fv8_1760396886
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3E46E1A0006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jcybsrxoctf1fkniug6i8yf4qyqksusq
-X-HE-Tag: 1760395918-678871
-X-HE-Meta: U2FsdGVkX1/pO1LdZNzt0kGP7yy4+VeZv/7MILQkSykW2ugcptrzxHrQo+lDivdQPQHypbmKehIKe/VfVD6MIqATuVxHjCW/CQ0nhqEMOQEwr86wxL3kHclCIeCOtQH3TBbFqqL0M7ywRKeVAoFKK3p+wOawRu0sL8r5lcST2/oyFY4avGanFubNxDU/iKYwgIrLFqHJO23tdbxr4LPi7NHxV3WvBry9alJj2kFtm7iTT17F7wCSTIwD+HEI+V2HN3c49sopCwiD3PbxWNaPZTHVWjoElaUj7o0WjQvfz95yYmQ2gNL9jMx3WjuV6O09vcso/At5xboR1CufShikk0XKYacrEWpLXz8uklx/mrCHq58HTxAlvhVZdy4qTMzxja5ee86uZhNOyAUSfBJmxYMA5pyYrkWQ7/uOtiJ135aO/ECgsmz41o3kKhLUaX1AgGRVjbhETdnw3vOSehYCVNeDrLlRHbl33NU4OXbsPhWeSnfau9j7lEp7BothLdSxk1tO4T2je0wgR7ubG0cjRTYEABsKFBf9ZifPxo+tztZdfqaeUW1SwhIu1OgqqawmpK7Vq+Zo9gOkZgavSb5KPy6NyIidbdnbM/Y44Tk9v0c81eCN/d1JLwmh89jI5hIJkDqmAi7wp1fNxBhRDKOeRCkN930Is9lPif4xCTr0ttIPd6wD2NjXjuRj/HACu1C5BtvzzsuwInGpAEJSXoDurCFCkeJfHCX/OpPOkL9JwFd4a02eL7dD82H1ww6FAQxEHeZ3kbUlLtRvV7MupPrlSCo7fyGQRC7i2iyUev9tDiy+C3nkSinSGN1XP7dKj6asmbcbKW1JMYu9fNbBE6Z3dqsJ6NAIt33z4bFcshvKmOuPkj4rh6LfM3Ebju4MNa2dxm+DmsmwwFugxI2/yx5ly4zKiAZTbrv6jZfDzpP5l+KNEWI6C/EnbJzZrHFvzXdOAgQXpO2F3wUbAzq3y3l
- s/sykkqF
- JUNkOhcDUmUWaItpypeAAYhytZX47yCkAyNX5bIQku/TAmO986JIJKg1tINN/JDG9+aguG8d37mE7mWGvXtdp+iyQL71dEVPsRpNcPwdRD9BJyQQenafkaK7lMC1UxjCcvyfqGQq9dHYSQgc2wTB11Pw5SExkKJZMufIGF/w/2CopmOqPoYq5G4Lp00QHFB5l4an+EENzIlVEGBPq7MdDS70d//0HCqMYt6YAGpm2+2wSarrelgj4nWQFT9OMu0LVgTmiWPY+re39fX93q4OaMjSMd6/Nn0aQBzq7LNTvmmm3qlN02LQCiV1hzGxsk13VgTbM3EUSVoiXMFc2de1whaEqZSuCa9/SE1iTR+B+U8LKVq2YXqgdn9pnhYoNiF2DBf+1xYLdhD2BN0P8SJywamz98+WEnHBIAlMtgF15Rg1zvwHVxC7C3yIySzobtkhU4pS2iqT7wCpdwSXykDuVYbTTCD+dniq7M2lzhB4FCvWzuTmdyIRTRL75C9DfGtn7JvCxeIyK7bORcRXsssQmrq4tVlFsysLKO18Vhc8x4L4J1M4=
+X-Rspamd-Queue-Id: 214B4A0002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: a1efbsqbkfehshxehxrj7m3thnr61frb
+X-HE-Tag: 1760396890-129140
+X-HE-Meta: U2FsdGVkX18R37Z5zyGVdYYiA2KaNT8rX0pHGJbFYfzHynrDPJT/h/q49Dai0cgMq+1pavEy+70Epzf2HR42/Di6hOnOTJorzXZA8B5rM9SoHPbVw3DzCExKLUM5uvIIwOI0+Tcmr5LMUATgZdQkuK5+6UwV1wnNh4dDhyoaGjKRodmSCYvcPYeRkDUm0wkwGwHBBB3Ja9PsC4vE2FE/GpnHSGX1nbJmPrbkuY5G2GZs3F1z/PX34l1bwTetHCa7BRTT2azQHPR4WZhtv+As4Bj0JCZQ9E52LfIzEYw9HR4N7MYNPHFwY4WO38DZySBP4YRf3EXss4TUtHGcb1pBsxYdGkZdgAuIUOZKOXXagE5HhJLB40/y7tF4VrpwEVnwkfL59I1tiFewDpThEDvTOevbJ3sSinWhj4CiR2cMTg2Bmk9qsYnPKuAwoVKsipit6Ev9Hul3T2QKDnjn7PC89yM/bxWEM1R0f9soEf5yv7Cb0+XMsSse/B6qyLxeMN57RLktamADGLjrFtsbyIzpYUvM88WRrHADf5QSXls8FfGFhXsz9x9aSAhgbdeCRcENPR/s8f5iHLSRRXowuhuAFo3L2VHRG8mGrGywGQGAwdIQiSNgtH87y55DIJ6SNhI94TiY/aB6T4rgo6so0Nco1F13CRr79RKTHIAK4V/HVmLWGOWyEEWihfUWJDdqU3I0qZGMA9G2uTId4rKI6MBSL+KUmQCUGnMXjLg2UZvlIsQf9Prg9Yd0MvTXofv8L+uNoAIaCV4J9pDyxVXuve4K7yrkopG2/VB4xc5IdhNMLuYUNFBKdz40pPCIGlfPaRnkJd0aG9odRabhHs9KY+UpTLXl7M7K46QiNSWyC+2gj3cIcJjjmqRck70fi2B8y2yjWXjv0ITI8rkPw9+NEblxTBOM6YCMMHWHICwdbUNJf8zj1hpkJlhF1IwwLhizxt7KI6pT6WK9KgkniD6/5hs
+ BvxolTRP
+ y4RXHntCiO55rkFZJ+f6plNNSd4883SxXIVdGaVbro+KDkGklr0CBSIVklrAErE/dkk51+/Q6gPS46sV2L+w7jFAwMiXL31oZVrGijJYGWISiLDGpkW4smc74TmI4qCj7BcaF1h90xhgwk2HMEta3PgpnymFWEKDjjja685JvnGi2fPDEwob5LGCUuSKMMoteMgh7pfxdSzalJuDV5Ay9Z5qmmMVbspDB5KxddGunm+gIIlJIrsulWmi8N65Yd/wb7K3QTdtQMZ9ekZFxJSeBO//scqhO5S6Uquw5cuaA8M7W2kNKhq3OYGh9gNwP9j4+6l+ncBAk05SNnsvQcL3RbSlxvziu4ceQ5mLpPdwMXKu5hA0w02+2NBmjmCRNK0Rv8YeL/5qdQMoviWC81KeWCH/aYqv4353yT3HKXQ89fL5/7g8lpxiw9pfa9bEtCH3+Y0cM1TJdvuc2wGBvACyndDeQmAIQ+0sADbu5seLhqIn4UBEnkIspfPAhIA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,45 +114,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/25 21:33, Matthew Brost wrote:
-> On Thu, Oct 09, 2025 at 02:26:30PM +1100, Balbir Singh wrote:
->> On 10/9/25 14:17, Andrew Morton wrote:
->>> On Wed,  1 Oct 2025 16:56:51 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
->>>
->>>> This patch series introduces support for Transparent Huge Page
->>>> (THP) migration in zone device-private memory. The implementation enables
->>>> efficient migration of large folios between system memory and
->>>> device-private memory
->>>
->>> Lots of chatter for the v6 series, but none for v7.  I hope that's a
->>> good sign.
->>>
->>
->> I hope so too, I've tried to address the comments in v6.
->>
+On 10/13/25 at 02:17pm, Barry Song wrote:
+> On Mon, Oct 13, 2025 at 11:58 AM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > On 10/13/25 at 04:40am, Barry Song wrote:
+> > > On Sun, Oct 12, 2025 at 5:14 AM Baoquan He <bhe@redhat.com> wrote:
+> > > >
+> > > > Swap devices are assumed to have similar accessing speed if no priority
+> > > > is specified when swapon. It's unfair and doesn't make sense just because
+> > > > one swap device is swapped on firstly, its priority will be higher than
+> > > > the one swapped on later.
+> > > >
+> > > > Here, set all swap devicess to have priority '-1' by default. With this
+> > > > change, swap device with default priority will be selected round robin
+> > > > when swapping out. This can improve the swapping efficiency a lot among
+> > > > multiple swap devices with default priority.
+> > > >
+> > > > Below are swapon output during processes high pressure vm-scability test
+> > > > is being taken:
+> > > >
+> > > > 1) This is pre-commit a2468cc9bfdf, swap device is selectd one by one by
+> > > >    priority from high to low when one swap device is exhausted:
+> > > > ------------------------------------
+> > > > [root@hp-dl385g10-03 ~]# swapon
+> > > > NAME       TYPE      SIZE   USED PRIO
+> > > > /dev/zram0 partition  16G    16G   -1
+> > > > /dev/zram1 partition  16G 966.2M   -2
+> > > > /dev/zram2 partition  16G     0B   -3
+> > > > /dev/zram3 partition  16G     0B   -4
+> > > >
+> > > > 2) This is behaviour with commit a2468cc9bfdf, on node, swap device
+> > > >    sharing the same node id is selected firstly until exhausted; while
+> > > >    on node no swap device sharing the node id it selects the one with
+> > > >    highest priority until exhaustd:
+> > > > ------------------------------------
+> > > > [root@hp-dl385g10-03 ~]# swapon
+> > > > NAME       TYPE      SIZE  USED PRIO
+> > > > /dev/zram0 partition  16G 15.7G   -2
+> > > > /dev/zram1 partition  16G  3.4G   -3
+> > > > /dev/zram2 partition  16G  3.4G   -4
+> > > > /dev/zram3 partition  16G  2.6G   -5
+> > > >
+> > > > 3) After this patch applied, swap devices with default priority are selectd
+> > > >    round robin:
+> > > > ------------------------------------
+> > > > [root@hp-dl385g10-03 block]# swapon
+> > > > NAME       TYPE      SIZE USED PRIO
+> > > > /dev/zram0 partition  16G 6.6G   -1
+> > > > /dev/zram1 partition  16G 6.6G   -1
+> > > > /dev/zram2 partition  16G 6.6G   -1
+> > > > /dev/zram3 partition  16G 6.6G   -1
+> > > >
+> > > > With the change, we can see about 18% efficiency promotion relative to
+> > > > node based way as below. (Surely, the pre-commit a2468cc9bfdf way is
+> > > > the worst.)
+> > > >
+> >
+> > Thanks a lot for reviewing, Barry.
+> >
+> > >
+> > > I’m not against the behavior change; but the swapon man page says:
+> > > "
+> > >        Each swap area has a priority, either high or low.  The default
+> > >        priority is low.  Within the low-priority areas, newer areas are
+> > >        even lower priority than older areas.
+> >
+> > I didn't see this in man 8 page of swapon, while see it in man 2 page.
+> > Means people may feel that change when they call the call swapon()
+> > syscall, but people may not cares about in script or something like that?
+> >
+> > > "
+> > > So my question is whether users still assume that newly added swap areas
+> > > get a lower priority than the older ones?
+> > >
+> > > I assume the priority decrement isn’t a stable ABI, so this change won’t
+> > > break userspace?
+> >
+> > Hmm, I would say that this will change the assumption, BUT I don't start
+> > it. That assumption has been broken since the numa based swap device
+> > choosing at below commit:
+> >
+> > commit a2468cc9bfdf ("swap: choose swap device according to numa node").
+> >
+> > Before commit a2468cc9bfdf, swapon behaviour is taken strictly as the
+> > man page states. The earlier the swap device is added, the higher its
+> > default priority is. And the highest priority device is used up, then
+> > the 2nd highest priority swap device, and so on in sequence. Below
+> > swapon output demonstrate.
+> > ===============================
+> > [root@hp-dl385g10-03 ~]# swapon
+> > NAME       TYPE      SIZE   USED PRIO
+> > /dev/zram0 partition  16G    16G   -1
+> > /dev/zram1 partition  16G 966.2M   -2
+> > /dev/zram2 partition  16G     0B   -3
+> > /dev/zram3 partition  16G     0B   -4
+> >
+> > However, after commit a2468cc9bfdf applied, above behaviour had been
+> > changed. I can give an extreme example, imagine on a system with one
+> > NUMA Node, node_id is 0. Then I swapon several swap devices w/o node_id
+> > value (namely node_id is -1), at last I swapon one device with node_id
+> > 0. You can see the last one will have the highest priority to be chosen,
+> > then other swap devices.
 > 
-> Circling back to this series, we will itegrate and test this version.
-> 
+> I assume this adds logic to prefer swapping to the closer swapfile first,
+> while still maintaining the old behavior for non-NUMA cases.
 
-Look forward to your feedback
+But it still change the traditional behaviour, right?
+The old man 2 page of swapon obviously doesn't state the prefer swapping
+to the closer swapfile first on NUMA, while still maintain the old
+behaviour for non-NUMA cases.
 
->>>>
->>>> HMM support for large folios, patches are already posted and in
->>>> mm-unstable.
->>>
->>> Not any more.  Which series was this?
->>
->> Not a series, but a patch
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=10b9feee2d0dc81c44f7a9e69e7a894e33f8c4a1
-> 
-> I think this [1] means this patch is Linus's tree?
-> 
-> Matt
-> 
-> [1] https://github.com/torvalds/linux/commit/10b9feee2d0dc81c44f7a9e69e7a894e33f8c4a1 
-> 
+===
+Each swap area has a priority, either high or low.  The default
+priority is low.  Within the low-priority areas, newer areas are
+even lower priority than older areas.
+===
 
-Thanks!
-Balbir
+> 
+> >
+> > So I would argue that if people realy care about the default priority,
+> > it has been broken since 2017 when commit a2468cc9bfdf was introduce,
+> > and complaint would be heard since long before. While we didn't hear
+> > complaint, means the default priority doesn't really matter?
+> > >
+> > > Or if someone sets up Linux assuming that a newer swap file will only be
+> > > used after the older one is full, then this change would break those cases?
+> >
+> > Hmm, it could happen, but I doubt people really count on that. I would use
+> > 'swapon -p xx' to specify explicit priority to make sure it. In the case you
+> > said, swapped out pages will be swapped in, it's either not guaranteed.
+> 
+> Personally, I also dislike the behavior where a newer swap file
+> automatically gets a lower priority than an older one. However, since
+> we have a rule to never break userspace, is this considered such a
+> case? Or at least, do we need to update the man page as well?
+
+As discussed above, the rule on swapon had been broken. Of course, I can
+update the man 2 page of swapon. There's no change to man 8 page of
+swapon, because it's not mentioning the default priority thing.
+
+> 
+> BTW, we can achieve all the benefits of the round-robin “18%
+> efficiency boost” once users set an explicit priority in userspace for
+> the four zRAMs you’re using?
+
+Not sure if I got you correctly. The 18% boost is only related to
+default priority. If user sets explicit priority via 'swapon -p xx', 
+nothing changed.
+
 
