@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E371CCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66A59CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:32:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26BE8E0068; Mon, 13 Oct 2025 16:32:17 -0400 (EDT)
+	id AB2918E006D; Mon, 13 Oct 2025 16:32:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFE088E0036; Mon, 13 Oct 2025 16:32:17 -0400 (EDT)
+	id A626E8E0036; Mon, 13 Oct 2025 16:32:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A140F8E0068; Mon, 13 Oct 2025 16:32:17 -0400 (EDT)
+	id 9786B8E006D; Mon, 13 Oct 2025 16:32:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E6E28E0036
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:32:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 319E11605D8
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:32:17 +0000 (UTC)
-X-FDA: 83994238314.19.6699450
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9140A100002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:32:15 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b25AQpoE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8631E8E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:32:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B81A59A6E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:32:24 +0000 (UTC)
+X-FDA: 83994238608.06.C76001D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 92CEA120004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:32:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dmGHLoeQ;
+	spf=pass (imf29.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760387535;
+	s=arc-20220608; t=1760387542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ucvmGdln0eqXccg+XKAlaJPI55ctMmMl9RgMkth7GwU=;
-	b=e7dz+QYmXZQ7krrN4y2dWF5QW2Y9j7mnzvdvDqKnBJiugu8q5pEXHChHlzjbUZ/W/H8mkX
-	QIeXA/OOdjVd+EFWf7vfCtuPSeX64TXVHwwotUx+h3BVGP3lH9e5FWuofiOj7l5TK3QLjD
-	qWx2OFu2zS2gIwE4zqItg5zAfauYsuY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387535; a=rsa-sha256;
-	cv=none;
-	b=R5RP4vjFFlEnPWJufHhRZKHmFNmmLR1XiTVyx3cH/5zCSjIUlUCrxMzo7I12xtu4zGKDK0
-	4/ZBJ365Sy9kBS+eszj9mkjkNrhf50IHYBRSByMMEtqHnkFrZaogh3ysPoAM2/peMetQSf
-	/NwxJzusBCmOnzp1aGufM6vo+iNqSP4=
+	bh=/wM/rWJ7TG0Tzgn3V0RdCFmqH5om+9J78iTD78iLzeE=;
+	b=INRtut4Ke/ESk76JWKheyFgTRrie0OswpCSwTaDT/fgjlFZP94wEfUej6YXKXE6+xUDnBM
+	L4SPZYvDVt5YoQNBoldPpfSCMiREVZ396RgJHYl8tO7duaFeyWeozYlO8wbFr5yI5iEitw
+	4BlMk8iuOc0qsWnD7arv94m1f9sFZko=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b25AQpoE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dmGHLoeQ;
+	spf=pass (imf29.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387542; a=rsa-sha256;
+	cv=none;
+	b=C4iwiKT5Dbuux1LIfGJYvLKVTh7WHiK+J8/5CusmyBvII1vV0NsBNVu9r0ewlckpFdq12C
+	LEeelZS1XI8E/FklL3UipTg9I94wrXbqXbvnBcNfDEFcBK4UAkk2GxswyvFkZwixgl9lzk
+	bv6Q1sTQ7xP4L8IjI/t6LhOH4sucTNQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E4584172A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0945461DDC;
+	Mon, 13 Oct 2025 20:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7294FC4CEF8;
 	Mon, 13 Oct 2025 20:32:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B4AC116C6;
-	Mon, 13 Oct 2025 20:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760387534;
-	bh=bjPVH71yYHRT38x+a2qhkcGYmz0Liwe3xJMHVBXj3C4=;
+	s=k20201202; t=1760387541;
+	bh=+2t7R2V0qL5AZXIuxvaOr0dG5kK47CKZx3qBR+Y/X6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b25AQpoE2Gaccq6xqz9Wp4kTc+E9b5qQGmXxn4aXI8OOn1B6UWNO90qdLaRbPI+WV
-	 5aT/vU5QYvbKG49S3wjZ41D44+GQQW0ZOcp7K4hq883Qob1sALGR40UhGm0KN2PlN9
-	 lve9n4RO7Czep7SFLzwH/NsLIsfatogAOXApPZHKKTObGY2vqfYCGn3UbQ6SZZ4CW/
-	 jRAmfvkvLzSH2xaloDMzLSTzfa/vxerXiq24jTwgeXFCtmkcBbFweebJdJHNI5fUog
-	 vGDyVAFB2RxSJMOn45X+ySzq3gIoohBiCt8cSMxIiRZ9K3OOIGCMlH9XqW0LQd1h1e
-	 TfzyOayYLeI3A==
+	b=dmGHLoeQu0b50FoRUM/araypa2rlaqAhrIYYiEnl0iKXC/N7vYxIlcZ3M7iYPRMAe
+	 zFQu+ud1bEjwMsEx7T8Y+JRfgDWzi9zbXIIMBgE+Imkdo6aGmMQFYF1qoJbUSLMe0K
+	 ucMgaKsv3o8ITmLIA70YEYnJ/nrhVocC5Urc5GABJQfQ0gLdK3fRptNqo7CmxOQrfH
+	 6j/ZDikdKGBgPPM0MBpNsDlQMtNSzpxTVfoWG2S4Hy6LGzfnbyk5RFidBqj3RkIkpg
+	 cvWuRweOaVHRDHoollxSrfaWT5pdiKAbzV5q2SzRet26W4P41N54tHYj2ExqCb0z6Z
+	 9B1F6flUKt28Q==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -101,20 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 02/33] cpu: Revert "cpu/hotplug: Prevent self deadlock on CPU hot-unplug"
-Date: Mon, 13 Oct 2025 22:31:15 +0200
-Message-ID: <20251013203146.10162-3-frederic@kernel.org>
+Subject: [PATCH 03/33] memcg: Prepare to protect against concurrent isolated cpuset change
+Date: Mon, 13 Oct 2025 22:31:16 +0200
+Message-ID: <20251013203146.10162-4-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013203146.10162-1-frederic@kernel.org>
 References: <20251013203146.10162-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: qoqouq8kg64n3gzqfzrmmjqehbp5ok4a
+X-Stat-Signature: spsfj4prs5pyznrzpt5suxb9dgcbwxra
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9140A100002
-X-HE-Tag: 1760387535-389787
-X-HE-Meta: U2FsdGVkX18CJ7XzK5HCraZADZNGC6naDV9B1aclY9jv/OOYWzDt1rJe9tukR63QI8b+VXacFkpOpHgdykqYKTGdQP/1IRKVGrIMqBfnPbfp5jCL8MC4BG0QMl/0e5F0RUiHJjFlFuPoUBtZDOj/8yZHKlIPWkC/A5uFbvDYmDy5RJIyQAuNEpou+R/UGjxMDdExTCiaGnzQ8I8jL1TfSMvgnNC2JlKanptUeyeCgw5APjWaFoNRVf/RVkVcNbp/Wj+t0nMovEscZG2UgMvcEqVy9PXYQE72p8eriURowIklOm/e9YYel9VjHzeFuikNK9OxwDRJNNJHTyU9zeBE67Qq2xfYMyh9xI6OJsuv87u5nokuBT9lpZhAA2j97rUbbDJjIBcQ3VtqId2NW07yfnL81acwKR2cXL3otm0iDjeEY5JlgpPc22UzrkHMUVtrbCPW9D52f+bhtXwJ3bCGzbPHUxb+3SZNn41Ma7I1veBJKKjpAWaL4zU74jp5oOYzM0qbLF80CJC3nWsIzkbPS0qNwoj9yPyCfkTdndyLuAj5Yk+bULVp30NGHo4eGwQ17gFOaeW7W6Eqzyhz66bDK7I+tY9b4nwhYmIGqxjwIw3bTyUv+6zpMe3eem7s/jSsvPlAzR5wW9GrBEQ+baRnAoFRIT+uyiMAFrXLeGJDMxfiq5c/BP+n26L1Bm54ov/36I3gAB5sKEXH3/cMiCKGus+euhhYuo2qj2Z7EEOZaBFp/XmZ4afnybMgHwleZhj2GBjI3no2FkornylucfQKFtDxwnq7qa30R5JsV01x5AR8gxqKOQjtkl/YAL+tt3SDBwIh1ax3No5Dx32BoFLaX/6IhPUEsuFUY9/UZY8KgH+xptariQhPBH5KNAzXTgl1RJFKLe3vUKxicx6G5Nr1uenoeR7eRpGB3MgaEpG0hNiIqHncGmBd4Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 92CEA120004
+X-HE-Tag: 1760387542-101980
+X-HE-Meta: U2FsdGVkX1+FUirMOAvTpM5WwVbAx+1cgI7w5mMvT3uYQ9Xpb9A+rUwVdU4R5EdVSbuRV0vM+2ETsYWoFWo3/11xJT449IY01S4CHcTaiyPDqrnpJB07cU///iiHlDBF5jO6VS9p5JbB6ieVH4FGvgrXz59Hdez2j2J72AGJrVjxiBngb7NuX4moV/ionYKeEOHrqBbbxkHPvolqW6QcEM+hmwKBq0Rlq5nb3xZSa5NIHKJoruRvSjhwpyad1W3z0SpK4HnYYZb5oJyVn8pana3W9ye5o/QMpI6/8ltv8upfXpWtP7mzHiMwaNqEGaWSOLumbsfmlrbLRKJOIkka9dziQfLXXLcEDOfNJ1uvyNqNrq/3L7GkPZ+DRoFOXeSmX9ZH4qhGFVDgQe2uJxaBF/UbdFHpuKb+vxOgPPZnCbLEQem4BL/1J2qweL0MhVju+7qI5sXh9fsoP19ZLbgSBEn9TP19yfcTdhIehGsmAA01d10aKUpS9r/g4BE5U9EBpJ+n2vHLNa53atLL5M8KipOMOQozv35HigQIxZW5TfBI0ETCgFPGDFMbZ3O3kC8ryWlJHitIC65P5KkfAYWAsNjZa7dEfy21YH8uiKQ/PgVW+kpkrlU/qRYGry4DSaz5dS6J2ws7v+Dqx3HVeILlfJz15L1yPrSPHep68gY+Sv1GclnXh5YKnadQ6BQ5iKngbSUQxJwkrOTSkBFB027FLIlFWaiRQSfOgtTrNdxqKyIuQmkZ4O/psPCkrHD15iwHLtMiWs0hhU4HULZQM7+Dfzwgm3G8mGz4PYXVfDRP52r/fpdhuGmLOaNlsdDwH1V+sFbXw3FJZ829fK/8ifvSP5CMgskGhKcOHPeUnNf0aFrZGY3NPE0FW8HGxGTnoYFQjkAqXalgPT8b9UJ5cUBsTrtcMtxjkc/fRoZCN+TFstzlC04b1m55dDEySYnMzQoufWonDUckynVYgLd7Rnt
+ FOazJ79Z
+ ahTmKRfbK46s4Bzz+1f6NwkfgbGevQxrGNnt1DcULCpFzQKeZABNpYm77oUl833b55FsMrP0pQJkXXUVybrvTRrLEBkB3kgZM9Go0oOvMFGvYw2xYotQukj1ZP0WHuAshrmU+0VW2SpbjPOhWUpmIkx5n6S1VBcWBnVLuxYW1GDXG8t0hYx6Q6cjbGNTZGSruJiszrjX6QRNz0/e0r3Q2ZFEGH64laeLcTaVqSZpSPmkvxcRdfH3C5TpNt/Jr/rb8H1zFXu1dLlmWWRY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,106 +125,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-1) The commit:
+The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifyable at
+runtime. In order to synchronize against memcg workqueue to make sure
+that no asynchronous draining is pending or executing on a newly made
+isolated CPU, target and queue a drain work under the same RCU critical
+section.
 
-	2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
-
-was added to fix an issue where the hotplug control task (BP) was
-throttled between CPUHP_AP_IDLE_DEAD and CPUHP_HRTIMERS_PREPARE waiting
-in the hrtimer blindspot for the bandwidth callback queued in the dead
-CPU.
-
-2) Later on, the commit:
-
-	38685e2a0476 ("cpu/hotplug: Don't offline the last non-isolated CPU")
-
-plugged on the target selection for the workqueue offloaded CPU down
-process to prevent from destroying the last CPU domain.
-
-3) Finally:
-
-	5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-
-removed entirely the conditions for the race exposed and partially fixed
-in 1). The offloading of the CPU down process to a workqueue on another
-CPU then becomes unnecessary. But the last CPU belonging to scheduler
-domains must still remain online.
-
-Therefore revert the now obsolete commit
-2b8272ff4a70b866106ae13c36be7ecbef5d5da2 and move the housekeeping check
-under the cpu_hotplug_lock write held. Since HK_TYPE_DOMAIN will include
-both isolcpus and cpuset isolated partition, the hotplug lock will
-synchronize against concurrent cpuset partition updates.
+Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
+workqueue flush will also be issued in a further change to make sure
+that no work remains pending after a CPU has been made isolated.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- kernel/cpu.c | 37 +++++++++++--------------------------
- 1 file changed, 11 insertions(+), 26 deletions(-)
+ mm/memcontrol.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index db9f6c539b28..453a806af2ee 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1410,6 +1410,16 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4deda33625f4..1033e52ab6cf 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1971,6 +1971,13 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+ 	return flush;
+ }
  
- 	cpus_write_lock();
- 
-+	/*
-+	 * Keep at least one housekeeping cpu onlined to avoid generating
-+	 * an empty sched_domain span.
-+	 */
-+	if (cpumask_any_and(cpu_online_mask,
-+			    housekeeping_cpumask(HK_TYPE_DOMAIN)) >= nr_cpu_ids) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
++static void schedule_drain_work(int cpu, struct work_struct *work)
++{
++	guard(rcu)();
++	if (!cpu_is_isolated(cpu))
++		schedule_work_on(cpu, work);
++}
 +
- 	cpuhp_tasks_frozen = tasks_frozen;
+ /*
+  * Drains all per-CPU charge caches for given root_memcg resp. subtree
+  * of the hierarchy under it.
+@@ -2000,8 +2007,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 				      &memcg_st->flags)) {
+ 			if (cpu == curcpu)
+ 				drain_local_memcg_stock(&memcg_st->work);
+-			else if (!cpu_is_isolated(cpu))
+-				schedule_work_on(cpu, &memcg_st->work);
++			else
++				schedule_drain_work(cpu, &memcg_st->work);
+ 		}
  
- 	prev_state = cpuhp_set_state(cpu, st, target);
-@@ -1456,22 +1466,8 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen,
- 	return ret;
- }
- 
--struct cpu_down_work {
--	unsigned int		cpu;
--	enum cpuhp_state	target;
--};
--
--static long __cpu_down_maps_locked(void *arg)
--{
--	struct cpu_down_work *work = arg;
--
--	return _cpu_down(work->cpu, 0, work->target);
--}
--
- static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- {
--	struct cpu_down_work work = { .cpu = cpu, .target = target, };
--
- 	/*
- 	 * If the platform does not support hotplug, report it explicitly to
- 	 * differentiate it from a transient offlining failure.
-@@ -1480,18 +1476,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- 		return -EOPNOTSUPP;
- 	if (cpu_hotplug_disabled)
- 		return -EBUSY;
--
--	/*
--	 * Ensure that the control task does not run on the to be offlined
--	 * CPU to prevent a deadlock against cfs_b->period_timer.
--	 * Also keep at least one housekeeping cpu onlined to avoid generating
--	 * an empty sched_domain span.
--	 */
--	for_each_cpu_and(cpu, cpu_online_mask, housekeeping_cpumask(HK_TYPE_DOMAIN)) {
--		if (cpu != work.cpu)
--			return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
--	}
--	return -EBUSY;
-+	return _cpu_down(cpu, 0, target);
- }
- 
- static int cpu_down(unsigned int cpu, enum cpuhp_state target)
+ 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+@@ -2010,8 +2017,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 				      &obj_st->flags)) {
+ 			if (cpu == curcpu)
+ 				drain_local_obj_stock(&obj_st->work);
+-			else if (!cpu_is_isolated(cpu))
+-				schedule_work_on(cpu, &obj_st->work);
++			else
++				schedule_drain_work(cpu, &obj_st->work);
+ 		}
+ 	}
+ 	migrate_enable();
 -- 
 2.51.0
 
