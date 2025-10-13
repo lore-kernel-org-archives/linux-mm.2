@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667D1CCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E646DCCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:28:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4D1B8E0005; Mon, 13 Oct 2025 03:27:48 -0400 (EDT)
+	id 5220C8E000B; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C255A8E0002; Mon, 13 Oct 2025 03:27:48 -0400 (EDT)
+	id 4FA4E8E0002; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B61898E0005; Mon, 13 Oct 2025 03:27:48 -0400 (EDT)
+	id 436D88E000B; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A68288E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:27:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B40413A68F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:27:48 +0000 (UTC)
-X-FDA: 83992261416.19.92E9371
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8797E14000A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:27:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="HieK/1Aj";
-	spf=none (imf23.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C2A8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BABBA1DF2E5
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:17 +0000 (UTC)
+X-FDA: 83992262634.05.16790CB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D02421C000D
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbL2UtGh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760340496; a=rsa-sha256;
+	cv=none;
+	b=4EsYlSF7sqah14vLrM1+FON91ITSzTDYsjXjy/+bZvVz9WUbGvfsoknc1DQrT8Zr6fSW/u
+	eGnG9mr3wb/naSBdGrjCNRl2BIfXD1vdmfKvdmw30hD0I2lB/VnncR0QM266sBUng5kmGv
+	R+T+I2REsjtTvhZSxi5JDEtm8E671fs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbL2UtGh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760340466;
+	s=arc-20220608; t=1760340496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4/i6Yo0DlavHvIyOPm6rSuHPtcfvBwYubd7udQWUQmQ=;
-	b=Shc72645vbN5IWTojmTdYc0NIwcKfd+cO26In93Lp3qgUI/Hh1ec2AkjFCni0VY7uOiAQn
-	4ynBVu3YEaAvvtQiFNp24ahNgH2YMv18zfq3HTaQL+XImeiJgUj6kx3ghDBDTmBsIknstL
-	01+Af4TAY86dXbQV1ZnZ1/jSaXCC1ow=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="HieK/1Aj";
-	spf=none (imf23.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760340466; a=rsa-sha256;
-	cv=none;
-	b=M6OVfnfSHvQbR/YgMQ9X75jqnGQZXJhGW3SkshJSG2HKPihulUG5WpA0I2xGirCCYw1aaE
-	YfPsHv3AKN52qMGvaj+XFFJv2mfPP+PnrJ5fUfxBoI3kXIiJXG+1UDORBDIoYkA4pskg3Z
-	8FX8pFf08CT7fHI6G+tICDpVSyhWC+o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=4/i6Yo0DlavHvIyOPm6rSuHPtcfvBwYubd7udQWUQmQ=; b=HieK/1AjETnFbyPypM9vJViuqg
-	SRNPd77JSXoda8B1rp+WFEYqCrKqUmvraiWGmg4PcPq6ANQICDS/CD2hgEY1Pw6kkbOeBCb2axRAi
-	69pZZOtzAMJaebM79s6ixL5K23P4JgeKkkKKpiq/UilH56UnMPOz/jC+t7zBCcb4Njf8EiZCnPZmh
-	IbcVkFQBybIpirM19Sst24gUjjkw5agH61uB01fhnlPiTgLS+s2pQb3ldct1WkmJFtMgs8CNdj1ML
-	VZcqaGdFE+oki6oPlsIkDvO0uyah5FiT01tAvdGgx3sdMaZr51G2ghi2XMx3+z7Z86C+guaJnpcSe
-	3EIYJWyA==;
-Received: from [220.85.59.196] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8Cy8-0000000CUF2-1DDD;
-	Mon, 13 Oct 2025 07:27:45 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: jack@suse.cz,
-	willy@infradead.org
-Cc: akpm@linux-foundation.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	dlemoal@kernel.org,
-	linux-xfs@vger.kernel.org,
-	hans.holmberg@wdc.com
-Subject: [PATCH, RFC] limit per-inode writeback size considered harmful
-Date: Mon, 13 Oct 2025 16:21:42 +0900
-Message-ID: <20251013072738.4125498-1-hch@lst.de>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xLfbxzkeO2ERTe7jXAN1BDvl0RebdDO86nNEGcRvVPk=;
+	b=ZMMpoPmU1+TsELhqAS8iuiKSdOm8kQkRHNF7BgrzlBi0ovNaTXviOPs1s8o0PPHvJ5NXKm
+	HwLOlbftxwqo3mcENwwVrMU/iTvgPidiKGQQc1W1+ZtdfQInAYbPqplgIGtTSeUcwoVPoe
+	Us79Ra1B3Saprfylg564rJeyPq8ZGv4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF5C345048;
+	Mon, 13 Oct 2025 07:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC21AC4CEE7;
+	Mon, 13 Oct 2025 07:28:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760340494;
+	bh=LXq06zOJDZCJjFxJSMriSR2r1NN0TNY9ryW7UFEsHNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nbL2UtGhHwSUcGWW+HFftTr1Zex2h56UWPi+59Dlbir/2koiJXfOyrHQboEf6dLFp
+	 DYECR09j/iAerh8uOTGkq3WkobLDm3Kp1DAN5ThsizadNmN9snCCVcjNt+sh3H/SRi
+	 9R8SvKkNNdcmwOqnJqo1kZ6mIvWSCEqzE6qVnN7efWns9muMgrNEAH6pGZoqjzQQ7o
+	 MLIY7oXQVhj3QtNHmSuaYExcIgWzSaK27QgdY3UuvUaXb1ZcmNuW1ZAkOQYodFtOWo
+	 eUyo1Rm/AoUSn7fraueBneQSX4KBMfTlQsdXCd69lPvhULXHr6e/qObo9nvsq+IS+t
+	 zAL5OVBdmdBeA==
+Date: Mon, 13 Oct 2025 10:28:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+	iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 5/8] x86/mm: Use pagetable_free()
+Message-ID: <aOyqBKjIut4fNr_B@kernel.org>
+References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
+ <20250919054007.472493-6-baolu.lu@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 8797E14000A
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919054007.472493-6-baolu.lu@linux.intel.com>
 X-Rspam-User: 
-X-Stat-Signature: o4rp871kn9nouyxo33gefoc1omnazgmw
-X-HE-Tag: 1760340466-87263
-X-HE-Meta: U2FsdGVkX1+XlW6/GsVgFXtH4aCah4vShFDs9TpqLTPBp9BZVA1qYMo+Yj52DTE/ZOfaUEzLYGH/JElV8vkijHeZ5JsAsVBfNzT6NHZwwO8NKlqTbm+zleD4KymQ4t/pZDy5BmlEk/BQNhWvwoP4XLtgVFb/e6iDTlx0FQZG/A3XAdTRe+5OGZ6n/wxGgmNXohW9ozdkWgr2mSE1/EFna6p618LfvkbCwB7hMQ+VGxR9+LWVdN1n3EE9FdF814lkxF2MbFeNk5no5Iy9lrYWWuWOGUXV60Py2C85BtNSk4rRhpSuLS4hE9sdWqsPKhAfDu9PCOy+e9ZHdv28XHQCF9z0NXG0hDjQ4CQoTOY1Ss1JNStxGGCf505u+9WozWOzT5AQ1GDFS3a4tgl25Im20o3/6FpO7MiHNQhJL8NKHZAPp83LpLshEmgGO05ve1gOn7+KM27ss3GFUdryOktxuBL9iXyPLegElpe7IMPG/G7JIX3Dvq7zNOBS/sc4Ns7667rYD8k0xGmZclXHhiXQ1NTFHoeuqgB4wUJVoxU5hsXSXZgmNaTYoAtWAsijn9Jir5PgSID4jRdx3/mqGw8Y7U1R3Cag8sB1X08O9q+2cRbhmR4m3OgxSmYLyOop/Vhmsd2FnoEo628EvDY+egXh7prsI4WZdLLVpAqlynvGuaiTfpuZS5wiCbUjA2Ou3IlbGpz+dKIAVR36Er8xnqc+aq6oAa/7yweVXORfSiIjXP/5BVjWaYoFWHfRNW4xN712AqNqyV1s53Lye6/eho5SOpSXCDElPsU2DxUafrGZQvePEv6ozxEy51KI1COV64K7czb7FJdxyHXEbznbpVeXWZbO6PKqMfSKDwHZpcQnAUK6aYJ+x8s4CY+XNL8zq6bUNNnXYDz7GhW11mxAyHRpcwdEf2MzRUAKEBbXSBAY4uQar3xlSHsqL1XwA+CDqwTqzuQF0eQIjr3Ocu5k4Ai
- s/PXDhLU
- mgQqFCphTjrxRghDt7Hkj8fWY5qiuz86wEs15dDmAMCUurmd3DJ7Ck7GouxJSsTkaGqXMokdRPMwJFLJqiyRJgVlEhmF3mbMoAab/OYC46Il9/pC7rOODAEmKKjVTq4l5PS6ggHQ01LCpuE09tdHrH/TPxkErdb6CdcYMJUUdNgYCU7ExxSvaaw8cMIoFZNa8LHc6+/Cqt8ipyOLsm/mkPjcJAIFcIV5AKehL5m4mOpFFiYDKOdatn46ik0cmXSs0eJGji0FAE6hJVpUOXyHv2CokWlUiqo18mwx/k0ETDhMKDFMFjkPfCIFU4zp37KD/TdQ+yeXLvxQQVdDfDc9IEfsElrtUnS+QHz7d415RKJfmIYEbfawpKQcbVgBn0gEtyKV4VrWxusfapaOwYNLbwziGyazlsZ5PpkSSCoejKUIlTzusLTgUt9Kr6my8u+TxvtLWDKn0gf2uTaBjGYGyyzTzWT2aks2OjpGEa6sTKN1pBi2L4TRYRXMdmore4XcoLQvPAAEEQkcfQoNHs7REB82WsomWzLd9RUg1GkcEnZ7a53k=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D02421C000D
+X-Stat-Signature: 9diom7zmod86r3n4dxbi1wrhtfoco8tz
+X-HE-Tag: 1760340495-430192
+X-HE-Meta: U2FsdGVkX18HzyhyHSX4ri1EwBGgr3dfEGrpG439eEypMircn8QptF5TDvHh4fGIDTL3syQc+gSdU0VyDI2rnlNl8dRF2MOqH879FUrX3TRsmHqaHW8P4s3/jxSSrQC6ZLvXOW+cnFqjkMYBIv/MKOL9SFOH4D7lO1jxi7bB3Ysks/BfBTzyspVug6eUGbg0KpC+nhPi5bRm++8gUj23Vy8EWyFpH66aMkvbYwUr5lsgvoe9cev+cSpJM0zzvLBbCTXrMq+6gBdAkL0kFwb52jbjy8rJYLZ/DAuockPSMt19fuuy/SpgyEUIPCJjjkjazl4HYSMxS+pdCZVZbWMkfzfy3Vm3BxR4UeqdUEbbvzzG0SFQZ5hMGcWnFyg3cePJgzXdpJRlgME2OddARHCt2Gzwf2CzWP+LQlmV5zAV23XPZHyuhjlMlrj0uNWen1Z2SxgtifYqp4dATNairZXvugMeyl3QMfVzgvoHBl73keO8zKFVT/1j5OnJmMTQrPoAsu1VBs+qeT2qEwxeknb2EfD/5I9XHWNLoqXvAONB9SxHXcBq3IfSz1veZghr16pMhB/N+D4VmErvDx4Ar/183hciEcq80oaH1cu3hsBy3cWUJbvJ4NbVMeoPtsMGzybR17Z3DH4PHBch+SYZQSClVH5vX6f/y3bMRdqnD7La0t/yhOCjSiTcwBqTtevittZnlR3HPx4N4J90Hhzmj/GEIPFGuZHtkcxe5jLIE9xcJihpR7fpBA6pqv7xtRcF5U5AT6lC+jUB2kGcL+q9Ke5bPTZ+RWVQc0HrEaI2aIsryXgiL7NdgnH7Z1ZlafeZxIGxxOQxLPqXW97jqgUiwKOe81287HeDt5MwtEr7r2fAl8Zt4xdOTnN0lIshZG5RWdgtopIYKzcY0w9/abSND/VpzvWZDTkoGVqY57mvYa/3OG3gZL+RiSzX1eNKnNuTCTqL8s4XdtmxgqZ+4XBOokb
+ sIW8HHDw
+ 4gVMCZWS5svF0DNLUNaJV5bybfQsitKRFvw+ItVH2hzTWT/JGwRSlDLVvZ6JUv5b9gGseFg7lBjIk0znkfPsWhEk7sl0DRKzg30azCy0MPqNIW8+z3oUFpd9NlHybqZPyP56zkIw0NQ6VDZ0QYtv5LWwqAlpTlV74k5lkDMjwIfLzo6gaiTV77xmoTkfUWg2c8FTtDOqDdNahzqJglkIdZEeO07qwLrjNECXv2ppkFLtpAfkACCKbJIqyBbtXEBTU/M+09ZjqaT2Qj3uUvtwDype1pMST8h1TfkprYEB3KAtcu5B5FT+Scp7gm1F/XTWmta258HNMCGDXw5Oso7jr4fVmiDUkEfOskl2B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,55 +104,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Fri, Sep 19, 2025 at 01:40:03PM +0800, Lu Baolu wrote:
+> The kernel's memory management subsystem provides a dedicated interface,
+> pagetable_free(), for freeing page table pages. Updates two call sites to
+> use pagetable_free() instead of the lower-level __free_page() or
+> free_pages(). This improves code consistency and clarity, and ensures the
+> correct freeing mechanism is used.
+> 
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-we have a customer workload where the current core writeback behavior
-causes severe fragmentation on zoned XFS despite a friendly write pattern
-from the application.  We tracked this down to writeback_chunk_size only
-giving about 30-40MBs to each inode before switching to a new inode,
-which will cause files that are aligned to the zone size (256MB on HDD)
-to be fragmented into usually 5-7 extents spread over different zones.
-Using the hack below makes this problem go away entirely by always
-writing an inode fully up to the zone size.  Damien came up with a
-heuristic here:
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-  https://lore.kernel.org/linux-xfs/20251013070945.GA2446@lst.de/T/#t
+> ---
+>  arch/x86/mm/init_64.c        | 2 +-
+>  arch/x86/mm/pat/set_memory.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index b9426fce5f3e..3d9a5e4ccaa4 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
+>  		free_reserved_pages(page, nr_pages);
+>  #endif
+>  	} else {
+> -		free_pages((unsigned long)page_address(page), order);
+> +		pagetable_free(page_ptdesc(page));
+>  	}
+>  }
+>  
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index 8834c76f91c9..8b78a8855024 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -438,7 +438,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
+>  
+>  	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
+>  		list_del(&ptdesc->pt_list);
+> -		__free_page(ptdesc_page(ptdesc));
+> +		pagetable_free(ptdesc);
+>  	}
+>  }
+>  
+> -- 
+> 2.43.0
+> 
 
-that also papers over this, but it falls apart on larger memory
-systems where we can cache more of these files in the page cache
-than we open zones.
-
-Does anyone remember the reason for this limit writeback size?  I
-looked at git history and the code touched comes from a refactoring in
-2011, and before that it's really hard to figure out where the original
-even worse behavior came from.   At least for zoned devices based
-on a flag or something similar we'd love to avoid switching between
-inodes during writeback, as that would drastically reduce the
-potential for self-induced fragmentation.
-
----
- fs/fs-writeback.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 2b35e80037fe..9dd9c5f4d86b 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -1892,9 +1892,11 @@ static long writeback_chunk_size(struct bdi_writeback *wb,
- 	 *                   (quickly) tag currently dirty pages
- 	 *                   (maybe slowly) sync all tagged pages
- 	 */
--	if (work->sync_mode == WB_SYNC_ALL || work->tagged_writepages)
-+	if (1) { /* XXX: check flag */
-+		pages = SZ_256M; /* Don't hard code? */
-+	} else if (work->sync_mode == WB_SYNC_ALL || work->tagged_writepages) {
- 		pages = LONG_MAX;
--	else {
-+	} else {
- 		pages = min(wb->avg_write_bandwidth / 2,
- 			    global_wb_domain.dirty_limit / DIRTY_SCOPE);
- 		pages = min(pages, work->nr_pages);
 -- 
-2.47.3
-
+Sincerely yours,
+Mike.
 
