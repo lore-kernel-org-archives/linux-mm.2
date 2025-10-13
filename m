@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B16CCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138AACCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:36:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C40AE8E0089; Mon, 13 Oct 2025 16:35:52 -0400 (EDT)
+	id 5FF3E8E008A; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF0D08E0036; Mon, 13 Oct 2025 16:35:52 -0400 (EDT)
+	id 5AF7C8E0036; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8508E0089; Mon, 13 Oct 2025 16:35:52 -0400 (EDT)
+	id 477628E008A; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 863758E0036
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:35:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54358BA663
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:52 +0000 (UTC)
-X-FDA: 83994247344.14.F0B2F4B
+	by kanga.kvack.org (Postfix) with ESMTP id 3143B8E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:36:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F132347049
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:59 +0000 (UTC)
+X-FDA: 83994247638.15.3A1E821
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 824D240008
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qGk5nfr+;
-	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4EE7518000A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bhePkCQL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760387750;
+	s=arc-20220608; t=1760387758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZojQTew++BfAEii+rnYjOoU9yY6iAsIlazqCQw8DR8=;
-	b=MhaJWxMjn/+28/+pP0iYT4/MEL2RkrlKFDAN7Qr2PhyNHMI+U+0mxP+/pereIsklHG9UQq
-	wI2PPqGJzSQIoJcZKH4sWCV6HXwFIANeuN+8lP/08sbvcDbIFYiYK+SA9K0uGMP0m9AITm
-	7nKW0ibwcsPVzzgnlyGLWTfMbogjV0w=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qGk5nfr+;
-	spf=pass (imf07.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387750; a=rsa-sha256;
+	bh=4pak3PzWX14tdOV4jDxU4oibUGbKEwQFf+VrOwDwaVQ=;
+	b=fFuuRW3To6wzM5g1rsDplLiU0/CQbp2H8061oHPZdyz3LHNZ3Fa12ddJUELkGCQdbKtuCL
+	Y7Gd1seyaAsGsB5I2dJa5yt1CYfJOfL18TE5ncwNdCTyTzG3wCwuDdVNlt/3CES7Sf0Hhe
+	Tv5heUqHSt+ZVSeOW6OcngCpfUhqkXc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387758; a=rsa-sha256;
 	cv=none;
-	b=uP/aBoYlgily5ZckPFmhENrqPT3VGBvvy4epX332eg3KqdzHtV8qCzwbnAqmU3vokR9uwh
-	CgeFT9z83DPL01y4keqtUGUWfMAyEDunXy9jfJqQm4vDtAYmLr+UW+oWScwhWGZ8uO7lQO
-	T70AeZO4i40VtoINPMueYv7ZNUOJwMM=
+	b=4HOxcODzQwyWcP+Q4h4RvwHImiXhTFRbPZePWwNc/ew3T8n8YQbnejv1vz0PVmKEDv0wza
+	oFt1sPH/ZbkmTwTwMa2ZEzCq51sWP3nZWBZnDX3xZYpwz9NQ266vZxg6FKSQ6vsm1DW0UO
+	TLSON9AhDXONAW8QWq8sZHLi/o+H7Qs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bhePkCQL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A068A40748;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C55D43E98;
+	Mon, 13 Oct 2025 20:35:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E744EC4CEFE;
 	Mon, 13 Oct 2025 20:35:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39411C4CEF8;
-	Mon, 13 Oct 2025 20:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760387749;
-	bh=tmme1GHCRZttEH0fzbesyJQ/RQ0GFTr99io8B0/CrOM=;
+	s=k20201202; t=1760387757;
+	bh=VRca4O5xWSvVtV07vu7T/vayv/vKzk4YtiAHpk59aYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGk5nfr+6FsZ+NjmwnCpmAIaenxkl60KAACf6wbri2p0S9pMENlqql05tS3cfeHFe
-	 uKiGz3Z1CNQF9dQ5na0Eo9YKToVMYig8jRDhXl6mjij12opct/nqMuc04zcTbWIkUp
-	 Pv4FcATUmHuTXDyFfwmtBXSk+cueqvuhxXcz79ZHZkNl/G05hC4WAIWCUq6mXj3vlC
-	 8GL1Mo9r7l5G3jIvY1YprkTxP7uSL9d4kbRQllwCO4VpCnFsXjxKKnDv13lxqm/xOg
-	 uIG/Hsns7R68qcZY9rnBMiW6uZGF0Fd9OINAd0lw3yS0nEqn0SX9YPNmoF+o7eFaGf
-	 O1f7778QWb7+g==
+	b=bhePkCQL/66n70lV9xZxYwRRP+VnIkS+CH6ARH9WtcldkTiOp5Ob386EHKyl3AMBa
+	 9RYk+wDM4ovm/56mZ6bzkEEh9UnuW+WYeuSJUUus+TACOJTuYhJNsvGA+p75if0nIr
+	 eF/1rT4tHcaKgPPXNTve99sj8RqEvhRdV8+5zdkPR+FLUveu003ODzhiA2YZdSiMzN
+	 L6N60HePBPGl52ouzhwYD9vF78x7wP2Yvg3D7LD2eoI4MiHO+TabowgoVKZ1e5gdiV
+	 DR0pYSljDpr9QuAxXqKVRzlLFoIoLIv9vydg718x4I1aBRpQXVEM3pIv7QhMJ6fOYq
+	 +KzLX6+lrv2Iw==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -101,22 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 30/33] kthread: Add API to update preferred affinity on kthread runtime
-Date: Mon, 13 Oct 2025 22:31:43 +0200
-Message-ID: <20251013203146.10162-31-frederic@kernel.org>
+Subject: [PATCH 31/33] kthread: Document kthread_affine_preferred()
+Date: Mon, 13 Oct 2025 22:31:44 +0200
+Message-ID: <20251013203146.10162-32-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013203146.10162-1-frederic@kernel.org>
 References: <20251013203146.10162-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: he6u494mcoi4kw3aeazmojcc16z7416y
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 824D240008
-X-HE-Tag: 1760387750-294274
-X-HE-Meta: U2FsdGVkX18Cx9nEpRj9ZHqOxwQUJh6RRhUD2nT0ppwvGy0hf+pMxds5WIqbH+n3yT4UgkE7qgt3jHzQqbxf5OZBRmm1NGwLP7+o/zuMtB4ukimL/zZPRAPIul6fJkRP1PxFXWiWoGYy2Ez6z+QEvtJ2c5i2nG5J67J1jZrrt6rOz5erWGknMFN3YNcP9ykd/iTwDnvngia9TW14iA6+nQYBOoTUXh0xcPAi2dVtSqyfLXmi+RtyRz3E8Neqisp9vtW5qMA4Q2Asuu1moHpurBGVsyj84z5443P6jKxNeKc8rW2JLKS4Y/mML+KwyhWasap6SNp6/48xLsJMP2562rgDrFdYfOAy0AuDxEzx8eELBC13vC2EpjY+E+mHn9hzvh+XfdfOkyukFF3bcPVRsLMgYwCszh9tGlXVL79qAxg6+9NFsikp2J6i4aCGxX3+6LL75uhK2UPn17RaRY2DGQeIFTsOuWwCHSxNvalwGwkAeExHiGO7Tbzv6T3In0Hvy7zU5ssvYP35mBX1Z7E/hBgcmeedmWBKx5c/zRMKBaw2bpDbcYSkglvs30u5JPJNGetczB8hKah39Am/kDbx5RHhhe2VyV0MyC7NYkhS3LS8gMzb/eRoicRVOBjljqF5f9+Mm+Yw3ci/zdZMU5s1v8/NYYrVXP8eon1EAnwj33rb2ExXJQCsBAKAAtSRVumAcRs+5YjpUZ4btkAnkuxgyxAgr60IrOvPgcYNFO44eyQh3z7IIm+Ny1Juf7Q3W6/9YGDbJQLeJfXz7NpvUjFpU6hL3ALqh6UHWtJshxjWtMq+7O/DEqqkFImCd/lBlDl+LV42vALVdg1M3gNYnj866EDzBVGEoisIXDlVtbZuX9s3+/vlQMLlZHp0fsEyqIJ3YqiD2vR4jXdblkxXuqcxRO04CMkDdjyWgppQXG5tB5KeQzdNUB0svH0wp1mgVOi1V0lC+CA2KVEXa1cTuFA
- YY8Ts1Lv
- 4dbDzj1E++nLYeG6aX/PLMxoW6Hfw7byus6xuACJ45k98M4QkqGdVzuP+rWsDNtrFndRjgpIMwCaqC6IqFQyLUmNhgPAFCxqCmawHiH3Y2X5WqB2okqR4MDOJ353ECvlwnoeKWDJ+Pv9pJ8AS9NqoFqBEiP3kJJGLtghFFgGm8LlTO6DOaCx01xJbxWrFLa+UYsa8bFt6Jf++EL0NLTGYSQKEqTixSh0dzz3unULVbbd7mVnHOqtDHW/5ybh4e+o9EmKARWlNiQ4aK2A=
+X-Rspamd-Queue-Id: 4EE7518000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ob74fkt5yr7jy46fy9uyuowiewuox7bk
+X-HE-Tag: 1760387758-640339
+X-HE-Meta: U2FsdGVkX1+xG7Z7yqnzWPLX9hNsWNwPOii2Ck7MQcm+BB4jzTp+w770CBveBPyEFUt2L5uHywbBUhXi+MPHz4jIlkcKd8K+fZWrkX4MCWwJlN7jSmkohpUSTITgvNK33CTvWylrN4NBeNL/eq+O0dQH0C1zIbfozkP2/EfJJD8OQ23lsqQAxRx2cAvICoqNEUbtCyhbnPfUFAldSfkyxjddgGylm6M68MWyVdos98+HbE/MNBj1ONHGGY6nbGyCL0a1GvaJn8N67cBPcvB2R1VOSYpjIhhEs5bgrmnWaW1qTCoJBOcO0wwrvNnkViAw/MXT8j/2UWrJ/tiI0WNItMTs578AybcAdTjIPoQotoDvde/fR6wC37EgFWVtS0c419hE6YB8XjiGW1iZk5GHlAr6S4UjsDW2UyBx9sShHiSXwqZ85LfIegeLfTvnUWdab+n0xy0LCkQSQ8A/+1Mtpnxkh8hz8/kRlJgDuxBnHTMKAYsVXa0yLfl1EKctM23jvqyuRwkivCJxQXO4Eb/lyqDX9brvLUpKv3egkSuLQw1ZTYpFH+m5GA9Zf4YutaHsgt9AYYZ0gPice7XxMdbx1dBZ4DQnxt/ROA55aFXUWuQ0gBofGUqFLvJURCDrH/pwncsiyAOz9K+aO4oSrwVY/O94GBqmy/aL+RwSy4XYHAK74KbFo1TiYFNNMdH+qjunsvdepZypQEbBSGBGQZFo0ht9m1Qk7qLQ01AMld09zycG3emkvxJBY4/V+2s6qvla7gnLLIr5nY3xH96Vkc/Xr4pQJfPhiw7sW3lBMtzqLLaIf16O8+adQyedMUG1NvOCN8CrInYGzsm/VbS2FTY8+0ujS0AO/P4xz6g+Tj1UczPRS1djMgmIuTrAmE8tFEnLSjB0++DD7vhreDZPqOj2xrDrKlDMoWNiHoLiCUVp8MEMQNyQ/sL8HLytwlZUQ2842ROM3tc9g1PB6AqdM/j
+ Gms5XHFn
+ 7nG0lyVzRBsotw9sjyAiTlCnr4qWz4OjhpzMCcaxmUTp5iQ9gBNsHEGfNL9LJTxwJxr6yq4W+MYJEgvScmQZOV0xXbWvLWKnb8bnbljdEayLQi2ZMFFYXVB/y9wkPO6IHqHJIgJa69grQayKXUUOlB714yz+/jgrHE8MdeVUFlJBXni7C7Kh23VIg+0orMlf8AB9Xe5UoBPD1pVY6nVVyAmNSI/x6Ga6vbSEG3cTrYGAHoag1MoucBPwaU/f8XtRAHVER800Gb6epg+y7mvlBc87Guk1A5Cxz+nfg0AbC4tLQfbFCdlNkcCl1lJACztC7ObJM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,109 +125,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kthreads can apply for a preferred affinity upon creation but they have
-no means to update that preferred affinity after the first wake up.
-kthread_affine_preferred() is optimized by assuming the kthread
-is sleeping while applying the allowed cpumask.
-
-Therefore introduce a new API to further update the preferred affinity.
-
-It will be used by IRQ kthreads.
+The documentation of this new API has been overlooked during its
+introduction. Fill the gap.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- include/linux/kthread.h |  1 +
- kernel/kthread.c        | 55 +++++++++++++++++++++++++++++++++++------
- 2 files changed, 48 insertions(+), 8 deletions(-)
+ kernel/kthread.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/kthread.h b/include/linux/kthread.h
-index c92c1149ee6e..a06cae7f2c55 100644
---- a/include/linux/kthread.h
-+++ b/include/linux/kthread.h
-@@ -86,6 +86,7 @@ void free_kthread_struct(struct task_struct *k);
- void kthread_bind(struct task_struct *k, unsigned int cpu);
- void kthread_bind_mask(struct task_struct *k, const struct cpumask *mask);
- int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask);
-+int kthread_affine_preferred_update(struct task_struct *p, const struct cpumask *mask);
- int kthread_stop(struct task_struct *k);
- int kthread_stop_put(struct task_struct *k);
- bool kthread_should_stop(void);
 diff --git a/kernel/kthread.c b/kernel/kthread.c
-index d36bdfbd004e..f3397cf7542a 100644
+index f3397cf7542a..b989aeaa441a 100644
 --- a/kernel/kthread.c
 +++ b/kernel/kthread.c
-@@ -322,17 +322,16 @@ EXPORT_SYMBOL_GPL(kthread_parkme);
- void __noreturn kthread_exit(long result)
- {
- 	struct kthread *kthread = to_kthread(current);
-+	struct cpumask *to_free = NULL;
- 	kthread->result = result;
--	if (!list_empty(&kthread->affinity_node)) {
--		mutex_lock(&kthread_affinity_lock);
--		list_del(&kthread->affinity_node);
--		mutex_unlock(&kthread_affinity_lock);
- 
--		if (kthread->preferred_affinity) {
--			kfree(kthread->preferred_affinity);
--			kthread->preferred_affinity = NULL;
--		}
-+	scoped_guard(mutex, &kthread_affinity_lock) {
-+		if (!list_empty(&kthread->affinity_node))
-+			list_del_init(&kthread->affinity_node);
-+		to_free = kthread->preferred_affinity;
-+		kthread->preferred_affinity = NULL;
- 	}
-+	kfree(to_free);
- 	do_exit(0);
+@@ -857,6 +857,18 @@ int kthreadd(void *unused)
+ 	return 0;
  }
- EXPORT_SYMBOL(kthread_exit);
-@@ -900,6 +899,46 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- }
- EXPORT_SYMBOL_GPL(kthread_affine_preferred);
  
 +/**
-+ * kthread_affine_preferred_update - update a kthread's preferred affinity
++ * kthread_affine_preferred - Define a kthread's preferred affinity
 + * @p: thread created by kthread_create().
-+ * @cpumask: new mask of CPUs (might not be online, must be possible) for @k
++ * @cpumask: preferred mask of CPUs (might not be online, must be possible) for @k
 + *           to run on.
 + *
-+ * Update the cpumask of the desired kthread's affinity that was passed by
-+ * a previous call to kthread_affine_preferred(). This can be called either
-+ * before or after the first wakeup of the kthread.
++ * Similar to kthread_bind_mask() except that the affinity is not a requirement
++ * but rather a preference that can be constrained by CPU isolation or CPU hotplug.
++ * Must be called before the first wakeup of the kthread.
 + *
 + * Returns 0 if the affinity has been applied.
 + */
-+int kthread_affine_preferred_update(struct task_struct *p,
-+				    const struct cpumask *mask)
-+{
-+	struct kthread *kthread = to_kthread(p);
-+	cpumask_var_t affinity;
-+	int ret = 0;
-+
-+	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL))
-+		return -ENOMEM;
-+
-+	scoped_guard(mutex, &kthread_affinity_lock) {
-+		if (WARN_ON_ONCE(!kthread->preferred_affinity ||
-+				 list_empty(&kthread->affinity_node))) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		cpumask_copy(kthread->preferred_affinity, mask);
-+		kthread_fetch_affinity(kthread, affinity);
-+		set_cpus_allowed_ptr(p, affinity);
-+	}
-+out:
-+	free_cpumask_var(affinity);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(kthread_affine_preferred_update);
-+
- static int kthreads_update_affinity(bool force)
+ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
  {
- 	cpumask_var_t affinity;
+ 	struct kthread *kthread = to_kthread(p);
 -- 
 2.51.0
 
