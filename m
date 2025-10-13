@@ -4,92 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDCA3CCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFDACCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12DF08E000D; Mon, 13 Oct 2025 03:29:38 -0400 (EDT)
+	id 2A8EC8E0005; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DED88E0002; Mon, 13 Oct 2025 03:29:38 -0400 (EDT)
+	id 2596C8E0002; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01B9A8E000D; Mon, 13 Oct 2025 03:29:37 -0400 (EDT)
+	id 1217E8E0005; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E44CC8E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:29:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFCF013A75B
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:29:37 +0000 (UTC)
-X-FDA: 83992265994.30.861E79A
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DEC8B80011
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:29:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BNutXIZ+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760340576; a=rsa-sha256;
-	cv=none;
-	b=ON261eQnxYV6b7q/DHFg9fst+QOhfBa+IwxsKK4ypgqMJFK6ca9upOiDojS6dysxgsGGuE
-	ankhbO4EJeys+C1xxW5//wTnIMGzbRw75a71QufeMH9NviT25uw11RFYZ5k9aPELdnJuuz
-	0Yr2YRDLrlp51CBb+1dfsRtfSllfpA4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BNutXIZ+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id F11458E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:41:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A895B1DF587
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:41:25 +0000 (UTC)
+X-FDA: 83992295730.17.7459AE3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0B5C2A0004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:41:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F/DFd5ZY";
+	spf=pass (imf15.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760340576;
+	s=arc-20220608; t=1760341284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/vZP9HpsjeKEWQ9ykCUaY7omAgoRs+k/b14bmmT76T0=;
-	b=qV7JXLdnIuqUVZR78KBUKvRly3G6W5zpSzeZEuh4oSuX35L8zAsdHQTpGkngM3UdJ4Na+w
-	cJw3LNj3A3POzfxrZD5UxPDI+xk6zuUVIHR/mZvg3ynIoQ88sLxhHNPTJf6/S/JgX79aRO
-	G/IKXnQVWt2nj9TELv/vmbiTopdO25o=
-Message-ID: <ab6edd99-30a3-486c-bc47-ffcac3d93b51@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760340574;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/vZP9HpsjeKEWQ9ykCUaY7omAgoRs+k/b14bmmT76T0=;
-	b=BNutXIZ+c4siKB0mcFGD5RRZLQ3PNEf4I+6qjrSKnIkaPg0w193ytJEFODM97FcOGAKkFr
-	h3TfaalDIraRKKKPNhyRj0RIk99hSEnanM8rJMAFGpPqpQOTvpybOD19xKYlGgOqyxwCfP
-	/U+6UvEP1XKa3jDhi3iMXOtrkadH7tE=
-Date: Mon, 13 Oct 2025 15:29:11 +0800
+	bh=gjBd7ViABM92G5SbEPZDU6kQ3B1a97IO6iX9leLL3Kg=;
+	b=kbmQ3FqhI/dW0VDn7my/m03vQtJRjCyZuRWFjeQYTK1h8EpBiFSc5vEaBse4hl3YQ4R0x8
+	QFi3oX47HvaNyVBvyljrmHQxed1lYUc05CYgzmHJZL9d6yOsWYwvLQMoCcvAQA71tqKaDx
+	9hyeXMiyMCytgcHMiMNy1me8hLxVKXA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F/DFd5ZY";
+	spf=pass (imf15.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760341284; a=rsa-sha256;
+	cv=none;
+	b=mAGIAWa+sRf606kSNMaJoKwVPQ7phuiOGfSeB526H+RIiCUe4mtadhylvJa1h69tjeHiQm
+	0+N1WiG8lZtr++vwnO6QHRXrA25fPVdXbyYajR59VdSVYCCjC6l4CK7QdOBAZeeWAVa5GC
+	g8YGOWQfq7beVpbhAW35o7BFdn0ZfIk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 209AE604BE;
+	Mon, 13 Oct 2025 07:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E3C4CEE7;
+	Mon, 13 Oct 2025 07:41:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760341282;
+	bh=9BuTDzaR1my5eKzXxHUiTDJrNndjS3jKSzq9fhN1ZZI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=F/DFd5ZYNP3J4xWwD4ImXWRAWOwNap/62bMhdThDYgc3/2IeAz5fOWHNeFTbdUa6W
+	 JQMJl06Yc7WAUEse9bKwJr7KQXApDxR2fsQ/ZbQftiID6tJFy6Jnu2iQ2etXhYY/1y
+	 fVXIyAHi8tj3743VeMDXBjLUUrv18KxGfykZwRfAP7rdEtulKKUOga9wIU4T24i89s
+	 5cCRR1LLRSGWJkqeQgu66Dho0nOsRvXxAhZp39wGJg4Kw1XaJwc4WPhP67KOX4l0Nu
+	 JYHMFDzA+2JaD+TLc2aws0RwskQ1TJFy11dVJWXXcBlGHq7DxG1Bl9to7qt0KVOyIG
+	 RWBwZk7se8h2A==
+Message-ID: <a1759d1c-08dc-46e3-96b2-9ae2d8258b22@kernel.org>
+Date: Mon, 13 Oct 2025 16:41:17 +0900
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 4/4] mm: thp: reparent the split queue during memcg
- offline
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
- <a01588414c9911f2bc912fa87f181aa5620d89d4.1759510072.git.zhengqi.arch@bytedance.com>
- <sdpkprxqf43emy5sttfzxnv4aemlarimdybdva4xyywyndajtx@zyvckuxgujzm>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <sdpkprxqf43emy5sttfzxnv4aemlarimdybdva4xyywyndajtx@zyvckuxgujzm>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] mm: don't opencode filemap_fdatawrite_range in
+ filemap_invalidate_inode
+To: Christoph Hellwig <hch@lst.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+ Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
+References: <20251013025808.4111128-1-hch@lst.de>
+ <20251013025808.4111128-2-hch@lst.de>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20251013025808.4111128-2-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: p5k43xuuceowixs5jnhh7an5gytn6opn
-X-Rspamd-Queue-Id: DEC8B80011
-X-Rspamd-Server: rspam06
+X-Stat-Signature: ubk5sejdsio4ha4a4yjjfrokps1yw15e
 X-Rspam-User: 
-X-HE-Tag: 1760340575-375806
-X-HE-Meta: U2FsdGVkX1/eYoou1dzw/Mo18ra3WQQpw3m8+W7xFSQyc97Xxn957Qj9IoId/6w+z/AoE6s2WgPs1ziSn0IJIbTiVdZuvqkg9JO1lrSbRLBmr4o/Upbd/JCqR99QkaPBGWqOXaiKmJQLQf0MsNTpDAqCk+9v6LJVZ+QDFOsBnqmoIL+Wvu/aGCO8C6e4IkFhZvi8dgnl9B5gOHoMc8xBmUyWo9aIgMNbkyprNxdXHV7m7teAk7SMbf7xYaxINdphZGSCRUp08otclJNL95QbI16UZYMOwFvVA7LMUlOmCsdpylfbcyUI2ZQbTIb9BQut2T7h003KwL8cOE7BFyK7QJbsUUvecUDA0tAOvUyvk3HHpGDD8vrbH9Q/NXrqnB+oLV0tUE4VJyBH3TfaWwT54pnqHUcVaD62OWbBthv8D8VA1u4lrnI0SXGFRyx+rqNGV3ehxR/1BVaPwVxkiDAYBSQ8l+uRqEutmHvuA96dm7LjMIrmNM40xb86w7II82J9+fVdCnY46NvuRGpwvy5mXbyZFxosmDmA6Dd4yOAUNHZkJnIlSq9B1Z0jd2XOHadJhoi26Wj7Q5Z9raZSv333dBpR1fquOd3U+ssYVm3e9X6dSUHudyc94rhVpU9N7II8h94oRZbvunkgjrriNXYJuUGWsyGpIwgiWL2EX+Uba3MYZj6ol3amJpbtLqXUVp/+P6f5Fbs/D7IayyqZWbyiaFRU8BC6m9CIq1OHqlkxBF/ptPqICBm6+BJWXBjW4nH/qOlTuUKyUGx6Rc/Pq0hb35eHhWm4dBdEG3a8iNnj64rH/mtARIYI2zfCydv4iPUU+mDwsd7aSi3YdDzN1HcgDLCAWLfWPLM2ApPazVelgTuiNOmRt44P/nrdkGi/HCZ5RCsCzf/ZLamJb+DbaDrj+iYNN9azleOgzfiaGW8e3EzdDEVxNidHcZL7DvG6e1Lx0BtcrDTSbjBLCkvnuJe
- J+6X3mdM
- 8GT3noMU/yNwpdGTdGgA+CiCrtpPQoFx3v2Hg9L1S+5k9qhy2JJ1yD6pagATSCJ+LDswtT3g8+GOULQUn0f5DRELAOTxgwFEqBi7GZHjdC5irW9WuchfYUEogUkt3J+xoGdWABNi1ik6dSxEjzGcFsZ0zeVKImBcUj7+GOQIbKBeKx/ZE4crWbWTlZGPIGnszFPP/6jjjcXpfNFRQlr6NiYScnEynvmcx8YMNYm8jEu6bu3fNlCTWPBqw8QsHGdz/N2uaVuPDDXMUEAX/cgkoqMqiF31FbAhsHblgDJSAbMqiB5HIqVnxzC+kTQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0B5C2A0004
+X-HE-Tag: 1760341283-389011
+X-HE-Meta: U2FsdGVkX19rcwgdInLIS7SYpFqzqejyeT6DSzGtiiZf5HnwIafiQzIZ/UPWZI2YrmjMqvWrwg5mMvd+NDA7UpCDzbaYpNTVn0MnpNE1IAiaCoGtQ/D567sgi998EZ5fV5gMRW++eBGBQpR5P2P0oGQmibUc4OswQr0Kml40kYUdXL2mucBm6zeUvz6YAJrjGFaNvwVsXDntvjVjWSWtDkaiMVdtCRdcuAS/MN1m1ThytVzBgKcq3dlf2yrzkBKIdJgZ46u8PZZKUyC/istY42Ps1zVNAgX/FautNZEJXFVIFS/lXQ4gJGum3w9pXwlwpL/cxVG0J+I1gsXX1YZrF9aIqAtFSKIqAaLZNtAba+pw+5oRCltHz07Qe1/d5Ha4WvUmthx3MPZ6zshZZMDOWYkESyMF7bcGB2E3Y7TzQt1IURqG51uASb/1o9yLKHRB8KNG9rP493Pm/y9+q9JzqtxQOA5f3Y08FnqCnnavpiujab85DvYmXZcnI7ZT0ByDagZuoTZeyhT609rWoOELTGhYve/keF4hvzGb+mLRs1sI8WLfEwEypNjbc5eLxdUxvEOw6317G26MT5pxpPCQQ0+0d4/0mJaA4SxVF3N4t3HumTiUw8Yb6wh9u0h4bZvIRqQOZLQUJG+f3H7fjrB/sjol8j3sFxqgSR3Fs/Pgncz5iYjXYXCwZFhj3Fjp9ASxY1HpO17rr5hkgrAVYf2JEyNNOGwUz/86vYH1db3PSmjeYav2qm/p62FGDeXMRufpuUJvMDhvK/z46blOliePgq07cFTSwI1BroDzGpkYs5tGDq88YvmO/m/mnShmXEU4HsCk01AqQxjQJX586hsGn129jtUQBRghc/3N2blyczlPH0xQxIVCtqXsV8uH7fX9cQfIb3mm5TMhF7qh13a6fn6idRR2LDA3qtKzWSawBuxEDp1TiZSmoXLpTYrw5IH1zDfUqMcv+RBOybyknWX
+ V0QUwlJA
+ 9hBFftN1MljkTmh9ZWJTfFtfi7Cl5bz+yOOTRefDCWkKSqXuWG4+I/cGA/u5rdyIgzIXMLL9/JTB+aAqeD3MgT8al3PlVqebmzqGjgpf313rxTahBvSZb+2vCpqZqdx+68uNQu9XI/Z8FmJTTsozuzKiX5Tu8/kw7XlSwF/UT1uTLHxhcQDUohPTjL9ZPO5Y7DMEI1pqRDsuskKuHIy4YgENwgBu0/PrvJVK2ccUtkkC1gvG/wk3Y4Ux0bT9kECuuH9dtL0Vt7aW9haSDTLYmXF39AdBujxW7mwWUVk33IYmNqNqRd5dlifp3AItJ7J43+VSPBT3Pisya8yNetp777QqNpNWXkS1L38ZrNOVhx/3MRc3k1QjJ7ThNlEG113Ea1wvQHAJKkhg5vY37AJMkq9RsMYq6pT8oP5U1kHwYL3ykg6Fb8NrYgFI4ByL17KEpcGxnA0FVgKReMfg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,73 +107,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
-
-On 10/8/25 1:56 AM, Shakeel Butt wrote:
-> On Sat, Oct 04, 2025 at 12:53:18AM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Similar to list_lru, the split queue is relatively independent and does
->> not need to be reparented along with objcg and LRU folios (holding
->> objcg lock and lru lock). So let's apply the similar mechanism as list_lru
->> to reparent the split queue separately when memcg is offine.
->>
->> This is also a preparation for reparenting LRU folios.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   include/linux/huge_mm.h |  4 +++
->>   mm/huge_memory.c        | 54 +++++++++++++++++++++++++++++++++++++++++
->>   mm/memcontrol.c         |  1 +
->>   3 files changed, 59 insertions(+)
->>
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index f327d62fc9852..0c211dcbb0ec1 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -417,6 +417,9 @@ static inline int split_huge_page(struct page *page)
->>   	return split_huge_page_to_list_to_order(page, NULL, ret);
->>   }
->>   void deferred_split_folio(struct folio *folio, bool partially_mapped);
->> +#ifdef CONFIG_MEMCG
->> +void reparent_deferred_split_queue(struct mem_cgroup *memcg);
->> +#endif
->>   
->>   void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->>   		unsigned long address, bool freeze);
->> @@ -611,6 +614,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
->>   }
->>   
->>   static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
->> +static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
->>   #define split_huge_pmd(__vma, __pmd, __address)	\
->>   	do { } while (0)
->>   
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 59ddebc9f3232..b5eea2091cdf6 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1099,6 +1099,11 @@ static struct deferred_split *memcg_split_queue(int nid, struct mem_cgroup *memc
->>   {
->>   	return memcg ? &memcg->deferred_split_queue : split_queue_node(nid);
->>   }
->> +
->> +static bool memcg_is_dying(struct mem_cgroup *memcg)
->> +{
->> +	return memcg ? css_is_dying(&memcg->css) : false;
->> +}
+On 2025/10/13 11:57, Christoph Hellwig wrote:
+> Use filemap_fdatawrite_range instead of opencoding the logic using
+> filemap_fdatawrite_wbc.
 > 
-> Please move the above function to include/linux/memcontrol.h
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-OK, will do.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-> 
-> With that, please add:
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Thanks!
-
-> 
-
+-- 
+Damien Le Moal
+Western Digital Research
 
