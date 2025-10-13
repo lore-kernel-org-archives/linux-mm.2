@@ -4,100 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222F7CCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:06:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2845CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EA1B8E0016; Mon, 13 Oct 2025 04:06:01 -0400 (EDT)
+	id 3F4EA8E0017; Mon, 13 Oct 2025 04:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79AE98E0002; Mon, 13 Oct 2025 04:06:01 -0400 (EDT)
+	id 37F258E0002; Mon, 13 Oct 2025 04:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63C298E0016; Mon, 13 Oct 2025 04:06:01 -0400 (EDT)
+	id 26EA48E0017; Mon, 13 Oct 2025 04:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA678E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:06:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1ABAD5840B
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:06:01 +0000 (UTC)
-X-FDA: 83992357722.10.0D2BE84
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5C6A840017
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:05:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JoJ5YBKd;
-	spf=pass (imf01.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0B0AC8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:07:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF96213A7E3
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:07:08 +0000 (UTC)
+X-FDA: 83992360536.14.374B6F7
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 85C521A0013
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:07:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Zr3D/VXT";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Wx9/QFhS";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vYqgbwpw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=l48zKrz4;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342826; a=rsa-sha256;
+	cv=none;
+	b=rgdN6mOJTEtw3o2JFL06dzgxHLwBRu5X/KyX5TUvA0YhCV3T3sDmY9v1t/SX3BjmSRaXCx
+	gClvPYhDPjGi4wyQMmmlOtS0C1ixfn8pvqXfNlks2v2KN5HyVmwX2q8JThipp65p0sRNN2
+	KZeMkcIaIIB2xEOs3o5Ib09cFPtJ8ug=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Zr3D/VXT";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Wx9/QFhS";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vYqgbwpw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=l48zKrz4;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760342759;
+	s=arc-20220608; t=1760342826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OXwozSeMlS70Sl3oI0odNiKy3vdryBhBgECDo9dwsrQ=;
-	b=1Vh5prBTF+nsVIo/D0FeuBpulC+rlZtODEL4k8ca006AMoZ/bViHblysW1Sjq+Ei0+7ZUl
-	OfLkF4YPpX4NE4D3d3Jp90UkoELFtFaKYMC/45Ud4lxgO5oBbb8geApwdGV9h7qyv7jebC
-	u6VV+GSr6o63KhqsA8xnpvF2GdXBPAc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342759; a=rsa-sha256;
-	cv=none;
-	b=26AnuO/LkfPmezPzt4yWP8z4NqYl9h0auPnl8Y7tVD3z4xzyeK/ahQ6QfcJyxW2CZT/bOB
-	ZtU0IqQ98OKLI+zTKKKDPS4+sQzN9jNz763uz6z4eNaFqrKiCZdTXHAYlAT9vEdl9ywJuW
-	f7rrIlluIKb80UYhWne/+spY5N0mf58=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JoJ5YBKd;
-	spf=pass (imf01.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A47A06111E;
-	Mon, 13 Oct 2025 08:05:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB19FC4CEE7;
-	Mon, 13 Oct 2025 08:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760342758;
-	bh=5HsWbtZ2dcB7krEcbKjne7KnS+nPBJU93qavaxJizuM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JoJ5YBKdMmynvxsqiAkHkZbrbXNbh1kQQdkhIKnwG6b9L6o3Uzqi1X27KlKrsP3Fl
-	 R+lbP/clJGXkbhS5NEhqi0WhSG87d70ezCBhCv1BktJRTGsKjbOMR2s0X7m2rPZ0Za
-	 aJ89IXK3xmT7/fyqzwHbHH3uYFwcU8sSKoILbJ6+EgEN5d0jr/somN9ZzIA7z4pSU1
-	 vSAsqr50CL9MnLXn4g22yvpe4Rxs3HtQAYyAu3lN/RpP31W4v5IU0188xLD7bhEdEo
-	 rs2FORcAaC7QLU5udePhJZbhtXDoEEFtFdrkp7D0ifJNyNJWapFn9NwLgNGUylYwx6
-	 Gyj0yBRoVk77w==
-Message-ID: <227fc5f2-c16c-4fb2-be02-e7b1f37559dc@kernel.org>
-Date: Mon, 13 Oct 2025 17:05:53 +0900
+	bh=6w01YLeD8Y7xeK5Gmx9nkKpU4qtns8801YbVOhrxlRw=;
+	b=Hk/mpzJ/cugEWvFtzlK9dBbo+igqp8tEs46eaZYNNyq9MRivVek6+/4pz6r+pJQwa+RHI0
+	uBZ1nY0hl8pIUC5uqqoL46BmVgScYn0tn7UxdxSwQjwzTRme+vp0gmX3EGbhS2uWcuixtd
+	1yMds/ZtBVzmu6xU6HM+W4PFQUecKJ4=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 287B0211CC;
+	Mon, 13 Oct 2025 08:06:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6w01YLeD8Y7xeK5Gmx9nkKpU4qtns8801YbVOhrxlRw=;
+	b=Zr3D/VXT+EBv3Vsijzg8uCr2TS86lZAtrDAHB+XWEuDaW8b/UXvDIoVYd6fmqdiSMZC3Qi
+	LmUsIH7wgtra1qQKefS87CMjZ0RXqO71fNGQt+RdlHGilg3vL2CcWPZabieZEXU9B2g489
+	zsxF8vLXqiaIYiyQkItPBhyHxkOSN+Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6w01YLeD8Y7xeK5Gmx9nkKpU4qtns8801YbVOhrxlRw=;
+	b=Wx9/QFhSLQ15pl9GXGO9Xd7GUKxZPcbXLMvPCBEqy4C237hdEGoXmfNwcoRLhoFBquVTtj
+	x9Qp1fNKFj8m84Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342814; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6w01YLeD8Y7xeK5Gmx9nkKpU4qtns8801YbVOhrxlRw=;
+	b=vYqgbwpw/BLdRfvuqgxFwOaFJsnscL8yRzrKIbzFO0ft3vQC6f/ciCgk1VD7H/khkUPZXe
+	I0CQOCkwTutAQZrBlQoG7MOvS5pY6rZ9zpJkasTgRTQb/Wr1TRrNKZnG6tKYt1ezZTGZ/E
+	3Rbla2zD3Uv4Y3eky86ahqOUjCbVaKc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342814;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6w01YLeD8Y7xeK5Gmx9nkKpU4qtns8801YbVOhrxlRw=;
+	b=l48zKrz4/O7RBu10ddw+yNKgWIp7Da6Mta/5wf9kqqL2FwkVuabbvGXY5Jrfa1A7UW0n50
+	M/XMFo4RQD4gK4Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEEBD13874;
+	Mon, 13 Oct 2025 08:06:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EvnaKx2z7Gh3GQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 13 Oct 2025 08:06:53 +0000
+Date: Mon, 13 Oct 2025 10:06:52 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, muchun.song@linux.dev, david@redhat.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] hugetlb.h: flatten logic in
+ arch_hugetlb_migration_supported
+Message-ID: <aOyzHMRf_eI3FiqK@localhost.localdomain>
+References: <20251008212614.86495-1-gourry@gourry.net>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] mm: remove filemap_fdatawrite_wbc
-To: Christoph Hellwig <hch@lst.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
- ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-9-hch@lst.de>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20251013025808.4111128-9-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: rh1a36gdxyxypu1qww3xpegpkntztgbe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008212614.86495-1-gourry@gourry.net>
+X-Rspamd-Action: no action
+X-Stat-Signature: 6dzpaz9qc3u16pek6ytqwcf4u76kpdn4
+X-Rspamd-Queue-Id: 85C521A0013
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C6A840017
-X-HE-Tag: 1760342759-91030
-X-HE-Meta: U2FsdGVkX1+IOByfnmTuTGlDYbjyP4l71lcgCa1FHMDQJto1gfOsWVqW3ybC6OYPfxx/nlF+UMrE3xv+BG0K3Z2dut2vYgVL1ccvP+HNmGmfaC1QT7buk16CNgoEhXFkhR3/v89/tEcK+vS7GmRf6cQ6c7+114Bj4/IhNaFWGjag09b2F8CglhUP2aOS1pdNLLCBJ84hGDbB7QfME8bM5AGI2sJByM6KaOEMLow6u8uordqh0GR2bksZcjAhPszTZp1WZYbtyE854ZlFSe7trOy43W2jPZnnIdOYnRtoPNeUYvjxSoLPEQ0V80pF3O3W3JM1ZJL5pHznuV9VC3HEshFRxuc3XxrvZhWozIBGKYM/X89jHwn/ipT2WY6wqTKGj6DlXUfLtjqvFVM7MxstrqqYpjhuFbeakDsaaUpZYNQ76XecoQUASdZzoUStzfYahwxCn1XPI+XTrbe0NEi8bJAu0maaz6aQRpcBiN27epuoX91rNzVX2sumL/zej15twDLpPjLNzwopMXHYyrVIiWoIoILgCHu3/VyD9VPYShnO4O0d7RIoNx2xBVkH7e5U+Vbx/d0eIPkT/nmFNqRsEn5GDbbtw+g9Sei+hR5ouzSj0yUbPcp9q8qetYLuOH5yOZ2NijJjzA+by8QsOstUF/gJSfcBUE4Rgs44RVc9SYv4REhpc85R4mjrzKu4ulGkv2UK6RxHs+jf6EBzF7X6vao75sdwmE5x2p/WHBOrqCLE7ubYPIl1HkkJGPoGH/DQh5C9NEqzH7UfBP5dBPgREmmMhcbkMNZ9zE73wFgFeOnWqL2+SvO1rtzIWqBnrW8sKtCnIrbHEOnidrrDMrxAS3xkR0YDPQ9j9oUQtewY61kM83q170uSs0i7yy+6eWLN+jJr+F9eQJVuIPLNWdHrZTC5lotcin+v4NqUG6xZWkcFDl/aPxk0yCe+qdSZmPzn73/AOrv876ZEcHNDwzf
- rY5OlcLX
- E5LLXM7QtSik4tu8k0E1uYLus9I9NmcC79fihGypTrV4UKTw2tSjT0RRKDD3b4nBrvAHdbwqeobB3VTsCmNZ0LIHczzbzo7J2bvvura4f3qf+FrclxyO2AfSNYvz29J9s4MAZuvymZTlQerCuPwDM4wemyiwtbB5C+1T5L9rqV1epKySBaZlh+9VspZ7mf7Ht6HJUKd8X0sobGLBn/1X5kULAznvmX7tyxgNfU3XsPhZUU46Y8EtVZDoi+zPTX8RsLfJUvTdy+2aRppuAyNv6DcF9fHqhiGWTboH9/LezALa3fXaTBnrxiiKjCdQNLK/ZNH2UHZElucFNwLI=
+X-HE-Tag: 1760342826-965571
+X-HE-Meta: U2FsdGVkX1/TfOx2VRPmQ9FHjRiXFVQ+Bk5f+BdERIAV/LfSsLK5lrA7ku43lROj5eW68tOawFeI4mgw5D3TathI0CeGa64fCbJzHjjr2/CTXmdLZoeo8BOG50IbpTEOFkJpp/hkaoRBq1X+RbrA1Z7dSp8p200fwUjn9lBmId+iT6bUCiqjgiLdzqJOxA/HmCJGXbh8TuURa6pmg5kIHZ8g5CRIpKgjyuyUfuf6SwQy/2ySS/F71J0PG3O9eNVgEGtZwYwJEq6OzPBjVFi8nOO2h2GJL7NMbLoGh7tZUH8FuXuAiIZhea2XFndIyvyyzs3wHoFs3PhPnDs+egID4n2OMHdX8FmTEiZzYtL1pfd0Zl8rRq3VdtHd0tguaYzRiq7EoasKil5pfcJxvPFu1EMQTKjchYRDXX8aZLSi2pRnR4pNvPr3jcYPxhom/epn9i3UkAO9//XnIKlaR2euEs+lv0yF8hibLr41/SlJs45sO5IugHETLENpsMx2eQe1i9D607OW99p1zrlsg5YFoZNeI8jrZ//azVSZVzLd50a0/V0J4SsHZV4Ls0gX6XaPAk6ldaetGCSm0lbWjDEVWBSyMxaRzG1LtK7nD4B0/lXm++ZmOG0YMpWgRboFYOxZ7rNxO/HoAdo29QXODL9LBG4+Kh3O1qrYbV2WmKGyYiwPTo5/4fUKaZzq5blr6Ab8XxbRIbYdv4ke/y4NFYQLYj84ECvNUNBMtWTG4MOOiehqse3TnyHSdZloOX/1mIjBEiwSvgh0xa0NyM1EDZx3OZ+DPef+DTOqBcvmMV8byLKo56iwZSL3jBAGLsu0QZzzvR7+The8tMMcOufeDwG3O1sQ0J3+xGRvjeL7VzWUfAc+tIoFtAcpns6S0Rc/gsU5OrLO5/pbHg/kyteYEGFi8QDvYjujyS83M1abfK6Z3tHXW+Az2PRyNF0+VqptMX0yEi9SQToWUX8V0i+JbyI
+ Aevr7qKh
+ cnBZVbnq44cNfcHHS8kqTNr0cA0+I0k/06KiFP/Tyq6o5V3v6rK3uouCpKlnQ83ZfAO9i9zSsym+9wYuUuKMbWJJxZQETM9I8Rq05Kurwc6V93rqv+VUJgl63Imz5hmTU+hMXWCVXQx8f0jnM5sAvaXyQ/mM3+X1/LH29lpeTeAvlnb7SI/u13F2q4gCovMPtlOyLvsL0dp5LCQdnoOUnXOBJ2mG/Vb2lE030tQKHZK0xBGQdyIjW39jZ5AlQdoPPGtjMINGJlwYiqVZ+23TPi4N8DSH8lBycZp1R53AUa+HymUFJUrnB8NDhSyYGVwwHoFtcwg1kjFgm05LBzGZE2VAjU4JWj6oaQy5DhYIontp9ygQcU11BJt6wivMwzR7LZhRRpg8FkFjwRg8bJ9B0IWJC0h7OuXuM9AgzEADN6kM5qIQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,16 +132,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/13 11:58, Christoph Hellwig wrote:
-> Replace filemap_fdatawrite_wbc, which exposes a writeback_control to the
-> callers with a __filemap_fdatawrite helper that takes all the possible
-> arguments and declares the writeback_control itself.
+On Wed, Oct 08, 2025 at 05:26:13PM -0400, Gregory Price wrote:
+> Simplify if-true-return-true-else-false logic.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+
+ 
 
 -- 
-Damien Le Moal
-Western Digital Research
+Oscar Salvador
+SUSE Labs
 
