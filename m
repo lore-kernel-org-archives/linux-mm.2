@@ -4,95 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4952CCCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0DBCCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 10:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3F608E002C; Mon, 13 Oct 2025 05:56:50 -0400 (EDT)
+	id 6795B8E002D; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17438E0007; Mon, 13 Oct 2025 05:56:50 -0400 (EDT)
+	id 602D98E0007; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92CCA8E002C; Mon, 13 Oct 2025 05:56:50 -0400 (EDT)
+	id 4A3588E002D; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A7F18E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:56:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42BD91DFCB2
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:56:50 +0000 (UTC)
-X-FDA: 83992636980.14.3964327
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 864D0140003
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:56:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BA3C8E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A476119A59
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:16:56 +0000 (UTC)
+X-FDA: 83992687632.19.1483920
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CB0F34000E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:16:54 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iKslxATp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760350614; a=rsa-sha256;
+	cv=none;
+	b=qO08ufDOpLsEpwcrQNPvuTk2gWFwCKVwL38deS22W136wLi3nl0gOd8IWMgd6YjU543c0o
+	CyX0V8EwkjAHSUd7YLjoGhhS7va+gh4/wbPoKr2UH+1qAEoEsFyKcLlc3LhsTG2xQt/bsK
+	yPCkgXdoNPR6lpw+4iItWUGYUqnzJ44=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iKslxATp;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760349408;
+	s=arc-20220608; t=1760350614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=Jgt1qsOx5yttmdnKF6IeTb4mORWO4/qWaKH5/7C1Opg=;
-	b=cDxrCOFc7zcZNHrnPcCgKITSPQJsMZ1ZO9X7SV1t7UPLyHYQ71PWW0Gp8lx6E4dQ1vBvTd
-	c4+blQrb6nsmgYVagq3PD+Ui5wqglf6dFfKO7BjX7Cvpo4v+aHdOaTw+HWzouNoezjM3di
-	Pvh2kxZpo+eurwwN9a2XK/tGlUiSJ/k=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of chenhuacai@loongson.cn designates 114.242.206.163 as permitted sender) smtp.mailfrom=chenhuacai@loongson.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760349408; a=rsa-sha256;
-	cv=none;
-	b=vt6H7bE4aUE1CWjCZYXEcD75SB9qMa8SHkPZ4GgdKIQqV8N1C0z9YSIfx/twU6GuU++nNi
-	+Z3E1/cy0fv68e4kpEgNVViZ5yc3/37tuu8hhKKSj9KGafdu+dOfc/ldrPvt4TV/PKvM1Q
-	A8asOXbIrZfkZ6agh7LXtZ1qAE9wZT4=
-Received: from loongson.cn (unknown [223.64.68.198])
-	by gateway (Coremail) with SMTP id _____8Axz7_bzOxob4sVAA--.44278S3;
-	Mon, 13 Oct 2025 17:56:43 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.198])
-	by front1 (Coremail) with SMTP id qMiowJDxcMLMzOxoloDdAA--.63721S2;
-	Mon, 13 Oct 2025 17:56:42 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Hannes Reinecke <hare@suse.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH] mm: Remove the BOUNCE config option
-Date: Mon, 13 Oct 2025 17:56:20 +0800
-Message-ID: <20251013095620.1111061-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	 in-reply-to:references:dkim-signature;
+	bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
+	b=1hGOIx33AazWHiOM78u6zpDCfIgycw93uVVOzvmdm2b/eDDiLzMwAjxoqAeIHs/pDCbnW5
+	feRwmC6BDZt4IqXE9GF8AM2IqsKZ/4D2t5o4WfduEeu8+aCsxf68S5wLZ3oVz+DGns/Htx
+	S6bu1jT3XeWgD7rd2wLD9fENF2VwVvE=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-27c369f8986so36995035ad.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760350614; x=1760955414; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
+        b=iKslxATpwk4axW0WfYGaWfsUqLj8+jR9Xfi1F8MZnYwTHExF09gYGNJ8ee3PxIvaWu
+         wzA+5iMW2bXDlqfvstgR7BqHQCl7KDPubE/sElxbs5npfLfdCuEBYJNkDSa5ZGDhsAtU
+         G1CZtAo8Jpm25YUGdIOz6p1AocH/lTcIJ6HM34AWhtDc8QVJ7WSQZ7YhkNH00xNmMXQP
+         oUFZ0NJJyuUKiVHLhPsKS8K8MgLFh2VlZ6RYEUF/P1yjySxqv6lS8BkfFO1Hi83SbA3Y
+         qtkuPEYVGJUna9XzXEAnX9MqM6iSmBg4DYysCbYnHKcCXWh2pCCKsMRQVKFGorHE5pQZ
+         mBWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760350614; x=1760955414;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
+        b=ChV0o3YPyI+dZSmcf5NIeJcGnbyN7FC0bxVJ5c3bqYrNiSWbwU2pKVOACsja0oqvmU
+         R6AYYJbT1pcrBks+s3BRXKK4r8hxhUlbQ4VEh7rjhjZDMDsETw6uFbe7ic4YBK5UbHML
+         sklqCRHZv71ura0FAPx7qdi+RffDg+HXGGP+wqshUoxvHgVhGBhn7W2dnG+Tcx6KodDs
+         6zbw1JKCyoRF+HJgkOdHE6N6X50jUQtZ6WL5/kGGgWfD0WZASTtv/SvE5qEx1B/CfIUM
+         JEe1lJZlcfep1j23CZVxTK9iXD4ywBZ3sLuQuwHvnArKxtssy0VmhqOQONUKkXB89z85
+         33sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVu9xolT4zExmTzm7vU987P00jd4/9H339uK4sbzBGxiyDbdTngOM5zX69MMwpMUiEgg8DP2ctbRg==@kvack.org
+X-Gm-Message-State: AOJu0YySLOR+2Nj+EbIQ9wnQ4lxUpl89ZnDdlWbWlip8Y/UDkIZMo3nZ
+	kk8bJ/22dYAWUZjUBnpzHkdauUnDg8byFsUH1D6ZwwfQKEVQsyUG6w9Y
+X-Gm-Gg: ASbGncvhP5l0UWtvgT2tIMOc6PBq4UPx85cF+cdKfHFHKUcR8yuESVJlSTK65cEWZj5
+	HC1AOpEnIRirvFlPgtPU/7JKKoqRdwylad8GI7MH1pkZm9uoYGAE2oUBur2WnQtEAmTogZdzMx4
+	k/hLsl0vrj0n4RY77QUv7fm+kl8+Pd0FXhsWTZn1rcCYy6rs0qLSeQb08kJgbfl239dnL4GPSwQ
+	XhUbrlGwMVT8e0mUBIQrnGRgclW63HVfJdLGEEmSWKQ3ft4klvR45GjbpQvTHjTJ6Efe1dqXEm2
+	lII7LX40/Q/sTsHFOVD8TqnTtp0PqiK0l4/2RxbWTAFXnvjrXK6hUkzEAdmzqwrquVGWSJm3laR
+	eLKQCT+JTk/NpO4gsVWGH3lYb4jKPUOz8yOZPJv2o8Plyfit/7BWge+t/yT9wArm2hHqNz/b1+u
+	XQo4rhQMa/ApTrOg==
+X-Google-Smtp-Source: AGHT+IFb3Ekfpe+r+fIcV18hbbrZ8FmIGYR048P5P8oY5j/nrUewcp8bX6QuZ1UX5R5SzFd5k4dKnQ==
+X-Received: by 2002:a17:903:138a:b0:268:b8a:5a26 with SMTP id d9443c01a7336-2902741cd15mr272716115ad.54.1760350613434;
+        Mon, 13 Oct 2025 03:16:53 -0700 (PDT)
+Received: from Barrys-MBP.hub ([47.72.128.212])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29040e02648sm95556355ad.116.2025.10.13.03.16.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 13 Oct 2025 03:16:52 -0700 (PDT)
+From: Barry Song <21cnbao@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Barry Song <v-songbaohua@oppo.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Huacai Zhou <zhouhuacai@oppo.com>
+Subject: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+Date: Mon, 13 Oct 2025 18:16:36 +0800
+Message-Id: <20251013101636.69220-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxcMLMzOxoloDdAA--.63721S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrurW3XFy7uFy7WFyrZF1rKrX_yoWfGwb_Ga
-	4v9F18G3W5ArW7C3ZI9rs5Aw4Dt3W8Wa4xK3W8tr4fX342q3Zagw17tFWrZF17Ca4DWrnx
-	Z3y0vryjyryvyosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbzAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
-	oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F4
-	0EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_
-	Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI4
-	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
-	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
-	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20E
-	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
-	AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-UUUUU
-X-Stat-Signature: oyzoiasyao4jkw99h86xck13k7ybsukd
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 864D0140003
-X-HE-Tag: 1760349407-80148
-X-HE-Meta: U2FsdGVkX19Oe1SaC0Nwtyeb5KREAm7i05TN3L2/RRlNkpWpftEdD3ZHNp7Cpza7SsLFIAp9ayyDUHS3LDHywKkWRhxfAFdBVrLMC7aj7jJ7yGKXxfI6hj0TBFbQKjbi9PHKugA1zMtXWNKSJwwQkiwZ8HPCDnetPp+MiI5InEpBvs3EnCLrtjnPpPi5JOqSr4i/Ll3gafmvDT3Y8JD1qKBQnrOR56+z16Wo1QAb5L6H/k4A9AIrZnePiy870EasQKxYvMQAqar3xmu5QZtbKqIZMD2VwA1tEFWtoPn+yphdDLMCEYp/sLr6860S8wSeHOM05y1hP0+FE7uCGt59dvDOeCo9Jpcu2Fg200wrsJYDMwK8yaF53uzDLU/6Ink3v/3Ou5OiQEXpI721B7gu1C9Z9PZGi9uDVBtrUG0e9Orf+pmtaZXk4qhmMQZJw4QQMqTDOse2OQXF8/osYdM0md72VeCZ9yJI+0BHG/vbVPxBaTNXpItfI+K0Asw+lpsQ66ycNcv/1bhspIWz9FzR/slybjKh4GO9tz+gQs2AbenTuTcgjRigTYuH/o9xdskaYogTmrd5Y1cSf015dHbvbbWmcf/p6jQ8kluxB0cVuLnlYHnQjCnFgk+o99rjExE7FgcOSsPyX8rNYnr7hZ8jC4PygRSu/4dU+Wm47+UmqHVwbadc4mAMS+l+KSKLohtHPgbIpJ5TNlydsVaizaev5MCE+oNSxLNp3paX135oJFvhxC4c+ifiu8oRP2fXHQlTrYXONedM3eNbOHjoJ+vKAz02K3v1rx900lhirTddIn/B9cJPJ0mip+VhBWOl+ZPviiat6ifNNuxjsy1FbnmlxTBhsn5ctymnK+zNz0POopbCFlJGT4Vq8wBgTbeWbfi7YZc8Y7Lodw67/HfQBTuq09dt/GY3/o7R8IDXi6NVC3TowUcgUoX5OzM+cBPLwysRvkrDhi/bmIoxV7SlkJQ
- 29g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CB0F34000E
+X-Stat-Signature: p8zdzbk1ayc8ggfocmt5jpcpb7nwnp7z
+X-HE-Tag: 1760350614-210367
+X-HE-Meta: U2FsdGVkX19gZFAEbe2rLFbVhih6uteoJGwtRBf0dwaf4N1NYYuMJOTQklVBmfHhjj2EFPrSHcpez/nTAE0Z74HS6zfqY9HI7tNyojwTFIA69VOi+4hbPf+Fp3UCHZnEruqqmvHUjKdgfsFqRFhwK/q5KjI+E/pM7r2viGl9pF+Nf1jaEPwg7itaP2LCXssFTymu3LPRF7+RNaC282rqrr2eEJ96Z1KUrD4Cc4IS2ti5xn89bbRgWNGn8pek8/3AMJAWJHM1QDcKZ9i7G44MVTCGpFB1G4GUA3ePk2SSUFMPFYbhr57FUNWcwswhBk9+t4Zu7GMvBJZVnrZ4xWTDxoFPwM7OIV3UTQEACKLMXex0CLGOfWIQRi3AuD0tZHLJmoxQQ+McbqYcV+hfGmK3LKHXdTTVwGsbzYSrevDFy44o0xix0PZn2KHE/8aCik0n2krUQuiBRGiUe5AOw5DWsk1ffUsIWKP8+Kdu3WHK7rVNTI5guOPINELlw01hx3kNLZ6ue7aPFQJD+ie2DtDX0IsrONwoz9QBlT99ScJbq4AlkAuuImL8h+l4iogBZ/aoQFqMkkIWnNmCljMVfmgkC4h5bhAUc4Bpr3ISe/9zWiKroXXvNKc8ye//QhLKAj0bJU8gqm00rXAfFtVYiiJt2bRkP0gtMxLvVtUkfAYflg3WeKrJaQpuYEPSIarfPGjyJnPSsPZQcmQIhK6EfWLQsFJOx1GOXfRTr5eu0WgHSX2ta38adP0fgKQB+/bUWaybnwScZ8Os3HWjiseqZyydrOQ/iS8oaQdQ6R1xr3TGowvreIdjSrhGXpjP7nBu5ruoowJQpBdg1fYAN9UZJK69MQyZOtq/eO2hHG/c+N+OyZzXumwjpL7INFDgLTmulZPSMYL58NGru5CtnnJMXTDLWGg/82hWHWXEC+3vy3gbtWd7vec3jSuK/bIr9y7DNWw3PkcOoHwt4whOHB+tPZ+
+ tg8W33//
+ rHwAD1IszlG7s3lhGWa5u/kwpUCoP+pRvL3fpAX1ZjA7rDB/1lhKMUsyQg6CvGa9fw+mtsdi5hAyLi70fNBGebgI3thb8aVxz1WjQ4fpqK4GcPny/cmXZkuOZVXEYYU4RPuxHLPABg+mjv/lf6dDuY+i/3TRlk/c+gHlKoBh79o8OG85UGqz1MI4R5FkAQ/Lap+WY5W6kvG6ZO3I3pd9KRpY+6G4qe9m7h/9ZGDx/RiEV96z1mfalN8GDIehB2Bk+LL1OxA7QO2FPJyGHlIVGRbFXcmKubAa6jRsn8XTbUJoc2PHheGRfxY95o729B7M33ioZU4Og6l8LZeddgPzHE9Cg5WHRVXQCCn6PyaYeewhjh7c6Iav/3MkTO3eJUp9XBVVNefff6ZLJpKPkuL4/DgY88q6M/d8Q2P2+iNRsofiaJDzmNDLuH9hQXK/ugpsaSb9GRP4zKN1B1dfLGB0yrCNE4OkGt0QYNhep57iIxGfrLIxWZ30Lad9zQdB8R+cgOnvLwKY3Ux0RqiTkt11ErTD4Ud8u0LnOTjeOTD04zBcJRm745j/AvRSJ0olGmFi4wApYcSPXXiVzHUeVnS92gsS0F4QhYcfhcBpnZBm3E7qglxVg33zK+ht9BB0kdwr5ilco+l2wNRg/d0gpO3CHMfmRhnyTbxG9zHtLuceB0biN9I+BsjV6xTGej3EA++f7axn/yYXZ1Xs5MMQf74kLDmbtDpc6BA21/abbOaBNbX5jyezhy9A9FPKEVxACVW786HBQa05SDx0CPWI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,36 +134,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit eeadd68e2a5f6bfe0bf10 ("block: remove bounce buffering support")
-remove block/bounce.c but left the BOUNCE config option. Now this option
-has no users, so remove it.
+From: Barry Song <v-songbaohua@oppo.com>
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+On phones, we have observed significant phone heating when running apps
+with high network bandwidth. This is caused by the network stack frequently
+waking kswapd for order-3 allocations. As a result, memory reclamation becomes
+constantly active, even though plenty of memory is still available for network
+allocations which can fall back to order-0.
+
+Commit ce27ec60648d ("net: add high_order_alloc_disable sysctl/static key")
+introduced high_order_alloc_disable for the transmit (TX) path
+(skb_page_frag_refill()) to mitigate some memory reclamation issues,
+allowing the TX path to fall back to order-0 immediately, while leaving the
+receive (RX) path (__page_frag_cache_refill()) unaffected. Users are
+generally unaware of the sysctl and cannot easily adjust it for specific use
+cases. Enabling high_order_alloc_disable also completely disables the
+benefit of order-3 allocations. Additionally, the sysctl does not apply to the
+RX path.
+
+An alternative approach is to disable kswapd for these frequent
+allocations and provide best-effort order-3 service for both TX and RX paths,
+while removing the sysctl entirely.
+
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: Huacai Zhou <zhouhuacai@oppo.com>
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
 ---
- mm/Kconfig | 9 ---------
- 1 file changed, 9 deletions(-)
+ Documentation/admin-guide/sysctl/net.rst | 12 ------------
+ include/net/sock.h                       |  1 -
+ mm/page_frag_cache.c                     |  2 +-
+ net/core/sock.c                          |  8 ++------
+ net/core/sysctl_net_core.c               |  7 -------
+ 5 files changed, 3 insertions(+), 27 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717..e47321051d76 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -695,15 +695,6 @@ config PCP_BATCH_SCALE_MAX
- config PHYS_ADDR_T_64BIT
- 	def_bool 64BIT
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index 2ef50828aff1..b903bbae239c 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -415,18 +415,6 @@ GRO has decided not to coalesce, it is placed on a per-NAPI list. This
+ list is then passed to the stack when the number of segments reaches the
+ gro_normal_batch limit.
  
--config BOUNCE
--	bool "Enable bounce buffers"
--	default y
--	depends on BLOCK && MMU && HIGHMEM
--	help
--	  Enable bounce buffers for devices that cannot access the full range of
--	  memory available to the CPU. Enabled by default when HIGHMEM is
--	  selected, but you may say n to override this.
+-high_order_alloc_disable
+-------------------------
 -
- config MMU_NOTIFIER
- 	bool
- 	select INTERVAL_TREE
+-By default the allocator for page frags tries to use high order pages (order-3
+-on x86). While the default behavior gives good results in most cases, some users
+-might have hit a contention in page allocations/freeing. This was especially
+-true on older kernels (< 5.14) when high-order pages were not stored on per-cpu
+-lists. This allows to opt-in for order-0 allocation instead but is now mostly of
+-historical importance.
+-
+-Default: 0
+-
+ 2. /proc/sys/net/unix - Parameters for Unix domain sockets
+ ----------------------------------------------------------
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60bcb13f045c..62306c1095d5 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -3011,7 +3011,6 @@ extern __u32 sysctl_wmem_default;
+ extern __u32 sysctl_rmem_default;
+ 
+ #define SKB_FRAG_PAGE_ORDER	get_order(32768)
+-DECLARE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
+ 
+ static inline int sk_get_wmem0(const struct sock *sk, const struct proto *proto)
+ {
+diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
+index d2423f30577e..dd36114dd16f 100644
+--- a/mm/page_frag_cache.c
++++ b/mm/page_frag_cache.c
+@@ -54,7 +54,7 @@ static struct page *__page_frag_cache_refill(struct page_frag_cache *nc,
+ 	gfp_t gfp = gfp_mask;
+ 
+ #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
+-	gfp_mask = (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
++	gfp_mask = (gfp_mask & ~__GFP_RECLAIM) |  __GFP_COMP |
+ 		   __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
+ 	page = __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDER,
+ 			     numa_mem_id(), NULL);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index dc03d4b5909a..1fa1e9177d86 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3085,8 +3085,6 @@ static void sk_leave_memory_pressure(struct sock *sk)
+ 	}
+ }
+ 
+-DEFINE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
+-
+ /**
+  * skb_page_frag_refill - check that a page_frag contains enough room
+  * @sz: minimum size of the fragment we want to get
+@@ -3110,10 +3108,8 @@ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
+ 	}
+ 
+ 	pfrag->offset = 0;
+-	if (SKB_FRAG_PAGE_ORDER &&
+-	    !static_branch_unlikely(&net_high_order_alloc_disable_key)) {
+-		/* Avoid direct reclaim but allow kswapd to wake */
+-		pfrag->page = alloc_pages((gfp & ~__GFP_DIRECT_RECLAIM) |
++	if (SKB_FRAG_PAGE_ORDER) {
++		pfrag->page = alloc_pages((gfp & ~__GFP_RECLAIM) |
+ 					  __GFP_COMP | __GFP_NOWARN |
+ 					  __GFP_NORETRY,
+ 					  SKB_FRAG_PAGE_ORDER);
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 8cf04b57ade1..181f6532beb8 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -599,13 +599,6 @@ static struct ctl_table net_core_table[] = {
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_THREE,
+ 	},
+-	{
+-		.procname	= "high_order_alloc_disable",
+-		.data		= &net_high_order_alloc_disable_key.key,
+-		.maxlen         = sizeof(net_high_order_alloc_disable_key),
+-		.mode		= 0644,
+-		.proc_handler	= proc_do_static_key,
+-	},
+ 	{
+ 		.procname	= "gro_normal_batch",
+ 		.data		= &net_hotdata.gro_normal_batch,
 -- 
-2.47.3
+2.39.3 (Apple Git-146)
 
 
