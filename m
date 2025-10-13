@@ -4,137 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA2DCCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 11:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65009CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 11:59:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 895358E0031; Mon, 13 Oct 2025 07:58:24 -0400 (EDT)
+	id A1ED98E0034; Mon, 13 Oct 2025 07:59:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D188E0007; Mon, 13 Oct 2025 07:58:24 -0400 (EDT)
+	id 9CF3A8E0007; Mon, 13 Oct 2025 07:59:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75BB88E0031; Mon, 13 Oct 2025 07:58:24 -0400 (EDT)
+	id 897BB8E0034; Mon, 13 Oct 2025 07:59:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 61E4B8E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:58:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF0C41A03CD
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:58:23 +0000 (UTC)
-X-FDA: 83992943286.22.1557405
+	by kanga.kvack.org (Postfix) with ESMTP id 75CBB8E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:59:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4783913ACC8
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:59:34 +0000 (UTC)
+X-FDA: 83992946268.20.7F8510C
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8CE2A1C0006
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:58:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LHzybpyB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Qgh3oEVH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ME29yvbc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+GQ6nB/u";
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 01ADE180006
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:59:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YMlz/os4";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ETy4GHph;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YMlz/os4";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ETy4GHph;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760356702;
+	s=arc-20220608; t=1760356772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPZNntVP7wQ8uxjyDhXSga5p6bLX+QQQQkULf/eXU6Q=;
-	b=XALHYNJMZgW35rfCKnjj3ATWfXGwItf+eVmE3nkLcWB9fZoq2VOzsH5vhdLIGVZzvR/gVr
-	nyEkOOdWXmZw4Y5Keo1bptY3eopKcgZqTFU1cjexDRpBgK90k9UYjBvlXYk2aX8TMt5niG
-	edIKX/bE4OYSFXg++xpE8GulwCG3bLA=
+	bh=65YchmjaU4/afzOfYncGWxSpSpwMbIPUmdJHCVAQsJ0=;
+	b=cX3uFPxJ1V3GHyu9BX5eMYtel5Nr3SRvIsuAv/+Xc8U7Qnoa4qdgiG/3IKlK99Qfs7aUGW
+	PT7DXNmBYL05FOa/ksLQDvHr5J8RDGqFnthQlbzGPknJP3OLUBlSMXVAafsxyq1YmIyXty
+	lfeGb+OBda9gqSuh7oFDICH1lMZY2Iw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LHzybpyB;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Qgh3oEVH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ME29yvbc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="+GQ6nB/u";
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YMlz/os4";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ETy4GHph;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YMlz/os4";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ETy4GHph;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760356702; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760356772; a=rsa-sha256;
 	cv=none;
-	b=gEeW09XJkQ23kpPTlL6IUPgTQDNPODgPpoH9tpZF5zYbvPKnW6zfQuE8Uv0jlPvzIohBqU
-	MmLyWhdSETaohgF8HcXfSr/+lrZEbWd3QEm5v6DOy3USLbO0ll5C7Vwbcmza+qs4nm3ll/
-	KeGmZdJJhRhi87yCwCejbAJeXeMj88I=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=BzOKviuUdFl8C8EWJCEUp8RngTJG1KP74Lu+oLTnXBiwy8IwB2PPDSXb9l0LQo35TEIEOh
+	5XdrRMY0fog5yZuC4BWEtiNjpW4vKg3yLJD7H9KVromftCPswN2R916x9gdWb1jTCHRL06
+	FYZEwNzsKrR5ea2UbDVIiv3wpr8kRbw=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D99E2219AB;
-	Mon, 13 Oct 2025 11:58:19 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 54C23219BD;
+	Mon, 13 Oct 2025 11:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760356700; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760356770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BPZNntVP7wQ8uxjyDhXSga5p6bLX+QQQQkULf/eXU6Q=;
-	b=LHzybpyB0GLJakHDKi3v7mSUdW9sAkVSckJjEIYU7uionamZ8B8jl1KTbGeKT00iy1lEuI
-	WKI43I0cicxVj/CLUtuUgnH8+OkMsKb5FLUoSmCTkm7TMt+dSjcvbp5TsWFGzuPh567c2G
-	38FD0LDh/nHQBeFHEXPf32xy4RS8GrM=
+	bh=65YchmjaU4/afzOfYncGWxSpSpwMbIPUmdJHCVAQsJ0=;
+	b=YMlz/os4GFl2vtP8mwGeoXm53hLwLCPEJblsob3IQxrWvk+OWwIKLj17v74P4CEvJ/VUe/
+	+HVTKDtjX5NLglP0DFaoInVjGEEXfvUZM+HuS062SmrD9yAkwXMRPnBufJ7/CNHymNduLc
+	l/RKCSzWDL81YSqHCvLNnFErKyCGxBc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760356700;
+	s=susede2_ed25519; t=1760356770;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BPZNntVP7wQ8uxjyDhXSga5p6bLX+QQQQkULf/eXU6Q=;
-	b=Qgh3oEVHWWIesaXhtgPESImlj3Mbme3RyXo8inUKxZESl8DLVG9QTAg2Lti/jFyfIiiau9
-	B2fY66kOepwpv7Cg==
+	bh=65YchmjaU4/afzOfYncGWxSpSpwMbIPUmdJHCVAQsJ0=;
+	b=ETy4GHphA8RJlkrrbZSA96ohF2idrC1LMJa2vT6HKHXqrWGzgPNhdSWb9Hxj2v1fxt4gDY
+	P5DFm6ew9cL4HuDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760356699; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760356770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BPZNntVP7wQ8uxjyDhXSga5p6bLX+QQQQkULf/eXU6Q=;
-	b=ME29yvbcQ/MbJF53rFA6iT5e32yP3OhIHjaDcaOMTyWZug0IIw6GrktxYOOzwhwmM5fvV3
-	nd3sCEW/6Ew1uGaomnCVpxSwK+mYoJmrdqoxHaAiBwEyOjz7ZRKy2dyNZh1KXf3D8oSUzU
-	zLvv73wixItoXsvggoNyAvHt5BKHaDQ=
+	bh=65YchmjaU4/afzOfYncGWxSpSpwMbIPUmdJHCVAQsJ0=;
+	b=YMlz/os4GFl2vtP8mwGeoXm53hLwLCPEJblsob3IQxrWvk+OWwIKLj17v74P4CEvJ/VUe/
+	+HVTKDtjX5NLglP0DFaoInVjGEEXfvUZM+HuS062SmrD9yAkwXMRPnBufJ7/CNHymNduLc
+	l/RKCSzWDL81YSqHCvLNnFErKyCGxBc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760356699;
+	s=susede2_ed25519; t=1760356770;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BPZNntVP7wQ8uxjyDhXSga5p6bLX+QQQQkULf/eXU6Q=;
-	b=+GQ6nB/uGXVIcxmT+F8khHkzFYthRB5g+YdjO+rW4+iS7ALtG00KT8SsjWel7sDbDJ1Yih
-	7Mnz5AnHeYOb11Cw==
+	bh=65YchmjaU4/afzOfYncGWxSpSpwMbIPUmdJHCVAQsJ0=;
+	b=ETy4GHphA8RJlkrrbZSA96ohF2idrC1LMJa2vT6HKHXqrWGzgPNhdSWb9Hxj2v1fxt4gDY
+	P5DFm6ew9cL4HuDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C6F3213874;
-	Mon, 13 Oct 2025 11:58:19 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4827E13874;
+	Mon, 13 Oct 2025 11:59:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zHCMMFvp7GgCAgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 13 Oct 2025 11:58:19 +0000
+	id OmSbEaLp7Gj9AgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 13 Oct 2025 11:59:30 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 72419A0A58; Mon, 13 Oct 2025 13:58:15 +0200 (CEST)
-Date: Mon, 13 Oct 2025 13:58:15 +0200
+	id E4B13A0A58; Mon, 13 Oct 2025 13:59:21 +0200 (CEST)
+Date: Mon, 13 Oct 2025 13:59:21 +0200
 From: Jan Kara <jack@suse.cz>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, 
-	linux-block@vger.kernel.org, v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 06/10] mm,btrfs: add a filemap_fdatawrite_kick_nr helper
-Message-ID: <4bcpiwrhbrraau7nlp6mxbffprtnlv3piqyn7xkm7j2txxqlmn@3knyilc526ts>
+To: Christoph Hellwig <hch@lst.de>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 07/10] mm: remove __filemap_fdatawrite
+Message-ID: <t4y7xtgfnzfpfupnb7on33n6qzrfxfphsm2hqsa5rx4liqvvbc@wwj7ckhyilpo>
 References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-7-hch@lst.de>
- <74593bac-929b-4496-80e0-43d0f54d6b4c@kernel.org>
+ <20251013025808.4111128-8-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <74593bac-929b-4496-80e0-43d0f54d6b4c@kernel.org>
-X-Rspamd-Queue-Id: 8CE2A1C0006
-X-Rspamd-Server: rspam11
+In-Reply-To: <20251013025808.4111128-8-hch@lst.de>
+X-Rspamd-Action: no action
+X-Stat-Signature: qrsf5z834f1wpxuxia7pgucdreeczimf
 X-Rspam-User: 
-X-Stat-Signature: u9u4rgzu7xpptji85wfpa5f4tzbq1q1g
-X-HE-Tag: 1760356701-693163
-X-HE-Meta: U2FsdGVkX199GmKPJLdbGlEPi40NHy0BYwq0uOwLQUwMDCVgV0/DC5oSUuaDJLIirTmUrjsd35pg0gQlIF3m7r4tesQrPyGbEuH8XA2tZU5BzL+z74R9y3Crk20jGrql08xFfTvNmU7hgEPhylGg4tGlSwlqsLVAVmpfpt2d5Y3hB9ADzG3JzI1Iy+lOTucGMORYEhTDKw5bzQfKF/6AIt+49cl9Z6cRgjMAIc/UlqfdJn3uZg5PXTpGDZ4bEuZCUA5ta/RbF9UNt95Fb14VaHWVMBVqr1v1ZL8L+P+sidR4x+s4DiyIgBUawABXyhgD87uxFx68TRkj5icjewshpy9gCrNQTdc00PtJVzIrtAAiWZlZxUh+iW8BMHjw5u3mf1kJc0tBcRgiso91w4bsGIwApefIw9hnTHwM8Nd8OpoKgwKpYEYkf3Ly25/Z3IdHGw1+RZ17OVxPgiMiPTpYkpthui2NvJDusbNmk0tt9x5MwdvZji9AQ51IWyGGfJIFULnjdE5IWYOCK2Bwd2kW6GNScNH6l/xIj1Mzoq9q+3jJAZJrWwZSpHRaxm0B0/3VlFx3KkrIRwYVY/5AzHeSW8jruAmLQLEkPu70kz9hn2zl4/fCL+bTDKg5Rfym+XkSSlP7vK6Pk+5ZeWTTnqFY/KPtczxiUeLs84fXvHz8irIiyglWNXVWt9OHuqJZ5YCJz9ewd8W4Q5XtJUNvco9dPBtqa6rC0x3eQiKCdNv6Sjd8g0OF7dEPIa4/LckWVpuOpLID60u7flOsCYWt8VBxyhckPL63lh4nu9Zjv4mRoAIlBR4Xym0TcC++uH9+8GxJ9j95lXOlSTq36Wf6x2DflgzvcoQkDanhZew5VRBd8LgJPGrmChd8tPGdRMyX247mqRD6xFn0ptrJ+L6+5scIg7F5+mSqY+e7ZwNB5/Ay60byM5hWGmddrEzNbCMKYnQ0y62fY1AsRSnvIRMwfru
- kUYUXxXK
- ihVQseygcC8jIQDidroabD2UpsYTZRPh7YvkgD965YWRjNiyAKwrjqs1zzJF4lKOFegdJf1fi55hoGiFYSV/huWSBV1B9zf3GHle3WtsTFehKujvxHYxFHCkNG76A0ofXgLUi+hmvWzrJ+XJVzwbS/i1I6cs9hF2OCZrBLBRpR/1FWDbSoSRxcoxOMZ+FXM1Qvy33eHlb/UlU1CXYiEQgZoXD2D3X3QOIhM2MBRT+qPN+Oq30E0joywyBIcTH03A/HTUKuZBoFjJn0OkG/G8TPVJZVheI6p58s+1r140sUrIbb9Io9/s8d/W/CiEaaS2shixv9blXf/AnOx33hfk4CyrrVH+3Uyr353XhonTU6sHy+Eq+SgQ/5hsddZCqmcuEyBc8MW15HfybPOji3sRiRAA5270lIVudFgGX
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 01ADE180006
+X-HE-Tag: 1760356771-187872
+X-HE-Meta: U2FsdGVkX1+aCVMeKDli+u6u/NQxY79x/bfDJ4pHLm96K7VXfKb+U8FUW+RJ1bMlbFb8w8c1UJ8R67GNGGgxFAo+1v2hNMpP0Uo8p6dADYyabPA3HYWusaxFcPzrSaeaUhB1sphz7iZe6k2nKjtfza5Wup+FvHch4IDfGhdY8OKSqPz+vN6yQq+O/iEsXsi4tRG53GlCe8GtfD+Mcy5V1unbJdpnLqdtID+uoCtXRBHb8NZESjAPhpWiGC2PJTj7+0inkgWPxdFPBxI9N7NAP5kNTHJXRewOyeO5SRxXMcs0QkJxsNjIoS+LGyY4k+t1WbvobX0KcMXA+eNbcAXQfi8ck3w2Am6fUs+9pH6QILnpXNq25tUSKmCc26nRvkK186C/v93joxwcLcbuYm5GVSo6LSexfw2mUg1xOT2tvil6wlHX3YrF3h5vhDR/NlsGBsBb+b9TiJq4qce8v110vRz6y3iv8J5On/ca8s9RZNJ2ZnPeoeYfbCvHyGP3mBmpGrpacw7s4aLpL1IL/B6CVd04yQChPZRsWAmLKc3gX4TIWKY5ei9YHrkgqEBJcQ6v1UwVI3dg3/ptZCIJil9ct2wXnSoZ0K/oDKMwm95lF+FLgBfa/HqsPSUbYy3S/Pmp3YmyqibOA7qM54NvkSTUpvUujeJSMutN/FDOdM7gQBfhhzghNU2urIPphiCy7xOEj/CWfP/fp429+HsgrJqILzA2ssnwrZvMPStKIiFIOxFhxrbfaz/yRPWU4/QN0C+qNSo4a/QezjRyH1aMYcDcgKL0mArDThR2NGjAduotuja2fDvmv9D/qFwMIVovfnAiaavgqM1qU5L91OKt8tfcTPrcKxZtoKGejusab2McOQVxQNJEVbXWjbm9WDnZNKuVJl6SiU/rjYG5nm1jZ1E8Nd8+iKW/Vefcg2oVwpjtQW3F8oBlQi1ekFwOFn8bJsqwKEJ9VxZCsLflMosmZzY
+ B7HJo789
+ VJ9pz7Caq/eCe+ANPjDJ+pdkE3L8azEwyFnvBM8LS50jDP9qeDCKyuEfwHud7TlaXGRrNrK/TBaa4S699PdooIYCUcLULf9aA16QHtHZ8y5bF7l5v4E9M26PNH1XuQxCtJcQHelrpPDWOA+If96HlREbDP5FzIDsCvph8KueT7oEAwbqjOW96G93hXIjoFta40kI7GKlHgYKuc0Jk8vY19o691UwDpCOEa8BSYYE92drv5XPIda3344k/Pyy9AiFOf2iMhEYfTUdA4wfKhcwzABacXp6y6G/Q8S7XC94p+q1XNzCI6ejd65pWJlA/yOFLeUFocx111anbffS7jD1vlv8SSaEmJUzeQk9cXk9120dJGb+AM2Gmfi2PVdJUDVm+PeVLmCZspPjnnLo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,38 +142,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 13-10-25 17:01:01, Damien Le Moal wrote:
-> On 2025/10/13 11:58, Christoph Hellwig wrote:
-> > Abstract out the btrfs-specific behavior of kicking off I/O on a number
-> > of pages on an address_space into a well-defined helper.
-> > 
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Mon 13-10-25 11:58:02, Christoph Hellwig wrote:
+> And rewrite filemap_fdatawrite to use filemap_fdatawrite_range instead
+> to have a simpler call chain.
 > 
-> One nit below.
-> 
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-> 
-> 
-> > +/*
-> > + * Start writeback on @nr_to_write pages from @mapping.  No one but the existing
-> > + * btrfs caller should be using this.  Talk to linux-mm if you think adding a
-> > + * new caller is a good idea.
-> > + */
-> > +int filemap_fdatawrite_kick_nr(struct address_space *mapping, long *nr_to_write)
-> 
-> Not a huge fan of this name. Maybe filemap_fdatawrite_nrpages() ?
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-I don't love filemap_fdatawrite_kick_nr() either. Your
-filemap_fdatawrite_nrpages() is better but so far we had the distinction
-that filemap_fdatawrite* is for data integrity writeback and filemap_flush
-is for memory cleaning writeback. And in some places this is important
-distinction which I'd like to keep obvious in the naming. So I'd prefer
-something like filemap_flush_nrpages() (to stay consistent with previous
-naming) or if Christoph doesn't like flush (as that's kind of overloaded
-word) we could have filemap_writeback_nrpages().
+...
+
+>  int filemap_fdatawrite(struct address_space *mapping)
+>  {
+> -	return __filemap_fdatawrite(mapping, WB_SYNC_ALL);
+> +	return filemap_fdatawrite_range(mapping, 0, LONG_MAX);
+
+As Damien pointed out, here should be LLONG_MAX.
+
+
+> @@ -470,7 +464,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
+>   */
+>  int filemap_flush(struct address_space *mapping)
+>  {
+> -	return __filemap_fdatawrite(mapping, WB_SYNC_NONE);
+> +	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
+>  }
+>  EXPORT_SYMBOL(filemap_flush);
+
+filemap_fdatawrite_range_kick() doesn't exist at this point in the series.
 
 								Honza
-
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
