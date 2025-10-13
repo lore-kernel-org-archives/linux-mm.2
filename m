@@ -4,106 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 703EECCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 12:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC999CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 12:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F60C8E001D; Mon, 13 Oct 2025 08:31:44 -0400 (EDT)
+	id E65A08E0024; Mon, 13 Oct 2025 08:33:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F468E000F; Mon, 13 Oct 2025 08:31:44 -0400 (EDT)
+	id E3D968E000F; Mon, 13 Oct 2025 08:33:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 846568E001D; Mon, 13 Oct 2025 08:31:44 -0400 (EDT)
+	id D2BF88E0024; Mon, 13 Oct 2025 08:33:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AB3C8E000F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:31:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 041CB1DFF65
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:31:43 +0000 (UTC)
-X-FDA: 83993027328.21.D38F539
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BBF7D8E000F
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:33:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 53DEF58C3B
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:33:34 +0000 (UTC)
+X-FDA: 83993031948.06.1AAB9A7
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7546C1C000B
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:31:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PmUtwIGL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760358701; a=rsa-sha256;
-	cv=none;
-	b=KmDwplRqa7L5QULGzqAqzixapXwS/B7Gi38f3OL0pGWPrv5yklnghK3t/Cbt0ImoVS6GsV
-	07ZrnvE5ju9bSq19uNUScbVhgQLfj/BaFPOSDDh1GVg8TBpTI4KJCoo7WEt+ra+/Gu7DM9
-	BkOVPVEvjNwK3Gz/tQcm5JYrBf4NQmw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PmUtwIGL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id BFDB718000C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:33:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="GjuyoV/r";
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760358701;
+	s=arc-20220608; t=1760358812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dwWTFnY01JMgC2QZA9VOzV/hbuJXScWrhj4pWb1ZI0=;
-	b=LZRHDhS/gnBiJEiCWxRA7O4hOnn0wKt5lyFrMs59k3RUVLhNKm+NPVEXmAl0YNnXzABf00
-	v5I4Ij/cxfwsKnGHu3IVgn6atMdllfo2OdAplSKDPTTVchqwX8NeHr6pjsjXZ99llRqqaa
-	Zu2PUjOagHUHmgLyeFQEb/8mSdeAvSI=
+	bh=fApsPT1dPlpmvqc8msb+pA7TEomWXHbI3o8FT9ZOyio=;
+	b=RDMueD6I4xH1nrC2LQw0OzfdJ9zr79/M77Oi/LZyH1OIlNVjtXvLnzAvLf/8hTCWsMxCh1
+	/ZZhw7QHO/AqU3M+HyJuwcVnJ5BfyiJRQv77WHqZqvNWO9wSjIr2n3bY80KwRDgYFlpQ13
+	aDDpXU1ccU4tKejvDZAjv54ITuuMO6w=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="GjuyoV/r";
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760358812; a=rsa-sha256;
+	cv=none;
+	b=cK0Wn73SpkFM4ztctoyczp9/Y7sMlDXtDDoi7O42otOsyo05MdgOo40/cQckGZq4ZVoOpf
+	zNJxjxAhMUy3U0qU6hkAwcqrJY8bmh/EZXUBi1xDKdTL8D6765GypgkhCp/xU1LM/7D6UC
+	4/GAxIp5fQhFMBUVBogQyUC+Rl7m7Ko=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760358700;
+	s=mimecast20190719; t=1760358811;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8dwWTFnY01JMgC2QZA9VOzV/hbuJXScWrhj4pWb1ZI0=;
-	b=PmUtwIGLpsjt9z3MBu1HAdX8IR4UPN5deiemhTwfNw0z7NJxo/+PwmyNea/1JeohpccF8B
-	b4nV09ruDBvy3Q6372g4rGiZ+bK4RU3qHfAao3+3nkn5XvQDq5zufygBEwSsa+/5+o5ZLQ
-	lgIDNlFCiUk0U6GQ1bEAnEDmFzZXa4w=
+	bh=fApsPT1dPlpmvqc8msb+pA7TEomWXHbI3o8FT9ZOyio=;
+	b=GjuyoV/rS1ztXHG8riq0yMx45bhLEgpSizZiccSLaoUeW2OP5UXzTSIlmynpGONhhGW2wJ
+	ufb2JjJxNy1+iuCoA7+USJYks6pBn9gGyYtYa64wDxJybsGPOUCTC+qeQWELgp61hWmcpj
+	Cl7/okj236P3UXVXDlaPn+7P5AWYNm4=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-otMJhu1mMkSrQybzsX6gHA-1; Mon, 13 Oct 2025 08:31:39 -0400
-X-MC-Unique: otMJhu1mMkSrQybzsX6gHA-1
-X-Mimecast-MFC-AGG-ID: otMJhu1mMkSrQybzsX6gHA_1760358698
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ee10a24246so3688987f8f.3
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:31:39 -0700 (PDT)
+ us-mta-455-kwE3mAEpNDGgiXzHLVEOMw-1; Mon, 13 Oct 2025 08:33:30 -0400
+X-MC-Unique: kwE3mAEpNDGgiXzHLVEOMw-1
+X-Mimecast-MFC-AGG-ID: kwE3mAEpNDGgiXzHLVEOMw_1760358809
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3efe4fcc9ccso3743476f8f.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:33:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760358698; x=1760963498;
+        d=1e100.net; s=20230601; t=1760358809; x=1760963609;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8dwWTFnY01JMgC2QZA9VOzV/hbuJXScWrhj4pWb1ZI0=;
-        b=f+Pvuo2tx8LqCeY69aNmi076cfDd1SQE2gfsUHx0sRv66twY2O3zBJ6XxOKH70IBha
-         JFMGFVM5TJHNGD5l/uepHeQ37d7wv7NKnO9SwTlBYA8d/MUepsqyN1ivV+GKVDajuNJ4
-         g5USECMM65nIY8EBGCYn+I4Ng4mUq7PpIaweQqNFI0IH8ST3RaUzU9xOLIDiAh8bd1Tf
-         e9rmSx6LRc6wP8RRQTh4aoZvhvnkYfxxUIQg7JeqQKSGt4FAobR+rOTuDi+U88D0FWzO
-         fDxh9HXLBfY5JlHTife2NobNdR+/CBySPe26udB9X3py1CqKsg5s+7+wxl0HwJUQHzOF
-         unDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfsEDQ2LA2NEYOdj100JP6At2nN4wJ1KnrZzMqZe/IndpTa7uypQuIN9v+gRK6dUe4Df++jEO0oA==@kvack.org
-X-Gm-Message-State: AOJu0Yy2Y9Wn4I8NbK4cyk0YLzRM8clkguhFolfFde+et10bgOhpSI9Z
-	OBaa/RbyYedGVbkv2OIDjHE4/E0DDngyAmgi73zYZCi9PqOroanU/OcGkSNOn7YqqMLMosItxka
-	PdMQS/93C5KsdamAm1xdVjEc7dNTZ38QW2iA4PXQojoTwWVRYBPfI
-X-Gm-Gg: ASbGnct5XeIH0VtkEdCkRRw2GEB38u72+y67VRdXUB3obDgxsI1a4HCPQyLqpF2aj2i
-	0DdoZrp+F+xn9yC9LtqFLyozi/JW+BqzN4/FnHj5u2PJuJ6x7OZeZyue7J7XRkkmB8g8CfoA2nQ
-	f5rF7dEB5yfXxRGE7LtcjEYNROZC5qufB3FkkwCK4W7hKwGBP5vnxO54NS7n/wC6a3ufoq4QIvE
-	Ht+Om+sZ1DmNOFBR244DEjy2GQIuEi01MMTz99CXRHHQ93mqYmqKVcNJMNb80nJnK9SWHGYE3xG
-	02/4z3MU+bgXpyxgPu4cw8baNNwrvfv7FKZdsjK5FAUF3qlYX/GDb2zspABlld1bZBV13smxREB
-	b6fE=
-X-Received: by 2002:a05:6000:25c6:b0:3fa:5925:4b11 with SMTP id ffacd0b85a97d-4266e8dd4a0mr13112714f8f.42.1760358698310;
-        Mon, 13 Oct 2025 05:31:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+rKhnncBM0Pv8kGyJiO+9pTdjKjpw6DAdSdAl+kaHZP46I4ToxAgGKi/qAMrrlAgZkXO50w==
-X-Received: by 2002:a05:6000:25c6:b0:3fa:5925:4b11 with SMTP id ffacd0b85a97d-4266e8dd4a0mr13112679f8f.42.1760358697872;
-        Mon, 13 Oct 2025 05:31:37 -0700 (PDT)
+        bh=fApsPT1dPlpmvqc8msb+pA7TEomWXHbI3o8FT9ZOyio=;
+        b=KyXAmCPM421tk0QARRsbkHArp0CprylDZEFMQfN9RFom7jBTL9QRKleVBbA1vqn7ts
+         MWIwOK3fkHn8d/wGeduVe0QHjTd3hP9YnYQACTT+3bOlJba/qqPowlfcbgh/DMUzTW9x
+         fkxfyFCHOtfQ77u9NVO1vm6ST7iEHCkIhsYr2ubeHLToPCxGPbPtOBzIniy7byZLo8Wv
+         deEJmjWXh6dfQ+Zr68EZIQYMZKY8GADNmyLme58sHUGc0MYoVBaBwUFD+iXBYS6E2z3Q
+         MGUnlaXbQSn5tnETyoEJq+rcr2cTfccjP+JMipY5gjpqZeOMJpSRJ3LKyquze0wNKzOq
+         4euA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZZbqNEmzykem6ReH4D3UY3Bbu5sGVygqN09g4zV3sqmC6mSwDhiQjCmTN44poZCpr7wUZkeDu6g==@kvack.org
+X-Gm-Message-State: AOJu0YzJm0a5YOJ/CldO18GTvz/7cuEJ3ErZq0tVe5HrQDQnFJnNJngb
+	JoSJGUmxFJbMOhfDRdwKeWnVjpIYEeJf1Y//72ErFPHdR8+IOyq7W/8sKYO83CQYa+8xMkSzLJh
+	PQvy925yNx+bJwrGyMPfnhOfxYovWVdq+w+NrAcn+5yAB7lDFS1Bf
+X-Gm-Gg: ASbGncv5rJn10iP1fwCZ9Qj3KkMA2/EZEuWihEIAvIUc+suEJwspxOXiVzcRLy2xvVT
+	66v25DHUUBeDyvAsBLA2RCDqWkNjA1CVjnLouk0zWOxsp7TZC3J0u9dFT/sSNEnechWmfhNHuAL
+	A+Ert6cCfaHG73nesPI4Awvwv+xsv5Pa7DLIJ5sXt9m2APDqypKd5EvxP53Lx5ACdCPsoQ8KQbL
+	CTp7zCE928pJmfXvoh/Wz/is33aZwN3aybW8NZOCyaIYbVq/n+slQmb9y+7CviBzw32DTG2ZsW4
+	0f6eRIjjafCNHj+IgeHdI0tokWdCUDpaTVtcVjRYA7mMjiSGLsxftvQjjJQbx+++MU2MQzyvFOk
+	6gQc=
+X-Received: by 2002:a05:600c:4fc9:b0:46c:7097:6363 with SMTP id 5b1f17b1804b1-46fa9aa4620mr127201425e9.13.1760358808749;
+        Mon, 13 Oct 2025 05:33:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0Cy6D/fWcdLGA3C5eSuXIxdOew7wbjd/FaVN1XfyGX/j8J8IUQpx5X5iCUYz9ws1sa5Xdig==
+X-Received: by 2002:a05:600c:4fc9:b0:46c:7097:6363 with SMTP id 5b1f17b1804b1-46fa9aa4620mr127201155e9.13.1760358808341;
+        Mon, 13 Oct 2025 05:33:28 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e1284sm18037134f8f.45.2025.10.13.05.31.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb492e6ddsm204393555e9.0.2025.10.13.05.33.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 05:31:37 -0700 (PDT)
-Message-ID: <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
-Date: Mon, 13 Oct 2025 14:31:35 +0200
+        Mon, 13 Oct 2025 05:33:27 -0700 (PDT)
+Message-ID: <de914c89-921e-4e75-abb9-315d3def1cff@redhat.com>
+Date: Mon, 13 Oct 2025 14:33:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC RFC PATCH] mm: convert VM flags from macros to enum
+From: David Hildenbrand <david@redhat.com>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
  Ye Liu <liuye@kylinos.cn>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -114,7 +115,7 @@ References: <20251011093054.886460-1-ye.liu@linux.dev>
  <809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local>
  <7ca0960f-9d1a-4ba4-b074-a6502578b82e@redhat.com>
  <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
+ <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -159,21 +160,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
+In-Reply-To: <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hOpCD_w-AHlJTaKlZeqbvpn6Gt8BhovuAQ2LqIDaD8o_1760358698
+X-Mimecast-MFC-PROC-ID: AGfkxQLGpeFDnZnEEaNhUd_4jBlDSTEkkJaxlxMzWpM_1760358809
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BFDB718000C
+X-Stat-Signature: gzxpw89or3pyg93hsejeqm7nzcjqib7x
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7546C1C000B
-X-Stat-Signature: y1yqsc13xfdkwtqqgew3it7zxcn3t89p
-X-HE-Tag: 1760358701-15269
-X-HE-Meta: U2FsdGVkX18fuEgAApv0BxBDczjwgmTvls+ydbxL9fm79hPi8wFqaXg0zTKMnifQuKHrdjurJyK8s7hKTE/oq47Z+EQtk/5QESpeXVX1Lr3IVqh7G0jgsoaWDWufsGOeuKTPxBClPr+bfn2KKpxPq10/c8zhIDplMbgz41t6NSSRQ58FF8lxhn+Yo6BcaD5kAuCxH60bvcZoZ2sH+Uhf2cM8AZ4qOWOjVm++q+cEFzCVO2gw5GHsI3uAuu8v9Kzj3KAMMhyhHFKaUlv4ECxlVbCCMnCUEcX3qUigNTNjI0i5F6bN9yBs4upbKGr7xGPJn2hO4JtuQTHfcK8jNCXdFIyfqnZY06YVIoU4URu8Tsnj8IGTY3X5fUFbxpn53BaW9s1BDyD83kVAsyW7TLGeO4PG8Wz9sGKmhsxu+e5agxZwAxX58pNAm0ulcyA+VQa0AE2Cj0Pb3uQ6z/A4A1eHkUpBWFf9GknqDvXyxHz8zmztS+M/t8goIe0wc+aOmZBMAeDyW6Z/Cmr5SjC6uDbo/qvGLNiHC4JRgXOFhKYcYCbpEsHYNpQswDlCyDcZgTFaV3gXLKjeGfl1grohtRLSMphKNBYasWCCk8H7MVr7IQBbSQjT//6czaHclHMmQ3A/0OfSev4M+fYUUNqXfLevtuO34tjrCkps5G9+uhqhyP5Tro4gfzhkvhPozMWK8LesqO2OGea5cJxCrFaGGrstEgP+sJc8Unpi4hhCm3Ggd1M5Guq88eGTbwO+NTjDC0Tq7/SkiB+Slj9dkSK8+IdIcFfeslAI0RKmZHgPZMYG1O2dBf9KGM4ZW+tSub3DQbsP0yslk4vgJ9Uu3mDzMlYNGUC0Z/2G0+Iz2kNft8X5k651eoxvoAh3N6DOVlJsjR14JbmzOVIp00XTFeILvyHZSit7q/TBThkA7fl335avppUfndtwDBsiznWFfSvUTlEKaLYWkYZ3UxZHSk5s5+B
- gSd8W0ld
- ZJl/a40GGUzunSaRmffLkcWGSopUtY6K3W0+zh6GKhrp/B+Zl905wm5GqEF1VRxS2BTicstrAmuc1XlrUvCJbpi7zU6mBZmkQuI5ZxhITquaR6JdU0CaB2dLd66NFMqGos62myBe9vbj2KGzWpO5hF9L7eHLCkBLCs/TqcuTCzmOIoJGVo65VczW+z8toZFCsRa9UlL8JO7QWFqEB8RuMUMezYBUvshPKvNd0oWfAPzoT0eQeGeqSpLuu2R2L7oWT6XQElvbajXPcUln8dtpkzC8ccS5gqR92ZSIeOQGDne/IITU0KnV5SutcJYSwKD5vvO8OW0veS2eoAimif2m9kjJ6TOB4N+D6iUCcas7IrHQGU4Lu4xHxL3MZAmiOqTvOe0UP9REO94flACJN4Pbd2dDNp4ApzXjGLe57nHoVF+TernbRBl9zt5IMlxYSEIlGC4agu8AfmZ3mDNIhkRr6Wva9pXXIWOxZBzXH
+X-HE-Tag: 1760358811-508707
+X-HE-Meta: U2FsdGVkX19u835bFgKIHotZ70eepVZKE0GLfDjBZyFKWGmy2pnNtv8x6uJwz9Tz7Qg1TgVd2YIdklllhejwUw5SqY4c7aHrEvkwWfCG/gUPisTnrsxV8ijKumW4JxYqoU7frSmyhqps33bGUZu4Va6jv3lr5sqsRNIxPJj75S11U3AcvejekabkTBusoMdOnSoAhVuu4LzXhT8ivwXPBhCFfVmTjUWqPH7MgOEmTU3zzlN9yZk4xM0ANvtdm3ulybFLo3IbwsJPyseLUG1nMciH9s6xJ7kUJCGCZ1WPLcCo+up0/1De3d7wN4yEde1YyOsCIHT5zpXHkopOWQbNHtq8EVeIwb0T0GLPbrxK2bqez/ehxF708K4RmH0HR3LOom9FO/UP4HKtgvN2DzKPpHxzcrVyume5K5+tNYHA2mY/DgnqqYpcWqK17hpeSQFm+FnTXWa7ULV3/REozWw1DllSIa6aHfBbHNoGB68rG/xQCtmkNEN3hocFRTLIvh05HqcFrEuGgbixAMx7KkhcdGDvyg7DDB0PY5KD3UZjZXJ4iMcT4HfcmPzyuYOWg0wo+pPLNLtSKbUW/wHUy+4uDAfw0+yp02A/V2J0CFWBjmWoryarETKVprdgii4VCwke05gmjOAKxclv39tIwiSe7z1zTZxfehB1QPOGZbkwoDbZ6+bD0mAJnyvqlXQh11ANaNZMxh0fYKcpodHWimvG3CzEIvL81lUQS7zJdCWkQauCV+bxxJNL2spUa2bAD54vN7I7lkybiBCBdEvEw7HtPz/YoY7mnhBQmatwIKz/HtMxqOpvCbW8ffMsAOYkN6r4/Z7JvNJh+JBsFJizomOX8YTfLS1UjHEg7FQpaZzj91S7dgYblCf/iEkM4l9hdLBxuCHm914PHuoRjR2WR2f9Lfmu1tWJnlohCWRu0rrSYMyDxO2Cm7fm24e4q0FTr0KPdFUhNg71w85Lejlbt2k
+ EKcFXpFq
+ UgPFzmNr0Fmbbped0P8h6XLbKkmDDVQR3Ue73Ufaa27YCN597/mnEiMWySyElqdnpkppLsbaumP8PvI1zDEvoix6WYyLCDd5XWGbClV1s9eXpOEYxqatgqXIo6D6c64f0ZvpFSz6W1dpXtvZg+AXANd+HM5FM3swv2grbNHkhbYF6r7Ec+FKYndSk0nBT0iOhAYT02XNGADL6Knc8HGYxvtfPRixV8rWLAw0xkdCmFBzAAB2Xx0ilsYP8fZr5orSX3RsInu4v7x2cFr67tPDIEwaqGl0rz+gkPT77SlEkoOXWj6bYcuednjQ25LSop4XOhMuH6uZ+UeMIVb9VEcnyew7Fj/Ky5iHaj9fUaaPZIvFmTje2M890f9Sxkl51cVOG27rIWWqyC/GmhzqsU5PtHY5cAljWzrm7vJ413ndJlQiwFyuLobz3e3PRVY06gGeM3Ven3ocSNjn3Ij0D2wMlk6K+63XzQPzEnANN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,45 +183,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13.10.25 13:33, Lorenzo Stoakes wrote:
-> On Mon, Oct 13, 2025 at 01:12:20PM +0200, David Hildenbrand wrote:
->> On 13.10.25 13:04, Lorenzo Stoakes wrote:
->>> On Sat, Oct 11, 2025 at 05:30:52PM +0800, Ye Liu wrote:
->>>> From: Ye Liu <liuye@kylinos.cn>
+On 13.10.25 14:31, David Hildenbrand wrote:
+> On 13.10.25 13:33, Lorenzo Stoakes wrote:
+>> On Mon, Oct 13, 2025 at 01:12:20PM +0200, David Hildenbrand wrote:
+>>> On 13.10.25 13:04, Lorenzo Stoakes wrote:
+>>>> On Sat, Oct 11, 2025 at 05:30:52PM +0800, Ye Liu wrote:
+>>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>>
+>>>>> Hello MM maintainers and drgn community,
+>>>>>
+>>>>> This RFC proposes to convert VM_* flags from #define macros to enum
+>>>>> vm_flags. The motivation comes from recent drgn development where we
+>>>>> encountered difficulties in implementing VM flag parsing due to the
+>>>>> current macro-based approach.
 >>>>
->>>> Hello MM maintainers and drgn community,
->>>>
->>>> This RFC proposes to convert VM_* flags from #define macros to enum
->>>> vm_flags. The motivation comes from recent drgn development where we
->>>> encountered difficulties in implementing VM flag parsing due to the
->>>> current macro-based approach.
+>>>> This isn't going to work sorry, it's not valid to have flag values as an enum
 >>>
->>> This isn't going to work sorry, it's not valid to have flag values as an enum
+>>> I don't follow, can you elaborate? IIRC, the compiler will use an integer
+>>> type to back the enum that will fit all values.
 >>
->> I don't follow, can you elaborate? IIRC, the compiler will use an integer
->> type to back the enum that will fit all values.
+>> switch (flags) {
+>> 	case VAL1:
+>> 	case VAL2:
+>> 	etc.
+>> }
+>>
+>> Is broken (compiler will say you cover all cases when you don't...)
 > 
-> switch (flags) {
-> 	case VAL1:
-> 	case VAL2:
-> 	etc.
-> }
+> I assume you mean theoretically, because there is no such code, right?
 > 
-> Is broken (compiler will say you cover all cases when you don't...)
-
-I assume you mean theoretically, because there is no such code, right?
-
+>>
+>> An enum implies independent values that exhaustively describe all state, however
+>> these flag values are not that - they're intended to be bit fields.
+>>
 > 
-> An enum implies independent values that exhaustively describe all state, however
-> these flag values are not that - they're intended to be bit fields.
+> Observe how we use an enum for FOLL_* flags, vm_fault_reason, fault_flag
+> and probably other things.
 > 
+> But more importantly,
+> 
+> enum pageflags { ... :)
 
-Observe how we use an enum for FOLL_* flags, vm_fault_reason, fault_flag 
-and probably other things.
-
-But more importantly,
-
-enum pageflags { ... :)
+Okay, that one is different, because it's the actual bit numbers today.
 
 -- 
 Cheers
