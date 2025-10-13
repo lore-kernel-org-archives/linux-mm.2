@@ -4,128 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0DBCCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 10:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344D9CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 10:18:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6795B8E002D; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
+	id 78FDA8E002E; Mon, 13 Oct 2025 06:18:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602D98E0007; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
+	id 73FEF8E0007; Mon, 13 Oct 2025 06:18:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3588E002D; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
+	id 5E1468E002E; Mon, 13 Oct 2025 06:18:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BA3C8E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:16:57 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A476119A59
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:16:56 +0000 (UTC)
-X-FDA: 83992687632.19.1483920
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CB0F34000E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:16:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iKslxATp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760350614; a=rsa-sha256;
-	cv=none;
-	b=qO08ufDOpLsEpwcrQNPvuTk2gWFwCKVwL38deS22W136wLi3nl0gOd8IWMgd6YjU543c0o
-	CyX0V8EwkjAHSUd7YLjoGhhS7va+gh4/wbPoKr2UH+1qAEoEsFyKcLlc3LhsTG2xQt/bsK
-	yPCkgXdoNPR6lpw+4iItWUGYUqnzJ44=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iKslxATp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4045D8E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:18:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB368C0353
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:18:52 +0000 (UTC)
+X-FDA: 83992692504.14.84684FA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6257B2000D
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:18:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O05EoaX5;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760350614;
+	s=arc-20220608; t=1760350730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
-	b=1hGOIx33AazWHiOM78u6zpDCfIgycw93uVVOzvmdm2b/eDDiLzMwAjxoqAeIHs/pDCbnW5
-	feRwmC6BDZt4IqXE9GF8AM2IqsKZ/4D2t5o4WfduEeu8+aCsxf68S5wLZ3oVz+DGns/Htx
-	S6bu1jT3XeWgD7rd2wLD9fENF2VwVvE=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-27c369f8986so36995035ad.3
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760350614; x=1760955414; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
-        b=iKslxATpwk4axW0WfYGaWfsUqLj8+jR9Xfi1F8MZnYwTHExF09gYGNJ8ee3PxIvaWu
-         wzA+5iMW2bXDlqfvstgR7BqHQCl7KDPubE/sElxbs5npfLfdCuEBYJNkDSa5ZGDhsAtU
-         G1CZtAo8Jpm25YUGdIOz6p1AocH/lTcIJ6HM34AWhtDc8QVJ7WSQZ7YhkNH00xNmMXQP
-         oUFZ0NJJyuUKiVHLhPsKS8K8MgLFh2VlZ6RYEUF/P1yjySxqv6lS8BkfFO1Hi83SbA3Y
-         qtkuPEYVGJUna9XzXEAnX9MqM6iSmBg4DYysCbYnHKcCXWh2pCCKsMRQVKFGorHE5pQZ
-         mBWg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8zLr9HRWBU4vFy2Jm9nw9zsWcFfSLePV2+VE2LgCs2c=;
+	b=B3Qf7kdQw20xo1r5f8RihinTKQ9vNesITHO8MgMzalE4LvD18Pnf79itGyzkBx9lo2GOEv
+	g5yqzBlfBBGuJDEAAvDIeiQf9jBuRyHKBUf+1yWPNAVPu/IKIHy89xcLx4V5fCgHJvyx+2
+	zouo85nWbIH4tQmOM5cfa48WVh25q1w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760350730; a=rsa-sha256;
+	cv=none;
+	b=YKkaxkpj52K6ALhwfMqu45s/swoBuO4E1BIq3deCHniNL/tu3pq8pQclmUK7oc5rZsH6pH
+	5tLnon8YQZn7l21ysL20mPScSpVMUcsl5H1w7E2woINmTlHp9Qgh0fg62z5ak8ByVXT7+7
+	V2yMjFrbtJ5yW1Dhs7hlVR+fztNfHwo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O05EoaX5;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760350729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8zLr9HRWBU4vFy2Jm9nw9zsWcFfSLePV2+VE2LgCs2c=;
+	b=O05EoaX5IKInejqK+tIRbG6C3eIGXqowBmbd6/Qbp7M7eLSMVByJekLCt78W3q2dA27Weh
+	KThnXujXlM2UUT/vLb0Untecf7LocKw6mhavkxy1kepMk/pAS/3lnpYDggWpDH0Uuvt+B1
+	dE4lSHjIzQKcMzZu5KGSCTPpumXK4wI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-494-1BzA5KoqPgWe9DdadqP7tQ-1; Mon, 13 Oct 2025 06:18:48 -0400
+X-MC-Unique: 1BzA5KoqPgWe9DdadqP7tQ-1
+X-Mimecast-MFC-AGG-ID: 1BzA5KoqPgWe9DdadqP7tQ_1760350727
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3fba0d9eb87so2633885f8f.0
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:18:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760350614; x=1760955414;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1760350727; x=1760955527;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QCAxtY3LQTIn8FngImj0LqZJY45nq8RXCAx12F/vMUM=;
-        b=ChV0o3YPyI+dZSmcf5NIeJcGnbyN7FC0bxVJ5c3bqYrNiSWbwU2pKVOACsja0oqvmU
-         R6AYYJbT1pcrBks+s3BRXKK4r8hxhUlbQ4VEh7rjhjZDMDsETw6uFbe7ic4YBK5UbHML
-         sklqCRHZv71ura0FAPx7qdi+RffDg+HXGGP+wqshUoxvHgVhGBhn7W2dnG+Tcx6KodDs
-         6zbw1JKCyoRF+HJgkOdHE6N6X50jUQtZ6WL5/kGGgWfD0WZASTtv/SvE5qEx1B/CfIUM
-         JEe1lJZlcfep1j23CZVxTK9iXD4ywBZ3sLuQuwHvnArKxtssy0VmhqOQONUKkXB89z85
-         33sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVu9xolT4zExmTzm7vU987P00jd4/9H339uK4sbzBGxiyDbdTngOM5zX69MMwpMUiEgg8DP2ctbRg==@kvack.org
-X-Gm-Message-State: AOJu0YySLOR+2Nj+EbIQ9wnQ4lxUpl89ZnDdlWbWlip8Y/UDkIZMo3nZ
-	kk8bJ/22dYAWUZjUBnpzHkdauUnDg8byFsUH1D6ZwwfQKEVQsyUG6w9Y
-X-Gm-Gg: ASbGncvhP5l0UWtvgT2tIMOc6PBq4UPx85cF+cdKfHFHKUcR8yuESVJlSTK65cEWZj5
-	HC1AOpEnIRirvFlPgtPU/7JKKoqRdwylad8GI7MH1pkZm9uoYGAE2oUBur2WnQtEAmTogZdzMx4
-	k/hLsl0vrj0n4RY77QUv7fm+kl8+Pd0FXhsWTZn1rcCYy6rs0qLSeQb08kJgbfl239dnL4GPSwQ
-	XhUbrlGwMVT8e0mUBIQrnGRgclW63HVfJdLGEEmSWKQ3ft4klvR45GjbpQvTHjTJ6Efe1dqXEm2
-	lII7LX40/Q/sTsHFOVD8TqnTtp0PqiK0l4/2RxbWTAFXnvjrXK6hUkzEAdmzqwrquVGWSJm3laR
-	eLKQCT+JTk/NpO4gsVWGH3lYb4jKPUOz8yOZPJv2o8Plyfit/7BWge+t/yT9wArm2hHqNz/b1+u
-	XQo4rhQMa/ApTrOg==
-X-Google-Smtp-Source: AGHT+IFb3Ekfpe+r+fIcV18hbbrZ8FmIGYR048P5P8oY5j/nrUewcp8bX6QuZ1UX5R5SzFd5k4dKnQ==
-X-Received: by 2002:a17:903:138a:b0:268:b8a:5a26 with SMTP id d9443c01a7336-2902741cd15mr272716115ad.54.1760350613434;
-        Mon, 13 Oct 2025 03:16:53 -0700 (PDT)
-Received: from Barrys-MBP.hub ([47.72.128.212])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29040e02648sm95556355ad.116.2025.10.13.03.16.45
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Oct 2025 03:16:52 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Barry Song <v-songbaohua@oppo.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Huacai Zhou <zhouhuacai@oppo.com>
-Subject: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-Date: Mon, 13 Oct 2025 18:16:36 +0800
-Message-Id: <20251013101636.69220-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+        bh=8zLr9HRWBU4vFy2Jm9nw9zsWcFfSLePV2+VE2LgCs2c=;
+        b=NkbV+4CKAw391toiNvwXe5fN9OSUQvlJuZFVv54Mx5lCcjlJtWlsiRDgIiBucncvnQ
+         QDgKHA73jNMxXvVZyCGxSJICDlFWvbfjN2fk2RqgudZLpiUh8o9hYpWRUVgUlNi9L2pA
+         0U246VhYbFRtOYrnykYrEU2BFMAPWNwLPyQHjvKBJttK+77SiDYMEDIg6d50Rk/SOzVU
+         kl4WElrZbOApu9YpltQ1PVRIen5pVu4ZpkL+9ovjvFBtjB2+1u5UOqm963qFopRpCYFZ
+         cZpEsFd0QYq+1k2hmwn0sJTOHBdsXGZ16Om+w2UzWRpm78Yr8lhKoxDYJRoweV4FRMnF
+         u/lg==
+X-Gm-Message-State: AOJu0YwCBjOQtXDyH0LQuiFCZXTUHvZJylrynp6r47x6lLrgMUCAa6/e
+	dYjZe7XuZaCSZDUwelMXL2aL45XTvhzBE8Ady1I1j/7oNG7WYHx/RbBXjUVsxwW/a7jNyz8YJzZ
+	1rOXf6oZio51udM2FLLrH1yV2Nu4YtSqBKpNka6zbl7tzB1kLrTa9
+X-Gm-Gg: ASbGnctpGkB42HgPL1vbl4d7IQ6lVbfEtGYNVihu6jEk4j9P25aby/fsD4kRuTYogip
+	s+piMraesaO5MFuSvoDvvHJ8I+xuXWEJV6UEefrpMCWkNvt6PP4bdjlqaIXEL2EnV81Fw17xJYe
+	GwsDNnzkBb3Zp3iB3y+ZOC6iMds1cnqSCJc4AqQO+aMEcp0NNsI176U7WUdOum4rxHovyCxwkHb
+	UpW53DXLuQCMu3NasYSMdag5YwNCxjFqhH5K9eCXcRu0oOblRt+bROhr4KqBW8TGNcC6B4NRzuH
+	0CNaqSh/0a9CPGmdyZpX8GTJWndKnerGYuyFWsoJBFiELMsWVWF0lvpgMHemt3FZRa/a/l2Y3d+
+	f3p8=
+X-Received: by 2002:a05:6000:2485:b0:3ea:63d:44ca with SMTP id ffacd0b85a97d-4266e7d458bmr12984598f8f.32.1760350727198;
+        Mon, 13 Oct 2025 03:18:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEM/T8CkEhXD5AffHwvYXnzkgYfTcIzt0LzKyvioPOCxT53MwhT1l9CdJPTaNnAknU5ZLI2Iw==
+X-Received: by 2002:a05:6000:2485:b0:3ea:63d:44ca with SMTP id ffacd0b85a97d-4266e7d458bmr12984579f8f.32.1760350726810;
+        Mon, 13 Oct 2025 03:18:46 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce57d3b9sm17741952f8f.11.2025.10.13.03.18.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 03:18:46 -0700 (PDT)
+Message-ID: <423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com>
+Date: Mon, 13 Oct 2025 12:18:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Regerssion] [KSM] KSM CPU overhead in 6.16+ kernel compared to
+ <=6.15 versions ("folio_walk_start" kernel object overhead)
+From: David Hildenbrand <david@redhat.com>
+To: craftfever@murena.io, akpm@linux-foundation.org, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <020cf8de6e773bb78ba7614ef250129f11a63781@murena.io>
+ <8e458538-69dc-4c0f-a25b-0c85ce1e866e@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <8e458538-69dc-4c0f-a25b-0c85ce1e866e@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VcyB5CTIy58Y23JcYekuf4yjMZdenGfex1OAZGGVk1Y_1760350727
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: bcirgrg637b7zbsn6ex5gqtp8rxzge7r
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CB0F34000E
-X-Stat-Signature: p8zdzbk1ayc8ggfocmt5jpcpb7nwnp7z
-X-HE-Tag: 1760350614-210367
-X-HE-Meta: U2FsdGVkX19gZFAEbe2rLFbVhih6uteoJGwtRBf0dwaf4N1NYYuMJOTQklVBmfHhjj2EFPrSHcpez/nTAE0Z74HS6zfqY9HI7tNyojwTFIA69VOi+4hbPf+Fp3UCHZnEruqqmvHUjKdgfsFqRFhwK/q5KjI+E/pM7r2viGl9pF+Nf1jaEPwg7itaP2LCXssFTymu3LPRF7+RNaC282rqrr2eEJ96Z1KUrD4Cc4IS2ti5xn89bbRgWNGn8pek8/3AMJAWJHM1QDcKZ9i7G44MVTCGpFB1G4GUA3ePk2SSUFMPFYbhr57FUNWcwswhBk9+t4Zu7GMvBJZVnrZ4xWTDxoFPwM7OIV3UTQEACKLMXex0CLGOfWIQRi3AuD0tZHLJmoxQQ+McbqYcV+hfGmK3LKHXdTTVwGsbzYSrevDFy44o0xix0PZn2KHE/8aCik0n2krUQuiBRGiUe5AOw5DWsk1ffUsIWKP8+Kdu3WHK7rVNTI5guOPINELlw01hx3kNLZ6ue7aPFQJD+ie2DtDX0IsrONwoz9QBlT99ScJbq4AlkAuuImL8h+l4iogBZ/aoQFqMkkIWnNmCljMVfmgkC4h5bhAUc4Bpr3ISe/9zWiKroXXvNKc8ye//QhLKAj0bJU8gqm00rXAfFtVYiiJt2bRkP0gtMxLvVtUkfAYflg3WeKrJaQpuYEPSIarfPGjyJnPSsPZQcmQIhK6EfWLQsFJOx1GOXfRTr5eu0WgHSX2ta38adP0fgKQB+/bUWaybnwScZ8Os3HWjiseqZyydrOQ/iS8oaQdQ6R1xr3TGowvreIdjSrhGXpjP7nBu5ruoowJQpBdg1fYAN9UZJK69MQyZOtq/eO2hHG/c+N+OyZzXumwjpL7INFDgLTmulZPSMYL58NGru5CtnnJMXTDLWGg/82hWHWXEC+3vy3gbtWd7vec3jSuK/bIr9y7DNWw3PkcOoHwt4whOHB+tPZ+
- tg8W33//
- rHwAD1IszlG7s3lhGWa5u/kwpUCoP+pRvL3fpAX1ZjA7rDB/1lhKMUsyQg6CvGa9fw+mtsdi5hAyLi70fNBGebgI3thb8aVxz1WjQ4fpqK4GcPny/cmXZkuOZVXEYYU4RPuxHLPABg+mjv/lf6dDuY+i/3TRlk/c+gHlKoBh79o8OG85UGqz1MI4R5FkAQ/Lap+WY5W6kvG6ZO3I3pd9KRpY+6G4qe9m7h/9ZGDx/RiEV96z1mfalN8GDIehB2Bk+LL1OxA7QO2FPJyGHlIVGRbFXcmKubAa6jRsn8XTbUJoc2PHheGRfxY95o729B7M33ioZU4Og6l8LZeddgPzHE9Cg5WHRVXQCCn6PyaYeewhjh7c6Iav/3MkTO3eJUp9XBVVNefff6ZLJpKPkuL4/DgY88q6M/d8Q2P2+iNRsofiaJDzmNDLuH9hQXK/ugpsaSb9GRP4zKN1B1dfLGB0yrCNE4OkGt0QYNhep57iIxGfrLIxWZ30Lad9zQdB8R+cgOnvLwKY3Ux0RqiTkt11ErTD4Ud8u0LnOTjeOTD04zBcJRm745j/AvRSJ0olGmFi4wApYcSPXXiVzHUeVnS92gsS0F4QhYcfhcBpnZBm3E7qglxVg33zK+ht9BB0kdwr5ilco+l2wNRg/d0gpO3CHMfmRhnyTbxG9zHtLuceB0biN9I+BsjV6xTGej3EA++f7axn/yYXZ1Xs5MMQf74kLDmbtDpc6BA21/abbOaBNbX5jyezhy9A9FPKEVxACVW786HBQa05SDx0CPWI=
+X-Rspamd-Queue-Id: 6257B2000D
+X-HE-Tag: 1760350730-344610
+X-HE-Meta: U2FsdGVkX1/Kghk12aFyt42lF45m4sua0zKw9cWgabCpQclA5pQDmhDeSqBtJVVqBkqyRgUcIlpzLmP4oY0lzVdY7wMMj0oK0n0/4qltBq0ODNkH3Z9rOK9kZBK26Pn5F6MwhuaznocgpvYz5qgGva7wnubu1BJhKqcWptXuAt1hbyUgcy4YAs0BdzQUNZgSWq1yj9phyiwORPJn4fg8IQ+5eM05QZ3jBPPiRmfHPGaq1roC63dmvPM8JG2Jd+mwWxBNb7gN7w/v1xE7FGXCis6XLO8SiB27xPL6wt2q85PPP/UL/70OkUzLnhHJSYfpvTzaiCtV2Fd0TSwTmDf/RpGteR+s7KRiDRPgCjyqwvw2QS09QniK5BLh6Jd7TVHKEugPUdnPdatrec9ct9hfocgejFLT2FKJyHrKjj+FhAAA3V5xZxtzg41zecQrnSh/anD9bghIsLtrw2QyRQ1N2LK43E31evdk5mc18Vbdvtq8xPZ0qF9zTkgALkCMAi3552sd8fQscjbvpUo3/NhtlcXH7b3ItFj/KCR6JQSx13YkWxnEngmRTphnREyQ1b7PfePpvp4S1mFVXuFNKfUJui+NiBOWfGz0cGpV4APffVTlpndoP/IBLYCCRBWBDVe+2XT4t4wVQt48xuijE6tKUbiAxGMbKqVQ+Wfvbs7rpuBcSm5RL9hzrGog0tC8KkRS1Xp1WF+ItYQAbexYap3ykpdK1IMXle14vDlxwW6YI87KtP69MAXPhLOAVmNmaryOuWFrCYTVK8FvkywtXsoy14eASaNNS6LgGMMypygmy5AYwDbGoVjhhvmFhOfoUADfasiQ1xPCQc6jGJgT1/j+CloVO4ogc3eK0/VocQs0SkMpyijXScaW8eZ2tuT6FIzLx0twXZDEVzd4ocCUxe+mnVfHMl8x/kbjzbEs/c/YR5hqXQN1HJON2jVjg/KmWz0sSY1aSnLqZ4x4ArFVZDl
+ vbz6x9GT
+ NpT1hvWch/tDpZG8SCAcCRm/A1pHRwj2QXxfxdSmvmEMRsiT8jRwrD6rBSOUtifdW1vOgueS+gdG3K6sP5Bz1iv4qiy4nlXk91mQt1cCzoDbcNrY99Y5vLl1f6QRJqi5t6S0HaULqA+FU/gaUNyxyUNab06AQ/tKJqYhzDF12i2DIG10uzIpAWYEDiNqfwklVffvtPZTZtAsfkiSzVrfMiLK60jDy1Hx4MIyWfO5JJlBM+2F6BcV8hzGS27i5S5nsM+533qTl2kDR/xCIl1bpnI1PbjGWOdSvBhKWfeWQ7PCFx4KJeYx2kTkRJQEvXPUqQEdzlcFQ+KkZKO74XhNKz6tXgfcBZIYYo4qyH2L5gHL3y7PVYAX9xzSb/md3lnWDUlw1QvdTxga/G8uo/vQHTUmPVEXLqBGTWLzlhPN2EEh0mqEqv6YV1yEEGzAWiGGXlqhu6CPtqfNLDUUEwgtz+UpWJIATp+e4l8EF20VjlJxfivS7poK0CY2m6v4XGOXXs14EhfTtW72PbDFbkBnrEUJboQ3ub/nOkebKZ9kICVUHPsc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,146 +178,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Barry Song <v-songbaohua@oppo.com>
+On 13.10.25 11:52, David Hildenbrand wrote:
+> On 13.10.25 11:22, craftfever@murena.io wrote:
+> 
+> Hi,
+> 
+>> I've posted about that problem already on bigzilla (#220599), but maintainers asked to post issues on maillist.
+>> The problem with freezes during KSM page scanning with certain processes like Chromium with huge virtual memory size amount was fized in 6.17.1 compared to 6.16.x/6.17, but problem with huge CPU overhead is present there. Compared to Linux <=6.15, where the overhead is much lighter anad there no much CPU consuming during KSM scanning, there is "folio_walk_start" kernel object is present (which I reviewed with "perf top" command) that is not present in versions <=6.15 during KSM work and which is in work starting from Linux 6.16. This method very resource-consuming compared to algorithm used in <=6.15 versions. Is there a kernel parameter to disable it or it needs more optimization?
+> 
+> I doubt hat it has a lot to do with folio_walk_start(), that's just a
+> simple page table walk replacing the previous walk based on follow_page().
+> 
+> So that's why you would suddenly spot it in perf top -- before commit
+> b1d3e9bbccb4 ("mm/ksm: convert scan_get_next_rmap_item() from
+> follow_page() to folio_walk") we would have used follow_page().
+> 
+> Do you see any kernel splats / soft-lockups?
+> 
+> I can see that in commit b1d3e9bbccb4 I removed a cond_resched(). maybe
+> that's why it's a problem in you kernel config.
 
-On phones, we have observed significant phone heating when running apps
-with high network bandwidth. This is caused by the network stack frequently
-waking kswapd for order-3 allocations. As a result, memory reclamation becomes
-constantly active, even though plenty of memory is still available for network
-allocations which can fall back to order-0.
+Looking again, no, that's not the case. We do a cond_resched() after 
+every page we looked up.
 
-Commit ce27ec60648d ("net: add high_order_alloc_disable sysctl/static key")
-introduced high_order_alloc_disable for the transmit (TX) path
-(skb_page_frag_refill()) to mitigate some memory reclamation issues,
-allowing the TX path to fall back to order-0 immediately, while leaving the
-receive (RX) path (__page_frag_cache_refill()) unaffected. Users are
-generally unaware of the sysctl and cannot easily adjust it for specific use
-cases. Enabling high_order_alloc_disable also completely disables the
-benefit of order-3 allocations. Additionally, the sysctl does not apply to the
-RX path.
+Also, b1d3e9bbccb4 was introduced in v6.12 already. Regarding 
+folio_walk_start(), also nothing major changed ever since v6.12.
 
-An alternative approach is to disable kswapd for these frequent
-allocations and provide best-effort order-3 service for both TX and RX paths,
-while removing the sysctl entirely.
+Looking at scan_get_next_rmap_item(). I guess we might hold the mmap 
+lock for quite a long time (if we're iterating large areas where there 
+are no suitable pages mapped -- very large sparse areas).
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: Huacai Zhou <zhouhuacai@oppo.com>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
----
- Documentation/admin-guide/sysctl/net.rst | 12 ------------
- include/net/sock.h                       |  1 -
- mm/page_frag_cache.c                     |  2 +-
- net/core/sock.c                          |  8 ++------
- net/core/sysctl_net_core.c               |  7 -------
- 5 files changed, 3 insertions(+), 27 deletions(-)
+That would explain why we end up calling folio_walk_start() that frequently.
 
-diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-index 2ef50828aff1..b903bbae239c 100644
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -415,18 +415,6 @@ GRO has decided not to coalesce, it is placed on a per-NAPI list. This
- list is then passed to the stack when the number of segments reaches the
- gro_normal_batch limit.
- 
--high_order_alloc_disable
--------------------------
--
--By default the allocator for page frags tries to use high order pages (order-3
--on x86). While the default behavior gives good results in most cases, some users
--might have hit a contention in page allocations/freeing. This was especially
--true on older kernels (< 5.14) when high-order pages were not stored on per-cpu
--lists. This allows to opt-in for order-0 allocation instead but is now mostly of
--historical importance.
--
--Default: 0
--
- 2. /proc/sys/net/unix - Parameters for Unix domain sockets
- ----------------------------------------------------------
- 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 60bcb13f045c..62306c1095d5 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -3011,7 +3011,6 @@ extern __u32 sysctl_wmem_default;
- extern __u32 sysctl_rmem_default;
- 
- #define SKB_FRAG_PAGE_ORDER	get_order(32768)
--DECLARE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
- 
- static inline int sk_get_wmem0(const struct sock *sk, const struct proto *proto)
- {
-diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-index d2423f30577e..dd36114dd16f 100644
---- a/mm/page_frag_cache.c
-+++ b/mm/page_frag_cache.c
-@@ -54,7 +54,7 @@ static struct page *__page_frag_cache_refill(struct page_frag_cache *nc,
- 	gfp_t gfp = gfp_mask;
- 
- #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
--	gfp_mask = (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
-+	gfp_mask = (gfp_mask & ~__GFP_RECLAIM) |  __GFP_COMP |
- 		   __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
- 	page = __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDER,
- 			     numa_mem_id(), NULL);
-diff --git a/net/core/sock.c b/net/core/sock.c
-index dc03d4b5909a..1fa1e9177d86 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3085,8 +3085,6 @@ static void sk_leave_memory_pressure(struct sock *sk)
- 	}
- }
- 
--DEFINE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
--
- /**
-  * skb_page_frag_refill - check that a page_frag contains enough room
-  * @sz: minimum size of the fragment we want to get
-@@ -3110,10 +3108,8 @@ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
- 	}
- 
- 	pfrag->offset = 0;
--	if (SKB_FRAG_PAGE_ORDER &&
--	    !static_branch_unlikely(&net_high_order_alloc_disable_key)) {
--		/* Avoid direct reclaim but allow kswapd to wake */
--		pfrag->page = alloc_pages((gfp & ~__GFP_DIRECT_RECLAIM) |
-+	if (SKB_FRAG_PAGE_ORDER) {
-+		pfrag->page = alloc_pages((gfp & ~__GFP_RECLAIM) |
- 					  __GFP_COMP | __GFP_NOWARN |
- 					  __GFP_NORETRY,
- 					  SKB_FRAG_PAGE_ORDER);
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 8cf04b57ade1..181f6532beb8 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -599,13 +599,6 @@ static struct ctl_table net_core_table[] = {
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_THREE,
- 	},
--	{
--		.procname	= "high_order_alloc_disable",
--		.data		= &net_high_order_alloc_disable_key.key,
--		.maxlen         = sizeof(net_high_order_alloc_disable_key),
--		.mode		= 0644,
--		.proc_handler	= proc_do_static_key,
--	},
- 	{
- 		.procname	= "gro_normal_batch",
- 		.data		= &net_hotdata.gro_normal_batch,
+But nothing really changed in that regard lately in KSM code.
+
+What we probably should be doing, is give up the mmap lock after 
+scanning a certain size. Or better, switch to per-VMA locks if possible.
+
+Also, looking up each address is highly inefficient if we end up having
+large empty areas. A range-walk function would be much better suited for 
+that, so we can just jump over holes completely.
+
+But anyhow, nothing seems to have changed ever since 6.15 AFAIKT, so I'm 
+not really sure what's going on here. Likely it's unrelated to KSM changes.
+
 -- 
-2.39.3 (Apple Git-146)
+Cheers
+
+David / dhildenb
 
 
