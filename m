@@ -4,105 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E28CACCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:22:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9289ECCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 494A18E0027; Mon, 13 Oct 2025 05:22:05 -0400 (EDT)
+	id DC45F8E0028; Mon, 13 Oct 2025 05:25:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C658E0026; Mon, 13 Oct 2025 05:22:05 -0400 (EDT)
+	id D4E0C8E0026; Mon, 13 Oct 2025 05:25:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382AB8E0027; Mon, 13 Oct 2025 05:22:05 -0400 (EDT)
+	id BEE738E0028; Mon, 13 Oct 2025 05:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 25C778E0026
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:22:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2A0B13A932
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:22:04 +0000 (UTC)
-X-FDA: 83992549368.01.4251235
-Received: from mail3.ecloud.global (mail3.ecloud.global [135.181.139.185])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EA67720009
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:22:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=murena.io header.s=mail3 header.b=KWZmnklH;
-	dmarc=pass (policy=reject) header.from=murena.io;
-	spf=pass (imf13.hostedemail.com: domain of craftfever@murena.io designates 135.181.139.185 as permitted sender) smtp.mailfrom=craftfever@murena.io;
-	arc=pass ("murena.io:s=mail3:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760347323;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A677C8E0026
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:25:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 469CB13A930
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:25:36 +0000 (UTC)
+X-FDA: 83992558272.13.5FDB6A5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B6AB3140007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:25:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M8TW8TbY;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760347534; a=rsa-sha256;
+	cv=none;
+	b=mFWnfxjaBEhMphr0WTmQvsWl6q5GEy7NGz22MIjZ/DrgJBKl70USesFodpN5G1wlC8UVkf
+	WhHr2+pez7sBaDuFEuob9RkuMf+9mg6KTOoTx4+TnAidxIQN62PGbgpimdDwkmOaFvmG6i
+	QRl66QAJ1KEMmMlIASrXlQhBUx27QDs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M8TW8TbY;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760347534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7e4oPSbyT6o1XKtkgDqQchHA30cNRFihW0o+KCSVfM0=;
-	b=goaA7y+/OFjVzUqBKIlhiNaaWkAUKtl9T9Fy0GorCBItj5ZgnTGdmCW7dlICyMsF/1Qxte
-	Y3tPI+Dh3i73ZqhoezIyTekWoz7JZO7TezftcKFmdCnU8bakaFwTs5CgAkZddNrgjHl6KG
-	2Iy/AwdEUmPGJEFEaXOARMj0z0G+5gA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760347323; a=rsa-sha256;
-	cv=pass;
-	b=25bLPs/mk1HU5BK/I9E5XsYsde1hDndFRrXqGX49Xza+tCnuxgoUhVIADougsMDUb9vYHa
-	CZYYtzxTl/pDl8L4sVW13GciknVWZKiWal//yzbsrQRmjQsHkmVF4OhfmIg824/mP6TrkM
-	OYQha9c/tpIpPbWy4oZb30pGTXuNYk8=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=murena.io header.s=mail3 header.b=KWZmnklH;
-	dmarc=pass (policy=reject) header.from=murena.io;
-	spf=pass (imf13.hostedemail.com: domain of craftfever@murena.io designates 135.181.139.185 as permitted sender) smtp.mailfrom=craftfever@murena.io;
-	arc=pass ("murena.io:s=mail3:i=1")
-Received: from authenticated-user (mail3.ecloud.global [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail3.ecloud.global (Postfix) with ESMTPSA id 3988688A3EC;
-	Mon, 13 Oct 2025 09:22:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=murena.io; s=mail3;
-	t=1760347320;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=45f1b0mXkQ/bXJiKQOO3KwWzxkP9Zc+3arM6UV73Zeg=;
+	b=eXHdrb3wUSJeOVoF/YcNQ0vapoUfuxTNUSwERw/0ehE6JqivStFywQDYL8Celf34BXFtFY
+	KKM+714w4jI5j7b8qJVzoHN9m9dDHzj917Ee/QuRfuYaFiqwkUd9hey40ew1MkIfqWPA18
+	sEvG+FwAwknxcX26ssVyMJgJdGnwp1Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760347533;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7e4oPSbyT6o1XKtkgDqQchHA30cNRFihW0o+KCSVfM0=;
-	b=KWZmnklHrgb53JpNCiU46XtaJg4zhgannNk2NRAkhanaIXcUrRdg9OCwx5WFf20Un+jGUn
-	XwOFcrLl1QQF/qN+mwIy58sIwn1dhR8+jFcSVrP6CDRnCtugphqkfaDfNsGXyqJDb8+yKP
-	0TNR9KUDxj7vKZ3J6jgAsoE0ffjkPA0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=murena.io;
-	s=mail3; t=1760347320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7e4oPSbyT6o1XKtkgDqQchHA30cNRFihW0o+KCSVfM0=;
-	b=BrzcjlUU3iNXAcHY+ElA6LJFefQR08+H1hXRQJRcng3/dP2w6jWjScGktlBbof8nhH5oFC
-	0s2lgzMiVKywXlXNrUBwHgHnV1aXr1NlW//J1Z1SskROKnaKQSckQitmms4U3GQhD/vrNa
-	vkS+UDF0drWoxNoG8EkZLtWOnWeMgYU=
-ARC-Authentication-Results: i=1;
-	mail3.ecloud.global;
-	auth=pass smtp.mailfrom=craftfever@murena.io
-ARC-Seal: i=1; s=mail3; d=murena.io; t=1760347320; a=rsa-sha256; cv=none;
-	b=PwxP0AJIGQ/zfae6OZPyxKRCEAvpNf8EfcnkrLjQIBKFO2tS2RnKuNHcH5drsPOS9Z1VhZ
-	O7NVGyHPg8bPUnXFEb+uvNtlzDvXRUz/0yXFrSTpP5uJFD83/3kfXOcg9kbSZPUHwKwHjL
-	I40Fy8Kl5ivXS/7kQUO8jMXV5qtZAzg=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=45f1b0mXkQ/bXJiKQOO3KwWzxkP9Zc+3arM6UV73Zeg=;
+	b=M8TW8TbYjTfJzLPBVqBeK0aWgWGYzGnogXrFL6lxzkUcunnakR3ODE4IA8OqZfuHCniW7m
+	NjZ03ezPImyAaGowpf3CjrblJacsetAW9nJ09E7lGspNTDPriQxWy1X8I3b53PNHrHo4Iz
+	pVTm8U6whbXUpljXX8P89igUIvrCrIE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-bu5GiIX5OZmecT-v7O5idg-1; Mon, 13 Oct 2025 05:25:28 -0400
+X-MC-Unique: bu5GiIX5OZmecT-v7O5idg-1
+X-Mimecast-MFC-AGG-ID: bu5GiIX5OZmecT-v7O5idg_1760347527
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-426d314d0deso1400247f8f.1
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:25:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760347527; x=1760952327;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=45f1b0mXkQ/bXJiKQOO3KwWzxkP9Zc+3arM6UV73Zeg=;
+        b=n91HawjO1XCtTbeSvsX6Je1btLQ6HwsYE1xC2e1useENYHSfRGNDotbyKynEYGTZt1
+         KE5PxLr3cCZXGs4wOwQudqrtORcVIxdk7IReiIMGAKbutz3LWlYRa0JuB4nT/xqkbx9e
+         FyxLsp5Pg5/EFka8n5BLWdjA0fW0YJfXydYZesBtOnKX5L3izJUZWJd44RpksFFYa54d
+         X9+R6LKIvXlYwPQdIvlpMIHiJF5LG2JZPbOZFjGvSjixDINZRNWMs8+nk6Rx/9VQzHds
+         lSH7IJTMIQh7U72lADOR5BS+8cSlN8WYEwgon4qHeyeLoO5Htn1U6mMhhw3nqS71+Q+S
+         ++/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWL9cicncV+c/Fsnikf0Kjee4HnA8DuDym6rOyWRIKQGtnC5HKqBRNc3KwgS/y2ay74wd9YaP87hA==@kvack.org
+X-Gm-Message-State: AOJu0Yz5uFeoGo7t6AINphRn4lcSxfZ8hQnUqVVZNQtCo040bvHMHMTP
+	5yAGAa2IiajhetPvUe8WGCtEWS+gyxMDL+dTUvf0oFoF94nwufoVhSyxSzPgiHFM1GFHbGqa0DV
+	ncocAYbWhMuw6EKhaWLqROUFbYxQCe6UBfm24wl1vmyID+qFT3+Cl
+X-Gm-Gg: ASbGncvWJHy3Vl9NepRg0gv1+1TzRUNOJiGI4cx2sBgbtNSsWk1lHrt9qXSfiH9Akwd
+	CzXlw5H/tRpGwFim7U/quv0hPzvQntlVEffQVQafRWAkCrvhm1A+Hywcwf+J7JQldOs/ubonGSM
+	kL3OKnQ/m/tsUzA2cmm9X+jOVxKHkqsPGDIx8Bct4ow2B+wUdEuqiRQK5UUJmUbUBLYFALQmSbR
+	cZHhknQB7XHcxibdw52ACNqcNmukj+DiYwD1jSlHSUf4KNUinSLY7drhNDh0yxpCJ2xPbBvQ1h7
+	v+FsyoznoxRFPZCsGoTDaIbHM1Z1JVjbu+eT4xkZCgP6IKFVNH6klh4KnsdpxpSKgO2XWTQjjT9
+	N22I=
+X-Received: by 2002:a5d:5f54:0:b0:3ee:1586:6c73 with SMTP id ffacd0b85a97d-42667177de1mr12847272f8f.19.1760347527134;
+        Mon, 13 Oct 2025 02:25:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYg9XjYPSU7V3J15wqS0ZRoHv9WaUOniN3wcI031rVOGGwlPRCDH+RKYRnwAJfJ5gFX+HfUg==
+X-Received: by 2002:a5d:5f54:0:b0:3ee:1586:6c73 with SMTP id ffacd0b85a97d-42667177de1mr12847240f8f.19.1760347526728;
+        Mon, 13 Oct 2025 02:25:26 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb492e6ddsm194397015e9.0.2025.10.13.02.25.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 02:25:26 -0700 (PDT)
+Message-ID: <3e6500dc-723f-4682-9e37-b28bc78a2bdb@redhat.com>
+Date: Mon, 13 Oct 2025 11:25:23 +0200
 MIME-Version: 1.0
-Date: Mon, 13 Oct 2025 09:22:00 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: craftfever@murena.io
-Message-ID: <020cf8de6e773bb78ba7614ef250129f11a63781@murena.io>
-TLS-Required: No
-Subject: [Regerssion] [KSM] KSM CPU overhead in 6.16+ kernel compared to
- <=6.15 versions ("folio_walk_start" kernel object overhead)
-To: akpm@linux-foundation.org, david@redhat.com, xu.xin16@zte.com.cn,
- chengming.zhou@linux.dev
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/1] mm/ksm: Add recovery mechanism for memory
+ failures
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Longlong Xia <xialonglong2025@163.com>, nao.horiguchi@gmail.com,
+ akpm@linux-foundation.org, wangkefeng.wang@huawei.com, xu.xin16@zte.com.cn,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, Miaohe Lin <linmiaohe@huawei.com>, qiuxu.zhuo@intel.com
+References: <20251009070045.2011920-1-xialonglong2025@163.com>
+ <20251009070045.2011920-2-xialonglong2025@163.com>
+ <CABzRoyYfx0QPgGG4WYEYmT8-J10ToRCUStd3tWC0CtT_D8ctiQ@mail.gmail.com>
+ <CABzRoyYK38imLh6zN2DZKPRyQrJkKyvpswqJAsWzEeECtOxaMA@mail.gmail.com>
+ <55370eb6-9798-0f46-2301-d5f66528411b@huawei.com>
+ <077882e3-f69f-44f3-aa74-b325721beb42@linux.dev>
+ <839b72b8-55dc-4f4e-b1da-6f24ecf9446f@huawei.com>
+ <f12dfacb-05dd-4b22-90eb-fcc1a8ed552b@linux.dev>
+ <bd374ac3-05a2-41ae-8043-cc3575fb13c0@linux.dev>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <bd374ac3-05a2-41ae-8043-cc3575fb13c0@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PNLcwpp8u1GcOIKEb5_wh0Hyqqu723682kBUDUPC1i4_1760347527
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA67720009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: zkabtz3zdook7d4qo3otaqd5uhhcxf3c
-X-HE-Tag: 1760347322-361149
-X-HE-Meta: U2FsdGVkX18VPtUiCa51gTteq8l0HLdIhLjXTgNUGDcM1jEtskoXhDVG9ufEo/vvD/nuVL0Qqr9Em4bnbAA1NMMpX0ry+lbi7c76PR/Kii3GryBd2nOB+/01ARZnofZeXaRl9vKvpLXY5I0hVDft6snS7dwLDfpVur5l8OqRQukgaqd1MCMJmf14C+D++OkwFUCfRKAwg9CnRE2/jPQ1N2Y3r1n/7B+e8Z/H5iU2Ura/evFzfitcamVcUzs+72UaxuZVsNpY0SJSteOTu2oWesitsN880YqdO+tjJK2gj19/31NY5ahvZBYg5ySp2vNdhBwVs1WR6Own5TQ/HZ79HgE4rUP1VIw16rdc6OGcZd+ibvsTUsNRmife3eXOCzTj+4MvQIzfH8omMzYCxiE+VrbnRS8C0toIyk1jHC58pB43OJfdjiYh0mmumD/EMQe46x33lyXqEvV1ih5yIiy7vlBYNRaBZpdXPCV6xIEbaPEFze90ZCdmfA6hTfJAF3Te//UnrIvCFcr35mDxqO2o5zcDxB2p7A+eGd1H6lxNnxKRA3jo7GIONQju/2hxq1tf5O7aOE2mMOm2f+oAHAMzgGcj6dTqKETgMnZDktvO3yaeITrUEEbGP2RdE1dWLa/B5q159w74pQ+S58W0U1sDkL03C9IMFz4TnRbu86hVv4HVHofCK8xcIsTNXWXW9j2ClVa8AmV1JjWxSkEkB/DUl6S2Njis/xnD32CzAcod6U2K6juS0Aqds68IHgJnHtY9lB0UgmjaQ9ZYfTS6k2nMiiklZcq8EWJPqBKwZ1wbGgNl2X0YGHW3AhHTOA4Z5G+5C1e5XDr1oWYttC4lHYNHWLEKoSyETKqRLw880WLm/mU913ddkWzbo2wqHUGTI89AwDwKtYG32DeE/xDwrJeUxaDk3E5Fa+8TaVmgcy7mmYU7Js0znCs7vUg4AiBlTDNcQcuvQSIkR0rkGx9cU3E
- ktPUkEXP
- ZYmAiT/SMSJ1RlrcIZzNqXpzBnvIKRdtXryA56AOni6sqHBWp63S4L+fwYe+j+70TrIL7BicsKihWyU4ALbfpZFefyujnGBBznOX5rsJraW4JfYHwvY1+dEgab5crA8M5+uNNgeIOQC/vlQKQhNs79E3pHJEPQmD2fFiFPPcottf5PkMdgrMvVgcrpEUJiKmhzm50QpXniFDa6QPwknI1YUNpCsxqjZ1Zk3rnNpNRAOiNVt/wqx5b4v7aJ9GJPWIt9lWK/rf/lgDEYHExJ1rPaDwH0Pp6XSKbyGZlhEyuGdGUQkZnPlfDjUDYRVYD9gfDhEE8
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.005989, version=1.2.4
+X-Stat-Signature: crbbhbm9nfzty6bjim3uem6jjz5zj7nq
+X-Rspamd-Queue-Id: B6AB3140007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760347533-612771
+X-HE-Meta: U2FsdGVkX18iFWaPHaG2kWrOyFMdO8gcUH2MNu3N8D1iB9+TxaVAvdHCGJgB2aHVTsmVQNRFpRw+k4ChVp9KKFVmutscNEVLCSUDUG+wiPdkwE44C5XN5biYC8pDp3S5uWWOynn3Shvs1tmzxFilBW0zECVe7todiWJwtotIhWvDXWctj3qYvLXNFkGEG2lPjwqTbioh9bZjGkDYteXEEw2j16kmSwowWUMP4JqgCkP4wFeNI5xWtHIV6EU/4Yke9mdNrq16ffCRsFAjjBfZTKb/vn22UHzZUL29tML/3BH/WotQXiHFT2woz5dqyWqt8MQw3U2m/Lipgktzz1WNRGDlk9nVDvbeERzDUiTxZE61iPyynNfSzfM1JlwPcMWyukFEaYYsocucIBMmClcZTkfzHHj7hiHtZwlekBdiw8qhST9h23dTy1H8xyApMtOO+Pv1lXt5nshYO4QhrfRtOOGsjb8msahH++RnMOSA6b4Hh/GqUilJvzHFqwD4EJVdCxMiLQb3AEjghb+XEZ++HcmIC0oZ75rgQr2JJ8PCY/NqQkKVwLch3VZkiZMirG7e09u04wQcP5VGqanjJ8qVZq2Vo4GV1zIvVRJ4kh3gZqTpqVr9sdr/am+jBQ0C+J12gSTOYY1dD3h1qg/XCMcGdh21WGdt6ub7QK6B9Id2RG0qddNNUN6h0ng/TW7691ptAj43Z97zIiCikjvaaeB98pVq8T6WxBV2e/AZLKkSJTHq3E+JLdBmCderpQSW+ZDPGL4BKePFQAIuNVoNw7BootvUg8Q9bEGj41nV7ZypZGGAxOdZcH/uuDrImd1Lx5Gk67VUNw43M+S2kyI3OVlJGO4J40a1JUbL5eLb10gM41wyaz71AUjuavVOP6JSDeV+JDKP6mieMkNNOkDXlkCm/GOprKGxzwLe3XVYCb3zzh03YV+yasr2DJKTvaHm42rwGdueqrTiibHgoMQzCTG
+ jbOdUciU
+ yHUVFeOWXRdC3a9kA1gWKEuT21nXe5xPtqflZZ8g9dPoXEc1S/kaWZkjniUgWF7tK8bGyW/5Y0l36ruM1vy7EG2Hc739nkqMjBM/QehiG5EdvU9Wqd1SPDWb5cs5PatB+F+l7JKP8vzqu0gg3ef4/V7SmgfTIX1/zx08xJWt1VnB8FBng1iXICGV/D4Tsk2enEHduZkoJ9VtTA+s+lxpzgkjw7+0d5HMvDANY8MiYYdYWJwYFpAphIUDzyIQEyMfYA67bAQG7JEAd5VY88c4Mjc3YikgIL+GU0JCDcknu8TMIfMppvY7v+MbOSvKz+Xo4/BRDjR4GhbIQoxbLjCW9UkeyexmpIC80MiNLhm1qKuRMrxt2csgMjzRCyn5EBsu54wIkt5vFUkW1XEQfRYWCPM+duGnQCO6hqUMSv0jK7GfjgzIUvpwdAFug6Hu1Xj4m3oA32tyzA+05o/MqoHcFoyjy2fNrkhIDXyfeOnTcx4gm7ZTbzglN7wgFTmFGDZjVn/lAXACa5Mbpu7GUfwKRL9JeY0pfVxZRzGF4YPnh8zL1c/g=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,20 +189,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I've posted about that problem already on bigzilla (#220599), but maintai=
-ners asked to post issues on maillist.
-The problem with freezes during KSM page scanning with certain processes =
-like Chromium with huge virtual memory size amount was fized in 6.17.1 co=
-mpared to 6.16.x/6.17, but problem with huge CPU overhead is present ther=
-e. Compared to Linux <=3D6.15, where the overhead is much lighter anad th=
-ere no much CPU consuming during KSM scanning, there is "folio_walk_start=
-" kernel object is present (which I reviewed with "perf top" command) tha=
-t is not present in versions <=3D6.15 during KSM work and which is in wor=
-k starting from Linux 6.16. This method very resource-consuming compared =
-to algorithm used in <=3D6.15 versions. Is there a kernel parameter to di=
-sable it or it needs more optimization?
+On 13.10.25 11:15, Lance Yang wrote:
+> @David
+> 
+> Cc: MM CORE folks
+> 
+> On 2025/10/13 12:42, Lance Yang wrote:
+> [...]
+> 
+> Cool. Hardware error injection with EINJ was the way to go!
+> 
+> I just ran some tests on the shared zero page (both regular and huge), and
+> found a tricky behavior:
+> 
+> 1) When a hardware error is injected into the zeropage, the process that
+> attempts to read from a mapping backed by it is correctly killed with a
+> SIGBUS.
+> 
+> 2) However, even after the error is detected, the kernel continues to
+> install
+> the known-poisoned zeropage for new anonymous mappings ...
+> 
+> 
+> For the shared zeropage:
+> ```
+> [Mon Oct 13 16:29:02 2025] mce: Uncorrected hardware memory error in
+> user-access at 29b8cf5000
+> [Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: Sending SIGBUS to
+> read_zeropage:13767 due to hardware memory corruption
+> [Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: recovery action
+> for already poisoned page: Failed
+> ```
+> And for the shared huge zeropage:
+> ```
+> [Mon Oct 13 16:35:34 2025] mce: Uncorrected hardware memory error in
+> user-access at 1e1e00000
+> [Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: Sending SIGBUS to
+> read_huge_zerop:13891 due to hardware memory corruption
+> [Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: recovery action for
+> already poisoned page: Failed
+> ```
+> 
+> Since we've identified an uncorrectable hardware error on such a critical,
+> singleton page, should we be doing something more?
 
-I'm using MemoryKSM setting in systemd in user@.service for KSM process m=
-erging and it very light on <=3D6.15 ver., but CPU consuming on 6.16+ (6.=
-17.1 without freezes) due to reasons said above.
+I mean, regarding the shared zeropage, we could try walking all page 
+tables of all processes and replace it be a fresh shared zeropage.
+
+But then, the page might also be used for other things (I/O etc), the 
+shared zeropage is allocated by the architecture, we'd have to make 
+is_zero_pfn() succeed on the old+new page etc ...
+
+So a lot of work for little benefit I guess? The question is how often 
+we would see that in practice. I'd assume we'd see it happen on random 
+kernel memory more frequently where we can really just bring down the 
+whole machine.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
