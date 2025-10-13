@@ -4,122 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E27FCCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 19:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DAFCCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 19:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 340358E006C; Mon, 13 Oct 2025 15:08:20 -0400 (EDT)
+	id 38AF68E004D; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CFBD8E0058; Mon, 13 Oct 2025 15:08:20 -0400 (EDT)
+	id 3625C8E0036; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11C4E8E006C; Mon, 13 Oct 2025 15:08:19 -0400 (EDT)
+	id 251738E004D; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D01F58E0058
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:08:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C3E81405CB
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:08:19 +0000 (UTC)
-X-FDA: 83994026718.21.992271A
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B54B8180009
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:08:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eCN5Lyl2;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 141FE8E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C21646F30
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:44:25 +0000 (UTC)
+X-FDA: 83994117690.11.9850437
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0EDC640009
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:44:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWwILwNw;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760382497;
+	s=arc-20220608; t=1760384663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SDzIWaOgwVfkqKsoR4FvITyGy2H0kRZNktinhlzDtIQ=;
-	b=wrW9OGwc/tVj/D8SwtcuVPpRMlkyvv8R72FY77lx3H3e0dudNS6tyCQ6coqy8ZqwZcE3wE
-	E+/xJkq8HGw5luEN2M2T+KTz6Q3dHIAowimuV+p3ACxt6AYmLELsNIwmVP5Y/V4amUJYRX
-	Cgx+bFHObyQXgloX0saS9qfk8FlUJQU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eCN5Lyl2;
-	spf=pass (imf24.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760382497; a=rsa-sha256;
+	bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
+	b=2vLg9qY6xYzAv6a5f6mJGRqvn3N8JFIHXrO9fVqLNtOvnT+vfNEe40m8eE9PYhYU2JjIYu
+	98GnfUNE+55NIw2mLKcS8ol1OHRso1IYF9yM4mJeyAxzs+ZXcfpGJ+TUY6sW7VxY3dlbcM
+	CSIhpArosTp4zXX5Do1r/rf5mZc3QME=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760384663; a=rsa-sha256;
 	cv=none;
-	b=Q3PXPYE63r0cJyngExCsMic661Xir6zXGAguTJ0GEqvMHniNn95spUoGipdf5ZqlEu8yO2
-	d32/vHTxsqRhON9v+LVlG6xwfdwKBzoZBpFQqHjJe4xGQGS36KMozgPAOICprvVpgAjZko
-	VnO05F0luiJUNjFwhXQnJwyRzbp1p04=
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-71d6051aeafso47255747b3.2
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760382497; x=1760987297; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SDzIWaOgwVfkqKsoR4FvITyGy2H0kRZNktinhlzDtIQ=;
-        b=eCN5Lyl2evBUwWvJCP3JL60DiaqF0tlno5KISQ42NoXtRsI6e4y/Xn7Dc5E1/pi16N
-         fYtWMIeKwPKtPhItdhsrp7BGBhR3DDNAeP7VQrlChZRqEOdF2kdaWBdKYYXpEukPNnja
-         CDD1BTZ+dc7O7zU3SMrURbc14j/37BI0cU4NYpxVAy/tdayWXxhiHsK6kuXC08vxtPSc
-         KFgZxJ4+FWddTOCRPGbs7Neu6xuxVDxxNz6d87AQJ+aQPcV41ueFIhh/pWndR4U7WVzO
-         egd89LDbRfJZyaTC8XkN32gmDjy9pElakVnmtzbyLy6hNpCB9tpxt0PnKdb24JlcN/5g
-         9z+A==
+	b=g6J3t1QZCMepco57VA43J3cypFIcKWdzDytP6SiuG+1HSbJxycge6Tv5jWImaWV7hGBUNS
+	LXIibt5KA4mBCuHKEfpA0MQ5ImY+52Asenw0GKASu7kJr2zsjorj8FxxPBfA0OMCcWZQfK
+	Kg17et+KPKai5S0jtqN01kzCbdZ6ytQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWwILwNw;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760384662;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
+	b=BWwILwNw5lhhmHJOiydbqF9Q2v/prdGSogujE3Ga6OJFrYvThCDDhd/dpb6T9GuRIBmaX8
+	NUp5pg3eXwRmAA5rTj5bCvCv5/rDbm3i/O7ocwefZFE4+TTldtRIMWn/ifAZ5wPldH1B7o
+	/MsHZUMakf2Yg5rNiF9dx6Fy0JJoI0g=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-g0Xplk2RMECx8ToEoXB3Pg-1; Mon, 13 Oct 2025 15:44:18 -0400
+X-MC-Unique: g0Xplk2RMECx8ToEoXB3Pg-1
+X-Mimecast-MFC-AGG-ID: g0Xplk2RMECx8ToEoXB3Pg_1760384658
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3efe4fcc9ccso4051015f8f.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:44:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760382497; x=1760987297;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SDzIWaOgwVfkqKsoR4FvITyGy2H0kRZNktinhlzDtIQ=;
-        b=deyWmuhc5e5VVCMdXfLGuGAXCTKM7GUSY6hA0GdW+E6jkGAK/fVyVFRJc8rTiLV9hA
-         YpvPIbIEuQvRtChxUuMuzjs2zrrRDRXxmjRs4ETmprPQEN1uumzJTxHBrKONDpYlhV7b
-         AZoOW+sbjFI4o0gIhslVMuN/cFeYFMgfZzMNM373nGO05XFIN7ZpnPLocrdIxWKnNqHR
-         /iA0OnpK4Eisj7c5Bhm+AXa4290XeCgm2EPSWI/TEqKs5fnVxgiJyrElUEdGhRFxQp9E
-         IxGwwd04/j89hhALGoF4JCXEGkhUsCxOSKG1jjEaaWgG0FkPLjqw0WwPQmROtEPGdCKy
-         fsJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzy48jdm81kR0au7840AtGWdQCwXidPbgf3hW8B0g6yEeS0VQkFFJFpdpNzzZe95n1gDAo6SN1Ew==@kvack.org
-X-Gm-Message-State: AOJu0Yyo4HfFJQuLXSrqEidEkrJbfNejRNIqAOJPP9xsPr+D5V5AeztF
-	olZpLmM2WK9L+TeGb038Zhh7Tbqlz1Z8ZbfSNj+qTg8cRcGgdxMcil0U
-X-Gm-Gg: ASbGncsL1sa6IkAKcSi2cjECVW7BxWJ94lcNYmAMGpCPuxexCsH8RqKz/KIfASMlXVK
-	XbKZYUhQZoUtInpyDyZXoYLnS0h4avmAw6rSoeSZ48f4yuoU6ee5kjHjog9MN+4iHigmCoqe6nV
-	x4N+OQvdC3MV/uV4d7rHWkYiRbT561PdQo7ETEGiDQZh8oApvtz0AHvVkOXk7z5B0NbddiDmZZd
-	QbL14yNdPLb0ODeWZwbtH9FaeIXX+WU+8+u48WBrcrielkCMJKoTNDCHZaW6F5j275yZzdRLQuw
-	JZD6qiBedVhLOq/A4/M1xsNzJeQA634ZaXpMRqogLbbCwby3otWbCHkdc916qE/pH9SxaAyUgjg
-	YpFYlVLYXFPSo+TZCwLZSDUhmKDfMBAC6kBmw76VWoNHungy3TFCYHz+ANj2xzDkz2FPgqaw+Pn
-	nUm93Y1f9N
-X-Google-Smtp-Source: AGHT+IE9xC3500baXqEHlI48re4/P275laxRB6z9xaFR7v78dK95X3SgDSsqDOD2QAARYLwFZ+0PNw==
-X-Received: by 2002:a05:690c:a641:b0:781:64f:2b68 with SMTP id 00721157ae682-781064f3762mr101116847b3.68.1760382496767;
-        Mon, 13 Oct 2025 12:08:16 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78106dbbef8sm28680687b3.1.2025.10.13.12.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 12:08:16 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: [PATCH v4 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
-Date: Mon, 13 Oct 2025 12:08:11 -0700
-Message-ID: <20251013190812.787205-4-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251013190812.787205-1-joshua.hahnjy@gmail.com>
-References: <20251013190812.787205-1-joshua.hahnjy@gmail.com>
+        d=1e100.net; s=20230601; t=1760384658; x=1760989458;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
+        b=SwIF3BTbqCLSXsOo1MZTGuRCyQQS4JipZklAPMjxmjU59oHovR3mmoHcQcuVM5HW15
+         6ci629G2eTH/OuRjqkXYkvsK5NeRHoVtJ5OH0cP7yT/burkQdJNrqkzpc9RoomFh7RCq
+         +6RljhHBBLS+b8s9vr1qThivkqu8hOW5z/bY8UVlIaOotkXL+icVD8e8TWTT8savdmae
+         YGDVKZGqlfDQY5X6EJa97HePlHpbunixV/+cDc1x1L7a8A1K2pizaT9/GyuBRBOBeV81
+         A82AAxEB1YRNz/IfISBGB16AaW44aTU9Mu+emoRlfNFr9Sih7/U+6zabPjSMMfSHNjIE
+         H4cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW69EC8H1Panjj04wgle1kiKIk0owIjnBhsJue99XFK3xgeoz8UgcX9mIuxsaMU/qQ3G7WSK2bvXg==@kvack.org
+X-Gm-Message-State: AOJu0YxJqTMD/IAT32CsDikyuf+HK/PrYj0tbvlA62dx5njQcMhoMlJ8
+	AnBtmFAfALskEclg26rG3Cf7qHndA/zcNIxw/az1FmWVey6jU9BWJwavAKYq6JoL4h/6MVNd93y
+	ClonqXv9uZYkk4BI0Q/l+Zda2uhsl5vIjEjLg3VZTzppQtii7hK3Z
+X-Gm-Gg: ASbGnctetYSkxaTxMkiOfvdpVnnynhbtBm3k7qIlsvmpxF/xje3wlG2e2ZiB9LISkAx
+	HQt8bYnOExTfL+iM4mrfuxzrOB8W4nC7V4NgNQDdjFhYSaTI8RLDtnJOj5uQFbFkkV5Br5JYIgw
+	edmgxMhk4x/g/2RfMHFefQ+rPYsP9Ebj8uYCBBRaEZaxvp+YLouRZ0A44McHsfKfPw1S8wz1wo6
+	4YT+Gmbi43O0rYHlKlnDTU/nmn021xFWkvtVtb8LtiXKTV7iQAtW+THgmkvelGFXc8gUTlcmp+L
+	q166uzZLTa8OOQSFEAVYgxIeSXnDQ8aj93QwFHCB6RD8Ns9ToYVawqxBWfKbZxnievRqbnc0+CU
+	T22Y=
+X-Received: by 2002:a05:600c:8b37:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-46fbbeb30afmr72148435e9.40.1760384657727;
+        Mon, 13 Oct 2025 12:44:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2DTOVPt4lvXv/lgrRhOALaBYDBqiAKGuJhLuVJZfy236VblOMb7pdACttLqxf3zcWruYTPQ==
+X-Received: by 2002:a05:600c:8b37:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-46fbbeb30afmr72148245e9.40.1760384657373;
+        Mon, 13 Oct 2025 12:44:17 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc7abca48sm36155805e9.5.2025.10.13.12.44.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 12:44:16 -0700 (PDT)
+Message-ID: <2e06ed6a-1674-4eff-94f2-e44ba7de9663@redhat.com>
+Date: Mon, 13 Oct 2025 21:44:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B54B8180009
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] mm: page_alloc: add __split_page()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>
+Cc: sidhartha.kumar@oracle.com, jane.chu@oracle.com, Zi Yan <ziy@nvidia.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
+References: <20251013133854.2466530-1-wangkefeng.wang@huawei.com>
+ <20251013133854.2466530-3-wangkefeng.wang@huawei.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251013133854.2466530-3-wangkefeng.wang@huawei.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rSciqqeyZV86kjYcTRlhnb-sPOriiotKmya2-lJGXC8_1760384658
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ez5bjwbsiyo8duwm8fjw8r7nn5yfhssm
 X-Rspam-User: 
-X-Stat-Signature: qyu4znmbueokmeyugz53fq4fpp6csefx
-X-HE-Tag: 1760382497-576979
-X-HE-Meta: U2FsdGVkX1+KqKLj5e1wZBMSZD8E/BkMvk9T1zlIoYWMS9klvXsU1ElHl5CPiw1AsLhoWYaYlzfQkXX+u9ecRctNriLimXFR5R/KnH11jsh5efl0X+66sVj2RMkA9VgDX74wVcwMHBHAsKgNaYv7IgC+cFok7EdJh4DT5zjG/1tLuIFbiU5U1LJ3U6u/LH21G5HP7d6Km6G6Tn6MAaMOiqRDnvVrENvrM3QD75p+8HGh8aFOytgJb1+GqNCx+tYfZSOEYtGwns3wdZ4CCzhh3X5vHoPM1g7UpZ3PasndD3uXlDfcfbyxrk9rcgX54zWlZTKPbxCM4URuoer8WQ4YGCDpizt3aloPw01xH2rxBLrDdMJeRDGSz6p3Da5GB1dgHKTj5BVye/6jjLZ+TbTPuQT7YkWp0hWjwFunXy4rIe+aWflqQIBU4Ax/qDssh1NB96XTFbWzUwLKUPgiBytDI7Dtv0qlHUffOGlIokKZlO1fSFG9G1UIt5N5moVtPWnlhjadiUTmHo1gbWL1/biSeZS4YBJZrY47wy5sQXv88COo2ZOtvDmSqCozsAxM3S5lvdTvYvXEQLDDyI0Hsn4SdYd1FumdHfYBbT+XWk/PNDPVv9oTz7uPqemuNiQDlT+eYKNsA1JLzGEONgSgiGVzFliXCN6GN3DAUTEdTtaQedRihw2p4yuIP1SZ+A/vP8Y7Sncs/Eiha0x4LdAQbnJeC91PGGZL2xU8Egtpyf06wQ+NEvkDF/4I1rDyf8q0AX7cmBrZsPD9wh8rCpnnI98jGQnMhx49vCdPoAjQoqIKygndAahEoeSV5nWI4dFl8ND6QxKDvSM3u3hyG8qnAsthVVyv22jWq5Ou1+3zKOE8/SekNmlvLoZPHPF/7Uz90Cb0qKlRlnNuAEpF230cZlOm1HyvLXVHxs09bsBVQz0HluqKc18aCc4oN8gi3AcrZadNM1BIEJAmyhun4CJ6ypO
- nN+xNh8h
- HZteOiN9URJ2pGOjtAEG5klA6plnuIin0330Wh9cQvEiyANp1yOsVU9hkCLDhmAo99KRQ+h7jCVK3YUHIrmE1fet5iY48dmyhGqBXWBLOTLBfq8NKsxpjL4BK/GF1TLphj3THsg6Ya2lLJfSmL+W1D34tWPsyXUME7XQjDx9IejJzSEK9c6DXx6Uh0XYdLX3ti98FQ/ZK9aslBIBdZLpu4dgOake4OwcsgOMxUsaF8eWr89q7C0Kebljd4rtWXvVswfhJUzH/or/WF8i8b0LyYKXTIH7/EP5a/vnqSP6Aa0xVAg+LP1LlHn5m6rHt+tK80wS7sZeC2fsSW0ZcfDb11wvHSuq3CYllxSGztKaxYwcdOo7NQIsjSgiO+FwhlISiFEj+1hQUe/WAa2aaWNnWZlEXicedzoDPUhNQ1UrcJFIJ6w6/Kk4o17D7UKhYPHrRBatdWNq27luA8iaA4DhLhRpOc2XMpNGM9l442EazhY5wm5wp2ffA09dgUYjnA3MP0wECEyW8zIXpRXBReGrNslkySsUbgyYkzSv8eTXqXzpLRSiAZQ6tdii1y34+DUnDZyZ+2cZdDOkp/JTFBbcIZ12Gk78n2SDtoKdjmXW9lP3bDth/5Ghg6uR/OnD7HFdbYirw
+X-Rspamd-Queue-Id: 0EDC640009
+X-HE-Tag: 1760384662-426641
+X-HE-Meta: U2FsdGVkX1+38WfFgBIzuTQ2nuAKeOB6zfywLDuUnhpuIpctvJYsW/AWdhpEam4hHp+FPCJwgi+waeFrmTELN856jNSxRZ5cGN2yhyqZpzWP5JFTxN0hcU5iheF3UjLarsE3P/lhfLLPcSKJhTBzqUoAEjoB3N7yotloncMMjAaps3UCBaHBjjbsjVWkNb46VKXWNVy4PLeCu6sZmNBk8MeABO2O92UCJQUk1JOyCOUxeKPqDxSh29mmqJArnoaVgRds+MQIInHbZRszTfBdRn/rw7pAYfEJZ9NMYGXGIXtlkHtaIK8gWta6r/IkxPkBulqRrKYy1/16mcjQesOUJ9fRpf0/7NEmxgDOskSxQx2VdrsyeTyyk2xAXjE6Z8QfT0XcNC2pp3Bw7VLco2Lezcsl/+kYZaGoQJ1BKhvOU2YxwF5K1Mp0nPs5utaNkQxtn6Yisf8ruEjR//z8rnSqhUXqVMZWDv5AsaLMilnDLstkJgX6Ucz0xV+dANFN7NBzFTCRp0Ap+ik6vtp3H2oGxQnfCRceYw0mWzB+luhSjO5Iaz8fwAfX8wCaQcZYgkIIsjqLnR+RDwhhWi/q0NwQxUQ5ONC3aqVvdmbpZxa+3upN089oGGXBSXfJ/IW+MMVRoyb/fSv4QhafaDXtZAMY8XgMF9zp8qa1gcHYnNWUQAtJWEHSeaLTiKJA86EtfyV88NYFclofbKB0CezPEk91HweM8Q8ZMtdmKv5+R4CV1gk45KegbDZTbACZEIcb0igfrW/WzoD03nS5Vm3DB0enS9L1OUh68kRYbZC6CAwE6qwCQl8HpFMXcSZG3OKC5M4IPJYhbNRBiFrPzMGRyrfnu45E/qUYavJNgvW31iJ1BMvTElai2oZqPfi8+0Qx0Ib3mRPwShbbpeC0BKpeR4lyUCrHW/d7WTUqtOYx19NZJpboPA2eYgPLoE2QVQ71gMuq/FS/buUXf6H0XETQ1O9
+ pQJ3WZ9f
+ Dvyp6ue9POktoy0QqY0y6MBxIJFk1dmUMwID2L1hhoYqKVgOYlsTSlQADxXktdWi70bGLOFyDarNQL0x4S4v19T+xYjIoEjWj1qF2Y846dS5Vc9xUTVTfCch+f4ZZHc4z77jwL1HRN/aWPHrNpKhR2vWr1sQr2xbqhYV8Vd6N/XKSjcg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,190 +180,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Before returning, free_frozen_page_commit calls free_pcppages_bulk using
-nr_pcp_free to determine how many pages can appropritately be freed,
-based on the tunable parameters stored in pcp. While this number is an
-accurate representation of how many pages should be freed in total, it
-is not an appropriate number of pages to free at once using
-free_pcppages_bulk, since we have seen the value consistently go above
-2000 in the Meta fleet on larger machines.
+On 13.10.25 15:38, Kefeng Wang wrote:
+> Factor out the splitting of non-compound page from make_alloc_exact()
+> and split_page() into a new helper function __split_page().
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>   mm/page_alloc.c | 19 ++++++++++++-------
+>   1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 949b01f293d4..646a6c2293f9 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3042,6 +3042,15 @@ void free_unref_folios(struct folio_batch *folios)
+>   	folio_batch_reinit(folios);
+>   }
+>   
+> +static void __split_page(struct page *page, unsigned int order)
+> +{
+> +	VM_BUG_ON_PAGE(PageCompound(page), page);
 
-As such, perform batched page freeing in free_pcppages_bulk by using
-pcp->batch member. In order to ensure that other processes are not
-starved of the zone lock, free both the zone lock and pcp lock to yield to
-other threads.
+While at it, make that a WM_WARN_ON_ONCE(). Unfortunately there is no 
+_PAGE() variant, maybe there should be one.
 
-Note that because free_frozen_page_commit now performs a spinlock inside the
-function (and can fail), the function may now return with a freed pcp.
-To handle this, return true if the pcp is locked on exit and false otherwise.
+With that
 
-In addition, since free_frozen_page_commit must now be aware of what UP
-flags were stored at the time of the spin lock, and because we must be
-able to report new UP flags to the callers, add a new unsigned long*
-parameter UP_flags to keep track of this.
+Acked-by: David Hildenbrand <david@redhat.com>
 
-The following are a few synthetic benchmarks, made on three machines. The
-first is a large machine with 754GiB memory and 316 processors.
-The second is a relatively smaller machine with 251GiB memory and 176
-processors. The third and final is the smallest of the three, which has 62GiB
-memory and 36 processors.
-
-On all machines, I kick off a kernel build with -j$(nproc).
-Negative delta is better (faster compilation)
-
-Large machine (754GiB memory, 316 processors)
-make -j$(nproc)
-+------------+---------------+-----------+
-| Metric (s) | Variation (%) | Delta(%)  |
-+------------+---------------+-----------+
-| real       |        0.8070 |  - 1.4865 |
-| user       |        0.2823 |  + 0.4081 |
-| sys        |        5.0267 |  -11.8737 |
-+------------+---------------+-----------+
-
-Medium machine (251GiB memory, 176 processors)
-make -j$(nproc)
-+------------+---------------+----------+
-| Metric (s) | Variation (%) | Delta(%) |
-+------------+---------------+----------+
-| real       |        0.2806 |  +0.0351 |
-| user       |        0.0994 |  +0.3170 |
-| sys        |        0.6229 |  -0.6277 |
-+------------+---------------+----------+
-
-Small machine (62GiB memory, 36 processors)
-make -j$(nproc)
-+------------+---------------+----------+
-| Metric (s) | Variation (%) | Delta(%) |
-+------------+---------------+----------+
-| real       |        0.1503 |  -2.6585 |
-| user       |        0.0431 |  -2.2984 |
-| sys        |        0.1870 |  -3.2013 |
-+------------+---------------+----------+
-
-Here, variation is the coefficient of variation, i.e. standard deviation / mean.
-
-Suggested-by: Chris Mason <clm@fb.com>
-Co-developed-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/page_alloc.c | 66 ++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 57 insertions(+), 9 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8ecd48be8bdd..e85770dd54bd 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2818,12 +2818,22 @@ static int nr_pcp_high(struct per_cpu_pages *pcp, struct zone *zone,
- 	return high;
- }
- 
--static void free_frozen_page_commit(struct zone *zone,
-+/*
-+ * Tune pcp alloc factor and adjust count & free_count. Free pages to bring the
-+ * pcp's watermarks below high.
-+ *
-+ * May return a freed pcp, if during page freeing the pcp spinlock cannot be
-+ * reacquired. Return true if pcp is locked, false otherwise.
-+ */
-+static bool free_frozen_page_commit(struct zone *zone,
- 		struct per_cpu_pages *pcp, struct page *page, int migratetype,
--		unsigned int order, fpi_t fpi_flags)
-+		unsigned int order, fpi_t fpi_flags, unsigned long *UP_flags)
- {
- 	int high, batch;
-+	int to_free, to_free_batched;
- 	int pindex;
-+	int cpu = smp_processor_id();
-+	int ret = true;
- 	bool free_high = false;
- 
- 	/*
-@@ -2861,15 +2871,47 @@ static void free_frozen_page_commit(struct zone *zone,
- 		 * Do not attempt to take a zone lock. Let pcp->count get
- 		 * over high mark temporarily.
- 		 */
--		return;
-+		return true;
- 	}
- 
- 	high = nr_pcp_high(pcp, zone, batch, free_high);
- 	if (pcp->count < high)
--		return;
-+		return true;
-+
-+	to_free = nr_pcp_free(pcp, batch, high, free_high);
-+	if (to_free == 0)
-+		return true;
-+
-+	while (to_free > 0 && pcp->count >= high) {
-+		to_free_batched = min(to_free, batch);
-+		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
-+		to_free -= to_free_batched;
-+		if (pcp->count >= high) {
-+			pcp_spin_unlock(pcp);
-+			pcp_trylock_finish(*UP_flags);
-+
-+			pcp_trylock_prepare(*UP_flags);
-+			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+			if (!pcp) {
-+				pcp_trylock_finish(*UP_flags);
-+				ret = false;
-+				break;
-+			}
-+
-+			/*
-+			 * Check if this thread has been migrated to a different
-+			 * CPU. If that is the case, give up and indicate that
-+			 * the pcp is returned in an unlocked state.
-+			 */
-+			if (smp_processor_id() != cpu) {
-+				pcp_spin_unlock(pcp);
-+				pcp_trylock_finish(*UP_flags);
-+				ret = false;
-+				break;
-+			}
-+		}
-+	}
- 
--	free_pcppages_bulk(zone, nr_pcp_free(pcp, batch, high, free_high),
--			   pcp, pindex);
- 	if (test_bit(ZONE_BELOW_HIGH, &zone->flags) &&
- 	    zone_watermark_ok(zone, 0, high_wmark_pages(zone),
- 			      ZONE_MOVABLE, 0)) {
-@@ -2887,6 +2929,7 @@ static void free_frozen_page_commit(struct zone *zone,
- 		    next_memory_node(pgdat->node_id) < MAX_NUMNODES)
- 			atomic_set(&pgdat->kswapd_failures, 0);
- 	}
-+	return ret;
- }
- 
- /*
-@@ -2934,7 +2977,9 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 	pcp_trylock_prepare(UP_flags);
- 	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
- 	if (pcp) {
--		free_frozen_page_commit(zone, pcp, page, migratetype, order, fpi_flags);
-+		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
-+						order, fpi_flags, &UP_flags))
-+			return;
- 		pcp_spin_unlock(pcp);
- 	} else {
- 		free_one_page(zone, page, pfn, order, fpi_flags);
-@@ -3034,8 +3079,11 @@ void free_unref_folios(struct folio_batch *folios)
- 			migratetype = MIGRATE_MOVABLE;
- 
- 		trace_mm_page_free_batched(&folio->page);
--		free_frozen_page_commit(zone, pcp, &folio->page, migratetype,
--					order, FPI_NONE);
-+		if (!free_frozen_page_commit(zone, pcp, &folio->page,
-+				migratetype, order, FPI_NONE, &UP_flags)) {
-+			pcp = NULL;
-+			locked_zone = NULL;
-+		}
- 	}
- 
- 	if (pcp) {
 -- 
-2.47.3
+Cheers
+
+David / dhildenb
+
 
