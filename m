@@ -4,128 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8DC4CCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE7CDCCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:01:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03C468E0011; Mon, 13 Oct 2025 04:00:32 -0400 (EDT)
+	id 324388E0012; Mon, 13 Oct 2025 04:01:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0143B8E0002; Mon, 13 Oct 2025 04:00:31 -0400 (EDT)
+	id 2FBA38E0002; Mon, 13 Oct 2025 04:01:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93588E0011; Mon, 13 Oct 2025 04:00:31 -0400 (EDT)
+	id 239398E0013; Mon, 13 Oct 2025 04:01:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D91018E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:00:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D1B88611E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:00:31 +0000 (UTC)
-X-FDA: 83992343862.24.2BB8366
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3A8B940012
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:00:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DTgCzLUY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2YAIP6G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DTgCzLUY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2YAIP6G;
-	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 160918E0012
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:01:09 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD088B7F98
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:01:08 +0000 (UTC)
+X-FDA: 83992345416.09.9A63DE0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E41CB40016
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:01:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pBDGm9z/";
+	spf=pass (imf01.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342467; a=rsa-sha256;
+	cv=none;
+	b=w1z3xUE+3stmhBEx5araajcHZGwNasBTZFuQko6DfhOrV7z+B/V835X1zpzv5T5JjlGYdt
+	XITgwBiW0Unv5rdgPjHvzLuEPZTIB9SHOkFO9PodIh0y3oLWvKqvH83DqfOWQOSieEQOBb
+	4lerTqKAc+AAZ5c7Hn8k9VpOK/Xo/4Y=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pBDGm9z/";
+	spf=pass (imf01.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760342429;
+	s=arc-20220608; t=1760342467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8t58zwnbBpGazmpfJwigZplemtrFKud6dUJScz2Wcb4=;
-	b=dMnS/FWbhUN/X028/wTEHh3jNwMLGWH5yMEMXvFoRgULuRM/NEdG5QRFS6eY9GW5V0jy/p
-	JK6WnCmctDOyxKJud0udKHbvGyuyPx4jjGLzBglXwfeLfujI0kJ2opZ5coewB9nj8KHA3z
-	/HZkaz07nzWTWEH/nXSfvQAqUJ/HYyY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DTgCzLUY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2YAIP6G;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DTgCzLUY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2YAIP6G;
-	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342429; a=rsa-sha256;
-	cv=none;
-	b=nmazd86iSCla6YcHUeQ71e/VdFHIa0CjDM/ii82aRQagED2QPsqGI/PAiU6eJFrkNEf7jC
-	U2ddUCcsl5vqP8ekli4GF3gwx4RmwL5oiGOxWSDe4Sz6xU5rnLPDDu8z0zO9s4twDlomJE
-	GTSYvUTU+rtm0KcXWCwpY923UkvFvDw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B156621221;
-	Mon, 13 Oct 2025 08:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760342427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t58zwnbBpGazmpfJwigZplemtrFKud6dUJScz2Wcb4=;
-	b=DTgCzLUY0ad8E5MyNbrkArk0eE/wvMEH12RuNqcAtldq7n1aIISIhF4rhVLK/BXvFxNWxv
-	+2c7Z2NMawHiyT8aQ+mdEekUeye61OKJTiNRcZcQ3sbIkqpulexnVZcalAGWkwb3so4qA6
-	dTXYim4ey1ywpKU8Pl8cYhT236rDqDM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760342427;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t58zwnbBpGazmpfJwigZplemtrFKud6dUJScz2Wcb4=;
-	b=A2YAIP6GqGRuraijN+d6sG5wlkWRahixq2bxKuvr+idEKO30rEGNHV9pl5Gy2ltlDrTMX1
-	cnlGPBGK61chaLAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760342427; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t58zwnbBpGazmpfJwigZplemtrFKud6dUJScz2Wcb4=;
-	b=DTgCzLUY0ad8E5MyNbrkArk0eE/wvMEH12RuNqcAtldq7n1aIISIhF4rhVLK/BXvFxNWxv
-	+2c7Z2NMawHiyT8aQ+mdEekUeye61OKJTiNRcZcQ3sbIkqpulexnVZcalAGWkwb3so4qA6
-	dTXYim4ey1ywpKU8Pl8cYhT236rDqDM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760342427;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8t58zwnbBpGazmpfJwigZplemtrFKud6dUJScz2Wcb4=;
-	b=A2YAIP6GqGRuraijN+d6sG5wlkWRahixq2bxKuvr+idEKO30rEGNHV9pl5Gy2ltlDrTMX1
-	cnlGPBGK61chaLAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 02ECC13874;
-	Mon, 13 Oct 2025 08:00:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nsRjOZqx7GijEQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 13 Oct 2025 08:00:26 +0000
-Date: Mon, 13 Oct 2025 10:00:21 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: muchun.song@linux.dev, david@redhat.com,
-	Andrew Morton <akpm@linux-foundation.org>, shakeel.butt@linux.dev,
-	linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com,
-	kas@kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 2/2] mm/hugetlb: allow overcommitting gigantic
- hugepages
-Message-ID: <aOyxle8OJPMKlVWX@localhost.localdomain>
-References: <20251009172433.4158118-1-usamaarif642@gmail.com>
- <20251009172433.4158118-2-usamaarif642@gmail.com>
+	bh=gYPIu0z382mARksqcX6oqCVuSxEra6cmqKYW6l9BkG0=;
+	b=mh2h3wG/CaU9WUk0WbOfG+lc/VatksxdaL8QPsO2c2xQP4Y2q36z9qIPP6K+wRIYRmpuXP
+	POqgmotcY9z1RHIbSMmiDJb9IH3UcEEz+Zy0DgP2BwhII6o+VH5xRp/RL9x/Co84NHPbWp
+	Z6RmBuA7ieBsW44wkAUiwXebRLvNtk8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CF549457EA;
+	Mon, 13 Oct 2025 08:01:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFC6C4CEE7;
+	Mon, 13 Oct 2025 08:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760342465;
+	bh=noRWn+euEOloBgxNJ8dGn+WU7na1mnGeYcuQeFZBKcQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pBDGm9z/dvP+Dmxvki9hejV2S2ZVULKP9OcyfWsJmAwVMW/5h3Fo/Q0rTSY2/t8de
+	 MsMyqaxTxNJRsYNM2uYjQmQXuKyYHnBeLQgVj7eqUqoeQ2BZvE2kLgY0ZF1TThX559
+	 KjU63ZaEvxHmiAnfvVOHOLE1j1wh1PtMXDVNbJabzybEfpwQ84O3H3kktKYxV8w0E7
+	 g0ps/rPrEpS18LVK9PIjswWPewYBEj3gP4I4k6qRxRNznVUTWmodK0qXJs9/TeW6GQ
+	 g2yByYTih6aMzs+AniXcqoLXFAtm/8p1Hln96sK7ehRa5VP5QdfICnIaJb7vYUs1Yj
+	 gvisoLlYoia+A==
+Message-ID: <74593bac-929b-4496-80e0-43d0f54d6b4c@kernel.org>
+Date: Mon, 13 Oct 2025 17:01:01 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009172433.4158118-2-usamaarif642@gmail.com>
-X-Stat-Signature: rrh5im6wumx8wz9155pk9apnttytn8zi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/10] mm,btrfs: add a filemap_fdatawrite_kick_nr helper
+To: Christoph Hellwig <hch@lst.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+ Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+ ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
+References: <20251013025808.4111128-1-hch@lst.de>
+ <20251013025808.4111128-7-hch@lst.de>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20251013025808.4111128-7-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3A8B940012
-X-HE-Tag: 1760342428-969357
-X-HE-Meta: U2FsdGVkX1+4HW4tRIP6IUw1pH6MPnzzvGGy9n7NEthKI1fR6b3HCPjieTX6bAoSEtlwiHs10GylajhsuBCB2S555ifJ3yHE8K85dpDCMXpxoPOVGsQ5YyTXUfqXNrxH1lhV0mlKgwGxORfoBD9ddLRYpH7TF9K3xR/idhyGfboYK6a+TFe+JbYlmgbcQeLlWUdsx8gc57z2wXDS8pjInC0FILgzuSK1RgkMUMrtaOYKnfPye2hZLoroFEOeOnqgo9oG11qN/fO4WzjirdWcKr7h6lDZ2SbfWOnIzghsdf9Ez6D0F0LaZ4SUXrZxPvsSMTqAaimJEz7c+Ne1VSyrMjPfmOaSzsEGZvexegOZejX/I1I2UK73rIPcAV7jcTy7DztsIcvqquJt/vBShi8rL4tKy/dQYqdebDJgGyDwlnPcva/w3kfj7MBgixRpXUvSDpOeFgR1sSD9jyqzQVoOv3t0fJ9JiWjOS6cmySyOOIsylIejfavPG+N8JPMKV6ZsRAcLsbADljcA1CqIaN2rY4wdM2sTyK3TrsmPhyKz6WexFXhH4eF25Ffre5qC1899ZuzVueVjHrrFTLyZwKZdui4h5OTPpiXgxW4h+HtFbQZbEw7B2Ki5w5aNEKNbB5AqisJBY2a8sLdNuYOhFg8/S26IdMHyQWcmg4M38ezw8TD/igITheLiXBCU2SDYl/SY1BYqBCh4+jgKtrTZ7RVsuOFW1sP4iIErgqPrQz1y4ek1yAErSZGrrnl7Cj3ewAU8yGdpDROLnDU3BxtlZmL+o/gFZWQzFd20XvPvqOAsbXU8s4CzKdCU6aarskLG7/+81WTzIzGoifdqm9kRqVXKKIGdByj3IGVq11PjkSI/aZG9M5crjJ7eNAfqwNIPj8R82jZirKkqzY2NTyhrCBhvtmwTt+UUstmzamX6kryW9SgysdD/VXYu+nds3kL6Zbg9+IksPXgF5qOvlSBPiKO
- ZohKzxv3
- CQ5izQSyygURQ3uJywy/vUGkzmdNCv2BTuKoyc+4EImTrhv48ARsuPaTMu8nS3c+HXUSsZSKe0EFMITqzkiJWN7EK2TJrNrNjlmG6LGxk+SQb925LpnUCTkjiDbf2aZY9qKj8dy2aFkIufQzfk+irK9++yvEzsjlQEJUFNuMHur7soSJYcoVEvc8gfp8BN2GMoXIDF0gbaslSO1MNV4DQyTOVTCCustpspvUJIbZpzZBh0rnQw92IkG5EIHSffamUjuZ8gjc8d6XlB5j+2S2AykTe3Fu+OSTKAfJg5UwRgCDWtDVMT7R0MiiTijywZ/2gUUye9cLrM4vVzITFmt9x5G65+gv3fI2d4W8K
+X-Stat-Signature: 3ggb14rp5rc877jwsauhbhisht98i14g
+X-Rspamd-Queue-Id: E41CB40016
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760342466-355586
+X-HE-Meta: U2FsdGVkX1/0zTBL2kUhSqiM9ysjJcIKpgMt5ZuQ3TarPM/PYIC3Y9DHgtwRABbSGHFAjgpzZMNaCg13N6Cwk2hbJBKsgcCdD1rmxPEOsG3MNxdZ68asa/ae1BzYluLHNJBa9D56gpy1n6DqBMRlzD7fES3KfQ+AZ9oqVP+r8caeaEHylK8UYY+uHcmlXBCsOVWx83nLkTwjeRyp0g+ReMka/TQ2BrF9NZ/toKKkbq1qcWbxrnPe5SD0bV1aEooJJjCONk8bDfvnMt3d8mzq2FJ/BWFWDi24Yh7ACc5sV6lcMq5egdmyAYNr4Jg12ATL/cgtuy9icgfCZlrH6o4rSTGxRTLhJGMPxXvpMo5g0V66WIjfBpd72qTrECHEROtM1WWsLsew+BWJXomMeTc91LjRZRJwXY7ULO8LQ41CRck8SlazwjezWUy2iTfbkhPcRSK2Wsztlm6Qfg2ZjZpcl33ZPMBxBGKEm8rRKHE3FvCzRMeoGegl6RVLyF3z2Vld2bJ5Vwgblb76NLBrfY1S82o2Jv6WwdzI99z6yYhyzsob3jUhKCtmgMobJZkOiXK4MZvGPZChte2oUA+o70aoiDSdyIEG8LP43MH2PdV3tn0EaCx72+h2LcJBus2JUbhux3tnEp8Qaws10abrE1PSjJerij36hEXRq/0/hMvqozl4oU//YRdhJXTb8p4tMcFg5sRS8jUvO8PbZRvSvJRrcme9VYA+QI0g3awgLhxt4B0wX2GaArzLRzeseaxSoEBl0GrqJPixutaFkfzT57lUDns/0TTUqTT9lMoFMDAkGZELs0kiPTYCTOm29Iqg6GlsKgVkJOwimWBb5GEvH1frNHKU9f2ox5vKDghAxVLj0HHvMWcuyxvpZA5Ho8CBw2zPigO526FNOLTn1QqPilJU8GH/n/gdZ/scKoKyx0F26Sl+e/kzRwQyXJyhAXuhunu2/byXCPWU5A2dwjpwubd
+ C2Gu//eS
+ BM4ddMmrxCSMv6WYSej28cUDcUnL4vKDw0DYzbjrrHwB6lLNthAJsJTzez3NaTpoDTTTcBQpWnjpLrugLtghYbgx9DefZOfKzpivEsCUUrPJZlO2OApp7s2dkAEq08fUO17xMxLzNBZ85zBkgj1sqLjxRWv/aUtuNJbmjbEyHVmXVRD+Agx94Vin+iqlhnDYxafXEjGJgWsJdbPsBoj0LtMI9Wsnh7UlA91w+KsNGPIycqiJoCae3KVMvzMKMm+ZmirW9tzFT8abRhClEua655fk1wFKDU1Q+dTB7m7WzjSMP0yf/lOpIlPNjIgt2t9r8DQfIN335uqRXWUg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,61 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09, 2025 at 06:24:31PM +0100, Usama Arif wrote:
-> Currently, gigantic hugepages cannot use the overcommit mechanism
-> (nr_overcommit_hugepages), forcing users to permanently reserve memory via
-> nr_hugepages even when pages might not be actively used.
+On 2025/10/13 11:58, Christoph Hellwig wrote:
+> Abstract out the btrfs-specific behavior of kicking off I/O on a number
+> of pages on an address_space into a well-defined helper.
 > 
-> The restriction was added in 2011 [1], which was before there was support
-> for reserving 1G hugepages at runtime.
-> Remove this blanket restriction on gigantic hugepage overcommit.
-> This will bring the same benefits to gigantic pages as hugepages:
-> 
-> - Memory is only taken out of regular use when actually needed
-> - Unused surplus pages can be returned to the system
-> - Better memory utilization, especially with CMA backing which can
->   significantly increase the changes of hugepage allocation
-> 
-> Without this patch:
-> echo 3 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_overcommit_hugepages
-> bash: echo: write error: Invalid argument
-> 
-> With this patch:
-> echo 3 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_overcommit_hugepages
-> ./mmap_hugetlb_test
-> Successfully allocated huge pages at address: 0x7f9d40000000
-> 
-> cat mmap_hugetlb_test.c
-> ...
->     unsigned long ALLOC_SIZE = 3 * (unsigned long) HUGE_PAGE_SIZE;
->     addr = mmap(NULL,
->                 ALLOC_SIZE, // 3GB
->                 PROT_READ | PROT_WRITE,
->                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB | MAP_HUGE_1GB,
->                 -1,
->                 0);
-> 
->     if (addr == MAP_FAILED) {
->         fprintf(stderr, "mmap failed: %s\n", strerror(errno));
->         return 1;
->     }
->     printf("Successfully allocated huge pages at address: %p\n", addr);
-> ...
-> 
-> [1] https://git.zx2c4.com/linux-rng/commit/mm/hugetlb.c?id=adbe8726dc2a3805630d517270db17e3af86e526
-> 
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-I guess nobody bothered to do this after we added support for 1GB hugepages because
-creating those at runtime is tricky, and in my experience, almost everybody reserves
-those at boot time.
-But I do not have objections to make them behave as normal hugepages:
+One nit below.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
- 
+
+> +/*
+> + * Start writeback on @nr_to_write pages from @mapping.  No one but the existing
+> + * btrfs caller should be using this.  Talk to linux-mm if you think adding a
+> + * new caller is a good idea.
+> + */
+> +int filemap_fdatawrite_kick_nr(struct address_space *mapping, long *nr_to_write)
+
+Not a huge fan of this name. Maybe filemap_fdatawrite_nrpages() ?
+
 
 -- 
-Oscar Salvador
-SUSE Labs
+Damien Le Moal
+Western Digital Research
 
