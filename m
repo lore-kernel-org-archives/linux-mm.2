@@ -4,126 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E7FECCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24F87CCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:31:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E32C48E0034; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
+	id 7F2198E0043; Mon, 13 Oct 2025 10:31:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0A988E0017; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
+	id 7C9958E0017; Mon, 13 Oct 2025 10:31:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D20808E0034; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
+	id 706CE8E0043; Mon, 13 Oct 2025 10:31:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE4638E0017
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 478D3C04A2
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:30:43 +0000 (UTC)
-X-FDA: 83993327166.17.71C5AF6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3A823140010
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:30:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HIRnNr9H;
-	spf=pass (imf23.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C7BD8E0017
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:31:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F4208C046A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:31:01 +0000 (UTC)
+X-FDA: 83993327964.18.BC27DE2
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7DFD61A0010
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:30:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=zjZ2hhR6;
+	spf=pass (imf19.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760365841;
+	s=arc-20220608; t=1760365860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BTlu2d/OCa7smgTdfnf6rps6xmzbDobGt8v/NuBgfVM=;
-	b=Pzz4Th0twSsfhnvkp/csMLOjFh5gw+S6uZXuUYmjjDmKr9GhKhdHiAP3V/2P5ExV1x19PC
-	2Uo3ZB/uEjIL1UN5R1Fl/iz/0EHFpxXWN2v3qzB5g67FFT1tm5o2ZZc3GCDOTmeW8eNZZu
-	pItir6RWYCAlkALcguREXY5bNKI0i/o=
+	bh=4+zeKz23GcC8G0cCKClcwBTlkpCur/puh9HJz5dxq7g=;
+	b=r/7FjxUdI7nRmuc/0UKqQrkhNVz3b8S4RgCiWkFkXDHcwzFq37dWVqkLKbWb7J8uzSQJIu
+	JtsEm1CalkN4uQy53mfvITnLzleM4oUg7HxF5gkhd2qbklHTc62OZOjnCK1vz4fkXw5NLZ
+	vvWrOuYFr6I70UWP4a56iNJBpq8Dv50=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HIRnNr9H;
-	spf=pass (imf23.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365841; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=cdn77.com header.s=dkim2019 header.b=zjZ2hhR6;
+	spf=pass (imf19.hostedemail.com: domain of daniel.sedlak@cdn77.com designates 95.168.196.40 as permitted sender) smtp.mailfrom=daniel.sedlak@cdn77.com;
+	dmarc=pass (policy=quarantine) header.from=cdn77.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365860; a=rsa-sha256;
 	cv=none;
-	b=A3kltrKU/gOfZzlFJ9v8JUL1Af4aupTrcOhfvkmLY9TRwFuwkejpjB3dDRuK3uUR8tWtvc
-	Upy9QK+31d8g0I3nn64RYNucCFNzo8w+9tIHFC1nhs3oHd/ojG6Wr1tuO0G+HIrZ7j8l/C
-	FVekXMHbwy8lmzL3kRgXu9apkYuHZYQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760365840;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BTlu2d/OCa7smgTdfnf6rps6xmzbDobGt8v/NuBgfVM=;
-	b=HIRnNr9HN4vk1HKut9LxvJuGhRMtzzUSIbIhjwL/0Dos8LC2SLh0AoUZoixxzjWoJqz8H7
-	6RRmrZbMIr55j7J+gEJ3qhywdlvBdtNP1lmCuWozgtypzcSVNhEQuOB7V4Fp+Ao96VHVar
-	BsPRvYP7hF4LaJcTm9R4BZ7moAFEMjU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-WHoEOy0QNoS_DHwHLaA70A-1; Mon,
- 13 Oct 2025 10:30:37 -0400
-X-MC-Unique: WHoEOy0QNoS_DHwHLaA70A-1
-X-Mimecast-MFC-AGG-ID: WHoEOy0QNoS_DHwHLaA70A_1760365832
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AAB3019560A7;
-	Mon, 13 Oct 2025 14:30:29 +0000 (UTC)
-Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.50])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 414E01954107;
-	Mon, 13 Oct 2025 14:30:12 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
-  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
-  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
-  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
-  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
-  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
-  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
-  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
-  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
-  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
-  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
-  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
-  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
-  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
-  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
-  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
-  paul.walmsley@sifive.com,  peterz@infradead.org,
-  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
-  robh@kernel.org,  rust-for-linux@vger.kernel.org,
-  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
-  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-In-Reply-To: <aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com> (Deepak Gupta's message
-	of "Thu, 2 Oct 2025 09:45:40 -0700")
-References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
-	<20250926192919.349578-1-cmirabil@redhat.com>
-	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
-	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
-	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
-	<lhu3484i9en.fsf@oldenburg.str.redhat.com>
-	<aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
-	<lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
-	<aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com>
-Date: Mon, 13 Oct 2025 16:30:09 +0200
-Message-ID: <lhujz0yoowe.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=1TRJl14Sypm+eJq2FHpHV89VNADIRQbdLDIXJMPCII9DLKrsg1lVdcGI6mx3aeejvUSRvw
+	ElE//rxlFVMVw4zlNHM/o9yVR/YbBfBoogbF6clKIgDNEyhI2dTr2Y/1NT1GWemPYdVEOm
+	gulEw55SWo4c0A+GG2bRtfOk1+Urtgc=
+DKIM-Signature: a=rsa-sha256; t=1760365855; x=1760970655; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=4+zeKz23GcC8G0cCKClcwBTlkpCur/puh9HJz5dxq7g=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=zjZ2hhR6nzhJIj2WKDmpSgSXTHEddDcN9agWH15DleRsMmw6CBfQSvFskrFwOGXZitXcohfNavuDdRvLRPYzNg15iEen5oJ5V2nnrCDtTsOnd/Kk7H6O7xxGjfBNaR/4493s4wOU7SZ7jnaRDl5pZZaBX0xcpsBjCqkBZEKYn2E=
+Received: from [10.26.3.35] ([80.250.18.198])
+        by mail.sh.cz (14.1.0 build 17 ) with ASMTP (SSL) id 202510131630537100;
+        Mon, 13 Oct 2025 16:30:53 +0200
+Message-ID: <89618dcb-7fe3-4f15-931b-17929287c323@cdn77.com>
+Date: Mon, 13 Oct 2025 16:30:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3A823140010
-X-Stat-Signature: 19hswad8rjj7rsbbcgm58dd5irb1zi3z
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ cgroups@vger.kernel.org, Tejun Heo <tj@kernel.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Matyas Hurtik <matyas.hurtik@cdn77.com>
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+ <87qzvdqkyh.fsf@linux.dev> <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+ <87o6qgnl9w.fsf@linux.dev>
+ <tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
+ <87a5205544.fsf@linux.dev>
+ <qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
+ <875xcn526v.fsf@linux.dev>
+Content-Language: en-US
+From: Daniel Sedlak <daniel.sedlak@cdn77.com>
+In-Reply-To: <875xcn526v.fsf@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CTCH: RefID="str=0001.0A2D030A.68ED0D1E.004D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
+X-Stat-Signature: epmg7yqsmng6ozdd8ciihtq9eeqajsha
+X-Rspamd-Queue-Id: 7DFD61A0010
 X-Rspam-User: 
-X-HE-Tag: 1760365841-848807
-X-HE-Meta: U2FsdGVkX1+OT0Az7whZX6O6B3cjn6mvsTQnwvkKOuy/1Hb+nVFg9eF+DOPF1nipQBI6O+lsVzalp+jTbHdQ5BXF4E6WYGhfpeejJVmlC45h+mXn8h99d5MLctlvMGGe5Q/azWAj0/ppzfvIPnuF8IRhxehGOaP9ctEYbnK9ki0K77sJ5hHEEcImbFgu3SMUvhDSRATKsJRubtPxeppymH1GRxm7dmMEkKUdnpyHxzeUMw5F6LB80l7BVxnJpe3nEGc+4RkYChXxRC5J7XuPjhhQERdFWVlj1iDhVALvfagp7i7eUZIc6DoVrPjXTvzI81pix50fCJADxu8NsspQJbAIWC5Lr49886BwHRobkNv8ZCq4/uRGDDooxCV73Jz2hh6AKAIHWSsDI/or6+X0ekbxVVJOUJxURb7w7NW7nf+CywJA6kGM5S7yf5T29F4krV/8R1Ud8shzfqhaJi7G4S8De25Gxo6qr1SS9CMlW5K5nK4STMQ7sbSX8ptfSV3m/l0CQp8jaGst/1zSHfpPjPDyHGSpkb6sDiA2nxxifE1d15a79/24Ih6tdf882EXno8Di0rxnpGC7yjA5BzSjmvwfT+iAcpy+4hcpgikcn2j5d9R+fhYf92beTlzdhTF5MSRUC+lmFUgLOOp3ynmrArw2/0WC0VlaaHpNG9yKPSJsIdqcqKfsutFIu17+KKWg5TabiNRyYAcgvAg0Ima4P117MiO40a8AXdlDf580+4f7WI+lyjdQhlD46jnbdlkx/UFPxtiH6jn3nrbRp0IESfjGXqxguBXrTF8MPFilygmdNVQAIqywgOdSbrCRKphgigpsFsRNrofOHBTUPjQ1otk0SD3I9lTp/zG/W/oKhW8pMa+6FbhuAc1Qt+L+v9G734ejjQpMqS+BkDzU6aY3f8UbUYwCDJYSgLje7tIsoXVE4THFHXBNZtNsPZ1GIbEVbK8gtfaqHzuJU4aBIda
- 5GnmSBjp
- m+WVBfjYOCgqxmycYG51lrdMPXDM4xQBtUne2PLxT/ymwn3DipwBcJS50uy1+LzBQxEFwH40x3QZCha66K3o8LGLS0x7M/vB7K3HgiNtjojVtUPAvh7XB+27Xyq9ZygxAeIMLlglxwpxV0r2m2PiBzc1rVs0eN9kjlB7sqxrvKLM5DnxJCLMG1kloMAI8mfIlAEx8yRis4I2MSSfOTCNq7btCnSGzChqNhqzdwZOzmfdFDi0A9/bJgxf2UTcLRz5HPfPawjjDgXx8cfoKaVq2OpqbRmNDdC+KyVFh7dPcCjPS8z3QyN+2jjtVnA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760365859-752217
+X-HE-Meta: U2FsdGVkX19uGkBA3al1stUDeTr8s3OoltkByo2/XUv4cHtyMKMpIjNxvI9ZeM+kmAQK+KtTbf7X9gAfQejqxNdcuMjSHOtADV/9JzuyDz2aA86RnvkSiqCHUNpoBY3GJw7fFTvM5rNUUY+9lLIrdN5ALxP9v7SQuJ1DZbv/RrYwa6vklY7U+DIG2lotStWDhvaUrKyLFKNiHVRmrnOGsfjLgZpS6PrA3dZZFLP90hbhtbpwOejmHaiwT/qePyhWFWPMe7tAeXzOa/wKzLzGXQuYdBQFglqvEYNj5HeRCLT1OyGidfB6bPmRxSFWexitCxRua4Ddxr7cVSwJGZM2x5W/W0xN2pE9z+drCNssVa2e8nNyaZpcvw/550lmSj3GC/Pd5Qau0wZO38bM+UDZAqIt4hhurFLkC/cpXpAPFW5ZN2j4qhCSEsr1yjtTKj4RzKyr7+YAS9AvpXQKnFu9Y/kxkkDwDP1+U+KPmZKMgOxquD1GqfmbCFESHE4yDhWdkCirV0SZAnT2WFD/WYHEAvZN4cyY0zollSrzLxnpI3Q4hEYH65i7wuzSilv3Mj3HAaWaplZLD4Ih5pwc7Hd15PjKeR8AK9X27dZRh7B+PT7h4COY1rwh0unZvpLh2GXPiZv/+GYqIGsOcSz5FBuxoMfCOML0l6aZjmoguERiwHJ4bMMmjNiaotJf5mdokHB9+61QLHf72wQKSVNQR9XzkvUzr4rWUB34nn5dsfBGu/pumAx+G1U8wmbPN4l5hc+NcvkBQZLjondFjIwwKTXKFAfoVLHVKS4SsSqR9dRWxLdEOkj8KsMuYXiwEpVWmV/4P+J9uQTrWCbbTDodmYdOL9ZWNrFTr6XsfmU/im/ZJSO04qIJWq0EFXKVauAs8j4GWUVEyZTQOXmFxr+sLim13+sX5vx6FxE6lw8d1UTKuCJewWBRJi9prQjKUNQmHzDwbIqVZ/QPwicwJAFb7jn
+ cVOajSf7
+ Swd8GWbgACjv5/5k39aZEe7M4T0BNN/c7KnNHmY5u/H1TPYzV6kerEqF2DbiuIv5SfKdlSxpLdvOyIK06CE5cJ0MQYZbAgoVxHEnNnkIqhZzqm16jQmWmO5Bww/FZAz0Ag6s8gqKHS+zmd0hTruMgFLKUa1Pf7diZ0QiK/d6COqe1JunyjpkRfaUvAix5AkknAvMdX5KKJQqfiWNzz6Y45Ahw+CaSyAVEqektib2LbGyPOBOI0Gjh+kkM3Z9JIo3GY+ut34TmNKcmcR7ylraA4pDWt9yTddxYlbdWbaMxYT+nGPEW232QwcTmX1PImGytzkz7K3PdxyUJ/Pc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,32 +102,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Deepak Gupta:
+On 10/9/25 9:02 PM, Roman Gushchin wrote:
+> Shakeel Butt <shakeel.butt@linux.dev> writes:
+> 
+>> On Thu, Oct 09, 2025 at 10:58:51AM -0700, Roman Gushchin wrote:
+>>> Shakeel Butt <shakeel.butt@linux.dev> writes:
+>>>
+>>>> On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
+>>>>> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
+>>>>>
+>>>>>> Hi Roman,
+>>>>>>
+>>>>>> On 10/8/25 8:58 PM, Roman Gushchin wrote:
+>>>>>>>> This patch exposes a new file for each cgroup in sysfs which is a
+>>>>>>>> read-only single value file showing how many microseconds this cgroup
+>>>>>>>> contributed to throttling the throughput of network sockets. The file is
+>>>>>>>> accessible in the following path.
+>>>>>>>>
+>>>>>>>>     /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+>>>>>>> Hi Daniel!
+>>>>>>> How this value is going to be used? In other words, do you need an
+>>>>>>> exact number or something like memory.events::net_throttled would be
+>>>>>>> enough for your case?
+>>>>>>
+>>>>>> Just incrementing a counter each time the vmpressure() happens IMO
+>>>>>> provides bad semantics of what is actually happening, because it can
+>>>>>> hide important details, mainly the _time_ for how long the network
+>>>>>> traffic was slowed down.
+>>>>>>
+>>>>>> For example, when memory.events::net_throttled=1000, it can mean that
+>>>>>> the network was slowed down for 1 second or 1000 seconds or something
+>>>>>> between, and the memory.net.throttled_usec proposed by this patch
+>>>>>> disambiguates it.
+>>>>>>
+>>>>>> In addition, v1/v2 of this series started that way, then from v3 we
+>>>>>> rewrote it to calculate the duration instead, which proved to be
+>>>>>> better information for debugging, as it is easier to understand
+>>>>>> implications.
+>>>>>
+>>>>> But how are you planning to use this information? Is this just
+>>>>> "networking is under pressure for non-trivial amount of time ->
+>>>>> raise the memcg limit" or something more complicated?
 
-> How will they contribute to CFI bringup without having a CFI compiled
-> usersapce?
+We plan to use it mostly for observability purposes and to better 
+understand which traffic patterns affect the socket pressure the most 
+(so we can try to fix/delay/improve it). We do not know how commonly 
+this issue appears in other deployments, but in our deployment, many of 
+servers were affected by this slowdown, which varied in terms of 
+hardware and software configuration. Currently, it is very hard to 
+detect if the socket is under pressure without using tools like 
+bpftrace, so we would like to expose this metric in a more accessible 
+way. So in the end, we do not really care in which file this "socket 
+pressure happened" notification will be stored.
+>>>>> I totally get it from the debugging perspective, but not sure about
+>>>>> usefulness of it as a permanent metric. This is why I'm asking if there
+>>>>> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
 
-Build glibc themselves and then proceed one library at the time.
+If the combination of memory.events(.local) and tracepoint hook(s) is 
+okay with you(?), we can use that and export the same information as in 
+the current patch version. We can incorporate that into the next version.
 
->>Another use case would be running container images with CFI on a
->>distribution kernel which supports pre-RVA23 hardware.
->
-> Container image with CFI will have glibc and ld (and all other
-> userspace) also compiled with shadow stack instructions in it. As soon
-> as you take this container image to a pre-RVA23 hardware, you won't
-> even reach vDSO. It'll break much before that, unless kernel is taking
-> a trap on all sspush/sspopchk instructions in prologue/epilogue of
-> functions in userspace (glibc, ld, etc)
+Also, would it be possible to make the socket pressure signal 
+configurable, e.g., allowing it to be configured via sysctl or per 
+cgroup not to trigger the socket pressure signal? I cannot find the 
+reasoning why this throttling cannot (maybe it can) be opt-out.
+>>>> I also have a very similar opinion that if we expose the current
+>>>> implementation detail through a stable interface, we might get stuck
+>>>> with this implementation and I want to change this in future.
+>>>>
+>>>> Coming back to what information should we expose that will be helpful
+>>>> for Daniel & Matyas and will be beneficial in general. After giving some
+>>>> thought, I think the time "network was slowed down" or more specifically
+>>>> time window when mem_cgroup_sk_under_memory_pressure() returns true
+>>>> might not be that useful without the actual network activity. Basically
+>>>> if no one is calling mem_cgroup_sk_under_memory_pressure() and doing
+>>>> some actions, the time window is not that useful.
+>>>>
+>>>> How about we track the actions taken by the callers of
+>>>> mem_cgroup_sk_under_memory_pressure()? Basically if network stack
+>>>> reduces the buffer size or whatever the other actions it may take when
+>>>> mem_cgroup_sk_under_memory_pressure() returns, tracking those actions
+>>>> is what I think is needed here, at least for the debugging use-case.
 
-The idea is that you can use a stock distribution kernel to run CFI
-images (potentially form a different distribution or version of the
-distribution).
+I am not against it, but I feel that conveying those tracked actions (or 
+how to represent them) to the user will be much harder. Are there 
+already existing APIs to push this information to the user?
 
-But maybe none of this really matters.  How far out is CFI-checking
-hardware?  Is it going to arrive much later than the RVA23 flag day
-that people are suggesting?
-
-Thanks,
-Florian
+Thanks!
+Daniel.
 
 
