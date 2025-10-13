@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DAFCCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 19:44:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7D47CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 19:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38AF68E004D; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
+	id EB81A8E0058; Mon, 13 Oct 2025 15:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3625C8E0036; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
+	id E8FBC8E0036; Mon, 13 Oct 2025 15:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 251738E004D; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
+	id DA5708E0058; Mon, 13 Oct 2025 15:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 141FE8E0036
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:44:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C21646F30
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:44:25 +0000 (UTC)
-X-FDA: 83994117690.11.9850437
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA6438E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:48:25 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51BF5BA432
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:48:25 +0000 (UTC)
+X-FDA: 83994127770.25.762AED4
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0EDC640009
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:44:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWwILwNw;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id E0B6710000C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:48:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cx4HrWj+;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760384663;
+	s=arc-20220608; t=1760384903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
-	b=2vLg9qY6xYzAv6a5f6mJGRqvn3N8JFIHXrO9fVqLNtOvnT+vfNEe40m8eE9PYhYU2JjIYu
-	98GnfUNE+55NIw2mLKcS8ol1OHRso1IYF9yM4mJeyAxzs+ZXcfpGJ+TUY6sW7VxY3dlbcM
-	CSIhpArosTp4zXX5Do1r/rf5mZc3QME=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760384663; a=rsa-sha256;
-	cv=none;
-	b=g6J3t1QZCMepco57VA43J3cypFIcKWdzDytP6SiuG+1HSbJxycge6Tv5jWImaWV7hGBUNS
-	LXIibt5KA4mBCuHKEfpA0MQ5ImY+52Asenw0GKASu7kJr2zsjorj8FxxPBfA0OMCcWZQfK
-	Kg17et+KPKai5S0jtqN01kzCbdZ6ytQ=
+	bh=OoIiVq6q/zPf+hFpTGPfYJQvuytKZqbr3TYJ0M28dGY=;
+	b=zIYsyVMWnIeFgteG+Y01Lz0GuPHBwhrKCZN0BEvbrFE5CPGcWM00tB2GanzAOF1NAyzeqe
+	Fgx1NCAjanfm6v88dARuc7GZocBLPO7SoIncebBh0wq7RrlbwnCsytezRYrGFRwD/craEB
+	NoL3u6wSKfn/2+hc7Bws91+keSrF8ps=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWwILwNw;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cx4HrWj+;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760384903; a=rsa-sha256;
+	cv=none;
+	b=tGwfR7D/u1zvci1sNzWqvL5nxhPYrfNK9WKQN1qPuEyTqqb3yJwED5slk7fDzoX4iYXF2Y
+	w9oJ8Nn9uZmRwok8ELdDLiCFGDPIXqQurxHi6gepTP29YhXXTbi7fsFOXwNz5RuN855981
+	56um+BM9RQPiLHRjlb4A2YdfYRiRn3U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760384662;
+	s=mimecast20190719; t=1760384902;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
-	b=BWwILwNw5lhhmHJOiydbqF9Q2v/prdGSogujE3Ga6OJFrYvThCDDhd/dpb6T9GuRIBmaX8
-	NUp5pg3eXwRmAA5rTj5bCvCv5/rDbm3i/O7ocwefZFE4+TTldtRIMWn/ifAZ5wPldH1B7o
-	/MsHZUMakf2Yg5rNiF9dx6Fy0JJoI0g=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OoIiVq6q/zPf+hFpTGPfYJQvuytKZqbr3TYJ0M28dGY=;
+	b=cx4HrWj+qliFh/pB+xtlGeRvwPZHoWWGV0DSwlsfuEdBp90xv9yOYxX+SfnRw15iBbApz7
+	zeuGT5ACEUPrTxMd1QDbYGvJn6Msj/Oo3JP26D3O3v9numhZjIC0AnTN9/g/vMJ8Xzo90u
+	m6DFinyimhX1yByE4w4XEl7+D+Fl+3c=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-g0Xplk2RMECx8ToEoXB3Pg-1; Mon, 13 Oct 2025 15:44:18 -0400
-X-MC-Unique: g0Xplk2RMECx8ToEoXB3Pg-1
-X-Mimecast-MFC-AGG-ID: g0Xplk2RMECx8ToEoXB3Pg_1760384658
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3efe4fcc9ccso4051015f8f.3
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:44:18 -0700 (PDT)
+ us-mta-591-ID7RhD9IO0WrkI1cgAaVow-1; Mon, 13 Oct 2025 15:48:21 -0400
+X-MC-Unique: ID7RhD9IO0WrkI1cgAaVow-1
+X-Mimecast-MFC-AGG-ID: ID7RhD9IO0WrkI1cgAaVow_1760384900
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e36f9c651so31722565e9.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:48:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760384658; x=1760989458;
+        d=1e100.net; s=20230601; t=1760384900; x=1760989700;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tpmxJccQttw3NZG2ruCVprCfEA+5py1uoFlC30sI2cQ=;
-        b=SwIF3BTbqCLSXsOo1MZTGuRCyQQS4JipZklAPMjxmjU59oHovR3mmoHcQcuVM5HW15
-         6ci629G2eTH/OuRjqkXYkvsK5NeRHoVtJ5OH0cP7yT/burkQdJNrqkzpc9RoomFh7RCq
-         +6RljhHBBLS+b8s9vr1qThivkqu8hOW5z/bY8UVlIaOotkXL+icVD8e8TWTT8savdmae
-         YGDVKZGqlfDQY5X6EJa97HePlHpbunixV/+cDc1x1L7a8A1K2pizaT9/GyuBRBOBeV81
-         A82AAxEB1YRNz/IfISBGB16AaW44aTU9Mu+emoRlfNFr9Sih7/U+6zabPjSMMfSHNjIE
-         H4cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW69EC8H1Panjj04wgle1kiKIk0owIjnBhsJue99XFK3xgeoz8UgcX9mIuxsaMU/qQ3G7WSK2bvXg==@kvack.org
-X-Gm-Message-State: AOJu0YxJqTMD/IAT32CsDikyuf+HK/PrYj0tbvlA62dx5njQcMhoMlJ8
-	AnBtmFAfALskEclg26rG3Cf7qHndA/zcNIxw/az1FmWVey6jU9BWJwavAKYq6JoL4h/6MVNd93y
-	ClonqXv9uZYkk4BI0Q/l+Zda2uhsl5vIjEjLg3VZTzppQtii7hK3Z
-X-Gm-Gg: ASbGnctetYSkxaTxMkiOfvdpVnnynhbtBm3k7qIlsvmpxF/xje3wlG2e2ZiB9LISkAx
-	HQt8bYnOExTfL+iM4mrfuxzrOB8W4nC7V4NgNQDdjFhYSaTI8RLDtnJOj5uQFbFkkV5Br5JYIgw
-	edmgxMhk4x/g/2RfMHFefQ+rPYsP9Ebj8uYCBBRaEZaxvp+YLouRZ0A44McHsfKfPw1S8wz1wo6
-	4YT+Gmbi43O0rYHlKlnDTU/nmn021xFWkvtVtb8LtiXKTV7iQAtW+THgmkvelGFXc8gUTlcmp+L
-	q166uzZLTa8OOQSFEAVYgxIeSXnDQ8aj93QwFHCB6RD8Ns9ToYVawqxBWfKbZxnievRqbnc0+CU
-	T22Y=
-X-Received: by 2002:a05:600c:8b37:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-46fbbeb30afmr72148435e9.40.1760384657727;
-        Mon, 13 Oct 2025 12:44:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2DTOVPt4lvXv/lgrRhOALaBYDBqiAKGuJhLuVJZfy236VblOMb7pdACttLqxf3zcWruYTPQ==
-X-Received: by 2002:a05:600c:8b37:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-46fbbeb30afmr72148245e9.40.1760384657373;
-        Mon, 13 Oct 2025 12:44:17 -0700 (PDT)
+        bh=OoIiVq6q/zPf+hFpTGPfYJQvuytKZqbr3TYJ0M28dGY=;
+        b=Ib2g3OjsaudjvvCL3/C7XboGEQ4wSnY7S9RoIhJCa9gKpkJSp5TgC0wjl5XmLT/VcV
+         aW7AOuOgE2q0TZwDwULVX9POf3Jz+gjdjsxTpGp565pk6HsCAcNCF9d9fWiNSl+bc1nX
+         WGb1HbQbCj1l/rpZv3PUF00xrXFjLnGxCgFxHNQCmbDM4f3/RnOI0Z31ZXdesLAJsZ7E
+         pAMMU1jQB9m2E48/xsBvmvcIgOyqbZpQ5ly2b3izzfZgWce38qq8BxlDKeh524dFoGrK
+         BsrBCg+ZAlNDkiiZ1fOXmoFbJi4OSYYaowM+0UzgHJGm0Jbdqku2OobNJKLCpcjhq/qq
+         S3CA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaDYsBXxtpQ1br/bUjGnwVL3+zj/0+6xdnpbokASt4JYJVHLmex9MQqDFAnTNzljYqR+gVWbzvCQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz2oaduLktw7DUKRisxz3mKEdj2NmhRyaBQvfg9OFugxFbAr0bm
+	0oGdXoQvySJtytPT92jIabKP8ZM0xZKGi5dmeD2wW/+QUOm6/XAmTHQE1dRvmwqF9P7M/Y/aHSo
+	Vdy+Rm6rU/TBWh9worlqyrLiRIhE19QeHRLUpD/mWdgJMxdCYojcL
+X-Gm-Gg: ASbGncsQCTp4Ar1uGV0JpN38hjf0pNfct9OmX9ZLJGvQ58ElSK/pJYuhy5eKqoPhoZQ
+	R4nzh3ephhNV2XgmMINSrcwWPCw0YqboGS8ZbxFNZ453Ul6ksPBXodDiNvoda5xxo4mITHgrVlq
+	178sDXGocW4s40o6wQZQ5M1Py5DtUWrqJQLGvPkIuDnlcVUfB+Ks09k9vJzX9UaT5TJE/k4OT8+
+	qxxo1zFEtnmHDDjurLcim8xd7vRoF/tCTpSSCd9if4tl/dAykIF6EOCfKD+7/5Zk04uo2o5ZUsQ
+	6v6Xj8B1hQU5pULnrHbk/GQTWjX07W2Iq+h96LWdelO0v0/AhFyFg6wllP+6PIkwrqIaksPBXmy
+	Oxbk=
+X-Received: by 2002:a05:600c:c083:b0:46f:b32e:5292 with SMTP id 5b1f17b1804b1-46fb32e5338mr86095715e9.8.1760384899832;
+        Mon, 13 Oct 2025 12:48:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbNw6YsZx8cSXfnUugZnTxcwqmuIwmVc7WQ4Zcnny7E+x+vjbOMkcyC4iU6iRN+IeO8VMqEw==
+X-Received: by 2002:a05:600c:c083:b0:46f:b32e:5292 with SMTP id 5b1f17b1804b1-46fb32e5338mr86095535e9.8.1760384899394;
+        Mon, 13 Oct 2025 12:48:19 -0700 (PDT)
 Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc7abca48sm36155805e9.5.2025.10.13.12.44.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb482b9easm205867875e9.1.2025.10.13.12.48.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 12:44:16 -0700 (PDT)
-Message-ID: <2e06ed6a-1674-4eff-94f2-e44ba7de9663@redhat.com>
-Date: Mon, 13 Oct 2025 21:44:15 +0200
+        Mon, 13 Oct 2025 12:48:18 -0700 (PDT)
+Message-ID: <5c1fb165-cb99-44c2-b274-09419f156ad2@redhat.com>
+Date: Mon, 13 Oct 2025 21:48:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] mm: page_alloc: add __split_page()
+Subject: Re: [PATCH v3 4/6] mm: cma: add __cma_release()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
  <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>
@@ -111,7 +111,7 @@ Cc: sidhartha.kumar@oracle.com, jane.chu@oracle.com, Zi Yan <ziy@nvidia.com>,
  Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman <jackmanb@google.com>,
  Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org
 References: <20251013133854.2466530-1-wangkefeng.wang@huawei.com>
- <20251013133854.2466530-3-wangkefeng.wang@huawei.com>
+ <20251013133854.2466530-5-wangkefeng.wang@huawei.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -157,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251013133854.2466530-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20251013133854.2466530-5-wangkefeng.wang@huawei.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rSciqqeyZV86kjYcTRlhnb-sPOriiotKmya2-lJGXC8_1760384658
+X-Mimecast-MFC-PROC-ID: 17CgI4DfgkTtfrpvJu2aMOtyhgbzm8huU7yd6wbAtLI_1760384900
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ez5bjwbsiyo8duwm8fjw8r7nn5yfhssm
+X-Rspamd-Queue-Id: E0B6710000C
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EDC640009
-X-HE-Tag: 1760384662-426641
-X-HE-Meta: U2FsdGVkX1+38WfFgBIzuTQ2nuAKeOB6zfywLDuUnhpuIpctvJYsW/AWdhpEam4hHp+FPCJwgi+waeFrmTELN856jNSxRZ5cGN2yhyqZpzWP5JFTxN0hcU5iheF3UjLarsE3P/lhfLLPcSKJhTBzqUoAEjoB3N7yotloncMMjAaps3UCBaHBjjbsjVWkNb46VKXWNVy4PLeCu6sZmNBk8MeABO2O92UCJQUk1JOyCOUxeKPqDxSh29mmqJArnoaVgRds+MQIInHbZRszTfBdRn/rw7pAYfEJZ9NMYGXGIXtlkHtaIK8gWta6r/IkxPkBulqRrKYy1/16mcjQesOUJ9fRpf0/7NEmxgDOskSxQx2VdrsyeTyyk2xAXjE6Z8QfT0XcNC2pp3Bw7VLco2Lezcsl/+kYZaGoQJ1BKhvOU2YxwF5K1Mp0nPs5utaNkQxtn6Yisf8ruEjR//z8rnSqhUXqVMZWDv5AsaLMilnDLstkJgX6Ucz0xV+dANFN7NBzFTCRp0Ap+ik6vtp3H2oGxQnfCRceYw0mWzB+luhSjO5Iaz8fwAfX8wCaQcZYgkIIsjqLnR+RDwhhWi/q0NwQxUQ5ONC3aqVvdmbpZxa+3upN089oGGXBSXfJ/IW+MMVRoyb/fSv4QhafaDXtZAMY8XgMF9zp8qa1gcHYnNWUQAtJWEHSeaLTiKJA86EtfyV88NYFclofbKB0CezPEk91HweM8Q8ZMtdmKv5+R4CV1gk45KegbDZTbACZEIcb0igfrW/WzoD03nS5Vm3DB0enS9L1OUh68kRYbZC6CAwE6qwCQl8HpFMXcSZG3OKC5M4IPJYhbNRBiFrPzMGRyrfnu45E/qUYavJNgvW31iJ1BMvTElai2oZqPfi8+0Qx0Ib3mRPwShbbpeC0BKpeR4lyUCrHW/d7WTUqtOYx19NZJpboPA2eYgPLoE2QVQ71gMuq/FS/buUXf6H0XETQ1O9
- pQJ3WZ9f
- Dvyp6ue9POktoy0QqY0y6MBxIJFk1dmUMwID2L1hhoYqKVgOYlsTSlQADxXktdWi70bGLOFyDarNQL0x4S4v19T+xYjIoEjWj1qF2Y846dS5Vc9xUTVTfCch+f4ZZHc4z77jwL1HRN/aWPHrNpKhR2vWr1sQr2xbqhYV8Vd6N/XKSjcg=
+X-Stat-Signature: zzywqfpb5j6bws84uiqczeg5w6ir8hw6
+X-HE-Tag: 1760384902-847274
+X-HE-Meta: U2FsdGVkX19tR/2GPOobtDdlzWm7VL5pddBr5ZfGtB/2gC3/06EV5fi5aw/0LaOhk62bLQPq6QCK0Gd0eZajs2taRtWIKbRIVOu+rUY0SyD7bKF1OKt3WRTwcPca8I30LFUpZx2DTKjWkD3mCeOjADWcH1uh9CllVI26DlGRDKMM4owacMc1/C0jI/TlAdci625qLNsY4sna6p0GnKXGKy27lA52gFiz8TsTvFoXx3lknoFhzalLe/nmePrUIodA2ip8zbYNXkpKGWLf4ztqJPXE+CyNbDWYVM7NC7nsvwAqNaYsuKaLuORC4c0GOnXx0ZN2qVaiC9QVhiuy6jy7VCoPDDZfla8EMd0rACLEiSjwSLdSFdPtjjJ+UiIKX9fB5ZwRfI4dlBKW3L3IjfFgj3G5iTdse4xnD2ZV1ZEKtr1kYz4O94mISaEgz2E2MWATW/nN/et0VuDzpkJG9q4onCxrnQ0fZjhagV6BKNg88KwO7BpSHUtRHPm83bwBHNYOGcI3jp8bFzsdTQkFzZIfnibGsy267Hp21TSQkKqZYUfsRBoKG7d3oWNxdkoavFxkKKIDoVL37gvE90YIlbRxj3fmG0fwFhWvDpaQ1VE+kqsdS37T3ykLFPEleU+vF3XtvfchARxjJR2QZCR+Kw3rZreF2Vj9F8L4hK0dLeNYFz+nn0VslfMGQyYoatSIARX78mDD8Td5UvJGQCNnHJTdlvXot/JAoVbdU4dS6cb+uotAfT4PJFg/pQlc+t9Fv9rxjafDKPcozKjAxAyg/HnYKUSVVZ9M0+Thm0BxZLojDFW4u8/S75TJP81OKpJxa+89pJ3Ed/2y7ZCqjYHZsdGJykWEIgCQOLntpPllg4KFh9FiXru+t0OnEO1jOnjDursGuwb+dx+AXpdIMbnYFlHIYKPWACSlnGUma+IhLmqc4QfycWBiiURuDi3i2EmrbW61EGa5o0LYiYYptIOen1g
+ bvelOHF9
+ drZV46lGECDtdAtCJMUMvJgLWr+20UE/L4c311PvXGVhnAEOL77NQSHLMVqiJeuqbbRtuqTzTDd43yV5FXhPRfmY/1QYP7Rzn49GimT6Oap9810E84m4sRVytpI4IRNTPx/dzx+9Oo03nzROqkIZq3g2ZRk2VujxUlD71Y87sFPsPfHA7KRGetVoPwVIRCXYjsaWwXHqb3n5L1dC7LWKnuKbSE/CuRVM832YUXCYLBOG9SFxcH8afk1qB/AUZRxN0eYf0iqGdwDCrlUMEwnw5c7nDHiiekBe3o98X/Tfwft9quyb+9L6HufV20f92ZNQ6duNe8Em+rwAMjW6YBNsBmKuagMEGkUuMSgE7Z8ve2s3C1SmpJbBqm3YWSwSVd96ISxX2RoM98ZQrZwPiqwavvYE1dzrAYwve7odf56H32hfYY+TonwLeQJUUSUy42RIEldedMPWFqXnfAzLG8JawpXlrkpnVUmcxAnw4v+KQcMlkJcF0HnCvqomjWyRprwqWFHkKjtj4L5iADZJpm6ZYFO48JQNGg2lCSVJ3e4EJ+QVEwx2M3DWh+2VufkBKDmyV1aepWCjxDNHOHjx3FvEFjtnKCd1sODumdgvgZvwO/Uq77H7sKWoBK6ZeAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,28 +181,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 13.10.25 15:38, Kefeng Wang wrote:
-> Factor out the splitting of non-compound page from make_alloc_exact()
-> and split_page() into a new helper function __split_page().
+> Kill cma_pages_valid() which only used in cma_release(), also
+> cleanup code duplication between cma pages valid checking and
+> cma memrange finding, add __cma_release() helper to prepare for
+> the upcoming frozen page release.
 > 
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > ---
->   mm/page_alloc.c | 19 ++++++++++++-------
->   1 file changed, 12 insertions(+), 7 deletions(-)
+>   include/linux/cma.h |  1 -
+>   mm/cma.c            | 62 +++++++++++++++------------------------------
+>   2 files changed, 21 insertions(+), 42 deletions(-)
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 949b01f293d4..646a6c2293f9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -3042,6 +3042,15 @@ void free_unref_folios(struct folio_batch *folios)
->   	folio_batch_reinit(folios);
+> diff --git a/include/linux/cma.h b/include/linux/cma.h
+> index 62d9c1cf6326..e5745d2aec55 100644
+> --- a/include/linux/cma.h
+> +++ b/include/linux/cma.h
+> @@ -49,7 +49,6 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+>   					struct cma **res_cma);
+>   extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
+>   			      bool no_warn);
+> -extern bool cma_pages_valid(struct cma *cma, const struct page *pages, unsigned long count);
+>   extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
+>   
+>   extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 813e6dc7b095..88016f4aef7f 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -942,34 +942,43 @@ struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
+>   	return page ? page_folio(page) : NULL;
 >   }
 >   
-> +static void __split_page(struct page *page, unsigned int order)
-> +{
-> +	VM_BUG_ON_PAGE(PageCompound(page), page);
+> -bool cma_pages_valid(struct cma *cma, const struct page *pages,
+> -		     unsigned long count)
+> +static bool __cma_release(struct cma *cma, const struct page *pages,
+> +			  unsigned long count)
+>   {
+>   	unsigned long pfn, end;
+>   	int r;
+>   	struct cma_memrange *cmr;
+> -	bool ret;
+> +
+> +	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
+>   
+>   	if (!cma || !pages || count > cma->count)
+>   		return false;
+>   
+>   	pfn = page_to_pfn(pages);
+> -	ret = false;
+>   
+>   	for (r = 0; r < cma->nranges; r++) {
+>   		cmr = &cma->ranges[r];
+>   		end = cmr->base_pfn + cmr->count;
+>   		if (pfn >= cmr->base_pfn && pfn < end) {
+> -			ret = pfn + count <= end;
+> -			break;
+> +			if (pfn + count <= end)
+> +				break;
+> +
+> +			VM_WARN_ON_ONCE(1);
+>   		}
+>   	}
+>   
+> -	if (!ret)
+> -		pr_debug("%s(page %p, count %lu)\n",
+> -				__func__, (void *)pages, count);
+> +	if (r == cma->nranges) {
+> +		pr_debug("%s(no cma range match the page %p)\n",
+>
 
-While at it, make that a WM_WARN_ON_ONCE(). Unfortunately there is no 
-_PAGE() variant, maybe there should be one.
+".. matches the page range ..." ?
 
 With that
 
