@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7638CCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5700ACCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 195478E005A; Mon, 13 Oct 2025 11:26:58 -0400 (EDT)
+	id 9F9718E005B; Mon, 13 Oct 2025 11:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146108E004E; Mon, 13 Oct 2025 11:26:58 -0400 (EDT)
+	id 9AA448E004E; Mon, 13 Oct 2025 11:27:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 034FD8E005A; Mon, 13 Oct 2025 11:26:57 -0400 (EDT)
+	id 8E7948E005B; Mon, 13 Oct 2025 11:27:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E26BB8E004E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:26:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE6D61A0439
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:57 +0000 (UTC)
-X-FDA: 83993468874.13.6E6FB77
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D61C8E004E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:27:01 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AFA31A0439
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:27:01 +0000 (UTC)
+X-FDA: 83993469042.04.8F53B52
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2F52B8001C
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XGXUL/n8";
-	spf=pass (imf30.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369216; a=rsa-sha256;
-	cv=none;
-	b=pZnC0nJ3FYflOcm/EfA2TTWBqST53Tm2lijtDocE6gWo3O//sWuxMwVfYDmg7yhsv+jStm
-	sDM3226jLxCgNl79riIfCuW1f7fpG+Ub8WzwLMWN/7Ecmta4W/YVAKHFGS/BKGb6/jQg9/
-	jzF3WP1FfA36dK4OD7BdY9CouqMo8SU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XGXUL/n8";
-	spf=pass (imf30.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id D36B6120002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:59 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VBFGKDqN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760369216;
+	s=arc-20220608; t=1760369219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8Lvu5o5p6XDbVkFuAp5XNw+4Tn/weOLOgFdyd4rHHE=;
-	b=VLCHt3WuJYKPESKDkvdvDzqAWbYWa9APMTOEJHGtoATqvOKWFV6RKjQmtmDwFrfjBTO1eO
-	sQh1j96GcNPYNlcamKRfufclKg14Cy6D3VGAWYVsnoEywteMl7pTrgOUXEiDsZWIIS4xQA
-	+51oRKjdbEjxbPTS5z1DbFuRP2Q1fzc=
+	bh=ldZuz/4N+wsldl2BKi+pecmRv5c3pRjmppa5VjHLQso=;
+	b=p7LGZFdgls28syE/Muu9bLZR5Ku7zA1IDP7+G31DzH1BR+dyOjP4y7WAmM/gZYSaK977QB
+	vN7dmQy8lf+e0/dLrcLx8p8WrjSqwxou96DMApxzrHcX4BeIXr9caCAc7xaG6BQBXrOcNi
+	qkiJNOrGR2eL/zHsguBJcNpEbrqxWP8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369219; a=rsa-sha256;
+	cv=none;
+	b=03Kn0bnzkjKNUGNKFqaq08NU+/14OChB4rc2LjQJ9HxsmWNexxsZetfJAHFuh/REkrp/TR
+	SLD0Snu576FtOwlAdsP2qFIyodpqZ8xNeGMlF89YswDmnmos0V/UBTJKagftdxXeMMak8T
+	9tdljCqQZcPffNsKuZyK1vjB3xKA+y4=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VBFGKDqN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 995A861DEC;
-	Mon, 13 Oct 2025 15:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26A2C4CEE7;
-	Mon, 13 Oct 2025 15:26:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 622B161E0C;
+	Mon, 13 Oct 2025 15:26:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7D4C116B1;
+	Mon, 13 Oct 2025 15:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760369215;
-	bh=sWj2rZyT42J/OYfkx+qu79O+85llJ4XsbCx+y5qZzZw=;
+	s=k20201202; t=1760369219;
+	bh=gP55VKbohdKUFjUIbdAFjXKOGHoX+x5EdhnEOLcQ7QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGXUL/n8MebGFtbArYlkLWAwshlP7BxUyDbGFrxA7tRPbb+hqW7iPQf3vxeSnj6r2
-	 qyMXiIj9C9BDcZ2F0nCo6bRuMbB008fDQprxf9k+4qs/28tmANmSNOnpCu/cxJGrb+
-	 COka5HjkPCsWuwfgYVTAypLDEUbTY3kHhsnZpd3gQRea5XwLPJaHRqkEh3G7FaaNbI
-	 ckYAcFzI41VXtx3lufS5D1zKrJ1bnuqUWNCR9gTdAgyY2tIgLBP5DHqOmKUy/rRpZu
-	 dVHYyq/1RY2yPEja3+Lqr0G5FINVgnG7peq1zjmqJ9aem6yi9JJ+JJggSh0tyZTh4g
-	 E6DP1eCMSd9Wg==
+	b=VBFGKDqNBy0xJePjSPwIh5MtWNEQFwHsevMHmHcBV5qcPGuvqZid9em7RPLMiGq4F
+	 qMKY9SyKL0NciEAq/rYuF6EbgGRndYQPjYeO1iksCcDIkldZu3fY3/LHnrcZfqiUoI
+	 NdYO1nup+k9vZEqA6weRmQgJwydWGadQODFVV3DfW67xHpUiNJBRwdhnymVPvrcTSR
+	 tH5XSM9HsbPSrJ6uJQ3dBSx6Ibw2Ntpo6Zp+cD3Tq6UbfdvZYV2gC2qOeqaw+Y0Z1A
+	 aQxgK4+gGQdcDvgKLXN5LdMAbgH60H5UulKgzaY0+9s2yaAome6GXMye0HSqbEAOEj
+	 ulYUgjpNsmsMw==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -87,22 +87,22 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v5 8/9] vfio/pci: Enable peer-to-peer DMA transactions by default
-Date: Mon, 13 Oct 2025 18:26:10 +0300
-Message-ID: <a04c44aa4625a6edfadaf9c9e2c2afb460ad1857.1760368250.git.leon@kernel.org>
+Subject: [PATCH v5 5/9] types: move phys_vec definition to common header
+Date: Mon, 13 Oct 2025 18:26:07 +0300
+Message-ID: <b520e4a2b7b6e0c873d4787aca400ca03821f8aa.1760368250.git.leon@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1760368250.git.leon@kernel.org>
 References: <cover.1760368250.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: kh3cwhwbzj6aj55o7mjp77tdc9r4eypx
 X-Rspam-User: 
-X-Stat-Signature: 9pufiwhz15nruujuyr7hqn9xczpk3rf4
-X-Rspamd-Queue-Id: 2F52B8001C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760369216-552207
-X-HE-Meta: U2FsdGVkX1/24p8Mq0DAOFcACbw1SQhoz7/TYrhr8gISpePhPUtxpoF2+bIGKutYdYKQL5eEbG02MZ0nzV1QLIvrCQAyv2A5LiEU3sSF8CyrAckDeF7gZQktZhYcWUApod192JZPi3nfaHOfHJrnC699EFw8YPNsEXhIaZgl7GExRu4+P+ihOUBpGXwdAggtVAmvCohb3Qe83gSI8BWnnlDrcP7r6OVZXAZ635JwwPyzIAAzsj12QP4ULKlndfVfR7Cb7fs3M928+2vni2LvMtFq7Sipnkn7AEL3Va7YlMjQu1bS38JiRQSdGD4vzHMqINTmfoW7GMJPPg6oym3EQWlRTR2gOrDY1yJBsZiB8kpmDaYUT8vGY9oUCCLkeIrXT5aUaYl1dA/4Z+bKhfQeu9OTptZ55RixBz5e8PW/WhrOT8TpgDU+68UJ7/lmzN65oCJPaWmjq8R1Idyaex62E5rnv7RoJH7wJO4gfLDjHJKOaenudP/ApTKt+5VOjG8jHFG82GuKsDHQOsjr0M7PsFxQaoww9QYRj6NMLH5NJswLCvIzMvK15Z0ZnI83T8Egac2HrQu+ruyP/Qn0cFpQYebcXKWStkMQcWGnSbUPMEjnFageLDxckeX632APXIDXiD8c6flKf9Dks4+hl5CCq9L0B7Dev3jIH01ZxV64w17idnXZZ8QsQ3ya1HYY4dgoVH1Jjs/4OqeWDgR1vlMV/ErBhuG7qmAiOh6T19Q4bPInQBFJrdfbYIc926NMGg86E/vFjTwRoMa23410yjdZEzkZeBEUR0Hu8hRgD1PBgux15hQ1kKIErcCwwnrL5DvCpgnYEXBCVixyHbrQ/cBa2O/MWh13GB6gVaereTKNTgexAe7ry9GCKSc9X0OnFuyf6J66E03Dk/S3pUUX2VYmJHI0TLRVUNUzuYjWQmO8UnXF1ekEDEojPK4XJBc08MEUoNSzsGOZ0TCg0Gpupfv
- pX5bPIPw
- nXl3bybCEW+pfxHulLM9ZaofYPB/BKuRNYOw4IJgDXavTOB6vtJOPlfxf5cmnCLmfoi5izE1TMvGavZt7yiIThV2zw1MyKYC713S87qi7+wyb+6vICrOanVWhmKAnA93Q+m3VKdwdXyCxdla43CR9mcYfi3IpxPq/cOiKUwzUBzmvcUvf/LNZdcYJuWzP8Q1ON2jEUepxn/OsPmg57Tvz/zi+Y0uhdl4K/o8n/Yk2cGvKSRNQfGwDSwFyOM5W4jVAPNmSbSHPScBkoTkOlm6BCO/CqBuOmpMplHdFZTEsybeTNRs=
+X-Rspamd-Queue-Id: D36B6120002
+X-HE-Tag: 1760369219-142522
+X-HE-Meta: U2FsdGVkX19OAiB597udWzZ+8+cXOoPOjAyM1hTZ8wVSD3foeXQE9rBTh+Fu9DrXG0SYRZnoMhrwms8jmjECCdA8VNhrkh1kp73TmYz9JNMI8psbfjGJr1Vxz2u2ds/e9yXKprHsCZTIcVRI4FypacO9V/EhXqg55OhtfaBNiCt/CcOHkQZzd1I1GRyB+3dpSN6brhJaSXA5Z4G/cABbk9gb36KsbT8nsSvsHl8BlRcgudesHlVBYo30ccVIxlv8Sk18zm/AXTjZiVrErFdSu79ZzmdRzHi5uh9mosHTpLycrU2ertg2VEJGoddr8XA2x1brZK5lC5m7y9lOs9sv/4Kbu/zXeF3rKjhP+0KJBEU3JNeRHDfvq0ObmbjAARc8rRavFCH/xoDA/CYxSYohnVqQJ81axSk4kGO41kQgV2Hu0yDPSqDPj3/mi2m/GDdcbhF3GK1xSfFL03TPKyp/hNsAelF9fU0YatjAVUklpi436OhLu2rvY9f8zB1ybTLdSEoXg2jxJXOddAmKr+L5c12DrMyWqPAOLhwEEfjA094WrO9pGyI+Pdx6wn22a9Rdkw+H+sFTv5XrJ1mh/gaMjY7n1LpPn+PRUrFFY4nEHShmOlizYDlBCDcuk3wzshJ6omvg8aJB5X09saGnLx70oN0rasrg+P/wHkB3Y7vKitzilwnZcn6hP/ERqCgufPIaJwYJPoEppQJoUPo9M27urhMOjvazW/zfflsStFH3TGl8axdMni1Qc2Md/gIojeEodyO4AHGZZEjXrli+whQvM6fJJdVP/2O+t/oCKiSV6xV9u6rS6i801Ke8p5gmRFOrtr4HZJAf1FU0UkPoa4PA9BCsQPzrEb74Ip5T4IEoSCYCWqY1eQgvFf7iXepjzxzi0NPcjBWQM1ezQtKAccNdAG8iyr4DrS+BrCNCFrhOuFcWV4TOJzc4KtzASj+EFXQqclFIrtof2rCepBwmSEB
+ kE1+hkXP
+ fajiEBbczfGPGLTg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,44 +113,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Make sure that all VFIO PCI devices have peer-to-peer capabilities
-enables, so we would be able to export their MMIO memory through DMABUF,
+Move the struct phys_vec definition from block/blk-mq-dma.c to
+include/linux/types.h to make it available for use across the kernel.
+
+The phys_vec structure represents a physical address range with a
+length, which is used by the new physical address-based DMA mapping
+API. This structure is already used by the block layer and will be
+needed by upcoming VFIO patches for dma-buf operations.
+
+Moving this definition to types.h provides a centralized location
+for this common data structure and eliminates code duplication
+across subsystems that need to work with physical address ranges.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ block/blk-mq-dma.c    | 5 -----
+ include/linux/types.h | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index ca9a95716a85..fe247d0e2831 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -28,6 +28,7 @@
- #include <linux/nospec.h>
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-p2pdma.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -2081,6 +2082,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
+index badef1d925b2..38f5c34ca223 100644
+--- a/block/blk-mq-dma.c
++++ b/block/blk-mq-dma.c
+@@ -6,11 +6,6 @@
+ #include <linux/blk-mq-dma.h>
+ #include "blk.h"
+ 
+-struct phys_vec {
+-	phys_addr_t	paddr;
+-	u32		len;
+-};
+-
+ static bool __blk_map_iter_next(struct blk_map_iter *iter)
  {
- 	struct vfio_pci_core_device *vdev =
- 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	int ret;
+ 	if (iter->iter.bi_size)
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 6dfdb8e8e4c3..2bc56681b2e6 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -170,6 +170,11 @@ typedef u64 phys_addr_t;
+ typedef u32 phys_addr_t;
+ #endif
  
- 	vdev->pdev = to_pci_dev(core_vdev->dev);
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-@@ -2090,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
- 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
- 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
- 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-+	ret = pcim_p2pdma_init(vdev->pdev);
-+	if (ret != -EOPNOTSUPP)
-+		return ret;
- 	init_rwsem(&vdev->memory_lock);
- 	xa_init(&vdev->ctx);
++struct phys_vec {
++	phys_addr_t	paddr;
++	u32		len;
++};
++
+ typedef phys_addr_t resource_size_t;
  
+ /*
 -- 
 2.51.0
 
