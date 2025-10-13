@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E646DCCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:28:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4997CCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:28:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5220C8E000B; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
+	id 487898E000C; Mon, 13 Oct 2025 03:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FA4E8E0002; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
+	id 438708E0002; Mon, 13 Oct 2025 03:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436D88E000B; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
+	id 375248E000C; Mon, 13 Oct 2025 03:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31C2A8E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:28:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BABBA1DF2E5
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:17 +0000 (UTC)
-X-FDA: 83992262634.05.16790CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D02421C000D
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:15 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbL2UtGh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760340496; a=rsa-sha256;
-	cv=none;
-	b=4EsYlSF7sqah14vLrM1+FON91ITSzTDYsjXjy/+bZvVz9WUbGvfsoknc1DQrT8Zr6fSW/u
-	eGnG9mr3wb/naSBdGrjCNRl2BIfXD1vdmfKvdmw30hD0I2lB/VnncR0QM266sBUng5kmGv
-	R+T+I2REsjtTvhZSxi5JDEtm8E671fs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbL2UtGh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 26F4F8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:28:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E55731DE8F0
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:43 +0000 (UTC)
+X-FDA: 83992263726.24.FF8A323
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1D9D540012
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:28:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O1Zjb7eQ;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760340496;
+	s=arc-20220608; t=1760340522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xLfbxzkeO2ERTe7jXAN1BDvl0RebdDO86nNEGcRvVPk=;
-	b=ZMMpoPmU1+TsELhqAS8iuiKSdOm8kQkRHNF7BgrzlBi0ovNaTXviOPs1s8o0PPHvJ5NXKm
-	HwLOlbftxwqo3mcENwwVrMU/iTvgPidiKGQQc1W1+ZtdfQInAYbPqplgIGtTSeUcwoVPoe
-	Us79Ra1B3Saprfylg564rJeyPq8ZGv4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF5C345048;
-	Mon, 13 Oct 2025 07:28:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC21AC4CEE7;
-	Mon, 13 Oct 2025 07:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760340494;
-	bh=LXq06zOJDZCJjFxJSMriSR2r1NN0TNY9ryW7UFEsHNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nbL2UtGhHwSUcGWW+HFftTr1Zex2h56UWPi+59Dlbir/2koiJXfOyrHQboEf6dLFp
-	 DYECR09j/iAerh8uOTGkq3WkobLDm3Kp1DAN5ThsizadNmN9snCCVcjNt+sh3H/SRi
-	 9R8SvKkNNdcmwOqnJqo1kZ6mIvWSCEqzE6qVnN7efWns9muMgrNEAH6pGZoqjzQQ7o
-	 MLIY7oXQVhj3QtNHmSuaYExcIgWzSaK27QgdY3UuvUaXb1ZcmNuW1ZAkOQYodFtOWo
-	 eUyo1Rm/AoUSn7fraueBneQSX4KBMfTlQsdXCd69lPvhULXHr6e/qObo9nvsq+IS+t
-	 zAL5OVBdmdBeA==
-Date: Mon, 13 Oct 2025 10:28:04 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
-	iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 5/8] x86/mm: Use pagetable_free()
-Message-ID: <aOyqBKjIut4fNr_B@kernel.org>
-References: <20250919054007.472493-1-baolu.lu@linux.intel.com>
- <20250919054007.472493-6-baolu.lu@linux.intel.com>
+	bh=IkLKvSUaQ4BnGmUhizr6OnCKnUnuAC5ZuO6XhuLGhRQ=;
+	b=1Y41YE3z1xXuINNcLf1NrAQMCHBhrCC54vdXySPHCKB4DHbwZQE7FEblxasjp3x9kdGk8/
+	uIKqri4ih6tZnsJlOnAcSMibAKp/nJNTqM2kPko9S+zHCqgmf/FjK/nMAo89BR7VK2YRoq
+	yBIJTxlIpfh2hqh8jaC6AWvVwyFBhgA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O1Zjb7eQ;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760340522; a=rsa-sha256;
+	cv=none;
+	b=BADVx5BdwO8jPZuP7iCUBIWpmHPK1JQx1oNJa9YC7AP2AtmS3uKLqjMVROCXQX9fREWiUs
+	dL0CbQ0XITATg3PBdS4SRvP42UJ/dFCyGkC41bt9CN697LuOx399odmkCWHfp8Xj7Fdsay
+	Dlvz/LD6TLfWPWwV5VAIOXpZMgrouXk=
+Message-ID: <ba2ec325-72d1-4a11-943f-b36a090cb68b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760340519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IkLKvSUaQ4BnGmUhizr6OnCKnUnuAC5ZuO6XhuLGhRQ=;
+	b=O1Zjb7eQu5+hY64dyZyuiEp94+2tjMc+TNk3zePZG8N6CXTZ9bs0B6nz5bcpd/RRprCWyi
+	k2CWFu4wddIDJRoOQUQZIyP/lCul2iotxNRRoGS2Rd2lTtDFfvercH+HFzJQ/FAxPIEwCq
+	T2orOfnrwXuArjHFGynllIFgiY7dmmU=
+Date: Mon, 13 Oct 2025 15:28:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250919054007.472493-6-baolu.lu@linux.intel.com>
+Subject: Re: [PATCH v4 3/4] mm: thp: use folio_batch to handle THP splitting
+ in deferred_split_scan()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, david@redhat.com,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+ <304df1ad1e8180e102c4d6931733bcc77774eb9e.1759510072.git.zhengqi.arch@bytedance.com>
+ <x4d36plhxcbyp76q4gmesktnnh7yi7bfifx3amk3fwx2moqkk6@77umpnw6rkg3>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <x4d36plhxcbyp76q4gmesktnnh7yi7bfifx3amk3fwx2moqkk6@77umpnw6rkg3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1D9D540012
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D02421C000D
-X-Stat-Signature: 9diom7zmod86r3n4dxbi1wrhtfoco8tz
-X-HE-Tag: 1760340495-430192
-X-HE-Meta: U2FsdGVkX18HzyhyHSX4ri1EwBGgr3dfEGrpG439eEypMircn8QptF5TDvHh4fGIDTL3syQc+gSdU0VyDI2rnlNl8dRF2MOqH879FUrX3TRsmHqaHW8P4s3/jxSSrQC6ZLvXOW+cnFqjkMYBIv/MKOL9SFOH4D7lO1jxi7bB3Ysks/BfBTzyspVug6eUGbg0KpC+nhPi5bRm++8gUj23Vy8EWyFpH66aMkvbYwUr5lsgvoe9cev+cSpJM0zzvLBbCTXrMq+6gBdAkL0kFwb52jbjy8rJYLZ/DAuockPSMt19fuuy/SpgyEUIPCJjjkjazl4HYSMxS+pdCZVZbWMkfzfy3Vm3BxR4UeqdUEbbvzzG0SFQZ5hMGcWnFyg3cePJgzXdpJRlgME2OddARHCt2Gzwf2CzWP+LQlmV5zAV23XPZHyuhjlMlrj0uNWen1Z2SxgtifYqp4dATNairZXvugMeyl3QMfVzgvoHBl73keO8zKFVT/1j5OnJmMTQrPoAsu1VBs+qeT2qEwxeknb2EfD/5I9XHWNLoqXvAONB9SxHXcBq3IfSz1veZghr16pMhB/N+D4VmErvDx4Ar/183hciEcq80oaH1cu3hsBy3cWUJbvJ4NbVMeoPtsMGzybR17Z3DH4PHBch+SYZQSClVH5vX6f/y3bMRdqnD7La0t/yhOCjSiTcwBqTtevittZnlR3HPx4N4J90Hhzmj/GEIPFGuZHtkcxe5jLIE9xcJihpR7fpBA6pqv7xtRcF5U5AT6lC+jUB2kGcL+q9Ke5bPTZ+RWVQc0HrEaI2aIsryXgiL7NdgnH7Z1ZlafeZxIGxxOQxLPqXW97jqgUiwKOe81287HeDt5MwtEr7r2fAl8Zt4xdOTnN0lIshZG5RWdgtopIYKzcY0w9/abSND/VpzvWZDTkoGVqY57mvYa/3OG3gZL+RiSzX1eNKnNuTCTqL8s4XdtmxgqZ+4XBOokb
- sIW8HHDw
- 4gVMCZWS5svF0DNLUNaJV5bybfQsitKRFvw+ItVH2hzTWT/JGwRSlDLVvZ6JUv5b9gGseFg7lBjIk0znkfPsWhEk7sl0DRKzg30azCy0MPqNIW8+z3oUFpd9NlHybqZPyP56zkIw0NQ6VDZ0QYtv5LWwqAlpTlV74k5lkDMjwIfLzo6gaiTV77xmoTkfUWg2c8FTtDOqDdNahzqJglkIdZEeO07qwLrjNECXv2ppkFLtpAfkACCKbJIqyBbtXEBTU/M+09ZjqaT2Qj3uUvtwDype1pMST8h1TfkprYEB3KAtcu5B5FT+Scp7gm1F/XTWmta258HNMCGDXw5Oso7jr4fVmiDUkEfOskl2B
+X-Stat-Signature: sgahnysxhumczh4zget6itpxxfp3fu4y
+X-HE-Tag: 1760340521-62772
+X-HE-Meta: U2FsdGVkX1+2dp0r3Y8Yqp/zD19v77mRK90JaFv9riJCHPcBbtJmBrmggKG7fVvToDLw625wLxzyZoziHHzjMjwpi9fQ9vnOU/6klK9e3ix0ypIswGRH5e/2cA5dhKMsA6E1Xg+YD2+aBADmgUqr4g5rN/2w3s03jDzPu3XEjNdX78R4kWOnA8B+SJjmFiYR4/nZ0YEJb0nBwXYyODD8OS55jPQsIN/qMVl6qOSk5moZ+ajCcpnCJsXXVHIwZ3sxG9tLgF6xi7uqVQ0BgY7iYasKGhAW+Rq4LMr2/6sQ5o5Ie82EnJbbIx3pZb5mFoTpTFHgacl9RUizdlLlJsXX8cm7olJDJ87XzhanngTaWKRZ1xJTy9MsslNzBzqAsWcODd5NPJUbHXa2AcrqDDESUMLmBs63AsOki/QznpuXoebtrTF9XcqAtEc+6iMMK39K3YFztsgaZQbswBmakrH15BrkJY54pFB2q5nmeKXTz5BJQ07Ny2OOKyjx0cj4aPDZvIboAaFOoEufwnN4cOBNEUgBMiACCdTZ1z4tDs/tx8srZ6gTm1X1XMqhAvpgLLV4BarqV3mkMN32qk4Io7kSfnZNdGakHtcUMKZ9xjpfPfv9S8PPXRhwleByH8FVYrdxt6oArrFGPMV9yiK9couDP3zLz3BqTFm1++kYhHpjTPV3jIp7zrk64Gor7yGWr6IMCzt1km6zTdYt2tOL8BT+753QhSFTQ1oDon04NfjvupwebJcAV3HzokYTZcEtg/1bEXNxNnyS/ZkK0GaKPAxOdUPFWRryM4al4T5m8U93q5L1rDM07zfk+HoS3BKUWF8FgpY4kW6CZk+IUz/QYnYPuDIi7GtsiWav8m9V9pdrba16AT2c6yazPOKv8sp3W3Eouf9LX93STsSpChpLgXjLp3/suXuW/RCAv/YhL2M5dwhnKR51Uwc7GAsAmBQhHyBP/R1SHJLvEpVOOrFfbW7
+ F17ev5Tf
+ 3A2PRU4+GOd5A0ej8sHz26sHchvL60B5M4ecwOyfPeKFwF/lNI8uuUxYMT9HoFgP/l3JAcqscD/ZvnFLcxwvuyYh6ypUC6akuoISt5d5xAiuKIMRn2XlxTX3gKwJSeZscKVveRKXP0N4fZjZrXLRCWuUoQt1BLNveofnMwt2u63Cv6TiSkDj2DPUUJXmS3DyMaP6UO+xtHoLYKQ8sHSH+55Zs1cMsXZ5kNRaewOKmiHh1WU7VWGc6Etdxn4MdyG1D5LYmNtM9OtkqtFF2iPxzl0VFdyo4vRA8G57w
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,53 +98,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 19, 2025 at 01:40:03PM +0800, Lu Baolu wrote:
-> The kernel's memory management subsystem provides a dedicated interface,
-> pagetable_free(), for freeing page table pages. Updates two call sites to
-> use pagetable_free() instead of the lower-level __free_page() or
-> free_pages(). This improves code consistency and clarity, and ensures the
-> correct freeing mechanism is used.
-> 
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Hi Shakeel,
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  arch/x86/mm/init_64.c        | 2 +-
->  arch/x86/mm/pat/set_memory.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+On 10/7/25 7:16 AM, Shakeel Butt wrote:
+> On Sat, Oct 04, 2025 at 12:53:17AM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
+>>
+>> The maintenance of the folio->_deferred_list is intricate because it's
+>> reused in a local list.
+>>
+>> Here are some peculiarities:
+>>
+>>     1) When a folio is removed from its split queue and added to a local
+>>        on-stack list in deferred_split_scan(), the ->split_queue_len isn't
+>>        updated, leading to an inconsistency between it and the actual
+>>        number of folios in the split queue.
+>>
+>>     2) When the folio is split via split_folio() later, it's removed from
+>>        the local list while holding the split queue lock. At this time,
+>>        this lock protects the local list, not the split queue.
 > 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index b9426fce5f3e..3d9a5e4ccaa4 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
->  		free_reserved_pages(page, nr_pages);
->  #endif
->  	} else {
-> -		free_pages((unsigned long)page_address(page), order);
-> +		pagetable_free(page_ptdesc(page));
->  	}
->  }
->  
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index 8834c76f91c9..8b78a8855024 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -438,7 +438,7 @@ static void cpa_collapse_large_pages(struct cpa_data *cpa)
->  
->  	list_for_each_entry_safe(ptdesc, tmp, &pgtables, pt_list) {
->  		list_del(&ptdesc->pt_list);
-> -		__free_page(ptdesc_page(ptdesc));
-> +		pagetable_free(ptdesc);
->  	}
->  }
->  
-> -- 
-> 2.43.0
-> 
+> I think the above text needs some massaging. Rather than saying lock
+> protects the local list, I think, it would be better to say that the
+> lock is not needed as it is not protecting anything.
 
--- 
-Sincerely yours,
-Mike.
+Make sense, will do.
+
+> 
+>>
+>>     3) To handle the race condition with a third-party freeing or migrating
+>>        the preceding folio, we must ensure there's always one safe (with
+>>        raised refcount) folio before by delaying its folio_put(). More
+>>        details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>>        split queue not partially_mapped"). It's rather tricky.
+>>
+>> We can use the folio_batch infrastructure to handle this clearly. In this
+>> case, ->split_queue_len will be consistent with the real number of folios
+>> in the split queue. If list_empty(&folio->_deferred_list) returns false,
+>> it's clear the folio must be in its split queue (not in a local list
+>> anymore).
+>>
+>> In the future, we will reparent LRU folios during memcg offline to
+>> eliminate dying memory cgroups, which requires reparenting the split queue
+>> to its parent first. So this patch prepares for using
+>> folio_split_queue_lock_irqsave() as the memcg may change then.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+> 
+> One nit below.
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Thanks!
+
+> 
+>> ---
+>>   mm/huge_memory.c | 85 ++++++++++++++++++++++--------------------------
+>>   1 file changed, 39 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 134666503440d..59ddebc9f3232 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3782,21 +3782,22 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>   		struct lruvec *lruvec;
+>>   		int expected_refs;
+>>   
+>> -		if (folio_order(folio) > 1 &&
+>> -		    !list_empty(&folio->_deferred_list)) {
+>> -			ds_queue->split_queue_len--;
+>> +		if (folio_order(folio) > 1) {
+>> +			if (!list_empty(&folio->_deferred_list)) {
+>> +				ds_queue->split_queue_len--;
+>> +				/*
+>> +				 * Reinitialize page_deferred_list after removing the
+>> +				 * page from the split_queue, otherwise a subsequent
+>> +				 * split will see list corruption when checking the
+>> +				 * page_deferred_list.
+>> +				 */
+>> +				list_del_init(&folio->_deferred_list);
+>> +			}
+>>   			if (folio_test_partially_mapped(folio)) {
+>>   				folio_clear_partially_mapped(folio);
+>>   				mod_mthp_stat(folio_order(folio),
+>>   					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>>   			}
+>> -			/*
+>> -			 * Reinitialize page_deferred_list after removing the
+>> -			 * page from the split_queue, otherwise a subsequent
+>> -			 * split will see list corruption when checking the
+>> -			 * page_deferred_list.
+>> -			 */
+>> -			list_del_init(&folio->_deferred_list);
+>>   		}
+>>   		split_queue_unlock(ds_queue);
+>>   		if (mapping) {
+>> @@ -4185,35 +4186,40 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>>   {
+>>   	struct deferred_split *ds_queue;
+>>   	unsigned long flags;
+>> -	LIST_HEAD(list);
+>> -	struct folio *folio, *next, *prev = NULL;
+>> -	int split = 0, removed = 0;
+>> +	struct folio *folio, *next;
+>> +	int split = 0, i;
+>> +	struct folio_batch fbatch;
+>>   
+>> +	folio_batch_init(&fbatch);
+>> +
+>> +retry:
+>>   	ds_queue = split_queue_lock_irqsave(sc->nid, sc->memcg, &flags);
+>>   	/* Take pin on all head pages to avoid freeing them under us */
+>>   	list_for_each_entry_safe(folio, next, &ds_queue->split_queue,
+>>   							_deferred_list) {
+>>   		if (folio_try_get(folio)) {
+>> -			list_move(&folio->_deferred_list, &list);
+>> -		} else {
+>> +			folio_batch_add(&fbatch, folio);
+>> +		} else if (folio_test_partially_mapped(folio)) {
+>>   			/* We lost race with folio_put() */
+>> -			if (folio_test_partially_mapped(folio)) {
+>> -				folio_clear_partially_mapped(folio);
+>> -				mod_mthp_stat(folio_order(folio),
+>> -					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>> -			}
+>> -			list_del_init(&folio->_deferred_list);
+>> -			ds_queue->split_queue_len--;
+>> +			folio_clear_partially_mapped(folio);
+>> +			mod_mthp_stat(folio_order(folio),
+>> +				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+>>   		}
+>> +		list_del_init(&folio->_deferred_list);
+>> +		ds_queue->split_queue_len--;
+>>   		if (!--sc->nr_to_scan)
+>>   			break;
+>> +		if (!folio_batch_space(&fbatch))
+>> +			break;
+>>   	}
+>>   	split_queue_unlock_irqrestore(ds_queue, flags);
+>>   
+>> -	list_for_each_entry_safe(folio, next, &list, _deferred_list) {
+>> +	for (i = 0; i < folio_batch_count(&fbatch); i++) {
+>>   		bool did_split = false;
+>>   		bool underused = false;
+>> +		struct deferred_split *fqueue;
+>>   
+>> +		folio = fbatch.folios[i];
+>>   		if (!folio_test_partially_mapped(folio)) {
+>>   			/*
+>>   			 * See try_to_map_unused_to_zeropage(): we cannot
+>> @@ -4236,38 +4242,25 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>>   		}
+>>   		folio_unlock(folio);
+>>   next:
+>> +		if (did_split || !folio_test_partially_mapped(folio))
+>> +			continue;
+>>   		/*
+>> -		 * split_folio() removes folio from list on success.
+>>   		 * Only add back to the queue if folio is partially mapped.
+>>   		 * If thp_underused returns false, or if split_folio fails
+>>   		 * in the case it was underused, then consider it used and
+>>   		 * don't add it back to split_queue.
+>>   		 */
+>> -		if (did_split) {
+>> -			; /* folio already removed from list */
+>> -		} else if (!folio_test_partially_mapped(folio)) {
+>> -			list_del_init(&folio->_deferred_list);
+>> -			removed++;
+>> -		} else {
+>> -			/*
+>> -			 * That unlocked list_del_init() above would be unsafe,
+>> -			 * unless its folio is separated from any earlier folios
+>> -			 * left on the list (which may be concurrently unqueued)
+>> -			 * by one safe folio with refcount still raised.
+>> -			 */
+>> -			swap(folio, prev);
+>> +		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+>> +		if (list_empty(&folio->_deferred_list)) {
+>> +			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
+>> +			fqueue->split_queue_len++;
+>>   		}
+>> -		if (folio)
+>> -			folio_put(folio);
+>> +		split_queue_unlock_irqrestore(fqueue, flags);
+> 
+> Is it possible to move this lock/list_add/unlock code chunk out of loop
+> and before the folios_put(). I think it would be possible if you tag the
+> corresponding index or have a separate bool array. It is also reasonable
+> to claim that the contention of this lock is not a concern for now.
+
+Considering the code complexity, perhaps we could wait until contention
+on this lock becomes a problem?
+
+Thanks,
+Qi
+
+> 
+>>   	}
+>> +	folios_put(&fbatch);
+>>   
+>> -	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+>> -	list_splice_tail(&list, &ds_queue->split_queue);
+>> -	ds_queue->split_queue_len -= removed;
+>> -	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+>> -
+>> -	if (prev)
+>> -		folio_put(prev);
+>> +	if (sc->nr_to_scan)
+>> +		goto retry;
+>>   
+>>   	/*
+>>   	 * Stop shrinker if we didn't split any page, but the queue is empty.
+>> -- 
+>> 2.20.1
+>>
+
 
