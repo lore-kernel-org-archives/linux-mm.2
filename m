@@ -4,100 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB49CCCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:09:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DA5CCD18A
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:09:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09EA98E001A; Mon, 13 Oct 2025 04:09:10 -0400 (EDT)
+	id F1EE38E001B; Mon, 13 Oct 2025 04:09:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076D28E0002; Mon, 13 Oct 2025 04:09:10 -0400 (EDT)
+	id EF7108E0002; Mon, 13 Oct 2025 04:09:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF5738E001A; Mon, 13 Oct 2025 04:09:09 -0400 (EDT)
+	id E0CA48E001B; Mon, 13 Oct 2025 04:09:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D98948E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:09:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 989C486CD1
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:09:09 +0000 (UTC)
-X-FDA: 83992365618.12.94B3A91
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D1E2C140005
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:09:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iJ+uHNeP;
-	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CA23F8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:09:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A682FB7FFC
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:09:52 +0000 (UTC)
+X-FDA: 83992367424.13.3AC3313
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6A95A16000A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:09:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="TuqFy/NK";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DB+tZuxo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="TuqFy/NK";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DB+tZuxo;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760342947;
+	s=arc-20220608; t=1760342990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZvcUyE/3rm7XVjVfA5sB0LiuyxoL4N5gYGG3dyEWUo=;
-	b=BNK7zkb6rrksWRuo7qUwt837wkzD+6c84cUe/Vrxoi7rKa07j/eMZfRh9gF90AqCw9pC3b
-	QKJ0VRyfUvCwwv1Ku64ybcQk/MxSHcqsoszYhdME8X96Yy5xHtatzInYGRBezlqVFRKoOW
-	ZnRtMIULSFUBbahNozH9DFkcvsKcugQ=
+	bh=mpX24lvqV7WFDDylZiXQr7peNkkr00zZ4SHlTRyubQ0=;
+	b=cL3oraRJDiqe1ZcRzF1S4pWH6jsAdU+SwcWgaPSxVBqQlggNIVlK/QJ5uBkyDK2ocR3k0/
+	M4o6XhN1Co+qHrhTR1I7lc3wb1D+iYBj2KK9yLEa/BMbFUedCZh0tIArxJLiwql7DZ3lph
+	wz4sljGKJzysjvuh16h6nw1vA0ANj0o=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iJ+uHNeP;
-	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342947; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="TuqFy/NK";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DB+tZuxo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="TuqFy/NK";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DB+tZuxo;
+	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342990; a=rsa-sha256;
 	cv=none;
-	b=XJgIpGrtab8C04m2BJ84HR4SGEsu57FZtV3bsjnftOd5T3cEL767R7R1pBE3rQhQRG4tGj
-	HQtcLLmM+VI/dwy/cgUsnrjll7/NLUsDUVlkMju1qOHdDI4QyawU18M81xgk/sGzi+2x4u
-	PxrsYkS7bwRJmNQhvVzqKguqZjPfrHs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3325861139;
-	Mon, 13 Oct 2025 08:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F32C4CEE7;
-	Mon, 13 Oct 2025 08:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760342946;
-	bh=gDCK0s48HW2hUV0Q7ClAR5lIhUaH2d/9Yb/F3zIIufk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iJ+uHNePZM88j5ktJ5Bn1podhcv/yo+c/xoKWvmJCMV2YxHE+DNLDoI56qVkiCpTn
-	 TxoscpmAdTgCxdgycT4KHSRE3r70iCpIgB7T7rI+1qUaM6ZZ+nt7mZjUbSA4b7Lrux
-	 lUjw2K+OcCGzjj/6Ls0XCbV18L5FC4//4YoTGf/NMPzI6P1qWPH60TtfBA4kJShdjC
-	 iqqE20h+7G6vYXYQLxzOsnRt8mRSEdjloLa4cbPqMDozwhAdJFn5cCaxx1RclH6zYT
-	 Ysxe5J51HpSdoRXr4GrxLj69WDrKliXSJ4D7ff5TWJkpFEP96aTqY2YXjNkXI3Iwox
-	 H2lbji/ExBBBg==
-Message-ID: <e0fa533d-c3c4-4a94-9e22-c379d69cb640@kernel.org>
-Date: Mon, 13 Oct 2025 17:09:02 +0900
+	b=TbwX/dqJpbzXad4Ewe5WOfiOMdMnTjY09KhOnvGkNzBbkEb6aDf4g32KFHPtlKUtXW4AcA
+	k5RrXva7ok6iKt65ZFSSJ58zxLcryBqnDWROnPlvvYeO6oCpwAiev2wdvo9P5+vkjMN14v
+	C4Vjg52r2yq0FRu/QEyeWBuszVCGpn8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B0F452122B;
+	Mon, 13 Oct 2025 08:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpX24lvqV7WFDDylZiXQr7peNkkr00zZ4SHlTRyubQ0=;
+	b=TuqFy/NKSMlBhY54yA3qrMBpRcSFlcNTt8izqAemZxrstv5oAZdOPFaCUqyjhwXi7XTHnZ
+	FL88B2rCk2NvT4gimbBukZi7x250pcP2xIuQ8fZuas+c8zIq0vFQKx7UzG4yb4v82sQOzp
+	h0eqw3Wc23wfHq3MMvr9F3F47xe5p0E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342988;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpX24lvqV7WFDDylZiXQr7peNkkr00zZ4SHlTRyubQ0=;
+	b=DB+tZuxoLCLj0jsrViySAGyPTmfJvtpxj0BMiDluFJXjHp0Df8DjuVUPNJ83vF18Rfzc/L
+	IT/bGsqjU20EBICQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpX24lvqV7WFDDylZiXQr7peNkkr00zZ4SHlTRyubQ0=;
+	b=TuqFy/NKSMlBhY54yA3qrMBpRcSFlcNTt8izqAemZxrstv5oAZdOPFaCUqyjhwXi7XTHnZ
+	FL88B2rCk2NvT4gimbBukZi7x250pcP2xIuQ8fZuas+c8zIq0vFQKx7UzG4yb4v82sQOzp
+	h0eqw3Wc23wfHq3MMvr9F3F47xe5p0E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342988;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mpX24lvqV7WFDDylZiXQr7peNkkr00zZ4SHlTRyubQ0=;
+	b=DB+tZuxoLCLj0jsrViySAGyPTmfJvtpxj0BMiDluFJXjHp0Df8DjuVUPNJ83vF18Rfzc/L
+	IT/bGsqjU20EBICQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3D4BB13874;
+	Mon, 13 Oct 2025 08:09:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +lpJDMyz7GiMHAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 13 Oct 2025 08:09:48 +0000
+Date: Mon, 13 Oct 2025 10:09:46 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: muchun.song@linux.dev, david@redhat.com, akpm@linux-foundation.org,
+	broonie@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Subject: Re: [PATCH v4] hugetlbfs: check for shareable lock before calling
+  huge_pmd_unshare()
+Message-ID: <aOyzyt7irOiINLWq@localhost.localdomain>
+References: <20251003174553.3078839-1-kartikey406@gmail.com>
+ <20251008052759.469714-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/10] mm: remove __filemap_fdatawrite_range
-To: Christoph Hellwig <hch@lst.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
- ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-10-hch@lst.de>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20251013025808.4111128-10-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D1E2C140005
-X-Stat-Signature: zqmtrhkjeusd4qg9ps74gfs6zjmk13qp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008052759.469714-1-kartikey406@gmail.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 6A95A16000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760342947-770140
-X-HE-Meta: U2FsdGVkX1/42YC4B83r73wNMj25fQq0N2xEwojuDl6Pjp+P7fwyP/bAqNSuul5RObdfF2LgV/Grq1A5pKnFwqaICgLYYgpMU6rnlIbB0eC4XKgMjyXwxwjNql0nE84gpkamyzvXlQTp4o26LhfHJ2m34R4fkz+XZKrXRmGl8A+s/MHpMlLWQPiKaxsj/0TfAusQoZaltddZb+wuujD8d/d1RvF0zmKeJoJpc28ijS8r7g0g8Up07COOseUGYDewHOcPgPIBjG5ZBs9sG7BrXcJw61Cn/6TZmxKb+Z5wVp0RnFTtApjQL/Ry6isDpjzMv/MUagLkncATxUlbDNXyf/d+Uy1qzjhMCDYFakIIl1h5Zzfo0Lo1ACVM2GddI/D93JZ8zURLt3aW0C+BGOzzsGKAbxE8G7xY12MuTMAMbIOo5BBYHvSdkBCAWlnTRJpN78NqLVk4zkkbID5yP9h0shcTF/VFdP7vpHbeRIj+r0Xlm5y19oUFEmGT3+K3bRDm8Vd0LM4x2684NRmq/gv5UyJh89QhG5+vX08nR330sXQDe4gvN/0Yw2I8KcLjbyPMbQZhglgfyozgZoZ4T1/fZHuu8BLpGNWEfuRwnFFK8X8I4lsUFW2lXLLfFMBmSt3StfOyTLX6HRJvoRpXZZW7ZyG8j75NUXpyH7JMKgg1mxudFvO4RQaWf6iSHbIB8m5ASP3HTPxrqjjUcGG7jbYiBIvOJjmI5a4RfEuYUFSrK4VMZUnOkfsOaUM+PuDEZ5VebO/tJqjeTRv+hq3xPqqRUkYEJrpn0t0NEkeZZF4EBx1Ldxe2p6bkWHqK6sipiAWcjElI6etq4qvHIlX7Nm/n93iq4Kp9xS6FtKZ4ZIrm2FJgw9DnTVJvaerqtXydwyQvqtGmAqumZys60xcFsJ7o5ZhKDwCpYQf1BsJhEI8VOvP4Rc+0RTebXL8Djz+iCWZUSr0c2J9ZXRLBfLxktsX
- lUcDWVgP
- 5vD1U3UB5OP7S4ASFkHYgSVB4aa/BhyCb07h3vx4YlZ7Ff0YBiNm8Akjco2+78C6jidBtyfm6cpO+00376LkPFYEgiHzCVGeWnixcjlyLJBom5PcRPTHUtqCE2MFUyjXbmBuo3PzPbVpHCqi6TAugP3btoNAD2Ad7uEFv18X0vio4wt5l/6XOPFMDIbz0ij0EEj6hwNeYVZfjenJZ6CJggqRGHvsGEeoeYYdxv+2lB/01xuqH0AWHiPqc8yWAmfZZ1SnN3kfL9siESRTpK/RUytFOKvq/ppSpKQ/VbbcbrR/U48znMWqp3g81xnNJKNmZR4jJEi/Yz0GwHsT0BAOcne/+LAH4BBLVz0MVAj04PE7iyJ0iNMpruhqSTrsuff71uN+gxKGzPpHP3Wc=
+X-Stat-Signature: ufhnr6yaqpum4dhq8kmsz9hhoamsk65w
+X-HE-Tag: 1760342990-420628
+X-HE-Meta: U2FsdGVkX18nmpN8390183B3A5J5DiRTAjBlB/AtjaYRSXLLjp33hk4YKrtKrdLzbje8l2fxT5Xboqnf/q1/hX59eYCkXgMxpfBQNSTKrV/k07h9qR4MEX2iqHOCV6Go6+jFdkFwAdhaEOQ5GYEXJBgZReX1a/ibYAVmYPMR39dUCWFgStMtxIgayORr6+idyOVkjfRGhc3gHakJjJy7kWaeBs6hKj4Evq60dW5Nq1Px7mb8E90gINACP5J4P6qn6q9E2b2mq+NEcjrsrSy+uYW/u+FzbiaHkrgL405lyxehOmD86fSkX3ia9O9zuilpYDHK8/miLR532wncUhbMYvMOAOm18N4z3018VOKz2KJa6hEI81w2Kq/qphtdoowK+GKmSpfQ5/pf1G9UUVDKPglmMHS1XWgeqdpvigqaE5/gY7SO+D8eNKsVmF0C+vtQaYggp6Bf662w1WIqT9UiG9cMC5ZbJUmuLy4rWabw9ofpqgVIZra2Gd/gfNaVXfMrTHnWrOllvnegbshfmUkUKPsoLHxB0hv4XgkfHJmaXvMUVvrFc2cANkhTgmITCUSufJMVXq4FBntFBQ8Rdkd2BujxriJFEXOxoVtSA5CvDdpHgHZsPiYPPAcf4/m472yirng3/zwZz4O1e6FYDprcBJhNrK6D5KFrwe8YABAV+rLmxE1qWgDi30R9u6400pGJi/kbSDKDjFFWphyTEDZZHpv7FY2Fi9iGf57YN2kNKUfTBaXEcrHnHBDEE1jvzTdMhKugQsR/fWpS/1FONec/6giF25K4wF9pxx88f4GedDj700da51MTocpeIp/OUCcXUp5vwDwmtJU3OBK558rVjssXnOw07jHsa6eiMH2+PcgWJdNA8+IeqrU5YzKYmywjbWzhQZNrkT19ywxuEi53SFf0j3ETdoMvPDgu/piBcXtqKymOsM+Buq0YDkzWdRGUybqTudRskuH+FXL2Jvc
+ sWW8ERLh
+ Mw6lmwlgVSWfu01oaI2GsDMLtTrz1OiC7PHquqi3IwbRpUnH6dMAvHbm+V6YSyMwQ01aO9UgV3lzxV0aVmjOHccMTI/eMZ20WjN/eqNY1EYO4DLrXAkEUdbHm2DsPTPvGSLN/8uAj3m7RMv9caXj+VRp1f0KHaLRY2Dj/mra2wTAjsiVH4/We6j5ow5hmD2INPB8LLSc+6vYlF5EeeucuKRuaPaJbxVXSG6Dga9zThGoyYVwcPsUk7HILaI9g+5NPH2Az1Pj1xdUkhRG5cZqeTjTqrknFqxmCwEBJmz7GjzJWBE9hB5WfHQbW4BjNh+pm8FBViRCW46qm2l+lR3sIfNo8d58ld8sfE+ronqeor0ASy7sNJZGjeuURHFkeSDR5sG79MutVOtwxmZXcgMxO80inLs16Nzs9/VP0OQaGVXETpmpL3HPoER2nWTRUWlvGsN+WDNmrPdqe3cN9zmWvyTNgVnrdqtClyfI/hjtEugwYiY7pj70LZHya3s7eROl6lCToYnzsCx6tenKCB8rptETJQw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,19 +135,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/13 11:58, Christoph Hellwig wrote:
-> Use filemap_fdatawrite_range and filemap_fdatawrite_range_kick instead
-> of the low-level __filemap_fdatawrite_range that requires the caller
-> to know the internals of the writeback_control structure and remove
-> __filemap_fdatawrite_range now that it is trivial and only two callers
-> would be left.
+On Wed, Oct 08, 2025 at 10:57:59AM +0530, Deepanshu Kartikey wrote:
+> When hugetlb_vmdelete_list() processes VMAs during truncate operations,
+> it may encounter VMAs where huge_pmd_unshare() is called without the
+> required shareable lock. This triggers an assertion failure in
+> hugetlb_vma_assert_locked().
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> The previous fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without
+> shareable locks in hugetlb_vmdelete_list") skipped entire VMAs without
+> shareable locks to avoid the assertion. However, this prevented pages
+> from being unmapped and freed, causing a regression in fallocate(PUNCH_HOLE)
+> operations where pages were not freed immediately, as reported by Mark Brown.
+> 
+> Instead of skipping VMAs or adding new flags, check __vma_shareable_lock()
+> directly in __unmap_hugepage_range() right before calling huge_pmd_unshare().
+> This ensures PMD unsharing only happens when the VMA has a shareable lock
+> structure, while still allowing page unmapping and freeing to proceed for
+> all VMAs.
+> 
+> Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+> Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+> Suggested-by: Oscar Salvador <osalvador@suse.de>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Link: https://lore.kernel.org/mm-commits/20250925203504.7BE02C4CEF7@smtp.kernel.org/ [v1]
+> Link: https://lore.kernel.org/mm-commits/20250928185232.BEDB6C4CEF0@smtp.kernel.org/ [v2]
+> Link: https://lore.kernel.org/linux-mm/20251003174553.3078839-1-kartikey406@gmail.com/ [v3]
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
+ 
 
 -- 
-Damien Le Moal
-Western Digital Research
+Oscar Salvador
+SUSE Labs
 
