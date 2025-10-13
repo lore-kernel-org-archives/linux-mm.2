@@ -4,174 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ACE7CCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B03CCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:59:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C28C08E001F; Mon, 13 Oct 2025 10:58:33 -0400 (EDT)
+	id 610178E0044; Mon, 13 Oct 2025 10:59:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF9A8E0017; Mon, 13 Oct 2025 10:58:33 -0400 (EDT)
+	id 5E7EA8E0017; Mon, 13 Oct 2025 10:59:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15878E001F; Mon, 13 Oct 2025 10:58:33 -0400 (EDT)
+	id 5252E8E0044; Mon, 13 Oct 2025 10:59:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A14758E0017
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:58:33 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3587859259
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:58:33 +0000 (UTC)
-X-FDA: 83993397306.05.27A47D6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 806B78000A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:58:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yARdaJDo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JGG2Btah;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V2Kj+Euk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1DkU73VJ;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F82E8E0017
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:59:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDF5A11A4D1
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:59:41 +0000 (UTC)
+X-FDA: 83993400162.10.FA5303A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1B84240006
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:59:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTk8n4Fz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760367580; a=rsa-sha256;
+	cv=none;
+	b=ki+3rALF/jYO7UKCHRwS8qlCq9Wr2vX33HGCfX2mFsikXQhrMuzOodRgD5JJq/kFZEcFQ7
+	tpWzzCC65ukfZoEUCV2C38/MswBBlrq4cwxDbsL2FesY2ZMoKWO/KOVtQjW/2jg/WDT6e4
+	3FEZBFJfhZkzKK9WnplmEEwBavHaBxM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WTk8n4Fz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760367511;
+	s=arc-20220608; t=1760367580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qcvuerjXx7ZIiFOwSPYkO0MEVGe90oiiAUJVcvRd3Fc=;
-	b=bA+gF5dfitvQikcMXh26nNENetKqQpM9ioAWZEifPrpmLzDNhsJt9uHd4vpD6W99N3QuDD
-	SBxEVf7FKYPefn1uEAvkmwXCCL+U9MshjM+IpU5Ct6DKv87V947Fs7TH/YiI70KMuVQoTR
-	UdfZHequKqDlEXL25/Hw+61mFJrZXD8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760367511; a=rsa-sha256;
-	cv=none;
-	b=C/u2EGaPnL63ocfS5e7ulvr5tI6RNC+r1xM+MqsfUTSnIJX4Y7otBblZOUfPUiyahkZFP8
-	sRZSiGZ2H4jKPfPtP9ZlaE1s1qGaQcKNi+ect8weM4mG0wYz8dEUiSXwAZDilaVbiDMj91
-	17WO54VoT/mXcyV13uGbWMmaMo84eVI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yARdaJDo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JGG2Btah;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V2Kj+Euk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1DkU73VJ;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CD49921246;
-	Mon, 13 Oct 2025 14:58:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760367509; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qcvuerjXx7ZIiFOwSPYkO0MEVGe90oiiAUJVcvRd3Fc=;
-	b=yARdaJDoEym+6DuoIJ14UBqZ6qDODq3KlgbIjHdtN4KSqzlO9BHY+T4gcxRRINVn8b3CJb
-	tcHw5TQ0J42s4JC8h0hQ0mM1P1IX01SuI8nk9FXBNb9pD77fCTxOmmpzT/jnGPxFgEtg90
-	MEz8QFYWpNE6ynXunKDslm+XdokyPfw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760367509;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qcvuerjXx7ZIiFOwSPYkO0MEVGe90oiiAUJVcvRd3Fc=;
-	b=JGG2Btahk4A1b6L6yzw2/gqML91UOlHl4jLbGieAHvA0XKSlxZXHvEDIu6FQMRwnGTsLTl
-	Gf0RqDZhrhEPD8Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760367508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qcvuerjXx7ZIiFOwSPYkO0MEVGe90oiiAUJVcvRd3Fc=;
-	b=V2Kj+Eukw2Nmbfkq7SfhMit7Kpm9uyq49qc8r0IiUOuTX8wDKZxVpA2aQWiv66X77Y5pq+
-	OFkWa9dujt/MjM9caUDkTXhtcnHoFDKQ0qQNQPXKJenK20Yym8D0e8liUnlKiYw1ZACVZi
-	cWxNNz0deq2Ql9Na4yuqk0B1HWnZ91A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760367508;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qcvuerjXx7ZIiFOwSPYkO0MEVGe90oiiAUJVcvRd3Fc=;
-	b=1DkU73VJvf1A7kvmsYiY3hPW/iLjPsoX4SS/a8dvuMsZUq1t5Wm+bTfJkbxKVhFy2NRvQt
-	u2PWqLBfd1BMDvBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B01471374A;
-	Mon, 13 Oct 2025 14:58:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id d6SoKpQT7WhHNwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 14:58:28 +0000
-Message-ID: <692b6230-db0c-4369-85f0-539aa1c072bb@suse.cz>
-Date: Mon, 13 Oct 2025 16:58:28 +0200
+	bh=91rYI2vMdFaeelqR6EO7cjHmJcFvcuwMoHwsL+HZWMA=;
+	b=Nl9ud/MN770hMYyax4uXP6FOpSWhpnGHfRi/OzU9SZXBTR410NLGAMveYbDQTYzmbpBBRZ
+	NitoeHchLpN/07czfrvWzhOVPD8s+Pg84VTLIgTR5qOxczdfChtaS3T3JmhpqZR/KfyoLR
+	m7CvA6Kp1wVBQ5DdKB3+KOV+XV23VxI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB6C1404E2;
+	Mon, 13 Oct 2025 14:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EC5C4CEE7;
+	Mon, 13 Oct 2025 14:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760367578;
+	bh=Q4amGCgEx94K8om8pN467kDbQql6OA0eh29fHknE5Fw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WTk8n4FzwfU+JNjoGVR3OOl9hk+bHZHl0+w5GZRjNYV4kcGnUqw90e8JkiIMYKBVG
+	 NcRsWksnrwcNhPIi5h+FE6/w7V49pHEpvBJWDcfp0XXxUphNZwlLcwqTdOS2Xv5h7H
+	 Ul0xhpRLHAp0v3U+9tWebDkckBTJyEpUQ7VkzJRTjJ7rMvZEqDE56NUEyhKX1KF1zu
+	 LtNnj2IWLDizfR5k0EAVLhiypzbKxwaeEPrWlIC63tsQcyvoiy5YWWAZ6X69XXqsee
+	 FAkG/CwJmqtbCg+OysuPgKOrseEsQDQlXtHMNhTe2lx3PAI0wJ8StKBXuFCzGviqs2
+	 SmK2gwrIbAo8g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Changyuan Lyu <changyuanl@google.com>,  rppt@kernel.org,
+  akpm@linux-foundation.org,  linux-kernel@vger.kernel.org,
+  anthony.yznaga@oracle.com,  arnd@arndb.de,  ashish.kalra@amd.com,
+  benh@kernel.crashing.org,  bp@alien8.de,  catalin.marinas@arm.com,
+  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  devicetree@vger.kernel.org,  dwmw2@infradead.org,  ebiederm@xmission.com,
+  graf@amazon.com,  hpa@zytor.com,  jgowans@amazon.com,
+  kexec@lists.infradead.org,  krzk@kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  luto@kernel.org,  mark.rutland@arm.com,
+  mingo@redhat.com,  pasha.tatashin@soleen.com,  pbonzini@redhat.com,
+  peterz@infradead.org,  robh@kernel.org,  rostedt@goodmis.org,
+  saravanak@google.com,  skinsburskii@linux.microsoft.com,
+  tglx@linutronix.de,  thomas.lendacky@amd.com,  will@kernel.org,
+  x86@kernel.org
+Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
+In-Reply-To: <ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
+	(Breno Leitao's message of "Fri, 10 Oct 2025 02:33:59 -0700")
+References: <20250509074635.3187114-1-changyuanl@google.com>
+	<20250509074635.3187114-2-changyuanl@google.com>
+	<ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
+Date: Mon, 13 Oct 2025 16:59:32 +0200
+Message-ID: <mafs0wm4yluej.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linus:master] [slab] af92793e52:
- BUG_kmalloc-#(Not_tainted):Freepointer_corrupt
-Content-Language: en-US
-To: kernel test robot <oliver.sang@intel.com>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
- Harry Yoo <harry.yoo@oracle.com>, kasan-dev@googlegroups.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <202510101652.7921fdc6-lkp@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <202510101652.7921fdc6-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Type: text/plain
+X-Stat-Signature: bs5rjjoxfkymqywyyk33csd151yh1k1f
+X-Rspamd-Queue-Id: 1B84240006
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 806B78000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: r44f9y4kg9t4w8ar3hjnstsxp6honyf6
-X-HE-Tag: 1760367510-476297
-X-HE-Meta: U2FsdGVkX18acKT6wOYq46fgdYPlLV0NNbXw6HFzBYGn6VGKL9kbOddzd8j0WgLTRl3Sc9YijC+Zt4fC4rm3RCe3Cqu3rZsGNAXjyBI/QB0Pwr77LTmsz6EIMP4Gm6blxjURJ843LBEUL9baQg4qxx6mDeKJcRyslLBwbXHbanLCLHVaqCKuBIyVb6OP3+v+3n1aXw10DUqwzD5EVTsCEps0EUTNx+zu6e/RcYKn6oD1ls660OBWBkje4Nq6c3rCCQJdUhZvUm/Xm9oCFOatxmkOe1r1F8NrfeWKAhMcenuBf9+Ninw8caMg7mftLOq3mIRGz60Xil5MDnUo5rLUrfw4hme+Wij5TVVAG6zoNXMQtGL++LnXcHdGi8sXF25Ld+kvrsPJFwXrsTVuyX1XRra9ZNMY07CcqS9oei1SgJOkoUCzF72Ct95YKHFYwlYyw1m8/f3YhrlS8E9Tw7gw2slB97RJGwAtdnDT+D9plj+Lt01ANp+naheseEet8eafAztMQDAs/of1C5i2glCGCPdMAPOxKrKgUDN9NMkXnjACfrO6fLZU5IxFR2+jGxpeRCzEWqenmmQu1NmnbU7L7Yvs8dqbnpZQsRjXAWCmGR7p6RQJJ8wXtR7fPpaG+c1xFTOgYUQWEfNx0ADFdsVWSpQVh0XQ8bqVbH8EL556ReR0+YlbBsYUMCZovAlrGQOwyRrsaZfK3LcariCUr/PUlPE9489WnM+sDb0fNw1I5tPP13+0uqa1Nel2Ou+neOJHZ4vBb+rZxQH3YvzPKJ0icOWPYNzf8n1g0hMfgIcukPMn5NDujhvIie59u2cenfiAR0VYj1C+wIHLSYvB8Ul0jOD5mr26FpDLbis/YMiRWnfJAh5Hc08B121BWx5cHeIf+08At2fz1CkHTs9VnvqRD7QkknLhGbvy0Xm+q5lVaCJ6/jMyNB0xZcjs3y6dp7lx1PI6Vl6rT9tgvCGWKuT
- gfDw8LE+
- g7OmnS+89ylyfjI+g40/uucl7cbvP+gKVyGElpHLw1JQFMDJs98sjUnsIvz5jYMc4wfr4MNIZMcpUCnv+KJVUeLVhOxBgyKaNUcJqDxRj4w+LkA5me8gUXFNrN+1jnHN6P9rspCmOk9sxVC3JdbAt72pB/Pu5n+GNUMs137buEyQkjvai8Sd6JhYugOMw8YQI0Cq42tmE2WaIWsrdPM8bC4XdcBA3Lw46WUU8RvlDmDqtoE0+CbhbRlGHi0o3a3+0A5NaYD0Un1CLtmiuxSQgHgMvgIvOKjnJp4P9iLN6hmrM3Gi2A1t1HN7096xshEG+lGm/f5r/YzmN5EGhDotR2zS4FcDYSejVamM8WSLn//gOJAEqJehz2o1wAsPFbA3q1GgV
+X-HE-Tag: 1760367579-492585
+X-HE-Meta: U2FsdGVkX18b+EmmWZ/M999GloZadaRdGMfDVhr+0O1vV1lomHX+4XrJMDIMCcMULHyzUwawxxzVZ4EIlURLT+A1ppAiE1UK7eCfdfo+1dRGmjigwCqi6MRjOUnL8FsuaCdB2bwVpDEzemItz51TlCkuV13OQKziS7HBW0t3m6SkFBPHTwsdWmgpGq5O1/ewsgOZ3oY3CLDVDLNRotAgzMuIoodPtbjh0JVWAn9eOGa7QEtGMEGh17Myn6inIip1b0xFKXjWIAw+56vrihNFU1KA7XceqEiD4n3Ghq2eiw0MWJTZ6joytftiDBcM/rDvpnxlhLyuiZdesRFxsAIo5cndQioUrLmqXd8CPFx9CE3oarYkY5dqca7ZIVfom1OoM63eLB9la3SwphkluKxYhTC/T20KYvveSmOAvfDtJ3zF41M8LU9nPTJ/Hv3DOAskYPFwFIEFpY2LXhbZfoOx6K1Gt4SKfXuSpYBCjIGGhvWhtn5yOpnswf1WIA+DVYocWFicGTmFfoHiUE+aA+iZqHZ8vMy4JaDr6sAvH3l00lVRqM0bkXM0qc7+A/HFw3fpchJZZeQvkZMbmFwP+m3YqoFlDaCU0u4gs8yhuQF5ldbHZ8Z8exu8QoHbttdeQKZ9sA5NgiD8S2oOlTUNIprMXXD4/Z4f7CCSavih5rfZJAoqUbssrNhWgZW9NNz4E2FCF9wANwlT1H+vlevIqGwNeg3RgK0mIE6yZNAIhtvedY5aWi3YrGW60hCP8HgRV07VWwQ9f1f0b8hAI8PwQNuHxxuw/TpYEbB3PBhSFiNiXFF11wcIJM5fpdMQ1VhHoBqRs8rGJNiMcCAP46xt4taSCI1ytFRY+UHTTifc/dB7Q2nxDT+aUr5Y4K0SmpKZJO0yc1sL6EoHNoRPDS28XNpcR+M0Rjln7OR0z94v5e06n+Jhy22IMlAtVjexZT4qX4t3YtSfZeLHaDfsMPwgbOn
+ K5EpA+Si
+ xnd6upEO7AwOxtNQ9Cfu1Qtd1JIQIo/tTReehEMSgcqViIaKRDx5vkzs2fn9FMPZVDE54VFPQMvGXJgxUWYUPFn7BkB5JMukzDqoT1QfGMtvBHTSCTlPX+o8xNdQeKvCXTpjd1VZbKSEq9ABh/YcvS6xGskFW3RVY6h2Bsg7NB7S8nBT7QZsORC3w+Mg5RuUGvOdZ3blLsSJorSO38jp/YPkBn++kDHxrW+n5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,81 +107,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/10/25 10:39, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed "BUG_kmalloc-#(Not_tainted):Freepointer_corrupt" on:
-> 
-> commit: af92793e52c3a99b828ed4bdd277fd3e11c18d08 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> 
-> [test failed on      linus/master ec714e371f22f716a04e6ecb2a24988c92b26911]
-> [test failed on linux-next/master 0b2f041c47acb45db82b4e847af6e17eb66cd32d]
-> [test failed on        fix commit 83d59d81b20c09c256099d1c15d7da21969581bd]
-> 
-> in testcase: trinity
-> version: trinity-i386-abe9de86-1_20230429
-> with following parameters:
-> 
-> 	runtime: 300s
-> 	group: group-01
-> 	nr_groups: 5
-> 
-> 
-> 
-> config: i386-randconfig-012-20251004
-> compiler: gcc-14
-> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
-> 
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202510101652.7921fdc6-lkp@intel.com
+On Fri, Oct 10 2025, Breno Leitao wrote:
 
-Does this fix it?
-----8<----
-From 5f467c4e630a7a8e5ba024d31065413bddf22cec Mon Sep 17 00:00:00 2001
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Mon, 13 Oct 2025 16:56:28 +0200
-Subject: [PATCH] slab: fix clearing freelist in free_deferred_objects()
+> Hello Chanyuan, Mike,
+>
+> On Fri, May 09, 2025 at 12:46:19AM -0700, Changyuan Lyu wrote:
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -492,7 +492,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
+>>  	 * needn't do it
+>>  	 */
+>>  	if (!use_slab)
+>> -		BUG_ON(memblock_reserve(addr, new_alloc_size));
+>> +		BUG_ON(memblock_reserve_kern(addr, new_alloc_size));
+>>  
+>>  	/* Update slab flag */
+>>  	*in_slab = use_slab;
+>> @@ -642,7 +642,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>>  #ifdef CONFIG_NUMA
+>>  			WARN_ON(nid != memblock_get_region_node(rgn));
+>>  #endif
+>> -			WARN_ON(flags != rgn->flags);
+>> +			WARN_ON(flags != MEMBLOCK_NONE && flags != rgn->flags);
+>
+> I am hitting some sporadic warnings at early boot on a production kernel
+> (6.16). Unfortunately this issue is not easily reproduce for me to test on
+> upstream.
+>
+> 	09:14:44  BIOS-provided physical RAM map:
+> 	09:14:44  BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+> 	09:14:44  BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000000100000-0x0000000064cb7fff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000064cb8000-0x0000000064dc3fff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000064dc4000-0x0000000065b13fff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000065b14000-0x0000000065b61fff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000065b62000-0x0000000065ed0fff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000065ed1000-0x0000000065f2bfff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000065f2c000-0x0000000066621fff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000066622000-0x0000000066630fff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000066631000-0x0000000068107fff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000068108000-0x000000006819dfff] ACPI data
+> 	09:14:44  BIOS-e820: [mem 0x000000006819e000-0x000000006a48cfff] usable
+> 	09:14:44  BIOS-e820: [mem 0x000000006a48d000-0x000000006c58cfff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x000000006c58d000-0x000000006c5dcfff] ACPI data
+> 	09:14:44  BIOS-e820: [mem 0x000000006c5dd000-0x000000006cfdcfff] ACPI NVS
+> 	09:14:44  BIOS-e820: [mem 0x000000006cfdd000-0x000000006e9fcfff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x000000006e9fd000-0x000000006fffffff] usable
+> 	09:14:44  BIOS-e820: [mem 0x0000000070000000-0x000000008fffffff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x00000000fd000000-0x00000000fe7fffff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x00000000fed20000-0x00000000fed44fff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+> 	09:14:44  BIOS-e820: [mem 0x0000000100000000-0x000000107fff655f] usable
+> 	09:14:44  BIOS-e820: [mem 0x000000107fff6560-0x000000107fff656f] type 128
+> 	09:14:44  BIOS-e820: [mem 0x000000107fff6570-0x000000107fffffff] usable
+> 	09:14:44  random: crng init done
+> 	09:14:44  ------------[ cut here ]------------
+> 	09:14:44 WARNING: CPU: 0 PID: 0 at mm/memblock.c:668 memblock_add_range (mm/memblock.c:668)
+> 	09:14:44  Modules linked in:
+> 	09:14:44  Tainted: [S]=CPU_OUT_OF_SPEC
+> 	09:14:44 RIP: 0010:memblock_add_range (mm/memblock.c:668)
+> 	09:14:44 Code: 28 80 3c 01 00 0f 84 04 fd ff ff 4c 89 ef e8 6c 77 09 00 e9 f7 fc ff ff 0f 0b 83 7c 24 1c 00 0f 85 9c fd ff ff e9 c5 fd ff ff <0f> 0b e9 be fd ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c 6b fd
+> 	All code
+> 	========
+> 	0:    28 80 3c 01 00 0f        sub    %al,0xf00013c(%rax)
+> 	6:    84 04 fd ff ff 4c 89     test   %al,-0x76b30001(,%rdi,8)
+> 	d:    ef                       out    %eax,(%dx)
+> 	e:    e8 6c 77 09 00           call   0x9777f
+> 	13:    e9 f7 fc ff ff           jmp    0xfffffffffffffd0f
+> 	18:    0f 0b                    ud2
+> 	1a:    83 7c 24 1c 00           cmpl   $0x0,0x1c(%rsp)
+> 	1f:    0f 85 9c fd ff ff        jne    0xfffffffffffffdc1
+> 	25:    e9 c5 fd ff ff           jmp    0xfffffffffffffdef
+> 	2a:*    0f 0b                    ud2            <-- trapping instruction
+> 	2c:    e9 be fd ff ff           jmp    0xfffffffffffffdef
+> 	31:    44 89 f1                 mov    %r14d,%ecx
+> 	34:    80 e1 07                 and    $0x7,%cl
+> 	37:    80 c1 03                 add    $0x3,%cl
+> 	3a:    38 c1                    cmp    %al,%cl
+> 	3c:    0f                       .byte 0xf
+> 	3d:    8c 6b fd                 mov    %gs,-0x3(%rbx)
+>
+> 	Code starting with the faulting instruction
+> 	===========================================
+> 	0:    0f 0b                    ud2
+> 	2:    e9 be fd ff ff           jmp    0xfffffffffffffdc5
+> 	7:    44 89 f1                 mov    %r14d,%ecx
+> 	a:    80 e1 07                 and    $0x7,%cl
+> 	d:    80 c1 03                 add    $0x3,%cl
+> 	10:    38 c1                    cmp    %al,%cl
+> 	12:    0f                       .byte 0xf
+> 	13:    8c 6b fd                 mov    %gs,-0x3(%rbx)
+> 	09:14:44  RSP: 0000:ffffffff85e07d48 EFLAGS: 00010083 ORIG_RAX: 0000000000000000
+> 	09:14:44  RAX: 0000000000000020 RBX: 0000000000001c00 RCX: dffffc0000000000
+> 	09:14:44  RDX: 000000000009f000 RSI: 000000000009d000 RDI: ffffffff8685ebf8
+> 	09:14:44  RBP: 0000000000000002 R08: 0000000000000020 R09: 0000000000000000
+> 	09:14:44  R10: ffffffffff200570 R11: fffffbffffe400b2 R12: 000000000009d000
+> 	09:14:44  R13: 0000000000100000 R14: ffffffff8edf5ce4 R15: ffffffff8edf5ce0
+> 	09:14:44  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
+> 	09:14:44  CR2: ffff888059e2dff8 CR3: 000000005bc1d000 CR4: 00000000000000b0
+> 	09:14:44  Call Trace:
+> 	09:14:44   <TASK>
+> 	09:14:44 ? __memblock_reserve (mm/memblock.c:936)
+> 	09:14:44 ? add_early_ima_buffer (arch/x86/kernel/setup.c:413)
+> 	09:14:44 ? parse_setup_data (arch/x86/kernel/setup.c:500)
+> 	09:14:44 ? setup_arch (arch/x86/kernel/setup.c:245 arch/x86/kernel/setup.c:958)
+> 	09:14:44 ? start_kernel (init/main.c:922)
+> 	09:14:44 ? x86_64_start_reservations (arch/x86/kernel/ebda.c:57)
+> 	09:14:44 ? x86_64_start_kernel (arch/x86/kernel/head64.c:231)
+> 	09:14:44 ? common_startup_64 (arch/x86/kernel/head_64.S:419)
+> 	09:14:44   </TASK>
+> 	....
+> 	Memory: 49640988K/66772816K available (54946K kernel code, 19058K rwdata, 22636K rodata, 2940K init, 120968K bss, 10650188K reserved, 6291456K cma-reserved)
+>
+> So, there is a memory override, and I am curious about it. Do you think it
 
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/slub.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Yeah, it seems IMA is reserving a region that overlaps a region reserved
+by something else that doesn't use memblock_reserve_kern().
 
-diff --git a/mm/slub.c b/mm/slub.c
-index f9f7f3942074..080d27fe253f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6377,15 +6377,16 @@ static void free_deferred_objects(struct irq_work *work)
- 		slab = virt_to_slab(x);
- 		s = slab->slab_cache;
- 
-+
-+		/* Point 'x' back to the beginning of allocated object */
-+		x -= s->offset;
- 		/*
- 		 * We used freepointer in 'x' to link 'x' into df->objects.
- 		 * Clear it to NULL to avoid false positive detection
- 		 * of "Freepointer corruption".
- 		 */
--		*(void **)x = NULL;
-+		set_freepointer(s, x, NULL);
- 
--		/* Point 'x' back to the beginning of allocated object */
--		x -= s->offset;
- 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
- 	}
- 
+> would be useful to expand this warning to dump more information about the
+> issue? (only compiled tested)
+>
+> 	if (flags != MEMBLOCK_NONE && flags != rgn->flags) {
+> 		pr_warn("memblock: Flag mismatch at region [%pa-%pa]\n",
+> 			&rgn->base, &rend);
+> 		pr_warn("  Existing region flags: %#x\n", rgn->flags);
+> 		pr_warn("  New range flags: %#x\n", flags);
+> 		pr_warn("  New range: [%pa-%pa]\n", &base, &end);
+> 		WARN_ON_ONCE(1);
+> 	}
+
+I suppose this would be useful. I think enabling memblock debug prints
+would also be helpful (using the "memblock=debug" commandline parameter)
+if it doesn't impact your production environment too much.
+
 -- 
-2.51.0
-
-
+Regards,
+Pratyush Yadav
 
