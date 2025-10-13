@@ -4,101 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88321CCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED33CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E14E38E000F; Mon, 13 Oct 2025 03:55:58 -0400 (EDT)
+	id CDDF48E0010; Mon, 13 Oct 2025 03:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DECA78E0002; Mon, 13 Oct 2025 03:55:58 -0400 (EDT)
+	id CB51E8E0002; Mon, 13 Oct 2025 03:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D29488E000F; Mon, 13 Oct 2025 03:55:58 -0400 (EDT)
+	id BF2238E0010; Mon, 13 Oct 2025 03:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C38178E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:55:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FCA91DF52F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:55:58 +0000 (UTC)
-X-FDA: 83992332396.26.DBED648
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C51FC160012
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:55:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6gq+hjH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0E38E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:56:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 54D1311962B
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:56:30 +0000 (UTC)
+X-FDA: 83992333740.23.5A91C90
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F21DF80011
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:56:27 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Vfs++J5i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DtLGvF40;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J8VFdhHl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WVhrkLKQ;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760342156;
+	s=arc-20220608; t=1760342188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k6JY4ljRru+mLGsidDjVKshW6S3LGQOqHzxa6CnY5eU=;
-	b=GDRvRddNZV4DozTV88lGMheCS7mwckwMU0zmHPuEvuTt/1ZVQqvcxDFzedpzgT467GYGM3
-	gBzrSMFveVfEPGK1yYSOsJXnY2+8WWPMxXUgAHsL0fC1anvKXsLVIQlFAA0Vs5FTVvWW46
-	aXkS3KHCfcz+jBCQ77E+ptceHsnQaAg=
+	bh=PX880TA/77/yrgYUzZYJ9ptGRpChgW/jGJJ8qYIOliA=;
+	b=QPEdjxXxDsFjbkT7vt9cgthdFhPxMrpcfO1nAN6ybbdtsVZ2X7IDUESe6jQBnqXd8ldXyd
+	ppfkzYsaIBJbTPD0Pq9GUyVuvKzYhSt7RVzSLDWCC0Urh+1mP3dVseZB2cWgYoKtga/Bzw
+	EEZHJw//qlQ1NHZvYSWQnxebAhXAOtA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6gq+hjH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342156; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Vfs++J5i;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DtLGvF40;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J8VFdhHl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WVhrkLKQ;
+	spf=pass (imf30.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760342188; a=rsa-sha256;
 	cv=none;
-	b=UniSTzaaT7Iv85KPhzUe06lWlXlFz98ETWZztuuIk+mo34n0vf17A+78TcnFIHJSvywPOL
-	iR9d87PN79NOIE8bf03JZujgyCbPc/xYO56HRmJFIMmxplz1PJFRB94MrrP4cUDQ0dk7Cj
-	i+H45Vchg5UmEjhdPE1MhRNLy6CxOck=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED5AE60F75;
-	Mon, 13 Oct 2025 07:55:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233C0C4CEE7;
-	Mon, 13 Oct 2025 07:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760342155;
-	bh=mgqubBXmcDUB0Vocd771Uy113a9CMlT/bu1FmLbtKOo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N6gq+hjHSCsbUKZZjniwkCj7yvgxSN3jmQu09ii02JLpjVZZaG1+SqSfGTa2PeQ9x
-	 R7zyxn85U6fWuqA2AB23LvwxslESlaO5wo5K7hZ/gvYDn+OVkG2vUNL9ufHlCEsvAV
-	 q+hC/o+wKMQWBb5bcyxqJh1BetJEcjhid1m9y7HnLAFbp3G+xhhZ23Cnl4l4WWHD76
-	 V2jEgIkBRxE3s9Xn3yq02N9b78hjJl85DrFjOxiO8abK6gSh0CQMZ79HAaVzGzOwvD
-	 XLcWUDUdyi4nGwosNspIhk/cPOcSTvepUqz9oxzPF3sdkl9nM8rHgA74VUSGFn9FSG
-	 Fj7T8n4JaMxlQ==
-Message-ID: <65aad714-3f1d-4f4b-bb8f-6f751ff756b7@kernel.org>
-Date: Mon, 13 Oct 2025 16:55:50 +0900
+	b=ROn4mw7Zr5u0ZFO39B59RohFm+b51y8ebNd8quw2x+c1odiiH/jqTkm9/w0YQ7ECotWKYH
+	8ywnFA30OxPZDeY0Jxqo6AiwGHb/CXC4oSaGB8gswEQ+RPHimwAoghNVBMPu1ULmNtFxyE
+	XTYsx9/hIKpHsEz+syTnpVuPDEB3rMM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 253F5211B4;
+	Mon, 13 Oct 2025 07:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PX880TA/77/yrgYUzZYJ9ptGRpChgW/jGJJ8qYIOliA=;
+	b=Vfs++J5iE5Vf+i6+pSlQesYltQxk/PixZNz6SgTCTa6+uwJmSOr8xRXP06iuJeVvH1u64X
+	hbiZUq57LJD5nW4KQ+qj6B4dhOiSQ515tIgtGVZV5DPre/+I305cLWI4j4EVA+dcsRWDUi
+	rbFzuIzjEOiD+hAXy5prs25PKwOGmLg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342186;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PX880TA/77/yrgYUzZYJ9ptGRpChgW/jGJJ8qYIOliA=;
+	b=DtLGvF40H7FBAeyeAUkcfpsddi0LOHAHJcrB+yIuvZD3Aaai6mqyb9wToy/4RALiNPodQl
+	PtyOZLOltnjIvDAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PX880TA/77/yrgYUzZYJ9ptGRpChgW/jGJJ8qYIOliA=;
+	b=J8VFdhHlx7doAxqdrJY11dDWSvtAhIpVKO4HtdzdF0Qh26Nkyn2w2s0toKxzCuNhE2kk2b
+	xaIjD08b8qD3eFoueKEfsXKZwVvGj7Oq/WMPaiX9tZ59PweMiwH5aWuW+1wcEWTErJ6Ant
+	R7TYLxDqwzZ2iGLTbau4kG5w5/tdrO8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342185;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PX880TA/77/yrgYUzZYJ9ptGRpChgW/jGJJ8qYIOliA=;
+	b=WVhrkLKQQe2+Ur0EQdAWDpWIZ1glyXkwJlzIdAcyQAD/tJKKLaRSrSkMRkaWqTWUeS8Zu/
+	hwrDc7ahVXAGzyAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80A9C13874;
+	Mon, 13 Oct 2025 07:56:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qyJ2HKiw7GhGDQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 13 Oct 2025 07:56:24 +0000
+Date: Mon, 13 Oct 2025 09:56:14 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: muchun.song@linux.dev, david@redhat.com,
+	Andrew Morton <akpm@linux-foundation.org>, shakeel.butt@linux.dev,
+	linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com,
+	kas@kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/2] mm/hugetlb: create hstate_is_gigantic_no_runtime
+ helper
+Message-ID: <aOywnmyYj7R-CFVd@localhost.localdomain>
+References: <20251009172433.4158118-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] btrfs: push struct writeback_control into
- start_delalloc_inodes
-To: Christoph Hellwig <hch@lst.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
- ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-6-hch@lst.de>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20251013025808.4111128-6-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251009172433.4158118-1-usamaarif642@gmail.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: a3jn7z163ri7ttzbxaiz6niqr6fc11oc
+X-Rspamd-Queue-Id: F21DF80011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C51FC160012
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sfpbktp957g43qds645bz8m38hk3ochp
-X-HE-Tag: 1760342156-776202
-X-HE-Meta: U2FsdGVkX1+Wq735XQ5MSnhlGPQAjWkJfWbuf4bbNOTLardEr/uU7TNzQiToi0YWySCSR1ousU+q8W+jSQe2p8Jq2D/PippuERY6XmXeg9CuoQ12jgTc2CKJ5EQsGNv3QaSOVAInCrvZodQDhOUee3Uds2SvihEi16xOjAWbZBBvyxsNLCfz8aMKG7KcfqwKN6OriX1pdg6azGsMSWmmKh9Bqy5roSYU0cWVFyFeKuZn1fV7DRNKqGm79+R4/rA5dugKPn2u17cjC2T0fjVm5hXAJknW6qpnTjdNtC8oFdCBBRQB9OAV/RuZzHhYRCdBwu9huZEdoNCyQAUyjjjriNgG3xj5MJ2byLlFGjpY8jonq8E/cttn57+6wir/Sp+Erx8z3RHS6CGDOpkoesfH7bRca9m89oCuQhM/KvAGkJ6HtMickEd5gwh5hc9YMX4VFQns64WztH32BhUIBhLmg8x8yzy6K6YEEpLPzosv7f/rLqxEPXcMB/uS5CVym/bF0fnwOleMq7bedu3AGMPYtE63LVe8XVh9pgQqiVbvTgxJau/5nAjtD5chmrJVTyX9CeNKuPGXzBzb+YT3NVCnfWvGqF3BFyxp24+MyDUdXS9rdzNeY/hsc9THMb/IuXLkqGxkG1V8CYsVaUd3LHxpnEvTIxbpnk9il86KfqU75nxrZ5Scy10QT0gmE7Y3PpYsLBrMZzd2l6ag/48abx6R5XyymkeSDivfiPxOm1KR6l11Xrgb+/kNuFa1QEyptPzXXyE71dyh6VjboPvqDDNw6R+lzOBFmxNBLCT/r6yTyR2W7EV9ZhCSPC1u1k01OrrFCohwL9UEQ/hpYTTvT2nahWpSv1g1euhvZ8D/UMEHdchNdOW+VLBtKxQHM83usL2FhJC40tdzLmnD2gUppFigSLdlixC5HwQFPlKxhcEY8RKBabZi84OBQWs9L/sah6zsyrbJYnhpUa7YbJbBGaG
- 36dSIudr
- VJhP3gub5gmMMEOmAjZgxWGCWK8FppQfvQ2I4EKOIS+TGyhiK1xHZFRBMuarxPhmmn63oTJXz5F+uOrf4WfwGJo7AkBUnlLTw3edlQl5WdmjB4CzYhLCPo35q47f9bXeXxsn5KBORETX4KEN3Ng4OUjWqZ89YzHelKGU5/4U7w8qGbeXPUIQedWlnJG+A72oulJq6ERMaTda3Yz7WkrqljawXqQfvHwrZoAf1mkjVnX15hy8HFAMPbq4xOMqin4wVfhuyYMrS1DMT35ebgXuQupP+do/XohTPYZI8yOgNd3s2hCZCEZeuH5A8C2N5cUnkDRiXqd4cPyg0TeMyXajOd4lbuA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760342187-135241
+X-HE-Meta: U2FsdGVkX1/An80y+0c9fqDNwpDfrpJ+b2wuJePflSrCO8smD+GmoHyf7WHWv7VRZuPBeWN9hBKmpigpmva1iDZ862YU4m6n2VcyaoYYYfgxojiUB6uBhYLDumh+DSvcp3JGw+mFECweaEJIXwhjOc98QAFaDj4ewcxIvPmVCloD9iTSj6Pg64oaEfF931B87QBY8LQq6JCTmu7SF1krjPM6epDbP9v810FAg1q6YCfw3jDF3+ZF7D+7oeYUhglT66S3iKeumUaPCHviz7FyaLgVvep0uRrig/dDlBhzDbRKygSOke6Shj/jHLuHMeHj9rPsmh49tk+C0+EshQVs1nAA4MecjZqhAYlDfHK6c1Yz91HHUMwcbcXYy0hEJuwtto9c2yIO6U/hE8/KH2bQlhhspdkHbWT27VLskDEKYj0I5qayiX9raSp90BPSxwnl/mqvdVrsk75+UmvorSjFRituI7d9KL/c9d64HynxvYmAnZZRabUcpGQ58ERCLQa1QFGFLn1QdWNn1DKlqtSgSOlbPJ641vq76OBuvVq1iZ9GAcf8pis6r8+aCfKJfc09oopHXispx+lL0Tz7xpYUMtpbD+Di0x1PcswKRQ8tbOlTjgdXsphIYxs4o0KezD4NbVDIKUHpih9tCu+ct5ZURP04pFXJ5bLh5iD6fVDNhZrRcmsRvXpo0+6oF7P0vu0f1VGrjpAKjZY0XUTBDtUPRHGh1m5YlGI3/yW9X02cZpJSlYT+zs8hzkPgw9emdI/virYKQnWqw3pI1EmdUF6I0QWAkuvWgl9hJK8g9VjUhw2ZA7IB8TK12g6gX55bTP4FIofGLgdtuc7tCHM74p0BmqPVsEiYXr+XBdKnDY6BHD8UIVfDpslbRxSTRUauLc5TJxIhZcTkIm6dx5iSkR8VOWGg6FaNT00yAGXrEwC7QJ8qSzHc5c7DkdT61Vynep4L73TQLz+CRsZztrZhWaI
+ 6VwW/gRQ
+ 08errEte9fULKkZAyksqAflBtZUYKb6XtxYe0eW33Uv0cABWKIHTXCgwykFWSU7d8xNYslCAS3cO1leh7cwv78R77mT0PsYUUGaxXP3KkPKwLg3wROYKnmPw3OxYCRF4A032GOXS97XaUiY4DwR8kkmHBZO7Jz0Q/J0kHGg7Rl9hTwWMinJlwl3zDH0gs0jP7VQ45qdftzhSsCXohmxA7gZ77bEm09lkNxlyqxkF3MfPwGHNBvnXnb/03rwQLSmzQw6hkCAKUfsesnR4ON3pLkt8NakyQ1+yzlJ81gzo815OfV87LpVa19gUqGEQHxhIvc+q/XKljref8NTyO5Ro70uNjjPaMC25NobcgXlPRiKvSnwxT0j380xGQq77ZZo8eHUsI+/7vIkn9lus=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,40 +134,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/13 11:58, Christoph Hellwig wrote:
-> In preparation for changing the filemap_fdatawrite_wbc API to not expose
-> the writeback_control to the callers, push the wbc declaration next to
-> the filemap_fdatawrite_wbc call and just pass thr nr_to_write value to
-
-s/thr/the
-
-> start_delalloc_inodes.
+On Thu, Oct 09, 2025 at 06:24:30PM +0100, Usama Arif wrote:
+> This is a common condition used to skip operations that cannot
+> be performed on gigantic pages when runtime support is disabled.
+> This helper is introduced as the condition will exist even more
+> when allowing "overcommit" of gigantic hugepages.
+> No functional change intended with this patch.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 
-...
-
-> @@ -8831,9 +8821,10 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
->  			       &fs_info->delalloc_roots);
->  		spin_unlock(&fs_info->delalloc_root_lock);
->  
-> -		ret = start_delalloc_inodes(root, &wbc, false, in_reclaim_context);
-> +		ret = start_delalloc_inodes(root, nr_to_write, false,
-> +				in_reclaim_context);
->  		btrfs_put_root(root);
-> -		if (ret < 0 || wbc.nr_to_write <= 0)
-> +		if (ret < 0 || nr <= 0)
-
-Before this change, wbc.nr_to_write will indicate what's remaining, not what you
-asked for. So I think you need a change like you did in start_delalloc_inodes(),
-no ?
-
->  			goto out;
->  		spin_lock(&fs_info->delalloc_root_lock);
->  	}
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
 
 -- 
-Damien Le Moal
-Western Digital Research
+Oscar Salvador
+SUSE Labs
 
