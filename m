@@ -4,179 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801BFCCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 13:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E044CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 13:08:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B23328E0045; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
+	id B72C58E0046; Mon, 13 Oct 2025 09:08:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB478E000F; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
+	id B4A4F8E000F; Mon, 13 Oct 2025 09:08:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E9D48E0045; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
+	id A12F38E0046; Mon, 13 Oct 2025 09:08:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C27B8E000F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CB328769E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:07:23 +0000 (UTC)
-X-FDA: 83993117166.19.7A8E23D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9364C20004
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:07:20 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WxSHAw4I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rWFoi5F2;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaLN6Qo9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9sAjJpKY;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760360841; a=rsa-sha256;
-	cv=none;
-	b=4Ax/JfzIDtRM+cReRopx7DAtIEzs1uXY/Pq31drRjA3Js/TaoyEFUinx1yhM9DJ/7AaamE
-	Q6VV2NtLkCI8aYDUnSRbKJU5crX5uFcG2uWY5D+O4U67NWOJOtIoqwjUkGXS1dWlZ/3Xas
-	V7ATIHEabML6CTlH1wnzsmHL9ou7lKA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WxSHAw4I;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rWFoi5F2;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaLN6Qo9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9sAjJpKY;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CE168E000F
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:08:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FF3A13AF98
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:08:07 +0000 (UTC)
+X-FDA: 83993119014.23.FEF57E1
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 589C1A000A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:08:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZSD1zBrt;
+	spf=pass (imf15.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760360841;
+	s=arc-20220608; t=1760360885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
-	b=YhufkRGyAbmCaGmWxWXffB3ITQ4Ca2Qsf9ifz+teQekg40m+A+e0FCCJJcGJ7aIIQKmVMX
-	89AG2OWSeehr2Vzmqc+xsRJEf0udH12IuKYpgJdbKl3baG6vilXYa+jt8+Z9cU11xVoXB/
-	UFl/UM4zuo46W2lP8YzZcMemjZG6H6w=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D7649219A7;
-	Mon, 13 Oct 2025 13:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760360839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
-	b=WxSHAw4IMFUn7RLE+0EdtM9sipT0TUIxYsQyP5uz53WvLjsoEZj6Ww0Nqk1rDjaJ/96gSv
-	I8+UWL2fVrMsqfMmGnAg+Q7GO75F6SFChwIGrX2NMjjvjN94Awrjflq1h7ZjxixlPnZwQJ
-	J1r5DxJPeqpD4DrkGgQCauYuQ/uk9GQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760360839;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
-	b=rWFoi5F2xi8+vhJ0Pn83W+YKOGfOpipbLwAmGBOky1uY+O5EKhSryQkguzE/ipdSfApR9U
-	yjkd0JCjeNzKK1CA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760360838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
-	b=HaLN6Qo9bnVAG0mENAom18/5bu7/rEo8RaEuoaCvS6oa40IU9UHmnzogATaknE4j2rnnU5
-	NpRof9hmAWxibTKVn1RPb3irg7bLhzO8t+IwPOan3uCQ9LefRXWh7pZB643F5GqZdCnSHG
-	4WGWM2kKLaQOXiQVNJzDEpj1KRFo9EM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760360838;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
-	b=9sAjJpKYn6yzEh84RG9SAxBlyXHF3iNOHS/Oe4RiDRCSlmBJ1HaVeUSq4fmHF+1vtPNxlt
-	X2q1L7YEZ+AvYNAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C28FD1374A;
-	Mon, 13 Oct 2025 13:07:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aNYuL4b57GhTRwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 13:07:18 +0000
-Message-ID: <71803dce-3fa6-494c-a4b1-55d98fc4aadb@suse.cz>
-Date: Mon, 13 Oct 2025 15:07:18 +0200
+	bh=ezMBebfglcjXR4WCpqnRZyhjdDDfwSug2JivoEcwJSY=;
+	b=MIeLUvu9/Tmh7U6LHk5JBU+4b1lz6F1ApnqkyF0be0nkoeNFpHszQR4/hdWvUt5UImKaII
+	rPPlyWorrtjzeA8OeW5Tov6h2CqhlgnS4kF5Yma0w3fUIfbZWiiAAjYWmqSRHZvJvuem4e
+	80sd7ek/9lWE/9BLpVs/esiMZ7uS7zw=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZSD1zBrt;
+	spf=pass (imf15.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760360885; a=rsa-sha256;
+	cv=none;
+	b=msRrc6DjMPLaDM6ZzLsf8B8CFooyca4wmvsP+eSFT4DCHrfSPLaAjnzx/XXdmlHnjiKtqx
+	pIDK/T2xnhSgyZOaQ/rZUE2lX95oyENBXQuiY8FeHwEaGAryE14xeI2swDsE+k7cH9vZNQ
+	5tHIQaKHciEH3L9cmLAOL7rMW1Kqu+0=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-78f15d5846dso68603686d6.0
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:08:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760360884; x=1760965684; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ezMBebfglcjXR4WCpqnRZyhjdDDfwSug2JivoEcwJSY=;
+        b=ZSD1zBrtvhDl7lTffmvsqo6kR36XYrOS9AsmoQbDF/HhqFkWPETikx4Ovomx5WuZoy
+         52loM7XMCyzuRcs0MnmFjxZ+41e+IRnwke3dzaczQfrL2Vn/8RGyUYWoVOmgRVY7kH9D
+         NdOxw1C7Hf58BjJmFi72QzW3o4f+ZTrOP2pZl0aMiqDuG9m9M9CqKjQrjEza+lP5SFud
+         hJnf6VUE/HXM5hxXj0ubKRE3FQfVtPV18S2S+JB8WY/vWqL3ldYSHJD5UvWnt3fqlMYC
+         I5HwEPpeIHnNhzMIViqGbQUMs76kEAU/ztoju+8UTwVQuhypgT1WCiSsttxwtCk7wziJ
+         tikA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760360884; x=1760965684;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ezMBebfglcjXR4WCpqnRZyhjdDDfwSug2JivoEcwJSY=;
+        b=hVqNbG3efgChcgzH1ehoZbvOIeI6raJdBf/7cvwnlZDVxoCBTl1WW5SrO46S7sZRg3
+         bzuoQzAWPZIC81yQdudnXwk+nbkUde+MIB537adjRiiE4bjSNXtN8Okr7QUSIXcyfvHV
+         BY9hLXM0KbzGH44ypSo24Y9UlfJNGll8NsE0knKIkBTkYCYF+MTE0CwYgTqnOOXkAdkr
+         l+/us+V9i7nsL5hLCHxOLfKEnfJ9NFnU/TW5fpyR/BgPitvKaJ4tDFD0o7D1MedLKTYD
+         3DoEIReZHsZ3La7QrwcR/hQDjmi/zQNZyp5bnvtFAOx7TbjoaKiGd8ZmXQF0gy9GJcnu
+         Sx1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUvcPAznR0TU/QI56yV7pXu9A1KPvBKuyLmOvlW/JDLQTqGle2gk9vDrTwp79G7Q3a+TPJKXhzA+Q==@kvack.org
+X-Gm-Message-State: AOJu0YwTo98rToWT7K1y6Njvp53QufsI8+T4lHlPJbfEBAvJ6YjhRWCS
+	GcBZfCPxXa98+SXIfOcKEaz10XxpfAji/CkD1uy8GdylCa6mfUW4t2Bz7PO4DOG+9UXEwdXswL5
+	cSDujHH1T3ea2VRZG9F3nnaSoIczA07s=
+X-Gm-Gg: ASbGncvw3NYlZ9xV5a9d+wFRbdJR3hwHdp7Ogi8gokLjMaakyCQPfvoWEnwPMqlbu6G
+	tJLe17H6ArWXAIyDTQ+n50VhyjQx2Bq6Xv1pRyStcn0hxfeCarb8fcRvsuGje2dbKA+xKznibzj
+	KMU7iJfyo2sDkTaBn/+FPIC7Ac/KILptv+Fh+/0dakfG+RE6luReqnk5UNADAYdRjkAbil1iwzk
+	+l+i5JFr3qe6NJU4kTaR52vzLfsKQJQuduFoA==
+X-Google-Smtp-Source: AGHT+IGm0oKxFc4T/QZjCy+NGutfmN3uHvswZSHDi9nqJU7JDX84TgvXkCDG/QBma6yTwwDWrVtFnLsmlV0W2zzJh/o=
+X-Received: by 2002:a05:6214:f08:b0:7a9:3d3b:fe95 with SMTP id
+ 6a1803df08f44-87b2101d562mr345171496d6.19.1760360884347; Mon, 13 Oct 2025
+ 06:08:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC RFC PATCH] mm: convert VM flags from macros to enum
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- David Hildenbrand <david@redhat.com>
-Cc: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Ye Liu <liuye@kylinos.cn>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251011093054.886460-1-ye.liu@linux.dev>
- <809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local>
- <7ca0960f-9d1a-4ba4-b074-a6502578b82e@redhat.com>
- <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
- <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
- <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250930055826.9810-1-laoar.shao@gmail.com> <20250930055826.9810-4-laoar.shao@gmail.com>
+ <CAADnVQJtrJZOCWZKH498GBA8M0mYVztApk54mOEejs8Wr3nSiw@mail.gmail.com>
+ <27e002e3-b39f-40f9-b095-52da0fbd0fc7@redhat.com> <CALOAHbBFNNXHdzp1zNuD530r9ZjpQF__wGWyAdR7oDLvemYSMw@mail.gmail.com>
+ <7723a2c7-3750-44f7-9eb5-4ef64b64fbb8@redhat.com> <CALOAHbD_tRSyx1LXKfFrUriH6BcRS6Hw9N1=KddCJpgXH8vZug@mail.gmail.com>
+ <96AE1C18-3833-4EB8-9145-202517331DF5@nvidia.com> <f743cfcd-2467-42c5-9a3c-3dceb6ff7aa8@redhat.com>
+ <CALOAHbAY9sjG-M=nwWRdbp3_m2cx_YJCb7DToaXn-kHNV+A5Zg@mail.gmail.com>
+ <129379f6-18c7-4d10-8241-8c6c5596d6d5@redhat.com> <CALOAHbD8ko104PEFHPYjvnhKL50XTtpbHL_ehTLCCwSX0HG3-A@mail.gmail.com>
+ <3577f7fd-429a-49c5-973b-38174a67be15@redhat.com> <CALOAHbAeS2HzQN96UZNOCuME098=GvXBUh1P4UwUJr0U-bB5EQ@mail.gmail.com>
+ <7176597b-006f-40ad-9421-860d80d7e696@redhat.com>
+In-Reply-To: <7176597b-006f-40ad-9421-860d80d7e696@redhat.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Mon, 13 Oct 2025 21:07:27 +0800
+X-Gm-Features: AS18NWCBr7_RxNHr1I-K75akWBIPcxKG4UcwhU5giQn6IEnh0jqmkdU7wZH1l1w
+Message-ID: <CALOAHbDqP3fH2_4r+5_9D46qrFiaRYHYGzW7M-fwwt4_qW9Npw@mail.gmail.com>
+Subject: Re: [PATCH v9 mm-new 03/11] mm: thp: add support for BPF based THP
+ order selection
+To: David Hildenbrand <david@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, baolin.wang@linux.alibaba.com, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
+	David Rientjes <rientjes@google.com>, Jonathan Corbet <corbet@lwn.net>, 21cnbao@gmail.com, 
+	Shakeel Butt <shakeel.butt@linux.dev>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zxxxh1s8ywt3rxrniwes4jhxeiy9iwgn
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9364C20004
-X-Stat-Signature: iwozhumyfo3i47ic4gpg5hba8tfh41pb
-X-HE-Tag: 1760360840-696843
-X-HE-Meta: U2FsdGVkX1924RLd2EiIpBbRVlEKKlJz1oiBQErsXMk1GXU3+o85Yn0tO4tzTULQaz1cdZchCzo1Faby4gACv2y1lI4ugqB9S6sbrplKODxMbqmwI8wiRDM03sg2pCmiQopO5a9R4gzz6DiLAA5I/56ZFd0R+n34j1tAvqZem6hIg5U2fxGvj15kyOwxFRojbNFJOmYWJ5OHqBB4q/CBEHTiQxUhq1VsY7Y64Jj0rWsq+6Se8S+PHKJSecYcKF5ZlFHLkpudJ095IMsZd7GQkgHICmcuvvmjVArveZJ14wIRo+XO0pzTWclQQOEhkKJm5iJdq+N+f6wpCqDNzDoH2yJvCYTGgsTwsHols5BApDNb2D0XqDEqokzBpH9iWZI3cSlMiRNAbuPPTXkHLYVTr+vnMH3B4hjtI9UTKUnfz5Na76qeawASxoBSMNMkI0hTMTwQLB4TZeNQS7470Mtx7HslM+BdK1lMzdmomJG2sQ+302kVuAoqc3U0xcZ0/R3ZrnceX646VYlts5WiN59C7m7aJjqjSzrFjIsqDouhq05F0sVCsg00NgppUMEdvFto6fX3D8csPG1JR3k4P1gEx2f7eryvIBPMaJKkDsfjJKxoYdod/jcOxfhOFhZzLj7vQzWNk6yMOlCmqFOApA7Jf8UEEqUosdxK92kFgzfYYapAuY6oTNu3ObBxnLeV3gt3vQuWHdHNeQm+Es6GGsaer15nn9mwV2Tai7h3hKe54s8hypmcv9cP99ExABl1XjQKfGuf1dWaZhd4lMkGFYDVWVf4l8gNddBdE6nEvSeIFWhmDVQoj7VT0slukNck/fCqvAKl2uLETA3OTqXXpXwsMHEdIB25WyCwPlYRAYKV4/+BF1Avl00jIe3VEoSKHf4aKxklG8yrJgV7S9gr/snYZ/t8JnrYQhz53yB9hAH4bV8OJ7/KOaettUCeJleF5rAv6UBrbVkbz1DlCKZrmry
- GYX5M6gV
- UiaeoFJ77lsqdONgRUJ3BXQ/LE2UDd5aMGYm4QHwSjeQISkjKqyA6hgfauMBMuhfqMuA1k8RvYqS4niLX9/btauBzRhQxGDaz7dOb1tByMVtm5iobluLErhQbMLOuBGGxkvGE/Nwll9Se3y+fPpfGXnUUAukyKE7giLbXEEZdhOHamJJrd+HfaWXy0jePrJQLY1O0vVc3PGuyBRWQE+GPp/6i9bPfPRKvQu3RJ0oyQPBkZMgz1L2XB4zkd2ELNlHwtmrc3xa5PiTxe4m1IZ+29n8OaveNTFONLVxC
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 589C1A000A
+X-HE-Tag: 1760360885-398939
+X-HE-Meta: U2FsdGVkX18KTSIxZTlkPN2StEO+KuGDCmOXjLc1JyMiFyiDU2aaxZjKBkCodq1acKsYbsySPkGu3P/eqKQbG8AEl8mgpOgoU1gIqWk1xoi7Mv91YnCZT8lKVvxRcttkTtZaL147z+SdaqOoyZnIgQTV+Z/6bNIai7OtwKv6Y3UfkA5SOu2OFXUE58L6WHNsBuZfq9kGwctdtsCksTbCbpod3Kc+94ALeW5Gn7kI0solwYKB5VRylIT3KhR8RRE1h12SqJFHweHVAByxa0VGj8hT5Q6deVH8ZlpKbe323z4olevQkhuYKQN3PgTydRYbRcSeXhpG6XC8wvmcD1iLdljokvghEee8pdlzMSjx/+qL9AUa2jSbYuXqL/5G138Ggk73loMsUKIbq4qrT/zUTWXRL9ioYAioc519fhteaBGmCjmj1WAI1leWFUYkNE3Z0tGDhSbcNGVnrv2h1xsBwbEkDytlgWf8hAyKG/YnEzELmmjvzE9ADXIlYnz9mID9BCB5FdKPTnr0Qqd4E72KGO3m2fg5sXqR/b1SkOGviltm+0tDPNhhw7Q+mw/cE3jIpG7GS74Rp1jpCQHroh/bndFQG8GIj0v/CjS2+HRphYyWpyqMycsMQS915Uwg8q/VzNZRV/hCBJR3RbcW+gAUhQiJl79/W4rr1/rxgwb1AEFFfL2uONFGVfFlyATO1+hW62hT87oUg1iZa0mF8WgJZSR4NI2a97I80SoDmk1U5BqJuHo0Kocu3loVCWsk8kKr5O4O19Yl339ftk+H3rGMKMsYlWmFVQhBxukqasPGD4GYOb0bjaqptW/WzHX4/2S7BCmafIQFquY+6VwSfsNwjPx/F/HeLmNRRaoLOPcqzIyyrgQR3lTvFhvDRe9ewOj9o7xY0yLF9UU24orbNTsfnorPJNie6zrZ4M9ajdhKdUotX0oZVAkAl8vKmmw7nkl+PcrnYCzMbKvppj08MRc
+ pEW2J99s
+ BAZvgBzIpXei1PcCHetpVXGM/5wL74CX429aXpnYqkZjKsBIWFsQvWiPetvWCq09efMB43Te9p+iI6YrTXFhl8vxG1scrEMWPPBHnP9NV2E58Xr9JPLclpXEKGwtGFAuhk9zRZl+N3w0h7Mm0g+nPEjkZQ3izHdVwLjRBQoHf950TvnoacW9WV05yAs6v0v3RTiXzobdtmAhjdF6TmbQTah5NOetiBoznxuL7bQioQo0P9kLf/Goolt2Vx6e+Xr6VGHwIxCpfZSAw8glJPp3MQn8gNW488vscW42RPeV9CKUIyD3NMQCtzbz84onMxHZGmfCoqin4r22Ch4OQbAkBnMpjOgRZaD9a1DkaxhSbbuXT3XmNtl4SQYS7/fg7eCAUo4Qiy5mvPDLL+DrVJiS/JkqMddvCfSdnziGj/4m5DvnZkV/nWzkDhVeekfPs6wgfyyi1a1OKVzCi8E6KzEQqVMX/hIsQVJjoJFzO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,56 +137,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/25 14:57, Lorenzo Stoakes wrote:
-> On Mon, Oct 13, 2025 at 02:31:35PM +0200, David Hildenbrand wrote:
->> On 13.10.25 13:33, Lorenzo Stoakes wrote:
->> > On Mon, Oct 13, 2025 at 01:12:20PM +0200, David Hildenbrand wrote:
->> > > On 13.10.25 13:04, Lorenzo Stoakes wrote:
->> > > > On Sat, Oct 11, 2025 at 05:30:52PM +0800, Ye Liu wrote:
->> > > > > From: Ye Liu <liuye@kylinos.cn>
->> > > > >
->> > > > > Hello MM maintainers and drgn community,
->> > > > >
->> > > > > This RFC proposes to convert VM_* flags from #define macros to enum
->> > > > > vm_flags. The motivation comes from recent drgn development where we
->> > > > > encountered difficulties in implementing VM flag parsing due to the
->> > > > > current macro-based approach.
->> > > >
->> > > > This isn't going to work sorry, it's not valid to have flag values as an enum
->> > >
->> > > I don't follow, can you elaborate? IIRC, the compiler will use an integer
->> > > type to back the enum that will fit all values.
->> >
->> > switch (flags) {
->> > 	case VAL1:
->> > 	case VAL2:
->> > 	etc.
->> > }
->> >
->> > Is broken (compiler will say you cover all cases when you don't...)
->>
->> I assume you mean theoretically, because there is no such code, right?
-> 
-> Right, it's a general point about why enum's are not such a great idea for this.
-> 
->>
->> >
->> > An enum implies independent values that exhaustively describe all state, however
->> > these flag values are not that - they're intended to be bit fields.
->> >
->>
->> Observe how we use an enum for FOLL_* flags, vm_fault_reason, fault_flag and
->> probably other things.
-> 
-> FOLL_* flags are an anonymous enum, enum fault_flag is not used as a type
-> anywhere, nor is vm_fault_reason. So those are both kinda weird as to why we
-> even name the type (they're in effect anonymous).
-> 
-> But also 'we do X in the kernel' doesn't mean doing X is right :)
+On Mon, Oct 13, 2025 at 8:42=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> >> I came to the same conclusion. At least it's a valid start.
+> >>
+> >> Maybe we would later want a global fallback BPF-THP prog if none was
+> >> enabled for a specific MM.
+> >
+> > good idea. We can fallback to the global model when attaching pid 1.
+> >
+> >>
+> >> But I would expect to start with a per MM way of doing it, it gives yo=
+u
+> >> way more flexibility in the long run.
+> >
+> > THP, such as shmem and file-backed THP, are shareable across multiple
+> > processes and cgroups. If we allow different BPF-THP policies to be
+> > applied to these shared resources, it could lead to policy
+> > inconsistencies.
+>
+> Sure, but nothing new about that (e.g., VM_HUGEPAGE, VM_NOHUGEPAGE,
+> PR_GET_THP_DISABLE).
+>
+> I'd expect that we focus on anon THP as the first step either way.
+>
+> Skimming over this series, anon memory seems to be the main focus.
 
-I think the example to follow could be GFP flags. Nowadays there's an enum
-below it, and a layer that adds (__force gfp_t), so you could do similar
-thing with vm_flags_t.
+Right, currently it is focusing on anon memory. In the next step it
+will be extended to file-backed THP.
 
-However I'm not sure how compatible is that with Lorenzo's plans.
+>
+> > This would ultimately recreate a long-standing issue
+> > in memcg, which still lacks a robust solution for this problem [0].
+> >
+> > This suggests that applying SCOPED policies to SHAREABLE memory may be
+> > fundamentally flawed ;-)
+>
+> Yeah, shared memory is usually more tricky: see mempolicy handling for
+> shmem. There, the policy is much rather glued to a file than to a process=
+.
+
+For shared THP we are planning to apply the THP policy based on vma->vm_fil=
+e.
+
+Consequently, the existing BPF-THP policies, which are scoped to a
+process or cgroup, are incompatible with shared THP. This raises the
+question of how to effectively scope policies for shared memory. While
+one option is to key the policy to the file structure, this may not be
+ideal as it could lead to considerable implementation and maintenance
+challenges...
+
+--=20
+Regards
+Yafang
 
