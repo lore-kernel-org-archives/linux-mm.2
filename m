@@ -4,124 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3EE9CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 12:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 801BFCCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 13:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B6268E0044; Mon, 13 Oct 2025 08:59:00 -0400 (EDT)
+	id B23328E0045; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08E238E000F; Mon, 13 Oct 2025 08:59:00 -0400 (EDT)
+	id AFB478E000F; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBF198E0044; Mon, 13 Oct 2025 08:58:59 -0400 (EDT)
+	id 9E9D48E0045; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D81B88E000F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:58:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8C2AB119B89
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:58:59 +0000 (UTC)
-X-FDA: 83993095998.07.BB3A4E2
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C27B8E000F
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:07:23 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2CB328769E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:07:23 +0000 (UTC)
+X-FDA: 83993117166.19.7A8E23D
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 333DE1A0014
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:58:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZIhtcp7D;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+g+6vyDw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w3wJ6bOR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oFRwmpdD;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9364C20004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:07:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WxSHAw4I;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rWFoi5F2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaLN6Qo9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9sAjJpKY;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760360841; a=rsa-sha256;
+	cv=none;
+	b=4Ax/JfzIDtRM+cReRopx7DAtIEzs1uXY/Pq31drRjA3Js/TaoyEFUinx1yhM9DJ/7AaamE
+	Q6VV2NtLkCI8aYDUnSRbKJU5crX5uFcG2uWY5D+O4U67NWOJOtIoqwjUkGXS1dWlZ/3Xas
+	V7ATIHEabML6CTlH1wnzsmHL9ou7lKA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WxSHAw4I;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rWFoi5F2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaLN6Qo9;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9sAjJpKY;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760360337;
+	s=arc-20220608; t=1760360841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GUvXlGSR5dfv4DsHE/Q9B87BUvBYICqk18OVwp4dZpo=;
-	b=kCxliiijbXsv34Urc1t9iRtHZQQ5AVQc/zD/B7507OYYCfbilV/1RQi3God92BrrSGJ/52
-	06vw+idlBGSkoQ+fvdSBvigoGOH0Qk2Ons+NpjLEIuGOdZn3AQpnAew401GHnSfCutFhBc
-	stZ8v2L0dyFm9Aco7BivCTFq7HJFCQs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZIhtcp7D;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+g+6vyDw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w3wJ6bOR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oFRwmpdD;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760360337; a=rsa-sha256;
-	cv=none;
-	b=Ouyj1zl74HPBseZ1eKH3izjcQDaQ4UxBBgUd050IY+/XDESzt1hz25VgugFUQcdrmKOgFo
-	cJFoz+5gc1KX8vJLn+3lv2gP878zJv5vP1rLg+bqLlmv296XulH0q88uomFuCzLih7sjZf
-	lnIVCvGgsrq9TZH29SLjIEzRsCdysXY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
+	b=YhufkRGyAbmCaGmWxWXffB3ITQ4Ca2Qsf9ifz+teQekg40m+A+e0FCCJJcGJ7aIIQKmVMX
+	89AG2OWSeehr2Vzmqc+xsRJEf0udH12IuKYpgJdbKl3baG6vilXYa+jt8+Z9cU11xVoXB/
+	UFl/UM4zuo46W2lP8YzZcMemjZG6H6w=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A355D21A0C;
-	Mon, 13 Oct 2025 12:58:54 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D7649219A7;
+	Mon, 13 Oct 2025 13:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760360335; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760360839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GUvXlGSR5dfv4DsHE/Q9B87BUvBYICqk18OVwp4dZpo=;
-	b=ZIhtcp7Dx8VfBtEa4XN0pmjakW/kevK9QuHN8xeQDoiyzQpQ/3Zt5yvQRtite5ibV5V8Uf
-	csFFxwQlD2r9TyeIlxcyBOqsOew7DCLfVd+/LVEZccl0Gysl4dp89PhwwwXhmETdd72PdZ
-	+jEdHtnCjAEhK7p8admwmYvm2IaZ2pk=
+	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
+	b=WxSHAw4IMFUn7RLE+0EdtM9sipT0TUIxYsQyP5uz53WvLjsoEZj6Ww0Nqk1rDjaJ/96gSv
+	I8+UWL2fVrMsqfMmGnAg+Q7GO75F6SFChwIGrX2NMjjvjN94Awrjflq1h7ZjxixlPnZwQJ
+	J1r5DxJPeqpD4DrkGgQCauYuQ/uk9GQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760360335;
+	s=susede2_ed25519; t=1760360839;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GUvXlGSR5dfv4DsHE/Q9B87BUvBYICqk18OVwp4dZpo=;
-	b=+g+6vyDwhWbIatNNLDLKSHUiullj0+zaljcntAFFnPG4Y8ImZGpnR6IXm5TlHggKZBIX88
-	Z5kONg5YCHF01LAQ==
+	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
+	b=rWFoi5F2xi8+vhJ0Pn83W+YKOGfOpipbLwAmGBOky1uY+O5EKhSryQkguzE/ipdSfApR9U
+	yjkd0JCjeNzKK1CA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760360334; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760360838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GUvXlGSR5dfv4DsHE/Q9B87BUvBYICqk18OVwp4dZpo=;
-	b=w3wJ6bORfEFflCSEDWXZ0SHmbA+9pWST+N/BMt1tti/E5n17216TAFRDo7KODNENZIts7F
-	sVc9qopl0n6RGRoOZ4JO0ZdVx2weGhDnZkmeBPi59nfgk0q92g7T7/9Ud747PkoUK02x6X
-	c6hkDVHmW3iQmCgn4msDESN4vPD3lyY=
+	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
+	b=HaLN6Qo9bnVAG0mENAom18/5bu7/rEo8RaEuoaCvS6oa40IU9UHmnzogATaknE4j2rnnU5
+	NpRof9hmAWxibTKVn1RPb3irg7bLhzO8t+IwPOan3uCQ9LefRXWh7pZB643F5GqZdCnSHG
+	4WGWM2kKLaQOXiQVNJzDEpj1KRFo9EM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760360334;
+	s=susede2_ed25519; t=1760360838;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GUvXlGSR5dfv4DsHE/Q9B87BUvBYICqk18OVwp4dZpo=;
-	b=oFRwmpdDQn5NL2xshmLSPbX2C962zstdmxgel3QZFZ5YhJLiZ3HFcE1fxDHI7+KICYT2TN
-	+AYEWJOLvuS7y1Dw==
+	bh=E3CnuRpErbgZ0qQjMayTZw+D5tyXqR2/i+elJ1QiCcg=;
+	b=9sAjJpKYn6yzEh84RG9SAxBlyXHF3iNOHS/Oe4RiDRCSlmBJ1HaVeUSq4fmHF+1vtPNxlt
+	X2q1L7YEZ+AvYNAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BAC11374A;
-	Mon, 13 Oct 2025 12:58:54 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C28FD1374A;
+	Mon, 13 Oct 2025 13:07:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DuqtIY737GgQPwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 12:58:54 +0000
-Message-ID: <eed70cd0-7850-4f06-ac64-3059c20e78e0@suse.cz>
-Date: Mon, 13 Oct 2025 14:58:54 +0200
+	id aNYuL4b57GhTRwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 13:07:18 +0000
+Message-ID: <71803dce-3fa6-494c-a4b1-55d98fc4aadb@suse.cz>
+Date: Mon, 13 Oct 2025 15:07:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/page_alloc: Prevent reporting pcp->batch = 0
+Subject: Re: [RFC RFC PATCH] mm: convert VM flags from macros to enum
 Content-Language: en-US
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kernel-team@meta.com
-References: <20251009192933.3756712-1-joshua.hahnjy@gmail.com>
- <20251009192933.3756712-3-joshua.hahnjy@gmail.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ David Hildenbrand <david@redhat.com>
+Cc: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Ye Liu <liuye@kylinos.cn>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251011093054.886460-1-ye.liu@linux.dev>
+ <809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local>
+ <7ca0960f-9d1a-4ba4-b074-a6502578b82e@redhat.com>
+ <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
+ <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
+ <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -162,18 +166,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20251009192933.3756712-3-joshua.hahnjy@gmail.com>
+In-Reply-To: <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 333DE1A0014
-X-Rspamd-Server: rspam03
-X-Stat-Signature: g7jtw3z49kuf8n49oe9i65w9izxihojw
-X-HE-Tag: 1760360336-996619
-X-HE-Meta: U2FsdGVkX19PquZjapy/NSUm2Wav0hX6/zmwzv3GeXl56wEDDNCsr3AFmhhSYauOwngPdiJfHV+1vO3pVBE12WgLsP85iz4DrahDJWGFEbAA4gnZyHObvY3mNc5FkHGMaboZktVXNxxqV2CfWKRXn1JpJL9Q2r3osv+xOonPOd9KbpX2mexpKvUmROEpiAiosGGbyrRe07wR3IWkngV0VlQkuJoE3AQ6Gv+w0zfaA7F/CE1M2CyMgP6d60Wxm0kc0hxBLeBgqgEt0InTjH6bzVN+01zdYcnHGuFofAjByc9LerZBMynnDwZQuv3ARbx4eaI/XwIHFAq55JlbAl2BPRzj0Vt2i4FuybaX0t8nBRbZv5ojtW8eef8IaihZPh13IFgXLVBscRS377qUeeCiH6k0VCvQUW7Pa31w6LPoIO06lZvucXpiDJ6kv4mG6otGcrVxMECRSMjQvwh2t71WFOcQ+aUmGcILgXf7cQ2H7R7J+bPpA6tvzH+PgmMiojk4Uu9VhhDg2pTGznSWjXEDohBE8obmaR5vUmelfUKWPRcbvBHNtLK4OLHQ4WtePnik2o5GXe6XaYFHlqfPPN6vrYHlmFgNpuYa2udOjZnguMVyoRZRU8XFBfyE+nMlJZiBnZE1z7ve7rDHenR44gpS9Jd9k9K/yWj61O78runHaPq2TMc3xIip3+6OVpA0YWN+zx3FXMIqPJH05FPLFL3GCo5tfA7pwfTPK2l5oGlPqBKzT+QHdfTmuKcGobvUhNCUlfpyaQzYSA4SQ08Q33sZHqylNXUxrRBnQOYjqA/QMcyG4VEN/dxyO0RubgiDWH5X+gOeKr3IIBmxJEQ5Xo8/1GIpeiLB9/GO71GPsJP0b9hBj4yZSA/e3trhAu042xsdZgc0MBwRLmEET03UZoG5Um8uZ2q9e/iL2ZnmUAxgzrzJT2RuHUyd5+eAwmMXfhFwzhQ3rcpztSuRQvWNB/b
- 1dx0hOC9
- c+FwnejYHpzFB2s5IzxSoyjDSorSuTJlwRIhEJ8CaUAGDAhv6AKivjiXjsjtoRxDEXLGmCwkfu8e1WoYzMYSv6bjxbB+YjmULHEELIdM0iT6UGm2jMd9gVgIAlQfLf5/gWF5QENoo6fAZsjsoPoLJQyqzZ4MCDFKCIScbvpe5u2Z1EgEHnxw7jyg2cpp3zVlY4cu/Juqap0HWzMMWyEXAvwJCixPCs7zVW3Ztt0PixMD9Z00lZmGgZX9Xx/S7a2IEoyXSOvR1HwLBUiF91SqoO27/3dYlg0Lv2BeXRlbiBm34AT4ZZoDBM36cxYtPLRqiWtOkN7jRbahn/tt1WfcwIOw9KTvlA47RQ7xdIwCW72c6CWKDlq9GS3eItv9MI0Bsc7AfT4ld5sbX80ZM5ymeF+jzyEG3yepyQl96eBDcBHX8rCY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9364C20004
+X-Stat-Signature: iwozhumyfo3i47ic4gpg5hba8tfh41pb
+X-HE-Tag: 1760360840-696843
+X-HE-Meta: U2FsdGVkX1924RLd2EiIpBbRVlEKKlJz1oiBQErsXMk1GXU3+o85Yn0tO4tzTULQaz1cdZchCzo1Faby4gACv2y1lI4ugqB9S6sbrplKODxMbqmwI8wiRDM03sg2pCmiQopO5a9R4gzz6DiLAA5I/56ZFd0R+n34j1tAvqZem6hIg5U2fxGvj15kyOwxFRojbNFJOmYWJ5OHqBB4q/CBEHTiQxUhq1VsY7Y64Jj0rWsq+6Se8S+PHKJSecYcKF5ZlFHLkpudJ095IMsZd7GQkgHICmcuvvmjVArveZJ14wIRo+XO0pzTWclQQOEhkKJm5iJdq+N+f6wpCqDNzDoH2yJvCYTGgsTwsHols5BApDNb2D0XqDEqokzBpH9iWZI3cSlMiRNAbuPPTXkHLYVTr+vnMH3B4hjtI9UTKUnfz5Na76qeawASxoBSMNMkI0hTMTwQLB4TZeNQS7470Mtx7HslM+BdK1lMzdmomJG2sQ+302kVuAoqc3U0xcZ0/R3ZrnceX646VYlts5WiN59C7m7aJjqjSzrFjIsqDouhq05F0sVCsg00NgppUMEdvFto6fX3D8csPG1JR3k4P1gEx2f7eryvIBPMaJKkDsfjJKxoYdod/jcOxfhOFhZzLj7vQzWNk6yMOlCmqFOApA7Jf8UEEqUosdxK92kFgzfYYapAuY6oTNu3ObBxnLeV3gt3vQuWHdHNeQm+Es6GGsaer15nn9mwV2Tai7h3hKe54s8hypmcv9cP99ExABl1XjQKfGuf1dWaZhd4lMkGFYDVWVf4l8gNddBdE6nEvSeIFWhmDVQoj7VT0slukNck/fCqvAKl2uLETA3OTqXXpXwsMHEdIB25WyCwPlYRAYKV4/+BF1Avl00jIe3VEoSKHf4aKxklG8yrJgV7S9gr/snYZ/t8JnrYQhz53yB9hAH4bV8OJ7/KOaettUCeJleF5rAv6UBrbVkbz1DlCKZrmry
+ GYX5M6gV
+ UiaeoFJ77lsqdONgRUJ3BXQ/LE2UDd5aMGYm4QHwSjeQISkjKqyA6hgfauMBMuhfqMuA1k8RvYqS4niLX9/btauBzRhQxGDaz7dOb1tByMVtm5iobluLErhQbMLOuBGGxkvGE/Nwll9Se3y+fPpfGXnUUAukyKE7giLbXEEZdhOHamJJrd+HfaWXy0jePrJQLY1O0vVc3PGuyBRWQE+GPp/6i9bPfPRKvQu3RJ0oyQPBkZMgz1L2XB4zkd2ELNlHwtmrc3xa5PiTxe4m1IZ+29n8OaveNTFONLVxC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,38 +185,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/9/25 21:29, Joshua Hahn wrote:
-> zone_batchsize returns the appropriate value that should be used for
-> pcp->batch. If it finds a zone with less than 4096 pages or PAGE_SIZE >
-> 1M, however, it leads to some incorrect math.
+On 10/13/25 14:57, Lorenzo Stoakes wrote:
+> On Mon, Oct 13, 2025 at 02:31:35PM +0200, David Hildenbrand wrote:
+>> On 13.10.25 13:33, Lorenzo Stoakes wrote:
+>> > On Mon, Oct 13, 2025 at 01:12:20PM +0200, David Hildenbrand wrote:
+>> > > On 13.10.25 13:04, Lorenzo Stoakes wrote:
+>> > > > On Sat, Oct 11, 2025 at 05:30:52PM +0800, Ye Liu wrote:
+>> > > > > From: Ye Liu <liuye@kylinos.cn>
+>> > > > >
+>> > > > > Hello MM maintainers and drgn community,
+>> > > > >
+>> > > > > This RFC proposes to convert VM_* flags from #define macros to enum
+>> > > > > vm_flags. The motivation comes from recent drgn development where we
+>> > > > > encountered difficulties in implementing VM flag parsing due to the
+>> > > > > current macro-based approach.
+>> > > >
+>> > > > This isn't going to work sorry, it's not valid to have flag values as an enum
+>> > >
+>> > > I don't follow, can you elaborate? IIRC, the compiler will use an integer
+>> > > type to back the enum that will fit all values.
+>> >
+>> > switch (flags) {
+>> > 	case VAL1:
+>> > 	case VAL2:
+>> > 	etc.
+>> > }
+>> >
+>> > Is broken (compiler will say you cover all cases when you don't...)
+>>
+>> I assume you mean theoretically, because there is no such code, right?
 > 
-> In the above case, we will get an intermediary value of 1, which is then
-> rounded down to the nearest power of two, and 1 is subtracted from it.
-> Since 1 is already a power of two, we will get batch = 1-1 = 0:
+> Right, it's a general point about why enum's are not such a great idea for this.
 > 
-> 	batch = rounddown_pow_of_two(batch + batch/2) - 1;
+>>
+>> >
+>> > An enum implies independent values that exhaustively describe all state, however
+>> > these flag values are not that - they're intended to be bit fields.
+>> >
+>>
+>> Observe how we use an enum for FOLL_* flags, vm_fault_reason, fault_flag and
+>> probably other things.
 > 
-> A pcp->batch value of 0 is nonsensical. If this were actually set, then
-> functions like drain_zone_pages would become no-ops, since they could
-> only free 0 pages at a time.
+> FOLL_* flags are an anonymous enum, enum fault_flag is not used as a type
+> anywhere, nor is vm_fault_reason. So those are both kinda weird as to why we
+> even name the type (they're in effect anonymous).
 > 
-> Of the two callers of zone_batchsize, the one that is actually used to
-> set pcp->batch works around this by setting pcp->batch to the maximum
-> of 1 and zone_batchsize. However, the other caller, zone_pcp_init,
-> incorrectly prints out the batch size of the zone to be 0.
-> 
-> This is probably rare in a typical zone, but the DMA zone can often have
-> less than 4096 pages, which means it will print out "LIFO batch:0".
-> 
-> Before: [    0.001216]   DMA zone: 3998 pages, LIFO batch:0
-> After:  [    0.001210]   DMA zone: 3998 pages, LIFO batch:1
-> 
-> Instead of dealing with the error handling and the mismatch between the
-> reported and actual zone batchsize, just return 1 if the zone_batchsize
-> is 1 page or less before the rounding.
-> 
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> But also 'we do X in the kernel' doesn't mean doing X is right :)
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+I think the example to follow could be GFP flags. Nowadays there's an enum
+below it, and a layer that adds (__force gfp_t), so you could do similar
+thing with vm_flags_t.
 
+However I'm not sure how compatible is that with Lorenzo's plans.
 
