@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90A81CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 23:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5BEECCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 23:56:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBD708E00B3; Mon, 13 Oct 2025 19:56:23 -0400 (EDT)
+	id 19E6A8E00B4; Mon, 13 Oct 2025 19:56:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6E008E0024; Mon, 13 Oct 2025 19:56:23 -0400 (EDT)
+	id 127D18E0024; Mon, 13 Oct 2025 19:56:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35BB8E00B3; Mon, 13 Oct 2025 19:56:23 -0400 (EDT)
+	id F0B628E00B4; Mon, 13 Oct 2025 19:56:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B96A08E0024
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:56:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8071B1DFFCD
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:56:23 +0000 (UTC)
-X-FDA: 83994752646.01.3622B68
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AD58640004
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:56:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LyfBBqsJ;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D7A838E0024
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:56:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DBF6B9BE3
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:56:34 +0000 (UTC)
+X-FDA: 83994753108.03.BD20B2F
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BF3904000D
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:56:32 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZaqQXn+I;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3pJHtaAsKCMs1r2v9y9z4xyx55x2v.t532z4BE-331Crt1.58x@flex--kaleshsingh.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3pJHtaAsKCMs1r2v9y9z4xyx55x2v.t532z4BE-331Crt1.58x@flex--kaleshsingh.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760399781; a=rsa-sha256;
-	cv=none;
-	b=gFfFHB7m32lHOyviZ2gZnQlOZ4+3FlWq7JyWqTOi5NBAXkDWdOgD72z9Bizqma711vgfsB
-	bxMQubtV9JvVFhIdRExQSDMf8sY0D1MWtW3QYEM/E3704NAVQqsYE8htcUvolegYIOH5K7
-	elXQmO3UX2sIAmNq2wEsHvyY5oHDNI8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LyfBBqsJ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3pJHtaAsKCMs1r2v9y9z4xyx55x2v.t532z4BE-331Crt1.58x@flex--kaleshsingh.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3pJHtaAsKCMs1r2v9y9z4xyx55x2v.t532z4BE-331Crt1.58x@flex--kaleshsingh.bounces.google.com
+	spf=pass (imf12.hostedemail.com: domain of 3r5HtaAsKCNYC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3r5HtaAsKCNYC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760399781;
+	s=arc-20220608; t=1760399792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DfyNCZtwA/KBestiCQmuIFg3B48jf9OXth0tohHfRYY=;
-	b=McaSX6UNYYyQ/S3rSKtLgrZSTVebn2zDv8QK/62gox9f23OF/R5QN0eN2U5mnuyQOuRsKO
-	tSrGQBRS4zSNn6Gl5bKQof2srDzR2tYB1Ry0WEBV15HXf/bB5PadKXHGFcroxwvEALtICN
-	5p6Rgooo9PCRBjcO3DdwihId3vTzTa8=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2698b5fbe5bso111584095ad.0
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:56:21 -0700 (PDT)
+	bh=nPYU+2umQYN0e1OeO8X1leEMEVeMTLGsEK2ETVKaSgA=;
+	b=CFQ9IE4s3Q1UExv5SkdPTXpWygAJ1CzpKYy31Mt1IlNaGca1QLR9Yc/w+MzSWxsxzjhn3X
+	gN6EWhi1Zf7wbYmLyuB3s9EVAAOMb4U1zL0ecJ4RqyEacg//03HDF3ua95+tj09b78nd4u
+	z3s3IHhQ8zoduzDexeR4bgGRbRu+eGk=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZaqQXn+I;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of 3r5HtaAsKCNYC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3r5HtaAsKCNYC2D6K9KAF898GG8D6.4GEDAFMP-EECN24C.GJ8@flex--kaleshsingh.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760399792; a=rsa-sha256;
+	cv=none;
+	b=vrdJBISH0AALShv9uRHiP1gG6iN4SBJZjYyrQL/h4uA3bOgg6X5sd22QlWPjDbu1s+Giv5
+	DyDcPR2qmr+BFKMK1H5B1cxE6PPtYDNVXwSA3NX16TVLXeietulOXq0+XxxSHlIvGnCVj6
+	wKN54PbkkD+UeTmx5w5M4wb5DpruRBc=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-339ee7532b9so24349883a91.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:56:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760399780; x=1761004580; darn=kvack.org;
+        d=google.com; s=20230601; t=1760399792; x=1761004592; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DfyNCZtwA/KBestiCQmuIFg3B48jf9OXth0tohHfRYY=;
-        b=LyfBBqsJe2ZbrqXt30Yyxu8KE2KeQOiYStvDh/YRSa72wI6g3yyoEhSgJ8MkaRDmi1
-         8IxzxrWMNeLbN75Lmk6d4tOtPUvAGggOxwiPQk1gFx33dMtAFoj6WjjG3feFKp55TMKw
-         Y3EdBm7WlK0+9QW9e2MzOqsN+EFp0jmSbNuW/6iQk8QxDeSaAE9w6EbDDr2OtSHM1zgo
-         7TB0DlKx/g/reG3pBh50U5eLLq0uoWKxYuHVF7PMT5O3l+0ZuG0lv/so5h+4GDqSj/6S
-         qaZiYqgcP5RzHHnChNCYuYk2fwyxpIA6ceHB434aKm19iOXCj9TXY6ep/G4Kdtxex/lc
-         PZOA==
+        bh=nPYU+2umQYN0e1OeO8X1leEMEVeMTLGsEK2ETVKaSgA=;
+        b=ZaqQXn+Ibs7Ye05V56x84RGYWUcH/jP8lim5rc9NGI5lzuihJUIiteszySssTa+dKA
+         YVLq1SIlPFkdFt1LUwTh45Q4X4PGqQiu6EV/1XgknPj38MuFws26tJvd++lM8fLEWV2Q
+         tctL0V21JDzUj3rlztrYDyypEAtXYn41Vc53IeL69hX+VngkLDmPLqk89FRXST4kOV+7
+         43uDJ3Ij6oLNqz+kV2lEIWjhNiRaYUC8zUImTV3AzVTh0WJdbqDBYwvcURFjoWYGCvAE
+         krVP+u1yBGCaW/ituZ2q30GPYMibiIRbsejP9NbHc369KfkooyLDXIiET/M3rARsEmAN
+         mGLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760399780; x=1761004580;
+        d=1e100.net; s=20230601; t=1760399792; x=1761004592;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DfyNCZtwA/KBestiCQmuIFg3B48jf9OXth0tohHfRYY=;
-        b=Ow1YlrPjjxzH3tVnu9SR5gexygEXuPnteZWLb7levGxckoZcaj9Yx0/ezpNnl7T5/S
-         RmDrHtO/jnjTah7C3Ssr9HyBe9mUa1VULU+b9SXQdUnTnSw0SZsxoq+ByritUYiVTO8N
-         UqcJmCBzTtEGfIKKmVYmXPRrpVbp8DJGtFSfgGF38EZy4FXHwmx1YetKUFvZOSFen44Y
-         y1itwyK2VltKKqFXQSlgY4otT2ab/P5eyZYEJ9q19D9BjirwvTJeR8dkrrYgUAJfhVvw
-         qb85g0EtcfFWplRdzadCsIqzJ6Ui1GKmsnCISVkZ2yKtLr2wzAaI2smXf+kJz6TQDYk4
-         YJKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTn1tPRR+1/Atp+L1iYccwno8TFlTtdCklRO+vuv8RvFtvsJohfjaCXFIZV2+smn0E7ebtvC8FsQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy41p8/FHJUE6krPr1uWC36SYhnawVZMXMXvu/1H+3BCWS3BIHP
-	LiVKXJvYpXa7fi2L257yZaOCm6PyJUgAQg5IR05/6eTQ6FDnLxpV7jQOW02G5FAas5loMxmPsqM
-	e37ugH/G1L1vpS9+jnVif9/ztqQ==
-X-Google-Smtp-Source: AGHT+IG1eNGVa95/QxhVANFx3qZmjnkLDPa9MUnbtzy/TBkioj/4LaNLCxwSAjNYNO/fURaI2PCcXgwYg4e6udk1Bw==
-X-Received: from plrr19.prod.google.com ([2002:a17:902:c613:b0:269:8006:8526])
+        bh=nPYU+2umQYN0e1OeO8X1leEMEVeMTLGsEK2ETVKaSgA=;
+        b=ak7kgwF7cMUXyUuj+46cedK0IZsYtmenWFzyj2w/dvRWSvhlCihadvF+rOxV6dOtmx
+         +3puVDuV5fC+aZreaGENUuP5mW/rUd5D/QSmlIC1qL5BrIMKrOKQDtRpGmWvNSx2nk1x
+         pJu5l68UpZIJurBYdUR6Xi8SAUmlegcbQPndkUUum7nFPI5qs9jGEmOqx6us9impoGLd
+         XCq9obEEypXRnfANydmF5kwJ6E+wYOearLL4C8xGUar3WZOUkLkyOwEZp2kNcxdYXnzN
+         BB+ljgZEWtDr1GrW5AcOeLsiSYc5b4nkxRrUSdsTV2i0f+nOZA5Tw4Ybb8kLilZyC+ak
+         uAJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ8hBRuAi78gr0fu/tfkudzhD/T/0cf5qoZz2k2kpTvYQAm7dcTRXYLaaeZ3sJiLpRNSQ5h00R/g==@kvack.org
+X-Gm-Message-State: AOJu0Yx617Y8wnELMw3tlwGQLC8994+630mLDbmZgu134b+GF9ssT2n4
+	M5EC4rzaJNT2denla0Ln3cDaVh7yDZvXdYlV2cIC0aSDnJqyagYT+VUOr3jX3c/KB3TK0cMgGEG
+	I9HPNflgjlqAaVnRwqQo/ugm9jw==
+X-Google-Smtp-Source: AGHT+IG8lrB7VX+K9dIOGBRbbEFaAljZfdwJaT5C/S0Dp/zoN1fe4Txo8ye3OLt4nWf6mVkw5tVIPzsscYSebRBbqg==
+X-Received: from pjuu4.prod.google.com ([2002:a17:90b:5864:b0:33b:51fe:1a78])
  (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2350:b0:274:aab9:4ed4 with SMTP id d9443c01a7336-29027312ffamr275585885ad.57.1760399780569;
- Mon, 13 Oct 2025 16:56:20 -0700 (PDT)
-Date: Mon, 13 Oct 2025 16:51:55 -0700
+ 2002:a17:90b:4b8c:b0:338:3dca:e0a3 with SMTP id 98e67ed59e1d1-33b51118f99mr34203500a91.16.1760399791496;
+ Mon, 13 Oct 2025 16:56:31 -0700 (PDT)
+Date: Mon, 13 Oct 2025 16:51:56 -0700
 In-Reply-To: <20251013235259.589015-1-kaleshsingh@google.com>
 Mime-Version: 1.0
 References: <20251013235259.589015-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.51.0.760.g7b8bcc2412-goog
-Message-ID: <20251013235259.589015-5-kaleshsingh@google.com>
-Subject: [PATCH v3 4/5] mm: rename mm_struct::map_count to vma_count
+Message-ID: <20251013235259.589015-6-kaleshsingh@google.com>
+Subject: [PATCH v3 5/5] mm/tracing: introduce trace_mm_insufficient_vma_slots event
 From: Kalesh Singh <kaleshsingh@google.com>
 To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
 	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
@@ -106,13 +106,13 @@ Cc: kernel-team@android.com, android-mm@google.com,
 	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AD58640004
-X-Stat-Signature: oho3o5szmycah47maeoumfphed9i3mmo
-X-HE-Tag: 1760399781-171306
-X-HE-Meta: U2FsdGVkX18kjB95SS6BHXYHPd8LB3Sl57b3Ax95Uu9RcJnqI1S0wSYTKJ2O0j2V8oboGKt8SDXbsw8vs8iBrwNCnLZEAg8IFvq5pOYXGFrSSXV4dpwu0xqdhrpMbojUy9WwcRSa+jOKAD0zcSbesI0anmStB/CJDtVLPRcu3/7xrPxy8QyckKnL7b4n2Ld8tKfxOwYD1ZxS2bA2hqqfGlLdCsw1ixipxm3CXo9I4oxEs6t9/Q857mIzx25c8dRIPtP+cQZGVBEt5ygF8qc2nNTPQJJaJiVxeQGOGlAxOWMEVokoYkpO0XCDQgLv4hZnpnAdsoI5CmtAL+QQsri322oPtpgeqNl52xvL0qByv+ZfHil8pvjqI/CLszClpBNWNSeR4p5fyoFGJZYdQ/TUWLN0Snn/5Fy9PuIuNOHg4v7+4YZqJp/UKQewE8RJSp8unJXFwJImmfIX9d0klTHCyPMCgmn0wlz61tyarlCYuxniqEdoweMDciqSGnRq+Lqv0huvC+MhwBUYy9v+nKdpAQ5Ls1LeicKRNX8yMrTZ/0dVjyPd66jgXRJGBbwEOveTWvl0lVSC6lyUqrvcrIuK4S7u8YueSdGKWpUvxqg8KS31QYJhriUB9bUhrfls4NesUn/9jmeyU9PDTx+vTnQovXYJgufNDxNg3Pwe0AEjfiPLmh4diAC4/Wa7omjheEnTBg0X82qBgLsnDdiCg4qNdmnHtEF2D3NKbSGt/psLvTDFxzpo1Lut8kC/YQ1D3b1aIXq/ldM9PBCDwTwv0xibhkpMajcxcXkHw9qXuYmjDIv5E9p6st6qPaHm1WoPxuudZmI8UatdUsH8vuVz1Wxfn6GRDkIMDWLe42KINRrZ6hrEihEz/RQyqjgozO3UjHSfD5/dQWH8MM+Jnzwb1Hv8qZxDbGBv7Tdi/EsoDntzjdz6kbdGISsET/OwlRPyH+OdkZjLVcfLSLWv40hgTHH
- gtwLU17V
- XShsKX7hZGHakKhKD5we5ERekKb/IF0nQVakE0Qtc6qGnSj9GCuLnOv/6KCGtIwXMutA+ygNA+fm8Lb7d7SzPT1gFaC5XezPZ8dgsx9c7j5bydPdGzCEejLecT5UmUtWWoO8OXURLU9NXZvUNS3mhuANQdSftVEy8YUomLVMscDDSTMEbi0bPcw61wU8BRv8jWbp/tw4XB0Cw2/TuDM9yRTtSKwx9d3JPyIm1CwOqdl8+MMGZt8gia0oPePv29i1d4l+JLmXA2rEr/ulH0Qu8hkcYzDNixUvORTknuD0i96r3qSXI4FnQJymXDuCOnSQ34r6Nsi8LADo2pd82UsgXUQc5iN8nUycN8gNRIH/rm//dOvcHDHMZft1bw7CLgRva9ISaDVgo9QGbyU/pC75QOggClCivsi4BrJjVwfviTHWQqyfQEJQiTrA7F2SOi1v6jeUwveyZDIpdlpEdGDl625LOAtLkfN9cuqDlXs3d843CCmk571O0o5uKG7xj9l++v4JRkaVGllpS3H9r05QR+oB/EpMs/JkeDEcMWWF+lDUsUv77zRd5VsYzTjSsFNPHKwhMZolTpeYYgCA4/pmXDjet0pnw8xrFP8cWterm9SiRU1wWn4rBRg6fDFbPbrWmf/hHDKQk75mFXLqp5Rhu9dsWH089BoUZfEYRmQbCdBxc44mPWdlcD841pbfU2rLe2em8g7kRXhhkXEryUabWz6YromJ6QXQrK6zEifROMZLM4FA4Cq/em/DnV5/MAe4g3XPlLCbFlOUUKaTeVJ6bnGctfA+HbG6O48zk
+X-Rspamd-Queue-Id: BF3904000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: diokosirsjhcab3gfufoad9ohbfefh5h
+X-HE-Tag: 1760399792-851050
+X-HE-Meta: U2FsdGVkX19YBQ/J1LJOoyvYHRq8ypUctt3c40bCcC/agK+cBkHGCNRSYauAWELxSv6GfVUk/lh79CTcbK63vpnX0zPrl+QmPVrnsRm58pWsxWuhFH+upWZ65K8ELyMcegn874BqQmR1TPMPZNrW9UR7HjuG2pxTQFCX8eXqI+jrFFxA1pbPG0vmm3SxkvrSBynqZ8b//rXm77jQwIl4u+BrhQ8vPRnLv4DUAW+ZBq0WO6LCgkBmSKt5OgW2ljgIDuwfrzrWTjix9z6VJVi3Q95VQfgMAyCvBbW4bp6084iEU2yBGHospFz5hkUej598cyOolg7juBDtSw6RXdn58b+stt07M0zecKzDsgAxhKW+DuUl7P6O+rsPqTK+ojKderysWf73Lp6Uxu46GwQIdv8vkqvvEvY5Y/j3pjmeVBlPeJBZiFf7kFJlqYJY/rqSKv6VuQYT+qHoSJzAYCtKki3dWeWGe1aphSlNIyUVAH+NkMbt7SuQ5Vxr//3chgvEGNnp3m641S59IsQWaQB3dBTPR6T3maXVx5WMndcmQPUbjviBjpq+75KZlDOINCBH13JBBJ51z+wT08jObmINcdEs7pNOxC+nYa/Iw8kC3EHre376TGKGFGvi5T8Sq/DSsGPXC9GXcGuleO67IXhpzBDMN6Bz+z64hoTai/GEYFPdrBCqLWSt+iSosgbasL7dWseFFtEAcX73CkbV4me8ok/tCCioM/CbsVq5z+uM5p3kPjAQPifCV9haXJPvUnFkK8LBRFJWdwlI8QpAiXcZVe2YqgV/y7Vdvg15dKJBvKn1OXBZ13yMVBU9RDKpBTWvicSU0Egox1wtPBRA+xWwVKbJxf27uOMVh0doch7G/titkR18LrZM7IDRIrKAp7v8vdFdG/S7pIJRzafCX8qWX1FpdjAe5LIu4/WWQfcobJ4nluV3ZAIRR59DL2LO1osEws0jcKiE/NlD/AsHiPx
+ ddNugbiR
+ /EIlFoE5rBTxqiMoNcZPQeZt7zrisIQJiTpJZQeUttd+GNrWuqqnD2HWbJIWo/se0v+DeQBYgDzbuiG7c6XyboS7DsPghgvGbtJbcegI/m0s6Pxiygc4Yh7+VT2nQODxBqzf8aeD9UYjirA/6Qq/XCh6NiWl7kYR8hK+3pUMragxc+kKBLgRU6nTHKhUueB5JcyOcN7JJjkSZgicnzeQnv6kbIOnMdfx4TTS+h6jQu/s005RRwAskLJnaPvaPWU5/klDcClvRnfyfFsIVOxnXnOt13Gk+Yr1mWWtiDcnZkY/NBTHZ3J1R1tKqQkm0QaWbOYvlVpuwRaZyDChOqdwBw2ldiFW8+Bt9EA3z+PAt8J0EzmAuFLk5mcRM80Qz0OgZa5WJ0Tm0OC1od8xRiAQnSca+q9c07lPhES/OzL+aRvIGLlcRVCUyPdYL3CTEETyPq7wPrMKbe9Dj10Cg4HLg5hMRxnYE2HCx+0Mbpgd9L1bWPtIGlBiwDCSb7OeoCY27C0Pg+ooIoGsWtLsUwKHYCxRixvu/1KJ4C6Ftkf4r4qZ6NeOArJcLlnhrbgiffttjHpXnsbmBgLg0ybpF0Yc1gitjiB7iNS99HbGJqjXx7Y4x3eRz0mClRKtNmtYLt1gXZ4Q9i7WRAm/qxNH30Z8aoQ7bR2+9enYAqKA1b025D6dtTdTueDGysobpG8zItP0Vn/YgNucXMQEA+Qm5RKj4+kU9u750Ovr55zkkLz55eU8jaJprVjrq9BVIhH7KzG4ND+TpXumKsqIuDocXyowmPWazTAi908AlWOms+so7YvpsxGxPZIvR1c00UEpWOnB+ATRhlj1lXCtS2tkoFuL2bocgFgqDcbElY8kQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,17 +121,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A mechanical rename of the mm_struct->map_count.
+Needed observability on in field devices can be collected with minimal
+overhead and can be toggled on and off. Event driven telemetry can be
+done with tracepoint BPF programs.
 
-While at it update the vma_count BUG_ON() in exit_mmap() to a
-WARN_ON_ONCE; no other functional change is intended.
+The process comm is provided for aggregation across devices and tgid is
+to enable per-process aggregation per device.
 
-The name "map_count" is ambiguous within the memory management subsystem,
-as it can be confused with the folio/page->_mapcount field, which tracks
-PTE references.
-
-The new name, vma_count, is more precise as this field has always
-counted the number of vm_area_structs associated with an mm_struct.
+This allows for observing the distribution of such problems in the
+field, to deduce if there are legitimate bugs or if a bump to the limit is
+warranted.
 
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@redhat.com>
@@ -140,438 +139,201 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Minchan Kim <minchan@kernel.org>
 Cc: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 
 ---
 
 Changes in v3:
-  - Change vma_count BUG_ON() in exit_mmap() to WARN_ON_ONCE,
-    per David and Lorenzo
-  - Collect Reviewed-by tags
+- capture the mm pointer as the unique identifier and capture
+  the vma_count as well, instead of current task tgid, per Steve
+- Add include/trace/events/vma.h to MEMORY MAPPING section in
+  MAINTAINERS, per Lorenzo
+- rename trace_max_vma_count_exceeded() to
+  trace_mm_insufficient_vma_slots(), since this is a preemptive
+  check, per Lorenzo
+- Fix tools/testing/vma build errors, per Lorenzo
 
- fs/binfmt_elf.c                  |  2 +-
- fs/coredump.c                    |  2 +-
- include/linux/mm_types.h         |  2 +-
- kernel/fork.c                    |  2 +-
- mm/debug.c                       |  2 +-
- mm/mmap.c                        | 10 +++++-----
- mm/nommu.c                       |  6 +++---
- mm/vma.c                         | 24 ++++++++++++------------
- tools/testing/vma/vma.c          | 32 ++++++++++++++++----------------
- tools/testing/vma/vma_internal.h |  6 +++---
- 10 files changed, 44 insertions(+), 44 deletions(-)
+ MAINTAINERS                      |  1 +
+ include/trace/events/vma.h       | 32 ++++++++++++++++++++++++++++++++
+ mm/mmap.c                        |  5 ++++-
+ mm/mremap.c                      | 10 ++++++++--
+ mm/vma.c                         |  9 +++++++--
+ mm/vma_internal.h                |  2 ++
+ tools/testing/vma/vma_internal.h |  5 +++++
+ 7 files changed, 59 insertions(+), 5 deletions(-)
+ create mode 100644 include/trace/events/vma.h
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index e4653bb99946..a5acfe97612d 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1660,7 +1660,7 @@ static int fill_files_note(struct memelfnote *note, struct coredump_params *cprm
- 	data[0] = count;
- 	data[1] = PAGE_SIZE;
- 	/*
--	 * Count usually is less than mm->map_count,
-+	 * Count usually is less than mm->vma_count,
- 	 * we need to move filenames down.
- 	 */
- 	n = cprm->vma_count - count;
-diff --git a/fs/coredump.c b/fs/coredump.c
-index b5fc06a092a4..5e0859813141 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1733,7 +1733,7 @@ static bool dump_vma_snapshot(struct coredump_params *cprm)
- 
- 	cprm->vma_data_size = 0;
- 	gate_vma = get_gate_vma(mm);
--	cprm->vma_count = mm->map_count + (gate_vma ? 1 : 0);
-+	cprm->vma_count = mm->vma_count + (gate_vma ? 1 : 0);
- 
- 	cprm->vma_meta = kvmalloc_array(cprm->vma_count, sizeof(*cprm->vma_meta), GFP_KERNEL);
- 	if (!cprm->vma_meta) {
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 4e5d59997e4a..97e0541cd415 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1078,7 +1078,7 @@ struct mm_struct {
- #ifdef CONFIG_MMU
- 		atomic_long_t pgtables_bytes;	/* size of all page tables */
- #endif
--		int map_count;			/* number of VMAs */
-+		int vma_count;			/* number of VMAs */
- 
- 		spinlock_t page_table_lock; /* Protects page tables and some
- 					     * counters
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 3da0f08615a9..c8d59042b34f 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1038,7 +1038,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	mmap_init_lock(mm);
- 	INIT_LIST_HEAD(&mm->mmlist);
- 	mm_pgtables_bytes_init(mm);
--	mm->map_count = 0;
-+	mm->vma_count = 0;
- 	mm->locked_vm = 0;
- 	atomic64_set(&mm->pinned_vm, 0);
- 	memset(&mm->rss_stat, 0, sizeof(mm->rss_stat));
-diff --git a/mm/debug.c b/mm/debug.c
-index 64ddb0c4b4be..a35e2912ae53 100644
---- a/mm/debug.c
-+++ b/mm/debug.c
-@@ -204,7 +204,7 @@ void dump_mm(const struct mm_struct *mm)
- 		mm->pgd, atomic_read(&mm->mm_users),
- 		atomic_read(&mm->mm_count),
- 		mm_pgtables_bytes(mm),
--		mm->map_count,
-+		mm->vma_count,
- 		mm->hiwater_rss, mm->hiwater_vm, mm->total_vm, mm->locked_vm,
- 		(u64)atomic64_read(&mm->pinned_vm),
- 		mm->data_vm, mm->exec_vm, mm->stack_vm,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aa83e5893e16..d37215a8a829 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16566,6 +16566,7 @@ S:	Maintained
+ W:	http://www.linux-mm.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ F:	include/trace/events/mmap.h
++F:	include/trace/events/vma.h
+ F:	mm/interval_tree.c
+ F:	mm/mincore.c
+ F:	mm/mlock.c
+diff --git a/include/trace/events/vma.h b/include/trace/events/vma.h
+new file mode 100644
+index 000000000000..4540fa607f66
+--- /dev/null
++++ b/include/trace/events/vma.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM vma
++
++#if !defined(_TRACE_VMA_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_VMA_H
++
++#include <linux/tracepoint.h>
++
++TRACE_EVENT(mm_insufficient_vma_slots,
++
++	TP_PROTO(struct mm_struct *mm),
++
++	TP_ARGS(mm),
++
++	TP_STRUCT__entry(
++		__field(void *,	mm)
++		__field(int,	vma_count)
++	),
++
++	TP_fast_assign(
++		__entry->mm		= mm;
++		__entry->vma_count	= mm->vma_count;
++	),
++
++	TP_printk("mm=%p vma_count=%d", __entry->mm, __entry->vma_count)
++);
++
++#endif /*  _TRACE_VMA_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
 diff --git a/mm/mmap.c b/mm/mmap.c
-index d9ea029cd018..b4eda47b88d8 100644
+index b4eda47b88d8..4035f49ac963 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1305,7 +1305,7 @@ void exit_mmap(struct mm_struct *mm)
- 		vma = vma_next(&vmi);
- 	} while (vma && likely(!xa_is_zero(vma)));
+@@ -56,6 +56,7 @@
  
--	BUG_ON(count != mm->map_count);
-+	WARN_ON_ONCE(count != mm->vma_count);
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/mmap.h>
++#include <trace/events/vma.h>
  
- 	trace_exit_mmap(mm);
- destroy:
-@@ -1508,13 +1508,13 @@ static int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
-  */
- int vma_count_remaining(const struct mm_struct *mm)
- {
--	const int map_count = mm->map_count;
-+	const int vma_count = mm->vma_count;
- 	const int max_count = READ_ONCE(sysctl_max_map_count);
+ #include "internal.h"
  
--	if (map_count >= max_count)
-+	if (vma_count >= max_count)
- 		return 0;
+@@ -374,8 +375,10 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 		return -EOVERFLOW;
  
--	return max_count - map_count;
-+	return max_count - vma_count;
- }
+ 	/* Too many mappings? */
+-	if (!vma_count_remaining(mm))
++	if (!vma_count_remaining(mm)) {
++		trace_mm_insufficient_vma_slots(mm);
+ 		return -ENOMEM;
++	}
  
- #ifdef CONFIG_SYSCTL
-@@ -1828,7 +1828,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 		 */
- 		vma_iter_bulk_store(&vmi, tmp);
+ 	/*
+ 	 * addr is returned from get_unmapped_area,
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 14d35d87e89b..a7f440a3737f 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -30,6 +30,8 @@
+ #include <asm/tlb.h>
+ #include <asm/pgalloc.h>
  
--		mm->map_count++;
-+		mm->vma_count++;
++#include <trace/events/vma.h>
++
+ #include "internal.h"
  
- 		if (tmp->vm_ops && tmp->vm_ops->open)
- 			tmp->vm_ops->open(tmp);
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 22e55e7c69c4..b375d3e00d0c 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -577,7 +577,7 @@ static void setup_vma_to_mm(struct vm_area_struct *vma, struct mm_struct *mm)
+ /* Classify the kind of remap operation being performed. */
+@@ -1040,8 +1042,10 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
+ 	 * We'd prefer to avoid failure later on in do_munmap:
+ 	 * which may split one vma into three before unmapping.
+ 	 */
+-	if (vma_count_remaining(current->mm) < 4)
++	if (vma_count_remaining(current->mm) < 4) {
++		trace_mm_insufficient_vma_slots(current->mm);
+ 		return -ENOMEM;
++	}
  
- static void cleanup_vma_from_mm(struct vm_area_struct *vma)
- {
--	vma->vm_mm->map_count--;
-+	vma->vm_mm->vma_count--;
- 	/* remove the VMA from the mapping */
- 	if (vma->vm_file) {
- 		struct address_space *mapping;
-@@ -1199,7 +1199,7 @@ unsigned long do_mmap(struct file *file,
- 		goto error_just_free;
+ 	if (vma->vm_ops && vma->vm_ops->may_split) {
+ 		if (vma->vm_start != old_addr)
+@@ -1817,8 +1821,10 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+ 	 * the threshold. In other words, is the current map count + 6 at or
+ 	 * below the threshold? Otherwise return -ENOMEM here to be more safe.
+ 	 */
+-	if (vma_count_remaining(current->mm) < 6)
++	if (vma_count_remaining(current->mm) < 6) {
++		trace_mm_insufficient_vma_slots(current->mm);
+ 		return -ENOMEM;
++	}
  
- 	setup_vma_to_mm(vma, current->mm);
--	current->mm->map_count++;
-+	current->mm->vma_count++;
- 	/* add the VMA to the tree */
- 	vma_iter_store_new(&vmi, vma);
- 
-@@ -1367,7 +1367,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	setup_vma_to_mm(vma, mm);
- 	setup_vma_to_mm(new, mm);
- 	vma_iter_store_new(vmi, new);
--	mm->map_count++;
-+	mm->vma_count++;
  	return 0;
- 
- err_vmi_preallocate:
+ }
 diff --git a/mm/vma.c b/mm/vma.c
-index 96ba37721002..b35a4607cde4 100644
+index b35a4607cde4..6d8cef7f4d5f 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -352,7 +352,7 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
- 		 * (it may either follow vma or precede it).
- 		 */
- 		vma_iter_store_new(vmi, vp->insert);
--		mm->map_count++;
-+		mm->vma_count++;
- 	}
+@@ -592,8 +592,10 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 		     unsigned long addr, int new_below)
+ {
+-	if (!vma_count_remaining(vma->vm_mm))
++	if (!vma_count_remaining(vma->vm_mm)) {
++		trace_mm_insufficient_vma_slots(vma->vm_mm);
+ 		return -ENOMEM;
++	}
  
- 	if (vp->anon_vma) {
-@@ -383,7 +383,7 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
- 		}
- 		if (vp->remove->anon_vma)
- 			anon_vma_merge(vp->vma, vp->remove);
--		mm->map_count--;
-+		mm->vma_count--;
- 		mpol_put(vma_policy(vp->remove));
- 		if (!vp->remove2)
- 			WARN_ON_ONCE(vp->vma->vm_end < vp->remove->vm_end);
-@@ -683,13 +683,13 @@ void validate_mm(struct mm_struct *mm)
- 		}
- #endif
- 		/* Check for a infinite loop */
--		if (++i > mm->map_count + 10) {
-+		if (++i > mm->vma_count + 10) {
- 			i = -1;
- 			break;
- 		}
- 	}
--	if (i != mm->map_count) {
--		pr_emerg("map_count %d vma iterator %d\n", mm->map_count, i);
-+	if (i != mm->vma_count) {
-+		pr_emerg("vma_count %d vma iterator %d\n", mm->vma_count, i);
- 		bug = 1;
- 	}
- 	VM_BUG_ON_MM(bug, mm);
-@@ -1266,7 +1266,7 @@ static void vms_complete_munmap_vmas(struct vma_munmap_struct *vms,
- 	struct mm_struct *mm;
- 
- 	mm = current->mm;
--	mm->map_count -= vms->vma_count;
-+	mm->vma_count -= vms->vma_count;
- 	mm->locked_vm -= vms->locked_vm;
- 	if (vms->unlock)
- 		mmap_write_downgrade(mm);
-@@ -1340,14 +1340,14 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 	if (vms->start > vms->vma->vm_start) {
- 
- 		/*
--		 * Make sure that map_count on return from munmap() will
-+		 * Make sure that vma_count on return from munmap() will
- 		 * not exceed its limit; but let map_count go just above
- 		 * its limit temporarily, to help free resources as expected.
+ 	return __split_vma(vmi, vma, addr, new_below);
+ }
+@@ -1346,6 +1348,7 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
  		 */
  		if (vms->end < vms->vma->vm_end &&
  		    !vma_count_remaining(vms->vma->vm_mm)) {
++			trace_mm_insufficient_vma_slots(vms->vma->vm_mm);
  			error = -ENOMEM;
--			goto map_count_exceeded;
-+			goto vma_count_exceeded;
+ 			goto vma_count_exceeded;
  		}
+@@ -2797,8 +2800,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
  
- 		/* Don't bother splitting the VMA if we can't unmap it anyway */
-@@ -1461,7 +1461,7 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- modify_vma_failed:
- 	reattach_vmas(mas_detach);
- start_split_failed:
--map_count_exceeded:
-+vma_count_exceeded:
- 	return error;
- }
+-	if (!vma_count_remaining(mm))
++	if (!vma_count_remaining(mm)) {
++		trace_mm_insufficient_vma_slots(mm);
+ 		return -ENOMEM;
++	}
  
-@@ -1795,7 +1795,7 @@ int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
- 	vma_start_write(vma);
- 	vma_iter_store_new(&vmi, vma);
- 	vma_link_file(vma);
--	mm->map_count++;
-+	mm->vma_count++;
- 	validate_mm(mm);
- 	return 0;
- }
-@@ -2512,7 +2512,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
- 	/* Lock the VMA since it is modified after insertion into VMA tree */
- 	vma_start_write(vma);
- 	vma_iter_store_new(vmi, vma);
--	map->mm->map_count++;
-+	map->mm->vma_count++;
- 	vma_link_file(vma);
+ 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
+diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+index 2f05735ff190..86823ca6857b 100644
+--- a/mm/vma_internal.h
++++ b/mm/vma_internal.h
+@@ -52,4 +52,6 @@
  
- 	/*
-@@ -2835,7 +2835,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
- 		goto mas_store_fail;
+ #include "internal.h"
  
--	mm->map_count++;
-+	mm->vma_count++;
- 	validate_mm(mm);
- out:
- 	perf_event_mmap(vma);
-diff --git a/tools/testing/vma/vma.c b/tools/testing/vma/vma.c
-index 656e1c75b711..69fa7d14a6c2 100644
---- a/tools/testing/vma/vma.c
-+++ b/tools/testing/vma/vma.c
-@@ -261,7 +261,7 @@ static int cleanup_mm(struct mm_struct *mm, struct vma_iterator *vmi)
- 	}
- 
- 	mtree_destroy(&mm->mm_mt);
--	mm->map_count = 0;
-+	mm->vma_count = 0;
- 	return count;
- }
- 
-@@ -500,7 +500,7 @@ static bool test_merge_new(void)
- 	INIT_LIST_HEAD(&vma_d->anon_vma_chain);
- 	list_add(&dummy_anon_vma_chain_d.same_vma, &vma_d->anon_vma_chain);
- 	ASSERT_FALSE(merged);
--	ASSERT_EQ(mm.map_count, 4);
-+	ASSERT_EQ(mm.vma_count, 4);
- 
- 	/*
- 	 * Merge BOTH sides.
-@@ -519,7 +519,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 3);
-+	ASSERT_EQ(mm.vma_count, 3);
- 
- 	/*
- 	 * Merge to PREVIOUS VMA.
-@@ -536,7 +536,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 3);
-+	ASSERT_EQ(mm.vma_count, 3);
- 
- 	/*
- 	 * Merge to NEXT VMA.
-@@ -555,7 +555,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 6);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 3);
-+	ASSERT_EQ(mm.vma_count, 3);
- 
- 	/*
- 	 * Merge BOTH sides.
-@@ -573,7 +573,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	/*
- 	 * Merge to NEXT VMA.
-@@ -591,7 +591,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0xa);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	/*
- 	 * Merge BOTH sides.
-@@ -608,7 +608,7 @@ static bool test_merge_new(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 1);
-+	ASSERT_EQ(mm.vma_count, 1);
- 
- 	/*
- 	 * Final state.
-@@ -967,7 +967,7 @@ static bool test_vma_merge_new_with_close(void)
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_EQ(vma->vm_ops, &vm_ops);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	cleanup_mm(&mm, &vmi);
- 	return true;
-@@ -1017,7 +1017,7 @@ static bool test_merge_existing(void)
- 	ASSERT_EQ(vma->vm_pgoff, 2);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_TRUE(vma_write_started(vma_next));
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	/* Clear down and reset. */
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
-@@ -1045,7 +1045,7 @@ static bool test_merge_existing(void)
- 	ASSERT_EQ(vma_next->vm_pgoff, 2);
- 	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_next));
--	ASSERT_EQ(mm.map_count, 1);
-+	ASSERT_EQ(mm.vma_count, 1);
- 
- 	/* Clear down and reset. We should have deleted vma. */
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 1);
-@@ -1079,7 +1079,7 @@ static bool test_merge_existing(void)
- 	ASSERT_EQ(vma->vm_pgoff, 6);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	/* Clear down and reset. */
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 2);
-@@ -1108,7 +1108,7 @@ static bool test_merge_existing(void)
- 	ASSERT_EQ(vma_prev->vm_pgoff, 0);
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
--	ASSERT_EQ(mm.map_count, 1);
-+	ASSERT_EQ(mm.vma_count, 1);
- 
- 	/* Clear down and reset. We should have deleted vma. */
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 1);
-@@ -1138,7 +1138,7 @@ static bool test_merge_existing(void)
- 	ASSERT_EQ(vma_prev->vm_pgoff, 0);
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
--	ASSERT_EQ(mm.map_count, 1);
-+	ASSERT_EQ(mm.vma_count, 1);
- 
- 	/* Clear down and reset. We should have deleted prev and next. */
- 	ASSERT_EQ(cleanup_mm(&mm, &vmi), 1);
-@@ -1540,7 +1540,7 @@ static bool test_merge_extend(void)
- 	ASSERT_EQ(vma->vm_end, 0x4000);
- 	ASSERT_EQ(vma->vm_pgoff, 0);
- 	ASSERT_TRUE(vma_write_started(vma));
--	ASSERT_EQ(mm.map_count, 1);
-+	ASSERT_EQ(mm.vma_count, 1);
- 
- 	cleanup_mm(&mm, &vmi);
- 	return true;
-@@ -1652,7 +1652,7 @@ static bool test_mmap_region_basic(void)
- 			     0x24d, NULL);
- 	ASSERT_EQ(addr, 0x24d000);
- 
--	ASSERT_EQ(mm.map_count, 2);
-+	ASSERT_EQ(mm.vma_count, 2);
- 
- 	for_each_vma(vmi, vma) {
- 		if (vma->vm_start == 0x300000) {
++#include <trace/events/vma.h>
++
+ #endif	/* __MM_VMA_INTERNAL_H */
 diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 70f11163ab72..84760d901656 100644
+index 84760d901656..57e36d82b4c8 100644
 --- a/tools/testing/vma/vma_internal.h
 +++ b/tools/testing/vma/vma_internal.h
-@@ -261,7 +261,7 @@ typedef struct {
- 
- struct mm_struct {
- 	struct maple_tree mm_mt;
--	int map_count;			/* number of VMAs */
-+	int vma_count;			/* number of VMAs */
- 	unsigned long total_vm;	   /* Total pages mapped */
- 	unsigned long locked_vm;   /* Pages that have PG_mlocked set */
- 	unsigned long data_vm;	   /* VM_WRITE & ~VM_SHARED & ~VM_STACK */
-@@ -1487,10 +1487,10 @@ static inline int do_munmap(struct mm_struct *, unsigned long, size_t,
- /* Helper to get VMA count capacity */
- static int vma_count_remaining(const struct mm_struct *mm)
- {
--	const int map_count = mm->map_count;
-+	const int vma_count = mm->vma_count;
- 	const int max_count = sysctl_max_map_count;
- 
--	return (max_count > map_count) ? (max_count - map_count) : 0;
-+	return (max_count > vma_count) ? (max_count - vma_count) : 0;
+@@ -1493,4 +1493,9 @@ static int vma_count_remaining(const struct mm_struct *mm)
+ 	return (max_count > vma_count) ? (max_count - vma_count) : 0;
  }
  
++/* Stub for trace_mm_insufficient_vma_slots */
++static inline void trace_mm_insufficient_vma_slots(struct mm_struct *mm)
++{
++}
++
  #endif	/* __MM_VMA_INTERNAL_H */
 -- 
 2.51.0.760.g7b8bcc2412-goog
