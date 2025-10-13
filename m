@@ -4,104 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F613CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 13:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB1B9CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 13:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07A1C8E0047; Mon, 13 Oct 2025 09:09:53 -0400 (EDT)
+	id 33CC78E0048; Mon, 13 Oct 2025 09:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 051EE8E000F; Mon, 13 Oct 2025 09:09:52 -0400 (EDT)
+	id 314BC8E000F; Mon, 13 Oct 2025 09:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA9FC8E0047; Mon, 13 Oct 2025 09:09:52 -0400 (EDT)
+	id 2030D8E0048; Mon, 13 Oct 2025 09:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D3C0C8E000F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:09:52 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C6CA8E000F
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:11:33 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9849A1DF33A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:09:52 +0000 (UTC)
-X-FDA: 83993123424.14.A606FF9
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B948858DED
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:11:32 +0000 (UTC)
+X-FDA: 83993127624.14.C6B357A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6A33E40011
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:09:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TPJgrC5Q;
-	spf=pass (imf07.hostedemail.com: domain of pauld@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pauld@redhat.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3AD9880018
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 13:11:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y5TltcKy;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760360990;
+	s=arc-20220608; t=1760361090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2sb9+tj/NdPdAHZt1L/fLKrYzPvINCloUN8HN7imzWw=;
-	b=mDLj6EgiVVaZXcD0MrI+y7qZKs42XSN658s9ssSeOauUspoy/wqBD0lq+2nNYC7ClHBa6F
-	RY5e/XcXVcFgVwZVNX8wWPfW0zJSJblcLGsZrHwPp5W6OEyhkm9ZcFamZgcRSpr8Q813lV
-	0YblYUvXSl4s4e2L69WpmoCu7WVR5iE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TPJgrC5Q;
-	spf=pass (imf07.hostedemail.com: domain of pauld@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=pauld@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760360990; a=rsa-sha256;
+	bh=RBdgSo6WOTx4EEG5eBWjfkr5h883eL8iwmBSlBrlRfI=;
+	b=atLPWSSABGu2oUbGLi8gm7xU+Wm5BtQ5P6VczP8BxgcbcYGnqoE+0j/HY5TDUISvZsHaAW
+	eosw/ZuGjIicN2DLx1HrnCZ9JvrMFoxOT4Cs3kmVDqOwVBqfw84s+WJPKxVK3KQ1dSdUtY
+	ui9T0COE3rSp2cUunYIYw2I/fcI2UlU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760361090; a=rsa-sha256;
 	cv=none;
-	b=5ojYsdMAS3thC8jjYGLnSYVmVxEOfv85eFvF/XKy50bsnbwVrg+m+NnuInnxKCDa6f/MvF
-	/GkT+tUQTTFP/71i37K/In+xh8ZLOT9msiXI7aYWbqXDFZW1bhJD5c7qQsG9in94fY5oI7
-	zzLOaD0QR/uh6D02+4wXa7IHTDQGgbk=
+	b=0ppNDa/TmvWXCvjCRg3X3slPuo/UDttNpX2NBEbYaescC5WMX8+Otv6Tp1G7IPcoTfeU9L
+	pe65yHVRV6hqqEIpAPc8Q1/x/rJXsJOeTI33YOih9vX6aTxpqQTML0JuCvyYdLxox1c9ZC
+	Yt9GIKlQlqy23xd6T2Svl8tZfrjqtKE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y5TltcKy;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760360989;
+	s=mimecast20190719; t=1760361089;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2sb9+tj/NdPdAHZt1L/fLKrYzPvINCloUN8HN7imzWw=;
-	b=TPJgrC5QSfP1jLq8cJB3CF1xvEyHDq0FpYgSWbJ6eGBf0MelAdAh/D7LBVfnvemAqFEOdU
-	VJZM4h6QqwE4IAjU69PFpQxAZT6WYylQ7QZM31zGtElWRJxoGmlCIFGmSNSx3GqwQSygch
-	+WGQJuS8fP6F9Fl+CC1jgK9lAWCoy4c=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-gQ-1f6MuOCyQ2LC0MAcUlQ-1; Mon,
- 13 Oct 2025 09:09:48 -0400
-X-MC-Unique: gQ-1f6MuOCyQ2LC0MAcUlQ-1
-X-Mimecast-MFC-AGG-ID: gQ-1f6MuOCyQ2LC0MAcUlQ_1760360986
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 799DC1800371;
-	Mon, 13 Oct 2025 13:09:45 +0000 (UTC)
-Received: from pauld.westford.csb (unknown [10.44.32.127])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15F3030002CE;
-	Mon, 13 Oct 2025 13:09:41 +0000 (UTC)
-Date: Mon, 13 Oct 2025 09:09:37 -0400
-From: Phil Auld <pauld@redhat.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Christoph Lameter <cl@gentwo.org>
-Subject: Re: Boot fails with 59faa4da7cd4 and 3accabda4da1
-Message-ID: <20251013130937.GA488956@pauld.westford.csb>
-References: <20251010151116.GA436967@pauld.westford.csb>
- <CAHk-=wg1xK+Br=FJ5QipVhzCvq7uQVPt5Prze6HDhQQ=QD_BcQ@mail.gmail.com>
- <e4f2a3e3-649a-423b-9696-6406ef56340f@suse.cz>
- <20251010184259.GB436967@pauld.westford.csb>
- <b63f1f40-a8f5-4b54-b025-d8d1daf78c9b@suse.cz>
- <20251011002902.GA479718@pauld.westford.csb>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=RBdgSo6WOTx4EEG5eBWjfkr5h883eL8iwmBSlBrlRfI=;
+	b=Y5TltcKyMPY49cwZ/G2nTl7Gn6oZRtBJG15Aw2+m/BepMiGy6lc5IgPiO+foMT8WaRey6F
+	D6CiMYYMtaoZxxp6Omo0+lhy/ofXiJpi9d9CGKmxY1DzFMgl4uZDctsBryuhnuSTQ6FDsv
+	ozRrG3tWbOPsiUcCNft4QbaG/pE9Fmo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-MFMPn_j-N_2ZQayHO4r0eA-1; Mon, 13 Oct 2025 09:11:25 -0400
+X-MC-Unique: MFMPn_j-N_2ZQayHO4r0eA-1
+X-Mimecast-MFC-AGG-ID: MFMPn_j-N_2ZQayHO4r0eA_1760361084
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3efa77de998so4342340f8f.0
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:11:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760361084; x=1760965884;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RBdgSo6WOTx4EEG5eBWjfkr5h883eL8iwmBSlBrlRfI=;
+        b=SQebkrh63HY/Wp8UuFpnzKKAL5gRKZ8q8v34lLB3FgBj659L+hFX7++qPbscUKbeDr
+         yblTmEMjfVX2cTzRHMWCp/50iOI63GeAY15YSflph644RrFhmdM+enpMl25cM62mn2S4
+         H1ynXk5e9U0p7zT2WmR8JJImgM476nGEIMgEsgTPcK80sehOcv6Xv5hxFOsKhaInL/LM
+         Q5T2vFPyl3JhriN+wNiwM5muWbXD5HbNnWOOw3lr3JAzOcfHu5bxC9aC7ptTEZeza9J6
+         7nmCLqds1Q0AeruOz5mv3GmzKIZO+L1Jo7UepFvN3lGJ8BJ1Kjb1dF6BsXb+K0BhE4OF
+         vIoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWciIrbW3USATuNDHZxd+aOnpnreBWyFCOtrgjdkXZ3aWpqSO4aTxYS7QhXV+rnAakG7BrNB1ktyQ==@kvack.org
+X-Gm-Message-State: AOJu0YzlpjR2r6ryVsWoqCy09UtrNS6NvvEiAzCoASGko5yW/34qAH0r
+	ZM9M0wBwvJ5C8ztAnTlmjc2qyRbXmKYOTVNHiPpYxnPkcZZtCKiGrHYAcQRD2qdFUonjIxycTVx
+	6q0ddXzDsqaKzj++L1PHa8+JCkfsoL2bYOIcbZt22w3x3QK2PV4qa
+X-Gm-Gg: ASbGncuCMmyZcCq1oXcvhxRaqUbaB5DibF9PM9f/8S/CQYYGcbiv5Pin8MGI/m2jYz8
+	KevVEwYSZHVH5UYC9b11Dsd7/3nkLFKC6DrzpY0WpvjxoXXgpiZpbOblwRNy1rFJdkfQPhmyO4u
+	55YNF+kdKnAvqP05XrqJleWxSkPR3Xjo356nJzEGP+DDiAqmfuK6QmeTpOT7+6+p1VHFBvAgr6W
+	QXF3LwkGqvxMCnQV+JYbq1J9hAQg9qteKtO3b4Ono40W2IoiQMxuRu2qQeGYkgukqWAg/XNFKet
+	KuYv/28CYLGH9s/f1tiMBxCWp+/ZLe8bUsX6gFtplHtWeBZjeqKfS6r9R92IW/YrYxjyogN9S7v
+	GziA=
+X-Received: by 2002:a05:6000:4901:b0:426:d5bf:aa7 with SMTP id ffacd0b85a97d-426d5bf0c0bmr6413940f8f.63.1760361083923;
+        Mon, 13 Oct 2025 06:11:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGb6YozfVgK5IEbuaYmcmf0o016i7X6GI+Ce3y52ZzyWmo1gIg1qS/dRVJW5aUVEBtNQl6juQ==
+X-Received: by 2002:a05:6000:4901:b0:426:d5bf:aa7 with SMTP id ffacd0b85a97d-426d5bf0c0bmr6413914f8f.63.1760361083554;
+        Mon, 13 Oct 2025 06:11:23 -0700 (PDT)
+Received: from [192.168.3.141] (tmo-083-189.customers.d1-online.com. [80.187.83.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb55ac08dsm178750975e9.13.2025.10.13.06.11.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 06:11:23 -0700 (PDT)
+Message-ID: <8e9d92c8-b2f6-4178-8a76-a6db935589ca@redhat.com>
+Date: Mon, 13 Oct 2025 15:11:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251011002902.GA479718@pauld.westford.csb>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6A33E40011
-X-Stat-Signature: 6wtgyi63feq4z6twqudzaxep1z7emqyh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC RFC PATCH] mm: convert VM flags from macros to enum
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Ye Liu <liuye@kylinos.cn>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251011093054.886460-1-ye.liu@linux.dev>
+ <809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local>
+ <7ca0960f-9d1a-4ba4-b074-a6502578b82e@redhat.com>
+ <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
+ <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
+ <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: spMotQjT_CALiVna3LaNsz3rP8pysZ8FNKfT415yC7I_1760361084
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tbbk67w5mtg6ah8xo9uuitpmecqk4qzb
 X-Rspam-User: 
-X-HE-Tag: 1760360990-940095
-X-HE-Meta: U2FsdGVkX1+s+Z3HHthIOq5cLwih8azpXP1LZuQ6dQIx9DvHBIIeNCTcj9lrJv5ufaX0gIwU0sqb4bZtwHfDQJ94PLTOdFyzJFy0Nt+G7CKqiMzR2cTsoryLfLVhr1BycJNbgKqVooaE+zI2mUnNWbV/b+agCyOu0G3nZVQZ+XmY1V6OanrgcGWRoDFB7wG4549UxyYcWi1HaZw2KrT5BGjTIQ7WUFiqxmShpOMmJeOwlZT4bGhgKBLV6VFH8F5sVwdNNg85Pl4YJm3UAXBbyitKkFtc5d+5AVWvc8ppbZxY14c5CY0sel8cYPCCIvICbRGKyP02OTh7jGTdFJiHzQlmAaTfb0S2kaLXIU84HkPHFf5q9rSoqzkHIBqcZI0y6eCKEVM+uvibuQpm1BkOS8Gz0LtqngvbxkdDqGXv/XEkuH6OU9OPnH2mTSXdPYcOJmOk53v1IL+BK7nionss7ODhM/B5rfZTGwBXIslTd2+tyG0lDyXxCWyATw6YOKbNcQypo/mHDNSEzYK4nEcNoNv26gXzQ1+iDtd4c2g9yAZ0dVFCsK82J718ikaMByKP6Zo3gQFXGEaXoYNp1eT/HWdzbeUWtDXmulIr/5MrM1TN3fjVG6xjdohPy96CZ1/81CMDp8YfqEDyExalwrl5JUAhwFknyQtAWnQ8+BZIxfrX8P67KvqQAj1ZwvJC8hc90V0d7NZtGzmQ+M1sCxoiLUtsUMLWN5oeUDsGdWqswkW4Ph8FfRsME3Asz41nJsa5lFm+TlEcYvZOs5hsv2KPhOrhE02QkpGJ6Em/m2F3IgIo2IKLWCdqfLU+RgfmG0YQbnnwnnYQTxPUOjugd9sy2kHjil4nckEVsf4EfoBpiz0aNrpYWIxFw1XcV193UKHtM75NQ5lCJl5UaesQujBOnc0WHzNhTv3DzY+WWHlfscnE3aV8gxmRBiHdpsp47KO5yszWF3pJXqtzxVdtr7o
- WLVZnxsI
- AzwJa/1BUJCLuysqoA80gJBJ+xl1bEnwaQx9EM5FmZLaHHyXeH2W7xPk9pby8fIf6R6lA11gAPNKt1GhIFPGpuAmAROsZsz8IeRJmhEBTcXH/PljmotFiJd7jcQyNm8sOWe2lXk1Grn2vBC8gaUzGKwOa6I9hv91afFyk77zML9rbECOtJ5RCbfc2wIKalJ3ze6syALdewMLt+olT45y/9W1TLmj1jTYvX0gYNUzPc3onzMhSkmUwdWdl7fvkDymtqlEBw5SDt7J5Rehq4w8ghDBS71HKM7udRxnUQfHLHO46zBQ=
+X-Rspamd-Queue-Id: 3AD9880018
+X-HE-Tag: 1760361090-818447
+X-HE-Meta: U2FsdGVkX19h9nhzSbNurALn9KF1i6Vkw7r+3E1fDXk2SaEmSZdOgCKzTQyn7fPy3biKbv12HA2y7icGpnRDoMTdqyP61Qu9bga0gAISgjMcY/Vt10jqGHKzNNfdqU0hlorKGnEeF9NNbdoEteHQTtgbEXAP1FZQIbzvzgxg8CZdq16rkNk7ntBARCczekJHlt0vsfOsPWk9cQKlLbBX1F9l1aOEy4QqNn24ub19nf55sqJR91e5l8y1uoGqM4DyV7YBVpaug2aaV0HxetUjLUat+hddNbM77J2jhmgMfP38txa4TPUyIMeBB7qtKC8XJaWXK9Vb8h8NWb9OMbsEcn0XWQ1+thbdEi3QhXC6kX+wWcq2UoOYcDCmYafz6u/2FFInaj2VKOLqONGO5QIC8+RgULxNyVaxASZiwdCJ2JhzLgFDZkFEznTTO2o/p/wal0dQuvLqYf8serQCily4/auWhctG17i92c2jU/i4M6DxmuCN3N4f6S3F6npu+4trDgKv2bZOSOEEY+fsalhzvfP/8Lp0zVoDeDoEW2n10pI/E7TV8s1OE8xsKMaXAfFuc4TaDlVblphhsgbCu8KDpSW1JZOr/PtY2ztHe2A90RKTAFjHIryG1cQWlNUUriosFUjVavIvi1CrAJwoqQnibpETMeVHWuOXpWY48Y0mijepNjm642g+B+nEUpFyIw0gy8Z6voERPcHgKke5MlvTWXgkZMSFTnrdq6S0Qe3NbtKGd2relZVjT25KX1d3o6G6bI4bZwozJjhROwd6/zasAAtVrhhm1HU4fXU78TMC18/nE2leO4a36wEVDSQV5sxJGjpflXmkwKVC8euDMdLjLUFS1vcbRpxYgyZkLXknUq3wTJcbaG82F/qET1XBPBU6GCskNxb1iLPDAYfbsRSu9OLHxvN1QHmizsqv1GcfV8jknlgM6DfyQvnq5B/6cakKvqKfF9RiLF7Ap/6Sedk
+ l8qc4qMn
+ bxEMDHcYmv9pWB1dELrRnQH7JMKf1L32TwmxQQSoPfG4qu756J16ibtSMAT06bkuTG6ZmF40IohPHYwYrcQYJXYoLPIzevHoFSnOKpw+apJWXWKLNidudyfmMw0B7E88HKgwyKsmmUvB/jJZM3qteNFC7KWU+m5parxWRoEcchcOorVkGYNFrDPFIL73P3xneuK8oHG0mCn/sdco0WEpPZxrIWp74ipJOCAwiWFUR5ktYQVpMpPpbVM1IAUD5jUxq+T6Bg3glwhxYMkDD/mi4T9oweDP3EDle15I28uDsIoXmtR3lEDTQDBxUFf9jGZrlKMoXfCl8vQ74EerXJJ9Nj20NFXH800GghccPBO8vavpem2FTkT5LmebMRKuCgU0aMifiSqEyR63tZkrIZbHgZs99Qf++Sx5ityhy/g/nLLs/iWvY2xxDfqTPhODNH8YnlcD5CiFNZzl362u8oI1XZzIWg5eAj8GFxIdr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,334 +184,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 13.10.25 14:57, Lorenzo Stoakes wrote:
+> On Mon, Oct 13, 2025 at 02:31:35PM +0200, David Hildenbrand wrote:
+>> On 13.10.25 13:33, Lorenzo Stoakes wrote:
+>>> On Mon, Oct 13, 2025 at 01:12:20PM +0200, David Hildenbrand wrote:
+>>>> On 13.10.25 13:04, Lorenzo Stoakes wrote:
+>>>>> On Sat, Oct 11, 2025 at 05:30:52PM +0800, Ye Liu wrote:
+>>>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>>>
+>>>>>> Hello MM maintainers and drgn community,
+>>>>>>
+>>>>>> This RFC proposes to convert VM_* flags from #define macros to enum
+>>>>>> vm_flags. The motivation comes from recent drgn development where we
+>>>>>> encountered difficulties in implementing VM flag parsing due to the
+>>>>>> current macro-based approach.
+>>>>>
+>>>>> This isn't going to work sorry, it's not valid to have flag values as an enum
+>>>>
+>>>> I don't follow, can you elaborate? IIRC, the compiler will use an integer
+>>>> type to back the enum that will fit all values.
+>>>
+>>> switch (flags) {
+>>> 	case VAL1:
+>>> 	case VAL2:
+>>> 	etc.
+>>> }
+>>>
+>>> Is broken (compiler will say you cover all cases when you don't...)
+>>
+>> I assume you mean theoretically, because there is no such code, right?
+> 
+> Right, it's a general point about why enum's are not such a great idea for this.
+> 
+>>
+>>>
+>>> An enum implies independent values that exhaustively describe all state, however
+>>> these flag values are not that - they're intended to be bit fields.
+>>>
+>>
+>> Observe how we use an enum for FOLL_* flags, vm_fault_reason, fault_flag and
+>> probably other things.
+> 
+> FOLL_* flags are an anonymous enum, enum fault_flag is not used as a type
+> anywhere, nor is vm_fault_reason. So those are both kinda weird as to why we
+> even name the type (they're in effect anonymous).
 
-On Fri, Oct 10, 2025 at 08:29:07PM -0400 Phil Auld wrote:
-> Hi Vlastimil,
-> 
-> On Sat, Oct 11, 2025 at 12:22:39AM +0200 Vlastimil Babka wrote:
-> > On 10/10/25 20:42, Phil Auld wrote:
-> > > On Fri, Oct 10, 2025 at 08:27:30PM +0200 Vlastimil Babka wrote:
-> > >> On 10/10/25 20:19, Linus Torvalds wrote:
-> > >> > On Fri, 10 Oct 2025 at 08:11, Phil Auld <pauld@redhat.com> wrote:
-> > >> >>
-> > >> >> After several days of failed boots I've gotten it down to these two
-> > >> >> commits.
-> > >> >>
-> > >> >> 59faa4da7cd4 maple_tree: use percpu sheaves for maple_node_cache
-> > >> >> 3accabda4da1 mm, vma: use percpu sheaves for vm_area_struct cache
-> > >> >>
-> > >> >> The first is such an early failure it's silent. With just 3acca I
-> > >> >> get :
-> > >> >>
-> > >> >> [    9.341152] BUG: kernel NULL pointer dereference, address: 0000000000000040
-> > >> >> [    9.348115] #PF: supervisor read access in kernel mode
-> > >> >> [    9.353264] #PF: error_code(0x0000) - not-present page
-> > >> >> [    9.358413] PGD 0 P4D 0
-> > >> >> [    9.360959] Oops: Oops: 0000 [#1] SMP NOPTI
-> > >> >> [    9.365154] CPU: 21 UID: 0 PID: 818 Comm: kworker/u398:0 Not tainted 6.17.0-rc3.slab+ #5 PREEMPT(voluntary)
-> > >> >> [    9.374982] Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.26.0 07/30/2025
-> > >> >> [    9.382641] RIP: 0010:__pcs_replace_empty_main+0x44/0x1d0
-> > >> >> [    9.388048] Code: ec 08 48 8b 46 10 48 8b 76 08 48 85 c0 74 0b 8b 48 18 85 c9 0f 85 e5 00 00 00 65 48 63 05 e4 ee 50 02 49 8b 84 c6 e0 00 00 00 <4c> 8b 68 40 4c 89 ef e8 b0 81 ff ff 48 89 c5 48 85 c0 74 1d 48 89
-> > >> > 
-> > >> > That decodes to
-> > >> > 
-> > >> >    0:           mov    0x10(%rsi),%rax
-> > >> >    4:           mov    0x8(%rsi),%rsi
-> > >> >    8:           test   %rax,%rax
-> > >> >    b:           je     0x18
-> > >> >    d:           mov    0x18(%rax),%ecx
-> > >> >   10:           test   %ecx,%ecx
-> > >> >   12:           jne    0xfd
-> > >> >   18:           movslq %gs:0x250eee4(%rip),%rax
-> > >> >   20:           mov    0xe0(%r14,%rax,8),%rax
-> > >> >   28:*          mov    0x40(%rax),%r13          <-- trapping instruction
-> > >> >   2c:           mov    %r13,%rdi
-> > >> >   2f:           call   0xffffffffffff81e4
-> > >> >   34:           mov    %rax,%rbp
-> > >> >   37:           test   %rax,%rax
-> > >> >   3a:           je     0x59
-> > >> > 
-> > >> > which is the code around that barn_replace_empty_sheaf() call.
-> > >> > 
-> > >> > In particular, the trapping instruction is from get_barn(), it's the "->barn" in
-> > >> > 
-> > >> >         return get_node(s, numa_mem_id())->barn;
-> > >> > 
-> > >> > so it looks like 'get_node()' is returning NULL here:
-> > >> > 
-> > >> >         return s->node[node];
-> > >> > 
-> > >> > That 0x250eee4(%rip) is from "get_node()" becoming
-> > >> > 
-> > >> >   18:           movslq  %gs:numa_node(%rip), %rax  # node
-> > >> >   20:           mov    0xe0(%r14,%rax,8),%rax # ->node[node]
-> > >> > 
-> > >> > instruction, and then that ->barn dereference is the trapping
-> > >> > instruction that tries to read node->barn:
-> > >> > 
-> > >> >   28:*          mov    0x40(%rax),%r13   # node->barn
-> > >> > 
-> > >> > but I did *not* look into why s->node[node] would be NULL.
-> > >> > 
-> > >> > Over to you Vlastimil,
-> > >> 
-> > >> Thanks, yeah will look ASAP. I suspect the "nodes with zero memory" is
-> > >> something that might not be handled well in general on x86. I know powerpc
-> > >> used to do these kind of setups first and they have some special handling,
-> > >> so numa_mem_id() would give you the closest node with memory in there and I
-> > >> suspect it's not happening here. CPU 21 is node 6 so it's one of those
-> > >> without memory. I'll see if I can simulate this with QEMU and what's the
-> > >> most sensible fix
-> > >>
-> > > 
-> > > Thanks for taking a look.  I thought the NPS4 thing might be playing a role.
-> > 
-> > From what I quickly found I understood that NPS4 is supposed to create extra
-> > numa nodes per socket (4 instead of 1) and interleave the memory between
-> > them. So it seems weird to me it would assign everything to one node and
-> > leave 3 others memoryless?
-> >
-> 
-> That I don't know. Someone from AMD might be able to help there. This system
-> has had its BIOS and other bits updated just a couple of months ago but
-> this numa layout has been there since I've been using the system (several
-> years now).
-> 
+Well, there are of course more, even in MM.
 
-Just to follow up here.  I think the issue is just that this machine
-is somewhat underprovisioned in the memory department.  It's got 32
-slots, with only 4 actually populated. I suspect if it was fully populated
-there'd be memory in every node.
+For these cases, we indeed don't declare a type, but I am not really
+sure if it makes a big difference here today.
 
-Thanks for the fix and getting it -rc1.
+I agree that once the flags are actually an opaque object (what you are
+planning on to work on), it will be a different story.
 
+> 
+> But also 'we do X in the kernel' doesn't mean doing X is right :)
 
-Cheers,
-Phil
-
-
-
-> > > I'm happy to take any test/fix code you have for a spin on this system. 
-> >  
-> > Thanks. Here's a candidate fix in case you can test. I'll finalize it
-> > tomorrow. The slab performance won't be optimal on cpus on those memoryless
-> > nodes, that's why I'd like to figure out if it's a BIOS bug or not. If
-> > memoryless nodes are really intended we should look into initializing things
-> > so that numa_mem_id() works as expected and points to nearest populated
-> > node.
-> 
-> The below does the trick. It boots and I ran a suite of stress-ng tests
-> for sanity. Any performance it's getting now is better than it was when it
-> wouldn't boot :)
-> 
-> Tested-by: Phil Auld <pauld@redhat.com>
-> 
-> 
-> Cheers,
-> Phil
-> 
-> > 
-> > ----8<----
-> > From 097c6251882bf5537162d17b6726575288ba9715 Mon Sep 17 00:00:00 2001
-> > From: Vlastimil Babka <vbabka@suse.cz>
-> > Date: Sat, 11 Oct 2025 00:13:20 +0200
-> > Subject: [PATCH] slab: fix NULL pointer when trying to access barn
-> > 
-> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> > ---
-> >  mm/slub.c | 60 +++++++++++++++++++++++++++++++++++++++++++------------
-> >  1 file changed, 47 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 135c408e0515..bd3c2821e6c3 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -507,7 +507,12 @@ static inline struct kmem_cache_node *get_node(struct kmem_cache *s, int node)
-> >  /* Get the barn of the current cpu's memory node */
-> >  static inline struct node_barn *get_barn(struct kmem_cache *s)
-> >  {
-> > -	return get_node(s, numa_mem_id())->barn;
-> > +	struct kmem_cache_node *n = get_node(s, numa_mem_id());
-> > +
-> > +	if (!n)
-> > +		return NULL;
-> > +
-> > +	return n->barn;
-> >  }
-> >  
-> >  /*
-> > @@ -4982,6 +4987,10 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
-> >  	}
-> >  
-> >  	barn = get_barn(s);
-> > +	if (!barn) {
-> > +		local_unlock(&s->cpu_sheaves->lock);
-> > +		return NULL;
-> > +	}
-> >  
-> >  	full = barn_replace_empty_sheaf(barn, pcs->main);
-> >  
-> > @@ -5153,13 +5162,20 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
-> >  	if (unlikely(pcs->main->size == 0)) {
-> >  
-> >  		struct slab_sheaf *full;
-> > +		struct node_barn *barn;
-> >  
-> >  		if (pcs->spare && pcs->spare->size > 0) {
-> >  			swap(pcs->main, pcs->spare);
-> >  			goto do_alloc;
-> >  		}
-> >  
-> > -		full = barn_replace_empty_sheaf(get_barn(s), pcs->main);
-> > +		barn = get_barn(s);
-> > +		if (!barn) {
-> > +			local_unlock(&s->cpu_sheaves->lock);
-> > +			return allocated;
-> > +		}
-> > +
-> > +		full = barn_replace_empty_sheaf(barn, pcs->main);
-> >  
-> >  		if (full) {
-> >  			stat(s, BARN_GET);
-> > @@ -5314,6 +5330,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-> >  {
-> >  	struct slub_percpu_sheaves *pcs;
-> >  	struct slab_sheaf *sheaf = NULL;
-> > +	struct node_barn *barn;
-> >  
-> >  	if (unlikely(size > s->sheaf_capacity)) {
-> >  
-> > @@ -5355,8 +5372,11 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
-> >  		pcs->spare = NULL;
-> >  		stat(s, SHEAF_PREFILL_FAST);
-> >  	} else {
-> > +		barn = get_barn(s);
-> > +
-> >  		stat(s, SHEAF_PREFILL_SLOW);
-> > -		sheaf = barn_get_full_or_empty_sheaf(get_barn(s));
-> > +		if (barn)
-> > +			sheaf = barn_get_full_or_empty_sheaf(barn);
-> >  		if (sheaf && sheaf->size)
-> >  			stat(s, BARN_GET);
-> >  		else
-> > @@ -5426,7 +5446,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
-> >  	 * If the barn has too many full sheaves or we fail to refill the sheaf,
-> >  	 * simply flush and free it.
-> >  	 */
-> > -	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
-> > +	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES ||
-> >  	    refill_sheaf(s, sheaf, gfp)) {
-> >  		sheaf_flush_unused(s, sheaf);
-> >  		free_empty_sheaf(s, sheaf);
-> > @@ -5943,10 +5963,9 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
-> >   * put the full sheaf there.
-> >   */
-> >  static void __pcs_install_empty_sheaf(struct kmem_cache *s,
-> > -		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty)
-> > +		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
-> > +		struct node_barn *barn)
-> >  {
-> > -	struct node_barn *barn;
-> > -
-> >  	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-> >  
-> >  	/* This is what we expect to find if nobody interrupted us. */
-> > @@ -5956,8 +5975,6 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
-> >  		return;
-> >  	}
-> >  
-> > -	barn = get_barn(s);
-> > -
-> >  	/*
-> >  	 * Unlikely because if the main sheaf had space, we would have just
-> >  	 * freed to it. Get rid of our empty sheaf.
-> > @@ -6002,6 +6019,11 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
-> >  	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-> >  
-> >  	barn = get_barn(s);
-> > +	if (!barn) {
-> > +		local_unlock(&s->cpu_sheaves->lock);
-> > +		return NULL;
-> > +	}
-> > +
-> >  	put_fail = false;
-> >  
-> >  	if (!pcs->spare) {
-> > @@ -6084,7 +6106,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
-> >  	}
-> >  
-> >  	pcs = this_cpu_ptr(s->cpu_sheaves);
-> > -	__pcs_install_empty_sheaf(s, pcs, empty);
-> > +	__pcs_install_empty_sheaf(s, pcs, empty, barn);
-> >  
-> >  	return pcs;
-> >  }
-> > @@ -6121,8 +6143,9 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
-> >  
-> >  static void rcu_free_sheaf(struct rcu_head *head)
-> >  {
-> > +	struct kmem_cache_node *n;
-> >  	struct slab_sheaf *sheaf;
-> > -	struct node_barn *barn;
-> > +	struct node_barn *barn = NULL;
-> >  	struct kmem_cache *s;
-> >  
-> >  	sheaf = container_of(head, struct slab_sheaf, rcu_head);
-> > @@ -6139,7 +6162,11 @@ static void rcu_free_sheaf(struct rcu_head *head)
-> >  	 */
-> >  	__rcu_free_sheaf_prepare(s, sheaf);
-> >  
-> > -	barn = get_node(s, sheaf->node)->barn;
-> > +	n = get_node(s, sheaf->node);
-> > +	if (!n)
-> > +		goto flush;
-> > +
-> > +	barn = n->barn;
-> >  
-> >  	/* due to slab_free_hook() */
-> >  	if (unlikely(sheaf->size == 0))
-> > @@ -6157,11 +6184,12 @@ static void rcu_free_sheaf(struct rcu_head *head)
-> >  		return;
-> >  	}
-> >  
-> > +flush:
-> >  	stat(s, BARN_PUT_FAIL);
-> >  	sheaf_flush_unused(s, sheaf);
-> >  
-> >  empty:
-> > -	if (data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-> > +	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-> >  		barn_put_empty_sheaf(barn, sheaf);
-> >  		return;
-> >  	}
-> > @@ -6191,6 +6219,10 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
-> >  		}
-> >  
-> >  		barn = get_barn(s);
-> > +		if (!barn) {
-> > +			local_unlock(&s->cpu_sheaves->lock);
-> > +			goto fail;
-> > +		}
-> >  
-> >  		empty = barn_get_empty_sheaf(barn);
-> >  
-> > @@ -6304,6 +6336,8 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
-> >  		goto do_free;
-> >  
-> >  	barn = get_barn(s);
-> > +	if (!barn)
-> > +		goto no_empty;
-> >  
-> >  	if (!pcs->spare) {
-> >  		empty = barn_get_empty_sheaf(barn);
-> > -- 
-> > 2.51.0
-> > 
-> > 
-> 
-> -- 
+Right, but it in general works. It's just nasty here in particular.
 
 -- 
+Cheers
+
+David / dhildenb
 
 
