@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBFDACCA476
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB97CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 07:42:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A8EC8E0005; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
+	id 543C38E0007; Mon, 13 Oct 2025 03:42:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2596C8E0002; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
+	id 51B278E0002; Mon, 13 Oct 2025 03:42:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1217E8E0005; Mon, 13 Oct 2025 03:41:26 -0400 (EDT)
+	id 40A418E0007; Mon, 13 Oct 2025 03:42:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F11458E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:41:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A895B1DF587
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:41:25 +0000 (UTC)
-X-FDA: 83992295730.17.7459AE3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F6FB8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 03:42:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DBCB31A02CE
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:42:34 +0000 (UTC)
+X-FDA: 83992298628.20.6C482E6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0B5C2A0004
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:41:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F/DFd5ZY";
-	spf=pass (imf15.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 33BF740004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:42:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZ5eg06e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760341353; a=rsa-sha256;
+	cv=none;
+	b=v2ZqeDBxeWptALB8q77Xml1FfZGQHBsiFZHLVfX6f9KR9PMlyRAqa4nK/JzlJ3D8YFOD4b
+	Xau4vectabKvuHBe2tNgUdSNMFosdmYD5rPfWzD0TIj2mCStRPccCfRQicEM1CbPqIsgDH
+	w3xvCngBz94GNIbEcWOQQa3DrvBRB0o=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SZ5eg06e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760341284;
+	s=arc-20220608; t=1760341353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjBd7ViABM92G5SbEPZDU6kQ3B1a97IO6iX9leLL3Kg=;
-	b=kbmQ3FqhI/dW0VDn7my/m03vQtJRjCyZuRWFjeQYTK1h8EpBiFSc5vEaBse4hl3YQ4R0x8
-	QFi3oX47HvaNyVBvyljrmHQxed1lYUc05CYgzmHJZL9d6yOsWYwvLQMoCcvAQA71tqKaDx
-	9hyeXMiyMCytgcHMiMNy1me8hLxVKXA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="F/DFd5ZY";
-	spf=pass (imf15.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760341284; a=rsa-sha256;
-	cv=none;
-	b=mAGIAWa+sRf606kSNMaJoKwVPQ7phuiOGfSeB526H+RIiCUe4mtadhylvJa1h69tjeHiQm
-	0+N1WiG8lZtr++vwnO6QHRXrA25fPVdXbyYajR59VdSVYCCjC6l4CK7QdOBAZeeWAVa5GC
-	g8YGOWQfq7beVpbhAW35o7BFdn0ZfIk=
+	bh=/04k12wRWiK9frGle9V+OT1Cl+gSGkskLavjV0fiUoQ=;
+	b=cvndF50qFaLsTnjtlkbc5maHLLbGHJVngjOMH2C6C/OWK28iapD+gSIhr6zKzp/zkZ7fts
+	WqbZuOz+ayuCA1rP14gn8SHUAv/iO+bAO7XO1lON10U30g8ENiAkurw8x1nggBKsvrxYQM
+	cCxwsG9Ac4Dqt5BH5mDj6vOz5sX76u4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 209AE604BE;
-	Mon, 13 Oct 2025 07:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E3C4CEE7;
-	Mon, 13 Oct 2025 07:41:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C08060B51;
+	Mon, 13 Oct 2025 07:42:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B319CC4CEE7;
+	Mon, 13 Oct 2025 07:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760341282;
-	bh=9BuTDzaR1my5eKzXxHUiTDJrNndjS3jKSzq9fhN1ZZI=;
+	s=k20201202; t=1760341352;
+	bh=98uNYnRqcVdtyKijP43iNr9FBYNN1buUB0s6rxs7Jnc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F/DFd5ZYNP3J4xWwD4ImXWRAWOwNap/62bMhdThDYgc3/2IeAz5fOWHNeFTbdUa6W
-	 JQMJl06Yc7WAUEse9bKwJr7KQXApDxR2fsQ/ZbQftiID6tJFy6Jnu2iQ2etXhYY/1y
-	 fVXIyAHi8tj3743VeMDXBjLUUrv18KxGfykZwRfAP7rdEtulKKUOga9wIU4T24i89s
-	 5cCRR1LLRSGWJkqeQgu66Dho0nOsRvXxAhZp39wGJg4Kw1XaJwc4WPhP67KOX4l0Nu
-	 JYHMFDzA+2JaD+TLc2aws0RwskQ1TJFy11dVJWXXcBlGHq7DxG1Bl9to7qt0KVOyIG
-	 RWBwZk7se8h2A==
-Message-ID: <a1759d1c-08dc-46e3-96b2-9ae2d8258b22@kernel.org>
-Date: Mon, 13 Oct 2025 16:41:17 +0900
+	b=SZ5eg06eGhWCDln8zwWXVDi++rSzVsHgAzWQJp6ZN6j1s72t724fV2Jbt/DoD4/7a
+	 lzXCYqRFefu97LfS0v6l7l6RNbjUdksNgGIFVCwXCqmnBLTCzAuPu2jsND1qCnheSU
+	 5WvUZoBYTtf+4hn9pSm37g9eScUL/M8svS4SRwjVFz0odn/HOFPYo+EQ9uTGkE0A3Y
+	 t8lC4ps3+kZ+rjKfDGchS64/XB0CnIm4l5cAXgqyDnOGPQV/PEg8HibmPCecq80TYA
+	 jShbsfAa3bAHekN7SMuo/X0dgr/3gIkq2mzIt9VcRrdCC14ERZA4Q1iuF9y9GfIYsH
+	 oUreoxYxkdAVg==
+Message-ID: <8efa955a-21c4-42b9-a734-a06a46fd51c7@kernel.org>
+Date: Mon, 13 Oct 2025 16:42:27 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] mm: don't opencode filemap_fdatawrite_range in
- filemap_invalidate_inode
+Subject: Re: [PATCH 02/10] 9p: don't opencode filemap_fdatawrite_range in
+ v9fs_mmap_vm_close
 To: Christoph Hellwig <hch@lst.de>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
@@ -84,21 +84,21 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
  ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
 References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-2-hch@lst.de>
+ <20251013025808.4111128-3-hch@lst.de>
 From: Damien Le Moal <dlemoal@kernel.org>
 Content-Language: en-US
 Organization: Western Digital Research
-In-Reply-To: <20251013025808.4111128-2-hch@lst.de>
+In-Reply-To: <20251013025808.4111128-3-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ubk5sejdsio4ha4a4yjjfrokps1yw15e
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0B5C2A0004
-X-HE-Tag: 1760341283-389011
-X-HE-Meta: U2FsdGVkX19rcwgdInLIS7SYpFqzqejyeT6DSzGtiiZf5HnwIafiQzIZ/UPWZI2YrmjMqvWrwg5mMvd+NDA7UpCDzbaYpNTVn0MnpNE1IAiaCoGtQ/D567sgi998EZ5fV5gMRW++eBGBQpR5P2P0oGQmibUc4OswQr0Kml40kYUdXL2mucBm6zeUvz6YAJrjGFaNvwVsXDntvjVjWSWtDkaiMVdtCRdcuAS/MN1m1ThytVzBgKcq3dlf2yrzkBKIdJgZ46u8PZZKUyC/istY42Ps1zVNAgX/FautNZEJXFVIFS/lXQ4gJGum3w9pXwlwpL/cxVG0J+I1gsXX1YZrF9aIqAtFSKIqAaLZNtAba+pw+5oRCltHz07Qe1/d5Ha4WvUmthx3MPZ6zshZZMDOWYkESyMF7bcGB2E3Y7TzQt1IURqG51uASb/1o9yLKHRB8KNG9rP493Pm/y9+q9JzqtxQOA5f3Y08FnqCnnavpiujab85DvYmXZcnI7ZT0ByDagZuoTZeyhT609rWoOELTGhYve/keF4hvzGb+mLRs1sI8WLfEwEypNjbc5eLxdUxvEOw6317G26MT5pxpPCQQ0+0d4/0mJaA4SxVF3N4t3HumTiUw8Yb6wh9u0h4bZvIRqQOZLQUJG+f3H7fjrB/sjol8j3sFxqgSR3Fs/Pgncz5iYjXYXCwZFhj3Fjp9ASxY1HpO17rr5hkgrAVYf2JEyNNOGwUz/86vYH1db3PSmjeYav2qm/p62FGDeXMRufpuUJvMDhvK/z46blOliePgq07cFTSwI1BroDzGpkYs5tGDq88YvmO/m/mnShmXEU4HsCk01AqQxjQJX586hsGn129jtUQBRghc/3N2blyczlPH0xQxIVCtqXsV8uH7fX9cQfIb3mm5TMhF7qh13a6fn6idRR2LDA3qtKzWSawBuxEDp1TiZSmoXLpTYrw5IH1zDfUqMcv+RBOybyknWX
- V0QUwlJA
- 9hBFftN1MljkTmh9ZWJTfFtfi7Cl5bz+yOOTRefDCWkKSqXuWG4+I/cGA/u5rdyIgzIXMLL9/JTB+aAqeD3MgT8al3PlVqebmzqGjgpf313rxTahBvSZb+2vCpqZqdx+68uNQu9XI/Z8FmJTTsozuzKiX5Tu8/kw7XlSwF/UT1uTLHxhcQDUohPTjL9ZPO5Y7DMEI1pqRDsuskKuHIy4YgENwgBu0/PrvJVK2ccUtkkC1gvG/wk3Y4Ux0bT9kECuuH9dtL0Vt7aW9haSDTLYmXF39AdBujxW7mwWUVk33IYmNqNqRd5dlifp3AItJ7J43+VSPBT3Pisya8yNetp777QqNpNWXkS1L38ZrNOVhx/3MRc3k1QjJ7ThNlEG113Ea1wvQHAJKkhg5vY37AJMkq9RsMYq6pT8oP5U1kHwYL3ykg6Fb8NrYgFI4ByL17KEpcGxnA0FVgKReMfg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 33BF740004
+X-Stat-Signature: ofrckxqqtuoyim6mdntp79rzgdhjiyih
+X-HE-Tag: 1760341353-231040
+X-HE-Meta: U2FsdGVkX1/gp5AOCGaBIUxNUrueyRwz/8C3Wfo1R2mBLMpE1IbhMi9Zote+dardnilfal5k8Uqdu7OdHLRETHFx3QNlnC59qmtX5RhheRKZCwE8wCABKJpOHRXadNpuRcTQ9tYpJWPrhI+SonQPzXpkuKvlqKqkdLKSH0OY9IVs/GB8EKd6NJGtGOjv16SZKP6Am0Lb5L3DScw8qrfHNBgARHe9b6P6OQokO+HRvjfbAEBYS+BGE+xbc5YodNP25CA+WmBKb2YnH2KNiMHQN0mcTzH+fz52AEsnLAeUc4aRo3Z+fEx3ow4NpyHEDgPgSyWoUlxxg6pAAM8ACLzzkmRtshpAfkJZSOkFpmTc3BIc8pj8j6P+1NBkjq3OrZP8xmPTyYh/WJaYLNVgcOV70O5QUrkU8ySKYZvyIn0eYAer4gvRgv5+3WoNlY1Fg3m3eA9rZSwIpow634JpRVRFSQ5GcAqGnQATy9dKUBgtu+ukXeBTAagd8z+PST+qNv9MxOMquMIci5uJlyC/RWqbzs0ONsJGNOnAnxcsddUab+XuBNrMuwqXvAp8CNtGEqOtA7vuH8w/KfxzXMjaUOIm/RnsiklEVbDtxpPL6LGUlRcm6sPEUfTrCdVpHq4vNhA8B6jvPyraIfudIAvAsrrLA4uVyMuy8dZrU6D5zj1NMOkTao9WaLbHaOPyni2mXv/odVZtmioOlGGulkxcjtv0mq3lKoysdF1bXI6147lgj/Ok6+N3B8j4gQIVKeUePsvHv3WCniojdjIVmyWv5M/Y8M+5uFRtgbkgfJTI+FweMPlJ4XGKeKqOvg3OStkL1rDLKaIv3O7nEQ0RChJECHKFfoYBzliAzFuqAtsHxqd0mGZlKrS967rkm49R4qkw4RV8H6iZr5eg29BYWvRW6rKppnQI7cZZXMbj/krbRrCrC5UwoVMuUliM5mxCf+u9fSoWbMRbie8rXdJIiTMOnaq
+ 2jP6F+z+
+ B3vVYqP4mk07jsn7yD2KgO4E7yAB7TcGRXM4wtcA+AyzuFKxNRdIzQmrUMZGIpywM7cgtJ9Gmh34/O1romm9DsV01TPjW7f3XzpYrcc/b02u2axk9Irv400o+xUx3aipVUXnkD2DOFRZMBXd+udGQyb0R82qUeWsum2FGhaYcPUSeXWwboNs1nztIP44pXcQoDuValjsvJnne9daf3KEA8bz7ZW8CZ/kP5Bjt/1CeYEF9aNduh12ctU4Hu+nOmnmVTm5XFbtoC7EeX9A+gw3zOo9v9joxCpOOKr3LEF8Ci1nRnhqakWGmo8h98jHEiRemaEK3i7ji5V0DfP2NB4x0xyeh5kgghGApRNnQBUM968c9xut0mP0v1aAgiNrysWOw/pb3eiQaxNgLuaJ6pOl9pPhHO76BWfkXezMbER+zZXcm9opjsk1OgMwH8XI7BP7G3eTMfmaDSKTuR4c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,7 +114,6 @@ On 2025/10/13 11:57, Christoph Hellwig wrote:
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-
 
 -- 
 Damien Le Moal
