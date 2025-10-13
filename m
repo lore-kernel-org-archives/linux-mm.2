@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDF3CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D9CBCCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:21:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08EC48E0022; Mon, 13 Oct 2025 05:15:23 -0400 (EDT)
+	id 3F6C98E000C; Mon, 13 Oct 2025 05:21:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 067218E0002; Mon, 13 Oct 2025 05:15:23 -0400 (EDT)
+	id 3A7BE8E0002; Mon, 13 Oct 2025 05:21:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4D48E0022; Mon, 13 Oct 2025 05:15:22 -0400 (EDT)
+	id 2BDB08E000C; Mon, 13 Oct 2025 05:21:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DB1598E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:15:22 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13256C02D5
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:15:22 +0000 (UTC)
-X-FDA: 83992532484.19.B96520F
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 359A610000C
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:15:19 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 1775D8E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:21:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A9BE8866F9
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:21:32 +0000 (UTC)
+X-FDA: 83992548024.03.F172767
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 59B2210000A
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:21:29 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MNQbpMfF;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760346920; a=rsa-sha256;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AtrNoBa3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760347291; a=rsa-sha256;
 	cv=none;
-	b=28Hl1vQVYBdVgtjhmCncF/tVQuRd5jsfRgh8Vecq0wcULEGMUkirWdrBThOSx37vsv6AS/
-	oyft/u6I4FNZosmitooGjlU+r2NwcghguXIwUah2VRAaqn1TC/coH864wa/fLODm02qI65
-	5B3GVJMnR2YAKkRM844K6NLQWm5DPZk=
+	b=3KmkdAZ8Ok7vI0q11MSjjxrTMFyby9Ujtlzo2hAN3d5gPO0eHvMJEGfR3xj8gzbbOS6buB
+	y2dt/4Uct6rzprNkMr+aft/GZoUc/puaQvO/aijzT4DEQWi/jimCCQY060vke2nX5+D+7E
+	QUzQz2D3Dpj8nB0cJKVINVxPmerad2k=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MNQbpMfF;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AtrNoBa3;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760346920;
+	s=arc-20220608; t=1760347291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z3uRU6A1V0MHfLT+ewa3AKJSUpsO5lmxHPh4GX6k0hg=;
-	b=xMxtg0wmPVBhRWJEdyIZH7Xo6asJTH6VtHZs15CjJYQLJFBvD4AvGnDhqFc7uHGCffGQeg
-	d+y+MqedzpmBMsBbJUmrFqjZYJp7uHKRvyb3jpFuFoUbkVwyRM6iCo9Ni6LUZ+kYemRa0N
-	577Ev80hXCek0onl+SLnRfcn11bTvEQ=
-Message-ID: <bd374ac3-05a2-41ae-8043-cc3575fb13c0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760346918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z3uRU6A1V0MHfLT+ewa3AKJSUpsO5lmxHPh4GX6k0hg=;
-	b=MNQbpMfFLQ2qpDDSdEkaNskbe9MHMp0xnYzedG+FVz6nyRLbQztirK+kx5Ir54ngMxaThf
-	WDc8Q/rKrID2o68szkR+UWaJ0QWxIRx9EQGrVza8abnWCj8lKlo3duhrKfY5vZdssNRneh
-	dVALp7ix5m0wpB/l+OyGFcibB55Y9ls=
-Date: Mon, 13 Oct 2025 17:15:09 +0800
+	bh=aWm1WdWttrhOYiXiJuOMK69KNjE6Idu3TEdWrDwmXPQ=;
+	b=04I2XDELR9vRP9fzWyAIX3AttpW1HCNxCjrnktDTS61FWESkfTMJPgQDqH1DoHWp2L+hhr
+	cleLc1GPRiv6gcBDUfQ2MCblzJLVRrk2zpOt6IBiOS5hq5vQuEsl3KuRz8mtHgFhP1QXGb
+	E9xYZzNfzdA4qu6BfOkIsORtpRa9UE0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760347287; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=aWm1WdWttrhOYiXiJuOMK69KNjE6Idu3TEdWrDwmXPQ=;
+	b=AtrNoBa3F3m0Ly+Wx3DPDNc4Ir7xn8lVA6ZzhDRVd0wBEb5C3DXNfkEgcT0J52HwyMzDDDppRdaGQac0KiJdfi1+8LVSFPig0gXMDEwIdR0xHHIiQMaLyiSmp7JZVgNtNetz0PeYfP+sstghG6tOtoJcHc5Iu7GlKvQAGpnS0Ro=
+Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wq1nigk_1760347285 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 13 Oct 2025 17:21:25 +0800
+From: Huang Ying <ying.huang@linux.alibaba.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>
+Cc: Huang Ying <ying.huang@linux.alibaba.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH -v2 1/2] mm: add spurious fault fixing support for huge pmd
+Date: Mon, 13 Oct 2025 17:20:37 +0800
+Message-Id: <20251013092038.6963-2-ying.huang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
+References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH RFC 1/1] mm/ksm: Add recovery mechanism for memory
- failures
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-To: david@redhat.com
-Cc: Longlong Xia <xialonglong2025@163.com>, nao.horiguchi@gmail.com,
- akpm@linux-foundation.org, wangkefeng.wang@huawei.com, xu.xin16@zte.com.cn,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Longlong Xia <xialonglong@kylinos.cn>, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, Miaohe Lin <linmiaohe@huawei.com>, qiuxu.zhuo@intel.com
-References: <20251009070045.2011920-1-xialonglong2025@163.com>
- <20251009070045.2011920-2-xialonglong2025@163.com>
- <CABzRoyYfx0QPgGG4WYEYmT8-J10ToRCUStd3tWC0CtT_D8ctiQ@mail.gmail.com>
- <CABzRoyYK38imLh6zN2DZKPRyQrJkKyvpswqJAsWzEeECtOxaMA@mail.gmail.com>
- <55370eb6-9798-0f46-2301-d5f66528411b@huawei.com>
- <077882e3-f69f-44f3-aa74-b325721beb42@linux.dev>
- <839b72b8-55dc-4f4e-b1da-6f24ecf9446f@huawei.com>
- <f12dfacb-05dd-4b22-90eb-fcc1a8ed552b@linux.dev>
-In-Reply-To: <f12dfacb-05dd-4b22-90eb-fcc1a8ed552b@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ei5w6fxq8f5re5q68y35ix383roa6ngb
+X-Rspamd-Queue-Id: 59B2210000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: kerpbtqbzuzo8eosqszhstyusw6a4kp9
-X-Rspamd-Queue-Id: 359A610000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760346919-514611
-X-HE-Meta: U2FsdGVkX184CvxGghEYmjuIFqKGIuX4OPHAOZoTtSYixT93JXolqYkHvzSmi2jLXiPzj9NtnFWAJoe/j0YtGzRCBo368r/990mErKPIgTfj7q3cF4LIPQH0SLrzMgtNKjoU/bng5FyVvAOLpBPMSLvcrf1W/JbMDbXOVcjPQlvTPee40Dg5RR3pUpeitZlPSDcgADrG6vXB87SgnUct+jbQQh3pfFCgFBBxoLVTYSGTkXMDyPyWXF0j61RSSa9CLOrI3lWvyS/kFg51qDW4PoEvFsGD5W9ng5Gs+tsDuEwMmGxdq8NIkyNhoJHEX9rlFm0aNouEBkMMYqbhaNzPczL5pqUgyAokIpfqDW9Bo+GiG37Bm0C9zq9vavKK9vaMEOSgGOOygnxDr90Td5gueisZGusCRA+FpEeRjmfD/edfH0ZNK9oWkxM0oSscFWBWVlukAORgii0XOCWbFwE5fk0V8XRw4sMluS+QU9PdZ4UUqXcs6VWRmoSWVfHEjLhbDUcftXDokD1Nku5mN7jowpWqVNc07m+In104vBmXJT9eaR6QtFVO4eaptwcBKCgroJwOlri+GcAQI0KZeOFac2jVI2dMU8A31MKCx6jqI+8SdYMTOi84l7U3vuRG7elKGC7BawMqfvBa6I9FmmvM/g2IZeXm3NqXppmGDxOlMgF3vGAP3bqcw6QXzYWjcE7AmQBbwDgKq7EE1JGlMsHUAWhkHpwu9sEf/uZFQPGT5MZHLYw6DPmx488qxBpSivRHxuQhEV8vGJNM/pC1kxsKbuSltrcJj4GWck91rZJVXN26dZDM+LhmkONSrW7UIBGnWNjg3wrcx6X5XPXVIDqH2SsfNbqzYyTFSVfSrqPs2UMgMKLimHmaEAPW5qqLhA05Q8g7NEBJZvqhrqHKYChpVlZIEnexgj28DWM4A5KQsbI4zbRkMNB7BeOw8igFytMmBQML9IM44B2TcMODJH3
- CbReN2di
- IW+XdXGx7dXWATLb8TpICVo2M3Ekxdhoq9S7zHYVZXAZy3+0mp79Cgx4l+lfXhElv+Fsx9BV4AJqSNk6+6pxHSvLJxhh3WuQkDQlQ6FUJFjQCHVg/tu8XlV9RtFvvT/JyQ/lHUsLGp0J4QvIU/8EItZuIIJ/5iYFyqy4FGrfuqgS7rcPZzreX5eDC9q9GBKEgtTu2LoDH5WYoIiBrmpnEtFG7DX9NJeWZyFEi0z7z/7XQV2MgJgKYKUWgHxExKGaEz8ya3mz6feT9h3S1KE9Ow8XPqw==
+X-HE-Tag: 1760347289-527031
+X-HE-Meta: U2FsdGVkX1/qd5Mp5Q2/YgLcqw/LZ+ViTnhXAX/2Ule09wD0onEvXgDWIDDpJT/KUd6tI6nmwGuZ8KSDw5C1rZ3gMvG7GVLVOxnY+78eCP5v6sn+AoBsbXXbRDncwObKuBqk97x79e7XxEs+oX58ID/S9ZQkQ/s3sk8EgKVpLRzI1yzFUDqsWuvXtRfEp8i/0vzr30WoaQ9Y1Bh+dj00xN3J0QdRYKCQmkSvACul7Am66psMPsXlKrphVA1c7E6RuKyOQ9P9MuJHdTmtf4NwQYsPmEqkF1dNVBuKs9IUmzC2ohol3y/E9wnSe3tRpKn6MaP1NXFmCC/uEcvKrKom3KAE0X59ryEg0IXF27qJfImvsSPvrojpLaIW/IHLW/7c0Teis2Vn9BzF9Y1H5dAPjSf/I+eQrdfapaz6qGraGc3nM7kZWppB9LjbGSvn/dpUdFISweD0S7eLNTHornYUdCriesbY3DkH/+DwLbVmO24JqL/+1SIc6Re4gdwMyT1egXs6R8CR9DVBJ192BBfD7A3BNTidrbpkrrUF8PW+azXKkKTr4m+SnY3AWIFgE+amtLlnIAVsg2iLr9Og2G6D9+GzxBw11uTiO55yDOi7JYaSqx6LE9wotyb/CRmFR0nuSmRZIrPAAoqLwatyMlaMyTe4Wc1LCf8KpmsIzH5k6PqrmofZAakQYrlO+FE881NxZlMH/PRzTePWkhNoJbMRd4ECXV8dIcB4mczQf1fOK0QnbJsLcZs1UT6s8YKV+UnCJEyn6XFoxf/Wg+mwjbSZenkByyLDaG1BBb0PRNuEYQXzpCZxf55UqXfSufgSgFQbiJaoYWuvadunLY8kVzQxl6Kut5wnUVegCF5IYicIg/mwZxuZ7Px1phjwR6i6xIIXX3bBG85qM+y3tISAHNcNYQWC3zFxJb/FMzTTiQggADCG0c1HNeG0UfGLG7V/mPeMfUlNlDUncuaSOW2oCB3
+ BVl9Bc//
+ yzIC+P2m0QTjv4TVPut5vtq4SrWriEOR/Oue9yBr+qVd0IYuXdHYO+rFFY7UFXSwBkMDrvhJJDTBEp/u1NEXlh9K2OQeatgHuFZXO6p5WOAL4ViT3/MMr3dpJxFAcpjP6X3hHtpiagJUlBjICuuTzOvX/uNhfpKXakLOwsv2Vn/QBC1NHyCFhFmTV2vrSeBicT2mYKEjW6AQZb0wx5G4yaNNwYjQRroEN+umGoQ00Jn2ZoaNawGH/8oGJhcG0UnTJRlwMEr/EZQcJepTm2alO9reCoJCvL62q7GUeDAFwT/bF8avCIMQkKpy7xoupDmO9Em4G+NR1C3+eUVbwJxT6esqd8QgkuYkzeLt7bYUnPTlkr0BXotOwmSjuLPouRyUtB+PBBu1AXer36J9Qoh5VOoQRUzJ9TLIxpJ+lmRUnygzLHhzVfurUH1ZvQSKC6cA3CqoYP4ZY0KE8AYP5RqzzZspzSjrVUB5jLCP0F0aE1gK2oGm1Q/Hh1odE5gf2xLSQmGozMHDcsmaa8LVY2k4o86FVn+rcchRk9sJAw3JR1A9Zcu3DvduUJOzUrmuUlpy+lp7VSGkjGI2TntWF65f+twoxbraOgUilSL11ILA/8LvYDiREaJpuxHF33g/WY39ulqJ9Nm1wt5dcVW3wEVLy5X5+jYMXY3un6YS5dHiDvPoCjxDZW8ImxBtft+AVozCxPfiDCp8XdTDnPAVB8kMHguK+eJKspBF6kjtW6NwsDVcnE/XDdaRfuySjXd7CGSLt86yzMTFNyl3KVrT3pjyqhN6LIw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,49 +103,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-@David
+In the current kernel, there is spurious fault fixing support for pte,
+but not for huge pmd because no architectures need it. But in the
+next patch in the series, we will change the write protection fault
+handling logic on arm64, so that some stale huge pmd entries may
+remain in the TLB. These entries need to be flushed via the huge pmd
+spurious fault fixing mechanism.
 
-Cc: MM CORE folks
+Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+---
+ include/linux/pgtable.h |  4 ++++
+ mm/huge_memory.c        | 22 +++++++++++++++++-----
+ mm/internal.h           |  4 ++--
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
-On 2025/10/13 12:42, Lance Yang wrote:
-[...]
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 32e8457ad535..341622ec80e4 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1232,6 +1232,10 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+ #define flush_tlb_fix_spurious_fault(vma, address, ptep) flush_tlb_page(vma, address)
+ #endif
+ 
++#ifndef flush_tlb_fix_spurious_fault_pmd
++#define flush_tlb_fix_spurious_fault_pmd(vma, address, ptep) do { } while (0)
++#endif
++
+ /*
+  * When walking page tables, get the address of the next boundary,
+  * or the end address of the range if that comes earlier.  Although no
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1b81680b4225..8533457c52b7 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1641,17 +1641,22 @@ vm_fault_t vmf_insert_folio_pud(struct vm_fault *vmf, struct folio *folio,
+ EXPORT_SYMBOL_GPL(vmf_insert_folio_pud);
+ #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+ 
+-void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
+-	       pmd_t *pmd, bool write)
++/* Returns whether the PMD entry is changed */
++int touch_pmd(struct vm_area_struct *vma, unsigned long addr,
++	      pmd_t *pmd, bool write)
+ {
++	int changed;
+ 	pmd_t _pmd;
+ 
+ 	_pmd = pmd_mkyoung(*pmd);
+ 	if (write)
+ 		_pmd = pmd_mkdirty(_pmd);
+-	if (pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
+-				  pmd, _pmd, write))
++	changed = pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
++					pmd, _pmd, write);
++	if (changed)
+ 		update_mmu_cache_pmd(vma, addr, pmd);
++
++	return changed;
+ }
+ 
+ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+@@ -1849,7 +1854,14 @@ void huge_pmd_set_accessed(struct vm_fault *vmf)
+ 	if (unlikely(!pmd_same(*vmf->pmd, vmf->orig_pmd)))
+ 		goto unlock;
+ 
+-	touch_pmd(vmf->vma, vmf->address, vmf->pmd, write);
++	if (!touch_pmd(vmf->vma, vmf->address, vmf->pmd, write)) {
++		/* See corresponding comments in handle_pte_fault(). */
++		if (vmf->flags & FAULT_FLAG_TRIED)
++			goto unlock;
++		if (vmf->flags & FAULT_FLAG_WRITE)
++			flush_tlb_fix_spurious_fault_pmd(vmf->vma, vmf->address,
++							 vmf->pmd);
++	}
+ 
+ unlock:
+ 	spin_unlock(vmf->ptl);
+diff --git a/mm/internal.h b/mm/internal.h
+index 1561fc2ff5b8..8b58ab00a7cd 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1402,8 +1402,8 @@ int __must_check try_grab_folio(struct folio *folio, int refs,
+  */
+ void touch_pud(struct vm_area_struct *vma, unsigned long addr,
+ 	       pud_t *pud, bool write);
+-void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
+-	       pmd_t *pmd, bool write);
++int touch_pmd(struct vm_area_struct *vma, unsigned long addr,
++	      pmd_t *pmd, bool write);
+ 
+ /*
+  * Parses a string with mem suffixes into its order. Useful to parse kernel
+-- 
+2.39.5
 
-Cool. Hardware error injection with EINJ was the way to go!
-
-I just ran some tests on the shared zero page (both regular and huge), and
-found a tricky behavior:
-
-1) When a hardware error is injected into the zeropage, the process that
-attempts to read from a mapping backed by it is correctly killed with a 
-SIGBUS.
-
-2) However, even after the error is detected, the kernel continues to 
-install
-the known-poisoned zeropage for new anonymous mappings ...
-
-
-For the shared zeropage:
-```
-[Mon Oct 13 16:29:02 2025] mce: Uncorrected hardware memory error in 
-user-access at 29b8cf5000
-[Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: Sending SIGBUS to 
-read_zeropage:13767 due to hardware memory corruption
-[Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: recovery action 
-for already poisoned page: Failed
-```
-And for the shared huge zeropage:
-```
-[Mon Oct 13 16:35:34 2025] mce: Uncorrected hardware memory error in 
-user-access at 1e1e00000
-[Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: Sending SIGBUS to 
-read_huge_zerop:13891 due to hardware memory corruption
-[Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: recovery action for 
-already poisoned page: Failed
-```
-
-Since we've identified an uncorrectable hardware error on such a critical,
-singleton page, should we be doing something more?
-
-Thanks,
-Lance
 
