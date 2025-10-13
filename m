@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86B0CCCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDF3CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 09:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6BBE8E0012; Mon, 13 Oct 2025 04:59:23 -0400 (EDT)
+	id 08EC48E0022; Mon, 13 Oct 2025 05:15:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1CA28E0002; Mon, 13 Oct 2025 04:59:23 -0400 (EDT)
+	id 067218E0002; Mon, 13 Oct 2025 05:15:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A32298E0012; Mon, 13 Oct 2025 04:59:23 -0400 (EDT)
+	id EE4D48E0022; Mon, 13 Oct 2025 05:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BC158E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:59:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 360341DDABA
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:59:23 +0000 (UTC)
-X-FDA: 83992492206.01.EAE7E86
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F1104C0003
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:59:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h3LaqdNR;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DB1598E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:15:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13256C02D5
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:15:22 +0000 (UTC)
+X-FDA: 83992532484.19.B96520F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 359A610000C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:15:19 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MNQbpMfF;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760346920; a=rsa-sha256;
+	cv=none;
+	b=28Hl1vQVYBdVgtjhmCncF/tVQuRd5jsfRgh8Vecq0wcULEGMUkirWdrBThOSx37vsv6AS/
+	oyft/u6I4FNZosmitooGjlU+r2NwcghguXIwUah2VRAaqn1TC/coH864wa/fLODm02qI65
+	5B3GVJMnR2YAKkRM844K6NLQWm5DPZk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MNQbpMfF;
+	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760345961;
+	s=arc-20220608; t=1760346920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gGIOd7Ex2m90KckglAwHsiXkn+YFnTKWdf60l+zhCdc=;
-	b=BMJ6J4PkjkGb2dbo1gPkCYDlJHmdZ9NwsjmzsDNdhPXRBfEfa0adB5T+wxV6A5OlW1EqPG
-	G5Rz0X5MAkKmpJygfCoSw2GEw4Wp8x9VyUPk7wQY1doofB8ocbdHPzRvSnCS5I51y2gWBI
-	JA53UZPfngP7cCGN/wB+OwIdnV8aJyc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h3LaqdNR;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of joseph.qi@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=joseph.qi@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760345961; a=rsa-sha256;
-	cv=none;
-	b=c76B7rTnLjqgXC7ZefFg5l6zZgtsaaQ1h52WjfuPxSoFnEv9eNBu93rcz/qlDfMM39SGcq
-	elloDT4ng+dCSWxQcXEu8pP1euWpzo1TyIOU/ssyXKCb59wwyPXLnLqzrFGpJHAvkKGPyw
-	zvatvhhNtP82hz88WJqMOZbL9r9+DaQ=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760345956; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=gGIOd7Ex2m90KckglAwHsiXkn+YFnTKWdf60l+zhCdc=;
-	b=h3LaqdNRHndzkRMufqmKcgJ7nMw9gmr2DxCZkxLSn3tWuuMOUs5UOAOrxr7OSasAqIqROY4s+gg5v27gKZvRZjfwJPoEox0HTVXN/EeCGzzliOwlBrqVy3lSbuTOloh2RYeLZSiQMEQHDszJQlShZYIONDMhzIq8OPMurstPjV4=
-Received: from 30.221.129.221(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0Wq2ERPx_1760345954 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 13 Oct 2025 16:59:15 +0800
-Message-ID: <9b8abc79-8605-4c13-9d9f-972f90418cd2@linux.alibaba.com>
-Date: Mon, 13 Oct 2025 16:59:14 +0800
+	bh=z3uRU6A1V0MHfLT+ewa3AKJSUpsO5lmxHPh4GX6k0hg=;
+	b=xMxtg0wmPVBhRWJEdyIZH7Xo6asJTH6VtHZs15CjJYQLJFBvD4AvGnDhqFc7uHGCffGQeg
+	d+y+MqedzpmBMsBbJUmrFqjZYJp7uHKRvyb3jpFuFoUbkVwyRM6iCo9Ni6LUZ+kYemRa0N
+	577Ev80hXCek0onl+SLnRfcn11bTvEQ=
+Message-ID: <bd374ac3-05a2-41ae-8043-cc3575fb13c0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760346918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z3uRU6A1V0MHfLT+ewa3AKJSUpsO5lmxHPh4GX6k0hg=;
+	b=MNQbpMfFLQ2qpDDSdEkaNskbe9MHMp0xnYzedG+FVz6nyRLbQztirK+kx5Ir54ngMxaThf
+	WDc8Q/rKrID2o68szkR+UWaJ0QWxIRx9EQGrVza8abnWCj8lKlo3duhrKfY5vZdssNRneh
+	dVALp7ix5m0wpB/l+OyGFcibB55Y9ls=
+Date: Mon, 13 Oct 2025 17:15:09 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] ocfs2: don't opencode filemap_fdatawrite_range in
- ocfs2_journal_submit_inode_data_buffers
-To: Christoph Hellwig <hch@lst.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
- Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
- ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-4-hch@lst.de>
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-In-Reply-To: <20251013025808.4111128-4-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH RFC 1/1] mm/ksm: Add recovery mechanism for memory
+ failures
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+To: david@redhat.com
+Cc: Longlong Xia <xialonglong2025@163.com>, nao.horiguchi@gmail.com,
+ akpm@linux-foundation.org, wangkefeng.wang@huawei.com, xu.xin16@zte.com.cn,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, Miaohe Lin <linmiaohe@huawei.com>, qiuxu.zhuo@intel.com
+References: <20251009070045.2011920-1-xialonglong2025@163.com>
+ <20251009070045.2011920-2-xialonglong2025@163.com>
+ <CABzRoyYfx0QPgGG4WYEYmT8-J10ToRCUStd3tWC0CtT_D8ctiQ@mail.gmail.com>
+ <CABzRoyYK38imLh6zN2DZKPRyQrJkKyvpswqJAsWzEeECtOxaMA@mail.gmail.com>
+ <55370eb6-9798-0f46-2301-d5f66528411b@huawei.com>
+ <077882e3-f69f-44f3-aa74-b325721beb42@linux.dev>
+ <839b72b8-55dc-4f4e-b1da-6f24ecf9446f@huawei.com>
+ <f12dfacb-05dd-4b22-90eb-fcc1a8ed552b@linux.dev>
+In-Reply-To: <f12dfacb-05dd-4b22-90eb-fcc1a8ed552b@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1104C0003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ub5q9kxb36yh1cgqrka4iq6zknpozc6x
-X-HE-Tag: 1760345959-292748
-X-HE-Meta: U2FsdGVkX19hM1T5hsUsiTrRa6rYd54jsJcpRmltvmYd1uCysDiM83MHvU1GGtCH0QVh68nSyfavE7WhgRrJTcw+J4LpQpzBlKLWIHgIZZ9avAY7MbmmWLoj7f9yjc6xtQtonVa2sf212HqVt4HynFkN90q0+o2RnLNf2QwFRdWlftvNLEgGFlJOmS7qU72fdmp/hKTHx3RB6Uopz4sRTVMaiaujYJ04eiPDS6iNEppTCjUdmn7QLyiZzsGN1I6nfw25lWilERIcy1AGI3TCUEtpu4wFYJs6cGdGqUaniDhUn0OO0U5cJKI0oFudXgqSzO6KQY/S2JhZgv1Piyu8SBO4ZwvLSw1Q4/DoS2VtEXcJ7ej4dLEhX8xRDUdmOWGRwv6gcYLSaFOp3yYwPyn+z+xD1ijYQzBoIBgyH8jeHjhmJ+wHzm7OF49ljV5pBDkveTqX+to1SNAc2UFZEAiMMtmcJ5TaO0Kdll/25oQvLH/DnHW9hfziyfwuiTwzNA4GHl/co5x7wivGNEGB298K1KSTbiQUfzXbhCRPzuVyyaeTmPPZxivvn3WesHxp86PA8cdVsUoU2sj6EWPLR+TQzmrd6CjZE3/pohnKHl5f+dsn76lXoW48LVkvPC6rNHjJk52a3qKW0LR8PAOAJPoPU9mOtcTGnFOlKFvX3GKL9B0hOUhzybYCTJXPjRiqagnUGMAhn6DD0/M4jq5QXU+rS+dCmjpQTHtw02BDMzikF7C4KCXZqOygKKvZT1g5u4A2KXtdBlb2cpxKqBccfnL4OEOK/P8lq8XZRDX++u83PafxNUIExzwG9UDIdwmBo0A6tPu2drNvtf8Z1ChR3p04s4XuwCaJruBdZ8FU7sKG/HRsJ+YP7JksoK8cLH5EMmliyEFTi54lyDY7qEAC+GIPr+Jc5Kk7aMTxYLHhqHvSXpuJ49JUy10ddWONUf5scTdNi9/ZIG3sOtNmJ+AHPXu
- 9aV5QPPo
- 596UF6LL8TvAs3W0bLsg5R2plEFNwIXI5jffPPmSEk3dVaaP4scUvuwS+LPOXaLOdzbtvjQga932WtfmMKrTj7pB/ZWy17VrGlzuJ0cwkXeqUL1wU2xhWw83Yp7edYSsDo1LmkdYhoobfVuUpgTDBkmpf5FWlJjBZdHg87hRQ/yQCbqrVPRvNsVB0Xu4khoT19iHY3WtJ+cb/S7zvWVzB0WbzqPUCxCtiA1g1dloQol6nSBQmbMMym7+r8hTunchFB5usKgqjtTLo6iXcng+zKzZlT6v7EGHURQluqOYAhu7o4fMdUP12vjVJ/g==
+X-Stat-Signature: kerpbtqbzuzo8eosqszhstyusw6a4kp9
+X-Rspamd-Queue-Id: 359A610000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760346919-514611
+X-HE-Meta: U2FsdGVkX184CvxGghEYmjuIFqKGIuX4OPHAOZoTtSYixT93JXolqYkHvzSmi2jLXiPzj9NtnFWAJoe/j0YtGzRCBo368r/990mErKPIgTfj7q3cF4LIPQH0SLrzMgtNKjoU/bng5FyVvAOLpBPMSLvcrf1W/JbMDbXOVcjPQlvTPee40Dg5RR3pUpeitZlPSDcgADrG6vXB87SgnUct+jbQQh3pfFCgFBBxoLVTYSGTkXMDyPyWXF0j61RSSa9CLOrI3lWvyS/kFg51qDW4PoEvFsGD5W9ng5Gs+tsDuEwMmGxdq8NIkyNhoJHEX9rlFm0aNouEBkMMYqbhaNzPczL5pqUgyAokIpfqDW9Bo+GiG37Bm0C9zq9vavKK9vaMEOSgGOOygnxDr90Td5gueisZGusCRA+FpEeRjmfD/edfH0ZNK9oWkxM0oSscFWBWVlukAORgii0XOCWbFwE5fk0V8XRw4sMluS+QU9PdZ4UUqXcs6VWRmoSWVfHEjLhbDUcftXDokD1Nku5mN7jowpWqVNc07m+In104vBmXJT9eaR6QtFVO4eaptwcBKCgroJwOlri+GcAQI0KZeOFac2jVI2dMU8A31MKCx6jqI+8SdYMTOi84l7U3vuRG7elKGC7BawMqfvBa6I9FmmvM/g2IZeXm3NqXppmGDxOlMgF3vGAP3bqcw6QXzYWjcE7AmQBbwDgKq7EE1JGlMsHUAWhkHpwu9sEf/uZFQPGT5MZHLYw6DPmx488qxBpSivRHxuQhEV8vGJNM/pC1kxsKbuSltrcJj4GWck91rZJVXN26dZDM+LhmkONSrW7UIBGnWNjg3wrcx6X5XPXVIDqH2SsfNbqzYyTFSVfSrqPs2UMgMKLimHmaEAPW5qqLhA05Q8g7NEBJZvqhrqHKYChpVlZIEnexgj28DWM4A5KQsbI4zbRkMNB7BeOw8igFytMmBQML9IM44B2TcMODJH3
+ CbReN2di
+ IW+XdXGx7dXWATLb8TpICVo2M3Ekxdhoq9S7zHYVZXAZy3+0mp79Cgx4l+lfXhElv+Fsx9BV4AJqSNk6+6pxHSvLJxhh3WuQkDQlQ6FUJFjQCHVg/tu8XlV9RtFvvT/JyQ/lHUsLGp0J4QvIU/8EItZuIIJ/5iYFyqy4FGrfuqgS7rcPZzreX5eDC9q9GBKEgtTu2LoDH5WYoIiBrmpnEtFG7DX9NJeWZyFEi0z7z/7XQV2MgJgKYKUWgHxExKGaEz8ya3mz6feT9h3S1KE9Ow8XPqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,45 +102,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+@David
+
+Cc: MM CORE folks
+
+On 2025/10/13 12:42, Lance Yang wrote:
+[...]
+
+Cool. Hardware error injection with EINJ was the way to go!
+
+I just ran some tests on the shared zero page (both regular and huge), and
+found a tricky behavior:
+
+1) When a hardware error is injected into the zeropage, the process that
+attempts to read from a mapping backed by it is correctly killed with a 
+SIGBUS.
+
+2) However, even after the error is detected, the kernel continues to 
+install
+the known-poisoned zeropage for new anonymous mappings ...
 
 
-On 2025/10/13 10:57, Christoph Hellwig wrote:
-> Use filemap_fdatawrite_range instead of opencoding the logic using
-> filemap_fdatawrite_wbc.  There is a slight change in the conversion
-> as nr_to_write is now set to LONG_MAX instead of double the number
-> of the pages in the range.  LONG_MAX is the usual nr_to_write for
-> WB_SYNC_ALL writeback, and the value expected by lower layers here.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+For the shared zeropage:
+```
+[Mon Oct 13 16:29:02 2025] mce: Uncorrected hardware memory error in 
+user-access at 29b8cf5000
+[Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: Sending SIGBUS to 
+read_zeropage:13767 due to hardware memory corruption
+[Mon Oct 13 16:29:02 2025] Memory failure: 0x29b8cf5: recovery action 
+for already poisoned page: Failed
+```
+And for the shared huge zeropage:
+```
+[Mon Oct 13 16:35:34 2025] mce: Uncorrected hardware memory error in 
+user-access at 1e1e00000
+[Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: Sending SIGBUS to 
+read_huge_zerop:13891 due to hardware memory corruption
+[Mon Oct 13 16:35:34 2025] Memory failure: 0x1e1e00: recovery action for 
+already poisoned page: Failed
+```
 
-Looks fine to me.
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Since we've identified an uncorrectable hardware error on such a critical,
+singleton page, should we be doing something more?
 
-> ---
->  fs/ocfs2/journal.c | 11 ++---------
->  1 file changed, 2 insertions(+), 9 deletions(-)
-> 
-> diff --git a/fs/ocfs2/journal.c b/fs/ocfs2/journal.c
-> index e5f58ff2175f..85239807dec7 100644
-> --- a/fs/ocfs2/journal.c
-> +++ b/fs/ocfs2/journal.c
-> @@ -902,15 +902,8 @@ int ocfs2_journal_alloc(struct ocfs2_super *osb)
->  
->  static int ocfs2_journal_submit_inode_data_buffers(struct jbd2_inode *jinode)
->  {
-> -	struct address_space *mapping = jinode->i_vfs_inode->i_mapping;
-> -	struct writeback_control wbc = {
-> -		.sync_mode =  WB_SYNC_ALL,
-> -		.nr_to_write = mapping->nrpages * 2,
-> -		.range_start = jinode->i_dirty_start,
-> -		.range_end = jinode->i_dirty_end,
-> -	};
-> -
-> -	return filemap_fdatawrite_wbc(mapping, &wbc);
-> +	return filemap_fdatawrite_range(jinode->i_vfs_inode->i_mapping,
-> +			jinode->i_dirty_start, jinode->i_dirty_end);
->  }
->  
->  int ocfs2_journal_init(struct ocfs2_super *osb, int *dirty)
-
+Thanks,
+Lance
 
