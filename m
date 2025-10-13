@@ -4,96 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF14CCD18F
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 21:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A361CCD18C
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 21:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 335888E00A1; Mon, 13 Oct 2025 17:56:41 -0400 (EDT)
+	id 901708E00A3; Mon, 13 Oct 2025 17:56:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6AE8E00A2; Mon, 13 Oct 2025 17:56:41 -0400 (EDT)
+	id 8B1BB8E00A2; Mon, 13 Oct 2025 17:56:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AEA98E00A1; Mon, 13 Oct 2025 17:56:41 -0400 (EDT)
+	id 6B6528E00A3; Mon, 13 Oct 2025 17:56:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E60BB8E00A2
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 17:56:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1ECA1A05F0
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:56:40 +0000 (UTC)
-X-FDA: 83994450960.13.6A978BD
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9CB694000D
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:56:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KTGXnn5K
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 48BA78E00A2
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 17:56:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1896011AA44
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:56:42 +0000 (UTC)
+X-FDA: 83994451044.03.7CF98A9
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2AB03C000C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:56:39 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=Rv0MYssi;
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf22.hostedemail.com: domain of debug@rivosinc.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760392600; a=rsa-sha256;
+	cv=none;
+	b=kXiao80khhHrhxIww+rfTCA9telCR+aIpWV2mrS3sMosI4EVjlP/bKCBk2M4XGOQFlmaFZ
+	HD6bJl80iMErZq1KLDGaGluJsKpfjLlnthhB/N1Njh/AcjZ/To3a8wCeOigJ1jKg6MjJRA
+	hd94Zcxbcz3r1DU2nSaFPdJNtGCnK5U=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=Rv0MYssi;
+	dmarc=pass (policy=none) header.from=rivosinc.com;
+	spf=pass (imf22.hostedemail.com: domain of debug@rivosinc.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=debug@rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760392599;
+	s=arc-20220608; t=1760392600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KhCn2KSyb7tmfiec5a5x+4NLc4rqOdPBeGr9lcN4QSI=;
-	b=Rq00Sc1zx5YBTP8EW4WWompJ4X4UXUWrK5gqZVDsHl4yMmXb537FNmbTLzyNVrQhptRfVo
-	HS06EWKOIAcH+3xJSpstrrksqdwMHjjZs+xM4+t8YGRmYWZ0FzC3DmB2I5MsYrlwi5P3mF
-	pioAp7ljTACpWTYnBdmEn4Gq9/Q7Zcs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KTGXnn5K;
-	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760392599; a=rsa-sha256;
-	cv=none;
-	b=vDV/7CDUy+cK9bkE3IsMvVGw2Awb6Wzh5ylUmo7YQke126hWFTZ+pvH5ajmoTQa2PRpEHb
-	47YAB646d+Btx8c6BylpPjPN5qbtn2eiRVRqsYCOuSW0EUKUIjJtoP4qTlOBwjhbjiOETq
-	9z2VtBXdLYvlfkVqUGLPpShHk7TyhbA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KhCn2KSyb7tmfiec5a5x+4NLc4rqOdPBeGr9lcN4QSI=; b=KTGXnn5Kkh8GuuVZ+yDqB/nMp7
-	9qZbgtKKrXNedzKoDYnX3tzZhb9uDwdn2hMcprdjumK9Z7xg+vsBopb8QwAE77Ef9qWG1KrcoXtPW
-	aUeK5DzGTpXGXz3SK6b2RMWtU76iQpbXrOFtDgTeXt2eLbt2bcVyg+qWrO670+aymw9gY9dbxP621
-	feLZAf8tsnqlFpxBWRjO1BcZsP1VQtFs4DdvnweBQnZ3koCzLa1eFms2i0JtsMshkbVDRQq7bcIEP
-	CaAiPgNmXtRwt0hLxXjKE4A2ePhFjxgjvsmEbyBLF7eCUVT9Zm7CDlOYOEWi0Ou9C0Jf3JiE6SBeJ
-	l4IMOG2g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8QWs-0000000EcRu-2ayi;
-	Mon, 13 Oct 2025 21:56:30 +0000
-Date: Mon, 13 Oct 2025 22:56:30 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <21cnbao@gmail.com>
-Cc: netdev@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Huacai Zhou <zhouhuacai@oppo.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network
- buffer allocation
-Message-ID: <aO11jqD6jgNs5h8K@casper.infradead.org>
-References: <20251013101636.69220-1-21cnbao@gmail.com>
+	bh=/tg1KhEMZfMefo+THEb4ueoLXzfJu3WY6LEuxXprwk8=;
+	b=xBbmwHOyN8FmGcfMkspRYsJZ01FYCvLFjfV0v/IJ2yIm5dZaEBbtteAewcaf6t9b1qhnMw
+	g+RRVid8rmIxRDLdASF4tI/FJ/mFWnsVD1RxB2PKmwqiBmVNSxPx3ZjxjhkiuOBS/mFaGM
+	TBX7esiSa3+VyGJUSxzS6aEJLWtp8JE=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3322e63602eso6280546a91.0
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1760392599; x=1760997399; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/tg1KhEMZfMefo+THEb4ueoLXzfJu3WY6LEuxXprwk8=;
+        b=Rv0MYssiXIOMfxlMYntYSwnhXbJqwPnMSHWoTx6PbstrkdsgI0PoVq+SrahDaFtAXa
+         Q7blJ3tY7CFvNviYOhjvyfi2GSqWwWZoEf0MeYf8QApAZVTJa7I8BY/UWfWcKS952ZAx
+         UnZdG7RhwVPAZTfaBz4LE6r/tu6JJtyDZHWisq8TuB2Z2+Yp8oUFyDA0pKgmrArMx3QS
+         MZPwKg4wlEeZ64/DyX8cog/t8T1IdkeK3YZNo5SNE0PZ/bE4H/sbOQdKDSpkoq2LWAj2
+         OHcW/fiLcmts9gTokAIzDjIFK5tLTWz8S2QQY3hstjLhNDtV2ioYHI3j/7IeHaN0oSj/
+         h1AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760392599; x=1760997399;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/tg1KhEMZfMefo+THEb4ueoLXzfJu3WY6LEuxXprwk8=;
+        b=uKAWYt4nCBPqWKdV2gUnROYTpO/of/OpdIMVMp26yGtAZiosLZv6lpcMekJme+XkUi
+         lRWzGnIvVzH+mKKzctrSuQytr/dTlQnkCJ5oIHBIXtPjOvdQn5TLUC1A0K3h82DWAqIY
+         qQYHDmX828pas9hYJ1u1PWpvIBXngNLWNTsKRKQ2/3P3U/l7vMFbU5u+rl5fvqF5EeQb
+         tnUqshCjnA3Sd9kVluNdpI3e4MYLyamq4GFLj4l90iR7cNgduidehV77bZofg2Wa4po/
+         rIGYQ8/xX4Y02xy84WBEOnAObG7jnFq9PeE7kDXrnNx1BBZcPW2hHobyhwWxlwplKRdZ
+         x1Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9cFkT5cyqx9xQZrUieWKJuPIio9c5co8Q7nfPlvUScNPkka9qA2c0tsSSWMxRg6JBIE4n2HnMsQ==@kvack.org
+X-Gm-Message-State: AOJu0YyJpc9/cNah7cHz+6un72nQm7RyRHVxm3w55VGb0YnvOXka4qb8
+	k45Kvg2vKRcq36q9r/MCX5LdkETV8jQQI5gkoK+bSpofu36PaeOSTywLlBhYbA5J+M8=
+X-Gm-Gg: ASbGnct74U9gBQuZAJzgGLItnIgFTDeFD9sbYv2m4yYhmWHQTSMkWqak3lYj+bQiktP
+	8Ezz4wSi2I6QnBgbEu4ZkmNIVVNHxTQmbFJhS9qLPlopM4yupDhyfrfYLHPy8C4S+v5xm83Xdyk
+	PO/cKKIO8A9BAjaAkNmgsQZNfpWLp2ybRcyMP3hJa5JX1nmu2fnhhlDQethOWBI+SJ/IfKeKgkC
+	L7Tq1S0ORRZaQYfbCXVUvFZlvhiflJpJ57o+kOa6Ut9Rv/rhGAk9gKI/ARGfNgQx1VR/zjUBcpf
+	qFs6RgT5VfHgYLI44T+RAMONjZHDTDFQWgQdvOOHJjFUBQKhaOD2AQGUp53yUv7pK6yeZkAiotK
+	iI6IlXbEElUt1C5lc+jXmY6y5WaRnpsCQvAD9NwpOJV4g3n/0XGQ=
+X-Google-Smtp-Source: AGHT+IErpeCxY0vA8s7bj04XUohmgz5bxQxVpPcpqkeTx6y9x7HsqMPhnwXuNc3lGWZJbSGptpTQ1g==
+X-Received: by 2002:a17:90b:1b41:b0:330:82b1:ef76 with SMTP id 98e67ed59e1d1-33b513d08e3mr27952859a91.28.1760392598996;
+        Mon, 13 Oct 2025 14:56:38 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b626bb49esm13143212a91.12.2025.10.13.14.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 14:56:38 -0700 (PDT)
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Mon, 13 Oct 2025 14:56:10 -0700
+Subject: [PATCH v20 18/28] riscv/kernel: update __show_regs to print shadow
+ stack register
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013101636.69220-1-21cnbao@gmail.com>
-X-Stat-Signature: j6yog1faye6f3ahz76zqfbsdhssmw7mt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251013-v5_user_cfi_series-v20-18-b9de4be9912e@rivosinc.com>
+References: <20251013-v5_user_cfi_series-v20-0-b9de4be9912e@rivosinc.com>
+In-Reply-To: <20251013-v5_user_cfi_series-v20-0-b9de4be9912e@rivosinc.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9CB694000D
-X-HE-Tag: 1760392598-160147
-X-HE-Meta: U2FsdGVkX18ztRQwoq/1uDqENV/zqlWh2LfBA98VD+jT0I8GmBI7b7lj/AnoBQvtgSA0HdY9z1sFFnJb+WyOfqccaS5enmwza8wNujwVREdOM1oAvady9q76UcTA7Q/Zhwjp8hjDQmiEZ8wAGXSwtdneSb8WgVAn+H/GY718f7gpCFriieAwJzjyc4w2SJ61YOLc9ak6hYGJQyQSPCcbL76L4gtVPVhfVVMc1+JfaiNebzf0Haj8iKJll+u+irkJhSSg9Eatcm95NEzZkumpGlsNMl3+5TwY8ixo3r3n7F2EssEsmFvYxq/l3kA/S2w7xEi5pH2xCHs/8YzUsDM6bwkeQnd6u7AOm9cr8VE1oKou7Dh18MX+WYZDIMr0e5/jsLD66UOUg6VqKKPKih+lsQZB0YX5yqrxp+AyVyIAZu0F/u2noegG42eeY7zMvlKW2mjXy3joyv6arLRnMnrbMB2tNaHWwR4f3SGc9ILdJp6OAvEFoqJKVFQvor378aUly39ppF91fcL1wViXvqZW6S8Je/C8BTKRXIeJX3Yq29BxywBIhoRdU5Xa5R6Dje262nV2NocGprl05w5DrNJUacH/A5JxSJ8VDp/Ablj95ZRNZ2rJnyxFI4mQec/KJv9pVsZkZMdIOUYTkjzxjEVRvXEQNldlfULo98hUiTS68b2Lp1yHN8y5qje2DXI0vRAp6F/0Pe4nmzRimysG8fZ7XSRTahYCnEJ1M/2CPwZYaULeEntrg2i8JA4R0sb3u+KUxDmPzFeizuHiLTtjflCrr+F/ub0p/PXfH4PkJMVmuQ20rhc40HeelcsebbDzVIq+K4ccZ1iHCR1lH4Iex97L31y4F9R7VDUFawc4k4wvS4Wn4lJ+SX+ur7aOPZpq8ebiGz3lpLgdUnTTXh8LxIa2iVVEl0DnB1IwnDMhBPDmqGvHSGPaxfG0ze5EAs3Lpw2qDCq32X4O6vIxkkBdLug
- eJyDL5D1
- mY/WUnWgC1jQhQXTrnn+hboMA30toxoqwkW8aWIhq5aBUAIewuMca60R0Sf0QqTc5HY7PySOsKmneoVCDdX+6WlOH0LIlDym1KBl5khFemrLcUQfuU0zAUmhbbIv+PgWV6vqQc+qlWHaoGuvwFgIilsaMByLGuV6hgivENCTu/Db8ewTPcOKHvTB/iQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2AB03C000C
+X-Stat-Signature: drshz95egdxci9fo1cskiqbra7sshtjf
+X-HE-Tag: 1760392599-340789
+X-HE-Meta: U2FsdGVkX1/BNloToTkqttgCOiIyN9DURBfFk7FtJrXzVAd3/7M95bCWSPVQI1iEQluQL61JZsR3cfhAU4V2fHYgVuOa9CaxBHaogPYt8agt8yITSAoya5hZkDVdiqNUC0vnYeDacd+CuDWaVrnk+6gObSWsTRIeEKm6oDTudIDJDiXumex2AmFgQiW6dvuCa6Tiddcy2W0G/njoN6Zx9AleyIj3aLq3KFL6/CjLBGH+AmRQEAa2DH0jW7Fx/ykrmwrXq+H5X8P/Bclqxl2flU8muIrXnQWj25Rcr4KywjUUj0IdDhaKSe/sDxatnnhREq8gT6Nib/KbD2lMSEy5tucYKquytInxH1CfyY01tCjhqAQNIxQ+KSvOaLtob1CN9AlCViKl28p+ckFdH7ppBbyEvtKNmRVZCUreCI5GmGAzfMAb0p2DBfe0oX0ox0h2H0Pr2mNZNlpGVA5qpTNWoiOuo6y671AENhAwXiTSBrUzyM54O0N42uM+6Trp9EnJiTyVN0j12fJ5vHCR4sMmt3yrdDTJ36wKkcXXSaaLl8YQU3mO0LYZiZPkjh5GsBsMgiPTT9pkJDAY0UKg/ITWC+MSzYa2iqB/PsZ85l+9NbXYGEJOa13rhdJECWXYlamfCsFICfxWpSaS0P+nUOvb/+PUTN1a1t5NLoXpxrrgncW9KWLXAEkKSCgjhKsilrhwViI+6NDkLrqJMEuvRGGCcIU1CGaughY5xFOeVz+7jAFOK2i6XbqRxJrK9XHAPhyAqs/Bp5w/0bfrASlw6vhQhBeJjvhQl6PUvSNfSBrqH2XtR0vmD4L4a0sfSv8ReRV3zFiSk3W425bFkBI8tvJi/OolKFbJ0ma2MmVEDmkihOOpOX1q1niZS7kukxfbAL4iHg2685sQ7PiE2oK0labIRNgf0B/q1d9oij8FJEuv75WFs5OumiUfvrzFuyn3DUaP2heja+YkJATcz8E0AN/
+ oZSBGovu
+ quKipEPhaJD1Zn9ACHLiKQ/1sp1dFZB6mugSbM2+Y5fw3cvjCYNwmGNv5PcCTEGMwNCfQjQl1yygFxs/oicgts3ObuEbGyb52Dx+x7kQ28xCm3n/1Lst+SZ6wSGDg1KO5ZZTnXBf4v+uUNyZ4tP3+pEy8/zH7uxI2J4OC4KHxiK/XBgHOWrNuJtgk5vHePYTzsW2ppSBi8zPhdyq45dHp8KxL/kphJBQu66C4WdvML7IDvgKJgbS/RrOuec5CCE9jNCQS1tTmJiO7EYSGEfSxuhW/FMXvZIzbxS/PywQpZKDNQj1Of5PgdPnD9DcA7AZhLFwU+CS5wKwg5ZemtYvZ4PMM2dFvfLDeTbUNOwWlUE7UuNY6h1Fa8wOLnwospKh01KlW8P4ttwnYL3titrd+BGuAK89nJq55PfnOBDnY5kNxjw2ESOrCVbYbN9Dsi04TmdY9YkaezZsRMA5zHxjf/xA5Ig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,21 +149,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 06:16:36PM +0800, Barry Song wrote:
-> On phones, we have observed significant phone heating when running apps
-> with high network bandwidth. This is caused by the network stack frequently
-> waking kswapd for order-3 allocations. As a result, memory reclamation becomes
-> constantly active, even though plenty of memory is still available for network
-> allocations which can fall back to order-0.
+Updating __show_regs to print captured shadow stack pointer as well.
+On tasks where shadow stack is disabled, it'll simply print 0.
 
-I think we need to understand what's going on here a whole lot more than
-this!
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+---
+ arch/riscv/kernel/process.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-So, we try to do an order-3 allocation.  kswapd runs and ... succeeds in
-creating order-3 pages?  Or fails to?
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 49f527e3acfd..aacb23978f93 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -93,8 +93,8 @@ void __show_regs(struct pt_regs *regs)
+ 		regs->s8, regs->s9, regs->s10);
+ 	pr_cont(" s11: " REG_FMT " t3 : " REG_FMT " t4 : " REG_FMT "\n",
+ 		regs->s11, regs->t3, regs->t4);
+-	pr_cont(" t5 : " REG_FMT " t6 : " REG_FMT "\n",
+-		regs->t5, regs->t6);
++	pr_cont(" t5 : " REG_FMT " t6 : " REG_FMT " ssp : " REG_FMT "\n",
++		regs->t5, regs->t6, get_active_shstk(current));
+ 
+ 	pr_cont("status: " REG_FMT " badaddr: " REG_FMT " cause: " REG_FMT "\n",
+ 		regs->status, regs->badaddr, regs->cause);
 
-If it fails, that's something we need to sort out.
+-- 
+2.43.0
 
-If it succeeds, now we have several order-3 pages, great.  But where do
-they all go that we need to run kswapd again?
 
