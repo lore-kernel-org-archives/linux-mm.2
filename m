@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1510CCD187
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 02:58:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0EACCD187
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 02:58:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A34D8E0009; Sun, 12 Oct 2025 22:58:51 -0400 (EDT)
+	id 3B50F8E000A; Sun, 12 Oct 2025 22:58:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27A7F8E0002; Sun, 12 Oct 2025 22:58:51 -0400 (EDT)
+	id 38C878E0002; Sun, 12 Oct 2025 22:58:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7B98E0009; Sun, 12 Oct 2025 22:58:51 -0400 (EDT)
+	id 2C9118E000A; Sun, 12 Oct 2025 22:58:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09E1C8E0002
-	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 22:58:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCEB385624
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:58:50 +0000 (UTC)
-X-FDA: 83991583620.15.CAD3DFC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AA598E0002
+	for <linux-mm@kvack.org>; Sun, 12 Oct 2025 22:58:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDD2C1191D4
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:58:57 +0000 (UTC)
+X-FDA: 83991583914.30.C5664F0
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 312B01A0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:58:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v1agg868;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 50A4D100011
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:58:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IGISrT4A;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf19.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760324329; a=rsa-sha256;
-	cv=none;
-	b=w/LqDkbxWWuEaTEyCQIGVp09IVim/W9IFXO4b7GhyyRReStK4/kqkJZ+Jn2SdM4LpXEWIV
-	yhVz5zWWJYeMvY5+dOqPWvEYlu9fuH1QaWOboM8UoSLm0u8v+4a8Ug3uckPwvvsmQiA28t
-	U7uEKg2lnktS4/NSYqzp6XL/VwLFcXg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=v1agg868;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf19.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org
+	spf=none (imf05.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760324329;
+	s=arc-20220608; t=1760324336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U/DAAkWmq2Dxx5Ncu78XnJSF3nOk6rkN/CJQmqoQWpE=;
-	b=QaXwo9eKy15nUD4B8i4jgv62p7IcNUVCnnAawgBt7mIcuTMZbDvYnVmhIsKaHEX46giZRX
-	WRfewrZQLEGt2jQqrOhfDy5O+VeULUHXOPjEQ0gk/AHNOHJQRryucaMz+8E+MNjY09xZY7
-	KEl9gPE+rQQcL5mcmliURmSHOIkz3Hg=
+	bh=Z4Pvwj709tUIujzcrgBwlwYYOtJwMTZtthARYMcLmnU=;
+	b=gGIrM2AFn7In1WF0WibDtlHKzXpn7d0DLIEFUcyooDxJhzCbBGH/KiC+9lzEpkvBMbDp5t
+	YoI8WSzZWxyewilvmeW4luCGx8OqHQarLsMKIXY0gtfNAXC9dxndvlfAaJckXVfba0frWA
+	ddxiliqe8lqY9AFZM/QqWsLOlqEoyAY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760324336; a=rsa-sha256;
+	cv=none;
+	b=Re7h+zcrFuQCd2gy4H6wDt0cBQCidy4TyTSJPtYukaQHtRotLxXobfFtaopVPuNHHXY/Or
+	WlU9wU6s/SBVs2seoM0QlAMsoII0kUSXm5dISOJ65ks5LBj6Mz2fBhihAJUEHWYn5nlq+z
+	SfTpHMHVGWS7ZfTX28jHRuMuhm4tIcg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IGISrT4A;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf05.hostedemail.com: domain of BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+429c5dd7f65f3a144064+8086+infradead.org+hch@bombadil.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=U/DAAkWmq2Dxx5Ncu78XnJSF3nOk6rkN/CJQmqoQWpE=; b=v1agg868KstaamClRF27PcxAmE
-	NMKTaFWdSt0z5b2C9IP/DIDFPD7zXPVT89f4fnltVINDZ7ES6vsQPElxFC8Wahjh08WYsbT8Xx4U/
-	PvrlxExKr7jaW23AlDsdD/3j2gQcVjYHULOZMyDMyzZAqBWpkyeLiMq2U9gSiO/Bb+vmTVicLSNbZ
-	Qw50TbDFEfFk6Sf3Mmkw5eCgl+dyz4UEdgpPZcRfcYmq7GLBuF6TNzL/XPkSkZp7sBy4pqKdLpQdp
-	AvSJJr70eSzdh+IVUoaoKh1XmeJJRiWgDBOsuQnXsHq40oDaH/Fwf5GzqpUljOMhy5j7WEKmQ12Wd
-	6GjFwTpw==;
+	bh=Z4Pvwj709tUIujzcrgBwlwYYOtJwMTZtthARYMcLmnU=; b=IGISrT4A0zRp9+72rVC63vG+be
+	MeouiH2AEc+hK7VS+eL1rgjzwyHPvzKg4hX/NWwh6A8jTl/bqkfGVgAywt5EKWplmYrMYmzbSYOhQ
+	rbt2127+Op8UfselRfLJauGl3NMOwkPdvohF3jws5kPXlzjAxqy06JT2PkQhSmATn5ZOy4U8EAvu/
+	DJFH+eQvhZ8geZEyeDO10vAxVXO2XELnDebigYpYzwYF/viNaVIPhk43fsHoXpKP6p2Zsx8iPT6Pn
+	y0HQEISCdiFCziTkwVsQTfBW9DTOT6qKRyBMbUAa12/U4J94pmOhlG8Hqq4v64CjUC4iC33ck1vS7
+	te4NMnvQ==;
 Received: from [220.85.59.196] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v88lo-0000000C8BU-2H5E;
-	Mon, 13 Oct 2025 02:58:45 +0000
+	id 1v88lv-0000000C8D8-0VSF;
+	Mon, 13 Oct 2025 02:58:51 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
@@ -86,23 +86,23 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	ocfs2-devel@lists.linux.dev,
 	linux-xfs@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 04/10] btrfs: use the local tmp_inode variable in start_delalloc_inodes
-Date: Mon, 13 Oct 2025 11:57:59 +0900
-Message-ID: <20251013025808.4111128-5-hch@lst.de>
+Subject: [PATCH 05/10] btrfs: push struct writeback_control into start_delalloc_inodes
+Date: Mon, 13 Oct 2025 11:58:00 +0900
+Message-ID: <20251013025808.4111128-6-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251013025808.4111128-1-hch@lst.de>
 References: <20251013025808.4111128-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: rp3ky9szxbzqeq3r3y9fgti5i6mi976h
-X-Rspamd-Queue-Id: 312B01A0007
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760324329-272212
-X-HE-Meta: U2FsdGVkX1+GeOrv83tcyKWAZ2L1rfzZaDwGsIILBGi+BJ9jEDNkufYkCKAymuN0gRt6xjR7GIRUPFv3yBW/ooURA7KWzPdwXnDpSFO51wWiBtBIyZgn2kf+qrOZcn3hxj1cyTkADoY/FmPf4VKw81giyvCc6pdoA/c5pHxIsiyhFYDKIbP22BjQw5VnAjIgRo/jWTyOreTM4Q6m+F3oDTnl6u4YPuZXb3Y8Iy3iG58FAh6AePLPphiZxe4P9Lk7kBKKAD6QqNtmrWBW8n/tQXtT2iOpO0pmIo2P3ySTh/Aq/5CtSBMSowv+BQ9bEpYm+7fCjtnksHmsrs7HWuWah0ceP7Xs/QUwW+1fwava6PBzE419Iguntito2KhYdHiaLpwnb3yqD+4GC24WY0k+I97l4G4atWA7H2gLu8Qetc6WGWnBM/DwUU6vYYDjcJxnlYZZ3NURuBVx0de1fYmYLMiARCqnH5esr2B16HCY7+ojQO/bTTznV+H+wH/nB3LvLsacu0/ghuZ4tPjVVbX8vI3fEgznxSXBWKhLAPw+TTUkxfd8wasdJU4Pq2nQ1ALzDQf5FGejeEHAiTMTslqvxyXycR5CRlRT8VqGvXxAzidUAgcTBTMJ2TuRkcnkN47dauYHuz4g8MqAkTbdHm+eMmSZ0+ydgIzjSSqpr5HvciajaV4rQWJRa3do+QyzAFLhuriHHec6uFsDnqMru90hML6Cj2UqqUpWFdiX+PgZTd5qw9VRxzP3/gIhr54/e+77d4W92IvLKvNBmBzOCPYIcsCQkLx9Qcdn9C9elUbs3/9VSvoJLMfmEF7TALJwe5aDEfUJ7pRNtiepgaipO2sP9LvX3HJlhWeH6nE1c0Sj5cwjSOhP0Me4i0lOMy5tIVXWn1lEtIuYtmJ4NlUCJ9tqNW4NUz3FaCZ2eIqzJQXS6hLLEPBjJ3qrdh5D8K+j7VJHOtJ9WsMyWvrWiYdiy5j
- IjDbBtll
- LzXiNgJvkXm4lb65aMOrEjaIaTR9l9KiADF4tNfN4MhlTHvWDqKd1rPtj4K00kzy5dAF4jYHQFn1A9Dkj6NX98hPXQf1gKGjISIFZb0xL4Yku+uTqnj2KO1qmyVVPPutuzT0h+uvOxQvbvpCFb/jp4p2kAEjAk7LG50kOElSSeVI76I3g8Te0yq9XSTVNevD93dkhPYfpddZoCiTtdJPkIA2XGJlLEP6R+wMzLxkPG2t0guVd+8m5Tbhz8G2+2Cj2KuYiwDDSjhVXZNbhwITQiMGN1JehEbtF20dEssDtZxPCckRH/npwgcV2REBnXI0zAgUWnu6Qz7hKsSlI8EwcTv3WB/fVWbQzzff6qem/tH7EwMXyRAL5iyKBSPf8tDYvGN7FXogBx6Ex3+I8ChHlFAArYDC/2nL69oBFRe0QZ8r9ZNb0/VXBySFEiJUVtk3Zh1x8gWjoYmieJiAF1x3WCV+zaNeRD2jYc1nR1ZPqJo/8EmmWQeJkaQrG2iOujz5k4ae0WzMpmpdY+B2tk3cU+eev12893/MPdMVTYBb2gZhM4w2A1qNwfV9Px9rj1axJwk23
+X-Rspamd-Queue-Id: 50A4D100011
+X-Rspamd-Server: rspam02
+X-Stat-Signature: tabwj17dnxu7gpn3t7z44b6waar9qhxc
+X-HE-Tag: 1760324336-845881
+X-HE-Meta: U2FsdGVkX1+fLhewr1/jES4OOZv6e6nIB2RMdC3Rvg9RGwhO2PNURq6AM+V2Q5P4h6vF7eT4RcRFSGBtA2jkXB41dI1lfMS6cO5jY3Uxk9BA6fz6TuAoCdvEiSpJhJf06BK4n9OeNYefUhTQatGIITiCixpAEzvRMaykIUr+21soa+7EMVYtTflqR8HwOyLagJ0xoV8/X7uyChF8Q5qE2QdqoHcBBfGZTucznX+BF9awcI3SeaNMzeQETrrcs/Qw5dRZShqrSCtLe3D4/B94p6v9gqhZdtsH63p9MkAexEokb+9HAPzTzugQvZ0kNUOVujHmiAStikrt6Jgx1Sqt3sMMQNt7a+84PA26h0SV7U6/xhZ+Ckmr8ZjxWwixB5IZMvd5vlfZy+CmVdfxzx2canBzhcbWjsKau3y2T1hyCZcU6qRVfwp3vUsxG04yKqJfwzliDEG/bRbBUMPtPfmER2nyy5tLz1+aUM+oeQcAX9hUCuPmVb8HM7P11J4YAALTgnzsfqrsJmVVRUoFZ3qzmN7UV0pKM9xA9LJctrGwZGPdSQJsrVRHXiV96oFrXq9ZHoRzVdMNQHRhVy9me+PM6C6FiOaliXb273Y8LP3iX5+1w6eci8IZHQzuhsTpFgkr7pXmMaP+Roa6DjULl41Cav+FTnAEUQcAReeYGjU7TpoVuMqanqrYHp/G+uD8+q1eLea18MsN4HVvZW8AllARsl2ZurCEJ//ukyYACwTOvlWU36oUIWkcQ3OBLVNyggrXVtdfZXjBzO4rhdPBvM67W7poiaLCkrQswa09OJkl0N4tZCrHaxTB5I7R044+M284QqjLPZl5dJyWuIR93BspTHrEFZkasvwYXV0bmsi8EqOkdZ2cNPrFat2CULz04YYoYawoZ5IB/Omuy5UQd8nRDIdL2TfenZQe1PPn4yCPaiDAJIvtpgUPJHx2lYCBs/vdnIVc4Iow3nShnaq8kqY
+ InWVEGA8
+ UFtK/VBykuXbj0mTuMgCSXTt8fFFvQ8ZqhW7oJeJY3DY8miPD0R5BzSuyExVjyGIiYUCusxkVZ1z1N6yzuc1jfKkb9ASEo4/YPVY59PQF5CzYAvz5NPP/Lbi5pSOe9MPqWYrH2qp86TzB7jP9U5R5juVdLjEEJ1Iky9uKok+eESOoG0SADQCmJefAGJgsV0K6LPurcjVSWbqi8ED4gNLu05xQSabpEWuDJzptsnuYcP/ExO4M6L+Pg1B1uhJrxkujmdyxXCsa5tS5/pQ52yhbVc5Av1wtZbk81DweXJLLC9kVv+G7D/VhL+8bPXw5AS+9ycJGI43NZWl+J2f7szXlQBIPazPYLJwIkOO3GN69zndpm81MPmK6O/JkwAOnttexlbox7IRNbyxtNOz27yz6CnkXBh0/YiA/CZXC6Yn0kUU9O1E8tRoFX/TzQoRgvE1XlHt+VVrqKsS6bE6zF5EiCKUsvicPziDDsiVj1tqggkQMtjqv5UZ8HJmUOUjNZpcOdy82P4G8g9dEEedq+ZTsgYeNUSWO5y2yV3nUAGlYXhqqJOCHWEwm/sJaFWI7507AaWiE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,39 +111,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-start_delalloc_inodes has a struct inode * pointer available in the
-main loop, use it instead of re-calculating it from the btrfs inode.
+In preparation for changing the filemap_fdatawrite_wbc API to not expose
+the writeback_control to the callers, push the wbc declaration next to
+the filemap_fdatawrite_wbc call and just pass thr nr_to_write value to
+start_delalloc_inodes.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/btrfs/inode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/inode.c | 51 ++++++++++++++++++++----------------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
 diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 3b1b3a0553ee..9edb78fc57fc 100644
+index 9edb78fc57fc..b97d6c1f7772 100644
 --- a/fs/btrfs/inode.c
 +++ b/fs/btrfs/inode.c
-@@ -8744,9 +8744,9 @@ static int start_delalloc_inodes(struct btrfs_root *root,
+@@ -8709,15 +8709,13 @@ static struct btrfs_delalloc_work *btrfs_alloc_delalloc_work(struct inode *inode
+  * some fairly slow code that needs optimization. This walks the list
+  * of all the inodes with pending delalloc and forces them to disk.
+  */
+-static int start_delalloc_inodes(struct btrfs_root *root,
+-				 struct writeback_control *wbc, bool snapshot,
+-				 bool in_reclaim_context)
++static int start_delalloc_inodes(struct btrfs_root *root, long *nr_to_write,
++				 bool snapshot, bool in_reclaim_context)
+ {
+ 	struct btrfs_delalloc_work *work, *next;
+ 	LIST_HEAD(works);
+ 	LIST_HEAD(splice);
+ 	int ret = 0;
+-	bool full_flush = wbc->nr_to_write == LONG_MAX;
+ 
+ 	mutex_lock(&root->delalloc_mutex);
+ 	spin_lock(&root->delalloc_lock);
+@@ -8743,7 +8741,7 @@ static int start_delalloc_inodes(struct btrfs_root *root,
+ 
  		if (snapshot)
  			set_bit(BTRFS_INODE_SNAPSHOT_FLUSH, &inode->runtime_flags);
- 		if (full_flush) {
--			work = btrfs_alloc_delalloc_work(&inode->vfs_inode);
-+			work = btrfs_alloc_delalloc_work(tmp_inode);
+-		if (full_flush) {
++		if (nr_to_write == NULL) {
+ 			work = btrfs_alloc_delalloc_work(tmp_inode);
  			if (!work) {
--				iput(&inode->vfs_inode);
-+				iput(tmp_inode);
- 				ret = -ENOMEM;
- 				goto out;
- 			}
-@@ -8754,7 +8754,7 @@ static int start_delalloc_inodes(struct btrfs_root *root,
+ 				iput(tmp_inode);
+@@ -8754,9 +8752,20 @@ static int start_delalloc_inodes(struct btrfs_root *root,
  			btrfs_queue_work(root->fs_info->flush_workers,
  					 &work->work);
  		} else {
--			ret = filemap_fdatawrite_wbc(inode->vfs_inode.i_mapping, wbc);
-+			ret = filemap_fdatawrite_wbc(tmp_inode->i_mapping, wbc);
+-			ret = filemap_fdatawrite_wbc(tmp_inode->i_mapping, wbc);
++			struct writeback_control wbc = {
++				.nr_to_write = *nr_to_write,
++				.sync_mode = WB_SYNC_NONE,
++				.range_start = 0,
++				.range_end = LLONG_MAX,
++			};
++
++			ret = filemap_fdatawrite_wbc(tmp_inode->i_mapping,
++					&wbc);
  			btrfs_add_delayed_iput(inode);
- 			if (ret || wbc->nr_to_write <= 0)
+-			if (ret || wbc->nr_to_write <= 0)
++
++			if (*nr_to_write != LONG_MAX)
++				*nr_to_write = wbc.nr_to_write;
++			if (ret || *nr_to_write <= 0)
  				goto out;
+ 		}
+ 		cond_resched();
+@@ -8782,29 +8791,17 @@ static int start_delalloc_inodes(struct btrfs_root *root,
+ 
+ int btrfs_start_delalloc_snapshot(struct btrfs_root *root, bool in_reclaim_context)
+ {
+-	struct writeback_control wbc = {
+-		.nr_to_write = LONG_MAX,
+-		.sync_mode = WB_SYNC_NONE,
+-		.range_start = 0,
+-		.range_end = LLONG_MAX,
+-	};
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 
+ 	if (BTRFS_FS_ERROR(fs_info))
+ 		return -EROFS;
+-
+-	return start_delalloc_inodes(root, &wbc, true, in_reclaim_context);
++	return start_delalloc_inodes(root, NULL, true, in_reclaim_context);
+ }
+ 
+ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
+ 			       bool in_reclaim_context)
+ {
+-	struct writeback_control wbc = {
+-		.nr_to_write = nr,
+-		.sync_mode = WB_SYNC_NONE,
+-		.range_start = 0,
+-		.range_end = LLONG_MAX,
+-	};
++	long *nr_to_write = nr == LONG_MAX ? NULL : &nr;
+ 	struct btrfs_root *root;
+ 	LIST_HEAD(splice);
+ 	int ret;
+@@ -8816,13 +8813,6 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
+ 	spin_lock(&fs_info->delalloc_root_lock);
+ 	list_splice_init(&fs_info->delalloc_roots, &splice);
+ 	while (!list_empty(&splice)) {
+-		/*
+-		 * Reset nr_to_write here so we know that we're doing a full
+-		 * flush.
+-		 */
+-		if (nr == LONG_MAX)
+-			wbc.nr_to_write = LONG_MAX;
+-
+ 		root = list_first_entry(&splice, struct btrfs_root,
+ 					delalloc_root);
+ 		root = btrfs_grab_root(root);
+@@ -8831,9 +8821,10 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
+ 			       &fs_info->delalloc_roots);
+ 		spin_unlock(&fs_info->delalloc_root_lock);
+ 
+-		ret = start_delalloc_inodes(root, &wbc, false, in_reclaim_context);
++		ret = start_delalloc_inodes(root, nr_to_write, false,
++				in_reclaim_context);
+ 		btrfs_put_root(root);
+-		if (ret < 0 || wbc.nr_to_write <= 0)
++		if (ret < 0 || nr <= 0)
+ 			goto out;
+ 		spin_lock(&fs_info->delalloc_root_lock);
+ 	}
 -- 
 2.47.3
 
