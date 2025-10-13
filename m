@@ -4,164 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B8CECCD185
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 05:27:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84973CCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 06:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 660A78E000A; Mon, 13 Oct 2025 01:27:34 -0400 (EDT)
+	id 624EC8E0003; Mon, 13 Oct 2025 02:09:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6116D8E0002; Mon, 13 Oct 2025 01:27:34 -0400 (EDT)
+	id 5FC6B8E0002; Mon, 13 Oct 2025 02:09:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D8FE8E000A; Mon, 13 Oct 2025 01:27:34 -0400 (EDT)
+	id 5392E8E0003; Mon, 13 Oct 2025 02:09:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 36BA68E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 01:27:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF8DF1DF1C1
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:27:33 +0000 (UTC)
-X-FDA: 83991958386.05.4F63E51
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 93E64100003
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 05:27:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 425478E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 02:09:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78BAD863E6
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:09:31 +0000 (UTC)
+X-FDA: 83992064142.16.E72CE2B
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B3B2640008
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 06:09:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bZx7JAt+;
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760333252;
+	s=arc-20220608; t=1760335769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=52JaKcUJyt2wRyJADidtcMcU75oCBgRk8A01aie9Ztg=;
-	b=gBmwBmSnLu2jhtORkaTkPMa3qAAm3NgBrJxEYrxLnRGCqu/gn7fLmEUZgHDHdLG+x1K2E+
-	MJqpZHo0fcbHdCrP1l6zFYQPOFjQ+RlfJLpKFJggec4aI95AZ0Mklipdu2cwDj803DE0VH
-	SDoot8CiYQXHSNt4PZdFbAVvcg44KTY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=h08dvo8pmGBC5yxJSI174655XZ2nrSROFfs7bn6SAhk=;
+	b=wufuzkj0icVgYiOlMc6ixWOvgoPMGwAfKFb6Roqe6IKifVpFWdzFU+vWLqjhr6EiUsN8nR
+	ug90T06WvlAxYQZdF2oYlFauKilxWaA06LGYrkEBw8skLDJ9vemduiivvBE5z8ccwvzEtf
+	koOpkKZM593QVy1hYxhvmoww+1oxFzI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760333252; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bZx7JAt+;
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760335769; a=rsa-sha256;
 	cv=none;
-	b=iEDmByFyi4WZmUwFNSb5W5f0H4RsdXjZNuSx2iisPCQ/L3skH5fUFpznyRSrkTq/aY5TD0
-	FaB59uBHMMdmjfhNxzGlSEdhLHCFV3t6ZfibCbVPRdCDJgnmY6eP5h5kc3mmtLxGQCmFLO
-	ykdIgWTB1PHDYLsF1hXHfBwtJNCHraI=
-X-AuditID: a67dfc5b-c45ff70000001609-4f-68ec8dc159b9
-Date: Mon, 13 Oct 2025 14:27:24 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 35/47] i2c: rename wait_for_completion callback to
- wait_for_completion_cb
-Message-ID: <20251013052724.GA9169@system.software.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-36-byungchul@sk.com>
- <aOFNz2mKXCXUImwO@shikoro>
+	b=UIVesEX4dMrWHauwBdA38QH8weRHDjtK07mZMWfV5oe0DU4eQtR+F78g27ZutAGffeHw+a
+	QQX/gR8b3wRR6ms1T2grXBNn7Rn21jhvLAlegG6SQMrHBYbsB4PAZPNmvOe0Ay8GUm6qj5
+	qaQoXlTypg5klmPJaoTyuZ/hzBc7TYU=
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-855733c47baso745270885a.0
+        for <linux-mm@kvack.org>; Sun, 12 Oct 2025 23:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760335769; x=1760940569; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h08dvo8pmGBC5yxJSI174655XZ2nrSROFfs7bn6SAhk=;
+        b=bZx7JAt+IDPaMrmSz6yqNNmNEoIvlQrXwcrCr1Cfo2JWF6vU1aGaVia3uCyiXWrxJ/
+         9XMFiMMPXspWHEFFlEPOwEaCgl/HNlatv9w4NdQtnKpMu4X2/xvWmHezihZSlu+kv0l1
+         haM307oCqUJDTTGAhFJUW06MCVRdRE3FnWDjgtZ+EtEX/xNqbQDDKqYC0t3laF/0GbbR
+         gK7t+ET2WasrnBNRSy6jeDnErM0yzhHqX0fvvB5bYQ8y83VyAzJhrCNcfvotHKXei8qI
+         MD+Z2SyR2V5zYN8VqylbrkcnjxR/OYZzMIGWvcjqjarCeH7tk2GC/+EiRfOectkA+rhb
+         OFDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760335769; x=1760940569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h08dvo8pmGBC5yxJSI174655XZ2nrSROFfs7bn6SAhk=;
+        b=h03LlGztDqmkCUo3qmjGOxcctrR3cSAkKLjMTbYo7tkTRE7gFlATjk5mZT6C3sQge1
+         egcppl6+FYwa6ESNj+N0UB8fnlwRO3zyWwxMQwThvxeDDjuRdqQoxhieyTOJ+OddFVfK
+         itOCKM/gcRcJuXh6tZouldnvyjUYdqP7ApF2+x+ES5gZEQqlcakpitTAHSU5aBc03Wz+
+         DOPqNhTRxw0Nw/a4usFLjuR9UTwi6WS2UTaj4vW0K+hSaU9AUH5hInbvSk71CDwIJJI3
+         c2uZ6ovoOksD9OoRR/wPyIYlPFTYgA1+THPaAtgeD7J8dZrmqrRV+M4Ua5Vx8Xfb1LVX
+         BARw==
+X-Gm-Message-State: AOJu0YwABWVHlrGrIWWuh37mSJpsKJ08164jJdBdxvu9f9JXuZrEMNSB
+	gGPQ44jI22eiA9MeXX289/N/inMJQnTQBSn8idrIkWMtaqKx1sCEirkAH4CxIX1nSSZ3B5jjEj9
+	JJtnvRJiGCWUu+6rsDatv2j3sF3rqLjs=
+X-Gm-Gg: ASbGncvAB53VYcPAKO7cFiyTA8RdVzkp7MHPzG0LRdby8db4dnK9R69gex/x/jdpgJ+
+	Pyxs+5FJXIlJWlnSSXYkpr7NiiDKdzsUmm6NcKjPSkoTDc/Q0lpwJBf9xiL8lqy+qwL5hibVZMG
+	adAdQBVylZj5S2uNEWCB8Ace87XarcPIFKl9xT0/hbM8A/d9Zu+h8lk5MVZokdkTzOan84mRObA
+	PqbPvvXbu14ayv7km97CYAZ8t1sJb5+oyxkhYNLfbLXYusz94kSCftbW+HmzW2MID6tAElFiOlM
+	sfc=
+X-Google-Smtp-Source: AGHT+IGK6kUSIj141SyOnUNq/Jxe6bA1JVXsDPSfqUWC2b854QU8LWv8Y0yujycD3noFuSD+YB5vdH6syx5pOuVx+XU=
+X-Received: by 2002:a05:620a:294c:b0:85b:e8ca:8ad8 with SMTP id
+ af79cd13be357-88352f84ac9mr2458294585a.70.1760335768601; Sun, 12 Oct 2025
+ 23:09:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOFNz2mKXCXUImwO@shikoro>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTdxTH87v3dx80NrleNP6wW9w6mQnxMTYNJ07JYrLs/mOyZbqZGR8N
-	vbGdpZiiIEMy0VZZo13FGLT4QKpYASO5yMsHwc5MiUZ5VKiCqMDQrhRMeYVI6npZlvnPySfn
-	fM/3e/44PC0+ZhbyZutu2WY1WPSsBmsic8qX+Y8Omz47qcyHifEiDEXKKQam3pbS4Gh6h2F8
-	uoeDsZoYC+E/oghKQoUYuieHEQQmRlkYqWGhPTxDwfOKIQz33eVUXMFCaclrCvp9Hg5mXqZC
-	a18XA+GhYhaUgTj92dhPQef10ywcqaljoK/6HQMdVW0Yrr4KUvDo+hUGXr4IMjDp0kHbsaMM
-	XBkpZ6HwthfD0ONDFEQvTGI4NBZj4PDrGyz0uv7G0Fz0goKLvggDxzvKWKhVTtDQVXyOhX5X
-	hIPombjYcWSag8Kx5wjsvatgxD3OfJUqTTlcWKo+W40khzte7LW5UpPnGSfZm59yUpmyR7Lf
-	iTBSrS9F8t4MUZJS+RsrKdFiTnJGApQ08vAhJ907+RZLg4ES6tsPftKsMcoWc45sW5G+XWM6
-	cSl51zC790LvaW4/amKcKIEnwkrS2RxGTsTP8oGOJLWNhWRyuKUGqcwKS0gwOE2rPE/4glQf
-	LOWcSMPTQoOOtF8boNXdRCGDXLUvVlErpJF7nV+rclH4lYz6y2ZXtcJc0npqEKtMCykkGAtR
-	qpwWdORSjFfbCfGkmb9cs4fNFz4hLfV3KTWJCH0JpLt3gP334iRy2xfEbiR43rP1vGfr+d+2
-	DNGVSDRbczINZsvK5aY8q3nv8oysTAXFn62iYGZzI4q2fe9HAo/0c7SmG2GTyBhysvMy/Yjw
-	tH6eNi1/2CRqjYa8X2Rb1jbbHouc7Uc6HusXaD+fzDWKwg7DbnmnLO+Sbf9NKT5h4X5UqcXp
-	i3ryM57EIoGsdVt2apb1bDgjcl2bxMTuUKOv4Nnq+jSz8+MPHxWOjmp+/2hr+8/pa9/ccXxn
-	C+rqA5dzqqqWWti7i1oabj0Y/HRuaWt3sgKrJ9ZtPM89Tc31GluTCribjQ57ft2UVzzf5y3/
-	wWo9ENr+ZZ57/Y/H9qGw8Rs9zjYZUlNoW7bhH6va14BoAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH89znvtGs89JBeJTsS5FoNKAGDWdDDXGZ3G3ZwjeWfZmd3tgG
-	KNpKJy7bgFJguDmoaYktzgpaGK3Q8aIWU9ZhYAISBWQjG8iYRSWWNZmgqbytd8kyv5z8zjn/
-	X87z4eGxKsps4nX6E5JBrylQswpa8UGWOe2nb8Lanb7O7fBLWZCGpcVqGhravSxUd5xj4G6b
-	B8HMUjWC58tODBb/Og2r1gEOFqO/c7AeGEBgH7Vi8HaVUfDUt8bCk5t/I7DNhliony+jIeL+
-	GoHjoZOD+f4cWJi5wcD69CMKfn0WRuAOrVEQClYhWLXnw4XGThaWR+5gqLfdRXBxdhrDY19s
-	2TVwH0GgpZyFudpuDOOhV+HeUoSFQdtpFhZGGyj4y8eCqzzAwHmnFYG5qZ0F+/kOGvx/9HAw
-	+mSFgim7lQJPx/sw435Iw3BtIxV7Xyz1QxI4681UrDymwHblBgVRdysHt5umaHCXpoJzZJyB
-	P1scHKzM7oJ1VxEMeB5xMP2tjYa2hTtMth2Jzy1naLG18yolWsZWWdH7nReJyy+sSFy8bMai
-	pTbW3gxHsFjR+al4eTjMii+WJlgx8MxFi0ONRKwbSRP9jmlOrOj9jcvN+kix94hUoDNJhh37
-	Dym0tubUY2H25KWpBq4U+ZkaxPNE2E3KxzbWoDieFlJJVdCHZGaFLWRyMoplThAyiNfs5GqQ
-	gsfCtWQy2vUAy+5rwmHSXrFZRqWQSW6Nvy3HVcKXJNLn+ldVCvFk8FyIlhkL28jk2jwlx7GQ
-	TJrXeHkcF7u0MneGkTlRSCHBqz9TtUjpeMl2vGQ7/rddCLeiBJ3eVKjRFexJN+ZrS/S6k+mH
-	iwo7UOxDuj9fqbuOFsdz+pDAI/UrytyqsFbFaEzGksI+RHisTlBmfhYbKY9oSk5JhqKPDcUF
-	krEPJfO0Okn5bp50SCUc1ZyQ8iXpmGT4b0vxcZtKkSQMx4ey2lN+zNqcGRlqPb0n+72pW/2J
-	xWQuafmTia3piYO2poPJxyubo13dljfeDGrKh/QT+9LrXw9kzHyP83pRWPB9mLHwjidt0BPd
-	kNvWk6ItrlN9sXMj17/Bn5BUme09W7y1J4dqOdv9YP9YnektYpltO8D64xsOMr2myq/UtFGr
-	2bUNG4yafwCIKJ+/jAMAAA==
-X-CFilter-Loop: Reflected
-X-Stat-Signature: r5ztcnhhkpwtkgi5iic3dohezxf8offi
-X-Rspamd-Queue-Id: 93E64100003
+References: <20251011081624.224202-1-bhe@redhat.com> <20251011081624.224202-2-bhe@redhat.com>
+In-Reply-To: <20251011081624.224202-2-bhe@redhat.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 13 Oct 2025 14:09:17 +0800
+X-Gm-Features: AS18NWAj8948aB_MhL5CO9kDMYJam5ed1bptMDX4uv0ZstNvgjmLd726kvSne2I
+Message-ID: <CAGsJ_4zvtdqzvBNmQjMy0L6JAz_XpvR=rGgNC_Xdo36QVW-g4g@mail.gmail.com>
+Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
+ according to numa node
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B3B2640008
+X-Stat-Signature: 5pbz6uayfwyo3hbxrn43zxozr669mtby
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760333251-551960
-X-HE-Meta: U2FsdGVkX1/TnE4msUPEaxu9jTK8FdjKenfTIdOLYomTXFZeC3WOVG/fKewMau28qhkGH1IaF1SGKjtPyi42eOLGAIBKYsMevQ+1ZtHbX+L+RQPYfm4bBYxlxUwS52+P8krH/QqGinzQFG1NbwbQcapsHGvlf6omoc3L9A7mUdDKra8vIM0tb+NQU5COJurCiKX+yvkXJ/oNgrwH5wZhRMDCbn9fDhRZEBmfiAJmS2BNiT7veG3lveaXL6tocbi8FwYfMSHG2CoTUTAs9ty7RZpQGRbNPqeP8dlIPWEmZEWbtWK2toCCvR7V6tbodBn5N+1obx4ef0TbSymMANS0T4DncZunNstNngJbGyzUIMXMpzt8/dZik1+x59xB4Po/V8kv3x0Bjygs/zUmsdRiMl3G1vvWKuhDxLKrleZdWWv5dhj2IKceqckTgdcUysclkLwJKFR539B/cGzZreUVcAxoH61K2jwWdOWcXxaVo5N/SKkB2hGZwA1JxHOdYr6onBpF23nWXmS0GfRcAjK5IpnivC/2rb9bDLAaR9bJWmt9QGO+eO4w9gQhhiiyF2+LelI257g9c+8N0mPedv36Thm1UW1ScKdg3bF2tGO9jEzE5T8qgT/YhlJb9IhtngqRMctE2/RIQ6X3F1DrHH9hLPM+5mNZLSe4DZgmB/hO4UcoODQHd5vZYwl9eyWebzasr4uDRwEK7yZ/vIIGMNQe0EfG3Tok/9JWBcJMKfJ0ECp5vko0NL1G/OgKiTXJVJqssgn6dSrMj9Go+A9SVfvrDedNE2pcmredYP6FasAiH0gkU9N+eUSCrjQxM/u44W8NjKi/6jNGyElFjtvcPzERYFDthGDwoth7TVoP/NK9a+afqnuRtkTZytsxXyGJoXn6xcRw+9fGj4/8yk7p9ATRndJZbS6D4GUq8jT1pSAEgm6sDiDhe/PSGeoHVXXjF3xkEpmWwPPEk3A9mEhYnMi
- 8994/ev2
- Bam/o/B9ySU0Z5WfwFrQOhjq8Iegp9P92NJgmDUc0xrj12hbrpeeYNnmJ8ykNFfFlsPWOsBCf7y/m/PiwCddjKzYtqxUjHMhHuaTU
+X-HE-Tag: 1760335769-846801
+X-HE-Meta: U2FsdGVkX18uo1ABvfmw2lz8EpPFUknMhdgkgnPdzdDriq1fspBPD02+hUaibYeSB27gDLDbL68zYNouh1bP4+E1xLr3VoEYdq7exl8uymenLFpymv1H3MvoRLLQHGNvY8l7omyssVBZ7INj3aO4jQWB4KzFmXefB3751XfKXX8QP/kb5GyUEoHo3LHP7uR/CASYfQnZO0SQDeLhOmcz6VXdXg6u/Gv5nAcpCWfrJPcq8ctaGxzhjIO3Ien2sIxdgrujlEFoXtJYGCa7EKRtXOi7v1fccpX4hFhoF9T9DwALNF+eWU69B5qAdQbNSFMebqvonMlwOXtMVdDm2CWXrXDRcF84mW9S2cVQmnmxRAxbBeXEbbAfUGhV4Dt2pkC5cYqfd6bZC12/jEIFyw3emenwCPA4rJHeSgYTBecavs/JLENMzgiJIyp070AOM/wF8kr0M0MajrsbJDY11lURX+9k62xcZU2YD0i9vnvikLDpEgUeeIB6uziOjKWfuaawrp4O7DQFdt7RjVKBzgppHeokz/r0WENywq+iqysg3f0YCKhGJtjydC6Blz1VLlVpM3BkvBp1VYDnJbKUf8cGAa/MD3LuHFqtqh9ki06AaTTNm4xIWIYC4V8bqoz4nzQLpfWwUUelZKROTYSrXZWWo8aSKgXRq8WPmUEVtNkmn26O6Arh4h+oQ2Of8CFl0S3z6hCQ97NWxkUSz/CuMHvo1R2rOaKpqJSrmvURHBPDQTC9k5tdACyHcEfqed4rxi8V5CEUFrMhtJ4UAQDJgVlmBRIDhvqWLiYybgDVmRAJr0gOSakSD5/umrO3vfW0h54tDFUIoltNGU+Zz6wLj4c9TYDBangMzQw6jmVowublKXF+TPl7k7HYJ//xR4RIJiLDnQy/o8daqke4b6SatWg750r6WLMEGeZcSjpAStSDbk1axGLI5p+yGuZ8jILjqaYuurgmZxH+zhaxFNvXG/e
+ Ad4Kwq1w
+ w3D7wZ827diy0Le0Sp+OohIqzszov2Xf3HNlfki3l9N7p680/B02Sw22LiHW2Mdx8rvQ85oLvetC6+vmPRBKOGEiDx32dydHFFP1r8V+HE6XFBHWM1pHiveeqMBE42rpHv8nqMoCNqRSa18UMMg6SSPU36J3lZgCsNG9U8CEwIJp2cYN2Sn5RzC0STfLJiucDn087ziXlFKCIAANAmOWLF2bA/NXxZ3QVTz5AtZxZkLwGZdlFchS40JmX+GcX4TyBkhYrixfp/Bh7pyk4ENR0JfxuDSCI/fOxYCJjScmlB7lMCTloAz7NS0h4EP0hEMQhbkQgkDJoEzqm5H0huuTzbSyYPooi1uRQiR6e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,27 +118,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 04, 2025 at 06:39:43PM +0200, Wolfram Sang wrote:
-> On Thu, Oct 02, 2025 at 05:12:35PM +0900, Byungchul Park wrote:
-> > Functionally no change.  This patch is a preparation for DEPT(DEPendency
-> > Tracker) to track dependencies related to a scheduler API,
-> > wait_for_completion().
-> >
-> > Unfortunately, struct i2c_algo_pca_data has a callback member named
-> > wait_for_completion, that is the same as the scheduler API, which makes
-> > it hard to change the scheduler API to a macro form because of the
-> > ambiguity.
-> >
-> > Add a postfix _cb to the callback member to remove the ambiguity.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> 
-> This patch seems reasonable in any case. I'll pick it, so you have one
-> dependency less. Good luck with the series!
+> -static int swap_node(struct swap_info_struct *si)
+> -{
+> -       struct block_device *bdev;
+> -
+> -       if (si->bdev)
+> -               bdev =3D si->bdev;
+> -       else
+> -               bdev =3D si->swap_file->f_inode->i_sb->s_bdev;
+> -
+> -       return bdev ? bdev->bd_disk->node_id : NUMA_NO_NODE;
+> -}
+> -
 
-Thanks, Wolfram Sang!
+Looking at the code, it seems to have some hardware affinity awareness,
+as it uses the swapfile=E2=80=99s bdev=E2=80=99s node_id. Are we regressing=
+ cases where
+each node has a closer block device?
 
-	Byungchul
-
-> Applied to for-next, thanks!
+Thanks
+Barry
 
