@@ -4,182 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5397CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 16:37:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82B47CCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 16:40:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B87288E001A; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
+	id D88928E001C; Mon, 13 Oct 2025 12:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5F588E0009; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
+	id D601B8E0009; Mon, 13 Oct 2025 12:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4E318E001A; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
+	id C9CFC8E001C; Mon, 13 Oct 2025 12:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F75F8E0009
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 187F2119CBE
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:37:41 +0000 (UTC)
-X-FDA: 83993647122.02.343E434
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 300851C0005
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:37:37 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DmYP3scw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760373458;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B99FE8E0009
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:40:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5794A11A57C
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:40:19 +0000 (UTC)
+X-FDA: 83993653758.24.A7D3272
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A0EA480017
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:40:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZSQu07P;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760373617; a=rsa-sha256;
+	cv=none;
+	b=eWJpyopOx/0/A2LvERScMjnk5yGoH9z0bP1R38dbI5luThHigv6ZG9kbQz+j/jA9lnTRGR
+	1LHgEMPR4VIOAW9U29UZWEdm5KrTPFNW9sxXIo0b1vbfQuUzX78GjHBA2cAGcUfiizRTBL
+	aGo+d5Uo7vnHNHzofAepozME+DGxltA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZSQu07P;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760373617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
-	b=7ZScV72ADGZhJmK9t0bKNSZNgXYjPPCjIouzxL64OeJVpm79Ypx02FeAvItkwybFaWhzVy
-	X/1G7BQavhNakHB091uQ5SgWjj9kfi1SK2RCLnyU0gRjlnWpxRtAMZU41pY8rqKsZQ048j
-	Anh/k5BWLtvnIMgaaoquV8GAL9CqGjc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760373458; a=rsa-sha256;
-	cv=pass;
-	b=mejshEveOWOJwPb8RnvMKg6AOFjPjzFeRp1SPxtogl/aUm3vfjAyNwQyjqwg5qFfq9tb9p
-	2YHn/xLq3kPEOLGQXtIhHZcQMRde/6qLKOaWBrobr1gDBaBN33PEL3qpZWV5iThHeqa40e
-	wFHDzdc9s21W7zDOWeBZMJkouAwc5ZI=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DmYP3scw;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HbkRU6nXIVpx4l2LvxpS8r2hgrmQqdvINfkUqPUWnNsmvtkw/hOmUCrZLYZNhRFwVxqPolA6RbfV94gu9vrXfjMtJpEQzOnSyiqK7fFwT1YCiCVSF9IHjxyJ73RsC8CA1y8P/5UwtRg8OnYe6y6TD/WrbO16bx5XlhmZt+EjyuGr7XkNBts0kwVODtYWnaNzap2y+yKbxmNHZlbVFqyyx8mLeTmpsiaoj/72idrIT1AbhWdMqws9pqWiPfE40ZtdaUfUE83f39wf9SJ0vuqH8fPPBu+3AXr/lppIhe3enr8tlXIRjGuZAXO6i4q9Fb5PQ+kRtTaOWeHdZw5wrBM8oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
- b=MdpfYrePllOgvijbsX/Mz+TkvprSbeSi6L8OmZxfNWFyJPhOCeN32goxC3aarThuIP0/ghzrx4hSQIJB4H6XnY2tie0yGGU8zxZquqG8d+b8pKKdtsFBsNdBWF+63n4uK16ZbK/NK8Yfrtx/nAcgVwLHNBxmc8Xahrl6eMrWIskKeTK/l/mvDFx6LLJRRwc4bcrOIpbVixQrawXmA0nhwpa8NWn2ixO04Jw0ra5gQRleTlfD1L+iRaw7kzW7TvPD2gJ6rj2rk89waJS4GlPvmaalikBWax9/4HeCKHDuB0dtLW/gv9g9/sWubUHF1c8F0dK1qVMxDfr3hxw74j2UBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
- b=DmYP3scwkwmlwnvJ4JvfHitfwMdF2l8VKuJJ1EfuSTsYOJ/Z1hIZ3Ev/WhJLu0yf7504ffimp1chcqgs64jGIXPt06PH184PUuwseYxu1b5p3rGVJvSeCs22dBgUaA0cPxps4SDMbh95blwM0Z7zIZKt/ETRHL+WgCWGvjPhxjJuxmdQx7rQqMvcokd6XiUa5K0oqskpiKC7cEW9WMEnAflLy/Bcg2A6pf5loPWARb2epcB3Da6fIUSWJaRE3rk2V7IDYP53AbefYdJ2tGu1NGEk2DTlT6XuLgZ/faJZMTNgy7HoVquNJsCrv9aRuywVMdPeIk6czJ/u9H7iMwkcFw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB7928.namprd12.prod.outlook.com (2603:10b6:8:14c::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.13; Mon, 13 Oct 2025 16:37:34 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
- 16:37:34 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@redhat.com, lorenzo.stoakes@oracle.com, harry.yoo@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 0/4] reparent the THP split queue
-Date: Mon, 13 Oct 2025 12:37:32 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <C3134C16-584F-41D2-88E4-4B94B58C16F2@nvidia.com>
-In-Reply-To: <df9a3e22-caca-4298-b7d8-5334ce5446a0@linux.dev>
-References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
- <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
- <df9a3e22-caca-4298-b7d8-5334ce5446a0@linux.dev>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR19CA0014.namprd19.prod.outlook.com
- (2603:10b6:208:178::27) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=dtgke5IIG+N7o7YGoqhF+zbTkrpkk29pKkR8cJvrfW4=;
+	b=mw+/COV9oJ+vD6hizhcmyUwxm51nZW1fLLK1qwnRptKyaltbkooCTfGX6x9G0f+PQ36zV5
+	tM0xQTwScYxHR5wZhskejnXrnSaBwR4TaBamcsPZJontR5gHx35cAzKK6lGnJvh1lZn0jy
+	+Z+iMbVJcQY5rgnJdmKVfh8A1lZRcuM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 35CBF43A06;
+	Mon, 13 Oct 2025 16:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D77C4CEE7;
+	Mon, 13 Oct 2025 16:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760373616;
+	bh=hs5Dm6BPAEGHFTEY/NVYLFoUg8OkvqoPEabZITp2GSE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XZSQu07P4SgkBBZjCn0RGnl0R5rV5/5dNJSGZOUAAsLQYCfUrfnNS+2HXe4K3m8l/
+	 KspWTGFqpB6+C8D6h76oWfo9JXkqDf2a34ASBb98qAVwnmZ9Btt2ElduQT2WpPTwww
+	 kmiBHNzSKdUzad5WTPGTAhE4J8bGtJo1Iu5u+uJCq98zd4m34G+qLiBvGhsU7F+Csv
+	 HWvSoO80bQv/kATFT6eHFXH67KQXHE+9CuWPspkyUx+j4KM1t6j5TFunRpv9sPvTbQ
+	 9iKwbP2ZPelsuuF5j7/TZi2mOfSFBbkWV2a2oDkxTMJMYb1C8FClYtFZyuYVCnuH7T
+	 j0FoiJN2A1P0A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,  Changyuan Lyu
+ <changyuanl@google.com>,  rppt@kernel.org,  akpm@linux-foundation.org,
+  linux-kernel@vger.kernel.org,  anthony.yznaga@oracle.com,  arnd@arndb.de,
+  ashish.kalra@amd.com,  benh@kernel.crashing.org,  bp@alien8.de,
+  catalin.marinas@arm.com,  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  devicetree@vger.kernel.org,  dwmw2@infradead.org,  ebiederm@xmission.com,
+  graf@amazon.com,  hpa@zytor.com,  jgowans@amazon.com,
+  kexec@lists.infradead.org,  krzk@kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  luto@kernel.org,  mark.rutland@arm.com,
+  mingo@redhat.com,  pasha.tatashin@soleen.com,  pbonzini@redhat.com,
+  peterz@infradead.org,  robh@kernel.org,  rostedt@goodmis.org,
+  saravanak@google.com,  skinsburskii@linux.microsoft.com,
+  tglx@linutronix.de,  thomas.lendacky@amd.com,  will@kernel.org,
+  x86@kernel.org
+Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
+In-Reply-To: <mafs0wm4yluej.fsf@kernel.org> (Pratyush Yadav's message of "Mon,
+	13 Oct 2025 16:59:32 +0200")
+References: <20250509074635.3187114-1-changyuanl@google.com>
+	<20250509074635.3187114-2-changyuanl@google.com>
+	<ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
+	<mafs0wm4yluej.fsf@kernel.org>
+Date: Mon, 13 Oct 2025 18:40:09 +0200
+Message-ID: <mafs0h5w2lpqu.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7928:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc4e6006-67bd-4749-546f-08de0a76d00b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Uc9Yvt7DiIZ6JRz67DetMOZ98lUDm5pCLI6IUSSGLzpDnajzqHR7hLAqlCH0?=
- =?us-ascii?Q?0Y4jYN2ys8n+WbUNl+W5gdoFnKOGT/ifwdeE8Z4HUfq0zyGSPJjqY2xZNiyS?=
- =?us-ascii?Q?5qmsgLMv/qkHkNvv/JQP6jm0oRWhxnJjrDG0v6YORap/YKpcp6OyD5WbRCq1?=
- =?us-ascii?Q?6qGPhjIMQ2YIDWDuFDKRebN0oYS8cifExcxX6rTD+T5Z0+mAHsgiRXgx3m/3?=
- =?us-ascii?Q?Fq0ghzMv8lNvtHfFBNaMPJ2/As5Ic+h8x+MIqlzKXmnHIuxFC2XwuShDkapm?=
- =?us-ascii?Q?U4OjIOgqaUJWYF4MAiCS/fHWt4nJEMWt/DX8zoAmVjsBYM5vR7ucKpiIxU6Z?=
- =?us-ascii?Q?blZNee+i4lHS1iFF5heA8ttMQ7FuIHIOzAsiYEl7y8oubGOSiXLxRz9kzX1x?=
- =?us-ascii?Q?Sb4KGYaTnvh7LmDuoJSQzDJCCGfuSnr2q/1qrYMSVX15unWbHNDT4ZT/lRdv?=
- =?us-ascii?Q?PZVAxCgX+snafsZ/E85k0LxU4RIgs759lQCpU33VAqgXSRdd4dvdQp2JXcme?=
- =?us-ascii?Q?wcwbQNSbY1Vou48kkGAK5vw6u8fgJdNeT9bNfDDUDiK/nEdrNztjejr+Jye/?=
- =?us-ascii?Q?WtT+tc+aGkSAvN5AhNCR+m1oFqaSMlgGg/5BtknJed9lZAWFw+OeuYAQkYqD?=
- =?us-ascii?Q?9ECNMRtCEVC7Aiv8afIb8hZUl2Xm4r5c0eWdl+61GxwVZYnPbzINlOCoGYNH?=
- =?us-ascii?Q?PjOX1GwCi4PkhSzzrYaNFw+boQNYAO60JT/oIixlE76FlzYrpVDmm7ICXhQs?=
- =?us-ascii?Q?Unzyv0f3WK0liLrNiPVJtD/GS1cmGeGBMcwIjN+SbDwjG9kNkQGI9EpHuubG?=
- =?us-ascii?Q?j9HeglxSrXYzrz8x4oIDpMMlfXlCPmK5MYO0Jl1spoTOY4Jlfk4sLk3d5StE?=
- =?us-ascii?Q?d0wbgdZUOgkr/1HueUIpWSffc9Nzvi7hrJ+bva3XD5Bj14JDx0BW32vrPxdQ?=
- =?us-ascii?Q?WRo+rkgbCR3q0Yloa3sqxPXbQ9I7mRMuBSkIRAP2QCeefpeInlUr7e/awFN5?=
- =?us-ascii?Q?REhOSQppPlKXMlkKN53LWLdoGhJaD41SG7S/F54IotpkALzq2tl7aHnal1X1?=
- =?us-ascii?Q?KLutIaYWmEKVLrl4EYiHPtlt6qYb1stmhl5oNFXbyrAZo+IFSSbAPIPvRJGK?=
- =?us-ascii?Q?BlngntRq0uTvAJFRNJlJZPAiPR3gmAPIApjOYg6vCndJSJB2CJadP9nvCtTm?=
- =?us-ascii?Q?FJxDM5WMSPaqOP5TISjum25sZsXWhHHfOONrNwtlptvDQnEyOQlUc/1moumE?=
- =?us-ascii?Q?+xGxekvlewf8vIU+WWrZZFgJs0IP9igYXaxP8B4W9IuvaZq8SPhL4TKFBC1i?=
- =?us-ascii?Q?U85e8k0aIhiJVBye8t+NCBnPLHVruw1qgKjVBwy7C/UhyTypz+3fI713TSKE?=
- =?us-ascii?Q?ypIVtBC21aFy7MuDr/kq4w6oT7V44F/asE43HTMnqVQd9klrsePrc9Exy7gT?=
- =?us-ascii?Q?sAFdPPUaQRQQNenASN6PaCX/PX7W2Ts5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZOiMtXFNgQC3VNdKXEZ42uuJHLwpn1iNEJNNOfpeKNr20tDkpzX1QSLze+X/?=
- =?us-ascii?Q?uomJ2g6J4BCAbjDrupoaXmGFO1MgyzFZbV4jCczGfE31kW+Pn9Mv0ol4QcbR?=
- =?us-ascii?Q?j3WCov7yOUYEasnKlcANaNIlwz/VLn0qow81DplvhHfzKnHRJIo5wAfNByA4?=
- =?us-ascii?Q?NWQUOv5Gv5+Zabu30ZoqQS7undGQj87kh+QArzOx7g5hPBspmabcWp3k6wrM?=
- =?us-ascii?Q?gTv3ZayhLl40FpXMr9JXN8AG3ntR8YCEEkpJIJLTfzJx4pb72jZKxb0/0CoO?=
- =?us-ascii?Q?zsdqUF2UM8KZWbHBWLU9VEa6MiTsgIw5KX+XxR6fLOcoeymJBguozka9qiKh?=
- =?us-ascii?Q?SBNkiF07j6UY4EAQODSywF85mTRjL/WaRMJpsVtl5z7wWOBsoDdc2TmOZPY1?=
- =?us-ascii?Q?2PCxNvCdk6Xk2IAzykfqk8DoU4k+5Uynzz3hiI6Fa5hokDS/Nsp2Wu2S3CTS?=
- =?us-ascii?Q?PZx1ZxHhNIryEoFg6bd/TrssPW3jedl1ZO+mSDMwOU3ZztFy1AmhCHv4zZCC?=
- =?us-ascii?Q?ZVtyjSW87P/lbg5M9gtP/Rfu14YZjPlubdDXUZRr6LBpvJ55KbRfDCvQ8x4+?=
- =?us-ascii?Q?a1a4bNz4kJU50sJoedX4h2sQPK4o2jfn+pbQQn1iJH1MAwtVuCZwHlIf4KuI?=
- =?us-ascii?Q?UD8mqc6sGiz0ME2xSxr6n4qWfepKADx36kj8+CEUTSDqq0ExwEMFwK+DEtQk?=
- =?us-ascii?Q?kfr0czCYVYR4VQf8UEIDMbU8QIRrzdLwwJvcpTZMtBKHNV6aXWo9BRpzHZS7?=
- =?us-ascii?Q?vXsjSYpeQSALglIkMSaijNfkTpuiRnkEURnX45jGzLW3BUHUJ7MAxRtSyena?=
- =?us-ascii?Q?l0+tAzCxthYtCTvRjW1CNTMMwFcA9YEIF4Yi1CpPX+baL3WOM1FFkedgRDO/?=
- =?us-ascii?Q?v11yhwtVatPn17MmGsP8QvC/Ql81YhstDPFiDbedlQ4SCY+9eBcIP/w5zXYz?=
- =?us-ascii?Q?smjFXMUZne+WfdGWq8BM1HJl7a+MdQpvufwMsEZ2CzXrvGXTtBlz7fgHOYct?=
- =?us-ascii?Q?0+nCMmhe6gzMw2THVCMDDsoD5SjXJ1qmFpOAtGDr5MfY8AJWlUmxZ2jNIciH?=
- =?us-ascii?Q?s/xe9EhMS3OsjoKE8EsXMUVaZDBtS7JHVQrCix9biGyf9xm+/9hIeY3hAR5i?=
- =?us-ascii?Q?YwLxZ9LX5reb9AXUoxRKeOsp2Cuzdf5zeLWBmojWg/jvIhE+GF29sl45VYQP?=
- =?us-ascii?Q?NMfghWgfuvbte2MXo+F4oRJ/TaQCK1mWjp9qxxuY4pFEFh2SgHXqWQ8CeI32?=
- =?us-ascii?Q?WkhxnShkLjAFtb84sdN8vXki0gKtUYqKsabx6f4sExoUvve0R9T30hIS4m8K?=
- =?us-ascii?Q?4SJAPIjW3p3mCEC6xjtN+Yl05WBGospGXJ1pBJLRFm6Ioks/N25oSqaBEQ79?=
- =?us-ascii?Q?d1uQzXBb7B9p2VOs/5APD5fgacULR56xOj6NwaBsbRm53mL5KHyjE8hzYjqO?=
- =?us-ascii?Q?NeRRBklcOHYM1YNh8tAbGZ3DfIlCO/zzq9TejEdyYqoGY33BS5bYgGntduRk?=
- =?us-ascii?Q?xMeNpLeD6hwl0w+PI9HAlHYdYc5bclfxxnF78xxSCB8UcuhruB9/Fh9fegb8?=
- =?us-ascii?Q?lOvc9EvVUW5RvaZOJaaZ+RnQmqdcG5EKFq4eXiVO?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc4e6006-67bd-4749-546f-08de0a76d00b
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 16:37:34.7419
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RH+Y02bHuGiOCeCyPmMvvlyVP5wxUOTmMDKP/Azc35B8OoIb7R2RF8jaeTyxMyIo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7928
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fgxz3yrpxuy6hrwnys3ru84or5hxbwgs
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 300851C0005
-X-HE-Tag: 1760373457-667549
-X-HE-Meta: U2FsdGVkX18ba8MHJs2ijJXBrNppX59EB5SzXEyLDub0mc5bgJ5Jedrk1vdcXnfw2wzClHc7jZ5Wznbij+2XWLRD6s/El3y1iG3IAR8KTOEtZlm3qwSB339UFKAjYVtHIvh92+dcrWEwcV4+C+ma4HfVF6DrtORKRIFqoVIZde3YrecBlTY9BzgaUhj3IsVpK5AIuHAaw2vyfTLinipVVNxZWZtiJ5nHZhITtTbj+HxuHwrSMjY/IRnkL/I8yAbA2lrzwXhEoth5DmYlXfvIsDFB2LzTTrKEmBucunf2Ppy1UiqNZH2T1K9zsbDLSjElO6pFUmsItA9jMeP1KyUp7WqhQ5Wpv39jJIUKxYP/enwmOrF6RzoRJpftUPm5/q2htRFo63RKCSWiTqaFFlhjwegG++LoXbvm+QvcuwvFD1+9q89/eZEwtct3A8so6XwrlHFcU1NCf48GJVvH4mQCm6HhjDpGJ8o78vBy8y08Z8Tlupv4AR110rMkbYP9NKFjfa0gPZ1JfG4cf2yfZhEUXXVEWICF9xSXhqz7DwHSNCUVJE46hP76Qm9g2PFX5p9BF9QsTOnnY5+UqDF+oVJiP4OhlC7mYVSAtheb6cqXxSPuOqu7w8mcXVh5WTVaxZxqkVO/pnHQaD/APVWnVXoLWWbe+VTecoz/6lYVCPIClhYJwPwexjzJYFeYNjBach4uSicEvxAb3di+s9Kxtm2htgIlgOsLFP38x9lQxejXYt6GOrjkzZ3Qqaqed3ZK9j7S18beeUbxbjf7+VGBOIQ0l6vI9Sr7rPn9pTuwBqoWxgeQCJtKIQWbsP7uucc5/5Cq0QqN0tcow2R1vM0EcCtEJP+qn7Px8nRM4vBhHVJlQNjlAbdGIQuAzInoLRXTlbqx51z6I9N5Y3l2f6rVCgQCXnfksBObj/U/N+Fvt0sc7eU13uw/yMEsCOOKSTrZ0IInW21UH9KLyqSs4OyhmbA
- ce//izXl
- vOSWjE1pWDomdYrj3Hkb3ljyFvn3cyfJtXt2s+8Vopac+aeuOOaVxOt7XBoRjcSrB+QuFm6Oj8G+emNnNDlQtYHtW0Tj1GHxT19R1yrIpbpgoGyhCXsCDNGEpqInPOeP4SNCF4nAZZsQ3qzF98NEfYnRmc38/OWr7DvHeZwnLMnJHwqB3lis3VoTznDf+Ntq+bJIqTp4SS+Ed92U6P+2DX67SjrRQGL6CFk6/O3s9INtM2TNmWw6QGiJxp9FP6yctRJ8WGCmSwuPvPlSOhO7+IAb3OqGedhbEvuFMLkFuJhYIw9f942maMU2vgL2WHwOcbIlukNZYpffGwhma4IYoFQgLZRGn1FXjEBFIAWplgtqAjDQ=
+X-Stat-Signature: uort67mkijkqwpqyeqxtswdifi6pg7dd
+X-Rspamd-Queue-Id: A0EA480017
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760373617-82982
+X-HE-Meta: U2FsdGVkX190GNyIIQ8qsOoQd12yUdghRQxATaRTHl4r+D+/7rsRCByC6wnDFzCLzEtPO6ZlxuLuTDAv1kupQqUtk5NbApcvNtg+0cwcgFqEN2HgfpEuRh36PwT5RB2UqC4GquyG7tDWb2YdfsqHyf/BnmzwKT3AtTYYnDv+8OJ/PeTcDf4JCiZqO01+yrGrEfk+y+VAZGHclRlIEAx6X5mwpR0hlscVVPQG3YMdKbqDkNN/MjKeeCArSMYcFFPSmmO1Rg4ByTAWDpOME0w2RlRVrpQ8CSTNwGHNbwPdbAr78TFwRT8rhJ975du0/I8jJG5J41nwRSvl9BOeGO65d1QcvVyHT4ctQp+ZaZfvAWDTDROHglrC2dZeXLG7jGlmwunHGup9/JNyCBc82H1tSFbc36Ww8GE/6NUE0Q8U4I29cm2iixD+FsnCGGx23lmq8s9kcbgaZE1dC/+7bgzDqoIkBK16GCKu2LPSgTrWwgEpP7k5P4ZHXvJvfQB6dT5bUqjt3IRN2YnJ5kcwRLstHwUVGwbSdUmlOMGx6nemDYbPmAibiROhMxc4IjlNv+rKPQDssJFSpQewlsSdduJih5vaJA8VXfBuozaM/ujQVsLod/uwVb/OyMaskDaeaCSLVGD3hz++WZ41HjY5Iv7ZISry78ldyM1obOuAFTAikgbf9kXJZ5PcTk9kT/GXQuFy6YoAmK/lZmg+ZEN+2WYDyGMXxXuW/j7+v9ewerqtjr1S75561sEuwCOGcYk75OqNa9iV65+ZNd9/C4WpWoZtfJdGJfZ1Q3NGLkwjk8ok8HCjZFFYYIZaWlFkzYnq3CguB1KIT3O5vgfqY7nhnodzXyn4G4QLgWdvvEjCWl/T9tRmOH0fiC/0Y0t3Kqq8cXDT3XzWHdDYzqaAxuQz5r0dBUiEgsGLcMeBx0Y635PWe4rIB4dy7eB9Hul0t97Nd+bkWSXhMSYpWlsMrHj01fy
+ PtjABkWw
+ uyNHM3fCe1ULB6EEAi9u/Cvq+If0pOsm6qFlI6wccUMViSFuFwbBb5d9ZF3zV6NX5bJ+Xw8hIKO+iYxk4ej7TQWvBJTZLAUkEmavWWuhL01talJ96XueVxIKjLhaUUL3pKYaaEyyUWoIjoZk+qgULh1md9k5vVX4VAWG7NO97RdriDgnsqBBprrdUku11xJ1Ee3IjDcDs/avsXB7BeDeDmY+a/n1+4ravuFRH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,284 +108,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13 Oct 2025, at 3:23, Qi Zheng wrote:
+On Mon, Oct 13 2025, Pratyush Yadav wrote:
 
-> Hi Zi,
+> On Fri, Oct 10 2025, Breno Leitao wrote:
 >
-> On 10/11/25 12:25 AM, Zi Yan wrote:
->> On 3 Oct 2025, at 12:53, Qi Zheng wrote:
->
-> [snip]
->
->>>
+>> Hello Chanyuan, Mike,
 >>
->> Hi Qi,
+>> On Fri, May 09, 2025 at 12:46:19AM -0700, Changyuan Lyu wrote:
+>>> --- a/mm/memblock.c
+>>> +++ b/mm/memblock.c
+>>> @@ -492,7 +492,7 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
+>>>  	 * needn't do it
+>>>  	 */
+>>>  	if (!use_slab)
+>>> -		BUG_ON(memblock_reserve(addr, new_alloc_size));
+>>> +		BUG_ON(memblock_reserve_kern(addr, new_alloc_size));
+>>>  
+>>>  	/* Update slab flag */
+>>>  	*in_slab = use_slab;
+>>> @@ -642,7 +642,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>>>  #ifdef CONFIG_NUMA
+>>>  			WARN_ON(nid != memblock_get_region_node(rgn));
+>>>  #endif
+>>> -			WARN_ON(flags != rgn->flags);
+>>> +			WARN_ON(flags != MEMBLOCK_NONE && flags != rgn->flags);
 >>
->> I got CPU soft locks when run "echo 3 | sudo tee /proc/sys/vm/drop_cac=
-hes"
->> with today's mm-new on a freshly booted system. Reverting Patch 3 (and=
- Patch 4)
->> of your patchset solves the issue.
+>> I am hitting some sporadic warnings at early boot on a production kernel
+>> (6.16). Unfortunately this issue is not easily reproduce for me to test on
+>> upstream.
 >>
->> My config file is attached. My kernel relevant kernel parameters are:
->> "cgroup_no_v1=3Dall transparent_hugepage=3Dalways thp_shmem=3D2M:alway=
-s".
->> The machine is a 8GB 8-core x86_64 VM.
+>> 	09:14:44  BIOS-provided physical RAM map:
+>> 	09:14:44  BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000000100000-0x0000000064cb7fff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000064cb8000-0x0000000064dc3fff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000064dc4000-0x0000000065b13fff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000065b14000-0x0000000065b61fff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000065b62000-0x0000000065ed0fff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000065ed1000-0x0000000065f2bfff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000065f2c000-0x0000000066621fff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000066622000-0x0000000066630fff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000066631000-0x0000000068107fff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000068108000-0x000000006819dfff] ACPI data
+>> 	09:14:44  BIOS-e820: [mem 0x000000006819e000-0x000000006a48cfff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x000000006a48d000-0x000000006c58cfff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x000000006c58d000-0x000000006c5dcfff] ACPI data
+>> 	09:14:44  BIOS-e820: [mem 0x000000006c5dd000-0x000000006cfdcfff] ACPI NVS
+>> 	09:14:44  BIOS-e820: [mem 0x000000006cfdd000-0x000000006e9fcfff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x000000006e9fd000-0x000000006fffffff] usable
+>> 	09:14:44  BIOS-e820: [mem 0x0000000070000000-0x000000008fffffff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x00000000fd000000-0x00000000fe7fffff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x00000000fed20000-0x00000000fed44fff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+>> 	09:14:44  BIOS-e820: [mem 0x0000000100000000-0x000000107fff655f] usable
+>> 	09:14:44  BIOS-e820: [mem 0x000000107fff6560-0x000000107fff656f] type 128
+>> 	09:14:44  BIOS-e820: [mem 0x000000107fff6570-0x000000107fffffff] usable
+>> 	09:14:44  random: crng init done
+>> 	09:14:44  ------------[ cut here ]------------
+>> 	09:14:44 WARNING: CPU: 0 PID: 0 at mm/memblock.c:668 memblock_add_range (mm/memblock.c:668)
+>> 	09:14:44  Modules linked in:
+>> 	09:14:44  Tainted: [S]=CPU_OUT_OF_SPEC
+>> 	09:14:44 RIP: 0010:memblock_add_range (mm/memblock.c:668)
+>> 	09:14:44 Code: 28 80 3c 01 00 0f 84 04 fd ff ff 4c 89 ef e8 6c 77 09 00 e9 f7 fc ff ff 0f 0b 83 7c 24 1c 00 0f 85 9c fd ff ff e9 c5 fd ff ff <0f> 0b e9 be fd ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c 6b fd
+>> 	All code
+>> 	========
+>> 	0:    28 80 3c 01 00 0f        sub    %al,0xf00013c(%rax)
+>> 	6:    84 04 fd ff ff 4c 89     test   %al,-0x76b30001(,%rdi,8)
+>> 	d:    ef                       out    %eax,(%dx)
+>> 	e:    e8 6c 77 09 00           call   0x9777f
+>> 	13:    e9 f7 fc ff ff           jmp    0xfffffffffffffd0f
+>> 	18:    0f 0b                    ud2
+>> 	1a:    83 7c 24 1c 00           cmpl   $0x0,0x1c(%rsp)
+>> 	1f:    0f 85 9c fd ff ff        jne    0xfffffffffffffdc1
+>> 	25:    e9 c5 fd ff ff           jmp    0xfffffffffffffdef
+>> 	2a:*    0f 0b                    ud2            <-- trapping instruction
+>> 	2c:    e9 be fd ff ff           jmp    0xfffffffffffffdef
+>> 	31:    44 89 f1                 mov    %r14d,%ecx
+>> 	34:    80 e1 07                 and    $0x7,%cl
+>> 	37:    80 c1 03                 add    $0x3,%cl
+>> 	3a:    38 c1                    cmp    %al,%cl
+>> 	3c:    0f                       .byte 0xf
+>> 	3d:    8c 6b fd                 mov    %gs,-0x3(%rbx)
 >>
->> The kernel log:
+>> 	Code starting with the faulting instruction
+>> 	===========================================
+>> 	0:    0f 0b                    ud2
+>> 	2:    e9 be fd ff ff           jmp    0xfffffffffffffdc5
+>> 	7:    44 89 f1                 mov    %r14d,%ecx
+>> 	a:    80 e1 07                 and    $0x7,%cl
+>> 	d:    80 c1 03                 add    $0x3,%cl
+>> 	10:    38 c1                    cmp    %al,%cl
+>> 	12:    0f                       .byte 0xf
+>> 	13:    8c 6b fd                 mov    %gs,-0x3(%rbx)
+>> 	09:14:44  RSP: 0000:ffffffff85e07d48 EFLAGS: 00010083 ORIG_RAX: 0000000000000000
+>> 	09:14:44  RAX: 0000000000000020 RBX: 0000000000001c00 RCX: dffffc0000000000
+>> 	09:14:44  RDX: 000000000009f000 RSI: 000000000009d000 RDI: ffffffff8685ebf8
+>> 	09:14:44  RBP: 0000000000000002 R08: 0000000000000020 R09: 0000000000000000
+>> 	09:14:44  R10: ffffffffff200570 R11: fffffbffffe400b2 R12: 000000000009d000
+>> 	09:14:44  R13: 0000000000100000 R14: ffffffff8edf5ce4 R15: ffffffff8edf5ce0
+>> 	09:14:44  FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
+>> 	09:14:44  CR2: ffff888059e2dff8 CR3: 000000005bc1d000 CR4: 00000000000000b0
+>> 	09:14:44  Call Trace:
+>> 	09:14:44   <TASK>
+>> 	09:14:44 ? __memblock_reserve (mm/memblock.c:936)
+>> 	09:14:44 ? add_early_ima_buffer (arch/x86/kernel/setup.c:413)
+>> 	09:14:44 ? parse_setup_data (arch/x86/kernel/setup.c:500)
+>> 	09:14:44 ? setup_arch (arch/x86/kernel/setup.c:245 arch/x86/kernel/setup.c:958)
+>> 	09:14:44 ? start_kernel (init/main.c:922)
+>> 	09:14:44 ? x86_64_start_reservations (arch/x86/kernel/ebda.c:57)
+>> 	09:14:44 ? x86_64_start_kernel (arch/x86/kernel/head64.c:231)
+>> 	09:14:44 ? common_startup_64 (arch/x86/kernel/head_64.S:419)
+>> 	09:14:44   </TASK>
+>> 	....
+>> 	Memory: 49640988K/66772816K available (54946K kernel code, 19058K rwdata, 22636K rodata, 2940K init, 120968K bss, 10650188K reserved, 6291456K cma-reserved)
 >>
->> [   36.441539] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [tee:=
-810]
->> [   36.441549] Modules linked in:
->> [   36.441566] CPU: 0 UID: 0 PID: 810 Comm: tee Not tainted 6.17.0-mm-=
-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
->> [   36.441570] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
-BIOS 1.17.0-debian-1.17.0-1 04/01/2014
->> [   36.441574] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
+>> So, there is a memory override, and I am curious about it. Do you think it
 >
-> It seems that the softlockup is not caused by lock contention. I have
-> also seen the following stack locally:
+> Yeah, it seems IMA is reserving a region that overlaps a region reserved
+> by something else that doesn't use memblock_reserve_kern().
 >
-> [14819.914867][    C2] watchdog: BUG: soft lockup - CPU#2 stuck for 49s=
-! [kswapd0:202]
-> [14819.914873][    C2] Modules linked in:
-> [14819.914877][    C2] CPU: 2 UID: 0 PID: 202 Comm: kswapd0 Tainted: G =
-          L      6.1
-> [14819.914880][    C2] Tainted: [L]=3DSOFTLOCKUP
-> [14819.914881][    C2] Hardware name: QEMU Standard PC (i440FX + PIIX, =
-1996), BIOS 1.12.0-1 04
-> [14819.914883][    C2] RIP: 0010:folios_put_refs+0x34/0x210
-> [14819.914889][    C2] Code: 57 41 56 49 89 fe 41 55 41 54 55 53 48 83 =
-ec 18 65 48 8b 05 36 51
-> [14819.914891][    C2] RSP: 0000:ffffc900039db8e8 EFLAGS: 00000246
-> [14819.914893][    C2] RAX: 0000000000000000 RBX: ffff888109e64330 RCX:=
- ffffffff82848bb8
-> [14819.914895][    C2] RDX: 0000000000000001 RSI: 0000000000000000 RDI:=
- ffffc900039db960
-> [14819.914896][    C2] RBP: ffff888109e642a0 R08: ffff888100403058 R09:=
- ffff888100402fe8
-> [14819.914897][    C2] R10: 0000000000000000 R11: ffffffff82711328 R12:=
- ffff888109e64328
-> [14819.914898][    C2] R13: ffffc900039dbb30 R14: ffffc900039db960 R15:=
- ffffc900039dbb30
-> [14819.914916][    C2] FS:  0000000000000000(0000) GS:ffff888332ad7000(=
-0000) knlGS:00000000000
-> [14819.914918][    C2] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003=
-3
-> [14819.914919][    C2] CR2: 00007f8d211b3000 CR3: 000000010833c000 CR4:=
- 00000000000006f0
-> [14819.914921][    C2] Call Trace:
-> [14819.914923][    C2]  <TASK>
-> [14819.914927][    C2]  deferred_split_scan+0x30d/0x420
-> [14819.914934][    C2]  do_shrink_slab+0x105/0x350
-> [14819.914937][    C2]  shrink_slab+0x2fa/0x3f0
-> [14819.914939][    C2]  ? try_to_shrink_lruvec+0x1a6/0x270
-> [14819.914944][    C2]  shrink_one+0x11d/0x1b0
-> [14819.914947][    C2]  shrink_node+0x9a4/0xb90
-> [14819.914952][    C2]  balance_pgdat+0x548/0x910
-> [14819.914955][    C2]  ? __sched_fork+0x160/0x180
-> [14819.914964][    C2]  ? __timer_delete_sync+0x2b/0x40
-> [14819.914970][    C2]  kswapd+0x1b9/0x320
-> [14819.914973][    C2]  ? __pfx_autoremove_wake_function+0x10/0x10
-> [14819.914978][    C2]  ? __pfx_kswapd+0x10/0x10
-> [14819.914981][    C2]  kthread+0xfd/0x250
-> [14819.914984][    C2]  ? finish_task_switch+0x90/0x270
-> [14819.914987][    C2]  ? __pfx_kthread+0x10/0x10
-> [14819.914989][    C2]  ? __pfx_kthread+0x10/0x10
-> [14819.914991][    C2]  ret_from_fork+0x170/0x190
-> [14819.914995][    C2]  ? __pfx_kthread+0x10/0x10
-> [14819.914996][    C2]  ret_from_fork_asm+0x1a/0x30
-> [14819.915002][    C2]  </TASK>
->
-> It seems that the reason is that deferred_split_scan() has been execute=
-d
-> for too long.
->
-> Could you please help test the following changes? I applied them locall=
-y
-> and no softlockup occurred.
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b5eea2091cdf6..5353c7bd2c9af 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4286,8 +4286,10 @@ static unsigned long deferred_split_scan(struct =
-shrinker *shrink,
->         }
->         folios_put(&fbatch);
->
-> -       if (sc->nr_to_scan)
-> +       if (sc->nr_to_scan) {
-> +               cond_resched();
->                 goto retry;
-> +       }
->
->         /*
->          * Stop shrinker if we didn't split any page, but the queue is =
-empty.
->
-
-It does not fix the issue, but only gets rid of the soft lockup warning.
-"echo 3 | sudo tee /proc/sys/vm/drop_caches" just runs forever.
-
-Looking at the original code, sc->nr_to_scan was one of the two condition=
-s
-on breaking out of split_queue scanning and was never checked again
-afterwards. When split_queue size is smaller than nr_to_scan, your code
-will retry forever but not the original one. After I added pr_info() to
-print sc->nr_to_scan at
-1) before retry:,
-2) before for (... folio_batch_count();...),
-3) before "if (sc->nr_to_scan)",
-
-I see that 1) printed 2, 2) and 3) kept printing 1. It matches my
-above guess.
-
-The below patch fixes the issue:
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 43a3c499aec0..d38816a0c117 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4415,7 +4415,7 @@ static unsigned long deferred_split_scan(struct shr=
-inker *shrink,
- 	}
- 	folios_put(&fbatch);
-
--	if (sc->nr_to_scan)
-+	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue))
- 		goto retry;
-
- 	/*
-
-
-
->
->> [   36.441592] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 9=
-0 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00=
- 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
->> [   36.441594] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
->> [   36.441598] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff88=
-8101168670
->> [   36.441601] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff88=
-8101168658
->> [   36.441602] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 000000=
-0000000000
->> [   36.441603] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff88=
-81011685e0
->> [   36.441604] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc9=
-00029afd60
->> [   36.441606] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) k=
-nlGS:0000000000000000
->> [   36.441607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [   36.441608] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 000000=
-0000370ef0
->> [   36.441614] Call Trace:
->> [   36.441616]  <TASK>
->> [   36.441619]  deferred_split_scan+0x1e0/0x480
->> [   36.441627]  ? _raw_spin_unlock_irqrestore+0xe/0x40
->> [   36.441630]  ? kvfree_rcu_queue_batch+0x96/0x1c0
->> [   36.441634]  ? do_raw_spin_unlock+0x46/0xd0
->> [   36.441639]  ? kfree_rcu_monitor+0x1da/0x2c0
->> [   36.441641]  ? list_lru_count_one+0x47/0x90
->> [   36.441644]  do_shrink_slab+0x153/0x360
->> [   36.441649]  shrink_slab+0xd3/0x390
->> [   36.441652]  drop_slab+0x7d/0x130
->> [   36.441655]  drop_caches_sysctl_handler+0x98/0xb0
->> [   36.441660]  proc_sys_call_handler+0x1c7/0x2c0
->> [   36.441664]  vfs_write+0x221/0x450
->> [   36.441669]  ksys_write+0x6c/0xe0
->> [   36.441672]  do_syscall_64+0x50/0x200
->> [   36.441675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> [   36.441678] RIP: 0033:0x7f7fe36e7687
->> [   36.441685] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 0=
-0 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f=
- 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
->> [   36.441686] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0=
-000000000000001
->> [   36.441688] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f=
-7fe36e7687
->> [   36.441689] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 000000=
-0000000003
->> [   36.441690] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 000000=
-0000000000
->> [   36.441691] R10: 0000000000000000 R11: 0000000000000202 R12: 000000=
-0000000002
->> [   36.441692] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 000000=
-0000000002
->> [   36.441694]  </TASK>
->> [   64.441531] watchdog: BUG: soft lockup - CPU#0 stuck for 53s! [tee:=
-810]
->> [   64.441537] Modules linked in:
->> [   64.441545] CPU: 0 UID: 0 PID: 810 Comm: tee Tainted: G            =
- L      6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(volu=
-ntary)
->> [   64.441548] Tainted: [L]=3DSOFTLOCKUP
->> [   64.441552] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
-BIOS 1.17.0-debian-1.17.0-1 04/01/2014
->> [   64.441555] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
->> [   64.441565] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 9=
-0 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00=
- 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
->> [   64.441566] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
->> [   64.441568] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff88=
-8101168670
->> [   64.441570] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff88=
-8101168658
->> [   64.441571] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 000000=
-0000000000
->> [   64.441572] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff88=
-81011685e0
->> [   64.441573] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc9=
-00029afd60
->> [   64.441574] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) k=
-nlGS:0000000000000000
->> [   64.441576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [   64.441577] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 000000=
-0000370ef0
->> [   64.441581] Call Trace:
->> [   64.441583]  <TASK>
->> [   64.441591]  deferred_split_scan+0x1e0/0x480
->> [   64.441598]  ? _raw_spin_unlock_irqrestore+0xe/0x40
->> [   64.441599]  ? kvfree_rcu_queue_batch+0x96/0x1c0
->> [   64.441603]  ? do_raw_spin_unlock+0x46/0xd0
->> [   64.441607]  ? kfree_rcu_monitor+0x1da/0x2c0
->> [   64.441610]  ? list_lru_count_one+0x47/0x90
->> [   64.441613]  do_shrink_slab+0x153/0x360
->> [   64.441618]  shrink_slab+0xd3/0x390
->> [   64.441621]  drop_slab+0x7d/0x130
->> [   64.441624]  drop_caches_sysctl_handler+0x98/0xb0
->> [   64.441629]  proc_sys_call_handler+0x1c7/0x2c0
->> [   64.441632]  vfs_write+0x221/0x450
->> [   64.441638]  ksys_write+0x6c/0xe0
->> [   64.441641]  do_syscall_64+0x50/0x200
->> [   64.441645]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> [   64.441648] RIP: 0033:0x7f7fe36e7687
->> [   64.441654] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 0=
-0 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f=
- 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
->> [   64.441656] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0=
-000000000000001
->> [   64.441658] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f=
-7fe36e7687
->> [   64.441659] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 000000=
-0000000003
->> [   64.441660] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 000000=
-0000000000
->> [   64.441661] R10: 0000000000000000 R11: 0000000000000202 R12: 000000=
-0000000002
->> [   64.441662] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 000000=
-0000000002
->> [   64.441663]  </TASK>
+>> would be useful to expand this warning to dump more information about the
+>> issue? (only compiled tested)
 >>
->>
->>
->> --
->> Best Regards,
->> Yan, Zi
+>> 	if (flags != MEMBLOCK_NONE && flags != rgn->flags) {
+>> 		pr_warn("memblock: Flag mismatch at region [%pa-%pa]\n",
+>> 			&rgn->base, &rend);
+>> 		pr_warn("  Existing region flags: %#x\n", rgn->flags);
+>> 		pr_warn("  New range flags: %#x\n", flags);
+>> 		pr_warn("  New range: [%pa-%pa]\n", &base, &end);
+>> 		WARN_ON_ONCE(1);
+>> 	}
+>
+> I suppose this would be useful. I think enabling memblock debug prints
+> would also be helpful (using the "memblock=debug" commandline parameter)
+> if it doesn't impact your production environment too much.
 
+Actually, I think "memblock=debug" is going to be the more useful thing
+since it would also show what function allocated the overlapping range
+and the flags it was allocated with.
 
---
-Best Regards,
-Yan, Zi
+On my qemu VM with KVM, this results in around 70 prints from memblock.
+So it adds a bit of extra prints but nothing that should be too
+disrupting I think. Plus, only at boot so the worst thing you get is
+slightly slower boot times.
+
+-- 
+Regards,
+Pratyush Yadav
 
