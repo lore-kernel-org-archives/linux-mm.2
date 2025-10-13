@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E0DCCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13C08CCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:26:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B31E88E0057; Mon, 13 Oct 2025 11:26:46 -0400 (EDT)
+	id 58C6D8E0058; Mon, 13 Oct 2025 11:26:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B09658E004E; Mon, 13 Oct 2025 11:26:46 -0400 (EDT)
+	id 53D718E004E; Mon, 13 Oct 2025 11:26:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1EDC8E0057; Mon, 13 Oct 2025 11:26:46 -0400 (EDT)
+	id 405598E0058; Mon, 13 Oct 2025 11:26:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E4158E004E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:26:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F29759211
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:46 +0000 (UTC)
-X-FDA: 83993468412.08.6721309
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B64B48000A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IRks+DWi;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CB1F8E004E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:26:50 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4AC846F37
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:49 +0000 (UTC)
+X-FDA: 83993468538.03.126C250
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 38E8A40004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hU07OA84;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369208; a=rsa-sha256;
+	cv=none;
+	b=k63dP+6aW/lm13RjIVakyyvq4YQrTwa+LH2GqV9J4aHzEeAxOOlEXV15bSq8nkhS6rRcfh
+	M3A4A//v6+ZNCjcMhzHoAgk7SswMvZQuckXqfdDOfwE9pmO+JHQjkmIcAZdGFhlVwNuxuV
+	RHSbge/+5a1NPGcFqkoNjGBbBgwRWto=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hU07OA84;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760369204;
+	s=arc-20220608; t=1760369208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TOrN9K6iU1nxK579VRuWQlHXICVbJam4V57fmeGQ33E=;
-	b=BnAM33VDDfyOjiTFk3hpMwc+Lm9Ra2IPBPynPMN1Mhuu8HgX18txlxop2V0UzxhGO+DdAB
-	RMGfiw3uTLGkmAhjkKWjqhzwKhEn/fpM9neukvtQkQNGxGWX1bmewYzPhh/+/PL7jz7u6C
-	0G8CEG8m1boR3fOm4NKxx+sm5JD37aw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IRks+DWi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369204; a=rsa-sha256;
-	cv=none;
-	b=I1dVLChRXFtQxs7/Wnqv5HlAvMx9Yl26HgpmmRmy51JGuGMA7BH7ICfOM1ZJpGsMiGWyea
-	TPXc/uYlBR6LpQ5AFV2oEoSCxHX8Wqr1UyJFQuijY3cWOYAAXVCGJfb7/yzsba+8q6MEis
-	KAUBP4nlSE7Ldmhtqu4mefnn1LlwIDo=
+	bh=x5sb5uq/QfHH+px3Sqs7BMMOULprNB6FIHBlJIEYBVo=;
+	b=wxCKvLma8Ih2ahkrJSGP2rodaJHD3mJZldb98jSGv7Isy2DMGH7BRvWSPtitUIuwGZVeID
+	osT145NEL9geeeJ9FcL0wpoEMMHl0OUtpSw0PVYpoiSNnJYYdPnppI/4sb8DoByY8pXwFU
+	4PLCv9uWBCwasTUXEwSqYiSa+ZMNJPY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C9C9861DF2;
-	Mon, 13 Oct 2025 15:26:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C88C4CEE7;
-	Mon, 13 Oct 2025 15:26:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4811A48B41;
+	Mon, 13 Oct 2025 15:26:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B086DC16AAE;
+	Mon, 13 Oct 2025 15:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760369203;
-	bh=/sqGzUlY70Md3kn/uqwkAy7zvckyzzhf3i23p85lfsQ=;
+	s=k20201202; t=1760369207;
+	bh=OVKSxkqNx5xaHu4z7h221RNhnqfR95e6/sS/QJ/Ow+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IRks+DWi1WAtZfZO4IdGAt75DsITSMamDbEAFdfZYPrtzEgNBjUnPFlFQdVlW2eme
-	 bCe5WYUJahxlCezrgNA/V97lguT2tGgDGex42ykf7U8294Yuo+cPUh07NHKpS8eOvq
-	 qz2awlV1qvXCCo7UVeewt3Sn6yV9nlx4UHHFNw5+M2nWz5h37jrlcFm+wwumAiJgmE
-	 aRDsEH4O/nJZs0YKTzRkFNHX2Jo3jUhIgtI/lUiGINgbX4J+UnD1sGivrOYVCnsMAz
-	 2JA0D7zRhqi2g4AQ14sYToHYl4vYxJDocUvA9r+b34jXBBMx3+uOkreQ/+cfbh8umo
-	 xy5t3Z2knqK4w==
+	b=hU07OA840mPC8nIqDvgUkFrQK1ylpRq/rsqQrQaGDWaU03D7b8rgS3C97iQw/udUl
+	 3NSnEHDvngRAdFmBJfNS7DNAnurv0IHuFVBDZLtMSBtETwHHX8BXIUoAhPWaKPHSc0
+	 xM8SfkIqhTuNdMCdYE+VTrovdZdQcGFBwT/w5wBViNdvqRNCNA7CdasIYxwsWBiM7m
+	 UfQ+BnlGr0iCYXnIupzJo8tqWsZqvYSRQPl/qKkl6/9Wc5hIUYS2PypcMAqHoBzSGr
+	 QIgMeIeDDVN+ZjQL8jPW4Jne8q0FQEzaiy5qqboSnOQBau+WHNsuw1rLos6pADSeBY
+	 Zywx646Qcxvmw==
 From: Leon Romanovsky <leon@kernel.org>
 To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
@@ -85,24 +85,23 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v5 2/9] PCI/P2PDMA: Simplify bus address mapping API
-Date: Mon, 13 Oct 2025 18:26:04 +0300
-Message-ID: <a228e188e45f40f0b4e754d37f5ea7f9d92bd0c2.1760368250.git.leon@kernel.org>
+Subject: [PATCH v5 6/9] vfio: Export vfio device get and put registration helpers
+Date: Mon, 13 Oct 2025 18:26:08 +0300
+Message-ID: <67fc8a91a1a047c83455721d28058a1cc86b003f.1760368250.git.leon@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1760368250.git.leon@kernel.org>
 References: <cover.1760368250.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: a7knxyg1dy76a7jxmyaz1k8f1x48gudq
+X-Rspamd-Queue-Id: 38E8A40004
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B64B48000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: g5iiny498bj7wsfroofwz4uiigjbqkfa
-X-HE-Tag: 1760369204-365720
-X-HE-Meta: U2FsdGVkX1+UszWcfHyNdvM33eMuyhc4L9ZthhHOq0REq9SFSrWUNTAc7Ub4A+k+CJjokAMc5X+CJPHARybSvcB8hU5tmB53YnM/ItyrrSOlSp2z5kI8xU5YyTOi44PvLmMyQ68NtCOJ71T0BchlN/zu5Fnpi106PpVolmPlCWzz/WD1A+AC7xM9r/HnSBcyqKTmqx9CI0CrQgGpGGXYMHUdnfcCI4zkMxaQH4zPXucv9dPyFG5Ldc/7N7ZG5YnrYNQ3kqeKdxPd5dM1I49KJrrTbqQDNIC9nwfQoHzQ64q5QKeqcvt2GvLYC9FgwYC2cj3BaGrlvD9ErpEMzLHtihS1BWY8ByUB7ZrcSj25O+K8aBOuDtVUiBcps8FLMDsuBDhq2vJo85gLOlgLQ9Jagys1IKfP9ADe/DwHIlCZxIK6u78dz3KfJ6xVOaswoDr/dQI44I0jx99uJCRjjLVBVK3BGxMq4SrjTNIR0fJNkpmnOqLoTyEAjx2H2HI8FtY7jHHrs2qZfjVkKX/FX7aRJ5vZ51Xft03BiTBPYoSPAFjopplnE22uzpciY7T9EuF5X2rHLu2Jr5GCC6qqVuKI6U1SyCSBlMOYEaVeeiT5upOCVOHlY8fBrOrhyTFREPnMcU+cbA6tMXTkK758Lm+csWUw6F3tbanerj6A6W1T4O10f1Ockgvb9AD40C3rDh64CZAtlcXDa3/H5lGrqfQfR31j189jNVQTNwZ0ALogzWohSPSqAvg1rWNfG1bsu3bKl5L2CmGsrPsOQOHtzTVA7aqmo2XKCU+DkAZd2Nj19e6/bW3HAJ67Ijqqj5VzxSJaIxof17HVXhnbZPkD5bz3qjVWOp2WZZ9z5HKmzDLUXwAcfh2DO2+AzDTYiTm3JP3ugsjbNtz3nNECGhoT6pNBgZm7fPG5R/mu8Q6Pz9YwS//G/9G2bHsZHdAH+Ud9JIiavlMvdgMeI8mwkHI7Y6Z
- p01g0MBK
- 69TJ2pN51oBN7lR+xU4Qv9N0ZH7uDw4ARyOxkk0GmpOYNaMV5qRJNNozTLzUq4eLA1KlbzrDU4d4MmJrSq26IlZ4imksJoola2fedU/OUkzjauEDRbu+Jpg/MRj5FUdy2Jg81wpTyuUjAQd/oqosfBtXIK/P/wwGfaIjGw0jl5md5z0uRX0yg4bnS7lKe7toOos2uFJ06emc4lgJMqYtEwYd/wYCXkbvt4WguEPWbTTiPO1MUCFE/zPBqoVUU+Olh9SHldKDZDfuW1Cg=
+X-HE-Tag: 1760369208-429732
+X-HE-Meta: U2FsdGVkX1+Rp8QpsuxdC1Sy4meWpoaV5r1VhfbLZOmT3TdyrnDDpC/EDvVZM+AR7BmKYx3W7bQUm5boKmVn/94t6OWZRa4MDpSoHbB6FqFkQpSBhFswtNqrLO9eNPI5uCToFkAoBhkn3GuVzSUy5EYTRIiSjonSV4xA7nZzswJVLwLnF8as4F6dwJSEhwA0YsVV8DoqKIT/H8v5KU6WYrIewEPKTNUMq5XTQxcTV3x9qhZTegz0G7a0icYva+8Vg1NNPWgXKp+SupWSygFKCUrfc362nJepCMniyLH140Wa5TCjBKWsYtGfcpSjVXTs0E8kZY02BsdSJsh9rilH+dlZw6AcS3k61LWVwgILOr18yaYgLhgKI2YxywWNUo480sc2t4NGTE6VGutV9DihVnepRACimsCIBO/0DXqnxbA/6bftuZ/DbnTUB6JMZLl/oeQKUKje+z8FOJ0Vg0+B6wO1Aub9lAQm1yUGD7HHghDN2vyobsYKgbbOrBTNa39oEqHN+PJOz1ec+YyBkZkHjEpoYihUb0ZluH1ED4PPbzS6Q1dBVSinR0cNZYwZe09NPTiscq3W38Z2iWtpOaMJ1pyEEw4OCd9HST0GFdOjeheULP6VpVKGLUngNqvdsJo3LIrPVgFzIwA3YDA8u1E9rV7sXBTiwEF8c/qrKhg6FmtZP4WhbrcQDPMAKTBa2jjVkzpRDeScP6MMkzfL5pfRinMJeTrM8w3q0aKsh0b+LCtAiacW2bChvV6BwlC+yPwGj1NFrO0y7lhzefWOOK8fasF6FALwCm4f4Gol+k7R3foXepN69zoCzXWDaLOYagBJWheonzeZEkfOMJf7zRLGDE6QferTRnw8t813QlaLOShBFiyiIc0L7ZiI5o5aaCRxb0TKOkvzYdx8gB1T60G2TLuP/0oo6Bb5eTRiaoqomZekxFKvpKj6QPP93nKDvV8w1MLPkEkJyxQbBnjJPQS
+ KG9GrMzu
+ p+TWBFOrkpM+Br4Ykgzd6JjqTyTezQR8VJ6mXZ+gMobfAJs2jdWfwxspR3vRsXX8yPmkNsq/qzsZT9HrSmxwSMMgQFG6Se2vLusyZfw4eG+I/Xi4x4m22TJgfV6OQ2hyGe+H5/g/RCc3blWgtzFHSF7L++rsSV8aaKvics0nCMIdujh4cCNSP9qVWng/b09lWmc8JohFM2LENbzEYfex4oib/LxA9RJH57ncIzGXoJfliWPaUY4pFv8PyYSvgFHqhf6ECZxWhzQzLKWrTvcneoju9bg23/fXpExh5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,108 +110,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-Update the pci_p2pdma_bus_addr_map() function to take a direct pointer
-to the p2pdma_provider structure instead of the pci_p2pdma_map_state.
-This simplifies the API by removing the need for callers to extract
-the provider from the state structure.
+These helpers are useful for managing additional references taken
+on the device from other associated VFIO modules.
 
-The change updates all callers across the kernel (block layer, IOMMU,
-DMA direct, and HMM) to pass the provider pointer directly, making
-the code more explicit and reducing unnecessary indirection. This
-also removes the runtime warning check since callers now have direct
-control over which provider they use.
-
+Original-patch-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- block/blk-mq-dma.c         | 2 +-
- drivers/iommu/dma-iommu.c  | 4 ++--
- include/linux/pci-p2pdma.h | 7 +++----
- kernel/dma/direct.c        | 4 ++--
- mm/hmm.c                   | 2 +-
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/vfio/vfio_main.c | 2 ++
+ include/linux/vfio.h     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-index 9495b78b6fd3..badef1d925b2 100644
---- a/block/blk-mq-dma.c
-+++ b/block/blk-mq-dma.c
-@@ -85,7 +85,7 @@ static inline bool blk_can_dma_map_iova(struct request *req,
- 
- static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
- {
--	iter->addr = pci_p2pdma_bus_addr_map(&iter->p2pdma, vec->paddr);
-+	iter->addr = pci_p2pdma_bus_addr_map(iter->p2pdma.mem, vec->paddr);
- 	iter->len = vec->len;
- 	return true;
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 38c8e9350a60..9aa4a5d081e8 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -172,11 +172,13 @@ void vfio_device_put_registration(struct vfio_device *device)
+ 	if (refcount_dec_and_test(&device->refcount))
+ 		complete(&device->comp);
  }
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 7944a3af4545..e52d19d2e833 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1439,8 +1439,8 @@ int iommu_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 			 * as a bus address, __finalise_sg() will copy the dma
- 			 * address into the output segment.
- 			 */
--			s->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
--						sg_phys(s));
-+			s->dma_address = pci_p2pdma_bus_addr_map(
-+				p2pdma_state.mem, sg_phys(s));
- 			sg_dma_len(s) = sg->length;
- 			sg_dma_mark_bus_address(s);
- 			continue;
-diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-index 1400f3ad4299..9516ef97b17a 100644
---- a/include/linux/pci-p2pdma.h
-+++ b/include/linux/pci-p2pdma.h
-@@ -181,16 +181,15 @@ pci_p2pdma_state(struct pci_p2pdma_map_state *state, struct device *dev,
- /**
-  * pci_p2pdma_bus_addr_map - Translate a physical address to a bus address
-  *			     for a PCI_P2PDMA_MAP_BUS_ADDR transfer.
-- * @state:	P2P state structure
-+ * @provider:	P2P provider structure
-  * @paddr:	physical address to map
-  *
-  * Map a physically contiguous PCI_P2PDMA_MAP_BUS_ADDR transfer.
-  */
- static inline dma_addr_t
--pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
-+pci_p2pdma_bus_addr_map(struct p2pdma_provider *provider, phys_addr_t paddr)
- {
--	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
--	return paddr + state->mem->bus_offset;
-+	return paddr + provider->bus_offset;
- }
++EXPORT_SYMBOL_GPL(vfio_device_put_registration);
  
- #endif /* _LINUX_PCI_P2P_H */
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 1f9ee9759426..d8b3dfc598b2 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -479,8 +479,8 @@ int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
- 			}
- 			break;
- 		case PCI_P2PDMA_MAP_BUS_ADDR:
--			sg->dma_address = pci_p2pdma_bus_addr_map(&p2pdma_state,
--					sg_phys(sg));
-+			sg->dma_address = pci_p2pdma_bus_addr_map(
-+				p2pdma_state.mem, sg_phys(sg));
- 			sg_dma_mark_bus_address(sg);
- 			continue;
- 		default:
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 87562914670a..9bf0b831a029 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -811,7 +811,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 		break;
- 	case PCI_P2PDMA_MAP_BUS_ADDR:
- 		pfns[idx] |= HMM_PFN_P2PDMA_BUS | HMM_PFN_DMA_MAPPED;
--		return pci_p2pdma_bus_addr_map(p2pdma_state, paddr);
-+		return pci_p2pdma_bus_addr_map(p2pdma_state->mem, paddr);
- 	default:
- 		return DMA_MAPPING_ERROR;
- 	}
+ bool vfio_device_try_get_registration(struct vfio_device *device)
+ {
+ 	return refcount_inc_not_zero(&device->refcount);
+ }
++EXPORT_SYMBOL_GPL(vfio_device_try_get_registration);
+ 
+ /*
+  * VFIO driver API
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index eb563f538dee..217ba4ef1752 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -297,6 +297,8 @@ static inline void vfio_put_device(struct vfio_device *device)
+ int vfio_register_group_dev(struct vfio_device *device);
+ int vfio_register_emulated_iommu_dev(struct vfio_device *device);
+ void vfio_unregister_group_dev(struct vfio_device *device);
++bool vfio_device_try_get_registration(struct vfio_device *device);
++void vfio_device_put_registration(struct vfio_device *device);
+ 
+ int vfio_assign_device_set(struct vfio_device *device, void *set_id);
+ unsigned int vfio_device_set_open_count(struct vfio_device_set *dev_set);
 -- 
 2.51.0
 
