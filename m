@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF15CCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E359FCCD18E
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 15:26:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117878E0052; Mon, 13 Oct 2025 11:23:28 -0400 (EDT)
+	id 3900E8E0053; Mon, 13 Oct 2025 11:26:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C8128E004E; Mon, 13 Oct 2025 11:23:28 -0400 (EDT)
+	id 340D28E004E; Mon, 13 Oct 2025 11:26:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF8D78E0052; Mon, 13 Oct 2025 11:23:27 -0400 (EDT)
+	id 27D458E0053; Mon, 13 Oct 2025 11:26:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D85228E004E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:23:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A587346F33
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:23:27 +0000 (UTC)
-X-FDA: 83993460054.18.BDD7242
+	by kanga.kvack.org (Postfix) with ESMTP id 142C38E004E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 11:26:31 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5823B8955
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:30 +0000 (UTC)
+X-FDA: 83993467740.07.6C6A5F7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 45AD1100003
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:23:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p1mwuIjG;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0ED0A140004
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 15:26:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QI46AevF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369005; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760369189; a=rsa-sha256;
 	cv=none;
-	b=y+v7udKfMxvGwGB4U9g19+39hAdzdP2kvmr0kSdKijp5ehYX+g1HUIm/wnhWk6wofx8MM6
-	x7fhDf2m3GKfcVkQXV0581NiHOBXMhV9JvLqWUDGOI6zA5J+Y5XpCxrrbqlxx3HxE4TNpI
-	quAmOls13sTSFVtb/I6mdX0yrTJMqbk=
+	b=0vol0MD7W1ZiWO9TYIsMaq/BWR2jsZU0FnILpOELZjRUA5ErYyFO6/Xa4kPaQb8U6oGDSu
+	93pwYShWEIrdEQs0ez9u4JJQJbSoqkY+/D1niVfXNl4NxB8f86n0OojXun+WuAf4ACFmWS
+	vU5ItPp+zE/cUBdYXGvu6dCcGXpsJyU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p1mwuIjG;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QI46AevF;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760369005;
+	s=arc-20220608; t=1760369189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/MVcby/Y0q1LFyDo8skazcaE/YzD+TPpzdqEx0J8WuQ=;
-	b=ObnYp375w6Sc9Mwya4CGzNOQ2oysdaW9iSGNdvQqEuUQBGjt6u9tnm+M4D0pcFErAsEl8k
-	flPELtuW9o8VCfSZJR8dzI6hRHU7ClGeyskMSYPM+yicrlD17yLHZvrC5qBea8XHaSfHX+
-	fOW7ongYpq+9K5yufE9hAUi+CSZTaF4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZlGVTp6U3CDjsH0UnaN4N17k9bUWxwI//SizfAED89Y=;
+	b=iJqnX8Lvgnv2tqHnyb6mO2BwyhtH1q2r4cGTZbzKEvDDNdwTBGypKGYxZNMqs6XgV56Egd
+	dqq/+tP8f+TMZ+rq4IH5yMYuZVWMh5q3dtwpbW3gm5Vwx0MmqciFo/8MlS5O49C3iGoUHQ
+	gzl41kcgtP/IBhclncCc59SfzSuI/a4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D913A489D0;
-	Mon, 13 Oct 2025 15:23:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467E2C4CEE7;
-	Mon, 13 Oct 2025 15:23:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ABF2C48AA4;
+	Mon, 13 Oct 2025 15:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F303AC4CEFE;
+	Mon, 13 Oct 2025 15:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760369003;
-	bh=HrpU56u8pxLbc0g2WXKv8ddcf/Eh7MXMNWvvG37jNK4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=p1mwuIjGDqqsckgAZg28V4Tdmyj4Dd97sGqbbsa9lgNdyX/sRs42EfYMS3jIPWYV+
-	 nr7vxK2+169v0M8HySQ0uqBzWr5hAOg9GhkSMNabre2gX2OpTEehC8GXK0Effdu/Fa
-	 3qlF51k21MY8e6I51tFIoKonWMKzGJJTeSnhlkhcx9OTkxrj5xVP10uY7uempIhuyC
-	 whGSrPHmNuYmQhrwOqoM1Mm7g38uBzRluMba02MY4iX0Nqu/FbMRr67HApS8b0rMcl
-	 UOdvgHtogP3LzHWRJLxerRuaI1Yn22cFa8aVYGPDj1UhayuNHwJMC1NTcqr0MjEaca
-	 vUKwnxoP+7xhw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  jasonmiu@google.com,
-  graf@amazon.com,  changyuanl@google.com,  rppt@kernel.org,
-  dmatlack@google.com,  rientjes@google.com,  corbet@lwn.net,
-  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
-  steven.sistare@oracle.com
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-In-Reply-To: <CA+CK2bB6F634HCw_N5z9E5r_LpbGJrucuFb_5fL4da5_W99e4Q@mail.gmail.com>
-	(Pasha Tatashin's message of "Thu, 9 Oct 2025 19:50:12 -0400")
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
-	<mafs0ms5zn0nm.fsf@kernel.org>
-	<CA+CK2bB6F634HCw_N5z9E5r_LpbGJrucuFb_5fL4da5_W99e4Q@mail.gmail.com>
-Date: Mon, 13 Oct 2025 17:23:13 +0200
-Message-ID: <mafs0o6qaltb2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1760369187;
+	bh=iwT2J/6Ee3JNCasRQZJmlsM7yv8uBxsSvtO7x8CH+0Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QI46AevFpmY08Ci9IDO9Gbh1+r/WU2BxnmEGrp2cn2WKFO9huEbazJLddAk4lN5GX
+	 b5c/n1Xuj+sMBclqJh5bm30LuSPzc6gcOuf3MBJoABy1hwPlYjR9mrnXGr0b+7QdBH
+	 fhxk9/aQRt4ipCV+PI/GqslOGkkvvHIuFGClxI7pj6yC11uh2TNxiWya2U/uyAT24m
+	 ZNi8xuJ0//k5X/ObU507wts9lR7ncxAQFX2BVBDLEAaxW0xvMTsRJHR/EzMS3LIB1a
+	 WgkAoZ71H1kPSiyyABQNvnMsFUwlG5bAg4iD17Ru5KX1wb5ub49SkfrHTpAFNdvccF
+	 ulvZnDXcm9buA==
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v5 0/9] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Mon, 13 Oct 2025 18:26:02 +0300
+Message-ID: <cover.1760368250.git.leon@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 17s55dcnns4oye3kqentpw9mdkgqa1j8
+X-Rspamd-Queue-Id: 0ED0A140004
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 45AD1100003
-X-Stat-Signature: ccno5tefs3z3ejs3ca3rsh4er8m3ufsh
-X-HE-Tag: 1760369005-937101
-X-HE-Meta: U2FsdGVkX18hPKVrmdYcxXqhZ+eEmLbjoXvG1sbEsB1cCt2ozV+ScRE9ffqcZXI1atGG5nFqIsHsj1HAsIy3mlpod/1RNXCkk+PVIJEFh1of5dn77lDzSda9pKXy6R+gWxFu/4KGdzKrmN+6RTIevpMY5JF5h9cjvNc7y8oQhe78ej4TR2Sl3vYO+clzTVXfnaflU+v82sSWvtBwjPPHt6Tzltc6JlW2ECMnvIf1L1qzPqALckfk7vUJ81HtD4+RsQNh6EDz+ow73ryu4NrCGeFXj7zFokt92K11gGsl4ZwCrIZ7pCp9nLPJybeRYbk5f+LUTiSiW19mlEQIiZRaorqeAD/xai6SGFfYvisfVoqhF7i+8NJocFFwua6s+hOcnWdiJocrk4k4AOMEKlnqM4wIUcCUijT1FLLeFWMrn9Fps4jcHVxCuhiwiVBxHxfHTljiNtwZIe/+DlFl/Smuqhioa1v9k+/xPs8sIRqpLcmOl74ZK+86hIkO2bgONKkkJVFoE0oJGyYNUZV4dhGLhDVxbZpWG1hNOwv0ZOJYCdrAfb5MGGcyZ2UPhQZ6qE1Mpk/BST09m2t23TnnbFuOYMfytlpJuhPEHkL/BDAyoGBJ1SNUii1SVIgUH9bJAXIXnMLsM5jz5CONHytClLODrKpBWH/BmuqWEz5NR4jXZ4LwK2EBQ0Uzi0gHwaDwN0GzPEaX2k0duVJ74uRiLlVmg9tyxtGk0kpU4gYrA/6XccPNRlR+EbQNnU6x2l2JRxp6vU0ZRrg/QB7Zd/Ry95Or2q3Vs7539Eia/ZjPkSybZKepZqfLyWAFjv49E5tXalhpTQtkaFl9nFNJE8VE165SdUyEv/6UEUAINbEdLHaYA/xftjwSaIPBNqs2rkzVSgNtgLGV1Zx09MKOzFDjzX8R4C7nwBuy/f+bVIauOXazn3ZvS858eG6iDidoiMDnK7W6tZSwdzEM8b62+5u/Czg
- uqKWzgxE
- 0qPKJvFhZu4mjKM8cwRzvZ1EHQCDCXUNI0vjP8GaRbJbG5jnd1Hf6uxtYk4okojXDqxjmPpPWu27+4rKYbknHhOD/zgkog3+QvQdLgGNxU6j6lzSjI1XZGRxb6CsgyhMC6umCfzIxCTs3B1C8aEsGtYNDFNRmlRMHzux1HU2z3heKfrNVNYp2rajn/CVi+ScL12kP030I9hL47FWZaI854WF7xgH/lt/MARAHYfmpC01AmfGbN4bFHP8rCinimWYudE4do4TOIfGMkt4v6fV61lWr3+DhGlew8hA8Idpl1fv77zVUwWi3MJvY7U1YRjuCctlF3jOkvDNEyCc+iIyjdywoPPX0wix296FPXrXFWFKCsMhcjrzYO3htbVbomFbCN1YK2xZT76F18AA=
+X-HE-Tag: 1760369188-343868
+X-HE-Meta: U2FsdGVkX1/PJRhTm8DdziCKVSOpDxS49pZrcwIcMfCQj5S7fxl7w1fvZsWx8wTHbCTDtm5j3CpBol0MyTY49MkhbwtmlyVN692BK4IXYFN6Iha4y67DVUxkLPERZYjxIrG2wEpkP24qZ99XS2lZ3FX8k573HhDjGFlRsZ9Fb9ViPAyOCqmExibFhnI7X1hE/dITsNU7Dcd2lxxNSGO5eq13JVPWudWY0n0xcgtnNpK5+VyzIauvrK5O1okENZJ78/RXWWyhnTjPa3l6a+xRl71mB81tx0bhMtnNpkCZbmeOzrPhBP09HrYoj3LwJgGTvxpJcYacpaNVcasao5KcPh6YE5Fiykf+WP2REws6vhk2YK33PpFVrt9uwcMT4fAdBZPtlr6wbDAzF6aT6bPjQ8kSCRj4ZJe5tAT2SwmjbJo3PJxiKJQT4/7sNbVBzxMlnQWH/ocMbPAOazaHv8Ce8I+JgoCbPEUWFbOELGvX4IuqobUOb8iYd2i1t1axk6MrCUyfYu/wz/a+DFZNaJT1dXjlcWEub7vkFwaXr1K5ry53sUa8JntuxH2YA4OjDa2/BpHN07mT57X1LO/x0PRVIRo6cx7Ez1xr9Lrbo5lZ96qGv/fXm8nvfpYDxc0nNhGdlpXEY17cHcU4WjYfE5l9RaMhlmg+lhYAY/XLpufb7rhAR/DMMufvwRhhbqda60TzDKBvyurCihUWY32FRAsslbsbmsCjIrivvaSlBvzO8r5ps3WfyUPtVq3XOMFCHnk+DXo1l2hIOYTlHcmfu5JSYQkPyJMrhSG/L0cUJNkiOb+ioQCSChlLuc2VYzMF9FTq+M0eY3ZnWLSJqIoyjJlsiciBK6Ep/vdiOuotg628QD7Nouu6MGeI5CUKfvdeln0kYIw+ABcHWw+2ZOAD7R8mxi9kDFRfKAZ2ypGKcn4p/cx7elz0Kv315ryI3Jrgnz24/uiTJS+dIfdx/zsx3Kn
+ FOkvM/g0
+ aOvDnuSmmutbbJSeGme6DxXsGh1dU0uDIBdI4LN5lPG+f57ly71NfXejooop2/dx9uDoViXS6gy7J/ire0lJBHb9CgdmdOKGC6NmYhWLOsXhG765s6DsMEfCSnzkKJsYV2aiAjSq56WwbTdVuBSl10y9Btk+vY0UV8zhSAeDsE+aD4LVmBjD3dfIR42gbyf//+JbMHqk+jmafJAHU6bhz6pf8TmZjq1BdsItak50KVTr5aak4WE6a4dSa9WhrOiIDfmBgY8Qd9euxPlKHjQFeXzfHCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,146 +108,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 09 2025, Pasha Tatashin wrote:
+Changelog:
+v5:
+ * Rebased on top of v6.18-rc1.
+ * Added more validation logic to make sure that DMA-BUF length doesn't
+   overflow in various scenarios.
+ * Hide kernel config from the users.
+ * Fixed type conversion issue. DMA ranges are exposed with u64 length,
+   but DMA-BUF uses "unsigned int" as a length for SG entries.
+ * Added check to prevent from VFIO drivers which reports BAR size
+   different from PCI, do not use DMA-BUF functionality.
+v4: https://lore.kernel.org/all/cover.1759070796.git.leon@kernel.org
+ * Split pcim_p2pdma_provider() to two functions, one that initializes
+   array of providers and another to return right provider pointer.
+v3: https://lore.kernel.org/all/cover.1758804980.git.leon@kernel.org
+ * Changed pcim_p2pdma_enable() to be pcim_p2pdma_provider().
+ * Cache provider in vfio_pci_dma_buf struct instead of BAR index.
+ * Removed misleading comment from pcim_p2pdma_provider().
+ * Moved MMIO check to be in pcim_p2pdma_provider().
+v2: https://lore.kernel.org/all/cover.1757589589.git.leon@kernel.org/
+ * Added extra patch which adds new CONFIG, so next patches can reuse
+ * it.
+ * Squashed "PCI/P2PDMA: Remove redundant bus_offset from map state"
+   into the other patch.
+ * Fixed revoke calls to be aligned with true->false semantics.
+ * Extended p2pdma_providers to be per-BAR and not global to whole
+ * device.
+ * Fixed possible race between dmabuf states and revoke.
+ * Moved revoke to PCI BAR zap block.
+v1: https://lore.kernel.org/all/cover.1754311439.git.leon@kernel.org
+ * Changed commit messages.
+ * Reused DMA_ATTR_MMIO attribute.
+ * Returned support for multiple DMA ranges per-dMABUF.
+v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com
 
-> On Thu, Oct 9, 2025 at 6:58=E2=80=AFPM Pratyush Yadav <pratyush@kernel.or=
-g> wrote:
->>
->> On Tue, Oct 07 2025, Pasha Tatashin wrote:
->>
->> > On Sun, Sep 28, 2025 at 9:03=E2=80=AFPM Pasha Tatashin
->> > <pasha.tatashin@soleen.com> wrote:
->> >>
->> [...]
->> > 4. New File-Lifecycle-Bound Global State
->> > ----------------------------------------
->> > A new mechanism for managing global state was proposed, designed to be
->> > tied to the lifecycle of the preserved files themselves. This would
->> > allow a file owner (e.g., the IOMMU subsystem) to save and retrieve
->> > global state that is only relevant when one or more of its FDs are
->> > being managed by LUO.
->>
->> Is this going to replace LUO subsystems? If yes, then why? The global
->> state will likely need to have its own lifecycle just like the FDs, and
->> subsystems are a simple and clean abstraction to control that. I get the
->> idea of only "activating" a subsystem when one or more of its FDs are
->> participating in LUO, but we can do that while keeping subsystems
->> around.
->
-> Thanks for the feedback. The FLB Global State is not replacing the LUO
-> subsystems. On the contrary, it's a higher-level abstraction that is
-> itself implemented as a LUO subsystem. The goal is to provide a
-> solution for a pattern that emerged during the PCI and IOMMU
-> discussions.
+---------------------------------------------------------------------------
+Based on "[PATCH v6 00/16] dma-mapping: migrate to physical address-based API"
+https://lore.kernel.org/all/cover.1757423202.git.leonro@nvidia.com/ series.
+---------------------------------------------------------------------------
 
-Okay, makes sense then. I thought we were removing the subsystems idea.
-I didn't follow the PCI and IOMMU discussions that closely.
+This series extends the VFIO PCI subsystem to support exporting MMIO
+regions from PCI device BARs as dma-buf objects, enabling safe sharing of
+non-struct page memory with controlled lifetime management. This allows RDMA
+and other subsystems to import dma-buf FDs and build them into memory regions
+for PCI P2P operations.
 
-Side note: I see a dependency between subsystems forming. For example,
-the FLB subsystem probably wants to make sure all its dependent
-subsystems (like LUO files) go through their callbacks before getting
-its callback. Maybe in the current implementation doing it in any order
-works, but in general, if it manages data of other subsystems, it should
-be serialized after them.
+The series supports a use case for SPDK where a NVMe device will be
+owned by SPDK through VFIO but interacting with a RDMA device. The RDMA
+device may directly access the NVMe CMB or directly manipulate the NVMe
+device's doorbell using PCI P2P.
 
-Same with the hugetlb subsystem for example. On prepare or freeze time,
-it would probably be a good idea if the files callbacks finish first. I
-would imagine most subsystems would want to go after files.
+However, as a general mechanism, it can support many other scenarios with
+VFIO. This dmabuf approach can be usable by iommufd as well for generic
+and safe P2P mappings.
 
-With the current registration mechanism, the order depends on when the
-subsystem is registered, which is hard to control. Maybe we should have
-a global list of subsystems and can manually specify the order? Not sure
-if that is a good idea, just throwing it out there off the top of my
-head.
+In addition to the SPDK use-case mentioned above, the capability added
+in this patch series can also be useful when a buffer (located in device
+memory such as VRAM) needs to be shared between any two dGPU devices or
+instances (assuming one of them is bound to VFIO PCI) as long as they
+are P2P DMA compatible.
 
->
-> You can see the WIP implementation here, which shows it registering as
-> a subsystem named "luo-fh-states-v1-struct":
-> https://github.com/soleen/linux/commit/94e191aab6b355d83633718bc4a1d27dda=
-390001
->
-> The existing subsystem API is a low-level tool that provides for the
-> preservation of a raw 8-byte handle. It doesn't provide locking, nor
-> is it explicitly tied to the lifecycle of any higher-level object like
-> a file handler. The new API is designed to solve a more specific
-> problem: allowing global components (like IOMMU or PCI) to
-> automatically track when resources relevant to them are added to or
-> removed from preservation. If HugeTLB requires a subsystem, it can
-> still use it, but I suspect it might benefit from FLB Global State as
-> well.
+The implementation provides a revocable attachment mechanism using dma-buf
+move operations. MMIO regions are normally pinned as BARs don't change
+physical addresses, but access is revoked when the VFIO device is closed
+or a PCI reset is issued. This ensures kernel self-defense against
+potentially hostile userspace.
 
-Hmm, right. Let me see how I can make use of it.
+The series includes significant refactoring of the PCI P2PDMA subsystem
+to separate core P2P functionality from memory allocation features,
+making it more modular and suitable for VFIO use cases that don't need
+struct page support.
 
->
->> Here is how I imagine the proposed API would compare against subsystems
->> with hugetlb as an example (hugetlb support is still WIP, so I'm still
->> not clear on specifics, but this is how I imagine it will work):
->>
->> - Hugetlb subsystem needs to track its huge page pools and which pages
->>   are allocated and free. This is its global state. The pools get
->>   reconstructed after kexec. Post-kexec, the free pages are ready for
->>   allocation from other "regular" files and the pages used in LUO files
->>   are reserved.
->>
->> - Pre-kexec, when a hugetlb FD is preserved, it marks that as preserved
->>   in hugetlb's global data structure tracking this. This is runtime data
->>   (say xarray), and _not_ serialized data. Reason being, there are
->>   likely more FDs to come so no point in wasting time serializing just
->>   yet.
->>
->>   This can look something like:
->>
->>   hugetlb_luo_preserve_folio(folio, ...);
->>
->>   Nice and simple.
->>
->>   Compare this with the new proposed API:
->>
->>   liveupdate_fh_global_state_get(h, &hugetlb_data);
->>   // This will have update serialized state now.
->>   hugetlb_luo_preserve_folio(hugetlb_data, folio, ...);
->>   liveupdate_fh_global_state_put(h);
->>
->>   We do the same thing but in a very complicated way.
->>
->> - When the system-wide preserve happens, the hugetlb subsystem gets a
->>   callback to serialize. It converts its runtime global state to
->>   serialized state since now it knows no more FDs will be added.
->>
->>   With the new API, this doesn't need to be done since each FD prepare
->>   already updates serialized state.
->>
->> - If there are no hugetlb FDs, then the hugetlb subsystem doesn't put
->>   anything in LUO. This is same as new API.
->>
->> - If some hugetlb FDs are not restored after liveupdate and the finish
->>   event is triggered, the subsystem gets its finish() handler called and
->>   it can free things up.
->>
->>   I don't get how that would work with the new API.
->
-> The new API isn't more complicated; It codifies the common pattern of
-> "create on first use, destroy on last use" into a reusable helper,
-> saving each file handler from having to reinvent the same reference
-> counting and locking scheme. But, as you point out, subsystems provide
-> more control, specifically they handle full creation/free instead of
-> relying on file-handlers for that.
->
->> My point is, I see subsystems working perfectly fine here and I don't
->> get how the proposed API is any better.
->>
->> Am I missing something?
->
-> No, I don't think you are. Your analysis is correct that this is
-> achievable with subsystems. The goal of the new API is to make that
-> specific, common use case simpler.
+-----------------------------------------------------------------------
+The series is based originally on
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.com/
+but heavily rewritten to be based on DMA physical API.
+-----------------------------------------------------------------------
+The WIP branch can be found here:
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio-v5
 
-Right. Thanks for clarifying.
+Thanks
 
->
-> Pasha
+Leon Romanovsky (7):
+  PCI/P2PDMA: Separate the mmap() support from the core logic
+  PCI/P2PDMA: Simplify bus address mapping API
+  PCI/P2PDMA: Refactor to separate core P2P functionality from memory
+    allocation
+  PCI/P2PDMA: Export pci_p2pdma_map_type() function
+  types: move phys_vec definition to common header
+  vfio/pci: Enable peer-to-peer DMA transactions by default
+  vfio/pci: Add dma-buf export support for MMIO regions
 
---=20
-Regards,
-Pratyush Yadav
+Vivek Kasireddy (2):
+  vfio: Export vfio device get and put registration helpers
+  vfio/pci: Share the core device pointer while invoking feature
+    functions
+
+ block/blk-mq-dma.c                 |   7 +-
+ drivers/iommu/dma-iommu.c          |   4 +-
+ drivers/pci/p2pdma.c               | 175 ++++++++---
+ drivers/vfio/pci/Kconfig           |   3 +
+ drivers/vfio/pci/Makefile          |   2 +
+ drivers/vfio/pci/vfio_pci_config.c |  22 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  63 ++--
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 446 +++++++++++++++++++++++++++++
+ drivers/vfio/pci/vfio_pci_priv.h   |  23 ++
+ drivers/vfio/vfio_main.c           |   2 +
+ include/linux/pci-p2pdma.h         | 120 +++++---
+ include/linux/types.h              |   5 +
+ include/linux/vfio.h               |   2 +
+ include/linux/vfio_pci_core.h      |   1 +
+ include/uapi/linux/vfio.h          |  25 ++
+ kernel/dma/direct.c                |   4 +-
+ mm/hmm.c                           |   2 +-
+ 17 files changed, 785 insertions(+), 121 deletions(-)
+ create mode 100644 drivers/vfio/pci/vfio_pci_dmabuf.c
+
+-- 
+2.51.0
+
 
