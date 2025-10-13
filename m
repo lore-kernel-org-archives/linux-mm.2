@@ -4,110 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13708CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EEC0CCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102048E0050; Mon, 13 Oct 2025 10:23:01 -0400 (EDT)
+	id C74298E0051; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DA4C8E004E; Mon, 13 Oct 2025 10:23:01 -0400 (EDT)
+	id C24918E004E; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31C28E0050; Mon, 13 Oct 2025 10:23:00 -0400 (EDT)
+	id B142E8E0051; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1B748E004E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:23:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72953B9B46
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:23:00 +0000 (UTC)
-X-FDA: 83993307720.12.3FC1CA1
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9FC698000E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:22:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hLI7YbeT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365378; a=rsa-sha256;
-	cv=none;
-	b=KIYkXpLsAQaZQ9PiQo/T3LcFTeSF3P+QSC1SUK2cLDE1CriQ5pslCGGXS1NffMuwzTBwwJ
-	XGev1GKFWcR2iBiT/81JM77qCXQtOxbaQqLrAojWDekeGFbtUNlBHMe3s/YOFQHBLag7XY
-	OcgrfPZ/9TnmBtcUzYb417elTu0aBQY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hLI7YbeT;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C70D8E004E
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 52A0E140472
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:23:14 +0000 (UTC)
+X-FDA: 83993308308.17.999C924
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C34D540008
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:23:11 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760365378;
+	s=arc-20220608; t=1760365392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nQDmLmpvt7xyeehMRRFgwseVV7xUEOIemq4RQrq5AnE=;
-	b=sNK/zNvhnJma6P7cmMLk9Tsf+0uHCvvDUUm+pV2KlEr6cn7UtBTW+wBp57StxdboFKyfnK
-	Ha1TFfpMqXlKnrQ6T1TEYTNwb3xCzgRmfG6BU+sLEwnm/GturVGYub65GBtkIjnvI4t74E
-	rULQZuByJPpCYn5/r7SmJH2RdAEGJ0M=
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-781421f5be6so5533217b3.0
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 07:22:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760365377; x=1760970177; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nQDmLmpvt7xyeehMRRFgwseVV7xUEOIemq4RQrq5AnE=;
-        b=hLI7YbeTnYBdUgrEGbc+Aicipysqenk95LWR+HyjhnSvcidx41iSAnBMbesJvp70DT
-         xyaFoLagW3YyCNVPBL3EsnToRxaEfifiTHsQ7XOoL0d8GClA7Vs8+1FkaXLqB5CTkQf8
-         xmqomJq2U5Ofjp3CdDJIeWOqXwYcnByOS8iskksGSGhv4cT9J00G9Zuiiqc9T7UxURoC
-         kvczgsn0tljwpskWo2Xtfsg91owA1Zg2Y69Wp3apjCG/TmprFypHO4c/GPo8toy0MMM+
-         wieycJVIKfeoDk+cLI+H9bow3wQccjRrNXfkTENP1N5dhE9z1UY8hmNoHXgESUBxrN0C
-         nusg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760365377; x=1760970177;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nQDmLmpvt7xyeehMRRFgwseVV7xUEOIemq4RQrq5AnE=;
-        b=oVWEykY2dOiu6OseRyp4OS5RV2yNqqN3VWSNgHqgU6YPjBiCoMbMxwW5VPaJU7ZcdC
-         2H2pLefDuhSvjej3Xn6eCnUxV9tICGY9n8dAvxWhhMfkwUgvR9BDs9YS10zJcFN4J1bJ
-         Kc/ZElAL5AansoOL8jNiXhQdN6BHRBcsKKFeB787n/8zucKIVYd+abprhpvNyH+sI2Hy
-         4x+tTgqfXISuClmClCV6c4Fs2BXtLJ+267Zuc2313X/9qpOJXvplHe8fjAAgFQ7sJ/D0
-         2J6UuQYI1GAQSwElMbuFFFvU1fDGZBjHkehNJPjOaLyV8u3HO0X75W06zgaQz/DH8VEm
-         OK8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVNGQbJn+Tgw2AcR7TV8riQZVjSKwoy/A4XSKxIVWcZ8yrRi+ry3x8UXh6dHDqQxJgK0Cel7rD8RQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw8kXM3ug4vV9WZ7cSHRqEuS3XCRHmH7ohsIyictYTZFoecOIS9
-	Zmvsmg2lfk/F9/8je4E1Aesn8rPkmVMSItdn4vhm6r2KPCSoA/tOUdJRQLJXSNpkxEqQ+mf7YVi
-	aY1v+9rA6LVljowJnhS7Dpm4mCTQoI2c=
-X-Gm-Gg: ASbGncu4xzKLUvbwXJe9xe1Uil9abl0bQnaydegQ7FHidiVbwpvj1+OLjnpQ47kNPA5
-	jVWZhvRk7fpLkRj1A2aKK/qPilQg8FsrplfU9hPS5lVtAfTvZLZ30eG91KGWnp55PU/txPC9Zen
-	BLmzR0eQJVa4j16uar/Hx6AtffkEIzVTg0kUTtN4pBpAXf8zrK0sKoOfKBnylU2ycMDxFoai4nR
-	GyLmWF923AlBm2WVgNc2nLR0AR2g+dKpz3dNZ0QAUIWI+AKRB+V+KtzmCrXmG0st/GKn/ijAHWQ
-	D4H35OQdQE8/u0dgeftjkN7gaQ==
-X-Google-Smtp-Source: AGHT+IFw3m5r5B57PTPTqjIZPVu/VeImTsLrIGOLmdDTjH42dwQ/oEcjzZqblWVNhJBiQlGGV3aa/bbrC//1J8fxHRQ=
-X-Received: by 2002:a05:690e:c4a:b0:63c:f5a6:f302 with SMTP id
- 956f58d0204a3-63cf5a707e3mr8298400d50.68.1760365377470; Mon, 13 Oct 2025
- 07:22:57 -0700 (PDT)
+	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
+	b=pn6PNGSZDFvNVJmwT+/Zydl3Exoq5PhLtONLnEXgyOIFojdYC5Mw7VGBNKIyPN58fdRJOU
+	j7gGYjiJ7DKDxWepERQUR7F2y5rlWGOs762zyuO6pbzr3ckZc+f6vkxJC/X5Z3VKpeiO3f
+	MDBCy4P2M0crbgZS+97REgxoX0bphSo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365392; a=rsa-sha256;
+	cv=none;
+	b=Qm69c4QjUrfd4Rw7GN8vcoooDQ3uUtmPhULtPj64Y0nXckik1HXBUa0xB50AYPcO46FGlC
+	ZqM8CeHXJeUQOohJ7EghKGyBYQd5n0vfOHGdKfMiV0FJquHDbmkBUynL3u8PMei+B4ScLB
+	VCEosiRNEho1Do+kzaL7El5gkaZBX2M=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BC11A219A7;
+	Mon, 13 Oct 2025 14:23:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760365389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
+	b=HEpsrrYD5nTSjDzXcBw7/lADaBtw6Pi01toYeMbhrX6nwRMKFaHNXxKc3zm43JaIrbNkFR
+	5baplKmBffm7XTXvipHyH/RnGh3HS2TycGO+c8wEWOfqj++rPiARStU7KPkSwTpoANUTZa
+	OAiv+4z+zmBzTxytbSwYlHDbPriVH1w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760365389;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
+	b=5pjDvXRAariB+XFpW8neIT5suldrRwrgAvkeEUlFYF5nohnHSeNy3bAAVGv/WTwaxfi3G/
+	oMfsD2fuLmFFvsBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760365389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
+	b=HEpsrrYD5nTSjDzXcBw7/lADaBtw6Pi01toYeMbhrX6nwRMKFaHNXxKc3zm43JaIrbNkFR
+	5baplKmBffm7XTXvipHyH/RnGh3HS2TycGO+c8wEWOfqj++rPiARStU7KPkSwTpoANUTZa
+	OAiv+4z+zmBzTxytbSwYlHDbPriVH1w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760365389;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
+	b=5pjDvXRAariB+XFpW8neIT5suldrRwrgAvkeEUlFYF5nohnHSeNy3bAAVGv/WTwaxfi3G/
+	oMfsD2fuLmFFvsBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A8DA913874;
+	Mon, 13 Oct 2025 14:23:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UsztKE0L7WgFFAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 14:23:09 +0000
+Message-ID: <ca53e0cd-95a3-43c9-b012-194d80cb3fcc@suse.cz>
+Date: Mon, 13 Oct 2025 16:23:09 +0200
 MIME-Version: 1.0
-References: <20251013093337.4432-1-kartikey406@gmail.com> <bab3249a-d9f2-4f19-9493-b7560aecc3ce@redhat.com>
- <aOz6wqdZcEY8-ufB@localhost.localdomain>
-In-Reply-To: <aOz6wqdZcEY8-ufB@localhost.localdomain>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Mon, 13 Oct 2025 19:52:45 +0530
-X-Gm-Features: AS18NWBUkYtvmMzc5cc_0q9l-c8KMySPiyoca6hPI3y-2obBhc_-nDf-RcT0WDE
-Message-ID: <CADhLXY6wvugZN+_ok8LnwWjUP8CWB4ETKtD6Er7y1thnJXwFFA@mail.gmail.com>
-Subject: Re: [PATCH v4] hugetlbfs: check for shareable lock before calling huge_pmd_unshare()
-To: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>, muchun.song@linux.dev, akpm@linux-foundation.org, 
-	broonie@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 53pk89hekrhbkzdmfqmt5wz1imff7kuh
-X-Rspamd-Queue-Id: 9FC698000E
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linus:master] [slab] af92793e52:
+ BUG_kmalloc-#(Not_tainted):Freepointer_corrupt
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>,
+ kernel test robot <oliver.sang@intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, oe-lkp@lists.linux.dev,
+ lkp@intel.com, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <202510101652.7921fdc6-lkp@intel.com> <aOzKEsav2RubINEO@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aOzKEsav2RubINEO@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C34D540008
+X-Stat-Signature: pts9cw84ciqupkwxe1tr8cyhugjzm4is
 X-Rspam-User: 
-X-HE-Tag: 1760365378-390329
-X-HE-Meta: U2FsdGVkX18LnSr9tWpFS0x0yNRGBdBwQ9enxoAXv0XR+gOgrwWPV0AYjY1N3gpa6F+fYEtB/tjoJHr3Om+FHadbMgN+cGpnWuercgDFAHxJUW7MgIyNn+hSF1ETe5RakZ2R3hDdfcnQ8AGtKR9Ajp+8QLyXxjGaHLp0MJXTQl+LaJ2voHKt2r7jPk4jNOfz2ikXceQsp8b9DyZ2kTQwB5xVA5rhutclbLuPf0SXJTXKLaQxrIaEz+RzJAZTNDZdw+siv0nYvwoIuZt6PEFsJKSVwW2EAjt7dvR17Fn0vCoMWIBHqNZQ4QIlcyppZ++qke8CE9C+7ClEjh6fAAuJ131m/hbounngGxJD47EQ13t3Crg/vH0XE9x0tyF6RhGQWDNC3FuYbHPVeJrs30vnaie+0cRWE+RnjRYYV9H4ZpkT6f/jXgDrmMPKihr/7s7QH42k/htGqtanFA0sW+7JjqRSDTAeULqgH4zw2V1ciDO5Np5siI06vU+/MJBQoGp4lZxoASVcVt/7gXrYWStmttErnHRkvIrLIPhtTYysGfww6DUaF/ZNIo8fN3Km6ACyDH78NqbRMAxUxzPE16dysQC8Ac3liX5drej88hoZECb1IUg7uVy8AOy1BeLIG5wH444Aom/dfTaQmujs0umk4s+XScQbv82qLrld7Uheow0DhiRnskQW8ihL6euUTMC6PeRht6UGAZTmKKkHYb0akjm28scvudbB+Ceyf9C/P5xis9xQJDrYtZP8qvP0cSdtt4PcnhuvU/klD8OeITyMM7uDcnHmzdDAOHB05HSYMmV5AVLHHYD2DsG20CELXqd422M3bXpp5EvO5ectG5aGofyhTjIKNrOcAj8qtOA+94S3xSNksE/NHyAaE9XpWSGUXyrwDm1slNrym37bU5VO9/Lhk0tIg7xyDfo3GVKDfJEEbqlDWVFc0GU0oQiZvoLFSMyYMg67p04T8pnvim8
- Mr8B8b02
- lFCC/sEijECwEPP14RSima0Ar1p3A9to2VV7O1Wfrr9Vs56fE62mzch4E5pKIV+uh2dlFrEA4xyzNanNlip+887N7MBm+bPXFdAMIkA+eSF9bBqGCA/TbrF2X6NsxRnOHiNoJH0BjSQJmqHse3yTThA65PwkjsEdzypAk0DlC9GmXpAftT0beNydAKt4VrBicvx16qSIxKGo6P5Za8qDhj5bgpDW3+fL2Gca9eh+MjdLrPKBm2GTZZBFF7iyrEKnq6rHbGL7EJfzfNw68T6Ab/CeF/tdqE2FwQssgl/mxxz1/ETDCVEzGAs+S9dtbEirULyd2UDr7ZDUC50/hX1LWHkyulGWCA3G49/YUlKURkFvuM2Avlf7mhz+lzn63kAOqNlQjAYOqbMrO6nPlKBhfZpnJ9vklXQhFhhPwGa2XsYxGRGBo0Hp7pLWoNmSXJhMQ/dDEUVAqnrBmgMppdCC4agBOT7hqHpyau38Jn5o1clWsl7iHQrTEW61i7wiqPUwkrzkohWhf+3y6EMw=
+X-HE-Tag: 1760365391-751156
+X-HE-Meta: U2FsdGVkX1/Fx66tq6Y+smUoYygxg6ulySlYoy5Ivpcd4uxbc+aq5fg4WSerd8e6HF3gAq2xWsQemu0z7E2v4xpY2QeOMlNsVYbDobMGq4kMOKvf4mKcs0+P2XTZITZDfwD5Zxk2gS6fm6DUeIkK5ZPpzubKRu5l0nO+cUn8OtoMm1/eVmoxKgCpfXGtP/caae6kgmk9f3VpVUSad17v4SNZOGQMrRx9PMGZxLLErUZ0qW572Ew5XxcUzJSYYBz115vUsHgyAB9PanDQXZkmYF/khvSrcXo8tltxza87TD7FJrfM5em0mtx8grTibwvweof79ETzWPWGHbZK+sP7QTiZBaATqiFY1XT0qQ83Z7Hab2JUm7rSNW/3rsOTp+ORbIUjblj5JE+NfEq74+DihGEwpD2G/+ufBvEetL7NIzOuq6pqQZpKCcPYEZdD465Ljq7cAIN52jelLtFhzGhEOptPN2iIsafQI6w8tg2ouTqo74otgiQWsMqnQx36eLvFzUGzjItO7Lw9jqphuN7PqGG9smyGDINYbYQsczeYFaAKFkVhovZsIxbYiey9yODv+/IOku7Dy1niZ9s2G5HWchGnrVXAXg/hq2UFRAygqIa6l9B5Mv0wR4HxtTe6PzezgYKpBxb7nuukQQwETrNXSQpbAFxQ881tcPf2YCLgqpgOopw26xZiH+BfDkI1IYaJLUJM3I7d1LrrEtrWvLreNqUfQvmeMBh0QvWnJieoFmdotHpxkDnBpr5BJebObgSacA4Dz8ROvdy/wz9hsIXAPHvv14jiKchtPb8FkzQ/KIP6FupVpKW25yAjRzq1Bh6h8u7MqcN5s68A8+iLVnvc8Pih/KaTbAqWY67bhGuL+OkqDJAZxfnc0XvDLJMhd5XkwDv3Nh2iHVoV/8jxDteiIk97MrpeGBV+i4ZQ2LZ9P2/nQOoJKKfgLGjNJJQO/MHvNrjrncKsrnCueobsofZ
+ oaljgQiJ
+ DNVfdTHkeR/LdITabUSn2YIz/764YA6y1h1rr3pVetqwUQKjF84pzCiKJ7RsJjWwVro3BOVxJNKZKKtmYuPHv3x29CNDjhSnNeJZW/y/m98tQWGdpfSZ3PbvQ7YHtELrNgYDGz4v7uYmsFy25IW/GUWJrYHUdbhD5nxySMC2DZxivhh4tl7nQIB9GQR3tdVskh4I6SxXuXxmBRz4EMEUOdO4q/sW1E1BXgSChgGonkz3UR8CHIQFQl1QB62d185NNwHsQPk0s3KfUhSSDHkC+de0K0ZuEckJ/E5FsXd8lTPTdLUP5GojjHs9wlZsK8mV/MTKdrSsq4SR2Do2GDocGAwBS81D5slvE8KBsJQjwWVdomvV3byjd8CWIweI23tZLFV/v
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,12 +180,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Oscar and David,
+On 10/13/25 11:44, Harry Yoo wrote:
+> On Fri, Oct 10, 2025 at 04:39:12PM +0800, kernel test robot wrote:
+>> 
+>> 
+>> Hello,
+>> 
+>> kernel test robot noticed "BUG_kmalloc-#(Not_tainted):Freepointer_corrupt" on:
+>> 
+>> commit: af92793e52c3a99b828ed4bdd277fd3e11c18d08 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+>> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git
+>> 
+>> [test failed on      linus/master ec714e371f22f716a04e6ecb2a24988c92b26911]
+>> [test failed on linux-next/master 0b2f041c47acb45db82b4e847af6e17eb66cd32d]
+>> [test failed on        fix commit 83d59d81b20c09c256099d1c15d7da21969581bd]
+>> 
+>> in testcase: trinity
+>> version: trinity-i386-abe9de86-1_20230429
+>> with following parameters:
+>> 
+>> 	runtime: 300s
+>> 	group: group-01
+>> 	nr_groups: 5
+>> 
+>> config: i386-randconfig-012-20251004
+>> compiler: gcc-14
+>> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
+>> 
+>> (please refer to attached dmesg/kmsg for entire log/backtrace)
+>> 
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <oliver.sang@intel.com>
+>> | Closes: https://lore.kernel.org/oe-lkp/202510101652.7921fdc6-lkp@intel.com
+>> 
+>> [   66.142496][    C0] =============================================================================
+>> [   66.146355][    C0] BUG kmalloc-96 (Not tainted): Freepointer corrupt
+>> [   66.147370][    C0] -----------------------------------------------------------------------------
+>> [   66.147370][    C0]
+>> [   66.149155][    C0] Allocated in alloc_slab_obj_exts+0x33c/0x460 age=7 cpu=0 pid=3651
+>> [   66.150496][    C0]  kmalloc_nolock_noprof (mm/slub.c:4798 mm/slub.c:5658)
+>> [   66.151371][    C0]  alloc_slab_obj_exts (mm/slub.c:2102 (discriminator 3))
+>> [   66.152250][    C0]  __alloc_tagging_slab_alloc_hook (mm/slub.c:2208 (discriminator 1) mm/slub.c:2224 (discriminator 1))
+>> [   66.153248][    C0]  __kmalloc_cache_noprof (mm/slub.c:5698)
+>> [   66.154093][    C0]  set_mm_walk (include/linux/slab.h:953 include/linux/slab.h:1090 mm/vmscan.c:3852)
+>> [   66.154810][    C0]  try_to_inc_max_seq (mm/vmscan.c:4077)
+>> [   66.155627][    C0]  try_to_shrink_lruvec (mm/vmscan.c:4860 mm/vmscan.c:4903)
+>> [   66.156512][    C0]  shrink_node (mm/vmscan.c:4952 mm/vmscan.c:5091 mm/vmscan.c:6078)
+>> [   66.157363][    C0]  do_try_to_free_pages (mm/vmscan.c:6336 mm/vmscan.c:6398)
+>> [   66.158233][    C0]  try_to_free_pages (mm/vmscan.c:6644)
+>> [   66.159023][    C0]  __alloc_pages_slowpath+0x28b/0x6e0
+>> [   66.159977][    C0]  __alloc_frozen_pages_noprof (mm/page_alloc.c:5161)
+>> [   66.160941][    C0]  __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
+>> [   66.161739][    C0]  shmem_alloc_and_add_folio+0x40/0x200
+>> [   66.162752][    C0]  shmem_get_folio_gfp+0x30b/0x880
+>> [   66.163649][    C0]  shmem_fallocate (mm/shmem.c:3813)
+>> [   66.164498][    C0] Freed in kmem_cache_free_bulk+0x1b/0x50 age=89 cpu=1 pid=248
+> 
+>> [   66.169568][    C0]  kmem_cache_free_bulk (mm/slub.c:4875 (discriminator 3) mm/slub.c:5197 (discriminator 3) mm/slub.c:5228 (discriminator 3))
+>> [   66.170518][    C0]  kmem_cache_free_bulk (mm/slub.c:7226)
+>> [   66.171368][    C0]  kvfree_rcu_bulk (include/linux/slab.h:827 mm/slab_common.c:1522)
+>> [   66.172133][    C0]  kfree_rcu_monitor (mm/slab_common.c:1728 (discriminator 3) mm/slab_common.c:1802 (discriminator 3))
+>> [   66.173002][    C0]  kfree_rcu_shrink_scan (mm/slab_common.c:2155)
+>> [   66.173852][    C0]  do_shrink_slab (mm/shrinker.c:438)
+>> [   66.174640][    C0]  shrink_slab (mm/shrinker.c:665)
+>> [   66.175446][    C0]  shrink_node (mm/vmscan.c:338 (discriminator 1) mm/vmscan.c:4960 (discriminator 1) mm/vmscan.c:5091 (discriminator 1) mm/vmscan.c:6078 (discriminator 1))
+>> [   66.176205][    C0]  do_try_to_free_pages (mm/vmscan.c:6336 mm/vmscan.c:6398)
+>> [   66.177017][    C0]  try_to_free_pages (mm/vmscan.c:6644)
+>> [   66.177808][    C0]  __alloc_pages_slowpath+0x28b/0x6e0
+>> [   66.178851][    C0]  __alloc_frozen_pages_noprof (mm/page_alloc.c:5161)
+>> [   66.179753][    C0]  __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
+>> [   66.180583][    C0]  folio_prealloc+0x36/0x160
+>> [   66.181430][    C0]  do_anonymous_page (mm/memory.c:4997 mm/memory.c:5054)
+>> [   66.182288][    C0]  do_pte_missing (mm/memory.c:4232)
+> 
+> So here we are freeing an object that is allocated via kmalloc_nolock().
+> (And before being allocated via kmalloc_nolock(), it was freed via
+> kfree_rcu()).
+> 
+>> [   66.183062][    C0] Slab 0xe41bfb28 objects=21 used=17 fp=0xedf89320 flags=0x40000200(workingset|zone=1)
+>> [   66.184609][    C0] Object 0xedf89b60 @offset=2912 fp=0xeac7a8b4
+> 
+> fp=0xeac7a8b4
+> 
+> the address of the object is: 0xedf89b60.
+> 
+> 0xedf89b60 - 0xeac7a8b4 = 0x330f2ac
+> 
+> If FP was not corrupted, the object pointed to by FP is
+> too far away for them to be in the same slab.
+> 
+> That may suggest that some code built a list of free objects
+> across multiple slabs/caches. That's what deferred free does!
+> 
+> But in free_deferred_objects(), we have:
+>> /*
+>>  * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
+>>  * to take sleeping spin_locks from __slab_free() and deactivate_slab().
+>>  * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
+>>  */
+>> static void free_deferred_objects(struct irq_work *work)
+>> {
+>>         struct defer_free *df = container_of(work, struct defer_free, work);
+>>         struct llist_head *objs = &df->objects;
+>>         struct llist_head *slabs = &df->slabs;
+>>         struct llist_node *llnode, *pos, *t;
+>>
+>>         if (llist_empty(objs) && llist_empty(slabs))
+>>                 return;
+>>
+>>         llnode = llist_del_all(objs);
+>>         llist_for_each_safe(pos, t, llnode) {
+>>                 struct kmem_cache *s;
+>>                 struct slab *slab;
+>>                 void *x = pos;
+>>
+>>                 slab = virt_to_slab(x);
+>>                 s = slab->slab_cache; 
+>>    
+>>                 /*
+>>                  * We used freepointer in 'x' to link 'x' into df->objects.
+>>                  * Clear it to NULL to avoid false positive detection
+>>                  * of "Freepointer corruption".
+>>                  */
+>>                 *(void **)x = NULL;
 
-Since I've been working through the iterations on this fix, would it be
-okay if I send v5 with David's suggested change? I'd like to see this
-through to completion.
+Oh wait, isn't it just the case that this is not using set_freepointer() and
+with CONFIG_SLAB_FREELIST_HARDENED even the NULL is encoded as a non-NULL?
 
-Thanks,
-Deepanshu
+>>
+>>                 /* Point 'x' back to the beginning of allocated object */
+>>                 x -= s->offset;
+>>                 __slab_free(s, slab, x, x, 1, _THIS_IP_);
+>>         }
+>>
+> 
+> This should have cleared the FP before freeing it.
+> 
+> Oh wait, there are more in the dmesg:
+>> [   67.073014][    C1] ------------[ cut here ]------------
+>> [   67.074039][    C1] WARNING: CPU: 1 PID: 3894 at mm/slub.c:1209 object_err+0x4d/0x6d
+>> [   67.075394][    C1] Modules linked in: evdev serio_raw tiny_power_button fuse drm drm_panel_orientation_quirks stm_p_basic
+>> [   67.077222][    C1] CPU: 1 UID: 0 PID: 3894 Comm: sed Tainted: G    B   W           6.17.0-rc3-00014-gaf92793e52c3 #1 PREEMPTLAZY  2cffa6c1ad8b595a5f5738a3e143d70494d8da79
+>> [   67.079495][    C1] Tainted: [B]=BAD_PAGE, [W]=WARN
+>> [   67.080303][    C1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>> [   67.085915][    C1] EIP: object_err+0x4d/0x6d
+>> [   67.086691][    C1] Code: 8b 45 fc e8 95 fe ff ff ba 01 00 00 00 b8 05 00 00 00 e8 46 1e 12 00 6a 01 31 c9 ba 01 00 00 00 b8 f8 84 76 db e8 b3 e1 2b 00 <0f> 0b 6a 01 31 c9 ba 01 00 00 00 b8 e0 84 76 db e8 9e e1 2b 00 83
+>> [   67.089537][    C1] EAX: 00000000 EBX: c10012c0 ECX: 00000000 EDX: 00000000
+>> [   67.090581][    C1] ESI: aacfa894 EDI: edf89320 EBP: ed7477b8 ESP: ed7477a0
+>> [   67.091578][    C1] DS: 007b ES: 007b FS: 00d8 GS: 0000 SS: 0068 EFLAGS: 00010046
+>> [   67.092767][    C1] CR0: 80050033 CR2: b7fa58c8 CR3: 01b5b000 CR4: 000406d0
+>> [   67.093840][    C1] Call Trace:
+>> [   67.094450][    C1]  check_object.cold+0x11/0x17
+>> [   67.095280][    C1]  free_debug_processing+0x111/0x300
+>> [   67.096076][    C1]  free_to_partial_list+0x62/0x440
+>> [   67.101664][    C1]  ? free_deferred_objects+0x3e/0x110
+>> [   67.104785][    C1]  __slab_free+0x2b7/0x5d0
+>> [   67.105539][    C1]  ? free_deferred_objects+0x3e/0x110
+>> [   67.106362][    C1]  ? rcu_is_watching+0x3f/0x80
+>> [   67.107090][    C1]  free_deferred_objects+0x4d/0x110
+> 
+> Hmm... did we somehow clear wrong FP or is the freepointer set again
+> after we cleared it?
+> 
+
 
