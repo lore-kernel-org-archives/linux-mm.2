@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF7DACCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 23:55:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB9DCCCD185
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 23:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0DC18E0034; Mon, 13 Oct 2025 19:55:39 -0400 (EDT)
+	id 2606C8E003C; Mon, 13 Oct 2025 19:55:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE57D8E0024; Mon, 13 Oct 2025 19:55:39 -0400 (EDT)
+	id 2373F8E0024; Mon, 13 Oct 2025 19:55:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C227E8E0034; Mon, 13 Oct 2025 19:55:39 -0400 (EDT)
+	id 174988E003C; Mon, 13 Oct 2025 19:55:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFDD38E0024
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:55:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4CEB95A129
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:55:39 +0000 (UTC)
-X-FDA: 83994750798.02.9664816
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 055878E0024
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 19:55:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8CC5881BA
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:55:49 +0000 (UTC)
+X-FDA: 83994751218.19.A04F7D3
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8CFE2C0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:55:37 +0000 (UTC)
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1268EC0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:55:47 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="jTtU/fOe";
-	spf=pass (imf22.hostedemail.com: domain of 3d5HtaAsKCJ4I8JCQFQGLEFEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--kaleshsingh.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3d5HtaAsKCJ4I8JCQFQGLEFEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--kaleshsingh.bounces.google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=C3PpSWha;
+	spf=pass (imf22.hostedemail.com: domain of 3gpHtaAsKCKkTJUNbQbRWPQPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--kaleshsingh.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3gpHtaAsKCKkTJUNbQbRWPQPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--kaleshsingh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760399737;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gOLw9DyCbQUK9US9qj81M7l3NRwOmAnngyQTgfMrJas=;
-	b=2OqfytF3umem8+USJM8pheMUpv0YYLsz52B+/ke0AYkkPn9FTe5fLKrNU58panPVN49DHs
-	HiAIozU3617+5QMMsf91ikYdlo3MeG0W/mb5jH8TZ+5D2ShkIDolkDRD/Eku1X8InzrvS1
-	e6N2n02raYDrQzx/vvu75SzdR7e43cI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760399737; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760399748; a=rsa-sha256;
 	cv=none;
-	b=7drYY+E7lrgKJhEAi1fAzJ8J/Gu8PX5pJaNiHYO+4kH84DUNx0RpFvPDt2+OVps0lY9sJc
-	bFd+ySktYiG0/iZR6JTGFyE6Kb9zJxPwsOhHwZOlbnhMOLe4qYn7EwG7PZ6fJblYZ7DbPK
-	1U3oHatDb9KrSXNHFSmJJC7gArrSU/A=
+	b=iYn1LPwh0QKAd4iXikjhEYMJx8F8off6XrFMevFj8AF3SjEsCfe08zKgv51Pep0rdRpypP
+	83fjAOujyUru8+GDPEDX/ZzX73Pdl/OdGsAkobEIysF2dD/W4ob3mYlZfsG1mUTQpokW2c
+	8RvqqO/b7aYzKNWpUqKqZ8q8ocNkUHE=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="jTtU/fOe";
-	spf=pass (imf22.hostedemail.com: domain of 3d5HtaAsKCJ4I8JCQFQGLEFEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--kaleshsingh.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3d5HtaAsKCJ4I8JCQFQGLEFEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--kaleshsingh.bounces.google.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=C3PpSWha;
+	spf=pass (imf22.hostedemail.com: domain of 3gpHtaAsKCKkTJUNbQbRWPQPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--kaleshsingh.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3gpHtaAsKCKkTJUNbQbRWPQPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--kaleshsingh.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32ee157b9c9so8293706a91.2
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:55:37 -0700 (PDT)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760399748;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6rWZlQ2orhu2ToWW4Y9B+YoDEtQfRAkGMApIJKpfngA=;
+	b=0RKX1YZQUar8ITLaHegVERIcptz13VKdD3W/P8HL+DAfje35MdHtk/eA1F4Eq54y6dfNKp
+	4331tQ58qmZq/7KT+rOEIgYlx2NpZd4P3poPRa78YWH7WNAZx0OcvLPDEgCrMlaRuD7XpO
+	Q9Zkbt4s4q9nJ3RYDuHDpeEQ6+7rxSk=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32eb2b284e4so14391401a91.1
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760399736; x=1761004536; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gOLw9DyCbQUK9US9qj81M7l3NRwOmAnngyQTgfMrJas=;
-        b=jTtU/fOeWUzS4DkE2jCBVBPVBSKKBK2O+qCxu3KsOxaAyczwueIFlYuH4flH6r4vq+
-         Fek9xRFRiWMk1TKN7+Bh2LgYcCMHQ6KtdosSVdyqMnf68KJw0ITn7ynNvvU4/yAbY4QS
-         fsZuS8wBPrmASrTyi7YF4VYNF+JKaAe1UK2hUBLN4d4gAhNr6xgbwtthHSNH8ERXg1Df
-         W8uW6xHbye+ey/jeYjt4tjewP6KMzTamRiMYktOtrfVkSKDXyl7Y+xNNGsyxtEiMTYbs
-         5G0Gdeep2bwQffRJwpMhzv2vh5omc6cDyxrXFofOpaYOM9ls50ig0GsxiyRhv921v72Y
-         3bvA==
+        d=google.com; s=20230601; t=1760399747; x=1761004547; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6rWZlQ2orhu2ToWW4Y9B+YoDEtQfRAkGMApIJKpfngA=;
+        b=C3PpSWha4GuY3iIrB118wtYUBKA5BaTmmhnDRaaEQvBbHD6A5pKs1N4D//MXMOZBWu
+         0UWeJF7UvG+V/Fs5HMgtMpVZ0xkYRPGa6U34wHwMcMEYcgEp8DRK9IstVMQZZPrsDsAW
+         kzV+ZsMID1gPtfBdNKR3SDqU1xAboDs6NFbKlSOBVzfqfNWAjOZvCSX6IHh0Au5RDmbE
+         nLhwjdiBlK6LEUco5l+SxdX5UFyWRf04AxxfMuhzWQrmT9Yma7lwxRzj1hqe6VUoGtas
+         xs4MPXA1QYIn38g7SJT+Xq8XgBsAB3sw1ie4YqhWOdpUC6TAiM3WTSBtqYcMPv4x28zI
+         d3OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760399736; x=1761004536;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gOLw9DyCbQUK9US9qj81M7l3NRwOmAnngyQTgfMrJas=;
-        b=n8EMRc0kIAtvTneVW8iECBTCt5OR4FJX1txNH5hyY67siH0PpxsgXAUiugGUe1Mo0B
-         OmvKhLT0IcjojVkrzZVYtL3Kv8S3hdEC4+GR5xz9TozjkIX9+7W31rXBrkxMCQaqAVZ5
-         MFL+I0cGxGuVBdARsA4rZfrJcsRVUBy9X9wyjmo0nqz6psCnJsy2LuiKLvmKUVQyTaem
-         Ogf9fIyKDX7Nj+UJykWN+75qamHmLY/IOY9qqU6SJHQ8TbPJ0JDMUOPt/cLsI5ueFvyc
-         gdxT9280GZwTPRQkcRApc5QgRaMMRsY81HIj3B1dJOXqP43k77TuKMngjGobi8aH6jzv
-         zLPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvzogM2Q2v2ynDvIVtSIDT3D3U6FLzBv6ajYBtCErKgkybteOWjh77mv05qX42Rp3GJL/PBh9t0A==@kvack.org
-X-Gm-Message-State: AOJu0YyuBm27NpPk3tUuN5gP5O8B+r4iCsMU51NvC1hl0bO5hOiSMJ9K
-	pg0oSlD0CG4+6WvSDb4LtBjN38B0MpksautDTxy3jLHsYZw1rwLBtaJrdUgJVUJ5pWd2XqpRi3t
-	UYKDtN1BhL0BwKxcN8NMUCF/ENw==
-X-Google-Smtp-Source: AGHT+IGFM4fnaJaclf+UwA57x8vAdATG64ugSFxav97RrXYX3bY+Pcic5KOI6oF2kEGVymj334kNdpoiwgiFgae0+Q==
-X-Received: from pjrv9.prod.google.com ([2002:a17:90a:bb89:b0:32d:e4c6:7410])
+        d=1e100.net; s=20230601; t=1760399747; x=1761004547;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6rWZlQ2orhu2ToWW4Y9B+YoDEtQfRAkGMApIJKpfngA=;
+        b=nrWbSMUFgIAAS33pR7pTvuLqJzo7+A8x/hJt6T/SPVELl7Cmx4B90eWQfYlftATnT0
+         QYQlRGCJKTwqHY7+Zn2ufP6E/1J4VNgYLXPY5jmYFWIwHutIUPIxu4z25iHhh/BRhTyJ
+         jFPVIaa+o6ydcyT2lIHLXZ/XGULQ9ETjBxu9OYSJVtsv7i3kSXL55vqr4PsrB/HlyqQc
+         BB9q9b2axr5tw++5uZSmrgV2k4YHyhm4+mkUTp0bIMKzR6psrRMbMmrKRffMAwShdBL7
+         QIRTSXSouOHJdw2LAFdrrg8EXiubXzkCMJe9nnUBNmm5CHnOVnTzY98GUfIsVcLbJL4U
+         LoFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVulc71q2x1e9Ue2UCMl79NACJKiBOMiO0jn1UlpGuIjxlmE0lEk7XLOK4C2j3apOngV7Mfyp+c9A==@kvack.org
+X-Gm-Message-State: AOJu0Ywg95zFjIe43lxteJWtlzYG1ABjcqdiasCw9S+nu6Prbm10pXZb
+	b6Ie4bkMUG7vXk2dfKNhlSeJMZZkBU9+oWWpGeZ5HA+ojsevocw1VAYXnHEtAT8UzuPQ5CfOE43
+	bj9gRTNbp1IygbNFlodpjaDNrfw==
+X-Google-Smtp-Source: AGHT+IGScETQx55bga4w6kvGfG7E35WD9DziDa+ZAZXqWYfQigIxpcLfBDKsXWxtq04osZKOoTiH4wackQ/kqzmTPQ==
+X-Received: from pjtf24.prod.google.com ([2002:a17:90a:c298:b0:339:ee20:f620])
  (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1b04:b0:32b:6145:fa63 with SMTP id 98e67ed59e1d1-33b5114d48fmr29169068a91.4.1760399735929;
- Mon, 13 Oct 2025 16:55:35 -0700 (PDT)
-Date: Mon, 13 Oct 2025 16:51:51 -0700
+ 2002:a17:90b:1b11:b0:32e:38b0:15f4 with SMTP id 98e67ed59e1d1-33b51149231mr34380315a91.7.1760399746893;
+ Mon, 13 Oct 2025 16:55:46 -0700 (PDT)
+Date: Mon, 13 Oct 2025 16:51:52 -0700
+In-Reply-To: <20251013235259.589015-1-kaleshsingh@google.com>
 Mime-Version: 1.0
+References: <20251013235259.589015-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.51.0.760.g7b8bcc2412-goog
-Message-ID: <20251013235259.589015-1-kaleshsingh@google.com>
-Subject: [PATCH v3 0/5] mm: VMA count limit fixes and improvements
+Message-ID: <20251013235259.589015-2-kaleshsingh@google.com>
+Subject: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit checks
 From: Kalesh Singh <kaleshsingh@google.com>
 To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
 	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
 Cc: kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org, 
+	SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
 	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
@@ -102,14 +106,14 @@ Cc: kernel-team@android.com, android-mm@google.com,
 	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Stat-Signature: oz6jxhorgmcbuhzzawm4zk5p3d86ua7m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8CFE2C0007
-X-HE-Tag: 1760399737-583360
-X-HE-Meta: U2FsdGVkX18/DBIU4Ywvkw85tAvC7Dp/8gGzvvZQl4bkoPFCaxEYP5eN5qhafQaXTRGdyv4c/yg6MDF1d5XJJ+KUcPLLG479n2CNDbzURHaQaDtIo6uqdtbKVPJ8gjoWZcn4OrkwI6YtkBGTILvSKGm97TDldklpChJCRGBn6K9zVKHImWGoXAye4q3bv/YUQAdCNPj7mmChOetlSoC8jACy9Wi/6J1GGCLiYcIeJ0/JGM7nOEcouYClypWEWQ9e4meSL+eGvxIanyxF9hlG/GfLP858/NiQiQdhzecPeABNWMYCIDEQgJmzjiHPviK6Eh20hxIYSh8AWwAprUDZNsraPM/pCt7C0pi/0zFluqm0fvnFawZPqnHd/ESi8oqkJt9JKoqnOGNuMRWlnV1jRmUPhaHK0fD1lfETb2dsHvYwLGqgpxO5InXp1X4TPtv1wRiT7tyzw5AvwvaSfktvoypRgq/Tn6kCYCxIIv5ng7PVTh1p2xiL+lJlqxGQoaKg8JAKahixjgjb0LoiVXiTN0VH9F2t3A36c4bpcn0IK/rXFpqiv7TRJEEOCh/hQUzCsMQn+NI/5QSGR5+7IAjD9Un5uLqmpL4K/5cYlIVVizWAqvhX5SOGzcANU9E1ZQ7w7xK0stZmQaP4swjy7Puqa3RUT3ZZJ1FlJE5ya3sEOfcWKabIQY+NS4p2mBOC3kBf1vDXOwP4l5u5F8EcpxsKxnxrGrk9hjs3ofyWVydBMXVcwl9CSNuNGYHieba0FosdgXGe0DZ4fwUGaA4ewMzxrcpt/Gn0yh1yCZqvvt53mI8osqv1DUSHv3EKR5ieajVpp11dxcIBvSskQP8EBwLNB8Kk81NI5rHtbv/ezcN/T+6T+pFzOp/mm+nhtz/6L3HwPyw7Cf6pI04Hv34Y6SnU5879iLhumAd5rKOmfwpX7JqnOqSuDMqNSN8rkj96Te6Tohysr0bnvhIY5ig7Os5
- JApBbZKc
- 54wfv1DzekSDUFMMVeRxsJFfeBcx6xF7QWw1VBAndcRqOykjMgej4mE2k+NJ+fI2zwzgyyy5T4wFsoGvGft6GT9oQku8gIQC0IzzbZgfYAHnlaIC25/2fr2Wji48YDUet95jj+SxXWaAjyaEK6LgT63EV8+IOvVV3KPut3vH9NjYlb4ph7dcMUvrkL9uG1cK+VT/RVQFWsrG6LBI1NTiTQoIX/51R2jnP30LtlJYk9k5gD2jSkcOQQ7WTc8+m4nnji4cnwA3sLmlafdCChvVODNHBSieJQa4Bqn6N8ZKIRialDUpcJ+of4PaS/PTTNeWOqq4J2MtaB5jBx1SUsEurTQTA4wpM2heeU29yDY8hkHaXDe0u/UwklH/AkvSCLqHM8+lnDabvE8Xv6mpdI+7bwuW3/k6B+4h/ccYZ3zD4e0ngjZ+UUckSQorM7PeD6a9vKhER/3xBk/Nm8sKTs4UwaRp8FTA7K/du7zjCMbV5sDGdpDyl8NJv3jflCue88ktuKE5aWpiavlGA9i82QSi0lE7pifQryzkNoa890fYmy9fdBSM24ELOnTzDL775PpaPnsCpGj548q5uVMgAHZMCiibm+IHJEMlvnzYf
+X-Stat-Signature: zcyr9ywyi86n8nwsy8gxk9ouwi77xn6p
+X-Rspamd-Queue-Id: 1268EC0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760399747-27426
+X-HE-Meta: U2FsdGVkX1+1mx27v8lYGQSeKA/wUJmEjm2CpMt8sccIaqwjBGX2rvbbhta24xIGQPYhncrbTqS/RMvKbwqGnblQaunF2uC+X8BK4ipGedSLLfPeu1FzHViIYVd6s6UQ/GB+d8LFsdRIEtEHO1ulvJtlUWGkGppfP7YXhxn2v3PqPURhB4PxypM25Lrorz+jOC6M6mCXmL1S5GR1doR+s/tNmQv+tPdonP3rr+PwXq+VR50oaHmZhP51U9ClrkzszaRBTsFnqx+cVy85snvaxIFNrqrNNsfx4dmtaGZtsxXtvd7Pd6bFkS0K9OKNYhS37mjC8eaI81OZaz8OCZ6lcL28dy+Z85xsoB0ItKa3ZukS2GW78nEL+Yetzu770gELLKygnwUTVQq8iD7q6sqFTuaVVI48PQtXyhfAPTFJn6FdCVPymDYHbG2zhjOnFJUusL34WbmIYW5FoU61Li7hGiXEf/IcaTk2FPXtpiJtVAVHvAkv8Hos1MrOBT3c318AEhz0rW4DW6YAjUZh4NM47bFdSE7onxonWkX4QOd41KD+OdVu9mkqoHVquFiAEpKGGM1fxBaOiWgUYoDpmoFE5pc4lKjgSxaqQAAZBUUYnVoLiTsWBDK1FmC3hxv3cBmtPzTBf6Cer4wNwh6J82cRSfC0tfKeLLWIVJEM0m5/RBFsHt+T06rGMK18NrZgJs/ESthcgMOTnEL6D15Xe3r18G0KVe/HW+kedJUTanxV5RniHldl7qWMC4aE0//Y3oa6hXxeJkRAM/x0u0q/4Na6ZUZGO+v2xEB+N1aR3iLHltTkctUEKtV2F9k86FIJjqC/HQnO2BGSvODrmF+ebHf/pPyAnlRR4DumRwJLJZjpyCudIQ5/nHyhq87yhz+7l345pXbCnNQ4zeK8kIogBlU15GgcZ/fvcqAVqU+eQ/Ec8TRzvDx+8UTO+Xd1ORfiFyWumWYJI3OSpTBv1xLFMpg
+ sTwmYZtT
+ 38qL4KpoyfcGTfCFS9tNWbyv1Cei8ZFtskmcZM/dFmkQj2DDJ+a5CLLlQEan19yQbbSR4ebzFp8MJnKNqB1NzCH1IJAeXQOGccruqUE/NJXNnbyfFGhwpg621Jrpom+OoMgRz9NHYsS64TjRrVlAnUWUx1AX1TQFX61G0KAvQKeQLEh4gJVam6y81e1H9nULLnAHYROqx1WOX7Yj8Nwff6un24SD+FRdiFgIOxcr2GlwNxz+gH2Cqwj/CTjwyTfNQ/GZgeEK2j+f6s6L8nlLVBYJ35bLkUEOjK+o/GOOCpJZg41M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,103 +122,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+The VMA count limit check in do_mmap() and do_brk_flags() uses a
+strict inequality (>), which allows a process's VMA count to exceed
+the configured sysctl_max_map_count limit by one.
 
-This series addresses an off-by-one bug in the VMA count limit check
-and introduces several improvements for clarity, test coverage, and
-observability around the VMA limit mechanism.
+A process with mm->map_count == sysctl_max_map_count will incorrectly
+pass this check and then exceed the limit upon allocation of a new VMA
+when its map_count is incremented.
 
-The VMA count limit, controlled by sysctl_max_map_count, is a critical
-safeguard that prevents a single process from consuming excessive kernel
-memory by creating too many memory mappings. However, the checks in
-do_mmap() and do_brk_flags() used a strict inequality, allowing a
-process to exceed this limit by one VMA.
+Other VMA allocation paths, such as split_vma(), already use the
+correct, inclusive (>=) comparison.
 
-This series begins by fixing this long-standing bug. The subsequent
-patches build on this by improving the surrounding code. A comprehensive
-selftest is added to validate VMA operations near the limit, preventing
-future regressions. The open-coded limit checks are replaced with a
-centralized helper, vma_count_remaining(), to improve readability.
-For better code clarity, mm_struct->map_count is renamed to the more
-apt vma_count.
+Fix this bug by changing the comparison to be inclusive in do_mmap()
+and do_brk_flags(), bringing them in line with the correct behavior
+of other allocation paths.
 
-Finally, a trace event is added to provide observability for processes
-that fail allocations due to VMA exhaustion, which is valuable for
-debugging and profiling on production systems.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+---
 
-The major changes in this version are:
- 1. Rebased on mm-new to resolve prior conflicts.
+Changes in v3:
+ - Collect Reviewed-by and Acked-by tags.
 
- 2. The patches to harden and add assertions for the VMA count
-    have been dropped. David pointed out that these could be
-    racy if sysctl_max_map_count is changed from userspace at
-    just the wrong time.
+Changes in v2:
+ - Fix mmap check, per Pedro
 
- 3. The selftest has been completely rewritten per Lorenzo's
-    feedback to make use of the kselftest harness and vm_util.h
-    helpers.
+ mm/mmap.c | 2 +-
+ mm/vma.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- 4. The trace event has also been updated to contain more useful
-    information and has been given a more fitting name, per
-    feedback from Steve and Lorenzo.
-
-Tested on x86_64 and arm64:
-
- 1. Build test:
-      allyesconfig for rename
-
- 2. Selftests:
-      cd tools/testing/selftests/mm && \
-          make && \
-          ./run_vmtests.sh -t max_vma_count
-
- 3. vma tests:
-      cd tools/testing/vma && \
-          make && \
-          ./vma
-
-Link to v2:
-https://lore.kernel.org/r/20250915163838.631445-1-kaleshsingh@google.com/
-
-Thanks to everyone for their comments and feedback on the previous
-versions.
-
---Kalesh
-
-Kalesh Singh (5):
-  mm: fix off-by-one error in VMA count limit checks
-  mm/selftests: add max_vma_count tests
-  mm: introduce vma_count_remaining()
-  mm: rename mm_struct::map_count to vma_count
-  mm/tracing: introduce trace_mm_insufficient_vma_slots event
-
- MAINTAINERS                                   |   2 +
- fs/binfmt_elf.c                               |   2 +-
- fs/coredump.c                                 |   2 +-
- include/linux/mm.h                            |   2 -
- include/linux/mm_types.h                      |   2 +-
- include/trace/events/vma.h                    |  32 +
- kernel/fork.c                                 |   2 +-
- mm/debug.c                                    |   2 +-
- mm/internal.h                                 |   3 +
- mm/mmap.c                                     |  31 +-
- mm/mremap.c                                   |  13 +-
- mm/nommu.c                                    |   8 +-
- mm/util.c                                     |   1 -
- mm/vma.c                                      |  39 +-
- mm/vma_internal.h                             |   2 +
- tools/testing/selftests/mm/.gitignore         |   1 +
- tools/testing/selftests/mm/Makefile           |   1 +
- .../selftests/mm/max_vma_count_tests.c        | 672 ++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh     |   5 +
- tools/testing/vma/vma.c                       |  32 +-
- tools/testing/vma/vma_internal.h              |  16 +-
- 21 files changed, 818 insertions(+), 52 deletions(-)
- create mode 100644 include/trace/events/vma.h
- create mode 100644 tools/testing/selftests/mm/max_vma_count_tests.c
-
-
-base-commit: 4c4142c93fc19cd75a024e5c81b0532578a9e187
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 644f02071a41..da2cbdc0f87b 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 		return -EOVERFLOW;
+ 
+ 	/* Too many mappings? */
+-	if (mm->map_count > sysctl_max_map_count)
++	if (mm->map_count >= sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	/*
+diff --git a/mm/vma.c b/mm/vma.c
+index a2e1ae954662..fba68f13e628 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2797,7 +2797,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
+ 
+-	if (mm->map_count > sysctl_max_map_count)
++	if (mm->map_count >= sysctl_max_map_count)
+ 		return -ENOMEM;
+ 
+ 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
 -- 
 2.51.0.760.g7b8bcc2412-goog
 
