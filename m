@@ -4,104 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E4B5CCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67355CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 08:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8E258E0022; Mon, 13 Oct 2025 04:19:09 -0400 (EDT)
+	id C32F98E0023; Mon, 13 Oct 2025 04:23:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B65788E0002; Mon, 13 Oct 2025 04:19:09 -0400 (EDT)
+	id BE40C8E0002; Mon, 13 Oct 2025 04:23:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA1FC8E0022; Mon, 13 Oct 2025 04:19:09 -0400 (EDT)
+	id AF9958E0023; Mon, 13 Oct 2025 04:23:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 97CBA8E0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:19:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46ABCB7EC5
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:19:09 +0000 (UTC)
-X-FDA: 83992390818.23.FD04B2C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BFB58E0002
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 04:23:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 546BF1DF8AB
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:23:23 +0000 (UTC)
+X-FDA: 83992401486.03.F4B196B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7AE0716000A
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:19:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a98t5npJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7EEA014000D
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:23:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7GUKc0p;
+	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760343547;
+	s=arc-20220608; t=1760343801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ughf36Tebh8tRi2naNgzgYAeZFLBdoKgUmvbnrM4Nas=;
-	b=trpw1fQrXWPCaRyC2iT54Cqic/m0U5uVM4M4nJ3oGIn/WUObNYKhxeyuvL3iww9i02/tFn
-	OPxaqHuyDLhMwGGx6THoTJRYmVMxJ6EmWJlSlF17onILrIV/ZWXiA6HzDIAkgbPn+gpzXR
-	HkfoKRIU9ejvVWF5nJOUwyilI7jXRRM=
+	bh=gWZgHXxBcz5Iy79EMz07wJ3G/Gcb4/W61XEISke+Y60=;
+	b=jqWr5+lLfrOMxK/7fxTmBqCpu2VV2ZJx0ajXl0LZDMYXfTCSbxnFK6ig+jk2theVsanPrj
+	J61mnzFcCiozi0KhNul8+yZ71oH2/Y75/OOmrM/q37haeG4ny6VsCMUPgj1MwgMWLFibYB
+	hfp25YMByoCDaRu3+gVV5Rq6NsjfxvM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a98t5npJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760343547; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z7GUKc0p;
+	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760343801; a=rsa-sha256;
 	cv=none;
-	b=ahpFmK98of4CW4jX9Ho44ClGsNgeBy4sQI3FlAwY/57gCSwaDW8NUDi7JhBxKdsdzNIikq
-	gD5Chkos4EnfqS1B8W3Esspa7+LhjZOK736SY3Va2eLBwUOpY2qbdmdMRdeKKrQF0c6TEZ
-	NZ9f4+/4SKtX4nsN8YxMK6XZPNaqrtE=
+	b=0RZS5Z7gJucRSSaxs1fRn118FFBfftsnjoZdkxNhMxErGmH63qjO+zKCZEzgU3ti96K7Qd
+	hmBwv4Wl8+0FqigDoG0SXfvYoY/eJaKQwb9qlXM/YrSKd9rsz/zj5ykOpf11sH1uGwLNHO
+	4orQ69SJLbpxSweDjLaxyq/xf78HJdU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 58BE84580E;
-	Mon, 13 Oct 2025 08:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A26C4CEFE;
-	Mon, 13 Oct 2025 08:19:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 876C445B72;
+	Mon, 13 Oct 2025 08:23:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29EDC4CEE7;
+	Mon, 13 Oct 2025 08:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760343546;
-	bh=ljQ4j9Pz6Hncku4QWYc6uskMl5cg5GjeIdqG3a1O4kI=;
+	s=k20201202; t=1760343800;
+	bh=cnSh8W6jhFCAzaT940CS+TKEufGQdg5GaKndRn4BVvk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a98t5npJJxA0RJV0qsmNA99531rbeFhI9GCV5Nhm8c3l8Se+sNXDDv4NaKtx8qXjx
-	 mYVxDcykicQUWeTF/7HfZFk91uHV3VGoOtjkAyFpmHYPwg3ldZ63R2pu2Z2VhlyFqv
-	 isgTahZdLMc7pBZzsN8e0+q7JVVIkQqjansZ++RQ+tcwm3SnnKjHk/mdNkPM+3YOxw
-	 uhKKLFud+BtR7TYveS6u94Jl/qVItX1ZfGqjGMnJVUYTvqJhFTdXkNHWugrL628awG
-	 eVmkEfNY7U6eHRhr30I+EKehBZIoit3IG1lZhOvcYrwAOE9sAQqTNgFaQplwImdWkt
-	 s8JSCF07WNolg==
-Message-ID: <74ddf437-0d59-4008-85ea-da6f0f6c0c9c@kernel.org>
-Date: Mon, 13 Oct 2025 17:19:01 +0900
+	b=Z7GUKc0pKniE7mLAPZ/6pqdvN6WS2EGnlbQRlV7qxincVQQUZa2U3P7ChEwKeVC4x
+	 SlEKS8xSrHY3CnyD3YbWDRS/kA0K60YGo053lr62M+geB650bwBSwyC8aQjQLkzuKk
+	 kHFlR90vbfuxBpdkKSCdFPB8lmMCQ0ustwXMoTx+EvvSGfl74gubOnvcn+Vd+uQzft
+	 dOtpQMN8sqT4KxQxAVE+mkkL349M6U9ZIrsk7THwobYeYosNK80tQEvOXdrX4Swmgj
+	 iFt3eWBkG9Ar/XnxgL5APEFIX+GCqgi2thNRqaBVBW/tJDHGT8OJLVYu9/UXd4+e7s
+	 660G6HX+IccMQ==
+Message-ID: <6f7e9453-de4e-4f43-ac1c-aaf9322cc6a4@kernel.org>
+Date: Mon, 13 Oct 2025 17:23:15 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] btrfs: push struct writeback_control into
- start_delalloc_inodes
-To: Daniel Vacek <neelx@suse.com>
-Cc: Christoph Hellwig <hch@lst.de>,
+Subject: Re: [PATCH 10/10] mm: rename filemap_flush to filemap_fdatawrite_kick
+To: Christoph Hellwig <hch@lst.de>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
  <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
  Christian Schoenebeck <linux_oss@crudebyte.com>, Chris Mason <clm@fb.com>,
  David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>,
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  Christian Brauner <brauner@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
  Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, v9fs@lists.linux.dev,
  linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
  ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
 References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-6-hch@lst.de>
- <65aad714-3f1d-4f4b-bb8f-6f751ff756b7@kernel.org>
- <CAPjX3FdRvkie6XMvAjSXb4=8bcjeg1qNjYVT5KOBUDrc+H=nDQ@mail.gmail.com>
+ <20251013025808.4111128-11-hch@lst.de>
 From: Damien Le Moal <dlemoal@kernel.org>
 Content-Language: en-US
 Organization: Western Digital Research
-In-Reply-To: <CAPjX3FdRvkie6XMvAjSXb4=8bcjeg1qNjYVT5KOBUDrc+H=nDQ@mail.gmail.com>
+In-Reply-To: <20251013025808.4111128-11-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7EEA014000D
+X-Stat-Signature: q1kzyujitjkri7kcq61ncoa9oqudshc3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AE0716000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: w6xkoemwo6ty8645idr6qu7xign9c1if
-X-HE-Tag: 1760343547-717022
-X-HE-Meta: U2FsdGVkX18tu7BJE6VI0Hk9ReRoAVZkQxH79f5Rvj42Z0S+nYcScnjcE8wpS0Q+XlVOXJ75mFvGhDdULFa7efQDfrXVSxBQCzuXbu0d3hUzIVYI4HoiPc1fsIEuBKCwX5y84WE/YFV8PE97HHTjaf70u7gjdmZWMccS/2ds5JDknNqFKtm0naWfMrLWAEVne/exmxKb7yh4qPnN3dQqpDPFA0V49OzGNTMUFk7ZcSxjM+uSGam2xLsm85UEofM9BTq+Q8XAEDwYpZJ70qiqdIRE8kCvPp3Kd2yI/u6O8izRDXxhaKrX7WlFe6nAz1OUuhkaRwSGPTD8xsJeaJIJvK/jFm7fiNHfN3G10F7Ki35eta7xULkffxrlllmU2D+FiAKwTGwttAoq8l6CVSs40jtQagWEc59iuTuc6VoGhif2LWMF9FEVPLB3agKCxCHjBeNxSTTxrz9Y3Y7aDN0X5I2hoiUk8sKLQJ5DXwNHCzXRV24zfuDirNLSpWqi8xXduhsiuSbEefcKXF4PWElDSx1XDrlZgmQqYhKFLWIVxdATuVU10h73eXFWhT+d5ZK4qporRGHlQDAngOhEX5FZd3aK4Y1ozjURjjGLZjvI56bUVIPpa022izK6fGW1M6I26OM6RdSUbtbLKgMMQqJhI/ADHprx/EaC9Qd+8FIwdUEfHGxr7OV88BMgylmHmkiZzpkRymmlWhWUaYBODuy7zFpwpbsMdMLJkREhKivCYYmQQU9seQgLP5aSwS0ITcy4JN/Mz1vTe0vnploVosIkbl09TwKIqHjnxhCThBPFpJfXByWTX4a6xWqLZWaZAXg5AZ3hIA4i2p48gWgm6Baxhez4COnvEEjLbDtLcpYgat7LJFZ0oNST+FHNkcE1QIXLhww5LVuAmAdVsnF0kDa5ZPB3pbsNeE0+VLQZCrTkkYtd2kkx6oCPFzaIlyrXUFqt0fSaCpiJ7dhT+tktuJI
- wtsDzK4C
- m280UXZxCgXOe/Szf0Wka7BezXVIzy7lkbc/4OnCjYxzQ+c0uXlZ7CxH4OEa9Ta1ldQpOAWjMOlVNhkxP76uWrQiiWzGuQbEuQIxTRDGM8GDYqQsG2GvVCgJm1pNFLOPS+mnYpre0YfV8UQHrlFvx41kmTNAFp6l+NcUjbmykAJhiICZ0QQ+RWqVtXdbg2Q8XNhVRZ1SRi9KpmABss8befua1i8kt2BBLG6DgGv6G4+0sIJW9jQMqk1GjxDawkhFIUjfZ3xIEgNfmQwff17PjfndxKbo0+b3ZjErybbGUj4pNPRrFo+bbZLHXY8sSA2blWiqO4QCNZubG22TCyoo6TiU9GcJcsWyxHlf0Pir1dP3Ymdg=
+X-HE-Tag: 1760343801-744343
+X-HE-Meta: U2FsdGVkX18OVu+V1xRE+Kq3zPG6oofFu8NHK4mxqS4nk3/C7Y0XkK5hZTRA1zTFjTkCYR0wWqL+8Wb1Zubi+OQZZsUci8zk/SjWUkQGVf+Ck6p8O/caPx50RCRVEGXsAKLuR8HgeJj+CW7DxHZcPtpXYmLzwayJz47yO+qRd2X+jliw4ZUgc8lDA/p+6iTQL7HWq2cENfR1XjFyqawfjv6jKyCxcQEypdVI8F++697JTaxelS8ZuWNuwcskrA8klzwBgHfUE7D8HsMA2rp+ruZeLbcQDBhlntx08PU+IlFrNXGdf6+10xg8U7CWSUfoGgHp4vjv5fwTa56Yn86RPG7ftBvoAEwOW0/nWt8hb8QwhXXbbGCZaRYfkIkXNb8KuE0tn9vakvNm1IEG5BaiGPbhiCIOqHRttawrTFgAKK4tACjzRcWVR5IpJKVFvhLjRV9oizxte7SeIeeXgoHFjvxJcNtb81ShP9T0SAsgJ0/gXBhmjBpMQAf6Hsr+9tmCKxdZIAgXex4/Fj+vYrKzXznOV6UmF/6o9yqdZ5UxbODEuIABz3JG95nptGMtgtFaXVTP31UvQWwl2OUgMUVu7qbYPXsGsElbqMx9KS/+GH5PsGy8gCNEd143ALNjU50I18e+c1ft37/OVRT7JG7iGH1RC22W4lI6dXJxXQKax+nNOXcqoYtdGDrK9dfjj7cbj6/6joChq8hHVwJIYV+33EPBuZbdrSwW8KJv9t18QWxSHB1JSppu5xa5g3JH3PuhBhLz42hqLC1+VebHJSnVILqgmI37ZYIuNbZmt7ZoxyKrf+hvTzFB/sk8W2rxrlocCUKRI0TS+YTeNZUURjIO1T6MiaGDaoLQtADyWgurfHU+rNlaLRGZqnEs0bZ5YwZf0d9bE3zW/05Esk6meXK62CM7ggLpKB3J/6Z5/dgx/zgMIEcNVSQfnZnWTc34DtjoNFkDAJmQPePp8h9RvG6
+ rWgDK+qy
+ 7QF/duKlr8yMDoRMPSnk9sLhtcEmR822wNeBw9G0KZdIMwPwK7U9jtlDqFe3pwN2MvgdD5SU4oohdhwRKl4oVQJA/doB9eGpHhwKarl7I/XcHZ7QyCqEp/phsJUfC+3ufI6WXWiqK8NBUUSKmgonZCwLZUBJbTID7N05D09v3TBj/cy3y+UlOS2ClNo5eQr7AGNYZcrSShbh1bkW1WZhrcREfNjwIKsUw1xAgOtI3VZOgZuWZ4+NAOzXB6QxL2ZhXhdg4hnng4eXGbmYnEVFryCYBrWuU++FaybD2XNysvHD36Prb2FUMp8D9GlgMfmMLCnWXai7Kw6iAaxgkKlGonGOhXh1GllSvpDc7LVA6B8RTrAMbyjXi++7Hk2BiFngiVT/89dFKNAEm7pgTZWmkG6ny7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,44 +106,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/13 17:15, Daniel Vacek wrote:
-> On Mon, 13 Oct 2025 at 09:56, Damien Le Moal <dlemoal@kernel.org> wrote:
->>
->> On 2025/10/13 11:58, Christoph Hellwig wrote:
->>> In preparation for changing the filemap_fdatawrite_wbc API to not expose
->>> the writeback_control to the callers, push the wbc declaration next to
->>> the filemap_fdatawrite_wbc call and just pass thr nr_to_write value to
->>
->> s/thr/the
->>
->>> start_delalloc_inodes.
->>>
->>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>
->> ...
->>
->>> @@ -8831,9 +8821,10 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
->>>                              &fs_info->delalloc_roots);
->>>               spin_unlock(&fs_info->delalloc_root_lock);
->>>
->>> -             ret = start_delalloc_inodes(root, &wbc, false, in_reclaim_context);
->>> +             ret = start_delalloc_inodes(root, nr_to_write, false,
->>> +                             in_reclaim_context);
->>>               btrfs_put_root(root);
->>> -             if (ret < 0 || wbc.nr_to_write <= 0)
->>> +             if (ret < 0 || nr <= 0)
->>
->> Before this change, wbc.nr_to_write will indicate what's remaining, not what you
->> asked for. So I think you need a change like you did in start_delalloc_inodes(),
->> no ?
+On 2025/10/13 11:58, Christoph Hellwig wrote:
+> Make the naming consistent with the other helpers and get away from
+> the flush terminology that is way to overloaded.
+
+s/to/too
+
 > 
-> I understand nr is updated to what's remaining using the nr_to_write
-> pointer in start_delalloc_inodes(). Right?
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Oh! Yes, nr_to_write points to nr... Sorry about the noise.
-
-So Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
 
 -- 
