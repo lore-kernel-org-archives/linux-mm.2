@@ -4,174 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EEC0CCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E7FECCD18D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 14:30:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C74298E0051; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
+	id E32C48E0034; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C24918E004E; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
+	id E0A988E0017; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B142E8E0051; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
+	id D20808E0034; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C70D8E004E
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:23:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE4638E0017
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 10:30:43 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 52A0E140472
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:23:14 +0000 (UTC)
-X-FDA: 83993308308.17.999C924
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C34D540008
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:23:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 478D3C04A2
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:30:43 +0000 (UTC)
+X-FDA: 83993327166.17.71C5AF6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3A823140010
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 14:30:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HIRnNr9H;
+	spf=pass (imf23.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760365392;
+	s=arc-20220608; t=1760365841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
-	b=pn6PNGSZDFvNVJmwT+/Zydl3Exoq5PhLtONLnEXgyOIFojdYC5Mw7VGBNKIyPN58fdRJOU
-	j7gGYjiJ7DKDxWepERQUR7F2y5rlWGOs762zyuO6pbzr3ckZc+f6vkxJC/X5Z3VKpeiO3f
-	MDBCy4P2M0crbgZS+97REgxoX0bphSo=
+	bh=BTlu2d/OCa7smgTdfnf6rps6xmzbDobGt8v/NuBgfVM=;
+	b=Pzz4Th0twSsfhnvkp/csMLOjFh5gw+S6uZXuUYmjjDmKr9GhKhdHiAP3V/2P5ExV1x19PC
+	2Uo3ZB/uEjIL1UN5R1Fl/iz/0EHFpxXWN2v3qzB5g67FFT1tm5o2ZZc3GCDOTmeW8eNZZu
+	pItir6RWYCAlkALcguREXY5bNKI0i/o=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HEpsrrYD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5pjDvXRA;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365392; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HIRnNr9H;
+	spf=pass (imf23.hostedemail.com: domain of fweimer@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=fweimer@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760365841; a=rsa-sha256;
 	cv=none;
-	b=Qm69c4QjUrfd4Rw7GN8vcoooDQ3uUtmPhULtPj64Y0nXckik1HXBUa0xB50AYPcO46FGlC
-	ZqM8CeHXJeUQOohJ7EghKGyBYQd5n0vfOHGdKfMiV0FJquHDbmkBUynL3u8PMei+B4ScLB
-	VCEosiRNEho1Do+kzaL7El5gkaZBX2M=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=A3kltrKU/gOfZzlFJ9v8JUL1Af4aupTrcOhfvkmLY9TRwFuwkejpjB3dDRuK3uUR8tWtvc
+	Upy9QK+31d8g0I3nn64RYNucCFNzo8w+9tIHFC1nhs3oHd/ojG6Wr1tuO0G+HIrZ7j8l/C
+	FVekXMHbwy8lmzL3kRgXu9apkYuHZYQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760365840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BTlu2d/OCa7smgTdfnf6rps6xmzbDobGt8v/NuBgfVM=;
+	b=HIRnNr9HN4vk1HKut9LxvJuGhRMtzzUSIbIhjwL/0Dos8LC2SLh0AoUZoixxzjWoJqz8H7
+	6RRmrZbMIr55j7J+gEJ3qhywdlvBdtNP1lmCuWozgtypzcSVNhEQuOB7V4Fp+Ao96VHVar
+	BsPRvYP7hF4LaJcTm9R4BZ7moAFEMjU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-WHoEOy0QNoS_DHwHLaA70A-1; Mon,
+ 13 Oct 2025 10:30:37 -0400
+X-MC-Unique: WHoEOy0QNoS_DHwHLaA70A-1
+X-Mimecast-MFC-AGG-ID: WHoEOy0QNoS_DHwHLaA70A_1760365832
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BC11A219A7;
-	Mon, 13 Oct 2025 14:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760365389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
-	b=HEpsrrYD5nTSjDzXcBw7/lADaBtw6Pi01toYeMbhrX6nwRMKFaHNXxKc3zm43JaIrbNkFR
-	5baplKmBffm7XTXvipHyH/RnGh3HS2TycGO+c8wEWOfqj++rPiARStU7KPkSwTpoANUTZa
-	OAiv+4z+zmBzTxytbSwYlHDbPriVH1w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760365389;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
-	b=5pjDvXRAariB+XFpW8neIT5suldrRwrgAvkeEUlFYF5nohnHSeNy3bAAVGv/WTwaxfi3G/
-	oMfsD2fuLmFFvsBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760365389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
-	b=HEpsrrYD5nTSjDzXcBw7/lADaBtw6Pi01toYeMbhrX6nwRMKFaHNXxKc3zm43JaIrbNkFR
-	5baplKmBffm7XTXvipHyH/RnGh3HS2TycGO+c8wEWOfqj++rPiARStU7KPkSwTpoANUTZa
-	OAiv+4z+zmBzTxytbSwYlHDbPriVH1w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760365389;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=P5Lw4ToLU1Itg1XX8KOQTgSZN6HqmiufSv56wGNzAnM=;
-	b=5pjDvXRAariB+XFpW8neIT5suldrRwrgAvkeEUlFYF5nohnHSeNy3bAAVGv/WTwaxfi3G/
-	oMfsD2fuLmFFvsBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A8DA913874;
-	Mon, 13 Oct 2025 14:23:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UsztKE0L7WgFFAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 13 Oct 2025 14:23:09 +0000
-Message-ID: <ca53e0cd-95a3-43c9-b012-194d80cb3fcc@suse.cz>
-Date: Mon, 13 Oct 2025 16:23:09 +0200
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AAB3019560A7;
+	Mon, 13 Oct 2025 14:30:29 +0000 (UTC)
+Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.50])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 414E01954107;
+	Mon, 13 Oct 2025 14:30:12 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Charles Mirabile <cmirabil@redhat.com>,  pjw@kernel.org,
+  Liam.Howlett@oracle.com,  a.hindborg@kernel.org,
+  akpm@linux-foundation.org,  alex.gaynor@gmail.com,
+  alexghiti@rivosinc.com,  aliceryhl@google.com,  alistair.francis@wdc.com,
+  andybnac@gmail.com,  aou@eecs.berkeley.edu,  arnd@arndb.de,
+  atishp@rivosinc.com,  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,
+  bp@alien8.de,  brauner@kernel.org,  broonie@kernel.org,
+  charlie@rivosinc.com,  cleger@rivosinc.com,  conor+dt@kernel.org,
+  conor@kernel.org,  corbet@lwn.net,  dave.hansen@linux.intel.com,
+  david@redhat.com,  devicetree@vger.kernel.org,  ebiederm@xmission.com,
+  evan@rivosinc.com,  gary@garyguo.net,  hpa@zytor.com,  jannh@google.com,
+  jim.shu@sifive.com,  kees@kernel.org,  kito.cheng@sifive.com,
+  krzk+dt@kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  lorenzo.stoakes@oracle.com,  lossin@kernel.org,  mingo@redhat.com,
+  ojeda@kernel.org,  oleg@redhat.com,  palmer@dabbelt.com,
+  paul.walmsley@sifive.com,  peterz@infradead.org,
+  richard.henderson@linaro.org,  rick.p.edgecombe@intel.com,
+  robh@kernel.org,  rust-for-linux@vger.kernel.org,
+  samitolvanen@google.com,  shuah@kernel.org,  tglx@linutronix.de,
+  tmgross@umich.edu,  vbabka@suse.cz,  x86@kernel.org,  zong.li@sifive.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+In-Reply-To: <aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com> (Deepak Gupta's message
+	of "Thu, 2 Oct 2025 09:45:40 -0700")
+References: <f953ee7b-91b3-f6f5-6955-b4a138f16dbc@kernel.org>
+	<20250926192919.349578-1-cmirabil@redhat.com>
+	<aNbwNN_st4bxwdwx@debug.ba.rivosinc.com>
+	<CABe3_aE4+06Um2x3e1D=M6Z1uX4wX8OjdcT48FueXRp+=KD=-w@mail.gmail.com>
+	<aNcAela5tln5KTUI@debug.ba.rivosinc.com>
+	<lhu3484i9en.fsf@oldenburg.str.redhat.com>
+	<aNxsWYYnj22G5xuX@debug.ba.rivosinc.com>
+	<lhuwm5dh6hf.fsf@oldenburg.str.redhat.com>
+	<aN6sNFBzx8NPU3Th@debug.ba.rivosinc.com>
+Date: Mon, 13 Oct 2025 16:30:09 +0200
+Message-ID: <lhujz0yoowe.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linus:master] [slab] af92793e52:
- BUG_kmalloc-#(Not_tainted):Freepointer_corrupt
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>,
- kernel test robot <oliver.sang@intel.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, oe-lkp@lists.linux.dev,
- lkp@intel.com, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <202510101652.7921fdc6-lkp@intel.com> <aOzKEsav2RubINEO@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aOzKEsav2RubINEO@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C34D540008
-X-Stat-Signature: pts9cw84ciqupkwxe1tr8cyhugjzm4is
+X-Rspamd-Queue-Id: 3A823140010
+X-Stat-Signature: 19hswad8rjj7rsbbcgm58dd5irb1zi3z
 X-Rspam-User: 
-X-HE-Tag: 1760365391-751156
-X-HE-Meta: U2FsdGVkX1/Fx66tq6Y+smUoYygxg6ulySlYoy5Ivpcd4uxbc+aq5fg4WSerd8e6HF3gAq2xWsQemu0z7E2v4xpY2QeOMlNsVYbDobMGq4kMOKvf4mKcs0+P2XTZITZDfwD5Zxk2gS6fm6DUeIkK5ZPpzubKRu5l0nO+cUn8OtoMm1/eVmoxKgCpfXGtP/caae6kgmk9f3VpVUSad17v4SNZOGQMrRx9PMGZxLLErUZ0qW572Ew5XxcUzJSYYBz115vUsHgyAB9PanDQXZkmYF/khvSrcXo8tltxza87TD7FJrfM5em0mtx8grTibwvweof79ETzWPWGHbZK+sP7QTiZBaATqiFY1XT0qQ83Z7Hab2JUm7rSNW/3rsOTp+ORbIUjblj5JE+NfEq74+DihGEwpD2G/+ufBvEetL7NIzOuq6pqQZpKCcPYEZdD465Ljq7cAIN52jelLtFhzGhEOptPN2iIsafQI6w8tg2ouTqo74otgiQWsMqnQx36eLvFzUGzjItO7Lw9jqphuN7PqGG9smyGDINYbYQsczeYFaAKFkVhovZsIxbYiey9yODv+/IOku7Dy1niZ9s2G5HWchGnrVXAXg/hq2UFRAygqIa6l9B5Mv0wR4HxtTe6PzezgYKpBxb7nuukQQwETrNXSQpbAFxQ881tcPf2YCLgqpgOopw26xZiH+BfDkI1IYaJLUJM3I7d1LrrEtrWvLreNqUfQvmeMBh0QvWnJieoFmdotHpxkDnBpr5BJebObgSacA4Dz8ROvdy/wz9hsIXAPHvv14jiKchtPb8FkzQ/KIP6FupVpKW25yAjRzq1Bh6h8u7MqcN5s68A8+iLVnvc8Pih/KaTbAqWY67bhGuL+OkqDJAZxfnc0XvDLJMhd5XkwDv3Nh2iHVoV/8jxDteiIk97MrpeGBV+i4ZQ2LZ9P2/nQOoJKKfgLGjNJJQO/MHvNrjrncKsrnCueobsofZ
- oaljgQiJ
- DNVfdTHkeR/LdITabUSn2YIz/764YA6y1h1rr3pVetqwUQKjF84pzCiKJ7RsJjWwVro3BOVxJNKZKKtmYuPHv3x29CNDjhSnNeJZW/y/m98tQWGdpfSZ3PbvQ7YHtELrNgYDGz4v7uYmsFy25IW/GUWJrYHUdbhD5nxySMC2DZxivhh4tl7nQIB9GQR3tdVskh4I6SxXuXxmBRz4EMEUOdO4q/sW1E1BXgSChgGonkz3UR8CHIQFQl1QB62d185NNwHsQPk0s3KfUhSSDHkC+de0K0ZuEckJ/E5FsXd8lTPTdLUP5GojjHs9wlZsK8mV/MTKdrSsq4SR2Do2GDocGAwBS81D5slvE8KBsJQjwWVdomvV3byjd8CWIweI23tZLFV/v
+X-HE-Tag: 1760365841-848807
+X-HE-Meta: U2FsdGVkX1+OT0Az7whZX6O6B3cjn6mvsTQnwvkKOuy/1Hb+nVFg9eF+DOPF1nipQBI6O+lsVzalp+jTbHdQ5BXF4E6WYGhfpeejJVmlC45h+mXn8h99d5MLctlvMGGe5Q/azWAj0/ppzfvIPnuF8IRhxehGOaP9ctEYbnK9ki0K77sJ5hHEEcImbFgu3SMUvhDSRATKsJRubtPxeppymH1GRxm7dmMEkKUdnpyHxzeUMw5F6LB80l7BVxnJpe3nEGc+4RkYChXxRC5J7XuPjhhQERdFWVlj1iDhVALvfagp7i7eUZIc6DoVrPjXTvzI81pix50fCJADxu8NsspQJbAIWC5Lr49886BwHRobkNv8ZCq4/uRGDDooxCV73Jz2hh6AKAIHWSsDI/or6+X0ekbxVVJOUJxURb7w7NW7nf+CywJA6kGM5S7yf5T29F4krV/8R1Ud8shzfqhaJi7G4S8De25Gxo6qr1SS9CMlW5K5nK4STMQ7sbSX8ptfSV3m/l0CQp8jaGst/1zSHfpPjPDyHGSpkb6sDiA2nxxifE1d15a79/24Ih6tdf882EXno8Di0rxnpGC7yjA5BzSjmvwfT+iAcpy+4hcpgikcn2j5d9R+fhYf92beTlzdhTF5MSRUC+lmFUgLOOp3ynmrArw2/0WC0VlaaHpNG9yKPSJsIdqcqKfsutFIu17+KKWg5TabiNRyYAcgvAg0Ima4P117MiO40a8AXdlDf580+4f7WI+lyjdQhlD46jnbdlkx/UFPxtiH6jn3nrbRp0IESfjGXqxguBXrTF8MPFilygmdNVQAIqywgOdSbrCRKphgigpsFsRNrofOHBTUPjQ1otk0SD3I9lTp/zG/W/oKhW8pMa+6FbhuAc1Qt+L+v9G734ejjQpMqS+BkDzU6aY3f8UbUYwCDJYSgLje7tIsoXVE4THFHXBNZtNsPZ1GIbEVbK8gtfaqHzuJU4aBIda
+ 5GnmSBjp
+ m+WVBfjYOCgqxmycYG51lrdMPXDM4xQBtUne2PLxT/ymwn3DipwBcJS50uy1+LzBQxEFwH40x3QZCha66K3o8LGLS0x7M/vB7K3HgiNtjojVtUPAvh7XB+27Xyq9ZygxAeIMLlglxwpxV0r2m2PiBzc1rVs0eN9kjlB7sqxrvKLM5DnxJCLMG1kloMAI8mfIlAEx8yRis4I2MSSfOTCNq7btCnSGzChqNhqzdwZOzmfdFDi0A9/bJgxf2UTcLRz5HPfPawjjDgXx8cfoKaVq2OpqbRmNDdC+KyVFh7dPcCjPS8z3QyN+2jjtVnA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,168 +132,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/25 11:44, Harry Yoo wrote:
-> On Fri, Oct 10, 2025 at 04:39:12PM +0800, kernel test robot wrote:
->> 
->> 
->> Hello,
->> 
->> kernel test robot noticed "BUG_kmalloc-#(Not_tainted):Freepointer_corrupt" on:
->> 
->> commit: af92793e52c3a99b828ed4bdd277fd3e11c18d08 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
->> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git
->> 
->> [test failed on      linus/master ec714e371f22f716a04e6ecb2a24988c92b26911]
->> [test failed on linux-next/master 0b2f041c47acb45db82b4e847af6e17eb66cd32d]
->> [test failed on        fix commit 83d59d81b20c09c256099d1c15d7da21969581bd]
->> 
->> in testcase: trinity
->> version: trinity-i386-abe9de86-1_20230429
->> with following parameters:
->> 
->> 	runtime: 300s
->> 	group: group-01
->> 	nr_groups: 5
->> 
->> config: i386-randconfig-012-20251004
->> compiler: gcc-14
->> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
->> 
->> (please refer to attached dmesg/kmsg for entire log/backtrace)
->> 
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <oliver.sang@intel.com>
->> | Closes: https://lore.kernel.org/oe-lkp/202510101652.7921fdc6-lkp@intel.com
->> 
->> [   66.142496][    C0] =============================================================================
->> [   66.146355][    C0] BUG kmalloc-96 (Not tainted): Freepointer corrupt
->> [   66.147370][    C0] -----------------------------------------------------------------------------
->> [   66.147370][    C0]
->> [   66.149155][    C0] Allocated in alloc_slab_obj_exts+0x33c/0x460 age=7 cpu=0 pid=3651
->> [   66.150496][    C0]  kmalloc_nolock_noprof (mm/slub.c:4798 mm/slub.c:5658)
->> [   66.151371][    C0]  alloc_slab_obj_exts (mm/slub.c:2102 (discriminator 3))
->> [   66.152250][    C0]  __alloc_tagging_slab_alloc_hook (mm/slub.c:2208 (discriminator 1) mm/slub.c:2224 (discriminator 1))
->> [   66.153248][    C0]  __kmalloc_cache_noprof (mm/slub.c:5698)
->> [   66.154093][    C0]  set_mm_walk (include/linux/slab.h:953 include/linux/slab.h:1090 mm/vmscan.c:3852)
->> [   66.154810][    C0]  try_to_inc_max_seq (mm/vmscan.c:4077)
->> [   66.155627][    C0]  try_to_shrink_lruvec (mm/vmscan.c:4860 mm/vmscan.c:4903)
->> [   66.156512][    C0]  shrink_node (mm/vmscan.c:4952 mm/vmscan.c:5091 mm/vmscan.c:6078)
->> [   66.157363][    C0]  do_try_to_free_pages (mm/vmscan.c:6336 mm/vmscan.c:6398)
->> [   66.158233][    C0]  try_to_free_pages (mm/vmscan.c:6644)
->> [   66.159023][    C0]  __alloc_pages_slowpath+0x28b/0x6e0
->> [   66.159977][    C0]  __alloc_frozen_pages_noprof (mm/page_alloc.c:5161)
->> [   66.160941][    C0]  __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
->> [   66.161739][    C0]  shmem_alloc_and_add_folio+0x40/0x200
->> [   66.162752][    C0]  shmem_get_folio_gfp+0x30b/0x880
->> [   66.163649][    C0]  shmem_fallocate (mm/shmem.c:3813)
->> [   66.164498][    C0] Freed in kmem_cache_free_bulk+0x1b/0x50 age=89 cpu=1 pid=248
-> 
->> [   66.169568][    C0]  kmem_cache_free_bulk (mm/slub.c:4875 (discriminator 3) mm/slub.c:5197 (discriminator 3) mm/slub.c:5228 (discriminator 3))
->> [   66.170518][    C0]  kmem_cache_free_bulk (mm/slub.c:7226)
->> [   66.171368][    C0]  kvfree_rcu_bulk (include/linux/slab.h:827 mm/slab_common.c:1522)
->> [   66.172133][    C0]  kfree_rcu_monitor (mm/slab_common.c:1728 (discriminator 3) mm/slab_common.c:1802 (discriminator 3))
->> [   66.173002][    C0]  kfree_rcu_shrink_scan (mm/slab_common.c:2155)
->> [   66.173852][    C0]  do_shrink_slab (mm/shrinker.c:438)
->> [   66.174640][    C0]  shrink_slab (mm/shrinker.c:665)
->> [   66.175446][    C0]  shrink_node (mm/vmscan.c:338 (discriminator 1) mm/vmscan.c:4960 (discriminator 1) mm/vmscan.c:5091 (discriminator 1) mm/vmscan.c:6078 (discriminator 1))
->> [   66.176205][    C0]  do_try_to_free_pages (mm/vmscan.c:6336 mm/vmscan.c:6398)
->> [   66.177017][    C0]  try_to_free_pages (mm/vmscan.c:6644)
->> [   66.177808][    C0]  __alloc_pages_slowpath+0x28b/0x6e0
->> [   66.178851][    C0]  __alloc_frozen_pages_noprof (mm/page_alloc.c:5161)
->> [   66.179753][    C0]  __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
->> [   66.180583][    C0]  folio_prealloc+0x36/0x160
->> [   66.181430][    C0]  do_anonymous_page (mm/memory.c:4997 mm/memory.c:5054)
->> [   66.182288][    C0]  do_pte_missing (mm/memory.c:4232)
-> 
-> So here we are freeing an object that is allocated via kmalloc_nolock().
-> (And before being allocated via kmalloc_nolock(), it was freed via
-> kfree_rcu()).
-> 
->> [   66.183062][    C0] Slab 0xe41bfb28 objects=21 used=17 fp=0xedf89320 flags=0x40000200(workingset|zone=1)
->> [   66.184609][    C0] Object 0xedf89b60 @offset=2912 fp=0xeac7a8b4
-> 
-> fp=0xeac7a8b4
-> 
-> the address of the object is: 0xedf89b60.
-> 
-> 0xedf89b60 - 0xeac7a8b4 = 0x330f2ac
-> 
-> If FP was not corrupted, the object pointed to by FP is
-> too far away for them to be in the same slab.
-> 
-> That may suggest that some code built a list of free objects
-> across multiple slabs/caches. That's what deferred free does!
-> 
-> But in free_deferred_objects(), we have:
->> /*
->>  * In PREEMPT_RT irq_work runs in per-cpu kthread, so it's safe
->>  * to take sleeping spin_locks from __slab_free() and deactivate_slab().
->>  * In !PREEMPT_RT irq_work will run after local_unlock_irqrestore().
->>  */
->> static void free_deferred_objects(struct irq_work *work)
->> {
->>         struct defer_free *df = container_of(work, struct defer_free, work);
->>         struct llist_head *objs = &df->objects;
->>         struct llist_head *slabs = &df->slabs;
->>         struct llist_node *llnode, *pos, *t;
->>
->>         if (llist_empty(objs) && llist_empty(slabs))
->>                 return;
->>
->>         llnode = llist_del_all(objs);
->>         llist_for_each_safe(pos, t, llnode) {
->>                 struct kmem_cache *s;
->>                 struct slab *slab;
->>                 void *x = pos;
->>
->>                 slab = virt_to_slab(x);
->>                 s = slab->slab_cache; 
->>    
->>                 /*
->>                  * We used freepointer in 'x' to link 'x' into df->objects.
->>                  * Clear it to NULL to avoid false positive detection
->>                  * of "Freepointer corruption".
->>                  */
->>                 *(void **)x = NULL;
+* Deepak Gupta:
 
-Oh wait, isn't it just the case that this is not using set_freepointer() and
-with CONFIG_SLAB_FREELIST_HARDENED even the NULL is encoded as a non-NULL?
+> How will they contribute to CFI bringup without having a CFI compiled
+> usersapce?
 
->>
->>                 /* Point 'x' back to the beginning of allocated object */
->>                 x -= s->offset;
->>                 __slab_free(s, slab, x, x, 1, _THIS_IP_);
->>         }
->>
-> 
-> This should have cleared the FP before freeing it.
-> 
-> Oh wait, there are more in the dmesg:
->> [   67.073014][    C1] ------------[ cut here ]------------
->> [   67.074039][    C1] WARNING: CPU: 1 PID: 3894 at mm/slub.c:1209 object_err+0x4d/0x6d
->> [   67.075394][    C1] Modules linked in: evdev serio_raw tiny_power_button fuse drm drm_panel_orientation_quirks stm_p_basic
->> [   67.077222][    C1] CPU: 1 UID: 0 PID: 3894 Comm: sed Tainted: G    B   W           6.17.0-rc3-00014-gaf92793e52c3 #1 PREEMPTLAZY  2cffa6c1ad8b595a5f5738a3e143d70494d8da79
->> [   67.079495][    C1] Tainted: [B]=BAD_PAGE, [W]=WARN
->> [   67.080303][    C1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->> [   67.085915][    C1] EIP: object_err+0x4d/0x6d
->> [   67.086691][    C1] Code: 8b 45 fc e8 95 fe ff ff ba 01 00 00 00 b8 05 00 00 00 e8 46 1e 12 00 6a 01 31 c9 ba 01 00 00 00 b8 f8 84 76 db e8 b3 e1 2b 00 <0f> 0b 6a 01 31 c9 ba 01 00 00 00 b8 e0 84 76 db e8 9e e1 2b 00 83
->> [   67.089537][    C1] EAX: 00000000 EBX: c10012c0 ECX: 00000000 EDX: 00000000
->> [   67.090581][    C1] ESI: aacfa894 EDI: edf89320 EBP: ed7477b8 ESP: ed7477a0
->> [   67.091578][    C1] DS: 007b ES: 007b FS: 00d8 GS: 0000 SS: 0068 EFLAGS: 00010046
->> [   67.092767][    C1] CR0: 80050033 CR2: b7fa58c8 CR3: 01b5b000 CR4: 000406d0
->> [   67.093840][    C1] Call Trace:
->> [   67.094450][    C1]  check_object.cold+0x11/0x17
->> [   67.095280][    C1]  free_debug_processing+0x111/0x300
->> [   67.096076][    C1]  free_to_partial_list+0x62/0x440
->> [   67.101664][    C1]  ? free_deferred_objects+0x3e/0x110
->> [   67.104785][    C1]  __slab_free+0x2b7/0x5d0
->> [   67.105539][    C1]  ? free_deferred_objects+0x3e/0x110
->> [   67.106362][    C1]  ? rcu_is_watching+0x3f/0x80
->> [   67.107090][    C1]  free_deferred_objects+0x4d/0x110
-> 
-> Hmm... did we somehow clear wrong FP or is the freepointer set again
-> after we cleared it?
-> 
+Build glibc themselves and then proceed one library at the time.
+
+>>Another use case would be running container images with CFI on a
+>>distribution kernel which supports pre-RVA23 hardware.
+>
+> Container image with CFI will have glibc and ld (and all other
+> userspace) also compiled with shadow stack instructions in it. As soon
+> as you take this container image to a pre-RVA23 hardware, you won't
+> even reach vDSO. It'll break much before that, unless kernel is taking
+> a trap on all sspush/sspopchk instructions in prologue/epilogue of
+> functions in userspace (glibc, ld, etc)
+
+The idea is that you can use a stock distribution kernel to run CFI
+images (potentially form a different distribution or version of the
+distribution).
+
+But maybe none of this really matters.  How far out is CFI-checking
+hardware?  Is it going to arrive much later than the RVA23 flag day
+that people are suggesting?
+
+Thanks,
+Florian
 
 
