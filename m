@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C458ECCD18C
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E090CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 20:35:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 254BC8E0087; Mon, 13 Oct 2025 16:35:37 -0400 (EDT)
+	id DA09D8E0088; Mon, 13 Oct 2025 16:35:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2054B8E0036; Mon, 13 Oct 2025 16:35:37 -0400 (EDT)
+	id D50BD8E0036; Mon, 13 Oct 2025 16:35:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CE0A8E0087; Mon, 13 Oct 2025 16:35:37 -0400 (EDT)
+	id C666E8E0088; Mon, 13 Oct 2025 16:35:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EADDE8E0036
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:35:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BC96BC060F
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:36 +0000 (UTC)
-X-FDA: 83994246672.14.3223F72
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B5B7F8E0036
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:35:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B1E61405D4
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:44 +0000 (UTC)
+X-FDA: 83994247008.18.A962A8E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2A33B100015
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BOcgefUb;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id D867420007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:35:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hwx+RCh+;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760387735;
+	s=arc-20220608; t=1760387743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MDhmNjrH/ApFrXrP814IcRBr/P0WKwEANNyt3qUOrh8=;
-	b=yqgZEGOeN+1gAVgO0YyJ0rB/+jfn+HQR+QS/dZGhNCa0tOABeuFJ9UwZcpB9r7e3nnG9hm
-	cj7ncIEAWFfPltrrCLq2YOdraurMH09kHI6nayRRIST4Oa7eAR/Rmr9UnCIZv4cufq9z58
-	/bP+xxgP8p8JB1f1J59mn+TbXIEpRX0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387735; a=rsa-sha256;
-	cv=none;
-	b=7MEZ5odF6Sk44VQSba3q8yhD6xIEBIo2n2muerOqlADXvS/3gu9Qar+ssteJcpPTFQ0o9G
-	tMb7XGsp+0VccbXINXYT9U+62BJ/oCoTPmx/vXLqIXVUCcE8b5UfChPxVnQU/zHUMWfUIv
-	0uoea1gx1Ltw6f5xZqBnDfS6BzowGMU=
+	bh=o2RaB4lHHhlKa+8v8iZE0Fllt8dt+Sn1Sj5thp5J+H4=;
+	b=YMoorRUWNGh6gWN9zoRFEe5GY80lpcBjAAIdKT3cJjJ52VB1raZbLuy8tyg40xPJHp4+uT
+	GzdW0XVNFF39Zk4X6jSF4svx2XPEkjBwl++LgJNsWnusTKgqvpS1b5scJaDqMeX6wuTSF2
+	DwCRYZ4DqmArKupKfem/g/iIlF2y0YQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BOcgefUb;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hwx+RCh+;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760387743; a=rsa-sha256;
+	cv=none;
+	b=eYZJd3E/zH4L8prA5ZSGtau9F1XCZCSL3whpD63ZEZNqWj9Nssr9tnn/+WkIyoMb81pJxc
+	bm8CBH1GvMTLK+g33mE8P9ZlNr0xEpbLYxCOHDC6Ko5JkQqaGDgO5lUmx112kHlFNkKpKA
+	cg/lV8paFzDKWhwUn33OFpaQKFF4hnw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F84F44836;
+	by sea.source.kernel.org (Postfix) with ESMTP id E5AE44374F;
+	Mon, 13 Oct 2025 20:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858D8C4CEE7;
 	Mon, 13 Oct 2025 20:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE283C4CEE7;
-	Mon, 13 Oct 2025 20:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760387734;
-	bh=PsMKH0OPMca3EhEEuIU354JdvA7f16B4eqaq2LuoXwI=;
+	s=k20201202; t=1760387741;
+	bh=n52cAu7bEMYLK1x1CARbNE9gVHxK/1DrMBlj3TyiG6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOcgefUbdM8KZZtxNCa5o0JhMH9FSXBLb7n4WPeOsF2XgdoK83GOUM6roqgwxi6fg
-	 lmeI43Wlh9lqJhfgRWkv5kPv0yv8NZJhMRURGFHNTE1N+A2btbuj7S4UK4KPSD//lj
-	 N94VL2GZrzRWuYxj7iP5IBsWSKOSinM80+mfqjqim1clnFbPeZF40wiaeoKIbqL6ks
-	 GkQ1KbgSilayV8mjiTJNiHaQM3lR8PnlIFvRB73rfRxrAg9FKRdXQDU4Z8S2AHPsRu
-	 TGDBiyljEp+s5CxXNwhR3i9ANDzt9nGvwUi4s5urUMUyWglryJ/ELSPTbcf4kHT8IX
-	 +SFKeeSMNX4fw==
+	b=Hwx+RCh+ZncRTZW4J3H101zxwGK2eXC7I/AqUiWKIv2Duuwwy39jB7rQi4ZnPKStV
+	 AbZRbdrU5REoIKByt/LVOaIEFYsTkgcDK/rQsCPMoITkhkdZg7ALJytPyN7MOI1vc+
+	 RT2iSlPvYNcvFM6/vFKmR2bKzL+SNzPQURqdZYp7huxAcjMbS59DbwOQUz7/bpVVj0
+	 HlKhsXGjIBcqreM/spUfVwgtUf7zzM7ao5qVaRVLlRlbKWfKCo1/4m/YIzCT1UeKOQ
+	 h3AAzzYPrXCd+VjamYW07Z5gyLAAw3SuDh1Wkx20np8piV10n7YbOohjL426Rqpvuk
+	 +nJqSOrG0UW6A==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -102,21 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 28/33] kthread: Honour kthreads preferred affinity after cpuset changes
-Date: Mon, 13 Oct 2025 22:31:41 +0200
-Message-ID: <20251013203146.10162-29-frederic@kernel.org>
+Subject: [PATCH 29/33] kthread: Comment on the purpose and placement of kthread_affine_node() call
+Date: Mon, 13 Oct 2025 22:31:42 +0200
+Message-ID: <20251013203146.10162-30-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251013203146.10162-1-frederic@kernel.org>
 References: <20251013203146.10162-1-frederic@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6pq5jpwtj8yb9rwnzumsyiz47rh5ar3x
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D867420007
+X-Stat-Signature: 33hm3e1h1kxwzgqm9jk5fnm61iohgt65
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A33B100015
-X-HE-Tag: 1760387734-103409
-X-HE-Meta: U2FsdGVkX18FWv8ENPa8HE1uejJFAiElxTdbP/xB067WBqmfKK2rmcF+kGFli6FFlsr9Jox8E2UvYMMEtxB+C3oLLrBxPgT7HojyaqyIe3QHgUM/Gn4jhyE5L2sxWNzMohyyZpDwtYZbq1ayam9FN3SlbkJHXxJyx/YitALFUU1gpGgCNVJQXQRo2QB2pm3IMqpQTHap3h1vHFaxbUu4TJ6jm1G4ONGfxYxwBalFIER2SzueUYhO7WYn9jpL5IExZ2kTJVs0dVht6YprHy1sWm5TbalWHWBGro4mWU3Im80Jd+t3qKRbzgcFWjPUYsPBkbLxOASXHcWWU8PZCTPHx+gz0IX2kcBxqgDCfkEzdL0N2tfhfZmQeT1/eRljcqwvAoX8RO25k2eSWrOvmZxcURXKoRfApMNBl4bRgT/6MIgDVgmjnWALvsdokoZ3UHvlhsrscpYmBbLwjxH9WSzaaji8ECft3jBtSW1ocuqFpGs/HOCVMpgNWW6ww8zZtDEsB3A/ThOj8wIx2B0hwYEBJgWOJL4tBMuNidPLvSm5P1P8/lb8NkSbmgqITfNAHSs3mztKDAA2MVF0qBSzfA340SAG+1NLaAO7D7EHZoXxc5JUWGEUunpUqUpkgZkh2O8hw8PvDaptLTBQdFBBrltRBWkQgyeClaTHtjRFyzMctrxKL42o1gn1nmjK8/ocivxbOyIzEVHhc8urRBKHRwY9JAxA6vI3qDZ3U6QOuNeGMfws30ZoAmUEGE7XwCobw8exaQorva8RP8EHSfqdOb0T+YHB8yNZ3+RYXm8PjBOv3E+t3xhn76R51nrmxKRtW7j3FpdO7Eqgm9WJooEGU8L2kMAnklkwQ5Z1LZJx2URrLFVTqfPbzjBElPeMx4DVMuI0e5jMiBnQZWGKD/qnZvRP3fluJG+txL8x/18fbld7jKyRJQXPo/74PQ==
+X-HE-Tag: 1760387742-668283
+X-HE-Meta: U2FsdGVkX1//YPN6Ofdqbr9VBPS40Ym0So5lgRDINSAy4G6O3h3P1275+W9WJqATpcKW/9X3CdcXzFl+5slt/16IvVcbnKuiMFzWkvxLmKjcT/SEAn/0P/xsQAWHZPkUBLzM26QZZHtv8ZFvpy8bmWwCxXyLwK4d54kVXGkYxrQT4y0juJc78w35cgZfhU60b6T528zv/RGUwC+JaMIkPmVOX3zfls9idvGAZS8m6PSMUOSk4NPZThn574ehMv5KgyGfhPyo54q6dNRtMDvkV0NmlaezcpIoz6ySzzEwlpb5yXtanR5UgBjlxXyzAcQenX4nCD+enTNo4aeSeyc6kfOuA8CwiKEQ7OKZCvJxIF4F+YprIXOSMt1lXS5zjd4QSepgysJ3DRuS17lMGQsz3kxC6OEySRjtAWM2lZqgKU4g0nKeJC3szE0Kicqk4xA6Z07YBxj/HrgYRFBsqOtvE1emoT2q/MYZLbDtDcTpcEcgz06lbfRkbEFAHGxaePiNK0fplPRLdpSz8wy59OxP3qoR4X/T5M0QleLrSuK6TQpIS8GdOm6po/UGQ5FsPBAYCZoihOntGPOU+MYX/k9Mgm1liZAVIVNGcvgFcXaIjy1S+MRszmfvlcBkAzoBeD7y+bh5MVBHLC0vxQq3dd2+4/cRi8jDHlId/BpnZ6g4+8k3mOCrEEmLcicDKVGJqoa8002UywmiSNy416azCEg+aHz1Ti3QZmeSAgPAGbEHJ3yATVfMKeFMnt+cJPf0THK1t/3tASFHMKXBgTRkc/fY74KlBA8mtL+Zs+9AwcVQ0HInmHP4ett379rFQxU+tCasBxEIwGppu9/eoo/SXCKgJMkZH0F51n7kndZg6XdELHF7tp9K0+ziv2AXSk6kDKlV0dkDOWO8+jxpUqB8HhwNjjvN3Iieeo9sXPrqY2ml4ChoCuEqfnd1VkVWjdne5vlhEzhxGgwWVI4ABm2QUeD
+ DKwUWn3f
+ uOtRioGf9VBB+p8rKH4fMrG08NCUS5tt1a8frE5E7kjyU1chuMC08SqKAQ5gV8kJhuBvAmDGs65nTxpJf2OKr2tLVQkUFcoLd8haj6OJkgO8Zq+VNows7590fUGyk85fYPedK4PoQKg9Hpu7WgjCFkWA06g8xykRyWTfVQssbJ7UwotLysjgSp8bebr8mFW1DjhMQYHRpOnaZd1dp0H7ySnYwbAk7R7IRzIejpxvHWZWTqDt+RO6TCIVfE75zM+H5NjsWSc8GILu8iKLvYe++bedW/5K7+9RpRM5s4kLwmWPJav7TqObbd+H01cLMUHtLEhkenmbA7BmImk7yeyei/+NOvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,132 +125,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When cpuset isolated partitions get updated, unbound kthreads get
-indifferently affine to all non isolated CPUs, regardless of their
-individual affinity preferences.
+It may not appear obvious why kthread_affine_node() is not called before
+the kthread creation completion instead of after the first wake-up.
 
-For example kswapd is a per-node kthread that prefers to be affine to
-the node it refers to. Whenever an isolated partition is created,
-updated or deleted, kswapd's node affinity is going to be broken if any
-CPU in the related node is not isolated because kswapd will be affine
-globally.
+The reason is that kthread_affine_node() applies a default affinity
+behaviour that only takes place if no affinity preference have already
+been passed by the kthread creation call site.
 
-Fix this with letting the consolidated kthread managed affinity code do
-the affinity update on behalf of cpuset.
+Add a comment to clarify that.
 
+Reported-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- include/linux/kthread.h  |  1 +
- kernel/cgroup/cpuset.c   |  5 ++---
- kernel/kthread.c         | 38 +++++++++++++++++++++++++++++---------
- kernel/sched/isolation.c |  2 ++
- 4 files changed, 34 insertions(+), 12 deletions(-)
+ kernel/kthread.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/kthread.h b/include/linux/kthread.h
-index 8d27403888ce..c92c1149ee6e 100644
---- a/include/linux/kthread.h
-+++ b/include/linux/kthread.h
-@@ -100,6 +100,7 @@ void kthread_unpark(struct task_struct *k);
- void kthread_parkme(void);
- void kthread_exit(long result) __noreturn;
- void kthread_complete_and_exit(struct completion *, long) __noreturn;
-+int kthreads_update_housekeeping(void);
- 
- int kthreadd(void *unused);
- extern struct task_struct *kthreadd_task;
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 817c07a7a1b4..bc3f18ead7c8 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1182,11 +1182,10 @@ void cpuset_update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
- 
- 		if (top_cs) {
- 			/*
-+			 * PF_KTHREAD tasks are handled by housekeeping.
- 			 * PF_NO_SETAFFINITY tasks are ignored.
--			 * All per cpu kthreads should have PF_NO_SETAFFINITY
--			 * flag set, see kthread_set_per_cpu().
- 			 */
--			if (task->flags & PF_NO_SETAFFINITY)
-+			if (task->flags & (PF_KTHREAD | PF_NO_SETAFFINITY))
- 				continue;
- 			cpumask_andnot(new_cpus, possible_mask, subpartitions_cpus);
- 		} else {
 diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 8d0c8c4c7e46..4d3cc04e5e8b 100644
+index 4d3cc04e5e8b..d36bdfbd004e 100644
 --- a/kernel/kthread.c
 +++ b/kernel/kthread.c
-@@ -896,14 +896,7 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- }
- EXPORT_SYMBOL_GPL(kthread_affine_preferred);
+@@ -453,6 +453,10 @@ static int kthread(void *_create)
  
--/*
-- * Re-affine kthreads according to their preferences
-- * and the newly online CPU. The CPU down part is handled
-- * by select_fallback_rq() which default re-affines to
-- * housekeepers from other nodes in case the preferred
-- * affinity doesn't apply anymore.
-- */
--static int kthreads_online_cpu(unsigned int cpu)
-+static int kthreads_update_affinity(bool force)
- {
- 	cpumask_var_t affinity;
- 	struct kthread *k;
-@@ -926,7 +919,7 @@ static int kthreads_online_cpu(unsigned int cpu)
- 			continue;
- 		}
+ 	self->started = 1;
  
--		if (k->preferred_affinity || k->node != NUMA_NO_NODE) {
-+		if (force || k->preferred_affinity || k->node != NUMA_NO_NODE) {
- 			kthread_fetch_affinity(k, affinity);
- 			set_cpus_allowed_ptr(k->task, affinity);
- 		}
-@@ -937,6 +930,33 @@ static int kthreads_online_cpu(unsigned int cpu)
- 	return ret;
- }
- 
-+/**
-+ * kthreads_update_housekeeping - Update kthreads affinity on cpuset change
-+ *
-+ * When cpuset changes a partition type to/from "isolated" or updates related
-+ * cpumasks, propagate the housekeeping cpumask change to preferred kthreads
-+ * affinity.
-+ *
-+ * Returns 0 if successful, -ENOMEM if temporary mask couldn't
-+ * be allocated or -EINVAL in case of internal error.
-+ */
-+int kthreads_update_housekeeping(void)
-+{
-+	return kthreads_update_affinity(true);
-+}
-+
-+/*
-+ * Re-affine kthreads according to their preferences
-+ * and the newly online CPU. The CPU down part is handled
-+ * by select_fallback_rq() which default re-affines to
-+ * housekeepers from other nodes in case the preferred
-+ * affinity doesn't apply anymore.
-+ */
-+static int kthreads_online_cpu(unsigned int cpu)
-+{
-+	return kthreads_update_affinity(false);
-+}
-+
- static int kthreads_init(void)
- {
- 	return cpuhp_setup_state(CPUHP_AP_KTHREADS_ONLINE, "kthreads:online",
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 691f045ab758..93de1304e6d4 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -150,6 +150,8 @@ int housekeeping_update(struct cpumask *mask, enum hk_type type)
- 	mem_cgroup_flush_workqueue();
- 	vmstat_flush_workqueue();
- 	err = workqueue_unbound_housekeeping_update(housekeeping_cpumask(type));
-+	WARN_ON_ONCE(err < 0);
-+	err = kthreads_update_housekeeping();
- 
- 	kfree(old);
++	/*
++	 * Apply default node affinity if no call to kthread_bind[_mask]() nor
++	 * kthread_affine_preferred() was issued before the first wake-up.
++	 */
+ 	if (!(current->flags & PF_NO_SETAFFINITY) && !self->preferred_affinity)
+ 		kthread_affine_node();
  
 -- 
 2.51.0
