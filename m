@@ -4,127 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92A7CCD18D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 16:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5397CCD183
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 16:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 520AE8E0054; Mon, 13 Oct 2025 12:20:09 -0400 (EDT)
+	id B87288E001A; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D18F8E0009; Mon, 13 Oct 2025 12:20:09 -0400 (EDT)
+	id B5F588E0009; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E72F8E0054; Mon, 13 Oct 2025 12:20:09 -0400 (EDT)
+	id A4E318E001A; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CAAE8E0009
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:20:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C173259635
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:20:08 +0000 (UTC)
-X-FDA: 83993602896.18.8C7A30D
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 991C740010
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:20:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=NkLvXPLt;
-	spf=pass (imf12.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760372406;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F75F8E0009
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:37:41 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 187F2119CBE
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:37:41 +0000 (UTC)
+X-FDA: 83993647122.02.343E434
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 300851C0005
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 16:37:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DmYP3scw;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760373458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7sWgKFnXKgddcA8SesxIqcxmzVwUrjw9E9Rc16q4eHc=;
-	b=Rg7wRUHOa+DRMQ8d8LUigMWl+U3wY2Dq+5atJJ4ijzdXJ10ISF6rJdeGlZwYjUWH8tAm9d
-	tJmzNF0g5Ch7+p6lLdhWh0OKQJWUEqDK5cok/O97lmrajIF5uhGJHhYhjmqsp0AXL9nNiS
-	U44WGAEaaucIHEw5Z+Rz66DOshQwrj8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=NkLvXPLt;
-	spf=pass (imf12.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.41 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760372406; a=rsa-sha256;
-	cv=none;
-	b=mMvIbcnGnoHdgGeXEzvbguPdp5DGZ0xvCWQh328V1zWTsiTgsARigHW/V3qIrsNaIIWmzz
-	73p/XGkH254D+SmWSSDF+/AIlJtfrt9qWs/jAls787x6KHO4RComI7uXjLxEwUyW4vGNaZ
-	97jbSPtxB1Tdix4Lv6MYjhMYcHMSu+Q=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-636535e4b1aso8628925a12.0
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1760372404; x=1760977204; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7sWgKFnXKgddcA8SesxIqcxmzVwUrjw9E9Rc16q4eHc=;
-        b=NkLvXPLtoqy64MjlRO6nrrWjGWJDq9yLUCxqZ0sjzCoCdpJFEe/pJdprl5DCsc8F9c
-         hCYTFfy/mTQ98FC0lgY+2IQUWSjm+Wmn6q+aIex0sIXsTVoWYAjP9IozVDoDtDP84qgP
-         ZceauCJD3aTYRRdJQ0hp5iTzQ7ISVuR3D6ecc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760372404; x=1760977204;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7sWgKFnXKgddcA8SesxIqcxmzVwUrjw9E9Rc16q4eHc=;
-        b=RkTo6YAKO4HafltXCCC7lNJwvQt379i9x7GM4EiJbd27FC/0fcPZ2h7FvGEEmVHmFA
-         B8dbTGsHtgVvwPN0KpYoePxhGZVF+tOF9csPMSzxVnpSbxAsiqiDaY3vuEYG4h1g01Kz
-         FI/QnCIt2oqEUwa7K8bUJ2+WS1NKM9mb75fKMTGfU0wEC+QFMvfgMhBQ98P9BhOQJA39
-         0rhCT6/H+fztzXNB8SSFHyrgwqASFxwji9J04fZHFSe7hjk5W5vIdVUEMADLzAyNJhgV
-         O1ws3yhHMGS70CJf89zoTa71cqMdJjLqyC3CJ0zD3I3jNI2jXT5+PZj4S4MEAFHkDGV7
-         hwHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWsBusDAHHtKevixbe1ybmWF/TQZcOx6+iSINZpZTPtoNg70h8Bx8+m8r0ZIvxOH70UztjJoIM3zA==@kvack.org
-X-Gm-Message-State: AOJu0YzfKgVQSqw2MT4TrbUpIoWo08pKfztgdzqM+iaAVJK49oxWLbmp
-	oJrdCOm+JxiH+nolV+B6dWo/eVnGte1izKOXFyyT+fRxRx5k0LdA9ZpW9JI9oOUCrO7BnIZMZi3
-	d/7Q6PcE=
-X-Gm-Gg: ASbGncv7tDK1cUHiApez+rLZBMaMIWGRk/mwhZGmh36dFPqD1VC30i9e3VbucwDSeIx
-	JqVpwl8gpZxOUH4+P4JersRx9SSwU86fIoLc32HU9+BucX23rR/peY1hh4RxlfbnKJ1SW91eIKB
-	t8AUwttij22Gsag1/zYqv6CS3TWa4zGFBCuVjNUOdUGmLyqPJYQIdLtORKB1UnnHfat5geAwFDM
-	am361QV6rYPkkej3kGPPkSpWroLOaQ55grT265jcksNpp9BIrZBSN6RzD8QdwZccwIOqEBYMWLx
-	jFmyGOQ/AnK8YUCC2Y6BgTJAwiZiXuQu+joGGZ0zaKoAPw0rvrt1xuyuwYaAWe7DX+jZroQnO03
-	YAm/oZuEqViNhIm4UDSOchTpOiTrWJB/AKV/EQ84fo/q+L0J8hsV3G4v/OMnUS7V6NcgMdanAee
-	/H6k/F7qC/y3xDXC7QnSW2lB0E9w==
-X-Google-Smtp-Source: AGHT+IE/5V1we7mjfSltph2PB14SkEdsf9YF6/SvnBOx6HQEtExLI6O1owR2JQ+Vi6vr3EjUTpbRoQ==
-X-Received: by 2002:a17:907:c297:b0:b3f:f6d:1d9e with SMTP id a640c23a62f3a-b4f40789662mr3068608666b.6.1760372404491;
-        Mon, 13 Oct 2025 09:20:04 -0700 (PDT)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d9525a29sm941505066b.79.2025.10.13.09.20.03
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 09:20:04 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-63a10267219so1613864a12.0
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 09:20:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXJUlk7kT0b3Ep5Kme5PsRwOU7LuN5T7b38DVIw/JS2t8/T4NV5nTFMi3ZF9s/EtPN6Y5UjoK/xzA==@kvack.org
-X-Received: by 2002:a05:6402:35c1:b0:62f:1366:46e8 with SMTP id
- 4fb4d7f45d1cf-639baf075f0mr25361887a12.7.1760372403624; Mon, 13 Oct 2025
- 09:20:03 -0700 (PDT)
+	bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
+	b=7ZScV72ADGZhJmK9t0bKNSZNgXYjPPCjIouzxL64OeJVpm79Ypx02FeAvItkwybFaWhzVy
+	X/1G7BQavhNakHB091uQ5SgWjj9kfi1SK2RCLnyU0gRjlnWpxRtAMZU41pY8rqKsZQ048j
+	Anh/k5BWLtvnIMgaaoquV8GAL9CqGjc=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760373458; a=rsa-sha256;
+	cv=pass;
+	b=mejshEveOWOJwPb8RnvMKg6AOFjPjzFeRp1SPxtogl/aUm3vfjAyNwQyjqwg5qFfq9tb9p
+	2YHn/xLq3kPEOLGQXtIhHZcQMRde/6qLKOaWBrobr1gDBaBN33PEL3qpZWV5iThHeqa40e
+	wFHDzdc9s21W7zDOWeBZMJkouAwc5ZI=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=DmYP3scw;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HbkRU6nXIVpx4l2LvxpS8r2hgrmQqdvINfkUqPUWnNsmvtkw/hOmUCrZLYZNhRFwVxqPolA6RbfV94gu9vrXfjMtJpEQzOnSyiqK7fFwT1YCiCVSF9IHjxyJ73RsC8CA1y8P/5UwtRg8OnYe6y6TD/WrbO16bx5XlhmZt+EjyuGr7XkNBts0kwVODtYWnaNzap2y+yKbxmNHZlbVFqyyx8mLeTmpsiaoj/72idrIT1AbhWdMqws9pqWiPfE40ZtdaUfUE83f39wf9SJ0vuqH8fPPBu+3AXr/lppIhe3enr8tlXIRjGuZAXO6i4q9Fb5PQ+kRtTaOWeHdZw5wrBM8oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
+ b=MdpfYrePllOgvijbsX/Mz+TkvprSbeSi6L8OmZxfNWFyJPhOCeN32goxC3aarThuIP0/ghzrx4hSQIJB4H6XnY2tie0yGGU8zxZquqG8d+b8pKKdtsFBsNdBWF+63n4uK16ZbK/NK8Yfrtx/nAcgVwLHNBxmc8Xahrl6eMrWIskKeTK/l/mvDFx6LLJRRwc4bcrOIpbVixQrawXmA0nhwpa8NWn2ixO04Jw0ra5gQRleTlfD1L+iRaw7kzW7TvPD2gJ6rj2rk89waJS4GlPvmaalikBWax9/4HeCKHDuB0dtLW/gv9g9/sWubUHF1c8F0dK1qVMxDfr3hxw74j2UBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A0zBvNj8oYIfIDI4i6yXlCmmUuLzBe6q2XCS01PHIac=;
+ b=DmYP3scwkwmlwnvJ4JvfHitfwMdF2l8VKuJJ1EfuSTsYOJ/Z1hIZ3Ev/WhJLu0yf7504ffimp1chcqgs64jGIXPt06PH184PUuwseYxu1b5p3rGVJvSeCs22dBgUaA0cPxps4SDMbh95blwM0Z7zIZKt/ETRHL+WgCWGvjPhxjJuxmdQx7rQqMvcokd6XiUa5K0oqskpiKC7cEW9WMEnAflLy/Bcg2A6pf5loPWARb2epcB3Da6fIUSWJaRE3rk2V7IDYP53AbefYdJ2tGu1NGEk2DTlT6XuLgZ/faJZMTNgy7HoVquNJsCrv9aRuywVMdPeIk6czJ/u9H7iMwkcFw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB7928.namprd12.prod.outlook.com (2603:10b6:8:14c::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.13; Mon, 13 Oct 2025 16:37:34 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
+ 16:37:34 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, harry.yoo@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v4 0/4] reparent the THP split queue
+Date: Mon, 13 Oct 2025 12:37:32 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <C3134C16-584F-41D2-88E4-4B94B58C16F2@nvidia.com>
+In-Reply-To: <df9a3e22-caca-4298-b7d8-5334ce5446a0@linux.dev>
+References: <cover.1759510072.git.zhengqi.arch@bytedance.com>
+ <925E0247-2976-4D85-A8AA-E8C92C64CED4@nvidia.com>
+ <df9a3e22-caca-4298-b7d8-5334ce5446a0@linux.dev>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN2PR19CA0014.namprd19.prod.outlook.com
+ (2603:10b6:208:178::27) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <CAHk-=wgzXWxG=PCmi_NQ6Z50_EXAL9vGHQSGMNAVkK4ooqOLiA@mail.gmail.com>
- <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
- <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp>
- <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
- <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
- <nhrb37zzltn5hi3h5phwprtmkj2z2wb4gchvp725bwcnsgvjyf@eohezc2gouwr>
- <CAHk-=wi1rrcijcD0i7V7JD6bLL-yKHUX-hcxtLx=BUd34phdug@mail.gmail.com>
- <qasdw5uxymstppbxvqrfs5nquf2rqczmzu5yhbvn6brqm5w6sw@ax6o4q2xkh3t>
- <CAHk-=wg0r_xsB0RQ+35WPHwPb9b9drJEfGL-hByBZRmPbSy0rQ@mail.gmail.com>
- <jzpbwmoygmjsltnqfdgnq4p75tg74bdamq3hne7t32mof4m5xo@lcw3afbr4daf> <dz7pcqi5ytmb35r6kojuetdipjp7xdjlnyzcu5qb6d4cdo6vq5@3b62gfzcxszo>
-In-Reply-To: <dz7pcqi5ytmb35r6kojuetdipjp7xdjlnyzcu5qb6d4cdo6vq5@3b62gfzcxszo>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 13 Oct 2025 09:19:47 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgrZL7pLPW9GjUagoGOoOeDAVnyGJCn+6J5x-9+Dtbx-A@mail.gmail.com>
-X-Gm-Features: AS18NWC_26IcmmEQwm0Kzayu0MFl0jqhPq6BKmyAI8MXuCaJVEX1viMlot--KWU
-Message-ID: <CAHk-=wgrZL7pLPW9GjUagoGOoOeDAVnyGJCn+6J5x-9+Dtbx-A@mail.gmail.com>
-Subject: Re: Optimizing small reads
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Linux-MM <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: rdj31xrboi6okdai75iabtgqdebeheur
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7928:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc4e6006-67bd-4749-546f-08de0a76d00b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Uc9Yvt7DiIZ6JRz67DetMOZ98lUDm5pCLI6IUSSGLzpDnajzqHR7hLAqlCH0?=
+ =?us-ascii?Q?0Y4jYN2ys8n+WbUNl+W5gdoFnKOGT/ifwdeE8Z4HUfq0zyGSPJjqY2xZNiyS?=
+ =?us-ascii?Q?5qmsgLMv/qkHkNvv/JQP6jm0oRWhxnJjrDG0v6YORap/YKpcp6OyD5WbRCq1?=
+ =?us-ascii?Q?6qGPhjIMQ2YIDWDuFDKRebN0oYS8cifExcxX6rTD+T5Z0+mAHsgiRXgx3m/3?=
+ =?us-ascii?Q?Fq0ghzMv8lNvtHfFBNaMPJ2/As5Ic+h8x+MIqlzKXmnHIuxFC2XwuShDkapm?=
+ =?us-ascii?Q?U4OjIOgqaUJWYF4MAiCS/fHWt4nJEMWt/DX8zoAmVjsBYM5vR7ucKpiIxU6Z?=
+ =?us-ascii?Q?blZNee+i4lHS1iFF5heA8ttMQ7FuIHIOzAsiYEl7y8oubGOSiXLxRz9kzX1x?=
+ =?us-ascii?Q?Sb4KGYaTnvh7LmDuoJSQzDJCCGfuSnr2q/1qrYMSVX15unWbHNDT4ZT/lRdv?=
+ =?us-ascii?Q?PZVAxCgX+snafsZ/E85k0LxU4RIgs759lQCpU33VAqgXSRdd4dvdQp2JXcme?=
+ =?us-ascii?Q?wcwbQNSbY1Vou48kkGAK5vw6u8fgJdNeT9bNfDDUDiK/nEdrNztjejr+Jye/?=
+ =?us-ascii?Q?WtT+tc+aGkSAvN5AhNCR+m1oFqaSMlgGg/5BtknJed9lZAWFw+OeuYAQkYqD?=
+ =?us-ascii?Q?9ECNMRtCEVC7Aiv8afIb8hZUl2Xm4r5c0eWdl+61GxwVZYnPbzINlOCoGYNH?=
+ =?us-ascii?Q?PjOX1GwCi4PkhSzzrYaNFw+boQNYAO60JT/oIixlE76FlzYrpVDmm7ICXhQs?=
+ =?us-ascii?Q?Unzyv0f3WK0liLrNiPVJtD/GS1cmGeGBMcwIjN+SbDwjG9kNkQGI9EpHuubG?=
+ =?us-ascii?Q?j9HeglxSrXYzrz8x4oIDpMMlfXlCPmK5MYO0Jl1spoTOY4Jlfk4sLk3d5StE?=
+ =?us-ascii?Q?d0wbgdZUOgkr/1HueUIpWSffc9Nzvi7hrJ+bva3XD5Bj14JDx0BW32vrPxdQ?=
+ =?us-ascii?Q?WRo+rkgbCR3q0Yloa3sqxPXbQ9I7mRMuBSkIRAP2QCeefpeInlUr7e/awFN5?=
+ =?us-ascii?Q?REhOSQppPlKXMlkKN53LWLdoGhJaD41SG7S/F54IotpkALzq2tl7aHnal1X1?=
+ =?us-ascii?Q?KLutIaYWmEKVLrl4EYiHPtlt6qYb1stmhl5oNFXbyrAZo+IFSSbAPIPvRJGK?=
+ =?us-ascii?Q?BlngntRq0uTvAJFRNJlJZPAiPR3gmAPIApjOYg6vCndJSJB2CJadP9nvCtTm?=
+ =?us-ascii?Q?FJxDM5WMSPaqOP5TISjum25sZsXWhHHfOONrNwtlptvDQnEyOQlUc/1moumE?=
+ =?us-ascii?Q?+xGxekvlewf8vIU+WWrZZFgJs0IP9igYXaxP8B4W9IuvaZq8SPhL4TKFBC1i?=
+ =?us-ascii?Q?U85e8k0aIhiJVBye8t+NCBnPLHVruw1qgKjVBwy7C/UhyTypz+3fI713TSKE?=
+ =?us-ascii?Q?ypIVtBC21aFy7MuDr/kq4w6oT7V44F/asE43HTMnqVQd9klrsePrc9Exy7gT?=
+ =?us-ascii?Q?sAFdPPUaQRQQNenASN6PaCX/PX7W2Ts5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZOiMtXFNgQC3VNdKXEZ42uuJHLwpn1iNEJNNOfpeKNr20tDkpzX1QSLze+X/?=
+ =?us-ascii?Q?uomJ2g6J4BCAbjDrupoaXmGFO1MgyzFZbV4jCczGfE31kW+Pn9Mv0ol4QcbR?=
+ =?us-ascii?Q?j3WCov7yOUYEasnKlcANaNIlwz/VLn0qow81DplvhHfzKnHRJIo5wAfNByA4?=
+ =?us-ascii?Q?NWQUOv5Gv5+Zabu30ZoqQS7undGQj87kh+QArzOx7g5hPBspmabcWp3k6wrM?=
+ =?us-ascii?Q?gTv3ZayhLl40FpXMr9JXN8AG3ntR8YCEEkpJIJLTfzJx4pb72jZKxb0/0CoO?=
+ =?us-ascii?Q?zsdqUF2UM8KZWbHBWLU9VEa6MiTsgIw5KX+XxR6fLOcoeymJBguozka9qiKh?=
+ =?us-ascii?Q?SBNkiF07j6UY4EAQODSywF85mTRjL/WaRMJpsVtl5z7wWOBsoDdc2TmOZPY1?=
+ =?us-ascii?Q?2PCxNvCdk6Xk2IAzykfqk8DoU4k+5Uynzz3hiI6Fa5hokDS/Nsp2Wu2S3CTS?=
+ =?us-ascii?Q?PZx1ZxHhNIryEoFg6bd/TrssPW3jedl1ZO+mSDMwOU3ZztFy1AmhCHv4zZCC?=
+ =?us-ascii?Q?ZVtyjSW87P/lbg5M9gtP/Rfu14YZjPlubdDXUZRr6LBpvJ55KbRfDCvQ8x4+?=
+ =?us-ascii?Q?a1a4bNz4kJU50sJoedX4h2sQPK4o2jfn+pbQQn1iJH1MAwtVuCZwHlIf4KuI?=
+ =?us-ascii?Q?UD8mqc6sGiz0ME2xSxr6n4qWfepKADx36kj8+CEUTSDqq0ExwEMFwK+DEtQk?=
+ =?us-ascii?Q?kfr0czCYVYR4VQf8UEIDMbU8QIRrzdLwwJvcpTZMtBKHNV6aXWo9BRpzHZS7?=
+ =?us-ascii?Q?vXsjSYpeQSALglIkMSaijNfkTpuiRnkEURnX45jGzLW3BUHUJ7MAxRtSyena?=
+ =?us-ascii?Q?l0+tAzCxthYtCTvRjW1CNTMMwFcA9YEIF4Yi1CpPX+baL3WOM1FFkedgRDO/?=
+ =?us-ascii?Q?v11yhwtVatPn17MmGsP8QvC/Ql81YhstDPFiDbedlQ4SCY+9eBcIP/w5zXYz?=
+ =?us-ascii?Q?smjFXMUZne+WfdGWq8BM1HJl7a+MdQpvufwMsEZ2CzXrvGXTtBlz7fgHOYct?=
+ =?us-ascii?Q?0+nCMmhe6gzMw2THVCMDDsoD5SjXJ1qmFpOAtGDr5MfY8AJWlUmxZ2jNIciH?=
+ =?us-ascii?Q?s/xe9EhMS3OsjoKE8EsXMUVaZDBtS7JHVQrCix9biGyf9xm+/9hIeY3hAR5i?=
+ =?us-ascii?Q?YwLxZ9LX5reb9AXUoxRKeOsp2Cuzdf5zeLWBmojWg/jvIhE+GF29sl45VYQP?=
+ =?us-ascii?Q?NMfghWgfuvbte2MXo+F4oRJ/TaQCK1mWjp9qxxuY4pFEFh2SgHXqWQ8CeI32?=
+ =?us-ascii?Q?WkhxnShkLjAFtb84sdN8vXki0gKtUYqKsabx6f4sExoUvve0R9T30hIS4m8K?=
+ =?us-ascii?Q?4SJAPIjW3p3mCEC6xjtN+Yl05WBGospGXJ1pBJLRFm6Ioks/N25oSqaBEQ79?=
+ =?us-ascii?Q?d1uQzXBb7B9p2VOs/5APD5fgacULR56xOj6NwaBsbRm53mL5KHyjE8hzYjqO?=
+ =?us-ascii?Q?NeRRBklcOHYM1YNh8tAbGZ3DfIlCO/zzq9TejEdyYqoGY33BS5bYgGntduRk?=
+ =?us-ascii?Q?xMeNpLeD6hwl0w+PI9HAlHYdYc5bclfxxnF78xxSCB8UcuhruB9/Fh9fegb8?=
+ =?us-ascii?Q?lOvc9EvVUW5RvaZOJaaZ+RnQmqdcG5EKFq4eXiVO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc4e6006-67bd-4749-546f-08de0a76d00b
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 16:37:34.7419
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RH+Y02bHuGiOCeCyPmMvvlyVP5wxUOTmMDKP/Azc35B8OoIb7R2RF8jaeTyxMyIo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7928
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fgxz3yrpxuy6hrwnys3ru84or5hxbwgs
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 991C740010
-X-HE-Tag: 1760372406-839806
-X-HE-Meta: U2FsdGVkX1/CY1WOUT5bQktICxDtnDkvkNIwNqxdRAQUpA/Bc1DeSXZ3y98dezAYYmncb9UorgdFc642kBu57qrV1mxwfagN2U8t48eeJ6TO0xofIMeRnn+n5SlbEKFO01E0B/D9xIvwe5E5a3Efg0CDFbaBqA8f4Scm5jMaapeF3WVMZuUpHzoYhT3y2zlGVNoAkmbir7UbHKXlYWa9HkXr7ubdrndS4B/dOcHi15kH8/JSPysUMiHGF4WzpC4Iu5uKtW6K7la205yzeYxcG3xPyJCyZGvXT86JRlElTxvVg0vn/evW5pJ++gXG4eLikDaDAzOmrhBtIy9kZQtueCn7zmIzmNTg+ZynZNQnUbf81xH/GAzmNgyR7x/URNunFKvEnJ9hGxEsLIddIIOq5pQ4vPqxYG997qzbAgTAdCjT5gxCDtz8pUw+G9Ka2usAN5/iwgI3A+4cFB8kp6dxwx11qKhRacJ2KuakaDtpYkybkTHtiAjOuVrwchuXYbqTr1ESNoBTTZbeenMMgIDoNYaVZnhncEbP7rGCnlIPxIFkuX/7Xyong8rIGWJMv1xbR87+bVWnDCoUiQdvOhkyHvvMnM8o6/pmAwClR1Hlj3wMtlvBviM/OStGpxS5XKhMgK/cjF8m6U+ljiX9fhi46B6I9fgPFgWw/1FLVz4IPv17bjDVEHA7GO3RG3ThblnzNLiqQJ2Hi1fR+0+A69WBqSpmQ3GCeVGJtr2TDXDcim7oSFwbd0s2ThqnM5afqVWM/qF9HTJQb5IuVUr+zpvkolZWakPvsL/DQtziudf93ZEuWv8ynuVpKsyQqimXfuyQ9kGrKgLOKYNN/dW86m//r05+yiFbEYtIHxbNraH58N/iKmctwtPOPAJPyUiGZZLSIC6QLXc/4+NHFeOgXN8WGVj4CBUtwFKnv+NL9bnhg7KDEoFHJnsSE0XVcHd+AtOC9pYbsk96eZ60JCcGmWG
- YRHhzoO3
- lhFWlyZfA13Lzr2bmt3wTm3UTMI1B0g1rHdDXDzqdmdv4FQcYkNT9m6ec8yJlYxNQvC2HqnLvRt7BhlvUDUc9CuMm3bm2jqp4Nr7t4BQ1uzxyLynhpsXTWQRrPm4Mfc74YxlWoGdTb0T4lBvWosAiXddbyP0N9TqVZMDWF1i7JnIXSNsRVBGCJe4PL2J+OLy9fL1wK30zxvqBYOVfU8t6v4wWWcft846marc8cNhT79aFlpjxDmR+yVGuIvefqpZIf1O26sy5QyRn+W/HKAgbiqZJ2kDUD9FmdOTFmea4EodKkdE6padgFXrj0zYhvp23jGR5sQZO6Ygog4TgoZRQHCNclpoURNsOLXZXxXCaWQXx7+7IKHuHEgi53Xp2bhZoo6oSQ/Lcl5jpdx2y1yT3LQBv5Ykuc5fkI3AzOYqAllTeL2SlhLJmK00wku37ly5wWytRy/umCaJNNHA49dxf4PBkmccX/3yIJeSYHXVbLhsnMNp0l0z4YmkK7ciLTjBWHqc6
+X-Rspamd-Queue-Id: 300851C0005
+X-HE-Tag: 1760373457-667549
+X-HE-Meta: U2FsdGVkX18ba8MHJs2ijJXBrNppX59EB5SzXEyLDub0mc5bgJ5Jedrk1vdcXnfw2wzClHc7jZ5Wznbij+2XWLRD6s/El3y1iG3IAR8KTOEtZlm3qwSB339UFKAjYVtHIvh92+dcrWEwcV4+C+ma4HfVF6DrtORKRIFqoVIZde3YrecBlTY9BzgaUhj3IsVpK5AIuHAaw2vyfTLinipVVNxZWZtiJ5nHZhITtTbj+HxuHwrSMjY/IRnkL/I8yAbA2lrzwXhEoth5DmYlXfvIsDFB2LzTTrKEmBucunf2Ppy1UiqNZH2T1K9zsbDLSjElO6pFUmsItA9jMeP1KyUp7WqhQ5Wpv39jJIUKxYP/enwmOrF6RzoRJpftUPm5/q2htRFo63RKCSWiTqaFFlhjwegG++LoXbvm+QvcuwvFD1+9q89/eZEwtct3A8so6XwrlHFcU1NCf48GJVvH4mQCm6HhjDpGJ8o78vBy8y08Z8Tlupv4AR110rMkbYP9NKFjfa0gPZ1JfG4cf2yfZhEUXXVEWICF9xSXhqz7DwHSNCUVJE46hP76Qm9g2PFX5p9BF9QsTOnnY5+UqDF+oVJiP4OhlC7mYVSAtheb6cqXxSPuOqu7w8mcXVh5WTVaxZxqkVO/pnHQaD/APVWnVXoLWWbe+VTecoz/6lYVCPIClhYJwPwexjzJYFeYNjBach4uSicEvxAb3di+s9Kxtm2htgIlgOsLFP38x9lQxejXYt6GOrjkzZ3Qqaqed3ZK9j7S18beeUbxbjf7+VGBOIQ0l6vI9Sr7rPn9pTuwBqoWxgeQCJtKIQWbsP7uucc5/5Cq0QqN0tcow2R1vM0EcCtEJP+qn7Px8nRM4vBhHVJlQNjlAbdGIQuAzInoLRXTlbqx51z6I9N5Y3l2f6rVCgQCXnfksBObj/U/N+Fvt0sc7eU13uw/yMEsCOOKSTrZ0IInW21UH9KLyqSs4OyhmbA
+ ce//izXl
+ vOSWjE1pWDomdYrj3Hkb3ljyFvn3cyfJtXt2s+8Vopac+aeuOOaVxOt7XBoRjcSrB+QuFm6Oj8G+emNnNDlQtYHtW0Tj1GHxT19R1yrIpbpgoGyhCXsCDNGEpqInPOeP4SNCF4nAZZsQ3qzF98NEfYnRmc38/OWr7DvHeZwnLMnJHwqB3lis3VoTznDf+Ntq+bJIqTp4SS+Ed92U6P+2DX67SjrRQGL6CFk6/O3s9INtM2TNmWw6QGiJxp9FP6yctRJ8WGCmSwuPvPlSOhO7+IAb3OqGedhbEvuFMLkFuJhYIw9f942maMU2vgL2WHwOcbIlukNZYpffGwhma4IYoFQgLZRGn1FXjEBFIAWplgtqAjDQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,95 +188,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Oct 2025 at 08:39, Kiryl Shutsemau <kirill@shutemov.name> wrote:
+On 13 Oct 2025, at 3:23, Qi Zheng wrote:
+
+> Hi Zi,
 >
-> And, for archiving purposes, here is the last version of the patch that
-> supports large blocks.
+> On 10/11/25 12:25 AM, Zi Yan wrote:
+>> On 3 Oct 2025, at 12:53, Qi Zheng wrote:
 >
-> Do you think it makes sense to submit unsafe_copy_to_user() optimization
-> as a standalone thingy?
+> [snip]
+>
+>>>
+>>
+>> Hi Qi,
+>>
+>> I got CPU soft locks when run "echo 3 | sudo tee /proc/sys/vm/drop_cac=
+hes"
+>> with today's mm-new on a freshly booted system. Reverting Patch 3 (and=
+ Patch 4)
+>> of your patchset solves the issue.
+>>
+>> My config file is attached. My kernel relevant kernel parameters are:
+>> "cgroup_no_v1=3Dall transparent_hugepage=3Dalways thp_shmem=3D2M:alway=
+s".
+>> The machine is a 8GB 8-core x86_64 VM.
+>>
+>> The kernel log:
+>>
+>> [   36.441539] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [tee:=
+810]
+>> [   36.441549] Modules linked in:
+>> [   36.441566] CPU: 0 UID: 0 PID: 810 Comm: tee Not tainted 6.17.0-mm-=
+everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(voluntary)
+>> [   36.441570] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
+BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+>> [   36.441574] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
+>
+> It seems that the softlockup is not caused by lock contention. I have
+> also seen the following stack locally:
+>
+> [14819.914867][    C2] watchdog: BUG: soft lockup - CPU#2 stuck for 49s=
+! [kswapd0:202]
+> [14819.914873][    C2] Modules linked in:
+> [14819.914877][    C2] CPU: 2 UID: 0 PID: 202 Comm: kswapd0 Tainted: G =
+          L      6.1
+> [14819.914880][    C2] Tainted: [L]=3DSOFTLOCKUP
+> [14819.914881][    C2] Hardware name: QEMU Standard PC (i440FX + PIIX, =
+1996), BIOS 1.12.0-1 04
+> [14819.914883][    C2] RIP: 0010:folios_put_refs+0x34/0x210
+> [14819.914889][    C2] Code: 57 41 56 49 89 fe 41 55 41 54 55 53 48 83 =
+ec 18 65 48 8b 05 36 51
+> [14819.914891][    C2] RSP: 0000:ffffc900039db8e8 EFLAGS: 00000246
+> [14819.914893][    C2] RAX: 0000000000000000 RBX: ffff888109e64330 RCX:=
+ ffffffff82848bb8
+> [14819.914895][    C2] RDX: 0000000000000001 RSI: 0000000000000000 RDI:=
+ ffffc900039db960
+> [14819.914896][    C2] RBP: ffff888109e642a0 R08: ffff888100403058 R09:=
+ ffff888100402fe8
+> [14819.914897][    C2] R10: 0000000000000000 R11: ffffffff82711328 R12:=
+ ffff888109e64328
+> [14819.914898][    C2] R13: ffffc900039dbb30 R14: ffffc900039db960 R15:=
+ ffffc900039dbb30
+> [14819.914916][    C2] FS:  0000000000000000(0000) GS:ffff888332ad7000(=
+0000) knlGS:00000000000
+> [14819.914918][    C2] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003=
+3
+> [14819.914919][    C2] CR2: 00007f8d211b3000 CR3: 000000010833c000 CR4:=
+ 00000000000006f0
+> [14819.914921][    C2] Call Trace:
+> [14819.914923][    C2]  <TASK>
+> [14819.914927][    C2]  deferred_split_scan+0x30d/0x420
+> [14819.914934][    C2]  do_shrink_slab+0x105/0x350
+> [14819.914937][    C2]  shrink_slab+0x2fa/0x3f0
+> [14819.914939][    C2]  ? try_to_shrink_lruvec+0x1a6/0x270
+> [14819.914944][    C2]  shrink_one+0x11d/0x1b0
+> [14819.914947][    C2]  shrink_node+0x9a4/0xb90
+> [14819.914952][    C2]  balance_pgdat+0x548/0x910
+> [14819.914955][    C2]  ? __sched_fork+0x160/0x180
+> [14819.914964][    C2]  ? __timer_delete_sync+0x2b/0x40
+> [14819.914970][    C2]  kswapd+0x1b9/0x320
+> [14819.914973][    C2]  ? __pfx_autoremove_wake_function+0x10/0x10
+> [14819.914978][    C2]  ? __pfx_kswapd+0x10/0x10
+> [14819.914981][    C2]  kthread+0xfd/0x250
+> [14819.914984][    C2]  ? finish_task_switch+0x90/0x270
+> [14819.914987][    C2]  ? __pfx_kthread+0x10/0x10
+> [14819.914989][    C2]  ? __pfx_kthread+0x10/0x10
+> [14819.914991][    C2]  ret_from_fork+0x170/0x190
+> [14819.914995][    C2]  ? __pfx_kthread+0x10/0x10
+> [14819.914996][    C2]  ret_from_fork_asm+0x1a/0x30
+> [14819.915002][    C2]  </TASK>
+>
+> It seems that the reason is that deferred_split_scan() has been execute=
+d
+> for too long.
+>
+> Could you please help test the following changes? I applied them locall=
+y
+> and no softlockup occurred.
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b5eea2091cdf6..5353c7bd2c9af 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -4286,8 +4286,10 @@ static unsigned long deferred_split_scan(struct =
+shrinker *shrink,
+>         }
+>         folios_put(&fbatch);
+>
+> -       if (sc->nr_to_scan)
+> +       if (sc->nr_to_scan) {
+> +               cond_resched();
+>                 goto retry;
+> +       }
+>
+>         /*
+>          * Stop shrinker if we didn't split any page, but the queue is =
+empty.
+>
 
-Without a user, I'm not convinced. I think right now there are zero
-cases of unsafe_copy_to_user() that are large enough for this to
-matter. It looks like we have exactly two cases; the readdir() case I
-knew about (because I did that one), and one other user in put_cmsg(),
-which was introduced to networking with the commit message being
+It does not fix the issue, but only gets rid of the soft lockup warning.
+"echo 3 | sudo tee /proc/sys/vm/drop_caches" just runs forever.
 
- "Calling two copy_to_user() for very small regions has very high overhead"
+Looking at the original code, sc->nr_to_scan was one of the two condition=
+s
+on breaking out of split_queue scanning and was never checked again
+afterwards. When split_queue size is smaller than nr_to_scan, your code
+will retry forever but not the original one. After I added pr_info() to
+print sc->nr_to_scan at
+1) before retry:,
+2) before for (... folio_batch_count();...),
+3) before "if (sc->nr_to_scan)",
 
-so that one is very small too.
+I see that 1) printed 2, 2) and 3) kept printing 1. It matches my
+above guess.
 
-HOWEVER.
+The below patch fixes the issue:
 
-What I like in this patch is how you split up filemap_read() itself
-further, and I think that part might be worth it, except I think you
-did the "noinline" parts wrong:
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 43a3c499aec0..d38816a0c117 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4415,7 +4415,7 @@ static unsigned long deferred_split_scan(struct shr=
+inker *shrink,
+ 	}
+ 	folios_put(&fbatch);
 
-> +static bool noinline filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
-...
-> +static ssize_t filemap_read_slow(struct kiocb *iocb, struct iov_iter *iter,
-...
-> +ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
-> +               ssize_t already_read)
-> +{
-> +       struct inode *inode = iocb->ki_filp->f_mapping->host;
-> +       union {
-> +               struct folio_batch fbatch;
-> +               __DECLARE_FLEX_ARRAY(char, buffer);
-> +               //char __buffer[4096];
-> +       } area __uninitialized;
-> +
-> +       if (unlikely(iocb->ki_pos < 0))
-> +               return -EINVAL;
-> +       if (unlikely(iocb->ki_pos >= inode->i_sb->s_maxbytes))
-> +               return 0;
-> +       if (unlikely(!iov_iter_count(iter)))
-> +               return 0;
-> +
-> +       iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
-> +
-> +       if (filemap_read_fast(iocb, iter, area.buffer, sizeof(area), &already_read))
-> +               return already_read;
-> +
-> +       return filemap_read_slow(iocb, iter, &area.fbatch, already_read);
-> +}
->  EXPORT_SYMBOL_GPL(filemap_read);
+-	if (sc->nr_to_scan)
++	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue))
+ 		goto retry;
 
-Look, the reason you did this was presumably for stack usage when you
-have a big 4k allocation, but the part you *really* needed to protect
-was filemap_read_slow() that then has much deeper call chains.
+ 	/*
 
-So filemap_read_slow() should *not* ever see the big 4k stack slot
-that it never needs or uses, and that eats into our fairly small
-kernel stack.
 
-BUT with this organization, what you could have done is:
 
- - don't share the buffers between filemap_read_slow/filemap_read_fast
-at all, so the 'union' trick with a flex array etc would go away
+>
+>> [   36.441592] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 9=
+0 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00=
+ 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
+>> [   36.441594] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
+>> [   36.441598] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff88=
+8101168670
+>> [   36.441601] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff88=
+8101168658
+>> [   36.441602] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 000000=
+0000000000
+>> [   36.441603] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff88=
+81011685e0
+>> [   36.441604] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc9=
+00029afd60
+>> [   36.441606] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) k=
+nlGS:0000000000000000
+>> [   36.441607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   36.441608] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 000000=
+0000370ef0
+>> [   36.441614] Call Trace:
+>> [   36.441616]  <TASK>
+>> [   36.441619]  deferred_split_scan+0x1e0/0x480
+>> [   36.441627]  ? _raw_spin_unlock_irqrestore+0xe/0x40
+>> [   36.441630]  ? kvfree_rcu_queue_batch+0x96/0x1c0
+>> [   36.441634]  ? do_raw_spin_unlock+0x46/0xd0
+>> [   36.441639]  ? kfree_rcu_monitor+0x1da/0x2c0
+>> [   36.441641]  ? list_lru_count_one+0x47/0x90
+>> [   36.441644]  do_shrink_slab+0x153/0x360
+>> [   36.441649]  shrink_slab+0xd3/0x390
+>> [   36.441652]  drop_slab+0x7d/0x130
+>> [   36.441655]  drop_caches_sysctl_handler+0x98/0xb0
+>> [   36.441660]  proc_sys_call_handler+0x1c7/0x2c0
+>> [   36.441664]  vfs_write+0x221/0x450
+>> [   36.441669]  ksys_write+0x6c/0xe0
+>> [   36.441672]  do_syscall_64+0x50/0x200
+>> [   36.441675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> [   36.441678] RIP: 0033:0x7f7fe36e7687
+>> [   36.441685] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 0=
+0 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f=
+ 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+>> [   36.441686] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0=
+000000000000001
+>> [   36.441688] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f=
+7fe36e7687
+>> [   36.441689] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 000000=
+0000000003
+>> [   36.441690] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 000000=
+0000000000
+>> [   36.441691] R10: 0000000000000000 R11: 0000000000000202 R12: 000000=
+0000000002
+>> [   36.441692] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 000000=
+0000000002
+>> [   36.441694]  </TASK>
+>> [   64.441531] watchdog: BUG: soft lockup - CPU#0 stuck for 53s! [tee:=
+810]
+>> [   64.441537] Modules linked in:
+>> [   64.441545] CPU: 0 UID: 0 PID: 810 Comm: tee Tainted: G            =
+ L      6.17.0-mm-everything-2024-01-29-07-19-no-mglru+ #526 PREEMPT(volu=
+ntary)
+>> [   64.441548] Tainted: [L]=3DSOFTLOCKUP
+>> [   64.441552] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), =
+BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+>> [   64.441555] RIP: 0010:_raw_spin_unlock_irqrestore+0x19/0x40
+>> [   64.441565] Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 9=
+0 0f 1f 44 00 00 53 48 89 f3 e8 92 68 fd fe 80 e7 02 74 06 fb 0f 1f 44 00=
+ 00 <65> ff 0d d0 5f 7e 01 74 06 5b c3 cc cc cc cc 0f 1f 44 00 00 5b c3
+>> [   64.441566] RSP: 0018:ffffc900029afb60 EFLAGS: 00000202
+>> [   64.441568] RAX: 0000000000000001 RBX: 0000000000000286 RCX: ffff88=
+8101168670
+>> [   64.441570] RDX: 0000000000000001 RSI: 0000000000000286 RDI: ffff88=
+8101168658
+>> [   64.441571] RBP: 0000000000000001 R08: ffff88813ba44ec0 R09: 000000=
+0000000000
+>> [   64.441572] R10: 00000000000001a8 R11: 0000000000000000 R12: ffff88=
+81011685e0
+>> [   64.441573] R13: 0000000000000000 R14: ffff888101168000 R15: ffffc9=
+00029afd60
+>> [   64.441574] FS:  00007f7fe3655740(0000) GS:ffff8881b7e5d000(0000) k=
+nlGS:0000000000000000
+>> [   64.441576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   64.441577] CR2: 0000563d4d439bf0 CR3: 000000010873c006 CR4: 000000=
+0000370ef0
+>> [   64.441581] Call Trace:
+>> [   64.441583]  <TASK>
+>> [   64.441591]  deferred_split_scan+0x1e0/0x480
+>> [   64.441598]  ? _raw_spin_unlock_irqrestore+0xe/0x40
+>> [   64.441599]  ? kvfree_rcu_queue_batch+0x96/0x1c0
+>> [   64.441603]  ? do_raw_spin_unlock+0x46/0xd0
+>> [   64.441607]  ? kfree_rcu_monitor+0x1da/0x2c0
+>> [   64.441610]  ? list_lru_count_one+0x47/0x90
+>> [   64.441613]  do_shrink_slab+0x153/0x360
+>> [   64.441618]  shrink_slab+0xd3/0x390
+>> [   64.441621]  drop_slab+0x7d/0x130
+>> [   64.441624]  drop_caches_sysctl_handler+0x98/0xb0
+>> [   64.441629]  proc_sys_call_handler+0x1c7/0x2c0
+>> [   64.441632]  vfs_write+0x221/0x450
+>> [   64.441638]  ksys_write+0x6c/0xe0
+>> [   64.441641]  do_syscall_64+0x50/0x200
+>> [   64.441645]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> [   64.441648] RIP: 0033:0x7f7fe36e7687
+>> [   64.441654] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 0=
+0 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f=
+ 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+>> [   64.441656] RSP: 002b:00007ffdffcbba10 EFLAGS: 00000202 ORIG_RAX: 0=
+000000000000001
+>> [   64.441658] RAX: ffffffffffffffda RBX: 00007f7fe3655740 RCX: 00007f=
+7fe36e7687
+>> [   64.441659] RDX: 0000000000000002 RSI: 00007ffdffcbbbb0 RDI: 000000=
+0000000003
+>> [   64.441660] RBP: 00007ffdffcbbbb0 R08: 0000000000000000 R09: 000000=
+0000000000
+>> [   64.441661] R10: 0000000000000000 R11: 0000000000000202 R12: 000000=
+0000000002
+>> [   64.441662] R13: 0000558d40be64c0 R14: 00007f7fe383de80 R15: 000000=
+0000000002
+>> [   64.441663]  </TASK>
+>>
+>>
+>>
+>> --
+>> Best Regards,
+>> Yan, Zi
 
- - both filemap_read_slow and filemap_read_fast would be 'noinline' so
-that they don't share a stack frame
 
- - filemap_read_fast could have the on-stack byte buffer - I think 4k
-is still excessive for on-stack, but it could certainly be larger than
-256 bytes
-
- - filemap_read_slow would have just the 'struct folio_batch' thing.
-
-Anyway, I think *that* part of this patch might actually be worth it
-independently of anything else.
-
-Of course, that re-organization does cause that extra level of
-function calls in order to not have excessive stack usage, and the CPU
-errata can make 'ret' instructions expensive, but whatever.
-
-So I don't know. I like how it splits up those two cases more clearly
-and makes the baseline 'filemap_read()' much simpler and very
-straightforward, and I like how it also splits up the stack usage and
-would make that union trick unnecessary.
-
-But it's not a big deal either way.
-
-                Linus
+--
+Best Regards,
+Yan, Zi
 
