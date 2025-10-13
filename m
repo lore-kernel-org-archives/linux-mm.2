@@ -4,135 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBEECCD183
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 12:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BC7CCA476
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Oct 2025 12:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60048E0036; Mon, 13 Oct 2025 08:03:29 -0400 (EDT)
+	id 8CC478E0038; Mon, 13 Oct 2025 08:21:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B10AC8E0007; Mon, 13 Oct 2025 08:03:29 -0400 (EDT)
+	id 87BC98E0037; Mon, 13 Oct 2025 08:21:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D8578E0036; Mon, 13 Oct 2025 08:03:29 -0400 (EDT)
+	id 792058E0038; Mon, 13 Oct 2025 08:21:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 85D2F8E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:03:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1BCA0C03DD
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:03:29 +0000 (UTC)
-X-FDA: 83992956138.09.8293445
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B225B1C0002
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:03:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I6Tu6QEx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F5tMp6sH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=b+bmMbsY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uZgagJZ4;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 654138E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 08:21:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1CEB91DFE71
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:21:29 +0000 (UTC)
+X-FDA: 83993001498.10.1667DD3
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A926180005
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 12:21:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CLZnob7w;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760358087; a=rsa-sha256;
+	cv=none;
+	b=Sk78bEcD3ULZbT0vV8p1SbUOS9KmSG3voXLZZ3sYCZyF6aL6c85OkAZxQ+bdxBzfgMfeIA
+	SBI7MVZge8s6q+6vJjbI5KADsod04CfF4u6DaCqDdgh+8XJlw1iObxAOKGV8EtEumdGRfK
+	tJIGGhsxDEaJuUsfDspZYg61gfS9VKU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=CLZnob7w;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760357007;
+	s=arc-20220608; t=1760358087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxSdY8AEzXNttMyqmikG4KICkG68sQmVXDungx9myyE=;
-	b=olSndPJ5IP7YPmoB5UmIwSl3vNKSo+kjTzl23XH7WmDSHx45dlj//EjzpSpaWx34v06RPu
-	sPe10k9Tdhy5cYedcka+gd7YNWcdsgqBcrXPSwzMySTv4z9pSvQyvpfQ5ozKn0xP3HGCiW
-	PhcbqFovRvmYW6zEwFuhxQWK1A5e7VQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=I6Tu6QEx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=F5tMp6sH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=b+bmMbsY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uZgagJZ4;
-	spf=pass (imf21.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760357007; a=rsa-sha256;
-	cv=none;
-	b=QVdJOUbx5p7ohBapdwQOkRWe7OaQzpmdXI88Ys8bR3Fn6FwobHeULRPFMU9cv4zqjxkSgB
-	1N371t/GvAzfXzf2dEyo1fCKqzk6lB+qCzqIBltvj1sXswiB/zTrt79bTdh7jLVzigUWRh
-	FwiZ5UQ4y79qwLz4SdVe5sTIOJvzWhQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 53E081F385;
-	Mon, 13 Oct 2025 12:03:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760357005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gxSdY8AEzXNttMyqmikG4KICkG68sQmVXDungx9myyE=;
-	b=I6Tu6QExFV+dBebEO5FqWa4CnC/ZtZN0xOyEGAncmWdGoa0IVFsax7N9267RYZWCI4yDAe
-	BFW3FdZz+2JOTd98CT1+hWculdJYDQ4LNt3cLfzcA4cAZIcrGHgW7En1dyBj0473RkMG9T
-	OUcuSbJaN4bH1iJ36A29HSmcMeKxvDw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760357005;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gxSdY8AEzXNttMyqmikG4KICkG68sQmVXDungx9myyE=;
-	b=F5tMp6sHebc1bFNq3o1qlBgdw7WXSa0vxFWNhLozJ6p13Cc8QTGnffMoJWdwcUfP+UgWDy
-	WJo390eCPwLnUVDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760357004; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gxSdY8AEzXNttMyqmikG4KICkG68sQmVXDungx9myyE=;
-	b=b+bmMbsYtdbqriqZU30MLE3rigTOge9VFILpR3ZAxAIp87aWzR0HZf5iXLy3Qmlc7o6ht4
-	iBQVFePWgwKhRReC07vwR6ym9gJe2q+JZ+tpStLqlpxQvsC3xZPYxQhmVE3Yls+FXyCsJC
-	G2vN2Sg2zwqFIUtoWSVWz9su12YR4E0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760357004;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gxSdY8AEzXNttMyqmikG4KICkG68sQmVXDungx9myyE=;
-	b=uZgagJZ4MaG1boq9mL70Dd8Oh/MLQG+tSddPXnq7M9Ii3bXEdvfa5li/T/T78DRLB8vpiJ
-	ZCtWGQBAtDwPq6DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4362513874;
-	Mon, 13 Oct 2025 12:03:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TKZxEIzq7GgcBwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 13 Oct 2025 12:03:24 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EBC7BA0A58; Mon, 13 Oct 2025 14:03:15 +0200 (CEST)
-Date: Mon, 13 Oct 2025 14:03:15 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 09/10] mm: remove __filemap_fdatawrite_range
-Message-ID: <ggj5mx662pc6557zthvqfbzcjzbltjntvf5ly5bj3czeof6ute@r3cjumpx3gtp>
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-10-hch@lst.de>
+	bh=dP1h9eoLEMZroZ7tHpM7EXtxO9KmBfSZYPeci9s2WaA=;
+	b=w6E/L2Ti4w6sCJ6oc8ii2BQhjPPEvtRJPMWIoeIglUsRKXbwW0p6wb38XOCOZf0HIidfzj
+	n+VaVkcvxr/tos5bsSqd8qkXT/ZvtI086nvkREElYNwAz+GXfgMnjjED6ZKHTeuMi5N74n
+	B+cQbgC0HMLJ6SiNyROTNXqA4581E2Y=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=dP1h9eoLEMZroZ7tHpM7EXtxO9KmBfSZYPeci9s2WaA=;
+	b=CLZnob7wfkiAWhvv3gSoRIIQTkMuQjrYojpkYggxRZ9n7ITO4kH3DcHTljFGDZ/lYM6HEzOy0
+	b3Iltq4jLufqX0iCMheeUsZJYrM2brR7t7eot7sUkDYGdLz7hvTmBgNzSdlWEycXt9XjGUm3Q7R
+	aBe6JqD8yMK+lCfkyWNS6JQ=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4clbyy6TqWzcZxv;
+	Mon, 13 Oct 2025 20:20:26 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id D10C2180087;
+	Mon, 13 Oct 2025 20:21:21 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 13 Oct 2025 20:21:21 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	<linux-mm@kvack.org>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH 2/3] mm: mprotect: avoid unnecessary struct page accessing if pte_protnone()
+Date: Mon, 13 Oct 2025 20:15:35 +0800
+Message-ID: <20251013121536.2373249-3-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
+References: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013025808.4111128-10-hch@lst.de>
-X-Stat-Signature: bidfj6cpqtnjj4x1ugyzcm955dwhufqw
-X-Rspamd-Queue-Id: B225B1C0002
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760357006-313108
-X-HE-Meta: U2FsdGVkX18bm/mEw7GldOQkTR4ZXYSBF/0BAxnvE7Yu7bjVbCEww0NRjfd3wXPc4LXvAYLYMIkLiEYFGTYlxyGXbMxsLK5iPATI/97v6ifAZQmFGvraQ3yEQvEmqlNLGMkL0yEtfmLPkZoW4em90OH0mpRRkMAH6gB7TIdhUbB5fO06Yw88DeUWgeIqYLJo/MAiwJAKDxZjQSNk8RLOhHI/ozvlWOl1yaWQppCZcbMpsn44Q/1fRoSzGj94TWKCYiuOMqrHv2IEQFykPqTvqcZkxHOkCP41BMmMsavxU39d0Hf2CoCH4eeayyiUPpeWoB+CV13DIKxrroaWnNAEtsHiTtJjv5+EccYE5XgbbMPZb7j7YKKXVbEn8GNnsqYe60WQ7QmtleWR5OsyzLLuI2+1878hvH0LoxtDnC9bPqkDpAE2HhG3ysvu1etvFeLniTwPbU3mVJgcQqCf1ZIQXvbZL7Ch7UvzU9EzoQqZ4Qi7CNn/wZexe7PuvsgBvT5/dbvbQnPzXhU6TnAqeHYoDG4mpn9g+9GPH87R0SUWtKNDZBNWRCMDjfmwtgTKHM6415Pw1k9GHBIvBCFE8UIv4nRs4Nlc78bY/+UydRIIJ1ZD37UquOLQZQxGMSP0csbefG9cIb8PgdMc3zyNV1Ri2q7es7QacSJiDZBt0jL12fwKsMmP7bwLpE5/2A4+vNqEj5jRDX5aw45NNicAQHgWhvPbCjndECygU8IlV5goVbpNkzqZvUGQ9Eix6z30kDQq3DkDItAmYe9R6kXWFUmlvlTsaHMQDtRpC46WGlvDqE5SqfbW+5wk0V0N/LDA0Aqyej2yc8GJbuTMsD9nsUZdnNQRIk3zQ0PevgWlq00fnhlfT9ZDYKeBcEw3FrlIRWdkV1TrcuHFQlbs3Y2WSdjbqRDvPGex8HZNH3i2cZq+hViNCpo96LsqR8R+KZeO+1bEBDZH1qEImFJ2G5WX/An
- Bi7CTjpC
- XjycLprIr2dx3nLyNUvzAa0fpOhvWlZHGctuotS1abQmtkBnAE6kXy0D0HToEMed7p2NkLznPuvZR7q9DwEGq63YGkifJP7ikXkFgOxFtDuHpVrb7sEJaMxbxgbj52ry+Ep5z2jHqhLQnx634LYGkKvt2oNnmBREOLkJObEixEvEIFR3sHPZrXYeZYVUn1l54e/6BWz+rJAys5zuatJcWWhYrL4L0rvhjXJKRwgcachKeGYIF5nsCbzBh1X+uxm02cpVn7GLbzqZCokSfnpg/AVWHPDWajz1GZV2zqGesgZFxZEFpvL4cRN3g/vdoyGzVgJO05N6MDhsBBUc65uKLQwLWUf+1v9wuSDJ4iKQUu2HR91LIyGsjg/5Djuyktl62D4cl4szUBt+nMHKLSgUDnwKAuAclsYa2Aj72/4WPqCtGxCY=
+X-Stat-Signature: c85wqjz3uujhg1rwejhejh1htyt144ha
+X-Rspamd-Queue-Id: 3A926180005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760358085-232690
+X-HE-Meta: U2FsdGVkX19Uny0gtm4WAzikE3yNvPp9DcRlDa8dhpFjwyUtY1QLC4V7mKxjpLO1HxuzpVCLDx7tWgRiUYTiV7tqY+0j9DY/Q8yTizkLTcaGMYt1UcLv88rw/005sZFC5KS9fP81qdnNMphY6CDqbnDqdwV42pJMmK7faRWumS5/TJQOmGLUk7JO2HodTcoLLVRz3cJdnX3nbr5J7Vu6s2AFTbABbBoK6sB+BJYY617OoshOG3J3R00W2WmWmAk+hitw4Jxp6S8uq2pY9bvybtyWpIRTiLQs3udl1Zd2zeFrxaGg+o5Dq2Geda7GW926rPkkPZA5wk2xY8gf+wsPcduuVuTvvP0DiReqdmAwc5X3fIrlpT/ScP89MQGNDoIiLsdcysCaozg7uFJ4Pg3ss36kIfilLV0v3OKcYfCyT7+914QUgTmuIadFX2AyHDE2083JFV3cLChB2PWtHnG3r9/cwLycgtaSWNUGoC7iBtZmd4Jx08Xt0Hhk2ejy2UjLFccby8PWgKRw7OD40RpDP3XUSZ8eBH/2+6izTk+EbwBCj2cz6HUOLScaivJGrDZNNQb6OYsBMjCu/0XeSjN682Osq68oaOBd66VICIPY6MGeD3PqXMZ/lB7hPQ3EMvLviBLFsWBbVOAMC7XGmc5ulC4BJPYvn89yQpKa5L4aEo9ONURWb23NKsLVPpQHcqTCr2hdVJs7oN1zM2qiLm5HBAaxdpu+a2YPBEM93Au4TRcPp2bqXU01WopqB6Z6p0rM1QYUgAtTNHL3/1Pbqb9P/Q2YrbPje5J18s/xfsQmcov+13MQxMPXAudVH9CGofJ3ah9bKedOcchXgpKVg829+HlFcw8bFWi3wMNsJV5l57rktNaAmfzCySs0jp96zYvV9IW06ncVZ0LPDdJUaALCLUeOmCcB570Y0ZRVIBQbN9hI/qbWmH0bSiULyKazQ6ChNfiw1D6i+fOAmKHjchB
+ HL4vL541
+ WrmLadE/uZC/f2Mylklp1gvWN+25bNlnIazIQH+biq2FHnqaNmeAN36fSKDKUIAp4w1g6ZxiaJ0ahoHU6QYSdfY1XXz1qsTbC/b7rspmA/uePEuCVbVUQppcf5oRmAtANbW7SiHA413pC+aYt+G/CqTas1gPYh56VRDKfUk1T6o/f+qdrT6YPgdLkZJ0o08IqJo6xjK6fng0CWcTHBkG73p9ONQI0is0CCOw3s4glBeHnVk6s5zgFfrgAZbk1iSlQ4z/w+hYOmg+Jl6oELSYeomyv8gHULlbSJgfAcFirvCYPhpZxO0oxBCGAtvGgGd+zGLCWvr6rpMQdlSmRXqKz+GL9Iw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,171 +102,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 13-10-25 11:58:04, Christoph Hellwig wrote:
-> Use filemap_fdatawrite_range and filemap_fdatawrite_range_kick instead
-> of the low-level __filemap_fdatawrite_range that requires the caller
-> to know the internals of the writeback_control structure and remove
-> __filemap_fdatawrite_range now that it is trivial and only two callers
-> would be left.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+If the pte_protnone() is true, we could avoid unnecessary struct page
+accessing and reduce cache footprint when scanning page tables for prot
+numa, the performance test of pmbench memory accessing benchmark
+should be benifit, see more commit a818f5363a0e ("autonuma: reduce cache
+footprint when scanning page tables").
 
-Looks good. Feel free to add:
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ mm/mprotect.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/fs-writeback.c       |  6 +++---
->  fs/sync.c               | 11 +++++------
->  include/linux/pagemap.h |  2 --
->  mm/fadvise.c            |  3 +--
->  mm/filemap.c            | 25 +++++++------------------
->  5 files changed, 16 insertions(+), 31 deletions(-)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 2b35e80037fe..8b002ab18103 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -807,9 +807,9 @@ static void wbc_attach_and_unlock_inode(struct writeback_control *wbc,
->   * @wbc: writeback_control of interest
->   * @inode: target inode
->   *
-> - * This function is to be used by __filemap_fdatawrite_range(), which is an
-> - * alternative entry point into writeback code, and first ensures @inode is
-> - * associated with a bdi_writeback and attaches it to @wbc.
-> + * This function is to be used by filemap_fdatawrite*(), which write back data
-> + * from arbitrary threads instead of the main writeback thread to ensure @inode
-> + * is associated with a bdi_writeback and attached to @wbc.
->   */
->  void wbc_attach_fdatawrite_inode(struct writeback_control *wbc,
->  		struct inode *inode)
-> diff --git a/fs/sync.c b/fs/sync.c
-> index 2955cd4c77a3..6d8b04e04c3c 100644
-> --- a/fs/sync.c
-> +++ b/fs/sync.c
-> @@ -280,14 +280,13 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
->  	}
->  
->  	if (flags & SYNC_FILE_RANGE_WRITE) {
-> -		int sync_mode = WB_SYNC_NONE;
-> -
->  		if ((flags & SYNC_FILE_RANGE_WRITE_AND_WAIT) ==
->  			     SYNC_FILE_RANGE_WRITE_AND_WAIT)
-> -			sync_mode = WB_SYNC_ALL;
-> -
-> -		ret = __filemap_fdatawrite_range(mapping, offset, endbyte,
-> -						 sync_mode);
-> +			ret = filemap_fdatawrite_range(mapping, offset,
-> +					endbyte);
-> +		else
-> +			ret = filemap_fdatawrite_range_kick(mapping, offset,
-> +					endbyte);
->  		if (ret < 0)
->  			goto out;
->  	}
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 742ba1dd3990..664f23f2330a 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -55,8 +55,6 @@ static inline int filemap_fdatawait(struct address_space *mapping)
->  bool filemap_range_has_page(struct address_space *, loff_t lstart, loff_t lend);
->  int filemap_write_and_wait_range(struct address_space *mapping,
->  		loff_t lstart, loff_t lend);
-> -int __filemap_fdatawrite_range(struct address_space *mapping,
-> -		loff_t start, loff_t end, int sync_mode);
->  int filemap_fdatawrite_range(struct address_space *mapping,
->  		loff_t start, loff_t end);
->  int filemap_check_errors(struct address_space *mapping);
-> diff --git a/mm/fadvise.c b/mm/fadvise.c
-> index 588fe76c5a14..f1be619f0e58 100644
-> --- a/mm/fadvise.c
-> +++ b/mm/fadvise.c
-> @@ -111,8 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
->  		spin_unlock(&file->f_lock);
->  		break;
->  	case POSIX_FADV_DONTNEED:
-> -		__filemap_fdatawrite_range(mapping, offset, endbyte,
-> -					   WB_SYNC_NONE);
-> +		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
->  
->  		/*
->  		 * First and last FULL page! Partial pages are deliberately
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 26b692dbf091..ec19ed127de2 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -392,32 +392,23 @@ static int __filemap_fdatawrite(struct address_space *mapping, loff_t start,
->  }
->  
->  /**
-> - * __filemap_fdatawrite_range - start writeback on mapping dirty pages in range
-> + * filemap_fdatawrite_range - start writeback on mapping dirty pages in range
->   * @mapping:	address space structure to write
->   * @start:	offset in bytes where the range starts
->   * @end:	offset in bytes where the range ends (inclusive)
-> - * @sync_mode:	enable synchronous operation
->   *
->   * Start writeback against all of a mapping's dirty pages that lie
->   * within the byte offsets <start, end> inclusive.
->   *
-> - * If sync_mode is WB_SYNC_ALL then this is a "data integrity" operation, as
-> - * opposed to a regular memory cleansing writeback.  The difference between
-> - * these two operations is that if a dirty page/buffer is encountered, it must
-> - * be waited upon, and not just skipped over.
-> + * This is a data integrity operation that waits upon dirty or in writeback
-> + * pages.
->   *
->   * Return: %0 on success, negative error code otherwise.
->   */
-> -int __filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
-> -				loff_t end, int sync_mode)
-> -{
-> -	return __filemap_fdatawrite(mapping, start, end, sync_mode, NULL);
-> -}
-> -
->  int filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
->  		loff_t end)
->  {
-> -	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_ALL);
-> +	return __filemap_fdatawrite(mapping, start, end, WB_SYNC_ALL, NULL);
->  }
->  EXPORT_SYMBOL(filemap_fdatawrite_range);
->  
-> @@ -441,7 +432,7 @@ EXPORT_SYMBOL(filemap_fdatawrite);
->  int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
->  				  loff_t end)
->  {
-> -	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_NONE);
-> +	return __filemap_fdatawrite(mapping, start, end, WB_SYNC_NONE, NULL);
->  }
->  EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
->  
-> @@ -689,8 +680,7 @@ int filemap_write_and_wait_range(struct address_space *mapping,
->  		return 0;
->  
->  	if (mapping_needs_writeback(mapping)) {
-> -		err = __filemap_fdatawrite_range(mapping, lstart, lend,
-> -						 WB_SYNC_ALL);
-> +		err = filemap_fdatawrite_range(mapping, lstart, lend);
->  		/*
->  		 * Even if the above returned error, the pages may be
->  		 * written partially (e.g. -ENOSPC), so we wait for it.
-> @@ -792,8 +782,7 @@ int file_write_and_wait_range(struct file *file, loff_t lstart, loff_t lend)
->  		return 0;
->  
->  	if (mapping_needs_writeback(mapping)) {
-> -		err = __filemap_fdatawrite_range(mapping, lstart, lend,
-> -						 WB_SYNC_ALL);
-> +		err = filemap_fdatawrite_range(mapping, lstart, lend);
->  		/* See comment of filemap_write_and_wait() */
->  		if (err != -EIO)
->  			__filemap_fdatawait_range(mapping, lstart, lend);
-> -- 
-> 2.47.3
-> 
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 51a28781de9d..0f31c09c1726 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+ 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
+ }
+ 
+-static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+-			   pte_t oldpte, pte_t *pte, int target_node,
+-			   struct folio *folio)
++static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
++		struct folio *folio)
+ {
+ 	bool ret = true;
+ 	bool toptier;
+ 	int nid;
+ 
+-	/* Avoid TLB flush if possible */
+-	if (pte_protnone(oldpte))
+-		goto skip;
+-
+ 	if (!folio)
+ 		goto skip;
+ 
+@@ -307,17 +302,23 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			struct page *page;
+ 			pte_t ptent;
+ 
++			/*
++			 * Avoid TLB flush if possible and unnecessary struct
++			 * page accessing when prot numa.
++			 */
++			if (prot_numa && pte_protnone(oldpte))
++				continue;
++
+ 			page = vm_normal_page(vma, addr, oldpte);
+ 			if (page)
+ 				folio = page_folio(page);
++
+ 			/*
+ 			 * Avoid trapping faults against the zero or KSM
+ 			 * pages. See similar comment in change_huge_pmd.
+ 			 */
+ 			if (prot_numa) {
+-				int ret = prot_numa_skip(vma, addr, oldpte, pte,
+-							 target_node, folio);
+-				if (ret) {
++				if (prot_numa_skip(vma, target_node, folio)) {
+ 
+ 					/* determine batch to skip */
+ 					nr_ptes = mprotect_folio_pte_batch(folio,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.43.0
+
 
