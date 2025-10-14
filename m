@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4630DCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 12:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B69CCD18D
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 12:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E98E8E00F5; Tue, 14 Oct 2025 08:10:39 -0400 (EDT)
+	id C82AD8E00F6; Tue, 14 Oct 2025 08:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 999558E000D; Tue, 14 Oct 2025 08:10:39 -0400 (EDT)
+	id C32848E000D; Tue, 14 Oct 2025 08:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 888618E00F5; Tue, 14 Oct 2025 08:10:39 -0400 (EDT)
+	id B21908E00F6; Tue, 14 Oct 2025 08:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7192D8E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:10:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2A78B140913
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:39 +0000 (UTC)
-X-FDA: 83996602998.07.9618190
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8F100160014
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=W05Y14re;
+	by kanga.kvack.org (Postfix) with ESMTP id 9C3158E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:10:44 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5CC585BBB9
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:44 +0000 (UTC)
+X-FDA: 83996603208.19.0F7739E
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B960480014
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=j4EoRb05;
 	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf08.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+	spf=pass (imf02.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760443837;
+	s=arc-20220608; t=1760443842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rKJH8bwqA59RYOc+B5sM49aSVlRkW4PvNX4CEB13cCo=;
-	b=OXA0XC/t8do4eXeKdIUHZlFXrw3L3kTbGE8M7WwnOBjCvgqbRekr2nsdJLnoT9JnMJTp/k
-	kw4z/vaVyAYoSMIDQnibWTCpMq7kWBANlBjStXgQkgyxOij4QQ+t+13U1/NzFsO0Hq/zss
-	OXzw0rsl+BPYfklU2q+BdH41pkTWoFY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760443837; a=rsa-sha256;
+	bh=O2U42LWZMM8201UpxKxW6f/AsVjv4jB1OSfEppuAbYw=;
+	b=gAxLo5kMvteo1EXNWJDMtKXvZVQggXXXHBgjhC6qrVKIS7TUCutTL4W5lJlTo6Wt0MHA1q
+	u2nkGh9bcRSR7KuGSwHUuW8x4ueZZYo4CIdgD2fCFfjJfR0Vp+554eQ5kIBro1VRTv30Ww
+	6vXywBK2+Rnfm2ZINSKie0dy2+9n2K0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760443842; a=rsa-sha256;
 	cv=none;
-	b=CtnAncw1PRNt7Nu8NS4259SEwgd6u8bVAUsG4TsOiGdXG+4llyAGLMjLXSaISiItXMVAIx
-	KtazNADO9TGbIGRdak0Bj2NCLeFYZJwxDqCaI6yhJHbczb21XfHBUCnZvWo5nO9aIEJ4rX
-	584Pmjnbjha0xlFcsTuSj7mPuSl6RBc=
+	b=jXGW0p4fFXtb6YHRSsypfgR47LHTTe4yFdtf7XHZjHdhtk/aSi7/mzSn3ILCdyMx0Be2gN
+	2AcCC08mBAG+LMe37VOu/XDH0AT1hyeJFeZwjKtWjB0xUA3cOmMY+QXvP8Op4xVI36wTgf
+	uXTU+voe0yLdJZ44BP2pq2z3yMraw5Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=W05Y14re;
+	imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=j4EoRb05;
 	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf08.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+	spf=pass (imf02.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251014121034epoutp0291905bdfb68237916c779a59ea17dbf5~uWlb9Siot2397723977epoutp02N
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:34 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251014121034epoutp0291905bdfb68237916c779a59ea17dbf5~uWlb9Siot2397723977epoutp02N
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251014121039epoutp038c5241ddcfd666e64080a67ebbeea9f6~uWlg069cW0487904879epoutp03J
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:10:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251014121039epoutp038c5241ddcfd666e64080a67ebbeea9f6~uWlg069cW0487904879epoutp03J
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760443834;
-	bh=rKJH8bwqA59RYOc+B5sM49aSVlRkW4PvNX4CEB13cCo=;
+	s=mail20170921; t=1760443839;
+	bh=O2U42LWZMM8201UpxKxW6f/AsVjv4jB1OSfEppuAbYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W05Y14rePZ8RFgXUzU42idAHG2tHyqnxyTHEGnyOuTLnJCR/PBRpmpxJAYeWIdafb
-	 wDeLhW0PSZ/QiE4Za8cKFfPoUyj6W/ieVWNi+AasoDHJtSKXrhQXMrBrzXsJ31gnd4
-	 J5rZ2dJ/Xi23b+2H3bT+d4wVB81A2+1H8pW1F1c4=
+	b=j4EoRb052CyFlWparM6vJ+IGSCEWjIS6wVo+S87KDQqDA0Ocmw/12pWxJHIIh31zH
+	 Esi8h9OyxeOyR15xYVX5wm7qtnvdwsg04HJRPmJ/1moWx5u2peXU8xFWHwP0Tb4pM0
+	 +fUQ0OawY0mVdzW1x06h3YX1hssKOUzItdHKdfpU=
 Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
-	20251014121033epcas5p1d8391adbcd15cb4c8848b8cb66b6cfeb~uWlbWfGcV0673806738epcas5p1Z;
-	Tue, 14 Oct 2025 12:10:33 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.90]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4cmCj42h5Qz6B9mF; Tue, 14 Oct
-	2025 12:10:32 +0000 (GMT)
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20251014121038epcas5p4685b828d668366916b45d174d16a3637~uWlgJt7Oo0610406104epcas5p4-;
+	Tue, 14 Oct 2025 12:10:38 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.95]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4cmCj93Ktwz6B9m6; Tue, 14 Oct
+	2025 12:10:37 +0000 (GMT)
 Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0~uWlZtq5xY0650006500epcas5p33;
-	Tue, 14 Oct 2025 12:10:31 +0000 (GMT)
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251014121036epcas5p17c607955db032d076daa2e5cfecfe8ea~uWleqppMN1447514475epcas5p1j;
+	Tue, 14 Oct 2025 12:10:36 +0000 (GMT)
 Received: from localhost.localdomain (unknown [107.99.41.245]) by
 	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251014121026epsmtip1b892e5a7d3af784888e5b4d33982dd8f~uWlVOMbrO1256112561epsmtip1n;
-	Tue, 14 Oct 2025 12:10:26 +0000 (GMT)
+	20251014121032epsmtip1fbff11e9fef5c6232ce81ec58fd0763b~uWlaFqXYA1256112561epsmtip1p;
+	Tue, 14 Oct 2025 12:10:31 +0000 (GMT)
 From: Kundan Kumar <kundan.kumar@samsung.com>
 To: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
 	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
@@ -86,31 +86,31 @@ Cc: linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
 	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
 	gost.dev@samsung.com, kundan.kumar@samsung.com, anuj20.g@samsung.com,
 	vishak.g@samsung.com, joshi.k@samsung.com
-Subject: [PATCH v2 04/16] writeback: affine inode to a writeback ctx within
- a bdi
-Date: Tue, 14 Oct 2025 17:38:33 +0530
-Message-Id: <20251014120845.2361-5-kundan.kumar@samsung.com>
+Subject: [PATCH v2 05/16] writeback: modify bdi_writeback search logic to
+ search across all wb ctxs
+Date: Tue, 14 Oct 2025 17:38:34 +0530
+Message-Id: <20251014120845.2361-6-kundan.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0
+X-CMS-MailID: 20251014121036epcas5p17c607955db032d076daa2e5cfecfe8ea
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-542,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0
+X-CMS-RootMailID: 20251014121036epcas5p17c607955db032d076daa2e5cfecfe8ea
 References: <20251014120845.2361-1-kundan.kumar@samsung.com>
-	<CGME20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0@epcas5p3.samsung.com>
+	<CGME20251014121036epcas5p17c607955db032d076daa2e5cfecfe8ea@epcas5p1.samsung.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F100160014
+X-Rspamd-Queue-Id: B960480014
 X-Rspamd-Server: rspam02
-X-Stat-Signature: yr15phem78sw9qq9nxqbwiboyw6pkim3
-X-HE-Tag: 1760443836-848628
-X-HE-Meta: U2FsdGVkX1+20T2RjAVu4lmdJyYWUk9A2X1rjx2QO1gQsi/Y2n5RcA2qHWfjMBmMJSoKMGcvy6Uis6IucKX6ALaUFIpY+rYVw8VhmjitqMz7XKWCJwJk3usoJjytTeD4Rl0KfTni+N3nZ2EL63cqZCG9OMYKwLargCTO7zEMn2ubGPMhH8l9/mFcqVmripYdn19s4VEwvi+lB2O/wKdkF5Og05TmnPWpJ/Xxwfhsz2isgzWLdDEei0uW8e5iI9OruJM1m88cp4KitngDc3NdfhCwTTeOZMYHugjXQWGGMKKTW7rV79xFZOHorNWSe4Z6RnSuLqX0H6Y29iOYW7WzdP7BqeTxNRHlzp+yK4crC8Lceh7suhVrAZUFtFeBJulG120LraEPPbbuTFHOjWg2iA23utGstTV+a9rJ7TYWUwY/aAu234pi4TIcboeYsI7qbhMzUKwEcT9UuT7z6yV0nT1tpeF4xSwrse83JbQwCGOF0csS8bsQrHLUePlm1T8eEW6aJr11k1wYyNJrK8yKqp+JuMqf3zKE29GQNjSYx6e85ZUZ4gjsoAPN9FND2pzBiCcm05nt2YrW0WZN7xSXLbidDGDflXL/dtlOLyyLZ22aRInz7XZgBu1dfhPdxgrQt9p4K7ozaBHwKN+TU/xfNAzhGygoQAmAfgA+b7Y9i44cZZyn/LEBwRDmbtoRkzc9FGdD8ZJpvOnCeYd8/3Si+sRnWCA1+f5X1BuGVDUMGRLNbSyrny1mHzERbJnYxZXJPxZizamGBicp4Ci6/5FnwO7UMKxkL04oHw9FZn4xUHu6i7434xPvF6O7Gjsahymv1O4FooY10bbZwW/I5xN2SXoqB+mdExuVNNkFzeewN3S/Kxv45VrCNrLtSuFw8D4Nh0eiqxClPqzrOad7uug9qH/pgHeD1R1rCF4MrQUJupD3X02GHh85mqw2VKaOrKTxK8j+6497nLKDmGBhBaZ
- J1C49KeN
- T3vImTxDM6QVSFosoEaQBs1HNJtSc6ENDG0xjbOnypNSE0Tgl/KZ3HeQ5y9lUog3ylQSCRay+9/8jde8VbV2KfN5WnqcslWhl7Pi2a+MxLU5mseT8sOTEgD+x3lhxDW+GBWBQaaC4iM7Rgtolf0F3UnyGkTkf4/ch0MDnVMEGRVoWdAqlXluRtthuwQ4qPxQWVkRG
+X-Stat-Signature: r9zupjbujid4fdgionhi8reanmatnn8j
+X-HE-Tag: 1760443841-350480
+X-HE-Meta: U2FsdGVkX1+fFrKe6G+5NW2V4s6Fuyfzr1kn0INEDpJgpBjjnRSaAGUBNzXNlhqLR4oiKPZjrqa6T3AaymXyQCsAqlabQ4uYEWZZd/JwEucSJ6+vEEftkp+GBMa2hkucoT91k2CfHCYRB3AUQ/CVTYwzmgD1/KGoTh6SGZYCqfJTDh077l38ZWVYXb1x5mLNwBzSsgSLoUi4lHFvJ3yYH2E8oP/e8aBGOwwUlT/a6hSSEtvam7Dw5GbM4MJVpkKQC3WgfbeDSnOv3RNLsuf/x+/nMpMSvyb/ar9lCDyaFhBMT/1PnV8hsXNCx3n+Z37U+dw3eu4GGf6n+L25i3b/2dSExRvPxyFo1MDMyjCni5MoU/ky61kKiqxPZ0/iV18D0DTPFjalY+s1kbxGZEAsvEjEZd5RvAGLP2CzH300RZcfBBFlUcfJmemAp87j3c49bPcuAVAnk9mXIdn29/nFgg8/md4R6ynFCB9W4a+lEnYQVpAEEOmrDBe0brop8TrG48vqJY4IukiRu1zGmGCumn7txcgpPQbYwG5KdzUSmiE53jJsf8L2O97qSywpxemFuIG2yjVxqvxbOfN9beM31Z75hmh65ZIOfH47jRMo8jfxX1yrchHyC4O3JtTV9CP5jC7sFkb3d8VeGcQjXVRJTXJczHaYDspQbcj/iiZmvr7HzqiplSxDe7g4z9oVLqBhHpZIHqewndZr/MdcnHDQgFkFS3kTF8qhQB1mpvxl2N+IfsnUqYgN9R/61ZI/klk0n1q9X90LQoeGTcbBCZFbc8tvBESglSwrk8o9iOSWgxy1ElwZ1U5B0IQ3NuTvbYWt6wfiRyy1O2RZdPji/dHOngagUfJwKlCzhCsEvyVaIrBooyauxVzwXDN23srcvZ1FKgmCTJbkWtJwQsue+tbJWhf9xmLuCtb6FAz5P080a50p6QVvnjtfnVi6y1x7QJo/hFQy3epRx9rPpSvQ+gE
+ o/hBgL++
+ I1js3Q9wsXoG21/VqZuVsXjgkh/hXethJdr1+S3h1HxiHKUFxZmxasPm/3RrJ/ckTJW4sSiL2jk9KumzZmv0CwlULVPHqGe4RdEtjyCoLXy+ZrAqrSlJ1yJSJBXgOdFWtVVLbMN2rqCHkihbxiiYzfQw+cDmYS7nmnrnilUE9KXMG5Whke64DO6mUrVIOVb1JmRC0Q2Q3UDjKddyPimzExmGdkfx5QZ5CPm1cguzWnek40Hz4K9t4ISwVqA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,117 +119,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Affine inode to a writeback context. This helps in minimizing the
-filesytem fragmentation due to inode being processed by different
-threads.
+Since we have multiple cgwb per bdi, embedded in writeback_ctx now, we
+iterate over all of them to find the associated writeback.
 
-To support parallel writeback, wire up a new superblock operation
-get_inode_wb_ctx(). Filesystems can override this callback and select
-desired writeback context for a inode. FS can use the wb context based
-on its geometry and also use 64 bit inode numbers.
-
-If a filesystem doesn't implement this callback, it defaults to
-DEFALT_WB_CTX = 0, maintaining its original behavior.
-
-An example implementation for XFS is provided, where XFS selects the
-writeback context based on its Allocation Group number.
-
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 ---
- fs/fs-writeback.c           |  3 ++-
- fs/xfs/xfs_super.c          | 13 +++++++++++++
- include/linux/backing-dev.h |  5 ++++-
- include/linux/fs.h          |  1 +
- 4 files changed, 20 insertions(+), 2 deletions(-)
+ fs/fs-writeback.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 0715a7617391..56c048e22f72 100644
+index 56c048e22f72..93f8ea340247 100644
 --- a/fs/fs-writeback.c
 +++ b/fs/fs-writeback.c
-@@ -265,7 +265,8 @@ void __inode_attach_wb(struct inode *inode, struct folio *folio)
+@@ -1090,7 +1090,8 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
  {
- 	struct backing_dev_info *bdi = inode_to_bdi(inode);
- 	struct bdi_writeback *wb = NULL;
--	struct bdi_writeback_ctx *bdi_writeback_ctx = bdi->wb_ctx[0];
-+	struct bdi_writeback_ctx *bdi_writeback_ctx =
-+						fetch_bdi_writeback_ctx(inode);
- 
- 	if (inode_cgwb_enabled(inode)) {
- 		struct cgroup_subsys_state *memcg_css;
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index bb0a82635a77..b3ec9141d902 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -53,6 +53,7 @@
- #include <linux/magic.h>
- #include <linux/fs_context.h>
- #include <linux/fs_parser.h>
-+#include <linux/backing-dev.h>
- 
- static const struct super_operations xfs_super_operations;
- 
-@@ -1294,6 +1295,17 @@ xfs_fs_show_stats(
- 	return 0;
- }
- 
-+static struct bdi_writeback_ctx *
-+xfs_get_inode_wb_ctx(
-+	struct inode		*inode)
-+{
-+	struct xfs_inode *ip = XFS_I(inode);
-+	struct backing_dev_info *bdi = inode_to_bdi(inode);
-+	xfs_agino_t agno = XFS_INO_TO_AGNO(ip->i_mount, ip->i_ino);
-+
-+	return bdi->wb_ctx[agno % bdi->nr_wb_ctx];
-+}
-+
- static const struct super_operations xfs_super_operations = {
- 	.alloc_inode		= xfs_fs_alloc_inode,
- 	.destroy_inode		= xfs_fs_destroy_inode,
-@@ -1310,6 +1322,7 @@ static const struct super_operations xfs_super_operations = {
- 	.free_cached_objects	= xfs_fs_free_cached_objects,
- 	.shutdown		= xfs_fs_shutdown,
- 	.show_stats		= xfs_fs_show_stats,
-+	.get_inode_wb_ctx       = xfs_get_inode_wb_ctx,
- };
- 
- static int
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index 951ab5497500..59bbb69d300c 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -148,6 +148,7 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
- 	return inode_to_bdi(mapping->host)->capabilities & BDI_CAP_WRITEBACK;
- }
- 
-+#define DEFAULT_WB_CTX 0
- #define for_each_bdi_wb_ctx(bdi, wbctx) \
- 	for (int __i = 0; __i < (bdi)->nr_wb_ctx \
- 		&& ((wbctx) = (bdi)->wb_ctx[__i]) != NULL; __i++)
-@@ -157,7 +158,9 @@ fetch_bdi_writeback_ctx(struct inode *inode)
- {
- 	struct backing_dev_info *bdi = inode_to_bdi(inode);
- 
--	return bdi->wb_ctx[0];
-+	if (inode->i_sb->s_op->get_inode_wb_ctx)
-+		return inode->i_sb->s_op->get_inode_wb_ctx(inode);
-+	return bdi->wb_ctx[DEFAULT_WB_CTX];
- }
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 754fec84f350..5199b0d49fa5 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2379,6 +2379,7 @@ struct super_operations {
+ 	struct backing_dev_info *bdi;
+ 	struct cgroup_subsys_state *memcg_css;
+-	struct bdi_writeback *wb;
++	struct bdi_writeback *wb = NULL;
++	struct bdi_writeback_ctx *bdi_wb_ctx;
+ 	struct wb_writeback_work *work;
+ 	unsigned long dirty;
+ 	int ret;
+@@ -1114,7 +1115,11 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
+ 	 * And find the associated wb.  If the wb isn't there already
+ 	 * there's nothing to flush, don't create one.
  	 */
- 	int (*remove_bdev)(struct super_block *sb, struct block_device *bdev);
- 	void (*shutdown)(struct super_block *sb);
-+	struct bdi_writeback_ctx *(*get_inode_wb_ctx)(struct inode *inode);
- };
- 
- /*
+-	wb = wb_get_lookup(bdi->wb_ctx[0], memcg_css);
++	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
++		wb = wb_get_lookup(bdi_wb_ctx, memcg_css);
++		if (wb)
++			break;
++	}
+ 	if (!wb) {
+ 		ret = -ENOENT;
+ 		goto out_css_put;
 -- 
 2.25.1
 
