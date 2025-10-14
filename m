@@ -4,120 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DA87CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 10:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A3BCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 10:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A7D58E00DD; Tue, 14 Oct 2025 06:19:20 -0400 (EDT)
+	id F12768E00DE; Tue, 14 Oct 2025 06:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47F618E000D; Tue, 14 Oct 2025 06:19:20 -0400 (EDT)
+	id EC2638E000D; Tue, 14 Oct 2025 06:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 394C08E00DD; Tue, 14 Oct 2025 06:19:20 -0400 (EDT)
+	id DD9978E00DE; Tue, 14 Oct 2025 06:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 261CA8E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:19:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AD6665B715
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:19:19 +0000 (UTC)
-X-FDA: 83996322438.20.4E43830
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D08618000E
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:19:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jwcUOnvX;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C92608E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:23:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5ACFC1A07EE
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:23:55 +0000 (UTC)
+X-FDA: 83996334030.21.339B618
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DEA8F2000E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:23:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="o/9cubEa";
+	spf=pass (imf03.hostedemail.com: domain of yadong.qi@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=yadong.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760437157;
+	s=arc-20220608; t=1760437433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1GhdPCYEOIPlUxhGKbw+Pmeq+R0XeZpDT4H4TE9DD8w=;
-	b=XYelmTSvP1A5IUjyUxzYWp3usPlJCMaTFkaZyRb0XiheBT8GBNBApCQ+51qeB3hNe9SS6S
-	bCWbicbQFCA3tg85F0lTwEaSpV6IcMLkJF/5+Du0m4kcQA8PjWf2H3bU3eD5mPtfEam5g9
-	XHObSGyN5lEZzm9sdL65PHVfViDViZA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=J9JOaJlvD/7q8qVNfsfW+49TDQ791v2pZOsg2KuuwpY=;
+	b=mWb4iFwBdfuNUdD4P/k1kCcRXlwWCJiGlDLcXCa4g1YRn4ECSOEXrsPtbHuNvl0RCZkxJR
+	5uCJ2PZEId2xAybQIdDaHqER4qdsoraKpUpM8Xslr5UmxcelTct9N1T9J9Z+o1IjiszxQm
+	Or26KmxBtuk+jepl/dH9F6k7hlA5jUc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=jwcUOnvX;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760437157; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="o/9cubEa";
+	spf=pass (imf03.hostedemail.com: domain of yadong.qi@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=yadong.qi@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760437433; a=rsa-sha256;
 	cv=none;
-	b=Bsy8alWgy0u4AxGBNK1SkFugmCNMBZpbsM917/PKT9BV42VLeBZLz7XLTgnuaXw3veIZGp
-	fThI6VgXYsXCj+rWckgJ+D9EJ9wmw6l/oZjEsHtD11fOdTe4B69aJba2OFdRt/EaLf45eD
-	33O2HiU6nMCYiRqXXBnMLqxPGymbwDY=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-84827ef386aso484586385a.0
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:19:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760437157; x=1761041957; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1GhdPCYEOIPlUxhGKbw+Pmeq+R0XeZpDT4H4TE9DD8w=;
-        b=jwcUOnvXifVwqwhwmJ4PSSyXvu08mfF4b4t+9ezP3VoG6jctysIE6heiSfib0vlsTA
-         FngFbEG8yRNydiJ73PoWlb/Y8omS/G7Ebc3awbYTdGOSavY6fe6P2qxvwIm7VduGhiiD
-         zYHYcQ6suThgTpeIbI/r6gkkbSygv3RIUyiiKfaWTlVJxiB/iNPQNGP35rNLfaskw+mF
-         Q1NgUDrvo9YE7sk8fnYqgMWsEU2aAs+wqmFhurksTV2iH9Nu0MuJlr8IBV1Crbk7ZvSi
-         rKcYxglNCAUUSLRcXigDBdHZIVFiqWe667mh7Wnz9jPCEW/4b7OkxEGRjNoA6yiWX0O1
-         z81A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760437157; x=1761041957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1GhdPCYEOIPlUxhGKbw+Pmeq+R0XeZpDT4H4TE9DD8w=;
-        b=Gqki6/hS1519g37s616k86663GaCUwLO9vaqWXZfXkcXiYEdd5JZjqCwbknp00ESw2
-         2/xeDsVDdIcFDNSmBmclw9nwgsrDOVM8dZbZOCI1wJ3IZV1gu3MJV3R5sC+5lg0iKljt
-         0TODWI8mRYyjnMhYdZNfKGQwIV2OTLrLAkpb8yD58tos06sVFSQ/s7heMdwg+YooY06q
-         DrehSpbobTltUqzU7bFUso6H4kZc/1llEQqWtBJX0XE/udy7nI5b0XlXZdrtcHPjS4gt
-         wZqwlpnX2vftLasOHlf0dn4tGGPvOh76268TDxGe/BSVf7vnXMll00eEw4/dAGKaS68E
-         1cmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVDz2bf6lsF1RZCBC9Gi84PetnbRHaVjv0645AWBfLwKzgpw03koIpHEMGtAnkb7GRzbW/ELDAa1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxe70vjdyisEkS0MTzu6OnpqjtaI1kSeKHlwiQ8CS+JO4lluzgI
-	eUnvof6TSok3VaQnbWz3mcQFoiqiQSikE3F0EtsWC/c4+HhWHtmxEeimoKiUqmy8ihj40X8NU9C
-	NvfQdeOVBcJFCeFGIqskvz4Hwm8N8EMM=
-X-Gm-Gg: ASbGncuR4F0v2VDbYEv4/tpBZBL2SYtuhoe/vkH1fKbsmgreccyy/bp8HsBTaSQc+rA
-	/gGz02R4CfLkOZ3JWHJfEaxTPNJGeyvk0NgKk1rXUP71xeOpwV/7OHjCuQty7kvXHUobXErqVJ+
-	MgdIAdh51GaFvLdcf/72PgGlKn5u6YHs6xWarTDqdojHuNg1WPZ9uRAQH0kK5sMuAmJNO/aFqvv
-	oRcFPF/M9Xkh6Nr7/ZBH83YHit/jIcpk+kV74EqbV21Y4gybgjqJfXHlJONZ58XQUC5
-X-Google-Smtp-Source: AGHT+IHkG+3MijbAqPzBuX6WT5qM1UH5wFEx4+o96mRJarvePfqJF8HiiyZhUvW6BxCxk3W2HxXrCx44GyONpuhGsYg=
-X-Received: by 2002:a05:620a:1a82:b0:864:c4b9:da16 with SMTP id
- af79cd13be357-883570ce5e8mr3684480185a.73.1760437156675; Tue, 14 Oct 2025
- 03:19:16 -0700 (PDT)
+	b=uoP8y1JTRVfRcXZl+7TCsmoLOf76zFQ/3Mq9zlNxUogQJXRlFHc8zPCS2UlrWXxtuFfNK4
+	jr0Mz2ZtagBQpiDTGGawrW/CBOr+J5Hdm2kK5x/y5PsKQuI9sTFwGdUzhu9WKSwOiXdYT6
+	191vG1IoTE/+sjf+MAjWpmDHNAA/47Y=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760437428; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=J9JOaJlvD/7q8qVNfsfW+49TDQ791v2pZOsg2KuuwpY=;
+	b=o/9cubEaxUaZYl6aA4L9zQ1dwpUyWwOCTSwKmAaHmhMxztvWiobGgUc0GBaayfc+25cqUazqUa2DTDDYdRV2LMZSM6Se4+QhIuGc+10mGI2i4kuovz1SzYKbHqnD5gH7Aa1w+bat//NSu8XO2IAhy1cSbkMA75lk9uN4ivz1NpM=
+Received: from L-G4162440-1116.localdomain(mailfrom:yadong.qi@linux.alibaba.com fp:SMTPD_---0WqBnE89_1760437427 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 14 Oct 2025 18:23:48 +0800
+From: Yadong Qi <yadong.qi@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	urezki@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ying.huang@linux.alibaba.com,
+	dan.carpenter@linaro.org
+Cc: Yadong Qi <yadong.qi@linux.alibaba.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] mm: vmalloc: fix uninitialized value issue
+Date: Tue, 14 Oct 2025 18:23:37 +0800
+Message-Id: <20251014102337.5453-1-yadong.qi@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
- <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
- <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
- <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com> <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
-In-Reply-To: <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 14 Oct 2025 18:19:05 +0800
-X-Gm-Features: AS18NWC6N5v2tw8omBV7hBy3g3GX8bmzsyDFnwNBZ4EEXltiuUXlhijttlnObnI
-Message-ID: <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-To: Eric Dumazet <edumazet@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: yjz1183mytj1fa8guhd7e36q87qr43w9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DEA8F2000E
+X-Stat-Signature: waywek6uexjh1hjp73fs61urezohuodh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D08618000E
-X-HE-Tag: 1760437157-24693
-X-HE-Meta: U2FsdGVkX1/tCF1N2mvvc2qNTm5/pp6R/BidW6J1tY/3c0uGxYXYxIGADaAPX5AMIwHyr+CfeiwOOglQjwQUY+dnPya8k/C/vCZ30qlQoTPTys1pbISRGrbtGZcc7VUuQW9MpnMtsJYXgrgXrOGNagXGc8P49jllmrjv/twK9jG810+YrEfIIMRaCppU6yV4qmp+3kbvNSmERHctnawT4CDz1yUgYeb4gMjZdtmWWC8RBg2gTcQ3ioh2hlv6R4oaz7FD594ahCYPZPreMakXTkAgUGpFJdwbpAIrrxj8tJI+0tVgTl8sPB6xfeS4Ka3KDtOZObEGeeKY1pHIDCSgon9gApisyzanKR5+qbQzFkMZ/qGYMcJ/RAhqznrZU8XzJd93hmFUn0x+dPbP0czC7aRdCTWlKCcee+idgCe/O+K/Bt4r6DdlJFMZvgmSDHxXjOPQXK9GKDAemtdjako76C+Nx5qYB0XQpmdvIaSj5K0npsHMfrzNEbbuB7jb41/8RGCG/2DEufxBcgXztHPVAvtHhp69+/bcVNDiYxm4/2kglhuyApKxm4sQK29IL61OFsNW/b9k3ue+GBrCxn/GrCYPshVi+TvMY9pA+HD27KvsU5Ad3UuJ+6Qkg4TGiGOfgFGCN+0J2q3XrChQ4JrUZF3V8wRS9xjZcAtBX7UP1eu0Qp3iSknFWIe+A5nLfx+PCGL7xnVZrRO5UUuJz6I8dLMX2r5wCdJBtxWPExjJWenjdab+FaOXKv6kMpXElyPVjj0ZqHgmvSNFljlYW5QkbBZX0prbn6RvrIhPBD27RTwdXcAV/cgEUr5BmGykg1jtJA65sXTpyu89LYoCqPmYJcA4Yaerno8FuKxB/kPMe1VMVbeDJZ42fQKB3T0iQh12fzisepCJNpXnQ5mfi9OGUvdoK9eIz7Nmiag3tXa/34k7pw1PZn+7X2ta4C+kmSZrDafLWA5hpK7cvNDASJb
- eRCDTmEE
- /II0GQ63iupru2T/5UBrLgFuNLZigTDWnPDvNUwbepagz4mRiAW9ii+NWzme6qH6zdHbpX8V2kxiBfY8lDQrTyh/R0Bhzcpc2a18TyNBggwKUrgOtul2h0wZvgIv+MbAYVFBJGC6k2oeofq1Np5aFG13IafaInLQtfddWv1HIiM7ST+RgnsRoa2STblNO9WYJzTyuVb0c9Fil5941bNfPdIlu1zo3Md/dsXB9Isoc1ZlBA+S6CsB6uqWwvNHpfjwvctlsTenZHbSEwI31zTZ/OQY4QwYo03tJ39WpBowy9E8MipaXSZfJA+iqIyjRa0c3yZ2Jly3zJ8PrVg5Q5usc9/bJ9AEpFT1N4cxm2puaK10aqJI6xZ5D4QPaIivIdvofCxRR
+X-HE-Tag: 1760437431-694732
+X-HE-Meta: U2FsdGVkX1/W5Hjc3OoSI/CCvnYxJMpefIItxf33eDepZNxhcGFXuaBCPxbTy9nxNi6keV4FCFtbfJ8lIsbH36eUNluC4odD8D11SfIBpymGjs/8GZ1/URV37rb3mGKdaaxWDJ49NRwI6vg5huA1gz9s1UzPho2st2loLZT6OGca5cE1pINjD5E/l2BnpAluziEqpXpsBSiSAwXMFCWZ+KRPl8A+N6VTIDSfYHxc/JKCOXOdRnN5En7tUEfWoHkt0pwEVV2QFR5POIleqPIwRbkKnAljlyV3aUnQy8XWPRo9PNPWTM24JLkaBYAMdKl2KZmMvQG031fsgyaoYLvVxTRoggX+r/W3Pi7124C6EDuVzvl4ERFPdz4/+lKJJ2v2kXt0kzku2FKkHn55Cj9OHE4cCi/nKP1R8ccCD+VABw7TM6U8OM1EdNlSs9AvbxEd0cYecK0lJy1chv2KVYis/n7gOAYxvttI7UZElKyXOZdeFss8UlUf6jrHh2Nfnfm7104LnoLy0hmiJyFj1uKMDdpAOq6B59+x2pCFEJjalDsEQPVfgpgBUgzfjQBhrJOVkcNGwW7qts6WJYt2QEt0k2XaIGKd4vv34DcpTn4GI3v73xyioy8wmPTraKGUFsCBTeSYJBAxN2FImE2J0HkgKwqWrO5/+8fjFHf3JYNTyi2sVIxkdb9qTVM5+7pbKQxbIvzrg+h5r9vyqDk0BCKZU6Y8AjxgOdAxq2AiOm/Gh7yZNAHdOhuWXwcaWwt8wtscDTeCKh5wNu7WM7JanekNg0L4Er1LBgrn/DJWUhlrl3qqcFX50lyT4YaaSbea7rxrm6Af0j+6lGnOHGGXe7U9tNpEaSkNCzx2cWtRal5+dvm/AAHgLNYxoB13JM3U9QOGXcc17t6QtmtH0JzjQwOF7M7pbnmZOr7uZjc+StWu52wJphkchB/KrtdlqRjJMgm/TqZ5PWafSA+YndCY8xa
+ empl/BWm
+ kHVCQ2/N5v26yU/nLc9ruruaRo0kjpAjvt/PyG18fD+lJV1v2FCKeGRCQkXaV2RAk5TtRPysXwLWUmfbqn+Dv7k0Po2gAUPd1FO2rBiPkf+mwo28oLPnr0jAj5sCMVJ5e8tloHkelqNcnrbY8AVD2ICUgcLvGTRfB6j9F65gKmRFziURDl7pvjvtB5HtvX8isp6obdcgOUBKJU8rqDVrIDEDsqUJu78HU9kNsukFYHp5Si8DrGUgEvZymbQcfCMpYa/ei+1MfVxO6BI0W6fWifrleguLv8YHSDu3E8zpqPLsTGU9wbudMbmaXki40Xha7lmTFFIszxIAGuV1UdKZvJDRvA/okLmEtml9DzmPVfb39htLWxusT+PUwWwcCpg5Eke10ojurQEr/s88=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,62 +87,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > >
-> > > I think you are missing something to control how much memory  can be
-> > > pushed on each TCP socket ?
-> > >
-> > > What is tcp_wmem on your phones ? What about tcp_mem ?
-> > >
-> > > Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
-> >
-> > # cat /proc/sys/net/ipv4/tcp_wmem
-> > 524288  1048576 6710886
->
-> Ouch. That is insane tcp_wmem[0] .
->
-> Please stick to 4096, or risk OOM of various sorts.
->
-> >
-> > # cat /proc/sys/net/ipv4/tcp_notsent_lowat
-> > 4294967295
-> >
-> > Any thoughts on these settings?
->
-> Please look at
-> https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
->
-> tcp_notsent_lowat - UNSIGNED INTEGER
-> A TCP socket can control the amount of unsent bytes in its write queue,
-> thanks to TCP_NOTSENT_LOWAT socket option. poll()/select()/epoll()
-> reports POLLOUT events if the amount of unsent bytes is below a per
-> socket value, and if the write queue is not full. sendmsg() will
-> also not add new buffers if the limit is hit.
->
-> This global variable controls the amount of unsent data for
-> sockets not using TCP_NOTSENT_LOWAT. For these sockets, a change
-> to the global variable has immediate effect.
->
->
-> Setting this sysctl to 2MB can effectively reduce the amount of memory
-> in TCP write queues by 66 %,
-> or allow you to increase tcp_wmem[2] so that only flows needing big
-> BDP can get it.
+Issues reported by LKP:
+  mm/vmalloc.c:191 vmap_pmd_range() error: uninitialized symbol 'err'.
+  mm/vmalloc.c:243 vmap_pud_range() error: uninitialized symbol 'err'.
+  mm/vmalloc.c:295 vmap_p4d_range() error: uninitialized symbol 'err'.
 
-We obtained these settings from our hardware vendors.
+Fix by initailizing err with 0.
 
-It might be worth exploring these settings further, but I can=E2=80=99t qui=
-te see
-their connection to high-order allocations, since high-order allocations ar=
-e
-kernel macros.
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202510110050.VG9YKMRK-lkp@intel.com/
+Signed-off-by: Yadong Qi <yadong.qi@linux.alibaba.com>
+---
+ mm/vmalloc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-#define SKB_FRAG_PAGE_ORDER     get_order(32768)
-#define PAGE_FRAG_CACHE_MAX_SIZE        __ALIGN_MASK(32768, ~PAGE_MASK)
-#define PAGE_FRAG_CACHE_MAX_ORDER       get_order(PAGE_FRAG_CACHE_MAX_SIZE)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index c0213118a75e..6d6d4cf3e176 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -170,7 +170,7 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ {
+ 	pmd_t *pmd;
+ 	unsigned long next;
+-	int err;
++	int err = 0;
+ 
+ 	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+ 	if (!pmd)
+@@ -222,7 +222,7 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+ {
+ 	pud_t *pud;
+ 	unsigned long next;
+-	int err;
++	int err = 0;
+ 
+ 	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+ 	if (!pud)
+@@ -274,7 +274,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+ {
+ 	p4d_t *p4d;
+ 	unsigned long next;
+-	int err;
++	int err = 0;
+ 
+ 	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+ 	if (!p4d)
+-- 
+2.43.5
 
-Is there anything I=E2=80=99m missing?
-
-Thanks
-Barry
 
