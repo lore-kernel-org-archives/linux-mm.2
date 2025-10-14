@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E75CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2305ACCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:08:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E02E8E0116; Tue, 14 Oct 2025 09:08:17 -0400 (EDT)
+	id 821298E0117; Tue, 14 Oct 2025 09:08:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7798E0112; Tue, 14 Oct 2025 09:08:17 -0400 (EDT)
+	id 7F8A18E0112; Tue, 14 Oct 2025 09:08:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A6E38E0116; Tue, 14 Oct 2025 09:08:17 -0400 (EDT)
+	id 736938E0117; Tue, 14 Oct 2025 09:08:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4998E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:08:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ABE05C0936
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:16 +0000 (UTC)
-X-FDA: 83996748192.14.7B94DCA
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 626F38E0112
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:08:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0DE085BC59
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:24 +0000 (UTC)
+X-FDA: 83996748528.18.DE6E1A6
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6D0CBC0007
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:14 +0000 (UTC)
+	by imf22.hostedemail.com (Postfix) with ESMTP id B8A7DC0019
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:21 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="S/RW4m4h";
+	dkim=pass header.d=intel.com header.s=Intel header.b=D1srO15R;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf22.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447294; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447302; a=rsa-sha256;
 	cv=none;
-	b=08II1/sLl7xmIlgqR5qQX3hCUK1IuesYQzC/mrVzR6DIYDvrfq1xiWEtQJAA/uuy6awkEb
-	Ns+0SkQrqO4DJkFBgfE00PPkwc80cPE6zofncKKKoThsBRnSc+3sURIYufoIwQLv1S0+lp
-	xAsWp9ywG+Gnq453keXIx6cgOubMRy0=
+	b=gyouEBNtk0UWD3TXN8oVNNHckHHPtFDt7mXXIuFXXIu6NyQe+CB87yFpdX59HqYVXXBSYV
+	Q5+DxznPiWdFRTwetzy0cPslg1yx6irCFrn7xmLRdM+rt1WUthLYSmPTKEfO70f9pS7sgB
+	ZNmNYo3iQyDCNVKlhO9jdkevQwkIibk=
 ARC-Authentication-Results: i=1;
 	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="S/RW4m4h";
+	dkim=pass header.d=intel.com header.s=Intel header.b=D1srO15R;
 	dmarc=pass (policy=none) header.from=intel.com;
 	spf=pass (imf22.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447294;
+	s=arc-20220608; t=1760447302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rFjqPss/05hT4Ui2djTBpxHlgiGLKTGxBVqpMBNPmSI=;
-	b=67N9kSL+VcxaQEE/At93rtrgEcyw2YqxvxsdCrBik5VQDkL+4aRBTNbNuPygObyc8qqXL5
-	+8GeIgJEh0lg84OCbECK7zXUblGoCqdn62q9TTr/VY+AAdhwHCWegmhIE/f8xd84ek9E6f
-	jw0iOZDAwo0k+CkM+mJJaFvAUbVVpvk=
+	bh=EdE3j6jtFkCFmeW7Z2PpEyeAhaejqZEZFwiQjALOlps=;
+	b=51L2I/0kBCVGyhFUE1Vn7trNikK8L1MNVu15q7Jh3uXGdHkMCuwK3MuRDx+UsXl+I0zF+T
+	3r4W3cxbjBRt4hRvfIYrLouoMAVkfCFlYmVGw/BWMYsAhxncPodEXro6rlHDxFZtAFX4er
+	3avPiAQT2oMpaITLmz1bkeI57mA0FkM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760447295; x=1791983295;
+  t=1760447302; x=1791983302;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=F4I8Kvtwn3jusskaFJsgVirsMtZJ1VpejkaxbIoXrsI=;
-  b=S/RW4m4hawkfHBMgvtjWPWtNg/08J8XI2ScCiSYpxDo/4lYHU5x1cmgZ
-   aAKf0lm03iDelczbzy3zsJDUdWQdw8cZVwlt4j+WKO0yRmaxtHGqB4BwS
-   d+CHqEHWw3w6Ud24XmRQohf8qgY040Xq5lM53FrsyUMyGvOR4KqEvBQuG
-   r7Tj+oeS2Gyj+xzHe8Ow0Vu/6gTXSDqg/gxkV8TI7qZ01sjBSYpdI1K1C
-   d8ebP7pN765mV4XzgiRJX+ApA8ULRULRTXpqlmHCxNNYKHFOoB/CPONK/
-   oYMPz4+wduBx9OeEy9AbAKRHPkCN0aTP0+T1N8tAOdR2d4D0/VvRs8RFx
-   w==;
-X-CSE-ConnectionGUID: ytS6hdpfQZmMuNRM4damkA==
-X-CSE-MsgGUID: B78sZD5OQFSwCjqDi2U36A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515481"
+  bh=i9IOH9O/QwIEJOJX4Hmu4TbYsCb1D/4y6+SywTSOJWg=;
+  b=D1srO15RM0Gmo4UiVPf1izv1zpJjKaHumqUgW7BuMIO4wKzsynFbRuhJ
+   d2zu/gia5D4GDpx7O8mQLkvppgri/vJBHyg2Mbn46WDgkX0i/72gKArbd
+   VHkH/awaFyGhMd6PQjmEcydwQdgVUW5BiC1ysKmbdUrVFWyYp/MlBZOPh
+   XiKuetaFRTE0dAK73WOgTqtTVGkMdWj0PycpWZGEgsE358eHWlwoUiiyo
+   drGTm1FUivnrSq91PUdm2pCngwVaIdhR5eJmoP0o6UN5ki5VTFrzU4R1i
+   TtfGDderCrnkkbH79dUoSErY2NyvS+pOsJKFBZI70L11oAqFCF7ByNqL8
+   A==;
+X-CSE-ConnectionGUID: kGrJYDV3Tla0hJAFfpffIA==
+X-CSE-MsgGUID: uoEKHBaIRqizHfZyxtJHpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515505"
 X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62515481"
+   d="scan'208";a="62515505"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:08:14 -0700
-X-CSE-ConnectionGUID: tSK9WVeGSxqGkNXKwf99Kg==
-X-CSE-MsgGUID: OTzctZkDTmCiQhcd/KV4OQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:08:21 -0700
+X-CSE-ConnectionGUID: 53aYxaR4Qh2tVgAdaUeJww==
+X-CSE-MsgGUID: cJiEiFtbThGI+AD5JzUPxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="182675699"
+   d="scan'208";a="182675720"
 Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:08:06 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:08:13 -0700
 From: Lu Baolu <baolu.lu@linux.intel.com>
 To: Joerg Roedel <joro@8bytes.org>,
 	Will Deacon <will@kernel.org>,
@@ -106,24 +106,24 @@ Cc: iommu@lists.linux.dev,
 	x86@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [PATCH v6 6/7] mm: Introduce deferred freeing for kernel page tables
-Date: Tue, 14 Oct 2025 21:04:36 +0800
-Message-ID: <20251014130437.1090448-7-baolu.lu@linux.intel.com>
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v6 7/7] iommu/sva: Invalidate stale IOTLB entries for kernel address space
+Date: Tue, 14 Oct 2025 21:04:37 +0800
+Message-ID: <20251014130437.1090448-8-baolu.lu@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
 References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cz1tjsit6tnkhcztqfnzp3daopszc7xj
-X-Rspamd-Queue-Id: 6D0CBC0007
+X-Stat-Signature: 5wkot86cfzza74n1m38dr1gczrzzx5r3
+X-Rspamd-Queue-Id: B8A7DC0019
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760447294-171485
-X-HE-Meta: U2FsdGVkX1/pEDFKgmj+QSdvt6d5pXbo21rEoGFblJT9cv66KjijmHWG3+hHKhAS/9Dyyvq+xe6SKMYNGNLz4UJDTAIsFPXDSHUxxP3ftyl+ZV5mmEYG1zH227kUyNHRTk6OMlzzUi3/jP4W1jLoOKbau6DcU/flmbgV6Rn3KyxuV0Wm3MEOaLI3OnVwIvXI2PW/ssKSb9Z6bytnJUGFXlnl8F/SRS0fmUrev+98WnFqKnTP8hxIjIBLdWKW/JvZTAe/ebRtpOt56oueABmeTjjq34eVRYjm/mVHDRiSV0DofIuLF4MEUDJmTv5iLaPHOrRjM/YdZ29rXI6G52+7ZbFTLhBB2iR8BAZD8MQ6iZAWn65tFNOHZ/NP81F2vDyC3AATBG8Zx9F2K1MFr1r1cWf41seTaYfgtScHV+twYEQCvm+JZH2YRqGabXrqiv/nwxTsJ0+XtFYbix86B4Rcm1Eax+7c3ch/84iWoEORnDolri7lRzDGss8WVu8r8tgXH/bj+FVw9R/Rsu8eBhD9yKxRn4xPG9y99R42eX/M3tzJpyW9ONy47y9cwq2ytcnasR+fiDL6JHXuKbmxpIoSrq81+Or/W+7EJQtvjDp/lH8c2w6CWzErUVE53KHLr2EEphwU/gT20PVY0QA3bnsAzqbAOCDw+TMOZnMu5o9LhPUzUTSJxpTMy+bjoeY2VQ0y3BJCl9XbtRbfqoDq1zEr85mcdxOlPkVsRrhgkXirkiGjK/DKzNVKFi8v8Q08xuQxHWy9rM9ZdgIdmEnArEeJyG1qORExuPc7+a+CP/g0KdN8//QEDsKdxuT8JH5BWw7mWkmp0ORkFfAPWUkuNNjoba+ojaGjNlWi7yDEb6fgX1IHRQXcT0kdR26OPktP88RLSzXxvmKeOKyRLUHA6w9dzoiksJbDRTXrSqO3aE1SRmLARBVCT04e0yDdL5Y0J81qT3QozZab232K0lrwiuR
- qvVnB9MN
- 8ebIoJtMCApPDkaCN+O/n0gYFwRW7zioXHI4iBJbBrDDJd/eiTqcGPRvaPj406hk0/Ooz2az9QeEXhG9q+1TiJPaDzj/7dcjUZt6t/zPoNI3wb9noHsbFPYCApmP0sPk6JoCZmLG8wZeXHPYJ05RlBlwVW9xLYOwWSqjKFsPyMZJFEhGX5IyjHJmo1RfiIDqrhNbhXtujux1RxEy43Q0ghiFVs4Az3OyGqS3DPz++L3zmgLg=
+X-HE-Tag: 1760447301-403290
+X-HE-Meta: U2FsdGVkX184Q6E1OHZK/f0DUW2oEabvrihRfQKnQi9gQoA6ukAgNMVou3bi7QbBIqlu2KuGs4Sd1Lrbny8bBVTBKQfy+eh9XC6C29d0hrCTOjwxB6bvj4GoQVbDpUdqNcIrVlUvlfoCIsRwgP0CZ6pwb8bRq/Rdz7lURMzf8K6JCC+BRuLpdGhe++krPtKqmyVkFNX+dmNUQuQoKBgcLPaPZIorA6CfGv+FHKyjUPc3vS4UQOnKKcyY44W0mXa3KNpCGA8m5xDqgxxwAen2a8nv1AqQMbKjkY+JzStdgYbnWTEuDjZ3ENbwI00OACcyPFLrE/tiut7Tf8vlbfqqwVZvY2/m2c9+xEaDr5Z3+HpZe+AnVSanDUunz1xkX6I+PbGf4QWEyarsFfMp7ObF2yLoRrhqbgwrqQKhH1Pk376cf3d/1ZpAfBTJXUiCDIglDMTPBRe3axUBZXBGug+32Eyi6+Sz6RIc3dUziMjk5dLvf6t/JDWmIKc3N0FiG71G4QaokMWQ1jfEmYyFFpv5sUbUCWC1g924Td/FQrRe2MAIOtX4USacd6tfLmfxecDghGWzwVaFWRI95jFSYQhL62pPcXvyyxvh3C348C2b73uqcUqzTxFpJ5bSD7koyt+fbF+CLIDs0YKyhZmvi1qcvSE5GFx8G4kpse+fBho7NDdlqgWraoFX101J6ld2N+dT097wV38yJ7NwZzAPa/qI2WMNL3zYpZsjhon2ltBNLHC7UAamH16ulgaLu3JXjX6YsOsUEA44ajoRAveotMVUwC/VnibSj66IoVa0wLpXCDv9EwR95qsT9BK2Qcj7hdR7NSHmpIzfcCFTes/jbe8Y2siEbnUlsOu4+hJeTNM1Z5MTK2LSbLdxIJRi4NZ5cGA9tm7cyi2rHQEL2khBE0TW6biQ51n6NLWeOLyTZK2UD+B8FuTQK4JBUrOC3JrLHAtpecMtW4au/r1Yy9IoNsR
+ 4sFf7GpF
+ XO0xed6sqeYmx7aDRas+RUPCzSbCjEzcjT2/ibKzbRXJmE8/PvLLLrxW4zwlRh1bIKMwnHkcKrylcW8vJ6jSFgM+zu6Acnf8M6vVI1XUdI9xkkr0O3asCcbo7KEBdPHtoEY3E7j43H2UJIjjT4v6BENE46PbKTZhSSGucb5kzmez49mxLyfmEvZfefSd+mc6j2u+6AUf1OJ8obSTbO+iLVBFbvSFBvxGiwA9rWQwLnyKbuccjIQdgUCACwz2xsr6Vs3z0PFgubhnRZItTrwn0oWRjPvDlgXjOtHDHrNMstbb/2D8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,141 +132,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
+shares and walks the CPU's page tables. The x86 architecture maps the
+kernel's virtual address space into the upper portion of every process's
+page table. Consequently, in an SVA context, the IOMMU hardware can walk
+and cache kernel page table entries.
 
-This introduces a conditional asynchronous mechanism, enabled by
-CONFIG_ASYNC_KERNEL_PGTABLE_FREE. When enabled, this mechanism defers the
-freeing of pages that are used as page tables for kernel address mappings.
-These pages are now queued to a work struct instead of being freed
-immediately.
+The Linux kernel currently lacks a notification mechanism for kernel page
+table changes, specifically when page table pages are freed and reused.
+The IOMMU driver is only notified of changes to user virtual address
+mappings. This can cause the IOMMU's internal caches to retain stale
+entries for kernel VA.
 
-This deferred freeing allows for batch-freeing of page tables, providing
-a safe context for performing a single expensive operation (TLB flush)
-for a batch of kernel page tables instead of performing that expensive
-operation for each page table.
+A Use-After-Free (UAF) and Write-After-Free (WAF) condition arises when
+kernel page table pages are freed and later reallocated. The IOMMU could
+misinterpret the new data as valid page table entries. The IOMMU might
+then walk into attacker-controlled memory, leading to arbitrary physical
+memory DMA access or privilege escalation. This is also a Write-After-Free
+issue, as the IOMMU will potentially continue to write Accessed and Dirty
+bits to the freed memory while attempting to walk the stale page tables.
 
-On x86, CONFIG_ASYNC_KERNEL_PGTABLE_FREE is selected if CONFIG_IOMMU_SVA
-is enabled, because both Intel and AMD IOMMU architectures could
-potentially cache kernel page table entries in their paging structure
-cache, regardless of the permission.
+Currently, SVA contexts are unprivileged and cannot access kernel
+mappings. However, the IOMMU will still walk kernel-only page tables
+all the way down to the leaf entries, where it realizes the mapping
+is for the kernel and errors out. This means the IOMMU still caches
+these intermediate page table entries, making the described vulnerability
+a real concern.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+To mitigate this, a new IOMMU interface is introduced to flush IOTLB
+entries for the kernel address space. This interface is invoked from the
+x86 architecture code that manages combined user and kernel page tables,
+specifically before any kernel page table page is freed and reused.
+
+This addresses the main issue with vfree() which is a common occurrence
+and can be triggered by unprivileged users. While this resolves the
+primary problem, it doesn't address some extremely rare case related to
+memory unplug of memory that was present as reserved memory at boot,
+which cannot be triggered by unprivileged users. The discussion can be
+found at the link below.
+
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Cc: stable@vger.kernel.org
+Suggested-by: Jann Horn <jannh@google.com>
+Co-developed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/linux-iommu/04983c62-3b1d-40d4-93ae-34ca04b827e5@intel.com/
 ---
- arch/x86/Kconfig     |  1 +
- mm/Kconfig           |  3 +++
- include/linux/mm.h   | 16 +++++++++++++---
- mm/pgtable-generic.c | 37 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 54 insertions(+), 3 deletions(-)
+ include/linux/iommu.h     |  4 ++++
+ drivers/iommu/iommu-sva.c | 29 ++++++++++++++++++++++++++++-
+ mm/pgtable-generic.c      |  2 ++
+ 3 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fa3b616af03a..ded29ee848fd 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -279,6 +279,7 @@ config X86
- 	select HAVE_PCI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-+	select ASYNC_KERNEL_PGTABLE_FREE 	if IOMMU_SVA
- 	select MMU_GATHER_RCU_TABLE_FREE
- 	select MMU_GATHER_MERGE_VMAS
- 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717..a83df9934acd 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -908,6 +908,9 @@ config PAGE_MAPCOUNT
- config PGTABLE_HAS_HUGE_LEAVES
- 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index c30d12e16473..66e4abb2df0d 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -1134,7 +1134,9 @@ struct iommu_sva {
  
-+config ASYNC_KERNEL_PGTABLE_FREE
-+	def_bool n
-+
- # TODO: Allow to be enabled without THP
- config ARCH_SUPPORTS_HUGE_PFNMAP
- 	def_bool n
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bb235a9f991e..fe5515725c46 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3031,6 +3031,14 @@ static inline void __pagetable_free(struct ptdesc *pt)
- 	__free_pages(page, compound_order(page));
+ struct iommu_mm_data {
+ 	u32			pasid;
++	struct mm_struct	*mm;
+ 	struct list_head	sva_domains;
++	struct list_head	mm_list_elm;
+ };
+ 
+ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode);
+@@ -1615,6 +1617,7 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev,
+ 					struct mm_struct *mm);
+ void iommu_sva_unbind_device(struct iommu_sva *handle);
+ u32 iommu_sva_get_pasid(struct iommu_sva *handle);
++void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end);
+ #else
+ static inline struct iommu_sva *
+ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
+@@ -1639,6 +1642,7 @@ static inline u32 mm_get_enqcmd_pasid(struct mm_struct *mm)
  }
  
-+#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
-+void pagetable_free_kernel(struct ptdesc *pt);
-+#else
-+static inline void pagetable_free_kernel(struct ptdesc *pt)
-+{
-+	__pagetable_free(pt);
-+}
-+#endif
- /**
-  * pagetable_free - Free pagetables
-  * @pt:	The page table descriptor
-@@ -3040,10 +3048,12 @@ static inline void __pagetable_free(struct ptdesc *pt)
-  */
- static inline void pagetable_free(struct ptdesc *pt)
- {
--	if (ptdesc_test_kernel(pt))
-+	if (ptdesc_test_kernel(pt)) {
- 		ptdesc_clear_kernel(pt);
--
--	__pagetable_free(pt);
-+		pagetable_free_kernel(pt);
-+	} else {
-+		__pagetable_free(pt);
+ static inline void mm_pasid_drop(struct mm_struct *mm) {}
++static inline void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end) {}
+ #endif /* CONFIG_IOMMU_SVA */
+ 
+ #ifdef CONFIG_IOMMU_IOPF
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index 1a51cfd82808..d236aef80a8d 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -10,6 +10,8 @@
+ #include "iommu-priv.h"
+ 
+ static DEFINE_MUTEX(iommu_sva_lock);
++static bool iommu_sva_present;
++static LIST_HEAD(iommu_sva_mms);
+ static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
+ 						   struct mm_struct *mm);
+ 
+@@ -42,6 +44,7 @@ static struct iommu_mm_data *iommu_alloc_mm_data(struct mm_struct *mm, struct de
+ 		return ERR_PTR(-ENOSPC);
+ 	}
+ 	iommu_mm->pasid = pasid;
++	iommu_mm->mm = mm;
+ 	INIT_LIST_HEAD(&iommu_mm->sva_domains);
+ 	/*
+ 	 * Make sure the write to mm->iommu_mm is not reordered in front of
+@@ -132,8 +135,13 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
+ 	if (ret)
+ 		goto out_free_domain;
+ 	domain->users = 1;
+-	list_add(&domain->next, &mm->iommu_mm->sva_domains);
+ 
++	if (list_empty(&iommu_mm->sva_domains)) {
++		if (list_empty(&iommu_sva_mms))
++			iommu_sva_present = true;
++		list_add(&iommu_mm->mm_list_elm, &iommu_sva_mms);
 +	}
++	list_add(&domain->next, &iommu_mm->sva_domains);
+ out:
+ 	refcount_set(&handle->users, 1);
+ 	mutex_unlock(&iommu_sva_lock);
+@@ -175,6 +183,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 		list_del(&domain->next);
+ 		iommu_domain_free(domain);
+ 	}
++
++	if (list_empty(&iommu_mm->sva_domains)) {
++		list_del(&iommu_mm->mm_list_elm);
++		if (list_empty(&iommu_sva_mms))
++			iommu_sva_present = false;
++	}
++
+ 	mutex_unlock(&iommu_sva_lock);
+ 	kfree(handle);
  }
+@@ -312,3 +327,15 @@ static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
  
- #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+ 	return domain;
+ }
++
++void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
++{
++	struct iommu_mm_data *iommu_mm;
++
++	guard(mutex)(&iommu_sva_lock);
++	if (!iommu_sva_present)
++		return;
++
++	list_for_each_entry(iommu_mm, &iommu_sva_mms, mm_list_elm)
++		mmu_notifier_arch_invalidate_secondary_tlbs(iommu_mm->mm, start, end);
++}
 diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 567e2d084071..1c7caa8ef164 100644
+index 1c7caa8ef164..8c22be79b734 100644
 --- a/mm/pgtable-generic.c
 +++ b/mm/pgtable-generic.c
-@@ -406,3 +406,40 @@ pte_t *__pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
- 	pte_unmap_unlock(pte, ptl);
- 	goto again;
+@@ -13,6 +13,7 @@
+ #include <linux/swap.h>
+ #include <linux/swapops.h>
+ #include <linux/mm_inline.h>
++#include <linux/iommu.h>
+ #include <asm/pgalloc.h>
+ #include <asm/tlb.h>
+ 
+@@ -430,6 +431,7 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+ 	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
+ 	spin_unlock(&kernel_pgtable_work.lock);
+ 
++	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
+ 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
+ 		__pagetable_free(pt);
  }
-+
-+#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
-+static void kernel_pgtable_work_func(struct work_struct *work);
-+
-+static struct {
-+	struct list_head list;
-+	/* protect above ptdesc lists */
-+	spinlock_t lock;
-+	struct work_struct work;
-+} kernel_pgtable_work = {
-+	.list = LIST_HEAD_INIT(kernel_pgtable_work.list),
-+	.lock = __SPIN_LOCK_UNLOCKED(kernel_pgtable_work.lock),
-+	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, kernel_pgtable_work_func),
-+};
-+
-+static void kernel_pgtable_work_func(struct work_struct *work)
-+{
-+	struct ptdesc *pt, *next;
-+	LIST_HEAD(page_list);
-+
-+	spin_lock(&kernel_pgtable_work.lock);
-+	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
-+	spin_unlock(&kernel_pgtable_work.lock);
-+
-+	list_for_each_entry_safe(pt, next, &page_list, pt_list)
-+		__pagetable_free(pt);
-+}
-+
-+void pagetable_free_kernel(struct ptdesc *pt)
-+{
-+	spin_lock(&kernel_pgtable_work.lock);
-+	list_add(&pt->pt_list, &kernel_pgtable_work.list);
-+	spin_unlock(&kernel_pgtable_work.lock);
-+
-+	schedule_work(&kernel_pgtable_work.work);
-+}
-+#endif
 -- 
 2.43.0
 
