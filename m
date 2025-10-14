@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DB9FCCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 19:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB977CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 19:50:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69C278E0101; Tue, 14 Oct 2025 15:28:57 -0400 (EDT)
+	id EB8FD8E00E9; Tue, 14 Oct 2025 15:50:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6742A8E0090; Tue, 14 Oct 2025 15:28:57 -0400 (EDT)
+	id E694A8E0090; Tue, 14 Oct 2025 15:50:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562478E0101; Tue, 14 Oct 2025 15:28:57 -0400 (EDT)
+	id D580D8E00E9; Tue, 14 Oct 2025 15:50:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 448CD8E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:28:57 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6E36BCB70
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:28:56 +0000 (UTC)
-X-FDA: 83997707472.12.9B81F50
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2DF81180010
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:28:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SsMG6WBl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE62F8E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:50:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A6195C44A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:50:29 +0000 (UTC)
+X-FDA: 83997761778.13.543ED0C
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 908C31C0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:50:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Gj/5RGPe";
+	spf=pass (imf20.hostedemail.com: domain of dalalitamar@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=dalalitamar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760471427; a=rsa-sha256;
+	cv=none;
+	b=xPz82SGBfBBGCJF2D19PqyZIqdUl9Y7+ICOuODcgS6LbIceWA3TmTyOgLWJHy/wRDFa5ty
+	9NmlBwr2wCHG6aeeFJRnrvn76sNksX08lHtbN5uVDaIu2A1vDaSXexuesBvtj+6X2zSZ6K
+	eUqHjZR4eDhQtcAHe1dpxqwurWWYxRI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Gj/5RGPe";
+	spf=pass (imf20.hostedemail.com: domain of dalalitamar@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=dalalitamar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760470135;
+	s=arc-20220608; t=1760471427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BznyztNdIKqiPGunKGQKnMKEgfA7Hg4YA0DdSTYZc+4=;
-	b=fAKCznrgAN7DQ4TV6i5prsdu8+2BF318jWSvSYA6bcDyX6dJyFxSIshMAx7sswvLP4KR3q
-	w8rUgjPN7mE/CAZsbkTtIoh0WbXMUtdr8+e7NkiFJfod9aaGIBqixEtd5BogayCN0AvWcb
-	MUEoIBlbOuCbLr8lCxaqZAYzhNq99LU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SsMG6WBl;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760470135; a=rsa-sha256;
-	cv=none;
-	b=6bYdwbkMmwOUTwDu+Ck/rxNHO0z0beDxuBGzYqK7uVqGn8siKU6eSuyaZttilDU1PevggS
-	xO0dpbW8mdUDtocZxNuWdt5XIa+hzXHkwsFg/cIbiQ/O1mBfnZ2fl0IVKO+oaeogtqRizo
-	tx4tVQeY2tAnDoDe+4aO6qKoI1+vvJs=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7815092cd0aso10619007b3.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:28:54 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MkhCJA/dXOXcwZ7S2jDqDvDpKsjxlEMR9YOOSuHW/cQ=;
+	b=Dr9IEBwAIFuxgB/xZWuguTH6+g6NCcK5qVcPur8IzfH+XDWETkBC2LoK/BlrsB9aObj/LI
+	meQVaqJCdhr43W1W0e+NQGZ1sj2DY7Mg2tWujQ8lL8B0t63TXN3U3MsMn9ifkIqj/Tdt1l
+	N0C9IbYMBuKWJGX6zHvVzOTHo70F38M=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46e37d6c21eso32441135e9.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760470134; x=1761074934; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BznyztNdIKqiPGunKGQKnMKEgfA7Hg4YA0DdSTYZc+4=;
-        b=SsMG6WBlVEuVGVL7+CAqdO8KU0ot7DzM6Y2eGqM7jqh4aYhG4p5ByYCYira7tIs0eN
-         SZVvjWZsZC+1j13GSIald0Y7HiqcmGUmZSIXgkn80hrjUzzJU3A4cA1Ioe2/3E89ihWB
-         yWSwRlDK2Wynx1H1pJ0SPery58na41poigVcRcUe//nD6eS4lb/sbCiqyJUFDi+or3dp
-         z9IYGkm9qTuqHjIK+IaHNciHJRTLQwY8L9LiLQpuACz6lUUZIuqtgQ1PIQCmTpRhexRn
-         QmxMBphkCEPLugPnRXQm3F87IvB9FtSX6PQGAPa3NqvVAJMsyiU3zcjXSWrY7BXRdwK9
-         Pytw==
+        d=gmail.com; s=20230601; t=1760471426; x=1761076226; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MkhCJA/dXOXcwZ7S2jDqDvDpKsjxlEMR9YOOSuHW/cQ=;
+        b=Gj/5RGPet7du3d4swinUb0E2eilm5N1MlX58CWbcRHN7rOK7MW/8FxYmtlDet4HFYn
+         B73TeK1+w8dcWnJTtgQaPVEQByaPl3ysif0Y6YjtWFykwFC/9qe3y4vTxmA7+5Kgi832
+         Xwd7FOAIGqjRK7+4ve5ZncaLdlBmT/nN2U/8mhtmvXfZCkPvxHo4F4Tht0B07txzD+FK
+         wb/AMU8SltdG2eMUtz+03jxZ6vW3nCvXiyNfnn+k9ASTV6HujNadIaK5bvsyDVsoOdAj
+         KWP7mhhDmjPqksHJZXS7i6lRa0xiw71J4PeDfN101lPEDBo4DDG8RGzQF7teDh/8S+aW
+         tHtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760470134; x=1761074934;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BznyztNdIKqiPGunKGQKnMKEgfA7Hg4YA0DdSTYZc+4=;
-        b=FG2e+Ci/jmcHVnZBpGsEvRo8ph1sxkVDc7v/IL8UTD2I5oDXMlKZYja+wQbLOUHxJ2
-         Gf8DKxwvefBlwFxKo/Ay8NtJa/nLU1X9HMRbcJChjRheDLIcVMAJRhBD03h/BN4phF16
-         fK6CE6y3t69RLFaM+2MpaDRxrbY3XJDnJsCubtJIouDbRGktnjHWfCPvVL1TqYu2YXQA
-         UILS1Q1NZBQf03eoOwtUmJMA1M/qxzInRgr5c2iysG73CZQykj7AWQmbWRttDn5OVEiZ
-         jOeX42Pf/ck79TEw7RFpnBIH3ObT/1PnGkPj2xOl+wYOZqpTO1SY7KEJbj3UMTNH3i2w
-         NFXg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4dkSsJsFPTI25Cqp2RhF41iadGTq52u3U//eBdUJrmj1ugJ4t5qEFbd6A9jkrwexrhXyeB1t7qA==@kvack.org
-X-Gm-Message-State: AOJu0YxXiGSEp9kgIH5tgMdPYxTOG9dSE2a4HEPXpX62EMCujqxAZhwy
-	QJC6UWjHiEbwqxGU0q0tBP2GHNSjTxtS5Om46sG76DBGGGdOXu4BRza0
-X-Gm-Gg: ASbGncuxLWSORbVShHvpjLQcbZkKEZgPAbhf3VCCZ2bXr0/OVNbaGvlGDsYpl40ClP7
-	aHYhfHwIlFYQZf0R3uZ1FHgrciM0wvUnv5U6kfYmCdpJJWBNfCb7U4dqwCvEMrIUppAxfxZwQ7Q
-	OSv/eMPLwNuuZvLt3NWd68/F4fgW6MdfMd8JkEN8cwsPgnlhzdWgikEZl+0J4YJ/gXPaxodmjYo
-	WzmIZQeVMpwZWJi2axTi+GwQwcuBTe8VFWKGYEy00ZfwAxXM/dNIE78x40HKU4xZ3Yh/ASanP32
-	qeCs9Snpbk027rJfSSauZuQg3yCL9RHyy8Bi+8DETdRRZ21ojnNxz8djfl7wXdIJJGgp8z4G5Ap
-	7dQrufug8bO3tAwyXGfi9JlVdLG5YH71qcC/4Y7qi9LH4UHB61TKGOtySFdFeu6V8YCtsl1IqdI
-	695nED5g4V
-X-Google-Smtp-Source: AGHT+IHUNZvALbfEmm2kCV99S3+gpLu5CmEocy1YAJb3Ch2vMTwHdbAyyx2AzGcyVwiIQNB9n3ZAmg==
-X-Received: by 2002:a05:690c:b9e:b0:781:23f5:17a7 with SMTP id 00721157ae682-78123f522d2mr111503887b3.11.1760470134198;
-        Tue, 14 Oct 2025 12:28:54 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-781072bb8easm35715457b3.60.2025.10.14.12.28.53
+        d=1e100.net; s=20230601; t=1760471426; x=1761076226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MkhCJA/dXOXcwZ7S2jDqDvDpKsjxlEMR9YOOSuHW/cQ=;
+        b=X8W4/kM/N7YirS6MaNYFFhZqG7j5xM94nZtL6ruHmqEjVlyaVdScm9wXZtM3JYf73Q
+         i8MslRbQCQJTL8JD+mBl+OXsfnLilUB3Rh2lgBxgmFHgxgQVe2pTrtvGz+r+zCpoDGmk
+         t3JwjklTLtMfipH0txpcZbrolJ5UYNwh+q+9uiaKwN2PUCL40zzLLEW6bPbXd7Dug4db
+         K20+BxC9W/hWh5b9heqk4xpvhjZN5wwKZmysN2mkllTbrcgOr3lMplGDg1nY+Jow6OuD
+         YGYD3Zg3ggGciKF5+ZyOB1YGKv0rS4BEj1z3BmPCbLDuO63djv8xeJW7QUDEHCwhfCHm
+         LOdw==
+X-Gm-Message-State: AOJu0YyuhqdYdFrZxNeDqpLc+pa/dDCTbP1DtX7+8fhmr599it5PioZt
+	rSIZg/GX5j2yGlc4mJ86Yw5ji135eSu1o+1nvzdBo/iCt6LIGsi2SanbBx1rIymDm1I=
+X-Gm-Gg: ASbGncv3xZn+MZunADi7SO0yFQRmWkrDtCGEtmSGW/gjeYK76yFk9UkufVD/dN98flO
+	qysZNxiw0uA5lvkXIiBx106gx8Jy14uUW8hDu1QKJa0NOvKARbPEwn2zOmUhgd79vRmAxCZtfQ1
+	14zZF0tN5yXGZZx0pWJzBTz9H4JclUW0z4w3qO3uCD6P2xJFPZXAv8Ac8di+hPd6g8Xm9ZXF4u4
+	LLN0Y/9nipaDSFDJZyRoqzQM2ZtcaPj45PM8IjWuv3xIP5oIBQaZyk+Dxc3d7G1atzfgGOS3CCE
+	O164ob5g3CMkeOWdmuuys3PYQgwn07Zf5Uve3FCd+3um77eFzN2NeCHRV3vGQ7XR9LumdJERJPt
+	gZzFkEAzA2NEynKx1q0nfR+rioixgWlPsNtwQBgy42RRoLW6nMqeEhC1ziPUf9C5h326/Kokx2K
+	xZdnFXi9YnORXd0ZI/O7l3EnN3ZEWhRQ==
+X-Google-Smtp-Source: AGHT+IHvY3jSRZiPAPUTjqLzv3in2vImFrsh3WPQgcjJugI6dCptqZos5H5Y/+xsV4lVpQrYH25Z3g==
+X-Received: by 2002:a05:600c:1e86:b0:46e:6a6a:5cf7 with SMTP id 5b1f17b1804b1-46fa9aa0f6dmr179572755e9.12.1760471425371;
+        Tue, 14 Oct 2025 12:50:25 -0700 (PDT)
+Received: from localhost.localdomain (bzq-79-177-131-159.red.bezeqint.net. [79.177.131.159])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb49d03e2sm257969595e9.19.2025.10.14.12.50.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 12:28:53 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
+        Tue, 14 Oct 2025 12:50:23 -0700 (PDT)
+From: Itamar-Dalal <dalalitamar@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
-Date: Tue, 14 Oct 2025 12:28:22 -0700
-Message-ID: <20251014192827.851389-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251014145011.3427205-4-joshua.hahnjy@gmail.com>
-References: 
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	Itamar-Dalal <dalalitamar@gmail.com>
+Subject: [PATCH] =?UTF-8?q?Add=20a=20new=20test=20'migrate.cow=5Fafter=5Ff?= =?UTF-8?q?ork'=20that=20verifies=20correct=20RMAP=20handling=20of=20Copy-?= =?UTF-8?q?On-Write=20pages=20after=20fork().=20Before=20a=20write,=20pare?= =?UTF-8?q?nt=20and=20child=20share=20the=20same=20PFN;=20after=20a=20writ?= =?UTF-8?q?e,=20the=20child=E2=80=99s=20PFN=20differs,=20confirming=20prop?= =?UTF-8?q?er=20COW=20duplication.?=
+Date: Tue, 14 Oct 2025 22:49:44 +0300
+Message-Id: <20251014194944.20341-1-dalalitamar@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DF81180010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 5tqygbe5989ueci16bmura334feybw48
-X-HE-Tag: 1760470134-608043
-X-HE-Meta: U2FsdGVkX1/F0Idi2ld7gOPHW5KGgjLh6ey2fcSt1FkmGG+bc0TPXGwLtKOndtO/b/xiIsu0WaIaBz/49aMrHGs5quvsJIeqX1og5Dwc3IIGBGT0uD7jyaoxcd98BBCN2zVKvp5W+zHGKH0mR21daKYF+wzRlkQrK+Eem86OrbkPNNyLYp7ASI1ONOS5GnpD+yzkblcrAYobfaXqPUyYgMYCUIfG8J7tqcy7sD+FZh84uwz52DMCDrhArW3S/mAAFEGbpuXkDv6wo9yEocFfVYyZY31UAdi0tothzgwObAD8dLwloY2MKfqh2tEe7/KLUf+XhobJVGYzm4XJW4/RVjhG3ggRBcMWAttHMtAxPN5yBkcQdv7xaf8/Nc5/BQxAd4VDi+wllqIlJNVWTblSIXb/wHPOmpNaiFafCP76mZ335lkFI7mLhMV78LdjbB/ty2Hrfk1K1ahYt5gZny8c/KA0yYbOdghmUnrav6cJwcW4jl0MySmwy4d4KqviaimQkhf9scW7YdEunKIL3fMDisEyya+eiOUUf2TLP9ptJDEuxWSUE5EuqPwoY3oAJJQyN4sOTLQjgoPyAgLdqnpZigUm7FW+tDmaSExl2tED56g9cgSOHVnYhu8ZtNedyFwOioZX/nDrYx2AvP2tOyRm69oDeXLF3jZ8eACBXw3it6XnQuel/Oki/qrdCS4KOrFPt/Qu8pQe14QX3gLKWL+y8bBAa/gTVWtpVF6anpkM6214f2/bk5TvvNfFkQEhkytl1HOn7AsEXeLs/GtQuIOgRJyn+kp+qZhfEPCoXXN0BkdjGe/zsHBxbU2FM3gv9MouMkB3p+oMgq0Y8O6MqI9w4AcZdSSb/7QRNHpLlydDmgkI/GCXUGZLBOqN47R49AcR180NxDrXXGt8Bc2jWiFtICd+NUMaEUmD1wBa7a6yvuhsBHfmvB66YEqYR9zU5uwqVQHEsB/MQNFH4jfpayK
- 3szyAQBh
- CdiMyHdf6Ns9i3DAbQWRHMfqXE4afdKJ2lQAT+e/VZrOaJilW0TzykVqYBw1TiWX457loUws3cFNFmrcVA/yccVLUe9JaMX473QeC2w6bIBBSI0e49cKwv+qjc7i5Iu5e74+wKUvbe/a7tH2h5ausUxYGrTMbMnAscWvBO+Vr/uxLdexu7Dg7pi7EgfC7foicXQKxm9zSWLM2cJQ6OUx4KZ8KX+ksjQQU92BYZ9jz8qSHxBOlB6N1UD9WnRJop6ekA0rq
+X-Stat-Signature: b6bqip8jchd1ab5hhcecz3dh3fskgxgf
+X-Rspamd-Queue-Id: 908C31C0005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760471427-422837
+X-HE-Meta: U2FsdGVkX18QK4MLjYaeQIVT89mFK7w6gey3sTkVcgv0Td47skkSe0wC8xRuaCwISN9uCK2JbZpN9w06Ljzi2h1wbNrT7H4lt0Tr1w1ka9PIiaKG7wNKgI4iX2tIRGfL56P9HqhZNXwrjci7jA/nAex8R3MiMXqeSByalWN4EWmM/iYkKdanAahvjyc8hCTCSCUB4rwjj/WaBFAuF0XedfFBuCczvEnIw244wHJUQmIpR13FQIIf7PopyElvIhJ4pTqJwdKrxpFdgEHOagkt9R9kcLMNzYOHDFCevuV9r+EKlfn3ejottA1R9asb3GqlEzzwjlyMlpeLM6EXDg0b4fyR6dXs6qhnnnz0W8XHRoC0TzCuKJm0tERtOhiYczGcyV83cG1OeNa59AfbbFoaD4QA1m9HtkQltZsRFKbgdPYBE0HY8Wx+uPl8rxqudjrB2gWzTsFlAWrIt2hFIj79W20rfepoQC01syaVxAiBEzcJInxrmvp0+UZaOzAdWeKq3T7dIl172FBLI1K6es/eAvCMPwsgJUIRYi18l+b+/kTDrJeCxV5tuG+PJNsY9G6Q8KJRkemtEQRvGv8YvtPCA1AXdpLQ7MpTacNEoz74Mge3VT9mMVLYYZRjDQctEh3t/oDOfcyHdLmrTnx9IZ9q1/CjKO5yqf5ijGz6Ms/vCTHino5v5Oi1IIm30dwmE/msVFT6aI9ITa5yV/nweHoFa4aG8phGV3eSy5xgsSMMELoEq8aZ3yC5crgUxByGV/0P3tjign/4oLPKJbKzFMwXysZyXxYYVYH5naLfU8T3nxZ3DStdrjs8nAtFcMaNXgNLcrP7VXAXKejTtuyd8Ho4/x0j7oF3SUVOjkEeDvQnVItQCXTdOJOMkD4TuSQs7ozZUq9qOOC1kqV43k3dh1UuXhvcU0SPq79Ye9sFpHiGBGY1SEQPhAZZkv/ltTriidIzNTU9ImgFd2yfN7WwVBJ
+ 5WRbP196
+ bjx77Zmn3TaBFNE+/KklgnQ0cad9wEVulvGD8JfesvsB4bmwsGgjcW1j8rJFeF+RgQGpSXh/j+ur3uRVn/HGTUalehmcZ8Hpf9gzfb4zBWFoj6ipCAAjOdo+ncxbHjJk8X+ZqSr7gkxxkCtm+HFPJDIwmirFgSwUYs8LNLmRu05peXp4JNzkxvqMJPtgspItTs27+HB9YiSKTT5+RJl1tQ49P+vANX7BUpRFVTIKEUdF8tziZk/tQ7r9OJ6d7RDIrPSrkNgc68nV8ktra8MOOiYNmNijECwiFswD7s4GsWDO5hNDco7LRD0D3PTEYzlFZ5fAS2cIPqWvLtBYsDg1AOTwNAQZtdEk4rWeyfORlBuSRJ1vw3lw1ZA/CVsbuuEdtIW369mldsPsqWM4G2/7bAAcTk3AuOrEJkPPAMtV/8pCtOZt53owWy0LkNvzB2POMTSZcblgiimaONPlpn/8dR3l8wj11Ptq/nqV13UFlNQw4lzSbBFHohzWbGgq8pffQoaHES2QQg8npXb/ecKcxIkuXpkuTnRMDL6eFPgyE78zNPRfJtNg8eSnGZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,61 +129,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 07:50:10 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+Signed-off-by: Itamar-Dalal <dalalitamar@gmail.com>
+---
+ tools/testing/selftests/mm/rmap.c | 45 ++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
-> Before returning, free_frozen_page_commit calls free_pcppages_bulk using
-> nr_pcp_free to determine how many pages can appropritately be freed,
-> based on the tunable parameters stored in pcp. While this number is an
-> accurate representation of how many pages should be freed in total, it
-> is not an appropriate number of pages to free at once using
-> free_pcppages_bulk, since we have seen the value consistently go above
-> 2000 in the Meta fleet on larger machines.
-> 
-> As such, perform batched page freeing in free_pcppages_bulk by using
-> pcp->batch. In order to ensure that other processes are not starved of the
-> zone lock, free both the zone lock and pcp lock to yield to other threads.
-> 
-> Note that because free_frozen_page_commit now performs a spinlock inside the
-> function (and can fail), the function may now return with a freed pcp.
-> To handle this, return true if the pcp is locked on exit and false otherwise.
-> 
-> In addition, since free_frozen_page_commit must now be aware of what UP
-> flags were stored at the time of the spin lock, and because we must be
-> able to report new UP flags to the callers, add a new unsigned long*
-> parameter UP_flags to keep track of this.
+diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
+index 13f7bccfd0a9..2ba3361fecf0 100644
+--- a/tools/testing/selftests/mm/rmap.c
++++ b/tools/testing/selftests/mm/rmap.c
+@@ -430,4 +430,47 @@ TEST_F(migrate, ksm)
+ 	propagate_children(_metadata, data);
+ }
+ 
+-TEST_HARNESS_MAIN
++TEST_F(migrate, cow_after_fork)
++{
++	struct global_data *data = &self->data;
++	int status;
++	pid_t pid;
++	unsigned long parent_pfn, child_pfn;
++	int pagemap_fd;
++	char *region;
++
++	/* Map private anonymous memory and fault it in */
++	region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
++		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(region, MAP_FAILED);
++	memset(region, 0xaa, data->mapsize);
++
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	ASSERT_NE(pagemap_fd, -1);
++	parent_pfn = pagemap_get_pfn(pagemap_fd, region);
++	close(pagemap_fd);
++
++	pid = fork();
++	ASSERT_NE(pid, -1);
++
++	if (pid == 0) {
++		/* Child: write to trigger COW */
++		region[0] = 0xbb;
++
++		pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++		ASSERT_NE(pagemap_fd, -1);
++		child_pfn = pagemap_get_pfn(pagemap_fd, region);
++		close(pagemap_fd);
++
++		/* Expect PFN to differ after write (COW happened) */
++		if (child_pfn == parent_pfn)
++			_exit(FAIL_ON_CHECK);
++		_exit(0);
++	}
++
++	waitpid(pid, &status, 0);
++	ASSERT_EQ(WEXITSTATUS(status), 0);
++	munmap(region, data->mapsize);
++}
++
++TEST_HARNESS_MAIN
+\ No newline at end of file
+-- 
+2.34.1
 
-[...snip...]
-
-Hello Andrew, I hope you are doing well! I was wondering if you could help
-adding this as a fixlet for the patch I am writing this reply to. Vlastimil
-kindly pointed out that they should never go negative, so checking for
-0-ness should be sufficient and more readable than the <= checks.
-
-I think it is OK to leave the changelog in 0/3 unchanged, since it will not go
-into the commit history and Vlastimil has already left a correction. But
-please let me know if you would like me to add a correction for that as well.
-
-Thank you as always, for your help! I hope you have a great day!
-Joshua
-
-...
-
-Since to_free and pcp->count cannot become negative, make the checks into an
-equality check instead.
-
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 6d544521e49c..fd46a982ce3c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2884,7 +2884,7 @@ static bool free_frozen_page_commit(struct zone *zone,
-                free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
-                to_free -= to_free_batched;
-
--               if (to_free <= 0 || pcp->count <= 0)
-+               if (to_free == 0 || pcp->count == 0)
-                        break;
-
-                pcp_spin_unlock(pcp);
 
