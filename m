@@ -4,97 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB197CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BCFFCCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:35:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1EF88E00EB; Tue, 14 Oct 2025 07:34:12 -0400 (EDT)
+	id 88A6B8E00EC; Tue, 14 Oct 2025 07:35:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACFFA8E000D; Tue, 14 Oct 2025 07:34:12 -0400 (EDT)
+	id 861588E000D; Tue, 14 Oct 2025 07:35:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 996668E00EB; Tue, 14 Oct 2025 07:34:12 -0400 (EDT)
+	id 79EEB8E00EC; Tue, 14 Oct 2025 07:35:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F618E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:34:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B8BA16089A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:34:12 +0000 (UTC)
-X-FDA: 83996511144.01.A694527
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 03EE040002
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:34:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ZUPEaBnm;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760441650; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 67C498E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:35:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DA79C08B1
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:35:44 +0000 (UTC)
+X-FDA: 83996515008.23.53572C7
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 50A721C0006
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:35:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="l/8PgZrq";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760441742; a=rsa-sha256;
 	cv=none;
-	b=6VSo5NGjRqsebCqM6/quy3V99Kn7iIpy51koe/9F76xHvs4lkjnq2/JuRFU0GYO9OKEUWo
-	K8V/TpOhI0mTERLWJBFcFeZPpDH7FL8vTsLt4ngwT5LO1ltmOYF/2BzR/EhOGOdHuVZVPn
-	MHUa5GqLrhpM3x1Pct9+QRXSIHWo/Tc=
+	b=U5qrZ7LCgO+OSCWNnwR6UFqMZF/TOR0yHrlPTNqopUKVPHnHINdAo5I5+4nZXdgIOjY+rH
+	SoRtUO+ezWKH/ccRkmnxm+RudiTiAoJteAYWzEIZDFwEktDFcYy/5xtqZ80T/er4rizXXQ
+	+JcozuzgkorGlvqUacSL/kA0bbbfaPM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ZUPEaBnm;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="l/8PgZrq";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760441650;
+	s=arc-20220608; t=1760441742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J2Os/vxtxopWe6GvOMqX4Sn7ySwzHDFEiA9y7BHDpw8=;
-	b=F4eU2MZfb1XS8iSKPdPT8/hZTRYc40jwspYnjESRGdGFClEQIyNXpe8qu4XPGUHrdsNiyM
-	QZw7oMAN+ZLzGl7YIUWGsF8lYcKil0EB/CCt9ZQIMoHId/8A7l4fv7CkZ2aU5t3Qwr/yuc
-	d8ny+SCPAChKvPbuHgizikGGH6OjtC0=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=J2Os/vxtxopWe6GvOMqX4Sn7ySwzHDFEiA9y7BHDpw8=;
-	b=ZUPEaBnmvY8q9/aZDTnUrWi7Xx0KBM7iO8N/8XLRIguLmS3iu1WII0tOCoO2DWqZ9kqXZKzeE
-	esPi5T4o96/at4QNpU/RNnHON2KZNU+gGehEGOCkX0XKVHQ/tnyxzgNAOdKwM+yqlvd/FU/8+Nd
-	fi3Pjz0xvSnohkJ31zagW2k=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cmBsw13ZYzcZxv;
-	Tue, 14 Oct 2025 19:33:08 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id D18A818006C;
-	Tue, 14 Oct 2025 19:34:04 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Oct 2025 19:34:03 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	<linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: [PATCH v2 3/3] mm: huge_memory: use folio_skip_prot_numa() for pmd folio
-Date: Tue, 14 Oct 2025 19:33:49 +0800
-Message-ID: <20251014113349.2618158-4-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
-References: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
+	bh=8p7hD7OCuERyUI780nZ9E8UoPwfcetR3c3Jt+sSRxSQ=;
+	b=E51BFdrgGjjQ8O1eDmW7IhBmlpvkYidM207wZoCDYF4hA0vED8k5EE/CKTZMVydg4UCMfs
+	jWpcEfeLU8wk99/nrWHKf0h9KXbGT717i4Juz4RKTdI0apBrOsv1ruMly5ur5Mp1yeBINh
+	9MyEWduhitkKSM1HjzbxfIikf9jijJc=
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-780fe73e33bso40496207b3.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:35:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760441741; x=1761046541; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8p7hD7OCuERyUI780nZ9E8UoPwfcetR3c3Jt+sSRxSQ=;
+        b=l/8PgZrqK0zPCKdq+zD6A/tR6y3pPlv9B17EoNFoo4rxSn7QKTLPxHe8z0CL2PhFLv
+         Sd1A4ZRcIr1pX7TCxpFyAA/QE6zvbPKpQxbSYdJRlFYBaxNPU4kYVhtlyGAnL3UWgDfZ
+         HEZsCX5Yrl21QI2IotLH7WXgLbKqMx6CQFpM7DkEWRJLCPcZP5tdZYHIl9rveWwlOSfw
+         OkJ5kBZo4LMs+xzYY+XyT98hbFXyCmSeYvbw4egbkMF30ivrvcIp6XxT7x7+2VarTzpW
+         VjdmhuaoNvHLr7W3JlJGdoiqfANak4u4diU+JBG3Upi+ry39Kna41K/pxlB8ERl8Rxjv
+         VOJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760441741; x=1761046541;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8p7hD7OCuERyUI780nZ9E8UoPwfcetR3c3Jt+sSRxSQ=;
+        b=rlLa/XaS2Kfb3KLhslP4f0b0DqVDnbZutbCdhVrwox0yBk7Jvg1WWt3jbHP9tshdoC
+         tfbzC3xSEXwqnOeFhr1KB+zomQMqcInvbHrb+7jGXeSogQOTp32PFV4bptLTkj52Y4ZB
+         8skzdRfWfLwu9lmgjhL2nJz5nL08aMnuSc1tRim050gnmOD37Uu99v+lPRheq0OZwcFo
+         /Lk9eXv6+pxpaa+EvxGwpFQF+/PV3Car0ffnIQ4gRGkLd3oMHqbI4g0nVbXnN/pI0HAM
+         90bPoW6tBMVB2G+0FLSZ6vfoDTee4YvRDn4ml4Sca4JegJ2RUlapJBEB6/nIVOpVwlzc
+         FzAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyQAaOMhRnmmYYdZ/98DvbO7UhKqrLji60C8CchSl1wyHZ05VJSJcWZXDDAudMCrLbUl4Sss3cdA==@kvack.org
+X-Gm-Message-State: AOJu0YyxI3rk/z0jMh4c0AvFIVMCJtcO/gwSIrIlhzSCnefJRlolYlv/
+	W7WdMSbHM/cYDCvEKs+imf7uNeImuF97/AXV5pz6asXUT8MJ/rElJYPAzqRDLVhSrShUpzzyh9v
+	AkVA6/d2GW3ZekZZdj3Pv/gOkjYFnXQA=
+X-Gm-Gg: ASbGnctN41ExwsOYY1JRhQBqd/AdmRt6V2ZackrNjDiJUI09CLLGhbTtL9afuEBUl1L
+	gEKyAWvPSGn0YpfstxP+UpPmwM1Tq4zqA60KmUfBzC24Jfpfx1LxGadTw/4GnMlzqy5Pgdgm8QN
+	xI4//+vCpT4KCDwg9ElSR7NcLPnhg67rMsyxiMiCYb7eKaifwu1mVNweAB8AhDRacZ6W6FFB8Aq
+	aGqDJ25+uDe21OH5iOGlmM9LHV91cPOW9lz0Q9DUBGvbv6RI6O06wW1E0gw3NZXqQvBTIJHCgeK
+	9JV4XYuMks1vmk0hcK4s/57OMA==
+X-Google-Smtp-Source: AGHT+IFGrG6pq7rWKm6aIR+7hnroTx4r9F7GqJTK8ku7OFj9kVD3jVgk3lYQmQV7GKSfAkPSy4Y9WHViCHJ0OdUDFlY=
+X-Received: by 2002:a53:cd86:0:b0:63b:fcf:5c5c with SMTP id
+ 956f58d0204a3-63ccb817b33mr15696163d50.11.1760441741317; Tue, 14 Oct 2025
+ 04:35:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+References: <20251014050609.349461-1-kartikey406@gmail.com> <e6bb05f7-8f05-409f-9d87-2d25f66942a9@redhat.com>
+In-Reply-To: <e6bb05f7-8f05-409f-9d87-2d25f66942a9@redhat.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Tue, 14 Oct 2025 17:05:29 +0530
+X-Gm-Features: AS18NWADgpzWMP4thQRXfhtcU-zx-hQnfX1rVdSDKTbFByCZERsGs3hEMU1Ik6o
+Message-ID: <CADhLXY70S17ZSnp0B=HYNgzqP1Ty5AppY_cKUteBoryGkF=y5A@mail.gmail.com>
+Subject: Re: [PATCH v6] hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
+To: David Hildenbrand <david@redhat.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org, 
+	broonie@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: apfr51uh61hthw3g3u56p99km6hujpyh
+X-Rspamd-Queue-Id: 50A721C0006
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: 57yi93zup8w3b3h13351dij8g9gnx71y
-X-Rspamd-Queue-Id: 03EE040002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760441648-307016
-X-HE-Meta: U2FsdGVkX1+wGTgpJj67UWZS3H58UNxOldCnxRtGQIglbP7SBdwPOPtGBlhTQl84snYV0s4TL4xDbpQSmpvushYaLFFa6EzwJugKGmq6MO876eprQjNC6p4u0urqWcTf/VtoCULnaYSZN6HHbAT+bTIYXhLkjf1rUtZgNWH6JQzSno1nRPlnZ7pZ495/c7Y7nCLgNDSIn0PwVMIn7gLIJIXGh0PFZ1IGYqCwTmijItmpdqotrHNTcEOHAovAiMJxUfbIw3G63A8+zJvXrfKFuMtqlHh5tS7BTJx9JxepTokOBZb2xJINPzsVC+Gg3inawxIbX74kx17EgSNqsIUb6F9WqKe0cdK0hlFoKzmQE8ehe7SRikGeDBWvlkQsF3U1NlFKxrUUc7egOVC0uMoJDWesn5TotUL4zTLkWTofEhymfQ15RflNWL32llHAnAGpQsYb/ZLyMdM5hzek/tsDdlj3NMBIFqjWuA392+SUtjQWMXFXdV+9RHercHyWFpDaXR/XTX12YoeppIlw2IQQ0njxDKJlvIDDqil7rhpjAUKiQXaNKXlRTigN0noquKDVLN6/+iOGARmo8+ekzx/X5xnQF9sy6uNnA2qia0R61/vLjdWvavNMqxqG4ajWBQKIIaLirRxAQmZHbgWP3S41Cu0GfWpK93/4LJaSAakfaCjEgbiZVHVENsatYoI4sAH2gU+aRj35az+/moJCJPNT3M/rXvxfcQ1gTsgOhGjQbeKnrdY9Sg2GuIztvOTbNM9OfQBGpGX3raWBnDqjutnRe0fLrZJJ+b22mobmXVMLXEn2GiPb3jHXLfxhbGnTA6+PQbdah9v/8Hh1tNYc2BMAfjl2lz1LTxPrdGBkBXJPvxskkkug2q487JF8oTykvzumFtChD/HYjWA99jf8UP5nd0kuJgpN16hDV+Ztbd+gv+IxMX5jplg+7+KDTC6E/HY24RlQHUT1izXPgN9077j
- 6WbaTos1
- a797NYqVoVyOgE1dorLPskoGyimbiXNUQ3n5Mx9VmM+UD9k8=
+X-HE-Tag: 1760441742-125300
+X-HE-Meta: U2FsdGVkX1/3m2W3bbhKwDBJOnUkIp0Aue4Z2LGPU2OjHtfbnyuPJCYis9JeBYHrZHFAMFjqM5UQAd7s+S9wMR7zL1xZApq2VbqY7+ff7TkyP960pWFDUv+fzTfHx/AWCWdtmqAQO/QCS9zMv4hFaWlKllhU1vMBKf+8Bw6au1qnw0ErzPsFZQBA+oDU2aKLdkTipZJUNlpTPuUF/+c1DL6WweJevx3tp9YZnp5a/OWDwa4yG4YJ9X5+JlCIreJpb3KkW8lscMmH/Q8Q456J0VXxEikbrRPntd8nAXE6C94H0csDadnHF3ff/8VTU8r+88EGQvQKxnXHTTXXcW9E++ny05Q2uQ1gwe0SwqzpNZd963+YwEyaSkEyqkMzi5Gr3Ehozrf9DgJUFymSRwJB2WFNg6uYgpXyufFf6QRudkd6OcgbnUtbw07Bmi+4VDQWbsYpoiTyVQfJy5IBZCC+NU/YKhML5TNzBA0fwfHSIV7HB0lowrkp6SCes6nU23CXxh3BqEgv8ofoOtt8SQpKynuNbouEu0LlALOygXImb+gTt45tGRQLropErpzuvw9hGxu8BzlWVvMQBGQHkzIDhsR3nH0BvEjbtn6G02VSMDrPi9i5vwJWvI9eSiBgV2zgiG88GOXcJe9f+YyACojnYXRge0DXfefg0RGkAKrBdnv1SP9OnE367dR0gi6uLGpyrZ3Y3/8aVrEq0UDSD1m7JPcACorz0XqRI0fcfcnpvisp1QpvRQQEAHwWjCnD4QBnoa4+5HAk/Ioz0IzFKNQse6W6ntd5DBbIhe6PrAKCIUeVGHX61vg7mBynYXZVHNXUhLMeuAHwn3dKHyaM5MM61ldvTfHXyIHCnk+5vGp8LIEcvwcZ6NSlZSB+GjowppuS0zhs36neF6GDxo4fUGsPum2ZVcTn9zmNt27QwGHERmmF3RWJAuLc7/kNfb/Vr8AhkkP+Ls+ZvVITDkassu3
+ ruT9VKFD
+ RF0LgNCedo8UM8AmFtm/kYWzxzxwWs+L/6moKZ0rWsFPNLfAH3LLk/pjg6lTa1kmqlNr6k7XYupnw72x1D3TqvLvdgtklbs9/IIAg+hNAzfY0YwuC5IZHJuHs42/fh+W3l4qwxf9AT/gtUrOXhvESttGesGaLanot4NT0EmIV4aQwjAHddHGVyqVXMe8Q9mlmdGGRBxVDtU1jxMT3Khp5W4KjkBJSRDmFY0EyCygQ04D8KXTVN5q30QIWrNdk2zltr8TeHeoyiLf9K6UvT7zg7EQi97NQonDI+sJxFmjNDpjxlgnOLOju8VAgKP5GM8LwSuzMbB1NeN+8nVAMpoHnssloltWlBcvNL9J8KHb7iJDL0yIzypsWAu0F2RCMELxVYNHhTabXU1KN1/bHGQ8vd4W2DrEY3aG2olVTTgec9lEhGoTT1+ULnI8T/i2VJILaiRdSyYxRmpHkWZhzj7EQLsrBET7eF26MCb6/9n0aALjCsM9T7VoIvkcKjy1U1VJyZRjGBkEk6S3n7jaWekAryqER1pfDB7P41WFJf3jJed6tWlI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,160 +115,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rename prot_numa_skip() to folio_skip_prot_numa(), and remove
-ret by directly return value instead of goto style.
+Hi David,
 
-The folio skip checks for prot numa should be suitable for pmd
-folio too, which helps to avoid unnecessary pmd change and folio
-migration attempts.
+I've sent v8 rebased on mm/mm-stable as you requested. It includes both
+the skip code revert and the assertion movement.
 
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/huge_memory.c | 21 +++++++--------------
- mm/internal.h    |  2 ++
- mm/mprotect.c    | 35 ++++++++++++++---------------------
- 3 files changed, 23 insertions(+), 35 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1d1b74950332..8ae17e0aacb9 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2395,8 +2395,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- #endif
- 
- 	if (prot_numa) {
--		struct folio *folio;
--		bool toptier;
-+		int target_node = NUMA_NO_NODE;
- 		/*
- 		 * Avoid trapping faults against the zero page. The read-only
- 		 * data is likely to be read-cached on the local CPU and
-@@ -2408,19 +2407,13 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		if (pmd_protnone(*pmd))
- 			goto unlock;
- 
--		folio = pmd_folio(*pmd);
--		toptier = node_is_toptier(folio_nid(folio));
--		/*
--		 * Skip scanning top tier node if normal numa
--		 * balancing is disabled
--		 */
--		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
--		    toptier)
--			goto unlock;
-+		/* Get target node for single threaded private VMAs */
-+		if (!(vma->vm_flags & VM_SHARED) &&
-+		    atomic_read(&vma->vm_mm->mm_users) == 1)
-+			target_node = numa_node_id();
- 
--		if (folio_use_access_time(folio))
--			folio_xchg_access_time(folio,
--					       jiffies_to_msecs(jiffies));
-+		if (folio_skip_prot_numa(pmd_folio(*pmd), vma, target_node))
-+			goto unlock;
- 	}
- 	/*
- 	 * In case prot_numa, we are under mmap_read_lock(mm). It's critical
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..55daceab3682 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1378,6 +1378,8 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
- 
- void __vunmap_range_noflush(unsigned long start, unsigned long end);
- 
-+bool folio_skip_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-+		int target_node);
- int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
- 		      unsigned long addr, int *flags, bool writable,
- 		      int *last_cpupid);
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 7affa88a6de7..cec4c80eb46d 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -118,26 +118,21 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
- 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
- }
- 
--static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
--		struct folio *folio)
-+bool folio_skip_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-+		int target_node)
- {
--	bool ret = true;
--	bool toptier;
- 	int nid;
- 
--	if (!folio)
--		goto skip;
--
--	if (folio_is_zone_device(folio) || folio_test_ksm(folio))
--		goto skip;
-+	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
-+		return true;
- 
- 	/* Also skip shared copy-on-write folios */
- 	if (is_cow_mapping(vma->vm_flags) && folio_maybe_mapped_shared(folio))
--		goto skip;
-+		return true;
- 
- 	/* Folios are pinned and can't be migrated */
- 	if (folio_maybe_dma_pinned(folio))
--		goto skip;
-+		return true;
- 
- 	/*
- 	 * While migration can move some dirty pages,
-@@ -145,7 +140,7 @@ static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
- 	 * context.
- 	 */
- 	if (folio_is_file_lru(folio) && folio_test_dirty(folio))
--		goto skip;
-+		return true;
- 
- 	/*
- 	 * Don't mess with PTEs if page is already on the node
-@@ -153,23 +148,20 @@ static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
- 	 */
- 	nid = folio_nid(folio);
- 	if (target_node == nid)
--		goto skip;
--
--	toptier = node_is_toptier(nid);
-+		return true;
- 
- 	/*
- 	 * Skip scanning top tier node if normal numa
- 	 * balancing is disabled
- 	 */
--	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) && toptier)
--		goto skip;
-+	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
-+	    node_is_toptier(nid))
-+		return true;
- 
--	ret = false;
- 	if (folio_use_access_time(folio))
- 		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
- 
--skip:
--	return ret;
-+	return false;
- }
- 
- /* Set nr_ptes number of ptes, starting from idx */
-@@ -314,7 +306,8 @@ static long change_pte_range(struct mmu_gather *tlb,
- 			 * Avoid trapping faults against the zero or KSM
- 			 * pages. See similar comment in change_huge_pmd.
- 			 */
--			if (prot_numa & prot_numa_skip(vma, target_node, folio)) {
-+			if (prot_numa & folio_skip_prot_numa(folio, vma,
-+							     target_node)) {
- 				/* determine batch to skip */
- 				nr_ptes = mprotect_folio_pte_batch(folio,
- 					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
--- 
-2.27.0
-
+Thanks,
+Deepanshu
 
