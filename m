@@ -4,126 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 583C2CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF78BCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADFB28E0113; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id ED8998E000D; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A68BE8E000D; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id E87D38E0112; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9581F8E0112; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id D76D38E000D; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8086A8E000D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A90A78E0112
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C6461608FF
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C74411B098
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:52 +0000 (UTC)
-X-FDA: 83996747184.17.BAB3A1E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0F0C82000E
+X-FDA: 83996747184.13.93B24FB
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 099601C000F
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cR/djIVU";
-	spf=pass (imf03.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=XYZmbZu+;
+	spf=pass (imf21.hostedemail.com: domain of axboe@kernel.dk designates 209.85.166.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760447270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4OZ/FMtNXDdZa/+FmlYwe3N/LH3oTbKpyLgCA01R+Ck=;
-	b=xA8LTBfuOIltZDf9VGmKZRVqw/BFEZuebyuz6sIKuufVtj0L7VeXtDj0ujOToRcXj6RG6X
-	vQSkK4G31zp7XehWo7l56gIipDb/XBt8SzGM9FQKWjN5pghbvPRgxcJi4bRVbOqu+ZLM/6
-	qVdxhQzQfXPOXlz7S+HOFTEzar9phA0=
+	bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
+	b=iWIrro+EGHfc2XQrjmQvU34CjzQQ9ixlJNANm5S6nsb3veqdle+jswcgMTDAv7yd9YpDgj
+	e9XXLEkULGOdhPXAUlSPc9x1RpXPEcjnwUaAIoEs1Pbh8dsqjFeL6b+7f85KQXHf4weFtn
+	JzfKV5HYuQWWLhkzzS0xxieUfZdYBjc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="cR/djIVU";
-	spf=pass (imf03.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=XYZmbZu+;
+	spf=pass (imf21.hostedemail.com: domain of axboe@kernel.dk designates 209.85.166.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447270; a=rsa-sha256;
 	cv=none;
-	b=6mh/swGiwbSRPpZLXv4rTkneu5uT1w4oM9wExs23MGZ0mrY5ZFIM2aIg0hiEyM4/ntwNSk
-	b4nCpKFubXlKj98zs6DnYgfQt/1H3dOk9GK6Za6YiNNeblMFwI9ieN6G0xl9/lkRPzWb1+
-	h8DFDIH8atDf2a4FYhIh8Es2ra85UTM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760447270; x=1791983270;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3LqwvcyCTUGBDDv54GKFHPFhtunF891CzWSsBDlRHvg=;
-  b=cR/djIVUW9/E+DmNiF9fI6klxUZjTGu1rIqBeY606kVBBa9MEyIJBKVI
-   fIMS3fNVX7j/i2gq24eVQdyF732BL/BnWlPW4NlChuqnMoT+7zTV0XiYP
-   dY34zCVcdfrQjonutslN9eOMAUSp7GvhDP1IgLE77xbfgWtQyhAWkNhlz
-   Be93bQ7meM6NCKobkqDYVw+C1+wuv7EWcsFJ/tlXSRUsiycOq4gp9Z20u
-   MtZ63+zB/WW3Dnbv+kpmCm6J3W4rxz2nbOKs3tpI3Dw8/DpR/gGbdcRpp
-   UfOQnxDA2lz1cimWCfM/JfzCsGtk4uUFSBJ5h3A2xOEXIuln0PllozeaI
-   A==;
-X-CSE-ConnectionGUID: 86x3SRPQRAuLYiO01ysZXw==
-X-CSE-MsgGUID: EJWymsilS/y1Gu/n6H79pQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515383"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62515383"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:07:50 -0700
-X-CSE-ConnectionGUID: wkKPsVjuQIOO3qPNmRmAVw==
-X-CSE-MsgGUID: z+j4SIdnSy2mQrtAx02caw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="182675618"
-Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:07:43 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jann Horn <jannh@google.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Yi Lai <yi1.lai@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: iommu@lists.linux.dev,
-	security@kernel.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
-Date: Tue, 14 Oct 2025 21:04:33 +0800
-Message-ID: <20251014130437.1090448-4-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
-References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+	b=jWwbxqFsuHwJsDUlKxnHi6C2irL5sE64+veyCBjCyOzGCyThobrnU5rI85DlzUtS2hh1X/
+	3WPonVl/GO0Ur4FW/HWFvDSA96G1cjcXEl+3yfDKuevw6U3++wOTllSrs1v/ysKxDML8C5
+	+F4aF2dybro3aU1qlMiDlUW6KplpGj0=
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-938de0df471so491161239f.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:07:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1760447269; x=1761052069; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
+        b=XYZmbZu+tm4WqlDJefwxgWCUgfpKYXU5td/StS0ulT4anTX+WcN/avYb44/iXlz2rw
+         eX5c6S4evSqQvCXKFtWGtOQje668LErxDNZzwSzcc7uOG9UUd8QD/uOdxicvDouUOTww
+         wZF926gMKnVKktK78+g2gvwqm/rO7PSMYND4XgFTMO1Pwjln2tQkjVqmjiK58emzk8fQ
+         Gx/EQjCo+NRdCAJydPfHZtAcFjxaoU7+rO5JKBiaRbpvKV7UIS7tB4LHWhdm85vW3jhs
+         61odPGAXguzWQllfXvfkykF+7LXsqVw2hiQ0spuytAyb7o6McpPhZNO9Do6PJrfl1tTG
+         yN3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760447269; x=1761052069;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
+        b=JbCvRqD7M0N7AxZc70m7hmVjOQtw6Fv548pHSvKFgYr8ikAPEv8M/Vd3G9DQM8QKOC
+         UNj4A1syRHMRCS7bcVqAqbdVqTo+e6odiSmqiege0c6jy72XywUzdswyMaGhjYO4IySP
+         Un03eh6xYXVZdZQ5tvRP+y+9SeRioqytk1g854F+DPF9bn3YkczuoCfYipgMjaoU+InY
+         Hz40M50u93RXTggzgf4rWmOpKw4Ada9cIWA39Dy5ewjhbNUzACdRBlmqoLHKmKRqW0du
+         37LJIUinNgzPy9lerW1QFcIjeVBrCstmokIpe3R14qy97AbIpb1vVsDl7JbsjLwicRE0
+         01XQ==
+X-Gm-Message-State: AOJu0YxiuqN4uKypAx1eGqcjGI0wYcLEKO8jF4YL5adUMDb3ANvGbm2Z
+	qaY8CdNVVOjHNkdgjxZGHb46gcXNK+D+GYGqf2embRLol/TOefyvvJRCgsPvWYPv+J4=
+X-Gm-Gg: ASbGncs2XDcVHLIRNbBWGB9NJfeTazMI3IjCTfY2Sn8c4J/7o/ngr9/q+S3l/xknoeh
+	dzpF7ECOf8o+6dV/t7AlGV1P+4B7QZUkZuAM9rOXtpzecp8HSWlKr2m1I60mIsQXjQclIDnzoe2
+	kM5sYsO3UGNuD4RWouj2+N+Hnxk9ManhMQ6AgCqnmEndaIo26GLe3cfHIkG1Dtf3osenMljlVTj
+	tou0kJQbFM8O54L3cBio2I/eb9TCN++J4BqPxRDhmm1x48BgW00x2avml2PDW3KP7VWUens2gVV
+	1ZjoG41WqUa0+uRy8NYll8TrxFqwvkavSCnjSXCbe/XwOSXEUWtDW+Vgo5u9ljgH9QEEhS0ZxL0
+	UQPNaoRhRxhfK886VBbbNh9RDwMNeNcyoAngdwgw=
+X-Google-Smtp-Source: AGHT+IGh+/cXW5eXefvfc/8019u8t+Wip4UewYdAOiTu7XDHpy98OIT7QQFCjFM4MijZt4pR5t5BaA==
+X-Received: by 2002:a05:6e02:1562:b0:42e:2c30:285d with SMTP id e9e14a558f8ab-430a43ca194mr21969905ab.6.1760447264888;
+        Tue, 14 Oct 2025 06:07:44 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-58f6cd58e48sm4796689173.17.2025.10.14.06.07.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 06:07:44 -0700 (PDT)
+Message-ID: <c775db95-ccff-46e8-9e3c-5cd784618f04@kernel.dk>
+Date: Tue, 14 Oct 2025 07:07:43 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F0C82000E
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Remove the BOUNCE config option
+To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen
+ <chenhuacai@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
+ Hannes Reinecke <hare@suse.de>, John Garry <john.g.garry@oracle.com>,
+ Johannes Thumshirn <johannes.thumshirn@wdc.com>, linux-kernel@vger.kernel.org
+References: <20251013095620.1111061-1-chenhuacai@loongson.cn>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20251013095620.1111061-1-chenhuacai@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 099601C000F
+X-Stat-Signature: u7ug9imq7dxdy11ni49ca9whf351ynmr
 X-Rspam-User: 
-X-Stat-Signature: mhwqca3fmjjr3bxt1m5gwnus1o7ygdi9
-X-HE-Tag: 1760447269-393421
-X-HE-Meta: U2FsdGVkX18wn+uW5CMWk6I3uYsvpYFiAQU2D88KijBKzau0L8mK4R01fW2o2ebVCbxgbf/Cn2zga/56UZ0/xk0cTtK5RSLXVuwS2hTVqU3q6SNS6F1lHNGvMPhUKADw/xIUj655vdgPyKp3KK9JFuPmdt1y2huKqLsmO6sd5Lzb98/5QGjDIy+6tpSx0BVWR1Nz/KDyyqp+od5Sj7YWXly8LZGmwSY83FOtLgqz8M/gK9fUWvYPncI2P6+3SB6wFOA73gLbFd5qJ8qPEvD9AQw47W+XpVxN2uBSmrIdCEx7daAPhIOwLjyPSl9fsng1kgIDQeap1Ais/3A4CGks1xyw8PKk5POoeKIaQjt/OXLx2BpwWt8yQey3D34xlZvZg84uRccnDpjcAi2nkPFA0du54WH+KFxkq2Av18Q12nae5D+QUJx5iybo7TbZ8/B/vyNmPDzHKYUZXHNFH7XE4fakLDog+nExkw79seGUDgxlPj0dGq2aOJmHwscjyCIHqO2pgOlaTOLmY0yQZN8sn87bdSr0sqLuwXeuSpkOcNcW12VDT2/LbMUeyEQ5IPsEx87vusCSFhz0TkNb+qRXT7dczeXmDGoD0eRjAsBBy1I2aWfMTF7Ti9ktKmr2o/Sfn9aGLoEkAz9hCSi8JCUpef/TLrLBr0EZ+zurLJBt++AmB/jBwwLxNzc8FzY+7QVsPijpesUi1dHqpKPXJILiGwg/3iWi0gU36kN7jU/AVFpJBp/oE541lAdOjQqPpNk3++7mgHgxCnWX1N5r7o0aWZH5cvYRgCiWpmuVBmsDAs4BC9YbACla3+LvoIpeeIX3Am4m5s3AyV+eGjAkqKfqLnaM7q3e44qzXHJYCFcBfR328cSbGOF9Gtj/MDEyEqRuuqXsYUp1tEo33LibMhg3tJNhALvtRdUXKYe5c201zXwc5L492DLvlVLAP2TUL+DdnEZxMjvhyQxVDbtCxiO
- E1QVPI5P
- 4Lv1qZf/hBRW2PGPPemu8HngvXmnaqEROrgHmTMqAMC4l7lZrUE0oz2EhEhGfo2Tybte+oAEPWe9QeO43xLp6rVElhB9ZklbvbvO+jWkcejWFUyydLdmrFZ+NTh4IOZRBsuz3jbdSxw7dYpJN/G3keQQuDjZivjBWPI5gbjbTVaJoK/eQjj2FuuLSWNbZq2yFDaj07qSiBCg49CPUdYjSk5qFO6O47w2zuFFZr/mUxQw8DxE=
+X-HE-Tag: 1760447269-544945
+X-HE-Meta: U2FsdGVkX1+P92kAdKkHD2fVrx0yh4Q5XwqK+yJ3VbC0cRMDvXZ0r5dcKM+3VtuXokeSVCQoN9t5za7h3t6RA+UmTssmBGWKG7hdcz/sHebCL0VmbbYaeHoG50vQmTSs2bBWJQeASvlLYG7Rv6NHEUCWvXYqdWfw667aneTZRqLOCMQDUwmAKNcw4/eHByHCJGkbukpoZHpMM5UeVFdNCPKG2aBOSGape1geyy6Sx3zH+pC80VTTjUENCY96Zl8Wtyrr0CpkLmPEEuvYePMS+Qdu9NhF6HBZWTWAgLcmkaoEZpFIIjgwz0HOXC9VhPaiamIXmmXtiRooWT93ehnIIxZ90w0Qzl1DN24R/8NTVmkOZEM3rapIv8zU0AgblXDpGdohw2yh6yV3KYaYO0ZRUe5MA90XImHS8+YtluBLk0buKadQ9SXv+O21bis/IT7MP4684LFq4945OrwnV2Y4dfoxV+wCKGF/UGxlVUtYk57FDavdQHolnwgwuRwH0Q3gi4SpTV8TAOv1dCn71zysQllg41AESEzkxLvuu8g+agji3902MOt+kxrFvZ8iuf7kMOQLNNBa83BLumnQYdiMkqyWCyDX2DBv8mGI03+ptTHLsgX9JFQ21XMUbsWQp39OPeoYFEt6QMNisNEptHJhFTBOseQsZrO/CQDxC2gAjC9taQ/E2kgd2urpi14gA8JTWeZA+PLSzCTcHzGAwWDYpAtmkACWgB+MvL3nepWDO0Z/zgO7AIVaOKugBD7D/f9wntvXMzhMrCR7p7CgL1CJaNI5KRja4/V9cVknKbmvgsCEWnL9idJBN8S7BJHYBqfe+taGSzcGxIc26OxUPetbRM1sWFTB/m8AjNY/XwxHh0TKODAXpDdzuQQqIr2nBjeGuXdIEvQ3WsTwbVaynkeOb23X45Kdo7GleVj7vDZJp5/Ca5tsI08z45RReOMHV4CvQ8di8tGjhHjsgCf72pr
+ FhFb2DoO
+ 4dt9LrYoYmtn/1xXKawqJ+uGQmpXTrpnA/l7SUXJRXM+cesvE/iRf+elKu5jmz1mHRfp88pk6gqt0/RgGAGFALRszkullEyew3r7HvU078ecxJmGpq8dt2f0f0X8lYa0MQV5XRcsyp2Q93FgAQbck8hDrDfBnwTZT+aMiXmQoBI4JFRaAP+5x5g9N+S0xRZ3c6Fx4OJoyln5JvuvPm5JS/CkkNGK7dqAek7VZAJsBnSsOpwKKRVgXkOBo6L0WGEIyWz8BBrqGEaW+ni5SPM3Ar/HQp1gy3mPHpP+GMoxL6woC7fKAAkQxabe4nlm62r8QVxAvgVQMa/3+YYUZLg0ytzTHWniMUE/6gI33CZRqCzQgu+kBjhDhZ9MdYJPNY4wDstA1FLDC2IqE9Q47ZORLMV1H/VvGMBLs5I3PxKULDp2DH9I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,99 +122,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+On 10/13/25 3:56 AM, Huacai Chen wrote:
+> Commit eeadd68e2a5f6bfe0bf10 ("block: remove bounce buffering support")
+> remove block/bounce.c but left the BOUNCE config option. Now this option
+> has no users, so remove it.
 
-There are a billion ways to refer to a physical memory address.
-One of the x86 PMD freeing code location chooses to use a 'pte_t *' to
-point to a PMD page and then call a PTE-specific freeing function for
-it.  That's a bit wonky.
+Acked-by: Jens Axboe <axboe@kernel.dk>
 
-Just use a 'struct ptdesc *' instead. Its entire purpose is to refer
-to page table pages. It also means being able to remove an explicit
-cast.
-
-Right now, pte_free_kernel() is a one-liner that calls
-pagetable_dtor_free(). Effectively, all this patch does is
-remove one superfluous __pa(__va(paddr)) conversion and then
-call pagetable_dtor_free() directly instead of through a helper.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
----
- include/linux/mm.h    |  6 ++++--
- arch/x86/mm/pgtable.c | 12 ++++++------
- 2 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 15ce0c415d36..94e2ec6c5685 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3203,8 +3203,7 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
- 	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
- 		NULL: pte_offset_kernel(pmd, address))
- 
--#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
--
-+#if defined(CONFIG_SPLIT_PMD_PTLOCKS) || defined(CONFIG_X86_64)
- static inline struct page *pmd_pgtable_page(pmd_t *pmd)
- {
- 	unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
-@@ -3215,6 +3214,9 @@ static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
- {
- 	return page_ptdesc(pmd_pgtable_page(pmd));
- }
-+#endif
-+
-+#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
- 
- static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
- {
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index ddf248c3ee7d..c830ccbc2fd8 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -729,7 +729,7 @@ int pmd_clear_huge(pmd_t *pmd)
- int pud_free_pmd_page(pud_t *pud, unsigned long addr)
- {
- 	pmd_t *pmd, *pmd_sv;
--	pte_t *pte;
-+	struct ptdesc *pt;
- 	int i;
- 
- 	pmd = pud_pgtable(*pud);
-@@ -750,8 +750,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
- 
- 	for (i = 0; i < PTRS_PER_PMD; i++) {
- 		if (!pmd_none(pmd_sv[i])) {
--			pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
--			pte_free_kernel(&init_mm, pte);
-+			pt = pmd_ptdesc(&pmd_sv[i]);
-+			pagetable_dtor_free(pt);
- 		}
- 	}
- 
-@@ -772,15 +772,15 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-  */
- int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
- {
--	pte_t *pte;
-+	struct ptdesc *pt;
- 
--	pte = (pte_t *)pmd_page_vaddr(*pmd);
-+	pt = pmd_ptdesc(pmd);
- 	pmd_clear(pmd);
- 
- 	/* INVLPG to clear all paging-structure caches */
- 	flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
- 
--	pte_free_kernel(&init_mm, pte);
-+	pagetable_dtor_free(pt);
- 
- 	return 1;
- }
 -- 
-2.43.0
+Jens Axboe
 
 
