@@ -4,115 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C94B4CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 05:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03BDFCCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 05:28:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 016958E00BD; Tue, 14 Oct 2025 01:08:10 -0400 (EDT)
+	id 4B13B8E00BE; Tue, 14 Oct 2025 01:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F30948E0005; Tue, 14 Oct 2025 01:08:09 -0400 (EDT)
+	id 488A18E0005; Tue, 14 Oct 2025 01:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6D008E00BD; Tue, 14 Oct 2025 01:08:09 -0400 (EDT)
+	id 39FA28E00BE; Tue, 14 Oct 2025 01:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D6E1F8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:08:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89164BAE1F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:08:09 +0000 (UTC)
-X-FDA: 83995538298.26.0545901
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B525F8000A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:08:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wwMNJmn7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of edumazet@google.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=edumazet@google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2873C8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:28:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C8160C0733
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:28:20 +0000 (UTC)
+X-FDA: 83995589160.18.E2ACD65
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F0707180006
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:28:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="S1/sziiO";
+	spf=pass (imf06.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760418487;
+	s=arc-20220608; t=1760419699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B5JkuuVSayA8Ofu2uznRObRn+eA97FQhk4dZT2qKwso=;
-	b=2IZ7m2RxdLUXTwHwns9260i4pywvwQt+VEzDnUAsSVkDZjvQGYO5WG3mYmuOqylFhVijVc
-	oY2sm32SqCS8RwWVat14tVV4whVe3gV4Noim47n+wHwRzqmTpp6M6+5fSnAx5lcELqFKYx
-	rxBaYgUubj/ablxa8SmrPscA2yAWFas=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760418487; a=rsa-sha256;
-	cv=none;
-	b=Or2oz805cphJqkNhZEj02GAimvosofdMPxBX5pj9Slqsv53doQp+BnHULeN+tKj78Y7G4Q
-	PFlwT74w9yV8BISaSCWqzXBph0auQm/lVigtOgIl0CHVbijOUMsKLb6IUBetpgNHGLoKA2
-	ZMORc4gmn115fkR4jShs/78wo1ZH/ok=
+	bh=ptPHbzU60TAIm8mnnxk2ahAv+Cxa99UUvkWsQlBP2xU=;
+	b=HKPSV6TXEsYxvcZ4L04oGzIJz5TZQ/BLiDEt8FCPBCIP0u6U8pZSg6WnKXc7Uf4oSoOuPf
+	b5f197SicOSpmnn8qXQRxBS8PU8tyNwQ+ilJjT9RTijDVwX9JJYO4P7hkbyxKEhy1TIdmk
+	J89WfqBs+Deh1hiulRBma4TygLAYC60=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=wwMNJmn7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf02.hostedemail.com: domain of edumazet@google.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=edumazet@google.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-855d525cd00so873252985a.2
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:08:07 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="S1/sziiO";
+	spf=pass (imf06.hostedemail.com: domain of snovitoll@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=snovitoll@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760419699; a=rsa-sha256;
+	cv=none;
+	b=RzWrMLDXNUAKaoR9vi++C0ffRmvW3B1t413zosivYQLLpEnroE9MpyEC5CG3KjdRKmUMvQ
+	ZwotprO4pYxWK9WeE2VXZxyJ1tlyvLm+VgW0PcLix6iXMBg15pz7mpj12sp/Ok/ai0DUhn
+	9azd8Q2HWVZwHGc6BBeRQloQAUy4BKc=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59070c9111eso6013476e87.3
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:28:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760418487; x=1761023287; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760419697; x=1761024497; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B5JkuuVSayA8Ofu2uznRObRn+eA97FQhk4dZT2qKwso=;
-        b=wwMNJmn7mYWvaXf+j6IHIM65qxylhFr+FeZlFoQ5yFFVl9+Z43AmLkuEHW3SRodzFw
-         YKZmnPUmIM8Nh3lLsoPqdM0ZBzw2clfjtXt5ljRZB59sF6eW0HQIcyHa6eSTBhNp99ox
-         IsQzkE001kbkWpit8vX40napDSHhFqCUKxC7vdaBXyMq3QYlcIVuyPrRp/Pgh0L1AOUo
-         umin4K91Sl6oqy1KA4snbt6GNhENOj8sa3+KId2RZhlrnDgBlW70Yjfjx3Wigwp65YjF
-         3xl2zABOyZx16i6SA0XregRGwNooA08/4tPruUyESlQXzfW/O6aIbfTlZCctRXeiqVHV
-         CjwA==
+        bh=ptPHbzU60TAIm8mnnxk2ahAv+Cxa99UUvkWsQlBP2xU=;
+        b=S1/sziiOUS6H4g6RKdOPEj4OtsbSCmciFSctm9E+nFVTsoUct3FbW1jb6/WmBDV/tv
+         pA8B74P4/rtFU7m2uxPTghjlbPNBccMs75jLxj71uXeRZT1E+RpVunecnAgXuSoHO47Q
+         GkSWPTzVrP4eo1IxkDHq5voEVsk+VLkXFBkrwDXepJLQWM2IRlu/t1schDsZvtEpMtyL
+         WadjVvNhNciJj5e+kU+B5of5kIJak8byMAa68Y36WTr4A0IPMoVuF2Ap8zlbBdT9sIpO
+         aCKLT1A8xtz4SLiWUoB3FWQkyYt5vTuJMNCo4oyOPGAAf767SQVpcMunqIbc2en1S7Y4
+         UPIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760418487; x=1761023287;
+        d=1e100.net; s=20230601; t=1760419697; x=1761024497;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B5JkuuVSayA8Ofu2uznRObRn+eA97FQhk4dZT2qKwso=;
-        b=EpCCuvaz05XS1NBJmnIjDQne9O/TuS6W/kAhmRD6E4b8bmL7Rpvqa41MVHPVZX0Z7j
-         Mx/PPUhgD4KbR9SOCF8qqd7hPNYzdrw1ttZF3/T30Nd0njZm+b5VgXP1MfgFoQ9bS9lI
-         jJKIMHD72wjJ0X6MBDiOlG/ZxGJG0PF1RvW8vKh8FsoOqYU0dJB0g7ltPk9b6I3K6k7y
-         Skz1FkfpZ0pxtEakSr8OmbHJbPPP4eEMKnCoVvfkOkbm9VIRR+EUGxqUCvWuiKibX5ba
-         qtxSkN/Uy8owQOHOcIHmBZRSM2kmupI8DAaApuYRq43nKflEHyRmeO+za2wjdbFHSJ0j
-         mrZw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+QInCn6OjCOqeRxvYp+ayefWt3j2rn5VfL93ceLGqPksYwcoFoch6Yw7zSqb82vMS4mc71d/RZA==@kvack.org
-X-Gm-Message-State: AOJu0YxG0oUJU9RwoMuuUbgyOqCM0NGj7DUrN8PFiqsrPEbQNcPvj76K
-	aumcpnHq1+tCyDsED68R+pzL3+66IH0IicKYvmhfTcgoLIr7TnlheRQ6MQfCPQN4v30FMhl0iO/
-	J+HlonxQKGkj8Uwe5/GniEpmAbj2nBUJPGS5Ws+68
-X-Gm-Gg: ASbGncvkqBqfKOUzmGcpAzv4Dtd6IclKVqPeGt0SI+viYR8S6oqr/HeO99O3E6pLfBc
-	pbb4sd2QxAjnVUeH1vfoifQdgPdN0XLB101HR2tAxQn3iWbsFt3i4H2OLIQTi+gGmtx0rvLhmU5
-	drmcuxbkuC5T8yyQXy32Kaw2J+Gx/xlCB08GKnjcjSr5dut0ZMs9o32TWwzZdbiP7fZS2tAmtsN
-	2Ar0gv8GluRKbAAUD/xU5sW4czII0W1k/9UMA525So=
-X-Google-Smtp-Source: AGHT+IG/8aE+aHcI9fnIx7BC8BEsSWywbVC7oJ9GTxoNgoK6tWmthKLsGkvfKsZG/szhyaZle3TfMxlghiUG7vn+aPI=
-X-Received: by 2002:ac8:7dc7:0:b0:4e7:1f14:c30c with SMTP id
- d75a77b69052e-4e71f14c405mr115414241cf.69.1760418486272; Mon, 13 Oct 2025
- 22:08:06 -0700 (PDT)
+        bh=ptPHbzU60TAIm8mnnxk2ahAv+Cxa99UUvkWsQlBP2xU=;
+        b=Z7HPkQXlige6xKKKRLkNqqsx4dZAchCBFzoeAJAFmdN5ulXkij+4dfwKlyBHnS9Mbl
+         fwMGwnxCsqSHTU7EGGmWoRoNgGOHsib6ICasTiSl+1jgo2ZyXrslit0syZ4HNZrPvzp/
+         uPaASAG3MWs/F1rFOU79SXhW221Z3s7MWff4HSTYv+l6XNTsRME4Tl3fnwcGHzHe1FH+
+         sMbhUEN8QpUlFglrU1F9eTIgOIfmuQfMrHzrKJsVfmTj85R832Vw6YBtseZ1/PGhzKKi
+         V4FU6V+VQexU9X3fO1Hlxl7zDLrI0+Z7rXDQfU34PNOBv04dd18Mo20ocLhnenpD82zK
+         IHWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+5lg9r18Hd/1tdsAwvStjnoy4KRbYAA2FekLUN/pLPZsfiiTRTYdIwZR25pkD0SvMAmVUyMD6kw==@kvack.org
+X-Gm-Message-State: AOJu0Yz0RNOh4SEvHC7N3LFi4HUA8kIZY1SY8AygCPa/wZNHcybYP0/C
+	8KPt4rRozKVqX5pvwrXcSHCm2iEzL8OgWLiF5j2RWHMVE/sTyjjRODmKFv3ly5D5sxczKuhhsFq
+	8M/aoKx3cWcZQ+fI46mzJ+YvQaPs5gBw=
+X-Gm-Gg: ASbGncvZOkeQFdG9iuIIuykSHVQdyodJ9SxwHL+fHjmLMnZx83CoOmpbe2ZqOnC36uL
+	lt5lp6hJAklVuHz7iSJTJI/Kz2/9CC86i/piN0OYNKpjNHrzlT2q4XVJlfEe5mbQQ32cVRH6PJp
+	kRjTnKuAHkqxA5XnB2ttoyan2R96cV7kgcW7PuQl3iBDGlkpJlO0TwFSdhzNdwHkNTX5+j8D1wP
+	tIJ5ncFkWyM06loq3owVP2eVg==
+X-Google-Smtp-Source: AGHT+IGdjfNUCN4gunItNKInWlyxyXS9VWDbMBSmmBL39oiGRrNBNxoCrVW6HmO4TTj1J7zFqIEW6QQm2vhVXKpWfzQ=
+X-Received: by 2002:a2e:bcc7:0:b0:372:950f:2aff with SMTP id
+ 38308e7fff4ca-37609e0ed4emr64933311fa.27.1760419696692; Mon, 13 Oct 2025
+ 22:28:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
- <20251014035846.1519-1-21cnbao@gmail.com>
-In-Reply-To: <20251014035846.1519-1-21cnbao@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 13 Oct 2025 22:07:55 -0700
-X-Gm-Features: AS18NWCWxB4_7MksVcSk_C7g7SO9YHjPuxXQz_zjkiBQ0xejWPMAGosiT_EXkB8
-Message-ID: <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-To: Barry Song <21cnbao@gmail.com>
-Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
-	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
-	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
+References: <20250820053459.164825-1-bhe@redhat.com> <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
+ <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv> <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
+ <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com> <CA+fCnZf7jYPUyqHqonWhDKVi9eeN6aaaByMTBYCQrv2-8+hngQ@mail.gmail.com>
+ <aMfWz4gwFNMx7x82@MiWiFi-R3L-srv> <CA+fCnZcWEuBerMeS4RCXQtged06MJhY=55KsYeJEOJn3K0psXQ@mail.gmail.com>
+ <aNNY1AzfGua3Kk3S@MiWiFi-R3L-srv> <CACzwLxh10=H5LE0p86xKqfvObqq+6ZN5Cs0hJ9i1MKJHWnNx2w@mail.gmail.com>
+ <aNTfPjS2buXMI46D@MiWiFi-R3L-srv>
+In-Reply-To: <aNTfPjS2buXMI46D@MiWiFi-R3L-srv>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Tue, 14 Oct 2025 10:27:59 +0500
+X-Gm-Features: AS18NWDpoAnK8X4S74wzUC_xmUwiiptVaXx4Fi_Po4Ht89THf-aVMKFaVW0-Q-g
+Message-ID: <CACzwLxiJ0pGur42Vigq=JnYecyZn-Z5BC3VcqxSUttT54kEusA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three modes
+To: Baoquan He <bhe@redhat.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, glider@google.com, 
+	dvyukov@google.com, elver@google.com, linux-mm@kvack.org, 
+	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, sj@kernel.org, lorenzo.stoakes@oracle.com, 
+	christophe.leroy@csgroup.eu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: F0707180006
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B525F8000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: aicib3beifmkqwmufb3z5kuop5dqcg9n
-X-HE-Tag: 1760418487-139887
-X-HE-Meta: U2FsdGVkX18Vmx61jENKXcvlOVq1byCHd7gH4UkcQidshB6k2KBt4m4rU6ej4DsJZyyC0rxPUxWCaZ6YfcwPdWRp24ZWYbOYZS28HkZzkdytFbg88IvWYMf2iwHy5mkwfNi6ZZkGEuGc0SizbU0uItz4EjhMfXKuxO7K5guTKwiO4iDJpbQff541KTuonckA1LUf5et2Jmg1n8tULiMuYIoocQNjHi/mGWAA9scGSY+Lqt04P+0F03e0hCFEIlTD+SAJ+ssqpt7eSAYvOCbngE6BLHXapCBHHDnIFHt8aB05zvqkCz3efNGMrLdJ2hf0OfQNU8Ra6iyX5RXY50nBVNDZT1PIfjkuRaZQB8hdTMusvG0AzocI1KhokLAfbkUbwT26u39vc3Xj5DUQt+U4c6upAkvE6V+DnEdT3zQdDGx/Nk5g6YQp96ngIjflsC8e5ofYrppdIVjMHMxFEwW8JnGR5yi2dn/5LlD9EOWKBT5rvL3WijmVzJ82imHPPmJl7OJPjtuYb41jt1/sYgL0uz0nh2KnqY6w4fWAVhDw5en6ErL7hFTNcJwVzSvmCCpytHrz7oTbhbmGTa/dFTs1UTilgupm7twWuj7EZFZ6h/P5yqFjGSQhW8dRNWkyhNhNzfdBzA649XFCwoc4x6Olslds4jG+K+YeH0LiH9uTKpUScG6p3bZe4bmv4lhGx5i/pdybkRnJsFeFRlE+pcGtZm7/iFHlTtQuoHgfoVw6g2LHyFAd+Bpu0QSu+n3DOaeyvDbFR4A/OhihRszVPJD9Ke+79tDKmwkguxHTKp69TOBLWia8HS7kxnEOZWzZYoPVVSDNrOGzllfuIFtDag7OXcVHs3k/bLXGQrvdXeDu8CQ8Y5YVYiMvtvY1HGcF+EeKUzMr3T+oTFRIq4JpD785CvHgh4FrF988nOjaGUi+PIwReozrsOhS5xZdJDph7BjdFRTW2KaG1yvXo5TlLz1
- mT70c2bP
- QboV/HpvUzHY1+1KJvRZVmcqBvTQkys6GM6Gfimgu4HcqXkrZPGHm620JvkQRDs6iXc4qa8CNXNcIzywQw3o7X4FCIKKeekBhDJ9Da5diNt2jSFwkP8OfOWd3VhdEIUNf2D/I9ULYLr1MJpTCt18gpWp0+w/2d0MdiU/JaPnKp7OfvHkzYuetmGP+Otz74r9cfbNCjkO4IHFbyKktGx4p5moaOeZGO/bx3pL2RS7f5vUlNgvHOeNRRnD58OlhkTyrzYos
+X-Stat-Signature: 5itf947d99iazjkgoj9fpdfu1cwfdf1f
+X-HE-Tag: 1760419698-437589
+X-HE-Meta: U2FsdGVkX194lHL+9mH8EtnY5TTS6oblz5JvGuAVCDYAElC8RdshR1Wr1k5IXKeK1lK5MCaAfImae9YOPYzDpB6+hYAxrJHh6Q5GC7GiDCdyi23Ca3BMCYmChfvRqhQh66qHn0QDsnkcdtNF2ycRkPhv/TC05BDm2vxGX5ZIiD0mBSJyZaIekIgTf8Rpj3uUjQ902EsxoHw44EFqJBcb9XdpIN8Uq5i7T+MNIlHJrJPuLQ9yDZurAWtHUP89F2l2cuZTRiB4etxBs8o6tUATiHzPX6W6MFZTZOAvkixCLkGXZoZc/qwrgEx/n3wI0wQtIDbJa1rJXedR4YhYPZbWfCMvf5JY/rPQhcpk/5y9s/86yEt6jT6VlYVF5f8wLMAzOEvzFciMKfkEt6Uv5JYIj1TkUzWF5cbCOMxVKtXwrLToXgyzHsw1u6lTPjO6KCGRs2miwynXZkISdRkKocqX09QpgTP7ijxNM8S1AgWZ5tlJgSlh/FVX2qzP1Cu6Zlhxh/JCxowjnblqwCwbFrL4OK52ecCelLVXVoG3OdMPZkdctDJ3UBmBDNdtK5fUy3c4MTHuABPQ85CQ0QSHX2tp6KOuyfkPEs/ggvA65YUfAP0ayGp40HpgmHWANI4J+dFGGOkBHYr6U0ne+ISYcEWYlVTIFaB6uVkeI0TFn1NI/xD36QNqk14EzJLot5UVjVAYjjHULQrSEbVD05MS/xnr5H4lT+REMYxjJioY7lA1KOOlxN+wJST0osvVllohwGSoQ/+qp7kQrI7zwk/GQo7c6vAXvlwKtb1T1Vo3NiSqBYfK6DtWwCTn2lgIvdkXxvvya76cc7wutExKKNOxKdNWtbAklRpgmrna1E62op/8CauyMPErP9aveRyH6qNJ6xP0mHH+OocaTG9k/v3lA/v/ZtDOYcgLxlcCMyvNF8e+GfVzy5WODAdcEW9QuY7K3dEpzm/ILwWe63mtcBdVOCa
+ aPfKJn0U
+ PqPG+uJRJtEv667z2i2NckVGCrQRjHfsjHwuAfPf9ThCFoIbSTNtqG8LvqfftzQVeDuogzJGkWd3DNEqXwnNWNuJ6rg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,111 +125,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 8:58=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
+On Thu, Sep 25, 2025 at 11:21=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
 >
+> On 09/25/25 at 12:07am, Sabyrzhan Tasbolatov wrote:
+> > On Wed, Sep 24, 2025 at 5:35=E2=80=AFAM Baoquan He <bhe@redhat.com> wro=
+te:
 > > >
-> > > diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation=
-/admin-guide/sysctl/net.rst
-> > > index 2ef50828aff1..b903bbae239c 100644
-> > > --- a/Documentation/admin-guide/sysctl/net.rst
-> > > +++ b/Documentation/admin-guide/sysctl/net.rst
-> > > @@ -415,18 +415,6 @@ GRO has decided not to coalesce, it is placed on=
- a per-NAPI list. This
-> > >  list is then passed to the stack when the number of segments reaches=
- the
-> > >  gro_normal_batch limit.
+> > > On 09/23/25 at 07:49pm, Andrey Konovalov wrote:
+> > > > Since the Sabyrzhan's patches are already in mm-stable (and I assum=
+e
+> > > > will be merged during the next merge window), just rebase your chan=
+ges
+> > > > on top.
 > > >
-> > > -high_order_alloc_disable
-> > > -------------------------
-> > > -
-> > > -By default the allocator for page frags tries to use high order page=
-s (order-3
-> > > -on x86). While the default behavior gives good results in most cases=
-, some users
-> > > -might have hit a contention in page allocations/freeing. This was es=
-pecially
-> > > -true on older kernels (< 5.14) when high-order pages were not stored=
- on per-cpu
-> > > -lists. This allows to opt-in for order-0 allocation instead but is n=
-ow mostly of
-> > > -historical importance.
-> > > -
+> > > That's fine, I will rebase.
+> > >
+> > > >
+> > > > But also note that Sabyrzhan is planning to move out the
+> > > > kasan_enabled() checks into include/linux/kasan.h (which is a clean=
+-up
+> > > > I would have also asked you to do with the kasan=3Doff patches), so
+> > > > maybe you should sync up with him wrt these changes.
+> > >
+> > > Hi Sabyrzhan,
+> > >
+> > > What's your thought? You want to do the cleanup after my rebasing on
+> > > your merged patches or you prefer to do it ahead of time? Please let =
+me
+> > > know so that I can adjust my posting accordingly. Thanks.
+> > >
 > >
-> > The sysctl is quite useful for testing purposes, say on a freshly
-> > booted host, with plenty of free memory.
+> > Hello,
 > >
-> > Also, having order-3 pages if possible is quite important for IOMM use =
-cases.
-> >
-> > Perhaps kswapd should have some kind of heuristic to not start if a
-> > recent run has already happened.
+> > I can make all necessary changes only next week. Currently, traveling.
+> > I will send the fix-up patch Andrey has described somewhere next week.
+> > Please let me know if it's ok.
 >
-> I don=E2=80=99t understand why it shouldn=E2=80=99t start when users cont=
-inuously request
-> order-3 allocations and ask kswapd to prepare order-3 memory =E2=80=94 it=
- doesn=E2=80=99t
-> make sense logically to skip it just because earlier requests were alread=
-y
-> satisfied.
->
-> >
-> > I am guessing phones do not need to send 1.6 Tbit per second on
-> > network devices (yet),
-> > an option  could be to disable it in your boot scripts.
->
-> A problem with the existing sysctl is that it only covers the TX path;
-> for the RX path, we also observe that kswapd consumes significant power.
-> I could add the patch below to make it support the RX path, but it feels
-> like a bit of a layer violation, since the RX path code resides in mm
-> and is intended to serve generic users rather than networking, even
-> though the current callers are primarily network-related.
+> Please take it easy, today is Thursday, I will wait for your clean up
+> patch next week and post. I can do some preparation work for rebasing on
+> your merged patches. Thanks.
 
-You might have a buggy driver.
+Hello,
 
-High performance drivers use order-0 allocations only.
+Just heads up that I've already sent cleanup patches [1] and
+Andrew has merged them into mm-new tree.
+Hopefully, one week's delay wasn't a problem.
 
-
-
->
-> diff --git a/mm/page_frag_cache.c b/mm/page_frag_cache.c
-> index d2423f30577e..8ad18ec49f39 100644
-> --- a/mm/page_frag_cache.c
-> +++ b/mm/page_frag_cache.c
-> @@ -18,6 +18,7 @@
->  #include <linux/init.h>
->  #include <linux/mm.h>
->  #include <linux/page_frag_cache.h>
-> +#include <net/sock.h>
->  #include "internal.h"
->
->  static unsigned long encoded_page_create(struct page *page, unsigned int=
- order,
-> @@ -54,10 +55,12 @@ static struct page *__page_frag_cache_refill(struct p=
-age_frag_cache *nc,
->         gfp_t gfp =3D gfp_mask;
->
->  #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
-> -       gfp_mask =3D (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_COMP |
-> -                  __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
-> -       page =3D __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDER,
-> -                            numa_mem_id(), NULL);
-> +       if (!static_branch_unlikely(&net_high_order_alloc_disable_key)) {
-> +               gfp_mask =3D (gfp_mask & ~__GFP_DIRECT_RECLAIM) |  __GFP_=
-COMP |
-> +                       __GFP_NOWARN | __GFP_NORETRY | __GFP_NOMEMALLOC;
-> +               page =3D __alloc_pages(gfp_mask, PAGE_FRAG_CACHE_MAX_ORDE=
-R,
-> +                               numa_mem_id(), NULL);
-> +       }
->  #endif
->         if (unlikely(!page)) {
->
->
-> Do you have a better idea on how to make the sysctl also cover the RX pat=
-h?
->
-> Thanks
-> Barry
->
+[1] https://lore.kernel.org/all/20251009155403.1379150-1-snovitoll@gmail.co=
+m/
 
