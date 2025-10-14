@@ -4,114 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C148CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:15:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BAEDCCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:20:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6A118E00D3; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
+	id 534488E00D4; Tue, 14 Oct 2025 05:20:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B41D88E00AB; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
+	id 4E47C8E00AB; Tue, 14 Oct 2025 05:20:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0A0C8E00D3; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
+	id 3AD288E00D4; Tue, 14 Oct 2025 05:20:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 880F18E00AB
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 251A85B468
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:10 +0000 (UTC)
-X-FDA: 83996160780.10.6E303C8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4F5CBC0002
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TZ79chb+;
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 266A58E00AB
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:20:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4A4E011AD03
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:20:12 +0000 (UTC)
+X-FDA: 83996173464.12.71BFDEC
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B9C15160013
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:20:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ZcDC38fQ;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760433610; a=rsa-sha256;
+	cv=none;
+	b=yktoMu4Mrm6OJd1Epu3qOQT44AcRKkfIO9zujJKOu8CzB/vO1es01fURLX/UPCPxsjkKYY
+	q8TA1AX1JEHAkwEW+t/zV+cPs9ktJ12U8HT1VrPWvhWfLG3dFKo2d3ran1O94jgYUOh9X5
+	YaZ64ka4oCfhjzwxIXKyQSsP2Sgo118=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ZcDC38fQ;
+	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760433308;
+	s=arc-20220608; t=1760433610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=84qLuulQEWfDvvAd6y1sTa13pyZb7pX9XGxQ88tYQoo=;
-	b=PQfkfQummYh1Am0UEB9DytN+xoi0XNrSc9RvJI2ZiTJ0fRKFZ8MIAK2KJULXrPcBau4F3m
-	+Nabwjie08IJzl8NnhH6yoP1NE35KJSG+Sc5hdQuKnxtu7cItsBhha05kBk6KCZcjdpjsv
-	o7WJwW912fAuFh+d5jdg8ctseE+fiXI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TZ79chb+;
-	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760433308; a=rsa-sha256;
-	cv=none;
-	b=f/xPJVhJOl5LPNEQjA6LfOEpEUMDCzFiE+6CXBG3kwsL5YAo33t36FAkgob5gM15c9AxXP
-	b96RFvoTPyWxfdgDIE8Pti5MA1M4Iwec8ltO8Zhw3tmdMvhBE5rCkbZKzVnr0i29kAGQ5i
-	ylo/YG82ExcbL6nqc4XCCOtBj0eRIcw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760433307;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=84qLuulQEWfDvvAd6y1sTa13pyZb7pX9XGxQ88tYQoo=;
-	b=TZ79chb+YDm/geyWTHcokvn14TSlXvvKvXBKw3Ps/nppqUjblomhhZkGyIAPfOGMUH31AW
-	dIpnpXSAg8WIAQALilFJajiZwE8eDMvWVz08oBYZUL3IsqCTQ5KfLwTUwhScRc6k9kIPkg
-	tLpP3jnrJhG1VpevPba48ysW1dnQUms=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-habP5WxuNy6IzIfoPvjpwQ-1; Tue,
- 14 Oct 2025 05:15:03 -0400
-X-MC-Unique: habP5WxuNy6IzIfoPvjpwQ-1
-X-Mimecast-MFC-AGG-ID: habP5WxuNy6IzIfoPvjpwQ_1760433299
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08D5B18002CD;
-	Tue, 14 Oct 2025 09:14:59 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.12])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DCFA1800283;
-	Tue, 14 Oct 2025 09:14:57 +0000 (UTC)
-Date: Tue, 14 Oct 2025 17:14:53 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, glider@google.com,
-	dvyukov@google.com, elver@google.com, linux-mm@kvack.org,
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, sj@kernel.org,
-	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aO4UjVmGkYg5Nyf6@MiWiFi-R3L-srv>
-References: <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
- <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
- <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com>
- <CA+fCnZf7jYPUyqHqonWhDKVi9eeN6aaaByMTBYCQrv2-8+hngQ@mail.gmail.com>
- <aMfWz4gwFNMx7x82@MiWiFi-R3L-srv>
- <CA+fCnZcWEuBerMeS4RCXQtged06MJhY=55KsYeJEOJn3K0psXQ@mail.gmail.com>
- <aNNY1AzfGua3Kk3S@MiWiFi-R3L-srv>
- <CACzwLxh10=H5LE0p86xKqfvObqq+6ZN5Cs0hJ9i1MKJHWnNx2w@mail.gmail.com>
- <aNTfPjS2buXMI46D@MiWiFi-R3L-srv>
- <CACzwLxiJ0pGur42Vigq=JnYecyZn-Z5BC3VcqxSUttT54kEusA@mail.gmail.com>
+	bh=RZJv8dOMs3XlDmJKajl//WZANZEjslLFxpO/nWDUbP0=;
+	b=m70bktTVYf3G4g93FqaNphHo+ITLmPlipzr0v2ZlEWjznQQi77ZjMu8T55WEdjIa9TTYD0
+	ljyKk7YJmVJ6PU4wJ86hdCTyjhnPFKdYHrXl6nm3Mc1h6nEdz10J+JGRbpXhZ+hF94y6Lm
+	KITiSZv6QElwjB8m16flWAmQE9clMbk=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RZJv8dOMs3XlDmJKajl//WZANZEjslLFxpO/nWDUbP0=;
+	b=ZcDC38fQxnuwD/mq4FRXQFjoOPi8LbkB8c/VXo5gmVZazTS35sez4ivjMBlB0L8648xUMQgZt
+	HabJzMltwAcKfW505rw/LpREVKzSw/xIibPazU2sZNW7PHOZhT5jSEzWTswn4el+fiI9n5B7r2w
+	ClNCpxDDDV1J59596Jv6p+s=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4cm7vL5vjFzpSv6;
+	Tue, 14 Oct 2025 17:19:10 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id B02391401F4;
+	Tue, 14 Oct 2025 17:20:03 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 14 Oct 2025 17:20:02 +0800
+Message-ID: <c83cf379-3941-41bb-a743-e0e93c83caca@huawei.com>
+Date: Tue, 14 Oct 2025 17:19:59 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] mm: mprotect: avoid unnecessary struct page accessing
+ if pte_protnone()
+To: David Hildenbrand <david@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	<linux-mm@kvack.org>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	<Liam.Howlett@oracle.com>
+References: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
+ <20251013121536.2373249-3-wangkefeng.wang@huawei.com>
+ <93d00bb0-8aa7-4f52-b9ba-ef777ec191dc@redhat.com>
+ <4469b9c3-3656-44f5-897d-b024e030587f@huawei.com>
+ <93736a75-3fc5-47b0-8985-96e1b0b98b8a@redhat.com>
+ <364ceb89-6327-498a-9582-bb1fbe2bd98e@huawei.com>
+ <9282d8f3-4824-4109-9e9f-3b75284d2e04@redhat.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <9282d8f3-4824-4109-9e9f-3b75284d2e04@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACzwLxiJ0pGur42Vigq=JnYecyZn-Z5BC3VcqxSUttT54kEusA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F5CBC0002
-X-Stat-Signature: tqgcycjwysnwqouknh6ibi5mz77ufjyr
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
-X-HE-Tag: 1760433308-609624
-X-HE-Meta: U2FsdGVkX1+SMFRRLPO1ys4ZPK7+zbxwnxVO9kj4L6a/885xjU7RSngRIyuooXRAfqPuEvhVoI8LSRcUYFeh3cPtmhYOalR1oCPjV4YXF/l6ZVTKogARgD1o1CPibQ3IcULcd+Fp+ufcOi4qICvPeI/NCYiqip7iHLVdJUMlQH46qb89lvweB3/jItT6pE6OhDtnzqGS0k4CL1kV4+YUrYv6W39MTEa/JwOVyS3mG450vYzva3m4UorLUOLTWBUJHDg3AVSv3oj/j1n/g11bjAiVSEnKlJIcY/m2GN6ZfT1Uy4iTfVPW8EyDXnk7VIPtPnyhmf5G6YP/j/iulxQ4LmDEDetFHHolBfSgbS0DQU6UHl+qbQkN/sUO1IBff1ZWPdxJd/nIXaPkuKJ4FhoUMwD8Hk6vutvosJ82zqIwVbupoUXwMe3eZu99ljz44Exg8mxXLPJjTBEvxaNpyjKMwXGfHjPnSLuCz0JiQkqB19/Md2wJODVgXC21i4+oSf0mr0pVGj0JAINljJQ42sRzrVjI8YF1gRov9rZOnRzKHQzF+LSJU6o3SilExe8Unn0x8JWNWWm5ZpZR6CJXuq0RsFkiJK9Fyg7OKRP+eOMqLt/+Oo64mJWSDvuJGgwFswF3u6mO1mHs7DBeS0E/ybq1NcFIGVuov+A5ugqJ+6raXppwY1WZ9UD+6CqPiZ3CMlO9twH175ONpiv8ln/YzGpWKEy4EMKDiWKnrofQ3oehOJ/mgJQF5ydCEzBWQufGxqF/xVij6KKP12RYKSQS/rrlJiCIeH0NHlUTtJKyCVC/QRFH8Rn2asfx0XzZJC/RIDGix/7nyfV4PD+Hkj3+k179+4oltKNlUTgBjLMxmz+Cgd8s0LhVFqlgmwooDNbJrrHFTWhWLV4PA61DDanQZ1bShs3q75Ss0FEsgVmdFGjeRWROsvNDauUvnydGhl+qoAD5nJISNrKk49tPYIUUPJC
- ztpaG/5/
- eopPnLMLiYPab2ep2B95UD4U2Uag0YqEC+o6IO6RMcgrtlflHXfOy1yIA98hFUMI4rgyaCv+xhzR/ifYGmfSkFpC+HnZoa5n8Xr0ReO9C0ECdnbFjS0awmD8nIdJU4GsWnqD8SoPFtbMGAgUoU0JOFWaP5oowoe7+3S79C32HogVAIhc1wQ+suYvHb1FFgzE9AX9h7k+HhpL/BeOpN014qcX6opLIq1pXIOPAA5hkoHze8ou0ie8rU1EWog3qWqxHzQDAoke8Ux21YpOCKeyUWYNCTgjBEAy1lEuCjU3/r+r69aTZCNLcOE/aQJdaWtNmDNllA6BqajhVi6bk5QcuZvOC/5nkKc5j9j68kFrVEAVqNZ9bNE4+Sw3VbQ9m0ZI9xQmTlXzCvLsmlNjE5G7YDCCaKUxiHEiuBqeh0VzoeFw7VDm+7bkm4qfjfeycflZAK7/8dYOmlTcxWW2ATUdqYV+fHVYvGmlowjPyZEC80dDqkQ/huFkU9cR+aCXj5eicLapU+yLH6Kk5l1+8u7bOn8vbufX6SP/W5B/q34w/mEIaahHF5dZnV+yYXv+vmEkpx/nR
+X-Stat-Signature: zxu7mekyr7tjice4qszfhkjjfk3wrycp
+X-Rspamd-Queue-Id: B9C15160013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760433608-972099
+X-HE-Meta: U2FsdGVkX197hcjEoIdtK39XqWqVc8CTKwMsOMBIMD12Ze9GG6LwZcXVyY5gMqP1R1O9IhI2rg2QIRTWSkTRmvawsCyJrFyKtvy351zHVGhQ3pplj6m/fyzgQrwu2WJZuacPVLpUaSOctMq05hcBN7xNJuURfNFSp7GbJI4OxeGFgq3zcCLir3QydOFYkOTU5IAWEli/ezEnZ65AvNrX4GDFZTnZLwbB26RO+rcOWhUcZ9f4crro66qBmNPBiYddNrgGSUB2FWLAUlQ/09s9WyN8K8shRvdzuDztW41Z5AEIJf95hV5ipvS5qYwZtMs6LG97ma4Cpxfjxzf+yLACDS75rnRc+nJWqVUQ43cX22mdC464ajZAn9ybli2w0g+kjximbTVvdqyvkq0uk9+2Qvzk0x39oXn3e028YUZiBvj68/exoc30zLbqZd0EtvI5A33Vgp62A2/0QXorl1LplqZdwAMX2aWsgRxzBXiAgp7Toq/Q6SPSBG/5l4Z+mzazls7vJBreyHPSjHnnKSneKMOCsnVc2NhyWW9C55XDVUlDZmC5Uu1mTAlN8Nar8x0FZN8rRdcWch2QlL1S3vpFXb1N4bKhVgowDPhCaPqRAC863n0KyHRNNvA4YwLekb4JDk8qPhFwrFm9h2LFI2ERaHExobH7HxeJsk3STfyL7f5Zr+E/nAjzC/ARFui4LkP7AafMKwq1t2d8OoSUgWrzdtfC/qGvZCAZBXdq0vIKHKrtzpJnOvppUIBsRMc/udkDNHqZRs6jUAzz3bKEXtSAIpDoBD6Ul9tUoOS27nCRS2ywf9qAdv8twoi8QAM8GlCljbrY3C1MbbRBlr8SGzNh0Y0yn0zLfOUfbrRfKeciic893eGV7WpYBXReB4QCK9ThOAOBnGbvkbN0l9BuG0skI7IN1U8QpDyc4WxS3lg+VqG6KWqRsVOPZu+ebOeX0jae4UKlMnubOG9M5dX5Vj4
+ P0wKDvfp
+ /8FHWn9ITUuP7HEO9VS1hzyeDDJpb8rAapj7Hp6V8VhMjc9TEfif5maU0+HxFpsp0fMrvf82HTdXfy0X/HFaEdMrZ1jeZj6xgviE95iXWoUQU50GxdObmMLVJyLbqFmvHFQVyZAtSed9w6gPwqTb9Xgg/DhzfV2tntS3HirrkmM/elYuACMsZ/eFKmGRyqop9WB4ncGhWB5pjWq2qGV5bVoIBZXGMn0dvV3u/vnO9VSgwrE6nofrp54A1r0wbjrRJt/i4PIoUeZBZdNXmHW4ibM0aHEB8czUjE+hcW1PTxjmz31VVHUxRusB0vZz5ver+2oK5OWE3SoEb2aCgn+5sjpMumIIQ//LW2LkE2XCejmCrK4+Wub2SPEqf3eu/c5FB1+k5cElm5T9UCrpLlLaChfUIdlC3R560s9iAMFqLAQWUjadK6xZ6BmF6Ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,53 +110,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/14/25 at 10:27am, Sabyrzhan Tasbolatov wrote:
-> On Thu, Sep 25, 2025 at 11:21 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > On 09/25/25 at 12:07am, Sabyrzhan Tasbolatov wrote:
-> > > On Wed, Sep 24, 2025 at 5:35 AM Baoquan He <bhe@redhat.com> wrote:
-> > > >
-> > > > On 09/23/25 at 07:49pm, Andrey Konovalov wrote:
-> > > > > Since the Sabyrzhan's patches are already in mm-stable (and I assume
-> > > > > will be merged during the next merge window), just rebase your changes
-> > > > > on top.
-> > > >
-> > > > That's fine, I will rebase.
-> > > >
-> > > > >
-> > > > > But also note that Sabyrzhan is planning to move out the
-> > > > > kasan_enabled() checks into include/linux/kasan.h (which is a clean-up
-> > > > > I would have also asked you to do with the kasan=off patches), so
-> > > > > maybe you should sync up with him wrt these changes.
-> > > >
-> > > > Hi Sabyrzhan,
-> > > >
-> > > > What's your thought? You want to do the cleanup after my rebasing on
-> > > > your merged patches or you prefer to do it ahead of time? Please let me
-> > > > know so that I can adjust my posting accordingly. Thanks.
-> > > >
-> > >
-> > > Hello,
-> > >
-> > > I can make all necessary changes only next week. Currently, traveling.
-> > > I will send the fix-up patch Andrey has described somewhere next week.
-> > > Please let me know if it's ok.
-> >
-> > Please take it easy, today is Thursday, I will wait for your clean up
-> > patch next week and post. I can do some preparation work for rebasing on
-> > your merged patches. Thanks.
-> 
-> Hello,
-> 
-> Just heads up that I've already sent cleanup patches [1] and
-> Andrew has merged them into mm-new tree.
-> Hopefully, one week's delay wasn't a problem.
 
-Thanks for telling. I planned to rebase on top of that and repost in
-one week or two weeks. I am doing some patch back porting for RHEL.
 
+On 2025/10/14 16:56, David Hildenbrand wrote:
+> On 14.10.25 10:02, Kefeng Wang wrote:
+>>
+>>
+>> On 2025/10/14 15:16, David Hildenbrand wrote:
+>>>>>
+>>>>>> +            if (prot_numa && pte_protnone(oldpte))
+>>>>>> +                continue;
+>>>>>> +
+>>>>>>                 page = vm_normal_page(vma, addr, oldpte);
+>>>>>>                 if (page)
+>>>>>>                     folio = page_folio(page);
+>>>>>
+>>>>> I could have sworn we discussed that while fixing the prot_numa_skip()
+>>>>> fallout.
+>>>>
+>>>> I'm not follow the thread, but we found that vm_normal_page does
+>>>> introduce regression for mprotect benchmark(libMicro) with
+>>>> this vm_normal_page().
+>>>>
+>>>
+>>> Right, I raised it here:
+>>>
+>>> https://lkml.kernel.org/r/aa496798-5ac6-4cb0- 
+>>> bdc2-91515172e935@redhat.com
+>>
+>> Thanks for the links, let's fix it now ;)
+>>
+>>>
+>>> I questioned how relevant it would be in practice.
+>>>
+>>> I'm surprised it shows up in a mprotect() benchmark: mprotect() itself
+>>> would never be able to set MM_CP_PROT_NUMA, so the code wold not
+>>> actually be executed.
+>>>
+>>
+>> Sorry, my description is very clear, the regression is not about prot
+>> numa, I mean the vm_normal_page does introduce some regression when
+>> mprotect benchmark in libMicro, before cac1db8c3aad （"mm: optimize
+>> mprotect() by PTE batching"), we only call vm_normal_page in
+>> can_change_pte_writable(), but now it is unconditional called and
+>> 10% regression in some libMicro mprotect benchmark.
 > 
-> [1] https://lore.kernel.org/all/20251009155403.1379150-1-snovitoll@gmail.com/
+> Right, I think we discussed that as well at some point, and possible 
+> ways to optimize if we ever have to. We don't have to optimize for each 
+> and every microbenchmark that heavily, though.
 > 
+
+OK, let's do it if real benchmark hint the issue.
 
 
