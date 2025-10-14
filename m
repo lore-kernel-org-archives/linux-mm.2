@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9277ECCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70DC4CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB9778E004B; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
+	id 1B46F8E00CD; Tue, 14 Oct 2025 04:35:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32978E00CE; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
+	id 03DFE8E00AB; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B102B8E00AB; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
+	id BD2EA8E00CD; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DDBC8E004B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 93B888E00CC
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:35:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DACABB28B
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5674E473AE
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:35:48 +0000 (UTC)
-X-FDA: 83996061576.15.A8C4931
+X-FDA: 83996061576.09.0545F24
 Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 49DCCA0008
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A651180008
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:35:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=A6BMxK4r;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430946; a=rsa-sha256;
-	cv=none;
-	b=r4L1s08c3DBAAI9q3gXaVAewFFsh1MeZvEGWuiEnyvhccTFHuNc4+Ylgs8oWLLbOgdcH7J
-	Px45Nj694YM9mtAH48lWIZ1gG/epeR9IKpFwU/m+KtYa2smW5RhVkvmsSV0IysCnLubaQJ
-	6KwKNlwSwwBxXBZG//yXT3hU/SlNWpI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=A6BMxK4r;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=a4Y5H+f5;
+	spf=pass (imf06.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760430946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63LZGfJJc6amCQ8kyFsu44XHeulr67TgoXNrETLf0zo=;
-	b=baZiB5e46LIokXBAXybUrXrUjCV1IS04pGFzWGq+74jG2C9mlTcq9mlWkWf8KHrulN/9eC
-	XuBbnVQB/ovcxcQ/XGXVl8tR2hgJ/INI1+4gSItZLO7cIm6frqNyKZj9gXj0R8aNA8a3aA
-	OqFxrBqjUedH29Jpcn7rev9egWN65p4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jHNbOSkAKxEmrSis/ca++e1CL7eRGk9nY48IkitfWL0=;
+	b=k7su3nWT/2co/oyaFc6XHVQyg+3x6YBZHQxO0M7geLsIX/q/MPhdaGkVgg1Fu5Q9jc3uOX
+	f8TDEHA61U3JCjhq2DU04sLkSHRgBXRmm+sV41w0Sc0J/3imX0RhUNIEuq435NNsiVmxI5
+	MVHjFy+7wMPpfwA115CUKDMWIMUi/Xk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=unisoc.com header.s=default header.b=a4Y5H+f5;
+	spf=pass (imf06.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430946; a=rsa-sha256;
+	cv=none;
+	b=7OMyxIs4rLhh8oygvSHr17M/fH9xP/RPlSABqK2n8KcIpop5BilZdNiAWsE0ieP9nSfFFH
+	MK4X/FbizyLcyNend9W1pyVNyDFJ/UqLCJqbsu+ng9d46h5zrKKG1E76o9ZttsUlcUR2jX
+	DhlmbQqW5nFt9a3KRosIIU27G7He+jw=
 Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 59E8WlsX086161;
-	Tue, 14 Oct 2025 16:32:47 +0800 (+08)
+	by SHSQR01.spreadtrum.com with ESMTP id 59E8WfXa085643;
+	Tue, 14 Oct 2025 16:32:41 +0800 (+08)
 	(envelope-from zhaoyang.huang@unisoc.com)
 Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4cm6q45dHRz2Q1PRd;
-	Tue, 14 Oct 2025 16:30:24 +0800 (CST)
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4cm6pz4wdzz2Nc5jJ;
+	Tue, 14 Oct 2025 16:30:19 +0800 (CST)
 Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
  BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Tue, 14 Oct 2025 16:32:43 +0800
+ 15.0.1497.48; Tue, 14 Oct 2025 16:32:38 +0800
 From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
         David Hildenbrand
@@ -79,37 +78,35 @@ To: Andrew Morton <akpm@linux-foundation.org>,
         <linaro-mm-sig@lists.linaro.org>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>,
         Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH 1/2] mm: call back alloc_pages_bulk_list since it is useful
-Date: Tue, 14 Oct 2025 16:32:29 +0800
-Message-ID: <20251014083230.1181072-2-zhaoyang.huang@unisoc.com>
+Subject: [PATCH 0/2] optimization of dma-buf system_heap allocation
+Date: Tue, 14 Oct 2025 16:32:28 +0800
+Message-ID: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
-References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.0.73.40]
 X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
  BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 59E8WlsX086161
+X-MAIL:SHSQR01.spreadtrum.com 59E8WfXa085643
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1760430782;
-	bh=63LZGfJJc6amCQ8kyFsu44XHeulr67TgoXNrETLf0zo=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=A6BMxK4rAeYaYPIcBx+mHWlG7KIuigkXVQwQ+QYyf8pYMQ9eq1TaZ+9gEkWaordnG
-	 Gy3RD/QSsz1QQlfedaoYYiFTBj1kD9J2QtYt2mxt/nRSwI3bDlSHeKUB+w7Ty+QgId
-	 oQjhEME1ywmxLfeaOcLCesMNyuGmV7s2Pp6wwC1WW18l2kzI6ZWpfTWdb8H8i5DLY5
-	 7KUOPMQrmAUX7BBglGhlSGP/fxlJUCyRDgCXYxGjBQEshMP8XJxPqu2jteIr6l+3iA
-	 ErL5jR5yKccLLRMbnNj4zuKS839zHMHgmQcGrRXMqlhX7As6s/yo07v54F2LKorGUe
-	 RhV4Z6d1cPSlw==
+	s=default; t=1760430772;
+	bh=jHNbOSkAKxEmrSis/ca++e1CL7eRGk9nY48IkitfWL0=;
+	h=From:To:Subject:Date;
+	b=a4Y5H+f5gs9OCSDBq5C514+UWWtOCiAX3I0FjR3BiI8uaOItTC9h6bTMGdI6XPKWK
+	 2E8qo7NI4ZSakzlCNUAGhcF707/K58wB9x5Fiej2In1Ifa922vtKbABLHqsDPdBTlg
+	 +0DIqOHIdVDGSfhGpP3dUfOeaZHVKbS9BtL35hz6J3bl9/x5v78poNS84MfTlQNFpN
+	 Eg3/cRlrBHyUeqTgzkbNsfcRAsDhhVVnscxN0X1NjeaQeQsIbeYV9BS+bbIUf39WBa
+	 MkPVD6C+zFUFIqHCavBPmuwvwEmKmMzuihbIrySnlHvoYNTSt2yuvRuPM0ysqYM2SP
+	 rDY6UoMvEygsw==
+X-Rspamd-Queue-Id: 8A651180008
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 49DCCA0008
-X-Stat-Signature: peuxoa6ikmfw9dpw8me6opqi516n5shd
-X-HE-Tag: 1760430944-345756
-X-HE-Meta: U2FsdGVkX1+LvNbPKxNcjmRZK9QuZ5ierHd6a+xDjJIQtBDl3MrSqikTF6A5x/FtN7JRoucs4PYEiX2MdW/spSgy6bTBS/cyqPyOrzmQK30wAM0w234+Ts7jtceeqz5HO2O6olr0R+qilh3qPb6Le1rtMpwEHLqJJ2vkzwwBdRhZuLCg9boQGdLEXIW7YkOqYwQf96sIxpfWmyF1Und3fxQefIa512Bja54PB522iCz7Xouo5Vind2zHKgIB9fWvuStujHLpGeXCPQZZmJSbPNLa8sVZmhYLkPHKjQtCr/JUSHKmvgXTt8+/ueciTa118iX7FN1w2wDpiZpaRz97UoheyCAqJoad3UyI61lnrG42CgK2NeVevREU/8+wNh/4hpSRlJ6EzV5FLfr17aRHQwmSGcuV/tn+9BrSI86PhLux+hBa06VxLGlJXjOKPPwPAA4cc2PKKSEDVDlUc42UyHo4gWZiyvKdJEJ4I2xNCGntU/Vs8bCaqsAlUPsCXKNmTiyHHS0R7lpI7toWlWUhnX3/hYQ2fuIE5VNNxpUj5JyvQJCRfVAq0xse+b7zcd3OnTvkRwOJ7ubKDvXBTbbz+gV4GwAHSSitbGSJnZB28L4H8rkBDvEkoUIhn2GlCyZUOZi8Y8qjfY87sLNEu7KUQYNOJV+7UgX7fVmRF7fAD+fRB5xD/6C/wZtZqX7XXkI3jcEXN/++gS8RbtumlIAp2ngExEX2jUgBInamBAyla3uO7ELD59ZavZoMG3qnwZDrYuWCAcoo2BsgeUpnEpqqsWRXr+65kudNWFmU4hTLk3IFwqQ6Rqrtw49u8yTF1aArf+6g64QEgPlaNxsmrj8qcJa/p11zBlEx/nPxCs24sB1hUW/k8fANjqGfuKWJV/WJGPTJguhvCxtuY5so5AS1TzuADk+d7b9fLrYDvSxLb+uaLRYGDiacZEBN0Tf7QpGVus7uTzCHfO3/RVn2nor
- sn1QdV2E
- 19fU8vN0vMCjIjM6G9lkSW0YDqF2z2WbOsfLUjgdkS5TeNwP21bFRuiM2ZsUARQaVZcTnB4NV0CqaXhZVr7x3CagAzcFxO+siFEuFTPhvkJQSYcEUccB6qWhJ8g9a/dzAacqQ7K4HWhSeiUGo+krdmesn43BFlnMSvM4gerKnE8ssZR2yKQBwjqC+k8KQLnskO2kNHnpekrGcCWQa91PtFFJKO/GdkscAmTfN85+MxAN5jQWF9RG7VB4JUmR8ASYAt1Kc/8l7Hf04lx/v4t0y2HvNlmEZ4TT0C8UryiW6QWnGbu801M4OTdSVxSsTKVxzfwBbOOfkLRgOiHyQRw1mBBGQ5w==
+X-Stat-Signature: nyptdtg1wgqzw1ssq9oezx184paoa5qc
+X-HE-Tag: 1760430944-535157
+X-HE-Meta: U2FsdGVkX1/KyWWn7R2KZOaMrr66oBorH45WczQ4M0wuK33nXLaq0VI/5RdwSlbW7McP2x4cMvdtunrglh6d+IA3p05TXZxnuVv1tEQh3vqdz5IiJU9nfCM0Edb7phhu4Jb8jeltmb84UDdAHBDR/1N6OLFJ+m4ApHcApbDKepXx0tCHQ3SfEeazHvpGkiIz+/NEIH6okOFWzeSIbVP4fIgNoEecc+f+dBSk4sL9e8JbmfpR+bAcMFBgNr1cWadmQ0cKP0EFUeSjj40QJQSWClW+a/pubgvdasmLN6NA4jy7jzbUEdw0RRSd8qGbXkAx/RiN0Uljkgg4gb7l90LkXXvn/7WKuESJyU6jGcI74c2fcgbFNK2ODYICVz820h4aMFsXHTj+B88mxnDJsOULDJv/hq4H0iXYiTRtMc9llgOBtGKVQq7P02EKJn/AnRRq93PH1a+X7jRQ/3pZqRTnFkSV4qjlpRXYVIjbQEUnsZKZnZ4JObQeL/hc5Kk+kIhm/+xy4TFlG/bZNp5vrcwIv/5amGApSwLZ9duO8LjBa9Z92w8uudbF1JMclNLUDKUqprUhciw2HOG7hqN4c1TzxQbMH6aNUvk5EN7D3gQn90YyNeBvDMQKrLy/mhM3u1i6E/DaOx1sKmtYhNh1noyqyMawLfNTQoof4lvje3ML9hXsJXEME8KnRreO6po1TX7k3r+JzorxRjSx6M708fTAN684LqEzPNqqQGbVv6pc6rLDIXMkMqY5+Vjw/HaAaSL1Bq22Bl6kn6eYeGFZGdXKfnj5ZLHetipa8c0VfAkhtID8PM7ibDUkHX76cKkt3BkLpPaSlO+regijsG7/1L7gDzR7cTsJj2SHa9yciJhcbR+Ew4XKWk4QzKJoI7ySPBvMmSIO32O+QSkYrI6BhCpPosTWmn9PoaKG9RZUVMgB8DVnPbeQO1y/Dz4AIFSRxW39mVuFgCT3dBGN8lVkwdg
+ EhtOpXbJ
+ L7KBk+oUr2xxtDr9PSP+Xr64yUlmfnThWKRoNw87RevUGHq4/jOgYF0EwAucs078JfEzNReqzmTHwcjaeEwn6InTYntmZGR9a4UT1SupXlXTs8DJgtnnea/Qf474Ic9AopxnuoP+ZA4i5AjQ+ch3zrOYYr6ov+Q/Mj3R5Xdpl+cmYr6sbxDj9P8I/Zy1J6M6It8WsGohnR7xRfDoMWi4qSsV0N+omyP03z4l4w2emvC+VkhwfZOskEuwDvN+uygBe9MlsmZy3HQkTYqjK7RGxVzIySRVq4OYNzWmxuLLv0vojHdfGmG0yg0ok1G8aFrqd6mqiFWpySV2bU1Rt2zHc0xbX+AufSfEx2v+pbnYe4dRt+MD+o2IqbLquJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,221 +117,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-commit c8b979530f27 ("mm: alloc_pages_bulk_noprof: drop page_list
-argument") drops alloc_pages_bulk_list. This commit would like to call back
-it since it is proved to be helpful to the drivers which allocate a bulk of
-pages(see patch of 2 in this series ).
-I do notice that Matthew's comment of the time cost of iterating a list.
-However, I also observed in our test that the extra page_array's allocation
-could be more expensive than cpu iteration when direct reclaiming happens
-when ram is low[1]. IMHO, could we leave the API here to have the users
-choose between the array or list according to their scenarios.
+This series of patches would like to introduce alloc_pages_bulk_list in
+dma-buf which need to call back the API for page allocation.
 
-[1]
-android.hardwar-728     [002] .....   334.573875: system_heap_do_allocate: Execution time: order 0 1 us
-android.hardwar-728     [002] .....   334.573879: system_heap_do_allocate: Execution time: order 0 2 us
-android.hardwar-728     [002] .....   334.574239: system_heap_do_allocate: Execution time: order 0 354 us
-android.hardwar-728     [002] .....   334.574247: system_heap_do_allocate: Execution time: order 0 4 us
-android.hardwar-728     [002] .....   334.574250: system_heap_do_allocate: Execution time: order 0 2 us
+Zhaoyang Huang (2):
+  mm: call back alloc_pages_bulk_list since it is useful
+  driver: dma-buf: use alloc_pages_bulk_list for order-0 allocation
 
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- include/linux/gfp.h |  9 +++++++--
- mm/mempolicy.c      | 14 +++++++-------
- mm/page_alloc.c     | 39 +++++++++++++++++++++++++++------------
- 3 files changed, 41 insertions(+), 21 deletions(-)
+ drivers/dma-buf/heaps/system_heap.c | 33 +++++++++++++++---------
+ include/linux/gfp.h                 |  9 +++++--
+ mm/mempolicy.c                      | 14 +++++------
+ mm/page_alloc.c                     | 39 ++++++++++++++++++++---------
+ 4 files changed, 62 insertions(+), 33 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 5ebf26fcdcfa..f1540c9fcd87 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -231,6 +231,7 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
- 
- unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 				nodemask_t *nodemask, int nr_pages,
-+				struct list_head *page_list,
- 				struct page **page_array);
- #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
- 
-@@ -242,7 +243,11 @@ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
- 
- /* Bulk allocate order-0 pages */
- #define alloc_pages_bulk(_gfp, _nr_pages, _page_array)		\
--	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, _page_array)
-+	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, NULL, _page_array)
-+
-+#define alloc_pages_bulk_list(_gfp, _nr_pages, _list)			\
-+	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, _list, NULL)
-+
- 
- static inline unsigned long
- alloc_pages_bulk_node_noprof(gfp_t gfp, int nid, unsigned long nr_pages,
-@@ -251,7 +256,7 @@ alloc_pages_bulk_node_noprof(gfp_t gfp, int nid, unsigned long nr_pages,
- 	if (nid == NUMA_NO_NODE)
- 		nid = numa_mem_id();
- 
--	return alloc_pages_bulk_noprof(gfp, nid, NULL, nr_pages, page_array);
-+	return alloc_pages_bulk_noprof(gfp, nid, NULL, nr_pages, NULL, page_array);
- }
- 
- #define alloc_pages_bulk_node(...)				\
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index eb83cff7db8c..26274302ee01 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2537,13 +2537,13 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
- 		if (delta) {
- 			nr_allocated = alloc_pages_bulk_noprof(gfp,
- 					interleave_nodes(pol), NULL,
--					nr_pages_per_node + 1,
-+					nr_pages_per_node + 1, NULL,
- 					page_array);
- 			delta--;
- 		} else {
- 			nr_allocated = alloc_pages_bulk_noprof(gfp,
- 					interleave_nodes(pol), NULL,
--					nr_pages_per_node, page_array);
-+					nr_pages_per_node, NULL, page_array);
- 		}
- 
- 		page_array += nr_allocated;
-@@ -2593,7 +2593,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 	if (weight && node_isset(node, nodes)) {
- 		node_pages = min(rem_pages, weight);
- 		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
--						  page_array);
-+						  NULL, page_array);
- 		page_array += nr_allocated;
- 		total_allocated += nr_allocated;
- 		/* if that's all the pages, no need to interleave */
-@@ -2658,7 +2658,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
- 		if (!node_pages)
- 			break;
- 		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
--						  page_array);
-+						  NULL, page_array);
- 		page_array += nr_allocated;
- 		total_allocated += nr_allocated;
- 		if (total_allocated == nr_pages)
-@@ -2682,11 +2682,11 @@ static unsigned long alloc_pages_bulk_preferred_many(gfp_t gfp, int nid,
- 	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
- 
- 	nr_allocated  = alloc_pages_bulk_noprof(preferred_gfp, nid, &pol->nodes,
--					   nr_pages, page_array);
-+					   nr_pages, NULL, page_array);
- 
- 	if (nr_allocated < nr_pages)
- 		nr_allocated += alloc_pages_bulk_noprof(gfp, numa_node_id(), NULL,
--				nr_pages - nr_allocated,
-+				nr_pages - nr_allocated, NULL,
- 				page_array + nr_allocated);
- 	return nr_allocated;
- }
-@@ -2722,7 +2722,7 @@ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
- 	nid = numa_node_id();
- 	nodemask = policy_nodemask(gfp, pol, NO_INTERLEAVE_INDEX, &nid);
- 	return alloc_pages_bulk_noprof(gfp, nid, nodemask,
--				       nr_pages, page_array);
-+				       nr_pages, NULL, page_array);
- }
- 
- int vma_dup_policy(struct vm_area_struct *src, struct vm_area_struct *dst)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d1d037f97c5f..a95bdd8cbf5b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4940,23 +4940,28 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
- }
- 
- /*
-- * __alloc_pages_bulk - Allocate a number of order-0 pages to an array
-+ * __alloc_pages_bulk - Allocate a number of order-0 pages to a list or array
-  * @gfp: GFP flags for the allocation
-  * @preferred_nid: The preferred NUMA node ID to allocate from
-  * @nodemask: Set of nodes to allocate from, may be NULL
-- * @nr_pages: The number of pages desired in the array
-- * @page_array: Array to store the pages
-+ * @nr_pages: The number of pages desired on the list or array
-+ * @page_list: Optional list to store the allocated pages
-+ * @page_array: Optional array to store the pages
-  *
-  * This is a batched version of the page allocator that attempts to
-- * allocate nr_pages quickly. Pages are added to the page_array.
-+ * allocate nr_pages quickly. Pages are added to page_list if page_list
-+ * is not NULL, otherwise it is assumed that the page_array is valid.
-  *
-- * Note that only NULL elements are populated with pages and nr_pages
-+ * For lists, nr_pages is the number of pages that should be allocated.
-+ *
-+ * For arrays, only NULL elements are populated with pages and nr_pages
-  * is the maximum number of pages that will be stored in the array.
-  *
-- * Returns the number of pages in the array.
-+ * Returns the number of pages on the list or array.
-  */
- unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 			nodemask_t *nodemask, int nr_pages,
-+			struct list_head *page_list,
- 			struct page **page_array)
- {
- 	struct page *page;
-@@ -4974,7 +4979,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	 * Skip populated array elements to determine if any pages need
- 	 * to be allocated before disabling IRQs.
- 	 */
--	while (nr_populated < nr_pages && page_array[nr_populated])
-+	while (page_array && nr_populated < nr_pages && page_array[nr_populated])
- 		nr_populated++;
- 
- 	/* No pages requested? */
-@@ -4982,7 +4987,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 		goto out;
- 
- 	/* Already populated array? */
--	if (unlikely(nr_pages - nr_populated == 0))
-+	if (unlikely(page_array && nr_pages - nr_populated == 0))
- 		goto out;
- 
- 	/* Bulk allocator does not support memcg accounting. */
-@@ -5064,7 +5069,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 	while (nr_populated < nr_pages) {
- 
- 		/* Skip existing pages */
--		if (page_array[nr_populated]) {
-+		if (page_array && page_array[nr_populated]) {
- 			nr_populated++;
- 			continue;
- 		}
-@@ -5083,7 +5088,11 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 
- 		prep_new_page(page, 0, gfp, 0);
- 		set_page_refcounted(page);
--		page_array[nr_populated++] = page;
-+		if (page_list)
-+			list_add(&page->lru, page_list);
-+		else
-+			page_array[nr_populated] = page;
-+		nr_populated++;
- 	}
- 
- 	pcp_spin_unlock(pcp);
-@@ -5100,8 +5109,14 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 
- failed:
- 	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask);
--	if (page)
--		page_array[nr_populated++] = page;
-+	if (page) {
-+		if (page_list)
-+			list_add(&page->lru, page_list);
-+		else
-+			page_array[nr_populated] = page;
-+		nr_populated++;
-+	}
-+
- 	goto out;
- }
- EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
 -- 
 2.25.1
 
