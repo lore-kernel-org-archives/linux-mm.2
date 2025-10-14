@@ -4,90 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7BCCCD183
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 01:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37602CCD185
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 01:44:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770DF8E0024; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
+	id 3C9DD8E002A; Mon, 13 Oct 2025 21:44:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 721678E0007; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
+	id 37A018E0007; Mon, 13 Oct 2025 21:44:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 636E78E0024; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
+	id 2425E8E002A; Mon, 13 Oct 2025 21:44:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E40D8E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A4808848B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:42:54 +0000 (UTC)
-X-FDA: 83995021068.22.A36E0A5
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4559940003
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:42:52 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=INaU7l8+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760406172; a=rsa-sha256;
-	cv=none;
-	b=7zm1KtzrA/fBSD0Y5t6vNUkJzZpYmzQNMJkGnA4BUOLtMbX7vPY5lBrbmd5AIQEc7yVl5k
-	u1WJ97UImAEcWu7wP8CN6aO/1+a+Qnw2kEpV1tEIrci7uCVNeu+Mc8W6CL6nrrCPmawmN7
-	VtdHo6KXOCz4qgmW0d6rHwxEtA6NUcU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=INaU7l8+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 09F8A8E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:44:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86296C069A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:44:01 +0000 (UTC)
+X-FDA: 83995023882.25.3FDD1FD
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C7769180005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:43:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FTfxEID/";
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760406172;
+	s=arc-20220608; t=1760406240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EBF0Ps2ImCzZ4tZ3MrZ01lPp3rnT5K2J0edlyN1v5io=;
-	b=W+mlgYT6mUbuH/+4R1GqwSW5Anub8d6hqsRVcUqe3t4ct6JEgEjJw0J/INsbcWW3LKKLSw
-	k2riP9R2IbPB/8Rsys4/K/+L+hxdElfzDzBlffBjYTyK4RD+ZDMNvWXClBrfvSRgaTUpLZ
-	xIRgY025UBaersWkh964XyGLOarKj1M=
-Message-ID: <b5f40a6b-482e-4e06-91b3-d6ad0427de85@linux.dev>
+	bh=vO/ZDB4TMtmLh64kPiFotXh5bUAaUBwq3BsPKySjreM=;
+	b=tRKqh0Q4xC+IaBFpOhF7DAiv5jQdvKKdyH1fCqZCdSFT920ODqX9HwYrpX8chPySz5iOxr
+	wy8Uq6Wpg4lcaBasHhCI8IabAFZgtEef0rxP8epcK36pkCHJ9+Dlx5E1CiVlOb/xrDHCyG
+	s/5zrZVxF4ITI17j7vfb/pKWWtwrrLY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FTfxEID/";
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760406240; a=rsa-sha256;
+	cv=none;
+	b=iQbYoMbppy10iaEuJY0UfHP//5QQ9BCN3U4cCTogRBuygwuAShjCQFvgHOGzFzTDMHhNFi
+	6oz7wtlDE76yrVDCTP8OMBqxQzqJUICYK5dTkP98TMmbG2i40IhF8sTsVmvwVRYr5qKRGA
+	iZEgtixidkQ1ODcJfrqIxvIRtTw3sR8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760406169;
+	t=1760406237;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EBF0Ps2ImCzZ4tZ3MrZ01lPp3rnT5K2J0edlyN1v5io=;
-	b=INaU7l8+nLdnLaKBJrkREE4PEYNLcdAlPypw+HDjgAvWXi5r6uA0NTeuoAKSKy+xSMk1Ay
-	WnCqeyQnda6EuoiIL7SVQ4MG9Jad+4HrKCZISBB+rXLdUyNsongpSuLEUqKgxd/4ZnP7HK
-	OT7EB/j/yEn8rzpgIn1rwdY49db/oKE=
-Date: Tue, 14 Oct 2025 09:42:44 +0800
+	bh=vO/ZDB4TMtmLh64kPiFotXh5bUAaUBwq3BsPKySjreM=;
+	b=FTfxEID/GkjBTTNzzbc45gGoh12Ba6wQqrzY/bO5nzi4cY4mfksqWw34ZkxG1aUz4cnX5l
+	taZo3/Bi+V1OBjRFo9bvgPqAb9tbY0t0Dknl/C/QBjFoIbPjxAIWONbpk1/ahMJVoCvZBq
+	INPVlegL1EDnAvlD6y6JwifiV1O529E=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Simon
+ Horman <horms@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Neal
+ Cardwell <ncardwell@google.com>,  Kuniyuki Iwashima <kuniyu@google.com>,
+  David Ahern <dsahern@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Yosry Ahmed <yosry.ahmed@linux.dev>,
+  linux-mm@kvack.org,  netdev@vger.kernel.org,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  cgroups@vger.kernel.org,  Tejun Heo
+ <tj@kernel.org>,  Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+  Matyas Hurtik
+ <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+In-Reply-To: <89618dcb-7fe3-4f15-931b-17929287c323@cdn77.com> (Daniel Sedlak's
+	message of "Mon, 13 Oct 2025 16:30:53 +0200")
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+	<87qzvdqkyh.fsf@linux.dev>
+	<13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+	<87o6qgnl9w.fsf@linux.dev>
+	<tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
+	<87a5205544.fsf@linux.dev>
+	<qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
+	<875xcn526v.fsf@linux.dev>
+	<89618dcb-7fe3-4f15-931b-17929287c323@cdn77.com>
+Date: Mon, 13 Oct 2025 18:43:45 -0700
+Message-ID: <87h5w2w94e.fsf@linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/3] mm: mprotect: always skip dma pinned folio in
- prot_numa_skip()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Liam.Howlett@oracle.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-References: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
- <20251013121536.2373249-2-wangkefeng.wang@huawei.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251013121536.2373249-2-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: f5rc6m96amdqsjqxnrcdna3oaz6iqqwx
-X-Rspamd-Queue-Id: 4559940003
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C7769180005
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760406172-824162
-X-HE-Meta: U2FsdGVkX1+mqdmRkmq5OSYUrx6ppfkFq7GHpyDYLttw2cH05EtRK099E77/p17rYNwWliFgqHkALh2jboo/SrAkzGw6ujTmilWKCbSV4tSJi52oXY9C2NwREsWru4KpoOx54CpjS9uFJKA84IZHiRMaTlCYsvtXUxpG1JzeCgtkZlF9j5iv1nvJEdHS42D5lnU4Mn4Mhm+lH2KdUfaBlA5ll5FJUp5j5LYOTNkarO7LLEO8ZtK6fyhGBe2NPqR7i8ChFx1dZVIlsH+B0pkT7mWWEes7sDvrXrLx3+eSzRVf4YJg4VerrPJqoeSPvCfAGZjlhURG7zlr4pu6EbQLA2YxzDlns0xU6eSRVRaXg/EgP/RbrwPGcUQ3ZYgjiSF3d+MQlEe0LS/3cYtMLCpCdPANVFnIWF46A2dbNx3Imqd2zF84QmPgmLZSsNFNTrgeVRSIXeYHYS/CWwb+bE1VXnZOLC7thrclNbZFlLpqelBGi/tks5MHIeDl9Unoxx3u+piz7vtObPiZMu1cm6u5UjlBuZ7zgJR7QSF++3bsYO9Tr1aJKgaHANZGY95E52QdH2pqqPQnRw7AONIpYU4vuIcE+TZhLviNUbU97+SITGTeolQfkyoj7uS5Wv/U7klF4X74Tpd1D34UD8LiVqwOg3yJYHEuoNPLlV1RHmXSQRq8ljNdLSdzlccHoQHltNTRJAsguvHRdFqEoV78+s38doNqbavdIU2ucLD2Y0ZTicjMx7lnfJelVs66WRaCtHTKDGCB6lsbjoEkrUnDfRaKTPq1yZ4Gt1CzFbSmUMHfKjcffcxXS4KlTHsiFHXUJCgfzjqrKLtb+zJSxbE5vGdVUPqVtcZu/f7LfPOF3+0eBUxlqLFnto98BB1emtJ6M+CbU3EHUDUXmHPHl4fNQGEYoSE3wMYXYo1eaDyUJlELiLsuLRFDExdG6LKEBV9LkdfPpNiggp8/5E4yiCumLC0
- rIHXHAwG
- O40vIU9rtSyIRkYDTsDu+n9xfCk4di9kqQZeNhocvqADOoYTPORKuCmXQEQTW1f1JiqrQ6Si3n23AOO+apyDjeExgU6nBfq8AgO4sE8swsYIl2zATOmK5G6TJLcWA4msoirzJchBPpsKGKPtrnioFP11JX97fOX3R1c9KJ4nEXAXwsEuq//DYYtpKdowlZuVGMhF3Y42Vfr14XusvVCXygIWxSsP/v88QWu9vCaLxT3v7oIYERNELdjh548tEMSWq9hhQOLxvJ3Qs6cdoBeGFmWLYd/VQzGHFsNJo4qT79qx4ZNswW9PBFuQhpA4ypXiTO3BVOQSKIZVT+0x8B9gm57UDww==
+X-Stat-Signature: afkaoghycw6u68t8qod1d7fmfe57bj3y
+X-HE-Tag: 1760406239-617105
+X-HE-Meta: U2FsdGVkX1/5ZwThtRXu1V56GhwVfRPEAKhDb+stu+ujnfbkODfnVJBuuC97AgOgZ50CmipW1YgXsxBlmN3RB+P9WBLUgvYo1k5okcTwHJf4OVXv6sri8H9sOuPJg4qNVIrKR58y5g99etg0RcbYPqe4viqeEKha4LNu4wzOekWXJvcb0GbtumWm0uP9d2IddIHs2qy6TlB1MtQQsDqr9IOCcaIBzBmN9aitdCKGWMxu2+Ji2ZhgcjOo9Yos8ovImF75E5Y1onuVJo/5GxVh/L3AQ1xbnIgHfbHwKwp5chKKnhlAH2QERb5XA3OCrYxQY7UummI9cOKTX0dQyylgy7bsvWa5a3Ap42QmaxE8aB+qQIMzfZgdbJRR40rF9UaTc6tiMmCQMJJVmeUqFHxCo0LmezZZCnT5UnAD6AmQVwwSgUisEH6Qxd9b0bwEcJt2lKLSjYqKu0rUP6jj7Zg7ihoTT1pz74mXUN1N1fCs95Qvt37JUsWoUoFZ+ybkvsnv5XcKsPagZbYQ2BErrcGLojItXYeZqsnM7GB2Q8x+OAhJEisIWhdNSzJkpo+CAj4SlelV0mSuMY/8jbwzN5wcWm02KBYld88lw29kzS5jBxacJvueAaQVFc2oLcDI67F4tfxAZOlcsDvxWr2cYfFRaSSxLMXmQ7gg6558G6PqVcVXiseO13K9faKhqs7YOfEbZNrnpco33+WsYEGcINA6swKQ0sY0ZV2AWxo2303YAnbLuTowi8IalflppT1U3EU/W2PEx1Wm+vmIrF9PW2fHEwPL3AYZHT1qvrnvfTS2RJOSj7cNKHKY0paEZnF/2U+AU8tS23+inpy5JZastm/GY+hAvjIG5Vw+zRBMuCnCK84o6MuZK2s0OcaCZb56T0bdlo7/vdGb+Ke9AK03NQg/qYSry/I1/rIMcE67WgMZWslE/FZa3NY3CZXDXlTuNgM64K+Igww98+a9fYSVrfh
+ EXN59g2b
+ V7RDDVgDWpXD7iU9suK0WyBfmPYjwFkIkWL8/nqtU69rUapQjcaF5yOeV3nPXJiG+nwxeNdisahi/ZHlr5kf6V8UMabP4AUadmOvbCUTRlIGPSH9U3jpS6kBeVKY5LWh3Lq7mDwCSKVYPg4TSAZ59igi4nOEzkW6v/dSP9VGbQYoefwtNbB6nyCkoi4eXeSIu+l9LPQb/BY84IenxyQzUL2uTfS5S0BsWDS0xrgexv3fWHGeeGKrxsaDeXWdimInzOWVEQvzIwU21JfXtHwTXtadZuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,18 +106,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
 
+> On 10/9/25 9:02 PM, Roman Gushchin wrote:
+>> Shakeel Butt <shakeel.butt@linux.dev> writes:
+>> 
+>>> On Thu, Oct 09, 2025 at 10:58:51AM -0700, Roman Gushchin wrote:
+>>>> Shakeel Butt <shakeel.butt@linux.dev> writes:
+>>>>
+>>>>> On Thu, Oct 09, 2025 at 08:32:27AM -0700, Roman Gushchin wrote:
+>>>>>> Daniel Sedlak <daniel.sedlak@cdn77.com> writes:
+>>>>>>
+>>>>>>> Hi Roman,
+>>>>>>>
+>>>>>>> On 10/8/25 8:58 PM, Roman Gushchin wrote:
+>>>>>>>>> This patch exposes a new file for each cgroup in sysfs which is a
+>>>>>>>>> read-only single value file showing how many microseconds this cgroup
+>>>>>>>>> contributed to throttling the throughput of network sockets. The file is
+>>>>>>>>> accessible in the following path.
+>>>>>>>>>
+>>>>>>>>>     /sys/fs/cgroup/**/<cgroup name>/memory.net.throttled_usec
+>>>>>>>> Hi Daniel!
+>>>>>>>> How this value is going to be used? In other words, do you need an
+>>>>>>>> exact number or something like memory.events::net_throttled would be
+>>>>>>>> enough for your case?
+>>>>>>>
+>>>>>>> Just incrementing a counter each time the vmpressure() happens IMO
+>>>>>>> provides bad semantics of what is actually happening, because it can
+>>>>>>> hide important details, mainly the _time_ for how long the network
+>>>>>>> traffic was slowed down.
+>>>>>>>
+>>>>>>> For example, when memory.events::net_throttled=1000, it can mean that
+>>>>>>> the network was slowed down for 1 second or 1000 seconds or something
+>>>>>>> between, and the memory.net.throttled_usec proposed by this patch
+>>>>>>> disambiguates it.
+>>>>>>>
+>>>>>>> In addition, v1/v2 of this series started that way, then from v3 we
+>>>>>>> rewrote it to calculate the duration instead, which proved to be
+>>>>>>> better information for debugging, as it is easier to understand
+>>>>>>> implications.
+>>>>>>
+>>>>>> But how are you planning to use this information? Is this just
+>>>>>> "networking is under pressure for non-trivial amount of time ->
+>>>>>> raise the memcg limit" or something more complicated?
+>
+> We plan to use it mostly for observability purposes and to better
+> understand which traffic patterns affect the socket pressure the most
+> (so we can try to fix/delay/improve it). We do not know how commonly
+> this issue appears in other deployments, but in our deployment, many
+> of servers were affected by this slowdown, which varied in terms of
+> hardware and software configuration. Currently, it is very hard to
+> detect if the socket is under pressure without using tools like
+> bpftrace, so we would like to expose this metric in a more accessible
+> way. So in the end, we do not really care in which file this "socket
+> pressure happened" notification will be stored.
+>>>>>> I totally get it from the debugging perspective, but not sure about
+>>>>>> usefulness of it as a permanent metric. This is why I'm asking if there
+>>>>>> are lighter alternatives, e.g. memory.events or maybe even tracepoints.
+>
+> If the combination of memory.events(.local) and tracepoint hook(s) is
+> okay with you(?), we can use that and export the same information as
+> in the current patch version. We can incorporate that into the next
+> version.
 
-On 2025/10/13 20:15, Kefeng Wang wrote:
-> If the folio(even not CoW folio) is dma pinned, it can't be
-> migrated, so always skip pinned folio to avoid a waste of cycles
-> when folios migration.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
+In my opinion
+tracepoint > memory.events entry > memory.stat entry > new cgroupfs file.
 
-LGTM.
+>
+> Also, would it be possible to make the socket pressure signal
+> configurable, e.g., allowing it to be configured via sysctl or per
+> cgroup not to trigger the socket pressure signal? I cannot find the
+> reasoning why this throttling cannot (maybe it can) be opt-out.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+It's a good point.
 
+First, I think that vmpressure implementation is not the best
+and we might want to switch to PSI (or something else) there.
+This is why I'm resistant to exposing implementation-specific
+metrics.
+
+That said, I believe that some level of customization here is justified.
+Maybe opting out completely is too much, but in the end it's hard for
+the kernel to balance the importance of e.g. page cache vs networking
+buffers as it might be really workload-dependent. Or some workloads
+would prefer to risk being oom-killed rather than to tolerate a sub-par
+networking performance.
+
+Thanks!
 
