@@ -4,116 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33955CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 03:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F86CCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 03:29:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7229F8E0085; Mon, 13 Oct 2025 23:26:44 -0400 (EDT)
+	id 049A98E008B; Mon, 13 Oct 2025 23:29:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D29F8E0007; Mon, 13 Oct 2025 23:26:44 -0400 (EDT)
+	id F15BA8E0007; Mon, 13 Oct 2025 23:29:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A518E0085; Mon, 13 Oct 2025 23:26:44 -0400 (EDT)
+	id DDD038E008B; Mon, 13 Oct 2025 23:29:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 451958E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:26:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1D7E5A743
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:26:43 +0000 (UTC)
-X-FDA: 83995282686.03.9ABD6FE
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0C2044000C
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:26:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lb4vY0UN;
-	spf=pass (imf07.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D468E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:29:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 769A913B9E1
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:29:20 +0000 (UTC)
+X-FDA: 83995289280.21.25229DA
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A652A180006
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:29:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SLP9AV48;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760412402;
+	s=arc-20220608; t=1760412558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2Z2NlKgP/sNpQxsAzBMmC/fbOmtwwCUWX3Npz5SEPkc=;
-	b=1jVs6gRNT2kgpfrt2SXj+JB/29PJSRLGF1K38yTGSEfXbRnqtcIJA/jQ41zEaxT/A5eGBd
-	/lQ3C3WPnXKSLNdZWAfK0qvbtwjkVkpNsQOoX1xPUY4eOA0iqSTYa5OP+gAKnQ63cYZMn4
-	qXmGWq44uOi4dA+GaP66dOkwDUzTyO0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lb4vY0UN;
-	spf=pass (imf07.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760412402; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bj5fkIbX61L0MhBrMaCBHJdM/TGl/Cqn2WE0N2ZyA1E=;
+	b=3+gxjaUJK6/WZu/SCwayrvZh576pc0Te2oQhAGMouZ/ULJFJW+q4PPhaX4qQ5NnrzMyuW1
+	4w6Pv/2jVlLWGGaUR6Ew+yQAf+8Bj9/XKxvu3IRNfONUSwtLwgxbFiXup3mkebWEHISuud
+	zYfB7orekYZgHfde90Q7oilI9q2UGZ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760412558; a=rsa-sha256;
 	cv=none;
-	b=6Tbqd82mikJiSgiAmkJ303Rl55Z0hcSy7fgzbKMjAW/VxAHxDlxxxNz6+MGBwT5bQGRFkm
-	a5D9nUudl5kcGBXBhhoDPW/6nZ18dp0Iq3T/3JqQo7OTBY1BFuKlY+fag+1/pt/zjpgkDR
-	O+nCbeay2YA0OeSAo4/8TTBJCiBpaNc=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7810289cd4bso4629476b3a.2
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:26:41 -0700 (PDT)
+	b=ZSdki+pjMvSgPQrIc0LyGqHWy4Bj8pNpg3yhCm9V5PeKsgI51W4PsIYEQ3oqvjoLEwIdqY
+	6HMUpuMjUzIWXD1ouyGL3PwT7WOTRabh1e6JZ6azbE8WtAsOiSL48Et1NF1JS57BVEK44K
+	mUBAZKUs4u2+i15c23elgsKaml7I6p4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SLP9AV48;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=kartikey406@gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-77636fb28f6so38749387b3.1
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760412401; x=1761017201; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Z2NlKgP/sNpQxsAzBMmC/fbOmtwwCUWX3Npz5SEPkc=;
-        b=lb4vY0UNLIW8hQ4naTm6mK250Ku01Sksc/F6Z9q+zNt85+rNjtqsUOQnWVAntD9Jbg
-         RjtjKJoCKBsw4u+hObXZEbi1EHCYx7REGyXqv+nw4a20wGoV6JpeOxOQpoMFxzjRcRO8
-         Y1Djmo5qE6wtAK59lxrjJ3lPxrUzTfaELFXt3jsXJ43noS2hFVPbMEI4MLMyNytr4dlg
-         D5P6jdjeDvezZrfsB8kzagMqNg6OUJ6l5HUv2cg9PmkZsBJofhYtk1Z+hd8s3HuPh4V4
-         /6/RupTwjkBoOdruyg5GC6R7aeIotAqC+hjkoSfnUO/Vp7hxQhBAZbiszBzpJh4KRj+d
-         MLSg==
+        d=gmail.com; s=20230601; t=1760412558; x=1761017358; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bj5fkIbX61L0MhBrMaCBHJdM/TGl/Cqn2WE0N2ZyA1E=;
+        b=SLP9AV485CPXvrV/x8P9JtHWVNnzwoH+ASH8KN7Azy2OuwQgicdab+0X2YXeMVpI1h
+         EfQbAqJlRp9/YGvAKyYoSgVzxneOE0+3y7PB2yhy2L/R3eh7iUiw/q2iDnYpyJz44O5Y
+         Qh+SfbSK6EtZ78TXRnVvS07m8pPRQuCkKcbHatJeLdiWMqfOfCBx2gbO1nmNnd0fHFZA
+         AHh6PRk8uyDy5HI32Ro8yrUc0vPx9AwywyIipeGl+UoviDTnRmEwlQS1DzQHJXsbGatT
+         cWUB+7Mz9KcCiBbShfGuDljEXvGcFgW/bFKiGHVtcv+FcGDaFM62UjVTnZLgTTU8/grQ
+         4BOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760412401; x=1761017201;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1760412558; x=1761017358;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2Z2NlKgP/sNpQxsAzBMmC/fbOmtwwCUWX3Npz5SEPkc=;
-        b=AK9bSBClW62c6pNDTTBcYbMkaBjwAFeRn9DPa0oRQ9BfiuHgb5g9q6SFZSm7u/K89Q
-         vACl1DKP3YtS5IArCYDmw1f2p1qsPdRT4nU7c1IEdV+lGgeqgvttwt5WjW0knPtaGfO9
-         QVpZJ2yayhIb7eBnrB7+YMv/q23MeUf0xrM555LbcsYukblFoMO8GRmoyc2Sorq9suNO
-         FNXaD0XnRs8xbZ75ncReR7BLpXgHyqBI2WuK14FHj6NMfD3YbWuLtYD1ikyAulQcKxWs
-         OEtgPe+mG97+A3DZzWW0i/8+GTdKWUOkgxtBqq0c4Okdx8B3BhRSyry0fhcUxammWHAm
-         urxw==
-X-Gm-Message-State: AOJu0YyVlngDBVHCLThkmzl8n05fNFUN6XmWKxb3dL9O0YWJbqUJK4bT
-	dlmB0L3A4z9pjsIKzkjFWIVM4997OTfqSyeGSgQ0sFaA6bcHyhXCfeSB
-X-Gm-Gg: ASbGncsgi1LvdnDYLf36PW9btkiDhvbwbG7BxRiu6GeRF085KpYOMLh2nz5THWK8Kp+
-	hDoyEUpAoR/kzC1u6j85i3MYWyEBkVpTnmVOPqdO2eXHKaY6KJiPtTRsP1BGBWJh7MaHuhxP9bY
-	YwA/erAOwZ5oCObQCXWBHqMt3WcKmygkuUht09kYFyM/xR1R38S4lKs+hbkJ2nd4vBbO2+kowIe
-	CVy42gD0AtSY0rcwD3WZbUo9SKG0vnAM9ErwNcmTNfrzm+U3caYBqMEIKQQtV/Tw6DZ1GTMSLDf
-	LtyGqtJLKcQWhUShW7OgrIUrU+XytC7ahMqfoFnde1EsF4WigvWDbp0E7SJTEv3c+cHjn/Rm9nd
-	qDoDZLv9CociMYrpq+4K5ft/6gNTS58masUb63r+PKoPE4JVKsJMNTi0k9eUdUlYWz9dtG2+2iU
-	BSQ1zrzpd5U9XxKQ==
-X-Google-Smtp-Source: AGHT+IHiLyaDYcsWx+W3f+TMyLFs0ZaeLr7rJrtuKhZhf00wDHV9m8BCbHrvN/bPmejb7TkCpfTpuA==
-X-Received: by 2002:a05:6a20:2446:b0:262:4378:9df2 with SMTP id adf61e73a8af0-32da845f861mr29523182637.44.1760412400792;
-        Mon, 13 Oct 2025 20:26:40 -0700 (PDT)
-Received: from deepanshu.. ([2405:201:682f:389d:c391:4ad4:fa2d:b790])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b0606f0sm13673109b3a.15.2025.10.13.20.26.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 20:26:40 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@redhat.com,
-	akpm@linux-foundation.org,
-	broonie@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Subject: [PATCH v5] hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
-Date: Tue, 14 Oct 2025 08:56:21 +0530
-Message-Id: <20251014032621.344209-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=bj5fkIbX61L0MhBrMaCBHJdM/TGl/Cqn2WE0N2ZyA1E=;
+        b=bmCILZcfDL+8jmeu4T7lifQtHjUuAJntizXzgvlQkAZ5BX2eRx6H0I1MBCGNPotu58
+         my2ggkaPNnO1SnfE4k6+pgAhvOps71qWwKp/z/BLfct1vEY5REUe/JBTkc2i0plM8+ad
+         /O3n/pUOVyOM6pNVs+afw5eL9At5AG6zcdk8q2GnpMm7UBh1Ia9V8/Uv1QOLD4J9q6Ex
+         ZtrRuK+Wv1r4VTv4/D+0w9vmU83UqKVzz0zEiwREDy+U+tRda8tdecukBA7lSpYtSt8i
+         Aq9Vkw4W3D7l3WRo6lyQstN4uzI5UaOFCfl7f3lL3BA41o6l7dXs8ukk1CI8rd4ocK9O
+         jm+g==
+X-Gm-Message-State: AOJu0YxyzHZN4+OITynMghzM0BsRewjaed7iwhh9F7xaltI/y/p75zBY
+	XtII3P03youtgYnoR0jIqNiK3+Uyeor/t5Cv5uUgUgRbIL+9uKlFiCG4U+K4RM6+vytknq3M9kP
+	Iplorye0rnB/ofPehXkuLrRFOAf7vs0o=
+X-Gm-Gg: ASbGncuIZ+YH/QghC1eEkeSsd4C6+xibC2GN5CF2Jsb1+qPxV5Ju7mkukvxGEHCJW0c
+	YtuIIngd8+SZtLQ6Ff6ViT7WqsFpM95fcivhI10AO5gLmzh+h2Gl70dwAgIJR6zY1JC/lofgzki
+	54gnDnRHvnC97kvG9hYAuplWa1Qg/pMmYi4xWHxK4T0pzer1ZsiuNpKJ66yZYlOPLH41a4Mao48
+	tk9kPDq1eFzk5TwS7HWcknjreCrKgm7iJytkKjPia0MSDPixpyEM6MARoHuiXCnnliCIl3ZoNi4
+	Wj32/fTyXgj7xRO4kHld6BAmfa+2GemztFuN
+X-Google-Smtp-Source: AGHT+IF8uLQZO8URAZnyCim5MbAmQ60+6f0ctJuIDBROxEu5YZvbDKsWsAfR4H9oKHvg5eae6TzbtI8YexlXqEqBCFU=
+X-Received: by 2002:a05:690c:6002:b0:781:64f:2b15 with SMTP id
+ 00721157ae682-781064f38e1mr249085787b3.55.1760412557660; Mon, 13 Oct 2025
+ 20:29:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0C2044000C
-X-Stat-Signature: knqw5hup4jh7ewp4mazqtactye6dymzt
+References: <20251014032621.344209-1-kartikey406@gmail.com>
+In-Reply-To: <20251014032621.344209-1-kartikey406@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Tue, 14 Oct 2025 08:59:06 +0530
+X-Gm-Features: AS18NWDR0ihCYLrwNnu4QRJZn9LRknZfn8rQjMzBqOrGeYibAZFxEPqBOdWYDdk
+Message-ID: <CADhLXY4uLWxEiQMpB-KXfHWYKWVGE=UT6OfTUgTnNu6+2VDW5g@mail.gmail.com>
+Subject: Re: [PATCH v5] hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
+To: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com, 
+	akpm@linux-foundation.org, broonie@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1760412401-659930
-X-HE-Meta: U2FsdGVkX18xnsTs/pGJS25sfaY/UoS5NS79JrzgEOaIOQDr6cUr5kG9Rs+Q6tG4V55GVgmyFKgClJhOwu5VlTfORIQnB8L8AapmbHv0sHopJWTPGdqLU5vp+DG6KTkHVdrPYQDPiJyxtGuVcBLROR9LQ3ZW7A0CJ1iPpsawvoEnhsNOrfHsjhQmU9Z8fHbfy9y57fBpxiK8Z57AqD6N5XKYR2eD2A5cBwi/X88mLlJDjcMC7KbwksaXjy8AarP9T21dEITiq4jbWSMCmlQYnH/KJT+PPFkvWloohbdcxiwXJWG8xtKqhrgL04zITFPoidUxYM7RHljBIYjTJd1E1AYxQSZg3g2C5v+Pf3CFDOSmI2TjDPaPazeq3boL6HU2htRzxV+1QupT1NeF2wH7XwnVHpeP3IOPYo2wEAAdizHCW0HmhNVNKii20foStIuAb27PtHfqC+/zndxsCc+UNB6xkzOm65tV7Afo3aUqiPmUPJJTi9oFtE8i4WgXfQSehqUl8WkkDZ80MUXzshF5SgerzFslaVz8PLPdHNmQjosU/Dz32FvMgB6GIx3kW41cuOBXxqAQ4JiFOiusvotGxPBlo+a9RThYsdlHq61cwF4SbsSJHFmFLp823lgLAjDUzfbJxwB1lIxG7yU17tAaqPTGoazzgiMS9DVJv8MKF1szQXwhBF+DE5FjQ2SA5CjvYu+aMtAJd29/nHUaVSN+QzcdYsuSkSH9YuTaIxO1PKe2ksso2ue0AU6TJnyoY+SI7jB6C1T7UaHbP6EZjuHDCg8EKSpCHC3rlMhPWa7JKOU+VmD40bmcWDYg9ruO1HfspGuUTL0mLmZ4aOyVQ2mcm09MFN/K6asOycyhFhzoYKa2MRNmAKTMUr9X3XhB9FRV5KEorPXgGEuWpiDN1LgS7qlKRjcsMyn1SQTPGD0PJ6/KNqj66daaXkA6kNML3ZNpARwiRF2wAAtGxAJKVQc
- DEkGYJLn
- Z4l6KdVHHhygk09/SyDvFNyPxFKZCGPl6QQieFKvsNn20CI9FLqllkMCuwFXIKS61Np4BiWve8KdnmDvhBfgR9bRp4cCf0NZpUIoVdewOUUd0YJopBl5oVBOd6kJv/PUu99/TlIoBoce8fBeuwdt5IDAoKWNYERPGr0skZzmsPc01zpP5zPfk/2g1RCWRkRRiUE0SaZ7x+i/kjKQ3HGd/B3KkjMS238DJduXL7P/M8EItTq/QzG66N7a5xmobY6X0zQlCJFqaw+IgGl5lUznHQMpk8MuDFREgyQu2iviVdCMKK3vR/0hoEf1PpXu04WiX5m/bE72vBbE7wcgy3NoT05GOlbnwLaSQu7uD3vPxEpoFMyMHmvBnTGazynBjdefNxx2i5q7McvqErCbSvAVNkQIkhuGO9faPdYFyPQjVqaZjiLXrM+yGpikQ8VF9Vqu8s/KZMvJUsRo+IxzTcPLpatAsXS5wL3YeJ5OD+tmo3N5ziGV3x0NWrsS4QqiVfEuuDtqoA4brK6Fux56Vsd8G+gk3+ICiGZxTfJpbUfVnrwFRlSTIGcViLgK0Z/KD42SXc7l6h4LLnwQTqEwZSv6p4mBBpFEMdCZxqSFDEah0Xv9909SDwjExNCkfoRwpn5F98H2VYtBSId3BXd/YDCiPVUF8TCs2gkk4ELfqATrK8f2gCIr6MnOxoLpzJRWXJZ6QQsafP8sPj4HFndECbnchTUp6kA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: A652A180006
+X-Rspamd-Server: rspam02
+X-Stat-Signature: nu9jrjgz8hmh8xucxsj5cefx1dqdcjnb
+X-HE-Tag: 1760412558-360018
+X-HE-Meta: U2FsdGVkX18yDdv3Qwk+HMmcw92ftkBa3YkmiUwcWX35rXBsdmU+GLMD3CU8TovQFYYwSE+DQV1LF8pxl19SBOI+NfYaFg2wQvp6bcOogVSiStHfEIW5Etbk6mJh2uss6msDHvqizQVpHGlwfTo3P7cXI/pBn+KMWUdmMgEY7aS88VUL9Q1TThGIcAaF2eJJoGeosFL947J9jLmX3myHSKAYV6NxtfuCt9NTAlZyuf3bbpO0iKkKdElMAZ0Vw0cKHoV59Itw/4H7yP7LYLhG0qpUo3S0hAogoq6P9nIE4hOTe67hxEYoi7W/Lj1q8H7PKxpeOaKZgGvKnyl9ejTDAsCSVTFtt9EfWSA8+m7gdFoidbiX/PZqmPQF8psRejZODifROEV8HoLR7Poddyoi3RrJopOc12haGdrk5OU38EulrR7cyMRH0eWhd3EtqWdq7B8hMrdJTUGCC4ZS5bwLCIAF+ptgwhq+J5akXgpFHapPWWm57XiD+OUCf6CtfkfSGHmxQ8RIxGwRkRZPvDxxzhL5LgFA95b+tnHzhbuiXBXTV2Om5Y6zPHm8LjxYDeM4NoMC1MEHdkJlVAAnVyXnixAdXlIKVbCFUs+0jt3Jt4eK6QnzE+vW/SlkIVXxXSKva0ONYxNE3B99DqrrVVf4dfQPxTIkCbVQwu5e6Fke3XqPx0l+M+sEiEzFkHrAPdAuNLL1ZFE73bnGzF9AIzpLFyMo7dcY86moEqSr5nkhC54Bmd72oAVyI82obfngXScPaX1KeTJnvpj4R9RE0hgN8yjze8e/zJIrItOU0W8wZXjHrR2pdAYwByhCKqZHQQ8+49RLM6lgaixPB7xQRU+UOYNXG5RNRm8eIRQRfn5uKGTnhuoRdHwwPucjZkB3a481F9HplpH5JMNcG0uUwei1sbkeZ+qe82hhJQdAkGgxQ3BM/Kcl4CcMmWm8+8wl1VZwzjinJzv3kgf2lJgokif
+ nhlm9ZM1
+ Eb/UhABZaxaJ9QaCgPbelG1I0qDqo64vSg6YFL3ohDXhGic8T/pmudKSWi+/k9ijYiuk8GVua55QRfpDT54dRDADooeLUKuqhWlnOF72Ov+fcXB4cOF2pT6KjkaumfTFeDRtGEylfEMX8fiSryPsZpT4URH4eRx3z9n2sWqmVPV0JBuLxNo0KkLZ9Pg4ow5v0+mM38nx+U5e39am/mciM4BMIZN2m6iY/wZlxCzmD3iA8C78nLfNpAv7UcU+9DBHFrc6pBzJxj/hN830gVJ/sA99qvBEi1g4zfDvys8hvAM5O+aOlVX8dXBz+4Pl69N5HrskXtAH3ssLXeQNBkfe6xI9c+AYBqDRjm9ooSTgezO4ejbgM/bD9EbDK79d1YhkSp//7v50SZJ65c/7B1SR8VKGgWD/4aN6gVa7f+YggwqzHvTkLWqCnyae0eOw0E3RgusFJVEy5+60iE6zGgI2m7ZtrESZ9HiVd58c6LJ3zcbdvGOVw8HvTue+QF7hsbKV3f3e2BMYxdtNizE8=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.093311, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,84 +114,5 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When hugetlb_vmdelete_list() processes VMAs during truncate operations,
-it may encounter VMAs where huge_pmd_unshare() is called without the
-required shareable lock. This triggers an assertion failure in
-hugetlb_vma_assert_locked().
-
-The previous fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without
-shareable locks in hugetlb_vmdelete_list") skipped entire VMAs without
-shareable locks to avoid the assertion. However, this prevented pages
-from being unmapped and freed, causing a regression in fallocate(PUNCH_HOLE)
-operations where pages were not freed immediately, as reported by Mark Brown.
-
-Instead of checking locks in the caller or skipping VMAs, move the lock
-assertions in huge_pmd_unshare() to after the early return checks. The
-assertions are only needed when actual PMD unsharing work will be performed.
-If the function returns early because sz != PMD_SIZE or the PMD is not
-shared, no locks are required and assertions should not fire.
-
-This is cleaner than previous approaches because it keeps all the logic
-within huge_pmd_unshare() itself, while still allowing page unmapping and
-freeing to proceed for all VMAs.
-
-Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
-Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Oscar Salvador <osalvador@suse.de>
-Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/mm-commits/20250925203504.7BE02C4CEF7@smtp.kernel.org/ [v1]
-Link: https://lore.kernel.org/mm-commits/20250928185232.BEDB6C4CEF0@smtp.kernel.org/ [v2]
-Link: https://lore.kernel.org/linux-mm/20251003174553.3078839-1-kartikey406@gmail.com/ [v3]
-Link: https://lore.kernel.org/linux-mm/20251008052759.469714-1-kartikey406@gmail.com/ [v4]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
----
-Changes in v5:
-- Move lock assertions after early return checks in huge_pmd_unshare()
-  per David's suggestion - cleaner approach that keeps logic within the
-  function itself
-- Revert all previous approaches (VMA skipping, flag additions, caller checks)
-
-Changes in v4:
-- Check __vma_shareable_lock() in __unmap_hugepage_range() before calling
-  huge_pmd_unshare() per Oscar's suggestion
-- Remove ZAP_FLAG_NO_UNSHARE flag per David's feedback
-
-Changes in v3:
-- Add ZAP_FLAG_NO_UNSHARE to skip only PMD unsharing, not entire VMA
-
-Changes in v2:
-- Skip entire VMAs without shareable locks (caused PUNCH_HOLE regression)
-
-Changes in v1:
-- Initial fix attempt
----
- mm/hugetlb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 795ee393eac0..0455119716ec 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7614,13 +7614,12 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
- 
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
- 	if (sz != PMD_SIZE)
- 		return 0;
- 	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
- 		return 0;
--
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	hugetlb_vma_assert_locked(vma);
- 	pud_clear(pud);
- 	/*
- 	 * Once our caller drops the rmap lock, some other process might be
--- 
-2.34.1
-
+Please disregard this patch i will sending fresh patch after testing
 
