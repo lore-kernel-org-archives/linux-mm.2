@@ -4,111 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA314CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121F2CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:17:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05D988E00C7; Tue, 14 Oct 2025 04:16:05 -0400 (EDT)
+	id 3BCD48E00C8; Tue, 14 Oct 2025 04:17:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00E208E0005; Tue, 14 Oct 2025 04:16:04 -0400 (EDT)
+	id 393D98E0005; Tue, 14 Oct 2025 04:17:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8D7B8E00C7; Tue, 14 Oct 2025 04:16:04 -0400 (EDT)
+	id 2D1458E00C8; Tue, 14 Oct 2025 04:17:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D49938E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:16:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C0F45B2CA
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:16:04 +0000 (UTC)
-X-FDA: 83996011848.17.F8BDAFD
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B3BAC1C0004
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:16:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=mYR5aVKk;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf21.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.54 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A84C8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:17:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EF075AC0C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:17:42 +0000 (UTC)
+X-FDA: 83996015964.11.D3DF7AB
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BCCC3C000C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:17:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Pys5/qwW";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760429762;
+	s=arc-20220608; t=1760429860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HyVJ9F0sPkvb6d9V8yvLooHwZ3md82CKflBoPN1xb5Y=;
-	b=BZTRQqvvKuD7/vrnK7WiPlJDzwmzQT7iuztKUtDK54BCiUgdUbY4qJkziEbXNyDckB0DtY
-	n0Q4srf9Ko9j2owN8g9S0QBTYK+uac4iGERSigrpQv2bnQLIXvu7hWvLVbbzgN84jgiYqZ
-	UGpGK/gl4ewheLchIacx4vtiHp/zROU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=mYR5aVKk;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf21.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.54 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760429762; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hB5XUi1+cDwXRPWde5CzSKgVrGaXvz4WI2PJ/mRCG6U=;
+	b=t4nEVVwKlrbPaFJoKXvGjjQlgr1ddBIYlXqF/AK/8LoXpmAf3tIgwDduKWVfoOVDeg5I9K
+	6vqbA6KmyWQtHn8IijUrZhMtMR0Jdk2KwHfK774Nirg1whpzDp1plxrbS6MjYfjarYj3l3
+	HMikX6xEj4LVK7r7IdXMkIkXHb0IaXo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760429860; a=rsa-sha256;
 	cv=none;
-	b=kGjaCyxHsT0pFPQmVQs8AXuNtIBn7/Kf1WoerpOSopebwmrVBQp3YmT4D1wCHSgk03JkaN
-	KSZTy5PEEr+Bph8EzeZHDpBY3FeIXakf3WWsJ6CmMv++4BE1d+iyuempQdBZ4EYXhENnAm
-	ZUlSkn+ESldN4CU2wlUfdvtaSi/EQyY=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46e29d65728so29836665e9.3
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:16:02 -0700 (PDT)
+	b=UG/0c3DAiFpvB7f31kNxxGj01vYHcwaTGgLpqthe+koySteyILntSUXYmeyYopNDNQql4X
+	3oNELdrsS85w1L9UpKDVl9Ldqf49fhlTWceWAsu3ts1VnhCkjbgNWTsIZx9sHRvCruWAkE
+	QhQHkK7KZq3VinPKJ8h6fCYu20RK3lw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Pys5/qwW";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-905b08b09f5so1185030241.3
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760429761; x=1761034561; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HyVJ9F0sPkvb6d9V8yvLooHwZ3md82CKflBoPN1xb5Y=;
-        b=mYR5aVKktyYkTKhrnFJC8PYZozX4KomZ8rYpLr+0vwRby9xJj2tSx6XjkhRkLYPqyg
-         WE++VeO9nR6m3efO4uymNRbLPx2XGyfMV4EgTnxJF8rnnqk5uJT40Xt0Z8b+dgd1yemU
-         umaB2ItTW5iXIKgFhykNqO3Mf93/wWiMmDuMCzxlmubrsq4mfVt3+1mhvZmjuPxBYJJP
-         0YUlT98gm24ts7f+6LMcXK8AIwdR9XAcUQrL2kaCuthuC01ETtCzkLN0AssZOssIhfLQ
-         6KnPbMPrrB5i7iSvoYhQXrsK6a3pUkhMWrB4uGTx4CuKudcKDJuT87Fuwz/PeIrcGPZX
-         8UuA==
+        d=gmail.com; s=20230601; t=1760429860; x=1761034660; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hB5XUi1+cDwXRPWde5CzSKgVrGaXvz4WI2PJ/mRCG6U=;
+        b=Pys5/qwWQEyKybh3DmN1VyPBWqZOL0EwdpbtNwkDLvNztmkZxp71VD682Diw6Fqx2R
+         sYXmo2u7UXIqUXVlwCyOAJzSHGjLkRZgjGga6pFvGxEBRuB1LomyvJ7WASJo+UoUe8PL
+         ZiUR2gRLgYLWcgDo7hsmazZOLrQGhgJI3duM4cWvmxfcjWJs7B6Rvm0YJX2ifX3wGAVI
+         FuGe0e1a4zr2Zw18p47LBPKvTBKWoEIcfyHrvsg1OCheKDn81Bakyn1fs02OS2tYaabh
+         i7FxQxyFvLgIwV8hu5DRufWUmNTU0ETjUN9jsNUYoYOSDKh+M4E21oeydE8d+J8mOX9V
+         lhSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760429761; x=1761034561;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyVJ9F0sPkvb6d9V8yvLooHwZ3md82CKflBoPN1xb5Y=;
-        b=Q6fLe0TBKeq2ikKpxEvHOfJ3xK+IOSe3zPV3ZxpxuEaR/PEBNosG7ktTLPH9JbchZG
-         qTgqeafEtDc5zL00HlATwn9zxVpJzq33gYx598vHSqB0Ajz+wv1CuPOGkeD7hMvSkmvo
-         jkoBNJovb2en/ZFbE0fqa3tKQhuUHLlEmTbrHNSMYDyT6B6IglkFCUyb6rRAUoVnRcZV
-         0qp8o6EbplTF3q5qOVf9Qu5I+DXVhVuUjiWvidmEtC8LuYg1L15v9bH8PoC5aXUEI2l6
-         NLYDQR50nPjn2SZYy+6lhUxBKfFHdRlHKzV0BY2uovJ1vlQF5Z6aY7i2tUjYOQxv3las
-         1l1g==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Ujh3eGXQB756HctgzPyGAQa84wMMuKswdNcXwxSRuRejEYy3IF3mW+MeT07jnk8+pq4kGBQiZQ==@kvack.org
-X-Gm-Message-State: AOJu0YzOuUFJTJO7h5m0B+yeZEbAvBPicpK10yzEOPAnWjJYfFkmSHb0
-	t+5GNgKSI4/jh/d5wItY/mOUSSxU9SX2RNRvF858pnUpfaVgfbsPr7wpf1ncsLlo+GI=
-X-Gm-Gg: ASbGncvGxD8ekIMwdWymxX2nC6ig/2cw3HO4BstW4d1i1TdykUOjSvPg24H/zzOXMil
-	4l/E2XdRNYCdEGkJAt5ItXCV4hfFX+KvwbzSgonSjrwfpD0DlFUcpsGagDW4OZim95zuQM3WNoU
-	n4FkduCU8oAGFRqkXNCfXIqaqlBXrZWvo9yx8MfgWugZOuMX/FlgDAhJXolaFDptsN1/xnnrNrT
-	Tzs3SA61dKvAuUxaz8ac/o7zwnrdiROaOOWGGB4XUPgrnatTvQuy44zmlWfSohKU4ZCon8bdYoq
-	DzZkVJrUl4WWY2sg9wQYkYAgs/mrtE1vAFfwMpd+HIM8Owubfw4sRYUm0e7J3IrY9+gtpijivaX
-	03dFDCLDKta5pDMULtRbjqAO9UJ6MdUGSV0X3fiURQx454gpsKqk=
-X-Google-Smtp-Source: AGHT+IEmRqbCSKEmZNfKWDxZ8G3ZB8/M2f4+Xn4uL3VJmZBukjyvTnhQ7J09DzuK9UCi1D9bEFsC1g==
-X-Received: by 2002:a05:600c:1d11:b0:46e:5aca:3d26 with SMTP id 5b1f17b1804b1-46fa9aef840mr173171105e9.22.1760429761023;
-        Tue, 14 Oct 2025 01:16:01 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fb4982b30sm224831925e9.6.2025.10.14.01.15.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 01:16:00 -0700 (PDT)
-Date: Tue, 14 Oct 2025 11:15:56 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [linux-next:master 13427/13588]
- kernel/liveupdate/kexec_handover.c:978 kho_preserve_vmalloc() warn: missing
- error code 'err'
-Message-ID: <202510100941.GZGMq64U-lkp@intel.com>
+        d=1e100.net; s=20230601; t=1760429860; x=1761034660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hB5XUi1+cDwXRPWde5CzSKgVrGaXvz4WI2PJ/mRCG6U=;
+        b=Ju0yt97cViicnKpwS2NWEDJggKTSTZ6yI5GiUNBrlKmQx7Lp9Z+kN3eoQjFY3sO+fY
+         ElV3FJzZRkCPM9lx8X4BOICcg3KFGo2D6Zaj2yMxrBJQMGqVdMcdcn4ULk16L2Rrw3gD
+         etznlj+2iE4h8qDsBiQ6J4HDMbak1+yfHZZTHaNO+YbWcKb43e4ledwyJFdHo4clkYCI
+         BigwEN2QkETt1BZYuW12tryp3bCfCIj85mV/VJM7WE6VJC6tR/D5QuD7YBCBkVOSom0q
+         FJ3YPZPfHJCluC/4CoU1gc6bPVnn0ZJWMM2igZI6SkMrNpsM2KTV5IpYH5+kN23zN0OL
+         NTcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWoXWqfG2ElVvBmOzTDmN1A2hLdIF5j09YfwB3E90GCmXeSFGp8oM7XvBU/G6iKbiwzvexHnjc8xw==@kvack.org
+X-Gm-Message-State: AOJu0YxvyFJhCo44HfHfdCytQMA7rByt7R8uQUAqKIcORInczwjCS8y9
+	GLjFO9p24MocGNib5IfD9JnhhBfg0Sgx4SxHL/sbyc3xBVnFXRaqefXAZSw+KO4uleL+oIUr2p8
+	RvVTOJo1/OYIJid+1XpmlmUPn6fjAdtU=
+X-Gm-Gg: ASbGnctLI5PcebiwOWL7zPJZhJmHcfGfOpXFAotqdE/cWUvyOWjdoVZBZKV6vRvq+Nb
+	Co6O8wIGv03naOI75GKryuYTn8IogQ9Ty+4TmH3wG1nhi/U8NANAuqEkCPDjATe4fKgGkbSGmlh
+	c7of8r96Fv973wNnqN/gpjg+8GDsCRsTP5/nGLRpXDhHOvXGwzL1bSu23GjYhAR4mSW88bHQNoU
+	fRf6uhHXJ3Ee2JmFYM13hSqawAFwIROKL5dkwr5/OyFz4dcYvL0o2FcQOSYj64j9mAW
+X-Google-Smtp-Source: AGHT+IE74/+9NMWbvU+qO/+W07sc5FWF1iW+Jodkjrw6Ldi09g2hF8G7tsWXqr3Kth9KAyQqpDa/9zGf3F+nkghdsOo=
+X-Received: by 2002:a05:6102:f07:b0:4fc:1a18:aaa2 with SMTP id
+ ada2fe7eead31-5d5e2217442mr8155988137.5.1760429859483; Tue, 14 Oct 2025
+ 01:17:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
+ <20251014035846.1519-1-21cnbao@gmail.com> <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
+ <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com> <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com>
+In-Reply-To: <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 14 Oct 2025 16:17:21 +0800
+X-Gm-Features: AS18NWDxwbBeHYYzY9zkajM9730iY7yUrkf_deZ_-1VTrKeqK4m8413YWm5g-Tc
+Message-ID: <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Eric Dumazet <edumazet@google.com>
+Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
+	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
+	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B3BAC1C0004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: aqi8efmfdz1w61wno7sk76mafhm5ar8b
-X-HE-Tag: 1760429762-562594
-X-HE-Meta: U2FsdGVkX18YTMdTPWVEYJk7uWq6J8rA1T7lkq2OaB/1Bp21yCFzetNfMPEl84KNgeaPu6I0OOql4cj9NC8NBjc9kC0Exg0D145QKBekM64eeaJ76I80ObZsa5Zasno570LIGqQ7C5sR2vz+hZdWqhlULb0uHhjfPc4WM4dLZoU9XuSvGFqjc+nUUnptVD9b1g5eVetUvZ36f60iER+bP3MQpwR/FUkM4G8GrbshPkvLF3DSKI7v/ZpTOBj7szqhZfBGqWgXHH0ifaFYP/qgmyNt9Kyx54G7x8SWqPxLXAtIUkXKz4jmoQBgYZ5SjK8EZn3oEmQu3WUV5bOk1wekT76sCsJvXf2C5T0w9M2aoqwTUY7TJZEXA5bweF/DOqbnslwywjyOeo/oMUWNKQFGwzRWDrykvCzbgsYH6ql402vqIVAffo2i4dmKRGf5iuTRTZB01gwqnZGCbM96Q5CO0yOV0nY1VbId+fplBR7lJQ7u50gr7xqyS1R8qLn0ipJ+zIz5rDu4hxjVpR24zoAZkCCVWh6g/2V1dRo7FvuRJjnoaHbsl+XKTUhFRj2EbL7p+dMsaXEhZLIp7loZZ1okSsQHf4OYoXcVnXbzmJpsOwKYTgkGP9lRvOFZPoH5MFFR9WT2Zbbh/5mD5eAJqwDk1C9tlZp4j/vIpF04CbndrZLtVmrvaqlZ+PfCa1mVs+zU2YXVMNDQIWPP3hpxPxJBiKbq1DFAHg8YsToN22zhfwu29DUf1p+jw/4fQf78k9/NnkdVQyClHC4U3OcKDikIwYGE+OcALWuHgS8N29QoQEig27nTUWWaU3s5eKR4noscuauYgY+LPwgA08+AxbGSRpTX0NTPUCmzSPq2amkYg3/f69VBObuljdbcFhKSNEqzqEGQolbPeHV6TBUfbcz74OWitLg8vnUaCWtXqOPGj1YqI+9YDNqpErB+lnYPvK8naQ9+rx0cLv2B2/FksLZ
- lrPv9WbH
- b35zyQkuYS7taCwgbdPtIuxFIZo6Cp5bHep/Ct5bHZ36zPtBAJTBkZzs+53g6/0cY65ziZeBwzEhroY3wLjmxNjOltjXSOOfd3oDxuljFgxJzQFjSYp1s91LS4SQkS6lfuX/7+FYg5WnAgpjaIQOV6rvjD3zB4EwUwrmcqE9c2UqhlbFKHVB53/qUIbGzdELGfrMCpldDwYEMm4JHoUCQj7I94Z2v22utU+iEWGmHC7mmJGrZ4teGcCDTQZztgTH1ISaVUQCg5HqZH85GuiykBgEqmycOXc+3VEFRLP3hcx6jZLcLfYlxKbUFt8IXONob+V90EoGJH3pZY6eiUClSKWR3eUB8YxKSeGtC9fZdFR6j+KBmmaDbKvLG4nFRcxwJbK7n8/SeE0sm8ASMZEadXHAfBiG2e0M22VUek1SdFG6MJIAOI2Y2AWiZ7O24eqRwVK3gZlkVZqODTUS5KPsX1eYUvlZQy1srRenQUAv4bwv4IjM3aU++PVFoX4D59i4XfZAe
+X-Rspamd-Queue-Id: BCCC3C000C
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 174orbx9rtsx1xoujeutc7nnhisei39w
+X-HE-Tag: 1760429860-371302
+X-HE-Meta: U2FsdGVkX18DhB/JHVrm3nVvAyPESveX4INOGKfjhIYrk2zufM/4a30crtjRFjwl5AeGsFGXtEc6nS4ZsA3LbgYUgV8zS5M7kw45+XeWkNewJjhq1LwO7KZhAKBg25IVdlamggSYVJXMrifz1rHIBnM8SYsQ5MrIt9jAkJzjpi/ZPEBIR6mKqpD3upIZz/ev+EVNSvCGptDl+ZS0YVf5apfFXcTEEB1eLELVfdJk6kMaRsJpFVdy8BQkcZU8p+b8n5Wfjeo01Scu8/dZ5HQ8L78PwuI+EUnQXDof7usnBg9U51cwj7dCCUN4Lt4uw3umSWrXS2h+/gx9xNrt7zLcmqhQjEIoCxLWPg7dx9kNXwOfmkHmwLsab2VjLxxFBQRMz0we1+PjBUZ+AvRoYN5NFjf8SBVyvyD7htQGg4B9XXZmEncEmLyHlTg7o8XeMJlbqdVHzJwbx+5iY4sa6umysbxK6d2qH5cd+f8WeipZ4GHk/2AeYVNHKc9H9Su/XjC3YzYk1/WGe2Z+IuvJSjqg5mgtTpM5JWiunSzAGwjsM6Jx+WvKNHc+6JrcBK1QUc0LPyQ+hM6Yx/7EQ6VkwDnbJeMyuLhel7gNmXq7GWxYgTegrKuQNcB443y8np2GioBjbrvCmFmpnuuBKuOQpx8vZ4lyJEC7cAxgwCiCOkZcS6b5bl8HwDxy5QkdcopW6Kx/scj01S/4kcpJpw0/qZSDUBlUNbVq0w9CdFjqOMf1uTEgdEds87QfX2v4PdRmzqBUDls23PORzxZqKgtCRGVnCmLIyCZgRZuGU/XFtqz5epMnfJmkrcQQOJ8zz34wM2juGEAvGG13lI2SnOYHQRudY3mf79xBFB7z7QWVZoeIvz29pGJO/0eCd68Pk94FDYU1u1rPncV22NyZ/NP+H43HWY4+Y8euQNFQT4C7G8qFdFtnVRyCe+LU+2I2wVvxGUowr2AVsXp1DMfagdMI2ts
+ 9CSLv1A6
+ 3pFQh/DDbtvWaTiyWoNi1RGwAD4sW1e5uldzgKYo+qTiZ8ojpalH7ZzJvQNuD7zj85+5XRy++ntNLOETO8OfJvG7TisefcNZq6cgCVb1gRroJpIotAiOO7lttWxj+/lbS/xtTcl1OCK2/AH1PrieanQBsZCHdgvFxBrUZwdUdwgZWOtocf1hDKa9ZyTKPus8oTcsR3EmAO1y+qsT1bJZot5uCUS3YJi6nyy8Ha+1/ucFeDFQ7fUYQfdwC03ZtxkuhnY5I/QfjEACUtEw6Rh1WVkqIEH3Iku6eP/ot3qfxhp3uDuQ3eU6iyPHSKjXVwmz+55XBjvBhJ4wgOVBWvMA1JEzul6Zbv34iYV3Nl36qtRP1ZPCVi+v4LmPoeT9YO3m74bVqOWLcTa52LYUONsaiU5UOXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,78 +122,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   0b2f041c47acb45db82b4e847af6e17eb66cd32d
-commit: f13bb574707674d1113a40e0b6dc4d9a143d2ec1 [13427/13588] liveupdate: kho: move to kernel/liveupdate
-config: x86_64-randconfig-161-20251010 (https://download.01.org/0day-ci/archive/20251010/202510100941.GZGMq64U-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+On Tue, Oct 14, 2025 at 3:01=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Mon, Oct 13, 2025 at 11:43=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
+rote:
+> >
+> > > >
+> > > > A problem with the existing sysctl is that it only covers the TX pa=
+th;
+> > > > for the RX path, we also observe that kswapd consumes significant p=
+ower.
+> > > > I could add the patch below to make it support the RX path, but it =
+feels
+> > > > like a bit of a layer violation, since the RX path code resides in =
+mm
+> > > > and is intended to serve generic users rather than networking, even
+> > > > though the current callers are primarily network-related.
+> > >
+> > > You might have a buggy driver.
+> >
+> > We are observing the RX path as follows:
+> >
+> > do_softirq
+> >     taskset_hi_action
+> >        kalPacketAlloc
+> >            __netdev_alloc_skb
+> >                page_frag_alloc_align
+> >                    __page_frag_cache_refill
+> >
+> > This appears to be a fairly common stack.
+> >
+> > So it is a buggy driver?
+>
+> No idea, kalPacketAlloc is not in upstream trees.
+>
+> It apparently needs high order allocations. It will fail at some point.
+>
+> >
+> > >
+> > > High performance drivers use order-0 allocations only.
+> > >
+> >
+> > Do you have an example of high-performance drivers that use only order-=
+0 memory?
+>
+> About all drivers using XDP, and/or using napi_get_frags()
+>
+> XDP has been using order-0 pages from the very beginning.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202510100941.GZGMq64U-lkp@intel.com/
+Thanks! But there are still many drivers using netdev_alloc_skb()=E2=80=94w=
+e
+shouldn=E2=80=99t overlook them, right?
 
-smatch warnings:
-kernel/liveupdate/kexec_handover.c:978 kho_preserve_vmalloc() warn: missing error code 'err'
+net % git grep netdev_alloc_skb | wc -l
+     359
 
-vim +/err +978 kernel/liveupdate/kexec_handover.c
-
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  944) int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  945) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  946) 	struct kho_vmalloc_chunk *chunk;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  947) 	struct vm_struct *vm = find_vm_area(ptr);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  948) 	unsigned int order, flags, nr_contig_pages;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  949) 	unsigned int idx = 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  950) 	int err;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  951) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  952) 	if (!vm)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  953) 		return -EINVAL;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  954) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  955) 	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  956) 		return -EOPNOTSUPP;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  957) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  958) 	flags = vmalloc_flags_to_kho(vm->flags);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  959) 	order = get_vm_area_page_order(vm);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  960) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  961) 	chunk = new_vmalloc_chunk(NULL);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  962) 	if (!chunk)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  963) 		return -ENOMEM;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  964) 	KHOSER_STORE_PTR(preservation->first, chunk);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  965) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  966) 	nr_contig_pages = (1 << order);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  967) 	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  968) 		phys_addr_t phys = page_to_phys(vm->pages[i]);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  969) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  970) 		err = kho_preserve_pages(vm->pages[i], nr_contig_pages);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  971) 		if (err)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  972) 			goto err_free;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  973) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  974) 		chunk->phys[idx++] = phys;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  975) 		if (idx == ARRAY_SIZE(chunk->phys)) {
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  976) 			chunk = new_vmalloc_chunk(chunk);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  977) 			if (!chunk)
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21 @978) 				goto err_free;
-
-err = -ENOMEM;
-
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  979) 			idx = 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  980) 		}
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  981) 	}
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  982) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  983) 	preservation->total_pages = vm->nr_pages;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  984) 	preservation->flags = flags;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  985) 	preservation->order = order;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  986) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  987) 	return 0;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  988) 
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  989) err_free:
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  990) 	kho_vmalloc_free_chunks(preservation);
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  991) 	return err;
-a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  992) }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Thanks
+Barry
 
