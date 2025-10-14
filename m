@@ -4,123 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A4DCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 19:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90209CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 19:17:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5FB98E00C5; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
+	id DFD588E00D4; Tue, 14 Oct 2025 15:17:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0FAC8E0090; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
+	id DD55F8E0090; Tue, 14 Oct 2025 15:17:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B25E18E00C5; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
+	id D120B8E00D4; Tue, 14 Oct 2025 15:17:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA7B8E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AB70888D4
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:06:37 +0000 (UTC)
-X-FDA: 83997651234.07.154AEBF
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 84DAF14000C
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:06:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=l0TW3OCc;
-	spf=pass (imf23.hostedemail.com: domain of 3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id BFD6E8E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:17:33 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F2B31A0A3E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:17:33 +0000 (UTC)
+X-FDA: 83997678786.22.7194DD4
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 99D5F14000E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:17:31 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IMxkfZEz;
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760468795;
+	s=arc-20220608; t=1760469451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
-	b=5wTt9RF82nVyl1eE/aAJz9N9efi+xK9s5hsAymt04PBJgeoj6iKSz9fsDFRQRCihyjsK43
-	rQNQRW/0o62qJTQdhO9eJRBvGWACUhTuwb/eKQHKfJiCG/MxdelA8Inrjg9X5cKr3HCnqu
-	e4HJb8MzhNbS6cngLD3ukdH8zdIFCeQ=
+	bh=6uDSBrC8cLuTSNHDyZiLCu5ZpZO8rOAjsl8ZFn/oXgY=;
+	b=Tv/RtfdTngSu4oZcUVNfKUvz9SotACcxmahoHE9na0F+eoD8IJxL4AL2lau9kb51YpKHMS
+	/p+r0YPeEDSrFWHdXi7+9YnsS7Qnn1OLdssYkY1/ynOmlbR6l/LPRa+gkW/2eu6c1lQg8T
+	jC5CuGDoaFlxaxYdBcYhyDbtr/HHnXE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=l0TW3OCc;
-	spf=pass (imf23.hostedemail.com: domain of 3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760468795; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IMxkfZEz;
+	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760469451; a=rsa-sha256;
 	cv=none;
-	b=NmPGKFyhBMaAij/LrySkUxybic9uZ6HRwhPrO+unhpMJ6YjqDnbEqbscNDdjoV/qjEdf1r
-	W7joyEkgv8JESJBTZmzmg/1qwg5j2fDIDSXm/GVzO/5gm3h2bzL8SlFkWR6ejgIRuAsKOw
-	qsLftncexRfauT8nqhzklemwZdSy4Kc=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso15389545a91.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:06:35 -0700 (PDT)
+	b=XY75VCOKuvHtqdznt8n2xJHZQb2RPGlfI11pvGQWbRe2tyJZyBN83idQYsFG2e5Tg6tlbM
+	463dfMHs2u159hJXCz/R1PCKChHNOEOiIgDWJN7CblZ6HYOpFBzJoPTUa+HFPcxGNRlmLK
+	TsNtiUyHmIegCDp9EouMCYPQ1AJsXHY=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7815092cd22so12160257b3.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:17:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760468794; x=1761073594; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
-        b=l0TW3OCcBrlg2xZWcUWIZlU2sryW1f1PYGE2MJ2xeYxQZAJFWhZ8BQNqTRq3FPT1QG
-         RKgHS4YA9r9cCTXo7zOCwA37Ye8QnGNGZmfXsLWVSYNqQJ2Jr1YOVOHYXA0rWN76LD3d
-         qw9oApCeIUysyvTd09CSVE7NXJfigTlgA7gskMZ6WEF/S+QnGbYduqhMRECzEQc4kMOr
-         os43vDoBxMfUV3cQnqWNBHPTXDjC/valvqtGWFCqnmMy9z5HmF2Vi0FGZtLMPcePQNTM
-         +bO7T+FfBe8t0sYM8AvEYpdetatGM+lnj3gfhYCzVQvAmcmSFh4Uv0503j4TuxgDwua2
-         gXWQ==
+        d=gmail.com; s=20230601; t=1760469450; x=1761074250; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6uDSBrC8cLuTSNHDyZiLCu5ZpZO8rOAjsl8ZFn/oXgY=;
+        b=IMxkfZEzQU4xoxvYu2M8qAvqBzB14UXas5rIFCzaFRYoJBNdzSymIhpQA9lbgN4W3C
+         IUbAi20nIAo8rGj+Igqgx1eu7OTT7en3LxKsZIUkIwWkhC6s3YwfK3HaZPBlx444xWOk
+         8yoagwFUyJF2kY23xc7sOXEh1U9IARKwh0hzsaYVJEVSQoaKBp9ESb54z7W4suYDZPkt
+         2hfC2ste8W5MBbobbYicWUflrDAkoNnn7rKBxASCk9PvKwhnMNbh+TsNDCnYRJ/uXgvG
+         7KuN+HFpL44wQr+7oOJfB6cHqXg7hc3Mx97nfpYEuD6/ej/BIX0VRUqT3V1NOUuOFNd8
+         NHVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760468794; x=1761073594;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
-        b=aN5frjiHiIbf0XGFRJzNXcdq44LOpFrFOwkwNGN/gUZrpXOULUVfYrKOV59WMFdq4c
-         FLeMPzf2ntw7ql+KbMMy+/udRFS/MYoO84PZX+5XSTMIKOJulOC+96uHiT0/FEQwyu/j
-         hChPHRqJhWk8CmfIeVIoOBxCtpe3uOPJ+yfdNlIHR+29WlUygoZQKCc7DNaVCjLuJicC
-         BQE8YHXwzIwHp3KC6GHppg4UmB99JS44ec7Ulrs33/nFKmMVvOfdQpzVDRsH6BC8B0uF
-         eoaCDICBiwd6wvIl6JoO8o1LHav8jiuqH3WO3RI5Fv8uoiLyTy79Qn794qaEmgJrRXFA
-         7XLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUWUTy7opuryuqCqmtZ+mVTprgBzedG01utDeOZEDJEGlCmuFzsXX+FxB50BqQyFSVTuQ0d6fJLw==@kvack.org
-X-Gm-Message-State: AOJu0Yxm+ht70pm/EuFgrGHjNKMZkKzrHh7PgAgmzJElj4TPybfbxLeN
-	xSjp1HXWvvssmxVED8/E/LrFIpMB4OwAwpKQaVGCYHTx90VOLmF73xKJGdKYotaQhDce1ppHgf/
-	NbaMYVA==
-X-Google-Smtp-Source: AGHT+IG9Zd3t+86XRNhfr6MOl3z2x5n36Sr6uReq0nGSm2P7jNviBzkfzWGC0x9bWFlsxNGdGfsNX6JxluA=
-X-Received: from pjuj14.prod.google.com ([2002:a17:90a:d00e:b0:32b:95bb:dbc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3ec5:b0:327:e018:204a
- with SMTP id 98e67ed59e1d1-33b50f85081mr35201870a91.0.1760468794156; Tue, 14
- Oct 2025 12:06:34 -0700 (PDT)
-Date: Tue, 14 Oct 2025 12:06:32 -0700
-In-Reply-To: <xhsmhwm4xpwyt.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Mime-Version: 1.0
-References: <20251010153839.151763-1-vschneid@redhat.com> <20251010153839.151763-20-vschneid@redhat.com>
- <aO2S3oZwOW_UgAci@google.com> <xhsmhwm4xpwyt.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Message-ID: <aO6fOM-XydknM6NJ@google.com>
-Subject: Re: [PATCH v6 19/29] KVM: VMX: Mark vmx_l1d_should flush and
- vmx_l1d_flush_cond keys as allowed in .noinstr
-From: Sean Christopherson <seanjc@google.com>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org, 
-	x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, 
-	Yair Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Stat-Signature: xqx9k6yhfcioxydjtpbcbd74o18j7pin
+        d=1e100.net; s=20230601; t=1760469450; x=1761074250;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6uDSBrC8cLuTSNHDyZiLCu5ZpZO8rOAjsl8ZFn/oXgY=;
+        b=ZCKe3sr2GiFH2SAobADPURukYJWwOBqc8wqzYiccG9njM2v2mIjcCvtwhqrrmAAB/O
+         l5/PRxx6M3tjaIw52vwohExEkcbVstvOnK9kPmEBBnPf3uZ7XHHex+EaAubJB8Fwc44f
+         R8OB3Js5tTbP8kgswWHrjR5TqH69gEABXjHXlrk91cFApiAGx64ZO/YTY6VdxO6h6Kv2
+         nbG+8PgA55LiBf9CoWJa58D9MMUQTe+925UVc7eizlkYc84bUzNk9ohWyfgU1OxK0f/H
+         5wctU91hg8eFUgYCnFwGSbLoFCUL6Mey+1b2z5tmI1m5+YanhKSWIucMsVBwllSJ//fC
+         LlXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMLXApXPucwjaJLKSqiMmjOQJm//Oj5T+6PDyyHqztiZ5oSgqhVF6DvkVMx44PvqrI3DS9yKysIw==@kvack.org
+X-Gm-Message-State: AOJu0Yw6a/ZAJMcmIhnCbIIqFHjwcgFSXA7FQgan7dT/rTGui1Gc1LtZ
+	IzXDtXZX2lnSU0q5gQGeU3h4eckr7qG7sdKBayOGHP3kMMz4NmJstc4F
+X-Gm-Gg: ASbGncu9sMuEspw2vUQCZpwhMrf77rn7ybbTnVvgKkFZ5ZLTaGTlMv9P5m3eSvPXbZd
+	ruS+6C3uF467Z5oUqf3qH8AuVoB7FZt5ZJZV2lqBuG5hQDh9Fl2a798R3lJpRKpeXOpVA8AKFgP
+	nA4TPpY1uXXWwBuD6vEMkl57eYs+d1H6UP1Hh3j5T3jJsSbLqzH88fQvt3exM9cCZL1JSJ9HCTe
+	GHYXhEhqhksOGGoxLD1ERs9JiiIxTplbDnLTKFXrl8xbuzkRzUIXysLCTquXOlhMG+GY3amVXPz
+	A9qx75I2FvjRemPC04lJBd6FxKinf1WC2bwlwHc/UEyk+kP2vcrEL7eMdBpdsCjbadtX0v6r76s
+	iHX2tDjoMKaiXyoqAykfF1QqnLfw7CfpELLw3N532949VOFE/D7T69uxg1ljCNRNXDVqHMn1r07
+	a8iL4Lq7BftxvW8lPIs0A=
+X-Google-Smtp-Source: AGHT+IF1b9AAnvNc6gLY8LoyIsmgjxUrlXEDNaP9TOJPUcJClAPAZoYgKHkl+ZfyW0Pn5VZag/Uuqg==
+X-Received: by 2002:a53:ec89:0:b0:629:9c6b:b3ab with SMTP id 956f58d0204a3-63ccb825baamr16716867d50.1.1760469450484;
+        Tue, 14 Oct 2025 12:17:30 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:74::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cf0ee8ccasm3560031d50.13.2025.10.14.12.17.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 12:17:29 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
+Date: Tue, 14 Oct 2025 12:17:27 -0700
+Message-ID: <20251014191727.788875-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <6d62386c-242a-4735-add3-fee9c6e0ba96@suse.cz>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: c11y836uwda3655aextj6x18n8j4z574
+X-Rspamd-Queue-Id: 99D5F14000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 84DAF14000C
-X-HE-Tag: 1760468795-955696
-X-HE-Meta: U2FsdGVkX18KXCRaA/oQs2VxjIB0CXdWSePp5cbvb97LpIzMksr783+4PTv5ep4cyGZtuSrqsqN9WEbjX8FF6rH9GgSkxQkay49LtHRGYiuB4oZyKcSLZr//iQWkO2sqTt4RtxhmvJfGsmSkHG2uRmGIScHBAKNLXhYX0FLbqJrQYMm3ddvZkehJNv8dW6FVMUN5TRWS5DPjZiDwljEfpn5i7GVaS5tEsJf7DTPD2ric4dHF26O/zV2X5Th0T12c/51bBeS/lSZeseyp5Tfno9sP9gH0vzxPpSmU9OUWD8xls2LnoZBB0GWlDSb0lVp4mkSvr/QthLL8tdHmVVuf4VXSdl/Np6jIFep9jeLJH9KQMhRo29YsZlkN/54j3TPKSvgUzUGxPHpuqN8M656+YjARDOB50xsEIvZMR50+WWrA+aXg0FMZAC+Mc4I/kcKkpj+sixFUH7x4L4y1bMWX/kfuKS/aMnp/50EH4r/193K5E75a+6yoO9+sFCGw9LuzT96Fp7RPp+bSTne2UtrTHjxtCCrBLMNiSngNZj9vs0k3tbZ+uTQaGlMk2j1v+jU8LjvqWRsuZAsNwIsLJ2aeLKhWtV0OwVJoYR6S4hR7b7eG6AoU3N/BAkjra/S/2oYiv0V06I9Tiw0XfW+AYws2q8h3k2ap9mJZU+nchb7T9ZHgAvcBCPAX14XIY+eVEu5XDOx5uDXS9BOZt+O1JvJ3xT4XvWThL8a3sVxDElhg96YSVpDSlcxo3xgO2nDMa4HGc+1clv7KN0hHsHCPdslY9CkYix9n/LBm/3dX6wMAX2uve1jDOj0DLihkoJNTX2OzcY5i/9qE+Eby2BYlhNLspFh0LRt6+gq935VJJapZzPQT8nxNKumViJqEJGy05L6GJtDSYYxxJNTsJV7vbaRwzeo/lyf/51hZn3mYiu4QpqEfKGDmb9VOXZm9E/F5oaFRX2Q0uEpYV5IPi6CEDwy
- lRqxfYKL
- 8rDEM3mQmmWeEGH30gA391NxN530X/z4wQ6cEhnxHgz7HKONK6dC11ogN/ba52weYDH1HbFOtOJxY8nILMzLk+q+vxoXHEVkD6MdtP8gYaBPjHM9V3TpyguoNO3qLE5g2cB7plkWvQwLT2fbrhqnqG8FHk8fcxgldpoZEA2pOoj0oTeXT0TPd38DARC8LfKrTeymtTlvXuCjcyxrt/1qBekn4pn55i4DsouuvaassPPsXlM7C+mDyXoSUeLw08rl2KldImpg0F726Aq7ttyTN8VPmt6UYGV93Fax732NCJgnWWDq9YNdkcpAGHsHXltzPzuNuNoF0pUQg/D9aJPtE7Z9pQJRqiinykOnIUXNDnlFtZyLzkyBXNEjR+nqFfhoobr1wq95c+dPlUNCMu9gLrA0xet9vDakAl3hyeXY2PSHyyQyWoYusjRu3P0m2uTCHNJTfKb7Yf5krpLZZytv6UAnCPPpU4qPX90+48sSMmpi6xscSb5Xf5FgAzZ9axCHEdxOK885D76XyRHR2mf/LMYNjT1LxE3gLx0KZVhxW06dg6Ymvh/hlPo++vQ/bfTDrRaeVzmRyfCfsXog0vQqFlHRgoOXQ8/a5OHJ3QRLsOA7OGanccx6cK8CyH8Z4mBETiPmD8/gZ+bwXVgNCitkuTM6n+BaNxsWEF5Bd8p+41foMb0n5Fqd+LhHnKR7oc6Uk0RS9
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760469451-465871
+X-HE-Meta: U2FsdGVkX1+ox9vTMWtbQbqw0fVO6yNgREwM56fTjnGo/fasWHO6ZEZoLoVhWbwhds3rt4/S+lkEI/qryiuFeMwisu1854/+Lv9jT8pDHAGAEWaklHZ7mOn//K/c2eSbBaESVwNVoILls/hYMAfHlrlbZc7ykO3zYOj/RodZ9izG5gtgX+h1dSesOPEtP2Jl/dTbHhmpTtsH+BEpddCKwahvBf659P5rBNseY+jA6Ju96W2PTxh73fRjXkgJXpuB+2DELrk/jLR7wl6JVWmN3GAwZ36VfWMdYDdF4djtgvWN+Pvo3pQ021lNAKiRHZFMFd4k7YHciT32uEuVPwZFWnHYBZR6l3iFnj8ritrX3+xTHScX3EtuaG/fo1lCBDi578CBqfl1dvre3rIMJb9xAOne0siEp1xrSrA7bq132pdQtLtFmXnWrdQDvU9DD6FvgyUDfa0/WAvBNnNwx56blxQLm48+lxGedmLizYhfKcmho8+BHg8+3ShiFi/z6Hu95vUbuHv+5qJL59Kw9Yp87dlFurE+3lSiHJasDur+8KtCPGPtQ7w2Uyww7TCgEYPivcgHuhz57cFqzPnSIlXFMZJloYleCbDeTPT0puAYZarmiyYw3MkTta3yaSaT59BDjuoqyu+cD2qEigvmLLLOBnZJuHhUQYwaTTBxUFTFrxyZSmhwHGYZz36+3pKfKyzknIjFbyZyDHdFi6++oFiEtbIogrf/BwmRx/aR/Z773gaQT04odaqJIDK9xesyyru/YkHKTtqRGwg7ppxBwfliB8XCKagG1dau7l/3ADiHcbpiChJsx3CnXh7UmDyWVsRX8nl34AUI8LKZUwvxcarU1RopEhEYfwUBDkeS3EEO6kANnIyd59mKiZTWb3k6IHRW5KFDZWgCKdGibpNL99jovEwNWGnaXeo9NTCfe6gzenwLE3ZqkqDwtya5buXhg284bC3NW5qdgCq3h7E70td
+ I14AW20a
+ M1xA/TorwCPjcu1qXsdOMvHmTNXoj8+LlO7JmSQZLfhwrToCwLSoni6b4m6vfha/GHHDCudBHuTjqyzjjg3knimXX0VbiuL+9xd93UaTqoavYXMi7RJQoL9QP1ewblbMSHmnXkiYAdC5YEIEfsPGl4FishJnDtO5lCl4g2GUXpWtmnl7ng3Eb7PepPEJKoOmvy+UNKl6pTmMarVIUgfpjUSnWnSVQ+ol3t9j+1DAmPp5QiWp/F6vkUsZG1fXH5Az5cAc4nX3r8FfylpW51A+yHPx8JWN7FaprNKZ1D8LKxPHImfAMcTt4DHiMpJlpezhEkFBQ1HM3eiOIcnd8pMBQqBQUz9AsYRPtUC9PO0rXmVG7B5ONAoeWvk9/4EvPHxds1bR5P3nwUuCrhGGShMblO8OLuJ1eIbDE12l6QkkT+dLl2KhKWRQZfh3a8lvSwz4xEZhwD8UE2ESIinBDzKbvg9Q16gcWbvQ9hCLwHntOxcC/90zJlKuYMLjBzX2ogk1AvuLMpOD1X6b2HUsObZhvfLjNm/G2cAn4awMD1c9VvI4lH+gVGGa2Gjp1qw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,51 +132,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025, Valentin Schneider wrote:
-> On 13/10/25 17:01, Sean Christopherson wrote:
-> > On Fri, Oct 10, 2025, Valentin Schneider wrote:
-> >> Later commits will cause objtool to warn about static keys being used in
-> >> .noinstr sections in order to safely defer instruction patching IPIs
-> >> targeted at NOHZ_FULL CPUs.
-> >>
-> >> These keys are used in .noinstr code, and can be modified at runtime
-> >> (/proc/kernel/vmx* write). However it is not expected that they will be
-> >> flipped during latency-sensitive operations, and thus shouldn't be a source
-> >> of interference wrt the text patching IPI.
-> >>
-> >> Mark it to let objtool know not to warn about it.
-> >
-> > Can you elaborate in the changelog on what will happen if the key is toggle?
-> > IIUC, smp_text_poke_batch_finish() will force IPIs if noinstr code is being
-> > patched.
-> 
-> Right!
-> 
-> > Even just a small footnote like this:
-> >
-> >   Note, smp_text_poke_batch_finish() never defers IPIs if noinstr code is
-> >   being patched, i.e. this is purely about silencing objtool warnings.
-> >
-> > to make it clear that there's no bug/race being introduced.
-> 
-> Good point. How about:
-> 
-> """
-> Later commits will cause objtool to warn about static keys being used in
-> .noinstr sections in order to safely defer instruction patching IPIs
-> targeted at NOHZ_FULL CPUs.
-> 
-> The VMX keys are used in .noinstr code, and can be modified at runtime
-> (/proc/kernel/vmx* write). However it is not expected that they will be
-> flipped during latency-sensitive operations, and thus shouldn't be a source
-> of interference for NOHZ_FULL CPUs wrt the text patching IPI.
-> 
-> Note, smp_text_poke_batch_finish() never defers IPIs if noinstr code is
-> being patched, i.e. this is purely to tell objtool we're okay with updates
-> to that key causing IPIs and to silence the associated objtool warning.
-> """
+On Tue, 14 Oct 2025 19:54:28 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-LGTM.  With the updated changelog,
+> On 10/14/25 16:50, Joshua Hahn wrote:
+> > Changelog
+> > =========
+> > v4 --> v5:
+> > - Wordsmithing
+> > - Patches 1/3 and 2/3 were left untouched.
+> > - Patch 3/3 no longer checks for the to_free == 0 case. It also now checks
+> >   for pcp->count > 0 as the condition inside the while loop, and the early
+> >   break checks for the opposite condition. Note that both to_free and
+> >   pcp->count can become negative due to high-order pages that are freed, so
+> >   we must check for (to_free <= 0 || pcp->count <= 0), instead of just
+> >   checking for == 0.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Hello Vlastimil,
+
+> I don't see how that's possible?
+> - to_free is decremented by to_free_batched = min(to_free, batch); so it
+> can't go negative.
+> - pcp->count indeed decrements by nr_pages but it should be exactly zero
+> once pcp becomes empty. It's true that internally in free_pcppages_bulk()
+> the count parameter (where we pass to_free_batched) can go negative, but
+> that doesn't affect to_free_batched in the caller free_frozen_page_commit().
+> So testing for <= is unnecessary and only looks weird?
+
+You are totally right. For the first point, that must have been a slip up in
+my mind, for some reason, I thought it could go negative after looking at
+free_pcppages_bulk, but it obviously can't since we are taking the min as you
+pointed out.
+
+The same goes for pcp->count, I realize that it cannot become negative. I think
+I was being too careful without really thinking too hard about what I was
+protecting against. I'll send in a fixlet in 3/3 which should hopefully be
+folded in.
+
+Sorry about these mistakes, I think they could have been avoided had I
+thought more about the code. I hope you have a great day!
+Joshua
 
