@@ -4,135 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 929BACCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA91DCCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:26:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A622280006; Tue, 14 Oct 2025 11:14:52 -0400 (EDT)
+	id 18F668E0122; Tue, 14 Oct 2025 11:26:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D478E010A; Tue, 14 Oct 2025 11:14:52 -0400 (EDT)
+	id 140898E010A; Tue, 14 Oct 2025 11:26:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 593C8280006; Tue, 14 Oct 2025 11:14:52 -0400 (EDT)
+	id 007458E0122; Tue, 14 Oct 2025 11:26:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F23B8E010A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:14:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A998A13BF86
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:14:51 +0000 (UTC)
-X-FDA: 83997067182.06.53924E9
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D9A721C000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:14:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=POIdsoPB;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DE9C58E010A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:26:14 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F22588867
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:26:14 +0000 (UTC)
+X-FDA: 83997095868.05.3C0FDD3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 360B14000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:26:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RweqxQ+V;
+	spf=pass (imf12.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760454890;
+	s=arc-20220608; t=1760455572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQLfTHNnTKNjH+34TPL7Pi8OhXbeEQ0J4cWXx6jAeow=;
-	b=EpqkFzaIcC8Rv4sVXSaXPYF2tq2Pu52DYCV2QFsKMbqPKfZD0Y13E4S9xVRowwMyb7s2KK
-	yBRrgVXxLayRnoiiAvCeI3gSqtfNr4kVbzn04oqbH99upyZWkhJbySJjI5n2N0FT0+1AND
-	UwYKyr9ILsAzAztDF/hdFjraikRmDPM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760454890; a=rsa-sha256;
-	cv=none;
-	b=Jr8k6qNj25b8MEPG/sFCM9jFbhM/vP42M41ThzKEsEqW1GfC6nT8sCseI5QjtJmLLsELRp
-	9sxmItYf9m+mIwqt1gqsyy6T7phO09heOLcoegbXFxo7w+Oe1mKi9IJt6jeIihA+GgFail
-	cO0v2JEIeaqVb0DG7WESnf8++Rg6YGE=
+	bh=BPklb6K1+lkU1jV8UO4c/obMd20v1vJ9fV4tt0H1zPw=;
+	b=De1kdaTCs6gatsVbuslgQRvdCeV2TaiSxewx9E5Yzmb0euSbyl3pMyUJvGSTorQL/duTM7
+	Bt7uVBfqG9PshHMjfNEvLRXLYZ1L/GjaJudWEw6ZYS8qJrInNF0qxxWWx6FmTi8xrJDa7K
+	gZrtTtJYhnBFrx0UrL4Zk2SCdJ6e/As=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=POIdsoPB;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-46faa5b0372so33437415e9.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:14:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1760454888; x=1761059688; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xQLfTHNnTKNjH+34TPL7Pi8OhXbeEQ0J4cWXx6jAeow=;
-        b=POIdsoPBIfDQGwZkMBawqX57EpMnGPObBorjdIt0j8Z4gkITrGNC1LaTaWRsVxDyjc
-         WJAU+CCgo2EXBgAXhoKB1H1AMpV7y2ytlMbByApp523EDHWDSMxMP543VRn2d36nt/5t
-         zSQLnGmTMDlN4Wh5LSHMAhbHS9haC999VQ6pjlXYz/YodL3atf/mJF7CRUXiGXBdOdTA
-         1l26Rb1HLv/o340om2Ss2ZaC16f94tAv2Lnx9/bt8ZJLL5Dc9rlNppa/VWqGab2i9aDP
-         1LQGrjM1WWSvQ8fFFZIn5SOdIW7OmHw05qm3cg1s4/HHnXza1JZBkRogr8b3pjGGRtc9
-         yd/A==
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RweqxQ+V;
+	spf=pass (imf12.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760455572; a=rsa-sha256;
+	cv=none;
+	b=IHZ5Cs+8JL1DEN48c1DXkOytwQY1c1uEdJA5ji7txXQqIcBaEcejFKPU+FvcLDbOCQGQVt
+	Ty2Ol42h8x+qbyHgzJf1M9ufJZcPVuAIlX0ACJUXRdZKWcbHL6//l1j43ms6bYM/wqrD/9
+	GXDWTCXnh/I5Kvh1nUZxfmS8/xXv2aY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760455571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BPklb6K1+lkU1jV8UO4c/obMd20v1vJ9fV4tt0H1zPw=;
+	b=RweqxQ+V0ktjKiFe9JID4OkFsr51HG2RWDe52/tDj9HfpOdbUz2ReLjxtBgQmlrHm7XOKE
+	5FfuReY2J/QsCpjPv0x9ETfBZD5qoUHuXUnZb9Vpa1Br2DxIo8Mj3rEa1yeTDXT3Rrrwqn
+	P4DJQZcRlFkROtdwiEiAlI/AObZHZT0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-449-qHiJX1FHNeCxd8-6hSqvfQ-1; Tue, 14 Oct 2025 11:26:08 -0400
+X-MC-Unique: qHiJX1FHNeCxd8-6hSqvfQ-1
+X-Mimecast-MFC-AGG-ID: qHiJX1FHNeCxd8-6hSqvfQ_1760455567
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e4cb3e4deso21106815e9.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:26:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760454888; x=1761059688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xQLfTHNnTKNjH+34TPL7Pi8OhXbeEQ0J4cWXx6jAeow=;
-        b=eUC8gWcRLMsY9TUAW84ZZrVz4P2/6M8Nv2ZsuFpRJ89M95PSTczUOGS/L35qFIql/x
-         Kq2Gmyfe+pc9Br5pByZmVpc/vjq5EUUgB+aSOmuCNyj8BaMhMOkE/Q7YiSJ1bRAvhsX5
-         rCBX/mlDPtUIFOZyE3bwEhfG05Xle2V6Zqs/3txrOckWu9CYOt0lyMEESDgvXXmYXwDp
-         Y8reQBXcbXTQaugDEhP3rP6JWdbPkFy9aYetOAn/Uulii+PTLsna6r73Z0nzgEl/4ZA/
-         JvXi0PZPxNECrVyflWJkVA6CNFjXuV++z5nP3jxxMOx7e7Rzlfu5/11CtnI0R9DbR1ek
-         Hoeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUJ+FQoaaopWcwlNXHqEDHYrCe4FkJRA7Rc1YiSSzzv8keiEmtLukD/IXTt9k9tHbnbqrttlrodQ==@kvack.org
-X-Gm-Message-State: AOJu0YzSKBscL8h2E2BYTGZ9P/QaOihMVcS3O1TfHjaankuDoZ/7CR+b
-	b8xJ7w9NZXOfEjHES5hGZP2xB4h7vtFAGowXxBrtjmbEMQKBP7yRSMtfBV7xuYWocgs=
-X-Gm-Gg: ASbGnctuuiUIFrGNd0tucQ8FDPOzMR7intP/n3TTToHjTGPYfOyUssWUPR2bah6wpzx
-	QlssPkTUhT/PH5VgCq4XYvH7WZDh6l4SNkuCikfoP/iokacZ674mYunxq5faotHXNL5jwKlEmaa
-	DABA1cxMCxun89kFtB4bwKl7vYvsnoG+R1JCeHxtuGmNCAmH13UO98mYz4P3PmJAmEwQTWcKooN
-	Ja2WOaN+gWcznl8k8r5+7GvgatcDigzgbk+KayHHa0XT1Zb4IvGwhQTPS8jnuGY8Sk/uQmR7+0Z
-	2i0JQTDXEkdr+Sl6yUkQBAC7A1Cj35GyBEzdugJgw9uHfeNlGwGHNhumRaotBWkljR8wcNxrkIM
-	fFIo9yNwT8Q9OKs5Hs3yWuXjoErfAqQ/oTRTnUt7+53oi+ivviUfep9JjpSp4V6V+xHzbBJuurA
-	==
-X-Google-Smtp-Source: AGHT+IFTHGjFphXZexQjbUWRV0zNN1oAawyBZFjG8j79GJAZYI0e5RFLHEUzsaTaFKvHfVpvOLq1+w==
-X-Received: by 2002:a05:600c:6818:b0:46e:36fa:6b40 with SMTP id 5b1f17b1804b1-46fa9af915emr172798525e9.24.1760454888343;
-        Tue, 14 Oct 2025 08:14:48 -0700 (PDT)
-Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fab500706sm157838725e9.3.2025.10.14.08.14.47
+        d=1e100.net; s=20230601; t=1760455567; x=1761060367;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BPklb6K1+lkU1jV8UO4c/obMd20v1vJ9fV4tt0H1zPw=;
+        b=pgtde9z2oUJGXGmJQZWYanrztxtuHtk9P5mqb293xwg+FKUuhZosEg821fpUV+npAO
+         YaEQXZo+TcM5cWNOujT7+SlqfK2JyFPNb+e+YDUv12Wr3i/6ByrwicvdGPumjsCtnoIA
+         VR8nQrF81kZKiSoOeEgEEH8qzRWX3329VvjD19L7N2/ibZkYDHLlzwAwFokIrRTowcp0
+         zxOprDSRysLo7hEwk7JcdJVLUs0P2KagC0yp5k7YTluo8pJREzTWDFh1J5sEonYofT68
+         rFrRHnbC5/48XrBcbnu7opIXthFPoj+92GxXcP8VOUExr4rmPzN719+zx7xHk75PZ04R
+         nujA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNNOo/QchxdpVqEqjgVOle89y/1OczdBcXH7Emj0Rwu+flyX6pUUtEEdcyJPh1cmExpMT7ZhhN2g==@kvack.org
+X-Gm-Message-State: AOJu0YwsuKckxTbP2ML2Ug18+/Icq45hjt0NDrOGB9DzqPDNvuOhQTib
+	XPACe5WatopeX8aMc5WYU8kFjmx6fzyAC4aykfcMMsy5zBp8F38DEGIgwoQMR9lzjof/ZRgXvKK
+	SrLLgcLh/pcnPkRR61IQnzNOcE3bsWbryzdGI7Wv6iJACxO/PmOqu
+X-Gm-Gg: ASbGncvapo/m5P2AQB7iDYp1IpDi/xPCpCHql+aMW448kR7YsLNKoYMQLKrF191idOr
+	ZRp7Ieo7yfLcqTCrILq23CB/J5Zvg5TTKzKFo6CI6O1qHa/QhwPvbu76u18rfl8fsT2QN0QkYwj
+	PYU9KPCmBsxuSEMZ60rWEj8W/amLaIPiOjp4dykmOHk58q76qwUleuqRtNA6XU0xbIKEOaYB6/T
+	IEpYunsxcx6NgajEp8lhEpaVGs159Pm3LienNfHx9/2kOi35WVl3DJXG6REinTSDvX3qH/ert9q
+	tzSoyo5RmpDB1UnK4Oo+kNBGAVOtmx65uvETwnZGZHdHN1gbq1d2yYMcKx7AY+7pcdD+/HPhtgW
+	Feohy6IOjNZ3OH7ZJyOkL00pX5g==
+X-Received: by 2002:a05:600c:8115:b0:46e:711c:efe9 with SMTP id 5b1f17b1804b1-46fa9ec7556mr181899295e9.13.1760455566815;
+        Tue, 14 Oct 2025 08:26:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHW593XOgtaLpqw6H4D31qH5lmbNbujonLfE4h+J4hQ9AwSFy0g3uK3ztnKvCXj4YJKI0uSVg==
+X-Received: by 2002:a05:600c:8115:b0:46e:711c:efe9 with SMTP id 5b1f17b1804b1-46fa9ec7556mr181898575e9.13.1760455566403;
+        Tue, 14 Oct 2025 08:26:06 -0700 (PDT)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce57d3b9sm24483884f8f.11.2025.10.14.08.26.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 08:14:47 -0700 (PDT)
-Date: Tue, 14 Oct 2025 17:14:47 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Barry Song <21cnbao@gmail.com>,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Barry Song <v-songbaohua@oppo.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Huacai Zhou <zhouhuacai@oppo.com>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network
- buffer allocation
-Message-ID: <aO5o548uQAuBcw0P@tiehlicka>
-References: <20251013101636.69220-1-21cnbao@gmail.com>
- <927bcdf7-1283-4ddd-bd5e-d2e399b26f7d@suse.cz>
- <aO37Od0VxOGmWCjm@tiehlicka>
- <qztimgoebp5ecdmvvgro6sdsng6r7t3pnddg7ddlxagaom73ge@a5wta5ym7enu>
+        Tue, 14 Oct 2025 08:26:05 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Juri Lelli <juri.lelli@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
+ Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, Andrew
+ Morton <akpm@linux-foundation.org>, Masahiro Yamada
+ <masahiroy@kernel.org>, Han Shen <shenhan@google.com>, Rik van Riel
+ <riel@surriel.com>, Jann Horn <jannh@google.com>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, Clark
+ Williams <williams@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>,
+ Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [PATCH v6 00/29] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
+In-Reply-To: <aO5I2WGtXqSPYFmH@jlelli-thinkpadt14gen4.remote.csb>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <aO5I2WGtXqSPYFmH@jlelli-thinkpadt14gen4.remote.csb>
+Date: Tue, 14 Oct 2025 17:26:04 +0200
+Message-ID: <xhsmhzf9tld2r.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <qztimgoebp5ecdmvvgro6sdsng6r7t3pnddg7ddlxagaom73ge@a5wta5ym7enu>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8dyc5ss9jqzuz7jcg8zgrkjrpfh1s44m
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5Peky1Kq56IpjqzJR5noPZGcc4DHUZEQ2zs3YBqbAtc_1760455567
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 360B14000D
+X-Stat-Signature: gd3etexo6xij83ueq8iiuonc1mtcp6bi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D9A721C000D
-X-HE-Tag: 1760454889-500801
-X-HE-Meta: U2FsdGVkX1+HhBVPn6zD72gGgHubjCJyfMONtCgA3uTUjgItpgI/i+qoLrEcF03ka6BPzPd2BWHteqDo0RQHoa0CvOB4J+WPsB4+Mmn1s96GdhvhKchXBJJSBEJwUczFsqZWM3rx2HJx4DhgJ6Oxp6a4cdlpb0lRR1rw8JFLE1TMIZxilW6I7HFg+caJ2EP+ujQmDHG/V0uHTC57xyjJCeTlBJHXq5GLKDKurtPDm+dN4BIDd2BBy4ZL3dTu9O34JASIR42XC8K/pB5QSCD8KHVykFyLR1j3tozjR0zMbbjpbcl8BrBnUl2JS3A5VenvQ70+DPsSzVhjttBkeMKACu8IOm3gvGXgTyiHWBdeItcow/qDX1J+anY62CLaYf+X4SHmpFp6dEialwllHE9uR4A7JCNG/T5fcgB8wNlV2OkIm5WPMAoQ1XIT22rPttXMowFu2JSVmyCu0kg4SWrAWD9DZb1tjDpy5CZyxHcp0V0u9EEqeO+1cevJw602uBOwcqHvT5ls012CmRrcIvZEXG6GoFFnbhaNI66rbN4MuBCJj30oklm4ax1VLur8bPSq8CvHS+tWXKdG0RW1Fx4yG8bzo+rKaK8LCrp+0CndTMW+IDmgNHsMgKmC5VZT2cTt1rm/3iifi7W4OJ9+2R5ZVV+W9j3Dyt9zBQQY5XOtAPbukxJXXRhoGsyekOJzxUliBfieu9SMkQGFSzRHoNQ3jcbWrIGvN12Iz8rTQ1AfI+kDsdlZJ088vtmAYbq+AhzNMI1e261x1MjoYIQs9fVOaGKN3KXP3TytSrQ6Gzy1DRLY/admGfDZlBRfPeGznCTX+eVC99ZA3/8Iv8Iftp2LkfVYtlNenQZo+kDGeIZXsGnMaXqkSqidYktVkKjSUlY349WWV0IxlM8YoDdaxgnvMHJQVK0ZA/3qIXQ1HJjobk40F4X6IwkiItSt2K3KFRzh1WmsXdCq6Ka7jEk9Cno
- 3+ovt7uZ
- RL6TbmDY7C7s7ZrWdonTdO/MUXuK2XvwDKVhMdKvGMq1ZyE5jKQRRn0PCK3ggDHj9tsZ4ksXkeRIIr9hiARJXMXoADSgYoZu6oqvzKcCoSGustXdWHqHuKnjObKmoheOSjgXLWmS780/v5oP7svPcKzZQ/E5mq1o2Ye8vo26mMU8J0qE=
+X-HE-Tag: 1760455572-766588
+X-HE-Meta: U2FsdGVkX1/KvvMfWQe6wzMTPKZ7JtLA3b5joG80dvJz2wSAn4aBY88bYaIKBXhfFRaLcYlE3XV7WqBeiOyLpheUu3XIunhuddK4JEiGKInWRnxpOoV+/M6ZoOE2i2ndNYCMzpewzWg9sanv4njmu0dbxZN0Y5BV9OohlQE/Sq29Qjbv5sYUTyv4RT5VrrG1zithRjeGB2Myf0hxjoCqhiln/YStUQAu3M5srDzmbm/z47BO+/vKOPrVXCNcLkJjdVhLfPS7SCRQegu0GDB4m1kACCCxC+YBlUVS9rKkjcuTFE3CP0HdpUYalt1pgthvvmetlnbx+ZguG26n51k3v+y45SFMe9W5zY9y49a3s9M0Qc8T8sSRkap+G6o7AtHKfiFDungbYq4k3DaP8qEdIiRqO8lzPZK9Z38nIATUODAclSeKHdUB/xWgUQApA7BPPTa43esjnXahgS6b30vs30JLTP/Ca2OkUHqdb/Ynm9xlWbWeEkHhsOZylSOjGhHBmW0zEYIm+TKWvg2OVpZ0CePevFIxeFgSTavSiYgpRC9dJ2WOnRNwrn+dupHLVn9KEm+pMR7GYaFSjSPWmVIDgZ/XTlcaoaQnVEow5fRXT5Gbw5HpeBrs4LiyphHZbMQqY9ZJ268+zPFYqzxF8Z3VVnmcz40zb2euAvHabzvBSdOMAY4OU9+UQ9hlch9/vjcG1ChnRN51DnL555DGHyDu1JFHn0FmR+Pz6Vung7U1RUDcGh4c91eQAOgRQusL0itHp+gGR0Ly51lUiRur6PaORDyBZqFw83srOPK8oSsBGka3kIYoqd8tAAoU02VAqe/H4x269cV7C+anFg1/y8xk50Y0tBhRa1RK2n1lYUgMfQ5RWUPG3faaerFDiPqVjpu8dTMRaibK2s6oklZpom6U12w00d4YKNZ50HPbDvmyAt6NY9EHaHh1bkAyzziZqKCx+RyVinCpJJFPHQUa/kS
+ vL2NJPe4
+ wfH75ocZHDY3M3l1TnF+/JdEh1dBr1ShLkjmqwwRg9Pm7Te6QeezYHetlv5w9UTCBzxpynFQ3fEfeZi5rQLUcyGnS3e7r8B0SMnB0rd6Jfa6oQbwa36P+YqrkD6UNLYz09VDBUYbeAc6jE4Bpeqw8seIyx/dNYDWmtQsymEH1jBzQ8mvXkzQZZA8PnXRZeYavHhRy6oVPnfGYuoWw6LEjpFPWuEMnUoMcgF7q3HMQufxh3kyoz96/Yv4stUwQBOtP0cUtkVsVqTcxz7lBoGd1F6NSNaqsMoHH/Sxnoqf6OrdGht0Q8px69icweRGcAcPtYkk8+3EEHeGFI61C0HsjAI5OdvFcWUtlQQRIXp/7Rbz29RhnwyeL7fUXUeMVfjU5kXeMw5fNtjnv+5jNLjHF6KU2wgE1UI/JU+1yYD+Ne1GtsKB9RfwZxncGqk1sGUDKUqOVgV1iMb0YJqT8Rz06FG09Xs/ZZhdrBYr5kyTII54xt12oqYFxAG70clScCAJ1KixCvoOV6S686EdOa2a0sBjVsBaGUDQEO5rDpjLY5WAZN2GDYyPtm+UEtQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,34 +150,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 14-10-25 07:27:06, Shakeel Butt wrote:
-> On Tue, Oct 14, 2025 at 09:26:49AM +0200, Michal Hocko wrote:
-> > On Mon 13-10-25 20:30:13, Vlastimil Babka wrote:
-> > > On 10/13/25 12:16, Barry Song wrote:
-> > > > From: Barry Song <v-songbaohua@oppo.com>
-> > [...]
-> > > I wonder if we should either:
-> > > 
-> > > 1) sacrifice a new __GFP flag specifically for "!allow_spin" case to
-> > > determine it precisely.
-> > 
-> > As said in other reply I do not think this is a good fit for this
-> > specific case as it is all or nothing approach. Soon enough we discover
-> > that "no effort to reclaim/compact" hurts other usecases. So I do not
-> > think we need a dedicated flag for this specific case. We need a way to
-> > tell kswapd/kcompactd how much to try instead.
-> 
-> To me this new floag is to decouple two orthogonal requests i.e. no lock
-> semantic and don't wakeup kswapd. At the moment the lack of kswapd gfp
-> flag convey the semantics of no lock. This can lead to unintended usage
-> of no lock semantics by users which for whatever reason don't want to
-> wakeup kswapd.
+On 14/10/25 14:58, Juri Lelli wrote:
+>> Noise
+>> +++++
+>>
+>> Xeon E5-2699 system with SMToff, NOHZ_FULL, isolated CPUs.
+>> RHEL10 userspace.
+>>
+>> Workload is using rteval (kernel compilation + hackbench) on housekeeping CPUs
+>> and a dummy stay-in-userspace loop on the isolated CPUs. The main invocation is:
+>>
+>> $ trace-cmd record -e "ipi_send_cpumask" -f "cpumask & CPUS{$ISOL_CPUS}" \
+>>                 -e "ipi_send_cpu"     -f "cpu & CPUS{$ISOL_CPUS}" \
+>>                 rteval --onlyload --loads-cpulist=$HK_CPUS \
+>>                 --hackbench-runlowmem=True --duration=$DURATION
+>>
+>> This only records IPIs sent to isolated CPUs, so any event there is interference
+>> (with a bit of fuzz at the start/end of the workload when spawning the
+>> processes). All tests were done with a duration of 6 hours.
+>>
+>> v6.17
+>> o ~5400 IPIs received, so about ~200 interfering IPI per isolated CPU
+>> o About one interfering IPI just shy of every 2 minutes
+>>
+>> v6.17 + patches
+>> o Zilch!
+>
+> Nice. :)
+>
+> About performance, can we assume housekeeping CPUs are not affected by
+> the change (they don't seem to use the trick anyway) or do we want/need
+> to collect some numbers on them as well just in case (maybe more
+> throughput oriented)?
+>
 
-I would argue that callers should have no business into saying whether
-the MM should wake up kswapd or not. The flag name currently suggests
-that but that is mostly for historic reasons. A random page allocator
-user shouldn't really care about this low level detail, really.
--- 
-Michal Hocko
-SUSE Labs
+So for the text_poke IPI yes, because this is all done through
+context_tracking which doesn't imply housekeeping CPUs.
+
+For the TLB flush faff the HK CPUs get two extra writes per kernel entry
+cycle (one at entry and one at exit, for that stupid signal) which I expect
+to be noticeable but small-ish. I can definitely go and measure that.
+
+> Thanks,
+> Juri
+
 
