@@ -4,105 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C538CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 04:59:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 963B4CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 05:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD4D88E00A3; Tue, 14 Oct 2025 00:59:49 -0400 (EDT)
+	id E40188E00BB; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87958E0005; Tue, 14 Oct 2025 00:59:49 -0400 (EDT)
+	id E183C8E0005; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9B618E00A3; Tue, 14 Oct 2025 00:59:49 -0400 (EDT)
+	id D547D8E00BB; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A692F8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:59:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4513511AB76
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:59:49 +0000 (UTC)
-X-FDA: 83995517298.04.11D0BB0
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5977F1C0006
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:59:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760417987; a=rsa-sha256;
-	cv=none;
-	b=vc9++wA9V6Uhm6F0y3onYvRLJbuwrTTQgS8o35nKIiKEgJ3aSGkRjDhxoUWRxRrUwhNE7l
-	TE7ugZN43qVGhyZeyKDijPB1dZ829XKoM5QTzeBWrcEAsFyYWKlUGBxatYK4lPBbIoWZ0A
-	dpfluL3yZa9ryatcmEmVUCMr+JAit4U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C3DFC8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45FEF140720
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:04:42 +0000 (UTC)
+X-FDA: 83995529604.29.EC88AF1
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 712831C000B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:04:40 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Y6okOmfE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760417987;
+	s=arc-20220608; t=1760418280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j7IUlAhB88E0TndW9aY0W3O4BbLrJPatp6viH0im4zM=;
-	b=AlDhEZTm5BnyJe7sA7CIUwKgJn/hPQs6ZRCyJIvdT6oOUbpDWUZfSy0pA0UWrmIq1FK9hw
-	tQiy/gPZO5w6HhruuzPfXY3I7TRQ82VlZR4pBTvGVDH6aR/+vrALB3Mz5aTGWWTqQFJWQU
-	4thNml1xVgseOI7HUDvWjtT/tBWeTpM=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6271ea39f4so3303697a12.3
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:59:47 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
+	b=L4Y5ja5cES6lsDHvXaAHEJ28526E95C/4yK8ro3g1eeHwadg7CODeIj32VPxmgcJt1NDUQ
+	MhY6kgHpE0USggwwZqvrqk13Vi6oFu1WWB3Tl6TptkHxr+qEx7Qkc+fqWW9MMVP278YDo9
+	4boefvaAYjPawMYYHZhT8zQVEq8mT0s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760418280; a=rsa-sha256;
+	cv=none;
+	b=jBE/U2YEnzKMn25YpticQT5xHgc5a3Dha1Z7TOYBh3LSO1DDjyymTG+q6q+APUWaMQJjpj
+	MQSW9js/YKEtuI3jtWvCFJRUhYY4w6a+kuODvyLSOmhg43W+hwd/6OlUUZ11a8nNvKt3G/
+	2yvHHBEagwFsPOvqW049jscEmR4QzHs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Y6okOmfE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-79ad9aa2d95so86067796d6.1
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:04:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760418279; x=1761023079; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
+        b=Y6okOmfEJ0h9ZrmccBahN7BUczzC+Eo05bQvBxIoDUZRu7dyDz/ndY1lBDMhVvf12a
+         72+rmHuobc2vZVOQawlqwuAF5Cqby+Ts5WFFLOvlrxZW0w16fc2xJXYkzGkhDxq2DHGW
+         biPrM5OJbhKkUbM2LwZ2Tw3jr8X6B5pARDjLO2kP924Aki7/E7bPPwTdhQCvaqqCcG0T
+         P83xdP/yIJgll9JuPcJM+QOHbJBXIhbkRLFSltlcYBoiqM7++wYgCbjhuhHAz+vDdUrZ
+         CVwyMrvTUfTvlbyC+7V2raF/qlvPKJOf0ln6m2rR5TAEhHaZG1/GZRnsGeDl2YNwjsqE
+         mRMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760417986; x=1761022786;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1760418279; x=1761023079;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j7IUlAhB88E0TndW9aY0W3O4BbLrJPatp6viH0im4zM=;
-        b=BPliNFGsk/hLwNX0ZV6dJkwf/IOjX22VKNLSwF6LA7fQ/Wedujx9HSOwasr2igV6wx
-         GhLfMqOygFLs6yabUKvJoExRXjN54sVE3NddjZa8TsBXH91qFzYcBW5QxTatjRCbnMnG
-         ZJRaq6DDDYu9MgxcCD2YGSbU7A0eFLMQbn03Bzymopu1MxzPs+1W+RpxwuoT/AVMZjHY
-         nY/fyLvLCQJIZWn5NaqB7Px5a5TG+gu9x1biW0kUTjIZZ+OzT76IVsgIsGYnpYuDj7gk
-         CPUDx8sErpWCElEoS16mz1Ef3zAWQfOMdj3h53zA2xtu7Sl6vKFMiPvvb8a8UZ2D6uAt
-         FreA==
-X-Gm-Message-State: AOJu0YzebBkWBdl6rrEpt0aH4p8aHSn7wDmdux9Ll2m3c4Bi/Hc28y41
-	SfuqqKLolTbDV493PWf58t377xIjamLQpvMvBzFNOQ81yXSKkxwZwPsK
-X-Gm-Gg: ASbGncvEMACGbWAOwsf3ie5OOao6QtCHbQNQrfBaNH8/Q32Mk0KwzfLLiXk1ddj54XR
-	+ZGqsDnTbNjQeIJk0Vfaj8P9M2h3zAjM1u8WdsmSJZMG9ou+1oijN1ETzq5mZkEt/0RWDDAu+TP
-	jGtEK/IKt5FzMDoL3KnXoF08eRQRlNY9vmjRLx/Qjy9009kVy9FdwRpmBw+m9LY2LQFk7rXD5Vh
-	uCxlBIiUQQJyoe8VXNUjH5aD2NCXmL/ftiXAjRoIdpWV0VPAmfsugvVi+sDgqnMrWpPGBzYz0gI
-	9WnoOb8tU46snDiG45lbSL7yF9LwRoPVjruc4e2LRIR9AlZYXgz7eDTuzFDq1guGsosSoNuEE9S
-	MoNcjiJ6eaTsGzWw1zUtIp1XnRv616W5B78WGKWiJ
-X-Google-Smtp-Source: AGHT+IFjFdZHGXT/x9wuBsdsKcMSUOCZEq1MwGHaq7Dd+Jdf9jADzgCkgSMal9VmF64Wpt1ilzESQw==
-X-Received: by 2002:a17:902:da8e:b0:26a:589b:cf11 with SMTP id d9443c01a7336-29027402d24mr340881805ad.43.1760417986016;
-        Mon, 13 Oct 2025 21:59:46 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a11:3:200::202c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e39727sm149783765ad.51.2025.10.13.21.59.40
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Oct 2025 21:59:45 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: stable@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y 1/1] selftests/mm: skip soft-dirty tests when CONFIG_MEM_SOFT_DIRTY is disabled
-Date: Tue, 14 Oct 2025 12:59:31 +0800
-Message-ID: <20251014045931.86386-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025101330-hemstitch-crimson-1681@gregkh>
-References: <2025101330-hemstitch-crimson-1681@gregkh>
+        bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
+        b=UyoyKMoAeuTmjgpTNwF2SSGftTQ2u7GH9M/2gu5oavTYB2wXuoJZIluuCrkWPfbf5m
+         70bmLu7l/WEt//gf7AmBKC26Ndpu9g1g78oiYeRuuc0EHhjHSrDuCmJ5hyMqBQQViNsV
+         yCIo/FyuAqEzoKDHP5L6QJT2OQOUgdJojH0fHP0JizytNZ/8XNLndF1Mmcy+cSGQe1ga
+         MaDYhxsUvJIhaqX10pQHmhk/wgDt6jKPczGD2D8l2VDpu8375pD50L8IcLt3qEzzm7p9
+         E1WKVeHANEoQi6UOjcckvEHsOKKqtXff1rjDgsniWS0QqHT55TQYBcgIHezd8Q0ucgQg
+         iiLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyD7VmgEgSDC77wXXOJ4twClfA3879b7CYlZziEez7JBG2CO4XddMbye5L/1S3bRnajj9CO7D4Hw==@kvack.org
+X-Gm-Message-State: AOJu0Yy9gD3NEoGxosLNqJqYViTilrJnEghtWfqxG3O1/DjLU114Ejxq
+	W8ibbWFQwk7WD0w7XWzPCi2U9Q4Ar/VOWSurjz1TqFTi2m5rbMZ7slOFOXKWusMzBoscNs2IPsq
+	AIjD096C1nWXBrDx8vclFzoZ30c+VheGgdpuDYcqx
+X-Gm-Gg: ASbGncv5J8KtYiNV/WxXpLJihlI4/8DWq/PNqh15E/bKGEo/oLa4hl/9Nr0noVA5ykF
+	w/p1L6tMRKLzFO1o3DrTCgH0AYykBq48UxaZlu3kkzEg/pFghaIShouIxMEWSPBgKKkuByCmAez
+	vjNTb+l52MLRhAwkQOOIaUWk3W9lLqHlUg+D6SdiHP5rO3betWJVVl3ZsXwOVRg/hLUNXf5xIEa
+	tg61wYuvtN9iPzoLCE2TTEu4e5gik6DoNue/pzOfhg=
+X-Google-Smtp-Source: AGHT+IHZgIxpjg/6kkvcMW/J7xD1PN1qAsKtx/7STdfwV4yzIcWv1dUE7oPcxZBo21d0/mZd0RfXxsWJndcH5nudxHU=
+X-Received: by 2002:ac8:5755:0:b0:4e7:2b6a:643a with SMTP id
+ d75a77b69052e-4e72b6a671cmr56529361cf.12.1760418279258; Mon, 13 Oct 2025
+ 22:04:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 13 Oct 2025 22:04:28 -0700
+X-Gm-Features: AS18NWArWNcPKS90Zk5Pwo5Ct2LOmBIBPcz-hhg5UK9PsI9_HIhdsDtGvM5VF4s
+Message-ID: <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5977F1C0006
-X-Stat-Signature: 4ugd6grzcuhwt5brk3a335sy36t9mb5t
-X-HE-Tag: 1760417987-337058
-X-HE-Meta: U2FsdGVkX1+c+XfjgRoFLbRjHO0vkG1YDRQMraHh2HhWSVza3ZRWNX6Z/Iyufat88iyFBfhO/Tq8kfmCyek7DH4e0PlOnSvTW+zQZuh1oOu5WEmgtTHzB29v3Xxq+4sFMRP7TXxcoa6hbOt69p9l2Q0Gu1PDLLo2kFOuXRD6jMmF/2rw6ov8IrAUiuoEs/giAjKsUPUsDqglLbZvrqKtPbYI5JzW5rBzpilnI5hjV9vqvRujVh7FiaWNTWkpsZgCcFgr3LdztEcJdpoysVKZwJbViAkfjlLDCcKlCb0TAnwtAvhOOjxqNkKqyQvNBAkh23XLFP8C+Oyco7StHW6V3CI2stxXD1kTET1doJThQCxyrZMtljsN50/CoGISaUG1NSqbI9+D2JULApvYuphM9ONA/RxlESgZpP6S0cP1oqQ+0F5MqrfUhtvsRPtc1upOX64DiAK3+dZzjqo8EQrPLWOB+LRNLupPipS/egvoY4zd/qA0QmE9pmRQCeI8VtzRCS6NfQGHsZMAJRmRVkw/Bt1WZnfsw0AXK77ZeTdTpQwng7FkvqXL+jktoC6hEXYD22LYsKH3uea3WClb8WQqCt+xDw7khjDfs1nmpQqMsT/wynp2eRF8Fftsb2ds8pRIsoORjZUFs1iVTebS9vkqdLgmOf/yKy84tx5SXYQDzQODPhp2og7Z4WvgzwMAq/Mm0F8+XI135/tGvp1UksBACkRl6vnEHZVDjts5eyVZYMJruBcmIv9+dApbj4PE3YaibdcyG1Er5VZgk0Z8pZYLqSP3xEtPlejMelZQXPZ/EbUUiDWdyZXgLeIupuf+/8blFg7kSCtB4bPAE6ywQR2S7VP+2Pig6kAOmSxhjI85a8NC8noT9uiqVLBS870GYH57r0uS4y2cgjNEPAXzWzXloA78mCAHFiEnLLicFQ/Iuqf9rFJac3e7Dwf9mcQ2fDXbRhb9F+hN7f/+0arAYBg
- tps11lmD
- K67heAUaTfY+FMMQs3Mxbf13c9r1TiWZATiU6S5YmR84NzrEUICsUCtyZrh1hjSbMirA7tsrw8XvIAJDERx9tTE6P3z3o7jR3YEFu9CrMi88i42d/iN4czfW3Y1P90JPP3IlH9NHGYDV8neh9KtNd0njB+C6Z2okJRtnWDKa8yy5CsU8tfkDVV5eSvBY4xwGuXZe1Ybwb1zMn5u5kIlybOId4cQvb3kS/PHfS8OetkGSFBUoQ5LW0q9ogCc5+Xgq4gN3ZPev5XPSEsdsdCwvYlFxrUIW+RG4YfR5CdeEkZs1AcEggupHlMX1LPyp9KzjzGi+Lx6KrfBHmnB4LIzUhqfQF/7+7XC/6BnSU+nwE03s/KRup7taVrEZnOWqvgF7RciPcCZsHaMwuZL8sixbHj3ZnI/yjsYNVhUTCKNFLXDrz/Imq3l7EqTtnWYu4LY5M5iF+/J2HUKh9yVS5T4DAOQjtxbLtJudKlaRzOFMR/gzm6R0iiU32X+rz7mgV/BJapCRkRMgYGJ/ZKxBFyOzASzzGdaICMjLAcaojZmMUCedPgaAZ11eLOPqGhhWGz8HWGcIZvxTmC1LzOAFqh5BU8KAuwGE77swzoYHfdzls5m2dpoSKV3cPIP42Cq79xZLZbondY3ix3F2JBiFX0H6y7gNGtAbkgMfOBkk9IHQR+YKpBdIya6T/lgFNPw==
+X-Rspamd-Queue-Id: 712831C000B
+X-Rspamd-Server: rspam02
+X-Stat-Signature: eicrom837hnw1c98zm1bejsk34yg8us4
+X-HE-Tag: 1760418280-157945
+X-HE-Meta: U2FsdGVkX18kY/ch21V6EqcGyYl+hx1oYKZHfuRUvPNsTI/mJQNVWhBu97gqJItxY+3V73Ky/baJ3L2KadYewZ/AbmKKDiqvz1gsAcBQ1bZ8CpUqwBJ65cTvDSpgJJ6sh8RbdG8h0O3ATUsP8rlrcBuodqD35JdrtHIhAdEGqJx2KFb0ziJaj9tz8I+Qxq92cVdcU2ir4nvswDYfyvckzJ9on/e4BNKIMWxmWtS2sYAOHS1lnv8To0ULlw9qlz8dNZEo4cmmtFXY2CcWxob5rE/RYzKHojON9mevLfX7hiLGkPnxFf08OEypcS13aulv3yBDSMt8QlZjF54YF0wNt2z2cAm79YTPp8C0uyeu0Rk3LB3v3EXRAlWE1EU0AX8yCcOUaf+zrZZVACxS+2lxtzXgU+WVVXQJKhZ4tVGGl0iFc7eEHWPNiQg4g+dv6DvHnEZSTZq4DrIuchdP7MrIksUEjHKzFEH/7fd3xC/sYWfpFsAOjSW491IGhHzn9ODEnccmUS562WlHWcLxZoFGczPh/cnvNDuMHvDTR5zKBadg9ojGV5ml+B7byEuXjuOhyiMiveulnQoxy1xwgo6Nke23zvU9OG2PNieadyXkHgS8cvo5v/b9K7aiygCYISGw7I37l7lsfjw4gpsrgBeIpoU7kdIn/radZW+zf0ZMLV5FjRwwL3gGCyIUFPCG7x9KiLiSrFcx6wlwanWDaYXm8dOa3e9qZyDuSEGBOawSluI2XM1t8M9ohNlmyLiIdZAn/vmO//MMNdNyf9QMGxT6e2hr7lzStUEsOjuCHSnE+tMjpvL1FVPUTkbp3IhVLFnfL7yH0hmI7d+XBETUxhf/KcInXrKtlcpb52joEULE0fZEm+pBqmlCoGzQln+8Y4aA0Gtvc4quWies7HVVRiFlzd0SlH3N3kgPaOXUG6CQLrQCQSfIGYWJQkRdEJpgsVqtU/SoNFBkw+aK/sONsnu
+ HKypdnBS
+ v5gMhVfEdE+VI8xaAx4A5V+KtcDBR9dBDgRTN6wZyUgLGrLmB0Wnip7Yw5KHyTY0myVOr2PXG40NZB+5Iimp0ETWmh8MA35/SQ6Doash9mpHqst7HoCuLd5VksafG7yBfMt4g1IFKX9vEls8zTpTuPkk/8AapKrQ0HTdNcklo5QmYYhsruooQWiwf0tIpohqbz6fcEvYQw1S5Xv8vojzIj+pVvOmktcozJ9XUXHVdm43ghsG6x84m+jESN/e3etUaroPCKOOQWCL+WQbpK6xSThrokgZLeCHzLrv/JlH0P0KbTnWdjlgYA7bhng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,191 +124,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Mon, Oct 13, 2025 at 9:09=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Oct 14, 2025 at 5:56=E2=80=AFAM Matthew Wilcox <willy@infradead.o=
+rg> wrote:
+> >
+> > On Mon, Oct 13, 2025 at 06:16:36PM +0800, Barry Song wrote:
+> > > On phones, we have observed significant phone heating when running ap=
+ps
+> > > with high network bandwidth. This is caused by the network stack freq=
+uently
+> > > waking kswapd for order-3 allocations. As a result, memory reclamatio=
+n becomes
+> > > constantly active, even though plenty of memory is still available fo=
+r network
+> > > allocations which can fall back to order-0.
+> >
+> > I think we need to understand what's going on here a whole lot more tha=
+n
+> > this!
+> >
+> > So, we try to do an order-3 allocation.  kswapd runs and ... succeeds i=
+n
+> > creating order-3 pages?  Or fails to?
+> >
+>
+> Our team observed that most of the time we successfully obtain order-3
+> memory, but the cost is excessive memory reclamation, since we end up
+> over-reclaiming order-0 pages that could have remained in memory.
+>
+> > If it fails, that's something we need to sort out.
+> >
+> > If it succeeds, now we have several order-3 pages, great.  But where do
+> > they all go that we need to run kswapd again?
+>
+> The network app keeps running and continues to issue new order-3 allocati=
+on
+> requests, so those few order-3 pages won=E2=80=99t be enough to satisfy t=
+he
+> continuous demand.
 
-The madv_populate and soft-dirty kselftests currently fail on systems
-where CONFIG_MEM_SOFT_DIRTY is disabled.
+These pages are freed as order-3 pages, and should replenish the buddy
+as if nothing happened.
 
-Introduce a new helper softdirty_supported() into vm_util.c/h to ensure
-tests are properly skipped when the feature is not enabled.
+I think you are missing something to control how much memory  can be
+pushed on each TCP socket ?
 
-Link: https://lkml.kernel.org/r/20250917133137.62802-1-lance.yang@linux.dev
-Fixes: 9f3265db6ae8 ("selftests: vm: add test for Soft-Dirty PTE bit")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Gabriel Krisman Bertazi <krisman@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0389c305ef56cbadca4cbef44affc0ec3213ed30)
----
- tools/testing/selftests/vm/madv_populate.c |  9 ++-
- tools/testing/selftests/vm/soft-dirty.c    |  5 +-
- tools/testing/selftests/vm/vm_util.c       | 77 ++++++++++++++++++++++
- tools/testing/selftests/vm/vm_util.h       |  2 +
- 4 files changed, 90 insertions(+), 3 deletions(-)
+What is tcp_wmem on your phones ? What about tcp_mem ?
 
-diff --git a/tools/testing/selftests/vm/madv_populate.c b/tools/testing/selftests/vm/madv_populate.c
-index 715a42e8e2cd..f37bda59c18c 100644
---- a/tools/testing/selftests/vm/madv_populate.c
-+++ b/tools/testing/selftests/vm/madv_populate.c
-@@ -274,12 +274,16 @@ static void test_softdirty(void)
- 
- int main(int argc, char **argv)
- {
-+	int nr_tests = 16;
- 	int err;
- 
- 	pagesize = getpagesize();
- 
-+	if (softdirty_supported())
-+		nr_tests += 5;
-+
- 	ksft_print_header();
--	ksft_set_plan(21);
-+	ksft_set_plan(nr_tests);
- 
- 	sense_support();
- 	test_prot_read();
-@@ -287,7 +291,8 @@ int main(int argc, char **argv)
- 	test_holes();
- 	test_populate_read();
- 	test_populate_write();
--	test_softdirty();
-+	if (softdirty_supported())
-+		test_softdirty();
- 
- 	err = ksft_get_fail_cnt();
- 	if (err)
-diff --git a/tools/testing/selftests/vm/soft-dirty.c b/tools/testing/selftests/vm/soft-dirty.c
-index 21d8830c5f24..615ab2d204ef 100644
---- a/tools/testing/selftests/vm/soft-dirty.c
-+++ b/tools/testing/selftests/vm/soft-dirty.c
-@@ -190,8 +190,11 @@ int main(int argc, char **argv)
- 	int pagesize;
- 
- 	ksft_print_header();
--	ksft_set_plan(15);
- 
-+	if (!softdirty_supported())
-+		ksft_exit_skip("soft-dirty is not support\n");
-+
-+	ksft_set_plan(15);
- 	pagemap_fd = open(PAGEMAP_FILE_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("Failed to open %s\n", PAGEMAP_FILE_PATH);
-diff --git a/tools/testing/selftests/vm/vm_util.c b/tools/testing/selftests/vm/vm_util.c
-index f11f8adda521..fc5743bc1283 100644
---- a/tools/testing/selftests/vm/vm_util.c
-+++ b/tools/testing/selftests/vm/vm_util.c
-@@ -72,6 +72,42 @@ uint64_t read_pmd_pagesize(void)
- 	return strtoul(buf, NULL, 10);
- }
- 
-+char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
-+{
-+	int ret;
-+	FILE *fp;
-+	char *entry = NULL;
-+	char addr_pattern[MAX_LINE_LENGTH];
-+
-+	ret = snprintf(addr_pattern, MAX_LINE_LENGTH, "%08lx-",
-+		       (unsigned long)addr);
-+	if (ret >= MAX_LINE_LENGTH)
-+		ksft_exit_fail_msg("%s: Pattern is too long\n", __func__);
-+
-+	fp = fopen(SMAP_FILE_PATH, "r");
-+	if (!fp)
-+		ksft_exit_fail_msg("%s: Failed to open file %s\n", __func__,
-+				   SMAP_FILE_PATH);
-+
-+	if (!check_for_pattern(fp, addr_pattern, buf, len))
-+		goto err_out;
-+
-+	/* Fetch the pattern in the same block */
-+	if (!check_for_pattern(fp, pattern, buf, len))
-+		goto err_out;
-+
-+	/* Trim trailing newline */
-+	entry = strchr(buf, '\n');
-+	if (entry)
-+		*entry = '\0';
-+
-+	entry = buf + strlen(pattern);
-+
-+err_out:
-+	fclose(fp);
-+	return entry;
-+}
-+
- bool __check_huge(void *addr, char *pattern, int nr_hpages,
- 		  uint64_t hpage_size)
- {
-@@ -124,3 +160,44 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
- {
- 	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
- }
-+
-+static bool check_vmflag(void *addr, const char *flag)
-+{
-+	char buffer[MAX_LINE_LENGTH];
-+	const char *flags;
-+	size_t flaglen;
-+
-+	flags = __get_smap_entry(addr, "VmFlags:", buffer, sizeof(buffer));
-+	if (!flags)
-+		ksft_exit_fail_msg("%s: No VmFlags for %p\n", __func__, addr);
-+
-+	while (true) {
-+		flags += strspn(flags, " ");
-+
-+		flaglen = strcspn(flags, " ");
-+		if (!flaglen)
-+			return false;
-+
-+		if (flaglen == strlen(flag) && !memcmp(flags, flag, flaglen))
-+			return true;
-+
-+		flags += flaglen;
-+	}
-+}
-+
-+bool softdirty_supported(void)
-+{
-+	char *addr;
-+	bool supported = false;
-+	const size_t pagesize = getpagesize();
-+
-+	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
-+	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
-+		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-+	if (!addr)
-+		ksft_exit_fail_msg("mmap failed\n");
-+
-+	supported = check_vmflag(addr, "sd");
-+	munmap(addr, pagesize);
-+	return supported;
-+}
-diff --git a/tools/testing/selftests/vm/vm_util.h b/tools/testing/selftests/vm/vm_util.h
-index 5c35de454e08..470f85fe9594 100644
---- a/tools/testing/selftests/vm/vm_util.h
-+++ b/tools/testing/selftests/vm/vm_util.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <stdint.h>
- #include <stdbool.h>
-+#include <sys/mman.h>
- 
- uint64_t pagemap_get_entry(int fd, char *start);
- bool pagemap_is_softdirty(int fd, char *start);
-@@ -10,3 +11,4 @@ uint64_t read_pmd_pagesize(void);
- bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
- bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
- bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
-+bool softdirty_supported(void);
--- 
-2.49.0
-
+Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
 
