@@ -4,93 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A830ECCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 12:25:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 203E8CCD18D
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 12:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E50458E0107; Tue, 14 Oct 2025 08:25:27 -0400 (EDT)
+	id 5C9EE8E0108; Tue, 14 Oct 2025 08:27:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E00958E000D; Tue, 14 Oct 2025 08:25:27 -0400 (EDT)
+	id 579428E000D; Tue, 14 Oct 2025 08:27:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF0308E0107; Tue, 14 Oct 2025 08:25:27 -0400 (EDT)
+	id 441DC8E0108; Tue, 14 Oct 2025 08:27:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5D98E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:25:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5BCE0C0914
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:25:27 +0000 (UTC)
-X-FDA: 83996640294.17.7664CF6
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 60940120005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:25:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A8XfJO2I;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760444725; a=rsa-sha256;
-	cv=none;
-	b=1LhjCMEi0/asmodRJ8c+DLdL8g9zsCBHlHpfO7dztC/WRQfGf3a+bIxwabJdWodvtMY/Ai
-	P9HgU7EnFDM2e6tDga7rX7yzXD+RCHA0lKq3umX2xC9Ha2f9t16a01rBfwX1ilQeeoy7K5
-	emV2hzYiLHZ0GqhTDgc1GvisRD/+Si0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A8XfJO2I;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BC818E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:27:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BDAD3886BC
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:27:14 +0000 (UTC)
+X-FDA: 83996644788.30.4A52890
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4C9F21C000A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:27:12 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SnvBhIjl;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760444725;
+	s=arc-20220608; t=1760444832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEyKC0rXBxwWC68IHciD57Sf1EbPHHc3LfBBqhTpsxE=;
-	b=UuW0dPKW1uR3y4kWWLjDd3fRHJJH81/5hTSelinm8RlLDRCnaMSODO40/7ru/7CQUCew4D
-	0HU5s+bmD8BR+fzio+DXNCZomh0VoQ6OgwvtdqmZy+DjRnFHDzcRLjlCLla7EJMt/ZJap6
-	hfJ4wXchEk79RNhwp+Y9k/SQOyf8AgQ=
-Message-ID: <d1cf240b-6e2f-453a-9119-23cfe5480f84@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760444722;
+	bh=HZXFr5KfRNnRAUwcPkoZ2FdzZWPO0u88EnCDpNDOJ2w=;
+	b=UF11e0EdWr88Ukhp/fcEj8r1fvj7PyC+GnMCiprt4TLK2Yjx+4OZ7qOTV/NSvoOJCdu5+N
+	50vmpWVo5kva3qiMo4yFmbbs9Cc74MwwrXXSaTXzJiepPdTANpLfZGOXPp9Fg9OJklhFt2
+	okkgf3wNS5Xm2eZ+5DO/SJAjHW9aujo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SnvBhIjl;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760444832; a=rsa-sha256;
+	cv=none;
+	b=YPbEoZcYBeKxMSLZY++5UcsjnHcbmbGcWFFJrfNOZSAHi035/UGcR54mQIHZYzymZ1R5cl
+	VG2tzdfW90NOaYUpJNana2TWapeQcGk94Xk6VvZXtnMTuyFWTFYJh1UOqMKlZiKhGE/+dt
+	ao27tixrbLAn7jTAYUoH+cDJWiRIBJY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760444831;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hEyKC0rXBxwWC68IHciD57Sf1EbPHHc3LfBBqhTpsxE=;
-	b=A8XfJO2IaHs0uBIzI1sOG5BrgAcC/xVeyCtYb1cJSlO53QVE5Hu99nfMcQOO9jsHYLFeKP
-	HAWri20mPdxvd80KXySc9d8mZZLTAUWFiNulkUNM+i0MC2J0mLe8yF2/y2UGGvLLIlwbo6
-	FzInSHzUp00rt1na9sF4jeqlMoaiz7c=
-Date: Tue, 14 Oct 2025 20:25:12 +0800
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HZXFr5KfRNnRAUwcPkoZ2FdzZWPO0u88EnCDpNDOJ2w=;
+	b=SnvBhIjldj/YfL8QgtI95WK+X/syIJU6tB0hk5BWlrLJQKG61MLsxUOMs2FQCS3Q6QHyw8
+	i+mna/0Ookw5Hgdh32PRQS+eM5zHP/hpvMvlr/b5wryxMHrnW2vmvqH4y+9fakITnvhu9O
+	ATeZezH6EfrcdmnHTQ7MEaLidrDUvCo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-128-IVybqAStO6C8GPSb5m34Aw-1; Tue, 14 Oct 2025 08:27:10 -0400
+X-MC-Unique: IVybqAStO6C8GPSb5m34Aw-1
+X-Mimecast-MFC-AGG-ID: IVybqAStO6C8GPSb5m34Aw_1760444830
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3efe4fcc9ccso4555452f8f.3
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:27:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760444829; x=1761049629;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HZXFr5KfRNnRAUwcPkoZ2FdzZWPO0u88EnCDpNDOJ2w=;
+        b=Wv/pQdz89ulQH2u4vvXmSdXZK3fmrWVFHXvbdB4pPUVR9eTXqYof9yp+SejzmgWu61
+         fk75L5VqF4Zs28hzh2RBw8Rj2g5s45G6sVZb7BGZAz+P7bl286Tm74/EOiMdjdFX+I7s
+         ZpFyAl5NnGIcQ9SXMx4ZBEDE8rYgmBdr/Fsh/TS0VHueoU84O1BLmiLPunM+bl8mQkW0
+         cYNfM+M+cQA4oY1Vwxanc9QWZtUHAJ/hBzTWZpXxiD7ua7eE1Hw4nAgApd5DOdZzhqtI
+         WHp2MCPoD4XVW+NupZaSJpYxjaMjpBEd4HCLxjlsaXRRwg1nSzOwfKJBzBGpJjyX/VbY
+         8Aow==
+X-Forwarded-Encrypted: i=1; AJvYcCXWc7mGbE5sAZYXqfGTVJN4OFRYEV3dpcK7ZxGMs6RXOlk2NDw6dqDk8SaHa605bjKPnw4m9UqXMQ==@kvack.org
+X-Gm-Message-State: AOJu0YzhS/ZUZC/sw02g9xBEkSxgGlwVkrb/wY0muaTLF0f5/3BmtHZU
+	MbuJMtdx0FmCU6E5kuHL/JwHmqYKY2KMXYol6u9NX+kVpmBxfsBpa0GKRthhfTt+JudbWOudJ6u
+	Q/EJw5ufORbYcdBcb6C6lKKQ+8c4juP9hAoiR9CSO0VAp75u70Rhp
+X-Gm-Gg: ASbGncvrZWwm+z6OD3N3oC0d15mCHP4Yxi4Db6R3IpZyqgsjQQDWHNSRcX/ht3nJxIX
+	qYJNc+1HPjR/5sqUOoWJE/xVE2jvFkCMGFHshu6S9r4Q0wbfimYaGCEKYdcyxJXrxhvaTjiLpYh
+	NXC3+iefzRJRnZFqg8F01H9YQbVQOvulBaynxGYV4IR356Tq+GPoX+hA38JHZ7bF7pd00FZvZft
+	QzYe/b1zNJoyQ/+/OR2F3tn1xWsuJpq8hqSzvM6XbRJciA05CSA/Sjmd+go8Lm9HtO3wZDY4YdD
+	cACs8LugpL2LcjSWwIsdhnfmvxMri2kDUKzXZRQA1AW0/LLnlAnDKpxaGs8=
+X-Received: by 2002:a05:600c:6287:b0:46f:b42e:e365 with SMTP id 5b1f17b1804b1-46fb42ee3f5mr106213995e9.39.1760444829046;
+        Tue, 14 Oct 2025 05:27:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvJYRneb0mqhfEJogc5WjuIbEc8spmQmpHChaTcpaaF0hqmSPkzGROCrzFQ++irStZBWlARA==
+X-Received: by 2002:a05:600c:6287:b0:46f:b42e:e365 with SMTP id 5b1f17b1804b1-46fb42ee3f5mr106213725e9.39.1760444828650;
+        Tue, 14 Oct 2025 05:27:08 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb48a6069sm238539115e9.20.2025.10.14.05.27.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 05:27:08 -0700 (PDT)
+Message-ID: <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
+Date: Tue, 14 Oct 2025 14:27:07 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 1/1] mm/rmap: fix soft-dirty and uffd-wp bit loss when
- remapping zero-filled mTHP subpage to shared zeropage
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v3 1/3] mm/khugepaged: optimize PTE scanning with
+ if-else-if-else-if chain
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ richard.weiyang@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251008043748.45554-1-lance.yang@linux.dev>
+ <20251008043748.45554-2-lance.yang@linux.dev>
+ <3982686f-908f-4f92-b3ae-e6f141e617ef@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3982686f-908f-4f92-b3ae-e6f141e617ef@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: haCemeoQWjv0kwcze_VMleGRBDn9E79S4suwHC38Sdk_1760444830
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, peterx@redhat.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, baohua@kernel.org,
- ryan.roberts@arm.com, dev.jain@arm.com, npache@redhat.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, usamaarif642@gmail.com,
- yuzhao@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ioworker0@gmail.com, stable@vger.kernel.org
-References: <20250930081040.80926-1-lance.yang@linux.dev>
- <91c443e1-3d7d-4b95-ab62-b970b047936f@lucifer.local>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <91c443e1-3d7d-4b95-ab62-b970b047936f@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: z36ads8a4i6bos1yxecr5e9oycbn96ec
-X-Rspamd-Queue-Id: 60940120005
-X-Rspamd-Server: rspam06
+X-Stat-Signature: 9aqn4otkfpcwq8owq8i58h65136zez83
+X-Rspamd-Queue-Id: 4C9F21C000A
 X-Rspam-User: 
-X-HE-Tag: 1760444725-714722
-X-HE-Meta: U2FsdGVkX18D76U7GLF+2RVTfEq1SXe8rHus6uBUK6SNYO7vJer3AaRvyC+NBHRywEeKSVB2qx5Osv3fVYfInyab55jfBygfL7WbvAG3zn/sAOXueds6wBmDjRRFAWh9K8ced60OC5qxJR+7ueqfuFs8Cb6ZWbEEbuNx5aiVrO5J5Oj4gWgUQ2BKE+6Ric83aCu0jHQ2KTcPwT+AChbd4zr2pm97Ll03G8Tm56sIdN2F0aRsUIw/PDqB2IqhujPm8EaSKhPERHkKNjuH2BPuLnpba/NRskcFNEpGqT2rJNe/AMmEz4BL5G4tsTXIbRoQiDW599xzTsJTtkrh/wwKPS2gHLXneG0iOXPCyy5OCOn5FNjOUGHKo4/Fxd5e0OU6QGfH/77JWFKv4JjNTDk2PoFjSdsuut8HREOqFN5g7mNJ3Vk3WmOPRCkq0Fd+sjV34a7Xj4xSxrPU9wETLkrZJMfUUCQ1+/QASGE30V+sJnvhJ00wQFdxKVggqPzRHLnwWAmsF0p7fbaDSooQHaTJFDnZeiWGZf/vKjvRXkRb6S4tmZ7QXgi/NP4FjoEdVGqSPl4yd62kF5XqKs7Gey34HTgL3EVmtHrMo7gHnkIwYnAF2rhEinYHOolA5VXIW7YcqMrzZzs8olkVXMYilQ1a89hFKC+dlbLNvPZd/LmQnHMVceKY2lGgBm5RJ9z8QJgFD8ANzr5lAsNP15wv2yd3CsS8zuhdrNYBBLDWxTln0GZpHmGnUkM4PxUK/JidaFeMeIdcNbUVyY77p7NI7kOjioHiWhU2hGQbPGsaRS4qq1itHbX9T94pwHB2+THPLH3zOBOpiWnSXDQDjSztNBa9kilcvRtC+glTqLVavZoNlpiQwk1H5wm2CTI63vGRWe0naUsgKEVYw0Wq3gGf4pmh7k9tdu4XGlnfzSfAt+2Kdmxqi5sHe7bwyF1gP+7GzpmwHbP2eDrYT15ST2gZdTl
- qj+V3xn9
- H6ZWPOOZTWVOAaT+J6WnFn7Ym0UVQTZEk+1mOqMOSil4gtCuzDlf/hB6vVbWl1eH4ax6kkgS5JOdSfu6OfXP03tM5qKECN1NxJWbMhp8TtBDrlu5N/o5H32WRY7gRH9lvdqfDsuU/q/NJYfAGuH8WwxQKRvybmGcajBprItMmygy7GJW4V5Mvv9zJ7mcU1TQf7RWNVJ2cZI3IZb2ZaQWrQUkU+c0PZZr+DBbq6pdM4mKPgvDv+EhFslQjvLjOjgIhlo1KIRJCMQUT5/Jy+Qofy9HCnvpgnAt3Ems5aBqiajTH9RHTzyYEdVSw1CLnEPJm2Ig0DnKOXOwpJyUgDd2WNvXEj9EC2pSkyKYLfV2sxqwdeZuiQUkuM1RI7tBFRo3V4xoPtQ8k2UW8Tgdbitjj3XBLUq9IqFZbu3mc
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760444832-620786
+X-HE-Meta: U2FsdGVkX1+frj8xNaEsgZ+wj7WPJzm/px8LyUqldEq3QXTPTcdFPwBJHAu/dye5sBsHApxXqXIOjuxHaIbRGyNgFs3KhTlOkiJi6MW7DSikWEbXPap/adiEfSj6nHo2cmdHpUBmIPnuEzxK74lPk/kK0Qx+JNbNrVqHffL3h8u47fNrViwj+ORzNjb3aRzecQUS3DoYcffsH6zG8PhAw4iI3WoYyW3z7WJsZ09p+4+Pnbmd7GY7VawwO/oeAz9TKRBlLD6M4OPWW9IlVoztSoOCeTKvrSsIOKt5JMJNJEmsYUo9XMdOJkHyovUh4iDmbT4CdWyWwQaZbaftZbPtj+ShSBw6K9rYunt+Q/DIogITDfBlUDJZo/1GCwQkfLWo3RmhNM00M+mqdFWSOHXg0oPSF3BqmXz1JkuoBf8W5pUHN/BCSlzgnTLqw5i+wbjc7FuAxocdys0zSFHMQIO8lcYAM+Gnol11dOAEWt8YUrFtSA1fRmoVNqCUYmZwDIu3K0JGcEDzg5ZUCAYb6o/NKdnUnZ7dSuspntV2E6J81XgY4svDAno8/eSOvVMRMCALZewicGUYuLRuz/un7luJjUcaBnRAevQedYMl0aTkhOgkKjLXLMS8YN1oEj4Hf1ugLWz5TrPtholGBIkP/c0guOkl22Hre1UOz02RdWiDhpj0VQJFFYTClqSfdJj+EuavLmirjm2OMMFnIyx0Iuj2PCQDKN62T9ttJyf8Po8Sn1V00+uQwJeys0NWjOMYoQZoAL8cBxHtBVa44hc2isRtjubccgb1SkS9iVd+oh2hLqRHu7p3bVP8hgG0XB0ZwNg5mwVRGYQt+P1VRzgYTBAbeNWJePb+XgDKfX9kfMV0kyyWfRdXoyEjO0sZsNoFqslXccKbSA89lv5NZrE91azql6kE/yArtBfNgACTT/wh2KGqiPc917tBxNQCdpOUggK2bFbhOwcP1pVNKGIJ0Hv
+ HaMk+Upp
+ qOpZkZ1t/3gnWl180tgdK8AWR8U1AklS6+jGOzgC/2FyUSGSgELojP5QlEXNLJ5sCNox9VCgfChF/4K5hfGbxG5L8JtUvjubCTGCVtFInAQ1f9xTCakCDfkt6+Sp8kLnKcoRSFJLN0if4krRaXy62NDzQed+HACfRZLvTNR/xatNYhuE5cyYf93y6rCLapCpGsfDpb1OJf8LKn0V54npr7OSkMnNkJpnqRqIRlnD99zj6byOed8FWD8Igun7uzkOaVTAg8dIYp5fITLsnGriPj/U4L/4evSBDezQQvsLr3U/7EAbjdqlZPH7AqTDj8cWivWJIMMF2/LNW4lR5URA3iwZkpwT1HHKpi2/ts+BPkn5y9w+6bfdTjYcZl6YGU4kMzbUvmZC4F+MPOuJUrxom/X4+qTYiDeyfheqwoGayGh0iKtkq5BgL9CXKE+jZ2udaoT7A0SyzZUS95EAHFZWfnq+XiIi/b1Bn7EhsBJhXsDQfbD7WC3Af+/inOySgky51OPQm47TlSj06rgw8zLGFJ6Dbgiwizr4CE0+FCqUeDqML0DRe1pn2Kln4TRHNh2y3qVSYMo59o6KKkhnS1ZSIASAGFQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,127 +181,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the super energetic review!
-
-On 2025/10/14 19:19, Lorenzo Stoakes wrote:
-> Feels like the mTHP implementation is hitting up on the buffers of the THP code
-> being something of a mess... :)
-
-Haha, yeah, it really feels that way sometimes ;)
-
-> 
-> On Tue, Sep 30, 2025 at 04:10:40PM +0800, Lance Yang wrote:
+On 14.10.25 14:17, Lorenzo Stoakes wrote:
+> On Wed, Oct 08, 2025 at 12:37:46PM +0800, Lance Yang wrote:
 >> From: Lance Yang <lance.yang@linux.dev>
 >>
->> When splitting an mTHP and replacing a zero-filled subpage with the shared
->> zeropage, try_to_map_unused_to_zeropage() currently drops several important
->> PTE bits.
+>> As pointed out by Dev, the PTE checks for disjoint conditions in the
+>> scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
+>> and pte_uffd_wp are mutually exclusive.
+> 
+> But you're not using is_swap_pte anywhere :) This comes back to my review
+> quesiotn on the series this is dependent upon.
+> 
 >>
->> For userspace tools like CRIU, which rely on the soft-dirty mechanism for
+>> This patch refactors the loops in both __collapse_huge_page_isolate() and
+>> hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
+>> instead of separate if blocks. While at it, the redundant pte_present()
+>> check before is_zero_pfn() is also removed.
 > 
-> It's slightly by-the-by, but CRIU in my view - as it relies on kernel
-> implementation details that can always change to operate - is not actually
-> something we have to strictly keep working.
+> I mean see review below, I don't see why you're doing this and I am
+> unconvinced by how redundant that check is.
 > 
-> HOWEVER, if we can reasonably do so without causing issues for us in the kernel
-> we ought to do so.
-> 
->> incremental snapshots, losing the soft-dirty bit means modified pages are
->> missed, leading to inconsistent memory state after restore.
->>
->> As pointed out by David, the more critical uffd-wp bit is also dropped.
->> This breaks the userfaultfd write-protection mechanism, causing writes
->> to be silently missed by monitoring applications, which can lead to data
->> corruption.
-> 
-> Again, uffd-wp is a total mess. We shouldn't be in a position where its state
-> being correctly retained relies on everybody always getting the subtle,
-> uncommented, open-coded details right everywhere all the time.
-> 
-> But this is again a general comment... :)
+> Also this just feels like it should be part of the series where you change
+> these? I'm not sure why this is separate?
 
-:)
+I think Lance is trying to unify both scanning functions to look alike, 
+such that when he refactors them out in patch #3 it looks more straight 
+forward.
 
-> 
->>
->> Preserve both the soft-dirty and uffd-wp bits from the old PTE when
->> creating the new zeropage mapping to ensure they are correctly tracked.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Suggested-by: Dev Jain <dev.jain@arm.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Reviewed-by: Dev Jain <dev.jain@arm.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Overall LGTM, so:
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+The missing pte_present() check in hpage_collapse_scan_pmd() is interesting
 
-Cheers!
+Likely there is one such check missing there?
 
-> 
->> ---
->> v4 -> v5:
->>   - Move ptep_get() call after the !pvmw.pte check, which handles PMD-mapped
->>     THP migration entries.
->>   - https://lore.kernel.org/linux-mm/20250930071053.36158-1-lance.yang@linux.dev/
->>
->> v3 -> v4:
->>   - Minor formatting tweak in try_to_map_unused_to_zeropage() function
->>     signature (per David and Dev)
->>   - Collect Reviewed-by from Dev - thanks!
->>   - https://lore.kernel.org/linux-mm/20250930060557.85133-1-lance.yang@linux.dev/
->>
->> v2 -> v3:
->>   - ptep_get() gets called only once per iteration (per Dev)
->>   - https://lore.kernel.org/linux-mm/20250930043351.34927-1-lance.yang@linux.dev/
->>
->> v1 -> v2:
->>   - Avoid calling ptep_get() multiple times (per Dev)
->>   - Double-check the uffd-wp bit (per David)
->>   - Collect Acked-by from David - thanks!
->>   - https://lore.kernel.org/linux-mm/20250928044855.76359-1-lance.yang@linux.dev/
->>
->>   mm/migrate.c | 15 ++++++++++-----
->>   1 file changed, 10 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index ce83c2c3c287..e3065c9edb55 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -296,8 +296,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
->>   }
->>
->>   static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->> -					  struct folio *folio,
->> -					  unsigned long idx)
->> +		struct folio *folio, pte_t old_pte, unsigned long idx)
->>   {
->>   	struct page *page = folio_page(folio, idx);
->>   	pte_t newpte;
->> @@ -306,7 +305,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->>   		return false;
->>   	VM_BUG_ON_PAGE(!PageAnon(page), page);
->>   	VM_BUG_ON_PAGE(!PageLocked(page), page);
->> -	VM_BUG_ON_PAGE(pte_present(ptep_get(pvmw->pte)), page);
->> +	VM_BUG_ON_PAGE(pte_present(old_pte), page);
-> 
-> Kinda ugly that we pass old_pte when it's avaiable via the shared state object,
-> but probably nothing to really concern ourselves about.
-> 
-> Guess you could argue it both ways :)
-> 
-> It'd be good to convert these VM_BUG_ON_*() to VM_WARN_ON_*() but I guess that's
+-- 
+Cheers
 
-I agree.
+David / dhildenb
 
-> somewhat out of the scope of the code here and would be inconsistent to change
-> it for just one condition.
-
-Since this fix already landed in the mainline, just leave it as is here :)
-
-Thanks,
-Lance
 
