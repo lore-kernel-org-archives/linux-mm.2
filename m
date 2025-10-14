@@ -4,99 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BE6CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 06:11:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E971ECCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 06:28:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB3C78E004B; Tue, 14 Oct 2025 02:11:08 -0400 (EDT)
+	id 2EE318E00B0; Tue, 14 Oct 2025 02:28:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C89D88E0005; Tue, 14 Oct 2025 02:11:08 -0400 (EDT)
+	id 2C5CF8E0005; Tue, 14 Oct 2025 02:28:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F938E004B; Tue, 14 Oct 2025 02:11:08 -0400 (EDT)
+	id 1DBBD8E00B0; Tue, 14 Oct 2025 02:28:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4B848E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:11:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74BED13BA80
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:11:08 +0000 (UTC)
-X-FDA: 83995697016.03.870C44B
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C48AB140004
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:11:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ql+oU+Bp;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0DBD48E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:28:35 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC8DEBAED1
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:28:34 +0000 (UTC)
+X-FDA: 83995740948.07.B9CF843
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F13F2C0006
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:28:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LdfSD6nz;
+	spf=pass (imf28.hostedemail.com: domain of hughd@google.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760423313; a=rsa-sha256;
+	cv=none;
+	b=bZOvSfXGBtQR5u4EyuDpAVWgW8mFRwKTP84eSb3ipU/j9dtXKyJ+zBD1D7DuPCDN1906Le
+	9SXP6FIU9mTEY9oTpjW8mn/jy9Ly6NHepws7Caxhf8rOybrFWs38casW+/4bS+QKJJqUHz
+	2elACObY9XfIhoH2ZJ03nTASoHbne5c=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=LdfSD6nz;
+	spf=pass (imf28.hostedemail.com: domain of hughd@google.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760422266;
+	s=arc-20220608; t=1760423313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zYeipiQqVCMoF06AGBtM8TxiIU3OmSmtIj2DkFQ3rzI=;
-	b=UrYTpi0Huh/TFwXcg8nnlo1UQmuFkMEx6WAay5ehnXor6PWOC0ePeV8O0hsl9DdfwPLLBw
-	QVw/aogNx175fW7IKU6yiu6ia05bstJa2RT1MjFDfPgegkjjAe3LaglEFrqEMgoad/BVXn
-	vy7LLCO0xU9YXeAqliFX0F4/DqDLkY8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ql+oU+Bp;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760422266; a=rsa-sha256;
-	cv=none;
-	b=FIMAVD5C0LNPe3RPoz/IOsPjp2IDhwcv+rmfd5c7NdO8J051ntrPS9ndrVfMj5DIieVEaY
-	3oxBs9CUVXbVm7Os7PSjlCtKJaklPbnx5ZmtHGARGihg77IvOOInKAqO4fQYkEkQ1Bdq39
-	HoKYFVGkpDxq4z/JJCZ+YsNj13RyAMg=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=zYeipiQqVCMoF06AGBtM8TxiIU3OmSmtIj2DkFQ3rzI=;
-	b=ql+oU+BpO1lXFera4KzsqCuSY4rvMP8j9TgEDeYlPD0tzrDK50QDke+ODkemfysKprnQgrtum
-	62i3+GVECLR/FLhVxCBymuPljUqONVEH1U8XEfL8kSG3zZhlqyfJx8GBBZkPMHO0BPyRBDjDQqS
-	wNJwWft21jgRyBl1zVHRdKI=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cm3jL6cGyz12LFQ;
-	Tue, 14 Oct 2025 14:10:14 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD2A11400D4;
-	Tue, 14 Oct 2025 14:11:00 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Oct 2025 14:10:59 +0800
-Message-ID: <c4feff94-ea84-4610-a836-e1f2ebf800a9@huawei.com>
-Date: Tue, 14 Oct 2025 14:10:56 +0800
+	bh=brM2AXzbshOug5S8YTD/rMQwcF1ZQ1CEjKwrbSaUSno=;
+	b=zF1nykS/+OrUN7dTDAtOaXhFxfy9+IRHo8OgpOKLrbOZHEYChr6WWmHJpnxpi46lJH0erq
+	jgJ2nhEFmt23fyozAhwyiOxR2+3qLquWIiHGRZs1flIKf+aon3BQZgS2h+LN4SXuVJznDx
+	sTNG7NCgVuQMxzriqHynAU7wYtUq+/I=
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7ab0012e05aso3590711a34.1
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:28:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760423312; x=1761028112; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=brM2AXzbshOug5S8YTD/rMQwcF1ZQ1CEjKwrbSaUSno=;
+        b=LdfSD6nzhfpFRt/SO77j8mxW3sPVOBtX/bLFHghoawzOOjWt6c3rLc6UvvhAsjXa0e
+         p7H329kuJx0xJj1lMTf6qwLwfPBM29LKDwJXrwTAiGJ9Jg3heXq/wsLp8QxKf1wXro+8
+         rnvw4a5hN5CTcQ0GOLnViEjLqDkfQnWUknXR7b7nZ0Zt8bcuRYwSvQA/7rt0E08+WBGv
+         RkD3rzvhOE030pzEQX+aaZy5P5MKQyoY6iZk8ac5LG/Y034ZwBTEsWbGLFaUKZEJHuju
+         mHAIsH7pa2WEHVhUjUknMfjiioNmloOPngzt6K3P8KE66m2d/M5cO1TDzEPdMmFyrdJg
+         8icA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760423312; x=1761028112;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=brM2AXzbshOug5S8YTD/rMQwcF1ZQ1CEjKwrbSaUSno=;
+        b=nxFsw9ybnE+DsuhQJC3hMwcPu+wo8D5Ul9ZcWrG20Ff0FDqGTn9HjVlJYtH2RijNwl
+         nMY4a1KRIGIlB2Rus8tLZENmBwlaCxb2Z1RevN8CoUrzuRYmNsMxCL5pHab/mZ6BO7pt
+         WGlqCfn2baMKr2vM3SL/j4EohpmptQuuXlO5lP9knAIqhu1JdmA7bM5serdKRrN5czlv
+         bcRTj72Lq9vHo9RdKBZKV2GpjC+gKO/6KHipxmuztLGe29UsigzTrk/Zuc6BaFb7zIAo
+         0diU2rYZf61PcjgnQcWlnGP0+CmRWsPrmLB+Ozdmof5siVVedIQADrYW0i/52J+ELG4E
+         kEdg==
+X-Forwarded-Encrypted: i=1; AJvYcCX8xeM4GdCPX86Za4LkcWcQaGHg3RyM3Y7C59ronAgFdz+y7LvzmNiMj+7p+0vke1+UvS5p6TM7/Q==@kvack.org
+X-Gm-Message-State: AOJu0YzR40dS1qKpeokBmaP7JsB79+ImjOfF188mKoGPYZEJOhRfAC5l
+	xk8Ydf317cv1JH4jDBPBIvQHhs4J1JWvy3dFdNS9+NEt4mGiW6XOe2MvBzxvsAe7qw==
+X-Gm-Gg: ASbGncv48IWlYA+kX2SsVjZHDyGyr99oR9GCwrGM0AGwQOq7uAWl+XdEjiDLd1Fy6iz
+	1I50obOHbdBHEwciQnK5Yhy3SKTlAUFck0Tjj9wGJgdyYtwLhcx8Aijn/VGfo1I33o+X7MUn5Zd
+	ZsbCrxfo9gvmwRHldSIKKA6AZUOiHl5qu83gCaOyt3ScoiVGXVQooVzbhpAMsbhTOJtXveTR6RN
+	PYcX3RMiuDZuVmFJxZ0D9DUQjf0p1levv4rY4eUCXREas7dlw4aVzk9Q5OIXd5KlBY3WXhNO8wr
+	3G9MdNj+F4lpa7CkQnhAgvtt9dhzoicJyaCafQvgNUcj9z2UG5NqWQFVq8tSa3v2DmNUnuQBJD7
+	g0j+I/GckMxNAraCz0VbJfIZZ+wFgPPIXHJ7dUrxeRjvXD4OGXX1c7CLTRd7UdBc0RsKhI5CZpk
+	/nx4913C8t9HlU0IJMW/OSIJgi9OzCMB7/
+X-Google-Smtp-Source: AGHT+IHpAC62Y/PpF9N39pOEV4oQ+R34+qD97A9mi5Ss82ojK2v3fSuKrUmSuLa+MCNnAOAp+Ihp0w==
+X-Received: by 2002:a05:6830:710c:b0:744:f113:fef8 with SMTP id 46e09a7af769-7c0df7becc1mr11002097a34.35.1760423311621;
+        Mon, 13 Oct 2025 23:28:31 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c0f915eed4sm4209133a34.36.2025.10.13.23.28.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 23:28:30 -0700 (PDT)
+Date: Mon, 13 Oct 2025 23:28:16 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kalesh Singh <kaleshsingh@google.com>
+cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+    david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+    pfalcato@suse.de, kernel-team@android.com, android-mm@google.com, 
+    stable@vger.kernel.org, SeongJae Park <sj@kernel.org>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+    Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+    Juri Lelli <juri.lelli@redhat.com>, 
+    Vincent Guittot <vincent.guittot@linaro.org>, 
+    Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+    Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+    Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+    linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit
+ checks
+In-Reply-To: <20251013235259.589015-2-kaleshsingh@google.com>
+Message-ID: <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
+References: <20251013235259.589015-1-kaleshsingh@google.com> <20251013235259.589015-2-kaleshsingh@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] mm: huge_memory: use prot_numa_skip() for pmd folio
-To: David Hildenbrand <david@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	<linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>
-References: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
- <20251013121536.2373249-4-wangkefeng.wang@huawei.com>
- <c31abe19-f13c-49e7-b305-d899536ce9bb@redhat.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <c31abe19-f13c-49e7-b305-d899536ce9bb@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C48AB140004
-X-Stat-Signature: g4tpc5hyb8dgnoqjbymrgqd4gmifszcq
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1760422265-124580
-X-HE-Meta: U2FsdGVkX1+ulyWHryzBXZCYj757IW1iY/vhWHRciIeJOiGC5DFadhN0vNPC2+g9gk44J2i/EczFkJ9WhYGkjTUb800vagMXluP1az/Bk+rwqIqXxAkQWm87mPLx38kmq8hEaUUniz48hQ+sUJ3IKH9ghgD56kRaFNzpB1U05p0ZoJ/cG6MeXUGMK1VxYqLqdMfcGDRMUKInK/rAZCCd+6omWDkhC5LDUus1G/po7uWUXrPPND9XG1TKJNWCXsL+I5R51D1y1H3KOA1+SR6BgrAGLwc7rcNOWjF3OQ61FksvsVOAcHg/VVA4s1s3vLQb2bqxjirR90pLNuE38pTb3VihFpkYf0h2U+9y7alLPn3WQejYHjiMX5duC607OmwzzEwAaNQWhZVC4qnqUSkKOXkV1NsIaJx1apFtWHwXAuhweUysyuAY8Q1HAFB/qnzgn76c7E8aKXcUpFlEKhjU88jS+nlBbIn6oFvw1Gm1hQrk+Ar+RNiuVnER6n9DeWPwjtRgg9MmHUH9vA4DovhyZBLdoUe9WCnKQmxoDKJQ4Rp/CKCwxAksQY5MbaewoiEKWRoBsNewgDxQca/dOK9zVVL56aE5SOlYrn4tlgWm5rm4LgH9EgGoAOuUEZ140UUXiJO8oZIVBOLwQAeW5slpe6+QY+K9sftzR3pTB335EeRNrfrvEU0JPCuxNvvNTOyHMtnZeDGefuQVioDtknbmZF39lceDeoHOYsTngfBjSl4jkf5Mran+N+9RCJdMTtWlgPskIRHBhOcvznoS2eNaI+wEXcYXkSS1BcRGT0jXKeCAGiKRSM7ilHMvNWkrcT3jMqchSlYL6Jzaf5DpQoju3goYwJK1IWty03Ut2iR0krfi7jTHXGCHVmbKAa3jiJcegzqih0mY0h4qLfYKpezY5RacGpXRm9qwQ8Ye71u8iCUo/1BfJ3JR4Xp9CbNBW2QkGFrogvv+DywWsqOgOL5
- DJToweZf
- T2ryAvsrkTDx/w2gPg08fsmKVLFoSUpAOHp1dm//fWC7ZRYjgjzRdtV0RWa6djY0AP9AFXeRUEnoQI5Y8gWg9vlgbF2YLCslOpWPGIemOkcVWqgnlOzceZ+ddreetRc/Q0Gx4EktjN53I0PZrNwsTtyK+N+HuerTkpviQ1Sy4D4Les5jLxenhCvOw8hbxhMSWzliPmC2+ZLM6QpGmC6LjML4sinA4/IS7S8+0RBOAaUUMV2vqyS8sAEfivcU7I9MgUbzK2tBIkgeOAiIKxP0CNWrz+AJs/C1rz+7kAf1k/8JHU9P2BTvXaD71WOsjj8rR+FgcIQCbk/rdVGTYk+TD3ekswk+82f5uA0zyj3B4M/V7ZOKhz5PLkfV7m3vOeDV8+GVfISx3PaSdF2UyfuqQUn9iVibPsHgPAsPA
+X-Stat-Signature: 3gsgr4ty6goyxh8ta7nm7bppoigwhzxs
+X-Rspamd-Queue-Id: F13F2C0006
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760423312-617840
+X-HE-Meta: U2FsdGVkX1+iUYFkp/Ny/Ro6TV0KJMBme631qbEmX59fQIQbmXK9LD16PjRNxJ1+Z4gitcXiqZB6y5bMHl31TgSyhMGwsEaTuTrOpGtamSIbHj4DBJWz5VkV2XbdK9l7UJWZx+qQoyMzEyVIjsVTW5z6/Yo9sF5MRbKRGvZpV7O/EYk9fs7pefBmvD5uSm0um+AiIjw6FHVzR+iEpuudSupWVNMh7VPqtj2ceu/+4uRFC9ndxf42KNsnY6aV1d3vjvQixm7wi1Xzv63D3AUXd8B6BfiIKGbRdH5NC0zVw/X5rkUlU9GVjcCZ3n9YbpVVydVAwunoFKgRnLX/rYDk0nHlDrCU329I13IFyqZbu/P7+3iRb5JbcTHHESnrDrTTKV1CkuhJj7l6NKqm1Gh4VfAzB5b9/0JB93m4+J06laDYIaH24dJwUmcKZP3j6FMm56DvHqFdWf5Ixx3E6O50x9C++D9/wfc+y9SEhzpDNTTa2/a1Oz45RUIp4zvd2gzq0e32e6YgCxLOslGO22m/pESKMtBFhXo41BJ9FSM2E0KTFKfjyB9sDeVHDVaOmHQW/BS//8mEXaumSuOjInBSGPKSN2/jAFaNJxiSJzen9R8xbta18VZ552qZmBStNqzxRKSpOJJkM5nUS5euXrmOcEgSXLb+VSqlXmh7zjFtpBIG0nJ/6kbiJvDDvmt+usX11Mf/Jq5FXS/IkYHOrWOWjwmoUtqpkXVxeHSL4RsPpcb1lxISBUlZj471BXLOhQsu1IELrHQf9ek8/D+pE71+I7Kv1NtVtZyCCwQNrRzZIADxIAgYmthDdmXLpFRzNodWIdvmO5TD+VDi6pQk8PPaAhnr90LfBXzQ0IYzB+5aQlHpUmJPBZcxFc0tFnt7E4GP8SgMqvS8dgqMYq31RNggEmDhPud1fAAQBDYWqgJXCSMylFGxlpSh3dbSKOpt3aRJ0VRBP6vF4lFWY3IZ6xU
+ T1f69FpS
+ hG48CBmk65dFx+iAAN9/44mmoPYbrH7oLzBbnv3lbZMRTrknVU3H28I2mUFb3xegYKGczP5fkwGuei2T5rdhsVWudF8VxXwk9qh4EzK/CRIqN0VCSAQEFs8rDBFrWHodeBJQDuJsbZBVAcRiG6GqxLDcdxFtD/nQAGqE9h2/6KOG7CILkjI2tKmzGU5O44U0odvO6/8//BOo7V8jBw7gABCCt9hQxA9ViYehJAP1JCnsMu8Kf5ClmAfj3ITOkfxNGvBaUW4VZZ7Zx6uGDgGDbwCelUqkCKygXvo51YtIk9/bgdU45PnFYdVbBcCHhWYCnhmjSDPTw/2HiRYutLkCtmZoM3u5Ddmidwq7xQMypWiUcvOaCASYraVih2dXB4eTXDsdpHO00lpQjNI4PnLZdQ1yDR5l3KyAnXzEmJa0AJgO5GkNRX/rA0SoOaUzbRx3lmDyfthDifv7wkJsHALMu9SmgWjcoEWa5zt1z
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,66 +135,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 13 Oct 2025, Kalesh Singh wrote:
 
-
-On 2025/10/13 23:58, David Hildenbrand wrote:
-> On 13.10.25 14:15, Kefeng Wang wrote:
->> The prot_numa_skip() checks should be suitable for pmd folio too,
->> which helps to avoid unnecessary pmd change and folio migration
->> attempts.
->>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   mm/huge_memory.c | 21 +++++++--------------
->>   mm/internal.h    |  2 ++
->>   mm/mprotect.c    |  2 +-
->>   3 files changed, 10 insertions(+), 15 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 1b81680b4225..feca5a19104a 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2395,8 +2395,7 @@ int change_huge_pmd(struct mmu_gather *tlb, 
->> struct vm_area_struct *vma,
->>   #endif
->>       if (prot_numa) {
->> -        struct folio *folio;
->> -        bool toptier;
->> +        int target_node = NUMA_NO_NODE;
->>           /*
->>            * Avoid trapping faults against the zero page. The read-only
->>            * data is likely to be read-cached on the local CPU and
->> @@ -2408,19 +2407,13 @@ int change_huge_pmd(struct mmu_gather *tlb, 
->> struct vm_area_struct *vma,
->>           if (pmd_protnone(*pmd))
->>               goto unlock;
->> -        folio = pmd_folio(*pmd);
->> -        toptier = node_is_toptier(folio_nid(folio));
->> -        /*
->> -         * Skip scanning top tier node if normal numa
->> -         * balancing is disabled
->> -         */
->> -        if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
->> -            toptier)
->> -            goto unlock;
->> +        /* Get target node for single threaded private VMAs */
->> +        if (!(vma->vm_flags & VM_SHARED) &&
->> +            atomic_read(&vma->vm_mm->mm_users) == 1)
->> +            target_node = numa_node_id();
+> The VMA count limit check in do_mmap() and do_brk_flags() uses a
+> strict inequality (>), which allows a process's VMA count to exceed
+> the configured sysctl_max_map_count limit by one.
 > 
-> Wondering if we should move that hunk into prot_numa_skip() as well.
+> A process with mm->map_count == sysctl_max_map_count will incorrectly
+> pass this check and then exceed the limit upon allocation of a new VMA
+> when its map_count is incremented.
 > 
-> I'd assume numa_node_id() is not particularly expensive?
-
-There is a atomic read, it may be expensive for 512 times atomic read
-for change_pte_range().
-
+> Other VMA allocation paths, such as split_vma(), already use the
+> correct, inclusive (>=) comparison.
 > 
-> While at it, I think we should then rename prot_numa_skip() to
-> prot_numa_skip_folio() or better "folio_skip_prot_numa()", making folio 
-> the first parameter.
+> Fix this bug by changing the comparison to be inclusive in do_mmap()
+> and do_brk_flags(), bringing them in line with the correct behavior
+> of other allocation paths.
 > 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: <stable@vger.kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Acked-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> ---
+> 
+> Changes in v3:
+>  - Collect Reviewed-by and Acked-by tags.
+> 
+> Changes in v2:
+>  - Fix mmap check, per Pedro
+> 
+>  mm/mmap.c | 2 +-
+>  mm/vma.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 644f02071a41..da2cbdc0f87b 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+>  		return -EOVERFLOW;
+>  
+>  	/* Too many mappings? */
+> -	if (mm->map_count > sysctl_max_map_count)
+> +	if (mm->map_count >= sysctl_max_map_count)
+>  		return -ENOMEM;
+>  
+>  	/*
+> diff --git a/mm/vma.c b/mm/vma.c
+> index a2e1ae954662..fba68f13e628 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -2797,7 +2797,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+>  		return -ENOMEM;
+>  
+> -	if (mm->map_count > sysctl_max_map_count)
+> +	if (mm->map_count >= sysctl_max_map_count)
+>  		return -ENOMEM;
+>  
+>  	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
+> -- 
+> 2.51.0.760.g7b8bcc2412-goog
 
-OK, will change it.
+Sorry for letting you go so far before speaking up (I had to test what
+I believed to be true, and had hoped that meanwhile one of your many
+illustrious reviewers would say so first, but no): it's a NAK from me.
 
+These are not off-by-ones: at the point of these checks, it is not
+known whether an additional map/vma will have to be added, or the
+addition will be merged into an existing map/vma.  So the checks
+err on the lenient side, letting you get perhaps one more than the
+sysctl said, but not allowing any more than that.
+
+Which is all that matters, isn't it? Limiting unrestrained growth.
+
+In this patch you're proposing to change it from erring on the
+lenient side to erring on the strict side - prohibiting merges
+at the limit which have been allowed for many years.
+
+Whatever one thinks about the merits of erring on the lenient versus
+erring on the strict side, I see no reason to make this change now,
+and most certainly not with a Fixes Cc: stable. There is no danger
+in the current behaviour; there is danger in prohibiting what was
+allowed before.
+
+As to the remainder of your series: I have to commend you for doing
+a thorough and well-presented job, but I cannot myself see the point in
+changing 21 files for what almost amounts to a max_map_count subsystem.
+I call it misdirected effort, not at all to my taste, which prefers the
+straightforward checks already there; but accept that my taste may be
+out of fashion, so won't stand in the way if others think it worthwhile.
+
+Hugh
 
