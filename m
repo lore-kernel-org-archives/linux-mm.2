@@ -4,110 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2E3CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 18:28:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A4DCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 19:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9243E8E0148; Tue, 14 Oct 2025 14:28:02 -0400 (EDT)
+	id C5FB98E00C5; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AD2E8E0090; Tue, 14 Oct 2025 14:28:02 -0400 (EDT)
+	id C0FAC8E0090; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E248E0148; Tue, 14 Oct 2025 14:28:02 -0400 (EDT)
+	id B25E18E00C5; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 54ECC8E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:28:02 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D125C5C3F5
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:28:01 +0000 (UTC)
-X-FDA: 83997553962.30.076EF8E
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 168151C0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:27:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6UMqDTj;
-	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA7B8E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:06:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4AB70888D4
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:06:37 +0000 (UTC)
+X-FDA: 83997651234.07.154AEBF
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 84DAF14000C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:06:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=l0TW3OCc;
+	spf=pass (imf23.hostedemail.com: domain of 3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760466480;
+	s=arc-20220608; t=1760468795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LBBmR5pAf4HbXTBeQ1kPK+D1rmObAEhbuan+OuQ0JhE=;
-	b=YjM8HjzgKVkg6fen30VKuFbfMGpmtjl72G5UonV958BD8fQW0MzBnleGUe5WtFpAS81ANc
-	44f2BDVMPquK5QyZe3fGzDZ3zYi5pzwyT6+VPApAxez713PW5ZKkcflOTfldbv+GwH1iuP
-	dH3x4EqNcw2mXEkHjsKxunhVVu2v9Ig=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
+	b=5wTt9RF82nVyl1eE/aAJz9N9efi+xK9s5hsAymt04PBJgeoj6iKSz9fsDFRQRCihyjsK43
+	rQNQRW/0o62qJTQdhO9eJRBvGWACUhTuwb/eKQHKfJiCG/MxdelA8Inrjg9X5cKr3HCnqu
+	e4HJb8MzhNbS6cngLD3ukdH8zdIFCeQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6UMqDTj;
-	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760466480; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=l0TW3OCc;
+	spf=pass (imf23.hostedemail.com: domain of 3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Op_uaAYKCIExjfsohlttlqj.htrqnsz2-rrp0fhp.twl@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760468795; a=rsa-sha256;
 	cv=none;
-	b=QvsQUaFTHKnu9yYYhQ4+jZlRyUO80/W3BhQaETtA4WEUGSMvz26WnStp4WxiDajmJvv2Xu
-	HiNQ4M/iTthRekN37QBD+V737g65osMH2v4PXsBN4PsQJIVQVmPmMaOa40avmy++csjata
-	mt5oJtbdMC9OInZuYjzCYm4xNkViztQ=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46b303f755aso49719445e9.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:27:59 -0700 (PDT)
+	b=NmPGKFyhBMaAij/LrySkUxybic9uZ6HRwhPrO+unhpMJ6YjqDnbEqbscNDdjoV/qjEdf1r
+	W7joyEkgv8JESJBTZmzmg/1qwg5j2fDIDSXm/GVzO/5gm3h2bzL8SlFkWR6ejgIRuAsKOw
+	qsLftncexRfauT8nqhzklemwZdSy4Kc=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso15389545a91.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:06:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760466478; x=1761071278; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LBBmR5pAf4HbXTBeQ1kPK+D1rmObAEhbuan+OuQ0JhE=;
-        b=V6UMqDTjNcCajZRm+HAZQcB1hOTuP+eSVO+epgLC8LBNQ6hw5kIl38qURw3R0qVWm3
-         +J46RqChLPeE192YCguV1oCcSD9wjcbIEpkmoy9k35GzsVn3AP+aGhjnIPC+1+tZ95f1
-         /HPUmC74RYmyuta3/22qi8uBeIBBfpeMCV4QP/QyY5o78r1tB0/GFvokInOhqGa0C6co
-         7SRVQ0cLN3rWtFyVPUCY1LptG2ed7ifHxVjCzDabh4gRxD1pGFMGtM3d260yxHFNR5AU
-         euIaC/b3Dk9MXrPHqDvf9ufhAekwliteWRR1Te+vb5zwpqqQYPtpA+c0SNEzmUOHHdo6
-         24Kw==
+        d=google.com; s=20230601; t=1760468794; x=1761073594; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
+        b=l0TW3OCcBrlg2xZWcUWIZlU2sryW1f1PYGE2MJ2xeYxQZAJFWhZ8BQNqTRq3FPT1QG
+         RKgHS4YA9r9cCTXo7zOCwA37Ye8QnGNGZmfXsLWVSYNqQJ2Jr1YOVOHYXA0rWN76LD3d
+         qw9oApCeIUysyvTd09CSVE7NXJfigTlgA7gskMZ6WEF/S+QnGbYduqhMRECzEQc4kMOr
+         os43vDoBxMfUV3cQnqWNBHPTXDjC/valvqtGWFCqnmMy9z5HmF2Vi0FGZtLMPcePQNTM
+         +bO7T+FfBe8t0sYM8AvEYpdetatGM+lnj3gfhYCzVQvAmcmSFh4Uv0503j4TuxgDwua2
+         gXWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760466478; x=1761071278;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LBBmR5pAf4HbXTBeQ1kPK+D1rmObAEhbuan+OuQ0JhE=;
-        b=Ql3vKhOBfq6isTOi/B3hCNmXiv4XTmo3RFNbqBFXBwdhaRSbTMbDshUAmMose4n2iP
-         UpI4mkNrlSv1qWBFwhNLsu8vlb3kGeuAa/LX4bhgvbSwlPAjxUQw5DJh23DTBIha4Zw1
-         vZMyrzRCS2n63qXKPvxc5SJQO8KFysKw0e48enkO5uVDZm8knW9ca1ZyFTfPpjfgRfo8
-         UeUZK36P2wlhO946r68Pjvv7lAU7Dlgq9V8OnKX3iOPEBvJ0dzi0bGTc2W+ZULSIn75B
-         uDpVUPlXb7m0cAFqdLTuZ6AJqMx/P9RMi7wQhYon8pdERLrVaMqq2mws4ZRllhAVhy2Z
-         ZJ/g==
-X-Gm-Message-State: AOJu0YwEnv4C9isYxLFpt1+WUR0W1u+I6Rk7CigSFNWOdlzh+t4R/PN4
-	ssh8tn4FfBRfTuXUY9wTnghJFF/r2s4z8RAMj1MSNm09KRLa4ZxMVUUZGb4DJ8Nd8rE=
-X-Gm-Gg: ASbGncvICoJoL5ndnjGKHJReu+1HFAipwSP5zdayIq2OKfr3TI+wWZY0hY+zUrS7mjb
-	azj1Z+Pot48bGlFYoadnENT92lhHntUpWrvW3b6geOskd9IcP/yKEJQUPDMIcbKJyin6wVUvySN
-	Im1YT6La7BFLUzyfzwYjY3LbOlOEudvfcq9nOJGXgq2iKlsBT2NlWLndHYHwspnD8y+6ADU8PnS
-	Xz9I6loN8zji9Kg+lw2PZVf089w93hPnj/ZSlS8hgduzQiTVqnCX0EZu5YTV7tb651Axjuc2l9x
-	RNlUBjsnW30OC+GyewI+cOPGw4qfxSH2+x6cBRuwfuLjHsq8d3VWowrLnJttiAVOEAbGvGuhaFB
-	zBHvTojxyLWXWuBHDUWO4C+pYsndPtDVvpDcMoYawdG3ZfhS0GrT+4vQ/99OE8er0Lgw=
-X-Google-Smtp-Source: AGHT+IHSJpI2+SslPqhOIWr8+fra5n1+waQpCkYtL5Nh0y1DMOBU4t5TaQtKsalwtXTnAPToZ83UfQ==
-X-Received: by 2002:a5d:584b:0:b0:3ee:1461:1654 with SMTP id ffacd0b85a97d-4266e8d92e8mr18056477f8f.50.1760466477644;
-        Tue, 14 Oct 2025 11:27:57 -0700 (PDT)
-Received: from fedora.castlerock.net ([31.94.68.142])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-426ce5833dcsm24789309f8f.19.2025.10.14.11.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 11:27:57 -0700 (PDT)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [RFC PATCH] mm/vmalloc: request large order pages from buddy allocator
-Date: Tue, 14 Oct 2025 11:27:54 -0700
-Message-ID: <20251014182754.4329-1-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.51.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ey8nxu1m7rpoeefre84iifor8j17975q
+        d=1e100.net; s=20230601; t=1760468794; x=1761073594;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NJxlV+oNDwXk+z+h9rw/7gmtAEVoUIc/lNQpO7FKflY=;
+        b=aN5frjiHiIbf0XGFRJzNXcdq44LOpFrFOwkwNGN/gUZrpXOULUVfYrKOV59WMFdq4c
+         FLeMPzf2ntw7ql+KbMMy+/udRFS/MYoO84PZX+5XSTMIKOJulOC+96uHiT0/FEQwyu/j
+         hChPHRqJhWk8CmfIeVIoOBxCtpe3uOPJ+yfdNlIHR+29WlUygoZQKCc7DNaVCjLuJicC
+         BQE8YHXwzIwHp3KC6GHppg4UmB99JS44ec7Ulrs33/nFKmMVvOfdQpzVDRsH6BC8B0uF
+         eoaCDICBiwd6wvIl6JoO8o1LHav8jiuqH3WO3RI5Fv8uoiLyTy79Qn794qaEmgJrRXFA
+         7XLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUWUTy7opuryuqCqmtZ+mVTprgBzedG01utDeOZEDJEGlCmuFzsXX+FxB50BqQyFSVTuQ0d6fJLw==@kvack.org
+X-Gm-Message-State: AOJu0Yxm+ht70pm/EuFgrGHjNKMZkKzrHh7PgAgmzJElj4TPybfbxLeN
+	xSjp1HXWvvssmxVED8/E/LrFIpMB4OwAwpKQaVGCYHTx90VOLmF73xKJGdKYotaQhDce1ppHgf/
+	NbaMYVA==
+X-Google-Smtp-Source: AGHT+IG9Zd3t+86XRNhfr6MOl3z2x5n36Sr6uReq0nGSm2P7jNviBzkfzWGC0x9bWFlsxNGdGfsNX6JxluA=
+X-Received: from pjuj14.prod.google.com ([2002:a17:90a:d00e:b0:32b:95bb:dbc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3ec5:b0:327:e018:204a
+ with SMTP id 98e67ed59e1d1-33b50f85081mr35201870a91.0.1760468794156; Tue, 14
+ Oct 2025 12:06:34 -0700 (PDT)
+Date: Tue, 14 Oct 2025 12:06:32 -0700
+In-Reply-To: <xhsmhwm4xpwyt.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Mime-Version: 1.0
+References: <20251010153839.151763-1-vschneid@redhat.com> <20251010153839.151763-20-vschneid@redhat.com>
+ <aO2S3oZwOW_UgAci@google.com> <xhsmhwm4xpwyt.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Message-ID: <aO6fOM-XydknM6NJ@google.com>
+Subject: Re: [PATCH v6 19/29] KVM: VMX: Mark vmx_l1d_should flush and
+ vmx_l1d_flush_cond keys as allowed in .noinstr
+From: Sean Christopherson <seanjc@google.com>
+To: Valentin Schneider <vschneid@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org, 
+	x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Juri Lelli <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, 
+	Yair Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: xqx9k6yhfcioxydjtpbcbd74o18j7pin
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 168151C0005
-X-HE-Tag: 1760466479-466175
-X-HE-Meta: U2FsdGVkX18feVOIcku3g4SKN1OZs6L7csKHRja/l9rMr3bKHX0idwE5y4JzV/m0QoRrL5p6MtA7yKuj2+jCsjRmWj4Eu9ipfGg6wHs7oT6AcYnDh2iq1RMQf17ISONaNk5wnpQBbJqXHD4BqUEfhzxSTiEyTzp7JNABHA/dp3AC+uUwKuq1kX1WRdbNuoGPWh2k7EXDZskOt9fn3Uz/FIZhPEriVuCHSv1tJJnWHAfj2xP5BW3KVZia7iCMxzxyEZAZ6atgtr+G9FGxde6u35g4tfbZl+FN1NuOdmg4CUyI4mkyqN9mRpo5xiDWgczZFKwpgQJByPNbZGWqTaA1rekJ+lif9uvaUfguGQkVU+x3TdYMkV9HziSVd1ANbLCEKUVgA0rpCPQPYOuvmiaKLjUa0oHFJMBDWTzKcly4E3QLUzPS/3Pb60NkNM26++j3FbToDldAlBBgcmIUNb/v+d3cTy9F6x68ERAS3EsFZZfCX44nrEIDQr5SGYAAdyLntXtB+HlB3i/DqJT07TKRfV6V9/FZc0UNbQCeYOKijSzDlphzw8F6OfoSSEq4hwG13zy37Phu9ggAjUQViBdlNlbdEdYjSZAD6l0B/pPxK3RNdEvofFuccGNRIRfgd3S5HB1xtHx+ZntxDfzIFvbjEsWtiOwhnbtHKrnJKJ2O3/seOOcEExWLNQu6EPkHDpqbvybQJsei5LU0iw8I/ynAvFPCw6bNXr3JMqyjW9wtjwDZB3VudF4VEHKsMh5SMl2nSOJws1ZB2Zh8XGlnErYHiMprau08J4DKi1ClPnd2iDUnQN/ezKjV1r+9+N8OiC8kkHDS+qdFLg2Z1BKLrlfK0j5QqDvjaF32Z51uQL7DND1hkRY4M3eiL043dd7Q+5qfitY9ysNM+oWJvTOWolTO7+XDM7EI2etKK+aPUJRoweRNpEIxdSTE0wbG4JIC0HCE1XvKiQv5Er40VSCQUg6
- NFuLnt9l
- f0V3cMqIk0gZ+J5x1AhYkehcmvp0wU6Yu7w5CyvQzfroMAOvRMrxD9I9WtDUgNvRY2mANA9Uox2W2YOd2W7YBiPkIdQZiRvEirqiwpKO+h1/mWZhC5MwUTjwBtga/IhaCN3/jADgnYg+ulp6N/yp38OZ+/07tBhSvNaLT9bcHHa8BET8+cHCwgAAWaxpiQs0IdXNPdO0e7I/g1mFI23wCb2PhiRCOlK+LEr5Zr2ldA14sCUYqY+bppXCCWsPWLS7q3EyXvJFvr5whihkEPw/HDy6+fxilhTfCPbxr7Wu4z95DUFE6Y86E3e2YXjAixxiqnO9NxFTb5UfFFk2dTJFPYIRAkSZpxsjg9s6EeD2dcDQtEqnWta6rvBMjBJx9g84p7nD8PLMj5Ot4BEbNcSY0/5Y5KdumYkTQAaYex02GBeHEVNzoc+1vsLOZZHB9TgOMqobAa629U7ELQeQ83THbUbCyjB/5JCQ+2Rc6Ngy4nGZg+oPaow6OJ/JhXVEJP6CSjYH6
+X-Rspamd-Queue-Id: 84DAF14000C
+X-HE-Tag: 1760468795-955696
+X-HE-Meta: U2FsdGVkX18KXCRaA/oQs2VxjIB0CXdWSePp5cbvb97LpIzMksr783+4PTv5ep4cyGZtuSrqsqN9WEbjX8FF6rH9GgSkxQkay49LtHRGYiuB4oZyKcSLZr//iQWkO2sqTt4RtxhmvJfGsmSkHG2uRmGIScHBAKNLXhYX0FLbqJrQYMm3ddvZkehJNv8dW6FVMUN5TRWS5DPjZiDwljEfpn5i7GVaS5tEsJf7DTPD2ric4dHF26O/zV2X5Th0T12c/51bBeS/lSZeseyp5Tfno9sP9gH0vzxPpSmU9OUWD8xls2LnoZBB0GWlDSb0lVp4mkSvr/QthLL8tdHmVVuf4VXSdl/Np6jIFep9jeLJH9KQMhRo29YsZlkN/54j3TPKSvgUzUGxPHpuqN8M656+YjARDOB50xsEIvZMR50+WWrA+aXg0FMZAC+Mc4I/kcKkpj+sixFUH7x4L4y1bMWX/kfuKS/aMnp/50EH4r/193K5E75a+6yoO9+sFCGw9LuzT96Fp7RPp+bSTne2UtrTHjxtCCrBLMNiSngNZj9vs0k3tbZ+uTQaGlMk2j1v+jU8LjvqWRsuZAsNwIsLJ2aeLKhWtV0OwVJoYR6S4hR7b7eG6AoU3N/BAkjra/S/2oYiv0V06I9Tiw0XfW+AYws2q8h3k2ap9mJZU+nchb7T9ZHgAvcBCPAX14XIY+eVEu5XDOx5uDXS9BOZt+O1JvJ3xT4XvWThL8a3sVxDElhg96YSVpDSlcxo3xgO2nDMa4HGc+1clv7KN0hHsHCPdslY9CkYix9n/LBm/3dX6wMAX2uve1jDOj0DLihkoJNTX2OzcY5i/9qE+Eby2BYlhNLspFh0LRt6+gq935VJJapZzPQT8nxNKumViJqEJGy05L6GJtDSYYxxJNTsJV7vbaRwzeo/lyf/51hZn3mYiu4QpqEfKGDmb9VOXZm9E/F5oaFRX2Q0uEpYV5IPi6CEDwy
+ lRqxfYKL
+ 8rDEM3mQmmWeEGH30gA391NxN530X/z4wQ6cEhnxHgz7HKONK6dC11ogN/ba52weYDH1HbFOtOJxY8nILMzLk+q+vxoXHEVkD6MdtP8gYaBPjHM9V3TpyguoNO3qLE5g2cB7plkWvQwLT2fbrhqnqG8FHk8fcxgldpoZEA2pOoj0oTeXT0TPd38DARC8LfKrTeymtTlvXuCjcyxrt/1qBekn4pn55i4DsouuvaassPPsXlM7C+mDyXoSUeLw08rl2KldImpg0F726Aq7ttyTN8VPmt6UYGV93Fax732NCJgnWWDq9YNdkcpAGHsHXltzPzuNuNoF0pUQg/D9aJPtE7Z9pQJRqiinykOnIUXNDnlFtZyLzkyBXNEjR+nqFfhoobr1wq95c+dPlUNCMu9gLrA0xet9vDakAl3hyeXY2PSHyyQyWoYusjRu3P0m2uTCHNJTfKb7Yf5krpLZZytv6UAnCPPpU4qPX90+48sSMmpi6xscSb5Xf5FgAzZ9axCHEdxOK885D76XyRHR2mf/LMYNjT1LxE3gLx0KZVhxW06dg6Ymvh/hlPo++vQ/bfTDrRaeVzmRyfCfsXog0vQqFlHRgoOXQ8/a5OHJ3QRLsOA7OGanccx6cK8CyH8Z4mBETiPmD8/gZ+bwXVgNCitkuTM6n+BaNxsWEF5Bd8p+41foMb0n5Fqd+LhHnKR7oc6Uk0RS9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,97 +129,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sometimes, vm_area_alloc_pages() will want many pages from the buddy
-allocator. Rather than making requests to the buddy allocator for at
-most 100 pages at a time, we can eagerly request large order pages a
-smaller number of times.
+On Tue, Oct 14, 2025, Valentin Schneider wrote:
+> On 13/10/25 17:01, Sean Christopherson wrote:
+> > On Fri, Oct 10, 2025, Valentin Schneider wrote:
+> >> Later commits will cause objtool to warn about static keys being used in
+> >> .noinstr sections in order to safely defer instruction patching IPIs
+> >> targeted at NOHZ_FULL CPUs.
+> >>
+> >> These keys are used in .noinstr code, and can be modified at runtime
+> >> (/proc/kernel/vmx* write). However it is not expected that they will be
+> >> flipped during latency-sensitive operations, and thus shouldn't be a source
+> >> of interference wrt the text patching IPI.
+> >>
+> >> Mark it to let objtool know not to warn about it.
+> >
+> > Can you elaborate in the changelog on what will happen if the key is toggle?
+> > IIUC, smp_text_poke_batch_finish() will force IPIs if noinstr code is being
+> > patched.
+> 
+> Right!
+> 
+> > Even just a small footnote like this:
+> >
+> >   Note, smp_text_poke_batch_finish() never defers IPIs if noinstr code is
+> >   being patched, i.e. this is purely about silencing objtool warnings.
+> >
+> > to make it clear that there's no bug/race being introduced.
+> 
+> Good point. How about:
+> 
+> """
+> Later commits will cause objtool to warn about static keys being used in
+> .noinstr sections in order to safely defer instruction patching IPIs
+> targeted at NOHZ_FULL CPUs.
+> 
+> The VMX keys are used in .noinstr code, and can be modified at runtime
+> (/proc/kernel/vmx* write). However it is not expected that they will be
+> flipped during latency-sensitive operations, and thus shouldn't be a source
+> of interference for NOHZ_FULL CPUs wrt the text patching IPI.
+> 
+> Note, smp_text_poke_batch_finish() never defers IPIs if noinstr code is
+> being patched, i.e. this is purely to tell objtool we're okay with updates
+> to that key causing IPIs and to silence the associated objtool warning.
+> """
 
-We still split the large order pages down to order-0 as the rest of the
-vmalloc code (and some callers) depend on it. We still defer to the bulk
-allocator and fallback path in case of order-0 pages or failure.
+LGTM.  With the updated changelog,
 
-Running 1000 iterations of allocations on a small 4GB system finds:
-
-1000 2mb allocations:
-	[Baseline]			[This patch]
-	real    46.310s			real    34.380s
-	user    0.001s			user    0.008s
-	sys     46.058s			sys     34.152s
-
-10000 200kb allocations:
-	[Baseline]			[This patch]
-	real    56.104s			real    43.946s
-	user    0.001s			user    0.003s
-	sys     55.375s			sys     43.259s
-
-10000 20kb allocations:
-	[Baseline]			[This patch]
-	real    0m8.438s		real    0m9.160s
-	user    0m0.001s		user    0m0.002s
-	sys     0m7.936s		sys     0m8.671s
-
-This is an RFC, comments and thoughts are welcomed. There is a
-clear benefit to be had for large allocations, but there is
-some regression for smaller allocations.
-
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
----
- mm/vmalloc.c | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 97cef2cc14d3..0a25e5cf841c 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3621,6 +3621,38 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 	unsigned int nr_allocated = 0;
- 	struct page *page;
- 	int i;
-+	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
-+	unsigned int large_order = ilog2(nr_pages - nr_allocated);
-+
-+	/*
-+	 * Initially, attempt to have the page allocator give us large order
-+	 * pages. Do not attempt allocating smaller than order chunks since
-+	 * __vmap_pages_range() expects physically contigous pages of exactly
-+	 * order long chunks.
-+	 */
-+	while (large_order > order && nr_allocated < nr_pages) {
-+		/*
-+		 * High-order nofail allocations are really expensive and
-+		 * potentially dangerous (pre-mature OOM, disruptive reclaim
-+		 * and compaction etc.
-+		 */
-+		if (gfp & __GFP_NOFAIL)
-+			break;
-+		if (nid == NUMA_NO_NODE)
-+			page = alloc_pages_noprof(large_gfp, large_order);
-+		else
-+			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
-+
-+		if (unlikely(!page))
-+			break;
-+
-+		split_page(page, large_order);
-+		for (i = 0; i < (1U << large_order); i++)
-+			pages[nr_allocated + i] = page + i;
-+
-+		nr_allocated += 1U << large_order;
-+		large_order = ilog2(nr_pages - nr_allocated);
-+	}
- 
- 	/*
- 	 * For order-0 pages we make use of bulk allocator, if
-@@ -3665,7 +3697,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 		}
- 	}
- 
--	/* High-order pages or fallback path if "bulk" fails. */
-+	/* High-order arch pages or fallback path if "bulk" fails. */
- 	while (nr_allocated < nr_pages) {
- 		if (!(gfp & __GFP_NOFAIL) && fatal_signal_pending(current))
- 			break;
--- 
-2.51.0
-
+Acked-by: Sean Christopherson <seanjc@google.com>
 
