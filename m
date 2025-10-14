@@ -4,126 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB6D9CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D269DCCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16DB18E00DA; Tue, 14 Oct 2025 05:41:33 -0400 (EDT)
+	id 17E3E8E00DB; Tue, 14 Oct 2025 05:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F68C8E000D; Tue, 14 Oct 2025 05:41:33 -0400 (EDT)
+	id 155948E000D; Tue, 14 Oct 2025 05:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00B08E00DA; Tue, 14 Oct 2025 05:41:32 -0400 (EDT)
+	id 044818E00DB; Tue, 14 Oct 2025 05:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6CB48E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:41:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9FB7513BBF0
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:41:32 +0000 (UTC)
-X-FDA: 83996227224.24.1439CAD
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 91D5C1C000B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:41:30 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=atbouwfG;
-	spf=pass (imf18.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E32388E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:49:17 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86FD487782
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:49:17 +0000 (UTC)
+X-FDA: 83996246754.21.60E8C1E
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D66631A000F
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:49:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UTjY4oyS;
+	spf=pass (imf19.hostedemail.com: domain of edumazet@google.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760434890;
+	s=arc-20220608; t=1760435355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCJev5YRwu/rqGnN8n/PTfia02gLpLN0twmsZsqNANU=;
-	b=z4ieniGbHd4Cwjl9xkpEveUXfzBaqdM9CZiZt1PNWzvs/aixbgG5Jc8c2TSSRVFSYbR2dS
-	wwftC+Oe2WXyEQbUJp0b+DV29Fbm6x+QZNcJ8TdDjrPDADi3OceYNAchPBd80P5mwMjYiP
-	SBu0xgFhEaAVHY9to+I7ofqpbgzynNc=
+	bh=/rejcU5EZuKfOaVf3kGuy7qqlEcfNKn49oLZoxZhzh8=;
+	b=69cawLYT64BcB064gaQn0NHTQMa955h8r1h6ytLpzqHUC6mtef7da/t8uaDd3zyBWCsQ7o
+	QJOjvxYio+hX+7QeDJ+Mt9wJtfYM1gxu/MI7Y973A4kipIggg5EVsdvrrZ1vus5bU25Czt
+	ykgeO4EOm6YZqSLXYx3qRNfreQbs0hQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=atbouwfG;
-	spf=pass (imf18.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760434890; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UTjY4oyS;
+	spf=pass (imf19.hostedemail.com: domain of edumazet@google.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760435355; a=rsa-sha256;
 	cv=none;
-	b=6uIe1RC5izieVqzPqcOBXC3q8TYOaQX1B+eke0bNvMv49Ipk0llHG5fkmOMEuSYIsz1YeJ
-	vnmEkEFPnpVvLvKdpzHpSH8Esk1wa06uA4ZBNBchK7oZVEIxWlErakBPZMcI6cO12hGj4P
-	uOkqmZXefY22N0Y6N4GwO0UMAqeVHsM=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b3c76f3703cso71128166b.3
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:41:30 -0700 (PDT)
+	b=Hn263eKZUK0gtqofvt2mv1Wqc6wdiixKbNSSI7Xu/Z+UfoO+M4JkVcOmBnRtxetM0okzlZ
+	eDI35W1J6MMaOhN1rMY9ZMj0IsyYc3WlU6UXtKwlEExOZjVFao6HBLz7hbOYfHJdJ/YYWo
+	c+iDXL0/lv0WWGCMVTk4oTtw0u5MpcU=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-816ac9f9507so788201685a.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:49:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1760434889; x=1761039689; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1760435355; x=1761040155; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wCJev5YRwu/rqGnN8n/PTfia02gLpLN0twmsZsqNANU=;
-        b=atbouwfGIiG1b4EgQNFgrOW02VDzIFkeN6dCJfZLp90zkalAyjAYbvanjxKJlQ2o9Q
-         CbuO7FTEPleHnsLdvheswoD1FxsJNm9cYP+NECfRmy0cCIlWeFnQK9dhhan6+4Evm+nw
-         PYrpF3ynNDUK3PsvU6Jc8gfGrJuQD59GycMI2Zi58jmB5pVL5y9Ye3lO16gLcmtayZYa
-         4dVrjGucbk4kVnci/bPakXBVpriUvI9rx4cF1nE6sqkud9iM18163leBOmOIbCgA9g1A
-         vNqqYAEc3khOn4DEhM9fBZ489LFSw4kZTuttv64YBvBFSz/n6jGBs4pM/fqIH4ixR39d
-         mfYw==
+        bh=/rejcU5EZuKfOaVf3kGuy7qqlEcfNKn49oLZoxZhzh8=;
+        b=UTjY4oySyTY9u6/dULluXonu7WAU2y8BdgDxv5YwOZlM6cXBsi7ZmoAIuEY2K0l3wb
+         8Rv8NRbqQF+gY0offU7jrE5mgl1KaRXpqIy8IZz3eFmn7uKpdR/OJdw5Cj4eyiCHRA78
+         ZRan8DOOMxBhZ1ZYX7mKS2XgK/0flmjzGNsrwMRPIyejwm+EPIrKygT3dC36i03YHOwN
+         nvfeFMLgTYK34hYx43IiEXxEqDFr0sZVvq1XiNhuhRTxQmoNevNAWXEA3D+bsqhwhGES
+         OZ19dLd/3MLQDBJSZK+y6AMZNSvO3rVtyu+HDcdld2K6IGtpt3Bg0lnrxJl2Sm13Q7fT
+         s69Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760434889; x=1761039689;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1760435355; x=1761040155;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wCJev5YRwu/rqGnN8n/PTfia02gLpLN0twmsZsqNANU=;
-        b=uK74r7wmk9KNBw0MJujF9/Qd2C2rAuuSXPZ1QD93zZ0p9GeULZuufUdUDo7MhuqlII
-         SR7UFBbh7Xo/Du4wcQ1gBvc6QQxH0QPVcLTe1o5jVKCTafYYGPKcW51t6S7mbWOMAv+W
-         IWjG9u73xTLjwhvTdV+YjiigWjNWZV3I/llFPXMVnwhAC1emcJiy/03QuNdgVfqJdi1F
-         v/EnXs0vD9er/QFk5V7HlHY3prWCl+qjkh1C0XrZCZMUJgtOWUEDgsDhBOWpMW54YnOA
-         hgHbvCa/ACmZLAIoQI5cRiaC+CcUmAt8iWKIVT2BOME9SjVqZjnEXDQr8++pwJdQUo3+
-         B54w==
-X-Forwarded-Encrypted: i=1; AJvYcCXIPj4FC2IZVzZYxWsKtquZXoCIxxB9cY4NFGmiNgQYY++lwzYbc36TZ+SGJmXyf+a1cBxAb3cv+A==@kvack.org
-X-Gm-Message-State: AOJu0YzOsQn8CZBs/1koQIc38Hf+yX4Al094U9QMMvjN3FNd6GuZzJ0I
-	t7vBRWUCoqFTlzIbxxDY9UiIGO/EVPU1quokhNOP4q9RJ/dh+2a/YgDUuYfphe3Jee0=
-X-Gm-Gg: ASbGncuxwIf//KZlzHezHWs+MkHoowwQfYNYFS/VCdhbteOn0hGbojAf6YWwKkckIUW
-	xIkJ6+j+votxtcAsEh+2GiVR+qTUWfgxqS0GNyZgAi1pfjg5g5yDQmKYYfBDfHu3qRHBG+Mu1ZX
-	gu6mzAvUYoJxVdQ2NEsBhym8MpRa9KXwGzIdQCEjI1x24UON3yeGJczcnRygSzzkuEouonM0Wnl
-	iIFBM2K9zxBOUeaZoECVjZcQqQ08Y2AtAwEKayiqmi8N+0ytbjYaEsJW/0ZYOKulFYOtbDI6yfk
-	OwfVvaDhI10JL1xo2QyBZp4ed7UeKDeAoRiYOfEBCYjcz9RAfEs9RvygigHcWX/BoNGo+z/IosG
-	Z7mcUPqtVKMAcTWKBRI13krqIpW9w7JZH/9vYgnnU897NGqGxxlm1QD0tMF6t1LAADzoCtYR1IL
-	t/VA==
-X-Google-Smtp-Source: AGHT+IEj7EXmKeGMkIHLFt6v1ZPE2GXmgL8mw1Xbm5Nig8QsEJKwgtZKXB33yqabFn/nHPojvmOTxA==
-X-Received: by 2002:a17:907:3e8c:b0:b57:1fd6:5528 with SMTP id a640c23a62f3a-b571fd65e5fmr757770266b.10.1760434888791;
-        Tue, 14 Oct 2025 02:41:28 -0700 (PDT)
-Received: from mordecai.tesarici.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d5cad938sm1124395066b.2.2025.10.14.02.41.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 02:41:28 -0700 (PDT)
-Date: Tue, 14 Oct 2025 11:41:24 +0200
-From: Petr Tesarik <ptesarik@suse.com>
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, Mel Gorman
- <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>, Sumit
- Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard
- <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
- John Stultz <jstultz@google.com>, "T . J . Mercier" <tjmercier@google.com>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linaro-mm-sig@lists.linaro.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, Zhaoyang Huang <huangzhaoyang@gmail.com>,
- <steve.kang@unisoc.com>
-Subject: Re: [PATCH 1/2] mm: call back alloc_pages_bulk_list since it is
- useful
-Message-ID: <20251014114124.145165bc@mordecai.tesarici.cz>
-In-Reply-To: <20251014083230.1181072-2-zhaoyang.huang@unisoc.com>
-References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
-	<20251014083230.1181072-2-zhaoyang.huang@unisoc.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
+        bh=/rejcU5EZuKfOaVf3kGuy7qqlEcfNKn49oLZoxZhzh8=;
+        b=ruIDA/JpKsQaOYBi6VE0lZGN/0aVNu7rFWRHVW6k1h9tHXHIVqywSaMQL5lQLtFBMq
+         4x/JLfnHyPizFJXgaNlpDO7JkRGdBfKVgrXfeNYHZylnbc+y3ir2hVlkkXNYtKv7eH1f
+         A/Sglo2DuzoXqqA+ALClTIvUl7jqY/D717EE+/KbbADAnzpf3ngOPjoNV/aZqnKZQGQT
+         ievC5+RCDQAdeEG5JcnXXCOuBHesFhsjBlqfeNd9gJMTiACkx0Gs3SJYrmB0Q15yYif9
+         K77sLAQUXNtUp7yj521vkr2aVsTIIT85cF4QlRwOHyCxaAp2Ui7K0dOkS1F4+6r5VnEz
+         uE/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWLw54SiiFgIqen4OxNeUMWPL5mFkRv/oe+fGjbTZPT/9IbgF+JXntBNmeQ+WhAHhZU5j9s7HsIlg==@kvack.org
+X-Gm-Message-State: AOJu0YzjFR4AC+Xz57X4Qhlo+zktC5hrcV38eEDnzWwqaZZa7YMMJW1x
+	TYdPRTlwkqZNdovNavdPCznkA7sGJ02nf+aq9rUMu2Op9v7tUZ6XJjED4uFkMku7kF5xHjC5hKH
+	ZRrvZGbccZ/8g1EITi8/Mf/Vu1qQgGCwyF7qJUGLIlZ7sZ4ikb24x8nlMb5A=
+X-Gm-Gg: ASbGnctYDcQiqWSM89J5XPnq625DhAHULcGJBdWhbMLuO6NVS2BK8MVBaj7Ofpf4VfA
+	B21tFTJMENizQV34r/DuY4kgXpb/n6k2rhgtaZptQh8k56TmbETdA0kBMj5wAoCN/kBpPUMSyuw
+	9XoEZaPOzj5DxCvo75O0CYrwpLh7iymglAyNvQEm7dQHMhSgD7eM+CF1wawb9YRvlCVjpZoXu7t
+	hv9ZVMLkNDJCBgUXgsS/erpNbSFlGcOEUcnJ/aMmFk=
+X-Google-Smtp-Source: AGHT+IHl4KYhns6HjXctJUP8o5ymMntOlhxSsAztTQ/ElyRGupOcA1nshFbafOIGxpIMTBr9aCbejFNLuYJavjSBG/8=
+X-Received: by 2002:a05:622a:1651:b0:4b7:a1b6:cf29 with SMTP id
+ d75a77b69052e-4e6de928b64mr379844891cf.41.1760435354432; Tue, 14 Oct 2025
+ 02:49:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fm6ap9kc8xard3p18ocgiemdn4i5jqqd
-X-Rspamd-Queue-Id: 91D5C1C000B
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com> <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 02:49:03 -0700
+X-Gm-Features: AS18NWCJcjmV12JbFBOiX1xuqww7glxnYRIPGxjvTUEA69A11zlzBQw_qx0TUQI
+Message-ID: <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D66631A000F
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760434890-117683
-X-HE-Meta: U2FsdGVkX18Mq0+wW0ODfvHQBbUq8LRRRum7ieyY022fXHWhBvwhNP9a3wRlYAK59Ps2Jf/QoSD1HHO0VfM8x9lWBysbQhKc9k71dNy0ePXx2+BbN11iC/7lLv4K80hrJ5LbEvES15Fkf/o8YbMqQMz9cpDuwEeHyNWwNAXOrRFrrSZXS3oRXAWZ3i8nKePEKFQ/qekYejphnLCy16OD3TfQo1ZkrIUXuLGaMdSKGjnFEIMa+lGNvpiG0F2QsICxE+my9yBy2b5G960q2o3Dc1FTOjMRA5LlRzVtlEUES6Pjq8I+cSUdqNlcLss2gUf3UqVF3Hf1cQ5jONj8SWLt53gcGm00gmrv7fwiEse4LA1t44J6J/yitskDUIVZilydAR/DNURagb1+DmjD4bGijeGuudIJH97NkbB+Ou+LWQ0ZCxZZLCnvoiVVc06GZ5bQZCoR8G+xKR6F9f/mTGJqjcsADlH68nQT7kYGgDhhySuwBLUHaTfd8m8gWAEf4CjXfCtYCE1A52JL/Hm7xJ1F7taJmCCLcW8shBk6QqEy+46U66+yIosgvuSPn40Do3iJ/E4MTF0du3wop78sFv1qZEKdGeWKujp9z23Rk9XcEbJDre4H0BprhpykkZZ8Fg4T21o8yq1iI6R8PXvZOkPzETUse33cMoTuYHFlWs7Ystn91h5twFDGMfa/pRUtkD8zvkwndVtOSqDnZpP5kIMlQnzIaIilw/Sh+tmh84D4MQ4YSWfylo1UJZvXyNxMwsV501H4Oa2MYfiWIlVul0O1unb6OpaN6WHtc+UeCwO/43RB6NTF+FKUmB3gA5ByJhQEfeAGGSLZv+K6gkbM2tPD6j1VFEmz/4x8XtkTjGR4tmMAcZHDSWznMBvUO5pu0R0l/UStzfSmKDA1Wo5v/icQBrVyN6yRtEpKXwggcteGAR4FIe88P5G4YlI4yo8o+BI6jp77WmlsuoFurzqW7KH
- IPoglodh
- L8mSZTXUX18VrcVpaPs6wKOHUnMoFBXzyhM04jx3b3AbGsA8XvkP5LvP0BMRGefoMGTn94pWq0Z8AtuyzecTDAD+JEiBvEwa/ALXpw+fv3jWssuE+otdpAqfZUbN9GCqQFGnfRJckuMHf4ngE8VU5uad3lG9iShjguSIxSqTZPeQNaJ9VSHLyRiwbueSgjTzQmu9ubZx8zUGemyr9/u3I7keh9jt56IfLGCFzN4BQpPqwj0dYeZh3swLBH2Hghsy0PKxsCBX+L7lIGOPf3cUKzb3j/EQe7UrQKDCMTEmQyqWMF/eG+AiKL6hLmRafphOA+pMdICnl1SwSti0QI1tT+yv8vw==
+X-Stat-Signature: rwnjwuh1whfuf4jz3tfeh4ozc1zfc9k1
+X-HE-Tag: 1760435355-527135
+X-HE-Meta: U2FsdGVkX1+9lJyHoTvrnBIlvtjAdyU5bPjD7C7wrBMTa2PLLsr/OiR4OnF8+uxe5rFeKsnbfwD5mo9NcXGwdGFxzju2e/s0VKG9iORLxhcbId5xfS7+F6s92KdbWfSGTdmMQ9vxKsIHSysk3009OQQ1D/Bsy2WCXseNAfdjQI100XU1XaXzkNUhBqY8qn89yM53YA5J6QwDwOAIOLCO2brphs2WK5UKMuwnPLZPpqDQY6rIZQtHzdo9Mp7I7jCBkmdN8gN6tMAlKm33tzRTPo1lSLLMBMEML/rlfozuDVhV+H57P8cjdhYSEjhzi4krzv2EO9emOhAJrpEFA+Tt7yew5xvSviMdcm8Ocz90YDurfBnSM629JiqPMwx9YhpkW1a0WM2EO0lzqP9xhJ1MxBVKMDLhZqnlcUZTNd18UO0C+gZI78JVylEA8I6kj4x8xSffGo8Sd03M858PQRL+nJm66XTb1dCVRS1skGP+wpaazl12ykoYESvn56u2Jh713CulLBKX/3+5wZt1mPPTlTswXmIFpNalsmhZJA8sIgqxcv7nSHtxbLOdrdAV1OnsL58WjTlwQSf0xq8y2rK0A6NvZ/qWF0ZvlNkUCZ2V7AeSaAe9O8gL6Hzs6h8I7t7Y+peDULGR23igrKkR/oV4gD+jay3BpWMdXYOjfkRzPZ4UbVJ/1rkypzTtbS52mP3jnzw0b+v65gatBEJTbemCSYOgtGBQRdrtoEtgj7MEiljDWkLpzUTqMQ5Fc+nSq4WiTO3xyJ5HGmvL/Ch1XoZ6gvEYVmkF9KM3mirZulBP6ulP7x2jipr1VdbFIsVQ/leMBO0lu4URpcz44pVX6kvLFQTP999dkPmQauyZV22YnJxubDcWlEjZvo1rwvz82hKDYwR/D+n3tWyog4PzoKFa0Q8lfNWgUPu0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,239 +123,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 16:32:29 +0800
-"zhaoyang.huang" <zhaoyang.huang@unisoc.com> wrote:
+On Tue, Oct 14, 2025 at 1:58=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Oct 14, 2025 at 1:04=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Mon, Oct 13, 2025 at 9:09=E2=80=AFPM Barry Song <21cnbao@gmail.com> =
+wrote:
+> > >
+> > > On Tue, Oct 14, 2025 at 5:56=E2=80=AFAM Matthew Wilcox <willy@infrade=
+ad.org> wrote:
+> > > >
+> > > > On Mon, Oct 13, 2025 at 06:16:36PM +0800, Barry Song wrote:
+> > > > > On phones, we have observed significant phone heating when runnin=
+g apps
+> > > > > with high network bandwidth. This is caused by the network stack =
+frequently
+> > > > > waking kswapd for order-3 allocations. As a result, memory reclam=
+ation becomes
+> > > > > constantly active, even though plenty of memory is still availabl=
+e for network
+> > > > > allocations which can fall back to order-0.
+> > > >
+> > > > I think we need to understand what's going on here a whole lot more=
+ than
+> > > > this!
+> > > >
+> > > > So, we try to do an order-3 allocation.  kswapd runs and ... succee=
+ds in
+> > > > creating order-3 pages?  Or fails to?
+> > > >
+> > >
+> > > Our team observed that most of the time we successfully obtain order-=
+3
+> > > memory, but the cost is excessive memory reclamation, since we end up
+> > > over-reclaiming order-0 pages that could have remained in memory.
+> > >
+> > > > If it fails, that's something we need to sort out.
+> > > >
+> > > > If it succeeds, now we have several order-3 pages, great.  But wher=
+e do
+> > > > they all go that we need to run kswapd again?
+> > >
+> > > The network app keeps running and continues to issue new order-3 allo=
+cation
+> > > requests, so those few order-3 pages won=E2=80=99t be enough to satis=
+fy the
+> > > continuous demand.
+> >
+> > These pages are freed as order-3 pages, and should replenish the buddy
+> > as if nothing happened.
+>
+> Ideally, that would be the case if the workload were simple. However, the
+> system may have many other processes and kernel drivers running
+> simultaneously, also consuming memory from the buddy allocator and possib=
+ly
+> taking the replenished pages. As a result, we can still observe multiple
+> kswapd wakeups and instances of over-reclamation caused by the network
+> stack=E2=80=99s high-order allocations.
+>
+> >
+> > I think you are missing something to control how much memory  can be
+> > pushed on each TCP socket ?
+> >
+> > What is tcp_wmem on your phones ? What about tcp_mem ?
+> >
+> > Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
+>
+> # cat /proc/sys/net/ipv4/tcp_wmem
+> 524288  1048576 6710886
 
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> 
-> commit c8b979530f27 ("mm: alloc_pages_bulk_noprof: drop page_list
-> argument") drops alloc_pages_bulk_list. This commit would like to call back
-> it since it is proved to be helpful to the drivers which allocate a bulk of
-> pages(see patch of 2 in this series ).
-> I do notice that Matthew's comment of the time cost of iterating a list.
-> However, I also observed in our test that the extra page_array's allocation
-> could be more expensive than cpu iteration when direct reclaiming happens
-> when ram is low[1]. IMHO, could we leave the API here to have the users
-> choose between the array or list according to their scenarios.
+Ouch. That is insane tcp_wmem[0] .
 
-OK, so this is more or less a revert of commit c8b979530f27 ("mm:
-alloc_pages_bulk_noprof: drop page_list argument")...
+Please stick to 4096, or risk OOM of various sorts.
 
-I cannot comment on the performance gains, but I dislike the fact that
-the patch re-introduces alloc_pages_bulk_noprof() as a function with two
-signatures (either page_list is used, or page_array is used).
+>
+> # cat /proc/sys/net/ipv4/tcp_notsent_lowat
+> 4294967295
+>
+> Any thoughts on these settings?
 
-If we can agree that allocations onto a linked list are useful, then I
-suggest to split the existing function so that the common bits end up
-in helper functions, called by both variants (one function using a
-list, one using an array).
+Please look at
+https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
 
-Petr T
+tcp_notsent_lowat - UNSIGNED INTEGER
+A TCP socket can control the amount of unsent bytes in its write queue,
+thanks to TCP_NOTSENT_LOWAT socket option. poll()/select()/epoll()
+reports POLLOUT events if the amount of unsent bytes is below a per
+socket value, and if the write queue is not full. sendmsg() will
+also not add new buffers if the limit is hit.
 
-> [1]
-> android.hardwar-728     [002] .....   334.573875: system_heap_do_allocate: Execution time: order 0 1 us
-> android.hardwar-728     [002] .....   334.573879: system_heap_do_allocate: Execution time: order 0 2 us
-> android.hardwar-728     [002] .....   334.574239: system_heap_do_allocate: Execution time: order 0 354 us
-> android.hardwar-728     [002] .....   334.574247: system_heap_do_allocate: Execution time: order 0 4 us
-> android.hardwar-728     [002] .....   334.574250: system_heap_do_allocate: Execution time: order 0 2 us
-> 
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
->  include/linux/gfp.h |  9 +++++++--
->  mm/mempolicy.c      | 14 +++++++-------
->  mm/page_alloc.c     | 39 +++++++++++++++++++++++++++------------
->  3 files changed, 41 insertions(+), 21 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 5ebf26fcdcfa..f1540c9fcd87 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -231,6 +231,7 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
->  
->  unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  				nodemask_t *nodemask, int nr_pages,
-> +				struct list_head *page_list,
->  				struct page **page_array);
->  #define __alloc_pages_bulk(...)			alloc_hooks(alloc_pages_bulk_noprof(__VA_ARGS__))
->  
-> @@ -242,7 +243,11 @@ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->  
->  /* Bulk allocate order-0 pages */
->  #define alloc_pages_bulk(_gfp, _nr_pages, _page_array)		\
-> -	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, _page_array)
-> +	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, NULL, _page_array)
-> +
-> +#define alloc_pages_bulk_list(_gfp, _nr_pages, _list)			\
-> +	__alloc_pages_bulk(_gfp, numa_mem_id(), NULL, _nr_pages, _list, NULL)
-> +
->  
->  static inline unsigned long
->  alloc_pages_bulk_node_noprof(gfp_t gfp, int nid, unsigned long nr_pages,
-> @@ -251,7 +256,7 @@ alloc_pages_bulk_node_noprof(gfp_t gfp, int nid, unsigned long nr_pages,
->  	if (nid == NUMA_NO_NODE)
->  		nid = numa_mem_id();
->  
-> -	return alloc_pages_bulk_noprof(gfp, nid, NULL, nr_pages, page_array);
-> +	return alloc_pages_bulk_noprof(gfp, nid, NULL, nr_pages, NULL, page_array);
->  }
->  
->  #define alloc_pages_bulk_node(...)				\
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index eb83cff7db8c..26274302ee01 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2537,13 +2537,13 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
->  		if (delta) {
->  			nr_allocated = alloc_pages_bulk_noprof(gfp,
->  					interleave_nodes(pol), NULL,
-> -					nr_pages_per_node + 1,
-> +					nr_pages_per_node + 1, NULL,
->  					page_array);
->  			delta--;
->  		} else {
->  			nr_allocated = alloc_pages_bulk_noprof(gfp,
->  					interleave_nodes(pol), NULL,
-> -					nr_pages_per_node, page_array);
-> +					nr_pages_per_node, NULL, page_array);
->  		}
->  
->  		page_array += nr_allocated;
-> @@ -2593,7 +2593,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  	if (weight && node_isset(node, nodes)) {
->  		node_pages = min(rem_pages, weight);
->  		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
-> -						  page_array);
-> +						  NULL, page_array);
->  		page_array += nr_allocated;
->  		total_allocated += nr_allocated;
->  		/* if that's all the pages, no need to interleave */
-> @@ -2658,7 +2658,7 @@ static unsigned long alloc_pages_bulk_weighted_interleave(gfp_t gfp,
->  		if (!node_pages)
->  			break;
->  		nr_allocated = __alloc_pages_bulk(gfp, node, NULL, node_pages,
-> -						  page_array);
-> +						  NULL, page_array);
->  		page_array += nr_allocated;
->  		total_allocated += nr_allocated;
->  		if (total_allocated == nr_pages)
-> @@ -2682,11 +2682,11 @@ static unsigned long alloc_pages_bulk_preferred_many(gfp_t gfp, int nid,
->  	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
->  
->  	nr_allocated  = alloc_pages_bulk_noprof(preferred_gfp, nid, &pol->nodes,
-> -					   nr_pages, page_array);
-> +					   nr_pages, NULL, page_array);
->  
->  	if (nr_allocated < nr_pages)
->  		nr_allocated += alloc_pages_bulk_noprof(gfp, numa_node_id(), NULL,
-> -				nr_pages - nr_allocated,
-> +				nr_pages - nr_allocated, NULL,
->  				page_array + nr_allocated);
->  	return nr_allocated;
->  }
-> @@ -2722,7 +2722,7 @@ unsigned long alloc_pages_bulk_mempolicy_noprof(gfp_t gfp,
->  	nid = numa_node_id();
->  	nodemask = policy_nodemask(gfp, pol, NO_INTERLEAVE_INDEX, &nid);
->  	return alloc_pages_bulk_noprof(gfp, nid, nodemask,
-> -				       nr_pages, page_array);
-> +				       nr_pages, NULL, page_array);
->  }
->  
->  int vma_dup_policy(struct vm_area_struct *src, struct vm_area_struct *dst)
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d1d037f97c5f..a95bdd8cbf5b 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4940,23 +4940,28 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
->  }
->  
->  /*
-> - * __alloc_pages_bulk - Allocate a number of order-0 pages to an array
-> + * __alloc_pages_bulk - Allocate a number of order-0 pages to a list or array
->   * @gfp: GFP flags for the allocation
->   * @preferred_nid: The preferred NUMA node ID to allocate from
->   * @nodemask: Set of nodes to allocate from, may be NULL
-> - * @nr_pages: The number of pages desired in the array
-> - * @page_array: Array to store the pages
-> + * @nr_pages: The number of pages desired on the list or array
-> + * @page_list: Optional list to store the allocated pages
-> + * @page_array: Optional array to store the pages
->   *
->   * This is a batched version of the page allocator that attempts to
-> - * allocate nr_pages quickly. Pages are added to the page_array.
-> + * allocate nr_pages quickly. Pages are added to page_list if page_list
-> + * is not NULL, otherwise it is assumed that the page_array is valid.
->   *
-> - * Note that only NULL elements are populated with pages and nr_pages
-> + * For lists, nr_pages is the number of pages that should be allocated.
-> + *
-> + * For arrays, only NULL elements are populated with pages and nr_pages
->   * is the maximum number of pages that will be stored in the array.
->   *
-> - * Returns the number of pages in the array.
-> + * Returns the number of pages on the list or array.
->   */
->  unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  			nodemask_t *nodemask, int nr_pages,
-> +			struct list_head *page_list,
->  			struct page **page_array)
->  {
->  	struct page *page;
-> @@ -4974,7 +4979,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  	 * Skip populated array elements to determine if any pages need
->  	 * to be allocated before disabling IRQs.
->  	 */
-> -	while (nr_populated < nr_pages && page_array[nr_populated])
-> +	while (page_array && nr_populated < nr_pages && page_array[nr_populated])
->  		nr_populated++;
->  
->  	/* No pages requested? */
-> @@ -4982,7 +4987,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  		goto out;
->  
->  	/* Already populated array? */
-> -	if (unlikely(nr_pages - nr_populated == 0))
-> +	if (unlikely(page_array && nr_pages - nr_populated == 0))
->  		goto out;
->  
->  	/* Bulk allocator does not support memcg accounting. */
-> @@ -5064,7 +5069,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  	while (nr_populated < nr_pages) {
->  
->  		/* Skip existing pages */
-> -		if (page_array[nr_populated]) {
-> +		if (page_array && page_array[nr_populated]) {
->  			nr_populated++;
->  			continue;
->  		}
-> @@ -5083,7 +5088,11 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  
->  		prep_new_page(page, 0, gfp, 0);
->  		set_page_refcounted(page);
-> -		page_array[nr_populated++] = page;
-> +		if (page_list)
-> +			list_add(&page->lru, page_list);
-> +		else
-> +			page_array[nr_populated] = page;
-> +		nr_populated++;
->  	}
->  
->  	pcp_spin_unlock(pcp);
-> @@ -5100,8 +5109,14 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->  
->  failed:
->  	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask);
-> -	if (page)
-> -		page_array[nr_populated++] = page;
-> +	if (page) {
-> +		if (page_list)
-> +			list_add(&page->lru, page_list);
-> +		else
-> +			page_array[nr_populated] = page;
-> +		nr_populated++;
-> +	}
-> +
->  	goto out;
->  }
->  EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
+This global variable controls the amount of unsent data for
+sockets not using TCP_NOTSENT_LOWAT. For these sockets, a change
+to the global variable has immediate effect.
 
+
+Setting this sysctl to 2MB can effectively reduce the amount of memory
+in TCP write queues by 66 %,
+or allow you to increase tcp_wmem[2] so that only flows needing big
+BDP can get it.
 
