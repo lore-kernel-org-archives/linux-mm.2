@@ -4,116 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF78BCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1809ACCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:08:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8998E000D; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id 75D7A8E0114; Tue, 14 Oct 2025 09:08:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E87D38E0112; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id 70E108E0112; Tue, 14 Oct 2025 09:08:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D76D38E000D; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
+	id 64B538E0114; Tue, 14 Oct 2025 09:08:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A90A78E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:07:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C74411B098
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:52 +0000 (UTC)
-X-FDA: 83996747184.13.93B24FB
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 099601C000F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=XYZmbZu+;
-	spf=pass (imf21.hostedemail.com: domain of axboe@kernel.dk designates 209.85.166.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5534E8E0112
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:08:03 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11BECC0944
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:03 +0000 (UTC)
+X-FDA: 83996747646.07.2A8539F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C0B90C0007
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:08:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VuwXZ8Z6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447281; a=rsa-sha256;
+	cv=none;
+	b=f5WEy46rdwVgOKODZ3EF+vaxRvzNw/giBDr5/MyRDI+kuU+bl3GKgnz2u+sWPPhX+3WA5Z
+	IGmRDtX2FuQehuc1ai8aWk180iO/2LQNCt2+8GT34L7QjXdBlic+iENE0Di1BIwixQX42y
+	O5CRJfmI6xxyUCTMy6+jtBbDPAex6fI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VuwXZ8Z6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447270;
+	s=arc-20220608; t=1760447281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
-	b=iWIrro+EGHfc2XQrjmQvU34CjzQQ9ixlJNANm5S6nsb3veqdle+jswcgMTDAv7yd9YpDgj
-	e9XXLEkULGOdhPXAUlSPc9x1RpXPEcjnwUaAIoEs1Pbh8dsqjFeL6b+7f85KQXHf4weFtn
-	JzfKV5HYuQWWLhkzzS0xxieUfZdYBjc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=XYZmbZu+;
-	spf=pass (imf21.hostedemail.com: domain of axboe@kernel.dk designates 209.85.166.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447270; a=rsa-sha256;
-	cv=none;
-	b=jWwbxqFsuHwJsDUlKxnHi6C2irL5sE64+veyCBjCyOzGCyThobrnU5rI85DlzUtS2hh1X/
-	3WPonVl/GO0Ur4FW/HWFvDSA96G1cjcXEl+3yfDKuevw6U3++wOTllSrs1v/ysKxDML8C5
-	+F4aF2dybro3aU1qlMiDlUW6KplpGj0=
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-938de0df471so491161239f.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:07:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1760447269; x=1761052069; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
-        b=XYZmbZu+tm4WqlDJefwxgWCUgfpKYXU5td/StS0ulT4anTX+WcN/avYb44/iXlz2rw
-         eX5c6S4evSqQvCXKFtWGtOQje668LErxDNZzwSzcc7uOG9UUd8QD/uOdxicvDouUOTww
-         wZF926gMKnVKktK78+g2gvwqm/rO7PSMYND4XgFTMO1Pwjln2tQkjVqmjiK58emzk8fQ
-         Gx/EQjCo+NRdCAJydPfHZtAcFjxaoU7+rO5JKBiaRbpvKV7UIS7tB4LHWhdm85vW3jhs
-         61odPGAXguzWQllfXvfkykF+7LXsqVw2hiQ0spuytAyb7o6McpPhZNO9Do6PJrfl1tTG
-         yN3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760447269; x=1761052069;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KtUOBA02vnRbubidZ3Mq6jULmhFQWs/Je7/vpnoal3k=;
-        b=JbCvRqD7M0N7AxZc70m7hmVjOQtw6Fv548pHSvKFgYr8ikAPEv8M/Vd3G9DQM8QKOC
-         UNj4A1syRHMRCS7bcVqAqbdVqTo+e6odiSmqiege0c6jy72XywUzdswyMaGhjYO4IySP
-         Un03eh6xYXVZdZQ5tvRP+y+9SeRioqytk1g854F+DPF9bn3YkczuoCfYipgMjaoU+InY
-         Hz40M50u93RXTggzgf4rWmOpKw4Ada9cIWA39Dy5ewjhbNUzACdRBlmqoLHKmKRqW0du
-         37LJIUinNgzPy9lerW1QFcIjeVBrCstmokIpe3R14qy97AbIpb1vVsDl7JbsjLwicRE0
-         01XQ==
-X-Gm-Message-State: AOJu0YxiuqN4uKypAx1eGqcjGI0wYcLEKO8jF4YL5adUMDb3ANvGbm2Z
-	qaY8CdNVVOjHNkdgjxZGHb46gcXNK+D+GYGqf2embRLol/TOefyvvJRCgsPvWYPv+J4=
-X-Gm-Gg: ASbGncs2XDcVHLIRNbBWGB9NJfeTazMI3IjCTfY2Sn8c4J/7o/ngr9/q+S3l/xknoeh
-	dzpF7ECOf8o+6dV/t7AlGV1P+4B7QZUkZuAM9rOXtpzecp8HSWlKr2m1I60mIsQXjQclIDnzoe2
-	kM5sYsO3UGNuD4RWouj2+N+Hnxk9ManhMQ6AgCqnmEndaIo26GLe3cfHIkG1Dtf3osenMljlVTj
-	tou0kJQbFM8O54L3cBio2I/eb9TCN++J4BqPxRDhmm1x48BgW00x2avml2PDW3KP7VWUens2gVV
-	1ZjoG41WqUa0+uRy8NYll8TrxFqwvkavSCnjSXCbe/XwOSXEUWtDW+Vgo5u9ljgH9QEEhS0ZxL0
-	UQPNaoRhRxhfK886VBbbNh9RDwMNeNcyoAngdwgw=
-X-Google-Smtp-Source: AGHT+IGh+/cXW5eXefvfc/8019u8t+Wip4UewYdAOiTu7XDHpy98OIT7QQFCjFM4MijZt4pR5t5BaA==
-X-Received: by 2002:a05:6e02:1562:b0:42e:2c30:285d with SMTP id e9e14a558f8ab-430a43ca194mr21969905ab.6.1760447264888;
-        Tue, 14 Oct 2025 06:07:44 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-58f6cd58e48sm4796689173.17.2025.10.14.06.07.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Oct 2025 06:07:44 -0700 (PDT)
-Message-ID: <c775db95-ccff-46e8-9e3c-5cd784618f04@kernel.dk>
-Date: Tue, 14 Oct 2025 07:07:43 -0600
+	bh=9PA3zhpa+BD/5dmKfcQGwmcHcAgqFVRQk01mUODYy3M=;
+	b=OdWJdG1GaHvD0GIf8gMgWD5D+YIP03ZfcGZhi7jnQauFV7aMZSkMMc5QODKk4Yv4hrc4Bp
+	Q5x7pygwuZWvxB5815thyz1077BMe6r1Z5UWQt+qj3orXZTefQefzs3ne/8QyeWCTGLJJK
+	c5v+nY3OzgfZFgeykPPHkfVkQpiryM4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760447281; x=1791983281;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=vO9zGwkmI5awwHRZtJhTqnzpNbqrGk1H0cCSFDOeJMw=;
+  b=VuwXZ8Z6T7mAC6yreupAO/SjCBOy7wiYFIJcY8W7CY9aC4l+xg1Cm759
+   vAeZbjrHTraMajik4XrAL6Pcu+xkJM26H95OUuXF08ZBlGVRM8IcwoZVu
+   uQkEFaucnvEMlZ13HAZbMQ7WAwidrENFqXHSA3qJ+ViCAqNZ+pISBa11F
+   /4Hi7sYCR7p/tCHasok366TEvrutXKCUMXmwd6rIpq2zE4ZjkruBOm7mu
+   g2L3+HjFDcJbU/9uQlodC7cuS0R9v2EosrbtY/SFANaTPONk9gtG8y3/p
+   vhl0lYqO3VdynZp0OBFrefQVSAe5bowUdL7/yfGRLG0S7PUKIHxsMcDzB
+   A==;
+X-CSE-ConnectionGUID: hsDia2LWTReWtS65VVkvTw==
+X-CSE-MsgGUID: pX7MUggBQY2Cx/pj/2rArg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515412"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62515412"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:08:00 -0700
+X-CSE-ConnectionGUID: RdlCVzNdS+u6SSMJDv3Wmw==
+X-CSE-MsgGUID: nksl6V3QRdqLMmdbw+DpWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
+   d="scan'208";a="182675639"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:07:49 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev,
+	security@kernel.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH v6 4/7] mm: Introduce pure page table freeing function
+Date: Tue, 14 Oct 2025 21:04:34 +0800
+Message-ID: <20251014130437.1090448-5-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Remove the BOUNCE config option
-To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen
- <chenhuacai@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
- Hannes Reinecke <hare@suse.de>, John Garry <john.g.garry@oracle.com>,
- Johannes Thumshirn <johannes.thumshirn@wdc.com>, linux-kernel@vger.kernel.org
-References: <20251013095620.1111061-1-chenhuacai@loongson.cn>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20251013095620.1111061-1-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 099601C000F
-X-Stat-Signature: u7ug9imq7dxdy11ni49ca9whf351ynmr
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nrah8xoktpq4pbaminf88kp9sdjqrdi9
+X-Rspamd-Queue-Id: C0B90C0007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760447269-544945
-X-HE-Meta: U2FsdGVkX1+P92kAdKkHD2fVrx0yh4Q5XwqK+yJ3VbC0cRMDvXZ0r5dcKM+3VtuXokeSVCQoN9t5za7h3t6RA+UmTssmBGWKG7hdcz/sHebCL0VmbbYaeHoG50vQmTSs2bBWJQeASvlLYG7Rv6NHEUCWvXYqdWfw667aneTZRqLOCMQDUwmAKNcw4/eHByHCJGkbukpoZHpMM5UeVFdNCPKG2aBOSGape1geyy6Sx3zH+pC80VTTjUENCY96Zl8Wtyrr0CpkLmPEEuvYePMS+Qdu9NhF6HBZWTWAgLcmkaoEZpFIIjgwz0HOXC9VhPaiamIXmmXtiRooWT93ehnIIxZ90w0Qzl1DN24R/8NTVmkOZEM3rapIv8zU0AgblXDpGdohw2yh6yV3KYaYO0ZRUe5MA90XImHS8+YtluBLk0buKadQ9SXv+O21bis/IT7MP4684LFq4945OrwnV2Y4dfoxV+wCKGF/UGxlVUtYk57FDavdQHolnwgwuRwH0Q3gi4SpTV8TAOv1dCn71zysQllg41AESEzkxLvuu8g+agji3902MOt+kxrFvZ8iuf7kMOQLNNBa83BLumnQYdiMkqyWCyDX2DBv8mGI03+ptTHLsgX9JFQ21XMUbsWQp39OPeoYFEt6QMNisNEptHJhFTBOseQsZrO/CQDxC2gAjC9taQ/E2kgd2urpi14gA8JTWeZA+PLSzCTcHzGAwWDYpAtmkACWgB+MvL3nepWDO0Z/zgO7AIVaOKugBD7D/f9wntvXMzhMrCR7p7CgL1CJaNI5KRja4/V9cVknKbmvgsCEWnL9idJBN8S7BJHYBqfe+taGSzcGxIc26OxUPetbRM1sWFTB/m8AjNY/XwxHh0TKODAXpDdzuQQqIr2nBjeGuXdIEvQ3WsTwbVaynkeOb23X45Kdo7GleVj7vDZJp5/Ca5tsI08z45RReOMHV4CvQ8di8tGjhHjsgCf72pr
- FhFb2DoO
- 4dt9LrYoYmtn/1xXKawqJ+uGQmpXTrpnA/l7SUXJRXM+cesvE/iRf+elKu5jmz1mHRfp88pk6gqt0/RgGAGFALRszkullEyew3r7HvU078ecxJmGpq8dt2f0f0X8lYa0MQV5XRcsyp2Q93FgAQbck8hDrDfBnwTZT+aMiXmQoBI4JFRaAP+5x5g9N+S0xRZ3c6Fx4OJoyln5JvuvPm5JS/CkkNGK7dqAek7VZAJsBnSsOpwKKRVgXkOBo6L0WGEIyWz8BBrqGEaW+ni5SPM3Ar/HQp1gy3mPHpP+GMoxL6woC7fKAAkQxabe4nlm62r8QVxAvgVQMa/3+YYUZLg0ytzTHWniMUE/6gI33CZRqCzQgu+kBjhDhZ9MdYJPNY4wDstA1FLDC2IqE9Q47ZORLMV1H/VvGMBLs5I3PxKULDp2DH9I=
+X-HE-Tag: 1760447280-571043
+X-HE-Meta: U2FsdGVkX1+cfudGTc9JadLbWAyiW+Hy0ZZ+50JQdY0QFTJLmHh7IdS0HvM7h/vE+BVBBqn6i+k2YP9XsTlBy4zNszX5ILqDvImcTqvU3CwxuiP+SHG1LAx/cJYCM/i5ChV1TLcwn7SMpnGF0jIrs/f/DfOtmCVPD6h0hnSyEJcwGFi2Da8XIkAxe90vGC7fB+UPURbnYyx9JmC4Fu9MAyAaPVfsitiHcurtAQ3I/FQDcfrTJYRYIFIx+80dP3f0oNEPpf3TQNLt+zGxjn9g2+3XPALdMXaPJlwtVlbCodFr7/9v3g2SINBNQTQGoWNBvJ580WzteGzopvQ/NgRTVYdawLPMBAX70r4Jo3AzGWHXRo0z2kEpjF6Q2NZJjTLBbOYN9ushswY+Th37fhgKAJn9mz5t7ePX7LPxUN55Hst4GwsrndUsaHwc2RnSPFBjmyOOHNWlWwEzNvibEokt87qCCBGl9oMrDOhje9UmqMfbU3uO48IfGqYlNjwU5I/RZjokCA0iEnrLe2J/Tx9YQh6kTXuuN4U5cOqUrqDqzlT9hGxvWx5rzQ1hD6CACX/rtN4Bk4Rpp6/4iQQWpi/ALHr5jLW7RNNa5XV/uzoM0iHABeFmHRuA7GPh1lM0wIqlBoplYX3QejAe5X2sgEOXI2EnwpCjS0MM1O62oEEpLObHusnGrQV2uzKS+RUHfEF9cexuAq2J/XVhlC+xGxsVfzxa87Y7fuuFD+3xRphUN4fL5HLajYR0sSlFxA2OCqM06O77zgSXvNqzJ1Wa7SrnX3f3hbpPzSdFkEdHBP89jFkb3MkTT5gI9oE7y/9696SS0D9scjZkccdivAmK7I7zaE8zjYDNDSNgwHxm7XOydKH/+OQCy2qfKwtjbwa0FWreFNONA+OW4sYHjJOD783a40cr5G801L9TQrqCLhpo8ZyQ+lzsti0x29ReyPbIlj5qsWo1XJeDkAlsnehyAf2
+ WSzNub+s
+ +qZF+RDRAl6WSapyQaQyTFAeCIXo6RSboyuol6g6cnoQv5ZYq3LBuFwV1Oivm3M1Mj1zzouXrhHvRyzj6KGfJEb7DQTjfRz96+Pr2zce8Wy07ngUuBiltJFt5fvYV3ls06Hnae7Zlxn4/VeT90gGkdskOphxbeYYh9eO19RbmRoMfsZ/jbt2boqqRsEDz63RAwsUHrm3N6UpRxrCQDuydG4Focs5VZF9Wm+eG38qVQLfZtrSCQ1EYH/Wz9JiiYQmU7b8eLXaewbq2NQehW3vAy6Temw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,14 +132,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/25 3:56 AM, Huacai Chen wrote:
-> Commit eeadd68e2a5f6bfe0bf10 ("block: remove bounce buffering support")
-> remove block/bounce.c but left the BOUNCE config option. Now this option
-> has no users, so remove it.
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-Acked-by: Jens Axboe <axboe@kernel.dk>
+The pages used for ptdescs are currently freed back to the allocator
+in a single location. They will shortly be freed from a second
+location.
 
+Create a simple helper that just frees them back to the allocator.
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ include/linux/mm.h | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 94e2ec6c5685..bb235a9f991e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3024,6 +3024,13 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
+ }
+ #define pagetable_alloc(...)	alloc_hooks(pagetable_alloc_noprof(__VA_ARGS__))
+ 
++static inline void __pagetable_free(struct ptdesc *pt)
++{
++	struct page *page = ptdesc_page(pt);
++
++	__free_pages(page, compound_order(page));
++}
++
+ /**
+  * pagetable_free - Free pagetables
+  * @pt:	The page table descriptor
+@@ -3033,12 +3040,10 @@ static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int orde
+  */
+ static inline void pagetable_free(struct ptdesc *pt)
+ {
+-	struct page *page = ptdesc_page(pt);
+-
+ 	if (ptdesc_test_kernel(pt))
+ 		ptdesc_clear_kernel(pt);
+ 
+-	__free_pages(page, compound_order(page));
++	__pagetable_free(pt);
+ }
+ 
+ #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
 -- 
-Jens Axboe
+2.43.0
 
 
