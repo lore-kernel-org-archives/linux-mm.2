@@ -4,208 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3035FCCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138A3CCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 913078E011A; Tue, 14 Oct 2025 09:11:31 -0400 (EDT)
+	id 6ABE78E011B; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C3E08E0112; Tue, 14 Oct 2025 09:11:31 -0400 (EDT)
+	id 683048E0112; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73D808E011A; Tue, 14 Oct 2025 09:11:31 -0400 (EDT)
+	id 598C78E011B; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B91A8E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:11:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B03CC085F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:11:31 +0000 (UTC)
-X-FDA: 83996756382.07.6325704
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C37CAC0019
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:11:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UwSZmaz9;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf22.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447488;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EC628E0112
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFB84BA386
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:15:32 +0000 (UTC)
+X-FDA: 83996766504.06.6CA85BD
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 01F01100014
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:15:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnOTiu2V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760447731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ucIeTqC2MbY5O/6QjTpTpyU532cBqijbFuQ9gevZm9w=;
-	b=RwriO0ImbAhEgirdBI/xFQ1lR7DJEMjwB1Yvf1enIoKd4LOqNq+foY6aNQ6WR5yylKSMee
-	vC+IzcMHM4wN07PKj3jn+6WzeWyCU34Y6yosMBfpvlBSVtpjd0Ws7kY1CRouMeC0rc50Rl
-	9RPZy8d5Y9drRa9I5sRMY8HBWTdrk2c=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760447488; a=rsa-sha256;
-	cv=fail;
-	b=cbmY3ryWADq0HqkJyS7WNJ0EjAsOJqp8i51P46PnWvaIla3rk7je0aQfN4wnKhqRFd18wP
-	VW9EJrNvH3xkJ1Q6lYys5wxT7fzvQ256pb6DSRJCZ3rc/nTBGIOqncl3rHT4sjpdqo2P96
-	WxePBSRV91WWw9uwBnWmUznUeVijIzg=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UwSZmaz9;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf22.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760447486; x=1791983486;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=QlsAmrJ7vDYTGKzZvSAr+guQby8UOm3cM79VJ1VmCww=;
-  b=UwSZmaz9weiZu3yokPkK/jP0BaW4uqUh60OoOYSMNR+UzeNDab/ErHLz
-   gHAp6O6chn5uvNxmuYeuW/KW6jaTt4yZJbF7Pkwb09Jd+47qFjI+FAk4o
-   Kp42grEyqb1O/MkZGrTTcfOtU0L+eOJNDub0Hh2vvhCXUwCG81Bf6IKwG
-   mMJq0q/+ax7V1visTY8KVw0Xgi8l11kghDUiye/f4Y7UYRGdcMwiiqmor
-   fJWJFA2Y2muACEZ+8l8clqxxdmSdN2yO4U4SQPGHCKAAUgSjsr+0pYd16
-   JiRfjdMPKy74AtSifJZUmKgiFZkYD1ZVxDSxyc+tuatV1UYG8+9HbfME8
-   w==;
-X-CSE-ConnectionGUID: 11l1mmd2SYedgs1fobNiew==
-X-CSE-MsgGUID: mrOPYiJaT3a/4ZdXtRmAog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="65228137"
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="65228137"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:11:25 -0700
-X-CSE-ConnectionGUID: zslZxQoxRrWST5Pbbqmq+Q==
-X-CSE-MsgGUID: +UXQWOuKT3WxSp5BC6PVBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="182341103"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:11:25 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 06:11:25 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 14 Oct 2025 06:11:25 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.9) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 06:11:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sDqtpFJ0YScTVL5/AUH0+p6H38raAgTgj2pSS8Ye6YqHxKlzn71dlqhzAvRO46NmaqaxH2AMGuMxkZ8068xaY/6EtfvgQYmIuJkJc2umi8HWiaFZF4A6ZD6buy4MtLGOnnRumoXHp+f4pkAilf8dZZvUDGZ+9CvysOxkvQedl7JVPBmmtInUPieDBPF/VSsLVBoAF+JweC/qMeqmmNEMH90b3ONNk/GntmfHTxeuE4OcQpAzeLGyhCXa/wjgjndFoSDAxQyoqQhPjcTZT9z2gbOmJz2ThuCiA7Lp2zBSFWFgfECy5554cnnKbH6BHhL1/wo3t98RZob58tLumVyA7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ucIeTqC2MbY5O/6QjTpTpyU532cBqijbFuQ9gevZm9w=;
- b=G9ux0APKES9eU+m7KWSc8C3GiSRglqfLpdE45+Q4aC6p3c7oLM4D+AvcJVHz7GTAUclBtCLecyZC2sM7YcwGPL8m8qTGBWFdMgHXx8Vn2oGHqhbCKRbmkKARHHI6Eek9MILoKBre09Z3bkoX82YZHDHI/xz2I/gzJIcTJDbXkJHZQf2I4xWmEdZuvZB4Y/jED1B2PD/4CosFLhjbdhOpNh/rMrCq2ez9ZXzYuOPuLtv6IHvmqghvkgq76oZbw6A/fo8ajeQhcLSuOWsQ3jbDceqaJObY3AOs3EHXYso6XMU2sMqIVuq6/Hva706biT/8yjoAF+3wKfseM1qxQOmJFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by DS7PR11MB5965.namprd11.prod.outlook.com (2603:10b6:8:70::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
- 2025 13:11:22 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 13:11:22 +0000
-Date: Tue, 14 Oct 2025 21:11:12 +0800
-From: Oliver Sang <oliver.sang@intel.com>
+	bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
+	b=vVRJ3FYuBmRr/8ps6hbENgg0xy3Ct+BIF7l6GKDx6vR3zOH5IBCxsKe46n2wmQv1+PcHs3
+	NH0ORDSt8b/pQYK1P+GcUxUoiblW6JgBGqZnbtMmMj+2G80UN+hgqAWmuRbDEXgMf62zVZ
+	3BLQ6kCh+oY4oMmr4QkVOw+CgJ6+3aE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnOTiu2V;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447731; a=rsa-sha256;
+	cv=none;
+	b=ia9oF241ZHUFXPjnz8LW/yKgcpEvNCWVah4h6rt52+3BjGiN4Trmxh6rZ8JYzt2vqs8eDE
+	ONTRGg/pMRMVR/70fXxBieGThgyogzQU5FYifApctDEGOWpfCTJyw+WBhDgLPjKI6CxuDW
+	+CSPlVcG4oXofZxf2l2gxVYgUyhhmHg=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-635349b6fe6so5135180d50.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760447730; x=1761052530; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
+        b=XnOTiu2VG19Otbl+UHvJtI/Ie+pYfd242mFRVfOhUfEJs/GkKGlHZ+aSyFdCRq4r+u
+         zCrbiOWB/ojjqmhgjGjOiwyrJBVJdtXlaxBRB+Rz0TzXlVYC5sIPeOq6H+/IzGdXR9KF
+         ou4CT2TFpPF2KGgGtvZYFsGnKE9Wi9GAs0fBIJpntaCbkbaUGMWLtXXXkS4E/PUbgUV1
+         N7ueznnEjVQ8sdZRkrWcxDBKrUHakpetNanRm7Pgjgc8yheMG6xp3pR7Pya3xuyBpkoN
+         WYqyl7Jl++robuyjEnFUGGrtRGQZYlfsDaLYt+b7hhZdAR2LqU9+FCqQR0vF7ZwXRmZQ
+         0iaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760447730; x=1761052530;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
+        b=obUu/Z/vu6iIbf+8kPr56sbU4wkOZ4a9rQh5PhRePH/yX8ZLfv6jX0rlZ1xnmDkD/K
+         OQ8FxHjpT6uznIxDBDOSMuLbFgRvSXGJvPGdssRM7BTIlLBar5GbEd1+vQFMdlZZkZqZ
+         xR40j4SCve1HIgyPW7lrDU58lQ7kaO1/XhJ7roZfWOgNxUa9n1OsBXs4TRtMfy5L2FDS
+         wZ5j0hfV2C31QWf1YrCKOJzJhpuN0Vo5TIK2WNgYq4/4KzDk/wjO8J9lPeh323038mWK
+         5OGpe7y8JSaLg5lPa1xzcIiZ6SB/6Q3/PU913044mND9NYhLv86Jgc1GceP0hi+OJMV3
+         CiSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAq7fKz5GjhlRPns8gZuOUERYQFoVryV0YO4drsafQuvSjfJE9O8iuvaZY6+hwmkzCmaXSb6lXzQ==@kvack.org
+X-Gm-Message-State: AOJu0YyFF9I/DuKvWQ27GrQqCR4R24OJNBwFD0yMf8uAy0WslGgCUR4g
+	1R3gh3FOnrtjXDUz0KDS5vEVSc1tYqIHLsEMEXGHFU3nEP5WWOFtuF0w
+X-Gm-Gg: ASbGncvOsWpFU91LEzr8sWOeD9qgSLx7cJAIlf4ypHm6pQA6N41cuq1srpgKeir3mTT
+	vmEaliDwyuLSTAjbGi0exJzRJklR/p6jbFFTkpv9a+7BnfSNT4kdTXAtksoLNDNRhCi1reskoU/
+	fyY2V6FxLTYWR/L/WvMIXTFfQfJTyUEWqiAlVHIT5A/5VdXMhLSRtlGP1w1FZ1jrkYEKphDQK6z
+	x8FSIu9O5Dn9UNAuj3SUjRwq//7O9Pkv7AEWydiyG5CPo6Pj+sLPRJXvZJgwb4+cIsVO2JDaU1f
+	+UoZHcmZPuxPcv1XUPk2jeWAVXyQxBJnElUrgzQfoXYvL0GmqGa24oymA0uhSILnVgdbR7NuqqZ
+	+k84Lm25PhKXZhhNZu0HSPAt6q7tXCelO8NAvCHatSp/YsTP/hRYOBsGktL6IxvvhNqUIgciWPo
+	tixwChQQxC
+X-Google-Smtp-Source: AGHT+IGsvcYYsClEsFTY4tHK/30S2COTBACDT7BSIyOjc1D+rhzPyWmHlUmxYc4FgFdDi9X48dV+ew==
+X-Received: by 2002:a05:690e:1599:10b0:63c:dadd:6b8e with SMTP id 956f58d0204a3-63cdadd7d33mr15517240d50.2.1760447729783;
+        Tue, 14 Oct 2025 06:15:29 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:48::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cdec375bcsm4392139d50.17.2025.10.14.06.15.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 06:15:29 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Vlastimil Babka <vbabka@suse.cz>
-CC: Alexei Starovoitov <ast@kernel.org>, <oe-lkp@lists.linux.dev>,
-	<lkp@intel.com>, <linux-kernel@vger.kernel.org>, Harry Yoo
-	<harry.yoo@oracle.com>, <kasan-dev@googlegroups.com>,
-	<cgroups@vger.kernel.org>, <linux-mm@kvack.org>, <oliver.sang@intel.com>
-Subject: Re: [linus:master] [slab] af92793e52:
- BUG_kmalloc-#(Not_tainted):Freepointer_corrupt
-Message-ID: <aO5L8EG3nkFeBmM7@xsang-OptiPlex-9020>
-References: <202510101652.7921fdc6-lkp@intel.com>
- <692b6230-db0c-4369-85f0-539aa1c072bb@suse.cz>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <692b6230-db0c-4369-85f0-539aa1c072bb@suse.cz>
-X-ClientProxiedBy: SI2PR02CA0020.apcprd02.prod.outlook.com
- (2603:1096:4:195::7) To LV3PR11MB8603.namprd11.prod.outlook.com
- (2603:10b6:408:1b6::9)
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Chris Mason <clm@fb.com>,
+	Kiryl Shutsemau <kirill@shutemov.name>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
+Date: Tue, 14 Oct 2025 06:15:27 -0700
+Message-ID: <20251014131527.2682236-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <428ec528-5471-4152-bcb6-d36dd32c3311@suse.cz>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|DS7PR11MB5965:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b9ee6f0-a16b-4505-ee3d-08de0b232bd1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WdqJQepTPCbzGLHyn2KT32h/RK0AFOgptDOZGugIhgP924GXVsamZ9bGrAIM?=
- =?us-ascii?Q?+VVLBf4+VYM5KNw3Gf9LSlXD8N5xO9L65WkvCHOWQnfGFZ4CoTTpAc4uBkNE?=
- =?us-ascii?Q?O4xsz2lSrSjJoaBz702WgyAoDmI8Dx0p7BQSWnRyf55Fr64IklzIVnLx8Pfq?=
- =?us-ascii?Q?SpZWSpFoNhliVO7u/AhBBBxwpguBbATQ5u8o8O/53DH4vTp+3erVpZ1YvXD4?=
- =?us-ascii?Q?2rLWYUG7L6zzCFKyxdW02mzTJmCYfshHpg0wRkrHHyEHO/7pjX1H+E7us+Og?=
- =?us-ascii?Q?cCg5VFPFfGRaJFN7xJwe/Kq0Wyu38SYoZG3Z/0BhmQraXOwKZDQd0Pe6KUiX?=
- =?us-ascii?Q?KO3EmRC9IkKtK1weTozTdJg85+QRUyaHf5Bg1/OfxLW6rshB/wn8K9e6Dp6v?=
- =?us-ascii?Q?z513/acu78Klfytn88rQiMLPoOCknCjnz0k0mtxAOv/b6XXqMGOAbFxfVOHD?=
- =?us-ascii?Q?DAcFS1RDudlAWUYZSnVt9/MqejAR4M35qy6J7fKFXHgnFGulyBDpbjGIwqR2?=
- =?us-ascii?Q?/bh3+6YGko9fGg5tTn+ZXlHF/EKsGl+8bQgW2VmzHs4/W2XrGDXJlmb2NdI4?=
- =?us-ascii?Q?mc7mmmDHNhDOC1YaFMlTyVEsmeQbJCjDwf13XwU+bNRIbBHiQKma2W0b6Wr4?=
- =?us-ascii?Q?9QXwhH54jhQISphUmoKLktCdwoh41qF4ejxGwnNl/qjoLbqyeA+X0jxXqUiv?=
- =?us-ascii?Q?tce2Eb3fWAl1cHCyKR+UZ5COmSNkxf3Ml/pXKEZ/acizl2GFkb3jx/S7/yl1?=
- =?us-ascii?Q?9ei/ELPadHPO+440bvycZ0VuuLfhyU2W5kou1d0JEgHesRvPR/tXWaMDAZ9l?=
- =?us-ascii?Q?sz3x4pd1cUjn+chjBlh4cZ/CcsJnXC/d2NR/2N2DCd1YHNYUZJ54y+/oAeNT?=
- =?us-ascii?Q?zvKXjHG+xaEPfspx7j4ZUp3I11j4lRnYp+O19zki3bgvdYxs2VlHUV/AdI3e?=
- =?us-ascii?Q?ONetN5J/83P2VowVB8nqHk75sLGKP6t5j23hO5h/wTqjQFK9jB+0UTOJhpe8?=
- =?us-ascii?Q?zm1IvqYQ5eslMw7GQV8jGXuaQjxW3EknkFf0wYUY/hJVcE94GrBPyaN66Ydu?=
- =?us-ascii?Q?banAcDT1DqciJ/Etsg42dRsisiR9IOfLYTvcdG2jl33N9cDkP2z3e4rveAyK?=
- =?us-ascii?Q?pxjxtwT/sp8q3kAL+azh4pIaYNJ1R+X5gA/RRwrPILhjg311eAat4fUKefD6?=
- =?us-ascii?Q?xP4QMh2QsVPkiURL21is4QQ2FruU10j7bkASK1CnJITODoZNaiPI+QXPUpe8?=
- =?us-ascii?Q?NC4sPol1eqeBo4ddq2uPTYE0pj4yU49wDm3cFi5Vnd8zpEC1bJ5124xFwg0v?=
- =?us-ascii?Q?g/zPZOiKWO3NDT/hGPdjKBSyLSPu4J1xAKnyz5Uv/eYD590ZoIWv3tKHm5nG?=
- =?us-ascii?Q?JNfY8M2lz1hnuo8s2wvyoOPmTdYw2gExb1Zhg46bNz8YlAwU67NFUXESTTdH?=
- =?us-ascii?Q?LfiVksEdONqspg8tm+RKydYx8n2gORQR4oxBD/7uIzPhhMlitoZKIw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WmNAkwDZGpCyfped950N6B/7bFCaWe134A0/rGgDvD/WvssRXjT0G8cPFvYV?=
- =?us-ascii?Q?YvRpFHaoclzPDX/zsVzHFMcdlflUHEK3vqfspaBO+pDr16o2MpbOGxk/55Yv?=
- =?us-ascii?Q?lNGBYZaPZGee4kTsU573Up48USe6JsiXzzqI6TX5dn233HgjTOf4hVA4ZNwA?=
- =?us-ascii?Q?H0Wpw0lajhE/rBdtqOH+S5QIZB3X9yApSeIcCMeaOdNVkgAjQoNEScg64IiM?=
- =?us-ascii?Q?GBvGZCitBfFQeexFzcQnPzZqz5sdNJkBlq1PB9q409ZT3H6W3SvYVI6d05vI?=
- =?us-ascii?Q?TqMUh+wIJdgACoKp68kuhkDGXrhW1PxGauVjaWV/7YvoAbvNgGmf/eEKOVbD?=
- =?us-ascii?Q?i5K1ODvYPfsP126naePh5ZO/TZS9nSyIq2MQabd76x8IrBer8BOj9SYzoFPe?=
- =?us-ascii?Q?xIvdCCRs2zoAhF05dtt+YL3C2YLDGUgDReDmMN1L1LuW0p3qupqYhUDJQItV?=
- =?us-ascii?Q?1v193o8U2Zx/pY9KeKMuXM+t7idcqg/Jqg77Ldu4YU4peqRTpDu4JCTycVym?=
- =?us-ascii?Q?SoMUGm5DlSvlV2ONlMDhqN0pGWQJqyYijD7OC7oQ4SOqyhmvuTjB1JwDcc/5?=
- =?us-ascii?Q?362l19/pEo/S5NaYujvlPashlcPZzC3hAKIn4i6OlBeZ7pqRQN+DWYKYHZ/y?=
- =?us-ascii?Q?d1FNlTTc4KaXYjnxNCsP2Yh4O35TQw+P9bcEr7BtO0LNAf5DvNelGQzvVr5V?=
- =?us-ascii?Q?aNWj0itxk3HYXVr7SsCViC6qHGFxq6UR8A4l5PtYXGOdJIDNenlDoYenOtGP?=
- =?us-ascii?Q?M/yFX+zsN/+qQ75J8nU2iuhOhpr8w1SRR9rh3Qk6FzOQN2ogjX1RXdodEE+Z?=
- =?us-ascii?Q?t9Z8i+0B02x/KEiY5GpSekiu0QrTpge++g8LaNGBmPMNheTiMrPBYlFnDLXB?=
- =?us-ascii?Q?K+a+PKWWGkRd5la1NG0tKsTIaGtMyhwlsp+0SPMBZgxQZ/ONOiCJy6VRkWb6?=
- =?us-ascii?Q?VhYkU2mqm846qM6/WjiBPFgQPD69y+Mr9OjAgRclGQdDzVshW1kv1jsojMkb?=
- =?us-ascii?Q?PLgjLLfKfWX7Wev6+WywWxW/7gcONEpGgQj16L4Ip3nOsjVzX7NiDZM2by1M?=
- =?us-ascii?Q?VE5jG/FwpM8LXkyy6haoE+AeiAAOltFGUCQkOmlNVX0TUS+lt2YIoXk/vPBE?=
- =?us-ascii?Q?h22Tw+N4nIx7sT7bKX+hBF73Nt6v7Fku7uNUXbP9aP/0KSq8eEj2FbA64cLR?=
- =?us-ascii?Q?8TLwGlFCY/eoaiSt+rvzaGtvxdrFN5nFAKaPuQkNg707AFS4teAtE+Lkpi4l?=
- =?us-ascii?Q?to7dzZRXKICTH6i0tZbZSAQGy6WFmpT+5WA1vRxZPZz4JxYeDHO9LdCHbOf+?=
- =?us-ascii?Q?IydNT2ftI7meFGqDUyb2RbnccMXf7MmTCmjh0TXEYhz1ctvzIw8VgwXOt9HS?=
- =?us-ascii?Q?d8ztVX249wvS/WjCvmmvjoQPgEE6z7Gv8nJjn1D8NM6xj6Wl5Sb4m0Qmzj40?=
- =?us-ascii?Q?5RMxc/DjFrEmY33yekbz9zRoDleucR+5dvAYTPvd5CNynU9Bpu/hDetQsepZ?=
- =?us-ascii?Q?bZuKFtxW+BJcAdpUZ5n0/meUvsDsjpp0NdCF2bcH/raiOpYkHBpH7b5i7+LT?=
- =?us-ascii?Q?DeiW8FLlTtFfD6mQ3MFT991GcNWOquAtBF7td2xI?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b9ee6f0-a16b-4505-ee3d-08de0b232bd1
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 13:11:22.1872
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: out+vybm50QtTqvRruAE2OuQXtRnUHAwteOx+kJI39HJ+LV3siUWKYIzGozx9nY62P7agmpelVeBPP/QDSp+aA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB5965
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ic5c3gyr34nmo4q7hkfjc4w96ezxcwts
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C37CAC0019
-X-HE-Tag: 1760447486-165053
-X-HE-Meta: U2FsdGVkX1/6kgOPeX2hh1ATXR0Mzc2+yMYmqhztyOPDRmu6Up+O87+/UKBwSBy/16/hJPNFMcba+/VTP1itPLloGllF/DM6SSdubjn/GmcWhesXPOaU8ZcvmsSNbA64EkGC97/MakQYF5IWYT6GWZf0hr6P/0GtW2X+9h9pQgdDnDgdwsSBI7OpmizYmLtFfXbWeyZFVZ46o80qHMnb3UW7AZrojbqEX3itv5PAAlt/4dfGdWi29HWY+Wyzw3DEgE/7N3J6/hAyZW2eXPZqxxTRaaSGWVBuBcI8xlvoVsmj6nXu+CoDKs2yGoozTaX/nCPXCOFiPkeWqLtTCQM+wPcpdW1QYo/hD3sKHsP/us1uDeznkvKOcGHjgENWOuZP54qWiPpW+Rzq6Wa6S5EwsXVHaoT50Tr7d8e7FP7DWI1PnxDY7zfHBlRqGDNnEoA5bzoJfGVY6uMWhlnAc2bQWhSu7w6OG6c2gIlABJoX+oGMHGn+LwPSuQDkZEG8/6bQLX6PEUocyh2axNO9lyzr8E3UiF85/xR0nJhnfM+i6KwPLbuTdd9ithdL2hemjKXdBgbXv91a67wdFHXvJhscrcOtAYTKDChma3xM2aoPFUlQFzkYR5dWgxFXn0AzTmQJ5hMf4tElvkfbGhZgVTs95aWZjy84T6nhR8XQJ/M6+XgGL1l8ntERKPpkc5eWmIce7ESYgGvsM3Gm7K3PIw4mApHpi3dehcsbwoTbzccltXsYJu8jPnhCK6NLAmBTDj91S+WzO2UDLoqBjL3bfcFiwBvar9DS9+KiP8IHQ9Eyw2fB0VonnYUeOFsril+thDi18E511FqxG84Y0s9ncoUG+EHDaA0AOohe5sJ7opQ66+J9lKjWb/PmhasO/2o7L2r60N4vp9wSGvm1FVlYan8SJzZefjkWm2izRchXDEHv+st8glVKg5UyY3Svv2V1l0UUgTli43mXA67X/MhB4rE
- yNcQzKyJ
- yJckcuv5oIUIUQXkhBrQxo8RhIVgtUHbOzoPLIgSBAXFiZL9UtDwHM9SVEYcfSxVmen8SOoMaLCWCEZY=
+X-Rspamd-Queue-Id: 01F01100014
+X-Rspamd-Server: rspam03
+X-Stat-Signature: qqkg3bxp9734qm9knm1wr3rz5p8459xy
+X-HE-Tag: 1760447730-483669
+X-HE-Meta: U2FsdGVkX19IPpRDy2NitjwjXxArgZ6zaVJOApNdM1PWziMXVjMLeY+JjWlGbbKlwmsznEBGO44qNzX+YAVFuynOL7KlR6bFQv/MEtL0XGcve+kleJwsTt/ayIcXgzIvKr/9b+imncG57tyW4xludTNymvRyk/uWoU8SASdatmYk+oThoCGvPZyHL1HfJwcrc57fw8muhHmtU5MzgICuEZnPKMJiJLvWev2gQOUARQzrr9wh0Ggcz/nakm5AtFzTxVztaG/YYXUbNpKZ78mnQGs4/fq004kC7qwVMiG3vAy8Y+Vp0wdeCrcWg4ZrHuTR9qRLIiDCDjO1s+mMd6XK9KPfqvCRUze4JaQDQdElAQQ9fQYKIIUfiKExYwjI4JVzXPgj7Ebwne5O+kIdtb89888TwN2iiqPHLn/Z3JHC1hXi7OV2mt5Q+CCm+87Vy1YSoE0H/rUSQqO92KuzexCW30b8SkANh5gLuQpzhz31RMmGkh5wmxtAWhGsw+jEagefpuSdw0SGORgBI/LKi1wo99Xfj7YUOXzlDR7I1PCOKp6ze4O0+9Dvj3T2nV2PncjRuI8Niwq47q2EtRy6yTV8/67BCz3ST6vV03Lj4nT/pQKkPBJ2EPZdehGxjlBvvCbo/9+Ih4kEPg8NKCkfQ6h7Cgac8hIWp1CmLy4FrBAMGadnhCYmGk/4kTJPPOKA5H/EafF2QGTv+hFEzpcvz8p+ZBZwh53ldLMnjgu91IXjYNqeKuuOPpU82dwh5Y7xsX0Ns3Yqe+aJDqXXviX1va5qr3j0XibIFYjGQkIvckDCP+xl/JDW331dCLiGFcsZpms99QRYuKakG0yfFhko1ab6rXahAVu8oLohEy686KN2FarN0RvlAYULhVO6IuqIWHcN3NMQ+mp7YYQiBJmuUgZ9I72AjwtrQcF8t7Y7Sj3xV2x/2cB6j6IU3bIILy91CJqLe+ZRVObhU7MSBAqL5w2
+ b0vFbRbf
+ c5D4O+ZQ418HeoFrvTH4EXHQOwTJIDMrNdFnWI34NUFezzftmuP0hW+Dt/iz4YkREqEOFM9VLql9kjQu/Sj1Bb93WJiJ7pbtJvRejDSiVScNwVgCgCu3pYecrttKTHnYBHgaBqqVKEuUJdzFQ4LcIOBYi2ogn7lJlxrdNRZHS4sELupp1FWIG8j+ASTBNeGeyNMU+Z4VR21C/LjmDsY8ZLn0zuWOJ7iYR42cimsAly6BEeaIZmpb4/DNcAt4Y8EwMbXBmZQoZHrybFDlePSn9Nvh2Z3lEoubco6iA0Yk1Vyng6JCkvMHbCwlMUpgGCzmfhFynOFIxGkz74DJeZu9j515e3U9MfaxEfvaVvQVewX3EmflATyuBSpHMmPqlbCE3xDvyHgQXFkqbhXPeD8ILPjOCrp9YZN85PFAxbN1x2NvnV/T07E+f9tCX2Cdaym1PwWH1PTKqiuRur1qcHcaXgaxifA+6AhLHYslu2NOF316kzKLAlZvIKEZKsdnJY2UjofzlickJbVBxNLqnVAyh75wWBWCZEK+KWd8IZj60zF01TPRXFscasnk7Mg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -214,89 +128,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hi, Vlastimil Babka,
+On Tue, 14 Oct 2025 11:38:00 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-On Mon, Oct 13, 2025 at 04:58:28PM +0200, Vlastimil Babka wrote:
-> On 10/10/25 10:39, kernel test robot wrote:
+> On 10/13/25 21:08, Joshua Hahn wrote:
+> > Before returning, free_frozen_page_commit calls free_pcppages_bulk using
+> > nr_pcp_free to determine how many pages can appropritately be freed,
+> > based on the tunable parameters stored in pcp. While this number is an
+> > accurate representation of how many pages should be freed in total, it
+> > is not an appropriate number of pages to free at once using
+> > free_pcppages_bulk, since we have seen the value consistently go above
+> > 2000 in the Meta fleet on larger machines.
 > > 
+> > As such, perform batched page freeing in free_pcppages_bulk by using
+> > pcp->batch member. In order to ensure that other processes are not
+> > starved of the zone lock, free both the zone lock and pcp lock to yield to
+> > other threads.
 > > 
-> > Hello,
+> > Note that because free_frozen_page_commit now performs a spinlock inside the
+> > function (and can fail), the function may now return with a freed pcp.
+> > To handle this, return true if the pcp is locked on exit and false otherwise.
 > > 
-> > kernel test robot noticed "BUG_kmalloc-#(Not_tainted):Freepointer_corrupt" on:
-> > 
-> > commit: af92793e52c3a99b828ed4bdd277fd3e11c18d08 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> > https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> > 
-> > [test failed on      linus/master ec714e371f22f716a04e6ecb2a24988c92b26911]
-> > [test failed on linux-next/master 0b2f041c47acb45db82b4e847af6e17eb66cd32d]
-> > [test failed on        fix commit 83d59d81b20c09c256099d1c15d7da21969581bd]
-> > 
-> > in testcase: trinity
-> > version: trinity-i386-abe9de86-1_20230429
-> > with following parameters:
-> > 
-> > 	runtime: 300s
-> > 	group: group-01
-> > 	nr_groups: 5
-> > 
-> > 
-> > 
-> > config: i386-randconfig-012-20251004
-> > compiler: gcc-14
-> > test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-> > 
-> > (please refer to attached dmesg/kmsg for entire log/backtrace)
-> > 
-> > 
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <oliver.sang@intel.com>
-> > | Closes: https://lore.kernel.org/oe-lkp/202510101652.7921fdc6-lkp@intel.com
-> 
-> Does this fix it?
+> > In addition, since free_frozen_page_commit must now be aware of what UP
+> > flags were stored at the time of the spin lock, and because we must be
+> > able to report new UP flags to the callers, add a new unsigned long*
+> > parameter UP_flags to keep track of this.
 
-yes, this fixed the issue we reported. thanks
+[...snip...]
 
-Tested-by: kernel test robot <oliver.sang@intel.com>
+> > @@ -2861,15 +2871,47 @@ static void free_frozen_page_commit(struct zone *zone,
+> >  		 * Do not attempt to take a zone lock. Let pcp->count get
+> >  		 * over high mark temporarily.
+> >  		 */
+> > -		return;
+> > +		return true;
+> >  	}
+> >  
+> >  	high = nr_pcp_high(pcp, zone, batch, free_high);
+> >  	if (pcp->count < high)
+> > -		return;
+> > +		return true;
+> > +
+> > +	to_free = nr_pcp_free(pcp, batch, high, free_high);
+> > +	if (to_free == 0)
+> > +		return true;
 
-> ----8<----
-> From 5f467c4e630a7a8e5ba024d31065413bddf22cec Mon Sep 17 00:00:00 2001
-> From: Vlastimil Babka <vbabka@suse.cz>
-> Date: Mon, 13 Oct 2025 16:56:28 +0200
-> Subject: [PATCH] slab: fix clearing freelist in free_deferred_objects()
+Hello Vlastimil, thank you for your patience and review on this iteration!
+
+> I think this is an unnecessary shortcut. The while() condition covers this
+> and it's likely rare enough that we don't gain anything (if the goal was to
+> skip the ZONE_BELOW_HIGH check below).
+
+Agreed.
+
+> > +
+> > +	while (to_free > 0 && pcp->count >= high) {
 > 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f9f7f3942074..080d27fe253f 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6377,15 +6377,16 @@ static void free_deferred_objects(struct irq_work *work)
->  		slab = virt_to_slab(x);
->  		s = slab->slab_cache;
->  
-> +
-> +		/* Point 'x' back to the beginning of allocated object */
-> +		x -= s->offset;
->  		/*
->  		 * We used freepointer in 'x' to link 'x' into df->objects.
->  		 * Clear it to NULL to avoid false positive detection
->  		 * of "Freepointer corruption".
->  		 */
-> -		*(void **)x = NULL;
-> +		set_freepointer(s, x, NULL);
->  
-> -		/* Point 'x' back to the beginning of allocated object */
-> -		x -= s->offset;
->  		__slab_free(s, slab, x, x, 1, _THIS_IP_);
->  	}
->  
-> -- 
-> 2.51.0
-> 
-> 
+> The "&& pcp->count >= high" is AFAICS still changing how much we free
+> compared to before the patch. I.e. we might terminate as soon as freeing
+> "to_free_batched" in some iteration gets us below "high", while previously
+> we would free the whole "to_free" and get way further below the "high".
+
+This is true, and I also see now what you had meant in your feedback on the
+previous iteration. 
+
+> It should be changed to "&& pcp->count > 0" intended only to prevent useless
+> iterations that decrement to_free by to_free_batched while
+> free_pcppages_bulk() does nothing.
+
+This makes sense. Sorry, I think I missed your point in the previous version,
+but I think now I see what you were trying to say about the count. Previously
+when we were re-calculating high every iteration, I thought it made some sense
+to make the check again, since we might want to terminate early. But I do
+agree that it doesn't really make sense to do this; we want to preserve the
+behavior of the original code. I do have one comment below as well:
+
+> > +		to_free_batched = min(to_free, batch);
+> > +		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+> > +		to_free -= to_free_batched;
+> > +		if (pcp->count >= high) {
+
+Here, I think I should change this in the next version to also just check
+for the same condition in the while loop (i.e. to_free > 0 && pcp->count > 0)
+
+The idea is that if we have another iteration, we will re-lock. Otherwise, we
+can just ignore the case inside the if statement. I think if it is left as
+a check for pcp->count >= high, then there will be a weird case for when
+0 < pcp->count <= high, where we continue to call free_pcppages_bulk but
+do not re-lock.
+
+So unfortunately, I will have to check for the same condition of the
+while loop in the if statement : -( I'll send a new version with the changes;
+I don't expect there to be a drastic performance change, since I think the
+early termination case would have only applied if there was a race condition
+that freed the pcp remotely.
+
+Thank you as always, Vlastimil. I hope you have a great day!
+Joshua
 
