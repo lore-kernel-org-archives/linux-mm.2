@@ -4,83 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70655CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 22:57:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33726CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 23:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A92E98E00C7; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
+	id 675DD8E0119; Tue, 14 Oct 2025 19:15:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6ADA8E0041; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
+	id 64DAB8E0041; Tue, 14 Oct 2025 19:15:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 980F68E00C7; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
+	id 563AD8E0119; Tue, 14 Oct 2025 19:15:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 81F668E0041
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A7CB479B7
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:57:20 +0000 (UTC)
-X-FDA: 83998232640.04.482A462
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6D4164000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:57:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LDY5mFre;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46FD68E0041
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:15:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCC1F11B203
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:15:11 +0000 (UTC)
+X-FDA: 83998277622.22.F03A8FE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A9DC510000A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:15:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fbjaN9j8;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760483709; a=rsa-sha256;
+	cv=none;
+	b=7DJCJ5G4Gf+xXsqVM10HkRAaO9UcWvJKATXj2SOneIOLxOalFnEP9/OhxKbzKKrBbgV8k1
+	meXjc7j1vSPKf3VB7g7gSVGQWYV5bnKTjyh552Z5MD4gyIjGCLvC+zj7l0kd2zmVS9SQik
+	l3bBlfIy6xGruM3B4bG/TqjXIumQ6Bc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fbjaN9j8;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760482638;
+	s=arc-20220608; t=1760483709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dRhy5pXAiQl4JPAdYHEJpTxKiPwF/nTrHCkBnWAbo/A=;
-	b=JsQgQbjgDE+fCF+a3os43FfZQ4n9nssiCvZbwTaCfalVdMwxM/iInjsNsk4InPWFin5G2J
-	/Jzuy6MEJvDJE1DcwgK2VGR3XqruvSxKLj2z96QSwng0euj+vJI5BHuVA1jM8QlffvNt3R
-	48hnZnTaOq/uGloTgxcEF/m3y9y/DDw=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LDY5mFre;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760482638; a=rsa-sha256;
-	cv=none;
-	b=uO2vsoZ0HPiBjxkxDhu8KBGAIh/UzEQGYWsfF1noyawlhEDViDQcTUaFASAsNuG5QkCgth
-	WWkHPm6t7THgeVIQ4VzxF4IPtgttzkUN93qoy2fcU9v0cGXGz9BvKmCN8/D877NhGv9C/k
-	TPc4cu8/DtKDfybcRfXzUQTcmjUMiGI=
-Date: Tue, 14 Oct 2025 15:57:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760482636;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gkEesdVP5klvagCiPua/4aXkAVndt2miK7odjHhrzGc=;
+	b=k2qIG26ydBQV7QwziASEtWK2/q3toJYknnabfVYtUOkzqDF9q9Q0QTe06AGLUZTysaxebW
+	FirBBcj59LOe+gQJWEb+1olVxT6kjo/UkHkCeqEGmkXWGK1aJy8Y7Yt4w4NPEaXEzHvCQN
+	1P+kDT732C9vx+9Zhz6TRWZFLTMc73Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760483709;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dRhy5pXAiQl4JPAdYHEJpTxKiPwF/nTrHCkBnWAbo/A=;
-	b=LDY5mFre+DitGOhyqu1GnrOHBiIq9UCsNNZUR8Y8e4ORBcMGksT5qu3WyakL62mrgaMKqk
-	b3TaGb3B5E3oqIzMyHPha306UJdZSRl5r0VWL7/4p4A6cmwVMvfU+cPu+tEAGPhlItHHtJ
-	Xfkijkcc+/6IOOVSchy7JRB8G1A5Zys=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	martin.lau@kernel.org, vbabka@suse.cz, yepeilin@google.com, harry.yoo@oracle.com, 
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gkEesdVP5klvagCiPua/4aXkAVndt2miK7odjHhrzGc=;
+	b=fbjaN9j8Wqzy+oxzcrVWHIzVLrzdEddPZ3na0WHwUnoxhvFXAZ3N7rpB8Z1n6rqkBMEpzx
+	kfbUageF2n4CDRMX1Z9ZYYi0w0OGH+YV6TEMBlZ6Y/6E38l5TbHbUXO7f9V4j35mPoRthG
+	c3Y16V4D0+B9K4BaHO6uONdiHwn+PeQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-c-6dpkS5PWyW7exgolbCQw-1; Tue, 14 Oct 2025 19:15:05 -0400
+X-MC-Unique: c-6dpkS5PWyW7exgolbCQw-1
+X-Mimecast-MFC-AGG-ID: c-6dpkS5PWyW7exgolbCQw_1760483705
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-88e133107adso72896385a.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:15:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760483705; x=1761088505;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gkEesdVP5klvagCiPua/4aXkAVndt2miK7odjHhrzGc=;
+        b=dvqKEU30N1L8pLXh4BD51qhD4AxRk1jPQluqmdjKBTUG3h/9C7ZCIsAu78AjqjpJMr
+         oDBzj6pMMoSSttR2VXb9zjmsvFNViBUXnBeMtt+Bakg9Gnbp10ElSmPBsBweqpcE9Xoz
+         X1IYlJd0P8rh/k6LgTYjHaFrM/m1LdAiPO+hc6bhlHt67EqKG5eBO/V00RZ4gHmzhtYN
+         VNcjwuXp32NIJfVpPCFs6IOhz9M3cGPh5xEDrglhz2V8j+Osm50MY5NUjPo3u3jdcIwy
+         6XdZdyeAQS9cdoUmtSGX/ncKfdgbz382x+qFmpAGJdT4uP5esEJ08m+1BSX7+TvYH7Fo
+         1Ldg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdWtQM9AcwOpALhh2UbCgE+KL1aGN9MZiyygQQZi0z3krK76NbPytaep0cNuioXPRfCxPsDRrStw==@kvack.org
+X-Gm-Message-State: AOJu0YyUeSBTmM/Mlt1iT0MQa9jPRABxe7Ncs1Sjfrr8VpOhWiwSCUVx
+	uxGcvRFDDPN2vCgscpeKNVDV36kVQsIl8Pfghzl06STTXhJtelS0REnMT5rTXMxg4s71hWcEMKf
+	bv8WEIRlYDXA5lSaVLbhRg0ZaRdh/pIyiB/xAN3nJDlXlQnyt1h5f
+X-Gm-Gg: ASbGncu1j1CUuHOVVECIhzi5zTNppu7/7ch7SNSr7H98MOnmsTCTURtaWjgi/qBVgJi
+	JJGtYEFD5xSpXqvlKRkbXPrhRXZPDh/Fd2C4f6eUl482AVdi211kAe5iK7bw4WSU0cAnu9zVF/1
+	QgGOajAs6qOwHXGaZSz+HNoLdNQyBSbfOc/a8b352gD2LTJtaSFC1iZB3R3D/WdaHNOwbeI6CGI
+	HXgP+nzMtYgVtT/as28te1ZVrlmrJt8Vltn9EE+o9KC73Ugq7ItoLsUFfBYeYrF24IPv19gG/1V
+	x6Roo3jWnWfw8mK6jCeVwber3Y36mw==
+X-Received: by 2002:a05:620a:3710:b0:82e:ce61:f840 with SMTP id af79cd13be357-88355a557e0mr3109207385a.84.1760483705027;
+        Tue, 14 Oct 2025 16:15:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0p/fJJcRO44NvHEwHC39Jn7HH9sdaldnpLK5FANmX+q1MOcaF1/2rpEijkCSasuFRimulfg==
+X-Received: by 2002:a05:620a:3710:b0:82e:ce61:f840 with SMTP id af79cd13be357-88355a557e0mr3109203585a.84.1760483704583;
+        Tue, 14 Oct 2025 16:15:04 -0700 (PDT)
+Received: from x1.com ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a23693a0sm1280258685a.53.2025.10.14.16.15.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 16:15:04 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH bpf] bpf: Replace bpf_map_kmalloc_node() with
- kmalloc_nolock() to allocate bpf_async_cb structures.
-Message-ID: <ts7ewzhspasn2n3gfpscqpvhhzeod7cv6nml4g457ytzgojbek@gd5vts6hpdjf>
-References: <20251014212541.67930-1-alexei.starovoitov@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Houghton <jthoughton@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	peterx@redhat.com,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+Date: Tue, 14 Oct 2025 19:14:57 -0400
+Message-ID: <20251014231501.2301398-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014212541.67930-1-alexei.starovoitov@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6D4164000D
-X-Stat-Signature: twt8a6nee7qx1mzho84rmjngzqo6ax3s
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lyexqP5dWmLlPm2NJkz5bTnGlYRWYZ8WQ9FiGyBpqW8_1760483705
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1760482638-647292
-X-HE-Meta: U2FsdGVkX19k1kmRM5YXs4OdicX0+du+3DZWKe3iJQk7udyAGM+AlH7a0FWDgxL0J3wE51w3i4nDHEDT6+oiO07lCw6FSsbblpcbJVdmUv1LEez7K6qtCcGOP+L51sdGc+7Kv9LhbQ1Vcew5upwOxLLEc26q5sU9N+8VKsLy9kvbipXbXjRE0gRDnBDoF0D/ZuiyRGgH9c4sAJu6myz8koXOuc8A0Hff6N21YQ4YV9TKza6c8vO5YUlpbv/AWxnYDnNRtqM0WpuOcJlBCrMZiDTIph7Duc0jaJDzP602bIE2m6ngdCuq/4YhemWUzLm8RA0auMzmwAVHxS+lgemQ1P9+QlP+AgIxtoRB30OKvvd0a8LJPct5iKv521s7Nqb2rVLiDtpfW6nIyqc9twv+lHofD5p/8eaoIiiN1K7V8h7HXqdU1sqzCAOtMc2OCN82oLXzXzEtqlIvTbDmvu2CrmWNtfN3xK6KkrMSmm0FJLgQnTL9T0k/cN/zoBpwsldmFFv11mciLMBJKAFJLUnvapOrAFqdaJyrdzwmxjjfGsfPk1yTuRoByKVx+FAlg/ikc7TGAzapnzjEmX6MMbXLDq3qvJovGYDoDYKc3F5JDXDdiMAyVwfNpx46K3j9eldEuFFDyFF1kigyXj7McUeGgWKFb9nsVmZLvXw4CdVNtuEyJ3T6LUTKIKKcyCkbn134w/Pmtg6VZYRyq6X3VpM4clQFOt6F8EP186skbBVPCuc0nWKiWVjNZChudtAUGYjCBYti38zxzeo6BgASzYSLWLQa1KHxZFTrtPlwmeIoD/Konj35epOISa13Lld7yAS+abEjyaphrXmMo0FF38iJ7eFKtileBU1EpIgYKMVVUO1RMkNe6yu4iZwcOAygkzfASWTLWXGKOIy3FiWkuQ17w+1zb4NbQS9Zx/yyamdEhiRU96ul7ixZ/pQo44AnKXuA2AXPMbc9MbWd6mnM9E0
- VXocUxJD
- hNgRcVZPMTube5g+xeMWy+NsWQqMnQuQTFuwp0eBAqEpmnnVGwlDuF0Vnkivno7mRvOkE+yP4PKelyuK2BBUtmZwLOc+sbkGDFFiJ1DlsmKLmrwByPY2RpEYO/mzQedxRv1hGSzUDmcGo1f+GJLfqAHLioH9pXB45cQNSNbBY2OplY7DagQ89TGHivBRERdgTMWJzosFGIhhmnJkAA9qHfUerH+FVTC1RsGi+EYeRMAaT257IsexLESabmNwvhqLVwQFFLASgJtpoV5sADPhGcCrx+VJG/tYMNIzh+Rw5wOKpir/cRBEjXKnSewgiVVr/MQQlj18zzuPC2bCVd9rgQawGJj2PHNM5lpe3
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A9DC510000A
+X-Stat-Signature: y9szpa5dckz6rnwupzb4j3ar5rueb5ue
+X-HE-Tag: 1760483709-705190
+X-HE-Meta: U2FsdGVkX1+2IDT3bMUvgXQj96dZL2IovUx4nSo0JmEZawsTknMA3T52TXfYuvW1nb+34oTZhrLeWtRWuX36UV1TVaJnIEoQW1OL4iPl0pykqmRN+/IrMOh6hgSDU9rVKE+KeQgLaN0uQc7wL6zGlsZKg9zpHrDMMcumzLfUz1+uUnsSYluv2izy+XAjq0gCYMs4r8+sm86PjkC83YIkCvZCK4+CH+aLqZ9fAgePueXt+RXn+uKoQ4+BZ177Yi1FibYJHFZXvTc7myyFaehijx9oAJtpGoz/vz6MGWtLNLlp9N0usze/CsDELb5GBaF0pmsAjwm3iabsSWBrYaXfHb3THDxBlIP2sKeSLI/TBpTHsn2vnz/Uovfix+csapQybybDkGBJ9tPMqSEOvcZ57Gc4dNida6rsugU3baEgth+cg//EAdYkTKS0p9iFbkhR6MdTY3J5yYc68jxNIVMuZQ4VBk9V468xDmjKhE8LIUUU5EgLaM2UACxF/dkzFztRbSWK9uYDp0JqWOfFZ5cqxpjeKlKDmFHAGqcZlI3IwrGXanUhNqHkqkbtMQC8r9/CzWSfRiC99IoP0xM6bTG5zv+ETRr2KURONBef+LB5OVQHYNEmlelxX5yVTn2MvwyI1uPFvNheY3voesdeYgKuzNC1BEbYPuT2tCf3idMrxAJOtRvEhQRe1nBfTw7OuPEPNeXIIep/63BfD/ISZdz4XO4ts901KTbJOnPuJq2J+dQlS5g+/rMlnOuGtzWDquqfBWuvQhPi37oWsC7QjLgKxGbGW9ZN3olp3ffDeAghT5mOnIrqVqCpe0kZrXYkP7n59yFq/75PTWQ4vEFjKwxaY7qsK3uwN3vQg7sCyxWj+ZoNHhJS/gYKOBKX6ehdSwBniVcYXqcrkOCMzkQ49RS712PM53aKZt8XQjajJazfvLBwIj/Jqpq/EevAn29kj5u/yeMW1oJgBEu8SOzc8In
+ wDiRVAsr
+ OeXl6wRTVBQE6qhpOOPRMWSWAfmpIk+tGvT+apGCztULUIoTx3L2Q94VRwIvufGT+Oo/TCfQ8jhujbuiiR98z7d4LJeszIsE39gSaDSlwDf8rszG4dC/aA0xC0c/pE89eEzlRp+wx4s62KqYFfdog/go8uLn6FjGeL1oetF590UEQIVo5kLaiRKobhX6JXWTTm69DI0zaih0zRy8+TAOFIt48e8Xedo/G/mk87c4YG3eHKYgEhrTVYP/vAOsC4Q7CKuYzDJw9q5Q/RUExSq5Gm2uRUOtyfcZjrpWSaKaQP+TDRZoy29FnXS/0A5Y1ZJHCYoZZdnEai4k2k+pNzEOOcZG5+5HJ7W1AdOfFfyw9HCHHASaOoNZOnnK9F2GlEdptDUAdNgoUxrj+XBVX8eczxoa2nJutMxN9kSPGgswt7AttxiA0C3T3cYjgQAQm7tZV1Zg6mEsJmprY/pb5iq6/aCWOTzfp6jZ8pqKeC0DSIFD9NB/2oEIURmCfJAJiTu5TN2DW1QrZlNY5xOrpZZtYNKyUVNpa0nIMXmF/RBhzDqHBwarVP/DU4Au7os/VgkPaHDWLUsioW64tm9k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,42 +141,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 02:25:41PM -0700, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
-> 
-> The following kmemleak splat:
-> [    8.105530] kmemleak: Trying to color unknown object at 0xff11000100e918c0 as Black
-> [    8.106521] Call Trace:
-> [    8.106521]  <TASK>
-> [    8.106521]  dump_stack_lvl+0x4b/0x70
-> [    8.106521]  kvfree_call_rcu+0xcb/0x3b0
-> [    8.106521]  ? hrtimer_cancel+0x21/0x40
-> [    8.106521]  bpf_obj_free_fields+0x193/0x200
-> [    8.106521]  htab_map_update_elem+0x29c/0x410
-> [    8.106521]  bpf_prog_cfc8cd0f42c04044_overwrite_cb+0x47/0x4b
-> [    8.106521]  bpf_prog_8c30cd7c4db2e963_overwrite_timer+0x65/0x86
-> [    8.106521]  bpf_prog_test_run_syscall+0xe1/0x2a0
-> 
-> happens due to the combination of features and fixes, but mainly due to
-> commit 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
-> It's using __GFP_HIGH, which instructs slub/kmemleak internals to skip
-> kmemleak_alloc_recursive() on allocation, so subsequent kfree_rcu()->
-> kvfree_call_rcu()->kmemleak_ignore() complains with the above splat.
-> 
-> To fix this imbalance, replace bpf_map_kmalloc_node() with
-> kmalloc_nolock() and kfree_rcu() with call_rcu() + kfree_nolock() to
-> make sure that the objects allocated with kmalloc_nolock() are freed
-> with kfree_nolock() rather than the implicit kfree() that kfree_rcu()
-> uses internally.
-> 
-> Note, the kmalloc_nolock() happens under bpf_spin_lock_irqsave(), so
-> it will always fail in PREEMPT_RT. This is not an issue at the moment,
-> since bpf_timers are disabled in PREEMPT_RT. In the future
-> bpf_spin_lock will be replaced with state machine similar to
-> bpf_task_work.
-> 
-> Fixes: 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[based on latest akpm/mm-new of Oct 14th, commit 36c6c5ce1b275]
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+v4:
+- Some cleanups within vma_can_userfault() [David]
+- Rename uffd_get_folio() to minor_get_folio() [David]
+- Remove uffd_features in vm_uffd_ops, deduce it from supported ioctls [David]
+
+v1: https://lore.kernel.org/r/20250620190342.1780170-1-peterx@redhat.com
+v2: https://lore.kernel.org/r/20250627154655.2085903-1-peterx@redhat.com
+v3: https://lore.kernel.org/r/20250926211650.525109-1-peterx@redhat.com
+
+This series is an alternative proposal of what Nikita proposed here on the
+initial three patches:
+
+  https://lore.kernel.org/r/20250404154352.23078-1-kalyazin@amazon.com
+
+This is not yet relevant to any guest-memfd support, but paving way for it.
+Here, the major goal is to make kernel modules be able to opt-in with any
+form of userfaultfd supports, like guest-memfd.  This alternative option
+should hopefully be cleaner, and avoid leaking userfault details into
+vm_ops.fault().
+
+It also means this series does not depend on anything.  It's a pure
+refactoring of userfaultfd internals to provide a generic API, so that
+other types of files, especially RAM based, can support userfaultfd without
+touching mm/ at all.
+
+To achieve it, this series introduced a file operation called vm_uffd_ops.
+The ops needs to be provided when a file type supports any of userfaultfd.
+
+With that, I moved both hugetlbfs and shmem over, whenever possible.  So
+far due to concerns on exposing an uffd_copy() API, the MISSING faults are
+still separately processed and can only be done within mm/.  Hugetlbfs kept
+its special paths untouched.
+
+An example of shmem uffd_ops:
+
+static const struct vm_uffd_ops shmem_uffd_ops = {
+	.supported_ioctls	=	BIT(_UFFDIO_COPY) |
+					BIT(_UFFDIO_ZEROPAGE) |
+					BIT(_UFFDIO_WRITEPROTECT) |
+					BIT(_UFFDIO_CONTINUE) |
+					BIT(_UFFDIO_POISON),
+	.minor_get_folio	=	shmem_uffd_get_folio,
+};
+
+To show another sample, this is the patch that Nikita posted to implement
+minor fault for guest-memfd (on top of older versions of this series):
+
+  https://lore.kernel.org/all/114133f5-0282-463d-9d65-3143aa658806@amazon.com/
+
+No functional change expected at all after the whole series applied.  There
+might be some slightly stricter check on uffd ops here and there in the
+last patch, but that really shouldn't stand out anywhere to anyone.
+
+For testing: besides the cross-compilation tests, I did also try with
+uffd-stress in a VM to measure any perf difference before/after the change;
+The static call becomes a pointer now.  I really cannot measure anything
+different, which is more or less expected.
+
+Comments welcomed, thanks.
+
+Peter Xu (4):
+  mm: Introduce vm_uffd_ops API
+  mm/shmem: Support vm_uffd_ops API
+  mm/hugetlb: Support vm_uffd_ops API
+  mm: Apply vm_uffd_ops API to core mm
+
+ include/linux/mm.h            |   9 +++
+ include/linux/userfaultfd_k.h |  75 +++++++++++----------
+ mm/hugetlb.c                  |  18 +++++
+ mm/shmem.c                    |  24 +++++++
+ mm/userfaultfd.c              | 120 +++++++++++++++++++++++++++-------
+ 5 files changed, 189 insertions(+), 57 deletions(-)
+
+-- 
+2.50.1
+
 
