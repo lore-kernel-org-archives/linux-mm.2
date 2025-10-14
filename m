@@ -4,126 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A08ECCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 20:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEE9CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 20:45:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1FF8E00D0; Tue, 14 Oct 2025 16:42:52 -0400 (EDT)
+	id 5EA688E00D3; Tue, 14 Oct 2025 16:45:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A2608E0090; Tue, 14 Oct 2025 16:42:52 -0400 (EDT)
+	id 5C21E8E0090; Tue, 14 Oct 2025 16:45:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 791478E00D0; Tue, 14 Oct 2025 16:42:52 -0400 (EDT)
+	id 4B0C88E00D3; Tue, 14 Oct 2025 16:45:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BC658E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:42:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC03D13C0B9
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:42:51 +0000 (UTC)
-X-FDA: 83997893742.29.F53F123
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DA9592000B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:42:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gchiJakK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760474569; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 372FF8E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:45:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0171CBC796
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:45:12 +0000 (UTC)
+X-FDA: 83997899706.05.3E71F1E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 80C0540003
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:45:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YALW1a/l";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fbttqre+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3H0+biV7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IavnuAfd;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760474711; a=rsa-sha256;
 	cv=none;
-	b=f5iW6QeZbZRHEapJ6s8P15x3lV5XPZcJ1KLIff61za6Pl2L9kQEKwkUfaGfBipAvnjjiRX
-	6ZV4nC+DnsENoltpleEBU2NrqxtUWZo1jw05OaU9QmrRfKQiVo9kR/VlSa7NUQTTlJwc7i
-	2OIQj+20w9r3bSrpQPEo+bup2FTCEno=
+	b=a0JIrYvcMDIMTRpuMM83aapMEKDqd/IboTX92Yna46cyR+ByezHRKIiiy8SOBDrxlbK/WD
+	gI7WDgpScQknWgMtC1BW9TVn4I3jIFOgEx2Uykyvg7TQq44HsilIV1Md11ndbpgnyJnCac
+	l1rL8hjTeMa9hT3v5NfdeeQhcA6FZxk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gchiJakK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="YALW1a/l";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fbttqre+;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3H0+biV7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IavnuAfd;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760474569;
+	s=arc-20220608; t=1760474711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uockn1DmFA8ZAnlkgMjydfkJvdgnzoAnn5KXsE8LaOc=;
-	b=Wi4Rb89uOzW0YWYWdhxUx2W9kMh7KCW1NDk7kE1R+x7sncf6EpMU0CljIDg1PHk+eUlRtc
-	zub/kC0dbXqzQkgo0AI/TA6IhRePH7fOGz3aE5d5qxQpfbZQ5S4/A1VLESulNAQoEcmwHn
-	03ROiNBrps1P9GOGKVufwFBohBAUycE=
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5997f407c85so2056678137.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760474569; x=1761079369; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uockn1DmFA8ZAnlkgMjydfkJvdgnzoAnn5KXsE8LaOc=;
-        b=gchiJakKPU8GyQNspM/EYMpvdTw2c0Nii1pApIOLTeqQlkoJEMoN9DDzGon1rS8x/Y
-         lTk2u62HwqXqAK22a7G8sq8CeEXKWbynOGQu2rNe9Ttecip3Jy9DI/1CzJJnTRB32AhF
-         1PBGUOL5S5LsZe5DSNVdjs6pPRh3aPvEVmNTlyqfgA+7nSG8ART0gNuk8huA9aIzqdpj
-         Xjie+zosGNpWlfwzVV8vbMRGTw5lpm1Ko44l8DYE0v8ikEThLnINjI9BVGvJ1AfVGNt/
-         f8on+uyhUq4Fu7lEJTbKNZjlwgQVuNr+a9yS2s4KQTYE1sr5Me4D+K9jIYiudDk9qIrs
-         l/FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760474569; x=1761079369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uockn1DmFA8ZAnlkgMjydfkJvdgnzoAnn5KXsE8LaOc=;
-        b=S50hepiGogKgidITRxwfG9/zGs6mExjmU+WEarayGVhxL2RvcdEGu6T8pGPtSu62HA
-         n4CKEpPYcyTayX8oDcw+2sSad2C5KN0wjoiodk/2DdrSS6V30J7BP4yJdMgcGKEO2g6L
-         McBaxb9P+zLAFgsCAqM1IsSUIPiPV3Jc5My8RGGjkQzX+dkXfOOntDA9HsrQh+ta4PXm
-         58ZD7XqnFDClW/hQ+u/GFaCR5OqcN6VTr+45AFbb5HQNQ/rfkc7j6IGFc9e2arMg5nuy
-         7V036mEuDGDGMvFBagwZjgtXc53V35p9u4j8oib545ZEkChlToVnrFVILkkqJb85hUAc
-         0FzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2DHRGN7hCgBWCHgM6gDFewctO5QysfKau9psX+OxJWhrfKpFOWM0s00SeVz0cHk1t9EYPygYPWw==@kvack.org
-X-Gm-Message-State: AOJu0YwHiwCNuXKyswSyu2IazWsWpIx7DMGRdA6+yZDpOc800vAu7Scl
-	qB6WF9qe+DeXPr75QJ4RchBUsZ+6odjSFs7bmskZ9pqMhdOEXqiipADqUwkvK0H1VItAtE8zK6G
-	44gitUmOkYwtcUNlYpu21fUr0fHnNq24=
-X-Gm-Gg: ASbGncvvk1bt8A9jaIyNXA2hyrPXoCV+CFZaQ3/EPmZKZAdwR+6dmuJoP/7wlwu9H45
-	nim2XhQ1q0eqthttRMdlUv1rV1RNZNkqueqssrdK7EhKuXN1HzR1GyWQLfZ2BUYk1MYU8i2uO5c
-	dKWrD0KI4BsHNBDtBTvp4c25fQHaKTHu6we0N4G5qMBKaB4puRQbasxKTY4Lkk9z9kxgrg9FsZ1
-	ea6LCVx8DQTHkoJ8kqx5ABzMPx2hnIupwpBAeDWPc5p7QddPUelgLaOUtyxXWWoXCsA
-X-Google-Smtp-Source: AGHT+IEnsr51HAAycnl5TJWtojVCtdeDbTLi5HrOIWN/EM0aj7tT4qSjlzWUR1EkpvLjmCuZMzthdHU4KSmPdfVDcS0=
-X-Received: by 2002:a05:6102:1516:b0:5d5:f6ae:38d5 with SMTP id
- ada2fe7eead31-5d5f6ae3b8bmr6904190137.42.1760474568697; Tue, 14 Oct 2025
- 13:42:48 -0700 (PDT)
+	bh=DFB4VLZVNkhkwmFjrnl3j5HQXx6c9X+PtZHCBSlbb+k=;
+	b=ec2MU32Zdi12TiiZedkVA49jC3liaJnzJBk7qvAixtYhxTtRPUvI504zb/hKwvaULbVgHH
+	WTwDZa81D0MQQII8Xtz+SWKj2VpG1n8YK0O+o+i5UQ8Vho7WppsNivS7YIlu+9aYISOw4g
+	9k/OZ0x+UHX/P69bZLZo4O+2HNRbf8o=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5F7C121D69;
+	Tue, 14 Oct 2025 20:45:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760474708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DFB4VLZVNkhkwmFjrnl3j5HQXx6c9X+PtZHCBSlbb+k=;
+	b=YALW1a/liwYXGW9N/46t7X9vtpUHF+XQyj8cFJ8hL4pq96N8KM84i2UJqoSfF64mn5403g
+	caEO8LbtwJlN/ymLljYsHXwAOxAEMcfg1eYrOm8khkMjBK7A7Gt2FmsURrIvSwp9RKpYda
+	TlM+HyZBodpIfqfWAckuIY5swo/27Bk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760474708;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DFB4VLZVNkhkwmFjrnl3j5HQXx6c9X+PtZHCBSlbb+k=;
+	b=fbttqre+La237CmAVxZL9iQXX8LyCZqS0sGkF4fxYmTF6D6AleVMs9AVMOTg3U9BR7jir4
+	5qNxtriM7MLvFhAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760474707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DFB4VLZVNkhkwmFjrnl3j5HQXx6c9X+PtZHCBSlbb+k=;
+	b=3H0+biV7xd6tUhXprGiINLQJA+Vf71yt3zB2HXTYhQp4SfiNK/Ozqak9WNVMZs0PWTACVi
+	C//+nl/l3WDRYitR0O/IR3bxZnsUPeShQ/R3Hv6HOx2a+1fU0rxRyQuS76eYtI9aJBWN2o
+	NdtUEDjCugC34NJjbZ3xxwxbNxr20EE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760474707;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DFB4VLZVNkhkwmFjrnl3j5HQXx6c9X+PtZHCBSlbb+k=;
+	b=IavnuAfd7L9gFwmo/tloQti+B1s4YfBjvyAZaY6Cj22Nn+bUFu6jOatv51lUU++eZS1YKB
+	v6fixdAVf7FNvJBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F7DC13A44;
+	Tue, 14 Oct 2025 20:45:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CuHWDlO27mgMZAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 14 Oct 2025 20:45:07 +0000
+Message-ID: <20564b23-a3eb-4282-acec-be8913a84daa@suse.cz>
+Date: Tue, 14 Oct 2025 22:45:06 +0200
 MIME-Version: 1.0
-References: <20250909065349.574894-1-liulei.rjpt@vivo.com> <CAMgjq7Ca6zOozixPot3j5FP_6A8h=DFc7yjHKp2Lg+qu7gNwMA@mail.gmail.com>
- <CAGsJ_4xiTteQECtUNBo+eC9uu8R3CgVT2rpvGCGdFqc3psSnWQ@mail.gmail.com> <fe38e328-5e64-44b2-9e62-f764c4b307bd@vivo.com>
-In-Reply-To: <fe38e328-5e64-44b2-9e62-f764c4b307bd@vivo.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 15 Oct 2025 04:42:36 +0800
-X-Gm-Features: AS18NWDkw8474qAcz1fNrydjfJ00yxfFAbDaJ_VQwKfXsjjmOArAdgWL5vP-vUY
-Message-ID: <CAGsJ_4xdvGjZ9YZnc0mk3bDfPCwxdpF_5bhcbca09j=-KBM9Mg@mail.gmail.com>
-Subject: Re: [PATCH v0 0/2] mm: swap: Gather swap entries and batch async release
-To: Lei Liu <liulei.rjpt@vivo.com>
-Cc: Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Chen Yu <yu.c.chen@intel.com>, 
-	Hao Jia <jiahao1@lixiang.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Oleg Nesterov <oleg@redhat.com>, 
-	Christian Brauner <brauner@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Fushuai Wang <wangfushuai@baidu.com>, 
-	"open list:MEMORY MANAGEMENT - OOM KILLER" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Batch page freeing in
+ free_frozen_page_commit
+Content-Language: en-US
+To: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Mason <clm@fb.com>, Kiryl Shutsemau <kirill@shutemov.name>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel-team@meta.com
+References: <20251014192827.851389-1-joshua.hahnjy@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251014192827.851389-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hmzdmjnjwf8bhjre97aonj35r9nzymxw
+X-Rspamd-Queue-Id: 80C0540003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DA9592000B
-X-Stat-Signature: no37nzf4pm5ww498q1tn3q11azsn8i8y
-X-HE-Tag: 1760474569-768693
-X-HE-Meta: U2FsdGVkX1+z4zlLouJBZMBF2J3icau8nz/VRH1mzIF58BmSeSAGgWVnJqtup7jCF9nibrkAvwnARiEc4qqtqD5uBrEFl8Km22ejvH0xiW1MWKnKg/qEFoa9aF9Wiy5pNV3Z64pk1aY13KGMy2/Jb3dHIkKvpqDpZzSMaPsy+wmhRPgAghOSauG7r27wDQWpBcdtmDL9JvIs9f6dLI+nua8/guNgDktf/41MU4doG7lBTGmpBUXbefzIS/8JpQ8E33RbvP5LvEGudWvoqNlRsvo5P+BcewdS1ykPncKR1X5M3EOLPY/RNDICiBzsHuCjw/waqfv7hN2vnFcPrzH1vfpmPjQg854XkxBJ+/gWb3Sl0vUayIaTJ/UmiRVj4X2H9S5shyaLk8Khk6gNRYx++sjvixUG5c3PQVN/lrjyh4ZTKrSZztgF7jrs9A+fPMTqIfscHF3zwULdv9Wp00ovWYU/4QkrCuWxfpb/yvxDwGHJpN7AU6CI4HDp0CPHk3MI3DlQjR/hrqz3FLQkyNdRjAiJANQzrtxqswKs+ToSUJzpbRpwHQiXdka9CvKtUw7hj/DtJfnfH5/sr+UibN2IEatTZn2+sXNDeUpeaF+W74lo2OfB9ctAwVOCnBOB8xR+BUbrfqEuOfDPIE707FktJ+27W+Fz78/5nupH38HWRm18sCeNlkD+ls1sZ07lXRdrfo78rQ7F/IIXS3NXB0eY0l/RZ/B9/oxq7fYCcbHWlL5/1hVQjtz608olvjbdAVB5e86vhDFayiCBpAnrcoIyEPtdugfVuSzp1p1okQ4EMCFzn5v/gSU0+FFmcJDh0AxU1IhFxq1ANV/zl6vBQnGl8+KTZtQS1xA9GxguX7zrqfIXgqJXA0prFrgQXCUPImtGb9bZyqBKuXaIeHR2wDDH7M3w/acBuqSS5wqPFnpN7FVGzV6LfzffKmVe4fjFU6rcku9vuK5klXZ94dmicsJ
- UnH1sft2
- 2ywzK3KuPhnrZTfhJJrCsak3+TGP5B7Rc+7xrnI4tLFSJqSfylWb+jx40uVG5ojNzy03Od81Ab4d9TTwTyym7kOjoG884PDMf1VOyMTz2eLDbbpxWeQw3qxG+9SmKg1Gxu8nBXljLoosBefAEmnEcJvvsS45PmxAgecBzbofMIkj/Grh3qZ9FajkYzNWlb12VSlIVEOCwch0y1dnXRj4UbidhrnAFEgam3/Mr5DMLa8+vkRDlHSIljdaIT8i0PlfM4nbhZavffA8V/oJdfoXHa5nEglGWHgXj6AdMtdn/oL/jVSwMG6udgjqJ+SmBOzTIj962+Omf7VcKG3Px/XSi8Nc0qm3/gpAmwkDFfuIO2F/6xxo=
+X-HE-Tag: 1760474710-70180
+X-HE-Meta: U2FsdGVkX1+kqt6RyMh4A0SeuxXdZT6zbqNogOJEwos8XOH1ft/d9eh5wzutUtdnj20W8MJGqPWJz21rqUxlmyZULTPvnGyYEadVCPGp1seyPQDdUXPoWuMjgPyR9CpOAP5zRFlgovqGdssqMX+gsNLUwjLyPzpmWmtlc82LrXCw3QuOt+mcFYS/TvjCtG72QhVnR/MkyYV+X5Jl/LS/Ls7lwypfRm1qSh7Rew/9kw2BF5yBxcfuMuWbOJWCbjoGiGi/4HVFqCtl1gXXtCvKvK4/8c10NnjL8YQ/rzPN03mvuqPmtLZ/nTOK0Vk1PSnK+Z9+hjqivQr76wSnHmlEbyG6H3YKm+n6dI3u/rR3mEqQht/ILoXYAkorWNWe8YBJC3IB1jjtTHto5ni2z+ZIG3y9sWNnwHB7uTxmQaQ5dguPu7QckGbwB1FQ1ehFP5hXlGmqmq3WR5Ov7+UXHKranE+ctVoB4SVPAMusowks+bWR/VjbW0jTsf2zXlp+UKuKKwYalhUZ4c84YHIs/8xp7ArPWQTtgawRqqBn81Yx3wEOJmY6053Auyw1mxOsxrT3z6B/CBfgi/Qwlh9rJ0XFXrNWqxbaKKyfBEtdpQly4rSgtVRqdWFr541Wg59sXCC8niRKQfYs2yjbXSoxmNDAhQJISwIH/TWjwdU5y6FH7C0Z0DBgNXYRJtr34ztW7ULNh506Swiw4k2uU4ibBUGBD7F+o8VNslb/fY6TsgAuUiGDilvPwILUA4mMnkSW9mkueMPo5e0/wYDzpe8AKCPmKp03ABDhYMwkjQWgCdyqNgDY2VLrc+yZLihzS2JbCq4guNmk3hhqGpWj7fQ/Sd4j2gKRcIKvVqADwSuZe6nAHUzA/TDZKODRNMXptlGUU7gS18DQ9xpvyUx+EB3Mi75YXrGlHZU8uRoxBN/UF+vK1fChHYl6Kzqy1OyZwkc/GpwuAyM5td8IBgXP1Bqa/BL
+ XQYLb+qE
+ MthvndwAoCfiBfGk9ZVrgT6ho62rIG/Pn+keGS/cr73xoe0o7kXigx6JB5z1/yosHBHKgZyPq8VRnycPIaql6Vy4xstfKI0/g9ei4eYx2KZoISAtoeWsF3uNqLXt4fcyB4Ifk4P4NErRmYLu1EdIEk4CRaTCpcKYhLHLQSr1bpgze9dJntW1TFAD/gXa/mdsVjjuNlERT/CTlnrBkVeR6k7PbZShIOmt7Fe4383vp16CBwAOlp9oO9xiLTsxBiETi5CE9hUFMY4YjWIobCEVQ7OlzLPpq/eHE8sMUI6vA5G9TK6j7q1Ld5GRf5Nx9Z2X+cUUY6fNYxvuyREByuvWFwGJZopZbmaYeoxsM0JfVA8M/Dw9/E7ZtVP1v9b7DeJvptwpLiGypiXacRjQU2ySeoq4zP60NBf6elrDhuPndOm9g6OgI5eyr+ks0lFAj6vcElZw0JAAgskI/ARksSUZhydp/tw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,36 +181,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->
-> Hi Barry
->
-> Thank you for your question. Here is the issue we are encountering:
->
-> Flame graph of time distribution for douyin process exit (~400MB swapped)=
-:
-> do_notify_resume         3.89%
-> get_signal               3.89%
-> do_signal_exit           3.88%
-> do_exit                  3.88%
-> mmput                    3.22%
-> exit_mmap                3.22%
-> unmap_vmas               3.08%
-> unmap_page_range         3.07%
-> free_swap_and_cache_nr   1.31%****
-> swap_entry_range_free    1.17%****
-> zram_slot_free_notify    1.11%****
+On 10/14/25 21:28, Joshua Hahn wrote:
+> On Tue, 14 Oct 2025 07:50:10 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> 
+>> Before returning, free_frozen_page_commit calls free_pcppages_bulk using
+>> nr_pcp_free to determine how many pages can appropritately be freed,
+>> based on the tunable parameters stored in pcp. While this number is an
+>> accurate representation of how many pages should be freed in total, it
+>> is not an appropriate number of pages to free at once using
+>> free_pcppages_bulk, since we have seen the value consistently go above
+>> 2000 in the Meta fleet on larger machines.
+>> 
+>> As such, perform batched page freeing in free_pcppages_bulk by using
+>> pcp->batch. In order to ensure that other processes are not starved of the
+>> zone lock, free both the zone lock and pcp lock to yield to other threads.
+>> 
+>> Note that because free_frozen_page_commit now performs a spinlock inside the
+>> function (and can fail), the function may now return with a freed pcp.
+>> To handle this, return true if the pcp is locked on exit and false otherwise.
+>> 
+>> In addition, since free_frozen_page_commit must now be aware of what UP
+>> flags were stored at the time of the spin lock, and because we must be
+>> able to report new UP flags to the callers, add a new unsigned long*
+>> parameter UP_flags to keep track of this.
+> 
+> [...snip...]
+> 
+> Hello Andrew, I hope you are doing well! I was wondering if you could help
+> adding this as a fixlet for the patch I am writing this reply to. Vlastimil
+> kindly pointed out that they should never go negative, so checking for
+> 0-ness should be sufficient and more readable than the <= checks.
+> 
+> I think it is OK to leave the changelog in 0/3 unchanged, since it will not go
+> into the commit history and Vlastimil has already left a correction. But
+> please let me know if you would like me to add a correction for that as well.
+> 
+> Thank you as always, for your help! I hope you have a great day!
+> Joshua
+> 
+> ...
+> 
+> Since to_free and pcp->count cannot become negative, make the checks into an
+> equality check instead.
+> 
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-If 1.11/1.31, or 85% of free_swap_and_cache_nr, comes from zram_free,
-it=E2=80=99s clear that the swap/mm core is not the right place for this op=
-timization.
+For the patch with this fixup:
 
-As it involves too much complexity=E2=80=94for example, synchronization bet=
-ween
-swapoff and your new threads.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-> zram_free_hw_entry_dc    0.43%
-> free_zspage[zsmalloc]    0.09%
+Thanks!
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 6d544521e49c..fd46a982ce3c 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2884,7 +2884,7 @@ static bool free_frozen_page_commit(struct zone *zone,
+>                 free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+>                 to_free -= to_free_batched;
+> 
+> -               if (to_free <= 0 || pcp->count <= 0)
+> +               if (to_free == 0 || pcp->count == 0)
+>                         break;
+> 
+>                 pcp_spin_unlock(pcp);
 
-Thanks
-Barry
 
