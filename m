@@ -4,123 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259E4CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 22:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60CA2CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 22:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 695848E0151; Tue, 14 Oct 2025 18:20:26 -0400 (EDT)
+	id 739A88E0090; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66D508E0090; Tue, 14 Oct 2025 18:20:26 -0400 (EDT)
+	id 719698E0041; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A93A8E0151; Tue, 14 Oct 2025 18:20:26 -0400 (EDT)
+	id 64E528E0090; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CFE88E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:20:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB9C25C477
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:20:25 +0000 (UTC)
-X-FDA: 83998139610.24.E5D66D1
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0E70820004
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:20:23 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yczk7LBo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760480424; a=rsa-sha256;
-	cv=none;
-	b=AJ7J7xeyj6YJL7mPtSjPb2819LLH1R8j+zr6uKwCRf+hIc7xkNuhB4lqTgWS21hUqhjoI/
-	9gLdpo72nJFueeB0QU9U8tCrkAhhH++8iUMKLF8GVXV4TWlvbzPRfHY0Ad6vO4681BYXYl
-	5Qh+TuymM1jiOBF9yTMd4yze+fGhnkc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Yczk7LBo;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 54DC68E0041
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA9B4160711
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:41:02 +0000 (UTC)
+X-FDA: 83998191564.20.A0BB490
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A4C001C0003
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:41:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FfwcNndM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760480424;
+	s=arc-20220608; t=1760481661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QiESf9E6LuhQtvYIrJoiu1eDEMYyeYxDUHowV6aD21k=;
-	b=RjCNNw3yBWmMhgcZ73gV9fzIFUEJKlA37p6Y9XhW5nX7S8j4NyzPN1soPhn9ERaP1XiO69
-	AuR8SsnCemCuejxR792ajnF8RbZqRgWGxAMbLaAJOD46B2xNROVllOh1RPLoG+2GHvK6po
-	iLcl2um36pqgOAE37eeJRnKqfIZSKsA=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2897522a1dfso54765775ad.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760480423; x=1761085223; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QiESf9E6LuhQtvYIrJoiu1eDEMYyeYxDUHowV6aD21k=;
-        b=Yczk7LBo9jNFtZHSnAiX28HJ23NbKj6iBOkrj1GxZ4vTHG3SwXts3IANULlG2y+HFt
-         gb+e7R66XR5zzz5mYBXPc3fKYjySDk3iRt6TGjv9+i7ZpoUg1s8Ysd7TvgRIv+GIchsp
-         gpBUViy9oNZrLDbV+XQrYtrY1eO+h9/S9lskhp4ifNYhf8u5CbJZSmsJXBkcto7cAMjj
-         wEBO+qVkeJdVvKULRgHJ/cWKV4vgGz8SuQL+U2woeSUnDIn4We18M9zT1TpwxVcHaGqs
-         Rw0ZscwUFF1YCFItDX68Yyd7Lzo9yqnuTf4WS0wkE3ZkyYqJYug2ami6oIbNt8ytzRUW
-         4PRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760480423; x=1761085223;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QiESf9E6LuhQtvYIrJoiu1eDEMYyeYxDUHowV6aD21k=;
-        b=i/sCpAS0yIc0nzlUBRovXb9hNQQY1O/cxcNJyZU7Th+r5nO5SMDecXAeq8q+ytwADZ
-         jlMoGsK5eY/r2lTl9DQlpgis6XWba4KTc1sTOm2LltGMH+/wqQP9yhmxZjSkAK1qoC1K
-         g1Zl4RWjSX6Wy0z22kYhxMXTTl7GqdRATo5nN+i3BJNnh7DeCRmgbrBReBjUtaRdgoLr
-         7G7Xs5FEoeZTxtPXTjUx9bYdTKd6o2lyl9hT2WKhPWDrPTie9c8kt4HyByuohk8PtmdO
-         OP2nSrZq6uFtuxTVudeTFyPcpGfN8Pjyy2ANaEWdocGTdwoJDyJ0wdu5HKmHSIjiD8mj
-         KsgA==
-X-Forwarded-Encrypted: i=1; AJvYcCXtWTlRXxLsIbdhdXTH/UZJO2VNbvtMzcETSpsWxXgjmevsj8BOpt1pZiGNdZithQO+32gf8mKbLA==@kvack.org
-X-Gm-Message-State: AOJu0YxIWE4F7qLriTERws5rjsb37uG3lijaOT/bNpy1RCQ+m4GIf13Q
-	g+RAcC3ooF/tnC/KnsEiOwp+qXkYeM+Ai1TPyi6nSMFrwbt9CYUm7HJF
-X-Gm-Gg: ASbGncueydZD73izo5ac0zWe8Nvi76s+zCOPNjpXrbPlykz4p/0b6J/6sYxNaQTDamm
-	ZwNtqGA25PGvSBiqq5XbEq+7K16i5gJBimGM5WrvoWIIlPxSCiusODSZ30g2+7b6BrRLfRQG5G1
-	EqbgyPpRFFq8Lz57olQKVpvE4aNsNTwElJ5q6eEwIlsLx+kBE+C3MMZr9IXjxNGtVxhUD5gESpB
-	P90IL4EqVt6oM5lIUhsVGmCWckK3sPqDlewiiGNCnbZfx5QL4xA/2vuK8lvtUg9oEtTAsdHvG6u
-	kLpvDBlOvHM6CdMcT6W3dC7zQ/PbQHY+7NTa7XjsjFU+6JLfrpnx1ZBNoVcDfQmCYrKKgRuIv1R
-	+fURruQyuytViSKHamqSJ2mS365sq95I8wUx603ot61IP1HXLPZt5kP4tQn6oJ8ebJ/9+Ho6EXm
-	DbfGcjM8GBElMae0oLtg==
-X-Google-Smtp-Source: AGHT+IF+uVtAAqgnG7qVyavs4DNKE+kIBncndz1O/yroSh92Bt71TOPgQgoxEYV7d7N1TNDWn8/+Fg==
-X-Received: by 2002:a17:903:b0e:b0:27c:3b07:5812 with SMTP id d9443c01a7336-290272b5534mr324588815ad.36.1760480417943;
-        Tue, 14 Oct 2025 15:20:17 -0700 (PDT)
-Received: from Barrys-MBP.hub ([47.72.128.212])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b67d0d8391dsm5260980a12.41.2025.10.14.15.20.12
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Oct 2025 15:20:17 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: wangkefeng.wang@huawei.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	david@redhat.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	sidhartha.kumar@oracle.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v2 1/3] mm: mprotect: always skip dma pinned folio in prot_numa_skip()
-Date: Wed, 15 Oct 2025 06:20:03 +0800
-Message-Id: <20251014222003.1358-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20251014113349.2618158-2-wangkefeng.wang@huawei.com>
-References: <20251014113349.2618158-2-wangkefeng.wang@huawei.com>
+	bh=7kymx9Ck3BaRbtCBkYGP0422cwTTn/aswqpSO+MgSvA=;
+	b=g8twgZ6CEp0PYJGLy7q2sb71lWuDsHDnFFc/RDvy9ybbihVv6LH4mznhusIWNNlGVvsRh2
+	lPtsrvldsUExP2ffy6CS+NxNq3OrIghOcBh9IQ/mFvKLYy261a7KLKuYAHaeGG5CemV5Xi
+	NcDhFJW5KwHmNMtMax75aAappBCG0gA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FfwcNndM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760481661; a=rsa-sha256;
+	cv=none;
+	b=DP6El7xImLZQNiRGoeprJhsqq8hTuO6kuOuDrnS+gMxQiU8w/nQiLCD2xMkMCRUtCFhbq1
+	bH+GbkfZPD7eJzgpakaQYVRdykuItciKuo6PXWzhHrQ2/uG6+M61nHreKdhnCbrm+mjW8L
+	IVP+VSS714OnZvB+Jc/msdkT3r0C++M=
+Date: Tue, 14 Oct 2025 15:40:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760481658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7kymx9Ck3BaRbtCBkYGP0422cwTTn/aswqpSO+MgSvA=;
+	b=FfwcNndMIvuZehmylvrdGiExadwXIbk3/1qViaC6bJJUUD3T1VC2r18YrQfykTdqEDgD9P
+	zIxKqXQNLJrI/n2vxVZxUCW5nl/JKRgAL+N6jCp6AJinamOlQwD7ezvRpGR5qBIe3O1vqK
+	gejPMoT7vgJLDMCXCcXTfzw6r372xrI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>, David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v3] slab: Add check for memcg_data != OBJEXTS_ALLOC_FAIL
+ in folio_memcg_kmem
+Message-ID: <j7tcixbgyo5ongfv33d2h4dvmko7ygrwi5fww2nc2op54nmvz4@ofwy5jpcvcrn>
+References: <20251014152751.499376-1-hao.ge@linux.dev>
+ <CAJuCfpGBxUmvWoe2xv2-bsF+TY4fK-m1-Z_E3OcyTiSYz5KeAA@mail.gmail.com>
+ <vdngz65wojqalim4xb6vxb6k7upbzmkfoogmbuswc4lowju3ke@32hgwjlzxibr>
+ <df175b09-c0db-4dc3-a0de-e1c38f70147d@suse.cz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <df175b09-c0db-4dc3-a0de-e1c38f70147d@suse.cz>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0E70820004
-X-Stat-Signature: u4ne67qt3kcz4eqtgatqbf9uou7adp5p
-X-HE-Tag: 1760480423-611942
-X-HE-Meta: U2FsdGVkX1+jRpZcgJOJrOKCP1T/nqfq6EWITJZ2IelFrNd1DMd3Lmnq99Q9UuEUZrMHsnIu0djEIh16g/Lwd751ERynMBwD1M8ISG0qR4dxAWPMWTX5n23sJYF/JbufsGF1v5jZ+xv1ALEETpOiTulAOIODsE+fC6c7zRzSdaB0W18IbMjZjWHsMDqGUI2rQdDtu7li4h8oLhbP3CiPgyGyIvg0dBrg8DlIpo4hQ7q7ME5ZcxnfXKSDyOGj9CLlCW4uTxvCiKrBNsytujQx9wgiNeFtwMZCeheAxUHiuIH2jWtSTJzorKRn+vQo+qQ5owImRfuyDRn8vSbUgbcJ7PmD3myKHVO0XMsTe6q0qE2KFk/ddHA08udFvFOLc3bSVOMIN+X1XnZ3b4FMdc2DsVFwu0vJWVgfvXe7CuKr6K4f9UfBuwyeUdfAFjdJI4gAXNs6J1ovbNpplhhFnCo987I6Vp9ClkLwa5HyzAeyoB72fHrY6q3/6WGN7euQu2qD+QbZcSHiJsY3XhJNCkjSXqT+Gfm6S66ZEWhZdRFzZXvdlEjs0vZ4+ufd0yLLyMIp2ytxgVFNelkmQJIRw5LQDDv2UhuTA8oAt6S9HbnE4rQWMcbbrfnzRoKiey/yCOspsqlP1jP6uRNia910b1cmRVtpzNjc4Yora5s8INUB997jN13ahnPG5swMrWtY7froYnHOSWzHTo/y8wgovX9gs8YfwRLQ6JWoBK38kSN0ME9fLdGmpIz3Nx1Da7fo3guA92Y/K+BV0Lw79pW8Ul4fJliJIaH+xbsBf/e51/LtG9u2g3Xuy8b55jTCqFsVHtUyylta+E8zhRli3xDauPsndYfKxWReppd2XktPKcr+0I4BZq2QRtkCpEtCFvG6peCDg8XwGKYT301/03mak8htiFGdY8+iGBdFR22pFd/x0AnvHyxVKwJ1vbkkE76uR/Hxw5L5GNCLsaoMJUq7H6X
- zLyFKeFJ
- ciIufTCbxDgEiw8wGoxcMut6c0ShcpV3q7Dk/J8ujlpjaxx6O4odNgeL8UScmeemClxTMsATy+/Me4RSCVxpDuBy7eYbYNkgfeYyY79Tp9Z/tP2iVDdUUiA0Za8oRgjum8Dfc6FmyRGInJkgSttSzwKLkLxfojNiQdD9Tf/OgKkt8U18tPKytuY95hR3X2BRoLmm/EsfSq4y5FQmmG0/DVXlZItJAubBQliWPBfPpms8lBPJCZLLOXsZqIeXMkNmkmSwtIeBiZ8dbK/fVSJWGt6jKQIJDzT2W/MW60JezI0ZyNqbnfE3MZJalyyN3o6WXkulcsGPhmb9kWqyIzHJ9aWg0V8bRCHdI3Tl7sLfRDmPg9JJVberwzXtT9zy3U3dGYiq6RGSpfOK4lHGUCiVMf7Zpg41ti0y9Pk9QJ7rphxfXLKPELH5bYZ8t5ztPPK5AgRhfwYIQDxchAv19bDzXbPDwIAG36Aq23wyLtnc8XpL12MTbBlOCq7rjR5DYI8yPaLZ/oFVD1+uC3A8SgFmBu8+MawlhSh8B90imTFohal0m0oE=
+X-Rspamd-Queue-Id: A4C001C0003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bjyifwor8gf6wqaxhe8sh579iu5uis4t
+X-HE-Tag: 1760481660-859205
+X-HE-Meta: U2FsdGVkX1+rbiVCFRSGVi3VFC/t/GaCihT6A7EdVSIgDsbNhWQrfbYp17cTATLz68zwwEolTwLEMlClONHj9hdApfoJnsgBcOZZ2G6uPlN/eTmUZoM/vqagqXivKCTpJg8i5UJlVjlBuZYckAMe/bzvSiv6eVWspLNyZKxagDuJNvxSk2fvtCIUJ8iHzzx8bWxRyJCSu5h4KQKQFd7DptIE8ta5qx20adzvoFpyO5lVSQewOI7WFcp/UDZrMD1HxnQSQxPqZo7nway2glYzF2kbVqWLW3o1RSPV0HFrNYvbi4oO/11ujAiQRZ/YBppilfHkZ0+pFuihk5Dmbzr31vhFyriUG3fLJRrlMdscoU0XQUdiiOYJuAJF0dvJ5EjdRNa1djadO7vkNSYYQDXOmWmYKxVpwbVZI8ICzldZBIy7nXsq+lLwao2ZWRQ/SiaVTTGXdhQo86NCDi0x178nzAaS4CGLmLKjgituFcgC/IBI//cuSBxdwuELnJHJgh0/7JwC0wEIgb6xmCVbkHO3/aGP2PogBiGBVC/dF4EdHIwsw/Ti5qZEeK1N22GR/PIYovkMknl7I4ZzwMXlpOfjHexWtdTBjcmzJhUSs70lBJ/58n81gTxMYgSvcSbqSMWgbFgYHOlZXrNpsVDy1BwvbL5kjNGDs2MnXfQfObT6DF3NaAssPU3XmUE3YTMzAFfdng9I1riYsrAY/HL6l2yvbr502z0uMWMyWtufY1KA4olcwJciYB3Y2kRjJEiRDQJ9VA0BfDYoBWeBsVUNImJijej3TcLMhsSBvxaVe3TisB1LKekbruWd60hJnJ5NiY7oQd81uW/mfks5xb/j4KHgh8P1wUn6pw0EE11AkYG5Cr9xCYOKG9+OwjZs2LTnKbytR+PP/aPnXWG5uCzJkAZr1Q5PSGbTehFJX/j5g9ze//EGFrZ6YjrsOsY5RxmDAjayb7Ho5k2WeRbxHkX1rQV
+ 0lUIXh3e
+ T6cpyzW9NQ4SAKG5V7PiInN4eL6mgmiCe91XEHVjqne2NM4RYhaFhX97kxNZugaZs1l8TKFbUV7X1VbK06j8IpscUpv/kMYcpwryauMvLOUGEnO/DiMRHiukySS9mTcZxiOg+ziQHjVKA6ln+Lxs2ZfN+nn9/NO8uFZp8Z3L29kkRPSpvTufyvW+IOPVzlVvw/Io7KJLQfNDj+EjpUj53fA3Bqf3AAir0uOfQ4DKcT+gtF8Xv0C0wJyWGywFTv1lsi5WoMuolzzD5ZAd3VwTIhpfXPSm8QeWibKjMp4YyNjPj5Pr7568hV4HFmaiINtwx1eoOfryBOCnx6WAXIQXr48B+OHeBD1Mi/wvO7pPTWKwAXAyhYieJMbN1eaOelRsjst5onz5sXw0YK48=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,19 +98,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> If the folio(even not CoW folio) is dma pinned, it can't be
-> migrated, so always skip pinned folio to avoid a waste of cycles
-> when folios migration.
+On Tue, Oct 14, 2025 at 10:58:25PM +0200, Vlastimil Babka wrote:
+> On 10/14/25 22:14, Shakeel Butt wrote:
+> > On Tue, Oct 14, 2025 at 09:12:43AM -0700, Suren Baghdasaryan wrote:
+> >> On Tue, Oct 14, 2025 at 8:28 AM Hao Ge <hao.ge@linux.dev> wrote:
+> >> >
+> >> > From: Hao Ge <gehao@kylinos.cn>
+> >> >
+> >> > Since OBJEXTS_ALLOC_FAIL and MEMCG_DATA_OBJEXTS currently share
+> >> > the same bit position, we cannot determine whether memcg_data still
+> >> > points to the slabobj_ext vector simply by checking
+> >> > folio->memcg_data & MEMCG_DATA_OBJEXTS.
+> >> >
+> >> > If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
+> >> > and during the release of the associated folio, the BUG check is triggered
+> >> > because it was mistakenly assumed that a valid folio->memcg_data
+> >> > was not cleared before freeing the folio.
+> >> >
+> >> > So let's check for memcg_data != OBJEXTS_ALLOC_FAIL in folio_memcg_kmem.
+> >> >
+> >> > Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
+> >> > Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+> >> > Signed-off-by: Hao Ge <gehao@kylinos.cn>
+> >> 
+> >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> >> 
+> >> nit: I think it would be helpful if the changelog explained why we
+> >> need the additional check. We can have the same bit set in two
+> >> different situations:
+> >> 1. object extension vector allocation failure;
+> >> 2. memcg_data pointing to a valid mem_cgroup.
+> >> To distinguish between them, we need to check not only the bit itself
+> >> but also the rest of this field. If the rest is NULL, we have case 1,
+> >> otherwise case 2.
+> > 
+> > With Suren's suggestion, you can add:
+> > 
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 > 
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Thanks, I added Suren's suggestion and pushed to slab/for-next-fixes:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/commit/?h=slab/for-next-fixes&id=711c435c89e59ee32bf8bb1c0d875a07931da5a8
+> 
+> Resisted the impulse to change the single VM_BUG_ON_FOLIO to
+> VM_WARN_ON_ONCE_FOLIO because we're still going to do that systematically,
+> right?
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
-
-> ---
->  mm/mprotect.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+Oh is there some coordinated effort happening for this conversion?
 
