@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FD2CCD183
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 00:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7BCCCD183
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 01:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C81E8E00B7; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
+	id 770DF8E0024; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59FB18E0024; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
+	id 721678E0007; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DCA68E00B7; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
+	id 636E78E0024; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE328E0024
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BF941405F6
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:18:53 +0000 (UTC)
-X-FDA: 83994809346.20.4F34AC7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D468618000F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:18:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnxiU2wh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E40D8E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 21:42:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6A4808848B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:42:54 +0000 (UTC)
+X-FDA: 83995021068.22.A36E0A5
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4559940003
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:42:52 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=INaU7l8+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760406172; a=rsa-sha256;
+	cv=none;
+	b=7zm1KtzrA/fBSD0Y5t6vNUkJzZpYmzQNMJkGnA4BUOLtMbX7vPY5lBrbmd5AIQEc7yVl5k
+	u1WJ97UImAEcWu7wP8CN6aO/1+a+Qnw2kEpV1tEIrci7uCVNeu+Mc8W6CL6nrrCPmawmN7
+	VtdHo6KXOCz4qgmW0d6rHwxEtA6NUcU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=INaU7l8+;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760401131;
+	s=arc-20220608; t=1760406172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kQAfIyYpPQE0GDnDD/YmNAf47h6oCTss9bU5Wbwbrw0=;
-	b=joFmFPezJZT5UPTZ9w7VqXsJcyj8WJa6zbmjo8UB4vqXCBA0iFIDCdszW408AiZIjGBtmA
-	FI8mTWixoq9yAAZSzmru1xKSYQXeVkmp56aEnc1NG3WMtwHUkjMToh8a2NvRYQ7E7g/k3G
-	4ZiRkxD9OUSZk2ntqhiZIFV7/CPiGIU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760401131; a=rsa-sha256;
-	cv=none;
-	b=0fJZU95B9PHQ7uHiLm+eH+cWFFZaaPPULCADDYKvbRTaJwa/Logc8eQc2KH91wyNl54R6z
-	OlyyGwelSs0MM/r+XP+Gr3iBhxUvJLvSwlOi8KXlfOSB3l5KvsIvbN1Yj+Jp50dOyBSOe2
-	l1L49GRE81SAW/hEdPaQx2zis7tih70=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnxiU2wh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECC8062091;
-	Tue, 14 Oct 2025 00:18:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76584C4CEE7;
-	Tue, 14 Oct 2025 00:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760401130;
-	bh=Wj7cSLcyT0p0yvwLU7VLNGP20MDD+s64RMgH2Oq8gVw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EnxiU2whCnZHUhG3hop0501oo0Znua44eztBcxHHpcDKvqctxqoBaaULm3oZuJ6Fq
-	 QcuWIJMf0g3JJAMsAZ9xXnMUfpDF/VhkkcxRRTYnveOqNgcEELdDWjXZIQ1yAtWS6X
-	 x8clovOVioShD79aGcl4Maj896DiLcjFhyoIMacQPCdENh/f1D8CdU7cj5LyhiNlqk
-	 FqK4eOZ4zXYS3fFpYaVDta7X4FIME/JnjpKYx12Ap+up5OwKQq4M+3wUMMXkKx3CSs
-	 nUHCtwjKNsZpvXt61K1whz0slG3bN7VEZCiBlPZBRyVgTjURPedUxR0HGTnEeS3yt8
-	 gUPSTBavfE3DA==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: use damos_commit_quota_goal() for new goal commit
-Date: Mon, 13 Oct 2025 17:18:44 -0700
-Message-ID: <20251014001846.279282-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EBF0Ps2ImCzZ4tZ3MrZ01lPp3rnT5K2J0edlyN1v5io=;
+	b=W+mlgYT6mUbuH/+4R1GqwSW5Anub8d6hqsRVcUqe3t4ct6JEgEjJw0J/INsbcWW3LKKLSw
+	k2riP9R2IbPB/8Rsys4/K/+L+hxdElfzDzBlffBjYTyK4RD+ZDMNvWXClBrfvSRgaTUpLZ
+	xIRgY025UBaersWkh964XyGLOarKj1M=
+Message-ID: <b5f40a6b-482e-4e06-91b3-d6ad0427de85@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760406169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EBF0Ps2ImCzZ4tZ3MrZ01lPp3rnT5K2J0edlyN1v5io=;
+	b=INaU7l8+nLdnLaKBJrkREE4PEYNLcdAlPypw+HDjgAvWXi5r6uA0NTeuoAKSKy+xSMk1Ay
+	WnCqeyQnda6EuoiIL7SVQ4MG9Jad+4HrKCZISBB+rXLdUyNsongpSuLEUqKgxd/4ZnP7HK
+	OT7EB/j/yEn8rzpgIn1rwdY49db/oKE=
+Date: Tue, 14 Oct 2025 09:42:44 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: oqfkprtz1ayg3t5718wjr3yaucaw9u6q
+Subject: Re: [PATCH 1/3] mm: mprotect: always skip dma pinned folio in
+ prot_numa_skip()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Liam.Howlett@oracle.com,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+References: <20251013121536.2373249-1-wangkefeng.wang@huawei.com>
+ <20251013121536.2373249-2-wangkefeng.wang@huawei.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20251013121536.2373249-2-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: f5rc6m96amdqsjqxnrcdna3oaz6iqqwx
+X-Rspamd-Queue-Id: 4559940003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D468618000F
-X-HE-Tag: 1760401131-198056
-X-HE-Meta: U2FsdGVkX1+JmhYGhruGgYFeP4/cB5M0R0ynPqxsKD1ybQ/lGJopPGJ8JVzxCUrnqsSUw4uIvYB4FRmvDOxf53TRb1CKUO7QqNzHsfL0q4ZIewKLHuGBnIBvPosOA3JqvtVVCVtYsE7f7DTx7mfVytCtTzQYUx91i7SGy8X8neqq0U0hZF7/o+yR8KYNWku7BRH15HX7E9GexZO/ECw/zLoQrmqaLAaPsvUE1eO24MhlgmC7t/pZhYM8qZt4eVfQd4gs/4RKgUZJcCWP12NANQpzKEoe7jKsDcbXU1y8W+m8gHf/7gFjNvThZ16BA+UTmzklgSiY/haWMocMBw6GlYsUQeeWkL1D7JufYtnh1msI4GcW25BAoBQ5x2ckNii+laecBgGwnrAawpOC28wdhOGmhcxPjtOV6jcy2x61M+pkgn+x2sU+pPxM44SM0F2DnndOVWBeY7pjGsTxWy+fzC+UrtTuuoeh/jtnQsnNvJXMMLt5ft6la9++uE1ngvkyJnJQfJcKFrZEMEZnyQ7HmRTS9B/iXUhg5ibewHLeJOKEws3X376WZ87MZ1L4j1+3K6QZfM8aP1CYFsEdCxNvZEjgA5OPsmGlI3svfClcydaMk2ZYVyvq9GcVTYkYtI7urh3rYAF38jlZ7rLVfFILWY3ElvYWxnkb24pQF3aEJSLQKzUWBfv8jHH40kv2S6fa1K/TJWsWv10zFJXTx09rvI3jvE32Z84sMsBaTkYb9EP6LbTwjgkCND8OEUdmIdeWOmpTtQXRWID2czxZoQh5nrT6uwGI19qDN1t0ZIovfNPAGlmjskeJYFvRXfgc79rtXB7pXmz71t5BEqtPNHOueabA7zmM4y8mP+snMXFcdZsg58WKgxweQxaqAkGhPnFZOvxQpqkFsgIcVKDQteaHbZADaOIEM9T3td4KeeyCq57+8YuSS4UNFGkQQWLNoQERbnMe6J3aqXAogl6FEW2
- NIT9de21
- EYI+7GqmS+l9eUBrf3aeZWxaPicP9JSRMff0o7x9SSMcFfl1815vx8V0dMPAKilQJVsElUyR6Q5BWrw5QsRzEDprubUThY0R/4e2XxgFy6kfxJkhjfuLWEWEu7/6myVzPCJF0u1uSzfi/TguuDOMRDisUdl5nC8nf5wMmk2l1SNF4CQY0T3AX67m5Lt9YQFr1DI6kYO14uGQqfHl5RROCf4eMJuP1O5+oJGj5/73Y9cTjEH4EfpLs7k46rNoZ2Mp+cjxfLAFVjtVCdmn+3qHKv7HbMw==
+X-HE-Tag: 1760406172-824162
+X-HE-Meta: U2FsdGVkX1+mqdmRkmq5OSYUrx6ppfkFq7GHpyDYLttw2cH05EtRK099E77/p17rYNwWliFgqHkALh2jboo/SrAkzGw6ujTmilWKCbSV4tSJi52oXY9C2NwREsWru4KpoOx54CpjS9uFJKA84IZHiRMaTlCYsvtXUxpG1JzeCgtkZlF9j5iv1nvJEdHS42D5lnU4Mn4Mhm+lH2KdUfaBlA5ll5FJUp5j5LYOTNkarO7LLEO8ZtK6fyhGBe2NPqR7i8ChFx1dZVIlsH+B0pkT7mWWEes7sDvrXrLx3+eSzRVf4YJg4VerrPJqoeSPvCfAGZjlhURG7zlr4pu6EbQLA2YxzDlns0xU6eSRVRaXg/EgP/RbrwPGcUQ3ZYgjiSF3d+MQlEe0LS/3cYtMLCpCdPANVFnIWF46A2dbNx3Imqd2zF84QmPgmLZSsNFNTrgeVRSIXeYHYS/CWwb+bE1VXnZOLC7thrclNbZFlLpqelBGi/tks5MHIeDl9Unoxx3u+piz7vtObPiZMu1cm6u5UjlBuZ7zgJR7QSF++3bsYO9Tr1aJKgaHANZGY95E52QdH2pqqPQnRw7AONIpYU4vuIcE+TZhLviNUbU97+SITGTeolQfkyoj7uS5Wv/U7klF4X74Tpd1D34UD8LiVqwOg3yJYHEuoNPLlV1RHmXSQRq8ljNdLSdzlccHoQHltNTRJAsguvHRdFqEoV78+s38doNqbavdIU2ucLD2Y0ZTicjMx7lnfJelVs66WRaCtHTKDGCB6lsbjoEkrUnDfRaKTPq1yZ4Gt1CzFbSmUMHfKjcffcxXS4KlTHsiFHXUJCgfzjqrKLtb+zJSxbE5vGdVUPqVtcZu/f7LfPOF3+0eBUxlqLFnto98BB1emtJ6M+CbU3EHUDUXmHPHl4fNQGEYoSE3wMYXYo1eaDyUJlELiLsuLRFDExdG6LKEBV9LkdfPpNiggp8/5E4yiCumLC0
+ rIHXHAwG
+ O40vIU9rtSyIRkYDTsDu+n9xfCk4di9kqQZeNhocvqADOoYTPORKuCmXQEQTW1f1JiqrQ6Si3n23AOO+apyDjeExgU6nBfq8AgO4sE8swsYIl2zATOmK5G6TJLcWA4msoirzJchBPpsKGKPtrnioFP11JX97fOX3R1c9KJ4nEXAXwsEuq//DYYtpKdowlZuVGMhF3Y42Vfr14XusvVCXygIWxSsP/v88QWu9vCaLxT3v7oIYERNELdjh548tEMSWq9hhQOLxvJ3Qs6cdoBeGFmWLYd/VQzGHFsNJo4qT79qx4ZNswW9PBFuQhpA4ypXiTO3BVOQSKIZVT+0x8B9gm57UDww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,46 +96,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a damos_commit_quota_goals() is called for adding new DAMOS quota
-goals of DAMOS_QUOTA_USER_INPUT metric, current_value fields of the new
-goals should be also set as requested.
 
-However, damos_commit_quota_goals() is not updating the field for the
-case, since it is setting only metrics and target values using
-damos_new_quota_goal(), and metric-optional union fields using
-damos_commit_quota_goal_union().  As a result, users could see the first
-current_value parameter that committed online with a new quota goal is
-ignored.  Users are assumed to commit the current_value for
-DAMOS_QUOTA_USER_INPUT quota goals, since it is being used as a
-feedback.  Hence the real impact would be subtle.  That said, this is
-obviously not intended behavior.
 
-Fix the issue by using damos_commit_quota_goal() which sets all quota
-goal parameters, instead of damos_commit_quota_goal_union(), which sets
-only the union fields.
+On 2025/10/13 20:15, Kefeng Wang wrote:
+> If the folio(even not CoW folio) is dma pinned, it can't be
+> migrated, so always skip pinned folio to avoid a waste of cycles
+> when folios migration.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
 
-Fixes: 1aef9df0ee90 ("mm/damon/core: commit damos_quota_goal->nid")
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+LGTM.
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 93848b4c6944..e72dc49d501c 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -832,7 +832,7 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
- 				src_goal->metric, src_goal->target_value);
- 		if (!new_goal)
- 			return -ENOMEM;
--		damos_commit_quota_goal_union(new_goal, src_goal);
-+		damos_commit_quota_goal(new_goal, src_goal);
- 		damos_add_quota_goal(dst, new_goal);
- 	}
- 	return 0;
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-base-commit: ccb48f0d949e274d388e66c8f80f7d1ff234ce46
--- 
-2.47.3
 
