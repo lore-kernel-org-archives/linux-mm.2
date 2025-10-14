@@ -4,116 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5C7DCCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:30:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FB8CCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:31:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1F6E8E011F; Tue, 14 Oct 2025 09:30:13 -0400 (EDT)
+	id 103338E0105; Tue, 14 Oct 2025 09:31:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF68A8E0112; Tue, 14 Oct 2025 09:30:13 -0400 (EDT)
+	id 0DA9A8E00DF; Tue, 14 Oct 2025 09:31:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D33C68E011F; Tue, 14 Oct 2025 09:30:13 -0400 (EDT)
+	id F0B988E0105; Tue, 14 Oct 2025 09:31:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C12548E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:30:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70775160927
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:30:13 +0000 (UTC)
-X-FDA: 83996803506.03.B36FEAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C377820019
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:30:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrHy1FFo;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DA6548E00DF
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:31:37 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 854FE47694
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:31:37 +0000 (UTC)
+X-FDA: 83996807034.08.A1A3DA9
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7BB5080011
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:31:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SDDU+afx;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760448611;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1760448695;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZerkQV5UIJ4ffC2QtBnHTnul1Sc2wRzT8K0kq7qCVgY=;
-	b=2B6/wzj5Ldfhm+ZaAjqyA9BTDsggiOKQlI+RlGGy8EVQ+j8NbsJo5MuptTzA4Qn4ky9aUs
-	hs5mALlYmQolACEV+sDr+kZ/3xMvdxIbBJ1jLRhlA/G5EEMZW6pfgu8+wlPPq/yspxyuPv
-	ETNrXVMdAu+cCiY+nHAPaqk5FcoJNj8=
+	bh=JRUz1hWdNpegFSxtg102ODjrrEjXcJrCzI5fyTVJ/6Q=;
+	b=2mHIHJfuFvKwwDV/FHNASLbgX5+q1sFFxm+5kLgL01hLpsiUXNHQ2qXSMVZ0HA641ZVweC
+	iIee1dRfg/rU1QPU4Uzmw/Xwuf22zYXXH+gw2gEgAdFXA9/97rYKyyBOn8CIUJvpl83AhO
+	0Btftc1ei6P3OG9lBTWuCjfHeLlyYek=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PrHy1FFo;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760448611; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SDDU+afx;
+	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760448695; a=rsa-sha256;
 	cv=none;
-	b=WYawHY6ccPysIcaQwzEzKlsSGO+6yqV6uZd6++vsvc9p8JNQlwk7hWsz97OwRRFSX1rzeD
-	d/0BruwPoCIZ5+tLgF2S+mP0h9IH/gqPUJhlTwKkGOHYg5OzGwWXRqvwQiGgmIHlG9IrE+
-	e9dtu7xJzsIoBsQKRXBdNaW3LczWqF0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 034AB621A1;
-	Tue, 14 Oct 2025 13:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209F8C4CEE7;
-	Tue, 14 Oct 2025 13:30:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760448610;
-	bh=pNGGyokr8X1AGHFovWK/YwKzLd8yndY2pnPSWQjmLOc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PrHy1FFo4vOfHgRLP+LZxJrAoiX0f1g6DosVRTkP9hjElSUeRaA1tnwNqdrN1/RNP
-	 rCuPe2GcHw/uA62lAVv0LwUqtXVfO7y3Up7IQSsZx/pLSHidaEipXsgJjA1IZHwSqn
-	 s8QOxS1YJoYZ3lS0VWUn7NwuKt5v8TOZj1lw2aS3xYIW4tR08HJwTRshi33ijbW6rv
-	 tT4cyA2lKl2ikFIA7gNlVVRNFodqD6voRaOl6ej6ozxGTWFejcm0r+Kb5AoO25TOpS
-	 XxnNKMs2DTqMC5RnCxyzWLAWoiuTW8vU56PRAIXGlxUrTlsgqJWZpGrHjjtlr6l8hK
-	 ix4SyXG6XtlNw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
-  leonro@nvidia.com,  witu@nvidia.com,  hughd@google.com,
-  skhawaja@google.com,  chrisl@kernel.org,  steven.sistare@oracle.com
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-In-Reply-To: <20251010150116.GC3901471@nvidia.com> (Jason Gunthorpe's message
-	of "Fri, 10 Oct 2025 12:01:16 -0300")
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
-	<mafs0ms5zn0nm.fsf@kernel.org>
-	<CA+CK2bB6F634HCw_N5z9E5r_LpbGJrucuFb_5fL4da5_W99e4Q@mail.gmail.com>
-	<20251010150116.GC3901471@nvidia.com>
-Date: Tue, 14 Oct 2025 15:29:59 +0200
-Message-ID: <mafs0bjm9lig8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=H4jyq6Ch0nZH+gPaf/1uKMPtNmcAEj/+/JX0qvVY+2v4RnwXj+d7bzQCQ9rf+mWDsDcw+6
+	dkATUm2qoJ1TBEhKLFF6xRQsZ/sBziRSWDYf+2NKXCzSRRK4Sha/ukbwK/h3DX78be68SG
+	OPFxvEy8/SPspnJuDX+n8u8DrbHZ41g=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6318855a83fso12121175a12.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760448694; x=1761053494; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JRUz1hWdNpegFSxtg102ODjrrEjXcJrCzI5fyTVJ/6Q=;
+        b=SDDU+afxw2VcQwKVHVeXFr7XmgRM3dxyJJwf8VbD+XSmUUBBHP3pCUm3tLi3yxwmYl
+         V7KYyZBF2l4Tbr8RyG+Di0NrIWa3UGwwMWy17mxsfO0LEF686jqQHO9JRhMCHYJjfcxN
+         tkHGhrf/mNGEJqBX5nVo6W+M43jbTxf0QOpSsdt9AnhdJJPg+enTAi+hbf3Rq/X/B+J+
+         qlxChWCwo0G+zMs/0xtZ1KcLZBvcym406ySEUTNj9YtlwUz+P5kRVY3UhL8GdVpcv1eN
+         KtKpGSfApR3mT1G6DXGvFOIIi+jAPyPkW/eCdzOjrJ852M+MnN7M5CX3lglJ2ytiGDZZ
+         M/xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760448694; x=1761053494;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JRUz1hWdNpegFSxtg102ODjrrEjXcJrCzI5fyTVJ/6Q=;
+        b=OS0ks8aFumFPMDkPnoFEz+2gAQD/CqfySeoEwjclB8TZROL5bcKMVawpJgnKYdgt5x
+         /lFtFl87BsPQtOlHgKDx5IyNZjrtPT1zoF3/ytGiztmsQgGfVgfeUIvn5TsrF+bugGTh
+         lmYr8e7JzkTts75zrRReNuAvR7hbzVTFuuL45kiAEkcmFZNWx+js2f67Y7qsIt65WSG6
+         ThMuoHzKuV1zAq+6ICf5hklN+EscQcpQtT8lk5tKiRYYPBKvRoCspya7WbMnssmLHyhp
+         EU/jy6Lg168a7+IBKFMYCFhh9WPlvZm5RLh7wvaqym2i1dKEe9Xg/97RU6uwOKUN3mFN
+         TEjg==
+X-Forwarded-Encrypted: i=1; AJvYcCUy7EL/4A0f2fqxmF9I9uFay6Js991sSqJ8a7sq0QPRNXGHeheQcMMqeK0MhDWb9QEYPhaGtg83Rg==@kvack.org
+X-Gm-Message-State: AOJu0YzwRylJ4Sr39OgAvRwOsovt01HOBrs7Z7/uFz8oFVgvxNUsiBHT
+	2rwfRcxLJBVux4Q+04LVmEYJDGC4DRnroryMgOUB4MgR8G8WbzdL0Gxt
+X-Gm-Gg: ASbGncvZnNqb9IsS/B+1dQz376Kf0u5OEnEWPXG+UA0DbWqh87bgbwV3Kd6fsCZmE/F
+	P3dtaD+HonjI42HPD3l4jIrsOU6Lo76gfb4c9LtOzt0IKt3OZ7I6FTwkKLTvIKn8S2H+IiHmx3t
+	bjLqMRJGQRKC0bY1MXoWK9JNy7VHGC3vtMQN01spoUfcetwEAKiHIT5h3QlKJUAbKNW5CUBLs5P
+	PqREs1FSxGRUeqMa7y4eMxdruvwgIFoc/YR0f1nzAQi4Ww5TeBvK3CWUQekugV1mOoMOEYdiFvT
+	kmvXRiWVY8G38cul7H9giI2/bHo+WEZ2IXWIClZet8XWViA39pxJibVTkjBDcPHeePocI3a9ZIp
+	rvOUDCd3SWsxuSqC+QiyLFa1cD/n35sCa+IqIvFsalnOPGPExrjA=
+X-Google-Smtp-Source: AGHT+IEgU+DdjYJjvofvtunCeX3nSH0eRUv1dqIRtOgeOUMEIzSuMU2hUdZtSc3ZGyXswVn9RHzZCQ==
+X-Received: by 2002:a17:907:7f0b:b0:b46:31be:e8fe with SMTP id a640c23a62f3a-b50aa48c4f0mr2728492866b.11.1760448693406;
+        Tue, 14 Oct 2025 06:31:33 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d971ec69sm1123110766b.85.2025.10.14.06.31.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 14 Oct 2025 06:31:32 -0700 (PDT)
+Date: Tue, 14 Oct 2025 13:31:32 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Tejun Heo <tj@kernel.org>, Zefan Li <lizefan.x@bytedance.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>, Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v3 20/20] mm: stop maintaining the per-page mapcount of
+ large folios (CONFIG_NO_PAGE_MAPCOUNT)
+Message-ID: <20251014133132.6garfzi24xlh3jr5@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250303163014.1128035-1-david@redhat.com>
+ <20250303163014.1128035-21-david@redhat.com>
+ <20251014122335.dpyk5advbkioojnm@master>
+ <71380b43-c23c-42b5-8aab-f158bb37bc75@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C377820019
-X-Stat-Signature: n9mgibbqdg7r5nrri8gf41axsej4ohog
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <71380b43-c23c-42b5-8aab-f158bb37bc75@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 7BB5080011
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760448611-939256
-X-HE-Meta: U2FsdGVkX1++5THhHXddpvLunDr0pbFV7uu97AJ1WMHSmJcXWz1+/+h5Q4IB+Dpfe7CYT0jTd72+fu5SDKueX7QkquRC7G0bmZVrcIbA6nSemBYnqtPJ0z38cwUq1gIsajTUT1X0W3TQKQAZO2nI2vu05UlVd+RVhhCb9VEeab6q15u3kcKfPhgqj8PDxniN8WljVtbklxFkKZWx2Z4qXJtzvToZhMsw8LRDaTy71mXSj/cMNYh9jhP1a433QfwhgxIUY4rhjcDKfASpRZ5sgECH+FixOOcpATPy2Xu6AddMCmCogkLset7oTZmFgk720Bnnb3WAhZZPOERACCzEZVkmXs+G1cjrS4Pjl91vRluet2GvUZR7rm+lERDLQ/w+Go/XJiOo4IQq3s7eRmMFwomgItTXhc0qH3FA31q+OALtNaPgWB+uxLyjCQDPI6ZSqgFs+sazJynJ1teBOlOqx+0L+bauCoCHEOXMj0eFaCGAZddYo9drseN6lBctl/OoppORK07g3mFtN3TVNHBJaztlbfCVwvIoZLHqd+IZ0kN2Y7DKn9NZP8rxh2go4XA6iXcDOUfPHi6aJUa7qhjnYxFPP9K6IyW9LHSCFEVtC8F4O+CPo9JeNLcpH3NokRtUgc0UlpP7p0SptbN3dG6B4w9PuiWBcK6yiXitTXh30dSqe5cqN92DIsRiAGpljZvLrRl2/YwJLK+D/PECmalL2UoTEh5cWq8Y2TZ4ss9xpKm8sqI//bBoGdX2XBa6fY9b8xxuL30YQQf6CH/8ChBnDxNzMGXGoj8ON9QrLdIleQs0bNoUFrRjIybIRViMnSTV6YFFuhgCa5WsELeBk7d+a3nzF9YNn8HqBfIHengqcllDLqPkW7BpC/8f9O5wzDruHYy5TjLcki3PfzCc15TgrJwPq4JaIvqzfy8v4PjqL8t1xG/LFIC7d7i1uzHCl/sJjndNtXQAGxhuZQlegFu
- yDDdNlYr
- rPRs8GhZP3mElAnFWCwoYDZG5MV6TSZP1A4OvarrLrVH+80L4cGtYIwKjaMZUcRVlTo/mws8P0Bngs0i4jWlST+vpkQCGDetgiY2ZxzcDz0QdosIxU0K2WjuK8wA1OV7D1ld/BoZFe81ntgB9NCJ69Un+oU4c9pE+jW+vK1z5eAcpT52HrbD685cmhlMvREhVn5eXW5C1+Y82uQTFIL4YZKvNEYZ4PPJ0ETNWg8lBD82qq1Q=
+X-Stat-Signature: p4sst1jc746rqgup56x71ct99hfyw7me
+X-HE-Tag: 1760448695-117237
+X-HE-Meta: U2FsdGVkX19fDPH2lxVJvMX+OJ6K3wHxvC1av7FG/I86JXyn3ShwSzI5PJ2Gjmxa3qvhAaX+nF+xQ/2BiEzQ/O8vuMTHhAKH9n90Bm2LLXiQZ31DvG4poVvpXE5bMo5RW/3O7wQTwsKadlDyDMUoqZwQIE8QcBeAbkGh/tIdStpB6+R/ZP7xk+ZXzFW9S0/NTuYzikKFhUE8Puk4SVR7VIadnW2ENoSlslkRJlg1UUBYsOZTJFsfefoYbSgRnpTIQWb0igBInK39sTm8v6erhAdyDhqpPnGpo4TVPpS3syUP47OvgdLKIbhWrv4JWzvklChl0LSsQlJe3HbUySFKKKd2ZVPMgPoX6S7uGgcGuj7CTjLgurSd3WDIP0Z+/d4W83apNFy30g14/Sv3/ZgpCKVIZ7kv/RN5/x2MjEwBaitoiG0GW5mQrOmOeTJY2tiJxn95TDL+IZAmDvWIshwutmA+jJh0sxU9O7W1WTZiALU5Jii11gdfYxbXfvrfaEH+qO0muKysb/r77nJxA6DBPr6DQU3/uJyVjlgobrUFl/fiGksZhWb5KOi0IAl1w49S3ff0XrECXIifgR5CPHE/MqGb9b38mp6yDoGsCE7/6VEyEo6balaCtxWHZVdhYZj7e+T+msurcgfjOdlTk+EdCvTOjNLfJYvLN0+bWWQrk6LIYJCBrKnvTQ4IuglMM2ErURsPegrjbCm6+oWKnCOJNTkSmHp1XYT7DE12cptdMX7ofQF7PIvxPPQZBJoG14Hz/kJQYOdgwH1tuD1U14PaIooPzyJwwy9Vl9CrCfCeRE+faUEUGiTax2sCIAjBafkOqAj9hP4oGTE8PcxoO0GQUUGE3qTlhQap6DjufJf6SCeRAcAlGtqLr0N/ojZE2yw1kmy+1EyH8Hz7YaAT3H5Mmv3y5JEVdNXRXEhkfNlTw8lDA7wwcXPiMElq5vpVwC9YEw1dKL38JPeMzBWZSGZ
+ iAxYg0bi
+ Dtgk6/hvUA8hGrE9gh2+U8uE+uZhSxJjsM5MeYdiYGhwd5X3OkgVGDvWx3ud5swQdkcJDG1rhOerOobvk5ovROjd4eN/3irkZ0E2pQDzjKnyyJQx+AluAd1lgKIlinclDE92pIqpi7sGOxTo6t7wn2bIun7p/lum6Z9Ht8ujZFHocF0mHCP6LElfKQU3swcXbf9b8LgrBnvHoIF62wPjpIWIZd7l+GYgJlwCj/3DOlcyXrHtlb2/zmCcZ8ufCj+vni8HFgdo8fWCxPB7v7p52ioL8BJ9JRv8VldK8BU/IJLwJQxpeCWFkMm8VDMUZ8Xw0Rxiyk9O9dzpff2h3gfX141r28xRmfvv3zphqKfcdvG80Mcpibnf5aHZC0XaOnWxFEJ9DqpNVbe1+4CVVGmG4fdLDRNwtOCfE/owGD3tY625a41pOqBYBlwBNPUzpp3gcSUsMiw06M1tXAT0y3GZrJTZsfsAirDYKRAk5DtSu5zvNc82hYYRxuwiOuHCeDUUKMbLAjiV9L6Sa48sscg30qpUH+vb+uPcffxd2QONtyfr5Jm5cZxfP0PxrjKF89qfQfwzU3hidChfgRnf7FBlZe8AeXfPc0sLANkx88IgeWMEACJqPhoRsG9YXtj7Eu26W4WPz6BSouaQu9yMvXRiAIfgy8Cp4eKALrxVmFYdnjA0Zczvu81d9mCgahY15h5dKd1/HqXCSnV6wp/3oRDrf9I1KXVyvV2TgVdnG7j2gv0OGaUDnHpgWnpKx46rdcj/Abcgf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,122 +139,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10 2025, Jason Gunthorpe wrote:
-
-> On Thu, Oct 09, 2025 at 07:50:12PM -0400, Pasha Tatashin wrote:
->> >   This can look something like:
->> >
->> >   hugetlb_luo_preserve_folio(folio, ...);
->> >
->> >   Nice and simple.
->> >
->> >   Compare this with the new proposed API:
->> >
->> >   liveupdate_fh_global_state_get(h, &hugetlb_data);
->> >   // This will have update serialized state now.
->> >   hugetlb_luo_preserve_folio(hugetlb_data, folio, ...);
->> >   liveupdate_fh_global_state_put(h);
->> >
->> >   We do the same thing but in a very complicated way.
->> >
->> > - When the system-wide preserve happens, the hugetlb subsystem gets a
->> >   callback to serialize. It converts its runtime global state to
->> >   serialized state since now it knows no more FDs will be added.
->> >
->> >   With the new API, this doesn't need to be done since each FD prepare
->> >   already updates serialized state.
->> >
->> > - If there are no hugetlb FDs, then the hugetlb subsystem doesn't put
->> >   anything in LUO. This is same as new API.
->> >
->> > - If some hugetlb FDs are not restored after liveupdate and the finish
->> >   event is triggered, the subsystem gets its finish() handler called and
->> >   it can free things up.
->> >
->> >   I don't get how that would work with the new API.
+On Tue, Oct 14, 2025 at 02:59:30PM +0200, David Hildenbrand wrote:
+>On 14.10.25 14:23, Wei Yang wrote:
+>> On Mon, Mar 03, 2025 at 05:30:13PM +0100, David Hildenbrand wrote:
+>> [...]
+>> > @@ -1678,6 +1726,22 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+>> > 		break;
+>> > 	case RMAP_LEVEL_PMD:
+>> > 	case RMAP_LEVEL_PUD:
+>> > +		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
+>> > +			last = atomic_add_negative(-1, &folio->_entire_mapcount);
+>> > +			if (level == RMAP_LEVEL_PMD && last)
+>> > +				nr_pmdmapped = folio_large_nr_pages(folio);
+>> > +			nr = folio_dec_return_large_mapcount(folio, vma);
+>> > +			if (!nr) {
+>> > +				/* Now completely unmapped. */
+>> > +				nr = folio_large_nr_pages(folio);
+>> > +			} else {
+>> > +				partially_mapped = last &&
+>> > +						   nr < folio_large_nr_pages(folio);
 >> 
->> The new API isn't more complicated; It codifies the common pattern of
->> "create on first use, destroy on last use" into a reusable helper,
->> saving each file handler from having to reinvent the same reference
->> counting and locking scheme. But, as you point out, subsystems provide
->> more control, specifically they handle full creation/free instead of
->> relying on file-handlers for that.
+>> Hi, David
 >
-> I'd say hugetlb *should* be doing the more complicated thing. We
-> should not have global static data for luo floating around the kernel,
-> this is too easily abused in bad ways.
-
-Not sure how much difference this makes in practice, but I get your
-point.
-
+>Hi!
 >
-> The above "complicated" sequence forces the caller to have a fd
-> session handle, and "hides" the global state inside luo so the
-> subsystem can't just randomly reach into it whenever it likes.
+>> 
+>> Do you think this is better to be?
+>> 
+>> 	partially_mapped = last && nr < nr_pmdmapped;
 >
-> This is a deliberate and violent way to force clean coding practices
-> and good layering.
+>I see what you mean, it would be similar to the CONFIG_PAGE_MAPCOUNT case
+>below.
 >
-> Not sure why hugetlb pools would need another xarray??
-
-Not sure myself either. I used it to demonstrate my point of having
-runtime state and serialized state separate from each other.
-
+>But probably it could then be
 >
-> 1) Use a vmalloc and store a list of the PFNs in the pool. Pool becomes
->    frozen, can't add/remove PFNs.
-
-Doesn't that circumvent LUO's state machine? The idea with the state
-machine was to have clear points in time when the system goes into the
-"limited capacity"/"frozen" state, which is the LIVEUPDATE_PREPARE
-event. With what you propose, the first FD being preserved implicitly
-triggers the prepare event. Same thing for unprepare/cancel operations.
-
-I am wondering if it is better to do it the other way round: prepare all
-files first, and then prepare the hugetlb subsystem at
-LIVEUPDATE_PREPARE event. At that point it already knows which pages to
-mark preserved so the serialization can be done in one go.
-
-> 2) Require the users of hugetlb memory, like memfd, to
->    preserve/restore the folios they are using (using their hugetlb order)
-> 3) Just before kexec run over the PFN list and mark a bit if the folio
->    was preserved by KHO or not. Make sure everything gets KHO
->    preserved.
-
-"just before kexec" would need a callback from LUO. I suppose a
-subsystem is the place for that callback. I wrote my email under the
-(wrong) impression that we were replacing subsystems.
-
-That makes me wonder: how is the subsystem-level callback supposed to
-access the global data? I suppose it can use the liveupdate_file_handler
-directly, but it is kind of strange since technically the subsystem and
-file handler are two different entities.
-
-Also as Pasha mentioned, 1G pages for guest_memfd will use hugetlb, and
-I'm not sure how that would map with this shared global data. memfd and
-guest_memfd will likely have different liveupdate_file_handler but would
-share data from the same subsystem. Maybe that's a problem to solve for
-later...
-
+>	partially_mapped = nr < nr_pmdmapped;
 >
-> Restore puts the PFNs that were not preserved directly in the free
-> pool, the end user of the folio like the memfd restores and eventually
-> normally frees the other folios.
+>because nr_pmdmapped is only set when "last = true".
+>
+>I'm not sure if there is a good reason to change it at this point though.
+>Smells like a micro-optimization for PUD, which we probably shouldn't worry
+>about.
+>
+>> 
+>> As commit 349994cf61e6 mentioned, we don't support partially mapped PUD-sized
+>> folio yet.
+>
+>We do support partially mapped PUD-sized folios I think, but not anonymous
+>PUD-sized folios.
+>
+>So consequently the partially_mapped variable will never really be used later
+>on, because the folio_test_anon() will never hit in the PUD case.
+>
 
-Yeah, on the restore side this idea works fine I think.
+Ok, folio_test_anon() takes care of it. We won't add it to defer list by
+accident.
 
+>-- 
+>Cheers
 >
-> It is simple and fits nicely into the infrastructure here, where the
-> first time you trigger a global state it does the pfn list and
-> freezing, and the lifecycle and locking for this operation is directly
-> managed by luo.
->
-> The memfd, when it knows it has hugetlb folios inside it, would
-> trigger this.
->
-> Jason
+>David / dhildenb
 
 -- 
-Regards,
-Pratyush Yadav
+Wei Yang
+Help you, Help me
 
