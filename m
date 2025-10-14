@@ -4,153 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6713DCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 17:42:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB18CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 17:42:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BC7A8E010C; Tue, 14 Oct 2025 13:42:13 -0400 (EDT)
+	id 201848E0112; Tue, 14 Oct 2025 13:42:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 693868E0090; Tue, 14 Oct 2025 13:42:13 -0400 (EDT)
+	id 1B1AF8E0090; Tue, 14 Oct 2025 13:42:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5822E8E010C; Tue, 14 Oct 2025 13:42:13 -0400 (EDT)
+	id 051AD8E0112; Tue, 14 Oct 2025 13:42:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455758E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E89FF160A13
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 17:42:12 +0000 (UTC)
-X-FDA: 83997438504.06.CA72CB3
+	by kanga.kvack.org (Postfix) with ESMTP id E47F78E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:18 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B006140A69
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 17:42:18 +0000 (UTC)
+X-FDA: 83997438756.22.541E294
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CA0441C0013
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 17:42:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yDmoKVMt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2WM08dl6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yDmoKVMt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2WM08dl6;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4F81DA001B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 17:42:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BMwBV93d;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XLbyzQ2K;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BMwBV93d;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XLbyzQ2K;
 	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760463731;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1760463736;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AAlEg30Xh123ICsXxHR1i8eLACocDbvHskeA1BeozEc=;
-	b=U9L7AU5W3hSKsrJd/a7Fw95NFFPNoo9LjcbB3RQbcnJbSKx+VDrM5hzJFMKwMM/5V/r/9U
-	MBiOsDMAoKK5TgJelh1gi5amyy+vljs2masbQtEGdNQW0ZTJUr05TX4zHrCT9DjuO1bysj
-	2TRuXRy0suLhEZcXWfdYyoBFVovO7Mw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760463731; a=rsa-sha256;
+	bh=URiO7IixP2q+6gg3VISCX9P098udorxIkiJkXia62O4=;
+	b=gZToIaFnuht4qHS3WY+8guZHK+CC73pmyZd62R5TUgtPFzw4qrIga2O4mT6wxtshKJ/gBy
+	qZv8n7OeMzPmrNFO3pyvW8pPJAD8yY3biFYAwJjV3COXZeNi/svf7UQSqNK1sM5lhjiunQ
+	VGO/jtJwBFAau/36o9RPs3fVpRm9i9Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760463736; a=rsa-sha256;
 	cv=none;
-	b=eMzDlH9A6Z+uTXP4wbV7XxF/IsmozP8Tr9IoAJvimA7eWY7FhhF4XL4swv0BaHOCBZ3BFx
-	uIbpVtDRvmSJcTtBou+susAN1qgHuhTIUwiA8yuaxvBtpBpZu5RrfNgRzDfdmi7hXfNxML
-	K/+q8AYrEgmqDBWr9mfjDGD7q7XTy2g=
+	b=ONSN+jeKQeMVnUhBXqYisv5uSy3C1e69k8CuwwK0IWGZ/+f2djsj1ssuQv2mbzL8g+GfNC
+	nNnPNttYP2awbbs8YuA0ArYaG1qwNlF9+pdv1bODDd67cLvAgcyOCUJ7rMtMudvG0JuAXt
+	twSzwl//MU5ORynu2IbzT2EuNZYbML8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yDmoKVMt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2WM08dl6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yDmoKVMt;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=2WM08dl6;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BMwBV93d;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XLbyzQ2K;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BMwBV93d;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XLbyzQ2K;
 	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=dsterba@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 76C2C203BB;
-	Tue, 14 Oct 2025 17:37:08 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E794203BB;
+	Tue, 14 Oct 2025 17:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760463428;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AAlEg30Xh123ICsXxHR1i8eLACocDbvHskeA1BeozEc=;
-	b=yDmoKVMtwLRJOBlla660Ag05yHaNOU1W1IV4a81qJLQLwqxGC/tzhmPsEY7YTuWQLSSusc
-	2291jCfcaCjyFff6ysHIWs13HLYVAPOEznX0vps0yRRO4+BBD3fZAwaTxqQOW1HbUGxcjb
-	+ZEbO3Vcv2kGHiKZVUmyXj5b7OVr+N4=
+	t=1760463734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=URiO7IixP2q+6gg3VISCX9P098udorxIkiJkXia62O4=;
+	b=BMwBV93d6A1g5P8Dx5Vou4Ki403PifgdX0f9kgk4DJ3U1oeRzHNTzO1sSLo8jPjHTYXcbG
+	8wNpDLKCQimQ81JZNzDR2QrYoa+uwWZ3vk5jCE2Sj7dk4rxe0DzRp7j05WsoCio+tT1FTO
+	srVKKTKqioPsVSwAWP6yt/BAjnKxmVA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760463428;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AAlEg30Xh123ICsXxHR1i8eLACocDbvHskeA1BeozEc=;
-	b=2WM08dl6lr7hfNBq0u+y+9D4Fb7mJE8UhxacJqdxQbZMxWliQxqE7oANIJuKqumg4DkUsY
-	rcpsVna643JvdGBQ==
+	s=susede2_ed25519; t=1760463734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=URiO7IixP2q+6gg3VISCX9P098udorxIkiJkXia62O4=;
+	b=XLbyzQ2KrdBCTsTMYmeDeU6+WNVpi5V7Q1zCNra4qBhqj82ZjpyYdd0+DamP0sregod6AV
+	Rc0jGSTGDvJe8ACg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760463428;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AAlEg30Xh123ICsXxHR1i8eLACocDbvHskeA1BeozEc=;
-	b=yDmoKVMtwLRJOBlla660Ag05yHaNOU1W1IV4a81qJLQLwqxGC/tzhmPsEY7YTuWQLSSusc
-	2291jCfcaCjyFff6ysHIWs13HLYVAPOEznX0vps0yRRO4+BBD3fZAwaTxqQOW1HbUGxcjb
-	+ZEbO3Vcv2kGHiKZVUmyXj5b7OVr+N4=
+	t=1760463734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=URiO7IixP2q+6gg3VISCX9P098udorxIkiJkXia62O4=;
+	b=BMwBV93d6A1g5P8Dx5Vou4Ki403PifgdX0f9kgk4DJ3U1oeRzHNTzO1sSLo8jPjHTYXcbG
+	8wNpDLKCQimQ81JZNzDR2QrYoa+uwWZ3vk5jCE2Sj7dk4rxe0DzRp7j05WsoCio+tT1FTO
+	srVKKTKqioPsVSwAWP6yt/BAjnKxmVA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760463428;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AAlEg30Xh123ICsXxHR1i8eLACocDbvHskeA1BeozEc=;
-	b=2WM08dl6lr7hfNBq0u+y+9D4Fb7mJE8UhxacJqdxQbZMxWliQxqE7oANIJuKqumg4DkUsY
-	rcpsVna643JvdGBQ==
+	s=susede2_ed25519; t=1760463734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=URiO7IixP2q+6gg3VISCX9P098udorxIkiJkXia62O4=;
+	b=XLbyzQ2KrdBCTsTMYmeDeU6+WNVpi5V7Q1zCNra4qBhqj82ZjpyYdd0+DamP0sregod6AV
+	Rc0jGSTGDvJe8ACg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3BFEF139B0;
-	Tue, 14 Oct 2025 17:37:08 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 51302139B0;
+	Tue, 14 Oct 2025 17:42:14 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5/kaDkSK7mgpMwAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Tue, 14 Oct 2025 17:37:08 +0000
-Date: Tue, 14 Oct 2025 19:37:06 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: hch <hch@lst.de>, David Sterba <dsterba@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Chris Mason <clm@fb.com>, Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"v9fs@lists.linux.dev" <v9fs@lists.linux.dev>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"jfs-discussion@lists.sourceforge.net" <jfs-discussion@lists.sourceforge.net>,
-	"ocfs2-devel@lists.linux.dev" <ocfs2-devel@lists.linux.dev>,
-	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: [PATCH 04/10] btrfs: use the local tmp_inode variable in
- start_delalloc_inodes
-Message-ID: <20251014173706.GB13776@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20251013025808.4111128-1-hch@lst.de>
- <20251013025808.4111128-5-hch@lst.de>
- <aae79ea0-f056-4da7-8a87-4d4fd6aea85f@wdc.com>
- <20251014044421.GA30920@lst.de>
- <57d7136c-b209-4f8f-bb6f-8ced354d205a@wdc.com>
+	id Wl1yE3aL7mipNwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 14 Oct 2025 17:42:14 +0000
+Message-ID: <6f09edd2-2149-4854-9d2e-24b07bdccc75@suse.cz>
+Date: Tue, 14 Oct 2025 19:42:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57d7136c-b209-4f8f-bb6f-8ced354d205a@wdc.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Batch page freeing in
+ free_frozen_page_commit
+Content-Language: en-US
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Mason <clm@fb.com>,
+ Kiryl Shutsemau <kirill@shutemov.name>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel-team@meta.com
+References: <20251014131527.2682236-1-joshua.hahnjy@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251014131527.2682236-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Stat-Signature: 4k4nyzxot5kqike784eyceif13d6yef5
+X-Stat-Signature: s7dprro4a8gzqcz63huhjogpr9hffwwn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CA0441C0013
-X-HE-Tag: 1760463730-229456
-X-HE-Meta: U2FsdGVkX18OMBZ3+CJPofk41RCess7uHt51HaMMQRQPUlaETzMUpx73GCY2zPM0IM86jwroiSMUu8Qx4ONpj8Xm5az3GVaEs71DYELxdaIuA8tgZUY9nD5WYSRd3AcoXuWRAwDyfqs8sIUS3toCRhHgYOG67dApf9Mmvvt0RI0gN3fZzG5CYbQ7L9Rigud+zXciSEOA4nIxoaEzI/cW/oBtJO57sO7ZKmXf040fb/rNAeB7D79tzwpYbVGp1xr+viSNtUpZAkO/7U6po8WiBdrX/EjYiF/yELa4ZaO0sdpYb/W2ZTXy2tn3mNNjLY8J78kvV+6mCEktED0o/iWl8hshXGcEw6zqpXdEy3/g0pF0jxKuH3GSx3KYajQDrY4+RZXhvzILHrhzNjY2NHC8xsgGOYM7VBvMyKhrqipODMXSyC6UBKrEmhAIBBDwtMamFUMAuG1vmtX6pIciNTpr7hXY3M78i7UQbtgKhjAtHUjh9dr5GJv8UCnWNQJoNTcg3JoFK52xAnpPG/eXB8GiJNS8D6GWyfo2vWGAOh05f2oAXWGN7FgNLNZYT42xcR4DK+2QNzCg18tWGgr5uGIGX9HtNu145yKEVFPVUyf2QHu6YivDfoxwX88u2A55DVbMZv6h91j9MAvi2+ck9ScnUfGP9Yw1DkdxUqiCuQtUCdyUgmpMEFzc9SzvYFYvq9y9wn2FSz0NNfxw+XN0zqmgphvnje8R5Nz5BeJqe6zl4LYTh49RHHHJCpn3CrnUzqywIIozMH06c8bLBum6GaNgsPQ+Fyky5hPEigaGemTRz9FmAJoCX5TLyczHGyAo0CvXYw6U+0OK/yBFmA3FX9RnUxG+eQsaoonJUy4w8ZtJUgWqYg00heoK8vC2Mpd+GXbUi43h/8caAVLt+vzj4l2zjc1u4ktbigLnVaGDoMr5/ES7G0q3RllASNF0Eut6ichnprxVphIg8mg6iPCQk1t
- c8DAvY77
- InEbUJiPbGvZ+rrfmHlKK5TsfeXshDaY7VIz5fdOv2928hhIkzX6y40V4uddosRTkraVHnHwr2FcXq5GLzzdeQI07VrqPFYWZ26UCeZVLfQZUIPY9wX3k1RUw8tOxvVEkNici74+SLvu9sK77BlrVDZSpHm0f/v48pWph
+X-Rspamd-Queue-Id: 4F81DA001B
+X-HE-Tag: 1760463736-856967
+X-HE-Meta: U2FsdGVkX1+L22R1bRwJrKudkzyKqaOSVd59HqaHEA4vaTsAr4syRmBh/QiAG19rJj02w/Th0Y2AXnsWIIC2VS21cDi/Mwqf0csMbt165DhEPM2u//6UzWKi33Ohdl1CjC+E3luJjtsS55tGDC+EKjFzpjUGoesPEaXIUUzS6jR/DtTPqHwZsbE4ZaahDVY3a/02jEIpht4n9jgLjhYYbMRV+9rPTJGn2Cl/DHBpfbqAauTL2CMkh8MUXe4Q3p3q8N1l6WBWN/voYRZoKd0uqT9RQGh7ynMnft7vj+1iTXYxvtR1hK8it7xK9V0RFWC2zS+cj8ZMcErbdEiCLDh4eRmmGzfJMJAW6sKyIdj5Imawu/CumVqV5WrBSIMzwAEMjDYKsyEj1lBgoPvx5a+BIHgMgfWJp+UEPrbN0IwDJvhYHb1iVRZT5FcxoICa0MMz6fCPaWGkIumkb7b9KRnAJgidZcm7WOrVDSqCCh6zGh++ZHXyH3MVUjaALticx6tMYqzY8iokDZXluBq6G0ysiPsTZyI5hr6EdDzL0JuPh3z7QETWN1Y2dHu5yqvqsqZfJb4edz1xXaE304V1ZJ5Ema2KhK87xO7rgDrSK03Hti/fuyaLdJTwKwka4X/oggyhf90t08d08/lzsNSKRFzX+zulU07JpfnFJcCZWrIflOIZ6/D2JhrmtoAweUCZEIrojguUyv5/SFZ2vmliYzj/uQYQbGCJPSbutf6jnVTr85QWQsfDqqwhNHtPuP9OysuaKO5doi7K5tSM2wzfNkw4gpHj7oIQ0lr880VEyyJRk3IPB1FH1sTIed0tmoR8EUqIYqwejeghe0Dute0JHQ1jv5FWHxYF0TEeRikgnHZJNrHpKKCdlAVkiHYw7cG9s67k98lHjtOkIhz48eBX5jdJCWUswv2zdVsVoZgn1YDptJRCZF9vS/i59kKtk1am7+B774NFBkDWGsWjfjEkMCV
+ 86TLULM9
+ ZsIxlKBHngTLzA+Ehjyhbbtw+/gN8QZdaJiKJNmaMqM+B8X9sGzopE250hwy5cGLyq2DCvP47jDPFp+0F0pGfFMny5GHdy7tekYsBZpNtwDUpxVia7ctto7m3uYEXnUE93eSTP/P8BELlJ7m4dnspH9TjuDnSS+0tijiOZW0F8e/c1H576ICHm2aWlqqGjnpivFyyDLOKVS0E0y3G7c1lvrzJ0evBgZ2HB1Q/Kc0Zv1hWnTO88i6GtcQ26RAKZBwn8fcFQ8B46ctaJ/wbicgrpKONycXo18z+0OHBvybCxBilu5Mz94X6fux97i0c5a6WvKf1pcRIWI3+2OVNB12R+E04UO1d0MTujNRg17nptAF2hhdlsPaRUCSfyasucwxky60n9BrencwopMyf5ajiaDzpSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,20 +181,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 07:02:11AM +0000, Johannes Thumshirn wrote:
-> On 10/14/25 6:44 AM, hch wrote:
-> > On Mon, Oct 13, 2025 at 08:11:35AM +0000, Johannes Thumshirn wrote:
-> >> If you have to repost this for some reason, can you rename tmp_inode to
-> >> vfs_inode or sth like that?
-> >>
-> >> The name is really confusing and the commit introducing it doesn't
-> >> describe it really either.
-> > It is.  vfs_inode is kinda weird, too.  The problem is that inode
-> > is used for the btrfs_inode.  But if there's consensus on a name
-> > I'll happily change it.
-> >
-> I unfortunately don't have one :( David?
+On 10/14/25 15:15, Joshua Hahn wrote:
+> On Tue, 14 Oct 2025 11:38:00 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
+> 
+>> On 10/13/25 21:08, Joshua Hahn wrote:
+>> > Before returning, free_frozen_page_commit calls free_pcppages_bulk using
+>> > nr_pcp_free to determine how many pages can appropritately be freed,
+>> > based on the tunable parameters stored in pcp. While this number is an
+>> > accurate representation of how many pages should be freed in total, it
+>> > is not an appropriate number of pages to free at once using
+>> > free_pcppages_bulk, since we have seen the value consistently go above
+>> > 2000 in the Meta fleet on larger machines.
+>> > 
+>> > As such, perform batched page freeing in free_pcppages_bulk by using
+>> > pcp->batch member. In order to ensure that other processes are not
+>> > starved of the zone lock, free both the zone lock and pcp lock to yield to
+>> > other threads.
+>> > 
+>> > Note that because free_frozen_page_commit now performs a spinlock inside the
+>> > function (and can fail), the function may now return with a freed pcp.
+>> > To handle this, return true if the pcp is locked on exit and false otherwise.
+>> > 
+>> > In addition, since free_frozen_page_commit must now be aware of what UP
+>> > flags were stored at the time of the spin lock, and because we must be
+>> > able to report new UP flags to the callers, add a new unsigned long*
+>> > parameter UP_flags to keep track of this.
+> 
+> [...snip...]
+> 
+>> > @@ -2861,15 +2871,47 @@ static void free_frozen_page_commit(struct zone *zone,
+>> >  		 * Do not attempt to take a zone lock. Let pcp->count get
+>> >  		 * over high mark temporarily.
+>> >  		 */
+>> > -		return;
+>> > +		return true;
+>> >  	}
+>> >  
+>> >  	high = nr_pcp_high(pcp, zone, batch, free_high);
+>> >  	if (pcp->count < high)
+>> > -		return;
+>> > +		return true;
+>> > +
+>> > +	to_free = nr_pcp_free(pcp, batch, high, free_high);
+>> > +	if (to_free == 0)
+>> > +		return true;
+> 
+> Hello Vlastimil, thank you for your patience and review on this iteration!
 
-For this series it's fine to use tmp_inode as it's already there, we can
-rename it later.
+No problem!
+
+> 
+>> > +		to_free_batched = min(to_free, batch);
+>> > +		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
+>> > +		to_free -= to_free_batched;
+>> > +		if (pcp->count >= high) {
+> 
+> Here, I think I should change this in the next version to also just check
+> for the same condition in the while loop (i.e. to_free > 0 && pcp->count > 0)
+
+You're right, I missed that one.
+> The idea is that if we have another iteration, we will re-lock. Otherwise, we
+> can just ignore the case inside the if statement. I think if it is left as
+> a check for pcp->count >= high, then there will be a weird case for when
+> 0 < pcp->count <= high, where we continue to call free_pcppages_bulk but
+> do not re-lock.
+> 
+> So unfortunately, I will have to check for the same condition of the
+> while loop in the if statement : -( I'll send a new version with the changes;
+> I don't expect there to be a drastic performance change, since I think the
+> early termination case would have only applied if there was a race condition
+> that freed the pcp remotely.
+
+Great!
+
 
