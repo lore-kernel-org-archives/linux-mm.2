@@ -4,110 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D076CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF3C5CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77E778E0005; Tue, 14 Oct 2025 04:28:14 -0400 (EDT)
+	id F2C068E00B0; Tue, 14 Oct 2025 04:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 755CF8E00CC; Tue, 14 Oct 2025 04:28:14 -0400 (EDT)
+	id EE5638E004B; Tue, 14 Oct 2025 04:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66EC88E0005; Tue, 14 Oct 2025 04:28:14 -0400 (EDT)
+	id DCB8E8E00B0; Tue, 14 Oct 2025 04:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D4D58E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:28:14 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1A82BB28B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:28:13 +0000 (UTC)
-X-FDA: 83996042466.18.9A4AE5D
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2928C4000F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:28:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wDPCyv0X;
-	spf=pass (imf27.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C5C558E004B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:34:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C5915A1F9
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:34:14 +0000 (UTC)
+X-FDA: 83996057628.01.13B05AA
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9B43816000C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:34:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760430492;
+	s=arc-20220608; t=1760430852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ZMmcKKtzsAFzuEGIDGC8F2Daew0h91iJpeeav+ugrHo=;
-	b=wafozpsP2SmYOf1VdCjIJqVbvAptTxeaWioGdRVm66Q8Xo+CDtobhXixrC8H0Gx/mlWtTX
-	B6STUeEo4ToVsi1H9vp5zkgXATjn55djY/w+oBjzZOEFIH7LUURyMvMRbGqXSdtuzAIOGZ
-	N2vizEni1pJbqEBHjPvLsiK0jlBfJq4=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=wDPCyv0X;
-	spf=pass (imf27.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430492; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AKUCHW/MBIZsUc3ODKKtWIaDlEQsfe7hY3IvRmB8i8o=;
+	b=T8FkV3c9S4eZ5r46VIZciMqfgQcDnCwB7/RU5s2EHn3BTzEyjFCkbFqXXlENd8eTSJ71Qt
+	OCeza1drC2yLiMyahHPqjBgEz5WOs7MeWNG2GTObHo0HNhSTCx1QGqa5SzGjvSbLwwxAwt
+	GhbPWX4gaat5TFRuU9aW+gXag6uusCc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430852; a=rsa-sha256;
 	cv=none;
-	b=MbObKTDp4Du/dSqm4PVCfnDpDbiL6qM+VcI5BGcH2tmu+cm6YROvqo4dYIRlm87ddmOfKm
-	Yl6AyV8M7WJtecmD4PhEmYzJA79xCcr8z2ssFQdKn1pFp5sH3w3j+MPEuLqBXiylRe+69L
-	1xP7I4MxKFtDNgkxGb762eQdVJEBROk=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-46e384dfde0so51840805e9.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:28:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760430490; x=1761035290; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMmcKKtzsAFzuEGIDGC8F2Daew0h91iJpeeav+ugrHo=;
-        b=wDPCyv0XSyTm1eQxJiZ+7gS5Z29/U2ThMnI1SybxREF2BXtk1Z+D2s8xlpe6fBTleE
-         7hJU8H+GfBC7i14xuu0H1QMGGM2f8gXXvtyarAB7NqMAX/N/qyqvMdyfPPzsSw+7iby7
-         v0Fxl7InWwg0Ww9t9w7UCXwMR3AkAqrNhTGFclDfVPhBXTWFeeHFBLup4AzREvS7j12M
-         fmf6xoPT6/lGAPVKg86KNiwp6emGoauGQRgqEiV4n9jQF+EuLfDx4o2OBwdz8ZF6igme
-         ENZ2jf2Z+AGfuMka+4i6SRGhPnHLBtL+DorVrJEsmmOW0AThUok5OTY8dBWQI1dWqCki
-         8x5w==
+	b=l5Kt3MsWs/xBH+9vWJV+AWTTTBl+M7IiKXuuVDjlejhihIXPkSCxmSbw2FEfalPSngt3Dk
+	vYsoXVRyoYDhA7FdPBEKgGSUhTKfQSYU6Ji3+yQwE1mmQwantijyk4req5+nI6wl550OAY
+	8ukRV+5vlSBocSOpfhwmqpt3XLG1Kpg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=breno.debian@gmail.com;
+	dmarc=none
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-63bdc7d939fso251289a12.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:34:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760430490; x=1761035290;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMmcKKtzsAFzuEGIDGC8F2Daew0h91iJpeeav+ugrHo=;
-        b=eVuknHVeaXVcNnjMqmYTmEmlptGZR6dUthHanQbGz5POvjjLbfvT6mCOgmjxbrnmd2
-         gkflH2IcYOL4kKAj/4mr1i/YcbZtKRPwgZuZiYOaUGJ2e2oIXPWAvCFhoAJQgfEiRtKZ
-         iA7jSCRxkO9kaKv6nhDH36ouPG7VUy60w5LxTSG8kPUyhGN7WJ319fVSyJhoSGZWt5xX
-         UeZZ2gahgj4T/Oa3H+lC6uEB2vwfQUrM+3xviwTK9VGGpyZxgjdZXu/wuunjDp7q/VCb
-         yTgUBqXsuqDa04wgXGeoFMqdyCPOcx2X7h0KLE9QAMkXD3zagQs/XxM2O4jP+phBdSVD
-         8xcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCVyWzgKEZYQHoD16jq3bLUu/bAUJT38UJX84bmg+JJm2xSwVzbquCKeqdfN4CowLxG2koXymQJQ==@kvack.org
-X-Gm-Message-State: AOJu0YwQErn60hmxd7AoN0Nbmn1vaKpgtsYw5AThFov8Ipa2JR4/+nmH
-	dorkHQ5F+D9LwRTxRW0DQYzT3QC7i6hVsss/UYvdyL5yKuHDmMVtJ4gFR5Hgxbmal6k=
-X-Gm-Gg: ASbGncuWWPrgk1eOhtFeRNf10AnospdS0NXEQAMRGT7V6UwdiYs8o+hyxcMdeP9vhlB
-	PZ04QychfgjYu0yic/AUPHzjX8T0LibnKK2sJLYN5ayI9pRoD357EAECFXIsnmQQ3ch5zziQqy5
-	ywsQ9MiSPZwYpVd1uoXzlEzMtw5xy6E2mlwwmk2zcq/Wfw7IeB5b68XEz26yqPGQqBCaC/+jZpl
-	roA1eXfZ8KKAvnC5345nWB5fHrcmsGcyTgQG33f0+xLEllY2owZy4okwK4stpLadwRyXhKxPF8n
-	fNPCUrKs7E3RMXbLVvYCRyATOt3i6wlJyWafBuxFEax8gcz0BD0Tr+gMpLby17+ajH6tZcHwDpB
-	4/jY2bFeVgvOeQQoF6BkYeaiVNyNpm3KcH3E9QPCZkEUsLFR87oo=
-X-Google-Smtp-Source: AGHT+IHg93aeG/+rqWGvVOf5SViU9wzXfImlvuVSqw4Zl6WnSo614BhemIrHZLx8kViaZ8pW3TgLTg==
-X-Received: by 2002:a05:600c:19d0:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-46fa9b06c8cmr173278365e9.28.1760430490392;
-        Tue, 14 Oct 2025 01:28:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fb489ad27sm227170535e9.15.2025.10.14.01.28.09
+        d=1e100.net; s=20230601; t=1760430851; x=1761035651;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AKUCHW/MBIZsUc3ODKKtWIaDlEQsfe7hY3IvRmB8i8o=;
+        b=UOnsLUjuhQVZqpkgDvWFguIHLU4OVEnlQ9EQMWqEbSCXZFiw7RGhM7sDIVp6Un9+No
+         hOtmaLEisimex6F1bkZn2OEH5c76ls8xXY2EyX7uGSKZeJh1jYfzShw23nm0f9FvZZul
+         QF3q60Fra4+fz5FgpKVSO2LKZpjtfUNpnbRxW+OKS+AdNnU2r9u4v0jIlYVT3LikHRb9
+         9Pv4HQs8bpzhAVaYGHuLY4Fz37UBh785N/DcvbyILzF5Wz/ULO9k3MHDjPPAsuzOZKrm
+         SDJldU319neRnCKtkkvKGwifXxwwg/LzldU481i7Uy2OKuKZ0pp3e2yu3zMNTKtBTStU
+         9Ifg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSdIfVXnF9LHDrPmsCkPds9cqJ2a+lk1i1OuK+nIAyRaBHozZC4TxobbigOX3svNoJfI9Y/HzxHw==@kvack.org
+X-Gm-Message-State: AOJu0YySGr8a+Wd1iOEcYBU49M0a2Oy9vovmYnVQkHvObZCXFCBXYBW4
+	4u5nlkMhNZ+Ii30UmojaaIZyDpQlK4KP5Wqk9BC/NhN/dLL/AWjlrxO5
+X-Gm-Gg: ASbGnctz9eJydsCCKF1OeRL3ZGl4hj5r3OajyUqyKO8WyufN3NxxQaG6QKi18WXQgZ5
+	ApWIg+3zD9nuChdunfQ2YbLoQZAr4ZfwuGgdNeH3fsL+9xpd+ovFfifjjGsbXjKba64/arSvCDn
+	C0Ehrlk+gKdo5DjEEHfi1KwSxzTgd6diZqL++Dn+rqUXjlLykZDwvXPtVJxuQiacMVdsLqfuNZA
+	ye8WFvm7OIEe1BMjsMzdQHz3UaXnLn9P3NjJdeUNR/LW8jFrbj1E6brKWmSDxIYW96RV7VUd2Ud
+	FUoAIKDBqrPl+uDJnJkFH83xA39MInI24kaG/IcOHODhUfoEP0auo3wjKSoM3QtMvYmHHeZtMyB
+	LyrUN7Dki4E6gnSWricxwmbXdvvpsq+g1yBKw
+X-Google-Smtp-Source: AGHT+IH9yDBhkiPY34+r8L4QfGlETNuwKEKExxU3npIvUrJ6TVQTuSdRSJEPMfeufN3cm41sP9BTrQ==
+X-Received: by 2002:a05:6402:50c6:b0:632:930c:ed60 with SMTP id 4fb4d7f45d1cf-639d5c57a9cmr20902180a12.30.1760430850785;
+        Tue, 14 Oct 2025 01:34:10 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:70::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a5c322e91sm10304155a12.45.2025.10.14.01.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 01:28:09 -0700 (PDT)
-Date: Tue, 14 Oct 2025 11:28:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Yadong Qi <yadong.qi@linux.alibaba.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Huang Ying <ying.huang@linux.alibaba.com>
-Subject: [akpm-mm:mm-new 114/114] mm/vmalloc.c:191 vmap_pmd_range() error:
- uninitialized symbol 'err'.
-Message-ID: <202510110050.VG9YKMRK-lkp@intel.com>
+        Tue, 14 Oct 2025 01:34:10 -0700 (PDT)
+Date: Tue, 14 Oct 2025 01:34:07 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Changyuan Lyu <changyuanl@google.com>, rppt@kernel.org, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, anthony.yznaga@oracle.com, 
+	arnd@arndb.de, ashish.kalra@amd.com, benh@kernel.crashing.org, bp@alien8.de, 
+	catalin.marinas@arm.com, corbet@lwn.net, dave.hansen@linux.intel.com, 
+	devicetree@vger.kernel.org, dwmw2@infradead.org, ebiederm@xmission.com, graf@amazon.com, 
+	hpa@zytor.com, jgowans@amazon.com, kexec@lists.infradead.org, krzk@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org, 
+	mark.rutland@arm.com, mingo@redhat.com, pasha.tatashin@soleen.com, pbonzini@redhat.com, 
+	peterz@infradead.org, robh@kernel.org, rostedt@goodmis.org, saravanak@google.com, 
+	skinsburskii@linux.microsoft.com, tglx@linutronix.de, thomas.lendacky@amd.com, will@kernel.org, 
+	x86@kernel.org
+Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
+Message-ID: <2ege2jfbevtunhxsnutbzde7cqwgu5qbj4bbuw2umw7ke7ogcn@5wtskk4exzsi>
+References: <20250509074635.3187114-1-changyuanl@google.com>
+ <20250509074635.3187114-2-changyuanl@google.com>
+ <ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
+ <mafs0wm4yluej.fsf@kernel.org>
+ <mafs0h5w2lpqu.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 2928C4000F
-X-Rspamd-Server: rspam11
+In-Reply-To: <mafs0h5w2lpqu.fsf@kernel.org>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: cwg8wnzf9goyczw3bu89e5fzr58q8p7c
 X-Rspam-User: 
-X-Stat-Signature: hs7wbzjx9gczew5dour85dcahbapjg33
-X-HE-Tag: 1760430491-359298
-X-HE-Meta: U2FsdGVkX19ayLA2KHgovTihT+rLEZk3Z+OGweDwig7YtoyGk78MIJrOJBc2vg9jjIVaRXkfV2nV5tKvXj8yhc7KugrYL34EutLDSaVD5hE24ID1+s8IgemlkXJ7FRFjVbXDcSfInBBWj5F1PkkCwXmCWwXz/KiohZcBk2J/zkHxeh6Q0u1asedZ8nJoQb6UJx+7v8duzodHYp3NwjbX3wSJalPZfG1qNMFAmy1+04tjpEWO1n7FQmLYZEgf8KZkSzBkHZLUCIEZ+2RSQkAtqgpDAj7NWjMjBs0TnPr6C5c02LKSs9pArIxgy5SLesXl/rhJFkfFOa/lKJIUJxMgSa1D1Je1srUb2kQDxBv5UQ/lHfeuzC9/GG+j0nSOKAXW4pe4FzzEJ9J1aVM/wco7fD3unBVj87SuvdpzBCZNVkRGIhEnr9/XCpW5RelabRsQa+MlWySxKpLgA51MyqnIzvn8w1+oCebnkwn5N54vVAAeieSd35E2HezjbqrQs72/O4l/xwwrZAuuYUYMjM7R4drVsaCb73NyrlXki2q6NH3/pGlJRHeNd/6UdlsknvpW561rXQyFz25oWLv6dOptaDX5cZJZG+Bi3+f08TC/DLay2gASjKZuwkhbNGTxgvH8CF1VC3t+NJFcYz1Z9aWu/WEjfHYUnPuQuonpJ/10NhBYpAr+9qE0d7ZZwEjyw9CG4DjpvTYwvGkfg/GI7kKJlPRqJdPQRTwn6G2RonkXi4DNKMw2rBosa3HRblIl8vN6xYlxvcqxVmoUSbRORfuNiTfDazbA0tTnbw589NlgaoaOeS+I/5zaAjFdnhNKSV0NDI5BAj8lG9oJ4JaYGdZKz0wYJhxTGMShGiDMFmjKNUyx1yfZreiMR9NPPWUG6TdqZEveY3MkzGhIOqgCN6mEDLNa5adpod5Q/bmVD62N5NxjuJTqMTH/e/sVu1jQ6kxSjR9VD/NUIRSKj1qjkz2
- 2UkupvjS
- ynxi/k8Nv5zd660XPS/3FwQ4KeLvVHz8mSyR5BLLqYmLzZoszCklpklwcHz1OY67yvvzvR6/zngyDb+q8VHVEuiq+weBW9fZrYsZK/8zaIjQgmWSvPEqjhB8zR0GtdAbj0nWvJVQr5zetH8PrA2E3+HqBOx4+B0ibi9vH+mvSDei/Bw8K4rEk94zWqORDDuT/RIAXWbta4ug4XD1cIXpITc5Q6DvEWxED03avNCg9R+kaatPmPoOetKMMXr0IcOSYt5tKInsm1n3qEwVm031BrZWIPGeXzBd95qa75F/qBw6l7DD6kKQYH+128KHHMpuYemChSaZBgg4E6U6YdIoyS+UVOiusRdQ9c+pDgMEK9Mhu71FUobgdD++u2OOk1rgryaMnciIAL1/ZuTFvpdSd/F+qlPimqllQt5Rrfe8vvWHZS3SJFx487bZvFR3xbh1B0pBasmoiVRVHkfKK01+mjfxjLzEhaLHytqLTwyVHYQQ5+/NY5TOWEOf3ds1eShIYxpHQHJlAFgN07a/Lg901rgfoOMnuxwFBQMta
+X-Rspamd-Queue-Id: 9B43816000C
+X-HE-Tag: 1760430852-72101
+X-HE-Meta: U2FsdGVkX19Iuj1bVU7mhgIM/iKYTNCEQezuDAMKFg6xngCX1iNFvM1i7q274LYNKQvt8/AVJluElN6yHT4Y8bFA0prlqcr1RJ9PYHU+EGz5DUS5V18fZHSnWLlt1JLp2WLpfZhhYFHldPXx3gveCoPPuzV2mK0qgp+330e0yU3Uv/0Kx9GGtglJ57OrrWQulShED0C4C0axML743zkR1YGcE2KccVeEsQ8Ln9j+sblDUAs5b/iBrcSdtgN4sx9yfJsa6Ag0KHDPZSPn3M1bSCNKmeOl0nuu3bzFCi7oA7j5P3ftKlDYd9b0q8imvV0yPauzByln6smCPOLCTHnShwHREkPuyCoYV5RnyPAwGZmYGW5nDGBLscgu9OL02mHsfEh8O189DzODvPieIT8Fp8mLDBUaCrVY4UhTiiaPcjz5s2yevgP+iKQd7f+S0a4/zZOGj6Z61ccJkoDqHPRWaA7n/qJxhgpwWxqAjUrFUWLH23BCzdJAXLeaiLclm4f3iYTxs9Vbk6onQbxHN6vS7R6mYbDexH9h673ZdpBrg9BKbxiIKe9j3jD3hu63imRDLaf+yqik/YB7K6vD7AotcR/vatlVtMbCwowqiZzYRNGFJzx2LcZMaECQW9ubF+2C/WScFEV/ltYM3B5JHYUxBcQFxlY4dkD9mZ63Ix8yoyEAPJr8limyjvwSgXajz4efXMIqbmETgkxJ9TH+V9dgf9L6DrRBkPFF7RyPeahFzBMMHUFHpAopjSeHUN9SLlz2VGdcMJfotHPsVeuIOA6URIMKKQThISL4T3AKJCZPECkA/iTV/qh9bjFKGTtY2+9YVwg3TJ07O9gfID4drDuJs4mS/12CgxoDOXugUeLSSt5mkXBl2kiL2ahdjfh1AawokoU1EPlXLQlyxFFrYP5k46rS/bQmTuTBb3l5Kvoua6WJL+zy/qM5qJHCZTqHyw9Tvr6WbjSQHgrnY15TCdb
+ IaJVVnd+
+ Z1pmNBd66sB1Agxnaiex2MyMQXUygQ5I4xRoqEJa1c1vqGmHdyuELH046hok8zlb98b3HDHkBfJ7QEJWq1G2CDb8r8qdxtO2ISFBun7cUb/zOJF4KtRGv/Wi2VwwGzHSjgDOtA3yk7pzj9uWcSOEkPfycPKniTjXZ+gbO4wbbd3V3+z306fwaKDuixviPUK09tE1bD/cHCF0wkWvy8o/I8xnl5zrWJMdXZKhIij6TIbhZ+0k6zKnHG3hNZXlyuLO2eLBf23KVtrphCyeC38ufvUBLPZLMMwpZVCFVPz0RmWyo0j9AswpfsxofAAXuCStlq8A/fzVvU4G4lfanThUm2cEN/aKcN9N0HlrCRoTVGBqOFad8jtw270eugQ9s5ya2//MeLsD+/QHLKQx7KGF6uB7Jizhiz7hvJ+Vr49MEa89O24WYgKvbwFRQKOTyGWf/cd+fg10L22zS7Qo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,62 +117,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   dbf0247637dd0601a462793035bdd0b416b30e36
-commit: dbf0247637dd0601a462793035bdd0b416b30e36 [114/114] mm: vmalloc: WARN_ON if mapping size is not PAGE_SIZE aligned
-config: sparc-randconfig-r071-20251010 (https://download.01.org/0day-ci/archive/20251011/202510110050.VG9YKMRK-lkp@intel.com/config)
-compiler: sparc-linux-gcc (GCC) 8.5.0
+Hello Pratyush,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202510110050.VG9YKMRK-lkp@intel.com/
+On Mon, Oct 13, 2025 at 06:40:09PM +0200, Pratyush Yadav wrote:
+> On Mon, Oct 13 2025, Pratyush Yadav wrote:
+> >
+> > I suppose this would be useful. I think enabling memblock debug prints
+> > would also be helpful (using the "memblock=debug" commandline parameter)
+> > if it doesn't impact your production environment too much.
+> 
+> Actually, I think "memblock=debug" is going to be the more useful thing
+> since it would also show what function allocated the overlapping range
+> and the flags it was allocated with.
+> 
+> On my qemu VM with KVM, this results in around 70 prints from memblock.
+> So it adds a bit of extra prints but nothing that should be too
+> disrupting I think. Plus, only at boot so the worst thing you get is
+> slightly slower boot times.
 
-smatch warnings:
-mm/vmalloc.c:191 vmap_pmd_range() error: uninitialized symbol 'err'.
-mm/vmalloc.c:243 vmap_pud_range() error: uninitialized symbol 'err'.
-mm/vmalloc.c:295 vmap_p4d_range() error: uninitialized symbol 'err'.
+Unfortunately this issue is happening on production systems, and I don't
+have an easy way to reproduce it _yet_.
 
-vim +/err +191 mm/vmalloc.c
+At the same time, "memblock=debug" has two problems:
 
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  167  static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  168  			phys_addr_t phys_addr, pgprot_t prot,
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  169  			unsigned int max_page_shift, pgtbl_mod_mask *mask)
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  170  {
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  171  	pmd_t *pmd;
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  172  	unsigned long next;
-dbf0247637dd06 Yadong Qi       2025-10-10  173  	int err;
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  174  
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  175  	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  176  	if (!pmd)
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  177  		return -ENOMEM;
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  178  	do {
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  179  		next = pmd_addr_end(addr, end);
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  180  
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  181  		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  182  					max_page_shift)) {
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  183  			*mask |= PGTBL_PMD_MODIFIED;
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  184  			continue;
+ 1) It slows the boot time as you suggested. Boot time at large
+    environments is SUPER critical and time sensitive. It is a bit
+    weird, but it is common for machines in production to kexec
+    _thousands_ of times, and kexecing is considered downtime.
 
-Is it possible to hit the continue on every iteration through the loop?
+    This would be useful if I find some hosts getting this issue, and
+    then I can easily enable the extra information to collect what
+    I need, but, this didn't pan out because the hosts I got
+    `memblock=debug` didn't collaborate.
 
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  185  		}
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  186  
-dbf0247637dd06 Yadong Qi       2025-10-10  187  		err = vmap_pte_range(pmd, addr, next, phys_addr, prot, max_page_shift, mask);
-dbf0247637dd06 Yadong Qi       2025-10-10  188  		if (err)
-dbf0247637dd06 Yadong Qi       2025-10-10  189  			break;
+ 2) "memblock=debug" is verbose for all cases, which also not necessary
+    the desired behaviour. I am more interested in only being verbose
+    when there is a known problem.
 
-I always feel like these are better as a "return ret;" anyway.  Then it's
-just one line to read instead of needing to "break; ... return err;".
-Twice as fast to read one line vs two lines.
-
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  190  	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
-dbf0247637dd06 Yadong Qi       2025-10-10 @191  	return err;
-5e9e3d777b99aa Nicholas Piggin 2021-04-29  192  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+That said, my suggestion is to only dump extra information when something goes
+wrong, not affecting the boot time neither boot verbosity.
 
