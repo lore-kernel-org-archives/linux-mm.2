@@ -4,127 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0AA0CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:10:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBDBFCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 033578E013F; Tue, 14 Oct 2025 11:10:14 -0400 (EDT)
+	id F29D7280002; Tue, 14 Oct 2025 11:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00AA88E010A; Tue, 14 Oct 2025 11:10:13 -0400 (EDT)
+	id EDA7A8E010A; Tue, 14 Oct 2025 11:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E62428E013F; Tue, 14 Oct 2025 11:10:13 -0400 (EDT)
+	id DC908280002; Tue, 14 Oct 2025 11:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D28B78E010A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:10:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89E66160999
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:10:13 +0000 (UTC)
-X-FDA: 83997055506.17.405EE67
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6CA981C0016
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:10:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Yaeuoalv;
-	spf=pass (imf20.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id CC5568E010A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:11:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A353160994
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:11:22 +0000 (UTC)
+X-FDA: 83997058404.16.436FBE3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3D9E3C001A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:11:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Aa9Z/qKB";
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760454611;
+	s=arc-20220608; t=1760454680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+9sQqZFGj6pjO2HmOLKtnRlFSVSp+ASbakb0jxv6v+E=;
-	b=mNgk7N5zUvO/FY8NAi7T1gR6mgpquI4UUtYLd40Tmp1x2uVYvE+ZpUQ3vc0HSo6Jn1nj+N
-	utxq871VYAjUpAHn/71W+wL2Zf35tIEwdqOf3eDyn538YutEef/1erf60QEFc7PD4+bd1x
-	F7fKH/vEpvMhIickywrIA3blslFju+4=
+	bh=CFM7dXtICj/fa8yA6o+n0YfJf/ny9ONIQh0B3zZDb+k=;
+	b=CEzN5+xdwRPxlUtJXn0B5RA6EkxItS7+Yv9WmQsVawIpG2XQZafvaQIEMASp1jYlJWZ+CF
+	nEPfS+RfesD9FYzv2M1msk1nRqw0OSrTgmIOCHyIeEA5Cgv0ccpxDllQ2W5VBC4lzM+Jyr
+	XbYuLoc3hD54Vz+SyBgiAU/aewk6OVE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Yaeuoalv;
-	spf=pass (imf20.hostedemail.com: domain of ptesarik@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760454611; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Aa9Z/qKB";
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760454680; a=rsa-sha256;
 	cv=none;
-	b=0BzpHlwCQ5s0ElheT5iYT3GmPiQAnLoJ22jEoJsaskEOPqO3tF6j5uIDR8bm1TaQReK3wh
-	wnYtjsi0XYrOrdA2JhIzaNTG3MZjo9Dtr1L6AI1cnIN94ylNaJFmC2XOJqc+cSHcCa1DmP
-	yK/m47A1qTrtCKQUIl21cGoq9BCNGH4=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e33cec8edso3843465e9.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1760454610; x=1761059410; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+9sQqZFGj6pjO2HmOLKtnRlFSVSp+ASbakb0jxv6v+E=;
-        b=Yaeuoalvhk3Oc6YNo+8tSyArece4pI4P873DX54TrKQ/r1frW1sKme2WN2YlZWlOKS
-         w8jLKsNEU1vTd9yi+m9VW6GGU/fkMkZ+ejUdaFciwhXFYAX7Auav/7QLMpUAZWWkkh+d
-         RQsG/TGmvgSe64vQnsFuPngBU65inlr/FTDmXdvTAgr0nb83KKkrcMTiNUvgvuFi+eRf
-         F74OZ8OdPYR6Fqwatcs1aIuIYUcg2jkoLIx8H5mx7iqt8Ku9LTSsOG/uV17Sj42sFv0j
-         FeJZL9bhcZoT4WCsVdOMBONjv53LCIRnex04sqRy+X1pvs4OBvdXVBwbZEH4h0FANa8M
-         1ruQ==
+	b=bPXpJA/thkrxBgUg9posIdFzSu00oN/UVawHJc/QJbVUVoKYqjy6DHWrTmModUb8/Z+ZMb
+	Qtvxexzt47IU+5mk/r2e/sJTaejMVhvYl7hlVRwU0uczGIkDhHMcxiPrsjtaWg4xZNF974
+	uEDVz6ue25ljsboRYHvT7os+PvgNEFg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760454679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=CFM7dXtICj/fa8yA6o+n0YfJf/ny9ONIQh0B3zZDb+k=;
+	b=Aa9Z/qKBxtR8TxZR7Zky1ZVt8xpwMHBk3Ay22WgMydKT8P2WZwBjw2A7Osynko1YRPBzBI
+	jFuMv0ZjZvpwLzhHlbSBAzC9GzROQcKGbaUvH4xjv4DeUo2qam3fvZCGvjZuH9FYQHNLC1
+	Dju8JbiFeX8g/qpupdNQ8XObwVPyCEg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-H1mLTMqeOA6sZOl0Pc-Ntg-1; Tue, 14 Oct 2025 11:11:16 -0400
+X-MC-Unique: H1mLTMqeOA6sZOl0Pc-Ntg-1
+X-Mimecast-MFC-AGG-ID: H1mLTMqeOA6sZOl0Pc-Ntg_1760454675
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e3d9bf9e1so36854055e9.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:11:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760454610; x=1761059410;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+9sQqZFGj6pjO2HmOLKtnRlFSVSp+ASbakb0jxv6v+E=;
-        b=ezcKKOR+nHYRYVQh3khPw743z/XCip4vpQQnqBnEeYlyfINVf3aE+WzLI7QB7YYsK1
-         fATFD5Phf2BhR8HDfHBhF2tgPfJj3Qe8a/CifPaY8wOfWJxwJTWh0HW6UTklvQ7Q0Ip2
-         hc3q1ZzMV9wG+PRhLpvYSlEOn1fi3CLcWax9mJeqbU/4/e3hKDdeEH3p68wtVmFShumc
-         /h9uLlkRvnOBKGHmCuyuAuedYcKM7R1k927eSEP5wYrurzgKqEWMnjjZuojxgKb8pG+3
-         AH1h7M7zgxLL07LtAZyv0JpxQheTFO9We3gSw/EIPdasQ1MZnYEeghLuwkk3CFzQmqU6
-         ZrbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXZHQjDwPvekWJSz03CFhElFY19Z5B9PWnoMBfwPmAS4/1RG7/KbO7wrS7Co+dj9V8ezDsgbQ55g==@kvack.org
-X-Gm-Message-State: AOJu0Yysv98bPLVCYwfod6HRao296pu7S6SAfBs1b84Lbzqj3PUaR3B5
-	3ehR7Ruf2KuOY1BM/wB/k5TzeLGMAgsu0V8LsuoisRv6Ovuwt3zz+CNTcxy3XC6w4oM=
-X-Gm-Gg: ASbGncsptLCn+/Yd3gYYL5t0k7HlZMzDnB3D5gS6dGpKBpcysZM7fDyXN4KMpzKhxN0
-	8jpo/tjKwSd63kYYwpE0VqFHfBCtNqK0okRLvszE/4hOFzAGpyCK30hqYwLfDlo06fUZXC0VnBo
-	nTh+1l3bv4vjV+Yz8j2UXzY7C6atKayljApQmBWViyHvcUV2eCZ/mP7iwyDgxza8kn88RanKnJi
-	GJy5h1dOzWMws+d5NTyxVCMBYHrhaGrx6Ny79lp9p2pTFkbZG3EUht1iQjCx2d4KWmNc4i8GvFC
-	FLtB70Q96bZ+cF/KGpWYfyjqk4P6U1dGn7MRwHouH9IlWuSzl+su2gTMV5Cj5RcO7noj8nOUByt
-	JgbhJ1xET7ZZdwMGGm6OsMMg=
-X-Google-Smtp-Source: AGHT+IGAXLObLFqWvdrlT8jNvhDt4TeOuL5i0Y/T3RwGkmTWxiheZJLoRR4en+J0WUHha4o/PPCBLQ==
-X-Received: by 2002:a05:600c:4e93:b0:45f:2919:5e9c with SMTP id 5b1f17b1804b1-46fa9a8ae60mr100424145e9.2.1760454609668;
-        Tue, 14 Oct 2025 08:10:09 -0700 (PDT)
-Received: from mordecai.tesarici.cz ([213.235.133.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb489194dsm244369755e9.12.2025.10.14.08.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 08:10:09 -0700 (PDT)
-Date: Tue, 14 Oct 2025 17:10:03 +0200
-From: Petr Tesarik <ptesarik@suse.com>
-To: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Zhaoyang Huang <huangzhaoyang@gmail.com>, "zhaoyang.huang"
- <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>,
- Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard
- <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
- John Stultz <jstultz@google.com>, "T . J . Mercier" <tjmercier@google.com>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, steve.kang@unisoc.com
-Subject: Re: [PATCH 2/2] driver: dma-buf: use alloc_pages_bulk_list for
- order-0 allocation
-Message-ID: <20251014171003.57bbfd63@mordecai.tesarici.cz>
-In-Reply-To: <ecba7133-699c-4f3e-927c-bad5bd4c36a3@amd.com>
-References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
-	<20251014083230.1181072-3-zhaoyang.huang@unisoc.com>
-	<87953097-a105-4775-88a5-9b3a676ff139@amd.com>
-	<CAGWkznGN7W-txq_G+xpZ6DtH_1DNorYc=CxqUjebo7qfB4Sxsw@mail.gmail.com>
-	<ecba7133-699c-4f3e-927c-bad5bd4c36a3@amd.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
+        d=1e100.net; s=20230601; t=1760454675; x=1761059475;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CFM7dXtICj/fa8yA6o+n0YfJf/ny9ONIQh0B3zZDb+k=;
+        b=tYxULlmv2H+zpwnu40PzaN5IsO0rbiI7IVgw2hYpMb2zoANR3WOHqa5JAvogmR7NyG
+         GkPM6OEnQyOhEuobapHBbHUHmFbluaBAIkRJ26ayiI2hqK65O+ZHiQmEcnojVbcZuQPQ
+         koCWyocp5z5Cd9yRMk+vxlilfdcsPBmzEwcC41MGE34C6tsZtL9QXc2DlnijMPpR9VG1
+         CZvv+3tH3M3uLg8Yto6Jokual2FtQEbwoJb+MQ2JIOm7k1GhPyAeFlFU3uYmpYaNzL1M
+         jYKEWfAbArqsOa+Xrla/OtAKXYD83tZt/ZmwBjtKYtpbyV98jtkw2qDEvXkgp3Aw0+hs
+         4NMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKSqJoMwPAVK7IAin67XzbMCEdiXasC8YDZnJEp7ZEHNoJAG4v3aqK6W88bHlD8e+HqspA28XPJg==@kvack.org
+X-Gm-Message-State: AOJu0YxbGeWPktb7W76r99hfHzFSI6XO+liSXQNMnLasuT7TusYKAgLe
+	ZRCHStlDyhoc/80kWz/grL4U3s8fQoFYPcGFgamIiX8sTk5XBXoHCTyCCIHZhz8ghuk0ayby6ck
+	ReqFTY9OKQlPmalVtY0GnG56g3xnJ2qrpZuaoxkT3VwWLgbYK2jkSHFvy3ryM
+X-Gm-Gg: ASbGncs6RAYuk143sgG2w095huwDmnCitihco0KyeST1Wd4mRJBUlfUg+HJLW62Lj2r
+	wT11eXzcs7QJ3Lx3zjyH1c0pogKHeC8lmAOTEHIjdcQ1raqqYgWHiqgYyA66LhFDt94TeHqzJSx
+	SG7NCaMhl4/2yoIYCOKnHDb7BhFcT9lTjHa1B7sUUnN/6mQOnt7G9CkNdXpNTpdZVo7KR164YNc
+	hMKlPqw0DY6JR1Ahr4M01gu52UthnhtfcIwlA6Yvt84iFU9UNN8ICFQOs51p+ESqLVqVZP70chO
+	tv87zParuYtC0T6ghCUHLpvkyP68mArcyYDasVgyAw/pYQx7fTZAjHf0KpODsyHz6kc4gC82Ig=
+	=
+X-Received: by 2002:a05:600c:608d:b0:46e:6d5f:f59 with SMTP id 5b1f17b1804b1-46fa9a8b2aemr174419295e9.4.1760454674824;
+        Tue, 14 Oct 2025 08:11:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAGYdJNsQt56FoIi3mVgcJVNPd2gqaodPPXK/4B0rTbZ0qKVvefWZK8UoRY5YIzCmIEwIKPw==
+X-Received: by 2002:a05:600c:608d:b0:46e:6d5f:f59 with SMTP id 5b1f17b1804b1-46fa9a8b2aemr174418995e9.4.1760454674352;
+        Tue, 14 Oct 2025 08:11:14 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb49d03e2sm246982765e9.19.2025.10.14.08.11.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 08:11:13 -0700 (PDT)
+Message-ID: <95a223b1-8d57-40c3-8226-678b1db233aa@redhat.com>
+Date: Tue, 14 Oct 2025 17:11:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: u4yhjxbhcdhhkefecehna1i4h47phtny
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
+ ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com
+References: <20251008032657.72406-1-lance.yang@linux.dev>
+ <f33735d3-b38d-4b6a-aeba-b415e6b24ea2@lucifer.local>
+ <0bfdbccd-9d4a-409f-ae43-b44bb7347d70@linux.dev>
+ <f7392f43-b8f1-4e6a-b9c8-25ad8a47f82c@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <f7392f43-b8f1-4e6a-b9c8-25ad8a47f82c@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: pOrrtaSZTDGnNp0PKi1Q8HPfrgnXLBZBWzuT_Qy80ns_1760454675
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3D9E3C001A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6CA981C0016
-X-HE-Tag: 1760454611-540769
-X-HE-Meta: U2FsdGVkX19XN7yc4GIeJftOAX45tbYz9nzXjCyAHHgU6N+x6GD/rW1jnFQ/rHmTL+4+GL3sA/623JnV8JSeb04FOULWCPQ6361/aZTSKNwDnY4VovJb67LjIWLRltvrFSU5u1xcIuhd8kLST8br+arxsMN5jKJBdXg2Ig5ns7wG61/aGzhG63Vxaqbr3nUbQzGc+2xWgfcYRaX874xmLpP/UOO3PqW42GoBUXyMp2aWR+h4m3N4JAU2LY4kFrqDFA4jzj5PcnXjCm3EnLh3G/gUsT4ZLWNbyCnqEy3PMqsyxNTF0RQuhB8JdEtF9bhjyCMkqIb2egWMMX88H5zYshlIT4WUS50oZqM4iEy9i/XD0aV7O4OEMeQCBIXnw/EdfU+myzOeGOvBkvgoJC1MdqBpDkufIpDRDwKayIVjfbjxKKW88PLSi+pbuFDiNPZ4p7W82SCPjzB0b+012dRSzV7YWShMDRFS6QBisjuN2QibUbjCJk738Qo/F+0aRVC5kTVrM45dOPrdoKgYN06ff/En884k42nkvYUOy/0doP99c1eWwzLu9MztSAQOsccfgw9Tdj3CAKoM/tyqItjJ+205EZVfSEGuRHdMX8PSXi0cF7CwSNZ/63eeYjWMgOEsHDOE5F7ZVzQ4qiZBv3H2fdDVJLpQFCeJtv0d5cJ8VLWqERPtS9uzyMZeVne+oa9B4bGH4IZ/jIa6PQry7+hDMGOru70gkIb3GTj3A56sPEBkRUhMNrVJ64zefaEVaJ4sAL3nTBXEHb4a723UX0Tn97jMP+P1PtJbqyPAyzaa1V7c+BHsSsQEeXTNkANZEzgJ64DJx0sctf7aZGjjo1CErikcqhg+fPIJdbcBU1KtqlhtHW5yeHmk8dkYtF2Uix3sP5TTJwLcfkXq2EWrHruq7VBPklZMdt27/CUJnm9vBkzRJGnPv6lLzwsXEeUri3qyt/JyQfzb9GNySfCJuo6
- 37h52LkK
- QylnJ1rPmflWOGrkJjRAVpUygwJY3HnqrH2sEW3Xtl012pkUF8cOxXduknL2ULWAKbhz9i1OE60nYoUsh/JyQFD8oH18PtmK8A1R3dxg28T8Mw7Xe8Nh6TF0AW+robzpw1RsmaYUXN+MRkgwklMMoL64UKh+ch1vrD8RGdhLHlXYxlgrSi+lvfF8kPtEzMS0O+Js88q+Yjhd12cLkFYlyzruHZzRF7uND8//x3Oq9zAZZQ7C8npJpPLv8MwFoQ00mhhoQb5bzeF4BedTlSXQt9Y/BhY1C4yoAHdg7ByVyrCPT9FFlSudgRQJw8EC3T83jwUEB9ISj+diwUL/3xnAvrtPOS6h70Olj9/AiGcBFtbUDbmXpleKjXWbRQQ==
+X-Stat-Signature: qpi4zy48yhmqppi6444qdqcd91usp1bs
+X-HE-Tag: 1760454680-348763
+X-HE-Meta: U2FsdGVkX1+aukOryV80r89FgBZPfAHysgzC581ogNs+HTiY5jFmd5q2WOEjOQzHzFqXN4F4kaihlhUSt+f5UdLRI7+SAHo15mJmzsmS9y7/Qv2T1PZ/uKQSUF5/hl6MTm3JJZkDQyLua0OAwEQ4LgQ6qwoJ7h5LTM0rrOJ2SXHkXUtwRdou+RwHXddCCSKjtPV7VVJXHScuov74+J1/mrOEVHdMpWSB60ORLzRkEcgYD9qdPYzrxiYCRDrUXYkwRXIdOf9J6Z/Gvb8sQJ8zP9UqfXjt3o8BmX5L4WrnK2yQJSAdME02kdRo2HZOHsNE51mHaZwxNGy4gezXOf/n3V/acPa7Eqoud87zd1dwa5HlmeMmuPnTvduiN8pGulbGiDBFz2cr8YXofemQCLqOILpJYNzSPPhz5eFu+mSo+ofixpQgb9GUMYyq69MlO5SZm6QxxH1M1QrsFiBGk+8sM4rcb6SQfudjdLLbxwpO2pO2QUgwFHpxY1oPaDaMX2BurbOFxxicJfR9EaFksaJL3RKwFDaKMZZUZB3QxrbIuK/iW5BXOGzTy8rqOwprLgQ4ejZMQLZK+MUsxBCbyUHdH7cJtPdZZy7uLqJ98b/jT8Da6aEAbjmgfa/DH4do8ItFLFY+nHephV8DnQSue+xTRhRlZMZHxwlM8YvwVndLDnViaOyeBfPq5dwlnhvNPawultvvSKytbImjU9hTfc9oo5TcVB3sEtt6+VzLkUbArwd86B7meVU5A1S/NoM3t1nF3HtPgfTUQMhYDQBoW9SxO8APvOhz3pstF9SiX3qTMMc2UR42uwf4TM+gL95jroyvYzKI7lAx04T7lpyiUtc5uYWlZ5LiwctIkOrTQY2SYMmpDTpPxjPwcKNNXdHsw04dfHtngrlC9pY8rRi9Ik2Sf5kkZJ630J8X7N/o4EKbU3WRBubbZLbWoWI069I+CX1gI9UOtjV5vERCgjo26Pe
+ Tbawr6I4
+ axvBX4wngKb9O3D+jDDSDue75nDtBjCzwQiNvp1xZfvuUPaH7nep29fJqbCV8+VOheCoJbOGRCET/BfoecCyHJTEWquP2oSs8zt+6IgtogwBgpJFDK8YKZlyBodKiqPSyqcXQS2AFM1YpjYXUfFdzLt/bvxBBeMkywUrheFAKwgiL9KcAIZ4eKKIF6LgnzYrTk5o5rpADwrIlbCd8PlJXWgv6bwciXqJOpyLdTk8PZi1WrPubomrjvMPCmAHSvuqLbEFL+NInWoQ083aa4/Rne8kIG2kCo3FKCJbkf368c8+6GFKvYs57kr9KZhkFCUmofdkUaio+fEMOa+4X/KVnH61Z5nLBxGgsoggiJ7faFRDUJOHnIi79tVMsI+w393Fb66ASADF4/oPFT4qQBObfeykxoTwMkcHe2Fxj/fte2cSRrmcUPxm5Ehyzez0v9FNpEEmLC0lActV3RwtOUdw1yVmkeL2vKgMbTU0ROdh+m4VfmYoV3xZoojiZBNiGCyFSKCgf1YmaLMsdQ6+DJ8TAwTR3vAxtRiNYn1qtVe9jHpP8FQa4FMToIMwkp0PjWGljUYl2lsRcI5KRr4h9F2Mqu4/GOQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,55 +184,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 15:04:14 +0200
-Christian K=C3=B6nig <christian.koenig@amd.com> wrote:
+On 14.10.25 16:39, Lorenzo Stoakes wrote:
+> On Tue, Oct 14, 2025 at 10:26:20PM +0800, Lance Yang wrote:
+>>
+>>
+>> On 2025/10/14 19:08, Lorenzo Stoakes wrote:
+>>> On Wed, Oct 08, 2025 at 11:26:57AM +0800, Lance Yang wrote:
+>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>> index abe54f0043c7..bec3e268dc76 100644
+>>>> --- a/mm/khugepaged.c
+>>>> +++ b/mm/khugepaged.c
+>>>> @@ -1020,6 +1020,11 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+>>>>    		if (!is_swap_pte(vmf.orig_pte))
+>>>>    			continue;
+>>>>
+>>>> +		if (non_swap_entry(pte_to_swp_entry(vmf.orig_pte))) {
+>>>> +			result = SCAN_PTE_NON_PRESENT;
+>>>> +			goto out;
+>>>> +		}
+>>>
+>>> OK seems in line with what we were discussing before...
+>>
+>> Yep. That's the idea :)
+>>
+>>>
+>>>> +
+>>>>    		vmf.pte = pte;
+>>>>    		vmf.ptl = ptl;
+>>>>    		ret = do_swap_page(&vmf);
+>>>> @@ -1281,7 +1286,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>    	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>>>    	     _pte++, addr += PAGE_SIZE) {
+>>>>    		pte_t pteval = ptep_get(_pte);
+>>>> -		if (is_swap_pte(pteval)) {
+>>>> +		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>>>> +			++none_or_zero;
+>>>> +			if (!userfaultfd_armed(vma) &&
+>>>> +			    (!cc->is_khugepaged ||
+>>>> +			     none_or_zero <= khugepaged_max_ptes_none)) {
+>>>> +				continue;
+>>>> +			} else {
+>>>> +				result = SCAN_EXCEED_NONE_PTE;
+>>>> +				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>>>> +				goto out_unmap;
+>>>> +			}
+>>>> +		} else if (!pte_present(pteval)) {
+>>>> +			if (non_swap_entry(pte_to_swp_entry(pteval))) {
+>>>
+>>
+>> Thanks for pointing that out!
+> 
+> You've deleted what I've said here and also not indicated whether you'll do what
+> I asked :)
+> 
+> Please be clearer...
+> 
+>>
+>>> Hm but can't this be pte_protnone() at this stage (or something else)? And then
+>>
+>> Yeah. The funny thing is, a protnone pte cannot actually get here, IIUC.
+>>
+>> ```
+>> static inline int pte_protnone(pte_t pte)
+>> {
+>> 	return (pte_flags(pte) & (_PAGE_PROTNONE | _PAGE_PRESENT))
+>> 		== _PAGE_PROTNONE;
+>> }
+>>
+>> static inline int pte_present(pte_t a)
+>> {
+>> 	return pte_flags(a) & (_PAGE_PRESENT | _PAGE_PROTNONE);
+>> }
+>> ```
+>>
+>> On x86, pte_present() returns true for a protnone pte. And I'd assume
+>> other archs behave similarly ...
+> 
+> This was one example, we may make changes in the future that result in entries
+> that are non-present but also non-swap.
+> 
+> I don't see the point in eliminating this check based on an implicit, open-coded
+> assumption that this can never be the case, this is just asking for trouble.
+> 
+>>
+>>> we're just assuming pte_to_swp_entry() is operating on a swap entry when it in
+>>> fact might not be?
+>>>
+>>> Couldn't we end up with false positives here?
+>>
+>> Emm, I think we're good here and the code is doing the right thing.
+> 
+> I mean sorry but just - NO - to doing swap operations based on open-coded checks
+> that you implicitly feel must imply a swap entry.
+> 
+> This makes the code a lot more confusing, it opens us up to accidentally
+> breaking things in future and has little to no benefit, I don't see why we're
+> doing it.
+> 
+> I don't think every little 'aha X must imply Y so just eliminate Z' idea need be
+> implemented, this feels like a sort of 'mathematical reduction of code ignoring
+> all other factors'.
 
-> On 14.10.25 14:44, Zhaoyang Huang wrote:
-> > On Tue, Oct 14, 2025 at 7:59=E2=80=AFPM Christian K=C3=B6nig
-> > <christian.koenig@amd.com> wrote: =20
-> >>
-> >> On 14.10.25 10:32, zhaoyang.huang wrote: =20
-> >>> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> >>>
-> >>> The size of once dma-buf allocation could be dozens MB or much more
-> >>> which introduce a loop of allocating several thousands of order-0 pag=
-es.
-> >>> Furthermore, the concurrent allocation could have dma-buf allocation =
-enter
-> >>> direct-reclaim during the loop. This commit would like to eliminate t=
-he
-> >>> above two affections by introducing alloc_pages_bulk_list in dma-buf's
-> >>> order-0 allocation. This patch is proved to be conditionally helpful
-> >>> in 18MB allocation as decreasing the time from 24604us to 6555us and =
-no
-> >>> harm when bulk allocation can't be done(fallback to single page
-> >>> allocation) =20
-> >>
-> >> Well that sounds like an absolutely horrible idea.
-> >>
-> >> See the handling of allocating only from specific order is *exactly* t=
-here to avoid the behavior of bulk allocation.
-> >>
-> >> What you seem to do with this patch here is to add on top of the behav=
-ior to avoid allocating large chunks from the buddy the behavior to allocat=
-e large chunks from the buddy because that is faster. =20
-> > emm, this patch doesn't change order-8 and order-4's allocation
-> > behaviour but just to replace the loop of order-0 allocations into
-> > once bulk allocation in the fallback way. What is your concern about
-> > this? =20
->=20
-> As far as I know the bulk allocation favors splitting large pages into sm=
-aller ones instead of allocating smaller pages first. That's where the perf=
-ormance benefit comes from.
->=20
-> But that is exactly what we try to avoid here by allocating only certain =
-order of pages.
+Not sure I follow. If something is !none && !present it's what we call a 
+swap PTE (that includes actual swap and non-swap PTEs).
 
-This is a good question, actually. Yes, bulk alloc will split large
-pages if there are insufficient pages on the pcp free list. But is
-dma-buf indeed trying to avoid it, or is it merely using an inefficient
-API? And does it need the extra speed? Even if it leads to increased
-fragmentation?
+We have the exact same code flow for example in 
+copy_pte_range()->copy_nonpresent_pte() and I don't see a problem with it.
 
-Petr T
+If we were to ever change what we call a "swap PTE" (I don't think so?) 
+we'd have to fix stuff all over the place.
+
+Maybe I get the concern here wrong?
+
+-- 
+Cheers
+
+David / dhildenb
+
 
