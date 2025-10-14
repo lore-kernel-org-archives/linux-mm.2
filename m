@@ -4,117 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1828CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:42:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C28DCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFD668E0121; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
+	id C9D5C8E0120; Tue, 14 Oct 2025 09:49:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED5748E0120; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
+	id C744E8E00A7; Tue, 14 Oct 2025 09:49:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEA8B8E0121; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
+	id BB1B88E0120; Tue, 14 Oct 2025 09:49:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA29A8E0120
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88BC911B0C5
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:13 +0000 (UTC)
-X-FDA: 83996833746.29.D98428B
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A3983100003
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYiVq1Ad;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7CC38E00A7
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:49:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5269613BEC9
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:49:26 +0000 (UTC)
+X-FDA: 83996851932.08.B1728F1
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1F74F40011
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:49:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9lkPsFR;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760449331;
+	s=arc-20220608; t=1760449764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
-	b=YHom2d3u4kEJal7LhmKqyCb56W0UZYlkICtfecpClAK7iqMX//CKD+O2Lbet903I6nLMn8
-	QDrgRyU8h15WXI4DMSChEJm9fCNrGz9ZxsP1nAyYW2SwvehDDedv8ppyqB3gUk1wcolJmo
-	vMJZKprptoJ+KCUK9tCiXVwR+FcA26k=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=tCgmqJvknBYMayRBo/EEQO5FxQxWgCwoPiscAHcvwvs=;
+	b=2nfcN0SQsA4galgB5micEpf5NRrinSZHoclEakFJkIANK4iaBfWcnbvkn7s4pnSPEb/oC6
+	9gRSx3F+LVAaRglTGpSZT+ckOVHn/AryaGl0UPzmqKEe6vwU3G8A6YoTvOh4B0nKPRIj/A
+	muJAkrTBKGbGIQQdvXO1LdqHbAsT6Jw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYiVq1Ad;
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=H9lkPsFR;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760449331; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760449764; a=rsa-sha256;
 	cv=none;
-	b=RUVZGv9KH39TI9XsBh449bjs3ohFu9LvII4lko8el8vdyPSUjgW+OIUpdmzw9fCLKhocs3
-	cQST1b9e5cBHj9Be2ktnKOeZ/o3ZqzdPJU2PsSBEIGB9M/xGEaPKxB7b4kYR+w5Gwtml8D
-	OVb6+BvQirQewYBMn5ald2W9T1VZ6yc=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-780fe73e33bso41819337b3.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:42:11 -0700 (PDT)
+	b=NKnhWNk6FTVVRH2KSld6flzfOpwKsgduB7BKOtTa7f+7r+1numON6pJI2J0GHmEdvD2drV
+	5yGGXjyS8E2y4ljOjtuKiCYlQNu2B5Sfq6BZ7b7K27lEBi5ppUDw8MDae7TUAIUkAvXCxo
+	jz+VhmSNKmyyMKsSi8Di1uBFSDEMQy8=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e4f2696bdso54200955e9.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760449331; x=1761054131; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1760449762; x=1761054562; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
-        b=OYiVq1Ady4nm3ZgOzpd/jCJ5MPmbGgLm1yXAxOOF+0pWuSfPEpcMATCY9J4/VSSZ0m
-         5vG+9704153lC1A+UPWXLu3jdpHfTwGx8s49iUIn5XDCCbfl838I5maqGJIHt3UBEmJo
-         RYQoKXit9FoM8PhoqwXsK5tgYOqO3yyKPOVG1PNYU3G5605+laj1p0kUgLZ+I9hVsn8n
-         ad90alG4aSFFaHI6WGjc1tf+glas+20iGnRvYZ5g3mzaf0QVoGWTHKpOnRNOApUPhMn+
-         u/V0eeKZoTN/OCR8qbWt+vxQGEH8rIK6u3ym+yG6eO1HT+X0faVO/GwoJbwQrxLM5okr
-         VP4Q==
+        bh=tCgmqJvknBYMayRBo/EEQO5FxQxWgCwoPiscAHcvwvs=;
+        b=H9lkPsFR9qFHe4hAmMDdl5aKPM/W3TfueHtQZSz1y9L+QWFj5T/SGKM16xhzK1bsaL
+         /WcJCKeRBaMUtFwnBk0blp60aXoDTiI/XU16bnd73GZIsZRrJ2WuTJR911j1bEbeJ5Oc
+         jXaUEUdhGWdIoc3ivhnyEDbBIfcat9n3QWjBOlmAFYck00lrCLzBRLB/HB4Har7iaE0r
+         OCVVjPaqzWj+8RWe6TipImX/wBC918DY/1swisuWV7p8/XnZWvV+ei6u9qDiqlscyQdy
+         lCDow/UZP9OKjZ/S7uo8rRBel1cIywMthRzjfbLu9/SBQiasXzFkMr7YFIICrlPDiQyH
+         QUKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760449331; x=1761054131;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1760449763; x=1761054563;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
-        b=B7lyszONbecYz4C4KFZlOT+0io3NSfkdjPQQC8WRe+SxJmLKjPmJcU2W40w3L0pU+W
-         n05X/8S7WQVg7hog5nCz/xEC3vjSM45jt42PqvyRi7GaoRNt6SF1DS8w9/0Xr17aki4p
-         ZvmO8DeFQbleKjvxgbFxDyNK5X6NWaJxgxvZz918hN+92A1b7PKlUXNxs4cFJ35xmNnh
-         AtQ2hO7rmiot4c9Sy7XAg+8+OpvDsE6OVy8wUPZwKor0DVfQhU9CSAeqQg8y5jhkUqS8
-         +dMKbd7CmAsF0+FSRGx6YmVjmVRxjywWSlUoCRnefQDQMqpl7ysrwzs4FBZ95/eROeC3
-         3ufQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVmLEelRU7nPqlKqhvuByDKT+NhvbLVIGdjpm8tEoiVgHswcvJrmvpNKTif8USSP40I2XBoDTnfww==@kvack.org
-X-Gm-Message-State: AOJu0YzNYSPZPKRMkYP9xiqULRmAW/fngqY1I/efJC+Pfp8pHwdmLv38
-	r9fPxLtBpBDUNPaA3xQn5j5u/53nw7XFyBQvvMnmRpHZg01a203ngL51
-X-Gm-Gg: ASbGncudJ8EsZyRVV+v4XNjqUWkWlQRVYacf4cAHTNg/S0WKoSb8pMwrVVGtL9rlPet
-	1PjNKLZ6Bo4GzpwK5S0t94McLMmlRqosT+Y42/l+lrUjfMh0UUWfj10Lcvrxn1xc/XMQsKxgGDM
-	mAYcMzqonjrGPinJMCFTQoKuO6VpXqaemguX9J44YW58e2ChZbYEFbkwahxC/MjZE81XvOdvlB6
-	z32PSEJgA3p8sQE/GEQm5ASGE1fPkuZq/hZMb3M0uEtaQTtuOwCmYYyRG2ODRMKStuxzve093z0
-	WEjgoYQo/W1fLiE7nkIBN1KT5BIrPq7EcMrVEXa2qUQkTEyYi1P/w2jWTDU7U5IOLubPVgLdt/m
-	U9xTUp4f25C5uj383QnjbzVF/FO+OBUTtapvT0eI0q4QTb3Xv7pXGpZUOAT6ifXQSIIUkS6n96a
-	+JgAiWY5rf2uF9JqJA+a2uU63v+VJPJw==
-X-Google-Smtp-Source: AGHT+IHEmGnQT19nB8fpJYZ36lJocxSeUy5ie5UanJzwR4STBWqUUl84lcuO3sceBz22ooJBZ+7W0A==
-X-Received: by 2002:a53:accc:0:20b0:63c:f5a7:3e1 with SMTP id 956f58d0204a3-63cf5a70b41mr9090122d50.61.1760449330421;
-        Tue, 14 Oct 2025 06:42:10 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:51::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cd95e3f9asm4749876d50.21.2025.10.14.06.42.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 06:42:10 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Hillf Danton <hdanton@sina.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
-Date: Tue, 14 Oct 2025 06:42:08 -0700
-Message-ID: <20251014134208.2826738-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251014112946.8581-1-hdanton@sina.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A3983100003
-X-Rspamd-Server: rspam11
+        bh=tCgmqJvknBYMayRBo/EEQO5FxQxWgCwoPiscAHcvwvs=;
+        b=j9SH72TxbjDYNJzU21zlHRmVPLZOEft56XUq6rz2CDsjpf66uyEG6qUWCtmzXMczq9
+         qGsrAvN2EBVbBLsXofxUbCRxhZCMazIYowFRAZI3MbFIaS3wkiQNwIw7LmSg24WmIkAO
+         a8zkbyAhC1EExxRa9YUbHuk4NUyOzX2PDQmNwwgi1PpewbnaNlSKDvkv+chj5GIPHHdA
+         9uHBcDbrVwaRiItMgIwSbUqCJ6ymsoYUOUWPX206KIlu+h2V0autqlOOiaizMV47y6Se
+         1/3+FPO5GIpUGsGkTb7Ll84ebPRrhvAykVt+FcgE5k2GvISyOxv+3vzPTVnVYIewHTJi
+         kPNw==
+X-Gm-Message-State: AOJu0Yx1i/b8IpD2RYwsUhCDMBzHhl+7RU8fvYTULuDx7NwJxtcSFypS
+	4jgFg1SMXcuXwJRQWjEO8V+5QonbM9SKV0HCkIDro+ODLvnRhrGjQVcZ
+X-Gm-Gg: ASbGncvGBXhNp0O+U6xBsvCPkldexUAOdPVv71igtyfuR+QC9D+KVXWOE4tr3nrgwWl
+	ykzJFDDBKs0aydR1Q5LLXw1obCC8lU9YsWfj5dRJI5mPCDYmTqhsutjjmr0fdl4CU5UgyozV1h2
+	+IgUrCl9lw7MBnLTJVDiB9NRSQw0orYRK2yN8cbDUspxH4hPe5OX48+uR5K2J9GioaxlfEg9L0E
+	AsUrEbiedsGbnLvbP06lDQaNt4FoSKh6mVGXyQLmlCcgwJzjTLWkKexYHjXmiBWTUeO2IueibmK
+	T3arIQK8Ewu63+Vh9nsjVLNkzCQjz2hwPNLL6GYdQq55J54dgZNWTAbmgBLB33eNZXZ447GvAx6
+	nhQnbt8N3Zt7O5TCRJjeh+bpUtAzSurZBvBcqnO4Q
+X-Google-Smtp-Source: AGHT+IFY+gANpniWkXG4tabZwLq78fi+X8Haz4kZ6mw9dieSkJXLm56wYOiiw4IHyX+w0C/kjy270g==
+X-Received: by 2002:a05:600c:4586:b0:46e:45d3:82fd with SMTP id 5b1f17b1804b1-46fa9b086e1mr189637785e9.31.1760449762412;
+        Tue, 14 Oct 2025 06:49:22 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fc155143fsm193071825e9.11.2025.10.14.06.49.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 14 Oct 2025 06:49:22 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH 0/5] mm/huge_memory: cleanup __split_unmapped_folio()
+Date: Tue, 14 Oct 2025 13:46:01 +0000
+Message-Id: <20251014134606.22543-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: k5fse9gd1tmsty8y7575tc6yys9393u6
+X-Rspamd-Queue-Id: 1F74F40011
 X-Rspam-User: 
-X-Stat-Signature: uuxopozsa8789sffgrnx9xw8mqase197
-X-HE-Tag: 1760449331-459363
-X-HE-Meta: U2FsdGVkX1/hOaCo0927LE58QI6kQiVcJ1aogUAkBbJAY3aIAbNPpKpJbwqulXTFKWBE9vGvFSYPUQxnafVu4g7Cvjr3fV/EPngEqBOoFKXTFsAI9vhzae/5LWieM27/EH5d5sxkLaHn8tBvtQU0zxqtqufAtq40i/+XGn13wWqdMGIHTxtxnhRZkeuJ8sWBDuZV6ZSbrOVb/O6cmuPTg7Wj/KG4R3auccG4xgvBc3H+UFW4WvsWGwJjovdwpOT7KocmAjY2nDUkAa0CWavSlSlQ1s27XGzVgMDid+lY2nj9r6wt8efK1EI7MwBcfTR+7E+061JcaYLSvHnoFVb479r/0R5yQuNy0hdm341tHl7LP0WN6jhNZoOJhD4Vf/Gsdd89rWAXjhdZ7Znzd191QmqWODqcUpO+/fTYjQfLQ93dvEa3dKnEyyCk/BN3L8AnW/KgU5SVVnE1hTM4bYjFOL+K1yqqrxUfbgmQ7pLridUXF7JC8PEYLF7SO/c2t7Rrqo8OpLfyo83AFPWtxtbVYeAA/PaCBn5KFVIOOxu0aU6uctqBGwvEj0Feh1NYzHxdqEbb5GUWZioaoITwm2jAeW8q0+066h734bVE0Zu98cVKDJQUSNSi6wBOinRXnYWdP1ZYCQec1vrCwEUJZd7itDAqq8N+r/f84Fj1dkPXjXr9bDfIt8HdQG5xssoHxIqkVjTSJxG7othTxRLKxZI/IYliQpTfmQNQVFYHKkv6OP7lm3wX75Tn499dPLL78oqadwk9n0aExZ+1O6RFjbG9ud1QOadH+Kc8EwnpT60wO1+8vQ8Hm7xEyLlqrV3es2R+M6LuTbMg+Xh0WbpKuaBehMenO83kLnaAj37LIrIIfpwxFe7wSf4vXUVZiBS4Zh4BrnmI/He3NLyyzwcXWfRYxEkQ1Wh9+hC5xA0m0KAao0ugz0BWnJbgL1yHmTJ+uMTeqvgytFiEONzDCsHi+JM
- wKH54eJh
- 47dQSTjwh3NSKCRkWqS/p/SKoB4G2nx9uxQgHvuGAw5UOjrbOsSeBLG0L6QiXHBMwxiz2KzZ/CsSvOYydklTscH9jrhyONmFl4T/KDbQHJYZtk1xqIQBys2VevC2Tmj0Ofy2ZgOSUWqYqWLOwH+815SxTYhcaR+U8zz+cEeqgMZpXcc5FoPeVcKkcbrV+v/Tmq47rzHq2AW4+GaREkWedVzYjViGuvDPQXWHWsPQ8rfhi7hyLK5ln8lFq15/dB/8HmcKn3HD5aGo3u6v91GvSqxkxNHWWc3i+C5vkOY3Pxzb1KfRq3k2HCuVn2gA8PbDbqCA+dpFjzLZk7H6RPO3xFAFp7wLfXatXXQR22rXYg2+Gwc5nMZmJIbxsjGlDr2U64YGOnzyLnB7fJ+GdE1R5YBrPflPACIYfDwLqiTtgYp7+u6oulC2ZFEtI3Qewb2sHx4uO86X+M3qk3/JfTVpshDQgxikbe0JbxwycXyvaSZ/nYu+xzp2NjD3lsjpn2WIjEXbxDANPXXWn8EJdKL04jIB5sDeLiH5hw0xkEpSogZCE7oXGWlsLBeAtKws0l4Cik9rfmyVqFDTi0YM=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760449763-65142
+X-HE-Meta: U2FsdGVkX18Ssp5T5nXSa3voAzulEnWn9KkvmVjNekK/EtqJtSWPQ3Z/S8zzgFv4ISgHYAKcJ09d+6HymTwQb3kjsuzQi6JlgzdPy9FyG8yOTNlJYoztvlFKQWW+YDjtbBzEO1QKllgoEW4gK7sKQQm+GA4Fe7CUhrXz3lotqru27KsW1waFnIAo65lBevmw85Z5Z0eUkebCHIzw13t8BlwihM9uzbVrHdeCLuItbxcKhMR3r3rkSVBf5MQJmRq4DjF3GKC+J1p5EtoJqYtREuk+mdmc/ytSCJM3jGb8dpv9cphNnWkzZ7r4iFbKnvbRyEuPHlxJq8eIfqc4VpZGgz9OU5Hp8zRzmKRcVVrehgCWP3k8aZSvrr1l0f68QPQ1LKS02Ml2EFIub1v6hsngoI3de8y3rwjuzaW/7HxMg/JyVvwWaRWOs0vqh9bOqiMVvjwQJfi2LC0E0o+MUrEU4g21wiJPs/8U/yHM2C+4q0bXIZvJnir0Oy+OHecnDxAbn52ob5ly8O2WUsdFGj9XW8CWPhEMB4I6mm4oku1kJWcpp34f3AmnnRvbf9RSrGSbqwHJXTN2cwTxAuV94ezUca5L3P1/PQsC2Plc3WTW49U3U2VvwaGP3Tx4IMJMeMkQ/FKa2Ehe6hPJyQKPzqX3yjM8c3ub9H7dJjvK5x+1y3ZQkskbzpPq7YVODB+qqqG8mAd53A0z7iQfOlWTMhutkcRV7lGirjMOsCPZ6rRN0U/fJ+7wuxBqyJmmfMLAKkFLmqnSB7xURX64Xvn1Q6T4YGYGKS8kvsGHQKSz1KjIOnL/uKiqFj+D5/Zv5mq+t1gNkkTYwTIBqBbj8IgcV4Hi93JihdBy/ZP+LaauwLP6PiDB15LGq8AvQjGFPTcamo8rE2rz2lMjvjzmq5ZHIevTGS9a61z7txaOXvAwkYLdRCB6PEihnuUVV7O48kt6fXLSc5fhqalw+GgbLrLn1ee
+ kbzw6dNU
+ DN2bGSXZJEKBSD4z8QaP9M57PnDuGTE2r7/DqbmAmYMBJo8m9x+/7LPLVjsiunVHOjs0rhZGOL1GYg8rmY4kW7SxlkKYWqMbuilYjIwSlwXDk0GnK4k5EBNTm2TZ/AZe3fgZKAanJBa9zlKEmRoeewTf/PvCjtovZVnsj5dBxkLJNcRNomb58iqf7NclG9Vt4o3xtyPPKQDvPH3boXTplfXeombY5VEDhlxXHfPfS0YbH/oa3hr8ZwutSniPpbQo+5TtKafTevElwmv7OKYxXC07lrDwPg5e0/4o54FGl9C3pJiLikoZO0+dOaMosStnC0LBaFMrSSzW0xq/kJar7TbtXsUBwuIK8PBso2Q0cLYzr/Z0z+k/gZWcViL7tllYH3vaJannPRE3jadtTRqMNCQbaSYEH3V6vqE/DQ3H1SX2NGlUFuWZN7vZrSOJrWa58wmwN1P3AFK0eYWuXGeGqTIw4E61+QfyxK9fZEEA1tgP1YkJTkHxdmKtxaJ9m8Av1uYAZLvcIaMj7VBoVeNtCfBUKe4/LK4JR3dr+p0B1ow15SiM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,131 +120,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 19:29:45 +0800 Hillf Danton <hdanton@sina.com> wrote:
+This short patch series cleans up and optimizes the internal logic of folio
+splitting, particularly focusing on the __split_unmapped_folio() function.
 
-> On Mon, 13 Oct 2025 12:08:08 -0700 Joshua Hahn wrote:
-> > Motivation & Approach
-> > =====================
-> > 
-> > While testing workloads with high sustained memory pressure on large machines
-> > in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly high number
-> > of softlockups. Further investigation showed that the zone lock in
-> > free_pcppages_bulk was being held for a long time, and was called to free
-> > 2k+ pages over 100 times just during boot.
-> > 
-> > This causes starvation in other processes for the zone lock, which can lead
-> > to the system stalling as multiple threads cannot make progress without the
-> > locks. We can see these issues manifesting as warnings:
-> > 
-> > [ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
-> > [ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
-> > [ 4512.626401] rcu:              hardirqs   softirqs   csw/system
-> > [ 4512.638793] rcu:      number:        0        145            0
-> > [ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
-> > [ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+The goal is to improve clarity and efficiency by eliminating redundant
+checks, caching stable attribute values, and simplifying the iteration
+logic used for updating folio statistics.
 
-Hello Hillf, thank you for your review.
+These changes make the code easier to follow and maintain.
 
-> > While these warnings are benign, they do point to the underlying issue of
-> 
-> No fix is needed if it is benign.
+Wei Yang (5):
+  mm/huge_memory: cache folio attribute in __split_unmapped_folio()
+  mm/huge_memory: update folio stat after successful split
+  mm/huge_memory: Optimize and simplify folio stat update after split
+  mm/huge_memory: Optimize old_order derivation during folio splitting
+  mm/huge_memory: Remove redundant split_order != new_order check in
+    uniform_split
 
-Maybe this is poor wording on my part. What I mean to say is that these
-warning messages can help us understand that the system is trending negatively,
-even though the warning messages themselves may not indiate that something
-has crashed or broken completely.
+ mm/huge_memory.c | 70 +++++++++++++-----------------------------------
+ 1 file changed, 18 insertions(+), 52 deletions(-)
 
-> > lock contention. To prevent starvation in both locks, batch the freeing of
-> > pages using pcp->batch.
-> > 
-> > Because free_pcppages_bulk is called with the pcp lock and acquires the zone
-> > lock, relinquishing and reacquiring the locks are only effective when both of
-> > them are broken together (unless the system was built with queued spinlocks).
-> > Thus, instead of modifying free_pcppages_bulk to break both locks, batch the
-> > freeing from its callers instead.
-> > 
-> > A similar fix has been implemented in the Meta fleet, and we have seen
-> > significantly less softlockups.
-> > 
-> Fine, softlockup is not cured.
-> 
-> > Testing
-> > =======
-> > The following are a few synthetic benchmarks, made on three machines. The
-> > first is a large machine with 754GiB memory and 316 processors.
-> > The second is a relatively smaller machine with 251GiB memory and 176
-> > processors. The third and final is the smallest of the three, which has 62GiB
-> > memory and 36 processors.
-> > 
-> > On all machines, I kick off a kernel build with -j$(nproc).
-> > Negative delta is better (faster compilation).
-> > 
-> > Large machine (754GiB memory, 316 processors)
-> > make -j$(nproc)
-> > +------------+---------------+-----------+
-> > | Metric (s) | Variation (%) | Delta(%)  |
-> > +------------+---------------+-----------+
-> > | real       |        0.8070 |  - 1.4865 |
-> > | user       |        0.2823 |  + 0.4081 |
-> > | sys        |        5.0267 |  -11.8737 |
-> > +------------+---------------+-----------+
-> > 
-> > Medium machine (251GiB memory, 176 processors)
-> > make -j$(nproc)
-> > +------------+---------------+----------+
-> > | Metric (s) | Variation (%) | Delta(%) |
-> > +------------+---------------+----------+
-> > | real       |        0.2806 |  +0.0351 |
-> > | user       |        0.0994 |  +0.3170 |
-> > | sys        |        0.6229 |  -0.6277 |
-> > +------------+---------------+----------+
-> > 
-> > Small machine (62GiB memory, 36 processors)
-> > make -j$(nproc)
-> > +------------+---------------+----------+
-> > | Metric (s) | Variation (%) | Delta(%) |
-> > +------------+---------------+----------+
-> > | real       |        0.1503 |  -2.6585 |
-> > | user       |        0.0431 |  -2.2984 |
-> > | sys        |        0.1870 |  -3.2013 |
-> > +------------+---------------+----------+
-> > 
-> > Here, variation is the coefficient of variation, i.e. standard deviation / mean.
-> > 
-> > Based on these results, it seems like there are varying degrees to how much
-> > lock contention this reduces. For the largest and smallest machines that I ran
-> > the tests on, it seems like there is quite some significant reduction. There
-> > is also some performance increases visible from userspace.
-> > 
-> > Interestingly, the performance gains don't scale with the size of the machine,
-> > but rather there seems to be a dip in the gain there is for the medium-sized
-> > machine.
-> >
-> Explaining the dip helps land this work in the next tree.
+-- 
+2.34.1
 
-I do agree that I left this on a bit of a cliffhanger here. I'm a bit confused
-as to why there is this kind of behavior as well, although I have a theory
-as to why this behavior is seen. Going back to why we see zone lock contention
-in the first place, I think it might have to do with the memory vs. processors
-ratio that leads to such contention issues.
-
-The lower the memory:processor ratio is, it seems like there is already
-less zone lock contention. If we rank these machines by their mem:proc ratio:
-
-Large machine : 2.38
-Small machine : 1.72
-Medium machine: 1.42
-
-It seems like this is the order in which we see the gains as well. I this
-explanation also kind of makes sense -- the more memory we have, the more
-memory each pcp will have, and the longer free_pcppages_bulk would have taken
-before (and vice versa). This is the case, at least for my setup, where each
-machine is onlined in one node (zone) and so the pcp watermarks really
-do scale with the size of the system.
-
-I didn't want to include this in the cover letter, because this was purely an
-untested conjecture.
-
-I hope this helps!
-Joshua
 
