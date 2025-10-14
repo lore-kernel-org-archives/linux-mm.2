@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA18CCCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30F89CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E9708E00D6; Tue, 14 Oct 2025 05:27:36 -0400 (EDT)
+	id 464A88E00AB; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 199F18E00AB; Tue, 14 Oct 2025 05:27:36 -0400 (EDT)
+	id 4158D8E0097; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D6C18E00D6; Tue, 14 Oct 2025 05:27:36 -0400 (EDT)
+	id 32B3F8E00AB; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EE5E88E00AB
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:27:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9962C88671
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:27:35 +0000 (UTC)
-X-FDA: 83996192070.08.7C4B5D4
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2CEA440003
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:27:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cMZi+K0b;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of yadong.qi@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=yadong.qi@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760434053; a=rsa-sha256;
-	cv=none;
-	b=i/lZh3Dskr4k6hpgw/dIZydfO5wOSYBKUiMwGT8CPOAVcYwqA1OcRsOXklILv6vYTiiRzr
-	nBOYV/ZNJP9YCjsY/RHjDpVmHmqIg182nZYuUFh0/3CEElzLLOi53EhELFn2umK8hxYZnY
-	JmiKCDbxalDYTxp25YiGaGyPe9Ep5sQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cMZi+K0b;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of yadong.qi@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=yadong.qi@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B3348E0097
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7572013BB5B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:32:21 +0000 (UTC)
+X-FDA: 83996204082.17.8717CEF
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1EADC2000E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:32:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Lb/N2nbn";
+	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760434053;
+	s=arc-20220608; t=1760434340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9p0qTVsaA/0eUuNDB2HEIbJ57T7iM2pq155kMAVAFzU=;
-	b=t9JJHtfrdLjE6eucmEB33Heznhl0zOSpnPLoDnFWTtau5kEfSsaHXXD0Q+ycZhZIP7bp2U
-	uV+msVIv73MnZ3CFG5hJJciFuXrHqZyFcda2teYERe4HvDNQ1WWoJjkvxYAwL/Z024HcRB
-	UoEaCC0AUlzy8xGetas4kTahy3jY4+w=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760434046; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=9p0qTVsaA/0eUuNDB2HEIbJ57T7iM2pq155kMAVAFzU=;
-	b=cMZi+K0bMqRNRS/rFSgN7U6MB0rDTgD7PV+O9mVaY2v/M7/YcS0l7zuNBBNdo5KjCNsFTTiN5PFbp95wF2Ivc+pHj+VJ4JtWRktswfQ+giB7F0gXikJRQsxv91zF0UTzKIb9J/lp8jlrY1afAS9aMclp6lV0LH5co60H9CfFvzI=
-Received: from LG41624401116(mailfrom:yadong.qi@linux.alibaba.com fp:SMTPD_---0WqBV2FQ_1760434044 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 14 Oct 2025 17:27:25 +0800
-From: <yadong.qi@linux.alibaba.com>
-To: "'Dan Carpenter'" <dan.carpenter@linaro.org>,
-	<oe-kbuild@lists.linux.dev>
-Cc: <lkp@intel.com>,
-	<oe-kbuild-all@lists.linux.dev>,
-	"'Andrew Morton'" <akpm@linux-foundation.org>,
-	"'Linux Memory Management List'" <linux-mm@kvack.org>,
-	"'Huang Ying'" <ying.huang@linux.alibaba.com>
-References: <202510110050.VG9YKMRK-lkp@intel.com>
-In-Reply-To: <202510110050.VG9YKMRK-lkp@intel.com>
-Subject: RE: [akpm-mm:mm-new 114/114] mm/vmalloc.c:191 vmap_pmd_range() error: uninitialized symbol 'err'.
-Date: Tue, 14 Oct 2025 17:27:24 +0800
-Message-ID: <003201dc3cec$c0697f40$413c7dc0$@linux.alibaba.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MaJVArJT5DSA2aQdi42cvv24ZzgEQA46Llp+u4DFk7o=;
+	b=d3EKnMJS1/65rY4zIJ5xGWJP2FldqfmmSYynuekm+2sBO/CQXK5AVWBijav9AZqXh8fbdr
+	XG4dYwWD6eLinhB/ulSt4KUn5Kymul0BlXYjbOTy2uJmAqZE6+voepBrGrSXqpGPWDeb4L
+	pr9bJFe/q7phr77LJ2S7r9PwbNI0F9k=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Lb/N2nbn";
+	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760434340; a=rsa-sha256;
+	cv=none;
+	b=7JgUmiPWglW+ytu6s+8dh5QjuH2JlDCuLz+R9xoMKxC5NbqAApafvkZBf2EtAT7Ay5C4Yk
+	Qn9yvWWccCggiPQNVs1U8+Mm/ZdlyyE8x7lhJzeqT8X0Xdlm7YR6WplL1GrxhLnomRjxZn
+	nO1MLiROudmhZFheetsetmRqHX+CirE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760434335;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MaJVArJT5DSA2aQdi42cvv24ZzgEQA46Llp+u4DFk7o=;
+	b=Lb/N2nbnUC+KtEZA5YdCQPpps9Cv3ryweXrraIB3a+qMPeI+DdRaj9d5dnTVQDFqYbd4/6
+	KO5FDqdZjAZeg+Yx8O+pttul2MOUXReq/nweJtW6skE52EkkWAoot8WsJkwQG95hqYkBap
+	WDVhc31X/+SlJdB8eeDHTQJeLJ27Uxg=
+From: Hao Ge <hao.ge@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <gehao@kylinos.cn>
+Subject: [PATCH] slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
+Date: Tue, 14 Oct 2025 17:31:24 +0800
+Message-Id: <20251014093124.300012-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQKp7XLvs+TopqcS+NXWteQ2YS1OxrMl93cA
-Content-Language: zh-cn
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: nnk33aa3gfrpnqykdgmd7sg6aby9oy5x
+X-Rspamd-Queue-Id: 1EADC2000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2CEA440003
-X-Stat-Signature: 97gx1j6edsrdbk3ygth5rmf3p4er5zi9
-X-HE-Tag: 1760434051-476340
-X-HE-Meta: U2FsdGVkX1/Lss1VQ6C52yOoeGz7+Xhb1WeX1pb26immnNl2qWrZcurzzDnV4vFG0HGCVGTB0xMaFn7XFaB1RKV48K4BNXyL2tTy3dOj8Bh9eVTjioPUfzshH60w7wpEqGR5SN2ygEkBldur5r+ps3wHwQbsch8D+gUuM2eHr9WwcE31PDMBBBMsT0MGev32S4NxTqrYBViKYt7/RNNuCobgCMuf/AzfM1l1l+HD3RtJTCugvyhC49m7a99ymtAva2pxZc3cVec45rdx/Ht17iKjWtDGdIzAv+k5L3Byd2f8WIWCNlwpDpZ9vJEWcQGYpWCMLNdhn2aSarHHdGXALrEtJQaXrO6bPB2DTEmP3pzNYtPQZigPmyYtyUqNvA/rmMeKuwtTP5qpQVYKXdFgP7XlInI/VhTboLKl/DYoWuLDVDhaDFWTzmxgW835yClYQLDqiBLcfqub3WMNOrAUGljMfwVTofOkpXvASa4RLXVgC6Y0eYBA6dO9OC1n4MZdTipW5Mr/fQt2K5pKiWmU8I2nzaf4N1lWJpzu81v6v2aMuEQwKSOR8J5dXcqx9DdKhKfBvZHN/DnaI4w6pXg+1EoPlg9HJPPmv2GYMh8/sJc2ftf9UQrkLQjTGP5BhbxZZ9cFXu6XAwNqQzv9ufj/+vw61fHyiMN/7Wcw/Muoq97ks5k0absfx3XFOqX1aQtls86tNnzBNnoSoELrk03TBQoirBQEEB4ai2Qll/mejOr1F6Biz7OvUFIj8E/hg8sQ4uID+biDfmEwhrNs5aNAVCCAxbR285zsWQ5fXIZLknY+pJvqasGPPgchiXAGTC28SWt/gak41bZ7cxSYQunc/d9CqQnxTqV4QFwSBXon/lSm0OWsZYj9UGs1iu4cm2hwCcO3ajyEsJjTtKzzt082EHSbP0Yb7m9IvOSHmjmqAtx7L4aGpBydDcrP1CNpgDQc2EFMzS81kDS1MUF4a42
- NBe/RjAK
- QojUcnldudh65+rRvy6v5ATBwEWMoge1v6tCSfI9zgtH3If8nH1WmgoINyg3GPCJdpZN2y5maupQhm+W+928CTZi9ZlfzD/WwzWmGd8SH3tWeFCmQjPNRNWzoL0v4oO8/6Hl4R228OGhcXjwVj+CUkcFrmITdvXHLpet6vNKfkelhy/hBQi42n6vTV/qgm9zm9Q54bIEB3pfgT2Xo1Lq3BdDhjlC7Hodb7mgx1Q/Vs0jci58CjnTaobf6wJiJOK09ws7zrEFXq3rayz69Vj6cG0bSc0o/UCZUd1HUwJVj/jksmyKPwLBkQ3OOQin5ZOHuTq9Jv/7HvHvaqj5DIIpXTbRVKXQDIG3P+KX4lEckU6iOVf5sFZvwMfpPzRzD3Gbrje8XdHU3Dt16GRXLgs7HSGXeFJE7LWEP9qKlu+umAiXYh6mS2ISQKE1+H4H00FivNaNLc3xjRvBBfXaRkH0sRpKaNPGP1D/O6Oxh2eBjEKOWw0jr5Y18rBrUy1KU1JIA4oywzs2YTQWO+YQEOK2bU6IpiLKHftf7xt44yOXWTSDBtZ/VjhZkQzfvUTmmsdnPKyODHUWmcZsPj0xwRuuguBdifw6lwGPik0G6kcLvLYZyH92UNLalbJa+zKUAYH21jBm/AWGaUPs3ptseSuHXi7t+BA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760434337-884266
+X-HE-Meta: U2FsdGVkX19McpzHb0D3dyFA8hRG3PmVq8FOyc4H1OU97UNG3be6D9uqtXUT8fAFAeJFzulVlYh2PMkT4Jra+hjHK+GUD99/Wii5o375xYqQ+JKiCJ3Y3Pt6ev6KXqKHCu0OjR4N01xgtRddKATWpGKjd8O5oWRjswTGnfFDCemvFK5VoV0LNk36K7SBfowEaJc5VY0i+6fr/ON6M5KmlURF2eyN3EkvXgcqLoc0wlwHAvQ40suxpjvVv5YA5QagYXVu0CXM7kaxh0L0+okwWvblexNpcpDknc+9e1qWr9O3OADrquIEvIE4FAYWeojqf4QBlCDuF2CMCmGKJx8kCBLdXjctG++CQPhp+pzsIgERzIxKtg440z1EaSQPmMpTkm2zk6c/AjK/XNUqkXNx4lPCsmaAHpbMRHKO6Ca2Tdhe77P4jLxRMHmlgZlBmwcZsyWkDd0J3nPU6gbZ5J+5NDX2xr838YIXmyQ/tBGSDcHbE8BI6btFfIonaaQJc1NZx2qI9rVcnSYt5ECiA5mruEPiCntyySeRw60TRheiFVOeiD6YPCLFwrLUK7vdFsNuipa7nun0bRz9Xf7rQZPQ3ZTBfTWz4qBBc3j34xqcygkuMS4m+4pN8KWVuQv7yx0jByA+En4IT/+8klLGGjcmA3fSg/4am2BYnt2LUg7gviEIGo4Vav5/OFCY/5JQGIrXq5772ix9zhClekwLRI3GbHa6FV4BOVhPnFuY+EBQMas+29+teQgwH/YoBam2wOob7J3zf+mBRuTaHt/f22symYZvHMnaVwuAWnn3B6MWERquxv4N+i5G0dhZFa0qaj1/CdEYVvZWZhRQj+qTllnmMwjyGzvZ0bLqumHYzG3uWbsuerGcPdn6KJQ+3jbvuxouZo1iW8CtakttCZn02HBvRdSgsHKT6nNUbI1RX9JNrzNSkP/60ZL3PX2DJSkKOW3l3g/LDtzfUEjOCIg6bmR
+ UEcdVdGg
+ RKsNWVSM1uMnSvssKQ7LqnsXXyzP+OlsCg6HEbPDytgUWeegqgBCMnfzRHNqZ/y73bV65E/EDEFY50rG7BqFIJ53HX3HRC11Qcld+sjN6neOK2rx1DdiMtba246HBCFI5V8cJcP0NzEWcSyBlRHgzkePcfiSX51s0Qu+Q7H3WkTsFvBTu14wgTg0cWEu+erqnvj4xogwx9lGWT3U4V63ku8TM8/c7iGJ9nzm0Z+JDUpntMO1GCAx4HDFOJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,94 +95,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> -----Original Message-----
-> From: Dan Carpenter <dan.carpenter@linaro.org>
-> Sent: 2025=C4=EA10=D4=C214=C8=D5 16:28
-> To: oe-kbuild@lists.linux.dev; Yadong Qi <yadong.qi@linux.alibaba.com>
-> Cc: lkp@intel.com; oe-kbuild-all@lists.linux.dev; Andrew Morton
-> <akpm@linux-foundation.org>; Linux Memory Management List
-> <linux-mm@kvack.org>; Huang Ying <ying.huang@linux.alibaba.com>
-> Subject: [akpm-mm:mm-new 114/114] mm/vmalloc.c:191 vmap_pmd_range()
-> error: uninitialized symbol 'err'.
->=20
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git =
-mm-new
-> head:   dbf0247637dd0601a462793035bdd0b416b30e36
-> commit: dbf0247637dd0601a462793035bdd0b416b30e36 [114/114] mm:
-> vmalloc: WARN_ON if mapping size is not PAGE_SIZE aligned
-> config: sparc-randconfig-r071-20251010
-> =
-(https://download.01.org/0day-ci/archive/20251011/202510110050.VG9YKMRK-l=
+From: Hao Ge <gehao@kylinos.cn>
 
-> kp@intel.com/config)
-> compiler: sparc-linux-gcc (GCC) 8.5.0
->=20
-> If you fix the issue in a separate patch/commit (i.e. not just a new =
-version
-of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: =
-https://lore.kernel.org/r/202510110050.VG9YKMRK-lkp@intel.com/
->=20
-> smatch warnings:
-> mm/vmalloc.c:191 vmap_pmd_range() error: uninitialized symbol 'err'.
-> mm/vmalloc.c:243 vmap_pud_range() error: uninitialized symbol 'err'.
-> mm/vmalloc.c:295 vmap_p4d_range() error: uninitialized symbol 'err'.
->=20
-> vim +/err +191 mm/vmalloc.c
->=20
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  167  static int
-> vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  168
-phys_addr_t
-> phys_addr, pgprot_t prot,
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  169  			unsigned
-int
-> max_page_shift, pgtbl_mod_mask *mask)
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  170  {
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  171  	pmd_t *pmd;
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  172  	unsigned long next;
-> dbf0247637dd06 Yadong Qi       2025-10-10  173  	int err;
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  174
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  175  	pmd =3D
-> pmd_alloc_track(&init_mm, pud, addr, mask);
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  176  	if (!pmd)
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  177  		return -ENOMEM;
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  178  	do {
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  179  		next =3D
-> pmd_addr_end(addr, end);
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  180
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  181  		if
-> (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot,
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  182
-> 	max_page_shift)) {
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  183  			*mask |=3D
-> PGTBL_PMD_MODIFIED;
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  184
-continue;
->=20
-> Is it possible to hit the continue on every iteration through the =
-loop?
->=20
-Yes, this is an issue. I will submit an addon patch to fix it.
+We should not reuse the first bit for OBJEXTS_ALLOC_FAIL.
+This is because the following scenarios may be encountered:
 
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  185  		}
-> 5e9e3d777b99aa Nicholas Piggin 2021-04-29  186
-> dbf0247637dd06 Yadong Qi       2025-10-10  187  		err =3D
-> vmap_pte_range(pmd, addr, next, phys_addr, prot, max_page_shift, =
-mask);
-> dbf0247637dd06 Yadong Qi       2025-10-10  188  		if (err)
-> dbf0247637dd06 Yadong Qi       2025-10-10  189  			break;
->=20
-> I always feel like these are better as a "return ret;" anyway.  Then =
-it's
-> just one line to read instead of needing to "break; ... return err;".
-> Twice as fast to read one line vs two lines.
->=20
-I prefer to keep same style in vmalloc.c.
+Under heavy system load, certain sequences of events can trigger the
+VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio) check:
 
+1. High system pressure may cause objext allocation failure for a slab.
+2. When objext allocation fails, slab->obj_exts is set to
+   OBJEXTS_ALLOC_FAIL (value 1).
+3. Later, this slab may enter the release process.
+4. During release of the associated folio, the existing
+   VM_BUG_ON_FOLIO check validates folio->memcg_data.
+   If the MEMCG_DATA_OBJEXTS bit is unexpectedly
+   set here, the bug check gets triggered.
 
+We have obtained the following logs:
+[ 7108.343437] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0002deb97600 pfn:0x31eb96
+[ 7108.343482] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[ 7108.343500] memcg:1
+[ 7108.343507] flags: 0x17ffff800000040(head|node=0|zone=2|lastcpupid=0xfffff)
+[ 7108.343523] raw: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
+[ 7108.343528] raw: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
+[ 7108.343534] head: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
+[ 7108.343539] head: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
+[ 7108.343562] head: 017ffff800000001 fffffdffcb7ae581 00000000ffffffff 00000000ffffffff
+[ 7108.343569] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
+[ 7108.343574] page dumped because: VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS)
+[ 7108.343601] ------------[ cut here ]------------
+[ 7108.343607] kernel BUG at ./include/linux/memcontrol.h:537!
+[ 7108.343617] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[ 7108.345751] Modules linked in: squashfs isofs vhost_vsock vhost_net vmw_vsock_virtio_transport_common vfio_iommu_type1 vhost vfio vsock vhost_iotlb iommufd tap binfmt_misc nfsv3 nfs_acl nfs lockd grace netfs tls rds dns_resolver tun brd overlay ntfs3 exfat btrfs blake2b_generic xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables rfkill ip_set sunrpc vfat fat joydev sg sch_fq_codel nfnetlink virtio_gpu drm_client_lib virtio_dma_buf drm_shmem_helper sr_mod drm_kms_helper cdrom drm ghash_ce virtio_net virtio_scsi backlight virtio_console virtio_blk net_failover failover virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod fuse i2c_dev virtio_pci virtio_pci_legacy_dev virtio_pci_modern_dev virtio virtio_ring autofs4 aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+[ 7108.355662] CPU: 7 UID: 0 PID: 4470 Comm: kylin-process-m Kdump: loaded Not tainted 6.18.0-rc1-dirty #54 PREEMPT(voluntary)
+[ 7108.356864] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[ 7108.357621] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 7108.358981] pc : __free_frozen_pages+0xf18/0x18e8
+[ 7108.359834] lr : __free_frozen_pages+0xf18/0x18e8
+[ 7108.360379] sp : ffff8000a2bb7580
+[ 7108.360786] x29: ffff8000a2bb7580 x28: fffffdffcb7ae580 x27: fffffdffcb7ae580
+[ 7108.362013] x26: fffffdffcb7ae588 x25: 1fffffbff96f5cb1 x24: 1fffffbff96f5cb0
+[ 7108.362804] x23: ffff8000839d6ba0 x22: ffff8000839d6000 x21: 0000000000000000
+[ 7108.363596] x20: 0000000000000000 x19: 0000000000000001 x18: 0000000000000000
+[ 7108.364393] x17: 445f47434d454d20 x16: 2620617461645f67 x15: 636d656d3e2d6f69
+[ 7108.365498] x14: 6c6f66284f494c4f x13: 0000000000000001 x12: ffff600063fece93
+[ 7108.366317] x11: 1fffe00063fece92 x10: ffff600063fece92 x9 : dfff800000000000
+[ 7108.367610] x8 : 00009fff9c01316e x7 : ffff00031ff67493 x6 : 0000000000000001
+[ 7108.368455] x5 : ffff00031ff67490 x4 : ffff600063fece93 x3 : 0000000000000000
+[ 7108.369276] x2 : 0000000000000000 x1 : ffff000103fe5d40 x0 : 000000000000004c
+[ 7108.370140] Call trace:
+[ 7108.370463]  __free_frozen_pages+0xf18/0x18e8 (P)
+[ 7108.371011]  free_frozen_pages+0x1c/0x30
+[ 7108.372040]  __free_slab+0xd0/0x250
+[ 7108.372471]  free_slab+0x38/0x118
+[ 7108.372882]  free_to_partial_list+0x1d4/0x340
+[ 7108.373813]  __slab_free+0x24c/0x348
+[ 7108.374253]  ___cache_free+0xf0/0x110
+[ 7108.374699]  qlist_free_all+0x78/0x130
+[ 7108.375156]  kasan_quarantine_reduce+0x114/0x148
+[ 7108.375695]  __kasan_slab_alloc+0x7c/0xb0
+[ 7108.376668]  kmem_cache_alloc_noprof+0x164/0x5c8
+[ 7108.377206]  __alloc_object+0x44/0x1f8
+[ 7108.377659]  __create_object+0x34/0xc8
+[ 7108.378196]  kmemleak_alloc+0xb8/0xd8
+[ 7108.378644]  kmem_cache_alloc_noprof+0x368/0x5c8
+[ 7108.379224]  getname_flags.part.0+0xa4/0x610
+[ 7108.379733]  getname_flags+0x80/0xd8
+[ 7108.380169]  do_sys_openat2+0xb4/0x178
+[ 7108.380921]  __arm64_sys_openat+0x134/0x1d0
+[ 7108.381952]  invoke_syscall+0xd4/0x258
+[ 7108.382408]  el0_svc_common.constprop.0+0xb4/0x240
+[ 7108.382965]  do_el0_svc+0x48/0x68
+[ 7108.383375]  el0_svc+0x40/0xe0
+[ 7108.383757]  el0t_64_sync_handler+0xa0/0xe8
+[ 7108.384465]  el0t_64_sync+0x1ac/0x1b0
+[ 7108.385284] Code: 91398021 aa1b03e0 91138021 97fd35e3 (d4210000)
+[ 7108.386553] SMP: stopping secondary CPUs
+[ 7108.389714] Starting crashdump kernel...
+[ 7108.390190] Bye!
+
+So, introduce __SECOND_OBJEXT_FLAG for objext_flags, adjust
+the corresponding order accordingly, and ensure that OBJEXTS_ALLOC_FAIL
+is no longer reused.
+
+Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+---
+ include/linux/memcontrol.h | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 873e510d6f8d..8ea023944fac 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -341,27 +341,23 @@ enum page_memcg_data_flags {
+ 	__NR_MEMCG_DATA_FLAGS  = (1UL << 2),
+ };
+ 
+-#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
+ #define __FIRST_OBJEXT_FLAG	__NR_MEMCG_DATA_FLAGS
++#define __SECOND_OBJEXT_FLAG    (__FIRST_OBJEXT_FLAG << 1)
+ 
+ #else /* CONFIG_MEMCG */
+ 
+-#define __OBJEXTS_ALLOC_FAIL	(1UL << 0)
+ #define __FIRST_OBJEXT_FLAG	(1UL << 0)
++#define __SECOND_OBJEXT_FLAG	(1UL << 0)
+ 
+ #endif /* CONFIG_MEMCG */
+ 
+ enum objext_flags {
+-	/*
+-	 * Use bit 0 with zero other bits to signal that slabobj_ext vector
+-	 * failed to allocate. The same bit 0 with valid upper bits means
+-	 * MEMCG_DATA_OBJEXTS.
+-	 */
+-	OBJEXTS_ALLOC_FAIL = __OBJEXTS_ALLOC_FAIL,
++	/* slabobj_ext vector failed to allocate */
++	OBJEXTS_ALLOC_FAIL = __FIRST_OBJEXT_FLAG,
+ 	/* slabobj_ext vector allocated with kmalloc_nolock() */
+-	OBJEXTS_NOSPIN_ALLOC = __FIRST_OBJEXT_FLAG,
++	OBJEXTS_NOSPIN_ALLOC = __SECOND_OBJEXT_FLAG,
+ 	/* the next bit after the last actual flag */
+-	__NR_OBJEXTS_FLAGS  = (__FIRST_OBJEXT_FLAG << 1),
++	__NR_OBJEXTS_FLAGS  = (__SECOND_OBJEXT_FLAG << 1),
+ };
+ 
+ #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+-- 
+2.25.1
 
 
