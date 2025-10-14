@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A95CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 14:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A051CCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 14:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 312A28E0130; Tue, 14 Oct 2025 10:32:49 -0400 (EDT)
+	id 51AD38E0131; Tue, 14 Oct 2025 10:38:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29C3D8E010A; Tue, 14 Oct 2025 10:32:49 -0400 (EDT)
+	id 4CB308E010A; Tue, 14 Oct 2025 10:38:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18B398E0130; Tue, 14 Oct 2025 10:32:49 -0400 (EDT)
+	id 408078E0131; Tue, 14 Oct 2025 10:38:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 034538E010A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:32:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A8620C0341
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:32:48 +0000 (UTC)
-X-FDA: 83996961216.13.11E5083
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1F1761C0006
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:32:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gANwOdXe
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4B68E010A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:38:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D87FA16096F
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:38:08 +0000 (UTC)
+X-FDA: 83996974656.23.31525F2
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E9E1740006
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:38:06 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="N7PD/BUD";
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760452367;
+	s=arc-20220608; t=1760452687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0GqYhA2elC/r2rvCKhRwX+jvXdEIHrho/9mEfMhvs2g=;
-	b=4MHL+Yyw3faNrDbeF1azUCaFc2EiUuhBGy8/epTOC4gLgEHoWkkWlJjH53ocBoNRF25JJa
-	2KaOn7ILiCjI4FjbqRQoPpMkTDnvNyZvsKWISC8K3raIfSLhtRYiWp69wz0edPIzM/Cyzf
-	fglxRRW7iY+CjGmQaH9z0vbLWjTEL6s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760452367; a=rsa-sha256;
+	bh=O+WxWTN/C2HyVblMAccwywFAotrd7QpsKNQRxf1sI58=;
+	b=8KNNVUqKHR1nFWxGSyy9VcNw4T5/ryxFGRm83hfngRbDFgEWx+rtm2ufzsltovQl1UtPVQ
+	hqdVB00oSaQAx3vncpL3xGsJiTJv1YX3d59OdLfwu6Tnlg4A9Ih+jqfWpw+vLBErmKDUJ7
+	Ez/ExwN/g8gmXrcP9H4Bffy0cd5e6Uo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760452687; a=rsa-sha256;
 	cv=none;
-	b=aT3UJqZ/1XJmAfGUpbJGaG4mJbtKSgTJinMMJGyOFnL0MXTyeqqEyHlykrz4NQFUF8O0Qy
-	/LRpULkaCcykcHhXP/JbPKst0rWYkQ9K9ffp9tWegAcry0NHI+kMV7A90N6qRhWQ2VVUfT
-	Fz6Tl8cYHyn29T2Ik3tkT3/6bru/VdE=
+	b=FHf/I4bj9cuoFr1NTjIQHWrxAMZuLZgVXe/LwYdb7I/wGA4/DbI8s7m5s4ghQSBXroP9/K
+	r6GUpfb16SfP/jJDEjpwVeWr134ggw0EKEpXOh1eTu0MDS8qWoHBKMo8hWhMjvh+S9TPYj
+	J5BRuceuT70mRgMeVUuw1F7T9cpxbZw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gANwOdXe;
-	dmarc=none;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0GqYhA2elC/r2rvCKhRwX+jvXdEIHrho/9mEfMhvs2g=; b=gANwOdXeFS4A8Uk10aaWilWR7d
-	ySohtwrkya4BSFA9MNyJwI2SZVkT1JJHEAJ1YXe7UWprbY1XwtET/2V4R4oRn4GF67uKnvqNrQQpm
-	yhej7D3Ampn9gV2sdpBOC//k6+7VCRkiUzXc9CAocGziSDmflGDKxlzctCPJMtuj1ame1R/WX62J3
-	/q00WWJeO563d2TrDkgqDV3wLGgpDguZTVQJuU95qNOMg6pvwsczOA0E/TTHHdN4VGFQz3RMBH5p7
-	s4BBoP6jBFf72/l5Iy/B7dE73hYHCsC/5tBuD4pR9oLkR5r5JzFIJiPt40JHliYisLm0SxqKtLxy/
-	LUkZzWEA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8g4v-0000000CSAd-1Vaf;
-	Tue, 14 Oct 2025 14:32:41 +0000
-Date: Tue, 14 Oct 2025 15:32:41 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>, Zefan Li <lizefan.x@bytedance.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>, Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v3 20/20] mm: stop maintaining the per-page mapcount of
- large folios (CONFIG_NO_PAGE_MAPCOUNT)
-Message-ID: <aO5fCT62gZZw9-wQ@casper.infradead.org>
-References: <20250303163014.1128035-1-david@redhat.com>
- <20250303163014.1128035-21-david@redhat.com>
- <20251014122335.dpyk5advbkioojnm@master>
- <71380b43-c23c-42b5-8aab-f158bb37bc75@redhat.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="N7PD/BUD";
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 14 Oct 2025 07:37:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760452684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O+WxWTN/C2HyVblMAccwywFAotrd7QpsKNQRxf1sI58=;
+	b=N7PD/BUDXc/bOVA2AS0yKahxhqfyPMfGVj13erv8XHxrFxgs9quAQp7uIdx7ICDzbZMTS6
+	/pd4lzjh4mPDJMpa+8NUiKnRE6quyJb5WjesKAC5YmqWv0+fbd8lZDwA3zzAFWkaSNd/WK
+	yqDMrA9ChLKXKNM0Q+XNxGFRKTJ5ncs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Barry Song <21cnbao@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network
+ buffer allocation
+Message-ID: <pow5zt7dmo2wiydophoap6ntaycyjt2yrszo3ue7mg2hgnzcmv@oi3epbtyoufn>
+References: <20251013101636.69220-1-21cnbao@gmail.com>
+ <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+ <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+ <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+ <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <71380b43-c23c-42b5-8aab-f158bb37bc75@redhat.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ghbiu1x41cnuxgex4m8kn3pcdiuh7ur9
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jet7auk4kt5m1n7sucydb68n7f9xnbgd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F1761C0006
-X-HE-Tag: 1760452366-826863
-X-HE-Meta: U2FsdGVkX19ZtIp51JoQicuh1TXpaipTeDBdOHMRiNycAswSp+KjRWOjDqp2JuWP5kYLg42Idm+hlGbl9PZ698v1oo+cF1ATIjQ4YGmfXuhGujWacRQbDFESlHPDMbxrc668JFcUf/Dg8jNuesPTeT8YWQ52FVagsYG78uYtG2pJHtmStjB1y5ICTUcZrzPk1KLU4gLVbEIZlFy3eOuKJNYn9rVGruOZ/ZQ5migoLJmddBrrHFh3vFf29IZEA8UQ7+ML6VZkU+B8wXwbPwx0kZSCCzQw+imxZRQqnhUubCVsondRL1B6oY0BqOh/jaXmJYzWVfIds6ASg0/eg0uMmzpM/oeTAau6cEzAdsoPOYdQlGviM3T/3MqfDuSq3Utizmph+l7nMREVuZFjOOjQoijnUpuAUDAEyTnnYUhtI1Nuf2Da8firnyRO3DigIK177vjEdazaaabjlaURz1J+ICUwmOYq4WPjlSZvqScMleN+a/hjKPfhYfzQvJhPX8pcr5GEdtdGGtkKjmWZN7ZzqbER9AQAiCu35+N7c9Ei8yDwdRCbEzvxtVtUUZq0eroTXMJQM3wILT2Ns/dabei5Zdgl+PqwHier4ggyvLfqhHEPrTInOkFKewZKVIH4W4Ek8t4ez0Cnm+yodbcv0p7gYYby/pTpMql4WRO590e1IplS8BgmtqZcgMEeS+2XkN8xLBrAF+3TayvX1TOx3HYoxzMy/OQ8EnjQ6T+H/LNw20utu8rrL7x2H4+67fjS9nZlZ6srXr6T4h08QzM3TJjVoVWFmMXDnt8yxusJJg84hm4HtLngBfsjhvcltnMFoEoZ58HpToinKUEG4sfxh9GOK2rxSWo5G0n+eYe/k5g/bjZDyeGlqnKTbkI+k0771+0kvk8XAj6hqxDNHRY7Fxiy3gFZRfQTnf/OFDbDsGMLq9cv+7caa2oRa7IZW6FP55S0lmc3wZ2y1n7Sav8xQhG
- jwdXd5JO
- qQ7hk
+X-Rspamd-Queue-Id: E9E1740006
+X-HE-Tag: 1760452686-669500
+X-HE-Meta: U2FsdGVkX1+8pO9bw+CFDsk5LD/eTfNhqgm2KX63dmcpRc7PaIKv6wk3afxppkeJ8iRzRT3RiRRSzAeVhbn1ikwUtvbba7CiJcucr8PaK23hMeI2i0v0jdwx5/Y1SxwttWf1h1RtUdi0cx4PDdhsskn3t6AJyjSNkMxvLWkmA/FHmJcZDUVguB3ev6asd5RIjfAHFTcXQAamf24+92qisv1IqQNFkDKQskhL7NKyTHFUutugu7d5RHi/FenzjFPBhpBFpqBu5u36GKU7LrTY0LWcnPJKH0/DYBjYXiZhvG4hHmPx+eD7YKJtJrUMD/SAvp0has56L1U61o1hqIw+YVM6qKVwZV3F8HBGEh/NVsFVQp/6w0mXLiu5BQyl1HWsxDwsAUbi05aJawbr5AyQhqM5L/38qQo7vt+mfmC+vsqOOWsbfH2ESmCaf1vdFKGDswKAeSoKv2KBCXHSdYo1C5PQIBlm/rglmIHeTW6K9y8Cbe6OnFTZKidRa5uu2YFcV9L4LUItvyu7ILPEFBtGdCQpO5mDC+UsTRdtU//yafyRE+t3/uiT+89WzWz1awhnAWAxgcG4plaaRbKWgqQuUaUOr9wp0ZBRqqufKn4Y8j7FDTx0Z01yQZcTBgUW+NUiWXP/f8Hz5+adz6Qlj+yfxxxAXPcR0u9Suqo/M9djv4Hq2DZAiRDgKQN4JA1W36otcAmOSLE+EwMYi5pOZCzvKWICGH8XHu3RKoE/cWdbPyFJe3YB+D+jXH1MvKSMrEHadWgP3cuPp9Dpjp3jB48oWCHb4tnaKK49+iR7fSm3lkYwxaUqU/z5dDci+CowcTTN5CRqtJ3Vm9/RXyEtLLtn5lbPVVfFnzKpvPMNgIewQA8W3h9f/ZZSPpUdtQi7ZBmccJWk2MGxD8z4ifLsrJtJ+3TWjbVfuZn6XBDhwg7lXrALP1tnJdwOWBMpEC4O8teQiEK3uPWL8PVmXJpukqJ
+ vW9hfREN
+ 0T+gho0zeZ0RAQc0yFjHC8JvRmTU0cAoW7p/qcmruA3EX4vCh1KDNKrpr4lCbQf81Jqk5DqQ+8z+zDsd6p+KSujegxKwhQCt95iXaT/NoXPKDzXAixhgQxbAuzHsY7HE1WozGmi8q80pnZqryTyd1cl7U2XpamUElC5UJT2LDy+EwoLhJ0SmlHNvZbh5eSiBcqszcu+XX/NtIBSB9z3ZhuzMItd13JV4AcWOXTdnT1Z3Vxg7uu3V4ghK5Q1b18sebig4n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,13 +105,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 02:59:30PM +0200, David Hildenbrand wrote:
-> > As commit 349994cf61e6 mentioned, we don't support partially mapped PUD-sized
-> > folio yet.
+On Tue, Oct 14, 2025 at 06:19:05PM +0800, Barry Song wrote:
+> > >
+> > > >
+> > > > I think you are missing something to control how much memory  can be
+> > > > pushed on each TCP socket ?
+> > > >
+> > > > What is tcp_wmem on your phones ? What about tcp_mem ?
+> > > >
+> > > > Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
+> > >
+> > > # cat /proc/sys/net/ipv4/tcp_wmem
+> > > 524288  1048576 6710886
+> >
+> > Ouch. That is insane tcp_wmem[0] .
+> >
+> > Please stick to 4096, or risk OOM of various sorts.
+> >
+> > >
+> > > # cat /proc/sys/net/ipv4/tcp_notsent_lowat
+> > > 4294967295
+> > >
+> > > Any thoughts on these settings?
+> >
+> > Please look at
+> > https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+> >
+> > tcp_notsent_lowat - UNSIGNED INTEGER
+> > A TCP socket can control the amount of unsent bytes in its write queue,
+> > thanks to TCP_NOTSENT_LOWAT socket option. poll()/select()/epoll()
+> > reports POLLOUT events if the amount of unsent bytes is below a per
+> > socket value, and if the write queue is not full. sendmsg() will
+> > also not add new buffers if the limit is hit.
+> >
+> > This global variable controls the amount of unsent data for
+> > sockets not using TCP_NOTSENT_LOWAT. For these sockets, a change
+> > to the global variable has immediate effect.
+> >
+> >
+> > Setting this sysctl to 2MB can effectively reduce the amount of memory
+> > in TCP write queues by 66 %,
+> > or allow you to increase tcp_wmem[2] so that only flows needing big
+> > BDP can get it.
 > 
-> We do support partially mapped PUD-sized folios I think, but not anonymous
-> PUD-sized folios.
+> We obtained these settings from our hardware vendors.
+> 
+> It might be worth exploring these settings further, but I can’t quite see
+> their connection to high-order allocations,
 
-I don't think so?  The only mechanism I know of to allocate PUD-sized
-chunks of memory is hugetlb, and that doesn't permit partial mappings.
+I don't think there is a connection between them. Is there a reason you
+are expecting a connection/relation between them?
 
