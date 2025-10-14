@@ -4,86 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AA3CCD185
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 03:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F6BCCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 03:21:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55B318E0064; Mon, 13 Oct 2025 23:15:57 -0400 (EDT)
+	id 196918E0075; Mon, 13 Oct 2025 23:21:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 532FC8E0007; Mon, 13 Oct 2025 23:15:57 -0400 (EDT)
+	id 16FF58E0007; Mon, 13 Oct 2025 23:21:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4704D8E0064; Mon, 13 Oct 2025 23:15:57 -0400 (EDT)
+	id 0AB2A8E0075; Mon, 13 Oct 2025 23:21:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 34CA18E0007
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:15:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B981813B9DA
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:15:56 +0000 (UTC)
-X-FDA: 83995255512.08.A345ACA
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A68E3C000B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:15:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DKKLGgE4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE6B48E0007
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:21:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9CE2F11AB33
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:21:08 +0000 (UTC)
+X-FDA: 83995268616.30.7D69324
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B11E080005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:21:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=NP42bns8;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760411755;
+	s=arc-20220608; t=1760412067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LiV6b7SrtuoVZx67W0BalusG8NaB9Pi8HQ4FuVqaPtA=;
-	b=tm6HowNCHMYMtiqZeoluCiH7rUvdVpzlW3XWXXX8VkwfjDb0aV4b++2PtzCAlpNLIXYZl/
-	Ax+4H2OKoXqLoY64VHvDgW7XjlnBeZ/4zQrn5CIHxYHJT6GWJCca2pXu23tbpjV1QU4Eal
-	lenPclKcnqe7KmhwCHKSjDsMg4TFcc4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760411755; a=rsa-sha256;
-	cv=none;
-	b=t8j/+7QkNQhwp/X1ymXo1nXxPBcZFlo3wI1Zzh+rLAwlC0Q369mnG3O5+8vVtu1tw8+K1+
-	hK4nELsNTXQmbOxm8N+KTfQRaJnPGHhY3w44jC8SbvhLZd8/bppfQ5vZav1TQFNIWjPgdr
-	NcN+evgCpZG1KMPiDIsA67/PXQKKrtI=
+	bh=41OSkq8dhVlpXFlmK5VxSYY/DHIKRiJto96FUVix4L0=;
+	b=HHfTXDPGagwnZ5IPs28qlhiNxOFJeNfFnkospcixSfk5GUVe7zL80N9KWbhN+R4uBEM23k
+	40Ketc92WaW1rutYlNKpLhejU08UBkNMam4prcClbML0FiXYmy8BJ+btx3EXbd0kGDnZN2
+	Q2PXwMquclun4Ec0kZkUu7A6XplWxpE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=DKKLGgE4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760411751; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=LiV6b7SrtuoVZx67W0BalusG8NaB9Pi8HQ4FuVqaPtA=;
-	b=DKKLGgE4q4rdFqpI8kuUC1pbl10cCWyiMeBFdtc47J+NSMynG7T0Yk0ULi5fYjR24+sCoVBX3yFYgPwqprIRUX0CpGeud74IiawcoBZthSxkUpEi7x5u7a5GS3+MdPFygmpnI5H/P3QC32aveW9wBvuQhBafknydVo5Z7+XzbQg=
-Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqA1jiw_1760411750 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 14 Oct 2025 11:15:50 +0800
-Message-ID: <35e79f7f-5197-44fe-93f6-f172a95e0906@linux.alibaba.com>
-Date: Tue, 14 Oct 2025 11:15:49 +0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=NP42bns8;
+	spf=pass (imf02.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760412067; a=rsa-sha256;
+	cv=none;
+	b=6y3eDWEolUnm3y7URe2zDnGT1mt1x8RqEH8MOzsOnREzJPpDZnFgD7VOasZksjEYw0Pol5
+	A9XU5YLUXogJIEmTVgq2n/m+uMCs4f8Fu8jyy4aDWyqjKNOnDWP98fLo9qNlHL+JKxxJZr
+	U1ChRUoYUsxnm7U+u/1JfwByO6u3+Gc=
+Received: from trampoline.thunk.org (pool-173-48-82-170.bstnma.fios.verizon.net [173.48.82.170])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 59E3KsU7014549
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Oct 2025 23:20:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1760412057; bh=41OSkq8dhVlpXFlmK5VxSYY/DHIKRiJto96FUVix4L0=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=NP42bns88QjT/FW6rfonREwhQSPUJN/eEvD0QNw7h90hB0l6EU3SqotxLxWIh39gx
+	 4WN08/IPuTGAdNzZ8lW/YtHoMKHfCjyhBp2uRqu1RzFJ3JtWbBak1IFjHfn9KsY3jT
+	 UUGKFJAHfY/uffvWEBHySfOF+iZxkpLDZu+VpHlYVP6onFReFKJ9rat2CYVTAezQvl
+	 IBrJaTZZQh3ytQqP7FHxUa69mh9lDXdrxhYKgG2GpMugZa7jBPfcQcG7yvFYT2EbxZ
+	 XLFK2BT6XotlVagaec9EKrn7Ty8eTdPwO+tjezP4hRBf3rwtqTTRAHge8BUCVPh9Ly
+	 ndpVqQup1Ahgg==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id BE7E32E00D9; Mon, 13 Oct 2025 23:20:54 -0400 (EDT)
+Date: Mon, 13 Oct 2025 23:20:54 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Luis Chamberlain <mcgrof@kernel.org>, Linux-MM <linux-mm@kvack.org>,
+        linux-fsdevel@vger.kernel.org
+Subject: Re: Optimizing small reads
+Message-ID: <20251014032054.GP354523@mit.edu>
+References: <CAHk-=wgbQ-aS3U7gCg=qc9mzoZXaS_o+pKVOLs75_aEn9H_scw@mail.gmail.com>
+ <ik7rut5k6vqpaxatj5q2kowmwd6gchl3iik6xjdokkj5ppy2em@ymsji226hrwp>
+ <CAHk-=wghPWAJkt+4ZfDzGB03hT1DNz5_oHnGL3K1D-KaAC3gpw@mail.gmail.com>
+ <CAHk-=wi42ad9s1fUg7cC3XkVwjWFakPp53z9P0_xj87pr+AbqA@mail.gmail.com>
+ <nhrb37zzltn5hi3h5phwprtmkj2z2wb4gchvp725bwcnsgvjyf@eohezc2gouwr>
+ <CAHk-=wi1rrcijcD0i7V7JD6bLL-yKHUX-hcxtLx=BUd34phdug@mail.gmail.com>
+ <qasdw5uxymstppbxvqrfs5nquf2rqczmzu5yhbvn6brqm5w6sw@ax6o4q2xkh3t>
+ <CAHk-=wg0r_xsB0RQ+35WPHwPb9b9drJEfGL-hByBZRmPbSy0rQ@mail.gmail.com>
+ <jzpbwmoygmjsltnqfdgnq4p75tg74bdamq3hne7t32mof4m5xo@lcw3afbr4daf>
+ <20251013172654.GI354523@mit.edu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm/migrate, swap: drop usage of folio_index
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Ying Huang <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251007-swap-clean-after-swap-table-p1-v1-4-74860ef8ba74@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: pasp6r1gtg9jyw7ubd73kd7xtini1ypy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251013172654.GI354523@mit.edu>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B11E080005
+X-Stat-Signature: rybs5wimwp185xse6tht41xy66zx4jtc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A68E3C000B
-X-HE-Tag: 1760411754-894736
-X-HE-Meta: U2FsdGVkX1/pKCCcTV9PAIFmezel7ezJur/gMGG26vAUpl4P3GpYZgqD8AucwgOw2Y0f+WIJ9t70aaYnOcSdtLGlrzBdzoITn6QczGJHmZmyC+o8I77yNsqeP2l0VNkALNr/d7GNZmue7pBCsnUSIXfqWxdBB6begYP8MLatw0KmU+qnjBvKlTGoN5r3+ejMqnD1zoq4Qy6/XYNni4XKNabT10kHVs0fgAz1UrsExNuDUFz9kC7yCddQzpJRiTJamHSy6YDkCmchQ2hkBrJ7qPymB8wWZPlVJMu1nXRK8JkILnsN17LLkBodPznpQ+uFL4/i2EAN5sQZ+a9ef3gReX1GGas4+A2wsW9+sOq3KQfA6T41GK3g8tDcvvM4jDAg5AQr8zInju6TROPrCxRmj1EAPEOMa1H7DQg1+o6fy7tT3103nTtpIrVj6anEuoDFVlnnZrbrAoTwU6XnZHBrSc/PuViSgt5TsKwyRxg5gYxfeu8XihIqk5PkMAs/o56ccgJt13ATpNFvlSWivV9bvaseJlLJNHq2Lc8mOGs7JzMvIPhwyxlSC1AL4pfT1D9wtKmF7IfIJUSII5tn5KWZPf80EWKOyhSX+88efHCebRCMeGRPjRy6cZMfcwx4IV53mx6idRyZjQ9LRTNUpqdnEp3/+1zGouOzRkYojKa57ExzTUnHC8yheItBSYU2sc/GiJi8hnHAD1pnNfYx4gszvyjJl1IxEveahzf1sho34Zr3o5CWZk3VPfA/k43oiUKmKSElt1EOhm6qiWl3Jerz6mT7+mQiP9RzZUQU2FLMq3QPylhPWcDA2CSXRaW5A3u8lh1sVG7O+ema1b6VM0HDb4JHzUlM+5OBCGO+2Kmh96Aa3dXCG9g1Kvx9wZ3eXGToNfmv2dqEOC3k4O5itLWe+TqZgeu1uWgGleatyqrCqyNSnne2zKyn0JS9zzRm+70VHOTCVWWWriX2H4pcSEL
- eVfMft/W
- /MOkdratfGeqzIy7DKnB1quqf+tq4j4lP+GgkUzUWYzgtinb604iDQsPQaqnQ9wiSHrW4fFrQap17HM4KU7K/53Vtdd/NvealueZRJFR4PiXBBIOuaGwkCTFTQS3pdMsHgSbwjMxRkw9rtjILKs8fjM7RsFMqALC2JrQt0JKBvkV6aLp4Tru1MKOOtGFPVSY524Yj/lQ4uP++9IfLMoY4f4Hud0kMaEu/YmODLGO2XFTNg7nOyEUz207WTHTOee/6GOoizB2dMmzvb33k6nd7MmEYrYw3v0N0JCSrHqlhrnRiugD1IrBmWKupbupsgeUS7hpQ5CW+z9303B/UQl7NfLNaim7N4wfJQuogABfzOsMdsEs=
+X-HE-Tag: 1760412066-726358
+X-HE-Meta: U2FsdGVkX18x4ws5JTUxX1GW+6js/EO12UalwieVfwyLWjfbNaxkIa/uFN7D/2nJ2GlSs2ZigdZh05H63QB1xn9PKGUUEQcujCK+WwnbzsawnrWkXj1lXLepb3ELxsV4LG6Pofp2T9saE7XdCCYTC0MsymD/J0NDLHhJ0Irv1cjHetEDgVpX/AwOdwHuUylPxKQFm9rZsymJ8Cf4XP17k5fcNAPxBa6XlFdv7hVCWS6BRZBUkXiZS0PRPeymtw8RUQGIISzuZ4fQ1dDMKziTSgmlbm6vQjjdhcaYNN0sLsJCLBKgjUULPmsj0ZgzRBES5K3nIkpyQJo3QSpb+8VP1MdO37+8kXeVLardeDANcfFlqf41Pb9SC9CAJqNrQHVSafL4Gp/5s1EhZHK9kJjeDOC2Xasbol3D8jQuO5/CUyjpbPDFqSejfFfpNbbUDSklKpY3G1BW4RkhwrIVPMl87zsxpq7wHHGUfIUe2lAkZYaYeKW9+s8Tn8EqlxyAK+MrSKF73zrP/g4Gl5I7ch8nQpGF7uGMRvaxK8Yin0WerXm49hnMd2D4Ybi7dOvwM+8og7dZsg8INEQPSwXDOR5MYidGrKfT6IvKhlVMZ26b3uDJp3enTBGMV2saXICKOhUWl0oIvLs24xcIr69YB2uMoKWbJgLkP73AJOTxZqTlW0r/d8c1HxqtMrwU5CTl9vWr68PP3V1GnPWkNEHMDnVFIGf0U7FqKb3k16fQ0cXy0dsNvza9bukc6b6+q092azsmIlRLsA7sAolp/+I7f34qmOrzwszaOxnWWk3jQ4tG+7qmetHknD6XczrRP+OxWGZyqv0Bn969nH2oKMFdm+XE/mVDx2ea5OwTsJeBH802XBQW7Jrynh6G8/ns667SpGRfdYhTdSfnTF07/RP3cLVjqQxry2P1aroVzAS13UxVaXZgxxOv16hrJ0nr5EoRLRx+q/ZpY8cnCOSFzQyFSJE
+ oZWioqIK
+ zx7mhm7J5sN1GaO+1xWQfwyzilx1Px5n/I/Bn8qSNWcTXz0aNB/GDDY8Xva8tldqJzU3gYTc1vX1auN8mNtvxHu1yAlRLvU3t2/6hdef7+hzh1hJLRCgkc7MGQxMaQCfcyuuNZMs1wV5lNdjqnZQKhl61VjLV70zRE2itO1Qy4GJNbw8h3qHZcc+gtnKymvJF3p4DmAfYL7PBOSjn7UROPg0n9Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,22 +104,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/10/7 04:02, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Mon, Oct 13, 2025 at 01:26:54PM -0400, Theodore Ts'o wrote:
+> On Mon, Oct 13, 2025 at 04:35:17PM +0100, Kiryl Shutsemau wrote:
+> > I also need to run xfstests. Unless someone can help me with this?
+> > I don't have ready-to-go setup.
 > 
-> This helper was used when swap cache was mixed with swap cache. Now they
-> are completely separate from each other, access to the swap cache is all
-> wrapped by the swap_cache_* helpers, which expect the folio's swap entry
-> as a parameter.
-> 
-> This helper is no longer used, remove the last redundant user and drop it.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+> Sure, I've kicked off xfstests with your patch for ext4 and xfs.
+> Results should be available in 2-3 hours.
 
-With the commit message fixed, LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+No xfstests regressions were noted for ext4; the xfs test run didn't
+get started due to hiccup.  I've restarted it, and can let you know
+tomorrow morning.
 
+						- Ted
 
