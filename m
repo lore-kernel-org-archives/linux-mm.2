@@ -4,118 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BE8BCCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:58:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361E2CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:14:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 022238E00D1; Tue, 14 Oct 2025 04:58:58 -0400 (EDT)
+	id 612188E00D2; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3BE28E00AB; Tue, 14 Oct 2025 04:58:57 -0400 (EDT)
+	id 59BF88E00AB; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51578E00D1; Tue, 14 Oct 2025 04:58:57 -0400 (EDT)
+	id 463848E00D2; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE8378E00AB
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:58:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A833BB2F5
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:58:57 +0000 (UTC)
-X-FDA: 83996119914.13.6A54A25
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 99605C0006
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:58:55 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ene7Vi1G;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.48 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2852D8E00AB
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DADBF160737
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:14:49 +0000 (UTC)
+X-FDA: 83996159898.10.5A0E13D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 232741C0014
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:14:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mKZxf22Q;
+	spf=pass (imf21.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760432335;
+	s=arc-20220608; t=1760433288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gLYcGa961yhxxYkbsF/rLk6YVjYontQ0KHKihOwI8T4=;
-	b=kQFMY/ukg/ID6m5iUMBNfqf299LeUHva/jUaximWq0l5usUXVe0GdVUW1xqNwSH1mzPKoN
-	yLBha3vP+jqhyd6q5mSvVOKdVlVtxusZOR29B90rpJleyxAYgRmr8oZMSoPkdXQYDTB56a
-	/oq5tlCbvyPWZPD1Gm0Wjl48vdmeMhQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ene7Vi1G;
-	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.48 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760432335; a=rsa-sha256;
+	bh=EGiZFnk1kQu1g0GPXcyRBT2RNyD9AEcg7RMuh8iWiIE=;
+	b=8eY/ynpNvPum5OCmZqCCXRjFHvYUMtWNi9Mwym5/ixQ24D/Xl5hkixuU/4sHMT+lojxD3M
+	CxDReQQldszX+WAu6bcMyM+cHZ4+oJ50lHmA6HWzbYlPU7oGQrbJCR/2GzSsR9tJYYd9zv
+	f1bh7mow+/KmdwZaIP3a9m7EhWbFaaE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760433288; a=rsa-sha256;
 	cv=none;
-	b=C8rJqCRSMbF5nuCUMsjI9inlZNWRL3APUAz7mzH7A/7LSNBQK09xMBoiCJ6Mv3xADpVcwY
-	xuEu+Bw/1GNxfyGK5tGD9ixoT8pHPLUCU6feXWC16YoWeTZLiD8glocZK9Xx0sGnFH2vcD
-	nynlMU3B9brUUVcwqX/TsJze42U0upU=
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-8e936be1359so3076168241.0
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:58:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760432335; x=1761037135; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gLYcGa961yhxxYkbsF/rLk6YVjYontQ0KHKihOwI8T4=;
-        b=Ene7Vi1G3IXd0iJvxvzdG0WrKeRjsnjFjXTsHg1KyyPPLTe0awqFfEjUPR2xMqJpL2
-         upEZJ4JDhdqMRCcf3o3EqTgTnfi4/i3unGminJCq0gcZb3RAGwI0N3LfTLeaZlOwq46z
-         7+p53w0D38OAHbfyyrIO4Jf23+e3Xn/AuZBec2RpUj2BOY46zZ3DX7etx5TBcpQfAhMS
-         SZPArwI2inHvfdkovKxhBqCC2IMlZOlvpE0AmaevbKiLAWLe2BOyfH7w8ojq5nN1j2zI
-         LBkGQyYd6jFYtty8TWkZpVvc6wi4WDKI4LVw4ZKnu+PTWth/pDINXWXi9bJ81H2VywDU
-         gjkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760432335; x=1761037135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gLYcGa961yhxxYkbsF/rLk6YVjYontQ0KHKihOwI8T4=;
-        b=phn6zgCTfnSdp88mgBW8yB9Z9EJ8kGULsT7LPNlsb1Yl2Ns+X/sXsA71sjZUFwzuH6
-         /lXzBIdc2uwZjoHRYhgu2f6G8AHutW3pXkwtcwI3ZuFGe5IlMZRtOmB0KCXAhQCcyIPG
-         8zYai6m5zGa7m1gMV+Mx254BpWyFfKjRaC7wCvIqkHUP+OuqI+cEHLLyAEmOXtpkTP7w
-         wtK7/YUDX3ZabnGM36wXQA3TuywT+Mx7VVgVEDp7kFZzNBAOL8qgKcBR5/oQSI5K70xR
-         oD+G/pFWzCY7HZl2iNJEBB6CWyQ0651c0qnaIKHtFg4GHsjKmiJC3MxZ+qWb3HOUN966
-         VFSw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/h5YFM1U1wjZ+2lKTeO/YVnrB+35uqiEb4PY8wAjlnH0T0Uv6jxOFYr/XWZxL5trcpv2tf1MTVw==@kvack.org
-X-Gm-Message-State: AOJu0YyjWDMRokF9WTzlM0i1xP01dMJboTno2J5XyrFJddxZVUZEBEbq
-	gGSihQ6PHCwjevV2QWMuQm2GiX42L9coTzSAzVDQpHLm17z8MwzJsZJ9ISevCV5F5kxGQIY3Res
-	RINdYNNFycDnAt85qCvT+yoTFOBI/m5o=
-X-Gm-Gg: ASbGncsLQQXyotOUUTNhIFu4I7y8esWhqJWJEzgVZgpHhoW4h8yfoozs7F7I8BeatGj
-	LhuW0/oluDB2VNwZuzisPNHB8FijZWkb7dr0+GRToPiJHoDCTEEMbmf6jxFoldDsma8Xl2xqibN
-	qqtKzK4uoCgxAxJN21hNvXBdqAMZ334lBD3oNlQqWcz1iFLjBVwNLBOu6w+JpNizhNEWAaIREvr
-	X6itU/07sWlgirAe5i5jCxnTsHg8AEnbQC59W0hJgd+n85zIRPnOepjag==
-X-Google-Smtp-Source: AGHT+IGX4PksrMyWa5G15wFPdlRrAfYAlpyBh8eq+zBl1laEShj5dhtzQCGqBWE2Cgx+teji5G7o41ixrF4TOb83K1Q=
-X-Received: by 2002:a05:6102:3e14:b0:529:e9a5:c216 with SMTP id
- ada2fe7eead31-5d5e22127b3mr9320305137.4.1760432334547; Tue, 14 Oct 2025
- 01:58:54 -0700 (PDT)
+	b=PV5qVrxJKJ+xnDs8z8abkpvFHuFeq9qeYUaktrAgHvalupKyOVdZXbuGaTQUYzMX90nAEv
+	xggIRWcugKKU4HZYZz3mLj7oBu5sRxgSryZ/gN+meV+43F/OqAfemrozgFIhwq0Zf0o0BW
+	KPQqmVivbqzzG8eo4qbG8Psj95OKrPc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mKZxf22Q;
+	spf=pass (imf21.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CD13D45086;
+	Tue, 14 Oct 2025 09:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD61C4CEE7;
+	Tue, 14 Oct 2025 09:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760433286;
+	bh=IBkCqz1KQ1uX83QuJ3HllJmulH8qpC3R2cWzYAaQB/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mKZxf22Qjtehf9Ju4hs4d1ZMls1QVC7xp1pg19tXZDUQGb2nMv21rX7z/REtSlZnn
+	 wdhZGctfOsCWA9ciC70TZNp9kr+a2rqxnEMKifOapN7x5EA3zolq/NQnJkZAJppQRs
+	 vN+2MI68O+Z6k7v8gSxVxBKjmzOynSflXzuDdH+Tp/pMAWfSXRKg9ML0HHI9XoLDo0
+	 gLZ+wE46cDHUuqsOuymef9yyVINznxtQIgzfjCc7kwee4kkI9zQ7A4k7a9BqOfRAKZ
+	 1KUsGf4Pkc3K2Bf7aET6QtHfXzDY8krzRLjehgxV2AakTlYjkVjMWbmoVDXqpa6YtG
+	 I1P5+AKe9VnHg==
+Date: Tue, 14 Oct 2025 10:14:41 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH v2 17/18] riscv: dts: starfive: jh7100: Use physical
+ memory ranges for DMA
+Message-ID: <20251014-unsocial-composer-880ea10cc1d1@spud>
+References: <20251009015839.3460231-1-samuel.holland@sifive.com>
+ <20251009015839.3460231-18-samuel.holland@sifive.com>
 MIME-Version: 1.0
-References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
- <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com> <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
-In-Reply-To: <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 14 Oct 2025 16:58:43 +0800
-X-Gm-Features: AS18NWBgpajHqeXyjq2SfshUK90UReXA3HYugsOOoYy5fZXYwfWha3ufAj0-PzY
-Message-ID: <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-To: Eric Dumazet <edumazet@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: reamddt9r4yixtemcfyq3u9h8bu3zbao
-X-Rspamd-Queue-Id: 99605C0006
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kExO0No+kM/nXpTw"
+Content-Disposition: inline
+In-Reply-To: <20251009015839.3460231-18-samuel.holland@sifive.com>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dqo4qd1mnbbnwxy54medy6ca8akoe3ew
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760432335-629536
-X-HE-Meta: U2FsdGVkX1/ZTm/6J41oHPIGGsu7yKum4lLgybh2JqAGy/SrjKiIjc4HTPfgohM66ZWFg056AtYQW0JLumM1ScYABdkiFxzLRxQwLXT7ha/gOCKBJ+cpG7ieLlWM5AI2OrOl4MmFa90i1ffR0oXU6alv1vZjqanYz9e6H1GAjaBT3LKOiwVbo2mKH2MOae6iECwFXx9jnoNJSclgCCt/GFdeLcQ5dtiBCw8vhZjKsftmHjFtuycoW4670ZrvkGALh7zdv7toyW5d6uBzOzIngHV1cbLT4FZbllGh/YF/LZwcdu2VGaYeDHSlmXgcW2tX8pOwxj+2fjDxe63DHGlwm1badAWv52rF7klWgRJJC/cgPK4VgmW6lfRj7qdS5DeYbKRUjf2SwkOY7Hr81jtagCAUrAUkCbx27RW31dCUS4e0rwHqQUhYX70wvf9KIyF60oh+RLaqn69qZamS+VOYe87MN8H3TQReN6K/Kf1kU01lQUQ1OFLcVn6jEz0zUiOJfn9R63P3WLl+IqpKrZk/bhbJvCT9qzrn0dqfr4AQf3+udZkRA0/vOxJ+CxD5VLAcEARZa2q5RqOnuF1Oi10jO1O3b7UE+/h7hN7oFDi5IVafyjw95YLFObGMwy5lKaAQJKvRm1QGfSxEGZl6detUc5rFjjpfuOhf5ANL6i9RZmqgLVf295fyxCZAgbHGhkdj9ZakNLMd5dLi+fOaNJzmRE0VVMdiiBmsDOgXLim6ShtE2i6kFsB1b09ISw4QMcfkRZHXh5OkD4P0S10A/Gpd/weC5R1hyTWdF/u03LjpI2R4BTTf9Y11z0ijN5y20e6PYt5gxnEFCarl2kEBXq9jpbvWOJ8JKo4/FzrzcXg50u1eFARTEuv4rVANBo5YP5AGXoM1rUyx0DpkBTHacJAwarHOs9aaDPhd02aA83zbfiBsfPXBJNJuUB+/DW6k+Smv4RHoarnOaTAmSgCBtl1
- bMGwVnkg
- NidE6Z+/SSH+ejgcK9oKRPsxBT0ASQxQ12Sk+txowMLv7Fzxrfb+C4/sV98K/SF72adsE4qHorkomCtQnhoO8L+tU1knubN/ARv6DrL0VyV5Cj8NR0b8WJDXVUIRX+z+oREd275OwKbRkpdomg9YM9DkwmjdwREVPWYSiUOKi5mOvhXZxvSX1HXbx2AqyodLVAZlEm1+s3aC/H5j7FKFtaEdwRejwKLj7jAflnD2hYGx/EmZL39zOleX37Ozlssq8AEChnMQvpdpK9wKZEXBTANYow1688kfhYWpab5aMcgXFZPiuJ7oSbATxKtbmDl0aa+nXZL3f1Ppqf4FJajUFU+/wt+NBx7qS+uvfoQ4B5n+AZEWBBERPH2XSUEahy4PbbELec5E4k9/wnFbkYgm/St1mT6gYEjjienE3MrPwmSPs2uoVwbFAmvu3KuCbhwYlvFsBAQnhL1+Eg3ixW1zTEzPZWQ==
+X-Rspamd-Queue-Id: 232741C0014
+X-HE-Tag: 1760433287-771447
+X-HE-Meta: U2FsdGVkX18JIzwotUKx80/JfXYM9Zcav8a6fW9qmrU3+khalNvjf7IhrQ46rkYsiDHbRX+pkzzEAE+VlfgzWcW0SDEIMKfsK4Uw5BKXLB7hcX4wHrL5pcDttmlqMSVn9ZcWBT3SATY0AeiDTJA+Kbar23wxxtIfrAz7ZQ1/Igplqm4lPiDBKEi91p4taRAiZjaf+rE4jWTo942TnbRODyPrnTuD+Sbti7AZQGV2I6UgYdcojIHgxslP4brP1KH2UjvZ18rIHPb1NXL5DCUnzsIudBqN0A3Gme4uHDhyBw2+Pa/5OBNxzs2iupIslSokKJ/ZuNiPsixxXSE911WU21HNS2gq5w18G9x1PsPbYYeEZqI0I0TTt6PGPEfBD82kIG081DBgSkEqUYSdM6SheuaCgd1Iu74bvYgl0Y5Vda7Hr151X+SS1B5cw8ahspfSytIw4uts72XorxrWlp61LGsGV47PZwDj+wr8avaq8IUfU+mDWApJgrVjFnl8Mo1cg/yADXPNupmHAvIIKQf12GVf+8Q4ZIubIzK/c9Q+Ao4x+ouka+LxRUcG2HuVZnegJyzfC6gI/Ez7ksBwz+rEllRJwt1ToOXhb8/Xdfj5yq0MB+vzBQiFSa7tFOgsnnxVSbWsLYYeTHVcdCAjaYVqUcr3cAgEcVelFRcZh4ETavUPz5/U+zMhF1XPaPOr87rbdVGA3LxUMJUeOi4MZgTnOuF+BNVBnZNYRu2efEjxgWcAHVoUyWAsbtIA/ihNJzTrTQ5bFgXxomD9fNjZARFUYK2qnYjp0xQtUUOXPARtjJIyVuarif1dD292cb6o+6QQLFYIo05PN3RU3ZT9dzBgASSPAedZFkZNU2sdWwMHwNRc5HADqefXTvdrerNV1fp0VviA5Vi7kcwUscY9+PcMJ24okonSuYoH3qykh0a8ICiQU+XiRUFmM1zgW2XtJwnDBEmwjo0eHTRtv+aiTPV
+ ck8q24a0
+ RgSA4aVZS9hg3vTpcjdTyg7S3nBFTrKcVXIOOax1hGMBC6P4FBEUAUXvaiseZVro/UfV76jzHfic+ZYE/XBrrCGsiluxZY3hmbLs3DM5mYOpA5npyY5I8vEdG/jRSQcp3/YbDdCbP07IgK17gxPlKkskIXIuiX7DqmELnOnSb6peWc/Wu9QwFpbBY/zemDwOjdSctiYdEVqsKZxxYiAYCNJzWpju1YM2ENuSBPsmHraskEd9QBPTcXh2uicAjE/J9fH8WO+zg/RfvqRR48VQNmC/Ja8qF/CzZMRd5pIDgqeZLWelmUeA+lUE9kMc03u1ncazi0WXRpv9Y7R21Wv68QGzMTCMXvzgZrOgpR7cLtmGynG/payVCzn6ve4Bfx84Ub9LQ5g1yfUqbMTSa7Hx3g2RZPCBT8iz2kVQsvbpoIYIiIpKSNMv2JiRjpG0vIOPyGV6439DxZg+3jwWGEwkshQkEmtiG8LLuGk91t7JXH6DqpqM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,80 +100,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 1:04=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Mon, Oct 13, 2025 at 9:09=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Tue, Oct 14, 2025 at 5:56=E2=80=AFAM Matthew Wilcox <willy@infradead=
-.org> wrote:
-> > >
-> > > On Mon, Oct 13, 2025 at 06:16:36PM +0800, Barry Song wrote:
-> > > > On phones, we have observed significant phone heating when running =
-apps
-> > > > with high network bandwidth. This is caused by the network stack fr=
-equently
-> > > > waking kswapd for order-3 allocations. As a result, memory reclamat=
-ion becomes
-> > > > constantly active, even though plenty of memory is still available =
-for network
-> > > > allocations which can fall back to order-0.
-> > >
-> > > I think we need to understand what's going on here a whole lot more t=
-han
-> > > this!
-> > >
-> > > So, we try to do an order-3 allocation.  kswapd runs and ... succeeds=
- in
-> > > creating order-3 pages?  Or fails to?
-> > >
-> >
-> > Our team observed that most of the time we successfully obtain order-3
-> > memory, but the cost is excessive memory reclamation, since we end up
-> > over-reclaiming order-0 pages that could have remained in memory.
-> >
-> > > If it fails, that's something we need to sort out.
-> > >
-> > > If it succeeds, now we have several order-3 pages, great.  But where =
-do
-> > > they all go that we need to run kswapd again?
-> >
-> > The network app keeps running and continues to issue new order-3 alloca=
-tion
-> > requests, so those few order-3 pages won=E2=80=99t be enough to satisfy=
- the
-> > continuous demand.
->
-> These pages are freed as order-3 pages, and should replenish the buddy
-> as if nothing happened.
 
-Ideally, that would be the case if the workload were simple. However, the
-system may have many other processes and kernel drivers running
-simultaneously, also consuming memory from the buddy allocator and possibly
-taking the replenished pages. As a result, we can still observe multiple
-kswapd wakeups and instances of over-reclamation caused by the network
-stack=E2=80=99s high-order allocations.
+--kExO0No+kM/nXpTw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> I think you are missing something to control how much memory  can be
-> pushed on each TCP socket ?
->
-> What is tcp_wmem on your phones ? What about tcp_mem ?
->
-> Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
+On Wed, Oct 08, 2025 at 06:57:53PM -0700, Samuel Holland wrote:
+> JH7100 provides a physical memory region which is a noncached alias of
+> normal cacheable DRAM. Now that Linux can apply PMAs by selecting
+> between aliases of a physical memory region, any page of DRAM can be
+> marked as noncached for use with DMA, and the preallocated DMA pool is
+> no longer needed. This allows portable kernels to boot on JH7100 boards.
+>=20
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> ---
+>=20
+> Changes in v2:
+>  - Move the JH7100 DT changes from jh7100-common.dtsi to jh7100.dtsi
+>  - Keep RISCV_DMA_NONCOHERENT and RISCV_NONSTANDARD_CACHE_OPS selected
+>=20
+>  arch/riscv/Kconfig.errata                     | 19 ---------------
+>  arch/riscv/Kconfig.socs                       |  2 ++
+>  .../boot/dts/starfive/jh7100-common.dtsi      | 24 -------------------
+>  arch/riscv/boot/dts/starfive/jh7100.dtsi      |  4 ++++
+>  4 files changed, 6 insertions(+), 43 deletions(-)
+>=20
+> diff --git a/arch/riscv/Kconfig.errata b/arch/riscv/Kconfig.errata
+> index e318119d570de..62700631a5c5d 100644
+> --- a/arch/riscv/Kconfig.errata
+> +++ b/arch/riscv/Kconfig.errata
+> @@ -53,25 +53,6 @@ config ERRATA_SIFIVE_CIP_1200
+> =20
+>  	  If you don't know what to do here, say "Y".
+> =20
+> -config ERRATA_STARFIVE_JH7100
+> -	bool "StarFive JH7100 support"
+> -	depends on ARCH_STARFIVE
+> -	depends on !DMA_DIRECT_REMAP
+> -	depends on NONPORTABLE
+> -	select DMA_GLOBAL_POOL
+> -	select RISCV_DMA_NONCOHERENT
+> -	select RISCV_NONSTANDARD_CACHE_OPS
+> -	select SIFIVE_CCACHE
+> -	default n
+> -	help
+> -	  The StarFive JH7100 was a test chip for the JH7110 and has
+> -	  caches that are non-coherent with respect to peripheral DMAs.
+> -	  It was designed before the Zicbom extension so needs non-standard
+> -	  cache operations through the SiFive cache controller.
+> -
+> -	  Say "Y" if you want to support the BeagleV Starlight and/or
+> -	  StarFive VisionFive V1 boards.
 
-# cat /proc/sys/net/ipv4/tcp_wmem
-524288  1048576 6710886
+Hmm, removing this is going to break old devicetrees, right? Shouldn't we
+just keep this with a wording change stating that it has been replaced,
+rather than removing it right away?
 
-# cat /proc/sys/net/ipv4/tcp_mem
-131220  174961  262440
+Cheers,
+Conor.
 
-# cat /proc/sys/net/ipv4/tcp_notsent_lowat
-4294967295
+> -
+>  config ERRATA_THEAD
+>  	bool "T-HEAD errata"
+>  	depends on RISCV_ALTERNATIVE
+> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+> index 848e7149e4435..a8950206fb750 100644
+> --- a/arch/riscv/Kconfig.socs
+> +++ b/arch/riscv/Kconfig.socs
+> @@ -50,6 +50,8 @@ config SOC_STARFIVE
+>  	bool "StarFive SoCs"
+>  	select PINCTRL
+>  	select RESET_CONTROLLER
+> +	select RISCV_DMA_NONCOHERENT
+> +	select RISCV_NONSTANDARD_CACHE_OPS
+>  	select ARM_AMBA
+>  	help
+>  	  This enables support for StarFive SoC platform hardware.
+> diff --git a/arch/riscv/boot/dts/starfive/jh7100-common.dtsi b/arch/riscv=
+/boot/dts/starfive/jh7100-common.dtsi
+> index ae1a6aeb0aeaa..47d0cf55bfc02 100644
+> --- a/arch/riscv/boot/dts/starfive/jh7100-common.dtsi
+> +++ b/arch/riscv/boot/dts/starfive/jh7100-common.dtsi
+> @@ -42,30 +42,6 @@ led-ack {
+>  		};
+>  	};
+> =20
+> -	reserved-memory {
+> -		#address-cells =3D <2>;
+> -		#size-cells =3D <2>;
+> -		ranges;
+> -
+> -		dma-reserved@fa000000 {
+> -			reg =3D <0x0 0xfa000000 0x0 0x1000000>;
+> -			no-map;
+> -		};
+> -
+> -		linux,dma@107a000000 {
+> -			compatible =3D "shared-dma-pool";
+> -			reg =3D <0x10 0x7a000000 0x0 0x1000000>;
+> -			no-map;
+> -			linux,dma-default;
+> -		};
+> -	};
+> -
+> -	soc {
+> -		dma-ranges =3D <0x00 0x80000000 0x00 0x80000000 0x00 0x7a000000>,
+> -			     <0x00 0xfa000000 0x10 0x7a000000 0x00 0x01000000>,
+> -			     <0x00 0xfb000000 0x00 0xfb000000 0x07 0x85000000>;
+> -	};
+> -
+>  	wifi_pwrseq: wifi-pwrseq {
+>  		compatible =3D "mmc-pwrseq-simple";
+>  		reset-gpios =3D <&gpio 37 GPIO_ACTIVE_LOW>;
+> diff --git a/arch/riscv/boot/dts/starfive/jh7100.dtsi b/arch/riscv/boot/d=
+ts/starfive/jh7100.dtsi
+> index 7de0732b8eabe..34ff65d65ac7e 100644
+> --- a/arch/riscv/boot/dts/starfive/jh7100.dtsi
+> +++ b/arch/riscv/boot/dts/starfive/jh7100.dtsi
+> @@ -7,11 +7,15 @@
+>  /dts-v1/;
+>  #include <dt-bindings/clock/starfive-jh7100.h>
+>  #include <dt-bindings/reset/starfive-jh7100.h>
+> +#include <dt-bindings/riscv/physical-memory.h>
+> =20
+>  / {
+>  	compatible =3D "starfive,jh7100";
+>  	#address-cells =3D <2>;
+>  	#size-cells =3D <2>;
+> +	riscv,physical-memory-regions =3D
+> +		<0x00 0x80000000 0x08 0x00000000 (PMA_RWXA | PMA_NONCOHERENT_MEMORY) 0=
+x0>,
+> +		<0x10 0x00000000 0x08 0x00000000 (PMA_RWX | PMA_NONCACHEABLE_MEMORY | =
+PMR_ALIAS(1)) 0x0>;
+> =20
+>  	cpus: cpus {
+>  		#address-cells =3D <1>;
+> --=20
+> 2.47.2
+>=20
 
-Any thoughts on these settings?
+--kExO0No+kM/nXpTw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks
-Barry
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaO4UgQAKCRB4tDGHoIJi
+0uKUAQD80+kPIuFiDo0jFL5AOngNkEUr28ECrOoIkr5OlYN8UgEAh9hDrsZWp8fb
+oE38JjdP0xJl6Q+HfnlMtSej1XDlZws=
+=jxde
+-----END PGP SIGNATURE-----
+
+--kExO0No+kM/nXpTw--
 
