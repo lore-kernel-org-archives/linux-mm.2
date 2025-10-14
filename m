@@ -4,238 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C565CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 16:27:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F80CCD193
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 16:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5BA48E0147; Tue, 14 Oct 2025 12:27:26 -0400 (EDT)
+	id 42D488E00C3; Tue, 14 Oct 2025 12:35:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A38BF8E0090; Tue, 14 Oct 2025 12:27:26 -0400 (EDT)
+	id 3DD6C8E0090; Tue, 14 Oct 2025 12:35:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D3D28E0147; Tue, 14 Oct 2025 12:27:26 -0400 (EDT)
+	id 2A5C18E00C3; Tue, 14 Oct 2025 12:35:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BA478E0090
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:27:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21EA813BFD9
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:27:26 +0000 (UTC)
-X-FDA: 83997250092.11.AB15192
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A29D8180013
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:27:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dpguHmMf;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XaWm1Xnd;
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760459242;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1446A8E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 12:35:39 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A4E2B47898
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:35:38 +0000 (UTC)
+X-FDA: 83997270756.26.D4FE228
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BD2CA10000C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:35:36 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RNQ2ZbYV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760459736; a=rsa-sha256;
+	cv=none;
+	b=Tz3B/LbyOz0t/NBq3Rb0nv9huhaQGMnfiaRjclycKV9wCHUAlwTByIpT1zpYBCnRUeAGAH
+	KvhO35CxfdDa8Z4/Y/EiuvMnj9Cl2dTlKD80Jw3Z3Lu+7e/HtJEH0y0E1drUEaOMAwpa+T
+	VqYo3oJNAWsQMbw+iSAwUId4i4phIoc=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RNQ2ZbYV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760459736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+B5rVuUGShb/bRHr5qU+b25zdhYc01Pl5jJ86eeq2sg=;
-	b=4J/PqJsM67Y95k8TQ4kIGLVt2781h8dNtlCneFveYi4gYfRWVUPwyr17mVRfE2XiZVwblc
-	4os3Rd91e8EyLn5xeaoccpmgaCyUGe/Ve88pW1xfRlkNA2aun2c4T/6qIP4vhyzTms0gKt
-	xTO5r4/wW/mBKROmO8i34JUSa11ogh8=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=dpguHmMf;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=XaWm1Xnd;
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760459242; a=rsa-sha256;
-	cv=pass;
-	b=6GK57fRyzHbqnumh9OG0jvddvmUcGIYDXGEX+UOf6QwjXyXdo0d18qKkXuVrDalDCC17dV
-	KDlvgoCDFHviwtUqzCd2lEGBBKCOhgvUfaY1Hfp3UVJX6ousQ5cPsFC7hqOqjFf+e1MbA2
-	m5gvw2zR2MJ1p7YJn/5ahWoAxcEBGZY=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59EEfKwW020556;
-	Tue, 14 Oct 2025 16:27:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=+B5rVuUGShb/bRHr5q
-	U+b25zdhYc01Pl5jJ86eeq2sg=; b=dpguHmMffBu820KGYnpP/2QxfaObVBIUwj
-	4GisgdL8q7dTxvol8DdhD0fGWSAsXmM9u8yMTEIYiYRugftqo/5PH44TpeIFgVbt
-	ISqcItz/fgu23xi39uGFFkv1Chl4VKBfNn3S5sRrdxo+xoEBVubrssyHQ1QPMksS
-	WXMl5YBt8I1Chgm4OMopc+equg8IudFthBiWLltwAl3vWcY4OglkeSOXxdcJXP7b
-	50ngnUBMQRf3gXvJKhMRtHW2Cwt2Q6S19/DQb7EXXoktZYHNFpp6bKLXsp9Kjaoh
-	EP/7Tp28191J1iWJkflYDfmbOi4Bgtb7aV5ce2OIRYn6bMCJCeIA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49qfsrvqux-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Oct 2025 16:27:15 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59EEpNEV016801;
-	Tue, 14 Oct 2025 16:27:14 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012020.outbound.protection.outlook.com [52.101.53.20])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49qdp8x231-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Oct 2025 16:27:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X59a14B68EXFM3xkLHB7G2VpTvbJ+ihrtykTo0Z3c5THActkHXykJBTDfkgy6px68ufC788qkiQizeBxg5FZ4kDeYgbfQr5d4/IW6O4QD4P+XLUoLNVHNQ1iIVZDV7s59ZWaUIqH21BnragdqZyohzPRo57upSwg/BWUb1ilwKO83pO8yHgmonmI46+vJLeC/WhZKG3zj+3rwOWuwoLwJe2SCvAmY1Zmyr5xqAqhEU7V142IZx5cRNQ6X1wZRSjenk4WX1Wwds88TSUAFhVitILoLrhqDLGaQ4DzCki/zjZ58H+a7BopyTg1KjnLdgqyU4OFp6k5c7Dt/MHGJwi+6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+B5rVuUGShb/bRHr5qU+b25zdhYc01Pl5jJ86eeq2sg=;
- b=mjzipyASAGeO8fx6Wx/C+hhms/qpu9OZ0/VwN7mp6An2fhfIXT8UHEmPN4cJszDcngbyg9Wxo2tZKbTyu5XtnWHHpOrAcx4XHEzqmvLjH0rtjumh3Tx2PX3l+Tnv6QKNbHQo7XRGGjDMfyHX6QOkddtiyrOrUz14JqfwCMSJLcHrYdPHs+lDL8fCZD2dnm35RSs1vaYNimIQRyaNh7Ya2hZoo05bT6+skBLnSWYxEHD7cYciwx7F7zUsCL3wNAOwY2BWe9T+bwt9VVn90COcH4xKPTzlv3xnxJZNTUiYN1a9j7iCxbaLZdMprylRKYAzhC0Nqe1vO87fpUxU8FbTWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=SqHQ2+KOI4dAk9Brl0lRqwVQjYCUh7n+OdRtoeAkV54=;
+	b=mDNTH2XaJ9LdDXd8nKSG9TLUZ/KGl3tyhlSPn/0/kIPvXr67agKpBVRQNyryOotyFVJcLc
+	iGLIjpsA4KsWM0uX52n6JNZCyG1HcespL+7sYYtUeJI1cv8dLvOQuXNdEE5I9oHMiNiGv3
+	wpb5rrQc9jRhAme+1/XjJkNKOH8+1JI=
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-430ab5ee3afso658275ab.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:35:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+B5rVuUGShb/bRHr5qU+b25zdhYc01Pl5jJ86eeq2sg=;
- b=XaWm1XndAt4vTVG9eNFJdHLCllGBFtItmGtoMr+3Hq4og4z9iG0i1g7lUyVV0CtM1YOn8gTz5i360CszebFV6xGbrXOWEZNZ5FHwQrO7dc+6IWRHzidisrw5AIiCEzIf8mdrBtC1wc0ZbBwnwyDSVnvd7z/fkLMEQnKbDQTpTEQ=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH0PR10MB4843.namprd10.prod.outlook.com (2603:10b6:610:cb::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Tue, 14 Oct
- 2025 16:27:11 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 16:27:11 +0000
-Date: Tue, 14 Oct 2025 17:27:09 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
-        Liam.Howlett@oracle.com, baohua@kernel.org,
-        baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
-        ioworker0@gmail.com, kirill@shutemov.name,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, mpenttil@redhat.com,
-        npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com,
-        richard.weiyang@gmail.com
-Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
- non-swap entries
-Message-ID: <c176f6d1-2f43-4920-8133-f405e6756c5a@lucifer.local>
-References: <20251008032657.72406-1-lance.yang@linux.dev>
- <f33735d3-b38d-4b6a-aeba-b415e6b24ea2@lucifer.local>
- <0bfdbccd-9d4a-409f-ae43-b44bb7347d70@linux.dev>
- <f7392f43-b8f1-4e6a-b9c8-25ad8a47f82c@lucifer.local>
- <95a223b1-8d57-40c3-8226-678b1db233aa@redhat.com>
- <57cffedc-65c0-44f1-8364-3a3ff9bdc760@lucifer.local>
- <b0e88b97-3c55-4be3-9782-4ab5e5d72ebe@linux.dev>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0e88b97-3c55-4be3-9782-4ab5e5d72ebe@linux.dev>
-X-ClientProxiedBy: LO2P265CA0221.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:b::17) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=gmail.com; s=20230601; t=1760459736; x=1761064536; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SqHQ2+KOI4dAk9Brl0lRqwVQjYCUh7n+OdRtoeAkV54=;
+        b=RNQ2ZbYVy9p1Wc7yfJjpuW5057vdV6XmMiuFR13zC79P1CQRwM0U7lfLdq/mj340bE
+         0TiEYpu1aA1cEmlQ8ihctaq2DoIGkCKLJPDOSaq6o76ZFoZufStzE1DNI75yQZbucX3o
+         3LvZ61JrtIr98qMmCl34sheIrsyEye94HrlFX+9NKYuID60xfWkBoBSaEDjZhxCyUr8x
+         3MqpZw8Ui0FNZy2331uay2ENxLT3GRSY4rKNAAdeuq3Idwc4xAjBhY8v6EjImyLc5YMI
+         dzDMS8Yo6VI02M14mQCgmDMeLlN22VzY0DTIcefyHs0nwt2sZGquebGMdxYU08F83C/T
+         flrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760459736; x=1761064536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SqHQ2+KOI4dAk9Brl0lRqwVQjYCUh7n+OdRtoeAkV54=;
+        b=sNsf4ukA2jXKGFy8FsOULh1FIvhs06NqLaaFKh2/Fe9gruEecjtc6P0mFbGQ5saSmn
+         +49sT/UF6FSd7gBptWmL59XY2DSd3jKn7fZunRS/D+KTbZes9kQ3CdFrwdo/x9/Oh03c
+         OBPPjWsHkkR1yH1SjEfde7M8lMFJzZWTF5Rthx9eE7pJt3Vmjs9wY9+p+DMK1bhDDpsM
+         RuL0Ixxx0L5g5MnboQsRPRgpdgUVF9kZdHBILZarw0H+LoxZu2uftmMvsyL4YYiYvjEj
+         Yy4twMIrWJePXu8kf+8DTC8vbgqg2sfrKki1SGxEPDkOVs3VmfhRxcGikn47b4nNFAym
+         zHDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXrmzG0p/RSZfoKXn15gHBWq1vPCYTAiHmhPQmZR7+y4YW7WEnrdZSyFwTfZRYYbZ09t3ZQCijTkA==@kvack.org
+X-Gm-Message-State: AOJu0Yxd72FYw/28W3UtRr9ub4wE7+Lz+k11gX0v8rSuQcMvlaBU7rNr
+	sZkAXMbqqCpcBCMhN1LYZV75QkK74Q5TYXrRwKiD/KZCxtpX4z7Tla3LSAqrcUHsIaau5+botMy
+	vQtVyK/fVvBy3UjF8gyP+ES/3YQjtcw0=
+X-Gm-Gg: ASbGncvdcsXQzcbUI/SiCE1sLkOtvseWSKt9mfuOkHpYqXOti4UfGaYQG8//dt8zVDg
+	TXRFvToqRPLVnWDgPw2Hjuxf8skbUHretREihfYu4jovZk6goLeRpUkIRs2ed38sbT5txvkYxXY
+	GQDRAxF5eJ7WjN39tarv6Vrg3fup+U6+yNK9/I1Q38c2SWZjn2A8jGH7arocxbSafoyiDpCa1+D
+	P6VFjdSqnR5P6KaZeLUy0RmY3TgZHKVmA==
+X-Google-Smtp-Source: AGHT+IEY7VUqCP/6pip0ttgbhxoRwcKJdJpXX3VVQ6uYBVkoIbhkGTsm9CuxqvphgnjFjnFOmjFQm0hmuzbL2sERn1M=
+X-Received: by 2002:a05:6e02:1fca:b0:425:8d9b:c430 with SMTP id
+ e9e14a558f8ab-42f873559d4mr317681995ab.6.1760459735457; Tue, 14 Oct 2025
+ 09:35:35 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB4843:EE_
-X-MS-Office365-Filtering-Correlation-Id: f70f2061-a92f-4e5f-9b48-08de0b3e86cf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uZjaQYCvsEp6Nyd+wA3D9ceMWK0LBC/oKi1/2CztAr5sHwPJUXi3ECJpmg5i?=
- =?us-ascii?Q?rzffIGWxutNwCd6rpvnblE0TQQMVhgF8HBoKatw2ql33tLQnuj8Rs3yzHEoX?=
- =?us-ascii?Q?5FMr99ldRInq44P7kCtYWtzjh8Pae9KUcaIGPe2EVyL1NnvjEFf90e094taw?=
- =?us-ascii?Q?8pARJLg4vgAErURW9eM9EGc6QJRpwpLcRfzuu2J54Ojf9amRSb63C/diKSCs?=
- =?us-ascii?Q?zKzPfRXWiffqpHZ1bDgnVd8+1nF4Ig+24DjMBQf/Doo6Av4/hv7v9lkP+eLk?=
- =?us-ascii?Q?Z+DzJwcb+Ned0X9S2rVMRmUhkvgPt21zeEyE+VTUtNPav2ny36RJI7qX7T7N?=
- =?us-ascii?Q?VgSoms4WWJekP7VdgPDQqShg8neYCrNpmX7bKdKTYcZetbovfTKvIWSwdKb4?=
- =?us-ascii?Q?YhRRKOn+jnhvtqwofhbtmnGOREIED0yB838eq1R6rKXecVvoSSLEzrL/bJA3?=
- =?us-ascii?Q?pG6Y3NqYiIi0Ong6x1ZlqPGUjkMMQd9fh8gu79FoNA2kJnL+s+Pj+xQ738eT?=
- =?us-ascii?Q?w4jqyU1VodKMy5uC+SEAKxvD3XgK4nl58FU8ZDXQBomvF/xzStvcE0EANJ0Y?=
- =?us-ascii?Q?teG+bJWJAWN+eMbgvvEk+Zr8uvSXLOWVtt1IB/elryQtNGhdF0GO/rJu5Ius?=
- =?us-ascii?Q?2pqYh2ew/7k6d0wNFr7q8dZyJ0b6HIX190U453jgd5BLJwXoN+OWmykPT3/F?=
- =?us-ascii?Q?nrm0bv1+YUUcfKebE+mybIahsNjV75gYYfxrGjytheUR0Jjhgdg7IgQbS3/t?=
- =?us-ascii?Q?OGEREAdqSd0aAbVpv02KK9f9o/xwpNpMaNLdWcyuFh6DB++eAI5z/83xAjwm?=
- =?us-ascii?Q?+4JnQg0IB4G+82EzoiDRDBiSezXDdzyITcmr7VBEvLrYQVUwlzqbhSInDNUG?=
- =?us-ascii?Q?iRipJxZX/vKDFj5P9E4BAM6OgfoOoHbACwVNskqWKO9/tDjYR4clpnziWiPW?=
- =?us-ascii?Q?+F+QUtZAbMh26T5yI/d0UobOiRRbLHDZfSP1kNkPZFEPru8JefNWoqszJLwg?=
- =?us-ascii?Q?smRvZrYRufNPRMq6XWfhXo7nNfp/Gjl7Rpnm5Xzrn3us+Ge+Y7VHtueatDj3?=
- =?us-ascii?Q?hW3XvIYHrEj4SkH3K0MLGMmkVv376rXuzLCUVJ7Hu0AgcYIdpMFGuBQuBGVv?=
- =?us-ascii?Q?tuj0o3xHmk3HbxYXlL+cT4HJRkLwVyWBhkHsbi8/U9OiO1UTgFHauOB82vjQ?=
- =?us-ascii?Q?k4cLEGB2qzLl67tMaRlTCcBlF5TKTjGvlJof9lJydbPIdkuX4K/a28y6d5fu?=
- =?us-ascii?Q?76wOKsB3o4r/Pypc9Kyz7xRYKduotDmz4cPBFwqu8mpOO54i3Cq3ZRlly+i8?=
- =?us-ascii?Q?cSV8nMdZWZwgtvyK/T9KE8hnjJvIYofvMZ1z1DkzH8Yn3KlQJ39bbX85kTrK?=
- =?us-ascii?Q?d8caKFn/9y2hkvQXQwzfHLlf+lg2dNvsGdp4KfazgY2y8Lapi4+G7k7jMdqs?=
- =?us-ascii?Q?bOWPgHV/dgDf3zaiGERsuvGP1BptKQLx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DitthsFct9ABDQsZpGFEqbD6C6GLr3bPSM+3Lpsu7ee0k83Hc7tKuje2hgm9?=
- =?us-ascii?Q?XpH+a5uQ97oPJxNy01ImqLES+E5J2in/TaqPa9v6HoJucsaEB/nMgKJvlmLl?=
- =?us-ascii?Q?unE8w0AC1fpM7s+FSJxV4WasXtgunxwC81KxHl73EBKsMyn2l1/EcEVD104+?=
- =?us-ascii?Q?XEId3AyKYFCQuF7ppRa2cvCo46I5Erm04kp1bKPJ1kPvXeCs4rv3th8ZwLpP?=
- =?us-ascii?Q?eiPqZVe2e2m1/atBsRIjP7+wzex8EWDTOdKiTxicPpWR1kCV9zK2nzzpE2lD?=
- =?us-ascii?Q?E+1H3x33Ia6UqgH5WcLCyK7fJN1ESqOY6eET5qUqU1v3a+qAmyYZOGmT1xEy?=
- =?us-ascii?Q?KSTTinUQubXKtotUcSVgHNUXG+809rhr3xoqRyTOzcbrMenY7h4OVIGpTL1e?=
- =?us-ascii?Q?ctVURH+ZzHyJSvkWhyYcZpvevf1+XlhKJtpBKVunZbDZdvjN5AbqAoiNjWT6?=
- =?us-ascii?Q?DSAvluhA8WeEb+PFuuLva9SGt7Kzy99DoMIR/oYTDJNSegpPkuZRVdF/H6Kl?=
- =?us-ascii?Q?baaoHwj2BzvGIDZRQE5vO1rn77dwhXIte601BO4FVmJhnhweuNUlGLeC1RdM?=
- =?us-ascii?Q?LVfuQWl62lxLM0Xo6VDcSqriSScP5G47KVnTHOAmmg7RNemW1mrBFXerII45?=
- =?us-ascii?Q?HiFKtvOCu/hqNPMf+1I2W4BF6dkoDtI57t+m26vrz+rpnFqb3XZxi8xGTWiZ?=
- =?us-ascii?Q?Vk5Uw1lNddYKp/jjf9LoIlmoJ3GB4GdJ9NU8FFxrlHLcffssaac1WhSbDpg8?=
- =?us-ascii?Q?tVaXQygmFxarzLRJKxWtXdn7y3ER9BTM4ih8E7dk3EKr5cYZObyvQSlAgnnA?=
- =?us-ascii?Q?mDe25nivKY4v2ior18PfVP96/PbvfWXaA2I54esql6+9V5bWSTXWT0aq2CBT?=
- =?us-ascii?Q?9lN3r3qEQbs3X74sSOgHpEPlvwISpJAGk499ziPBfXgr70uv3hKz49be6NkY?=
- =?us-ascii?Q?Moegt4uP/oYx69HXpLUkxXxR/Ms6jknCpxYJ/yNgEwbi7/8QMS+7HTjYNDtl?=
- =?us-ascii?Q?eMsBp54UT2O8iT9yEMgsCaUTnakZSPiZyzp9YvXFqsSnHrS2jOMlsOs5euOC?=
- =?us-ascii?Q?66+lyaU+KZUCPAW3lh4PCYB+KcVitNrJpyWchtkiNcmUmGPaV7/2DWV0XDZo?=
- =?us-ascii?Q?r5jUpN8ld9b0zpCXib9on7Qj4s0flDUQuurCc8AZFyWwNqHqF/PepX3KlvX8?=
- =?us-ascii?Q?yg7jHfSFJlEtj49nQfplN7WX86oEMkaq2cP05sZo9rc72Go14WDeaYnIuVFB?=
- =?us-ascii?Q?VsHycks/zJw3GVtOQ1lRn4sYwc32sieqvRn4EOLAm/+6j5yRFd93iK2mQOZT?=
- =?us-ascii?Q?V8bfpKL1HReZeKE8gzgC2pZF4nVouFdoKXR7Y6RQ2ew+YTC3uEx89VJ4l4jh?=
- =?us-ascii?Q?Es4ppjdAOI/zpIXTR0N8L4ySNjJuBkD3RNpFmBlE15sUeo8AYP9ico+VmLTL?=
- =?us-ascii?Q?9IYsdOxuKuQm7wHlxTxJW/sDFJc0J6bRLuq/mDz1AzRNeumT8xbclEXFKu8O?=
- =?us-ascii?Q?+yZQrbt0FUdHRIycIp8kUmP8HdFhCq8My43WWJ2sBYANqCyvw2d/O+LLeuo/?=
- =?us-ascii?Q?aas9lyqP2kbmUTfNOdcsFOxQt8erPzc5rgOUdzBIq8O0mHI72jNdNRptN0MM?=
- =?us-ascii?Q?HQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	+zB8+iDqgie8iNVVYvcJd4DFunN3PohiDuo3IVepQ84qbxFab3yUzionZJXBmE19fHbjZ4hh4C9JHJLN/mggHxL2FY1bHxLfGn11c4WYJqPh+FJiLsCjqOz7WD+E/0JE/Bb3vWQ8NSaWysc195Ckrz3dyY3JX1gNfyWWsJuo5fnXJk6NgOaXOUwnnnKLd0+giwn3Li3J5H1kxW7YqKIloGuFzS94n2r6O0eSuxgBHDKmVO9fROkPadONM3FL8kNjA4r8+gQ/r2XAkIfjiC/vxWJcVl4zwFjt73436vf/Erl8CkNpLbO7Q+ZY0J/EDqPXtaCOiR/beg4myKAEEXFUoHswzWbdQek3HO7fwfJhXw5zvS2HBGgO2whmby1hEpbUMzMsD7FxhrC4Osy2eIgD1+0oaHZd6Az/YsJiXBRoYaA6R0CDF+SSpQ+albcWyZqOR7WEMoS1eadGJqcww7LEFy5rXuWp8c+7pZIEOU2wneXHH1txXaZqvtoW07sfLD/p7sRhgMdr+vcTMLN4UUwehGUPpDsWesM2HKaWOG/HmhwjnelWUE0dd8u3F6LoUcCT8dvtFBDa0B2LenBmsGpXHnJxHSmJ+u3UC/b+7HB3v98=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f70f2061-a92f-4e5f-9b48-08de0b3e86cf
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 16:27:11.1443
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7JlhangCn8o94dDzbgJKJ5spX6S9BKMkWRz85naea7DIDm41CLR3FZ9pJGipNZhfcvU8ztGxIao8teNG/AgEVoQRAfJ86kRy3+qLMMzjfig=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4843
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-14_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 suspectscore=0
- mlxlogscore=623 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510140125
-X-Proofpoint-GUID: LhaDvkljrR-lWs1cU-xFtjWg9F-ReaQi
-X-Authority-Analysis: v=2.4 cv=APfYzRIR c=1 sm=1 tr=0 ts=68ee79e3 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=jxp4CzYOe_3-huScVboA:9 a=CjuIK1q_8ugA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAyMSBTYWx0ZWRfX8h4FufQAIPyW
- JbQJ9HDS/b+B9c7rxs0SkFDh9q5+5zetJdlfDI6xa4cVvGivQO/nkZnWPXkvBZXPWCEE8uuePHf
- gaPnFATuOWgSfvSzI7ZSdhGQCgnUC8qtHBAs4MKg0+qrMK0Uw95E0xJaVxXbX4TvrkFnQT8Fmls
- D4VvvuUr7nlnFYBwG7znv4yBI54dcErVTpzSV7Ldj9w2d2o9zaxXQ7cZeESkYOvEbb0sJlXGSai
- sBiVcth2GWTaeeDX8eqVPxsX+5OhZXbInC6yxF4IPT414JDJEF19VxxzUb2c+G/MPH+24KWUGV6
- 6iFmoAVy54IeCfakkOXdEDVvt/ymJxQW0ylaK2SGdraFuC199I3kdlUtIPrti3mFDxzpClw/2zd
- qW2ijiluvy4nkNlyoPI3fGizpDfQ/A==
-X-Proofpoint-ORIG-GUID: LhaDvkljrR-lWs1cU-xFtjWg9F-ReaQi
-X-Rspamd-Queue-Id: A29D8180013
-X-Rspamd-Server: rspam11
+References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
+ <20250926033502.7486-23-kanchana.p.sridhar@intel.com> <2qvfjavbepw3sq2pvvcez6jsc3bxkxej27674l4ztfdza7jqaq@xi6qndkj5xhh>
+ <PH7PR11MB81216AEDFD10B5BDCBCE1F19C9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <xnwqi5jnawvxdciqapfhhkneynsdr3dx36hmqe7jn4shm3uc3y@iyi5qqfubqey>
+In-Reply-To: <xnwqi5jnawvxdciqapfhhkneynsdr3dx36hmqe7jn4shm3uc3y@iyi5qqfubqey>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 14 Oct 2025 09:35:24 -0700
+X-Gm-Features: AS18NWB_RzfEOc-RbJZxwtIdj_8PcOzqcUoQW3euFgLMr1EXBSVQoQ46xhPlML4
+Message-ID: <CAKEwX=NyUR6UE0PhXCaHOdta4=gVvRj7QgZtpPaLADpfXYyvZw@mail.gmail.com>
+Subject: Re: [PATCH v12 22/23] mm: zswap: zswap_store() will process a large
+ folio in batches.
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"21cnbao@gmail.com" <21cnbao@gmail.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org" <sj@kernel.org>, 
+	"kasong@tencent.com" <kasong@tencent.com>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 67prfqogsbnncj8184i1ip4je6jbfxxo
+X-Rspamd-Queue-Id: BD2CA10000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: srrb6pqxaib86gudyhjpytcik9tfzxz5
-X-HE-Tag: 1760459242-256706
-X-HE-Meta: U2FsdGVkX1+wbfroxDEsGTn3t5Pmxh8pzHUE3CS2W0E3xbnWaRSoBQS80dyHBnDybKznJ25zHkAxlsEineDFETllFT2jCCEq8jLWFmiN5EElidwSs3PeQTlnWT4IjsB90LZjX9qI4ZXP5dIaXSh6mSOqbB+HocW5xhoqoZC8oUUSF609Ffei8Dyvw1NPRxN/iY8r+lld159XlnJT9TmaHST2LGdKe0VdNBWCM+00ZrYZ8GhXv6rUkTNhK0pRRzy2/paTEyo59YzSeGBfiLEcrtIxsdZIZvufvD1t9hLZB9kYNLbGxwkB2rbIoyUgNjN7LmXRVHJYSMEavE4+pCMdy33dmaaeZ78WUxs570P1yKvX27LkX2aEXCfCDMzAriv80rs9fP+lZnM7GmhXlCnoYci5Dmd5LD028wXLrqiinR4kmj1Su/DNJyyIi2oX5avBqF8arBcrTPMfCKX9I9e0NDpCO/kTyqUna8wh2NGbdz6wLEYSzD6Ebhyqb62xtlhDK4GDMNP4wlp9yJKRw1ZBnZXsqMKC7Hoj+qyuuy8xCjz47uNFwRiTCDT/5oA3QxvQSViLgWdtbKCZByFg7ohy61bZD5jf5D5gz3ES8MDOlCdl7Q+phBQegWWJJfSE3wos3/4PVRllJr/auCgMSvNzq6cwCR/I6h5AtCrBH+kcjI9X4Wbp/1g8UXqBRUV3dJ5KQM54ileyJnhXs6thqcN1UQTX6sHiNPn8Tp+TVEXeER13kcg7CajOsKcyIrvDMzqP1WvSAeHInVOKZvIq1BovsnojHkZf1LyIyk2aNpF3gLYloM62FPq5ZPH4M70M+ImEGevU848o+cdIQdR0zxdTrvsNebvNQkWU0rtTuw6LipscZRNvPREcRm/VT3iFe8n1Rj1/QH/EuA6QF8EwA8YIxxj8liViD4bo9aodYSbBod3EqvtPHmNCNrmpt509S+F3rCkRgu6x4muRU3QsPQH
- ToMzI3h1
- 5GQySm7VVQCgtznfX0M+SWFNU2W+aX7/0GKDWZO1OeV48HDzwb/+fJJwswMMLSR7UVfTzjsQo4ibXIF4brDfo1YXMyDB8G/hnH1FERJ6OLLwS/ZYVP8czcEShbwKT2NEqJwCYvxN2NN5xCPPcwPzZk/iMWgDHICHDDmjbdogA8AMftQv3TM1cIPDWupzZt02CHUBwn/gyZ5y5kw9ON8Kgf/808c8X+DeHfbjzSLJYK6QRwB0eB8u1AHWns7LV8+tgkGrbmIalLJSObsQqSkQrP/lzUqvfPfaf36Mxfl/TByokdAzvQ7Kb9EzweVOO8Z4A2kw1Ptu4KP4q0clsJYB1/txpI+VHDcHBrdXtEE2XaswxTRKwVPaxbYX8MaIygxD+3M43DMx5NVmXhQKwRdufpzunTf3LwVttP2HazV5ztXF5jbdh3uN0TC3SrA9JB6yqZ1rAaMN2u0JO8ileT9cOkJ7fcEt0uk4hAA2EPGyxLA8Gc/EX9GT/nUu2rjVwotQ5MdzGpj6Y5WCtk/Wmoz6JYrgl/owpqLz+icsHK1E6uUSZu02kS8SdCR6mY3cc87bwd4StruIb+uS828giJ1GFbjUX+f/tyZiXsZfrSGKISKi6rUMd5XbfEMIIJtE/o2LsR9LKo8/UcFTDFCENyjSDLfZ519wYex7S1apqcgaQDkAiYslxxSxw0HnD6g==
+X-HE-Tag: 1760459736-11404
+X-HE-Meta: U2FsdGVkX18ySbBcP7AeRVSyymAnw7PR9Cu0wKnZi5ZYgslUFr0uYhUvjPlf/GVewuAh8jQjvC/ZjA595sxyTClWJQnXNLVTBwzTcEgESnx4fj/nO5xaC+PCjQlu3ZgnWoPDv/2iSHiDK8J8BBjUSZv9eSFe+WvhSPyy+aEvpr+tyBPvwqEjuuSHpDfLvQgV3kQFIud53KEfVniS1nua3Deo0BmFvzDU6bqCB8y++EKLRM/rRHKV5BgxO2fchziOhlsjI/ngWPPcviygaMhHs7rvJ9r4LUp9+gLLzTiKIa8wE8QQaC6MNnqaG6z2w1TlDaXQRzb8QwlLd28cFb/2jtvldbPw/RXBjZsVRxH+VzDpMQPwY4AH1wMsadvb2wja68dpnpUHlFQbkneh9hU1KXfLxUO6Uwksxq3V5chYLv5E9wiws8SKtoVBd4jcd0LItCJnypb8c0CFpVjBYdzvMlKv2Es5LDktTaQzBSbt+YFSvIl04snDdmE+FbC+P29St9PMTDDzTicKmBwIJ86q1SaJ5m89yepCaozAufVwstIFsI4Ghv+5ZoHoT3kpY0bBPmYMmR4jotdzF1kXeU8/0aVFKHfyks9YiBsl19hNyDjGDxqg4v0sY4Al/vjMrBN0fax1g5cYq1q1dVfpwUpLhq4AbfTEOEOtUqwT66bpKNOmRrDC5OO4Uqi4l5c0GVsHXHXnpOueST9lkqmZskp9JZAND6FFsiTsQPBZa3DxwKYaAkOTIgTgewzgpB9pTfCvybFbA3W3Cthhq6h7bWaiaeozCOQbnVZ++7wmf/UHJVkLI9syW/NCob4vnOoI79K5lzKhhE9ixFl1bn2WPs3BsMqNE9IkNZmIlQM17laV37y2aXOUI2HLEYo6qY61WHbWMEWYADxz89LZ06YvVWJaRRhEZhAJsjKQBv6xA1oNyuIUJWn/YHnjeF3RuZ4tfRwRKWRLliNjofHcq9Asm+m
+ MyFkbsQl
+ VzMS92YIQnP13ct00NkOIHdDU5sSepwDuzeWCELImNGZ2QRNaC7//DPvIavUZ0FX0KaixQN26RzZot62egACIRGaO4XB+kMja41d6ya7iJDh5x1MsFkYUUgCgsm9zQCA8bK6Y7WtAJBGd3Ndnz1Xx1LU5UtU7tk81AtMR8+UUfiyJrmLZCEyM/SEbQQRM1QanA3SpGZeFdztuFtrqy7saWpe45uNdEwvOwjBp2zOVNXzZhgwYFUkjWnw4omBA0e5wVW3liQO14jOjDHkT/semdoMdWptH31VMnFxg2BKqJAIuAkR6Z5l+JjgeaTne+wx29f/Rm66E6ELKmofaxgM3zI5WaOi8YvezUpOU2W5shQ84YtO8ZRRCikvBkCxxRuBmD9YXpZ5X4q7E9xAM2VmvjWxndW1BgtHsGXqdQBG6QKMhibbq6I9GY89DJ72V5AfxRAvJGxpbUZhtOd8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,32 +133,348 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 12:09:42AM +0800, Lance Yang wrote:
-> Hi David, Lorenzo,
+On Tue, Oct 14, 2025 at 8:29=E2=80=AFAM Yosry Ahmed <yosry.ahmed@linux.dev>=
+ wrote:
 >
-> Thanks to both of you for the deep dive on this!!!
+> [..]
+> > > > @@ -158,6 +161,8 @@ struct zswap_pool {
+> > > >   struct work_struct release_work;
+> > > >   struct hlist_node node;
+> > > >   char tfm_name[CRYPTO_MAX_ALG_NAME];
+> > > > + u8 compr_batch_size;
+> > > > + u8 store_batch_size;
+> > >
+> > > I don't think we need to store store_batch_size, seems trivial to
+> > > calculate at store time (perhaps in a helper).
+> > >
+> > > Taking a step back, is there any benefit to limiting store_batch_size=
+ to
+> > > compr_batch_size? Is there a disadvantage to using
+> > > ZSWAP_MAX_BATCH_SIZE
+> > > even if it's higher than the HW compression batch size?
+> >
+> > Thanks Yosry, for the code review comments. I had a discussion with
+> > Barry earlier on these very same topics as follow up to his review comm=
+ents
+> > for v11, starting with [1]. Can you please go through the rationale for
+> > these design choices, and let me know if you have any questions:
+> >
+> > [1]: https://patchwork.kernel.org/comment/26530319/
+>
+> I am surprised that calculating the value in zswap_store() causes a
+> regression, but I am fine with keeping the precalculation in this case.
+>
+> I think there's a bigger problem here tho, more below.
+>
+> > > > + */
+> > > > +static __always_inline int zswap_entries_cache_alloc_batch(void
+> > > **entries,
+> > > > +                                                    unsigned int
+> > > nr_entries,
+> > > > +                                                    gfp_t gfp)
+> > > > +{
+> > > > + return kmem_cache_alloc_bulk(zswap_entry_cache, gfp, nr_entries,
+> > > entries);
+> > >
+> > > We currently use kmem_cache_alloc_node() in zswap_entry_cache_alloc()=
+ to
+> > > allocate the entry on the same node as the compressed page. We use
+> > > entry_to_nid() to get the node for LRU operations.
+> > >
+> > > This breaks that assumption.
+> >
+> > You bring up a good point. I was looking at the code in slub.c and my
+> > understanding thus far is that both, bulk allocations and kmem_cache_al=
+loc_node()
+> > allocations are made from a per-CPU "cpu_slab" that is allocated by SLU=
+B.
+> >
+> > IIUC, the concern you are raising is in the mainline, the entry is allo=
+cated on
+> > the same node as the compressed page, and gets added to the LRU list of=
+ that
+> > node. IOW, the node to which the compressed page belongs is the one to =
+whose
+> > LRU the entry will be added.
+> >
+> > With this patch, with kmem_cache_alloc_bulk(), the entry will be create=
+d on
+> > the per-CPU slab of the CPU on which zswap_store() is called and will b=
+e
+> > added to the LRU of that per-CPU slab's NUMA node. Hence, the end resul=
+t
+> > could potentially be that the zswap_entry for a page could potentially =
+be
+> > on a different NUMA node/memcg than the page's NUMA node.
 
-That's ok :)
+I think only the NUMA node is the problem, not the memcg.
+
+> >
+> > This is my thinking as to how this will impact the zswap shrinker:
+> >
+> > 1) memcg shrinker: if the memcg the entry ends up in is on the zswap_li=
+st_lru,
+> >     the entry will be written back.
+> > 2) Global shrinker: will cycle through all memcg's that have pages in t=
+he
+> >     zswap_list_lru, and the entry will be written back.
+> >
+> > Based on this, it is not clear to me if there is a problem, and would l=
+ike to
+> > request you, Nhat and others to provide insights as well.
+> >
+> > Interestingly, most of the code in slub.c has unlikely(!node_match(slab=
+, node)).
+> > Does this imply some higher level mm slab allocation requirements?
+> >
+> > I am Ok with just calling zswap_entry_cache_alloc() for "nr_pages" if w=
+e
+> > think this would be more correct.
+>
+> I saw your other response as well, but I think one thing is not clear
+> here. The zswap entry will get written back "eventually", sure, but
+> that's not the problem.
+>
+> If the zswap entry is on the wrong node lru, two things happen:
+> (a) When the "right" node is under memory pressure, we cannot free this
+>     entry by writing it back since it's not available in the lru.
+> (b) When the "wrong" node is under memory pressure, it will potentially
+>     writeback entries from other nodes AND report them as being freed
+>     from this node.
+>
+> Both (a) and (b) cause less effective reclaim from the zswap shrinker.
+> Additionally (b) causes the shrinker to report the wrong amount of freed
+> memory from the node. While this may not be significant today, it's very
+> possible that more heuristics start relying on this number in the
+> future.
+>
+> I don't believe we should put zswap entries on the wrong LRU, but I will
+> defer to Nhat for the final verdict if he has a different opinion.
+
+Oh shoot. Yeah I missed that part.
+
+In the past, we sort of did not care - zswap was very poorly designed
+for NUMA architecture in general, and most of our test setups have
+been single-node, so these kinds of discrepancies did not show up in
+performance numbers.
+
+But we are getting more multi-node systems:
+
+1. Bigger hosts (memory-wise) tend to also have more than one nodes.
+It scales better that way (especially because a lot of structures and
+locks protecting them are node-partitioned).
+
+2. We have also seen different memory media that are often expressed
+to the kernel as nodes: CXL, GPU memory, etc.
+
+This will necessitate tightening memory placement. We recently had to
+fix one such issue:
+
+https://github.com/torvalds/linux/commit/56e5a103a721d0ef139bba7ff3d3ada6c8=
+217d5b
+
+So I'm a bit nervous about this change, which will make us use the wrong LR=
+U...
+
+Some work around:
+
+1. Can we squeeze an extra int field anywhere in struct zswap_entry?
+
+2. Can we pump nid all the way to zswap_lru_add()?
+
+This is still not 100% ideal - the metadata (struct zswap_entry) will
+still be allocated on the wrong node. But at least the data are
+properly managed, i.e on the right LRU.
 
 >
-> The code we've been discussing was moved to a new helper by
-> another patch series[1], so let's call it a day on this
-> thread and leave it as-is and just review/change the logic
-> at its new home :)
+> > >
+> > > Does it actually matter if we do the initializations here vs. right
+> > > before inserting to the LRU (current behavior)?
+> >
+> > Yes, it impacts batching performance with software quite a bit.
+>
+> Taking a step back, based on discussions in this thread and others, it
+> seems like the performance of zswap_store() is very sensitive to minor
+> changes like this one, calculating the store size, etc.
+>
+> I don't recall this being the case before this patch series. It seems
+> like an artifact of batching affecting performance negatively and
+> a collection of micro-optimizations and "correct" placement of code/data
+> to fix it. This seems to be very fragile.
 
-Ahh, please do make that clear in future, I reviewed this on the basis it
-was a dependency of [1] :)
+I agree. This seems troubling.
 
-I separately reviewed that on that basis.
-
-Will reply there...
+What's the variance of your benchmark results, Kanchana? I have found
+that kernel build tests can have quite a bit of variance, but is it as
+big as the performance difference of these minor changes (i.e, can it
+explain the "regression")?
 
 >
-> [1]
-> https://lore.kernel.org/linux-mm/20251008043748.45554-1-lance.yang@linux.dev/
+> It is very possible that an incoming change will move the
+> initializations or make other changes to the code, that will seemingly
+> cause regressions when they really shouldn't.
 >
-> Thanks a lot!
-> Lance
+> Additionally, what may seem optimal on the CPU you are testing on maybe
+> be suboptimal for other CPUs. I think the big problem here is not where
+> to initialize the entry or whether to precompute the store batch size,
+> it's why the code has become extremely sensitive to these changes when
+> it shouldn't be. zswap_store() is not a fast path by any means, and
+> people will not expect such changes to cause meaningful regressions.
 
-Cheers, Lorenzo
+Agree. These micro-optimizations seem very fragile.
+
+>
+> >
+> > >
+> > > > + for (i =3D 0; i < nr_pages; ++i) {
+> > > > +         entries[i]->handle =3D (unsigned long)ERR_PTR(-EINVAL);
+> > > > +         entries[i]->pool =3D pool;
+> > > > +         entries[i]->swpentry =3D page_swap_entry(folio_page(folio=
+,
+> > > start + i));
+> > > > +         entries[i]->objcg =3D objcg;
+> > > > +         entries[i]->referenced =3D true;
+> > > > +         INIT_LIST_HEAD(&entries[i]->lru);
+> > > > + }
+> > > >
+> > > > - old =3D xa_store(swap_zswap_tree(page_swpentry),
+> > > > -                swp_offset(page_swpentry),
+> > > > -                entry, GFP_KERNEL);
+> > > > - if (xa_is_err(old)) {
+> > > > -         int err =3D xa_err(old);
+> > > > + for (i =3D 0; i < nr_pages; ++i) {
+> > > > +         struct page *page =3D folio_page(folio, start + i);
+> > > >
+> > > > -         WARN_ONCE(err !=3D -ENOMEM, "unexpected xarray error:
+> > > %d\n", err);
+> > > > -         zswap_reject_alloc_fail++;
+> > > > -         goto store_failed;
+> > > > +         if (!zswap_compress(page, entries[i], pool, folio_wb))
+> > > > +                 goto store_pages_failed;
+> > > >   }
+> > > >
+> > > > - /*
+> > > > -  * We may have had an existing entry that became stale when
+> > > > -  * the folio was redirtied and now the new version is being
+> > > > -  * swapped out. Get rid of the old.
+> > > > -  */
+> > > > - if (old)
+> > > > -         zswap_entry_free(old);
+> > > > + for (i =3D 0; i < nr_pages; ++i) {
+> > > > +         struct zswap_entry *old, *entry =3D entries[i];
+> > > >
+> > > > - /*
+> > > > -  * The entry is successfully compressed and stored in the tree, t=
+here is
+> > > > -  * no further possibility of failure. Grab refs to the pool and o=
+bjcg,
+> > > > -  * charge zswap memory, and increment zswap_stored_pages.
+> > > > -  * The opposite actions will be performed by zswap_entry_free()
+> > > > -  * when the entry is removed from the tree.
+> > > > -  */
+> > > > - zswap_pool_get(pool);
+> > > > - if (objcg) {
+> > > > -         obj_cgroup_get(objcg);
+> > > > -         obj_cgroup_charge_zswap(objcg, entry->length);
+> > > > - }
+> > > > - atomic_long_inc(&zswap_stored_pages);
+> > > > - if (entry->length =3D=3D PAGE_SIZE)
+> > > > -         atomic_long_inc(&zswap_stored_incompressible_pages);
+> > > > +         old =3D xa_store(swap_zswap_tree(entry->swpentry),
+> > > > +                        swp_offset(entry->swpentry),
+> > > > +                        entry, GFP_KERNEL);
+> > > > +         if (unlikely(xa_is_err(old))) {
+> > > > +                 int err =3D xa_err(old);
+> > > >
+> > > > - /*
+> > > > -  * We finish initializing the entry while it's already in xarray.
+> > > > -  * This is safe because:
+> > > > -  *
+> > > > -  * 1. Concurrent stores and invalidations are excluded by folio l=
+ock.
+> > > > -  *
+> > > > -  * 2. Writeback is excluded by the entry not being on the LRU yet=
+.
+> > > > -  *    The publishing order matters to prevent writeback from seei=
+ng
+> > > > -  *    an incoherent entry.
+> > > > -  */
+> > > > - entry->pool =3D pool;
+> > > > - entry->swpentry =3D page_swpentry;
+> > > > - entry->objcg =3D objcg;
+> > > > - entry->referenced =3D true;
+> > > > - if (entry->length) {
+> > > > -         INIT_LIST_HEAD(&entry->lru);
+> > > > -         zswap_lru_add(&zswap_list_lru, entry);
+> > > > +                 WARN_ONCE(err !=3D -ENOMEM, "unexpected xarray
+> > > error: %d\n", err);
+> > > > +                 zswap_reject_alloc_fail++;
+> > > > +                 /*
+> > > > +                  * Entries up to this point have been stored in t=
+he
+> > > > +                  * xarray. zswap_store() will erase them from the
+> > > xarray
+> > > > +                  * and call zswap_entry_free(). Local cleanup in
+> > > > +                  * 'store_pages_failed' only needs to happen for
+> > > > +                  * entries from [@i to @nr_pages).
+> > > > +                  */
+> > > > +                 store_fail_idx =3D i;
+> > > > +                 goto store_pages_failed;
+> > > > +         }
+> > > > +
+> > > > +         /*
+> > > > +          * We may have had an existing entry that became stale wh=
+en
+> > > > +          * the folio was redirtied and now the new version is bei=
+ng
+> > > > +          * swapped out. Get rid of the old.
+> > > > +          */
+> > > > +         if (unlikely(old))
+> > > > +                 zswap_entry_free(old);
+> > > > +
+> > > > +         /*
+> > > > +          * The entry is successfully compressed and stored in the=
+ tree,
+> > > there is
+> > > > +          * no further possibility of failure. Grab refs to the po=
+ol and
+> > > objcg,
+> > > > +          * charge zswap memory, and increment
+> > > zswap_stored_pages.
+> > > > +          * The opposite actions will be performed by
+> > > zswap_entry_free()
+> > > > +          * when the entry is removed from the tree.
+> > > > +          */
+> > >
+> > > But there *is* further possibility of failure if a subsequent entry
+> > > xa_store() fails, right?
+> >
+> > This comment is referring to this specific entry.
+>
+> I think it's currently misleading in its current form. Perhaps:
+>
+> The entry is successfully compressed and stored in the tree, and further
+> failures will be cleaned up in zswap_store().
+>
+> >
+> > >
+> > > Seems like if xa_store() fails we do not cleanup previously charged
+> > > objects, pool references, zswap_stored_pages, etc. Instead of rolling
+> > > all this back on failure, can we do all the xarray stores first and o=
+nly
+> > > do the rest when we're at a point where no failure can happen? Would
+> > > that cause a performance regression?
+> >
+> > It would make the code more complicated and thus cause a performance
+> > regression. I have tried to balance code simplicity (which impacts perf=
+ormance)
+> > with correctness here. The "store_failed_idx" ensures that all partial =
+work done
+> > in zswap_store_pages() for this batch, is cleaned up.
+> >
+> > The rest is handled in zswap_store() when it sees an error returned by
+> > zswap_store_pages().
+>
+> Right, I missed the part about zswap_store() handling this, the comment
+> above confused me.
 
