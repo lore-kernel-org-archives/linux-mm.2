@@ -4,89 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A392ACCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 14:09:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45424CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 14:21:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC47C8E0129; Tue, 14 Oct 2025 10:09:08 -0400 (EDT)
+	id A25CC8E0123; Tue, 14 Oct 2025 10:21:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9C698E0123; Tue, 14 Oct 2025 10:09:08 -0400 (EDT)
+	id 9FD758E010A; Tue, 14 Oct 2025 10:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD9418E0129; Tue, 14 Oct 2025 10:09:08 -0400 (EDT)
+	id 913528E0123; Tue, 14 Oct 2025 10:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C969A8E0123
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:09:08 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 7D67F8E010A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 10:21:47 -0400 (EDT)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7928C13BF2F
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:09:08 +0000 (UTC)
-X-FDA: 83996901576.08.E91625B
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 967CE40014
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:09:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qmHUBqwK;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3242A47781
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:21:47 +0000 (UTC)
+X-FDA: 83996933454.08.C46CA76
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6DABD1A0007
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 14:21:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bG4c7lG+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf19.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760450947;
+	s=arc-20220608; t=1760451705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HTt/KzKieiee5hMQF+Yl+hZuVbxPhLlk+WHV6D9guo8=;
-	b=I+JOA4MhFMCWRieJyqRFJxV+FitLCrZFnDWGh/AiQDWHWX9REtJUfgjUV2sMi0/jehlSr0
-	3KsPBnJVDRhUn/UI9T2WDvzt/evWyLgXJgrf0QFABxBYqJlQFEUg1CjmJ1B98X/G7l2OeW
-	fjoJvKonhCHRaZ1V3poy+ZZZVMdwqtE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qmHUBqwK;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760450947; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bc/kk9aGg+NAA0PnxquTmsluNh6C3YJCHG16E4V/i88=;
+	b=JrPpXO6NsLDPibqyF6wbVQfZZn8fL2bMF0mgnQRCuaOu3JbuMzLy/B+BRpwxzBtoF2Oj5n
+	3sY2iG22Z1YyMXRyers7lg/XEfmiMg1JYjQ3azKXPfHgjDo0B9jiuqXIK2FoeLLJ8EzJmT
+	G+TM5pA45k3vmFoUgyqhZ4PaksW04sU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760451705; a=rsa-sha256;
 	cv=none;
-	b=qM6CnO3hFvE4XrL1HyIIESByzQRj4Gx6CrVWDtDoGkYlqnqb9gIwmr6DkVrz0/dpT2dC9M
-	EkOzI9Mz/aBkmnjcNgr/FktSN0uMNjoJapBY2gjt5pbkuoorsgwa25Rr+ERjvAKaEsQ9qn
-	FxrVp2GMs2c3dIFCmLLMTGTpAkpR8+U=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760450944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=HTt/KzKieiee5hMQF+Yl+hZuVbxPhLlk+WHV6D9guo8=;
-	b=qmHUBqwKWNT5vYFudzOiUF4zcASTLZYuSKIEBYKIYVECM3evlnYbwtVC8+wujvSBGhkRvY
-	OyuizPA56TwSUlr7qmo4GZLrjp3R+5oetCgXTIS7kckygImIJsFsBocWRNnvc2skNg4ZEq
-	Ug6JIGrNsyZQALcEojvwDxh6J+Z7bGw=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	cgroups@vger.kernel.org,
+	b=aL6tRNTeliCZNYe+FR/p2VpTTTMU/NLifEmpoz1GAQu7MndIxH9uxHba1b2/qlixTJUGC3
+	aqlMXCW8UZdFNe64qcy+Wfmq3gzjBjU0+2ddltS5uzqV5i1figPJpkvY8IyEEr4lk4nD+p
+	0R7Hxd+rEGo05l3OWFKVpFbUB+n93RQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bG4c7lG+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf19.hostedemail.com: domain of qiuxu.zhuo@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=qiuxu.zhuo@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760451704; x=1791987704;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1Hf1GQnfilFRE9nB1w0R6O4CsxGa+shCweum3ftHKYs=;
+  b=bG4c7lG++NTYSlAHAk0uknmneaqmn2kOPCHvz13vGuaqsnAkFfLD4pYa
+   BywLRrBTifLZB7gkgt5buxRo6oZdd2zopmJgfjRbHbOV8rkg46GZR3Z1c
+   gpPW2gTshWehh/NRQzN/3KOqsRUlr6Q1XRrq3xEI5wcaqaGFNSS2IFY2P
+   I20hUozJ6f2+SxPM1e9hUgaNJzmp+I+EHYb7YukNrB+ISjdXYmwgOX8Sv
+   V3e//UiRjU0aMdvdEhSjZQrI4xssxCIzgF8+fy8tgP1gowI+0S2oVYyEX
+   hpAgT+kIEfZje22f0mc5aZwgZZ+EQDQ1tQSAN9sJYePoFBBsKRYqeIj+5
+   A==;
+X-CSE-ConnectionGUID: YkdguFqUQ0i4srWOf1KUCw==
+X-CSE-MsgGUID: 0HABOIysTAi4MbeXKm6BOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62653254"
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
+   d="scan'208";a="62653254"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 07:21:43 -0700
+X-CSE-ConnectionGUID: fjCBQiILTRa4fpom3HZ2vQ==
+X-CSE-MsgGUID: xqmpdOA3RDOarD3OZxal3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
+   d="scan'208";a="181449086"
+Received: from qiuxu-clx.sh.intel.com ([10.239.53.109])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 07:21:38 -0700
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	linmiaohe@huawei.com,
+	tony.luck@intel.com
+Cc: qiuxu.zhuo@intel.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	nao.horiguchi@gmail.com,
+	farrah.chen@intel.com,
+	jiaqiyan@google.com,
+	lance.yang@linux.dev,
+	richard.weiyang@gmail.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>
-Subject: [PATCH v2] slab: Add check for memcg_data's upper bits in folio_memcg_kmem
-Date: Tue, 14 Oct 2025 22:08:15 +0800
-Message-Id: <20251014140815.383823-1-hao.ge@linux.dev>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/1] mm: prevent poison consumption when splitting THP
+Date: Tue, 14 Oct 2025 22:19:35 +0800
+Message-ID: <20251014141935.1878315-1-qiuxu.zhuo@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
+References: <20250928032842.1399147-1-qiuxu.zhuo@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 967CE40014
-X-Stat-Signature: 3z9mdbxn78jfb1oomm7iukb13xjqejtc
 X-Rspam-User: 
-X-HE-Tag: 1760450946-863046
-X-HE-Meta: U2FsdGVkX1+ymDpJeKS5dlsTyVGwzdPOAiICJTMsVkU12bzH4WFaRixN8VrwOkp7PHAxI/Mib2uql6Hget+8DnE21/WQUj8EqIgkdHJSKZT0yX6nXYxkCGEsLrHWGepc9AXY12zAs6bvGzWf95nlJg7u66a1nOZY22TLGXDVVUZvKyW+9wb0DzaC0OonZUJUwShoT0oGSa4YktzBpPO7BglIfE3GjyLhOzFZIZGmjSR3tAiLU72l6n4iHtDEbWjE9X0en9yOrMGqnu9BO88OO9schCiNiYQNfS/KV7zcXx7tKNU0ILA7CaWJtsVcmGRZqxwp0q/60Eg23yu3T8uyGPYAjng4l8F5O8QahEYLbRNc3njjXm6VzPLOzBrekPWcfvMN00IwZH5geyD4QokIfyjh6xiuvOXV2vO2Vuap6KylhqZqeGWbipBQJoB5MjTTVkSuWDWyM/vftvjXXhcQjKZh4nRiRPIHNJQE4y3z9fOeZGPnU3U/nX6MpnxTO/a19+Px0QPoBfY0Ycpl6OLwUPqsu/Uo2SWD+nFAheZ5mpjRgVmQHNwLlZPggSF0xctuRy60ZteU9tnHwYGj9FuO96RWL1brdQtI6vW/uQZsHNGRHutterpmQ+lsKZZ7Ra+6ou4QbRjPFY7z3UckhNjzOnYzVkSILUPXBo2yDhpnQHyrrhXYXGWcrt4gn54p7+M9tfF6zMTj9XS7s7Q7Jg0E8gsuAh8522xeZtNhx/hplfKCdBqZhRTaKv1N96BwgTLqMYWKv3vl70832OGrfYTtRdB8+HWCqWUSkV/4EkgSFKbihJMLF/9ufk89s45J8oxlCYu8yvur8MsyKsa6A73ezcsktv5qDvQmfOgP0sI6oMFBCXlVJe11OMdj74wekEUwEpGNqFrtJSRx+1y4W/7K7TeIzSVbWiuPmMJ2fyKQU30Kh1RmNoga+RUo1B1+al0potzsQxP3sY+0In6Ifi5
- iE0dyPoE
- z420EWf1JXfpJyqwN+MTZnW5HQtTs04890mRaL2oJiFwomzS0B+ay0WT3WWrSR5AkfFQ27JmTprggXgC2hjJVkjWfJOq6F2r50/kJhyCx2S69mNsH7regMjzoulwWWL2L2QOdw3BMO/2EJsNO07jmt8xBl1nHTpdxc1IN9aXyRyWNk//Au4JJ1bn8fnA6cPD+/l2q0BTnDfEaTOVRpjdQKzU95842Na8qoOhH0m7T6Du1aIQDklzyX5lyM2uQ/e8nNenC/KfIaAg92gKdQwgFXiskdQ==
+X-Rspamd-Queue-Id: 6DABD1A0007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: f6tmuubn9jwd9ozfas9zg9gxtz8mtust
+X-HE-Tag: 1760451704-698837
+X-HE-Meta: U2FsdGVkX188nhMIMtuhRGc46WjrjT9mIdVv3WRZ4M2vxwKTHLq7Uyc8KV4MCwHmQR0QDhiYDYxGh/PR4TOVGw3oDf9abCqKMPWI59f4PhwGIBVqDvdpWBOkejDuyn74iia6+6gkks1G49bZI66cO0HSAuE+DWYz2JJDhjOrYvo8nDe9SkNdVfZoW1t9ayA3S6HXsB647Xr6WRmdU54R8zb3sFGURyNFB5mOaEhKuv9Q2vSHvUKrRm8/xhNrHCQ/c0/mwChbutPyveOHwElWhBWNVDfBQtKCNaVSgGjEJ96wPE4VOwxBsiF1+0oPzZH+3GBZKFG+ifvUkSXjJoxXU0m70/MgRqKHWLJhakbPwtNoZeyMTsHVukJKPhzNsyLwcqwsNCpwPf+3z4IUdbsCjRdo9nHEUsjZ463+JWvt5CG8mrIYYtRYpcbOgbxJN9AnXj8jjQr3dous6Z4MSGttQvBKHRmDAc6TkngdG2f+sWczrJqacbcMma2zPRD1Gr+s6urg1Xn7JOa6diQLXR0qy+tU6yK3J7WzHrNTxXW/Qg1Rr3gxvQzIr6oK70UDEXV1L9ZMypIsDxMTvoIizTIVY4hAa4GTcxx0/9dRONCofc4BDCtcT4bTlFdQEloX8exun34gl/I+Tew9fg8DPcsUpwrJR5rLwgdPlOIXZFRILTz6pO9EoEPJasCoZEwDgrToS0uwNgquZp91xLImZYtxI6sZCZeDuiy5avbpmY8eT5BMQtnqFQcf3ffa4nLnQdKRE7pzY7hdavGz5DrSjbIs03L6cOCzSW7S9DR10sZWi9NwS2/w4Cw7nN+DHvY2epIuCwgyoasjlM/XjpXsUDvfFiGxkulayLqCNhsvKm2eyFHjyvMVgbQPUaJ8hZqzjE6T3iMcAaEW8MC6BiBa3tT9qQ1AgLxPIoZYK+NRkBQeQXhYq3kykugRUQaLkYLAGixPYQGPeLxsX/PQMBRa3qI
+ GSAUiR74
+ 6PnU23MW0siDaTV+YRzDPzSCIxpthI021yspHqPcrR2eS1jN8rl9+U9021tOLVA4K3NcpQ4Z669ooUjw0FfGKM6da9RTycSTiWKy+fnujKDEPlXUpwCSWFoNefrVD/gVcPxbK4NR98ED/l4uh355j1emoUV0WD2oegVklHfAIXa463O/KU+hZRLpXws0S/1DaBGLwIKDATm7HYQ5wJxQ00h5mP5t4LoXKb05+ZVaB/zan1lvHE4iLqrb+Kv7Afpl/U33MV/NaftSLLbsHTlWVnRtQhTbSItRjVpnGnXIbOxKzal/k/Z69KHTUmYZnasgYwSE7NK58O+Id6IQ7G+h1gVsojQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,52 +120,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Ge <gehao@kylinos.cn>
+When performing memory error injection on a THP (Transparent Huge Page)
+mapped to userspace on an x86 server, the kernel panics with the following
+trace. The expected behavior is to terminate the affected process instead
+of panicking the kernel, as the x86 Machine Check code can recover from an
+in-userspace #MC.
 
-This is because OBJEXTS_ALLOC_FAIL and OBJEXTS_ALLOC_FAIL currently share
-the same bit position. Therefore, we cannot simply determine whether
-memcg_data still points to the slabobj_ext vector by checking
-folio->memcg_data & MEMCG_DATA_OBJEXTS.
+  mce: [Hardware Error]: CPU 0: Machine Check Exception: f Bank 3: bd80000000070134
+  mce: [Hardware Error]: RIP 10:<ffffffff8372f8bc> {memchr_inv+0x4c/0xf0}
+  mce: [Hardware Error]: TSC afff7bbff88a ADDR 1d301b000 MISC 80 PPIN 1e741e77539027db
+  mce: [Hardware Error]: PROCESSOR 0:d06d0 TIME 1758093249 SOCKET 0 APIC 0 microcode 80000320
+  mce: [Hardware Error]: Run the above through 'mcelog --ascii'
+  mce: [Hardware Error]: Machine check: Data load in unrecoverable area of kernel
+  Kernel panic - not syncing: Fatal local machine check
 
-We can distinguish between these two cases by checking whether the upper
-bits set:
+The root cause of this panic is that handling a memory failure triggered by
+an in-userspace #MC necessitates splitting the THP. The splitting process
+employs a mechanism, implemented in try_to_map_unused_to_zeropage(), which
+reads the sub-pages of the THP to identify zero-filled pages. However,
+reading the sub-pages results in a second in-kernel #MC, occurring before
+the initial memory_failure() completes, ultimately leading to a kernel
+panic. See the kernel panic call trace on the two #MCs.
 
-1) MEMCG_DATA_OBJEXTS is set, but upper bits are not set,
-   so it should mean obj_exts allocation failed (OBJEXTS_ALLOC_FAIL),
-   thus do not report error, or
+  First Machine Check occurs // [1]
+    memory_failure()         // [2]
+      try_to_split_thp_page()
+        split_huge_page()
+          split_huge_page_to_list_to_order()
+            __folio_split()  // [3]
+              remap_page()
+                remove_migration_ptes()
+                  remove_migration_pte()
+                    try_to_map_unused_to_zeropage()  // [4]
+                      memchr_inv()                   // [5]
+                        Second Machine Check occurs  // [6]
+                          Kernel panic
 
-2) MEMCG_DATA_OBJEXTS is set, and upper bits are also set, so someone
-   did not clear a valid folio->memcg_data before freeing the folio
-   (report error).
+[1] Triggered by accessing a hardware-poisoned THP in userspace, which is
+    typically recoverable by terminating the affected process.
 
-So let's add check for memcg_data's upper bits in folio_memcg_kmem.
+[2] Call folio_set_has_hwpoisoned() before try_to_split_thp_page().
 
-Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
+[3] Pass the RMP_USE_SHARED_ZEROPAGE remap flag to remap_page().
+
+[4] Try to map the unused THP to zeropage.
+
+[5] Re-access sub-pages of the hw-poisoned THP in the kernel.
+
+[6] Triggered in-kernel, leading to a panic kernel.
+
+In Step[2], memory_failure() sets the poisoned flag on the sub-page of the
+THP by TestSetPageHWPoison() before calling try_to_split_thp_page().
+
+As suggested by David Hildenbrand, fix this panic by not accessing to the
+poisoned sub-page of the THP during zeropage identification, while
+continuing to scan unaffected sub-pages of the THP for possible zeropage
+mapping. This prevents a second in-kernel #MC that would cause kernel
+panic in Step[4].
+
+[ Credits to Andrew Zaborowski <andrew.zaborowski@intel.com> for his
+  original fix that prevents passing the RMP_USE_SHARED_ZEROPAGE flag
+  to remap_page() in Step[3] if the THP has the has_hwpoisoned flag set,
+  avoiding access to the entire THP for zero-page identification. ]
+
+Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when splitting isolated thp")
+Fixes: dafff3f4c850 ("mm: split underused THPs")
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Acked-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 ---
-v2: Per Vlastimil and Harry's suggestion, instead of introducing a new bit,
-    implement this by checking if the highest bit is set.
-    Many thanks to Vlastimil and Harry.
----
- include/linux/memcontrol.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+v2 -> v3:
+  - No code changes.
 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 873e510d6f8d..f9f7ba14be04 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -534,7 +534,9 @@ static inline struct mem_cgroup *get_mem_cgroup_from_objcg(struct obj_cgroup *ob
- static inline bool folio_memcg_kmem(struct folio *folio)
- {
- 	VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
--	VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
-+	VM_BUG_ON_FOLIO((folio->memcg_data & MEMCG_DATA_OBJEXTS) &&
-+			(folio->memcg_data & ~(ULONG_MAX >> 1)),
-+			folio);
- 	return folio->memcg_data & MEMCG_DATA_KMEM;
- }
+  - Rebased on top of v6.18-rc1 and retested.
+
+  - Add two "Fixes:" tags.
+
+  - Collect Lance Yang's "Acked-by:" tag.
+
+  - Collect Wei Yang's "Reviewed-by:" tag.
+
+  - Collect Zi Yan's "Acked-by:" tag.
+
+  - Collect Miaohe's "Reviewed-by:" tag.
+
+v1 -> v2:
+  - Apply David Hildenbrand's fix suggestion.
+
+  - Update the commit message to reflect the new fix.
+
+  - Add David Hildenbrand's "Suggested-by:" tag.
+
+  - Remove Andrew Zaborowski's SoB but add credits to him in the commit message.
+    [ I cannot reach him to get his SoB for the completely rewritten commit
+      message and new fix approach. ]
+
+ mm/huge_memory.c | 3 +++
+ mm/migrate.c     | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 1b81680b4225..1d1b74950332 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4109,6 +4109,9 @@ static bool thp_underused(struct folio *folio)
+ 	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+ 		return false;
  
++	if (folio_contain_hwpoisoned_page(folio))
++		return false;
++
+ 	for (i = 0; i < folio_nr_pages(folio); i++) {
+ 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+ 			if (++num_zero_pages > khugepaged_max_ptes_none)
+diff --git a/mm/migrate.c b/mm/migrate.c
+index e3065c9edb55..c0e9f15be2a2 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -301,8 +301,9 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 	struct page *page = folio_page(folio, idx);
+ 	pte_t newpte;
+ 
+-	if (PageCompound(page))
++	if (PageCompound(page) || PageHWPoison(page))
+ 		return false;
++
+ 	VM_BUG_ON_PAGE(!PageAnon(page), page);
+ 	VM_BUG_ON_PAGE(!PageLocked(page), page);
+ 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.25.1
+2.43.0
 
 
