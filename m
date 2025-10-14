@@ -4,103 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB62CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9E5CCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25A908E0118; Tue, 14 Oct 2025 09:10:47 -0400 (EDT)
+	id C465B8E0119; Tue, 14 Oct 2025 09:10:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3BC8E0112; Tue, 14 Oct 2025 09:10:47 -0400 (EDT)
+	id BCF758E0112; Tue, 14 Oct 2025 09:10:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D3778E0118; Tue, 14 Oct 2025 09:10:47 -0400 (EDT)
+	id A97CA8E0119; Tue, 14 Oct 2025 09:10:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E95288E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:10:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B419686693
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:10:46 +0000 (UTC)
-X-FDA: 83996754492.20.78AD11B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2465B80018
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:10:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g9+NifUw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447445; a=rsa-sha256;
-	cv=none;
-	b=QIWltNYECOCUhZtwUwe75smwHqOp3OkB6jVfADKyejkGoUB447w8BkrtRJvJo96uW+nhJG
-	j2Wkyu2hp1h6HFv0yDnGm/1c7c3iyHyJd4/q0y0I6vMIyKL5x4nOduYm/ZT+04nGs86TJg
-	maZOQ3aB2rHHbRiS9kLmoqAMb6LgeXA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g9+NifUw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 918ED8E0112
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:10:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 52275160923
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:10:59 +0000 (UTC)
+X-FDA: 83996755038.03.48F8017
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 852661C0002
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:10:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 34EvuaAkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=34EvuaAkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447445;
+	s=arc-20220608; t=1760447457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nsF6PObp6qoqkkCKTQsSNmyL4hK2S7wY4EQepojwbJw=;
-	b=WA9D6prfLOwdcurb6lNh08oJGn3omaN6rW1K32TbJFigDKkGQdVj+L4eEOwFUCr4HS44Ic
-	X6iyNfnBlIToL0ZAxnDPJkPANWYqtIhWpeicuR6zn+Ybf5H/gTXyMD9o/jwZ21XzUFj3se
-	N1TRCqHfvdzecN3tcQxi+y0qGn3bklU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EF9C622CF;
-	Tue, 14 Oct 2025 13:10:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8533FC4CEE7;
-	Tue, 14 Oct 2025 13:10:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760447443;
-	bh=1z29qiTz6h5jyAO8g68bo34GcYPLqTUSe9I3ydJUTw8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=g9+NifUwXszKwI+i9b+BADg9CHX9pjgCw2mu/yxA+73glB/SfRpvhpeMLwX+7zeg9
-	 cpZyrZdbl6zsMX+Wo90KkdV6hDFv+HpHH+GKnixUqPtsiiuipRTYlBSA+RFLrU6AdF
-	 z8MA7ZC0dDyvXrecjZhU8nlLLfZCLEsyyqROyne29Obt+UqzwZBF2jT+f8QUD3imN0
-	 gQ5aZfRz1OgEk0IJVCMTbI4VrsIEPNPKNZutUFVMj6TdGeXxePJsX5/R68ibLC+6iv
-	 jZYvfqrXGK5MchNQMt25O838FaWOmrFURP+ZyNfLcRWE1zF4CmsEn6AFbRAtwXlHBn
-	 SOQ76mXQJoW1Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Changyuan Lyu
- <changyuanl@google.com>,  rppt@kernel.org,  akpm@linux-foundation.org,
-  linux-kernel@vger.kernel.org,  anthony.yznaga@oracle.com,  arnd@arndb.de,
-  ashish.kalra@amd.com,  benh@kernel.crashing.org,  bp@alien8.de,
-  catalin.marinas@arm.com,  corbet@lwn.net,  dave.hansen@linux.intel.com,
-  devicetree@vger.kernel.org,  dwmw2@infradead.org,  ebiederm@xmission.com,
-  graf@amazon.com,  hpa@zytor.com,  jgowans@amazon.com,
-  kexec@lists.infradead.org,  krzk@kernel.org,
-  linux-arm-kernel@lists.infradead.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  luto@kernel.org,  mark.rutland@arm.com,
-  mingo@redhat.com,  pasha.tatashin@soleen.com,  pbonzini@redhat.com,
-  peterz@infradead.org,  robh@kernel.org,  rostedt@goodmis.org,
-  saravanak@google.com,  skinsburskii@linux.microsoft.com,
-  tglx@linutronix.de,  thomas.lendacky@amd.com,  will@kernel.org,
-  x86@kernel.org
-Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
-In-Reply-To: <2ege2jfbevtunhxsnutbzde7cqwgu5qbj4bbuw2umw7ke7ogcn@5wtskk4exzsi>
-	(Breno Leitao's message of "Tue, 14 Oct 2025 01:34:07 -0700")
-References: <20250509074635.3187114-1-changyuanl@google.com>
-	<20250509074635.3187114-2-changyuanl@google.com>
-	<ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
-	<mafs0wm4yluej.fsf@kernel.org> <mafs0h5w2lpqu.fsf@kernel.org>
-	<2ege2jfbevtunhxsnutbzde7cqwgu5qbj4bbuw2umw7ke7ogcn@5wtskk4exzsi>
-Date: Tue, 14 Oct 2025 15:10:37 +0200
-Message-ID: <mafs0cy6pljci.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 in-reply-to:in-reply-to:references;
+	bh=YTvCLh80L5RCIEYpK48k3nL1zjTVSsw4OaSTIePcCmg=;
+	b=4HssOamS9ltg04avwSDj37vJuwTAqxU5SP0/V1pfXgOhlRKoKCaD5Jv4VTAjTZkjxOFKBj
+	8zsqMXP6uMjQg7UNBlMrMWacni5XsaUxHyAG6jFhk0aJushjjoMuye/ngZQl1s//YdMidi
+	6zbsjw3baRF9ZoemrEIjmgl9ejqpvQs=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 34EvuaAkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.69 as permitted sender) smtp.mailfrom=34EvuaAkbAH8v12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447457; a=rsa-sha256;
+	cv=none;
+	b=iwiGm5EV5KOxwlwdFeBprPmADNoF3DFZpIl0EUjrEEbHk/uD4n2OuICcX2E3Ha3PigdLI9
+	xUdEpve36xC1Ufvn0vTqM+rwSOmUG80krzVv0m2urSgrlqeiJlk9AEr5FSRNjNEux40kVz
+	XGgeChi86x9el1sb0qhMXPjW7EDJIdc=
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-9048fe74483so1392394739f.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:10:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760447456; x=1761052256;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YTvCLh80L5RCIEYpK48k3nL1zjTVSsw4OaSTIePcCmg=;
+        b=neBGcvwV7gesunNJE8b2KeKjCE6gtgKJyXRy1CzPcNu5n4gh0YGZG2aQw9CyUa8uYW
+         3m6fQyUe47TMEm5mTOKnKdtCJTEvCOxp9M3C36KrGw0mccblaeCVpOm5e7XGVRZJ+O3Y
+         XQQtnBAIsk1jqm1EFp10036K21y1g8oXmgS61PdXgj5zHGy2artSviXWDUUp1nYgsrSZ
+         uQrVbI+ORZl0THLyMM0FGnItahzzQ2Iv6VK21EZownvQ1sp2bxB8mULx2Gtl8FYZdaYh
+         FFwaW0myoWGSG0L71wklGKYHKkQFW5lY/OX6fbZ7TrKWrokD00nPvESR+M+hoO62bguM
+         f6Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgd5UHiGzJC7x1JZ7fzDjvOJ0bcIltMzPrwLAsPBEZBkPM8iKtN78aAmQwHtSBT3kf0aQQt7i7Dw==@kvack.org
+X-Gm-Message-State: AOJu0YxdVYKHbiiy8e4KgAcD1Bjtb+6ajhBEAEdK2ZV0y8RypK1O9hzk
+	JpprUmsdwktO8pfyIJYKiEMHHZIS7Ymlj2V5hFu7V9YCP87qDrPfq7vz6UfE6l/+O6kuhnrHICw
+	YKv/bEI6CXDhQA8/MwD5x9ONkheKmUxzZ2IxzR5m4txSRLJ1YDNEzfHnjOUs=
+X-Google-Smtp-Source: AGHT+IEPH9IF89ITwygTX0sulnxlR817dJPiW7sqU1Z8BIDZ/6e+3f2GvHQhEGN5ckeXiKxOq+fc0U8MPZ/A5YbCtFxHLytXbbXL
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6e02:12c5:b0:426:39a:90f1 with SMTP id
+ e9e14a558f8ab-42f873d62c7mr267953315ab.18.1760447456621; Tue, 14 Oct 2025
+ 06:10:56 -0700 (PDT)
+Date: Tue, 14 Oct 2025 06:10:56 -0700
+In-Reply-To: <20251014093124.300012-1-hao.ge@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68ee4be0.050a0220.ac43.0104.GAE@google.com>
+Subject: [syzbot ci] Re: slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
+From: syzbot ci <syzbot+cid6b2cf8227adc21a@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, ast@kernel.org, cgroups@vger.kernel.org, 
+	gehao@kylinos.cn, hannes@cmpxchg.org, hao.ge@linux.dev, harry.yoo@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, 
+	muchun.song@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	surenb@google.com, vbabka@suse.cz
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 852661C0002
+X-Stat-Signature: xbo71kf7zj86xfpo55o4d38fzy4hju5d
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2465B80018
-X-Stat-Signature: th8w8tcyxrafkj4fhhgxhkc8rycjrq1w
-X-HE-Tag: 1760447444-783583
-X-HE-Meta: U2FsdGVkX1/nUF3Fuphrtp8AUWeqhp9SFtV5zHUM/DpxTuPubmNeTOVAIx60snZ3qVh4UgWEzUOw0WVSkeSehevFp5mFxmwXXdRXD+Ts9ccEUWva248Qos07iQ0NIiHsx3ioth1ORj6RdjFHcMlW5+9G66TEkIpWykTLP6xjP6MHNCYsrxdK/V0Wq68fAc76w+30S5lQFxbh7WqBbPrX/XLP30pBWBciF1DfK9BJHpgu67FCpP6/8+L/CO8S4uLHD1voSpq7STe+Clu2mHWPHVlea7o6M7cWT6RmaYSM6vkmvZkmv6u/V8NsTfSY+pdVFRs7aq0PbAHRE4VMkjeGfHJB10CsjpbwWKAX4rIlPfexsJe6kHsGpSGweADxc2eJnbNIMoK5Ncl26IEcUG8ocn4tRmjfmJxtv8cjLVIyMwcptGFoYzVkQudC7RsAWJ3HR4TpYqvvFwTnkrtzXpBAPv3ZO/5yWgl5g3+9SZmQ3pfqbGrcBFslJZXNfE4qYm/yR616r0X3hdzlTeFuEbv5vnnfkDApeeXj6JclascxNcim9b6v+lHRmi+pZMmxCv4IvVU6yznWuB5Cm1yZTlLPuIsS9bIZtYdrH4KT14ybyJ/gyD/kkIk0KnBFwy8jZtQDN2yyJqETA96oYa+2ylL5v73iSMAOWAhy9IOrqH+DN4Kbu4M7OrWquOdhPfMboQ1jxsiIwUK9A2lDPi9Y/ayfUocxmidbIDhIYkEi6uoMrSJX6NEryv4dbnkJ9w5d+NWRrU2gYPsTcVBkRCHOhRmfUDJ2p7jmXWTtiF9UwceGqCSe4I/CNo5chZoGC+3KDVeB407Ia8YPhVHuwOjbsv4t585nlgo31a+bsXvvP+cTVDAGWEnuHMGMCpzwJ/eW3h6gb33Lqi6tybzJNi3hWudFNVA9Rl602KLU2Qeg/XyuP2peziMuSuiriaay97kXAeRDJIhqYRJSox1nYZo2tLN
- uWKIyNTG
- oelBeeblXw3je8sIceCcFBdT2DS0y2JBuFUYWRLLXS6UimC7kwZRuaPLt4RSHgrSUdAiGhqIUzfwbCEoRXewIZtYuYKDuh5+GTOs7gF317zlMuQ3uao33Omshwrf/hJgs7CruhQXc9nmJ8ye5cM0rQOIwEBYy/OW4abIwZsFRJkKXVtrwbcwFHUy2xsfX+04liJ1/azUWx4eF3ILodmhAySbDAw==
+X-HE-Tag: 1760447457-54582
+X-HE-Meta: U2FsdGVkX18lcERt8J8H9nG/zJy6agWtfBrCdvDEj5pLJazGdiP8hrEhxnUNM8jQVq7SOvB/K/jBFA60LqtowNZ2cGzHY1Di83aoyT18qaTmcpBt7ljjaw9Qjzxj1Ia1LMs4NhoRfE8cmKigD6TGZWMHdLOiFdmR4OYN4Vy6kk1mIBLLIiybf3SHOi/g/CwyH3ume6tfKROJs8GAFtxSPxo7tkvc5AGW6cWcFHgt1oU+7tvVFaqCDMrQUd3t4kT/4PfvcH3XtcvpLNdZEIOlyc1EuqfSOnWOeiPAVST4wDM2neVFymEVdgL4L6hEcadnZ572wMoBN2utqDjkr9qFiEGjuajWnXOFXLvsHh3BSDMztB4j+F99j0Fqvzk8H646nLLGwliTQY14ADaEGwWeIh3wGgxycmydGI1w/Zp5Z847TSDWAn2yzUoI3qiw94YvATGDIzZlLczE3OBgdVkInvzBlh4ugbwWYjnJicax/B+1NV8/Xx2j3x+3kkt7L1xs0OLFGk5xkc2BAxuiuceeRUr0mxLbTACdVnECF+kbbJj+1zcj/F/dKwjtdUDCBDapCpHaHCbKaryJSpwHyoiyKDbXhaTdQ0hu3P+XoZcvvcyw+yPebIcHJm8bBV20WT8zLgE1eu2qgZO4WzSbYPd7RtzQGmdBUgRHC74CIZs6lXzs+Dq1AKDcC9IogxpSA6CKUTh5J/kBJueYnGmkpGgRYAHiFcnG79Ee+cXo0EhRTDNlj1fskT3SfRnBpmgDq4AEx2c45XKjyikiMA+Ky1+SX0u3169vukpWIUdL1KgdmUfqTyog2wAjrvo57s6Bb6T5Ehm/8w1F8ZU97jg0BRZjp4LkImmUTEPX/fsN3Toi5K1qHRj6YTo0WW0DWcQIuJk2Vn/3DQT5smF5q28u4FbYz1LdD4wXg6ZGfANxjhu5SDWj1FHdCrjzzah42DMMnwjmWgJU7qAf+k0Eew9w4yg
+ ZqOojEFY
+ 4CKg21KlojlSqpF0EMa+8b7SRjqc3XI0vh2apJDS+2dm56edk8anmDCPpDbvRm4Qn7twa06mc1Mgf7toVQZ0D4ZpXrEGSNjWR65Z3/YHXphHaoEHkKJreOl5k8bJk0Iz7jK1ATlB1fJwx9mhD98lr5sOKNeETBWGJDNHKCmt990Bn01KmgJAtSgp9OPhHTKrGxoEY4MB37A5KvO3e95wp0KG1RfVOvCbLqXz/gFRyVWpFRyF6vZ/WOtvf2YdEEvhwEMsqSt3Md65mBFZmTeuD4qK42kqaoBzENH67A19Rdpq3l21HJBavCLYOFjEaRC64P0j0F4Yd7l/5RKOy/N9QU+K4HxQs8QUHARk3/O/hnABsCUwI3kv7KIssstGn35LaCJSkTrnzsMhZpoKpYj4omkxqlhx+tPqgQGd1fWIFh4lL7TDN6WEzhEtmqjmEB6vKwdWmgYPE9B5pJcfmg/zLWdLtcmQc5atBPGwEUAzVoAamiZ8KkSyDnJ5URoJwVbb9xlqLNvIhWFxlBW0jhWYCMgANQv1vwKt7N8otNPV9LpQnbkWgRyWhcP9wevT9WF+14NIQ0h68vp3zgULMouJH6TyPiCFq7X7YKiNkhXWD41z8Ml71J1x/IMiA/L5vGSFOeoSftppLblCi/6E1VmqgBDy3dorBn8JF3QyZ+JlhPy96VJfSkj6ehEmcNFNkr15E7C6YTVtZ3jQqe+svzib9iQXke2mIyGl0dgIW9vUjrPZ+oO07VUXYXqj2eURMemaes1XbJ3IBoDeH2vjIWt4D6X3lzl0VlG6fots16xB290x/7Ev1vHnjiJROvzB6eDFOTP0W5pydnDsIt2iICl6fjXfowt8O9E/7wS0eiy52FP8kpIL3SfqxtNaC20FWcnjw5pBsUkqZiv4y7/f6gtPC8ofdkYCoCOdORuG3+WPJA38XyZR5m8fBhLfQ7vYq+coUag5VRyVTRd58X+TYowTcvza8PLa4
+ DKJhkFPn
+ Tvh1qhLyt3/0XMbEwjn5fm3utSE+POTxSWeY8qTXdyH+KiwkQ6ttn35SANdRybDqT8wZZ4+PBr2ui0LScIvDEQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,61 +102,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14 2025, Breno Leitao wrote:
+syzbot ci has tested the following series
 
-> Hello Pratyush,
->
-> On Mon, Oct 13, 2025 at 06:40:09PM +0200, Pratyush Yadav wrote:
->> On Mon, Oct 13 2025, Pratyush Yadav wrote:
->> >
->> > I suppose this would be useful. I think enabling memblock debug prints
->> > would also be helpful (using the "memblock=debug" commandline parameter)
->> > if it doesn't impact your production environment too much.
->> 
->> Actually, I think "memblock=debug" is going to be the more useful thing
->> since it would also show what function allocated the overlapping range
->> and the flags it was allocated with.
->> 
->> On my qemu VM with KVM, this results in around 70 prints from memblock.
->> So it adds a bit of extra prints but nothing that should be too
->> disrupting I think. Plus, only at boot so the worst thing you get is
->> slightly slower boot times.
->
-> Unfortunately this issue is happening on production systems, and I don't
-> have an easy way to reproduce it _yet_.
->
-> At the same time, "memblock=debug" has two problems:
->
->  1) It slows the boot time as you suggested. Boot time at large
->     environments is SUPER critical and time sensitive. It is a bit
->     weird, but it is common for machines in production to kexec
->     _thousands_ of times, and kexecing is considered downtime.
+[v1] slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
+https://lore.kernel.org/all/20251014093124.300012-1-hao.ge@linux.dev
+* [PATCH] slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
 
-I don't know if it would make a real enough difference on boot times,
-only that it should theoretically affect it, mainly if you are using
-serial for dmesg logs. Anyway, that's your production environment so you
-know best.
+and found the following issue:
+general protection fault in percpu_ref_get_many
 
->
->     This would be useful if I find some hosts getting this issue, and
->     then I can easily enable the extra information to collect what
->     I need, but, this didn't pan out because the hosts I got
->     `memblock=debug` didn't collaborate.
->
->  2) "memblock=debug" is verbose for all cases, which also not necessary
->     the desired behaviour. I am more interested in only being verbose
->     when there is a known problem.
->
-> That said, my suggestion is to only dump extra information when something goes
-> wrong, not affecting the boot time neither boot verbosity.
->
+Full report is available here:
+https://ci.syzbot.org/series/6fd66120-211f-479f-b6a1-35f990da2dc2
 
-With your proposed change, we only know what the overlapping area is,
-but not who allocated it. I don't see how that can be done when the
-error is detected. memblock debug lets us know that, which is why I
-suggested it.
+***
 
--- 
-Regards,
-Pratyush Yadav
+general protection fault in percpu_ref_get_many
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      0d97f2067c166eb495771fede9f7b73999c67f66
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/74de5bb7-695b-4115-9a4b-ee7d7fd0cca2/config
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc00177780ff: 0000 [#1] SMP KASAN PTI
+KASAN: probably user-memory-access in range [0x00000000bbbc07f8-0x00000000bbbc07ff]
+CPU: 1 UID: 0 PID: 6155 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:percpu_ref_get_many+0x8d/0x140
+Code: 01 48 c7 c7 80 70 78 8b be 65 03 00 00 48 c7 c2 c0 70 78 8b e8 64 2b 6f ff 49 bc 00 00 00 00 00 fc ff df 4c 89 f8 48 c1 e8 03 <42> 80 3c 20 00 74 08 4c 89 ff e8 c4 50 f7 ff 49 8b 07 a8 03 75 62
+RSP: 0018:ffffc90004df7500 EFLAGS: 00010206
+RAX: 00000000177780ff RBX: ffffffff822de139 RCX: 14bab840e71f4400
+RDX: 0000000000000000 RSI: ffffffff8bc074c0 RDI: ffffffff8bc07480
+RBP: 0000000000000088 R08: 0000000000000000 R09: ffffffff822de139
+R10: dffffc0000000000 R11: fffffbfff1f3c1ef R12: dffffc0000000000
+R13: ffff88823c63b5c0 R14: 0000000000000001 R15: 00000000bbbc07f8
+FS:  0000555570ae6500(0000) GS:ffff8882a9d12000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555562d8c5c8 CR3: 0000000113444000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ refill_obj_stock+0x254/0x850
+ __memcg_slab_free_hook+0x123/0x3b0
+ kfree+0x3f7/0x6d0
+ kobject_uevent_env+0x361/0x8c0
+ netdev_queue_update_kobjects+0x346/0x6c0
+ netdev_register_kobject+0x258/0x310
+ register_netdevice+0x126c/0x1ae0
+ __ip_tunnel_create+0x3e7/0x560
+ ip_tunnel_init_net+0x2ba/0x800
+ ops_init+0x35c/0x5c0
+ setup_net+0xfe/0x320
+ copy_net_ns+0x34e/0x4e0
+ create_new_namespaces+0x3f3/0x720
+ unshare_nsproxy_namespaces+0x11c/0x170
+ ksys_unshare+0x4c8/0x8c0
+ __x64_sys_unshare+0x38/0x50
+ do_syscall_64+0xfa/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f85c81906c7
+Code: 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 10 01 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe57c0ca58 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f85c81906c7
+RDX: 00007f85c818eec9 RSI: 00007ffe57c0ca20 RDI: 0000000040000000
+RBP: 00007ffe57c0cac0 R08: 00007f85c83a69d0 R09: 00007f85c83a69d0
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe57c0cac0
+R13: 00007ffe57c0cac8 R14: 0000000000000009 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:percpu_ref_get_many+0x8d/0x140
+Code: 01 48 c7 c7 80 70 78 8b be 65 03 00 00 48 c7 c2 c0 70 78 8b e8 64 2b 6f ff 49 bc 00 00 00 00 00 fc ff df 4c 89 f8 48 c1 e8 03 <42> 80 3c 20 00 74 08 4c 89 ff e8 c4 50 f7 ff 49 8b 07 a8 03 75 62
+RSP: 0018:ffffc90004df7500 EFLAGS: 00010206
+RAX: 00000000177780ff RBX: ffffffff822de139 RCX: 14bab840e71f4400
+RDX: 0000000000000000 RSI: ffffffff8bc074c0 RDI: ffffffff8bc07480
+RBP: 0000000000000088 R08: 0000000000000000 R09: ffffffff822de139
+R10: dffffc0000000000 R11: fffffbfff1f3c1ef R12: dffffc0000000000
+R13: ffff88823c63b5c0 R14: 0000000000000001 R15: 00000000bbbc07f8
+FS:  0000555570ae6500(0000) GS:ffff8882a9d12000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555562d8c5c8 CR3: 0000000113444000 CR4: 00000000000006f0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
