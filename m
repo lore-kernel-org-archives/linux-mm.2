@@ -4,123 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 285AFCCD183
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 00:02:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FD2CCD183
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 00:18:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863828E00B6; Mon, 13 Oct 2025 20:02:53 -0400 (EDT)
+	id 5C81E8E00B7; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EC848E0024; Mon, 13 Oct 2025 20:02:53 -0400 (EDT)
+	id 59FB18E0024; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DB2B8E00B6; Mon, 13 Oct 2025 20:02:53 -0400 (EDT)
+	id 4DCA68E00B7; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D3AB8E0024
-	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:02:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01234C0344
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:02:52 +0000 (UTC)
-X-FDA: 83994769026.26.0295BEA
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6C8E4C0010
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:02:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="nrJQ/CjA";
-	spf=pass (imf22.hostedemail.com: domain of 3KpPtaAYKCFUF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3KpPtaAYKCFUF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EE328E0024
+	for <linux-mm@kvack.org>; Mon, 13 Oct 2025 20:18:54 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BF941405F6
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:18:53 +0000 (UTC)
+X-FDA: 83994809346.20.4F34AC7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D468618000F
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:18:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnxiU2wh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760400171;
+	s=arc-20220608; t=1760401131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gbMLU0DBTTE4ZUI3tpJtNUcx/FkgYHD5aLH5yKQ0ecU=;
-	b=1ZJWWDoPMslIAkXbQaMyM8Egtflp/Kxz79WDVL0jtOcQ28qKQrfvSS5WRUh0EfE+9qDgWI
-	3Xifti/RHQYpL5uA1aemxfawMMN+O9JuUuT5+NAcGuwosd6aFgh8kT6Nmv4XnDhliugXL5
-	2kUnuxcvYp8si08/EGwwPk3FLf0ZF74=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="nrJQ/CjA";
-	spf=pass (imf22.hostedemail.com: domain of 3KpPtaAYKCFUF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3KpPtaAYKCFUF1xA6z3BB381.zB985AHK-997Ixz7.BE3@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760400171; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kQAfIyYpPQE0GDnDD/YmNAf47h6oCTss9bU5Wbwbrw0=;
+	b=joFmFPezJZT5UPTZ9w7VqXsJcyj8WJa6zbmjo8UB4vqXCBA0iFIDCdszW408AiZIjGBtmA
+	FI8mTWixoq9yAAZSzmru1xKSYQXeVkmp56aEnc1NG3WMtwHUkjMToh8a2NvRYQ7E7g/k3G
+	4ZiRkxD9OUSZk2ntqhiZIFV7/CPiGIU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760401131; a=rsa-sha256;
 	cv=none;
-	b=5vl4IkAmBQmRiRohdKYFUZs31P5n7/hNlG7Vo8vixFwzo+R8/zm4BUYdjTQdaGFcMAcxXP
-	HRYmBO856i22JkvtP7Wuvn+zpbmraG2LUdeWyBUgvP+HvvrYaw57tpx91jJX0zDwqL5fLF
-	mdiaIYMOhlJ+cwD8SiL+Rq8CDj5T/qg=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-339b704e2e3so9975875a91.2
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 17:02:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760400170; x=1761004970; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gbMLU0DBTTE4ZUI3tpJtNUcx/FkgYHD5aLH5yKQ0ecU=;
-        b=nrJQ/CjAxXPUU45QVWu3iM8xWHH2eSbCZqakoikjC0yoBcjztiwoEQxiGvjdRHGXKp
-         w38fQ0HJFhM+2jqZxjbvtB2Vf1GrNe9k0JM1wahW56OKbjWy8M3VmvKLL/RmzH3adAFV
-         9V9NeMibjM23c+8zzrXnRdmMbrbI9n3e2svpZq2v9MWMwUTpR82oA779hDMw+sXxk1Q6
-         Z8MVu4R0WaHPePTixwu6XuiHHUHXu9sAk4JHz+KHSP+QsPNU553EkDfYzRZqHgjyaJGb
-         UbCX3nz2qiLyOgFj6bmP0qZbULOmXH4EPwJJ/IPbIBT2y8XdkU70fFZ6e7pTcZibmXHM
-         H1oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760400170; x=1761004970;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gbMLU0DBTTE4ZUI3tpJtNUcx/FkgYHD5aLH5yKQ0ecU=;
-        b=OK5AKsdlpVBMmxrcW0qW6gips+KhNZ3DjtGfhZK9dX0Hgt5oBJXrPyj517tTc9VmkY
-         kskpX6XOsNO6BM92kfxNUdy9+HsNLTF/xbJ32UsJv4Hk35sdmK4Z4y/2yBDfJZfnLmID
-         aWLsavglhT6zw5L5ubww4Y9FX/qcw8+32i8pwFtvfejWJYKKhoEpITlx9DcxbGFWJzkm
-         66Q2cSqaVSJCbSwDIlKDIdVf2eOHtBTve78+A8nBxr9CquUrE7ny1UtBCJXhkbfA/nNr
-         YizlqEY88xk1JuNSkUVx4sx+oj4hIYVJReyfLZ9I8296KgMjVypLf0B//ZbNCD51Oyhl
-         7Jvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrh57iumV2/Z6xV+CsMTTkokWTvV2JdSR1flyHx6l3KmQgn+6lBO4Hlx0NvTHYwT42AMQszVrPug==@kvack.org
-X-Gm-Message-State: AOJu0Yw0c1KlEmgBmhrTGazaXElLrNn6J+FoIUiPlKwcf+Ed1dfqQ6Qs
-	Ww4wIn1GdzmYxtRP3L/MtqAqkkxDgBFSXihRP/+p6bLcJNl4rOnQlFgl69aA1UHmiajrQSJkSwe
-	jSVngBQ==
-X-Google-Smtp-Source: AGHT+IFj7XEk3dTkPnLos5082VprjEOkbmDHEla6HA+8/jfX0ozELV9F0rEtoGCDSVNCkEzGlN6/hN7WXyk=
-X-Received: from pjzm8.prod.google.com ([2002:a17:90b:688:b0:33b:51fe:1a75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c89:b0:321:9366:5865
- with SMTP id 98e67ed59e1d1-33b513b4afemr31472790a91.33.1760400170137; Mon, 13
- Oct 2025 17:02:50 -0700 (PDT)
-Date: Mon, 13 Oct 2025 17:02:48 -0700
-In-Reply-To: <20251010153839.151763-17-vschneid@redhat.com>
-Mime-Version: 1.0
-References: <20251010153839.151763-1-vschneid@redhat.com> <20251010153839.151763-17-vschneid@redhat.com>
-Message-ID: <aO2TKOY5JV9OoRUg@google.com>
-Subject: Re: [PATCH v6 16/29] KVM: VMX: Mark __kvm_is_using_evmcs static key
- as __ro_after_init
-From: Sean Christopherson <seanjc@google.com>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org, 
-	x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>, Jann Horn <jannh@google.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, 
-	Yair Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 6C8E4C0010
-X-Rspamd-Server: rspam11
+	b=0fJZU95B9PHQ7uHiLm+eH+cWFFZaaPPULCADDYKvbRTaJwa/Logc8eQc2KH91wyNl54R6z
+	OlyyGwelSs0MM/r+XP+Gr3iBhxUvJLvSwlOi8KXlfOSB3l5KvsIvbN1Yj+Jp50dOyBSOe2
+	l1L49GRE81SAW/hEdPaQx2zis7tih70=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EnxiU2wh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ECC8062091;
+	Tue, 14 Oct 2025 00:18:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76584C4CEE7;
+	Tue, 14 Oct 2025 00:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760401130;
+	bh=Wj7cSLcyT0p0yvwLU7VLNGP20MDD+s64RMgH2Oq8gVw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EnxiU2whCnZHUhG3hop0501oo0Znua44eztBcxHHpcDKvqctxqoBaaULm3oZuJ6Fq
+	 QcuWIJMf0g3JJAMsAZ9xXnMUfpDF/VhkkcxRRTYnveOqNgcEELdDWjXZIQ1yAtWS6X
+	 x8clovOVioShD79aGcl4Maj896DiLcjFhyoIMacQPCdENh/f1D8CdU7cj5LyhiNlqk
+	 FqK4eOZ4zXYS3fFpYaVDta7X4FIME/JnjpKYx12Ap+up5OwKQq4M+3wUMMXkKx3CSs
+	 nUHCtwjKNsZpvXt61K1whz0slG3bN7VEZCiBlPZBRyVgTjURPedUxR0HGTnEeS3yt8
+	 gUPSTBavfE3DA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 16 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: use damos_commit_quota_goal() for new goal commit
+Date: Mon, 13 Oct 2025 17:18:44 -0700
+Message-ID: <20251014001846.279282-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: oqfkprtz1ayg3t5718wjr3yaucaw9u6q
 X-Rspam-User: 
-X-Stat-Signature: 5eoqm9saj4keeafayen8o19cjckwh6iu
-X-HE-Tag: 1760400171-410628
-X-HE-Meta: U2FsdGVkX18AyHIAi/63sJaDKj3Yvvt4ELiiZu6wn2clFYs+kw2t+fSdDJ4dqHv9YAeKRAL6JuVwpobm4Uj5WT1y5hPxm8Ty+ZlwO6EO2fUfNZwfJhJMotoPZgss2poPm/7G+SNF6Ei4qIkmFWFPUzpSc5HOQuRdCZXRSVW5goMJ6hDPfL9J1Gi7ExRFG8sZ3ykOTU+ZjyOpUqYu1luqRnnIzAxVrqi8uqzP5qqezSEJi/ASgzMsc3firBlpJEsADVJOCCGXUd+QIjEKi5F9ZtG6mCQ23mQy3ZLMCWTtXem7s+EftQPJ5QMxr0syt4lLgShLPxRLejAYEsUxpUuxj5ZzWUx51lrfXVAEz+5g0AcGAxwAHv0lMP9N2NKBuTZGJBBOTTfQ+bMWkkfK/A913sZqxCalLbHvQNXn9T4iIX1aSwXi88/JyNcqGzRoaX9vfIGpHoYAKPAtvPS+NvXkSzw560KBKYHJN48U96epHxmLKsc958gYtBvcrB/rMudXxQDSPXPGR3CMwrKdmba8We92LWTQ/2m79kSsDrTBO/QGZ//K3b6xapGQlSlEtanlh+x21hO00sfQ6VcsrL6wZ7SBay9H+ge9DOmHM/BpLicMXummuWtMecENaq2JQ2KY2uVkymuAiieTI0WD4WrJrnIdBsPhJIEQQc70n1vfAqRExyq8nG6H5M/iNts5fPL7dnPcwyYdT0aOkONSum6tLakQYpLwNrBYQ6MiNRvsMzr2+DOJwhAhTxAHvpfC8vG4hXkb3HTWYJC5IPxhxqQs4bhR9RZG3Piqb3Brx5qaT+lsaufT2HhtVmJPkoUjK/4hpHuj5lcyHCSrUCWcSQhJ3bsTQPQlXVMozmax9EK+Jbut6iwK0nnfCbNfFm8xJSCJxtoCWnZkmy/D29xsL+VTKexkcJxYa1Jf6px2vS7C2kWOEV4ayZA5yWFqBDdvUZqpVaYA/t6EfwMvYTpjBdR
- ZA9HLq7x
- Baw7DTbVnxLgAI2Ku9q5d+mGO2LpRQ9k1dNeO6NIV8RXEvAtR5vnzSXVUYpahxag1B9nn/Kq0XbFJVA6ACmN1s+BVGfD9x9exoZaMXVKn9zJ97HaDSfZ15wPjX3SNlCRgZwZ5VXPIQxUkosr887LOXSW4a9j18dgkcfRZWn2P8IhHpsAF5rcKXGd8LrdRM31T07f9+wOfE7aDyjFARfI0qGLA68o/gf7X22b2QkIVW4jg9UJMw0PWQCV4X14RZGBT9+YGmot1UR6DhtWnCdpg50FwwZR6CfTSVgRXb6KB5F6v7oINhNkGlJq8ktB81S88/TbKYKIG/ikQgy/XQaQSEespUmmfucuzK+xmunCPmIlJI7LCtdG+raapzKQMKWLuXCyGbry88p8Fm4arlxWcRT6j9L5LnlP78m4z
+X-Rspamd-Queue-Id: D468618000F
+X-HE-Tag: 1760401131-198056
+X-HE-Meta: U2FsdGVkX1+JmhYGhruGgYFeP4/cB5M0R0ynPqxsKD1ybQ/lGJopPGJ8JVzxCUrnqsSUw4uIvYB4FRmvDOxf53TRb1CKUO7QqNzHsfL0q4ZIewKLHuGBnIBvPosOA3JqvtVVCVtYsE7f7DTx7mfVytCtTzQYUx91i7SGy8X8neqq0U0hZF7/o+yR8KYNWku7BRH15HX7E9GexZO/ECw/zLoQrmqaLAaPsvUE1eO24MhlgmC7t/pZhYM8qZt4eVfQd4gs/4RKgUZJcCWP12NANQpzKEoe7jKsDcbXU1y8W+m8gHf/7gFjNvThZ16BA+UTmzklgSiY/haWMocMBw6GlYsUQeeWkL1D7JufYtnh1msI4GcW25BAoBQ5x2ckNii+laecBgGwnrAawpOC28wdhOGmhcxPjtOV6jcy2x61M+pkgn+x2sU+pPxM44SM0F2DnndOVWBeY7pjGsTxWy+fzC+UrtTuuoeh/jtnQsnNvJXMMLt5ft6la9++uE1ngvkyJnJQfJcKFrZEMEZnyQ7HmRTS9B/iXUhg5ibewHLeJOKEws3X376WZ87MZ1L4j1+3K6QZfM8aP1CYFsEdCxNvZEjgA5OPsmGlI3svfClcydaMk2ZYVyvq9GcVTYkYtI7urh3rYAF38jlZ7rLVfFILWY3ElvYWxnkb24pQF3aEJSLQKzUWBfv8jHH40kv2S6fa1K/TJWsWv10zFJXTx09rvI3jvE32Z84sMsBaTkYb9EP6LbTwjgkCND8OEUdmIdeWOmpTtQXRWID2czxZoQh5nrT6uwGI19qDN1t0ZIovfNPAGlmjskeJYFvRXfgc79rtXB7pXmz71t5BEqtPNHOueabA7zmM4y8mP+snMXFcdZsg58WKgxweQxaqAkGhPnFZOvxQpqkFsgIcVKDQteaHbZADaOIEM9T3td4KeeyCq57+8YuSS4UNFGkQQWLNoQERbnMe6J3aqXAogl6FEW2
+ NIT9de21
+ EYI+7GqmS+l9eUBrf3aeZWxaPicP9JSRMff0o7x9SSMcFfl1815vx8V0dMPAKilQJVsElUyR6Q5BWrw5QsRzEDprubUThY0R/4e2XxgFy6kfxJkhjfuLWEWEu7/6myVzPCJF0u1uSzfi/TguuDOMRDisUdl5nC8nf5wMmk2l1SNF4CQY0T3AX67m5Lt9YQFr1DI6kYO14uGQqfHl5RROCf4eMJuP1O5+oJGj5/73Y9cTjEH4EfpLs7k46rNoZ2Mp+cjxfLAFVjtVCdmn+3qHKv7HbMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,19 +92,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025, Valentin Schneider wrote:
-> The static key is only ever enabled in
-> 
->   __init hv_init_evmcs()
-> 
-> so mark it appropriately as __ro_after_init.
-> 
-> Reported-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-> ---
+When a damos_commit_quota_goals() is called for adding new DAMOS quota
+goals of DAMOS_QUOTA_USER_INPUT metric, current_value fields of the new
+goals should be also set as requested.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+However, damos_commit_quota_goals() is not updating the field for the
+case, since it is setting only metrics and target values using
+damos_new_quota_goal(), and metric-optional union fields using
+damos_commit_quota_goal_union().  As a result, users could see the first
+current_value parameter that committed online with a new quota goal is
+ignored.  Users are assumed to commit the current_value for
+DAMOS_QUOTA_USER_INPUT quota goals, since it is being used as a
+feedback.  Hence the real impact would be subtle.  That said, this is
+obviously not intended behavior.
 
-Holler if you want me to grab this for 6.19.  I assume the plan is to try and
-take the whole series through tip?
+Fix the issue by using damos_commit_quota_goal() which sets all quota
+goal parameters, instead of damos_commit_quota_goal_union(), which sets
+only the union fields.
+
+Fixes: 1aef9df0ee90 ("mm/damon/core: commit damos_quota_goal->nid")
+Cc: <stable@vger.kernel.org> # 6.16.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 93848b4c6944..e72dc49d501c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -832,7 +832,7 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 				src_goal->metric, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+-		damos_commit_quota_goal_union(new_goal, src_goal);
++		damos_commit_quota_goal(new_goal, src_goal);
+ 		damos_add_quota_goal(dst, new_goal);
+ 	}
+ 	return 0;
+
+base-commit: ccb48f0d949e274d388e66c8f80f7d1ff234ce46
+-- 
+2.47.3
 
