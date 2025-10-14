@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 963B4CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 05:04:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 790FACCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 05:06:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E40188E00BB; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
+	id D59218E00BC; Tue, 14 Oct 2025 01:06:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E183C8E0005; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
+	id D330C8E0005; Tue, 14 Oct 2025 01:06:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D547D8E00BB; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
+	id C6DC18E00BC; Tue, 14 Oct 2025 01:06:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C3DFC8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:04:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 45FEF140720
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:04:42 +0000 (UTC)
-X-FDA: 83995529604.29.EC88AF1
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 712831C000B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:04:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Y6okOmfE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B6C3F8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:06:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4E20047302
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:06:25 +0000 (UTC)
+X-FDA: 83995533930.15.D913E73
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 953D112000C
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:06:23 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TziKZBHg;
+	spf=pass (imf29.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760418280;
+	s=arc-20220608; t=1760418383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
-	b=L4Y5ja5cES6lsDHvXaAHEJ28526E95C/4yK8ro3g1eeHwadg7CODeIj32VPxmgcJt1NDUQ
-	MhY6kgHpE0USggwwZqvrqk13Vi6oFu1WWB3Tl6TptkHxr+qEx7Qkc+fqWW9MMVP278YDo9
-	4boefvaAYjPawMYYHZhT8zQVEq8mT0s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760418280; a=rsa-sha256;
-	cv=none;
-	b=jBE/U2YEnzKMn25YpticQT5xHgc5a3Dha1Z7TOYBh3LSO1DDjyymTG+q6q+APUWaMQJjpj
-	MQSW9js/YKEtuI3jtWvCFJRUhYY4w6a+kuODvyLSOmhg43W+hwd/6OlUUZ11a8nNvKt3G/
-	2yvHHBEagwFsPOvqW049jscEmR4QzHs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=B9BK+9ajYmleGpxEkSE4YYmD6WR6oYv/sY36uPRqwkM=;
+	b=JW3clMWjiDhJ5E8AZu4HOXDdroLGBan6Mhj9XvtQAOdka/07yybck1AqgHxJjrExWed7hK
+	OihUXimzTOBavU5ZcExL0lZhpdeKQkJgp68WgHbRGo3i9U8QiouoYDojNoELPSU2VHnnCL
+	/Ev0d//pZTgzKlyPdaOlYyK2KgBrxB4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Y6okOmfE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of edumazet@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=edumazet@google.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-79ad9aa2d95so86067796d6.1
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:04:40 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TziKZBHg;
+	spf=pass (imf29.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760418383; a=rsa-sha256;
+	cv=none;
+	b=VayBNbHU/Dkmkox1IvQD0Qgn6mpTwb0ytpDOMWVuoFcE0gZwTWTL6246OD4To7lGJlgHCK
+	sEKkKug0IOLfsjo3LldGP2QgKOAi3qz2tP4aWFKHoyxJtRfQLMsAoiJVQLEcQMCz2uB09Q
+	8FtLflebyiuMEEjtcgqDh4IyGMOZJSs=
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b609a32a9b6so2901176a12.2
+        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 22:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760418279; x=1761023079; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
-        b=Y6okOmfEJ0h9ZrmccBahN7BUczzC+Eo05bQvBxIoDUZRu7dyDz/ndY1lBDMhVvf12a
-         72+rmHuobc2vZVOQawlqwuAF5Cqby+Ts5WFFLOvlrxZW0w16fc2xJXYkzGkhDxq2DHGW
-         biPrM5OJbhKkUbM2LwZ2Tw3jr8X6B5pARDjLO2kP924Aki7/E7bPPwTdhQCvaqqCcG0T
-         P83xdP/yIJgll9JuPcJM+QOHbJBXIhbkRLFSltlcYBoiqM7++wYgCbjhuhHAz+vDdUrZ
-         CVwyMrvTUfTvlbyC+7V2raF/qlvPKJOf0ln6m2rR5TAEhHaZG1/GZRnsGeDl2YNwjsqE
-         mRMg==
+        d=gmail.com; s=20230601; t=1760418382; x=1761023182; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B9BK+9ajYmleGpxEkSE4YYmD6WR6oYv/sY36uPRqwkM=;
+        b=TziKZBHgG4pQxqzv5zBI8rvOgyPtxRc64uqsG+14hpjGAQbraAB7nUo934jyoWwRsH
+         8eDDcjvlDhOEnFBmF6GiO2VUhjBXCdnwyf1vBCBVmyGDykvRiNFisBvui43rKpt3WYMW
+         pXHKOvpL2gQRK5wKH6KLclE8rnIbsEKSZpkbJatw5vNMSmYsKXWP6/zbBwv+u0/XFfSO
+         rbDjAIj4gmBjmCLZhOWehHw1GfF9qu71zFq2XwSR8gpg803HoZN+38M+sH7o2oBX8/B0
+         zTOV1JH/sIhgLnRcH/KmBP7E/6Si0WXFpPyT+e5efYau+eaBM5L2TWLNImmRm1uCDRet
+         lHsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760418279; x=1761023079;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=irzV2QUfJJ8dqUzMZqecWufn5bUU0255l1546dL2h1g=;
-        b=UyoyKMoAeuTmjgpTNwF2SSGftTQ2u7GH9M/2gu5oavTYB2wXuoJZIluuCrkWPfbf5m
-         70bmLu7l/WEt//gf7AmBKC26Ndpu9g1g78oiYeRuuc0EHhjHSrDuCmJ5hyMqBQQViNsV
-         yCIo/FyuAqEzoKDHP5L6QJT2OQOUgdJojH0fHP0JizytNZ/8XNLndF1Mmcy+cSGQe1ga
-         MaDYhxsUvJIhaqX10pQHmhk/wgDt6jKPczGD2D8l2VDpu8375pD50L8IcLt3qEzzm7p9
-         E1WKVeHANEoQi6UOjcckvEHsOKKqtXff1rjDgsniWS0QqHT55TQYBcgIHezd8Q0ucgQg
-         iiLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyD7VmgEgSDC77wXXOJ4twClfA3879b7CYlZziEez7JBG2CO4XddMbye5L/1S3bRnajj9CO7D4Hw==@kvack.org
-X-Gm-Message-State: AOJu0Yy9gD3NEoGxosLNqJqYViTilrJnEghtWfqxG3O1/DjLU114Ejxq
-	W8ibbWFQwk7WD0w7XWzPCi2U9Q4Ar/VOWSurjz1TqFTi2m5rbMZ7slOFOXKWusMzBoscNs2IPsq
-	AIjD096C1nWXBrDx8vclFzoZ30c+VheGgdpuDYcqx
-X-Gm-Gg: ASbGncv5J8KtYiNV/WxXpLJihlI4/8DWq/PNqh15E/bKGEo/oLa4hl/9Nr0noVA5ykF
-	w/p1L6tMRKLzFO1o3DrTCgH0AYykBq48UxaZlu3kkzEg/pFghaIShouIxMEWSPBgKKkuByCmAez
-	vjNTb+l52MLRhAwkQOOIaUWk3W9lLqHlUg+D6SdiHP5rO3betWJVVl3ZsXwOVRg/hLUNXf5xIEa
-	tg61wYuvtN9iPzoLCE2TTEu4e5gik6DoNue/pzOfhg=
-X-Google-Smtp-Source: AGHT+IHZgIxpjg/6kkvcMW/J7xD1PN1qAsKtx/7STdfwV4yzIcWv1dUE7oPcxZBo21d0/mZd0RfXxsWJndcH5nudxHU=
-X-Received: by 2002:ac8:5755:0:b0:4e7:2b6a:643a with SMTP id
- d75a77b69052e-4e72b6a671cmr56529361cf.12.1760418279258; Mon, 13 Oct 2025
- 22:04:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760418382; x=1761023182;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B9BK+9ajYmleGpxEkSE4YYmD6WR6oYv/sY36uPRqwkM=;
+        b=MgLk64lTpQoMhz4U0ZBuEzUL+kDwxd8TgS+1xpCsme/4UEf5PJQocRjZID8Vd06AIR
+         gB2MyMt1SCaC5IAnn8TV1mItlbQi3oYSRn813FEezM6tdyzO9XzyR9O7qUvEGqfDDpTD
+         CLjpS5R1Tft54IDOynOTGP0RkFN7IToa+WDkGtEFVtYmWiDgMDWkc8DxftrrnOy3kV81
+         tr/Lq5VS5ug7au7iGCyZ4mcTgAGvKTPkw+1YvQKAjaCVsUodB2ePzURglSAkV8eZYnJO
+         12KvMu/ejxkqgO3tyg9bGvdyb3RNi7gHuFZgKMxym0VkrZBjTKchpTone36k5xr3/USs
+         OU+Q==
+X-Gm-Message-State: AOJu0Yy8iUtB4ntVogQ/7J/VDew0mOhRDb4xJBvSDr99Sd7GM7WRAMgs
+	yuyx/U4pi77CFlAUZuA3B03e1K1h9a0Whc7y+scvX/oZcb8S11saC8vN
+X-Gm-Gg: ASbGnctq9/JIsiVMSjpJpCY4ZL9yjwufoFMKK5bK3Gn3wlS9aro8xYoLbzDCle6k87b
+	lEo/WL4T12zN0KBdwWBAPU1brBsTg60VvdAU+eedHizvkwI+b+OOYxLQNbLCpFYCBZBX6qAOMkI
+	0KB7+VEUzotGqFQGWjfb9zQ6bOnYBmmPqlUp7pG2ng8T7yWqYfVbm0Zdz/i4RvOoUbFL8IlZKGe
+	rVcMs/tYLgRKc7eAqa3VuPGqyWXzYSIvyiC44Zy1SKcO4DwmoF/v6KFRkbHZwQlrmD+ZB5IjiIP
+	hwvYl2xGjCOu+rqhYUKR4qu43O2+adu4NNTcUsafU88i7do39WDhPEBSFCaegsROPA05vs5Xk6J
+	GuhIt/u8HN6w3obYIthec/o8eySEIupltxq8mmvZL+S3h9+zgenkYoD4X7LZhB6eAhWUfplp5/z
+	FlWVUQIVgOlv+rFg==
+X-Google-Smtp-Source: AGHT+IEIVs7lvSQ3NXzZb0jGdos4Hk3jrN73ntxBRefqVaXGal6SIJg7cZ/x00Q/QXcoJ9SkB9/Wgw==
+X-Received: by 2002:a17:902:ce88:b0:26a:8171:daf7 with SMTP id d9443c01a7336-2902723f086mr387687875ad.16.1760418382248;
+        Mon, 13 Oct 2025 22:06:22 -0700 (PDT)
+Received: from deepanshu.. ([2405:201:682f:389d:c391:4ad4:fa2d:b790])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f8f9e0sm150546215ad.120.2025.10.13.22.06.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 22:06:21 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@redhat.com,
+	akpm@linux-foundation.org,
+	broonie@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: [PATCH v6] hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
+Date: Tue, 14 Oct 2025 10:36:09 +0530
+Message-Id: <20251014050609.349461-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
- <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
-In-Reply-To: <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 13 Oct 2025 22:04:28 -0700
-X-Gm-Features: AS18NWArWNcPKS90Zk5Pwo5Ct2LOmBIBPcz-hhg5UK9PsI9_HIhdsDtGvM5VF4s
-Message-ID: <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-To: Barry Song <21cnbao@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 953D112000C
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 712831C000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: eicrom837hnw1c98zm1bejsk34yg8us4
-X-HE-Tag: 1760418280-157945
-X-HE-Meta: U2FsdGVkX18kY/ch21V6EqcGyYl+hx1oYKZHfuRUvPNsTI/mJQNVWhBu97gqJItxY+3V73Ky/baJ3L2KadYewZ/AbmKKDiqvz1gsAcBQ1bZ8CpUqwBJ65cTvDSpgJJ6sh8RbdG8h0O3ATUsP8rlrcBuodqD35JdrtHIhAdEGqJx2KFb0ziJaj9tz8I+Qxq92cVdcU2ir4nvswDYfyvckzJ9on/e4BNKIMWxmWtS2sYAOHS1lnv8To0ULlw9qlz8dNZEo4cmmtFXY2CcWxob5rE/RYzKHojON9mevLfX7hiLGkPnxFf08OEypcS13aulv3yBDSMt8QlZjF54YF0wNt2z2cAm79YTPp8C0uyeu0Rk3LB3v3EXRAlWE1EU0AX8yCcOUaf+zrZZVACxS+2lxtzXgU+WVVXQJKhZ4tVGGl0iFc7eEHWPNiQg4g+dv6DvHnEZSTZq4DrIuchdP7MrIksUEjHKzFEH/7fd3xC/sYWfpFsAOjSW491IGhHzn9ODEnccmUS562WlHWcLxZoFGczPh/cnvNDuMHvDTR5zKBadg9ojGV5ml+B7byEuXjuOhyiMiveulnQoxy1xwgo6Nke23zvU9OG2PNieadyXkHgS8cvo5v/b9K7aiygCYISGw7I37l7lsfjw4gpsrgBeIpoU7kdIn/radZW+zf0ZMLV5FjRwwL3gGCyIUFPCG7x9KiLiSrFcx6wlwanWDaYXm8dOa3e9qZyDuSEGBOawSluI2XM1t8M9ohNlmyLiIdZAn/vmO//MMNdNyf9QMGxT6e2hr7lzStUEsOjuCHSnE+tMjpvL1FVPUTkbp3IhVLFnfL7yH0hmI7d+XBETUxhf/KcInXrKtlcpb52joEULE0fZEm+pBqmlCoGzQln+8Y4aA0Gtvc4quWies7HVVRiFlzd0SlH3N3kgPaOXUG6CQLrQCQSfIGYWJQkRdEJpgsVqtU/SoNFBkw+aK/sONsnu
- HKypdnBS
- v5gMhVfEdE+VI8xaAx4A5V+KtcDBR9dBDgRTN6wZyUgLGrLmB0Wnip7Yw5KHyTY0myVOr2PXG40NZB+5Iimp0ETWmh8MA35/SQ6Doash9mpHqst7HoCuLd5VksafG7yBfMt4g1IFKX9vEls8zTpTuPkk/8AapKrQ0HTdNcklo5QmYYhsruooQWiwf0tIpohqbz6fcEvYQw1S5Xv8vojzIj+pVvOmktcozJ9XUXHVdm43ghsG6x84m+jESN/e3etUaroPCKOOQWCL+WQbpK6xSThrokgZLeCHzLrv/JlH0P0KbTnWdjlgYA7bhng==
+X-Stat-Signature: ibzyjeej6cw3musihrffpucbcg98t9en
+X-HE-Tag: 1760418383-649191
+X-HE-Meta: U2FsdGVkX19Vo9lpKfcDDCFJ5nM85tcXERHwlD15grp0TD/Qh7NaStJ/PfcOELAcu8ZYkEyYM9KUwRByH+NsAm8hsje2d0HyALIhGT3IvRiPxwqbd/IHpXNPDrJlkEMehY9YS74boSI3xq8ka+moHZRGzPR/H+FHdk5UbCcVTFSxst9azp9svb4rVPhVQ3AYj0tWDnD3ooWpNoSCEZQVj//LEXwyR+nhdYBVm2tnlt6/SlTEYiW9rBMhw569XHza2dN8Qc00ja/l3DZ79MBGLWEcAnKJS93E+aIfJf5QU7qtW4CPyNlwvz6viM7HmGz712J21HZrOXgThcJNm8jkUkMtorVzUeAhsZfocVV1/eoTUhlCJF2Lrjv2r53su7Oo9KX5gTie7MLueXsgXuCxFAOSpXT+anJV3YPjaXWmrt/3Vg2vGFiXKejsyK+RDs2V+bhdP+blyvX/f7qN3KSR3s8VdrY6k3gRCr02tgeiZj7nvkZY4WH9Rp6o0GcX4klRhl1LPgZy0qy3aIil4xJfPuc3obUQgkckexh+R7ZC75OcisoUoPdJpqWiQVDd6/erfJTUEln2awfo/psZj/blVlakX3RjYIzYjL4ic0E7CMQL4oNDi0/JKPIcLaRN4y/LuSqju+vgfLILCPQOzowT37IFCmLmP4EvkXmP6CZ6ca2a2zilachNrC98i4fe8fnfCNDYxvcPVh30kMx+rN080jkJgZwax969XiFfEN4qNCwu/XW2jBlzk+78lumh+iwE/NRZ4fdj15NSf6c735X6bjPCWMMAM/Y3IJw/G5EVIxKLSm3Rf3U6dcKOmwaoQoonggAG6OSQVB8NgYSgzYEhV4J1pBHDC4udqEu74K1nP+iX3MG4BJ+05cweXklZuvShML2FjCL/Ea0yyn+7MqdhtEJ46JLKbTuldTVXT2ce15dpjRa2S1AIFnN9Whp4FYBC2WHuYfYPF/vlji6hw2X
+ 0zFgGuVO
+ WKJEE6Ic8T2EJNfghiBHfRXKtGlM1eD/U781XM6x947IVlRGOky1F3+x6CTisSP0U2fGN05YqnOMMhbp5UD+tjIGJvg4F2KOezwXLGH5yfhrdV3WUfPNj2Hh4f1CuOnvmguT5xJI9YKE7LBljYEw3r/rocrX6hrQm3ftY19po7ClL8xN+jZlIzlM6JKq3ZwsF/CrFFXKZMJx1hNyruh624F6CWBEUNpyRf+RW0dvq9KF4NtFhfBdg+MmT7XmN0zqV/TQzcP2w4gNrRf9ir0sKObk6C9NiiqC/DUOz9NZJi+cy36MDJ11HjMTyy+KPJce61zbn4V68yS2OkO/x+7t9WEXO4vLS0P1gAIY1W39v5K4DxnnWnGgRrZ4YfLt9dq4BSpJOYPRXPRRWYtx7jzRZ0fO5tBpXXGgmhhr5g8aaQJAZAfC+bKhPBdCNfmTvOPlZcuZx7a5COTPMGPnjZlWlmT4KujBkv2nG3lGvhG2F3XsAvlQa8/cFMsEhX2UhzHyzPBFhA2sA2PoovIO54yZPVZgg/D2+L8nm6pDEhRuFg5nOfxhAal8hY4bWd6/55aHAxKD2cSJ+leptMMVTp6ABo9flvIGrTFrhvls7vU+GD1Q2F1V2bjNMbH0MyzSKzgxRBDWuO9gluH7F6kWc1sxTZhW5reTl6l6JplcNrwBAySNroOU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,54 +121,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 9:09=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> On Tue, Oct 14, 2025 at 5:56=E2=80=AFAM Matthew Wilcox <willy@infradead.o=
-rg> wrote:
-> >
-> > On Mon, Oct 13, 2025 at 06:16:36PM +0800, Barry Song wrote:
-> > > On phones, we have observed significant phone heating when running ap=
-ps
-> > > with high network bandwidth. This is caused by the network stack freq=
-uently
-> > > waking kswapd for order-3 allocations. As a result, memory reclamatio=
-n becomes
-> > > constantly active, even though plenty of memory is still available fo=
-r network
-> > > allocations which can fall back to order-0.
-> >
-> > I think we need to understand what's going on here a whole lot more tha=
-n
-> > this!
-> >
-> > So, we try to do an order-3 allocation.  kswapd runs and ... succeeds i=
-n
-> > creating order-3 pages?  Or fails to?
-> >
->
-> Our team observed that most of the time we successfully obtain order-3
-> memory, but the cost is excessive memory reclamation, since we end up
-> over-reclaiming order-0 pages that could have remained in memory.
->
-> > If it fails, that's something we need to sort out.
-> >
-> > If it succeeds, now we have several order-3 pages, great.  But where do
-> > they all go that we need to run kswapd again?
->
-> The network app keeps running and continues to issue new order-3 allocati=
-on
-> requests, so those few order-3 pages won=E2=80=99t be enough to satisfy t=
-he
-> continuous demand.
+When hugetlb_vmdelete_list() processes VMAs during truncate operations,
+it may encounter VMAs where huge_pmd_unshare() is called without the
+required shareable lock. This triggers an assertion failure in
+hugetlb_vma_assert_locked().
 
-These pages are freed as order-3 pages, and should replenish the buddy
-as if nothing happened.
+The previous fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without
+shareable locks in hugetlb_vmdelete_list") skipped entire VMAs without
+shareable locks to avoid the assertion. However, this prevented pages
+from being unmapped and freed, causing a regression in fallocate(PUNCH_HOLE)
+operations where pages were not freed immediately, as reported by Mark Brown.
 
-I think you are missing something to control how much memory  can be
-pushed on each TCP socket ?
+A subsequent fix in commit 06e8ca1b3dca ("hugetlbfs: check for shareable
+lock before calling huge_pmd_unshare()") addressed this by checking
+__vma_shareable_lock() in the caller before calling huge_pmd_unshare().
+However, a cleaner approach is to move the lock assertions in
+huge_pmd_unshare() itself to after the early return checks. The assertions
+are only needed when actual PMD unsharing work will be performed. If the
+function returns early because sz != PMD_SIZE or the PMD is not shared,
+no locks are required.
 
-What is tcp_wmem on your phones ? What about tcp_mem ?
+This patch removes the check added in commit 06e8ca1b3dca ("hugetlbfs:
+check for shareable lock before calling huge_pmd_unshare()") and instead
+moves the assertions inside huge_pmd_unshare(), keeping all the logic
+within the function itself.
 
-Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
+Reported-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
+Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Tested-by: syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/mm-commits/20250925203504.7BE02C4CEF7@smtp.kernel.org/ [v1]
+Link: https://lore.kernel.org/mm-commits/20250928185232.BEDB6C4CEF0@smtp.kernel.org/ [v2]
+Link: https://lore.kernel.org/linux-mm/20251003174553.3078839-1-kartikey406@gmail.com/ [v3]
+Link: https://lore.kernel.org/linux-mm/20251008052759.469714-1-kartikey406@gmail.com/ [v4]
+Link: https://lore.kernel.org/linux-mm/CADhLXY72yEVDjXWfxBUXfXhNfb8MWqwJmcb1daEHmDeFW+DRGw@mail.gmail.com/ [v5]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+Changes in v6:
+- Remove __vma_shareable_lock() check from __unmap_hugepage_range()
+  that was added in v4 (commit 06e8ca1b3dca)
+- Move lock assertions after early returns in huge_pmd_unshare()
+- Complete implementation of David's cleaner approach
+
+Changes in v5:
+- Incomplete: only moved assertions, forgot to remove v4 check
+
+Changes in v4:
+- Check __vma_shareable_lock() in __unmap_hugepage_range() before calling
+  huge_pmd_unshare() per Oscar's suggestion
+
+Changes in v3:
+- Add ZAP_FLAG_NO_UNSHARE to skip only PMD unsharing
+
+Changes in v2:
+- Skip entire VMAs without shareable locks (caused PUNCH_HOLE regression)
+
+Changes in v1:
+- Initial fix attempt
+---
+ mm/hugetlb.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 85b2dac79d25..0455119716ec 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5885,7 +5885,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		}
+ 
+ 		ptl = huge_pte_lock(h, mm, ptep);
+-		if (__vma_shareable_lock(vma) && huge_pmd_unshare(mm, vma, address, ptep)) {
++		if (huge_pmd_unshare(mm, vma, address, ptep)) {
+ 			spin_unlock(ptl);
+ 			tlb_flush_pmd_range(tlb, address & PUD_MASK, PUD_SIZE);
+ 			force_flush = true;
+@@ -7614,13 +7614,12 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	p4d_t *p4d = p4d_offset(pgd, addr);
+ 	pud_t *pud = pud_offset(p4d, addr);
+ 
+-	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+-	hugetlb_vma_assert_locked(vma);
+ 	if (sz != PMD_SIZE)
+ 		return 0;
+ 	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
+ 		return 0;
+-
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	hugetlb_vma_assert_locked(vma);
+ 	pud_clear(pud);
+ 	/*
+ 	 * Once our caller drops the rmap lock, some other process might be
+-- 
+2.34.1
+
 
