@@ -4,117 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA66ACCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55814CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:27:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4918E8E00CA; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
+	id AFE108E00CB; Tue, 14 Oct 2025 04:27:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441548E0005; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
+	id AD5C38E0005; Tue, 14 Oct 2025 04:27:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3302B8E00CA; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
+	id A12768E00CB; Tue, 14 Oct 2025 04:27:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A99E8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9CC0115FFC
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:25:19 +0000 (UTC)
-X-FDA: 83996035158.28.15755EA
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C673F140007
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:25:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ygLXyFR3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of edumazet@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=edumazet@google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A46B8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:27:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04E2C140776
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:27:11 +0000 (UTC)
+X-FDA: 83996039904.12.05D5A47
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AE44E40002
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:27:08 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fy7NbVJG;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760430317;
+	s=arc-20220608; t=1760430428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
-	b=swKVfnFfTzwMMMf8+6yP/zm0SJR5Vvt86fOvTYN9emldzzRKwXJ38zu5PoKEhV8WmvNi/U
-	q024VZs3PaJ7b3/TXUGbzmePuXmv4t34WW7zM8jBnQO0SJuBpZbaT3KVGAGQynrOwcXVMd
-	At0sipLRXwSmClzUIahusjBwnMsl2z8=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ygLXyFR3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of edumazet@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=edumazet@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430317; a=rsa-sha256;
+	bh=7oOL3kdYYlknYR47TEXFdShOrQCn0oEFnG9MAYkawAg=;
+	b=8fjdNhteBzSQRHLPvaey8482XtExL/YIlw9Ky+55F5zChZSt5ccktJE+bx1rm1+l8FJvb+
+	xtxGTWvHDz2UlVSsb6lPDGHZi/+/LWOxqPcWgWHcoCid2+W/mfP53AgRXJFU1ZvJLgxNGr
+	mSfGFMyTf6qA/B8iQkbTlMcdrJX3eSs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430428; a=rsa-sha256;
 	cv=none;
-	b=FH+g/xPA1ZwvLjvFGxIa7gGWs+M64DUmtAjcnSi/9oaE1C+94kBZdQzD/Z1OLFB0GKNPzy
-	Y6HXBO+qthN/Ca0x9TGIz+2t4Fp/x/c56bJ3GsgCLMGNL4acjOKtdysoXRgqUHhUOS46gX
-	gVVrkoDr7WGAT4CTRFSqt/xV1Ez7tLw=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-78f75b0a058so65100396d6.0
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:25:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760430317; x=1761035117; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
-        b=ygLXyFR3vwsmDMO833uuk9qn8IHVS0woYYoxtkl1Ud2g9xbXBT24y7/OhDE8URI5EJ
-         swF8RCNZGr8uG7q480EcS8MBxnYUT/u54Th8wVjXbyPKH0+ieeS9eQvkbrg4/cW/zmiy
-         rInUG16maL7hObvy0rBH51o1cnMxx/+PdH3oa6hOYaoaR56H3UAJK8Ocjw17ky+dY9BV
-         34HNZBziSeaLPJAnXj1oQL4Sme987LJcfPV7qmh65V+vYQoRIh94r7ObYdksSRrhgb4V
-         M9L7GL7ou19OXPYmeorFdGKqDtEdK/dxJCq7QNXQqOyK6YJYURhBp735muDiUJjgoRyM
-         1GHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760430317; x=1761035117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
-        b=EI930V640lS3Y3FMpcUuDgGQvkC4XYedhcaoHiZgvVxxaXqCmkKUZksN2xJKcalcQX
-         csp9mYGysOFXXK7mbqh0fktqRfqY8JTlIZlOTVsjcxGJpHfYV2Xu4GjQrRtDt6apbO1C
-         +QYQTjXr5X30rK0cScpeYOecnSvrsLGMfyLaTBmMTmeyOQcwqagEC/qgLIbuibvmKh+Z
-         NGHNAxYnBvAnkBqk2gmSk1B6FllsBHCAJBozQJmV+nGFkwLh78pkBVJpySrFw6KVkI5P
-         5eVu804nkcwQiYUgYGkp4qm/irxTLsdIAkj0R2w3w/pVQzNc4kmvV/gqCsX+H3NFwr7N
-         WKdg==
-X-Forwarded-Encrypted: i=1; AJvYcCU05fr5HiG8JwdhtBpPUZvnq9WCRgtbJbsNhTwvcmlU9+iBYVQzH42N9d+tH31BzSAaxh25jZ0KoA==@kvack.org
-X-Gm-Message-State: AOJu0YwAN0HaBxPgjKoIawA9jCCbWlgxxJ+hfuN8BIwcoWVEXD1ZlfRi
-	5COKH7qtwn3urPCAm9ZHoZt/X+IlejHDZDE8buQQmEQ9FDvyOI+1PqWixLJUEQTfoRKmzV+VoFK
-	bYuKETygI92VI2p7ml7OX7k2F0VnzUj+YetXTgJcp
-X-Gm-Gg: ASbGncsq22Vs0Qwnd4kl4OvEtcK21J/klksFIZfXIcw1xee54SPdODcN/5nVbtO6Jyj
-	efgEwUa3q2YLUKARTRealzHWbe6vvLGnR0PhDYRTk0pm8XhWC/r65PEW74V0TwM0NuEYPYey9H2
-	QlkAb1DYJkD9svJxmP84trLExosS6W/nOew3gackMkByI7mTTkqAURCNpmJzhKl5h3rGd8C/yDp
-	i8UtI4ssCSPDPlO4MkUVaFHdOfSZDzG
-X-Google-Smtp-Source: AGHT+IE2XZuUpY6yf1dVWPffNJkuGfhZwF35m+45ndZ/A0W69WaedUjJkm4TDgb9gRxsnIAXSMksxOG9bcF7EYiqZu4=
-X-Received: by 2002:ac8:6f1a:0:b0:4b3:2dc:8b84 with SMTP id
- d75a77b69052e-4e6ead513b5mr378830371cf.47.1760430316382; Tue, 14 Oct 2025
- 01:25:16 -0700 (PDT)
+	b=4u4uWXab3xRAo2esg3E/C94jKFxrhVkp/Y07AMYXR/wzmmNghjWpqCXWZtZRBgKHb7bdyb
+	OgzOIzZoNW9lq9bCNriQ7DxuW3cNNrZ+8XICwmnpku+tYB5+4tehtQNfiDpTc1h+6wNMvX
+	+8cXqByBD9sDtR86HmX2wVvV+kdNYBY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fy7NbVJG;
+	spf=pass (imf11.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <4a911279-5e95-499d-a188-dab72d75b6b1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760430426;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7oOL3kdYYlknYR47TEXFdShOrQCn0oEFnG9MAYkawAg=;
+	b=Fy7NbVJGzcvQp5AxZL9wsPPbNvhZ6Cv2KBbR1jXxS+80Ht4gbiS+kPd6pTdFaKtAiqqKI+
+	MPLbmQ4tferMUufytYuujs6TT2k7skGYz4nBWKtog3AHoA7CXk9tQcHO2g5UXEt9w+CkEX
+	2KwX3rMtkFa58wxX5TBsLlnCfWOq3Wc=
+Date: Tue, 14 Oct 2025 16:26:56 +0800
 MIME-Version: 1.0
-References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
- <20251014035846.1519-1-21cnbao@gmail.com> <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
- <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com>
- <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com> <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Oct 2025 01:25:05 -0700
-X-Gm-Features: AS18NWCsffjFXuh9SOpm483ZoDLgHXwm8ssjSph3yipxi4Ti2I03tEtjJ8_KnP0
-Message-ID: <CANn89iK0OWswFFHH10PLzFdcFxZXodWorR5YJSdPq+P6+Qsu1Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
-To: Barry Song <21cnbao@gmail.com>
-Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
-	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
-	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC RFC PATCH] mm: convert VM flags from macros to enum
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, David Hildenbrand <david@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251011093054.886460-1-ye.liu@linux.dev>
+ <809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local>
+ <7ca0960f-9d1a-4ba4-b074-a6502578b82e@redhat.com>
+ <d619784b-b967-4795-aad9-6e79d4191b83@lucifer.local>
+ <dfc18351-bb77-4099-bcdd-eb2bd4f1bea5@redhat.com>
+ <fa2d7db5-688c-4d04-abcd-a60f79a6bb7a@lucifer.local>
+ <71803dce-3fa6-494c-a4b1-55d98fc4aadb@suse.cz>
+ <bb9cd331-326f-4ddb-8848-60195e41f012@lucifer.local>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <bb9cd331-326f-4ddb-8848-60195e41f012@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: s633qjmycbspshsp6596u1dgzbc7chxa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C673F140007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: f5nzrw3ti7sdjpfjyupqbdb1fncahf57
-X-HE-Tag: 1760430317-720962
-X-HE-Meta: U2FsdGVkX1/i75qiTf/oSGTbNFpcZZUlBLFp2yAdQxLSHUs/UWNpmuAJPwxdI7nQyQiuk6wTS8YibFGO2C7IOZ2lSiUFb9DO1dQaVee0U5zs1qFPag43GPP9s1jqwgKhmohgLAR6Ri1slJ43XtbZhBegcumasqFNB5k4e5rlc97/FKF/2tCgPUyXbCyXSccRzJPFQYj/onE/3vAgSlMAoTc6eOdUzL2poudb1ig/uuefbMGvjqkazR7ppWZHkrWPdS1ZbcPiSfFoRCtDB1XfxPk63bv90TFPCl9YKiazroSuMQqd5qWcOsFmP+mZ6aEwvuXDy7aa73mIetRczkfckbQigxWgPp9t/9Gn20Z+D9EF+1KdNM98kgesdXfDTijZ2+CA2kyXblUkkvxWgIBt0QTcSlMkW8d4CpErbEBQUSQFcq/P8lxVaFvAk2WNSoZRYi9zkJcbVq+hngn3lw+Tle6YzXI3LTPiDAiudrdQWuMjXn9w9/JWD6arUblrduQZN72jYU/36rrHrSZLXikaCCTApKTM68/KDbcCx19/t0RXh6iRm1+q0EOOHnMMdrBfp87jmxAwiXqtljR8RaNqHxa29kNo4RoZoH1TGz84fGBj3zgdgB+D9SfAd9RfgVmAXINr9kTGsKDyowmtqm7OjmeoNebWYJfOrFSXm3swpjduLs8wX3pDfxOjR77MRvQ0lRTxg8zFGw/cxDpXTAJ7ngDKf0A7ljUYo9AHpzyuT+thUBE/UVficarw6k8oQZY/Hnndw/qk/0nx6uaGhIyFqpSt3CgH6WT6iFv+QmuZFVl73i/yxQrW4C/G7kgQ6dWklj8ZmDk2uQ407tIrLtP3rhD379oxADvRS0TTFPzDPm39TbkIx/d4/FRtW14RjTCQBDI3mMcbXkxxqpa/ETVfH61Mk5QicEx2PmxQ14phC/vLUesq981ZAKfVy1i+oRj33sx0nVBA7nNqqHrr5s4
- WATpe0GC
- 3+zu+BkWsRGS28Uwg+27r0PdYTm9dpnaIzjMsht+udqEEEwJaSlmyU9hpdnQhxuEohnbTXnEshfrLb3rZwVrNcwryuGPYAZQi96SOxna2+uI5cGBWWYGdv+Bsa/d+k9JON4IWGGJRTfbyMenJFxBXfw8TIB44jwYv+gVhY+LejcJHkrBT42PmkNdJkdwo2hj93Z4JlrFF6E2lEyjAgLW7Uf72Rs+UWYCQM3K3wxCdl90jySjcz2bouy3PAg==
+X-Rspamd-Queue-Id: AE44E40002
+X-HE-Tag: 1760430428-465131
+X-HE-Meta: U2FsdGVkX19/JR6G5sF/kog5kcHYmzchoFQRGXsRFj3hBNFsZvpX70hBO7XQHy84JNi6Zpoae9+Fu/qVNOfJvQDQVC9Sq2OgDJ1l7uJTzPZM+uBhe5l2Uqt8xSaHKVIo2d/MyEdtTw9ss/Q/pspu2yek8QJ5Mj/4Qqrhr2D7xk0UNmHiFzndaQYz+nKisk67oc65aqAQ8tiYRvUQpWtSseBkUWUTmtQPoKtQeYJZ0Tn0A4FQxW1vyhHrhZloY25h9FBpzKULMyF3tVhnbFPjyHDpI/90dZYCdH8yLB3mwj4SiGeBQg21Q5ebwD4mr4fIkLEDWjFWAOjoZGeDnPv3GHLg5Zcd83YaKz+lZWz59wnCCnSNhaQpY88cHrhYKPIjekQq7dzCZIiGzf9vMoDo9HkGGkiehMU8NN3za0qt66Rd8jBAz+zR6A3u1gI2znOg7aVpjDAluNZay5yADcHRGHFo/ouwgAx5Mpmq8xUEkFETktKtEpR/RWs/xWIPdu3EETTegdo+nlKpqDvsMoqj9is/7ZTtxqB5fT50HiG5iGakF4uXZu6Hb7675pHl6N+jfX3PNi19tosWUyleYKqM3daOI6sapSQnqTKKVyxvQb599Xzju0IC7MI1LIDI46GhgfRGN4xrAYR0nhqOMVUbm03QoSSpJUFo9eI1U73M39rjtMZSmm/IqB7ieTr9Tb6MObQVW+BO07OsPVFSHOx3OK1KXCtVMY1o7LN/NSN49w+QZJlduMW943xIShTwFwYls9cYoHPx/XmYD6e2RkHk2yoLAfM1H3VhdInbhg3bepigCBsL16fvyr9Rxy8shVfJIwpk06DSMBECMqfYs9pmGpNqwC4+5f3IOwMKraj7dVh2i178Yqy+iKHOE+/tr1sAOHNch5tOmTHLg7Q+5QuVR/oqNR0vVfKOn8RV2KQLXc6/BYNEbWPWFi/u6mHo+ZsuqAVRuD8C7freObapdq0
+ 0BSvybLN
+ vmvsFSqS1FjUY5mmJYgudg8s9/Ib14iK/4EhDcEiesAfXdKZnz+iuXXfn/jgTzXC7Nh6o5PGYOU2jLgZU7ktkpnvEKJy3fcWxaGrwpjCffq1RyPy7fHCiG2GpBbg9IxpWkdvWYpAamI0VBdCePsHPXbukbX07rmZ8n4fT4kqnkrVUt9ghAZ/E9TdZZO+6WcxNDUET
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,76 +101,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 1:17=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> On Tue, Oct 14, 2025 at 3:01=E2=80=AFPM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > On Mon, Oct 13, 2025 at 11:43=E2=80=AFPM Barry Song <21cnbao@gmail.com>=
- wrote:
-> > >
-> > > > >
-> > > > > A problem with the existing sysctl is that it only covers the TX =
-path;
-> > > > > for the RX path, we also observe that kswapd consumes significant=
- power.
-> > > > > I could add the patch below to make it support the RX path, but i=
-t feels
-> > > > > like a bit of a layer violation, since the RX path code resides i=
-n mm
-> > > > > and is intended to serve generic users rather than networking, ev=
-en
-> > > > > though the current callers are primarily network-related.
-> > > >
-> > > > You might have a buggy driver.
-> > >
-> > > We are observing the RX path as follows:
-> > >
-> > > do_softirq
-> > >     taskset_hi_action
-> > >        kalPacketAlloc
-> > >            __netdev_alloc_skb
-> > >                page_frag_alloc_align
-> > >                    __page_frag_cache_refill
-> > >
-> > > This appears to be a fairly common stack.
-> > >
-> > > So it is a buggy driver?
-> >
-> > No idea, kalPacketAlloc is not in upstream trees.
-> >
-> > It apparently needs high order allocations. It will fail at some point.
-> >
-> > >
-> > > >
-> > > > High performance drivers use order-0 allocations only.
-> > > >
-> > >
-> > > Do you have an example of high-performance drivers that use only orde=
-r-0 memory?
-> >
-> > About all drivers using XDP, and/or using napi_get_frags()
-> >
-> > XDP has been using order-0 pages from the very beginning.
->
-> Thanks! But there are still many drivers using netdev_alloc_skb()=E2=80=
-=94we
-> shouldn=E2=80=99t overlook them, right?
->
-> net % git grep netdev_alloc_skb | wc -l
->      359
 
-Only the ones that are using 16KB allocations like some WAN drivers :)
 
-Some networks use MTU=3D9000
+在 2025/10/13 21:19, Lorenzo Stoakes 写道:
+> On Mon, Oct 13, 2025 at 03:07:18PM +0200, Vlastimil Babka wrote:
+>> On 10/13/25 14:57, Lorenzo Stoakes wrote:
+>>> FOLL_* flags are an anonymous enum, enum fault_flag is not used as a type
+>>> anywhere, nor is vm_fault_reason. So those are both kinda weird as to why we
+>>> even name the type (they're in effect anonymous).
+>>>
+>>> But also 'we do X in the kernel' doesn't mean doing X is right :)
+>>
+>> I think the example to follow could be GFP flags. Nowadays there's an enum
+>> below it, and a layer that adds (__force gfp_t), so you could do similar
+>> thing with vm_flags_t.
+>>
+>> However I'm not sure how compatible is that with Lorenzo's plans.
+> 
+> That's defining bit values in an anonymous enum so isn't really comparable.
+> 
+> But what it's doing, ultimately, in broad terms (other than the opaque bitmap
+> type I'll be using for VMA flags) is what my changes will do.
+> 
+> And yeah, trying to do duplicate that is not really a good use of time and will
+> conflict with my work.
+> 
+> Overall I think this change is generally unnecessary given that I'm about to
+> radically alter how VMA flags are implemented, and actually will cause me
+> problems.
+> 
+> But as I said before, I'm happy to prioritise the change that specifies the
+> flags based on the bit numbers, I actually have it ready more-or-less.
+> 
 
-If a hardware does not provide SG support on receive, a kmalloc()
-based will use 16KB of memory.
+Thanks for the input, everyone.
 
-By using a frag allocator, we can pack 3 allocations per 32KB instead of 2.
+Lorenzo, I agree with your assessment.
+I'll pause on this from my side and wait for your patch.
+I'm excited to see the new implementation.
 
-TCP can go 50% faster.
+> Cheers, Lorenzo
 
-If memory is short, it will fail no matter what.
+-- 
+Thanks,
+Ye Liu
+
 
