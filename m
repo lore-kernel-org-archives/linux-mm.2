@@ -4,139 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED6DCCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 23:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14023CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 23:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 210FC8E0154; Tue, 14 Oct 2025 19:15:22 -0400 (EDT)
+	id 5BED18E0155; Tue, 14 Oct 2025 19:20:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E1AF8E0041; Tue, 14 Oct 2025 19:15:22 -0400 (EDT)
+	id 56F088E0041; Tue, 14 Oct 2025 19:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2A3F8E0154; Tue, 14 Oct 2025 19:15:21 -0400 (EDT)
+	id 436708E0155; Tue, 14 Oct 2025 19:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D99358E0041
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:15:21 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8733A478B8
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:15:21 +0000 (UTC)
-X-FDA: 83998278042.06.D53E974
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4EE0A20009
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:15:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UPSTzPAe;
-	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760483719; a=rsa-sha256;
-	cv=none;
-	b=tkfpqVdlHeIcaQpKFJNfE/bMbA5/L08paXu9S84WYwgWCtIWJzhhU6B1Ro9mkoiM4GyAvH
-	1zs4JqjoHF+WQEKP7ufbnAR+2EKBHPKId+JLdWex8D6NF5d8/UhXaRC4lVAQhSfk5JkQ1D
-	8jdTBQVOhCS8xX3G7rBxVKChdAMQ4jo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UPSTzPAe;
-	spf=pass (imf13.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7E48E0041
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 19:20:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D43C5C0711
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:20:21 +0000 (UTC)
+X-FDA: 83998290642.17.45B426E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0C6F5160008
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:20:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VpCnS0Wi;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760483719;
+	s=arc-20220608; t=1760484019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HedfkyMs3B9oqDedHNEV7q9JZcOI7I215Yi2CdixyTc=;
-	b=02KDO1nbHIzmLyvruJeLzEnFHfj1VQLWGR26JrxjQFMn/oBiZZovzL3JenWOp/9PVTmWkx
-	R2aqYLHtQ3mT6cDzpJZRoOIG4uDbVWuGMS/a6tk088ZCD/0+r4wjQlUVLbhiRyjHcR0XUB
-	L+rpxguGOJi8lZ5SzJwRt3bIFZv3fiw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760483718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HedfkyMs3B9oqDedHNEV7q9JZcOI7I215Yi2CdixyTc=;
-	b=UPSTzPAeT1iIDMPzI033KKjXH1KhzxqhBsH3QQQMupr8fb+0Gpq9skPmimMeoDuQZJH3vJ
-	d57Swo/5Q9c43SjZBWiF8WGNigW5qoNsyF1aKLg2MEOm4YKDZr80x5/Cc5IsHa17BzcuQf
-	K7LCvTY1ljai+IKU0+X+xNPZ5fuWC3M=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-V9q6c-MlND6hDohYzUMaug-1; Tue, 14 Oct 2025 19:15:17 -0400
-X-MC-Unique: V9q6c-MlND6hDohYzUMaug-1
-X-Mimecast-MFC-AGG-ID: V9q6c-MlND6hDohYzUMaug_1760483717
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-88e35354330so41247685a.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 16:15:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760483717; x=1761088517;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HedfkyMs3B9oqDedHNEV7q9JZcOI7I215Yi2CdixyTc=;
-        b=PJAAds0OjfCX5MUTmcpRzoPsrzy3tOHTw1n7EbV6gynNkWv7MmITBGYE6D/GWQ6BQK
-         T4mrs/if57ehxiJGdO4HD9BEu2nz+E5d8itZSVVXjvTqwj36HUlpcV1xg+/eymQBVjbJ
-         XVwV8/esh6KBUoe+4+qSIDzQKfa2g66RAwy4qgpo9MS3toI+gX1sMJq04TywVCjMb6g+
-         DubbWiwborHlaPbaxAZqztIIPA4JDSlYeblavS8HZqmEAxj+DwLHjZnaS6+f8kFyBBFX
-         bvIehO0r6VZdAfnBEcykraujBSTJz1HijNt0Os+E3EZz0foUXCpDvf86WEN4A3MITFJp
-         4NCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMOV1fAcpMFUF18/kVHaxqJ5moi/paRIQnCyFN93EV14KWiUWerxjnJomAhaAAjfCNY4R7W8cb2g==@kvack.org
-X-Gm-Message-State: AOJu0YwzhcEVG8C6GWfVlb8gxtgf22k8LwPUcC11fwD2QkM7CFFPQeHs
-	bxdGhl39HroUJfsBVPftHgFp2XR7PasafrGjtQtEi1lmNPO6h5tqThQJQnSne+OYeVXbArZO13v
-	2tPwzqHgUaoHwPASQ+DAlZ/98P3Fbl+GQpE+FAYCQHOA3oePFAPsM
-X-Gm-Gg: ASbGncvOIh5VVwLlGWuEFF4OhnOu7Uv9Gn8vmlfOXQVSLBz/jneQfKe1YOKLFbNKhin
-	VDsCOZPkgsJuJN6isuIGOhrZYTZzs5dSOwbekZdBGPwWoxGarqCxT8fCVDSabe0XyDxg0HNZdqL
-	Yr3RIsMNvWgOky2n4EOrICnf/5akAiPCz8QRNmVxVFzFPJQ5SyxPQKgYvX2J/QX7CeiycrGuUEt
-	fZqKGtrcmZO3tiI7wT3QxY6JkYV0aw6SuBYjZfAf0dvhDqgKIdgwkc9wuC5qMbRVkVl+Zz9gQHi
-	zf6pKl+qvjoKlefMSJ7gAPc2il0XOg==
-X-Received: by 2002:a05:620a:7012:b0:816:b56d:20ef with SMTP id af79cd13be357-8835326fa38mr3291255285a.86.1760483716687;
-        Tue, 14 Oct 2025 16:15:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8trGwxOWwN9vklPIUb4DUFPDDuGTh9yrsza4jeSL14iOpRJmq9d1JUbiuCxpuX4zt03gfgQ==
-X-Received: by 2002:a05:620a:7012:b0:816:b56d:20ef with SMTP id af79cd13be357-8835326fa38mr3291250085a.86.1760483716141;
-        Tue, 14 Oct 2025 16:15:16 -0700 (PDT)
-Received: from x1.com ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a23693a0sm1280258685a.53.2025.10.14.16.15.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 16:15:15 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	peterx@redhat.com,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v4 4/4] mm: Apply vm_uffd_ops API to core mm
-Date: Tue, 14 Oct 2025 19:15:01 -0400
-Message-ID: <20251014231501.2301398-5-peterx@redhat.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251014231501.2301398-1-peterx@redhat.com>
-References: <20251014231501.2301398-1-peterx@redhat.com>
+	bh=Shh5OaCHcMULEmpCG3Oh2GMfhY1DSJW2K15TncMe0vs=;
+	b=FsixbEwT26bgP1nyir+ZecxuiXfSsvr88CXg5Hu0pfNyreeC/H6Scl7Ph0Z3QR4DT4irW3
+	eTbA3wNRQeEBFaMtbMi0YChP23yfNPpnSjZ7LSbQ+2F7omOnqONVBNcWIM0Jkrhx21GXpg
+	tQk19d9esNyrtuFuG9hkad6ojBK3zOM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VpCnS0Wi;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760484019; a=rsa-sha256;
+	cv=none;
+	b=eypZBXm2S8M8q7og+fw5J68RIDk90KarQm3mROJOYSZdTveSZy6atTrR8BFisExlPXu3pa
+	lB2sDIxhqC5QXT8SaDP0ObmTIo3s6mIgleaD9kW14TlqwlrP8/dAlVQSD6nif3ycbAAHVO
+	wd2d8sOouH3DGXmJy9zBi5Nb144m/F0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760484019; x=1792020019;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Shh5OaCHcMULEmpCG3Oh2GMfhY1DSJW2K15TncMe0vs=;
+  b=VpCnS0Wigx7T86MDvOlAK/YbsiKR0W+9IatC5B8scMq3uroRjEC/eM/7
+   kS9J11yfWBUwu+VUbh12XoufdrjFJRPNMrbfCbm/u99GHKExolvQcUxis
+   /VoboPUE9BqwwY/1ICyGo/FD3dcgU+MqLHwKcaqPh2Rjcl9PeeETDzOAy
+   j2B6uoPdEX5EZRE+8O4jNnrZKMU955lvy9ycSmbVECL7oNsOS2DKr7gER
+   7Ad1OW12+N+dLQ7LdJqZZYQtHXtjpmoRHbdbzXdP6EeQEAD88zvBc7q5A
+   r9j0U5RSwDO8da+mW3fwu8c2Vt7L56ofFA7RWJ+9gKBV9/VdYsqsnzmXZ
+   A==;
+X-CSE-ConnectionGUID: OXHCdAYZTjqVd6zynetxhg==
+X-CSE-MsgGUID: MGoz7kdtTcCzipxmm32Zww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62804560"
+X-IronPort-AV: E=Sophos;i="6.19,229,1754982000"; 
+   d="scan'208";a="62804560"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 16:19:57 -0700
+X-CSE-ConnectionGUID: gKgXGwxpS/6QIEGmF33LTg==
+X-CSE-MsgGUID: 2vt3WlKPQNyV9H0gyFaqcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,229,1754982000"; 
+   d="scan'208";a="187318351"
+Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.111.172]) ([10.125.111.172])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 16:19:55 -0700
+Message-ID: <b6fdba02-cc3e-4d06-b013-fba94209e7a1@intel.com>
+Date: Tue, 14 Oct 2025 16:19:55 -0700
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Tk6fVD3dpe3GRBhQ7_JVOP19gfcd3rXLxP9xrRGHBzI_1760483717
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+ <20251014130437.1090448-4-baolu.lu@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251014130437.1090448-4-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0C6F5160008
+X-Stat-Signature: zgfehdyohm1uswki3u6465gckhy4zi1m
 X-Rspam-User: 
-X-Stat-Signature: 5hqfarq61wqcfi93rpn3ufhepkdkusfj
-X-Rspamd-Queue-Id: 4EE0A20009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760483719-722287
-X-HE-Meta: U2FsdGVkX18le7/a7nV5QwlXXVRNWBIj8UB9fjsNJs+OhsrCHzKhus2qTZ7SMZrkAYt/SL8yIKIdFo0jg02XoKrsiJ9blPQBsYfW7zxXgSm4yVtgsf8HC6oCKhfIGTICTIh+knvZ2gCFKDfETgzadsnmCr+xCYxNXDguKqFHNP9kCOzvmFFFuyaWLF3m4U5OUmToJGaydTHN73TP3ErdtYrjDb02QiTxk8WwkZMhyLPYo7PWrr8DaI+9dff7mwlI+7ma3EJBwGDskL3UILtMZduCNQHO+2v29KEFtjTMyBxcq47N2G/SebxHdKH1cm8sccy1gW7ioPVfIHwGruUcgbNHlNw62Nk6H3hjRj1NUoI+tmDSJEIUWYiQduedbEGT+wJ1URqkO7VFIZAE0mQ3FR+DwgyCdIn1/BzNOLcdw04x0HQkJOmPB4X0VMW0SCU5JZvP9M37lvKBK3LVObvaXkXVXkNdG8eDVDcwF0myEhIhyz2moyRCTcJR7f5or7F9HB8uI2F5okAMDpZdVWFWYWP+SfpyWcRzQk576X9CC5tjIJHtuPXSQg6vi3yYjmKG+ILGbAcfvZ3n5CS4cE2wsaHdwqYOIqGyV6MDUqhFot2+xs8gRoBg8MS1zUB0xaIukvLYJTGbgvMApuGWo8R/cbqb6ejk6bVmpDuVtLHf3mbxFCbT1DTh1B0RgLJEdjo4AnKAJHLTx6bC++SDLL+hnk2OijRm2G2W/U4Zbv+9iG/KNG+KSJtohb/vCGD80INdtIMg0RZNRPa93VU5y6MM0uIKrc+cqBa2CYTDVkRS+7QwhsNTb6GN8JYT0xIeKa2jgACyqGtDdoyXF98qJppGbAPKZwlxoLtY7N93DBDCGegqWAqbiXilY/B8O74gm8wCpmOIlSoUdMGQ9bw8SY4w2q9jpN3bRny7oXJseP8y/AXEwAzMr4guX8a6pefZlkK/HRNrBxmEvp7i0+nBc31
- 8moevp/j
- uqgmjXTVNBghKcSvabjtd8PonLEtpnik3GtlpHaseg/1sh7NbVMqirTS7n8i5tXmqElJb5zr3SVnUut70mA2HY6pXJYT+nwxKC/B5KXZOnrkSOugqe0MTa8L3rcvGJPh+mOSNbO7UkOkl76vaHINgKMUCRpCQfO9lmxRzzsvyRtE5O2HpfefIegCaWrgrADJwsmqyWHxVVGBg3W6GfAnKBNr0UFmT1YsCC5tr+TboOTnTP9ciseXr+TMo0sHI1aRSIztMllHskXk99yn2zQUOCA6ft4YsAS473ak/3TeVbpCceoOHRkVNz4rolb5/o4HtZuLHk2IFFyIFRdDTVxsHEcwDIAFpJr+VIvreyshEl3TUrON8nKaRaEZcX98u8aaGhbbl3/1u4qi0bPf9mP//tBbZ2TD0vONZfvHOhdmw5JEAQh11r/YcFYNzZt5yQs/xB/pPgKTDPySt7qnsKncbhj4TEhtJ7NW4u4g7LNlSTVVo8ufkRMsB3Ijgkx3w2UoGpA2jYQedUkhfpUJdh31rfX68HDIGrMNTE//EMZzneeNrM14r/FoktYhmPIEh1tZU/4if1A7cYZepzcIGM+c84PQyOyD3Y6lQJsYuxevBUJU5NS6pBmynxe9hKxVMlHg95PCp9lWPAtAMwMBM9WSSx0eShA==
+X-HE-Tag: 1760484018-909704
+X-HE-Meta: U2FsdGVkX19pPr6lpTC4RYqvuM3NdqDYJ0fvd/VDNFB3ahCMMM9az7/Jyu8+teck2gn/x9QROQs41HzEyDGLOk+kV/wlsntT1SVRJu5kNUuznbCrXLPyK51gLk0ILKt5JmJ3oePNC8VZ34OsoRiYj03ndmmcKHvWAOD0ViNOkmOFUW1X2vdxSwEBPzpTvFg4v7TvY+Uo2IY3ISECeljejTtpOASSXEmMXzoKonL+yYqZ0LbS9EEd97Pn1ijTAVr5EZ2RPiEW93fsDRDJlJwt5c3P2+PJeVwl84G6QQu0VvEcFM7h499QYEOsBtob9XUeQNkF/gJSLbVReo2BtxAXrY09JQSzLFAwOIDa+Y24XpEqNAO5BMfw3qtWqES5ITKoksUUBofnuSIUQqRNOr/k5p4lWiIpiJ5NEgze3VvsrHyGIDYMfI58wVyKCxYCa6bbnQbDSAxA/PDw9wRy+Bo1jIgTTbKFnP712fmzv+vqTweS6QfmKPJalfUYBiyypJAVMFWVyjcb3LdmbYoiNjgtzkbZvBayMBEsh2A+COd9YKWsxpnPN8le7OK7TMnbP4PRnMZESEOUFIb3aOskdN1DTp9m+vbScwr/sXd1e1VkY518tOzpS9Tx/r/l1Uh4Pjn1/pcvwugt8oAp/vVb5Mfo0jHqAmtMS57CZjjP84WhjrLoBBkDplj6X36ksCGZyTBTce6BwD880IGBa9l3hLaeuIlVpmU1AMvQnIdO3TVJE6XnyFx8EdfluU4lc2U6MnmwvbrTT5m9B5GmNZQnT+h5vzdDRneoONnCP04OGZOfdx1lrrMPbXo7Ac8/fWiu8HmCsVQVybfU6FpVl64VM079F2nD/C/KYx5I1eCPgTjoJOaqyt1Oay56hfFZf9m9y7EDvF85ZzyZUZmKvQKUvYIROPJruaZ57STDxOO4s87nDRtFACSO2VmeE7XIGbQ+7ycxqDQbvqJotuoP+opnrQ7
+ 9wNHrcpY
+ 2x+UK9HH1vS7qbr3GsRogCk3hHl0oNzZPHCbkzH6R6LDpuzhHNAKFKUCW+Yt6IP6mtEU9BVDJxlpiCh1zkjJ6x062EOtwpxSGXfY1dVr6s+3kuhqpsnPiqihPx+iEtgXj9UmeTIEoTdCgr4/bWvbOFvI5fnNFA9/whbVlQrGxi5FL88Gq3p5XGcb3qYzOJqiCdDolv02m3CN/pl7fr7RnZkwLOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,273 +165,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move userfaultfd core to use new vm_uffd_ops API. After this change, file
-systems that implement vm_operations_struct can start using new API for
-userfaultfd operations.
+On 10/14/25 06:04, Lu Baolu wrote:
+> -#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
+> -
+> +#if defined(CONFIG_SPLIT_PMD_PTLOCKS) || defined(CONFIG_X86_64)
 
-When at it, moving vma_can_userfault() into mm/userfaultfd.c instead,
-because it's getting too big.  It's only used in slow paths so it shouldn't
-be an issue.  Move the pte marker check before wp_async, which might be
-more intuitive because wp_async depends on pte markers.  That shouldn't
-cause any functional change though because only one check would take effect
-depending on whether pte marker was selected in config.
+What's with the #ifdef munging? It's not mentioned in the changelog.
 
-This will also remove quite some hard-coded checks for either shmem or
-hugetlbfs.  Now all the old checks should still work but with vm_uffd_ops.
+I went looking at this because pmd_free_pte_page() is right in the
+middle of the action on this reported use after free:
 
-Note that anonymous memory will still need to be processed separately
-because it doesn't have vm_ops at all.
+> https://lore.kernel.org/all/68eeb99e.050a0220.91a22.0220.GAE@google.com/
 
-Reviewed-by: James Houghton <jthoughton@google.com>
-Acked-by: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- include/linux/userfaultfd_k.h |  46 ++++---------
- mm/userfaultfd.c              | 120 +++++++++++++++++++++++++++-------
- 2 files changed, 109 insertions(+), 57 deletions(-)
-
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index b5b4f3f174b32..983efaecfdcb0 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -126,9 +126,14 @@ struct vm_uffd_ops {
- #define MFILL_ATOMIC_FLAG(nr) ((__force uffd_flags_t) MFILL_ATOMIC_BIT(nr))
- #define MFILL_ATOMIC_MODE_MASK ((__force uffd_flags_t) (MFILL_ATOMIC_BIT(0) - 1))
- 
-+static inline enum mfill_atomic_mode uffd_flags_get_mode(uffd_flags_t flags)
-+{
-+	return (__force enum mfill_atomic_mode)(flags & MFILL_ATOMIC_MODE_MASK);
-+}
-+
- static inline bool uffd_flags_mode_is(uffd_flags_t flags, enum mfill_atomic_mode expected)
- {
--	return (flags & MFILL_ATOMIC_MODE_MASK) == ((__force uffd_flags_t) expected);
-+	return uffd_flags_get_mode(flags) == expected;
- }
- 
- static inline uffd_flags_t uffd_flags_set_mode(uffd_flags_t flags, enum mfill_atomic_mode mode)
-@@ -237,41 +242,16 @@ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
- 	return vma->vm_flags & __VM_UFFD_FLAGS;
- }
- 
--static inline bool vma_can_userfault(struct vm_area_struct *vma,
--				     vm_flags_t vm_flags,
--				     bool wp_async)
-+static inline const struct vm_uffd_ops *vma_get_uffd_ops(struct vm_area_struct *vma)
- {
--	vm_flags &= __VM_UFFD_FLAGS;
--
--	if (vma->vm_flags & VM_DROPPABLE)
--		return false;
--
--	if ((vm_flags & VM_UFFD_MINOR) &&
--	    (!is_vm_hugetlb_page(vma) && !vma_is_shmem(vma)))
--		return false;
--
--	/*
--	 * If wp async enabled, and WP is the only mode enabled, allow any
--	 * memory type.
--	 */
--	if (wp_async && (vm_flags == VM_UFFD_WP))
--		return true;
--
--#ifndef CONFIG_PTE_MARKER_UFFD_WP
--	/*
--	 * If user requested uffd-wp but not enabled pte markers for
--	 * uffd-wp, then shmem & hugetlbfs are not supported but only
--	 * anonymous.
--	 */
--	if ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma))
--		return false;
--#endif
--
--	/* By default, allow any of anon|shmem|hugetlb */
--	return vma_is_anonymous(vma) || is_vm_hugetlb_page(vma) ||
--	    vma_is_shmem(vma);
-+	if (vma->vm_ops && vma->vm_ops->userfaultfd_ops)
-+		return vma->vm_ops->userfaultfd_ops;
-+	return NULL;
- }
- 
-+bool vma_can_userfault(struct vm_area_struct *vma,
-+		       unsigned long vm_flags, bool wp_async);
-+
- static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
- {
- 	struct userfaultfd_ctx *uffd_ctx = vma->vm_userfaultfd_ctx.ctx;
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 00122f42718cc..b50db51e75d5b 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -20,6 +20,61 @@
- #include "internal.h"
- #include "swap.h"
- 
-+static unsigned long uffd_get_supported_modes(struct vm_area_struct *vma)
-+{
-+	const struct vm_uffd_ops *uffd_ops = vma_get_uffd_ops(vma);
-+	unsigned long ioctls, supported = 0;
-+
-+	if (!uffd_ops)
-+		return 0;
-+
-+	ioctls = uffd_ops->supported_ioctls;
-+
-+	if (ioctls & (BIT(_UFFDIO_COPY) | BIT(_UFFDIO_ZEROPAGE)))
-+		supported |= VM_UFFD_MISSING;
-+	if (ioctls & BIT(_UFFDIO_CONTINUE))
-+		supported |= VM_UFFD_MINOR;
-+	if (ioctls & BIT(_UFFDIO_WRITEPROTECT))
-+		supported |= VM_UFFD_WP;
-+
-+	return supported;
-+}
-+
-+bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
-+		       bool wp_async)
-+{
-+	unsigned long supported = 0;
-+
-+	if (vma->vm_flags & VM_DROPPABLE)
-+		return false;
-+
-+	vm_flags &= __VM_UFFD_FLAGS;
-+
-+	/*
-+	 * If user requested uffd-wp but not enabled pte markers for
-+	 * uffd-wp, then any file system (like shmem or hugetlbfs) are not
-+	 * supported but only anonymous.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP) &&
-+	    ((vm_flags & VM_UFFD_WP) && !vma_is_anonymous(vma)))
-+		return false;
-+
-+	/*
-+	 * If wp async enabled, and WP is the only mode enabled, allow any
-+	 * memory type.
-+	 */
-+	if (wp_async && (vm_flags == VM_UFFD_WP))
-+		return true;
-+
-+	if (vma_is_anonymous(vma))
-+		/* Anonymous has no page cache, MINOR not supported */
-+		supported = VM_UFFD_MISSING | VM_UFFD_WP;
-+	else if (vma_get_uffd_ops(vma))
-+		supported = uffd_get_supported_modes(vma);
-+
-+	return !(vm_flags & ~supported);
-+}
-+
- static __always_inline
- bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
- {
-@@ -382,13 +437,17 @@ static int mfill_atomic_pte_continue(pmd_t *dst_pmd,
- 				     unsigned long dst_addr,
- 				     uffd_flags_t flags)
- {
-+	const struct vm_uffd_ops *uffd_ops = vma_get_uffd_ops(dst_vma);
- 	struct inode *inode = file_inode(dst_vma->vm_file);
- 	pgoff_t pgoff = linear_page_index(dst_vma, dst_addr);
- 	struct folio *folio;
- 	struct page *page;
- 	int ret;
- 
--	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-+	if (WARN_ON_ONCE(!uffd_ops || !uffd_ops->minor_get_folio))
-+		return -EINVAL;
-+
-+	ret = uffd_ops->minor_get_folio(inode, pgoff, &folio);
- 	/* Our caller expects us to return -EFAULT if we failed to find folio */
- 	if (ret == -ENOENT)
- 		ret = -EFAULT;
-@@ -504,18 +563,6 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 	u32 hash;
- 	struct address_space *mapping;
- 
--	/*
--	 * There is no default zero huge page for all huge page sizes as
--	 * supported by hugetlb.  A PMD_SIZE huge pages may exist as used
--	 * by THP.  Since we can not reliably insert a zero page, this
--	 * feature is not supported.
--	 */
--	if (uffd_flags_mode_is(flags, MFILL_ATOMIC_ZEROPAGE)) {
--		up_read(&ctx->map_changing_lock);
--		uffd_mfill_unlock(dst_vma);
--		return -EINVAL;
--	}
--
- 	src_addr = src_start;
- 	dst_addr = dst_start;
- 	copied = 0;
-@@ -694,6 +741,41 @@ static __always_inline ssize_t mfill_atomic_pte(pmd_t *dst_pmd,
- 	return err;
- }
- 
-+static inline bool
-+vma_uffd_ops_supported(struct vm_area_struct *vma, uffd_flags_t flags)
-+{
-+	enum mfill_atomic_mode mode = uffd_flags_get_mode(flags);
-+	const struct vm_uffd_ops *uffd_ops;
-+	unsigned long supported_ioctls;
-+
-+	if ((flags & MFILL_ATOMIC_WP) && !(vma->vm_flags & VM_UFFD_WP))
-+		return false;
-+
-+	/* Anonymous supports everything except CONTINUE */
-+	if (vma_is_anonymous(vma))
-+		return mode != MFILL_ATOMIC_CONTINUE;
-+
-+	uffd_ops = vma_get_uffd_ops(vma);
-+	if (!uffd_ops)
-+		return false;
-+
-+	supported_ioctls = uffd_ops->supported_ioctls;
-+	switch (mode) {
-+	case MFILL_ATOMIC_COPY:
-+		return supported_ioctls & BIT(_UFFDIO_COPY);
-+	case MFILL_ATOMIC_ZEROPAGE:
-+		return supported_ioctls & BIT(_UFFDIO_ZEROPAGE);
-+	case MFILL_ATOMIC_CONTINUE:
-+		if (!(vma->vm_flags & VM_SHARED))
-+			return false;
-+		return supported_ioctls & BIT(_UFFDIO_CONTINUE);
-+	case MFILL_ATOMIC_POISON:
-+		return supported_ioctls & BIT(_UFFDIO_POISON);
-+	default:
-+		return false;
-+	}
-+}
-+
- static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 					    unsigned long dst_start,
- 					    unsigned long src_start,
-@@ -752,11 +834,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 	    dst_vma->vm_flags & VM_SHARED))
- 		goto out_unlock;
- 
--	/*
--	 * validate 'mode' now that we know the dst_vma: don't allow
--	 * a wrprotect copy if the userfaultfd didn't register as WP.
--	 */
--	if ((flags & MFILL_ATOMIC_WP) && !(dst_vma->vm_flags & VM_UFFD_WP))
-+	if (!vma_uffd_ops_supported(dst_vma, flags))
- 		goto out_unlock;
- 
- 	/*
-@@ -766,12 +844,6 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
- 		return  mfill_atomic_hugetlb(ctx, dst_vma, dst_start,
- 					     src_start, len, flags);
- 
--	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
--		goto out_unlock;
--	if (!vma_is_shmem(dst_vma) &&
--	    uffd_flags_mode_is(flags, MFILL_ATOMIC_CONTINUE))
--		goto out_unlock;
--
- 	while (src_addr < src_start + len) {
- 		pmd_t dst_pmdval;
- 
--- 
-2.50.1
-
+so something fishy is going on. It would be great to narrow that report
+down to a _specific_ patch in the series.
 
