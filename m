@@ -4,143 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8904FCCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1599DCCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:43:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9FC18E00CA; Tue, 14 Oct 2025 04:41:08 -0400 (EDT)
+	id 702B48E00CE; Tue, 14 Oct 2025 04:43:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E50608E00AB; Tue, 14 Oct 2025 04:41:08 -0400 (EDT)
+	id 6B3988E00AB; Tue, 14 Oct 2025 04:43:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3F6B8E00CA; Tue, 14 Oct 2025 04:41:08 -0400 (EDT)
+	id 5C8E88E00CE; Tue, 14 Oct 2025 04:43:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 924FA8E00AB
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:41:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FF1CBB2F5
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:41:05 +0000 (UTC)
-X-FDA: 83996074890.04.94D56BF
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C1E111C0007
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:41:02 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ivPmnqiV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5neRTWO+;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qfEVIgkQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+hcqb1bq;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A0328E00AB
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:43:02 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E498411AC9A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:43:01 +0000 (UTC)
+X-FDA: 83996079762.19.89AF09D
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CDD7E140007
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:42:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760431263;
+	s=arc-20220608; t=1760431380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=oD4N98xqKoKzh5mdGTCdnVsbHNjiWYye8KSN/sZHlMo=;
-	b=Z8ewBbkwRMNPZcAIBUHCBXSPHpqqac9xmOkzO7kmf+/97rqI7M96th/PY+dtJbLa8G3vcf
-	4a2F64yp10YLH5h9b8/jZr+oFBMBD9Xxk96Gmjpu9DcZNhe3g7Y1PLAODo/jh40CWY7x01
-	+y6WwcBwYTisjP66i+QVS3t84JWo2lw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ivPmnqiV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5neRTWO+;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qfEVIgkQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+hcqb1bq;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760431263; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=K3LkqqfYvr+4iVhjCE2MHmrEAIJHf4SB5Ndp9QwkPcA=;
+	b=qet5lwtpYWMeL5OGEI/ilTxyGJmmun0vXjvPiBgh2Ob3S706LxTElP7CG644hrnCermMpA
+	Yt7gLX1eI/hx2Y23i231QS5WuA/6HB5tjWtGbOwJQsViS65GxNcBOQ73o6yW/ZYzPu+lxy
+	ojULKza9Y69VnH1p0cdk30ZnVWkYiO4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760431380; a=rsa-sha256;
 	cv=none;
-	b=MHaZNbNnhaU03E1ZTHCTZhoBThxQQCTciOSaQGAtlkabO5rpMaayOIVbMBV4w/iFSa4l9x
-	rujse52Y4TqOYw4xLjUHBl8o7INJ7s5EbdyBI1SDMqNruAnZWadhPx0uDz1VJgUfuUaWng
-	W+khoYpjNV8F25OfVFv59z/VFnMbojw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E48A41F7B9;
-	Tue, 14 Oct 2025 08:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760431261; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oD4N98xqKoKzh5mdGTCdnVsbHNjiWYye8KSN/sZHlMo=;
-	b=ivPmnqiVD3lW6jQtv5IXSI6u5paQvz6x5PzlMIRpvkecw9HYw29HXFVkuA3TKyDYn1Z92E
-	zLt37ChvkwBQpypkjMZRtY+aPZ0gm3UtRDtDua2d6HPvc1CHVlkJF0Y14GNE/OmW4BK65d
-	o1Wto531LjdoSVYZywG0DKuSNEgR4qg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760431261;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oD4N98xqKoKzh5mdGTCdnVsbHNjiWYye8KSN/sZHlMo=;
-	b=5neRTWO+ATqOjBCTRINXXRjrSI3gGlw1SSYXbB1BZqstYzTpvbUsvM/PbD5iUH/a/9M14U
-	bsIHj7dks+8Q5bCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760431260; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oD4N98xqKoKzh5mdGTCdnVsbHNjiWYye8KSN/sZHlMo=;
-	b=qfEVIgkQ6o1sjqnc/Fe1/M8RBgZ5CyPLyFHFFahDDSqNve1L2QZemFc8anbNSIey5dmbo/
-	RZBJiPu7AhwdGmcX03BlRuBWSRALYSUVqPlnTNE489bYdYOnXLMYRXTkizv6MgqmSfTo1d
-	IqUyykSGOJ9ugU5dOW0ZN7RV4nBws4A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760431260;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oD4N98xqKoKzh5mdGTCdnVsbHNjiWYye8KSN/sZHlMo=;
-	b=+hcqb1bqPU4mvm3h4A0Qx6ro8PLXOpwb3KsRtMV8dZ+GA22ZHLY+UKDeTKdxO4zF7epyDH
-	OOVSZ/mlRdpHf8CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D04A813A44;
-	Tue, 14 Oct 2025 08:41:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G1uFMpwM7mg1IAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 14 Oct 2025 08:41:00 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Tue, 14 Oct 2025 10:40:57 +0200
-Subject: [PATCH] slab: fix clearing freelist in free_deferred_objects()
+	b=U9prNVA2NvjAozp9kFHcLwRvnkeJ3c6ESfgSOUENcf5nL9xRGsubwPvtac7qoQPtpAQteD
+	xy6+I97Hxy8zNC7nk3KNx63QfrJ8K0eRgNw2OgwdEk5+QHLvsnHSzXdNANHqy50KOSwHXb
+	qKpvjOwj168YaA2b1H1F+OyUR+P2Iy8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn;
+	dmarc=none
+X-UUID: c283b6e8a8d911f0a38c85956e01ac42-20251014
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:598fe906-9c18-4ad6-8aa2-4af1c8eaaea6,IP:10,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-5
+X-CID-INFO: VERSION:1.3.6,REQID:598fe906-9c18-4ad6-8aa2-4af1c8eaaea6,IP:10,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-5
+X-CID-META: VersionHash:a9d874c,CLOUDID:45d320bac237e45ad2aa7e2e56a0f0d9,BulkI
+	D:2510141640177430877O,BulkQuantity:1,Recheck:0,SF:17|19|24|38|44|66|78|10
+	2|850,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:ni
+	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
+	0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: c283b6e8a8d911f0a38c85956e01ac42-20251014
+X-User: lienze@kylinos.cn
+Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 2001799193; Tue, 14 Oct 2025 16:42:47 +0800
+From: Enze Li <lienze@kylinos.cn>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: [PATCH] mm/damon/core: fix potential memory leak by cleaning ops_filter in damon_destroy_scheme
+Date: Tue, 14 Oct 2025 16:42:25 +0800
+Message-ID: <20251014084225.313313-1-lienze@kylinos.cn>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-fix-freelist-v1-1-e402301f276d@suse.cz>
-X-B4-Tracking: v=1; b=H4sIAJgM7mgC/x2MQQqAIBAAvyJ7TlDRg30lOoSutRAWuxFB+Pek4
- zDMvCDIhAKjeoHxJqGjdrCDgrQtdUVNuTM444I11utCjy6MuJNc2sVoA+aUXPHQk5Ox+383za1
- 9wZAMpF4AAAA=
-X-Change-ID: 20251014-fix-freelist-29915edcc2f4
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org
-Cc: kernel test robot <oliver.sang@intel.com>, 
- Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1866; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=pPl6RhapejOsMg81F6RD18xhwMoZrS5BV8bYDWQ519A=;
- b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBo7gyZePWrRv20PZ4gtsekRnTDi/+wx3O6/MQId
- xlDIfKeSv6JAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaO4MmRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJriLwgAnf3jwUayx0cBRT96peMbd7s7WEPHx6C
- LMsjWXyIMckLoLLip3RhZfPU3p+/e2zr/i7qR0ZRuef2J156WM40iqlqlIvUBRWDb6vu9Pp2dQi
- Fueb68BrxnZNVX4pp7Yl/oNIWMKaHZvlYOKiXDdLgMdiK13YyefYBY4iW29lioG9CWzM0nVob0s
- CSenTaTXRczmjAHlU+7cG5TJ5zAUkKWJVHUAMSzBEcyTSTJgsBOC5jGeMfBdIz/b56xpIcLpxRN
- 5oe/zNFWvI+cLTFDXDfcZSPb4C4q58GPQsH/31SIZw7/7ygcaB8ixJbd3NGVTmZPxE8lREJSLuV
- ITcFp8oqpJg==
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Stat-Signature: z7y6xftakg5s86u5zreokyrcn7qmemqy
-X-Rspamd-Queue-Id: C1E111C0007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: kmxq3uzqgjpp7kqyzi9qnyjuo1sfaryr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760431262-590154
-X-HE-Meta: U2FsdGVkX18lrOFEfc/5YRub0oXFTuuLZGGYWpJ8XBXBxy7Oe1hOkzpc/hLyU491O6iI+nHU0sz6gSEOCjv3yQJJ8uy/ks3XvymQHzdPkVQ72lWvdt+g11SOt8KZl0Ug/daio93j7QpRVUP4p3+CzvJp99P+xTo6At6Y6lHXV15/9rGgKa//5TAq0mwNtcSanSqsLekfnlq3+AK+BLKaqqqPDv06jM41g4Xy04HlwaQrnHfowggViiLbRQmgWMZ0MaF3jWl4fZZfjWDAaVAnKfnBzdrOCbqkfRZvnU6nXxHHjBRC43PXmHKUvErau/KvTP9tGKgqmSk/WPd0AXtiJ/P5eTfS0meBkD8tmCwuxgedAeDIdwmyzXwAT081bV9Rj72tzDibdJZ4CNYbLNYpiDCXmIIMlPCbygVXth3fRePYSWdl7/GAvtnfl+STZo46PVhMG4oWSNImkcVDNW2Ag8yLy6NOr+wH6HGSwPEegQSSIbAZqlumnWVBvGXNZWZK/uF5J3BD8BkcJ1Wn9Slaqc9jBEl7nnLOUdT5/DudCVxV9rDN8hul/YV1SLJ/jlXHljj001/HV933aNTjNSo8qSzv/wJyESXRjIcyNclgJGb1q5TabVZlFXFG06Hr4MLkHKtdgdiJq5gJCm93CTE6RsLQdHM6Gv9aQthX6oLIR26oXX06j6eujR2DZ3M42m3Ke5UYcWdyTOWHvCQzYaRHqCCCdD7L2ov7kTJPDteDIn80UZZgO0Wlsk6wB+tNuVTkPxNl6MzNWtnsoxxomJxC+EPtPGXNbpJiQzPUmzo/dVYcMF5bqOY+fe8ReQqjWwxPkETrCfD7oBg0OJVkeZZxRPsVHPYf2FWudcg4yzFAIFrMZ7LNrlKfGE7iehe216s2rt20dS1JZkaoAkFVXLADodooygbESheJPaIHyIusJRElK7o0Z3myCSV9zqZ+x/mA64ye5NF38FD7mef6W0U
- EgILDJB2
- ZGUflGiMqJNw8OIwQg0MG86yy2PAj1DYxvP5N/Y6z0poZzg38dYju1YLtAvtMpldyqZblqARn5nWU9ybbfB9j3J+f3Sp72q/IGUfnDEMDDJaPZCz0IUZQJynSXSNhGqPhUpQuFwnxNrdz/6O04SF/b2VGK3Y3s6vhTulcxTddK5YXxFN28APbqyamrqULUPKQ/c8EiDscgVb37JlBixcWDxx5UDf4emAHtusNfJdo6G64DvjJMtNz/v7L21IYbLlBttUtLYmgat+LqL81L/41Vrosu6+3f8/vVmmyWu1Ym5fydOwWmyTtkS2gURrEnRklKUXkwasoAlAmELm/QNNi5N31KQ==
+X-Rspamd-Queue-Id: CDD7E140007
+X-HE-Tag: 1760431378-997262
+X-HE-Meta: U2FsdGVkX1/IP2p4Lk7F0MeB5jfjJvmAcq1YLQ0EiqBRNLqkeSlX0XRNiJi6H1ZLLtaRjSDRdCDT0FF4PpEUpcnfhLTonyqECF4gIc5AYpQgLq7TTIxF9hRykmSZi2z7Klt1PLnODj/vzgkV0OoZSInceNzoyt4re1N8Lb/EkRJNTn16uxcC8ZEDVACwwWvy2Bctlo8pvtFCffsNl9+yhDypDUiXT19Gb+Ql+LBdK1bg6QUN2juS7I2vNdnWYid+DF/ZjDFkXoWQfh5sAUneY79YgHUd3V7WMFxmOMuXSKwIA5Ysru7AhqgJ8m/wbmOYt9BJLu6V952elyxDJ7busFir5weK4q71AaJ5OcScKqViLEu1dCYpVLlNp/7P0HnapifsSiKrSOEmw6A+a3WwC2N1XXHMqGBx34341VBWKze2NZsHXgTmBecThiFHtisqZ+ENkDpxSj7dbQX5N8xxYn5qLfSZ8V1rXaX+Y93VYwb2kzGbaVXKQrxJ/FV/xfQnO/Cupj6XotHwv3FdwMnCIf+TKMbumLP1sCxjMyGfARFgDmewdmr6LMlQ77//X5rqPd1sD0eqQCqoP9UbchnMvIst9bXmpZzSoTlRCGwMmXOs1HGPBZzr7mwUccr4+SznF7qpsK11EHecWpXNNs+VYklVNpaagrzKPDkHy+y7Efb1XQZEw+chjBh9hajPqv7vWP1iS8Jbu0Z6l+CUcq9gZkGBDpBX2XPqbOLmxRf4omOtzvo8L4hNBRbbB3aN8rhruLe/nwoymDJFs0Yz4LBKbnu1mxUSFAF6i9rYKM1AuDGwPSSbVC20CcIzKXwLFbX8nqY1TWTCT82RQ+9Rtt3fJ1ElVG47VqpTYKN+z1Uzu6n4Zq6D5zoquHx3nz+hBafG7ndqbyFRRebxTs4sYlUASFFBNcYju+TVFljen0rvQZx2AkBUSPC31EcAN/7zzQsW6TpzC6oxMK+ARQEJNCX
+ 2vmSueE4
+ fTbO5IAgmOIwLJh2LLGUY/l5wcke+Pbywp/A4XYRruSOLFw8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,60 +104,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-defer_free() links pending objects using the slab's freelist offset
-which is fine as they are not free yet. free_deferred_objects() then
-clears this pointer to avoid confusing the debugging consistency checks
-that may be enabled for the cache.
+Currently, damon_destroy_scheme() only cleans up the filter list but
+leaves ops_filter untouched, which could lead to memory leaks when
+a scheme is destroyed.
 
-However, with CONFIG_SLAB_FREELIST_HARDENED, even the NULL pointer needs
-to be encoded appropriately using set_freepointer(), otherwise it's
-decoded as something else and triggers the consistency checks, as found
-by the kernel test robot.
+This patch ensures both filter and ops_filter are properly freed in
+damon_destroy_scheme(), preventing potential memory leaks.
 
-Use set_freepointer() to prevent the issue.
-
-Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202510101652.7921fdc6-lkp@intel.com
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: ab82e57981d0 ("mm/damon/core: introduce damos->ops_filters")
+Signed-off-by: Enze Li <lienze@kylinos.cn>
 ---
-will be added to slab/for-next-fixes and sent later this week
----
- mm/slub.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/damon/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index b1f15598fbfd..64c17afc375b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6443,15 +6443,16 @@ static void free_deferred_objects(struct irq_work *work)
- 		slab = virt_to_slab(x);
- 		s = slab->slab_cache;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 93848b4c6944..3e2c743e0864 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -452,6 +452,9 @@ void damon_destroy_scheme(struct damos *s)
+ 	damos_for_each_filter_safe(f, next, s)
+ 		damos_destroy_filter(f);
  
++	damos_for_each_ops_filter_safe(f, next, s)
++		damos_destroy_filter(f);
 +
-+		/* Point 'x' back to the beginning of allocated object */
-+		x -= s->offset;
- 		/*
- 		 * We used freepointer in 'x' to link 'x' into df->objects.
- 		 * Clear it to NULL to avoid false positive detection
- 		 * of "Freepointer corruption".
- 		 */
--		*(void **)x = NULL;
-+		set_freepointer(s, x, NULL);
- 
--		/* Point 'x' back to the beginning of allocated object */
--		x -= s->offset;
- 		__slab_free(s, slab, x, x, 1, _THIS_IP_);
- 	}
- 
+ 	kfree(s->migrate_dests.node_id_arr);
+ 	kfree(s->migrate_dests.weight_arr);
+ 	damon_del_scheme(s);
 
----
 base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251014-fix-freelist-29915edcc2f4
-
-Best regards,
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.51.0
 
 
