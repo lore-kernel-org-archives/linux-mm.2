@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668B6CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 04:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A430CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 04:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AFB48E001D; Tue, 14 Oct 2025 00:49:12 -0400 (EDT)
+	id C028C8E005D; Tue, 14 Oct 2025 00:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9605A8E0005; Tue, 14 Oct 2025 00:49:12 -0400 (EDT)
+	id BB29B8E0005; Tue, 14 Oct 2025 00:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 876218E001D; Tue, 14 Oct 2025 00:49:12 -0400 (EDT)
+	id AC86D8E005D; Tue, 14 Oct 2025 00:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 72E088E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:49:12 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0264B11AA58
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:49:11 +0000 (UTC)
-X-FDA: 83995490544.27.1662059
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9786D8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:52:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49C1AC0713
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:52:44 +0000 (UTC)
+X-FDA: 83995499448.01.913A45E
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 760FB14000B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:49:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9509F14000E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:52:42 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf23.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760417562; a=rsa-sha256;
+	cv=none;
+	b=3MIIxs29v9hvGGFWgffuS1BCc9tTeKs0hE6n+/qESSUviPruq51UQibdEdlz8xyUmi8Qd7
+	4AJ8PUqw7VlSjifMIhMfMUlqeBHYFUvzCFqKfKGfERaWu3A5Zx/UCAM0yPN2fngqkivyI2
+	fOWxkgeDt9g8Kd+hK9PF1R0jxHMaWi0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760417350;
+	s=arc-20220608; t=1760417562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y/EGNBewWlX776z4za7Ii5NXJ1S+NChZ3ujpMAaM3D4=;
-	b=uzdcpkgH4KuR5A/0/vZcGCKztZYOSubStHXrdyTlk2mcGPHT72PoxVEDoedvyJNG7ZXgDT
-	J9ZHtAMdqyMnNcdjsbUVETWhO06r9IDfd/IaTAn8tRkFGVAdcCcSw+tWSzGr4lO1SzumYi
-	O1j3ch3Wtt0qZ6Smrw5Z3GL4TzZ65hQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760417350; a=rsa-sha256;
-	cv=none;
-	b=pzhmFaLXGlq0UnIsqhecmVOJiTRCM2x2K0maCaP4GmDhyUrUIH1f2ydIUifXlfAj2iaJt9
-	f2asAFAcxPCinK0orNxdqFab6QdDwMTQejAifEPN7zY3oOyMtdiQ38sZL/oby+WJdFvG20
-	V58UmsxE5HJiRD8kmgzqhMGB/KQ2vhY=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf23.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	bh=IYNi7v4oqUnqFZQMbrx9Av9oqoG2jtUSAlAjctVk0VI=;
+	b=tfqf6rJkye1u+WdjJQ+CMUoYcq/Mlaqcb7eWOjBZQbR5gL0DkGCXcTc7fSA2M3uYbJ+EOi
+	bCcfUS/mYgqvvt20z63Q/FSQ9SzB2HrBv262RKa1EBoMfSNp6vAcGZ2Gc0UTNtU4JQfUz7
+	0GqH78sDfQCnMJOxgSHbIabwQlssD2o=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id D0523227A8E; Tue, 14 Oct 2025 06:49:06 +0200 (CEST)
-Date: Tue, 14 Oct 2025 06:49:06 +0200
+	id 1B7E3227AA8; Tue, 14 Oct 2025 06:52:36 +0200 (CEST)
+Date: Tue, 14 Oct 2025 06:52:36 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: David Hildenbrand <david@redhat.com>
+To: Damien Le Moal <dlemoal@kernel.org>
 Cc: Christoph Hellwig <hch@lst.de>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
@@ -70,20 +70,22 @@ Cc: Christoph Hellwig <hch@lst.de>,
 	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
 	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 06/10] mm,btrfs: add a filemap_fdatawrite_kick_nr helper
-Message-ID: <20251014044906.GB30978@lst.de>
-References: <20251013025808.4111128-1-hch@lst.de> <20251013025808.4111128-7-hch@lst.de> <41f5cd92-6bd8-46d4-afce-3c14a1cd48dc@redhat.com>
+Subject: Re: [PATCH 07/10] mm: remove __filemap_fdatawrite
+Message-ID: <20251014045236.GC30978@lst.de>
+References: <20251013025808.4111128-1-hch@lst.de> <20251013025808.4111128-8-hch@lst.de> <4e508d42-9cd4-481a-904f-535b1de0b765@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <41f5cd92-6bd8-46d4-afce-3c14a1cd48dc@redhat.com>
+In-Reply-To: <4e508d42-9cd4-481a-904f-535b1de0b765@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam01
-X-Stat-Signature: jd85b3sztme4qxphuagbsp4fs5w93t8k
+X-Stat-Signature: 14s7qaraxuk8r6qwxwt35pixwqmyhoyg
+X-Rspamd-Queue-Id: 9509F14000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 760FB14000B
-X-HE-Tag: 1760417350-756173
-X-HE-Meta: U2FsdGVkX19YbPea/plGiA0DJYVHoLfTPe6vBagIP0Nr+fAbqn/tZPbOfZhNxMdi6VgDdSLr4awGhM2lb+tvKREPkhm+Ck8tylWTkDYRocByoeJgJdjam499AJewEinQYdxak2f0jy6geIXLWdP5uS9BTPMhfE/0PpT1axfErEvcZ67XhmgpEwWNXXmSOsisHzdCDqD8vHRVwhSCJly8Osscg7+yYGLS6knM8MaH8srblr93BQglcnlCN6reI6TzH6sQRe5c/xpPwWyVNLKUkhTkoUsEu9sQR1sIaH3Q3j0Fqj1AII9FIMU/WQ25gR9/zbw+GUZGom6RiU0sHSLmxB6roDHZZOZjNShQZxlBoLj2NYotIO/lo9BQtFyN/pUFatSZ4hN8PR6Xk+rJI5ztI2qEPUGfRP+1L6ZTPKnG9nCiRj+CxJOdrbAMrfB9ABnw6nB4p6vQma2FFKE+VtDaTOeiUTSU7nzy3eqwCSZwvNvPMA+oMUFRW8nVn/9n5b8F6kRd/7CQs4NndFnzQsEh3+4v/Nu/8EZJTa3lq7TPhUlF0nAPSs8Ol8VG59p2D+Yfvk1nJ3t851FpJVQpAOufLU+zM2EY10FQfznaFR6F8Q07E6xl9sJZ+GpnccassuMOn2PxnCt+ZwE0rFFRMoy82BEsb7vlfXuK7R2OpI4d2Z2r18JISXG30mgzCnSKusB/7igXbJQJAD5Geb2sd4XEL4mxHa3s93EE4ZsJsTznBLBwlhl+HC3DD21skrj5UfpnzpnWVInrCUMBtcsQ/1ihT3816apiYd9OThSYjPBDbhMmEZaKB7ta1z4Rb+++hOItX7h9QAjLvOpT9u4Yx29tVg==
+X-HE-Tag: 1760417562-906846
+X-HE-Meta: U2FsdGVkX1+sYaQFS5ok/pXjnpYXBnyAgN4CDbp0Fv5MWcaskS6dXC+coTl/6ju8oD4SDKk4myeIrjQtTJOU2UGQXnIAM2+aD9lZt/6Nx/t5+xCbuDfuvlpnxnR35CNlFmN+1/E0yxwGMm30JBKspStwVWepAZCmEpEyCo2CJ5QNmhuM73QReJE9mrJfQ+DFU1M/ru2qqnY79Ci4TYQ8b/mFe+DaCbKpyh97jYQ8mE/cfSqSlI6hir/6vjq81i6gKESc6+SgyksAdRJ0p31/qiq/0JyAszvn0vUDshmgc0KWJfXqvVO+jpvmt1sI5P0unNqfwqVJsQC0vFjuR++FDiNwFJMWmUAFdBsoCzOXuMGYiZqNI+3CSB9YkvyML1DkiY7Bnm0WI7HB45IZAczBMrHrR1l9l19AUZEO5kpFr4CgEjnGbhKNqpVodil2QJFHTR7fEpgk/lkY1Dv8eNo/SN2EbBVGJhRICo4wnqsZngZMKtBwgXd8gANrpaeKQYNOTQCld5SL7kcFNnMpHOd6RzS1U0iyvi+7Fb396y23MnGdyjngDckJpaLYCofmMTaPoyFjm+qNnxNsQIjjKYSdpMpBb6l38jXMpp3Ku8aMuEc/HTwEKI4rYxB8iy3YJQd4N+MeIYoTUEDDapS8LvIH5E8kpzeo37P3K2n/1eIwzRlcC6u+ISz2crsLwf+14gXDzh/T0zCOItne5jyNtI1zeWbJtxZRhcQzhigbUK3uUHx2zWxRo7nyXMisiJ1TtAIM3zc62F8yltH9JGeOsoEcwD6dxQtfiTLfxRVgmghuPJGzcL8yV9mlqSVfuXNQ8iG00XGNimSqjBEd3IVnOzWw35agoRuM4AsheAX4JlTaXY12yJbRSleJ0pnY9CW9F23b6DFVcdpQnjfK1rMd+kLljot4VKc2F41V9e1knCh636moy3YC2ZOBlPs4WAkrwctwtBa++GuduoaTYXeGa6a
+ gHHOenPn
+ sVG1BxviptXEEuLIXQpltqzK99IdvJRJHxk55QG4gfasGZHs8PaMc0p4fJE422Bx4R+7QwioVf+EYo+80woRXyRF+DniD9xtM5SPXrjUm5vY2Ja1iVWPNs5fp82j2aLvAXRYm9Cst/FgpXqc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,19 +94,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 02:48:48PM +0200, David Hildenbrand wrote:
->>   +/*
->> + * Start writeback on @nr_to_write pages from @mapping.  No one but the existing
->> + * btrfs caller should be using this.  Talk to linux-mm if you think adding a
->> + * new caller is a good idea.
->> + */
->
-> Nit: We seem to prefer proper kerneldoc for filemap_fdatawrite* functions.
+On Mon, Oct 13, 2025 at 05:02:50PM +0900, Damien Le Moal wrote:
+> >  int filemap_fdatawrite(struct address_space *mapping)
+> >  {
+> > -	return __filemap_fdatawrite(mapping, WB_SYNC_ALL);
+> > +	return filemap_fdatawrite_range(mapping, 0, LONG_MAX);
+> 
+> This should be LLONG_MAX, no ?
 
-Because this is mentioned as only export for btrfs and using
-EXPORT_SYMBOL_FOR_MODULES I explicitly do not want it to show up in
-the generated documentation, so this was intentional.  Unless we want
-to make this a fully supported part of the API, in which case the export
-type should change, and it should grow a kerneldoc comment.
+Yes, fixed.
 
 
