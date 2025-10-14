@@ -4,94 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361E2CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C148CCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:15:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 612188E00D2; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
+	id B6A118E00D3; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59BF88E00AB; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
+	id B41D88E00AB; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 463848E00D2; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
+	id A0A0C8E00D3; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2852D8E00AB
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:14:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 880F18E00AB
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:15:10 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DADBF160737
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:14:49 +0000 (UTC)
-X-FDA: 83996159898.10.5A0E13D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 232741C0014
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:14:47 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mKZxf22Q;
-	spf=pass (imf21.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 251A85B468
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:10 +0000 (UTC)
+X-FDA: 83996160780.10.6E303C8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4F5CBC0002
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TZ79chb+;
+	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760433288;
+	s=arc-20220608; t=1760433308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EGiZFnk1kQu1g0GPXcyRBT2RNyD9AEcg7RMuh8iWiIE=;
-	b=8eY/ynpNvPum5OCmZqCCXRjFHvYUMtWNi9Mwym5/ixQ24D/Xl5hkixuU/4sHMT+lojxD3M
-	CxDReQQldszX+WAu6bcMyM+cHZ4+oJ50lHmA6HWzbYlPU7oGQrbJCR/2GzSsR9tJYYd9zv
-	f1bh7mow+/KmdwZaIP3a9m7EhWbFaaE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760433288; a=rsa-sha256;
-	cv=none;
-	b=PV5qVrxJKJ+xnDs8z8abkpvFHuFeq9qeYUaktrAgHvalupKyOVdZXbuGaTQUYzMX90nAEv
-	xggIRWcugKKU4HZYZz3mLj7oBu5sRxgSryZ/gN+meV+43F/OqAfemrozgFIhwq0Zf0o0BW
-	KPQqmVivbqzzG8eo4qbG8Psj95OKrPc=
+	bh=84qLuulQEWfDvvAd6y1sTa13pyZb7pX9XGxQ88tYQoo=;
+	b=PQfkfQummYh1Am0UEB9DytN+xoi0XNrSc9RvJI2ZiTJ0fRKFZ8MIAK2KJULXrPcBau4F3m
+	+Nabwjie08IJzl8NnhH6yoP1NE35KJSG+Sc5hdQuKnxtu7cItsBhha05kBk6KCZcjdpjsv
+	o7WJwW912fAuFh+d5jdg8ctseE+fiXI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mKZxf22Q;
-	spf=pass (imf21.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CD13D45086;
-	Tue, 14 Oct 2025 09:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD61C4CEE7;
-	Tue, 14 Oct 2025 09:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760433286;
-	bh=IBkCqz1KQ1uX83QuJ3HllJmulH8qpC3R2cWzYAaQB/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mKZxf22Qjtehf9Ju4hs4d1ZMls1QVC7xp1pg19tXZDUQGb2nMv21rX7z/REtSlZnn
-	 wdhZGctfOsCWA9ciC70TZNp9kr+a2rqxnEMKifOapN7x5EA3zolq/NQnJkZAJppQRs
-	 vN+2MI68O+Z6k7v8gSxVxBKjmzOynSflXzuDdH+Tp/pMAWfSXRKg9ML0HHI9XoLDo0
-	 gLZ+wE46cDHUuqsOuymef9yyVINznxtQIgzfjCc7kwee4kkI9zQ7A4k7a9BqOfRAKZ
-	 1KUsGf4Pkc3K2Bf7aET6QtHfXzDY8krzRLjehgxV2AakTlYjkVjMWbmoVDXqpa6YtG
-	 I1P5+AKe9VnHg==
-Date: Tue, 14 Oct 2025 10:14:41 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH v2 17/18] riscv: dts: starfive: jh7100: Use physical
- memory ranges for DMA
-Message-ID: <20251014-unsocial-composer-880ea10cc1d1@spud>
-References: <20251009015839.3460231-1-samuel.holland@sifive.com>
- <20251009015839.3460231-18-samuel.holland@sifive.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TZ79chb+;
+	spf=pass (imf10.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760433308; a=rsa-sha256;
+	cv=none;
+	b=f/xPJVhJOl5LPNEQjA6LfOEpEUMDCzFiE+6CXBG3kwsL5YAo33t36FAkgob5gM15c9AxXP
+	b96RFvoTPyWxfdgDIE8Pti5MA1M4Iwec8ltO8Zhw3tmdMvhBE5rCkbZKzVnr0i29kAGQ5i
+	ylo/YG82ExcbL6nqc4XCCOtBj0eRIcw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760433307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84qLuulQEWfDvvAd6y1sTa13pyZb7pX9XGxQ88tYQoo=;
+	b=TZ79chb+YDm/geyWTHcokvn14TSlXvvKvXBKw3Ps/nppqUjblomhhZkGyIAPfOGMUH31AW
+	dIpnpXSAg8WIAQALilFJajiZwE8eDMvWVz08oBYZUL3IsqCTQ5KfLwTUwhScRc6k9kIPkg
+	tLpP3jnrJhG1VpevPba48ysW1dnQUms=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-habP5WxuNy6IzIfoPvjpwQ-1; Tue,
+ 14 Oct 2025 05:15:03 -0400
+X-MC-Unique: habP5WxuNy6IzIfoPvjpwQ-1
+X-Mimecast-MFC-AGG-ID: habP5WxuNy6IzIfoPvjpwQ_1760433299
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08D5B18002CD;
+	Tue, 14 Oct 2025 09:14:59 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.12])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DCFA1800283;
+	Tue, 14 Oct 2025 09:14:57 +0000 (UTC)
+Date: Tue, 14 Oct 2025 17:14:53 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, glider@google.com,
+	dvyukov@google.com, elver@google.com, linux-mm@kvack.org,
+	vincenzo.frascino@arm.com, akpm@linux-foundation.org,
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, sj@kernel.org,
+	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three
+ modes
+Message-ID: <aO4UjVmGkYg5Nyf6@MiWiFi-R3L-srv>
+References: <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
+ <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
+ <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com>
+ <CA+fCnZf7jYPUyqHqonWhDKVi9eeN6aaaByMTBYCQrv2-8+hngQ@mail.gmail.com>
+ <aMfWz4gwFNMx7x82@MiWiFi-R3L-srv>
+ <CA+fCnZcWEuBerMeS4RCXQtged06MJhY=55KsYeJEOJn3K0psXQ@mail.gmail.com>
+ <aNNY1AzfGua3Kk3S@MiWiFi-R3L-srv>
+ <CACzwLxh10=H5LE0p86xKqfvObqq+6ZN5Cs0hJ9i1MKJHWnNx2w@mail.gmail.com>
+ <aNTfPjS2buXMI46D@MiWiFi-R3L-srv>
+ <CACzwLxiJ0pGur42Vigq=JnYecyZn-Z5BC3VcqxSUttT54kEusA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kExO0No+kM/nXpTw"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251009015839.3460231-18-samuel.holland@sifive.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dqo4qd1mnbbnwxy54medy6ca8akoe3ew
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACzwLxiJ0pGur42Vigq=JnYecyZn-Z5BC3VcqxSUttT54kEusA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4F5CBC0002
+X-Stat-Signature: tqgcycjwysnwqouknh6ibi5mz77ufjyr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 232741C0014
-X-HE-Tag: 1760433287-771447
-X-HE-Meta: U2FsdGVkX18JIzwotUKx80/JfXYM9Zcav8a6fW9qmrU3+khalNvjf7IhrQ46rkYsiDHbRX+pkzzEAE+VlfgzWcW0SDEIMKfsK4Uw5BKXLB7hcX4wHrL5pcDttmlqMSVn9ZcWBT3SATY0AeiDTJA+Kbar23wxxtIfrAz7ZQ1/Igplqm4lPiDBKEi91p4taRAiZjaf+rE4jWTo942TnbRODyPrnTuD+Sbti7AZQGV2I6UgYdcojIHgxslP4brP1KH2UjvZ18rIHPb1NXL5DCUnzsIudBqN0A3Gme4uHDhyBw2+Pa/5OBNxzs2iupIslSokKJ/ZuNiPsixxXSE911WU21HNS2gq5w18G9x1PsPbYYeEZqI0I0TTt6PGPEfBD82kIG081DBgSkEqUYSdM6SheuaCgd1Iu74bvYgl0Y5Vda7Hr151X+SS1B5cw8ahspfSytIw4uts72XorxrWlp61LGsGV47PZwDj+wr8avaq8IUfU+mDWApJgrVjFnl8Mo1cg/yADXPNupmHAvIIKQf12GVf+8Q4ZIubIzK/c9Q+Ao4x+ouka+LxRUcG2HuVZnegJyzfC6gI/Ez7ksBwz+rEllRJwt1ToOXhb8/Xdfj5yq0MB+vzBQiFSa7tFOgsnnxVSbWsLYYeTHVcdCAjaYVqUcr3cAgEcVelFRcZh4ETavUPz5/U+zMhF1XPaPOr87rbdVGA3LxUMJUeOi4MZgTnOuF+BNVBnZNYRu2efEjxgWcAHVoUyWAsbtIA/ihNJzTrTQ5bFgXxomD9fNjZARFUYK2qnYjp0xQtUUOXPARtjJIyVuarif1dD292cb6o+6QQLFYIo05PN3RU3ZT9dzBgASSPAedZFkZNU2sdWwMHwNRc5HADqefXTvdrerNV1fp0VviA5Vi7kcwUscY9+PcMJ24okonSuYoH3qykh0a8ICiQU+XiRUFmM1zgW2XtJwnDBEmwjo0eHTRtv+aiTPV
- ck8q24a0
- RgSA4aVZS9hg3vTpcjdTyg7S3nBFTrKcVXIOOax1hGMBC6P4FBEUAUXvaiseZVro/UfV76jzHfic+ZYE/XBrrCGsiluxZY3hmbLs3DM5mYOpA5npyY5I8vEdG/jRSQcp3/YbDdCbP07IgK17gxPlKkskIXIuiX7DqmELnOnSb6peWc/Wu9QwFpbBY/zemDwOjdSctiYdEVqsKZxxYiAYCNJzWpju1YM2ENuSBPsmHraskEd9QBPTcXh2uicAjE/J9fH8WO+zg/RfvqRR48VQNmC/Ja8qF/CzZMRd5pIDgqeZLWelmUeA+lUE9kMc03u1ncazi0WXRpv9Y7R21Wv68QGzMTCMXvzgZrOgpR7cLtmGynG/payVCzn6ve4Bfx84Ub9LQ5g1yfUqbMTSa7Hx3g2RZPCBT8iz2kVQsvbpoIYIiIpKSNMv2JiRjpG0vIOPyGV6439DxZg+3jwWGEwkshQkEmtiG8LLuGk91t7JXH6DqpqM=
+X-HE-Tag: 1760433308-609624
+X-HE-Meta: U2FsdGVkX1+SMFRRLPO1ys4ZPK7+zbxwnxVO9kj4L6a/885xjU7RSngRIyuooXRAfqPuEvhVoI8LSRcUYFeh3cPtmhYOalR1oCPjV4YXF/l6ZVTKogARgD1o1CPibQ3IcULcd+Fp+ufcOi4qICvPeI/NCYiqip7iHLVdJUMlQH46qb89lvweB3/jItT6pE6OhDtnzqGS0k4CL1kV4+YUrYv6W39MTEa/JwOVyS3mG450vYzva3m4UorLUOLTWBUJHDg3AVSv3oj/j1n/g11bjAiVSEnKlJIcY/m2GN6ZfT1Uy4iTfVPW8EyDXnk7VIPtPnyhmf5G6YP/j/iulxQ4LmDEDetFHHolBfSgbS0DQU6UHl+qbQkN/sUO1IBff1ZWPdxJd/nIXaPkuKJ4FhoUMwD8Hk6vutvosJ82zqIwVbupoUXwMe3eZu99ljz44Exg8mxXLPJjTBEvxaNpyjKMwXGfHjPnSLuCz0JiQkqB19/Md2wJODVgXC21i4+oSf0mr0pVGj0JAINljJQ42sRzrVjI8YF1gRov9rZOnRzKHQzF+LSJU6o3SilExe8Unn0x8JWNWWm5ZpZR6CJXuq0RsFkiJK9Fyg7OKRP+eOMqLt/+Oo64mJWSDvuJGgwFswF3u6mO1mHs7DBeS0E/ybq1NcFIGVuov+A5ugqJ+6raXppwY1WZ9UD+6CqPiZ3CMlO9twH175ONpiv8ln/YzGpWKEy4EMKDiWKnrofQ3oehOJ/mgJQF5ydCEzBWQufGxqF/xVij6KKP12RYKSQS/rrlJiCIeH0NHlUTtJKyCVC/QRFH8Rn2asfx0XzZJC/RIDGix/7nyfV4PD+Hkj3+k179+4oltKNlUTgBjLMxmz+Cgd8s0LhVFqlgmwooDNbJrrHFTWhWLV4PA61DDanQZ1bShs3q75Ss0FEsgVmdFGjeRWROsvNDauUvnydGhl+qoAD5nJISNrKk49tPYIUUPJC
+ ztpaG/5/
+ eopPnLMLiYPab2ep2B95UD4U2Uag0YqEC+o6IO6RMcgrtlflHXfOy1yIA98hFUMI4rgyaCv+xhzR/ifYGmfSkFpC+HnZoa5n8Xr0ReO9C0ECdnbFjS0awmD8nIdJU4GsWnqD8SoPFtbMGAgUoU0JOFWaP5oowoe7+3S79C32HogVAIhc1wQ+suYvHb1FFgzE9AX9h7k+HhpL/BeOpN014qcX6opLIq1pXIOPAA5hkoHze8ou0ie8rU1EWog3qWqxHzQDAoke8Ux21YpOCKeyUWYNCTgjBEAy1lEuCjU3/r+r69aTZCNLcOE/aQJdaWtNmDNllA6BqajhVi6bk5QcuZvOC/5nkKc5j9j68kFrVEAVqNZ9bNE4+Sw3VbQ9m0ZI9xQmTlXzCvLsmlNjE5G7YDCCaKUxiHEiuBqeh0VzoeFw7VDm+7bkm4qfjfeycflZAK7/8dYOmlTcxWW2ATUdqYV+fHVYvGmlowjPyZEC80dDqkQ/huFkU9cR+aCXj5eicLapU+yLH6Kk5l1+8u7bOn8vbufX6SP/W5B/q34w/mEIaahHF5dZnV+yYXv+vmEkpx/nR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,156 +120,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 10/14/25 at 10:27am, Sabyrzhan Tasbolatov wrote:
+> On Thu, Sep 25, 2025 at 11:21 AM Baoquan He <bhe@redhat.com> wrote:
+> >
+> > On 09/25/25 at 12:07am, Sabyrzhan Tasbolatov wrote:
+> > > On Wed, Sep 24, 2025 at 5:35 AM Baoquan He <bhe@redhat.com> wrote:
+> > > >
+> > > > On 09/23/25 at 07:49pm, Andrey Konovalov wrote:
+> > > > > Since the Sabyrzhan's patches are already in mm-stable (and I assume
+> > > > > will be merged during the next merge window), just rebase your changes
+> > > > > on top.
+> > > >
+> > > > That's fine, I will rebase.
+> > > >
+> > > > >
+> > > > > But also note that Sabyrzhan is planning to move out the
+> > > > > kasan_enabled() checks into include/linux/kasan.h (which is a clean-up
+> > > > > I would have also asked you to do with the kasan=off patches), so
+> > > > > maybe you should sync up with him wrt these changes.
+> > > >
+> > > > Hi Sabyrzhan,
+> > > >
+> > > > What's your thought? You want to do the cleanup after my rebasing on
+> > > > your merged patches or you prefer to do it ahead of time? Please let me
+> > > > know so that I can adjust my posting accordingly. Thanks.
+> > > >
+> > >
+> > > Hello,
+> > >
+> > > I can make all necessary changes only next week. Currently, traveling.
+> > > I will send the fix-up patch Andrey has described somewhere next week.
+> > > Please let me know if it's ok.
+> >
+> > Please take it easy, today is Thursday, I will wait for your clean up
+> > patch next week and post. I can do some preparation work for rebasing on
+> > your merged patches. Thanks.
+> 
+> Hello,
+> 
+> Just heads up that I've already sent cleanup patches [1] and
+> Andrew has merged them into mm-new tree.
+> Hopefully, one week's delay wasn't a problem.
 
---kExO0No+kM/nXpTw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for telling. I planned to rebase on top of that and repost in
+one week or two weeks. I am doing some patch back porting for RHEL.
 
-On Wed, Oct 08, 2025 at 06:57:53PM -0700, Samuel Holland wrote:
-> JH7100 provides a physical memory region which is a noncached alias of
-> normal cacheable DRAM. Now that Linux can apply PMAs by selecting
-> between aliases of a physical memory region, any page of DRAM can be
-> marked as noncached for use with DMA, and the preallocated DMA pool is
-> no longer needed. This allows portable kernels to boot on JH7100 boards.
->=20
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
->=20
-> Changes in v2:
->  - Move the JH7100 DT changes from jh7100-common.dtsi to jh7100.dtsi
->  - Keep RISCV_DMA_NONCOHERENT and RISCV_NONSTANDARD_CACHE_OPS selected
->=20
->  arch/riscv/Kconfig.errata                     | 19 ---------------
->  arch/riscv/Kconfig.socs                       |  2 ++
->  .../boot/dts/starfive/jh7100-common.dtsi      | 24 -------------------
->  arch/riscv/boot/dts/starfive/jh7100.dtsi      |  4 ++++
->  4 files changed, 6 insertions(+), 43 deletions(-)
->=20
-> diff --git a/arch/riscv/Kconfig.errata b/arch/riscv/Kconfig.errata
-> index e318119d570de..62700631a5c5d 100644
-> --- a/arch/riscv/Kconfig.errata
-> +++ b/arch/riscv/Kconfig.errata
-> @@ -53,25 +53,6 @@ config ERRATA_SIFIVE_CIP_1200
-> =20
->  	  If you don't know what to do here, say "Y".
-> =20
-> -config ERRATA_STARFIVE_JH7100
-> -	bool "StarFive JH7100 support"
-> -	depends on ARCH_STARFIVE
-> -	depends on !DMA_DIRECT_REMAP
-> -	depends on NONPORTABLE
-> -	select DMA_GLOBAL_POOL
-> -	select RISCV_DMA_NONCOHERENT
-> -	select RISCV_NONSTANDARD_CACHE_OPS
-> -	select SIFIVE_CCACHE
-> -	default n
-> -	help
-> -	  The StarFive JH7100 was a test chip for the JH7110 and has
-> -	  caches that are non-coherent with respect to peripheral DMAs.
-> -	  It was designed before the Zicbom extension so needs non-standard
-> -	  cache operations through the SiFive cache controller.
-> -
-> -	  Say "Y" if you want to support the BeagleV Starlight and/or
-> -	  StarFive VisionFive V1 boards.
+> 
+> [1] https://lore.kernel.org/all/20251009155403.1379150-1-snovitoll@gmail.com/
+> 
 
-Hmm, removing this is going to break old devicetrees, right? Shouldn't we
-just keep this with a wording change stating that it has been replaced,
-rather than removing it right away?
-
-Cheers,
-Conor.
-
-> -
->  config ERRATA_THEAD
->  	bool "T-HEAD errata"
->  	depends on RISCV_ALTERNATIVE
-> diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
-> index 848e7149e4435..a8950206fb750 100644
-> --- a/arch/riscv/Kconfig.socs
-> +++ b/arch/riscv/Kconfig.socs
-> @@ -50,6 +50,8 @@ config SOC_STARFIVE
->  	bool "StarFive SoCs"
->  	select PINCTRL
->  	select RESET_CONTROLLER
-> +	select RISCV_DMA_NONCOHERENT
-> +	select RISCV_NONSTANDARD_CACHE_OPS
->  	select ARM_AMBA
->  	help
->  	  This enables support for StarFive SoC platform hardware.
-> diff --git a/arch/riscv/boot/dts/starfive/jh7100-common.dtsi b/arch/riscv=
-/boot/dts/starfive/jh7100-common.dtsi
-> index ae1a6aeb0aeaa..47d0cf55bfc02 100644
-> --- a/arch/riscv/boot/dts/starfive/jh7100-common.dtsi
-> +++ b/arch/riscv/boot/dts/starfive/jh7100-common.dtsi
-> @@ -42,30 +42,6 @@ led-ack {
->  		};
->  	};
-> =20
-> -	reserved-memory {
-> -		#address-cells =3D <2>;
-> -		#size-cells =3D <2>;
-> -		ranges;
-> -
-> -		dma-reserved@fa000000 {
-> -			reg =3D <0x0 0xfa000000 0x0 0x1000000>;
-> -			no-map;
-> -		};
-> -
-> -		linux,dma@107a000000 {
-> -			compatible =3D "shared-dma-pool";
-> -			reg =3D <0x10 0x7a000000 0x0 0x1000000>;
-> -			no-map;
-> -			linux,dma-default;
-> -		};
-> -	};
-> -
-> -	soc {
-> -		dma-ranges =3D <0x00 0x80000000 0x00 0x80000000 0x00 0x7a000000>,
-> -			     <0x00 0xfa000000 0x10 0x7a000000 0x00 0x01000000>,
-> -			     <0x00 0xfb000000 0x00 0xfb000000 0x07 0x85000000>;
-> -	};
-> -
->  	wifi_pwrseq: wifi-pwrseq {
->  		compatible =3D "mmc-pwrseq-simple";
->  		reset-gpios =3D <&gpio 37 GPIO_ACTIVE_LOW>;
-> diff --git a/arch/riscv/boot/dts/starfive/jh7100.dtsi b/arch/riscv/boot/d=
-ts/starfive/jh7100.dtsi
-> index 7de0732b8eabe..34ff65d65ac7e 100644
-> --- a/arch/riscv/boot/dts/starfive/jh7100.dtsi
-> +++ b/arch/riscv/boot/dts/starfive/jh7100.dtsi
-> @@ -7,11 +7,15 @@
->  /dts-v1/;
->  #include <dt-bindings/clock/starfive-jh7100.h>
->  #include <dt-bindings/reset/starfive-jh7100.h>
-> +#include <dt-bindings/riscv/physical-memory.h>
-> =20
->  / {
->  	compatible =3D "starfive,jh7100";
->  	#address-cells =3D <2>;
->  	#size-cells =3D <2>;
-> +	riscv,physical-memory-regions =3D
-> +		<0x00 0x80000000 0x08 0x00000000 (PMA_RWXA | PMA_NONCOHERENT_MEMORY) 0=
-x0>,
-> +		<0x10 0x00000000 0x08 0x00000000 (PMA_RWX | PMA_NONCACHEABLE_MEMORY | =
-PMR_ALIAS(1)) 0x0>;
-> =20
->  	cpus: cpus {
->  		#address-cells =3D <1>;
-> --=20
-> 2.47.2
->=20
-
---kExO0No+kM/nXpTw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaO4UgQAKCRB4tDGHoIJi
-0uKUAQD80+kPIuFiDo0jFL5AOngNkEUr28ECrOoIkr5OlYN8UgEAh9hDrsZWp8fb
-oE38JjdP0xJl6Q+HfnlMtSej1XDlZws=
-=jxde
------END PGP SIGNATURE-----
-
---kExO0No+kM/nXpTw--
 
