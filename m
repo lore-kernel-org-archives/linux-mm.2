@@ -4,122 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138A3CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B64CCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ABE78E011B; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
+	id 0735F8E011C; Tue, 14 Oct 2025 09:19:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 683048E0112; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
+	id 04B248E0112; Tue, 14 Oct 2025 09:19:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 598C78E011B; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
+	id ECA6D8E011C; Tue, 14 Oct 2025 09:19:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EC628E0112
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:15:33 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFB84BA386
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:15:32 +0000 (UTC)
-X-FDA: 83996766504.06.6CA85BD
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 01F01100014
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:15:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnOTiu2V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA0F48E0112
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:19:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60ABAC0952
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:19:55 +0000 (UTC)
+X-FDA: 83996777550.12.8B4D7CC
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6EC3110000A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:19:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnVJgjVA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447731;
+	s=arc-20220608; t=1760447993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
-	b=vVRJ3FYuBmRr/8ps6hbENgg0xy3Ct+BIF7l6GKDx6vR3zOH5IBCxsKe46n2wmQv1+PcHs3
-	NH0ORDSt8b/pQYK1P+GcUxUoiblW6JgBGqZnbtMmMj+2G80UN+hgqAWmuRbDEXgMf62zVZ
-	3BLQ6kCh+oY4oMmr4QkVOw+CgJ6+3aE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnOTiu2V;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447731; a=rsa-sha256;
+	bh=JE+Kn2HjCSTg/qS1EjXYbWfpt2UDhrJQ2s6zULpht+4=;
+	b=ZDi5WXzY89DPXmOfftRqpoAZiMtzq3H+eO8OoYjZ0lgXFhktE+zkYTxzrZqbxJXhlFZf9W
+	CuTOL6bPSdkoIUu0FYZ6RhdapelQXueegstylOmRGiKgzc2EJYYnxVsTsCQecRdFFx70Sf
+	MwawP3vLdVOhpQP3gZd5399eHGXfB2M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447993; a=rsa-sha256;
 	cv=none;
-	b=ia9oF241ZHUFXPjnz8LW/yKgcpEvNCWVah4h6rt52+3BjGiN4Trmxh6rZ8JYzt2vqs8eDE
-	ONTRGg/pMRMVR/70fXxBieGThgyogzQU5FYifApctDEGOWpfCTJyw+WBhDgLPjKI6CxuDW
-	+CSPlVcG4oXofZxf2l2gxVYgUyhhmHg=
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-635349b6fe6so5135180d50.2
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:15:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760447730; x=1761052530; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
-        b=XnOTiu2VG19Otbl+UHvJtI/Ie+pYfd242mFRVfOhUfEJs/GkKGlHZ+aSyFdCRq4r+u
-         zCrbiOWB/ojjqmhgjGjOiwyrJBVJdtXlaxBRB+Rz0TzXlVYC5sIPeOq6H+/IzGdXR9KF
-         ou4CT2TFpPF2KGgGtvZYFsGnKE9Wi9GAs0fBIJpntaCbkbaUGMWLtXXXkS4E/PUbgUV1
-         N7ueznnEjVQ8sdZRkrWcxDBKrUHakpetNanRm7Pgjgc8yheMG6xp3pR7Pya3xuyBpkoN
-         WYqyl7Jl++robuyjEnFUGGrtRGQZYlfsDaLYt+b7hhZdAR2LqU9+FCqQR0vF7ZwXRmZQ
-         0iaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760447730; x=1761052530;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yDuVlQoM0GKjXHqLFZaHd1hl5+Amiaz43y1oJczL34k=;
-        b=obUu/Z/vu6iIbf+8kPr56sbU4wkOZ4a9rQh5PhRePH/yX8ZLfv6jX0rlZ1xnmDkD/K
-         OQ8FxHjpT6uznIxDBDOSMuLbFgRvSXGJvPGdssRM7BTIlLBar5GbEd1+vQFMdlZZkZqZ
-         xR40j4SCve1HIgyPW7lrDU58lQ7kaO1/XhJ7roZfWOgNxUa9n1OsBXs4TRtMfy5L2FDS
-         wZ5j0hfV2C31QWf1YrCKOJzJhpuN0Vo5TIK2WNgYq4/4KzDk/wjO8J9lPeh323038mWK
-         5OGpe7y8JSaLg5lPa1xzcIiZ6SB/6Q3/PU913044mND9NYhLv86Jgc1GceP0hi+OJMV3
-         CiSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAq7fKz5GjhlRPns8gZuOUERYQFoVryV0YO4drsafQuvSjfJE9O8iuvaZY6+hwmkzCmaXSb6lXzQ==@kvack.org
-X-Gm-Message-State: AOJu0YyFF9I/DuKvWQ27GrQqCR4R24OJNBwFD0yMf8uAy0WslGgCUR4g
-	1R3gh3FOnrtjXDUz0KDS5vEVSc1tYqIHLsEMEXGHFU3nEP5WWOFtuF0w
-X-Gm-Gg: ASbGncvOsWpFU91LEzr8sWOeD9qgSLx7cJAIlf4ypHm6pQA6N41cuq1srpgKeir3mTT
-	vmEaliDwyuLSTAjbGi0exJzRJklR/p6jbFFTkpv9a+7BnfSNT4kdTXAtksoLNDNRhCi1reskoU/
-	fyY2V6FxLTYWR/L/WvMIXTFfQfJTyUEWqiAlVHIT5A/5VdXMhLSRtlGP1w1FZ1jrkYEKphDQK6z
-	x8FSIu9O5Dn9UNAuj3SUjRwq//7O9Pkv7AEWydiyG5CPo6Pj+sLPRJXvZJgwb4+cIsVO2JDaU1f
-	+UoZHcmZPuxPcv1XUPk2jeWAVXyQxBJnElUrgzQfoXYvL0GmqGa24oymA0uhSILnVgdbR7NuqqZ
-	+k84Lm25PhKXZhhNZu0HSPAt6q7tXCelO8NAvCHatSp/YsTP/hRYOBsGktL6IxvvhNqUIgciWPo
-	tixwChQQxC
-X-Google-Smtp-Source: AGHT+IGsvcYYsClEsFTY4tHK/30S2COTBACDT7BSIyOjc1D+rhzPyWmHlUmxYc4FgFdDi9X48dV+ew==
-X-Received: by 2002:a05:690e:1599:10b0:63c:dadd:6b8e with SMTP id 956f58d0204a3-63cdadd7d33mr15517240d50.2.1760447729783;
-        Tue, 14 Oct 2025 06:15:29 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:48::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cdec375bcsm4392139d50.17.2025.10.14.06.15.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 06:15:29 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Chris Mason <clm@fb.com>,
-	Kiryl Shutsemau <kirill@shutemov.name>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 3/3] mm/page_alloc: Batch page freeing in free_frozen_page_commit
-Date: Tue, 14 Oct 2025 06:15:27 -0700
-Message-ID: <20251014131527.2682236-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <428ec528-5471-4152-bcb6-d36dd32c3311@suse.cz>
-References: 
+	b=4pZjcGXEVJswosjGOzNj/NRBAcRko0/HF65bv18CaaHgirEoY8d2Y/Xpcf23JUHfZustbs
+	kD0+N3ps0VKRJDWQ0pmhuyh8tzuhdReqxxFeZvEG9kNR7PrCMxZkhaM3wZkf5yvuyttu8U
+	NnEJBn054/iIRn+uKVEV5gxP7TDqe8U=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RnVJgjVA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Message-ID: <8507df5e-0170-4316-b732-9ebb11bab4e2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760447991;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JE+Kn2HjCSTg/qS1EjXYbWfpt2UDhrJQ2s6zULpht+4=;
+	b=RnVJgjVA3Fn7aQ0zhP00Tom2evqdyeKrpAcE/pTudMQPYc9RoBK4RHqzpY37mrC+w67AXk
+	rn+BogiWQxs/UF4rw+OzxNCZa7SxN+d61b1bH2QzsoenKDMi+MPeBe+LucJomb0095Mh3A
+	PY2NfGRNCUii2yRKYTml87SztdkZ9Ns=
+Date: Tue, 14 Oct 2025 21:18:50 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
+To: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hao Ge <gehao@kylinos.cn>
+References: <20251014093124.300012-1-hao.ge@linux.dev>
+ <aO4loolcE5u2gSM0@hyeyoo> <b48a0656-3c68-494a-8e90-54247888bccf@suse.cz>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <b48a0656-3c68-494a-8e90-54247888bccf@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 01F01100014
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qqkg3bxp9734qm9knm1wr3rz5p8459xy
-X-HE-Tag: 1760447730-483669
-X-HE-Meta: U2FsdGVkX19IPpRDy2NitjwjXxArgZ6zaVJOApNdM1PWziMXVjMLeY+JjWlGbbKlwmsznEBGO44qNzX+YAVFuynOL7KlR6bFQv/MEtL0XGcve+kleJwsTt/ayIcXgzIvKr/9b+imncG57tyW4xludTNymvRyk/uWoU8SASdatmYk+oThoCGvPZyHL1HfJwcrc57fw8muhHmtU5MzgICuEZnPKMJiJLvWev2gQOUARQzrr9wh0Ggcz/nakm5AtFzTxVztaG/YYXUbNpKZ78mnQGs4/fq004kC7qwVMiG3vAy8Y+Vp0wdeCrcWg4ZrHuTR9qRLIiDCDjO1s+mMd6XK9KPfqvCRUze4JaQDQdElAQQ9fQYKIIUfiKExYwjI4JVzXPgj7Ebwne5O+kIdtb89888TwN2iiqPHLn/Z3JHC1hXi7OV2mt5Q+CCm+87Vy1YSoE0H/rUSQqO92KuzexCW30b8SkANh5gLuQpzhz31RMmGkh5wmxtAWhGsw+jEagefpuSdw0SGORgBI/LKi1wo99Xfj7YUOXzlDR7I1PCOKp6ze4O0+9Dvj3T2nV2PncjRuI8Niwq47q2EtRy6yTV8/67BCz3ST6vV03Lj4nT/pQKkPBJ2EPZdehGxjlBvvCbo/9+Ih4kEPg8NKCkfQ6h7Cgac8hIWp1CmLy4FrBAMGadnhCYmGk/4kTJPPOKA5H/EafF2QGTv+hFEzpcvz8p+ZBZwh53ldLMnjgu91IXjYNqeKuuOPpU82dwh5Y7xsX0Ns3Yqe+aJDqXXviX1va5qr3j0XibIFYjGQkIvckDCP+xl/JDW331dCLiGFcsZpms99QRYuKakG0yfFhko1ab6rXahAVu8oLohEy686KN2FarN0RvlAYULhVO6IuqIWHcN3NMQ+mp7YYQiBJmuUgZ9I72AjwtrQcF8t7Y7Sj3xV2x/2cB6j6IU3bIILy91CJqLe+ZRVObhU7MSBAqL5w2
- b0vFbRbf
- c5D4O+ZQ418HeoFrvTH4EXHQOwTJIDMrNdFnWI34NUFezzftmuP0hW+Dt/iz4YkREqEOFM9VLql9kjQu/Sj1Bb93WJiJ7pbtJvRejDSiVScNwVgCgCu3pYecrttKTHnYBHgaBqqVKEuUJdzFQ4LcIOBYi2ogn7lJlxrdNRZHS4sELupp1FWIG8j+ASTBNeGeyNMU+Z4VR21C/LjmDsY8ZLn0zuWOJ7iYR42cimsAly6BEeaIZmpb4/DNcAt4Y8EwMbXBmZQoZHrybFDlePSn9Nvh2Z3lEoubco6iA0Yk1Vyng6JCkvMHbCwlMUpgGCzmfhFynOFIxGkz74DJeZu9j515e3U9MfaxEfvaVvQVewX3EmflATyuBSpHMmPqlbCE3xDvyHgQXFkqbhXPeD8ILPjOCrp9YZN85PFAxbN1x2NvnV/T07E+f9tCX2Cdaym1PwWH1PTKqiuRur1qcHcaXgaxifA+6AhLHYslu2NOF316kzKLAlZvIKEZKsdnJY2UjofzlickJbVBxNLqnVAyh75wWBWCZEK+KWd8IZj60zF01TPRXFscasnk7Mg==
+X-Rspamd-Queue-Id: 6EC3110000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wz9mkkn6jxby4bbtzk5bg9pdrjpsf4mm
+X-HE-Tag: 1760447993-177709
+X-HE-Meta: U2FsdGVkX1+BBmWh1QYa96zqhC3G/nVb0QT8VzTHY5qOvqzZbQQ3DJzU08yymMyjhHTwhX2V2zdwJ9DQMYoj08PTluRoMcl8tbas8JPQxoIjj6PPx/+vMmfzUvvjOXX3fGq0Ken4XnGu6u84G19J10fDCqaa+GK2ZiXOS6Pyr6IYatmsowLH6bGWEpRrm5naJE0c+XEapDJwh94/5G9CumOnjoG4xdeEZ6KZKcCFs2TkR9aP2Gq3M9LGxRq7TVctK7stx9WSPwMkw6CXfpqwEJxrpP9paHax1IHqAqfl1Sv9wSAdwd6iyhw7HMF0lVRFozrcL8GHoUEV6w/mVGyoyoUEji68V75ruWZCyHzVgsaimZfzIeg2dNS+X0roeV4ky68F8zUDDG8dlGSbkSwiHTi5gmZqbMMTlrB+/58UivHRoNNkQK+eiHIx3Qpuc54yzCMX4x9vSLGp/yExTRzzmlFlIlElPdwZtIc5GCSZfbwi9OiufIVf6fZHyzxfvtdummoq3wxSrHl4TGouqV25W6gvehzpCxzflfpICyzRYCOEz5fEVX2+Nepgi/OdXsEoJbMM410xanMvJtuHDtk2SE9w/JcKrocJtKzwV1TS+UKBzUiKWW7LmFrGqd/IV8LqzKhBPEruSaGa8a+IfhbZYFMo0XblQxojbdH/p56xuBSqbFdAMcEuKwTp3Jug7gvfYNZrD8hNXZhwPvxukGUbs2wzO3+0Ru0+1PCKMMcVm3iy+9hBUVrvpNQqNk8YaLaePMusiy16A55wMXyjfX9vtwjngCizP6lxhAO98iEL6YyJ4l3rStzzgTKUDuLF08R59JHgBvDFd1o2YO4IYcrfq80D0CZSP7bNdKd7QPpYfDPmPuVS65rRbBRODJXqjgQBxg5qKIAWmpKr8Z1wsZ3LBM57yYdFsAWHm8R/QxW5H9SsMMyCnrwUz8nm02PkWQHXz67LSU5M7Vy5TX0Fbps
+ 3+h/OPBi
+ 89Xqov8HfJ6RCe2qA6iEA0ORstoEaaDYlFBSvwewyd6wZdVG5F4I6Eaz5rItEw4FE18NnbVWLrvCn5eMY/1cgDoJ05Yi7vu8y6s+nFkw8JrnFNksTN6fjxxj/lRuniBK8K/35cgmgY6K/gBMeVUZ6a41pvT51/8ybmwDnP6Et8AV3613/a3mpy9r9NzKzXr048JNb5k9ONnSwARK99z4UGSlXLFY1vs3gM0+V5Evo1EL0hTOZr99PGOGSDqcBYleJ6/gxpnS0R7VuJkY2yNGiRP2qlBJeJb3v5AISSSAnJJHPY7I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,100 +96,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 11:38:00 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-> On 10/13/25 21:08, Joshua Hahn wrote:
-> > Before returning, free_frozen_page_commit calls free_pcppages_bulk using
-> > nr_pcp_free to determine how many pages can appropritately be freed,
-> > based on the tunable parameters stored in pcp. While this number is an
-> > accurate representation of how many pages should be freed in total, it
-> > is not an appropriate number of pages to free at once using
-> > free_pcppages_bulk, since we have seen the value consistently go above
-> > 2000 in the Meta fleet on larger machines.
-> > 
-> > As such, perform batched page freeing in free_pcppages_bulk by using
-> > pcp->batch member. In order to ensure that other processes are not
-> > starved of the zone lock, free both the zone lock and pcp lock to yield to
-> > other threads.
-> > 
-> > Note that because free_frozen_page_commit now performs a spinlock inside the
-> > function (and can fail), the function may now return with a freed pcp.
-> > To handle this, return true if the pcp is locked on exit and false otherwise.
-> > 
-> > In addition, since free_frozen_page_commit must now be aware of what UP
-> > flags were stored at the time of the spin lock, and because we must be
-> > able to report new UP flags to the callers, add a new unsigned long*
-> > parameter UP_flags to keep track of this.
+On 2025/10/14 20:49, Vlastimil Babka wrote:
+> On 10/14/25 12:27, Harry Yoo wrote:
+>> On Tue, Oct 14, 2025 at 05:31:24PM +0800, Hao Ge wrote:
+>>> From: Hao Ge <gehao@kylinos.cn>
+>>>
+>>> We should not reuse the first bit for OBJEXTS_ALLOC_FAIL.
+>>> This is because the following scenarios may be encountered:
+>>>
+>>> Under heavy system load, certain sequences of events can trigger the
+>> Hi Hao, thanks for catching it!
+>>
+>> It's late at night and my brain is tired so I may be missing something,
+>> but let me leave comment anyway...
+>>
+>>> VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio) check:
+>> Should we check (folio->memcg_data != OBJEXTS_ALLOC_FAIL) &&
+>> (folio->memcg_data & MEMCG_DATA_OBJEXTS) instead then?
+> Yes, we already went that direction, but seems we need to expand to more
+> places due to 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL"):
+>
+> https://lore.kernel.org/all/20250915200918.3855580-2-surenb@google.com/
+>> Not clearing a valid folio->memcg_data is considered an error, but freeing a
+>> folio that is marked OBJEXTS_ALLOC_FAIL isn't.
+>>
+>>> 1. High system pressure may cause objext allocation failure for a slab.
+>>> 2. When objext allocation fails, slab->obj_exts is set to
+>>>     OBJEXTS_ALLOC_FAIL (value 1).
+>>> 3. Later, this slab may enter the release process.
+>>> 4. During release of the associated folio, the existing
+>>>     VM_BUG_ON_FOLIO check validates folio->memcg_data.
+>>>     If the MEMCG_DATA_OBJEXTS bit is unexpectedly
+>>>     set here, the bug check gets triggered.
+>>>
+>>> We have obtained the following logs:
+>>> [ 7108.343437] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0002deb97600 pfn:0x31eb96
+>>> [ 7108.343482] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+>>> [ 7108.343500] memcg:1
+>>> [ 7108.343507] flags: 0x17ffff800000040(head|node=0|zone=2|lastcpupid=0xfffff)
+>>> [ 7108.343523] raw: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
+>>> [ 7108.343528] raw: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
+>>> [ 7108.343534] head: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
+>>> [ 7108.343539] head: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
+>>> [ 7108.343562] head: 017ffff800000001 fffffdffcb7ae581 00000000ffffffff 00000000ffffffff
+>>> [ 7108.343569] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
+>>> [ 7108.343574] page dumped because: VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS)
+>>> [ 7108.343601] ------------[ cut here ]------------
+>>> [ 7108.343607] kernel BUG at ./include/linux/memcontrol.h:537!
+>>> [ 7108.343617] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>>> [ 7108.345751] Modules linked in: squashfs isofs vhost_vsock vhost_net vmw_vsock_virtio_transport_common vfio_iommu_type1 vhost vfio vsock vhost_iotlb iommufd tap binfmt_misc nfsv3 nfs_acl nfs lockd grace netfs tls rds dns_resolver tun brd overlay ntfs3 exfat btrfs blake2b_generic xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables rfkill ip_set sunrpc vfat fat joydev sg sch_fq_codel nfnetlink virtio_gpu drm_client_lib virtio_dma_buf drm_shmem_helper sr_mod drm_kms_helper cdrom drm ghash_ce virtio_net virtio_scsi backlight virtio_console virtio_blk net_failover failover virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod fuse i2c_dev virtio_pci virtio_pci_legacy_dev virtio_pci_modern_dev virtio virtio_ring autofs4 aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+>>> [ 7108.355662] CPU: 7 UID: 0 PID: 4470 Comm: kylin-process-m Kdump: loaded Not tainted 6.18.0-rc1-dirty #54 PREEMPT(voluntary)
+>>> [ 7108.356864] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+>>> [ 7108.357621] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>>> [ 7108.358981] pc : __free_frozen_pages+0xf18/0x18e8
+>>> [ 7108.359834] lr : __free_frozen_pages+0xf18/0x18e8
+>>> [ 7108.360379] sp : ffff8000a2bb7580
+>>> [ 7108.360786] x29: ffff8000a2bb7580 x28: fffffdffcb7ae580 x27: fffffdffcb7ae580
+>>> [ 7108.362013] x26: fffffdffcb7ae588 x25: 1fffffbff96f5cb1 x24: 1fffffbff96f5cb0
+>>> [ 7108.362804] x23: ffff8000839d6ba0 x22: ffff8000839d6000 x21: 0000000000000000
+>>> [ 7108.363596] x20: 0000000000000000 x19: 0000000000000001 x18: 0000000000000000
+>>> [ 7108.364393] x17: 445f47434d454d20 x16: 2620617461645f67 x15: 636d656d3e2d6f69
+>>> [ 7108.365498] x14: 6c6f66284f494c4f x13: 0000000000000001 x12: ffff600063fece93
+>>> [ 7108.366317] x11: 1fffe00063fece92 x10: ffff600063fece92 x9 : dfff800000000000
+>>> [ 7108.367610] x8 : 00009fff9c01316e x7 : ffff00031ff67493 x6 : 0000000000000001
+>>> [ 7108.368455] x5 : ffff00031ff67490 x4 : ffff600063fece93 x3 : 0000000000000000
+>>> [ 7108.369276] x2 : 0000000000000000 x1 : ffff000103fe5d40 x0 : 000000000000004c
+>>> [ 7108.370140] Call trace:
+>>> [ 7108.370463]  __free_frozen_pages+0xf18/0x18e8 (P)
+>>> [ 7108.371011]  free_frozen_pages+0x1c/0x30
+>>> [ 7108.372040]  __free_slab+0xd0/0x250
+>>> [ 7108.372471]  free_slab+0x38/0x118
+>>> [ 7108.372882]  free_to_partial_list+0x1d4/0x340
+>>> [ 7108.373813]  __slab_free+0x24c/0x348
+>>> [ 7108.374253]  ___cache_free+0xf0/0x110
+>>> [ 7108.374699]  qlist_free_all+0x78/0x130
+>>> [ 7108.375156]  kasan_quarantine_reduce+0x114/0x148
+>>> [ 7108.375695]  __kasan_slab_alloc+0x7c/0xb0
+>>> [ 7108.376668]  kmem_cache_alloc_noprof+0x164/0x5c8
+>>> [ 7108.377206]  __alloc_object+0x44/0x1f8
+>>> [ 7108.377659]  __create_object+0x34/0xc8
+>>> [ 7108.378196]  kmemleak_alloc+0xb8/0xd8
+>>> [ 7108.378644]  kmem_cache_alloc_noprof+0x368/0x5c8
+>>> [ 7108.379224]  getname_flags.part.0+0xa4/0x610
+>>> [ 7108.379733]  getname_flags+0x80/0xd8
+>>> [ 7108.380169]  do_sys_openat2+0xb4/0x178
+>>> [ 7108.380921]  __arm64_sys_openat+0x134/0x1d0
+>>> [ 7108.381952]  invoke_syscall+0xd4/0x258
+>>> [ 7108.382408]  el0_svc_common.constprop.0+0xb4/0x240
+>>> [ 7108.382965]  do_el0_svc+0x48/0x68
+>>> [ 7108.383375]  el0_svc+0x40/0xe0
+>>> [ 7108.383757]  el0t_64_sync_handler+0xa0/0xe8
+>>> [ 7108.384465]  el0t_64_sync+0x1ac/0x1b0
+>>> [ 7108.385284] Code: 91398021 aa1b03e0 91138021 97fd35e3 (d4210000)
+>>> [ 7108.386553] SMP: stopping secondary CPUs
+>>> [ 7108.389714] Starting crashdump kernel...
+>>> [ 7108.390190] Bye!
+>>>
+>>> So, introduce __SECOND_OBJEXT_FLAG for objext_flags, adjust
+>>> the corresponding order accordingly, and ensure that OBJEXTS_ALLOC_FAIL
+>>> is no longer reused.
+>>>
+>>> Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
+>> Hmm using a new bit was suggested at that time, but that would
+>> require bumping up the alignment when allocating slabobj_ext array?
+>> (see alloc_slab_obj_exts())
 
-[...snip...]
+Hi Vlastimil and Harry
 
-> > @@ -2861,15 +2871,47 @@ static void free_frozen_page_commit(struct zone *zone,
-> >  		 * Do not attempt to take a zone lock. Let pcp->count get
-> >  		 * over high mark temporarily.
-> >  		 */
-> > -		return;
-> > +		return true;
-> >  	}
-> >  
-> >  	high = nr_pcp_high(pcp, zone, batch, free_high);
-> >  	if (pcp->count < high)
-> > -		return;
-> > +		return true;
-> > +
-> > +	to_free = nr_pcp_free(pcp, batch, high, free_high);
-> > +	if (to_free == 0)
-> > +		return true;
+Now I understand the alignment you're referring to, and indeed, my 
+solution does require bumping up the
 
-Hello Vlastimil, thank you for your patience and review on this iteration!
+alignment when allocating the slabobj_ext array.
 
-> I think this is an unnecessary shortcut. The while() condition covers this
-> and it's likely rare enough that we don't gain anything (if the goal was to
-> skip the ZONE_BELOW_HIGH check below).
+And syzbot ci has reported a bug:
 
-Agreed.
+https://lore.kernel.org/all/68ee41cb.050a0220.91a22.020b.GAE@google.com/
 
-> > +
-> > +	while (to_free > 0 && pcp->count >= high) {
-> 
-> The "&& pcp->count >= high" is AFAICS still changing how much we free
-> compared to before the patch. I.e. we might terminate as soon as freeing
-> "to_free_batched" in some iteration gets us below "high", while previously
-> we would free the whole "to_free" and get way further below the "high".
+This is because the data of slabobj_ext has been corrupted.
 
-This is true, and I also see now what you had meant in your feedback on the
-previous iteration. 
 
-> It should be changed to "&& pcp->count > 0" intended only to prevent useless
-> iterations that decrement to_free by to_free_batched while
-> free_pcppages_bulk() does nothing.
+>> And we can still distinguish two cases where
+>>
+>> 1) MEMCG_DATA_OBJEXTS is set, but upper bits are not set,
+>>     so it should mean obj_exts allocation failed (OBJEXTS_ALLOC_FAIL),
+>>     thus do not report error, or
+>>
+>> 2) MEMCG_DATA_OBJEXTS is set, and upper bits are also set, so someone
+>>     did not clear a valid folio->memcg_data before freeing the folio
+>>     (report error).
+>>
+>> without introducing a new bit, right?
+> Agreed.
 
-This makes sense. Sorry, I think I missed your point in the previous version,
-but I think now I see what you were trying to say about the count. Previously
-when we were re-calculating high every iteration, I thought it made some sense
-to make the check again, since we might want to terminate early. But I do
-agree that it doesn't really make sense to do this; we want to preserve the
-behavior of the original code. I do have one comment below as well:
+Okay, now I understand what you mean. I will send out the V2 version soon.
 
-> > +		to_free_batched = min(to_free, batch);
-> > +		free_pcppages_bulk(zone, to_free_batched, pcp, pindex);
-> > +		to_free -= to_free_batched;
-> > +		if (pcp->count >= high) {
+Thank you for your guidance.
 
-Here, I think I should change this in the next version to also just check
-for the same condition in the while loop (i.e. to_free > 0 && pcp->count > 0)
 
-The idea is that if we have another iteration, we will re-lock. Otherwise, we
-can just ignore the case inside the if statement. I think if it is left as
-a check for pcp->count >= high, then there will be a weird case for when
-0 < pcp->count <= high, where we continue to call free_pcppages_bulk but
-do not re-lock.
+Thanks
 
-So unfortunately, I will have to check for the same condition of the
-while loop in the if statement : -( I'll send a new version with the changes;
-I don't expect there to be a drastic performance change, since I think the
-early termination case would have only applied if there was a race condition
-that freed the pcp remotely.
+Best Regards
 
-Thank you as always, Vlastimil. I hope you have a great day!
-Joshua
+Hao
+
+>
+>>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+>>> ---
+>>>   include/linux/memcontrol.h | 16 ++++++----------
+>>>   1 file changed, 6 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>> index 873e510d6f8d..8ea023944fac 100644
+>>> --- a/include/linux/memcontrol.h
+>>> +++ b/include/linux/memcontrol.h
+>>> @@ -341,27 +341,23 @@ enum page_memcg_data_flags {
+>>>   	__NR_MEMCG_DATA_FLAGS  = (1UL << 2),
+>>>   };
+>>>   
+>>> -#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
+>>>   #define __FIRST_OBJEXT_FLAG	__NR_MEMCG_DATA_FLAGS
+>>> +#define __SECOND_OBJEXT_FLAG    (__FIRST_OBJEXT_FLAG << 1)
+>>>   
+>>>   #else /* CONFIG_MEMCG */
+>>>   
+>>> -#define __OBJEXTS_ALLOC_FAIL	(1UL << 0)
+>>>   #define __FIRST_OBJEXT_FLAG	(1UL << 0)
+>>> +#define __SECOND_OBJEXT_FLAG	(1UL << 0)
+>>>   
+>>>   #endif /* CONFIG_MEMCG */
+>>>   
+>>>   enum objext_flags {
+>>> -	/*
+>>> -	 * Use bit 0 with zero other bits to signal that slabobj_ext vector
+>>> -	 * failed to allocate. The same bit 0 with valid upper bits means
+>>> -	 * MEMCG_DATA_OBJEXTS.
+>>> -	 */
+>>> -	OBJEXTS_ALLOC_FAIL = __OBJEXTS_ALLOC_FAIL,
+>>> +	/* slabobj_ext vector failed to allocate */
+>>> +	OBJEXTS_ALLOC_FAIL = __FIRST_OBJEXT_FLAG,
+>>>   	/* slabobj_ext vector allocated with kmalloc_nolock() */
+>>> -	OBJEXTS_NOSPIN_ALLOC = __FIRST_OBJEXT_FLAG,
+>>> +	OBJEXTS_NOSPIN_ALLOC = __SECOND_OBJEXT_FLAG,
+>>>   	/* the next bit after the last actual flag */
+>>> -	__NR_OBJEXTS_FLAGS  = (__FIRST_OBJEXT_FLAG << 1),
+>>> +	__NR_OBJEXTS_FLAGS  = (__SECOND_OBJEXT_FLAG << 1),
+>>>   };
+>>>   
+>>>   #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
+>>> -- 
+>>> 2.25.1
+>>>
 
