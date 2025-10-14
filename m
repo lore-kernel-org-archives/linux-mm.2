@@ -4,88 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF69CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA66ACCD18E
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 08:25:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A76178E00C9; Tue, 14 Oct 2025 04:19:05 -0400 (EDT)
+	id 4918E8E00CA; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FFA68E0005; Tue, 14 Oct 2025 04:19:05 -0400 (EDT)
+	id 441548E0005; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7228E00C9; Tue, 14 Oct 2025 04:19:05 -0400 (EDT)
+	id 3302B8E00CA; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 70D2A8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:19:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23F061DF042
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:19:05 +0000 (UTC)
-X-FDA: 83996019450.21.01E09DD
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4255EA0004
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:19:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FkHSsady;
-	spf=pass (imf15.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A99E8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:25:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9CC0115FFC
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:25:19 +0000 (UTC)
+X-FDA: 83996035158.28.15755EA
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C673F140007
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:25:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ygLXyFR3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of edumazet@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=edumazet@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760429943;
+	s=arc-20220608; t=1760430317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=5OeyEYLseuiwt3LveByP/Aul19aE1+Npt1dW+qDVh4s=;
-	b=D+VS4jLHkq/z8LtOlyHmExZS1RE0cNpm0gBTCXzGAQGajXuSrFfFPhDKazY945GYrLbXQa
-	xEw81/qwkzmdDxat1Sk7bIKrFmofT6MmiRKrY8kxCcahz+NztalKe++JkLgxGeNUEVhelP
-	YyxuPN9pkiILUKtAFc7MG6/B9RunUuI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760429943; a=rsa-sha256;
-	cv=none;
-	b=7WkoL3m9Zjdt2ESPp4IzjjxpZ1H553sshFk9t+UbaYStX+esoXOymg/C1NkUq0g5cN/p4d
-	CeJesRaPcq+N3yGH1bvLlKHQdqqoBks3AoCqBQbIbNWcfRwtLKnnJtun4WHY4wVFfabKtN
-	apneCAeIZ4Vtmyqcu2/0gsT6xnPZeqQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
+	b=swKVfnFfTzwMMMf8+6yP/zm0SJR5Vvt86fOvTYN9emldzzRKwXJ38zu5PoKEhV8WmvNi/U
+	q024VZs3PaJ7b3/TXUGbzmePuXmv4t34WW7zM8jBnQO0SJuBpZbaT3KVGAGQynrOwcXVMd
+	At0sipLRXwSmClzUIahusjBwnMsl2z8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FkHSsady;
-	spf=pass (imf15.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760429941;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5OeyEYLseuiwt3LveByP/Aul19aE1+Npt1dW+qDVh4s=;
-	b=FkHSsadyvJojzqrbq8TTDnPtANwM1U4aJvbeB8PGG7xSL1OG+S10cFC3JQ/I+4CPU1b4dj
-	fMCiIHrDn1lhOe4rn/ZvqM3aMM+MT+LfhiyhRc16/SmQrP6ICeEzV70wfXAbWYC/TJ9Jk3
-	pz+a6RoB7tLMgqx6ViN4sYT/hqSDRs0=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: linux-mm@kvack.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@redhat.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] mm/vmscan: Add retry logic for cgroups with memory.low in kswapd
-Date: Tue, 14 Oct 2025 16:18:49 +0800
-Message-ID: <20251014081850.65379-1-jiayuan.chen@linux.dev>
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ygLXyFR3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of edumazet@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=edumazet@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760430317; a=rsa-sha256;
+	cv=none;
+	b=FH+g/xPA1ZwvLjvFGxIa7gGWs+M64DUmtAjcnSi/9oaE1C+94kBZdQzD/Z1OLFB0GKNPzy
+	Y6HXBO+qthN/Ca0x9TGIz+2t4Fp/x/c56bJ3GsgCLMGNL4acjOKtdysoXRgqUHhUOS46gX
+	gVVrkoDr7WGAT4CTRFSqt/xV1Ez7tLw=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-78f75b0a058so65100396d6.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 01:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760430317; x=1761035117; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
+        b=ygLXyFR3vwsmDMO833uuk9qn8IHVS0woYYoxtkl1Ud2g9xbXBT24y7/OhDE8URI5EJ
+         swF8RCNZGr8uG7q480EcS8MBxnYUT/u54Th8wVjXbyPKH0+ieeS9eQvkbrg4/cW/zmiy
+         rInUG16maL7hObvy0rBH51o1cnMxx/+PdH3oa6hOYaoaR56H3UAJK8Ocjw17ky+dY9BV
+         34HNZBziSeaLPJAnXj1oQL4Sme987LJcfPV7qmh65V+vYQoRIh94r7ObYdksSRrhgb4V
+         M9L7GL7ou19OXPYmeorFdGKqDtEdK/dxJCq7QNXQqOyK6YJYURhBp735muDiUJjgoRyM
+         1GHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760430317; x=1761035117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xedia4qpks7I7EdQJJs0YGYLRIvZhKtcLLcwC48lucU=;
+        b=EI930V640lS3Y3FMpcUuDgGQvkC4XYedhcaoHiZgvVxxaXqCmkKUZksN2xJKcalcQX
+         csp9mYGysOFXXK7mbqh0fktqRfqY8JTlIZlOTVsjcxGJpHfYV2Xu4GjQrRtDt6apbO1C
+         +QYQTjXr5X30rK0cScpeYOecnSvrsLGMfyLaTBmMTmeyOQcwqagEC/qgLIbuibvmKh+Z
+         NGHNAxYnBvAnkBqk2gmSk1B6FllsBHCAJBozQJmV+nGFkwLh78pkBVJpySrFw6KVkI5P
+         5eVu804nkcwQiYUgYGkp4qm/irxTLsdIAkj0R2w3w/pVQzNc4kmvV/gqCsX+H3NFwr7N
+         WKdg==
+X-Forwarded-Encrypted: i=1; AJvYcCU05fr5HiG8JwdhtBpPUZvnq9WCRgtbJbsNhTwvcmlU9+iBYVQzH42N9d+tH31BzSAaxh25jZ0KoA==@kvack.org
+X-Gm-Message-State: AOJu0YwAN0HaBxPgjKoIawA9jCCbWlgxxJ+hfuN8BIwcoWVEXD1ZlfRi
+	5COKH7qtwn3urPCAm9ZHoZt/X+IlejHDZDE8buQQmEQ9FDvyOI+1PqWixLJUEQTfoRKmzV+VoFK
+	bYuKETygI92VI2p7ml7OX7k2F0VnzUj+YetXTgJcp
+X-Gm-Gg: ASbGncsq22Vs0Qwnd4kl4OvEtcK21J/klksFIZfXIcw1xee54SPdODcN/5nVbtO6Jyj
+	efgEwUa3q2YLUKARTRealzHWbe6vvLGnR0PhDYRTk0pm8XhWC/r65PEW74V0TwM0NuEYPYey9H2
+	QlkAb1DYJkD9svJxmP84trLExosS6W/nOew3gackMkByI7mTTkqAURCNpmJzhKl5h3rGd8C/yDp
+	i8UtI4ssCSPDPlO4MkUVaFHdOfSZDzG
+X-Google-Smtp-Source: AGHT+IE2XZuUpY6yf1dVWPffNJkuGfhZwF35m+45ndZ/A0W69WaedUjJkm4TDgb9gRxsnIAXSMksxOG9bcF7EYiqZu4=
+X-Received: by 2002:ac8:6f1a:0:b0:4b3:2dc:8b84 with SMTP id
+ d75a77b69052e-4e6ead513b5mr378830371cf.47.1760430316382; Tue, 14 Oct 2025
+ 01:25:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 9ufyxbuzkc7wbjxotm83ja64fkkewnwy
+References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
+ <20251014035846.1519-1-21cnbao@gmail.com> <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
+ <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com>
+ <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com> <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 01:25:05 -0700
+X-Gm-Features: AS18NWCsffjFXuh9SOpm483ZoDLgHXwm8ssjSph3yipxi4Ti2I03tEtjJ8_KnP0
+Message-ID: <CANn89iK0OWswFFHH10PLzFdcFxZXodWorR5YJSdPq+P6+Qsu1Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
+	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
+	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4255EA0004
-X-HE-Tag: 1760429943-393535
-X-HE-Meta: U2FsdGVkX1+MmyqbYEL8/dFdoLB8CQPpT982YGvgGi2aQtN3+kGSn8Vex98LEpsq6jG+GWeRafLFKcy5KfxAs290DkNd0gJ49utrxUcLlm4bfGGOKKan5At6ggKk4VrIDl4OgZGwV/TWZiaEekyVM2WvQ8xsJXqfgFkmKxKijySxN/OxSXkXeIrbPwDATDIKnn+eHb9jXCGtBMq6rT5zowHxWeOJNmx8nM7Mq2BOM2pc+Gog+C2WqhvKUB1KQ1Ql7XZarNMik/e/BzCQXxXuYrFwWetT2y3BM5++2CqkTeSirwf2Uy6BeFz5WcQTa1ESB1Il6ZZCS1X64bEykfpeGoZ89aihm6kCHYx2cUMBOlc5aaeGQdN3Bo7ex3RYmqaWpP8ZHwd/k+ObBWX4C2FGyk517oScF4MK9rLl6whs+IdoDa13EzoXrqPTsUKvVpupe4kMqSK8P4yHpHpt9IizqSRGG9uPQvtQns+aogcFeNBTfF+/rA/MGDd7Kcz2Bg39DvKq0bJN8WQCrNChnzXC3NZjiQN3qyB6eiMkVLDryJ9PvyGja4YK9yuKNszGR56AdZ+Qdm68iWO216ZiGyEk+TA15+iUl/GL3RZlDfUo6cMdfoiMvEzIwb14xvlLwcdueRwZM68lYa3Aau72KI48cNzOf3R81vf8H7pd+IFdsR2wr0+B03/FP3G7sHkSwquS1iEsxJs3jJlD/LYJitn24WGSX2rQcWDiPiWrKG+JCN7+zfusoxrJwaUReITIkPQ5deQLmbRV4MnkzzY1frN3SwVcCPGFanfzGaseeWA7kG6v4uzvvt9cGgruCgoQNEieDF3UxyH34zoWsn1yfjV5LH2ulKzhsEwV+eHwmqw6sPqs0INbcufe9tjWbSjjTdA1LrT3KAw75gB30YFEtRoOT1j50EHSxGxOfftq06M0kjBMU4cLrq6L0nIeOOo8k8+p5LRttC77e0p0iKIaaeo
- 49XAdbeN
- E1OGKXMVEn1QA3l/eLfkOI4s8kGQwH0fgLFKl8dNRltWAiDLa27pzNBnwdoYuPhxYnJW2yCpCucUsjqE4xR8l+GK8KewPj5SXcZ7lcA7XqQhiJDh9+B5ekYh/O34Xf5NOwCQB5gYH9k9WVS9v+eqlAg6F8HbUsdQD/3zK
+X-Rspamd-Queue-Id: C673F140007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: f5nzrw3ti7sdjpfjyupqbdb1fncahf57
+X-HE-Tag: 1760430317-720962
+X-HE-Meta: U2FsdGVkX1/i75qiTf/oSGTbNFpcZZUlBLFp2yAdQxLSHUs/UWNpmuAJPwxdI7nQyQiuk6wTS8YibFGO2C7IOZ2lSiUFb9DO1dQaVee0U5zs1qFPag43GPP9s1jqwgKhmohgLAR6Ri1slJ43XtbZhBegcumasqFNB5k4e5rlc97/FKF/2tCgPUyXbCyXSccRzJPFQYj/onE/3vAgSlMAoTc6eOdUzL2poudb1ig/uuefbMGvjqkazR7ppWZHkrWPdS1ZbcPiSfFoRCtDB1XfxPk63bv90TFPCl9YKiazroSuMQqd5qWcOsFmP+mZ6aEwvuXDy7aa73mIetRczkfckbQigxWgPp9t/9Gn20Z+D9EF+1KdNM98kgesdXfDTijZ2+CA2kyXblUkkvxWgIBt0QTcSlMkW8d4CpErbEBQUSQFcq/P8lxVaFvAk2WNSoZRYi9zkJcbVq+hngn3lw+Tle6YzXI3LTPiDAiudrdQWuMjXn9w9/JWD6arUblrduQZN72jYU/36rrHrSZLXikaCCTApKTM68/KDbcCx19/t0RXh6iRm1+q0EOOHnMMdrBfp87jmxAwiXqtljR8RaNqHxa29kNo4RoZoH1TGz84fGBj3zgdgB+D9SfAd9RfgVmAXINr9kTGsKDyowmtqm7OjmeoNebWYJfOrFSXm3swpjduLs8wX3pDfxOjR77MRvQ0lRTxg8zFGw/cxDpXTAJ7ngDKf0A7ljUYo9AHpzyuT+thUBE/UVficarw6k8oQZY/Hnndw/qk/0nx6uaGhIyFqpSt3CgH6WT6iFv+QmuZFVl73i/yxQrW4C/G7kgQ6dWklj8ZmDk2uQ407tIrLtP3rhD379oxADvRS0TTFPzDPm39TbkIx/d4/FRtW14RjTCQBDI3mMcbXkxxqpa/ETVfH61Mk5QicEx2PmxQ14phC/vLUesq981ZAKfVy1i+oRj33sx0nVBA7nNqqHrr5s4
+ WATpe0GC
+ 3+zu+BkWsRGS28Uwg+27r0PdYTm9dpnaIzjMsht+udqEEEwJaSlmyU9hpdnQhxuEohnbTXnEshfrLb3rZwVrNcwryuGPYAZQi96SOxna2+uI5cGBWWYGdv+Bsa/d+k9JON4IWGGJRTfbyMenJFxBXfw8TIB44jwYv+gVhY+LejcJHkrBT42PmkNdJkdwo2hj93Z4JlrFF6E2lEyjAgLW7Uf72Rs+UWYCQM3K3wxCdl90jySjcz2bouy3PAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,50 +123,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We can set memory.low for cgroups as a soft protection limit. When the
-kernel cannot reclaim any pages from other cgroups, it retries reclaim
-while ignoring the memory.low protection of the skipped cgroups.
+On Tue, Oct 14, 2025 at 1:17=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Oct 14, 2025 at 3:01=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Mon, Oct 13, 2025 at 11:43=E2=80=AFPM Barry Song <21cnbao@gmail.com>=
+ wrote:
+> > >
+> > > > >
+> > > > > A problem with the existing sysctl is that it only covers the TX =
+path;
+> > > > > for the RX path, we also observe that kswapd consumes significant=
+ power.
+> > > > > I could add the patch below to make it support the RX path, but i=
+t feels
+> > > > > like a bit of a layer violation, since the RX path code resides i=
+n mm
+> > > > > and is intended to serve generic users rather than networking, ev=
+en
+> > > > > though the current callers are primarily network-related.
+> > > >
+> > > > You might have a buggy driver.
+> > >
+> > > We are observing the RX path as follows:
+> > >
+> > > do_softirq
+> > >     taskset_hi_action
+> > >        kalPacketAlloc
+> > >            __netdev_alloc_skb
+> > >                page_frag_alloc_align
+> > >                    __page_frag_cache_refill
+> > >
+> > > This appears to be a fairly common stack.
+> > >
+> > > So it is a buggy driver?
+> >
+> > No idea, kalPacketAlloc is not in upstream trees.
+> >
+> > It apparently needs high order allocations. It will fail at some point.
+> >
+> > >
+> > > >
+> > > > High performance drivers use order-0 allocations only.
+> > > >
+> > >
+> > > Do you have an example of high-performance drivers that use only orde=
+r-0 memory?
+> >
+> > About all drivers using XDP, and/or using napi_get_frags()
+> >
+> > XDP has been using order-0 pages from the very beginning.
+>
+> Thanks! But there are still many drivers using netdev_alloc_skb()=E2=80=
+=94we
+> shouldn=E2=80=99t overlook them, right?
+>
+> net % git grep netdev_alloc_skb | wc -l
+>      359
 
-Currently, this retry logic only works in direct reclaim path, but is
-missing in the kswapd asynchronous reclaim. Typically, a cgroup may
-contain some cold pages that could be reclaimed even when memory.low is
-set.
+Only the ones that are using 16KB allocations like some WAN drivers :)
 
-This change adds retry logic to kswapd: if the first reclaim attempt fails
-to reclaim any pages and some cgroups were skipped due to memory.low
-protection, kswapd will perform a second reclaim pass ignoring memory.low
-restrictions.
+Some networks use MTU=3D9000
 
-This ensures more consistent reclaim behavior between direct reclaim and
-kswapd. By allowing kswapd to reclaim more proactively from protected
-cgroups under global memory pressure, this optimization can help reduce
-the occurrence of direct reclaim, which is more disruptive to application
-performance.
+If a hardware does not provide SG support on receive, a kmalloc()
+based will use 16KB of memory.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- mm/vmscan.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+By using a frag allocator, we can pack 3 allocations per 32KB instead of 2.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index c80fcae7f2a1..231c66fcdfd8 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7147,6 +7147,13 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 		goto restart;
- 	}
- 
-+	/* Restart if we skipped the memory low event */
-+	if (sc.memcg_low_skipped && !sc.memcg_low_reclaim &&
-+	    sc.priority < 1) {
-+		sc.memcg_low_reclaim = 1;
-+		goto restart;
-+	}
-+
- 	if (!sc.nr_reclaimed)
- 		atomic_inc(&pgdat->kswapd_failures);
- 
--- 
-2.43.0
+TCP can go 50% faster.
 
+If memory is short, it will fail no matter what.
 
