@@ -4,204 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6702ECCD194
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A196CCCD192
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C11068E00B0; Tue, 14 Oct 2025 09:04:36 -0400 (EDT)
+	id E87908E010F; Tue, 14 Oct 2025 09:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE8B68E000D; Tue, 14 Oct 2025 09:04:36 -0400 (EDT)
+	id E5FBA8E000D; Tue, 14 Oct 2025 09:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD72C8E00B0; Tue, 14 Oct 2025 09:04:36 -0400 (EDT)
+	id D9C878E010F; Tue, 14 Oct 2025 09:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 990F88E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:04:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5EB0B5BCFD
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:04:36 +0000 (UTC)
-X-FDA: 83996738952.15.3229CBC
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013032.outbound.protection.outlook.com [40.93.196.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3A5AAC0009
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:04:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=mf3WPeKP;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.196.32 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760447073; a=rsa-sha256;
-	cv=pass;
-	b=D/BumCG8jntFut77716uzrrX0UeEnCslpcTAfwzf47XWHGrf/8J1xniIb6DO971+P+980t
-	WYkb/2/6SaCIzcIYN0gZImPDkh3BL/dNwL9cUVetzOQoBah2xLBqFlSTkydNvb71IeDThc
-	jJ6mIhzXiwRwnpa7M+iRpKHds6tC9JA=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=mf3WPeKP;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.196.32 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760447073;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C5F5C8E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:07:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76DFD140848
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:21 +0000 (UTC)
+X-FDA: 83996745882.08.372F8DE
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C37661C001A
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:07:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=D6md4wC+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760447239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8G/nOydD9+WHaZ0PVMW4MPIf/EbVosDLP5NEj9lFhXk=;
-	b=fuRYc5ZyO3X7J+vVkzL83MZ8TLCaBAY2+h4PXGkbadpNYlsaDXz90gNX7DUKCyiGiT1xxY
-	bXRqc5ZYyW1TLihtdDpf1+NJ3Pb2BCea7X0I74IViq/OdEAg0ig2To4fZWSewY/hjg+o/9
-	EXhox2RXqRqwmZz6innnPdxXtsvSbpw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WxbEXUQbPxFcu0T+bTxwAenCAFR1d50tbniG6zoZj3CI2IvzRlXuFgpETZTYJ1UdUS5HmXkBhheGjUefQHbezQyuHR8iYzm3EwK0lE3a9wCFFCBk3o6Aw4uTMI4Pgd0Y0sTAuaUA9xJwyxvhzh0E1z9claAP/8kT1FkCHmP4STNOlScmiSvkqiJT4GFLwTBb+yTlzN3i1J0O1ylS2X2dgkr+UOiqx016rxH1ipP5X+NRB5G1e+hnAi3UHr2zpImPrXvDWQ6jMX6xPYqIwucRqxXoST2gOxuLWS5giM5f+w5adEcfM/HGEZKSfPsrTz9kq88/z38RhNYEtdsYiOipfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8G/nOydD9+WHaZ0PVMW4MPIf/EbVosDLP5NEj9lFhXk=;
- b=kYZVudvAX6hQ1ROEVSb+8GCy9SiFAQNEGe7Hvd+dTdWD7MTD6JQ2flIfO2G2bWCx6a9lMQGma548MeAwlxDdtW9f6gvyC9E8rYdk8lYivJHZVHS4yOT40os458o8rNysqkJ5Ha0fMnBPVQuyIgzIkxBpB1C/8j1GEUpAe+hR8zc3GdZFKAuNJLDM1WFi7pq+k08PpwJbTSq5HO0DgSbu5MbM6qfyR/A4SrufdlInGeIw9UteFHAOIRRVnhKhw6wX7ZlFem0g6OiS7KAMbcq4ewvIQ+Q7BNr+jxv93yH2TrjWx0Y0SOhM3qFlyhLWh4dg3nbSn2RwWtR9YwdshiXVfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8G/nOydD9+WHaZ0PVMW4MPIf/EbVosDLP5NEj9lFhXk=;
- b=mf3WPeKP8S+MmyTvdjwrKjfMa29JlPYFJ+li2qbcYzNSKsendTIaIDlwwPcFpZKpcsprCyK+Rv+8oMVErzvtBC3n0Z0D88tClwhGYZy3TW9DeWzQMFtQozXq9utm4oRGYHoTd9SkssaeHA2hG3vhGA1MFvvNj4XhiPaf35vuDJA=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH7PR12MB7796.namprd12.prod.outlook.com (2603:10b6:510:275::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Tue, 14 Oct
- 2025 13:04:25 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 13:04:24 +0000
-Message-ID: <ecba7133-699c-4f3e-927c-bad5bd4c36a3@amd.com>
-Date: Tue, 14 Oct 2025 15:04:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] driver: dma-buf: use alloc_pages_bulk_list for
- order-0 allocation
-To: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- "T . J . Mercier" <tjmercier@google.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, steve.kang@unisoc.com
-References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
- <20251014083230.1181072-3-zhaoyang.huang@unisoc.com>
- <87953097-a105-4775-88a5-9b3a676ff139@amd.com>
- <CAGWkznGN7W-txq_G+xpZ6DtH_1DNorYc=CxqUjebo7qfB4Sxsw@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CAGWkznGN7W-txq_G+xpZ6DtH_1DNorYc=CxqUjebo7qfB4Sxsw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0017.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::13) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=18Ew0aAXtEgUbkwE6ixE4TlRDzrx/rkm0Nh96P1QfZo=;
+	b=G6AtEZ6/hpyKiNKHDs+eOtQsrHzbqNjSSyNAGx2EsbF43Puw1C1SqmEHG8MzhvjiS4j7Q0
+	sba9kaK19T9oAofiYNN4tG1kfWe4Us46f4AX1SZZBTTDIF9vNd5wv/bVuprmaqSkhZAefl
+	JyyQBQhPS/ZO781Zj5+ORyCArmzBUGg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=D6md4wC+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf21.hostedemail.com: domain of baolu.lu@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760447239; a=rsa-sha256;
+	cv=none;
+	b=LQ2ON+aXk1D29kNvqUc+sLnqkg8gkU59VOqPaJryujXqxx2MMLVPVCgA4KklNtMZkRIcbh
+	0+JzpbQj/MYsrnjijHTUyd+WHDEYYyRBFLENzXcZejreQbtfvfyECUY9XsB2DnT+R24/As
+	91pRtya9pPYMMR+eCwJFVTDsu5+imGY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760447239; x=1791983239;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+Ij5X6I1pn3tOPVFV6qa8qHb+MGgIveks54UsCnznwg=;
+  b=D6md4wC+L4rTDciWpiqaYjENFhz955y1kxH93eRZTIxjmRVD3HdXHtet
+   Lx+57y8yym/IItJSdRVHHM6/MAJ4T5SCxptW7Qi+2GFKeyaqx0ARk06OP
+   pIU3fFM7gLpLWnt8wJWdoN+laAf3lcBqbZ8yu0HOZveGi3oOpps6Mc7VQ
+   0b9ZEcIAO+xTRIk3+sZoOGG6YmhprgvZyPok1ho5u2Udxc0n/4A7CmXcZ
+   UyKikZ8fKFQMVz3QaiezE24muGK9+LCMwilSOAG3uhA0T9hIMZXiRjB0q
+   j/IZP57wjJ4dRP+2gOTj5CCTpTw/N6i+DlbYiD92eCltFnXkqTJ3XGgDM
+   Q==;
+X-CSE-ConnectionGUID: 5X60H4mtSRe0ZFV9Ls1qxA==
+X-CSE-MsgGUID: NPgXgM+RQmmZAqDH/ctMfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62515292"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62515292"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 06:07:17 -0700
+X-CSE-ConnectionGUID: x1UbzMZCTya0ZQljcGcOEg==
+X-CSE-MsgGUID: 1SrbxBknSoO93W5oE+HWXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
+   d="scan'208";a="182675488"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 06:07:09 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev,
+	security@kernel.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH v6 0/7] Fix stale IOTLB entries for kernel address space
+Date: Tue, 14 Oct 2025 21:04:30 +0800
+Message-ID: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH7PR12MB7796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b80f179-a64e-4049-e964-08de0b223313
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QWltQ2ozdjRIYjNFdG1reUNCZWxBUFpKdS8zMFY2WnpuWi80TEpnMGttVDRC?=
- =?utf-8?B?WTlyckhrbVhyUnFDN011ck1uUGM2NWtCby9uR3hNcUoyY1RKKzEwdkFyK3Vt?=
- =?utf-8?B?Mm12L2R3SUhMaVZyKzJEMytMVjZUbkxmakFLMXFkVm85WS9rTHVVdGs1RjNG?=
- =?utf-8?B?NTNiTTdwU3duZGxiblovZTUxSkFYUjZCWDFBeHovOHR3cEd0M1huSXM0WkRz?=
- =?utf-8?B?bkRQR05oenZRM0hidkJEU2lOVnd4anFmc1h5bGI3OUlrS05rWWRkVzZZbHJW?=
- =?utf-8?B?eERaNTc5RElIdXE5NWgwN2Q2eW5NbXhWdWtXeCt3ME9xYWs2NG02WDQzQVZC?=
- =?utf-8?B?YUVHZjFzOFRYcXFIQkVCVnRBZCtLRXBRVGV4a2RqZ1I3SktGMi9JL2ZVRVgy?=
- =?utf-8?B?dkdXaGIyOHhOR3A3OEFsWnUwK0ZzQmxZZXc2THdtZTZnQ3NUbFdJNHV5M2x0?=
- =?utf-8?B?Z3BxK1d1bmZHdkNBTVdsZ0JFYzdpOThKVzlYMWhZbDh3Q3hqTDA0M21PSDda?=
- =?utf-8?B?bmdjeWl0azJjdEdRUmhjZ1plUk5SRHhnTGtmbzMxWG16cHJLbmlzamx4YlZK?=
- =?utf-8?B?bFd2NTJJZjVDUGN0L2VJeEwzd1I2b2UrSTM1R2NIT0VlKzZDMi9QcGFLcVZF?=
- =?utf-8?B?YUpkcXMyTjc5TVZHT0lIT3hIYW9KUGRHRHk1Q2pCZFYwOUtCbXNiMm5Xa3Np?=
- =?utf-8?B?Sm1aTmlDRG9UUFZMVUZsT21mUlhCVTlqSmpGOXFqUU5RaXZnNXBINEdGUno1?=
- =?utf-8?B?S1JpcXJRM1ZZVFVHbE8ydHJoL042Y1NhYjhXQS8yWWtVeWxwTzZabW1XL211?=
- =?utf-8?B?V0RlWmdzd0N3WFcya2lvNjBSQ1VKalNVVWh5RG1DWUhSNnVKQmZoNElrVXNV?=
- =?utf-8?B?NWdNMllxSmtRd2VLWkZ6QzE0RXBKWHp2bGl5SmlsQmdEVmRUQ0xkT0dyUU1l?=
- =?utf-8?B?a0xqemYrL0hyLy9nSThrenZPWm02Wk5mR1U2YUNzZWEvSys3WmFVdVJGeC8r?=
- =?utf-8?B?elJwcEN5Z0YyTTM1N3JRS3hPeGJhQnFrWXJaLzYyb0NhT3U5QitCTmhyeGla?=
- =?utf-8?B?dkczck9lTmJDY0pQUTFpUjR4VGJTV2lNU2RuNVpoWXEvcFFiWEZTU1ZhNXlX?=
- =?utf-8?B?R2plbDRKVWJXa2ZtV3BlM1FGYURUcnpLU0h3VmhkQm9RbDR5T2pVT0JuaS92?=
- =?utf-8?B?T1poMzlQRlM1b1pkZW9KRC9lWnZPcUxXTUdWL1k2TTI3eTN4VlZ2TGt1UndS?=
- =?utf-8?B?R3dWd3p3bGJXNXE1aHBhTlJSZTJCN2kybjhpN2FDcHQ5YWIwdHNFTEVUZnZC?=
- =?utf-8?B?WVB1bDBnU0lTbld5VEJ0VVhIQUFJRnIxdlRVMkxUWm1hM2QwdHJSVWhPc3JW?=
- =?utf-8?B?MHJuSlkrM2l1emswaXR0TWNhUlEva2Z2UzJ6QkloNlcvdS9Vcy9FVXpZYWtR?=
- =?utf-8?B?Y3dhTXMzZzBVdDZQSmZCY0MweFkzMUo0MDhoQWhrM0dvb0F5RFc1aDBhcml4?=
- =?utf-8?B?S05lZUxuNXFnalJzOUFXWEFIR1MwbkQrS2pzcDBlUTNqUG5FbEpmMUUvOW5q?=
- =?utf-8?B?UStwNnZ3Zlc0WllSRUhiNFgwekE2RHhPQ1p2d2NYa0Nuek16M1NuVWQvMXNV?=
- =?utf-8?B?c2hnRSs2aFdFdnh0ZG0ya0w3Y0o4NkNlK2c1SjlDa20ySzlrUkxYUU5rNWp4?=
- =?utf-8?B?THFNOUZ0aVdTV25weXN1Q2VuWVZac0MwOFVXTU1KSmlBVElJT2Vxeml2TmE5?=
- =?utf-8?B?ci9jTHVGc0xQUE9tYU5oVmhkVSt4Zm00NTJaYUJSeWtqenB3c3VBamlTUHBV?=
- =?utf-8?B?bVRPK0czS2lZSStCOXJHNWU0aHlvbnZQUDN0Ly8vUC85VlRaZ2oxZnUxbFJy?=
- =?utf-8?B?YjN4ZkNRV3U4bmZNQmhnWHdXb24vODZZTmgzcHg5bSthT1hTbzQxamJNR2Vp?=
- =?utf-8?Q?MwQNwqG6POHPGvVKq6exryH2ngzaU2sD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZTdRL3lQNnc5bEd6dVQ5bEdwMEdwWEpvTXNCWDROZWtkKzhsOEE3SVc5ZCsw?=
- =?utf-8?B?V1VqY2tqaUxHc3gxNURvVW5iNWdrdnpqNnhjSzhBUzJYZitFa0RybGRrVUtn?=
- =?utf-8?B?enJrbFVvOFR0bnUzd25ESGE1cldKWFpwekpRczRxYzgxbVR1OFM3NHB4dEJj?=
- =?utf-8?B?N01HNDlXSWlDcHQrOTU1a3d0Y2MyTG5vN1FuUTV3OVgvR2R4TkhZVHBlemFO?=
- =?utf-8?B?em8wbDY3MkwyQXVSMFFOaDZNZEdlQnhmMWg3NTBSeXJ2c1J2bVJnR1N4SVRD?=
- =?utf-8?B?eXZxelV4S2xlbEt5RnZFSVZLYWc0U1NtZzNPN2l5YTZZY3dmc2xtbk1uMGJJ?=
- =?utf-8?B?NDNiR2psbTcvSTJqSFhOT1IzZC9ZZ1ZjV3k2SFZnUWdoZy8vOEhITkFZejJ6?=
- =?utf-8?B?NWdqeURhY2N5RWZOKy9Uc005NFVuS1BZZVBjYUxIc084dlM2bGRwcG1TUEdW?=
- =?utf-8?B?VzFuOHoxcldQTnozV2J2NGJZdmlldkM2THdMV1dXY0MxNUpYTE9xRVlQNkxH?=
- =?utf-8?B?SHlIcWpuWXJIRlhwM1FjVTIvdE0zNWt0dFAra2JxVGc2cEdVc0RIdDU0Wm53?=
- =?utf-8?B?dTAvTm9ZWjdtOFlQRXpXMFdxMC9GekxGc0xjdzhrdHB4Zkk3aG84MHZmZ1ls?=
- =?utf-8?B?SGNIaGlEUm50U2hidFpzZFczNE9tN1JiUS8xOXBxbWgvU250NFFJcnl3UjJH?=
- =?utf-8?B?Mm5WWFpkTVpIQTcySVdtTU9JTXBFekh3RndOeHdsV1J5KzBoRUE4dzgyckJv?=
- =?utf-8?B?cG1CemRVQ0RFZ09Eck5NQVBOdGMyZWpCekZXYkhqV2pXMUJ3R1o5U3I5MVNQ?=
- =?utf-8?B?WWZ0MFB3VEVDVUZweitBMWVJekl1Z1NYRzNIMGI5RWZJMk9yTjhNeDNzS1ly?=
- =?utf-8?B?UCszWFJoM2RKWDZPOU54a2JERm5XNnpRcGlkODNaeGdBZHlvUmVEWmlvODJE?=
- =?utf-8?B?aUw3UHFUWlJxNHd2RHQ0V0FPaEhlcFVqN25OdGVPamwzTk9NOUhGcDRkSmJZ?=
- =?utf-8?B?emMrWFZFZUlPc2tQYXJQY1ZINjJIWTkvS29sZXU0SUZQdlRwb2JXUEtEY2tK?=
- =?utf-8?B?d3NabFNDZFVqaWExYTE1K093clVCN3BxelBuUU1EZ09wczRJYytyWDZuQSt5?=
- =?utf-8?B?dTFkSC9QdWxiY0d0TmZvZG9JY3dXdjBRMm91eVdpQ0VtdzlydEdmMzV2blJu?=
- =?utf-8?B?Q2VyQ3ozeS84Q0crbnNBM3h2QSs3UVFGTkFGSGhXWlkyd3hvYVR5WkdiMXJo?=
- =?utf-8?B?WHA0Wit0aDg3WEhTM1ZVWSt2cVVVMG1EQmphM1NWdnBkYzJ4ZE4yVlFkcjJV?=
- =?utf-8?B?MVVwYURtdnRUby9yMjJKejBXQk1zMGl2anJqbUtoU0hNTXQ3S2JoU1pkMGx2?=
- =?utf-8?B?aHZOd0VwVkFkNE01VWRoUzNnUkN6dTZmT0JrUHdneHgySVhKWmorQ3o0N0Vu?=
- =?utf-8?B?YTZ4RlZObVRQTWdnNmpjeWtDUFMxZlBYem5mSjhjL0s3YjVTQWhsVERxcVds?=
- =?utf-8?B?Y3RIQVVLY29rUVRGYWQydW1va0E5SHhSNjF6NHNVNnZoV3J4K21IVXFVdWV2?=
- =?utf-8?B?cVBCaHI5UUVLNnFaWmZ5NDVTRXYrSURONXhDZWFjTjNIcCsyZ2lBNjNHNUFH?=
- =?utf-8?B?dGE4VWx2Y2g2OFlGUFg0MnFDZy9VWjFTdFNmUlFzK0dIY29qWEhFMHJrYlY4?=
- =?utf-8?B?YXV1OVdPd0dMYjlUTDdhNVk5aHZQMHJKbDJNV3liWVVDaDN1UDhCRm1lUDM0?=
- =?utf-8?B?b01YanVwU0FaY2ZhN2hlWmhBQ3dLVkxlWjNsd3FNUC9VRVFxNjAzRzArV29s?=
- =?utf-8?B?alVPRTk5RTFUVmR2WG1NdHo4a0pjb1Zta25DM2MxZmxFeVZ5QUpmWlBwUytD?=
- =?utf-8?B?UnQ3Wm5sVHUzb3RId2ZxSndicHNzbkg0ajJIbW9ic3orY1RYamk0bjhEZzBU?=
- =?utf-8?B?RzFjSDVlTXNhUHdERzc4ZzhVdVdZUnhvc0Y2bWVZbGtIRDZiRFV2aGphdDMz?=
- =?utf-8?B?UkRRNWF2Znk1RGl1OWhGdUpSNFNhdjhCSk9ieTVUaGoyV2RTYnBlUE1zdFpy?=
- =?utf-8?B?LzdkY0dTZ0RMR0xzYmhBRlJOdHZYNnE0Q0dEZXRGMHpHbXRsSC8vWGhZLzRM?=
- =?utf-8?Q?18i8=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b80f179-a64e-4049-e964-08de0b223313
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 13:04:24.8735
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YBqhmDMnk3efOj7KhWx6JGRLjoAw8NHDBnLAIQax/qtGyfHZc1BvbZXQ7JMXKwY5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7796
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3A5AAC0009
-X-Stat-Signature: huonhcugept54rqg8kfw35q74gh3gaa4
-X-HE-Tag: 1760447072-374078
-X-HE-Meta: U2FsdGVkX1/div9JLLyi5oCxlp1Ui2DOpgeCB4r/HwTjxIjXAoTUsB5psnP32YaRCBwra+wSjmFsgFYBYx6vxlBLe4DF5b8zlyEt89agc32agLixJfR5i3iTwV0nexqJUaYN5XZ2V286T05vMHrMHHrqm3UyDfN5uYIBhWohFGHo2lRTzXGeuh6Tnz8HgSd9r4l2gJ1UFNJ/g2/ne+AnWnToes5go9MNZym8pUIM0oBOkC68Y5NWIO10EAlLWf9+fbIcDoYsev9R/GhReo/eDAkOjld2gQDqYdAoqZXoaST3gq4/cxRiDEIs018S1x2YL+vZnScbmShUdMuw94JzbqONOsy0lHIiiovRG2cgGQsYNg2QMhYk3v1V+0HQT8If5AmXXiQHAsIdb3L2bee3NCVCKh1jBIoDjtFnvvUYt+6w/Z6AgyoIX9LZAJ3kEgJKFnTH7usOkcQPXvYT4GgK8hEvaR/xFEJzhBseNbZo0Surlt/hvvUrhUOWSfgSU0zhInv0FEw7tWRS2alM9+DW97y46XFBv4AtwVN65UCW/XHtlzxAzDFohMTp4cG5ugdQofJrVSRl1vMc0mvvwSjZYoYLgyJuMSVtDZm/4V+4KkPMrd6ewyuqKlIh4eb5m04U1n0UdfXQX5nHUH/aXbssnVViQlR65vNAp2q+rJbM2W9ZQfRfgg3s3bkBIhaqEMF7/WK8eZQCabqHaBdmBtKdzwGmZOZFLPXwScWUqVKi7BJZxeWhUmSTCW1qnCtOLqvTMykUm3yd9DOqAc8bF5IhbbsBGMP6z5Z7k7T4e02IbDEfrA/q0HXR5TL6GDOWffYYueb2W1AXUfhoPm3qvciB7BkjZthFI0lVJ9ZHoWkEDKsdaXFt/rct0eMefFJ0v14aP8u4gmePpClYmr/ejb8M4nhqR0/MgBQwYEkzo3D2yaQ7zJzbREFSAF3cVZLWeLsrvhjyBQBLiQKSg5PZleT
- jDpVC61n
- uVMBxD3B6nczO53nU1AcDiNCk3NWWA0czq3awVtbrRbZyHwGlYGjvIJjhZHEoTDB2+kkMmcE1gA7o2o2CjU5R3jRAtHRGk5Etwkm0r6VToAm4y3P+c8IIAm7wkDzOwtef2gZo+eUsMnGZKRm0Ey6Txra4WNk/UJDwKOgzzuoKGGC5PyC5k7Z4Scj0pls3dGVQDCQzYzx8ClKEKngVPB9CfrjbhoPfe/Gp5eOHiujFLr92D0P/QjiSP9RgXWRLcFPaVd1fvwgFmXZOkvBUHoJxtpD8NP8Wczv5JXOkt6fcKqQGU106f8ipiYL4DR777yi2CEPptIP8D8aH6fW0/ppYplNYAyRw9RPRIsEXcxAgVM1lgKQ453kbl/7wX7w4T/0etNaWmAmJUQz3+X2+m06YLsT6jS0pKTSvr1syPMRuMYksj7c/ejdOyHws/hET+/wjgTW1qdAFgIxLc0fnejm0SNhcdY9eXBcNkw8Z/ipeDRXGh+k/fRU99xjSYEo35mVKl5mTNqX5s+OdFI4+WfyJIdy07f1I12EWOLRydmVKNO7/Xmhxws26gMr2qEqjI5dryZrlgmIe7529BuA=
+X-Rspamd-Queue-Id: C37661C001A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xet1fhcumfnaqecun4n1887t4jtryh8k
+X-HE-Tag: 1760447238-215414
+X-HE-Meta: U2FsdGVkX1++g/vMP/NCgBV8vA/2IZy48SpKFVFoO54MML3hCN4mKRwsVy5g6pEFsYzkNzjZlETKCpJcjYChFt3e2nMshu3RDA6oGwrbyZHSKC2Ff44yaympZWzwZsQ/T311fBGVczGvgrfv9W49yjmlfjHWO6eDgG0Ea7OluOh/NXPVMvLowsGnLl4LInAfFhi+3Ru4+eh3fB8bmz7lJU/SXb4f2kMZj3lEvFyj8pLyzsa6g5NlLE/JYAttjsL3B0xmx+4hC/PxfSBxYFj8FPbqNs/DSA2BzoJahC3MOZ/CF1i9SaHsm5FKVha56zsUWqCrGEfgtV30BB8zUfncyzszVqbOptjNsLXDk0ebz7Nt3tdy9n83yNaQbIEaoaxFaITtYAFV5wsv2wJovYvaaRYqusnyBqYYKceZPNpXquTa+BerjuhRZjc1KFORAjk7ym9oYG5HiqTXxUqH2XsXVhL5q+Pb/7PrLuo4fG4FaH3JurDTtWIissCtMlVrEOUax/4Bxu0QxPr1wDTT4UHzEM1kf4tiirqLdogShwwszr/0Es9oETZ3z982+Hgg+0MNGgJwpVKlxYrqAdQ2n0mew2nSnLvtRYcxR/7/OxjcFrLBkURED2IBPQsrr/KeYacZfK/F5OLIQ/Ai7cLs/G7xGWutSQvQMv7jYte/tbdA65I6EtyhmjPzXoBPLVmM81C8BVZ9Rgpw2B7eIagadt3QGgJ5K/Z6i/ZSq5JP+QxV1WOSqnxP5O0lGJm/dYr8qJO3FlU2Cf95siGghxOhE1izr4bZAKU+4hpuChIhZ/wY84Jac5JdmB2IhrwhPmpYLrOa5+iRD51FXdobngjb0JjquAZRa+k4DL/qlcZ0TQ6kxNLwMSH+3odhzfPkXkBILGTZQENXRv8zL+7xYaplbUhEX+r85E1Uwp58kKHkslUrZroMXVs7QkSLWB5cbYksTpfn4HHR/hhHIUL7US9jKjw
+ Ryg3Fg8p
+ 37z3XmRUlbOjfcVSKZPTBb5RP+bGwma0+MCbkpnA7p/3iUxcQLBTdQMQYcSGgYiI/yC2krA581BcqEEqzO84qlNckLtRx5SZza/zaZSvNXQIC2rnotM5FPQJFSKyzMgtMGUmhTjVtt2NL4gxwXh/1dkjRuZS2vPwvlvkg5yoACDSY8jixvqDvbuJ+JTEf+Mmx/We5/UEknkRSIgQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -210,130 +129,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14.10.25 14:44, Zhaoyang Huang wrote:
-> On Tue, Oct 14, 2025 at 7:59 PM Christian König
-> <christian.koenig@amd.com> wrote:
->>
->> On 14.10.25 10:32, zhaoyang.huang wrote:
->>> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
->>>
->>> The size of once dma-buf allocation could be dozens MB or much more
->>> which introduce a loop of allocating several thousands of order-0 pages.
->>> Furthermore, the concurrent allocation could have dma-buf allocation enter
->>> direct-reclaim during the loop. This commit would like to eliminate the
->>> above two affections by introducing alloc_pages_bulk_list in dma-buf's
->>> order-0 allocation. This patch is proved to be conditionally helpful
->>> in 18MB allocation as decreasing the time from 24604us to 6555us and no
->>> harm when bulk allocation can't be done(fallback to single page
->>> allocation)
->>
->> Well that sounds like an absolutely horrible idea.
->>
->> See the handling of allocating only from specific order is *exactly* there to avoid the behavior of bulk allocation.
->>
->> What you seem to do with this patch here is to add on top of the behavior to avoid allocating large chunks from the buddy the behavior to allocate large chunks from the buddy because that is faster.
-> emm, this patch doesn't change order-8 and order-4's allocation
-> behaviour but just to replace the loop of order-0 allocations into
-> once bulk allocation in the fallback way. What is your concern about
-> this?
+This proposes a fix for a security vulnerability related to IOMMU Shared
+Virtual Addressing (SVA). In an SVA context, an IOMMU can cache kernel
+page table entries. When a kernel page table page is freed and
+reallocated for another purpose, the IOMMU might still hold stale,
+incorrect entries. This can be exploited to cause a use-after-free or
+write-after-free condition, potentially leading to privilege escalation
+or data corruption.
 
-As far as I know the bulk allocation favors splitting large pages into smaller ones instead of allocating smaller pages first. That's where the performance benefit comes from.
+This solution introduces a deferred freeing mechanism for kernel page
+table pages, which provides a safe window to notify the IOMMU to
+invalidate its caches before the page is reused.
 
-But that is exactly what we try to avoid here by allocating only certain order of pages.
+Change log:
+v6:
+ - Follow commit 522abd92279a to set/clear/test a flag of struct
+   ptdesc.
+ - User page_ptdesc() helper.
+ - Squash previous PATCH 6 and 7.
+ - Rename CONFIG_ASYNC_PGTABLE_FREE to CONFIG_ASYNC_KERNEL_PGTABLE_FREE.
+ - Refine commit message.
+ - Rebase on top of v6.18-rc1.
 
-Regards,
-Christian.
+v5:
+ - https://lore.kernel.org/linux-iommu/20250919054007.472493-1-baolu.lu@linux.intel.com/
+ - Renamed pagetable_free_async() to pagetable_free_kernel() to avoid
+   confusion.
+ - Removed list_del() when the list is on the stack, as it will be freed
+   when the function returns.
+ - Discussed a corner case related to memory unplug of memory that was
+   present as reserved memory at boot. Given that it's extremely rare
+   and cannot be triggered by unprivileged users. We decided to focus
+   our efforts on the common vfree() case and noted that corner case in
+   the commit message.
+ - Some cleanups.
 
->>
->> So this change here doesn't looks like it will fly very high. Please explain what you're actually trying to do, just optimize allocation time?
->>
->> Regards,
->> Christian.
->>
->>> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
->>> ---
->>>  drivers/dma-buf/heaps/system_heap.c | 36 +++++++++++++++++++----------
->>>  1 file changed, 24 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
->>> index bbe7881f1360..71b028c63bd8 100644
->>> --- a/drivers/dma-buf/heaps/system_heap.c
->>> +++ b/drivers/dma-buf/heaps/system_heap.c
->>> @@ -300,8 +300,8 @@ static const struct dma_buf_ops system_heap_buf_ops = {
->>>       .release = system_heap_dma_buf_release,
->>>  };
->>>
->>> -static struct page *alloc_largest_available(unsigned long size,
->>> -                                         unsigned int max_order)
->>> +static void alloc_largest_available(unsigned long size,
->>> +                 unsigned int max_order, unsigned int *num_pages, struct list_head *list)
->>>  {
->>>       struct page *page;
->>>       int i;
->>> @@ -312,12 +312,19 @@ static struct page *alloc_largest_available(unsigned long size,
->>>               if (max_order < orders[i])
->>>                       continue;
->>>
->>> -             page = alloc_pages(order_flags[i], orders[i]);
->>> -             if (!page)
->>> +             if (orders[i]) {
->>> +                     page = alloc_pages(order_flags[i], orders[i]);
->>> +                     if (page) {
->>> +                             list_add(&page->lru, list);
->>> +                             *num_pages = 1;
->>> +                     }
->>> +             } else
->>> +                     *num_pages = alloc_pages_bulk_list(LOW_ORDER_GFP, size / PAGE_SIZE, list);
->>> +
->>> +             if (list_empty(list))
->>>                       continue;
->>> -             return page;
->>> +             return;
->>>       }
->>> -     return NULL;
->>>  }
->>>
->>>  static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->>> @@ -335,6 +342,8 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->>>       struct list_head pages;
->>>       struct page *page, *tmp_page;
->>>       int i, ret = -ENOMEM;
->>> +     unsigned int num_pages;
->>> +     LIST_HEAD(head);
->>>
->>>       buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
->>>       if (!buffer)
->>> @@ -348,6 +357,8 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->>>       INIT_LIST_HEAD(&pages);
->>>       i = 0;
->>>       while (size_remaining > 0) {
->>> +             num_pages = 0;
->>> +             INIT_LIST_HEAD(&head);
->>>               /*
->>>                * Avoid trying to allocate memory if the process
->>>                * has been killed by SIGKILL
->>> @@ -357,14 +368,15 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
->>>                       goto free_buffer;
->>>               }
->>>
->>> -             page = alloc_largest_available(size_remaining, max_order);
->>> -             if (!page)
->>> +             alloc_largest_available(size_remaining, max_order, &num_pages, &head);
->>> +             if (!num_pages)
->>>                       goto free_buffer;
->>>
->>> -             list_add_tail(&page->lru, &pages);
->>> -             size_remaining -= page_size(page);
->>> -             max_order = compound_order(page);
->>> -             i++;
->>> +             list_splice_tail(&head, &pages);
->>> +             max_order = folio_order(lru_to_folio(&head));
->>> +             size_remaining -= PAGE_SIZE * (num_pages << max_order);
->>> +             i += num_pages;
->>> +
->>>       }
->>>
->>>       table = &buffer->sg_table;
->>
+v4:
+ - https://lore.kernel.org/linux-iommu/20250905055103.3821518-1-baolu.lu@linux.intel.com/
+ - Introduce a mechanism to defer the freeing of page-table pages for
+   KVA mappings. Call iommu_sva_invalidate_kva_range() in the deferred
+   work thread before freeing the pages.
+
+v3:
+ - https://lore.kernel.org/linux-iommu/20250806052505.3113108-1-baolu.lu@linux.intel.com/
+ - iommu_sva_mms is an unbound list; iterating it in an atomic context
+   could introduce significant latency issues. Schedule it in a kernel
+   thread and replace the spinlock with a mutex.
+ - Replace the static key with a normal bool; it can be brought back if
+   data shows the benefit.
+ - Invalidate KVA range in the flush_tlb_all() paths.
+ - All previous reviewed-bys are preserved. Please let me know if there
+   are any objections.
+
+v2:
+ - https://lore.kernel.org/linux-iommu/20250709062800.651521-1-baolu.lu@linux.intel.com/
+ - Remove EXPORT_SYMBOL_GPL(iommu_sva_invalidate_kva_range);
+ - Replace the mutex with a spinlock to make the interface usable in the
+   critical regions.
+
+v1: https://lore.kernel.org/linux-iommu/20250704133056.4023816-1-baolu.lu@linux.intel.com/
+
+Dave Hansen (5):
+  mm: Add a ptdesc flag to mark kernel page tables
+  mm: Actually mark kernel page table pages
+  x86/mm: Use 'ptdesc' when freeing PMD pages
+  mm: Introduce pure page table freeing function
+  mm: Introduce deferred freeing for kernel page tables
+
+Lu Baolu (2):
+  x86/mm: Use pagetable_free()
+  iommu/sva: Invalidate stale IOTLB entries for kernel address space
+
+ arch/x86/Kconfig              |  1 +
+ mm/Kconfig                    |  3 ++
+ include/asm-generic/pgalloc.h | 18 +++++++++
+ include/linux/iommu.h         |  4 ++
+ include/linux/mm.h            | 71 ++++++++++++++++++++++++++++++++---
+ arch/x86/mm/init_64.c         |  2 +-
+ arch/x86/mm/pat/set_memory.c  |  2 +-
+ arch/x86/mm/pgtable.c         | 12 +++---
+ drivers/iommu/iommu-sva.c     | 29 +++++++++++++-
+ mm/pgtable-generic.c          | 39 +++++++++++++++++++
+ 10 files changed, 167 insertions(+), 14 deletions(-)
+
+-- 
+2.43.0
 
 
