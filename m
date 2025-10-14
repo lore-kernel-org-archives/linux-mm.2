@@ -4,96 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEFCECCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58509CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 15:33:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E5FD8E0140; Tue, 14 Oct 2025 11:30:01 -0400 (EDT)
+	id B3CFD8E00C9; Tue, 14 Oct 2025 11:33:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BD3E8E010A; Tue, 14 Oct 2025 11:30:01 -0400 (EDT)
+	id AED2A8E0090; Tue, 14 Oct 2025 11:33:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D3BD8E0140; Tue, 14 Oct 2025 11:30:01 -0400 (EDT)
+	id 9DC2A8E00C9; Tue, 14 Oct 2025 11:33:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E7FED8E010A
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:30:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B41DA1A083E
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:30:00 +0000 (UTC)
-X-FDA: 83997105360.22.99FDD5D
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 00D3D40011
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:29:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQDeI29R;
-	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D5C28E0090
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:33:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CE101A0957
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:33:26 +0000 (UTC)
+X-FDA: 83997114012.19.66201C6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A8EE54000B
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 15:33:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VfmNMPSU;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760455799;
+	s=arc-20220608; t=1760456003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vR+iQzDDtN6M7VRFpvNrFUkeHoDZ4oVbeGYumjrias=;
-	b=LEMBoIyQdMpMf5PwyamacV+ueKozDVVQ2WQ6TqSJEwtrFQL2ZBwMEqbNiubKFkG/7iUUpw
-	wswmp3U5dJlbTKEm2n+f7BlOtFirYHSo9o3/NA4o+gOxpEXiy1WzYFD2SLkwGMXEAnQiTT
-	BnrrEkPmrRuNbWTYsNLQMx5qAEFXeK4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQDeI29R;
-	spf=pass (imf04.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760455799; a=rsa-sha256;
+	bh=+1UVYE8sOFf7urKOQ7gZ7h3LRzinBvs61P0Q6ItQr+k=;
+	b=xi01GNg/21SJzCSX6s32DFLsrYUj0tGdHa7fwqT89yeNTxLYPiv330mOqFnN7XzNW1wXex
+	gvoVlqVZIdiYG785pG1JSD3TZdO6kTs/3bLQ3Empo5N8ozxRjkyVduQJdGsXOM+d9IYibo
+	Hd5thDQvEAwMIa2HDjWnNb/7fxrK9zA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760456003; a=rsa-sha256;
 	cv=none;
-	b=2M68Ln5EBm6jYn2+m0KFsSrKsfiSqoQ1ZCfdJJqpZnhndz4aDfBbN0ch1YIL1UFnRa1yg1
-	wEjEENU+0EiGW7kaxM+saeAo1hJFbTNEYmjRH006WgoV1MjAkhDMfQmaUhAsouZ0VBKHUx
-	Qefroq6jyNC7fbT2jIysmfhCkzUKSgo=
-Date: Tue, 14 Oct 2025 15:29:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760455797;
+	b=CJNoY6bflE9NPu+3MPuv8zJOtx8xeJyPGzKkVm1xO41yzaUkVwV0DShdYWtj1qUtwOTwKD
+	X9adKHIcKFuXWMz8k5EH7veExVtO6vldQ0nen3kmEcfIklpXdLGVADL8a6gv5MISb5EvQK
+	iIicbT3G7AhIQS28OB7dHk8YR6EPOO4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VfmNMPSU;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760456002;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8vR+iQzDDtN6M7VRFpvNrFUkeHoDZ4oVbeGYumjrias=;
-	b=nQDeI29RZax/5DJTAfcx+0NEaydLFpQR2DmXX8FMsYZe/VXunSXZL6JgBlqWTWuDhQkFPw
-	izZScTJxg54czvoeqdhW0cWTqzo24ABE9WzsM9ChOUfoflmwJJ4BN6RcoK41qRmaU+2Jgf
-	K8+JZ3m9O2ymEDrD4WnIknLokpre8n4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
-	"sj@kernel.org" <sj@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "clabbe@baylibre.com" <clabbe@baylibre.com>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "ebiggers@google.com" <ebiggers@google.com>, 
-	"surenb@google.com" <surenb@google.com>, "Accardi, Kristen C" <kristen.c.accardi@intel.com>, 
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, 
-	"Gopal, Vinodh" <vinodh.gopal@intel.com>
-Subject: Re: [PATCH v12 22/23] mm: zswap: zswap_store() will process a large
- folio in batches.
-Message-ID: <xnwqi5jnawvxdciqapfhhkneynsdr3dx36hmqe7jn4shm3uc3y@iyi5qqfubqey>
-References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
- <20250926033502.7486-23-kanchana.p.sridhar@intel.com>
- <2qvfjavbepw3sq2pvvcez6jsc3bxkxej27674l4ztfdza7jqaq@xi6qndkj5xhh>
- <PH7PR11MB81216AEDFD10B5BDCBCE1F19C9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+1UVYE8sOFf7urKOQ7gZ7h3LRzinBvs61P0Q6ItQr+k=;
+	b=VfmNMPSUREAh+HJNXOIvVquQlI/M5czYXD2oalqod8NeIDSwg/AnuqmRodGMz76MkSoXN9
+	/ZvVs9f2sUNZruKneZ5X/L9WLI5ETXBktAM/P5R44hMODYXjQim5nj6FmXgtbCRQZyynkq
+	g9ttAxKErEuZJqp1j8/N18hVnYbRsmw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-ke64E4ATPbmlQKUHOq-lBA-1; Tue, 14 Oct 2025 11:33:21 -0400
+X-MC-Unique: ke64E4ATPbmlQKUHOq-lBA-1
+X-Mimecast-MFC-AGG-ID: ke64E4ATPbmlQKUHOq-lBA_1760456000
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46e509374dcso24395035e9.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 08:33:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760456000; x=1761060800;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+1UVYE8sOFf7urKOQ7gZ7h3LRzinBvs61P0Q6ItQr+k=;
+        b=kdIYoOi3JagWy3H9mRfOMQwyg4d8YX115+ommu0eVPZZ1ZaVqYRPZ6IMQaUOx3sEOM
+         ULdOA3YZpxKCxtu4nGfkNeB9gI6Hc3NrIoaCi09zSlnvUxqjlpHIK7wqBLIsbJZ7qcK7
+         hrCjwGC0JpFOsv0F9LGTaPxpgZxaxsuo98CZ41aD1bc8Z0IsOHVkyo1HGLDjn5LA/AIJ
+         tvpuk2Da+CbcQ/dGWbkFDe6guGvF6NKVaW2avdrBBvpRTqcn7BzyTxo71YMzZmtyPTMz
+         +CRrmJ5t0i4V6RquiZIT6J3GZ8Jc1hxbP1iRfV5wWBcr78QznU+pFBR61T+5HWwgL471
+         C0eg==
+X-Forwarded-Encrypted: i=1; AJvYcCXD5/JizuDq7FutAZCveH8wzivn1Z9Zyb3vQpRnmw3WsNuWPaqurfJZrO2I9cX4noNkQc1enut15A==@kvack.org
+X-Gm-Message-State: AOJu0YyTf7utk9uOepCjL+RKwO586mj1RNxI04iZIPQQjwjOFf6CjRMP
+	s7pKs+iJi/uNynm89zPKOJydOAy4xxiAP6QT3EUUagJZVsWMnYW7gAOLlFrykRQSpsyGRjFVXmk
+	ymqj/ativMn9dj9M/ZMC4UniecKD2JjclW+0MogFJkGpf8US0gMuH
+X-Gm-Gg: ASbGncvQ4foDHZKscBUtPA5IVNMxJJ7DBmqlncWpYJj+9uk3+FvdwV88aWwg7KSL7/H
+	vvbE00cDHp7gUxegxEOqGtzzgTdJ866plqeztCzVwIDY9fz6oXsp6UNQwZqoRFh6BqooglAi4mN
+	VDya7IjGV76xRPhW2uyFg8GM2qvAgrhC7kXa/2RhKthQTHURFldrH5AW3qhD8xNMceuotG3xCj1
+	6MjJLAwH4zdzcIPcx/8f9DYk6ZiHEw2J1zUd6vtp3WrC+InQTZU04oCXLgHDgeKkVtzGyK1mX6y
+	EmJkJq4VMFnX094yj+oh9kYiiYDs4HD3zy6b3DzOvPG25yATMojqT5EJO1EvvNFdW8WhjDEMDw=
+	=
+X-Received: by 2002:a05:600c:4506:b0:45b:8a0e:cda9 with SMTP id 5b1f17b1804b1-46fa9a8638dmr184764085e9.2.1760456000245;
+        Tue, 14 Oct 2025 08:33:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhJpIXD7XQ5pJSvl2kMtYK5HLrtya1KimSbQX7gY+SFRx0KBjyrmvvoAE0I1/rLJ3ZdqjMkg==
+X-Received: by 2002:a05:600c:4506:b0:45b:8a0e:cda9 with SMTP id 5b1f17b1804b1-46fa9a8638dmr184763725e9.2.1760455999749;
+        Tue, 14 Oct 2025 08:33:19 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb32a84edsm132343605e9.4.2025.10.14.08.33.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 08:33:19 -0700 (PDT)
+Message-ID: <e2c77ce4-c260-4d10-b9b6-93a507080e61@redhat.com>
+Date: Tue, 14 Oct 2025 17:33:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR11MB81216AEDFD10B5BDCBCE1F19C9E6A@PH7PR11MB8121.namprd11.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dm4kjtsy3p58zkgm9e5xqbz1ezz8b4o1
-X-Rspamd-Queue-Id: 00D3D40011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v3 1/1] mm/khugepaged: abort collapse scan on
+ non-swap entries
+From: David Hildenbrand <david@redhat.com>
+To: Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ ioworker0@gmail.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mpenttil@redhat.com, npache@redhat.com,
+ ryan.roberts@arm.com, ziy@nvidia.com, richard.weiyang@gmail.com
+References: <20251008032657.72406-1-lance.yang@linux.dev>
+ <f33735d3-b38d-4b6a-aeba-b415e6b24ea2@lucifer.local>
+ <0bfdbccd-9d4a-409f-ae43-b44bb7347d70@linux.dev>
+ <f7392f43-b8f1-4e6a-b9c8-25ad8a47f82c@lucifer.local>
+ <d2e5b099-94bd-444d-9946-182807443539@linux.dev>
+ <c44e198d-7d46-491e-adc1-86cc306c27db@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c44e198d-7d46-491e-adc1-86cc306c27db@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dd3dd4BDuO8Yppq_o6mSPRhTlLVQ2o4jHwQSZMbLEMA_1760456000
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8kk9z4szsb1p1cwwu4ua4i3nmz1ncwee
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760455798-454251
-X-HE-Meta: U2FsdGVkX1/N+H6Gmo2BleBfVetMaRsPLftE0b8aQ1iCEHqwjyX4zZP7N14bw0VZrRPJzqeRsT1VOrQtXOf3LP+SVKyom8VfnYqVQNxkWvpRF3IunUYFElzNI6Yr5s/fI828wivbx1FAog6/h7HDGAFjvLuk5YGFQcwR+k80mlunsUVJF5oSOg946MayK1ZpAVFx1GUfkh2XXG+YB4yQ0RzRhWj5TJQg0kRzP7lHt+qRgzbAuPbkdhF9iaOnBY64L2U6J3dcx3TgALyxP9urmEWiLIOfR1av30BN+c8TCIBBHVtfgEho1wM1ncWmEx5fJ7End8R52lK6a/gRVSejzcjvVPXeLUe8yhAiPpPD1lEiN/Jr39da6D+3hV6XOnB/efPqRt4uAm1bJMnwRP0cafscWfaf/hxs4OOOerzA/9sOP7dKLZIPp7zUJS+TXCqYKVn9x0s0sgMOHiwWxjpS3xwwzHKlqOhiDwKmY6P5SDaNv5XIzflG41n6o7jmk7/WaxzJoTOnQiEYcD5A4EVawySvqACZ5+GbY8kPcMoalCeSgxzS9Fxg3Y0pGthcI6fWF1GrcocvUDFfBSyoNyRwgZOjAdnTOoXuprT9QkqVDnCm8TxEyqa0ty2feNRhi/41GzyRD32GtJ2SqTqQgztsnDOpU4zkcdQ0/iwNNm1HMhNwUwfbCARpzcxeVayFPyewtHDuoPXmvLttETxONWsxeQE6X9IWxHP6H0j2nveV3F3hIkFseToJC2Ni0Cwvot1gyIv3zLSXj3G3NszS19MlzAKJCPLKFbpV8CU5ujDHopNXAGU65BSKBtLHdSJIBbgPyohvFZxHRVAAPHjxwGLYgmxQtnCTawiVfoudOslHvCrqyz+jMXTbvC/CuNSRPOIRw1qDz9aKCw16wmOKlmbGCAt5JuKJRfeZ3YlWs8HfHvbHaC28ZLfponvZ8e9DJV62MEsEwWWZDz96zYzn6yF
- H0H/didV
- K1bYY3rOqragx+viT+FONJ8u7F3QNaj7qNCOEgWzWjOyQaS6IsBEAym2FBKHxhBJK4bwcnm03A2uLRBJ1YdtbF0EFbucq8eJjV2Dn+nU5oWSQbk3y12B95Qafjij7F1cnANQi1UMo02rvL/SjjcC6OITgq90QEWkvAYMDpMB0HvR9e0IGknUDSI2y0wM2i9AtMk1DSpvSf2bHHySjOXJyT8KmojiRAz1mVgx/3eT7szLIlpha8seQ41oubBK5xtZVn8Kwf+tkOJV/j2loLBiPY3HPEQ80/xlQI9rphPjnHOqj9UEbsVIIHLWmfY+ehL2JXD9r
+X-Rspamd-Queue-Id: A8EE54000B
+X-HE-Tag: 1760456003-957308
+X-HE-Meta: U2FsdGVkX18/mX1OOB0N4hHstrI0TkBTijjCAE/RzVHOLvmsDNkMOfML4nEmg3Lq/srEB/ZdvU/DrxfmaPJS3YPsj5hk8jK3Or0Hu9XecF5U40OpbUCvSs87Vt4FXgDp9KaCkvwxU65oZWPEQ/6pl9nYbo+wBu2u82Y0iHGftDllzXrOU1mka3cTX6TXRhdIfnqjW5v1D3oMOLuPMLH1jyF5aSWe/cZN/xYo3/kZeVb1KhmEsCSTyyhq8aREJr+fHPywD1DMjXfnAKYh1d94/VS9hEureOCsSxsf7TKe9uT8FLriqmHgwGQxb925qYVc+0tR3+a0zxPvAvykmE5PlZMhpxvj6gfNMqp8EPsK54yNtKrmyU3+WaAPwYGm1hrx/4Fw6TFMAiM+CMpmK27zHEUixL02wWMTbVZh6FQO8zWSmO76zrtwbx8CcQnuvfP/Rnsnu+oiggfRng3IgpVkFEqGrxBvc1T15DcPudldTBydhTkG0YjunsffDm10scv92jCbdCchGHybp0tVokWuu1quBG7lBvaJJOmOSa05Sz0FPuIf9CyRfDyVEb94aHHpy5Xw1BlU14Azb0jB29bh/SVWlhnetQPvJ8WYUP5owvjp1JL6hEY+QxVdHiD7vrryKRHL9ikQzgq9LN4RHA83Sjcf692D9jzY+fzZlKpu+UYHnSlSNLaBUqhjJoTqjqCN8uj3IcUDYoNdth0sMCPMVF8H+kR/hXgEdwjloJqEPtUPRUrNj/QWmqKKwoSe27IYTmBxDSyfLKsRbjACYugNljrJvbgJQ0Dj4w2JeUtdo80aftBaKaZb7X/LneZ+yRKjD617IGKwY+Z1mHYO1nceFC74d1dI0oEmxRLtqEnlU9QBzWmqmLRqYZrs+d5tlz4xwzamKcBPr+V1h6LBIYJreCUO0QjOf9ZsuGcmXcEURFRcsRL4m3debgEEsFS/2uGOztmmolmvYs7QSNj9WCT
+ 1pr7IcI7
+ /nRWGZD3Lfdr9+BvnhB7t3RxjfEjljm5LR18zQ/HuhrPf01ujJd4oVArGJra/QvpcmSwuCn98bj9rMkCXzdgTOGYsWtGJwHNNWsgRapRT5ILW7BosvlGHD/Mre+crRxcZG0FNJiLHRJ5O0r/QR5K3C3yRVB80114FJ5huFEppIJmbEh5Odrag4xfeTzjLMWVI3jnNs52rqXuARsV/wfqONKEovsSTv6mzrosUD9xKDANgUsAV24OOILJTJXhgNa0uq8mjoPaYG5Ib+nU8BUs/cZr99eHZHzc61cQ+eU2vgDQwH2wzo+blXS54Nvfp5dRNWFvOIRqgRneWmqIT7AFbItK5oKtdYKYF2z8e36/I4GinX7S8ZmeJIRjC6EwT5iCRCHfRJ8kDEsIH3zM9OcZFR6xcUIlz1c8cFlTcnoDuSzkebej2CHG8ilOsrgJ2ewsX1Q6Eppx+xinrsZUg86q+rstXOsSG46PS0ZOx+UgJfeVMfA6x73opGe1jE1M2UzvRuYQvv3a5zWGrmiz0weOSm7sWxqrJYdrCc106Ss8AUnZOEV8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,264 +186,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[..]
-> > > @@ -158,6 +161,8 @@ struct zswap_pool {
-> > >  	struct work_struct release_work;
-> > >  	struct hlist_node node;
-> > >  	char tfm_name[CRYPTO_MAX_ALG_NAME];
-> > > +	u8 compr_batch_size;
-> > > +	u8 store_batch_size;
-> > 
-> > I don't think we need to store store_batch_size, seems trivial to
-> > calculate at store time (perhaps in a helper).
-> > 
-> > Taking a step back, is there any benefit to limiting store_batch_size to
-> > compr_batch_size? Is there a disadvantage to using
-> > ZSWAP_MAX_BATCH_SIZE
-> > even if it's higher than the HW compression batch size?
+On 14.10.25 17:12, David Hildenbrand wrote:
+> On 14.10.25 17:01, Lance Yang wrote:
+>>
+>>
+>> On 2025/10/14 22:39, Lorenzo Stoakes wrote:
+>>> On Tue, Oct 14, 2025 at 10:26:20PM +0800, Lance Yang wrote:
+>>>>
+>>>>
+>>>> On 2025/10/14 19:08, Lorenzo Stoakes wrote:
+>>>>> On Wed, Oct 08, 2025 at 11:26:57AM +0800, Lance Yang wrote:
+>>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>>>> index abe54f0043c7..bec3e268dc76 100644
+>>>>>> --- a/mm/khugepaged.c
+>>>>>> +++ b/mm/khugepaged.c
+>>>>>> @@ -1020,6 +1020,11 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
+>>>>>>      		if (!is_swap_pte(vmf.orig_pte))
+>>>>>>      			continue;
+>>>>>>
+>>>>>> +		if (non_swap_entry(pte_to_swp_entry(vmf.orig_pte))) {
+>>>>>> +			result = SCAN_PTE_NON_PRESENT;
+>>>>>> +			goto out;
+>>>>>> +		}
+>>>>>
+>>>>> OK seems in line with what we were discussing before...
+>>>>
+>>>> Yep. That's the idea :)
+>>>>
+>>>>>
+>>>>>> +
+>>>>>>      		vmf.pte = pte;
+>>>>>>      		vmf.ptl = ptl;
+>>>>>>      		ret = do_swap_page(&vmf);
+>>>>>> @@ -1281,7 +1286,23 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>>>      	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>>>>>      	     _pte++, addr += PAGE_SIZE) {
+>>>>>>      		pte_t pteval = ptep_get(_pte);
+>>>>>> -		if (is_swap_pte(pteval)) {
+>>>>>> +		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>>>>>> +			++none_or_zero;
+>>>>>> +			if (!userfaultfd_armed(vma) &&
+>>>>>> +			    (!cc->is_khugepaged ||
+>>>>>> +			     none_or_zero <= khugepaged_max_ptes_none)) {
+>>>>>> +				continue;
+>>>>>> +			} else {
+>>>>>> +				result = SCAN_EXCEED_NONE_PTE;
+>>>>>> +				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
+>>>>>> +				goto out_unmap;
+>>>>>> +			}
+>>>>>> +		} else if (!pte_present(pteval)) {
+>>>>>> +			if (non_swap_entry(pte_to_swp_entry(pteval))) {
+>>>>>
+>>>>
+>>>> Thanks for pointing that out!
+>>>
+>>> You've deleted what I've said here and also not indicated whether you'll do what
+>>> I asked :)
+>>>
+>>> Please be clearer...
+>>
+>> Oh, I didn't delete your comment at all ... It's just below ...
+>>
+>>>
+>>>>>>> Hm but can't this be pte_protnone() at this stage (or something
+>> else)? And then <-- Here!
+>>>>
+>>>> Yeah. The funny thing is, a protnone pte cannot actually get here, IIUC.
+>>>>
+>>>> ```
+>>>> static inline int pte_protnone(pte_t pte)
+>>>> {
+>>>> 	return (pte_flags(pte) & (_PAGE_PROTNONE | _PAGE_PRESENT))
+>>>> 		== _PAGE_PROTNONE;
+>>>> }
+>>>>
+>>>> static inline int pte_present(pte_t a)
+>>>> {
+>>>> 	return pte_flags(a) & (_PAGE_PRESENT | _PAGE_PROTNONE);
+>>>> }
+>>>> ```
+>>>>
+>>>> On x86, pte_present() returns true for a protnone pte. And I'd assume
+>>>> other archs behave similarly ...
+>>>
+>>> This was one example, we may make changes in the future that result in entries
+>>> that are non-present but also non-swap.
+>>>
+>>> I don't see the point in eliminating this check based on an implicit, open-coded
+>>> assumption that this can never be the case, this is just asking for trouble.
+>>>
+>>>>
+>>>>> we're just assuming pte_to_swp_entry() is operating on a swap entry when it in
+>>>>> fact might not be?
+>>>>>
+>>>>> Couldn't we end up with false positives here?
+>>>>
+>>>> Emm, I think we're good here and the code is doing the right thing.
+>>>
+>>> I mean sorry but just - NO - to doing swap operations based on open-coded checks
+>>> that you implicitly feel must imply a swap entry.
+>>>
+>>> This makes the code a lot more confusing, it opens us up to accidentally
+>>> breaking things in future and has little to no benefit, I don't see why we're
+>>> doing it.
+>>>
+>>> I don't think every little 'aha X must imply Y so just eliminate Z' idea need be
+>>> implemented, this feels like a sort of 'mathematical reduction of code ignoring
+>>> all other factors'.
+>>
+>> Understood. Changing !pte_present() to is_swap_pte() will resolve all your
+>> concerns, right?
+>>
+>> ```
+>> if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>> [...]
+>> } else if (is_swap_pte(pteval)) { <-- Here
+>> 	if (non_swap_entry(pte_to_swp_entry(pteval))) {
+>> 		[...]
+>> 	}
+>> [...]}
 > 
-> Thanks Yosry, for the code review comments. I had a discussion with
-> Barry earlier on these very same topics as follow up to his review comments
-> for v11, starting with [1]. Can you please go through the rationale for
-> these design choices, and let me know if you have any questions:
+> Can we please take a step back and make sure we are not starting to do
+> stuff differently than elswehere in the kernel, please?
 > 
-> [1]: https://patchwork.kernel.org/comment/26530319/
 
-I am surprised that calculating the value in zswap_store() causes a
-regression, but I am fine with keeping the precalculation in this case.
+For the sake of progress, I assume the compiler will optimize out the 
+additional pte_none() stuff.
 
-I think there's a bigger problem here tho, more below.
+I absolutely, absolutely hate is_swap_pte(). To me, it makes the code 
+more confusing that talking about something that is !present but also 
+!none: there is something that is not an ordinary page table mapping.
 
-> > > + */
-> > > +static __always_inline int zswap_entries_cache_alloc_batch(void
-> > **entries,
-> > > +							   unsigned int
-> > nr_entries,
-> > > +							   gfp_t gfp)
-> > > +{
-> > > +	return kmem_cache_alloc_bulk(zswap_entry_cache, gfp, nr_entries,
-> > entries);
-> > 
-> > We currently use kmem_cache_alloc_node() in zswap_entry_cache_alloc() to
-> > allocate the entry on the same node as the compressed page. We use
-> > entry_to_nid() to get the node for LRU operations.
-> > 
-> > This breaks that assumption.
-> 
-> You bring up a good point. I was looking at the code in slub.c and my
-> understanding thus far is that both, bulk allocations and kmem_cache_alloc_node()
-> allocations are made from a per-CPU "cpu_slab" that is allocated by SLUB.
-> 
-> IIUC, the concern you are raising is in the mainline, the entry is allocated on
-> the same node as the compressed page, and gets added to the LRU list of that
-> node. IOW, the node to which the compressed page belongs is the one to whose
-> LRU the entry will be added.
-> 
-> With this patch, with kmem_cache_alloc_bulk(), the entry will be created on
-> the per-CPU slab of the CPU on which zswap_store() is called and will be
-> added to the LRU of that per-CPU slab's NUMA node. Hence, the end result
-> could potentially be that the zswap_entry for a page could potentially be
-> on a different NUMA node/memcg than the page's NUMA node.
-> 
-> This is my thinking as to how this will impact the zswap shrinker:
-> 
-> 1) memcg shrinker: if the memcg the entry ends up in is on the zswap_list_lru,
->     the entry will be written back.
-> 2) Global shrinker: will cycle through all memcg's that have pages in the
->     zswap_list_lru, and the entry will be written back.
-> 
-> Based on this, it is not clear to me if there is a problem, and would like to
-> request you, Nhat and others to provide insights as well.
-> 
-> Interestingly, most of the code in slub.c has unlikely(!node_match(slab, node)).
-> Does this imply some higher level mm slab allocation requirements?
-> 
-> I am Ok with just calling zswap_entry_cache_alloc() for "nr_pages" if we
-> think this would be more correct.
+The underlying problem is how we hacked in non-swap into swap (and 
+that's exactly where it gets confusing). Well, which this series is all 
+about.
 
-I saw your other response as well, but I think one thing is not clear
-here. The zswap entry will get written back "eventually", sure, but
-that's not the problem.
+So, I don't care in the end here.
 
-If the zswap entry is on the wrong node lru, two things happen:
-(a) When the "right" node is under memory pressure, we cannot free this
-    entry by writing it back since it's not available in the lru.
-(b) When the "wrong" node is under memory pressure, it will potentially
-    writeback entries from other nodes AND report them as being freed
-    from this node.
+-- 
+Cheers
 
-Both (a) and (b) cause less effective reclaim from the zswap shrinker.
-Additionally (b) causes the shrinker to report the wrong amount of freed
-memory from the node. While this may not be significant today, it's very
-possible that more heuristics start relying on this number in the
-future.
+David / dhildenb
 
-I don't believe we should put zswap entries on the wrong LRU, but I will
-defer to Nhat for the final verdict if he has a different opinion.
-
-> > 
-> > Does it actually matter if we do the initializations here vs. right
-> > before inserting to the LRU (current behavior)?
-> 
-> Yes, it impacts batching performance with software quite a bit.
-
-Taking a step back, based on discussions in this thread and others, it
-seems like the performance of zswap_store() is very sensitive to minor
-changes like this one, calculating the store size, etc.
-
-I don't recall this being the case before this patch series. It seems
-like an artifact of batching affecting performance negatively and
-a collection of micro-optimizations and "correct" placement of code/data
-to fix it. This seems to be very fragile.
-
-It is very possible that an incoming change will move the
-initializations or make other changes to the code, that will seemingly
-cause regressions when they really shouldn't.
-
-Additionally, what may seem optimal on the CPU you are testing on maybe
-be suboptimal for other CPUs. I think the big problem here is not where
-to initialize the entry or whether to precompute the store batch size,
-it's why the code has become extremely sensitive to these changes when
-it shouldn't be. zswap_store() is not a fast path by any means, and
-people will not expect such changes to cause meaningful regressions.
-
-> 
-> > 
-> > > +	for (i = 0; i < nr_pages; ++i) {
-> > > +		entries[i]->handle = (unsigned long)ERR_PTR(-EINVAL);
-> > > +		entries[i]->pool = pool;
-> > > +		entries[i]->swpentry = page_swap_entry(folio_page(folio,
-> > start + i));
-> > > +		entries[i]->objcg = objcg;
-> > > +		entries[i]->referenced = true;
-> > > +		INIT_LIST_HEAD(&entries[i]->lru);
-> > > +	}
-> > >
-> > > -	old = xa_store(swap_zswap_tree(page_swpentry),
-> > > -		       swp_offset(page_swpentry),
-> > > -		       entry, GFP_KERNEL);
-> > > -	if (xa_is_err(old)) {
-> > > -		int err = xa_err(old);
-> > > +	for (i = 0; i < nr_pages; ++i) {
-> > > +		struct page *page = folio_page(folio, start + i);
-> > >
-> > > -		WARN_ONCE(err != -ENOMEM, "unexpected xarray error:
-> > %d\n", err);
-> > > -		zswap_reject_alloc_fail++;
-> > > -		goto store_failed;
-> > > +		if (!zswap_compress(page, entries[i], pool, folio_wb))
-> > > +			goto store_pages_failed;
-> > >  	}
-> > >
-> > > -	/*
-> > > -	 * We may have had an existing entry that became stale when
-> > > -	 * the folio was redirtied and now the new version is being
-> > > -	 * swapped out. Get rid of the old.
-> > > -	 */
-> > > -	if (old)
-> > > -		zswap_entry_free(old);
-> > > +	for (i = 0; i < nr_pages; ++i) {
-> > > +		struct zswap_entry *old, *entry = entries[i];
-> > >
-> > > -	/*
-> > > -	 * The entry is successfully compressed and stored in the tree, there is
-> > > -	 * no further possibility of failure. Grab refs to the pool and objcg,
-> > > -	 * charge zswap memory, and increment zswap_stored_pages.
-> > > -	 * The opposite actions will be performed by zswap_entry_free()
-> > > -	 * when the entry is removed from the tree.
-> > > -	 */
-> > > -	zswap_pool_get(pool);
-> > > -	if (objcg) {
-> > > -		obj_cgroup_get(objcg);
-> > > -		obj_cgroup_charge_zswap(objcg, entry->length);
-> > > -	}
-> > > -	atomic_long_inc(&zswap_stored_pages);
-> > > -	if (entry->length == PAGE_SIZE)
-> > > -		atomic_long_inc(&zswap_stored_incompressible_pages);
-> > > +		old = xa_store(swap_zswap_tree(entry->swpentry),
-> > > +			       swp_offset(entry->swpentry),
-> > > +			       entry, GFP_KERNEL);
-> > > +		if (unlikely(xa_is_err(old))) {
-> > > +			int err = xa_err(old);
-> > >
-> > > -	/*
-> > > -	 * We finish initializing the entry while it's already in xarray.
-> > > -	 * This is safe because:
-> > > -	 *
-> > > -	 * 1. Concurrent stores and invalidations are excluded by folio lock.
-> > > -	 *
-> > > -	 * 2. Writeback is excluded by the entry not being on the LRU yet.
-> > > -	 *    The publishing order matters to prevent writeback from seeing
-> > > -	 *    an incoherent entry.
-> > > -	 */
-> > > -	entry->pool = pool;
-> > > -	entry->swpentry = page_swpentry;
-> > > -	entry->objcg = objcg;
-> > > -	entry->referenced = true;
-> > > -	if (entry->length) {
-> > > -		INIT_LIST_HEAD(&entry->lru);
-> > > -		zswap_lru_add(&zswap_list_lru, entry);
-> > > +			WARN_ONCE(err != -ENOMEM, "unexpected xarray
-> > error: %d\n", err);
-> > > +			zswap_reject_alloc_fail++;
-> > > +			/*
-> > > +			 * Entries up to this point have been stored in the
-> > > +			 * xarray. zswap_store() will erase them from the
-> > xarray
-> > > +			 * and call zswap_entry_free(). Local cleanup in
-> > > +			 * 'store_pages_failed' only needs to happen for
-> > > +			 * entries from [@i to @nr_pages).
-> > > +			 */
-> > > +			store_fail_idx = i;
-> > > +			goto store_pages_failed;
-> > > +		}
-> > > +
-> > > +		/*
-> > > +		 * We may have had an existing entry that became stale when
-> > > +		 * the folio was redirtied and now the new version is being
-> > > +		 * swapped out. Get rid of the old.
-> > > +		 */
-> > > +		if (unlikely(old))
-> > > +			zswap_entry_free(old);
-> > > +
-> > > +		/*
-> > > +		 * The entry is successfully compressed and stored in the tree,
-> > there is
-> > > +		 * no further possibility of failure. Grab refs to the pool and
-> > objcg,
-> > > +		 * charge zswap memory, and increment
-> > zswap_stored_pages.
-> > > +		 * The opposite actions will be performed by
-> > zswap_entry_free()
-> > > +		 * when the entry is removed from the tree.
-> > > +		 */
-> > 
-> > But there *is* further possibility of failure if a subsequent entry
-> > xa_store() fails, right?
-> 
-> This comment is referring to this specific entry.
-
-I think it's currently misleading in its current form. Perhaps:
-
-The entry is successfully compressed and stored in the tree, and further
-failures will be cleaned up in zswap_store().
-
-> 
-> > 
-> > Seems like if xa_store() fails we do not cleanup previously charged
-> > objects, pool references, zswap_stored_pages, etc. Instead of rolling
-> > all this back on failure, can we do all the xarray stores first and only
-> > do the rest when we're at a point where no failure can happen? Would
-> > that cause a performance regression?
-> 
-> It would make the code more complicated and thus cause a performance
-> regression. I have tried to balance code simplicity (which impacts performance)
-> with correctness here. The "store_failed_idx" ensures that all partial work done
-> in zswap_store_pages() for this batch, is cleaned up.
-> 
-> The rest is handled in zswap_store() when it sees an error returned by
-> zswap_store_pages().
-
-Right, I missed the part about zswap_store() handling this, the comment
-above confused me.
 
