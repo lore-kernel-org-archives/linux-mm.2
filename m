@@ -4,112 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F975CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 06:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDE6CCD187
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 07:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBAC08E00BF; Tue, 14 Oct 2025 02:57:43 -0400 (EDT)
+	id 003988E00C0; Tue, 14 Oct 2025 03:01:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6BF88E0005; Tue, 14 Oct 2025 02:57:43 -0400 (EDT)
+	id EF6588E0005; Tue, 14 Oct 2025 03:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A818C8E00BF; Tue, 14 Oct 2025 02:57:43 -0400 (EDT)
+	id DE5A58E00C0; Tue, 14 Oct 2025 03:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 99FB78E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:57:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 502B214074E
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:57:43 +0000 (UTC)
-X-FDA: 83995814406.30.F4479A5
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 623A4180005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:57:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ddi6xAY+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760425061; a=rsa-sha256;
-	cv=none;
-	b=N1mctnU9cwEemRPs1ZTevErhvOysnJ6F0jOYOSFswkChHZS/5Npi8tf6InL6dk+HcTrm0R
-	+p5rIyJli0cKmH5ZAN6o4dUS5JmiCEKvXs8LLq7EFM521qNoH2drgqclp1VGyXnaLusDeT
-	/KWp6eVNKaVWvhp9kN9Re35MJi+7ipw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ddi6xAY+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C83318E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 03:01:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7535D8838E
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:01:21 +0000 (UTC)
+X-FDA: 83995823562.24.D461813
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 92AE820011
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:01:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QBqQDYBI;
+	spf=pass (imf03.hostedemail.com: domain of edumazet@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760425061;
+	s=arc-20220608; t=1760425279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydO9QE9Pyr/n5ro6pKARsUihNEcUXgq8dHGMv1U89TQ=;
-	b=dKU+HTt3/ww1AcKD6dq3fDHjzFnbZf80I5MBJ29AcCgldMwO/8c+RD/Wjq1HDK8fGzOwP/
-	J4if/hWg0mo4+BKgRm3tmkC8WDBgTZMHf2dV2SvB3mwhbPhedTO+IRqXBpwaWa0qhVLfzG
-	qZTVp/ntOHEPVGC1DTCiFUm+NmmCVH4=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b456d2dc440so815786866b.0
-        for <linux-mm@kvack.org>; Mon, 13 Oct 2025 23:57:41 -0700 (PDT)
+	bh=jsQ1m/aFutWkld5ryO0dQSkVhTvtxn9NWV5ydHxepQA=;
+	b=Tu3gkX5sY11tsjoz2LF7Rm7J0EkeoeaZs5NaPQt99X770xp4HEyBUh9w7se7ioqTS/WdSN
+	iBgFwzDySRhifIU6UMcRuUvl2Z6XadyH0msVKfI0lK3EXngsbxZU66x1yyzXx3KcfMULE9
+	lx6a7Jn7QtjR9AQiXMKJl56AwdhoaEQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QBqQDYBI;
+	spf=pass (imf03.hostedemail.com: domain of edumazet@google.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760425279; a=rsa-sha256;
+	cv=none;
+	b=rBhA7I9T2GhB2MSA9X5ghJiYlk6nlnS1n7DVScrVpMpbcgtLrCMLRSbLSuXWQ5gWttitcp
+	gl78a9qiUOqFgfGVUyZEo1Qrc3spwGP5inFLDV1xBzSGPRjSPPgcgdLoKU0sRHdxyeZzag
+	haX14yDLUhtdrcy+3mKQpZp7Cg4Mh/Y=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-7946137e7a2so77132436d6.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 00:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760425060; x=1761029860; darn=kvack.org;
+        d=google.com; s=20230601; t=1760425279; x=1761030079; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ydO9QE9Pyr/n5ro6pKARsUihNEcUXgq8dHGMv1U89TQ=;
-        b=ddi6xAY+XSBINptauJT6CItzxE1aVwrl1+RMRqP9wB3im8ysS3U4r6Q0UGeR2Yral9
-         TyS5HGYt6VovYEqjAfcQBY4pmdPZ5sfiw32R/WX0Fq/w3nSiBCQnIsDMRYyAMQdsI0Jn
-         62zobVrvAbupJRyWwzmbxc3sA6zsPULxTPkY+JpS91SA42mDfzjd4yMu4A9yvbRlKIXn
-         LjRJl9OyKGT1uFEfjmQUgPBIn4WztMcofGgxHMtkaPTeBRIajiSSj1Fie7QblK6dW46L
-         5sT9u6FlFcsV/GYCDn2gTJEZew7WA4QbvMjjofrBg4tRrjDXhOPh1Ckq0NbNDya39ZC0
-         AYKg==
+        bh=jsQ1m/aFutWkld5ryO0dQSkVhTvtxn9NWV5ydHxepQA=;
+        b=QBqQDYBITg5li4JJIQcmEr3w6+86RfNYzb2AV8iv8Lo1mSDBf37UcU0KuILc8wvZE3
+         E7QmD4t7CJfcIR8rzBEK15SIx6YwtPxjwaS3ipu0dzINFzUp1TT74onolcS/i61Ld3aI
+         NlE+kVzptJt0qjHbS6OZfP1wi5t84a/49LmOChpL4C4aaMR4Kq4InGXwUmSxqLdUeiHD
+         wgQByQqk+/OYPYYmu8PZqzH38pAaM7i59EvMdnU3sxR2TpaAUmAtRDxww73A9RhRDHtc
+         qmo1LTyB+e+CdwF416p06I91wb2ZFH4aphCzCUwJx4urom8yo5RaD7VKw9ORw4DIZkwJ
+         ehZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760425060; x=1761029860;
+        d=1e100.net; s=20230601; t=1760425279; x=1761030079;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ydO9QE9Pyr/n5ro6pKARsUihNEcUXgq8dHGMv1U89TQ=;
-        b=q4G8Q8OqbL/VOloO0ntK7umqXG+QVlchO9lYZB/2tmjSUQvYeWIMBZxWYTgpFKyzfQ
-         v9f7IkBU1XRTXfwL5y6S7iqW5xu1vZI050K6Tslnx1uDsVVthuM/9VY2gx+7ePEcmAYp
-         Y2Qo+9oRw21Y4+NdSAK0SSjYBcJEAx/Uc+m0RSURNgYW9kMfPVgprAYu+NDhLB4U8QbN
-         4Rqp6wJmKka99uloK801U8vsKQ2+u+TOoTw66v/wPVvuNQASXD41IG+O1fzP0qzUY8DX
-         Tj5ByE21NIVkxIYMaihvfr4wG0bqsMcvepBS2NaXR5pM+CKEuK4Kb0kQOFDa5ojNP6GX
-         2qcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfW1VC9MszdzQK6pfZUvbxbp9tRrlF2oop+wJLdfjDaKWu8qjqBkc8rOuY0HtZCrgxucUys5Ukew==@kvack.org
-X-Gm-Message-State: AOJu0Yz97Vd94/HSkyQ9z1aLH94y71YAz8g7+0ui1FnvapkQL4JGRfE+
-	D0fllJnZNL5eC07FWy8BOXx5fwBH/jSRfw7YctuPNiOxDQOgMrliaxt1345h8OQJJdv1SuyU59T
-	Q3LbLjLZBmlaAuvKEBTLJUPIFLiNrzrc=
-X-Gm-Gg: ASbGncvCrS7gQxSOzKbwO+wDYY6QqUjETTes0nWvtwAf+1JPsEUty5JWUKY9vyw8Cx/
-	ED2blFOA4WK3aSaDEWm2XCFhJCAWCNKBmk8b393hg8OxgI0j4x7eR0hitccPx6LIHXFJLT9gtI4
-	SWRHqpoPvIuqlXUfVjuTZBjrgVF8Dy53bJqJ3Hb8qZWebrLV9vK6e1+ypIcQeZQI6DpBblK/Vjm
-	W8owUlf+f4tHCGOmn7XiMoaeQ==
-X-Google-Smtp-Source: AGHT+IEZmsv+LaZQBpo3Rmh0owXX1J93Gn9uf7s1llsw88Z+kkSSb4fiitV9qcOalkZuBUO5rR3E/mzfblF1lt/7w6o=
-X-Received: by 2002:a17:907:3daa:b0:b40:5dac:ed3f with SMTP id
- a640c23a62f3a-b50a9d59a8cmr2483657766b.7.1760425059487; Mon, 13 Oct 2025
- 23:57:39 -0700 (PDT)
+        bh=jsQ1m/aFutWkld5ryO0dQSkVhTvtxn9NWV5ydHxepQA=;
+        b=glwkNbIwOCnp6GeQ97cI7xJpBjfWw0IXmlAjWUQserQ9/Be7pkgcWPRLfCSaSISsMX
+         xh4KbImBTrx8vaREoglAwWWOM4DWipwQHOQSeAJF05ulnVOjkInGCr2FZvpVako9Jk0r
+         9SSxQjcU/SwVmtKBtR9w0JvylzHGKC05S8ZZvjbpFHPBGMT8EWlCh1h37cN9zP/ItM3Q
+         /K6LwFJzckdnaVvA3jAYPEHpL34noaivkG6yAXk5XAscesZY4/9I4Bs+1GMvqcmgYvvG
+         XE3+88anrc1IyLpQweF9sFTP/AO8ZiGHQJYBeCywLYfXfeMsnU+iNe//7ExLX3z+JchV
+         1QnA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3hNt5t5mmc40mcCxtvMI//+y6zJvj5k/aVWTPGYT2k6Sfts4MjqDHGQU+YywKzAx2nMeEvayDjg==@kvack.org
+X-Gm-Message-State: AOJu0YydojRvNCD7rsXHxf2ikLqNERgEjN5JO8ntz+P2umPfL0BA2I8H
+	g2aZOBuClLRfaxH3juV8e2ixK+KtnUkjOzgjJHnBphgMAWrb0eafaL0I6FzSeypm5gt9/TAkHDQ
+	wCjzLViSVO7/lZu+QRda9INaRl5seN1NkzlZNsOBq
+X-Gm-Gg: ASbGncs9FQLvniMtvW6maekiIdm4iVPZBJ1lxrMu2s+94ybGATYEKf9cx5rN8A7t8zH
+	3X4vXlHDAdJWc1ABtZQZF9zS9T6UiRj/d7tIIomDcNOfOipkRiJ0ZQ5p4nbhNqxz/JQP4kBLgO7
+	WiteP7wd8dEImF+ZEOqlrCWb2icwe0aTAFqpKomg9ywldpYGHnoNklMNZCwZbmOZPnyABPP8+o/
+	UelgkiRfk4WKwOtK9KNWhof6/BAnJjQLg2YE82jBBU=
+X-Google-Smtp-Source: AGHT+IHR7KeqfX1q4j3neFi7CD60ffHHvOgtSgSkxcg1JbCbIReg3SIb3TKWDF50WzB6YocPrnOGpWynAn63FWdOqTE=
+X-Received: by 2002:a05:6214:2622:b0:820:a83:ead3 with SMTP id
+ 6a1803df08f44-87b21032994mr371828316d6.23.1760425278145; Tue, 14 Oct 2025
+ 00:01:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <bug-220605-27@https.bugzilla.kernel.org/> <20250929160727.a0119e93688378c570a3c550@linux-foundation.org>
- <d2729b26-1bde-41aa-8e2e-b6ca861185b3@orange.fr> <CAMgjq7Ce_WXHJeV8tmbRT1wAYY2_2f8G8Z-9tbSjkjOg3077ag@mail.gmail.com>
-In-Reply-To: <CAMgjq7Ce_WXHJeV8tmbRT1wAYY2_2f8G8Z-9tbSjkjOg3077ag@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 14 Oct 2025 14:57:03 +0800
-X-Gm-Features: AS18NWD_fqRCtmx_ueqWm0Wvs85_BG6cf3qSnxX6h85R_7WpViN7lUi7jxJJMrE
-Message-ID: <CAMgjq7AvfqbCwLRHPOwS2hAuFc004rmoZiAD6mGzADEK6zwM0A@mail.gmail.com>
-Subject: Re: [Bug 220605] New: Very slow access on HDD when a swap partition
- is used on this HDD on kernel 6.16
-To: Pierre Juhen <pierre.juhen@orange.fr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, bugzilla-daemon@kernel.org, 
-	linux-mm@kvack.org
+References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
+ <20251014035846.1519-1-21cnbao@gmail.com> <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
+ <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com>
+In-Reply-To: <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 00:01:07 -0700
+X-Gm-Features: AS18NWD5ciaHerlqKb1LSkLizTAcEH7y8M_BZABcYRSz9LQQyJTFiKiNPr9pVjc
+Message-ID: <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
+	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
+	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 92AE820011
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 623A4180005
-X-Stat-Signature: 11ef7agz4r13i7chykemesgemckghr3u
-X-HE-Tag: 1760425061-261147
-X-HE-Meta: U2FsdGVkX190Yli/3NgJ5v06dWTuGX+zKUVoOXWyChizmBgTgLo8ogSb7cmiPAuWD5181gx3w9U8u6WmCNHaflyPncFBPWmi6rKEkKo5bwNTuuuCBm7dPnnhVGtn709ba5WFNL7c93U9uXQrqdAzKnm+s7N6jOBplL4yDgNu8/9jhJ9FdAOP0AtUBxyFsZHK/trFVlaUNi4UT77JW4BV4Vs093UFS2Ihc42mSfnujUrRpPG4cRDOj7PDAJf4bZsyt8PmMoYGfa7Qacs9qh+vSi6tRACSZX5jV6vpgpqCsk24eeh/djlctvhVxWNUHHF+S5XZMrr5vdgUjvpHYd/2HUqsFz6n8zMLp0UL1LnSuRY6/1SD81FYrbGf9r1Qu1AZSuEz9JQv2wwaaAJ2bOXn3YjhXdagEMNd481w5kPjIAJjTtU4PppyRsWAMksT1yFWuVoE50ggzZVMbBpiyzKi+6IlDpCLTtSf7MFNWGGIHSGM7GXGZF7fg0WLbJqm4pU+p3LKWI8qh6DCC7t5AJxPxJwBVWMP8fGQWusw9uu2vRHDkCzQ9rO4s/lyhB3omoy894zCLyDfk8IAF83i/PaU05Ad3DgvizvvfY/UxT6LDkKd3pV/O8zNArZJwApDnoLjKVjNd6AVsX4VZazLj+jB3AeTN95KP7Wq/bKa1nf9e7Q3sR68Y0EsGZ9Tc3UEivXM9FbYmwZBH3CMT/MK9MbMB0jYdkuEPYzXsR0IQW9nE61PTxu2m91AhpbBZRf+g0ec+xDBvkeWwuKcePTQr41Xx/C0jL/NezLnOOLBzvZPTiHdK3R0NtaZyLeKXy8Mp7uurequkSo9tGPBFecoZbBKxDNFLnAPT2JzNk1gHa4gW5XdZKDIMLXTsjx986/cyjUEHWl5h7yapE5hDGu0enIv8vL5Qc/S1weRTWiiayoARqwv8v4t7OgRI1ty1FSST9S9puvorCQLj/AqRwBCAPU
- 6gBH57ah
- dAtrkqmk/RuJ9HWEw1VTdVZWzJOHBPLin9QkAQyRe24tx4eahCVg2dzbqTFpQuEb9a9uvpF9LsnDhas3ZP333fXsD+ldX1bZJyX1yPJvr2f6sMszMJ2oL2b3QHzmQ1Bm36gOAGo86ZoJqlt94zvQsg6VvVc3s3CCMucw6za3CP/Qtk+Q2QgCSKupeeCN4EaossTw8TC3P+Iogc/+Ne5PhlSCSLzkcD66N1qpzaApdWaJ2UtOeFHOjU7i9cA7RdCveJEj6fCmsRlr/dcAGaKePVLadbTkd/dikMFJ+LOQUiDHEcGK+Gnldzu1FxwIR9xwAbjKBo3tR2ucu0l9QeVn+PrW5ba9He8HKXJTXkqQGMOG9jVM94e5wjruvbWnDkh5heZaT2gqoc1kHClQPRfyfhnoI9VjxE/LzpwPV
+X-Stat-Signature: kctjpqzasjuhwu41bp4qt6swxqkwar84
+X-HE-Tag: 1760425279-42013
+X-HE-Meta: U2FsdGVkX19mree2oRfjAi+Kpm0auyfRfBEk5GlgkY36qVyZv7NV4NBCgW800PspYgKgEjp0Qu1Oaa1rsMts8IBP3L1MoRYhp22KukJtVE/gfy5yncCaO+VJ8Oef0sz1wgRaakZJ+L/aPEVOLpsyd0BRE2ahFLIsULwcPfmyOgWoS6nkQrIMzhrEg5aTkhkow0/JdQba5tCuQWvgKrBWv/KlVCFo3cFfqxQYntpcIXX7Zo1FvB1T6IsQ97pVZVrlY506ueSG8FCe0fTkG19ZF24bf7uMy1beTnz+crvdzF5rrpqU+DGQK3SxdB5MjWWO5zZZ174ffytyUFkADVDJvY6ZmE2qitIIvPunrVPw2rohnq/X8DabfbK2vxp3dvIQouYo3MT9qXZv/Xv9QesPclWphNp1GAoHPPZYU7Qvy0SJWr2mGDIve1Or0+2Oor3r0kGG4xOugPpFbh64XEIpn33wHmLmENHFaafY/d826579nrNu2CVwn3Ron6TRO1sCewuRPqNHQn2ksEHN5W9YcDnvcbZj7PRG2ldWIkUk2Go6Apk95oHl04gKYaKu+SBzuCCjmsmivEvJxEN+1yDst1yrsyM6KsxlNUXDhHFsFTE9X98c30tKGA5ELXLkgVKAahUOOvwviUA4HzzEanr6AXmdxsLi2UcpKmWNsyqKS+ryDg/Kx+GyfGN5JYJqaxnxqSzRCUto9aRL5c6Lg72++KACCyJG4aFCcL180fztgAdo84wDzYfvFk+ufmQVJef29fl0fRHB5TA/HDFAW/vt5MRmVkoehScnCf8/Y8gIrhlD2EZgnkIYf2+UGH4dECE9J86gLO+Cjl3NdioRx9rru2raqkpIHzx1mYma5BqlcuOOurEYvKYnAUFG+3DXrzNMvbeHjZyNZBM1FmLiCo5Q+6ZX8jQ+ag9YW1Jrp7ZiNbwktREr5ZxK8HxvthW1sVCxE6YEgYRLiKp17ofYzUV
+ OQy8FcSl
+ F5OBPLztwufU27OiS4eQDslM5d9UCsBB7BqXH7/O47k+zu/dnAPT6Dhjg/l/tLwJaYzyyRVpYaXGQnWeUjZpZ0F0tPUaBAX4UxFY2sn1Fz0nureZUF6PzdTGLBz/jZI96QLf0qkaQTgGxN3ej8DT+bg+t99ZO0tWiqdDBWvve2oFEdgmpy3VymrgeEnQ9v+hSAj/lgEQsPc5Q8pyAivYOjfM/4cZBXJMnw6XV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,58 +122,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 2:29=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Mon, Oct 13, 2025 at 11:43=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
+te:
 >
-> On Sat, Oct 11, 2025 at 3:42=E2=80=AFAM Pierre Juhen <pierre.juhen@orange=
-.fr> wrote:
+> > >
+> > > A problem with the existing sysctl is that it only covers the TX path=
+;
+> > > for the RX path, we also observe that kswapd consumes significant pow=
+er.
+> > > I could add the patch below to make it support the RX path, but it fe=
+els
+> > > like a bit of a layer violation, since the RX path code resides in mm
+> > > and is intended to serve generic users rather than networking, even
+> > > though the current callers are primarily network-related.
 > >
-> > Hi Andrew and people reading those lists,
+> > You might have a buggy driver.
 >
-> Hi Pierre,
+> We are observing the RX path as follows:
 >
-> > $ sudo hdparm -t /dev/sda
-> > /dev/sda:
-> >  Timing buffered disk reads: 612 MB in  3.01 seconds =3D 203.56 MB/sec
-> > $ sudo hdparm -t /dev/sdb
-> > /dev/sdb:
-> >  Timing buffered disk reads: 570 MB in  3.00 seconds =3D 189.95 MB/sec
-> > pierre@pierre:~$
-> >
-> > But swap is not used
-> >
-> > MiB Mem :  31952,0 total,  27091,7 free,   3057,6 used,   2343,0 buff/c=
-ache
-> > MiB Swap:  36000,0 total,  36000,0 free,      0,0 used.  28894,4 avail =
-Mem
-> >
+> do_softirq
+>     taskset_hi_action
+>        kalPacketAlloc
+>            __netdev_alloc_skb
+>                page_frag_alloc_align
+>                    __page_frag_cache_refill
 >
-> So the disk is already having a performance regression after swapon,
-> while there is no memory pressure and SWAP is not used yet?
+> This appears to be a fairly common stack.
 >
-> Are you using swapon on the whole disk / partition or swapon on a file
-> on top of the disk / partition?
->
-> >
-> > So I suspect that, when the swap is used, there is some sort of lock th=
-at slows
-> > the whole disk that contains the swap partition that is being used.
-> >
-> > Logically, the system becomes very slow.
->
-> This is really strange if swap is not actually used. I just tested
-> with HDD locally and didn't find anything wrong about it.
+> So it is a buggy driver?
 
-I just checked the bugzilla page more carefully, sorry I had some
-misunderstanding of what is going on just now.
+No idea, kalPacketAlloc is not in upstream trees.
 
-So usually when there is swap IO on an HDD, it will cause performance
-regression because HDDs are slow and really bad at random IO. So if
-you are seeing a lower performance with recent kernels, could you help
-check if that's because the memory pressure is higher, or the kernel
-prefers to do SWAP more aggressively now, or the performance is
-just worse when swap is working? Maybe you can check and compare the
-swap usage after the same workload before / after the regression?
+It apparently needs high order allocations. It will fail at some point.
 
-I'll also try to test again locally with some slight pressure on swap.
+>
+> >
+> > High performance drivers use order-0 allocations only.
+> >
+>
+> Do you have an example of high-performance drivers that use only order-0 =
+memory?
+
+About all drivers using XDP, and/or using napi_get_frags()
+
+XDP has been using order-0 pages from the very beginning.
 
