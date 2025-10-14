@@ -4,92 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60CA2CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 22:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70655CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 22:57:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 739A88E0090; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
+	id A92E98E00C7; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 719698E0041; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
+	id A6ADA8E0041; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64E528E0090; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
+	id 980F68E00C7; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 54DC68E0041
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:41:03 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA9B4160711
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:41:02 +0000 (UTC)
-X-FDA: 83998191564.20.A0BB490
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A4C001C0003
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:41:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FfwcNndM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 81F668E0041
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:57:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3A7CB479B7
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:57:20 +0000 (UTC)
+X-FDA: 83998232640.04.482A462
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6D4164000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:57:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LDY5mFre;
+	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760481661;
+	s=arc-20220608; t=1760482638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7kymx9Ck3BaRbtCBkYGP0422cwTTn/aswqpSO+MgSvA=;
-	b=g8twgZ6CEp0PYJGLy7q2sb71lWuDsHDnFFc/RDvy9ybbihVv6LH4mznhusIWNNlGVvsRh2
-	lPtsrvldsUExP2ffy6CS+NxNq3OrIghOcBh9IQ/mFvKLYy261a7KLKuYAHaeGG5CemV5Xi
-	NcDhFJW5KwHmNMtMax75aAappBCG0gA=
+	bh=dRhy5pXAiQl4JPAdYHEJpTxKiPwF/nTrHCkBnWAbo/A=;
+	b=JsQgQbjgDE+fCF+a3os43FfZQ4n9nssiCvZbwTaCfalVdMwxM/iInjsNsk4InPWFin5G2J
+	/Jzuy6MEJvDJE1DcwgK2VGR3XqruvSxKLj2z96QSwng0euj+vJI5BHuVA1jM8QlffvNt3R
+	48hnZnTaOq/uGloTgxcEF/m3y9y/DDw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FfwcNndM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760481661; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LDY5mFre;
+	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760482638; a=rsa-sha256;
 	cv=none;
-	b=DP6El7xImLZQNiRGoeprJhsqq8hTuO6kuOuDrnS+gMxQiU8w/nQiLCD2xMkMCRUtCFhbq1
-	bH+GbkfZPD7eJzgpakaQYVRdykuItciKuo6PXWzhHrQ2/uG6+M61nHreKdhnCbrm+mjW8L
-	IVP+VSS714OnZvB+Jc/msdkT3r0C++M=
-Date: Tue, 14 Oct 2025 15:40:51 -0700
+	b=uO2vsoZ0HPiBjxkxDhu8KBGAIh/UzEQGYWsfF1noyawlhEDViDQcTUaFASAsNuG5QkCgth
+	WWkHPm6t7THgeVIQ4VzxF4IPtgttzkUN93qoy2fcU9v0cGXGz9BvKmCN8/D877NhGv9C/k
+	TPc4cu8/DtKDfybcRfXzUQTcmjUMiGI=
+Date: Tue, 14 Oct 2025 15:57:11 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760481658;
+	t=1760482636;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7kymx9Ck3BaRbtCBkYGP0422cwTTn/aswqpSO+MgSvA=;
-	b=FfwcNndMIvuZehmylvrdGiExadwXIbk3/1qViaC6bJJUUD3T1VC2r18YrQfykTdqEDgD9P
-	zIxKqXQNLJrI/n2vxVZxUCW5nl/JKRgAL+N6jCp6AJinamOlQwD7ezvRpGR5qBIe3O1vqK
-	gejPMoT7vgJLDMCXCcXTfzw6r372xrI=
+	bh=dRhy5pXAiQl4JPAdYHEJpTxKiPwF/nTrHCkBnWAbo/A=;
+	b=LDY5mFre+DitGOhyqu1GnrOHBiIq9UCsNNZUR8Y8e4ORBcMGksT5qu3WyakL62mrgaMKqk
+	b3TaGb3B5E3oqIzMyHPha306UJdZSRl5r0VWL7/4p4A6cmwVMvfU+cPu+tEAGPhlItHHtJ
+	Xfkijkcc+/6IOOVSchy7JRB8G1A5Zys=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3] slab: Add check for memcg_data != OBJEXTS_ALLOC_FAIL
- in folio_memcg_kmem
-Message-ID: <j7tcixbgyo5ongfv33d2h4dvmko7ygrwi5fww2nc2op54nmvz4@ofwy5jpcvcrn>
-References: <20251014152751.499376-1-hao.ge@linux.dev>
- <CAJuCfpGBxUmvWoe2xv2-bsF+TY4fK-m1-Z_E3OcyTiSYz5KeAA@mail.gmail.com>
- <vdngz65wojqalim4xb6vxb6k7upbzmkfoogmbuswc4lowju3ke@32hgwjlzxibr>
- <df175b09-c0db-4dc3-a0de-e1c38f70147d@suse.cz>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	martin.lau@kernel.org, vbabka@suse.cz, yepeilin@google.com, harry.yoo@oracle.com, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH bpf] bpf: Replace bpf_map_kmalloc_node() with
+ kmalloc_nolock() to allocate bpf_async_cb structures.
+Message-ID: <ts7ewzhspasn2n3gfpscqpvhhzeod7cv6nml4g457ytzgojbek@gd5vts6hpdjf>
+References: <20251014212541.67930-1-alexei.starovoitov@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <df175b09-c0db-4dc3-a0de-e1c38f70147d@suse.cz>
+In-Reply-To: <20251014212541.67930-1-alexei.starovoitov@gmail.com>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D4164000D
+X-Stat-Signature: twt8a6nee7qx1mzho84rmjngzqo6ax3s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A4C001C0003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: bjyifwor8gf6wqaxhe8sh579iu5uis4t
-X-HE-Tag: 1760481660-859205
-X-HE-Meta: U2FsdGVkX1+rbiVCFRSGVi3VFC/t/GaCihT6A7EdVSIgDsbNhWQrfbYp17cTATLz68zwwEolTwLEMlClONHj9hdApfoJnsgBcOZZ2G6uPlN/eTmUZoM/vqagqXivKCTpJg8i5UJlVjlBuZYckAMe/bzvSiv6eVWspLNyZKxagDuJNvxSk2fvtCIUJ8iHzzx8bWxRyJCSu5h4KQKQFd7DptIE8ta5qx20adzvoFpyO5lVSQewOI7WFcp/UDZrMD1HxnQSQxPqZo7nway2glYzF2kbVqWLW3o1RSPV0HFrNYvbi4oO/11ujAiQRZ/YBppilfHkZ0+pFuihk5Dmbzr31vhFyriUG3fLJRrlMdscoU0XQUdiiOYJuAJF0dvJ5EjdRNa1djadO7vkNSYYQDXOmWmYKxVpwbVZI8ICzldZBIy7nXsq+lLwao2ZWRQ/SiaVTTGXdhQo86NCDi0x178nzAaS4CGLmLKjgituFcgC/IBI//cuSBxdwuELnJHJgh0/7JwC0wEIgb6xmCVbkHO3/aGP2PogBiGBVC/dF4EdHIwsw/Ti5qZEeK1N22GR/PIYovkMknl7I4ZzwMXlpOfjHexWtdTBjcmzJhUSs70lBJ/58n81gTxMYgSvcSbqSMWgbFgYHOlZXrNpsVDy1BwvbL5kjNGDs2MnXfQfObT6DF3NaAssPU3XmUE3YTMzAFfdng9I1riYsrAY/HL6l2yvbr502z0uMWMyWtufY1KA4olcwJciYB3Y2kRjJEiRDQJ9VA0BfDYoBWeBsVUNImJijej3TcLMhsSBvxaVe3TisB1LKekbruWd60hJnJ5NiY7oQd81uW/mfks5xb/j4KHgh8P1wUn6pw0EE11AkYG5Cr9xCYOKG9+OwjZs2LTnKbytR+PP/aPnXWG5uCzJkAZr1Q5PSGbTehFJX/j5g9ze//EGFrZ6YjrsOsY5RxmDAjayb7Ho5k2WeRbxHkX1rQV
- 0lUIXh3e
- T6cpyzW9NQ4SAKG5V7PiInN4eL6mgmiCe91XEHVjqne2NM4RYhaFhX97kxNZugaZs1l8TKFbUV7X1VbK06j8IpscUpv/kMYcpwryauMvLOUGEnO/DiMRHiukySS9mTcZxiOg+ziQHjVKA6ln+Lxs2ZfN+nn9/NO8uFZp8Z3L29kkRPSpvTufyvW+IOPVzlVvw/Io7KJLQfNDj+EjpUj53fA3Bqf3AAir0uOfQ4DKcT+gtF8Xv0C0wJyWGywFTv1lsi5WoMuolzzD5ZAd3VwTIhpfXPSm8QeWibKjMp4YyNjPj5Pr7568hV4HFmaiINtwx1eoOfryBOCnx6WAXIQXr48B+OHeBD1Mi/wvO7pPTWKwAXAyhYieJMbN1eaOelRsjst5onz5sXw0YK48=
+X-HE-Tag: 1760482638-647292
+X-HE-Meta: U2FsdGVkX19k1kmRM5YXs4OdicX0+du+3DZWKe3iJQk7udyAGM+AlH7a0FWDgxL0J3wE51w3i4nDHEDT6+oiO07lCw6FSsbblpcbJVdmUv1LEez7K6qtCcGOP+L51sdGc+7Kv9LhbQ1Vcew5upwOxLLEc26q5sU9N+8VKsLy9kvbipXbXjRE0gRDnBDoF0D/ZuiyRGgH9c4sAJu6myz8koXOuc8A0Hff6N21YQ4YV9TKza6c8vO5YUlpbv/AWxnYDnNRtqM0WpuOcJlBCrMZiDTIph7Duc0jaJDzP602bIE2m6ngdCuq/4YhemWUzLm8RA0auMzmwAVHxS+lgemQ1P9+QlP+AgIxtoRB30OKvvd0a8LJPct5iKv521s7Nqb2rVLiDtpfW6nIyqc9twv+lHofD5p/8eaoIiiN1K7V8h7HXqdU1sqzCAOtMc2OCN82oLXzXzEtqlIvTbDmvu2CrmWNtfN3xK6KkrMSmm0FJLgQnTL9T0k/cN/zoBpwsldmFFv11mciLMBJKAFJLUnvapOrAFqdaJyrdzwmxjjfGsfPk1yTuRoByKVx+FAlg/ikc7TGAzapnzjEmX6MMbXLDq3qvJovGYDoDYKc3F5JDXDdiMAyVwfNpx46K3j9eldEuFFDyFF1kigyXj7McUeGgWKFb9nsVmZLvXw4CdVNtuEyJ3T6LUTKIKKcyCkbn134w/Pmtg6VZYRyq6X3VpM4clQFOt6F8EP186skbBVPCuc0nWKiWVjNZChudtAUGYjCBYti38zxzeo6BgASzYSLWLQa1KHxZFTrtPlwmeIoD/Konj35epOISa13Lld7yAS+abEjyaphrXmMo0FF38iJ7eFKtileBU1EpIgYKMVVUO1RMkNe6yu4iZwcOAygkzfASWTLWXGKOIy3FiWkuQ17w+1zb4NbQS9Zx/yyamdEhiRU96ul7ixZ/pQo44AnKXuA2AXPMbc9MbWd6mnM9E0
+ VXocUxJD
+ hNgRcVZPMTube5g+xeMWy+NsWQqMnQuQTFuwp0eBAqEpmnnVGwlDuF0Vnkivno7mRvOkE+yP4PKelyuK2BBUtmZwLOc+sbkGDFFiJ1DlsmKLmrwByPY2RpEYO/mzQedxRv1hGSzUDmcGo1f+GJLfqAHLioH9pXB45cQNSNbBY2OplY7DagQ89TGHivBRERdgTMWJzosFGIhhmnJkAA9qHfUerH+FVTC1RsGi+EYeRMAaT257IsexLESabmNwvhqLVwQFFLASgJtpoV5sADPhGcCrx+VJG/tYMNIzh+Rw5wOKpir/cRBEjXKnSewgiVVr/MQQlj18zzuPC2bCVd9rgQawGJj2PHNM5lpe3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,51 +89,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 10:58:25PM +0200, Vlastimil Babka wrote:
-> On 10/14/25 22:14, Shakeel Butt wrote:
-> > On Tue, Oct 14, 2025 at 09:12:43AM -0700, Suren Baghdasaryan wrote:
-> >> On Tue, Oct 14, 2025 at 8:28 AM Hao Ge <hao.ge@linux.dev> wrote:
-> >> >
-> >> > From: Hao Ge <gehao@kylinos.cn>
-> >> >
-> >> > Since OBJEXTS_ALLOC_FAIL and MEMCG_DATA_OBJEXTS currently share
-> >> > the same bit position, we cannot determine whether memcg_data still
-> >> > points to the slabobj_ext vector simply by checking
-> >> > folio->memcg_data & MEMCG_DATA_OBJEXTS.
-> >> >
-> >> > If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-> >> > and during the release of the associated folio, the BUG check is triggered
-> >> > because it was mistakenly assumed that a valid folio->memcg_data
-> >> > was not cleared before freeing the folio.
-> >> >
-> >> > So let's check for memcg_data != OBJEXTS_ALLOC_FAIL in folio_memcg_kmem.
-> >> >
-> >> > Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-> >> > Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-> >> > Signed-off-by: Hao Ge <gehao@kylinos.cn>
-> >> 
-> >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> >> 
-> >> nit: I think it would be helpful if the changelog explained why we
-> >> need the additional check. We can have the same bit set in two
-> >> different situations:
-> >> 1. object extension vector allocation failure;
-> >> 2. memcg_data pointing to a valid mem_cgroup.
-> >> To distinguish between them, we need to check not only the bit itself
-> >> but also the rest of this field. If the rest is NULL, we have case 1,
-> >> otherwise case 2.
-> > 
-> > With Suren's suggestion, you can add:
-> > 
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+On Tue, Oct 14, 2025 at 02:25:41PM -0700, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
 > 
-> Thanks, I added Suren's suggestion and pushed to slab/for-next-fixes:
+> The following kmemleak splat:
+> [    8.105530] kmemleak: Trying to color unknown object at 0xff11000100e918c0 as Black
+> [    8.106521] Call Trace:
+> [    8.106521]  <TASK>
+> [    8.106521]  dump_stack_lvl+0x4b/0x70
+> [    8.106521]  kvfree_call_rcu+0xcb/0x3b0
+> [    8.106521]  ? hrtimer_cancel+0x21/0x40
+> [    8.106521]  bpf_obj_free_fields+0x193/0x200
+> [    8.106521]  htab_map_update_elem+0x29c/0x410
+> [    8.106521]  bpf_prog_cfc8cd0f42c04044_overwrite_cb+0x47/0x4b
+> [    8.106521]  bpf_prog_8c30cd7c4db2e963_overwrite_timer+0x65/0x86
+> [    8.106521]  bpf_prog_test_run_syscall+0xe1/0x2a0
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/commit/?h=slab/for-next-fixes&id=711c435c89e59ee32bf8bb1c0d875a07931da5a8
+> happens due to the combination of features and fixes, but mainly due to
+> commit 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
+> It's using __GFP_HIGH, which instructs slub/kmemleak internals to skip
+> kmemleak_alloc_recursive() on allocation, so subsequent kfree_rcu()->
+> kvfree_call_rcu()->kmemleak_ignore() complains with the above splat.
 > 
-> Resisted the impulse to change the single VM_BUG_ON_FOLIO to
-> VM_WARN_ON_ONCE_FOLIO because we're still going to do that systematically,
-> right?
+> To fix this imbalance, replace bpf_map_kmalloc_node() with
+> kmalloc_nolock() and kfree_rcu() with call_rcu() + kfree_nolock() to
+> make sure that the objects allocated with kmalloc_nolock() are freed
+> with kfree_nolock() rather than the implicit kfree() that kfree_rcu()
+> uses internally.
+> 
+> Note, the kmalloc_nolock() happens under bpf_spin_lock_irqsave(), so
+> it will always fail in PREEMPT_RT. This is not an issue at the moment,
+> since bpf_timers are disabled in PREEMPT_RT. In the future
+> bpf_spin_lock will be replaced with state machine similar to
+> bpf_task_work.
+> 
+> Fixes: 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Oh is there some coordinated effort happening for this conversion?
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
