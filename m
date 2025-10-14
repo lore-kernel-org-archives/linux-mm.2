@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04F18CCD192
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:38:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1828CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 13:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BBD48E00DF; Tue, 14 Oct 2025 09:38:31 -0400 (EDT)
+	id EFD668E0121; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 445788E0120; Tue, 14 Oct 2025 09:38:31 -0400 (EDT)
+	id ED5748E0120; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30E7D8E00DF; Tue, 14 Oct 2025 09:38:31 -0400 (EDT)
+	id DEA8B8E0121; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1909C8E00DF
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:38:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE0A04774E
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:38:30 +0000 (UTC)
-X-FDA: 83996824380.19.D1F5E2B
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AF0C1A0007
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:38:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RdWvm1vG;
-	spf=pass (imf25.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CA29A8E0120
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:42:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88BC911B0C5
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:13 +0000 (UTC)
+X-FDA: 83996833746.29.D98428B
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A3983100003
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 13:42:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYiVq1Ad;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760449108;
+	s=arc-20220608; t=1760449331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A085BtH7ekRyYK8/+lQK6CtKf8LhcnavzYT4kIWkbTg=;
-	b=w5DBv7OWSj+Nx/BhwC4HWp3EiD0R8cE4Bg5S816+MXF9mm0NbbmXBslvCbyvaMxjjd/hQM
-	6nQytOXianCRyAFUmxoDrgUlU5p03+DmxKFI8y1kt8sAGnw4Vmz8Jq4ZUqTR/BFCfGboGu
-	I4vM0tCCAxyDRgXHuPlRpLPbseRc8do=
+	bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
+	b=YHom2d3u4kEJal7LhmKqyCb56W0UZYlkICtfecpClAK7iqMX//CKD+O2Lbet903I6nLMn8
+	QDrgRyU8h15WXI4DMSChEJm9fCNrGz9ZxsP1nAyYW2SwvehDDedv8ppyqB3gUk1wcolJmo
+	vMJZKprptoJ+KCUK9tCiXVwR+FcA26k=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RdWvm1vG;
-	spf=pass (imf25.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OYiVq1Ad;
+	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760449108; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760449331; a=rsa-sha256;
 	cv=none;
-	b=UMVGveFBu9YUX60PR4JW/dTjUtaWiIq4oDDEMKrJkxqMmL9jYLT7jg3YsMrUfWeYKisWbo
-	Sh9nusec89fU+A7LPCqMau5w6TzFiCICHtLDDVsm/skMK88bMVZ6E9AM+GzNL7KL/lyrYy
-	loUfdaKq08psjWaeIgJzYrvk4Kovhs0=
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-339d53f4960so5603536a91.3
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:38:28 -0700 (PDT)
+	b=RUVZGv9KH39TI9XsBh449bjs3ohFu9LvII4lko8el8vdyPSUjgW+OIUpdmzw9fCLKhocs3
+	cQST1b9e5cBHj9Be2ktnKOeZ/o3ZqzdPJU2PsSBEIGB9M/xGEaPKxB7b4kYR+w5Gwtml8D
+	OVb6+BvQirQewYBMn5ald2W9T1VZ6yc=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-780fe73e33bso41819337b3.1
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 06:42:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760449107; x=1761053907; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A085BtH7ekRyYK8/+lQK6CtKf8LhcnavzYT4kIWkbTg=;
-        b=RdWvm1vGoCx8vLGU5KN8TsaT8lmrpBuW8cmEZmOMIjLlH7tN9FkIxQoXqox7WQmToe
-         cD/4xK+pET12TgHxjhd5Ef4yLShTIr5psI+WY1/vPSsNZIfokgl8p7bNxhDmVfMfxzOZ
-         rNVcITu1GQPtxoAe+7QjI/5vdVE2XyuKIbJZSsScv5QIl4po8iAubmvT9OR5e/EX2gBc
-         psq1c06gAgCRa/p07kQJ2YFEA0pI++PwyLFG9MeN/bjjOe99+ITIEZFS/1y991vx87TD
-         9O2LyjuZ8173KHIu3iTtd/lkQ7j8wbJ2FL6J2N1Q7NdiCfO3r3eHXNyiO0xIRu9S5Uc3
-         rKvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760449107; x=1761053907;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1760449331; x=1761054131; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A085BtH7ekRyYK8/+lQK6CtKf8LhcnavzYT4kIWkbTg=;
-        b=XBe1ovZsTW8LFnZA1o/Wn5cOfxmImSRytflupiCc33dCG6WKhMYWlrlM0ONja+u0/2
-         GOAPMTYVNEYAJerfjPPZ9/SlUb0pD1hKQzdv7lMekyNl3YVvOv9JPgtdTg7VT5ZSKRu6
-         lgWBthfEpX5zrBgAb8yAQJVmtHX4+qBHQPRhLuUJpesUcZNY3tEEqtxLmgkDbzNaY6Ug
-         EGsSEC1LkQaEwBxt9xCQbl8ETKOK6FQIjf9aUurzP1Qmz8WeidDXrpuT6bQiZhxot8d5
-         0iqubm5FtpBPlg8FJr9i6zWoTuSabz0v1y1gWKHuOdR0tgzsLyk6kC+cecbTZcC32nEz
-         Ci3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXvlIhG5FCvmKbKI16DwBpsKhABlhnjXHpWzP3pM1p41w1T95AmmqmqNsjkejiUbBqIbYlHUBAO1w==@kvack.org
-X-Gm-Message-State: AOJu0YwqNlMvcg+kovxY18N4TmVdxOxpRUgtm+ulqaBctsLA/Akkqvd/
-	ojDcKLlWjcVZd1ZuhyoDBXbZrdjWPZR1r2Kq9yk7cJydA/j2RaKseQXr
-X-Gm-Gg: ASbGncuHOzEREU5U/psZTViv1lBlmZ2RLCDeCFm4lf5czwzo5g14J6U2eIUKwy9+B0n
-	fKaHfgIdTXrVk/TTHxP414goTTxJ3KEuflmwhXhdgcv4p6pr7UuhgLj8ytqarv6ENx5jsSLQGqt
-	9bIIuHnwKVFJCGYD7w2nYnZEFbaDdSipDnlWsTuBjFp6SgOEon87PQwhICvfh6rlleBO/bUTQL6
-	iqhaoPe0O1B6dgbgRzVNMURq/JbskupQY8Myv7PEu/XbKMhjbOA8WDrhn1JYG2Jxm20KliGL6bj
-	tDdmRq8OENSXBLRmbOEizqRfN4DiXWu9pfzezRzSsbhObRbbJi8s1rdRJl1Lni2/Jyg9P52uITH
-	Rw+A6jLPHqX0XKtpTVoIPITnUI6+8ScKsasluA0RyRG901b/6/9bVXT+KScwKdy3BDCk=
-X-Google-Smtp-Source: AGHT+IHZoEpNtqb3Er/H8rHrHDUjXVXuJ/umcp1U+VvoRsZ+h9SpEmOctIzSeP+NFNUAR2TR1CliKg==
-X-Received: by 2002:a17:90b:3511:b0:32e:5646:d43f with SMTP id 98e67ed59e1d1-33b513b4c25mr34617827a91.19.1760449107333;
-        Tue, 14 Oct 2025 06:38:27 -0700 (PDT)
-Received: from weg-ThinkPad-P16v-Gen-2 ([2804:30c:166c:ce00:5a20:94db:a4ce:661d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b61a3cbf2sm16117618a91.8.2025.10.14.06.38.24
+        bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
+        b=OYiVq1Ady4nm3ZgOzpd/jCJ5MPmbGgLm1yXAxOOF+0pWuSfPEpcMATCY9J4/VSSZ0m
+         5vG+9704153lC1A+UPWXLu3jdpHfTwGx8s49iUIn5XDCCbfl838I5maqGJIHt3UBEmJo
+         RYQoKXit9FoM8PhoqwXsK5tgYOqO3yyKPOVG1PNYU3G5605+laj1p0kUgLZ+I9hVsn8n
+         ad90alG4aSFFaHI6WGjc1tf+glas+20iGnRvYZ5g3mzaf0QVoGWTHKpOnRNOApUPhMn+
+         u/V0eeKZoTN/OCR8qbWt+vxQGEH8rIK6u3ym+yG6eO1HT+X0faVO/GwoJbwQrxLM5okr
+         VP4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760449331; x=1761054131;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iShRlMjD16vCOvZiANOmQCZA2Q2Y8AtPdzjclXG3tnc=;
+        b=B7lyszONbecYz4C4KFZlOT+0io3NSfkdjPQQC8WRe+SxJmLKjPmJcU2W40w3L0pU+W
+         n05X/8S7WQVg7hog5nCz/xEC3vjSM45jt42PqvyRi7GaoRNt6SF1DS8w9/0Xr17aki4p
+         ZvmO8DeFQbleKjvxgbFxDyNK5X6NWaJxgxvZz918hN+92A1b7PKlUXNxs4cFJ35xmNnh
+         AtQ2hO7rmiot4c9Sy7XAg+8+OpvDsE6OVy8wUPZwKor0DVfQhU9CSAeqQg8y5jhkUqS8
+         +dMKbd7CmAsF0+FSRGx6YmVjmVRxjywWSlUoCRnefQDQMqpl7ysrwzs4FBZ95/eROeC3
+         3ufQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmLEelRU7nPqlKqhvuByDKT+NhvbLVIGdjpm8tEoiVgHswcvJrmvpNKTif8USSP40I2XBoDTnfww==@kvack.org
+X-Gm-Message-State: AOJu0YzNYSPZPKRMkYP9xiqULRmAW/fngqY1I/efJC+Pfp8pHwdmLv38
+	r9fPxLtBpBDUNPaA3xQn5j5u/53nw7XFyBQvvMnmRpHZg01a203ngL51
+X-Gm-Gg: ASbGncudJ8EsZyRVV+v4XNjqUWkWlQRVYacf4cAHTNg/S0WKoSb8pMwrVVGtL9rlPet
+	1PjNKLZ6Bo4GzpwK5S0t94McLMmlRqosT+Y42/l+lrUjfMh0UUWfj10Lcvrxn1xc/XMQsKxgGDM
+	mAYcMzqonjrGPinJMCFTQoKuO6VpXqaemguX9J44YW58e2ChZbYEFbkwahxC/MjZE81XvOdvlB6
+	z32PSEJgA3p8sQE/GEQm5ASGE1fPkuZq/hZMb3M0uEtaQTtuOwCmYYyRG2ODRMKStuxzve093z0
+	WEjgoYQo/W1fLiE7nkIBN1KT5BIrPq7EcMrVEXa2qUQkTEyYi1P/w2jWTDU7U5IOLubPVgLdt/m
+	U9xTUp4f25C5uj383QnjbzVF/FO+OBUTtapvT0eI0q4QTb3Xv7pXGpZUOAT6ifXQSIIUkS6n96a
+	+JgAiWY5rf2uF9JqJA+a2uU63v+VJPJw==
+X-Google-Smtp-Source: AGHT+IHEmGnQT19nB8fpJYZ36lJocxSeUy5ie5UanJzwR4STBWqUUl84lcuO3sceBz22ooJBZ+7W0A==
+X-Received: by 2002:a53:accc:0:20b0:63c:f5a7:3e1 with SMTP id 956f58d0204a3-63cf5a70b41mr9090122d50.61.1760449330421;
+        Tue, 14 Oct 2025 06:42:10 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:51::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63cd95e3f9asm4749876d50.21.2025.10.14.06.42.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 06:38:26 -0700 (PDT)
-Date: Tue, 14 Oct 2025 10:36:49 -0300
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, craftfever@murena.io, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ksm: use range-walk function to jump over holes in
- scan_get_next_rmap_item
-Message-ID: <qrf6mertexxf3hcazexkv6jxokdg5jnsbuixih62w2peq3ooyl@u3mhuopdjrfc>
-References: <20251014055828.124522-1-pedrodemargomes@gmail.com>
- <90ed950a-c3bb-46d5-91f9-338f5ca15af6@redhat.com>
+        Tue, 14 Oct 2025 06:42:10 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
+Date: Tue, 14 Oct 2025 06:42:08 -0700
+Message-ID: <20251014134208.2826738-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251014112946.8581-1-hdanton@sina.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90ed950a-c3bb-46d5-91f9-338f5ca15af6@redhat.com>
-X-Rspamd-Queue-Id: AF0C1A0007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A3983100003
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: z8zqfwq1oedc3bbzjuke8ptromo1mns3
-X-HE-Tag: 1760449108-602827
-X-HE-Meta: U2FsdGVkX18p1pXOAUGfWuTaWVSn0xE8ybYcnl4A2fYcrx7tsinTfvIofbM/pKyfCRJHl3F18DEuPY5nOEYZfstyve0VZPCHDbohHlkaAtG3z6GdBKQkuK9X/oxCANiyl7nmOYt56drLUOPu+xioEqtwLVxHoLNCqaWm7cTyuxGXmBiUqoY2vCGIu1SeSrKAZFKdfQ17PBhWMAOQ/g1ou0enG4BhT9TiIU5YKdbuJkR9pWhwoqcyRz7bw8rjOqx9V+cAgDSG6M4T6lcwI8taiz/JILMbgJ0MvDW0GoUppwAZOiQYc6h3GPhCkR3Nl76bzT3bz1ZQsedHjH0eT7X5ihKDha/QfIysX3DzNPpX2g6e2CU2Uo1o2nm7Tp5WAgvSOdlBC+yFPaV07mxdlohuHobSrBuD68EeF9k+OHEMtl9EdDbtXo686yrUa7o8BJpWS0D4PzfDPWYwrp97ItJgYMLlJhf3ywsthE8vnDDcU9/64OHcAdVnFboNDDePSDuVKlfXDTZ9sw++aYQi/Qsd5XfvZqy1Ouh7nv59zX/8hqBlKvcqLd71seOrnPts1ipup93jS1wCrdFFQeDF1dKTpUP4oJSRDsVSN+/souRCx2IF1PsMY2h3avnthdNEE/EeoNUU73gKmnPMYKro2ic9H3ER55PWgxqA2+kv6Q00d2wQBr/ypVs8HHdKrFupEZa2I+9GV9ItBJP/yHZug+PsKjoVo57g+d8Wu8pnWMl4Jprj3QLgdTOGYuQlPuxc/l73U9Se6KPhEKSJQwaft8hbEu2cFHlMpD/arh37Ny0EuByoaVTKVbXJ38JPhQg8gBBmTQCy+vzVxVMi4l65VwHoRDuCxjGeVIZI5o+ijX9oj8M+nva3+z2zW5o/rW0Rv7dipG4v3nLeI3F5QylFjVuH48lxlxpKE2HRedb+/zT+O/h3NJI4ZqcmZ4nBQ+15O8iAprZjgjsRHpQu0iHZOfJ
- hoX7xWNN
- YjFQul7rEiSmytCXYopmK1KUgxgxamTa9INuwDAiInRVpy+fRCJ6AOMjFBOQxhPhRTjvZkG4IY2hfwT+LgezPBYojW7A4IFI6f6QTDxy+bgrZZhWD9J+tEENeUe2ItM54kBvM9iKzXvNPDVvUGCGi/xZoCKQ5C9JWLcWG3Bw0oM9pFJZzEhJ5P/pF+EGOBlvOmA2l5U8y4/2Gz0bjGt7a0Wjl9G5X+WqOOPcjcqBRUqPExTXU/tEBklhu1iBZWRzMI2XyI2DgOPlJi3QCPbJ0q5n/9xpjWwEXCEQop3H5cy1rLPt/MYrrfdnXDWYwlb/WF99s5/Z9GT6dVGdJBM4DudF/dmIXJkRu41dgHZCiKtOqhKPfbormvl89YVsjUTBBZr/98eM/KTFi13quDirMSsg5YtF2CjF4CxrXWf0lw2ZLD08IULYSxr/CSMmtxE3jaAGW7WDXzjZqBaFETlQzynv+9VBLt9elFh4UjviH9hIndNDF1V+Uakn2LR003lYlykBLEFqYWt7+E5NfFi82rsjINAlP5cTZdskDPV7z9Yb75GE=
+X-Stat-Signature: uuxopozsa8789sffgrnx9xw8mqase197
+X-HE-Tag: 1760449331-459363
+X-HE-Meta: U2FsdGVkX1/hOaCo0927LE58QI6kQiVcJ1aogUAkBbJAY3aIAbNPpKpJbwqulXTFKWBE9vGvFSYPUQxnafVu4g7Cvjr3fV/EPngEqBOoFKXTFsAI9vhzae/5LWieM27/EH5d5sxkLaHn8tBvtQU0zxqtqufAtq40i/+XGn13wWqdMGIHTxtxnhRZkeuJ8sWBDuZV6ZSbrOVb/O6cmuPTg7Wj/KG4R3auccG4xgvBc3H+UFW4WvsWGwJjovdwpOT7KocmAjY2nDUkAa0CWavSlSlQ1s27XGzVgMDid+lY2nj9r6wt8efK1EI7MwBcfTR+7E+061JcaYLSvHnoFVb479r/0R5yQuNy0hdm341tHl7LP0WN6jhNZoOJhD4Vf/Gsdd89rWAXjhdZ7Znzd191QmqWODqcUpO+/fTYjQfLQ93dvEa3dKnEyyCk/BN3L8AnW/KgU5SVVnE1hTM4bYjFOL+K1yqqrxUfbgmQ7pLridUXF7JC8PEYLF7SO/c2t7Rrqo8OpLfyo83AFPWtxtbVYeAA/PaCBn5KFVIOOxu0aU6uctqBGwvEj0Feh1NYzHxdqEbb5GUWZioaoITwm2jAeW8q0+066h734bVE0Zu98cVKDJQUSNSi6wBOinRXnYWdP1ZYCQec1vrCwEUJZd7itDAqq8N+r/f84Fj1dkPXjXr9bDfIt8HdQG5xssoHxIqkVjTSJxG7othTxRLKxZI/IYliQpTfmQNQVFYHKkv6OP7lm3wX75Tn499dPLL78oqadwk9n0aExZ+1O6RFjbG9ud1QOadH+Kc8EwnpT60wO1+8vQ8Hm7xEyLlqrV3es2R+M6LuTbMg+Xh0WbpKuaBehMenO83kLnaAj37LIrIIfpwxFe7wSf4vXUVZiBS4Zh4BrnmI/He3NLyyzwcXWfRYxEkQ1Wh9+hC5xA0m0KAao0ugz0BWnJbgL1yHmTJ+uMTeqvgytFiEONzDCsHi+JM
+ wKH54eJh
+ 47dQSTjwh3NSKCRkWqS/p/SKoB4G2nx9uxQgHvuGAw5UOjrbOsSeBLG0L6QiXHBMwxiz2KzZ/CsSvOYydklTscH9jrhyONmFl4T/KDbQHJYZtk1xqIQBys2VevC2Tmj0Ofy2ZgOSUWqYqWLOwH+815SxTYhcaR+U8zz+cEeqgMZpXcc5FoPeVcKkcbrV+v/Tmq47rzHq2AW4+GaREkWedVzYjViGuvDPQXWHWsPQ8rfhi7hyLK5ln8lFq15/dB/8HmcKn3HD5aGo3u6v91GvSqxkxNHWWc3i+C5vkOY3Pxzb1KfRq3k2HCuVn2gA8PbDbqCA+dpFjzLZk7H6RPO3xFAFp7wLfXatXXQR22rXYg2+Gwc5nMZmJIbxsjGlDr2U64YGOnzyLnB7fJ+GdE1R5YBrPflPACIYfDwLqiTtgYp7+u6oulC2ZFEtI3Qewb2sHx4uO86X+M3qk3/JfTVpshDQgxikbe0JbxwycXyvaSZ/nYu+xzp2NjD3lsjpn2WIjEXbxDANPXXWn8EJdKL04jIB5sDeLiH5hw0xkEpSogZCE7oXGWlsLBeAtKws0l4Cik9rfmyVqFDTi0YM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,228 +123,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 11:26:06AM +0200, David Hildenbrand wrote:
-> On 14.10.25 07:58, Pedro Demarchi Gomes wrote:
-> > Currently, scan_get_next_rmap_item() walks every page address in a VMA
-> > to locate mergeable pages. This becomes highly inefficient when scanning
-> > large virtual memory areas that contain mostly unmapped regions.
-> > 
-> > This patch replaces the per-address lookup with a range walk using
-> > walk_page_range(). The range walker allows KSM to skip over entire
-> > unmapped holes in a VMA, avoiding unnecessary lookups.
-> > 
-> > To evaluate this change, I created a test that maps a 1 TB virtual area
-> > where only the first and last 10 MB are populated with identical data.
-> > With this patch applied, KSM scanned and merged the region approximately
-> > seven times faster.
-> > 
-> > This problem was previously discussed in [1].
-> > 
-> > [1] https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/
-> > 
-> > Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-> > ---
-> >   mm/ksm.c | 136 ++++++++++++++++++++++++++++++++-----------------------
-> >   1 file changed, 79 insertions(+), 57 deletions(-)
-> > 
-> > diff --git a/mm/ksm.c b/mm/ksm.c
-> > index 3aed0478fdce..584fd987e8ae 100644
-> > --- a/mm/ksm.c
-> > +++ b/mm/ksm.c
-> > @@ -2455,15 +2455,80 @@ static bool should_skip_rmap_item(struct folio *folio,
-> >   	return true;
-> >   }
-> > +struct ksm_walk_private {
-> > +	struct page *page;
-> > +	struct ksm_rmap_item *rmap_item;
-> > +	struct ksm_mm_slot *mm_slot;
-> > +};
-> > +
-> > +static int ksm_walk_test(unsigned long addr, unsigned long next, struct mm_walk *walk)
-> > +{
-> > +	struct vm_area_struct *vma = walk->vma;
-> > +
-> > +	if (!vma || !(vma->vm_flags & VM_MERGEABLE))
-> 
-> The anon_vma check should go in here as well.
-> 
-> How can we possibly get !vma?
-> 
-> > +		return 1;
-> > +	return 0;
-> > +}
-> > +
-> > +static int ksm_pte_entry(pte_t *pte, unsigned long addr,
-> > +			    unsigned long end, struct mm_walk *walk)
-> > +{
-> > +	struct mm_struct *mm = walk->mm;
-> > +	struct vm_area_struct *vma = walk->vma;
-> > +	struct ksm_walk_private *private = (struct ksm_walk_private *) walk->private;
-> > +	struct ksm_mm_slot *mm_slot = private->mm_slot;
-> > +	pte_t ptent = ptep_get(pte);
-> > +	struct page *page = pfn_to_online_page(pte_pfn(ptent));
-> 
-> Oh no.
-> 
-> vm_normal_page()
-> 
-> > +	struct ksm_rmap_item *rmap_item;
-> > +	struct folio *folio;
-> > +
-> > +	ksm_scan.address = addr;
-> > +
-> > +	if (ksm_test_exit(mm))
-> > +		return 1;
-> > +
-> > +	if (!page)
-> > +		return 0;
-> > +
-> > +	folio = page_folio(page);
-> > +	if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-> > +		return 0;
-> > +
-> > +	folio_get(folio);
-> > +
-> > +	flush_anon_page(vma, page, ksm_scan.address);
-> > +	flush_dcache_page(page);
-> > +	rmap_item = get_next_rmap_item(mm_slot,
-> > +		ksm_scan.rmap_list, ksm_scan.address);
-> > +	if (rmap_item) {
-> > +		ksm_scan.rmap_list =
-> > +				&rmap_item->rmap_list;
-> > +
-> > +		if (should_skip_rmap_item(folio, rmap_item)) {
-> > +			folio_put(folio);
-> > +			return 0;
-> > +		}
-> > +		ksm_scan.address = end;
-> > +		private->page = page;
-> > +	} else
-> > +		folio_put(folio);
-> > +
-> 
-> You're under PTL, get_next_rmap_item() will perform an allocation, so that
-> won't work.
-> 
-> Observe how the original code worked around that by performing all magic
-> outside of the PTL (folio_walk_end()).
-> 
-> When you switch to .pmd_entry() (see below) you will be able to handle it.
-> 
-> What you could also try doing is returing page+folio and letting the caller
-> deal with everything starting at the flush_anon_page().
-> 
-> > +	private->rmap_item = rmap_item;
-> > +	return 1;
-> > +}
-> > +
-> > +struct mm_walk_ops walk_ops = {
-> > +	.pte_entry = ksm_pte_entry,
-> > +	.test_walk = ksm_walk_test,
-> > +	.walk_lock = PGWALK_RDLOCK,
-> > +};
-> 
-> It's more complicated: you'd be remapping each PMD to be mapped by PTEs
-> first, which is not what we want. You'll have to handle pmd_entry instead of
-> pte_entry.
-> 
-> > +
-> >   static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
-> >   {
-> >   	struct mm_struct *mm;
-> >   	struct ksm_mm_slot *mm_slot;
-> >   	struct mm_slot *slot;
-> > -	struct vm_area_struct *vma;
-> > -	struct ksm_rmap_item *rmap_item;
-> > -	struct vma_iterator vmi;
-> > -	int nid;
-> > +	int nid, ret;
-> >   	if (list_empty(&ksm_mm_head.slot.mm_node))
-> >   		return NULL;
-> > @@ -2527,64 +2592,21 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
-> >   	slot = &mm_slot->slot;
-> >   	mm = slot->mm;
-> > -	vma_iter_init(&vmi, mm, ksm_scan.address);
-> >   	mmap_read_lock(mm);
-> >   	if (ksm_test_exit(mm))
-> >   		goto no_vmas;
-> > -	for_each_vma(vmi, vma) {
-> > -		if (!(vma->vm_flags & VM_MERGEABLE))
-> > -			continue;
-> > -		if (ksm_scan.address < vma->vm_start)
-> > -			ksm_scan.address = vma->vm_start;
-> > -		if (!vma->anon_vma)
-> > -			ksm_scan.address = vma->vm_end;
-> > -
-> > -		while (ksm_scan.address < vma->vm_end) {
-> > -			struct page *tmp_page = NULL;
-> > -			struct folio_walk fw;
-> > -			struct folio *folio;
-> > -
-> > -			if (ksm_test_exit(mm))
-> > -				break;
-> > -
-> > -			folio = folio_walk_start(&fw, vma, ksm_scan.address, 0);
-> > -			if (folio) {
-> > -				if (!folio_is_zone_device(folio) &&
-> > -				     folio_test_anon(folio)) {
-> > -					folio_get(folio);
-> > -					tmp_page = fw.page;
-> > -				}
-> > -				folio_walk_end(&fw, vma);
-> > -			}
-> > -
-> > -			if (tmp_page) {
-> > -				flush_anon_page(vma, tmp_page, ksm_scan.address);
-> > -				flush_dcache_page(tmp_page);
-> > -				rmap_item = get_next_rmap_item(mm_slot,
-> > -					ksm_scan.rmap_list, ksm_scan.address);
-> > -				if (rmap_item) {
-> > -					ksm_scan.rmap_list =
-> > -							&rmap_item->rmap_list;
-> > -
-> > -					if (should_skip_rmap_item(folio, rmap_item)) {
-> > -						folio_put(folio);
-> > -						goto next_page;
-> > -					}
-> > -
-> > -					ksm_scan.address += PAGE_SIZE;
-> > -					*page = tmp_page;
-> > -				} else {
-> > -					folio_put(folio);
-> > -				}
-> > -				mmap_read_unlock(mm);
-> > -				return rmap_item;
-> > -			}
-> > -next_page:
-> > -			ksm_scan.address += PAGE_SIZE;
-> > -			cond_resched();
-> 
-> You're dropping all cond_resched(), which will be a problem.
-> 
-> > -		}
-> > +	struct ksm_walk_private walk_private = {
-> > +		.page = NULL,
-> > +		.rmap_item = NULL,
-> > +		.mm_slot = ksm_scan.mm_slot
-> > +	};
-> 
-> empty line missing
-> 
-> > +	ret = walk_page_range(mm, ksm_scan.address, -1, &walk_ops, (void *) &walk_private);
-> > +	*page = walk_private.page;
-> > +	if (ret) {
-> > +		mmap_read_unlock(mm);
-> > +		return walk_private.rmap_item;
-> >   	}
-> >   	if (ksm_test_exit(mm)) {
-> 
-> 
-> -- 
-> Cheers
-> 
-> David / dhildenb
-> 
+On Tue, 14 Oct 2025 19:29:45 +0800 Hillf Danton <hdanton@sina.com> wrote:
 
-Thanks for the explanations, I will send a v2 shortly.
+> On Mon, 13 Oct 2025 12:08:08 -0700 Joshua Hahn wrote:
+> > Motivation & Approach
+> > =====================
+> > 
+> > While testing workloads with high sustained memory pressure on large machines
+> > in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly high number
+> > of softlockups. Further investigation showed that the zone lock in
+> > free_pcppages_bulk was being held for a long time, and was called to free
+> > 2k+ pages over 100 times just during boot.
+> > 
+> > This causes starvation in other processes for the zone lock, which can lead
+> > to the system stalling as multiple threads cannot make progress without the
+> > locks. We can see these issues manifesting as warnings:
+> > 
+> > [ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
+> > [ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
+> > [ 4512.626401] rcu:              hardirqs   softirqs   csw/system
+> > [ 4512.638793] rcu:      number:        0        145            0
+> > [ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
+> > [ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+
+Hello Hillf, thank you for your review.
+
+> > While these warnings are benign, they do point to the underlying issue of
+> 
+> No fix is needed if it is benign.
+
+Maybe this is poor wording on my part. What I mean to say is that these
+warning messages can help us understand that the system is trending negatively,
+even though the warning messages themselves may not indiate that something
+has crashed or broken completely.
+
+> > lock contention. To prevent starvation in both locks, batch the freeing of
+> > pages using pcp->batch.
+> > 
+> > Because free_pcppages_bulk is called with the pcp lock and acquires the zone
+> > lock, relinquishing and reacquiring the locks are only effective when both of
+> > them are broken together (unless the system was built with queued spinlocks).
+> > Thus, instead of modifying free_pcppages_bulk to break both locks, batch the
+> > freeing from its callers instead.
+> > 
+> > A similar fix has been implemented in the Meta fleet, and we have seen
+> > significantly less softlockups.
+> > 
+> Fine, softlockup is not cured.
+> 
+> > Testing
+> > =======
+> > The following are a few synthetic benchmarks, made on three machines. The
+> > first is a large machine with 754GiB memory and 316 processors.
+> > The second is a relatively smaller machine with 251GiB memory and 176
+> > processors. The third and final is the smallest of the three, which has 62GiB
+> > memory and 36 processors.
+> > 
+> > On all machines, I kick off a kernel build with -j$(nproc).
+> > Negative delta is better (faster compilation).
+> > 
+> > Large machine (754GiB memory, 316 processors)
+> > make -j$(nproc)
+> > +------------+---------------+-----------+
+> > | Metric (s) | Variation (%) | Delta(%)  |
+> > +------------+---------------+-----------+
+> > | real       |        0.8070 |  - 1.4865 |
+> > | user       |        0.2823 |  + 0.4081 |
+> > | sys        |        5.0267 |  -11.8737 |
+> > +------------+---------------+-----------+
+> > 
+> > Medium machine (251GiB memory, 176 processors)
+> > make -j$(nproc)
+> > +------------+---------------+----------+
+> > | Metric (s) | Variation (%) | Delta(%) |
+> > +------------+---------------+----------+
+> > | real       |        0.2806 |  +0.0351 |
+> > | user       |        0.0994 |  +0.3170 |
+> > | sys        |        0.6229 |  -0.6277 |
+> > +------------+---------------+----------+
+> > 
+> > Small machine (62GiB memory, 36 processors)
+> > make -j$(nproc)
+> > +------------+---------------+----------+
+> > | Metric (s) | Variation (%) | Delta(%) |
+> > +------------+---------------+----------+
+> > | real       |        0.1503 |  -2.6585 |
+> > | user       |        0.0431 |  -2.2984 |
+> > | sys        |        0.1870 |  -3.2013 |
+> > +------------+---------------+----------+
+> > 
+> > Here, variation is the coefficient of variation, i.e. standard deviation / mean.
+> > 
+> > Based on these results, it seems like there are varying degrees to how much
+> > lock contention this reduces. For the largest and smallest machines that I ran
+> > the tests on, it seems like there is quite some significant reduction. There
+> > is also some performance increases visible from userspace.
+> > 
+> > Interestingly, the performance gains don't scale with the size of the machine,
+> > but rather there seems to be a dip in the gain there is for the medium-sized
+> > machine.
+> >
+> Explaining the dip helps land this work in the next tree.
+
+I do agree that I left this on a bit of a cliffhanger here. I'm a bit confused
+as to why there is this kind of behavior as well, although I have a theory
+as to why this behavior is seen. Going back to why we see zone lock contention
+in the first place, I think it might have to do with the memory vs. processors
+ratio that leads to such contention issues.
+
+The lower the memory:processor ratio is, it seems like there is already
+less zone lock contention. If we rank these machines by their mem:proc ratio:
+
+Large machine : 2.38
+Small machine : 1.72
+Medium machine: 1.42
+
+It seems like this is the order in which we see the gains as well. I this
+explanation also kind of makes sense -- the more memory we have, the more
+memory each pcp will have, and the longer free_pcppages_bulk would have taken
+before (and vice versa). This is the case, at least for my setup, where each
+machine is onlined in one node (zone) and so the pcp watermarks really
+do scale with the size of the system.
+
+I didn't want to include this in the cover letter, because this was purely an
+untested conjecture.
+
+I hope this helps!
+Joshua
 
