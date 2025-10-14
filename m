@@ -4,108 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2D45CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4ED3CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:30:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CD3D8E00E7; Tue, 14 Oct 2025 07:25:56 -0400 (EDT)
+	id 128E78E00E8; Tue, 14 Oct 2025 07:30:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257498E000D; Tue, 14 Oct 2025 07:25:56 -0400 (EDT)
+	id 0DA498E000D; Tue, 14 Oct 2025 07:30:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1464F8E00E7; Tue, 14 Oct 2025 07:25:56 -0400 (EDT)
+	id F320E8E00E8; Tue, 14 Oct 2025 07:30:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F0D208E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:25:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CDCB16089D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:25:55 +0000 (UTC)
-X-FDA: 83996490270.27.C3A0BDB
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B883D180005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:25:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=A2rTqJXJ;
-	spf=pass (imf24.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DC1738E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:30:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7BD8711B024
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:30:06 +0000 (UTC)
+X-FDA: 83996500812.03.B653FEF
+Received: from smtp153-168.sina.com.cn (smtp153-168.sina.com.cn [61.135.153.168])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3444C4000F
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:30:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=kmq1tHTC;
+	spf=pass (imf12.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.168 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760441404; a=rsa-sha256;
+	cv=none;
+	b=AehmaCXuP4LWsHdOKnQ0mw4lqNYfOsVqx2FqPgLizd5+Ee7f6Qh6dMgUnBQ9Gq74PxN4VT
+	UuivVYyexk4x+AnIw+W3Mo4rwfCxF85poxjInz+lCAb42c/9c1gNIt8F6cYn3GKW6zjsLt
+	EV+J5Mj0yCjRNtllhE8PHzANU5gLUyE=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=kmq1tHTC;
+	spf=pass (imf12.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.168 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760441153;
+	s=arc-20220608; t=1760441404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XVuiIrau97qjpcYS/102JQpRxXMYJ1qlunE5ky/iKeQ=;
-	b=4BWmxVXwqKf+mlNAuYLnU4Mtvj/oP2KF8YYL+WEbeJsEVLuKGnyx9ljlQ9Dp+EQbNumuSU
-	9HL3NiXq7XGNxblMxMtYLpXRSUJUme4uLGsNh2IAhetJtGPen5uTzVsbvxJXSMmOsyKrdr
-	cAWMi0+1HuqfJ7hp80lLQ8hUk9n0uuk=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=A2rTqJXJ;
-	spf=pass (imf24.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760441153; a=rsa-sha256;
-	cv=none;
-	b=GyDqVeyKj3nBbkBGBaN5xKrKk68j3FTfaY+/qpTbR9FPm7KGGRrAVcS19Ppa7dahXxJOBv
-	Jm0cba3K9jVcqWm7BkY7EpSyrhgczuIo/mEw6YRjlAd9rQz7irsTWRHGOyl+Et1vhRvNG5
-	gdJ+Z2GdxFqWe1ItCp0/BK2ubAER/zo=
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-780fe73e339so48476597b3.1
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 04:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760441153; x=1761045953; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XVuiIrau97qjpcYS/102JQpRxXMYJ1qlunE5ky/iKeQ=;
-        b=A2rTqJXJBdg3wuTc3Wu2ZJSXw88aDfcPCx7BU/gBNlGCf/jgGHQhYfABg0oL/QhvOy
-         5VJJMklFPRp0B4/1I/toT+KwPrq30/Lk0wG1d7YHnmtwQgyyG6SH9Nlpc+glAKuCWgdT
-         wl6KbkHwDNFyzrwKFs0qmzRsTaOEtIvVjEiMPFTwZ91CUsbh/RGbWdlpFnC0zVUdnIPz
-         DaLvX4NBGKBF+DZmYvrelaS2mn2uLovxna1VW0zBAeYS2UW33IAPpdS+N3FAnzRA+QL1
-         cg9RysTj0avsvpBjooE9ZwwqUnbHVzYzkmaB17MM9lGV9NGxmoxR8+H4zCHiXakKEMRh
-         0gyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760441153; x=1761045953;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XVuiIrau97qjpcYS/102JQpRxXMYJ1qlunE5ky/iKeQ=;
-        b=ZDYVHakf8c5ffOfm3dLZkVOxm4kAhAywTOtEE6axmO/nSIc5Yt//+Tr7HMGFLte9wO
-         CUyUv9TRrvdM1sLoBSmoXLsEfhwc2PhfQa+aBsIBuW9REvkq8xsLq3Iw+MJ/AQtAhdkC
-         9hHPz7xKeMMl6T+84A14ss+L2Vn/YQ1sGEgZZi2Dx2fZ0p2GTx99y4dBZkO7gV4OxFg/
-         e0CRcVCLXva7c8OUaWVgSFatWjFWISBMYdXydFDhhhHfUM+28FRdOAG5DAp0+nbcWWH/
-         wvuYuEWth5ZrcVlE0xgj3qAKTUHjeuoBqaMFTP1Xd9WhhRbIXv8rZSkE4Lv4O0N6Vdwl
-         GcGA==
-X-Gm-Message-State: AOJu0YwMMfvlHXHGtCm4XW1dEsoFND01TyLAM0/5vi5YtRegjlWR/ct7
-	qL8EkNmruz0+R0wEPJMyGm4bWlhsB70i70rw2EsWJa3FirPn1Ci6umrSu3LqW0UU6/5YD/3ViJC
-	4ksUONiVhVp3gOwlAznZys1FqJ85no3Y=
-X-Gm-Gg: ASbGncu7HC/eyCwv7wkH/+uWyE0FCN2eArpNT43SdnJ92yHTwCVsNmSSNgL8Jh5Fytj
-	EsDlp0jTlPjHsiMTkIstlZ7u+bCZC2MkhihbWVdIGrj0eScZgLWE2XyTwxfbGH4/d4kAabiuwYG
-	DiNb+cyaBIjq2kY8MXt21kijtOg5zPTQr1jqoqu6gOpiujUekuWKesmbc5WBVq7JlIHkUNkiomq
-	BoH8QCG9wmTwyGJ9RMAm0mc0TS/duaMsyalC3j+g8YyZ4bQQIzQLonTSly02Y67OQSgml3qYpf6
-	v+iG42T5OY13v+UUvDyneJmwIA==
-X-Google-Smtp-Source: AGHT+IG/TDprzS6OG3Gn0DVpuSUmx9MXD7CS5+6MCCRpdRxXQxD8wLaVu7wXm7e/LRg2/prxvED50OPG2W6DCb8Dt9U=
-X-Received: by 2002:a05:690e:1555:20b0:63c:f5a6:f30a with SMTP id
- 956f58d0204a3-63cf5a70840mr10000269d50.33.1760441152685; Tue, 14 Oct 2025
- 04:25:52 -0700 (PDT)
+	bh=XuiZZX2bdYokcEIW6becPyXT1zpVn2AQfemG2M9o3UI=;
+	b=4zk39KsQxmLAmtEibSN95N2AOVA9wnETJIOnmMNswDRAi+UHGi6SqJtTmVahOZ1UtghBSS
+	Vhb/49sdvIbeQW8uz2iLiYG1Cp0yIxbuel+lSRtzE7O+iXgONQZJT8YOAo8ET9TlTXzKQQ
+	CPTeuqrWj49Wz5VuwluFRZYWexdVbAI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1760441403;
+	bh=XuiZZX2bdYokcEIW6becPyXT1zpVn2AQfemG2M9o3UI=;
+	h=From:Subject:Date:Message-ID;
+	b=kmq1tHTCxf+63ZmvIhcm1IL/pCrf6IhmpA+TBV0LkhOHzXHKIDhokj3qYNZxkS5q8
+	 bebLeqQFN4buzxrwXlCTvORhD1gOlbcUZnxNxE0QqTA0SH4PFCYhWaTKFZ3TfFWRcw
+	 S4Q4P4WpOc7EDNaJVXJ6FIX2QXJIF1j+brk6I0AU=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.33) with ESMTP
+	id 68EE343400007D1B; Tue, 14 Oct 2025 19:29:58 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 8044336685184
+X-SMAIL-UIID: FAFC45108EE14A7F85C90DE2B7CC568D-20251014-192958-1
+From: Hillf Danton <hdanton@sina.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 0/3] mm/page_alloc: Batch callers of free_pcppages_bulk
+Date: Tue, 14 Oct 2025 19:29:45 +0800
+Message-ID: <20251014112946.8581-1-hdanton@sina.com>
+In-Reply-To: <20251013190812.787205-1-joshua.hahnjy@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20251014112256.18793-1-kartikey406@gmail.com>
-In-Reply-To: <20251014112256.18793-1-kartikey406@gmail.com>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Tue, 14 Oct 2025 16:55:41 +0530
-X-Gm-Features: AS18NWCx4hH1KxgcNMUNXomJCt-IsbF6ux9Dw_tk-C4GO0AWePvGcEHUjSQcr-U
-Message-ID: <CADhLXY4WPxzvzuiZPJmhS-9xMqRZ_qf7ZcFf5MXPgXbgB3_Xzg@mail.gmail.com>
-Subject: Re: [PATCH v7] hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
-To: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com, 
-	akpm@linux-foundation.org, broonie@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B883D180005
-X-Stat-Signature: sg3hfc5crxfux8m6ubryrod143uo77ux
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1760441153-545609
-X-HE-Meta: U2FsdGVkX19xk5p7mHnlPSErQjJ9BbKnMj18Tatnks+uLs3iT3C/Ueeix0QoNENrwRIrY7lZ/UKhxnu799CaTAhUPKIVAuMjDT1IVp8CI5s0Qh5Dqb9VSEIO5xD/uzt5g+uLDT7bK8i6z4pheS2+mjaYlRceO0LcSPkAeHxqJaFLavyTgagjCuxYFJDV9PpMqa+gYIWFfKFUxi0kfCoCIasbcNCMLdGA6fa8Z8cTZslNUZ1Cl13IIZGqQXxxhsHgc3Fr27nu+4H2UGE8yu6tQ+X5OkVwOLJVLol+FmCTrnQLgTr4X1nI5UZGy+oKHL3f42fwoiopmnrLsX/36oAUSCedfF/JBcnrX7XTqe4/7FEGkXoewFzklVSdVBUo9AD/xy5zMbUi3ievWKc/kVCvXGpgSfybtXnaH6NmI2iXWB3hKKMQr7MLBILK2/9Bnn/IBNDub/L/W1FOMpln4e7upSAFccsx9BuSgeN57HlpiTr0kPspxd57V8amPpT+QlGlendhM1nk2j8EhuIQT2aTUBGI030Oje0OvygDoKwEZoh54hXAp5nlk4WribbbDHZ1pY0E2V71UrJ4Vou0t0wLlv6yow5DdwB5153oIuydJUEadkFFroM8XQEeJ+NWU9uj5Y1O2muqJxP0OViTx9wxzasGk9yE0qVZCeZW7vgyHal0XaQpNgk/NpR4+Sf9sBogKas+E66BjxBcQ/TjN+0ypYNNJHiSD4zwNTa5EuVpLs6/9pMwAywfOhXclaOwNw4qQEBwPB9kkweyzWRSfVAvjL0pHYVvHwCJxUSJmHYcy5piJSnpdOSQv7E1lNvS/S+snXd1izvtvecQp3N0xE36YNkPDuVFBMlCi73bUP/m/ziCx/NiOZsply3eJ57Q2Fveuvf54wHYMNIBLegxjheqcUzdAGXeLUyXGMQt80ZvHkTTwggz4PDYwA4vmk+ZquyqRyP8PL7Cwd9jG2K18Yy
- 4Qb4/m01
- 1c4fc/KjElBUoPlVGsDTp1z9NsvPse5Khi5XN4sUV43U9udf6cvQsmUUMcHvZpBRgtthj7GD8uOWrzzVVnXLEcRBSOl9hKgM+uQyu2YfCbhLLsDLzrgi6JjUwGSKNit+MhObytOVZoncgKN6yplYLNrDgRRWMCGbl+ejk14Jfiwra11y0/9qkEfh063ck6/3rKVKsaqp6q3xcjNbQFeHkrxNO1oQDZW85fmAyKVo99KRv+Kn/CHMguQ+GnK7l/2h5aQagA7Iw72U2Cyjl7RCFyh6ageAgG27QkFVLsQSimighHvxakNLnvVe5eBlWaHcrHvIwqS1qPgDqxnw0LLr8ph1AV/ElIePzpT7N7cNrOBpzeKv95avBjbhntSgb008gkuT6QiwOa2zo733JgMdbsr6iKH/Lk4RQPv0UdjfYQbLZLc1gPEuenzsURdGzG0OrZxK5cE84lBBfRVgk5R5uqM2HtG7AE79DmP771VG4Aw46Dbzu/RlT/6YDswfUjAVNFe+83/NyLbSs/Fc9CUXyLnmy/a1tSU6cIXMJ8S1r1hrFKCQqLBwuKLAxhA==
+X-Stat-Signature: p5nceufjtirkcc8fwu8xkg18m91bpi4z
+X-Rspamd-Queue-Id: 3444C4000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760441402-102576
+X-HE-Meta: U2FsdGVkX1/5Ubdi2WTIHphAxEb1dhIgciFJW/jgtMgET2R1ja8DAK7QBQQxX9vTyIeIslr5hHmVkoocvlN9Gs1AjK+wQFvmrysI/o576Yv8PRbgtvnjrOlnSDEyVCtnMzH9LnFt4y7pKPBN5mCkmDS/RsKH/se9XxsjzivOuFnFAAGToLiTw9PgQDeVvgg6b7hhFBG95F9Zqsb8u1NQg/FrBn2UgZs+TIYofh6BrVl71sF7bUZZ2+ZHSgl1dDqqfApnBULSvBdFhnEUFMEGo4K1aGtw69K4wSixuagW7nL4fvWhkQpSZ+0Y7Nc8QuwzNaODpJGVIEvYR5eNC4S/I/e1TmKSYvsRgrj3agjKpRFWUCcAD9gTxKDlV4egftQMgkohEibhoK8C5D5Rab4AHJOcj5sxFmoq+4I4turDRVlcKf9kzcoEdlldGf32rt64it8667ekyc5rcUKMVkoWBK/eq2OFJ+FZ+48oKUDKOnHT6S30MRCdBCDqJP6yDbohBrW4wmdDOTck6qTmaejFKxwL/OIQz+K/TiE3MKr8CGWLd6OCtbBZgLP/F6MZrbpu336WXjN5jgSQyhgMPZPeAwG/hCpJ5Vf6arkPctamnbxLQqhxtvgKTrT021HRoAorYfJlwNPBOWZz6FUIuhZ7ODk36kJrcG+9uklzcqsUal4en+fhuEi/Mr8c2S0cGERfV1MB/Rs3UPowqm4KOZBZdFnee98eHx4JHypg24YUGfGf/vx6XY/PZPGimjO905CPGYlttVofpbSfKXd/vU0IPh2m9ZTKw1gwrQACveT5hyf0cix2OS97SRViG2vy5lZ1egiHZ+r3rL13UmlcU61aqL6YdjNotRnH8r4ynC5kGMpnIIMPNXbxjVV2u5tWg2ttYnwWWDC9yQb2JFaoOfMF9mCZzcIhBvTtmCmkROuKz/oX2ALsyP2V8cHXQHli9TMGLnmnMkTFnXBS1BvYV2q
+ W5Rn5n+8
+ ICn2BrzToZAoDGMctwRY6URe6cdUbHklLdfR3KJNzBkea7eaUXXzCthNa1xIdUUhey9IkFQl3Chg5pv9kivAtYphIBlOEiqmZhoIE2r74sYVO0l+h1wmH5mPUpcYHBQYXhgRD8UFscR5vA9/2HxorxFfHtX8dTEoQ2B3pyj7D1AaVA24Fe9000liwfijFBbmizVF5FmlVVU3xaaHYoc0QcGf5MW8Z8Wav9BWfXz5f85RGzWrX2YlXmsq+3hLRCAej5uZ5yvRKPUVEV4Mh+GBMmPI6u1mDhhGhdyYtCSASpwyXgVdV6wz3R66+v6Sma/vL6ySb53LTM/1gtBGGtBemn6InaO3nyEQWcQLKm6AY5F/UAM2GOw/ybreCalO0DBjO9Xaj339IfsCPVeSIEnL4Ov6Nmk0LIoE3IpSjQ4ChxlnnafVdEQuvPx9rmgaKwkGrb5ACNPcQtrNPR2xapfODxbZR/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,5 +93,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please disregard this patch
+On Mon, 13 Oct 2025 12:08:08 -0700 Joshua Hahn wrote:
+> Motivation & Approach
+> =====================
+> 
+> While testing workloads with high sustained memory pressure on large machines
+> in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly high number
+> of softlockups. Further investigation showed that the zone lock in
+> free_pcppages_bulk was being held for a long time, and was called to free
+> 2k+ pages over 100 times just during boot.
+> 
+> This causes starvation in other processes for the zone lock, which can lead
+> to the system stalling as multiple threads cannot make progress without the
+> locks. We can see these issues manifesting as warnings:
+> 
+> [ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
+> [ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
+> [ 4512.626401] rcu:              hardirqs   softirqs   csw/system
+> [ 4512.638793] rcu:      number:        0        145            0
+> [ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
+> [ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+> 
+> While these warnings are benign, they do point to the underlying issue of
+
+No fix is needed if it is benign.
+
+> lock contention. To prevent starvation in both locks, batch the freeing of
+> pages using pcp->batch.
+> 
+> Because free_pcppages_bulk is called with the pcp lock and acquires the zone
+> lock, relinquishing and reacquiring the locks are only effective when both of
+> them are broken together (unless the system was built with queued spinlocks).
+> Thus, instead of modifying free_pcppages_bulk to break both locks, batch the
+> freeing from its callers instead.
+> 
+> A similar fix has been implemented in the Meta fleet, and we have seen
+> significantly less softlockups.
+> 
+Fine, softlockup is not cured.
+
+> Testing
+> =======
+> The following are a few synthetic benchmarks, made on three machines. The
+> first is a large machine with 754GiB memory and 316 processors.
+> The second is a relatively smaller machine with 251GiB memory and 176
+> processors. The third and final is the smallest of the three, which has 62GiB
+> memory and 36 processors.
+> 
+> On all machines, I kick off a kernel build with -j$(nproc).
+> Negative delta is better (faster compilation).
+> 
+> Large machine (754GiB memory, 316 processors)
+> make -j$(nproc)
+> +------------+---------------+-----------+
+> | Metric (s) | Variation (%) | Delta(%)  |
+> +------------+---------------+-----------+
+> | real       |        0.8070 |  - 1.4865 |
+> | user       |        0.2823 |  + 0.4081 |
+> | sys        |        5.0267 |  -11.8737 |
+> +------------+---------------+-----------+
+> 
+> Medium machine (251GiB memory, 176 processors)
+> make -j$(nproc)
+> +------------+---------------+----------+
+> | Metric (s) | Variation (%) | Delta(%) |
+> +------------+---------------+----------+
+> | real       |        0.2806 |  +0.0351 |
+> | user       |        0.0994 |  +0.3170 |
+> | sys        |        0.6229 |  -0.6277 |
+> +------------+---------------+----------+
+> 
+> Small machine (62GiB memory, 36 processors)
+> make -j$(nproc)
+> +------------+---------------+----------+
+> | Metric (s) | Variation (%) | Delta(%) |
+> +------------+---------------+----------+
+> | real       |        0.1503 |  -2.6585 |
+> | user       |        0.0431 |  -2.2984 |
+> | sys        |        0.1870 |  -3.2013 |
+> +------------+---------------+----------+
+> 
+> Here, variation is the coefficient of variation, i.e. standard deviation / mean.
+> 
+> Based on these results, it seems like there are varying degrees to how much
+> lock contention this reduces. For the largest and smallest machines that I ran
+> the tests on, it seems like there is quite some significant reduction. There
+> is also some performance increases visible from userspace.
+> 
+> Interestingly, the performance gains don't scale with the size of the machine,
+> but rather there seems to be a dip in the gain there is for the medium-sized
+> machine.
+>
+Explaining the dip helps land this work in the next tree.
 
