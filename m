@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CAA3CCD187
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6344CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 11:34:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D67FA8E00CB; Tue, 14 Oct 2025 07:34:10 -0400 (EDT)
+	id 4676D8E00E9; Tue, 14 Oct 2025 07:34:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D186F8E000D; Tue, 14 Oct 2025 07:34:10 -0400 (EDT)
+	id 3A2778E000D; Tue, 14 Oct 2025 07:34:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07E68E00CB; Tue, 14 Oct 2025 07:34:10 -0400 (EDT)
+	id 21C378E00E9; Tue, 14 Oct 2025 07:34:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3C58E000D
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:34:10 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 775D0BBCD4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BD078E000D
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 07:34:11 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACAF713BE90
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:34:10 +0000 (UTC)
-X-FDA: 83996511060.07.2A7E95B
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A166CC0012
+X-FDA: 83996511060.16.1CBE920
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D67E314000A
 	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 11:34:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DQJnwFNR;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=O0KE4txq;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760441648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JdNMLRv0GjIEMWCtgcQ7HoIeyMuAmO8DRMnhGuBJI2k=;
-	b=DXoZkajeIEsUyxgDDkE6ZvNA7iE+AAcZ+A6cCBZHW6fzjoxzWR9vlGFAvJlE2L53HwxfS7
-	7VRBaycIeb3I6SQjHQbEVYvAIbx6hAVysiNeOc+vQ9OZgwRZKZQzdlq5bdOXL8VDRxu38O
-	n8vWxf4tvg3D3WQUgT7VAhqvFBDzD0U=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OkhosY4kudM5b2LDvScLHpmry/qDRID3Z35q3P72RpI=;
+	b=rIyVWqZ4ahjbU5JVxWfHCsjKIyrvPbySFLoZyDjRPF9RwjeKtClweVXIDhq8kYgcP7Z+RD
+	wUcDCeuMPJX3Cl7yPC6py3id4wM48Lc87ai8kUu/AwtWB2iQj5gDxMkfB4GrzXgWK4GmJv
+	qemUPHv0BOrfZVie2wCValKNdidz9o0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=DQJnwFNR;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=O0KE4txq;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760441648; a=rsa-sha256;
 	cv=none;
-	b=s+CHMDCgNKXSwdnNcXCtJ7Rm8BotOAf04UUNhuE5LX+W1pUg2YwovVuyCw1MPK0OkmuxDY
-	8mcM1LIS9SkiVQGMg62mEBePMsKMDaLXvgWYhgOlagM5pKEnDQM/4YaVjs/WS+1Ysz+HB8
-	PSHBKrmGJeLA7B6gdabcY8qld3CXiF0=
+	b=AfhWQvI4IHDlX+gIEg7wXAs+lNM3Sqtoih/7T6rT23FKKCgAUm4HdatP1I+tZLQA8HWZa5
+	uQsIojfFJOgllNW2HItpuMO6d8JfIcwhBup6oNu3VJnC7geyuwXy7JG+RLfLiNerDd/UPM
+	3ihgUb9pvQ1ojosEZuY8eo5tbqZb/7E=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=JdNMLRv0GjIEMWCtgcQ7HoIeyMuAmO8DRMnhGuBJI2k=;
-	b=DQJnwFNRJfNd40hx7ZBKkbw3+eW1X2/B0fkQf4Jo5A/Vl5OPOo8Z2/uwINUFqPlp5UK7v8/S5
-	HaJIxL/tLJ35eHGfacaESI+lT/zQ55qhTkTSCHE3kvEaL3SRuLcyUafvdDIjaE8vdwEyhuRHmmv
-	12k3QR9AHQia2DTPxdIimHA=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4cmBtZ2hmczRhS7;
-	Tue, 14 Oct 2025 19:33:42 +0800 (CST)
+	bh=OkhosY4kudM5b2LDvScLHpmry/qDRID3Z35q3P72RpI=;
+	b=O0KE4txqhyV3Vzh26t9+GWh7OSn/fdvdkDSIto4DukT7foH1H2jJEjZU8DETzLQZtkDWWqtzN
+	uwDRBLzwt52cMawThoI2BHdPvjmJsmkYQdfHZZvBpyfkdnNbmZYSwZYqX6ivS5MAlqjwXhdR8uN
+	N9xpd8CHdU+IaD7blDzlvQ8=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cmBtb3bKHzKm54;
+	Tue, 14 Oct 2025 19:33:43 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 48002180B66;
-	Tue, 14 Oct 2025 19:34:02 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 267301400CB;
+	Tue, 14 Oct 2025 19:34:03 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Oct 2025 19:34:01 +0800
+ 15.2.1544.11; Tue, 14 Oct 2025 19:34:02 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -72,25 +73,28 @@ To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
  Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
 	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 0/3] mm: some optimizations for prot numa
-Date: Tue, 14 Oct 2025 19:33:46 +0800
-Message-ID: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
+	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: [PATCH v2 1/3] mm: mprotect: always skip dma pinned folio in prot_numa_skip()
+Date: Tue, 14 Oct 2025 19:33:47 +0800
+Message-ID: <20251014113349.2618158-2-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
+References: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: o65gk3oor77zi38nhf8aqo7okyuj1i1a
-X-Rspamd-Queue-Id: A166CC0012
+X-Stat-Signature: corj7kw7ucmhyw7icaxxpoekkzwz7oww
+X-Rspamd-Queue-Id: D67E314000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1760441647-917541
-X-HE-Meta: U2FsdGVkX19zCHKEotaFbNaXnHNmNYBezliQAwblnXnPlLDetazf3ucLrbNnX32F/3E9b3G+CutHPc7EYrzhOOtlbjaw25R4bI+3WhTcRmsvJAOElWqhjuRUVO18IefdMgQYb577Y/s6kZpVUxdV+kdKE25AzGMxA4m5cO6J45jbVrP7sVrjA6Tqt66CNU7yqSLZw2fuzk3CkJv0Qy2zgrjmk+EgWZ6hOnR4dy1gpmieEESn1zNgfZhKFX0LefaXkectzjqvvKICIj38ha9URKHLCCfFxZLHGaNUbqlftIxOYQIwxz8FondAijWq8aPf2MbBNVmhzG3s57i8BsBpqrpyn51Tt9bfQGLk6ktXfHoveIWyg9PDhuDV+Z2Eaxp5bQGAKMfCqx4/+UmiA2h279O/gosqziUzjCOlM8ERINj6y0XqMUNLYNvYFFjlv0QrEhaUMi2hC9/fehh9Vlxm1UIMBWo/o6IFVgri/tCVMiEVQxm2wvVCpW+4KyfYzC1dLXfIgUoSBaF3sn80CQfZBoHeL9MnZT8jTWtJwK83tKBT5dbBYLXIXCClVDDfyveHvmStYLzhOvZcEvx905GA8Uj7r+z/CAuHHXN5H3CpgxqZjBZ3vwCoCP2msfk9EqPDyzPYxLE/gyhidDvelvA1aFT9jVIaSQi4D0F2M4eRfQx2zO0ATcvk4P5uDS+TYYpzUiFoXMEGBG7LhYgYpnLqhSSfBNJQ7MGZat/P6teLAUOtFRuqdynlgoWVl4z9+w0qnLhnhDvOMQtQWXDpj2SKbIa6GBSTVhpXYKlDKu3V8Vwde+Vj8/PxSDdX6li7mggV47qgVCXuTwu5+oYUR5AldLpOYcX3w8e4gicu8SwsYC84UslwmZWrjp/UFvrdcO3IBIxkGhsso0awRqONBGAEpTjH6Kf+M7Qs3UolmFwKLn2dQTF1IqKyxklq8ZwvEtb+3h6nRgWM5NoqQfkpkPE
- yKGlKVpZ
- cIqUALSil4EUx14VStXuzPdTDzy9jJSs5KQJRYhgv5SQsC+hSovNS32EjKXRBEGjgT3ewHTvn9zSNeJfi0w4A3G/0Zsw4H2eGWf046MTCN2vSjWcakCRgZT4llZ/uL+vMZzeCoXkmof7joOyDyrrjjGI9ASwXOFSrb1R0cI+GSxAxSoLfVFnD6jGdkEn1+RXDi+ivpwNFpFXJuSQWL3LOI5C/jeWLc1BcIKxR3OqjJNhGh2J3ZgmYz8JMu31xcTs+hYMvn3fw5j91grhe83Zj/W0woCsVJfNpYWgH
+X-HE-Tag: 1760441647-252696
+X-HE-Meta: U2FsdGVkX1+owQTK1yzeiMPcFKzmspqpDPqBM+ajivrHia5yW/RqmNaqphQgJ+JNdwh7e7XL0yzjh1Ixnwq0xBgdb2OeaF8PqXR+3x6f9ShUNIQOyKUekC2GlRoQfRCxH4mjAJvgmUMfd9fxB6meLiFkAGpEtB1Xd5ua1a9bAcq0c2Z4KbqoEi6GJ7U3v2u2J+2s4DojvUjGfEjveYjK5TAwf1uH+MeFWI/MJo2Xk05EMtpSKLtg5Jqp6rF/S+G3oA/7Ez9z/rpQ7KVypFNCetMRI3cIbEvq9EP9W9VXUoTJ9NwR/ohyHUx7jvCcQwtdvE/pczYOlYJQso4JkJ8LVqJ0op9ghjdY6dbh3z7b3mFHQKeiJSmU9NnJh5+2tffhY6ZJ1t7pt8HDgmBIEpSmaZT2SgylL4sZbcJjW0MPcP3mv4gLuJjBAWpnjgjngDgfPcXQK9QZPRR2jdvw5UHnocXb9yqeTeCcc8R+ELv0qS6rRYDZANTf0KQoqKwVxd+HCiNei+vuKg1lXVKBMjXC3zJDsVbGfG4HBHBoUq7hE+k7LE7B7zteLzedHIqA6TwBqwauzhWUcn9jztoUUMXBttHMxisfxSKO02zOSEeDKd1giLSshJmIKelvEULiUyqbZzdVL7HyjcAFuB/y5YCHm7mANrm5UBCgrn/5rxGOKyxtL5bP6F7L6/GMd1ZIEeU9uHdn6+gZcTAiGTAFwMe1bDbx5U+wY9O/N2OYKGkWSifeycTVFIKHGkaFQp5Ez2Amkh6lDQ0EzG49oqHjdnZmQBgZHndNZNqNTRJQhDA3zxMCXiJnSQx9ViqUnkqY/xbrN0PmeV0bGWte4V1WhN5iJSRcgyhD+KTVH3BaINngK7yWtdPLo9MsDSLP1KihryeWQeMud0OIF9DoaGV6CnU4+xp4OuY4qRa8fyL+a1Hfv+AjUKxbzasd1H98VkNK9uw7rrR/SNfz9AH5K/TqyRH
+ y8dLmP7e
+ wvAy3GOAIZIRvLQavYl5oReVGtAc/5BgEUqlekdGTfWVUOM3nm0lI88dVHf//q55FuoPM5tHhSM3gftilCUTmaJtXguZQJo5u9lFUtgZ5HihOUtmKxFeMdg3/PuZLE3FcrftlX2Nc8vXmeqt93JxuiTT6c5j77dWbplxJIZps+UGMTctpMddpQW4jEr3NtyElqg0pqZ12iYHJ1K9N4ymTX+dsqUorIC1d5aDGKqTuOThEFXBAH8iapzz0gsrlGx9AzHwyZhVa+CmTusTr1alfgj00oD0D/5DYO1mISEkWhnq3tK6rI0k5ir/YPPUONZO2iObMBj2rVNPjCISODxlbQbwKharvFOIqrixJpZRrEejxOMgiHzYnc4EzvjChKlNzDRoJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,23 +103,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-v2
-- update comments for pte_protnone() in patch2
-- rename prot_numa_skip() to folio_skip_prot_numa() and
-  cleanup it a bit
-- add RB/ACK
+If the folio(even not CoW folio) is dma pinned, it can't be
+migrated, so always skip pinned folio to avoid a waste of cycles
+when folios migration.
 
-Kefeng Wang (3):
-  mm: mprotect: always skip dma pinned folio in prot_numa_skip()
-  mm: mprotect: avoid unnecessary struct page accessing if
-    pte_protnone()
-  mm: huge_memory: use folio_skip_prot_numa() for pmd folio
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ mm/mprotect.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- mm/huge_memory.c | 21 ++++++----------
- mm/internal.h    |  2 ++
- mm/mprotect.c    | 63 +++++++++++++++++++++---------------------------
- 3 files changed, 36 insertions(+), 50 deletions(-)
-
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 113b48985834..bb59a42809b8 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -136,9 +136,12 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+ 	if (folio_is_zone_device(folio) || folio_test_ksm(folio))
+ 		goto skip;
+ 
+-	/* Also skip shared copy-on-write pages */
+-	if (is_cow_mapping(vma->vm_flags) &&
+-	    (folio_maybe_dma_pinned(folio) || folio_maybe_mapped_shared(folio)))
++	/* Also skip shared copy-on-write folios */
++	if (is_cow_mapping(vma->vm_flags) && folio_maybe_mapped_shared(folio))
++		goto skip;
++
++	/* Folios are pinned and can't be migrated */
++	if (folio_maybe_dma_pinned(folio))
+ 		goto skip;
+ 
+ 	/*
 -- 
 2.27.0
 
