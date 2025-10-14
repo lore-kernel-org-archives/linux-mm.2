@@ -4,89 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30F89CCD18E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8992CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Oct 2025 09:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 464A88E00AB; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
+	id D8EF18E00B0; Tue, 14 Oct 2025 05:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4158D8E0097; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
+	id D3F928E0097; Tue, 14 Oct 2025 05:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B3F8E00AB; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
+	id C2E678E00B0; Tue, 14 Oct 2025 05:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B3348E0097
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:32:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7572013BB5B
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:32:21 +0000 (UTC)
-X-FDA: 83996204082.17.8717CEF
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1EADC2000E
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:32:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Lb/N2nbn";
-	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4C08E0097
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 05:33:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 57E6C11ACDE
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:33:24 +0000 (UTC)
+X-FDA: 83996206728.18.9E10FF3
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 67C2BA0007
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 09:33:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UYByb+Z6;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760434402; a=rsa-sha256;
+	cv=none;
+	b=hcF+lgqPZ8+c3ZNGlSMyTANtYkm1eKLp+oGVgSoyryGzs3oscgVbg1m6sQ5L4oj889+gG7
+	B8G6N6ZQKCWI+X/Sj7jPnRj2qsZ0a83LgEC6bBuUJqat66xwABnkmR21csaS991RMnOJMg
+	y+uplnBp1eOIaf47DD5jpvItLkSvtZU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UYByb+Z6;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760434340;
+	s=arc-20220608; t=1760434402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MaJVArJT5DSA2aQdi42cvv24ZzgEQA46Llp+u4DFk7o=;
-	b=d3EKnMJS1/65rY4zIJ5xGWJP2FldqfmmSYynuekm+2sBO/CQXK5AVWBijav9AZqXh8fbdr
-	XG4dYwWD6eLinhB/ulSt4KUn5Kymul0BlXYjbOTy2uJmAqZE6+voepBrGrSXqpGPWDeb4L
-	pr9bJFe/q7phr77LJ2S7r9PwbNI0F9k=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Lb/N2nbn";
-	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760434340; a=rsa-sha256;
-	cv=none;
-	b=7JgUmiPWglW+ytu6s+8dh5QjuH2JlDCuLz+R9xoMKxC5NbqAApafvkZBf2EtAT7Ay5C4Yk
-	Qn9yvWWccCggiPQNVs1U8+Mm/ZdlyyE8x7lhJzeqT8X0Xdlm7YR6WplL1GrxhLnomRjxZn
-	nO1MLiROudmhZFheetsetmRqHX+CirE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760434335;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MaJVArJT5DSA2aQdi42cvv24ZzgEQA46Llp+u4DFk7o=;
-	b=Lb/N2nbnUC+KtEZA5YdCQPpps9Cv3ryweXrraIB3a+qMPeI+DdRaj9d5dnTVQDFqYbd4/6
-	KO5FDqdZjAZeg+Yx8O+pttul2MOUXReq/nweJtW6skE52EkkWAoot8WsJkwQG95hqYkBap
-	WDVhc31X/+SlJdB8eeDHTQJeLJ27Uxg=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iOAPJCH11hDS3jLByXOGPi6Sv8SZOPugR5veuhkVP30=;
+	b=GLqw6q8lBuGPGSnV90mou3E++Uy9ogfiDenQksUOktFjhInaRESw8e2HaZOEcUWIgljTyS
+	Id1YoFT1gEyy5m/P/V9ASLjo1ejkYC+4ht7Xp5o4MAYI0XfFYy82fNFmc0S4Phtm5cU3RY
+	Tp4BX9fD00mewlfaRSZcuaBtrrWLKjQ=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e3a50bc0fso38024705e9.3
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 02:33:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1760434401; x=1761039201; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iOAPJCH11hDS3jLByXOGPi6Sv8SZOPugR5veuhkVP30=;
+        b=UYByb+Z662W5xQOOnVq7XYRuq4w9cRdVeFEEGkIMY7XBji8g715Xc+GFBpvOPoEwqf
+         eMUUStUzDk3Gk3Kh6J7XJxcEg8wL0sBAZ8lwNTYjaIpk3UIQRu7PUapLOy7mRSpXJy33
+         mWAIK/mZ4f9vI/iSf/O6n3q6YtG8ZkBRIMOzp2C+XTWrw45S3hRCY9Bm0bO+qHyvWC78
+         UC1u1eAllAv3jXnT0iptQ3dc4fxzpRG4dzMdW2co5xjcggBytUuiRPlO1UH3imEM2rgx
+         ymDxDnf28eobz54OUT19cOxNZULB+5G49lClV11gC1e4MJpPnofWkgPxTD8BWjZKEgdI
+         ZqNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760434401; x=1761039201;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iOAPJCH11hDS3jLByXOGPi6Sv8SZOPugR5veuhkVP30=;
+        b=hMTWMuSroB+QCNLvM72HwoxzFFyqQePGl2zMPR4GVGWX2nFtHDOvSiBBPHVcEAoeIk
+         qhq90wz9e7SgBB79rOkgMNlXCfLQ3f0boEpG/qZuyDSPOEiEApYos+pxSAR8z2iMOM8u
+         wKaak7hX3kRsdAp9DiPdIJ1HuGcmdsjKcY1Ok7gnaVpkUkqiClR715nF88RCSzKqOfOT
+         NKztKEVLkvQZNxPbAZvbdVYKCdME73u9iIgfxIjSo71aVtfF6SqbvpRsMu3o0cczcHjP
+         bSktEvjouPxzk48yatUoe2dQBj2b1mxcIMLMhpWa9ZD7xd6wm4o9smRyEEDcddHAK2fZ
+         0XPg==
+X-Gm-Message-State: AOJu0YzoJwxL4/jaqwdXSwKZcjdoC4iG8OCYq26s3rtoyv3cEkDc5Wq+
+	akwJH1v9cJKFdv09zQVyfNap0Xh46UjgjfUfkeMevqBGKdY5W18NWyIwGkEya3sWydk=
+X-Gm-Gg: ASbGncsmvYNLTTT3/JIib0xFDg+Wu71hMMfNApSgbUjx25DqNEcl43Ei/3GGgSKDdf1
+	uCRKf0ns00oPI0hclmHyBfFWsSqJHwftw7vUf8OxpGULk09cVrYzrqX6ZPTRwoblXzGi2MriPLn
+	GEA2yYZqts2U5Kw+Nmb1PG9I1MI9fHHr8H45QOiWLUXVYrR9c0vHcLu2ISEYhwshqBkU7SabvB1
+	GcLp6oaQAupTtz5P6Juc6FcTSj1cBnQB8z/9FEKYMoZr97kNI2iqAih8z2fQA28J166ZPEaEa+1
+	6U1lTe+r7YA1rCbsT0RAUA5WrL9haYy8RyX4yp60VhJT8FOlZrP/N5xBTGwsobY4PrqQqf5kMPY
+	ISnsqmqklUJWWCarhE1xm3xQtJTSniy7qDcisIryM+SFh1y8BwituWJ2crJDgCts=
+X-Google-Smtp-Source: AGHT+IGcTFlotl++DNaOADqQPzPL48+M3MLBrIdj40znL9ulmxpmP8mkq3jzjYz/lQESgVWhNIZdqw==
+X-Received: by 2002:a05:600c:5247:b0:46f:b340:75e7 with SMTP id 5b1f17b1804b1-46fb34075efmr133092415e9.8.1760434400686;
+        Tue, 14 Oct 2025 02:33:20 -0700 (PDT)
+Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fb48a60b8sm233103935e9.19.2025.10.14.02.33.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 02:33:20 -0700 (PDT)
+Date: Tue, 14 Oct 2025 11:33:19 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>
-Subject: [PATCH] slab: Introduce __SECOND_OBJEXT_FLAG for objext_flags
-Date: Tue, 14 Oct 2025 17:31:24 +0800
-Message-Id: <20251014093124.300012-1-hao.ge@linux.dev>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: Add retry logic for cgroups with
+ memory.low in kswapd
+Message-ID: <aO4Y35l12Cav-xr4@tiehlicka>
+References: <20251014081850.65379-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: nnk33aa3gfrpnqykdgmd7sg6aby9oy5x
-X-Rspamd-Queue-Id: 1EADC2000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014081850.65379-1-jiayuan.chen@linux.dev>
+X-Stat-Signature: kxmyixot6jazdz1zswosrgiz6h9tykux
+X-Rspamd-Queue-Id: 67C2BA0007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760434337-884266
-X-HE-Meta: U2FsdGVkX19McpzHb0D3dyFA8hRG3PmVq8FOyc4H1OU97UNG3be6D9uqtXUT8fAFAeJFzulVlYh2PMkT4Jra+hjHK+GUD99/Wii5o375xYqQ+JKiCJ3Y3Pt6ev6KXqKHCu0OjR4N01xgtRddKATWpGKjd8O5oWRjswTGnfFDCemvFK5VoV0LNk36K7SBfowEaJc5VY0i+6fr/ON6M5KmlURF2eyN3EkvXgcqLoc0wlwHAvQ40suxpjvVv5YA5QagYXVu0CXM7kaxh0L0+okwWvblexNpcpDknc+9e1qWr9O3OADrquIEvIE4FAYWeojqf4QBlCDuF2CMCmGKJx8kCBLdXjctG++CQPhp+pzsIgERzIxKtg440z1EaSQPmMpTkm2zk6c/AjK/XNUqkXNx4lPCsmaAHpbMRHKO6Ca2Tdhe77P4jLxRMHmlgZlBmwcZsyWkDd0J3nPU6gbZ5J+5NDX2xr838YIXmyQ/tBGSDcHbE8BI6btFfIonaaQJc1NZx2qI9rVcnSYt5ECiA5mruEPiCntyySeRw60TRheiFVOeiD6YPCLFwrLUK7vdFsNuipa7nun0bRz9Xf7rQZPQ3ZTBfTWz4qBBc3j34xqcygkuMS4m+4pN8KWVuQv7yx0jByA+En4IT/+8klLGGjcmA3fSg/4am2BYnt2LUg7gviEIGo4Vav5/OFCY/5JQGIrXq5772ix9zhClekwLRI3GbHa6FV4BOVhPnFuY+EBQMas+29+teQgwH/YoBam2wOob7J3zf+mBRuTaHt/f22symYZvHMnaVwuAWnn3B6MWERquxv4N+i5G0dhZFa0qaj1/CdEYVvZWZhRQj+qTllnmMwjyGzvZ0bLqumHYzG3uWbsuerGcPdn6KJQ+3jbvuxouZo1iW8CtakttCZn02HBvRdSgsHKT6nNUbI1RX9JNrzNSkP/60ZL3PX2DJSkKOW3l3g/LDtzfUEjOCIg6bmR
- UEcdVdGg
- RKsNWVSM1uMnSvssKQ7LqnsXXyzP+OlsCg6HEbPDytgUWeegqgBCMnfzRHNqZ/y73bV65E/EDEFY50rG7BqFIJ53HX3HRC11Qcld+sjN6neOK2rx1DdiMtba246HBCFI5V8cJcP0NzEWcSyBlRHgzkePcfiSX51s0Qu+Q7H3WkTsFvBTu14wgTg0cWEu+erqnvj4xogwx9lGWT3U4V63ku8TM8/c7iGJ9nzm0Z+JDUpntMO1GCAx4HDFOJw==
+X-HE-Tag: 1760434402-788087
+X-HE-Meta: U2FsdGVkX19CMXxTQbNlmilMGSEsPahB2ZvSmW0mocU8zo7qUpgCa2vBCIAiiUwX6tdLOMHRZn6z8S15ifrLLEC+A+b57RofeCbxynj1+foxtu8i03qt9n4z2CFKE+IvxlyXcsZlVYL22iJU4tQwTHbE8eMl3fRnFZrVrqQN+8DNBnhlj6G21Va2lwVORZzaQpEbC6dc9C4eN6I83YrgXKX+pq4gN36RU1eY5oEF0Yt8Ftgx1lZXWUGIWnJPKtXxXYWj9Vu+Hp5jATKGHdFiWWG2XEXbP45o5nxcKcQC7DpeY/Q8XfOpJ7LxEyebvkvPzoD8PQOU2mhsdM2D/piDhvGzbqmfov06fzQoQwdQ/n+FJT+ZmVl/xCPvR00BtY5MTIXfZ0xNjZw17y2uXf8SCEfv/hwAXQv8a1ZR+vO3RCk2Ut6end5P1FH6EnAQVVIexvULTBm/4GtQggNXJ34N4ca68jKn2F1K1NXgRlQGtG9oR0QDb2cC6FLJEnkRb3UIucM2DZryBl43w+p7ke5Y0r2usyPyMaXqJ8PPjoDcv4FyuV9CG/LxcC36SxSYMRFc+/TKe3yUSaxviEH66Bu3yzy2DoJVp2bXKsZxuKXUY8dm4JJCzgg8PtfO5ZFTReQHKG/wewjUP/P3Dhnbxq02c2G3vqQWdTsGqwd/A4QPImeIVZqb7bzJm7N7J2g3ICKUvu0Afa0B+v/fBI4V347Cn4e/0knEojoLBUwI558isWeelv1OswY+ZPEZd0Fs9ZG61Cr8DHmJLYodL7RK3udkvIH8D3XKN+kWvuwoSRVQkpy6F0GaYrFsvaQ1AZTZgnet2fbmA4GuFiyglw81XIQ46IfXOh3oUZYkcgKX0KbcDTsEj2YEaXryQ3qWOGpUxMFo8id7bZMvLuFqz9iFY1ekPHW42d7usjMdBN41QE3sSNGqLtchgXfkEBwP2gyPDjLPkZX1Qg7uCAIG6FPfiBh
+ 6ujC6T/6
+ oh5pL+xmPdb+nwFmCompAR7hjoB5el/Jb09bBkJyRx7h31ux1lawvdJeAqB33qi1h6ZnF8DHLYvRO6cU/7DeTGiAurqMTImEQjMlqta20+fcA+wKXiHElKEy5pqBz3kDdMTLftUXilL4Q55InGakcLJ9OCoYnTo/bpJ1PAHPtRF4sF6FLXVOeITjY1NZmwdsD7GEvNTtshd+/pWArfyJOGxFFqWIEOyM8NvivnaxPNLAwWgBcodWtRJYEJYKal3DX316uA+ps0B4EnwAAr3lnjgs2R5/NxtdVvMr088EUqGilG77dd4ad+HaVVwvV82JVWVXT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,135 +124,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Ge <gehao@kylinos.cn>
+On Tue 14-10-25 16:18:49, Jiayuan Chen wrote:
+> We can set memory.low for cgroups as a soft protection limit. When the
+> kernel cannot reclaim any pages from other cgroups, it retries reclaim
+> while ignoring the memory.low protection of the skipped cgroups.
+> 
+> Currently, this retry logic only works in direct reclaim path, but is
+> missing in the kswapd asynchronous reclaim. Typically, a cgroup may
+> contain some cold pages that could be reclaimed even when memory.low is
+> set.
+> 
+> This change adds retry logic to kswapd: if the first reclaim attempt fails
+> to reclaim any pages and some cgroups were skipped due to memory.low
+> protection, kswapd will perform a second reclaim pass ignoring memory.low
+> restrictions.
+> 
+> This ensures more consistent reclaim behavior between direct reclaim and
+> kswapd. By allowing kswapd to reclaim more proactively from protected
+> cgroups under global memory pressure, this optimization can help reduce
+> the occurrence of direct reclaim, which is more disruptive to application
+> performance.
 
-We should not reuse the first bit for OBJEXTS_ALLOC_FAIL.
-This is because the following scenarios may be encountered:
+Could you describe the problem you are trying to address in more details
+please? Because your patch is significantly changing the behavior of the
+low limit. I would even go as far as say it breaks its expecations
+because low limit should provide a certain level of protection and
+your patch would allow kswapd to reclaim from those cgroups much sooner
+now. If this is really needed then we need much more detailed
+justification and also evaluation how that influences existing users.
 
-Under heavy system load, certain sequences of events can trigger the
-VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio) check:
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+>  mm/vmscan.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index c80fcae7f2a1..231c66fcdfd8 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -7147,6 +7147,13 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+>  		goto restart;
+>  	}
+>  
+> +	/* Restart if we skipped the memory low event */
+> +	if (sc.memcg_low_skipped && !sc.memcg_low_reclaim &&
+> +	    sc.priority < 1) {
+> +		sc.memcg_low_reclaim = 1;
+> +		goto restart;
+> +	}
+> +
+>  	if (!sc.nr_reclaimed)
+>  		atomic_inc(&pgdat->kswapd_failures);
+>  
+> -- 
+> 2.43.0
 
-1. High system pressure may cause objext allocation failure for a slab.
-2. When objext allocation fails, slab->obj_exts is set to
-   OBJEXTS_ALLOC_FAIL (value 1).
-3. Later, this slab may enter the release process.
-4. During release of the associated folio, the existing
-   VM_BUG_ON_FOLIO check validates folio->memcg_data.
-   If the MEMCG_DATA_OBJEXTS bit is unexpectedly
-   set here, the bug check gets triggered.
-
-We have obtained the following logs:
-[ 7108.343437] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0002deb97600 pfn:0x31eb96
-[ 7108.343482] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[ 7108.343500] memcg:1
-[ 7108.343507] flags: 0x17ffff800000040(head|node=0|zone=2|lastcpupid=0xfffff)
-[ 7108.343523] raw: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
-[ 7108.343528] raw: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
-[ 7108.343534] head: 017ffff800000040 ffff0000c000cac0 dead000000000100 0000000000000000
-[ 7108.343539] head: ffff0002deb97600 0000000000240000 00000000ffffffff 0000000000000001
-[ 7108.343562] head: 017ffff800000001 fffffdffcb7ae581 00000000ffffffff 00000000ffffffff
-[ 7108.343569] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000002
-[ 7108.343574] page dumped because: VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS)
-[ 7108.343601] ------------[ cut here ]------------
-[ 7108.343607] kernel BUG at ./include/linux/memcontrol.h:537!
-[ 7108.343617] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[ 7108.345751] Modules linked in: squashfs isofs vhost_vsock vhost_net vmw_vsock_virtio_transport_common vfio_iommu_type1 vhost vfio vsock vhost_iotlb iommufd tap binfmt_misc nfsv3 nfs_acl nfs lockd grace netfs tls rds dns_resolver tun brd overlay ntfs3 exfat btrfs blake2b_generic xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables rfkill ip_set sunrpc vfat fat joydev sg sch_fq_codel nfnetlink virtio_gpu drm_client_lib virtio_dma_buf drm_shmem_helper sr_mod drm_kms_helper cdrom drm ghash_ce virtio_net virtio_scsi backlight virtio_console virtio_blk net_failover failover virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod fuse i2c_dev virtio_pci virtio_pci_legacy_dev virtio_pci_modern_dev virtio virtio_ring autofs4 aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
-[ 7108.355662] CPU: 7 UID: 0 PID: 4470 Comm: kylin-process-m Kdump: loaded Not tainted 6.18.0-rc1-dirty #54 PREEMPT(voluntary)
-[ 7108.356864] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-[ 7108.357621] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 7108.358981] pc : __free_frozen_pages+0xf18/0x18e8
-[ 7108.359834] lr : __free_frozen_pages+0xf18/0x18e8
-[ 7108.360379] sp : ffff8000a2bb7580
-[ 7108.360786] x29: ffff8000a2bb7580 x28: fffffdffcb7ae580 x27: fffffdffcb7ae580
-[ 7108.362013] x26: fffffdffcb7ae588 x25: 1fffffbff96f5cb1 x24: 1fffffbff96f5cb0
-[ 7108.362804] x23: ffff8000839d6ba0 x22: ffff8000839d6000 x21: 0000000000000000
-[ 7108.363596] x20: 0000000000000000 x19: 0000000000000001 x18: 0000000000000000
-[ 7108.364393] x17: 445f47434d454d20 x16: 2620617461645f67 x15: 636d656d3e2d6f69
-[ 7108.365498] x14: 6c6f66284f494c4f x13: 0000000000000001 x12: ffff600063fece93
-[ 7108.366317] x11: 1fffe00063fece92 x10: ffff600063fece92 x9 : dfff800000000000
-[ 7108.367610] x8 : 00009fff9c01316e x7 : ffff00031ff67493 x6 : 0000000000000001
-[ 7108.368455] x5 : ffff00031ff67490 x4 : ffff600063fece93 x3 : 0000000000000000
-[ 7108.369276] x2 : 0000000000000000 x1 : ffff000103fe5d40 x0 : 000000000000004c
-[ 7108.370140] Call trace:
-[ 7108.370463]  __free_frozen_pages+0xf18/0x18e8 (P)
-[ 7108.371011]  free_frozen_pages+0x1c/0x30
-[ 7108.372040]  __free_slab+0xd0/0x250
-[ 7108.372471]  free_slab+0x38/0x118
-[ 7108.372882]  free_to_partial_list+0x1d4/0x340
-[ 7108.373813]  __slab_free+0x24c/0x348
-[ 7108.374253]  ___cache_free+0xf0/0x110
-[ 7108.374699]  qlist_free_all+0x78/0x130
-[ 7108.375156]  kasan_quarantine_reduce+0x114/0x148
-[ 7108.375695]  __kasan_slab_alloc+0x7c/0xb0
-[ 7108.376668]  kmem_cache_alloc_noprof+0x164/0x5c8
-[ 7108.377206]  __alloc_object+0x44/0x1f8
-[ 7108.377659]  __create_object+0x34/0xc8
-[ 7108.378196]  kmemleak_alloc+0xb8/0xd8
-[ 7108.378644]  kmem_cache_alloc_noprof+0x368/0x5c8
-[ 7108.379224]  getname_flags.part.0+0xa4/0x610
-[ 7108.379733]  getname_flags+0x80/0xd8
-[ 7108.380169]  do_sys_openat2+0xb4/0x178
-[ 7108.380921]  __arm64_sys_openat+0x134/0x1d0
-[ 7108.381952]  invoke_syscall+0xd4/0x258
-[ 7108.382408]  el0_svc_common.constprop.0+0xb4/0x240
-[ 7108.382965]  do_el0_svc+0x48/0x68
-[ 7108.383375]  el0_svc+0x40/0xe0
-[ 7108.383757]  el0t_64_sync_handler+0xa0/0xe8
-[ 7108.384465]  el0t_64_sync+0x1ac/0x1b0
-[ 7108.385284] Code: 91398021 aa1b03e0 91138021 97fd35e3 (d4210000)
-[ 7108.386553] SMP: stopping secondary CPUs
-[ 7108.389714] Starting crashdump kernel...
-[ 7108.390190] Bye!
-
-So, introduce __SECOND_OBJEXT_FLAG for objext_flags, adjust
-the corresponding order accordingly, and ensure that OBJEXTS_ALLOC_FAIL
-is no longer reused.
-
-Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
----
- include/linux/memcontrol.h | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 873e510d6f8d..8ea023944fac 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -341,27 +341,23 @@ enum page_memcg_data_flags {
- 	__NR_MEMCG_DATA_FLAGS  = (1UL << 2),
- };
- 
--#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
- #define __FIRST_OBJEXT_FLAG	__NR_MEMCG_DATA_FLAGS
-+#define __SECOND_OBJEXT_FLAG    (__FIRST_OBJEXT_FLAG << 1)
- 
- #else /* CONFIG_MEMCG */
- 
--#define __OBJEXTS_ALLOC_FAIL	(1UL << 0)
- #define __FIRST_OBJEXT_FLAG	(1UL << 0)
-+#define __SECOND_OBJEXT_FLAG	(1UL << 0)
- 
- #endif /* CONFIG_MEMCG */
- 
- enum objext_flags {
--	/*
--	 * Use bit 0 with zero other bits to signal that slabobj_ext vector
--	 * failed to allocate. The same bit 0 with valid upper bits means
--	 * MEMCG_DATA_OBJEXTS.
--	 */
--	OBJEXTS_ALLOC_FAIL = __OBJEXTS_ALLOC_FAIL,
-+	/* slabobj_ext vector failed to allocate */
-+	OBJEXTS_ALLOC_FAIL = __FIRST_OBJEXT_FLAG,
- 	/* slabobj_ext vector allocated with kmalloc_nolock() */
--	OBJEXTS_NOSPIN_ALLOC = __FIRST_OBJEXT_FLAG,
-+	OBJEXTS_NOSPIN_ALLOC = __SECOND_OBJEXT_FLAG,
- 	/* the next bit after the last actual flag */
--	__NR_OBJEXTS_FLAGS  = (__FIRST_OBJEXT_FLAG << 1),
-+	__NR_OBJEXTS_FLAGS  = (__SECOND_OBJEXT_FLAG << 1),
- };
- 
- #define OBJEXTS_FLAGS_MASK (__NR_OBJEXTS_FLAGS - 1)
 -- 
-2.25.1
-
+Michal Hocko
+SUSE Labs
 
