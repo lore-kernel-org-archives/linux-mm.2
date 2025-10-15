@@ -4,84 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EAB4CCD193
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AFE7CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:10:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65B28E0014; Wed, 15 Oct 2025 08:09:42 -0400 (EDT)
+	id 5EA2B8E0019; Wed, 15 Oct 2025 08:10:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3D048E0002; Wed, 15 Oct 2025 08:09:42 -0400 (EDT)
+	id 59A088E0002; Wed, 15 Oct 2025 08:10:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A528D8E0014; Wed, 15 Oct 2025 08:09:42 -0400 (EDT)
+	id 462508E0019; Wed, 15 Oct 2025 08:10:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EA9A8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:09:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2D43B115DC5
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:09:42 +0000 (UTC)
-X-FDA: 84000229404.30.FF352EE
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EBE4820009
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:09:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fXrwPuT6
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760530180; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 324C38E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:10:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D22C3117053
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:10:49 +0000 (UTC)
+X-FDA: 84000232218.05.CB6EBBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1D47AC0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:10:47 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sd5Ito2z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760530248; a=rsa-sha256;
 	cv=none;
-	b=KshV3fC0lp1nFKQvoeVlYTNkXmmnGGewj4RzvRPuv64XDw5dj54JP/wquim/Uv2UVl70A6
-	dnL9V+SolHmsT6U3Kh1EecxmBVvNLNTpEn5OQcVNGMxfVneqIJkgmTeix81XKj5i7ZzSWe
-	2D0TuNPjvTBHfhWk1RXrr+6Kdk5RjEY=
+	b=6V/e7p9EM0r5BsgIavCAEZ4iDmPnw7BuFPCicV31WXodLBlbx0SJniHNV+bK/KVueY3YBO
+	dFL51Yur8zU94j3HWGxa75SZxlVOQ7peaZpVUIr67P2/j96AMTgqfqgqnVlAg2ceqlhPha
+	8MXd/hBPJAgt5vBNxxgcCzsKnvy5GRs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=fXrwPuT6;
-	dmarc=none;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Sd5Ito2z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760530180;
+	s=arc-20220608; t=1760530248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9Fjl7F3VFzXC0O48M5wncgrl7psHc5HnBqdo1yCEm8=;
-	b=5dqfs4/LFRMv5DD67AygK00yuW7ADCDKmd+7M3gyfQedjZxpytIIYu2511WWMqiTBnXzHQ
-	yIx9DEpfbt0jfue677SXBNHyt1pdO+5N7zSFaXX3o1dMJXd7o3Q+oumLzzZIrpWfRhXp9Q
-	WXFBjVhoBZf5D+d9tzWoFYpF6py8W6A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=f9Fjl7F3VFzXC0O48M5wncgrl7psHc5HnBqdo1yCEm8=; b=fXrwPuT6D6NXjiEVl+QjBGjMhZ
-	AS1I9IN66rWe6YhNQDOmQ0rvfm8FzszVFXWhrLrz5IbriMPLxINEhtc5OimwSOCU5tzWqQ03V+IBP
-	F8OtuPSePY4QAxn9qo80PEAEZDZhO/+k6sHLjEfz4V3CG1wKodBvYTB5HiL4JarqvdRDE7OfJUfmt
-	qQaUOj+87E62ZC/sDwzNNjQVEu30qM2/bwdCDYsUzvSEebjJ9pFtqASBfSeAoyPQ3kLecj3amW0JF
-	0vgv7kuKoIH/k/hgcBhBFYP1UhHTeypycpIPuk0gyN3vM6N+h8+yfb3ypwP3zvjaI7fZpAppYRvox
-	ztMLJw8A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v90Jz-0000000Elb2-34Jb;
-	Wed, 15 Oct 2025 12:09:35 +0000
-Date: Wed, 15 Oct 2025 13:09:35 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Guo Ren <guoren@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] csky/mm: fix build errors cause by folio flags changes
-Message-ID: <aO-O_2lhxZ8I78cl@casper.infradead.org>
-References: <20251015064759.2993842-1-rppt@kernel.org>
- <CAJF2gTTgG2DhqLC2B6URsNusjzcwCaxi-k=MUZTc1FTEHbaf+g@mail.gmail.com>
+	bh=rjcAu4D35+8ddYfP5ogyph4cHo9YUSa7agtex6ehUck=;
+	b=cHTzpTKNV6E5adknr9mxbRiDNmrdT/n3cU9859daavKd21bglne5GIm5sxdKImunrJA2Ae
+	DqmnSTOQ4al1JrXQB2ZwEhkmnZavGkjYyv109Fs9jLC4DrbcmSrL9rCVurNATV2PI3Mr/4
+	q6qfJGvulsWLKfvtYiYLtrqLRddZGYE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 344A463D25;
+	Wed, 15 Oct 2025 12:10:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75197C4CEF8;
+	Wed, 15 Oct 2025 12:10:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760530246;
+	bh=FRp2nP/cabZWIQTDCFbnZuskgerA1RB/tXfMpaKNBeE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Sd5Ito2zl8yQO/MD6izBpbkQAVgwascCvAqBfIQR3xW8OA7rngdhvt9B6dIBGQnnd
+	 bhQHJQIOObOA3A/qMXGlxL1uE5OhQ6OelV16v1EhWvOFiEnhTIvBdA7rogW4hJJzag
+	 r9Y0enGq8mLUUp52YEJw6qQdUjCMN/LISe8He4d3+Ea30IeQSwxMBXFw0i3lhKeWYH
+	 PPph2OZ2gtJCSO07L4BDV/0R6heC92LTIgWUNnjOHm3jOHxgd2y0bUQbiQnlKCMYes
+	 5ByZB9EfQNHq1KKSeyzRb7pFFa6CxqjpNUSz6W5kUTxdKPfdJnIoncFtSo/9ETOtbp
+	 9PKuHLBk3ADAQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
+  graf@amazon.com,  jgg@ziepe.ca,  linux-kernel@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
+  masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
+  rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org,
+  jasonmiu@google.com,  dmatlack@google.com,  skhawaja@google.com
+Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+In-Reply-To: <20251015053121.3978358-2-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Wed, 15 Oct 2025 01:31:20 -0400")
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+	<20251015053121.3978358-2-pasha.tatashin@soleen.com>
+Date: Wed, 15 Oct 2025 14:10:43 +0200
+Message-ID: <mafs0zf9sjrgc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJF2gTTgG2DhqLC2B6URsNusjzcwCaxi-k=MUZTc1FTEHbaf+g@mail.gmail.com>
+Content-Type: text/plain
+X-Stat-Signature: ppm9di8oh1qr6km6dgtr8ei3ac4ccdq8
+X-Rspamd-Queue-Id: 1D47AC0002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EBE4820009
-X-Stat-Signature: jtkkn3e43o1q97n3rx9rek9yf7ahx3ic
-X-HE-Tag: 1760530178-195006
-X-HE-Meta: U2FsdGVkX18wCCF2P99n1BkRRCJvD9lbEgQBwZ+9Ba3jNXLfx8EB+SUKUU3h2JzuAgHua2Lw+/Xllvqks3Vvom2qAxa1uzL9GOG6wxDRFYaPwvPKBMNiXPW2bh6IOMvYT2KxS9dcUPpt5vfBJ6dRFOLbF6TukvmdD/ckzezxP3Aygxhn5mDOJVkN6U63UN6MmYZycOtkAkT0ZuwVgVhh3r3/rSBpLIsEBil9ecnmAvodhk6u08iWdeirXYAukuATaLvDYeENhMddxxq9nDfofLyf2+XFZXwy7Wdx42Xkw3vA/6JtWy7ZzIyggozKQZSWmYDix1yYt9ayXT1J5lhBngrEtBOenq9NVHeHlijkYLykQNMGGkdeqeYyfCqSUAxQ5tCgtiHHoX0P45uAHKw3RCI9K+MyUbe5HxbrJ3NQprNxQ9myBMagw41xpuzMq3KQ4U36u7SAajGV26DIJDB6Dye3K02SUQVznSoepVFmvu8rN7e3lsuUaA8tEstMX5K/2d9Grt3e2AL5D96b/38l6rVvH+CLQinpx2MOx98x9BM/CfTnHD36nVnzup8l6f3d/tLYek+e6RkCozhCauSw8zemD0cDbxhndJg/ModiCHoYy2sFe9Be5SaiA5Z8oNGiyoL27XGLcu16oL2m/LPRaaP+Q+A55rOGEsa4JykfCnaC4anY96qoicSPReZ8FupfBapkWUlVVdXHngcRH03sW5my387DXiNzXVIO9T7jVRcRW4c1SH4smU8+RgnwaVHBhW37mnDhIBxB9YJaasqmH/KqpQRPw7GdIYg6ixCT44SosMGqrtBYbPnJPuZ2V6hHDp89pGw3LUAo08zarkZIrTcIkgE4qDW/tUR2umb4W6agi+9NQlk0Kh/v18Oz+24yeBYQXNfNNsrewv0CDrAGnREzNaTIY7kizAOKCYmzICs7woTN+mTcqjTyoFZU8PcB/z2o0c1S0mFQjUFb6AL
- nQ/m7gMN
- 4DfPEG/hqBieJnsxORWEd5h3CYBjZd1/D7ct2Wanvx4zvUG3HjwExS0EBlgF11GisS/YFcvq6HrHOwN1Pdaf1BOB8wH+2LSfSD8MHQbMRhYuL2nWLWXXRr8GEbAz0m2VNWvcYVBJJAae42gZk2W6QrQRqupd+Lf65MLeoI44lyfY8e28ra0k7zzNDUUNgw1WiJtBCkBeD0njr13rJZVLdNt7KBF7am8+jlqVOjK/lGEm/0HxDunnUTHvFX3iEJHUnGFFa15n9CJThjLM=
+X-HE-Tag: 1760530247-348113
+X-HE-Meta: U2FsdGVkX1+GqvTFjbQQ8qKca4NS4JBmFkvuJ0FL08hHrZ2BPkz4IBfWMZcZ84YY6NCbO2QL07ZdqEluaQObYPNPzNcRfMlyQJ99Vkcwb7gsNJhMoIbjMUQGUoseyoGLTamNoyngxQ/tQywiwodz5wJNp98kzzo5UfefprHdlGMsar1R7s91NnhoYIkWkIlLdf5KjG8E4GYUG9BBRad0UUHQkOqUdgklUoLTHI+t95qkgG53GJomfdUUse8EPUOVYu0m+zPyjzFyKiINVE25IQoFsCvsmigtEWcN6BKeCg1UI7weg/HWQpzDcmRWU0CVJwopg9qlwoFKsd54A/5f9Nqnk76D/xEqv9JVSHH/XbPBH1bT8WKe8MMsK0FB8TGhq5aNJ+J4hnLN8NdEUif58DfqRpOrWAXltHANaE56xFiIVzc/hC5WKMQfed7DEM2Y9MmieYaSu3xqxEOPYXnXbmz2cJMfAhn0m/+iSFHLW3gl0WYLtD0PG9S3oRlaDLrULzSQImXw1mvmzmVFKVFU5qHeD6wJURMSXeVwsDAhdulYiNVCp1cEqTXqrlmLtaz1PtzBumuTOeB/HMzeocdY0m2pAEb0PCHhcZdwCbpGzVOBFFPcHCIfaDA8HUWl+8Z3N0wQzOIJIcIm3HgbaQ0kgrKy1d67Q0720bFH9QIpzy9YH/FDkmXJvll7HiDqO0diMY+srgWjqVKiejqprZi4bb7OcjHkI/8vPneLHKqq6YKCwxCIDrz9ankyOLfBtcXZoDmSD/XBedmdDgdRUGMcGR6SZr0TsYc1lZTS/Io98cPKbmBpl1NDIo7+3TgxyyIyDQP0pZ5ozRN88/xp1k4XcUiDxQfvujSogYaHJHTccqjGWQVMu6ip4q3VvsN6ljwil4WcHZw9eGoXH2G0buiZQbZ+9aILQADwxr5rCO72CVojlXqTsyxTJYLB0TWSylNH+IcOho456bS2Iwqgfea
+ YTl5GsmO
+ DIs+NUkfSsG2DQAmvXp9d7I1OQp+iAizEZMycLpIeIKNqsRueAc9frdJx42iF6Kt7IbFg4GQsRo+bzkqCGtete7b/WRFtTybPpTT0JFkJbgNAnmp5PGC2P5Q5Tpnvu27EbZtXo94SkfSo5/RY+pbmyTk+gcoDzqpotsRgqg8jUdEn2MrXvXTw2WFwmbIe8x/JGL7c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,12 +98,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 03:51:53PM +0800, Guo Ren wrote:
-> Thanks for the fixup. If you want to go through your tree, please add the tag:
-> Acked-by: Guo Ren <guoren@kernel.org>
+On Wed, Oct 15 2025, Pasha Tatashin wrote:
 
-Why haven't you merged the original patch from October 6th?
+> It is invalid for KHO metadata or preserved memory regions to be located
+> within the KHO scratch area, as this area is overwritten when the next
+> kernel is loaded, and used early in boot by the next kernel. This can
+> lead to memory corruption.
+>
+> Adds checks to kho_preserve_* and KHO's internal metadata allocators
+> (xa_load_or_alloc, new_chunk) to verify that the physical address of the
+> memory does not overlap with any defined scratch region. If an overlap
+> is detected, the operation will fail and a WARN_ON is triggered. To
+> avoid performance overhead in production kernels, these checks are
+> enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/Kconfig                   | 15 ++++++++++
+>  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
+>  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
+>  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
+>  4 files changed, 70 insertions(+), 4 deletions(-)
+>
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index 522b9f74d605..d119f4f3f4b1 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
+>  	  Also, enables inspecting the KHO fdt trees with the debugfs binary
+>  	  blobs.
+>  
+> +config KEXEC_HANDOVER_DEBUG
+> +	bool "Enable Kexec Handover debug checks"
+> +	depends on KEXEC_HANDOVER_DEBUGFS
 
-Message-Id: <20251006-csky-folio-flags-v1-1-a91dcbdbf988@linutronix.de>
+Why the dependency on debugfs? Why can't the debug checks be enabled
+independently?
 
+> +	help
+> +	  This option enables extra sanity checks for the Kexec Handover
+> +	  subsystem.
+> +
+> +	  These checks verify that neither preserved memory regions nor KHO's
+> +	  internal metadata are allocated from within a KHO scratch area.
+> +	  An overlap can lead to memory corruption during a subsequent kexec
+> +	  operation.
+
+I don't think the checks that are done should be listed here since as
+soon as another check is added this list will become out of date.
+
+> +
+> +	  If an overlap is detected, the kernel will print a warning and the
+> +	  offending operation will fail. This should only be enabled for
+
+This also describes the behaviour of the checks, which might change
+later. Maybe for some checks the operation won't fail? I suppose just
+leave it at "the kernel will print a warning"?
+
+> +	  debugging purposes due to runtime overhead.
+>  endmenu
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 5da21f1510cc..ef1e6f7a234b 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -141,6 +141,11 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+>  	if (!elm)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
+> +		kfree(elm);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
+>  	if (xa_is_err(res))
+>  		res = ERR_PTR(xa_err(res));
+> @@ -354,7 +359,13 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
+>  
+>  	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!chunk)
+> -		return NULL;
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE))) {
+> +		kfree(chunk);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	chunk->hdr.order = order;
+>  	if (cur_chunk)
+>  		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
+> @@ -379,14 +390,17 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  	struct khoser_mem_chunk *chunk = NULL;
+>  	struct kho_mem_phys *physxa;
+>  	unsigned long order;
+> +	int ret = -ENOMEM;
+>  
+>  	xa_for_each(&kho_out->track.orders, order, physxa) {
+>  		struct kho_mem_phys_bits *bits;
+>  		unsigned long phys;
+>  
+>  		chunk = new_chunk(chunk, order);
+> -		if (!chunk)
+> +		if (IS_ERR(chunk)) {
+> +			ret = PTR_ERR(chunk);
+>  			goto err_free;
+> +		}
+>  
+>  		if (!first_chunk)
+>  			first_chunk = chunk;
+> @@ -396,8 +410,10 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  
+>  			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
+>  				chunk = new_chunk(chunk, order);
+> -				if (!chunk)
+> +				if (IS_ERR(chunk)) {
+> +					ret = PTR_ERR(chunk);
+>  					goto err_free;
+> +				}
+>  			}
+>  
+>  			elm = &chunk->bitmaps[chunk->hdr.num_elms];
+> @@ -414,7 +430,7 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  
+>  err_free:
+>  	kho_mem_ser_free(first_chunk);
+> -	return -ENOMEM;
+> +	return ret;
+>  }
+>  
+>  static void __init deserialize_bitmap(unsigned int order,
+> @@ -737,6 +753,9 @@ int kho_preserve_folio(struct folio *folio)
+>  	const unsigned int order = folio_order(folio);
+>  	struct kho_mem_track *track = &kho_out.track;
+>  
+> +	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
+> +		return -EINVAL;
+> +
+>  	return __kho_preserve_order(track, pfn, order);
+>  }
+>  EXPORT_SYMBOL_GPL(kho_preserve_folio);
+> @@ -784,6 +803,11 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+>  	unsigned long failed_pfn = 0;
+>  	int err = 0;
+>  
+> +	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
+> +					nr_pages << PAGE_SHIFT))) {
+> +		return -EINVAL;
+> +	}
+> +
+>  	while (pfn < end_pfn) {
+>  		const unsigned int order =
+>  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+> diff --git a/kernel/liveupdate/kexec_handover_debug.c b/kernel/liveupdate/kexec_handover_debug.c
+> index eb47f000887d..294d1d290142 100644
+> --- a/kernel/liveupdate/kexec_handover_debug.c
+> +++ b/kernel/liveupdate/kexec_handover_debug.c
+> @@ -214,3 +214,21 @@ __init int kho_debugfs_init(void)
+>  		return -ENOENT;
+>  	return 0;
+>  }
+> +
+> +#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
+> +bool kho_scratch_overlap(phys_addr_t phys, size_t size)
+> +{
+> +	phys_addr_t scratch_start, scratch_end;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < kho_scratch_cnt; i++) {
+> +		scratch_start = kho_scratch[i].addr;
+> +		scratch_end = kho_scratch[i].addr + kho_scratch[i].size - 1;
+
+Nit: wouldn't it be a tad bit simpler to do
+
+		scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
+
+> +
+> +		if (phys <= scratch_end && (phys + size) > scratch_start)
+
+and here
+
+		if (phys < scratch_end && (phys + size) > scratch_start)
+
+At least I find it slightly easier to understand, though I don't think
+it makes too much of a difference so either way is fine.
+
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
+> diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
+> index b3fc1957affa..92798346fa5a 100644
+> --- a/kernel/liveupdate/kexec_handover_internal.h
+> +++ b/kernel/liveupdate/kexec_handover_internal.h
+> @@ -44,4 +44,13 @@ static inline void kho_debugfs_fdt_remove(struct kho_debugfs *dbg,
+>  					  void *fdt) { }
+>  #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
+>  
+> +#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
+> +bool kho_scratch_overlap(phys_addr_t phys, size_t size);
+> +#else
+> +static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
+> +{
+> +	return false;
+> +}
+> +#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
+> +
+>  #endif /* LINUX_KEXEC_HANDOVER_INTERNAL_H */
+
+-- 
+Regards,
+Pratyush Yadav
 
