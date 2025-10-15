@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF534CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 19:08:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A8BACCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 19:08:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B9D98E000C; Wed, 15 Oct 2025 15:08:38 -0400 (EDT)
+	id DBB5D8E008D; Wed, 15 Oct 2025 15:08:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 491A08E0005; Wed, 15 Oct 2025 15:08:38 -0400 (EDT)
+	id D1D2C8E0005; Wed, 15 Oct 2025 15:08:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A6F48E000C; Wed, 15 Oct 2025 15:08:38 -0400 (EDT)
+	id C5B4B8E008D; Wed, 15 Oct 2025 15:08:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AFC68E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:08:38 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF2E8B7CC1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B922B8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:08:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5ABDD1A02BC
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:08:39 +0000 (UTC)
+X-FDA: 84001285158.09.A36F969
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 74E3080014
 	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:08:37 +0000 (UTC)
-X-FDA: 84001285074.08.D7778D8
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E50B920007
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:08:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JnZaSuoy;
-	spf=pass (imf13.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TTpvqZSC;
+	spf=pass (imf30.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760555316;
+	s=arc-20220608; t=1760555317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=QmSbXI2ApsZqfklDnKMr9/VcpSy3bad84AJw3uoOIms=;
-	b=uFpFC4Exh/hDEfhUbhsKvACazHyPz0V0AUk7i9FnLedepONZyNpNhyFRYcVTmAF/73oiNX
-	j4TGvWVGNb8yAns9pyeP17f7u4iM7A1QchZoxpqyV2HoVlpr2Z/1vu8Z1AI51mfj3m0XiR
-	TXcCzGzh8iLbC47oQfGcqW9Y/Lf7lLo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JnZaSuoy;
-	spf=pass (imf13.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760555316; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=x4+5aOgvWODOPGtO0hDqGiqO++kewzL0OPl+hME7NKc=;
+	b=G6MIBbLRG7wsgvIrcn8riLppccstHk5QsDB7tJFhTuCLT7Ubm3Lqz51lSOZ7ETt1KIync9
+	LOiZ3iiY1Qd4Y3L32eTqOpVxtbQcBKrEQpoWskTWrHgN321kvFB86nka+4AWndmjmp+DX8
+	ve+yZvSAQDils1ALyOuI9E+sYlk7Os0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760555317; a=rsa-sha256;
 	cv=none;
-	b=iuX1qCkGVTR6o7foSIwZxWJmCfn2VEm03BB51IPtMDn/BMQ7kWkC5Pkv4dnOYi5KjouOGO
-	YvcUwgdJ49jnI4B/oyt65+FAjS78lXFjkKeLeg1aQ4M18JSvfUdc2iP5LyMcwtgU2mc3s3
-	WAntwCm8kcuO6An0Xh8kgRR7AsPzy5c=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-78af3fe5b17so5576217b3a.2
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:08:35 -0700 (PDT)
+	b=GHfnRzXYHtRGPKh+gqET19WldUi/7SjK2n/ONVIGjDaXBin+SR9cjBCKlc45TS6Hif3vbb
+	atlSOzZ6SHhxicJbCIbaShQJzLlhb3taUp1gxFGVLKWTXtISTpRmVp54a5i760xqVtVKQG
+	b3wzVtYFcIOdEbES8z4Fv5lDwiFiR6M=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TTpvqZSC;
+	spf=pass (imf30.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-780fc3b181aso4215116b3a.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760555315; x=1761160115; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QmSbXI2ApsZqfklDnKMr9/VcpSy3bad84AJw3uoOIms=;
-        b=JnZaSuoyGbZzfuLnLh5t3IBzPutSDZ7ND7tKcuOvePBWiYt0xOp8H0GmCu5y49zlgA
-         VpRJQIgyMef6WyVElHhZoblSOuoCiMuDZFqJ8rxpeJ+urQsygZ2xpZcOpKL7rDALczpG
-         4U0zqhs9A9VFOoveRXsJJ0MLbP4SHUB5wfxn4LOGh//mKgG0jhCnpBUVuBiEFS1lqQmY
-         8VKCm1oe1dh1QhJNHtyBhdwy1CBrAibQcMLK5M1cgPXUSQ2p2B2G9y4/gLyj3JYNzPZF
-         Onn7zgtz7ZSc3yI1U+gNAGRvg5M+zEU4CzykW6k3bB7ltODrXSHEwuUeJeSj0BUSHBZX
-         hHaQ==
+        d=gmail.com; s=20230601; t=1760555316; x=1761160116; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x4+5aOgvWODOPGtO0hDqGiqO++kewzL0OPl+hME7NKc=;
+        b=TTpvqZSC+9Na+enJRb8Pwk7S2gvkjlIb0AQLoTx5eQniiSkyGaI0vTdGC2EPPizACW
+         6xrlt8KVSqDFsrOieG6XFG8bZy61wupsx4/hkSAMh2mO4XvlpvWKljXqu917f2p7u5YS
+         W4Qt3uFbYQwurE+3PuMhuw9EuTPRH7KGjUmU0AxYDmqmytoUidPcdLtgvxv6cMphdTxG
+         Q9H9A7aP7rVpYchmCMFgb+uxPUPeTimZGs6GZM64rdZss7LSXgcoRVdz5vIwR8CtxOkg
+         NYFObLSxcxL2ayw2uAFFC2gfhAIo/6/heoYI8xwT8qbbjvQSka/4DFcNKueW5pK3xdE1
+         SscQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760555315; x=1761160115;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QmSbXI2ApsZqfklDnKMr9/VcpSy3bad84AJw3uoOIms=;
-        b=d9l2oVx+rSDVbq5bBX+s5ufOMdfQR6Mp4gfudWJJNZuVRZK4OpK64CvRSZqrAL+vi5
-         cprVb+PCH0pCyLrjLfkpmkCc5D0samOFLuIKvYSf484+JpAkle40pETi1GTsOhS6uJU0
-         AuOE0VwwUiaFL/kYTa9fEzz3S9DJd1nU7xIVqMgRgDvBjwQ/5HpYn/lFpHHr7scWc97B
-         Q7QqxYpJdm0ISRJCVI6yGbvWtpHBdCJnev4ZOS/F3AbKHm7Hz12doGHKrdqFmKEU/1X9
-         fiIRQaSHiKOvPT0bJVTNZOJrUBZ8wIqIuMS7+H7w+Xrkxq00JFIe7ZGTb0IRYCS8eddh
-         fnXA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3GHAtM6T1y9KD5D8/ShZwEdn8SmLObyrddEmrNJBKlQb2PpYSFN8CTlXi20j3J5q1eirD0/Oekg==@kvack.org
-X-Gm-Message-State: AOJu0YyHbDTPjktyuZE9ZrRkrmQL8Lg2xgEgGx0dN1bEviNUDxz24nFa
-	ZBYNPXldZvMQcJsG2EX0u87WeSeHboeh/CNSIeVhdm27zRK36uxIX1jC
-X-Gm-Gg: ASbGncuqU3dVWa9CVOqLU54G7V4ZlN6Jdk2fxbGEpI0NffT5Dej2VYmkG8D+6+674IC
-	GEni6PabJAwoAzEgklUavXHTCb91oqYUzXQAA93QUvh/m1+ruAJlzr/0Qobd/lxtwHJ5wCuV7CE
-	bbnv1RopsYbVRp7AYQO0YGj9f04osoc/GKJYnEDohKtwc/Rkq6Z5pRaU3VMnEy4ezXCXs5DXwcf
-	Xo8ZBHANIzkcvGJPSgin/oIz6MKGQbOxLOAEa/5p1SyigORXTOK/Nu6HrwhKzD7mIdLsK+PWRw6
-	hfW6scE4uQ5zsxXId6t7ohfk2b6HF8MfssO3hLOikqCvLoyDzcrXAqqK3ApbsDK9MzjM3C5e03P
-	DkjDbAFebOsTgtsErrm+jiw3Ow8giwqwyeEWisMhABRuuYAi0o9D7JuHBH2/dGKn+5JtGCQ==
-X-Google-Smtp-Source: AGHT+IHMSB7YdnX8tgv3hAnoptITEW+v5c6/QGjesZK24TcZjCmiCjAy3xCUPKMz1WHLBr4gr+e/lA==
-X-Received: by 2002:a05:6a00:1884:b0:77f:416e:de8e with SMTP id d2e1a72fcca58-79387efb06cmr33823101b3a.26.1760555314450;
-        Wed, 15 Oct 2025 12:08:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760555316; x=1761160116;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x4+5aOgvWODOPGtO0hDqGiqO++kewzL0OPl+hME7NKc=;
+        b=tp8qLpT2MWDg7LxKl38xW1faMiA/N6V+rOidZ8yv1HVImFtJjh/JGJ/pEXrXO7vbg/
+         rF2XFk4WJzDy5fZidyujrxT+tlN2S1v49CXFHd2IFVRDoYxYIPXcDlL6rtmeMvB9YfUv
+         D5jCC+Sq0lDu3AQtixtMQXlWXB4dYuYuBpKSalTsC/5YzjR2eWJP101xhJAO4ICivVv8
+         lRjZqy2Al7LO45sMxNfmzSGxbqVD3IiGdoMpMGoGKPQSWlEVUY6FxrBH9a7CIbQBGEwz
+         4PzEQJ/Z0U+D7B5lsguYfk+SWnQajxK4q9BKvK2/Thw2rs3Ix35CnyC+KGCfhL4QghLW
+         Zx0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWO6kqnumjo6bLv0ozfoEqft+qkhaDV9U+1gNlvIfhsO+wkmOdJ3pgDi6g+KLxvFwPlc/6VsDscfw==@kvack.org
+X-Gm-Message-State: AOJu0YyLCYSY9bs6ZnQPo6/h9AYvUejYfPgdVmG+lJMUVE0GXnxl+2O2
+	ZY6+Uofb0m2nye3Em070jDWOg/sZx1kUwrWD21vTJSVfuH14ShLBPX9h
+X-Gm-Gg: ASbGncvjSQq4gyDMmjT5GYPX5iVBuSpgX5uS9xjDSFzD5/mA5eOjNnMaIX5vPEMoE3I
+	iAzd41P/3Q2WBIOM4MQlDYoTDZe7HozBCuNuAuh260b9h7yfddbryu5oqLGvYrN8zHWqL3UdVoy
+	bP+r1rwNiE4lGecKRCDm5yzGw57E1ehGv127UoNNugk/kHWbR9Cocl+oDVKh2AImzCyAVQITuY1
+	yrp3J0AZCWkV5hANWDZ4oB4d7+oUpUXY4wTRzfm+Cf4dL1PoDYl7p2ZuSGsR9fBFyhsuZsIlIsP
+	boptOmNgv1SVcqKnJw8P2yOyeUAiu6WJxbM8ZfFVrYQVMggRQ2MAycBxvh+NhMqYUISbKzy0PHV
+	Jjbm3JT81xKQZzJyXvKa7qTYK7cwlgXQkb3twM29dvudJPNMXOuHhWz1rRo4UncpT3fCpKA==
+X-Google-Smtp-Source: AGHT+IFmVjoy0/RXg9J2/ujgSWA6hbqUoUjXe12ni5dKrJHqDFKqV95/Gh1KnAb6dMRdJCKgoA9fqw==
+X-Received: by 2002:a05:6a00:182a:b0:781:275a:29d9 with SMTP id d2e1a72fcca58-7938742c7aemr38835163b3a.18.1760555316194;
+        Wed, 15 Oct 2025 12:08:36 -0700 (PDT)
 Received: from jpkobryn-fedora-PF5CFKNC.thefacebook.com ([2620:10d:c090:500::7:1069])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d5b8672sm19483106b3a.69.2025.10.15.12.08.32
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d5b8672sm19483106b3a.69.2025.10.15.12.08.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 12:08:33 -0700 (PDT)
+        Wed, 15 Oct 2025 12:08:35 -0700 (PDT)
 From: JP Kobryn <inwardvessel@gmail.com>
 To: shakeel.butt@linux.dev,
 	andrii@kernel.org,
@@ -103,20 +104,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	bpf@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 0/2] memcg: reading memcg stats more efficiently
-Date: Wed, 15 Oct 2025 12:08:11 -0700
-Message-ID: <20251015190813.80163-1-inwardvessel@gmail.com>
+Subject: [PATCH v2 1/2] memcg: introduce kfuncs for fetching memcg stats
+Date: Wed, 15 Oct 2025 12:08:12 -0700
+Message-ID: <20251015190813.80163-2-inwardvessel@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251015190813.80163-1-inwardvessel@gmail.com>
+References: <20251015190813.80163-1-inwardvessel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m91qspy89mk6jbjpszxbszmq5gxbcjgg
-X-Rspamd-Queue-Id: E50B920007
+X-Rspamd-Server: rspam05
+X-Stat-Signature: st68mdyqaqd9ou3mqegc7e7f67sdie6y
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760555315-967009
-X-HE-Meta: U2FsdGVkX19sseufI20xXfczmzDKMtHdyFj42aoid+mWP1lp2Jj/F6LSXws/iY+rjvLtxSlNm1TQLyXCNaYOfQZOEGcb5CIQlUf9l+CATDAD9iDaYnwBbWfayRQUk7AEFQurH6XqHgwCXD47HC2/5HolgxuPQpAHGssF9MBRjRSCNtIckszEuOHPYpHvfmcODlh6PxenMWhC8suQsrLGMIzv+uUTnVk99BbGN5oqOkPjeAjoPwzicQuriJCpDy//qksQQNdBoXOnGVDmelB7vKjmSFiLR9hXalYLeVeA4DcDzNFEBSXMSvL0Za02iOEpHbT6D9L/duVWpRKwWa3tpOUV7/0K0OFk9ZI+Ws+LOZummGHgh/MG/IV8EnouemPV+l92nYVlHWh385Ocrs1dbpjVtQo97bn0R25RHQYqlFVujqErlQDb4vIJTFV8DF6qKynBMJVK6cHv13ZRCaid/J4Kl/ilEofgKFPvhDUx6FFflH3+e0Puk0QlEvXP+YhPEoUguGXqjm/gAF5Icd7Kkb4RQN+Nvs53qr223bguBbKccrKSn5fCkwJQK2EtCAegbzVa748QiCI0ytz/nPnCIMy5kBTwnXQwfJ3XjkN3n8taRiMaTJ7iNsiT7R1La2smWX7I3KO//83r9C2SpOYppamV2XkkbWY/gAIZmXl6IGSPiPRclKl5at9N+U5PvVf+gN1S0c3gZ+N0Uw1JNc9IuVTIpXDOALUpmdt/Jv4P2+T3I6DvA6RusSIcsUTeVltTiC4Dj83jHjE0n2BJJYkZi7PnP6ycPed69bK8GvgSiJqKQnqE5fY1cfiNzCERHp7Y/YD+W8bbAS3tggvw7QazX+hh5uJ79h7u49hB2zOpaSrmJKjPcVyEDHp1sFxQYFuBHIlp11bFqFiH4HN9tDXgSxwn2ELKQE8fzL/tAQF99XkmLvhMJAKmNZMxJUUi89/9CSnT6Z0BIbjhr3mlMkV
- e8M7znr6
- jyZ2Etp5dCK2/FM5Ga6KpXgjWNYK1v1TsVsyCNr+dPhhzF85f+Ffxbmac41qyw9Jm6QFNvrUhSJo3/3Z1AJpoUerQkH+43SMng/2ux785Imislo9KfV32XiJ7gnmd0ps+FMw+J396TrUyTVLUgF1etr5Mug+zkdWVBw/JnCGHzv2uRr9xWVRGfcIR91IDyy3Ti4AGopM/7WG3nUF3BATrFavpKzfjov4nYbJlqEfRvryfSIZ0Ga2usIm2m9wAg8augmr30MCVoPJCQk2L7Ox1E+HleVoVpR3bg6I7PBRju1VBvC8LO6N+kPxq0RR1E5pAYmyd9R+Jjuy1WsHO+6ySN915yMJVqjNnPhdahB4qRkENNAD+o/k8MxLWjAuwfGBZf9dKCS3tirPEJLwEYP88cFp2zN28rB70K0F1Dys/YFTreEgG+WCzk2O11Q==
+X-Rspamd-Queue-Id: 74E3080014
+X-HE-Tag: 1760555317-776378
+X-HE-Meta: U2FsdGVkX199HFdAkqAg5A2z9EhfI56qJLECoX+G96vsFa9c65AwUX1rzGB5/DVXfCDG+SmQYMFO+EfTla9vxfy04Ul305kEldKVE/johfa4WCIQU9BA1QnrklO3pNG6jeTChhO/Cg41CpKizOl8pHHiKmUv6BvNUApB/Q6UDob022aRWCPTWd/UN0ewXwSfSMb3komHWgMVfeBPLisIJ6bQnvPPEQ2AbpBhKIIa0VAv6bwzJTvG9SdQTWwpPcbOXIkpHcjDfW0EIi6omn9tZnFVCJL8YiD+/Gx6sr/HqFSiEENrq/AHhvKHymcU+GdZFihmaAk7lnUp6tk4yJ2jTCMl6KnPYHzUPHYCh671Aj70UxHJE4FVZJZtfC2KqK1vLYhy7EmYLe888dpgudThwm+B5OLFTv874IqsF+WtKIkcHy8WUauhQmPFEHKny85vWe2kvlY1E67JjGzevFgJiT5nTawqa4avuXnvjKRTzUZLjjnHBVd9QaWMT6GaZNdcrb/dHo5SoAThMkX84AUSnnxdgID5G5v4n8daYhDEy4/ov6Dh/39xE35ztOQ4HJQKsnmwYsAP5kv1GXXSpLA0EwhZ9jSffAkX/cb2zXwMSogszeoMXN/AfV3cvaHtYOxJHBDttPIElimNRd4n9x+KlyW+wrXd2nYBsvXC853LpEQBPqKcxzJm3eBV+6ThQAZI3A4MhuaTSYPurCT2ipCUG/esHzjvoHj8Bqagky8wlDFL3tB29mEMR2GUrA/du0o87zJrPZAANJmDd20cm0xIJLpz3tyhNsXLJtj5DIoIdJ+b1RG26TAEhlFSvWlEZhBk5yNp1Y5WvhYuQLABMmFOoyWFbNB11eRcm7JZpXw5zjY2bivCvrvDZ4VSf7pLXaMhPFAreuUF9EK5GInnhsCim3k45am+qvCGvhOBQLlVob0mqMthVqL4HdPUxcPtjhdIcaxzFZ1ceG+ovsmfLFB
+ LmAnG6Xl
+ 82DQ29tUhJDYLvpaSoNAz3fjIds8hDu0E3rBx3MGlN6gErhQAFKorIxe6fCVmedDhqjEPKf52ZLF1b+KfRntmM2yXPy2odJ6LeFs2BOJbJ4EApZlgNa3LBZ98rAGjDgYJ+05wMIN3PwtPaSm0Gb5rAMko4Nl+djz94v2wwBhsXonr303Fw3VMejfo9pXcI2BXvYY2FRP1TSf7WquYXfS+n3s9k5y7vztyQvnPEWK0jUHsXnve4+zhcqK6+bNw+k/7jiJs/CgBxZ6HbBSXWcPefqGrl2nJFmQ8yGOLWzsih7Oo3JPikowYbixH/2R668BJ0F/w48d0rhFxVwCLW3Kdnb5lO3kMvKvp3wl5pfndfjmUR2AegAU3CBXIDhpsSMQ3eB4ybSh4gz1aY80ant3eknYBiPjdODRFLwPDEaRpx/5C5ls=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,98 +128,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When reading cgroup memory.stat files there is significant kernel overhead
-in the formatting and encoding of numeric data into a string buffer. Beyond
-that, the given user mode program must decode this data and possibly
-perform filtering to obtain the desired stats. This process can be
-expensive for programs that periodically sample this data over a large
-enough fleet.
+Reading from the memory.stat file can be expensive because of the string
+encoding/decoding and text filtering involved. Introduce three kfuncs for
+fetching each type of memcg stat from a bpf program. This allows data to be
+transferred directly to userspace, eliminating the need for string
+encoding/decoding. It also removes the need for text filtering since it
+allows for fetching specific stats.
 
-As an alternative to reading memory.stat, introduce new kfuncs that allow
-fetching specific memcg stats from within cgroup iterator based bpf
-programs. This approach allows for numeric values to be transferred
-directly from the kernel to user mode via the mapped memory of the bpf
-program's elf data section. Reading stats this way effectively eliminates
-the numeric conversion work needed to be performed in both kernel and user
-mode. It also eliminates the need for filtering in a user mode program.
-i.e. where reading memory.stat returns all stats, this new approach allows
-returning only select stats.
+The patch also includes a kfunc for flushing stats in order to read the
+latest values. Note that this is not required for fetching stats, since the
+kernel periodically flushes memcg stats. It is left up to the programmer
+whether they want more recent stats or not.
 
-An experiment was setup to compare the performance of a program using these
-new kfuncs vs a program that uses the traditional method of reading
-memory.stat. On the experimental side, a libbpf based program was written
-which sets up a link to the bpf program once in advance and then reuses
-this link to create and read from a bpf iterator program for 1M iterations.
-Meanwhile on the control side, a program was written to open the root
-memory.stat file and repeatedly read 1M times from the associated file
-descriptor (while seeking back to zero before each subsequent read). Note
-that the program does not bother to decode or filter any data in user mode.
-The reason for this is because the experimental program completely removes
-the need for this work.
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+---
+ mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-The results showed a significant perf benefit on the experimental side,
-outperforming the control side by a margin of 80% elapsed time in kernel
-mode. The kernel overhead of numeric conversion on the control side is
-eliminated on the experimental side since the values are read directly
-through mapped memory of the bpf program. The experiment data is shown
-here:
-
-control: elapsed time
-real    0m13.062s
-user    0m0.147s
-sys     0m12.876s
-
-experiment: elapsed time
-real    0m2.717s
-user    0m0.175s
-sys     0m2.451s
-
-control: perf data
-22.23% a.out [kernel.kallsyms] [k] vsnprintf
-18.83% a.out [kernel.kallsyms] [k] format_decode
-12.05% a.out [kernel.kallsyms] [k] string
-11.56% a.out [kernel.kallsyms] [k] number
- 7.71% a.out [kernel.kallsyms] [k] strlen
- 4.80% a.out [kernel.kallsyms] [k] memcpy_orig
- 4.67% a.out [kernel.kallsyms] [k] memory_stat_format
- 4.63% a.out [kernel.kallsyms] [k] seq_buf_printf
- 2.22% a.out [kernel.kallsyms] [k] widen_string
- 1.65% a.out [kernel.kallsyms] [k] put_dec_trunc8
- 0.95% a.out [kernel.kallsyms] [k] put_dec_full8
- 0.69% a.out [kernel.kallsyms] [k] put_dec
- 0.69% a.out [kernel.kallsyms] [k] memcpy
-
-experiment: perf data
-10.04% memcgstat bpf_prog_.._query [k] bpf_prog_527781c811d5b45c_query
- 7.85% memcgstat [kernel.kallsyms] [k] memcg_node_stat_fetch
- 4.03% memcgstat [kernel.kallsyms] [k] __memcg_slab_post_alloc_hook
- 3.47% memcgstat [kernel.kallsyms] [k] _raw_spin_lock
- 2.58% memcgstat [kernel.kallsyms] [k] memcg_vm_event_fetch
- 2.58% memcgstat [kernel.kallsyms] [k] entry_SYSRETQ_unsafe_stack
- 2.32% memcgstat [kernel.kallsyms] [k] kmem_cache_free
- 2.19% memcgstat [kernel.kallsyms] [k] __memcg_slab_free_hook
- 2.13% memcgstat [kernel.kallsyms] [k] mutex_lock
- 2.12% memcgstat [kernel.kallsyms] [k] get_page_from_freelist
-
-Aside from the perf gain, the kfunc/bpf approach provides flexibility in
-how memcg data can be delivered to a user mode program. As seen in the
-second patch which contains the selftests, it is possible to use a struct
-with select memory stat fields. But it is completely up to the programmer
-on how to lay out the data.
-
-JP Kobryn (2):
-  memcg: introduce kfuncs for fetching memcg stats
-  memcg: selftests for memcg stat kfuncs
-
- mm/memcontrol.c                               |  67 ++++
- .../testing/selftests/bpf/cgroup_iter_memcg.h |  18 ++
- .../bpf/prog_tests/cgroup_iter_memcg.c        | 294 ++++++++++++++++++
- .../selftests/bpf/progs/cgroup_iter_memcg.c   |  61 ++++
- 4 files changed, 440 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/cgroup_iter_memcg.h
- create mode 100644 tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
- create mode 100644 tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4deda33625f4..6547c27d4430 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -871,6 +871,73 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
+ }
+ #endif
+ 
++static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
++{
++	return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) : NULL;
++}
++
++__bpf_kfunc static void memcg_flush_stats(struct cgroup *cgrp)
++{
++	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
++
++	if (!memcg)
++		return;
++
++	mem_cgroup_flush_stats(memcg);
++}
++
++__bpf_kfunc static unsigned long memcg_stat_fetch(struct cgroup *cgrp,
++		enum memcg_stat_item item)
++{
++	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
++
++	if (!memcg)
++		return 0;
++
++	return memcg_page_state_output(memcg, item);
++}
++
++__bpf_kfunc static unsigned long memcg_node_stat_fetch(struct cgroup *cgrp,
++		enum node_stat_item item)
++{
++	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
++
++	if (!memcg)
++		return 0;
++
++	return memcg_page_state_output(memcg, item);
++}
++
++__bpf_kfunc static unsigned long memcg_vm_event_fetch(struct cgroup *cgrp,
++		enum vm_event_item item)
++{
++	struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
++
++	if (!memcg)
++		return 0;
++
++	return memcg_events(memcg, item);
++}
++
++BTF_KFUNCS_START(bpf_memcontrol_kfunc_ids)
++BTF_ID_FLAGS(func, memcg_flush_stats, KF_TRUSTED_ARGS | KF_SLEEPABLE)
++BTF_ID_FLAGS(func, memcg_stat_fetch, KF_TRUSTED_ARGS)
++BTF_ID_FLAGS(func, memcg_node_stat_fetch, KF_TRUSTED_ARGS)
++BTF_ID_FLAGS(func, memcg_vm_event_fetch, KF_TRUSTED_ARGS)
++BTF_KFUNCS_END(bpf_memcontrol_kfunc_ids)
++
++static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
++	.owner          = THIS_MODULE,
++	.set            = &bpf_memcontrol_kfunc_ids,
++};
++
++static int __init bpf_memcontrol_kfunc_init(void)
++{
++	return register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
++					 &bpf_memcontrol_kfunc_set);
++}
++late_initcall(bpf_memcontrol_kfunc_init);
++
+ struct mem_cgroup *mem_cgroup_from_task(struct task_struct *p)
+ {
+ 	/*
 -- 
 2.47.3
 
