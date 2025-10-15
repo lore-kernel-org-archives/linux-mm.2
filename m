@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7075DCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D567ECCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA8EE8E0018; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
+	id 3A7358E0019; Wed, 15 Oct 2025 04:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C587D8E0002; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
+	id 37EAA8E0002; Wed, 15 Oct 2025 04:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B95A98E0018; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
+	id 2BBD18E0019; Wed, 15 Oct 2025 04:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A95018E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7766C88B73
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:44 +0000 (UTC)
-X-FDA: 83999672568.08.73F3D9B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BDC58E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA38711B32A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:49 +0000 (UTC)
+X-FDA: 83999672778.13.0E60E9D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D571240005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 226B34000E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516923;
+	s=arc-20220608; t=1760516928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kYmPJ6r7KmFHWtiLUTbtWuCWMRTotHkS2m3cSns0zQ0=;
-	b=0aimDHdI9w2pF21Xf97bEUlt8/iBHVhAUtwJQHe4s7qcbVxVI3uM/dsF5T97h/O0zVlfge
-	ltG0GlKdq5i4nN4QHd+im19znHJQrkINRwrfvOjl8J725HhsHWJpIt8py/Cbu2PrTBKutP
-	H5PsS3PXtaO5046JHNveT7N1NArF4qg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516923; a=rsa-sha256;
-	cv=none;
-	b=pl2Ovk/MA0CcgRT+Q+iTeEVHEPi40fGNV1ysGJbfp9Ogduat8eTwcMVnv9ACuwjPTVRpyg
-	gd32hC93LtCmIUnFlOAMmXjFsdvKi0f0Ltp1slF9sOHF2gV1R8LDXyaXAHHUlS3TkTrE0W
-	4c7IZ3U6T3lFCWp1gm5Rt+s5z8nJrJM=
+	bh=gxy2WR9jIOFdN7YJmtvFh7KSjx/WBbD3EHjVYsBnWoI=;
+	b=yANeeOumEr/vBCUhogG50r5U4PQAVnUomjFrQf1VbRDaNDKbC+49Lw97/d98JVMSDh+tBr
+	2EjoQRYoieYAD8m02HafRfPVjq2u+lq2PI63NAL5V7v1A+YeHu6cLHr6YizhO/stnCeR83
+	cRdKy56+OXEBdDRKFvBgCpHC5WeUq84=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf07.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516928; a=rsa-sha256;
+	cv=none;
+	b=JJZ2czhWSKrnKw55Q95FbnmMUjTYPdEL9E/gArX656eZQ+ifynrj5J3p2/Nmf2vlwwhFi5
+	NFBw1kCBk+btVLi0S02fni/uhzMPC94NVQUsdcDJiB9KMBe+HJ81axWDY6KrJOeCI6d9P8
+	B5tZEq9efUlDBClslVQNYVJ+cI6t26Q=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EB672364;
-	Wed, 15 Oct 2025 01:28:34 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 78DF9236D;
+	Wed, 15 Oct 2025 01:28:39 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ADB43F66E;
-	Wed, 15 Oct 2025 01:28:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 754613F66E;
+	Wed, 15 Oct 2025 01:28:42 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -91,22 +91,22 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when context-switching
-Date: Wed, 15 Oct 2025 09:27:25 +0100
-Message-ID: <20251015082727.2395128-12-kevin.brodsky@arm.com>
+Subject: [PATCH v3 12/13] mm: bail out of lazy_mmu_mode_* in interrupt context
+Date: Wed, 15 Oct 2025 09:27:26 +0100
+Message-ID: <20251015082727.2395128-13-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20251015082727.2395128-1-kevin.brodsky@arm.com>
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 226B34000E
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D571240005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hm47repfro5wchdxnmouz78tbm5z3d6g
-X-HE-Tag: 1760516922-500922
-X-HE-Meta: U2FsdGVkX1+rapJei1lt3c6vmpzyvfKLm3uo6+3cHTXwTgHZkV6t6CalWbWiNosZcCqqioAmNvOQigxN2ldJI25V9YiekcynxE/NS/03RoJu2WVcUNaZ7esiXWWk9BDyisWAa8VV1wcvH0erMknQEqmLyVVc15tirOXh3D6pETxhysKkmU51eqcPCv9Iy/SZwL5KUA5MgiuJkmNdd1lBmyL9U0dSPIKLhL70hTZBNH9xK7URxujpkh0n0fEhN/QHyTvHE3haG2+6SbHP2PBERMxvqmBzD4f8ul/f+32Fj4/K5+akci0quPJc7k/VZ9v7lvmUe2z3JpLkiRvgvZjVvBUvjpaYJnqNWkMR1i+w2X8w5qKiMD5Blw3xY5OmQWo4LMw+EdKPXHbT+DAEDDgKDed4sOhF1YpgdTEVMaHuzn4lh9y/hax0bAsLrSoz8WKvUY0govseZ7xI5roV0mtzSVRMQdWeXxqkCizxp+/gse5GOXuGIY6QDdbh+XIuiQGwVzfWe4AhbSk2Hw0HOnzIWm0PXM0gL6Z9YnU8qo7V9quPE73w58lGRXQYDauRX/o5xluQu9khdZt+kKoKKdqiEt9+q5u9/fWDuWMfkKQ8VkzNZEIUPqiaJliDx2SFkEELpp3W5j87WUgwvV1xc4SA9VGOfx42X3/hToAFm+Y5xTOw9ADI7xekqtj2QTk5M/KEv01kRslaM5diURw1YmWri11hY1qlWdjBEZjJpLeDSo1t4f7EEfMyshR4zahWgKrY7a5IJSRXSlPfWCsBOpQaBKBtDnvYH4/vO9E8xplesJb1AEY0gV74HzmGhWbiAMQJPWckIgQJeH0J2829EiAtFZ6T7QgWN72u4NF4pI4ZIsgEJYns9aTn3iBoyd1Q9+8+p1FNwl34hJWgYe7gXvneiQl8YMZbWQ+gW1o/5ZXvU7YFUngsyte4+e4k1zkVp8qCj1vUx/A9j6D9A6nvc/F
- Vis4X/4D
- MDA3ECBMoisslTPW0YMp5o9BIMI2eHTuUqhUmYbPS6NiCAG2lzBfDpwD/UYHvQJSdewYqiOKqaLLtxd+x8mJYzYJ5f7UyLsV0At1D6nEnqTUVLUz2KumrTMRuv/0ZvPAasfeZb39OiYlxjFbCkc+2v2a+zwum0pf1T0qXVsyMLdzjXWlrTR3Cn19B7L1Oqu33twa24775RAczecI=
+X-Stat-Signature: niibiqbkt3gjwg5icwjucjn8omsafyjs
+X-HE-Tag: 1760516927-174467
+X-HE-Meta: U2FsdGVkX1/VBfkGMUan1wAkdMjgBxa71bTATEVVsG+cdVRe7bAgI55SktNaeRwcfK+hOiUvtHIDR+lkK3pUbg2P+s+5VGWPlBdX92RMi6lAEOdlojwJGliqyBzhwfw5OXxyoiSICwYhkSKiWScHsgUj4hJOrc2VYVjUtwSwfrJ4dXCE+rSW1cpWvR8CG2GGR3by/OvNfSxb5760WRLT4TgUUXz+7RGkkRup4/NbPpIinbpCw/Qlo6TIB8/6tw8ODRsbuNgGOusQm7VxBF1fnJ5H7djh6lvbdv7wzJt+9FfrF2iQtCrP8eok6+3U6T7D55M1hmuHu2BYY7hi2tGO4IXViO1Lwnsi4t3rzyHgeTi6eHc4o6e4Rx63ovP5fwllfdEkiBqnv8Kd3v9nSs79mNtqI2RPknfo6sdrQQTBelWNIuHLbdisq+KVg69SgUFElmRXDgY4z/0qOvMF3R1aYTmbv+7dKtUyLij2LiNmsVCaelCYhnw2ksJ1w1blopmWuRufsvcjFs/HB0epGVOdmmAyXRJNm5LwVmz4Iw0L4/L490yc6qIWHonKAknsoshHacb02qR0q7l0QsYLopHBM79LS/Jt7aPGz8tT6OJ5JbjlIYhTyAfD3bXYFe221y3dGPNXooLAuEu86+0QBJi0c4R039O4HrBBsKgjcb9DgrJtWgQuPg+ZAHTE/jMDxzP3EhwU/UPCfC3vmtyBaVTJ5maCwztxknNbqk9k5/UDwNGVDA7zdpGviXMpfeoQTeJ6+4xCwH1/ZlPONK3G3oQ0euonWcC0xeEnGct2P69BhI/Rx+sGjWQOcnOZLzoYvPAURhC+uhhryG9nnZhoWDiKKh8klJ52kKvUDacU7AYaJLqRFTtOeKBf2Qnlu0GE/6kP8JzXfqE3o7tqcWT2EGLceSNOfvOgzlAIdt0il2TYJjrG6ltXPztBa2dE8aQGMeIGH30RnaQs3/48I0oCcmJ
+ xPaHUCbx
+ knpxGd22AJ/MrVKIg1NqSPCEipSpIDL1Ws5z/wzPJfIs7QAHQQHPZVdJvTKA4HsEr0Pfj9GSTYWPkl34PlzbE9lFmyU9uKz9UUloiG68mJ1OzSh5NdjEUyznqJOPtAw8rV1dKEwTcgxduIRr41q0J+q1GWv3B1fV4AT4VXHFHUM/jydNXsq2edpv81InVGL9lPcnhrJ4gj9EqfmszFh9uena1yOUe66blSPSMhhpZ8B6/WMQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,64 +115,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We currently set a TIF flag when scheduling out a task that is in
-lazy MMU mode, in order to restore it when the task is scheduled
-again.
+The lazy MMU mode cannot be used in interrupt context. This is
+documented in <linux/pgtable.h>, but isn't consistently handled
+across architectures.
 
-The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-mode in task_struct::lazy_mmu_state. We can therefore check that
-state when switching to the new task, instead of using a separate
-TIF flag.
+arm64 ensures that calls to lazy_mmu_mode_* have no effect in
+interrupt context, because such calls do occur in certain
+configurations - see commit b81c688426a9 ("arm64/mm: Disable barrier
+batching in interrupt contexts"). Other architectures do not check
+this situation, most likely because it hasn't occurred so far.
+
+Both arm64 and x86/Xen also ensure that any lazy MMU optimisation is
+disabled while in interrupt mode (see queue_pte_barriers() and
+xen_get_lazy_mode() respectively).
+
+Let's handle this in the new generic lazy_mmu layer, in the same
+fashion as arm64: bail out of lazy_mmu_mode_* if in_interrupt(), and
+have in_lazy_mmu_mode() return false to disable any optimisation.
+Also remove the arm64 handling that is now redundant; x86/Xen has
+its own internal tracking so it is left unchanged.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/x86/include/asm/thread_info.h | 4 +---
- arch/x86/xen/enlighten_pv.c        | 3 +--
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/pgtable.h | 17 +----------------
+ include/linux/pgtable.h          | 16 ++++++++++++++--
+ include/linux/sched.h            |  3 +++
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
-index e71e0e8362ed..0067684afb5b 100644
---- a/arch/x86/include/asm/thread_info.h
-+++ b/arch/x86/include/asm/thread_info.h
-@@ -100,8 +100,7 @@ struct thread_info {
- #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
- #define TIF_SINGLESTEP		25	/* reenable singlestep on user return*/
- #define TIF_BLOCKSTEP		26	/* set when we want DEBUGCTLMSR_BTF */
--#define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
--#define TIF_ADDR32		28	/* 32-bit address space on 64 bits */
-+#define TIF_ADDR32		27	/* 32-bit address space on 64 bits */
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 944e512767db..a37f417c30be 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -62,37 +62,22 @@ static inline void emit_pte_barriers(void)
  
- #define _TIF_SSBD		BIT(TIF_SSBD)
- #define _TIF_SPEC_IB		BIT(TIF_SPEC_IB)
-@@ -114,7 +113,6 @@ struct thread_info {
- #define _TIF_FORCED_TF		BIT(TIF_FORCED_TF)
- #define _TIF_BLOCKSTEP		BIT(TIF_BLOCKSTEP)
- #define _TIF_SINGLESTEP		BIT(TIF_SINGLESTEP)
--#define _TIF_LAZY_MMU_UPDATES	BIT(TIF_LAZY_MMU_UPDATES)
- #define _TIF_ADDR32		BIT(TIF_ADDR32)
- 
- /* flags to check in __switch_to() */
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 4806cc28d7ca..9fabe83e7546 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -426,7 +426,6 @@ static void xen_start_context_switch(struct task_struct *prev)
- 
- 	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU) {
- 		arch_leave_lazy_mmu_mode();
--		set_ti_thread_flag(task_thread_info(prev), TIF_LAZY_MMU_UPDATES);
- 	}
- 	enter_lazy(XEN_LAZY_CPU);
- }
-@@ -437,7 +436,7 @@ static void xen_end_context_switch(struct task_struct *next)
- 
- 	xen_mc_flush();
- 	leave_lazy(XEN_LAZY_CPU);
--	if (test_and_clear_ti_thread_flag(task_thread_info(next), TIF_LAZY_MMU_UPDATES))
-+	if (next->lazy_mmu_state.enabled)
- 		arch_enter_lazy_mmu_mode();
+ static inline void queue_pte_barriers(void)
+ {
+-	if (in_interrupt()) {
+-		emit_pte_barriers();
+-		return;
+-	}
+-
+ 	if (in_lazy_mmu_mode())
+ 		test_and_set_thread_flag(TIF_LAZY_MMU_PENDING);
+ 	else
+ 		emit_pte_barriers();
  }
  
+-static inline void arch_enter_lazy_mmu_mode(void)
+-{
+-	if (in_interrupt())
+-		return;
+-}
++static inline void arch_enter_lazy_mmu_mode(void) {}
+ 
+ static inline void arch_flush_lazy_mmu_mode(void)
+ {
+-	if (in_interrupt())
+-		return;
+-
+ 	if (test_and_clear_thread_flag(TIF_LAZY_MMU_PENDING))
+ 		emit_pte_barriers();
+ }
+ 
+ static inline void arch_leave_lazy_mmu_mode(void)
+ {
+-	if (in_interrupt())
+-		return;
+-
+ 	arch_flush_lazy_mmu_mode();
+ }
+ 
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 269225a733de..718c9c788114 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -228,8 +228,8 @@ static inline int pmd_dirty(pmd_t pmd)
+  * of the lazy mode. So the implementation must assume preemption may be enabled
+  * and cpu migration is possible; it must take steps to be robust against this.
+  * (In practice, for user PTE updates, the appropriate page table lock(s) are
+- * held, but for kernel PTE updates, no lock is held). The mode cannot be used
+- * in interrupt context.
++ * held, but for kernel PTE updates, no lock is held). The mode is disabled
++ * in interrupt context and calls to the lazy_mmu API have no effect.
+  *
+  * The lazy MMU mode is enabled for a given block of code using:
+  *
+@@ -265,6 +265,9 @@ static inline void lazy_mmu_mode_enable(void)
+ {
+ 	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+ 
++	if (in_interrupt())
++		return;
++
+ 	VM_BUG_ON(state->count == U8_MAX);
+ 	/* enable() must not be called while paused */
+ 	VM_WARN_ON(state->count > 0 && !state->enabled);
+@@ -280,6 +283,9 @@ static inline void lazy_mmu_mode_disable(void)
+ {
+ 	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+ 
++	if (in_interrupt())
++		return;
++
+ 	VM_BUG_ON(state->count == 0);
+ 	VM_WARN_ON(!state->enabled);
+ 
+@@ -297,6 +303,9 @@ static inline void lazy_mmu_mode_pause(void)
+ {
+ 	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+ 
++	if (in_interrupt())
++		return;
++
+ 	VM_WARN_ON(state->count == 0 || !state->enabled);
+ 
+ 	state->enabled = false;
+@@ -307,6 +316,9 @@ static inline void lazy_mmu_mode_resume(void)
+ {
+ 	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+ 
++	if (in_interrupt())
++		return;
++
+ 	VM_WARN_ON(state->count == 0 || state->enabled);
+ 
+ 	arch_enter_lazy_mmu_mode();
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 2862d8bf2160..beb3e6cfddd9 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1731,6 +1731,9 @@ static inline char task_state_to_char(struct task_struct *tsk)
+ #ifdef CONFIG_ARCH_LAZY_MMU
+ static inline bool in_lazy_mmu_mode(void)
+ {
++	if (in_interrupt())
++		return false;
++
+ 	return current->lazy_mmu_state.enabled;
+ }
+ #else
 -- 
 2.47.0
 
