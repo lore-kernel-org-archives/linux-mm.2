@@ -4,131 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6644FCCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E241CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:52:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE2A08E0008; Wed, 15 Oct 2025 03:40:18 -0400 (EDT)
+	id 864908E0005; Wed, 15 Oct 2025 03:52:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A93798E0002; Wed, 15 Oct 2025 03:40:18 -0400 (EDT)
+	id 815918E0002; Wed, 15 Oct 2025 03:52:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8D18E0008; Wed, 15 Oct 2025 03:40:18 -0400 (EDT)
+	id 72B238E0005; Wed, 15 Oct 2025 03:52:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7AA8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:40:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33FBFC0B84
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:40:18 +0000 (UTC)
-X-FDA: 83999550516.11.C63F6A1
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1BB2F180003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:40:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=HeQj2jaf;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="u LbnibN";
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FCAA8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:52:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D848413C166
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:52:10 +0000 (UTC)
+X-FDA: 83999580420.23.7FD5069
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D200E1C0012
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:52:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dscn2Apa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760514729; a=rsa-sha256;
+	cv=none;
+	b=yHBcwXNbOP/enJSztceNSBR/Kkyo/qrZB6gmDosKECTOkYR8xfaby0wityd500qgw66H6w
+	/bo2FwQQcthtpqhdgajjzSXAS2O/Lg4mzxAnf15ip6H65Jkgx7O2YWTpszUcrRf4p9Rth7
+	nOT8VOZHOY1wUMF274mKDHUIBi6h4TM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dscn2Apa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760514016;
+	s=arc-20220608; t=1760514729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mhTvKNjDWORy40SOn/DpL+Jsth7I0286Q518PgEEowk=;
-	b=HFU7fAEt+dVVNVBVGB1Me3oaYH4607ueB8vpqyfhvmlG3OeNELS0RVYdBYViVgFmDQ4I8n
-	b5PLgw8X3avxyIvEuuwZFHVbtgkCqiZp2b4LB3tyZ48cPx1RITLzzz9M9jSRCiRRcCiWV+
-	Qdr5daTLm7puSpre6voDOwn4n1glWQY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760514016; a=rsa-sha256;
-	cv=none;
-	b=3Tfb+KUGIe3wA/SEMSJ4yigm4Ia47UJp96P3CQhfxtF4RcC8HD2m2tinua6J3uOLFjKk0r
-	cdMDoctpZbDR6PaCA9Ugagbi79mm1Acjjw+sORjV2iekCfK0uYdv1lE1TIoaTeDeut0tX1
-	BUjHd0b9yRSeQVZ2jw2KwgCr3CmSEX0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=HeQj2jaf;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="u LbnibN";
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 231051D001CE;
-	Wed, 15 Oct 2025 03:40:15 -0400 (EDT)
-Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-04.internal (MEProxy); Wed, 15 Oct 2025 03:40:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1760514014; x=1760600414; bh=mhTvKNjDWORy40SOn/DpL+Jsth7I0286
-	Q518PgEEowk=; b=HeQj2jafkF0vTfOTyfDFcbDCaAJv5ndMmHcjmcubECs792VI
-	++8nFLzWgFy+p+7YBNFfama4/+iKAfI6WQkhXGmyuOgA9U+twL1peq3rCSUtbRia
-	FzJb/y+xMV+x8wdrhwKL2BZzsaUYks2Pxy7u+VGcivpqLvX9NmKe+8bJ1KhkmoLS
-	2SwBvfdVYNyKyF3kRhONNLTI4dHAQEPC7erbdCnpbFwQ45BPO1+tHH9UL/JDU1ms
-	hqID6V6U8tGQG/2oYoBXYYRWiH1qdqRQlRx4wn4kBKK15poaKV8oupQTtxURcipJ
-	gHk5WgYPpQ4f62jTcA4w0dRwtlSsIrX0ZrZEzA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760514014; x=
-	1760600414; bh=mhTvKNjDWORy40SOn/DpL+Jsth7I0286Q518PgEEowk=; b=u
-	LbnibNegX1nlLwH+tYItt+hl0UMp6N1A18f5ba5ndZY4AICwwm4oGq7HWaJIuaSK
-	O6DWsHeTkQ1xdsxjfLI3ge5pA015tVTAlL+M1ZdHs4cI07BXcUgAfpZTgEpbSalr
-	8zuHwp0FJnhYTjJOHbEotaKMslP2gYFe6QMApFTLxlGgVtITSa1uGVbhZKJVb72D
-	rhJYqyZDl2jTiK5AvLHROvly1M6lL+C6TlTKdHsa7LdHNOekkzvfO85bi6BLTgMK
-	5f9T8oWRTi540muNaLXeeGofgsUiA08j6T5sU+Vx1uqEgACmjX9Me7qqCGoHNFw3
-	OhmcrBBU8jjS/7G55g2Hg==
-X-ME-Sender: <xms:3k_vaOCHSszB2XjJaNKKkzyTR3AyDqAMXn5feq4-D7KHkcLEJ0aaeA>
-    <xme:3k_vaDXu3U8ADuZY4BwtSII_zcAIPgTupwyQSLfNUtGKQEyyjQ_aKqPoKcXjhtIA1
-    juEboi_JLEr4R8f4C0X38xZx3A-At5dxI34Smqkqh6EN1zRsnvnV6U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvddvkeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfmfhirhhi
-    lhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrg
-    hmvgeqnecuggftrfgrthhtvghrnhepgfevvddtvdegheekgeegvefhleevteeghfevieej
-    hfejhefgtdehleffvdevtedvnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhes
-    shhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhhtph
-    houhhtpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphht
-    thhopegujhifohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmh
-    hmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
-    rghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqgihfshesvhhgvghrrdhk
-    vghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:3k_vaED22WLve9jZiRv2Gjd-J-HYJYE8ydeBbvatr8ZxNmrjNBO6KA>
-    <xmx:3k_vaBd4O_zaJtJpqgihPa4y-ceRwHSJXEjg7I1WzucCnxwVniWN-Q>
-    <xmx:3k_vaGlCc4i_kAC05bIDWeuukZyctAy3gC5hLjaeEiQrwrYbGDvTmg>
-    <xmx:3k_vaAGhV-z4d_pxOz7Zydve9MbRj-yvf0Bo_TirkVHQbzPF9tKpPA>
-    <xmx:3k_vaAysEYc9reCf7lk8Sgxq4DeVmNi9WFy9hEjZ3Vkr_YpK6yMaMLpZ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 53EBF2160065; Wed, 15 Oct 2025 03:40:14 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	bh=E0kxyBGabssp0rzho2WuiuH9lwTWVoSTEFB52ILRQDA=;
+	b=MO7ddIT59Kto98Bsq416Q98+MIZGN4PMMkoL5J40b7IN3ORF2VlKUoFMEgkYVqif9WGgCH
+	ZfDGRNhl5uxhcBosPOB9fLAIUUmT1jZBECljUQedKGUfyeqhg27f5pchm4kroMclUKIvEU
+	BetAcdYFjYRBl+OZn9rcX0KQKPcf6+U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B66954923F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:52:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96709C4CEF9
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:52:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760514727;
+	bh=Hk8FceSWL5r86KoiYChN7BiB6tlnUBYhdKKUtKnsBf0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dscn2ApaBkuh8EDk+NNw0Ct2slio/sqp/Dra1L+qTikaYBzhvDstLjLWZXHXJ2tT0
+	 6uiCCAmA9ZqQo5LA69iR5c7Bq0PxD/SR+MzxAHIhcXUIrOKiiEwhX7ixX8fnhzZjS7
+	 D5awNVe0jKY+x6aAkrmgY49xOIGSo+4iCUgSBK/DItRVgNez4EXDhkGEcTOk2OasgF
+	 5EKA46AgxJlk6B6gVFDEsFZpyu/4kzSHmPkpZHA5wbidVffvwRl/WK9rQAteKLOg4n
+	 7lLU93sKVh3SySgrtvME+3A6aJogBZpES+xuSfvxxz0iPCljqsAqeBVFpn+Rt+XQ1Q
+	 Te8I85OgVol0w==
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46fcf9f63b6so12292865e9.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:52:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXHCDcDOG2Eh5SXK+2YB1VBt0q6bbJ1aeDoogmggAaiwyNdmqRxo4mrCezeaXW5pdurBcvauw+3Ww==@kvack.org
+X-Gm-Message-State: AOJu0YwZb6rCMMuZo65yWsn9VJf7SfRmR1VvBhVAvjubCB3iXgUVt7qb
+	V/G5546zaDdpNP6AaEmvOCbvru7jAkph0GA9rffvzX9RuhR7Y42dzky6EN+rJ8BYZy0SY36MTjr
+	x8te7bIi/pIJjj36XeEcVDU/M6T4/Oy4=
+X-Google-Smtp-Source: AGHT+IEFaI3DZoRnbvDOhvRmHl+9oaMsWgpyEGx60mmVrJHDRbgxKRmZRxoBncYFiUSnm0OF0Il58OANJPKeCxbOxCQ=
+X-Received: by 2002:a05:600c:154a:b0:46f:b327:f20d with SMTP id
+ 5b1f17b1804b1-46fb327f2aamr130646295e9.26.1760514726025; Wed, 15 Oct 2025
+ 00:52:06 -0700 (PDT)
 MIME-Version: 1.0
-X-ThreadId: APftQYjyEKps
-Date: Wed, 15 Oct 2025 08:39:53 +0100
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: "Darrick J. Wong" <djwong@kernel.org>, akpm@linux-foundation.org
-Cc: linux-mm <linux-mm@kvack.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- xfs <linux-xfs@vger.kernel.org>, "Matthew Wilcox" <willy@infradead.org>
-Message-Id: <d2b367ae-b339-429b-a5e7-1d179cfa0695@app.fastmail.com>
-In-Reply-To: <20251014175214.GW6188@frogsfrogsfrogs>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20251015064759.2993842-1-rppt@kernel.org>
+In-Reply-To: <20251015064759.2993842-1-rppt@kernel.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 15 Oct 2025 15:51:53 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTgG2DhqLC2B6URsNusjzcwCaxi-k=MUZTc1FTEHbaf+g@mail.gmail.com>
+X-Gm-Features: AS18NWC3MAeshMbUqk61Elrq_2rSWAMD4mfkq-zOY9A84heCjfIMCusAIOWNVzY
+Message-ID: <CAJF2gTTgG2DhqLC2B6URsNusjzcwCaxi-k=MUZTc1FTEHbaf+g@mail.gmail.com>
+Subject: Re: [PATCH] csky/mm: fix build errors cause by folio flags changes
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: sedz17h1y19oguzoq7pj1qhqqcr3rofs
+X-Rspamd-Queue-Id: D200E1C0012
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1BB2F180003
-X-Rspamd-Server: rspam02
-X-Stat-Signature: jjpu1me5cboy46reg9fkmpi6ckjk87tx
-X-HE-Tag: 1760514015-590561
-X-HE-Meta: U2FsdGVkX18qKuRj9xhaWpZJTpS7403E8KAKqjYH1tTrszXVXx/1ZFS3602sHSySw9HU39U/L7d4BzEoawGhwIepI+k12HN0H2bCabShXZ7+cTKIUbGUS04V086pPtyg1eIvKu5s1zibk7Y+hICtweLZK1/g00fsV+W9XeWeGf8L18e2AtPKkzFuJgqR01kCnzqWcEOVhbVpqW7/qM3ds95WwUykfJ2nmPNZI5E+BI/HZJ/fOIDrSwU8qDrFXZ/vcuAgfr96YvQ8rKcZrSqglDcRMmedGhuAtuOcX2+1YevgPoQ0V/z8ezL6BVRF5l92i2kxV4V/7fVmCG7AqY79bQMmcb44JozNjCrqJ+0d27zNuDKr5RVb0h8kmj97vsR/vIcYRhMln+wvi4LAOw4usYLG7yZ7RnYUns0zVtC/aBfL3WtajMZFfyRDZYxFbmX0irbVbqQ5K+wzfdWKWWLuIs2bYs/kWmadEHdW36bAeyfVaKEpqetLh/e2lsna51ygZGdhsGvCCd50jwh3aFJEo6jHW8RbJq3QFq4RI73bXqKSt9vbPfSzb797PWt3f4dRuHwb+0l0yLnBp3Sm4d48WxJIaHn33gceXVI4rXnpddH7ENMZWYUFYCCEDpQGcUfz2zZlN7iw0RhxRR/IHS3AOxG8TcXOo9RdMn1BNAOfNtenTKzdeMCouud7TQ8W7Ojg+ZMmgf8+/LuLv+rMslov6UGfUyC7R1F9rPdajDecAHbI6yW1VvN/7OOMIJmNp5rB4oVADJnt2M3KZJSZa/B2YbygGFbW5FC4Iz/ux16txI+XsSktCW615DDPUiwcc9QjzTslAhJGATB8IoBZi8q+sKU2WXLxZUzh0dxOW5OKGVXsp/0RK2ig7Sen9Ufj0icju3abzdsu3k2oCcOmdiTd2jNqiB6X9qLZ+dYPb6H0DWFwv+kRSbcqUuJJhRTfWp4BZTNH7cUB/Qa7zerlxTQ
- i02lACYB
- 8A5t2TMu1fHJSXSk/+FVp8AAXRVchDDt2rLvlCwBEFUXKES5ArteFxKdbuFXodHtWZ0LxqG2XgAxKe3dpfr09PKPh92hZ597hdETHZF6wh2SnS0wMQ31K9tWo27nPmDJ3M5qJWJZ14Jd8bZ78kLqCZrBDPDLOn8GD7N6NpSnuLlwNz8JAIYHV5VNA1s97o1+Lr1SY8Ta9HxUjvYQkNn1CHVWB/il0zBptEyeptTcE+ZFYGAUqeCh1kUa2HELyME8P9TbvhPPCiZgkiLan6DnC6SPB6j/OZzCDq2/bgXeFfYyuOzCkQKcpce03w6tpL/aRFgG5Xj667NdjNLD51zbzIAAksQ==
+X-HE-Tag: 1760514728-857811
+X-HE-Meta: U2FsdGVkX19Pk/vuunA9xCV8+4O4tAJgRQ2E+F9sFpbbfJyVph6ZTOH3gPRO3Y9awGjbcORfpoisOx6Uz3w2GreWtIQWKvjLclvDsujwTBYjrA8Z9fxYM97l0B4+yEp8022+goPAP3O/iQY8JwOaOFGyvtJLkJlhZiERFrxlkK7LX/9oZeaJRp8iTWzlLIvsZz2XGcQEXtCd1eWdI/zCM8ZIu44BeIMONh4RbTHHmOIcnJsoRWUmC3raIOhf4/3MlI01eo85e2rhtDkm4B3VgG8Yx9ILnPkBf36yKj9sQ1lBBq523d1kFUUfvFPU//ez34YJiyFwBIkTPTr056xlgVTUOrKpRu/ZNijZtUgeutnycleIrvM4AC5qUiyrKpryuaeQfETxI0bGfjR1gbv1nsvInz59f+AzpnUj+kixCAbCZdYACAhuadt2k8m0pVVvAgRqIrTGDoazdrVkyncnaVDW0oyVfgTKWU0HKfgZLFl3UxqnL9MMLgP7aien0Vg7GY4UCMXp2LJLc6tqLEricy3MnmhpTnCKy5/SDb5ZGD3PVB10HXYKdIRGWvj86hsv/efC687DlLui6LF8cEufwDWCkzH6ogogqwZWtn0FQdBvNks+9glauCKEj3/s381O9GmXkSM9aFmiqzBPGLGmHQjM61PCnE8VSrMOHnnB5EshUM0DjqTKouFSb5EjnddqxA8KmiSv3Zw55RY6RMlLCcC7XK0f2IYowjhY+Ppw0SEVoeEs3DhxnqS1kvG4W9fiLR34W2m14hGJMs/N52SRwMxQdSGxZwlCR0YRgphLMYRrHKeQzqDZ+rSQp997t4h8S/OwHdOLWRjYJ+XZtVkw7pnmIl08fXHNdZhoy3ahNhzDoKPNAFelfD7dZjgMwkKVqawnC2UwHDiWwpFOuRKAeSS5MMe8CP4mhBCr3tAmXYeqCajIRDbI/cdqpFmmbDWpL2BUByHe5YEVEena3dK
+ ylZJU62k
+ Xuqa8pALipRCO/2nwZR//AW6/kzQQBmstSuBkBAm/tOh+dQNpO72dXET4KkoXOUrpZy6w4g6NSL3qL1Mgp01bRsot/tXQ/EVrlWljChw7KJsWQdWPaY9s+EsqwZfmwGII9UYSFufhYyP4FSy7cQskc4kIp0nw2YcX+JMJ97PaVQk46h6KGx1lOkJo/arlpCKktF4OtHsvTmdL8P+C+jXg2V4tixY5J06l73xloR3pV/M8OGZG3oXil9mRnOWEoI4MdahNWTT351+m7xjnkyJa8yPYSnXSkZJT5rkGIhettSkrM8ORZVjglv2S1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,15 +104,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025, at 18:52, Darrick J. Wong wrote:
-> Did your testing also demonstrate this regression?
+Thanks for the fixup. If you want to go through your tree, please add the t=
+ag:
+Acked-by: Guo Ren <guoren@kernel.org>
 
-I have not reproduced the issue yet.
+On Wed, Oct 15, 2025 at 2:48=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Kernel compilation on csky fails because csky was not updated during
+> conversion of folio flags to memdesc_flags_t:
+>
+> arch/csky/abiv2/inc/abi/cacheflush.h: In function 'flush_dcache_folio':
+> arch/csky/abiv2/inc/abi/cacheflush.h:23:39: error: passing argument 2 of =
+'const_test_bit' from incompatible pointer type [-Werror=3Dincompatible-poi=
+nter-types]
+>    23 |         if (test_bit(PG_dcache_clean, &folio->flags))
+>       |                                       ^~~~~~~~~~~~~
+>       |                                       |
+>       |                                       memdesc_flags_t *
+> include/linux/bitops.h:47:24: note: in definition of macro 'bitop'
+>    47 |          const##op(nr, addr) : op(nr, addr))
+>       |                        ^~~~
+> arch/csky/abiv2/inc/abi/cacheflush.h:23:13: note: in expansion of macro '=
+test_bit'
+>    23 |         if (test_bit(PG_dcache_clean, &folio->flags))
+>       |             ^~~~~~~~
+>
+> Update references of folio->flags in arch/csky.
+>
+> Fixes: 53fbef56e07d ("mm: introduce memdesc_flags_t")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/csky/abiv2/cacheflush.c         | 2 +-
+>  arch/csky/abiv2/inc/abi/cacheflush.h | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/csky/abiv2/cacheflush.c b/arch/csky/abiv2/cacheflush.c
+> index 876028b1083f..064b0f0f95ca 100644
+> --- a/arch/csky/abiv2/cacheflush.c
+> +++ b/arch/csky/abiv2/cacheflush.c
+> @@ -21,7 +21,7 @@ void update_mmu_cache_range(struct vm_fault *vmf, struc=
+t vm_area_struct *vma,
+>
+>         folio =3D page_folio(pfn_to_page(pfn));
+>
+> -       if (test_and_set_bit(PG_dcache_clean, &folio->flags))
+> +       if (test_and_set_bit(PG_dcache_clean, &folio->flags.f))
+>                 return;
+>
+>         icache_inv_range(address, address + nr*PAGE_SIZE);
+> diff --git a/arch/csky/abiv2/inc/abi/cacheflush.h b/arch/csky/abiv2/inc/a=
+bi/cacheflush.h
+> index 6513ac5d2578..da51a0f02391 100644
+> --- a/arch/csky/abiv2/inc/abi/cacheflush.h
+> +++ b/arch/csky/abiv2/inc/abi/cacheflush.h
+> @@ -20,8 +20,8 @@
+>
+>  static inline void flush_dcache_folio(struct folio *folio)
+>  {
+> -       if (test_bit(PG_dcache_clean, &folio->flags))
+> -               clear_bit(PG_dcache_clean, &folio->flags);
+> +       if (test_bit(PG_dcache_clean, &folio->flags.f))
+> +               clear_bit(PG_dcache_clean, &folio->flags.f);
+>  }
+>  #define flush_dcache_folio flush_dcache_folio
+>
+>
+> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> --
+> 2.50.1
+>
 
-Could you check if this patch makes a difference:
 
-https://gist.github.com/kiryl/a2c71057bec332240216cc425aca791a
-
--- 
-Kiryl Shutsemau / Kirill A. Shutemov
+--=20
+Best Regards
+ Guo Ren
 
