@@ -4,173 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D61F8CCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9F7CCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 399E58E000B; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
+	id 8CA618E0054; Wed, 15 Oct 2025 12:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34A9D8E0005; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
+	id 8A19C8E0005; Wed, 15 Oct 2025 12:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 212AD8E000B; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
+	id 7B7378E0054; Wed, 15 Oct 2025 12:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C78B8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBB87117031
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:08:52 +0000 (UTC)
-X-FDA: 84000832104.20.036237C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 58C51A0007
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:08:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760544530; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 696108E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:26:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDB3F16022A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:26:02 +0000 (UTC)
+X-FDA: 84000875364.30.B25E68F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C74388000C
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:25:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QmwTasLp;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760545560; a=rsa-sha256;
 	cv=none;
-	b=2yCfKfeib00hS1j2fjx8bvLIS6c6NmkSStoZuhU3pJWvQmawGOVZQmNmCvxRf+oC5IZJNx
-	o0Gxg0N9qdjS8cIJN2nVWW1srVPLXz30sVr5Pz5LfRvRGM2ji1lDpmi4SKRs1xJkju4t+1
-	FG5a9iCD2YbE/QshtTMA9zO1N4bsKxw=
+	b=6rn6GjkJswT9CeU5IGQEpRGvuwWgeKsyaQinYZS+Z5Twivwidk7NkpLMH4DOStDFjau2uE
+	MR10pDAv0P5Hsr7EPUDjsBQCNZe95BQPDkt/aqgC7f057EAXF5EdpSLf+aoZ8YYcd9d4eG
+	luFo01FPa4eq/qC2h+zsXUH3bI3JgPg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QmwTasLp;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760544530;
+	s=arc-20220608; t=1760545560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
-	b=FML7xeLOCzCjuWkKfESXSiYzRJdzWnqEpwiKop/wJCBsHkcwRYNXR6WYsMcQDJ++V6IOYX
-	/fJr5eOdPl8WIblpyEV7QJ4oMzi+2NkwjKAVG8ytXwsbuFxjrvuieiLz2L10fU+SJr9cpv
-	Hq77Jnc34N6cfvdNlr5W7KD79jVNxCo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A1EE7210B9;
-	Wed, 15 Oct 2025 16:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760544528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
-	b=0d8Yabi7FbV/imG+A18nv2oT1FAHT4U1WsiFQ5guJgiJW3uSKAmcZF8loktXZTbyHaxW1b
-	rmMu5/lo3pXwOpcMlxdmf/8+zoMvcbv5VKlKCwLuuElf5xxRuxTYVqH2v+pgKJRXRmuyN4
-	qlFjGWXZFmWwMnvBeCVILbB3qiXxMRs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760544528;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
-	b=Zlu9F5O149VMRHC5yZju51p9/YVF1QOxu2KvwGD2g6AY8Nj84/fDPx13+4sy5rxDaMkegK
-	FA2lO0qf00vB8CCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760544528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
-	b=0d8Yabi7FbV/imG+A18nv2oT1FAHT4U1WsiFQ5guJgiJW3uSKAmcZF8loktXZTbyHaxW1b
-	rmMu5/lo3pXwOpcMlxdmf/8+zoMvcbv5VKlKCwLuuElf5xxRuxTYVqH2v+pgKJRXRmuyN4
-	qlFjGWXZFmWwMnvBeCVILbB3qiXxMRs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760544528;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
-	b=Zlu9F5O149VMRHC5yZju51p9/YVF1QOxu2KvwGD2g6AY8Nj84/fDPx13+4sy5rxDaMkegK
-	FA2lO0qf00vB8CCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 86F2213A42;
-	Wed, 15 Oct 2025 16:08:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DR0YHxDH72hOagAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 16:08:48 +0000
-Message-ID: <421c7c42-bf7d-4277-b364-525c63254205@suse.cz>
-Date: Wed, 15 Oct 2025 18:08:48 +0200
+	bh=35ekPIjYYzIReJcbi4WesQ7j07gzkbIvXHGJzCouMX8=;
+	b=M1O0DrvXhZcuy1LUkCMz0QD2b29nCl1SdnzkNDaZJNX9fW+7yaG8SeUYHiSXJJ5ON7A3m9
+	rLDv/yV52bpQsdLhEeFGRYJf0aSVZrAy6czCIgyY9lvufL6CZQwsSvLxACfCBUn8WeFz1h
+	k7E91GYbJDot5aWnyKUvkGcOLUM82N8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760545560; x=1792081560;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ZMHqUjjRMecUoMSYtZ3448DhY0XDVwqidZ24uC6AjB0=;
+  b=QmwTasLp52/POxj5jwNLuly8vY9AJi4Q0AYasnidajdJ+CvhnMTl+ZKa
+   Qe0+rVuE0tWt6eLF+3c8+4z9XXv2IoycEgiXB4pr6ZosAEukZRX0WVxXO
+   ZUwqXxkKTuZnw1BaMnUaDak3NTQBKvPNlndauVgJcbXGXMYzybhPNDIa2
+   Oma0bC5RMSW8R9iHyryE08KyHFt8XchcLnotrc0GTJn6ZVV31FTKDshlY
+   gYSmI6Z7oNnalamheYT+/htTWfIjUQtnez0XGtdX0zMrfEYBqWnW6hsg6
+   MGZL+zchLj4sSMeDfvlkpjJxRF3088PmbRczkmcXchxLDybJd6wGL9vL5
+   Q==;
+X-CSE-ConnectionGUID: e1ZTlfngRACCXA682QuVkw==
+X-CSE-MsgGUID: y6ekSWQ9Tmive7rXWI+iDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="66378799"
+X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
+   d="scan'208";a="66378799"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:25:58 -0700
+X-CSE-ConnectionGUID: 4oqxeFpYQJaQbWtbCxrgeA==
+X-CSE-MsgGUID: J/iikkarTcGc2GuVi06PPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
+   d="scan'208";a="205919283"
+Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.111.202]) ([10.125.111.202])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:25:56 -0700
+Message-ID: <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+Date: Wed, 15 Oct 2025 09:25:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: simplify and cleanup pcp locking
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Mel Gorman <mgorman@techsingularity.net>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251015145143.3001503-1-joshua.hahnjy@gmail.com>
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, baolu.lu@linux.intel.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, david@redhat.com,
+ iommu@lists.linux.dev, jannh@google.com, jean-philippe@linaro.org,
+ jgg@nvidia.com, joro@8bytes.org, kevin.tian@intel.com,
+ liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, luto@kernel.org, mhocko@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, robin.murphy@arm.com,
+ rppt@kernel.org, security@kernel.org, stable@vger.kernel.org,
+ tglx@linutronix.de, urezki@gmail.com, vasant.hegde@amd.com, vbabka@suse.cz,
+ will@kernel.org, willy@infradead.org, x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251015145143.3001503-1-joshua.hahnjy@gmail.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jaeogh5fdwmck99h9xqenkxsy6hxbemt
+X-Rspamd-Queue-Id: C74388000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: qeb19bq8ykcu838u6kqhago9uujkios4
-X-Rspamd-Queue-Id: 58C51A0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760544530-731219
-X-HE-Meta: U2FsdGVkX1/DqOMMChBpiFLCoE38t4Y2BoqlhzNLFmfX9FKakv7UFBqyALcW+43kK89sIDY9VKpKlddABGn8roRuMOP/hSgi+Id7uek3cGxUzJ7c0CnIp0Bojs+mH/xraBFZnMzM49izGz589ztd06iLfq3EaAvtOv5PNwGT2QgnFTV5YFoZsBPIQWfLFkIP7cpuRivilRTPCeQbNieILlh/F32nuYee5VxBFmDUTNTyHp9h+JJKMI60rDxF57KhUolwJsy9BZG9OcL+kaaUHWHMjg+vrF36aNGNvWIRExtxMeLFIjZ/nvCrUkZU9f6b0BwBlInV/Hx9VEvkV9YcOiLf+UesTy8EBLGOb/P9RwKjEEUHRGdm4r+QdMq5NciM4udOCyyrxbdmuI+N8QVQBId0c9lRA5l/Hq8uAN8B9jTuijfBcFO7cNM1/AxFXGkOopYmoxIaX0dNCSVOGNMVZ9bBVS4iY0bmuso3Y//TBhX/7Bfl9dBwR/d/uPlJwQVBRQvVemyG2/lIEdxVmkLp68WH9PblJMamBKQbmo2lbBALrOzyYAVTqOhfcVrP2U172dzR7ONs/9iT/VxOLbGqytomEnZHS3xwEpebNBqU7iM44LD47ZFYtusaUHuhwZm0samC+FrYOrlggxiuiBAVWXUFwnE7dn7MGWbbow2U5L1hNstPfJEz7SFhcmfOqOW1nOL8nDLR+NZaOzWv+RQMHVjoPI0I1ql4U+nAM3eOziRPZvQ5O2y9mTr0WJASewv87rMhZv8r/EpbfCEZFd2A5sq38rHwJ7+BP95U9uOllNOiYn6KV3V5KCaa5Mc04qFGgcpnJakvqYgfsthlth78rnkzGm4vkjSOVIoh2vJzNUWzIKkcywDhU0iaLsg1GFjRqhhzqf6FsvtjsFnW7i39rkOSkLL4eXD0m1c0lnsNWBDkxh15W9A/2HzpwZkEQBQeKevhvD9lKpAILqUiSru
- HGqx3wiz
- eIeokkV5Ja5SMznxFUOLrg/nzXO3bHNT3AMkl9v4n7ZrF6aM4Acj/WFmAVLOsTN4Ln/K4kw09M56w1HpEFl6LUE0CdQ==
+X-HE-Tag: 1760545559-836306
+X-HE-Meta: U2FsdGVkX18P5faBVg0wRvP5LzSm7LNKlAQem50L8eQEUNHX1K3r9AeyBYPL3qQ/bG6pNDMVgxvzEhsbGy8actxdfImOVvuTPyJW8D02/YfuUlEazbM30UCqjECNgAOPpybONd99M3QXTzYfPloYh7vChhgZt+UEqG/MaZP9+YWfusyMqYysaxfpnKCseEfgRdKyb4s0XOisBJDXk9es7wne/lgD/xskuD2H2SPKkBQa5Y3CoiaMz5y1BerEVdlDnhRsFYmXDVCODZElzm3qW93qs1pbJO56OEQTzwE5JhPhJGYzklCxxASijvveRxJQAi+NZmd8abTJoiK8uhnvoDRUKsaJkrjxkFr89KVLZdjI+9upY7Z2RQx8c8Ua1As/IJ81K3u7icFmRUM07s+SIXtp6gXZFNwMW/0mmErtKWcPtIYUH18BQQKFGOrqDWDRqudEGpcvsePrIE3vSqlav0znAtVBSlH4aJwxm1AKVukvndpjEI3ZNu+rRqc6TmAW5vwBbaVr0PsYMz2d/Bxn6aR2kcOnMQb0biZ/Z7X5S/PeqgFim1UhL4XnQtjSjZ95xhrtucbeUL2dTB77c2ARzrVFbJxWY6xPaJvRHq8Wmv4vv9Ol5TxEWj51mvqOsriK7jX8BPiUWq9W1YSHQaC2c7yOqP8Hzq1x49JaIUUw92xEMkQmsHDDnI6EcWlcj/S1/Z2k6/7NBwrz5SxE6YrxLPugpIhx2/k7Cj17NFr5gf/r8o6P5xYU9wc7J8jr3SrMFqhrzNf1FLE70jITok4yTVb2euhyWP8sNbek+0kx+5MEdEKnlHdYqSL5lDYu+EBKj4zJ40INPBKdWhqL50Q+fc5Qgjiq0ausgrAYR9lk6mQSPbI5QhJ1gxGu/9GSq/GTdQXiDAHS9A6LIhlhrygJLarAWMHN196oylh+P5W1MLhI16aWNf3WIuWsNhAPRyqu9nxu85q3yrSK2NT9XjQ
+ 89h+4QHu
+ Ia542xF0G8xBchBsmINCUBYQSCxdMcqBAn+cfdfYZIChrKQw0z79vvJAvR3DGZh/Wv0fi+4iUr17H0ibyZT+p9Om1RH/1HbPDJTL8HYt+YEpUAsvlDyuzckxVdZZBcFcr7H2NXvgoL7r6K/GIsIRft740Qm0E4xVs3Yiae28N5bi68CFSxXrVNpijncodusmHeUwSxjU/jS3g/jyxohpxKJq14NMl/cMNnULv5Pkvp11PMQ2dLwvhrznU712MyO1B5DDFNxXTzYk5a3m+9M7KYqI3Ozrr1WDnOcwHVSTFpu7ipiA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,79 +158,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 16:51, Joshua Hahn wrote:
-> On Wed, 15 Oct 2025 11:36:09 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
-> 
->> The pcp locking relies on pcp_spin_trylock() which has to be used
->> together with pcp_trylock_prepare()/pcp_trylock_finish() to work
->> properly on !SMP !RT configs. This is tedious and error-prone.
->> 
->> We can remove pcp_spin_lock() and underlying pcpu_spin_lock() because we
->> don't use it. Afterwards pcpu_spin_unlock() is only used together with
->> pcp_spin_trylock(). Therefore we can add the UP_flags parameter to them
->> and handle pcp_trylock_prepare()/finish() within them.
->> 
->> Additionally for the configs where pcp_trylock_prepare() is a no-op (SMP
->> || RT) make it pass &UP_flags to a no-op inline function. This ensures
->> typechecking and makes the local variable "used" so we can remove the
->> __maybe_unused attributes.
->> 
->> In my compile testing, bloat-o-meter reported no change on SMP config,
->> so the compiler is capable of optimizing away the no-ops same as before,
->> and we have simplified the code using pcp_spin_trylock().
->> 
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> 
-> Hello Vlastimil, I hope you are doing well!
-> 
-> Thank you for this patch. This is a pattern that I found quite cumbersome,
-> so this patch really makes the code so much easier to understand and read.
+Here's the part that confuses me:
 
-Hi, that's good to hear!
->> ---
->> based on mm-new
->> ---
->>  mm/page_alloc.c | 99 +++++++++++++++++++++++----------------------------------
->>  1 file changed, 40 insertions(+), 59 deletions(-)
->> 
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 0155a66d7367..2bf707f92d83 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -99,9 +99,12 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
->>  /*
->>   * On SMP, spin_trylock is sufficient protection.
->>   * On PREEMPT_RT, spin_trylock is equivalent on both SMP and UP.
->> + * Pass flags to a no-op inline function to typecheck and silence the unused
->> + * variable warning.
->>   */
->> -#define pcp_trylock_prepare(flags)	do { } while (0)
->> -#define pcp_trylock_finish(flag)	do { } while (0)
->> +static inline void __pcp_trylock_prepare(unsigned long *flags) { }
->> +#define pcp_trylock_prepare(flags) __pcp_trylock_prepare(&(flags))
->> +#define pcp_trylock_finish(flags)	do { } while (0)
->>  #else
-> 
-> I have one question here. I was a bit unsure why we do the typechecking and
-> silencing for the unused variable warning for only pcp_trylock_prepare, but
-> not for pcp_trylock_finish. Is it because pcp_trylock_finish will always
-> be called after pcp_trylock_prepare, so the flag will have been used at
-> that point? 
+On 10/14/25 13:59, syzbot ci wrote:
+> page last free pid 5965 tgid 5964 stack trace:
+>  reset_page_owner include/linux/page_owner.h:25 [inline]
+>  free_pages_prepare mm/page_alloc.c:1394 [inline]
+>  __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>  pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>  vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+...
 
-Exactly.
+So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+stuck around so that it *could* be used after being freed. It _looks_
+like pmd_free_pte_page() freed the page, returned 0, and made
+vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
 
-> I was concerned that there would have been some area where only
-> pcp_trylock_finish would have been used, but compiling with W=1 seems to show
-> no errors on my end : -) So it looks good to me! Feel free to add:
-
-Yeah we can change that if ever we end up with some code that needs it
-(hopefully not).
-
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-
-Thanks!
-
-> Thank you! I hope you have a great day!
-> Joshua
-
+But I don't know how that could possibly happen.
 
