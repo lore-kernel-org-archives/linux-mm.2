@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EDA8CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 15:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D851DCCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 15:14:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B28F8E002A; Wed, 15 Oct 2025 11:07:17 -0400 (EDT)
+	id 281408E0045; Wed, 15 Oct 2025 11:14:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862D18E0005; Wed, 15 Oct 2025 11:07:17 -0400 (EDT)
+	id 2586A8E0005; Wed, 15 Oct 2025 11:14:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7788A8E002A; Wed, 15 Oct 2025 11:07:17 -0400 (EDT)
+	id 1487E8E0045; Wed, 15 Oct 2025 11:14:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 67A078E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:07:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AA6B1A01F0
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:07:17 +0000 (UTC)
-X-FDA: 84000676914.17.D33A49E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 47C48160012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:07:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pwEM8WBm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F194F8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:14:18 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8BCFB1401DE
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:14:18 +0000 (UTC)
+X-FDA: 84000694596.08.70C39C6
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B10EA100010
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:14:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=XN7dLolz;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf05.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760541257; a=rsa-sha256;
+	cv=none;
+	b=SQFQiTlaW/XiOh6xcX4BmcrLFu7CPzpVp/dRle9yxfKMhJJbciln+TW7lm5VaJ8bIC72Iw
+	idckv8NYozTGIP6OY62u3NWreJ4NSTgqp0dWsYBwMtL0E+hkUk7pD4057Qpz3qKgKe7ann
+	8UOv2gzehMGvTX736B132Avp7fgmz0I=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b=XN7dLolz;
+	dmarc=pass (policy=none) header.from=mit.edu;
+	spf=pass (imf05.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760540835;
+	s=arc-20220608; t=1760541257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3fglftwiU5EjMaoXOUvGRzaFG2qV8d5OU6QG/LMyp0c=;
-	b=VskgWQd2yIysAAg+NO4YOLL6b7nh6AwKnm5KJwh1bjSkJUdTjyIZzLdHeLz0XQMiLgkKq4
-	0JnZLpCCn7ev7f+cnnGLA0fK9Pp12D8zizGnNaIyusnw8pDQFFdcDBJs6wKWwniur6VRXm
-	LlXgq/rcLDuBFeAYpkZNtvVgy7gOQeY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pwEM8WBm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760540835; a=rsa-sha256;
-	cv=none;
-	b=G2LWqn90m++H/Gr775WIpjUJalgVxCB3jfpZta51shv56qG9WLY1EFZHI3RVECUq12LnNw
-	UOtHr1RUy1ZU7lyKIPODceX7Bda9hUBs8ntfEwMzk2ythdJdPrnNgrBOJFbJOp18ClwIaq
-	6v2zSZf/AQbKtGPlfkyWiyjKkU7nFk8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F10434547D;
-	Wed, 15 Oct 2025 15:07:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F6EC4CEFB;
-	Wed, 15 Oct 2025 15:07:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760540833;
-	bh=5hXx2RD+bmNSeJIwcoPLQR4SB2ipmLncmu2KyKpJLh0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwEM8WBmmycAcispyGwA3tgWT/07O+zjujTHq8qpSkO+jGrMofRhMHO7uGyPpscFS
-	 HYKXJ61AFvd5hEVDut13Z5rHo0Sja60zeOzpADSijfkX3NQblD+x3c/lI9nY9MbZXy
-	 70LFdB+1V9VAqOKh/b2vcsgwO2BsB1ADtbWDeW1cSCEEdPnzrQgXrpf5fY0Y3cLmRY
-	 wMGVfooAiC94uiJPrkzLCpOMbYC0LbMqOCz9UuK93XbtP7wXZVe8kdYWcqFxPpwlFD
-	 objtyTYuIAa7H8C58ksHGWBeFMrebIJrJmv6CDMN8CBcRk7WKer0ELHe1kRihoUSRb
-	 9PhHQYIuivyBQ==
-From: SeongJae Park <sj@kernel.org>
-To: Enze Li <lienze@kylinos.cn>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	enze.li@gmx.com
-Subject: Re: [PATCH] mm/damon/core: fix potential memory leak by cleaning ops_filter in damon_destroy_scheme
-Date: Wed, 15 Oct 2025 08:07:00 -0700
-Message-ID: <20251015150701.68087-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <87jz0wg9uw.fsf@>
-References: 
+	bh=/8PdHQt80eigPDJZ5EBlPY1pQSNfCt+AMOYaxY9njWE=;
+	b=J+Q7MrD+6fQ78iD8cE56pE11t67vTFWSQXJOSdq6ti32g/KEtKFA4ssjPfubcF/Y0wdsYg
+	QKLEcuAc7gVPFmbQgSSZ3R81SeXD0mo9cofl17V2i+EpvKeKt0GXTdnDW26KhmKaRU1erG
+	4FJkT59azb/C/tLLEJiaZi2+WPBKDqs=
+Received: from trampoline.thunk.org (pool-173-48-113-184.bstnma.fios.verizon.net [173.48.113.184])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 59FFDrk7013069
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 11:13:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1760541238; bh=/8PdHQt80eigPDJZ5EBlPY1pQSNfCt+AMOYaxY9njWE=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=XN7dLolzgmYMYPpg8AxvRudqr3f2lce7C+Lv57v8XFtyyzlXrX7+KqVp6ejSQE3RC
+	 ItRezbFf35T3vLyabBS1b1RnKyfAkCkctiBzJpcx7TohOH3kQW8Eo3y+47ULuV6Knu
+	 YmjH2S0GJSWQxBMu6lVG8Fx46llx0flAfVn+rL/kFu30B6RkudQELJTvTpZK6wOM4/
+	 KO0/7nE8zzghZW2boAGMIj+3WvG/wL7QI6DEGGzv847giX4dLRRnRN2gR/mOgzVG+3
+	 K3tzDOKYkPSx5IqSvFe7ajOMWyD0OB9LjZdGlju1aN2FRUCp/rR3iFJhfmWUDhsg2U
+	 nASEg5ZKrF1kg==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id 97EBD2E00D9; Wed, 15 Oct 2025 11:13:53 -0400 (EDT)
+Date: Wed, 15 Oct 2025 11:13:53 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Carlos Maiolino <cem@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+        dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/3] writeback: allow the file system to override
+ MIN_WRITEBACK_PAGES
+Message-ID: <20251015151353.GA786497@mit.edu>
+References: <20251015062728.60104-1-hch@lst.de>
+ <20251015062728.60104-3-hch@lst.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015062728.60104-3-hch@lst.de>
+X-Stat-Signature: yt8izxtmgj3jtqia1nb8htgm7amor9qa
+X-Rspamd-Queue-Id: B10EA100010
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47C48160012
-X-Rspamd-Server: rspam03
-X-Stat-Signature: bucapju61gq9ocqdsu4nmdhnu7p9by58
-X-HE-Tag: 1760540835-518817
-X-HE-Meta: U2FsdGVkX19gsJdZYKVSfJgluN7pAsyZKO6bj2lYKt5Diz3IgWA2B3Mt4G5PQr9NZuM4DQ4PIN/PPC3gk4GJrpyiOX6j7ira0lbnJUVox0rKBIkf4tukw2HPd6Lo2fnDsleXyZPOl7jTYuoHUGRMaNHtKWDQUCw4T0FIFjx5b79teMdZ5rl+hCnlSzYjYZAEsPK5+GeIzm68SbeMpbeq6PrWgY+gu/LpIf/dNK387n2nqPofFN9EeH6M72PrIX/PM+gNxixB86qqiFa56S+8U68+jcqpL3rVX1pjLwvxeI18rPlVmW1c5V1tep8a5AkLlL0W+vakFpGfkr2y0+F5H2dfofJCtBs+23wWVJfD01tSBD+6YJKrenxH5eqxGRe8trnmVSFDRVKlTKfqHkvgAC6PW1mm1m54mvS3U0D/KfsEgCBuOqZoZmAk8HWh0biHWoVaOqmzX5/FgMh2sMty6XoOUMsOS2jeJVMSz/LT1+EJqFrW25Ev1l6//JCtL4Yebw3Q2nRp7MY8Q607h/JvA30McgqkxPuBeFmgVcV1WbmSwt/7BiYLq/3GscvFA5MMqRZwx/1Iv0bCcxFkvs2pKdVuwmv2/piFsutEtF+ziHPb2zYUNhxtQ6MVEAyYfoajdfIQMtzVeoyhNu2eQo8JsQrREHGyxBiWwc8dzHpXSBozbLuRFc6l1iiAOkdHoWec/wY+bOXtMke/EEp/LJmRUh8OLIt8WW1keZr8K1mQjA7DHyq/F+UbOkogprw1jtKqOIHsN/P/zzUAU2nshyQ5D+EtU3bQGLNtwCUn1JPxzoVeFG0U0LtiI9AOqkr007qm5/7xvcPS4E+T05v6FmCj+svvXessyYktYqIQtzNwoId/K83YI4drrmTxUAaAI120uF6Nj3P1vZTFPuBj2zLGsEAY5DjA3F1HF1J/DkBHPb6RV0WxF9LnyemTT+rDL2NFh1G0QtgieYC8vT/Yei3
- 34sujPrQ
- 7GiBXijJExhD8fkE/BQUmXHX6wt727FTFoA/DA13cZ8+c6ME1qmCoZ6jWuJoXn9GMshcInLRzKKpgkXYFx/QFTULiD2wlwRvxWn7cGO4qC12pTIYsFsI2KjOd7Y4Qj6e9dNt5c0DvjG+9+lN/pm3NKQSh2jkgEXI7oNTvFn+1gqrHFLBiYFZFiX9hcHZykOk2yi8hYWE6UVRJteGYdN0bgpIU4GRl2ldDsmn/nRENhUFHERm2vcg4ziqM4cQOnTj5JGOU
+X-HE-Tag: 1760541256-573869
+X-HE-Meta: U2FsdGVkX1/WUhfE7xAm5mGqlvcrKFuLua5VfbwNV9W0TGQtY/2ZRMPTfRCmO87XhgbNw5Y5KEN1f/BMuplyWnQrgqsWzcZigBt5QEU2hwUInsgv3QoRvdhmItoZYkSvGuEAW1seW2f4IbBA/5/6EnO9Jm6jf4MStU359WihKRuokd81wJTG4aRO4QOuPeuAGVbUj1Y0QN79eQBMlGeP7i0VR3trNaAFsIy5a2wRUexV32/0SZ2J/Py0TXwWMnWnKAqUZVb1jL2fZnMJQoVVwJ6VGkN8ij0eZlk5ZWkQb1EfLuxjj0pnhN2X9LbPlYHodjluGvbjhVu51EZK9uZjSxVL+VDgWddo9EE7u1S/hJ66P/rlyM4h6CwTsomQxkB1CvNZiUHns0Iqm7bbpXwQyw94PPBnIPLRnETl/PVqxQIXYvqnAgySN3ovyIgfdVw6fCdOk2z1kvLw9RrJ4p4D4oos94RWU0Zt0SfTs7UMa2eDJTKAszG3kbr9QasSxbLlyAxS0m3JfZ7YP7J8x9PWNGV55EXK+kNkcj8IrMymdt5HopVs+tqGRGLysI833kPgzdeObRrw7SnQVUuVyAp4uNSvhAwfUqJXW6VLda3wncgE7wCqVlsSkppPfcFJos8jDNb0jTWalecB2SH/3KO+mdXgeguJXWLRZre/TjsvjZjniGK541lcbrTiIPRTGos16GXqqLyWoSNB4MCc8+Ch4gC9e09jA1TWIV8Wbv5Tu+AQi6KwLS9LuTEhN7c0VxJpyNiXmq65NVHANQ8uMYrPqdFkTL+H8rf66pCeWAe69YJZh3CEd/WtoqZ7QToJ4rfGiCqGO3DriVWvxHNLiznZ/pNeQzRofNJgUf1/sPmWQwF1yGuOqQzPtrDJ0xd0Gtm0/a4NHjlq7IzElptjL0/9oM5z0WeaiEgA1nf+YH/GhWlEJM5gx0aC8vLD3+0kI7rvuODxmFp5CikA+vaeWie
+ OYF1ug+y
+ Dv/b9eGKU2phdT6K7v9C5zG4kIwnRpwsS6BtC6aJonaDIlLHwq6otMDWhEtdnrfZYdxYwK6J2NxcCgtmVpHs7q2xYEKCyHhQnwRoLeIFuPkKxuCmUQa1DMuMkmr/LsGFk6I+qRLUsqyXWg+1jUwchIg6hkYNak2KRQpuoIV6b+17FNNDNI+bn9OkAs0/l2J5ACic0rku9gOXMJKHf6ddKNbZJKZxBYSU034yosgW41H4r7or7hzxaj5E1yWnKkSrPud8ORT13KnIYGKk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,68 +98,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Oct 2025 10:46:47 +0800 Enze Li <lienze@kylinos.cn> wrote:
-
-> Hi SJ,
+On Wed, Oct 15, 2025 at 03:27:15PM +0900, Christoph Hellwig wrote:
+> The relatively low minimal writeback size of 4MiB leads means that
+> written back inodes on rotational media are switched a lot.  Besides
+> introducing additional seeks, this also can lead to extreme file
+> fragmentation on zoned devices when a lot of files are cached relative
+> to the available writeback bandwidth.
 > 
-> On Tue, Oct 14 2025 at 11:25:38 AM -0700, SeongJae Park wrote:
-> 
-> > On Tue, 14 Oct 2025 16:42:25 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> >
-> >> Currently, damon_destroy_scheme() only cleans up the filter list but
-> >> leaves ops_filter untouched, which could lead to memory leaks when
-> >> a scheme is destroyed.
-> >> 
-> >> This patch ensures both filter and ops_filter are properly freed in
-> >> damon_destroy_scheme(), preventing potential memory leaks.
-> >
-> > Thank you for fixing this!
-> >
-> > FYI the leak is not only potential but can easily be reproduced using the ops
-> > damos filters.  For example, I was able to reproduce it using DAMON user-space
-> > tool (damo), like below.
-> >
-> >     $ sudo ./damo start
-> >     $ sudo ./damo report access --snapshot_damos_filter allow anon
-> >
-> > After the above steps I confirmed it leaks the memory using kmemleak.
-> 
-> Thank you for the review.
-> 
-> Considering that similar memory leak issues might occur elsewhere in the
-> future, should we consider exploring the introduction of Rust for
-> certain modules as a proactive measure?
-> 
-> My search through the mailing list archives didn't reveal similar
-> discussions, though I might have missed them.
+> Add a superblock field that allows the file system to override the
+> default size.
 
-I also don't remember discussing Rust for DAMON on the mailing list.  You must
-be right, or I also missed some :)
+I wonder if we should bump the default; and if the concern is that
+might be problematic for super slow devices (e.g., cheap USB thumb
+drives), perhaps we can measure the time needed to complete the
+writeback, and then dynamically adjust the value based on the apparent
+write bandwidth?
 
-> Would you be open to
-> sharing your insights on this matter?
+We could have each file system implement something like this, but
+maybe there should be a way to do this in fs generic code?
 
-In short, I agree adopting Rust for DAMON could be helpful.  As you mentioned,
-rewriting certain buggy DAMON modules such as DAMON sysfs interface in Rust
-could be a good idea.  There was also a private discussion about writing DAMON
-user-space tool or library in Rust.  I think that could also be an interesting
-idea.  So I'd say I'm open to Rust adoption on DAMON, not only in kernel space
-but also in user-space.
-
-Nonetheless, I know nothing about Rust, and having limited resource.  I
-actually wanted to learn Rust and start writing a sample DAMON module in Rust.
-I got the idea from the last year LPC, but still made no progress at all.  So
-I'm open to Rust adoption in long term, but cannot guarantee something in short
-term for now.
-
-The user-space Rust adoption could be done regardless of my help, though.  That
-is, someone could develop and maintain a new user-space tool or library for
-DAMON with Rust, independent of 'damo'.  My poor knowledge about Rush shouldn't
-be a blocker for such projects.
-
-
-Thanks,
-SJ
-
-[...]
+	      	    	      	       - Ted
 
