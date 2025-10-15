@@ -4,185 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA798CCD193
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8201FCCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE62E8E001D; Wed, 15 Oct 2025 08:23:48 -0400 (EDT)
+	id DB7778E001E; Wed, 15 Oct 2025 08:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBEC68E0002; Wed, 15 Oct 2025 08:23:48 -0400 (EDT)
+	id D94E38E0002; Wed, 15 Oct 2025 08:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DABEE8E001D; Wed, 15 Oct 2025 08:23:48 -0400 (EDT)
+	id CA4CC8E001E; Wed, 15 Oct 2025 08:28:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CAB9B8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:23:48 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 850C51177B4
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:23:48 +0000 (UTC)
-X-FDA: 84000264936.21.049404E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0390340012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:23:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTWqUzG5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BA6BB8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A67F55EFD
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:28:23 +0000 (UTC)
+X-FDA: 84000276486.18.BE833B7
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B052B40016
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:28:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bAAGjbmu;
+	spf=pass (imf01.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760531026;
+	s=arc-20220608; t=1760531300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkqQTWDiFQG/rhmW5z9gOyGt97QuPR5S/ZSPPEuBM80=;
-	b=A4PSHcfw7tts7qBJrY5ITb6oTI+za5VfUdqGHjD2ALLs0XsLG96kUIjvCyS3YwFvKz8cc+
-	WUNGKUn9YK9f596Gjc8VPZmwM8zWDRGpIwoaiwNK+vCg51K2sIDeFCwD9MsBk9JBrC44Nd
-	44GD4JUxMZUkBAqYAnwM7pC0TN9+UrY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760531026; a=rsa-sha256;
-	cv=none;
-	b=yKJsiWJwQzRCg28dwA3tpqPx0UfzQ/h4zFy7vI9USIJ5IN/e/oIGstKOHhytyYcPOmcdna
-	pLi7kDX2WxHTTLtUIwGGvSg1MzuPgBqT7B75NJXju/eMvXo9OAlMgssrf9ihd7ttkgBrPH
-	ivlxT9Da/FJ42JvDIyWdc2DAg7s10Tw=
+	bh=QAcHt1dapQ840Ot11Ijs6OU/pMU2QO8FW6tPLQhHtAg=;
+	b=JHlx6VZBEZMttAcRT2SXrKRXd0QmNyrxT7AuR0Ttf1c5Tqw6JDwG7iIkhdBM7chgbNRwl8
+	6cc60JcO2Mg9/HWyqxWy81v7RmxwnhTFep/+EK7OP/A+bjYz8O4ato0aTQ5s2nEw8wfcWd
+	vg+uKih+4SKaaUPWWx7AiDokyNEj7/Y=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTWqUzG5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760531025;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZkqQTWDiFQG/rhmW5z9gOyGt97QuPR5S/ZSPPEuBM80=;
-	b=fTWqUzG5Gcn0xi+fRKT7bqie5RvmHCc4c94nlidJsXVzfJjFyg6XeKtlJuIJdhAdOin//3
-	3W/I/JvIaVX2ZtcsBWhr5LV8dA+2wguAYHU/FXNxKWWo30gDA97eYoeZLWgF4uUgqKL7pz
-	QDXcO9VVacDn0Xr8GItz3xxZATlPLT0=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-YUa83x7aMR-lcr1SijJ1MA-1; Wed, 15 Oct 2025 08:23:44 -0400
-X-MC-Unique: YUa83x7aMR-lcr1SijJ1MA-1
-X-Mimecast-MFC-AGG-ID: YUa83x7aMR-lcr1SijJ1MA_1760531023
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-b56ae0c8226so8521317a12.2
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:23:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760531023; x=1761135823;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZkqQTWDiFQG/rhmW5z9gOyGt97QuPR5S/ZSPPEuBM80=;
-        b=QbD+ovipxmNZPrwyfYEpNDDkhLW53tY3gLxYNz+/XBZ3wNr4rad7a9Ac0CzbJ7Y8sj
-         W10hFKgc3sCjJUkMNrZ0f1k5CwybfkdLc3kJsQuGAWgdeAsjLOkbJe4XBBgpklX6plwI
-         mo00X/Od0vU+l1ABGLu6tP4kzgckwU7VKa/SPfTWixCagyZRIalPyOw5MPigMwooqcVQ
-         nW3CtxD5QGIbD77HU1urCbUnbaoZnKhljNtApvY0xissRqoV0LKPAed3/OA+4aIImHzS
-         dx+dQu6fBuDRN58t/woy47rgXv1uWrlIeAcABfBVV0qYXw4YTDP/mNDfx5BbFv6WH2tC
-         xXRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwCZnfInBTi722YgmmL3emD+JBBXqlpm66iH++jYKWmsNyfSHDVXdhjrx9hz/S9BiKaypzAYPtNA==@kvack.org
-X-Gm-Message-State: AOJu0Yw4NwjOk1IpnSoBOOBN/YEpRt8Se6FvSZ9+P4jLD+vqiOtG4nP0
-	pyGlrQn+FVhx2CRhtM8CnFt8tEcUBy9TyqzhpgcQ4G3aHEyyetE9+mIS25lfhwPCdomFcRi4P4T
-	T6Dg0GiTHIKhNiom9jhaA72R9/b92eXT9owswTl5pG20rMB7Kx3Xz
-X-Gm-Gg: ASbGncv0AHObNsgnN/T/wm1C/Xu8olqI817k0CXMvxYkj43hu98XsnfTin2Wrge0+nG
-	l5V+8BJAqSwp7NkwUYgsv0wwNpdXG0rU3Ms4PUYQopAYFCL5h5it+bSy9M2OeBA/Lo6291r+gyR
-	F2vWPJl7lr9GLn+l2r87t0ZPk6nJeifxsNMaNzCC4JB+bgktmU9xhrF4GjHLGEIhLy+80pPBTbm
-	Rg+WY/LwlnzGH8idLkw7csCXIMKY+kFPtm+VonV2/MY2I+k25cjH2RHBnI1s49C5qZ+Rn/9wPyQ
-	M2Lkah4Gi2IvDAseMDPjxY7gkohl20R4lAt1TcZc0EY2l/kLwcwOBgAx1k2I1is=
-X-Received: by 2002:a17:90b:4c4a:b0:335:228c:6f1f with SMTP id 98e67ed59e1d1-33b51168de3mr43078754a91.12.1760531022992;
-        Wed, 15 Oct 2025 05:23:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHphda3lGGfkiLRoBnQzpvHA4Ky6Irwuv735W3mQQQTqQIM8ZJIPop8Z5JRhjHaRWbxoi3uKA==
-X-Received: by 2002:a17:90b:4c4a:b0:335:228c:6f1f with SMTP id 98e67ed59e1d1-33b51168de3mr43078717a91.12.1760531022428;
-        Wed, 15 Oct 2025 05:23:42 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b678df2360dsm15222181a12.25.2025.10.15.05.23.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 05:23:41 -0700 (PDT)
-Message-ID: <b479a6af-1e13-41da-82b7-d4c17e9034dd@redhat.com>
-Date: Wed, 15 Oct 2025 14:23:26 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bAAGjbmu;
+	spf=pass (imf01.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760531300; a=rsa-sha256;
+	cv=none;
+	b=AWEz0TCA/71YxzHwk7QLiRrhaROgsvcCAXMTun2eHezQNscCUw1phc1CZAFzI7ABJqQXTz
+	WgEDUYus+0imD8WyLh08ZVRAdY/flLHVMTdZ8ac0A7TvUfmNs+RCWvoXNkY243FXUKtGJb
+	yMoAkci8QTVv8fg/U9/7gZULb5k6A1Q=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59F5v1N4014420;
+	Wed, 15 Oct 2025 12:28:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QAcHt1
+	dapQ840Ot11Ijs6OU/pMU2QO8FW6tPLQhHtAg=; b=bAAGjbmuT1IDIGkly3yRks
+	eQbNqM7L76cDvCOCYZEQZzp2igyVW2n1rYXipXHIQUhBY9GTJjf4CE6Z4TqSWzqz
+	WhHBQapX689ColD4op2WTmI4R/fj92pFolFMWOsbbv9EP9MQ3HWAsoLOezWySaAu
+	vSRLGEYmFA3NDPfMnp0cdmILGUGMIuhCYUYkrUsHnzIoEe/tVdFWuBJKKZdkloI1
+	jXIjd8RtEDChqEPFgMkkyWHA52xHPg43WZ3pBIsSv+yIxCSUogEeTXpOqxFVD333
+	V0Ze8yVQUSSTHHuQ1pqqDkM40ikAMVYNCsPxipZW6K7rR25DTLweKQIbbDnCZwug
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrbwdw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:09 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59FCS8s5007728;
+	Wed, 15 Oct 2025 12:28:08 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qcnrbwdm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59FAb0aH003626;
+	Wed, 15 Oct 2025 12:28:07 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r1xy0cfx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Oct 2025 12:28:07 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59FCS6rC40632730
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Oct 2025 12:28:06 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31ECD58059;
+	Wed, 15 Oct 2025 12:28:06 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D46B258043;
+	Wed, 15 Oct 2025 12:27:59 +0000 (GMT)
+Received: from [9.109.215.183] (unknown [9.109.215.183])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Oct 2025 12:27:59 +0000 (GMT)
+Message-ID: <5af4bc20-1809-4389-afe2-987f547cc8f3@linux.ibm.com>
+Date: Wed, 15 Oct 2025 17:57:58 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v2 1/2] mm: add spurious fault fixing support for huge
- pmd
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Yang Shi <yang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Anshuman Khandual
- <anshuman.khandual@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Yin Fengwei <fengwei_yin@linux.alibaba.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
- <20251013092038.6963-2-ying.huang@linux.alibaba.com>
- <4c453dcc-2837-4f1a-905b-3462270f5e31@lucifer.local>
- <87ldlcpnbx.fsf@DESKTOP-5N7EMDA>
- <d748bc6b-2aff-4cee-a233-008f4d2555fa@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <d748bc6b-2aff-4cee-a233-008f4d2555fa@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZSYsuy6LTqebJdQ9H9vz1uZzXlRnoxLNILiM8pLh7JQ_1760531023
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v2 1/2] drivers/base/node: Fold register_node() into
+ register_one_node()
+To: kernel test robot <lkp@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>
+Cc: oe-kbuild-all@lists.linux.dev,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        linux-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rafael@kernel.org, Danilo Krummrich <dakr@kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>
+References: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
+ <202510151130.JYajIJuM-lkp@intel.com>
 Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <202510151130.JYajIJuM-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ahzu6swxsejc4ry9cred3o8kzawbbqtn
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=M5ZA6iws c=1 sm=1 tr=0 ts=68ef9359 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=anyJmfQTAAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=i3X5FwGiAAAA:8 a=QyXUC8HyAAAA:8 a=qCTGczElb8rRS6Tj57UA:9 a=QEXdDO2ut3YA:10
+ a=mmqRlSCDY2ywfjPLJ4af:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: bAX_B4dOnV7v2Y31hobP-XuOn-6zcZlL
+X-Proofpoint-ORIG-GUID: Q30cX-kcGhGWVz-Y0VR0bYuPk7QQATV7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEwMDE0MCBTYWx0ZWRfX3hkaKjg3bS+B
+ VeTAzgD+CRnKJnq40pTHKqA7X9Rp8T+290hlMDS1zQnTI0ADrP/Glw4tQdau7VTmSyPeU3DQFpE
+ 5TgrLDc0oKaAtDO/6MzyFIptSKEGqLiJh6LDc0B6+7xucN9akBdVjOeKKx3SBni4qQNEhja7GZH
+ r2g670bIVASNqqHZcrJ33EwFaSlNmokBQTIwEVXyrwAld0I9zjXqDC7ZaJx36s92+9QwJZZ6RIJ
+ E8E+oXuFNqaRH8pFeW00ek959q3xXYSSQU+8J/xr8Bx6ODymUFtVpA1mszW13wwKaDsuNuiRA2k
+ iUz9ImSFJzoqFe2qai4fwuLBZxg/jUy7yGd+XKScdeOkK+PGKZ2+Mk8LeMpWR3k4a7GPl8Ka25T
+ W8nOA1pMxMKafEosuADFS6Hb57R22g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-15_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 spamscore=0 clxscore=1011 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510100140
+X-Stat-Signature: md5qxjhbus6xmh3ryy9fcz1ozm8ehkiz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0390340012
-X-HE-Tag: 1760531025-154538
-X-HE-Meta: U2FsdGVkX19LTx0uAmJpAMcX4NtUlub0p4ZHEv0ftcO+Gy90D485okbH2E5+8vITGnF3e6D/XdyHtIBC05Ak4GzF67QzO5XakkgauARoucRnklDa1iwwz1BFjMGVpU+mybhTZHrZ9yyFFiqcBvj9rweEAHXXzUDgk3V60oKFrepkyLQEdsDvoWLm73dH3bCZNn4rEmNUIfYrkEqQ3+yqxwZmf8iZbQDloXojd/rTWwt9oKYmfZunjIa1qzh8lKatHjN8ePWI6F0HSPIJs5DGj2a9CB7Q8gO9hysq/VGFLI18uz0csZ3CUrKSbVHCsNqDveVXOxF/aeKtOiuUrDvl82E3uaBcLMg9AicNSZlqMILRT+BoLcYqvYbmuGC6iQAM0bn7cbjnd2fwxQSXE/A+YfNVgEintrUq11IvTb8z1J/AbiCLNa7gMgnKvq+OfcBiZEbsg1oFuhdwFQx2gFaPRQnVKmvI6ht20EPSmNwN1dPWp6XZQEt9LTdmym4diD5y1E1leMXPUDfIHi9zm871EC9o3UZ3kQ3Dz22QMbimFXnqzT2ExMixlJKrCYimZHiamsOyr0vi4JP0DGVg6Ujvl4k/0sHpwznkVUZrpDrW5iEPAKnkdt44jas4VSKme6gv2wyP8003cZJoqj8ieMKQyuO+Bk6awBEAInOh0rZHkLwF+VJ9YGVLF8rlHhIT7Nc0AC6X3I7Ent/4EH/KhFNGZ8RVLBEaCLO4NE7qODirY8Dxc4Yj4IImiacm0vpIMOySRSS/IDX+mpKtqIqeSxXpySf4CGlgbNAV0x2meiJmVLKd/Jjoh1idWxr16jnZwzKtHklGcWigDCNIOctMhP6LijbiVEQh5w4yg2AUGPqvcx4jFFGltgtF0HZReK/T/wTJ1RJ+mJVMTEbZfycpM467ZnYZAUPDhB7cIMqSzMlYBrpxBXDciIy+YE04v5pQPot2iz57NBuzOT+GPea3HwO
- x09hb4Ss
- wT2CGGzt+Mmnd1fASXlu1t7A+8SpHAZcutnRu66f26h5amCy9Egr6nnssgWAV78lY3N8fKVvj1SDUN3WyncwBGz2v8RszkOsh8/MDQ4vD5XWsLpLqMWUBetCfdGuinw3y4qHNej9a1OafoFdtYDyNCC+wPL2V9Jcfw6R3+yradoVItqRE0COOGijCo+xEKKCbs3MQaAdnmei9VUhvvwuBg9hD9ifXLv4qcZw72N8EvSNduUDwPguwZBdVbydO1L1mnu4zFAOmP6k5smIysEtYk2KNvgLn4fHTnYWs8pZswkCQVt9Mwy3/t8+NKe2kfCuhM8f7bYKpFwiV0iYy5QSIWyNLaECb5TMckhaPU9Qai70jcX2UaFwGLzBl5NXThkSSCaMX
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B052B40016
+X-HE-Tag: 1760531300-581545
+X-HE-Meta: U2FsdGVkX1+qvVyFhXDV5ECuoRRef37ePhF9j7nWdLZuujJ1zfYNQC8wPR2erv4P9Uin77rhXjnvx7Qk5hbmWM2J0f9yy471uq/UkXhV4kSD594nvK+D6BGOvctKUCWdKQuzOSL8ueHhM0Grn5i2YJQjB5brslLiaeNQ8vpgWgAmliW2YA+/bFW/XTTb2aaLKqx4MpH5kZQwssjrqcTTzhPV2PGeuy9yc+fTWJy4v3Xu/43CJFtzq5rKgN88Zu77mjSsPzWmnUVCdF9ZY6wW8RJrKs0G0eU+WpgcCcDUJN0WumXyPko92i/un9sYMZkwLrwU2kP+26z1DmZkcioWPA6porUB0Y803ZfTJlfsbLNiaxrKQcYd512vAMGQRgI+lMr0XnOwg9pMz6ZPrSdM0uqGNkYmK7UaoDzc6RagYbvGqK13KU+u8tjgSnxzbC2Xs95k7wh9xAaIi7mv63aZUDUplzOFP4W0uQxmpV4s4GjIMqa8offzPqq8etRoRXRsngqz8SLrTggV3vB5nLhHNqplCWFXJUEh/sha+Oe/b8LieZ/gsyKR3fNi7uyulK6iELuy5HAgKW6DSWw28wFxzc0+RN1E5Fiunzt/k0Kc9nyNtSyeRMYjceYuILCcaZ4tuXE2biUpOiaYvmyID7qJY6qENKK2YemYjyUGRiSFVZ9o+ZB7pmXibQKtCRPqIkCK91LoZpOa5VrYoaaK1ToJs+rSv/ckAxneqOqlvHxYYQ/p1Md3jrCPSQmWrok1pOBMeZce5bunBh9tnm8QGQOZ5TksIEZHaJK8XoZHcqXEJKWlwdh5TSZxS13ydZOAz2ydPduQgbPKmuFK771/VklR8qO/zMWr6Bf2GhGC4t6J7KR/QVgYmSOW3OBlLaWfgYsQO+ZrzCnbERdOlJpqk7aK3UWrtUuROq4jYDA0TuVc09Z7vnjZWHGEosLhp4J+ZJ1yRW/GpMrd/EA3YYvRtcP
+ EeqR8DRO
+ p090Jc5Ju+4HPVu7IE12doHnLjxf/CeNs1xPKbAwh1P3/OtrgTmKnW5Uw2IxBKPlvSm7CWMeterbZG5yAzauva5OWsH7OvxLyxgSYRWu0LaMIl7pCwyWi57BepmGpXcz9/cKHeBQWlbBSCeOg76MWYnk3ETo+9rVd/4yFFsR0NwZA/5NYlbSfYmyzGb2XOTjtoUQTYXuOXgjp9/nZd3UPTYz6M8GKtvc4MoLzvK3BQETqv2X5K35eYnu0l5x0b7T7Q+cLMJu4W5lbNRV47TbhbrsMU3bumRp3jyslU70+8ZePWRFws5jwAkrhmSiG4zSojKzvOWwqTmFmyq3ymJ7+hYFYatc7IENqPdw/wGAcA29ZZa0l7Mz7TikfQnHTFcT7n6h70rHhQ8UddFEERhIg0Onoq2nIcniAaLdOTZokmEmBXHRcJdfRklop4e/MC1cphMqruxAwBoUP388PFssdLQahqUOcUzgm6UtRr63xmwaH53c//u/zZSJ86m9xsZlzjV9n9QN8q+4X5TE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,37 +164,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
->>
->>>>
->>>>   	_pmd = pmd_mkyoung(*pmd);
->>>>   	if (write)
->>>>   		_pmd = pmd_mkdirty(_pmd);
->>>> -	if (pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
->>>> -				  pmd, _pmd, write))
->>>> +	changed = pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
->>>> +					pmd, _pmd, write);
->>>> +	if (changed)
->>>>   		update_mmu_cache_pmd(vma, addr, pmd);
->>>
->>> We can make this simpler, e.g.:
->>>
->>> 	if (pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
->>> 				  pmd, entry, write)) {
->>> 		update_mmu_cache_pmd(vma, addr, pmd);
->>> 		return true;
->>> 	}
->>>
->>> 	return false;
->>
->> No problem.  As long as David is OK with this.
-> 
-> Sure I don't think he'd have an issue with it but he can raise it if so :)
+On 10/15/25 9:23 AM, kernel test robot wrote:
+> Hi Donet,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on akpm-mm/mm-everything]
+> [also build test WARNING on powerpc/fixes linus/master v6.18-rc1 next-20251014]
+> [cannot apply to driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus powerpc/next tip/x86/mm rppt-memblock/for-next rppt-memblock/fixes]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
 
-Absolutely fine :)
+This patch is based on the mm-new branch. It is not applying cleanly on 
+target branch because the target branches are missing some patches that 
+are present in mm-new.
 
--- 
-Cheers
-
-David / dhildenb
-
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Donet-Tom/drivers-base-node-Fold-register_node-into-register_one_node/20251015-000850
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom%40linux.ibm.com
+> patch subject: [PATCH v2 1/2] drivers/base/node: Fold register_node() into register_one_node()
+> config: s390-randconfig-001-20251015 (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/config)
+> compiler: s390-linux-gcc (GCC) 12.5.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251015/202510151130.JYajIJuM-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510151130.JYajIJuM-lkp@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+>>> Warning: drivers/base/node.c:889 function parameter 'nid' not described in 'register_node'
 
