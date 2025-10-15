@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D94BCCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 19:27:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCF4ECCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 19:59:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC2008E008F; Wed, 15 Oct 2025 15:27:23 -0400 (EDT)
+	id BE1998E0028; Wed, 15 Oct 2025 15:59:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99748E0005; Wed, 15 Oct 2025 15:27:23 -0400 (EDT)
+	id BB95D8E0005; Wed, 15 Oct 2025 15:59:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD5C28E008F; Wed, 15 Oct 2025 15:27:23 -0400 (EDT)
+	id AF5FE8E0028; Wed, 15 Oct 2025 15:59:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BC0E8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:27:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0492C160299
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:27:22 +0000 (UTC)
-X-FDA: 84001332366.20.FE5D0C6
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 45C484000F
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:27:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=Xh+i9IUV;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=uxd0icnL;
-	spf=pass (imf01.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E6698E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:59:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13A2F56EDA
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:59:14 +0000 (UTC)
+X-FDA: 84001412628.24.AD9C5D2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B3881C000F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:59:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Qjt3Df5d;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760558352; a=rsa-sha256;
+	cv=none;
+	b=ZSJzv7Q9zLSIE+MuLvc+F6iD57Xu9NzXuYaq6RrvAHjJnJBFqPu4ffiVFsURauCNw3AM9e
+	zdbwKvltqmnbKOALKMXQ0kJ+VWc9Ezl8hvfW2LsG2d5fdAKzvMEDUPybbZ/ZXDZ+U1XAgN
+	M2wOmzdoUWKut5PqB+rPf0muoPSb02Q=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Qjt3Df5d;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760556441;
+	s=arc-20220608; t=1760558352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GWtiYUPlnQw9OtpmC0sdUUXx3SYzXSM1Q0xsiYsFZNo=;
-	b=yQzlCblJjzqicZdRFjvLvMzg7nbF6fmtPWsDODJ4tFga4FpGfexKtP8AutXk/k+op9mDfs
-	nj3KPSOPTFtxJDznVIZNWugTe3IYS5TpBPTSIQZq93kRQC7KrVDqaW9uw8wBLeZ+BjsbGx
-	auCY01R6/aXpY8g3Fq5PPc1FQCLMlZk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=Xh+i9IUV;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=uxd0icnL;
-	spf=pass (imf01.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760556441; a=rsa-sha256;
-	cv=none;
-	b=LEE8haI0j62NRTAuy/xjzg858dticoUeyV7+0HZdT7KbWzg6vIOSdIwEoEiiRT/0lJxm0s
-	2UZ2qPyFYIHJS78ESpgTiK+Ansxm6PHTmtIkq5Al3DRIjHE1dz94vs3o+DZhfnAhrJLWLn
-	oVcyNKHJPFXA1TisqWOnf+cNMnjOlPQ=
-Date: Wed, 15 Oct 2025 21:27:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760556438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GWtiYUPlnQw9OtpmC0sdUUXx3SYzXSM1Q0xsiYsFZNo=;
-	b=Xh+i9IUVqRb3vPqw82EPo4YL+Si/vG4jdJ39jG480GAqiXK/6Iw/zC+FHSJ1b00Tcc8Qhf
-	z9DClQzxp8L5Vnn1AOxJKiMQkMPcG5jSYMlbi4eSbRfdzmYyU5V+ddaHev3z9nMGCl2Jm8
-	pdjJXBlTwhtljL+6ozc0MIossZcAPwRkkDqrQc9EJtF/DqEXLokwYtGrrH6mgffKDK2F3s
-	ANt7WHWyvkf9TpSUbjn98qhhFB674qCrPiU4N1apS/jMmvezTOeGTg60dbDAUPoyqv7LGf
-	Pue1VsbiK7FAk6qrFdnytHdyUlO5FVTT1vTrmXucB6FBH/V5sgz3ZRsxkSLlew==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760556438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GWtiYUPlnQw9OtpmC0sdUUXx3SYzXSM1Q0xsiYsFZNo=;
-	b=uxd0icnLjLD+M6AEofEoOm/uV3l3o88dWkR6JQyvg4e5o1D3QzonjA3gi85qdBfxwhk2pK
-	pXHx4lbAX4YOBVCA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH] mempool: clarify behavior of mempool_alloc_preallocated()
-Message-ID: <20251015192717.HvwzCChE@linutronix.de>
-References: <20251014-mempool-doc-v1-1-bc9ebf169700@linutronix.de>
- <aO_taH9CKxmJPnhV@fedora>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aO_taH9CKxmJPnhV@fedora>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 45C484000F
-X-Stat-Signature: yiqjd4obb6bjaory7n3p9ojsb3ox53jz
+	bh=xxihovUvtVnPUMPdBc1/WdgS+CUXbdBYGXJaZYLt/+c=;
+	b=n/VTwViCnkCWDFHVKvSy/tu3mQmfbuGfgwMx6r9KG9OpdapiOx8b8+wfsKRSD0dyAfXmOT
+	M9E/xZMKgK94nGRre/cTiWcWEiaEBU8iKlSTBTVy3C7OVnhpOS2eIHbrA3WB30g4SAjnhk
+	+bcm+o+UVOE4Ob1FWDDZirFSYJpy5fw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C02E162724;
+	Wed, 15 Oct 2025 19:59:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A919CC4CEF8;
+	Wed, 15 Oct 2025 19:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760558351;
+	bh=qWmg0NtlX9VEzTpgvqIlBglFj3zmXkbFtSVVHicvZOg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qjt3Df5dghFnppzxr1Z54A55GDwmn1BhOWImmYBXkhS00UI0huJ55xgj1k80c9ZCu
+	 /mjbrq+At/yTHDeZQp+bSHvshZA9aoGwJ7X+0tUTXv4FG+GvMM8z1DDKrH9VY42TnN
+	 9iHcaDGvEo4uwo2agKjlBrNA6kO1bIAE399RxTyg=
+Date: Wed, 15 Oct 2025 12:59:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Kemeng Shi
+ <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
+ <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, Kiryl Shutsemau <kas@kernel.org>, Usama Arif
+ <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, hughd@google.com, yangge1116@126.com,
+ david@redhat.com
+Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
+Message-Id: <20251015125911.0f0ebf87b278324667c4dfc5@linux-foundation.org>
+In-Reply-To: <aOaoD0HQk7YPeLkE@shell.ilvokhin.com>
+References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+	<ltvv3v4vibvlglpch6urayotenavpzxc7klbcyowjb4wrv3e7z@pzovtvtbmnsp>
+	<aOaoD0HQk7YPeLkE@shell.ilvokhin.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1760556441-341930
-X-HE-Meta: U2FsdGVkX18+Tr3vYUR3ZKWFQNbKBFVXKMjjd4//eIQP+nvMLZGiOOr3Q/UfWKK7KFdtbAJXkEl1GC+dRSTogcGxR2liILVnNkQZRRlAuTAsjBeBVSynAY8/4zS/fsLtOKvNzQ6tKizTNhuSMd3d5Xad9eyiod+Al7/W/b1GZ18skgL0RnuVd3l8CkJ/BvH7DCHl1J6ds287Z/eIah956GghyrrWL1qIptfSK7W1ct3s9MRw15pxwp0dQW11ua7NpLtSV04t1e1Ux5hclE7faEpqHb19PvviJMuIk4AX+9gS3uXJnTOHasVk++UtVoXvn0L99SO8PZNqLTxObsEaqAUkjz7+iibpp3Z2fECvgmutFioat86yUCGvqpWNS+/0i9nkPWcqPQFoQ2pApxEunXIqXQA0WG6FI4NJBsOASTm7V5nmftrsAvDcM8DAwSPNGaECdjuxL1n85lKGlm/HTsZKbLHuyqArUQU0S9MVWbixrfEGmvsf2XzI3jY4uFYjW5DDix9fXDd0kd0gJ71ZzbLqrZGAMMk69ZxuM911HQGZB4ZijL9DmDm7pk3646DFXRQmrhXH7bQgnEic4MF821Zxkjk6TAyLqKzmc5BlePFoAsVSd+qe1Y5cIDdCM5GqgeNVGw7gcYvqXdOMXZQqWB3cd0KHcyIjKfO9dhMrX2Qa5AJGCelM+64Gh9HEjJ8GKGMl6cXmkiB+HtzD/nshtAlwByHp62perN/IOcNzkD1Axcyw74Fp9wm/BbvgcwNsLx4WKeN3ngLaAqtXMVhK3juayL0+SR1Q3+r5qSkUbi0U8/HkC85dALjixZcyD3GiDmW8Ebi4u2nTHmu0/cCbpLykRvPueSbS6ibuLJmLYoECDgfeCj72ixuxAelQZrvYx7H/JrQTT+UJGxxd5yPHyGkxIRi4jbDko3HQ03gzPiiLREfb87PDqSHACiebfCqtbi7eA0ICWs+NAtID+IL
- o/oBOSby
- PWzHXmNd3MpPTWhgPQZW1tvurfrWmxn5oHTY5XDosfRl0gtMNi+ARnKTD0/lcklcIYH07AtKEY9/qJmGkcXEGHmQc65m9j7gdXNcqMUEjPG5zGO7FOkp3c+bIBXM+5GJ45ntAdt7vqzdRDb3Ar2HrCHHt/pZhYIagCTS33xzMqS1VL60JE0PBeX8nKX0XWrCqe9Fof+L/uR5Wa/YSaxNmHzDkCZ/SnBt9AL/V6LCKbsG4iN+4DZWdhmWyc9af94PACNPuoOPgrlW6NbUoR4AaYVrAruF2eX4oz+xF9Lk364UlCarCFxidyxmB8w==
+X-Stat-Signature: btb4dhzen6gynqycoyqgg11mtp3cntim
+X-Rspamd-Queue-Id: 8B3881C000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760558352-886639
+X-HE-Meta: U2FsdGVkX1/rCA6y3Yi2Pvv8L0EuvvJwg/ZkvMeAdbGX1+OVYjsu71sOgK10e3mzHwRt2KQ0LwJyFWQmCp0zxFHrp+4PS9uCBwaPXPN01kjCY5jZjbzJ5nn3ob2UGOXaBETC2o6UeBmQ5OjRMKuCjxqaNKGbahvqp5APScZ7NSqWAohuh2ofHLrQnoV03zL/n2N6H4rSZAHwLXtX1vY7YcFHoehU+yl5s+QVZuHsOKkNA3o9pVHE9uaeL87Cene4NgeDXTJmFNgxBMAhsJDJZyBAQdLwsXW2evx63ex0zm61Y/5E3RHgTSfUwvl8lfvD7XAZud1MJEN/tIZYF1PdxNKpdCj8QC6rDcW3Fn7ztHPJqgVbp+XA/y0p0RBpdbpp2U23WZCKxebwemQJmgio/CMrT6mbfpov1xbjR8naD6SHJNRJ0Owc1LJ+ao/GoitXBY13R2weHcwMDQj38/PR7ujDKvaSB9Drepz5xa64kjDEqoFvxKr+VzsPRGEGpQcf5WbEWZJ/du/rYQt1Mkmluo4fkH1EkUVPP0nzabGfbEE1MZDY8ESHYi5v2ZAZxL7rktTIsnhPEWIsSDc5A8YIMDJfzY8OHMEkdoeXC54/n2pDxmdY7ft3AzWs/cXZfq5DIoS/rl1zvBP/k5p/HO4sj7WZFiTu7223BocVgfO5RmhNYVAZWbK4CTToQtFk1wHRn99BhdG5Ea4lK9Acp3hLmQayqON2BgVJ5gUzCLwf/it1APoccYeuWpzt4iyqwNx8PuGHVb9Sr0gxycw5I0wutamG/f37/+XLx4oR+V767hEAEnVScQIz4qNQciyDlyWXvG/D1suo6HsZChl1EzCug4J5+sYEpA0I6X3OlqxMulRyjoZIqi1ApEnTGu+7iYYWbw3yPGals+X7IVyvfNmo7betFbcjljI2g+8ugFDfoMUkg3jnTmxRiHR2vDGb+O2yHVyyWXouiK6ZZnOmwwL
+ OBTpBGza
+ UqrP7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,28 +99,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-10-15 11:52:24 [-0700], Vishal Moola (Oracle) wrote:
-> > --- a/mm/mempool.c
-> > +++ b/mm/mempool.c
-> > @@ -461,8 +461,8 @@ EXPORT_SYMBOL(mempool_alloc_noprof);
-> >   *             mempool_create().
-> >   *
-> >   * This function is similar to mempool_alloc, but it only attempts allocating
-> > - * an element from the preallocated elements. It does not sleep and immediately
-> > - * returns if no preallocated elements are available.
-> > + * an element from the preallocated elements. It only takes a single spinlock_t
+On Wed, 8 Oct 2025 18:06:07 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+
+> > > +		 * They might be still in mlock_fbatch waiting to be processed
+> > > +		 * and activating it here might interfere with
+> > > +		 * mlock_folio_batch(). __mlock_folio() will fail
+> > > +		 * folio_test_clear_lru() check and give up. It happens because
+> > > +		 * __folio_batch_add_and_move() clears LRU flag, when adding
+> > > +		 * folio to activate batch.
+> > > +		 */
+> > 
+> > This makes sense as activating an mlocked folio should be a noop but I
+> > am wondering why we are seeing this now. By this, I mean mlock()ed
+> > memory being delayed to get to unevictable LRU. Also I remember Hugh
+> > recently [1] removed the difference betwen mlock percpu cache and other
+> > percpu caches of clearing LRU bit on entry. Does you repro work even
+> > with Hugh's changes or without it?
+> >
 > 
-> Might it make more sense to say "It may sleep" instead of "takes a
-> single spinlock_t"?
+> Thanks Shakeel for mentioning Hugh's patch, I was not aware of it.
+> Indeed, I could not reproduce problem on top of Hugh's patch anymore,
+> which totally make sense, because folio_test_clear_lru() is gone from
+> __folio_batch_add_and_move().
+> 
+> Now I wonder does folio_test_mlocked() check still make sense in the
+> current codebase?
+> 
+> > [1] https://lore.kernel.org/all/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com/
 
-May sleep usually refers to something that can not be used in an
-interrupt handler.
-
-> I feel like the fact that we take a spinlock isn't the important part
-> here (especially because we always drop it before returning).
-It actually is. A spinlock_t can not be acquired in hardirq context or
-when interrupts are explicitly disabled via local_irq_disable().
-Therefore you should use the function in a local_irq_disable() section.
-
-Sebastian
+So I take it that this patch ("mm: skip folio_activate() for mlocked
+folios") is no longer needed?
 
