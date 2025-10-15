@@ -4,89 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD09CCCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:02:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D61F8CCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:08:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426F28E0055; Wed, 15 Oct 2025 12:02:02 -0400 (EDT)
+	id 399E58E000B; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDEC8E0005; Wed, 15 Oct 2025 12:02:02 -0400 (EDT)
+	id 34A9D8E0005; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3142C8E0055; Wed, 15 Oct 2025 12:02:02 -0400 (EDT)
+	id 212AD8E000B; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E6A98E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:02:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BFE18160233
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:02:01 +0000 (UTC)
-X-FDA: 84000814842.12.B15EC39
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0456A100011
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:01:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uLwXVID7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C78B8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:08:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBB87117031
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:08:52 +0000 (UTC)
+X-FDA: 84000832104.20.036237C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 58C51A0007
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:08:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760544530; a=rsa-sha256;
+	cv=none;
+	b=2yCfKfeib00hS1j2fjx8bvLIS6c6NmkSStoZuhU3pJWvQmawGOVZQmNmCvxRf+oC5IZJNx
+	o0Gxg0N9qdjS8cIJN2nVWW1srVPLXz30sVr5Pz5LfRvRGM2ji1lDpmi4SKRs1xJkju4t+1
+	FG5a9iCD2YbE/QshtTMA9zO1N4bsKxw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0d8Yabi7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Zlu9F5O1;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760544120;
+	s=arc-20220608; t=1760544530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c4Kk+cUxfYkVZ/UjAkODvwc0aEFN6RQEGhYQTTJ0YTc=;
-	b=YgejlngBp66jx59NHeAiRnpObFX6ytPF+DrkR3FlK/wEgA6ug3wnoddRT4nKAjlgGN9FIv
-	kdFIEUzcTbJ9dNvAn+Rl0Q/B1HH6FXF5HSXgK6CMIVfNcrHUrKOr5vxk7UFfyWmwVwdfYO
-	Vj6t966BhbyBIDyaKxfVK9Zvk03H1ck=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uLwXVID7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760544120; a=rsa-sha256;
-	cv=none;
-	b=DwVrYaS1GDyJgoicvdoU0QiVtpjwmD+qAshDyoNMS4ns4ahoawqyOgKs1sRv6DMB0UO4mM
-	DmYF5lRoT8us5U47s+d9rLMZXfGzCqVeOPm4P9cia452esIMhF9gUnjIouPTaQBJEDgwkt
-	wqrObyfIQBoXNL03Pecyfp4s+CrDWvw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 718DB602A4;
-	Wed, 15 Oct 2025 16:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EC5C4CEF8;
-	Wed, 15 Oct 2025 16:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760544119;
-	bh=Ib8plWshjqLsG29fR6AtQ9r2xzraj9E0iv8tvd4lfz8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uLwXVID7J6t4Rv9G7dC4W2pXTpcm0X4qDwvtPeJ0mY8cQ0yP0HE4IMGRLMGWOlPuZ
-	 n6Xnc0z/SiK6bYdQgEbj/tXlFcK5sXF9cFQ8KvMuyU+2J9G27eBZYH5TuYOLXNIE2J
-	 qIzK9ICGR2xvC01O2JWBzcNR98P/Gd9fWPoosuHyDeDjQBm/Ts9WhgMSmvilDztM09
-	 BEOF7VNY8WpY7lgu2b/iJnmY753f27HjVDq4ivY/C4yFTCNnupHYOFlb+HIbpKl5iw
-	 yNYyxnIaPzZloPbTSEL5+0Nsi5ZDbTj19jYrAGXieKH58h8EBhaSFcjp3XG7P3Lwpt
-	 WQ/UoETM0hNeA==
-Date: Wed, 15 Oct 2025 09:01:58 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Carlos Maiolino <cem@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
-	dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 3/3] xfs: set s_min_writeback_pages for zoned file systems
-Message-ID: <20251015160158.GA6188@frogsfrogsfrogs>
-References: <20251015062728.60104-1-hch@lst.de>
- <20251015062728.60104-4-hch@lst.de>
+	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
+	b=FML7xeLOCzCjuWkKfESXSiYzRJdzWnqEpwiKop/wJCBsHkcwRYNXR6WYsMcQDJ++V6IOYX
+	/fJr5eOdPl8WIblpyEV7QJ4oMzi+2NkwjKAVG8ytXwsbuFxjrvuieiLz2L10fU+SJr9cpv
+	Hq77Jnc34N6cfvdNlr5W7KD79jVNxCo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A1EE7210B9;
+	Wed, 15 Oct 2025 16:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760544528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
+	b=0d8Yabi7FbV/imG+A18nv2oT1FAHT4U1WsiFQ5guJgiJW3uSKAmcZF8loktXZTbyHaxW1b
+	rmMu5/lo3pXwOpcMlxdmf/8+zoMvcbv5VKlKCwLuuElf5xxRuxTYVqH2v+pgKJRXRmuyN4
+	qlFjGWXZFmWwMnvBeCVILbB3qiXxMRs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760544528;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
+	b=Zlu9F5O149VMRHC5yZju51p9/YVF1QOxu2KvwGD2g6AY8Nj84/fDPx13+4sy5rxDaMkegK
+	FA2lO0qf00vB8CCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760544528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
+	b=0d8Yabi7FbV/imG+A18nv2oT1FAHT4U1WsiFQ5guJgiJW3uSKAmcZF8loktXZTbyHaxW1b
+	rmMu5/lo3pXwOpcMlxdmf/8+zoMvcbv5VKlKCwLuuElf5xxRuxTYVqH2v+pgKJRXRmuyN4
+	qlFjGWXZFmWwMnvBeCVILbB3qiXxMRs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760544528;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6UQ/oferKnYZ70n+TKPZJIlqLdRtpozdd+b9K7tyxTU=;
+	b=Zlu9F5O149VMRHC5yZju51p9/YVF1QOxu2KvwGD2g6AY8Nj84/fDPx13+4sy5rxDaMkegK
+	FA2lO0qf00vB8CCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 86F2213A42;
+	Wed, 15 Oct 2025 16:08:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DR0YHxDH72hOagAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 16:08:48 +0000
+Message-ID: <421c7c42-bf7d-4277-b364-525c63254205@suse.cz>
+Date: Wed, 15 Oct 2025 18:08:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015062728.60104-4-hch@lst.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: simplify and cleanup pcp locking
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Mel Gorman <mgorman@techsingularity.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251015145143.3001503-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <20251015145143.3001503-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0456A100011
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6xq94u984noxtt6ijy6kw3zm1mn1peur
-X-HE-Tag: 1760544119-322140
-X-HE-Meta: U2FsdGVkX1/31QAhscqcCmEJI+tqZvCaHFMVdJ3/mRr/J9WKqp1VgkHSHXc5bwrg45Gw43F9DQ2rRkdbW5VXMCVE/Yaq6UDRmE2LwXnZkWR9s1s9NR5o4IhTvCnBZcOnCPPjq6dqOn2x80WoRGLQSQZzJbVl+zLswjhxB2EZhCRsOabqRPLTOLO0LJyXgpXbycd5Vgs9AwbLnzelSI/M3S2Q1WC4920NAsfB8sB4Zkt/5iPieNyVdXZMO3NGKw2DPJn3KnXjNdRX+jyKXwhJqqxMpT3ktwChSf7/EL5nAugsChWYB/i2tFdx4Gw1Bae4T9zvK/I3bMr4s6G0Bh+xnFKixfZ6swDOCsHAS9kYsDmEZ92+7uGbJyKHSUj+Z8ayhXAug/3DNSY1SC/K0Ut7SMPO71oCZ9mBxGkPFA4Zwf/k8o6UAfLSdq7Kb3M7hdtkp7/APR+YDIpYxCdiTEyomq7iFQgcBHHmezVkAdfzTBwulPE7OddlpD5Q5i8/SBxZ4+zEFxe7x9yYav+kcSAEIZzdOgAaRHjtuEtMNkJX1mEpxS8YfMtcqG0pb851y1kmXU9DotSzBT/UhlL0lUWSe9LVQE5yy6CSpJtKHnfXBenfXvkkBKeJUQEy76uds7GTdSTtFDho7G3F3Q7M8IsT92067nTYDbmfiOI9ObPHlLY93siT+NPQ4APQKhDbX1dtv2alz2+WQWMrSVxzL7A7Rz9tboQl9mIJATdqK5eQRRReqnj1KF8ezZmK2PQOrauQ8BpfPW4ApnfA0p37SjsldQJB5WqwciZe6Tq/+k7y7Cd9GBxfvd0VsUZIczbr3GHgIpB3YoehPvlawnW+dbYqmKT/aSn02TFSy9rqOvCS855jsv6gKJ+w/rMXElQ8F/aYcYjaJzZHkqL3rb2vb85Pp1zg/4AQ5mZGtdV3/ly5M491o8oo/IZNkAkr/wkqq5k30A3ttK0/t1RXcNkwT62
- xcyLUhDd
- WrIr4q4GWw1rYvRtIG5R1pPB6cGQXlDcAKUqawY0OZJH6sjWlkZNKuizqrdXeFel2ExPqlVbfnjsSZ2YushqW2W+wi6m0PIon4FMkhysRMLIAdNytomkolFoTD8FFKiQcd6CZ45qCQTjL+6LxhrpRuGCazC1FR22EtCwZFqvphK2+6EhxSQP74fT1VD6fDTIpTOw4Jy29iavVzmyoe10vJf9f2E1E/y66kZjldu/ejugxGYhEZTclJSGm9wIfUHpNQlXhxZtOwRAE6MBm5EsJ0DAPk9ORzyEe2ULkqE2hRk7xIRhn0kDvUpjc2Xaezss+BBx7
+X-Stat-Signature: qeb19bq8ykcu838u6kqhago9uujkios4
+X-Rspamd-Queue-Id: 58C51A0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760544530-731219
+X-HE-Meta: U2FsdGVkX1/DqOMMChBpiFLCoE38t4Y2BoqlhzNLFmfX9FKakv7UFBqyALcW+43kK89sIDY9VKpKlddABGn8roRuMOP/hSgi+Id7uek3cGxUzJ7c0CnIp0Bojs+mH/xraBFZnMzM49izGz589ztd06iLfq3EaAvtOv5PNwGT2QgnFTV5YFoZsBPIQWfLFkIP7cpuRivilRTPCeQbNieILlh/F32nuYee5VxBFmDUTNTyHp9h+JJKMI60rDxF57KhUolwJsy9BZG9OcL+kaaUHWHMjg+vrF36aNGNvWIRExtxMeLFIjZ/nvCrUkZU9f6b0BwBlInV/Hx9VEvkV9YcOiLf+UesTy8EBLGOb/P9RwKjEEUHRGdm4r+QdMq5NciM4udOCyyrxbdmuI+N8QVQBId0c9lRA5l/Hq8uAN8B9jTuijfBcFO7cNM1/AxFXGkOopYmoxIaX0dNCSVOGNMVZ9bBVS4iY0bmuso3Y//TBhX/7Bfl9dBwR/d/uPlJwQVBRQvVemyG2/lIEdxVmkLp68WH9PblJMamBKQbmo2lbBALrOzyYAVTqOhfcVrP2U172dzR7ONs/9iT/VxOLbGqytomEnZHS3xwEpebNBqU7iM44LD47ZFYtusaUHuhwZm0samC+FrYOrlggxiuiBAVWXUFwnE7dn7MGWbbow2U5L1hNstPfJEz7SFhcmfOqOW1nOL8nDLR+NZaOzWv+RQMHVjoPI0I1ql4U+nAM3eOziRPZvQ5O2y9mTr0WJASewv87rMhZv8r/EpbfCEZFd2A5sq38rHwJ7+BP95U9uOllNOiYn6KV3V5KCaa5Mc04qFGgcpnJakvqYgfsthlth78rnkzGm4vkjSOVIoh2vJzNUWzIKkcywDhU0iaLsg1GFjRqhhzqf6FsvtjsFnW7i39rkOSkLL4eXD0m1c0lnsNWBDkxh15W9A/2HzpwZkEQBQeKevhvD9lKpAILqUiSru
+ HGqx3wiz
+ eIeokkV5Ja5SMznxFUOLrg/nzXO3bHNT3AMkl9v4n7ZrF6aM4Acj/WFmAVLOsTN4Ln/K4kw09M56w1HpEFl6LUE0CdQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,57 +179,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 03:27:16PM +0900, Christoph Hellwig wrote:
-> Set s_min_writeback_pages to the zone size, so that writeback always
-> writes up to a full zone.  This ensures that writeback does not add
-> spurious file fragmentation when writing back a large number of
-> files that are larger than the zone size.
+On 10/15/25 16:51, Joshua Hahn wrote:
+> On Wed, 15 Oct 2025 11:36:09 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 > 
-> Fixes: 4e4d52075577 ("xfs: add the zoned space allocator")
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/xfs/xfs_zone_alloc.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>> The pcp locking relies on pcp_spin_trylock() which has to be used
+>> together with pcp_trylock_prepare()/pcp_trylock_finish() to work
+>> properly on !SMP !RT configs. This is tedious and error-prone.
+>> 
+>> We can remove pcp_spin_lock() and underlying pcpu_spin_lock() because we
+>> don't use it. Afterwards pcpu_spin_unlock() is only used together with
+>> pcp_spin_trylock(). Therefore we can add the UP_flags parameter to them
+>> and handle pcp_trylock_prepare()/finish() within them.
+>> 
+>> Additionally for the configs where pcp_trylock_prepare() is a no-op (SMP
+>> || RT) make it pass &UP_flags to a no-op inline function. This ensures
+>> typechecking and makes the local variable "used" so we can remove the
+>> __maybe_unused attributes.
+>> 
+>> In my compile testing, bloat-o-meter reported no change on SMP config,
+>> so the compiler is capable of optimizing away the no-ops same as before,
+>> and we have simplified the code using pcp_spin_trylock().
+>> 
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > 
-> diff --git a/fs/xfs/xfs_zone_alloc.c b/fs/xfs/xfs_zone_alloc.c
-> index 1147bacb2da8..0f4e460fd3ea 100644
-> --- a/fs/xfs/xfs_zone_alloc.c
-> +++ b/fs/xfs/xfs_zone_alloc.c
-> @@ -1215,6 +1215,7 @@ xfs_mount_zones(
->  		.mp		= mp,
->  	};
->  	struct xfs_buftarg	*bt = mp->m_rtdev_targp;
-> +	xfs_extlen_t		zone_blocks = mp->m_groups[XG_TYPE_RTG].blocks;
->  	int			error;
->  
->  	if (!bt) {
-> @@ -1245,10 +1246,12 @@ xfs_mount_zones(
->  		return -ENOMEM;
->  
->  	xfs_info(mp, "%u zones of %u blocks (%u max open zones)",
-> -		 mp->m_sb.sb_rgcount, mp->m_groups[XG_TYPE_RTG].blocks,
-> -		 mp->m_max_open_zones);
-> +		 mp->m_sb.sb_rgcount, zone_blocks, mp->m_max_open_zones);
->  	trace_xfs_zones_mount(mp);
->  
-> +	mp->m_super->s_min_writeback_pages =
-> +		XFS_FSB_TO_B(mp, zone_blocks) >> PAGE_SHIFT;
-
-Hmm.  The maximum rtgroup (and hence zone) size is 2^31-1 blocks.
-That quantity is casted to int64_t by FSB_TO_B, then shifted down by
-PAGE_SHIFT.  So I think there's no chance of an overflow here,
-especially if s_min_writeback_pages becomes type long.
-
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-
---D
-
-> +
->  	if (bdev_is_zoned(bt->bt_bdev)) {
->  		error = blkdev_report_zones(bt->bt_bdev,
->  				XFS_FSB_TO_BB(mp, mp->m_sb.sb_rtstart),
-> -- 
-> 2.47.3
+> Hello Vlastimil, I hope you are doing well!
 > 
+> Thank you for this patch. This is a pattern that I found quite cumbersome,
+> so this patch really makes the code so much easier to understand and read.
+
+Hi, that's good to hear!
+>> ---
+>> based on mm-new
+>> ---
+>>  mm/page_alloc.c | 99 +++++++++++++++++++++++----------------------------------
+>>  1 file changed, 40 insertions(+), 59 deletions(-)
+>> 
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 0155a66d7367..2bf707f92d83 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -99,9 +99,12 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
+>>  /*
+>>   * On SMP, spin_trylock is sufficient protection.
+>>   * On PREEMPT_RT, spin_trylock is equivalent on both SMP and UP.
+>> + * Pass flags to a no-op inline function to typecheck and silence the unused
+>> + * variable warning.
+>>   */
+>> -#define pcp_trylock_prepare(flags)	do { } while (0)
+>> -#define pcp_trylock_finish(flag)	do { } while (0)
+>> +static inline void __pcp_trylock_prepare(unsigned long *flags) { }
+>> +#define pcp_trylock_prepare(flags) __pcp_trylock_prepare(&(flags))
+>> +#define pcp_trylock_finish(flags)	do { } while (0)
+>>  #else
 > 
+> I have one question here. I was a bit unsure why we do the typechecking and
+> silencing for the unused variable warning for only pcp_trylock_prepare, but
+> not for pcp_trylock_finish. Is it because pcp_trylock_finish will always
+> be called after pcp_trylock_prepare, so the flag will have been used at
+> that point? 
+
+Exactly.
+
+> I was concerned that there would have been some area where only
+> pcp_trylock_finish would have been used, but compiling with W=1 seems to show
+> no errors on my end : -) So it looks good to me! Feel free to add:
+
+Yeah we can change that if ever we end up with some code that needs it
+(hopefully not).
+
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+Thanks!
+
+> Thank you! I hope you have a great day!
+> Joshua
+
 
