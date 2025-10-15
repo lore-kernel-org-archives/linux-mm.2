@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C480ECCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:21:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A97ACCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:23:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19C258E000B; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
+	id DD4878E0006; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 173578E0002; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
+	id D85388E0002; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B0B38E000B; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
+	id C9AB38E0006; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC89B8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:21:41 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B6631A0B51
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:21:41 +0000 (UTC)
-X-FDA: 83999654802.26.9D93D99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 74EBF20008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:21:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u55Z+EvM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516499; a=rsa-sha256;
-	cv=none;
-	b=NjFIG6mZQ5TBiPIB6OyBMW/LzyrE7OIfTSB1IGr50A8vwpgy7ft5xwnJk8fDYVvz8t+eco
-	GDNfG4k5Kk/LlO3mIzmUHYdsErtGfdQrjjywSv06Ra2ZlW01Aki+HFBIIWTMifnbkihseC
-	fBJju6JPDgVcpoJBqZ27LB+hig4oLSQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u55Z+EvM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5F6C8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3555011B322
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:23:27 +0000 (UTC)
+X-FDA: 83999659254.15.EA8B7FF
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D9AC0180009
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:23:23 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eG3WEqi2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516499;
+	s=arc-20220608; t=1760516604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aEGpct1pPo/9AwrIfL7NwUZxzHtPRtYHvflLKg+Ai5E=;
-	b=h6T7nsXyioMauiWEdd7E98vqICEN3/VG5ttQRd/kr8ay9HmkO0xWwOkOEqupEuzeJwoJDG
-	XQ4fFK/D/IOBIydNcb/NHpzqRY+9DXFnErNwlrcfShIiAcQlGCWObrjSN36QXpVf32D/X6
-	FYusYzyRfnWIFRs5s/NP3yjz6U8WBog=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CE9443901;
-	Wed, 15 Oct 2025 08:21:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A175C4CEF8;
-	Wed, 15 Oct 2025 08:21:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760516497;
-	bh=aUyMg0r5Z6Pu1f8HinELT/IZMgwDZyyKT77Cbz9ISjs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u55Z+EvMBzgWN6PmzJ4w2jPQk1OmAHY1Ltm98ZKLlILP6qsjXVlaDW1JPSjk/l4cC
-	 6nixNt1kHAFbAioY7wPrDSkwrhzt0GQmM/RXf1fCLhyH9cJTQ7pNX5XTAdgTe/0KOS
-	 UxccDGFrzDbf4ZakLZzrChf2iY+dxH4YZvQ+z2J8gq5kPm5XTJ14u0Cu7X9RvKVQgb
-	 8mlcAQ802+06rdeKIocL1dphngXtsBd3GY3WqXYilMNlzD40b1bovdZJXNqmIYlESW
-	 k/r0kWitA+2DjeieTpbzTW3MM4CvAG/K9slCPttLCvLO2CYRU3ictLCDx54x65PU1y
-	 HCuaTguYdZYgg==
-Date: Wed, 15 Oct 2025 11:21:28 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
-	dmatlack@google.com, skhawaja@google.com
-Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
- preserved memory in scratch area
-Message-ID: <aO9ZiERHff7vQiBL@kernel.org>
-References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
- <20251015053121.3978358-2-pasha.tatashin@soleen.com>
+	bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
+	b=h3SCoABkdMYKR5n5EHOQ5O+5rk0kYoQP39PnKZ62s2ZJZqIxFRCpuDaAxsdwuIuDVa+uwT
+	NH7Ht8caL0/6FpZdA6FIX7mH+rUCG3Mfq769nUmQKpYWm0TtNQvRmw48lEbxYZhchG6SaY
+	Q6z17hoU9EsD63DRgHvwNxeEC3rVQzQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516604; a=rsa-sha256;
+	cv=none;
+	b=QZQGv+Czbk8GyG7BwZ4PdpgLaNKAmFGRQO8riRpfTmtTbAe/xKG9gJRiItqNescPY0t8eQ
+	a30aE+Ju/HexRgjNw7F82tYuLAwHwLwIaspM4oURrpk3eJZIJjHk4WweUPY2aIMTVRZfBw
+	tpyr3/OPs7OlYUXidAAqpH3Y4Ez2pXM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eG3WEqi2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-367874aeeacso63401241fa.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:23:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760516602; x=1761121402; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
+        b=eG3WEqi2VFRu8exNV8IgaSU+Evr2uxVG5058SOwKD0jHP+UQ23Y6FQN2O512T+kAHj
+         2yc3pftwyz8UUo15/eNWYszdijbCoex011rCY7snYKU/a+mU0dTpg1GnkOWGnCnk6o0f
+         ftO1DBLaj4FicLe+swXIEgXrMO2nqgskkmZb8/xfrUA49cVhLiJMx8kTVlMFzW9DI0c/
+         zJsrRz2+3ptM7Vhl1C/u1O7WS+0AHFualM8lQV0ZAfwjJS+mauanzv6pgsCEhFiHZocb
+         OIpTQU4MYFpRi+4T73NfhcVaPl+DIoAjoH+wGqTXl21GkIq+sNHqBtxLeT3FDoPTasbt
+         97Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760516602; x=1761121402;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
+        b=A2vZeC+1y844U5B87maXy8ycNGhE9YeuN7bw9o+ofUZhohuEMpWUZq3VzhNB9rHWfy
+         +inf8x/FdXFT43Ibj9L35jc8Oo5nCGiBF9dzZ7L6l6LqySjHd1HC+vuORa+yEzgWbwby
+         wpLD1MvSUgb207G3YD0qN3EjsStXTwFIXYPns3pKGjWlXn7911OHYY1DZd4TrEwXz6Yh
+         /qksIeic2l35Vo7vIgDGHHUlvQj8kb9owF1QNslWdgLmDnvgydO8ei2T9xIpuJhOeZcm
+         P8fXqMfPHJUKDo5ApSHvDne8Hs31Gdgqpn6O0pmx9qVU8juW9U0DDkorEo6dXdMkQHzm
+         UN5A==
+X-Gm-Message-State: AOJu0Yy9qjtZDAF+s4LsDU2e6fyg7iqf6RIrCdy6wmLJRlovot3n9rod
+	eRRpBf+o80BhUQxbMkvBG2FzwM4dVzGQzUiqm0PeUCqBec6/qUmHHUK+
+X-Gm-Gg: ASbGncuDYwBLqiFOZrC84SiaTcRjv2ACBNfAsbYaAo42rqhuvbm0qoSuUgsI+Swrwvd
+	RcIAtxFPoUwYtfEdPd6WpEGWsw5pbG4X+HLKjXsT8fP5jFlWvI8kndIWhsYo37IxFMQ6s11opST
+	iBZn8/zDdQvBm1g8u0R7nuDCL5npkqudwX+/1VEAOLLu0a8pcufL7ujEOeQfelCO9vbobP4UcZ+
+	3T+WcLfJTq9Irzt94je2cTjyNxqUIptFimyPUDcq1LaT0NgJGuauVJuYIiUa3fCvykidDVvxLRB
+	Y/TlyuakI64Be4IdVoe4fibHRaU1fGC1Vfyso5nXnrpsX7d5k0QDsEgvAT2O6UQidKKoRs8DYlO
+	iLTjjKDbx
+X-Google-Smtp-Source: AGHT+IEDfPLZF1XUkUC6PKH6VKbUwMfZxNo1JP9Fexm8vGn0nDS/kZEDNU2PautB7TCBU/85QBFQfA==
+X-Received: by 2002:a2e:be86:0:b0:377:7ca5:7997 with SMTP id 38308e7fff4ca-3777ca57b3fmr2778641fa.44.1760516601525;
+        Wed, 15 Oct 2025 01:23:21 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3762e7b461esm45980461fa.16.2025.10.15.01.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 01:23:20 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 15 Oct 2025 10:23:19 +0200
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aO9Z90vphRcyFv2n@milan>
+References: <20251014182754.4329-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251015053121.3978358-2-pasha.tatashin@soleen.com>
-X-Stat-Signature: bzu3jx5qqpbbcxgozstwewhedfg9hygn
-X-Rspamd-Queue-Id: 74EBF20008
-X-Rspamd-Server: rspam06
+In-Reply-To: <20251014182754.4329-1-vishal.moola@gmail.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 8os9oog14qmmdnhkptckuiwtj4qi49rq
 X-Rspam-User: 
-X-HE-Tag: 1760516499-736593
-X-HE-Meta: U2FsdGVkX19HgECL5W6yCbZ4XwVwesWkaEq53l2gbamfKsmq24FaFmstL9HdM04ySlSPPCosLwYZNFU33A+TPYC7K/7o/0ry1HUoF6oy21LmHM5yE9t9mQ3SjlHj+gaDyAOLL/h5VCjJbhZJo9aQ9j2Q47zccd+CCAtHkQ63KAv2uI0o4PPJndH77H0xrFYCKWLtbzmUT5FLMecbck8ieY3b0EzentoDN4ls5raCHIFcXKTa553y4YNHrca7oMQGm+DpVdJs9z9RKhPI8xVM+PArqAQrujs7XJiNfKPnRqWNfLRv28cRzo7JPBMOmSsAlxhdjr8dkTzt3UktazPfG8lFuheR48dzND9kpTPhclFBJfuXex+d17kMkADcmZ6a3rFhbM/fZe5Vy8rUVAZY52b225JXBCLg6tRjT4fR4o6LvEiTaJ6RjSaFLh1rAyrvlrPqkUW44XG1vmttScvmzMUTU6mossGmehhlajN3WErau+WD/qKhkbLEY0WiXEc6I0w2aRPzxx9selQfvt60Prhfsx/7P/iqh+7QG5b5F7c9RHIue8mn9g6nhMJyr+g/IqWUWeHZaxhQ15i6CD5H3xTmXAt07Lt5jatezaZgfNcvIZxo9b2jNxfFAGlTIKRkcRp8f2w4wCU/BjkASF2w6D5u3a0YBOCcTpwhPGVFPe1ba5vLCrARrgaQp+hP5F1T19koxx5EJxSKciuuPapdSAIPIOxvoyZNekAA/4RO0TH/gKsDbFS5HhylXnZHzKLYK4IU3lBNI1RWUe3H07/Ov3fgyFmooJ1FaDtd1ktaz7eUj0olXrvy5KzcWSNmVxyXI2WkK3Wlk+81DhaMPAu+gxlzo9NzytmQ1mQqgn1HXoJ8OYqUDAQV3849guZ4SRnHr7xjoz8Wksm1/JuEvO90VRvYTaEMrQIfboJ6bFhU7C4yvfnxpenFZiqt96ctdDB4hisr7tOtNccdi/5NWh6
- 803JdZ4C
- +19rRCyAMBpxgm3ZvL5VnbH5TQfdkhzhMrroQUv1f804LCASstgnxnQ0Y6h71XKNhQ2MGKRuNOuN7DFdyiLe/3tsE536uBz0ifa9NgvuL5H/5VE2FCcxmy5bdrg0C0+LJudnNWI2BgsWdA97Q9U9tm2f+37/IGxwC7W/N+RUTnpFxapsRS5+EouPRGc+jqz4wUSVl6D93xqyoYXvHDa0u4FMXBrtvy7qxMmPwubV5AKm57+IpfoICJ+++gUA+tetkclx5ZY9Drgl7TwIidB8kmcEQbta9oJW3kB+HN3Tp3IdUsDI8KKY9GmnH7Q==
+X-Rspamd-Queue-Id: D9AC0180009
+X-HE-Tag: 1760516603-797617
+X-HE-Meta: U2FsdGVkX1/eMWFl5DhT70jX4Ljs7TfKk+oyodhW4OTrF5yVddFXhDKi8usZ/gDyzleDdNm5ouUGyYctjYEMkXAtliODVOfg+6we54nLlgyAKvGtcPIlkBn7EJ0cAvwat3YSL6dsxd1NvdklAoRJO3bcC3FJqJRQOMfPptIliZdaVUq6jL98pVbdW/Dg8NADm0F7OS5suPz5X+viDbA353nzzVySlUgGQ74KL//vA1JF1k7nOqRfRtt2ni/AjtroEZYrclj5FSurcujcYXgK64euw4fWRdm1Qe8buIK+PXMZIX+E4p4rh+WvjkbhcgjuLyOU9cDRVHI1q0gmPuaPKONdCtzOsKEZ6rM/OduzLIL2FmhjfcYvW+PMFDRNna2ZxStksM5uf9krGlFnOWlVDnyq+NhnuaB5Af15kTdxqlH14Z3X9UyRAQQsBf7e8k4PYMEJgPJfTZFj94qdhoeeUc5f71fyUmjCtcwgO8jDPQ/dXAygbbHvvb6vW0QROiMPF+Fp/Rr03brUYupkocHYWy1aOMYuj0yqsFk36p02uD3gH/bZTXiJVICFQfofmH98y5rTGTOv/kEte5d/Kz4+F83VD4SJ5JuT/ujVKFX/ATulP+VvdTlTAxkfhBe4nmxBO6iMTqCSc/NZjUO7CyMOp+cmK1298KPrvxKRDK9NX+/LAHl8CiH5+4tc0w/gjkin/TCO0tW+f2iLQ1y2/naH5uDUvbBAmgCo0hkaJYrvh/Wwc0CB4fcQ9W/pExQsQC25M7LvZR6wS7S1GP1bJXVBP1SZMlhtmFWzdXsqJagya+M/ZMpjnNVVdaJdeiznblnmob5sC3eXDYxAyifsdj8mWJC7I5kRBU7kEd4Lygm4jqsfIZAk05jHypLD936jS1+/EjNwnQi6KUIWUW7KJ3ERekMMauveWxXZG+Kfp4CnNwH+g6fT6gJHlO1HVkKj6RX74+DFxxYycDprHWnRtkb
+ 6MyHnavF
+ /YB138+kTk0nze3Tv4nf1EounIuUbvN97bEpBVw+SXVRnbX9ADdor5z9OjGPNRzFBJnBqC/mqMBkg1CCXIMr3bkyyEXjdPpo4rPPeTvgH2jQrNGeWdSYG0mFuWaOeuMArHVBJHx0IOXEydu62PjctRkdgHeVcGKSNRc9kzL+BGxMQcXLwYaLXjshJHSNoW0JRf32UPcysZ0k+LPZPlhwNBLeVtmEeHFztrKFINIuPMcup6p+bs1TcJIsEn7SmWKPyJU7U1XnpnFcDZD2PUuUQCzqUVgRmaDBnXkjParNtWo7zP8PeS3IlXsRwaFR2pyOLjsRsjNd9OGjGviMhR1HVkuR+f6u1Z+m9mGO5xwzIxmqpy/JQjWq+o/4E6IBaCqMb6t45TM1rvzrUnb93FL4WiIr5FFW5PwxMPJl7H5k7NReplDxkfOrZn5yoD6ryZtlK0geMeRIGEEuax0eMwyR84ufqTtfUz7j3VJNFx/5/42QUKcYuqNjQw4RZRFB8TR4o2L7B1nIj7kgMt6UZ3sdfMuH1oA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,171 +119,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
-On Wed, Oct 15, 2025 at 01:31:20AM -0400, Pasha Tatashin wrote:
->
-> Subject: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or preserved memory in scratch area
-
-Hmm, can't say I like liveupdate: kho: prefix. KHO: on it's own is shorter
-and reflects that this is a KHO change rather than liveupdate.
-
-> It is invalid for KHO metadata or preserved memory regions to be located
-> within the KHO scratch area, as this area is overwritten when the next
-> kernel is loaded, and used early in boot by the next kernel. This can
-> lead to memory corruption.
+On Tue, Oct 14, 2025 at 11:27:54AM -0700, Vishal Moola (Oracle) wrote:
+> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+> allocator. Rather than making requests to the buddy allocator for at
+> most 100 pages at a time, we can eagerly request large order pages a
+> smaller number of times.
 > 
-> Adds checks to kho_preserve_* and KHO's internal metadata allocators
-> (xa_load_or_alloc, new_chunk) to verify that the physical address of the
-> memory does not overlap with any defined scratch region. If an overlap
-> is detected, the operation will fail and a WARN_ON is triggered. To
-> avoid performance overhead in production kernels, these checks are
-> enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+> We still split the large order pages down to order-0 as the rest of the
+> vmalloc code (and some callers) depend on it. We still defer to the bulk
+> allocator and fallback path in case of order-0 pages or failure.
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Running 1000 iterations of allocations on a small 4GB system finds:
+> 
+> 1000 2mb allocations:
+> 	[Baseline]			[This patch]
+> 	real    46.310s			real    34.380s
+> 	user    0.001s			user    0.008s
+> 	sys     46.058s			sys     34.152s
+> 
+> 10000 200kb allocations:
+> 	[Baseline]			[This patch]
+> 	real    56.104s			real    43.946s
+> 	user    0.001s			user    0.003s
+> 	sys     55.375s			sys     43.259s
+> 
+> 10000 20kb allocations:
+> 	[Baseline]			[This patch]
+> 	real    0m8.438s		real    0m9.160s
+> 	user    0m0.001s		user    0m0.002s
+> 	sys     0m7.936s		sys     0m8.671s
+> 
+> This is an RFC, comments and thoughts are welcomed. There is a
+> clear benefit to be had for large allocations, but there is
+> some regression for smaller allocations.
+> 
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 > ---
->  kernel/liveupdate/Kconfig                   | 15 ++++++++++
-
-Feels like kernel/liveupdate/Makefile change is missing
-
->  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
->  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
->  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
->  4 files changed, 70 insertions(+), 4 deletions(-)
+>  mm/vmalloc.c | 34 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 33 insertions(+), 1 deletion(-)
 > 
-> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> index 522b9f74d605..d119f4f3f4b1 100644
-> --- a/kernel/liveupdate/Kconfig
-> +++ b/kernel/liveupdate/Kconfig
-> @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
->  	  Also, enables inspecting the KHO fdt trees with the debugfs binary
->  	  blobs.
->  
-> +config KEXEC_HANDOVER_DEBUG
-> +	bool "Enable Kexec Handover debug checks"
-> +	depends on KEXEC_HANDOVER_DEBUGFS
-> +	help
-> +	  This option enables extra sanity checks for the Kexec Handover
-> +	  subsystem.
-> +
-> +	  These checks verify that neither preserved memory regions nor KHO's
-> +	  internal metadata are allocated from within a KHO scratch area.
-> +	  An overlap can lead to memory corruption during a subsequent kexec
-> +	  operation.
-> +
-> +	  If an overlap is detected, the kernel will print a warning and the
-> +	  offending operation will fail. This should only be enabled for
-> +	  debugging purposes due to runtime overhead.
->  endmenu
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 5da21f1510cc..ef1e6f7a234b 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -141,6 +141,11 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
->  	if (!elm)
->  		return ERR_PTR(-ENOMEM);
->  
-> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
-> +		kfree(elm);
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 97cef2cc14d3..0a25e5cf841c 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3621,6 +3621,38 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  	unsigned int nr_allocated = 0;
+>  	struct page *page;
+>  	int i;
+> +	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
+> +	unsigned int large_order = ilog2(nr_pages - nr_allocated);
+>
+If large_order is > MAX_ORDER - 1 then there is no need even try
+larger_order attempt.
 
-I think __free() cleanup would be better than this.
+>> unsigned int large_order = ilog2(nr_pages - nr_allocated);
+I think, it is better to introduce "remaining" variable which
+is nr_pages - nr_allocated. And on entry "remaining" can be set
+to just nr_pages because "nr_allocated" is zero.
 
-> +		return ERR_PTR(-EINVAL);
+Maybe it is worth to drop/warn if __GFP_COMP is set also?
+
+> +
+> +	/*
+> +	 * Initially, attempt to have the page allocator give us large order
+> +	 * pages. Do not attempt allocating smaller than order chunks since
+> +	 * __vmap_pages_range() expects physically contigous pages of exactly
+> +	 * order long chunks.
+> +	 */
+> +	while (large_order > order && nr_allocated < nr_pages) {
+> +		/*
+> +		 * High-order nofail allocations are really expensive and
+> +		 * potentially dangerous (pre-mature OOM, disruptive reclaim
+> +		 * and compaction etc.
+> +		 */
+> +		if (gfp & __GFP_NOFAIL)
+> +			break;
+> +		if (nid == NUMA_NO_NODE)
+> +			page = alloc_pages_noprof(large_gfp, large_order);
+> +		else
+> +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
+> +
+> +		if (unlikely(!page))
+> +			break;
+> +
+> +		split_page(page, large_order);
+> +		for (i = 0; i < (1U << large_order); i++)
+> +			pages[nr_allocated + i] = page + i;
+> +
+> +		nr_allocated += 1U << large_order;
+> +		large_order = ilog2(nr_pages - nr_allocated);
 > +	}
-> +
->  	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
->  	if (xa_is_err(res))
->  		res = ERR_PTR(xa_err(res));
-> @@ -354,7 +359,13 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
 >  
->  	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
->  	if (!chunk)
-> -		return NULL;
-> +		return ERR_PTR(-ENOMEM);
+So this is a third path for page allocation. The question is should we
+try all orders? Like already noted by Matthew, if there is no 5-order
+page but there is 4-order page? Try until we check all orders. For
+example we can get different order pages to fulfill the request.
 
-I don't think it's important to return -errno here, it's not that it's
-called from a syscall and we need to set errno for the userspace.
-BTW, the same applies to xa_load_or_alloc() IMO.
+The concern is then if it is a waste of high-order pages. Because we can
+easily go with a single page allocator. Whereas someone in a system can not.
 
-> +
-> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE))) {
-> +		kfree(chunk);
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
->  	chunk->hdr.order = order;
->  	if (cur_chunk)
->  		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
-> @@ -379,14 +390,17 @@ static int kho_mem_serialize(struct kho_out *kho_out)
->  	struct khoser_mem_chunk *chunk = NULL;
->  	struct kho_mem_phys *physxa;
->  	unsigned long order;
-> +	int ret = -ENOMEM;
->  
->  	xa_for_each(&kho_out->track.orders, order, physxa) {
->  		struct kho_mem_phys_bits *bits;
->  		unsigned long phys;
->  
->  		chunk = new_chunk(chunk, order);
-> -		if (!chunk)
-> +		if (IS_ERR(chunk)) {
-> +			ret = PTR_ERR(chunk);
+Apart of that, maybe we can drop the bulk_path instead of having three paths?
 
-... and indeed, -errno from new_chunk() juts makes things more complex :(
-
->  			goto err_free;
-> +		}
->  
->  		if (!first_chunk)
->  			first_chunk = chunk;
-> @@ -396,8 +410,10 @@ static int kho_mem_serialize(struct kho_out *kho_out)
->  
->  			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
->  				chunk = new_chunk(chunk, order);
-> -				if (!chunk)
-> +				if (IS_ERR(chunk)) {
-> +					ret = PTR_ERR(chunk);
->  					goto err_free;
-> +				}
->  			}
->  
->  			elm = &chunk->bitmaps[chunk->hdr.num_elms];
-> @@ -414,7 +430,7 @@ static int kho_mem_serialize(struct kho_out *kho_out)
->  
->  err_free:
->  	kho_mem_ser_free(first_chunk);
-> -	return -ENOMEM;
-> +	return ret;
->  }
->  
->  static void __init deserialize_bitmap(unsigned int order,
-> @@ -737,6 +753,9 @@ int kho_preserve_folio(struct folio *folio)
->  	const unsigned int order = folio_order(folio);
->  	struct kho_mem_track *track = &kho_out.track;
->  
-> +	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
-> +		return -EINVAL;
-> +
->  	return __kho_preserve_order(track, pfn, order);
->  }
->  EXPORT_SYMBOL_GPL(kho_preserve_folio);
-> @@ -784,6 +803,11 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
->  	unsigned long failed_pfn = 0;
->  	int err = 0;
->  
-> +	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
-> +					nr_pages << PAGE_SHIFT))) {
-> +		return -EINVAL;
-> +	}
-
-Can't we check this in __kho_preseve_order() and not duplicate the code?
-
-> +
->  	while (pfn < end_pfn) {
->  		const unsigned int order =
->  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-
--- 
-Sincerely yours,
-Mike.
+--
+Uladzislau Rezki
 
