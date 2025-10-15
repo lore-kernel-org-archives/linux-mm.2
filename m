@@ -4,101 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37016CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 09:02:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1708CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 09:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 924148E000F; Wed, 15 Oct 2025 05:02:43 -0400 (EDT)
+	id 2C83C8E0012; Wed, 15 Oct 2025 05:08:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D48A8E0002; Wed, 15 Oct 2025 05:02:43 -0400 (EDT)
+	id 2783B8E0002; Wed, 15 Oct 2025 05:08:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C3458E000F; Wed, 15 Oct 2025 05:02:43 -0400 (EDT)
+	id 18E188E0012; Wed, 15 Oct 2025 05:08:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 65A338E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:02:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3213588B58
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:02:43 +0000 (UTC)
-X-FDA: 83999758206.08.3D4CBD7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8E4C11C0015
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:02:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jGLnoEpN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760518961; a=rsa-sha256;
-	cv=none;
-	b=frNm/724XNRtgVIUXkvm+r9TdbNzK/X2JplLzlIkQVDoQg+BOqLDG0X4LER+6h6vrj00sB
-	+UjnMHFPywj9uSG6cLX7Mby/YUASnnOC8jMCugmxGQF1HJPhhKehKbngUlmAujG1i/qGzC
-	Cu/CbA8xoNELpS2PTMwRlreBjR9ZsE4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jGLnoEpN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0630F8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:08:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F16B1A0B65
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:08:10 +0000 (UTC)
+X-FDA: 83999771940.25.52FB199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C708B40008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:08:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760518961;
+	s=arc-20220608; t=1760519289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xxzCRrc5WtwQ0LVfF0axsM6ttkL4cjtbeEF+IehadFQ=;
-	b=ae7z09iAWkptvA70YwVPgfJrP6CuTCkcpAcUaEMZyjXxmaH8vCT6HPndGZbCvNjSeMxbg9
-	D3T0P5SlS9TUr1GRbkAdB9j1gKH2aVKaRIlPsxpD45SxJn5PWhCgr+xhpGTP4s+ZuX1TWa
-	DMRkUT9S3cwobVKxfmO7H9NOpH9s3Fs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85AC862541;
-	Wed, 15 Oct 2025 09:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28134C4CEF8;
-	Wed, 15 Oct 2025 09:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760518960;
-	bh=NnFyGjBoL4vGg7ADG2ActUbXLTE11O5QDFufreKmw1o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jGLnoEpNwn1R41Qc3IIZWGmcD6MeEK4GVqMrDhSSc8fN7VJuVkNMDCZ6AQflu63GG
-	 UK0nFSVBkXOxB/KgPc2mfZ+1Pa47f9DwOlOxLuWdZ0cEnY5WCIqelN5Gbt4+TgnOKJ
-	 WKw11Oz6Xpru/Ylb9p+eAidWCosit/ZcLmNoa4aUvNQW4V75q42xXScHUgf2MFvkYl
-	 D08bz/w7rnbxImSwUzRViQB6J9yV8DznSHr0alrfz+/UDiJl9aEHUX9NyVORrhAI8d
-	 +q40uiiZceCBnd0y8AcQcgQB4GOeHjv2QUvMJzA8vWbPAsCqNpaJB0JUVBA9F8rXNI
-	 aAwTNFMgrDruQ==
-Date: Wed, 15 Oct 2025 12:02:31 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Itamar Dalal <dalalitamar@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"riel@surriel.com" <riel@surriel.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"harry.yoo@oracle.com" <harry.yoo@oracle.com>,
-	"jannh@google.com" <jannh@google.com>,
-	"surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>,
-	"shuah@kernel.org" <shuah@kernel.org>
-Subject: Re: selftests/mm/rmap: verify correct RMAP handling of COW pages
- after fork()
-Message-ID: <aO9jJ-wGR5ANmKZs@kernel.org>
-References: <SN6PR04MB4048CF9A242A640B29A588EDFEE8A@SN6PR04MB4048.namprd04.prod.outlook.com>
- <8c2c9721-e2ca-488b-b7be-c58170f6ceba@redhat.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=zWdzM1o0bP51JTmnXgOxvnMFxR/jfYHObOzz7l/dgus=;
+	b=uYjAXd0QfF8ZNpqW5ecTSUYY6Sa033AgvSwqW3LYi3aC4tNytH7R0T5beQuvP69tWTtWkJ
+	wRIsHLxgTD0impcOeCGenBoqbAjkx+A8di4pQewu+Uvc2RNiZv0a+lxcxs+Mnvh8RnJE8v
+	8B7GcUs4m8ALQKLoSP+ItHIxYOWie/w=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760519289; a=rsa-sha256;
+	cv=none;
+	b=2Vk6iIzePxPqRDS4Y4ylXDJ8kK2xEPjjHs8NgRlkaI/bly7ijfwrr6vCuEEB3p/L+i1xc7
+	DlCwHv0c0WfIgixb+jVRIpYcS+StKgwZQkno/VkiHuXpwpPFNILtcLmxz/89wu9UKtZlaP
+	FQXt5pR8DXoXKky31TCmMJTbHCL7B2M=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D8371655;
+	Wed, 15 Oct 2025 02:08:00 -0700 (PDT)
+Received: from [10.163.67.182] (unknown [10.163.67.182])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFC5E3F6A8;
+	Wed, 15 Oct 2025 02:08:05 -0700 (PDT)
+Message-ID: <cdd96bd2-f759-4637-b61e-c77fcd9a24c5@arm.com>
+Date: Wed, 15 Oct 2025 14:38:01 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8c2c9721-e2ca-488b-b7be-c58170f6ceba@redhat.com>
-X-Stat-Signature: xudx8a4g339uaes5x38f8i3ixyof7tdh
-X-Rspamd-Queue-Id: 8E4C11C0015
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/mm: use <stdbool.h> in page_owner_sort.c
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251015085843.104443-1-ye.liu@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251015085843.104443-1-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C708B40008
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760518961-67212
-X-HE-Meta: U2FsdGVkX1+EGG0JNmbrMXad7T5WZ2RJvfBQcRnYfDdt87Yi8me8NU1uGS9kook7MipauGya2WsHAtaPY0+KrJUg9nin7/NTD/S5m8tbcI1VCyniwtP7tV7YfOQCp0bsVQlZfzPEFT+X0/7VhHk3FiyBh9WpHigYMl7239M4xMX2aBOQsnFg0YnZRsXm0FoY9JoV21UkqyXX49Yb3UfBGh4fWSEjf7o7Kxh+bgFLaYGjECZvz2/nvg3fRpS2g9A/DMY6ld8K1nEK3JSJqtavPs7XTvijlIMdtK4qOGBbEYJmMEXMtuSDAFvpt8qILkwxk04KKjlqC1CfflDNRDNrGd2Q1m3L4wKQpG8hXI/VOgqklf33cd7ovXh1wtP6DhI6w0ZLyf4vo7VUEiO1guG092V4wfBYXjhxMIOpwMX/v4TnBOiCyJ48xAcgK/AHDGAcAUVjju2WDMrlMBhXhirc7cDCsuBPs3Sq9Nad3eraEfoYYvu8edANCx51Scct9HNGhzZ2nmS+6ceidl4bIvkhc1LCcds3BhMlQH9ehZWBUEKVOY0qbNQF6wKpkkVlNhBastatpyvD9EbUSvxXSTGgGlsRiDkIrvniuhIOS91ZbEIXDO3tP/OoshTI1OXWsJp8o2txSvyLNK2OLbXFaGRd1XGj4Z1Krar2GdUpOCc4A9JpfQnBe+GWNPMi7vEx+logxuvKUxKeHcr/DMGCVC314OF2L5T93DTP1ej8bWkvtmRDidkzxtgqxzIktXulLSzXBUtrdL1vNhnV1TqWWfXH4BaYE2jPfNq0ibqXpS086uxoEKSbrXdJXIBj9ePMbP1XiEk6b7c1NhC3itjMlUW9X4kxBNMc3JQ58S4B4A4GEUSxt/twQK33vF23BQ7EeXW8pEsDp26NhpO4JR0ysyN3HAVxExykbsgNFfzUgvfJfA8RnyC9SUmpMetoUcvxN1tvu2VFeAVbCbfZDgJGBF3
- ylj6JGLd
- GKsD/4sGsQjdky2fHcsMAqdeE48EX+uavswuUuWJjV3qypzseWufZCc62aBdaZlTTvP0s2gAbWJOlb5WxJ9i5X0dnL3Hh/Oqc2jN/XxXlEZBilbSNj6NU/ZVYA9YBtoN/aOmezbfcfH50j0SrlKxp+UZAd0UQTPiSIjHogWy2r08COXERrv/ngGJtE0pomFnKCwPqAb8Phd32z6XQ49/1iya79nC0Hilj/j94kcptUO812PZG704jqtq6vkqgYdKy1lAFB88aA3nYTZuztH9BryGebTgkVeqguuO7ivfIAUW1DUrhyTWhaGz70rjzEymgkz6T3AqabYCBi25VSFDJUJOBl7szI/wa2Ow2ZGguoQjro7irYM7UMQLrFpKbQP+B+ll3QxqiHGoIZlQ=
+X-Stat-Signature: 1m9tygqr74r5k3ugddbcej47rqriwzo4
+X-HE-Tag: 1760519288-603435
+X-HE-Meta: U2FsdGVkX189cMTAPm4ayazjuvZeVGLJDX4KXfS7rNVtnoNzxppnw0gQvcbLQzlpgv1kKj0EW7KphKnBANVsq93fRnZ3nx1n3mcZ0yladewlP3j4i5gD+/cmoMAidUf+UWQ1Lv7NrLKETEJkgNFlRZn9q8jcGQDzz7GzIFHzDVu5LS0oYF7CW6zWZheHXQ1IroZspkjsEKLn+o3ca9+yyPVPbjecc39RzixgXGY3Jy72JsTMpEeNzi4FM7w3si/SiAh+H42fOsnHHJnTTCAFBmFVHq4Cl5J+Gnd049yzYIdkeTI2FBRFbxR7N5guOvFGRysQxcHpKvbHg9lY7uzTlEKaW1pt7VS/PIZRptCr+A0jOwIbZAJqKXjnW3x1Fh+Nghl/KmECrFfsjCeghXJaovB49nISceesseoLn91r8+0Blqu7C1HCYxWKbAiSMtF2pHt8QmWfIbItBYcBqKNUMyB1TjJCJk8OZviFJ2dfXKp1ISS4ba9JcA/K69XKwoYpPrXGTM1DWN5/FOqOoyYkaSBxQQ5RD9fxn7hAyRNv8w7STPYGXwmnFKrwtiOqpCRlOaFJfPyZQETw5k0yUd0tCMwdc3DYOSJ2WWKT+Pm2DUT3kgZJWCATHD2XAxHlxeiKiG05XEu4Tuaosk+pT1bgsp1LHQm8V0accLewtiqmTeKsWr4AWMq318pEysRHDqld5ffnTpa7lfXN9VzF9RhbxapclUN/OmUWXbi/N6ARoUBdDTVHHkijSRoMluHX9sGk7YQfSXHu/2wY2LHAvA04DfZw5Is0VuW9StDF4d3f4qYG1nxlz7ATVAYiMqzBBfBfMBk6SPJR8bex+nQB8rypyys05VKhvlA81TFMRB8EdBEbIav+Agc/nPId5Ju+vSlJN1xCsVzotC6p9Ug1APupudHechUkDX/jQ6suUkIG5tQogLLMzU+3MrzEfAXGPR5mPnF1n16DQo6lXHA+uwr
+ hK+1khZ1
+ eewxFoNsDdit5LfzfnOOC76drzpS/1afrgRnhkrLetHGzYxuyTDosst06pHVedplWlvRybEPmM9GsSCUAGQ9W8vJIUJWjah53KwIEQdzTfUCpjq+C+WYvM+lZuAWHNScDHDzRZbvpyx05MrDwOT9y0MMz2l1q0sZNDRzFRD2OJDOUDSHXQQumW1Rnhye25xe8h0J4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,41 +85,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 10:49:48AM +0200, David Hildenbrand wrote:
-> On 15.10.25 10:43, Itamar Dalal wrote:
-> > Add a new test `migrate.cow_after_fork` that verifies correct RMAP handling
-> > of Copy-On-Write (COW) pages after fork().
-> > 
-> > Before a write, the parent and child share the same PFN. After a write, the
-> > child’s PFN differs. This confirms that proper COW duplication occurred and
-> > that RMAP correctly tracks page ownership transitions during COW events.
-> > 
-> > Signed-off-by: Itamar-Dalal <dalalitamar@gmail.com>
-> > ---
-> 
-> Se my reply to your other patch.
-> 
-> For the next time
-> 
-> a) Use git-format-patch that will automatically add [PATCH]
-> 
-> b) Use versioning, e.g., [PATCH v1], explain changes since the last version
-> under the "---" the
-> 
-> c) Use RESEND for resends, e.g., [PATCH v1 RESEND]
-> 
-> d) Use git-send-email to send mails out
-> 
-> The b4 tool might help as well.
 
-And
+On 15/10/25 2:28 pm, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> Use standard <stdbool.h> instead of manually defining bool, true and false.
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> ---
+>   tools/mm/page_owner_sort.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+> index 880e36df0c11..cbd195d7b5da 100644
+> --- a/tools/mm/page_owner_sort.c
+> +++ b/tools/mm/page_owner_sort.c
+> @@ -13,6 +13,7 @@
+>   
+>   #include <stdio.h>
+>   #include <stdlib.h>
+> +#include <stdbool.h>
+>   #include <sys/types.h>
+>   #include <sys/stat.h>
+>   #include <fcntl.h>
+> @@ -23,9 +24,9 @@
+>   #include <linux/types.h>
+>   #include <getopt.h>
+>   
+> -#define bool int
+> -#define true 1
+> -#define false 0
+> +//#define bool int
+> +//#define true 1
+> +//#define false 0
+>   #define TASK_COMM_LEN 16
 
-e) please don't respin new version as soon as you get a single feedback.
+You forgot to remove these :)
 
-https://docs.kernel.org/process/submitting-patches.html#don-t-get-discouraged-or-impatient
- 
-
--- 
-Sincerely yours,
-Mike.
+>   
+>   struct block_list {
 
