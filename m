@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE7BCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C9CCCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:39:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 179C08E000E; Wed, 15 Oct 2025 02:36:34 -0400 (EDT)
+	id B1BE18E0003; Wed, 15 Oct 2025 02:39:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1298F8E0003; Wed, 15 Oct 2025 02:36:34 -0400 (EDT)
+	id AF3EE8E0002; Wed, 15 Oct 2025 02:39:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 018C38E000E; Wed, 15 Oct 2025 02:36:33 -0400 (EDT)
+	id A0A578E0003; Wed, 15 Oct 2025 02:39:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E15228E0003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:36:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FD261A0ADD
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:36:33 +0000 (UTC)
-X-FDA: 83999389866.25.EE939CC
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C0E5B14000B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:36:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H7caSZfu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760510192; a=rsa-sha256;
-	cv=none;
-	b=S5fU5EuD3qc7xdWXDQ/RDSUyqa1l8XNlbVzcYntvg3+g61GvACFjNg/CDWRMMKpbQDvD5+
-	NoNfepOyosaLS9PSYjnnadwIKmEBuCrQK+bsCLpLZFMCDrZyfgXrTLRlijB6xPX15a3ohZ
-	eqyfYE5mHnetRUGf5PgzOHlayedFoC8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H7caSZfu;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E6958E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:39:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4A4C45C931
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:39:14 +0000 (UTC)
+X-FDA: 83999396628.19.411301B
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5E1B2A0007
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:39:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UDsqyGlZ;
+	spf=pass (imf15.hostedemail.com: domain of edumazet@google.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760510192;
+	s=arc-20220608; t=1760510352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3BICM4/ICXf+zqUc8wiZAUMGTBpg8K3w3bGX3Sv3oBQ=;
-	b=hHX8NDD8X5G/qlbF3HIDjPlPwjQgFeavI1KySvro6hAmcU0ku55baL1VoLGsjow8FoS+Jc
-	8qx9S7An3ZZLP5lS8j/1Z1SRy4rFtsqvepwjFIBViOIsH9LPjGVr6+0fAVP/coIs9n4LpE
-	UdFG0gdQ0I1ZEuWM7s67xZb5hQkgcf0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760510190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BICM4/ICXf+zqUc8wiZAUMGTBpg8K3w3bGX3Sv3oBQ=;
-	b=H7caSZfu4t4c5M7yudMPuBohd2tAVxKye8T6//8DUxt095mlcwWRyGXMiJt1ydX/gSpKO8
-	a7a+eH+aLJm+jZhp/l93jFXsW0POPuVhfURihl0jKG3mLJ2p+rJ0DjcPEc6ui2roX0klU6
-	tBdp3Bor+ZznaSPJgH8PKT35RyRB4tg=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	harry.yoo@oracle.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v5 4/4] mm: thp: reparent the split queue during memcg offline
-Date: Wed, 15 Oct 2025 14:35:33 +0800
-Message-ID: <645f537dee489faa45e611d303bf482a06f0ece7.1760509767.git.zhengqi.arch@bytedance.com>
-In-Reply-To: <cover.1760509767.git.zhengqi.arch@bytedance.com>
-References: <cover.1760509767.git.zhengqi.arch@bytedance.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bsukMYa0AUCqYEvcLXRhuapsU2hd6Y80454Ux1AAjL4=;
+	b=1rjbySQIYljWr0giuvL1QGeiM2vyBg7BzCt+jtnZzyZ3vZ595Ykq8BoDvZ7hwjKStPNHNt
+	ecZO1fLvJz3NtznyDw0vqMnCNcvRO+PThIV2mMk0Ydteum2Uee20ZDapIvvrIpKrlYkWK/
+	K2V5iy81Vd/awDY3vZrzJPG8P3KrV0Q=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UDsqyGlZ;
+	spf=pass (imf15.hostedemail.com: domain of edumazet@google.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=edumazet@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760510352; a=rsa-sha256;
+	cv=none;
+	b=wdN6Zzad7QHLVDQ7SPoSsno5p9PwEgrNhNlp6f5iUW8ilQQbfEr/tyIxe0G7i3bowNWn2+
+	89dgqqfFahJC067k7vWFqY72C0bX6Pg0rawQz2qavCymZ4hJZ1y2seRn/lnOHpw1diOteX
+	NcBZA7KkJZoMEMixqYgndwfZNTFW9Zs=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-85d02580a07so73665285a.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760510351; x=1761115151; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bsukMYa0AUCqYEvcLXRhuapsU2hd6Y80454Ux1AAjL4=;
+        b=UDsqyGlZ1QoVVAwIVs4fz4/ABi7Y8etQR0pbbV3uMwTeI5sz90J/2H5WMJ1AWHDs1o
+         J+qDODygFKjANm42pYLiMVu5t7FMWW3Zpce4OVU2wZF77UfFxgJqvpxeF3oLH6FbOZoW
+         zV/SQsBh7/0flC50CgZ5+eu9KXwO9+ycuTSOy8gHO/loduFm+EgvSKJS7s4wvlKEUIkB
+         60xbUhTxWmlYg8jfMpoAr2d5iMLy8NSQSj7BNwvun41diylrrSdJG54m0eemgHfZN+9D
+         rh6clrFE1Bmc/DvGuFIK1hlVClTKQOX+mjM/O7rO2rN7DyNrwucHLjvolVkBn9eMyLiF
+         aw6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760510351; x=1761115151;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bsukMYa0AUCqYEvcLXRhuapsU2hd6Y80454Ux1AAjL4=;
+        b=Zr8UO6Dl3ibC+zUCkfZAafPd0m6EjfrNbNKyUigsZ6mfT55MNhkeBcDTXb2qxd5Eb6
+         GZXfwc08AYdU0Vejdi6vvdxSMVcpU7mIwf+JKSWsdKUhZP76B0mD4dtCOHHg0bb2HwHC
+         ny+XHuKyTMa42XBdNDfAOtWCAUCUCaybCyF2ayNEKXvlYhnGiEi/VO0Cm6anSdaYbSu7
+         V4XUm7+1zx2MzqnsTPxZcpR6lvXKiNX9NZYoSUZVxQSrRpyDRI0OFTdwDO4sunHzggev
+         NgRmt+2WW1AxTWcNcfJWRKuyIuklLmqHyw43/CafxKZi7lk7Hgh7gkVaQ2m1Yn+A2X6J
+         OBPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKhTVWmx9CxYW1ShtP+POcrrShQe5Dd9Ru/gmX5K+Os1e7ItNIP6EMfbaHXnu486G+dkQ7W9zQ4Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyaw4OmWGjdounBjUJ99ZZ4AULnzu8c4WgXe37YoxgMQBup0hfi
+	P41qwfQa95vT3qdcp92x8c8o7LtTj3GUrpWwke3DCjl9bZ7oz85oQCtcyE8nReEKnv+Ss2blCbE
+	dYUOn6M4NIvmGPWANxo2r6tzq90ZiL9dY9j5leP1y
+X-Gm-Gg: ASbGncuyGmmoQDRrFOlQiSOoqii83096Ns7bVlMCMxkmwC+Nypl0HUWfu6OJzQzKqK2
+	JQGu5zEU+l5IdEA7lRHcmIa0olsm+ooS6X3IY1RsEWKvdqiozbSPciF+yhwIfjRBDHGKKvHaqzc
+	QjuObaT66Yf6vkxTvS7AxXwMPRbcXk2/j/sf5tXZe8m7kzOXf0fmukBshz8BZqLuA5zYWsp8aP2
+	U4lJUqTYvLMeLy3SrknZ1dVIatOqTa7mA==
+X-Google-Smtp-Source: AGHT+IFK/RWWMbmryZERBFoMRzd6/kz9EwXNSWCusWT0Lc+3vQtZfacIx3bleY22OD0BqECfDUYhjeSl5kCs+LlgdPM=
+X-Received: by 2002:ac8:4799:0:b0:4d1:212f:6689 with SMTP id
+ d75a77b69052e-4e6eb068d71mr314051311cf.41.1760510351122; Tue, 14 Oct 2025
+ 23:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+ <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+ <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+ <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
+ <CANn89iKC_y6Fae9E5ETOE46y-RCqD6cLHnp=7GynL_=sh3noKg@mail.gmail.com> <CAGsJ_4x5v=M0=jYGOqy1rHL9aVg-76OgiE0qQMdEu70FhZcmUg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4x5v=M0=jYGOqy1rHL9aVg-76OgiE0qQMdEu70FhZcmUg@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 23:39:00 -0700
+X-Gm-Features: AS18NWDMOlh0tBS4TlU64c6PgouY_kRH71v_bFl3FqJI9-6cAzN_kZLryiaCnBA
+Message-ID: <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5E1B2A0007
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C0E5B14000B
-X-Stat-Signature: gfr9chkcwzi9huq9at6ehfqkwabue5gn
-X-HE-Tag: 1760510191-25207
-X-HE-Meta: U2FsdGVkX18MTVRpnsztigm68P76vGLdtSpaUgZ6jqbt6nCaQPLgGAumH47uK6fYkmGfSetkZHm22Pnvks68E+7UNfDvXYGTUw4adwz7Gl4Fqcd7GQPWgj4twnRVi9Rugo70bZYBtkvf6SlW8Bd+b99fvmNMt96ypWG4Ka2lWr0RSzVgAEmSUm+cvlFR6Xo9VxX26JRqnWaCADDsUvW7QoQfCoHG8sg163a6bCxJodhrUY6hzfAEzF7hMefOKgfo+v0j0gLYm9f8KPCmDVZsJ2gC2Sv05fsXhdHPjjgV8Yj7iBfYFVKxhtG1lJkkv+02vLulLMrhDlvFNWk5sRa71niIaiF7ZU41iBOWmSv+/Ye0w58x13V5Og1tVVMa+SoP6LXk8FAcB4le1e1idKFDpFmcVQKyyUvQXOEYzwK+9LN8/JVD9zvteK3/r9aPjhHUM/YEt9ltyKjfGf0AkOC6+eT+i3xSpWfd5+1jkMBTy6SALksuHDH1MUc0K2WDc6+0VEAHhTwR9RkMOcSqUBDgZsyt5BEyEx0b/3JOSUtHqT8U52CFfx9MqFwInitG8aNIQp6MCjVzXZsILmSNk+rk3V+WxGS9+obl8ZVucxc2/Rz6idFAM/CaC6G3bIaSaXywjZff5hCMfkwj68x3OQ1wze6w1PogAN9g4XjSgR/fLIjt8Hm+lYp+KL+IErTkDtaV3TLqZ6qrhtJ+SpBkPY0eHUOw6MpeEWYu8iGYr8475/GUOTAyeof+6DA3BQ8kNMfDLroN600n5QiK6QPm5BowOhlNo5azEprsvbb7rNw0258gtakufD1AeP0Evyyzw6lN4RHcAGq3pQZf4tXceeCmmQ/L3YhvfW2zcKQONWmD+StnCEm5AkwZosuwumHvElAcqPygW8ICBcZFNq84jF8eFLTNxXUCKLoCYawJ6X4DB60lCUfG9AmmczZCaOP1a2xXEHqtE0E8ChasVd6NfvF
- kMlT6SIt
- r95raclB3NnsBECCmY5sR891G4EbNFfZxVLN2uxxAAaQSp2dcyrI8Z9yisIugYuIhwKcVs1jeK/L0bikVtq3URq2MqqrLZUydIqmgnMmbLwECf8mWTPnonFJ/bAnNfYPRCezXjHt2HxMF7CXTT3Qrb5m9LTf0ZWfJM1tccNXZcyxyn3KA9RM0FCokyyvFXqIqxv4Teh3ii8qHwu7cFBlqIqWoqIxqlHQJ1OgYC13Dhoq2yPsNWECVtzWErYAkELarxS712t6xv7ocEcM=
+X-Stat-Signature: y75imyzywzzaponxxi7gtgd9d35yjzy1
+X-HE-Tag: 1760510352-222787
+X-HE-Meta: U2FsdGVkX19xef8pJwtSwIxkm3rsgnLXXX8FA28QWVP6CRnx/ewP7TjCz9rSi0Zblmd4MpRZ24CEKlfogJ2CdIrKN+o8DMQ7G/RqrPsdkRoFbA/nY9VFquhP5XKeB5XjmFx3MRaw+CFWOq3a7AYraEs35sc5sJIcN5+sgPstdAwBsMm9EFqwZAHWTNUPLgJ1c/tq63BOmpSbqgDa4M+Snw7LEPggR5M6CKY7GLcrba8mFC+XkXPHA8oVJRE7rq6/A9KMYfSE+x5D8+pbeqLjbtJ+i/MLnWyqSSM2yFw46RVDmHJTEC/bHNf4qP2g32AkcMUbVpWmb9s5VDIFBOTbGq19G9h0fgeY1okU0QwHmuYQvcoP+BoW42BmxlClNtlcDM+2vIdRV64RShusspkz1r/sl3/vSfERW0fV0xATbb3K1Kz54MgMfzSb9lTEpAak30sqMngtqNaSwPhWfbOmk5wpngzeI5aa0hpW64e8Ns7vF1HfXTL1+KM+z8d/AzqDk31wlAJ7FPdmpw1uxJFd8xxZuS0xzMYhniq6lI6mntWfwDQ+Axvu4WjNEFyDNAh+eGj1gNccgMRs7DrKTmMyqYg9oWWyjaeZQg6Zyj35FHDqIbL/ZZ/OwkhI8xgzw+q8FL0JvWtgwyETyA766ZvgNkcpqGpE+AFIv8iBrHK5AeguuXGKmCuoOmWIZhgWrliUy6GJkjssVH/mwWMMXv5hIYkwlUge5dhteFVJmkvz62o6ieO93zpvpJVtdX8DyTZtQOdPfEQgF4g04q73lVxuNcXfhws9dRgUTqns3TjKTM/RSiMmTj+nj32Pex9QdoRWvFTa7ttiHVFc7bJWc1cY6XGQZPfbhbCeW1GoyEYcG+UNHvxk7cobe0O6HKFbtMIGcdSfDoGYFN7gXiwdrEoJtNm6noHeqCpuOIcEbg/uX8oLTslswaul4iyxSigFV8WyhQzCJd95LoMbry/iYok
+ svfW21FH
+ LBKgD058eHRz54wQpbi+wENBo1bdG93M7XdVeR/nTk/qgUr6WOhFfylQ4gdWOb/Bx31++3TDZDVNxUVaSMaieEVTr1ifoWeN/Ik4OWyuXyZ216k2ZP2aOPMQFo0mZ094RGzKaMNLaFXMGVWGP/V6xN2XVs4l7r5nUpe3HtRbBJLC4XOEiiD2jevJVB9fQ/gsdik3QdHxZwTOubTELaYIH37L2Iwgogs7pE9hmfazRtEJNnLtIB0HkQPe4DM/15mAWObFUlrBNWGj27zM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,163 +129,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Tue, Oct 14, 2025 at 1:17=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Oct 14, 2025 at 6:39=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Tue, Oct 14, 2025 at 3:19=E2=80=AFAM Barry Song <21cnbao@gmail.com> =
+wrote:
+> > >
+> > > > >
+> > > > > >
+> > > > > > I think you are missing something to control how much memory  c=
+an be
+> > > > > > pushed on each TCP socket ?
+> > > > > >
+> > > > > > What is tcp_wmem on your phones ? What about tcp_mem ?
+> > > > > >
+> > > > > > Have you looked at /proc/sys/net/ipv4/tcp_notsent_lowat
+> > > > >
+> > > > > # cat /proc/sys/net/ipv4/tcp_wmem
+> > > > > 524288  1048576 6710886
+> > > >
+> > > > Ouch. That is insane tcp_wmem[0] .
+> > > >
+> > > > Please stick to 4096, or risk OOM of various sorts.
+> > > >
+> > > > >
+> > > > > # cat /proc/sys/net/ipv4/tcp_notsent_lowat
+> > > > > 4294967295
+> > > > >
+> > > > > Any thoughts on these settings?
+> > > >
+> > > > Please look at
+> > > > https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+> > > >
+> > > > tcp_notsent_lowat - UNSIGNED INTEGER
+> > > > A TCP socket can control the amount of unsent bytes in its write qu=
+eue,
+> > > > thanks to TCP_NOTSENT_LOWAT socket option. poll()/select()/epoll()
+> > > > reports POLLOUT events if the amount of unsent bytes is below a per
+> > > > socket value, and if the write queue is not full. sendmsg() will
+> > > > also not add new buffers if the limit is hit.
+> > > >
+> > > > This global variable controls the amount of unsent data for
+> > > > sockets not using TCP_NOTSENT_LOWAT. For these sockets, a change
+> > > > to the global variable has immediate effect.
+> > > >
+> > > >
+> > > > Setting this sysctl to 2MB can effectively reduce the amount of mem=
+ory
+> > > > in TCP write queues by 66 %,
+> > > > or allow you to increase tcp_wmem[2] so that only flows needing big
+> > > > BDP can get it.
+> > >
+> > > We obtained these settings from our hardware vendors.
+> >
+> > Tell them they are wrong.
+>
+> Well, we checked Qualcomm and MTK, and it seems both set these values
+> relatively high. In other words, all the AOSP products we examined also
+> use high values for these settings. Nobody is using tcp_wmem[0]=3D4096.
+>
 
-Similar to list_lru, the split queue is relatively independent and does
-not need to be reparented along with objcg and LRU folios (holding
-objcg lock and lru lock). So let's apply the similar mechanism as list_lru
-to reparent the split queue separately when memcg is offine.
+The (fine and safe) default should be PAGE_SIZE.
 
-This is also a preparation for reparenting LRU folios.
+Perhaps they are dealing with systems with PAGE_SIZE=3D65536, but then
+the skb_page_frag_refill() would be a non issue there, because it would
+only allocate order-0 pages.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- include/linux/huge_mm.h    |  4 ++++
- include/linux/memcontrol.h | 10 +++++++++
- mm/huge_memory.c           | 44 ++++++++++++++++++++++++++++++++++++++
- mm/memcontrol.c            |  1 +
- 4 files changed, 59 insertions(+)
+> We=E2=80=99ll need some time to understand why these are configured this =
+way in
+> AOSP hardware.
+>
+> >
+> > >
+> > > It might be worth exploring these settings further, but I can=E2=80=
+=99t quite see
+> > > their connection to high-order allocations, since high-order allocati=
+ons are
+> > > kernel macros.
+> > >
+> > > #define SKB_FRAG_PAGE_ORDER     get_order(32768)
+> > > #define PAGE_FRAG_CACHE_MAX_SIZE        __ALIGN_MASK(32768, ~PAGE_MAS=
+K)
+> > > #define PAGE_FRAG_CACHE_MAX_ORDER       get_order(PAGE_FRAG_CACHE_MAX=
+_SIZE)
+> > >
+> > > Is there anything I=E2=80=99m missing?
+> >
+> > What is your question exactly ? You read these macros just fine. What
+> > is your point ?
+>
+> My question is whether these settings influence how often high-order
+> allocations occur. In other words, would lowering these values make
+> high-order allocations less frequent? If so, why?
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f327d62fc9852..0c211dcbb0ec1 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -417,6 +417,9 @@ static inline int split_huge_page(struct page *page)
- 	return split_huge_page_to_list_to_order(page, NULL, ret);
- }
- void deferred_split_folio(struct folio *folio, bool partially_mapped);
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg);
-+#endif
- 
- void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long address, bool freeze);
-@@ -611,6 +614,7 @@ static inline int try_folio_split(struct folio *folio, struct page *page,
- }
- 
- static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-+static inline void reparent_deferred_split_queue(struct mem_cgroup *memcg) {}
- #define split_huge_pmd(__vma, __pmd, __address)	\
- 	do { } while (0)
- 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 0b2d4ec79adfe..5ca97fece6907 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -1801,6 +1801,11 @@ static inline void count_objcg_events(struct obj_cgroup *objcg,
- 
- bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
- 
-+static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return memcg ? css_is_dying(&memcg->css) : false;
-+}
-+
- #else
- static inline bool mem_cgroup_kmem_disabled(void)
- {
-@@ -1867,6 +1872,11 @@ static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
- {
- 	return true;
- }
-+
-+static inline bool memcg_is_dying(struct mem_cgroup *memcg)
-+{
-+	return false;
-+}
- #endif /* CONFIG_MEMCG */
- 
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e850bc10da3e2..9323039418201 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1117,8 +1117,19 @@ static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg
- {
- 	struct deferred_split *queue;
- 
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock(&queue->split_queue_lock);
-+	/*
-+	 * There is a period between setting memcg to dying and reparenting
-+	 * deferred split queue, and during this period the THPs in the deferred
-+	 * split queue will be hidden from the shrinker side.
-+	 */
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock(&queue->split_queue_lock);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -1128,8 +1139,14 @@ split_queue_lock_irqsave(int nid, struct mem_cgroup *memcg, unsigned long *flags
- {
- 	struct deferred_split *queue;
- 
-+retry:
- 	queue = memcg_split_queue(nid, memcg);
- 	spin_lock_irqsave(&queue->split_queue_lock, *flags);
-+	if (unlikely(memcg_is_dying(memcg))) {
-+		spin_unlock_irqrestore(&queue->split_queue_lock, *flags);
-+		memcg = parent_mem_cgroup(memcg);
-+		goto retry;
-+	}
- 
- 	return queue;
- }
-@@ -4276,6 +4293,33 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 	return split;
- }
- 
-+#ifdef CONFIG_MEMCG
-+void reparent_deferred_split_queue(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-+	struct deferred_split *ds_queue = &memcg->deferred_split_queue;
-+	struct deferred_split *parent_ds_queue = &parent->deferred_split_queue;
-+	int nid;
-+
-+	spin_lock_irq(&ds_queue->split_queue_lock);
-+	spin_lock_nested(&parent_ds_queue->split_queue_lock, SINGLE_DEPTH_NESTING);
-+
-+	if (!ds_queue->split_queue_len)
-+		goto unlock;
-+
-+	list_splice_tail_init(&ds_queue->split_queue, &parent_ds_queue->split_queue);
-+	parent_ds_queue->split_queue_len += ds_queue->split_queue_len;
-+	ds_queue->split_queue_len = 0;
-+
-+	for_each_node(nid)
-+		set_shrinker_bit(parent, nid, shrinker_id(deferred_split_shrinker));
-+
-+unlock:
-+	spin_unlock(&parent_ds_queue->split_queue_lock);
-+	spin_unlock_irq(&ds_queue->split_queue_lock);
-+}
-+#endif
-+
- #ifdef CONFIG_DEBUG_FS
- static void split_huge_pages_all(void)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4deda33625f41..2acb53fd7f71e 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3888,6 +3888,7 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
- 	zswap_memcg_offline_cleanup(memcg);
- 
- 	memcg_offline_kmem(memcg);
-+	reparent_deferred_split_queue(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
- 	lru_gen_offline_memcg(memcg);
--- 
-2.20.1
+Because almost all of the buffers stored in TCP write queues are using
+order-3 pages
+on arches with 4K pages.
 
+I am a bit confused because you posted a patch changing skb_page_frag_refil=
+l()
+without realizing its first user is TCP.
+
+Look for sk_page_frag_refill() in tcp_sendmsg_locked()
+
+> I=E2=80=99m not a network expert, apologies if the question sounds naive.
+>
+> >
+> > We had in the past something dynamic that we removed
+> >
+> > commit d9b2938aabf757da2d40153489b251d4fc3fdd18
+> > Author: Eric Dumazet <edumazet@google.com>
+> > Date:   Wed Aug 27 20:49:34 2014 -0700
+> >
+> >     net: attempt a single high order allocation
+>
+> Thanks
+> Barry
 
