@@ -4,100 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FA3ACCD196
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6406FCCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:55:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C63CD8E0019; Wed, 15 Oct 2025 04:50:56 -0400 (EDT)
+	id B83428E001A; Wed, 15 Oct 2025 04:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3B538E0002; Wed, 15 Oct 2025 04:50:56 -0400 (EDT)
+	id B340B8E0002; Wed, 15 Oct 2025 04:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B77FC8E0019; Wed, 15 Oct 2025 04:50:56 -0400 (EDT)
+	id A70DE8E001A; Wed, 15 Oct 2025 04:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A49B38E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:50:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 678841A0978
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:50:56 +0000 (UTC)
-X-FDA: 83999728512.15.80D909A
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2DF99160010
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:50:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vDORZKbz;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9412C8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:55:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20D9185784
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:55:13 +0000 (UTC)
+X-FDA: 83999739306.30.34D6FDD
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3D17F1C000F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:55:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hkYuhbqH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of kundanthebest@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=kundanthebest@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760518511; a=rsa-sha256;
+	cv=none;
+	b=cDM5Naga7PGRh2DWRLUm6siJj+F7sr9HIzqS0lXPsL6wbBr20/T6RoguBjK/lL08LDRTwz
+	sbGNTJOa2/+rp0AxNaVtki2rtZ69wR2qHZuxLWHvFNeqfbAc5NwQVFimqN9xkA9FWuQ/xs
+	bybvwyAsqwgHR8qM8TbqvVXpTpatnb4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hkYuhbqH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of kundanthebest@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=kundanthebest@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760518254;
+	s=arc-20220608; t=1760518511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Aff6UWucet03xCuuR3gGl7WpAj11Cx7rcc7d8WgQ2s=;
-	b=EIoTNm8yG5ldsau1y8MIITsxZ2Zn9jPp/VDnQHNN2DZOmqt0sPT84kbjOoqszLHk27tin2
-	tOpFrTSc8udyzR8REtteH+l/2FQdTLX4741MgY+voybmrcfju1x9fCpsHFwoNU1RG28cBN
-	3J7t54OUbPBc0Uxu9MwewdkmRIRmOig=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760518254; a=rsa-sha256;
-	cv=none;
-	b=MyhAF8JTdMfilrdzZ8Xr8spomTwhsG6fXbG/p/T7e2qaqeMauMu27wIi7wO8XEW32HfQAT
-	EvW+Mh+GzUYHOpWWm7x5BKomrNHCkSja5bQa8+1DdBixtexTgaH5oOtuKD0Afj7gpOU1Qk
-	vSc2I9FouufVPWTDTI2cYCV28a9cYTk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vDORZKbz;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1Aff6UWucet03xCuuR3gGl7WpAj11Cx7rcc7d8WgQ2s=;
-	b=vDORZKbzGAY6WMT3QD/oqUbe8+evLJYQDlJLxR0nvewseXXqrykpTSK3yrURV8hdAflbvDZ/2
-	weybBn6GobbckpRCPF3ZrnBt1DhM6WRNmEj8a095+3zfS3hwte+PKAngr0/LI8AQLwDMa4BDPUt
-	1d7WwZlYIUW5rLbz601rrRU=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cmlCm2G9KzKm6d;
-	Wed, 15 Oct 2025 16:50:28 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7C1101400CA;
-	Wed, 15 Oct 2025 16:50:48 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 15 Oct 2025 16:50:47 +0800
-Message-ID: <cd9462ce-eb0e-49ca-b2dd-49f92298d53e@huawei.com>
-Date: Wed, 15 Oct 2025 16:50:44 +0800
+	bh=fgEqnrxX4R0u2xnG7ixfV3NvX2lvrI5nPU8w2RGCEiE=;
+	b=FP1Ug1H0qC0qcrS4FKwXxAY+WavPFfRe96O/NkWmugh4SSnBJCEgVsF0AK3iAX9eaEOW0E
+	0aWuzrVX05U3EIviN9LGq9zB5vUWAQFOssNfJz1i2YKf+f17FHaFWJzjiV72EoHtfJ+Sez
+	VM3JKj2Z2nWT+lt+0VvENvU+DYNW/yI=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b3d5088259eso926553966b.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:55:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760518510; x=1761123310; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fgEqnrxX4R0u2xnG7ixfV3NvX2lvrI5nPU8w2RGCEiE=;
+        b=hkYuhbqHHP3PuDM7x4aE3UcysaG2uHcAadhVy18Ms6H6I7oAR5oYnVuNTkQCj3JRf0
+         jBvXUN5pSETldeHn4t/55kOW/zUWm6r7/kLa4mwMLlQsYIlavehbSUrjjtXSXW6eli/R
+         MmD4WCszzUje/ULo2y0ZDumps5F9cM53734ThZ2Ft5GZMhJU8rldhPWAcEn1sGIwkqFJ
+         Ozg+djWA46+dmEPZZop7Q7V9T3WdX9AA1BdQNROhD9RfM30fbZmI7r0yZeFN2WcVYm2B
+         qIfmm3rVW5UjjeMITWoVddyO4BQA0clHWq5KEYIwtg9+FQWKi7fds/sv/NeskIdYiMs4
+         E21g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760518510; x=1761123310;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fgEqnrxX4R0u2xnG7ixfV3NvX2lvrI5nPU8w2RGCEiE=;
+        b=Rk4bRpPZTz4oeBrFExNPDjQkY5Vy/x1Sdaxj3Ws/IZNak0tBB+u4wLQLn2IXMGAXG3
+         ApjTUlqeOcsp29mZeJuQrv9ASGrrZqusR0Zj6NUeRuRSFufyi6lW9BLqhqFDy+cgJ7x+
+         Vogp4QR7Y8pxFepSXRAJ0U5UK3tPw//Q2CqcbjRCnrhjESHQUolkZB8MjTG45W2XuULc
+         jFglmvBh03MeAwTCpPUGh5Ms7Q2c0mp/otvP7wp5qlsE+orwwKtmHyG0Hb1KFNT0hA1O
+         0p+/Z4EbRq54wARpz6DbTPcoN3EYXpLVDDM7vBdKpFDpXtPBsZZi4tJlnkFoACw30eXI
+         am0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXyMcF7HonjdenXZVCU4YsRPKZvi6Tvu8YEEI7mXjCaUPH21rwJ/AqrcgsWaQ4SjcOCCmciY8gZ9g==@kvack.org
+X-Gm-Message-State: AOJu0YwfVA3H/v2h89PAdY1kA9HdtQrF0piYQ/TZCerDBOJ7BrrHpZka
+	5xrYDQfk8Qf+UKTpmM0ctF1zk+t0u2SFaXZtsAgpOyR7ETjQ17c0ZMpylOMhqbeBYN3mC13HVR+
+	PaSGtiMzc7jRQeT8PaNVOx88r/IzxPNI=
+X-Gm-Gg: ASbGncvXPz4NySC25yVIjGKUelSOvvxwfbBoTHiev+GSLVH0tLB5Z437ledAj/nhlkL
+	CZpTOXllBa2wtyOedYNKf9CQOKBaTcJhUIKioTZV80I29wy+A9T0uln7lgi3Tk0sVFqzpDYBZi6
+	oNWG3VPtMeG6nSJg9InYm8iESnXnSaYGVj8cT/GzihcF9npzD5fPWff/fZw8Gyms83LEfXlXp9s
+	gpUZL8P+McDvq9IrI8XCpnkai/i66xPLu4M6dbUJSm1Yvdv
+X-Google-Smtp-Source: AGHT+IFTcVXJ2k4Io0gR55B+LOiUs0D6lc9nA2FkAagSET75wVrURhguyB7dmaTVjRb2yFF3HFNEaUx2J8d6K4IUlfA=
+X-Received: by 2002:a17:907:9448:b0:b40:a71b:151f with SMTP id
+ a640c23a62f3a-b50ac1c4e7cmr3185549666b.30.1760518509261; Wed, 15 Oct 2025
+ 01:55:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm: mprotect: avoid unnecessary struct page
- accessing if pte_protnone()
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, <linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, <Liam.Howlett@oracle.com>, Sidhartha Kumar
-	<sidhartha.kumar@oracle.com>
-References: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
- <20251014113349.2618158-3-wangkefeng.wang@huawei.com>
- <1562a70d-6778-41cb-be30-c83ca7eab373@arm.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <1562a70d-6778-41cb-be30-c83ca7eab373@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ogyupsh9zdybz1p76qxh3y7cj5fyijo1
+References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
+ <20251014120845.2361-1-kundan.kumar@samsung.com> <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
+In-Reply-To: <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
+From: Kundan Kumar <kundanthebest@gmail.com>
+Date: Wed, 15 Oct 2025 14:24:57 +0530
+X-Gm-Features: AS18NWBrpUjyPc8mxzcKZ88p2FW9F32bwQuz9_BbcqcNCJwm-Zl4oTpr4byxBk0
+Message-ID: <CALYkqXp9Wewk=P79r+Q8HjngUOSWq71ZA6NBm5fPSj9EZHh1Ng@mail.gmail.com>
+Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kundan Kumar <kundan.kumar@samsung.com>, jaegeuk@kernel.org, chao@kernel.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, 
+	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, willy@infradead.org, 
+	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com, 
+	axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org, 
+	dave@stgolabs.net, wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, 
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com, 
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DF99160010
-X-HE-Tag: 1760518252-527349
-X-HE-Meta: U2FsdGVkX19H5Y3LcaIeSHQWL9n2PaG3oi8Cr5fwn4Qj6VhxhYsTAh3vw1jgBlYQ1vnjiMUU/zZ5bW7RyMAkXgm9uEbEQlVmOeEB/JRrfJ5xpMbMfQHuSnXyM10q4gdJyu9bIGeWp0bDDY9glq4b4TIvjzfB/AO5OSeeEY76kZMRhitP0RwtaHbNERbJI4XBNageGUKLK95e4Ygcy3iHsOj2D7qDB/EZ8Vx4VPkIMKEFOTlk3wymapeXfNg0cTtUeKizbQeGM4A+/eRtm1uA8eOSfvnvgNaChfWp4/A4rWKaybQSe9VgleQPxNDvzuRaDxVBcL0GGEg2vms7zMUdgGPQi8W3FYHWFM4q+mXjLtFSVEShxyl7S7EmWpWEWbbUE61qURywb1nyUHS7eS6K3Lo9WxfevIMOHEdHigw7+YV9tjLfK1YTGgCF39m++NRzYajELmP8AiNG7WP+9XmaWBlQ7me8m5Msxv/B8srBKjQqtP0JUbp8Saf/jUzlxZVcWYVO6MTv9JaXkjB75AYCzEjjAi87p44JO0Ei5Py6Z9NLwJP76SnSs2DwjvhqKTu4wpX9yeEJpkbURtX3W8WDalXxM2f41T9hBkh7Ba+TKUqRRMyCaelGjJAmkKsV0O7Dz1bSPS+UsIOsQ+t61+vPpA0leCcHiYzJCTaFmXOjQ+mCO5kbItzOt0T+uqdXdXExJ863uE29SVJsDl1oJNOEBuL30pqQDfz6Rf2aX0M4eQEP/gAdIlAT2sF83dgJPEeAyzD3E86+dbkK92WEguIV0y9ttMj/F2K8eX17G+Zzhf/KrVe9FYY70CxasgUzZYQpGoF4YzbAloM6+Q4dpOIENjJpY4Z3TesLF3R2W1Wox/EIveHbjIReZ4hZ1z+ZYkStpPIjuEazyPgea4CdCF7+yXJdVbObXYUcDKqKVOv99wwKR/OP4/VNycRsNlaeVZ/kVWWPeJTBG8IodkTIbXV
- zXEusKGA
- z7xv/hvDTE4eg2r7DEzSeA+Cw7h57g7UZhEmgbWIkdcpIasMq2TKfa8INnOlLjx88vVTtZVb6vjdr4bbWyloKnWYky+nhipkO9gefUppM2mzO/ZfZSiFXBLMXfYuuehJzFMKuCdccuzIaGCcn96TzqmzVkyhl5PA+vQi7AUFDqRgOzbow4j8l0aq0etTRvyLWUAkHFPtuWPXIkSN3j/2VTAoqjeYqZNBL5bGtHPQhJM39/rFy4H9EfTCNq55nzSL6eahPC0BcZsUYgOyXBHv1NBhcMKWvT0E7JGRu6UpsJoFiC0BEi/5VEltSDPqHOyQxsjLOzQKo1tjuDwGj960MSX5rJLj1dZQe3MHGE168eGo5lGQLQxungWsr2jwt/7aPCTh4dXzz0QEZa18CeWUmuglkVrIuYl3WwZI0G00Avt0TB39R6TMEmWbSQA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3D17F1C000F
+X-Stat-Signature: am1whfwqa7w68ibw96gynbf36kmpb6ju
+X-HE-Tag: 1760518510-815030
+X-HE-Meta: U2FsdGVkX181p1CUZNccygEEsdvQQSFSEoK8CQJPUltN2HgWDNKG9nnQzSRHp0H7Qry7wAalZDEZWfMLKgopvwA7SNR6ZxdrdBTcO6r9FH1WKxeXSbbMpJzXFip2SeQBJ1RsyParVF+aNedS5AKJ8KhJvVK6aEMDaZpWt40ul1ni1npxIQwh3rJAUYwSE6/Dk0BELllqDSsyfqqwqEbYpp4c9jGT5oaMTln4DRsnSmEtcKdRYvXkb6GK21bHXHKhTo13LWffw5fi41iXSvKiM+Ks6siFLBxjg9gKECh8GX9om0njCYKrxZy8YTWIi3uRzXcR4/VFgGXCzwxT71+T/85vbk1nY4WPhb3Mf3fx2TH1Q7L35DKwiECH+FZcRnzyQZzpA2Xd3mFjB7TgpZM6WCqJd0fHGtZnre5RvjSDm4fBNU6F//DX+ph7CaAUZGysSyx22SfbW4/TUbvyooWj8B2hI0EiXhyB92FMLu4s5ip7sueieg7xSURMeLjHZlHqtzbGporzrFcuG+R4/vSBzf3RFLaQtEE4kK4TvMSAlVsAarP7Lk/BwDqrfdpj4v0XbFgFSjGYuVOZ7bljw2L9LQF++de/TXzdewL5ua0Pdx1ST5wglz5EaAiMvSBXMn55Z3qRWL0zfFs/cWsZdChHbZ1+rfWGDETJswujumLENyQe05oH/8a0Z0bwk5KUcQXW+gAYMseqPE7zNftdIXhGJXfR28Alz8mLu7AhfKQ850gjAfqsSUWXnTgxKGYFAcdQv41/8PoDbhSvlPZRWqiTE/uBIB1CmXNW8XixoqJRPehanPSAEVHamFVUZZkkc6McA1vvY+blO9JKzR1LCSd3mu8grteU3bQEMTEz04osVUVef/xhOf+5pgNGR5poOgoi7K8+i5I3BCqTV19AogZuC3JFBtzZJm/d2hUIOwg0c5vpEl44e8cjDKe0w8gpTFgyOb5NVffX6Ml7mEsfEVo
+ puRgoN+5
+ n9xgIckPKlE80OOAG/nnk7WmM2NYXb3z9arP6zDOuZIKIPnMtwVlipeEY6zwdLBfaNPuryv8tmoDgEM1eFlPpk2im+Yc1EQsE7TRjCfI72H3OzH4RbADKDwH9ExF7im7/HUPbYSpYIVntGVnWi3SFom4C96k/rAHuId8PcOg+210KI7g0KtZNBbL8rHVZKbs7ul2kVwBrmk4fKtsHL39HQ2UHljcmsLe80jbV58zWA0D3f79BrkSRkmPK/7T/5ZCnNxcyfK8cu77z6uO9htpLqNBkcidoKVnIkmQvtByO0nHTG6CzPaXX7GUHNkLHO4zS0f3YE79yXv1UjhvavK+YDycFSE8dAsFbLKCvVRSw1rWGFoHNm8lE0wCj3Pd21AdEmiU7XAgpy1OOVbHkjAlYrcwE5VqxuFacoo1VsYqoPuHZyEs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,95 +121,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>
+> Nice results.  Is testing planned for other filesystems?
+>
 
+The changes currently improve the writeback performance for XFS only.
+We have introduced a callback that other filesystems can implement to
+decide which writeback context an inode should be affined to.
 
-On 2025/10/15 15:32, Dev Jain wrote:
-> 
-> On 14/10/25 5:03 pm, Kefeng Wang wrote:
->> If the pte_protnone() is true, we could avoid unnecessary struct page
->> accessing and reduce cache footprint when scanning page tables for prot
->> numa, the performance test of pmbench memory accessing benchmark
->> should be benifit, see more commit a818f5363a0e ("autonuma: reduce cache
->> footprint when scanning page tables").
->>
->> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
-> 
-> Thanks.
-> 
->>   mm/mprotect.c | 29 ++++++++++++-----------------
->>   1 file changed, 12 insertions(+), 17 deletions(-)
->>
->> diff --git a/mm/mprotect.c b/mm/mprotect.c
->> index bb59a42809b8..7affa88a6de7 100644
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio 
->> *folio, pte_t *ptep,
->>       return folio_pte_batch_flags(folio, NULL, ptep, &pte, 
->> max_nr_ptes, flags);
->>   }
->> -static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long 
->> addr,
->> -               pte_t oldpte, pte_t *pte, int target_node,
->> -               struct folio *folio)
->> +static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
->> +        struct folio *folio)
->>   {
->>       bool ret = true;
->>       bool toptier;
->>       int nid;
->> -    /* Avoid TLB flush if possible */
->> -    if (pte_protnone(oldpte))
->> -        goto skip;
->> -
->>       if (!folio)
->>           goto skip;
->> @@ -307,23 +302,23 @@ static long change_pte_range(struct mmu_gather 
->> *tlb,
->>               struct page *page;
->>               pte_t ptent;
->> +            /* Already in the desired state. */
->> +            if (prot_numa && pte_protnone(oldpte))
->> +                continue;
->> +
->>               page = vm_normal_page(vma, addr, oldpte);
->>               if (page)
->>                   folio = page_folio(page);
->> +
-> 
-> Unrelated change but I guess this is needed since we usually leave a line
-> before starting a comment.
-> 
->>               /*
->>                * Avoid trapping faults against the zero or KSM
->>                * pages. See similar comment in change_huge_pmd.
->>                */
->> -            if (prot_numa) {
->> -                int ret = prot_numa_skip(vma, addr, oldpte, pte,
->> -                             target_node, folio);
->> -                if (ret) {
->> -
->> -                    /* determine batch to skip */
->> -                    nr_ptes = mprotect_folio_pte_batch(folio,
->> -                          pte, oldpte, max_nr_ptes, /* flags = */ 0);
->> -                    continue;
->> -                }
->> +            if (prot_numa & prot_numa_skip(vma, target_node, folio)) {
-> 
-> Why not "&&" instead of "&"?
+This is because the decision to affine an inode to a particular
+writeback context depends on the FS geometry. For example, in XFS
+inodes belonging to the same allocation group should be affined to the
+same writeback context. Arbitrarily distributing inodes across
+different writeback contexts can lead to contention of FS resources,
+which can degrade performance.
 
-oops，will fix it.
-
-> 
->> +                /* determine batch to skip */
->> +                nr_ptes = mprotect_folio_pte_batch(folio,
->> +                      pte, oldpte, max_nr_ptes, /* flags = */ 0);
->> +                continue;
->>               }
->>               nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, 
->> max_nr_ptes, flags);
-> 
-
+I conducted a sanity check on the performance of EXT4, BTRFS, and F2FS
+with the current changes, and the results show no performance impact.
 
