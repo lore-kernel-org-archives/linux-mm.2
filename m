@@ -4,152 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4124CCD193
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 20:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D09CCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 20:42:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24BEF8E0053; Wed, 15 Oct 2025 16:36:50 -0400 (EDT)
+	id 9D0A88E0005; Wed, 15 Oct 2025 16:42:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 222D18E0005; Wed, 15 Oct 2025 16:36:50 -0400 (EDT)
+	id 9A8468E0057; Wed, 15 Oct 2025 16:42:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 112E68E0053; Wed, 15 Oct 2025 16:36:50 -0400 (EDT)
+	id 8EA8B8E0005; Wed, 15 Oct 2025 16:42:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F12DF8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:36:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BACA7119912
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:36:49 +0000 (UTC)
-X-FDA: 84001507338.16.CCD4396
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E7C0180006
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:36:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hYJWZN6H;
-	spf=pass (imf30.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760560608; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6808E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:42:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C87513A7EC
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:42:05 +0000 (UTC)
+X-FDA: 84001520610.24.E4073BA
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8C018180008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:42:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=MuAGazgH;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf24.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760560923; a=rsa-sha256;
 	cv=none;
-	b=KaJOMvr9uqj3uGLO0AQCrxeCDHnCq5LNEd05dNMk3jjTCo1HMqiLcE9+RkESg783Vbl8Td
-	4oaWlXnrQujCzX5Tj1bIjf2Q97s11GyF38LcEi62RQrDgFs4rRMxb4MQM8nv1ZkpyYJxQz
-	qwrxUPOzufqvruWGtW/PNzU3z/XVA8M=
+	b=3vestBXAscn1IHCnKyIhCluDGdqcNTwMw6+274+O3K6DwmlBZTXqPWoUKPElFyodxfChTo
+	Vpjk62CfWUWJAVLJW9A1Zi8XSqsHKdHUX77VY7fA661r4IgIMk7ayDgxBMmP6o/M0NHjQa
+	fR7ZPQ+uKnuMqlRoA4BSXd8V86ql+uw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hYJWZN6H;
-	spf=pass (imf30.hostedemail.com: domain of cmirabil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=cmirabil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=MuAGazgH;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf24.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760560608;
+	s=arc-20220608; t=1760560923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9l2SAd4et9FHUQ+j/+m4vgSU0s4WtjrjNQIhvzxYPxM=;
-	b=ZtPok68aoMc3VG0B7rtIdgntveyg7en9HPwZNzArqKxfW7LYzzFjZYmrcPmzHClli1Bf5B
-	LYOHmUPIPttrv41a4pFSsRZ2sFKPSuEXR1RyLxT+7iINuxwOIJzGD3j/tB2ZjWCrLGUpBa
-	h4p43ZBZRbHgQq4vgAZNkaCr/hfsBks=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760560607;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9l2SAd4et9FHUQ+j/+m4vgSU0s4WtjrjNQIhvzxYPxM=;
-	b=hYJWZN6H6iRWP94B3k4U/7JX9v9jEhRRbca6dPamey/tG9kf3ZC5lL1zHG0apK9Pmq0C4+
-	LbKGj+BjPDuzlSl2zfehjKYwhPvWZ33Dab7d5M+8WkJ63znBE+9tPA3ndxL68kGXml/6hJ
-	KIdTuBb4rQKxxunHZXgr0Iji/pK8Jtk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-VsCjS__3PmC3eNpISX8uSg-1; Wed,
- 15 Oct 2025 16:36:43 -0400
-X-MC-Unique: VsCjS__3PmC3eNpISX8uSg-1
-X-Mimecast-MFC-AGG-ID: VsCjS__3PmC3eNpISX8uSg_1760560598
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L9BU+Ina17XWpogHmVUKIVXEkGA9CX8oA0k8fU1AM3Y=;
+	b=jPumjKFGe/dKBmnl+akC1XLhCYQl/nKqBJh+X0QA/pkU4KikFHP98zl+3VD8tJxea7HmA2
+	fAXPEijq3MM2hxr9CTTO5LqCNRZj/Pjc30bWIEIgbZtmwKoh6NL/9Uu9rIFYDUSxKeDKkX
+	AjqaDKXGOmfmmr8FB44r4qZciZQUZcE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760560920;
+	bh=6NFItZksUnL4AeNLzkE9uW56mfjFXSMe3I2p1k1atTk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MuAGazgHFf5NMEd+91RF7Wbfyfomf3WrSUyB9/IZolPbvVH5lTuwAPCHd7tE6/Bq7
+	 QqCVAo7pOpD5H83FsAH3RRWYz68OQPN+OeXkMVTIM6jkrZS4ylGZUoy4zi8xMfgBdW
+	 cD+AO81Ijw1bO1YB494nBepz2rX7bX43B0L+WMFhLbczgk3sm91zprnGct2I7/iP0D
+	 G38aiNIDYCkYwl/E2lkzLt7zE0PVuX3pGypRYRN5cqRJbG7stRBmvSZVJF9dedIGdW
+	 7mU087gqoePoUadp0Z94Elm1QCIxIMvrH+Uwil+z9n3QN0DEgbVvE/3cjWk9jflzhe
+	 RfSGnUk7yuuFQ==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0ECB6195422D;
-	Wed, 15 Oct 2025 20:36:36 +0000 (UTC)
-Received: from laptop.mht.redhat.com (unknown [10.17.17.210])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4F12519560AD;
-	Wed, 15 Oct 2025 20:36:25 +0000 (UTC)
-From: Charles Mirabile <cmirabil@redhat.com>
-To: debug@rivosinc.com
-Cc: Liam.Howlett@oracle.com,
-	a.hindborg@kernel.org,
-	akpm@linux-foundation.org,
-	alex.gaynor@gmail.com,
-	alexghiti@rivosinc.com,
-	aliceryhl@google.com,
-	alistair.francis@wdc.com,
-	andybnac@gmail.com,
-	aou@eecs.berkeley.edu,
-	arnd@arndb.de,
-	atishp@rivosinc.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	bp@alien8.de,
-	brauner@kernel.org,
-	broonie@kernel.org,
-	charlie@rivosinc.com,
-	cleger@rivosinc.com,
-	conor+dt@kernel.org,
-	conor@kernel.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	devicetree@vger.kernel.org,
-	ebiederm@xmission.com,
-	evan@rivosinc.com,
-	gary@garyguo.net,
-	hpa@zytor.com,
-	jannh@google.com,
-	jim.shu@sifive.com,
-	kees@kernel.org,
-	kito.cheng@sifive.com,
-	krzk+dt@kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	lorenzo.stoakes@oracle.com,
-	lossin@kernel.org,
-	mingo@redhat.com,
-	ojeda@kernel.org,
-	oleg@redhat.com,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com,
-	peterz@infradead.org,
-	richard.henderson@linaro.org,
-	rick.p.edgecombe@intel.com,
-	robh@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	samitolvanen@google.com,
-	shuah@kernel.org,
-	tglx@linutronix.de,
-	tmgross@umich.edu,
-	vbabka@suse.cz,
-	x86@kernel.org,
-	Charles Mirabile <cmirabil@redhat.com>
-Subject: Re: [PATCH v20 24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
-Date: Wed, 15 Oct 2025 16:36:11 -0400
-Message-ID: <20251015203611.2572538-1-cmirabil@redhat.com>
-In-Reply-To: <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
-References: <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B526017E0C54;
+	Wed, 15 Oct 2025 22:41:59 +0200 (CEST)
+Message-ID: <efc1d805-1613-45a9-aa15-fcc009adf27c@collabora.com>
+Date: Wed, 15 Oct 2025 22:41:59 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 08/13] drm/v3d: Fix builds with
+ CONFIG_TRANSPARENT_HUGEPAGE=n
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251015153018.43735-1-loic.molinari@collabora.com>
+ <20251015153018.43735-9-loic.molinari@collabora.com>
+ <20251015201737.3956f801@fedora>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <20251015201737.3956f801@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspam-User: 
-X-Stat-Signature: f3toge7ogf3n498xn1yqipymme18wua6
-X-Rspamd-Queue-Id: E7C0180006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760560607-828581
-X-HE-Meta: U2FsdGVkX1+a1VhxtuHUdxursN+zl++wDApRUaM0ZH3lCli+XN5oAV3d5GsUHbi0TzpVMMEhz7jzdFwqfMkIuwCOyr4ytIxzoaN2vXUUfWV+kURa3g/XEDh297GTZBIBK44WjIw0ZMGuFJgcceomgOiDHn0sA+TFQYsrP08AQyoQAtzZuQZgL3RRkmVdwitG0zwxbwSt9fATv9GnJ0Ft0B15dqZFU2hSA4sSiY0LZs+JvOGqdWQLTa/th8B23XkqOnKjsy2XFU3GAcH2B+7Qv4r72LqSSpwoNCDNu5lY1bc344EETIGMNKCjX4Wgil+LPg8b5ZlUv2hsDQh+4lssrguFlaJQN2V11eOuvc/zMedN2mktv+TC0iSW5PJtvTmKKos5LpEtDe7e4dpdohQo6oBmoZyFOKAAYYOP1IeW8dpD8udtqHuTeDmsdxq10g+9XJq5we7MileZoVInGCqizfWc8fsCixpKXoSFRe38gETc9kDYXQZeBtscqmKAMfDPJ8aTbD+OrcFm7QfGV3ZXr8XsEdHo2aRlO/2SUd2GwokOr3TyQlj9kFyHKW8QjcHsBeO1RkAf5wc/0/WJqjfDZi2z/bjmj9EAFnKZJ90q8u+KJ42JEeRnaNOfITsFGimWWphx/c6OtWAX19cE4u1z0zncfRxu1guuJpu16X/ZQep8fHYHL5Vztl8TRu2oKqeiFNJ5jzkuRHVwzVVi3PAqeW0Wj4Zirv8AFpU575sYRLr3BBxd2B6Y6sDDY8D1KoytQ4eRQrPr1nq5tI9uBusqHZIzppUup/pnRWZWwCnLB4BAcE0JuWFsuetjY8GCwZJQXLvbMyUdsbR3lMAsoTgRwJ161IDKb/S+VCoZ+hd/Rgc/tbCbgd24VwUgW/nKWb2Z3IM5qzj1PgRLNSo3IjHfjRUZf1cO8sr7Ig1iwA1fLFC351KbeHuV34bEy17v2Xk0RtraeomjnhhgOaZ3Ugk
- KlCBEnr0
- SN4j0kEfwLpGukpfu0EjhUH5gJPWmFTv83UJdvqxtd7GaHV2rimzV5YJLSX7dW5f7WWdtFwDLjIxD/Y3mc59lJetZxIigyoLbZhqWY6seAgJMY2VNPt7WK0xTpwzVePRCZ4JV
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C018180008
+X-Stat-Signature: fs5pe5i5abzgjhnxd1wnh573moai7noc
+X-HE-Tag: 1760560923-307069
+X-HE-Meta: U2FsdGVkX18YV7qJZiRzunEQ16px1ZTNBVladlF9wKvTyj8EWTWPd0qYdTuN0HZ6GS9UuS3SMNPDd+XfCepKDzWSETvnlEhaMuUTT+1o41hz69YBwzCXdMOgUSBp7vCjdGk1cVQ80Vd74n6K8nxH5UeoXujUDJrfSe6chNnIhgMYkqrCJdElRPA4YAknqd37YYPzXDWSMtdYGUkQqkIVOSuwbWE2G14p3sWmAPmhdyqN/Oq4g0jG+9v+imE7qxg4gpJmEVrcXN1HwXOSI+rK6w4peQ0hwu95G0buBT4/y43dsA5fYykG7Ro3AhLYnOCJNqtKrmoAAM4kzsOl00crLRXA3CwhTw0wfmZsiYNMTsSCFfgd8uqlt1obKSbOnOVnQgt+hJf/zdy5ocs82v6XV9k7u6SX3kU2F1EO1Xpfot19nNNX4HVTk8jflKnbSINLMN8pJDfO/Zf9bOraor8ARvl5bgIP1zE9+PuUak3+Ks2hmY9zrNcpk8/lgq7uyi6IS5sMF8ZToupHW82xHSwIQR4O1ourizywCDYFhI1Nn3dyirI9LuKDqd5eDKjXIK3c4J48sYfCxqSw7Bo0NkGqOIeKWA/eafZPnou9bYgpvhqY7R/0olKt2l0kQ80wCuydeAMTmoFd3DTb+WUdgsyDcW96bAj7f/CPJWEji0IYu6bla2Q0SsGDTNWVs8nZE2FVq4DFLVhu2Ji9ZQvFIWKIs513l0VSdwb7pCxcxkpbWLyJFGe2U4yg8MqjIpVwv0fy1WvJeYc2gXlyJrksb4Ciid9s5a57CCkkyRg7gxNse3HE7XK85fRsJT/fxzt+ld7J8HeiIGw9sX3BVPpLIz9n94wxujue3gOQpqYWhx3sCtnFei1OUKzzc2AAkQ2ZutKEfPgkXAgFSmrCBMg8jgNkYNTd9VE2x8E2ATubE1JDP+NTsC4r6Am5RZg9amSu/rbzqladJ5P9dpNQH/FvTSb
+ OohwCJdg
+ 3274lu1tTbGScNzdvqbfCnJktRxnDY5+6odZbmIKg2XFR29mrG53wdvhDsTJP1J5JL85yMwYtSIDgc6vutVt5ImIKEbdoSQRnvva8IwZJGvxr9ES4ZAsSM55VYoiHqC+vdNJCk77HLq3frng0LpEk/vQKC5GoBvDq6r1nVT/6QGl7xXNzIDEKE2NnoAMiufoDy2O7ZWKrRglsZS8s5tT+Exz/nEe2X4EeELBFGYyXJsylyM89Woc/e8jCzMB4mpkjo7/Ko/RzT4tWNwS/OmDaOLTujrOS55cYEXZbHOCBWalnkJzqlkd61XFkrVs/haX1T9hkobZcBhyDw5NfWnT3EHolwbSJC9S89KlV/o68lbuHnVsjHTcas6Mb1LNiQif+tR/zhDKwC7yOqn9UdZTRu4USmOrVrx1dHvABU3peOx9Ye40TKYGO1ZPk5w2F9Nx//z9LjlhC9GXCnZ0zr5Or2JvMKFsCJeO/9tXHtVHJo8lM2Zb7k78HxeXexrhQqhec4zLZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,292 +119,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Deepak -
-
-On Mon, Oct 13, 2025 at 02:56:16PM -0700, Deepak Gupta wrote:
-> Shadow stack instructions are taken from zimop (mandated on RVA23).
-> Any hardware prior to RVA23 profile will fault on shado stack instruction.
-> Any userspace with shadow stack instruction in it will fault on such
-> hardware. Thus such userspace can't be brought onto such a hardware.
+On 15/10/2025 20:17, Boris Brezillon wrote:
+> On Wed, 15 Oct 2025 17:30:12 +0200
+> Loïc Molinari <loic.molinari@collabora.com> wrote:
 > 
-> It's not known how userspace will respond to such binary fragmentation.
-> However in order to keep kernel portable across such different hardware,
-> `arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-> compile `arch/riscv/kernel/vdso` sources with cfi flags and then changes
-> in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-> on whether underlying hardware(cpu) implements zimop extension. Offset
-> of vdso symbols will change due to having two different vdso binaries,
-> there is added logic to include new generated vdso offset header and
-> dynamically select offset (like for rt_sigreturn).
+>> Don't declare "super_pages" on builds with CONFIG_TRANSPARENT_HUGEPAGE
+>> disabled to prevent build error:
+>>
+>> ERROR: modpost: "super_pages" [drivers/gpu/drm/v3d/v3d.ko] undefined!
+> 
+> I believe this is a bug introduced by the previous commit: the
+> compiler probably drops any code between the
+> IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) check and the err label
+> because IS_ENABLED() evaluates to false at compile time. So I'd squash
+> those changes in the previous commit.
 
-This looks great. As kernel test robot highlighted, the code doesn't build
-when the config is off, but I was able to fix it with the attached patch.
+Right, it's been introduced in previous commit.
 
-Assuming that these changes or equivalent are folded in, you have my:
+>
+>>
+>> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+>> ---
+>>   drivers/gpu/drm/v3d/v3d_drv.h | 2 ++
+>>   drivers/gpu/drm/v3d/v3d_gem.c | 2 ++
+>>   2 files changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/v3d_drv.h
+>> index 99a39329bb85..481502104391 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_drv.h
+>> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
+>> @@ -564,7 +564,9 @@ extern const struct dma_fence_ops v3d_fence_ops;
+>>   struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum v3d_queue q);
+>>   
+>>   /* v3d_gem.c */
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>   extern bool super_pages;
+>> +#endif
+>>   int v3d_gem_init(struct drm_device *dev);
+>>   void v3d_gem_destroy(struct drm_device *dev);
+>>   void v3d_reset_sms(struct v3d_dev *v3d);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+>> index 635ff0fabe7e..0039063eb8b2 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+>> @@ -269,7 +269,9 @@ v3d_huge_mnt_init(struct v3d_dev *v3d)
+>>   	 * match our usecase.
+>>   	 */
+>>   
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>   	if (super_pages)
+>> +#endif
+>>   		err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> 
+> Why not
+> 
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>    	if (super_pages)
+>    		err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> #endif
+> 
+> I guess
+> 
+> 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
+> 		err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> 
+> would also do, since it's likely to rely on the same optimization the
+> previous v3d_gemfs_init() implementation was relying on, but it's
+> fragile (not sure what happens when compiled with -O0).
 
-Acked-by: Charles Mirabile <cmirabil@redhat.com>
+I'll remove the #ifdef/#endif around the super_pages declaration in 
+v3d_drv.h because it isn't necessary if super_pages is compiled out in 
+v3d_huge_mnt_init().
 
-As merely a user whose previous concerns have been addressed, I am not
-sure what that is worth, but I appreciate your effort on this.
+In v3d_huge_mnt_init(), I'd add the #ifdef before the ret variable 
+declaration and the #endif right after the last else so that it's clear 
+drm_notice("THP is recommended...") is called unconditionally when 
+CONFIG_TRANSPARENT_HUGEPAGE=n, whatever the optim level. What do you think?
 
 > 
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  arch/riscv/Makefile                        |  3 +++
->  arch/riscv/include/asm/vdso.h              |  7 ++++++-
->  arch/riscv/kernel/Makefile                 |  1 +
->  arch/riscv/kernel/vdso.c                   |  7 +++++++
->  arch/riscv/kernel/vdso/Makefile            | 29 ++++++++++++++++++++---------
->  arch/riscv/kernel/vdso/gen_vdso_offsets.sh |  4 +++-
->  arch/riscv/kernel/vdso_cfi/Makefile        | 25 +++++++++++++++++++++++++
->  arch/riscv/kernel/vdso_cfi/vdso-cfi.S      | 11 +++++++++++
->  8 files changed, 76 insertions(+), 11 deletions(-)
+>>   
+>>   	if (v3d->drm.huge_mnt)
 > 
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index f60c2de0ca08..b74b63da16a7 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -176,6 +176,8 @@ ifeq ($(CONFIG_MMU),y)
->  prepare: vdso_prepare
->  vdso_prepare: prepare0
->  	$(Q)$(MAKE) $(build)=arch/riscv/kernel/vdso include/generated/vdso-offsets.h
-> +	$(if $(CONFIG_RISCV_USER_CFI),$(Q)$(MAKE) \
-> +		$(build)=arch/riscv/kernel/vdso_cfi include/generated/vdso-cfi-offsets.h)
->  	$(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
->  		$(build)=arch/riscv/kernel/compat_vdso include/generated/compat_vdso-offsets.h)
->  
-> @@ -183,6 +185,7 @@ endif
->  endif
->  
->  vdso-install-y			+= arch/riscv/kernel/vdso/vdso.so.dbg
-> +vdso-install-$(CONFIG_RISCV_USER_CFI)	+= arch/riscv/kernel/vdso_cfi/vdso-cfi.so.dbg
->  vdso-install-$(CONFIG_COMPAT)	+= arch/riscv/kernel/compat_vdso/compat_vdso.so.dbg
->  
->  BOOT_TARGETS := Image Image.gz Image.bz2 Image.lz4 Image.lzma Image.lzo Image.zst Image.xz loader loader.bin xipImage vmlinuz.efi
-> diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.h
-> index f80357fe24d1..3fc8f72b8bfb 100644
-> --- a/arch/riscv/include/asm/vdso.h
-> +++ b/arch/riscv/include/asm/vdso.h
-> @@ -18,9 +18,13 @@
->  
->  #ifndef __ASSEMBLER__
->  #include <generated/vdso-offsets.h>
-> +#include <generated/vdso-cfi-offsets.h>
->  
->  #define VDSO_SYMBOL(base, name)							\
-> -	(void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-> +	((IS_ENABLED(CONFIG_RISCV_USER_CFI) &&					\
-> +	  riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) ?			\
-> +	  (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_offset) :	\
-> +	  (void __user *)((unsigned long)(base) + __vdso_##name##_offset))
->  
->  #ifdef CONFIG_COMPAT
->  #include <generated/compat_vdso-offsets.h>
-> @@ -33,6 +37,7 @@ extern char compat_vdso_start[], compat_vdso_end[];
->  #endif /* CONFIG_COMPAT */
->  
->  extern char vdso_start[], vdso_end[];
-> +extern char vdso_cfi_start[], vdso_cfi_end[];
->  
->  #endif /* !__ASSEMBLER__ */
->  
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index 2d0e0dcedbd3..9026400cba10 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -72,6 +72,7 @@ obj-y	+= vendor_extensions/
->  obj-y	+= probes/
->  obj-y	+= tests/
->  obj-$(CONFIG_MMU) += vdso.o vdso/
-> +obj-$(CONFIG_RISCV_USER_CFI) += vdso_cfi/
->  
->  obj-$(CONFIG_RISCV_MISALIGNED)	+= traps_misaligned.o
->  obj-$(CONFIG_RISCV_MISALIGNED)	+= unaligned_access_speed.o
-> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-> index 3a8e038b10a2..bf080e519101 100644
-> --- a/arch/riscv/kernel/vdso.c
-> +++ b/arch/riscv/kernel/vdso.c
-> @@ -98,6 +98,13 @@ static struct __vdso_info compat_vdso_info __ro_after_init = {
->  
->  static int __init vdso_init(void)
->  {
-> +	/* Hart implements zimop, expose cfi compiled vdso */
-> +	if (IS_ENABLED(CONFIG_RISCV_USER_CFI) &&
-> +		riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) {
-> +		vdso_info.vdso_code_start = vdso_cfi_start;
-> +		vdso_info.vdso_code_end = vdso_cfi_end;
-> +	}
-> +
->  	__vdso_init(&vdso_info);
->  #ifdef CONFIG_COMPAT
->  	__vdso_init(&compat_vdso_info);
-> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-> index 272f1d837a80..a842dc034571 100644
-> --- a/arch/riscv/kernel/vdso/Makefile
-> +++ b/arch/riscv/kernel/vdso/Makefile
-> @@ -20,6 +20,10 @@ endif
->  ifdef VDSO_CFI_BUILD
->  CFI_MARCH = _zicfilp_zicfiss
->  CFI_FULL = -fcf-protection=full
-> +CFI_SUFFIX = -cfi
-> +OFFSET_SUFFIX = _cfi
-> +ccflags-y += -DVDSO_CFI=1
-> +asflags-y += -DVDSO_CFI=1
->  endif
->  
->  # Files to link into the vdso
-> @@ -48,13 +52,20 @@ endif
->  CFLAGS_hwprobe.o += -fPIC
->  
->  # Build rules
-> -targets := $(obj-vdso) vdso.so vdso.so.dbg vdso.lds
-> +vdso_offsets := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),)-offsets.h
-> +vdso_o := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-> +vdso_so := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so
-> +vdso_so_dbg := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so.dbg
-> +vdso_lds := vdso.lds
-> +
-> +targets := $(obj-vdso) $(vdso_so) $(vdso_so_dbg) $(vdso_lds)
-> +
->  obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
->  
-> -obj-y += vdso.o
-> -CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
-> +obj-y += vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-> +CPPFLAGS_$(vdso_lds) += -P -C -U$(ARCH)
->  ifneq ($(filter vgettimeofday, $(vdso-syms)),)
-> -CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
-> +CPPFLAGS_$(vdso_lds) += -DHAS_VGETTIMEOFDAY
->  endif
->  
->  # Disable -pg to prevent insert call site
-> @@ -63,12 +74,12 @@ CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
->  CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
->  
->  # Force dependency
-> -$(obj)/vdso.o: $(obj)/vdso.so
-> +$(obj)/$(vdso_o): $(obj)/$(vdso_so)
->  
->  # link rule for the .so file, .lds has to be first
-> -$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-> +$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) FORCE
->  	$(call if_changed,vdsold_and_check)
-> -LDFLAGS_vdso.so.dbg = -shared -soname=linux-vdso.so.1 \
-> +LDFLAGS_$(vdso_so_dbg) = -shared -soname=linux-vdso.so.1 \
->  	--build-id=sha1 --eh-frame-hdr
->  
->  # strip rule for the .so file
-> @@ -79,9 +90,9 @@ $(obj)/%.so: $(obj)/%.so.dbg FORCE
->  # Generate VDSO offsets using helper script
->  gen-vdsosym := $(src)/gen_vdso_offsets.sh
->  quiet_cmd_vdsosym = VDSOSYM $@
-> -	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) | LC_ALL=C sort > $@
-> +	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) $(OFFSET_SUFFIX) | LC_ALL=C sort > $@
->  
-> -include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
-> +include/generated/$(vdso_offsets): $(obj)/$(vdso_so_dbg) FORCE
->  	$(call if_changed,vdsosym)
->  
->  # actual build commands
-> diff --git a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-> index c2e5613f3495..bd5d5afaaa14 100755
-> --- a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-> +++ b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-> @@ -2,4 +2,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
->  LC_ALL=C
-> -sed -n -e 's/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2_offset\t0x\1/p'
-> +SUFFIX=${1:-""}
-> +sed -n -e \
-> +'s/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2'$SUFFIX'_offset\t0x\1/p'
-> diff --git a/arch/riscv/kernel/vdso_cfi/Makefile b/arch/riscv/kernel/vdso_cfi/Makefile
-> new file mode 100644
-> index 000000000000..8ebd190782b0
-> --- /dev/null
-> +++ b/arch/riscv/kernel/vdso_cfi/Makefile
-> @@ -0,0 +1,25 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +# RISC-V VDSO CFI Makefile
-> +# This Makefile builds the VDSO with CFI support when CONFIG_RISCV_USER_CFI is enabled
-> +
-> +# setting VDSO_CFI_BUILD triggers build for vdso differently
-> +VDSO_CFI_BUILD := 1
-> +
-> +# Set the source directory to the main vdso directory
-> +src := $(srctree)/arch/riscv/kernel/vdso
-> +
-> +# Copy all .S and .c files from vdso directory to vdso_cfi object build directory
-> +vdso_c_sources := $(wildcard $(src)/*.c)
-> +vdso_S_sources := $(wildcard $(src)/*.S)
-> +vdso_c_objects := $(addprefix $(obj)/, $(notdir $(vdso_c_sources)))
-> +vdso_S_objects := $(addprefix $(obj)/, $(notdir $(vdso_S_sources)))
-> +
-> +$(vdso_S_objects): $(obj)/%.S: $(src)/%.S
-> +	$(Q)cp $< $@
-> +
-> +$(vdso_c_objects): $(obj)/%.c: $(src)/%.c
-> +	$(Q)cp $< $@
-> +
-> +# Include the main VDSO Makefile which contains all the build rules and sources
-> +# The VDSO_CFI_BUILD variable will be passed to it to enable CFI compilation
-> +include $(src)/Makefile
-> diff --git a/arch/riscv/kernel/vdso_cfi/vdso-cfi.S b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-> new file mode 100644
-> index 000000000000..d426f6accb35
-> --- /dev/null
-> +++ b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright 2025 Rivos, Inc
-> + */
-> +
-> +#define	vdso_start	vdso_cfi_start
-> +#define	vdso_end	vdso_cfi_end
-> +
-> +#define __VDSO_PATH "arch/riscv/kernel/vdso_cfi/vdso-cfi.so"
-> +
-> +#include "../vdso/vdso.S"
-> 
-> -- 
-> 2.43.0
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
----
-diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.h
-index 3fc8f72b8bfb..9cfbb390270f 100644
---- a/arch/riscv/include/asm/vdso.h
-+++ b/arch/riscv/include/asm/vdso.h
-@@ -18,13 +18,21 @@
- 
- #ifndef __ASSEMBLER__
- #include <generated/vdso-offsets.h>
-+#if IS_ENABLED(CONFIG_RISCV_USER_CFI)
-+
- #include <generated/vdso-cfi-offsets.h>
- 
- #define VDSO_SYMBOL(base, name)							\
--	((IS_ENABLED(CONFIG_RISCV_USER_CFI) &&					\
--	  riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) ?			\
--	  (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_offset) :	\
--	  (void __user *)((unsigned long)(base) + __vdso_##name##_offset))
-+	(riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) ?			\
-+	 (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_offset) :	\
-+	 (void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-+
-+#else /* !CONFIG_RISCV_USER_CFI */
-+
-+#define VDSO_SYMBOL(base, name)							\
-+	(void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-+
-+#endif /* CONFIG_RISCV_USER_CFI */
- 
- #ifdef CONFIG_COMPAT
- #include <generated/compat_vdso-offsets.h>
 
 
