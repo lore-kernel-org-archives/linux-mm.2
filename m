@@ -4,124 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF99CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 570ECCCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4EE98E0005; Wed, 15 Oct 2025 02:44:20 -0400 (EDT)
+	id B571A8E0008; Wed, 15 Oct 2025 02:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B268A8E0002; Wed, 15 Oct 2025 02:44:20 -0400 (EDT)
+	id AB9F68E0002; Wed, 15 Oct 2025 02:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A63708E0005; Wed, 15 Oct 2025 02:44:20 -0400 (EDT)
+	id 9A8A58E0008; Wed, 15 Oct 2025 02:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 96A168E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:44:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46A24888F1
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:44:20 +0000 (UTC)
-X-FDA: 83999409480.17.1107BBD
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 751324000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:44:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 832008E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:48:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 22F7D11B2D9
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:48:08 +0000 (UTC)
+X-FDA: 83999419056.19.A6FCFF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A56744000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:48:06 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q4edzjdq;
-	spf=pass (imf12.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0wHAfwA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760510658;
+	s=arc-20220608; t=1760510886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=1h2ZB5tEfXNExzSYRgqaGZiEFO4eGNTSW8hgQwq0KJE=;
-	b=rmsqKqhXkGjyPaImaunZMaDiAfuwatkhr2+NI4x3oe4C9Iijb4ssV1Int0Cq5Ju1EkebVA
-	7Uk4jKyL74+caiSrU+v133Csb1oZQX+7YSWk9mXG8D6fzCiNQ0gZTVcEiWlbO89ENQOCgs
-	5FGZf4DqXgF8XF5BFyTv0h67ydHHPU8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760510658; a=rsa-sha256;
+	bh=xTUv6OGNrRahJgEqlg+1EXPF3auigpZ8UpzsEr/ykpc=;
+	b=a2LMIiaNTU14BxuhRTm34VOV7/DOJqTkzkeGCUObAe2vTGLbGbBLTXjuEeHSHmXFro2gMa
+	baaqG1arCPnJmN1n7T0XfL2HxVmBsu3J5N0BTRyoQ/FVGG7HiSmodWYF+6JEMefExts4Vu
+	sxb/teRRFY5zqZBi5j2wqM9GwXq3Wek=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760510886; a=rsa-sha256;
 	cv=none;
-	b=CjzcN1wb4UMSqOKJfMIeUBdmjbIV8ofQ5jIX/ApDZUy4k/JUCjaJ1egZXL5829g2OASJWG
-	1lzzzlH3ODna3BCpt8o1dOJ3WXI8x8PlQwlUSS6b0c3Zuf957l7HUPn5dXBLGvd3ZFF0G5
-	byTHGfnXvqmFl0DYgtWDQ1zyYRq952o=
+	b=VbPgqJ2l2K4tsYapz89NtKuTfY9u5bkR8wAZ5uawd+4xfCvgnPXzdgW7GnLW7IQ/98wHoX
+	lKdiuNm/DbkUS/ZOWebpf2k+vVEQ4XCRGLNYkh4b6d8DiSow5hDZ23CgXPrig4+hSInufF
+	nAxkG1rMR165rB325SW19fkOxIi1nYw=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q4edzjdq;
-	spf=pass (imf12.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-27c369f8986so56762775ad.3
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:44:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760510657; x=1761115457; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1h2ZB5tEfXNExzSYRgqaGZiEFO4eGNTSW8hgQwq0KJE=;
-        b=Q4edzjdquk8hjjxr6X0+ompd09vgcD1NI91riHqPfMbpOOu8OUSqBX5iGPjqSW3Fgx
-         4rlgQ6dIDLeTwGua/wEPfqO4kXDXY0lR/ZhLOd73yvIcppwY7Z058myRIKxb6vP3C8tQ
-         XLaefOwPT5u/JqhnedjCRyecRIqoYRKABlYzs+LKSn/D4gJCQSwfi4pkbyppt/Yxu+qY
-         RytuDLY9k4H7WYFwOQpe8kcCwYf+DY4UiMbPQSmqIXDE5REjJomt4LxiC4076AgXkNDA
-         6+lyE2pZ/hGuELmcLV4WG1MX5077eskzbux9Nfi4kLdOEJR+Yw5RxAyh9tSjwfJKNMCe
-         x2kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760510657; x=1761115457;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1h2ZB5tEfXNExzSYRgqaGZiEFO4eGNTSW8hgQwq0KJE=;
-        b=X+52k6Plzxz3aNLzmzaJpoNr6UbwHw63n5kEve6iVSb8ImpJcL+4Asq0ia9y9q42Vd
-         THpnb5ePWlCCLf6CJAkpdREJtFLRZ5BrQaBnvFe0X3pDhuM50V+/6ukUuHUHfmIACQ7e
-         lAJ2qRc7kYQbkUJNgSkqPHZN9V9mi5iL039pD6lQlVwwfW9Ck4EstOpXVVIhK1qApKmA
-         JS0ntgCU7b13Zlzx7SGXxFMTdZdB5iuAUC22640DTcS314YD3z6BkGheGkAPEGTYzTSN
-         pMRffv6ixQfgdw67LrYPpasgpakEusTTod2w8tlP7a/760QDZEzaMDCBfu3+BLy/NAzX
-         4kLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXS4sKKmeEjM9jbot4xClkkkMjOg4sdvY1zY0FhYH+Jc8TxWe76UmWT6yCTl8AM7Su+m6NtaMiuCw==@kvack.org
-X-Gm-Message-State: AOJu0Yxsf81op9SRSLfTKCuAXzKB1dUO2CjUTC3+8ITnmwZhIb6L1Fyg
-	5m37Gqkc0GgeoGxMib7E03spMvhcA7wQgxgYUg+qrQghAFgWVLaHfyH4
-X-Gm-Gg: ASbGncteJlhTfTm/6Hu3ZoVlX9W0yJaiHE3DiCzdlVjVXBHPkDVGWYxP1RQ/38mvvtq
-	JfqmBIYxzyUWMUziea7259lFnO4aZzXaMn+HdHKSBHAUbmqV11kH75DiGrSQrPPQMEAl0heA0it
-	jc96+KUVS6rSiKBj/PxkAyaHmD47q3Xd7iyZT5pXCDxC+Q4luiCiGm+acBIi/qXoDJz0Mtdur5P
-	YzM3gG40+vrEwxU7q/fcg9q28PF6WIe8N48cIOZ0THZh0MPJqp4sBkwIHAHkWVzfBmC1w3jquMs
-	YGN8rnZtjkl5wUaUzTMeEe+53LSAPuDG4le0uW/WgrC75iPzgw22rBgJ3efcZxW8vK3othrMkzz
-	x3+i6pIj0RKbmX4szz5ssVoUtv/1xYtc3VieqDkXfYLjOkApDrzLJkWM3jqP2AHb1+LbutpFpNS
-	B36E/3WQ5a4z16a6f2+cgoqbaLzA==
-X-Google-Smtp-Source: AGHT+IFo4GkQAR4kQ8Q0IeCrlZ57EjWWcL/UzLVqG910m/3rZAgcNeInZAE64rrfXWrRydS69ZNpxw==
-X-Received: by 2002:a17:903:1b64:b0:28b:4ca5:d522 with SMTP id d9443c01a7336-290273ecb07mr350160565ad.39.1760510657134;
-        Tue, 14 Oct 2025 23:44:17 -0700 (PDT)
-Received: from localhost.localdomain ([2409:8900:1896:1396:e40a:cbdc:d4a4:cc3a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e44ef9sm183712015ad.52.2025.10.14.23.43.57
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Oct 2025 23:44:16 -0700 (PDT)
-From: wang lian <lianux.mm@gmail.com>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0wHAfwA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DDA596298B;
+	Wed, 15 Oct 2025 06:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969C8C4CEF8;
+	Wed, 15 Oct 2025 06:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760510885;
+	bh=KsS5xOABSmfYlcnL3VQZQMNjTjI7cwu4YVwYjCn92OA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H0wHAfwAl2ndFvoBLhKGlFMfpkrM0jMYEW5g6hug4b7UZJbAHauYJRwrfPcY5jOFJ
+	 /DJ3t2/dzM513Acoa8EuBLs+FuWhRHliZhdkVDs4wPnL7YT+RztWqHA2E44RCkciHV
+	 fs5T6YQ5K60utS5sKl/KT/TANSZXTjt4GSKKHh5N49NtIMKCm4J8GESHv+OtJxoppn
+	 iK62a9DQbOT4djJb3Jt/wvP/vlxRGkMOXuUyH/+DBgYoU7A1eRRr9GKB5Uw/RvQaBo
+	 h9/jbmb4iLWjVUolQ3zmcoPMI5+xRCgvKtr2CLjm8JxRpt/DTiYTQ+9jb18aewwMWi
+	 a3bvG+mV0ceMw==
+From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Rik van Riel <riel@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	linux-mm@kvack.org,
+Cc: Guo Ren <guoren@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-csky@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	wang lian <lianux.mm@gmail.com>
-Subject: [PATCH] mm/khugepaged: fix comment for default scan sleep duration
-Date: Wed, 15 Oct 2025 14:43:33 +0800
-Message-ID: <20251015064333.31274-1-lianux.mm@gmail.com>
+	linux-mm@kvack.org
+Subject: [PATCH] csky/mm: fix build errors cause by folio flags changes
+Date: Wed, 15 Oct 2025 09:47:59 +0300
+Message-ID: <20251015064759.2993842-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ym3m4hy5epa6175ep9rf4npottpdhr7t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 751324000A
-X-HE-Tag: 1760510658-820010
-X-HE-Meta: U2FsdGVkX199sBTo6thhJdisB4l3zjnhxSpTershbzfHZMMFu5BUFbuo+zo99VPzVtxs1tQq5at+IFmEp1JQvNX9yQBizMe44g2Cw99uA+OLprOVo/1v1t48Vserkd7zxXXk93zVGk+MRRMLdpkL7bs4KU363EaqzGyQbmAx/kqIutT9UJu08BtUArlKg4CgTukaGtPp9JowrrBC1SF/DgNuTJ1AEjEohnxSexcWdnBLPJnxBv1cenkPppEf5aeC6uhdiSJuyNEb22+baXq+/NZtm+SdN1jHnTaA39xNh7QsOJDWUCZfVU13IZ+95O1Lv9w9EoUjBTe5fPdk/bqqhrt3hsYabLEymF+YdUAmQJsz5WYShu06r4NR6UvyUK0UV17I3pNJuasYNk74+oLLf/4aQ8fYtFGZ6RM1rjueS4c64a06xvh9GfCNvrYgcsreRSK2flCGGjzLYDiiYN2lDizHQYNAfMtUkUILrLjK53dJXbKVuZ3tJqpF60cVfCyezXo5J5QorxTQx0diHyhrT3oArwoOmE9orj35bOWxkurqvu6MArHJKQXzOttXpmcMjm/R4z1DX10OCEN/ETl128BhJ0swcct7kU/87+mNQ7DzIXvISSalpyR3VRc358EimBKsWsCqY1UlbYPz6blhKdkjt+Mtb8UajPI0bM9zIKpmZhzYiO/ZlWVgGPw3rJYeeNN234qN2+YNhfgz7uAb6Z7dLFmKKlXLNZN96exyZlngAntkRs/nlpizb8hdrnlLMXUdOjYgNusC5VlCd7CTpg+macQU+iZWDGrmJ1Dtn9VWH/I4Q+4MfH6qF4vQseGu4nm9plNbq9Flhkt6XZoe37AC8T+xT+MpzWz7YrJ9lUp0vxY05FPYg9ntwljJ3GjsM8FxCAcYhURwyn/AY4szAvc4SygqSQw3m0i+M0YGJbe/5Wo8QX8u4H8xLITE8nBipLY2o30lZ+JYacfnkUQ
- AalwNnui
- xBSEyeHs7H71gTGWbHkSOJrV5H9ohNl7ldxVzg7n725We8fOvoHfdM/d4AfceJTB02BCt97WL4A7w2N22Gc/om2NGF5LzKLn6E2tdyjGj737MHnnGC+92L8jnhpSohNE0ayw6sfBViWvFeabeaHkSHxHwY1ZYg0BuNTl7H0OgTEIBhCPYM3o5i3zjR+48R5xpvwJ5m2w80uUCUVgkAcX6RNpnLqxsFA+GzLSoq5gOR4X7ZZe6094b9x7uqUDBe/Wg+eqVk6XmbJw7VISifkEkSUZP/UdafuDAMl+hmSfspmKxYNg/zOw7X63kc+TGtQUAg0U6pCgT6jar7bYxCJSqjwMmNF1fcYbjrhyoHwrlz+usm1CgvVe8JcrO2PJwiBkFOh7VZ2WaSXO8yws+Mra/z5GV2nEiL0nx8cqjCb55TyViEffI+0UwkMkeXXRDq2mZ7hcTEj+IlSBP5x7zL17f+4WOHlW0c7E+NFWvgzVupkna5NA0U4uPZNpDSoXalg9HsWQgTNz+wAoiDl4=
+X-Rspamd-Queue-Id: A56744000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: it966p8iz3mgx373wbpnrfwck1ffsqc8
+X-HE-Tag: 1760510886-614234
+X-HE-Meta: U2FsdGVkX197FE8kZ4qRSsDtGcloAzNWu7BriJqeYAxa0d/hDSYDFF1eonUDr0Gp0hs21XvkulLSf16ODXlunmrnxx+DyjEO2YmPhKes3zuiZyeO0rAcxngqg0aEpmJcwTVt1/0W62H12KfqArBgQHQq71GgTHPTgbW1aQtGsm2Se2AfHtu7lWy8uO0fuX8SBqJ1BPU2pJRTYJ1LYru+iEnEHsjWV3XtsG70TnAXiIN87hMQ1ukEqThl3is4qEKJ60MjEG33MdntqVWpQzDvNw+AV3v0OMycpTa5x+RGOOkMY6Lp8k63FTBomlMk2ezCH/VAKi6BjDOheQAoQVeS8SQdQK2riZcreBxy0RcxDTu6jW4LVs61peyUr7ObMti0qX6uO6QTszfxiqmlqZZDpd3eWfcF1jx7nGfJfJbwA61Q+s+AYRlP15IN4cu+OEeKtN55M3Hm+aU4GfZEdSQSCoW36N+AKxrpNeQvsmZGVYlNdvEZ6vCsDtGLBEeZ+D2LLi1YRagrtvXmfsVI2J/6/EVaYAzQm8vLqHIn9ieoXTWL9z0Vj3tXXJV8eedo/UooHs65aSaVpUUQ+lslq79JqPoWFAMBu6D1loOjp9oYSSo0gubct2qcYFB27qDKXfxKkrrzbHDZJx2qdHGJC+DONlBI3cRzzbCiGqGlyQdP3wRZND0R4tLlIS4RNCLEqHCJVmkzUV/+Mo2xDtI8DWscCvVuCReT6isTr3c6cWImv5zesYWTSodSaCGQpO5INalX54bt7Z7TIU+WXRHdGQIBi7IOUdEYdoa4/LvHbsCNhRIMSPyylBi5Xngur3UJc0JWqAQJXTVmLXk4x5iQGFLI7rRfvHti55xSgdlVQca+NHq62kpLg8m7+OLW6EN+srS1XhZ5lSq7HvRhZzLdXykDiDA1sdXklboEYd+WhO5nptfxKzKtuCSYIPlwwJPxC/esv81T7Lv1mg++l4tDm3Y
+ mO6kLGRe
+ 7GkszBTlxVd5F6lJ2mhQRhnmItiZioc24YVqR+OVQCoQe5Nky7PAXuD6GT3ZDB7Qw2Ibb1+l/6D5/kkINh9cpHM7/Yg1vmWDpe888i0XSbyG6F6FAPVGFGI4mK8nV+qOGOmRs/WNp8dmpGN1IoDgG97eWLpJfp/zFA+eIn5/Etqph7Ni9Gb0PwUpWRuxZ0EakUwYWcQmf+bScymP2pzBQ48T1lL/uyNTDTHzsbofWqAoIh14=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,34 +93,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comment for khugepaged_scan_sleep_millisecs incorrectly states
-the default scan period is 30 seconds. The actual default value in the
-code is 10000ms (10 seconds).
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-This patch corrects the comment to match the code, preventing potential
-confusion. The incorrect comment has existed since the feature was
-first introduced.
+Kernel compilation on csky fails because csky was not updated during
+conversion of folio flags to memdesc_flags_t:
 
-Fixes: ba76149f47d8 ("thp: khugepaged")
-Signed-off-by: wang lian <lianux.mm@gmail.com>
+arch/csky/abiv2/inc/abi/cacheflush.h: In function 'flush_dcache_folio':
+arch/csky/abiv2/inc/abi/cacheflush.h:23:39: error: passing argument 2 of 'const_test_bit' from incompatible pointer type [-Werror=incompatible-pointer-types]
+   23 |         if (test_bit(PG_dcache_clean, &folio->flags))
+      |                                       ^~~~~~~~~~~~~
+      |                                       |
+      |                                       memdesc_flags_t *
+include/linux/bitops.h:47:24: note: in definition of macro 'bitop'
+   47 |          const##op(nr, addr) : op(nr, addr))
+      |                        ^~~~
+arch/csky/abiv2/inc/abi/cacheflush.h:23:13: note: in expansion of macro 'test_bit'
+   23 |         if (test_bit(PG_dcache_clean, &folio->flags))
+      |             ^~~~~~~~
+
+Update references of folio->flags in arch/csky.
+
+Fixes: 53fbef56e07d ("mm: introduce memdesc_flags_t")
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/csky/abiv2/cacheflush.c         | 2 +-
+ arch/csky/abiv2/inc/abi/cacheflush.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e947b96e1443..449f983b8891 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -67,7 +67,7 @@ enum scan_result {
- static struct task_struct *khugepaged_thread __read_mostly;
- static DEFINE_MUTEX(khugepaged_mutex);
+diff --git a/arch/csky/abiv2/cacheflush.c b/arch/csky/abiv2/cacheflush.c
+index 876028b1083f..064b0f0f95ca 100644
+--- a/arch/csky/abiv2/cacheflush.c
++++ b/arch/csky/abiv2/cacheflush.c
+@@ -21,7 +21,7 @@ void update_mmu_cache_range(struct vm_fault *vmf, struct vm_area_struct *vma,
  
--/* default scan 8*512 pte (or vmas) every 30 second */
-+/* default scan 8*512 pte (or vmas) every 10 second */
- static unsigned int khugepaged_pages_to_scan __read_mostly;
- static unsigned int khugepaged_pages_collapsed;
- static unsigned int khugepaged_full_scans;
+ 	folio = page_folio(pfn_to_page(pfn));
+ 
+-	if (test_and_set_bit(PG_dcache_clean, &folio->flags))
++	if (test_and_set_bit(PG_dcache_clean, &folio->flags.f))
+ 		return;
+ 
+ 	icache_inv_range(address, address + nr*PAGE_SIZE);
+diff --git a/arch/csky/abiv2/inc/abi/cacheflush.h b/arch/csky/abiv2/inc/abi/cacheflush.h
+index 6513ac5d2578..da51a0f02391 100644
+--- a/arch/csky/abiv2/inc/abi/cacheflush.h
++++ b/arch/csky/abiv2/inc/abi/cacheflush.h
+@@ -20,8 +20,8 @@
+ 
+ static inline void flush_dcache_folio(struct folio *folio)
+ {
+-	if (test_bit(PG_dcache_clean, &folio->flags))
+-		clear_bit(PG_dcache_clean, &folio->flags);
++	if (test_bit(PG_dcache_clean, &folio->flags.f))
++		clear_bit(PG_dcache_clean, &folio->flags.f);
+ }
+ #define flush_dcache_folio flush_dcache_folio
+ 
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.50.1 (Apple Git-155)
+2.50.1
 
 
