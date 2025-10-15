@@ -4,146 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3770BCCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 21:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F1ECCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 21:50:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77AA18E005D; Wed, 15 Oct 2025 17:46:05 -0400 (EDT)
+	id BF3168E0093; Wed, 15 Oct 2025 17:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7520C8E0027; Wed, 15 Oct 2025 17:46:05 -0400 (EDT)
+	id BA3EA8E0027; Wed, 15 Oct 2025 17:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CD7E8E005D; Wed, 15 Oct 2025 17:46:05 -0400 (EDT)
+	id A924E8E0093; Wed, 15 Oct 2025 17:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 475A18E0027
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:46:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC8A2B6EB7
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:46:04 +0000 (UTC)
-X-FDA: 84001681848.04.F4BFD6E
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D11F240014
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:46:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="oTx/jY2+";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 91B378E0027
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:50:57 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E10161604D6
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:50:56 +0000 (UTC)
+X-FDA: 84001694112.18.EC2F352
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0E0D58000F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:50:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=mojatatu-com.20230601.gappssmtp.com header.s=20230601 header.b=cBuDvpuK
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760564762;
+	s=arc-20220608; t=1760565055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L3FMg1FEv7ZUbFziIBjfrlMH5r4d6/IdcxKlJL9nOzQ=;
-	b=t1lcXeED3xd1Wptr/VN22LXYUgKj9zkydT6plMvK5yvXTu+FUIsGDlZTCHqMUEgSvxvdUH
-	7i1SMQ0lGG4wy83mRk2OJxQkS1Ny9wLhaa8aTpFhI1VTC2AT3MTRMrOE9gNd06fpYYrgLr
-	8x5BjzcqoDV5IXLAZ+QkdHh65Bw7Glw=
+	bh=iduM9BCUy9A1PPFJTP7NoUXJkN4FJL3UKtirvC6QjRM=;
+	b=DhBTAuSQn4DCAwHjFVWf+1GeEN2RgFCMJIG+cc30JkJ64orMdA1/tJN3ZUfgkUAjkuPr49
+	WX2HU3OSlrB5no4yIQ0kJl9/5wDvmW+iR8DsrMDF+koAD5GynpRVk0/tjbqPvJt+S5SoVL
+	nfkd9XSCYSnWhgef58egq8ri9U+A63U=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="oTx/jY2+";
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf02.hostedemail.com;
+	dkim=pass header.d=mojatatu-com.20230601.gappssmtp.com header.s=20230601 header.b=cBuDvpuK;
+	spf=none (imf02.hostedemail.com: domain of jhs@mojatatu.com has no SPF policy when checking 209.85.210.181) smtp.mailfrom=jhs@mojatatu.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760564762; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760565055; a=rsa-sha256;
 	cv=none;
-	b=czqsbNZJNTSR+shAh5Z9RzsIsYiGzQAn4RTkdZdqUVqA6X+OhOymHLc1xSzWLcMe162MPW
-	EUjKvBu3Ph30yhQtiGKBS+t/Qq0A6i0dJFrHv5zpV6kwdTalRI+mNQkW5ocofOm5/ZqhKo
-	KxPvLg/tT7kMXGR2/mq0vPMT8L4JXUA=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-85ed0a1b35dso5188885a.2
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:46:02 -0700 (PDT)
+	b=icXNNca4caxo+Vk1v6ZfXw4v2qRm/0AC/zxbS4vk3qrmjK7A5C4wRVVggd35fyDeU977Mk
+	p0yS1PFuCgMdW0CTcC1PWd9F9jDF6sexQIx/cB7EBHW00uyk6Lty4HKGtbcSoDwlPjojxq
+	S9JNrF9K4KSYcDg3n+Q0ZOp7KMLJifM=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7833765433cso152638b3a.0
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760564762; x=1761169562; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L3FMg1FEv7ZUbFziIBjfrlMH5r4d6/IdcxKlJL9nOzQ=;
-        b=oTx/jY2+1jR1uEOQNAl0oW0ZL46bsz2uR0xBrAW8XkaHmD9ONTlxzM/uoxUnroW4ep
-         4fIRv7OA6brwXtpqIOsdAGo8+TYAylh5UBbG6Kzkuv7GEAM371/1MF18e6WzoB0ackjc
-         eC9nHyYb0ATMyQjvZRn7RXEGXGhmQwlV+8KIZkyP6dNPDMNVc0sV8tCtgtAf1fMrxQk8
-         S16ryL4cmKz7HaJ2IA7ilGzhGLCvAkyZRr63wyuDyPJGxYrc436fyLEvbZc35oPR+abm
-         2O/VNRl+ioFCUze5hePkgInphaqRfAXxoUpC2NKiM1XQholdfAKw1Sc/BRnvLrc47a5p
-         BgGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760564762; x=1761169562;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1760565054; x=1761169854; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L3FMg1FEv7ZUbFziIBjfrlMH5r4d6/IdcxKlJL9nOzQ=;
-        b=OGkg/3B6TXd3tn1RLGi0B1fV0NcT4zto6P0a26DKVjxQtzRjIt23Mgv85hEOJtHZz8
-         O/wC1kGCakj+LJcUWGisi847ZTtRpYh7+37nclm+LHYHiXklOQPryIyCNHfkdmQhtNLL
-         4HGG2rNfdG5ragwCIrdi9J9vnWb6XNusku+jdjfyjqfz9CHMZl/frDTRpTABFZ1s2u/W
-         VUZT1wpz/dC05EyJU0npmFk7o3Mx3Nk+pFCE84zdSD/k0S63HnLglI3AjUekfMdRxPC4
-         KoGAPbjMktgeH6RhALyY+eeVNNNbxY/ZWXQm9L1xyFNQkgk4PMOLok14l5uS/mZGMzf5
-         NqUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6UhYu3GHOkl3sE/fKGqd403COQVDQGFQ1/XurAe8SJSXbeCV59svE2BS7aoYrDxbUerws7qO/Lw==@kvack.org
-X-Gm-Message-State: AOJu0YxGJ0opmh98l90+LkUq9KQFQA3kGUYG+Q+ZxmVQDTkGlwYsN45x
-	XeSOWBiJqDTpKdqh07z2R/n10zpBabKx4IARHZsR/kKj5sjzF4QSGYk1VF+HsIHYPn0=
-X-Gm-Gg: ASbGnct/7pcJj3+DySUTsBXPLBtLDyOs3eOGHTfuE5Z87x4E3jpCrSpYmHf9te0ZHAm
-	hlwpn5IhHD75U5VXQjCD1x1lRjqoFMxQkJh3YyJjOy3CuyQnDW1MYlMlEC6/odq7oMq9wbKNNZc
-	0tukdFtt7ZHcjpYQbdWNEHj7TpbQKn/AY0Z9kO9ze6Atfx33F+RKuraf6jatIPKmSibauwpkGBh
-	VfOdHw1HZPkdsWVvFjfVigfbLQ898uTQArIxFYw6eLB7pep+AosTTvvebqnY/0ny01L3wuFjXgj
-	NMANDoyEqrKra7o5hhJLmFalL5sngq1jtcbyR3ODLocab3zXVHuPZIdaYeDOX2akJhqUvC4y0Ym
-	UIQX1EOyEU+JGw5Fr3jix1gCSOY/sbxnMIJ6uH6OuMIMMhoMwJnqgJ5co5wGFI3Pq3f3kVuVmG5
-	vFdsCgjEniCJyuz6Adh6+7OerXItG0yxHFXXgbmL7rhNaB70LHpqV8Lk7/GPlQAa+AXkZI7g==
-X-Google-Smtp-Source: AGHT+IGFaJmIXEF9qOWREfnISohaPtcOawCiX32gOo0axLN0cRb3DCKNrFn66v9UE7KAPGfO0N4wTQ==
-X-Received: by 2002:a05:620a:1a02:b0:88e:86a3:98f1 with SMTP id af79cd13be357-88e86a39b78mr380325385a.45.1760564761659;
-        Wed, 15 Oct 2025 14:46:01 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-88f37e50ebasm56360985a.31.2025.10.15.14.45.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 14:46:00 -0700 (PDT)
-Date: Wed, 15 Oct 2025 17:45:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Shivank Garg <shivankg@amd.com>, jgowans@amazon.com, mhocko@suse.com,
-	jack@suse.cz, kvm@vger.kernel.org, david@redhat.com,
-	linux-btrfs@vger.kernel.org, aik@amd.com, papaluri@amd.com,
-	kalyazin@amazon.com, peterx@redhat.com, linux-mm@kvack.org,
-	clm@fb.com, ddutile@redhat.com, linux-kselftest@vger.kernel.org,
-	shdhiman@amd.com, gshan@redhat.com, ying.huang@linux.alibaba.com,
-	shuah@kernel.org, roypat@amazon.co.uk, matthew.brost@intel.com,
-	linux-coco@lists.linux.dev, zbestahu@gmail.com,
-	lorenzo.stoakes@oracle.com, linux-bcachefs@vger.kernel.org,
-	ira.weiny@intel.com, dhavale@google.com, jmorris@namei.org,
-	willy@infradead.org, hch@infradead.org, chao.gao@intel.com,
-	tabba@google.com, ziy@nvidia.com, rientjes@google.com,
-	yuzhao@google.com, xiang@kernel.org, nikunj@amd.com,
-	serge@hallyn.com, amit@infradead.org, thomas.lendacky@amd.com,
-	ashish.kalra@amd.com, chao.p.peng@intel.com, yan.y.zhao@intel.com,
-	byungchul@sk.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
-	michael.roth@amd.com, bfoster@redhat.com, bharata@amd.com,
-	josef@toxicpanda.com, Liam.Howlett@oracle.com,
-	ackerleytng@google.com, dsterba@suse.com, viro@zeniv.linux.org.uk,
-	jefflexu@linux.alibaba.com, jaegeuk@kernel.org,
-	dan.j.williams@intel.com, surenb@google.com, vbabka@suse.cz,
-	paul@paul-moore.com, joshua.hahnjy@gmail.com, apopple@nvidia.com,
-	brauner@kernel.org, quic_eberman@quicinc.com, rakie.kim@sk.com,
-	cgzones@googlemail.com, pvorel@suse.cz,
-	linux-erofs@lists.ozlabs.org, kent.overstreet@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, pankaj.gupta@amd.com,
-	linux-security-module@vger.kernel.org, lihongbo22@huawei.com,
-	linux-fsdevel@vger.kernel.org, pbonzini@redhat.com,
-	akpm@linux-foundation.org, vannapurve@google.com,
-	suzuki.poulose@arm.com, rppt@kernel.org, jgg@nvidia.com
-Subject: Re: [f2fs-dev] [PATCH kvm-next V11 6/7] KVM: guest_memfd: Enforce
- NUMA mempolicy using shared policy
-Message-ID: <aPAWFQyFLK4EKWVK@gourry-fedora-PF4VCD3F>
-References: <20250827175247.83322-2-shivankg@amd.com>
- <20250827175247.83322-9-shivankg@amd.com>
- <aNVQJqYLX17v-fsf@google.com>
- <aNbrO7A7fSjb4W84@google.com>
+        bh=iduM9BCUy9A1PPFJTP7NoUXJkN4FJL3UKtirvC6QjRM=;
+        b=cBuDvpuKgvuwxscVYzAXEbOBOpRzOVcDKMm+ohrYwZPP9pp5w50RaVrTkrYUmRfikj
+         sbJ6h3Qqc39wdHyYtZ9RcghajgjYbQJMhUtv1S+HTMRkGXkmgSz/UOxgh2lSUa7dEE22
+         rRP/ZW6JRKn0bzsTxubPlftPtxsMlY2D5VPSrTbPwa6d0sI/Pspr+Seubt75Us7D2LbY
+         oXmbwifER/eA2ly/gcJVojq0A4BkA0cNRVBP0Vj8l00fdu5f6K5wqnPpm1d3BmLtOz5n
+         zzb2a27Gdlv+tUfFj8pZu2GmtyY2BWHLQtk6ghqh48xokRomZFoPYl+ek4ndJXuT843Q
+         oQCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760565054; x=1761169854;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iduM9BCUy9A1PPFJTP7NoUXJkN4FJL3UKtirvC6QjRM=;
+        b=ckRxyg1JteYRiBtyszNjOmhHn35rQMqPGgMYMh5lIAqkCRQrja/ln46mm5PuMrebW9
+         3a1kMUpaTnyFNvANptteg3ZNn4b58L8m8p/STo0JQTo7T4xFiGsBbQcmZwQ8rRgpXK4V
+         tpi8D+bWe6rGi55MRos+MLnaiYT8jZMJqhHrxpGUdUWMbX0ld+/i0vLsyfLSczuphcfO
+         pOxi85+CyUUvSFBoII01iUqx04V1lcjjyfrD3N68CcsPip5xKLuQurSAHV7ZQXDzn7/M
+         HYq9BLxNziBIcKjjuKsa7MmiiW1fClQiv25QbdGxohq8cUozqwchLKXVLY8u4x39Hfqs
+         /6fA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDYPIk0Lw4hatEd9x8hC8x72NRoUKQXIbo3ex9/D8apcxaPonG5uI814ZYUkA74u2dslwWRD/vcQ==@kvack.org
+X-Gm-Message-State: AOJu0YzjXtphJg1U9nO5XZrWeEC8mGGUPWV6Yaep8FIGQegKQr/lz6dG
+	Gv4T7Rdx1n4ne2JuJDQJO6L315x/bNZ7WM0aOAEOpOS6K0Il4WnNw2yqqis9UN/4Zw8+Ay60Rcq
+	SxbMAa8oxvGlRnUIjuLOo7KhV6bv6tp6bbmrlgwg1
+X-Gm-Gg: ASbGnct/8+/GtyW/hHWQYd7D4v4cMb7eIIqi2BpoPF0oPDtkE1mWcuDuye2XtjlLmR7
+	YNuS+hwXpYkvVgGDaMku5lTcnBmAWlMWjN7Q/Hjv4tkpGlbXibJV4SEWSI3y2PhNnCZVr8cVt8b
+	V9fyUpK3HYuUGIT9TnalDRRIoGHjLEtvOy7OTdhvOGNBatkQI/651L92ingvTgI3MMXNkMgohyo
+	+gN7qFFYD6vImI4ASxgLSHft5RoYlpkZZS7Vmxc7O01RLENf9pmPMoqm7GjoqfQlY9g/z/1a0r0
+	reoGXDRrKeWfnm3a/p8H18mreZ+xC88IYcNX
+X-Google-Smtp-Source: AGHT+IFwZrRh7ZKAhbIlR4D12tk51kY/fRatZwY2OQID0vS3YYNT414SduS1rI4gvIe3Me4Ogb4ysXIQ+xiEjdpPLrE=
+X-Received: by 2002:a05:6a20:3ca7:b0:2e5:c9ee:96fb with SMTP id
+ adf61e73a8af0-32da84ed584mr41211395637.59.1760565053849; Wed, 15 Oct 2025
+ 14:50:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNbrO7A7fSjb4W84@google.com>
-X-Stat-Signature: i76grczz498fh9cejnxwj8m3semmxm6n
+References: <681a1770.050a0220.a19a9.000d.GAE@google.com> <68ea0a24.050a0220.91a22.01ca.GAE@google.com>
+ <CANn89iLjjtXV3ZMxfQDb1bbsVJ6a_Chexu4FwqeejxGTwsR_kg@mail.gmail.com>
+ <CAM0EoMnGLqKU7AnsgS00SEgU0eq71f-kiqNniCNyfiyAfNm8og@mail.gmail.com>
+ <CAM0EoMmK7TJ4w_heeMuD+YmUdMyEz7VWKY+a+qMO2UN4GYZ5jQ@mail.gmail.com> <20251014201149.ckkw7okat3cv55qk@skbuf>
+In-Reply-To: <20251014201149.ckkw7okat3cv55qk@skbuf>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 15 Oct 2025 17:50:41 -0400
+X-Gm-Features: AS18NWBoDDX5v9apL36RaGrCWfEkUt2MPnhglXFLB138k75uT3ov8ARY2TM2AaI
+Message-ID: <CAM0EoM=1swUNW5F2Ha4JCf3VW309m1S0JEpSqiyR5wH7e=YyJw@mail.gmail.com>
+Subject: Re: [syzbot] [net?] [mm?] INFO: rcu detected stall in
+ inet_rtm_newaddr (2)
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	syzbot <syzbot+51cd74c5dfeafd65e488@syzkaller.appspotmail.com>, 
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>, davem@davemloft.net, dsahern@kernel.org, 
+	hdanton@sina.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, tglx@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bndyefud454accte4j9gxhdngjyznmsx
+X-Rspamd-Queue-Id: 0E0D58000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D11F240014
-X-HE-Tag: 1760564762-81299
-X-HE-Meta: U2FsdGVkX19qL13qCqyI87eu9Bpa+Pf6atdNbKOVyjCcES3JQ6o80CC2uxLhrCFLVKUjCZ2mH49XT7f5/Ct8CTnyiB8g2kIdmDv2/t4IZiEeBpaeZT5hXJVrLmlmyW9q5y7hwekj2vxILmIOxFiLiSCQ2jZ1xL2wwW6E3Pm4AqayBjCtCzb+M8A2wApImX7eoKmanCxfRH8pp8ui4AWDyoRK6loseBsvyJHDYtTDFxCuZQyIvVMpwm3pW/Aqe1UbJrG/vvmkVPTqFFQNUmiX74roubCXKB8DDhMaTgB2KyAOOS1tzaRcg3DiMocTbxibNg1lz/B1S+HhBQrHxcro4xMnjV+HndjUH3zOgX01P/hgCrpmHZZO0g34ME8Ydv7S626UDkuJBpRqZEuZ3lFT4QNHcQDuoBG7cv3PBGBWfa6S+oCIZe2i6sbNjMBwPdFWd/arTQ3gG56/9qP82bXmq7I9IH++t1VNBvSo/27UGFvUumqzPZcjKfUGyhkZQ6hlzj5Hk8DHNuGJ06t7rxOij5yMEsQU7rOComvQkIBjXRYyYJNCo4P8fM82/G/29tfhqBsaWCxBFjacL7IiFM7RqCqNHIM8I7Mh2/KeXZCC7nQs4fgAYM1ID2RnHdTmdGDN6PvtOy+dExS8cZwdL1JEsK8KWTgmE+x74VjA7oZQtxVrTcghA1beKsGK68bE7SvPic+rhE+hAnz4HgDw/ztrdpMDA6yyu0XIOCSbsxHOfI+G7p9VClrEfUx3BliLt5XB2LdMUwPPMLCE56DDyZDoUrTkzMiDVT8sPyGwLIFNCbpeRX49gE8bhIP6yyvcldx8BRUFtSyNU2ZzFaXEpQ0zyHREGWc+V3bpVH5F0R0YnOhHQ4IQ8IAljMhurkzYFVSk/4X1Dn99eTjskauxY/t15IfD5kDS0Pgvq/E0M26VQT/FsX3UMXcVlgoMi2kIIl8N6NnYmaR5C4vI5yecW1V
- GEkJXLqC
- PlNdKANHOC1LTpDi100WuZFC7ySu5xNRjmNfFcO7AKJThAticp7Px3AVbW/KGtNc0BL5f7KHZnxgelot+XEkD1sNjAvoeuH04bGFZqaYLpbiMGsvm1D5z8kQLJITaJhsNoj4ornft62577jbWfjgINU5p9Pn/J0dnyFmb9InaQTCvl3gBBg05OpIrXrRhFxWjJNnuu94FzNeGnRb++P2bm9BymOpLqW3E3iUemppr9rD1Cu8ccbumuclisJBRxflq84rNx2RvIyQZqNWuCSo/96ZVP+dHZtkGzewPEnkXZLmn/ln5yu1fdEShw+Y/sa+AdukQcE0aLM5bG2VByH9rfw8Y43TGsJVpD66iAoJgUsBKnZVHS2zM4rHz+y659CstFtZKxvOv+WhRt3fnxzyKn7aSB3lueliKer7rJx32xahW/p8wjW6bdzshvUSt5++w2Y8R
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760565054-817448
+X-HE-Meta: U2FsdGVkX189K5rgGod7lhovbGPGdsikq2UXUAl9klWiUN3k1EqJurCqTIsSytUvldVvjxC5nd6nb5sCdlbYgT/LSdbx4eJe1ny1dxz4FfrlQ9vMzFLvDj9QubbS8kiLRcFDiXRUzO8SCxJFSQMG2MZf+cTuHgmY6J7Fruy5mOvL9F8nMLDEHGMmZTTYCvCIHNEoTnYshkFOq1Fry9qpLk92m3PLpHiscWZZls3NmCDVTOiVocXEgOVR39tfZfPAkdgL8ShKKVz+3Tqqlw8bcoImJ494vjVeZJzlqi/Wc0jnAoztQtiC6zJUEWqu4kSNDVbyaaRrXsJct6rCLdY/7WZNGFXROlBgl1UjhHO8HWQVV7db4gVha9PHE6ea7HtqAJewwM1YkcnRNX3polJ3U1faQVDPyGnLgf3EmrXvFLpd8XwJ/nYUlLuPC4UTAavVmkxhNAoQ0512DmdPTjrRtDkbIDtW23DyMMeHMjYSjphboyK9fguP4ZKQ1vF4K5Of+Dnpeu/i5Riz9NUWQ6K711kt9RbaSKH8Ba4InpE1HDSgA6/6V6UDDzgOD36tU43cM9BKepK7TD5zC0g7QWzBNDoofVrtqrhrAiRTGH0M3TpsPl3GCSmmHmCyGVfnEZpChfVO7A0xE+U2afz0ODXqVdABaeO6FJB38vJCKWIkEUGLevdhiRz6U6Clgl6+9T/thP69CS46kx7g3Q01cbb9tKA/3Mg6E6JdCNpLbqGc7kEPbo9jTri+Qm0fU2lIQXx2aBGWbt6Ly97zUkmoNRPVPrOJqJnXVTttra1rg9gU3y9PmJz/t2IXObqAIAfXsJEMEU3OO9qeXvAxDCBB37y4FT3O2U9rBRRlpOyHT6ynCUlFitNqHPG9rc1Kdzdt/2tLHvjBjyQQdMGJctbW6OVQW3MywGs9utqEmajfOSUGt70OPW3+SmS+k2Mx+OiaKncF7iZoH5Tm3yiutUIENnF
+ ZmmlIc4u
+ xwplswPLX9vPr/bBvoUgMKKLBJZeOpJTBAwEVFclb2XuBgASRtREJTYcGX149n5RcFkQ64uBGP7wJMnyaF0++4kogn63Uglw4M3U9ms9TgqtCz1QlQ9eCdTg4PLiJd/R2mnL6ENOechSoqYL9OX/vgpkaIkqcjYFxn/aJmBFYTSJlGv1/VCE1eHfiIm1El3Hllouwf+DnHpXcX4JhEiqUVzXlcvufMhqZ5YuIb3Dpy11on+EmrXbyZoIUBj39vt4MtFH+WXXFdZ13ArDBHK76hdyttiep7FebZD6R0rqzQi3mQVguWKkhrzDUhiRe3jnZ3mgSrMi87QTVAoxCCPSCBy9MFNGwEjXO3f1tS6NHQhsI9hl5OdX+1gOdlllZszKOB7neH0O6YEyoS0asf5eneHYzEnMRl2k2enXDrQvRNJjoFcbLjQiH6KCnui5UAtMa7iY4qzsfq8GN5+odPYIWTMtQDA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,57 +123,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 26, 2025 at 12:36:27PM -0700, Sean Christopherson via Linux-f2fs-devel wrote:
-> > 
-> > static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
-> > 					     unsigned long addr, pgoff_t *pgoff)
-> > {
-> > 	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> > 
-> > 	return __kvm_gmem_get_policy(GMEM_I(file_inode(vma->vm_file)), *pgoff);
-> 
-> Argh!!!!!  This breaks the selftest because do_get_mempolicy() very specifically
-> falls back to the default_policy, NOT to the current task's policy.  That is
-> *exactly* the type of subtle detail that needs to be commented, because there's
-> no way some random KVM developer is going to know that returning NULL here is
-> important with respect to get_mempolicy() ABI.
-> 
+On Tue, Oct 14, 2025 at 4:11=E2=80=AFPM Vladimir Oltean <vladimir.oltean@nx=
+p.com> wrote:
+>
+> Hi Jamal,
+>
+> On Sun, Oct 12, 2025 at 11:52:54AM -0400, Jamal Hadi Salim wrote:
+> > > > Yet another taprio report.
+> > > >
+> > > > If taprio can not be fixed, perhaps we should remove it from the
+> > > > kernel, or clearly marked as broken.
+> > > > (Then ask syzbot to no longer include it)
+> > >
+> > > Agreed on the challenge with taprio.
+> > > We need the stakeholders input: Vinicius - are you still working in
+> > > this space? Vladimir you also seem to have interest (or maybe nxp
+> > > does) in this?
+> >
+> > + Vladmir..
+> >
+> > > At a minimum, we should mark it as broken unless the stakeholders wan=
+t
+> > > to actively fix these issues.
+> > > Would syzbot still look at it if it was marked broken?
+>
+> I still have interest in taprio, but at the moment I can't look at this
+> any sooner than the second half of next week (unless someone else beats
+> me to it). I've added a note not to lose track.
+>
 
-Do_get_mempolicy was designed to be accessed by the syscall, not as an in-kernel ABI.
+Thanks!
 
-get_task_policy also returns the default policy if there's nothing
-there, because that's what applies.
+> What is the situation with syzbot reports? I don't actively monitor them,
+> only if somebody happens to email me.
 
-I have dangerous questions:
+These issues have been lingering forever..
+They do get posted on the list. Here are samples:
+https://lore.kernel.org/netdev/676d25b2.050a0220.2f3838.0464.GAE@google.com=
+/#r
+https://lore.kernel.org/netdev/67d2a576.050a0220.14e108.0030.GAE@google.com=
+/
+https://lore.kernel.org/netdev/67946a0c.050a0220.3ab881.0010.GAE@google.com=
+/
+https://lore.kernel.org/netdev/66e96979.050a0220.252d9a.000a.GAE@google.com=
+/
+https://lore.kernel.org/netdev/6777334a.050a0220.3a8527.0058.GAE@google.com=
+/#t
 
-why is __kvm_gmem_get_policy using
-	mpol_shared_policy_lookup()
-instead of
-	get_vma_policy()
+They all point to the same bisected commit, but am not sure whether
+they are the same issue
 
-get_vma_policy does this all for you
+To get you on Cc from syzbot - i think we'll have to add you as a
+maintainer for taprio if you'd be okk with that..
 
-struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
-                                 unsigned long addr, int order, pgoff_t *ilx)
-{
-        struct mempolicy *pol;
-
-        pol = __get_vma_policy(vma, addr, ilx);
-        if (!pol)
-                pol = get_task_policy(current);
-        if (pol->mode == MPOL_INTERLEAVE ||
-            pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
-                *ilx += vma->vm_pgoff >> order;
-                *ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-        }
-        return pol;
-}
-
-Of course you still have the same issue: get_task_policy will return the
-default, because that's what applies.
-
-do_get_mempolicy just seems like the completely incorrect interface to
-be using here.
-
-~Gregory
+cheers,
+jamal
 
