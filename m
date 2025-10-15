@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D98CCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 04:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3EFACCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 04:49:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00C058E000C; Wed, 15 Oct 2025 00:29:53 -0400 (EDT)
+	id E8FDB8E0005; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F25588E0005; Wed, 15 Oct 2025 00:29:52 -0400 (EDT)
+	id E41018E0003; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E62288E000C; Wed, 15 Oct 2025 00:29:52 -0400 (EDT)
+	id D56AC8E0005; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E6C8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:29:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C9A2BD042
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:29:52 +0000 (UTC)
-X-FDA: 83999070624.25.DA623C8
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8FC26C000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:29:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BQ+P+C4D;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760502590; a=rsa-sha256;
-	cv=none;
-	b=xvf5tyO0pOENa3fExHPZPa+XQHtiB/y5iSCQt3O9FoQuo8IA6z+t9e6rNmIV3FZBsdTPR6
-	gD/ObcRO7ZNtRVTaTd1FDbYLO3kQ1QBfdYmnExmfGDxXBNRf+Tm2sEhhN6JfJYTXYiK7d1
-	QHYFQMvvo374QYic4ajfY2tVAh9afwo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BQ+P+C4D;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C3C5C8E0003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A9ECC0B29
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:49:48 +0000 (UTC)
+X-FDA: 83999120856.11.922175D
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 642551A0006
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:49:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EZ2qVHvF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760502590;
+	s=arc-20220608; t=1760503786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7umbxdKyXD7nTBpBrjHh916Yt8tG8NcUNNJJ+puN24w=;
-	b=Bc3bz3M4FUakvxxWHqUh2+cW14qlWpvUi17JVlCgePKut07Aj0P6Wq549e5VF+AuimzcsV
-	Tff8xMpJh8OVWV4fAa9MUcsZ+jDU1s6WThS5f0NIbn97ZilMsysEqBCtEdY+awCIT1Hc2u
-	SbjFIw+BvoLj9Ub9YMjtiZd0m1/U2Tc=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8582a34639aso470053785a.3
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 21:29:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760502590; x=1761107390; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7umbxdKyXD7nTBpBrjHh916Yt8tG8NcUNNJJ+puN24w=;
-        b=BQ+P+C4Da85Pc9HT7fg0kpzWz/CNU/X8jl13p/nHOeFtK0VMbrh8fuCA3vVSWhwHFF
-         r6J+N7Ysoa2ije8BG37lfR650QUxFLgJVV2yvEk3Fz7bEibt7vC5dvvjChG5T+nvtjjy
-         CS/9nWBcYpC2MZ6Es+h5XryYEZHP9LBc1655LWtT/WpmCgkrTIzzFqBvQtx2G02LPxjW
-         bHKf6wmIllmJqcaLcnMiuaRIzSoHUCWy30Uv7enX5rr4+sisNu9w8RKRJKzBmlO4xWpq
-         ngCihXkCS0ad8Z/ICVcMVlcQCzK9KAVX8zYTeUlVfu616RX4vkcpWV35sXIDhOWlE34J
-         u1Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760502590; x=1761107390;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7umbxdKyXD7nTBpBrjHh916Yt8tG8NcUNNJJ+puN24w=;
-        b=rEhhZwiBSw+czK0LEjhOnBK9QZXPAQBN4kYbJ2ER6vaZnv85eTOKL8Ri4MsrtYOL6j
-         SP0CHo1OBvR2Zzw6HwoK7MACu7T09Xc6swU3RiXWMkD+tkBuC+DEXkchoes/QoFyav2D
-         HTDSuaqy+MHjYF/dStq3tYUscRi2g+i2RtKl0YuqoigWtqyMYned/TsYIsMkIaOqLEf6
-         qL65mCC2lmbWCliZHUIvCtxsJJGbqTOYVdJaORJzAphL2spraxn7mXotiICYg3nxy+5h
-         Cwjdj8hWPWtOIt22VMCzVWQ9/5Amj7ZS8BP0vw0W1EkyhNsLVNNMUHfsgPJXQiix3BSX
-         xZow==
-X-Forwarded-Encrypted: i=1; AJvYcCV5gt48qDwhNzCPVDWESlS4PzeG10uI7XsdZtQK4VYvkBE6EU62TFtpnbbWeYYgF48MHGg/dwD34Q==@kvack.org
-X-Gm-Message-State: AOJu0YwiWI8eOxS6EldyQV+VIlH9HBzsyeXMAN7r6vbFLmN9/47QlAmS
-	ubLY0RGjcJPppHO2kn+hE2VTRQdnxacHvzRjeNmbeSx2lI5bk41BgzE357VNrjhtRXEqSU7Q1rj
-	Q1fla6AODti5Ns+6234NSmcU00d7AwMM=
-X-Gm-Gg: ASbGncu1bxNmutCq4eLyR1GE3H9pVEpqJOVQU3TPPpm8y8cuMGzvj1upzS5VAUQ1Oht
-	o217z6prDazqeF9ZRsyu65t+inbQO52co7otvNFM9PdcrZXLJTkDl4c2m9UHbde8bN/ugVSNNiF
-	+KazyMflt5KoLpGa3Fd93baipwp7BvIj9B2hPj8TiAj+Ud5aMPd8o/CPpREkTvqNpZFx5hpwtNW
-	EJpU7nzAZa7zd8Cqfr28feNz2TqNfXPo5LJgqv4/FaJIyYRhfbVXkdPW9TuKJqJ0f4c
-X-Google-Smtp-Source: AGHT+IFSd7rR2yhuM6ArM8rTJIOrMBD13K1D0UP+LCqiXo0xNEGlzCRv09AviUeb7DJrScDn+uFmR1UaoQZWnRfwSxs=
-X-Received: by 2002:a05:620a:254b:b0:88e:1671:2e4f with SMTP id
- af79cd13be357-88e16712febmr189204685a.78.1760502589399; Tue, 14 Oct 2025
- 21:29:49 -0700 (PDT)
+	bh=ygDjvocgrySJ816q1hlB757s4pG93J0anp2ldxVExNw=;
+	b=V66xpOPVXJ8rjeZ39eTa4lxaKMcie3gjVyP+Bpeus88panT0VcGMJ7IN8EpiFp8B0C0Bdc
+	rExLCbqs1HBGFu5Cq2g80QE5m6JfWsAzT9KuV1+4SymfHyHTIgP2Q6HsA+1yZh83O6Ge3k
+	WwI2iLglDoa7rHiYVWZ/FiAJ/Mbvch0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760503786; a=rsa-sha256;
+	cv=none;
+	b=64BgJvlTw6jeYeVmbYSoxl3lGnlW/Qhfoov74V/vo4CQEtQotsO5ZhyutaP7rgkrQmbIGO
+	SW+n6xtGKTmHt4/ZM2+GLRjErA8WNJHY08gaEjeL3Slwvr4kUt2SY7qvBCijv0y+nwXVC8
+	sz2I9oU0lfzOeib1mRF4rkzXqjv1ElU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EZ2qVHvF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <80771030-0d8d-4f65-803a-f89da3b59796@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760503783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ygDjvocgrySJ816q1hlB757s4pG93J0anp2ldxVExNw=;
+	b=EZ2qVHvFYwYzxX+uULJSA7sCrdOmUs6JY/QrAORm+zvi+iwUX02arVUPk2aOEXOzKbuR2D
+	C4ObtDFndbyBJbZH1PsNEsulxhfdOrVUBcD3h0GpmMIdS8fFEm3eZ1hnSuc+fcyyFEqUYU
+	WrrPZrrDaH1G2y0C7hxW90gL8+nlHRw=
+Date: Wed, 15 Oct 2025 12:49:26 +0800
 MIME-Version: 1.0
-References: <20251011081624.224202-1-bhe@redhat.com> <20251011081624.224202-3-bhe@redhat.com>
- <CAGsJ_4y4CLu7qeHijhJtL+NDrehfiWpu9mtsVGxmn5rBy03v0w@mail.gmail.com>
- <aOx42iLkuyYqXBMW@MiWiFi-R3L-srv> <CAGsJ_4zSeMfiy=9Pa3A3UtdNigOc=w4eWc1KQpkBbD4AdvmPTA@mail.gmail.com>
- <CACePvbVfRCdGaqu4SgB0MnZWUgBRDH7VJxs=XxrLfdqjU4z4Dw@mail.gmail.com>
-In-Reply-To: <CACePvbVfRCdGaqu4SgB0MnZWUgBRDH7VJxs=XxrLfdqjU4z4Dw@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 15 Oct 2025 12:29:38 +0800
-X-Gm-Features: AS18NWBsciOrvSLoH8Oapvy5UJKe0mw0QOMCocN0lLrRyuj-vM8BDufgeKaNehI
-Message-ID: <CAGsJ_4zzLYyGDuZbMU2j2nqatjLi1kP_eJ8XA3eA1UqN3JgWvw@mail.gmail.com>
-Subject: Re: [PATCH v4 mm-new 2/2] mm/swap: select swap device with default
- priority round robin
-To: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: keyjax6e17e9qinw74bp3aws8mzfqjo4
-X-Rspamd-Queue-Id: 8FC26C000C
-X-Rspamd-Server: rspam06
+Subject: Re: [PATCH mm-new v3 1/3] mm/khugepaged: optimize PTE scanning with
+ if-else-if-else-if chain
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
+ richard.weiyang@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251008043748.45554-1-lance.yang@linux.dev>
+ <20251008043748.45554-2-lance.yang@linux.dev>
+ <3982686f-908f-4f92-b3ae-e6f141e617ef@lucifer.local>
+ <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Stat-Signature: gc8gctsnipzozezjt7j9dhiodcu4oyok
 X-Rspam-User: 
-X-HE-Tag: 1760502590-79180
-X-HE-Meta: U2FsdGVkX196Mv1zq8NhXfWTG+u8OXRk1tOd+RLbIoZbxNYi9vucmBY6etKK1N1pSg6VXHnL9mxrsGbtjIlCpMGWU9lcJxcjaRNjLn47kb0EfodNPUM/KK10MWd65x5hPrTKdcYflwerqPRXLsJXCpmLymZxyAsjxyorFPZEG85WArkDLgJ5LDt9foNtmgYBAAO/MKEA6wixCAEpnYWRYR3hWuhiTIzyMHZwZ/Z4ILdWcUiOq5BnHeCowB1kQTmQV+h4cmEbpjV0nmjMMTNfAL/h2JnLj8PyJvetGLSnYJO2spDG9EHX+GO2jK19/+AxggXLjzLSsVwBo3wQPlSJGtLRHGl8sQEZFapxmi1xni6yz5LY7uHgDsQOqkzoAh10voV1bzdSznl9PlYZTW8UeDPeFkHTd/Si1LRSvGBiI/rG+KtLfUo9w1ltQC9Q+wPUrfbjd7O56zcQ/Hvl/Ocn6Njv7F+hdQckHejLh3vEHULwBvMSojRcxJIoUPhXXJhJvyrzYn/6bR9+5lEEuxZLY1RAcoOsHAPobKwOdsJm76xDRfo1K1PfbtO7kdQc926qBCSLhxa1yiAK+wGxXhaLV0+Eq+Ifb6eF++KjNKh5fz9FWhtH8/pG+/opnI9y6MBVwUBniGaE1iOhCsDN8FIMOa0fs28K63P12T68g54iyM7NPskRzhp3UYwMOX3j03D34i7jeOsSYEepQlHjbcbSHlWwR3AdonOrRRxFB59Xv3acpu2ZR+1PQNfAyWjtCz5orYLAvxB7pZPtoVXkiv27eHcrsQpgYYDGUG6eZzhypNwveWPM79Gi4mYTJ2ohTPCDl9A96vMJPjWDTtZV/MdORGXzPMjrhWS5Q9u9WNhkE6skOVOxnBq5VSzhik98I7XeXKKkIlld76W4S9drcQzO0zy3w9f5PqGYzRmq+h1s7RBL8g+0NeUMDJKp1J1wC7G1bLCMXvOxsE4ex8w9q2Q
- 5GVOvXi5
- 5pwK6hr5PwawGP+QUt3MybseTVui2FwlryIzLqGQyQjJ1eqvz9KIH5TzOgIax4KS55A/OVGtWcijAt4xJRvlKVba7tse7Axh0Id8g/ZTs+wLEGFm2vpt/3w9Lnuejyow5P/fdGzWbZX1j1GoWQEGCKyVNN/p3z34cXzeDimM7CW017XaOck8HIMix/fAqagTIbw4meuu+vOl58YTz8ueeVgGLATZcE0N32KSTYug8kajCGwtqZMHn4Nbwx+oMpyYWiG2RuuAG+mlUDF+W7noSvqoxK1ry2jc5K9N3JQhcOgOfzLQ0q80NkAP/hdsS7v8ut6J4/2G579xuJdq53C5HSuxRTWD1cQsxfulRAPvRez8Y2QCSUhkhfk0dnOt5pTYoiTFRvnyb4ACoC2DuFrcrgVNTAA==
+X-Rspamd-Queue-Id: 642551A0006
+X-HE-Tag: 1760503786-911479
+X-HE-Meta: U2FsdGVkX19g2EEsRJEp47+9/14iNb+c1i+MAIybcwuzBuWQoKDbz37PzdQ8Pe2fdsWAmKKLQRejCo3WYSKGftHItehvPz3NUvq1iBYguKIiuAeidZweyEd3eID1mTW2PafDO23DZBbqWBpdSmJXYIpZkHYo2O2VDkwbT5jKC8E52b2kUWCEf7TRCiT54pkPruVm4qGU3F4uF6WJuKmfn48ROQ0IbpT8reTsJFmilKW1tSqoOLokRxSF0ZXSfKBrjLOHU0WFjVH9T1wyDGNItrEdP0mk+R1WTFWF/EITh3EkniPgYZG//4IDW8/Lmz6A9j4nc8dgb4+GluMWefsw8GBqlhyMcfPxPREpvwADs07HXJEfgDAMx4KOCfmoy68zrYww9JQXmtR6if7k1DxK7OImYG8TRjS3iZ+mNe6KEtaE5DdO32VGluwIF/Td3Nyasy71kRTXedr6SUyS6baWuo9pB8Y1iS69NCS2pWbCTkfG/TlDp0goGjyq3YsZWafo5qwWGuGR88es2RpXK/hWtHjgpAIf9UEST48G57XEJKJ9zib+iYpjpBQrov1635PUIxbjAkFVfh++KhuP6ZvTl/p4ArgmToC0oOREdPhil33vZdTaVOKqpHJVmD1qTwQLZrnOAQHS5S1GZ6JevFWTzcyez5+C1wH059MGUoYIAeo7qp0YrnIbyeAwPsOCruTdqIgGVKLrigUkEa0Dhh0l4Doqwq8KivUHNmxpwcppJIHu0YHzSWJXjQzHD8L9AJVd+GqE2hMVyVL0faV+KHq9HhBWQqu7ydm+efJrpJvpgxLKV4Q2EQ1I79ZFppdvGndlVg3pMf/Ru+MSL88Gbkj+dTXL4i2hHmlCQqSDPlAnacgRutiZX5VZdQBe1SHTr/a+fjzCBbXLz510tmUFtgdG63t9t44/krXFCH557vJQWFUt8tehhzk3O2VtRAyTMI5/adO71r3/22jN3SHCfI8
+ gmbj9n9z
+ GA9Y95vzgTYrC6w/KLSQYXrJLM8b8TSZ9MjoEXy4woGu/yrvqlmGzWR0Fkh9JxrzqqrXhPPE9HQcNGy/7bfb9YKEDONRSZHejtsRQW+ArcuuBKbBAB5JyC9RfjO3KfqjIIIKAxDLShP3Xe9MDiuVG/E+S8XWN7CKMXyGR6VC3BDXWuk2bk4hB2qxU76xr7emzLSwH0QSINXYeeChdBeKTeA0u0Z6fjyz6RskY0y176+eRmU9zDh47e5Jw98f/O4AC/05RHmlTz5K7xUIA+Byq11VPrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,78 +97,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 6:49=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
->
-> On Sun, Oct 12, 2025 at 11:17=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
-rote:
-> > >
-> > > However, after commit a2468cc9bfdf applied, above behaviour had been
-> > > changed. I can give an extreme example, imagine on a system with one
-> > > NUMA Node, node_id is 0. Then I swapon several swap devices w/o node_=
-id
-> > > value (namely node_id is -1), at last I swapon one device with node_i=
-d
-> > > 0. You can see the last one will have the highest priority to be chos=
-en,
-> > > then other swap devices.
-> >
-> > I assume this adds logic to prefer swapping to the closer swapfile firs=
-t,
-> > while still maintaining the old behavior for non-NUMA cases.
->
-> That commit a2468cc9bfdf changes the default behavior of the swapon
-> which does not specify a priority.
-> If you claim the revert breaks the user behavior, that commit also
-> breaks the user behavior as well.
->
-> > > So I would argue that if people realy care about the default priority=
-,
-> > > it has been broken since 2017 when commit a2468cc9bfdf was introduce,
-> > > and complaint would be heard since long before. While we didn't hear
-> > > complaint, means the default priority doesn't really matter?
-> > > >
-> > > > Or if someone sets up Linux assuming that a newer swap file will on=
-ly be
-> > > > used after the older one is full, then this change would break thos=
-e cases?
-> > >
-> > > Hmm, it could happen, but I doubt people really count on that. I woul=
-d use
-> > > 'swapon -p xx' to specify explicit priority to make sure it. In the c=
-ase you
-> > > said, swapped out pages will be swapped in, it's either not guarantee=
-d.
-> >
-> > Personally, I also dislike the behavior where a newer swap file
-> > automatically gets a lower priority than an older one. However, since
-> > we have a rule to never break userspace, is this considered such a
-> > case? Or at least, do we need to update the man page as well?
->
-> See above, we should update the man page as well.
->
-> If the a2468cc9bfdf can break user default swapon behavior by
-> introducing node_id in the first place. It is totally justifiable to
-> break it again to revert it. I fail to see the logic why the breaking
-> rule only applies to the revert but not the commit introducing it in
-> the first place.
 
-I=E2=80=99m actually referring to the part below, which changes the default=
- priority
-to -1 for all swapfiles while it used to be -n, -n -1, -n -2 , -n -3....
 
--       if (prio >=3D 0)
--               si->prio =3D prio;
--       else
--               si->prio =3D --least_priority;
+On 2025/10/14 20:27, David Hildenbrand wrote:
+> On 14.10.25 14:17, Lorenzo Stoakes wrote:
+>> On Wed, Oct 08, 2025 at 12:37:46PM +0800, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> As pointed out by Dev, the PTE checks for disjoint conditions in the
+>>> scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
+>>> and pte_uffd_wp are mutually exclusive.
+>>
+>> But you're not using is_swap_pte anywhere :) This comes back to my review
+>> quesiotn on the series this is dependent upon.
+>>
+>>>
+>>> This patch refactors the loops in both __collapse_huge_page_isolate() 
+>>> and
+>>> hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
+>>> instead of separate if blocks. While at it, the redundant pte_present()
+>>> check before is_zero_pfn() is also removed.
+>>
+>> I mean see review below, I don't see why you're doing this and I am
+>> unconvinced by how redundant that check is.
 
-I agree the NUMA-ID swap patch (a2468cc9bfdf) has partially broken the man
-page, but only for very rare hardware whose block device has a NUMA node ID
-(yes, the man page should have been updated back then). Now we=E2=80=99re b=
-reaking
-the man page for all hardware, so I think it=E2=80=99s even more important =
-to
-highlight that in the man page at this point.
+Ah, good catch! Lorenzo, thanks!!!
 
-Thanks
-Barry
+>>
+>> Also this just feels like it should be part of the series where you 
+>> change
+>> these? I'm not sure why this is separate?
+> 
+> I think Lance is trying to unify both scanning functions to look alike, 
+> such that when he refactors them out in patch #3 it looks more straight 
+> forward.
+> 
+> The missing pte_present() check in hpage_collapse_scan_pmd() is interesting
+
+Yep, indeed ;)
+
+> 
+> Likely there is one such check missing there?
+
+I think the risk is exactly how pte_pfn() would handle a swap PTE ...
+
+A swap PTE contains completely different data(swap type and offset).
+pte_pfn() doesn't know this, so if we feed a swap entry to it, it will
+spit out a junk PFN :)
+
+What if that junk PFN happens to match the zeropage's PFN by sheer
+chance? IHMO, it's really unlikely, but it would be really bad if it did.
+
+Clearly, pte_present() prevents this ;)
+
+By the way, I noticed there are other places in khugepaged.c that
+call pte_pfn() without being under a pte_present() check.
+
+Perhaps those should all be fixed as well in a separate patch?
 
