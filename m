@@ -4,91 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB743CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:37:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A7ECCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CB598E000D; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
+	id 82B5D8E0016; Wed, 15 Oct 2025 04:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47BE88E0002; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
+	id 803438E0002; Wed, 15 Oct 2025 04:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36A708E000D; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
+	id 6F2728E0016; Wed, 15 Oct 2025 04:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D4E78E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 59A6E8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:40:17 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B97C65CB8F
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:37:41 +0000 (UTC)
-X-FDA: 83999695122.22.02427BF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2DC6B120008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:37:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EFjGFU8o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00F66C0BC6
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:40:16 +0000 (UTC)
+X-FDA: 83999701674.22.EF44627
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0D54418000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:40:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=axwzjcd4;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ptesarik@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760517460;
+	s=arc-20220608; t=1760517615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lm93Ddf80BjY228EEe7TxGH4rOs6twm7fCQ+semD68o=;
-	b=78r9GI3NYjb+cTrAkKc9KyojBLMPdRIfkYVBX+c0VnNLhClOdpZxhixslMj3lZICmMtPWS
-	PFurqytsaavYwDU5phf2m1gRmRVehDuFAF58lIQOcYSZaP0Mme56qbhpUz3yBDs6fnT8zD
-	TZbHLtIoEoU2sPdr4GxJItuk9ToDep0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760517460; a=rsa-sha256;
-	cv=none;
-	b=Mgwl9K5gh8prVPM/0AP7yR9MtMgeGxBLzvM/NZBV0xvjybX4Kz7VMwHQXIfr/wkcIzOrS0
-	DGvEffSaLhicgUCWuHMRCkGklnaVCyRqoOAhmXMq5/B5qK7B6kgs0MiPwAmnVcLKO0HXqH
-	In961HtK12MjZBUK3++on4KK6Cgb6mA=
+	bh=fDsY2VBapz+UptqvTnMcZt7pORUL703BjZYmcP5YKY0=;
+	b=eiOqy/wOxfJg7cAjb0kNChesNiWgvnf1X+UIvcaUZFFDwDO8sCSxodEjLyeuV73dxYc+GK
+	X8OG2wyyB5lrYKbrdJO8ii4GF3CRUtyQNE2k9NtHB5QOkjs9gP2Vv2C5iuts7KY7/58DnZ
+	oLaIHx8WyEfZ2uRiotQoc/PFRl5OGhw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EFjGFU8o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4AD2962525;
-	Wed, 15 Oct 2025 08:37:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126B1C4CEF8;
-	Wed, 15 Oct 2025 08:37:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760517459;
-	bh=gdYDtGzxadCRywoKsNND96qlV2l3VYovlotLaMP+lMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EFjGFU8ohMjiYW6cjmOLcobwbSKk44/bYESuCJCcbLXt5sAFPb/hStV94AooI+6Mt
-	 +fKKoCiAKqVBSKJvDpNwYs59gKqdDNvXz/boQ6Vv9pu5vhAGnklQolhan/yVmnHVNY
-	 /8uAV7aQ5dIhh2x2wJXfSnGp4Ltf1YXsvNvQk53/bS1sMY+0AeWDkwJwobY9ZxBYzV
-	 y2hU2hxoL9IoHhV+2PN6hkdlFJ3QPPXKTjW9ubCtx7/DefVgbZ+0OLK1hQmYH9tWr+
-	 x7/1o6lvTVTCdiMUWIvNEmTk0zqQWjhe8IsJravYG0L2DeZmrvItK8zzuGSh6Q2vcg
-	 jJ9O811wcKFZA==
-Date: Wed, 15 Oct 2025 11:37:30 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
-	dmatlack@google.com, skhawaja@google.com
-Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from the
- buddy allocator
-Message-ID: <aO9dSizvhyTznMHZ@kernel.org>
-References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
- <20251015053121.3978358-3-pasha.tatashin@soleen.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=axwzjcd4;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=ptesarik@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760517615; a=rsa-sha256;
+	cv=none;
+	b=XCMQB0CynqVG5Nduo/7GRsPIZqZHi0UYCWWoW6rtNIIEDTPC48dKPKHmprSoa/iY/S8sgE
+	KaDHPldZhweoDE2MXXtaEmF+pz9KnSnywVUbKx2id51NW/TMTf3JLjevYYOwgNNXRWnqiy
+	Qfr+pMSX9odgvXogseXgaQYDw7veWcw=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3e8f400f79so82903266b.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1760517613; x=1761122413; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fDsY2VBapz+UptqvTnMcZt7pORUL703BjZYmcP5YKY0=;
+        b=axwzjcd43oHWvhzeWZw3xKVyQHMmrCeUSe/w1L/ejh6FwIp6hoJ2l4Vd0ohUcejgFB
+         5Cz5Fo49OBWqSTUIB9iPhuUOglEiR8fkl+CeIcVTASDzsAmMGxie4YqxC2pPGGsnlLbj
+         RHTl3PnJD6AYzEYsH/FISQDW7acviY/UnbbQp///sAvQhQAovgiTaBP9kjw8WuU6IZY1
+         97x81EkMibLGbN9ipkFd3SBRUHyVnh7bjo2m55rhqWj90TDfGrLEiGoyoi0AfYB80m2z
+         tBaTmWgOKSMLbpYbwNT6nK1ZYvgJxZd7NpdkVr8Q3oJnc5ndFhyj9BXdoSOW0kmN9JQx
+         x3mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760517613; x=1761122413;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fDsY2VBapz+UptqvTnMcZt7pORUL703BjZYmcP5YKY0=;
+        b=GVScaqmJZzrcjUKF+ufkUhwsvytXpCZ1lWykPu1gSx5DxntssxspHm3RPEnp0Vn0q5
+         2+UI5OkbAjGd01Kr8wX6MZ7wUAEMXnFWi60L1eezADCttiTY9z7RMKKH5m/n7oP/HTUc
+         JYJ53ENdg6fHA9fvz4xcjAmZ/ZUWwFOiVSUc7eNCq1i+aB2CAwCU+phYzj2bZ0lvuZ5a
+         FKZmTzhCvWMb/P2q320SJbwIi+d6Z1xN1DBxqR+A9Erwv3sdqMBBY+4sXtMkFrUfj96Y
+         UsEXPEfbXpfGiMFu8rh+WPdrwzlUBSzPSUOCnXGcmpXBSqsIu+83Q7KFNxI5zr1s4mxZ
+         izaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWR02FfN9yyEDfcOMDeG4w0UUiVN0RN9kcbQG7b4ytaXX5+JAkOw5fBZAeyY79ketYzxkAwesXtGQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzgqu+nY158BiIg18AyjjtgM2Lxcw/rNsHpz/BBi2en5DiEMTUo
+	HdR5pgFPs9uo37wmMXORNAgfkGKR6d6W5cQ2vhKUXZVQOiT6IuRdG5aSF8K7Cl6BfN4=
+X-Gm-Gg: ASbGncvxh6UV1TCpaIVV/6W2GBkOTSl6A/eb6tFF2uRiIL4bCwGbff+TMgXi5lCeQ9r
+	jl04ejXYvOLlRFqlfK/Y9RTkxH2fjMsDsT9mxRigcsYSkSxL0aaqaAhia7UTUgra2FEcJyoKYg6
+	UtV2+PxxrLW1vpfvvbYJTlc8nzpg+uz45uVuAAMjUbZu3FxdC08TwZgbnei3oP/L1snxY6lGrwU
+	ufy5tRoXZHK9kjf/3/Cu02vhLnq+sTP57nIeN23tpHxiyXTIQjKpJbuzNUYOVYkbzogCJ1M5F94
+	FNHjBuTf39WrVFa0RqcygYw4IP5aaTRH6qrp+leVLfdKNahSkdlkSS9gcmKyCi8aORl0ZxpgYKs
+	fLO/kQed7erNjwnJWV3bSK1lYGD4Woj6UDwNzP4PvOScaKy5Sk5521QGQzMmuUCblGp2yuf+q9O
+	MfEbmmWesYZkfcUTPfFbUKI5mTFnCyCITq685HJsfoSWxT0Gsbg08IPU3APw==
+X-Google-Smtp-Source: AGHT+IELGd1QIrFF53QcX+I76rx+ZG0TLeQwEgYCUqwVFMJIjoxdZrhJJkMTqEZ8KN0QoxSWe07NSA==
+X-Received: by 2002:a17:907:e8f:b0:b44:fb0c:5c37 with SMTP id a640c23a62f3a-b50ac1c480dmr1491862066b.6.1760517613246;
+        Wed, 15 Oct 2025 01:40:13 -0700 (PDT)
+Received: from mordecai.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b5cba45afc5sm170229166b.37.2025.10.15.01.40.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 01:40:12 -0700 (PDT)
+Date: Wed, 15 Oct 2025 10:40:08 +0200
+From: Petr Tesarik <ptesarik@suse.com>
+To: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Suren Baghdasaryan <surenb@google.com>,
+ "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Mel
+ Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard
+ <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>,
+ John Stultz <jstultz@google.com>, "T . J . Mercier" <tjmercier@google.com>,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Subject: Re: [PATCH 2/2] driver: dma-buf: use alloc_pages_bulk_list for
+ order-0 allocation
+Message-ID: <20251015104008.4bcd99e7@mordecai.tesarici.cz>
+In-Reply-To: <CAGWkznFG2_WGmLRmHnjV-49iTX0mrt9jxQBzZYK=K9U7eKJD0g@mail.gmail.com>
+References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
+	<20251014083230.1181072-3-zhaoyang.huang@unisoc.com>
+	<87953097-a105-4775-88a5-9b3a676ff139@amd.com>
+	<CAGWkznGN7W-txq_G+xpZ6DtH_1DNorYc=CxqUjebo7qfB4Sxsw@mail.gmail.com>
+	<ecba7133-699c-4f3e-927c-bad5bd4c36a3@amd.com>
+	<20251014171003.57bbfd63@mordecai.tesarici.cz>
+	<97da9924-9489-4d30-a858-8ee5c87bc031@amd.com>
+	<CAGWkznGnmb=8GgcrfDvY2REHdRZYVXZy=F3thXhK0FaSoiK7tw@mail.gmail.com>
+	<aO8TKQN6ifOSMRSC@casper.infradead.org>
+	<CAGWkznFG2_WGmLRmHnjV-49iTX0mrt9jxQBzZYK=K9U7eKJD0g@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015053121.3978358-3-pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DC6B120008
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 3h7p65eam167qs6m9b1u3i6fkbumiomn
-X-HE-Tag: 1760517460-656203
-X-HE-Meta: U2FsdGVkX19RGmPCweb9irXnp8LTnFCplfFGmn9LdSDuDd12hQlSG4exqrRQhRIY7stRlZ9Zn02xRumjGTLWpACooNNQYvgh27RQcrw6V6q2UkwDaMAlMxCUs0IXbSwByEMTOJCJr/BA+YkvMCnNt7GcKIRxjw09KDx4ywnGart09Qgrf4MhmxMMSkXEpT4/vtK2dCHeBah77LExXd6gBGDDhxegXAZWyXP3PR1elfM89U3Je3Zo95obVjYie1LcyPVnozN6jyTsNpxWqwnD6bPzHipZ9qDPEMtEnpkFLUy28R7D/d5LXHet/1O28xeXI0Ii8vsj4opgEURcTbTc0pRQTIpeW6HjWmI1lS7j9Q3vVY/FE1Q7gTAyDND0/jnRgq6FmyD83x711gAlNFgAjCtQ54PmCqU8Hq3OUbCWtquMk3vGKgiSmxZmSCkLDLKgfbRaDpUeQKrvZCiWXqmg/WFJBMyZrzQyxQTbjCEbXBhcWg1GdK9H2i7Hv8OAY89Ole6rE2uP44AzcRMaDXvWaKycmQeKI2rEuFIUsDa2U13zNv0KKLLJDx4yas3PHuJEDS3tNVlj0zhrwCi04ti8obeecwzBUqoH7lth11TbU5ZYguhYHwYnAEaXVZaHx+MXN7oIwvltS5FPKj7HRBsVGcr+1L3JAX2IJTZ8r0dGzUjVNaSjCL1ZOclt7BhceT1JoYfOD++V5Hc6FQ0S3XEP0lUEzabDJni/vQQgNeGWxwCnu8HLH04mvMtmd+V4hdq8E/VNiFt3Q3CJv9rKSdzVQvY2Mejk7lEa7Se39JFV6d+wuwpuYPJirJADCxfhn/B6OY5Q06zWOZH+3pjdfcHVoyc5CQ5nRVHg1IMew83GHwQ0Uw3ESv5Ww5Xu0p1jdocHLOAVrv5j3trW0lsqgYYVSCvKfazFkjGV6LcclPatraKqf1OwahH74adk+Ya/TfQtCwm9MI41c3HeTaUT6ze
- 6t2+dpXO
- D5t/td10ec2coc3Ituto6I8srqaUpcJO5ve8a/ZS5jKaU671+wGeF0uC76prnORJZj2GBzam5WJtB0V7LXAnuY9abzsMC+cdS4IeKuODaktk+tnqGZt1Vr7aM4VeP17X4Wgbzx0ifIZqwDh9gWpiBzNmRsT0cetc8A0fSsMlRQgKeGhqwbtdvQ4CKII0ksOdK78WE+SeFt3HPkgo1uwowyscnnEpFdWDWboYzY0BFZWCBeYE0TFdcJA5DksOG6bw90qlTAwMVBfr0jlsOfqwBRcgEbA==
+X-Rspamd-Queue-Id: 0D54418000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: zobnr3o6g7tu7gxza59fkwqx4pxzxmf1
+X-HE-Tag: 1760517614-300456
+X-HE-Meta: U2FsdGVkX19w19dxeH8S5sCwsdtOU8LCPzJlsumDM6Fo5kVwbrLKjgZPHUV0kC5N0qJMIpMzqr9HCMySfHT7AlUaMrECPhlBr1K9ZzokgyjQX/f+QulGCk/tPJ3gYdts1h+oBGivPacZwIOqsOVh5RahXYAvD7MNDrAxS1ofqTkC/j8F5MP6wGiktf21sQzq7+EpQoQ5ZFpFaLarJAuhyDanZyxctQgV9Nh6wDi9/jrGbuGd08OP0yc2vT2/bIk+GtASfDEWe9H9SqTQL+T35yG1pSye8pQhP/Ue2i5tk82RmUoqUBMKDui1mXD5+Cg1UFS7yjdQboSWT5x9sWKKuMhK1lezBFELE5b1lsLuNILNYqkB1+970cln18fGO154jKs+isgLrQ9mMyGjJji5yrmbpM3jqvqvfcQXX8qs92S136EQGvntCR7AKMHApS50PNem8wrd1bFMwCctqZKfUA20ViCcsrFLGSKfTBpmgFab6KFBeAwhBBKgaD2lh1AEZ/5fe+bVHA517hnHjW1OGNmp9UD0fFZ9oIefouZ8iDY7Huh5oJ2FsTjR70gGeOhSOuNYHKOzjqctMeymyYZeYyKPNheRxs6pYo0oZLYC5Y65k6dJopgq30Y/6CK5O/coM8wT5MnBOcKA7I4hxHCjeM64aHDlO/Oj0uF90J/4bM1rLdN7U3bWlownba1Fo4IuEQ2NJUx8ZfqY/tmRymp/1NA5HdWhZ5Dnhusg6NGjQtlLydQuosYyWrOHhe/aQAnlJbx2nYJ1bcQ1QcFTiJO/PsKacCC7kHfTq428nXK/IvnZU0OI1nAsbaRiDp9fOziwA/LAkR2+S3wO2onpLjF/4/zVrUE8vjPJ5Tw/m8TQk7WlOzqEjgL5xiYpZGMMcp51BrLm1nKQmY8G0SepDGBm3C92YCenXFyS5K7LkcHywDLsbaE2si1m3OQXbNB+KAjjwB6lr/2fpny2YRIg2cV
+ B2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,97 +139,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 01:31:21AM -0400, Pasha Tatashin wrote:
-> KHO allocates metadata for its preserved memory map using the SLUB
-> allocator via kzalloc(). This metadata is temporary and is used by the
-> next kernel during early boot to find preserved memory.
-> 
-> A problem arises when KFENCE is enabled. kzalloc() calls can be
-> randomly intercepted by kfence_alloc(), which services the allocation
-> from a dedicated KFENCE memory pool. This pool is allocated early in
-> boot via memblock.
-> 
-> When booting via KHO, the memblock allocator is restricted to a "scratch
-> area", forcing the KFENCE pool to be allocated within it. This creates a
-> conflict, as the scratch area is expected to be ephemeral and
-> overwriteable by a subsequent kexec. If KHO metadata is placed in this
-> KFENCE pool, it leads to memory corruption when the next kernel is
-> loaded.
-> 
-> To fix this, modify KHO to allocate its metadata directly from the buddy
-> allocator instead of SLUB.
-> 
-> As part of this change, the metadata bitmap size is increased from 512
-> bytes to PAGE_SIZE to align with the page-based allocations from the
-> buddy system.
-> 
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 23 +++++++++++++----------
->  1 file changed, 13 insertions(+), 10 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index ef1e6f7a234b..519de6d68b27 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -66,10 +66,10 @@ early_param("kho", kho_parse_enable);
->   * Keep track of memory that is to be preserved across KHO.
->   *
->   * The serializing side uses two levels of xarrays to manage chunks of per-order
-> - * 512 byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order of a
-> - * 1TB system would fit inside a single 512 byte bitmap. For order 0 allocations
-> - * each bitmap will cover 16M of address space. Thus, for 16G of memory at most
-> - * 512K of bitmap memory will be needed for order 0.
-> + * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
-> + * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
-> + * allocations each bitmap will cover 128M of address space. Thus, for 16G of
-> + * memory at most 512K of bitmap memory will be needed for order 0.
->   *
->   * This approach is fully incremental, as the serialization progresses folios
->   * can continue be aggregated to the tracker. The final step, immediately prior
-> @@ -77,7 +77,7 @@ early_param("kho", kho_parse_enable);
->   * successor kernel to parse.
->   */
->  
-> -#define PRESERVE_BITS (512 * 8)
-> +#define PRESERVE_BITS (PAGE_SIZE * 8)
->  
->  struct kho_mem_phys_bits {
->  	DECLARE_BITMAP(preserve, PRESERVE_BITS);
-> @@ -131,18 +131,21 @@ static struct kho_out kho_out = {
->  
->  static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+On Wed, 15 Oct 2025 13:52:57 +0800
+Zhaoyang Huang <huangzhaoyang@gmail.com> wrote:
 
-The name 'xa_load_or_alloc' is confusing now that we only use this function
-to allocate bitmaps. I think it should be renamed to reflect that and it's
-return type should be 'struct kho_mem_phys_bits'. Then it wouldn't need sz
-parameter and the size calculations below become redundant.
+> On Wed, Oct 15, 2025 at 11:21=E2=80=AFAM Matthew Wilcox <willy@infradead.=
+org> wrote:
+> >
+> > On Wed, Oct 15, 2025 at 09:12:07AM +0800, Zhaoyang Huang wrote: =20
+> > > > Could be that we need to make this behavior conditional, but somebo=
+dy would need to come up with some really good arguments to justify the com=
+plexity. =20
+> > > ok, should we use CONFIG_DMA_BUF_BULK_ALLOCATION or a variable
+> > > controlled by sysfs interface? =20
+> >
+> > No.  Explain what you're trying to solve, because you haven't yet. =20
+> Dma-buf works as a memory allocation backend could loop thousands of
+> times alloc_pages for allocating order-0 pages to fulfill the dozens
+> MB demand, this commit would like to replace the loop by once
+> alloc_pages_bulk. Whereas, alloc_pages_bulk_array perhaps introduces
+> extra memory allocation along with direct-reclaim which could be more
+> expensive than iterating the list. so call back the API
+> alloc_pages_bulk_list as well
 
->  {
-> +	unsigned int order;
->  	void *elm, *res;
->  
->  	elm = xa_load(xa, index);
->  	if (elm)
->  		return elm;
->  
-> -	elm = kzalloc(sz, GFP_KERNEL);
-> +	order = get_order(sz);
-> +	elm = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
->  	if (!elm)
->  		return ERR_PTR(-ENOMEM);
->  
-> -	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
-> -		kfree(elm);
-> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm),
-> +					PAGE_SIZE << order))) {
-> +		free_pages((unsigned long)elm, order);
->  		return ERR_PTR(-EINVAL);
->  	}
->  
+This does not quite explain it. IIRC you mentioned allocating 18M as an
+example. The ideal outcome in that case is:
 
--- 
-Sincerely yours,
-Mike.
+- 16 order-8 compound pages
+- 32 order-4 compound pages
+-> total 48 calls to alloc_pages()
+
+But presumably, that's not what happens, because fragmentation makes
+(some of) those order-8 allocations fail. Since you talk about
+thousands of loop iterations, it looks like even order-4 allocation
+fail in your case. Then I agree there's not much value in trying to
+avoid further fragmentation, and after so many order-0 allocations,
+it's probably also pointless to do memory reclaim.
+
+OTOH I can see why the opposite approach is a bad idea in situations
+where fragmentation can be avoided. To make things even worse,
+alloc_pages_bulk() will rather split pages in the preferred zone than
+try allocating from the next best zone.
+
+To sum it up, Zhaoyang, can you please describe in more detail what
+happens in your scenario and what you believe should happen instead?
+
+Petr T
 
