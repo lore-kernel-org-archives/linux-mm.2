@@ -4,108 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305E0CCD199
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A61AACCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BA5C8E005E; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
+	id AD3858E002A; Wed, 15 Oct 2025 13:41:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86AF58E0005; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
+	id AAB568E0005; Wed, 15 Oct 2025 13:41:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A328E005E; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
+	id 9E7F38E002A; Wed, 15 Oct 2025 13:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BDF08E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12CD51A0256
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:16 +0000 (UTC)
-X-FDA: 84001032192.16.194464A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A02C980003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="O/AIKjGH"
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E2608E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:41:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21B7085A90
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:41:08 +0000 (UTC)
+X-FDA: 84001064616.01.2F87087
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6DE248001A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:41:06 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHzfevzY;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760549294;
+	s=arc-20220608; t=1760550066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OHD1PbWJgOF9XOuL5HA73G273J12JtIymtajQ7fqsQ4=;
-	b=eCKR7zTXKvEu+xGDsO5mXHXS8cVuQTpb4aqJr81x36WwPQQ4as5hb3w0q5gqeVOKbH1sc8
-	40uZd4ppY6hnylPFXVuDaBWXdDubGkZvlJTs8pK/2yP+mMSarBTr9X9BreGBIzq23RjRWV
-	Bf+mpPuJ1U5QiVfDoEX2F1rlvNj7q4U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760549294; a=rsa-sha256;
+	bh=KSMG89Up68NYQoqwU5zmfZ9Fdp5+8Obj2RWgs6WsWME=;
+	b=6R9q3CbSIawSImriwLW6lBDqqqHMWpnjtHWLjEgfLvMKOpr1jHffRT/7sI0M0UuRdKsJGP
+	ecO2X6AoNRiq5y6UomHMYlJ9S+P0T9ztRgbpcN/ZA/+wRXPMm/s+Syd7LxQORx7ykeoP/y
+	kzkhQiYLnjfQUOWrFV2ygLJ+yhaYKdY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760550066; a=rsa-sha256;
 	cv=none;
-	b=7PeuCk4SWcba1B+31z7yAnuHcRE0T0a6cRvtd7UjRL/C9FiBPmoRfnHHrCa3YkgQkfkFzw
-	VYgQLiy9dnkWS4xgRli/YEiNklJKC2K9UEDn3SgGVNQcLYtDHU2lZTI7I2QmfG2P+KIOtV
-	vAVwB0+UxfOxXOTzvVO0MGaM1K648G8=
+	b=J96lsmZFmksVKpUe/llou5Akk4p0DLrd3D/YkOmXfzkl8hclrCkEV+booCFDKGA6AJtNIw
+	yBIcTXdrMa3320URheroTk73GihsGTWYDPYyY2fBvXGWSjI3/KWCCqZW3EKicGNZR/7JYV
+	nSn2nVXtIw5AOkD3Fi+QyKYvBy307mQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="O/AIKjGH";
-	dmarc=none;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=OHD1PbWJgOF9XOuL5HA73G273J12JtIymtajQ7fqsQ4=; b=O/AIKjGH3q2vAiI35ZMnFpDXL9
-	C+s4LMohbjn1T1gowDff1QATHCAKFtMlK/vQLkE6V3EMtM4PyVK7+qNjjH8p/SMgAOrlYDh7E5JNj
-	s6YHmSgHX3PZeq5i2cQTrpXa6f/EsBMgS+kaQRLCyHVc51UqP5td4HDZnJ8pJHHOP2BQCs6Kdb3dl
-	hDdhTVC23HoZ8cjO9DV1mJas9/6i26NP5x/fG5klzP8VqwqGrFQpNOM+S4KcTQZO8AUi9LAwkUeyi
-	W84rWDUlfmhJWd6nz90Jtg0an/C/x6jqBk720u/RVEgVMVk7m7XzfqEOkFEtR41Jp2xUsiPZ+01/Z
-	FUrLjK/g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v95I1-00000002tYN-00lF;
-	Wed, 15 Oct 2025 17:27:53 +0000
-Date: Wed, 15 Oct 2025 18:27:52 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XHzfevzY;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E63BC45359;
+	Wed, 15 Oct 2025 17:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7ABC4CEF8;
+	Wed, 15 Oct 2025 17:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760550064;
+	bh=NZCrGB9nHrm21Ve7bIne00nCHgmzUU9E7iFs0ZquwJM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XHzfevzYzGfsGBPvLd4z4XdUC4PLoK3g/GVMdhXLOBq8o4Zi+tUsdJIMc07hl9w6W
+	 NqyRdZye2N68SjeHS0zcPlmfoCnTDjsBF2jB/Tdao2jRpEZv7IQbrAiNmXOg9BxriO
+	 IIaVeZdCy/YS4zw98StQ6b9SL6pv8xll0I5jHuRgj13hfsbvf1JKyddl7zxvv3YeU+
+	 VGv8IypkhNJmOEFgnlHH8QImVayM9XjtcDfAve9Vo64+2eLJczWtEXZyDZ4uoOGtBW
+	 OasDjpcr7moN799RUmRNXVQAtBMLDLHnDVmQGHCZd7OBhzD4t6uC21gcacq0TPBamt
+	 Nv7sXoK6NVyGQ==
+From: SeongJae Park <sj@kernel.org>
+To: wang lian <lianux.mm@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	=?utf-8?Q?Miko=C5=82aj?= Wasiak <mikolaj.wasiak@intel.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christopher Healy <healych@amazon.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v4 03/13] drm/shmem-helper: Map huge pages in fault
- handlers
-Message-ID: <aO_ZmA6yoqbzTKt9@casper.infradead.org>
-References: <20251015153018.43735-1-loic.molinari@collabora.com>
- <20251015153018.43735-4-loic.molinari@collabora.com>
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Rik van Riel <riel@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] mm/khugepaged: fix comment for default scan sleep duration
+Date: Wed, 15 Oct 2025 10:40:55 -0700
+Message-ID: <20251015174055.70060-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251015092957.37432-1-lianux.mm@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251015153018.43735-4-loic.molinari@collabora.com>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ckai8q61ubfhx8iz1aqgpn9aje9n5iyt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A02C980003
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7i9i1xsqj5tkz3pdjp9dq6zose6e4w89
-X-HE-Tag: 1760549293-648525
-X-HE-Meta: U2FsdGVkX1/OMhgu6W1eWS7Lihfx6DS2XeuTp1LRGyBJ4T8tVHzRP/28pIIoL3SuIrWtWWMgbz3NG4qfuqJlPh0C8YNHcktxqZ2xa8//IUBrxHi8NscmyCkwIQq6ILcihZQJ99EkQCYupzIC61+1AFGq5Y0sj61druVFXo+xPmxjSiCcvAuGmv8TYcUjKPY8r0oh8B4R4m5ZFTm+78p2yn2j//3Ln4haKlGW++cftxgSRLGWtJBbijf7BIGoLZkU0bG3kIzi9UHLPUa19nCb7g70K/3xIhx3pdz/cwRq6CqGBm/k6xOM2YTlnBaw1Uikw6nTUIVrj1qupBx2tWFCuuYWHmTEN6GZ/M4llSsUNZDvk//JiIMsUeRvGCtlJzdK45pi7UODoMpbFyqF13pL5i+s2MOSGxYEI6D+Y+HckJqCTq/78Cb0vz2Y89Z3FZ5O2IJznO1koZFX15eEo+yS5XwCCVd9Y2NoikdG8q6wdUzdgXX68XM7hyOb7JdrPISBIkh7D2itxedXvMW4pRYSPj2Y9frQWsVqAZMhZdXpR/RlY27ieajis8Nf62Y7yuGEOoEjZCWRrXGSc0c8+jV2Mw2GxPIesc4LcKuac493wwJ2VXemXNY1ECwaOB6g0eCLo2bYm8Qlsf5QIJ0fQmy/lZ1UvEYrZE2O2WcBGA4PLluvuE0wHzmHmqQWc+uAOMfSNCT1YLwuMVQR8L4JxLlxI6aQRUHaWN80Mni9Up7Wa5mPzvt/msdmIjtWZegq0Olg6Em+aGN0QpzopQcOab86RgfcaJ6ZU2MtnDfU/Hb60mZiTXZHLFiXM8lVXfv+aA0s2lNYYpzJedER9YnxBWeZjBf3TzMzh+F/8YMHzvZAvjHnivH6PaHaZ88YkI9Gxn3+do1Xnwb77aCVe07YW3AySRUuuLpUooE5x9lxr1vU5WFWEUzI/IlJMLPkB/adasaHNGD+1tO/rL/cAfcTchP
- uXRtN1Tq
- LQypqZuHKurSfCQyhVFLcX/FuF6iC8MoBPGVIkcnKzM3mk6LQkI4S+DO/Jm0Q7eIkBorZWpcfQ+9faKgXTR9wXhwlE3YJ2ynXvhHnJJVM82FDZPOds8ka/sJeaNtdSKLNXfgAV60Wzd1BWM7zarWQ/4+T6ZLnGAReieWOk3bO7C8Cxe5KbkEB0vWFUjDoWhrqdlpf7c5sT6E+SpQ=
+X-Rspamd-Queue-Id: 6DE248001A
+X-HE-Tag: 1760550066-337885
+X-HE-Meta: U2FsdGVkX18DL6Kv5fQVeK2tJoO+ekhcjPgDLAB3D7hGdp6F/dNKMLNRe15Cz4MjggYImrkRh4mdUULHWgV0JLjhL2WZXNF1oP3aY6TT9DZ2pDezECvqS0If8Z6PoNKCYVO8w+/qgOTvK74yQS0+877nsODXLy4ySjGKvx7qDIGN4Y5WxfkQ/gsJ3yFXHAxZ54cb+dVEozfCbvfbVo2uucD1OgPVPExzd0rlNQUB2DQSeyFNlvmJYQA+fWyDER6Rma57AzeUW4rc2TrTiPNWNYiZGpXnXjRtIKBC+1x/WUGgBXlOPZGPdfTjzI8f7GO8cZ7lT7E/whmBqkGgi/c1MWfHSZPFP2xRIXgYjqEmivlPgUTsVojizGsQ+rWUGQ7tYzPX1lfqRU0OUmFVYGXfXP5bnmXw/iljMANjWGKADEd7Jgvq5FgJ6SJQ+3gzuD9tYmP3FEn/hSzuabkAkYqqaq3TkrGeCzjN3nKnM/Lgdt2dQ91DuAVUr2OicEuTbF3NX1vZF4UNriZWiQ5ywVNWhU+Fk/kUAS0SNjvOwIRUBHptftdPF66YXgnm/9vAQt7MsJby+9MsEeQQdE11h9BngaFqGirSR7TgVFAvDyJ70ZcT72jSMswcyJVLE7cE3KXY0kXP6OgjVibLwyR5puyV33CLuiJYHGk6smYmLyHEe90mCgLiTIC7lHTMME6Hcy6WqMIM2zmozzBw8nWnmYCiIKnWbc26mv7oga7TpoZV8Fzn7fPxGXLZVNrix/CWJhEMo3caCFEmJV6RTmSJmSQjOehP6kyyVn2H73Dn5juMT7f5Ihx+H9Rcd9I5W1YL7FCobiV0nn/LKn2QD4nO/P80yIzIkRp7B6Apse6YSI+dKJWnl6cS5CH8A14bm5vrJ9Td6JY19xH6KQt4T5aY80MUh56wjTNcrop4Z4EKlzO95CIX9Bkx5HODSwVpl6wMr7t+4YWW0ub7HY2E9wWB9g1
+ f38ZOZJx
+ UJWmRd80UUFVNx2+t1A8soUNo9wmOtrDL+/k7DbKWjfDIfq2TqGwU1VAUGiqpc2JFl4LIuUNoDifyJAJrXndGkLuMRbSnDejEYipM8hrzuOQGw2rA1YBR5Ycjqkn/scb4i+j9XyRAo7e0MpXHUVo8ea6iVvBYToxbiQEBu7Qi6ohwQTbXajrww/9I7vTdvR72PJkhD0xYq0TvJXT4YSiqaeOTCAfA8GSCd3jNLMBQ/ZIC4yoxZanag4rf+5D1ZsUBCTEs/rjZyxZ63jo0xin6HqQQnFLvLPGAeyWdGKse/kTvldjScQmz26tFAY41fWGP39HxF3an7LG+vY3X1upfFai4/7bM+VPg+yB9aeuDcYJMOZi7ragX3wL7U+FrZEZK44pXkqgP4OAau7zgZ0FCcB9WsFxzl7HTmtDl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,33 +106,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 05:30:07PM +0200, Loïc Molinari wrote:
+On Wed, 15 Oct 2025 17:29:57 +0800 wang lian <lianux.mm@gmail.com> wrote:
 
-This looks fine, no need to resend to fix this, but if you'd written
-the previous patch slightly differently, you'd've reduced the amount of
-code you moved around in this patch, which would have made it easier to
-review.
+> The comment for khugepaged_scan_sleep_millisecs incorrectly states
+> the default scan period is 30 seconds. The actual default value in the
+> code is 10000ms (10 seconds).
+> 
+> This patch corrects the comment to match the code, preventing potential
+> confusion. The incorrect comment has existed since the feature was
+> first introduced.
+> 
+> Fixes: ba76149f47d8 ("thp: khugepaged")
+> 
+> Signed-off-by: wang lian <lianux.mm@gmail.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-> +	/* Map a range of pages around the faulty address. */
-> +	do {
-> +		pfn = page_to_pfn(pages[start_pgoff]);
-> +		ret = vmf_insert_pfn(vma, addr, pfn);
-> +		addr += PAGE_SIZE;
-> +	} while (++start_pgoff <= end_pgoff && ret == VM_FAULT_NOPAGE);
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-It looks to me like we have an opportunity to do better here by
-adding a vmf_insert_pfns() interface.  I don't think we should delay
-your patch series to add it, but let's not forget to do that; it can
-have very good performnce effects on ARM to use contptes.
 
-> @@ -617,8 +645,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+Thanks,
+SJ
+
 [...]
->  
-> -		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
-> +	if (drm_gem_shmem_map_pmd(vmf, vmf->address, pages[page_offset])) {
-> +		ret = VM_FAULT_NOPAGE;
-> +		goto out;
->  	}
-
-Does this actually work?
 
