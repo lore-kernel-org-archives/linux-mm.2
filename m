@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3EFACCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 04:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1960CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 05:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8FDB8E0005; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
+	id A419B8E0007; Wed, 15 Oct 2025 01:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E41018E0003; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
+	id 9F1A18E0003; Wed, 15 Oct 2025 01:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D56AC8E0005; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
+	id 8E0298E0007; Wed, 15 Oct 2025 01:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C3C5C8E0003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:49:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A9ECC0B29
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:49:48 +0000 (UTC)
-X-FDA: 83999120856.11.922175D
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 642551A0006
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:49:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EZ2qVHvF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 794488E0003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:02:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EDBC11B2CD
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:02:48 +0000 (UTC)
+X-FDA: 83999153616.20.E5132A7
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4115F40014
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:02:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KrqBAPQf;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760503786;
+	s=arc-20220608; t=1760504566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ygDjvocgrySJ816q1hlB757s4pG93J0anp2ldxVExNw=;
-	b=V66xpOPVXJ8rjeZ39eTa4lxaKMcie3gjVyP+Bpeus88panT0VcGMJ7IN8EpiFp8B0C0Bdc
-	rExLCbqs1HBGFu5Cq2g80QE5m6JfWsAzT9KuV1+4SymfHyHTIgP2Q6HsA+1yZh83O6Ge3k
-	WwI2iLglDoa7rHiYVWZ/FiAJ/Mbvch0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760503786; a=rsa-sha256;
-	cv=none;
-	b=64BgJvlTw6jeYeVmbYSoxl3lGnlW/Qhfoov74V/vo4CQEtQotsO5ZhyutaP7rgkrQmbIGO
-	SW+n6xtGKTmHt4/ZM2+GLRjErA8WNJHY08gaEjeL3Slwvr4kUt2SY7qvBCijv0y+nwXVC8
-	sz2I9oU0lfzOeib1mRF4rkzXqjv1ElU=
+	bh=bFXCcHDf7en4W6zLXEVP2nd4RatmQMAnLxWOZHGzM5M=;
+	b=syY+oeh44KNNsiIAsOd0tH3SAJa8o/CDkJpa3lqEGfegZzIzOYPoBSsApz/4rw6zFMHQ2j
+	gfYHhMtqIjEH01JAnRua0Ewjgra8Wzj93VmT1UBMB/YZUistjXIdUblgfolG/C81x/swiR
+	J+jZ/0ux0QkX/t7Sg/mhanqiHO24hsk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EZ2qVHvF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <80771030-0d8d-4f65-803a-f89da3b59796@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760503783;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ygDjvocgrySJ816q1hlB757s4pG93J0anp2ldxVExNw=;
-	b=EZ2qVHvFYwYzxX+uULJSA7sCrdOmUs6JY/QrAORm+zvi+iwUX02arVUPk2aOEXOzKbuR2D
-	C4ObtDFndbyBJbZH1PsNEsulxhfdOrVUBcD3h0GpmMIdS8fFEm3eZ1hnSuc+fcyyFEqUYU
-	WrrPZrrDaH1G2y0C7hxW90gL8+nlHRw=
-Date: Wed, 15 Oct 2025 12:49:26 +0800
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KrqBAPQf;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760504566; a=rsa-sha256;
+	cv=none;
+	b=Qpdod68s4iGr2mi07tuvI5AGyH0aQZcxx9i79z0vS5HdnaoK/VCXr39uAL4orzYcZGnySr
+	aqTu6jOLoonq0xs4rv1XHNdwoPa7+M0NVgz2q6wJ1hKKE/fKUHqHcOjGzfCcQCh1J1TAH8
+	WjIK7JxwENnPkSDgiV1IyFPAusXLNHA=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-869ecba3bd2so967940385a.0
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760504565; x=1761109365; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bFXCcHDf7en4W6zLXEVP2nd4RatmQMAnLxWOZHGzM5M=;
+        b=KrqBAPQfv297L8O0FbnOCVsKsU5XM41cMNE+QfRg33MovOMTj9JeA2ORTxmkspNNi7
+         flG+yNGsw32eGGGSIjZe0NejRbEIWbjAHERlthdJqmSTKP3I7gGGqKBpwWlITKFHz4qg
+         oPzT5LxcTQ9qIozsAteRUHgldEWnQqhXksYYfkyDIf24cKMCi4dZpRD4QPmk6xr6tGr+
+         8dqGugLxLwfXqaBmkBDLbERzaLND9DCGp6amM6G3yZV8LIkcp1r4zfDSvR9UvcJNfIHi
+         GjTwDknLqFXAw/vTgeCbKBBnvfE2Gs1nN4z/J8fw9ZoYlW9svdskn8gtodDB482xKkjf
+         loXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760504565; x=1761109365;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bFXCcHDf7en4W6zLXEVP2nd4RatmQMAnLxWOZHGzM5M=;
+        b=snTPcqcbEzPFx50XzCSdAX1KV1ugPKAKWTVQdMuWKvAZuCBvoOYvHMl2Rhq9fLSBtZ
+         ZTF/jGlGWxqSZLcQDg0L5xfo3+758yhc9Qqi/l3LBou5G4oqFUkUglRG6dpZVVR66xjU
+         jOsJRFGa9QRwR2M+8RqB3AX74N3SnvXWCZ4+geP5wZZq6hy/Iw9e6TNCw7/qcd2ACGeh
+         iUAkUX4LzvTryONT1x2ypVDQx1VcxsyxOXF2BcMPtxtQf14mFLnZIbgsWbWqjPkkHgqp
+         wf5PfbaKwzWDHFPKO7uWlPIlUJejfqJCXlnO3z1oQZ2z0pYEk+Ci2EukzYuU8v1LPR+7
+         tfBA==
+X-Gm-Message-State: AOJu0YztHINwjPBLQBwflBpIRdattGNEwaPNSfmbakoe99BISD0MPJfL
+	4c0RMM/q46TWJj5KjLlCKpEZBCzjdWuTKejZczs8ZJ1+fUceKygbGfE+oNWzboj0v3dXOpMC6zR
+	g95/7DoZOa9bxOKQ7ZF6wEW1VmddBDKocfcj5
+X-Gm-Gg: ASbGncvCWfrsdFfsJgHjHqvrZgLwwuBgr/4aJZKFOh3oROUc+Jn3HLqU62YK1LaSed2
+	mnYeF0cEvhiQkYN5iwbjxhFTz3Aq+qZcywC2KubfIVcOV/HswvcYOeog1d239mwaYv91u1x+w93
+	u5IPBPn3JnD8BXUrfx+f3/1Y1IuV8d8ZsUqF546iQF5Cw+kUlCwfBV85k8JGKlE4xLnS7NIS6u3
+	NuZ3LZKSoQy7swLVzSidZDiy+yqQLLa48DXOFkiqFBCh+E3aAt/K8t7cVFZiOkqIjRjrkVmC3P1
+	4Jo=
+X-Google-Smtp-Source: AGHT+IFpBzV1D65BPoFAcqyBYeO1w0unePqCmMDfZmXta2B1t5+ZR85oCuRY3HGuzM7qJjr3prZIzl4NLuuLEZ9Ba2o=
+X-Received: by 2002:a05:620a:1a2a:b0:870:6891:9c1a with SMTP id
+ af79cd13be357-88354caf304mr4281625385a.71.1760504565075; Tue, 14 Oct 2025
+ 22:02:45 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v3 1/3] mm/khugepaged: optimize PTE scanning with
- if-else-if-else-if chain
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, ioworker0@gmail.com,
- richard.weiyang@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251008043748.45554-1-lance.yang@linux.dev>
- <20251008043748.45554-2-lance.yang@linux.dev>
- <3982686f-908f-4f92-b3ae-e6f141e617ef@lucifer.local>
- <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Stat-Signature: gc8gctsnipzozezjt7j9dhiodcu4oyok
+References: <20251011081624.224202-1-bhe@redhat.com> <20251011081624.224202-2-bhe@redhat.com>
+ <CAGsJ_4zvtdqzvBNmQjMy0L6JAz_XpvR=rGgNC_Xdo36QVW-g4g@mail.gmail.com> <aO8PuhNfKOQ8SJUV@MiWiFi-R3L-srv>
+In-Reply-To: <aO8PuhNfKOQ8SJUV@MiWiFi-R3L-srv>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 15 Oct 2025 13:02:34 +0800
+X-Gm-Features: AS18NWDwPKhy8Nm3E6urj72YWyVGpn5sYuH-eJQfwVPB7PeORGB6DWOvAwbSLbE
+Message-ID: <CAGsJ_4yv66kW32Lr--O8qWq3gbrwF110cT7MzqMWumRabFNj1g@mail.gmail.com>
+Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
+ according to numa node
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4115F40014
+X-Stat-Signature: u6ik6undckp3ohhxg4n8h8ggc1eosojz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 642551A0006
-X-HE-Tag: 1760503786-911479
-X-HE-Meta: U2FsdGVkX19g2EEsRJEp47+9/14iNb+c1i+MAIybcwuzBuWQoKDbz37PzdQ8Pe2fdsWAmKKLQRejCo3WYSKGftHItehvPz3NUvq1iBYguKIiuAeidZweyEd3eID1mTW2PafDO23DZBbqWBpdSmJXYIpZkHYo2O2VDkwbT5jKC8E52b2kUWCEf7TRCiT54pkPruVm4qGU3F4uF6WJuKmfn48ROQ0IbpT8reTsJFmilKW1tSqoOLokRxSF0ZXSfKBrjLOHU0WFjVH9T1wyDGNItrEdP0mk+R1WTFWF/EITh3EkniPgYZG//4IDW8/Lmz6A9j4nc8dgb4+GluMWefsw8GBqlhyMcfPxPREpvwADs07HXJEfgDAMx4KOCfmoy68zrYww9JQXmtR6if7k1DxK7OImYG8TRjS3iZ+mNe6KEtaE5DdO32VGluwIF/Td3Nyasy71kRTXedr6SUyS6baWuo9pB8Y1iS69NCS2pWbCTkfG/TlDp0goGjyq3YsZWafo5qwWGuGR88es2RpXK/hWtHjgpAIf9UEST48G57XEJKJ9zib+iYpjpBQrov1635PUIxbjAkFVfh++KhuP6ZvTl/p4ArgmToC0oOREdPhil33vZdTaVOKqpHJVmD1qTwQLZrnOAQHS5S1GZ6JevFWTzcyez5+C1wH059MGUoYIAeo7qp0YrnIbyeAwPsOCruTdqIgGVKLrigUkEa0Dhh0l4Doqwq8KivUHNmxpwcppJIHu0YHzSWJXjQzHD8L9AJVd+GqE2hMVyVL0faV+KHq9HhBWQqu7ydm+efJrpJvpgxLKV4Q2EQ1I79ZFppdvGndlVg3pMf/Ru+MSL88Gbkj+dTXL4i2hHmlCQqSDPlAnacgRutiZX5VZdQBe1SHTr/a+fjzCBbXLz510tmUFtgdG63t9t44/krXFCH557vJQWFUt8tehhzk3O2VtRAyTMI5/adO71r3/22jN3SHCfI8
- gmbj9n9z
- GA9Y95vzgTYrC6w/KLSQYXrJLM8b8TSZ9MjoEXy4woGu/yrvqlmGzWR0Fkh9JxrzqqrXhPPE9HQcNGy/7bfb9YKEDONRSZHejtsRQW+ArcuuBKbBAB5JyC9RfjO3KfqjIIIKAxDLShP3Xe9MDiuVG/E+S8XWN7CKMXyGR6VC3BDXWuk2bk4hB2qxU76xr7emzLSwH0QSINXYeeChdBeKTeA0u0Z6fjyz6RskY0y176+eRmU9zDh47e5Jw98f/O4AC/05RHmlTz5K7xUIA+Byq11VPrg==
+X-HE-Tag: 1760504566-349864
+X-HE-Meta: U2FsdGVkX1/WA+QDrLaMxvFRHV049kbAxKl6ndElK7QyIGa/3gRMg63SpP2c5K0YR6f6K+Ys5cIzsDQAM4OZNRwgW4yCvHSfa+XhHtQR/YsX+5Bxcqd6/COnxMRvVINBGSMklAru05/8I3tbTCVeOZKCLQ6L87lz8yCdF+IIs89ZKpXd7okWfAcTtKMmln0vwqkhsu2xa4D2BufQc/jAxRGBrIirfvo7WMXvXMcAmC+cKjXOPYNCEQO8PnspGGaWq4hPkdzf4RpiHWSlM/4VqXm98OisvEv51BLIFLtQc+qxBrsQExHxaS0kckW7YhK/wR9V8Jo6n6Gjt5sd7bNqfCCGCYou18+cdGyE4Iu4NfMg2qfjefOqlQTbgNIMCAugOIVUBScvzQt1qoIA39GlrShvMUgDHCsW0lg8DTJvUidpLWA1Qpb3KpL2ymzB3+2ryeCuDXWDsbMJ63OIaFOpL9mnHpkZjRDcFgDTKM0F6ehPu014s1CNVH4F2spSMbexlDuqRzKB3lfSay1AdglI7Ra82f0+PkZrXdhs8AYMHbMJTJ1vP81lMVvDN03Yn9C4A0TkA5D4l6GeJnKXKzzzBjdYSOyKPOcX7FGeMvaCxgcuCCEuo9rHAdZd0MZqi69fctmb0ohiDzrENGuC9pSe5tv4ra3PTsQgbA8yMgO1BSV57L8ydZ+bzhLqX60UJ9oxFKi4NvaGC/n4RI7VjDsnE38ClLvsV6V+S0YVxwF3E3CbE1cDwuXQtwrNgDcpkF1PVhhhy/FWFze06axLN6Cub6bkrDzmpaA9xi8oRyV8fElqcYorkI1aVNyARoRXIiYjTyu5hm4Z7sA35haGm28APZ+7vK6PVACG3N9LQplwKe0n0WtGyl5qO5F/N6MULByCntSC6WKii1lDdvQ6N/wlSu+HuvECJY9lVQEYUviBItG7qSvKGd/yzb9Xi/kRnvktjSmd2URrkN3H8tCI0WX
+ afTStF81
+ MUP1XjZiGxtwq19flH9kabxG9Hg4p7mk1KJWS21p65fcNkYaYqN0lk8d6ilxRKfBGoXpdTLBMAUOZk0rSsGUTi816u+jUtxvmDEz9ehWF+7JDCf7I5JLcmxqxn5m/5EYuGV8i2bBSUOwm/3RLbq7yxhMcd0qEPgs+w7T+1FNYyfOCO8Xr0zM+7mhrqA0r6VcKNRYB6CM4sakLS8Opiu8aYWM0zBHN+5aMrOJIoOGgrqwNZRKh5kq4q74VrG1g0kP6jThC4rTkvFn6pGs+AIahGBWUMToLPJfMjU7Ctc5Oz4uFQNWsWk0ZnIJ+DDWY7lWydzRNvHLGdLg4rcMFVuD5Hk17YAU9nSZf81M1AQf9B7CgFeCaeyyP3zuNCZRftTwiP9r0ra7N1ln7gRsFu27xDFhkRjPn8OoNvEAvgNHy2Xdsu/OqUWQmfRVMzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,61 +119,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 15, 2025 at 11:06=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
+>
+> On 10/13/25 at 02:09pm, Barry Song wrote:
+> > > -static int swap_node(struct swap_info_struct *si)
+> > > -{
+> > > -       struct block_device *bdev;
+> > > -
+> > > -       if (si->bdev)
+> > > -               bdev =3D si->bdev;
+> > > -       else
+> > > -               bdev =3D si->swap_file->f_inode->i_sb->s_bdev;
+> > > -
+> > > -       return bdev ? bdev->bd_disk->node_id : NUMA_NO_NODE;
+> > > -}
+> > > -
+> >
+> > Looking at the code, it seems to have some hardware affinity awareness,
+> > as it uses the swapfile=E2=80=99s bdev=E2=80=99s node_id. Are we regres=
+sing cases where
+> > each node has a closer block device?
+>
+> I had talked about this with Chris before I posted v1. We don't need to
+> worry about this because:
+>
+> 1) Kernel code rarely set disk->node_id, all disks just assign
+> NUMA_NO_NODE to it except of these:
+>
+> drivers/nvdimm/pmem.c <<pmem_attach_disk>>
+> drivers/md/dm.c <<alloc_dev>>
+>
+> For intel ssd Aaron introduced the node based si choosing is for, it
+> should be Optane which has been discontinued. It could be wrong, then
+> hope intel can help test so that we can see what impact is brought in.
+>
+> 2) The gap between disk io and memory accessing
+> Usually memory accessing is nanosecond level, while disk io is
+> microsecond level, HDD even could be at millisecond. The node affinity
+> saving nanoseconds is negligible compared to the disk's own acessing
+> speed. This includes pmem, its io is more than ten times or even more
+> than memory accessing.
 
+I agree that it=E2=80=99s fine to remove the code if the related hardware i=
+s obsolete.
+I found a paper [1] showing that accessing local Optane PMEM is much faster
+than accessing remote Optane PMEM (see slides 4 and 5). That might explain =
+why
+they started the project to make swapfile NUMA-aware.
 
-On 2025/10/14 20:27, David Hildenbrand wrote:
-> On 14.10.25 14:17, Lorenzo Stoakes wrote:
->> On Wed, Oct 08, 2025 at 12:37:46PM +0800, Lance Yang wrote:
->>> From: Lance Yang <lance.yang@linux.dev>
->>>
->>> As pointed out by Dev, the PTE checks for disjoint conditions in the
->>> scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
->>> and pte_uffd_wp are mutually exclusive.
->>
->> But you're not using is_swap_pte anywhere :) This comes back to my review
->> quesiotn on the series this is dependent upon.
->>
->>>
->>> This patch refactors the loops in both __collapse_huge_page_isolate() 
->>> and
->>> hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
->>> instead of separate if blocks. While at it, the redundant pte_present()
->>> check before is_zero_pfn() is also removed.
->>
->> I mean see review below, I don't see why you're doing this and I am
->> unconvinced by how redundant that check is.
+My point is that we should at least mention this in the changelog to
+honor their past contributions. But since the hardware is no longer used,
+we can remove the code to reduce complexity and stop maintaining it.
 
-Ah, good catch! Lorenzo, thanks!!!
+I see Aaron's email is no longer reachable, which is probably why we haven=
+=E2=80=99t
+received any feedback from them.
 
->>
->> Also this just feels like it should be part of the series where you 
->> change
->> these? I'm not sure why this is separate?
-> 
-> I think Lance is trying to unify both scanning functions to look alike, 
-> such that when he refactors them out in patch #3 it looks more straight 
-> forward.
-> 
-> The missing pte_present() check in hpage_collapse_scan_pmd() is interesting
+[1] https://www.usenix.org/system/files/osdi21_slides_wang-qing.pdf
 
-Yep, indeed ;)
+>
+> If there's a real system which owns disks belonging to NUMA nodes, we
+> can test to see if the new round robin way is better or worse then the
+> node based way.
 
-> 
-> Likely there is one such check missing there?
+Yep. If there might be a real user in the future, we can revisit this.
+For now, I agree that we can drop the complexity.
 
-I think the risk is exactly how pte_pfn() would handle a swap PTE ...
-
-A swap PTE contains completely different data(swap type and offset).
-pte_pfn() doesn't know this, so if we feed a swap entry to it, it will
-spit out a junk PFN :)
-
-What if that junk PFN happens to match the zeropage's PFN by sheer
-chance? IHMO, it's really unlikely, but it would be really bad if it did.
-
-Clearly, pte_present() prevents this ;)
-
-By the way, I noticed there are other places in khugepaged.c that
-call pte_pfn() without being under a pte_present() check.
-
-Perhaps those should all be fixed as well in a separate patch?
+Thanks
+Barry
 
