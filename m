@@ -4,104 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 256F3CCD193
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB743CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0EB8E001B; Wed, 15 Oct 2025 04:34:10 -0400 (EDT)
+	id 4CB598E000D; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7811A8E0002; Wed, 15 Oct 2025 04:34:10 -0400 (EDT)
+	id 47BE88E0002; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670148E001B; Wed, 15 Oct 2025 04:34:10 -0400 (EDT)
+	id 36A708E000D; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EF828E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:34:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F9521A07C5
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:34:10 +0000 (UTC)
-X-FDA: 83999686260.06.4436B01
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7F5422000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:34:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hL3GS9d9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of dalalitamar@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=dalalitamar@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760517248; a=rsa-sha256;
-	cv=none;
-	b=HM8AHRy8/umwdZ5QHyQdkr773GaDdYREO0AvSkgE1oGvvTVrYN6dh0YPK7dQyQpAVOD7kC
-	yDDsF7mKPiprn44cJrl2TTdSvuoPFLU9ySqBWW0Km2elwAjVpsdvtg9NYS0RJDXqo/HOti
-	6BCBZBuhYLd16uo+tmgKnQ1j4pji3S0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hL3GS9d9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of dalalitamar@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=dalalitamar@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D4E78E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:37:42 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B97C65CB8F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:37:41 +0000 (UTC)
+X-FDA: 83999695122.22.02427BF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2DC6B120008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:37:40 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EFjGFU8o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760517248;
+	s=arc-20220608; t=1760517460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UvD+dpk9qIdvSGdC/Ma7Kb6PuLSKQVrNtIj7GZm64sk=;
-	b=M8WcIfcz1RbficRNKN5cPJKCGoQnYe2k7PZ+s4RUL8jITUa/DN+mYV8k3PmOPF44KYJSrB
-	CjceLF3pLqDOxFeAqc8mbx794IU2n8FsrZw7H7U+j1dp7rZQTU8ZcH+DAc7jfMadmQsyM5
-	Y0Qtiggzajanpma/qgLgJwJr/Sz7IRo=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7811fa91774so5451779b3a.0
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:34:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760517247; x=1761122047; darn=kvack.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UvD+dpk9qIdvSGdC/Ma7Kb6PuLSKQVrNtIj7GZm64sk=;
-        b=hL3GS9d9BwVD4QpVwj9oRv+Udx3PBS3WhQCsxPAahUdIdmMQTKfq2f/0E7jmJkDQcZ
-         ekrxISgPaoJlnlGOMaOHD4xbTYrh05GY1DVHxr6Ot/BJc+ADdkFXW4zPiksQ0B450pmx
-         QvuGbo4kn25kGrTf+ibisccrw0dOQT2h4KDk+RayzmA0PTfjweNlcRwbEGw62MgtZbaO
-         O6pNGv39/7QlEhAMzmslYa17p5MUTBYxrOMDuO6mv0xQGFcK2xb5LPeMWmQmo8ukRpz5
-         H+xSms/zov69IKKKH1iOBbKrugpzTtQTyHFBpjx/oPtKz7Ly/96wFgRbhKCNMkyypY0G
-         yCYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760517247; x=1761122047;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UvD+dpk9qIdvSGdC/Ma7Kb6PuLSKQVrNtIj7GZm64sk=;
-        b=j21sdOAX/mnnet4pHXyOq3afkkyPNCJzr7tMhK4Oza7ofnmIHEWOyDjDcNmKX4zVEY
-         nLyGVX0xNfARMkvZraVMCiF2RZNqmKA8DiNj2tlew2+8JMqNTm5AGNtdozuMQe03VDEr
-         K/8iAsk8cqJxlcmxeyhJdAJLYh+GvcfUj29ElYwc2YSS+EKBgXdv0tQDAla/cZrgDPGv
-         pzHznw2irPref57zms/+WJKvrJv9bT59BReYGuR9kNuKJLJPK+sZCsCx2mIp/L1ESNt/
-         lwe90crtRb/LCt9NnoWlIReX6eM9wMr3T3/SrAyyDn/GdnucXQzvicfx5yvTIBWdvwPT
-         Yi2A==
-X-Gm-Message-State: AOJu0YwAp6p6WzoxzBGRee3GR4b9GGZbmOv00NIAeKdCuME/Fo0TD3Gi
-	b8FeKUwnlow9uUnAxAsG6g35XzWh+ayfCM7O6swTTtijMK5tyhzSDgi4oaotKnk1e0V+8OgEa9h
-	gf9tPf7q9bsX1vKalVuNET1pszXY1k0bvTqR0Nes=
-X-Gm-Gg: ASbGncsr2l1RTk/viCktSP+DcrNoRw+0kKA2eIajgP6qAOtJh4GoqUeCoytoz9k/VaR
-	6QAYJYs938REUsNkV8CBzb5SntFfaXmwlZfcBD/KNV9l5x5wwQ9Tcr7wfMnJu+YhC/wVLNyL+js
-	rJ6E6bNfKX0QUTacFlsAi2tm/1+NslyJR8/8uW6npJAQ7gzncYlcqnjpWSOF+XRKtpt3UF1cZhL
-	3on9OyUDMCJx7zB/rfGydQV51g=
-X-Google-Smtp-Source: AGHT+IEr7Cned0gdhjbSviNtR+EkOPWQpYt/W0VWKq0OjLJnnpTZ17hpPGB8AS7UT/RG7Z+cKHjD2nOyatWea/PYrBc=
-X-Received: by 2002:a17:90b:1810:b0:32e:52aa:3973 with SMTP id
- 98e67ed59e1d1-33b51125090mr38930572a91.8.1760517246779; Wed, 15 Oct 2025
- 01:34:06 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Lm93Ddf80BjY228EEe7TxGH4rOs6twm7fCQ+semD68o=;
+	b=78r9GI3NYjb+cTrAkKc9KyojBLMPdRIfkYVBX+c0VnNLhClOdpZxhixslMj3lZICmMtPWS
+	PFurqytsaavYwDU5phf2m1gRmRVehDuFAF58lIQOcYSZaP0Mme56qbhpUz3yBDs6fnT8zD
+	TZbHLtIoEoU2sPdr4GxJItuk9ToDep0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760517460; a=rsa-sha256;
+	cv=none;
+	b=Mgwl9K5gh8prVPM/0AP7yR9MtMgeGxBLzvM/NZBV0xvjybX4Kz7VMwHQXIfr/wkcIzOrS0
+	DGvEffSaLhicgUCWuHMRCkGklnaVCyRqoOAhmXMq5/B5qK7B6kgs0MiPwAmnVcLKO0HXqH
+	In961HtK12MjZBUK3++on4KK6Cgb6mA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EFjGFU8o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4AD2962525;
+	Wed, 15 Oct 2025 08:37:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126B1C4CEF8;
+	Wed, 15 Oct 2025 08:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760517459;
+	bh=gdYDtGzxadCRywoKsNND96qlV2l3VYovlotLaMP+lMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EFjGFU8ohMjiYW6cjmOLcobwbSKk44/bYESuCJCcbLXt5sAFPb/hStV94AooI+6Mt
+	 +fKKoCiAKqVBSKJvDpNwYs59gKqdDNvXz/boQ6Vv9pu5vhAGnklQolhan/yVmnHVNY
+	 /8uAV7aQ5dIhh2x2wJXfSnGp4Ltf1YXsvNvQk53/bS1sMY+0AeWDkwJwobY9ZxBYzV
+	 y2hU2hxoL9IoHhV+2PN6hkdlFJ3QPPXKTjW9ubCtx7/DefVgbZ+0OLK1hQmYH9tWr+
+	 x7/1o6lvTVTCdiMUWIvNEmTk0zqQWjhe8IsJravYG0L2DeZmrvItK8zzuGSh6Q2vcg
+	 jJ9O811wcKFZA==
+Date: Wed, 15 Oct 2025 11:37:30 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
+	dmatlack@google.com, skhawaja@google.com
+Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from the
+ buddy allocator
+Message-ID: <aO9dSizvhyTznMHZ@kernel.org>
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+ <20251015053121.3978358-3-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-From: Itamar Dalal <dalalitamar@gmail.com>
-Date: Wed, 15 Oct 2025 11:33:54 +0300
-X-Gm-Features: AS18NWD2W386-Lufr9QSTvKb06mASTIg40VOmS7FWj6e7r5724F90Nd0GhDx5rs
-Message-ID: <CAJoePDqCd6F0ai1itmVATawqMQzB+JRi4NUtMJtxyeOVOT56VQ@mail.gmail.com>
-Subject: selftests/mm/rmap: verify correct RMAP handling of COW pages after fork()
-To: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, riel@surriel.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Content-Type: multipart/alternative; boundary="0000000000001d84b006412e5dd9"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015053121.3978358-3-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7F5422000A
-X-Stat-Signature: ath6d9dzdjhmi8zciikr3wypte3ws6kn
-X-HE-Tag: 1760517248-448215
-X-HE-Meta: U2FsdGVkX18Rg8ZZ2BoOi9yvx29A50NOiXb5Nc/CrkhhQS9zNvn1EZEkOdnU6+nbv7BIHN8U1rcJD5ctvn+UN5VCHSXjPSA3/+5ZG+gHgnaFz6TOYGhBHD7y2/eJhv60kg5Iv+rQoKHSff4RmsiCYyfojsOgbSibFOnyQQk8pZfOd09Npe5vvMDv2CIgTTukMWGWSg7poiG6bJhuKKukUPSxv5YgK7re0BcMq2cYn1DWk/YlUY18dTr8cKsgPevvR/kr6gaUKeEfn1bsN5uskYangO30xOuaDLAX85MBl3zd86+TrGdhQvWHSmi/cjMh3hNHEXRuefJVBx2UWY9k3L0xwi0MDQXnM9W+i8ZX5CjgQPDMYyJWfvLkFo77kIuV2qaulbJItXNPr5JfFcf6gq23b6jFs3hrFNp2ZkFzTVtX92WpER6AtmaBQI0K4vMIMZyeRS+zXwH7Yqn5iB52osJuqIkQCDDV9eq/n3rP3Lg8HduDfa2WtUE8qOr9nh6gjzet87YEUCVAqpdMAtjX8ppLaMzyAYkdbhqnZE/TDGnKS1MwbQy94rgJzOvjjR9i0tAnhifORVUefMO/YueX8r9Am7wMHN+IfzJZZHwJPm5FlORpwjHyg9lDYO558Hvfq04WVf3MmnPgfoAYPM+Cm4qthBDzdJBoUdUKjr2/ND214QVjTEvAcmeohGPfZQewwvOu2Y62kbquihlFLAIgLgTkS3aE8Gv4cRYAlZTlsQT9K/4Tt2XFDKaharolGux9WznZY6BwUgM3c1q9zplhzt0tRI+m9p1VdtpmswpymEMu4Ix4zfKv9vEpoDGIhw07bKSosZcs0exgsYKurKRV8QROx4S8/cgZHnqMjkn9ce0+dv/sI4J730hWzytkNMBCZTP+UiuMYmew1y6XgMoHNkMf/9pxB7Qqc7nuu3MQ00zDtCMmgSL11y/riqukci6VQf0QJVmxPAOo5exr1lD
- ZLyGfJXS
- bKOKeR9PeW/HnsF4821mVHTuGW+6UTyxzF9qpWIk2lJj5rJ0vX9UwVA45G3g8esV/D6MdMpBhHyFIxBK3MJ1vNwjNa3sMcLMaWYFuXOcDNS7NA55jyXSThwNs4XFYiHU4CRi0t0ClfSPLY79h3jFGWYJtY3UF1mDFURSTgayBVpjVOu/HPdAgnTpQ7OQ2BbEc6Cg0neDovXTDlgfTDqCAWHtZeMja4U9ich6smoYlV8eL0Jew2JjdGZ0g7DSehh1cuhUZ5eK/gp2faUT4klSOJ+rVvU9A0g0IgYw+eAAwwtbgfvnl/Um1kLAQgC7nZXM/HXOZVMUxHWa+i7ILyJQeAipmDrKG1nO42B3py7TOAO8NDjnl+kjuYkNpAyNUdK+90efoJ761OTjCYo9MtOD++UTjMuYGoP9mj25Biv8OjkcL2EOuX8oGYP1ET7emGOOCcmHqLCHqOIjuRaEwqYfBR5PldIPX4qFMWW2TE/y5mwrVQTw=
+X-Rspamd-Queue-Id: 2DC6B120008
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 3h7p65eam167qs6m9b1u3i6fkbumiomn
+X-HE-Tag: 1760517460-656203
+X-HE-Meta: U2FsdGVkX19RGmPCweb9irXnp8LTnFCplfFGmn9LdSDuDd12hQlSG4exqrRQhRIY7stRlZ9Zn02xRumjGTLWpACooNNQYvgh27RQcrw6V6q2UkwDaMAlMxCUs0IXbSwByEMTOJCJr/BA+YkvMCnNt7GcKIRxjw09KDx4ywnGart09Qgrf4MhmxMMSkXEpT4/vtK2dCHeBah77LExXd6gBGDDhxegXAZWyXP3PR1elfM89U3Je3Zo95obVjYie1LcyPVnozN6jyTsNpxWqwnD6bPzHipZ9qDPEMtEnpkFLUy28R7D/d5LXHet/1O28xeXI0Ii8vsj4opgEURcTbTc0pRQTIpeW6HjWmI1lS7j9Q3vVY/FE1Q7gTAyDND0/jnRgq6FmyD83x711gAlNFgAjCtQ54PmCqU8Hq3OUbCWtquMk3vGKgiSmxZmSCkLDLKgfbRaDpUeQKrvZCiWXqmg/WFJBMyZrzQyxQTbjCEbXBhcWg1GdK9H2i7Hv8OAY89Ole6rE2uP44AzcRMaDXvWaKycmQeKI2rEuFIUsDa2U13zNv0KKLLJDx4yas3PHuJEDS3tNVlj0zhrwCi04ti8obeecwzBUqoH7lth11TbU5ZYguhYHwYnAEaXVZaHx+MXN7oIwvltS5FPKj7HRBsVGcr+1L3JAX2IJTZ8r0dGzUjVNaSjCL1ZOclt7BhceT1JoYfOD++V5Hc6FQ0S3XEP0lUEzabDJni/vQQgNeGWxwCnu8HLH04mvMtmd+V4hdq8E/VNiFt3Q3CJv9rKSdzVQvY2Mejk7lEa7Se39JFV6d+wuwpuYPJirJADCxfhn/B6OY5Q06zWOZH+3pjdfcHVoyc5CQ5nRVHg1IMew83GHwQ0Uw3ESv5Ww5Xu0p1jdocHLOAVrv5j3trW0lsqgYYVSCvKfazFkjGV6LcclPatraKqf1OwahH74adk+Ya/TfQtCwm9MI41c3HeTaUT6ze
+ 6t2+dpXO
+ D5t/td10ec2coc3Ituto6I8srqaUpcJO5ve8a/ZS5jKaU671+wGeF0uC76prnORJZj2GBzam5WJtB0V7LXAnuY9abzsMC+cdS4IeKuODaktk+tnqGZt1Vr7aM4VeP17X4Wgbzx0ifIZqwDh9gWpiBzNmRsT0cetc8A0fSsMlRQgKeGhqwbtdvQ4CKII0ksOdK78WE+SeFt3HPkgo1uwowyscnnEpFdWDWboYzY0BFZWCBeYE0TFdcJA5DksOG6bw90qlTAwMVBfr0jlsOfqwBRcgEbA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,130 +97,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000001d84b006412e5dd9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Oct 15, 2025 at 01:31:21AM -0400, Pasha Tatashin wrote:
+> KHO allocates metadata for its preserved memory map using the SLUB
+> allocator via kzalloc(). This metadata is temporary and is used by the
+> next kernel during early boot to find preserved memory.
+> 
+> A problem arises when KFENCE is enabled. kzalloc() calls can be
+> randomly intercepted by kfence_alloc(), which services the allocation
+> from a dedicated KFENCE memory pool. This pool is allocated early in
+> boot via memblock.
+> 
+> When booting via KHO, the memblock allocator is restricted to a "scratch
+> area", forcing the KFENCE pool to be allocated within it. This creates a
+> conflict, as the scratch area is expected to be ephemeral and
+> overwriteable by a subsequent kexec. If KHO metadata is placed in this
+> KFENCE pool, it leads to memory corruption when the next kernel is
+> loaded.
+> 
+> To fix this, modify KHO to allocate its metadata directly from the buddy
+> allocator instead of SLUB.
+> 
+> As part of this change, the metadata bitmap size is increased from 512
+> bytes to PAGE_SIZE to align with the page-based allocations from the
+> buddy system.
+> 
+> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index ef1e6f7a234b..519de6d68b27 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -66,10 +66,10 @@ early_param("kho", kho_parse_enable);
+>   * Keep track of memory that is to be preserved across KHO.
+>   *
+>   * The serializing side uses two levels of xarrays to manage chunks of per-order
+> - * 512 byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order of a
+> - * 1TB system would fit inside a single 512 byte bitmap. For order 0 allocations
+> - * each bitmap will cover 16M of address space. Thus, for 16G of memory at most
+> - * 512K of bitmap memory will be needed for order 0.
+> + * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
+> + * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
+> + * allocations each bitmap will cover 128M of address space. Thus, for 16G of
+> + * memory at most 512K of bitmap memory will be needed for order 0.
+>   *
+>   * This approach is fully incremental, as the serialization progresses folios
+>   * can continue be aggregated to the tracker. The final step, immediately prior
+> @@ -77,7 +77,7 @@ early_param("kho", kho_parse_enable);
+>   * successor kernel to parse.
+>   */
+>  
+> -#define PRESERVE_BITS (512 * 8)
+> +#define PRESERVE_BITS (PAGE_SIZE * 8)
+>  
+>  struct kho_mem_phys_bits {
+>  	DECLARE_BITMAP(preserve, PRESERVE_BITS);
+> @@ -131,18 +131,21 @@ static struct kho_out kho_out = {
+>  
+>  static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
 
-Add a new test `migrate.cow_after_fork` that verifies correct RMAP handling
-of Copy-On-Write (COW) pages after fork().
+The name 'xa_load_or_alloc' is confusing now that we only use this function
+to allocate bitmaps. I think it should be renamed to reflect that and it's
+return type should be 'struct kho_mem_phys_bits'. Then it wouldn't need sz
+parameter and the size calculations below become redundant.
 
-Before a write, the parent and child share the same PFN. After a write, the
-child=E2=80=99s PFN differs. This confirms that proper COW duplication occu=
-rred and
-that RMAP correctly tracks page ownership transitions during COW events.
+>  {
+> +	unsigned int order;
+>  	void *elm, *res;
+>  
+>  	elm = xa_load(xa, index);
+>  	if (elm)
+>  		return elm;
+>  
+> -	elm = kzalloc(sz, GFP_KERNEL);
+> +	order = get_order(sz);
+> +	elm = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
+>  	if (!elm)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> -	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
+> -		kfree(elm);
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm),
+> +					PAGE_SIZE << order))) {
+> +		free_pages((unsigned long)elm, order);
+>  		return ERR_PTR(-EINVAL);
+>  	}
+>  
 
-Signed-off-by: Itamar-Dalal <dalalitamar@gmail.com>
----
- tools/testing/selftests/mm/rmap.c | 45 ++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/rmap.c
-b/tools/testing/selftests/mm/rmap.c
-index 13f7bccfd0a9..2ba3361fecf0 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,47 @@ TEST_F(migrate, ksm)
-        propagate_children(_metadata, data);
- }
-
--TEST_HARNESS_MAIN
-+TEST_F(migrate, cow_after_fork)
-+{
-+       struct global_data *data =3D &self->data;
-+       int status;
-+       pid_t pid;
-+       unsigned long parent_pfn, child_pfn;
-+       int pagemap_fd;
-+       char *region;
-+
-+       /* Map private anonymous memory and fault it in */
-+       region =3D mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-+               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+       ASSERT_NE(region, MAP_FAILED);
-+       memset(region, 0xaa, data->mapsize);
-+
-+       pagemap_fd =3D open("/proc/self/pagemap", O_RDONLY);
-+       ASSERT_NE(pagemap_fd, -1);
-+       parent_pfn =3D pagemap_get_pfn(pagemap_fd, region);
-+       close(pagemap_fd);
-+
-+       pid =3D fork();
-+       ASSERT_NE(pid, -1);
-+
-+       if (pid =3D=3D 0) {
-+               /* Child: write to trigger COW */
-+               region[0] =3D 0xbb;
-+
-+               pagemap_fd =3D open("/proc/self/pagemap", O_RDONLY);
-+               ASSERT_NE(pagemap_fd, -1);
-+               child_pfn =3D pagemap_get_pfn(pagemap_fd, region);
-+               close(pagemap_fd);
-+
-+               /* Expect PFN to differ after write (COW happened) */
-+               if (child_pfn =3D=3D parent_pfn)
-+                       _exit(FAIL_ON_CHECK);
-+               _exit(0);
-+       }
-+
-+       waitpid(pid, &status, 0);
-+       ASSERT_EQ(WEXITSTATUS(status), 0);
-+       munmap(region, data->mapsize);
-+}
-+
-+TEST_HARNESS_MAIN
-\ No newline at end of file
---=20
-2.34.1
-
---0000000000001d84b006412e5dd9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"rtl">Add a new test `migrate.cow_after_fork` that verifies corr=
-ect RMAP handling<br>of Copy-On-Write (COW) pages after fork().<br><br>Befo=
-re a write, the parent and child share the same PFN. After a write, the<br>=
-child=E2=80=99s PFN differs. This confirms that proper COW duplication occu=
-rred and<br>that RMAP correctly tracks page ownership transitions during CO=
-W events.<br><br>Signed-off-by: Itamar-Dalal &lt;<a href=3D"mailto:dalalita=
-mar@gmail.com">dalalitamar@gmail.com</a>&gt;<br>---<br>=C2=A0tools/testing/=
-selftests/mm/rmap.c | 45 ++++++++++++++++++++++++++++++- <br>=C2=A01 file c=
-hanged, 44 insertions(+), 1 deletion(-)<br><br>diff --git a/tools/testing/s=
-elftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c<br>index 13f7bccfd0a=
-9..2ba3361fecf0 100644<br>--- a/tools/testing/selftests/mm/rmap.c<br>+++ b/=
-tools/testing/selftests/mm/rmap.c<br>@@ -430,4 +430,47 @@ TEST_F(migrate, k=
-sm)<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 propagate_children(_metadata, data);<br>=
-=C2=A0}<br><br>-TEST_HARNESS_MAIN<br>+TEST_F(migrate, cow_after_fork)<br>+{=
-<br>+ =C2=A0 =C2=A0 =C2=A0 struct global_data *data =3D &amp;self-&gt;data;=
-<br>+ =C2=A0 =C2=A0 =C2=A0 int status;<br>+ =C2=A0 =C2=A0 =C2=A0 pid_t pid;=
-<br>+ =C2=A0 =C2=A0 =C2=A0 unsigned long parent_pfn, child_pfn;<br>+ =C2=A0=
- =C2=A0 =C2=A0 int pagemap_fd;<br>+ =C2=A0 =C2=A0 =C2=A0 char *region;<br>+=
-<br>+ =C2=A0 =C2=A0 =C2=A0 /* Map private anonymous memory and fault it in =
-*/<br>+ =C2=A0 =C2=A0 =C2=A0 region =3D mmap(NULL, data-&gt;mapsize, PROT_R=
-EAD | PROT_WRITE,<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MAP=
-_PRIVATE | MAP_ANONYMOUS, -1, 0);<br>+ =C2=A0 =C2=A0 =C2=A0 ASSERT_NE(regio=
-n, MAP_FAILED);<br>+ =C2=A0 =C2=A0 =C2=A0 memset(region, 0xaa, data-&gt;map=
-size);<br>+<br>+ =C2=A0 =C2=A0 =C2=A0 pagemap_fd =3D open(&quot;/proc/self/=
-pagemap&quot;, O_RDONLY);<br>+ =C2=A0 =C2=A0 =C2=A0 ASSERT_NE(pagemap_fd, -=
-1);<br>+ =C2=A0 =C2=A0 =C2=A0 parent_pfn =3D pagemap_get_pfn(pagemap_fd, re=
-gion);<br>+ =C2=A0 =C2=A0 =C2=A0 close(pagemap_fd);<br>+<br>+ =C2=A0 =C2=A0=
- =C2=A0 pid =3D fork();<br>+ =C2=A0 =C2=A0 =C2=A0 ASSERT_NE(pid, -1);<br>+<=
-br>+ =C2=A0 =C2=A0 =C2=A0 if (pid =3D=3D 0) {<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 /* Child: write to trigger COW */<br>+ =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 region[0] =3D 0xbb;<br>+<br>+ =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pagemap_fd =3D open(&quot;/proc/=
-self/pagemap&quot;, O_RDONLY);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 ASSERT_NE(pagemap_fd, -1);<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 child_pfn =3D pagemap_get_pfn(pagemap_fd, region);<br>+ =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 close(pagemap_fd);<br>+<br=
->+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Expect PFN to differ=
- after write (COW happened) */<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 if (child_pfn =3D=3D parent_pfn)<br>+ =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 _exit(FAIL_ON_CHECK);<=
-br>+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 _exit(0);<br>+ =C2=A0=
- =C2=A0 =C2=A0 }<br>+<br>+ =C2=A0 =C2=A0 =C2=A0 waitpid(pid, &amp;status, 0=
-);<br>+ =C2=A0 =C2=A0 =C2=A0 ASSERT_EQ(WEXITSTATUS(status), 0);<br>+ =C2=A0=
- =C2=A0 =C2=A0 munmap(region, data-&gt;mapsize);<br>+}<br>+<br>+TEST_HARNES=
-S_MAIN<br>\ No newline at end of file<br>-- <br>2.34.1</div>
-
---0000000000001d84b006412e5dd9--
+-- 
+Sincerely yours,
+Mike.
 
