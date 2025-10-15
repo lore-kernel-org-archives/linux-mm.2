@@ -4,122 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7094ECCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 18:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8828CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 19:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6BEC8E0088; Wed, 15 Oct 2025 14:58:40 -0400 (EDT)
+	id 47FA88E0089; Wed, 15 Oct 2025 15:00:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43208E000C; Wed, 15 Oct 2025 14:58:40 -0400 (EDT)
+	id 4302E8E000C; Wed, 15 Oct 2025 15:00:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B801C8E0088; Wed, 15 Oct 2025 14:58:40 -0400 (EDT)
+	id 31F928E0089; Wed, 15 Oct 2025 15:00:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A74108E000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:58:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 58F40119281
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 18:58:40 +0000 (UTC)
-X-FDA: 84001260000.25.0DE1466
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 61A6B160012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 18:58:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uFhQrWoc;
-	spf=pass (imf08.hostedemail.com: domain of kuniyu@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760554718; a=rsa-sha256;
-	cv=none;
-	b=fg0OQMqWQyTdcs6I9/AIMZEz0dmv/oob3Icn5BQ5McrGwhBFOM/rXSw5/TQ9bDuGvsa8Yq
-	Tk8psE8WNUMNveff/uCcsH8abETG+4aKg/L0NfWNq2HTKyeWA6902I759Svu7Oqr1pD/8R
-	4EUCwRXOo4DuMBLe5qWgysM5Z1VnZQE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uFhQrWoc;
-	spf=pass (imf08.hostedemail.com: domain of kuniyu@google.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=kuniyu@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A7AB8E000C
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 15:00:15 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB97E1602A6
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:00:14 +0000 (UTC)
+X-FDA: 84001263948.01.A9AF40A
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 08D3240009
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 19:00:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0Q++cShO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3O-_vaAYKCCgacMLERKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wyihan.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3O-_vaAYKCCgacMLERKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wyihan.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760554718;
+	s=arc-20220608; t=1760554813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b5wWPe5cNvLvLkG2x2JRUcg1UiLk0hyS1ikpUjlCASg=;
-	b=7PHjUn80j8iJevNha2G8C/ZDTugndAOIhsj6SEaHq0NZgYv542xA+mfsclemmUSf01DWOu
-	r2hqyneLc+8PpkajaATNDcrdePwHGgo54jW2vho12Z8zARMe0so3JYsSh0C8nsd6L3I89d
-	HTDxANXnCOg5Tw9A2ErXVCDFSfh8ZsI=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so11026746a12.1
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:58:38 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cqsd/vPXiuTR4hJNd2SCH3oN5KwWIK1dnn9ppreK3H0=;
+	b=jjkfzoSem1ElVYfPZEy25L74ok4XHmJl9rUAjiTGu4/zWMtXehQiDt5dV8R6PxPXXYZm1D
+	RhJh3E0RpONz6ZvYLr+ia3XzcsmSYnIiyJnlZ/D1RvCNpmTkOQ2adJPRaS1zxBH0SQ3pjY
+	f8jXFFtwI/FhGqqtf0p99K+0HCMAjxA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760554813; a=rsa-sha256;
+	cv=none;
+	b=ksMzDMukUy+8qkbJMOaCYDdQg3aCuicbrX5aj+2Wf7OYy3i1oawYaysT6dCZHdhKPBikFa
+	KT9YbRzKzzsFjHOJLOtKuF+B+SKpX9FltnJxcxbyfZ3Vo93Us1w10SyRfp023b7yEm5Az2
+	x6w1ARthLR/lM/vbdwcuQ+OpwtkI6ek=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0Q++cShO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3O-_vaAYKCCgacMLERKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wyihan.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3O-_vaAYKCCgacMLERKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--wyihan.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b55735710f0so14571303a12.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760554717; x=1761159517; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5wWPe5cNvLvLkG2x2JRUcg1UiLk0hyS1ikpUjlCASg=;
-        b=uFhQrWocmPVx0STsefAvNGyMnAVmmZZuTLp7T351dZ3oGwqE2W7zdt5V5M1VkaME9d
-         zvLxwtTNjV5H707uzKzFDwYu8gcOtSqp8hD3dCAUuAQfKlQtaFwn/65RvG9qVNLu68Hl
-         tcPsvb+6DN4ROyxj9j6qbJznO3cI03eR+Lr1I9ZdKST6Q2FZQaQg5ZYXlEd9kwrD0EIM
-         XkULUlNtqjQJJfDjI75uzH/XcOF0HkeVNBqdScR2MU7kxPI2W/qgi0ziNBP904GN/LAS
-         OUHwl4XnOTGmnX5poB/KlsUJNOf1a3kcAXqN8E7Wbx3/9HdbF5BfcqmDNWa7U7W7YnzA
-         rLnw==
+        d=google.com; s=20230601; t=1760554812; x=1761159612; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cqsd/vPXiuTR4hJNd2SCH3oN5KwWIK1dnn9ppreK3H0=;
+        b=0Q++cShO/Z2QJPnfs6DZlV8SnObtk/FB3nE1XErObRhp5UmjO1WL7nJFzoqRAj9b/j
+         HuAcR+D+EpdezDO/47bv9Wy1JVPCW81jZ8W8Lsd0ZDVagTqF4o79aHhx7lQQNjc56PSX
+         hMMbt7SLGQpWa9alxAuvCWUPDD4nms0rkjOwMAMbDM8FCxsug/5eTX1UYk7E1SR0S8jb
+         xu5KfBn61IzLXEPM23JYChghjTwkEczr0gUoQcDZx0d8/W3LVKlHeipiS9mwjaHIuwPd
+         qYAo1FnCq1lAiKCoT0HoISbXgtcpVeu2AMl6Xuj23m/PCCoJB7d2Ht3KBuA/mvPaxbjS
+         3yzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760554717; x=1761159517;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b5wWPe5cNvLvLkG2x2JRUcg1UiLk0hyS1ikpUjlCASg=;
-        b=qEaD2mNtNFOxu56lwqMUkP75AnA/W699N2pKcVs29CvK7OxmUPGH8TIJRJKg81Mkeq
-         9QmKiGb+hJ2HkY7kbinuux28v84m6iYETza/90XWt4cSD4YCWNTHuZN3DljncLnu7YwS
-         OMtEU1UT6iBeStrfHZIcxFK857FV+ZiEnYqbWcputMrdJIvpUr8sk2PqojOa1AfyiHqj
-         8/dkpWnDh8KJ5hMKydZE+guH+bSSWSROtqn5810+lOZssdHhvauwbkYrcV29Kzj4EKKB
-         4iRzHF7WXstxYFqlRtdORm2YlZM7UsMb1O0vOZOg8Zl1mAFk+9oFhVc1H4WcaMiNwXmz
-         ecvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWyKoC+kpsf+/HnyN2sW/xlCX9pgoRknC9jXlRmAOPS/cEYu0MT3qUpUbalLPBeZAnDPlyo2JMIEA==@kvack.org
-X-Gm-Message-State: AOJu0YzGVwV2bHiiL5/XWbM5HrZv+pLgOK97WH7/38B7htQfCcV9GILZ
-	8CEKNydMu1TvDK8s5K44JTtsxPdYLOMvPgfN9ywyhCdQCrnaLijz0WF0CSoPApjgGRo7QEG2Cyp
-	if3cWdBInCxnXqXPIB33BskMAsblHrFJSLYhDR56u
-X-Gm-Gg: ASbGncs035rabsargEXG8pphh22sY9DG9819GBI1JJ/pd0urufC4FcjnnGvollTJ+f7
-	UkHvH+4uGBfUVoWJq5488m3C//EMB6kd8c7giAaRrJwHUi4AiCkkC77wc7UGeaTAPDg2KX023CQ
-	zNl8b77CwtiUhJjn/ny7MGd5p5QacNlVzbNjSVyBHU0718ppgVLjdbkFmAk6Om+0VZNZTnNl6Eu
-	rZnaeg2coN+rCNIo4E/KyfTM8xFDDZ1bAMyAlnuZPnmidQeD5ex0dtoK/XF1Rc46/aB2jfF7g==
-X-Google-Smtp-Source: AGHT+IFXcR4/a/uWu2/COMG2rM2MXmYSeyVnHJVJ071uBYQhdmJ2s12d0Sglrmv8RLNynXPyIpu3cpFeni0ANJye8G0=
-X-Received: by 2002:aa7:df92:0:b0:637:d2d6:dddd with SMTP id
- 4fb4d7f45d1cf-639d5c6f393mr19995045a12.36.1760554716460; Wed, 15 Oct 2025
- 11:58:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <87qzvdqkyh.fsf@linux.dev> <13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
- <87o6qgnl9w.fsf@linux.dev> <tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
- <87a5205544.fsf@linux.dev> <qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
- <875xcn526v.fsf@linux.dev> <89618dcb-7fe3-4f15-931b-17929287c323@cdn77.com>
- <6ras4hgv32qkkbh6e6btnnwfh2xnpmoftanw4xlbfrekhskpkk@frz4uyuh64eq>
- <CAAVpQUDWKaB6jH3Ouyx35z5eUb9GKfgHS0H7ngcPEFeBdtPjRw@mail.gmail.com> <cfoc35cqn7sa63w6kufwvq7rs6s7xiivfbmr752h4rmur4demz@d7joq6oho6qc>
-In-Reply-To: <cfoc35cqn7sa63w6kufwvq7rs6s7xiivfbmr752h4rmur4demz@d7joq6oho6qc>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 15 Oct 2025 11:58:23 -0700
-X-Gm-Features: AS18NWCCDR5AqbojOF4FmdytvEGOhlifSaI5ISfKVV9sd4073qOpkYTl1jQCD34
-Message-ID: <CAAVpQUCNV96vOReAeVHpwbUg9XJDLRTkHmcABh9dhm=f8p5O+g@mail.gmail.com>
-Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Matyas Hurtik <matyas.hurtik@cdn77.com>
+        d=1e100.net; s=20230601; t=1760554812; x=1761159612;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cqsd/vPXiuTR4hJNd2SCH3oN5KwWIK1dnn9ppreK3H0=;
+        b=NJlVxnx9+/xhyvHH2h1y6rJIW543cFt4gS5QLCdsPhmP4tsMIGEVUgSEeIlwMz7vZq
+         oHSVCn22WY4EC+07DBGXmys6YHoFnzVDhJFV+C8aXBVgoU7/gux3fel3Fcspi9cn11Sw
+         HVkpG0YKqBsquj2fp4L9e1x9DO3WKewcTyD7HLmIoendF7Vr1XjcLEL77N6yv1P9tQVZ
+         h+urUX9N6vDlOaMbviQPLCm9mhlB22iDZAUa330L0KyZuaS356MBznYWDckyZU3P8FuK
+         QRyCSNLkmBGSBmjEx/brse1PzkCvGkjiChA60E9ntvT/w6hywS9jTBhWORdRmzLZgLqS
+         hxJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWuLGRIYEpr1oiySCvYrJqVeo9zqzP/TyXtrlBEbP6JEjxS2RImaSR4Ro4VViOjA9jmtbBVvJ2VQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz0rLsqugjeWQhKibtEszSQEfURXTj1e9CNg4emSmN9sNxiqNTJ
+	WsgUH2/TQYnk1fQFL/M+DeS/ShuptuPeM1vHlCHUeHVbEil001kMdw1iKCdYbeM9qpe018IYIHu
+	mhVq8jA==
+X-Google-Smtp-Source: AGHT+IFnNgFHzdVwVBgjv1vYxeJtKWTDydfUHZWWQm4sogrJBUuU/RaThVnJNJ/l8yi1LMJs0OC3cJqUm/M=
+X-Received: from plhy4.prod.google.com ([2002:a17:902:d644:b0:290:9abe:4419])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec81:b0:290:6b30:fa8
+ with SMTP id d9443c01a7336-2906b301097mr149049165ad.23.1760554811768; Wed, 15
+ Oct 2025 12:00:11 -0700 (PDT)
+Date: Wed, 15 Oct 2025 18:58:54 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
+Message-ID: <cover.1760551864.git.wyihan@google.com>
+Subject: [RFC PATCH RESEND 0/3] mm: Fix MF_DELAYED handling on memory failure
+From: Lisa Wang <wyihan@google.com>
+To: linmiaohe@huawei.com, nao.horiguchi@gmail.com, akpm@linux-foundation.org, 
+	pbonzini@redhat.com, shuah@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Cc: david@redhat.com, rientjes@google.com, seanjc@google.com, 
+	ackerleytng@google.com, vannapurve@google.com, michael.roth@amd.com, 
+	jiaqiyan@google.com, tabba@google.com, dave.hansen@linux.intel.com, 
+	Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: u466daas3ms14qyitkg54c6i384xuqot
-X-Rspamd-Queue-Id: 61A6B160012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760554718-212351
-X-HE-Meta: U2FsdGVkX1/Md4CUYk954NVnxJa/SsxGWj9FgAoibAL+BkDGzcrt5+d4VCpchKsziuclqEAvjGoJ1jRuv7eGrWcPlKd4mrFceGsjOEPx3kqdFLjJtht39YXotd/STNtRYvQd5dl2k27ohxKsj5AcHC6z9BSg7plMREQDWhE0QJmDg5m4WGDyX0uVEOKHlkHL0fQI59YvpPl1xpVSPdaPhue8FhdZjshm/fAQ5+eVuoCjakeiNkiawPrJryzHWYdlSC4idoGs/thcoz/nR9fC637gylm0Qmaplv/ZbTRbaovg7PzUytZiFi0CBgShG4nsUE4f5IDaMpfM5+RANvKnhEdxI5E5wIsdCe0EgpyPr8a/g/9UohA1fNO++Wqt5PiXPC/bD0KaMrqYaaLsI9HlU6W1W4BJolYqUUSs/6nQHWm+z0KnVqBjJ7PQDr2ihGcrDW1ihiRyr4yddFkdVP5BNdTbUsdJRYA3rS4RzdZeNPOsDxyjNsNxJU8mKwSoQCeT6+8TO1L7S+V+esJ56ZyiygaDQlRlSpyJHFMkz7iHHaAtlmVvc3dziaWTqOkb8jMc/3ejBi1nRshxscK65HKrfcBxTi+Nw44ZQBD01EPvXiTceGXNeiNSwIQBOxB3J4qobTz29vv80W6ffuDKewvnL7EHP4UhVQOfVdNQnBZVlIBZQ1uyZoKGukpvdueglhX8Je6EGn6b8mkr6//mLpFDZwkgTT5isOqAfoXhfsCKN6EcrOtf+GyBtQ4WqBMMe+yXbwclLEsuYwOWWGEjOAuo/LRnPF5EipBI9kH1ZnBs5qDhj7X4V6Tgg1fHfx1nxh57wAcf6jTvzf3w1t7K1H7bqbsL2SHc6dz1udKttCwmA39s1BevUmrDPFvkH3Z29Wf6OYSS/dKav8al5tHA6ARaelQiRv7zt3uwJvIl57va4F/ylHOBLQr9IGplJ6yT+bMVCKWnSR/veoq4EUnYuVd
- /irb3paD
- 4kP5HJkflXSQxvMgNpdNFU1/QuOw9uMrYK5F4xLD5YoMqG5ZMTeMeSDBfo93ZRk1pdcrOhGBYmEgkeEeEnpVbc9loEWQaebH/caYaBv+u8VMLLjvH8O1sUy4nqiu5Bi1mWTU0AeM9chNMiioi4NIqYeePLtWJhLxTHjjuasbISPjfWVj+i+cI80splfV1P6LVNcow
+X-Rspamd-Queue-Id: 08D3240009
+X-Rspamd-Server: rspam02
+X-Stat-Signature: ygy3shcgkmwri87m4khth1whc3jtdhkz
+X-HE-Tag: 1760554812-127076
+X-HE-Meta: U2FsdGVkX1+mWQE5Vr1fJ3QjtXosZbNhVkFgx4tVczicbAnD2Y/CHA2jxmRkA7042Yt/2+FoZDzBTBIqTriqqlyvqJs1sQiORnxN5t5l7xm037MdnrnNkWJqVfeYgfbgQVLi9WNYO01bJWHBOMyn6qbapiv7xZX855lgozzxYgxM31Zxhs/QD0jgMOOhl9fcaYJ7lJf3N2pMrfYO36M+Bf6c1gwmp8Mnc7QJYRv33qr42nGq7rr0BvntmS49CIsRIu6CotcOoc4m4wG29YVyflgJxJ9Lb385qa2/9IKUjya+M4Mxv56zLOyZHHlv4AD7Gh5/kD4aGNgmCiKPxb50QBopAbwiErIR5oMrKk8ENYde0z6eO49rbFfKv0vetOkUfY7CheYRijUBfSd5BnEjBI0YidSsr42ljbeN2UfsREhgzetlZuFblbYdnMqDfm46qji30WQidyluMAFYffwbpZD97yh9BHXCoe9/bO/4b3rUVElbOn07OQGsJ63uIfYOQjekzuwsYaolQENSy1IZNLfrxNHdxMbU74CwjR+uY0Lk8tHilf77F+jfuEqT5ka1NgA+BbKpKN8JIXpEpjVwbX0dprNXMim2n7dE4QoWJ50d7zradgcqCTOmYZoJ6rHXG8ZR5yrL3Vfyiv4/2zGkrt2rZcyLiE87SPytUJ9r1MrrDfGd+9CgYHROmgyj9IdzfzesnspLm5eThO4pHoVatbjr92UsH87r3BW0NHtFaXpfVAzPaLY+3vzIBsSW5YypGHakayldBSwXpQkqlWLm6AZ5Q48NWiriJ954YGvBLoBfuWfXHtE8MH5J2mkmAAnRfV/n3ePNohYA/cNRGim/l0mG63TVMLMVPq3NK/9H666G7n0VQm84ktAfGCaxdK42v2qyBGcB8/PG3tkg8asAuHRoQOXCt9Lnzlqr2TDAQ7fMJuuuIxGh7BFP2g9xBRMfSQhfvHxp0My5tdgJeMe
+ gnPtGBE7
+ 6aOk/pr2vU3Xsuz0ipDscUzGqQIIp9YicuYcJilm8ACZbGsBrKFskCnvJuH+BjeWhEvdmy71ue35cgaW8fog1xP5KkR4G8O3vJViRgjsNV1roCx6kXzftnp7Yyw+2EKB6M0CHwdKkbmrOID9oCiuQWp5aMVOb/qgEEupSpkMiSqmNLPR/9Ds1eyc6sUnQP/NTGbBmVZvOuFF7TIHTV9ytFrRovtWpVhDgKUcGx6nb78w+wA6Vz1YB7G/PDwS8T1LF/MMgaTfIftsXlTaFDZevsg3kudmIo1iBAb+vxQFcTxey/WxVFu7JzjROg6H0aelLcPwcIhPJOIGUJwg+m3p85QqtWtKs27pFAuqF5R5XVM+M+SpvX/HMWrU8DVroMUROsFREZR8v4MABYl9Lgx0xvNElewj8mhWiVSq7CzEOHOgJm/mx6/H3EcF+piUzWm1z2F3xX+KDDCPnzuPXf5qSWnypm8uV7geCA+vB+Vo8XaEiErbRlDIOk8n/2sV51IqdrtaOCR6MzmUu7ueS0Q4e/4iyXe7/kjgt+oG6llP98d4EdDwgmKwtr5ApZFcX/h658X5KHZZft9uWNGTBjT+8anNLUcnbzAfyDYjp9kqblE80ZXnkTHHGkl0R5Angk8C1qDdjyRPUF7mp888GxW+2O7lpoz2+R4YWI7VoSosqmcnoiVrVoWIwJluy8LH3twnKdPJyFS43vFMrSAM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,57 +113,77 @@ X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+Message-ID: <20251015185854.2-aI27LAkTVMyur38HRG8upvGWn-Kt49TfM8wHIRH9s@z>
 
-On Wed, Oct 15, 2025 at 11:39=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
-ev> wrote:
->
-> On Wed, Oct 15, 2025 at 11:21:17AM -0700, Kuniyuki Iwashima wrote:
-> > On Tue, Oct 14, 2025 at 1:33=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > On Mon, Oct 13, 2025 at 04:30:53PM +0200, Daniel Sedlak wrote:
-> > > [...]
-> > > > > > > > How about we track the actions taken by the callers of
-> > > > > > > > mem_cgroup_sk_under_memory_pressure()? Basically if network=
- stack
-> > > > > > > > reduces the buffer size or whatever the other actions it ma=
-y take when
-> > > > > > > > mem_cgroup_sk_under_memory_pressure() returns, tracking tho=
-se actions
-> > > > > > > > is what I think is needed here, at least for the debugging =
-use-case.
-> > > >
-> > > > I am not against it, but I feel that conveying those tracked action=
-s (or how
-> > > > to represent them) to the user will be much harder. Are there alrea=
-dy
-> > > > existing APIs to push this information to the user?
-> > > >
-> > >
-> > > I discussed with Wei Wang and she suggested we should start tracking =
-the
-> > > calls to tcp_adjust_rcv_ssthresh() first. So, something like the
-> > > following. I would like feedback frm networking folks as well:
-> >
-> > I think we could simply put memcg_memory_event() in
-> > mem_cgroup_sk_under_memory_pressure() when it returns
-> > true.
-> >
-> > Other than tcp_adjust_rcv_ssthresh(), if tcp_under_memory_pressure()
-> > returns true, it indicates something bad will happen, failure to expand
-> > rcvbuf and sndbuf, need to prune out-of-order queue more aggressively,
-> > FIN deferred to a retransmitted packet.
-> >
-> > Also, we could cover mptcp and sctp too.
-> >
->
-> I wanted to start simple and focus on one specific action but I am open
-> to other actins as well. Do we want a generic network throttled metric
-> or do we want different metric for different action? At the moment I
-> think for memcg, a single metric would be sufficient and then we can
-> have tracepoints for more fine grained debugging.
+[resend to correct the mailing list address]
 
-I agree that a single metric would be enough if it can signal
-something bad is happening as a first step, then we can take
-further action with tracepoint, bpftrace, whatever.
+Hello,
+
+This patch series addresses an issue in the memory failure handling path
+where MF_DELAYED is incorrectly treated as an error. This issue was
+revealed because guest_memfd=E2=80=99s .error_remove_folio() callback retur=
+ns
+MF_DELAYED.
+
+Currently, when the .error_remove_folio() callback for guest_memfd returns
+MF_DELAYED, there are a few issues.
+
+1. truncate_error_folio() maps this to MF_FAILED. This causes
+   memory_failure() to return -EBUSY, which unconditionally triggers a
+   SIGBUS. The process=E2=80=99 configured memory corruption kill policy is=
+ ignored
+   - even if PR_MCE_KILL_LATE is set, the process will still get a SIGBUS
+   on deferred memory failures.
+
+2. =E2=80=9CFailed to punch page=E2=80=9D is printed, even though MF_DELAYE=
+D indicates that
+   it was intentionally not punched.
+
+The first patch corrects this by updating truncate_error_folio() to
+propagate MF_DELAYED to its caller. This allows memory_failure() to return
+0, indicating success, and lets the delayed handling proceed as designed.
+This patch also updates me_pagecache_clean() to account for the folio's
+refcount, which remains elevated during delayed handling, aligning its
+logic with me_swapcache_dirty().
+
+The subsequent two patches add KVM selftests to validate the fix and the
+expected behavior of guest_memfd memory failure:
+
+The first test patch verifies that memory_failure() now returns 0 in the
+delayed case and confirms that SIGBUS signaling logic remains correct for
+other scenarios (e.g., madvise injection or PR_MCE_KILL_EARLY).
+
+The second test patch confirms that after a memory failure, the poisoned
+page is correctly unmapped from the KVM guest's stage 2 page tables and
+that a subsequent access by the guest correctly notifies the userspace VMM
+with EHWPOISON.
+
+This patch series is built upon kvm/next. In addition, to align with the
+change of INIT_SHARED and to use the macro wrapper in guest_memfd
+selftests, we put these patches behind Sean=E2=80=99s patches [1].
+
+For ease of testing, this series is also available, stitched together, at
+https://github.com/googleprodkernel/linux-cc/tree/memory-failure-mf-delayed=
+-fix-rfc-v1=20
+
+[1]: https://lore.kernel.org/all/20251003232606.4070510-1-seanjc@google.com=
+/T/
+
+Thank you,
+
+
+Lisa Wang (3):
+  mm: memory_failure: Fix MF_DELAYED handling on truncation during
+    failure
+  KVM: selftests: Add memory failure tests in guest_memfd_test
+  KVM: selftests: Test guest_memfd behavior with respect to stage 2 page
+    tables
+
+ mm/memory-failure.c                           |  24 +-
+ .../testing/selftests/kvm/guest_memfd_test.c  | 233 ++++++++++++++++++
+ 2 files changed, 248 insertions(+), 9 deletions(-)
+
+--=20
+2.51.0.788.g6d19910ace-goog
+
 
