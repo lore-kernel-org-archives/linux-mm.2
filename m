@@ -4,106 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95507CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 03:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0C4CCD192
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 03:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5ADB8E001B; Tue, 14 Oct 2025 23:06:51 -0400 (EDT)
+	id 0D1558E001D; Tue, 14 Oct 2025 23:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32498E0005; Tue, 14 Oct 2025 23:06:51 -0400 (EDT)
+	id 0A9BA8E0005; Tue, 14 Oct 2025 23:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6F418E001B; Tue, 14 Oct 2025 23:06:51 -0400 (EDT)
+	id F01598E001D; Tue, 14 Oct 2025 23:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B78DC8E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:06:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E7CB47A73
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:06:51 +0000 (UTC)
-X-FDA: 83998861422.02.ECC1B5B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5ACD240012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:06:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OqJin37f;
-	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D8B7C8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:21:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EBE1BC02A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:21:35 +0000 (UTC)
+X-FDA: 83998898550.19.C3F3177
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 25F4F1C0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:21:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="FbGRZ/rx"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760497609;
+	s=arc-20220608; t=1760498493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2IvZFH1GlxbOlwBO0vn3PVp3T0hjKi4CU/igwLjmMB4=;
-	b=Km4bDXqH/CdrmPVo36WNWTKT5SwcImGNjsNlQfQKoIta2ifeqxY175n1+Q+njeEpltbgmp
-	WThudYCjnX6v25y6CMEQGxfp9I8hcGnG7nUZIDUd+2Z2db87mbKq/kDjvW+sRPBGX7qQ7q
-	lC5Y0K2ZrOFKRK40gnpzSGlYzXWjcpw=
+	bh=+vZhghVmnJMheRu4WGt6Jm2AnYVQSqZVx2x8NSyWD+o=;
+	b=bhNM2H5NKxMnLP5XxQRsnwF+oyeFuvHwk4IryYS94lE3wgVDRUi9iEllJEgYT2OBsqy4jH
+	tUBWaYC9p13bM7uX4bUgvkZd7jAlI8kbVNsXmXh9UUM/ABD8SQTUCH3+k6XASrJxxAz4+r
+	Y/4oLjWGGPKIxd1rC1R4maiJfKcmv6k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OqJin37f;
-	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760497609; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="FbGRZ/rx";
+	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760498493; a=rsa-sha256;
 	cv=none;
-	b=lxhf1D3Lw3u10nupeBsqrSAFCMxl5t+47Ok9bbtM/FmAr3bLn49OZwct4Ns699C5T/jvPV
-	utCTJHjXkW7gAsDZXI1KHEnlkysyyb1AV9QH1qxdEYuwD06irPbUnpr15+hc8n35k0KTED
-	YPD356aDk7JlzMx5RaA419v//gWcMCk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760497605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2IvZFH1GlxbOlwBO0vn3PVp3T0hjKi4CU/igwLjmMB4=;
-	b=OqJin37fHF/jmDY2VWfWQDuFLtlTv67+1iB6FkMrngbN93y+2Iho29SsN7qzhu2vSzInpc
-	/fAIx7s5ah/zAjB145dLBCSnn+OlqGNcrC8WCUyDdTj5PFeL72VZ3TC8/IMNQIr6qXMFjq
-	cf+O0zCltRNKuDa6sLecAHLP+HZB37E=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-Rq0xx_EWMPaH60t9QpDTlQ-1; Tue,
- 14 Oct 2025 23:06:42 -0400
-X-MC-Unique: Rq0xx_EWMPaH60t9QpDTlQ-1
-X-Mimecast-MFC-AGG-ID: Rq0xx_EWMPaH60t9QpDTlQ_1760497601
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 761871800350;
-	Wed, 15 Oct 2025 03:06:40 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.19])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4743D1801AD7;
-	Wed, 15 Oct 2025 03:06:37 +0000 (UTC)
-Date: Wed, 15 Oct 2025 11:06:34 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, youngjun.park@lge.com, aaron.lu@intel.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com
-Subject: Re: [PATCH v4 mm-new 1/2] mm/swap: do not choose swap device
- according to numa node
-Message-ID: <aO8PuhNfKOQ8SJUV@MiWiFi-R3L-srv>
-References: <20251011081624.224202-1-bhe@redhat.com>
- <20251011081624.224202-2-bhe@redhat.com>
- <CAGsJ_4zvtdqzvBNmQjMy0L6JAz_XpvR=rGgNC_Xdo36QVW-g4g@mail.gmail.com>
+	b=1BxHza2UI6Jy5PQzAGPC1wiA4+batBpOKk7uWaZU1xIAZnaquUqRu2eIlefcmigmTf3uZe
+	lZuBgXRHLPZB5kkLXwwGePxn79zzWeqp9H8dny0nj1Q781BDZymlYIpglfJ+8zfaIG6PLt
+	kuXKh0H0THP5VTJ0R4yTd9DuRtKHmZc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+vZhghVmnJMheRu4WGt6Jm2AnYVQSqZVx2x8NSyWD+o=; b=FbGRZ/rxcOCURqJcLxsSF/pzLo
+	L/v76Zh8y9EcucbcRxZQdiTEwOoRt9atY8AjoeGJovLqc3ZOFKV20A5wK0SYY60r+EKhk9mS2Laj9
+	IK/r3Ed693yH/8skGzY3KRygDDWQr55qBEomc9oUWSYVpD772fJuGMjM0vX3TuVog4L9huuLy7t3u
+	HYWrPYsdTu2zbRQGeh/qIKgySxuFOf5cHPmVD1MrIiad82QeJOoM0muj/rDGKxmA821nM0ABgA4Yc
+	+9D/MgidcOyM5+c9Y3y51X50S26WlC3W73xgXGFsl3Ql9KaRRNlIf4L4Wl+pn2fsQZE822PkVo777
+	Iru8YHkw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v8s4g-00000006McQ-0QcF;
+	Wed, 15 Oct 2025 03:21:14 +0000
+Date: Wed, 15 Oct 2025 04:21:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	"zhaoyang.huang" <zhaoyang.huang@unisoc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T . J . Mercier" <tjmercier@google.com>,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Subject: Re: [PATCH 2/2] driver: dma-buf: use alloc_pages_bulk_list for
+ order-0 allocation
+Message-ID: <aO8TKQN6ifOSMRSC@casper.infradead.org>
+References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
+ <20251014083230.1181072-3-zhaoyang.huang@unisoc.com>
+ <87953097-a105-4775-88a5-9b3a676ff139@amd.com>
+ <CAGWkznGN7W-txq_G+xpZ6DtH_1DNorYc=CxqUjebo7qfB4Sxsw@mail.gmail.com>
+ <ecba7133-699c-4f3e-927c-bad5bd4c36a3@amd.com>
+ <20251014171003.57bbfd63@mordecai.tesarici.cz>
+ <97da9924-9489-4d30-a858-8ee5c87bc031@amd.com>
+ <CAGWkznGnmb=8GgcrfDvY2REHdRZYVXZy=F3thXhK0FaSoiK7tw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAGsJ_4zvtdqzvBNmQjMy0L6JAz_XpvR=rGgNC_Xdo36QVW-g4g@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: R-G776QySuhDHCIgRkndJH-uLGYWfxoMg8o1_SI_UBo_1760497601
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5ACD240012
-X-Stat-Signature: 9nrcmrezpwp4j18o1ror3cewq9m869g5
+In-Reply-To: <CAGWkznGnmb=8GgcrfDvY2REHdRZYVXZy=F3thXhK0FaSoiK7tw@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 25F4F1C0002
+X-Stat-Signature: 3nbtixbywxtgk6hy1zi4tg3xb9kgwqmj
 X-Rspam-User: 
-X-HE-Tag: 1760497606-71398
-X-HE-Meta: U2FsdGVkX19+3/hlnm5nK6UNulvaOXokhj6FJf1i3NsgeKGMFyTDD0p6kfFJNQUUBwDJ8JY6IExnN5fY/42ZH/pfAjLNIpOj3RXMsMpX8k5ycbZLx2mC49SFB+FmQ4EZJEG+LROyX4WyZamZpqfiuDMsCCjwdl8svJ/2HX5oA8XP+uQuBmY89mQIKBVTw2PSo2nYeYXqmgDWvnL+QCQh9IHAZ2NpBcjh+zMXN1DRi08dMwEYNpgkF1shsEEsEaAduKeugHx4laaE7isGBkRvW6R/OaZksofjB6u/w0zoiZa9GsE87Q/cd/n0ebULpOgtOdu+aRCou3UdonRAQuKp1lCZclpEjhCPtKtZWy0jjt94clH56UXCijOIDoLCwK2CbXthUjnzsm/9Tu5FVIH7vTe6slw+2A62mHiYRvutjpH8cnv6qL3jWjhw1pO8zb0nIJdAo2jgTMHG5+7gdCqYfYNF7lv4mKV1fIxO8l3zCL958SCpr5ELnbpP5fRc6ApE7VVdED9R3POoQWMVR4eR4uldlfOIbulIu0zmy97QMRUOydsexnMoUoiN1FnuxqBultnzpecZx+mW84TsgrIA58+PGgNCT0969sOKMWFpTkZ2mbgyH9SPxq4zd8PcSiwMkUqP9Eq1C1NGoHexVKtZ0LAQ7mDKQxZsvJZctObMZuppyRw7JG5z97raXkzY+crLbN6FmA0LVIXpJluJ3to5wUUbzz3LbwG78ityXpBzzioF+fbFMiomydc47ruNtJOC0vdPg6gv9W0dwmOMeuBMizIrfCAs2V79XLVi0r6zPx/PMukzDTDQzGA9kstGWblCpOWaNQ5UG+vyk81Ksc2bHfOtsVTQx5JDOJj2syXU0CZvJHhgSkoraSILnoW5jBfMtYr5FwuSFN667WjLEy4niOJ3C+qb2JIx3zxfCPucFQn5+jpXf/OxR8VlkcvDJUrTGCX+xs+apUPn7HQMTzV
- m0Z+LmCu
- kX4fp84N9r52pWJWf6r3JXUmyjqGmgv4tS5p5+7SzyO/C0RGYbBFqpIb8G/r1N129vY8u0BM2Sdi0bGtNA4E+qfEVjkjKOt96drL+w29Erhh9PvKR7dWAjAOume7jLvuKw6qClhmaSRyyhSqsooZ4hryvmkDoT92PfubK1dwSA8T7zewXkZ1hD2khnc74lP/CO5+cnfKJ7jJMc9m3LIYkbgZ8Wk0EC5z0P8hRF/wPOrQwWNSmtLw8KLhvHQtUYPRzvNd1XHEkxq1+ZDJSTw2CmhgPYQkJ9yIIN5X31VKEYLEmUtoGHP5CoKbJfgBFydGtKuzqFh2lthjE3Pij+KQyjog8Lso+wN0IhLKjcskrnQh/GEguzP1UIlrgvDZG3PafRHPj28hNPxvKOyE0muEcukE1Nq3m19kcGVurHApyybpGH8UeublQjDi/tZERr9K6s1tWUs5ngK0brL1sqqnur03oV7zQfvv9KjIi
+X-HE-Tag: 1760498492-810449
+X-HE-Meta: U2FsdGVkX19LMOT1t8QwdXFmF4yw8+Azc0xr8Pu6uuEfutcly4kXjLAU9HdEGlbmm2RUObfofjwzuYvw9JVa8YmzyTs0DrsvmY64kAgsV0T4F4bnvW7AFUJKXCVXb8aQ/asJUBu8wIh1Q/S1U3uvqvU+Cpy/UHD+1SvoexrAAI6ciaJ+//KbuB3iyn8Xh4LC9QtEm5Vlnuarv9oXFXRBjj9wsI/g5IMsCY9wY0ryW7s77fRVRl94erMh/Ypv36V1xnn0mKylTNgjPL2yf6dc7hKMF9l9xBk+mOBQFm/nR01x7JlPbBlBArtRvS7sy/2zDaUiEqQsS8Xtzrpsl7vNVQPqaTAavkR0RZmEwMdMAgx0HPdoGMb7QDvKjQozIxfNANrc2mkaSp8bbdXrlrDoTAzzcq0iFlVi09zOm1z7ba2OdiHoZp+aPCTcJGyGSA/5SeakmJQ4bK4zkWFyWPkFFpEG9m/Wp7YZNqCv5cCR6pUx+iYDUQfCFeV7teVOUXYG0h+JCVaifk8iWdQ11wIWbJtiKGqz+Tz3BbsncD2qBO7EDyLqZGB/lO6oF/hmmzD5HyAn78zgrZAP7/ax42a7X+n471OCgUsSLDhtEV6NtggcVXfZ4bMWxY7Zd2W+aozBYdzEFkOvYG1Y/Y3FOv2njtVHNaG1HRmhvPhkWJE2UBNYAqEZ6CgsCkdKORJIL2ftDAzk7rjnqKnXbThRRBs/a9hCeQKCSPtKoTCRIYRYbGQldApQCttTlSDogCjh1QOwCse4YK4YV+Rr0vo+1ngURg5s9f0AwTTL45gGTohv7Ns3uUDLqEuFVIZu6pTrxqRfkwp/eaF5jAsKT1mSALJoUM9phNCvhqpHcZMflcWUW0zdaj0nhThnOBhvmRw681MEWxrQpHhn6NhHYvdqJg4TI1KenNdcHCHaPC0CbYiKNL+tYbgpFbM5q8ZbZinnCCHoapL/26eV2FGkyto+gn/
+ kzo/+PyT
+ n1HyVNVhWWtaxynz1M0YwVb9Q2dOXp1I7tXX3w6jYSxALhOgqlIld68+OHPXjaEh+N2SvF2jCPZI2t9+H5+YbSr2b3pQbddMVXnI5ciGIx1n3KQG9Z7E/Sje9Gm26bignSMuOv9Z+6QG+Nvhynr0fDrXfelnQX9tlKUf8xl18ByYvuntf1D/W9lFookL5ZzbTqMEMc116yHnHBOTOikLQ4l+ZcTepkhbvgdM+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,49 +109,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/13/25 at 02:09pm, Barry Song wrote:
-> > -static int swap_node(struct swap_info_struct *si)
-> > -{
-> > -       struct block_device *bdev;
-> > -
-> > -       if (si->bdev)
-> > -               bdev = si->bdev;
-> > -       else
-> > -               bdev = si->swap_file->f_inode->i_sb->s_bdev;
-> > -
-> > -       return bdev ? bdev->bd_disk->node_id : NUMA_NO_NODE;
-> > -}
-> > -
-> 
-> Looking at the code, it seems to have some hardware affinity awareness,
-> as it uses the swapfile’s bdev’s node_id. Are we regressing cases where
-> each node has a closer block device?
+On Wed, Oct 15, 2025 at 09:12:07AM +0800, Zhaoyang Huang wrote:
+> > Could be that we need to make this behavior conditional, but somebody would need to come up with some really good arguments to justify the complexity.
+> ok, should we use CONFIG_DMA_BUF_BULK_ALLOCATION or a variable
+> controlled by sysfs interface?
 
-I had talked about this with Chris before I posted v1. We don't need to
-worry about this because:
-
-1) Kernel code rarely set disk->node_id, all disks just assign
-NUMA_NO_NODE to it except of these:
-
-drivers/nvdimm/pmem.c <<pmem_attach_disk>>
-drivers/md/dm.c <<alloc_dev>>
-
-For intel ssd Aaron introduced the node based si choosing is for, it
-should be Optane which has been discontinued. It could be wrong, then
-hope intel can help test so that we can see what impact is brought in.
-
-2) The gap between disk io and memory accessing
-Usually memory accessing is nanosecond level, while disk io is
-microsecond level, HDD even could be at millisecond. The node affinity
-saving nanoseconds is negligible compared to the disk's own acessing
-speed. This includes pmem, its io is more than ten times or even more
-than memory accessing.
-
-If there's a real system which owns disks belonging to NUMA nodes, we
-can test to see if the new round robin way is better or worse then the
-node based way.
-
-Thanks
-Baoquan
-
+No.  Explain what you're trying to solve, because you haven't yet.
 
