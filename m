@@ -4,92 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1868CCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F341CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:36:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 696F08E0018; Wed, 15 Oct 2025 02:27:50 -0400 (EDT)
+	id B62558E0007; Wed, 15 Oct 2025 02:36:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66C8F8E0003; Wed, 15 Oct 2025 02:27:50 -0400 (EDT)
+	id B3ABE8E0003; Wed, 15 Oct 2025 02:36:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A95B8E0018; Wed, 15 Oct 2025 02:27:50 -0400 (EDT)
+	id A774E8E0007; Wed, 15 Oct 2025 02:36:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 472558E0003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:27:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E384B160B6E
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:27:49 +0000 (UTC)
-X-FDA: 83999367858.30.1D77935
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 53293120002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:27:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YhXywWnl;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf29.hostedemail.com: domain of BATV+bc6a97f86abb080b148e+8088+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bc6a97f86abb080b148e+8088+infradead.org+hch@bombadil.srs.infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9573A8E0003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:36:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48FC813C156
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:36:04 +0000 (UTC)
+X-FDA: 83999388648.22.7E7B7B5
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6F0FA140013
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:36:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gW1ZJQJZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760509668;
+	s=arc-20220608; t=1760510162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2S6yrGSJzKiMajpaUI8vM4I6Sy7cVl721scCL8BqWLo=;
-	b=mfIPpEVGeE511UY5jXQ+QWUjg2DKF0shfbzCOGoJKH6Rtctaf5mPvyMCFkeWhPQeW5WK88
-	3CGOL2ce75wv3beb67HTB4409pPYiERx5Lx9GKdihDIV8MY5FhaJ9ldv0zLQH8zptqx61z
-	7sA900CMBI2ZygMj7tdpjmrjRGtSQV8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=YhXywWnl;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf29.hostedemail.com: domain of BATV+bc6a97f86abb080b148e+8088+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+bc6a97f86abb080b148e+8088+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760509668; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=chYLFKHOenLcAoAbuxLeK+xLyqa/SWaDhpi/ROUy1lk=;
+	b=Uq0ik9ZT1Y9t46G4ZURFIjXeM7vvNvBh++hbuzyKEbLGiCujgHUDPdoaLl6w4YNYnY5bO5
+	RQEjAkEywlc+4BSYwc9/oiJ42A5kNx6aSVmXIV3i459myqDZTytsvJySdecLEVqsdJ1Hfp
+	4AcRR+JuZaCdkeAGvvT0jB3qkTe3sZc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760510162; a=rsa-sha256;
 	cv=none;
-	b=skGPRlSWJAXM9VY/5G7oBKZwB9J8neibhMXxy/FmrVsQ269gB4dI/bhk4U+t4Cmq4oChE6
-	phmcZ3wHk3nq8sXXO0ZYdGGcI4QUyNfIFLyBmP9aPojDFCwzYZemx7Bz4Kf4TY3ZuAdx0R
-	47CdKj7DyHvmD9adXSsCsx312VHrzpA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=2S6yrGSJzKiMajpaUI8vM4I6Sy7cVl721scCL8BqWLo=; b=YhXywWnlybvD+Q4MLlpCLaT2LP
-	/4L8CGInDcz5hr848E1WMd9H5DoE5e4cJpQrERMBQbwMgatFu9AUs8KZ0jl1uAK/sY7vzZnReOlgQ
-	NpEeLSEu4gUUOqmQfv/n6Otc7zAlh89rp8SZK0cdKAR5ZsC/8N6m80FjwQzXbR0TWv6S6BQsL/Dhw
-	abVa4UcKzedtqqvuERs+eK1dSpWNcltYWGgaJsofQdtLFgyqL19+Iv8zb1kXeHGiYzXBT3DvTz/ep
-	zeP7mdQBBN7l6P3PjCjrCw+DHgI2kVyD4cu8jkVI73Rs14Yuvq9cg19lSeJhlYcvoAyZvF75EltCL
-	ce1xgY1w==;
-Received: from [38.87.93.141] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8uzC-00000000bFA-2wTR;
-	Wed, 15 Oct 2025 06:27:47 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Carlos Maiolino <cem@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	willy@infradead.org,
-	dlemoal@kernel.org,
-	hans.holmberg@wdc.com,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-xfs@vger.kernel.org
-Subject: [PATCH 3/3] xfs: set s_min_writeback_pages for zoned file systems
-Date: Wed, 15 Oct 2025 15:27:16 +0900
-Message-ID: <20251015062728.60104-4-hch@lst.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251015062728.60104-1-hch@lst.de>
-References: <20251015062728.60104-1-hch@lst.de>
+	b=K+l8ms4Zp2uzITV0VaROjwFnmFoccPOmI6VmYkD32mfCkXnOv/QOytjRDLwwgjW8u7L/kh
+	tDitKcFyA1Urr5n0OvEWq77qgrWAT67rzlZCL9Yn5398ItXPgyrJZkNBIb+p/3iYSbLsdl
+	4mpiQXtS0LJkW2o+T6Ct9jmQYNBakjM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gW1ZJQJZ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760510160;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=chYLFKHOenLcAoAbuxLeK+xLyqa/SWaDhpi/ROUy1lk=;
+	b=gW1ZJQJZl6v8GMrG3KfidtB039hu4hUhUhzri0l/yhaXnna1qQidZc0XD/jGRYbFQtRCzw
+	aB9eQg0iDSgvjDMbpeQuRMWioTMBQ5BV9CMA/jtqZyesZZxFbMU2ohM6tb9oK/z6EPo01b
+	Ac1TrRvDLNTWSmbXBBvR/uyfrrQiODo=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 0/4] reparent the THP split queue
+Date: Wed, 15 Oct 2025 14:35:29 +0800
+Message-ID: <cover.1760509767.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Stat-Signature: kw3enprbbymwppu3y19mxn89neqsgzka
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53293120002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 979638to7ks11him3amueqresb14qtrb
-X-HE-Tag: 1760509668-583506
-X-HE-Meta: U2FsdGVkX19iUk5eVPjeFHm67dyJ5JWqc9Xdn0W+heUEPEHI4gbs+DgUVNRQbVoXOs2rlXvmNTl28i0fwpMNxPQg52wkPZghpZpLbGY5cG/jGrmUrad/Qm4vT94ped6IQGS7cnhutMIlJcDDtQhjv3vKSfqy5TRAuQB0ZKnApJouhM6l66A/8lAFvPp5nPTUw62JBENRH8o+Wte+aZZwY7vKprWSrqnIxJ5NLJtc4f8Q9BlRhQMyWtiYeZBv21PQppPjdbPvBSmcNO4ndR+V9bO5U5ULVmXJzHhD5X+UEnCmnKM4opMKiq5vC271dxZWTvwMUbhEJ5IuGPhXULu6f6bUtmmZT9HlRwjb+PCBWaejPVQe7ql3YrtFt5u2w+zwsf7zqO5TwiRuBhquSgPUYpTkraYd85S6Rn5d0KLC7e8tjppHeadLMuCtoVPqgFTYVOiEIzWaoYcbz/NyJGjmEUyWqvRDitrJq5MBHbxtPc8ZugijeqAchhWYg2Q22SzGB+T47UkUcy5sjGIztb75oiqBFSA6+B7IkCKyuqkmIEk5xMf19c2rdzchw4pO4EJIl+Fr1oSrWpaeGfiwAqQ4g+AOanglmEQkDJ7CoouB5mn+Ch1QnmBJLzMJeNkxO9FgdyL2lwaloRqjPltPEgqj0u+WFczXzFCk6HsX+OLeSasMPp/o9AKZbLUMhVmlhY3fNjiyMGDOOtl1OdD30X4Fk/FoauZqLZPNa09rShpEiI1WUohejdVsMzNLelgKCpDPvqtRgRCdpkoDqr5J/Tsd8Kb2Rgx5tPk+mb0+8tdCE43HSrOcF5shkBQrN9gG5l3dKUDwo4+VbgEq9rVvBN2/i0Fk2bH/PkrDINo1yt8E5yugp6dwoFq8XjB2fBFSO7V6Bj7TzpLdxnz7clMBpGdIjPbK9KWzOTADW/PhRStRhWmXVgPobE6Vhecpt8PQokjOhWMRCwiPM69wWO06p+Y
- boIhuc4y
- f8LHfpbsvcaP/6gaaTTPyD7Lwri9OhDSjiNSyoe96gm/2JZLcl1TNIc8aErWGgemaO7uNwrTWOdgtr/IWWttFY0Tkj8/lliPkOjFOMVUNtBtmcRdN19bWCE0rJo8fxD5s+nxp/ODzpe7FkVMs3iL+GH8qB01AX5VX3B8HL0oJ/VsShphCWDS/UgYIrPa1wPEi1GyL1XNGuV4iVLj0rbNvV4OD9u3Sgpr3NB2io8XJstfR+XdWyripL0AsU7MWHMvH+fBFsAXLpk3UyCD8JRAuxVEdpIJYgbwNdp5zg9rrPiH8JI80xUxVMbQ9qkwOpAiUdqmQGmp5CV0oWTSElXkB5ADdoKQIFxHMMX3KDRJrgvKalx3L16iWxBqIoUgg7Ua2PA9NqRQx9FWYrjwOpHePBGuYpuXisZzJBg6rebiMvL6gqa9sVaJUGiB9LRhLYHomqq357XEGO4CLovP4RkLGzQ7lMqf8rebZP1+xfmNT1dTBvQthsc4ZONNQT/zHQeTx3eC5j2K59YOtDo++7cwKukjbstFKmg1NtKZ5G7sfK5Dq91tFo8knma+plBp2+rGvuB7P
+X-Rspamd-Queue-Id: 6F0FA140013
+X-HE-Tag: 1760510162-750526
+X-HE-Meta: U2FsdGVkX1+Wq53VOLS1qZ3T8RYi8f1fl1QiMZGcfbJ3OdQd302LV0rsZlq3Lyw0JCJDTct3xGc7RgzP6c2yDdXJVY1EP4k9wPzAAnf+MYulAWuBeq6IZc3Zspht+X+ppwwBUYXzSX705ZerYHlZhpse8rbIKGST7Vo/C/Pe3wnnrjOn+IKgRsi+eHIcx23dK0eJrWr7RLacl//XJ+EAPyAyaBRxOQkDQJ+5eR5nJiSTz39QImWuIQqowADfI5TbEVDmzG7IOUFEA96DlkUoTLpQ0h/6VJhLbKi5esjr/X7YMysuvrAzgIxE13omPCLWKmfZsr+JNzEXTgedAMJQ/S+UzDJ7RtWyx9nVBgG5fKEY8GZ94lI/YQVnHXBXsBMaDygcla+NM3030PZ+aaOt7fd6K0d6jDgru+t57SlAV3vwbiX0aXpLHhctiw7+gxw3fVuatPG2E/8qiGJHraWXIfT5A6UMholzVn6nPOebAuq15d+WRBI6QgpXBRx8Yi9vlFlMVQfeOc3YGKxWg10O8k5tH4FFREx8nYsig2wWB6cjXxDhMB/ZTBbTqShWm9GjbMNSFBsBnHOKIO59wGdAzdnlbHEJh0g3VOM9YRBYMz1MIHN6rYbPhjlh/dyfhqD+zYPzZ9M/1rde4FdZ8dyC7Qtu96ksZhmLh7J8cyguRtOarvxCCh5eOapbpUj9hbNlM5u/7G56PO/Sivjj0T9goFJpzzHYjZAkACupbKQU2XyS7fg+LTk/NkGr7bLRy2m0Beh3g7OemOaBeanlHxGkPjzsltPoIuyKzjmdyGVqtfcMttPa55rbRdj/HZhCGqCQ11uSa7neGHHiXmZcFvWn1SBPtLfhZHsy6Bg36FIIEfkxENH1oVn+HIZ5KYQh6Zy7JGz2RyDMaABX+cUXya5HEdHL3pqtbpPISpQpaX3iLje6h/WYwd74jYRAgxdqgubYDxFqUWYW2IjCSknz0lM
+ +Gu5Y9V/
+ 5G+9db1XiVtPrZkKE0gnkIgk9kvH4bS9e/IszCI3cA4jMNW9V7d01PfACK5eSAoLmbImd/qYZdWYJ6Y807MbwUUrgd+j7vNCPqFoeQID1PakMHYsMajpytcMXLY97tsM1TiOcxYNGP8ln94x5KlZ6GmYE22gWyQPMdSD/xaKZ5MnA7eoGh5LApe0MTrvFZwxbBJrhsgiTeASOT6A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,45 +103,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Set s_min_writeback_pages to the zone size, so that writeback always
-writes up to a full zone.  This ensures that writeback does not add
-spurious file fragmentation when writing back a large number of
-files that are larger than the zone size.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Fixes: 4e4d52075577 ("xfs: add the zoned space allocator")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- fs/xfs/xfs_zone_alloc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Changes in v5:
+ - fix the softlockup issue in deferred_split_scan() (Zi Yan)
+ - modify the commit message in [PATCH v4 3/4] (Shakeel Butt)
+ - move memcg_is_dying() to memcontrol.h (Shakeel Butt)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20251014
 
-diff --git a/fs/xfs/xfs_zone_alloc.c b/fs/xfs/xfs_zone_alloc.c
-index 1147bacb2da8..0f4e460fd3ea 100644
---- a/fs/xfs/xfs_zone_alloc.c
-+++ b/fs/xfs/xfs_zone_alloc.c
-@@ -1215,6 +1215,7 @@ xfs_mount_zones(
- 		.mp		= mp,
- 	};
- 	struct xfs_buftarg	*bt = mp->m_rtdev_targp;
-+	xfs_extlen_t		zone_blocks = mp->m_groups[XG_TYPE_RTG].blocks;
- 	int			error;
- 
- 	if (!bt) {
-@@ -1245,10 +1246,12 @@ xfs_mount_zones(
- 		return -ENOMEM;
- 
- 	xfs_info(mp, "%u zones of %u blocks (%u max open zones)",
--		 mp->m_sb.sb_rgcount, mp->m_groups[XG_TYPE_RTG].blocks,
--		 mp->m_max_open_zones);
-+		 mp->m_sb.sb_rgcount, zone_blocks, mp->m_max_open_zones);
- 	trace_xfs_zones_mount(mp);
- 
-+	mp->m_super->s_min_writeback_pages =
-+		XFS_FSB_TO_B(mp, zone_blocks) >> PAGE_SHIFT;
-+
- 	if (bdev_is_zoned(bt->bt_bdev)) {
- 		error = blkdev_report_zones(bt->bt_bdev,
- 				XFS_FSB_TO_BB(mp, mp->m_sb.sb_rtstart),
+Changes in v4:
+ - add split_queue_lock*() and let folio_split_queue_lock*() to use them.
+   (I have kept everyone's Acked-bys and Reviewed-bys. If you need to discard
+    it, please let me know.)
+ - let deferred_split_scan() to use split_queue_lock_irqsave(), which will fix
+   the race problem in [PATCH v3 4/4].
+   (Muchun Song)
+ - collect Reviewed-bys
+ - rebase onto the next-20251002
+
+Changes in v3:
+ - use css_is_dying() in folio_split_queue_lock*() to check if memcg is dying
+   (David Hildenbrand, Shakeel Butt and Zi Yan)
+ - modify the commit message in [PATCH v2 4/4]
+   (Roman Gushchin)
+ - fix the build error in [PATCH v2 4/4]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250926
+
+Changes in v2:
+ - fix build errors in [PATCH 2/4] and [PATCH 4/4]
+ - some cleanups for [PATCH 3/4] (suggested by David Hildenbrand)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20250922
+
+Hi all,
+
+In the future, we will reparent LRU folios during memcg offline to eliminate
+dying memory cgroups, which requires reparenting the THP split queue to its
+parent memcg.
+
+Similar to list_lru, the split queue is relatively independent and does not need
+to be reparented along with objcg and LRU folios (holding objcg lock and lru
+lock). Therefore, we can apply the same mechanism as list_lru to reparent the
+split queue first when memcg is offine.
+
+The first three patches in this series are separated from the series
+"Eliminate Dying Memory Cgroup" [1], mainly to do some cleanup and preparatory
+work.
+
+The last patch reparents the THP split queue to its parent memcg during memcg
+offline.
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
+
+Muchun Song (3):
+  mm: thp: replace folio_memcg() with folio_memcg_charged()
+  mm: thp: introduce folio_split_queue_lock and its variants
+  mm: thp: use folio_batch to handle THP splitting in
+    deferred_split_scan()
+
+Qi Zheng (1):
+  mm: thp: reparent the split queue during memcg offline
+
+ include/linux/huge_mm.h    |   4 +
+ include/linux/memcontrol.h |  20 +++
+ mm/huge_memory.c           | 250 +++++++++++++++++++++++++------------
+ mm/memcontrol.c            |   1 +
+ 4 files changed, 194 insertions(+), 81 deletions(-)
+
 -- 
-2.47.3
+2.20.1
 
 
