@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D547BCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 02:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB35CCD184
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 02:50:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6AEB8E0007; Tue, 14 Oct 2025 22:47:01 -0400 (EDT)
+	id B606D8E000A; Tue, 14 Oct 2025 22:50:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1C318E0005; Tue, 14 Oct 2025 22:47:01 -0400 (EDT)
+	id AEA368E0005; Tue, 14 Oct 2025 22:50:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B38978E0007; Tue, 14 Oct 2025 22:47:01 -0400 (EDT)
+	id 9D8D98E000A; Tue, 14 Oct 2025 22:50:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4C598E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:47:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE1F911B294
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:47:00 +0000 (UTC)
-X-FDA: 83998811400.04.39A8A47
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 049A84000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:46:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 872838E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 22:50:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 499601A07CC
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:50:13 +0000 (UTC)
+X-FDA: 83998819506.25.29E755A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CD05B40003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:50:11 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	spf=pass (imf17.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0nlJ95+B;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760496419;
+	s=arc-20220608; t=1760496611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9DUfInmfjCXWXWHNUvAFju1n8/AD74+ozx/b8R+rN4E=;
-	b=pp2ayrBKjQwH+rF0QlWnDxXJ5QKxwfLnIBOrNm+I+09nfqMxrYTpaK/fJL4tTy0At5AKKx
-	UtaQkzk75BlaXZSg5rvdaUB+jg8kH8WxmNPoKMpcl2DHG/98Y3+6SBV3aVCHB6XihBiP+h
-	9DwuFFa3XgLz+oNxLniRebSYAYvgYNk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760496419; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1Sw4y3gIxZ5+AmFWe+DM4l79O3rVkDzFgpmPEgCrMQU=;
+	b=LCl7oBhOlFtAizR9nAZeSwAgnQCYyErDg/JD+dxkd2FOaleJCdsX6UnGuJJiNtPUz5wPR4
+	Jt9+xi7h9FYvf1mGTNnVg8JhB8ScMXw6qAt2BTzBc4z5pIhahimN6mr1rxQ8EnbAV7dCNF
+	2t90jO7Jeh7mUJj8x2juP14kw2cTWYg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760496611; a=rsa-sha256;
 	cv=none;
-	b=rSKLJrefhpGwk3cyXN1SRFWVxx5zqNYh4xSXobF4LHpo085IhKA49Fld5Uk1I+2DP0wjz8
-	KDhKRAPWL98tVLpElILsVHp56YER+Hap8bDCyGwzig92J71X80Ivp69CsMrPaAUpHFq2m7
-	ZpQ73/5k5mxak+kG0Q7swzRppuvc48o=
+	b=Hf8SQa58ucAQAgDGpWx66wwsk3HTP0MAV1uUam/pgvmNRJftTbMCHkJCxo++9dTnNaQU4l
+	7H+B3R5Wha/icAhnjIBz3hMolU+Nmj8nDkoWYEI4s0ZTxKI26Hi1GJiB5hl/Cvex3lNtuW
+	0L4l5wPnfojsBpKQU2J2iyiUehppedA=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=none;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0nlJ95+B;
 	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of lienze@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lienze@kylinos.cn
-X-UUID: 33614046a97111f0a38c85956e01ac42-20251015
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_MISS, HR_CTT_TXT
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
-	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
-	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_BAD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:9de399e0-e403-4388-8d89-3a9026aa03b2,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-5
-X-CID-INFO: VERSION:1.3.6,REQID:9de399e0-e403-4388-8d89-3a9026aa03b2,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:a9d874c,CLOUDID:f7674e290a18d7778a8da14655b245f1,BulkI
-	D:25101510465334PBUK1N,BulkQuantity:0,Recheck:0,SF:17|19|24|44|64|66|78|80
-	|81|82|83|102|841|850,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:n
-	il,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
-	,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 33614046a97111f0a38c85956e01ac42-20251015
-X-User: lienze@kylinos.cn
-Received: from localhost.localdomain [(223.70.160.239)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1506227250; Wed, 15 Oct 2025 10:46:50 +0800
-From: Enze Li <lienze@kylinos.cn>
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org,  damon@lists.linux.dev,  linux-mm@kvack.org,
-  enze.li@gmx.com, lienze@kylinos.cn
-Subject: Re: [PATCH] mm/damon/core: fix potential memory leak by cleaning
- ops_filter in damon_destroy_scheme
-In-Reply-To: <20251014182539.50115-1-sj@kernel.org> (SeongJae Park's message
-	of "Tue, 14 Oct 2025 11:25:38 -0700")
-References: <20251014182539.50115-1-sj@kernel.org>
-Date: Wed, 15 Oct 2025 10:46:47 +0800
-Message-ID: <87jz0wg9uw.fsf@>
-MIME-Version: 1.0
-Content-Type: text/plain
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E116D62496;
+	Wed, 15 Oct 2025 02:50:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4887CC4CEE7;
+	Wed, 15 Oct 2025 02:50:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760496610;
+	bh=uZ09AO8FUvS3PHoAN1UIg/EUNrO9xZYhQBj5B5JO7Dc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=0nlJ95+Bhw11gF5P6sHbaL3cDIndYHosNII1BXzisn4R0MTRea/CVyK4kVoIPqEaC
+	 rSdFH7sBssAq0yh7mRrT041p8MIe7D6d5Fg+2s1zfBHsCznRIrVXYaWSwhv2gQwq/s
+	 GYBJCOOVzs/IgvlK3xIdVO1FE74FGqRnXDFnMnxk=
+Date: Tue, 14 Oct 2025 19:50:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: oe-kbuild@lists.linux.dev, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ lkp@intel.com, oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [linux-next:master 13427/13588]
+ kernel/liveupdate/kexec_handover.c:978 kho_preserve_vmalloc() warn: missing
+ error code 'err'
+Message-Id: <20251014195009.9505434cfdcc136503f08df1@linux-foundation.org>
+In-Reply-To: <202510100941.GZGMq64U-lkp@intel.com>
+References: <202510100941.GZGMq64U-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Stat-Signature: amdxe7369s9k3ey4ywfao8empgd1qzqu
+X-Stat-Signature: zkqg87bxtkoyayp5o6j3sf4nxsp4tfbm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 049A84000A
-X-HE-Tag: 1760496417-855300
-X-HE-Meta: U2FsdGVkX1+q0fQdorEPwi8Au3MgHjynHjx+OWPsoWquTs6aH/RQ1CvldqyVo7IqGsVM0NW1xzg3b8LearNmNc2Qyh3tm+DjhbuA75oUJlnDYsWw7v71gIUh128jssXgvRVCpn5Tk7Kx8dV6a2D7gIJkniHCCli5NId22psaROWySDiyBvWuaL1aGrJrM1bgGO3Hjfi10VjoSeZiPMydbK0tpeURbcVSgNAj71mLEPgzbrp/VuHEpA061v6BAloFzstVTy1izJI7uFKHemCefMXZi0FekS4lpXm7u+/3zkATYGJnLWo7NZoTbd2RHimcPtudYhsL75zrjw/T7WviLtFLvbGND0mM9fefRVrOirqQk4CD6U0eG2IMI262CBp3mebUurgau1+TZoYa2BWEvIcMaS3KUV4VZL590EpZ1CrsRb058A5BNmtpYF5qL/yOuuDyZ0l455SNGr6cRxQ8c8h4+NL96KaPXyW/3JITgBpJ+drJUIitOQofIduyKpDWOy1/aB+dNtoo1QOvtIbjdTnsBefHvlvijChfAsQhuO8i9w1dwZaerQjovm0wDuqFe/QrnZ9kVupNS+8gqaZtmGe4Fvs8i6iMZvRcDgAxvnxF075mL3T3yklp8mnzACFxYFWZZ0bh2MGyKXjUZopytx+Yqq5Zba/K9u0vIWXvegy4yHc+vMO/ugHWUqgxTjH+cu8KeZVXzCmm3TUAB5VNmugaBsThaXg7Rlrixe8a1dITL9iQeAd5k2BpN/0TeDN2/fMB8K47QwD3nm/if88gLC/dLjjdGtqIDPmi4bIk5gQS0WHengasC1MJaLMbGUyKwKBXbgSaRIs=
+X-Rspamd-Queue-Id: CD05B40003
+X-HE-Tag: 1760496611-815519
+X-HE-Meta: U2FsdGVkX1897/IBGaQtFLkwXSzDsVWE6Iy7hEsrLsfenO8Aduvw1AfCS0iApmo1++GNkAJ4aqIudzna8O+j9NrgQk7UAb272AHdd2C8JobCbGB0eHA0M+gdsXnz3uLI2BfWx/Yjx3NQIjnxjaCVSdW7zPhcVV+k9yXf1womnRv1KaYczwzj+Ab6wayn3ZW+TgW0UwCGpW6Khj0GTVQRnxtvfQoWLX1rlASZQiC5xFdnaELJFjg9p29jyD0HoEqmWzevHTjWvciC3vdYDPl93Pvm6/ew7QL93aE4rzsJbsq/guqd6JZXjX3IIYRuFc6/TZsP64FkV50/TE1V5WQ/eBuKzb2hDao9SwQE+sHIPmhTbNoO4kUPjmDeYReAXsVZdHoT1BWzeBiQdM1Wgk4flxFCwhS+2Xjjb8sKxT1h7PW/ePRbrQHkYANaqwI0ngLUk3ZRi4Njqr5QOBZEw58c2b278NM+tM166poJKCg9n7SE/bWq61NAOSTkMSfgiX5aMlNJ9vpgQ5yushypARLTpSdUK2OuzZ8nanL11WebY7JFlTbFk35VHHVrhQlqLZVXeaQABeJASK+S8L2gXv4lJxmO1zkvkQt7y02sje4wz8GpDKGmJn0ucwEGkKUeNAOKJ+oY4eakBkt1VDGQncT46JdGY8ta8HsSx+kqANO6goLMAytLLQZ+A5onRXEfT1SC+jGtKQSVeR6FmA6FyuqjA4HkH8e7iSe9Kso1lrwwzFILECFt7l8nWqZ036y6GDwU+zcyxY9nX6MQPHV/gKWSTNwtJLOHnd1YhKcU6Iaolo7aDJnIYycXpoMY8rtzeO1FCM1waZ2tBxnvNWA7VdjAYhnNnb4z0E/a8984yKxf5c115TA/aOCqoRQvEHVj750iIhty54Ul/w8yGBRpUew7ncux/LT4r6jTBcw9wJF9jM3CJIa0USoY4aWere3h0C7/CoiKSkURNHdEGzg+UFR
+ odg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,42 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+On Tue, 14 Oct 2025 11:15:56 +0300 Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-On Tue, Oct 14 2025 at 11:25:38 AM -0700, SeongJae Park wrote:
-
-> On Tue, 14 Oct 2025 16:42:25 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   0b2f041c47acb45db82b4e847af6e17eb66cd32d
+> commit: f13bb574707674d1113a40e0b6dc4d9a143d2ec1 [13427/13588] liveupdate: kho: move to kernel/liveupdate
+> config: x86_64-randconfig-161-20251010 (https://download.01.org/0day-ci/archive/20251010/202510100941.GZGMq64U-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202510100941.GZGMq64U-lkp@intel.com/
+> 
+> smatch warnings:
+> kernel/liveupdate/kexec_handover.c:978 kho_preserve_vmalloc() warn: missing error code 'err'
+> 
+> vim +/err +978 kernel/liveupdate/kexec_handover.c
+> 
+> ...
 >
->> Currently, damon_destroy_scheme() only cleans up the filter list but
->> leaves ops_filter untouched, which could lead to memory leaks when
->> a scheme is destroyed.
->> 
->> This patch ensures both filter and ops_filter are properly freed in
->> damon_destroy_scheme(), preventing potential memory leaks.
->
-> Thank you for fixing this!
->
-> FYI the leak is not only potential but can easily be reproduced using the ops
-> damos filters.  For example, I was able to reproduce it using DAMON user-space
-> tool (damo), like below.
->
->     $ sudo ./damo start
->     $ sudo ./damo report access --snapshot_damos_filter allow anon
->
-> After the above steps I confirmed it leaks the memory using kmemleak.
+> a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  975) 		if (idx == ARRAY_SIZE(chunk->phys)) {
+> a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  976) 			chunk = new_vmalloc_chunk(chunk);
+> a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  977) 			if (!chunk)
+> a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21 @978) 				goto err_free;
+> 
+> err = -ENOMEM;
+> 
+> a667300bd53f27 kernel/kexec_handover.c Mike Rapoport (Microsoft  2025-09-21  979) 			idx = 0;
 
-Thank you for the review.
+Thanks, I'll add this:
 
-Considering that similar memory leak issues might occur elsewhere in the
-future, should we consider exploring the introduction of Rust for
-certain modules as a proactive measure?
+--- a/kernel/liveupdate/kexec_handover.c~liveupdate-kho-move-to-kernel-liveupdate-fix
++++ a/kernel/liveupdate/kexec_handover.c
+@@ -974,8 +974,10 @@ int kho_preserve_vmalloc(void *ptr, stru
+ 		chunk->phys[idx++] = phys;
+ 		if (idx == ARRAY_SIZE(chunk->phys)) {
+ 			chunk = new_vmalloc_chunk(chunk);
+-			if (!chunk)
++			if (!chunk) {
++				err = -ENOMEM;
+ 				goto err_free;
++			}
+ 			idx = 0;
+ 		}
+ 	}
+_
 
-My search through the mailing list archives didn't reveal similar
-discussions, though I might have missed them.  Would you be open to
-sharing your insights on this matter?
-
-Best Regards,
-Enze
-
-<...>
 
