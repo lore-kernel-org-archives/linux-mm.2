@@ -4,163 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB1FCCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0115ACCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:52:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3E428E0058; Wed, 15 Oct 2025 12:52:22 -0400 (EDT)
+	id 5F8ED8E0059; Wed, 15 Oct 2025 12:52:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EE5D8E0005; Wed, 15 Oct 2025 12:52:22 -0400 (EDT)
+	id 5A9528E0005; Wed, 15 Oct 2025 12:52:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B6528E0058; Wed, 15 Oct 2025 12:52:22 -0400 (EDT)
+	id 4E6ED8E0059; Wed, 15 Oct 2025 12:52:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 753578E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:52:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 37D8A1A01C4
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:52:22 +0000 (UTC)
-X-FDA: 84000941724.16.DF46549
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 99E9480007
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:52:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E3218E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:52:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8704B749E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:52:41 +0000 (UTC)
+X-FDA: 84000942522.18.DB20DD9
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E5AA380003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:52:39 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QsWu4GC8;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760547140; a=rsa-sha256;
-	cv=none;
-	b=2Mk5mBZmBOX+wVGWzj6Pv1UDlJy92KiGSWSw61ypd7QFv4jRaoDhPI1YzwAy64QIu8GmS/
-	/eKzPM8dSqWvjrTBxL8166wsVBQnwGiov8MYEoqBQzcMV50JjBWoDtoMUCt83kyu3jTRKS
-	pxIBIAi+NUEJO6jjONjNRJDljlQniUQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QsWu4GC8;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	dkim=pass header.d=google.com header.s=20230601 header.b=VnDk2wJU;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760547140;
+	s=arc-20220608; t=1760547160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLJBLO2OLqfrqfeP9ZEBXUzq5811de1uUgkkChiDSjE=;
-	b=GGHcRvWOZ/aLv5eWAXAxLIwyh2hNpA9SzYkquMLtt6LTek1VsPFiBqc2A9r4Ls8az73gkb
-	dBbulYy72BS5OwCQd043oWWnp8XNf4bSVK2AilU7WkbhdU6J188lSAN0CxUwSAt4xS+Edt
-	Jj8yTQaGPuL7JnAHP39w7ISirHzqDJM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760547139; x=1792083139;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=S0KxPqiw5HwIE1K7rWHuBlrawAOZSzzBrpSoYH3rAds=;
-  b=QsWu4GC8wcVnz5AqxJHQ/PJCERFBSgoRWafmfHvhBeNSHmTJ+T10zRwd
-   VpP+dAsM3d/xWKn6pJCmOwg7uRMTdrRAwZsbKN8/aqK03kVtZFTvHxNMA
-   xpz03BvTycpWE8TMHX406Rm4pDxltVnr1IQpOBvd0fn6uqmjgU9a5x19J
-   EYMzbmXjbYs+JXhrf9PR2QKMz7bwmo0Fgf8NwNhGmP+sjIL1pFEe1iCL8
-   z/3GxrDKrxk0opuI7g4xVWfv3znOuHDS/q0JEu8d6Uo4fBaPFkUyg3+O+
-   dNqsjPlo9IbK2eD/WSYiKVxy6bzAV7EoODMlQ8bP4MMTKzVFPCLaI7iwR
-   g==;
-X-CSE-ConnectionGUID: 8734+jNAQD+rtwsSwCi/dw==
-X-CSE-MsgGUID: 4hTCrhSrSKe0/aGuddrdSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="73006783"
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="73006783"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:52:15 -0700
-X-CSE-ConnectionGUID: uTxFJgGnRdqZXhWgFrdjDA==
-X-CSE-MsgGUID: u7QBuV7aSXy5YlMObe7+LA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,231,1754982000"; 
-   d="scan'208";a="181439319"
-Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.111.202]) ([10.125.111.202])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 09:52:14 -0700
-Message-ID: <35d9cf4f-135e-4786-a4e3-fd3a4a18b800@intel.com>
-Date: Wed, 15 Oct 2025 09:52:13 -0700
+	bh=OcbgnDJpv9SnV/N0PbUubV1+/akvdYLhVf/DD1zM4sM=;
+	b=OnqxPjWSnP+991FNzxZi0yK7vcf/5HLNHkg8CMMzt5P/3uAGWRSGKctue39rdFF3q9o+KY
+	JNBDPZhROtEUKwt47KNG5u5P7bVNgUQc2O2ecsZwqI9BniY2YnlSlQ/Yl1C6bO7D9DuKNm
+	OmlukyRF5LcHdIh4yXLP7a0tBP3fbLA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VnDk2wJU;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760547160; a=rsa-sha256;
+	cv=none;
+	b=ls2rj8P4z92Lt4qhJ5GMYKpzT2mSyq6iBuNQ4rg6UZpgoDitpdl4Y/XTUqCPjv/Ym2lOX6
+	Md4jn+wvcfSi7qTO9/PvO7XOrGpTR7mwWS8oIepEb9G9Kk9FyO24SYDmd32BclOeNhYKfY
+	ZpZ12lf6cQvkr1gxCNNRQpduQZnFghU=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-62fa84c6916so485a12.0
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760547158; x=1761151958; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OcbgnDJpv9SnV/N0PbUubV1+/akvdYLhVf/DD1zM4sM=;
+        b=VnDk2wJU6fvBmKgjZKjJXIpvoLtPt6bOcsSe+EOeCA4HU1/syFVuVFaGJbi/TOhxOg
+         HvISH4X2QBN4rtrKewI8QHpvL/rGycEx/wDlV6aS9NXsRLGycgofP1y+jaEnyojYEPbj
+         jGDyzg203H8zqNGIvQn/sQjtYK/oL0qFUZ3khLhJDp164CaDhG3eyGIKvgElqhwVjHgs
+         IaY018Fe6OXd3VJ04CGCaOoALPj4pVkCr4ovHSOfYl/2fctQYhOS6QhOEUm8CIn6btoZ
+         UVWNwUwXU9dlU7W0Zf7xUF71JzH9GStVtZp+ZPNF/MeZTc2KEz82MhXZMFyy1VL23QER
+         B/8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760547158; x=1761151958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OcbgnDJpv9SnV/N0PbUubV1+/akvdYLhVf/DD1zM4sM=;
+        b=twlbwAPP+MOasEhEUTecGWxrL7rtKKdLkisiJ6m1m7P6dcH36id4lhXdqqkRqcOBtJ
+         7VpLRsADG1L3ORj5JWTW0azEKlbnY3PNk11VfYXWTwtWHiBt4pmYWDq/MfV+pP/qN5wP
+         FDni/UE3jpKMym1IQO990sr/DlNjMMu/2vp2fiySXxiYdgrkAp63uy85rSLhyzuM7Ka8
+         V9oRB/lVvd2mSUSefKz0sx2+ZSbzrQXaZTuvjELS9i1Td1vNhKP8BiHt80N/agCadBbp
+         v/NIasejQpMpkD3m+DExNlkWIvYD8gxSU9babONwQla81c5CDEfUJOxxOV2zcGx+/nxJ
+         7u8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW+AfIIYohSyvUxyIiMpuV0KQsxgxFy2OYRSzWWk4Xgvyz7HEfSS0Y1I379JxIqiEy1P4mb60epMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw95bXY1k3NOmy9u4Dsaw8k8vjyQrc4AWtYN8mHQcqiu0mB2N+H
+	9X4yjkB0hfPGFdCdFuHWju28v0cm0qywpUg2+jkJWfr6245iDxOKjxtF3/d6YyapjaWJDJZq87y
+	z3hD+HjVfC48KsMm9urYByoHfOKpb1/cbdE4YFllZ
+X-Gm-Gg: ASbGncugdDwV/MG9xQXeohCVNO8ym2kBpLlF8D4XGubtVrZp6iE8hnSzqFQ0h4QMLaq
+	IujQG/VgJ7nXqabVmVfEiCwgkheALcVTTMjWeOs5OEO2FsSwIeH83F13fXma+VkKP5UlEeS6O9N
+	lfiQmYI5QHoLcET+Riy11g+Wvr8gPKIFQV+VSAezTZhajckEzVAG8WTmahcBh5uv65SNtpVQii2
+	B1n/ykQ2cLH4GrAVAlIwQJgb7h3uKsdg8tLQqiV0mHmmyMk4lSQQQccn9YUSOKpooxhNh37sw==
+X-Google-Smtp-Source: AGHT+IH9MUeZtXE8gzB0gzMSpz+7IRf3KC0PSSZ1JGtjGPGf1LK4FBeScwrLue623iT8cPsccGCSKzZw+phr82m9f7o=
+X-Received: by 2002:aa7:c559:0:b0:62f:cb1a:5c43 with SMTP id
+ 4fb4d7f45d1cf-63bee0684f2mr90366a12.1.1760547158252; Wed, 15 Oct 2025
+ 09:52:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/13] x86/xen: simplify flush_lazy_mmu()
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-3-kevin.brodsky@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251015082727.2395128-3-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xtsakhgqu48nzdq37wr1bb16k6yxaope
-X-Rspamd-Queue-Id: 99E9480007
-X-Rspamd-Server: rspam06
+References: <20251015141642.700170-1-hao.ge@linux.dev> <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
+ <0928dcc7-a4e0-4641-9381-6adf2ad30493@suse.cz>
+In-Reply-To: <0928dcc7-a4e0-4641-9381-6adf2ad30493@suse.cz>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 15 Oct 2025 09:52:25 -0700
+X-Gm-Features: AS18NWBHjjdZh7kEuF-bFGXPMCMj8LpDNRhw1KcOhmc29GGJ-f4cgbeIqiGQRhY
+Message-ID: <CAJuCfpGgQnhjzhJw8TkCE2TgspoCz24xk1BC6OYRhNEpUXXR7w@mail.gmail.com>
+Subject: Re: [PATCH v5] slab: reset obj_ext when it is not actually valid
+ during freeing
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: z63urptjo8pafyrc91qrgebc5mjw1r3u
+X-Rspamd-Queue-Id: E5AA380003
 X-Rspam-User: 
-X-HE-Tag: 1760547137-611013
-X-HE-Meta: U2FsdGVkX1/6DPZVad2cb7QW63dApZtxnW8dj6S0oX9lehxTlshMobYibyNjRVpXdFMDqLYhVE695TWZoXHmXffBFH4dbmZUo/X7KlIuctiRHQJy0/LpxLiWcmwVofPEsNz70gfkgnF6W2t5MduPQ1akBkHYzkefBKa5LtPcaBh2SK1l3oDDSVQPU5kI4gxqK0uGbXZY1ERKxgoJsmOib4wZprqQF0bg4eU3/6lDhWREbMpV4MCBJWPWt0xuEBaWXFUz0pGJdfcCXgWhs+SupD2LIFcu0vI8ncpO9pqRrFOEemPLXRHDBkGiroWRqYpfr00b7awjkrsnnVtm7mQBBWlvvrzP7bmniZaD3kmd6EhDzeQsg2mFvnqkRWRtB81PSfcE/NLnA5fpNdEcCQqoZt03vP6kETQA1rP7j/aZQgyPfolYQwfo+aJ/LCJwnCYm0xdK2r5UyggRicogsXno15VKmRecewTHX+ruO0rSjYH2EcB2b3PWKKC0aAnI0JndegshrPwt1pKHmo7+jNKtUxsTQhZNEEwSpm7nOyAD0eh+Ajgh0UkROPUzdp/FtJBfxbaonI3ut3uNmuA48v+pYJUDBkYryP10uSECy49VCBSyJs9rQhQTUj3/X8O8cPdN13luYZ5s7PyeuCQHm8w/YviJApB+PD+xyCykCZEw8y3zq3VFk1D5iTYAnq400feuDLVRf5WveswHMIg6eSBlVYAnjxCT4nLQr1/vbnmGjWV9Mt/mZTHzJQAkFWjfRmrO5urBa9e3UXtO6wG8HCMh22GR/ajTWPX/XNKcHK6yYddC+0+B1kbBZPWeixCj5tjryTuTstbCie6LnXiTw1fRTiXI6oBUg8oPEuBPOP6j9n8DspugVuW5KSJYXAvHAjKQAu6olsWGrJPspi0zYlcbnAgYNao7POW87UR4YwgyOdzdnl5pFO3rk8hZ+4buMoZahxlIi3iQZkMKB5kzNEB
- hEuez4AN
- jD4klkB3Q1Bbgl/VYJyUUV3kXqghWjZNtqvl7ANCaElR5KM8op5YkfaepuacpQUtBhEvDbvY2j94LP4HZAH+JLLJjJfLMa8yb+vmUAXHjqKfz/gil10fzySP4gJ0R2NYksdwJXxKsGV1vUAoDr96E/94/UcTSqWvXDw7Pp/VoxUOqB2UFwRBwM0lzJun3d9mgSaYDEDHg5IN/0lIgyCFBTJQyKHey+a3ROVradvGFpxKR9PJRHcbTmteXPE3+3iYlBE2JXDYqMJVfveXO8Oi6wBsEBwAW64nbO5KI7XtqhjeKg8Si7YF8EeMPZg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760547159-828535
+X-HE-Meta: U2FsdGVkX1/3VmJNmsKkA3L+Gl0id9fAWH7QPg8URoTjk60rKSyUvlQzi/dtXX/3EWA6cEz2WairWF3BPhQrrYln51y/1gmKyBQwLcXlr6fStWbKWaM9xndWlj/wMPksN0o+gZIO8HM4wj52tJcrWl0pUMV2PSPUcSZy2fR9cixWbhVNTI/dFLzBiWbE3pQz81GsEtSykuTPeQaLE3vrgRk3nYjBcet3vmrykBYrv/2NmR145TSRA8xEtVm5iGoH9vVh0fXGYdmS502O/KUbsehYF8WZUDui6xZe5A8BJjc2n9yobNynNwUPPPkZGK7FmrcsL5+kYYeEuBqdpOiSM5hfIT2PdfBMe65ozIoRu3luQ9pdDLGDhxsfwJS4ru1KQ9NZjiPUYHmiCUofrsvkjDNikkhPWm3TOrr5sHVrOzv+c2/VcreqTVnby3wdoE0ISK3VSngsusTMXXlaf/JnOKtH9oW2f3DxAxOKkoHo4yXf2BGO7QlXNqzaWf+t62+mnXoQFzcaSMB/FL2JCvFCUKCCH6VC143lEJ1sudZPSyeVy+T+EZ/mFJGqDBGmsUGpjVVJGejTGQrDwJA+89+uM+Jlc5oFEYwSbhBCIj/s8X3dqGNfRwo574Ts2gnG5+WUdbcawjLnOAXyq20OH+7qTd0xc3aoy/z2J2q6OzH0lcFIPcpBpfKceMFsidAQjtfrSj/WycZCougQQQZqveZcxQyaXNBhiHM8Qyk4Bzo5YVJyQXdYCSPBAMfmk4uZ4O6RDbmX5U7ol3RAcgr5Kv8lKO5II9JsIaq4Zq1fJy5br3yPAnDCdLvqPKXmoKK+bl1C0EotDVh8jkaCLyLXrWUpgPgT/QStt9oVjS0fimkxL6k+ANZUkmbzFdKUjHQqWn66owubLm2x1ZCpGaZ1g4SVfe/KBEhVl70r332+JPXvI/JR2hUw5dwKpJIl0fWnLTQPuesifj+jWT1piwAVxEf
+ 4pByaKkD
+ NwqBDnDzqYOc8PR2KU3/T+MtaXBjg2KIHizVW2nCWlaSXEVerr7u7LZ21fH1qO2yeXPp2OZakWm+wg2+6c4vYNb5usid1Q/Fv6JsGnG48OZm766qTDFdPTtC0rvxjc1TVKKbIOgoQaqayVw4wYSEQ840INzKJoPfjyyeCl6abN16PrVf+HkS3gWwG5s377xyEZ0Z2B82VuWmx6tA9na2+Y/h7Il6fgunAG1H/B3ja4N+zroxT3ny29bc/VbrdytRutz5/nThWE1eAsnQKtTOWVnT4SAEJ0oq1idDo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,28 +121,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 01:27, Kevin Brodsky wrote:
-> While at it, we can also avoid preempt_disable() if we are not
-> in lazy MMU mode - xen_get_lazy_mode() should tolerate preemption.
-...
->  static void xen_flush_lazy_mmu(void)
->  {
-> -	preempt_disable();
-> -
->  	if (xen_get_lazy_mode() == XEN_LAZY_MMU) {
-> -		arch_leave_lazy_mmu_mode();
-> -		arch_enter_lazy_mmu_mode();
-> +		preempt_disable();
-> +		xen_mc_flush();
-> +		preempt_enable();
->  	}
+On Wed, Oct 15, 2025 at 9:44=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 10/15/25 18:29, Suren Baghdasaryan wrote:
+> > On Wed, Oct 15, 2025 at 7:17=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote=
+:
+> >>
+> >> From: Hao Ge <gehao@kylinos.cn>
+> >>
+> >> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_=
+FAIL,
+> >> But we did not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAI=
+L and
+> >> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
+> >> release of the associated folio, a VM_BUG_ON_FOLIO() check in
+> >> folio_memcg_kmem() is triggered because it was mistakenly assumed that
+> >> a valid folio->memcg_data was not cleared before freeing the folio.
+> >>
+> >> When freeing a slab, we clear slab->obj_exts and reset it to 0
+> >> if the obj_ext array has been successfully allocated.
+> >> So let's reset slab->obj_exts to 0 when freeing a slab if
+> >> the obj_ext array allocated fail to allow them to be returned
+> >> to the buddy system more smoothly.
+> >>
+> >> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+> >> ---
+> >> v5: Adopt the simpler solution proposed by Vlastimil;
+> >>     Many thanks to him
+>
+> I've massaged the commit log and comments a bit and also realized that
+> AFAICS we're actually fixing an issue that predates 7612833192d5 ("slab:
+> Reuse first bit for OBJEXTS_ALLOC_FAIL"). Am I wrong?
+>
+> ----8<----
+> From 8151384e5baf34db5812ed51e2e463796ab6e973 Mon Sep 17 00:00:00 2001
+> From: Hao Ge <gehao@kylinos.cn>
+> Date: Wed, 15 Oct 2025 22:16:42 +0800
+> Subject: [PATCH] slab: reset slab->obj_ext when freeing and it is
+>  OBJEXTS_ALLOC_FAIL
+>
+> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAI=
+L,
+> But we do not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL an=
+d
+> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
+> release of the associated folio, a VM_BUG_ON_FOLIO() check in
+> folio_memcg_kmem() is triggered because it was mistakenly assumed that
+> a valid folio->memcg_data was not cleared before freeing the folio.
+>
+> Another problem that predates sharing the OBJEXTS_ALLOC_FAIL and
+> MEMCG_DATA_OBJEXTS bits is that on configurations with
+> is_check_pages_enabled(), the non-cleared bit in page->memcg_data will
+> trigger a free_page_is_bad() failure "page still charged to cgroup"
+>
+> When freeing a slab, we clear slab->obj_exts if the obj_ext array has
+> been successfully allocated. So let's clear it also when the allocation
+> has failed.
+>
+> Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mar=
+k failed slab_ext allocations")
+> Link: https://lore.kernel.org/all/20251015141642.700170-1-hao.ge@linux.de=
+v/
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-But xen_get_lazy_mode() does:
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
-	this_cpu_read(xen_lazy_mode);
-
-Couldn't preemption end up doing the 'xen_lazy_mode' read and the
-xen_mc_flush() on different CPUs?
-
-That seems like a problem. Is there a reason it's safe?
+> ---
+>  mm/slub.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 13ae4491136a..a8fcc7e6f25a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2170,8 +2170,15 @@ static inline void free_slab_obj_exts(struct slab =
+*slab)
+>         struct slabobj_ext *obj_exts;
+>
+>         obj_exts =3D slab_obj_exts(slab);
+> -       if (!obj_exts)
+> +       if (!obj_exts) {
+> +               /*
+> +                * If obj_exts allocation failed, slab->obj_exts is set t=
+o
+> +                * OBJEXTS_ALLOC_FAIL. In this case, we end up here and s=
+hould
+> +                * clear the flag.
+> +                */
+> +               slab->obj_exts =3D 0;
+>                 return;
+> +       }
+>
+>         /*
+>          * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
+> --
+> 2.51.0
+>
+>
 
