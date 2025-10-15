@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11E1ACCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 14:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE30ACCD192
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 14:23:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 646C18E0041; Wed, 15 Oct 2025 10:19:49 -0400 (EDT)
+	id 27C928E0042; Wed, 15 Oct 2025 10:23:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F77C8E000A; Wed, 15 Oct 2025 10:19:49 -0400 (EDT)
+	id 254278E000A; Wed, 15 Oct 2025 10:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E6028E0041; Wed, 15 Oct 2025 10:19:49 -0400 (EDT)
+	id 16A6B8E0042; Wed, 15 Oct 2025 10:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30CC08E000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:19:49 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 057481DC86D
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:19:49 +0000 (UTC)
-X-FDA: 84000557298.10.8D8EA39
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EC8E210000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:19:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EQD7IUae;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	by kanga.kvack.org (Postfix) with ESMTP id F23A78E000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:23:08 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A9D4256433
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:23:08 +0000 (UTC)
+X-FDA: 84000565656.09.8A22A1C
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CB33A180009
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:23:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ND1Ax6Pb;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760537987;
+	s=arc-20220608; t=1760538186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hUApJ/d2jv5ytp4hpBk/UGF4vKaPuPbb12BM57vyuxY=;
-	b=zi1MbcuIfcvMoutjh0VOZdk45EGbTIuEHRX6WLdkGRlvPcM47QcVGEz40OQ9bBnU/6RatL
-	OoRHH88Shcv5l0jUJYyv62/g/FQsmCr59mGbgep8P7CrXInTr0TTGIWlL7lgl868w6ogPb
-	ClJoHE7ghMNLq1kgFrXyH9huRpT5J3A=
+	bh=PAtt6LJWXf75EYio9dz/gTvlM96/DYgKuXEluISNUPw=;
+	b=ezLo43s4QMK+ULGrDMyUlQgujEA+obNBCrliZM9JSdDoZ8+6uECu4bIGrpqQ3dScl/XnFf
+	7YDRIELVIdphsyb6VQsHt7z3UcsuWvsuLNXaA/rFDrLNx+vYz8/Ts2+qVGjvzKsEtNemI5
+	/zRIPPUyvpKGnXLj9DFRVpcxZ3+S+Zo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=EQD7IUae;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=ND1Ax6Pb;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760537987; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760538186; a=rsa-sha256;
 	cv=none;
-	b=jTjPAiYsfBc833Gw+pLJXSNKVW3oFKnTYGJTqNoJnJyckViP7/zoSmpfUCp1IgdBFLHVEG
-	1PJe8oNVNan2QOMT9HSvIbQxowpxMmYtb+re/Ecry6rH93wlDbFmsaLamp7AHkt+MhiDCi
-	jiZTGnC4Yu0K36BltCJi4KDkViWXch0=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-639102bba31so4633762a12.2
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:19:46 -0700 (PDT)
+	b=GDfFpFqJadhNW4MAVenj2sy6f0XDNoNxPLXwmCwQQBV2X+zZlk9y9HLsvcc0WCJIJNgAIL
+	QoBWC1UE6vF3yMGklvwA4LkC6PKwRa5DnjvwD7zx2km1F7gfr+aBRU4ty0tXWrzbx4/01K
+	tMc6NPYb4pBmN46qFiPFF0ReaDMrSP0=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-63bad3cd668so5821136a12.3
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1760537985; x=1761142785; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hUApJ/d2jv5ytp4hpBk/UGF4vKaPuPbb12BM57vyuxY=;
-        b=EQD7IUaeGTwjQqAeEGKWLszN2I2ymrwbSwouhl2JNpLL/u2O+SQ0wKVYMFsNhqaMbB
-         WESORn/gRXRqklaF/Oyc/JjOoHpKtkVJE0uokKOw0XQaX8YY3RgVcikrY2IGdaK4yZtm
-         3or4/q9wjmG959rruj4SfAfu4cKYuxly9ATwGfkqIZ0QHa9wgty+tFtBYoNtSgrOQaRs
-         W/CAtnWcZj7iaNhMsrSVanpjrDEoJRWeBiz/3cA2GC3NgCPr1UMXA0YJGlONe8lMUkGU
-         sxnig8yBnSKepxxWH2o6xBHiIAEwiZnxa7m2nFVq65D9eB/y5PSvKXOOdsuN98tXrqhQ
-         fe9g==
+        d=soleen.com; s=google; t=1760538185; x=1761142985; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PAtt6LJWXf75EYio9dz/gTvlM96/DYgKuXEluISNUPw=;
+        b=ND1Ax6PbwDKq9nA8WDXZ3DvyPlFlngT8sqJiqCiKbU20reQ2n8xmRnDczURcrikjYL
+         4wRKnlp0fsZEsnANoksWPhE99Ypuw7EkcpSriLrNtodzCYaZsn2/MywwApi16QsNZEsB
+         uKiYkIkAoE+RCFUAoe5UoIHt54l8JkNm0HFnDayU8uTmDGsG8Lk1NRJKGTTyzeqv+bN0
+         0Mf4dK+tKl4NPtbBZL6TQW9DJWR18oQN//3OIQrWgFR+LY1rpA0ju46JVpAN/0BhZdRp
+         DoM0CcCFpT6XSEYxSV+UQOpSJ01qc5rDYGIRVv9BaDXVta0P72hIIem4VYzCyhlpnRcR
+         b55w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760537985; x=1761142785;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hUApJ/d2jv5ytp4hpBk/UGF4vKaPuPbb12BM57vyuxY=;
-        b=mVGlFGlYfGbSnbE3pqr2uP6LtJrxCyJSVQgQ/Qu9o7Brc2kPIZE/Lypce4bMoDBW7U
-         ih3aJGZN5KSqD9Kdu3NoGQnokC58gAhqr1hmrmnzdUZB8YFJkhX4tuztP0h/PRrAshY7
-         iQXlJXfqgUW/c9Zj970Zloc6XUGhd2j1l5/mkaLVwJYye8GJ+FGlW4pr9ckXtOH3en43
-         ARxFxScU5PrAXtRyvxK6fhs8HkpNlH8i9Rx/vvWtPKJ0QroTZZhmsPhDdRkFahYb9Xpi
-         PP57c5+6Ss/y9DOvkx6cNKFcLCqkr98Upppb9TEeJMLkwX5iqi77aZqRrNOM1PjZd1wa
-         XXEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUd4plwjJqsFZIyMw4+ZsmY/wt5P8TrGX4mYFVQ3Idy52ekeKLS/kRZ8roLRu+7rGepufRHUHmqQ==@kvack.org
-X-Gm-Message-State: AOJu0Yygq3zruxVjxcxIYXbrp4pFpMIY/hE0/pedlXwWUqNtTmq4/6Jd
-	usyOvZWvjY0cWMsugOuHo/it2PABI9KWp9v5kFDdFip51/vmABv/yLpnLT0b5Dq43dvNufc9ATT
-	XRvcdxRA7YaHRoq4wlkfFEtIOTaRxsHg9BCA+a0VAeg==
-X-Gm-Gg: ASbGncswLgu1fHNJmiSWk8+HWOHisiseFtZVC/q3o0lzKLjnwg/c705U5JSR9AX7L2H
-	6u2B545OlfZ4Av9xEpwa8lQlfHw857bApL3cOfuYCow7dGCBFwdQIQePMFelfyvhrtr/sg3TwO3
-	6bACiapJGw7cnbmq8HpHfNaNtYmcQDBKGBf1O5qhuFVthYRINWHre0LBBAsreBw4ci6kXDXClOy
-	sdTdcnr2y8Vtuu4OfnwgDuH9GHPK/2Buw==
-X-Google-Smtp-Source: AGHT+IFgvnWABvFp2YO4aybRqOy0KXXsuvYtzVtzjFu719w6HusoLk54zzREdfAYZlsXpNluTDl3s5anm94ec20FQEM=
-X-Received: by 2002:a05:6402:5244:b0:634:544b:a755 with SMTP id
- 4fb4d7f45d1cf-639d5c3294cmr29350078a12.19.1760537985003; Wed, 15 Oct 2025
- 07:19:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760538185; x=1761142985;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PAtt6LJWXf75EYio9dz/gTvlM96/DYgKuXEluISNUPw=;
+        b=q9XbOMHOsMBkHPEOOpBrWHbkPHTgMHbg+64Bspghahav6zXyJEAXbQTz0aDo/lvM+E
+         poIFxsYRADu2uu124/SvZBEjOSuRqW4abyA978qz2JXSwAEsdFW6Wlu6lU0xKDtIv9lx
+         i0QGF+CPCs2zTmNhQzwH3ag+azNGdABelKVs35kICZLC7vW3zbvscc/VS3teh9Thcb+F
+         iYDhOoGFpwQwo1GoV38uqj583ZLMmDM2z4fOCdw20brMxleAAefaCgkeLzDMGI5ESyPw
+         aAbJNKrBpjZUB2Pu+QanRQGXkxViDTBUcMSFVKWF1q314u+mHHATM231tzw0jZx+b3DG
+         DKwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVhTY1tEnVKtoM5z36j5QHP+N4L+AcocsgZe/mDw8K3ams22GeRmXHU1M3gKlZUXqiSJ5TaX9ioA==@kvack.org
+X-Gm-Message-State: AOJu0YzFtFyx1HVCXhtQ5b9PybMD8inZ4wp+44im1ltxwiJYp3h5SDgH
+	lEUUPIWX42l++nBDhKfbH2YqIBiA96WY2sgdIzOaIX0h+EKBTChn/G800r0kVTYVHCZn6idVCVp
+	l288rG8Tay19CL0V8exLsfy3bPFVfBmQErAAwjjH9eA==
+X-Gm-Gg: ASbGncu6wVuAnc16klaloax3eqAkig6FjsgOubK5owd8BTUTeDCQTHK2WwZ3Fzuol0t
+	3EMzZmAc81ZSnXUn2LTmZfVoPOsCf8ZTSVoKqsIJd+rgkWMbu4GgE21aWm67KAx/KcNHJV51mTG
+	8xa8+3DPfbgse8olXrRAY4mjK1vfgx5sm/TpdZA0gV4CgUL4clnpolsIejxFgjW6oiXoVILfIe+
+	qP+y8FK4kinYohgAnvj494bUSsLskI0Ew==
+X-Google-Smtp-Source: AGHT+IHt07hyRkueoFkR4F0w+xF9Gbyc+PiDwaAgXzfFVpNxzbBZcK46A+MFwX9oxnYBoVi3/21yDow56czseXIBw9E=
+X-Received: by 2002:a05:6402:27ca:b0:639:4e0b:2724 with SMTP id
+ 4fb4d7f45d1cf-639d5c31fbfmr28772103a12.24.1760538185250; Wed, 15 Oct 2025
+ 07:23:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
  <20251015053121.3978358-3-pasha.tatashin@soleen.com> <mafs0v7kgjoxq.fsf@kernel.org>
 In-Reply-To: <mafs0v7kgjoxq.fsf@kernel.org>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 15 Oct 2025 10:19:08 -0400
-X-Gm-Features: AS18NWBj8W1b8VguIoFufUrvIsQUXiGHkQ32JE7FqsyGBasY6kmjvm5a_9MOZ2k
-Message-ID: <CA+CK2bCG011xf7v9nGMq4WQAUta9wDt05+W8KmRuc-JE7ZTwqg@mail.gmail.com>
+Date: Wed, 15 Oct 2025 10:22:28 -0400
+X-Gm-Features: AS18NWArNFoBhagluGBh83EOX5thK2VCtA_UuHBzGdmFvoOqbuMsR--L8cHX_oM
+Message-ID: <CA+CK2bAHk2JnQwfA0fJo1qmcwoO_9eeG5_DSL_6OC+-pyT=7Jg@mail.gmail.com>
 Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from the
  buddy allocator
 To: Pratyush Yadav <pratyush@kernel.org>
@@ -105,15 +103,14 @@ Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
 	jasonmiu@google.com, dmatlack@google.com, skhawaja@google.com, 
 	glider@google.com, elver@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: o65quh6eujy9je1zddu46fqffkp3s4g4
-X-Rspamd-Queue-Id: EC8E210000C
+X-Rspamd-Queue-Id: CB33A180009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760537986-706630
-X-HE-Meta: U2FsdGVkX18GW1A4R8fFLbN2iltSGsb1QdrN//3bqoWcLPaGJfgTNxBU9GcRjNGIUCTr9h++ANv+D4XIeIni9dzsqeER9y1HOEf8WvcSeS+oVmG84UJsPtThodoU6aAvGrnnySFjLaF49jMu+EbC7s2BdpWejOTTYwS+PeL3lZHUpfCXKZh/0IRYFDo+NFes7PiRwLNcVF95ek7M5k3kCV/0p5TWAseNjWNCfBaxDpO6xEQG3jgAa3Gb9+Xa7bufXX29pa07T2EVBs1ZwdknnwJ+DiX8+ZgV4LE8MMpn/5QZdQSoV9IYtFVWDFQHIHJpA7rMpxVu08H4llQtK4GL64xGVS2WlJ2uCs3BXWpye6EWRUxVw2PEF6uSLqeMaRxguVj8m0g0/9ZGLmSDgKm41A1YAvbnFTcnWM35nXs+DOaPaDlXJ6Bjo0RL0lqzUtqIV4jdGMnWRUJ+6U15yuH2tbTYpbgXVS8Zz2qd3UmPgd1KP2/36gIMPdTXDddoC+V29mQLgO3n8xIcTrhaOYR85vKEviTiYin3zIf2Gh+oWSYN4TYF9IIXEjUtdGyUrQl2He7wSO+pvLi1pkJpk1R79svZ7cFeyRLRqqprxovyCzaFgiOwGFJ3hjBOUNYq0S1itECvLC+mBIeF8C5zWcu5HT7F+/RgHWVA5U0PtbF3xlpxsi6tzKRPRrPMWQUgHMYH2vOTrCJsCw/RHEWT612qgqiQampSwUjv83EASjve7yG3jcp63nUmhmJiwe5McjdZPqlCAGWnvzG6BWhOExPJINzrFedqxJdVDFcQIHAIjFfRl+IIKUDnW7WcnxkHA8ra4/UOa8fajCMAb3dFaisIOUgjc6jri+JGGCwmiuRoPwrce+6UVn3oMZoj2j6hAjALTh54JzPtCHBQGZztEgXaHznOtlsYBTdYu27iYUeB/dlsnKueXRXFl4X2qkGjGnzRRLq0dC61S06UaZ5EJEH
- TD2bdkpr
- R9DXFifo7w9/RpVhoT9JqlpkUgpXtn9q0WpRyAEPBhy97xVFkht2j+XbpybdpqKO43Tqsy7pxg2dMiHmLVZg4n0kp4Pl3sgqFszicuVd4p1ANoDMJ0ixj9hooa+XrQ6Mf/EkWBw3MlIo493uHpc1IGz8UkiCGNew6uzhuuRgEjyZu41gFzYoLRoS8I5t3emUiD0eDYsG6pBHryp31mdlqlrr9Yw==
+X-Stat-Signature: xis1m9ofzuwkyhbcj1tykdgyhyiopjn6
+X-HE-Tag: 1760538186-537169
+X-HE-Meta: U2FsdGVkX1+syTMeZWhuevej8mhzXvXnj0zr0QRJiNQsSX/b9XDkz/rOtU2AWoDT3beRMSx7c+kv+18RfqQdF1zqYV4+oEbCx/r5PakMt9qKWJbWPXNA7yqRcxG0pJaUK+LDBw1MvnbEKXHrMcPJB8TnvdPWYmWkZld4Tpk9XSB3+mWzd3GcaJUSKLgup/3E3kjgqJLWZZ/Gy3Zn2MuBR4Nn01XjFDgluAlU8s9zwoVH8vRQSm21dMnwoyhwjbzLepKjSq4xBNIociJkykuLXGWeQxapfsAWhKTEWK99+o3f66kmVmiNFFqeT1NdGwKLtHOf/L8jxNLl/nIbrTftQ3CKisgMk0RzsPJrE21fNtN3k6dY6pkwXAoti6BNrrPubK8WMgwlURtjn7kuRQvSc9QTitQzzhQVgn2LJGYsa3Nw4hIpGiAfFkqqci5L7FeheYsB4HZ7vfeOTBJPAFqBjNTK4TPtNycmXLH+ip1FWT25k5fhDszY4WA+Gxu+XFwlV0qLt2tNyvd4sNLYMO0c6anZf7tYTKHhzSt9ASpONu2z+0t3YOkh1zVhlFCH1PnIcx4MtwyQz8yRI7sm6qmMN2RfQ/R/7lFmvmfVJvzJewh1exQ3gP0/LKFHDf26qEoeIP10BwayghsJMcJCWHz3UB7Xtg5EU2WpJXVL+kA9AtZuuxcBDKIct0qqE6+d7UTjfD7nzrCaSch+C1KopF4ywQasG0qnseNDKSFFdYPhZG/qyKz3tPH/S5wD9V6AoFBY+axK6tF1XkTSdSjrOQ3DvD5mn/engjgrI4RRLRQ45gjYaoAp3wSA6ceOnwD3UhZv2bHEd17sa52jT0Y/mZwrX7ad0/kZVAcKK5E19xRDjy49q7Zjop8LfVw1J3P1hFM53nZkC/jVs29XfLq22zJp8UsULg+UV57DKgNAjtquSoUhXMXXTsgSiTehZF5riyezhdR0vTIMWIyz5otJ5cd
+ l1+6EXKf
+ crlMdswJBYGt7TDXX1c/wMC5rIxGFiuFbknve7cMKcUI+iWzhWFB+dN8FhuiiK2d9FAVkOpdg5yLxfskj/QAyPDsu3yledDgFutGcUu2xA0Y58q7xzTsCzze/SK8K0+WmxdFonwPxitrflLpXJ5AAtCGOq8ot/iiHSjmullzxalz0kn+4YoQ1ODh7x+6vHgOiPgFOxN5itptENgoZBfSgTNXVlQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,32 +119,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 9:05=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+> > As part of this change, the metadata bitmap size is increased from 512
+> > bytes to PAGE_SIZE to align with the page-based allocations from the
+> > buddy system.
 >
-> +Cc Marco, Alexander
+> The implication of this change is that preservation metadata becomes
+> less memory-efficient when preserved pages are sparse. Mainly because if
+> only one bit is set in the bitmap, now 4k bytes of memory is used
+> instead of 512 bytes.
 >
-> On Wed, Oct 15 2025, Pasha Tatashin wrote:
->
-> > KHO allocates metadata for its preserved memory map using the SLUB
-> > allocator via kzalloc(). This metadata is temporary and is used by the
-> > next kernel during early boot to find preserved memory.
-> >
-> > A problem arises when KFENCE is enabled. kzalloc() calls can be
-> > randomly intercepted by kfence_alloc(), which services the allocation
-> > from a dedicated KFENCE memory pool. This pool is allocated early in
-> > boot via memblock.
->
-> At some point, we'd probably want to add support for preserving slab
-> objects using KHO. That wouldn't work if the objects can land in scratch
-> memory. Right now, the kfence pools are allocated right before KHO goes
-> out of scratch-only and memblock frees pages to buddy.
+> It is hard to say what difference this makes in practice without
+> sampling real workloads, but perhaps still worth mentioning in the
+> commit message?
 
-If we do that, most likely we will add a GFP flag that goes with it,
-so the slab can use a special pool of pages that are preservable.
-Otherwise, we are going to be leaking memory from the old kernel in
-the unpreserved parts of the pages. If we do that, kfence can ignore
-allocations with that new preservable GFP flag.
+Forgot to reply to the other part:
 
+I agree, however, I suspect the implication is going to be minimal, it
+is strange to preserve fragmented state and expect a fast reboot. Most
+likely, we are going to be optimizing the preservation pools, such as
+using 1G order pages for guest memory.
+
+Also, we are moving toward preserving 4K bitmaps as part of the
+Stateless KHO patch series, so I think we will make this change
+anyway, as part of this fix or as part of transitioning to radix-tree
+stateless KHO.
+
+
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+Thank you.
 Pasha
 
