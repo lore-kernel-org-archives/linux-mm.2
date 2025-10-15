@@ -4,115 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACE3CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE781CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65BB38E0029; Wed, 15 Oct 2025 08:41:07 -0400 (EDT)
+	id 267978E002A; Wed, 15 Oct 2025 08:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 633278E0020; Wed, 15 Oct 2025 08:41:07 -0400 (EDT)
+	id 23EF08E0020; Wed, 15 Oct 2025 08:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 548FB8E0029; Wed, 15 Oct 2025 08:41:07 -0400 (EDT)
+	id 154D38E002A; Wed, 15 Oct 2025 08:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F3D78E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:41:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7981160191
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:41:06 +0000 (UTC)
-X-FDA: 84000308532.20.71A1121
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F00D4C0007
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:41:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WTU6zJv+;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 047E98E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:42:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id ACC51C011F
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:42:50 +0000 (UTC)
+X-FDA: 84000312900.24.B6DA61E
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BFE4620019
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:42:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="fI/btDQ+"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760532169; a=rsa-sha256;
+	cv=none;
+	b=4Vnd9cB3mp6jnQzblvrlOmlaBUxBGcMxgoN6arF/FifulSWF7EcJTVeXWzjH/yT46OI70l
+	2epfUBSLgHahXYDAbyiUHs3axKWWKYuDS+98Ypfx0Zj2cfBiZbz2Yk9FNC9wdoAKrEs9xr
+	6RKZcG8zbBIre14Ffb9S2F1yD6/gJVw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="fI/btDQ+";
+	dmarc=none;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760532065;
+	s=arc-20220608; t=1760532169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FipoM8XHkQDqrmj0YxqfPPlg2b8IjYcJe+/Om+8rUJs=;
-	b=dlNnS4zB6BGPNvPgign9ZH7O4Wxd8mLdoo26SDuOh4kLhRWJcCcgWF5un3Xm88wXLxlEuR
-	6MHLv5WyDqgRHHWSaW0dOobzH3TEnaSZuuYXz95UoQ9hz4qpIpX4BzrlB2UWrA9b5oEFuv
-	GqF+PkJ+zsHY2914VfnhixH+DMkqBvQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=WTU6zJv+;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760532065; a=rsa-sha256;
-	cv=none;
-	b=trfOVHObNbbxf6Nklx3RJ5xZ6f8p94o1KZEqXREB1XV78UqqLv540u6yp470EPT8UKgxq7
-	Jsi02ZUQBHhsHh7ajHdcXiqUs1y5k8mgJuJDKd8//PKNxBAcLg3oxcZd5FnPCvSZLbqTip
-	+sEBmFVXuP340ELPejfwuYm0u9LlgGE=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63bdc7d939fso2997713a12.0
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1760532063; x=1761136863; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FipoM8XHkQDqrmj0YxqfPPlg2b8IjYcJe+/Om+8rUJs=;
-        b=WTU6zJv+YGGNjARdC8MFBL80p75k1+ThyswXQ7dOf6V+jRhvZOs2nsamPnG33brYaC
-         VnWkyaqRsRgvEk/hzBqCuGex4ru0+1YpYkTTM8Gl2fTEiyUHcrSAbRY1+0hx4l3YiGRn
-         Y3VtRYY6UWdMgWe7r7v6H/5VhJyU93MekfhbKSc3pDtmin2Solcq8t4pCw20eWQIevCr
-         EZR7RI/LGzFF4++FZO2jVuO008wBWJHkUUriEBS8Lh0k/k5L4uNGp5BCRv63AgHehN7M
-         xwXSC8B2hZuZSQvQ4tVWj/lmqN5kczM3g01kiJWUFYhmvjooNxdGPCewm7bKQCuWEh2U
-         g7RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760532063; x=1761136863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FipoM8XHkQDqrmj0YxqfPPlg2b8IjYcJe+/Om+8rUJs=;
-        b=l9pCKzZenz1/b3wyu5lcjjqJRdsayHAb1fAk+RrFwjelTztHPrgH4VLmh8OwwDS8vd
-         X+E6HDIyzLxjXMitL0yajmdl8J9ODT1EFJEaWNfQp1rqbSBOvelEEizDDPwsMYA69M8V
-         ugb2OBNlZnIEOlr/VxaDlLP36abPcObYvEeP6yn5++hOAsXMYPc4oVBukdjtOXz+KAMT
-         4vyWd2diGM6/RTuKK+ULDrravqD4fb8Rb40Nv3Mibg/BfK18l7eCBFTWfkxfUB9kU2Q+
-         a+Xo36e7jkmp+bvbf884zIYDZMw+ng0Ac4GSeTPgMQjnb3QbHd2FuDDFBJZoYByHEP+3
-         uUSA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8bCMACKyAPbsrtrMjbStU5zKN8OcjOjKJz/e4aN26I5W5gNgn5lemLCBPOl4XgIwDVmf0MeLRaw==@kvack.org
-X-Gm-Message-State: AOJu0YyMICzjelixA9lWDRoATtJNZHJbi9Fr2mFYgfa0DF6ETqR6raV3
-	z1X4NwQiSXZj4JaUgeBQaZFNZ6X+2K+Q1qK1x3+2N35nSvCzsiidmFPSal85ez9HGuFnCEIXXER
-	6/vvciK2xMOBRoYJEc6Q+QQkkCYXoTJmnDtyQ+wjP8w==
-X-Gm-Gg: ASbGnct8nmFVW89K9ZoC5+pidj+StorH/FFBbZLbOfoLKb46uVSYsWAZMAjity7JqFs
-	CrDDhfI3OoOJhMuyITwYS0WsfzsYEVwRAGUpl/0FqsNTltpwFDYTZpkJfknPRjNK8bUfn8l4LXd
-	+tebFg3Jlui4VncV6wgWLBjQXq+tU5hC4uFq6Bs0DqRDwds73ZQ9vEt6UQu/WIE7GMMt8r3dYlE
-	aCAq1j1kE8e7JlxNyrXkMoynMHM1zYNEw==
-X-Google-Smtp-Source: AGHT+IHVW/aOfxAnOknHtkPVdgNnM4tNmxh+uGWj/wtje/WHNOH4EeyB3zfHx5JMTKCACj6PKn5d59raSVcEvzYo1NE=
-X-Received: by 2002:a05:6402:3487:b0:639:f548:6894 with SMTP id
- 4fb4d7f45d1cf-639f548ba3fmr23286278a12.3.1760532063349; Wed, 15 Oct 2025
- 05:41:03 -0700 (PDT)
+	bh=YpvuTPdKEnG8kh0LAxrV4kemX2pr+zKEL9tcOV5VL8I=;
+	b=ZQjnaoTvOn8sa3PCkabJ8IxFmjgoAf9UC/GSu/yZnRGWDsIfT1CnD2tOe9tOOttNQyGm3u
+	LWYlKMCAOn1q+lwgiHzi4IYdE2gfhDsDHeErEZfFTa7r6A+E+4TljI2o5TeN9K58bsllUU
+	zZQRYaL2yIBoHrF06Gu7sQfkoconAL4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YpvuTPdKEnG8kh0LAxrV4kemX2pr+zKEL9tcOV5VL8I=; b=fI/btDQ+F9gEXnHWCjEAcad140
+	urwS1uun98p1hrl8iEQruMZQDp/zBFQmQBXo4R7HSpcZhdzduMnyZliYgxf6irVaT8nlXM4iLJIzp
+	iLYcp7lv4oI5G37fONOIxl83ONG5babsrJ72ldiswk2uHDCoR9tkHaFl8IQ3k+3vk5YqEdnKKtmD3
+	HGZHqEy8IX22QrnZHwzdyL7pdAfllhIavAgcgSWaL5oGZOSSoL20Qi1UDwYBN4UXlEzrA7TJSUD+h
+	uu/dzmXvMuT50FUYCM+vXb13hamajcBDrWY56/uxMJbUCfmrUwVffupW2p9zaTkfSJCdig8ElmCC9
+	UH14x4Rw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v90q6-0000000FRPV-0xq4;
+	Wed, 15 Oct 2025 12:42:46 +0000
+Date: Wed, 15 Oct 2025 13:42:46 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aO-Wxj7al7I-IadV@casper.infradead.org>
+References: <20251014182754.4329-1-vishal.moola@gmail.com>
+ <aO9Z90vphRcyFv2n@milan>
+ <aO97BjvNZNh0UV3u@fedora>
 MIME-Version: 1.0
-References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
- <20251015053121.3978358-2-pasha.tatashin@soleen.com> <mafs0zf9sjrgc.fsf@kernel.org>
-In-Reply-To: <mafs0zf9sjrgc.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 15 Oct 2025 08:40:26 -0400
-X-Gm-Features: AS18NWBP9oBjba4zuXY2WUb88hXZWd7h5EjNqKrj5u46Vy6IINb-vIhf0-yb0QU
-Message-ID: <CA+CK2bD4z_j_jMhMtrvvQ5nOMEFT6yrRHk9rk7BEiQPSPCHiqA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
- preserved memory in scratch area
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net, 
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org, 
-	ojeda@kernel.org, rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org, 
-	jasonmiu@google.com, dmatlack@google.com, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F00D4C0007
-X-Stat-Signature: 6hn9i5m6m91axdjc6nsp1zbbukrt4pwz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aO97BjvNZNh0UV3u@fedora>
 X-Rspam-User: 
-X-HE-Tag: 1760532064-264157
-X-HE-Meta: U2FsdGVkX1/gTtUaABwvHRi1XGT2xPc5TQaQkWgdOAnHpI3mAyooW7s0x1kpajAn3gpNjGHKtiPG8W60J0Xh9wXCqRf2fGbkT4h4jSLiLyc9gqmF0Vatnr4lkQahJ17kfoa/LIY+FmoQheMMBA9Czqqtc+Uk9kYhaOy2v+8+KBr2BLF8QkYLFGe76m2qmGM/bMsj39OK56wbyo9C/htsfFEGWtaJajoRmc07+UDRrfaKbkReO7tpJugYrCC8g8OVgJ3KfTa4is+cWg9JFPQyZf4rssKtOris/y4xB9IGMgAdOHu8jQmbB2bYD2EhXhWH3iCtj/VZJe8bzbnpRqijFTOhUtIOC5WWNBaX49aZPQlG/ry/fHK5l1rP48qMT7tVHOEITk1HRR8/bMK8poFUNANT4i7cLL+urgx+tUsC1eObYGgXfr9fyTED7JjlSLs0LldnBKb35xjtzlGLu+nBdVxMoHx4LxNuQvDYlVzf1ru7HL8WAkHB0EmGnznnGUYzvO078yNQBKWPT/MYdiyy8G/HraYwotjY457EYyM7hBQB5WEH2YjEfRrL8ik6vdV7TI7Wer5ePcp5IAkYqnblHfkeDUT4V/V5WM25MaIPkmfvVEoRouPxw87JZAChSdOdCOgTdhv9hF+/KQxOl2wb96CL/W42Da+nVyeeLIhjSLlIpBSGYM4fza1AX0R8c6F3POrJnlwqA/yXO4uEPpon3WVkY+x9JSJ53/JOrBqqj01XN5XGqljSyVNR96lcCGrCU4Gybt1z0F8HX0550X4zIbQZQxMqa7MGjbbeta4XCG9LASFqXUun9TmXVQl8beCcnqknSqH6uc5Q10Kcw3Clsb0JrDK7uPpZl7u9DQeLPlDjCmxIQgH7H2R24dJjo4VnBFdgHGgv13fsU/BJ32jqixXm9nUIv/MpthmW5/9br1COeDt4oxtUEVAD+a0h1yaKGxnGj9mE/0AjmUlgfGA
- WeQ6PSa0
- K2CI1r71j+qBitArNCT6RhSMv0nCYhCwHDamWvQa+CSgWIRvSJDTeKckbna9r3wJRWKWUfCF6nyAyPC4zCf8M5KlwSE0tl4n3R/u1tGWF2VA6w0ZLCkAs/KkxWL02OzNerKz1097Og3R4BoinxGtuBMxU0Cg8/MY0peXkKNe/q3oJ1h4mxzxluvQ52YMjyNTjV4By/FbqtTkXAH/VBo3YPyBMSt2zxa4E0qMC9pQzium45wo=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BFE4620019
+X-Stat-Signature: i16t38njz4togcjtsqeigbgsmqd8dnrh
+X-HE-Tag: 1760532168-123617
+X-HE-Meta: U2FsdGVkX1/iZ7yfpyfgKMMMElDIwCJJFK6YqDyCCpdvybEYBpctUE0Lt0+PjLyvwOsyGmuITk5GutVHRntHTz3RCjYUiWCMc0NYihGkLVmE2xdtjQgMC6LiB2vFeO/nKbLCdUq6ye46Yg9uCHK7Pp3Ha/P9fBEGMsPy9CH53tUZezLy0yHWxWgR9ASd/lP/oL5AVP8+NyTdSKctQHKYevJFzsOZKTaaL3YAUBW9L+XcUDqCq6c0x6hFAmt/LxtHoNrFQrHvZ2Na1KhRIOUT+HVBFgffhd5DyKkovfyWSxQ9AyEd7pmeki/CDfx/Cd0g7FQDqlQFyELQJcJLNd7bRrmNV71ol1G01jyTKNNUZs53VL6xcwF5iO1p8VIWFw/jwjOFIcN2a+HhM+yiW0qb4BAEprXdBhThKanH5OaER3Vv5RQvpLD+WiuTZjnLWFSvHOcK8940ukHHGDlIWU+E+pAE7TbO3mSXJf2hK3MV8kwcfsCFhfGimCy8hsOJOL0D1jZVW+y9SRAJCQvrb+oS4ZBXyZkiSbFmL/Pp4slJPKdQL+fMn8TMvO7m6jr0glJ544n9GWp6T/+1zDDxML5m71VjWxI1Rr9jkNT9gOzuOk1ZOip+jfqFndv69H6yRXCxWf2ixFT0f2YB3STeLeHlJmCMDlH2bnckCYHwFCnv3iodoXDMJ4oTNe3gSFarBaQpqmlgJXJHb2yTXVPSdxsMsJ83nnu17v7ugdpjrTHBED/Mq/HFcJ9hahRjumvtMqkMmr5Ty1ZfIMOOj4WtcYyNLXj5R6P3zRBM7jINLrJPHMGi6IaB+0r1klWTk0Ht9+PSd5ZH/HL3zpSZfh8V1Q21su3z1fXe2sfYhHr09ZN7W7st0Mkt7065T/Rzg3JavduyuOVzaungQKcMXuEJ0VaoZM4GBforF7+30YgnGc2pUNHgdQnjd2+QQDTkw8RsaG2dMndw/Mfb83nlP5Np0vb
+ 3hVu1CSv
+ aknWwMCtUIigY+kTI9LSdQXEB3AtDS8i+vL1WTY2DjB4BEzzl2Z++dcINjlEeL7J2UPDtlfPy3645cirjibhnBHmzF9nG/cyLejhyNQA9KkUeD4P+jvj6n0onX2kck6m7CeOCqFxXibg7jLzok97ph7i97JwbZkRctVQHdxn+fQgwUWB65oK2tPTLz1tGdhdz60nzYOP065EuHNR9PicAz4em2ZII9YMW5Sn8Uh/GGyQPW1jabt0CWpEfkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,258 +91,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 8:10=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> On Wed, Oct 15 2025, Pasha Tatashin wrote:
->
-> > It is invalid for KHO metadata or preserved memory regions to be locate=
-d
-> > within the KHO scratch area, as this area is overwritten when the next
-> > kernel is loaded, and used early in boot by the next kernel. This can
-> > lead to memory corruption.
-> >
-> > Adds checks to kho_preserve_* and KHO's internal metadata allocators
-> > (xa_load_or_alloc, new_chunk) to verify that the physical address of th=
-e
-> > memory does not overlap with any defined scratch region. If an overlap
-> > is detected, the operation will fail and a WARN_ON is triggered. To
-> > avoid performance overhead in production kernels, these checks are
-> > enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  kernel/liveupdate/Kconfig                   | 15 ++++++++++
-> >  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
-> >  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
-> >  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
-> >  4 files changed, 70 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-> > index 522b9f74d605..d119f4f3f4b1 100644
-> > --- a/kernel/liveupdate/Kconfig
-> > +++ b/kernel/liveupdate/Kconfig
-> > @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
-> >         Also, enables inspecting the KHO fdt trees with the debugfs bin=
-ary
-> >         blobs.
-> >
-> > +config KEXEC_HANDOVER_DEBUG
-> > +     bool "Enable Kexec Handover debug checks"
-> > +     depends on KEXEC_HANDOVER_DEBUGFS
->
-> Why the dependency on debugfs? Why can't the debug checks be enabled
-> independently?
+On Wed, Oct 15, 2025 at 03:44:22AM -0700, Vishal Moola (Oracle) wrote:
+> On Wed, Oct 15, 2025 at 10:23:19AM +0200, Uladzislau Rezki wrote:
+> > >  	int i;
+> > > +	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
+> > > +	unsigned int large_order = ilog2(nr_pages - nr_allocated);
+> > >
+> > If large_order is > MAX_ORDER - 1 then there is no need even try
+> > larger_order attempt.
 
-Because there is one kexec_handover_debug.c file, that I thought would
-make sense to use for both, but now thinking about this, perhaps we
-should split the code: KEXEC_HANDOVER_DEBUGFS and
-KEXEC_HANDOVER_DEBUG, and add two files:
-kexec_handover_debugfs.c and kexec_handover_debug.c, this would avoid
-ifdefs in .c.
+Oh, I meant to mention that too.  Yes, this should be min(MAX_ORDER, ilog2()).
 
->
-> > +     help
-> > +       This option enables extra sanity checks for the Kexec Handover
-> > +       subsystem.
-> > +
-> > +       These checks verify that neither preserved memory regions nor K=
-HO's
-> > +       internal metadata are allocated from within a KHO scratch area.
-> > +       An overlap can lead to memory corruption during a subsequent ke=
-xec
-> > +       operation.
->
-> I don't think the checks that are done should be listed here since as
-> soon as another check is added this list will become out of date.
+> > Maybe it is worth to drop/warn if __GFP_COMP is set also?
+> 
+> split_page() has a BUG_ON(PageCompound) within, so we don't need one out
+> here for now.
 
-I thought it could be expanded when new features are added, but I can
-remove this description.
+I don't think people actually call vmalloc() with __GFP_COMP set, but
+clearing it would do no harm here.
 
->
-> > +
-> > +       If an overlap is detected, the kernel will print a warning and =
-the
-> > +       offending operation will fail. This should only be enabled for
->
-> This also describes the behaviour of the checks, which might change
-> later. Maybe for some checks the operation won't fail? I suppose just
-> leave it at "the kernel will print a warning"?
+> > The concern is then if it is a waste of high-order pages. Because we can
+> > easily go with a single page allocator. Whereas someone in a system can not.
+> 
+> I feel like if we have high order pages available we'd rather allocate
+> those. Since the buddy allocator just coalesces the pages when they're
+> freed again, as soon as these allocations free up we are much more
+> likely to have large order pages ready to go again.
 
-If it changes, and Kconfig should be updated as well.
+My PoV is different from either of you -- that we actually want
+to allocate the high-order pages when we can because it reduces
+fragmentation.  If we allocate five separate pages to satisfy a 20kB
+allocation, those may come from five different 2MB pages (since they're
+probably coming from the pcp lists which after a sufficiently long period
+of running will be a jumble).  Whereas if we allocate an order-2 page
+and an order-0 page, those can come from at most two 2MB pages.
 
->
-> > +       debugging purposes due to runtime overhead.
-> >  endmenu
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index 5da21f1510cc..ef1e6f7a234b 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -141,6 +141,11 @@ static void *xa_load_or_alloc(struct xarray *xa, u=
-nsigned long index, size_t sz)
-> >       if (!elm)
-> >               return ERR_PTR(-ENOMEM);
-> >
-> > +     if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
-> > +             kfree(elm);
-> > +             return ERR_PTR(-EINVAL);
-> > +     }
-> > +
-> >       res =3D xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
-> >       if (xa_is_err(res))
-> >               res =3D ERR_PTR(xa_err(res));
-> > @@ -354,7 +359,13 @@ static struct khoser_mem_chunk *new_chunk(struct k=
-hoser_mem_chunk *cur_chunk,
-> >
-> >       chunk =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
-> >       if (!chunk)
-> > -             return NULL;
-> > +             return ERR_PTR(-ENOMEM);
-> > +
-> > +     if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE)))=
- {
-> > +             kfree(chunk);
-> > +             return ERR_PTR(-EINVAL);
-> > +     }
-> > +
-> >       chunk->hdr.order =3D order;
-> >       if (cur_chunk)
-> >               KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
-> > @@ -379,14 +390,17 @@ static int kho_mem_serialize(struct kho_out *kho_=
-out)
-> >       struct khoser_mem_chunk *chunk =3D NULL;
-> >       struct kho_mem_phys *physxa;
-> >       unsigned long order;
-> > +     int ret =3D -ENOMEM;
-> >
-> >       xa_for_each(&kho_out->track.orders, order, physxa) {
-> >               struct kho_mem_phys_bits *bits;
-> >               unsigned long phys;
-> >
-> >               chunk =3D new_chunk(chunk, order);
-> > -             if (!chunk)
-> > +             if (IS_ERR(chunk)) {
-> > +                     ret =3D PTR_ERR(chunk);
-> >                       goto err_free;
-> > +             }
-> >
-> >               if (!first_chunk)
-> >                       first_chunk =3D chunk;
-> > @@ -396,8 +410,10 @@ static int kho_mem_serialize(struct kho_out *kho_o=
-ut)
-> >
-> >                       if (chunk->hdr.num_elms =3D=3D ARRAY_SIZE(chunk->=
-bitmaps)) {
-> >                               chunk =3D new_chunk(chunk, order);
-> > -                             if (!chunk)
-> > +                             if (IS_ERR(chunk)) {
-> > +                                     ret =3D PTR_ERR(chunk);
-> >                                       goto err_free;
-> > +                             }
-> >                       }
-> >
-> >                       elm =3D &chunk->bitmaps[chunk->hdr.num_elms];
-> > @@ -414,7 +430,7 @@ static int kho_mem_serialize(struct kho_out *kho_ou=
-t)
-> >
-> >  err_free:
-> >       kho_mem_ser_free(first_chunk);
-> > -     return -ENOMEM;
-> > +     return ret;
-> >  }
-> >
-> >  static void __init deserialize_bitmap(unsigned int order,
-> > @@ -737,6 +753,9 @@ int kho_preserve_folio(struct folio *folio)
-> >       const unsigned int order =3D folio_order(folio);
-> >       struct kho_mem_track *track =3D &kho_out.track;
-> >
-> > +     if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << o=
-rder)))
-> > +             return -EINVAL;
-> > +
-> >       return __kho_preserve_order(track, pfn, order);
-> >  }
-> >  EXPORT_SYMBOL_GPL(kho_preserve_folio);
-> > @@ -784,6 +803,11 @@ int kho_preserve_pages(struct page *page, unsigned=
- int nr_pages)
-> >       unsigned long failed_pfn =3D 0;
-> >       int err =3D 0;
-> >
-> > +     if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
-> > +                                     nr_pages << PAGE_SHIFT))) {
-> > +             return -EINVAL;
-> > +     }
-> > +
-> >       while (pfn < end_pfn) {
-> >               const unsigned int order =3D
-> >                       min(count_trailing_zeros(pfn), ilog2(end_pfn - pf=
-n));
-> > diff --git a/kernel/liveupdate/kexec_handover_debug.c b/kernel/liveupda=
-te/kexec_handover_debug.c
-> > index eb47f000887d..294d1d290142 100644
-> > --- a/kernel/liveupdate/kexec_handover_debug.c
-> > +++ b/kernel/liveupdate/kexec_handover_debug.c
-> > @@ -214,3 +214,21 @@ __init int kho_debugfs_init(void)
-> >               return -ENOENT;
-> >       return 0;
-> >  }
-> > +
-> > +#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
-> > +bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-> > +{
-> > +     phys_addr_t scratch_start, scratch_end;
-> > +     unsigned int i;
-> > +
-> > +     for (i =3D 0; i < kho_scratch_cnt; i++) {
-> > +             scratch_start =3D kho_scratch[i].addr;
-> > +             scratch_end =3D kho_scratch[i].addr + kho_scratch[i].size=
- - 1;
->
-> Nit: wouldn't it be a tad bit simpler to do
->
->                 scratch_end =3D kho_scratch[i].addr + kho_scratch[i].size=
-;
->
-> > +
-> > +             if (phys <=3D scratch_end && (phys + size) > scratch_star=
-t)
->
-> and here
->
->                 if (phys < scratch_end && (phys + size) > scratch_start)
->
-> At least I find it slightly easier to understand, though I don't think
-> it makes too much of a difference so either way is fine.
->
-> > +                     return true;
-> > +     }
-> > +
-> > +     return false;
-> > +}
-> > +#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
-> > diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveu=
-pdate/kexec_handover_internal.h
-> > index b3fc1957affa..92798346fa5a 100644
-> > --- a/kernel/liveupdate/kexec_handover_internal.h
-> > +++ b/kernel/liveupdate/kexec_handover_internal.h
-> > @@ -44,4 +44,13 @@ static inline void kho_debugfs_fdt_remove(struct kho=
-_debugfs *dbg,
-> >                                         void *fdt) { }
-> >  #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
-> >
-> > +#ifdef CONFIG_KEXEC_HANDOVER_DEBUG
-> > +bool kho_scratch_overlap(phys_addr_t phys, size_t size);
-> > +#else
-> > +static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-> > +{
-> > +     return false;
-> > +}
-> > +#endif /* CONFIG_KEXEC_HANDOVER_DEBUG */
-> > +
-> >  #endif /* LINUX_KEXEC_HANDOVER_INTERNAL_H */
->
-> --
-> Regards,
-> Pratyush Yadav
+I understand the "allocating order-0 pages helps by using up the remnants
+of previous allocations" argument.  But I think on the whole we need to
+be doing larger allocations where possible, not smaller ones.
+
 
