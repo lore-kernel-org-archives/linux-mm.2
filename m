@@ -4,93 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4879ECCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 20:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FB2CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 20:17:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84E268E0035; Wed, 15 Oct 2025 16:09:06 -0400 (EDT)
+	id DE0378E0041; Wed, 15 Oct 2025 16:17:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 825F58E0005; Wed, 15 Oct 2025 16:09:06 -0400 (EDT)
+	id D904B8E0005; Wed, 15 Oct 2025 16:17:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7632A8E0035; Wed, 15 Oct 2025 16:09:06 -0400 (EDT)
+	id C7F9C8E0041; Wed, 15 Oct 2025 16:17:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 61A6D8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:09:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE0FC1602A7
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:09:05 +0000 (UTC)
-X-FDA: 84001437450.02.1C3D6F8
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 207CA10000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:09:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ER+FfBxf;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B50DB8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:17:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4696586A78
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:17:51 +0000 (UTC)
+X-FDA: 84001459542.04.379E4C6
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5691C16000E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:17:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r5NurIyW;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760558944;
+	s=arc-20220608; t=1760559469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QE9+6/UqXy7fEFgnk3w2iHUsxl9kOSZaT4yz9NSkM4s=;
-	b=p2UE8TsXR8SbC0KRy3TT4b0SloS94KaIuAs+lwZHErr7FvBXZULO7I9OG+liiVHxpEP155
-	tBHpUYuStCuNyqvcC8v6f7Qo3A2QnlIlWEogX9Obx/8rhsjCRL9tEraKfvlFA6bXW6iRSZ
-	2kIlV/4yuseqNjgfE8f0cOz5dPJ6554=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760558944; a=rsa-sha256;
-	cv=none;
-	b=hyyBye+sr/cQsj8eE3Z3p55Zn3ma06XTve/nQ6SMfZDR0+83sJYTKvlAOsh/3XcM+nZ/qI
-	23UlIFjS2zEB90j1Y8piqTah3FSMnACXQqEpFGzfkpAOLn1FhPgS6qygxGeeZxW7RRAHD6
-	mFE3mDy8vSKZcF0i9lUBg5X0DRApFHE=
+	bh=AuLkftPTLJewXmjuYq/pzFJKexCaUt81R4Qe53LhJss=;
+	b=gcFiNng5KP6zSpOLY2mXkprgZj7tcNiJxxXn+LeT/y30BdzvtTmS695Y8dnXVs1TKGJXmC
+	1iKJStuW5Rybs0o3TFuPBOFsypj+lPxqD+5xk6HnklETQV1055U2Jq6lPRz+TbwgUBwaRG
+	TKlT3DLqgrEKN606auLzo7pfea74GR8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ER+FfBxf;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf14.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 69C46932EF;
-	Wed, 15 Oct 2025 20:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1760558942;
-	bh=QE9+6/UqXy7fEFgnk3w2iHUsxl9kOSZaT4yz9NSkM4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ER+FfBxfjxx+qQF+sKdm5eOSvgvyKc/qweUgWMKkQV4OH4mCoyHiQTcSxNfC7POen
-	 iTn1wloJ0iGmGu3mujVFGrzAj9aI1UVzaFZ0eTwlr2l42+w4wqmN0M7M84cqeZWUPq
-	 JEsfeT0drWKpkCLAcWWWd4YKCh74AUmCEs9UNj+M=
-Date: Wed, 15 Oct 2025 20:09:01 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	hughd@google.com, yangge1116@126.com, david@redhat.com
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Message-ID: <aO__XXIJShKz3-Tn@shell.ilvokhin.com>
-References: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
- <ltvv3v4vibvlglpch6urayotenavpzxc7klbcyowjb4wrv3e7z@pzovtvtbmnsp>
- <aOaoD0HQk7YPeLkE@shell.ilvokhin.com>
- <20251015125911.0f0ebf87b278324667c4dfc5@linux-foundation.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r5NurIyW;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760559469; a=rsa-sha256;
+	cv=none;
+	b=8o7IPScHl5bcG8cwNSoT2TfgvPMxzgNxmVRQGBJjB6kyGGvsVcy7G9NV6QKy9p0/uI3n4Y
+	FbShr6EKXSd+AnfHqUAN5QDRFvrLLxuR3TOk15CHApDfTlnxsTIWrJg8rSKIscC4WdoSsY
+	EgfwTOwwx8VBtZKAnalGZMFUQ1+sQN4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760559467;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuLkftPTLJewXmjuYq/pzFJKexCaUt81R4Qe53LhJss=;
+	b=r5NurIyW2RIqeEEVAE7BbOgH4HGJpRaAU2V0Wa3BgTTIyBwiZNQ7kIIxqvLqZQu55aTfC1
+	TSKyn1N1LR6f9uybzu/QC5UZAbVVciFtrS22W8NXdlMy3kAVc0oiPzSwpZyvvEPbbHhpSY
+	qBD0JvnDagVDf/nKfUd6umK087STJ4Q=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,  Daniel Sedlak
+ <daniel.sedlak@cdn77.com>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jonathan
+ Corbet <corbet@lwn.net>,  Neal Cardwell <ncardwell@google.com>,  David
+ Ahern <dsahern@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
+  Yosry Ahmed <yosry.ahmed@linux.dev>,  linux-mm@kvack.org,
+  netdev@vger.kernel.org,  Johannes Weiner <hannes@cmpxchg.org>,  Michal
+ Hocko <mhocko@kernel.org>,  Muchun Song <muchun.song@linux.dev>,
+  cgroups@vger.kernel.org,  Tejun Heo <tj@kernel.org>,  Michal =?utf-8?Q?K?=
+ =?utf-8?Q?outn=C3=BD?=
+ <mkoutny@suse.com>,  Matyas Hurtik <matyas.hurtik@cdn77.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+In-Reply-To: <CAAVpQUCNV96vOReAeVHpwbUg9XJDLRTkHmcABh9dhm=f8p5O+g@mail.gmail.com>
+	(Kuniyuki Iwashima's message of "Wed, 15 Oct 2025 11:58:23 -0700")
+References: <87qzvdqkyh.fsf@linux.dev>
+	<13b5aeb6-ee0a-4b5b-a33a-e1d1d6f7f60e@cdn77.com>
+	<87o6qgnl9w.fsf@linux.dev>
+	<tr7hsmxqqwpwconofyr2a6czorimltte5zp34sp6tasept3t4j@ij7acnr6dpjp>
+	<87a5205544.fsf@linux.dev>
+	<qdblzbalf3xqohvw2az3iogevzvgn3c3k64nsmyv2hsxyhw7r4@oo7yrgsume2h>
+	<875xcn526v.fsf@linux.dev>
+	<89618dcb-7fe3-4f15-931b-17929287c323@cdn77.com>
+	<6ras4hgv32qkkbh6e6btnnwfh2xnpmoftanw4xlbfrekhskpkk@frz4uyuh64eq>
+	<CAAVpQUDWKaB6jH3Ouyx35z5eUb9GKfgHS0H7ngcPEFeBdtPjRw@mail.gmail.com>
+	<cfoc35cqn7sa63w6kufwvq7rs6s7xiivfbmr752h4rmur4demz@d7joq6oho6qc>
+	<CAAVpQUCNV96vOReAeVHpwbUg9XJDLRTkHmcABh9dhm=f8p5O+g@mail.gmail.com>
+Date: Wed, 15 Oct 2025 13:17:36 -0700
+Message-ID: <87a51rapi7.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015125911.0f0ebf87b278324667c4dfc5@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 9tkqquwwo3fg6jqjt837hwkp4u54f7t9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 207CA10000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: da34fwowfztkan4gxbxp6xwm5ebuszrh
-X-HE-Tag: 1760558943-283974
-X-HE-Meta: U2FsdGVkX19nllnof/xizc+FVTfh5nvNhzIARAstTTUGEL/jDIhg9Z1VwdQJlPOjyYaGBcgk22CcJTb4mGP1jpSbWhOSZjxzyQRyoWGJWSG1WQY7DjEM4ABiL7IK+78oMBQHo6HYeTh2yg2LSyWlPWbLSbKh+kXpZsEGwljlKl5ZUVcgI1nuzzo481C/ZdOM1X0xqVMWCsY7Jhqh1rTkbZO1bnoawNNwVc56puT7c0iidHiYLM1HkGC2nJLEcx2F6Ef0Vh0W5dKcWYdtL8Ut2hLgAVEp2jqtP7lJHlgj8eeEITfIpuf05QMwZq+cioggkI4WejU/3DsMHkew/asRffOChUhbai/TXdZkcrkMg6CZG+dPLu6Fl/ja1UwOj/OMKkz8JW67heb6qL5gVDx/+Dd6YoQTx6HiaLFfLYYYjcYa9kudbjF0bXZzrDoHCh7TSsT4iC5BpkXRv8aJ8U+hEIdQ6zViMh1g6gZhagUgdktDx0QzLK4d66X6Kwt3+h/hp35ythDYHCpW7ydnH2giZJD9+M5vMyYsjNThmlwWJY8Mbxcm5T/629lxQLdwhC+xx0DGwhioO4Fnougl7Mk5qaYo0o+XO7QdSocYtIpT0C6zSQV9dcMBjgZV/RynofpkRzRLDvYFzO7EZaEW0IO9HkbF/GWkC/YsRnd0iuwGeLXuDYWFqi4Atuil5AxWQVOVTKTOL0PM0ploYkWM3n2ZZJXEKvhVfL7AFZMNXf2hJQ4mj+j+NOYURQleGB1rwiniItqQY9FZH20ZcxIuxEhLaJ0jZ0XQPRgprD2VYf2mymca39hRNm0SuT2dBqHTjV206OP65C/PtyYFIq9u9FwxzBJJdNjymVc1UiQk9FHBkXNM/tIn9OxZ0xv20AwhK2h5Yzyf4UNjL6KenIiMbt3Od78jO9wsqucW6rDcBrLYDKOpVewuPnqSWNtwnZzYzCBnZMtuED/ejEkTaMzIFYi
- t7aVGnUP
- PJO4vlCAwGG/7G6b0+hFYhaV8hod0ExJ8WZjgFhIz+QXieKAOFSgTwrEz1MCOMR05V2RfVepvvQp6t+pR4bPleiv0bmEEJPxU0VIOqc30F31sYC3QJZgwPu3irxka/CvrbS0hdxVqG5YsPog71csYwho3lVp1l3ljR4PlhD0MBi4dYWrN9m1h/h0OvXTMTzLDjxquUw74dpta48sC2oeHx4FJh82kC6G8t6XLNEun7DFMJ/IUEjJhwLuuUqSUb6OdCYUcHmUv4QVgOwfzdWlkUDYDpW4/EtonNFl6QGLi4wkfB1qWw+Isg0JLkQ/rK8vRY08RhzVr0VoxMzDYg0e9Jax2B4JEZQ8sOHTTcdIPIph8rjoRY/S7b70q0ggsSfO0R35A
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5691C16000E
+X-HE-Tag: 1760559469-546530
+X-HE-Meta: U2FsdGVkX1+DhYjRjUqQGcQ7wbmK7ZUV+aps9y4/ICYYYqpAu3Il7Yy9gkvBS2pU4iuqVGMdaaiwgDtp/O1CpjFjsNg6QnfUgHeiGWXKpTfIZkcxC9mPdj+WyzqxuCwCJdJhvGbnXonRE/n91d5/Vs5DqOdEzBGGLvg2tv48DEMwz7qDzZxwXlTlbKnx4sszCLLVrhw2mBHoKxPL4lXnzTygkWVf9O6H1a48bbSvEg6WMjqFI6xAGHg0xElRGFAAzor7sYMpfUYn7S95IGl4zbj2BKH0FlyLl9YwgEwwpEihI2MsSWoniTq5l9ZezPd+VLpxQkq148kLVdWxUPnDOH1zG303HFY+XNSQDKuZgsqj99UAmQrN2e2srXoIJVmkkCtFs0SVFJVm0XHey7MvOEVX4f8fTuXN9gNJGv2vshbrkpr++uc2BmQvaxSNdgfExMnCUYgdHSfx9fAQ71L1SpJh4ZcEosyarl2SoOLh4JanBxDezRVMXKHw1LCG2MYr1kTZEqRJZVqJiiahkdDtG4Dcjp0rEPfLFXy//odisvdO3SDqWNXHLgSBFupRPJN/5BVnFCc3PEdrSFZSQ/r5vzjqrjJP6AztTes24gLkB3/JLp1jtUPWpqK3TJlOKfcyHtbFwQn2JvVFRlwkwSRguC9JIHmiiJ2egFFoXv1mvviUJ7kGP6PqX/UnI4vXgP9CTmxeUh/0UA3v3x4iGnsMWiSx01ViJXLt3g+UHQxx7xL7GV/3NCPH+eYSpotMNYchzbFh1b3osABhDkGD8TJsRQ3pk9MYqE+03SgEn9PxAuOHKlU0643EKSDZVMA9We8X2djhhJFON84ff+1uXffITCYsxdpisX+e0ufEeUrr70MwYDePFTg+xlYIUPq3URyzNaa8C6fggGTD4xCc2j16kVLcpMiFRd1j62SfYtd6CPqaTyy23e6arHf0QvShrik7wzBHKrd/ZQemi/RtfMH
+ wO8x9uxh
+ Y6YLEmtbKlD4VfvnRnrhGoy8KrjlFxCuS8FISnyyYYkS+bW7PdCjzq72XouwIS5iHq7xwBwo3fLy+emD8+CbUaLgmLY5bs5blhi+YoMSYyYwtYB5tDjkkyXrjKGsE/O18BLB7p37CCD7zlr7S+D3NAIHdbdgjjKDSybXZ+74FD3EkLziihLcWqA2PcBjwLYh4KiSEhpstqI1BvF2cyzP4Ew95zr5ZkhEJ/j9tPmiH7RqD1FU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,38 +111,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 12:59:11PM -0700, Andrew Morton wrote:
-> On Wed, 8 Oct 2025 18:06:07 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> 
-> > > > +		 * They might be still in mlock_fbatch waiting to be processed
-> > > > +		 * and activating it here might interfere with
-> > > > +		 * mlock_folio_batch(). __mlock_folio() will fail
-> > > > +		 * folio_test_clear_lru() check and give up. It happens because
-> > > > +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> > > > +		 * folio to activate batch.
-> > > > +		 */
-> > > 
-> > > This makes sense as activating an mlocked folio should be a noop but I
-> > > am wondering why we are seeing this now. By this, I mean mlock()ed
-> > > memory being delayed to get to unevictable LRU. Also I remember Hugh
-> > > recently [1] removed the difference betwen mlock percpu cache and other
-> > > percpu caches of clearing LRU bit on entry. Does you repro work even
-> > > with Hugh's changes or without it?
-> > >
-> > 
-> > Thanks Shakeel for mentioning Hugh's patch, I was not aware of it.
-> > Indeed, I could not reproduce problem on top of Hugh's patch anymore,
-> > which totally make sense, because folio_test_clear_lru() is gone from
-> > __folio_batch_add_and_move().
-> > 
-> > Now I wonder does folio_test_mlocked() check still make sense in the
-> > current codebase?
-> > 
-> > > [1] https://lore.kernel.org/all/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com/
-> 
-> So I take it that this patch ("mm: skip folio_activate() for mlocked
-> folios") is no longer needed?
+Kuniyuki Iwashima <kuniyu@google.com> writes:
 
-Yes, this is my understanding as well. Hugh's patch addressed initial
-problem and this patch is no longer needed.
+> On Wed, Oct 15, 2025 at 11:39=E2=80=AFAM Shakeel Butt <shakeel.butt@linux=
+.dev> wrote:
+>>
+>> On Wed, Oct 15, 2025 at 11:21:17AM -0700, Kuniyuki Iwashima wrote:
+>> > On Tue, Oct 14, 2025 at 1:33=E2=80=AFPM Shakeel Butt <shakeel.butt@lin=
+ux.dev> wrote:
+>> > >
+>> > > On Mon, Oct 13, 2025 at 04:30:53PM +0200, Daniel Sedlak wrote:
+>> > > [...]
+>> > > > > > > > How about we track the actions taken by the callers of
+>> > > > > > > > mem_cgroup_sk_under_memory_pressure()? Basically if networ=
+k stack
+>> > > > > > > > reduces the buffer size or whatever the other actions it m=
+ay take when
+>> > > > > > > > mem_cgroup_sk_under_memory_pressure() returns, tracking th=
+ose actions
+>> > > > > > > > is what I think is needed here, at least for the debugging=
+ use-case.
+>> > > >
+>> > > > I am not against it, but I feel that conveying those tracked actio=
+ns (or how
+>> > > > to represent them) to the user will be much harder. Are there alre=
+ady
+>> > > > existing APIs to push this information to the user?
+>> > > >
+>> > >
+>> > > I discussed with Wei Wang and she suggested we should start tracking=
+ the
+>> > > calls to tcp_adjust_rcv_ssthresh() first. So, something like the
+>> > > following. I would like feedback frm networking folks as well:
+>> >
+>> > I think we could simply put memcg_memory_event() in
+>> > mem_cgroup_sk_under_memory_pressure() when it returns
+>> > true.
+>> >
+>> > Other than tcp_adjust_rcv_ssthresh(), if tcp_under_memory_pressure()
+>> > returns true, it indicates something bad will happen, failure to expand
+>> > rcvbuf and sndbuf, need to prune out-of-order queue more aggressively,
+>> > FIN deferred to a retransmitted packet.
+>> >
+>> > Also, we could cover mptcp and sctp too.
+>> >
+>>
+>> I wanted to start simple and focus on one specific action but I am open
+>> to other actins as well. Do we want a generic network throttled metric
+>> or do we want different metric for different action? At the moment I
+>> think for memcg, a single metric would be sufficient and then we can
+>> have tracepoints for more fine grained debugging.
+>
+> I agree that a single metric would be enough if it can signal
+> something bad is happening as a first step, then we can take
+> further action with tracepoint, bpftrace, whatever.
+
++1 to a single metric
 
