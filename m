@@ -4,91 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED44CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573F9CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:28:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DEAA8E000B; Wed, 15 Oct 2025 03:11:40 -0400 (EDT)
+	id 65A0A8E0008; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 995EE8E0002; Wed, 15 Oct 2025 03:11:40 -0400 (EDT)
+	id 60B098E0002; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CCAB8E000B; Wed, 15 Oct 2025 03:11:40 -0400 (EDT)
+	id 5208C8E0008; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8A88E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:11:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28F9D11B303
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:11:40 +0000 (UTC)
-X-FDA: 83999478360.17.00F0436
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6F3F7140004
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:11:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nNBm8zcx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3F5818E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBC951DD8C1
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:28:06 +0000 (UTC)
+X-FDA: 83999519772.23.B0B1F9C
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EA9B540005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:28:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760512298;
+	s=arc-20220608; t=1760513285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Do3F1qbT5+63ceqLapAJ1UbUieDzUu7GvT7gY6AUkJM=;
-	b=gms3jQOl/tK9REFy3z0gUJPnqNggG164WKnIH2HsqehcOnmNMhQiffwbDEW4zS68xf+tDW
-	ts+QWsWipp1OQi0rDz3OinXCqTSeticBldpwTVOP8el26deKhjldFoGpfdDmDqJuYZDpX7
-	aLHn16AlGrJjN3jg6Nzwfd4XbJLBQYA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FxTz/CsBtqGwOsVkfT39u2/dSwl7+hBRN939OMGuCVA=;
+	b=BOY5v+3iaHLQ0aOHaRdnZ1E1hVvrwoBNXcdNgP7PjsRe1eGkyTtuTJj1R/bNf1Q8IFPLgZ
+	86uUZipInJQCe+0AY9dff/AkiMq2uyhnWAuBAnbNSdCu6B1zNINsZ3j8PIHaqJAqujhM9M
+	TaECvQebY0AOBOjJrJSezMBTd9CVEVQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nNBm8zcx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760512298; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760513285; a=rsa-sha256;
 	cv=none;
-	b=O3lYRE1sZchn1XoDCpNHQjRR0vFNW6NpX9SmKjV40L01CBZskkajjChsAZf31f1WMgGzLT
-	YB1ttzO32lYa/PG9WT19Ko4gmUenqc9sx+bYSXtaCqx3AXlUFmT6aRQrn11AFd3nMBwvDu
-	DANecw33hF2vmrKVUkWnD5lb04o7olo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0AE960298;
-	Wed, 15 Oct 2025 07:11:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676B2C4CEF8;
-	Wed, 15 Oct 2025 07:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760512297;
-	bh=+YN9iv/JKaRpqQa6Ykr9VD5uGu2CRTjueccIgjbhdmE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nNBm8zcxxXY1bW1Jx06JgkcDaCYB11moLnPLADeWeaWCvoe+GRIL0gbf+sLlgCe8H
-	 +4D2ONNcUJrEZhesbBBxoePGgm7yTsePEWpUYmgXc+OlpJWn31es/QnYEIacJlczjV
-	 AGqlxBiCtfiAaIOFXEEPOdbNvfxpdv4ToC6RwzhjswvOyRpFJWrDMkK2mmere5UNUK
-	 n95C4lY8blVz38eHiYgRsWE9qLEnTySygu9US6T8CCeOceZyPTwE+d8dQdcy+MhGcm
-	 lNdY8F4mJ0ycz6JQ22eUXpGtijKX9rOy2ctsVK4riTq5HqsMbQ26s4Gni4Nl9NZZA6
-	 WYJXlAJsLTW8A==
-Message-ID: <f7c41a0a-94d0-4189-b05c-bea31429b1be@kernel.org>
-Date: Wed, 15 Oct 2025 16:11:35 +0900
+	b=motPKwzS5LjkXWbaRbCfnq/9ZloV5+NcSSQDllQewrLyD8lEH3FF/Vnt+f5laSS5XwjEoL
+	s46JjWeQgQ/eK94EK/aI5E7KqnZyR9GgWaHBqZrggt8nigcfkh6aIV9I034ebHNKfTK/Zz
+	0IbzNvzLpMLKZ9Wq2TtGgQByxpoEejk=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id D75E5227A88; Wed, 15 Oct 2025 09:27:58 +0200 (CEST)
+Date: Wed, 15 Oct 2025 09:27:58 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+	hans.holmberg@wdc.com, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/3] writeback: allow the file system to override
+ MIN_WRITEBACK_PAGES
+Message-ID: <20251015072758.GA11224@lst.de>
+References: <20251015062728.60104-1-hch@lst.de> <20251015062728.60104-3-hch@lst.de> <a1671515-4aec-46a0-aff0-75ea8540394c@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: allow file systems to increase the minimum writeback chunk size
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
- hans.holmberg@wdc.com, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-xfs@vger.kernel.org
-References: <20251015062728.60104-1-hch@lst.de>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20251015062728.60104-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a1671515-4aec-46a0-aff0-75ea8540394c@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Queue-Id: EA9B540005
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F3F7140004
-X-Rspamd-Server: rspam03
-X-Stat-Signature: o79cwyaitenbndfgsiz3oibopuzbwi7a
-X-HE-Tag: 1760512298-613781
-X-HE-Meta: U2FsdGVkX1+F/k3KTQYIuuBkd+AvhjR8sXHAuRcmfgFHsU6Aru5gGwdl1EIvgU9F3PcOcfinNLKC5JA8a0FBBlJ2RlPZvA541AzdiWzGBuOdTHGGB7V7vifOwqMeZuwPS83TDRjGfiyXXFt+qKtFGZ4CdyUIkwEHAZaLpDNo9mbwx1RUlL1OFNYFvd0lvbI7fROSRzA5kthAWu3hRsw4h1PFzIZqQspww/bo+tOMk0hctFnNNUznxjDyUQQ5raVE5peHDLpD26NbSzGThoukdQv+NrpeNwslNZ0ZrkZUUfkJQV/TcOaXeKVxu6JRIUNWSNvXnQ4OHGPXM41FPq+XD+rugulEUFKYbGmypgRTdpHvjhussHvcbOuZK0RVBDjetkKy+BPqhJrzKnTT+zeymbHK/Vcip8UFoetPtqbyflExXCq2laM1LVJhktCd3f6idxIFetL96w1/8/c1zlvFr53y9Oo0heG+rR0zqXsMo/6vTjdMz6cgdGTRLijMFVXjACCMQ0SCdm+m2LqtWAnUOBJ+SMsHeF9JdUYaGbWrR7jYUJrFN8BMqnyl5kkN1BNgQB97pv4MtLzJnwBUPdPybnAl0O+EZTFNtuRpp/gWycShXruCVoxXlKh1KfRF482wjHxhnn0Vb16FmTErttGbAS4vGi8tAlPOselpTFuidbVrHGDALP0OTWuZqcEfsTAe5cvCEnAzC8LxFHOiSBlUPXRP3MMu3i64OBGV7AT9x6jmnFnZFhDbJmkC5n55H8XLYfY9kX9oUZd7iIiMwC+VrvKfdGbt6y5N/kfkHx95moRx3N1GYTzhvEnYpu1RghqBkxhAPkogCakpbAFXhd8duuqNac+MaCOtm5W06UlWNmOJxCTTeg7Y3kMe7k+7C5fCzbH+XROi8T8ojYH1u6h/6N8YzobuCcuBuymkxyXWzWETozeBKiMbihLOKSxQMKQc8kxQ6fqgVtBx6A7P1X6
- zBt/hjAj
- mHCJG6OlslR/63SDGIxJ81SycnUrBqrE2nPGIG+UBwq30CnN+JMRsfKnMkBZLUulGkCaXC7A4L+w8uuJaHAX1TY+sJUO/wVwtoPfsmT+xeQss+zPz+PkRtJmSCD7JGyBCg11nFHvOrNkYCq5Wn4oBUlKTltGJ6YXve+dxBasM0SSvqF9AkpTQP5W8/UtNfQWuYDvQIpc/a+ZNYsgu92QR2TZ8d7wrIzCMDdN8jyhfaPYWneID6lnoqEbOxJ8H3ND9AqONI5RIIudCaQAjWJ55Qcj/hnEFO/JyQAEv6z8/+hLLfqTFUkZ2KxuiW98W+sQudpEq
+X-Stat-Signature: j3ipfcn5nebgbgw3dyjb4fsxnsowhknf
+X-HE-Tag: 1760513284-689414
+X-HE-Meta: U2FsdGVkX1+7dWCauTaicxfwTQelyDY0gg/pZ4F0edWuk5QeHWznqUzkuu+t/Bgv9+FCNXSee2l1AKG6MpE8iYwZ82C1oahiueF0zlPTipbCP/osWpVUPWExJxTAW4xpJ0GAHP8ImNzHAZ3CJaKiJ8aXakzDoLREE8o4+6QD3panu7NZsk095yuAHc8lkXcYnQI/95+L35saUS5SdODKjIwBXvuu83gK4/e2co5IEkGalsQPoZ6Ll3zvFChGzM2bvCWIQu96gqV+9O3r8dBwLX96M6Wm7A/37V34IMt2GEIfahI45ON3HABFMOQa7rRoRss4SUb+AyAmcsClPN8J6SwkG+7SscWxmg3Nj1vbBJD17KND/Ign6mNIYWkw1OZDJJx4WvPUIHIh43zgBMq1SAuE68fiM5FHtibBMlUDm+jM4LK25rrmn6b/VUE9pJuPlpLpMQuQAKPMc57gnkd/8GXZEZz/EFqK4grMMVWikGu+4xN/7mYYwv4PD6YA3rgCZRvpVywZpVQlCUrK5faEjNdhZo0J0mxChtHurKRTKJ5iDs3ot3Zg2ykzQPh+pU+dsCpqIfabd7++s7hd4u3hPclLkf319wpHLN2eOkedrOjzQEHwiZFsHTWM/sO404rfkcXlLs31UBFG6jpCX8gIoLO0KfNfcBh88SGgXxKs+oQBaEyKS32idZ1U3Q9WFN5FTYR6tow2zvJ09G4rdBMpD5AsOyqhTmVCdEoy3SaNBC7ov6jyMzj5QpHGA28agULD4nEMyEDiicKnnGr8zfYQaX12gA6WyUlwn+Z7kSpdS83tBrrTcW6xhVmVvtSRiFD5IJGKtJCl7A+oWA0qS5NN0hjxJrHsNgr0ALuGby3ao5ttDUDpTEq2BSovT3iBa9pkGAETSH4XdGv6hb+Haz9318zz7sJlDJcAlSRIquKACzIavpzWp8VDOuv/Ym1R62OVMHXZywJCY1kWBsyR+Bh
+ I3NLv09W
+ TLlcc+KI7GdWh6piyc9tiPXn4WTHlaRENqOJmNkCOmmuZjlz69+yUcO0tB7rg9xBs5uNtUDQ67A7EODdEs+K+fXbs0x4lUXDYzOrRx6cUpG4oT85cpYhlfiy7rfql4+3eALKsjbm7h8UteUU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,24 +83,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/15 15:27, Christoph Hellwig wrote:
-> Hi all,
+On Wed, Oct 15, 2025 at 04:09:13PM +0900, Damien Le Moal wrote:
+> > +	unsigned int		s_min_writeback_pages;
 > 
-> The relatively low minimal writeback size of 4MiB leads means that
-> written back inodes on rotational media are switched a lot.  Besides
-> introducing additional seeks, this also can lead to extreme file
-> fragmentation on zoned devices when a lot of files are cached relative
-> to the available writeback bandwidth.
-> 							         
-> Add a superblock field that allows the file system to override the
-> default size, and set it to the zone size for zoned XFS.
+> Given that writeback_chunk_size() returns a long type, maybe this should be a long ?
 
-For the series:
+Not that it currently matters much, but yes for consistency this should
+be a long.
 
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-
-
--- 
-Damien Le Moal
-Western Digital Research
 
