@@ -4,126 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F44CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F35CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:35:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 183658E000D; Wed, 15 Oct 2025 03:32:59 -0400 (EDT)
+	id 7F7FF8E0008; Wed, 15 Oct 2025 03:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15B0E8E0002; Wed, 15 Oct 2025 03:32:59 -0400 (EDT)
+	id 7C88D8E0002; Wed, 15 Oct 2025 03:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 098248E000D; Wed, 15 Oct 2025 03:32:59 -0400 (EDT)
+	id 705C48E0008; Wed, 15 Oct 2025 03:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC3B8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:32:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9BFB3C0B8B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:32:58 +0000 (UTC)
-X-FDA: 83999532036.10.1CBF87C
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 95F72C000B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:32:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ru9Gab3b;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760513576;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cu/zEiC7ds7XeHZ44gt1r4dEzp1UHt8UKyKXP93tZdc=;
-	b=PdxYVh2I/oZHRck7dV+oWMf6iprVRTVRxG2P2ageHE/cUeR/aYdlqPTymfTYVG2m3pCz/I
-	kTIoXV3DRfOVRcW/nkZf55DDOyrjbImX6BUI/qyx22KzLK2182R+ysHFPogZvPP1D+Koe2
-	zGV8Q33sja5UYsIw+XgR3TQEvyCmCPE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760513576; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 60AE08E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:35:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 049665CAA3
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:35:14 +0000 (UTC)
+X-FDA: 83999537790.28.583D7A6
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2C34D4000C
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:35:12 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZWStJk3f;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760513713; a=rsa-sha256;
 	cv=none;
-	b=3Sm34Ae41rF32KR/viFN8PFSpwafzf12romqP6qC5CCF7fbQeZjtBOtREkh6uXE/Lzpl83
-	kKHdV/BrLicJBj6ud1qJ79JWTaTxUMdOIv0cKvo9TmDrlhfKA6HXkFQlwZeiJFz2JkvqyS
-	Sjgza0kg1JqAVZkc8sklK+KspxPg3aI=
+	b=u/cxDK4WHV6BUzu0a97L3eA0jOzWX5gQMmCnwNcD40B+ljtYTqp4Frzdx+CbdBuswOHvca
+	dp3tyWMlA3gMPnmsvLMga4ycQd7WJUzM2rzd5lsrqTjRT9IbKI0SgvPk29s1p9AdQHNQqq
+	hxLgeOCz6893TxSGemYiWFlN5y2BMg8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ru9Gab3b;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b3c2db014easo332173366b.0
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:32:56 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZWStJk3f;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760513713;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BA3o1cHbuC0FFSVH6LGwTjiyg5Fjt24vDKqsTK1XeKk=;
+	b=C+ayEc0V+8+pfVznRaSq/O4EeAaudhlFRgOB3oZhioLzgHCZsWj2AxvKzeKsxojw8BRlvG
+	8SzN4Tfsch8ukXCUDM38EruHU+heRw0pGJYhRukq08K2KRgrmUEcb9LDU4c8NZ1442L8N2
+	lCG1w1I6XExCjFbd+2sivS/2OoGMj28=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-88e32ad012cso59638385a.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760513575; x=1761118375; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1760513712; x=1761118512; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cu/zEiC7ds7XeHZ44gt1r4dEzp1UHt8UKyKXP93tZdc=;
-        b=Ru9Gab3bpiAW5bCvo6fVSuQnzIZxwiiurE3StQdLlT3cGijrB4ZkiLiUTHJa7/DMIM
-         MOQ/C2uCt416v7r6dBBFb7FofuWT7E79tKLjjRqJ+pEY4+TjnysHdW0skM7gmsAz7cZc
-         4bshtIqGv6agGb38r/iz/KYuf7YaR/lJ+pIJU48WlgfUYYK1QxJPt1LTtTE6ssXyw/Cl
-         6RnqhwD6+4urGK3kMus0wCkdpzGjIHUpy2BPWdX82/pjM7cYPUJPnkcZYr7QVpDp5lEl
-         Q964C72bidH0cW3sAn6AUYcXYLAPAylykddC0JrhchbjDJ5zBaOUioYbKxPZMGfeExkJ
-         l7Sw==
+        bh=BA3o1cHbuC0FFSVH6LGwTjiyg5Fjt24vDKqsTK1XeKk=;
+        b=ZWStJk3fSG6i+SW4MEQvL0+zXOhTnp0w1pzAc+kmoz4N2G5DUOM1C4AQrj6Smk2LHa
+         VnEQ+pNFafFYOgFwPMj8MO4R5cicS4v8WaPpcGIzHqUhFiAu/+eeg/7wnxEf9cfjsRQ0
+         4CP6Eruy5N/KbV4er/ppMN4c15u3Ultx8imeS1FCb93+in/PnYCATgvBnR5mXAS/hVqn
+         6RJQTY/qpXGzzCtLEi7QrnIWTXXC4VlQkjppdwX7V8lJOwOEyrWIEF+5S7kUZBC9CWld
+         rg1r5+NwaErAWGLHiBJSJmR480jjDnJNj3FRT3hXM2ZYRNomoX/D44MD83W0ZFDrngGE
+         AWTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760513575; x=1761118375;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cu/zEiC7ds7XeHZ44gt1r4dEzp1UHt8UKyKXP93tZdc=;
-        b=W/ZT3fBfPG/GuL+YRoGJAQaJ7CvWbInqMJWDRTOre1FXtrUuEqwtVO0tc3yIN7LWqT
-         V+Y6MfpgIVDHg/o5kRXQQoguJOewB2W48Sz1OsRM+GgBCwf1AqSKw1wG0bQNkN3Il6xt
-         mVdaY5juj+YPrAkZJ3WNey680PoM9/ewTzetX7FUjQJkt1c+hhJuOQ2N7AFEKVmFku1i
-         snRHWjz7yLtprYVEzR07bzoOC7AV8IwoBP5BGjixl6Asj7sj9ELIHb8u6GukOj//gXxF
-         4NIahx0YAx9JwmcF+PbzYTtsarEwEKbKkPXUFpekaQ/Ty5swZCqBBwFgZ+oNtOqDrzYg
-         vu+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXGnus5om6P46wG3ZHl/qAyu0v1MyWOxM8ZEyiUJgc8qKM4UFK1HUpSUycVAZeYDbAvpoKHKdyIUg==@kvack.org
-X-Gm-Message-State: AOJu0YwkO9nx9GeIPJZk03eCCdf28+ee8a4kQWehli98Rg2XPM07Z8u2
-	gDQuKh2ts4MvLzS14jrLQs/qKCtrMKI6kKH4Zl0RTNZ1bDphjLJ4bj1y
-X-Gm-Gg: ASbGnctNrDjE+YHy9QC3dAKXdWdTVkQQSA5FRutb03BXK0giCExOpXkGP6qKaX1bIwO
-	SdpbQilbNxOr2Tw47uUgF5FDIFMMOiiRmM3VaDUfeR9ZMXf5aprkJWX1+NAK8lWH0Uvz8+X6kn5
-	ZZSbnOwKRt70WT+4qmEh+tc0h5KH8jdnY7v/uwJWGDYo23TCm/n2G0gvKFHVJGtgXD7uDo3/Bkz
-	wso8mb+ofJXPkoB24YzW3Z+jKCCQxs7VrHwObwUTJeGUP/Qpx7it3KPga9DofWzVVPSLbxpy/Ww
-	EUgV6DGK3RLrla4+rwHIWtQ9oZ4hWXuRx/a1YDMZdzv5o7pzM+f55vh0XT6X8sp6v0BrRGpMR3V
-	29lPQNudxGrqrtvxuwkm/ihoCLkE70sbNaNZ1AiZ4
-X-Google-Smtp-Source: AGHT+IE03KE2pSI4rTJDmqhEodHZuWeu+5M1Rq7LihYajBzN/AObneWDEFvxo2MFDZhDavivsyt/kQ==
-X-Received: by 2002:a17:907:d08:b0:b3f:f822:2d9b with SMTP id a640c23a62f3a-b50a9c5b3a4mr2744828166b.9.1760513574611;
-        Wed, 15 Oct 2025 00:32:54 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63bdfd73dcbsm2176899a12.27.2025.10.15.00.32.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 Oct 2025 00:32:54 -0700 (PDT)
-Date: Wed, 15 Oct 2025 07:32:53 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: wang lian <lianux.mm@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Rik van Riel <riel@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: fix comment for default scan sleep
- duration
-Message-ID: <20251015073253.aqyz6dhgion443hl@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251015064333.31274-1-lianux.mm@gmail.com>
+        d=1e100.net; s=20230601; t=1760513712; x=1761118512;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BA3o1cHbuC0FFSVH6LGwTjiyg5Fjt24vDKqsTK1XeKk=;
+        b=osa00oy8L2DkqXjU+InTbvINUZV11np4/xacMsm3Y+YwjITflUIe4QJOzu5aCQgmCy
+         k6SSda/4H/klWOb0QDiSL10NmiU4uXGeYmeDawZiCk/ZupIr46S6A/ZRfW5Iu+xh8ZUz
+         jPaYvec8iNOFUH5RdQgmYSznZe821LUrQ52fqfmQQN1tooL6FYAeEAPmOcwoxPCRj/6n
+         +yD5KsA7i9XD7YnWAkiDQwI14r2ae1kjPrY9uc+cB0PaaiRzxqEDUWRB0uMP0F2PdZLI
+         3M51/QWDTezcjfuNTNRA09wBEt7uuSn71gzbaE30W1VeEBdSnLiCaEE9XiaGUGwb7xqd
+         cyNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEIuk32MRazgSBNMzpu0bmgl0IALoViKB1uzDCmo2UGLt1UYwmFOdNA1UorabIbs+kJC3dTYNSEw==@kvack.org
+X-Gm-Message-State: AOJu0Yyyw3rfYdW8KYcDa+bpv6/oq31Rm7N5c+oT+sMV7uoWrlPibwia
+	t5/7R42VNFLq90u1aWnlJXG7HizMf/7c/MHUbNIOP6q+KZVTHkmQrilwhPIZIl2AaaTfbX8klv9
+	3pUr4G+YkQiplhF3GlTkqTiGwuO6uB3A=
+X-Gm-Gg: ASbGnctm3dk6gM84H0v059Qtphv7xV2weC+GsLHkJgvgGwU59aBwrnauEoBkwnWJWAA
+	V3Jj8p3F5Kz6Asu9KVdief8T+b6NDjEhqm9Z1hAUA63MMMNLSE9RJ1mYfpE6veyqHEw6+aP0JCN
+	l1SayEvNNas/iTpx+bTQ7OFsU8vqxTsQLHXfO3heNs+KoDe0poaQ3IlqGNU3t9CJhRXbHqG8lEv
+	CDIfv6MdyTZL9O400wIkuMTc0Jj8FKP3vLWu/lXzyrO1t45mhXh46ZCfpt4mhLUSnNY
+X-Google-Smtp-Source: AGHT+IEKuviABuf8paTr2eaaeUlS/nUOTJ25Ra9gag22Alb6I0Md3LX7r3aaI+eo4s+XoFak3t65ds9W83VxSzBmJiE=
+X-Received: by 2002:a05:620a:f13:b0:812:c6e3:6663 with SMTP id
+ af79cd13be357-88350c678bdmr3682430585a.34.1760513711989; Wed, 15 Oct 2025
+ 00:35:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015064333.31274-1-lianux.mm@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam05
-X-Stat-Signature: s5w1s78nr4z4ytcwrbtcn14osm6ajqw9
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+ <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+ <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+ <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
+ <CANn89iKC_y6Fae9E5ETOE46y-RCqD6cLHnp=7GynL_=sh3noKg@mail.gmail.com>
+ <CAGsJ_4x5v=M0=jYGOqy1rHL9aVg-76OgiE0qQMdEu70FhZcmUg@mail.gmail.com> <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com>
+In-Reply-To: <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 15 Oct 2025 15:35:00 +0800
+X-Gm-Features: AS18NWAHXtYVOjzGMsZVpeCyed9cBDk9Qc-GpblFolpgSoSOaZV2-smc5Nm5TAA
+Message-ID: <CAGsJ_4wYrQuhGY6FuZJzQJjQfx6udRAbP4XZvEevknrpqnkv8g@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Eric Dumazet <edumazet@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zxzwnpch9y9a847y9iizxa8tqt6tuyji
+X-Rspamd-Queue-Id: 2C34D4000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 95F72C000B
-X-HE-Tag: 1760513576-658288
-X-HE-Meta: U2FsdGVkX1/R/0wle5LlVX9xPSpvWjw3acPQTV7ZdixuXdwtiQ00zyLWsYOuM6tUai7QHapSAkdrXZzvLrGY6rKQQADQI40c7ItI+BplodWV0O9FGCKwx8jlD7EXOYIika9u+UZnzXgT3hX1LC0l1ECJbA+m5pLM9ogUgjGFFt8Ojl5c1R2ARe7ieKLVF9wX0wU6fG2QnsHQW/3P4Cl7pKByVRFgRrwRoh1y4Cun74oAJ0ZV8f8tFUJRoyugijKtf6++Hi/RnvB6cjK6Is6cuoriUuS+KMeSBGETy0nLwEwxSz01D4kveOGnp+9tTR8hLwoIPWFMIX7hhKvLbgHKRYS4+LcfsmKH+NX6PWxpMbYZmocg9Ab7HuVNitL4DXN/2iuN0fgKIyoV4f2P9tBndikwMPj+cWYJJwMa0qBXyoOcucvcpOHGnP1TeSijVHxU5N7lg1cv6HSiKbm3A25gVU7yFd7ECIqVprEFsrBAuZI5oZZ7uzsnHROvYVCWbTc0TqkbZUlQsJpo/cWNmuqqcQvV2rVz/VQp8uJ0f+aCzHP8IMHjEWEWR6ZBvEWsusKvH9KQd75JEusFDLtNpIi95gJrvT30TBzh1cR+0CBdIUBBDh1xiB0oNBtl9mxk2mX3Ve0DQIctDQIvkcGess00tEYtwvHGkpnUkmtW1PRlcNHpmbQlGtE7FFzqslv0jPUXH3uj3a3qs7dYXzm3js3vRHn0pOnfngTMsXKksQSmA+lJ0ti6wLhgkWxhKtiT6FffuUqgl/d8jPks/lonIR5g1S2DgD4C/W0ZDT8X2q0XyKEkabKeOvrbMKhenLVQvf6NhqklBTl3xKZG35MiaSitZJMMyiIVCccWAhUUu+KRqusmikg/LaiK6ObCBm+Wngu4Ocjg9sVLSk802STJXYoXE3wRnyR30oWuDm2Zg45xyR2j3pD70+b7zEmnlEX5RHag5fY1Xd/lBlN03IRLgG9
- pCCEn0M7
- c2wvYCNSZUo0o+RxphWTRujtWs2i7b8qvbdIvCKfFbUi307vBdr1RS7lWNftUu/16N6PKXZnqdengQxUGjUjZDpYg2BGrC6V/85zSTcfroTwRb4CakGFbbVTqjujoP+LyWXmYLiZyxripFAsMMGVykadbHCCKcU47qTt4ZnWXn+R+vEpJRqAeyEjjMVQxneax0CT6ph9AaJsKQkkRLdA0xFD2PMJ8VrLiJz47H0LbdN7joFYbfpw7jrQzsMCVFE9d/NK2RQkxVmzoRZm2QafeUnwof4sFL4OLgp36U05hIWKSfN9i5EKuX0B0c9nNgKDsz1NJVuu/Qm3qk/ol2IYFHR9Lfspqr7A/vGQ+8GbGIOtZxUzD3hCwUkW3+Wssr20sWEY5oCxF5DrCJGH6SL9OrbMUxPgElT7XvgxoYjbXppW1LLPu4fnJpqNLbZyEfMzgFg0skaX06S0lRx9GNI93z7TmHiaSIylqu/yk9vAXh/b3ZIQ+O+V+MiS9TUJvO2+1xzNrxelzj5ZxZ6tWMn583XD6IK2VFeShTOolOJpj+JMTtbEyKOF1esLzehWjX1WjAIyrTbgoRnO75JGTkQXDHTKvhsMcNVzAneHgT894nRwwIFTyI5zFqKiYx9/CzNVXDqHaPEv5b9W7mWxx/K7QPZZFGOePASKHb2/V1T4FsfQAqf2RLiHvx4tSz7ZIsUBBnFwDz84Ksk+LyKJQKoQWXNoG3WbxyAdeMDVo2gaxtuQ8LFM=
+X-HE-Tag: 1760513712-123806
+X-HE-Meta: U2FsdGVkX1/HnOtdbRqLM/ZCGUJ6lIDgOpYsfvAaK84B2Wm+ERqnoGn9T+qFbb/MTu5dr9wzTFCGuNYEwTawxATGB43lZUfqBALoLE68Iu731gI64KV2+k34VEw0Ez8xUuYTJVkfHLG1Zbhco30yyHtetYwtliewywazRoDg/6X5zc/vqCEeTWPUMavrxVcsctRds3tCR/CIBhJ5EyZM8Ms7L69+oR+4sJ/PyJSSuxS/Mm6eizX661KLQenwZ1h/zhMrrMX1A+t5JNOAQlIbkCSHPTgqCD9r2MGCOt7vDzrSEgoffsDBWE1h3u47sQGQXhirPh7fR2r5dPbca0rvmkx/AXGiecZs5ObsoEHXE6JXibRHLZVhGHQQNp4HV5gQs17aj88o06FnFKGJG9Z7S4Yd7bGf+4vYUpYWvp/mfyW9yHrORjmm8l5s2bDc+bX3hoHG1Ur2Z9XZ/OOyJQbNW5fn6j7FjFzMaLR50oR0l6D5tslfxlkE6oS8NP/jHhAz0pLKhAD/S6q7LZwi9CU0mP2C/InSetwybh75/VGQMFhqHzWomo++3fVoVNgx2su8NMpVxYd9BafLIi/Eucny2evbJWgfuP0DbIOnjaPh8iCqLankJMCotFJs2F/oa6+4I0X2jd2EaoDSXmL2FUNoSMfzddkvzHzUVVsmRkLr1Ya14jKAKkzIMDGRvlM28O8WU6T+0zjLRU2qcP19aekVVg7Ag7UXAOq9VvATg6rGppeLd3+2nFHOYH3aj8Uoj6N1nPw+ywSbghMi4Jv/a/6RcaZSJ0GUk8S/1sH1h5tYLcas6fGpJGEa04/1ckP1tRo9zeyxni6cONhE1DznBO6yLJN43Thw0Ugz6JsHJJmECW26Lu+Yy73470lY4D/Qhu3W0KLGPqJC1AWnH532rX4ezmBcgrSloV3IuVlffbtMK7QLSJLNu2GNHJZ9Z/O6kggNpYrP0foDV3C5k/MRCkM
+ zg9aoXlT
+ u6siis0bzT71YAHHkoexKcMocBM3RSXAkGE4UfLXncKGupZ4tMHPKqc6+2fWnbS9ZAXvyWKOnZg9GueK+uP0CUsaoScmk7BizYvbYw4v6cTKzaeOp8u78XZ4pPIY5eJZgP5AQLvCX4FTd8SfzR//R8aYYwcomNSzrDjvxRLNR+VH1EOClZV9l8g9LUhwBFHyHD2TWXYLXumaThCDQOIqh7/0UjVYx4KykQK0JGydzYd/AavOH6gwlXUNLWa9YeOFhjccn4YR69SCeObL0xnp0HOTD8hNUaYHDH+Ty4BVJQSvYfjT9DcmczTKnha+bHapD78CU8XocEl+qS/RRi0wbXLl3kRn1K9JxnvfxaLHSFd94Lq/n6QFrPxtiHVwj0tvEw1uS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,21 +130,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 02:43:33PM +0800, wang lian wrote:
->The comment for khugepaged_scan_sleep_millisecs incorrectly states
->the default scan period is 30 seconds. The actual default value in the
->code is 10000ms (10 seconds).
->
->This patch corrects the comment to match the code, preventing potential
->confusion. The incorrect comment has existed since the feature was
->first introduced.
->
->Fixes: ba76149f47d8 ("thp: khugepaged")
->Signed-off-by: wang lian <lianux.mm@gmail.com>
+On Wed, Oct 15, 2025 at 2:39=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> > >
+> > > Tell them they are wrong.
+> >
+> > Well, we checked Qualcomm and MTK, and it seems both set these values
+> > relatively high. In other words, all the AOSP products we examined also
+> > use high values for these settings. Nobody is using tcp_wmem[0]=3D4096.
+> >
+>
+> The (fine and safe) default should be PAGE_SIZE.
+>
+> Perhaps they are dealing with systems with PAGE_SIZE=3D65536, but then
+> the skb_page_frag_refill() would be a non issue there, because it would
+> only allocate order-0 pages.
 
--- 
-Wei Yang
-Help you, Help me
+I am 100% sure that all of them handle PAGE_SIZE=3D4096. Google is working =
+on
+16KB page size for Android, but it is not ready yet(Please correct me
+if 16KB has been
+ready, Suren).
+
+>
+> > We=E2=80=99ll need some time to understand why these are configured thi=
+s way in
+> > AOSP hardware.
+> >
+> > >
+> > > >
+> > > > It might be worth exploring these settings further, but I can=E2=80=
+=99t quite see
+> > > > their connection to high-order allocations, since high-order alloca=
+tions are
+> > > > kernel macros.
+> > > >
+> > > > #define SKB_FRAG_PAGE_ORDER     get_order(32768)
+> > > > #define PAGE_FRAG_CACHE_MAX_SIZE        __ALIGN_MASK(32768, ~PAGE_M=
+ASK)
+> > > > #define PAGE_FRAG_CACHE_MAX_ORDER       get_order(PAGE_FRAG_CACHE_M=
+AX_SIZE)
+> > > >
+> > > > Is there anything I=E2=80=99m missing?
+> > >
+> > > What is your question exactly ? You read these macros just fine. What
+> > > is your point ?
+> >
+> > My question is whether these settings influence how often high-order
+> > allocations occur. In other words, would lowering these values make
+> > high-order allocations less frequent? If so, why?
+>
+> Because almost all of the buffers stored in TCP write queues are using
+> order-3 pages
+> on arches with 4K pages.
+>
+> I am a bit confused because you posted a patch changing skb_page_frag_ref=
+ill()
+> without realizing its first user is TCP.
+>
+> Look for sk_page_frag_refill() in tcp_sendmsg_locked()
+
+Sure. Let me review the code further. The problem was observed on the MM
+side, causing over-reclamation and phone heating, while the source of the
+allocations lies in network activity. I am not a network expert and may be
+missing many network details, so I am raising this RFC to both lists to see
+if the network and MM folks can discuss together to find a solution.
+
+As you can see, the discussion has absolutely forked into two branches. :-)
+
+Thanks
+Barry
 
