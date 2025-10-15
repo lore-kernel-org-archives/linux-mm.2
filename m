@@ -4,113 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A97ACCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8112CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:27:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD4878E0006; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
+	id 2E1AB8E0007; Wed, 15 Oct 2025 04:27:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85388E0002; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
+	id 292568E0002; Wed, 15 Oct 2025 04:27:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9AB38E0006; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
+	id 1CE988E0007; Wed, 15 Oct 2025 04:27:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B5F6C8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:23:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3555011B322
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:23:27 +0000 (UTC)
-X-FDA: 83999659254.15.EA8B7FF
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D9AC0180009
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:23:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eG3WEqi2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 05B668E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:27:46 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C4EB140BC2
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:27:45 +0000 (UTC)
+X-FDA: 83999670090.12.6643E51
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 90082180006
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:27:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516604;
+	s=arc-20220608; t=1760516864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
-	b=h3SCoABkdMYKR5n5EHOQ5O+5rk0kYoQP39PnKZ62s2ZJZqIxFRCpuDaAxsdwuIuDVa+uwT
-	NH7Ht8caL0/6FpZdA6FIX7mH+rUCG3Mfq769nUmQKpYWm0TtNQvRmw48lEbxYZhchG6SaY
-	Q6z17hoU9EsD63DRgHvwNxeEC3rVQzQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516604; a=rsa-sha256;
-	cv=none;
-	b=QZQGv+Czbk8GyG7BwZ4PdpgLaNKAmFGRQO8riRpfTmtTbAe/xKG9gJRiItqNescPY0t8eQ
-	a30aE+Ju/HexRgjNw7F82tYuLAwHwLwIaspM4oURrpk3eJZIJjHk4WweUPY2aIMTVRZfBw
-	tpyr3/OPs7OlYUXidAAqpH3Y4Ez2pXM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=n1o+GRt+bPeG4Abot8XLg8pth8XmLgkK3uQfydpQZjY=;
+	b=djsyXQHS9glHk5MY3z5hJbB0eNgwqIAy+yJteK8P1llgCmuhplQxe8/k7J6W2uUinJySVp
+	y8qNVnmZ3B5YigpufdozvsHQllnHgYv4Q6PyE8D75WmcSSj2yPe9Wn9TNrUoeTGcsV+U5Q
+	bco2snz7BrYx8SkQoWkexYu20yYReeU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eG3WEqi2;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-367874aeeacso63401241fa.1
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760516602; x=1761121402; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
-        b=eG3WEqi2VFRu8exNV8IgaSU+Evr2uxVG5058SOwKD0jHP+UQ23Y6FQN2O512T+kAHj
-         2yc3pftwyz8UUo15/eNWYszdijbCoex011rCY7snYKU/a+mU0dTpg1GnkOWGnCnk6o0f
-         ftO1DBLaj4FicLe+swXIEgXrMO2nqgskkmZb8/xfrUA49cVhLiJMx8kTVlMFzW9DI0c/
-         zJsrRz2+3ptM7Vhl1C/u1O7WS+0AHFualM8lQV0ZAfwjJS+mauanzv6pgsCEhFiHZocb
-         OIpTQU4MYFpRi+4T73NfhcVaPl+DIoAjoH+wGqTXl21GkIq+sNHqBtxLeT3FDoPTasbt
-         97Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760516602; x=1761121402;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mf/kC+OIjNsVWQTW5KyvVpDANmQ6eLIZpAk+yfTTfM8=;
-        b=A2vZeC+1y844U5B87maXy8ycNGhE9YeuN7bw9o+ofUZhohuEMpWUZq3VzhNB9rHWfy
-         +inf8x/FdXFT43Ibj9L35jc8Oo5nCGiBF9dzZ7L6l6LqySjHd1HC+vuORa+yEzgWbwby
-         wpLD1MvSUgb207G3YD0qN3EjsStXTwFIXYPns3pKGjWlXn7911OHYY1DZd4TrEwXz6Yh
-         /qksIeic2l35Vo7vIgDGHHUlvQj8kb9owF1QNslWdgLmDnvgydO8ei2T9xIpuJhOeZcm
-         P8fXqMfPHJUKDo5ApSHvDne8Hs31Gdgqpn6O0pmx9qVU8juW9U0DDkorEo6dXdMkQHzm
-         UN5A==
-X-Gm-Message-State: AOJu0Yy9qjtZDAF+s4LsDU2e6fyg7iqf6RIrCdy6wmLJRlovot3n9rod
-	eRRpBf+o80BhUQxbMkvBG2FzwM4dVzGQzUiqm0PeUCqBec6/qUmHHUK+
-X-Gm-Gg: ASbGncuDYwBLqiFOZrC84SiaTcRjv2ACBNfAsbYaAo42rqhuvbm0qoSuUgsI+Swrwvd
-	RcIAtxFPoUwYtfEdPd6WpEGWsw5pbG4X+HLKjXsT8fP5jFlWvI8kndIWhsYo37IxFMQ6s11opST
-	iBZn8/zDdQvBm1g8u0R7nuDCL5npkqudwX+/1VEAOLLu0a8pcufL7ujEOeQfelCO9vbobP4UcZ+
-	3T+WcLfJTq9Irzt94je2cTjyNxqUIptFimyPUDcq1LaT0NgJGuauVJuYIiUa3fCvykidDVvxLRB
-	Y/TlyuakI64Be4IdVoe4fibHRaU1fGC1Vfyso5nXnrpsX7d5k0QDsEgvAT2O6UQidKKoRs8DYlO
-	iLTjjKDbx
-X-Google-Smtp-Source: AGHT+IEDfPLZF1XUkUC6PKH6VKbUwMfZxNo1JP9Fexm8vGn0nDS/kZEDNU2PautB7TCBU/85QBFQfA==
-X-Received: by 2002:a2e:be86:0:b0:377:7ca5:7997 with SMTP id 38308e7fff4ca-3777ca57b3fmr2778641fa.44.1760516601525;
-        Wed, 15 Oct 2025 01:23:21 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3762e7b461esm45980461fa.16.2025.10.15.01.23.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 01:23:20 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 15 Oct 2025 10:23:19 +0200
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
- allocator
-Message-ID: <aO9Z90vphRcyFv2n@milan>
-References: <20251014182754.4329-1-vishal.moola@gmail.com>
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516864; a=rsa-sha256;
+	cv=none;
+	b=8P+FfT3j85zoJMVPhJ0s7o2DudeAhiLDmrQZd2t3yHVuO48+Ed1zDkkCukI5vs+oQmULuW
+	0W8Llsc/jkw4+uP4wJXezj2DWA2xgFKSov3IDlIZTQLEQarXYfR6WqdHBU3tatW7VZ5DNv
+	GaO2dvzuBOSreyvdVQ4qF7+mhgDlbKg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A32C41A32;
+	Wed, 15 Oct 2025 01:27:34 -0700 (PDT)
+Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9E0813F66E;
+	Wed, 15 Oct 2025 01:27:37 -0700 (PDT)
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	x86@kernel.org
+Subject: [PATCH v3 00/13] Nesting support for lazy MMU mode
+Date: Wed, 15 Oct 2025 09:27:14 +0100
+Message-ID: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014182754.4329-1-vishal.moola@gmail.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 8os9oog14qmmdnhkptckuiwtj4qi49rq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 90082180006
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D9AC0180009
-X-HE-Tag: 1760516603-797617
-X-HE-Meta: U2FsdGVkX1/eMWFl5DhT70jX4Ljs7TfKk+oyodhW4OTrF5yVddFXhDKi8usZ/gDyzleDdNm5ouUGyYctjYEMkXAtliODVOfg+6we54nLlgyAKvGtcPIlkBn7EJ0cAvwat3YSL6dsxd1NvdklAoRJO3bcC3FJqJRQOMfPptIliZdaVUq6jL98pVbdW/Dg8NADm0F7OS5suPz5X+viDbA353nzzVySlUgGQ74KL//vA1JF1k7nOqRfRtt2ni/AjtroEZYrclj5FSurcujcYXgK64euw4fWRdm1Qe8buIK+PXMZIX+E4p4rh+WvjkbhcgjuLyOU9cDRVHI1q0gmPuaPKONdCtzOsKEZ6rM/OduzLIL2FmhjfcYvW+PMFDRNna2ZxStksM5uf9krGlFnOWlVDnyq+NhnuaB5Af15kTdxqlH14Z3X9UyRAQQsBf7e8k4PYMEJgPJfTZFj94qdhoeeUc5f71fyUmjCtcwgO8jDPQ/dXAygbbHvvb6vW0QROiMPF+Fp/Rr03brUYupkocHYWy1aOMYuj0yqsFk36p02uD3gH/bZTXiJVICFQfofmH98y5rTGTOv/kEte5d/Kz4+F83VD4SJ5JuT/ujVKFX/ATulP+VvdTlTAxkfhBe4nmxBO6iMTqCSc/NZjUO7CyMOp+cmK1298KPrvxKRDK9NX+/LAHl8CiH5+4tc0w/gjkin/TCO0tW+f2iLQ1y2/naH5uDUvbBAmgCo0hkaJYrvh/Wwc0CB4fcQ9W/pExQsQC25M7LvZR6wS7S1GP1bJXVBP1SZMlhtmFWzdXsqJagya+M/ZMpjnNVVdaJdeiznblnmob5sC3eXDYxAyifsdj8mWJC7I5kRBU7kEd4Lygm4jqsfIZAk05jHypLD936jS1+/EjNwnQi6KUIWUW7KJ3ERekMMauveWxXZG+Kfp4CnNwH+g6fT6gJHlO1HVkKj6RX74+DFxxYycDprHWnRtkb
- 6MyHnavF
- /YB138+kTk0nze3Tv4nf1EounIuUbvN97bEpBVw+SXVRnbX9ADdor5z9OjGPNRzFBJnBqC/mqMBkg1CCXIMr3bkyyEXjdPpo4rPPeTvgH2jQrNGeWdSYG0mFuWaOeuMArHVBJHx0IOXEydu62PjctRkdgHeVcGKSNRc9kzL+BGxMQcXLwYaLXjshJHSNoW0JRf32UPcysZ0k+LPZPlhwNBLeVtmEeHFztrKFINIuPMcup6p+bs1TcJIsEn7SmWKPyJU7U1XnpnFcDZD2PUuUQCzqUVgRmaDBnXkjParNtWo7zP8PeS3IlXsRwaFR2pyOLjsRsjNd9OGjGviMhR1HVkuR+f6u1Z+m9mGO5xwzIxmqpy/JQjWq+o/4E6IBaCqMb6t45TM1rvzrUnb93FL4WiIr5FFW5PwxMPJl7H5k7NReplDxkfOrZn5yoD6ryZtlK0geMeRIGEEuax0eMwyR84ufqTtfUz7j3VJNFx/5/42QUKcYuqNjQw4RZRFB8TR4o2L7B1nIj7kgMt6UZ3sdfMuH1oA==
+X-Stat-Signature: 79m6h7yqwoumf77kr75jecpziwmp54n6
+X-HE-Tag: 1760516863-392007
+X-HE-Meta: U2FsdGVkX1/mOJcvidNLEb6UOCaMZstMNmOghXpQT5hxWDPRvBR5MaWfa7MfN6L5lC5Qt03teUblyrKOU1d1csrO2JNR/ganKPz2awY+wIuSEhjAayWGNNvN+Ks0Z7K6eJ/qdZDtmmf2JNbwBR7DsnYiURZslIcO1WSQt0Rx+/SfP1IHm13y+pyC+9MJO/pmfimGSyRIJB1Dtcz++hxTBKuuskI24mYb7rkDgat5+UfT0LuigVyTnAgmKZE/jSnfW/jtgaZzPnEPSqQjBDDJOVz85oD5rfeINfjCP45ldxV4WOcde0I4WfeJA/uIJS34PRAb06XTYQz3lf3S8nNIEYhpslJcuMOs6/DvSg0yhvbEAZDUQBuBHMv57bjzYKJTc+4yvtc94VD0gITLG5+rOL7GZpMkTaxTEr02vbaadPOJdhs26nQLz8oSS6v2teELbRc+3uY8nmkAy0P7UeKzs8XaFAkFQbWZ56dpZ7kBDoObBdfGT+cPxAyKHQvCI8Vam7uJeUM8dtxEa+5G/Em0buEL3mQSkrg57tmay6eKfEjUKqMXSRSh5jt1MwouOfo0y7y/m1QpeW0+IWweMf2IMje59SIVcBCp62PbzmZv8qF2pkp7cGSusWcjXsCpWpdpgixM+vGgOshz33q1dN53rkjNOVjD3hunVFL/BcyibC9tlT0k3NEV9nhqoJdjvSZ81kPKJzdtcr5ebnNUVFIBcsf6mlPjJdAqETyYmkxigGCYhg+jz5+YZa/3YXSwxojq2edQYreWmWWj8JrMoK2dE9A4sVj6xkXTcVvFjGYhyrzlNWGyo5+lJBh1Ndbr3m58fJ+fYWINjdsQHlWDis/cIp1eTPEH7vXyLlALegIH53Zx07W6nFdLNe2lqLQnq9hDgBSH0o9Yisf3MwKS71treinCvUIItkPLZAalMlBZPEerSx+L9FT2oaYqad9ega9VMGVTfKvW5xT20qg4J9/
+ dtPSHfwj
+ HGFp8OtzwHK/FwjhM+6nY2h3vc/Ptt6dUzSaZkLnRegZAfWO7o62bQtXJpdbYFr11BX+bJjNzf5DFHxe2swcL1rb++OLHkFqRYGi4HMbjBiav1xj+Wirnb8lYvIBSiaw+5HS+Ja9e9BhWzanTgsDXX08N0tOgM8GS8I852RNXhOYpKc0w7QKu1KOZHUzXiZZFzsTTuIjJkpt5xe3K9tHkgDhHqfyHdpjq9KfItH2UIPnbG5+NgZOi29UWKqcT4P5eoIjVuo1AnELv5nT/rpeQKc8l6NiDNWI6AwGjw0sDpl3Vfi61lJ/ka57qdbAUsYQj9escK4uBW2D8245oYDZfyG6KILChBmcc/2DAlbSnKXeC5VGMV2l7F9uw+hpoBdYyAi1gXTqotWKDt/VwD2I3o+xVJ8KuTbG80d8dvj9xgS8iUavB9xqzkUNGhzK6a1SGXD3XTTadD1XnM2L55Zzy3cZFi8XLXB8ONXuOG4a0Sup8A3MSu4rE3PYy8acBY1zRQQDD31FERJ2cnek3kICNYaPxkRHj7vp/KPRi9L0WOb9AgBnlZHm8o8uzq6omPgqE1zo7FoJ57Q6lms3ZFFPCvK1G0iLv5McPFtjGwnvtlw1p0pWL2JzUE0rq5JtQJnLKdUTsLxeXqNWzoYnMAxTFfzqdD1CeD5xQszgcXzVmQZQo6BcIxtPkWychD3cqW0grOzycqGxn2AdIJk1zEiBO0qkBHIxbv7xStJBcoajJLTufqZuVvPFm7iFaIDwnv8m7eXg1ITNqRl8VJ5G7QoyQPFStn6WJMEf/F9KZGRGhJHuJ239Z5goyf1Y6XWrgpPy16S+KZu23YGdhihGtGjgDRmcOB7acJlngkp9/q+xcYUHdVEU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,107 +114,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 11:27:54AM -0700, Vishal Moola (Oracle) wrote:
-> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
-> allocator. Rather than making requests to the buddy allocator for at
-> most 100 pages at a time, we can eagerly request large order pages a
-> smaller number of times.
-> 
-> We still split the large order pages down to order-0 as the rest of the
-> vmalloc code (and some callers) depend on it. We still defer to the bulk
-> allocator and fallback path in case of order-0 pages or failure.
-> 
-> Running 1000 iterations of allocations on a small 4GB system finds:
-> 
-> 1000 2mb allocations:
-> 	[Baseline]			[This patch]
-> 	real    46.310s			real    34.380s
-> 	user    0.001s			user    0.008s
-> 	sys     46.058s			sys     34.152s
-> 
-> 10000 200kb allocations:
-> 	[Baseline]			[This patch]
-> 	real    56.104s			real    43.946s
-> 	user    0.001s			user    0.003s
-> 	sys     55.375s			sys     43.259s
-> 
-> 10000 20kb allocations:
-> 	[Baseline]			[This patch]
-> 	real    0m8.438s		real    0m9.160s
-> 	user    0m0.001s		user    0m0.002s
-> 	sys     0m7.936s		sys     0m8.671s
-> 
-> This is an RFC, comments and thoughts are welcomed. There is a
-> clear benefit to be had for large allocations, but there is
-> some regression for smaller allocations.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> ---
->  mm/vmalloc.c | 34 +++++++++++++++++++++++++++++++++-
->  1 file changed, 33 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 97cef2cc14d3..0a25e5cf841c 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3621,6 +3621,38 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->  	unsigned int nr_allocated = 0;
->  	struct page *page;
->  	int i;
-> +	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
-> +	unsigned int large_order = ilog2(nr_pages - nr_allocated);
->
-If large_order is > MAX_ORDER - 1 then there is no need even try
-larger_order attempt.
+When the lazy MMU mode was introduced eons ago, it wasn't made clear
+whether such a sequence was legal:
 
->> unsigned int large_order = ilog2(nr_pages - nr_allocated);
-I think, it is better to introduce "remaining" variable which
-is nr_pages - nr_allocated. And on entry "remaining" can be set
-to just nr_pages because "nr_allocated" is zero.
+	arch_enter_lazy_mmu_mode()
+	...
+		arch_enter_lazy_mmu_mode()
+		...
+		arch_leave_lazy_mmu_mode()
+	...
+	arch_leave_lazy_mmu_mode()
 
-Maybe it is worth to drop/warn if __GFP_COMP is set also?
+It seems fair to say that nested calls to
+arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
+architectures never explicitly supported it.
 
-> +
-> +	/*
-> +	 * Initially, attempt to have the page allocator give us large order
-> +	 * pages. Do not attempt allocating smaller than order chunks since
-> +	 * __vmap_pages_range() expects physically contigous pages of exactly
-> +	 * order long chunks.
-> +	 */
-> +	while (large_order > order && nr_allocated < nr_pages) {
-> +		/*
-> +		 * High-order nofail allocations are really expensive and
-> +		 * potentially dangerous (pre-mature OOM, disruptive reclaim
-> +		 * and compaction etc.
-> +		 */
-> +		if (gfp & __GFP_NOFAIL)
-> +			break;
-> +		if (nid == NUMA_NO_NODE)
-> +			page = alloc_pages_noprof(large_gfp, large_order);
-> +		else
-> +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
-> +
-> +		if (unlikely(!page))
-> +			break;
-> +
-> +		split_page(page, large_order);
-> +		for (i = 0; i < (1U << large_order); i++)
-> +			pages[nr_allocated + i] = page + i;
-> +
-> +		nr_allocated += 1U << large_order;
-> +		large_order = ilog2(nr_pages - nr_allocated);
-> +	}
->  
-So this is a third path for page allocation. The question is should we
-try all orders? Like already noted by Matthew, if there is no 5-order
-page but there is 4-order page? Try until we check all orders. For
-example we can get different order pages to fulfill the request.
+Ryan Roberts' series from March [1] attempted to prevent nesting from
+ever occurring, and mostly succeeded. Unfortunately, a corner case
+(DEBUG_PAGEALLOC) may still cause nesting to occur on arm64. Ryan
+proposed [2] to address that corner case at the generic level but this
+approach received pushback; [3] then attempted to solve the issue on
+arm64 only, but it was deemed too fragile.
 
-The concern is then if it is a waste of high-order pages. Because we can
-easily go with a single page allocator. Whereas someone in a system can not.
+It feels generally difficult to guarantee that lazy_mmu sections don't
+nest, because callers of various standard mm functions do not know if
+the function uses lazy_mmu itself. This series therefore performs a
+U-turn and adds support for nested lazy_mmu sections, on all
+architectures.
 
-Apart of that, maybe we can drop the bulk_path instead of having three paths?
+v3 is a full rewrite of the series based on the feedback from David
+Hildenbrand on v2. Nesting is now handled using a counter in task_struct
+(patch 7), like other APIs such as pagefault_{disable,enable}().
+This is fully handled in a new generic layer in <linux/pgtable.h>; the
+existing arch_* API remains unchanged. A new pair of calls,
+lazy_mmu_mode_{pause,resume}(), is also introduced to allow functions
+that are called with the lazy MMU mode enabled to temporarily pause it,
+regardless of nesting.
 
---
-Uladzislau Rezki
+An arch now opts in to using the lazy MMU mode by selecting
+CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
+generic API, especially with state conditionally added to task_struct.
+The overall approach is very close to what David proposed on v2 [4].
+
+Unlike in v1/v2, no special provision is made for architectures to
+save/restore extra state when entering/leaving the mode. Based on the
+discussions so far, this does not seem to be required - an arch can
+store any relevant state in thread_struct during arch_enter() and
+restore it in arch_leave(). Nesting is not a concern as these functions
+are only called at the top level, not in nested sections.
+
+The introduction of a generic layer, and tracking of the lazy MMU state
+in task_struct, also allows to streamline the arch callbacks - this
+series removes 72 lines from arch/.
+
+Patch overview:
+
+* Patch 1: cleanup - avoids having to deal with the powerpc
+  context-switching code
+
+* Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
+  generic layer (patch 7)
+
+* Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
+
+* Patch 7: nesting support
+
+* Patch 8-13: move as much handling as possible to the generic layer
+
+This series has been tested by running the mm kselfetsts on arm64 with
+DEBUG_VM, DEBUG_PAGEALLOC and KFENCE. It was also build-tested on other
+architectures (with and without XEN_PV on x86).
+
+- Kevin
+
+[1] https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/
+[2] https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/
+[3] https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
+[4] https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.com/
+---
+Changelog
+
+v2..v3:
+
+- Full rewrite; dropped all Acked-by/Reviewed-by.
+- Rebased on v6.18-rc1.
+
+v2: https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
+
+v1..v2:
+- Rebased on mm-unstable.
+- Patch 2: handled new calls to enter()/leave(), clarified how the "flush"
+  pattern (leave() followed by enter()) is handled.
+- Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
+  suggestion].
+- Added Mike Rapoport's Acked-by.
+
+v1: https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com/
+---
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: x86@kernel.org
+---
+Alexander Gordeev (1):
+  powerpc/64s: Do not re-activate batched TLB flush
+
+Kevin Brodsky (12):
+  x86/xen: simplify flush_lazy_mmu()
+  powerpc/mm: implement arch_flush_lazy_mmu_mode()
+  sparc/mm: implement arch_flush_lazy_mmu_mode()
+  mm: introduce CONFIG_ARCH_LAZY_MMU
+  mm: introduce generic lazy_mmu helpers
+  mm: enable lazy_mmu sections to nest
+  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+  sparc/mm: replace batch->active with in_lazy_mmu_mode()
+  x86/xen: use lazy_mmu_state when context-switching
+  mm: bail out of lazy_mmu_mode_* in interrupt context
+  mm: introduce arch_wants_lazy_mmu_mode()
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/pgtable.h              |  46 +------
+ arch/arm64/include/asm/thread_info.h          |   3 +-
+ arch/arm64/mm/mmu.c                           |   4 +-
+ arch/arm64/mm/pageattr.c                      |   4 +-
+ .../include/asm/book3s/64/tlbflush-hash.h     |  25 ++--
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/process.c                 |  25 ----
+ arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/sparc/Kconfig                            |   1 +
+ arch/sparc/include/asm/tlbflush_64.h          |   5 +-
+ arch/sparc/mm/tlb.c                           |  14 +--
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/misc.h               |   1 +
+ arch/x86/boot/startup/sme.c                   |   1 +
+ arch/x86/include/asm/paravirt.h               |   1 -
+ arch/x86/include/asm/pgtable.h                |   3 +-
+ arch/x86/include/asm/thread_info.h            |   4 +-
+ arch/x86/xen/enlighten_pv.c                   |   3 +-
+ arch/x86/xen/mmu_pv.c                         |   9 +-
+ fs/proc/task_mmu.c                            |   4 +-
+ include/linux/mm_types_task.h                 |   5 +
+ include/linux/pgtable.h                       | 114 +++++++++++++++++-
+ include/linux/sched.h                         |  19 +++
+ mm/Kconfig                                    |   3 +
+ mm/kasan/shadow.c                             |   8 +-
+ mm/madvise.c                                  |  18 +--
+ mm/memory.c                                   |  16 +--
+ mm/migrate_device.c                           |   4 +-
+ mm/mprotect.c                                 |   4 +-
+ mm/mremap.c                                   |   4 +-
+ mm/userfaultfd.c                              |   4 +-
+ mm/vmalloc.c                                  |  12 +-
+ mm/vmscan.c                                   |  12 +-
+ 36 files changed, 226 insertions(+), 169 deletions(-)
+
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+-- 
+2.47.0
+
 
