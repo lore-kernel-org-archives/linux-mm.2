@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CEA3CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:53:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414A5CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 06:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9BBA8E0009; Wed, 15 Oct 2025 02:53:09 -0400 (EDT)
+	id 8CDFF8E0012; Wed, 15 Oct 2025 02:54:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4B618E0002; Wed, 15 Oct 2025 02:53:09 -0400 (EDT)
+	id 8A5628E0002; Wed, 15 Oct 2025 02:54:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B615B8E0009; Wed, 15 Oct 2025 02:53:09 -0400 (EDT)
+	id 7E2928E0012; Wed, 15 Oct 2025 02:54:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A51F58E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:53:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 597371A0B32
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:53:09 +0000 (UTC)
-X-FDA: 83999431698.03.94F1BC2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 36B9FC000B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:53:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D06F8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:54:28 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29395BD172
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:54:28 +0000 (UTC)
+X-FDA: 83999435016.20.3EB5EEF
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 58D8D40009
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:54:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XEpNLvCL;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760511187;
+	s=arc-20220608; t=1760511266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vu9J+yL0LAIt/y73bGU7MSCpwr4SHfKaZaqmf3lX4uw=;
-	b=w9CLIrZjimlGgCLbu1zEqIp4eKWP5gBqzV1lZmy1VS8KM2NC9kCYDZJ4LirVZL5Qcm1EAq
-	z5gomWbmO0X7JomropcBWqjnGVOupeZrNDZqtlTSJidTHHIOsWWpEmlrx6148AAYSHNr0r
-	zG6jDJe7P49MB9vXSb+iBYsug9YP2hg=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760511187; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B1G6utL5DCeqFuLtZqRhRDoOQLJbNPGUsAg7wYRENEs=;
+	b=lXMw5QniqbHLGS/ivvOZHGgkPdOX/Uu0Rvokfp8xO+FZDaGNvuk6QVMmw2VCnpGDNPRQUU
+	jRFJLctb650LMIBbPkoBIKn1EZEE81qe1Ny95BggKhzpEX76rf0G1FYb1jdN6JooXU2PcH
+	QMIt+nPXZhWMRtksfJCcDaSAdNlm8IE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760511266; a=rsa-sha256;
 	cv=none;
-	b=scLs64Y1csFDBXXfcDjNLRB7QvKjLGBQ6TUoFu921B++GcgjdhPP9ismK1a/9aCmxH58/x
-	uZrduBHB1b6jseG5QBRhXiWao6kYWvG7vlZcwf65NhPuh0CxfCzQAfJd/ofcIZInN+YqnO
-	ukq17JGYAAfB261GCypYJVS8+9gVR6w=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AFA21A32;
-	Tue, 14 Oct 2025 23:52:58 -0700 (PDT)
-Received: from [10.163.67.182] (unknown [10.163.67.182])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 627503F6A8;
-	Tue, 14 Oct 2025 23:53:00 -0700 (PDT)
-Message-ID: <32ad68ef-a306-4572-9554-7200e06f78e9@arm.com>
-Date: Wed, 15 Oct 2025 12:22:56 +0530
+	b=M2/7xMQwJ6bKJTplD6PMLutyv8P1o+V+xVjb6ElLERyhZRKXt11ySleqhUcnx2jip0uVgj
+	F5fV2bdLA2sUFQpsfy7E7AeSenANWNrK0o1F6WlT36m5XEFOiYeBpvWn2WRCiRF4G4PRJ8
+	46+ai9vxz3+msiUuufdvJkTXg61SlN4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XEpNLvCL;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <07ab102d-0034-43a5-9dad-e170e89ce60f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760511264;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B1G6utL5DCeqFuLtZqRhRDoOQLJbNPGUsAg7wYRENEs=;
+	b=XEpNLvCLMvnVw+8R8y6htHgy5a76vZslYhcIgsbZaDrUPjBlqX4MN1Ym9q+/inQxF7bhT5
+	/B/hSRF1Zch2wo0r8M9596xBjoJyDpRamB8NbdQRReSNcARcwHcV8rowAmr9cjjCLZyp7Q
+	4rQ6A/htpGwShw8GTYnscLIEurFOUE8=
+Date: Wed, 15 Oct 2025 14:54:13 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/khugepaged: fix comment for default scan sleep
  duration
-To: wang lian <lianux.mm@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Content-Language: en-US
+To: wang lian <lianux.mm@gmail.com>
 Cc: David Hildenbrand <david@redhat.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Andrea Arcangeli <aarcange@redhat.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrea Arcangeli <aarcange@redhat.com>,
  Rik van Riel <riel@redhat.com>, Wei Yang <richard.weiyang@gmail.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20251015064333.31274-1-lianux.mm@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
 In-Reply-To: <20251015064333.31274-1-lianux.mm@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 36B9FC000B
-X-Stat-Signature: az5htpweonbq44rresbpzsmida6prg5b
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: t37587urk6qc6fkuqgaeifhnbaxdmsk8
 X-Rspam-User: 
-X-HE-Tag: 1760511187-96309
-X-HE-Meta: U2FsdGVkX1/7B/9Sg9NarNgJvO2S1Ur08j1yXVisQ5yAet89lNvPfzvm+Bov57brxRGlUIq1zMsKPQxIgPUIetCzLViqmfKMjwGgv7P/2j22pyNiLcnnABCgrfQ9I3OCHWkL4430Fy9l9cTTWh+rxYBfObFuhQbD+K8ly/gkhM5sH3rz5hDQIdsHlNIzJnvBFEQKq1JR07w2owHqemH5mGCYLimSvrcj+qGEMRuplC4J12OuFDh8VXKhFLHZY+EZJKMQTjkJiY69z4cyq7QfLO0hOwX55ZlRwZVEZD6gDldMkUCQmNkLJp55mezPwkA41LFUki3AbZMWlwo4eFZaUlduOCo2XNarF3HcCv+YO5J//Kfc1NAV5vHummQOfB5BnMq7o87zlbzU4G7cGa+cf21Xempv0E+JTHRLB1RLRjUW7QEVp1wkXR3bBYwHRp5Ue3lIseV8w5KxVjf+nxa132oqEGRn3zKp6cn0ZF92B+EA4vYeMdlAhFP9++sLTADUYE0N+PRuyIIGN2kw5h+Ghopu0VP7BD95IZfYSoF5sCk0BWr6Yq6Opyq7M/zSGR1VQ+s4JGEgZ4iW1E+D0DCPVq+dA7/PGeGYm9SUK8S/bgMJL9ofvXG61wV5kXAyil49FiqYb3iA0JkHtX6cRHjAWZEgG1R3R6NbRwwaSOIrH44lmKsTX7/dWcWycJuPuYfnrNudd1WFTFq3i1FzYosdKkV4Xn1K0BxLv6DND0y8BY/NPQQ87TCHiUB825sgJkerVqdn2gHxmGqzxekxHwCpGxYQkj2djrdVqyhGEHJqpSImat5yeZeZPlryXYBRyi8jPhTO6zMDaj6z7mlfwp/Xkcst/0uZy31MFLzVJQcdnnowiKxJoPWflW8aL89c3hmQynTuQ3masq9rSVyo9bEBNPl52Lq5DmQxkZv1wcYgPMMmXAAOkBTe/TfiFcwFTxllGpCCTBw+TulwfCGgg4H
- XC4Fjc6L
- HtKjfuk7EM7dmjwnimkGhyGUGn89GZxsTFXxVeaHJX0sJiLvPpHzC0O/LImt1jyuc2zOq7rJJP5UNOm8obB4A8L32H5NA1PM4xoB5y08IMB1Vhw2WsAxcTQuMHgiN3ttncw5R5sB/6TM2jX1Zx6wGO2nFvVe49m4rgo+gjQW7lHn6WR62/Von57sfPGtB5KvePYVQbCNLMem/RB7t1jmaesbzIeuZtUe1rK3NOqCdtNqBeftuoyGif5oEWEuLj7R3dG2uf9w2cRZre94NfkCDBiW4zVr0agsvTCm+4+p8tIsucRg=
+X-Rspamd-Queue-Id: 58D8D40009
+X-HE-Tag: 1760511266-207936
+X-HE-Meta: U2FsdGVkX18vkURaCxqqV010tCV+mIK+OgsywzZObd5LZ8qdFnNPMrFZtBlZMAzudttovt7q4mnwYKRyv8dfe+xYEzop4gnH1xxC+bgl68beLRRRZtD0WueFpMAZ2v4nOoQ61fE2AbrhdzspIbofDi9yszDCnExNSzwmU/XLaQvS1YnoRvy7Y0a5jWkXwmIUYOdtE4YsjmKJi0nef7H6VbXdTCGAcbsOkeMIhIA8XztPZY5jiCUh/DNd6LX2hYFIeCo2FRx68z9DDVBa42qpk5O6OtmyWTBtIlJoQH7kwQPeefIn7mXbylykKBZlbNgobhyONUeHVlHs3aeMy4H/NM1DcQ2yXJLcwIqxaaOZD2QXMLjBHijw2noYjH8MsJO/wKO0316BNpnTmcJfwNj0Xl1hTrGmX1BGmq/2q66JIW0xqVscQN/yL+QkUYXPNMl5hBYyqLEK+MruLiAJ/QofEw0uk7bfnVSJhF2AFmLGzRDw8A3WvNoXsGYsacj7vFlte7QtMVXc/o4n1byzO3s9NXjWiCc58rYX+KkwWpp8CmrjaKfdehwyHm+eXZcZo9g7tGi09qitqxLsCpfEhEk8ePKfmbRHAuQmRRXcsj2VPuX1iErhyTrTUbpI9rjkIHTalG1gEY+qPPktSyVcXPQUGwcNIWSr9GQJcVd2x7ncbuh1rIE7DGT8nFFpbyjQA9zdJIzVcl6Nm8NOBZWq+aKhP4UyZEec69+vxlDyu7R9X4X841Wl2PiUABktQJN0ZWkuaEjiSNtd2jQsuRK+Fmwd9dNgnBZhbvjOrf5P+6LYbSsausif7KXDeiUwYx1OxJU9vMT9s7ZN9sUY7NesXyK8Qu+WFjH73MIQwhufy23jt9V0kJhWejwqno0JKPzONXhltzTQgN3meLvLSHm+/89eqDFL4J1nq9JAJrjls0FdhIryvuyN978EQuo1i8GB1Ih0EzeZV0vhx68hZTbrcvW
+ 1J7DAbHl
+ +ZKAL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,20 +99,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 15/10/25 12:13 pm, wang lian wrote:
+
+On 2025/10/15 14:43, wang lian wrote:
 > The comment for khugepaged_scan_sleep_millisecs incorrectly states
 > the default scan period is 30 seconds. The actual default value in the
 > code is 10000ms (10 seconds).
->
+> 
 > This patch corrects the comment to match the code, preventing potential
 > confusion. The incorrect comment has existed since the feature was
 > first introduced.
->
+> 
 > Fixes: ba76149f47d8 ("thp: khugepaged")
 > Signed-off-by: wang lian <lianux.mm@gmail.com>
 > ---
->   
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+Thanks!
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+
+>   mm/khugepaged.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index e947b96e1443..449f983b8891 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -67,7 +67,7 @@ enum scan_result {
+>   static struct task_struct *khugepaged_thread __read_mostly;
+>   static DEFINE_MUTEX(khugepaged_mutex);
+>   
+> -/* default scan 8*512 pte (or vmas) every 30 second */
+> +/* default scan 8*512 pte (or vmas) every 10 second */
+>   static unsigned int khugepaged_pages_to_scan __read_mostly;
+>   static unsigned int khugepaged_pages_collapsed;
+>   static unsigned int khugepaged_full_scans;
 
 
