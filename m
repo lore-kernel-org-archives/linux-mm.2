@@ -4,176 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3658CCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599FACCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264838E003F; Wed, 15 Oct 2025 12:44:44 -0400 (EDT)
+	id A30668E0044; Wed, 15 Oct 2025 12:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23C8E8E0005; Wed, 15 Oct 2025 12:44:44 -0400 (EDT)
+	id 9E19E8E0005; Wed, 15 Oct 2025 12:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12B4F8E003F; Wed, 15 Oct 2025 12:44:44 -0400 (EDT)
+	id 8CFAF8E0044; Wed, 15 Oct 2025 12:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 027718E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:44:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4392B75F7
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:44:43 +0000 (UTC)
-X-FDA: 84000922446.08.B7CC0AC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1A7B6120004
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:44:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=c9Yii5zg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ITbL+y1k;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=c9Yii5zg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ITbL+y1k;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 79A278E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:46:33 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 267FB118BD1
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:46:33 +0000 (UTC)
+X-FDA: 84000927066.14.672ADCD
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 45E921C000C
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:46:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=io4cA57o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760546791; a=rsa-sha256;
+	cv=none;
+	b=23UWNbv0haTMC55qROG7SzlgtC28sNsT/jONpiwcrxTE674l7zqL+LreiU14ZsAzXzodKE
+	ot+e+zWZmFPtV59LqmsttRKBm/HGG8Ju1QPa28qZnKgFWY3iz8PK4fQpKm9jKWTonX7YqA
+	4S6FsvS4cHbEcW7VoNFtyHm+XWY+OrQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=io4cA57o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760546681;
+	s=arc-20220608; t=1760546791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=98x3oan5ZQ/cd3QQoCx46VxTuy0CMcvOqM9UTT3BM+k=;
-	b=URD9EBZyalJUSuBLXQHQsV5zY6BI/YiD3VjA7F/R6BCFNCPTmfoMA1ZnF2yNKSeWEKi6j0
-	ytDyUDoTToeFJ/xYKWvHNk4DSzz0Ki3ac6yU5bYlcihTXg48Qd5Gy5y0JsQfrAzrJpyxV+
-	lQ4z2xSo8ypu5awkTMcRea81ICJL+hM=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=c9Yii5zg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ITbL+y1k;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=c9Yii5zg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ITbL+y1k;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760546681; a=rsa-sha256;
-	cv=none;
-	b=ug0P8Gc3zi0/8z2ODIe9D0Ay9Ka3W3yLlD3fPwPr2vDT/zH8bIYqwcUtr2I4iFaueWNqql
-	vcNPfJUjt9slDeZpK8zfcFk+iYvjwdskOuqtZY+ZDrEwxGGXwKHsZKGnSReScDZwvp6oTY
-	Z65jpo+V7C/RQQoY0cgh8jk+S4ydMJM=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3E4645BD2F;
-	Wed, 15 Oct 2025 16:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760546679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=98x3oan5ZQ/cd3QQoCx46VxTuy0CMcvOqM9UTT3BM+k=;
-	b=c9Yii5zgppVLzAeN0+mOjMYMbMhOChMBY7KB478cHe6JCqABtbiQcezXpG7KPqjDw2WLN6
-	Xa6p5G1nOOrKBHxoGu4MuQK+rsipVitaHWYZYZjxPwqVbOzXFzyNQu+LNbAHbEgxlwJahO
-	vyxa75Ij3tIaqJguuVC3LOC/cXyZVqU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760546679;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=98x3oan5ZQ/cd3QQoCx46VxTuy0CMcvOqM9UTT3BM+k=;
-	b=ITbL+y1k4oIggDVJc3M2+pnIWOtEqRKjexzkmQ4tG1c8SQDFHUOsZuacpFdKBqEJoMaZSK
-	xhsE31S/qQQpmtBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760546679; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=98x3oan5ZQ/cd3QQoCx46VxTuy0CMcvOqM9UTT3BM+k=;
-	b=c9Yii5zgppVLzAeN0+mOjMYMbMhOChMBY7KB478cHe6JCqABtbiQcezXpG7KPqjDw2WLN6
-	Xa6p5G1nOOrKBHxoGu4MuQK+rsipVitaHWYZYZjxPwqVbOzXFzyNQu+LNbAHbEgxlwJahO
-	vyxa75Ij3tIaqJguuVC3LOC/cXyZVqU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760546679;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=98x3oan5ZQ/cd3QQoCx46VxTuy0CMcvOqM9UTT3BM+k=;
-	b=ITbL+y1k4oIggDVJc3M2+pnIWOtEqRKjexzkmQ4tG1c8SQDFHUOsZuacpFdKBqEJoMaZSK
-	xhsE31S/qQQpmtBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F6F513A29;
-	Wed, 15 Oct 2025 16:44:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EG9dB3fP72gyDwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 16:44:39 +0000
-Message-ID: <0928dcc7-a4e0-4641-9381-6adf2ad30493@suse.cz>
-Date: Wed, 15 Oct 2025 18:44:38 +0200
+	bh=je0F7nfACXJpbmYznXu1sTtkMbdp1GFHRjbs99COgfU=;
+	b=XisB3ka6fngS/ShjffUrAzSj+CazlZ47jCJgv5850uRZDrHCMslc45hV3Y1Mcp/I0S7uaC
+	V8Zg7vbLcI+zsDQ/k1M4P3CQTUW9cFpVBNFRtVZk/MX35C8eSiK23iA5eQ7HUy+he7nXKE
+	c02E53UktG59mFH09qIKrNdTS4J9c64=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b48d8deafaeso1401830966b.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:46:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760546790; x=1761151590; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=je0F7nfACXJpbmYznXu1sTtkMbdp1GFHRjbs99COgfU=;
+        b=io4cA57oOTqPCHT8QwCEUOjz5KNDgtTZEmM7s6K1ii+FdNHATvVhJzU6exBy0d90SH
+         wTMSQgdvseFLI5OH0Uo2sjCTYkI2gHPTWhMEquiHGz1h5+IW78aQffgqeoGJdfazAVAE
+         UfJY0Jcsd1EwFuNX9FeaOtoGiFnrgEBTis+4PlFq9lIWWZtHYAehPqh98E/VxRbLaWsf
+         PtsuS4U0oK4V2fcwqPBDnNb0K2XPhezwzLc8tHMmtj62xunZ0kqpd+UROxlP6uj61NaT
+         R63uf62Dr5k6dLK3kWBZLxPntDYRAVXwQQ+Ehu7WQagRwWYy1pmemj7TDnC53WrtQonP
+         dxWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760546790; x=1761151590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=je0F7nfACXJpbmYznXu1sTtkMbdp1GFHRjbs99COgfU=;
+        b=cMf+ldC8eA3u8ViVYxVAM07Gnb1OoWLN9O8yl+GiQEzsdgDqUENUdo/P0JzrKRlyLm
+         Ng34hYJ4WMG3xCW8vciMhxG/mWh2dqJpFTU025ohg+r9XahDa9U69OwcX5sihzdLM5qp
+         8GoPa8S5AChDMlBxrQWSAhVMtll50r/Be/oF7psdEqZcoS+aIyi/48V6PRh5xFvrXAse
+         rhV+6mBZdF5FXB3WNTq3q42s4lmabBn2JKpJ92q6zI9KY5MEJs/K9ykv6hWXSr1wC9fO
+         5n8632ZuthL69qLeWLOSregEZzVQnWH6RFDyK5KiDPzr1E2XfFZ3sEj/9UyF4EUu6Hvm
+         W9vw==
+X-Gm-Message-State: AOJu0YzxX2OvAKoPnp7VQR6Om+Ivx7BWYZue4inNVqvfTu3TI/46ihEA
+	h/m3K2U9lveo9kmp4nf5XSsqsqdfdnANWxSp69g8KzgGlDeOQXGxN/SyQrehXuOPDQ/nDNs/byx
+	y+3tXLtpYTmLzX5xmFhG1qLykCXc6w8U=
+X-Gm-Gg: ASbGncs4s8Y2n7SFu5kxD9yQI9OqpUykiSbqaqu7pmVwrfhVRULkHA9MtJBHaCqvx6I
+	VcfYxzUEs9awB7hw7Fx6SZDXay8EzFLQHwPwT8Tmz6PhK6zONNxvAK49MA1qvORScXg7tDZwlG+
+	NAuzJfsRecVlSZm3OuR4UyQcxXRxKO8PfvCpB7p6EKSeGk+up9Tiax7Ih1jI46Fudm/yROel2dv
+	CZtEhr7qqsueCuH3i8kHPkHqA==
+X-Google-Smtp-Source: AGHT+IG6mst+qVI0JUb5puzOWQMXSlytfQLY39/u3UCs+EtF1W8BL9hwi0uE2sSR4jvdT6ZVos7cZl+TB59DjLKsk2o=
+X-Received: by 2002:a17:907:980f:b0:b42:9840:eac5 with SMTP id
+ a640c23a62f3a-b50acb0e645mr3174683566b.61.1760546789493; Wed, 15 Oct 2025
+ 09:46:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] slab: reset obj_ext when it is not actually valid
- during freeing
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Alexei Starovoitov <ast@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <20251015141642.700170-1-hao.ge@linux.dev>
- <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1A7B6120004
-X-Stat-Signature: kn1hbypgj5zs9zquph3qduh4sdbpzchu
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+ <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+ <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
+ <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
+ <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com> <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+In-Reply-To: <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 16 Oct 2025 00:45:52 +0800
+X-Gm-Features: AS18NWBxPhombhPrk2cbIiwnOB7SZCpnaOyVcUMkzwhYwQ_vXmWp_OG4dB0nf-M
+Message-ID: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
+To: Chris Li <chrisl@kernel.org>, YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fitk31w1bdaudb956uhdjgp1t4rbw47h
+X-Rspamd-Queue-Id: 45E921C000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760546680-768785
-X-HE-Meta: U2FsdGVkX18Ev5uKHKGtvFToHuniTD4guA5wVnNrv30hiO1pGLLeWqFgkVXPRN1vIlpiWE7DmCMANGqkGsaAvHetyAOCa0b8gGWGAqy2ag09DXr5cFDyVfrPXrDUgN7cnlT7+3DA1BG7UGaBdgGvWfmECCFjP4My6/W5+gAQYZRzyIX0XLAKBTEN8prJqjyVORlTYJEpVGDyiS9Tl2EILIrA8f7AWSDyENRo4y7oBsl+XyrPCNMPmbXGGiMJqPphT6IlVwOamKs5nr4thqMMg2QskdNtSqFUELJlK2+Nfk90sK3wDOMvU3ofSzPGw5ko3yygBR+3bb4RpZUhX10PjaFUl0vlaFbC/zm1kXNe9tySdhqN4BUilO2NQKkvZ9otYkhJC3MySWtgpqFigMp1jsYGdhqyE08cDU/q25zkmD0EJNTv70PdKay0ppfCtZO7yOqYOyvC8tcFUxFc5FyTnJ8oZv9q8T7ruJ1V6FHDnhTqTHtOdpA83bH8hm8VtuYMDFSoFCocoVgKB392qqjpq3+RBH2Fpu9OL49OuMtHkaZlgkNFN+CZZnb8HjR8Cj8U3dtmAbZgI+t0+zxvS0VRVZ3tuF8HJv32s94iROPuHiReMJVtYh/G+Agf+0tgo2f4pzoc2u3RRVNK/jc7cHVl68mgl7pPvJcLIV3WE9imM2GRzX+ohiV/hxNLghrv2M4dfnYfNjmV36O7iAxPwvwA+7LYAfcoS3kE1+wH0XFGzIfSz81cGl00NW2qJyDJ0SGkwfxHCy1VFx/crHbT0oX8etqaHeDf+tvrVewmSqfSBNj+r/ywEr2WIxLDpo5T8/ehR+NgQzDFBC7IXAvcC9dqjsNdtfvx97Ov4OwSQPgCWY6+W+mqq0DN59DAAD0iLg+GvxfhL4hO3zFuJOyjn2OaQIVX51EXKMqjHmioaD7Q2vkkKrOFasSOfyGb1h8wo3qRScNv3mFHDWailJoBM1a
- PbqFhFJc
- wjITSmgF9cOUULZdkaqF4Sp5mJFtp3l5Aa9ap/ThDSitzCUYD6lwQ8pUH3wLSyc56Y+1SsOzsuSCSp2RTYt2+WKuSMaS8+DhDF8tFIowC1HCpg/Ey4JI6oFNKX6GKb5y48rzvoYIAfn2H/zndRvLFroAx/Y4PfHlRuLVO3bjcnfwPoKUukXpYsvwNSwYXJPBy9HTNFjFUUr5qShwYP4eL7kH39bacdoJuLHqYoAIgq1rZFJA983HXV5o/5hF02MKN01OdbMXBMVqflagtFL+8UZcY2x1zRxKSprbUrTE9N+xW+8IubSGMWszXDHEUm7/k5SW3NlcZ+g/Hw+Vg4p780lH1GEWZUFLl3vHp8tn/6zgiU2sH7+zOccAuvkflvqYITj6G
+X-HE-Tag: 1760546791-894270
+X-HE-Meta: U2FsdGVkX19CjpPvxU1fWhA2yhKNf1VIv9v0aWBsA1let4jJaczrz5UrHTqhRTmr0aKfpVdVjlR9aGba/pyk9tSjtUSibclDXL9xVoe+PXFtCVVY+EL33qUZVaw5Di6cuFg1iLp8dZU/MxZ5VPi7EJ56tEb8+7bLAc6VmmEXCUZfGadHKVq/soeK9Fnev1oQsWkbYEgzki4HPUdm9ocjBGDA0dHR9Oo5knvHiOHgX7vm1UIBhD1PCAOuSaRqkVGA47WItt3j2ymzy1mI9QCaH+Cq+tuF5OD3YEsOIEB/If0cnl2jw6bTJDpNV3G067uxNWr21wREqUPGVvtFGYCMqht5OXzI4gEW+u3fAiPYEaSnywiXlLVhMnf1kuKNAU5dqesh8UILgsFYgmlSFxB3gxOGXJ/i+vyfmQmKDBy7Cbhs7TOu3p1IPSYfc/FdUb7SZ/joF9X2zf97AJVUI1sMXOy373qvNC+vK4jb+r2UTjFSDBhwDh7g0B5sdjlHAZTItStjlZ3UhBXN0fnEgcoGR6uqB32hEY0ENW7fTy1vs/w3nYzVzsutfvjTAarjCFf65wIjKeYg71oXfgRQSO1I3n3qUzQyNHHfVZoDo7zlJgA6bqlLvy0l6OnK8M6YQ0FG76X6gbXCCSHzU3En5Dv/8VdSxwOmdLDIZN0idl+gaWGnNFpU3rm7VKqZ2e/8TwrmoCC97/0HC3iuG/RvttsANwaO0rtr0qRUNAk97oI1iWSHC+tbqgTmALr86q9pnHb2aLGnHA5YaCBblqnUxxJaGW6c04ogCJBL4Ls07/R4B6oGoKuIgZvPfvXl+yJmxlleUt2NJxg6sIeWTj2qMGjhUEOcYUsusyV2PGuH3vvh49cu1u2HBK+qRee/rPaYtdPqh9pSmu1/mgmaHhtxmXJBb657brssJoBAiHiCmNAHas2c6GMnVLwxT2hlcfSuw0p3y37c/i9TRoh4BFMLFXC
+ CSkR4Xpl
+ +brsVcPGZvToIocWvTFzLtSzvlM8JZPptiSCGjrDLf/yHyktD/kcNU9uIh6p19xbhUXAhIEDjoVoFGXasfMZ8fPIPY7qx5QwIKqPvqPeKXJ2dsai7gvom1SXQ7eMK/NAqZJsMYmUQIsVdBnMChrqjHXAr6kTw+HM45uHRCubbNlF4z5J4H+mdQXvTrwCkO/FklM12a72NAdvdj1YCv16jjBBkqpvmw6IPvHu4ufoMg4QemHjIhLH+jQiWLB+UL5IjpG8rWMTIS2nbx1Pu5aqqufrKd0f+8Jt556zOQUggE7VIajd6psFr+y3YQfUw9IxTeTJYTTIixMh8M/jVbAHjjuKGY+Y62j2X8z5x+xen5dUA3m7fuLbCs1ATpeOTtwkHJYS7dtNpMtJCIes9LgmgnVZIEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,88 +124,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 18:29, Suren Baghdasaryan wrote:
-> On Wed, Oct 15, 2025 at 7:17 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> From: Hao Ge <gehao@kylinos.cn>
->>
->> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
->> But we did not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
->> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
->> release of the associated folio, a VM_BUG_ON_FOLIO() check in
->> folio_memcg_kmem() is triggered because it was mistakenly assumed that
->> a valid folio->memcg_data was not cleared before freeing the folio.
->>
->> When freeing a slab, we clear slab->obj_exts and reset it to 0
->> if the obj_ext array has been successfully allocated.
->> So let's reset slab->obj_exts to 0 when freeing a slab if
->> the obj_ext array allocated fail to allow them to be returned
->> to the buddy system more smoothly.
->>
->> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->> ---
->> v5: Adopt the simpler solution proposed by Vlastimil;
->>     Many thanks to him
+On Wed, Oct 15, 2025 at 2:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Wed, Oct 15, 2025 at 12:00=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
+te:
+> >
+> > On Tue, Oct 14, 2025 at 2:27=E2=80=AFPM Chris Li <chrisl@kernel.org> wr=
+ote:
+> > >
+> > > On Sun, Oct 12, 2025 at 9:49=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
+> wrote:
+> > > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > > > index cb2392ed8e0e..0d1924f6f495 100644
+> > > > > > --- a/mm/swapfile.c
+> > > > > > +++ b/mm/swapfile.c
+> > > > > > @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_=
+entry(struct swap_info_struct *si, int o
+> > > > > >                         goto done;
+> > > > > >         }
+> > > > > >
+> > > > > > -       /*
+> > > > > > -        * We don't have free cluster but have some clusters in=
+ discarding,
+> > > > > > -        * do discard now and reclaim them.
+> > > > > > -        */
+> > > > > > -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled=
+_discard(si))
+> > > > > > -               goto new_cluster;
+> > > > >
+> > > > > Assume you follow my suggestion.
+> > > > > Change this to some function to detect if there is a pending disc=
+ard
+> > > > > on this device. Return to the caller indicating that you need a
+> > > > > discard for this device that has a pending discard.
+> > > > > Add an output argument to indicate the discard device "discard" i=
+f needed.
+> > > >
+> > > > The problem I just realized is that, if we just bail out here, we a=
+re
+> > > > forbidding order 0 to steal if there is any discarding cluster. We
+> > > > just return here to let the caller handle the discard outside
+> > > > the lock.
+> > >
+> > > Oh, yes, there might be a bit of change in behavior. However I can't
+> > > see it is such a bad thing if we wait for the pending discard to
+> > > complete before stealing and fragmenting the existing folio list. We
+> > > will have less fragments compared to the original result. Again, my
+> > > point is not that we always keep 100% the old behavior, then there is
+> > > no room for improvement.
+> > >
+> > > My point is that, are we doing the best we can in that situation,
+> > > regardless how unlikely it is.
+> > >
+> > > >
+> > > > It may just discard the cluster just fine, then retry from free clu=
+sters.
+> > > > Then everything is fine, that's the easy part.
+> > >
+> > > Ack.
+> > >
+> > > > But it might also fail, and interestingly, in the failure case we n=
+eed
+> > >
+> > > Can you spell out the failure case you have in mind? Do you mean the
+> > > discard did happen but another thread stole "the recently discarded
+> > > then became free cluster"?
+> > >
+> > > Anyway, in such a case, the swap allocator should continue and find
+> > > out we don't have things to discard now, it will continue to the
+> > > "steal from other order > 0 list".
+> > >
+> > > > to try again as well. It might fail with a race with another discar=
+d,
+> > > > in that case order 0 steal is still feasible. Or it fail with
+> > > > get_swap_device_info (we have to release the device to return here)=
+,
+> > > > in that case we should go back to the plist and try other devices.
+> > >
+> > > When stealing from the other order >0 list failed, we should try
+> > > another device in the plist.
+> > >
+> > > >
+> > > > This is doable but seems kind of fragile, we'll have something like
+> > > > this in the folio_alloc_swap function:
+> > > >
+> > > > local_lock(&percpu_swap_cluster.lock);
+> > > > if (!swap_alloc_fast(&entry, order))
+> > > >     swap_alloc_slow(&entry, order, &discard_si);
+> > > > local_unlock(&percpu_swap_cluster.lock);
+> > > >
+> > > > +if (discard_si) {
+> > >
+> > > I feel the discard logic should be inside the swap_alloc_slow().
+> > > There is a  plist_for_each_entry_safe(), inside that loop to do the
+> > > discard and retry().
+> > > If I previously suggested it change in here, sorry I have changed my
+> > > mind after reasoning the code a bit more.
+> >
+> > Actually now I have given it a bit more thought, one thing I realized
+> > is that you might need to hold the percpu_swap_cluster lock all the
+> > time during allocation. That might force you to do the release lock
+> > and discard in the current position.
+> >
+> > If that is the case, then just making the small change in your patch
+> > to allow hold waiting to discard before trying the fragmentation list
+> > might be good enough.
+> >
+> > Chris
+> >
+>
+> Thanks, I was composing a reply on this and just saw your new comment.
+> I agree with this.
 
-I've massaged the commit log and comments a bit and also realized that
-AFAICS we're actually fixing an issue that predates 7612833192d5 ("slab:
-Reuse first bit for OBJEXTS_ALLOC_FAIL"). Am I wrong?
+Hmm, it turns out modifying V1 to handle non-order 0 allocation
+failure also has some minor issues. Every mTHP SWAP allocation failure
+will have a slight higher overhead due to the discard check. V1 is
+fine since it only checks discard for order 0, and order 0 alloc
+failure is uncommon and usually means OOM already.
 
-----8<----
-From 8151384e5baf34db5812ed51e2e463796ab6e973 Mon Sep 17 00:00:00 2001
-From: Hao Ge <gehao@kylinos.cn>
-Date: Wed, 15 Oct 2025 22:16:42 +0800
-Subject: [PATCH] slab: reset slab->obj_ext when freeing and it is
- OBJEXTS_ALLOC_FAIL
+I'm not saying V1 is the final solution, but I think maybe we can just
+keep V1 as it is? That's easier for a stable backport too, and this is
+doing far better than what it was like. The sync discard was added in
+2013 and the later added percpu cluster at the same year never treated
+it carefully. And the discard during allocation after recent swap
+allocator rework has been kind of broken for a while.
 
-If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-But we do not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
-MEMCG_DATA_OBJEXTS currently share the same bit position, during the
-release of the associated folio, a VM_BUG_ON_FOLIO() check in
-folio_memcg_kmem() is triggered because it was mistakenly assumed that
-a valid folio->memcg_data was not cleared before freeing the folio.
+To optimize it further in a clean way, we have to reverse the
+allocator's handling order of the plist and fast / slow path. Current
+order is local_lock -> fast -> slow (plist).
 
-Another problem that predates sharing the OBJEXTS_ALLOC_FAIL and
-MEMCG_DATA_OBJEXTS bits is that on configurations with
-is_check_pages_enabled(), the non-cleared bit in page->memcg_data will
-trigger a free_page_is_bad() failure "page still charged to cgroup"
-
-When freeing a slab, we clear slab->obj_exts if the obj_ext array has
-been successfully allocated. So let's clear it also when the allocation
-has failed.
-
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
-Link: https://lore.kernel.org/all/20251015141642.700170-1-hao.ge@linux.dev/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/slub.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 13ae4491136a..a8fcc7e6f25a 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2170,8 +2170,15 @@ static inline void free_slab_obj_exts(struct slab *slab)
- 	struct slabobj_ext *obj_exts;
- 
- 	obj_exts = slab_obj_exts(slab);
--	if (!obj_exts)
-+	if (!obj_exts) {
-+		/*
-+		 * If obj_exts allocation failed, slab->obj_exts is set to
-+		 * OBJEXTS_ALLOC_FAIL. In this case, we end up here and should
-+		 * clear the flag.
-+		 */
-+		slab->obj_exts = 0;
- 		return;
-+	}
- 
- 	/*
- 	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
--- 
-2.51.0
-
-
+We can walk the plist first, then do the fast / slow path: plist (or
+maybe something faster than plist but handles the priority) ->
+local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
+too I think). That way we don't need to rewalk the plist after
+releasing the local_lock and save a lot of trouble. I remember I
+discussed with Youngjun on this sometime ago in the mail list, I know
+things have changed a lot but some ideas seems are still similar. I
+think his series is moving the percpu cluster into each device (si),
+we can also move the local_lock there, which is just what I'm talking
+about here.
 
