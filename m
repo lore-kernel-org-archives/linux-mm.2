@@ -4,117 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414DBCCD184
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 00:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E3A0CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 00:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B3368E0041; Tue, 14 Oct 2025 20:07:06 -0400 (EDT)
+	id 6E9788E00E1; Tue, 14 Oct 2025 20:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38AFD8E0005; Tue, 14 Oct 2025 20:07:06 -0400 (EDT)
+	id 69A6F8E0005; Tue, 14 Oct 2025 20:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7718E0041; Tue, 14 Oct 2025 20:07:06 -0400 (EDT)
+	id 5B01D8E00E1; Tue, 14 Oct 2025 20:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D2C48E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:07:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C28F6BCD66
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:07:05 +0000 (UTC)
-X-FDA: 83998408410.20.9BEB6CE
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 08B5A1A0012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:07:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ifBkovTH;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 43BFC8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 20:43:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 906AA160938
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:43:45 +0000 (UTC)
+X-FDA: 83998500810.04.6CBD607
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DFE00C0007
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:43:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v9QnkIUm;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760486824;
+	s=arc-20220608; t=1760489024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yXPxuwObJkkCRWy8ktvoowrkbeuhTp2+JLZJZCgaOMQ=;
-	b=qPuGTQbmFTYtWnn4C8CvLd40KFHVy/bx25+ME/WZb1qSMdZzBJzM/b8Eqt4W4uXdMv6w7W
-	oY5QNMNGoIeWLrAiU8fjKiox0YZytWg1791fD315MFu98S+wUMdzXIjUa6wARMEKt//BX3
-	GryUu+GCy+9ZWHi/9X1ml7IVV6IiQEo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Omc6TNPlqTlsy63+D5qzEpE+EP52tM0YYCPum+OtXVY=;
+	b=3ltbTvv98mfkAw7USiTKB7tfCcDiMqTKdctItUxVYJQiis7qKmuzTnZVMNPc/p/guIGhMJ
+	QnAD2ufMxp5L58QecF6h6vwZlV+lt+FLy3XOSV8e1/GU32z2qQ0hEu6UuCxVqOWBCX5/r5
+	ZtxWoOhFCXgjB5BasMjYlsTnXIdPROc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ifBkovTH;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760486824; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=v9QnkIUm;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760489024; a=rsa-sha256;
 	cv=none;
-	b=LlnuxJj0pJcpAMs4p8xrJ8Mih0ww1TgmNokVcN2sZSQp8yYXIu1z6/FN0wYC/9MjRFik7b
-	mA8GOFsUFdiZBC/fyW2cmd9K8c9TpEDnu4Ow0nH/jw9722/ULZpSOpvS6Lgn1VY98/rr8i
-	FBUyRNdpNz16ah8D6Q1ZN2RMGZZMdxY=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-781206cce18so405341b3a.0
-        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 17:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760486823; x=1761091623; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yXPxuwObJkkCRWy8ktvoowrkbeuhTp2+JLZJZCgaOMQ=;
-        b=ifBkovTH21kT6PtR3UVuMmQExJzn1o9VAaj3jGKZOedTQ38O+tCq+YACaW+tafZE75
-         gcyMk1iHOagQSIQ4e6Bw/y+qCRiMnix0r8etKnduKTBQ75ERUI+zRs+2JpyGa9EyZuLt
-         559okCSNXhw5dIxhOxO3Iw7I5gt4ZvcsS2KN6t2+3/4cFVOYHqUywzdey7ObD0gHKKxN
-         FSqHDPmUbCm/7qB+QUx8H0DB2oK8P7EU6GvzYIBzB6fFGwvQGX9sT+Z7UWp53v8dmUWk
-         xFKOsrcunjaZLhMsOlMLibHyBTqMZZw9ESXCKfyWoywPB2o9+i1gtKqh9iWYWJLzAkU1
-         ThWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760486823; x=1761091623;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yXPxuwObJkkCRWy8ktvoowrkbeuhTp2+JLZJZCgaOMQ=;
-        b=YxNMbXaJYzo4sXtWCo/r7tGVFbRULf2wYTFub3nnQR3oWTozU398gZK9YSOaPOf1PA
-         Pf61vpdloWEWY+Oj/kzwd88/S2QLh+NSryLVcKMBEmn3gKzCNtJrW5v9U4TWUaKI37Tj
-         wnPEXRwk3nlkVv7rI85GR83zl/Kcf5PnDRmyCeSjAkfFDdKDCWvjcGF99oKC6cvtt58v
-         9rWFvQddc5qIgZPo7qPRkAeT0An2GOeneWXyFPVr01Y4drNquKXf/s3WHdLHtiYFpJwp
-         ZNvb3liZPCcCYCOTSvKSwLjMrUkX60insRF1I9kI42hKlb8DXhAQANnUw6vHxb9axd+K
-         uzYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVV63waZg+nXHvdjCCHNMY63HXs281okb8KMIEpc7Fd+GPEoPbuqeXnFEG5JfoaJTeck1r6wSqpCQ==@kvack.org
-X-Gm-Message-State: AOJu0YxO/0ADvwaTDCQvB2QH50vT7Vl1gGoNF9I/qP4f9FztKcnxRH/1
-	K7qjThSslWM8e05KB0jKGQuBUWNRQhHnoroL966iHaAEpCg7uBLMdllA
-X-Gm-Gg: ASbGnct0XqQySKiyJchdZb1W2+RV77hveYFl2Y07ATLfNDjR9MUjAtDstGrdlTUs8Np
-	lvjx8+8iq8xJ6De8NEcphnN8rEwj1blgG/I2iZJ6+X+Fi2XhbhPqskcMF1Qn1SG05rrbVBSVe8b
-	tjY10g/fQ1vOdKBbdBZk84kLf16fieMw32DvUNVguKGVaKxEmKlogsYvmVXm9vppTLqodut3olk
-	IJydVjS/zgKuhVvF/6hRSDYqdaQBRwlmUmHJ8Pi3LXr2Yoo1dqgf0TYIpk1suQ0tWFV9Uz75y1X
-	OAbO7JHbwxrk+a6kBfn2CAyht0aE8TmznKRzk7PLzvf5U5sLm//dnlw1vJyJl8zwDy5GRjKKZCe
-	/uTpND+fxk3AcXfULC/YpktIDgum5MF01qdO3lTxExLLH0hbhf/hF3zTD90FYaexfkNiGg0sTLz
-	vsgIjc3C13AbhLFjcOswZI
-X-Google-Smtp-Source: AGHT+IHd5BU73GIkW3P76RXF0BBUnl6Dvwja0oj9zpaxg6vbkP5JLSk159tuTRDYwjGLXwYbSXAsPw==
-X-Received: by 2002:a05:6a00:1701:b0:78c:a3a6:a1bf with SMTP id d2e1a72fcca58-79397b19445mr30372445b3a.7.1760486822692;
-        Tue, 14 Oct 2025 17:07:02 -0700 (PDT)
-Received: from localhost.localdomain ([2601:600:837e:3c50:1021:a424:7dd1:a498])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d0e3f89sm16117780b3a.66.2025.10.14.17.07.01
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 14 Oct 2025 17:07:02 -0700 (PDT)
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-To: bpf@vger.kernel.org
-Cc: daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@kernel.org,
-	shakeel.butt@linux.dev,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	yepeilin@google.com,
-	linux-mm@kvack.org,
-	kernel-team@fb.com
-Subject: [PATCH v2 bpf] bpf: Replace bpf_map_kmalloc_node() with kmalloc_nolock() to allocate bpf_async_cb structures.
-Date: Tue, 14 Oct 2025 17:07:00 -0700
-Message-ID: <20251015000700.28988-1-alexei.starovoitov@gmail.com>
-X-Mailer: git-send-email 2.50.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 08B5A1A0012
-X-Stat-Signature: 3ui89qbt8cusxi1z9c7e6tjxmqy4k4qo
+	b=KSQIqEH4PvX+9X9Ssi0MOI23yMuL688zsryf9a9Cxm8/xr13Q0Mdtt+oucI2K4B5vMjY8j
+	/ef2Xk5DZe85Qf5GKDdyITTjV9wb893l7TXsq1hIdlRGnQRSVvX2KfaJWq9NG2h+rU3W4g
+	HFfPjxzv/tP4dCWJR619F90gTntvZIg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FA366022F;
+	Wed, 15 Oct 2025 00:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F03C4CEE7;
+	Wed, 15 Oct 2025 00:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1760489021;
+	bh=KlTltCVjzil8zVBXTbYHXZHdEEBKkgd41/qdQ/Dc+Ms=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=v9QnkIUm4Z6bwO4R7RVxKZnIh4L+AuvydsQgUMCypyYdq/0R1FL+RIIM99oNJyAcK
+	 6Mz5UDsCYld2vxhsaBOiTiIFgLsE426IcH1omBVfvpHcRoz04HtnsJmgdMsefK11w5
+	 F1D0Ln/JMyOu5c0utKnsEIauL5D5p5udyEj+lvQE=
+Date: Tue, 14 Oct 2025 17:43:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin
+ Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Jason
+ Gunthorpe <jgg@nvidia.com>, Jann Horn <jannh@google.com>, Vasant Hegde
+ <vasant.hegde@amd.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@intel.com>, Alistair Popple <apopple@nvidia.com>, Peter
+ Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>, Andy Lutomirski
+ <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>, David Hildenbrand
+ <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Michal Hocko
+ <mhocko@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/7] Fix stale IOTLB entries for kernel address space
+Message-Id: <20251014174339.c7b7d2cfb9f60d225e4fe5ec@linux-foundation.org>
+In-Reply-To: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DFE00C0007
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760486823-369665
-X-HE-Meta: U2FsdGVkX1+CYMlMeIktIW78cS2yPNHzgWA1adxCFKQhgtNVjQhUNOsuLjuD0EW1Ws8M3dX47w7GMDtQsJ7oUHnIf5yMIF7CQQE9IazQtrsrQjVQThsuksArmIWyaZrTEtQlT8NjLEZEf1vEL7joks44Wu+r1tu82j0SocwjWr1angw8pUvRRo1HniRQvWQvqY8x+DgQzP7/mB2B6XU2PXHheh7gGtmgFJHUhetrZA91FmjexixFrdPqjM12b76HQ7j/lEI0AjtuJuY0ssHrg3w7fZZAcVwGToo9/LHP4JBk5oujyD1zKbwkVgyN00S0g3oYbPZ2vzkwwIa2NCPFeccoDIgDmLRLCr5QNcJneIWWAJzLbBR2uGUBkLAGe5NXe4iVoCoL8Yr7xBowFcNLxv6/+FLHAny7vI8rZjzGQuGh8OkslStQwJ6UPXDNogEGnljOszuqhus81oRh2PhaOPddTNVi3htNEJpMX1xIoj9mEM6M5H4+X55/5gu37jJ7oMki+cxTydpFdmEzbbShTd0HCuPDQTkSgWHyuoJxH/931IKo4HCL8dmak1DmrVqCjpCV6ulCru9wh9D3jBNKTBnVXx6X5mm+WSMBXSLW7fyBe6My+JWOO4YDEF1LIuUPlkAeKPJYl8HIzSrL17gTbrNN0FYwYkuNkQfyS1M6HM/2nHD+b58oIC4FLy/w9SCqN01eEYVZCuBdwjd70N24pO9wcisWZQqxYE9lgObZUstUsCjjvhnCGKlD+AKDMtE1mt8Q/F0EulU3yven1dlgeZ77BGqExvplC9Oq5AAu+yVucjhE0uipI0pQN2JTev/8Q5FGpOBEKP9ufB+6jZO7MBPLz6DfYCbC9gDmgWssPcLMLj0RC8+Li7D/U1hhlemDm5SIvH2onCPndHMozBHqopwhboIgP6uTYfQ+Eb4keZw83jdGNU1XVcYmtcuqwzVzXwiEcYJvSn4cieQ2Iic
- yqkWqO05
- nCAOT9u9blxbmsAA9uYd2cZJm+GiDd7CAbdD0FjjZzo/+fGsSDwmTJvU2Pn+sSTakLoFP4m/AXR99MCR+3EOKBVSX+Cvlb/1Jdi18S/hI7Emo5f2hTzawxirK42u9fAvhjMMcrbjRm4PPA27KQsBNAjvh9HcOlf6oJ6ltzZfX1OkHESrDoK94HMWRkKCJrMOiywQSqvXtXMHOnRHTvNE8Z4h82LBOQnVhIB2Pn05DXM5YRBPA5PUz5NZvh4gkOkcR7eXWTTcg/IyM8QgSiXmvDUt8te4SPfQHltPMrjcBM18DvIrVR4feDBBiFNOCCMDvzgLBS4jZrfZLg003mCyNln8qMZaUIcVIhSNFbNNRWXG6Vh8OfW8GTI2vJAtRRBui/qnPCfR9PXeKmlCEMUrnKkOe7vFFQvyu8CDZR3w0Yq5dFTDVuqlEobcTBk3AxtUEE88jaIZGF/0XyOxuKT9QbbAlmX2l6CZ7W98cIrp1/+KOKro3AtoTB+OiqYae+9In/pvK9z7LASHLhwjl1vOavGjNZnmOzVYDEOaD
+X-Stat-Signature: onk58ztkfu5txgm6gqhextk3dofyts9w
+X-HE-Tag: 1760489023-96466
+X-HE-Meta: U2FsdGVkX18xXThBhsoQa84ZeLOk/whKCT1MW5YqbcWt6OkvAKuyC+9BxSB6cYuqkTkGUFU0wkkYLHW3LvtdtgyHFVv41pwCzvO8NBPZcZDcPbY2RkCoRpzE1uIhN6cuHIAH3JGZHik5ftRhmqM8x3PBhnOrAAQJ+2dAgVzCI+krQLhcS2iaSD/Pc+HleihWUlUkaXFK3p1FreQbjdv0Wtq/Rbfi9aNN/kUVSvVj2TKmK5q6qahpB58OqH/1rVgRlAz6mvIa5Y3TQrkolakNwJnqPrtIVBDWCJA4p1VxDww3sRUMKczPW4AdlgJ0rC+KCwqBL7gAOYdzboYJ1l/J5h5kN/2kg1Xf/nIJu6MbMD7TBW1ATm2hEYVCNSdhbmJ71ZchAlR2LyIvvqnuNFmVEtVRsGQ2o6+nuVBo00C0PYtgZF++w832KMIklUDGq2/XJ8BqtUPFdz5hMRelLFuLLUAH/7vH9NQrDPj6Hp4POxxkOVraPV8MI5J/+cRQAHmDWW3jP7JRRUC8+p+ctJYzPlbSZd91ie87TuUJzl90X0IwbnKYndkN1HloRQ/ECeBUdmjC/niIllF6fdicw/qGiHf0P7AwBgWfyfh+4wjUdoPe5NkQaJq3dd5m8aB/kgWC6E/sMlqs6lEgbVw7gZBiG3l23wvodbFATSNORhVMBEzKHWzmZ8PaAJaMweQRhBI3ZXzQk6UDf4fgoQlBg4lzKAOiHKZPMhCb47Vvc9TSO2QBrAuPjiPIphTBISs7wu2VwxXZ2GrtHZDCY8a0OveyGCSnzbuEB59F6ftpoqHVrddi8pdod5MkoPf98g/XOfRSmC0VvJG3uHgkRjrcWzPEJG8A+ygNQKq/Nebh28/XPsdwAxTufAerb8uMouDVcPJSkhA2OVQOmT3aXvQSkIFhdOPg8cXxE9wVTk8/MgQh+3n/I7osai3BuB3h9chEoqmc6rSeo1vMlz4m7KvWAhm
+ z7fsdGkj
+ DsYdvh623JtV6i6JmBS+tebgZG/R2fb0UQYu0pkh9keryRRjwdR6AcfTbuBfCA0Ndb5dMArxL7UGB904twJXKo89Lkps0rANtG+7uvEI45DNrLmY48gMq3ak234/xHk4XcKngEkdmjdgL0rjPJtgwdJB4x3Fn2OTIiyXSwufk0a41bBS8hgQho4tLgNQyzeslu9Q+Mczdsc79Z6wa5eXQH9+ncqFoUBJJZtWJPuUGpUlYmzKAzWhPbgiUf6OBwHjtWyvq9nEz3zTUtnTfVSww4CLWRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,181 +103,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Alexei Starovoitov <ast@kernel.org>
+On Tue, 14 Oct 2025 21:04:30 +0800 Lu Baolu <baolu.lu@linux.intel.com> wrote:
 
-The following kmemleak splat:
-[    8.105530] kmemleak: Trying to color unknown object at 0xff11000100e918c0 as Black
-[    8.106521] Call Trace:
-[    8.106521]  <TASK>
-[    8.106521]  dump_stack_lvl+0x4b/0x70
-[    8.106521]  kvfree_call_rcu+0xcb/0x3b0
-[    8.106521]  ? hrtimer_cancel+0x21/0x40
-[    8.106521]  bpf_obj_free_fields+0x193/0x200
-[    8.106521]  htab_map_update_elem+0x29c/0x410
-[    8.106521]  bpf_prog_cfc8cd0f42c04044_overwrite_cb+0x47/0x4b
-[    8.106521]  bpf_prog_8c30cd7c4db2e963_overwrite_timer+0x65/0x86
-[    8.106521]  bpf_prog_test_run_syscall+0xe1/0x2a0
+> This proposes a fix for a security vulnerability related to IOMMU Shared
+> Virtual Addressing (SVA). In an SVA context, an IOMMU can cache kernel
+> page table entries. When a kernel page table page is freed and
+> reallocated for another purpose, the IOMMU might still hold stale,
+> incorrect entries. This can be exploited to cause a use-after-free or
+> write-after-free condition, potentially leading to privilege escalation
+> or data corruption.
 
-happens due to the combination of features and fixes, but mainly due to
-commit 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
-It's using __GFP_HIGH, which instructs slub/kmemleak internals to skip
-kmemleak_alloc_recursive() on allocation, so subsequent kfree_rcu()->
-kvfree_call_rcu()->kmemleak_ignore() complains with the above splat.
+Is only x86 affected?
 
-To fix this imbalance, replace bpf_map_kmalloc_node() with
-kmalloc_nolock() and kfree_rcu() with call_rcu() + kfree_nolock() to
-make sure that the objects allocated with kmalloc_nolock() are freed
-with kfree_nolock() rather than the implicit kfree() that kfree_rcu()
-uses internally.
+> This solution introduces a deferred freeing mechanism for kernel page
+> table pages, which provides a safe window to notify the IOMMU to
+> invalidate its caches before the page is reused.
 
-Note, the kmalloc_nolock() happens under bpf_spin_lock_irqsave(), so
-it will always fail in PREEMPT_RT. This is not an issue at the moment,
-since bpf_timers are disabled in PREEMPT_RT. In the future
-bpf_spin_lock will be replaced with state machine similar to
-bpf_task_work.
+Thanks for working on this.
 
-Fixes: 6d78b4473cdb ("bpf: Tell memcg to use allow_spinning=false path in bpf_timer_init()")
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
----
-v1->v2: Fix one missing kfree->kfree_nolock() conversion (caught by BPF AI bot)
+Can we expect any performance impact from this?  Have any measurements
+been performed?
 
- include/linux/bpf.h  |  4 ++++
- kernel/bpf/helpers.c | 25 ++++++++++++++-----------
- kernel/bpf/syscall.c | 15 +++++++++++++++
- 3 files changed, 33 insertions(+), 11 deletions(-)
+Only [7/7] has a cc:stable, even though that patch is not at all
+backportable.  Please give some thought and suggestions regarding
+whether you think we should backport this into earlier kernels.
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index a98c83346134..d808253f2e94 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2499,6 +2499,8 @@ int bpf_map_alloc_pages(const struct bpf_map *map, int nid,
- #ifdef CONFIG_MEMCG
- void *bpf_map_kmalloc_node(const struct bpf_map *map, size_t size, gfp_t flags,
- 			   int node);
-+void *bpf_map_kmalloc_nolock(const struct bpf_map *map, size_t size, gfp_t flags,
-+			     int node);
- void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags);
- void *bpf_map_kvcalloc(struct bpf_map *map, size_t n, size_t size,
- 		       gfp_t flags);
-@@ -2511,6 +2513,8 @@ void __percpu *bpf_map_alloc_percpu(const struct bpf_map *map, size_t size,
-  */
- #define bpf_map_kmalloc_node(_map, _size, _flags, _node)	\
- 		kmalloc_node(_size, _flags, _node)
-+#define bpf_map_kmalloc_nolock(_map, _size, _flags, _node)	\
-+		kmalloc_nolock(_size, _flags, _node)
- #define bpf_map_kzalloc(_map, _size, _flags)			\
- 		kzalloc(_size, _flags)
- #define bpf_map_kvcalloc(_map, _n, _size, _flags)		\
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index c9fab9a356df..8eb117c52817 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1215,13 +1215,20 @@ static void bpf_wq_work(struct work_struct *work)
- 	rcu_read_unlock_trace();
- }
- 
-+static void bpf_async_cb_rcu_free(struct rcu_head *rcu)
-+{
-+	struct bpf_async_cb *cb = container_of(rcu, struct bpf_async_cb, rcu);
-+
-+	kfree_nolock(cb);
-+}
-+
- static void bpf_wq_delete_work(struct work_struct *work)
- {
- 	struct bpf_work *w = container_of(work, struct bpf_work, delete_work);
- 
- 	cancel_work_sync(&w->work);
- 
--	kfree_rcu(w, cb.rcu);
-+	call_rcu(&w->cb.rcu, bpf_async_cb_rcu_free);
- }
- 
- static void bpf_timer_delete_work(struct work_struct *work)
-@@ -1230,13 +1237,13 @@ static void bpf_timer_delete_work(struct work_struct *work)
- 
- 	/* Cancel the timer and wait for callback to complete if it was running.
- 	 * If hrtimer_cancel() can be safely called it's safe to call
--	 * kfree_rcu(t) right after for both preallocated and non-preallocated
-+	 * call_rcu() right after for both preallocated and non-preallocated
- 	 * maps.  The async->cb = NULL was already done and no code path can see
- 	 * address 't' anymore. Timer if armed for existing bpf_hrtimer before
- 	 * bpf_timer_cancel_and_free will have been cancelled.
- 	 */
- 	hrtimer_cancel(&t->timer);
--	kfree_rcu(t, cb.rcu);
-+	call_rcu(&t->cb.rcu, bpf_async_cb_rcu_free);
- }
- 
- static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u64 flags,
-@@ -1270,11 +1277,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
- 		goto out;
- 	}
- 
--	/* Allocate via bpf_map_kmalloc_node() for memcg accounting. Until
--	 * kmalloc_nolock() is available, avoid locking issues by using
--	 * __GFP_HIGH (GFP_ATOMIC & ~__GFP_RECLAIM).
--	 */
--	cb = bpf_map_kmalloc_node(map, size, __GFP_HIGH, map->numa_node);
-+	cb = bpf_map_kmalloc_nolock(map, size, 0, map->numa_node);
- 	if (!cb) {
- 		ret = -ENOMEM;
- 		goto out;
-@@ -1315,7 +1318,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
- 		 * or pinned in bpffs.
- 		 */
- 		WRITE_ONCE(async->cb, NULL);
--		kfree(cb);
-+		kfree_nolock(cb);
- 		ret = -EPERM;
- 	}
- out:
-@@ -1580,7 +1583,7 @@ void bpf_timer_cancel_and_free(void *val)
- 	 * timer _before_ calling us, such that failing to cancel it here will
- 	 * cause it to possibly use struct hrtimer after freeing bpf_hrtimer.
- 	 * Therefore, we _need_ to cancel any outstanding timers before we do
--	 * kfree_rcu, even though no more timers can be armed.
-+	 * call_rcu, even though no more timers can be armed.
- 	 *
- 	 * Moreover, we need to schedule work even if timer does not belong to
- 	 * the calling callback_fn, as on two different CPUs, we can end up in a
-@@ -1607,7 +1610,7 @@ void bpf_timer_cancel_and_free(void *val)
- 		 * completion.
- 		 */
- 		if (hrtimer_try_to_cancel(&t->timer) >= 0)
--			kfree_rcu(t, cb.rcu);
-+			call_rcu(&t->cb.rcu, bpf_async_cb_rcu_free);
- 		else
- 			queue_work(system_dfl_wq, &t->cb.delete_work);
- 	} else {
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 2a9456a3e730..8a129746bd6c 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -520,6 +520,21 @@ void *bpf_map_kmalloc_node(const struct bpf_map *map, size_t size, gfp_t flags,
- 	return ptr;
- }
- 
-+void *bpf_map_kmalloc_nolock(const struct bpf_map *map, size_t size, gfp_t flags,
-+			     int node)
-+{
-+	struct mem_cgroup *memcg, *old_memcg;
-+	void *ptr;
-+
-+	memcg = bpf_map_get_memcg(map);
-+	old_memcg = set_active_memcg(memcg);
-+	ptr = kmalloc_nolock(size, flags | __GFP_ACCOUNT, node);
-+	set_active_memcg(old_memcg);
-+	mem_cgroup_put(memcg);
-+
-+	return ptr;
-+}
-+
- void *bpf_map_kzalloc(const struct bpf_map *map, size_t size, gfp_t flags)
- {
- 	struct mem_cgroup *memcg, *old_memcg;
--- 
-2.47.3
+If "yes" then the size and scope of the series looks problematic.  Is
+it possible to put together something simple and expedient just to plug
+the hole in older kernels?
 
+>  arch/x86/Kconfig              |  1 +
+>  mm/Kconfig                    |  3 ++
+>  include/asm-generic/pgalloc.h | 18 +++++++++
+>  include/linux/iommu.h         |  4 ++
+>  include/linux/mm.h            | 71 ++++++++++++++++++++++++++++++++---
+>  arch/x86/mm/init_64.c         |  2 +-
+>  arch/x86/mm/pat/set_memory.c  |  2 +-
+>  arch/x86/mm/pgtable.c         | 12 +++---
+>  drivers/iommu/iommu-sva.c     | 29 +++++++++++++-
+>  mm/pgtable-generic.c          | 39 +++++++++++++++++++
+>  10 files changed, 167 insertions(+), 14 deletions(-)
+
+It isn't obvious which tree should carry this.  Were you thinking the
+x86 tree?
 
