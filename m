@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B570FCCD192
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64A2CCCD192
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:05:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E3798E002E; Wed, 15 Oct 2025 09:00:52 -0400 (EDT)
+	id BC2AC8E002F; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06CDF8E0020; Wed, 15 Oct 2025 09:00:52 -0400 (EDT)
+	id B99F78E0020; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC4BA8E002E; Wed, 15 Oct 2025 09:00:51 -0400 (EDT)
+	id AD7688E002F; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D61CC8E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:00:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ABD03117BAA
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:00:51 +0000 (UTC)
-X-FDA: 84000358302.07.9C649F0
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C93BB4000F
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:00:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tkm+5Cdz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533250; a=rsa-sha256;
-	cv=none;
-	b=qzKGLujCYvxhtjxZlxtvyrUEZpJH9d7ESRr4/VuI0OX2CTCHcjnW18BmPlfivijsULHkRY
-	Gcf4Ghj98RyVR80yF3L9BsQcXEu+aLXeMiWGxM4wNFicQU2a+dZuqqYhNsFb6BzIze7XIe
-	h7fnpmwjce5IHSsiBYjA1/YpISCnpvI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tkm+5Cdz;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98F778E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25A121DA6DE
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:05:13 +0000 (UTC)
+X-FDA: 84000369306.09.CCB07A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4BC5B100013
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:05:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F12SqXdh;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760533250;
+	s=arc-20220608; t=1760533511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bvThHLk7dk0OCNQMxd4/MQHHps7Vic0UfmO+bcwITQc=;
-	b=3DU1Vjym+33uGA1Q2UaG0jyWM2RdR16lkNd2N5/T/nUXrBNYQhph82I/XmwSaA6K04cPq2
-	CjuyvgZdafAxk3ey5qgNvYOH9CEok+AeokFx3uE3nJ0loNx9qrQh/MR6QLrWakwFeoCGMe
-	sUTjigAZiSH2DNVuOcLrg5rxnzd2o/s=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760533247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bvThHLk7dk0OCNQMxd4/MQHHps7Vic0UfmO+bcwITQc=;
-	b=tkm+5CdzzX3evmTKvCY/i5bNzP17XpdFzXSxivzzJLWFy1HEBiZYFmjZZgK1i0ox3EPVYW
-	HGHdyrVkbP5irKJtwKAtgmqYMbTbiEjs1FqYNC05EqASSjEo9Gv0mcCOUbn/PaQ8h2KLhp
-	QXIU4vv4DlDLqpEvtuWhBO/8GgLQS2A=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>
-Subject: [PATCH v4] slab: clear OBJEXTS_ALLOC_FAIL when freeing a slab
-Date: Wed, 15 Oct 2025 20:59:45 +0800
-Message-Id: <20251015125945.481950-1-hao.ge@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mzeow8aVSDkC1qzULQkmK15/X6aC73xjvRgRFvsPFms=;
+	b=NDSKfqlA4Lt3Xi0Y0LTnX6vCr2dxvQvQ1l6ER6zmge9yCDorPUhn6nwV45XDoySegmPAKM
+	dMBs0YV8TuftHbHqw0X8I+OCpTL6+L/r0CMY71V331RQ/LaMSLmeiyw6PlhJ8AKPKDIKF5
+	1beKDO0klwfgGswnV3+lU0SZfScN4u0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F12SqXdh;
+	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533511; a=rsa-sha256;
+	cv=none;
+	b=sf87GiAxGc6z2POS18o8ccXE7MC4zLr0VN3o7AQ7LS8l1d2wbc+XPvmUxO2sHo6W/rpKmj
+	UAHUFA0hPF/s1Pn6xIeVgp8wIB3B9dylFmeriSELvWi/a6jk8oXF9UzTmt3S+/PSKQrNn/
+	ZmDGtbC+cMwxv/nx1Jp8ZcLB/bTBpgU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C6C524523C;
+	Wed, 15 Oct 2025 13:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4773C4CEF8;
+	Wed, 15 Oct 2025 13:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760533509;
+	bh=2ad4JdcB1dy+2CtYWky5FKUKrCrxFnEL7ZzpoxjFRAs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=F12SqXdhbLXz05zwQrekYKF8O2vnJ9nCDTpE5dudRvebGwlmWhKNdsmccdILjpq46
+	 L8rSlTNMs5ad4QaNiIwBoPBzLwTsli8z/UmumMaDdjuvTLhP+U99FspQvl2vuSnT5y
+	 Nx08AGpCO2HP1B/FEAx+E2Yo3A6G1zH2JNTQNW11R+yhvXZVygEveX3xFnqjoa9c7k
+	 RZW0K1fbaNHN+utYQZ33x+V4pjidmSdp0/F0jKS1C5dH5hOv/SbvRqa3N8VCIPAkUH
+	 D90O9K2/8Bccg6glBB4fgj3vrIVSAP5OAp7fSu1ywQmErqjxu1b2e72oyfa3p0f8yk
+	 zfQvF0IBBrI+w==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
+  graf@amazon.com,  jgg@ziepe.ca,  linux-kernel@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
+  masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
+  rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org,
+  jasonmiu@google.com,  dmatlack@google.com,  skhawaja@google.com,
+ glider@google.com, elver@google.com
+Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from
+ the buddy allocator
+In-Reply-To: <20251015053121.3978358-3-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Wed, 15 Oct 2025 01:31:21 -0400")
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+	<20251015053121.3978358-3-pasha.tatashin@soleen.com>
+Date: Wed, 15 Oct 2025 15:05:05 +0200
+Message-ID: <mafs0v7kgjoxq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Stat-Signature: t94gxfr5nym115irnxw77y71ae33mm3m
+X-Rspamd-Queue-Id: 4BC5B100013
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C93BB4000F
-X-Stat-Signature: onejscr53o66jrsxek4ofpmbbj3cyzkc
-X-HE-Tag: 1760533249-817012
-X-HE-Meta: U2FsdGVkX1/hvow5uQF6U2PToyLfqG5riGGPS4NShvKue5rfkPfutXO6clglk0WUCv/6ObGvc9xb8MqyUjayUAqgPQ2CHdxAgEJ9irEEAHHIRJ6w2vS7PNIiOMFyj6DRo/8fQ6WgrgaDJjJp6O8AiC5HfuFQhY+qeCTYA22tVJVhix670Gr/LG9PoRnOIfZlsN8YEv5RVrNbjPNlRc7mPHsT8JL8Hif83jacURSHyk6Mv2M++5YrB5BcfjnHlBRPS8KcRksNPfpuf0r/UxMA8/RnNUeUj+sAFK3uMpqT3LDhX9zQH1zyrZGAv9D5N16uFzcdOQP5xaDJG2Y519+Nm/Q+t6Ta4sNWeTRP83YmZMiXH8qfCEahi1GrfQOjmuLyGYSuBvxrrkAbd9Rg9OxUKSSZf8Pi3Nir6DUzMuWgnu2opI4jWqXVO29wDCvl0L+U19fRIucU+4Fg8LPoNb1H0x2k3XnYofsbF16x0D7Mf+McXZnhcX45oCtKsMuXoqMGItMnA9dFuJmTC0yd7Cu8yP/IUtnTAkZaJBbx3H0JDWVAdnavqppBwvC3WgLrcqz22a3Md5t2XFLZLDXzey/WierVbbqzVDnH85hoOk/qC9Iph5TTDpy2IQKql2dsJ8dK9Td8m+8SHY0T76BwXRlVL3SEMW3tOwyvp3QtS3VT9cLPeERbLcJyZ5uCEW9/DhwFqpZHZs5OCQNX7DfsmS2eB8skNOFel31U8lW+lwlR6Z77MXj7dACnUfRDnfjKjDnMmiGV4l3VcvHqAACPHcPoPn0BSw6iC/YzXEhkqFldh2XqKXt+Pzl2/vJSmgb6kLaa4G6X9W5OsEDVf3bON1f55HJOxXnfmCWO4SjyqSkxqHlzoaJHx9oy2zzedgEh+TtqR935rAphLbGIYmX+dbcxFuPeMMIdwGKHFaqZvE6S9A0iDUano/D2RzOf9xTNbVsh3xr9kKrD0DGmwf0HuI3
- uje4f92l
- YsU9AmB41HWMiYuPJZa1XYgF44McR3hI063OrDKgiqO9ySDerNXoLRocnoDqYQhAniCQMR5UKjeE3ibbDzBtMq6RN0XJOg5sKYGBoBh/lqeFoNpaDpnug8kzJBFu1dMdOn08xHJS9wgS8mAYDI9w/b6ai6IIPmh0CQfi5n3ni17fjzXdFltFlT6TywmqQFNY8qAOg48yT9tI19DN1EF1uGdfZk4fU/NJYhoKXmORMd44YQDhb4rTlvTqR6KUmcTLJTY91e3FaZsfd6/7K+SNb/GSflw4wyGs0709owRSGO2e0Xw+rOPIvPfNh7rAmH6Fd+Vuka5aeFZ+3Qh0=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760533511-25390
+X-HE-Meta: U2FsdGVkX1+zS3c0vJ3jMPTBqMlsg9SrqkRv92bYv7OF0krkTe5TMeANhCPsi87+rBNpWK+m0nPRI8nZ0kbCOOke38vT5zo8LUUvugsbOyJJJb4MaDM5Q0Q1fUlITO1f0GWHT0mOzaucjYNCBN5aLc6FpNqc70AoexLztlXR8yuz2Qn1sGwt8qS4yS+Loa1nlRUGVt1YuIqOp/mVjW5/SrARZR6EpQoOTzhQIuc0y/Kl+qvrNcMpNZu5Fcl3MdtWzGbSLuFNhgieF7O33UpJU2AOdoIQMm8VNJAfvBExXVKcCLlfEw8AvWuH9ws4wBssGdrGX41zIYAs75Hg6w292ZS9MZL9UtPq6W85QsxxJ6EvJ5jvODnl7U2pxZkRcyak7GHIphRaLdbqS6WiIrf1Y/IGb3PHKQwSVumhIUqXHSJ7gRuuLvCh1jFgmXNphX4p+6xBrqZJ9Ga4kcn8S+k+3PvL+8xLiQ2BUDqlOxIVbad/U1LPnVgLP6wuc3GFt/sVFcshCxF/cG6CrLJ8cAhcnWHbVtIKnZxa+J1AsHk5ubU3ooMSIeIHquP9OgUoMaVaTZgbV6xX7oARCZ0J0CugwEoN1JkJ2HvwXBvm/D42MM3zdTwNxC2lP4zV1hCxaLXNet09yyOhft6ieRndCodfWtc4lGNi7q18YkRXio4i00oZx/0Y5Nnj2hQn1W4M6aR4vXUMQ34joHbRmKlGPkm5P3wA3rnecR9GXJdiijfgSDdg+GbU1n5HFTfPbIaplXrARfx5hhm8pvuHMTe3+e4sGWUnkXIbI68+5BY0J/m9TT1EWhJBbpwCv6j+1er3+gzc2OV6o2dK+E74KiQU2nUKQCs/YJAu6wZz27zBcd+MN/aL67cxYnJ0GAiExD9GsbuShVoswUyyLD4XUxf4SJ6hkqZbnyMFh4GcUPe2sOdyfq6WyWLhc6MESi6cNQDS89qZAVmAOkQnatvd4ak4Tbs
+ 7V77Pwh3
+ DBfcTBHZNd1dKMlO05g+st84SELb4EXxwG9CCcuMe6e/C6rsk8ZGtTBgLvM1FbOmI88FIhwEpt6qX48qErDdvOgUm4WpsvM41gUF9RgSPaGGJZ8Zuan+bdNnGlbwlTcQz2YMBtqHp0pIJL36Nw5yCSFPL3J6g6UYQL8lR6ZcCqe8K3AI3nRUoQO8aPSpshkwFtSi1YS49CQcvdOXzxrtDk+wkdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,96 +99,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Ge <gehao@kylinos.cn>
++Cc Marco, Alexander
 
-If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-But we did not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
-MEMCG_DATA_OBJEXTS currently share the same bit position, during the
-release of the associated folio, a VM_BUG_ON_FOLIO() check in
-folio_memcg_kmem() is triggered because it was mistakenly assumed that
-a valid folio->memcg_data was not cleared before freeing the folio.
+On Wed, Oct 15 2025, Pasha Tatashin wrote:
 
-When freeing a slab, we clear slab->obj_exts if the obj_ext array has been
-successfully allocated. So let's clear OBJEXTS_ALLOC_FAIL when freeing
-a slab if the obj_ext array allocated fail to allow them to be returned
-to the buddy system more smoothly.
+> KHO allocates metadata for its preserved memory map using the SLUB
+> allocator via kzalloc(). This metadata is temporary and is used by the
+> next kernel during early boot to find preserved memory.
+>
+> A problem arises when KFENCE is enabled. kzalloc() calls can be
+> randomly intercepted by kfence_alloc(), which services the allocation
+> from a dedicated KFENCE memory pool. This pool is allocated early in
+> boot via memblock.
 
-Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
----
-v4: Based on the discussion between Vlastimil and Harry,
-    modify the solution to clear OBJEXTS_ALLOC_FAIL when freeing a slab.
-    This does seem more reasonable. Thank you both.
----
- mm/slab.h | 26 ++++++++++++++++++++++++++
- mm/slub.c |  6 ++++++
- 2 files changed, 32 insertions(+)
+At some point, we'd probably want to add support for preserving slab
+objects using KHO. That wouldn't work if the objects can land in scratch
+memory. Right now, the kfence pools are allocated right before KHO goes
+out of scratch-only and memblock frees pages to buddy.
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 078daecc7cf5..52424d6871bd 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -547,6 +547,28 @@ static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
- 	return (struct slabobj_ext *)(obj_exts & ~OBJEXTS_FLAGS_MASK);
- }
- 
-+/*
-+ * objexts_clear_alloc_fail -  Clear the OBJEXTS_ALLOC_FAIL for
-+ * the slab object extension vector associated with a slab.
-+ * @slab: a pointer to the slab struct
-+ */
-+static inline void objexts_clear_alloc_fail(struct slab *slab)
-+{
-+	unsigned long obj_exts = READ_ONCE(slab->obj_exts);
-+
-+#ifdef CONFIG_MEMCG
-+	/*
-+	 * obj_exts should be either NULL, a valid pointer with
-+	 * MEMCG_DATA_OBJEXTS bit set or be equal to OBJEXTS_ALLOC_FAIL.
-+	 */
-+	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS) &&
-+		       obj_exts != OBJEXTS_ALLOC_FAIL, slab_page(slab));
-+	VM_BUG_ON_PAGE(obj_exts & MEMCG_DATA_KMEM, slab_page(slab));
-+#endif
-+
-+	obj_exts &= ~OBJEXTS_ALLOC_FAIL;
-+	WRITE_ONCE(slab->obj_exts, obj_exts);
-+}
- int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-                         gfp_t gfp, bool new_slab);
- 
-@@ -557,6 +579,10 @@ static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
- 	return NULL;
- }
- 
-+static inline void objexts_clear_alloc_fail(struct slab *slab)
-+{
-+}
-+
- #endif /* CONFIG_SLAB_OBJ_EXT */
- 
- static inline enum node_stat_item cache_vmstat_idx(struct kmem_cache *s)
-diff --git a/mm/slub.c b/mm/slub.c
-index b1f15598fbfd..80166a4a62f9 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2169,6 +2169,12 @@ static inline void free_slab_obj_exts(struct slab *slab)
- {
- 	struct slabobj_ext *obj_exts;
- 
-+	/*
-+	 * If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-+	 * Therefore, we should clear the OBJEXTS_ALLOC_FAIL flag first when freeing a slab.
-+	 */
-+	objexts_clear_alloc_fail(slab);
-+
- 	obj_exts = slab_obj_exts(slab);
- 	if (!obj_exts)
- 		return;
+	kfence_alloc_pool_and_metadata();
+	report_meminit();
+	kmsan_init_shadow();
+	stack_depot_early_init();
+        [...]
+	kho_memory_init();
+
+	memblock_free_all();
+
+Can't kfence allocate its pool right after memblock_free_all()? IIUC at
+that point, there shouldn't be much fragmentation and allocations should
+still be possible.
+
+Another idea could be to disable scratch-only a bit earlier and add an
+option in memblock_alloc() to avoid scratch areas?
+
+Anyway, not something we need to solve right now with this series.
+Something to figure out eventually.
+
+>
+> When booting via KHO, the memblock allocator is restricted to a "scratch
+> area", forcing the KFENCE pool to be allocated within it. This creates a
+> conflict, as the scratch area is expected to be ephemeral and
+> overwriteable by a subsequent kexec. If KHO metadata is placed in this
+> KFENCE pool, it leads to memory corruption when the next kernel is
+> loaded.
+>
+> To fix this, modify KHO to allocate its metadata directly from the buddy
+> allocator instead of SLUB.
+>
+> As part of this change, the metadata bitmap size is increased from 512
+> bytes to PAGE_SIZE to align with the page-based allocations from the
+> buddy system.
+
+The implication of this change is that preservation metadata becomes
+less memory-efficient when preserved pages are sparse. Mainly because if
+only one bit is set in the bitmap, now 4k bytes of memory is used
+instead of 512 bytes.
+
+It is hard to say what difference this makes in practice without
+sampling real workloads, but perhaps still worth mentioning in the
+commit message?
+
+Other than this,
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+>
+> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index ef1e6f7a234b..519de6d68b27 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -66,10 +66,10 @@ early_param("kho", kho_parse_enable);
+>   * Keep track of memory that is to be preserved across KHO.
+>   *
+>   * The serializing side uses two levels of xarrays to manage chunks of per-order
+> - * 512 byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order of a
+> - * 1TB system would fit inside a single 512 byte bitmap. For order 0 allocations
+> - * each bitmap will cover 16M of address space. Thus, for 16G of memory at most
+> - * 512K of bitmap memory will be needed for order 0.
+> + * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
+> + * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
+> + * allocations each bitmap will cover 128M of address space. Thus, for 16G of
+> + * memory at most 512K of bitmap memory will be needed for order 0.
+>   *
+>   * This approach is fully incremental, as the serialization progresses folios
+>   * can continue be aggregated to the tracker. The final step, immediately prior
+> @@ -77,7 +77,7 @@ early_param("kho", kho_parse_enable);
+>   * successor kernel to parse.
+>   */
+>  
+> -#define PRESERVE_BITS (512 * 8)
+> +#define PRESERVE_BITS (PAGE_SIZE * 8)
+>  
+>  struct kho_mem_phys_bits {
+>  	DECLARE_BITMAP(preserve, PRESERVE_BITS);
+> @@ -131,18 +131,21 @@ static struct kho_out kho_out = {
+>  
+>  static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+>  {
+> +	unsigned int order;
+>  	void *elm, *res;
+>  
+>  	elm = xa_load(xa, index);
+>  	if (elm)
+>  		return elm;
+>  
+> -	elm = kzalloc(sz, GFP_KERNEL);
+> +	order = get_order(sz);
+> +	elm = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
+>  	if (!elm)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> -	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
+> -		kfree(elm);
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm),
+> +					PAGE_SIZE << order))) {
+> +		free_pages((unsigned long)elm, order);
+>  		return ERR_PTR(-EINVAL);
+>  	}
+>  
+> @@ -151,7 +154,7 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+>  		res = ERR_PTR(xa_err(res));
+>  
+>  	if (res) {
+> -		kfree(elm);
+> +		free_pages((unsigned long)elm, order);
+>  		return res;
+>  	}
+>  
+> @@ -357,7 +360,7 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
+>  {
+>  	struct khoser_mem_chunk *chunk;
+>  
+> -	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> +	chunk = (void *)get_zeroed_page(GFP_KERNEL);
+>  	if (!chunk)
+>  		return ERR_PTR(-ENOMEM);
+
 -- 
-2.25.1
-
+Regards,
+Pratyush Yadav
 
