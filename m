@@ -4,176 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A636BCCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D0C0CCD199
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 16:39:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 057948E0038; Wed, 15 Oct 2025 12:37:17 -0400 (EDT)
+	id A47F58E003B; Wed, 15 Oct 2025 12:39:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28D38E0005; Wed, 15 Oct 2025 12:37:16 -0400 (EDT)
+	id 9F8068E0005; Wed, 15 Oct 2025 12:39:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEC228E0038; Wed, 15 Oct 2025 12:37:16 -0400 (EDT)
+	id 8E7148E003B; Wed, 15 Oct 2025 12:39:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CBD4F8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:37:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B0E5571FE
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:37:16 +0000 (UTC)
-X-FDA: 84000903672.16.0DF723B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 99DD540012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:37:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3V+MR6Um;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Roig1Q4i;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=u89Q4jB+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="z8Mb/VEI";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760546234; a=rsa-sha256;
-	cv=none;
-	b=vGok3Dj1nmb/TVv7jO2dekY7JPwevhblb5AUH/p8+LN0xUXNI0yUVZKbsoiTL+sZAcGmc0
-	OYIrEusOgSUDYmDNKVQC2kB30h5uiazz8JtHi/LAvoO6BfyoQgV/37G5+3CckHlJeAoVl/
-	R6DoxRL625WUZjqWjwTvuoL/z04VjhE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3V+MR6Um;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Roig1Q4i;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=u89Q4jB+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="z8Mb/VEI";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 79FF28E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:39:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 15B4857825
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:39:21 +0000 (UTC)
+X-FDA: 84000908922.02.B2AA237
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1D484100013
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 16:39:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=D6YURhqx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760546234;
+	s=arc-20220608; t=1760546359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rPAcpK/s6GPGz/dK/BEAl7H9IF92YQTxk2EK4TwnJ2I=;
-	b=N3/ItL8bxOrawTMOYWCiSU52pynHwNdth8GZvo0uWchv8ruwMCf9sflxebM7kRsWkMZ1Yg
-	gptC3az0iFgMhHY+L8J0I2KRhGQYl+6cxebEBqa514MZVErLcdJukwG0iE9RZoUpJtFh6d
-	b6/3GFS0roIUHrm7yy+lw0bjPq7K99o=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C4531338D8;
-	Wed, 15 Oct 2025 16:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760546232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rPAcpK/s6GPGz/dK/BEAl7H9IF92YQTxk2EK4TwnJ2I=;
-	b=3V+MR6UmRgVGhVa2MloG89lwpYgG8lkCdbdgeG2FKQOwPYRnBzsflXie97xD0wPVVsjSCx
-	DIPY2umrj+ij2U6eGyIyQhxD//bfwep9HRaDh/rajtjELtT/L6cNvHlHjMDOJTntw+q3zm
-	1+QC84G9R6CPyDPdcAy3uK64fKAmj9I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760546232;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rPAcpK/s6GPGz/dK/BEAl7H9IF92YQTxk2EK4TwnJ2I=;
-	b=Roig1Q4iJYRMQtgkcDZUzWbPkMbCpmFO6DBFTfPa9tNKKfvQWpNGzGH2H49Ol/NSrlIUWM
-	+xx7famPlH7y/xDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760546231; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rPAcpK/s6GPGz/dK/BEAl7H9IF92YQTxk2EK4TwnJ2I=;
-	b=u89Q4jB+kGYd6UpR7wnOEgwxrqftAKVA5nLITNNFJu3vbQZWvUWpEQ3ufDGKyblJ87cSF/
-	Wr1OEZOSL9FRTSwyFGAsll1BzdFknbGM/WsWRsUcsv+uBnAhHSe6t+m/nsSNXkScLpmkRS
-	y/U6Nc5Xm9R1HVu31GwCsKpCI5Yitqk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760546231;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rPAcpK/s6GPGz/dK/BEAl7H9IF92YQTxk2EK4TwnJ2I=;
-	b=z8Mb/VEITpUtc7AnaKU1qH3GLpIxudpINp2GEHGbg09xBMXv0h4WDOxKehrzsUnNjNRCy4
-	vSp1U0olmgllLHCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A5EA113A42;
-	Wed, 15 Oct 2025 16:37:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id F+kBJ7fN72hICAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 16:37:11 +0000
-Message-ID: <6728a58d-7849-4eba-bce4-68968dd55afe@suse.cz>
-Date: Wed, 15 Oct 2025 18:37:11 +0200
+	bh=nzhM5CGB+RoDFW8y/0jUZz7oHPU/o/zMoGAuCJ5t4mg=;
+	b=f9zK8XAklBIRXkZLqKOV+vs+gdVJ7sI0WsFn6ppnCiT21EmtNIapSUuY8yPcn+vxUk0NPA
+	4SUTUrWf08s4iZxf5RM/JilJh6zJkO++Jg3IV9yATs9nEJsZTXDhx1P1k3QPohfXs7kNdU
+	RdHh9S0ES+eYUP3GzwpTva6Rld9HD0U=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=D6YURhqx;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf05.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760546359; a=rsa-sha256;
+	cv=none;
+	b=IQPFSuhyndduuyA13f71VjBjCJIgfDjU8mzmKwU7OAveQFDhpyLP6xA2qrTAgKepPLHY9h
+	+fWGMJkWqX0QNrjrGceOnMlDFgbK2S0EDJQIWf3fHRsHCkve6uMszao165ivc6MOLAo81n
+	Sgx6qbMeGNBCNa1i0UrHwBaxhaDm6lI=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-634cc96ccaeso10309a12.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:39:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760546357; x=1761151157; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nzhM5CGB+RoDFW8y/0jUZz7oHPU/o/zMoGAuCJ5t4mg=;
+        b=D6YURhqxY3sNOPamWJFTp5KuCFTTmepfW6kPq0Gk7vISX4Zfi9iZzo0zTFlOFWtIIr
+         klOp3nQXw9yU7bgdO5omqGC01C368T09j7ggK2O/M+E7HbiK26mtoIFz5sFxoFg+rkZU
+         5fcCk9nRt13Nm4M8gY2zQoMG7s2Y5j5QMR9Ud+qSfZOy8NmCSUcbE89pSveu2/pp8gjm
+         Lvbpx7R1bZeTVLwqMhXHILNOgTKrAVjTXGH7/vadsVwQljFHJH0obVygUluOJwYPuAXO
+         IX/ilsodaPkp6IaFGq5aaey7sb5w/sHM/VDs9k/yxBwv4CD627WrhHPtOfSodlNoV5Mc
+         yDMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760546357; x=1761151157;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nzhM5CGB+RoDFW8y/0jUZz7oHPU/o/zMoGAuCJ5t4mg=;
+        b=kBKAUv5RTDDny3urOSky541NNBx0NApkJQqFs6S/BgYVye6YI+xT+UWDZ/yKkJCfI2
+         razpXj76U9BMqA9moxreehinlC+8b7CV7iWka+aM1mLimADgU8djMAkHJE1dwgKSX3+C
+         i0zW3GdrFuBA4ih7MPfPc7aOh8dVAgSilPPT0lShBPjosCRYZOtQVZLD1b6du4sWfm2u
+         9LOQkA/PPDhk2TDK155VDZM5evTozTRSq6Sg5WReiCFjM0JvjDlNTngee6Y6RArh+Dag
+         lP79dgtlFSdUloZQ1yFiw8CtHTAgbqtMbk21jvCkBGJ/aPLCwh4DwpUKXZjmHuuXQLND
+         yDZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXW5Xh2biC+dLk/xb9dhkhcdY/3K2ijTpAVL5YPsh+LaHlxayZ/GoTUvtgyGA3fLL/3pxalCWkTkA==@kvack.org
+X-Gm-Message-State: AOJu0YwaN5a6Glf7r5r3kvD+NAUg2sEfGDHoNXZAROkCYxgk2k32AzI2
+	FvZSISzMdvdOgn/awBIErluR/t4t/eYaqGQEgNJJgugT4gnM5yw3SFaifTtpCeu7/z6hZm5lOpZ
+	o8lm4Z9lL1Vp9BM/wdcA2MhU2Ly9vnAx5amfRXvI8
+X-Gm-Gg: ASbGncth1chKA3yJ0R7PjBsJMnzjNR0j37AXBc5OaHbD3+7StexirpOrGO1pKeWbTHn
+	Cu0ivinxVc2NGZnQAH3lFxvMe/EtkhKfLFv90oRBWgzqSUkdmmo61JgpOC34YgCfi4CA9bK6a12
+	+0FSQSHbsK/A/W5gQSm8dRLR0k4ehtVctz8v3oyQ8bkQ9OErdhIHl7DRx5FhMSqES3jlM7aRz8Z
+	0+GLQITXblH9ThFfCJQC74XGE+HprAraytn4TUfiMLpTH7O8GrdGb6Rx8LKmKg=
+X-Google-Smtp-Source: AGHT+IFiVuLYivP034AwNyXAkpK0U9cc8NbdifZyjw09pfdEvHJuVDozucJsWtjEL9bmQH3yJFcdpbpk6wFGjPz12kI=
+X-Received: by 2002:a05:6402:3246:20b0:634:38d4:410a with SMTP id
+ 4fb4d7f45d1cf-63bebfa2921mr142406a12.2.1760546357234; Wed, 15 Oct 2025
+ 09:39:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] slab: reset obj_ext when it is not actually valid
- during freeing
-Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Alexei Starovoitov <ast@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <20251015141642.700170-1-hao.ge@linux.dev>
- <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+ <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+ <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+ <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
+ <CANn89iKC_y6Fae9E5ETOE46y-RCqD6cLHnp=7GynL_=sh3noKg@mail.gmail.com>
+ <CAGsJ_4x5v=M0=jYGOqy1rHL9aVg-76OgiE0qQMdEu70FhZcmUg@mail.gmail.com>
+ <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com> <CAGsJ_4wYrQuhGY6FuZJzQJjQfx6udRAbP4XZvEevknrpqnkv8g@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wYrQuhGY6FuZJzQJjQfx6udRAbP4XZvEevknrpqnkv8g@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 15 Oct 2025 09:39:03 -0700
+X-Gm-Features: AS18NWDCakq1h-mH7wphh8y1dVf2NhsytSCg4Cqtn1Pb9vJqQi_9SQu-IJteMNE
+Message-ID: <CAJuCfpGf8Hj1QAgNtbRwsBwTOZTidt9sGLwX8PYhiHWYyE9Z1A@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Barry Song <21cnbao@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 99DD540012
-X-Stat-Signature: ko6sqrpnu6z7p16s4peewkm4x7onzqq7
-X-HE-Tag: 1760546233-422656
-X-HE-Meta: U2FsdGVkX193veYMho2Sf3Qbxj5axhegvB78Fl96uktIJHNi0HeCMlHyk4/5Z4KmxMBpeYB5vzDSQlLb37S8c4PSkV695W9Kwho8pDQdRNna8Bg7L3NZ4dOq8/w/BH07R70NyTnGFxU0zP7ch3AiPFbwjryKVelWVJaa5lpgAx3GnyLDVbUX0J/qwuClTyqLeTknoAUG5JZIZRhDB00IAw71QWVnd0KYiHZcrTnoNW7zaDM9RurSzs2u/4XaIu0T4lBevsl27xNfzf1V77tgiMACCHV+1jO9yt5ZdTaCgfSkvnTuO6nnsn617pbkc2p6hQNEzeTe/zs4nsBojn9nYKxRtllzhdpWtA6Hkh5S7R8+O4TPENAGOLOA1DgKR4Ch1TfVb8CYIonNlXmMWOKP4GpRhVVoASKjUJpbFac422vFpk3GlT696cFkjrFLq4Zhx4OVcuCoh2f4SNGPcNOGG5olq8QR+1j0vHJNfH071t+p3pMGPnT9ph6AcILae+rdlJe6ZtX7HCTs6F+uzGH/hhP+ZHMLXbR7n8r+we4du5V+7cT/2f1rfZ4IvasBLgp+zk85XnfOnjrR+xX8hNU1wO0Ay6bK5vGML6NAWgHjhaBzVRZoY/uv8DzI6AYikkqL70tMQhmJCfsS5qBnGYVzrZF/mYaoc0io7jfBYF7ohExjOc/Zkx6tU0LQA/162i/5hviWqohLz+Go22UQfPrjVudEkYkJ2zMYphQJmYV+YcxBKq8qlw+53yGADMm3zOD20ZvnIvbQasjbztGSUMcX598uZJxIHy2RGHmeIVE1fJJnCzrk1ESzdxZOjDryjNdl9UGooEpeYzqIaatBEqjC+wYdOZGZ/+13jlNjWE39szNh/xAoS2sHnFTR+JMfuFDUa1AMe23SiXgoNVIT7HRoCetvCL95dfCfVE8Np8VHeG5F5NKUpJjKXrzF7lW9TZ5XyDur5jaSY/YQx0jHNFG
- PumrNyLF
- Lr4VXAaPralMCRpFnDz23oqLFAh0eBDERgSaOlzsUf6+/M3LnUZkQ5jFiaSkLy0IoSnHcloPf090MJlD7REyL9CZ0StOFxw50Wpt4Ax7Wg6kzGrONqtrvv15e2ggBBBMWH7TOmHcas8+XNFKIaOe660yU9ebHHE8zbztKDzq0MyPRNzsF0fpaSUe+miKBQg2WQIwQb2+Gqd02V/ThdegwwguDoofdVRv2jdSzxb8z6W6444ctneh98E62UdBMYpemjut0/0Vg0sSlJBlIebDI5Ok+gza6/vXvLrxWV/yLvEWHKJiyVB6d2EjfdthQnBx0NwJ362KD6/EucaXnfYUF+hDwYa2oI19xnKwwCrTxAJY0TgY=
+X-Rspamd-Queue-Id: 1D484100013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: uh9qurq3o94i3cor3b3e6k8hdrmt799q
+X-HE-Tag: 1760546358-619811
+X-HE-Meta: U2FsdGVkX18abRaWVetsCZUN/029wZKvcyUdk9ap1fBxR8FyJnIU6mE3aNYGANul03WPfpL9H9c4PuZjv//G/VPIwHTcgXQdpll2BIoNLGMF0q/4BMfm550uhiR6qrOgbYCiNgkRcgomjrYs48q9LSVmrwoZUrnDiC829j8EfCEuLYVpA1lS9M1Ayhre/W9lVhAvfEwudnBdHFKaHDhBu8lJmiT8F7/gpmJl7uHeKUzFI3FWjO3/I0s1SbuY32lK4k9HkR6DFiUkDCQ/BDXmrjNAsGfB5GrjmAXxNXeFl22r1q7C8UJhnvTSWqdy14/o0kAzRSXEP8hC4Xu13HDdEwCK+aTaiaQA3IgOtvRXY4Qh8ul+9wpgoUJzhdjj2r6aJ3tBuQPIhaqndb7zoyfiB+/3BiBaXVvk29JQe4nOe/tKZ6JO3Ijgk9vgWjm5bCYykISLDhb/59GLrFebjE1zmxm87TM9d0jfHipLZDFwBsZRk+A/igNXKG1MfLdkhQCQRFGi75wjbXpoPvlWDZ7ITe/6VQR46Q6gQ+gZK3K2Hh8k7eRg5zKbRGjBxatd7ZH1orsYEQO090EMVZf6AlNjXoD+hEKhAAJlxDXCD7SxIsh5TZrID+cDnq46ud8AYhkEZU032Nh7Q+tFa8C4w9MtSaWoJi4hGIrNr6B5czjyaOicj/5laFUPKjakVmvNbCwbP26gcvu+tIQ9qrXB/l71z5krbVfOSYYLJL9HCKJ0VgU/DwCed9gWxwMPpa9W6TveEfchOTfGqjsQPAxr2RqV+fN96Drhx5c8gRz/D3UQXJhP/XqMr8PIXarnWwhyyQSUmxtj4l56jbmFvj5sbz9iw3DTU0SV2srKZE7iRRI55YwXhgL5PgexTl2cPngfjf3INKD8PU4MABlChPO5FyxLFdsjseMpLnOaGFsck66bo6wNX7500SMFjYPhYAlfOzCHvydJJvya3zlhew96nla
+ J7tTfRoS
+ 2qxCjiB67NJnNq4L/ZIKT3PfCQV3ACu3e/10pzAVb9O6RHJebWWBDlVU0lJfa0XYynrtcNa2sxNfED5RUAWY6+dNx5Kz2yHt2lGQJvoDYd6LzolC9i1QjeKlvbvUqDGOgNI4CCLYt1K3jUKVzKjl+wyBvSK/iMK4iK8ZaMZplj1XVEwf4KgQA+DiCnbFYOoL7Jq+snUxzeJcy47GAo9sSQfS+OyMMYrV6ARKZ245zMczfSXxM8zuahIMb3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,88 +131,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 18:29, Suren Baghdasaryan wrote:
-> On Wed, Oct 15, 2025 at 7:17 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> From: Hao Ge <gehao@kylinos.cn>
->>
->> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
->> But we did not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
->> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
->> release of the associated folio, a VM_BUG_ON_FOLIO() check in
->> folio_memcg_kmem() is triggered because it was mistakenly assumed that
->> a valid folio->memcg_data was not cleared before freeing the folio.
->>
->> When freeing a slab, we clear slab->obj_exts and reset it to 0
->> if the obj_ext array has been successfully allocated.
->> So let's reset slab->obj_exts to 0 when freeing a slab if
->> the obj_ext array allocated fail to allow them to be returned
->> to the buddy system more smoothly.
->>
->> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->> ---
->> v5: Adopt the simpler solution proposed by Vlastimil;
->>     Many thanks to him
->> ---
->>  mm/slub.c | 10 +++++++++-
->>  1 file changed, 9 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index b1f15598fbfd..2e4340c75be2 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2170,8 +2170,16 @@ static inline void free_slab_obj_exts(struct slab *slab)
->>         struct slabobj_ext *obj_exts;
->>
->>         obj_exts = slab_obj_exts(slab);
->> -       if (!obj_exts)
->> +       if (!obj_exts) {
->> +               /*
->> +                * If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
->> +                * In this case, we will end up here.
->> +                * Therefore, we should clear the OBJEXTS_ALLOC_FAIL flag first when freeing a slab.
->> +                * Then let's set it to 0 as below.
->> +                */
->> +               slab->obj_exts = 0;
->>                 return;
->> +       }
-> 
-> How about this instead:
-> 
-> static inline void free_slab_obj_exts(struct slab *slab)
-> {
->         struct slabobj_ext *obj_exts;
-> 
->         obj_exts = slab_obj_exts(slab);
-> +        /*
-> +         * Reset obj_exts to ensure all bits including OBJEXTS_ALLOC_FAIL
-> +         * are always cleared.
-> +         */
-> +        slab->obj_exts = 0;
->         if (!obj_exts)
->                 return;
-> 
->         /*
->          * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
->          * corresponding extension will be NULL. alloc_tag_sub() will throw a
->          * warning if slab has extensions but the extension of an object is
->          * NULL, therefore replace NULL with CODETAG_EMPTY to indicate that
->          * the extension for obj_exts is expected to be NULL.
->          */
->         mark_objexts_empty(obj_exts);
->         kfree(obj_exts);
-> -        slab->obj_exts = 0;
+On Wed, Oct 15, 2025 at 12:35=E2=80=AFAM Barry Song <21cnbao@gmail.com> wro=
+te:
+>
+> On Wed, Oct 15, 2025 at 2:39=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+>
+> > > >
+> > > > Tell them they are wrong.
+> > >
+> > > Well, we checked Qualcomm and MTK, and it seems both set these values
+> > > relatively high. In other words, all the AOSP products we examined al=
+so
+> > > use high values for these settings. Nobody is using tcp_wmem[0]=3D409=
+6.
+> > >
+> >
+> > The (fine and safe) default should be PAGE_SIZE.
+> >
+> > Perhaps they are dealing with systems with PAGE_SIZE=3D65536, but then
+> > the skb_page_frag_refill() would be a non issue there, because it would
+> > only allocate order-0 pages.
+>
+> I am 100% sure that all of them handle PAGE_SIZE=3D4096. Google is workin=
+g on
+> 16KB page size for Android, but it is not ready yet(Please correct me
+> if 16KB has been
+> ready, Suren).
 
-You have an older base, check current mainline, we evaluate slab->obj_exts
-later in the function
+It is ready but it is new, so it will take some time before we see it
+in production devices.
 
-> }
-> 
->>
->>         /*
->>          * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
->> --
->> 2.25.1
->>
-
+>
+> >
+> > > We=E2=80=99ll need some time to understand why these are configured t=
+his way in
+> > > AOSP hardware.
+> > >
+> > > >
+> > > > >
+> > > > > It might be worth exploring these settings further, but I can=E2=
+=80=99t quite see
+> > > > > their connection to high-order allocations, since high-order allo=
+cations are
+> > > > > kernel macros.
+> > > > >
+> > > > > #define SKB_FRAG_PAGE_ORDER     get_order(32768)
+> > > > > #define PAGE_FRAG_CACHE_MAX_SIZE        __ALIGN_MASK(32768, ~PAGE=
+_MASK)
+> > > > > #define PAGE_FRAG_CACHE_MAX_ORDER       get_order(PAGE_FRAG_CACHE=
+_MAX_SIZE)
+> > > > >
+> > > > > Is there anything I=E2=80=99m missing?
+> > > >
+> > > > What is your question exactly ? You read these macros just fine. Wh=
+at
+> > > > is your point ?
+> > >
+> > > My question is whether these settings influence how often high-order
+> > > allocations occur. In other words, would lowering these values make
+> > > high-order allocations less frequent? If so, why?
+> >
+> > Because almost all of the buffers stored in TCP write queues are using
+> > order-3 pages
+> > on arches with 4K pages.
+> >
+> > I am a bit confused because you posted a patch changing skb_page_frag_r=
+efill()
+> > without realizing its first user is TCP.
+> >
+> > Look for sk_page_frag_refill() in tcp_sendmsg_locked()
+>
+> Sure. Let me review the code further. The problem was observed on the MM
+> side, causing over-reclamation and phone heating, while the source of the
+> allocations lies in network activity. I am not a network expert and may b=
+e
+> missing many network details, so I am raising this RFC to both lists to s=
+ee
+> if the network and MM folks can discuss together to find a solution.
+>
+> As you can see, the discussion has absolutely forked into two branches. :=
+-)
+>
+> Thanks
+> Barry
 
