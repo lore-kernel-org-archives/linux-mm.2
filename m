@@ -4,111 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D483CCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A93E0CCD196
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04A918E0013; Wed, 15 Oct 2025 04:28:23 -0400 (EDT)
+	id 0E76A8E0014; Wed, 15 Oct 2025 04:28:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3D598E0002; Wed, 15 Oct 2025 04:28:22 -0400 (EDT)
+	id 097BE8E0002; Wed, 15 Oct 2025 04:28:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2C258E0013; Wed, 15 Oct 2025 04:28:22 -0400 (EDT)
+	id EA3448E0014; Wed, 15 Oct 2025 04:28:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE25D8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 870475CBEF
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:22 +0000 (UTC)
-X-FDA: 83999671644.15.327DAF8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D2E3E1C000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CFBED8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AC5811B32B
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:24 +0000 (UTC)
+X-FDA: 83999671728.01.08C4975
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E36FC40008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pjlFy6pX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hK0+5+uH;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pjlFy6pX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hK0+5+uH;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516901;
+	s=arc-20220608; t=1760516902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NQTwqTlBXr6retjra5GPHcjItFw8MKUqPe4SY+8hd5k=;
-	b=lYa1LwFfYSvH7iynqREM0Njgh1hC9UqeeLNCVwNdYsogQEZdE+02ZAQuAn9W9C2V/gl6EF
-	SE3j04nTnYNsBbbmhx5KK5tQjsYuzfNIcXxs/D7S3a58NRqIhb0/9/HILzur9cW/95K0az
-	KTOBtsB4aW74PTmoglWqARtYI5/VXI0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qqzB9JK9+uCij0k20PiNt2gVw+L4NpHiOSzfoVgzyLg=;
+	b=l2EOoLYsUiFnRqXeOKzuUCFB3FyQJsDZIgsoduhefWrKRkF5SU7hBwj6BxmSQCc6k0kpPe
+	LKilajcBQFCabOpKdukZjVm+RR8m+oq0qY5FDRwvKOhX0dZRvNLL0ofLRet+73TIwqVgVu
+	/QOK7Zyz2TC+AiwkXosZHgQQaoO3oMQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516901; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pjlFy6pX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hK0+5+uH;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pjlFy6pX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hK0+5+uH;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516902; a=rsa-sha256;
 	cv=none;
-	b=flXX+BESrByWyB5Nik9KG5F1LnhKMYzHWQWMewwrOT5tz9pDsyi2dEPeo/ZABa/5XUi9NX
-	fPe9dDR8Dj7xyFkPcUXnR3PPqOsZNuaqvknrkpgUCpfEDl7teteE4Wg4DmIwBLpPsjXUhR
-	xXKb3vnIhcFeKAQyq8m8lqWmQMkKzDs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44DD11A32;
-	Wed, 15 Oct 2025 01:28:12 -0700 (PDT)
-Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FFB93F66E;
-	Wed, 15 Oct 2025 01:28:15 -0700 (PDT)
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	sparclinux@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	x86@kernel.org
-Subject: [PATCH v3 07/13] mm: enable lazy_mmu sections to nest
-Date: Wed, 15 Oct 2025 09:27:21 +0100
-Message-ID: <20251015082727.2395128-8-kevin.brodsky@arm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20251015082727.2395128-1-kevin.brodsky@arm.com>
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+	b=hJCPGmqPLyMSxexbXkoayCL0RoeRJgP5YZJUbuqFkZf0oDpWniNTbokGwq3iBJ4mT0GcMj
+	95oqvJOMGI8juxi/9h3KUkcq1fneMBmkiPvKtyq+Zk2sAXU39lVgmKHj6uBz2Ohz9zGFov
+	tAXGKBDvc+y9ee8b/V0KPWZx/FmzsLc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EF38033853;
+	Wed, 15 Oct 2025 08:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760516900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qqzB9JK9+uCij0k20PiNt2gVw+L4NpHiOSzfoVgzyLg=;
+	b=pjlFy6pXzOkp3UeHPyDVqKWq9KsbuPMvTIb3bv7vOlOqeLyuV/sXYenidAZvrR4OSD8x+b
+	EPnXyqq9UM2enEebsWDHZYLdU4VHA/dKVqiUuLxuZ59xoyueaUPfiGV3h7yRvmPEhFWnWc
+	VKaGl9/NZUpyNgkUyYdEBnywiugsjH4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760516900;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qqzB9JK9+uCij0k20PiNt2gVw+L4NpHiOSzfoVgzyLg=;
+	b=hK0+5+uHgMQWFZQ68x2XXGlC6RvBH5phfiJzz4rdXIv4uOxA1NRVSPSUG9bDcnj5YhJrXs
+	AuipeVS4RGN/izAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760516900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qqzB9JK9+uCij0k20PiNt2gVw+L4NpHiOSzfoVgzyLg=;
+	b=pjlFy6pXzOkp3UeHPyDVqKWq9KsbuPMvTIb3bv7vOlOqeLyuV/sXYenidAZvrR4OSD8x+b
+	EPnXyqq9UM2enEebsWDHZYLdU4VHA/dKVqiUuLxuZ59xoyueaUPfiGV3h7yRvmPEhFWnWc
+	VKaGl9/NZUpyNgkUyYdEBnywiugsjH4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760516900;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qqzB9JK9+uCij0k20PiNt2gVw+L4NpHiOSzfoVgzyLg=;
+	b=hK0+5+uHgMQWFZQ68x2XXGlC6RvBH5phfiJzz4rdXIv4uOxA1NRVSPSUG9bDcnj5YhJrXs
+	AuipeVS4RGN/izAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D135D13A29;
+	Wed, 15 Oct 2025 08:28:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eSL4LiNb72j4cwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 08:28:19 +0000
+Message-ID: <86eb8759-426f-4460-8bde-1d88e70e266f@suse.cz>
+Date: Wed, 15 Oct 2025 10:28:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mempool: clarify behavior of mempool_alloc_preallocated()
+Content-Language: en-US
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20251014-mempool-doc-v1-1-bc9ebf169700@linutronix.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251014-mempool-doc-v1-1-bc9ebf169700@linutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E36FC40008
+X-Stat-Signature: 7fxhceosjn5wx87rn9qh13w6amufumn7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D2E3E1C000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: b9ke3aq9gkqpcidwxata147wpzy11ssi
-X-HE-Tag: 1760516900-837834
-X-HE-Meta: U2FsdGVkX1/gUdzNWLbNJpWUSMKxv1V7qpif1hAv5qhniHAcbYWwRGCJY2z1v19CBLoAIK/oJhLYA7QJAz5EeW6NqCncGsZkSfW4yhiTNhom5JVkjTsJpc+oUrOuyy2UJsv/TMLXutYxurUiB5WC0q0eZVkWgYov8hJMfCIR9F6zQlu1tLgMNVbuzFmuoz4+CChLOB8a1O5UjRiJpB20jwnvRqeWQNzTL6xvNUgLs0bHzae9VJASo5CO03D2yTrn02I2I3tjygbuZ20vI3nbth9mqIqWLNWHE5BXhLdyWNvh8zi/VAlsN3Mj99Wetr5Px6JHpXofTdAR5L5s1s7sxHmVJd1wl0W6Y/wODubijSuuOxuavJpKR33k7nlUwjHb92aAWGEXGqEBRevkRSEPhVpT0PYzh4i2qFVmFub64SkGIUMAkdDE++E46j/uzJBPyG/y9rghpIsOZ+/x0LgXHiBznqH9Zt/xkqj7aWNNIm/8qzle3Zs9jatyM+ZBG+1te/6WTp2XMb+d0iXznZZMmVj7/4MkfN0Qze3qz812fxyhieqOzyj3d6Khy0H4hzrMfOnaCKFZx1Sc4AM0gLE02jEFV3YPx0R3Rme6VjxrLlRXmcvuVAQn3pAPsJvxNCVQQyao4JeqijGlCbXdfiDxrhB6pImbmD1umG/5zIpv9MQ2nlEebutMK+GV8HoaHmfn2xGd6VmTkeCRmTq+fZF0C2toO1Tl2JAihcPsMwRXAla966eOkCQn0F5lOQ8lys01txj3DsVc27vFo/ufai3TjOcTvz+dTE9lnTEc7tJWjlIf88j9vb14+nYnsNDMbyykZ4OdgSgi9ji3yHnFJOg7/w/0QlV6SLpTW+4R47pJ7ft+aKXwGb6FntyTY8MwD6sYIaS49TO/cbxy7gaakA3W32AljS3sbELKdtldwKSCjP3UkZL4KJj9QiZI0+dLpSjRbanz6pGytyA1rLxvKCe
- +qiBEg7S
- 5mLK3IgFer9xEq9Z8Lyx8wjw6dD1m6iBfspD7Zk9u4Y25dtPmTgvM+nEuJPCD6blnVrTrvcT/DfRL7bp0lM6omiTtHSVWWQELyEnJHbTY9H2pLHQK1qL5vCbFeG6WLu5chpziGykE6Wvo4+0wKGyPOSlXQQcBy6nTgqz9iIXSCArwhK7bOy8B+gwVB3dSL/zlAlc0x3Oiy6sYd3xJ1RhdlFyQuUEcMkREuwv8LWmuRSzq4DIgvqMRCI3MF3jI44Fk2H+emQ2YyS/EkL1rfhZFTtwllYGRu/tm8lDplsCPi7rgnNNLnGMmd2x+oWNX3ZThYGL4
+X-HE-Tag: 1760516901-813485
+X-HE-Meta: U2FsdGVkX19Nt4P7N/N42Rb5lLqFgoDuOnockl6nKu0utgUbua5UmFkRHz1ydM/RHpz42+qynuxcRawLcZRbPPXEcwR3dwwC4zt+2EpL6VJe1HqB78YqlP3opTrIEFdTO5XXiG6GFp3mhfE6oohBRRK1QcltUfeJQ+d8Mb9L2TpLaFy77lpblczU1KqMLJ3WXArao107Wjaezqc4M3OreJkiwyGVyMZKLhEXHOjvBKpbC6EWYAR2jVdHEAoE85ttNfDBbDGPUw8/wXHEMX78Do7P0tw9M6dXVMuRjCTwJxPhPSLAQJ+sNQMtTyOOg7gm//kjeHXMFg042DN0HCwnLUcwXI5+lHzzwvm36oZYlFGmQSZuf4eerPinRUHiX0ZA04xByALT1NS8P86cPpcCbDfhoDFXVTBS5zCxlut2w7mFzsucfuuyncDiPhzAqmL6K62N4+fFvGcpnRJsUPGE5Geu2XQeQ24JriyIhpLGpp3sm5AdO0VbtjXSeozVDQvZBGMNyGh908AekUvK6n/9Cid11QOlfVaFhzHjOkuDHGleV/ddN9dl/0zbz0/o7ZmgWCRKWTJmLFUF1fGm3JKHzinaXWK0Wkt6pEneDSY9Fbs6+wPK0aQ/wqAcR2TupY8CQNBW9sYPvdjRENPBc48pSwqdW0QM0kCf8J/7zpp/pjPP8BFeYiPqc0xFxnl5SXoa/KYYOKSsgI9rsJ/FBPVI8KE0OXBh/tE6MFSnJ7BYND6myxmmCfnCuV+vnzr5H0809qbKZisYSLNzot7XsYFOwdesXGrDVIyMcU2Q3H9zwp4QUKM0xS5TOrPnNhSN1kpRdC/+aIogXUjczTnZ2awCsURiFHwI3njFAljDAAK2LR8PxlqvSrkQGug6/KVyOsTEOJcfkqWiNOj4DgCSfd0D5u0TlCSn8c/R3obqV7Rx8y3bVJMQUnOXyMYZJm/pqoWnJzldtnANrt2Bwiq1aSs
+ EpL36HtQ
+ InXvqBWqDgqz9gQbBZ/UA5PvlpKvJFCCMh7Oljnl3CQy288sOqAsoV4t/dlToSOlSDyF7OQrXbjRIBaLkvlu91TGzoKtUGLB7VGG4YzPB3mUNc4aqRbBlZjt+6/C/nJIj6Uhyo0LCgbxlcoI9JOY3zcj5/98QPKIPk4gZAoH3bEcjsEcBwtHYK86JiMgJOrDxs6AJ/ZwRgLwjeKXig2hJenAEpoO1VBmCzQC3/qM6FNMZJ2WRiDG52OdAaclmvqQmIGVoD7Cb4UEQ+5LhAfkbhduRL01IlCZFFjmJL8TsVRaFRNNe7f3mIgIPj/D1PJEoytPEjsPKw6Th7uW3nqlwzcWLgExTZuyIbe4I0D8tlD/p6l8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,242 +182,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Despite recent efforts to prevent lazy_mmu sections from nesting, it
-remains difficult to ensure that it never occurs - and in fact it
-does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
-Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
-made nesting tolerable on arm64, but without truly supporting it:
-the inner call to leave() disables the batching optimisation before
-the outer section ends.
+On 10/14/25 14:17, Thomas Weißschuh wrote:
+> The documentation of that function promises to never sleep.
+> However on PREEMPT_RT a spinlock_t might in fact sleep.
+> 
+> Reword the documentation so users can predict its behavior better.
+> 
+> mempool could also replace spinlock_t with raw_spinlock_t which doesn't
+> sleep even on PREEMPT_RT but that would take away the improved
+> preemptibility of sleeping locks.
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-This patch actually enables lazy_mmu sections to nest by tracking
-the nesting level in task_struct, in a similar fashion to e.g.
-pagefault_{enable,disable}(). This is fully handled by the generic
-lazy_mmu helpers that were recently introduced.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-lazy_mmu sections were not initially intended to nest, so we need to
-clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
-This patch takes the following approach:
-
-* The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
-  calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
-
-* Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
-  to the arch via arch_{enter,leave} - lazy MMU remains enabled so
-  the assumption is that these callbacks are not relevant. However,
-  existing code may rely on a call to disable() to flush any batched
-  state, regardless of nesting. arch_flush_lazy_mmu_mode() is
-  therefore called in that situation.
-
-A separate interface was recently introduced to temporarily pause
-the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
-exits the mode *regardless of the nesting level*, and resume()
-restores the mode at the same nesting level.
-
-Whether the mode is actually enabled or not at any point is tracked
-by a separate "enabled" field in task_struct; this makes it possible
-to check invariants in the generic API, and to expose a new
-in_lazy_mmu_mode() helper to replace the various ways arch's
-currently track whether the mode is enabled (this will be done in
-later patches).
-
-In summary (count/enabled represent the values *after* the call):
-
-lazy_mmu_mode_enable()		-> arch_enter()	    count=1 enabled=1
-    lazy_mmu_mode_enable()	-> ø		    count=2 enabled=1
-	lazy_mmu_mode_pause()	-> arch_leave()     count=2 enabled=0
-	lazy_mmu_mode_resume()	-> arch_enter()     count=2 enabled=1
-    lazy_mmu_mode_disable()	-> arch_flush()     count=1 enabled=1
-lazy_mmu_mode_disable()		-> arch_leave()     count=0 enabled=0
-
-Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
-headers included by <linux/pgtable.h> to use it.
-
-Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
----
-Alexander Gordeev suggested that a future optimisation may need
-lazy_mmu_mode_{pause,resume}() to call distinct arch callbacks [1]. For
-now arch_{leave,enter}() are called directly, but introducing new arch
-callbacks should be straightforward.
-
-[1] https://lore.kernel.org/all/5a0818bb-75d4-47df-925c-0102f7d598f4-agordeev@linux.ibm.com/
----
- arch/arm64/include/asm/pgtable.h | 12 ------
- include/linux/mm_types_task.h    |  5 +++
- include/linux/pgtable.h          | 69 ++++++++++++++++++++++++++++++--
- include/linux/sched.h            | 16 ++++++++
- 4 files changed, 86 insertions(+), 16 deletions(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index e3cbb10288c4..f15ca4d62f09 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -82,18 +82,6 @@ static inline void queue_pte_barriers(void)
- 
- static inline void arch_enter_lazy_mmu_mode(void)
- {
--	/*
--	 * lazy_mmu_mode is not supposed to permit nesting. But in practice this
--	 * does happen with CONFIG_DEBUG_PAGEALLOC, where a page allocation
--	 * inside a lazy_mmu_mode section (such as zap_pte_range()) will change
--	 * permissions on the linear map with apply_to_page_range(), which
--	 * re-enters lazy_mmu_mode. So we tolerate nesting in our
--	 * implementation. The first call to arch_leave_lazy_mmu_mode() will
--	 * flush and clear the flag such that the remainder of the work in the
--	 * outer nest behaves as if outside of lazy mmu mode. This is safe and
--	 * keeps tracking simple.
--	 */
--
- 	if (in_interrupt())
- 		return;
- 
-diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
-index a82aa80c0ba4..2ff83b85fef0 100644
---- a/include/linux/mm_types_task.h
-+++ b/include/linux/mm_types_task.h
-@@ -88,4 +88,9 @@ struct tlbflush_unmap_batch {
- #endif
- };
- 
-+struct lazy_mmu_state {
-+	u8 count;
-+	bool enabled;
-+};
-+
- #endif /* _LINUX_MM_TYPES_TASK_H */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 194b2c3e7576..269225a733de 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -228,28 +228,89 @@ static inline int pmd_dirty(pmd_t pmd)
-  * of the lazy mode. So the implementation must assume preemption may be enabled
-  * and cpu migration is possible; it must take steps to be robust against this.
-  * (In practice, for user PTE updates, the appropriate page table lock(s) are
-- * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
-- * and the mode cannot be used in interrupt context.
-+ * held, but for kernel PTE updates, no lock is held). The mode cannot be used
-+ * in interrupt context.
-+ *
-+ * The lazy MMU mode is enabled for a given block of code using:
-+ *
-+ *   lazy_mmu_mode_enable();
-+ *   <code>
-+ *   lazy_mmu_mode_disable();
-+ *
-+ * Nesting is permitted: <code> may itself use an enable()/disable() pair.
-+ * A nested call to enable() has no functional effect; however disable() causes
-+ * any batched architectural state to be flushed regardless of nesting. After a
-+ * call to disable(), the caller can therefore rely on all previous page table
-+ * modifications to have taken effect, but the lazy MMU mode may still be
-+ * enabled.
-+ *
-+ * In certain cases, it may be desirable to temporarily pause the lazy MMU mode.
-+ * This can be done using:
-+ *
-+ *   lazy_mmu_mode_pause();
-+ *   <code>
-+ *   lazy_mmu_mode_resume();
-+ *
-+ * This sequence must only be used if the lazy MMU mode is already enabled.
-+ * pause() ensures that the mode is exited regardless of the nesting level;
-+ * resume() re-enters the mode at the same nesting level. <code> must not modify
-+ * the lazy MMU state (i.e. it must not call any of the lazy_mmu_mode_*
-+ * helpers).
-+ *
-+ * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
-+ * currently enabled.
-  */
- #ifdef CONFIG_ARCH_LAZY_MMU
- static inline void lazy_mmu_mode_enable(void)
- {
--	arch_enter_lazy_mmu_mode();
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	VM_BUG_ON(state->count == U8_MAX);
-+	/* enable() must not be called while paused */
-+	VM_WARN_ON(state->count > 0 && !state->enabled);
-+
-+	if (state->count == 0) {
-+		arch_enter_lazy_mmu_mode();
-+		state->enabled = true;
-+	}
-+	++state->count;
- }
- 
- static inline void lazy_mmu_mode_disable(void)
- {
--	arch_leave_lazy_mmu_mode();
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	VM_BUG_ON(state->count == 0);
-+	VM_WARN_ON(!state->enabled);
-+
-+	--state->count;
-+	if (state->count == 0) {
-+		state->enabled = false;
-+		arch_leave_lazy_mmu_mode();
-+	} else {
-+		/* Exiting a nested section */
-+		arch_flush_lazy_mmu_mode();
-+	}
- }
- 
- static inline void lazy_mmu_mode_pause(void)
- {
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	VM_WARN_ON(state->count == 0 || !state->enabled);
-+
-+	state->enabled = false;
- 	arch_leave_lazy_mmu_mode();
- }
- 
- static inline void lazy_mmu_mode_resume(void)
- {
-+	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-+
-+	VM_WARN_ON(state->count == 0 || state->enabled);
-+
- 	arch_enter_lazy_mmu_mode();
-+	state->enabled = true;
- }
- #else
- static inline void lazy_mmu_mode_enable(void) {}
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index cbb7340c5866..2862d8bf2160 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1441,6 +1441,10 @@ struct task_struct {
- 
- 	struct page_frag		task_frag;
- 
-+#ifdef CONFIG_ARCH_LAZY_MMU
-+	struct lazy_mmu_state		lazy_mmu_state;
-+#endif
-+
- #ifdef CONFIG_TASK_DELAY_ACCT
- 	struct task_delay_info		*delays;
- #endif
-@@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_struct *tsk)
- 	return task_index_to_char(task_state_index(tsk));
- }
- 
-+#ifdef CONFIG_ARCH_LAZY_MMU
-+static inline bool in_lazy_mmu_mode(void)
-+{
-+	return current->lazy_mmu_state.enabled;
-+}
-+#else
-+static inline bool in_lazy_mmu_mode(void)
-+{
-+	return false;
-+}
-+#endif
-+
- extern struct pid *cad_pid;
- 
- /*
--- 
-2.47.0
+> ---
+>  mm/mempool.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index 1c38e873e546fadcc594f041874eb42774e3df16..cceb09b75ebe35f263a5fb95ff6d400221ecbdd5 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -461,8 +461,8 @@ EXPORT_SYMBOL(mempool_alloc_noprof);
+>   *             mempool_create().
+>   *
+>   * This function is similar to mempool_alloc, but it only attempts allocating
+> - * an element from the preallocated elements. It does not sleep and immediately
+> - * returns if no preallocated elements are available.
+> + * an element from the preallocated elements. It only takes a single spinlock_t
+> + * and immediately returns if no preallocated elements are available.
+>   *
+>   * Return: pointer to the allocated element or %NULL if no elements are
+>   * available.
+> 
+> ---
+> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> change-id: 20251014-mempool-doc-625dd4996110
+> 
+> Best regards,
 
 
