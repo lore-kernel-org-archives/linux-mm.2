@@ -4,179 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01EC0CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 10:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F59CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 10:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 591B98E0015; Wed, 15 Oct 2025 06:37:19 -0400 (EDT)
+	id 0BFB78E0016; Wed, 15 Oct 2025 06:44:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 569798E0002; Wed, 15 Oct 2025 06:37:19 -0400 (EDT)
+	id 097B18E0002; Wed, 15 Oct 2025 06:44:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 458128E0015; Wed, 15 Oct 2025 06:37:19 -0400 (EDT)
+	id F16678E0016; Wed, 15 Oct 2025 06:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 341758E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:37:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B903116035F
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:37:18 +0000 (UTC)
-X-FDA: 83999996556.18.AF0F265
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 42A652000A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:37:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MMjwsQZ4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kmWsXVhg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MMjwsQZ4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kmWsXVhg;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E11B98E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:44:28 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 76740889B4
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:44:28 +0000 (UTC)
+X-FDA: 84000014616.16.EBA0320
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 999CC40003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:44:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dd649Wu1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760524636;
+	s=arc-20220608; t=1760525066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ch8Txd3Go5tUrNpujwfVCPB6V90KtdNakLBwiq7WOPc=;
-	b=3C86+haAt1rNctq8hCSt2f+vF4nL5jnenvYcsaj3JjQ+SaImR8voPKJQC1jciQpB3HuNQs
-	AJTxmNIg+5nV1KjZTwh25VAQ4ATuXxnseHQkQc5KTY903TVLAh8c7NrlcZwN0Jf3RZQLag
-	eO0HRJpT4fZBVJn7Nlw14knRulOWHqw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760524636; a=rsa-sha256;
-	cv=none;
-	b=qLIlSAXvt1tpzarXeU5VCs3V2hxTt2lLjrr8YPAcOahWirFTkVeXeifY8KTtNUZXCpab6K
-	8DJYOlLMAX4xGYn1HihG+REGZ8OLgW5iVPd+VSzj0Arty6GRoBbfZRuPGqjtSnVuj9B/4t
-	P2gPF/NI//7vTiyYaaBKisYxABhfIsg=
+	bh=Ja98IX4O3cTLH8elNwZHWRY1chVsyxH3oWvi7WUQjeY=;
+	b=d1mkKJeGTHhEileJcfBKhCxWrirqjE7AWoGAIXxdm0v6XS74xkCjPoPsUrh+lmwxAswb+K
+	S/vPLJpdUxWRrnWzNe5xQTEEgbJ3WVIsgtVyn6PQ/eM5pSdyiOXWZLw39mW4gbep0S1rzC
+	M+NDcmBrZLageg6Msf/c/d8WuRMR4bk=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MMjwsQZ4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kmWsXVhg;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MMjwsQZ4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kmWsXVhg;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9383133856;
-	Wed, 15 Oct 2025 10:37:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760524634; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ch8Txd3Go5tUrNpujwfVCPB6V90KtdNakLBwiq7WOPc=;
-	b=MMjwsQZ4KE/nscd/YIHEYI+aLquW+tOE/yF7EF95Kb9Q6z/ZOFJXsz/87T+jLv1XzVN1aH
-	3Vbg/o9OgsQx1hazAejb7UOyQwHlGEo8s4B3VV5R4/COWX0cJdOxw7ZffYy1tFp9BolojM
-	WJnqEeRUblRTso5I3+MkSrwMkv93R/k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760524634;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ch8Txd3Go5tUrNpujwfVCPB6V90KtdNakLBwiq7WOPc=;
-	b=kmWsXVhg7qvQHQQ8zL9EGCoyIcw+R5ppekmtANLqCecRU58mwBHDfvp/hnMMgZnnZFAbCQ
-	WcKelaB7ZKcjTSDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760524634; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ch8Txd3Go5tUrNpujwfVCPB6V90KtdNakLBwiq7WOPc=;
-	b=MMjwsQZ4KE/nscd/YIHEYI+aLquW+tOE/yF7EF95Kb9Q6z/ZOFJXsz/87T+jLv1XzVN1aH
-	3Vbg/o9OgsQx1hazAejb7UOyQwHlGEo8s4B3VV5R4/COWX0cJdOxw7ZffYy1tFp9BolojM
-	WJnqEeRUblRTso5I3+MkSrwMkv93R/k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760524634;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ch8Txd3Go5tUrNpujwfVCPB6V90KtdNakLBwiq7WOPc=;
-	b=kmWsXVhg7qvQHQQ8zL9EGCoyIcw+R5ppekmtANLqCecRU58mwBHDfvp/hnMMgZnnZFAbCQ
-	WcKelaB7ZKcjTSDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7483313A29;
-	Wed, 15 Oct 2025 10:37:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id r0ogHFp572jVHgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 10:37:14 +0000
-Message-ID: <6194b6ab-6b43-468d-ba78-a95594c48798@suse.cz>
-Date: Wed, 15 Oct 2025 12:37:14 +0200
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dd649Wu1;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760525066; a=rsa-sha256;
+	cv=none;
+	b=HQwTtk/IcEYkpt4+ZvreqC10nGDNg9agxxcxqWU2owoVzp084XctAnVF9vNfxPt+PUr8H4
+	e07S76whp3Vmyri604lagh2vsoiO7DKwFqowVH86508QtbQpk/vulu9F3Do35ApfsWx50/
+	74z0WdyDh4OnFY5eJfCPj7j81VbqfyI=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46b303f755aso56653135e9.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:44:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760525065; x=1761129865; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ja98IX4O3cTLH8elNwZHWRY1chVsyxH3oWvi7WUQjeY=;
+        b=Dd649Wu1GZZNES17jtWuINl/tlLBsJMShkJ9tSATCG8AoZVvOzgE80XHEZRBxJ5xRg
+         XtD+n3GDO4kSz/UQg7sBiEZ6aJFeHwVrqRcgoRfUvxj9PBn9MzuUXCJsmipcOwK1M6q1
+         YRjF418ojXQTps+HH3wiX0uQou4CiljzK7gCnyhDmmZEcnTMFczmj/yZ8XVHIf0vq6JA
+         +lXIXiDCKpIw9tvg9GDNMj7EMBUf0HFVMptDFqixz4GOAG1Np2uMSKcLMqKTM0xBZ9qq
+         8hLzJOyjQKHWxUcIjaeJGXafETBpE8kZyx/5pajjRoqMcmFAnJK7rdJb7osi1MPVuui+
+         4jug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760525065; x=1761129865;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ja98IX4O3cTLH8elNwZHWRY1chVsyxH3oWvi7WUQjeY=;
+        b=F465KHQIPMpMCRf6QoJz9KazWQZmiQa14nXIN+QCZ6e8n5rAwogGhbqFiyN1qzvGYF
+         8ti9F3v8JCLrVDIOmhRm3Vh2Nc8rvwCmc2/oze6BEzvRH4noqRjs4EDB1oqDq+HCX4To
+         IMzQdi9KqM2KhNfOkUPaj1Gx4BZTuOdT6LqD6YwJXC3c61zUgiB5/uH+G4dOYVHgPoM8
+         PLYGThMKzRT6yymOU4uKc7ZP6wKSo/eVmytjKxJJsNhWTY2ccOqIV6dWTOHH5aEYJJef
+         th5jntISgHt4UsBuAst2B6tNPI61KLda9k/KDoezqw/UZSwm+hft88U61+bI0e64URge
+         URow==
+X-Gm-Message-State: AOJu0Ywv7gV6B8ZUITK2loIT2GBYQabXcF/WwJVdxRrJnladJWFXR7VV
+	lkqO7BZt9gi2ykkOpGnTDqP8kXEpZGVz0UUQt0+WZxWRUzNRo+2AA94L
+X-Gm-Gg: ASbGncs1zmb6MJL6PpgwY5Om0QFRyZgKu1WryPSQGR1KPUyhsJ8jk3wB8AdlFMVIGoA
+	mB1uf4XkTwyRtNabmFL7vw/tIfGNa84MOvvai/TSToDcOuHlRQo4JhTrm4R4XKk0fw4eBDEZdgQ
+	7vv6UzIzr718Rl3S3xXR3/I5PqfSJQavdxSviuq9e4dIEL8QY/U4CmYxSZAeGwyT7ZliRBQOH4G
+	ItsdD2s8hcLdoYCE4YrC9KSPrM/1Zooh2px/D5Ym6JKhHXfnf9trRUPpziad1KwYp/HDN47B/0v
+	4g0kuBEj4KBQJ1WkQ1jUPSV8NM3yqe/EG3lOVohRV9FGsisyRfFKFLA+RW9Xse/T0t9QcpmqdPC
+	SINTj5/R45wd8cOq57iGE4R7lCDG9yyMVt4Qx9KvNTx3pCA==
+X-Google-Smtp-Source: AGHT+IG61k8TsU+nB/wUHMVmWo7EiG1XXr0JninDaZK/tiZZ7l9Az3/JlEMJMgkqkdZo6AaTLocEaA==
+X-Received: by 2002:a05:600c:1907:b0:470:ff87:6c2d with SMTP id 5b1f17b1804b1-470ff8770dcmr13266675e9.29.1760525064699;
+        Wed, 15 Oct 2025 03:44:24 -0700 (PDT)
+Received: from fedora ([31.94.20.38])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fab5250ddsm170242205e9.6.2025.10.15.03.44.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 03:44:24 -0700 (PDT)
+Date: Wed, 15 Oct 2025 03:44:22 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aO97BjvNZNh0UV3u@fedora>
+References: <20251014182754.4329-1-vishal.moola@gmail.com>
+ <aO9Z90vphRcyFv2n@milan>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] slab: Add check for memcg_data != OBJEXTS_ALLOC_FAIL
- in folio_memcg_kmem
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <20251014152751.499376-1-hao.ge@linux.dev>
- <CAJuCfpGBxUmvWoe2xv2-bsF+TY4fK-m1-Z_E3OcyTiSYz5KeAA@mail.gmail.com>
- <aO9okBEZiA4pCNku@hyeyoo> <c07838ca-4e6e-4837-b99f-09fd44c7801c@suse.cz>
- <aO93GHNR_32-Pmom@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aO93GHNR_32-Pmom@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aO9Z90vphRcyFv2n@milan>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42A652000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: a51f81szb8xwsk78g6bcuthp3doddu1z
-X-HE-Tag: 1760524636-693068
-X-HE-Meta: U2FsdGVkX18v0B6l9gDObA1KYRX1r74vOgfM+t2SJASQq2fXLH9QApfrU4HbAeyh6uXDlRPC8LAWy18m7oVCOE2ouu/nNgpLVxc/ERcry4eZLmSmafl7JsDCL9chT6HjF/BO6x5GEl7hsj7VbaBYWHWAmbgIKch231gXSBpzcGh6NV/F6h4VwC6hkKkuhqEQx1lPikPhfWAPBEoPuOpCeNGXM8JZaOzYjj9dILkJXcYwBVttHmayE+xj6twnbqmveJbu18qoKnqDceIm3xmkan1PSVbgxeZWuJLc8AgAgU/IOcZiCbe5v2ZmAC2WjOVHrYDodQC0VcqDUu+xZbGDF7khS95PMtWbK2GPMUZFctRv18oNfKIA8jufhIeVWjVyf5Azc+iwE+tsoGDwWsmOM7Vt/gJJ/ben8G9L0N6Jso4w2J1XHktnnm/QLjRxyY4cTKM1jJVwIPfqzIedSVcjktlZA4aEqBZE3cf2Ut0zlsLjssJYjjT+3tbt/FzgL3cr6GOK91yWzJy4ON4sQCPBaiesC0a5l5W58R2D5HqiF4qwi7jk+YHWZn2mWFzq++UfcMzD7Ih/WZY0skXa7HE0AAQNeKm535VuK6lS1LLwkgaONANdlxdBJKdRLX4aEz8dmXFaUaFVXpCSlcfOJUJdR//yi1o2UQ0y737EXKJu+QNjrN6tblt+YXgTPMK4LOJtD6LUxovIeOMyQvBx5MfYEkscJD7ut1Mf2kea5ftDVgRCSPmp8/911nvQLoTtHuWbnlmbuyDkAfadMUA0u3xE+ZFaIoRjVjbal9W3QnL0bk2s4Wbt+sLwnar2igpAv2SU5k659qGXtam6Z6sUYdgScDyedRp8xs5/rGLUzuPGMp/NpRswmnoQMGZeblYP0xGD5n6A/dHzdha1ZhzA+oDmQ0rfdZL/La5HVk9xzWc0NGWDS22ScOmjLg7MDbt9OKjYmk8W6pwuZyl96YrWE5K
- t7UP5cSD
- akTSH67vY+QDp/3K7pbFBnRV5IKD3uZEG62me4aqLKmeaUaXTLFrcCqIDKh9pJSQ6axLXwvnaAGB6yM/A41IX8eIrozkDfKNE6bOO6SCLgwUvrAfaI/wSK1xU46X1GKbmNA9zIhTbS2L5ScZT2Y2w+l6QCeodFaiNsXL95wTNbzYbJIcp3tLN+aei5EvnOofYgZC/1Ji5f22VlTrifz9FI68EYniz0LbsCgbLmajaSm8lhgbqDSmZIjCTv3T3GLhJHiIZBH1T//vMY/OSMJig8CuvY3fXIjCo6bNMjOb0PmslVQfK6s4hNRS/f1qC6XflxtkotX9Vpm6BtYVNlt0nuBBFplhT40wUifpgGzxq6yHP9e3ccO49qIVKQC7/gjyEUno9j2Z5WQuDRO9UASfdH/t0tcjThuy2c5yC3VTNZExmcPNp7CQoPuXORQj7EVdEVdyJ
+X-Rspamd-Queue-Id: 999CC40003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6o1yc9hcpb68cwiq4hqjgx6gj9zrje9z
+X-HE-Tag: 1760525066-592953
+X-HE-Meta: U2FsdGVkX19icM/aYiD0uyJoGXTLuscl8kgw3V43yuTu7HcISnBrxQaLjQyhrD2cf1u8rQTQZBC7XTrCZ1x/zL/+uoIp77qhCP3mGSlaZyhhvg21u9h/BEj5Cj5CMeHoQX0KqiTXXAac/UFrLsY8MEOAK2VjM5CghQEk36v6phiEh9+/kCK+wbHbSHEi1OYLvGedbICDPrLCgrFr0u3Lgut8oyCk0FhQ6YcwWn0NcMxV1DUzO2tdMjYMs8iQENpd9/hrZnZIW2Yl1bNDZgklfFpM6oQ9mnD+a1D0sZLJv0OBYvM0zVMOqF4Xa1YrKxp0o6mERYwBUFhvBHzpbDJ41CeVntbTjK7VMupnFMgsK29dM4bg091qZTRWhOGuJpIs5rzfBvmIOnttnwJNwlU8Si/uwpJcJb3tZSsTTz5c/UVFOqjdPMlOLD2ndVabru9FHcsrEQgoJXuX3gYeqDI8tBsqGcvbmEGEU5+EhzwkKHUY5RWFiaBHmgk2+hDGo+JxOyXeQEacwzSObG6kUcnZTxE1kSH0K3HLBAqi+dDVP/wU6JLJjoTBpTmX4cII1PPpfQL6b0cD4Mefg270jcfD8Lede+d31ozUgKrfRDWmeqCOEHuNw9BRao5VEAC1r1k6Er7d2EE06tvPx2H2++rYgAMmhtjxn956+XEg+xDfmTwhUw9ii5Ey8835Jfgmn6A/k209sPugnXVKvHv/VuG53tKqYOYenR3tS0rmN1BzjxnbrdmdIGK4y3h3y4pTslpJX4FgCYD1Ez0GOeeiOq6/wDMC/pE+PW3H+HCGqsT18yfBCBsBX+FV123y/ufic9Jx3/ahF3ChxFPOBiyZ1QrvTwMq0j9NKzHLjKyn3uBff6DvB/ORj/twhjJC4ZAOTl2u+Zq4tlnbTN89WqgsYngCJ7+I+sI7EQivGExLmxv7/K/UwoG6YgHEk/3pp3flsuaM+V2Ho7qGPNP7SHHB9lP
+ n/jhxIuj
+ DwEfEd6dctQAB4km3swPsOa9+Etr7WqpTt8BJNKR8zDG0wnhObzFTRA4YOFlpGs/GS4uZdFBiTIUXswJxeIjec7xNlSJk8Bw9CcKXEd0VmigRb7F5NKOkbWlmqG9+6KU5ZFN3HoltWUtVDSLc1lk/+hJ7rxHWbuOLOs8m5cMGoKr2JKZL0AcboywPJvJnL+MlNcj06gQeDFIn6Lqrj+bOBaot4gBzmgdZqNgYvYIPMnN+onePe93XReX7CwFNVlv+v9hcNjOQw6PQtFteG77sEJWQ8gsAWSSiSsuYPErjpG1pAMwQT/KLQYabTmX8uTx3+jBmNKGJqrCMjmKiNXZIoQ+Ix7RJMTYvKJhXRvyqOfuVrwNonFZIkB7hEdsOMC1VYhFXcmHIDKY5qHcjlltwoB4fKBJsXbyzhwVcp+wJu5lrcTjq2gg4VYrI1cR9QUPtQE1TBUxZYhnP2OJJrhW5b5tUrnyVKINoY0ltuYL29n5OTh0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,142 +118,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 12:27, Harry Yoo wrote:
-> On Wed, Oct 15, 2025 at 11:54:18AM +0200, Vlastimil Babka wrote:
->> On 10/15/25 11:25, Harry Yoo wrote:
->> > On Tue, Oct 14, 2025 at 09:12:43AM -0700, Suren Baghdasaryan wrote:
->> >> On Tue, Oct 14, 2025 at 8:28 AM Hao Ge <hao.ge@linux.dev> wrote:
->> >> >
->> >> > From: Hao Ge <gehao@kylinos.cn>
->> >> >
->> >> > Since OBJEXTS_ALLOC_FAIL and MEMCG_DATA_OBJEXTS currently share
->> >> > the same bit position, we cannot determine whether memcg_data still
->> >> > points to the slabobj_ext vector simply by checking
->> >> > folio->memcg_data & MEMCG_DATA_OBJEXTS.
->> >> >
->> >> > If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
->> >> > and during the release of the associated folio, the BUG check is triggered
->> >> > because it was mistakenly assumed that a valid folio->memcg_data
->> >> > was not cleared before freeing the folio.
->> > 
->> > nit: yesterday I was confused that this is sanity checks in buddy complaining
->> > folio->memcg_data not being cleared, but it's actually folio_memcg_kmem()
->> > complaining that MEMCG_OBJEXTS_DATA flag is set on non-slab folios (in
->> > free_pages_prepare(), if PageMemcgKmem(page) -> __memcg_kmem_uncharge_page()))
->> > So the paragraph above should be updated?
->> > 
->> > And as a side question, we clear slab->obj_exts when freeing obj_ext array,
->> > but don't clear OBJEXTS_ALLOC_FAIL when freeing a slab? That's not good.
->> 
->> Hm great point. We should rather make sure it's cleared always, instead of
->> adjusting the debugging check, which shouldn't be then necessary, right?
+On Wed, Oct 15, 2025 at 10:23:19AM +0200, Uladzislau Rezki wrote:
+> On Tue, Oct 14, 2025 at 11:27:54AM -0700, Vishal Moola (Oracle) wrote:
+> > Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+> > allocator. Rather than making requests to the buddy allocator for at
+> > most 100 pages at a time, we can eagerly request large order pages a
+> > smaller number of times.
+> > 
+> > We still split the large order pages down to order-0 as the rest of the
+> > vmalloc code (and some callers) depend on it. We still defer to the bulk
+> > allocator and fallback path in case of order-0 pages or failure.
+> > 
+> > Running 1000 iterations of allocations on a small 4GB system finds:
+> > 
+> > 1000 2mb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    46.310s			real    34.380s
+> > 	user    0.001s			user    0.008s
+> > 	sys     46.058s			sys     34.152s
+> > 
+> > 10000 200kb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    56.104s			real    43.946s
+> > 	user    0.001s			user    0.003s
+> > 	sys     55.375s			sys     43.259s
+> > 
+> > 10000 20kb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    0m8.438s		real    0m9.160s
+> > 	user    0m0.001s		user    0m0.002s
+> > 	sys     0m7.936s		sys     0m8.671s
+> > 
+> > This is an RFC, comments and thoughts are welcomed. There is a
+> > clear benefit to be had for large allocations, but there is
+> > some regression for smaller allocations.
+> > 
+> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > ---
+> >  mm/vmalloc.c | 34 +++++++++++++++++++++++++++++++++-
+> >  1 file changed, 33 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 97cef2cc14d3..0a25e5cf841c 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -3621,6 +3621,38 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+> >  	unsigned int nr_allocated = 0;
+> >  	struct page *page;
+> >  	int i;
+> > +	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
+> > +	unsigned int large_order = ilog2(nr_pages - nr_allocated);
+> >
+> If large_order is > MAX_ORDER - 1 then there is no need even try
+> larger_order attempt.
 > 
-> Yeah folio_memcg_kmem() isn't supposed to be called on slabs anyway
-> (it's not a slab at the time we free it to buddy), so we don't have to
-> adjust the debug check.
+> >> unsigned int large_order = ilog2(nr_pages - nr_allocated);
+> I think, it is better to introduce "remaining" variable which
+> is nr_pages - nr_allocated. And on entry "remaining" can be set
+> to just nr_pages because "nr_allocated" is zero.
 
-Great. Hao Ge, can you please send v4 that instead of adjusting the
-VM_BUG_ON modifies free_slab_obj_exts() to always clear slab->obj_exts? Thanks!
+I like the idea too.
 
->> >> > So let's check for memcg_data != OBJEXTS_ALLOC_FAIL in folio_memcg_kmem.
->> >> >
->> >> > Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
->> >> > Suggested-by: Harry Yoo <harry.yoo@oracle.com>
->> >> > Signed-off-by: Hao Ge <gehao@kylinos.cn>
->> >> 
->> >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->> >>
->> >> nit: I think it would be helpful if the changelog explained why we
->> >> need the additional check. We can have the same bit set in two
->> >> different situations:
->> >> 1. object extension vector allocation failure;
->> >> 2. memcg_data pointing to a valid mem_cgroup.
->> >> To distinguish between them, we need to check not only the bit itself
->> >> but also the rest of this field. If the rest is NULL, we have case 1,
->> >> otherwise case 2.
->> > 
->> > Agreed.
->> > 
->> > In general LGTM,
->> > Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->> > 
->> > By the way, maybe it'd be nice to introduce a new helper function that
->> > properly checks MEMCG_DATA_OBJEXTS flag.
->> 
->> I thought so too at first...
->> 
->> >> ~/slab (slab/for-next-fixes)> git grep -n MEMCG_DATA_OBJEXTS
->> >> include/linux/memcontrol.h:337:	MEMCG_DATA_OBJEXTS = (1UL << 0),
->> >> include/linux/memcontrol.h:344:#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
->> >> include/linux/memcontrol.h:358:	 * MEMCG_DATA_OBJEXTS.
->> > 
->> >> include/linux/memcontrol.h:400:	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
->> >> include/linux/memcontrol.h:421:	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
->> > 
->> > these two,
->> > 
->> >> include/linux/memcontrol.h:492:	if (memcg_data & MEMCG_DATA_OBJEXTS)
->> > 
->> > this,
->> > 
->> >> include/linux/memcontrol.h:538:			(folio->memcg_data & MEMCG_DATA_OBJEXTS),
->> >> include/linux/memcontrol.h:1491: * if MEMCG_DATA_OBJEXTS is set.
->> >> mm/kfence/core.c:624:				 MEMCG_DATA_OBJEXTS;
->> > 
->> >> mm/page_owner.c:513:	if (memcg_data & MEMCG_DATA_OBJEXTS)
->> > 
->> > this,
->> > 
->> >> mm/slab.h:541:	 * MEMCG_DATA_OBJEXTS bit set or be equal to OBJEXTS_ALLOC_FAIL.
->> >> mm/slab.h:543:	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS) &&
->> >> mm/slub.c:2137:	new_exts |= MEMCG_DATA_OBJEXTS;
->> >> tools/mm/show_page_info.py:55:        MEMCG_DATA_OBJEXTS = prog.constant("MEMCG_DATA_OBJEXTS").value_()
->> > 
->> >> tools/mm/show_page_info.py:59:        if memcg_data & MEMCG_DATA_OBJEXTS:
->> > 
->> > and this do not look good.
->> > 
->> > I mean technically they are fine since OBJEXTS_ALLOC_FAIL is set on
->> > slabs only, but that's just a coincidence.
->> 
->> And checked the the other debugging checks too. But then thought it's better
->> that if these are not expected to see slabs, then they should not be
->> adjusted. I don't see it as a coincidence but as intention to keep it slab
->> specific. It will be also more future proof for the upcoming separation of
->> struct slab from struct page.
-> 
-> Then we're intentionally using (folio->memcg_data & MEMCG_DATA_OBJEXTS) check
-> as a way to determine whether the folio is a slab (either slabobj_ext array
-> allocation succeeded or failed).
-> 
-> That makes sense to me!
-> 
->> >> > ---
->> >> > v3: Simplify the solution, per Harry's suggestion in the v1 comments
->> >> >     Add Suggested-by: Harry Yoo <harry.yoo@oracle.com>
->> >> > ---
->> >> >  include/linux/memcontrol.h | 4 +++-
->> >> >  1 file changed, 3 insertions(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> >> > index 873e510d6f8d..7ed15f858dc4 100644
->> >> > --- a/include/linux/memcontrol.h
->> >> > +++ b/include/linux/memcontrol.h
->> >> > @@ -534,7 +534,9 @@ static inline struct mem_cgroup *get_mem_cgroup_from_objcg(struct obj_cgroup *ob
->> >> >  static inline bool folio_memcg_kmem(struct folio *folio)
->> >> >  {
->> >> >         VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
->> >> > -       VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
->> >> > +       VM_BUG_ON_FOLIO((folio->memcg_data != OBJEXTS_ALLOC_FAIL) &&
->> >> > +                       (folio->memcg_data & MEMCG_DATA_OBJEXTS),
->> >> > +                       folio);
->> >> >         return folio->memcg_data & MEMCG_DATA_KMEM;
->> >> >  }
->> >> >
->> >> > --
->> >> > 2.25.1
->> > 
->> 
-> 
+> Maybe it is worth to drop/warn if __GFP_COMP is set also?
 
+split_page() has a BUG_ON(PageCompound) within, so we don't need one out
+here for now.
+
+> > +
+> > +	/*
+> > +	 * Initially, attempt to have the page allocator give us large order
+> > +	 * pages. Do not attempt allocating smaller than order chunks since
+> > +	 * __vmap_pages_range() expects physically contigous pages of exactly
+> > +	 * order long chunks.
+> > +	 */
+> > +	while (large_order > order && nr_allocated < nr_pages) {
+> > +		/*
+> > +		 * High-order nofail allocations are really expensive and
+> > +		 * potentially dangerous (pre-mature OOM, disruptive reclaim
+> > +		 * and compaction etc.
+> > +		 */
+> > +		if (gfp & __GFP_NOFAIL)
+> > +			break;
+> > +		if (nid == NUMA_NO_NODE)
+> > +			page = alloc_pages_noprof(large_gfp, large_order);
+> > +		else
+> > +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
+> > +
+> > +		if (unlikely(!page))
+> > +			break;
+> > +
+> > +		split_page(page, large_order);
+> > +		for (i = 0; i < (1U << large_order); i++)
+> > +			pages[nr_allocated + i] = page + i;
+> > +
+> > +		nr_allocated += 1U << large_order;
+> > +		large_order = ilog2(nr_pages - nr_allocated);
+> > +	}
+> >  
+> So this is a third path for page allocation. The question is should we
+> try all orders? Like already noted by Matthew, if there is no 5-order
+> page but there is 4-order page? Try until we check all orders. For
+> example we can get different order pages to fulfill the request.
+>
+> The concern is then if it is a waste of high-order pages. Because we can
+> easily go with a single page allocator. Whereas someone in a system can not.
+
+I feel like if we have high order pages available we'd rather allocate
+those. Since the buddy allocator just coalesces the pages when they're
+freed again, as soon as these allocations free up we are much more
+likely to have large order pages ready to go again.
+
+> Apart of that, maybe we can drop the bulk_path instead of having three paths?
+
+Probably. I'd say that just depends on whether we care about maintaining
+the optimizations for smaller vmallocs() - which I have no strong opinion
+on.
+
+> --
+> Uladzislau Rezki
 
