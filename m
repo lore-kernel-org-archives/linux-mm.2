@@ -4,97 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76A2BCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D210CCD192
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 12:36:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF3538E0008; Wed, 15 Oct 2025 08:35:31 -0400 (EDT)
+	id 935A98E0025; Wed, 15 Oct 2025 08:36:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7CFC8E0020; Wed, 15 Oct 2025 08:35:31 -0400 (EDT)
+	id 8E6E68E0020; Wed, 15 Oct 2025 08:36:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 958378E0008; Wed, 15 Oct 2025 08:35:31 -0400 (EDT)
+	id 7D5A38E0025; Wed, 15 Oct 2025 08:36:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 764698E0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:35:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 67C6F8E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:36:10 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34D08C012C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:35:31 +0000 (UTC)
-X-FDA: 84000294462.27.47FA856
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AE66E14000B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:35:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=sSPHofTR;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760531729; a=rsa-sha256;
-	cv=none;
-	b=lEz4q3xjVWk/zHUeKh3j10mrL17ZROr0iVBoX2XrfE9gp18ctTKi3kkX+DlrYm3h7J0uZD
-	f8RwFOAGo2o5Atrli1KPBUosRqpbHApFUf7M5UvNSDAZeDKgQ3FiM4IxZCSJI8nXlwUORr
-	f9wxyUblOI+wDa0eFKZJvzuv6yk0+0Q=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=sSPHofTR;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21785564E4
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:36:10 +0000 (UTC)
+X-FDA: 84000296100.27.84DA721
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2C23010000D
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 12:36:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ai8s2Bss;
+	spf=pass (imf14.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760531729;
+	s=arc-20220608; t=1760531768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bZkMHk8vSyjdT9ATUyMsYZvO7Wy4fl8dta7kIVnpE8k=;
-	b=g8NGkQru7OBJ6NwbdmIBab9n03ggUEq8tJ6s4vHVXjHD6otB4tnnx7bWiYw3KUhTPMBC0o
-	GBxRA7rITL/BnHePkYlNthyfY8bYx23fZZEf90oCYFHB+iutfoGz7/k3aoPI6HUtKpxwt/
-	+XjDJPV+3PrUT/tuKR+E+IA/K/DP35c=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=bZkMHk8vSyjdT9ATUyMsYZvO7Wy4fl8dta7kIVnpE8k=;
-	b=sSPHofTRb3IF/CJ+P6iwc0dW4Aay9K124c63sJ0ut9sqLCOfBRXYhGbV9mfaI/Clb58EtwC0Y
-	wjK5l2rHEePLEDHwfDL9zVH67ViNoCh12Bye0lRrdxkVqMuEhapQ3chB93bIhGZOmw8040VJN+Q
-	Ni7uIp5kz5uocyJKYM7ooBU=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cmrBw44R3zmV6g;
-	Wed, 15 Oct 2025 20:35:04 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id E2A0A1400CA;
-	Wed, 15 Oct 2025 20:35:24 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 15 Oct 2025 20:35:24 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	<linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: [PATCH v3 3/3] mm: huge_memory: use folio_needs_prot_numa() for pmd folio
-Date: Wed, 15 Oct 2025 20:35:16 +0800
-Message-ID: <20251015123516.2703660-4-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
+	bh=mXqZCy2SyArQfSZB6+/vhy8c6RWAc9H5KTcnkJHJQFY=;
+	b=gFcPr7gU+MMV43mCiKlgu6Ou4S7Hj17kzx1W/S82LG0wea3usdIetJbnbczTqMnfxZmnfk
+	ZJSdtjCm/9sSedKNd++4P3qugViBJmOl7Gk5GUBzNg1Plnz55ZZLiO3vKWW3ikZJpR7sy7
+	enngY0pFhYvogrwt7Y8beYcKM8asz2E=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ai8s2Bss;
+	spf=pass (imf14.hostedemail.com: domain of huangzhaoyang@gmail.com designates 209.85.167.53 as permitted sender) smtp.mailfrom=huangzhaoyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760531768; a=rsa-sha256;
+	cv=none;
+	b=uMuY9qKhhFRLKqgvnWQ0Qv3AXqDzathVPtyxGUG/TU9NLR3h3CPENdLRLey+UJMMhC0OUK
+	PDyPGtKsThIOERHtdC7KMnJ1l3fpGylIL9ADdail+t1G5GImbECyKlra9j4XC1nHPcRFjG
+	wGa2NOdFkH1znxkV7VFdtPZsmhvYB8M=
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-58120c35d47so1201027e87.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760531766; x=1761136566; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mXqZCy2SyArQfSZB6+/vhy8c6RWAc9H5KTcnkJHJQFY=;
+        b=ai8s2Bssijp0HXEWvdtltWyExhqj1VMuOvR3h4z6sUFiNwCFebjZIc5LCJdgRn10oV
+         d2vVfsUpCC+e0uwk+CRuuGxlgXp7C71DrJAhTn+YSvIsMbekR2YpKCWbXPGBQpO84gc9
+         Nmre9kMuK7+Fb14wwkFZ5+XfALuFui0T16rpycoEvJhJOCc8qXtOWaiY60WJOcGy21Ff
+         YI9ETlHsXbZYCUqXqGi9Ta4wTuperBLC3eQQlPe5uc1CmmACk7q3pn/Tl3R6RHbqwawP
+         2U+iPCmUq2DHGc9i8RFwlWgFArBgU8GvwariG2wnC66VrtAscBcGTOhtc0eP+FATKOhc
+         v+JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760531766; x=1761136566;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mXqZCy2SyArQfSZB6+/vhy8c6RWAc9H5KTcnkJHJQFY=;
+        b=ReDM790U2yw5IXPVoGRcBH2R6yqM6NNcb+EGRBs7I2drNhnJK7d20fn+PK/xouk2bV
+         eEXUDEkOk0SCyGyP4BHLxrJCLEKIFm+6qvlZOSYAxG19M5po+sg5ODCiLiRXNwSgfE1V
+         j5luKZdyB5KFgV28KPPlWbh2PUxdJx2We+OkIVNlHztfsHYmB7qSdKVWmP+b5KBs/+Pp
+         8QzRj10mPSoPkpUNhWH3kazdVe7TGwnv2Y1CQCLZ66i1yQXHkd5jjqW6TkZLlAMBQn8L
+         TiEi4D4N32gSp9/diPV9L8lvE/1OiVq6odNbZEeyiOUxExYiZ+bIl/6UNFBSvttstCAO
+         WGdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdiUYroWysvFza62LUtN4gVZFY/k9ngE+7ia9BAm1p+3chY2T/1du1miDm0OYSyWdUyqHF8CjshQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzgt9x0N05HJRAhGm5SCOEgshCZcVVSSj7PJi4ShuvtZ8PDslpV
+	o8gGqMfKp5yaV8zNu8HRI1EHAhhKvHpptpJtss0vG9hvOSSRBdgVgHhN5KtVy8QkSGvSX4z4Z/A
+	kqdn1+971xl7ZRk+mOGHDFZX9f7kXJRo=
+X-Gm-Gg: ASbGncuucJn/U5J6BGTcvJGVDqS6+6dHSvhmV7SDt8nWgvwMvLn6fRCTLjCi0iKjnBx
+	euUAQjHjSeSCDSXE615dFLlgYksi0iTUf4gBiwgffTHD6sJMbAYjxlDvIAZZ+pRzkmyXplw8NSQ
+	CpzcA56cDQTcgYC60VkeXAm2+Nf8XZnWBq22RUkC8WyFYbHEwovgRD7iGYasrgcruiHZqh8vUt1
+	e8QAGzL2j8t7o4NZFM/A/0jnW2aFl7DfWGJcPLBHc2rliij
+X-Google-Smtp-Source: AGHT+IHpJJ3i4VE7K63V7qp2FsxwGna5n/UOWX+WqUQGecNnl4cdq5PAcjc23PWmzxHfk1E5P7xRzKbuz8NuSN92NCQ=
+X-Received: by 2002:a05:651c:f1c:b0:36d:54b3:9f75 with SMTP id
+ 38308e7fff4ca-377795d5fe4mr5645081fa.2.1760531765871; Wed, 15 Oct 2025
+ 05:36:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+References: <20251014083230.1181072-1-zhaoyang.huang@unisoc.com>
+ <20251014083230.1181072-2-zhaoyang.huang@unisoc.com> <f807f3bf-a05d-4e0f-af4c-bb0167dde51c@redhat.com>
+In-Reply-To: <f807f3bf-a05d-4e0f-af4c-bb0167dde51c@redhat.com>
+From: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Date: Wed, 15 Oct 2025 20:35:54 +0800
+X-Gm-Features: AS18NWBHy47J7vqNuZdMWmFiioMnHOdN9PsD8vuUcKjXC1NTUEoBMVAQrHP3CgE
+Message-ID: <CAGWkznG=DAXz5s1gAcs9=OKJC0v0KwB=FK=mKL-c1DSw3jGqfA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: call back alloc_pages_bulk_list since it is useful
+To: David Hildenbrand <david@redhat.com>
+Cc: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Mel Gorman <mgorman@techsingularity.net>, 
+	Vlastimil Babka <vbabka@suse.cz>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, steve.kang@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2C23010000D
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: h61j7ye3nrwpy7kf8wusnqujhcicku9r
-X-Rspamd-Queue-Id: AE66E14000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760531728-488113
-X-HE-Meta: U2FsdGVkX18rSwBooK2Z9ozzhvgPuJVROoX4t7bj+o+A3isDbFAHigOJrdr/IbCe8VfKo53Cnk4ryr0uwtPceti9WVEijTZdzl+B6BQqxXkeM9g43YfkI5M8GONx1s8/XH9LerELm4OE+NcICuUkvJl1YhNcrNGuFV0HH7tn5CuM26EqLlGUwViRTgGivnI2DsV+XYBPwe3NlTAg7w39pCUjA9CmG820hfptVgcsMR6qv/PHRpIkLCsOVvMd6kkKa7fpCkW/cVApvLW/5sTx152f7knooUIlR656sdJXK58GHCLVs7asLGBDgJvByVv5cxdoSlbYdv0cxUpjQ4ro2/ig130qO6NwGdvvHPwwEkcbj96mnP0AB4ehwUbo28pdi0CTgJsWXKAwy4Rf/BDTnXlw5EWq6jPs4hyZ3zJW8i1ZINrdGbcH2uCngXCsfIbaYmGilJHLibX64xSmQ8E5+7ydm2KEPKN+spZ80c1JN8l5zoRiEmH/1iW3y92VxOpRQGsIPG7g6GgMLydVg9m/zJKNdLJqWfJQSs2ueaV8AVIKA5UY7frrRAp4FdYaOImQMJwO+vNWNNWwaazNatKYvUIuV0IomgGFXpZ1fYCxBbJSDKzOeIYaZwvC0M4NzPd3k8grfErlmU6J78uo/W9MjSM/q+xjEUL6D11K5K1In0Q+brUg4825c/kha1lNyeRyGtLXwKhOMDnQc5FBfF221+pHUrl2iaI6tRrXhAaEDLsGf8+eWyDK+ILbVFmhSoj8JqVBNSC5PFOpUMyX8dR2ofagIWQn61aNDmvFBdk3SWO0WJq/X1fE2YDd/r3MOdbTEwkWrpo0lq+YpAtqsYVusc6droi75MNmEV6q1D6Cg4Q7iGBXS7KoRyjSTlJqqox15z8tWWKhRULk20HewHUurvh5E+NNiNgjHrZEaCvYpa/Dl8iQamKW34XQo7jGAD0u1JduQYTEIA2625K/bVg
- KexLOPJ/
- obQahi8A6fiZuRR0oW+RGpaLWacIvTgpZGFpdDrIZOFBSZx2XtILU6R3zkRrAkBBY23MX1hhnFvHzYAVbY7f5Wg1cKZgF1kXtTIrv4K/fJPD/eqsuUCLuLh+ijWftDPyVb8mN50h0kTujdzlDFlWYNLFhKvZpttfnxl1J+BWWsM5rL+b79+u6CAYzwJRJA9csO7N7na1dteHUil/LTZMJXv/7xDsIl4e6xYlozj6aFr8HGQJq7QDK/sHHqDm39e5QBLiKxC33Pn8ZpfM/7lsNUrNC4egtcLAoBKfkbebJ+wE+AXJ0BYljt5PGIViqRtzSljQ0
+X-Stat-Signature: 91b4adphumddgab5zujpuwcz958h7r3u
+X-HE-Tag: 1760531767-156091
+X-HE-Meta: U2FsdGVkX1/iVBMLeotcIKgT6IYSZ/FxfJ80hb66iZll4YPWy22Qjs9nDDr16O+R/WR5O3N7ThokfHdqPi8uuJvyKXxRA6hm/aA0O3HgcxIubi83XMZKXzzZeUpagTIYGCh82B9ei3b0icORs+iBG7min19Iu/+cV+8qNGojwnXN8OJPo5JKibUDRV6w8NRD66W1K4U30Ps80+kUG0/AU2OWaYRBn9BlVbALKd9foGtZgb6ZI/7g1zl1cDwhxM9MphZSkgjjevn9FwyfmEPYdbeHTWC8gEDxu/vyh+KLdGMjSPe2THbyZY7Sf2XKtEagQ63tw2BPBRJtwFK4dt189jLDz8yhcLOtHPxX6Tt03V03Hcje/yy7DHHSZXs4DJoxAM1ah6e5/lg2IZ5gTWRNn5MFOkATxBnCMbbj6J3Z4ImBGOaqgQiixSnoXuCkiVPEEowGV/UU0nVCKjTUPnwI47GnIfyA+Q3NUYaktaQXB6GUMfdie3uYVFuoAxpjL7TLETYwDMc0Kb1/Tvscdp7hoo/nlgUbeub4C650sEmvNelyWspW0hdbK4rnRPX1GS3LJ7yF6hU0WyZPXPTSGHnyQnaPrViMNHfBUe6oQlbkVMU9Z+HVxhgO39zMyVtaaUnVXOK4HD17uNyCj9r7+QCE2YGgttlIKF5F+xALgyrS6i8M7qMwrEAs7GQr+IGzkUHzuaOwnFBs5PuRvTy8wL3AVIKtQzWgJgw5fgeYUXndR3WOgQTwURfvifcItPob4S8qYIr8sS6Gc3UjFGt3k1hgseGzgqYZ4VgYks+vG+AAgM9wowjwA80MeEGXDuDYjo/5wF7XVrZRaCL+/mtj4YE8H2zovrw7GTYvJxkogvZqWMvCgHm064Y7zaqj7r3iHYEWPxQq90di5ityBVUHUT76AawPLd4Rs2JMB5qkIpZhJFyx7CZGZnFCg2/t97nZLkbalVwGZ4KItv7JRCqG8Eh
+ g9IhtX4c
+ bKY1DuyUlGxIpD2sSVGpqI6J2tQcfJM9mZ5k/HLOKwWZx6bYZhf9FYVjYz+NI68vdyZUPGmLOTETMyowNPK60bFvjwz+pPvtgGJ71XvzOKfumuN38eM00jaMDO7DPjeWuZcuRrKIwQuPZUovYMlkQJKl5rBWxU7VhZyIIA0yCVY0qnPL3VgN7J0EWE+y+//vJQlOhLr+d0mR/fxVPpq29zQUEWy0VuwMT3jbmPMn9U63rwz0Fak+3Yd43ZSCjmWSP7KGSU3KJYDnKAwRhI/PvW0wwR+8qPkfRfl1uFeXCpS6bRjKjCOb2dse5AekgUEErt7JqPwJgX0bM3jDHY1aHHgyEKvyVI2kz0dRIsuZV4KRM6pjpFC3zyeE+WA0tfrWy8IIlsQjdkEW21pntRE5gk5NWH84okOisYl3ApbRR1Xwv9pm7xHek/LIKKN+8TODa2K+pzrZcOqj9RHD3hxLqOZz3W0RXQWxgOEQgVZDN4DB4w94=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,170 +124,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rename prot_numa_skip() to folio_needs_prot_numa(), and remove
-ret by directly return value instead of goto style.
-
-The folio checks for prot numa should be suitable for pmd folio
-too, which helps to avoid unnecessary pmd change and folio
-migration attempts.
-
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/huge_memory.c | 21 +++++++--------------
- mm/internal.h    |  2 ++
- mm/mprotect.c    | 45 +++++++++++++++++++++++----------------------
- 3 files changed, 32 insertions(+), 36 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1d1b74950332..c7364dcb96c1 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2395,8 +2395,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- #endif
- 
- 	if (prot_numa) {
--		struct folio *folio;
--		bool toptier;
-+		int target_node = NUMA_NO_NODE;
- 		/*
- 		 * Avoid trapping faults against the zero page. The read-only
- 		 * data is likely to be read-cached on the local CPU and
-@@ -2408,19 +2407,13 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		if (pmd_protnone(*pmd))
- 			goto unlock;
- 
--		folio = pmd_folio(*pmd);
--		toptier = node_is_toptier(folio_nid(folio));
--		/*
--		 * Skip scanning top tier node if normal numa
--		 * balancing is disabled
--		 */
--		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
--		    toptier)
--			goto unlock;
-+		/* Get target node for single threaded private VMAs */
-+		if (!(vma->vm_flags & VM_SHARED) &&
-+		    atomic_read(&vma->vm_mm->mm_users) == 1)
-+			target_node = numa_node_id();
- 
--		if (folio_use_access_time(folio))
--			folio_xchg_access_time(folio,
--					       jiffies_to_msecs(jiffies));
-+		if (!folio_needs_prot_numa(pmd_folio(*pmd), vma, target_node))
-+			goto unlock;
- 	}
- 	/*
- 	 * In case prot_numa, we are under mmap_read_lock(mm). It's critical
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..5f63d5c049b1 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1378,6 +1378,8 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
- 
- void __vunmap_range_noflush(unsigned long start, unsigned long end);
- 
-+bool folio_needs_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-+		int target_node);
- int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
- 		      unsigned long addr, int *flags, bool writable,
- 		      int *last_cpupid);
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index ed44aadb7aaa..0ae8f4a277b2 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -118,26 +118,30 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
- 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
- }
- 
--static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
--		struct folio *folio)
-+/**
-+ * folio_needs_prot_numa() - Whether the folio needs prot numa
-+ * @folio: The folio.
-+ * @vma: The VMA mapping.
-+ * @target_node: The numa node being accessed.
-+ *
-+ * Return: Returns true if folio needs prot numa and the access time of
-+ *	   folio is adjusted. Returns false otherwise.
-+ */
-+bool folio_needs_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-+		int target_node)
- {
--	bool ret = true;
--	bool toptier;
- 	int nid;
- 
--	if (!folio)
--		goto skip;
--
--	if (folio_is_zone_device(folio) || folio_test_ksm(folio))
--		goto skip;
-+	if (!folio || folio_is_zone_device(folio) || folio_test_ksm(folio))
-+		return false;
- 
- 	/* Also skip shared copy-on-write folios */
- 	if (is_cow_mapping(vma->vm_flags) && folio_maybe_mapped_shared(folio))
--		goto skip;
-+		return false;
- 
- 	/* Folios are pinned and can't be migrated */
- 	if (folio_maybe_dma_pinned(folio))
--		goto skip;
-+		return false;
- 
- 	/*
- 	 * While migration can move some dirty pages,
-@@ -145,7 +149,7 @@ static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
- 	 * context.
- 	 */
- 	if (folio_is_file_lru(folio) && folio_test_dirty(folio))
--		goto skip;
-+		return false;
- 
- 	/*
- 	 * Don't mess with PTEs if page is already on the node
-@@ -153,23 +157,20 @@ static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
- 	 */
- 	nid = folio_nid(folio);
- 	if (target_node == nid)
--		goto skip;
--
--	toptier = node_is_toptier(nid);
-+		return false;
- 
- 	/*
- 	 * Skip scanning top tier node if normal numa
- 	 * balancing is disabled
- 	 */
--	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) && toptier)
--		goto skip;
-+	if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
-+	    node_is_toptier(nid))
-+		return false;
- 
--	ret = false;
- 	if (folio_use_access_time(folio))
- 		folio_xchg_access_time(folio, jiffies_to_msecs(jiffies));
- 
--skip:
--	return ret;
-+	return true;
- }
- 
- /* Set nr_ptes number of ptes, starting from idx */
-@@ -314,8 +315,8 @@ static long change_pte_range(struct mmu_gather *tlb,
- 			 * Avoid trapping faults against the zero or KSM
- 			 * pages. See similar comment in change_huge_pmd.
- 			 */
--			if (prot_numa && prot_numa_skip(vma, target_node,
--							folio)) {
-+			if (prot_numa && !folio_needs_prot_numa(folio, vma,
-+								target_node)) {
- 				/* determine batch to skip */
- 				nr_ptes = mprotect_folio_pte_batch(folio,
- 					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
--- 
-2.27.0
-
+On Wed, Oct 15, 2025 at 8:16=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> On 14.10.25 10:32, zhaoyang.huang wrote:
+> > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+>
+> Probably the subject should be "mm: reintroduce alloc_pages_bulk_list()"
+ok
+>
+> >
+> > commit c8b979530f27 ("mm: alloc_pages_bulk_noprof: drop page_list
+> > argument") drops alloc_pages_bulk_list. This commit would like to call =
+back
+> > it since it is proved to be helpful to the drivers which allocate a bul=
+k of
+> > pages(see patch of 2 in this series ).
+>
+> "Let's reintroduce it so we can us for bulk allocation in the context of
+> XXX next."
+>
+> > I do notice that Matthew's comment of the time cost of iterating a list=
+.
+> > However, I also observed in our test that the extra page_array's alloca=
+tion
+> > could be more expensive than cpu iteration when direct reclaiming happe=
+ns
+> > when ram is low[1]. IMHO, could we leave the API here to have the users
+> > choose between the array or list according to their scenarios.
+>
+> I'd prefer if we avoid reintroducing this interface.
+>
+> How many pages are you intending to allocate? Wouldn't a smaller array
+> on the stack be sufficient?
+Actually, dma-buf is the main consumer in android which could occupy
+half of the system RAM(mainly by multimedia which passes the memory
+between GPU and display, camera driver, NPU driver etc). Dozens MB is
+quite common or maybe more. This commit is proved to be helpful in the
+scenario of camera APP cold start which allocate around 300MB memory
+in an 6GB RAM ANDROID system
+IMHO, page_list could be more efficient than page_array in memory
+perspective which is an uncertain factor than iterating the list
+>
+>
+> --
+> Cheers
+>
+> David / dhildenb
+>
 
