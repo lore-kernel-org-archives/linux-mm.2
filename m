@@ -4,173 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87DE4CCD193
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E779DCCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7FF98E0032; Wed, 15 Oct 2025 09:11:56 -0400 (EDT)
+	id 4CF3C8E0033; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D56FD8E0020; Wed, 15 Oct 2025 09:11:56 -0400 (EDT)
+	id 480A28E0020; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C466E8E0032; Wed, 15 Oct 2025 09:11:56 -0400 (EDT)
+	id 3BD3A8E0033; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3F078E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:11:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5CE3955A6D
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:11:56 +0000 (UTC)
-X-FDA: 84000386232.05.2FCC4A9
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E018B8000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:11:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GHGDsIXc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/SqK4l1+";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GHGDsIXc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/SqK4l1+";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C2C68E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E149E1DBA48
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:13:03 +0000 (UTC)
+X-FDA: 84000389046.20.9EAB83C
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F17EF4000C
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:13:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="m8Ob9jb/";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760533914;
+	s=arc-20220608; t=1760533982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AQi+dhYrJXBSl35q86HIQWqi7/gBcyLZtUjN+URTrIw=;
-	b=8qLnZD49BlbUmT1Kvd0oJoM3Cjy6QsoDHe4pMotGic0W+gjoSUuQKT4VPESeBSN2rNPXUk
-	ukFOVKE9rFE6y7+UU4ZwxU/k5aM+kf6r38pP2F1M5o8hk31bW+n4zlN7Vycl822ygP9GZL
-	SzdL2ZrNCWecIcQuCMward9XaEsRSRo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533914; a=rsa-sha256;
+	bh=HvqBNDKYzNLYuvJ6GCsxKgFo8vTAb1l0oaB8RnCFMGk=;
+	b=XiYEmGKigGKglJEdpUot57orCoBJ5O2ZcNnjw6iaVp/OzmSpCY7A41NN3obCbARbJnOKII
+	97q14uJfJLHvT1SplCshrzJ/2lAnhGWInrmy1kCceL7aDrzciLcVPRiE3nEvUaMkQyvbw0
+	LT091UbOTPRjUpjKdS791zI7/FE7ACE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533982; a=rsa-sha256;
 	cv=none;
-	b=uI1eV66G6uhH6G9FdAAQGinFZ5t5QrYjzZ/a0dhIq0n5s7H9u+EBmlVLQKWUxk44M6YpIA
-	tLQiiLAMjoRx76EzKiPiF/TBP4n0bMlDSrBAPuBB4V8WJ5KQYm7tNojipVUqQ0Oz4gHNeM
-	x4alvnqsrHKVfDPcXtD9JaF3YnLkij8=
+	b=qntNq07AQrPSMbwZc1ORWgn6mElCdkyyMOvos+X1V7dKx61nzRpJqxRU6sEbvvWJVfQkji
+	LXuQVhl/hkY4iodBLNao9wnquRdscBGe5p6pdJWNUGpWAOWx5YBfdXes5Sx6TLmGRy720H
+	PjoM8uRPWlx44/3HxbMvlAuvSmHdD+0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GHGDsIXc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/SqK4l1+";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GHGDsIXc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/SqK4l1+";
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	imf04.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="m8Ob9jb/";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760533979;
+	bh=CbnARJ1NcaAYMxMWl6wrepneykP7YTXb9rnB9JY3DjY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=m8Ob9jb/yqmdZN5gbXCzgVebh2Me0gTPCS7skTCvVHKVKZb+E7d3Ne+V6rwVXRlDt
+	 VYSG1AI2Zntyba9pSD9ieku+zAV8xZnQZKl1w135SeDH5V4jRI+7aCCI29CMlO7vgi
+	 EB2NhMEXtEfUYG/7m5wKCKYVi2mOj9ZciBV77NvzD2jEhcQknQBWaf5TS/Gqz67Q2G
+	 6WKnH7+N7X6nLqyebw7YxBL1E6GQZIu4uWTpxiRS5TaV9n6PV6zCSts1MNZuwssU6O
+	 IGZzlxOQrCxo4Rfk1xY97c/4o8aeVa8stN4cxnQC+n8Zo7D1h0zeDOcmkFdwD1x9B8
+	 boa/A3UcsyrGg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EA9B1FC31;
-	Wed, 15 Oct 2025 13:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760533912; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQi+dhYrJXBSl35q86HIQWqi7/gBcyLZtUjN+URTrIw=;
-	b=GHGDsIXcxEv/qA3WtSEleATzL8n9WUyhWSuW4rUwe2e27Sue8pBRKzauOfTu4K+W/HK+1j
-	KVFeO5Ig4zWfouc6/BGf3rukn686T73O7ygvTHcR1XQapU+3KURgK9BeujH+ZDGB3WfIqP
-	gCqCHpfQ2uZL6GeeqQeEJbjYN3TdJao=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760533912;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQi+dhYrJXBSl35q86HIQWqi7/gBcyLZtUjN+URTrIw=;
-	b=/SqK4l1+xY1NZEwTQgtgkeFKYwvPHejVfo+N4AlHaoz1WSXhV/ycQ6bz0TPZdpa0nVs4hM
-	2zdCJ14m1uVS7vBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760533912; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQi+dhYrJXBSl35q86HIQWqi7/gBcyLZtUjN+URTrIw=;
-	b=GHGDsIXcxEv/qA3WtSEleATzL8n9WUyhWSuW4rUwe2e27Sue8pBRKzauOfTu4K+W/HK+1j
-	KVFeO5Ig4zWfouc6/BGf3rukn686T73O7ygvTHcR1XQapU+3KURgK9BeujH+ZDGB3WfIqP
-	gCqCHpfQ2uZL6GeeqQeEJbjYN3TdJao=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760533912;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AQi+dhYrJXBSl35q86HIQWqi7/gBcyLZtUjN+URTrIw=;
-	b=/SqK4l1+xY1NZEwTQgtgkeFKYwvPHejVfo+N4AlHaoz1WSXhV/ycQ6bz0TPZdpa0nVs4hM
-	2zdCJ14m1uVS7vBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 088C313A29;
-	Wed, 15 Oct 2025 13:11:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IdTBAZid72gXOwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 13:11:52 +0000
-Message-ID: <06b0c6fb-0123-4482-ac07-80f0faec3532@suse.cz>
-Date: Wed, 15 Oct 2025 15:11:51 +0200
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 27C4F17E05FE;
+	Wed, 15 Oct 2025 15:12:58 +0200 (CEST)
+Date: Wed, 15 Oct 2025 15:12:55 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
+ Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ Christopher Healy <healych@amazon.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, kernel@collabora.com
+Subject: Re: [PATCH v3 07/10] drm/panthor: Introduce huge tmpfs mount point
+ option
+Message-ID: <20251015151255.6f314a11@fedora>
+In-Reply-To: <6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
+References: <20251004093054.21388-1-loic.molinari@collabora.com>
+	<20251004093054.21388-8-loic.molinari@collabora.com>
+	<20251006092856.02fbfd9e@fedora>
+	<6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] slab: clear OBJEXTS_ALLOC_FAIL when freeing a slab
-Content-Language: en-US
-To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <20251015125945.481950-1-hao.ge@linux.dev>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251015125945.481950-1-hao.ge@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Stat-Signature: i8i4fq9b9tqmetf77zzzhsftq9okki5w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E018B8000C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: gbzewrtkhrwurywugopzigomqiwc4a5q
-X-HE-Tag: 1760533913-890485
-X-HE-Meta: U2FsdGVkX19GYh/pZBAXQaaLDHvOswFkLUhw3kO8Fh9lDYYbDeSJWGQs/z/iAR5Qi+vf2Dv7KdcA86i/AamqSJffuFwiXhn0zecY8SCs3nBcOqSi+eEMH7dPKvxpig6mT5pRv0OdzYGYaDcJ1f7+aLjjSiTTykMbNLsLKTvCq1xA1PfWaRTNwoWX0vgEMHHARQE+C1OK9753KP1l0wlpszHDPvKWzYgWdiFkiY+s60AWS4ULabxdnoULS7Na/BHMBHlLto3lVdYIt7SAXXf0jF8Js3I3UMHsRaWnkoM7SL5bXUdJ1RSqsa9pE/Ad02SsdLL7B8E3EzFQLOqfPhdnPm3+uIB0HKbJXabCpG//2UyTt0sVAckrPOLgXSgryGI9rApTkoF3kJ1SAQpvJuAxsyE7W/y2SpDXUcV2qfRo3EjGU1JzH3f6ryxMzhW3eo2OvTaaA/y7fU6Te6MEHnKXJlibsGqXVyMEDPSK9iCc6cRM7jiIuQKEtix9RElm5flfLCu4qJyOqxPM39U+nvGKl0f5hTQ0/TRqUjortTBOkcdCULFCkA42AyLkvocv1WgxD9Cw2GRD4VlF7ieUu2te0ZJDFBlU/iW0Aum9yPz8BI4ndtG4EO0opmWmpPS2bfjMBDBaFMN0yAUFwG8bWxDx8oK+QGihqZo59fzbmZM5oBt3WGyyVy4gfvUT3AK8vFH/A9WslrV57+HhHZd+IJQHXOyNh0D4a6EVlfBB40wr86PQ5kRSDMvuD02O32P+/WqR1x5wIVyK7znluAswzd0/cXzXLJjzlbl2bg+GhZqmnpvd5TNvfIR4vgYSTIneN9FldB+hHPxmzDQznfvS0datfmX4xiRZB974H7wak/ka7xazK1+69O6p9NeA+k42dD+4OEdTh4xqR4B5ZM/fCAj+xtvyUgGOrAjpc5Knz4SOAsG64fvqcYxs3ZA7UNgujiLw770n/2S0cGj+KmKv0Ts
- FwFKpYTr
- UQYxfgbMUzwUCJscE/f8zAnMnJ3KF3qr+JfcbDgjztkWIwEIa/bg7s3MKGMWKcI35C5G5i8NkKha39E3YYz4lSgEqB0BtrxfWyQbEap+NeIoMFgdU86Bcy0/2x8/1ERTG5IUuJSywjwCoGPgSq0hRhsSGo246aBY92a/heKOHRtszHyDkYLhF5LKHCtAP5P3WiUcCzktFIzYdvvZBcqXCsR0VOcvZa6W472J7Iuq0jgH951na2VBzHP+SjZiw3DtZAvNstFsYyBaMEBaQKaGjYCisMfOnLpqMC+DAFSZ/hgs47KPmVHmNYaGxmPnoCx5tcATShIl1TdanB6HYfU4AbN2SnBy7rqiFveterWIJrPtdmVU5ij1RL85AwQ85iuTvnLKuahHIAs4Rjm7aaxbK9AdQRZSl3MPUNDYg
+X-Rspamd-Queue-Id: F17EF4000C
+X-HE-Tag: 1760533981-970479
+X-HE-Meta: U2FsdGVkX183iQqOxilSDVWC9p9n6fDpWrcwiQOUbH2u9PCsrSY0+UGC9rm3LNRwhYdHpAzzJ7gNnUtQfYNq5zBuosk9iJPJgq4dNhRUod+Txi6bT2H4Z7uK6E3KdUdQXdeNcrltFQ2MyFsmayfPx0Ig/8EdCVIy2eG32WUfwfWZjKxsezUb11gqlIaRGhf1lkQSGxsRXcO9wCUaRLB4gTaZMJMu+USuluEqqYRMTNxetvtZJSk5pPaF14L4CjUA9uOs1rLXsgilpS2B0w5ppIn6UjZlO1d6+YSfoKErMyHkEoUlEEmGM7o68Yeoo3PaYwspF2ixQtc6507UNd89tOQva2IvkPCNHWKE2YwJkUbd0jG4kiKIVCkJGKLdpc1HTftdFY5c0zu11t12oJ47yeJAq7KxAJsk/V/hIM92UspGc/PQCY1lJWlG8p8ar8cLeEmZSsbQHCNtikFRN8uwuuVO4hahmf7LwRhcVsZO+bCoL3uKCGsEEqsOzc8Q8vzln57v55kXJ6JzEWFT9DSDag1L5jmdV3O+avAXEnxlrsDYqPgMwg5rvRUeebDpbb5eFXT3xOp+CHfGrUgmqWXvG59yXBGVccYsQJkKidvjlnw54CM5qdTU+s4RkKE4h/9alwlE++H9RzL24yE2qwIVK9/HvIX/iY5BqLJMxZDKkRKCxSRk0t9zUFd5aBFAyp6mBzXpFy92iN15WctfMYzvn4v+UaVM1Knxhtjng9GGSUv8v9VBj8HBhKOImQRFWFRWO7sXMLyBicRi+5h5lsaxnUuAYe+RJkD+yNV69Ppu9rHq0Xc6TMDhXeMHblgy5PGboCAOLpJRYltZQFIh4C+FmyiF1n0H6HRWFjSTFq3aUgyaRqj11d4cuQ3xZKdOMmzXmSeY2w+XFZBVQBUu8qMBfCBmL11ioLoAG/ddvSbp5/8uqSp5FXjc/TrB59Dt10X1rNi8fvAEyH3zz2pjnaT
+ qnPiWxzS
+ O/9rlYcGVZaBHHXDNw4xeUA0T3Nmd//0C1442h+VAnMOX+pBm0REbGfpyhuj1fEnfMoynV00XrbkevhcRxH/B8KHNQx3lfRj03tPr1aWkZkj5bceOT92pA+lcTNx3If3fLQ5sJTpiRwrtihVCJpmDztWz0qEwVONBbNFqHEizDJCMDvBHE+GJHldxdQfpgNuFde8RZteteGyp6cHuPCS/cmOHRN98S94V2Z9plk67Llja9aT6tkv72EBAVFQvczbkKvF0CWw3UrR7RQxSTBZ/IWA1jcu2IIm61zesi3qo2yEDM7RudlALcou24FWjC4A8fLe30Cr/Lf6t0mVIFe29RTfXJkylQr3xCCWfjOPMC49gc74JZkh8i7WFe61Oj8TBYr+FFndSm4ctmqw76cDY0Yjpqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,107 +114,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 14:59, Hao Ge wrote:
-> From: Hao Ge <gehao@kylinos.cn>
-> 
-> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-> But we did not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
-> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
-> release of the associated folio, a VM_BUG_ON_FOLIO() check in
-> folio_memcg_kmem() is triggered because it was mistakenly assumed that
-> a valid folio->memcg_data was not cleared before freeing the folio.
-> 
-> When freeing a slab, we clear slab->obj_exts if the obj_ext array has been
-> successfully allocated. So let's clear OBJEXTS_ALLOC_FAIL when freeing
-> a slab if the obj_ext array allocated fail to allow them to be returned
-> to the buddy system more smoothly.
+On Wed, 15 Oct 2025 15:09:31 +0200
+Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
 
-Thanks!
+> On 06/10/2025 09:28, Boris Brezillon wrote:
+> > On Sat,  4 Oct 2025 11:30:50 +0200
+> > Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
+> >  =20
+> >> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/p=
+anthor/panthor_drv.c
+> >> index fdbe89ef7f43..a2be3b904ca2 100644
+> >> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+> >> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+> >> @@ -1623,6 +1624,12 @@ static const struct drm_driver panthor_drm_driv=
+er =3D {
+> >>   #endif
+> >>   };
+> >>  =20
+> >> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >> +bool panthor_transparent_hugepage;
+> >> +module_param_named(transparent_hugepage, panthor_transparent_hugepage=
+, bool, 0400);
+> >> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount p=
+oint with Transparent Hugepage enabled (false =3D default)"); =20
+> >=20
+> > nit: I'd go for a slightly shorter name, like [panthor_]enable_thp. =20
+>=20
+> For v4, in order to be consistent with the "transparent_hugepage*"=20
+> kernel parameters, I'd prefer to keep the "panthor.transparent_hugepage"=
+=20
+> (and "panfrost.transparent_hugepage") module parameter name
+>=20
+> I could keep the parameter name as is and change the variable name though.
 
-> Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
-> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-> Signed-off-by: Hao Ge <gehao@kylinos.cn>
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Fair enough. Let's just keep things as they are in this version.
 
-Since we changed the approach completely, I think we should not carry over
-the previously added review tags in this case.
-
-> ---
-> v4: Based on the discussion between Vlastimil and Harry,
->     modify the solution to clear OBJEXTS_ALLOC_FAIL when freeing a slab.
->     This does seem more reasonable. Thank you both.
-> ---
->  mm/slab.h | 26 ++++++++++++++++++++++++++
->  mm/slub.c |  6 ++++++
->  2 files changed, 32 insertions(+)
-> 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 078daecc7cf5..52424d6871bd 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -547,6 +547,28 @@ static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
->  	return (struct slabobj_ext *)(obj_exts & ~OBJEXTS_FLAGS_MASK);
->  }
->  
-> +/*
-> + * objexts_clear_alloc_fail -  Clear the OBJEXTS_ALLOC_FAIL for
-> + * the slab object extension vector associated with a slab.
-> + * @slab: a pointer to the slab struct
-> + */
-> +static inline void objexts_clear_alloc_fail(struct slab *slab)
-> +{
-> +	unsigned long obj_exts = READ_ONCE(slab->obj_exts);
-> +
-> +#ifdef CONFIG_MEMCG
-> +	/*
-> +	 * obj_exts should be either NULL, a valid pointer with
-> +	 * MEMCG_DATA_OBJEXTS bit set or be equal to OBJEXTS_ALLOC_FAIL.
-> +	 */
-> +	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS) &&
-> +		       obj_exts != OBJEXTS_ALLOC_FAIL, slab_page(slab));
-> +	VM_BUG_ON_PAGE(obj_exts & MEMCG_DATA_KMEM, slab_page(slab));
-> +#endif
-> +
-> +	obj_exts &= ~OBJEXTS_ALLOC_FAIL;
-> +	WRITE_ONCE(slab->obj_exts, obj_exts);
-> +}
-
-This is much larger than necessary I think. See below.
-
->  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->                          gfp_t gfp, bool new_slab);
->  
-> @@ -557,6 +579,10 @@ static inline struct slabobj_ext *slab_obj_exts(struct slab *slab)
->  	return NULL;
->  }
->  
-> +static inline void objexts_clear_alloc_fail(struct slab *slab)
-> +{
-> +}
-> +
->  #endif /* CONFIG_SLAB_OBJ_EXT */
->  
->  static inline enum node_stat_item cache_vmstat_idx(struct kmem_cache *s)
-> diff --git a/mm/slub.c b/mm/slub.c
-> index b1f15598fbfd..80166a4a62f9 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2169,6 +2169,12 @@ static inline void free_slab_obj_exts(struct slab *slab)
->  {
->  	struct slabobj_ext *obj_exts;
->  
-> +	/*
-> +	 * If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
-> +	 * Therefore, we should clear the OBJEXTS_ALLOC_FAIL flag first when freeing a slab.
-> +	 */
-> +	objexts_clear_alloc_fail(slab);
-> +
->  	obj_exts = slab_obj_exts(slab);
->  	if (!obj_exts)
->  		return;
-
-It should be enough that this return path does "slab->obj_exts = 0;" no?
-
+>=20
+> > The patch is
+> >=20
+> > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> >=20
+> > regardless.
+> >  =20
 
 
