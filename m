@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C3FCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 09:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 288B9CCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 09:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE90C8E0012; Wed, 15 Oct 2025 05:30:44 -0400 (EDT)
+	id 680D08E0008; Wed, 15 Oct 2025 05:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C993C8E0002; Wed, 15 Oct 2025 05:30:44 -0400 (EDT)
+	id 659038E0002; Wed, 15 Oct 2025 05:31:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B895E8E0012; Wed, 15 Oct 2025 05:30:44 -0400 (EDT)
+	id 5960D8E0008; Wed, 15 Oct 2025 05:31:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A292C8E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:30:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 41F6F1A0B83
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:30:44 +0000 (UTC)
-X-FDA: 83999828808.22.B4AFB96
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 773F34000B
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:30:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aUWFVO8t;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760520642; a=rsa-sha256;
-	cv=none;
-	b=eURe0/4rmuWmxfHWOeCqLnczZolFTUuBYahLOONk2Js/1vS8P5JUF63MEOvIJ+oeHtRmCk
-	k/fAsRuE7YTOUdCPO8wsAGu6ht5rNnX+M6K1UYMzGjdmsj0ELhy+qsrHY/BDWVXi0QYitQ
-	l0OEJOJH3gkw+n9c1yOtjAtFE3EDglc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aUWFVO8t;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4448F8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 05:31:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA0B91A0B70
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:31:31 +0000 (UTC)
+X-FDA: 83999830782.13.6E32825
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DDFB4120008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:31:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JTr6NNWa;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760520642;
+	s=arc-20220608; t=1760520690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XDtXgZFzYXZK/ibRrp5PX9uMJOOke03pAz5gDdS9N8M=;
-	b=U8/Xsr//QSM9MXp7UwO2ZjD1LyAjIh7Gr46oYT8mmk5iBU8sk0Fz/hEbYU2KxK7kD+Vs+g
-	NCgTMhFCmzy9awP1NC+dv6Oczv0Nn3ha2MwSPzUOBpGxGW55z2ST5re/rTb6z+SF9mk7b8
-	fnDT5sFN/CnNhesx22rgAh2ZKQiF9QY=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b5579235200so4007869a12.3
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 02:30:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760520641; x=1761125441; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XDtXgZFzYXZK/ibRrp5PX9uMJOOke03pAz5gDdS9N8M=;
-        b=aUWFVO8tWioIgth0pfXinTDRiBO4HIui6DqBKFy/ZAgxnL/mtLcxXjJr6NvDZTa298
-         LpdCVy/gAvQbrttE9oHTV2LBNWrxGuoHrxiB8FmQvMlS1Zzyqsa3OXouH7Wy73qizHy+
-         E/NZXXOXEguAvv5PxlYxyzLRQ1Ds1n9p+XAHE2JlookrVqggTw48nuzPvQZtSnHTOZD1
-         l54buM/2I/ULC3pJX38miglflcl6E5Vrr3/111qlcANlqTRNXV8t2/6Ev93571BXVGIU
-         H/uIsnVYsIx8OTOyqnP8gIOYWApCs5T1/Jij3seDv4Come+1FBy1B2OizcctxCQphMXe
-         6Haw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760520641; x=1761125441;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XDtXgZFzYXZK/ibRrp5PX9uMJOOke03pAz5gDdS9N8M=;
-        b=tTovElsNEHg0MywhQhO+vTiZUNeP4XDfpACfs/ij9JOEBRHUXaaEJo76d0rdkupYbD
-         D9LT4O4ppAS2JP0qUszBvVjKv+kQDiAc9KPS5KO9FfQwmggFM5hu0lXAxtzTZCBS5535
-         hDqVovKmWXn8nA/ZRuS+73nWCtSNanIU2qpRx5uwgtxs7PlN+xf8Gmh6B5P1Tl5yJUOV
-         1hqrmKaUg6uU1c94Hv9s3qIbjQW6lGH+lc2daWbG1Of6oT3DxqYZ51tuQc+7SFPhklwd
-         3ZrBu9nSfDo1BwScCA4yPVl5dxy0iMsjTosmDV0QiDFHDyQk1yLQF+u+SKWX/ne2CIVs
-         Q9kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbnRUrDbBHAY83wGvwMWuQE95IUFdzE4BWOMFkALZpfqErqMCV5T52Eie2tEReLvIW8kSloFlmaA==@kvack.org
-X-Gm-Message-State: AOJu0YzfUqdRYfjhMYQA5c1JqQSN5IS8334I8kNNAJK6i4JudPqFwZpn
-	sZrHHhL3B9jQZ2ULqVzF8AcClIIw7rgVLHpU+aGh5+xCFD51Iy6Q0tQ2
-X-Gm-Gg: ASbGncvtOJeMOWTj1uKbjh6CKfX6rO2ud6zPoKVCjAfU5oKO9fHeX8pfrmM+qSz6tZe
-	83HigPN7rZcg4dX8eHdviAl4/uJJPZ362sC+kEuRlir8xaBgxNPf3hxv2hv6Qn5o/KenIyG0R8z
-	TztxwA6bhivI/FUh5DXiVUbZVhBGTa9ZJYCLeE/ndOqxdkXAOv7m0VAVXujz+6s0tWa0j3RmyWj
-	bnc2ILZc9ka/WrB3HTl4uclbj5z4SmE4e9LgmesPA7ezspbhPZjfPcbo2ct+QKZE4H0AQc92m24
-	okLp2a1LZmxOnWtIQgifbZ4nJFeFIDEMBIqT0LpqHLN8uRCMkV8v+puUcbq2jgjV/NrBcSyshcb
-	UVwNa//fnXEEcJDzpVs6iEzSbeQwrwBTeWUALX3411mHnbfw7pAqFSuNkz3Ii2iBFe23umdaidX
-	/b4fucFrnYjszZNw==
-X-Google-Smtp-Source: AGHT+IEK9gGd4ylhL+ohQ0j4ij/MvWMWaktFv9kBT3L4nH8VbW7kaaXONU81DrtfDoVueDQoE/cLTg==
-X-Received: by 2002:a17:903:3c4f:b0:25c:5bda:53a8 with SMTP id d9443c01a7336-290272b5529mr333496115ad.37.1760520641158;
-        Wed, 15 Oct 2025 02:30:41 -0700 (PDT)
-Received: from localhost.localdomain ([2409:8900:1896:1396:9404:1b8d:6e77:8dd])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b678df2360dsm14730127a12.25.2025.10.15.02.30.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 15 Oct 2025 02:30:40 -0700 (PDT)
-From: wang lian <lianux.mm@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Rik van Riel <riel@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	wang lian <lianux.mm@gmail.com>
-Subject: [PATCH V2] mm/khugepaged: fix comment for default scan sleep duration
-Date: Wed, 15 Oct 2025 17:29:57 +0800
-Message-ID: <20251015092957.37432-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LDWnb6HM59m53HWWkDZ7wJOQ8divhA+pm6fAx1aM0zU=;
+	b=rj67fj4/pDa8dUgi/levuiJuenDwWGiyT57KxgNTj2XJgO35ufvddisbCJuMC8YKO+KVc5
+	BJnkZQDDjvq3lOWqrbEGdrUs6Nnv1wkHmrGb0ZterZLvv1QZwDMguoPeHTfcNfTUzKyVRu
+	0keocyb4bJW0tA06BaSbTEN5OmdklAQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JTr6NNWa;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760520690; a=rsa-sha256;
+	cv=none;
+	b=oPljZWI+Ib+8fpfD+GdUfxvZAPf+zPCXtY7e+t+II1N6Wt9IRRxkxzaBFM/eBNXJ55b2nw
+	vc4iVzSep6iAytvbKyGwbQaGXOnkwySiHnltctZen5YO/5E6qqXKTCWWd+0UcrsfmD9SQI
+	ohrRCc5MSyXZkn1hprAi8EYmumSedQs=
+Message-ID: <8dd76501-9e19-4471-86e2-6c4254fd8d42@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760520687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LDWnb6HM59m53HWWkDZ7wJOQ8divhA+pm6fAx1aM0zU=;
+	b=JTr6NNWa2wIWtUi5kh6m5VAdhCS9RvVGDXyapvf1sQp+ucujZtSQPW5m9p6vRvoFuHGulp
+	93WF7vRxhitiV+c5szfeRiVd/W11D3M9UhKVdaTC8pG9DxIhJKJmLm38UDy17jFHfufNNn
+	JVlqIV7/wuygPyJnbY5dSLdV0brBj4A=
+Date: Wed, 15 Oct 2025 17:31:15 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4n18t7dtzzhwmeo8r6dirrxhw78xegbf
-X-Rspamd-Queue-Id: 773F34000B
-X-Rspamd-Server: rspam06
+Subject: Re: [PATCH mm-new v3 1/3] mm/khugepaged: optimize PTE scanning with
+ if-else-if-else-if chain
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, ioworker0@gmail.com, richard.weiyang@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251008043748.45554-1-lance.yang@linux.dev>
+ <20251008043748.45554-2-lance.yang@linux.dev>
+ <3982686f-908f-4f92-b3ae-e6f141e617ef@lucifer.local>
+ <cfbd4f48-69a0-4ba9-bce8-f578d9602125@redhat.com>
+ <80771030-0d8d-4f65-803a-f89da3b59796@linux.dev>
+ <cc998aee-2a98-45ae-875a-9712d4c29240@lucifer.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <cc998aee-2a98-45ae-875a-9712d4c29240@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: peyg8thu99d4kej1hascaimquwp5stz6
 X-Rspam-User: 
-X-HE-Tag: 1760520642-799382
-X-HE-Meta: U2FsdGVkX189XI/5fHGE+uDMEpycWM289G5umkAkTHz+8lspEM94sFP0q8uE9X+ahhD2vxiCciNoWw9Semk3YKYeG1huYkBtpmMUOYKa5rfdzGI/OGwWZi45byQWFFhe3XwhRKVNf56Os94OiaReYVNDNc5i9NrMJuMfprHiItIAbcZBVMYJ3GYnVg8VmqhQJ61zoD5hrXfPZGh900C8fOEev7VBEwJABpWRYnwRlk9CosxWUxoIiVxQ4WQFHF4HVImcrdL+SmYnaPLJf66NoYJobQ8SpGdmKlzkQ7bJZbqYRulMsBq4p3WPvAamL/fFNjqcQKDfo+Y7SBh6AB2KBPyCSFy76AxMKCBNuwtW9HSPEJMOmXnUJt0zxOm5wKQBumgfK86tRpYHAEpn1/82Dbi2g9btA/RyjW5fL8Hn9B6TTFyRTmfQb+8h5nLegbMMhaxaxnPZkha2dP2Z7+yqXqCb78KHZ1/j8XAShZIe8VH/ysvOZIsVh4SXQKY/1+NkR5vUcUowORtcu0JtsU+EocloYc6kjeEOWuO+vMGgJZtZOrYBpxEfC9vyILlBiOWl2oRgT0Gc819iTTkmUMY2nb9gHPBIrO3h4ozVtWux0umqQXLwxeqYflkIxDvlAZisH7SajyCaFyiwj5XwL9Oj+Et1k5yfPmUsI1S7GOvYzeEwfBqsCcEd1XcervVM867QBMqV4D8V+p1DxvVa14ezWMXDpur8b2Fdfxa7DtH3F8e/g2qH1B08lpvhlvwzXDM4orn/TCl8E1BBDR8OUgWz7YQURsC18mfyY5gX6Z8mHMSK+rcj7/WfraKbuaD04ni4A7OkvzlucwKNiu5dItp3AS6jDZCODKRRvcnQMgVQkRZaqFbaGlgOkMJkfUtE/Lw87csorxqpM3yJ7ImVSeQpz9aJNbIfFRl1abbY5aoHFo/f/ZgWEU5/AePOUqNMH7IXa8U+ilu8lw4LHhxzRgO
- 5r6riMcS
- ubc9qmMpGN/40D/ktKvD3kirMDRLB/cpGRpBoqWo4hrOyk/Ma3C/xGo6o0Diqh0tMTeDBKwSp5nJhepAM3KCh7PTx+U1TzBZUeEpsAP/x+54ZZS+DBs2wuRQusQqty9eD7gMG4/ime7HC1hq90w6hWvntkdVJeybHNxEnXas/GnerokcZ0sZ8YypOTqVrX+vyR1XQPyo+7mxAfOG0gsMgPh+upmpqdPahyDxNWDzxeL7eXCKjsMlNryxaBRO/I1Lez6/1tLt+UiFrZzM7QI9lFnH+/JfajaaKRkLUUh9sKkr3yJGytwPWezL6apU6Z4LAjGAfgLKnjEiirAPX+YAFG+c++U+6PRcS6ULDwRLN51SOMmh53ftIi1G0OeLgvW35amhi3KwMJzXiUmtxJm/QU16JbaG4bfd0BI1UX6kzM76C8lyiAS4Jl5b4E32bG9FYXT+FhWX+l+muHzff4Ydxees+JnBS9pVgwIKThIK+6QsXoWZEkz6Z87HoReztq6XfwhzMAN1NdTlTdEr7yzSazMsIkkkwbfHRgbAZP9lbko5O8UKcSPjEOU4AdPT5b8ypD8pkTI/C/Y/jhgMRcf3C7KcubTdAEfLgdrnWuDTDfpENWgJ1qtsiN5rFu7ha67uJNNJ8dJhb02gscoU=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DDFB4120008
+X-HE-Tag: 1760520689-858466
+X-HE-Meta: U2FsdGVkX19hqHKwq2T7sW9gwBZlE9bBq//n2T1OkYS4S6H2n1wtsRtg30wqea/fP4jK8EtPie5a9emI/BvCX9Hi3FfRz1Gr9JEfqe0hpSHTnZCIjicYRf0CkOczZ8BKCBxZ5LGhkeWs3tfid10A6v8NReZ/ZbvKa5AIg+H7YG6tHdmvYuCod5Wz4PbWmlRNIdN08TUE33F1ppvUf03UrGmYLOxqd0JzjQmOv5dks+IBxf1uecNBfY+n5EHGp482kSi7b1XLJZLQy4NepxRdZFNb28zCy8iOjZFej/opgGrAkMuTsloaha+G6j+f1mt26uiZs+fF9TrN64yxm3jRZvSymPDlVjH1djqVQ+9GpAh2Q/QLePbm2v7C9d0niqHu7rhBNrTHck9M2rZVWOSkg/wNeJI0fl8AEIvlwsz+ZW1eb0Xkh5Ul+lVYV2lWJoyMAgBt1JGItwL2tb89YU7XID5ioLVYsi9diJOwmLqSJBJiNbVLiDgAQi/zDvCqE1k5itHLYKXHycsw/4oTUDtPhrRUCx6yOg8bMG6rvc8uTXD7SwAv1h+lF2BD1EMC9qg6MKy8w+Uf7NB+WPGfRQO4lls9YwzPZDBScPC2lGJAo5R/Iuxc+59pXC51IN0cKyQ1qLHaLobbuqhhVRXscV8Byb10JN+xdSGiiD4DGrecFz3mBldTVz1+yYF61kYuhLAbIF2fd1h1uNj00PpQfZGXfgfgjMWMDtt4RcKafmt4g8m2pXgRQA2pVBtYKwIzk/Algje/qZe9jhlLyXCFLxlQYPyVFoiOsd3w53P2+QN8+zzp1bqGbJWcBUo6k/ZxCJquK6eMCPE8Watt0zfcWVn1N6hXqUpyInR9MD0X3qogB80xktO6tG4DpuFmdiLKoU3611jL8f1btYHmSEGHfZpXEieY75T2ngGGRveY/E4/pLiE0lmQVtdepOIdecWAnmwg5Kj/KAFCj6APH/kXgWN
+ u+GUZoqF
+ uklLX/tSNoO3Sn+dau0SsMnPfYpZN8y8JDwUeHNKE4mjGHOLxARiGReMu3FMtSLP25wmKzhf1+2svYQyT4l7fju9GvCguijn2nwwyDaFm3ESCmeO1mGG9FYO6gTSDmiZ0wFr8k3KbGbmUnKHSMllQCUFW7LRoQHwhFsroTrx+LtvU6iEgUlkMkdlPQSTW1KLKuZ1j18S3jWQNVvtsPgKppRn9mSxkU37po/hojZ1C3tTNtE6QQlw/VoXghj018mLJJ+POVeL6QlWoNgyC87jJSjZ7/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,39 +99,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comment for khugepaged_scan_sleep_millisecs incorrectly states
-the default scan period is 30 seconds. The actual default value in the
-code is 10000ms (10 seconds).
 
-This patch corrects the comment to match the code, preventing potential
-confusion. The incorrect comment has existed since the feature was
-first introduced.
 
-Fixes: ba76149f47d8 ("thp: khugepaged")
+On 2025/10/15 17:16, Lorenzo Stoakes wrote:
+> On Wed, Oct 15, 2025 at 12:49:26PM +0800, Lance Yang wrote:
+>>
+>>
+>> On 2025/10/14 20:27, David Hildenbrand wrote:
+>>> On 14.10.25 14:17, Lorenzo Stoakes wrote:
+>>>> On Wed, Oct 08, 2025 at 12:37:46PM +0800, Lance Yang wrote:
+>>>>> From: Lance Yang <lance.yang@linux.dev>
+>>>>>
+>>>>> As pointed out by Dev, the PTE checks for disjoint conditions in the
+>>>>> scanning loops can be optimized. is_swap_pte, (pte_none && is_zero_pfn),
+>>>>> and pte_uffd_wp are mutually exclusive.
+>>>>
+>>>> But you're not using is_swap_pte anywhere :) This comes back to my review
+>>>> quesiotn on the series this is dependent upon.
+>>>>
+>>>>>
+>>>>> This patch refactors the loops in both
+>>>>> __collapse_huge_page_isolate() and
+>>>>> hpage_collapse_scan_pmd() to use a continuous if-else-if-else-if chain
+>>>>> instead of separate if blocks. While at it, the redundant pte_present()
+>>>>> check before is_zero_pfn() is also removed.
+>>>>
+>>>> I mean see review below, I don't see why you're doing this and I am
+>>>> unconvinced by how redundant that check is.
+>>
+>> Ah, good catch! Lorenzo, thanks!!!
+>>
+>>>>
+>>>> Also this just feels like it should be part of the series where you
+>>>> change
+>>>> these? I'm not sure why this is separate?
+>>>
+>>> I think Lance is trying to unify both scanning functions to look alike,
+>>> such that when he refactors them out in patch #3 it looks more straight
+>>> forward.
+>>>
+>>> The missing pte_present() check in hpage_collapse_scan_pmd() is interesting
+>>
+>> Yep, indeed ;)
+>>
+>>>
+>>> Likely there is one such check missing there?
+>>
+>> I think the risk is exactly how pte_pfn() would handle a swap PTE ...
+>>
+>> A swap PTE contains completely different data(swap type and offset).
+>> pte_pfn() doesn't know this, so if we feed a swap entry to it, it will
+>> spit out a junk PFN :)
+>>
+>> What if that junk PFN happens to match the zeropage's PFN by sheer
+>> chance? IHMO, it's really unlikely, but it would be really bad if it did.
+>>
+>> Clearly, pte_present() prevents this ;)
+> 
+> Yeah, not so clearly kinda the whole point I'm making here. I mean all this code
+> sucks because we have deeply nested conditions and you have to keep in your mind
+> that 'oh we already checked for X so we can do Y'.
 
-Signed-off-by: wang lian <lianux.mm@gmail.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
----
- mm/khugepaged.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I see :)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e947b96e1443..d635d821f611 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -67,7 +67,7 @@ enum scan_result {
- static struct task_struct *khugepaged_thread __read_mostly;
- static DEFINE_MUTEX(khugepaged_mutex);
- 
--/* default scan 8*512 pte (or vmas) every 30 second */
-+/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
- static unsigned int khugepaged_pages_to_scan __read_mostly;
- static unsigned int khugepaged_pages_collapsed;
- static unsigned int khugepaged_full_scans;
--- 
-2.50.1 (Apple Git-155)
+> 
+> But the THP code is horrible in general.
 
+Yep, you'll get no argument from me on that one ;p
+
+The code is indeed tricky ...
+
+> 
+> Anyway let's stay focused (so I can stand a chance of catching up with my
+> post-vacation backlog :), I will check the respin once you send!
+
+Cheers!
+
+This series has been dropped from mm-new. I'm going to take a bit to
+rethink the approach based on the feedback.
+
+> 
+>>
+>> By the way, I noticed there are other places in khugepaged.c that
+>> call pte_pfn() without being under a pte_present() check.
+>>
+>> Perhaps those should all be fixed as well in a separate patch?
+> 
+> Yeah I'm not surprised and sure indeed.
+> 
+> Thanks, Lorenzo
+
+In the meantime, I'll send up a separate patch for the missing
+pte_present() checks first ;)
+
+Thanks,
+Lance
 
