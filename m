@@ -4,108 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E779DCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DFA5CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CF3C8E0033; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
+	id B18C68E0034; Wed, 15 Oct 2025 09:16:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 480A28E0020; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
+	id AC8F78E0020; Wed, 15 Oct 2025 09:16:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BD3A8E0033; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
+	id 990FA8E0034; Wed, 15 Oct 2025 09:16:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C2C68E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:13:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E149E1DBA48
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:13:03 +0000 (UTC)
-X-FDA: 84000389046.20.9EAB83C
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F17EF4000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:13:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="m8Ob9jb/";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E8798E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:16:24 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E1C021DB93B
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:16:23 +0000 (UTC)
+X-FDA: 84000397446.29.F223EAA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8701FA000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:16:21 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OR0F3Rd1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760534181; a=rsa-sha256;
+	cv=none;
+	b=w+Y+Ip7qtQdYu6RI2yFeEns0yRCr5bt82RWw3kfrbGaLOb1eEEXZRyVoq0Jtg0571DimS+
+	N2/SQ2+S5cw/wYCsvqKa4kdk6VG368hUoEzwQTOjcaGJUXswMAGRq0RNYGYwsf09nzW7ql
+	kpZo4htmatNodH/Tvue5VKq6Vn1E07o=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OR0F3Rd1;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760533982;
+	s=arc-20220608; t=1760534181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HvqBNDKYzNLYuvJ6GCsxKgFo8vTAb1l0oaB8RnCFMGk=;
-	b=XiYEmGKigGKglJEdpUot57orCoBJ5O2ZcNnjw6iaVp/OzmSpCY7A41NN3obCbARbJnOKII
-	97q14uJfJLHvT1SplCshrzJ/2lAnhGWInrmy1kCceL7aDrzciLcVPRiE3nEvUaMkQyvbw0
-	LT091UbOTPRjUpjKdS791zI7/FE7ACE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533982; a=rsa-sha256;
-	cv=none;
-	b=qntNq07AQrPSMbwZc1ORWgn6mElCdkyyMOvos+X1V7dKx61nzRpJqxRU6sEbvvWJVfQkji
-	LXuQVhl/hkY4iodBLNao9wnquRdscBGe5p6pdJWNUGpWAOWx5YBfdXes5Sx6TLmGRy720H
-	PjoM8uRPWlx44/3HxbMvlAuvSmHdD+0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b="m8Ob9jb/";
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760533979;
-	bh=CbnARJ1NcaAYMxMWl6wrepneykP7YTXb9rnB9JY3DjY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=m8Ob9jb/yqmdZN5gbXCzgVebh2Me0gTPCS7skTCvVHKVKZb+E7d3Ne+V6rwVXRlDt
-	 VYSG1AI2Zntyba9pSD9ieku+zAV8xZnQZKl1w135SeDH5V4jRI+7aCCI29CMlO7vgi
-	 EB2NhMEXtEfUYG/7m5wKCKYVi2mOj9ZciBV77NvzD2jEhcQknQBWaf5TS/Gqz67Q2G
-	 6WKnH7+N7X6nLqyebw7YxBL1E6GQZIu4uWTpxiRS5TaV9n6PV6zCSts1MNZuwssU6O
-	 IGZzlxOQrCxo4Rfk1xY97c/4o8aeVa8stN4cxnQC+n8Zo7D1h0zeDOcmkFdwD1x9B8
-	 boa/A3UcsyrGg==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 27C4F17E05FE;
-	Wed, 15 Oct 2025 15:12:58 +0200 (CEST)
-Date: Wed, 15 Oct 2025 15:12:55 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: =?UTF-8?B?TG/Dr2M=?= Molinari <loic.molinari@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?B?TWHDrXJh?= Canal
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?B?TWlrb8WCYWo=?= Wasiak
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>, Nitin
- Gote <nitin.r.gote@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
- Christopher Healy <healych@amazon.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- linux-mm@kvack.org, kernel@collabora.com
-Subject: Re: [PATCH v3 07/10] drm/panthor: Introduce huge tmpfs mount point
- option
-Message-ID: <20251015151255.6f314a11@fedora>
-In-Reply-To: <6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
-References: <20251004093054.21388-1-loic.molinari@collabora.com>
-	<20251004093054.21388-8-loic.molinari@collabora.com>
-	<20251006092856.02fbfd9e@fedora>
-	<6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	bh=yD6dvIl7J8wWJkas/YONpCBWDBu3WvjIWx4zsxh951U=;
+	b=HQeS6Jv4R0R476nuSKxLyUSlKifymG4cfH82dwP9Yi/KVOwVcAnsaOzyHb2e2VQPe78u1S
+	4ReIvWOmlhlXeZd8luxLcv7nLpuP1TTui0gH/Acdc14hsjwqtUFuS7nz0CqRDp+neRA35p
+	CEm6P5T90EHv+fWfaBLFpW1fHrPOnXo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760534180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yD6dvIl7J8wWJkas/YONpCBWDBu3WvjIWx4zsxh951U=;
+	b=OR0F3Rd18+UXyS/ur6I8fgwRmdEiRYxrMTXOkYqtRytU9ouhAtC8UH26QlGdqvgXFeJppJ
+	IQkA7GCJAB1qGi+Nh5Rb911P4iicIptHyWaEnQca9KHpjMbRHRlqKmjohv4ZhnCUQzkw1f
+	xx1lGccBp0u1AiUu/w0gSwcnXcrbjng=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-36-pUgMDDoKNmuzSjhvFMghmA-1; Wed, 15 Oct 2025 09:16:18 -0400
+X-MC-Unique: pUgMDDoKNmuzSjhvFMghmA-1
+X-Mimecast-MFC-AGG-ID: pUgMDDoKNmuzSjhvFMghmA_1760534177
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee13baf21dso5281223f8f.0
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 06:16:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760534177; x=1761138977;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yD6dvIl7J8wWJkas/YONpCBWDBu3WvjIWx4zsxh951U=;
+        b=iqrjdf0Bzu6/Ba82mirTr8hOgbSwMBvTi9DqfxsKFBeRPaWaP50Das0we0or/epiBs
+         5hojhaqyALK//yHl/Lop+XJhfs388I2K7uDkIWVHk2d5Aq7MSiBir5akFkkmTJ1gJW2N
+         nmD85KsaRzdUQOnAK4sCKuH/urzscNdlWkHspZgISVfp4iQtt/HzFvypVw/BOLBuqiqG
+         a2VCGtVV+edY6v3VlU4ZULD1njk1XNw4KmD1JPbTLskNeVPAZoS7DXUfE9mdiYzteVVE
+         9FxjkGe6FRX79AordmcsPG3V6uhRpi0y7/ECGtKn0QSPklKLkkmZhO1rro/mGrYtKIAa
+         J0Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8f1rG4g5ZrsgNspJmpdC9HgpajVnJICjr5aWhhC75CXIi7pUc68wXTkML2lMoBPFAy8ApMNgjdg==@kvack.org
+X-Gm-Message-State: AOJu0YyK18q8KywM0PXw86Nc+PSgGm6dtriZpsPHAtNdmDW2uVZgkPzT
+	QDqdUreol7ZFgXbda6j7J6Aa1DHxnvPNAaU4Sc1nE64URCEH8RIKNbzAREDNkcjNGOPOxDgFjIF
+	k89sh65OCDalo7t+Ea983Z5zCJbbQjCCr82SietFFJYAXebsuPsc/
+X-Gm-Gg: ASbGncv5cmeOQJfqXprZsQm5gZo58HIJchNOjQGUY+GszawQjQTlI6pCbt/WzMpsHtf
+	TQz0EMJRlqKjsnOgw5lR8OWhtMZSG/M/kbF48KNTxa64UsPgw2UdVxNwXjErL96ObUu3Q6Zg4pZ
+	xsFHQ9iFdFxmzjsQuB9s/TITW7Icr3zLk+/dEvkRVTcmO+V20H9A5lil5GBPE6KhGo5ErbH234U
+	NpqgcVvQoQHKiRgnRlwQdjGYsQgDWuzE1IboCOYhvp96ZemNRQ4cOJiNvxfJbO7Ts99Xf8G8fwy
+	9HduoNnRDbKzxfABcrSvLdjCeloKPi3xvRHa13Moew51lEYyYbXMbcS2El0RWfMuu/WPi5V3a2l
+	smmeBhPvPNjo/muZA2xghVpNOeg==
+X-Received: by 2002:a05:6000:248a:b0:3f2:dc6e:6a89 with SMTP id ffacd0b85a97d-4266e8e4c29mr18416315f8f.57.1760534177098;
+        Wed, 15 Oct 2025 06:16:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcUjf8Yi428dP9FWOn2X364zzJqp12CDvIxSjruyz4UDGZF5I3K12BFelQ7PlgEZWXYUZIhg==
+X-Received: by 2002:a05:6000:248a:b0:3f2:dc6e:6a89 with SMTP id ffacd0b85a97d-4266e8e4c29mr18416272f8f.57.1760534176503;
+        Wed, 15 Oct 2025 06:16:16 -0700 (PDT)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce57ccb1sm28976327f8f.8.2025.10.15.06.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 06:16:15 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Juri Lelli <juri.lelli@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
+ Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, Andrew
+ Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>, Jann Horn
+ <jannh@google.com>, Dan Carpenter <dan.carpenter@linaro.org>, Oleg
+ Nesterov <oleg@redhat.com>, Clark
+ Williams <williams@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>,
+ Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [PATCH v6 00/29] context_tracking,x86: Defer some IPIs until a
+ user->kernel transition
+In-Reply-To: <xhsmhzf9tld2r.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <aO5I2WGtXqSPYFmH@jlelli-thinkpadt14gen4.remote.csb>
+ <xhsmhzf9tld2r.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+Date: Wed, 15 Oct 2025 15:16:13 +0200
+Message-ID: <xhsmhwm4wl2zm.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _o4YPkxIcRd-Pq6ZBnPfUyMmy1y4dEhL5Hpi2v-yz8Q_1760534177
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Stat-Signature: i8i4fq9b9tqmetf77zzzhsftq9okki5w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F17EF4000C
-X-HE-Tag: 1760533981-970479
-X-HE-Meta: U2FsdGVkX183iQqOxilSDVWC9p9n6fDpWrcwiQOUbH2u9PCsrSY0+UGC9rm3LNRwhYdHpAzzJ7gNnUtQfYNq5zBuosk9iJPJgq4dNhRUod+Txi6bT2H4Z7uK6E3KdUdQXdeNcrltFQ2MyFsmayfPx0Ig/8EdCVIy2eG32WUfwfWZjKxsezUb11gqlIaRGhf1lkQSGxsRXcO9wCUaRLB4gTaZMJMu+USuluEqqYRMTNxetvtZJSk5pPaF14L4CjUA9uOs1rLXsgilpS2B0w5ppIn6UjZlO1d6+YSfoKErMyHkEoUlEEmGM7o68Yeoo3PaYwspF2ixQtc6507UNd89tOQva2IvkPCNHWKE2YwJkUbd0jG4kiKIVCkJGKLdpc1HTftdFY5c0zu11t12oJ47yeJAq7KxAJsk/V/hIM92UspGc/PQCY1lJWlG8p8ar8cLeEmZSsbQHCNtikFRN8uwuuVO4hahmf7LwRhcVsZO+bCoL3uKCGsEEqsOzc8Q8vzln57v55kXJ6JzEWFT9DSDag1L5jmdV3O+avAXEnxlrsDYqPgMwg5rvRUeebDpbb5eFXT3xOp+CHfGrUgmqWXvG59yXBGVccYsQJkKidvjlnw54CM5qdTU+s4RkKE4h/9alwlE++H9RzL24yE2qwIVK9/HvIX/iY5BqLJMxZDKkRKCxSRk0t9zUFd5aBFAyp6mBzXpFy92iN15WctfMYzvn4v+UaVM1Knxhtjng9GGSUv8v9VBj8HBhKOImQRFWFRWO7sXMLyBicRi+5h5lsaxnUuAYe+RJkD+yNV69Ppu9rHq0Xc6TMDhXeMHblgy5PGboCAOLpJRYltZQFIh4C+FmyiF1n0H6HRWFjSTFq3aUgyaRqj11d4cuQ3xZKdOMmzXmSeY2w+XFZBVQBUu8qMBfCBmL11ioLoAG/ddvSbp5/8uqSp5FXjc/TrB59Dt10X1rNi8fvAEyH3zz2pjnaT
- qnPiWxzS
- O/9rlYcGVZaBHHXDNw4xeUA0T3Nmd//0C1442h+VAnMOX+pBm0REbGfpyhuj1fEnfMoynV00XrbkevhcRxH/B8KHNQx3lfRj03tPr1aWkZkj5bceOT92pA+lcTNx3If3fLQ5sJTpiRwrtihVCJpmDztWz0qEwVONBbNFqHEizDJCMDvBHE+GJHldxdQfpgNuFde8RZteteGyp6cHuPCS/cmOHRN98S94V2Z9plk67Llja9aT6tkv72EBAVFQvczbkKvF0CWw3UrR7RQxSTBZ/IWA1jcu2IIm61zesi3qo2yEDM7RudlALcou24FWjC4A8fLe30Cr/Lf6t0mVIFe29RTfXJkylQr3xCCWfjOPMC49gc74JZkh8i7WFe61Oj8TBYr+FFndSm4ctmqw76cDY0Yjpqw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8701FA000A
+X-Stat-Signature: sfjgkbf3zz3jeknquir3xdk4a31sknrj
+X-HE-Tag: 1760534181-876848
+X-HE-Meta: U2FsdGVkX18gIV0wOWd/A60Vzcy7ezl4gD6K2Rfd1enWOTQrCjO7fJp92QLwn2jSofWKEQEN1e0hmCyVbjyXgbfzrizG9kJiXYxqoxK2XFVi//UIOr+P8vymiscW+Q6258J6J/ipwr+ygVOS2yBfD41HrNVogcoTNu6T0jYIo1eEhoW0afQBTqri+IXZorZP937FGrLIKSENF/eMAh5GoL8PQCGg1fpTCn1Nyiav3L/ijuOhbQo/UK/UW5ZuEX4iws3do2JKgWderHTdmrwwLaE+2MxmsSlXJTW9+N5J8Rou4GzQau+eAs9PJyYuq05TYZpAbWsN+azF0+zO2ehXaz0oC7zuIZ2Jh/OeqxRJVoE5YkejZVp2tRIPgPs8/ez0vyHGSevSij9JlHOowikNKErkR9ENkP9JDp+BZGLwvkXDyh9sjFHnbbdLz31N1KPph2S2RUO8xe5698lCg03dRo6R8MxKMQKRNVKpP7mZnbSOyziOrCdiR2oe+Ap/Vwwiq5FcyBtzgXH69P7SVv2nI18oqeAcqCIZbR+qZUz5WrHN0qmcFnY9MHBfPovzwq5lNgahCgtiH8/jMSQ8l8jUIEFUo30YAqlKbKOPOW+MS0TgtXY0Ayp4kpccmtsPATaLx8g4A3VDfFcJoIluz1LaT1zz7CPTF0Vf56mNCdSE8pbJ8KF0Qd9vxmnH/K7ed42gs86k67I4YRau+1BVKwGuEQ3bF75L5Mu+dezZ+GTYtoVE79N4xts3Sf6J6I4cLGrQxZd1UpncRohl6MJVrzGCLSVIMWoeMXzvbKwuYeSynrMWV7kXeBwuh93otZftGwoKGlzFp6k773EDMaqIXlb2s9q7iycvvtIEBjSGnwUSJNq5C6EV8tyg/Ho8j3EnWPoH9d0Pe4nhIJ0F9VyKqT6+101n+97dfLSa+Vb27JZIMDyK/VkLrU18MzGQvRoc+KvcrdhMmYohwOIfh9kOTkm
+ dRs9Y5nM
+ JifanhxMeg0610O6o67wf28N1jj6DfobV+SsgKkVpgnpvAYETltX0Z6QKFiVFDVkWORq+eqDnogeksAZiD52IqLkKf9MrPd7O4dECSL6h4N4FLcweDO1WO7sNbR7sHfSYlNRBcfhsl9a5zYueqMEVsmZjPGkVBTplQQsXtrLnwzB9F5a69bwvfcHuIJnlFzpmf2cvWbG4M2EY13cEQkOuNyu+6J+G3cMT9xlhv6zUmWcr92YaGa/zShAkeIV8WTdT2EplRx2s+1CpxTuv7UNfNbbIgizNN/L4XUL8DIpV1p1D5TYzu1cplcNpSjKeeKDpET0uvMG8JXUJr5NZx8l8SyrsM6ZIqkJIL+FuX7tnMjgOX5CcuLYcgAKGG4uXrwVGZYdCHtGzGdJelVe2tXjAr3nJ3vcpgjl6ybpfygCrA3wxY+DpOGPCpJ9a8evst3m39zsDWlsV+7Zqe44UNb4TMg/AsRpDN4XTwh0IGDjIDurPEDiKQzTwkwHIXVUNW8rqE4eme0BALAWhhlf8jJk+in53hLjGLATxEthyHLdU8xZ8b/imqiflW7BNUpcbyEJvWwnD3RuAeVUr42dWBml0MBlNjRTuN8wtUERV7vhNKOlcDEk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,47 +155,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Oct 2025 15:09:31 +0200
-Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
+On 14/10/25 17:26, Valentin Schneider wrote:
+> On 14/10/25 14:58, Juri Lelli wrote:
+>>> Noise
+>>> +++++
+>>>
+>>> Xeon E5-2699 system with SMToff, NOHZ_FULL, isolated CPUs.
+>>> RHEL10 userspace.
+>>>
+>>> Workload is using rteval (kernel compilation + hackbench) on housekeepi=
+ng CPUs
+>>> and a dummy stay-in-userspace loop on the isolated CPUs. The main invoc=
+ation is:
+>>>
+>>> $ trace-cmd record -e "ipi_send_cpumask" -f "cpumask & CPUS{$ISOL_CPUS}=
+" \
+>>>                 -e "ipi_send_cpu"     -f "cpu & CPUS{$ISOL_CPUS}" \
+>>>                 rteval --onlyload --loads-cpulist=3D$HK_CPUS \
+>>>                 --hackbench-runlowmem=3DTrue --duration=3D$DURATION
+>>>
+>>> This only records IPIs sent to isolated CPUs, so any event there is int=
+erference
+>>> (with a bit of fuzz at the start/end of the workload when spawning the
+>>> processes). All tests were done with a duration of 6 hours.
+>>>
+>>> v6.17
+>>> o ~5400 IPIs received, so about ~200 interfering IPI per isolated CPU
+>>> o About one interfering IPI just shy of every 2 minutes
+>>>
+>>> v6.17 + patches
+>>> o Zilch!
+>>
+>> Nice. :)
+>>
+>> About performance, can we assume housekeeping CPUs are not affected by
+>> the change (they don't seem to use the trick anyway) or do we want/need
+>> to collect some numbers on them as well just in case (maybe more
+>> throughput oriented)?
+>>
+>
+> So for the text_poke IPI yes, because this is all done through
+> context_tracking which doesn't imply housekeeping CPUs.
+>
+> For the TLB flush faff the HK CPUs get two extra writes per kernel entry
+> cycle (one at entry and one at exit, for that stupid signal) which I expe=
+ct
+> to be noticeable but small-ish. I can definitely go and measure that.
+>
 
-> On 06/10/2025 09:28, Boris Brezillon wrote:
-> > On Sat,  4 Oct 2025 11:30:50 +0200
-> > Lo=C3=AFc Molinari <loic.molinari@collabora.com> wrote:
-> >  =20
-> >> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/p=
-anthor/panthor_drv.c
-> >> index fdbe89ef7f43..a2be3b904ca2 100644
-> >> --- a/drivers/gpu/drm/panthor/panthor_drv.c
-> >> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
-> >> @@ -1623,6 +1624,12 @@ static const struct drm_driver panthor_drm_driv=
-er =3D {
-> >>   #endif
-> >>   };
-> >>  =20
-> >> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >> +bool panthor_transparent_hugepage;
-> >> +module_param_named(transparent_hugepage, panthor_transparent_hugepage=
-, bool, 0400);
-> >> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount p=
-oint with Transparent Hugepage enabled (false =3D default)"); =20
-> >=20
-> > nit: I'd go for a slightly shorter name, like [panthor_]enable_thp. =20
->=20
-> For v4, in order to be consistent with the "transparent_hugepage*"=20
-> kernel parameters, I'd prefer to keep the "panthor.transparent_hugepage"=
-=20
-> (and "panfrost.transparent_hugepage") module parameter name
->=20
-> I could keep the parameter name as is and change the variable name though.
+On that same Xeon E5-2699 system with the same tuning, the average time
+taken for 300M gettid syscalls on housekeeping CPUs is
+  v6.17:          698.64ns =C2=B1 2.35ns
+  v6.17 + series: 702.60ns =C2=B1 3.43ns
 
-Fair enough. Let's just keep things as they are in this version.
+So noticeable (~.6% worse) but not horrible?
 
->=20
-> > The patch is
-> >=20
-> > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> >=20
-> > regardless.
-> >  =20
+>> Thanks,
+>> Juri
 
 
