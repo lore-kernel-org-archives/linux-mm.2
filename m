@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBFB8CCD194
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA594CCD185
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:28:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BDE88E005C; Wed, 15 Oct 2025 13:26:14 -0400 (EDT)
+	id 0F1EA8E005D; Wed, 15 Oct 2025 13:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 447DC8E0005; Wed, 15 Oct 2025 13:26:14 -0400 (EDT)
+	id 0A2FF8E0005; Wed, 15 Oct 2025 13:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F678E005C; Wed, 15 Oct 2025 13:26:14 -0400 (EDT)
+	id ED3758E005D; Wed, 15 Oct 2025 13:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D0A58E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:26:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C34AA139AAF
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:26:13 +0000 (UTC)
-X-FDA: 84001027026.13.6BAE432
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 286C118000E
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:26:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hA5+vBqM;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D9FEB8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:28:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8656514014A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:09 +0000 (UTC)
+X-FDA: 84001031898.07.0EA8315
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D252A180013
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLYcUCKM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760549172;
+	s=arc-20220608; t=1760549288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQZpbRRSeXhqck6KWzejU4ySPcJxpAvSTRDOqN4La38=;
-	b=y1+nn8Tblk5yyZ1mBVJc5yeZVpTPDBv9s5kJt/A3CQ7KY6Ac7KJwu5lYstcf/0nBx6owDG
-	2Bx6H2l/zTujuB5QsSKm+U5yxLMLfA6xhiLDPEMIc6ORtlB4xzG22wC3ozhKvo9Q0pujhq
-	jg3ty9IWCJ9jJ2Mn8udqr44GyIXNf0g=
+	bh=gvVDRnFReodweIyh4vqEswR+ZdFxTXb+n1H2PWseY5g=;
+	b=UCLkKQQrBn+zzZNYc6MB9I0vO+ioLHjNWNDUZjPumn0oiCxrs75oRLb4QQOAdMk1RgByo4
+	adfJlHG0FBROLvRPJplMSWAxDQa66ZFmU0XQgWSN+PzPRfW9LC3aze67ztOlbTMuW2F2Fy
+	g+j3RAcOW/wgJCis941DLbK9Gm43lyY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hA5+vBqM;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760549172; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLYcUCKM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760549288; a=rsa-sha256;
 	cv=none;
-	b=WpT1Rz/ovjLWh870k8KyUabIRJN+77gNfeS5olk8BwZS++ZjsX+U6A7F5mkLjBuK4YVwsJ
-	7OAjfdnmT/1trwjZQj9uN58tb4UHxfEf45ViJRZKa4rfzMr/t3UbjKPAvHbgxS3vBbuP0P
-	1bNvzP8dGXrLWU0JNH3034YOLvYt0O4=
+	b=XlktzjS4uOMqj2ddMCN/XJfwbGf0Iup4WRRal8XKlDz45Ce5S9jOnaOsq0xLep/u2fdoSW
+	h3zsT17uZ8xnvizSOjZYPKIDlbSkiocqYIFM4vTKfsWfoXnMrvrpGHlwZZ4eMsRVC0e6Bw
+	YB9nNicNp6GbQeohWx31lUVbH0Hpmfs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 264F2602CB;
-	Wed, 15 Oct 2025 17:26:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B3FC4CEF8;
-	Wed, 15 Oct 2025 17:26:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F3C949E13;
+	Wed, 15 Oct 2025 17:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B3CC4CEF8;
+	Wed, 15 Oct 2025 17:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760549170;
-	bh=EBPP//KAlBskb9pMhxaBL7Kga+U6vtFga53T2SeQa9U=;
+	s=k20201202; t=1760549286;
+	bh=2/0p/0k/TXO7o16P7A/u4tyNONwtv678Sc1Mfzau9Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hA5+vBqM9+KAbQ2ZLh7xQyiaPk15CQAjVlTcxPL7on3gUbUnV5A9Zz4mGOXglD3qf
-	 kC54OsUK04mRPIzbcfAB2XY0uYmS1yrt3fKFMOn3J3rRnP9gKLoVN7ahh0rKEOZlLz
-	 Mg+hR1OoHGMmWrFZfURy66L9UrkbTAoX/JjzMFPGSSpyhoeLM2GjmMFJnNfsjgnqkp
-	 YlKLClzCBN9+FfBQdc8eIsjh19j+C53f6pBwkHcZ+XMa9sA958ZqqaeJFvrD4ZRgDh
-	 EPt+SUwO5Wif8Qh1Eoq7XKuEX2DfGOu0WsDI7vvhyH+1qVgK3NK+eOF3zbctTZQ9gQ
-	 V0LVOVJeJklDQ==
+	b=cLYcUCKM6bI5Mz3l/tIYX/Z8p679bj7v28Kvi74TY7ncPOkHDjSf4kSDNS4Rrv0gO
+	 MfF8ObXedzSLW80dEXdPChqCCXcLRHpxhQ6sYCQyL5YhXIij7R6m25TNaY4w/I/oWn
+	 GEor+iRGSfQ0uN5vatbPqIWjKlSmdPypIE8CTRamSxuDgJToelhnE5AKSaFiJ1BgD6
+	 B0R24iWwCp75s3cU4Or6ZyBpF+8G8eic0/GknwhH8KbJ1bMQO5SWxjKfxapQgHQa+P
+	 ZwtVJppb7CxWPrFLIcll1iselKsf67JYLLUZprpMBYL4YisI9hPlE7y0PO6EKSIBU5
+	 AsY7Rn1AbrdlQ==
 From: SeongJae Park <sj@kernel.org>
 To: Donet Tom <donettom@linux.ibm.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -84,22 +84,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	rafael@kernel.org,
 	Danilo Krummrich <dakr@kernel.org>,
 	Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v2 1/2] drivers/base/node: Fold register_node() into register_one_node()
-Date: Wed, 15 Oct 2025 10:26:00 -0700
-Message-ID: <20251015172601.69756-1-sj@kernel.org>
+Subject: Re: [PATCH v2 2/2] drivers/base/node: Fold unregister_node() into unregister_one_node()
+Date: Wed, 15 Oct 2025 10:27:58 -0700
+Message-ID: <20251015172759.69864-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <910853c9dd61f7a2190a56cba101e73e9c6859be.1760097207.git.donettom@linux.ibm.com>
+In-Reply-To: <32b7d5d8f0f30d313c3e1d8798f591459c8746f9.1760097208.git.donettom@linux.ibm.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 286C118000E
-X-Stat-Signature: h1z94m5c9eniu7ckab8izufbxkah1ad1
 X-Rspam-User: 
-X-HE-Tag: 1760549171-370781
-X-HE-Meta: U2FsdGVkX18/gs5cRRij0hYBy6tsU7lnAjjjNekQAFr9QrqC/rUTWFjtejA6QmtTPZ/RnLDd1j2AsMdH6n7F3FaHhkpVy9dceoNpN5yMA/wdbdF9bm5PgnM/rAcN86Ma8FutMP0Y9bLNmyMixbDWGhJ3gnBjR997wqCGNVNg9neS6wAPbti+HrI7mU5WMGXQs3vxlOUaoIBTrvv9mt2A9cAyvgb2nm/35GR697nrAN3ymZhY0EZYf614PRPWNemvHt1gzv46Zs6vgxHG2z/Cv2bbg/19LVXpIolmZVCVmc6953MB3IOQCiRq2HWtxc39sb5FO88nTe/S3Z3fqGoySu1YP5ddrOET0ft20cZuM2MapDPpWMtBV/XHsq/67ckf+UOxM3KfVCTn/A8LmSQAdiY0QSv/SbrKUcNoFCQ2plewQPzqLtplZ3rO4CQg04zwXE6AgetORnA+cCmjyokFOTqWdkB5XzeMPb0t0RI1WLtjxpcdP/gPI8io40nVqTjeTGzlziqjC0nheqF253q13kAENhzJw2kT6eQxBHAFrafENJVrzt3NoEGNUvoup24r1vwPW+Q50hlAfe4VOsYg+04J4zc+aJiJrQBZ84GL/hNbpopYCNBIN1y/XQyLxNR9Ey32TmHJQ68pduwEg25Oi+i1L62O2W5lKCNNJB9VpjHsBEapLxoyMuWHKkOTIeK6JfOzsnQ203uzVP5k0K/tGIkcF8j04Co8FNwo5uYKEVFLsayto7o76oJisxA38E0oLBesfn8EGnVYGjAOX513j4X9t+Aa/povX3Ow3vMG/baKWzhESrj0KxtZ99UqwTT19y6W58jdKWPSAWTtJ6oDXzmO/nkfLZcN8shBM5Ujt4mWQlr51oZk2ecIdIzS9ReGwhz6xpcpIqJRUmfejz5MtJC2K5OHmyRi3+L+mk3P1roYmpqKLv930wVi74OaNnXKO5rmmBO8v5qd6uFRcg9
- FLmRi8hf
- wJVOQCaqOs8sGivHj+0eCAMArrlwIaPMwZAzhyvLj35bIcQObI9tn8ZWn+p1cMLlkXL/soEdM8G7+VW/kH8KomhnT/uQamOK2q4m7Y9+qzqF4nSmyGNBsJIX1HjzKcB2sY7k/GkH/QB+6YJA7+hSo+oO5mczbM8VdTg3t5yW+uo9KpNkD+KzHAizihPaw0vVOaAyn50j+LQgud4hBDEb9Pwe+2qT69L1QrQtkoPYGsxKEyhWarp4MX0XOj7i8x7mXr840cbj+NVZUDT0LWBaqiW8cadb/llibk7lONuXkb1cKT2I0bVZcubeisAvsbaRGCBgkNRLCeRnoASTgRsto4XDDqMEwtqmxmQx7ImWwuFl5L8dUmTYuaU1hzw==
+X-Rspamd-Queue-Id: D252A180013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7quxtzr5bzesuak6h3jj45wyapzjrqjq
+X-HE-Tag: 1760549287-226989
+X-HE-Meta: U2FsdGVkX19onwUmAzyz6G8UlAedlv5WNz3nzHVupci1W709eQoElAwVoOEXXihsOts/J0G21UiwvUMErftyRGTnGOkVVtKkGXnqJTk8K/a6gUtOkIeYKOZVvWibW27epJiS7pKju+Yf6XWhtcCzF9YZe4xXIk8wNRqP8+n5ve7P2OgdSJxE6USHV+Gf+t9dWaC/3U3aOmxIlpMfO7NqCFCZ9oUgw0a/aO+84BQ7ZzXtKzhpI4zVktcuFyMFlHRDSQS68xBJq84edAvN+iAwlTAOTS59XWcJ5OhHdsZTo/I+3/gGaKb3N4RPEMF1k2lcDG1qY8HQBZ1rtBPOKDlfSIKnQumyGvZqlIXOAJN01V0GsDjyg6vBKCZJJKbaXFHbQrfvHINFN9LZOZd2BuPhF2WxZFHnF56sJDBySTx68zyIW0diRXFBowl6JjENbg9Q6HvboaSf8NDZLqcP5Bd9I9E8lLIsn1ag15C8+YM3XN8lqTe2kEGCIyvTwEeCEC313guVPG6NiL5Y0fKaA3KUTzkiAOhL05u8BQ1HWS2VJgpjVNmYt6Cq/N1bICwzphOqbIrx1DUWSe5LRJzqZwrTRws78QtlPc44hLN5p0YkBzK7C41BK9Px7wtym3Ckab4kuOgvw0g9prdjE5+wEExNxYYOynmYZ+K+4utuI6xRBg7/TRRaNui+2lZVaAVho5cKIG7PZeX6YsvjuArShPrCALSVKs59TuNueGmHgdTfp3he4ANXtt2EBAjIAibfqfO4qX7QTfxgsxIFc6VZ3RClqreIXo5+VUYfny1S9f8eBgnFgC/wg7FRxlCIYwTrUkjGZjJ3VhvcTWjucrbwKHFoh4QmLsX/34jWOJVaPcsYjApGhdB/4zcUdCazwcpibyVyZo1w4gfXDx44H/8Cfqt8znyZmkO4BSxpIGBlHQ1rRCJiUDfDMAoAj6P7hU6shZGrIKDdvG3c31/ocGuLEZB
+ Zy3jySLl
+ 3L6BwIcsxuwSaDZkkGEEA+h4Lj79yeZWAW0bJSkbK48EInU6fsmDjf5f6NwsElBIQoJZ6DNOd3DHmR1GUDrCM7eY/Q0MkyD7yo256LpX5lzts+p4AgQseOQE5cAfZf/XGKP4setHHdXLYmmTo7Sll2rSWbc2/WVqZcQ75fiZhp+4sTCWau0WphiaE0XtUfTlrQQJuVYVDF6+u8/QB6PRjMOdT/TgTwBLg0L3VBem1UTd0IVr1OK47eih3lbOLeWUkRCftOKXcilTITpU0AHT8E2zIDsYJIdQzLm6oxNNtFvkhe1uYkmTMC7zrY4ZogT1sEBhgPvRHctoHCu9YGLwGvGV+j/+1p1fn2fCOnYyVOGJwZlY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,23 +108,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 21:09:16 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
+On Tue, 14 Oct 2025 21:09:17 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
 
-> The function register_node() is only called from register_one_node().
-> This patch folds register_node() into its only caller and renames
-> register_one_node() to register_node().
+> The function unregister_node() is only called from unregister_one_node().
+> This patch folds unregister_node() into its only caller and renames
+> unregister_one_node() to unregister_node().
 > 
 > This reduces unnecessary indirection and simplifies the code structure.
 > No functional changes are introduced.
 > 
+> Acked-by: David Hildenbrand <david@redhat.com>
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 
 Acked-by: SeongJae Park <sj@kernel.org>
 
+> ---
+>  drivers/base/node.c  | 38 +++++++++++++++++---------------------
+>  include/linux/node.h |  6 ++----
+>  mm/memory_hotplug.c  |  4 ++--
+>  3 files changed, 21 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index 4bcaa8006cd6..758b777dec1f 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -676,23 +676,6 @@ static void node_device_release(struct device *dev)
+>  	kfree(to_node(dev));
+>  }
+>  
+> -/**
+> - * unregister_node - unregister a node device
+> - * @node: node going away
+> - *
+> - * Unregisters a node device @node.  All the devices on the node must be
+> - * unregistered before calling this function.
+> - */
+> -void unregister_node(struct node *node)
+> -{
+> -	hugetlb_unregister_node(node);
+> -	compaction_unregister_node(node);
+> -	reclaim_unregister_node(node);
+> -	node_remove_accesses(node);
+> -	node_remove_caches(node);
+> -	device_unregister(&node->dev);
+> -}
+> -
+>  struct node *node_devices[MAX_NUMNODES];
+>  
+>  /*
+> @@ -924,13 +907,26 @@ int register_node(int nid)
+>  
+>  	return error;
+>  }
+> -
+> -void unregister_one_node(int nid)
+> +/**
+> + * unregister_node - unregister a node device
+> + * @nid: nid of the node going away
+> + *
+> + * Unregisters the node device at node id  @nid.  All the devices on the
+
+Nit.  Why two spaces before "@nid"?
+
+[...]
+
 
 Thanks,
 SJ
-
-[...]
 
