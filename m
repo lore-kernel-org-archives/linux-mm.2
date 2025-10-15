@@ -4,102 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67245CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 11:04:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F28D2CCD193
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 11:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AE628E0005; Wed, 15 Oct 2025 07:04:34 -0400 (EDT)
+	id 3F7688E0011; Wed, 15 Oct 2025 07:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 886668E0002; Wed, 15 Oct 2025 07:04:34 -0400 (EDT)
+	id 3A7E78E0002; Wed, 15 Oct 2025 07:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C31A8E0005; Wed, 15 Oct 2025 07:04:34 -0400 (EDT)
+	id 2E4EA8E0011; Wed, 15 Oct 2025 07:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B9E88E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:04:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 39EE4160446
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:04:34 +0000 (UTC)
-X-FDA: 84000065268.17.7BFAE5F
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 222BC4000F
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:04:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Icl28WZ6;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760526272; a=rsa-sha256;
-	cv=none;
-	b=dyUe6y66v1YiwrNsuHUTAY4G3x5DQArMhcBByIHguzLG7AcgiSHdrnnC68cpsxndkPocLe
-	O6+H6W0OiEvGWhrErAzYe/T7DSkyDfb+XfkYKe8ewQe/kpq+I5OVxlOJmShh6Exxixtufx
-	+L1xYjU/29M5pdTluKay5SbBa5Pn0o4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Icl28WZ6;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CF288E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:24:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F9441A04AF
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:24:03 +0000 (UTC)
+X-FDA: 84000114366.15.ED4CC2C
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B38091C0012
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:24:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fw2riVTi;
+	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760526272;
+	s=arc-20220608; t=1760527442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=waaSkUTajFSu7GDeeSsIK8w04Eebv+AgJ9uThxzjal8=;
-	b=LB94+ZK6kpN06bP6AN1cmp8uLEEUwgXrpeA8TiNx+zGDb8L+LDHltEpgRWaJRRmwWJTTR6
-	18g1IVfZdj61EH5FtDXgIL60vVkxupIXG3rHlYMkg+Z3MRtvLrmGzc5E2XJU1eMoRIm232
-	eFbjUzw1DKyYdH2bxklQiBW19eYidrM=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=waaSkUTajFSu7GDeeSsIK8w04Eebv+AgJ9uThxzjal8=;
-	b=Icl28WZ6lsFeoM9TrI4J7xcfYvnXScN7c2Y7cycjflql+cwJ7OhVl5gBKMPBi3mEnxTZPZSDR
-	i0SUU1UbXkuQ5NkgjIh4siK9uGLa/hrP5Tyhs39eu8GvaYxAIK58KfeRNYBLw4CkUOePDYm957W
-	YlSk7BFcrvd2O7uqfnE+X1o=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cmp9C6fJszcZxv;
-	Wed, 15 Oct 2025 19:03:27 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 695CF180B72;
-	Wed, 15 Oct 2025 19:04:26 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 15 Oct 2025 19:04:25 +0800
-Message-ID: <c5f19802-3d40-4e0e-a9ab-1de64b6869e8@huawei.com>
-Date: Wed, 15 Oct 2025 19:04:22 +0800
+	bh=IwvFeOSawJO8ToN1vYMfeDPUih6SozsleVrhFjkq2dQ=;
+	b=Bwvk0wibILojaRXBXXjHJ3E8hq+PSQgICYpL5fsfT2D1YFZ1h4FpG/5TqFlG9V68ikQdz4
+	fob0Ei20v60QXg/yDirW9K+6F24flt5X7oZ2nSvGIhvu3RhOfWxHfjZ1x8IHZxpqqbbXcZ
+	/mv744Ia0o40yjZ5r/GLr7HXEn3lb/c=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Fw2riVTi;
+	spf=pass (imf21.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760527442; a=rsa-sha256;
+	cv=none;
+	b=pjOGWlsFup3Qkk/WQOw3FYUjyPzEfzEHl8O7GFFboP/F70tVONogUrO6zlmdXpOVuRrvyj
+	vbYcsMitY2DIK84qdgA57nP3iyfTU0hNLbY3gB1Vfr7N9FkoJ7kPWyFzFs9iZjx7zNCGCA
+	sEd91GaUOI9F7pn+Y60796RYzPfSqn8=
+Message-ID: <8f161ba2-6d0f-4dbb-85bc-ab4bff04f24a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760527439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IwvFeOSawJO8ToN1vYMfeDPUih6SozsleVrhFjkq2dQ=;
+	b=Fw2riVTiTN8NodX907zI5PJGFL25SWKPdtF7d9Qo0gNzBF6Xo4g0tGzuRY6HQhxF2hV1Ny
+	Vu8jgIE07yH/sMViD71uC8imi8NU+B4S2POM/Kd+ivseb9OUbXKPZeDM14CVQTQw+N0Fm2
+	u2AQf7wk+EWssayU5cjF+TS/W0ngv+Q=
+Date: Wed, 15 Oct 2025 19:22:59 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: huge_memory: use folio_skip_prot_numa() for
- pmd folio
-To: David Hildenbrand <david@redhat.com>, Dev Jain <dev.jain@arm.com>, Andrew
- Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, <linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
-	<lance.yang@linux.dev>, <Liam.Howlett@oracle.com>, Sidhartha Kumar
-	<sidhartha.kumar@oracle.com>
-References: <20251014113349.2618158-1-wangkefeng.wang@huawei.com>
- <20251014113349.2618158-4-wangkefeng.wang@huawei.com>
- <1c020f8f-4722-45e4-af1f-ee3d4a67068b@arm.com>
- <92490858-fa4c-49dd-bb3b-2820c794a8dd@huawei.com>
- <77fe5471-ed9a-4448-8a0c-75e41729bec4@redhat.com>
+Subject: Re: [PATCH v3] slab: Add check for memcg_data != OBJEXTS_ALLOC_FAIL
+ in folio_memcg_kmem
+To: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
+References: <20251014152751.499376-1-hao.ge@linux.dev>
+ <CAJuCfpGBxUmvWoe2xv2-bsF+TY4fK-m1-Z_E3OcyTiSYz5KeAA@mail.gmail.com>
+ <aO9okBEZiA4pCNku@hyeyoo> <c07838ca-4e6e-4837-b99f-09fd44c7801c@suse.cz>
+ <aO93GHNR_32-Pmom@hyeyoo> <6194b6ab-6b43-468d-ba78-a95594c48798@suse.cz>
 Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <77fe5471-ed9a-4448-8a0c-75e41729bec4@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <6194b6ab-6b43-468d-ba78-a95594c48798@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: B38091C0012
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 222BC4000F
-X-Stat-Signature: 7edd9qtksu7acq9b3gbtckokqzqupapm
-X-HE-Tag: 1760526270-807878
-X-HE-Meta: U2FsdGVkX19AVsw1F6awX1oFQXihPXT3VHvlAPIeHxNt8Dl8XSGkeIgSCAfa3B/dypZCos/EtI8SFP6lvBvZEirMJD/hbEdKX8X0bEdhpgWe3Yxx/exkTS1PUM685bdn3qCclyBm37qV6b11/j+nrsBTKDVAggwjvC4u7+J3a7fuZWbvmutxOTGiXylXijhLktl4Bfl2gDjwY61NNimleSo3zW3kyCJBIxPB4NFro+zioMqXg7Dx0fV4O4QRgQ8uTo1inOfsILnMW25wx1OPSbIccqXHDmk3AzPzCMNtZ5y4zeGyNUq2HF15K36nPXwVnCxp/wddHjUBzYPMdPq6RAKnzywIIz8u1W1lw3Bnm1rSvEEh2L+/52QzWL1LQ/s5yplSjGBWj1ocrAjQ027HeHiyJMxh2EEUyGY7WaQuxVTvk1LGBVvLwPGQuWaxElGyr0H/q4h7Os6oxQbHNYg7IPfmPZHugQaO/J9GDY/YMNSJUYJThX6FMYkJqo8gYVR1yE6D7JZuh6Jko0RcExfvKEyZnj4lZaZQP6OaLpBb7ve6mlWQ3fZHu3nhVOKWwpr0E21D8oxNPa+Guq/Sk3xjfj3IL1SDj4bgNxyg2DGMqW5zwpb4eM10LBfW7DrExs4QGaadwbzcLWOEtBxm7JpHCbZBTZRehBvrGf+/dvyin80IHUfpoyG42xiO1kA8NS04qkMSSUwOdFsdztDSIO3gU/pSSv0kAgRff7VUQD0Zx27Vgi2r6P0npDgDxx4PFqMLbmC6f0elAUifqF/dnuWv/rD4MAH5g+Xb7iBc692ctvtTEnUiOV088XaHLVEZnuAwhB19iwzLLELXoe/s7eZ3lgG/p603aRT7frVqniXi/3ehvgHBM73QdpYb6faR9TJdrjXN9eEbH7xnbzo2ga1aI9wgb1BrKoAS+VpghBF+6875vnYzfpj9kNuqJZ0GurZ6FRV7Kvkp5bra0Dlmmbs
- MXsUnQNA
- xURNPpbr+QQLgDdhP/uPvWt/hCos7wC+m3PVwebh5BXBilB2eIG8FYDzchppgxvscdLnzRn6hhoSMJq5UiQYNjjUrT9+I2Qou+hNBM9EE/ANNhJdqN5BiTy5Oo3kJoA0X1cVBJ8a7h9pWEykELMqAflnGyuIYeitVcBfpw9rj/oyhitDHTuXF0pcj7njJ+VBOW+76aDJcqeWCdN8kH94tN7okCNo7kpwtl9rB0OQGBOMTOmOjh8Zn4IZULzcnKSu1YjfWBG++mTXgnZT5QEt6NzT0JYgqumtm1H4kktP+6Ui6Mi9u6tBAqsTgcGC72yE/3wEPkgwT1my1q02I2oFOBsX13EI2ZrwhNlPMK2Z81U3dMaT2Z1IKU/RBhZD2B2uh1qbTaD8N8BC6jKQAzDxL2jATtp5OhgV1bYbgx8YpFDPdAdAWwgiMbsbqSg==
+X-Stat-Signature: 41imq553xskdsyb9pb1wcj8cubw5ee3a
+X-HE-Tag: 1760527441-177635
+X-HE-Meta: U2FsdGVkX1/wCVHZTcpXUux0PHxHlDjFeSzFvu10DeOffGHgW9KjqVGyAM8mfpAwMl55+cviZxkJk0eNX3USTpTM+te2ijD5m/bnJgg7n+Bljo7TZ9Qa4L7MXDlswE80Zzu9dFawWrm+752uNlWfZDvs7iqGZYI0AX5S8ziuXfsByclNINJyHnw97D5L3Apa46zezyh6fZX/HCd+FqAg0NLC0Fn06JAulG+qgryiwxlk99eC5TbkybUjUrUEUzuFH3LBOsnezPvt3NM1L59QG5olTWrBoeZFytNt6CxpWZoHANaCCBEV8G8QWLzqSXf7/59SuYkkwV5g5G7p54DTYE5Gu0Iu6j9ZZLad35AkBgN96pj3ZL0oNbCuZl6q4f9geGTKuVbN3jaqsdyuS0fbguZz0sL6BjVxJcP6MGkuNnZaUkfl1gllWpLSjF/2+IuGhyeM/gJ/YUMAJHi5Lbhj4Y726Q19VMF+WM0rMSKGeWBAeuwguVxMWUe1qC4c0H4hTScvOdyRxUeyUx1bX/jyuAQ+8RTJrrtcwmDKS2hFV5DW3bEEvo7t30k70oiSBEBsxNP7jpwZpkozf5115ikHAa3UL54EyTrKWhl2NxzpAtRZ9Qo0Fxhcbafov/WO/f9L8I+jh7JOyzoZ/MX0DHHi4u6oXfRMkZrNMaYO0juL89DphCGHI1PRUWI5SHSjdcMoxXDakElELWtZos1agdfMLXzrH8fyUJPiDn1WrGNtLQHDPjgaW3s93K8fCTy4/wbZgEOazUVgXscI74MBrVterO4yD9+RV59h6f8npd1X7Zrd8lOg1Jdfs7/kLmCqDqIbcJgi5Do8OQakqSAcsxu8KhGlM8t1OE+7WU4Ibp/k02D3EJwGhNGSLHTx+OEiL8UVbMyrO+iVq0uhm4IRhVG29N+7+yupRctOqL60Le1xP3HgplA1Gi/OEKyWd1Nb0m0f+IRqLGjPsVney0qhMWD
+ OFJLAaZC
+ I6b1DMRe/svhwLYCEHcahrbs2YMfTNcII9QNQzk2WI8hUJicHWDS4kzPjKEtrH+I7LKAE43WEBoRoQntXN9G8St5ZDQtO3yN4A6ATa+N7qGcDaiucaTmPRv/fO6MjZM4EOUATo3nq89hYUaaPDZ9sBkDVYeYrS7gVEztBo9Lo7nVJHSeDvdHwxeUuqt6nqf3ym65Waumw3afEAJcdrSGfcyPxwnNzH0DelPSoJP6OlkKAmlt+CVyQTvg8xcTc07KW/OGIzM8PLFAuaUwQkeU+/npaBITdX0Z3f4FwdV7TI35ctViANSP+FT03Jcsp/B5CMTjN/ypjvQCsutpVqlUHDSRJBeGsji0OzXFHRdWDGVNY+sxk+fDfhpkk1Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,50 +99,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Vlastimil and Harry
 
 
-On 2025/10/15 17:54, David Hildenbrand wrote:
-> On 15.10.25 11:21, Kefeng Wang wrote:
->>
->>
->> On 2025/10/15 15:30, Dev Jain wrote:
->>>
->>> On 14/10/25 5:03 pm, Kefeng Wang wrote:
->>>> Rename prot_numa_skip() to folio_skip_prot_numa(), and remove
->>>> ret by directly return value instead of goto style.
+  Thank you for your professional guidance.
+
+
+On 2025/10/15 18:37, Vlastimil Babka wrote:
+> On 10/15/25 12:27, Harry Yoo wrote:
+>> On Wed, Oct 15, 2025 at 11:54:18AM +0200, Vlastimil Babka wrote:
+>>> On 10/15/25 11:25, Harry Yoo wrote:
+>>>> On Tue, Oct 14, 2025 at 09:12:43AM -0700, Suren Baghdasaryan wrote:
+>>>>> On Tue, Oct 14, 2025 at 8:28 AM Hao Ge <hao.ge@linux.dev> wrote:
+>>>>>> From: Hao Ge <gehao@kylinos.cn>
+>>>>>>
+>>>>>> Since OBJEXTS_ALLOC_FAIL and MEMCG_DATA_OBJEXTS currently share
+>>>>>> the same bit position, we cannot determine whether memcg_data still
+>>>>>> points to the slabobj_ext vector simply by checking
+>>>>>> folio->memcg_data & MEMCG_DATA_OBJEXTS.
+>>>>>>
+>>>>>> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
+>>>>>> and during the release of the associated folio, the BUG check is triggered
+>>>>>> because it was mistakenly assumed that a valid folio->memcg_data
+>>>>>> was not cleared before freeing the folio.
+>>>> nit: yesterday I was confused that this is sanity checks in buddy complaining
+>>>> folio->memcg_data not being cleared, but it's actually folio_memcg_kmem()
+>>>> complaining that MEMCG_OBJEXTS_DATA flag is set on non-slab folios (in
+>>>> free_pages_prepare(), if PageMemcgKmem(page) -> __memcg_kmem_uncharge_page()))
+>>>> So the paragraph above should be updated?
+
+Hi Harry
+
+We don't need to update the paragraph.
+
+We did have cgroups running at that time, but they had no connection to 
+this page.
+
+The entry  "[ 7108.343500] memcg:1" can also be seen in the v1 logs,
+
+Therefore, the situation at that time was indeed consistent with what I 
+described above.
+
+As discussed below, this only occurs because the OBJEXTS_ALLOC_FAIL flag
+
+was not cleared when the slab was about to be freed.
+
+Or have I missed anything?
+
+
 >>>>
->>>> The folio skip checks for prot numa should be suitable for pmd
->>>> folio too, which helps to avoid unnecessary pmd change and folio
->>>> migration attempts.
+>>>> And as a side question, we clear slab->obj_exts when freeing obj_ext array,
+>>>> but don't clear OBJEXTS_ALLOC_FAIL when freeing a slab? That's not good.
+>>> Hm great point. We should rather make sure it's cleared always, instead of
+>>> adjusting the debugging check, which shouldn't be then necessary, right?
+>> Yeah folio_memcg_kmem() isn't supposed to be called on slabs anyway
+>> (it's not a slab at the time we free it to buddy), so we don't have to
+>> adjust the debug check.
+> Great. Hao Ge, can you please send v4 that instead of adjusting the
+> VM_BUG_ON modifies free_slab_obj_exts() to always clear slab->obj_exts? Thanks!
+
+
+Okay, I will send v4 as soon as possible.
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+>
+>>>>>> So let's check for memcg_data != OBJEXTS_ALLOC_FAIL in folio_memcg_kmem.
+>>>>>>
+>>>>>> Fixes: 7612833192d5 ("slab: Reuse first bit for OBJEXTS_ALLOC_FAIL")
+>>>>>> Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+>>>>>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+>>>>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>>>>>
+>>>>> nit: I think it would be helpful if the changelog explained why we
+>>>>> need the additional check. We can have the same bit set in two
+>>>>> different situations:
+>>>>> 1. object extension vector allocation failure;
+>>>>> 2. memcg_data pointing to a valid mem_cgroup.
+>>>>> To distinguish between them, we need to check not only the bit itself
+>>>>> but also the rest of this field. If the rest is NULL, we have case 1,
+>>>>> otherwise case 2.
+>>>> Agreed.
 >>>>
->>>> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
->>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>>> In general LGTM,
+>>>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>>>>
+>>>> By the way, maybe it'd be nice to introduce a new helper function that
+>>>> properly checks MEMCG_DATA_OBJEXTS flag.
+>>> I thought so too at first...
 >>>
->>> In the review of my mprotect pte batching series, reviewers had
->>> noted that the branch "if (folio_use_access_time(folio))" in
->>> folio_skip_prot_numa() did not belong there - it should be done
->>> outside of the function. But I see that that would duplicate a line
->>> now that this function has two users. So in light of that, would you
->>> mind changing the name of this function to
->>> folio_skip_or_process_prot_numa()?
->>>
+>>>>> ~/slab (slab/for-next-fixes)> git grep -n MEMCG_DATA_OBJEXTS
+>>>>> include/linux/memcontrol.h:337:	MEMCG_DATA_OBJEXTS = (1UL << 0),
+>>>>> include/linux/memcontrol.h:344:#define __OBJEXTS_ALLOC_FAIL	MEMCG_DATA_OBJEXTS
+>>>>> include/linux/memcontrol.h:358:	 * MEMCG_DATA_OBJEXTS.
+>>>>> include/linux/memcontrol.h:400:	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
+>>>>> include/linux/memcontrol.h:421:	VM_BUG_ON_FOLIO(memcg_data & MEMCG_DATA_OBJEXTS, folio);
+>>>> these two,
+>>>>
+>>>>> include/linux/memcontrol.h:492:	if (memcg_data & MEMCG_DATA_OBJEXTS)
+>>>> this,
+>>>>
+>>>>> include/linux/memcontrol.h:538:			(folio->memcg_data & MEMCG_DATA_OBJEXTS),
+>>>>> include/linux/memcontrol.h:1491: * if MEMCG_DATA_OBJEXTS is set.
+>>>>> mm/kfence/core.c:624:				 MEMCG_DATA_OBJEXTS;
+>>>>> mm/page_owner.c:513:	if (memcg_data & MEMCG_DATA_OBJEXTS)
+>>>> this,
+>>>>
+>>>>> mm/slab.h:541:	 * MEMCG_DATA_OBJEXTS bit set or be equal to OBJEXTS_ALLOC_FAIL.
+>>>>> mm/slab.h:543:	VM_BUG_ON_PAGE(obj_exts && !(obj_exts & MEMCG_DATA_OBJEXTS) &&
+>>>>> mm/slub.c:2137:	new_exts |= MEMCG_DATA_OBJEXTS;
+>>>>> tools/mm/show_page_info.py:55:        MEMCG_DATA_OBJEXTS = prog.constant("MEMCG_DATA_OBJEXTS").value_()
+>>>>> tools/mm/show_page_info.py:59:        if memcg_data & MEMCG_DATA_OBJEXTS:
+>>>> and this do not look good.
+>>>>
+>>>> I mean technically they are fine since OBJEXTS_ALLOC_FAIL is set on
+>>>> slabs only, but that's just a coincidence.
+>>> And checked the the other debugging checks too. But then thought it's better
+>>> that if these are not expected to see slabs, then they should not be
+>>> adjusted. I don't see it as a coincidence but as intention to keep it slab
+>>> specific. It will be also more future proof for the upcoming separation of
+>>> struct slab from struct page.
+>> Then we're intentionally using (folio->memcg_data & MEMCG_DATA_OBJEXTS) check
+>> as a way to determine whether the folio is a slab (either slabobj_ext array
+>> allocation succeeded or failed).
 >>
->> The name is a bit long, and it only update access_time not change the
->> pte, so maybe we leave it as is?
-> 
-> Any such name might make the return value weird (which indicates whether 
-> to skip) I'm afraid.
-> 
-> We could invert the meaning and call it something like
-> 
->      folio_apply_prot_numa()
-> 
-> And return whether we have to protect it.
-> 
-> Maybe that's better? Other naming suggestions welcome :)
-> 
-
-That's better, or folio_needs_prot_numa() as there are already some
-similar names with folio_needs_ prefix ?
-
+>> That makes sense to me!
+>>
+>>>>>> ---
+>>>>>> v3: Simplify the solution, per Harry's suggestion in the v1 comments
+>>>>>>      Add Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+>>>>>> ---
+>>>>>>   include/linux/memcontrol.h | 4 +++-
+>>>>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>>>>> index 873e510d6f8d..7ed15f858dc4 100644
+>>>>>> --- a/include/linux/memcontrol.h
+>>>>>> +++ b/include/linux/memcontrol.h
+>>>>>> @@ -534,7 +534,9 @@ static inline struct mem_cgroup *get_mem_cgroup_from_objcg(struct obj_cgroup *ob
+>>>>>>   static inline bool folio_memcg_kmem(struct folio *folio)
+>>>>>>   {
+>>>>>>          VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
+>>>>>> -       VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
+>>>>>> +       VM_BUG_ON_FOLIO((folio->memcg_data != OBJEXTS_ALLOC_FAIL) &&
+>>>>>> +                       (folio->memcg_data & MEMCG_DATA_OBJEXTS),
+>>>>>> +                       folio);
+>>>>>>          return folio->memcg_data & MEMCG_DATA_KMEM;
+>>>>>>   }
+>>>>>>
+>>>>>> --
+>>>>>> 2.25.1
 
