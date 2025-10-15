@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13A58CCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7075DCCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DB418E0017; Wed, 15 Oct 2025 04:28:39 -0400 (EDT)
+	id CA8EE8E0018; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B2E88E0002; Wed, 15 Oct 2025 04:28:39 -0400 (EDT)
+	id C587D8E0002; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C8EE8E0017; Wed, 15 Oct 2025 04:28:39 -0400 (EDT)
+	id B95A98E0018; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B9878E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 199CD889E5
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:39 +0000 (UTC)
-X-FDA: 83999672358.01.6D1D19D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A95018E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:28:44 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7766C88B73
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:44 +0000 (UTC)
+X-FDA: 83999672568.08.73F3D9B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8313320008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id D571240005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:28:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516917;
+	s=arc-20220608; t=1760516923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yonosVKorvPfHjKG943kS+3aeQ7jqapDh6f5jDLbXPE=;
-	b=zF+W1/chUSNqKwNEwRAiL+Loi2/VFQndyBSdGp2hmxKAHzoI2/gqlOSWkqN4GoaACkHFge
-	oLDhXG8DWP+/jt3luO+z1l9S8V8ppEovy8haOPc758imRxC36Ip2V95dKtO6+VkCke9un5
-	OOscyLkfMmgxV9sKru/rM5Zmh/p9PpQ=
+	bh=kYmPJ6r7KmFHWtiLUTbtWuCWMRTotHkS2m3cSns0zQ0=;
+	b=0aimDHdI9w2pF21Xf97bEUlt8/iBHVhAUtwJQHe4s7qcbVxVI3uM/dsF5T97h/O0zVlfge
+	ltG0GlKdq5i4nN4QHd+im19znHJQrkINRwrfvOjl8J725HhsHWJpIt8py/Cbu2PrTBKutP
+	H5PsS3PXtaO5046JHNveT7N1NArF4qg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516923; a=rsa-sha256;
+	cv=none;
+	b=pl2Ovk/MA0CcgRT+Q+iTeEVHEPi40fGNV1ysGJbfp9Ogduat8eTwcMVnv9ACuwjPTVRpyg
+	gd32hC93LtCmIUnFlOAMmXjFsdvKi0f0Ltp1slF9sOHF2gV1R8LDXyaXAHHUlS3TkTrE0W
+	4c7IZ3U6T3lFCWp1gm5Rt+s5z8nJrJM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf03.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516917; a=rsa-sha256;
-	cv=none;
-	b=L91/+ouFIJOWqVGet+sEImpzq2PC4qwzIdBJ+f6HiuSGqOptGmTRTBwF/Z69VufKEdlqAZ
-	lWZvvScpJawZztPJ5MXnQD4SqnX4sQUzr6y7o6uPWVHDamFl6PPmlio2VVwOx7xmLlwp5V
-	E7rINWIcoioLyKaLe8EEq9ZtrBXAIeQ=
+	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D57AA2328;
-	Wed, 15 Oct 2025 01:28:28 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EB672364;
+	Wed, 15 Oct 2025 01:28:34 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8251F3F66E;
-	Wed, 15 Oct 2025 01:28:31 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2ADB43F66E;
+	Wed, 15 Oct 2025 01:28:37 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -91,22 +91,22 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v3 10/13] sparc/mm: replace batch->active with in_lazy_mmu_mode()
-Date: Wed, 15 Oct 2025 09:27:24 +0100
-Message-ID: <20251015082727.2395128-11-kevin.brodsky@arm.com>
+Subject: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when context-switching
+Date: Wed, 15 Oct 2025 09:27:25 +0100
+Message-ID: <20251015082727.2395128-12-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20251015082727.2395128-1-kevin.brodsky@arm.com>
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i57a3w55gdo4yrtcicd84ag4ey4uhwei
-X-Rspamd-Queue-Id: 8313320008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760516917-569239
-X-HE-Meta: U2FsdGVkX19RaCMJZtBZxOZfVeCUlr4cjVs36aE4P6RR4YuEdIoVmQCtwAb9KHCaj0FN02Voq9xL3vjcHaqvA7oWmIpyPByjEu5UWV9YITXW+os6TaX5w1grfj88BRXs2AxTzgdDJb9nriHDVipj/JCO7J8c+rzmgyvZE6hUNrUmmu+gBvVHQfQGjxmljcUliVsyXiMPy1gdAw9m2Dw2jMl+0pI4DpnoEcr2FEoGAotwMJ9zgPZB+7WD51K4Nu6J4uA4VBhXk3QWLhciUP7QVTgQ6zTtq1p9BI4/dBuCHvDJUeKd05PebY3oIh7WTXU8RMF1v2e1wpfc5+fuYmwv9ZQzGI5ISRwU0uAHyxsK6iNXPVgsS0FZ+E2X1v9vFWf7DjA9NrwPW6qFhRBrjQAgGBeNsRJfbohF2Xa7xJZmTosZpadhUbz6Z5SnUuoSazsg0z0u9OXcp3rSYV5+rdtx+2gZ5iiPVD8fc2oD1uiciYs9j+waadJ3QkdFZcARq7Dr+Bp7faDTTiPQII3P8zLbRdg9vZcdxu5BTHem102fqYR6fxSvfPaAGZlU2VKqXT7OtfDEr2+BD+UurDBN4lA/Jp66eiW9p1nEbkbIyz6JeegKEAxobPCBacrUQ6M9X+dlD5SEv0fJIcNGrj8+s3RV4vwbmivrO2S0LBBOHBprT4zEpUPj2vFf0d17NrfmiPmATYwRBv0VdJTxyX8el7Mmabx8O1C77cxnR2Xrz9SfLFQ6K7R09q3PYJX+hOFAf96z//uX2Q5qZQBNtmAR7blfiGNUDUXG5LlmkmocoLR3RKX5NQWkxav0b5Z3lHWiQx2imYjanlObDP0ICJjsYrpzKDdsPDezlg1g4gy8y3jbdisi+3gN0JWPqKFydA2zcKtvY5owPDjG1bwbK0n1jy//X7yyQwUg7iOmPzYGysNRb7y1SG5WlGRN2kuaLoMsMAMBd5V4hNCVh+KXatpLqo2
- 9z464qhc
- dcm2gsQfPtod5aU3z5jagPZ+cnKovXYE6XNcYnydEanHgXmK/fx98Rj5Xs5jkzq610+FzyyK9pt9Nl0xrOdlTIeLQ6uI7VBaNcbernScOzE3+Fn8O0ffgvA6XBXeyLHt0JtbBvsPsEqBEdxSsAVHUlKUfBOJZf4HH6QyuvQgi0mLlFX6oDQrGaFiq2UeQhcGVZU7CMbAQF78MFS2MNo7GvkgH46/kReZ8ekgc8xPbRggRPdc=
+X-Rspamd-Queue-Id: D571240005
+X-Rspamd-Server: rspam02
+X-Stat-Signature: hm47repfro5wchdxnmouz78tbm5z3d6g
+X-HE-Tag: 1760516922-500922
+X-HE-Meta: U2FsdGVkX1+rapJei1lt3c6vmpzyvfKLm3uo6+3cHTXwTgHZkV6t6CalWbWiNosZcCqqioAmNvOQigxN2ldJI25V9YiekcynxE/NS/03RoJu2WVcUNaZ7esiXWWk9BDyisWAa8VV1wcvH0erMknQEqmLyVVc15tirOXh3D6pETxhysKkmU51eqcPCv9Iy/SZwL5KUA5MgiuJkmNdd1lBmyL9U0dSPIKLhL70hTZBNH9xK7URxujpkh0n0fEhN/QHyTvHE3haG2+6SbHP2PBERMxvqmBzD4f8ul/f+32Fj4/K5+akci0quPJc7k/VZ9v7lvmUe2z3JpLkiRvgvZjVvBUvjpaYJnqNWkMR1i+w2X8w5qKiMD5Blw3xY5OmQWo4LMw+EdKPXHbT+DAEDDgKDed4sOhF1YpgdTEVMaHuzn4lh9y/hax0bAsLrSoz8WKvUY0govseZ7xI5roV0mtzSVRMQdWeXxqkCizxp+/gse5GOXuGIY6QDdbh+XIuiQGwVzfWe4AhbSk2Hw0HOnzIWm0PXM0gL6Z9YnU8qo7V9quPE73w58lGRXQYDauRX/o5xluQu9khdZt+kKoKKdqiEt9+q5u9/fWDuWMfkKQ8VkzNZEIUPqiaJliDx2SFkEELpp3W5j87WUgwvV1xc4SA9VGOfx42X3/hToAFm+Y5xTOw9ADI7xekqtj2QTk5M/KEv01kRslaM5diURw1YmWri11hY1qlWdjBEZjJpLeDSo1t4f7EEfMyshR4zahWgKrY7a5IJSRXSlPfWCsBOpQaBKBtDnvYH4/vO9E8xplesJb1AEY0gV74HzmGhWbiAMQJPWckIgQJeH0J2829EiAtFZ6T7QgWN72u4NF4pI4ZIsgEJYns9aTn3iBoyd1Q9+8+p1FNwl34hJWgYe7gXvneiQl8YMZbWQ+gW1o/5ZXvU7YFUngsyte4+e4k1zkVp8qCj1vUx/A9j6D9A6nvc/F
+ Vis4X/4D
+ MDA3ECBMoisslTPW0YMp5o9BIMI2eHTuUqhUmYbPS6NiCAG2lzBfDpwD/UYHvQJSdewYqiOKqaLLtxd+x8mJYzYJ5f7UyLsV0At1D6nEnqTUVLUz2KumrTMRuv/0ZvPAasfeZb39OiYlxjFbCkc+2v2a+zwum0pf1T0qXVsyMLdzjXWlrTR3Cn19B7L1Oqu33twa24775RAczecI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,65 +115,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+We currently set a TIF flag when scheduling out a task that is in
+lazy MMU mode, in order to restore it when the task is scheduled
+again.
+
 The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-mode. As a result we no longer need to track whether the per-CPU TLB
-batch struct is active - we know it is if in_lazy_mmu_mode() returns
-true.
+mode in task_struct::lazy_mmu_state. We can therefore check that
+state when switching to the new task, instead of using a separate
+TIF flag.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/sparc/include/asm/tlbflush_64.h | 1 -
- arch/sparc/mm/tlb.c                  | 9 +--------
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ arch/x86/include/asm/thread_info.h | 4 +---
+ arch/x86/xen/enlighten_pv.c        | 3 +--
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
-index 4e1036728e2f..6133306ba59a 100644
---- a/arch/sparc/include/asm/tlbflush_64.h
-+++ b/arch/sparc/include/asm/tlbflush_64.h
-@@ -12,7 +12,6 @@ struct tlb_batch {
- 	unsigned int hugepage_shift;
- 	struct mm_struct *mm;
- 	unsigned long tlb_nr;
--	unsigned long active;
- 	unsigned long vaddrs[TLB_BATCH_NR];
- };
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index e71e0e8362ed..0067684afb5b 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -100,8 +100,7 @@ struct thread_info {
+ #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
+ #define TIF_SINGLESTEP		25	/* reenable singlestep on user return*/
+ #define TIF_BLOCKSTEP		26	/* set when we want DEBUGCTLMSR_BTF */
+-#define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
+-#define TIF_ADDR32		28	/* 32-bit address space on 64 bits */
++#define TIF_ADDR32		27	/* 32-bit address space on 64 bits */
  
-diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-index 7b5dfcdb1243..879e22c86e5c 100644
---- a/arch/sparc/mm/tlb.c
-+++ b/arch/sparc/mm/tlb.c
-@@ -52,11 +52,7 @@ void flush_tlb_pending(void)
+ #define _TIF_SSBD		BIT(TIF_SSBD)
+ #define _TIF_SPEC_IB		BIT(TIF_SPEC_IB)
+@@ -114,7 +113,6 @@ struct thread_info {
+ #define _TIF_FORCED_TF		BIT(TIF_FORCED_TF)
+ #define _TIF_BLOCKSTEP		BIT(TIF_BLOCKSTEP)
+ #define _TIF_SINGLESTEP		BIT(TIF_SINGLESTEP)
+-#define _TIF_LAZY_MMU_UPDATES	BIT(TIF_LAZY_MMU_UPDATES)
+ #define _TIF_ADDR32		BIT(TIF_ADDR32)
  
- void arch_enter_lazy_mmu_mode(void)
- {
--	struct tlb_batch *tb;
--
- 	preempt_disable();
--	tb = this_cpu_ptr(&tlb_batch);
--	tb->active = 1;
- }
+ /* flags to check in __switch_to() */
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 4806cc28d7ca..9fabe83e7546 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -426,7 +426,6 @@ static void xen_start_context_switch(struct task_struct *prev)
  
- void arch_flush_lazy_mmu_mode(void)
-@@ -69,10 +65,7 @@ void arch_flush_lazy_mmu_mode(void)
- 
- void arch_leave_lazy_mmu_mode(void)
- {
--	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
--
- 	arch_flush_lazy_mmu_mode();
--	tb->active = 0;
- 	preempt_enable();
- }
- 
-@@ -93,7 +86,7 @@ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
- 		nr = 0;
+ 	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU) {
+ 		arch_leave_lazy_mmu_mode();
+-		set_ti_thread_flag(task_thread_info(prev), TIF_LAZY_MMU_UPDATES);
  	}
+ 	enter_lazy(XEN_LAZY_CPU);
+ }
+@@ -437,7 +436,7 @@ static void xen_end_context_switch(struct task_struct *next)
  
--	if (!tb->active) {
-+	if (!in_lazy_mmu_mode()) {
- 		flush_tsb_user_page(mm, vaddr, hugepage_shift);
- 		global_flush_tlb_page(mm, vaddr);
- 		goto out;
+ 	xen_mc_flush();
+ 	leave_lazy(XEN_LAZY_CPU);
+-	if (test_and_clear_ti_thread_flag(task_thread_info(next), TIF_LAZY_MMU_UPDATES))
++	if (next->lazy_mmu_state.enabled)
+ 		arch_enter_lazy_mmu_mode();
+ }
+ 
 -- 
 2.47.0
 
