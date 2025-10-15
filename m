@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1650FCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:15:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C480ECCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:21:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BF908E0009; Wed, 15 Oct 2025 04:15:41 -0400 (EDT)
+	id 19C258E000B; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6988C8E0002; Wed, 15 Oct 2025 04:15:41 -0400 (EDT)
+	id 173578E0002; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5850F8E0009; Wed, 15 Oct 2025 04:15:41 -0400 (EDT)
+	id 0B0B38E000B; Wed, 15 Oct 2025 04:21:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 35D348E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:15:41 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EC89B8E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:21:41 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA05C1A0B53
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:15:40 +0000 (UTC)
-X-FDA: 83999639640.26.7FB9F73
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9B4CC4000D
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:15:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LZVEiO/V";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B6631A0B51
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:21:41 +0000 (UTC)
+X-FDA: 83999654802.26.9D93D99
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 74EBF20008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:21:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u55Z+EvM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516499; a=rsa-sha256;
+	cv=none;
+	b=NjFIG6mZQ5TBiPIB6OyBMW/LzyrE7OIfTSB1IGr50A8vwpgy7ft5xwnJk8fDYVvz8t+eco
+	GDNfG4k5Kk/LlO3mIzmUHYdsErtGfdQrjjywSv06Ra2ZlW01Aki+HFBIIWTMifnbkihseC
+	fBJju6JPDgVcpoJBqZ27LB+hig4oLSQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u55Z+EvM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760516138;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1760516499;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BIfqIsLc99bq87qQvOG2VjthDQ82hRvAcTCE74IdLVo=;
-	b=PfqaG4U4dDyjGmmvmCirGmT0kVFsZ7OZyFOUZRoXC/ojB1TWQNJQHKA3csULfoTqyWlkVs
-	0oimpxATOJuV+q3jT2j1+jsDRqkc2vsGYsSlU36PHXgoqupBZXjufRPNUL1YV4bxAHOugq
-	0PBwNhgU314A48o0JZVt390MFjdxsZI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760516138; a=rsa-sha256;
-	cv=none;
-	b=XtpmwEy65cY65lcuODypjG9aFse72g1XYDW6bb1iPGI9ydkxgChKcovDevKIAo7qFmQRGy
-	WsyRTZsKQQfBlQu04pY0MT0ooWCx0p8vjtIGznFlZG/QtkJYbVl8BM9RisqMzyJWmhAKbr
-	92zlJiJrVtg/ohVzW6l74ot3VZEXRcg=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LZVEiO/V";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b3d5088259eso921587666b.1
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:15:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760516137; x=1761120937; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BIfqIsLc99bq87qQvOG2VjthDQ82hRvAcTCE74IdLVo=;
-        b=LZVEiO/VuKdsMivanoQDVxh9vAGg1tGmKPS2MTlXfPmE28U8d3fjgBIpWVEbLMdyh7
-         BIJonMqVH4mwKzh8pB4aC9KOKTbCl2pPa22XnH2F8p1LSY/Dyv5Fth/gywjttjZWMtVM
-         OsW5MGzXg7bfBIbRK5iOT3vk6702MQy4mT7RVSVxlRg3C0U2T7BEBC1mAl4jOrulDJfu
-         Jd4QqkvS1EzE5Oh+w486ANKSOr3AZHM9+9hhtVI12lcpKPwEQ8nvSuQnyUtkELaz15os
-         I2OOGNizoXsXnLcbsvmlq0jXDyVwRU9tp//56NJJo+oANeZ6wOv4CCVXiHEpHMslDs5g
-         6oiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760516137; x=1761120937;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BIfqIsLc99bq87qQvOG2VjthDQ82hRvAcTCE74IdLVo=;
-        b=gZYl3h4eTZ+1DzeEJiuGBB7KQpF3nhjLaMiuulUWAZu1TWQBhCfD1Kv6qu6Fm0K1AM
-         of7zgMRBuzulZ+BiYXXY11ykn6VuA3h71skhBt0/jNAKBduVJeT3klbs3h6OJv4iRNJ9
-         SKBTKvVUc1/B7N55HBUGT989AX4+vkK0GJv4ivost2CkHPjvso9vGpr9N0ireFC4+M29
-         8fxbNbLjgb6KpnxzDwoG+qSI1EjCkm6RDwGgpwhiSMmT06mb3diKXsiELWuDgF3JYgOa
-         InCYtYSGIh6/XNCisWLc3mSF+zm9F9i/KFQfQm38ak325vS2BfApLkSe+JjszJNO++f6
-         Vg9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVD8VXpq1O/mtnxBxuN4I41E2gNhQBkSaWGNZwSqxo8fZS0RBhZtXd/z9orl2KZYEJ68EJHz81CRw==@kvack.org
-X-Gm-Message-State: AOJu0YwfjI2WVlESabgmbXffzFdEKQOTnO/j2igjXyqFnDBJYvcO7Bg6
-	5HyXma5c6Vltdb6LXLe4SBPQ6ANkzgHKxI0Q54IA6YAlv50Ja5ZOILT0
-X-Gm-Gg: ASbGncs+NxRFCTEqLPtvix+u1mW7ceHOXj8xY9CdZPOaFBP5BxyeKoN58LcJIN0BJAl
-	VfGgYDrN6fMmVjyy0k/GhPfAAtTtXBaqGwLlSVVm3W/GdQYylDgtbXXJHxOmQ4Hjl/9nOsOlWYv
-	FTJfzNA8Vz/i2Vn8oA9RINa27cQuFn6jZi2MZ011f97u7Gi3fsHJmzLkG7RD/lE36lzhjIOQMPF
-	Z0qo8IlhTHJjYvPELJyQfdKfzBcYiqmPPXiPF4FEHMvK2oOz59G6bqjdiEn2p759j527jnAKdHL
-	6veIhwvLCKZCH/ODDFLgUtTNmZtTeqBYUTO62mkP2z68jxmRilIZ+mgAF7YCrWXNWvgoCpkHTfE
-	cieTy/WXoz8La6cLUXybBfGhVJtt/jtV8EAEAdcuHaC2TNcUcNG4=
-X-Google-Smtp-Source: AGHT+IHDve9Dz7zcmKuULtJ8YBELBPq9HTdUfWbvjqy9EPGVXjjytQ9BNb9i9Wz7fy23tuSwn8G8aw==
-X-Received: by 2002:a17:906:e20c:b0:b53:d97c:5203 with SMTP id a640c23a62f3a-b53d97c6304mr1973757066b.42.1760516136780;
-        Wed, 15 Oct 2025 01:15:36 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b5cb965dac0sm173482466b.13.2025.10.15.01.15.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 Oct 2025 01:15:36 -0700 (PDT)
-Date: Wed, 15 Oct 2025 08:15:35 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH 0/5] mm/huge_memory: cleanup __split_unmapped_folio()
-Message-ID: <20251015081535.qesjcj2mhb7flq6f@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251014134606.22543-1-richard.weiyang@gmail.com>
- <B19F20C2-7B99-40AD-BC1F-944FF92ADECA@nvidia.com>
+	bh=aEGpct1pPo/9AwrIfL7NwUZxzHtPRtYHvflLKg+Ai5E=;
+	b=h6T7nsXyioMauiWEdd7E98vqICEN3/VG5ttQRd/kr8ay9HmkO0xWwOkOEqupEuzeJwoJDG
+	XQ4fFK/D/IOBIydNcb/NHpzqRY+9DXFnErNwlrcfShIiAcQlGCWObrjSN36QXpVf32D/X6
+	FYusYzyRfnWIFRs5s/NP3yjz6U8WBog=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0CE9443901;
+	Wed, 15 Oct 2025 08:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A175C4CEF8;
+	Wed, 15 Oct 2025 08:21:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760516497;
+	bh=aUyMg0r5Z6Pu1f8HinELT/IZMgwDZyyKT77Cbz9ISjs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u55Z+EvMBzgWN6PmzJ4w2jPQk1OmAHY1Ltm98ZKLlILP6qsjXVlaDW1JPSjk/l4cC
+	 6nixNt1kHAFbAioY7wPrDSkwrhzt0GQmM/RXf1fCLhyH9cJTQ7pNX5XTAdgTe/0KOS
+	 UxccDGFrzDbf4ZakLZzrChf2iY+dxH4YZvQ+z2J8gq5kPm5XTJ14u0Cu7X9RvKVQgb
+	 8mlcAQ802+06rdeKIocL1dphngXtsBd3GY3WqXYilMNlzD40b1bovdZJXNqmIYlESW
+	 k/r0kWitA+2DjeieTpbzTW3MM4CvAG/K9slCPttLCvLO2CYRU3ictLCDx54x65PU1y
+	 HCuaTguYdZYgg==
+Date: Wed, 15 Oct 2025 11:21:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
+	dmatlack@google.com, skhawaja@google.com
+Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+Message-ID: <aO9ZiERHff7vQiBL@kernel.org>
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+ <20251015053121.3978358-2-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <B19F20C2-7B99-40AD-BC1F-944FF92ADECA@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20251015053121.3978358-2-pasha.tatashin@soleen.com>
+X-Stat-Signature: bzu3jx5qqpbbcxgozstwewhedfg9hygn
+X-Rspamd-Queue-Id: 74EBF20008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9B4CC4000D
-X-Rspamd-Server: rspam02
-X-Stat-Signature: du66u31f6manaycrsqg11gcj6nwhoqga
-X-HE-Tag: 1760516138-887683
-X-HE-Meta: U2FsdGVkX182VQOWiG/gq1l+QVavnA8K9j57QZ061mk36P0LSlJzPdyjpbBkH0LufCPIx6KjUNiyLuVrMRcxotbRLN41VvdzcQyXVz/A5baQf6QU2G33359S/YETPq7WJGMALagMFN68R8dbwsexM170Hg0HQWMT2T9+gzmOkmH0Jpt56PXKFI5ys/HQJtQT8JLHOlYt053WJUdvxZY+0PuQyrU0FGl/Io3uGpo5ZkRoXOLEDXkfv6CPqIUGqcxZbmpGB8tEMW5dWwKZo/gsz0i7BP32Kl1zgMemPc3vEkJlXxmNWpbKZcHrEm7plmwv45ppH8/0cp8rzQfuweb7t8BfG4mrsI+ELqbDvV+9b/1C3EN/IDOO5PMfStmE8L1QY48VQv2rAtyxpFigtehrWWcBAlX3/m8xCASRumHhfndWpZwBsTAVgpIJxAsqIyXJioc/p9hELK3cxctNRTM4kzRmsenYpuMZYR0PJe/Ekl1CWN32ikFYJS7xfmQKXv9IxkBZ5RJRjIQlenBPHRsLoqiyGEsRrBhY0nf3hfc4L/hbFh46AJe1eDvPoJ0wXl6io8kmnI21RnAWpwv9um7h2dW2OqFU4tWbAeTH4cUXMGuhL1E55zcsMtSoqszJ/8VqYjFIBeK3WL0Lh/9D54GBmjZoaeecI/09tW3KoDafEc3m1r6lUDwPk0YMPW5FVlYoKavpGRTlBV6CYlDhhNpvOnx4j1LhSNYD3O/ayDA8U8hXEbYij/rET6upvMZOXwnmKEtyE+hNF2Ojy1j2K0R5sHawgVxF6qaAt6xWSvS1FhE9sN4nNREapIOG7aIYfRAap66NyvPgw5uxrUpkbnabS31LAJYk+vo9FwCRMt6M2w9fdVzNBlOaQDuhQ2XVCMIphlmA7HGc42sIlIrabiYUo7RX/TMynhXwnYnWJr8vmknJ+JaV5xyNAB1h6yAVUeYkvf5uvN4KXz3xiN6nvy9
- W4eENZKC
- Kcb275RNZP5aPaGAb8ZwamOdvnl0wM76dK7leeoBTc/ibVozcygsgsmEyZ/+lGNjqlewoGwrQ3+jCJ7DqmQLchCZjP1lPpz2ODkbkEahYH4L0fUMvCpDNICXG1W6tGyTPahwcNsmPBzAoHM29+wtx/6YOONBJMijhSjCpIzWh7w2px8kDOuUqVFtQ4/SrBBWxloD7KzQkIpnK7bHHdh39YDLls1gP7XzL2Oe60CMQtmQfHE8hNL0XyQPDp0e3rucUNugZiSQxGJu8cYr3ALirwXnIdjV3ylxKOMUwf8zvX9IcrXndwLOL7ibfCcpqfRl5rx1Bq9pFjKnJgP9a4wye6hR7KFNDYQybxDubVTIVGSQ2HSJAJiy9Wqxoh++fiswGdZ2EDGy8N49u2wclpVSzS1PGGqcR05PhyYeWjlxEiSQQJ8+y2WmTKNMGfbMBMalE2m6ADB21NitMRnQfE+rippQYk9sZrLOo8doRSTY+RrpUk5wK5Ng/AgnG2nTzDS9QbqH/lcnqXhuoRtxf3w3hJa0ZXFCp+xMs+pOLNlqFeZFwH5KylVqqYvjdRA9kEuAbA221rPUb+VprZFkzaWvLNe0/M4GsHTbfSttIWGQlDFcDVMkg+spd0n6YxNc41mQ1y4yqY6gqrbA5B0782KYpNQQpU7KHgNWcShpAmSEdE5qfpi4rzSI3j09rgQSBskhBx6YJhowGSbLDDlcVT/tvTcNZGLu2OiaqwXGJlP4OFMHjxccHoiHb0BRd9Fjvn0/wbD4w
+X-HE-Tag: 1760516499-736593
+X-HE-Meta: U2FsdGVkX19HgECL5W6yCbZ4XwVwesWkaEq53l2gbamfKsmq24FaFmstL9HdM04ySlSPPCosLwYZNFU33A+TPYC7K/7o/0ry1HUoF6oy21LmHM5yE9t9mQ3SjlHj+gaDyAOLL/h5VCjJbhZJo9aQ9j2Q47zccd+CCAtHkQ63KAv2uI0o4PPJndH77H0xrFYCKWLtbzmUT5FLMecbck8ieY3b0EzentoDN4ls5raCHIFcXKTa553y4YNHrca7oMQGm+DpVdJs9z9RKhPI8xVM+PArqAQrujs7XJiNfKPnRqWNfLRv28cRzo7JPBMOmSsAlxhdjr8dkTzt3UktazPfG8lFuheR48dzND9kpTPhclFBJfuXex+d17kMkADcmZ6a3rFhbM/fZe5Vy8rUVAZY52b225JXBCLg6tRjT4fR4o6LvEiTaJ6RjSaFLh1rAyrvlrPqkUW44XG1vmttScvmzMUTU6mossGmehhlajN3WErau+WD/qKhkbLEY0WiXEc6I0w2aRPzxx9selQfvt60Prhfsx/7P/iqh+7QG5b5F7c9RHIue8mn9g6nhMJyr+g/IqWUWeHZaxhQ15i6CD5H3xTmXAt07Lt5jatezaZgfNcvIZxo9b2jNxfFAGlTIKRkcRp8f2w4wCU/BjkASF2w6D5u3a0YBOCcTpwhPGVFPe1ba5vLCrARrgaQp+hP5F1T19koxx5EJxSKciuuPapdSAIPIOxvoyZNekAA/4RO0TH/gKsDbFS5HhylXnZHzKLYK4IU3lBNI1RWUe3H07/Ov3fgyFmooJ1FaDtd1ktaz7eUj0olXrvy5KzcWSNmVxyXI2WkK3Wlk+81DhaMPAu+gxlzo9NzytmQ1mQqgn1HXoJ8OYqUDAQV3849guZ4SRnHr7xjoz8Wksm1/JuEvO90VRvYTaEMrQIfboJ6bFhU7C4yvfnxpenFZiqt96ctdDB4hisr7tOtNccdi/5NWh6
+ 803JdZ4C
+ +19rRCyAMBpxgm3ZvL5VnbH5TQfdkhzhMrroQUv1f804LCASstgnxnQ0Y6h71XKNhQ2MGKRuNOuN7DFdyiLe/3tsE536uBz0ifa9NgvuL5H/5VE2FCcxmy5bdrg0C0+LJudnNWI2BgsWdA97Q9U9tm2f+37/IGxwC7W/N+RUTnpFxapsRS5+EouPRGc+jqz4wUSVl6D93xqyoYXvHDa0u4FMXBrtvy7qxMmPwubV5AKm57+IpfoICJ+++gUA+tetkclx5ZY9Drgl7TwIidB8kmcEQbta9oJW3kB+HN3Tp3IdUsDI8KKY9GmnH7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,173 +97,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 08:45:43PM -0400, Zi Yan wrote:
->On 14 Oct 2025, at 9:46, Wei Yang wrote:
->
->> This short patch series cleans up and optimizes the internal logic of folio
->> splitting, particularly focusing on the __split_unmapped_folio() function.
->>
->> The goal is to improve clarity and efficiency by eliminating redundant
->> checks, caching stable attribute values, and simplifying the iteration
->> logic used for updating folio statistics.
->>
->> These changes make the code easier to follow and maintain.
->>
->> Wei Yang (5):
->>   mm/huge_memory: cache folio attribute in __split_unmapped_folio()
->>   mm/huge_memory: update folio stat after successful split
->>   mm/huge_memory: Optimize and simplify folio stat update after split
->>   mm/huge_memory: Optimize old_order derivation during folio splitting
->>   mm/huge_memory: Remove redundant split_order != new_order check in
->>     uniform_split
->>
->>  mm/huge_memory.c | 70 +++++++++++++-----------------------------------
->>  1 file changed, 18 insertions(+), 52 deletions(-)
->>
->The final code looks good to me, but patch 2-5 could be merged into one.
->The diff below is the patch 2-5 and is not that big. My comments are
->added below inline:
->
+Hi Pasha,
 
-Sure, let me try to merge them. The challenge for me is how to merge the
-change log :-(
+On Wed, Oct 15, 2025 at 01:31:20AM -0400, Pasha Tatashin wrote:
+>
+> Subject: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or preserved memory in scratch area
 
-Below commit log looks good to you?
+Hmm, can't say I like liveupdate: kho: prefix. KHO: on it's own is shorter
+and reflects that this is a KHO change rather than liveupdate.
 
+> It is invalid for KHO metadata or preserved memory regions to be located
+> within the KHO scratch area, as this area is overwritten when the next
+> kernel is loaded, and used early in boot by the next kernel. This can
+> lead to memory corruption.
+> 
+> Adds checks to kho_preserve_* and KHO's internal metadata allocators
+> (xa_load_or_alloc, new_chunk) to verify that the physical address of the
+> memory does not overlap with any defined scratch region. If an overlap
+> is detected, the operation will fail and a WARN_ON is triggered. To
+> avoid performance overhead in production kernels, these checks are
+> enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/Kconfig                   | 15 ++++++++++
 
-    mm/huge_memory: Optimize and simplify __split_unmapped_folio() logic
-    
-    This commit refactors the statistic update and iteration logic within
-    __split_unmapped_folio() to improve clarity and efficiency.
-    
-    The current implementation is overly complicated due to two main issues:
-    
-      1. It iterates over all resulting new folios to perform two combined
-         tasks: update statistics and determine the folio for the next
-         split.
-    
-      2. It uses confusing conditional logic (skipping the stat update for
-         the folio at @split_at on success, only to attempt updating it
-         later on a subsequent failure path).
-    
-    This refactoring removes the confusing iteration and conditional updates
-    by leveraging information that is already known, allowing us to directly
-    calculate and update the folio statistics upon a successful split:
-    
-      * All resulting folios have a known order: @split_order.
-    
-      * The number of new folios can be calculated directly from @old_order
-        and @split_order.
-    
-      * The folio for the next split is easily identified as the one
-        containing @split_at.
-    
-    This change results in a much cleaner and more efficient stat update
-    without the complex looping logic.
-    
-    This commit also includes a related cleanup to the uniform splitting
-    logic by removing the check for split_order != new_order, as this
-    condition will not logically occur within the expected flow of a uniform
-    split.
+Feels like kernel/liveupdate/Makefile change is missing
 
->
->
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index b2a48e8e4e08..46ed647f85c1 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3528,9 +3528,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  		struct address_space *mapping, bool uniform_split)
->>  {
->>  	bool is_anon = folio_test_anon(folio);
->> -	int order = folio_order(folio);
->> -	int start_order = uniform_split ? new_order : order - 1;
->
->I would like to retain this, no need to inflate the initialization part
->of for loop.
+>  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
+>  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
+>  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
+>  4 files changed, 70 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index 522b9f74d605..d119f4f3f4b1 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
+>  	  Also, enables inspecting the KHO fdt trees with the debugfs binary
+>  	  blobs.
+>  
+> +config KEXEC_HANDOVER_DEBUG
+> +	bool "Enable Kexec Handover debug checks"
+> +	depends on KEXEC_HANDOVER_DEBUGFS
+> +	help
+> +	  This option enables extra sanity checks for the Kexec Handover
+> +	  subsystem.
+> +
+> +	  These checks verify that neither preserved memory regions nor KHO's
+> +	  internal metadata are allocated from within a KHO scratch area.
+> +	  An overlap can lead to memory corruption during a subsequent kexec
+> +	  operation.
+> +
+> +	  If an overlap is detected, the kernel will print a warning and the
+> +	  offending operation will fail. This should only be enabled for
+> +	  debugging purposes due to runtime overhead.
+>  endmenu
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 5da21f1510cc..ef1e6f7a234b 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -141,6 +141,11 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+>  	if (!elm)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
+> +		kfree(elm);
 
-Sure
+I think __free() cleanup would be better than this.
 
->
->> -	struct folio *next;
->> +	int old_order = folio_order(folio);
->>  	int split_order;
->>  	folio_clear_has_hwpoisoned(folio);
->> @@ -3539,18 +3537,14 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  	 * split to new_order one order at a time. For uniform split,
->>  	 * folio is split to new_order directly.
->>  	 */
->> -	for (split_order = start_order;
->> +	for (split_order = uniform_split ? new_order : old_order - 1;
->>  	     split_order >= new_order;
->>  	     split_order--) {
->> -		struct folio *end_folio = folio_next(folio);
->> -		int old_order = folio_order(folio);
->> -		struct folio *new_folio;
->> +		int new_folios = 1UL << (old_order - split_order);
->
->nr_new_folios is better.
->
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
+>  	if (xa_is_err(res))
+>  		res = ERR_PTR(xa_err(res));
+> @@ -354,7 +359,13 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
+>  
+>  	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!chunk)
+> -		return NULL;
+> +		return ERR_PTR(-ENOMEM);
 
-Sounds good.
+I don't think it's important to return -errno here, it's not that it's
+called from a syscall and we need to set errno for the userspace.
+BTW, the same applies to xa_load_or_alloc() IMO.
 
->>  		/* order-1 anonymous folio is not supported */
->>  		if (is_anon && split_order == 1)
->>  			continue;
->> -		if (uniform_split && split_order != new_order)
->> -			continue;
->
->This is probably dead code in my initial implementation.
->>  		if (mapping) {
->>  			/*
->> @@ -3573,19 +3567,12 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  		pgalloc_tag_split(folio, old_order, split_order);
->>  		__split_folio_to_order(folio, old_order, split_order);
->> -		if (is_anon)
->> +		if (is_anon) {
->>  			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
->> -		/*
->> -		 * Iterate through after-split folios and update folio stats.
->> -		 */
->> -		for (new_folio = folio; new_folio != end_folio; new_folio = next) {
->> -			next = folio_next(new_folio);
->> -			if (new_folio == page_folio(split_at))
->> -				folio = new_folio;
->> -			if (is_anon)
->> -				mod_mthp_stat(folio_order(new_folio),
->> -					      MTHP_STAT_NR_ANON, 1);
->> +			mod_mthp_stat(split_order, MTHP_STAT_NR_ANON, new_folios);
->>  		}
->> +		folio = page_folio(split_at);
->
->This is where non-uniform split moves to next to-be-split folio.
->For uniform split, the for loop only iterates once, so this one
->and the one below do not affect anything.
->
->A comment above this assignment would help reader understand the difference
->between uniform split and non-uniform split.
->
+> +
+> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE))) {
+> +		kfree(chunk);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	chunk->hdr.order = order;
+>  	if (cur_chunk)
+>  		KHOSER_STORE_PTR(cur_chunk->hdr.next, chunk);
+> @@ -379,14 +390,17 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  	struct khoser_mem_chunk *chunk = NULL;
+>  	struct kho_mem_phys *physxa;
+>  	unsigned long order;
+> +	int ret = -ENOMEM;
+>  
+>  	xa_for_each(&kho_out->track.orders, order, physxa) {
+>  		struct kho_mem_phys_bits *bits;
+>  		unsigned long phys;
+>  
+>  		chunk = new_chunk(chunk, order);
+> -		if (!chunk)
+> +		if (IS_ERR(chunk)) {
+> +			ret = PTR_ERR(chunk);
 
-How about this?
+... and indeed, -errno from new_chunk() juts makes things more complex :(
 
-		/*
-		 * For uniform split, we have finished the job.
-		 * For non-uniform split, we assign folio to the one the one
-		 * containing @split_at and assign @old_order to @split_order.
-		 */
+>  			goto err_free;
+> +		}
+>  
+>  		if (!first_chunk)
+>  			first_chunk = chunk;
+> @@ -396,8 +410,10 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  
+>  			if (chunk->hdr.num_elms == ARRAY_SIZE(chunk->bitmaps)) {
+>  				chunk = new_chunk(chunk, order);
+> -				if (!chunk)
+> +				if (IS_ERR(chunk)) {
+> +					ret = PTR_ERR(chunk);
+>  					goto err_free;
+> +				}
+>  			}
+>  
+>  			elm = &chunk->bitmaps[chunk->hdr.num_elms];
+> @@ -414,7 +430,7 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  
+>  err_free:
+>  	kho_mem_ser_free(first_chunk);
+> -	return -ENOMEM;
+> +	return ret;
+>  }
+>  
+>  static void __init deserialize_bitmap(unsigned int order,
+> @@ -737,6 +753,9 @@ int kho_preserve_folio(struct folio *folio)
+>  	const unsigned int order = folio_order(folio);
+>  	struct kho_mem_track *track = &kho_out.track;
+>  
+> +	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
+> +		return -EINVAL;
+> +
+>  	return __kho_preserve_order(track, pfn, order);
+>  }
+>  EXPORT_SYMBOL_GPL(kho_preserve_folio);
+> @@ -784,6 +803,11 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+>  	unsigned long failed_pfn = 0;
+>  	int err = 0;
+>  
+> +	if (WARN_ON(kho_scratch_overlap(start_pfn << PAGE_SHIFT,
+> +					nr_pages << PAGE_SHIFT))) {
+> +		return -EINVAL;
+> +	}
 
->> +		old_order = split_order;
->>  	}
->>  	return 0;
->>
->
->Otherwise, looks good to me. Thanks for the cleanup.
->
->--
->Best Regards,
->Yan, Zi
+Can't we check this in __kho_preseve_order() and not duplicate the code?
+
+> +
+>  	while (pfn < end_pfn) {
+>  		const unsigned int order =
+>  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
 
 -- 
-Wei Yang
-Help you, Help me
+Sincerely yours,
+Mike.
 
