@@ -4,90 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91E74CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FE7CCD199
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 18:06:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D69098E0060; Wed, 15 Oct 2025 13:57:30 -0400 (EDT)
+	id 788708E0061; Wed, 15 Oct 2025 14:06:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1A778E0005; Wed, 15 Oct 2025 13:57:30 -0400 (EDT)
+	id 7601F8E0005; Wed, 15 Oct 2025 14:06:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2FCA8E0060; Wed, 15 Oct 2025 13:57:30 -0400 (EDT)
+	id 676048E0061; Wed, 15 Oct 2025 14:06:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B21E78E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:57:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64400B7701
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:57:30 +0000 (UTC)
-X-FDA: 84001105860.11.CCB5E2A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B3AAC1C0003
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:57:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TNUc/9EJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760551048; a=rsa-sha256;
-	cv=none;
-	b=sYgu/wn1vj1AC+MA61F68ao9rQL5Gb4EUd5DpYqFK3vx7m68GvaNoHSmoxvXhhXIJcpDbE
-	8TjkToGUb4YtC5lPfjI++Wbl8nyiV273HU84+hIYfxFIzPC/Agvwe3LadAzysAQlnEHpvu
-	c//YuaWsfi9AifJVpo4hdS9vX6A8iIY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TNUc/9EJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 540A38E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:06:00 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F39A613A364
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 18:05:59 +0000 (UTC)
+X-FDA: 84001127238.13.98F3ECF
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0FF5D140005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 18:05:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CYwWiMwT;
+	spf=pass (imf26.hostedemail.com: domain of 3g-LvaAYKCFYG2yB704CC492.0CA96BIL-AA8Jy08.CF4@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3g-LvaAYKCFYG2yB704CC492.0CA96BIL-AA8Jy08.CF4@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760551048;
+	s=arc-20220608; t=1760551558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QYkKCnkD1z7p7cFHk82WzB9PjR79YSZfURccznXLmJU=;
-	b=NlpAAx/9Olk0C0D22Nnkzt+mN4nFFr5NzsWvBqkIBPegTDYU1KiaArh2p/jlwHJAjKx9mo
-	vpEHHgb9SVbXRGwOv2DTHFa+ZmIMA2wLqz95XA0ufAm5/mdlLjDLMKlGwC0V81mTkr1W/y
-	JyfwzSg5mhBz6o3Lp2l4Jn1brJOHPpc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7D79604E9;
-	Wed, 15 Oct 2025 17:57:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C08FC4CEF8;
-	Wed, 15 Oct 2025 17:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760551047;
-	bh=gfRoV7O/XWktQsukmzqKSNJlQpoNhjkCFzkEvFnQRC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TNUc/9EJJTvBbysSHzMsQNaKnKcGZvz+w+Dz+1NGhf3RDIOpXL1Ab+mmFHhwpa5SJ
-	 wnL9rDEWuWhnZdE0vjoCK6IReeQ5h7/8c/1cNu6z/PlwaQjpHaejhNIxOhyiuY6OGU
-	 39CvYWp/1/wRjnNSchCqZVEWr1mNSKwwFClSt5/+DccfnyKNMEzy+Yfuabip+5yqDx
-	 kkulOH/pRpsjLmGnAL8ADnbXWz56XbVJV8lFInszGpO02yrCRjLj4RKPCAg59fPaN2
-	 TQa9s/Jp2+vD4iAra0lH+fKvLyiSe0Q9KnWGX13GXLcP77A4/K+2IP72TmfM58rUMG
-	 h6JwwVpqcp+fQ==
-Date: Wed, 15 Oct 2025 10:57:26 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	xfs <linux-xfs@vger.kernel.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Message-ID: <20251015175726.GC6188@frogsfrogsfrogs>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
- <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
+	bh=wj/ujD0eXtGvKYdVuuqLrx+hKA4SG0aPTcTudPvMU20=;
+	b=qJ222xR9lUgv5aEuVDfSLzw2hiv5qCt4dCOAkU8mzwLqrpEqajnEbzQghclZKbc+s9h6Cd
+	ZtdPLXScGMUIs1VmASYaKSx/pBir5VvkxEeIZg67v3YV5M7YVTLXFsQLXdLGBjFlAWGXW4
+	EqjDCs3FLV1Ix2F/Ahic/CkiibiIdfk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760551558; a=rsa-sha256;
+	cv=none;
+	b=J0fs9EbcFRym4M1KiXt3tw9Rj0KgpIfyiiWybbnIP52kX3yh7VL08+zzy6CXTysxqF1vuv
+	5xItnJBy0Q+3sQ9o6Rn+VlZHQlcwA0rftslZwsZ776cGxICashjjuGsae+oAXyuhcCq14X
+	FsNKSr0feCpi1Q1c0mzf1+GXifMElcQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=CYwWiMwT;
+	spf=pass (imf26.hostedemail.com: domain of 3g-LvaAYKCFYG2yB704CC492.0CA96BIL-AA8Jy08.CF4@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3g-LvaAYKCFYG2yB704CC492.0CA96BIL-AA8Jy08.CF4@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-277f0ea6fc6so233368115ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 11:05:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760551557; x=1761156357; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wj/ujD0eXtGvKYdVuuqLrx+hKA4SG0aPTcTudPvMU20=;
+        b=CYwWiMwTles+CNpce4yn8rztrMz9N6gvYUFbR+P6XIYk4xOdq+aOMahYo75zQWex9T
+         Podf55ai64d5tfU/m9tnzKYW/BF1vuMR1tFxmSbxRmHBeIfGbNZiJ2tskNY8ypRwyiA3
+         rYCg0WUPkon4dhTtTgpclpc8JRrsaPmEv+YnNsJzO7es7awSQxW33U89wbKf5sR89YL4
+         oA2eXh+eRfIhOklB+4uXcWIAqyIATOfEqrkF6PU7LsLG9tirLDfhiBuYMKOyFHOEZPzY
+         54abXHSBTDu2RsM7wv2fGa4zUPwqmvOagQiDOwjd/6AFKhkDgVSHr91Vxm28APU03/wE
+         Z8ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760551557; x=1761156357;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wj/ujD0eXtGvKYdVuuqLrx+hKA4SG0aPTcTudPvMU20=;
+        b=XE5piu/+O6JFU0Z/DMQZY9TYpub8FQNCADsvd4IvDlqwaJ34JF5XuPc7+HirKTIU4a
+         fl9DLxQ/iYCIZA8DiTZEJuqX70GlbZoCXuSFpmeogGadXLIHo5WbgCxHqZTQyiUyQ7LZ
+         oDBztXkXoGhXgaZQRR8AdxPgnc5wsrBTI85z9VIDjRq5X6U3DIZ0HifvilB1JAg0Wo3N
+         Vvnxu1mVElR6xi3fkMn93ZhRargYrl9WhUfj38/rzx8gmJgGzlBiz68Z3/7zvqLl+i8W
+         ssd+BEkfRBx26tNfPvE8kl4QL0CJzI5ebp5OKObnmmNQBfz95lyhXhtFYmLvruyIYFfA
+         xQbw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6jHsl6OszpkTdCsNxogrk1wR12I5+QyBcKV0Th9iWOMJxXUodxCWhYRcaJLEMNmRC9VZnwGVQ2w==@kvack.org
+X-Gm-Message-State: AOJu0YwJWoQq9jNKhP4cx4qjgctrKXRaqdy3Cpfj69GrbfKCuBipoKOx
+	VIHY/9kL6AMKUW2aMWz7IAkiExdqqwAzW1VXOYE6zIOZZAMEgKOPgjdCs2fPv2JMy2v55Rk1p0V
+	fAOSU9g==
+X-Google-Smtp-Source: AGHT+IH/Mc5bux0nHPu+CkauZuwZIYiV046udmQ4p4yB6kgoXdVfplmR64sQJckJg1s2r9B+yaVqVDHEGb8=
+X-Received: from pjrv8.prod.google.com ([2002:a17:90a:bb88:b0:32e:b34b:92eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3d05:b0:26e:49e3:55f1
+ with SMTP id d9443c01a7336-29027373d9amr366930845ad.18.1760551555936; Wed, 15
+ Oct 2025 11:05:55 -0700 (PDT)
+Date: Wed, 15 Oct 2025 11:02:44 -0700
+In-Reply-To: <20250827175247.83322-2-shivankg@amd.com>
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com>
+X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
+Message-ID: <176055105546.1527431.3611256810380818215.b4-ty@google.com>
+Subject: Re: [PATCH kvm-next V11 0/7] Add NUMA mempolicy support for KVM guest-memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, willy@infradead.org, akpm@linux-foundation.org, 
+	david@redhat.com, pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
+	Shivank Garg <shivankg@amd.com>
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
+	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
+	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
+	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	tabba@google.com, ackerleytng@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, 
+	vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, 
+	michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com, 
+	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	aik@amd.com, kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ex8ftsdqzx7fbbnfd3635ch18mckh97d
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B3AAC1C0003
-X-Stat-Signature: 41cmpc4qxnz1iq3mdkx4eqcprfhyegkn
-X-HE-Tag: 1760551048-414921
-X-HE-Meta: U2FsdGVkX19r5xIYhxpLbeSQyteOAkX7APrzk61l6NWRjERe3AyvTlFBrTK/kCbNHYfpI8RZHdL0QN5hKWUSeKJ5k9E1Hxs+39VRKEkvdLNK4FtKgPDTC+zgZ+GPqA1d6VXxdMAbV5iQQN+N64FaVugnAKh3zGhn3Ub9dXR0N/YSGboIeqgzOSgJyc2MDDRHN6FIZEiooCs+mR377ReZDSqrhoahdYdbD+KekGVpSPPYxTCS6D/magSQTcfBG0LMyTvZ6rRsOufZRy21j55iXrY4MKW/yUtIQZSijCf+Wf4wIzM1eK2df6X7pTwdc9CqCtvF2ljPNpfEwulcFVRrZbkcg3fFOLj9M1zwBAUZKDg+yHkE7P3rR5dY6ZGKQGcUr2Jljjtm4b7/yFCVQ3krsLPJK7UIISCJQXRgoAvVX6s0lVemjBao1oOHeOz33ZLH5jKF8hx3bw/30WQmaf7CkKv5Tq157e7GdaQsyV/9SawL6Bp53xRaEe5Xh7iT41XptJI/p+7HkQCFoUXIVJi6JYBo64ur1Q7ePIAfwcSlkAVz17NBe5deJtFDJ8EFFmtFoW8CbnKsXC7+Qjhti9C8sm13EU2LUFarsCtRUtrXmTfXC9XNGL2DJoSjNUR2g8Y3yVc3DPvPopuk3J78grW3gcW5M0vRiTpx506wYqH61BkiA6iuRPr5+GnCOBfsAkSNM2Elvxc2q/yyD0KK4V6/Mr725Sp0SFuVr5Qv5hzq8S5g8om2GdYL97Xsz2wfBzdmIt8Naf5mDxnI10nODrSfJsq2uaT55AvGDmfPeCkCJdq5ER+bzRpxPpPYsNP7f7MmGX9SSkq+lnEjw+GOeLeh/F99Buzjk5QFFALOMercajR3vHnIhdMa8/NcSYtU8zulK0Gs2p7gJPmJc3IQWbjKVO61zSUZ4nB18Nm0DiO4jB53rU8ynGyj5381p+6wkMZ31nTlkuTHnS0qUt9ZM9z
- F5coNByw
- qhhMWhX6fO90F95MjNxSYkgRpk5rySr6UF+oXBK42cJ4f0IYZoeShCb9x+J4ai6IkBnujDJqX05eIn5iHujoQrA+BKoA2ZmUwtFcP7CzfLQ3CrFc6x6eJdvkXXsw7lObvwG2nBTFZCsUd4rrzHom9VBtKHz0Fz4d3BA87u0RIyvHsWRFLM3TV1dFHCgq74/q/G+voFb2fcnfy5w80BG4tpr4d8WEHNR/ebkdj2lSTwLGpPSxXPFmHBeE8RpJC0gqo6fk6gGuET+K5ZuZm0jhCkxFcbVHCD9bwoHClOyrPQn4v962USBzNw5Kib4c/qGxQGMgqFKW1LqqdGLd6mXNYBLeU8/9EXZ5e2Oiv35Ga3pXL0ro=
+X-Rspamd-Queue-Id: 0FF5D140005
+X-HE-Tag: 1760551557-993093
+X-HE-Meta: U2FsdGVkX18UHO81aDvEyCyXYzWedDVzMp74dpnXrYej8MueeHFRxgiR0lLd0yV/lxNPFbaz7U8b6FQOBJ2XmOw2imqL++8vgCr6rVaJvAvGYRULPCutA1dltZ9B7PL784Ac+2Rrc2HITr936zav0IFghrETsOYE9L/mzGOm91rKtP1xmRkaqFV5SnFoGY98Dmr8LeURKOqVb09RVRq15PmOW0VaTLuZ+61K5Pa0cC5IuKRrN0NN1WOM2IzsbdMHYAmVX1+IdivBZ8PI85y77lE2iS60FKpj9sjEnviVVNCozWf04e8p4PDzu0g1WHBDCrBBSktYHgqv6Li2gfli+cd62SVH3tsOMZpyiNL5AOa8jzXacF6Fo7JAKh9bDEprh/RVZRbQ6P726daAyEZb6uBaDpYmYt3kmho8b5xGpOAe//Mpl1KyNjHPnsXPsIf8U6i4GUbUIAr56QnS7+jeymsP1gABtUAb3zNVI5n1ouP7cvYTI4Ep36pKf85LtKCngwpdEE+AKJR+7B3p+a9sDuQf2ubyRcKR4Fhmm95sDhhGVdmN91R/JJBJk6yYZntMWiikeOtgXWyy4dMUi6N5D+VLdcc62Lq9ia3raTqHLrUN5HIOjQZhQPWV6notg43IQX7/kJtYyTMXnrkMiozuzEQj3sc4qpt6He9Sm77JYkhY4LmXNC+RR84TjwozKEQ4enqD8MAbOZGN5R8I/TwqMb/dRK5mHmmOoZBqheqny9CHjoCMnPZeG2q41C34dkHLKNHZ9CTbnyYddU9xRYGNX4UsM7KHUID694Cvc+BGcBC1Hfpeasm25JqDQDgr8Za/Mip9/oP8JbYvR4jaZe0TVcsEXcPmNS3qcjOHeDxKMz8HSqedZHYnIoTOrU/WjxAkpcJTtww3RE+SgjNpRA7NVWpckVTgUtiUQscAZdQsOeARHQAr424eAH6itWPqtWi2YghVeLg1S/5bWnvg9a1
+ 2xfCnVgz
+ FTUliqqHLBrMhkNqgrEd7BNdVF21dNOJTZ5un2jA3RdgR9b9cRBzYglGU/3CbqvF5hqYwoMDPB0E3UxBhr73rvmGhKC4vG06bqu4HeXhIozmfGlSvnLyoNk4dLSqyCL2VxpP+U+1A9qa1yzLtLZtVRCzxhi5gvLiB+us3xCY/BmlV+wun270WcAx/5HrjV1y6lUeRsFSsMojVkzlBzVFL9Q7gZtYxAmvUIZed2zksQT7Ag9wSD3KK/CG6+NLW2CDFOMpSHLlUBDWvQfBTRs9Eeof0sxcaJsAmF+6V8yWIyrsfKstDgXcK/nHkhMee0DHqcVZPxCmu0YSFcWG0SUHlSKYiazFVm4Ja06otwjM6qDrxBo8smy/JlUG2LMsE9+KNZGBorbsWhlvvw9NfdpdqUIebhVGqwlabpSB5sNsrud2bIAhH93uMmpzNlsLpuASOGmA/cGm1vnhQ8vcA+v1wPZ0aHkxTy3eUGIjnJvyUFYOvxrh+tQcW8hzd5/xahXLjP9CVE3BvVn6GWw8lhWV5tHrEOVhE7dJT77OnEnle1BnEAq7tSsw303KZQ9gOIMlcSAQYRypTZiveSU7OfPiAQ+VwZhmL+j/g6Qw/VsnJQVaY9C0JXfGRkbWYchYGSyYnZH4XPHCfALYrn85P4pPrpvmO9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,95 +135,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
-> On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
-> > Hi there,
-> > 
-> > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
-> > with the following:
-> > 
-> > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
-> > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
-> > @@ -1,2 +1,10 @@
-> >  QA output created by 749
-> > +Expected SIGBUS when mmap() reading beyond page boundary
-> > +Expected SIGBUS when mmap() writing beyond page boundary
-> > +Expected SIGBUS when mmap() reading beyond page boundary
-> > +Expected SIGBUS when mmap() writing beyond page boundary
-> > +Expected SIGBUS when mmap() reading beyond page boundary
-> > +Expected SIGBUS when mmap() writing beyond page boundary
-> > +Expected SIGBUS when mmap() reading beyond page boundary
-> > +Expected SIGBUS when mmap() writing beyond page boundary
-> >  Silence is golden
-> > 
-> > This test creates small files of various sizes, maps the EOF block, and
-> > checks that you can read and write to the mmap'd page up to (but not
-> > beyond) the next page boundary.
-> > 
-> > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
-> > folio to cache the entire fsblock containing EOF.  If EOF is in the
-> > first 4096 bytes of that 8k fsblock, then it should be possible to do a
-> > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
-> > to the second 4096 bytes should produce a SIGBUS.
+On Wed, 27 Aug 2025 17:52:41 +0000, Shivank Garg wrote:
+> This series introduces NUMA-aware memory placement support for KVM guests
+> with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
+> that enabled host-mapping for guest_memfd memory [1] and can be applied
+> directly applied on KVM tree [2] (branch kvm-next, base commit: a6ad5413,
+> Merge branch 'guest-memfd-mmap' into HEAD)
 > 
-> Does anybody actually relies on this behaviour (beyond xfstests)?
-
-Beats me, but the mmap manpage says:
-
-       SIGBUS Attempted access to a page of the buffer that  lies  be‐
-              yond  the end of the mapped file.  For an explanation of
-              the treatment of the bytes in the page that  corresponds
-              to  the  end  of a mapped file that is not a multiple of
-              the page size, see NOTES.
-
-POSIX 2024 says:
-
-The system shall always zero-fill any partial page at the end of an
-object. Further, the system shall never write out any modified portions
-of the last page of an object which are beyond its end. References
-within the address range starting at pa and continuing for len bytes to
-whole pages following the end of an object shall result in delivery of a
-SIGBUS signal.
-
-https://pubs.opengroup.org/onlinepubs/9799919799.2024edition/functions/mmap.html#tag_17_345
-
-From both I would surmise that it's a reasonable expectation that you
-can't map basepages beyond EOF and have page faults on those pages
-succeed.
-
-> I think this behaviour existed before the recent changes, but it was
-> less prominent.
+> == Background ==
+> KVM's guest-memfd memory backend currently lacks support for NUMA policy
+> enforcement, causing guest memory allocations to be distributed across host
+> nodes  according to kernel's default behavior, irrespective of any policy
+> specified by the VMM. This limitation arises because conventional userspace
+> NUMA control mechanisms like mbind(2) don't work since the memory isn't
+> directly mapped to userspace when allocations occur.
+> Fuad's work [1] provides the necessary mmap capability, and this series
+> leverages it to enable mbind(2).
 > 
-> Like, tmpfs with huge=always would fault-in PMD if there's order-9 folio
-> in page cache regardless of i_size.
-> 
-> See filemap_map_pages->filemap_map_pmd() path.
-> 
-> I believe the same happens for large folios in other filesystems.
+> [...]
 
-<shrug> The kernel SIGBUS'd as expected in 6.17.  For the 8k fsblock
-case there indeed was a large folio caching the EOF, but then we were
-also installing 4k PTE mappings.
+Applied the non-KVM change to kvm-x86 gmem.  We're still tweaking and iterating
+on the KVM changes, but I fully expect them to land in 6.19.
 
-(I'm not sure what happens if you actually have a PMD-sized page since
-those are a little hard to force.)
+Holler if you object to taking these through the kvm tree.
 
-> Some of this behaviour is hidden by truncate path trying to split large
-> folios, split PMD and unmap a range of PTEs. But split can fail, so we
-> cannot rely on this for correctness.
-> 
-> I would like to understand more about expectations in real workload
-> before commit to a fix.
+[1/7] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+      https://github.com/kvm-x86/linux/commit/601aa29f762f
+[2/7] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
+      https://github.com/kvm-x86/linux/commit/2bb25703e5bd
+[3/7] mm/mempolicy: Export memory policy symbols
+      https://github.com/kvm-x86/linux/commit/e1b4cf7d6be3
 
-Yeah, I dislike the incongruities between byte-stream files vs mmapping
-pages.  All the post-EOF zeroing logic is constantly getting broken in
-subtle weird ways.
-
-willy? :D
-
---D
-
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
-> 
+--
+https://github.com/kvm-x86/linux/tree/next
 
