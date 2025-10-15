@@ -4,77 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573F9CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D741CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 07:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65A0A8E0008; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
+	id 042AB8E0008; Wed, 15 Oct 2025 03:29:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60B098E0002; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
+	id 01A148E0002; Wed, 15 Oct 2025 03:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5208C8E0008; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
+	id E99CE8E0008; Wed, 15 Oct 2025 03:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F5818E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:28:07 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBC951DD8C1
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:28:06 +0000 (UTC)
-X-FDA: 83999519772.23.B0B1F9C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D98348E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:29:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 94E6ABD172
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:29:18 +0000 (UTC)
+X-FDA: 83999522796.03.1D41B10
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EA9B540005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:28:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 04B8580007
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:29:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
 	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760513285;
+	s=arc-20220608; t=1760513357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FxTz/CsBtqGwOsVkfT39u2/dSwl7+hBRN939OMGuCVA=;
-	b=BOY5v+3iaHLQ0aOHaRdnZ1E1hVvrwoBNXcdNgP7PjsRe1eGkyTtuTJj1R/bNf1Q8IFPLgZ
-	86uUZipInJQCe+0AY9dff/AkiMq2uyhnWAuBAnbNSdCu6B1zNINsZ3j8PIHaqJAqujhM9M
-	TaECvQebY0AOBOjJrJSezMBTd9CVEVQ=
+	bh=/jqV4kzoi87kR6CjE870xFxBQep7fEAX3ZGebZY8SQ4=;
+	b=2XPz50gzD6AVlWNDdadMEdJLy0iWEvZF2UM2DlO3p/VHmHM41A1BGVE1Z5OjctohmAp5qw
+	6HoCav5//hw2U6Ws669cGyWM6GIx9wcH6Aqhz+pbScBdgtCQpb7Vh39wfrDoaOlwJPiESS
+	DHfunqE6TEESxdQeFd/7e2RVbyYCLaY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
 	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760513285; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760513357; a=rsa-sha256;
 	cv=none;
-	b=motPKwzS5LjkXWbaRbCfnq/9ZloV5+NcSSQDllQewrLyD8lEH3FF/Vnt+f5laSS5XwjEoL
-	s46JjWeQgQ/eK94EK/aI5E7KqnZyR9GgWaHBqZrggt8nigcfkh6aIV9I034ebHNKfTK/Zz
-	0IbzNvzLpMLKZ9Wq2TtGgQByxpoEejk=
+	b=INPu2bCT4xt+RI84/9THYT8SI10QbTS/G26E3yMOINV8vzcOTQTEPnPktHQ/SGoDwO2ZKm
+	p77z8Vaptm2CAxUHs+haPVFqdjk1wCoSYEI7C1T1nCRxMwasqw2NcxvE2BZRzhA1ktdO/o
+	4FxEbHMgugNIaAY0xdBZjpPm5atK5wM=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id D75E5227A88; Wed, 15 Oct 2025 09:27:58 +0200 (CEST)
-Date: Wed, 15 Oct 2025 09:27:58 +0200
+	id 66DAC227A88; Wed, 15 Oct 2025 09:29:12 +0200 (CEST)
+Date: Wed, 15 Oct 2025 09:29:12 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
-	hans.holmberg@wdc.com, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 2/3] writeback: allow the file system to override
- MIN_WRITEBACK_PAGES
-Message-ID: <20251015072758.GA11224@lst.de>
-References: <20251015062728.60104-1-hch@lst.de> <20251015062728.60104-3-hch@lst.de> <a1671515-4aec-46a0-aff0-75ea8540394c@kernel.org>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu,
+	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
+	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
+	clm@meta.com, david@fromorbit.com, amir73il@gmail.com,
+	axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
+	djwong@kernel.org, dave@stgolabs.net, wangyufei@vivo.com,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
+Subject: Re: [PATCH v2 09/16] f2fs: add support in f2fs to handle multiple
+ writeback contexts
+Message-ID: <20251015072912.GA11294@lst.de>
+References: <20251014120845.2361-1-kundan.kumar@samsung.com> <CGME20251014121102epcas5p3280cd3e6bf16a2fb6a7fe483751f07a7@epcas5p3.samsung.com> <20251014120845.2361-10-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a1671515-4aec-46a0-aff0-75ea8540394c@kernel.org>
+In-Reply-To: <20251014120845.2361-10-kundan.kumar@samsung.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: EA9B540005
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: j3ipfcn5nebgbgw3dyjb4fsxnsowhknf
-X-HE-Tag: 1760513284-689414
-X-HE-Meta: U2FsdGVkX1+7dWCauTaicxfwTQelyDY0gg/pZ4F0edWuk5QeHWznqUzkuu+t/Bgv9+FCNXSee2l1AKG6MpE8iYwZ82C1oahiueF0zlPTipbCP/osWpVUPWExJxTAW4xpJ0GAHP8ImNzHAZ3CJaKiJ8aXakzDoLREE8o4+6QD3panu7NZsk095yuAHc8lkXcYnQI/95+L35saUS5SdODKjIwBXvuu83gK4/e2co5IEkGalsQPoZ6Ll3zvFChGzM2bvCWIQu96gqV+9O3r8dBwLX96M6Wm7A/37V34IMt2GEIfahI45ON3HABFMOQa7rRoRss4SUb+AyAmcsClPN8J6SwkG+7SscWxmg3Nj1vbBJD17KND/Ign6mNIYWkw1OZDJJx4WvPUIHIh43zgBMq1SAuE68fiM5FHtibBMlUDm+jM4LK25rrmn6b/VUE9pJuPlpLpMQuQAKPMc57gnkd/8GXZEZz/EFqK4grMMVWikGu+4xN/7mYYwv4PD6YA3rgCZRvpVywZpVQlCUrK5faEjNdhZo0J0mxChtHurKRTKJ5iDs3ot3Zg2ykzQPh+pU+dsCpqIfabd7++s7hd4u3hPclLkf319wpHLN2eOkedrOjzQEHwiZFsHTWM/sO404rfkcXlLs31UBFG6jpCX8gIoLO0KfNfcBh88SGgXxKs+oQBaEyKS32idZ1U3Q9WFN5FTYR6tow2zvJ09G4rdBMpD5AsOyqhTmVCdEoy3SaNBC7ov6jyMzj5QpHGA28agULD4nEMyEDiicKnnGr8zfYQaX12gA6WyUlwn+Z7kSpdS83tBrrTcW6xhVmVvtSRiFD5IJGKtJCl7A+oWA0qS5NN0hjxJrHsNgr0ALuGby3ao5ttDUDpTEq2BSovT3iBa9pkGAETSH4XdGv6hb+Haz9318zz7sJlDJcAlSRIquKACzIavpzWp8VDOuv/Ym1R62OVMHXZywJCY1kWBsyR+Bh
- I3NLv09W
- TLlcc+KI7GdWh6piyc9tiPXn4WTHlaRENqOJmNkCOmmuZjlz69+yUcO0tB7rg9xBs5uNtUDQ67A7EODdEs+K+fXbs0x4lUXDYzOrRx6cUpG4oT85cpYhlfiy7rfql4+3eALKsjbm7h8UteUU=
+X-Rspamd-Queue-Id: 04B8580007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 443w5zawkydp15kxuyrtyy8bpx9kmjcg
+X-HE-Tag: 1760513356-869932
+X-HE-Meta: U2FsdGVkX19yRIPu35sS4wNoAT7Hom3o6jW8YTP8kto+KG+5B1WuJ4q3MAysKXPWQkPByGePSJCYvZz6O2/IS9r2YkxXPPE5J/ed435if32GwMTemJk68FI0AWuplnHz8AN06iPtvsDVZWin6LSKMAgAjnwPbaXjgybaIp7I4PU2mmHO9XNrr2aLkxD4OQu1MWC4kJWacJsSFme1lWsiAYwambNMbtw/XeG5zilpwnLZhm5pv1BJwCzUx7eG0RSIKgV9cGwu4R14tnxxS9uISlaDOrnLrVbDZ0JOEfCBm3SP1hgKpKMrNnbkN0SF2OJm3gBsBqif8r43tMVsqJg97EOzfvgHDWbCpxJV4wg1cvCEvvJmKxOyPwDJ+U6PKcsdbKwEi1rpDRXqaBih56gAiluyS6mg7rxmcJgan+Dp90bX7Qrh1Eyn8FxCWseaD+5qQy4OaLG2+5E/w9VoEXUO2Bs2YnJdMKIhExqmfkXEdqjMnSySez/hE5tOfNkKaVVTP07ATobmZ0BfBXeTAG8MaCU3P1rXDyXWizvn9dNeVEL8YA/Pc5p6n2IyRgaCtoVE7eE1a7i9mInn0Nok1NxQXrrpzoDHfLfYnAT4GvcPiYA3Jz4haoz63bvjBx2BStRbJ9VcFFVoYpht8UM4CLiIvWkb/ouOm9BNiX6oP1aF8CqN4VSp3ksaQVni/VqTRmdpzsSRv6fBJ4VOkIds0Vz+ax6B7++t0ZSH+jP9QDtn9tjiaooUE5DBolb+CvXUSFMLIGac+7Oa2mA3SrTKI6GpLlttybvok9Zh5M4099s7b1XdPP809x62L8I1WzW6MdhWbbra+Azaj5e9plYvheM/BqDkiVUyKPUcfoU3/cknMYkvbboo8zvw7w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,12 +87,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 04:09:13PM +0900, Damien Le Moal wrote:
-> > +	unsigned int		s_min_writeback_pages;
-> 
-> Given that writeback_chunk_size() returns a long type, maybe this should be a long ?
+On Tue, Oct 14, 2025 at 05:38:38PM +0530, Kundan Kumar wrote:
+> Add support to handle multiple writeback contexts and check for
+> dirty_exceeded across all the writeback contexts.
 
-Not that it currently matters much, but yes for consistency this should
-be a long.
+As said last time, please do a preparation series with all these
+cleanups for file systems poking into writeback internals that can
+go in ASAP and sets the stage for multithreaded writeback.
 
 
