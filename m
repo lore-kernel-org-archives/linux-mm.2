@@ -4,110 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CEACCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21888CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 479828E0030; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
+	id 7B27D8E0031; Wed, 15 Oct 2025 09:11:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 451988E0020; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
+	id 7634F8E0020; Wed, 15 Oct 2025 09:11:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 367398E0030; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
+	id 6A0768E0031; Wed, 15 Oct 2025 09:11:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 231408E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C729614016D
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:09:37 +0000 (UTC)
-X-FDA: 84000380394.12.F580CDC
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D30EE14000E
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:09:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=KypksD7o;
-	spf=pass (imf23.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 596EA8E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:11:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1452F1383B6
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:11:48 +0000 (UTC)
+X-FDA: 84000385896.08.AEA8AC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 45B2414000E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:11:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bj3kAtTv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533906; a=rsa-sha256;
+	cv=none;
+	b=0wwFXYL3eGV1Hg9ZU1nCEWbo/jWxJbyBk6AnhP0VtUIIW4znGT0YKQeB8Grxc0F2ELkPLQ
+	X/WP6+RPUcJFD6tGmneFU0hwMlKP25GXcBtakWUdiiWGzPg7RfQxn0gDA8EUjbjfGrQoAm
+	zQtQ1ZtNhrFIvF9tVOrm1m9Zju40npw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bj3kAtTv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760533776;
+	s=arc-20220608; t=1760533906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q6ORQ/xKAeoGwGCxYDzeUbCbogq7qa00EfyJDwKghp8=;
-	b=LWpM7q9QRU4y9DWp0y5LYfdYNBf18x26es+v0JADDuUfmqakVS01AoYc9fsNLUoXpl9ihr
-	k7dy8r7yVG1kK+zgit7jfRUrwSl7501KRm8Pe/pQVHdQaMxeE65O+F0+She4mRYeA+Z7L2
-	bw6FaBBQfOlC76riFqE0IdUD+hIhZ90=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=KypksD7o;
-	spf=pass (imf23.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533776; a=rsa-sha256;
-	cv=none;
-	b=HgaBFhW2oHppEAQdtrhKQdCTJGj/I8TRYE3BEGwikIsZDVJvMA2Dkm3GPZGxMP8sGW93f3
-	FvgUVR/IKEV4nvWuGbPdJO92LxhlQ2yRyQ1gcZDOXzUipV5YDtQHAZq2dofT8TCKwKf2y4
-	uVzZ8mKOE3w5jhQNxstD/n0BVNqibog=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760533772;
-	bh=QaXo/9LbVR+tBaOZHohIKGkjMYP/u3JenqZBxSXMx9g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KypksD7oZEmujpy6XjotRWQaxryLNjUL1a+0MJUsCZx4+fVJ1efrWNYdoLTnovd33
-	 6YohNFTxHYLwUW8ZV0CgwVoT1SSoUNR17WewzGeOx+sEHOesL+fiWvjAzJiUZcoox6
-	 8bQceecvY8EPTgrKyLTMBg/jvyz2DqQEEbBkm8zm5auqG/IjGg/GAlDtM2h7fjCCW5
-	 zbbK6tEgM2NtoNxob1GoUUvbSgtZG3l6BoTzVmxVnObsjUGtIa/cXzNS01cjxIotTh
-	 2N6ilIP2gLhJexoJyMUrGPcR2ZfUYD8PCs66Npr1wBnRsTJFU6G9TjdyXw6FJ0QqEV
-	 X+gTn022pgaOw==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D472F17E0125;
-	Wed, 15 Oct 2025 15:09:31 +0200 (CEST)
-Message-ID: <6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
-Date: Wed, 15 Oct 2025 15:09:31 +0200
+	bh=HXbauMlt4Pxz/MefjAuBjtTmdLctrXtespYiKt1VVhM=;
+	b=5U+PkjgcBMbtNkR8QCXm9I7dfRTuCEKVVTJEb5DYRFaTE+GLR+s+9XxzLMixTlIA66CwGv
+	bozNA2mWeAWYjPzn7z8WtUPS4E3vsG3Bi5APM/hQ6ih3Y0ziDSkC+ljPLM2GZdnEmfhLgm
+	5SNJnCODL+N9/WsSSpGIhAQHfZV5Byc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29DC644942;
+	Wed, 15 Oct 2025 13:11:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D96DC4CEF8;
+	Wed, 15 Oct 2025 13:11:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760533905;
+	bh=omexcsvQOP6L3u6VXqhGkYJUOCWIegna1Gz630OIFyA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bj3kAtTvuMH0wrdZEdcvWcUEePwq0ISRRyCNWlhSpLuB6WQVpbV0vTd0PuT52xlAS
+	 w7KFR5RXN7/WBOhy+YS726di7J4JaoI0d4fan+f4IiCJjqlVJlAD6MHu/578kiA4xV
+	 A7MpgIXtEEOQ9yi9IE0weQsmeyVwMca2PpXfMUgC5LiwVYlWewTC95p0Ly4cPNO73I
+	 ee2bIlA/rLBudcBVPP1aqtm+RtpYrRb21GqaDgDvR67Eavpg7HBO7oE3YZV4ydK+kr
+	 qXsz8moSzdIAmz4widHWgoPA0mJBioHsEaAlz0wePPBt+CHyNvMboHoe7gy/H8nOV8
+	 I60zSTotKp7SQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  akpm@linux-foundation.org,
+  brauner@kernel.org,  corbet@lwn.net,  graf@amazon.com,  jgg@ziepe.ca,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  masahiroy@kernel.org,  ojeda@kernel.org,
+  rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org,
+  jasonmiu@google.com,  dmatlack@google.com,  skhawaja@google.com
+Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+In-Reply-To: <CA+CK2bD4z_j_jMhMtrvvQ5nOMEFT6yrRHk9rk7BEiQPSPCHiqA@mail.gmail.com>
+	(Pasha Tatashin's message of "Wed, 15 Oct 2025 08:40:26 -0400")
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+	<20251015053121.3978358-2-pasha.tatashin@soleen.com>
+	<mafs0zf9sjrgc.fsf@kernel.org>
+	<CA+CK2bD4z_j_jMhMtrvvQ5nOMEFT6yrRHk9rk7BEiQPSPCHiqA@mail.gmail.com>
+Date: Wed, 15 Oct 2025 15:11:41 +0200
+Message-ID: <mafs0qzv4jomq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/10] drm/panthor: Introduce huge tmpfs mount point
- option
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Al Viro
- <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Christopher Healy <healych@amazon.com>,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org, kernel@collabora.com
-References: <20251004093054.21388-1-loic.molinari@collabora.com>
- <20251004093054.21388-8-loic.molinari@collabora.com>
- <20251006092856.02fbfd9e@fedora>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <20251006092856.02fbfd9e@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6zcshgwkip3udqfsjm8mthwwk935uc1a
-X-Rspamd-Queue-Id: D30EE14000E
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: yeyj87pnz8owp81cq7rec1k3qis9bdug
+X-Rspamd-Queue-Id: 45B2414000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760533775-160816
-X-HE-Meta: U2FsdGVkX19p0GfVbdE3w7SOCf92k26d2Sr5tmzaTJHcc4m69vE3KaJ7rGIraV+aqix/HKmJc7n+OvJ/INWhCeULcXu0RK1XbNaZs5MFMy6lhKTUEPYnj6SKIBxn5Uk1cANwUIpM/eJcMkKMDB0flUQ3ugpSTJb93maUyKuO7afglLzRadYS/JQRjhkAc7nZHy647Xcdh55oM0Y2eTknx/F1t9SV+ghEPwb+GITBXx5VbEI0+VN8d9Ml3p/tCE2DVURcZvcbXnnRG7J/VMXTEuZUFmwLpNwO6yNrfH37fjeW3N+06TYAGq4v2EOY2p8cD+y8eclK+EdMOE76J/HO7IsKXwAnA85bH21/FoQehKIiK6WZiyUmFC2s7RP0x1KcQQWXL3qJKn/rnow6KBqZBgufTRqQizwSPX48/ojtzFYsWxHEaVLgwxGLIku26pZ/3DE0nONnjOyXbe2fXKKRsoh4aRe0vRNMWz1jOGiiaBmZSntL5zvZBw32ok5+BgoNaZNi3pvx0I+seXSxIs6JjHuX65LjbA/bZjl7dF51dJD+qWsITE7tmq4KAiHx/gIsUvMjiRNShiRQNWUGvmdyriCvf9OFtOJAnom4666Uq2cfF7mUnknXp6M1SQouxDLNCVatEg9PRaEgwruRw+7g75aIYUUmlNtFYJzjmJl+7hj3DmcvGoCY3Y0giM/Qqo8WoEnjHhKlPiep+HlGVVRkNHXCLO54V4qfXIG0g6kSnKosL5dRddaZBcoJMM6MhJNqidAAdgAuqLFIbMHmyXCQEZhs6YMYwi7L1EMYjGsdCCPoQQsUnf9XncfBnd4DQ5qM+pQpq+MEJR9NUdlMn0TaG5+MNwOs/Lrfaerb6srIAWZ4rrHk/Nc1U/ir+jCBIrKFBSJsU1zK0ynMyTYVcWo6vOkD7Q63g+L+cOswiU53j3pGKIcc2SYs+EmIABff3SCMOXBIocalN8n4xNEciFV
- dr34Bb9P
- sZtbOQPrzw0TzQdNf3PfAEt+A7us7B/SZl4JACGWomx3ysqJkchrUruPXGN+Qx0GDXVkNbiBd5LAWBL+aAIX47lIre/tPFRxK25aPw8w24yg9/2ijFjCL4Mq6bGPBOmCOin56vf6+CEdxXewN+C6tzY1KwID21FEPpm3ZEDUbzvNDL+aLSsayQfiHjosM6tGkOaq1QAwDDOTwgja3/aERKcHb407ih7xMSeSd3AI1ORbNe9oNIV+/HzRP11+WE9+O7jkjqWdhJu4t5I1+mv48sF+kmDxMg6yqnmt87bGRQRlXCIduA1eyHLjmfi79bWdGa+Is2Hjm2U2bLy0kjtE5MVbPV5l9PhJ8Stj/IAbmqwnSUNVM6h06wyFNtkH/5RvjKkxaLPJWDQ7A1M9HnaFkwooC9Fn4JECMxx1U7xBkRfpVTdhjSDy91A0hMbxbsOgUjgQlYJQ+VZ2UvKk=
+X-HE-Tag: 1760533906-311409
+X-HE-Meta: U2FsdGVkX1+zqwi8JaRWeJma1UT0crG2fHr3jcUiUtQtmKBHFA6elDkW7yqIEAuNkpXuzarwWmCCbl4IHcIKzFVHQOxdZXJWCW1j0UGb7ENXCe2vXAbl6dIDmljbujygrU9AYsHzXBAeKVT9MGRKupIPKLiHHgRMxX2Jf4WPtgOPSVv6Q9lrqX0Y9KyVh+99ea3wRsbRgNbU0lGxvg9H9DO6j2BB/8fMLEW0O2eJRY525u4bmIpFeDsyk0/43D1dNm4OUcTIZEeYKszYbr76motdee4DLoeUOhKewyMDqKs+9AbgMrneCGjTvN0vWquP1fVgOvc3pHB8qvWAUsJTRKrp87kjwmbAkO0cwRXfEAl652BoRYK/4fkSYIK01mnthFt0WMhbvm+mjGIKSsvTnfwdHjIC3lC+mHk2Q/aS7vnLuz3r6pNszMP864PnEX/iec/cLd3eHq/VdJi6RPj3voicdE4sX+W6fU89syZYvDLyNPcPQ9z8VaqSk7dZX+Z51pgMb7G9RoFEVYcgePigkiotUwwIS9KSbo1me2Nm5mAy3oeuwOKzJHDJEp9HWb3XYo4ttIDrpTgI7z0NbErx9ID2V8D5Ipx94u20dWr3xXHuABBkGlAFT0bkfaUrkDzX12KrbjnSs61U2z2aOv1uW+TmcppSNgA/v6D3AAXy3Bmu2vfZn30RKN/z954By1qpMeoawOTJi1T3wr3tooB91vjcB8deYQGXyR90KCKIPA5WDPcNmbKzEa2toh29Hif+rgpQYyHDxMX4of0zFeqZOXW5QR7R7A4V1VWrAp9vFESrLcpg7+FS6i/BfoNTS40umO/4Dmsm4MWWqOEgfrPWIdAiOtRkLUj2gGQcLT7oxQjIA//yzbIrPRGnD8nxxosxMbMkIsOdKxtku/PXhIijuJyYzp11eIAp40bQah4wIkVEJFzFR9RmvGwBJtCMq/saSODfhjL9uf9QfGQ4Rsu
+ pCM5sh6d
+ it50FVSo+02VfseaM0sdsLjk4UMNc21jhep7CilwpMg0mHEFSZkMztniRHVcs7Vc2gehGsgBFnz+pa+T5l3WMwvi+P7mgh8iUVPu5STRCneO+O2tkgnlVgidpxx0RoX7o7DSKlhnOUGEMg2idsxOWSBxA4pvEfb3FeYcOcV17g25EMQHLYkFHD9TxYADgnJb4Uvw8YGDNzrwXBkq2i17SlVixtMfNgiiZYc5Iw+zGo8wFSSR1ZUf4cYwG7W3DtBITSc21OKojCsBPNZMMvGInZ6P9Z/H6wMnHaGf3olu3tsWomXTaG5cmw7xdDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,35 +102,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/10/2025 09:28, Boris Brezillon wrote:
-> On Sat,  4 Oct 2025 11:30:50 +0200
-> Loïc Molinari <loic.molinari@collabora.com> wrote:
-> 
->> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
->> index fdbe89ef7f43..a2be3b904ca2 100644
->> --- a/drivers/gpu/drm/panthor/panthor_drv.c
->> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
->> @@ -1623,6 +1624,12 @@ static const struct drm_driver panthor_drm_driver = {
->>   #endif
->>   };
->>   
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> +bool panthor_transparent_hugepage;
->> +module_param_named(transparent_hugepage, panthor_transparent_hugepage, bool, 0400);
->> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (false = default)");
-> 
-> nit: I'd go for a slightly shorter name, like [panthor_]enable_thp.
+On Wed, Oct 15 2025, Pasha Tatashin wrote:
 
-For v4, in order to be consistent with the "transparent_hugepage*" 
-kernel parameters, I'd prefer to keep the "panthor.transparent_hugepage" 
-(and "panfrost.transparent_hugepage") module parameter name
+> On Wed, Oct 15, 2025 at 8:10=E2=80=AFAM Pratyush Yadav <pratyush@kernel.o=
+rg> wrote:
+>>
+>> On Wed, Oct 15 2025, Pasha Tatashin wrote:
+>>
+>> > It is invalid for KHO metadata or preserved memory regions to be locat=
+ed
+>> > within the KHO scratch area, as this area is overwritten when the next
+>> > kernel is loaded, and used early in boot by the next kernel. This can
+>> > lead to memory corruption.
+>> >
+>> > Adds checks to kho_preserve_* and KHO's internal metadata allocators
+>> > (xa_load_or_alloc, new_chunk) to verify that the physical address of t=
+he
+>> > memory does not overlap with any defined scratch region. If an overlap
+>> > is detected, the operation will fail and a WARN_ON is triggered. To
+>> > avoid performance overhead in production kernels, these checks are
+>> > enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+>> >
+>> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> > ---
+>> >  kernel/liveupdate/Kconfig                   | 15 ++++++++++
+>> >  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
+>> >  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
+>> >  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
+>> >  4 files changed, 70 insertions(+), 4 deletions(-)
+>> >
+>> > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+>> > index 522b9f74d605..d119f4f3f4b1 100644
+>> > --- a/kernel/liveupdate/Kconfig
+>> > +++ b/kernel/liveupdate/Kconfig
+>> > @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
+>> >         Also, enables inspecting the KHO fdt trees with the debugfs bi=
+nary
+>> >         blobs.
+>> >
+>> > +config KEXEC_HANDOVER_DEBUG
+>> > +     bool "Enable Kexec Handover debug checks"
+>> > +     depends on KEXEC_HANDOVER_DEBUGFS
+>>
+>> Why the dependency on debugfs? Why can't the debug checks be enabled
+>> independently?
+>
+> Because there is one kexec_handover_debug.c file, that I thought would
+> make sense to use for both, but now thinking about this, perhaps we
+> should split the code: KEXEC_HANDOVER_DEBUGFS and
+> KEXEC_HANDOVER_DEBUG, and add two files:
+> kexec_handover_debugfs.c and kexec_handover_debug.c, this would avoid
+> ifdefs in .c.
 
-I could keep the parameter name as is and change the variable name though.
+Sounds good.
 
-> The patch is
-> 
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> 
-> regardless.
-> 
+>
+>>
+>> > +     help
+>> > +       This option enables extra sanity checks for the Kexec Handover
+>> > +       subsystem.
+>> > +
+>> > +       These checks verify that neither preserved memory regions nor =
+KHO's
+>> > +       internal metadata are allocated from within a KHO scratch area.
+>> > +       An overlap can lead to memory corruption during a subsequent k=
+exec
+>> > +       operation.
+>>
+>> I don't think the checks that are done should be listed here since as
+>> soon as another check is added this list will become out of date.
+>
+> I thought it could be expanded when new features are added, but I can
+> remove this description.
+
+Yes, but it is easy to forget to do so.
+
+>
+>>
+>> > +
+>> > +       If an overlap is detected, the kernel will print a warning and=
+ the
+>> > +       offending operation will fail. This should only be enabled for
+>>
+>> This also describes the behaviour of the checks, which might change
+>> later. Maybe for some checks the operation won't fail? I suppose just
+>> leave it at "the kernel will print a warning"?
+>
+> If it changes, and Kconfig should be updated as well.
+>
+>>
+>> > +       debugging purposes due to runtime overhead.
+>> >  endmenu
+[...]
+
+--=20
+Regards,
+Pratyush Yadav
 
