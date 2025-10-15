@@ -4,102 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA594CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305E0CCD199
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1EA8E005D; Wed, 15 Oct 2025 13:28:10 -0400 (EDT)
+	id 8BA5C8E005E; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A2FF8E0005; Wed, 15 Oct 2025 13:28:10 -0400 (EDT)
+	id 86AF58E0005; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3758E005D; Wed, 15 Oct 2025 13:28:09 -0400 (EDT)
+	id 75A328E005E; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D9FEB8E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:28:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8656514014A
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:09 +0000 (UTC)
-X-FDA: 84001031898.07.0EA8315
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D252A180013
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLYcUCKM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BDF08E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:28:16 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12CD51A0256
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:16 +0000 (UTC)
+X-FDA: 84001032192.16.194464A
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A02C980003
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:28:13 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="O/AIKjGH"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760549288;
+	s=arc-20220608; t=1760549294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gvVDRnFReodweIyh4vqEswR+ZdFxTXb+n1H2PWseY5g=;
-	b=UCLkKQQrBn+zzZNYc6MB9I0vO+ioLHjNWNDUZjPumn0oiCxrs75oRLb4QQOAdMk1RgByo4
-	adfJlHG0FBROLvRPJplMSWAxDQa66ZFmU0XQgWSN+PzPRfW9LC3aze67ztOlbTMuW2F2Fy
-	g+j3RAcOW/wgJCis941DLbK9Gm43lyY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cLYcUCKM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760549288; a=rsa-sha256;
+	bh=OHD1PbWJgOF9XOuL5HA73G273J12JtIymtajQ7fqsQ4=;
+	b=eCKR7zTXKvEu+xGDsO5mXHXS8cVuQTpb4aqJr81x36WwPQQ4as5hb3w0q5gqeVOKbH1sc8
+	40uZd4ppY6hnylPFXVuDaBWXdDubGkZvlJTs8pK/2yP+mMSarBTr9X9BreGBIzq23RjRWV
+	Bf+mpPuJ1U5QiVfDoEX2F1rlvNj7q4U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760549294; a=rsa-sha256;
 	cv=none;
-	b=XlktzjS4uOMqj2ddMCN/XJfwbGf0Iup4WRRal8XKlDz45Ce5S9jOnaOsq0xLep/u2fdoSW
-	h3zsT17uZ8xnvizSOjZYPKIDlbSkiocqYIFM4vTKfsWfoXnMrvrpGHlwZZ4eMsRVC0e6Bw
-	YB9nNicNp6GbQeohWx31lUVbH0Hpmfs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F3C949E13;
-	Wed, 15 Oct 2025 17:28:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B3CC4CEF8;
-	Wed, 15 Oct 2025 17:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760549286;
-	bh=2/0p/0k/TXO7o16P7A/u4tyNONwtv678Sc1Mfzau9Y4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLYcUCKM6bI5Mz3l/tIYX/Z8p679bj7v28Kvi74TY7ncPOkHDjSf4kSDNS4Rrv0gO
-	 MfF8ObXedzSLW80dEXdPChqCCXcLRHpxhQ6sYCQyL5YhXIij7R6m25TNaY4w/I/oWn
-	 GEor+iRGSfQ0uN5vatbPqIWjKlSmdPypIE8CTRamSxuDgJToelhnE5AKSaFiJ1BgD6
-	 B0R24iWwCp75s3cU4Or6ZyBpF+8G8eic0/GknwhH8KbJ1bMQO5SWxjKfxapQgHQa+P
-	 ZwtVJppb7CxWPrFLIcll1iselKsf67JYLLUZprpMBYL4YisI9hPlE7y0PO6EKSIBU5
-	 AsY7Rn1AbrdlQ==
-From: SeongJae Park <sj@kernel.org>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: SeongJae Park <sj@kernel.org>,
+	b=7PeuCk4SWcba1B+31z7yAnuHcRE0T0a6cRvtd7UjRL/C9FiBPmoRfnHHrCa3YkgQkfkFzw
+	VYgQLiy9dnkWS4xgRli/YEiNklJKC2K9UEDn3SgGVNQcLYtDHU2lZTI7I2QmfG2P+KIOtV
+	vAVwB0+UxfOxXOTzvVO0MGaM1K648G8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="O/AIKjGH";
+	dmarc=none;
+	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=OHD1PbWJgOF9XOuL5HA73G273J12JtIymtajQ7fqsQ4=; b=O/AIKjGH3q2vAiI35ZMnFpDXL9
+	C+s4LMohbjn1T1gowDff1QATHCAKFtMlK/vQLkE6V3EMtM4PyVK7+qNjjH8p/SMgAOrlYDh7E5JNj
+	s6YHmSgHX3PZeq5i2cQTrpXa6f/EsBMgS+kaQRLCyHVc51UqP5td4HDZnJ8pJHHOP2BQCs6Kdb3dl
+	hDdhTVC23HoZ8cjO9DV1mJas9/6i26NP5x/fG5klzP8VqwqGrFQpNOM+S4KcTQZO8AUi9LAwkUeyi
+	W84rWDUlfmhJWd6nz90Jtg0an/C/x6jqBk720u/RVEgVMVk7m7XzfqEOkFEtR41Jp2xUsiPZ+01/Z
+	FUrLjK/g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v95I1-00000002tYN-00lF;
+	Wed, 15 Oct 2025 17:27:53 +0000
+Date: Wed, 15 Oct 2025 18:27:52 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rafael@kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v2 2/2] drivers/base/node: Fold unregister_node() into unregister_one_node()
-Date: Wed, 15 Oct 2025 10:27:58 -0700
-Message-ID: <20251015172759.69864-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <32b7d5d8f0f30d313c3e1d8798f591459c8746f9.1760097208.git.donettom@linux.ibm.com>
-References: 
+	Al Viro <viro@zeniv.linux.org.uk>,
+	=?utf-8?Q?Miko=C5=82aj?= Wasiak <mikolaj.wasiak@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christopher Healy <healych@amazon.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH v4 03/13] drm/shmem-helper: Map huge pages in fault
+ handlers
+Message-ID: <aO_ZmA6yoqbzTKt9@casper.infradead.org>
+References: <20251015153018.43735-1-loic.molinari@collabora.com>
+ <20251015153018.43735-4-loic.molinari@collabora.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251015153018.43735-4-loic.molinari@collabora.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D252A180013
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7quxtzr5bzesuak6h3jj45wyapzjrqjq
-X-HE-Tag: 1760549287-226989
-X-HE-Meta: U2FsdGVkX19onwUmAzyz6G8UlAedlv5WNz3nzHVupci1W709eQoElAwVoOEXXihsOts/J0G21UiwvUMErftyRGTnGOkVVtKkGXnqJTk8K/a6gUtOkIeYKOZVvWibW27epJiS7pKju+Yf6XWhtcCzF9YZe4xXIk8wNRqP8+n5ve7P2OgdSJxE6USHV+Gf+t9dWaC/3U3aOmxIlpMfO7NqCFCZ9oUgw0a/aO+84BQ7ZzXtKzhpI4zVktcuFyMFlHRDSQS68xBJq84edAvN+iAwlTAOTS59XWcJ5OhHdsZTo/I+3/gGaKb3N4RPEMF1k2lcDG1qY8HQBZ1rtBPOKDlfSIKnQumyGvZqlIXOAJN01V0GsDjyg6vBKCZJJKbaXFHbQrfvHINFN9LZOZd2BuPhF2WxZFHnF56sJDBySTx68zyIW0diRXFBowl6JjENbg9Q6HvboaSf8NDZLqcP5Bd9I9E8lLIsn1ag15C8+YM3XN8lqTe2kEGCIyvTwEeCEC313guVPG6NiL5Y0fKaA3KUTzkiAOhL05u8BQ1HWS2VJgpjVNmYt6Cq/N1bICwzphOqbIrx1DUWSe5LRJzqZwrTRws78QtlPc44hLN5p0YkBzK7C41BK9Px7wtym3Ckab4kuOgvw0g9prdjE5+wEExNxYYOynmYZ+K+4utuI6xRBg7/TRRaNui+2lZVaAVho5cKIG7PZeX6YsvjuArShPrCALSVKs59TuNueGmHgdTfp3he4ANXtt2EBAjIAibfqfO4qX7QTfxgsxIFc6VZ3RClqreIXo5+VUYfny1S9f8eBgnFgC/wg7FRxlCIYwTrUkjGZjJ3VhvcTWjucrbwKHFoh4QmLsX/34jWOJVaPcsYjApGhdB/4zcUdCazwcpibyVyZo1w4gfXDx44H/8Cfqt8znyZmkO4BSxpIGBlHQ1rRCJiUDfDMAoAj6P7hU6shZGrIKDdvG3c31/ocGuLEZB
- Zy3jySLl
- 3L6BwIcsxuwSaDZkkGEEA+h4Lj79yeZWAW0bJSkbK48EInU6fsmDjf5f6NwsElBIQoJZ6DNOd3DHmR1GUDrCM7eY/Q0MkyD7yo256LpX5lzts+p4AgQseOQE5cAfZf/XGKP4setHHdXLYmmTo7Sll2rSWbc2/WVqZcQ75fiZhp+4sTCWau0WphiaE0XtUfTlrQQJuVYVDF6+u8/QB6PRjMOdT/TgTwBLg0L3VBem1UTd0IVr1OK47eih3lbOLeWUkRCftOKXcilTITpU0AHT8E2zIDsYJIdQzLm6oxNNtFvkhe1uYkmTMC7zrY4ZogT1sEBhgPvRHctoHCu9YGLwGvGV+j/+1p1fn2fCOnYyVOGJwZlY=
+X-Rspamd-Queue-Id: A02C980003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 7i9i1xsqj5tkz3pdjp9dq6zose6e4w89
+X-HE-Tag: 1760549293-648525
+X-HE-Meta: U2FsdGVkX1/OMhgu6W1eWS7Lihfx6DS2XeuTp1LRGyBJ4T8tVHzRP/28pIIoL3SuIrWtWWMgbz3NG4qfuqJlPh0C8YNHcktxqZ2xa8//IUBrxHi8NscmyCkwIQq6ILcihZQJ99EkQCYupzIC61+1AFGq5Y0sj61druVFXo+xPmxjSiCcvAuGmv8TYcUjKPY8r0oh8B4R4m5ZFTm+78p2yn2j//3Ln4haKlGW++cftxgSRLGWtJBbijf7BIGoLZkU0bG3kIzi9UHLPUa19nCb7g70K/3xIhx3pdz/cwRq6CqGBm/k6xOM2YTlnBaw1Uikw6nTUIVrj1qupBx2tWFCuuYWHmTEN6GZ/M4llSsUNZDvk//JiIMsUeRvGCtlJzdK45pi7UODoMpbFyqF13pL5i+s2MOSGxYEI6D+Y+HckJqCTq/78Cb0vz2Y89Z3FZ5O2IJznO1koZFX15eEo+yS5XwCCVd9Y2NoikdG8q6wdUzdgXX68XM7hyOb7JdrPISBIkh7D2itxedXvMW4pRYSPj2Y9frQWsVqAZMhZdXpR/RlY27ieajis8Nf62Y7yuGEOoEjZCWRrXGSc0c8+jV2Mw2GxPIesc4LcKuac493wwJ2VXemXNY1ECwaOB6g0eCLo2bYm8Qlsf5QIJ0fQmy/lZ1UvEYrZE2O2WcBGA4PLluvuE0wHzmHmqQWc+uAOMfSNCT1YLwuMVQR8L4JxLlxI6aQRUHaWN80Mni9Up7Wa5mPzvt/msdmIjtWZegq0Olg6Em+aGN0QpzopQcOab86RgfcaJ6ZU2MtnDfU/Hb60mZiTXZHLFiXM8lVXfv+aA0s2lNYYpzJedER9YnxBWeZjBf3TzMzh+F/8YMHzvZAvjHnivH6PaHaZ88YkI9Gxn3+do1Xnwb77aCVe07YW3AySRUuuLpUooE5x9lxr1vU5WFWEUzI/IlJMLPkB/adasaHNGD+1tO/rL/cAfcTchP
+ uXRtN1Tq
+ LQypqZuHKurSfCQyhVFLcX/FuF6iC8MoBPGVIkcnKzM3mk6LQkI4S+DO/Jm0Q7eIkBorZWpcfQ+9faKgXTR9wXhwlE3YJ2ynXvhHnJJVM82FDZPOds8ka/sJeaNtdSKLNXfgAV60Wzd1BWM7zarWQ/4+T6ZLnGAReieWOk3bO7C8Cxe5KbkEB0vWFUjDoWhrqdlpf7c5sT6E+SpQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,72 +114,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 21:09:17 +0530 Donet Tom <donettom@linux.ibm.com> wrote:
+On Wed, Oct 15, 2025 at 05:30:07PM +0200, Loïc Molinari wrote:
 
-> The function unregister_node() is only called from unregister_one_node().
-> This patch folds unregister_node() into its only caller and renames
-> unregister_one_node() to unregister_node().
-> 
-> This reduces unnecessary indirection and simplifies the code structure.
-> No functional changes are introduced.
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+This looks fine, no need to resend to fix this, but if you'd written
+the previous patch slightly differently, you'd've reduced the amount of
+code you moved around in this patch, which would have made it easier to
+review.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+> +	/* Map a range of pages around the faulty address. */
+> +	do {
+> +		pfn = page_to_pfn(pages[start_pgoff]);
+> +		ret = vmf_insert_pfn(vma, addr, pfn);
+> +		addr += PAGE_SIZE;
+> +	} while (++start_pgoff <= end_pgoff && ret == VM_FAULT_NOPAGE);
 
-> ---
->  drivers/base/node.c  | 38 +++++++++++++++++---------------------
->  include/linux/node.h |  6 ++----
->  mm/memory_hotplug.c  |  4 ++--
->  3 files changed, 21 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 4bcaa8006cd6..758b777dec1f 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -676,23 +676,6 @@ static void node_device_release(struct device *dev)
->  	kfree(to_node(dev));
->  }
->  
-> -/**
-> - * unregister_node - unregister a node device
-> - * @node: node going away
-> - *
-> - * Unregisters a node device @node.  All the devices on the node must be
-> - * unregistered before calling this function.
-> - */
-> -void unregister_node(struct node *node)
-> -{
-> -	hugetlb_unregister_node(node);
-> -	compaction_unregister_node(node);
-> -	reclaim_unregister_node(node);
-> -	node_remove_accesses(node);
-> -	node_remove_caches(node);
-> -	device_unregister(&node->dev);
-> -}
-> -
->  struct node *node_devices[MAX_NUMNODES];
->  
->  /*
-> @@ -924,13 +907,26 @@ int register_node(int nid)
->  
->  	return error;
->  }
-> -
-> -void unregister_one_node(int nid)
-> +/**
-> + * unregister_node - unregister a node device
-> + * @nid: nid of the node going away
-> + *
-> + * Unregisters the node device at node id  @nid.  All the devices on the
+It looks to me like we have an opportunity to do better here by
+adding a vmf_insert_pfns() interface.  I don't think we should delay
+your patch series to add it, but let's not forget to do that; it can
+have very good performnce effects on ARM to use contptes.
 
-Nit.  Why two spaces before "@nid"?
-
+> @@ -617,8 +645,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
 [...]
+>  
+> -		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
+> +	if (drm_gem_shmem_map_pmd(vmf, vmf->address, pages[page_offset])) {
+> +		ret = VM_FAULT_NOPAGE;
+> +		goto out;
+>  	}
 
-
-Thanks,
-SJ
+Does this actually work?
 
