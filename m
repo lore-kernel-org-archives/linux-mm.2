@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64A2CCCD192
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06CEACCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 13:09:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC2AC8E002F; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
+	id 479828E0030; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99F78E0020; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
+	id 451988E0020; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD7688E002F; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
+	id 367398E0030; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98F778E0020
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:05:13 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25A121DA6DE
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:05:13 +0000 (UTC)
-X-FDA: 84000369306.09.CCB07A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4BC5B100013
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:05:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F12SqXdh;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 231408E0020
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 09:09:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C729614016D
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:09:37 +0000 (UTC)
+X-FDA: 84000380394.12.F580CDC
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D30EE14000E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:09:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=KypksD7o;
+	spf=pass (imf23.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760533511;
+	s=arc-20220608; t=1760533776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mzeow8aVSDkC1qzULQkmK15/X6aC73xjvRgRFvsPFms=;
-	b=NDSKfqlA4Lt3Xi0Y0LTnX6vCr2dxvQvQ1l6ER6zmge9yCDorPUhn6nwV45XDoySegmPAKM
-	dMBs0YV8TuftHbHqw0X8I+OCpTL6+L/r0CMY71V331RQ/LaMSLmeiyw6PlhJ8AKPKDIKF5
-	1beKDO0klwfgGswnV3+lU0SZfScN4u0=
+	bh=q6ORQ/xKAeoGwGCxYDzeUbCbogq7qa00EfyJDwKghp8=;
+	b=LWpM7q9QRU4y9DWp0y5LYfdYNBf18x26es+v0JADDuUfmqakVS01AoYc9fsNLUoXpl9ihr
+	k7dy8r7yVG1kK+zgit7jfRUrwSl7501KRm8Pe/pQVHdQaMxeE65O+F0+She4mRYeA+Z7L2
+	bw6FaBBQfOlC76riFqE0IdUD+hIhZ90=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F12SqXdh;
-	spf=pass (imf05.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533511; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=KypksD7o;
+	spf=pass (imf23.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760533776; a=rsa-sha256;
 	cv=none;
-	b=sf87GiAxGc6z2POS18o8ccXE7MC4zLr0VN3o7AQ7LS8l1d2wbc+XPvmUxO2sHo6W/rpKmj
-	UAHUFA0hPF/s1Pn6xIeVgp8wIB3B9dylFmeriSELvWi/a6jk8oXF9UzTmt3S+/PSKQrNn/
-	ZmDGtbC+cMwxv/nx1Jp8ZcLB/bTBpgU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6C524523C;
-	Wed, 15 Oct 2025 13:05:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4773C4CEF8;
-	Wed, 15 Oct 2025 13:05:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760533509;
-	bh=2ad4JdcB1dy+2CtYWky5FKUKrCrxFnEL7ZzpoxjFRAs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=F12SqXdhbLXz05zwQrekYKF8O2vnJ9nCDTpE5dudRvebGwlmWhKNdsmccdILjpq46
-	 L8rSlTNMs5ad4QaNiIwBoPBzLwTsli8z/UmumMaDdjuvTLhP+U99FspQvl2vuSnT5y
-	 Nx08AGpCO2HP1B/FEAx+E2Yo3A6G1zH2JNTQNW11R+yhvXZVygEveX3xFnqjoa9c7k
-	 RZW0K1fbaNHN+utYQZ33x+V4pjidmSdp0/F0jKS1C5dH5hOv/SbvRqa3N8VCIPAkUH
-	 D90O9K2/8Bccg6glBB4fgj3vrIVSAP5OAp7fSu1ywQmErqjxu1b2e72oyfa3p0f8yk
-	 zfQvF0IBBrI+w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
-  graf@amazon.com,  jgg@ziepe.ca,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
-  masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
-  rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org,
-  jasonmiu@google.com,  dmatlack@google.com,  skhawaja@google.com,
- glider@google.com, elver@google.com
-Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from
- the buddy allocator
-In-Reply-To: <20251015053121.3978358-3-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Wed, 15 Oct 2025 01:31:21 -0400")
-References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
-	<20251015053121.3978358-3-pasha.tatashin@soleen.com>
-Date: Wed, 15 Oct 2025 15:05:05 +0200
-Message-ID: <mafs0v7kgjoxq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=HgaBFhW2oHppEAQdtrhKQdCTJGj/I8TRYE3BEGwikIsZDVJvMA2Dkm3GPZGxMP8sGW93f3
+	FvgUVR/IKEV4nvWuGbPdJO92LxhlQ2yRyQ1gcZDOXzUipV5YDtQHAZq2dofT8TCKwKf2y4
+	uVzZ8mKOE3w5jhQNxstD/n0BVNqibog=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760533772;
+	bh=QaXo/9LbVR+tBaOZHohIKGkjMYP/u3JenqZBxSXMx9g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KypksD7oZEmujpy6XjotRWQaxryLNjUL1a+0MJUsCZx4+fVJ1efrWNYdoLTnovd33
+	 6YohNFTxHYLwUW8ZV0CgwVoT1SSoUNR17WewzGeOx+sEHOesL+fiWvjAzJiUZcoox6
+	 8bQceecvY8EPTgrKyLTMBg/jvyz2DqQEEbBkm8zm5auqG/IjGg/GAlDtM2h7fjCCW5
+	 zbbK6tEgM2NtoNxob1GoUUvbSgtZG3l6BoTzVmxVnObsjUGtIa/cXzNS01cjxIotTh
+	 2N6ilIP2gLhJexoJyMUrGPcR2ZfUYD8PCs66Npr1wBnRsTJFU6G9TjdyXw6FJ0QqEV
+	 X+gTn022pgaOw==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id D472F17E0125;
+	Wed, 15 Oct 2025 15:09:31 +0200 (CEST)
+Message-ID: <6f1fb1a5-5d6f-4ebf-bf12-3481d360fb7f@collabora.com>
+Date: Wed, 15 Oct 2025 15:09:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: t94gxfr5nym115irnxw77y71ae33mm3m
-X-Rspamd-Queue-Id: 4BC5B100013
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/10] drm/panthor: Introduce huge tmpfs mount point
+ option
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Rob Herring <robh@kernel.org>,
+ Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Melissa Wen <mwen@igalia.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Christopher Healy <healych@amazon.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org, kernel@collabora.com
+References: <20251004093054.21388-1-loic.molinari@collabora.com>
+ <20251004093054.21388-8-loic.molinari@collabora.com>
+ <20251006092856.02fbfd9e@fedora>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <20251006092856.02fbfd9e@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6zcshgwkip3udqfsjm8mthwwk935uc1a
+X-Rspamd-Queue-Id: D30EE14000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1760533511-25390
-X-HE-Meta: U2FsdGVkX1+zS3c0vJ3jMPTBqMlsg9SrqkRv92bYv7OF0krkTe5TMeANhCPsi87+rBNpWK+m0nPRI8nZ0kbCOOke38vT5zo8LUUvugsbOyJJJb4MaDM5Q0Q1fUlITO1f0GWHT0mOzaucjYNCBN5aLc6FpNqc70AoexLztlXR8yuz2Qn1sGwt8qS4yS+Loa1nlRUGVt1YuIqOp/mVjW5/SrARZR6EpQoOTzhQIuc0y/Kl+qvrNcMpNZu5Fcl3MdtWzGbSLuFNhgieF7O33UpJU2AOdoIQMm8VNJAfvBExXVKcCLlfEw8AvWuH9ws4wBssGdrGX41zIYAs75Hg6w292ZS9MZL9UtPq6W85QsxxJ6EvJ5jvODnl7U2pxZkRcyak7GHIphRaLdbqS6WiIrf1Y/IGb3PHKQwSVumhIUqXHSJ7gRuuLvCh1jFgmXNphX4p+6xBrqZJ9Ga4kcn8S+k+3PvL+8xLiQ2BUDqlOxIVbad/U1LPnVgLP6wuc3GFt/sVFcshCxF/cG6CrLJ8cAhcnWHbVtIKnZxa+J1AsHk5ubU3ooMSIeIHquP9OgUoMaVaTZgbV6xX7oARCZ0J0CugwEoN1JkJ2HvwXBvm/D42MM3zdTwNxC2lP4zV1hCxaLXNet09yyOhft6ieRndCodfWtc4lGNi7q18YkRXio4i00oZx/0Y5Nnj2hQn1W4M6aR4vXUMQ34joHbRmKlGPkm5P3wA3rnecR9GXJdiijfgSDdg+GbU1n5HFTfPbIaplXrARfx5hhm8pvuHMTe3+e4sGWUnkXIbI68+5BY0J/m9TT1EWhJBbpwCv6j+1er3+gzc2OV6o2dK+E74KiQU2nUKQCs/YJAu6wZz27zBcd+MN/aL67cxYnJ0GAiExD9GsbuShVoswUyyLD4XUxf4SJ6hkqZbnyMFh4GcUPe2sOdyfq6WyWLhc6MESi6cNQDS89qZAVmAOkQnatvd4ak4Tbs
- 7V77Pwh3
- DBfcTBHZNd1dKMlO05g+st84SELb4EXxwG9CCcuMe6e/C6rsk8ZGtTBgLvM1FbOmI88FIhwEpt6qX48qErDdvOgUm4WpsvM41gUF9RgSPaGGJZ8Zuan+bdNnGlbwlTcQz2YMBtqHp0pIJL36Nw5yCSFPL3J6g6UYQL8lR6ZcCqe8K3AI3nRUoQO8aPSpshkwFtSi1YS49CQcvdOXzxrtDk+wkdg==
+X-HE-Tag: 1760533775-160816
+X-HE-Meta: U2FsdGVkX19p0GfVbdE3w7SOCf92k26d2Sr5tmzaTJHcc4m69vE3KaJ7rGIraV+aqix/HKmJc7n+OvJ/INWhCeULcXu0RK1XbNaZs5MFMy6lhKTUEPYnj6SKIBxn5Uk1cANwUIpM/eJcMkKMDB0flUQ3ugpSTJb93maUyKuO7afglLzRadYS/JQRjhkAc7nZHy647Xcdh55oM0Y2eTknx/F1t9SV+ghEPwb+GITBXx5VbEI0+VN8d9Ml3p/tCE2DVURcZvcbXnnRG7J/VMXTEuZUFmwLpNwO6yNrfH37fjeW3N+06TYAGq4v2EOY2p8cD+y8eclK+EdMOE76J/HO7IsKXwAnA85bH21/FoQehKIiK6WZiyUmFC2s7RP0x1KcQQWXL3qJKn/rnow6KBqZBgufTRqQizwSPX48/ojtzFYsWxHEaVLgwxGLIku26pZ/3DE0nONnjOyXbe2fXKKRsoh4aRe0vRNMWz1jOGiiaBmZSntL5zvZBw32ok5+BgoNaZNi3pvx0I+seXSxIs6JjHuX65LjbA/bZjl7dF51dJD+qWsITE7tmq4KAiHx/gIsUvMjiRNShiRQNWUGvmdyriCvf9OFtOJAnom4666Uq2cfF7mUnknXp6M1SQouxDLNCVatEg9PRaEgwruRw+7g75aIYUUmlNtFYJzjmJl+7hj3DmcvGoCY3Y0giM/Qqo8WoEnjHhKlPiep+HlGVVRkNHXCLO54V4qfXIG0g6kSnKosL5dRddaZBcoJMM6MhJNqidAAdgAuqLFIbMHmyXCQEZhs6YMYwi7L1EMYjGsdCCPoQQsUnf9XncfBnd4DQ5qM+pQpq+MEJR9NUdlMn0TaG5+MNwOs/Lrfaerb6srIAWZ4rrHk/Nc1U/ir+jCBIrKFBSJsU1zK0ynMyTYVcWo6vOkD7Q63g+L+cOswiU53j3pGKIcc2SYs+EmIABff3SCMOXBIocalN8n4xNEciFV
+ dr34Bb9P
+ sZtbOQPrzw0TzQdNf3PfAEt+A7us7B/SZl4JACGWomx3ysqJkchrUruPXGN+Qx0GDXVkNbiBd5LAWBL+aAIX47lIre/tPFRxK25aPw8w24yg9/2ijFjCL4Mq6bGPBOmCOin56vf6+CEdxXewN+C6tzY1KwID21FEPpm3ZEDUbzvNDL+aLSsayQfiHjosM6tGkOaq1QAwDDOTwgja3/aERKcHb407ih7xMSeSd3AI1ORbNe9oNIV+/HzRP11+WE9+O7jkjqWdhJu4t5I1+mv48sF+kmDxMg6yqnmt87bGRQRlXCIduA1eyHLjmfi79bWdGa+Is2Hjm2U2bLy0kjtE5MVbPV5l9PhJ8Stj/IAbmqwnSUNVM6h06wyFNtkH/5RvjKkxaLPJWDQ7A1M9HnaFkwooC9Fn4JECMxx1U7xBkRfpVTdhjSDy91A0hMbxbsOgUjgQlYJQ+VZ2UvKk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,150 +116,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Marco, Alexander
+On 06/10/2025 09:28, Boris Brezillon wrote:
+> On Sat,  4 Oct 2025 11:30:50 +0200
+> Loïc Molinari <loic.molinari@collabora.com> wrote:
+> 
+>> diff --git a/drivers/gpu/drm/panthor/panthor_drv.c b/drivers/gpu/drm/panthor/panthor_drv.c
+>> index fdbe89ef7f43..a2be3b904ca2 100644
+>> --- a/drivers/gpu/drm/panthor/panthor_drv.c
+>> +++ b/drivers/gpu/drm/panthor/panthor_drv.c
+>> @@ -1623,6 +1624,12 @@ static const struct drm_driver panthor_drm_driver = {
+>>   #endif
+>>   };
+>>   
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +bool panthor_transparent_hugepage;
+>> +module_param_named(transparent_hugepage, panthor_transparent_hugepage, bool, 0400);
+>> +MODULE_PARM_DESC(transparent_hugepage, "Use a dedicated tmpfs mount point with Transparent Hugepage enabled (false = default)");
+> 
+> nit: I'd go for a slightly shorter name, like [panthor_]enable_thp.
 
-On Wed, Oct 15 2025, Pasha Tatashin wrote:
+For v4, in order to be consistent with the "transparent_hugepage*" 
+kernel parameters, I'd prefer to keep the "panthor.transparent_hugepage" 
+(and "panfrost.transparent_hugepage") module parameter name
 
-> KHO allocates metadata for its preserved memory map using the SLUB
-> allocator via kzalloc(). This metadata is temporary and is used by the
-> next kernel during early boot to find preserved memory.
->
-> A problem arises when KFENCE is enabled. kzalloc() calls can be
-> randomly intercepted by kfence_alloc(), which services the allocation
-> from a dedicated KFENCE memory pool. This pool is allocated early in
-> boot via memblock.
+I could keep the parameter name as is and change the variable name though.
 
-At some point, we'd probably want to add support for preserving slab
-objects using KHO. That wouldn't work if the objects can land in scratch
-memory. Right now, the kfence pools are allocated right before KHO goes
-out of scratch-only and memblock frees pages to buddy.
-
-	kfence_alloc_pool_and_metadata();
-	report_meminit();
-	kmsan_init_shadow();
-	stack_depot_early_init();
-        [...]
-	kho_memory_init();
-
-	memblock_free_all();
-
-Can't kfence allocate its pool right after memblock_free_all()? IIUC at
-that point, there shouldn't be much fragmentation and allocations should
-still be possible.
-
-Another idea could be to disable scratch-only a bit earlier and add an
-option in memblock_alloc() to avoid scratch areas?
-
-Anyway, not something we need to solve right now with this series.
-Something to figure out eventually.
-
->
-> When booting via KHO, the memblock allocator is restricted to a "scratch
-> area", forcing the KFENCE pool to be allocated within it. This creates a
-> conflict, as the scratch area is expected to be ephemeral and
-> overwriteable by a subsequent kexec. If KHO metadata is placed in this
-> KFENCE pool, it leads to memory corruption when the next kernel is
-> loaded.
->
-> To fix this, modify KHO to allocate its metadata directly from the buddy
-> allocator instead of SLUB.
->
-> As part of this change, the metadata bitmap size is increased from 512
-> bytes to PAGE_SIZE to align with the page-based allocations from the
-> buddy system.
-
-The implication of this change is that preservation metadata becomes
-less memory-efficient when preserved pages are sparse. Mainly because if
-only one bit is set in the bitmap, now 4k bytes of memory is used
-instead of 512 bytes.
-
-It is hard to say what difference this makes in practice without
-sampling real workloads, but perhaps still worth mentioning in the
-commit message?
-
-Other than this,
-
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-
->
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/liveupdate/kexec_handover.c | 23 +++++++++++++----------
->  1 file changed, 13 insertions(+), 10 deletions(-)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index ef1e6f7a234b..519de6d68b27 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -66,10 +66,10 @@ early_param("kho", kho_parse_enable);
->   * Keep track of memory that is to be preserved across KHO.
->   *
->   * The serializing side uses two levels of xarrays to manage chunks of per-order
-> - * 512 byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order of a
-> - * 1TB system would fit inside a single 512 byte bitmap. For order 0 allocations
-> - * each bitmap will cover 16M of address space. Thus, for 16G of memory at most
-> - * 512K of bitmap memory will be needed for order 0.
-> + * PAGE_SIZE byte bitmaps. For instance if PAGE_SIZE = 4096, the entire 1G order
-> + * of a 8TB system would fit inside a single 4096 byte bitmap. For order 0
-> + * allocations each bitmap will cover 128M of address space. Thus, for 16G of
-> + * memory at most 512K of bitmap memory will be needed for order 0.
->   *
->   * This approach is fully incremental, as the serialization progresses folios
->   * can continue be aggregated to the tracker. The final step, immediately prior
-> @@ -77,7 +77,7 @@ early_param("kho", kho_parse_enable);
->   * successor kernel to parse.
->   */
->  
-> -#define PRESERVE_BITS (512 * 8)
-> +#define PRESERVE_BITS (PAGE_SIZE * 8)
->  
->  struct kho_mem_phys_bits {
->  	DECLARE_BITMAP(preserve, PRESERVE_BITS);
-> @@ -131,18 +131,21 @@ static struct kho_out kho_out = {
->  
->  static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
->  {
-> +	unsigned int order;
->  	void *elm, *res;
->  
->  	elm = xa_load(xa, index);
->  	if (elm)
->  		return elm;
->  
-> -	elm = kzalloc(sz, GFP_KERNEL);
-> +	order = get_order(sz);
-> +	elm = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
->  	if (!elm)
->  		return ERR_PTR(-ENOMEM);
->  
-> -	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
-> -		kfree(elm);
-> +	if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm),
-> +					PAGE_SIZE << order))) {
-> +		free_pages((unsigned long)elm, order);
->  		return ERR_PTR(-EINVAL);
->  	}
->  
-> @@ -151,7 +154,7 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
->  		res = ERR_PTR(xa_err(res));
->  
->  	if (res) {
-> -		kfree(elm);
-> +		free_pages((unsigned long)elm, order);
->  		return res;
->  	}
->  
-> @@ -357,7 +360,7 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
->  {
->  	struct khoser_mem_chunk *chunk;
->  
-> -	chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> +	chunk = (void *)get_zeroed_page(GFP_KERNEL);
->  	if (!chunk)
->  		return ERR_PTR(-ENOMEM);
-
--- 
-Regards,
-Pratyush Yadav
+> The patch is
+> 
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> 
+> regardless.
+> 
 
