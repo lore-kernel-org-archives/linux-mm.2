@@ -4,143 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F37CCD185
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D02D0CCD194
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 17:50:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5DE48E005B; Wed, 15 Oct 2025 13:50:53 -0400 (EDT)
+	id 20FF68E005F; Wed, 15 Oct 2025 13:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7D98E0005; Wed, 15 Oct 2025 13:50:53 -0400 (EDT)
+	id 199D08E0005; Wed, 15 Oct 2025 13:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 988A98E005B; Wed, 15 Oct 2025 13:50:53 -0400 (EDT)
+	id 060B68E005F; Wed, 15 Oct 2025 13:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 820398E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:50:53 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3065FB7687
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:50:53 +0000 (UTC)
-X-FDA: 84001089186.02.98BE32A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9E62CC0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:50:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S7jxapwC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laPpn4W6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SZSQv1sO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jTvP7Oh6;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E1F8A8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 13:50:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 84A55140247
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:50:57 +0000 (UTC)
+X-FDA: 84001089354.24.ACA51F3
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AE88380007
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:50:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iCNwfYXO;
+	spf=pass (imf02.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760550651;
+	s=arc-20220608; t=1760550655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eQ75EAJh+K3fc00OxjTeenY3SD53Rdq8gimDFm5M73g=;
-	b=gbBf85/W5QhFj6le98mSnAV+CzaJ3venSazC3a518OiTR8xaIfcef06xGQmgZ5izA60bx0
-	yWcNNcn9zdnwrBMlWB0s4HSH5II8VEIBFpAqXFYAR0ZviUteveCwBnBo3cMiOZOet2Zan0
-	fO+tpdB5mjELlLWcGeSxRNz2qCeI18c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760550651; a=rsa-sha256;
-	cv=none;
-	b=EIpkZcAr7hd4ZUbW7pq0GcJofXQKUq9xI8Dt9BISIqoLTaOIc6nuyr1f2YLdpXGIfjYZm6
-	SELxrcHtyi5DTBTaP5sIGvW35ENBBkvCqhebtHOf6EvWaQZE4+cLAb3NnGBhPA2aSQaDXP
-	Hq9m4oZPDvQ21ipHw8eKtQjxgsOtiPQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Bhhd94uikYZ0M57TCKhsGF3XmQPdd62RUy7Czm1T+JY=;
+	b=jtukb2qyKlScgzeyLqVHePlurlDd9nw5DiQpyBJspVYifsZhBFv7gA6K7e+5vp4R9t5X8c
+	xDg+N4XrD4KZras268dD6T1wA/qffJZSl2NScluy50VGbWi5yqhl91OSLny7/SF+z/ZC6c
+	/13DMVYv9A+QbRPClFZ5sDzLERTPI+c=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S7jxapwC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=laPpn4W6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SZSQv1sO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jTvP7Oh6;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1ED2F229E8;
-	Wed, 15 Oct 2025 17:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760550649; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eQ75EAJh+K3fc00OxjTeenY3SD53Rdq8gimDFm5M73g=;
-	b=S7jxapwCWwYuHKP1GFIjPSeBv17whoOQxJL9gU9GbQozuCtMcF/J5PG+nxDmEPjcUsYyLC
-	O9xXRF8A4TwTpxe/JHj9dVjnFf9/rh/afYMC/dslXMP9iGlU9Zde1Prqe3iml78S4bylUW
-	iug3WcDXXzOcz0bJk2fErnVj0TuEp40=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760550649;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eQ75EAJh+K3fc00OxjTeenY3SD53Rdq8gimDFm5M73g=;
-	b=laPpn4W6F8reiAnkpLl82N7OF3lH1hk9XMYHJRwaGfr7n66fKIuuPM+FoDOBqDnqSjm/QV
-	fomcN8tuAa5/rWAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760550648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eQ75EAJh+K3fc00OxjTeenY3SD53Rdq8gimDFm5M73g=;
-	b=SZSQv1sOQtk6RB+iX5xnq9u3NpbtZRJ19XHB9kX1wAfP0j7fkjf8LNNRZb6nzp9MBdTfhw
-	xSOxX5xNJiMVyY9cWXYMLbyO6b/UReOPwCWPMXPqEhu77LFrqA9fbIfQaqypGFTGKMqV+k
-	YMQFR3bCeuZSG6QBTk3e8Vmhi5MUNyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760550648;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eQ75EAJh+K3fc00OxjTeenY3SD53Rdq8gimDFm5M73g=;
-	b=jTvP7Oh6ltI28GHkR6hIGTsiHCrbnDycKuWE9p2ehLtO/TBzfS9G+orrrjiGnYf0Yowzjp
-	wKdA5tJJhgs8L7DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 077E913A42;
-	Wed, 15 Oct 2025 17:50:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pCFxAfje72jTTgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 15 Oct 2025 17:50:48 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 15 Oct 2025 19:50:38 +0200
-Subject: [PATCH v2] mm/page_alloc: simplify and cleanup pcp locking
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iCNwfYXO;
+	spf=pass (imf02.hostedemail.com: domain of manish1588@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=manish1588@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760550655; a=rsa-sha256;
+	cv=none;
+	b=8N8h7YnErPjK5DQANOntg7UIPfNf2FGUoUlVyJuyrwUCQUAJI/VBKHXD1CauSq0V+LCKsh
+	NYzpDEVdB2i7b3SnrUr3cahZCuxGhe5uBYLtCJPnMraiQePLUVO/t6XzSYQEjsASpFhh7D
+	phxGwYWF7V+Ictkff5pmHI25m1ZltLc=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-789fb76b466so6310222b3a.0
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760550654; x=1761155454; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bhhd94uikYZ0M57TCKhsGF3XmQPdd62RUy7Czm1T+JY=;
+        b=iCNwfYXOCZ3ZkSQMyfft3QQQ9nayOD/q3VHTWYpvjI/EfIAxPxvEl3NC5ZDRfaxii6
+         nXrET6fQdZ8p8IHOyekE7gzq7u+0lov/j9OLn17KX/0qjSJdq68tZriwyTimK1mwf/Nq
+         5xMGqBYPSXX5ieHHShnXxZjSYjY7FW3l8RCxdqm2Lwo69VK5ACErEofgQpwM9Jhe6QQa
+         MGsUWe87NcNxBtvmm7xXLl9bKydnNunODNPmyFF5kcV/LZDmAdXcnolJw1cNbcfwwtwr
+         7ariGyt9Q8wMYI4zlgkNXFV/ciySQLY2UqbPoMooAyI9F4FpBd0+MxIakZDiTuMXI2hp
+         nVjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760550654; x=1761155454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bhhd94uikYZ0M57TCKhsGF3XmQPdd62RUy7Czm1T+JY=;
+        b=aLNZ585S1dRgvzstVe/pkKsuUfkwUqW/WBGJ/yBciNkRbRN2fNYB+V8VpXVkTdDh9K
+         ZLv9PPqox3+xKqvqg7iG7yP7t17FmRqkHFNFWptgOJMS9LSHQY/VptKOJSP/6WiS1wSN
+         rLDwpmy8bDw0oiADoVlcM/GOgafNPguxSkuPRsoAGbA+F+BIYQ5AJUNpQvnwcczniDS1
+         zeWYNghB3cxRtKI/K/6ut/4h7HH2N/FEtNT+uukk3dPW6PSBNd8e/Gh8Qcr5p3tCFscc
+         IaTg3SRh/Ch9kEmE1K4oA9FGl7T1g6uAOQPEEa6YVPMlW2mcrcfwJXqGVGjG3ekosCCW
+         k9eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWi0e+9ho5AN+iBzam332jPUQZM8AVU/738YwqvAk+K4tsCcjq2k0F0nvA4ah+26PqzFMlA0PHPQQ==@kvack.org
+X-Gm-Message-State: AOJu0YwGX2faH7WEVHEO+k07AYYZlM43puwc7BRLs12IJJbR82nCAVzy
+	dSvPD2xaswbC2AeQncAE1K+Nc2rVC77ZIaOgFgkwJA8agGlhmk6vla7Y
+X-Gm-Gg: ASbGncv5MZzYHXDG9yCQjQgkYGR6TtELhH9ZVLZYFfVLESvsFI5NXf3GbCRnHSS6DOo
+	odw9pT3r8BWn4v18Fl1p7f3pxVNzag4aDMwxex0TFdeA3jKJZTeQLFNJDLMwAevmkZFvsN+699Z
+	NLz3yjP2YJv4rqarogMkVouXtdgfyb3kGn88QCsHpGyL/hBmcPbiNZ3IPTMLa23T6pd2L4bgxTY
+	GD1gei6+ofGIogdRymNmh9J4b1tv5on+yvT/Wz3dYjAQlDHdzABZ5nfVE3Jb6scNhV6ntV/pS0S
+	/2ZSCQlQ0NuaNcDBpf/icNXKlppyomXeebZZERO/NeQuMU+kq9Qg6JBLWoVvGKgZsViNTLJFnoG
+	QeY9PntEMBfqz4khScLC9nqiag9/meU3jWrW33BXxzemtocOhGFOz1FileYZBw5c=
+X-Google-Smtp-Source: AGHT+IEarAggh1iZ8jsVCPzM3oT+9cjTgRfUuCh+BSAmgke/WR8EXgzmjltOTGkP9T9W3tY5eKi9wg==
+X-Received: by 2002:a17:90b:1b07:b0:330:4604:3ae8 with SMTP id 98e67ed59e1d1-33b513b3887mr35836227a91.21.1760550654433;
+        Wed, 15 Oct 2025 10:50:54 -0700 (PDT)
+Received: from muxbit.. ([2401:4900:1cba:d8c2:3f55:be8f:65f9:7af1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33ba86b9f13sm11728a91.15.2025.10.15.10.50.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 10:50:53 -0700 (PDT)
+From: Manish Kumar <manish1588@gmail.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Manish Kumar <manish1588@gmail.com>
+Subject: [PATCH] mm/page_isolation: clarify FIXME around shrink_slab() in memory hotplug
+Date: Wed, 15 Oct 2025 23:20:41 +0530
+Message-ID: <20251015175041.40408-1-manish1588@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251015-b4-pcp-lock-cleanup-v2-1-740d999595d5@suse.cz>
-X-B4-Tracking: v=1; b=H4sIAO3e72gC/32NQQ7CIBBFr9LM2jFA2lBdeY+mC6BTS2yAgCVqw
- 93FHsDle8l/f4dE0VKCa7NDpGyT9a6CODVgFuXuhHaqDIKJjjPeoW4xmICrNw80Kym3BbxoyXT
- LpRKMoC5DpNm+juowVl5sevr4Pk4y/9n/vcyRYy97YiQnM2txS1uis/nAWEr5AmeEAtK0AAAA
-X-Change-ID: 20251015-b4-pcp-lock-cleanup-9b70b417a20e
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Joshua Hahn <joshua.hahnjy@gmail.com>, 
- Vlastimil Babka <vbabka@suse.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9848; i=vbabka@suse.cz;
- h=from:subject:message-id; bh=5YeiXycEHBP9UL7SpqxhlXaE4HDt2xnE7RFWrPOXngE=;
- b=owEBiQF2/pANAwAIAbvgsHXSRYiaAcsmYgBo797zNbmiH4d7JrNLpLGyWlvuth3v/LOzjhmOf
- MStc63WHhKJAU8EAAEIADkWIQR7u8hBFZkjSJZITfG74LB10kWImgUCaO/e8xsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQu+CwddJFiJq96wf/YG5DWuTVspUOR52b1acc5RMhQzZvNbC
- lQ6qReXKw6+gPQkZInW1xijhmYtN2Z/NgFlb+JeK22bGJN4sLHABxj6TQ0TyTKcCCgZdE3/lhHM
- LaCsN4cJQ/81WlUCwhk+YRDsiN4WktUpSwHKEo4wHdeQXOPOEb0H/nRCSE5u9r05dVzF+io7/JW
- PyeTIgP+PJhL42mPcNm/Bua3B7GmpW7o4gG7luOrEMGHOTtfFhZvAYbvBLnV4D1lm3yuQ2AQGOq
- IVQpsy9Idm/qmvdZmNI7M675YptsiSzdca9smsFAqObAUuJDMED9CLO2R77GdRKgwZPSUWdfcVU
- vV7pAbM9JdA==
-X-Developer-Key: i=vbabka@suse.cz; a=openpgp;
- fpr=A940D434992C2E8E99103D50224FA7E7CC82A664
-X-Rspamd-Server: rspam01
-X-Stat-Signature: fgtfrcxmwebyjnkrnjab7twzcdt7yaq1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AE88380007
+X-Stat-Signature: xxmgc3583emcfcwcrpyuk5urpygtsu9e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E62CC0008
-X-HE-Tag: 1760550650-608148
-X-HE-Meta: U2FsdGVkX19E4g9UjvS2ssToYpBFgwg9Jfmz1BjYGOAjX7TKXVwOrlre9KEq5Q/79IzUrd/hdWgWUn2c4JAlDzO5EIn6iGEBUTZtJ91TYsQQ/59M2pheb7yweWNhePBjBT4rdd3Aa4JYvEbuCUjPthVkvxfxAvoCus6oqQiCd8UerQoQomP/YP7WYMWTCtLgotMCn6UJps5gwlqDe1aSIRLCrQ+ggP9iJbCap+PYwjmv+w+7RBG0UH6UvC0G1JuR1c/n+Bhz6F1Ea6zPHKLjJQRWS3oRIn5RNizHT04Uh9P6p5Mcf1UnX6UJTGBTnjCNEj+hGHXl/WxH1FuWhw3nr2W3+FkojXp/VNHL0gDC7nLsIbFD3fGDN0DGzXp/YPSmRAfJVbbK6P1233OtdU825aspoOetlQES8kkc9fXiSSpOFFCBMeMT5sVDxcugUkVNfbWHPORUqGDceLlaBubgV2oyqq7PN0oO25kiWRUZn+cZO8/XlrkiqmDpWtoQPsP4g04OMQuk5rYXuNu2a91Jw9UKGI9G+KqlGtjibK2+97UGMr4/vjD4GrZropsHiw53uW6K7749SidTx+oQO8+rHfUo1+fjw6zSXqOS+2Poo6mjvXxiFCd1irvAi8mgE/+BUTWR1fURELTZgdmNuaZAAPbWzjlLCqeM5mb4HF1G5ZUY+XCkLTzBuWzRhPjVKybFNyi4GrMxEe7R60F1r46HtwVyTn+n9eomyIAOy6SLj3vWfqUIWO6VHzh05LrjkvzbZPt6HFmEBGyy2nTUXZa+RQz8ccweZVONVyRSRSfWIpAF0B8WFaIGHJZs24QQ6P+Dtqpxz/oeafA5j2NtR/AHi0KJhcEkCjsz2knG+NFriDtA/U9XO51CmqktF9i3zdKF0EaKWaKJnBcjDeZ57UmdfrFvhiJuiT/tC+DEEHgTkUDotTiLFwNRNVeUdKI1EV3WLatEOC95aIDTgBYpPB6
- eiAFslV1
- FI9DEyDqbR8l3WZ6a/Gkc52t54QLdJdyq/EJxVbZChdCgJchPzVW5+Q2M+QV8BSZMZY5KpZrX9AYODWyUPvmF6CoT6NadErrxXG/XOdvVAahNJBRX18xkXZ9pLbj2IL7lWHTHXL4h8y6MjTP4vyq7nC5k13DOEkatG8Ky8W7gr6yUPSQa+CAbQb/+GMIySmRNiP3tojY9JWSbtukLVlD1x+8gA1y/SXufVsGvIER1PefzqXmw26gpfiuSWwBtndAP6DL7RuaYjR32Mh5VPtkBflfQDaQfIDALBq/50fT1ecS3/Tt9yiwUEaxZRef89Nt2vYGS4aXz+KvU9A3hIefJOIxhz0QvgKBMRmUGMxZx/Mk+jsDA6ktlHaYg8Q==
+X-HE-Tag: 1760550655-902427
+X-HE-Meta: U2FsdGVkX1/xSb07MJ2MsktKSzuqVz1hXVElnRNcTGADhgYu857N/BaERO0nJZuI5CVHlxc7XM1rw/rCLlAtGPRsyM5JVJen0FD0dvpV3X5arKhyz3CV+iVxxDf+t1xU8vPu4m6lUNYNzKZLbzfsibsKQ7MfPC0MPQDO+pdaxpDwuNnY8zxOLwhK/NHZfU7zHHo0wtEZqspL/o7svHHZAYSuR1hGuHH7tWLn37l0DWGVK0wYxefvyg3qDt+RPipXCJ0xJj9CoVokGz9VtFFnNDZWLUB5L+hBVyQufA9+EPzLIKDVYxP4Z8h/Wz436N/Qpzq/3Xj6AbplVasGabzL8lMOC7qXxfkoTjm5ea4VR9O90hcfV5s23QPVxYbpB7agWAAGbetv4Y7aTND2lt8oxteupBk6Sz0aOgECmmwaiNkO+gJskQXkQJYxqqkZV26lhnijYxHXsDLSKj8H0KHamsGuuh9L5qB1shSDPd+9nbzo49Nac+JCxJ9eyLDfE+XfSnSPU3jD1A9B+ewcQkQ2S+k0XJYFhuixvPADO5HuDtcNjc8TxsLOlnMf+BdMeXUoKhP32uNxYWJ1tm4Z3UZ3LZiimOA+yJPsHGbwqqk25Ux0SKedR6UXMzoq0iLIcysQClsxEH3YGiaSDBJPmtNQ31OglRHT+5c/UFNnSyz5gcbG++INYjQP75+ytF6m2YIQo3yf20VOOrP708mnJAtimd4dKdQ6ksNHLKv0y4qWn2c35emlPv6EztO/9BiqQJrwSCqKGlhO9c9truC9FuU/yOAPxXrt6MJqCdf2afSPUHqcebwEph8tlCPwamRq0ZFboiWlJ9wZova4Oc34qGZdihDNai6v9SJbOcLcDV38bqTTzEF/4rEK0bgOi2jrKIBjRJcWnzx8e0JZWa/6F6hEC8cGMJtXRS8RtDNTImIIHDTEWBdId4MDDBTF6Mm5d0DD9qSR4ugAt/1bDe2s3sx
+ KfYCMtlk
+ C8aQcrs1o99pFMwXBfZmRg0MuP0eM77P9QR7SU5xEwOzFQBQZsr0GOVVALQDQb4mZeITUah7NBgbLHM3doXEQVsM3B7LfoiNosMh3nBU6B2z7sildPJalJ76nQ/9Fq680pG/6emGb5N/FTp2po0MFxWSDSVo3hnElpUo+qIqtXOmW3s1SMIRBnYy/Nq1qqRwZG3EGbmkJgJy7BDr9/9ZGtzQRxKd6g/y5fo0O0WYeCax5oC0C0l3cV1L8XbCp68tELwg/oc2QnNv8/nfmDXQ42+DYvAF0AWAvIhBgOKQmzO72AmRQSLZtgOTNGCnACwfEIDy9kERnWgCl5OYRssklaOYyk78FfaA/2XeQ/9tIgTaPMeMCtRzMDkkRepNX4rBj4irnoFe3VyrhxmK785Ja7m2ooFzU9n42RrPvREcASRMfhT/EuHNZxxrevOgi3BvoQPyl+XecY5OnMyP1gTr5kP5DWQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,289 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pcp locking relies on pcp_spin_trylock() which has to be used
-together with pcp_trylock_prepare()/pcp_trylock_finish() to work
-properly on !SMP !RT configs. This is tedious and error-prone.
+The existing FIXME comment notes that memory hotplug doesn't invoke
+shrink_slab() directly. This patch adds context explaining that this is
+an intentional design choice to avoid recursion or deadlocks in the
+memory reclaim path, as slab shrinking is handled by vmscan.
 
-We can remove pcp_spin_lock() and underlying pcpu_spin_lock() because we
-don't use it. Afterwards pcp_spin_unlock() is only used together with
-pcp_spin_trylock(). Therefore we can add the UP_flags parameter to them
-both and handle pcp_trylock_prepare()/finish() within.
-
-Additionally for the configs where pcp_trylock_prepare()/finish() are
-no-op (SMP || RT) make them pass &UP_flags to a no-op inline function.
-This ensures typechecking and makes the local variable "used" so we can
-remove the __maybe_unused attributes.
-
-In my compile testing, bloat-o-meter reported no change on SMP config,
-so the compiler is capable of optimizing away the no-ops same as before,
-and we have simplified the code using pcp_spin_trylock().
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Manish Kumar <manish1588@gmail.com>
 ---
-based on mm-new
-Changed my mind and did as Joshua suggested, for consistency. Thanks!
----
-Changes in v2:
-- Convert also pcp_trylock_finish() to noop function, per Joshua.
-- Link to v1: https://lore.kernel.org/r/20251015-b4-pcp-lock-cleanup-v1-1-878e0e7dcfb2@suse.cz
----
- mm/page_alloc.c | 99 +++++++++++++++++++++++----------------------------------
- 1 file changed, 40 insertions(+), 59 deletions(-)
+ mm/page_isolation.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0155a66d7367..fb91c566327c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -99,9 +99,12 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
- /*
-  * On SMP, spin_trylock is sufficient protection.
-  * On PREEMPT_RT, spin_trylock is equivalent on both SMP and UP.
-+ * Pass flags to a no-op inline function to typecheck and silence the unused
-+ * variable warning.
-  */
--#define pcp_trylock_prepare(flags)	do { } while (0)
--#define pcp_trylock_finish(flag)	do { } while (0)
-+static inline void __pcp_trylock_noop(unsigned long *flags) { }
-+#define pcp_trylock_prepare(flags)	__pcp_trylock_noop(&(flags))
-+#define pcp_trylock_finish(flags)	__pcp_trylock_noop(&(flags))
- #else
- 
- /* UP spin_trylock always succeeds so disable IRQs to prevent re-entrancy. */
-@@ -129,15 +132,6 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
-  * Generic helper to lookup and a per-cpu variable with an embedded spinlock.
-  * Return value should be used with equivalent unlock helper.
-  */
--#define pcpu_spin_lock(type, member, ptr)				\
--({									\
--	type *_ret;							\
--	pcpu_task_pin();						\
--	_ret = this_cpu_ptr(ptr);					\
--	spin_lock(&_ret->member);					\
--	_ret;								\
--})
--
- #define pcpu_spin_trylock(type, member, ptr)				\
- ({									\
- 	type *_ret;							\
-@@ -157,14 +151,21 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
- })
- 
- /* struct per_cpu_pages specific helpers. */
--#define pcp_spin_lock(ptr)						\
--	pcpu_spin_lock(struct per_cpu_pages, lock, ptr)
--
--#define pcp_spin_trylock(ptr)						\
--	pcpu_spin_trylock(struct per_cpu_pages, lock, ptr)
-+#define pcp_spin_trylock(ptr, UP_flags)					\
-+({									\
-+	struct per_cpu_pages *__ret;					\
-+	pcp_trylock_prepare(UP_flags);					\
-+	__ret = pcpu_spin_trylock(struct per_cpu_pages, lock, ptr);	\
-+	if (!__ret)							\
-+		pcp_trylock_finish(UP_flags);				\
-+	__ret;								\
-+})
- 
--#define pcp_spin_unlock(ptr)						\
--	pcpu_spin_unlock(lock, ptr)
-+#define pcp_spin_unlock(ptr, UP_flags)					\
-+({									\
-+	pcpu_spin_unlock(lock, ptr);					\
-+	pcp_trylock_finish(UP_flags);					\
-+})
- 
- #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
- DEFINE_PER_CPU(int, numa_node);
-@@ -2887,13 +2888,10 @@ static bool free_frozen_page_commit(struct zone *zone,
- 		if (to_free == 0 || pcp->count == 0)
- 			break;
- 
--		pcp_spin_unlock(pcp);
--		pcp_trylock_finish(*UP_flags);
-+		pcp_spin_unlock(pcp, *UP_flags);
- 
--		pcp_trylock_prepare(*UP_flags);
--		pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+		pcp = pcp_spin_trylock(zone->per_cpu_pageset, *UP_flags);
- 		if (!pcp) {
--			pcp_trylock_finish(*UP_flags);
- 			ret = false;
- 			break;
- 		}
-@@ -2904,8 +2902,7 @@ static bool free_frozen_page_commit(struct zone *zone,
- 		 * returned in an unlocked state.
- 		 */
- 		if (smp_processor_id() != cpu) {
--			pcp_spin_unlock(pcp);
--			pcp_trylock_finish(*UP_flags);
-+			pcp_spin_unlock(pcp, *UP_flags);
- 			ret = false;
- 			break;
- 		}
-@@ -2937,7 +2934,7 @@ static bool free_frozen_page_commit(struct zone *zone,
- static void __free_frozen_pages(struct page *page, unsigned int order,
- 				fpi_t fpi_flags)
- {
--	unsigned long __maybe_unused UP_flags;
-+	unsigned long UP_flags;
- 	struct per_cpu_pages *pcp;
- 	struct zone *zone;
- 	unsigned long pfn = page_to_pfn(page);
-@@ -2973,17 +2970,15 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 		add_page_to_zone_llist(zone, page, order);
- 		return;
- 	}
--	pcp_trylock_prepare(UP_flags);
--	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
- 	if (pcp) {
- 		if (!free_frozen_page_commit(zone, pcp, page, migratetype,
- 						order, fpi_flags, &UP_flags))
- 			return;
--		pcp_spin_unlock(pcp);
-+		pcp_spin_unlock(pcp, UP_flags);
- 	} else {
- 		free_one_page(zone, page, pfn, order, fpi_flags);
- 	}
--	pcp_trylock_finish(UP_flags);
- }
- 
- void free_frozen_pages(struct page *page, unsigned int order)
-@@ -2996,7 +2991,7 @@ void free_frozen_pages(struct page *page, unsigned int order)
-  */
- void free_unref_folios(struct folio_batch *folios)
- {
--	unsigned long __maybe_unused UP_flags;
-+	unsigned long UP_flags;
- 	struct per_cpu_pages *pcp = NULL;
- 	struct zone *locked_zone = NULL;
- 	int i, j;
-@@ -3039,8 +3034,7 @@ void free_unref_folios(struct folio_batch *folios)
- 		if (zone != locked_zone ||
- 		    is_migrate_isolate(migratetype)) {
- 			if (pcp) {
--				pcp_spin_unlock(pcp);
--				pcp_trylock_finish(UP_flags);
-+				pcp_spin_unlock(pcp, UP_flags);
- 				locked_zone = NULL;
- 				pcp = NULL;
- 			}
-@@ -3059,10 +3053,8 @@ void free_unref_folios(struct folio_batch *folios)
- 			 * trylock is necessary as folios may be getting freed
- 			 * from IRQ or SoftIRQ context after an IO completion.
- 			 */
--			pcp_trylock_prepare(UP_flags);
--			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+			pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
- 			if (unlikely(!pcp)) {
--				pcp_trylock_finish(UP_flags);
- 				free_one_page(zone, &folio->page, pfn,
- 					      order, FPI_NONE);
- 				continue;
-@@ -3085,10 +3077,8 @@ void free_unref_folios(struct folio_batch *folios)
- 		}
- 	}
- 
--	if (pcp) {
--		pcp_spin_unlock(pcp);
--		pcp_trylock_finish(UP_flags);
--	}
-+	if (pcp)
-+		pcp_spin_unlock(pcp, UP_flags);
- 	folio_batch_reinit(folios);
- }
- 
-@@ -3339,15 +3329,12 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
- 	struct per_cpu_pages *pcp;
- 	struct list_head *list;
- 	struct page *page;
--	unsigned long __maybe_unused UP_flags;
-+	unsigned long UP_flags;
- 
- 	/* spin_trylock may fail due to a parallel drain or IRQ reentrancy. */
--	pcp_trylock_prepare(UP_flags);
--	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
--	if (!pcp) {
--		pcp_trylock_finish(UP_flags);
-+	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
-+	if (!pcp)
- 		return NULL;
--	}
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index b2fc5266e3d2..2ca20c3f0a97 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -176,10 +176,16 @@ static int set_migratetype_isolate(struct page *page, int migratetype, int isol_
  
  	/*
- 	 * On allocation, reduce the number of pages that are batch freed.
-@@ -3357,8 +3344,7 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
- 	pcp->free_count >>= 1;
- 	list = &pcp->lists[order_to_pindex(migratetype, order)];
- 	page = __rmqueue_pcplist(zone, order, migratetype, alloc_flags, pcp, list);
--	pcp_spin_unlock(pcp);
--	pcp_trylock_finish(UP_flags);
-+	pcp_spin_unlock(pcp, UP_flags);
- 	if (page) {
- 		__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
- 		zone_statistics(preferred_zone, zone, 1);
-@@ -5045,7 +5031,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 			struct page **page_array)
- {
- 	struct page *page;
--	unsigned long __maybe_unused UP_flags;
-+	unsigned long UP_flags;
- 	struct zone *zone;
- 	struct zoneref *z;
- 	struct per_cpu_pages *pcp;
-@@ -5139,10 +5125,9 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 		goto failed;
- 
- 	/* spin_trylock may fail due to a parallel drain or IRQ reentrancy. */
--	pcp_trylock_prepare(UP_flags);
--	pcp = pcp_spin_trylock(zone->per_cpu_pageset);
-+	pcp = pcp_spin_trylock(zone->per_cpu_pageset, UP_flags);
- 	if (!pcp)
--		goto failed_irq;
-+		goto failed;
- 
- 	/* Attempt the batch allocation */
- 	pcp_list = &pcp->lists[order_to_pindex(ac.migratetype, 0)];
-@@ -5159,8 +5144,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 		if (unlikely(!page)) {
- 			/* Try and allocate at least one page */
- 			if (!nr_account) {
--				pcp_spin_unlock(pcp);
--				goto failed_irq;
-+				pcp_spin_unlock(pcp, UP_flags);
-+				goto failed;
- 			}
- 			break;
- 		}
-@@ -5171,8 +5156,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- 		page_array[nr_populated++] = page;
- 	}
- 
--	pcp_spin_unlock(pcp);
--	pcp_trylock_finish(UP_flags);
-+	pcp_spin_unlock(pcp, UP_flags);
- 
- 	__count_zid_vm_events(PGALLOC, zone_idx(zone), nr_account);
- 	zone_statistics(zonelist_zone(ac.preferred_zoneref), zone, nr_account);
-@@ -5180,9 +5164,6 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
- out:
- 	return nr_populated;
- 
--failed_irq:
--	pcp_trylock_finish(UP_flags);
--
- failed:
- 	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask);
- 	if (page)
-
----
-base-commit: 550b531346a7e4e7ad31813d0d1d6a6d8c10a06f
-change-id: 20251015-b4-pcp-lock-cleanup-9b70b417a20e
-
-Best regards,
+ 	 * FIXME: Now, memory hotplug doesn't call shrink_slab() by itself.
+-	 * We just check MOVABLE pages.
++	 *
++	 * This is an intentional limitation: invoking shrink_slab() from a
++	 * hotplug path can cause reclaim recursion or deadlock if the normal
++	 * memory reclaim (vmscan) path is already active. Slab shrinking is
++	 * handled by the vmscan reclaim code under normal operation, so hotplug
++	 * avoids direct calls into shrink_slab() to prevent reentrancy issues.
++	 *
++	 * We therefore only check MOVABLE pages here.
+ 	 *
+ 	 * Pass the intersection of [start_pfn, end_pfn) and the page's pageblock
+-	 * to avoid redundant checks.
+ 	 */
+ 	check_unmovable_start = max(page_to_pfn(page), start_pfn);
+ 	check_unmovable_end = min(pageblock_end_pfn(page_to_pfn(page)),
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.43.0
 
 
