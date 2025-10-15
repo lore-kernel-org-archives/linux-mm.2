@@ -4,93 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF7FDCCD184
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 01:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6AFCCD184
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 01:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 408A88E0105; Tue, 14 Oct 2025 21:03:18 -0400 (EDT)
+	id 9B6CE8E0136; Tue, 14 Oct 2025 21:07:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E03C8E0005; Tue, 14 Oct 2025 21:03:18 -0400 (EDT)
+	id 93FC08E0005; Tue, 14 Oct 2025 21:07:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31C868E0105; Tue, 14 Oct 2025 21:03:18 -0400 (EDT)
+	id 807058E0136; Tue, 14 Oct 2025 21:07:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 231828E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 21:03:18 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBE8811B28C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:03:17 +0000 (UTC)
-X-FDA: 83998550034.11.6814C66
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id ED2A440012
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:03:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b6hAzcK9;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760490196; a=rsa-sha256;
-	cv=none;
-	b=m4yY7KNe/sjw4RxpOM8Zb4Riad666AK4/xbM8Y0LOz5b2BhMnwjbZjt5dP2woQkE0kRs0U
-	yFk5CzZTaqfPVIC5RJ7iwTncPMuZoS7xvxK+U2Qe8ApF1gNwMiwZ8qMt4/LPptp1oz08gL
-	TYOMUggFvaMfQcruo48r0HVaB+Jvha0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=b6hAzcK9;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A37A8E0005
+	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 21:07:08 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 149D611B291
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:07:08 +0000 (UTC)
+X-FDA: 83998559736.09.7BEC99B
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2A7A540008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:07:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jYDkDNKo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760490196;
+	s=arc-20220608; t=1760490426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jd8JoSwYJ3bPuRm6iTGouCOCT+zSKviknwUe1ePUhdI=;
-	b=D40+Ddo/8LcYqJLnRd4wqdBlHZWdOAbZSkjvH3QHtglSmM6uchBkucMwHuPgJG8znTeiV9
-	vkLo6kHPJHIpgzz/ylRfN95rjwNL5CNzG/JDnBF8D5BXgpc/RjUrWDTaHzQiCgst/GUg5P
-	Lpq4nUPnBLu5cHikhpTjRU2n/zRzQ9o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F3F1D60251;
-	Wed, 15 Oct 2025 01:03:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5719AC4CEE7;
-	Wed, 15 Oct 2025 01:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760490194;
-	bh=RREgf6Gg7wwMbGdc/AWZnTykON32Sl+5JqxT1WhtNd8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b6hAzcK9a6ZsHa0Mk3iI21Eqpc+IV+6ztwUn4mhqw/zL741FObJn7o/U9JxPSucFA
-	 SEs+LS9B625yiZiRfHBLry2rSnVIcwt334tzjVqkWVwgBsNZDdhpSWaH5YoM+Re3XR
-	 MVE+EarzW3FoEwNNGRRa6truUMvxx/+8yivIASe4=
-Date: Tue, 14 Oct 2025 18:03:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
- brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
- trondmy@kernel.org, anna@kernel.org, willy@infradead.org,
- mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com,
- axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org,
- dave@stgolabs.net, wangyufei@vivo.com,
- linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
- gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com,
- joshi.k@samsung.com
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Message-Id: <20251014180312.6917d7bd5681d4c8ca356691@linux-foundation.org>
-In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
-	<20251014120845.2361-1-kundan.kumar@samsung.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=h5js9XrKJ8gf/jFCMXPOPzkESKIK+jrvyttaIfXdX08=;
+	b=RcpNAEownIM0dnI+0gZ3TLWDS5NaUwTXs7vivpS6uua1NV52oFmst9kNYmrfLbQBNcz60u
+	9971Mr4jKCGHwLC7CBFUMyWNoC67tC35T60MnokHHQrprbyFrSiHG5DwnoSLloRrCCMyoD
+	OUh0RVauf45ycwM+GeANK06CXWgZvT8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jYDkDNKo;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760490426; a=rsa-sha256;
+	cv=none;
+	b=MpB2PmEvW3CRZ06T7mq+2aSqyOkqM55wqLGH/w39fLbHTF+fuw9A2bHXgUdizROT4YQ860
+	SE914fMmO5zIC1pI3GNeItY9PJ93FPL48nvWSHJ4DDvlTLNOEckWt7Gg4K6LibreoxfK6B
+	gjUNmILPNTcflvu6FmtDc3dTVYZlghs=
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3383ac4d130so5121934a91.2
+        for <linux-mm@kvack.org>; Tue, 14 Oct 2025 18:07:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760490425; x=1761095225; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h5js9XrKJ8gf/jFCMXPOPzkESKIK+jrvyttaIfXdX08=;
+        b=jYDkDNKoIz80bhY/9mvnxTNKA8ERFw+tji050udelUtXqhf7tWWEgwYrQkZdGWmCK4
+         rG0OQHSFB3E13UiGqr/JbiO61obK6PWLVAw83oqc0pkOYyJWQJN510hjEcDuQ0/b34ei
+         7C10PgSU4cxRYbnkPy1GtwAelcskiWDLD3svQsGYz0QhRK8ksEQvF5LFzYmpYOyBGNGx
+         NBU21vCXTz1WAEBBbmEYnYen4sNhtV+J6hshNw0+5P2KWjorgUdvl+BuBcgZcuB0FWAp
+         jPyd4MG6UZEDPAq/LJ3PL51ChA6DL9Mltq4H/sDfByQ9bmc6ddXGLPseYY4VDUbrVxU8
+         I4NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760490425; x=1761095225;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h5js9XrKJ8gf/jFCMXPOPzkESKIK+jrvyttaIfXdX08=;
+        b=Ynlrkn/o9MVfpR67uLrdxJpH9T8927bgf5yaRlnTMh8c6+3S4NcYF3lpqtTjHW1imh
+         ryXrIYqsoitRoUCi6fxc2rbEkBQSEbifE/fIB4nfqeiXekHbwtVwLpbGYL6OkckjKRhx
+         4XNUATozm+H3muXojY+nwpK4IWkw+l3JvvdA24Faghl1HeRFFIPSrqFvMzPPFXNP/ezw
+         MqGO7v2mCVBDKMHj34/mE+aU7uR2u1rFXnDr2ZOB88gRP3WfC5mmlHLx/EiXc0Bh/bsp
+         qe7K9k6QaNxtFns1S0aPpC6aIiXbDobRGoSYFGwp2WylcGHNDvQfWnvuUDOmTA8kUTJR
+         JGJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXuLmr77A0zWyQVYeYHhzZY2P9l4VO+XwKvUnpDXuaKIP6UkR33nmzQ74ZLpEZVYMK/pGitLxuMg==@kvack.org
+X-Gm-Message-State: AOJu0YzF/DzH4q2BRCehukUp/e8/5HJoKgPWgwmGMkkUPyATVFnwQ1Ha
+	qd2QnnCyjDn/810r3CEDPnIh9FvUtgl3eExB2PmZae1I9YZIowCQHCIg
+X-Gm-Gg: ASbGncsztoHXRXd4i5meEMrZLfZ3709L9EyvMiNtwKP/k1iyU16V6pB9llDYgy3YlHM
+	xPk9mr0Q2XaQCUGQta9oWywyyWyUy4dEO4n25HyUZwhsrLWPjKHjhnSUOMuZhpyS1d3BnrZvcqy
+	Tz+wl7XyO8VgDTULvoFs1U/7ba2M588paksnM08W2sSHecDA8w8CJKQfiw2z+6hXLMvuxL1s0Cd
+	j7R/q1iU4lTttscHYksH07M4wh7u7+NGUXqDuXoC6Ob0adePaW1isnQxNl+KcBaoP06lRxezL+p
+	i9dmJ2V+fhY8QS+tVJzn+GSGihN28Ky5/Qzkvv8nbPXf3skoBN6Q6d8evZpYb7jWqjcZhQcHx+4
+	PkWpRelX0S1gjabCBCVZATyFi6FLpOc880MpnDbjD4cEHiauyHJ1agMEXmdKZfX80BemUBBuKKe
+	gJ2bSgFFHmvvx7kVM=
+X-Google-Smtp-Source: AGHT+IGlDIwdrvJdMOHOQpE2iK6rkjqM9WfbmJ7ohrr/kc9vjbkArOh18KbVwi2FDCS86MoCq3oBfQ==
+X-Received: by 2002:a17:90b:1809:b0:335:2934:e217 with SMTP id 98e67ed59e1d1-33b511150f4mr36065857a91.10.1760490424525;
+        Tue, 14 Oct 2025 18:07:04 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8900:1896:1396:cce6:9f32:ae57:f39c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b978537a5sm226622a91.3.2025.10.14.18.07.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 14 Oct 2025 18:07:04 -0700 (PDT)
+From: wang lian <lianux.mm@gmail.com>
+To: richard.weiyang@gmail.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	david@redhat.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	ziy@nvidia.com,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH 1/5] mm/huge_memory: cache folio attribute in __split_unmapped_folio()
+Date: Wed, 15 Oct 2025 09:06:28 +0800
+Message-ID: <20251015010628.10217-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251014134606.22543-2-richard.weiyang@gmail.com>
+References: <20251014134606.22543-2-richard.weiyang@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: irsi8xbxy9dcnpb5996ox8otuwksrq6c
-X-Rspamd-Queue-Id: ED2A440012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760490195-440433
-X-HE-Meta: U2FsdGVkX1/ph/cV95F111AipvQ9rrM2ail5bhyM0J24j0cIlDferBPU5zjt8548i5k0vd41X2524JZauopVAwtZERzwLXdsVpnkA8O9xX3UsJcvcGDJ5YA0Yij8pZ8eGoIBL4f9nE+GekHOMeNCJeX4B5XxaxJvZxnKh5ID38+7C5k2xWNc95kuJGSKZ28s8xADHPkFRKTqa9UicEseXmHoBYV1c7RJZg639fUVfnZtR8XJVJZkWYAZLa5drUPX9ZTA0TSrEbP4/qtCznMDpPNob7/tgnWLeGAI3IbUlQQX22O6u1oFQ0IRUfTGhERl8AFR7oaxvKXF/uC26rJSLt6Vb7q6gKAqMWxKeZ9HBOgvkkwLto+cfk4YFMYgBIu7D9lKHnJ0qoL1jWKu4MH22Y5i/wCOLLl5Krm23W88iuhNMwjcDXJq5WOucYSr79zl3fLJYUAezC2+035VnPHXCOlXJ7ixjnGbZ2UcMRcfLASqxBGvO+Dj5ojKoIyt+M+Q+9rU1QTlIAgdDNuuR9GvxrYRzr/erT7Bi4F+Rj73znAMHM6dBNFZjPNOZmj1KgEfwSGwAxn8HinCftPHO8MTvoMR6guYiDWqMPZ7urAR1LzGzlVNQAs0wb5NLb+9BiRS3rdSVPTExyRPgFFB9dR96TUF2b3kNEaluApbqPQLISmpm6G+BHSrKO78Q1bexd4jH8WZqguyoujiEQOCHYB4yu5yswzHDEXL8MOdrHublnqgYCOFq4t66dVIg6HHLfvXHEWLO5SKGruwz8CrBIBBGFyw/FhQ8XIfw2I6Ic5bVduovIj0LmevpOKHfFZb1WjFsfkPqVrolryESysj2E8vi91P0zMaX1ba999Iv/n4ZPIVoKfND3eUPZ+DjbESUdjZthMLQnUbOP1lbQ+Qf8+aLOszaBzNGPwVw/zKS1vgspuvcGe2ugS2z+/cHrxb5I+SGEwMxEck9AUuE0Ex0Ej
- FnaqeLiO
- zQbrN74IizKsb69ZomJAsyRiOOcUKhOXPOlgZxhlb2V1kLNGGiEzjLQN5/yO4G3I6h6Yll6YK/p/exZ4q8PHpaYWOkhF+PNwCyVkakdzM622ZDtd/JV8KSzVYj0phx2lmmzqS5XF3t7+XqeMQ/cE2ZMAWSC6D9S02qod1ghbH375r5kT34GRar4pSWQV6k/jt8nCrir4I3Dh6oK93VizvVm+sblhGoWrxYVTOFtmsGIUcV38/RAF2Rr2VEkD35QjqEklWfCR1AqxRI1RBcKo+Jo/VTN7VcMzSUf9pb+fJMAzQV/XPHOR6tS8mysvLRyYIdlryUSaKh6J0VG6T4VtrxQ68Pw==
+X-Rspamd-Queue-Id: 2A7A540008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 5zbsmu1ng6nj3x51pbnedrwstbak16gx
+X-HE-Tag: 1760490425-365024
+X-HE-Meta: U2FsdGVkX18t3lzqToldqlrD9lovfUNijUKt2AU2c8WJVvjE2bwi+UU5CJJ2Hj6ZDjpmlosMz8ELyL+idaQD6tJOBoFoZwYicFi6vIEtQGL3wteiS998TN/ehUyfgdlt/jnEpyinA7R+qtSKumf8M0vvm7cp+aPOmKDG2WbRg4zo1m8xnbhICvGNgYU4BXczKYu7LDvWkqyMzvxm4rDeCy3UyfM5arIeDZncmKtmc3JkQQqDXLvoNoBkm2Yq9t8fyoHszgILpXF5mZr6ynPmRMb9HQ9Bhwtv1ekN5BwHsUOIrgEtN/+krm3l5DMaGuOkmAfCffP/0ScfISXtpKRnl0SU5/L2KHPqWAM6HcQbDcv0bksmMrwYI3GsoAWbG3EeHCTynBRRMLRNgLMsirfdtGDsXOlYvxlTdAjzeASCZ1Io5DoS2DaUNBgvsJerML9Iz+3kvNl5/JtjguwmguU86WxGhce+hAtafH5+XdmeIqAjgx7ED1QOOAQnI7LkN7qmv2uzXTyq+DJBpLOq+e+DfbxqPD+OHyXedQoaKIqeMDmKnrKZZiAPLnFKIVzb5pVsNadgzsICciG9wiA9Rcagax707lJUChFIasmgl+VQ13ZjSZ89ln8QB7UxRAWprE6XCsZ07oXDIxAtk5xRHpENN1FYycMf1PboudY481TdnH7pS0mhGjjwvwpEg9iprDPI2kskt0LkfJ7W/Gys8Q3JgZrUpxYHnz3q3uosBDi0dc265xBxTaciIbxfqir70kBi3ZkiuG+/tIlBkTckeOD7oL/PnEK5HbsjEFKfahGeYHzaFzFYwXAY5578oW+B5amroe1QT8STlXCBKTfN2FM2R8Mxf9zS6MlSaerSzYTAaffzSw2rGm3p/4TwLHOD36Ycx1cBvPhe6nwJLc4vjcWjXWnUQQd90HFYj/yRQWFqzTHc5FTUHh+5ngWx0MKfMVWn3ligoD8f+XozErii6nb
+ flszSgvz
+ aiL3bllTNrhlSqH3mF3uplsoM0wyJN1KaGNI38q0idW+kPuTq0a8efJxXwAXbJTWLpYhVWzrlCTIgTPbhZzhUx6Kg2tnorYcIgQ5k7Tf4z7vhxVzMELCiocLfo5GGSBW66SNlDjbbtCvIhOwNT8WMPXDtVcgLeOcnk8ht9814g38tAvhQBW2y7QgJQJUxu9/KLGNjFPGHGAdads2wGBQIxOHQC+6jeSt29xYC0tkX+d2xHgmGw04AXO3vx8bDtI/hhLfoTLEzMnJ+UI6qx74ke1WzoYVVFc8iDQhOFL7z1eJoX4QtjxqyRqbF2VkwiNfK881LmUVhwn6fgU6Kv5dnQTabMWqiWbU+0SWKEtwLzoHKMNaYht1OfYWlCStJcxG77XoHSElJ1iFE/yLw0Hajzk73knv/STM6ssdesS/6sVrSMa7jyRp5JdFaphF7SPbygl3S/DOsckOvGjZ54rwqQzi1s/IcrkCL4GialGfh11Y59cRXSIJCKUVemxUjoLo2IeDWuj4HaCwD+fulgrMEN2BWYUYeOF/xPXyLlSpbswshcfmKlXFNlgxz7H+WJGlVgvCeOJKACUt0Rb7tW1QppHH5/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,59 +130,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Oct 2025 17:38:29 +0530 Kundan Kumar <kundan.kumar@samsung.com> wrote:
-
-> Currently, pagecache writeback is performed by a single thread. Inodes
-> are added to a dirty list, and delayed writeback is triggered. The single
-> writeback thread then iterates through the dirty inode list, and executes
-> the writeback.
-> 
-> This series parallelizes the writeback by allowing multiple writeback
-> contexts per backing device (bdi). These writeback contexts are executed
-> as separate, independent threads, improving overall parallelism. Inodes
-> are distributed to these threads and are flushed in parallel.
-> 
-> ...
+> During the execution of __split_unmapped_folio(), the folio's anon/!anon
+> attribute is invariant (not expected to change).
 >
-> IOPS and throughput
-> ===================
-> With the affinity to allocation group we see significant improvement in
-> XFS when we write to multiple files in different directories(AGs).
-> 
-> Performance gains:
->   A) Workload 12 files each of 1G in 12 directories(AGs) - numjobs = 12
->     - NVMe device BM1743 SSD
->         Base XFS                : 243 MiB/s
->         Parallel Writeback XFS  : 759 MiB/s  (+212%)
-> 
->     - NVMe device PM9A3 SSD
->         Base XFS                : 368 MiB/s
->         Parallel Writeback XFS  : 1634 MiB/s  (+344%)
-> 
->   B) Workload 6 files each of 20G in 6 directories(AGs)  - numjobs = 6
->     - NVMe device BM1743 SSD
->         Base XFS                : 305 MiB/s
->         Parallel Writeback XFS  : 706 MiB/s  (+131%)
-> 
->     - NVMe device PM9A3 SSD
->         Base XFS                : 315 MiB/s
->         Parallel Writeback XFS  : 990 MiB/s  (+214%)
-> 
-> Filesystem fragmentation
-> ========================
-> We also see that there is no increase in filesystem fragmentation
-> Number of extents per file:
->   A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
->         Base XFS                : 17
->         Parallel Writeback XFS  : 17
-> 
->   B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
->         Base XFS                : 166593
->         Parallel Writeback XFS  : 161554
-> 
->   C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
->         Base XFS                : 3173716
->         Parallel Writeback XFS  : 3364984
+> Therefore, it is safe and more efficient to retrieve this attribute once
+> at the start and reuse it throughout the function.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> ---
+>  mm/huge_memory.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+Reviewed-by: wang lian <lianux.mm@gmail.com>
 
-Nice results.  Is testing planned for other filesystems?
+
+--
+Best Regards,
+wang lian
 
