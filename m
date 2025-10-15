@@ -4,112 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EC7CCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:47:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4EC6CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 08:50:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 110E28E0007; Wed, 15 Oct 2025 04:47:33 -0400 (EDT)
+	id 0A2038E0018; Wed, 15 Oct 2025 04:50:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8D28E0002; Wed, 15 Oct 2025 04:47:33 -0400 (EDT)
+	id 079678E0002; Wed, 15 Oct 2025 04:50:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F19AB8E0007; Wed, 15 Oct 2025 04:47:32 -0400 (EDT)
+	id EAA428E0018; Wed, 15 Oct 2025 04:50:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBAF68E0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:47:32 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B1A31A0425
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:47:32 +0000 (UTC)
-X-FDA: 83999719944.26.E83F7B9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D99918E0002
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:50:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89E50C0B81
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:50:09 +0000 (UTC)
+X-FDA: 83999726538.06.F91F7B0
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 437AD1C000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:47:30 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b5XRPtZn;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0D98A4000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 08:50:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S69IcqyS;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760518050;
+	s=arc-20220608; t=1760518207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mvDmNeoCngAvqfFphlxRaIVqa4lNYICD47e+Hsgb9Ec=;
-	b=yf3kwFf9Rjqef8uSNBVz5eNlxTHnr+akVWqStl5b9lnuNnh9/2KIxl73QIKMGylOYQvp8w
-	BHv67fx2lJaS+wVLjz9ntVFZyrJR5gTanQd2X9YJQSfyv/QQLIQswg7ay/6zgAuOerTQ4L
-	QTw4fNSNREDDmXWQjLZceuRpOK3gSIE=
+	bh=U2xYcEDiEp3Ua92vFalk7I21nwEzPa4pjb/oKqCkfyw=;
+	b=l0dzOHi/sOx5hIMKx5UjgD62w5H8BArPq4e+GYfQM3E6P03YoSwBFjm/q9yCWRpO9X5Msl
+	N7H4eOyJO7eihvWU4WCZBtfz07io2LV8+hv1Lz/Uchde11sZQG/Y4hvnJ5j7jP/oqUU+kU
+	cppeKA1eLMnkiYlDfLOor8gXBJPeexk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=b5XRPtZn;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S69IcqyS;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760518050; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760518207; a=rsa-sha256;
 	cv=none;
-	b=m6Xq/Gp7dQNpTeN4G/aY2ZTRqQoUjob2JIIbGAdXf0gGpmtTVdExOsVA6vPOCzOjADThBA
-	V7YmEvpT2mjEOGEw9SoevvUR0VbhgiQG0Mz0B0HJvZ2p5gNmVK+OvpBFy0DFIj+UF/8zik
-	10/oOih3bsi7m1GWgsWUstBsW1cosKM=
+	b=dpgohxPk4mDZQ++n4Z/qYXIqQT/nvLd5VEKgom81cvE78otwcSX02efzO+vhqYx6QhEob2
+	gjc0EzohpG+eMECGBZ+XkhilxvA5PzHcWmdvDVfETLKlnBDBkh2wRo3QZIRe9ykw/kH3VF
+	rIEDdYh3flqwoidPDr5dmITasOHuCcU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760518049;
+	s=mimecast20190719; t=1760518206;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mvDmNeoCngAvqfFphlxRaIVqa4lNYICD47e+Hsgb9Ec=;
-	b=b5XRPtZnrmk1FGE6MXuKbj6pNekxtFuxGl957BRrQZuCwAHUg15NgABduV3ccZUvXNFfNa
-	RoBFyZyKjX+a9znLTzGNN23qh3eCqOSWNEVllJoxVnoCx2oHkORP/qetABPqzcOEbGcI+L
-	lvNZF8pS9NQ7pUTcWlGlA5790kNgzcE=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=U2xYcEDiEp3Ua92vFalk7I21nwEzPa4pjb/oKqCkfyw=;
+	b=S69IcqySVpN6ziJvnLDGn8n97R3vU4yn3apzPn9UfO6cMGPeVwhYT2On5kBD+iCSJXKodS
+	a2Cd81a+chYoeR4Ha/unTGn7zUmKXfdz9TmgB8CdRhtNhz0QxBgORAAT7G4rcT4oJtT5c3
+	fYMlSGuGOFae8peKvNCPPBJLIgeaAIk=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-pq9KnH76M7ypj_cv5YnO0A-1; Wed, 15 Oct 2025 04:47:26 -0400
-X-MC-Unique: pq9KnH76M7ypj_cv5YnO0A-1
-X-Mimecast-MFC-AGG-ID: pq9KnH76M7ypj_cv5YnO0A_1760518046
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8715f5037beso2614586485a.0
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:47:26 -0700 (PDT)
+ us-mta-241-jop-m4u_PI2nqZZbq7wC7w-1; Wed, 15 Oct 2025 04:50:05 -0400
+X-MC-Unique: jop-m4u_PI2nqZZbq7wC7w-1
+X-Mimecast-MFC-AGG-ID: jop-m4u_PI2nqZZbq7wC7w_1760518202
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2908ce6ae6fso2264375ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 01:50:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760518046; x=1761122846;
+        d=1e100.net; s=20230601; t=1760518202; x=1761123002;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mvDmNeoCngAvqfFphlxRaIVqa4lNYICD47e+Hsgb9Ec=;
-        b=XFeuY/MixyWggYRnZsN59rjdfQphurCQc6Po14yWoDoxyvtQwR7fEFHxJEQuQZDi4E
-         5jM4ZIXqiBenke0WGv9U2VZeYTLvFKBYLkyLwxaN1voq7eSmI1z+sNp7ru8cqraJ9FBW
-         VjugemGPUDpI+SvGjZR90HK4ZENHltGXxUWKJ9awZe3993VrzpRXWLOSihXLWOSk3Y8Z
-         XDZLKNJ30r/12VGO628hfNW5m6dMU4NIkXQsMPPz+VOJlsxvnwA9i1DXbiMfxWSkfFDa
-         PgZqwXa5/2l8LYhokCylvZv9Tn+iWO//QiYBIBlvxaN30fZuD/mytwCFSFNZLLyhlf28
-         NNgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVV3ZgIkH9I2Os4KTmRERb5umfw4pdZ2AgT/TsFJaGrw4qfpofKYmXE1U7JxHr9xpzwZVqoZjiJ/A==@kvack.org
-X-Gm-Message-State: AOJu0YzrIwSBTgbrOWax75/CUNNVy7y0OaFdv6AllQrF5wQUkYs3TrJ/
-	+7JrP6tHTkMQZ2zTkBSIuLtZPVnLQF/KS9/s19eh0glBNrBUj+M1aQErvoSj5vOV4rT9iIBppBW
-	+NMhb6RSIrNMt01OEf3OgJu1iZ0aJRy7OSfGDgVHfB0zY2RIapxbN
-X-Gm-Gg: ASbGncsBui6nbHOuhnoBzBScIg1DlA9vBoQpc9TJVlBMdCBN/3py43++pmfxV2OzNr3
-	bAdYwoEcK7s0zc72kDujDXCEC4tD3Fymbz7Xo3mz9KdHlPxJ0SAqe8n3oynege+d/MsOrNCd2Pa
-	fx6bu3GpOxsxT4kuRxYM9uUuwNB6pWEOjAsZPlkHfZQebmDy88UjYvuJKqBKPzV3rYO4ZDwM4Ur
-	UszKT3Y6XlUZZOAjyORtpaNQus2qPxG7Ibym2Srbh44raZWysiysWqfRLmIr1tCACconbcq5yh4
-	azEzB452zICMo6kL3zllJHAANvaqxLaSlxAuXJtElr+NI6Q0Qp8jPjocg3M17Sc=
-X-Received: by 2002:a05:620a:288f:b0:862:ab87:ce6e with SMTP id af79cd13be357-88353846127mr3526612785a.27.1760518045764;
-        Wed, 15 Oct 2025 01:47:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyPR7ITdiSnustS+ancsME8Nm74/0O7iLaBKc+qKE60Y+nTtzXmrVeAynkx03IohwzGSYLUg==
-X-Received: by 2002:a05:620a:288f:b0:862:ab87:ce6e with SMTP id af79cd13be357-88353846127mr3526611385a.27.1760518045338;
-        Wed, 15 Oct 2025 01:47:25 -0700 (PDT)
+        bh=U2xYcEDiEp3Ua92vFalk7I21nwEzPa4pjb/oKqCkfyw=;
+        b=HZq4bEj3YK/pdaYmMBba7XxpDBTsmhEMK9f67i1FePMK0JNg0m0imaQ0pblaOU2d+p
+         JnACdx4HIhgc9nDBwJwFr/WmZbvp7LH7jtu9ue7kq0wcZ3DRMGxNvAAewZxWLiPb05iU
+         wuXw8EjfIK2WFgOPuk51ng2kMgKYbn1VyzQ23k0XGuJM4p8gpt58NKFX4CjJFVOKvvRf
+         ye3aEJoT/AkHBJoLJbhzfeiRHe2cgbpD2kclSTal71SIgSEfJc4RyrzXnK4WPc2gav/9
+         TGCiBWje/O7Is3MzUJSyQ1YmqNVe91C3H1XTGmaxBIzMP5xYri6lMpNnlAkBSo1qQhoB
+         gdhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMXzUjO3IVZuQWY3m18w9r5Vyj9wM4i0dtSLquZnuw01UadQTUWLg6R0/E4afFft5N8Eq0iPK0yQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywc/pp6Qx3f0cZDvODEJa8ESol71WfrkPdoPLNu+u9OSkYXnw/x
+	YGZ+ZCo3m+1YdxPOP62rzo89JlXiFK8tNcZyp6RfdIm7ulIkNTYl9mEkG0qBZP4+CGS71dLdOzS
+	YPxkD/1iOiqQ6YUjHYjQ/Tdosos6FWKz6UDPiUsQ4wt4s9zY7j3wmZ3yzOIAnKKc=
+X-Gm-Gg: ASbGnctvc74j44V5fbAyFp4aADW8YMIECx3b4qWFVXwRuJndralWVKkOqGgiW+MK3ay
+	2w9wO7LoONTLpKtwtre/02t9NMLJIxaT/4fl+dln8Gk4ELh+CURdVp0/w4YY12dEdoLNrUm5Qrg
+	PtYC2Ep+Z7rdaC0LAtQs6S65ISH3NafDKtkM9IhmtyKqfQMDcQxXoHwMmPHNSMIgkVtQD10ep6V
+	EQJYdQXWlhzulEP1Bh8nuMWIJe4JjmlLWTqDetlTICREyE5QvFhSqc67zM7uj/OiUgJUDHokgnC
+	NYvIiznpqtmh9jATa9UxLcq7lndxWA9um59x5og/gdJArgwskpsKZ9HCukGxOQY=
+X-Received: by 2002:a17:90b:4b8c:b0:32b:6cf2:a2cf with SMTP id 98e67ed59e1d1-33b5111895amr38382010a91.14.1760518202363;
+        Wed, 15 Oct 2025 01:50:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVbUHqU3QKHS+2fc/9YjRXO1Nbn0rMLG6Td+fbVm4EuDdA25uLsveQIn0KOX3/VuwxdqJbmA==
+X-Received: by 2002:a17:90b:4b8c:b0:32b:6cf2:a2cf with SMTP id 98e67ed59e1d1-33b5111895amr38381981a91.14.1760518201947;
+        Wed, 15 Oct 2025 01:50:01 -0700 (PDT)
 Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8849f9adb31sm1357375685a.19.2025.10.15.01.47.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b61a3cc5csm18897294a91.10.2025.10.15.01.49.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 01:47:24 -0700 (PDT)
-Message-ID: <9c323deb-ded8-480a-ab96-34ea47194a16@redhat.com>
-Date: Wed, 15 Oct 2025 10:47:21 +0200
+        Wed, 15 Oct 2025 01:50:01 -0700 (PDT)
+Message-ID: <8c2c9721-e2ca-488b-b7be-c58170f6ceba@redhat.com>
+Date: Wed, 15 Oct 2025 10:49:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: selftests/mm/rmap: verify correct RMAP handling of COW pages
  after fork()
-To: Itamar Dalal <dalalitamar@gmail.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org
-References: <CAJoePDqCd6F0ai1itmVATawqMQzB+JRi4NUtMJtxyeOVOT56VQ@mail.gmail.com>
+To: Itamar Dalal <dalalitamar@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "riel@surriel.com" <riel@surriel.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>,
+ "harry.yoo@oracle.com" <harry.yoo@oracle.com>,
+ "jannh@google.com" <jannh@google.com>, "rppt@kernel.org" <rppt@kernel.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "shuah@kernel.org" <shuah@kernel.org>
+References: <SN6PR04MB4048CF9A242A640B29A588EDFEE8A@SN6PR04MB4048.namprd04.prod.outlook.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,21 +162,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAJoePDqCd6F0ai1itmVATawqMQzB+JRi4NUtMJtxyeOVOT56VQ@mail.gmail.com>
+In-Reply-To: <SN6PR04MB4048CF9A242A640B29A588EDFEE8A@SN6PR04MB4048.namprd04.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: z4935Q2wW8fKRWL-18A5WWuRF95CF1rFkhZN4L6ctWU_1760518046
+X-Mimecast-MFC-PROC-ID: NeRD084Ref_PGvCXe77HceOLwoPLsZcRrk_1aXw2y8E_1760518202
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 437AD1C000C
-X-Rspamd-Server: rspam11
+X-Stat-Signature: qm4ky1rcwbtq4y6pxms8xpnungstwp6z
+X-Rspamd-Queue-Id: 0D98A4000A
 X-Rspam-User: 
-X-Stat-Signature: jjwsn4ayt9umfdd8dejzaizx8u3y95fe
-X-HE-Tag: 1760518050-322388
-X-HE-Meta: U2FsdGVkX1/BsDNzXCDHTUL7FFUz9F7cGu78SVSa8w3f4CkUqUGoA8COY5jJ2rkKhDb0vcMWzljjt5ErV+kc6iMq1WC/9rCDv20yOOoXjHVpRDJAhkczAaB2yl/a8lbnpNyGkjM13/evZYVqd0x9PJ9EumQmf5GmRhxb7RcwTh/MXmSrGA9zcR5X8cCOFUyBAv6yXxFbpMmuDeJ+9H5gEYHhzJm12IlWGL5Vx+A06UdukhYpGPSPMszQcPb6+oUg7/bdZIjD+n4Qm0Rw8JMPz9zJcCql0L27w5qD6T23ru0sF/9/9TuGGg/um9aebXUZi5yRlE2gL1aoTjJPQoTkgLg71i7w4LrQ1IC1SRWmeT0/6TGJGTOxSWFpi34S9/5CQLNx7uhGLZiErj+7lukkHqZNjp5ITh6H0lI2lDZnDQ9DxqJhKxS1IV4nzg8L/8kPKxAo0NF3x40j0WFnYbM3pD82/6q4snejnvQEjYOxn/yn6De3R/ka9Aa3SitN10cMKilESQRM1ZFwzYGCxkYwKfOgqeGNiRoz1NcFuONTR7C2qq/hLMcbxs5R+/CJ16UvwsFxbRSE57HqY+ZsVzbze3Cu93UeUDVa6k8laGiJWfUncDA3s+KCsYOb2dVHlLg2E6OEHRHMGLGRrl1twuXUAaafAcEB8nOpjn9A5WPg+Eg1TaYLQiVrzuF0YsGWcZ90Q46yaBUOJfQqK6jMXyx/dkWSUdIaVr9N+o5owC1ltz9HehmcMRws81d91VvBnR9+tJE2nOKzUVAvtVq5x05RRqLqsrkHeoWroA9KvLkR3JR0CLOaj4tZjWvyhHIKbUoZNf+wL/2EAv0uf+I2nBAPRJicD4cPDkg+1wLEoaLwI8kYHq5mTgsBhmpYdrrYK9FC+svQzCAk/A6VGqUssRHIE3jw76biXSsXi8hgMx7IQuh8eK8QLoywspnm3fj2ma0mWTR9hDVWS34ROIJIjk+
- 1NtWEYcb
- mQ5GI32DhcMeCxRjJqNx8sOiHI1gedIa8Al/AP4geu+tV1ZfNnRauICow//W99hUXSmiVqQf0ZeFE457+q0HjS24U4UhVROZS5fxIiZ/CadlWVnWWGROS7v5YfmDWyw1xrsftZv3yfQ5uTNk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760518206-427009
+X-HE-Meta: U2FsdGVkX19ZHw3IWPzTPWVg45JdOX8dAqFRzYYEVjP5mYypxFRpL09VIwhgZi94g29wtGL33ZhvYZMvh9jjgo2gI8ePrmqoneF7E2LITVGOeQiUWqwtXg6hMRw+HfLeAXzid6vARk1Xyahe/nw1QdtLFWaSdPt4X77ZAZiJsDv8EvFjfMS2wg5KyYp81K32c35zQtXbGmZghwcTl1aJPiVeeoHArq08II3kAw5BSjs1WrsQvAepu2giTFYAvP5yIzjTO/zfWA+FlqAKxj9LtwLKoMj9CkRbThrW1N6RKvd7LAZsl6Ak82ZrBdXKyr8B15V5tCmRJjzfJ13jK0QKkMtrGGM8L8dZh3NCfggAA3Wd5KYLVCPgwSM+UO18f+hO4+1eZVpMSEmtWt8IoeIjAHy+7MPZQqGgHtmfJhmq8PGr2Za0FyT9kq5RLALGPWJ7onFjfNjv6Wu3y5wxHRYGnvv2VnfxLqQPh6PAcozF1PAp4v2FPVd8spQkW5LaOIH61TYFeAQAWCNq8hP/AnCRHISVeFrW3ZbB/6vM8kWU9jG868wMjxmdzAHMK40jZ+BOSYNera7bHx34zix5a1t2JwA7EHu74pzh1oSA7cUIodNpkwfpYC5u0lyi3j5WukFFS+1bKUz9DmArBcmx1sZGRxMqBMAhosGfaLT6iG/udYQrTdJITYIIEFeF3PfCYtIIVwVBdBZNKcJdo3AmWA1RJQclVRaf1L3iSLDpYNYBaR/lhK2NKZzu85DCC8ef1FrazGsmadkCzZPv7rvR+Ma1ka2z33zuMPpxMU7DRF3EevcPchFe75+tRPPhusyZnWyx7+2ROIKxsPtYczuD4TfND+KEzlXK7ZfD9lHumbKNa8r/2EenaZYzMglktL92D88XZ9/3ekfd0fI8lVdSmFjE34fIOvN1XwQY9WJ/5b5fjufxMoKIpDJ1qwkbPoxkFnxmQ4Lg6M1Mr+HXvW2X4zS
+ d7Yl3UVW
+ bs66EMLIg548YPiwaz4Nxa54U2u0dPCFu2c5B3b2C79kGT+N0PFqXXE9oWWWn7wGyK+iI/17usJDHOSy/WVooQ0KJuBHw5MA6Ed6jYQnlQsKuDRELeL/ri60VPR6OGUWwwGKDgIMVfwlp+7mXjBX/iwIYyW8IKFFxZxpd4QJvlNisvDfnDNnjCyXkUW/ICxt/hLl5Qi+l5gUYnpw9Z7EL8DmEv5AObTwfq2UBkh3dZIjtjbjV4lLGOHA1bEK6oi3AJgZ+I7pgzPXHUjshkAnU9N7Va1WcOaW8kWiXnY8gdDjg1UY5lGYOpOjEzWaKwYE6la0wOlztMYCKeUK3Gpi2AiJtEYqKqcJSGKRjLgHy2eo/3p2xucbiMmM/D/LOdKE+VZ4tEmz8f3PIBZkAcUfRzy40nKUBFGgctkB2/02vjftTnry6khlRX6d2BdxLrJeYQvVGCDe4qoPWI3SeOQdRFEBw8lIAWFc0Wj5X8yVBmas6pg2BARcTfRjaKY03RhVhdpjykzv4lNQBmxzESzORjvHi2NxERouMmUaHuTgkPlBiF88dTcoI2Qc9K7PVRvS4FkVs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,7 +185,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.10.25 10:33, Itamar Dalal wrote:
+On 15.10.25 10:43, Itamar Dalal wrote:
 > Add a new test `migrate.cow_after_fork` that verifies correct RMAP handling
 > of Copy-On-Write (COW) pages after fork().
 > 
@@ -186,81 +193,23 @@ On 15.10.25 10:33, Itamar Dalal wrote:
 > child’s PFN differs. This confirms that proper COW duplication occurred and
 > that RMAP correctly tracks page ownership transitions during COW events.
 > 
-> Signed-off-by: Itamar-Dalal <dalalitamar@gmail.com 
-> <mailto:dalalitamar@gmail.com>>
+> Signed-off-by: Itamar-Dalal <dalalitamar@gmail.com>
 > ---
->   tools/testing/selftests/mm/rmap.c | 45 ++++++++++++++++++++++++++++++-
->   1 file changed, 44 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/ 
-> selftests/mm/rmap.c
-> index 13f7bccfd0a9..2ba3361fecf0 100644
-> --- a/tools/testing/selftests/mm/rmap.c
-> +++ b/tools/testing/selftests/mm/rmap.c
-> @@ -430,4 +430,47 @@ TEST_F(migrate, ksm)
->          propagate_children(_metadata, data);
->   }
-> 
-> -TEST_HARNESS_MAIN
-> +TEST_F(migrate, cow_after_fork)
-> +{
-> +       struct global_data *data = &self->data;
-> +       int status;
-> +       pid_t pid;
-> +       unsigned long parent_pfn, child_pfn;
-> +       int pagemap_fd;
-> +       char *region;
-> +
-> +       /* Map private anonymous memory and fault it in */
-> +       region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-> +               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +       ASSERT_NE(region, MAP_FAILED);
-> +       memset(region, 0xaa, data->mapsize);
-> +
-> +       pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-> +       ASSERT_NE(pagemap_fd, -1);
-> +       parent_pfn = pagemap_get_pfn(pagemap_fd, region);
-> +       close(pagemap_fd);
-> +
-> +       pid = fork();
-> +       ASSERT_NE(pid, -1);
-> +
-> +       if (pid == 0) {
-> +               /* Child: write to trigger COW */
-> +               region[0] = 0xbb;
-> +
-> +               pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-> +               ASSERT_NE(pagemap_fd, -1);
-> +               child_pfn = pagemap_get_pfn(pagemap_fd, region);
-> +               close(pagemap_fd);
-> +
-> +               /* Expect PFN to differ after write (COW happened) */
-> +               if (child_pfn == parent_pfn)
-> +                       _exit(FAIL_ON_CHECK);
-> +               _exit(0);
-> +       }
-> +
-> +       waitpid(pid, &status, 0);
-> +       ASSERT_EQ(WEXITSTATUS(status), 0);
-> +       munmap(region, data->mapsize);
-> +}
 
-We have excessive cow tests in cow.c, that are independent of any PFN 
-checks.
+Se my reply to your other patch.
 
-So I don't think we need this.
+For the next time
 
-BTW, I never received a mail that shows up right-aligned in my mail client.
+a) Use git-format-patch that will automatically add [PATCH]
 
-Seems to be because of
+b) Use versioning, e.g., [PATCH v1], explain changes since the last 
+version under the "---" the
 
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+c) Use RESEND for resends, e.g., [PATCH v1 RESEND]
 
-<div dir=3D"rtl"
+d) Use git-send-email to send mails out
 
-The whole attachment should be dropped. Did you send this with 
-git-send-email? :)
+The b4 tool might help as well.
 
 -- 
 Cheers
