@@ -4,83 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD4CCCD18E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 03:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55C99CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 04:01:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C44B48E000F; Tue, 14 Oct 2025 23:56:46 -0400 (EDT)
+	id 8F3DA8E0011; Wed, 15 Oct 2025 00:01:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF4668E0005; Tue, 14 Oct 2025 23:56:46 -0400 (EDT)
+	id 8CB288E0005; Wed, 15 Oct 2025 00:01:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE49D8E000F; Tue, 14 Oct 2025 23:56:46 -0400 (EDT)
+	id 807898E0011; Wed, 15 Oct 2025 00:01:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AFE58E0005
-	for <linux-mm@kvack.org>; Tue, 14 Oct 2025 23:56:46 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFE18BCC85
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:56:45 +0000 (UTC)
-X-FDA: 83998987170.23.8A13F59
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 654BEA0002
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 03:56:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Dfy4W9ST
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 72EDC8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 00:01:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0BABC1A0AD0
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:01:27 +0000 (UTC)
+X-FDA: 83998999014.08.366A181
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 22AA114000E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 04:01:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EGf2UCUe;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760500604;
+	s=arc-20220608; t=1760500885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iC+bIt3lh+BcXGKI7RLWlb4Z81tpVxVGePCWF8n6Ebs=;
-	b=WnF7pE3KF9qt8yxPzhE85o5AfkLT3u+YDaLAFdNtG1hOBp61RTQfYdGtXlehqmjKlFYqew
-	TFjsKXtkB6whWUji/r4zzB4CCj7EwCJAU+oNfSC9CTRY15sStgA47q5yrfstOHktJ/joGg
-	NhzuU6OaK1919ytSn+fnrlPg/OfD+fk=
+	bh=zbny4X++b3XhfMj5aDMNgLZNmlxV9Znb4oEvVnXNRFs=;
+	b=ozDzrk5hvf00ZIXw0nrTao2sux5KRfqXTGOjb3BP2eSlLP70zvoZb5VVr/jvVsa/6Tnc4G
+	zcRKL7egBtek6g7X5ialtBLYeVPIUJCs2wjIjN8Vx9Mjd4kjBjSV4lHrUbtOhEgEp1HM/w
+	HbAPMicyuj9Lg4PwdppWCy0Y62Ic0nM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Dfy4W9ST;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760500604; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EGf2UCUe;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760500885; a=rsa-sha256;
 	cv=none;
-	b=tQIY1oOHLeTZ8blLssOtLVDAo0hL18HCJU+XsX/yTkEYFArQiCj+zdyq/BpBYNeUJ5+0EF
-	XrWnjgwDoApVgiK8RllYrphy2dbMFlRpDNagNNUJtzHwD0XktWaf51B5qP4DH6sy65KP/T
-	9lKglePaqTMNgjqJU3623Sh/vV5rTD0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iC+bIt3lh+BcXGKI7RLWlb4Z81tpVxVGePCWF8n6Ebs=; b=Dfy4W9ST4fZL+AhcctsetPE2Ob
-	pKlsWlOvB8nHjBMDjEJLCSV+dFeMUlOr4aixUpIupF9GOeOETVMCjw+pD+gkoLMEDWYvUMbVLtYAZ
-	8Ynj4mV1Su0Npo2kSgZ2QB49Zj95eIB1Z9Sq9C7YPP3wlpsZ4NbjL56cbSJwwq8QhOyZzE+ZtOnIa
-	eJEZ7T0qqWrJwmz6GIye1H6x16OLHKmAiICtjcBd2qnC7VbE33dKT2a8JKFRyCvuV9eQ6o3xXkb69
-	ytGzAs9Xl7tHOxZJlS0Y4gpb0FPtPA7JYXFjM7WAnLpetgysoFT7jw9ZpgXWssxZganBc97+AuAvB
-	h7s/OOzg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v8sd0-00000006r1M-2K2w;
-	Wed, 15 Oct 2025 03:56:42 +0000
-Date: Wed, 15 Oct 2025 04:56:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
- allocator
-Message-ID: <aO8behuGn5jVo28K@casper.infradead.org>
-References: <20251014182754.4329-1-vishal.moola@gmail.com>
+	b=Fy1bau9ubK1HWukdtXwsCbZ9/mahxdiFBdq/PQz21uqDFrJBSeCDKweGfsvk6IMCUi5I4/
+	/K8iucjy4o7sElp4v0I8ru+xx1b+9H9hFSKpbSsHHeYgnr/PsGMk8DNJcxllK5mHR9uMzn
+	0KEAYy3RzjzmmVsyN5lwm96h/z2LyKQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760500884; x=1792036884;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xEnKUjSeRVxcox93QyeT+KlvKLsc9ekKmD8PhZkdAEc=;
+  b=EGf2UCUeOe4LYAQdewx0kj3k0aEMVfvqZ3cc5/NuEugYBwCbRnn+UBG0
+   /7lphB+49CrTmSYVou2SW4lzd2UDERlhrpeSqy4+3mE9cKrfOs5JMKT+F
+   T13slTzFzO3MbZ8dDpbmQXOyHsnkJmJYZEzgEyOvySeoBfsXyHWyvhPlp
+   p9WTIcI+yp0WzYSKmHwIxtw7r+H+t4WtlTwZdIJodke3mhe8rx4OQUPIS
+   4U34XAYR8GU4Q8aZaWDqQbmFdAMzGOBNpZjimki7VgFcXV8H+NsaH4Yy8
+   iBzyfOScngETDSAAgbtO84eTaufiOIN2fS4mXyW28JRDZaMk+HULuAPsV
+   g==;
+X-CSE-ConnectionGUID: covR4IL/RNyeBCX+IXB2/A==
+X-CSE-MsgGUID: ZH8FiQ2PSmiaUxv6P6LmyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="73344718"
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
+   d="scan'208";a="73344718"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 21:01:22 -0700
+X-CSE-ConnectionGUID: XzVPSFTCQZaGLcABPvsI8Q==
+X-CSE-MsgGUID: gVllb85JQhijGcKuXDiMGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
+   d="scan'208";a="182841358"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 14 Oct 2025 21:01:16 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v8sfS-0003QD-0r;
+	Wed, 15 Oct 2025 04:00:15 +0000
+Date: Wed, 15 Oct 2025 11:54:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Deepak Gupta <debug@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jann Horn <jannh@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v20 24/28] arch/riscv: dual vdso creation logic and
+ select vdso based on hw
+Message-ID: <202510151153.212gVMMJ-lkp@intel.com>
+References: <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014182754.4329-1-vishal.moola@gmail.com>
-X-Rspamd-Queue-Id: 654BEA0002
-X-Rspamd-Server: rspam11
+In-Reply-To: <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 22AA114000E
+X-Stat-Signature: qr7de9zse1fw44biaz4gk9n9qy1wjnkb
 X-Rspam-User: 
-X-Stat-Signature: qtae1fqctifpy4q1ps3qps34o8e5exkc
-X-HE-Tag: 1760500604-636459
-X-HE-Meta: U2FsdGVkX180JStXR+08G8rSw7v68VvlOa55XZsEFwwRcV0UuicczdHIrB7WXEg/LL2e39r7oDhTjxz6SwxMbg0lHx3hzvzEHw39Lb8pVbiejBxyO0PWT5QreOAnL3zcQFkp0ZoRzr0IHyCvLCl2cpCuwLF44z8JkO3G6L6fUtPhst8pRRIRjogrOau/OTsgILGVKiRKTAFgSf/MfY5OJ4Vj3A6bS+N4PsUU2rp6ZY6NkErMvQqZYa4h3QU9h9NMiSRq8fjiyvUX7RGb4QUg9V0qsnhJ5pM4PTawdeyeWClhV7xn9Cj2L14wsjA4i2+0knQDQA2mQtMSbxfhICHEVFWf8Mk9CoJGpB2GjE8SsDKG3UgDhG7eftpnkXU4JfE2ScYHT2WhGT3mzM0PN3cUFkJDj+5nWkrkbJT0a3fsq3FpAKkS1fZVY030TRLPVs4dXbyTNfca3VHvfdgt4SjnqB7SYK7tp3pORawu2Yvm67VzbnyTG1y8bqxI7+xoeh1hmDdLpdLvwBONI2eCL6VzVz1W79depH1ZBq8mOqT0dL7CdA/GbGMO2OZipx4wUMthx9pUCj3VE+6P1jLOTppIx19Rqca3MWuPgM7h/Ezlv5lj7jc3doWLQd4vGjROb5f+dF2DksOR1Zss99LArYJdT+lC7oc9GLZhHkhqBGBxUnPv4Ll+TB8ZJB3VwfoAgIJGD6XwtB+j+nY5L2y0LADcc7u0aebXipvJAoGaFdXceFb+WLuheEvCF2icIxOsIoPs4zzRoTLqw2jEhIM1FZFe5zCVJEFH9O729bPfvU0zUGxPnCWZ4GcoJ1zJom+4MVxW/G9HnSkCJUmVnLGjHBny374/YCgxa+7RpbSoI3fVhhnF0kKQP1PYUJ0INL6C0Nj69fCDSQVpHI2BVPxxsWMACrPfXYu3pE39VgdipvzzFdiXJ7SSuBJ6ydBF+D1KSF4O1jqsqsWE9un8k/yC/UM
- P4rTyVe6
- dD3lCLHUGNGbjSp46NRLafyBq0EUSuwFzoWbuBBva35z95TS5RwrYNcg2ClnE7NzVvRqHZGDmqlMOVP+t4a2RUldvtSKCzwwMywiGjiado+lGmx+fL1VpieOpGE1ejkGERfRGA3+OGT0NaxwrSc83EnzCmWPIl3823aHd6HX/6n0XmXMwqa+ghwiMuGnfiNkdV5pohZwtokm63TYXeawSwu1gvJYWcfpiIiGXnMWf6y4OXtYLvPwQw7jOcg==
+X-HE-Tag: 1760500883-40116
+X-HE-Meta: U2FsdGVkX18+YzfqaxtnZo2Ud67tOY9fm8EvF1q5QS+6mSUfkxwSQ9FI2wIlJ8TBlvwYbPbWJeSOjUcbDj4lGWVN9IjZ3VEcjhRSy7mQO5AIiKpannjzcf0Ju1fh1bE+SuhgzfvDNY2znh6OQK1XnwwouEVX4IHYO6N24Ihtvb3J1GVe/9aGGTOk6VG8rWZ589airqFXHBKHaywatBx5ZiNBII+4mD/zqiSplD2zst8iJDU1KFyFsw5XbGCB8MMAOIt+TzWpxr0V4ekydeupgFJS2f8kVBgLXUjMMTv5jpPz2TXqMcwXEvbCVo20axe95l2kpUvJCos4zRyhC/qRMzBurz5dOXZNI5ELPeCjTFouSR4kR4acFsdplyew7RnfJcRzcnaBWCHaeLquHS4bJ8is2c518pwW1Aj2RvfyfJp5NB9C7FaXuPlj5Ylg7oMDKdAt4z0pmJOLpolElKsZu/NfXEQMzsVxoiSiqbE08J/4r8ISnd+x+HaLfwThFxnTEso7XBolkxDizVarOB38wjJFF45ydVlNJOr+yG4s7P4Um0IHopec0pIxQKAo8Hovu2bMtUUVbNuTvJ12LggbbPJvVt1y41xzFoAEpT7LkY4TsmQxw5gvZutlOT06eE/QrgHmKPuRJBZCfaDXeKMTcozcI4d96+dDZjESVjQZVyPh0F/r9sJehG24gPyvuvCWOy1uT92XWWqivPnatGH3XST9ZD3yfSnhJpPhUSJC+5dYJLBZad1WhZBUowenzvjbhhUU6pomlvbG7g4kDq+eUYP5erIEFhqC+8Vxmxr73BQL4lTZS9I+b6ElJo/Ele4Fzo3fkV2ro3JY782Xmu/iNfQVGiXBVCG1ckg1M/O+ARdvpomdCXYwXaEbZQ9jGPZTDKZ7UV2wZRuUcJcuUX4h3KcS45JZ75A0HQSWtJypjyJNaNAVy2r8uT56WYMhaaatyXmxv3sfFiFsb5IOVZO
+ 1WwGD3pb
+ r+asN4W/mP2Hcom9ZkOwwyNfUm516VtR/aq7npBd6AbJlKcU8opA+mX1WrYv9SqGtk164pc+3TxMBozQF5sUw2DKGvsqA0ZeJ/fxelWmNf5wyhzUUzSvL07TCmVUYGFxx7L4krAqmrxvGx2nITuKXiirD7FeyWc8wElFpoJfvKFF5vs4AbBjozF6NqG+bRFbd/S7udDzD2R3UtTaeGoiqfxeq3X7EEQfHa4rcolmnAiXxwyseJj4Stt7rbv0m8hTVaKuwEdJoh9GAFYQ2YLn/VaIhlvq6lVnNQA5QsnbyTLGj3K2fd4R8vo7dCe4wnEgjJjSEv2UzX8F3OyMXpVfsck3svRe2GpRARkL6PJvVOozWcP65FFX+4wpiKubT99qwUw41Py11yi08JhAv5Oym57yGY5vYDVl3DZedDJ3yjEHe08ntYOM1NvMETSheLXnmZ0aeyhneiI8QaME=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,99 +130,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 11:27:54AM -0700, Vishal Moola (Oracle) wrote:
-> Running 1000 iterations of allocations on a small 4GB system finds:
-> 
-> 1000 2mb allocations:
-> 	[Baseline]			[This patch]
-> 	real    46.310s			real    34.380s
-> 	user    0.001s			user    0.008s
-> 	sys     46.058s			sys     34.152s
-> 
-> 10000 200kb allocations:
-> 	[Baseline]			[This patch]
-> 	real    56.104s			real    43.946s
-> 	user    0.001s			user    0.003s
-> 	sys     55.375s			sys     43.259s
-> 
-> 10000 20kb allocations:
-> 	[Baseline]			[This patch]
-> 	real    0m8.438s		real    0m9.160s
-> 	user    0m0.001s		user    0m0.002s
-> 	sys     0m7.936s		sys     0m8.671s
+Hi Deepak,
 
-I'd be more confident in the 20kB numbers if you'd done 10x more
-iterations.
+kernel test robot noticed the following build errors:
 
-Also, I think 20kB is probably an _interesting_ number, but it's not
-going to display your change to its best advantage.  A 32kB allocation
-will look much better, for example.
+[auto build test ERROR on 3a8660878839faadb4f1a6dd72c3179c1df56787]
 
-Also, can you go into more detail of the test?  Based on our off-list
-conversation, we were talking about allocating something like 100MB
-of memory (in these various sizes) then freeing it, just to be sure
-that we're measuring the performance of the buddy allocator and
-not the PCP list.
+url:    https://github.com/intel-lab-lkp/linux/commits/Deepak-Gupta/mm-VM_SHADOW_STACK-definition-for-riscv/20251014-055847
+base:   3a8660878839faadb4f1a6dd72c3179c1df56787
+patch link:    https://lore.kernel.org/r/20251013-v5_user_cfi_series-v20-24-b9de4be9912e%40rivosinc.com
+patch subject: [PATCH v20 24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
+config: riscv-allnoconfig (https://download.01.org/0day-ci/archive/20251015/202510151153.212gVMMJ-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251015/202510151153.212gVMMJ-lkp@intel.com/reproduce)
 
-> This is an RFC, comments and thoughts are welcomed. There is a
-> clear benefit to be had for large allocations, but there is
-> some regression for smaller allocations.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510151153.212gVMMJ-lkp@intel.com/
 
-Also we think that there's probably a later win to be had by
-not splitting the page we allocated.
+All errors (new ones prefixed by >>):
 
-At some point, we should also start allocating frozen pages
-for vmalloc.  That's going to be interesting for the users which
-map vmalloc pages to userspace.
+   In file included from arch/riscv/kernel/alternative.c:16:
+>> arch/riscv/include/asm/vdso.h:21:10: fatal error: generated/vdso-cfi-offsets.h: No such file or directory
+      21 | #include <generated/vdso-cfi-offsets.h>
+         |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   compilation terminated.
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 97cef2cc14d3..0a25e5cf841c 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3621,6 +3621,38 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->  	unsigned int nr_allocated = 0;
->  	struct page *page;
->  	int i;
-> +	gfp_t large_gfp = (gfp & ~__GFP_DIRECT_RECLAIM) | __GFP_NOWARN;
-> +	unsigned int large_order = ilog2(nr_pages - nr_allocated);
-> +
-> +	/*
-> +	 * Initially, attempt to have the page allocator give us large order
-> +	 * pages. Do not attempt allocating smaller than order chunks since
-> +	 * __vmap_pages_range() expects physically contigous pages of exactly
-> +	 * order long chunks.
-> +	 */
-> +	while (large_order > order && nr_allocated < nr_pages) {
-> +		/*
-> +		 * High-order nofail allocations are really expensive and
-> +		 * potentially dangerous (pre-mature OOM, disruptive reclaim
-> +		 * and compaction etc.
-> +		 */
-> +		if (gfp & __GFP_NOFAIL)
-> +			break;
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for ARCH_HAS_ELF_CORE_EFLAGS
+   Depends on [n]: BINFMT_ELF [=n] && ELF_CORE [=y]
+   Selected by [y]:
+   - RISCV [=y]
 
-sure, but we could just clear NOFAIL from the large_gfp flags instead
-of giving up on this path so quickly?
 
-> +		if (nid == NUMA_NO_NODE)
-> +			page = alloc_pages_noprof(large_gfp, large_order);
-> +		else
-> +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
-> +
-> +		if (unlikely(!page))
-> +			break;
+vim +21 arch/riscv/include/asm/vdso.h
 
-I'm not entirely convinced here.  We might want to fall back to the next
-larger size.  eg if we try to allocate an order-6 page, and there's not
-one readily available, perhaps we should try to allocate an order-5 page
-instead of falling back to the bulk allocator?
+    18	
+    19	#ifndef __ASSEMBLER__
+    20	#include <generated/vdso-offsets.h>
+  > 21	#include <generated/vdso-cfi-offsets.h>
+    22	
 
-> @@ -3665,7 +3697,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->  		}
->  	}
->  
-> -	/* High-order pages or fallback path if "bulk" fails. */
-> +	/* High-order arch pages or fallback path if "bulk" fails. */
-
-I'm not quite clear what this comment change is meant to convey?
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
