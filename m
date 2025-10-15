@@ -4,90 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED90BCCD192
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 14:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70A74CCD18E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Oct 2025 14:51:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6218E000D; Wed, 15 Oct 2025 10:36:57 -0400 (EDT)
+	id 9EE138E0022; Wed, 15 Oct 2025 10:51:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4964D8E0005; Wed, 15 Oct 2025 10:36:57 -0400 (EDT)
+	id 99EF78E0005; Wed, 15 Oct 2025 10:51:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AC988E000D; Wed, 15 Oct 2025 10:36:57 -0400 (EDT)
+	id 88DF18E0022; Wed, 15 Oct 2025 10:51:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 272F78E0005
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:36:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 757BB8E0005
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 10:51:48 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDDCE14019E
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:36:56 +0000 (UTC)
-X-FDA: 84000600432.22.F7A5E36
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3A946160018
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:36:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UeuEpObN;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2ECD211873E
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:51:48 +0000 (UTC)
+X-FDA: 84000637896.22.9428235
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4E3252000A
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 14:51:46 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b7Jao4Zq;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760539015;
+	s=arc-20220608; t=1760539906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VcHb8m53O0OfAxcKQARyOQxYQTS/x+Ol6oQ470bfd+I=;
-	b=gPpcV3fp4QgHixdSEmG/PhsVhVBkFF1TsJuiqzd2kZnv030giv44cCY1sbE/s8dzLs0ef4
-	EnrXGi03/2zsQTd+y1sTjxtYuewALht3PR/2Tdrznsp9jZQSkBfrW6Ocbgl+W2Ga5cD3lJ
-	BOpM7WRllBQrBX8BpjZvrg/jBgWG23Q=
+	bh=NyLoltljIFIHQvuHJEe7loF3nTJT00G7D3T168aMfDU=;
+	b=nEBPk+Zvq3AOmr4K7OXlDYhou1bt779lUtL2QCO5KBiYA5J1lcFdhQJ6lfrfbMfJZKPMVD
+	6ZfKVKzLZGM8PRxmXIpKYQcyjLaVIlrE40wJWW1l68Rf48Dxs0pNL5eln2454YgoNNXxK/
+	rVtMLagKQpvQTnrnUNoxqX1vE7Abfk0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UeuEpObN;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760539015; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b7Jao4Zq;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760539906; a=rsa-sha256;
 	cv=none;
-	b=gCEjrIe4qPV0vKWqrOgXmSV1UpHoS6Eyg4ylkaxLstfa9oBz0NbIaxEBqeYGMfUu/cJW2W
-	MmumeATgVBhcnBBK0kZuLjLOdidDoGwybkgtmmfWO26xV7M+9ghTSom4kSOqVANYsJKqGl
-	/EU0WCYFSd+H4gsAba/myhpNZ7wS+C0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA56743631;
-	Wed, 15 Oct 2025 14:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A763C4CEFB;
-	Wed, 15 Oct 2025 14:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760539013;
-	bh=q3IGuHOuKYj1maeYSdpMggw3+0tCzoglIrAlJxaChrM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UeuEpObNWodrFe4Tcd1s9U/Sm/Y5TnD+d9mC4iU5oRQWU1NrpE9yleEJA1tMc5CL6
-	 pUXElVnCMOMOlGKSzQMpNP3XatEpCUfiP2n2ZX5ww3zuPxvzkUeCrCkcPK0xHZJm4Y
-	 9pRWmSbBWsOyTGOqDnwjP0uM0xa4h9xTC3IbmXlUtc9seeayfDaeFIO7kXU3y4nv5o
-	 ow/MYtiSFUM4KeP2cqyaqBcLtUbrhqW+BqSkCo0y0D2FeKTrFLIAzUPT8iOrrhHpz6
-	 olpW5FHanTOG2gPbdEI+gtn7bwBfW3zi31TGCzTrLjNJBgU7NkiHO7y33aw/gD0uSF
-	 u7BCek6kMzuZA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
-  graf@amazon.com,  jgg@ziepe.ca,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
-  masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
-  rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org
-Subject: Re: [PATCH v5 1/7] kho: allow to drive kho from within kernel
-In-Reply-To: <20251007033100.836886-2-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Tue, 7 Oct 2025 03:30:54 +0000")
-References: <20251007033100.836886-1-pasha.tatashin@soleen.com>
-	<20251007033100.836886-2-pasha.tatashin@soleen.com>
-Date: Wed, 15 Oct 2025 16:36:50 +0200
-Message-ID: <mafs0ms5sjkot.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=jIk19Jd90vrtNLf76w2inmo23cf2VHmIiQXQBd1kEvPp4TjFZIdXNvleseK3jSNp+6Z88C
+	HL5rCgR35Om/cs8bZVSchGQD/382XMMelxPQR9TNyuTP6wWVbOzvxAy68i6HcdNcP0oLdM
+	u0m23P4s4HZ+N4dwijYZPPFDnaSWRis=
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7815092cd05so23160787b3.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 07:51:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760539905; x=1761144705; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NyLoltljIFIHQvuHJEe7loF3nTJT00G7D3T168aMfDU=;
+        b=b7Jao4Zqi1IlEBiwF62QqDKBFfBKquIX+4qCfNc01yQYdJ10+F9PeeMCqe1wcG/foz
+         SfLGYdv547dQsp9/TBmcehWLZT7NlQMvwxL/Pd3u+JAVObXsgsxaHtWnJ0vBlwG/5jQ/
+         YTxhx9etDsnm0E/MrgdolFokJHvJxW7neHVrdlpyFbt2QgC6mHff6p2GFYx5sInGjRUR
+         uqOMWvDD2UymQA6wvaHu4PdkDlTcq+qbwQyn+2StSqu/PlGj4blNu67qC+eY7NoYZK9d
+         1a+xj4jb5sCfzgDCvLqsikj35GMx+X5xK6ugSTt5Yyrx0ILZBiMgt3C+i81OmlhyVZTp
+         FYIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760539905; x=1761144705;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NyLoltljIFIHQvuHJEe7loF3nTJT00G7D3T168aMfDU=;
+        b=UgEfdCJdxc0+RS+/E8TQpP1RP+V0ruNCb8/YaqFrIMJYn6RKZ2lf/eNA/IR3yoEkxx
+         FlXRv0RUfds+/vKnb2ev6RPG3c+FM3DZFysA6zE+SXXZzjkLyve+11VyVj9It3uO6Vgv
+         xzFEESws6grX7RzLIb8a0+9K621Aj9PqNtEQIrE1QQVhCx87zyCEP7/AuBEQwiVkTBlQ
+         6V+C8WwYgvbVjice1RaiUDu2AAMtfAkb2NxYYTv+d3muzEfxQdRazTTSGKOCdtB+kI+r
+         8dmJ1bTBarOzbM5Kon3NdFrCbw5runCYOlFyyLN+eHJ/SJ0AL39+l8iDwhv7+dH6uiZX
+         1Gtg==
+X-Forwarded-Encrypted: i=1; AJvYcCV26sBY9rxJ4SIfeUk8AVs5FDuzwY9EZhjFRdIypX7+2iO048WkPVLLniCBDpZAZn74UDsl6e/2YA==@kvack.org
+X-Gm-Message-State: AOJu0YxMhGP3V8AxOYOZ8nHKq+TydZbetj7lSgIX8S8HYnCB4zSZWIHW
+	cn6IsDvKO5X6/HDThlzphSqoIlw/6G4RO+L3potLOVkV6wTk9yx4bPoO
+X-Gm-Gg: ASbGncs1DUkMtzFO0GBgr08zJfJShhImiS1QElOjiESVskUnTNTzaekENwEHDHmVSFm
+	hQASKYTWse2KveuJ29YJsPT18H46haBqaF+VPA9Vnjfho536fTc/MPP11TG84T/InLIPJ3E8t8r
+	fP4+TwWgKdfQswP1BDcGuWICfVTsoJhJCsZ6YkrG1RqwinlwwoL+Zt+XUIwZA8m/lfUHEQM72vU
+	uckGr+IYMyyFMTmVN7Uvdpqra1E339JP0V8xyFIZU/KroSfPhsxblHc18DLj4tfgia3AhpxVU4B
+	jmXFvRHOynW7+E7GnONQ8j7IrHzQiqaMBd/wgvDD/komYmRIjg3X9HiH6ukVP1dlXJ8QucQVVEN
+	JX3Up1iGynvUmYKPkGU/pcXHO7a7v9AuyI6TDAc5nPFgznxfqtGOEE20OBebzIE7/Bk5vddehe/
+	Ky7W0VQhMi
+X-Google-Smtp-Source: AGHT+IFdqdeTyqiUO3M8Jt3admfj16X+6I9SKPrlqNLZA1JhYvTo5CcWbZOMzfxfyhV/tM6hbT9L/A==
+X-Received: by 2002:a05:690c:360b:b0:735:4c38:34 with SMTP id 00721157ae682-780e153baabmr270617987b3.27.1760539905211;
+        Wed, 15 Oct 2025 07:51:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:40::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78106dbbac6sm42931667b3.3.2025.10.15.07.51.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 07:51:44 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: simplify and cleanup pcp locking
+Date: Wed, 15 Oct 2025 07:51:42 -0700
+Message-ID: <20251015145143.3001503-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251015-b4-pcp-lock-cleanup-v1-1-878e0e7dcfb2@suse.cz>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 3A946160018
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4E3252000A
+X-Stat-Signature: d7dztxyp3nm7qbi9399grtp35owcqogm
 X-Rspam-User: 
-X-Stat-Signature: kdmut5dx4t1ywoe5wxsn9bentkoz8h3m
-X-HE-Tag: 1760539015-227850
-X-HE-Meta: U2FsdGVkX19R40cZx+PREEQDjO7Let+ynocD2dpAVJ6SyYgAsBS2ZnyfI6oxgAQ9DwQ79zaaf2Bis9KDf1TXpPSp3GgZgMAWNNKMzUMxZWmzDm6CY9wqdo2rPXW+Ys+6P83sMcRjXeg2xC/74L4QlwqePAVbTvVnylTDHJe38PjbF5NY1BG3Sodk4/PgopMujkN7THY1HThkxjoo6ECmTD4Fvskn8uuQu1CMQSItNjRQH4wwq1wLjGdxtaS3Xs8vgL6UKuYsw84yhvszrTyAV3StHiVgbOrrPVke7xuB1gTNVJOH/rV4XT7Vl6OHJ2bzEtgREHU5DU9ZpfscT92Tpnl/va/OQ52GKTYIG5QBpFFFjBaiIkREeKlcKYiOJpN1aA/KilmVAdMJDH36Fzg/cF5nM5HWtN8zxI5Swy3jAjOgFvptIi/AHdqKGtEQOOx3pWlr7VNd1kJi97yuCPXImYK3FJYZyd6qcxXT4rISzHLhvTawGOKqK/dJ+nI9salTcWaTAQBGOOtZCmotMiAMBN7tzrXUYCvUut1QjIotXZZF8V47RTsNMO7gQIMzoXLGFyckPam7XlscPsAXfyJ6hG1pvhXJ2cuURWxQjDLYdvwUtE1TNgLlwTGXQ30vUB8n0eivq6MjSRIrQuKPmKOFci2dv/2XtAeJFdKQuswX/CK/60VN9L+0r/b1uVegzQLf3dJrLznJpbPElB31vnN/o68XYg1jfHeX/mJanHknfbOrZrD5BN3kLfYrnT/BW2+urzZ/bmt7yfKtuvD9SVvylYiYnqGGw65iyQUyFqbL6AIqDiSxZHEQLB04cu7K/9aeR2g0+22uPOTvWmut6LqZbz0ehL1qkiXYSNeyb1XSPHDiik0jeKwt3IvpoWs3oSo9whkRUXK8vrQKEA5uYvEA1t1euXdQrQ+e8TPYVn0xovqhzIjCXYbe8x8fLmqdgEMqWkAeVALFt5FDP8kUGD4
- it8i4mQ1
- s6FTHc5sBSU83IB/VlO6co3mLr+S3iHB2XpqVPap9jSYxAuJBdqfJdgV7KpXIbKP/dK+/e06HfQrzf/LBbIJQPA14Yi5d7GF4ABPQIskNVz/GSvDkzNXzYlon9edd5aWbTTGdNjMEACXwkpjyCHNQyD8nyBpQZNgXWMeEltqTBtuZPHw18i/WSD7HJVkAyQf8D/B3MDxdVqVZ3CnyYQvBB1vR3kOcBkDAn5Y4m1ILRXpDxmg0iJuCr5mYPNjXexNz6fMU
+X-HE-Tag: 1760539906-95841
+X-HE-Meta: U2FsdGVkX18upe5ACqaAoAx0WLCueEwgkeSLFpehvmwcFeDfQYEEEyduEDP3nsRAd5L1auFBjqLEgzCI2oPbuIyao7EWBwdjqfEh02IU0oZDNDNEVh4jXbD6DOsSDBbqPe3gri9b8P30Bc8p3U52Mb2/a0Q1sj12/p1ZTkbpRYPqFlsnx2Du6UCzjtFFt6w9vnuk4Q8fJ4zbUS27qQIGzyhaFor2Btsojm1kQ7QrN/OYjd2VQpxt0MXe+q3V/kYSZOSBL79BF4GHT7WkE4VSRaOoCJmXP2r77Uy5bEEYd0iu8/sVLS8VVaiK9oWdAsWIv6Tz5hX4uRegEAn5qCCD9JTkdskDKcre97n8dU+16lyZRfAKNNc9fK5HTtAKHH4GziidvMA74c3OeAMa6JRjTT0bStKy3XR6HBVDr7AtRyoZYb8WxKlCseRUFRCQJknqFDRdjWbkHR9HmAnUcb1xR1zDEc2918ZzreYTEVc1kIkJ0+40LF5R6aRvRqFXAxgeuu2mg0JU+FhgO6Jta2njF3leQSccVxfjA1waDqbrmd80GSNXYiXzTLQc/ubHzhFCZ8TRusrA9DDE3+OqSJQGu5ojjmgicSy2we8XhSKWdBJSHgLGXmPeUrE9eNwHXXGyYM3pvt7L1mU4vOhpwojRdgOPmZUJJf7dVmiJjZwEf6u29HuqVCHHIuNHoQFu1n1qC3pFVK2efIjOc2s6jzyPzkTjcfxk7rhmLW6G2zpu8ja2yvpGRiW5BhX/p4GjAA4gnAlZPKXsG09zGhcoaM9J+KP2FTKHuzEoXysEoc7avBc4i22xZ8TBvwxZ2Q0fvTl4m2WfiUu5QIULeGuZL1xtD1ruGhBc0G+1yAnoA92lDro8yulrvSlud9WNVf6HhVVqSBtPdJNbARXX9UL6iXWbk8OeuFKojHSCTie8aBjnWcoePeDL67FLx+o2k3xuIT6hC6wEv6ZIoKhdmGc3HWL
+ jmfN12EO
+ J38NGizYkf9LjCRQnRb5pPRPS9pQMNfd/1Mgr4JcIZRLRvKro2KRkF5qc28QaTzwu7B5HxurWQw6gvoR4NlZE632vz3vc3A9IeMVy8akB80gP1ft2dVQJebEuzrjDMQOoPvZ4RQsj24+q11SvxsOH3inavepuem4jHozrT/XxOnbC34CYP7fnc6Hvrj3lO9Uug/y12vkDCsHruieMMcUNwuNnEu0xKcmIYKv1cxCPP+RYaYp/sLwmoTXc13C6m514mr+MnYX5p1kAkOWJPHIIKsfQJQ4kFIBiAVJyS948qe5n8M6J2QxtWy7FtWxGwOjm4+d8GGBJDDXyNBk4arBw47/QfUPc/Y1iwztN+7xzdgYeoLsLPB0O99RPd0jOI6kN/TSFhWYmvRUKO0v50TJD1sjmxXLK237cMETGznFi7+NbWgTH6wUYVWhOHXDuOTpsuRFioqtnLKZMSSO8FItp2HInIMnVkxKpW91PbobneGBNMOOllLIN/NY+ng9kbi/TN1uU0KKdKN/b6zsqAksbHUxwsVLjkfYss1RjaDKbmVB2Un0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,18 +126,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 07 2025, Pasha Tatashin wrote:
+On Wed, 15 Oct 2025 11:36:09 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-> Allow to do finalize and abort from kernel modules, so LUO could
-> drive the KHO sequence via its own state machine.
->
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> The pcp locking relies on pcp_spin_trylock() which has to be used
+> together with pcp_trylock_prepare()/pcp_trylock_finish() to work
+> properly on !SMP !RT configs. This is tedious and error-prone.
+> 
+> We can remove pcp_spin_lock() and underlying pcpu_spin_lock() because we
+> don't use it. Afterwards pcpu_spin_unlock() is only used together with
+> pcp_spin_trylock(). Therefore we can add the UP_flags parameter to them
+> and handle pcp_trylock_prepare()/finish() within them.
+> 
+> Additionally for the configs where pcp_trylock_prepare() is a no-op (SMP
+> || RT) make it pass &UP_flags to a no-op inline function. This ensures
+> typechecking and makes the local variable "used" so we can remove the
+> __maybe_unused attributes.
+> 
+> In my compile testing, bloat-o-meter reported no change on SMP config,
+> so the compiler is capable of optimizing away the no-ops same as before,
+> and we have simplified the code using pcp_spin_trylock().
+> 
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Hello Vlastimil, I hope you are doing well!
 
-[...]
+Thank you for this patch. This is a pattern that I found quite cumbersome,
+so this patch really makes the code so much easier to understand and read.
 
--- 
-Regards,
-Pratyush Yadav
+> ---
+> based on mm-new
+> ---
+>  mm/page_alloc.c | 99 +++++++++++++++++++++++----------------------------------
+>  1 file changed, 40 insertions(+), 59 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 0155a66d7367..2bf707f92d83 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -99,9 +99,12 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
+>  /*
+>   * On SMP, spin_trylock is sufficient protection.
+>   * On PREEMPT_RT, spin_trylock is equivalent on both SMP and UP.
+> + * Pass flags to a no-op inline function to typecheck and silence the unused
+> + * variable warning.
+>   */
+> -#define pcp_trylock_prepare(flags)	do { } while (0)
+> -#define pcp_trylock_finish(flag)	do { } while (0)
+> +static inline void __pcp_trylock_prepare(unsigned long *flags) { }
+> +#define pcp_trylock_prepare(flags) __pcp_trylock_prepare(&(flags))
+> +#define pcp_trylock_finish(flags)	do { } while (0)
+>  #else
+
+I have one question here. I was a bit unsure why we do the typechecking and
+silencing for the unused variable warning for only pcp_trylock_prepare, but
+not for pcp_trylock_finish. Is it because pcp_trylock_finish will always
+be called after pcp_trylock_prepare, so the flag will have been used at
+that point? 
+
+I was concerned that there would have been some area where only
+pcp_trylock_finish would have been used, but compiling with W=1 seems to show
+no errors on my end : -) So it looks good to me! Feel free to add:
+
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+Thank you! I hope you have a great day!
+Joshua
 
