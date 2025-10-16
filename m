@@ -4,98 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184A9CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 20:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AE5ECCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 21:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EC468E0034; Thu, 16 Oct 2025 16:59:29 -0400 (EDT)
+	id 4B4C68E0021; Thu, 16 Oct 2025 17:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C4298E0002; Thu, 16 Oct 2025 16:59:29 -0400 (EDT)
+	id 4656F8E0002; Thu, 16 Oct 2025 17:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6011E8E0034; Thu, 16 Oct 2025 16:59:29 -0400 (EDT)
+	id 37BCD8E0021; Thu, 16 Oct 2025 17:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3908E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 16:59:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2944B835C
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:59:28 +0000 (UTC)
-X-FDA: 84005193216.05.17DADF2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 51122100005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:59:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="2GG/tL4K";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 294408E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:07:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B75E3160426
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:07:38 +0000 (UTC)
+X-FDA: 84005213796.08.2C4DAB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C6A43A000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:07:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K7VK4UUz;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760648856; a=rsa-sha256;
+	cv=none;
+	b=jOh3Beqov0bijkGB3IA7sBGY+r89tC8r+xHSJnly3M7JIt/CIkT59LKW+v6uyVkkwYZ+h4
+	ep2/bGbhYlICZu2RnxsLahoxHjswN+0pF9Ez4Y3Dszf5VuBucs6+yIjLUm+iErpbkw5KOl
+	xW0wWFyFXB2Sinarw8VC3mPM8glbYts=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=K7VK4UUz;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760648367;
+	s=arc-20220608; t=1760648856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XohFyr46NXvuM66TmFRtJuFCam0UylASGO2FmbD3b7M=;
-	b=PT66HLjAvOo+6HI+Z50JKUO7MsLwYVfe4tHffsEkNmceRcfFxN+jwT6ju86v/4GtZX+c4w
-	7nbOABkBF19DBR1h7H7i3Vk37nOrjgJaPNV+UATWCDg05V1YChNHP6L9VAcUhw7O/IYLwA
-	2JDrnfQlvt8a+r1mChf8ZKoyZxFirqc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760648367; a=rsa-sha256;
-	cv=none;
-	b=HOZ2CPsjXjw76h1BSj2kXN31lV4Lq0it9pwsONva33PnoGa08vXMwm7NSeHC5FcSR6gtyu
-	HRDv6jNq/v3KdpolmeXSWzSLwT7IYNV3EB0xz6mM7GjWWUIHoDGOkci4bPqglG235BAUCX
-	TXdBQg7Z3Nmm5o3GyT0qP/b/Sas3h/U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="2GG/tL4K";
-	dmarc=none;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=wJ2+D93qponrkvjXZXNgTmgCmQdEyU5MGdg8xveMlME=;
+	b=dvyKkgKF+GBD5C5OxO/ce1uMX84fWYAD0Z2f73s3uS5CDfYq+C0mkzANGyZqMq/as0I87B
+	ncgm4RVElXDg6Zyw4+FsPkjokP92p8YWyY7MrfIGfEMPhSwt2oy8KSEoLu47wN01g5d6c1
+	5JNAHK/SrP7BzcGhLqA5le+CawlJUp4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA0624070C;
-	Thu, 16 Oct 2025 20:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEECFC4CEF1;
-	Thu, 16 Oct 2025 20:59:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A525601A3;
+	Thu, 16 Oct 2025 21:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBC6C4CEF1;
+	Thu, 16 Oct 2025 21:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760648365;
-	bh=On0cJn7W8Gh4erOEbo4yZw/MYHtBNjnFLohMdduX5Tk=;
+	s=korg; t=1760648855;
+	bh=qDT0KpgNjvnYSFEGuNHvVnzxlTGK5dEK3a6ypkudwFw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2GG/tL4K3Ivbf3xyWHn/Vtu/7WWXC55vU//3w11E7n1pREIksTdNSGEroj52SzDBM
-	 4P2ldDBbTRfKAJFhz2Rn7lYgMJSYjzRJfAK5cl0MLrO10kUjs7RW35FkdRHU8sGejk
-	 zt8FDRRwj38Hp9385EIAHhFvQFjlT5IKTW4Ggu0o=
-Date: Thu, 16 Oct 2025 13:59:24 -0700
+	b=K7VK4UUzlBeno/ZXpjhVi7RxZgfZl5QaIUeY1jFwAMEbdr8lDVRJHtatM2AjUiMJ1
+	 p97wvvgOwVmto4SINkte2R0PzAaomFcle8VBJ5P8L0URKA2ABvRxOTwWpGLuxY3vHX
+	 w4jzmEDGoKR9DY5OGfii55hgCg07wkP1RssNBoLc=
+Date: Thu, 16 Oct 2025 14:07:35 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linmiaohe@huawei.com,
- david@redhat.com, jane.chu@oracle.com, kernel@pankajraghav.com,
- syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
- syzkaller-bugs@googlegroups.com, mcgrof@kernel.org,
- nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2 1/3] mm/huge_memory: do not change split_huge_page*()
- target order silently.
-Message-Id: <20251016135924.6390f12b04ead41d977102ec@linux-foundation.org>
-In-Reply-To: <49BBF89F-C185-4991-B0BB-7CE7AC8130EA@nvidia.com>
-References: <20251016033452.125479-1-ziy@nvidia.com>
-	<20251016033452.125479-2-ziy@nvidia.com>
-	<20251016073154.6vfydmo6lnvgyuzz@master>
-	<49BBF89F-C185-4991-B0BB-7CE7AC8130EA@nvidia.com>
+To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ craftfever <craftfever@airmail.cc>, Chengming Zhou
+ <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] ksm: use range-walk function to jump over holes in
+ scan_get_next_rmap_item
+Message-Id: <20251016140735.d7d4c282f0fbf22954a4b4ee@linux-foundation.org>
+In-Reply-To: <20251016012236.4189-1-pedrodemargomes@gmail.com>
+References: <20251016012236.4189-1-pedrodemargomes@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: hdrmrup9pugpbkh4eh8xtg3tqbsnd8rk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 51122100005
-X-HE-Tag: 1760648367-135706
-X-HE-Meta: U2FsdGVkX19fH9iBzLJ3BhvysRXHMldDp1pwPHB6Wx0wgfLYiilCjcuYjO5nt4zZktg9ViruxYObVNuIikcs3uId5niMlWhcxc5OJzZ11BkAGXYgXHBoEY8nH2R1vOzMSMQYMVPfFOgjD1ZpxJvz0zilrbROjeL+EJaWJ3MjlBirStebHR/I9Asj/JRTE9njwwCpkEBSDfmGhuYzQSKF1m5lbofjOOvPVSmxU/TI7f4qSjcJVy+OI5QSVczZLuT4q64qZKSuPkr3u6bbi7qL4tXeGeWmvp/qhVHXzOfVSZVTblj7cfMTewUBgoNeNRnXl3YDB4wMk5+pHarytbTEsSIxOKs0h38fLXUxhNwqF5KZEwczZ829S8/56CpS5hGyLplkCnsTO2OhsF3uLtDPvTv8TG/XPdqnhVjDthKPxmf6oSLRouC1Lild75kKcaVYAwVCD+3ZzHvLRikI0jOSffPFRJ5QTcE7LDEmliMUW72QvPDe/B2/rJ7z1ILm08AhYtMnpA8rrYcSSL37IuTuYR31tMxk4R0jSFi9iTDPOZmVZlFkqjHef1RPCKJS9Ia2cAN7EKnbBYzIwOylOQh7m2TxEZtj5jNj/d9lhNcRiEcJ5BbNXnQxTsN8tou33ZtxgDmjJVfV40K1PJXO6Lojmm5mof9LTVHAsITgMjqfeaB6QdbSCSCks3qgo3Zc8Vv2HEdqXm/h7Itd4tuBiphjDvskvJ2PNqFPHX5kFe474xrdK5X7KWGaaAwUF5WV3QOKtey2Dg6k0fjhIDjadB78cSfZgTc4h9RfMbH5bvwQrVfa2VUVsalxnj9U/xMA4oCXt6wcD4NNrums6WbY0eM44d6G11Av8YzX5Gf9n/+/es2TCVBBUlBGN/Fgv0PHhE+x2Zc0oPHY1CsxsRaoHEXE2ZNMijcdWCSdeHQe6HwMvAnX8NLRwCJSSs18aKHMNnrx2NaYXOL6Aep86pgE9lC
- BQHVIRkZ
- zakANBs6T+EBRf8Z3Ruc4fJNznJczI7Y3e3TFPExHWBNq2DPgmhF/aMulFg==
+X-Stat-Signature: fo1bcarp8ujxgaphwm9oarrxym8r51bf
+X-Rspamd-Queue-Id: C6A43A000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760648856-578326
+X-HE-Meta: U2FsdGVkX18ZLX4J6PMYv7gB6+ZpPpZBhz9IfAYrU8xZWgCwZStp5AeeMkgbUZxYV5X6QbEqHTTWeaf8pWKyIB1KPTUfy4RUxEOohetVg+0sIdoWvRUG2EnovmbD+Of6537e4JB0crdWvEFWGBLdi7NjX+UBDSAYtJLh1NLum7oQ87M1UYoPyKtKIrUqLgUOwf59eTM6S4p79gDkhkI2Mt8anFn7CR+xddrc0SdOn894v96ojq3bfmEI3ZQIrt9r/pUTU/+gNmpJE6v2k5DVuU5zsG+/ofO+EJxuOD2enLL3ylKQ7KN81RBT+1djj6bE1sSe/5/pCPFK/KnXpZKJVlxOG9vVD52i6Q3d+Rs9h8gPMQ8Tz5MnzzuCYn5W66zCsFEhU0oIR+w3zjpEsQBoxUSGXsYI6shsSlIJJ0uQ2gJXqYznrJ3o3OpPuOfoi+JTVrYGqJfpw2Zd+pUSZor5UauLX+VW9o/ydeFz+iWN+OY5k05xbxuuRgTQji1L21kQGqiDxMpT69vZ67GA888GmUsQ86sZn61qXDqXWhChiYk6lMN43+yjGl8xWIuP20t4nRWkg7E5zPsiqUBtHPzFCY5CwQwNBsdWPzOz0+jRVQDzx5pVlixREISNTELsEDSQoYzMampgPrlelIh4YErf7gawd+uk6vQy4ttu76b71rFXCeJ7frOuFfbUM8B62OpYvuZcJlmE97dgU+XNVX2njgf3Bq8u/qbXsNTbJlWvakJELSAk0U9XGqydcdUDbmYQtMDIURIdlQG92GNFe+urTZ/v9St/0LX/A+Bed0CIhxz8ppA6otrh+AoJzwQtZOJIp71zYpgBSod4Tsu8JWHzT7ufU3dLEnGuQrZlfHDL1uyEQIT1vM2HZgGwzUnKz1Oxcr5Mj/IdCGApsnysSyDUWwwYHvYMjkqdS2sH9xhMffS8MbMA/xG1MP2oERxXIpwwQtxjOYbLdZ+/PXGZ7M9
+ adZbOxtE
+ 0lyjdQAry0YPWXqB3ib3pL8tdZ0tPgjGQ/4pLHdp0YSfiIVdUjZRyymnFMIEZbZc3H9sGNlAPdbZ5Vq/ldqlc8GpNKDUmq5Ozzq2dRcKt27AT+u5Rd/w8CFe1dmZpwaesD9/r0SCVHqwifKpLh0EbQ+ztdrm4VgZIvRkxjQYNUKLC0Sc0Ya2SPJORlHYmjNmwrfM/72mcfbK8QDu8Qp/9Bj9jM6aBV+Xme0qya2czKplZmCiO3j3NF6tT0E4A462y9Z6hrRwJJJBtMWCofmY2A0qyxJCMaT+nueEgqZgRq2nXh/iDGmReXY+QSmn9gTNhIxTKAWDzi1vWE1cqn4ud/7V9v2g7Z2tqAdKuBkx11iuroAM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,17 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Oct 2025 10:32:17 -0400 Zi Yan <ziy@nvidia.com> wrote:
+On Wed, 15 Oct 2025 22:22:36 -0300 Pedro Demarchi Gomes <pedrodemargomes@gmail.com> wrote:
 
-> > Do we want to cc stable?
+> Currently, scan_get_next_rmap_item() walks every page address in a VMA
+> to locate mergeable pages. This becomes highly inefficient when scanning
+> large virtual memory areas that contain mostly unmapped regions.
 > 
-> This only triggers a warning, so I am inclined not to.
-> But some config decides to crash on kernel warnings. If anyone thinks
-> it is worth ccing stable, please let me know.
+> This patch replaces the per-address lookup with a range walk using
+> walk_page_range(). The range walker allows KSM to skip over entire
+> unmapped holes in a VMA, avoiding unnecessary lookups.
+> This problem was previously discussed in [1].
+> 
+> ...
+>
+> Reported-by: craftfever <craftfever@airmail.cc>
+> Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
 
-Yes please.  Kernel warnings are pretty serious and I do like to fix
-them in -stable when possible.
+Is Fixes: b1d3e9bbccb4 ("mm/ksm: convert scan_get_next_rmap_item() from
+follow_page() to folio_walk") appropriate?  
 
-That means this patch will have a different routing and priority than
-the other two so please split the warning fix out from the series.
+The problem which is being addressed seems pretty serious.  What do
+people think about proposing a -stable backport of this fix?
+
+It would be better if this changelog were to describe the user-visible
+effects of the problem.  A copy-n-paste from
+https://bugzilla.kernel.org/show_bug.cgi?id=220599 would suffice.
 
