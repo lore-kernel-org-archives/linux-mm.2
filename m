@@ -4,123 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12D2CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:43:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B5DCCCD199
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:45:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0A598E0006; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
+	id D38988E000D; Thu, 16 Oct 2025 14:45:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBB188E0002; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
+	id D10BF8E0002; Thu, 16 Oct 2025 14:45:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0328E0006; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
+	id C25CD8E000D; Thu, 16 Oct 2025 14:45:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CB9708E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6878DC036F
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:43:51 +0000 (UTC)
-X-FDA: 84004851462.21.EE1E002
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 35DEE1C0013
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:43:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fwlfK2kx;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0A4D8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:45:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 367F6119E2F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:45:38 +0000 (UTC)
+X-FDA: 84004855956.23.EC16055
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 37D5620003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:45:35 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mq2aRMWt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=jannh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760640229;
+	s=arc-20220608; t=1760640336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
-	b=x/xPfonpqgfvlaUhsWvLCsqd/K/qRa9cgb61eKfyw1jbMX4ABrnXa+mFyywtOLMJDa+lNS
-	zxijoNXSE8yI6hWQqk0XCyV1JD1Ab3tkZZTUKb4z9PsSdWLYwDBBYx1Ob0itGHFssDYdJR
-	DF2hDk5rWYvfySsk1XauCpHJPJGtM14=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760640229; a=rsa-sha256;
+	bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
+	b=IwTy60goAYDiqR5WpAiTu5K9G4HwzjllWKxAOV92wptVkLrOwi+f95QsYZG72GLX+U0Ara
+	kC+9dxRsVjx05b7PUYOpbk0QBdsHpwBvIOhqz1UbzCEJpLzJb3r12qlbRjpzHNOwPGzk1Y
+	F1KNGglX8ObgqnWNAvuZGjgSAvhgkNk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760640336; a=rsa-sha256;
 	cv=none;
-	b=smZDyca+7zQu0eunRilcADu+/qf4PQce83l8kLGhlqtz+G8suJrMTUqSbDTBz6Y4mgoJSd
-	2d1ZL1eLCJQCz8CF0xVkf/hNbIC15qv3+8L3WqIeY+TJxQuFq4vVRtXJEjyFyapjMZNDIH
-	M8pmOM6PXQQdwle7AnVvpqDvvyYsW7I=
+	b=MpD3MNeXa5Is1RF2AVd75eo1Ys28TG3TzDoVqFvdecV82rgCBySWg2hEfKjSg9oEhDsNs+
+	M2HU6H7lBl5g6fLjqIXoOXIbK21HxXklsPdjlx85oDKdPzikEyIDtaTjdmgbE5Pxi4sYx3
+	H1lf3V2xWk/11ONhl9wvEBdJltg+6iU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fwlfK2kx;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-426fd62bfeaso490049f8f.2
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:43:48 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=mq2aRMWt;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of jannh@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=jannh@google.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63c167b70f9so1880a12.0
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1760640227; x=1761245027; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
-        b=fwlfK2kx8yDb3PoZWSAp3rjrSCsikHWId7ai8k4WkE5S8xR4ZAkfqRk4/OCSLzhFJT
-         XEUe050IyTsix55GLoBFi05dVzmPS8jDaEUA8snxYqC69SDFJwFcFCzrou7yJLluwVB4
-         +HLo8kSTakk913xH7XOGtwVngCVoEDBg+amXPh5a4LgHN7PLm2Nelc2dl0tkBqnaVn66
-         oQdpl0M7GyOK4PMt3ozocDY+NrnvuuPdB2proL26/U8lFiVBzXcbUNtStxnRUWuGOsT7
-         tfSCHHE0LHA8Dj5twmUE8YynPnCYWs6p2hLoD0LgAXA+IGtVR4dtdUwzIJJQ1CZrwhEm
-         7mHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760640227; x=1761245027;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1760640335; x=1761245135; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
-        b=sRGrUOXvv4NQWbUePlWZU1lwdMO0PPfUPDvYojda94G6LfGplEpayONSX3PGvEVlVY
-         9whDn8h3xS8koC8TbdJZdUq+wUrpnrfsTt6hdkyIc/X38Q/ScnjukqPzeJWQqhfCcazp
-         hAMS/mjJ7BJ891JZ/92YaboRWtjl+X20HsuZFQW7weCow0LbBCMkVjTbmHMH9iZWTdGA
-         KKYJpJz/LTKskdFBoAnhl0T8EtJW70CpF5TrmMgeoWTv30NwUsSZF3TrAmi5EXlM1cSl
-         GuYxJg7dKHShDAPPAfokyugqvYkoznJuQRVDKVwhOaNxN2dBY0nSpE9AAXVAlhOPBdM7
-         VX1A==
-X-Gm-Message-State: AOJu0Yxqn1EGPN3DpDkFqvq992SzOUeVM9rYC0Ke8xGoooP3G0mbJWoL
-	okJjsNt92bFZielE5VhjAxlg52IgJ5LuSB0VG3TSR2GA5Wq6RwTGkmeISXt5ankcqow=
-X-Gm-Gg: ASbGncs3Tf28/jlH0nXHA7wm4dE9I96YmLwOBjMYB6wpT23bogRm+OKmgHCuZGsAJj7
-	c5spa3gmQtikUaSZq6uVv6IuWWmvQM/lXB8a4MFSKihzQ77Y1yljxu0DRA+acd44Y+SIk4+pAtE
-	nWoQSb51NqYAIskcRv2j3uXEIrHM+bEHiL0LjfSCUY9x+OXQHGorGa9FxbH0S+i7gDPp4tNk71r
-	X0EM0kJ7EDslnR174C92hzSw5TbwJyj3uLl4GInvHjxHh8xYqhZWj31Bk1XZ7t5vgcHQhbcPtjG
-	1TakhNhRCIQ0MabCO1gg6uQO4RfWm5Hne99mCfFVzTfyDXuNuFUonTL07BEN65dZPklM78Kvakw
-	S4t8AovLyC/D5qSRe4AlWqRM9PNOiOG4+JXYJLucfyQOt42GaZnQYLbAaxmfxqlXxYtShY1feMv
-	fhJOnY30MA0hs=
-X-Google-Smtp-Source: AGHT+IGo6y5lk13djMjMMq4R3viE+pYB2nSrAPV8y+Kp8nAdZ4R6ve9ypzaXAl0LPNYCFR1kJAQtiw==
-X-Received: by 2002:a05:6000:250d:b0:3fd:eb15:77a with SMTP id ffacd0b85a97d-42704d143e3mr765616f8f.6.1760640227495;
-        Thu, 16 Oct 2025 11:43:47 -0700 (PDT)
-Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471144b5d48sm41689115e9.9.2025.10.16.11.43.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 11:43:47 -0700 (PDT)
-Date: Thu, 16 Oct 2025 20:43:45 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/vmscan: Add retry logic for cgroups with
- memory.low in kswapd
-Message-ID: <aPE84XfToVH4eAbs@tiehlicka>
-References: <20251014081850.65379-1-jiayuan.chen@linux.dev>
- <aO4Y35l12Cav-xr4@tiehlicka>
- <a6cd4eb712f3b9f8898e9a2e511b397e8dc397fc@linux.dev>
- <aPEGDwiA_LhuLZmX@tiehlicka>
- <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
+        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
+        b=mq2aRMWtc0Q0pkWFCgG2/tZ6GK7DvBdZlOeuRZHMDfEllg9UoKOle0gQ2mTtedw6QZ
+         IWjJsIoSDEqKrr+SVi9/qO29MDTeDAOBYLaZePJY/WrP9BFyq8cFaxCchVrCcrsDGdep
+         fVqzMa9PUfSVpDhqviYIiD86vLyaF2GeHpGSSFQXYmzuAPDSkmVWmlOWsXW/2ULkw4Bp
+         bSKSPQgjNMaQZSjzwOT0kLMU8RVUqRGKuEbLbtKLbFN8cQCfDMlZPpPvBG5P9sMIE0dx
+         2AexTgQ9hil55x4GRoBWYb6MXBP4+/H8rIdPfDg0IzYNWy+yBPl59oAjz07G2UsF82Z2
+         FdYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760640335; x=1761245135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eKAdvV4xTE9n5qoKZxok1YZP3tAtC9BHXBT0bF0XgI4=;
+        b=bV8b2L5/rZcOsBbgBEE6vAfCiOqbX3SK35BjbSnwLZDju/Cs8h+gUoERAh98y4oJfZ
+         j8USsHX83Q9sCn5nXxshDw2YnvJ+PEQvVxPwaNB5k2L7ljD4SaPk99I1kvmhcbdnmSxf
+         Wfaf2ZUEhhT1G8YmX8P8kgIbPRfEIzppsGghjP9oiXL6c97u6BHAmyQLBeUaoNsALcFg
+         2mrYgXIx1ocq5HLTeiHPXASA2XrEy3pfvwtmjft+iDDpcg/Ylqd0vnDaQRuwwzKLFjhh
+         EsGlNxOGraW+B9Aa+aCkHDYrtyXwoOS3OCS3I3rbFJIrUPMBDOCTV61DUgGvsxTpj53s
+         kodQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHenr6jK1aerDLyh8vVoY9X63QLfOfbt9DjoVGIyxD4gJ8Py3+uDy+GIOHL1cJsMTS88b6enJGSw==@kvack.org
+X-Gm-Message-State: AOJu0Yzzi0G+f9dKy5DbVBkbr3vh289133lHCwcBDgczat8X8HEvsqiM
+	pXaV9h7TcdsWoZ9KtuUOE8Jqd+MKPh1MpMfelgrUruHEg+eMN8H1nAnVJyMVV7crRtMWXlEsk5R
+	l0m2m2kHM0IeQDBIY0XwtbioHXN7FsOZIseSUo2aG
+X-Gm-Gg: ASbGncvo0B/bMmkQOK4wR0CaHyFUgepZlec+XrgbZidDuHGfvdZRa0jZ3sbjVySUsEC
+	8RTGFClsKxm7kdSHe2N8mTS5rcBTq4qb5Zb/qVZniTrPElvJZ797FMBCqV2+jVWYj7cOG7qWJAZ
+	fYLEinmGKowOPIF/f5h1GYsn/dDi7a07Kz8mN7QEiMlyyjqnUijAwuE0eryh+wLHCJ7sci7r3BO
+	2CPkXJyQJhF+NnMsLLNF0YaWGzVJjmRn+ajj+X4rBb94fhFd3gqZaR0H1+gt/2w3McnkfaCoejN
+	KUj5mnwJ+/+rfAi1BXGEZjW95Q==
+X-Google-Smtp-Source: AGHT+IHMU7eVzIIxanU4159bOcDF3YZy3khy4dytu3X9pooQwOC3RvBQR6FnIdRDKA1rp6F4oJCjxXDvC7z56ZeUki0=
+X-Received: by 2002:a50:ed13:0:b0:62f:c78f:d0d4 with SMTP id
+ 4fb4d7f45d1cf-63bebfe1112mr244762a12.6.1760640334407; Thu, 16 Oct 2025
+ 11:45:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
+References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+In-Reply-To: <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 16 Oct 2025 20:44:57 +0200
+X-Gm-Features: AS18NWAPtIHsIZ0KkjzqmIc9gow3CG1PS8LMsfQSH4RUrDyio7sggwn916JOBbk
+Message-ID: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: David Hildenbrand <david@redhat.com>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"trix@redhat.com" <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, 
+	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"muchun.song@linux.dev" <muchun.song@linux.dev>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Stat-Signature: uyietgetiagoodwoakem1shuhug81but
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 35DEE1C0013
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 18khny3obrr5swheygs5mtn5i35a6ygp
-X-HE-Tag: 1760640228-531403
-X-HE-Meta: U2FsdGVkX1+xbmxJfSWe/vpv6JhdWMv/SFkB5qD7fjEvCAJ7NiG7lfn6Zi3KGNRgtfbsNrN+Ry7BpeoywBHDVM3/OHtPfjh2D0LF0R5sdH488auv91Y/KQz0QnkVz5SX0RAjZ4OLXulnZ74q3M9Nif4LruP/EtAyevCC+Px51FCvOz+re1sE2BI8Hx8TX7XXobyqNztV75d7Zj0odJU6OJ8KTTd71d9ZZ+qGO3a5GvKlLu3OqSE3wlRBp2O0ShB+HktchAlKNPo2i2xqVATGU+wGYpCSfuQJg8C1DI5TGm0mXxsUCjvF1HXgQn3R2lUJ2ZvwNrCUhF8xpPEcv1Duq4+lkA6B8KyEhpb0h7fFJh7xedI9SGtl5yJ8KaJbBStJzQMzbpg94oBy6YwhK9nLkl5Fggeyfg4nZblGXTCvOfbWGcNkfrSWQnFYaiAlTh7C+1WL8NmioIgh9/IXxfezYfrLZd5Y1Zliq6phiPLBkuZQVurkuspM4aAgcIDvUvRhAGaR3elnt6gVpkuOLKlRT/gk4/AmCR40D1Ncx+JR23RFAfNDVMovRI1RLBQv4ZFAFGknS12VXXB4iCbETnJSVBUqAzdTHlL+rsTCPYZtSbhh+43Z1bSFnC5Q2cp4k/qJhfdPkXHS+qS5vb2+Xvdr3HZOSLCw+oabXcTKuriPY6IGSx+Mqnh9KF6wccU6ZowCQ85GeSWjpzi7XCqDlanwlmU0YELLwTsYlNRYiP1sclDbf27GC/imzdSJQW56lYBIxuxomBJeZMAS1rZmr75qa+uoLpZmgr3HB+S0n5AJddvbWSr8ofmWHwcYWHrsvkN4LjSGVO31QVlcYUqVQhbdCJbQSfA2dn3Ws7652uDZFcu5C9cwMrV2X1EONCqfzJ6M5xzXORnxe84t5zTgSzCp5H0mIfll7F8ItwYNuv83IfoqlpieRo0RKSbG1+INQ4ElOdTD849vPbgT2gwGLC3
- ovysSxq3
- gOlr01DQa9a4VULr0+vQfurGbBid20yt/R6YB7UnagERd5hmIDQPk/fOQEQW9PUZ8BDhbFc9c5kAnfShCb2ZNPaFaUiSWYCicsx96uOUTO8fJC4r0QuA0xWrXXYJtqrNUz3aLX6Bco0RgN62RNUysxSHergTvGjxNn0/uYwV3lX6TAzLWI1yBynWenfHv4zkAF+ytaM9NrQNxzxhwj3PqFfduj6eAhhPgxh0uruoxajIQk5Bgi3DmrODEBjccOQOAZFpIt25a1Cm6p1U/uLkRdgVC8Pby4rubyykJ1vlTplbRFDhj8FKOLEXN1QBmIzX0PIBR
+X-Rspamd-Queue-Id: 37D5620003
+X-HE-Tag: 1760640335-722776
+X-HE-Meta: U2FsdGVkX195QBrieINTdqTjc5KjectvQ/eBRznu5fIWG8m+eyG2Ngjuzx9/ajni25lkgniQZFafp/KGZJV58fMx0LEuSNE99nrsPe2Y2wA4jHRxVGskQ/ibSImmIR+Ll1d/+mGNyO/gyvkQUj0Uqht7yYZynT3QFFZouF/uzUAgHfgpYaOa0SWxdKr5zc34+17uCG3e3v/TcNK4OxRbLGv2AH7w/Vsm0xrnBeGJqCV+xhCFsQcTCDg4UmW7tNL7BWXi8JTtI9DNQ6XPcSrlq0+MXMwIOI4bO75uzmfttkGB+PxEyfzhN3rOqq4qJp8QfZvtZeoDkaRXY3dqY1tgQI+KeO1a9xD7xHrXPHOxfCXe7nKxmHf3bd2BWA8dfbOEgTjo9O9NMBnswkS80S8QSai25XWHvLdpIbpEWQ4645IhtOBYByZLPxrhDB3/+Qo1e1AimN8yhwN7wvQuxO62bl+hG/gscPXBfpZju12UZh12fxqL/h9f3/Fu35dFNpKVqqP7IGF9zALsYsOGQTOYc3i/M7APmg7Zw/2ela9nha98hom3aaB/aIGy+6xJFO8Kerdy9Wyy8uWh9JC/H9e2S7p5xj1CnpoRyaBnqHVM/UTIa2rgB+x39vPeqvZXnbqJ/6MbeLuASiF0UgKUs7+E5pzU2MiUiDNKYTO3QcH3c77IhHTr8lts6iHWfAPlULqx6p/OgXbDkdNdhkfuqRquRVrKt9EZgFGuLTSauSymih7Ju90x+5KrmDuRH6zICmu+7rh0RetIVbp4ep8t9MbhNtfF76R6bQfOk+yPABj3mvife+/gcrsH8qG3eLwgH6+nchtCcHj5sRCBdYOrOl+/tFqPNxnGvhfHIE+V+nPy0n9BJ3ENziczGW3pgXIkI6mpgjk0Mj061s9LT27CFisEUUgzif591uBl4Bzrq6yhT8EEGkQppyO2IBDtJnOMVTd2s5WYy37vPQb09jsPsYE
+ JDtMQulb
+ EFUVhj8wxgg2LF9rrNhprWgD20lBolSLQmbBK1nX0MPe4t4Ex7HIepjJFKblnMKfGHFnXSdoGeK/A4FnuA5aHK8gkREikBIkLdxRtAatttETz9ZFzjyezGxlkMyIvLxzrcjr24mI740btTAAXytg39BO75s+CkHXm8j3PslIEElz9sAw0JY8VlBJP5iDWqaQRCR+TyfgyHByVwmfiDd82AMXC1ghm0EJJtfRKaJASeTyZRZbZHot+S6SW4J2/bm2zGPs7lMR+woVYU8sdfwpQRZ1Esc9WNSmhJfzXZQqG/CE+rAXY2m0Qfd/G5Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,26 +124,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 16-10-25 15:10:31, Jiayuan Chen wrote:
-[...]
-> The issue we encountered is that since the watermark_boost parameter is enabled by
-> default, it causes kswapd to be woken up even when memory watermarks are still relatively
-> high. Due to rapid consecutive wake-ups, kswapd_failures eventually reaches MAX_RECLAIM_RETRIES,
-> causing kswapd to stop running, which ultimately triggers direct memory reclaim.
+On Thu, Oct 9, 2025 at 9:40=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
+> On 01.09.25 12:58, Jann Horn wrote:
+> > Hi!
+> >
+> > On Fri, Aug 29, 2025 at 4:30=E2=80=AFPM Uschakow, Stanislav <suschako@a=
+mazon.de> wrote:
+> >> We have observed a huge latency increase using `fork()` after ingestin=
+g the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hugetl=
+b: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5TB o=
+f memory with 196 cores, we identified mmapping of 1.2TB of shared memory a=
+nd forking itself dozens or hundreds of times we see a increase of executio=
+n times of a factor of 4. The reproducer is at the end of the email.
+> >
+> > Yeah, every 1G virtual address range you unshare on unmap will do an
+> > extra synchronous IPI broadcast to all CPU cores, so it's not very
+> > surprising that doing this would be a bit slow on a machine with 196
+> > cores.
+> >
+> >> My observation/assumption is:
+> >>
+> >> each child touches 100 random pages and despawns
+> >> on each despawn `huge_pmd_unshare()` is called
+> >> each call to `huge_pmd_unshare()` syncrhonizes all threads using `tlb_=
+remove_table_sync_one()` leading to the regression
+> >
+> > Yeah, makes sense that that'd be slow.
+> >
+> > There are probably several ways this could be optimized - like maybe
+> > changing tlb_remove_table_sync_one() to rely on the MM's cpumask
+> > (though that would require thinking about whether this interacts with
+> > remote MM access somehow), or batching the refcount drops for hugetlb
+> > shared page tables through something like struct mmu_gather, or doing
+> > something special for the unmap path, or changing the semantics of
+> > hugetlb page tables such that they can never turn into normal page
+> > tables again. However, I'm not planning to work on optimizing this.
 >
-> I believe we should choose another approach that avoids breaking the memory.low semantics.
-> Specifically, in cases where kswapd is woken up due to watermark_boost, we should bypass the
-> logic that increments kswapd_failures.
+> I'm currently looking at the fix and what sticks out is "Fix it with an
+> explicit broadcast IPI through tlb_remove_table_sync_one()".
+>
+> (I don't understand how the page table can be used for "normal,
+> non-hugetlb". I could only see how it is used for the remaining user for
+> hugetlb stuff, but that's different question)
 
-yes, this seems like unintended side effect of the implementation. Seems
-like a rare problem as low limits would have to be configured very close
-to kswapd watermarks. My assumption has always been that low limits are
-not getting very close to watermarks because that makes any reclaim very
-hard and configuration rather unstable but you might have a very good
-reason to configure the memory protection that way. It would definitely
-help to describe your specific setup with rationale so that we can look
-into that closer.
--- 
-Michal Hocko
-SUSE Labs
+If I remember correctly:
+When a hugetlb shared page table drops to refcount 1, it turns into a
+normal page table. If you then afterwards split the hugetlb VMA, unmap
+one half of it, and place a new unrelated VMA in its place, the same
+page table will be reused for PTEs of this new unrelated VMA.
+
+So the scenario would be:
+
+1. Initially, we have a hugetlb shared page table covering 1G of
+address space which maps hugetlb 2M pages, which is used by two
+hugetlb VMAs in different processes (processes P1 and P2).
+2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
+walks down through the PUD entry that points to the shared page table,
+then when it reaches the loop in gup_fast_pmd_range() gets interrupted
+for a while by an NMI or preempted by the hypervisor or something.
+3. P2 removes its VMA, and the hugetlb shared page table effectively
+becomes a normal page table in P1.
+4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
+leaving two VMAs VMA1 and VMA2.
+5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
+example an anonymous private VMA.
+6. P1 populates VMA3 with page table entries.
+7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
+uses the new PMD/PTE entries created for VMA3.
+
+> How does the fix work when an architecture does not issue IPIs for TLB
+> shootdown? To handle gup-fast on these architectures, we use RCU.
+
+gup-fast disables interrupts, which synchronizes against both RCU and IPI.
+
+> So I'm wondering whether we use RCU somehow.
+>
+> But note that in gup_fast_pte_range(), we are validating whether the PMD
+> changed:
+>
+> if (unlikely(pmd_val(pmd) !=3D pmd_val(*pmdp)) ||
+>      unlikely(pte_val(pte) !=3D pte_val(ptep_get(ptep)))) {
+>         gup_put_folio(folio, 1, flags);
+>         goto pte_unmap;
+> }
+>
+>
+> So in case the page table got reused in the meantime, we should just
+> back off and be fine, right?
+
+The shared page table is mapped with a PUD entry, and we don't check
+whether the PUD entry changed here.
 
