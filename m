@@ -4,124 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6DF1CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 22:33:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15864CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 23:01:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6FA68E000A; Thu, 16 Oct 2025 18:33:22 -0400 (EDT)
+	id 0CA2B8E000D; Thu, 16 Oct 2025 19:01:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46F68E0006; Thu, 16 Oct 2025 18:33:22 -0400 (EDT)
+	id 0A20E8E0006; Thu, 16 Oct 2025 19:01:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D36308E000A; Thu, 16 Oct 2025 18:33:22 -0400 (EDT)
+	id F20D38E000D; Thu, 16 Oct 2025 19:01:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD7DE8E0006
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:33:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97902140212
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 22:33:22 +0000 (UTC)
-X-FDA: 84005429844.20.DF46637
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9AA311C000B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 22:33:20 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=PfIEh2X+;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
-	spf=pass (imf18.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=david@fromorbit.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760654000; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DD0328E0006
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:01:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B8EE160419
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:01:13 +0000 (UTC)
+X-FDA: 84005500026.29.A1A05B8
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 943B6100018
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:01:09 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F81fm32C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760655671; a=rsa-sha256;
 	cv=none;
-	b=rw5HjjT1CfJs4Hg8gmPZfLh2YHmBhFSWcxgpWp1xoOI/vIWmIRiHCDZ7BmQzslGwpGv7V3
-	VDX3ODEW+jFZsxlQhBLgY+vXHWKSz/3GYcQDhQqERik9GAFs6c8jtPB+710gA4/Qg8GcVx
-	sy6Q4Q26YXf7fc/kQMlbKdREZ7iIHh8=
+	b=kxvKFL01ZTz+ZrEJKyMuMwWlRu7i8MmbU8IZ9F0IvSC2yEz4maNDXpqsToTcYPaLIbrqFf
+	tQ3lcVzozooPKctfnAajXAydkZcQjpTHwIWtsnXPBSvF9qc5e4YhZqAD3TrNPRcklF7oA0
+	qXXGKBJxvJd0Y92YukgpAtb+cJi+as4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=PfIEh2X+;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
-	spf=pass (imf18.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=david@fromorbit.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=F81fm32C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760654000;
+	s=arc-20220608; t=1760655671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cyHszjXwr011mdavyBxcCiQ2SmN5DwUbyqKyrEqEbK8=;
-	b=KAC98c4x+KW/fQ+61SQTou/k3y5zacrlZVtQ+l46tS8Xviosy3oFTX+cILfPtfSE7LEyE0
-	OCDizrTJI4rvAWgNZd09pNum4+wBp7p+VjvA2cZI4WWnq+esEGuRMFHQat6o00iqjw8Zqg
-	tORNrzlRlB3LFxshp30IHB90hnja6eQ=
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b62fcddfa21so814841a12.1
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 15:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1760653999; x=1761258799; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cyHszjXwr011mdavyBxcCiQ2SmN5DwUbyqKyrEqEbK8=;
-        b=PfIEh2X+mHljDUgEneXaQNvW/wwITzb7kelS/zxkGjUSryEirWuLYYvRosPtQqP9Dl
-         iuRG8nXozAt6zD7wy/Rp0unFGZn2A9weV1jX25XY3IFpgScs6CoaEvsJWnWPgcPRWIah
-         AgoVCttqX4ffTyhuqdH+RpRi9HLpxvgniyrdSMH8SeYLXKpa9fie2MQDGiMVzq6GskvL
-         gcRoPremNzxK6zAmWfzzk956uaqjtdy65wIS+KuAEA4ogoSnTwT8eZBIJWrdAxzyI4Un
-         /pSIw5ecqBqOqpYFdVbuoGZVjm2YuELBkn9CgB55AbuxJn1Kp8MBYWLwANPSSrgIW8Xl
-         4Ffw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760653999; x=1761258799;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cyHszjXwr011mdavyBxcCiQ2SmN5DwUbyqKyrEqEbK8=;
-        b=CrCltvaeT6MXhL5jgqQNYOS8vzY6VoPkEM7QSm7dh5K2dXlBWTqvte7b7461NHSG9h
-         Ozp1sHjY6SCK1qJ1D3ZeVg085X8dAkvX+a613l4B84zBs1J/76fCaO9HxQHkt2dbsPtf
-         OsO5B0Un1Ee2v1+r1dg5s+BYX9wI8kCcDWqBLNa47oowRf9ExVAd979KcKjofwgDsTFm
-         +Q8zA3fsppuPur+Y8D+yx2VeiM9h/RwiW+TH4+BqfO3nrHLUw4WCazrdlf2vUdpsLBvN
-         mS2+/3JL2Ain/5DBdm9fCKAiVQ6uCB3Dru+99S+tJkiyz5QIeT0wIQ5wZNiDCHkEhkqx
-         OEDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtuwxTFfD71WSB9Hgo2TXL4orqGp0CbENBbJNsAnHsX0xZa1gRjj/tfCh9yegezImLC/90frrqkQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz7Tt3cFgg9Iy/fTMDlOhidltBWSrwK4cwObKkSId1ajoE42yze
-	Xzgzgtdy8Ofl8jadaLPnkh33F0WkFXJpUMROmpU0Ts56ZNbGxdj8r9q4+JbUzYiDrDo=
-X-Gm-Gg: ASbGncuSSLyTvPRkvpMJx/+VOryrML3CztHgkYwXOVzV/g0Ln2MUm1UMzpkR4+oPGiN
-	5AqncJ+JfXOK/Kh4ayLIi7qqwpN5yOok5ORiP1c717yOop8+NnHhCtKAzpNP4MAXJExXemXJqTj
-	4LT4WaUAwWYkzcb2GNYSQCRxzgh5S+r3YO5VBtTYk2cpN38A+0gIfPZxvVFHBeGm8NMuOjzSD/V
-	RUQaeUshWvwK+uibNsR9aqhu9apGym25QIQElI1GozHmsATkcUxTuMWBf1rNk43ykOXwQK0rgRx
-	UBAfv6gFbMIoA/MYWS53or9NNi9WdsuB0lEDWbLkMD/3QMPMdQ+T6zlmo0xoTAOQTY47rX30EA/
-	7atucfmbPb6xp9Skv+QdfivSxE5w2r5U3GaNf1f/O7ANGphKfGPRvNPSIPZO4sNnjbgVMzWWBE3
-	NebqVY1OicHKJi6YZCWXsBfJ3k5PMPHZw2vRt8myrp+Asksp2SlreKrl/0GzVDzg==
-X-Google-Smtp-Source: AGHT+IHA0ri7OHJpZ/4Fd97oTXQUCyc/5am6RLXoYkFT5WMoFCFwAYWAWovMfIuEjWrsvgSaZLmzvA==
-X-Received: by 2002:a17:902:f70b:b0:267:af07:6528 with SMTP id d9443c01a7336-290caf83079mr16312385ad.35.1760653999244;
-        Thu, 16 Oct 2025 15:33:19 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992b060c4esm23661111b3a.14.2025.10.16.15.33.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 15:33:18 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1v9WX5-0000000FmFe-2Hry;
-	Fri, 17 Oct 2025 09:33:15 +1100
-Date: Fri, 17 Oct 2025 09:33:15 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>,
-	akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	xfs <linux-xfs@vger.kernel.org>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Message-ID: <aPFyqwdv1prLXw5I@dread.disaster.area>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
- <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
- <20251015175726.GC6188@frogsfrogsfrogs>
- <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
+	bh=6lnf0SlVNBa1MHaoQqJyDwakLfgUyXqJdGj6LGOIvyI=;
+	b=SrzDp35RO+pj+Ea7zJ2DlXlXbHLMgMuxM0bHVyu3CEDgAbBk8z7+nkBvcJTD91N3dKk2Va
+	lAP4WdkJNkdGoow/Rrz49uSyZz42SKShUov0ecXh2NjOv2NRrCYI1PfGrINRZ206ULmPvC
+	Zk2xyhSQ7fHVIMUkP5Uo/yo61BO/Tgw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760655667;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6lnf0SlVNBa1MHaoQqJyDwakLfgUyXqJdGj6LGOIvyI=;
+	b=F81fm32Cy9ymkg8hRJwfUSBZlIddtx0rrYIvKNcMyGg30wqq+TDhJUAppy/zpkfR7sFmUK
+	BzJxiPuQqKecd1ogb3moIZcub+cle2Sxur8YuNi1pZq//SzlgI1qC6Sn5lbVo6FSMWjAnW
+	y/NyoB4mkR2VXNeGoRNPM9pqofHXBpU=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: JP Kobryn <inwardvessel@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,  andrii@kernel.org,
+  ast@kernel.org,  mkoutny@suse.com,  yosryahmed@google.com,
+  hannes@cmpxchg.org,  tj@kernel.org,  akpm@linux-foundation.org,
+  linux-kernel@vger.kernel.org,  cgroups@vger.kernel.org,
+  linux-mm@kvack.org,  bpf@vger.kernel.org,  kernel-team@meta.com,
+  mhocko@kernel.org,  muchun.song@linux.dev
+Subject: Re: [PATCH v2 0/2] memcg: reading memcg stats more efficiently
+In-Reply-To: <2fa573e6-bd9a-46b9-a2a6-bfb233d0389a@gmail.com> (JP Kobryn's
+	message of "Thu, 16 Oct 2025 13:26:44 -0700")
+References: <20251015190813.80163-1-inwardvessel@gmail.com>
+	<uxpsukgoj5y4ex2sj57ujxxcnu7siez2hslf7ftoy6liifv6v5@jzehpby6h2ps>
+	<e102f50a-efa5-49b9-927a-506b7353bac0@gmail.com>
+	<87wm4v7isj.fsf@linux.dev>
+	<2fa573e6-bd9a-46b9-a2a6-bfb233d0389a@gmail.com>
+Date: Thu, 16 Oct 2025 16:00:58 -0700
+Message-ID: <87frbimoyd.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ju98coyda9qshqig7fg4j7u8wqhnd9tz
+X-Rspamd-Queue-Id: 943B6100018
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9AA311C000B
-X-Stat-Signature: 8hxiatzynp78gfd3s35gyhzjmich47pk
-X-HE-Tag: 1760654000-8420
-X-HE-Meta: U2FsdGVkX18RObIz8Mf921T1zKglhrgovVx5Inj1fPPWR0r9a9HzBLT3lm9P3eOr8tVXFpXbfiYGmWMvBbCeXwwjlca+9xoZ5YPfOo2M22ur0KWNo1/exWaO6UaVXNJoujFgK4Ub1n47JpBgN20uHJ/lOc+2x5Ka9Z5yI970uYqmA6wLraAjcq7n08IDIU4SWOcxyiFB0yLbpilLM/Cx8A1k5h6/vhOB47yd4l1lQYRpoWMhcJ6qn6CrDpdIU0V5kwiMH58+cqDKHXA6Otg7k2RPoE8Ztu8PVpraKBXVw4B7gPPloXOF1h1IvVk1YdlvqkXkd6p6pvytMSRp8khypWWdyQEiklD0ugDQ9k+DLCMCWaZHb0VKTz1joXsCQ4zekBJu6DfTmecMHAPbbd+pu+gDfGXxiex+1LpLJ5bvn821RGLD67cgjrmpL3iVzKdRCsOux6vrqoNce9EAOw4qb1RcRK9jzKtsXSXj37ZULktC67j5OEGgxT3fzVF/bCV204IrQOFvVCkpPnJjwWUt4ZWt30DLkVOwlm9m2hcBKJJQEsdfvEhPAmEK+fLWzFjOCJQJLXx9Sl4ZewL4Tia48USYPKonKO2gTbwykXk06mQH+oCoKhNZw/FbJyMiXBTAsX6wOv2JEGJAIPDiRfMqyfhv0VozzZ2Q/edy+nRG5FNi7CBXV4ySmuS6bVHvwjnknlcBAqQ3RvawzAk9ayOsg12z8ojGJRH2wEGy6aAXZwamRBaPZVa41bqJsUrhfmh6lRCd47Fw1h/INOzu2bElaGWEb+yLtmeNan3uAGCPmfUFoeSIyTPICDi6zf2iNVJOBj1G4V9G5Lp3NlhOXGYrY0lgkq2/Fe9F8uxOmksRObcDifjL4Ni2tT3ytEDrhUOQObXLmrN74PDrn4Oun6rC32LDHyMsowcHzpjcLL2gSX2ZWyKrQl1nvjSmxrQlQfSZqiv2nsLXal07OxqXL7Q
- n5lTlrh/
- 7d3N0aPSQ9dE6f3aR785vs7bMfaLM5Sako/MhfS6GiR3CcOae13GIAxHFcO0J52juJs/L1KDIUWDYizZbCecnicZMPaxe3CNyPW1BxNjPU2Ehp/F6T/Qdl9NEf5Nn7PXGSraQGGfunvOZy7M3oQeEJ5SyvO3L3Y3ZGz4tWnXc8gtsAdymbskhDmchD8QSqT+n6ixH3Dl4p5LVU5MxBGV2p9rk23eTrw8/5cJR4RGJrKPpoL3L76Vc4xIk5tOFxrSdwP24UG3goNNLOspyCWscgKrWtHOMZOmwKojcAJyRAV9r8guBxVnTA9cH5yv6nv+A31eF/xn64iW4xs417fzMY+vsu5SAKWL5z0H+g3GXoIC/GJj9VMBKtWEW/rIc4LQxAtf0tLn8EzmH3ch2WctfAu04HHoGNkRPKV6ssflXXcAotlQF2euf/UcX51yxN7pMpuwQzU3nzISh3yc=
+X-HE-Tag: 1760655669-230552
+X-HE-Meta: U2FsdGVkX18/fpmNAjJX4EYNKmpdvBRzc7vdtOtbNH4S5zP5N5HIaWh/kH/XuADc+le8ebEgEAHujejDTxCoTdLi2nu7SwAaUN/SZQxwltw6eYiTrjMgVaxOeOdeNDr6sJ+kyNpJTwEI5MGnhP8jPlNtr8TIo9h2/JiL82mJLPgtIlEMgf9F6QXUrD5paQBeD1rzbwUaMUuRyNM+sCPuDSzkX5G4+AT9m1IJSUCVo7p4ZPjg49jj8UIiEKvWRD5zvdille4ncAkK8Mb9OKylF/gkfHyfvAgdo9Z4R/R24l7AKNQrl1AQJLHus4mNID71i8YHcjRZcUNrqaPtbsDdmxUTD7EBIOIa1kKcgw63KGHZp5VsiusduQMLEi75viWnzEs73eJh3pbdiohEZMm6oJWRlKhXWQ/mugtCQDBitLIwt4vFg4HkipmrWtvrQG4Ov2aYBSJvBVh1XhrLsNDqFgyNjvbm7pSsyE30HkWGsiJ9SZL9v90O/oBn06jmBsITB8J/lt3tTiakpMpcBD2S4qn7RUVcnFkQp85NF+/KLEUCH6fMj+NQ79ezz9lbTBRUWMF5hdBy2clbZnjzqmMYymZOOxr/eMry+gHEBTi0Q2gwoWMnXftVDSzxEdTCKHy8F1B9yAYF0ZBI4Dl/zI6ot7O5dMh4WjvwpeJwmPPmPpRjpgH+x215f+jmU9/+0G0Z0t7SlVwXKSbyvQKRF6LgXrF6x3ndar7RYMv4D7Hi38ksBu1ZHgDLVNKbKbaddoI9AD7/q2oK8S9xCO7hvxNmc4dDGshxo8VOBhifisiqYbM1piMzO6UI7V6aD9lucb2/0pfpsV5YDKIYZmiKlogIvjIkfyAP2lBpAWIYrnbZMWYCBnSPNO5KlKN6BT1sfoctVSB4D+qYPin2i2iWe7W42qelY0rctLPAmImifpf8EnSBXNrcDfmanlQ6ju3LMrSKtpW60DNhaAwqJ7rHbVr
+ cMaRPayB
+ 51FIWbtY2loNAFqDCg5GqhUG/47NFIL+1HPUSh1D9jGBIRX67qRz8CdTJOUnBh/rKBwSQApi/VTZW5BHEkmUvT3kg4rGBSA2jzPj4A1gIOd2JQeRBgl/Ue5sWGd2JEXTtRyjVoFq3LUjBBUiwPIG/bvS8YitGpMmdR65LUVbJNQ9AWVc8E3m6/+79BRCQYX+C/fy+l4EQMwst0ApkIoYI+ntU2v1N+ElSgTEL38va47AAYbpEP2cr4iwe3Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,80 +95,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 16, 2025 at 11:22:00AM +0100, Kiryl Shutsemau wrote:
-> On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
-> > On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
-> > > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
-> > > > Hi there,
-> > > > 
-> > > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
-> > > > with the following:
-> > > > 
-> > > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
-> > > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
-> > > > @@ -1,2 +1,10 @@
-> > > >  QA output created by 749
-> > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > >  Silence is golden
-> > > > 
-> > > > This test creates small files of various sizes, maps the EOF block, and
-> > > > checks that you can read and write to the mmap'd page up to (but not
-> > > > beyond) the next page boundary.
-> > > > 
-> > > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
-> > > > folio to cache the entire fsblock containing EOF.  If EOF is in the
-> > > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
-> > > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
-> > > > to the second 4096 bytes should produce a SIGBUS.
-> > > 
-> > > Does anybody actually relies on this behaviour (beyond xfstests)?
-> > 
-> > Beats me, but the mmap manpage says:
-> ...
-> > POSIX 2024 says:
-> ...
-> > From both I would surmise that it's a reasonable expectation that you
-> > can't map basepages beyond EOF and have page faults on those pages
-> > succeed.
-> 
-> <Added folks form the commit that introduced generic/749>
-> 
-> Modern kernel with large folios blurs the line of what is the page.
-> 
-> I don't want play spec lawyer. Let's look at real workloads.
+JP Kobryn <inwardvessel@gmail.com> writes:
 
-Or, more importantly, consider the security-related implications of
-the change....
+> On 10/15/25 6:10 PM, Roman Gushchin wrote:
+>> JP Kobryn <inwardvessel@gmail.com> writes:
+>> 
+>>> On 10/15/25 1:46 PM, Shakeel Butt wrote:
+>>>> Cc memcg maintainers.
+>>>> On Wed, Oct 15, 2025 at 12:08:11PM -0700, JP Kobryn wrote:
+>>>>> When reading cgroup memory.stat files there is significant kernel overhead
+>>>>> in the formatting and encoding of numeric data into a string buffer. Beyond
+>>>>> that, the given user mode program must decode this data and possibly
+>>>>> perform filtering to obtain the desired stats. This process can be
+>>>>> expensive for programs that periodically sample this data over a large
+>>>>> enough fleet.
+>>>>>
+>>>>> As an alternative to reading memory.stat, introduce new kfuncs that allow
+>>>>> fetching specific memcg stats from within cgroup iterator based bpf
+>>>>> programs. This approach allows for numeric values to be transferred
+>>>>> directly from the kernel to user mode via the mapped memory of the bpf
+>>>>> program's elf data section. Reading stats this way effectively eliminates
+>>>>> the numeric conversion work needed to be performed in both kernel and user
+>>>>> mode. It also eliminates the need for filtering in a user mode program.
+>>>>> i.e. where reading memory.stat returns all stats, this new approach allows
+>>>>> returning only select stats.
+>> It seems like I've most of these functions implemented as part of
+>> bpfoom: https://lkml.org/lkml/2025/8/18/1403
+>> So I definitely find them useful. Would be nice to merge our
+>> efforts.
+>
+> Sounds great. I see in your series that you allow the kfuncs to accept
+> integers as item numbers. Would my approach of using typed enums work
+> for you? I wanted to take advantage of libbpf core so that the bpf
+> program could gracefully handle cases where a given enumerator is not
+> present in a given kernel version. I made use of this in the
+> selftests.
 
-> If there's anything that actually relies on this SIGBUS corner case,
-> let's see how we can fix the kernel. But it will cost some CPU cycles.
-> 
-> If it only broke syntactic test case, I'm inclined to say WONTFIX.
-> 
-> Any opinions?
+Good point, I'm going to change it in the next version, which I'm about
+to send out: tomorrow or early next week.
 
-Mapping beyond EOF ranges into userspace address spaces is a
-potential security risk. If there is ever a zeroing-beyond-EOF bug
-related to large folios (history tells us we are *guaranteed* to
-screw this up somewhere in future), then allowing mapping all the
-way to the end of the large folio could expose a -lot more- stale
-kernel data to userspace than just what the tail of a PAGE_SIZE
-faulted region would expose.
+> I'm planning on sending out a v3 so let me know if you would like to see
+> any alterations that would align with bpfoom.
 
-Hence allowing applications to successfully fault a (unpredictable)
-distance far beyond EOF because the page cache used a large folio
-spanning EOF seems, to me, to be a very undesirable behaviour to
-expose to userspace.
+I kinda prefer my version regarding taking a memcg argument instead of cgroup
+and also regarding naming. I also think it's safer to expose the
+rate-limited version of stats flushing function. But I do lack the
+node-level statistics (which I don't need)
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+If it's ok with you, maybe you can rebase your patches on top of my v2
+and I can include your patches in the series?
+
+Thanks!
 
