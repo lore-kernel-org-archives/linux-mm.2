@@ -4,90 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9563DCCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:02:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB64CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:08:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C01A98E001D; Thu, 16 Oct 2025 07:02:47 -0400 (EDT)
+	id EF32C8E0016; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8B438E0003; Thu, 16 Oct 2025 07:02:47 -0400 (EDT)
+	id EA2E38E0003; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A79FE8E001D; Thu, 16 Oct 2025 07:02:47 -0400 (EDT)
+	id D91978E0016; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 908318E0003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:02:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C29B98E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38C66C0298
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:02:47 +0000 (UTC)
-X-FDA: 84003689574.24.0DFB013
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 09A46A0016
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:02:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PVH3AjvB;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68F6F58359
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:07:59 +0000 (UTC)
+X-FDA: 84003702678.24.2322FC6
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2420CC0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:07:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="oI3KR1/Z";
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760612565;
+	s=arc-20220608; t=1760612877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YA8D5I96zsXRtdPpR5at9hJZuoUIlUR0M7FDNK1mdqI=;
-	b=u623InkN1SlHjCRFDfJaNYxvDE7xqtbqMaYEFkX3GIcHccyQl0tfqKS4+PQMgbMDFarN35
-	cxKh4uE8UXaAd17ssssfDVSAiDnFQx8Vf1sjhsrx+PrVIJvnYZYBF6ar5ZO+B8gs+HpmnF
-	jpSc0W65wFTpLRdbw2kIty6ChKPZUA0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sdQ9RHb7v7NNLdjW+oTREdHZ4KKafpNrMj5Dc8vh2Fk=;
+	b=ezWsdLucfP722Xj/0nbLuYVOxbkALuHOq6Pl32fTkysuvdrNwUF9fZkoEooczJ8zxi9WSh
+	twlq/XZVCumeh5pLotxf0S5Etpbl3KvgAnZKHcSx90hcXFT1wG2atthWdxNcG/TpAzZDf8
+	efQHoIS4FmddnT4ro4hRFioRay5PM7E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PVH3AjvB;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760612565; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="oI3KR1/Z";
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760612877; a=rsa-sha256;
 	cv=none;
-	b=TSVD3ybWVk0Nxko6bL/38fbOVxDME6sNq9t77zUvH8pVykh98Y/0+M/zidEnCRjEx4ToD8
-	dvexNaknqc9ftVlhncNQz6kAgwI0YyOGpR88f0tSXKI7yZBmFkPMcX7JaoYF/jkoP5njIn
-	/34pYIH0Dgdzl75Wun1/sSdhRIAYdI4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YA8D5I96zsXRtdPpR5at9hJZuoUIlUR0M7FDNK1mdqI=;
-	b=PVH3AjvBH98EWotO5/VLOPldqTmMmYiNlNV+Bl1atBgPKDreShqY5goNPA2WDOeykki2sMx+v
-	HuoZc/ZGEjExlvoTSYoJa2ZX9GHgzDRJIWJJHOQd0P/bluTH5tSy0cGYmZjBO7pIiUhiKfbS7wf
-	J9/mqUs/wLmtNaO3PU/CgS4=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4cnQ4l3rHFzpSv6;
-	Thu, 16 Oct 2025 19:01:43 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id EBF2F18048B;
-	Thu, 16 Oct 2025 19:02:39 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
- (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Oct
- 2025 19:02:39 +0800
-From: Quanmin Yan <yanquanmin1@huawei.com>
-To: <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH] mm/damon: add a min_sz_region parameter to damon_set_region_biggest_system_ram_default()
-Date: Thu, 16 Oct 2025 18:47:17 +0800
-Message-ID: <20251016104717.2194909-1-yanquanmin1@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	b=s7DiPvd5oz3gKqyd2F8QGG3HROrV9sQjQAcI9DDRqDiZEvZzqsBa0vcTrf1aWgDiwu+NTx
+	HR4DKPdVQ3tEN43uFFt+Fh7jH+TqwgLwQEghx+K6Hw7SgW0EfKs9Mc+BcLS0mzLlAzCdcs
+	l7XfLE5M3YKs1Mj+OkCzB3uHiK9JrRI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760612877; x=1792148877;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=X9aFNc43N2mIzbQN88dQuc9eSgi7CWull+Rn9afMSbY=;
+  b=oI3KR1/ZBJ7uP75OvV8dZ2UCkewBMeJLlVOlKn2N/NUzUw52SXTg/bH0
+   wNOyFc4B/DWeTgqcnfK2u+w/8tSxdOKgOEwG7EfJiBJTtnEH+B5KYX7y+
+   RMXjno21Kv9CCs17MRNHZKMlOKsCznDCn1lEu5Mv7zyYmQ4k1R+grBqMo
+   t7GPm3UKRE186IbD6zVEhUtCspYRYnexMFWXnrYWqd4iZGLl4Mol0vqW8
+   G07clOxG2haO92xHAVZoV0MWm9NQBR9X7Yeq+isjO8UJhUATTZUjsDNsP
+   5yE0Ru+0I2u/G7GUJpWkgF7wjXQiqsbf5JVYKhCeWkY7t5a0E66zz55sF
+   Q==;
+X-CSE-ConnectionGUID: c04vRDeZQniXY/bS+3WdlQ==
+X-CSE-MsgGUID: WfezB8z2Q5mww8Iik1LOAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62011187"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="62011187"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 04:07:55 -0700
+X-CSE-ConnectionGUID: ci2VY5XdR1OYxkSl6SuILg==
+X-CSE-MsgGUID: +Wi3BTgZSgu3rjkmdKn1pw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="181557081"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa006.jf.intel.com with ESMTP; 16 Oct 2025 04:07:48 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9Lox-0004jL-1a;
+	Thu, 16 Oct 2025 11:07:17 +0000
+Date: Thu, 16 Oct 2025 19:05:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Takaya Saeki <takayas@google.com>, Tom Zanussi <zanussi@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ian Rogers <irogers@google.com>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH v3 03/13] perf: tracing: Simplify
+ perf_sysenter_enable/disable() with guards
+Message-ID: <202510161858.5hz4HLnc-lkp@intel.com>
+References: <20251015173548.540984239@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Stat-Signature: k758mhmfm4whexrkehicyiiuf3hfnn8b
-X-Rspamd-Queue-Id: 09A46A0016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015173548.540984239@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2420CC0002
+X-Stat-Signature: e3xsrp1amzs389jxnkoqy4o3bg5c63qj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760612563-26887
-X-HE-Meta: U2FsdGVkX1+aIumLRgGYrFQa9s5m5dj8DjNSCl3SXbPoOE64wR62bmkJls4oP/EPoyexi0vUyXX6HcyHUR4AJD/S5R8DgqvocrQ37KEUiUreQJRLmQiH9dbZKu397Nf7RDytr4cDH8a1oY/l0JXKVDDPAkdUZKMisiKR+Tmta1AZAfxJ1ZllMvTu+XMBgN/fPXdWa3eEGqgVPsfmpL8nAdGoRYNBR/vQNirVIO/tT+i0NYvbnFoOqkhzncs036skMu7tzwTKy26ns2VLkb0iBd6F6tJ9fvgHOgN8wds3zP2whG9ehvDUCh476qTB22r8Prfb8L1DkcjYE5wQXGzzbGRm3pnYsktAtuIHHSyMfrBmNFoc8Zj8W5i0Ap6d9XzGKhz3eaGl5yo3ZSSG39ipxS+GeXMv3JCX98qN/a5PL0pn+O8kQyROYwHZWrUhDtn4id64/CHGEoDDpXK1XTuwEPJlhf0GQMwRkiKUMzk3CiDyth8bbbetbLrztungMKJS72ZHaIFjGUW0Tx7km67Jg57oz0zOPWEsVa6WssaZ2h2InJwVfioyJJinwlP7AhBUt9oCLuccDm1QVFwli/O/p13HtYjI46OWWNjM0IxKxozbO5rTku4iMEldR2iVogIvtObqSnnzzk9sT7Q8I8WMMFrNxtt8TEPTbHWGw1JO+h5TqYtYkLzJsiZsEIka3w/JOSa5OFvhCL2AuXuLUBic1RJk0wJlM9BE7YeEjCinOxvCyINg3xZAnewLbiHeTpdShEDTdI69+nyVQ2ZtZpqydit+nSY3pxBZEXw2KmOrFqc3A4i0xGtROz5lODOtuuolsK1QLYhN+hSw+vujjjOpQ3gNt7CE8uUxFPqkGNNPKHdBQPgISKUVNuDepOpHmP9jBXSr2Qi5aA3WjroRJVPiqpz5+WbzP9ZVqFg66QG969g5haI9KbJmdF68GMruI1SZC1JzUIwW03Mf03dkkYu
- FFEFbyvS
- dWPQKZluWeploMtCnLTbrd9cPOgllYKP9nLMPe7SV6E8oObbS2tsPjgCzr8Tb6esPsscV6TCu3BXvq0NB7ksy4Cz3MArS6NSN4KM2tftTXfJdKrYLWSXJAoee0uA5xzfFHS6zlhpNDrLNXEOiTic5TNEcEqR+GjeiJcZ6L5Pj9BZaPyBfZ0DWo+5QHi2PhXNEOPrbpdSWk4zCM+nvfVExD+a5fAH5IlYUvxFvOGMv4gVRw8XjTX8v0MncCaQH5VVEcWTEGz5NXKgkL1Uy+Jc8upqLlislRAzC+ZgqzL/yHyM7Kn+f3FxFx5t41NlgMWHytA5RumPYUg71QBh9ywMmq6raKAwJSwDvjgV1A9IKDdmqNzoJR6Okwzr9ag==
+X-HE-Tag: 1760612876-692225
+X-HE-Meta: U2FsdGVkX18etIKovvHfEj2NzVtkrWlxVMDql2pOxDaz0GuWyi5KcgfMt+fBTbsdkTv7qPI/T/78pg2ZI3CwduV8p112nZCDrZXSKXOV0ZAMz84nidZx0ripqIqTzUhZNC/qkN85CHP/V/SJ3U6EOcMDrf6O9TL0xm+Xj4sgzOSrMupX/BpCl51rmuKHTFxItEaFCCjWMEHtaKq2Qlq8igAH2doUrPDc+v1/HMYGmNW8Crf1WPBdNZhUBT/w94afgauYbdx7wywLlR/aI/22Sqv3dZM7uZD6EMHyVztEUtdIaXQqVT7ky1C7J2sscLoDBNFBjDHdmWl+D0w3cvLRCs1LVRbT9jIRHtuEtk9uz914xkQV/SGP/jZK00Hi5WtOVcXQkmpna0rPQlXccHWkXvtAHCpu6GJ+uM0PPKFRo+veAjnqufDYNXZvVZB7Uta+JTVtGH92G7hoXjfPnS6bkgSlkzmx3jBIJjRIz9hqUDgX1rW9g+Rgy5HTjYsm7T1bu81OGA+vepoe4tIaUeszdIzgdm+3j123JkaYrKe18kjPUboW3J2XCT8i+6hJp8JW66BVYU9PiVdpekgyN7xzmx6Z2XsSYoEgDHBBnnANdkOvqUe87xfkRFZHqJfYhQARyCyqwqFXxuAth/Iqv+6j9tk8WnSg79rRoTNPWOlFK0n+obWzkilYABPzb0YjISyxiNZr5BlKVAGxMdiplUf4J9uFpnAYVCl16rdJGcu6elBTsWr49q2dsxLmdyhyCT9TVsjOzf74MXu+nuEDceZ2+f5W3+NtaLUwLuTzezi+HMofBO79/g0YcjKagMCD3RUh93VrSt+hidACY56HB3UprsQZzEuD123PkO7FwAxNOvAOACYm6xPTIghN261936uQr46euxn7MWb2aYjCowe20ZZHArVmY6tDUuEhwst2/Jk4oRDYzJxINNFtd10xUA5+velJBAD9FxUMVZcYBp5
+ S85Ai73d
+ a1bLFjfhSkNvMzY0/NFBWZKOWIYT8UekOhT1Em9FAqrjBEYA7ERAzKOes7BNBBRaNr2dkWaq+eNVA8w3h2KyxVrxPU5ZAKSxa/+dHNxx74XkfqpRvok0j3JLUWFohB1d5V1heVR+qVy+mZunVtbNrTcH3pNvnIhmQxIxcgJqrvSO+13fAP/8CenP6xuMbGRKzETrWmvauK89IYxI2n3FIqGQDKmmFORFMeT9nrzZeRM+CRkrZ01/EBhfE1aA913JBgFiiiCc2eNLomHIP6PMUcYCQVaEmC2j21/Rbwgbm+72PpUmcYnApZ28xe1XwOnKWDf9GmDesFo45HuDB/4v1eK4Aom74Cb3vtax+ZLgDMV7n9fFO4tpAtf6bUg1UEy/Hk/H8CGElAorFs1Nrc2sOvuXUsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,112 +123,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After adding addr_unit support for DAMON_LRU_SORT and DAMON_RECLAIM,
-the related region setup now requires alignment based on min_sz_region.
+Hi Steven,
 
-Add min_sz_region to damon_set_region_biggest_system_ram_default()
-and use it when calling damon_set_regions(), replacing the previously
-hardcoded DAMON_MIN_REGION.
+kernel test robot noticed the following build warnings:
 
-Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
-Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
----
- include/linux/damon.h | 3 ++-
- mm/damon/core.c       | 6 ++++--
- mm/damon/lru_sort.c   | 3 ++-
- mm/damon/reclaim.c    | 3 ++-
- mm/damon/stat.c       | 3 ++-
- 5 files changed, 12 insertions(+), 6 deletions(-)
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master v6.18-rc1 next-20251015]
+[cannot apply to trace/for-next acme/perf/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index cae8c613c5fc..1ce75a20febf 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -947,7 +947,8 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
- 
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--				unsigned long *start, unsigned long *end);
-+				unsigned long *start, unsigned long *end,
-+				unsigned long min_sz_region);
- 
- #endif	/* CONFIG_DAMON */
- 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 93848b4c6944..e29f08b8a114 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2767,6 +2767,7 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
-  * @t:		The monitoring target to set the region.
-  * @start:	The pointer to the start address of the region.
-  * @end:	The pointer to the end address of the region.
-+ * @min_sz_region:	Minimum region size.
-  *
-  * This function sets the region of @t as requested by @start and @end.  If the
-  * values of @start and @end are zero, however, this function finds the biggest
-@@ -2777,7 +2778,8 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
-  * Return: 0 on success, negative error code otherwise.
-  */
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--			unsigned long *start, unsigned long *end)
-+			unsigned long *start, unsigned long *end,
-+			unsigned long min_sz_region)
- {
- 	struct damon_addr_range addr_range;
- 
-@@ -2790,7 +2792,7 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 
- 	addr_range.start = *start;
- 	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1, DAMON_MIN_REGION);
-+	return damon_set_regions(t, &addr_range, 1, min_sz_region);
- }
- 
- /*
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 42b9a656f9de..49b4bc294f4e 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -242,7 +242,8 @@ static int damon_lru_sort_apply_parameters(void)
- 
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
--					&monitor_region_end);
-+					&monitor_region_end,
-+					param_ctx->min_sz_region);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 7ba3d0f9a19a..36a582e09eae 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -250,7 +250,8 @@ static int damon_reclaim_apply_parameters(void)
- 
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
--					&monitor_region_end);
-+					&monitor_region_end,
-+					param_ctx->min_sz_region);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index d8010968bbed..6c4503d2aee3 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -187,7 +187,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
- 	if (!target)
- 		goto free_out;
- 	damon_add_target(ctx, target);
--	if (damon_set_region_biggest_system_ram_default(target, &start, &end))
-+	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
-+							ctx->min_sz_region))
- 		goto free_out;
- 	return ctx;
- free_out:
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Make-trace_user_fault_read-exposed-to-rest-of-tracing/20251016-014059
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251015173548.540984239%40kernel.org
+patch subject: [PATCH v3 03/13] perf: tracing: Simplify perf_sysenter_enable/disable() with guards
+config: x86_64-randconfig-r073-20251016 (https://download.01.org/0day-ci/archive/20251016/202510161858.5hz4HLnc-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251016/202510161858.5hz4HLnc-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510161858.5hz4HLnc-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> kernel/trace/trace_syscalls.c:1018:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    1018 |         if (!sys_perf_refcount_enter) {
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/trace/trace_syscalls.c:1027:9: note: uninitialized use occurs here
+    1027 |         return ret;
+         |                ^~~
+   kernel/trace/trace_syscalls.c:1018:2: note: remove the 'if' if its condition is always true
+    1018 |         if (!sys_perf_refcount_enter) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/trace/trace_syscalls.c:1012:9: note: initialize the variable 'ret' to silence this warning
+    1012 |         int ret;
+         |                ^
+         |                 = 0
+   kernel/trace/trace_syscalls.c:1123:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    1123 |         if (!sys_perf_refcount_exit) {
+         |             ^~~~~~~~~~~~~~~~~~~~~~~
+   kernel/trace/trace_syscalls.c:1132:9: note: uninitialized use occurs here
+    1132 |         return ret;
+         |                ^~~
+   kernel/trace/trace_syscalls.c:1123:2: note: remove the 'if' if its condition is always true
+    1123 |         if (!sys_perf_refcount_exit) {
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/trace/trace_syscalls.c:1117:9: note: initialize the variable 'ret' to silence this warning
+    1117 |         int ret;
+         |                ^
+         |                 = 0
+   2 warnings generated.
+
+
+vim +1018 kernel/trace/trace_syscalls.c
+
+  1009	
+  1010	static int perf_sysenter_enable(struct trace_event_call *call)
+  1011	{
+  1012		int ret;
+  1013		int num;
+  1014	
+  1015		num = ((struct syscall_metadata *)call->data)->syscall_nr;
+  1016	
+  1017		guard(mutex)(&syscall_trace_lock);
+> 1018		if (!sys_perf_refcount_enter) {
+  1019			ret = register_trace_sys_enter(perf_syscall_enter, NULL);
+  1020			if (ret) {
+  1021				pr_info("event trace: Could not activate syscall entry trace point");
+  1022				return ret;
+  1023			}
+  1024		}
+  1025		set_bit(num, enabled_perf_enter_syscalls);
+  1026		sys_perf_refcount_enter++;
+  1027		return ret;
+  1028	}
+  1029	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
