@@ -4,115 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAC4FCCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D078CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290608E009D; Wed, 15 Oct 2025 21:29:51 -0400 (EDT)
+	id 9E6F28E009E; Wed, 15 Oct 2025 21:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268108E0008; Wed, 15 Oct 2025 21:29:51 -0400 (EDT)
+	id 997308E0008; Wed, 15 Oct 2025 21:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17E138E009D; Wed, 15 Oct 2025 21:29:51 -0400 (EDT)
+	id 8862C8E009E; Wed, 15 Oct 2025 21:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 05B828E0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:29:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC814160166
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:29:50 +0000 (UTC)
-X-FDA: 84002245740.20.E6A279B
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2C3CA40015
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:29:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="MK9rmLp/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 72ACF8E0008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:31:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10B04C018E
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:31:36 +0000 (UTC)
+X-FDA: 84002250192.24.1BC3C09
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AEFA5C000F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:31:32 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nFV6LZ10;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760578189;
+	s=arc-20220608; t=1760578294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=7VYxBH2d0zpUlNbfQbUIMot0C8+u83RLKKdWC9mUtFQ=;
-	b=L5qFf2GqLQ5PAMzVNv0EIE5uUoyG6GDbKegSXhX7xXEFxablpaDIB1Cpt2PmT7iKjyfIAt
-	gOTYWRNQtCVhzxSSgOxI4ZU8ocORhYTUmG/I8HXJzN7GN+KtbJUyFYLmrgG8Hp9qnk5iw8
-	3sZ7iqPIz01DbVpJFfaQ6Z0fBCNC7G0=
+	bh=mAH4DTkhB2L0j3FKIGlf3UR1pnmOzqOC8vlUBGtYG4o=;
+	b=H+Xfu8FYY0Jss6lY73gDMzW3Q53nRhk2ywpffKsB0r7522iU/figToSziKYxyest2x8N59
+	YwA7s2BqGMswnCLRfe1D9MOpM1SQRl2dZFyU5ZI/rcVEd3a1qCUtUL333ujSeYUW4Qv7QA
+	wriEx4QgJX2OTMClJ9Rnkxc3ddiXqUE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="MK9rmLp/";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.221.173 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760578189; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nFV6LZ10;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760578294; a=rsa-sha256;
 	cv=none;
-	b=iFPhfxsbfJeWEYkxEep7aOvyG8BfVitcwdxFMsRmfDqoGlfwL8pL/gRnyBA3L2oLnYNPA2
-	+wuaYolN3d5sVWgVE6JF8tG5/l+6Zr54HxpesN94Fp4R5b6lEo3NpJfY/lktx7OPBJV92k
-	BZk6gtvzdsBc19BYsznoUTcWD9Nw+yg=
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-54aa4b86b09so98208e0c.0
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 18:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760578188; x=1761182988; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7VYxBH2d0zpUlNbfQbUIMot0C8+u83RLKKdWC9mUtFQ=;
-        b=MK9rmLp/0Wg6kR6+8+cn0b4dLBkKFsUJfMrL77syi6fykuUcl6VZgXUNWXEk39f8n7
-         UZcnThkymjokHAuRB9rdrtrTSXpXRsihFGrG/nvA+5QWJwD1L95bwGSuaGQTC1V27h31
-         QRR7Edg5RCOqvE12+uO0VhR7AwsBbac41V0I78eBD+wPbAjtlbaaBxWdzFiXmd1lR3G8
-         CUbS9Lzx9hJZoA2X+MUlL3NfW7+l5B3oiA34g/5hWFt8P1hyXIgovIx+SojAPsCNy9XE
-         674T104csc3Mh9qnQOEpTRRa6kOj8UD3996MA6U8DagbejM9voY1B9qvUD3gblE4fBFy
-         Pm/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760578188; x=1761182988;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7VYxBH2d0zpUlNbfQbUIMot0C8+u83RLKKdWC9mUtFQ=;
-        b=tmCS9J7y3Xg+xrOqnAy9zQH6zGANu+dmL9cZkejV5nzvaHNxxuAWvriDGFsaUd0Rae
-         WRIB6F8BtkpSVNcgxsXx+37dbQ8Kk0Yn+QRM3278zmQ0ck4NIbWy/GOXcvbiDBCuww+7
-         5R7U5e9ysShrrWq7RZVH/0LwezeJQlvi4o9zwTBvi3l5jKTzjB1BvqSd2d/w7V2aZrKz
-         UDSsH5EvtvH2T079285WsnY/DJefDGI/100bqWTS6qlBz5wx0sRNUwED0RnFmlUy+6AE
-         tshOgxcdA7eHQo7Wl6IbUEFBU1Q+NEUUBTl1bzVJ3Ig3WNQfzJzt66DTOak3V9jAriZW
-         G65A==
-X-Forwarded-Encrypted: i=1; AJvYcCWvN9yLvTrwC1Bd82LsPOZYkp8dxCAnfEFj60uxsQOAkO1e/yZTNphB2wavgWXkjwVT5/I0TWX7dQ==@kvack.org
-X-Gm-Message-State: AOJu0YxbQIMvTfq+iQkRe4X/iT4FWz0xUaNE9nFXowKWoCJj/J3XovJ5
-	+w/Goj+h6YnkkP31rQWXAVGMf3sLH+vnFJMMorvQUYiMunre/24fOKAZ
-X-Gm-Gg: ASbGnctSBUk3XtICy1F9dma+FHPxfRLRFkR94rHVhCZRpXnN70RpCWVgIMiL8LzwqDW
-	ZMnhdOTCPDNDcTehvyWaIdI8cIL59lOU4i0sz6CqzbP7nrk7B63aKvsK+zBM+FXSUTtYS5PZyOv
-	A1qEkuRRPUHrEG2jgorwnUwB98EDu6NBZer81fD0LTOe06Hv0qdfUIIjTqcAH+JYo+Yk87wvs9L
-	Ysje5E/IO0kEyzpkm/M4OgOUoGJ26eEXZLyWZutIL5SQLs2nEOfC63X97SQJ5Xu2wYkA+x6LeEK
-	Y/xAo9WK2/rYwgP9RwaN95LTfjg1glFJFeHUNYQDk6ZlAYe6zdsP3oFbGiw5A+JO/tUCMHxyr5R
-	PmIYNLie3xEWhI6XaAqUPu4Mne2DuJfxd0sPCVOPe11RI9u/WbQnRCoeTPQweAJy7h1PhBjPDvp
-	W1qF81
-X-Google-Smtp-Source: AGHT+IHnQYhV6RpXvrx84+8SiCk6AEfJ0W8ZNrxExGEv4WcaUsJUVVRkqjZtXqYvBn/+YQge5wi94Q==
-X-Received: by 2002:a05:6122:3c92:b0:54a:9e02:f9c2 with SMTP id 71dfb90a1353d-554b8b6e7ecmr9425746e0c.6.1760578188061;
-        Wed, 15 Oct 2025 18:29:48 -0700 (PDT)
-Received: from ryzoh.. ([2804:14c:5fc8:8033:5e5e:f0d0:4950:c448])
-        by smtp.googlemail.com with ESMTPSA id 71dfb90a1353d-554f37d2ea8sm4069649e0c.4.2025.10.15.18.29.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 18:29:47 -0700 (PDT)
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-To: David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Xu Xin <xu.xin16@zte.com.cn>,
-	craftfever <craftfever@airmail.cc>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
+	b=dJ4pLPCxyFVi7abN3p4s7+Grz60uOA/eMs2i54lDaV6mF/YOeFPQOoRegVIGXbfFhPi6ry
+	CHmOdS/RMrZ86VTU65BiYOYBEtAQWtg7tfhQ2vSQA/O+TvbsSEW4xLJfZuLHsgC/bk1ZMf
+	oaml/A4JADPRI3sMfW5ud16b3pp1YBM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760578289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mAH4DTkhB2L0j3FKIGlf3UR1pnmOzqOC8vlUBGtYG4o=;
+	b=nFV6LZ10O9IGPGi0HyBdBDCbtBdqMBc1rWxLYmEh505ZKGipDZsx3HBs2GUmIfyafI7tjh
+	L0gTuYALgvJYdNSTx/+FuApxgZIH5QN8MsiPx3Swq8vpqRG3w06lHcawtKRMaLNHdUfcVg
+	XMp+IKgkCSX7EQI+H1IVx5ZfV0EuKk4=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Matyas Hurtik <matyas.hurtik@cdn77.com>,
+	Daniel Sedlak <daniel.sedlak@cdn77.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Wei Wang <weibunny@meta.com>,
+	netdev@vger.kernel.org,
 	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Subject: [PATCH v3] ksm: use range-walk function to jump over holes in scan_get_next_rmap_item
-Date: Wed, 15 Oct 2025 22:22:36 -0300
-Message-Id: <20251016012236.4189-1-pedrodemargomes@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	Meta kernel team <kernel-team@meta.com>
+Subject: [PATCH] memcg: net: track network throttling due to memcg memory pressure
+Date: Wed, 15 Oct 2025 18:31:16 -0700
+Message-ID: <20251016013116.3093530-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AEFA5C000F
+X-Stat-Signature: djkn53tbcd7cuq1ywzwdrdffhp8eu9zy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C3CA40015
-X-Rspamd-Server: rspam03
-X-Stat-Signature: say95wgt9qijwo4cp5zsifs5j47c7uuc
-X-HE-Tag: 1760578189-433749
-X-HE-Meta: U2FsdGVkX1/dFq426DMpUIrbBrX9mvhk/mx8RN07DtXoGbc5GpT1iwodM6Hzbq7eR0P7TNkZcu42gUt1/3kRbdEQ5klxlXppGxuwY2eL/gJ2Asqaju+B2d0YjThXst1q8W++Tp2/VWIgOWGVyqbxSQjY41tvRvbeOBlPLyKC9bitOQYR9+GvSgY/hhBGQf9UndJ4XrbudNrwmAN3vL6fJPo2tpZD2s/q/yhz8+bT4+tPWfr58nuZdVYWN1Cx4KxvDXTDJJ9QbPeRVar4GZqdrgNVukNgePl6NmYfGHQs0JXlbP6Sa6PgC28m/qvkuxf9ogf7DjXeXQF3MTLXW9ULiXZ2jzspgZZHyYKCnLPaqomXooKvqcfTSBk3pWg9dzKJFGJORCvzwteZxGrxnzkbcmbI04FhbhzErEntnNyL2Kr/3aOrB7X1kIP5upYuGHJqcxjp7bGA2l52I7akajV9qrL3hCN2DwjC6ckd0StrjkyOjWldpEbpk09ZoqSIMINnotHGqa2OJxzmYFVk/r7KZ87BS514NhfivWPMwaRmRhO+lB8kQR8YNAXmXIEHpaEEBc2OMVLEkLs/UaVZR8ZFkNSKHWR3cR9QvxFMOQAGoqUD8+v5GszVo9epL+mKumo1ZWVUxrySHqSAfWNSXgrhAPhFqTRG+xhhogfsRo//uIC4aAfSO198hEa9VEl/a6castzc97vpEr3+TgxfSV4FVflueZjiScdZ3jikE1uagE7zW7QQCxQIvnnsEoFq/78BLcI92h5CdP2nu5o9b/ApRm0p4jORSNHVzqhWXCXdQeMz8t3joCJfzyvKKVvQK6VI4WV/1CHNH/AWbGL7g9ajdEFOp3EsIuCoNEPIUeiH3nC814Yu2uCAm7sleXlel3Gpr7+J4vqBlzMvbqx8CDmyoUSN/0rL5orPvtFhWnX9Jzh6uLOKVj+HMWzeQ52Sl3o5FoqGSIIhC8zgB53rhVl
- GTrr3mRu
- VUDMqFCn3z3iIHSFOItOpgucdH3A1mn4xMcTxeYmcyJxN/5xTSGybEIV8wEC2rHBSxbVuAynbXHOfL4MapiaftbGB/SGURS1kufcXzZwmlF3bR8HGuP0svu8aaHlSbt0YMWhWvXZ0Aei9yZk=
+X-HE-Tag: 1760578292-757843
+X-HE-Meta: U2FsdGVkX19j9JZzPY6z6dRFEJWBmGZ23pjXxNE9FCUx0qmOAnAEN9JC5EAD1nfAST0bzezMEd+eCowwfa99Stc7eSnae5QPA2W+22jVazTjI5KpxPBoRiFMkpYxtCTy8HZ3U+rACx5lI8ZDw4HK16OZ90yBMCpz6W2T2ADi98lY/fqK5S6CGdtWalLDPXFA9d03y7HP3GIPp4hulcYgU79o1sqsKBQIwnnQlTH3DB93ZvTZieJFmmfMYe42olY3PsnJ4ftj18MGeLVBmQAL9EXZiZ2hQQdniiUkvC3g1BlJXTZo+TsLrOc6mkafCjx913GbKzi49M5xdmTDpKiMcV92h0Zws6FvOuF7VtjH8ZJUhPzzdwyjlBNuYnH04It8p/nB6cPwQN06r+8YLgZKgmBnPrLqTnNgDGP76RZzbmtpX72geQzhfZlWn6CTH+aWEOZY++wgIutdL6YSlszJUonMIWzlq9RME0w4Cl8FJ71WV3E+aMiYw7gCFq4emTCbU25vQWYMf1chc4wDL3mTKAb1ffUP4ITJvylq6ocDotfuZm/udivwHNLzDx3iLeRHghDFwxkM/qSEKdlc5NE7fLIZHnAjERJszqMJAuLTrsfnTBUetP3AFq+hAEh+FPOkHtyYa7jfJz/3g0MJmmTstJgMkatk7ClLeNJaIBxPo8j/JH0kMcsNDiFaJ6qW/bMamZXVvO/Bn5wefqM5yqHLjzOQGpcHRSvEFAZMnpuXd0V/8eqd+a3UHFsjvhu8thsdkopmoqy2wNi5RjytGD/CU8rbQnWEp8yn35sogC1053WHceyUFrBUbOw+R83NmKof50dKOnsSNspuQ6ngavRhXmzefUFVdhbD0ZB3xKoSGcohVoNBpieIuJR0pR3xyjT1A2jHWGb0tRFz1jLWKYym57Nf0nKZYc4ENjvjlXPLxZNlnJK/9v13PlUFB0GAsyB64olrpcQlAtGHmz+mOhk
+ iSRTatqn
+ vOz5PshzzKW1ytAGNSyssCtNS9+UAlJ7Rk8FJCbVljJ9FwFJh9JcuMd7UO32j+49vAL8c4eMChsePG1GXW9NSNnOQxcJd37lueBnGfutoiw/G6V6TgB4oq31bHmBiasTrtKLQJuO7bFEv6DhkvJhPTKcbh1G+SLZ+YsaF4jTtN1kL4zhB9fojzhaopKCedgwHghkm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,259 +103,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, scan_get_next_rmap_item() walks every page address in a VMA
-to locate mergeable pages. This becomes highly inefficient when scanning
-large virtual memory areas that contain mostly unmapped regions.
+The kernel can throttle network sockets if the memory cgroup associated
+with the corresponding socket is under memory pressure. The throttling
+actions include clamping the transmit window, failing to expand receive
+or send buffers, aggressively prune out-of-order receive queue, FIN
+deferred to a retransmitted packet and more. Let's add memcg metric to
+indicate track such throttling actions.
 
-This patch replaces the per-address lookup with a range walk using
-walk_page_range(). The range walker allows KSM to skip over entire
-unmapped holes in a VMA, avoiding unnecessary lookups.
-This problem was previously discussed in [1].
+At the moment memcg memory pressure is defined through vmpressure and in
+future it may be defined using PSI or we may add more flexible way for
+the users to define memory pressure, maybe through ebpf. However the
+potential throttling actions will remain the same, so this newly
+introduced metric will continue to track throttling actions irrespective
+of how memcg memory pressure is defined.
 
-[1] https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/
-
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
+ Documentation/admin-guide/cgroup-v2.rst | 4 ++++
+ include/linux/memcontrol.h              | 1 +
+ include/net/sock.h                      | 6 +++++-
+ kernel/cgroup/cgroup.c                  | 1 +
+ mm/memcontrol.c                         | 3 +++
+ 5 files changed, 14 insertions(+), 1 deletion(-)
 
-v3:
-  - Treat THPs in ksm_pmd_entry
-  - Update ksm_scan.address outside walk_page_range
-  - Change goto to while loop
-
-v2: https://lore.kernel.org/all/20251014151126.87589-1-pedrodemargomes@gmail.com/
-  - Use pmd_entry to walk page range
-  - Use cond_resched inside pmd_entry()
-  - walk_page_range returns page+folio
-
-v1: https://lore.kernel.org/all/20251014055828.124522-1-pedrodemargomes@gmail.com/
-
-Reported-by: craftfever <craftfever@airmail.cc>
-Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
----
- mm/ksm.c | 185 ++++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 135 insertions(+), 50 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 3aed0478fdce..403e4f102f07 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2455,14 +2455,119 @@ static bool should_skip_rmap_item(struct folio *folio,
- 	return true;
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 0e6c67ac585a..057ee95e43ef 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -1515,6 +1515,10 @@ The following nested keys are defined.
+           oom_group_kill
+                 The number of times a group OOM has occurred.
+ 
++          socks_throttled
++                The number of times network sockets associated with
++                this cgroup are throttled.
++
+   memory.events.local
+ 	Similar to memory.events but the fields in the file are local
+ 	to the cgroup i.e. not hierarchical. The file modified event
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 7ed15f858dc4..1434759eb111 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -52,6 +52,7 @@ enum memcg_memory_event {
+ 	MEMCG_SWAP_HIGH,
+ 	MEMCG_SWAP_MAX,
+ 	MEMCG_SWAP_FAIL,
++	MEMCG_SOCKS_THROTTLED,
+ 	MEMCG_NR_MEMORY_EVENTS,
+ };
+ 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60bcb13f045c..5a025eed08d1 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2635,8 +2635,12 @@ static inline bool mem_cgroup_sk_under_memory_pressure(const struct sock *sk)
+ #endif /* CONFIG_MEMCG_V1 */
+ 
+ 	do {
+-		if (time_before64(get_jiffies_64(), mem_cgroup_get_socket_pressure(memcg)))
++		if (time_before64(get_jiffies_64(),
++				  mem_cgroup_get_socket_pressure(memcg))) {
++			memcg_memory_event(mem_cgroup_from_sk(sk),
++					   MEMCG_SOCKS_THROTTLED);
+ 			return true;
++		}
+ 	} while ((memcg = parent_mem_cgroup(memcg)));
+ 
+ 	return false;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index fdee387f0d6b..8df671c59987 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -4704,6 +4704,7 @@ void cgroup_file_notify(struct cgroup_file *cfile)
+ 	}
+ 	spin_unlock_irqrestore(&cgroup_file_kn_lock, flags);
+ }
++EXPORT_SYMBOL_GPL(cgroup_file_notify);
+ 
+ /**
+  * cgroup_file_show - show or hide a hidden cgroup file
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3ae5cbcaed75..26b5fab19094 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -81,6 +81,7 @@ struct cgroup_subsys memory_cgrp_subsys __read_mostly;
+ EXPORT_SYMBOL(memory_cgrp_subsys);
+ 
+ struct mem_cgroup *root_mem_cgroup __read_mostly;
++EXPORT_SYMBOL(root_mem_cgroup);
+ 
+ /* Active memory cgroup to use from an interrupt context */
+ DEFINE_PER_CPU(struct mem_cgroup *, int_active_memcg);
+@@ -4463,6 +4464,8 @@ static void __memory_events_show(struct seq_file *m, atomic_long_t *events)
+ 		   atomic_long_read(&events[MEMCG_OOM_KILL]));
+ 	seq_printf(m, "oom_group_kill %lu\n",
+ 		   atomic_long_read(&events[MEMCG_OOM_GROUP_KILL]));
++	seq_printf(m, "socks_throttled %lu\n",
++		   atomic_long_read(&events[MEMCG_SOCKS_THROTTLED]));
  }
  
-+struct ksm_walk_private {
-+	struct page *page;
-+	struct folio *folio;
-+	struct vm_area_struct *vma;
-+	unsigned long address;
-+};
-+
-+static int ksm_walk_test(unsigned long addr, unsigned long next, struct mm_walk *walk)
-+{
-+	struct vm_area_struct *vma = walk->vma;
-+	struct ksm_walk_private *private;
-+
-+	if (!(vma->vm_flags & VM_MERGEABLE))
-+		return 1;
-+
-+	private = (struct ksm_walk_private *) walk->private;
-+	private->address = vma->vm_end;
-+
-+	if (!vma->anon_vma)
-+		return 1;
-+
-+	return 0;
-+}
-+
-+static int ksm_pmd_entry(pmd_t *pmd, unsigned long addr,
-+			    unsigned long end, struct mm_walk *walk)
-+{
-+	struct mm_struct *mm = walk->mm;
-+	struct vm_area_struct *vma = walk->vma;
-+	struct ksm_walk_private *private = (struct ksm_walk_private *) walk->private;
-+	struct folio *folio;
-+	pte_t *start_pte, *pte, ptent;
-+	pmd_t pmde;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	int ret = 0;
-+
-+	if (ksm_test_exit(mm))
-+		return 1;
-+
-+	ptl = pmd_lock(mm, pmd);
-+	pmde = pmdp_get(pmd);
-+
-+	if (!pmd_present(pmde))
-+		goto pmd_out;
-+
-+	if (!pmd_trans_huge(pmde))
-+		goto pte_table;
-+
-+	page = vm_normal_page_pmd(vma, addr, pmde);
-+
-+	if (!page)
-+		goto pmd_out;
-+
-+	folio = page_folio(page);
-+	if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+		goto pmd_out;
-+
-+	ret = 1;
-+	folio_get(folio);
-+	private->page = page + ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
-+	private->folio = folio;
-+	private->vma = vma;
-+	private->address = addr;
-+pmd_out:
-+	spin_unlock(ptl);
-+	return ret;
-+
-+pte_table:
-+	spin_unlock(ptl);
-+
-+	start_pte = pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
-+	if (!start_pte)
-+		return 0;
-+
-+	for (; addr < end; pte++, addr += PAGE_SIZE) {
-+		ptent = ptep_get(pte);
-+		page = vm_normal_page(vma, addr, ptent);
-+
-+		if (!page)
-+			continue;
-+
-+		folio = page_folio(page);
-+		if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+			continue;
-+
-+		ret = 1;
-+		folio_get(folio);
-+		private->page = page;
-+		private->folio = folio;
-+		private->vma = vma;
-+		private->address = addr;
-+		break;
-+	}
-+	pte_unmap_unlock(start_pte, ptl);
-+
-+	cond_resched();
-+	return ret;
-+}
-+
-+struct mm_walk_ops walk_ops = {
-+	.pmd_entry = ksm_pmd_entry,
-+	.test_walk = ksm_walk_test,
-+	.walk_lock = PGWALK_RDLOCK,
-+};
-+
- static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- {
- 	struct mm_struct *mm;
- 	struct ksm_mm_slot *mm_slot;
- 	struct mm_slot *slot;
--	struct vm_area_struct *vma;
- 	struct ksm_rmap_item *rmap_item;
--	struct vma_iterator vmi;
-+	struct ksm_walk_private walk_private;
- 	int nid;
- 
- 	if (list_empty(&ksm_mm_head.slot.mm_node))
-@@ -2527,64 +2632,44 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 
- 	slot = &mm_slot->slot;
- 	mm = slot->mm;
--	vma_iter_init(&vmi, mm, ksm_scan.address);
- 
- 	mmap_read_lock(mm);
- 	if (ksm_test_exit(mm))
- 		goto no_vmas;
- 
--	for_each_vma(vmi, vma) {
--		if (!(vma->vm_flags & VM_MERGEABLE))
--			continue;
--		if (ksm_scan.address < vma->vm_start)
--			ksm_scan.address = vma->vm_start;
--		if (!vma->anon_vma)
--			ksm_scan.address = vma->vm_end;
--
--		while (ksm_scan.address < vma->vm_end) {
--			struct page *tmp_page = NULL;
--			struct folio_walk fw;
--			struct folio *folio;
-+	while (true) {
-+		struct folio *folio;
- 
--			if (ksm_test_exit(mm))
--				break;
-+		walk_private.page = NULL;
-+		walk_private.folio = NULL;
-+		walk_private.address = ksm_scan.address;
- 
--			folio = folio_walk_start(&fw, vma, ksm_scan.address, 0);
--			if (folio) {
--				if (!folio_is_zone_device(folio) &&
--				     folio_test_anon(folio)) {
--					folio_get(folio);
--					tmp_page = fw.page;
--				}
--				folio_walk_end(&fw, vma);
--			}
-+		walk_page_range(mm, ksm_scan.address, -1, &walk_ops, (void *) &walk_private);
-+		ksm_scan.address = walk_private.address;
-+		if (!walk_private.page)
-+			break;
-+
-+		folio = walk_private.folio;
-+		flush_anon_page(walk_private.vma, walk_private.page, ksm_scan.address);
-+		flush_dcache_page(walk_private.page);
-+		rmap_item = get_next_rmap_item(mm_slot,
-+			ksm_scan.rmap_list, ksm_scan.address);
-+		if (rmap_item) {
-+			ksm_scan.rmap_list =
-+					&rmap_item->rmap_list;
- 
--			if (tmp_page) {
--				flush_anon_page(vma, tmp_page, ksm_scan.address);
--				flush_dcache_page(tmp_page);
--				rmap_item = get_next_rmap_item(mm_slot,
--					ksm_scan.rmap_list, ksm_scan.address);
--				if (rmap_item) {
--					ksm_scan.rmap_list =
--							&rmap_item->rmap_list;
--
--					if (should_skip_rmap_item(folio, rmap_item)) {
--						folio_put(folio);
--						goto next_page;
--					}
--
--					ksm_scan.address += PAGE_SIZE;
--					*page = tmp_page;
--				} else {
--					folio_put(folio);
--				}
--				mmap_read_unlock(mm);
--				return rmap_item;
--			}
--next_page:
- 			ksm_scan.address += PAGE_SIZE;
--			cond_resched();
-+			if (should_skip_rmap_item(folio, rmap_item)) {
-+				folio_put(folio);
-+				continue;
-+			}
-+
-+			*page = walk_private.page;
-+		} else {
-+			folio_put(folio);
- 		}
-+		mmap_read_unlock(mm);
-+		return rmap_item;
- 	}
- 
- 	if (ksm_test_exit(mm)) {
+ static int memory_events_show(struct seq_file *m, void *v)
 -- 
-2.39.5
+2.47.3
 
 
