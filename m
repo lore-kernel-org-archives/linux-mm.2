@@ -4,89 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C8ACCD1A2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 04:19:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07842CCD1A2
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 04:33:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F3AA8E0007; Thu, 16 Oct 2025 00:19:00 -0400 (EDT)
+	id 3FB498E0003; Thu, 16 Oct 2025 00:33:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CB6B8E0002; Thu, 16 Oct 2025 00:19:00 -0400 (EDT)
+	id 3AC168E0002; Thu, 16 Oct 2025 00:33:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 008138E0007; Thu, 16 Oct 2025 00:18:59 -0400 (EDT)
+	id 2E8A88E0003; Thu, 16 Oct 2025 00:33:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E53F78E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:18:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 198758E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:33:42 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C96EB6C13
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:18:59 +0000 (UTC)
-X-FDA: 84002671998.17.128F1C8
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A5B90A0008
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:18:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pvVkZIX8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of yonghong.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=yonghong.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760588338; a=rsa-sha256;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB7E11401BA
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:33:41 +0000 (UTC)
+X-FDA: 84002709042.17.AF07C51
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D22F9180007
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:33:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760589220; a=rsa-sha256;
 	cv=none;
-	b=qq4bN7D2TvQ6BS3ylKWM2otGnAU1GnoLEPg4FT/04+xmcXvQ5wQAZGtiCKHVO/sRKt6OOp
-	8MDWSuN8VCsKn05nkkb/sLtOud6MTEgMZ6Hxs35yjdyV5tx/T3Mi7d/rXGr3UJFP4MDz4F
-	/xr4YWZyZS/6zPpcAfwDyvir1j0gT3k=
+	b=V+YV2UdJgJgA7UpSwgeOUKZJfk6MLbvaMsGNsEybF48IPBsROdl0VBMVLjeXQLVy+a/3Kh
+	nEcP5GaD/q3UkQnjheVPZF3pohqte0VQJTNoE1+Zg6ihpMYADfxhoLbV9g/3Vka+y+0UKg
+	qNc6lqEu9CWwx0uF7lpNCemYr+Ti7bw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pvVkZIX8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of yonghong.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=yonghong.song@linux.dev
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760588338;
+	s=arc-20220608; t=1760589220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j74IkFY/9p07YTv56+MgM3TYZlLX13fwYDRNS0UGDp4=;
-	b=mb3IQjfeoAfswDudcQfk8uxJggze+AjX9H2GciZNf5qvhwaJA/TdbeMO5TVAqA0OyY5Wrv
-	LwgdCY3hA1xKnzQnN7c6qz54CF7IgBomM2lm16CVev2qEXG3T4fT45oirXUyVQ3DeNcYx4
-	D1jGoYk8kmI8JbSR5bCj3m8MWdiGkfQ=
-Message-ID: <987ef44e-55ef-4e6c-92e8-daaf005701b2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760588335;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j74IkFY/9p07YTv56+MgM3TYZlLX13fwYDRNS0UGDp4=;
-	b=pvVkZIX83jiJ/l+3B/CwdBQUhQL29T6Aj19njZ+XX6q1LWoomT7wZsh5h1ncbJVRXdf4vr
-	gjEhpT8HhNyc47WmdOIbHNdqLpCbpbnhoMkVsax9ENfy7QAqeeLTOp0dsGdFxAPjfwPVBX
-	yv6tpCQoAyeGEWWTPOZGCcRpcgwqZPQ=
-Date: Wed, 15 Oct 2025 21:18:42 -0700
+	bh=cxG5a7rYgW5UKD7jxo0ORPmHip3rWKhdSm2TPSjwrl8=;
+	b=FMjl8grwjWYj4bgRLO9RoIlBAjirLbUc2NOrJxIdAkH9c7obRgNKPyehVHSr88KIwo68em
+	ZWhHF1SagB08csszMxujEUT/2cigDyodBcU5QK5QYnpXYWI6eaIakaN0e8sGcSDltiSUzM
+	Xi6vW4lKTtQcBnrJTVmArNFJRB26tFc=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 4DC40227A87; Thu, 16 Oct 2025 06:33:34 +0200 (CEST)
+Date: Thu, 16 Oct 2025 06:33:33 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+	dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/3] writeback: allow the file system to override
+ MIN_WRITEBACK_PAGES
+Message-ID: <20251016043333.GA29905@lst.de>
+References: <20251015062728.60104-1-hch@lst.de> <20251015062728.60104-3-hch@lst.de> <20251015151353.GA786497@mit.edu>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/2] memcg: introduce kfuncs for fetching memcg stats
-Content-Language: en-GB
-To: Song Liu <song@kernel.org>, JP Kobryn <inwardvessel@gmail.com>
-Cc: shakeel.butt@linux.dev, andrii@kernel.org, ast@kernel.org,
- mkoutny@suse.com, yosryahmed@google.com, hannes@cmpxchg.org, tj@kernel.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
- kernel-team@meta.com
-References: <20251015190813.80163-1-inwardvessel@gmail.com>
- <20251015190813.80163-2-inwardvessel@gmail.com>
- <CAHzjS_s3L7f=Rgux_Y3NQ7tz+Jmec5T8hLyQCxseLJ9-T-9xuQ@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <CAHzjS_s3L7f=Rgux_Y3NQ7tz+Jmec5T8hLyQCxseLJ9-T-9xuQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: xztip87jhi3b3coz7i4kigj9ipmkmnxw
-X-Rspamd-Queue-Id: A5B90A0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015151353.GA786497@mit.edu>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: xbamf8h8o3sddote4fm8hn4pzse6r5pd
+X-Rspamd-Queue-Id: D22F9180007
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760588337-586909
-X-HE-Meta: U2FsdGVkX181YHD7jUVO3boCyR5z0G5DaVvR78BsA1NXv1SsErE40NcaFr4iphPuVFN3ToIYT2p32bZCEVr45bGK2VN2Y86aZOqiHAPR8bXBRV1UZFVV9ywlbn7r5/SrGiS21hdD5eEXm+SPs0Kgud/qpnlVlZyPzavNPcPKZnrSHFWJ4M02J9fcZSOgLzzelqo9Zg4DOu2R1d7uwc8cR13z3rrc8FJom2HfGAkDFbY+yw7cfYJIgdOQAVZtYL9WUn3dQqYLN3zLlwHPIDikhHrTJOqT73xYBuYyBERTsQWP5eaqSC90OEgI8IPK+rmuoYDvOZ2yXktzwNqQ5KoMdQwMX41PE3liwTNK0D5YR9QmkJk92OJYFFC5xOG1ShJ71m42WTQDX5PcuzHq8RzRaW6Yl2bTvz7irMZj9WvXTiSdGqSLe0QvkveO+qcMzgiGLXhvwlhhpnvzrTZkdWffkwRdAT3z/CWfy0yqC/+RgY5fCqClJBHL8R1LV+khLiEue4n4B79ELZQGG4yc6zuD+7Lry+JQOoSb/wFendBkm+O3XZebk/8CKZMwTdae4ZvjE6lmcaBKT5KqOT5XXb1wFwJQKixiIWdBkiCpTRRxMYPssAeUtxRTDPhC0UDtApK0Oub/bH67rN859LtSEvzZjWGY1MCcjZWl/QrDVNZzIs207CSCud0HXsboNeGfbsG9dDdO641aCgEgQiBx4Yjvo9UsAt+XaNaisBONfujmvMCrHrm/SmxJWVLFdoQGXTG1riOVuM3WPrFvQca6ofW51TqR7IzBx4cD6QjdAQuYwgvV05TKBE66Exzgs2/7kUaZN3rEsvxiWlRYDxUq6ZhLxv+x1BULjsCyB3hH/xUJTKyhiaEBa6+c0PW+xG4VN4vGL6BQKyHV5yZiwkPU1xKqzKRdsA7fNuXOB8JqvnSMKyBNnws4LtbfsHekx31mmtVJk2z1iLR+gg/Z5iCPXGL
- 4BuDrOSp
- NBIDQXZnilhKZGa5K20c1X7dwVEhPeprsvvqoApPF1NuePPaQru1JbqGb35ooEUAIRsv8He2dgCJfwb5zUPOuWeuOSZMKueZi5m7DDGETKiIIdTwCVI5DdYTnHn6ZbMnIRZurB9/b9xPvDUPDfcKPF8l4ECcKPr1gp6G8sSlgjioyN/vJ1I9Lp1TNdHvz6kn2/PvNSIQBLeQauvFMrIMPiKaKTcVWqhGAs4hvNnu6+O/rA5Y0FY0vclbnFs4QXC2/oRvuXcAvPfZyluimIuINRKfd3DPvdn55yL7b3hHA7yyIsZc=
+X-HE-Tag: 1760589219-161181
+X-HE-Meta: U2FsdGVkX1+LBvZubCvK3hZwQ5fsr/KSQ4hcBBmDHzMrrz23uMNN0AHpIAWojtsWnT904KYPTkTCv1SIHNMVNKQHMzNtiLhcAbk80H90qBIv4XcJcOE8TT1rQQuF9j/XjxfoAGIW7igK1WKrFRyJll2tTHQvd/Qd4tqz3bTt4hXdK+RQ3DGUdWmBJRMdeCvRsN1q4TD2UhLyFF7HReDyV3nDMoem8A7d8mI8oNVc7uhrj2pPzVcRHVhZJ3C3th+hsSxs75BIdJDcdfYTP5X4FxovnSULzxO/0GWY2OdehWSOiTbFJRHUGEml9+gbQ22yWVJQw6W8R2J0tvJ5PuEegwqLxPx7CHqBkVcFtoThwRAjHGf8RI1N9r4AQAvQ8Uu4LonorswPcgXTkyPMI9VqfvOl2BKZn4pj9exuG3yusveYmicGmkvfsrZ3XihPWzVsNdtJ79orvWe2a0ylt+b6GlgAF7k26rc7rITWO4SWdKmCmv0agPdyRpjh4Qvv6Ii0aYsd1r6Xr4T3vMV4UqrfJV7miwPYJAyjaf82hWQZCQlBf2QUFxbS5JK1pLUc9QbRHQFzumvdEhLlMEuC0geg60+5LzzVof75f4h1dHyu4hJOlwSm0oi/ePHtQEuuQIs8tcOduUUn40UH04Bf3GF/zos02zQa4GWb89G9LuhNvb2CBLHTm3RJJ3osnv/JIVz2Nde+ekkyujTMuc2JxD36SfoLr7Y89DkIiu5nyChL/AaZEKvvoA4anMvujJiEruX0Z1Go8Pu+sF4WJNyCUNvmSdBlO93+fErNPz7uoBjePsXNUSRBNbBCAAwa+kUMQWWlN/7SVrEhxw2QTW+kjankSogzzXkaX+kthklG74+ec88L+sLImrSPVyMn9vyNI3TyZFTIuwFt0B0/KAtgOq8VUmD/SHKzNQ1OBh61ujzOtBxqhHAZh/NmL0r3+DeWs1mzDrpebvPo1y0Uve+kQK9
+ sqgP4bK0
+ 7EFkGmZyPPxUoreH70aNXQIcH1qke4P6fIM9TwI/P1uhsY5QkVjL9xtlQ2nigKnmLjCd246NRgPqKWe/xhSTyO/EoP8zaj2n6Z2IdUJ1X78ubSGfwju+GK36kzFbio/nWKQadlB4yNnuNutY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,58 +83,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 15, 2025 at 11:13:53AM -0400, Theodore Ts'o wrote:
+> I wonder if we should bump the default; and if the concern is that
+> might be problematic for super slow devices (e.g., cheap USB thumb
+> drives), perhaps we can measure the time needed to complete the
+> writeback, and then dynamically adjust the value based on the apparent
+> write bandwidth?
+> 
+> We could have each file system implement something like this, but
+> maybe there should be a way to do this in fs generic code?
 
+Right now my main concern here is zoned file systems where the switching
+directly leads to fragmentation.  Besides XFS that would in theory also
+affect f2fs and btrfs, but unlike XFS they do not do the trivial data
+separation by inode but just throw all writes into the blender with (f2fs)
+or without (btrfs) some hot cold separation applied.  But even if they did
+it finding the zone size is file system specific, so right now I don't see
+much too share.  If we end up with duplicate code I'll happily factor it
+into helpers.
 
-On 10/15/25 4:12 PM, Song Liu wrote:
-> On Wed, Oct 15, 2025 at 12:08 PM JP Kobryn <inwardvessel@gmail.com> wrote:
-> [...]
->> ---
->>   mm/memcontrol.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 67 insertions(+)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 4deda33625f4..6547c27d4430 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -871,6 +871,73 @@ unsigned long memcg_events_local(struct mem_cgroup *memcg, int event)
->>   }
->>   #endif
->>
->> +static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
->> +{
->> +       return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) : NULL;
->> +}
->> +
-> We should add __bpf_kfunc_start_defs() here, and __bpf_kfunc_end_defs()
-> after all the kfuncs.
->
->> +__bpf_kfunc static void memcg_flush_stats(struct cgroup *cgrp)
-> We mostly do not make kfunc static, but it seems to also work.
-
-Let us remove 'static' in __bpf_kfunc functions in order to be consistent
-with other existing kfuncs.
-
-
-The __bpf_kfunc macro is
-    linux/btf.h:#define __bpf_kfunc __used __retain __noclone noinline
-
-__used and __retain attributes ensure the function won't be removed
-by compiler/linker.
-
->
->> +{
->> +       struct mem_cgroup *memcg = memcg_from_cgroup(cgrp);
->> +
->> +       if (!memcg)
->> +               return;
-> Maybe we can let memcg_flush_stats return int, and return -EINVAL
-> on memcg == NULL cases?
->
->> +
->> +       mem_cgroup_flush_stats(memcg);
->> +}
->> +
-> [...]
->
-
+> 
+> 	      	    	      	       - Ted
+---end quoted text---
 
