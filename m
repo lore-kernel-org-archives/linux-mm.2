@@ -4,87 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A48CCD185
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 05:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A527CCCD185
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 05:05:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76DA8E0003; Thu, 16 Oct 2025 01:04:54 -0400 (EDT)
+	id 0CECA8E0005; Thu, 16 Oct 2025 01:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D27E08E0002; Thu, 16 Oct 2025 01:04:54 -0400 (EDT)
+	id 0A6BE8E0002; Thu, 16 Oct 2025 01:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3D768E0003; Thu, 16 Oct 2025 01:04:54 -0400 (EDT)
+	id ED79C8E0005; Thu, 16 Oct 2025 01:05:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B1D248E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:04:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4EE6A1601E8
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 05:04:54 +0000 (UTC)
-X-FDA: 84002787708.07.885CDE7
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B33BD1C0006
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 05:04:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z2FspIzq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of yonghong.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yonghong.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760591092; a=rsa-sha256;
-	cv=none;
-	b=vw4LjheIbawwcTnoTeiYBaTWDIorLKa3DfX2KPeXsz1lXW9m7Z/TmLd5W6pHkh3FeGzq6x
-	3MvZYUN0f1A+aTJaIJ/NJ5DsZxzzg2D7XwbtxzFlq4rCwhuJnvIzQGvYigLDEdB5Jvdor6
-	jhW5d3A66hPXzrG2gbMKsRHmTcwpEKM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z2FspIzq;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of yonghong.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=yonghong.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC5438E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:05:37 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67EE41A01E4
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 05:05:37 +0000 (UTC)
+X-FDA: 84002789514.29.B9F822D
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8CC74C000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 05:05:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zr8bqUfl;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760591092;
+	s=arc-20220608; t=1760591135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HZ0OhGBCw/TeJ0eEkVC8lEwB+tMQoRHyfhkQ+NORWwo=;
-	b=SO1xA14uMjUB/5vxwyW6SKEL+byTPwnmeKs1T/ZtipPtGfR14+aT4shnS5u4SqV6UKd4BG
-	JKInuSwYGTaxvFFwQ9kgiUW5nQTONXWHKNZRAdOBNkNcpzVz+xUmQobp4hHBoiv6GuDQWR
-	veA+p6ALDgsi9t8zthNljuDj5yU0754=
-Message-ID: <f1558b5d-41be-4f56-8428-d5ae63d696ea@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760591087;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HZ0OhGBCw/TeJ0eEkVC8lEwB+tMQoRHyfhkQ+NORWwo=;
-	b=Z2FspIzqtUWauRrDfma+tzAHRHBnmlCfIoUNmBooTf88BAd1opzFWm6xkdDEN+MAKuWKUn
-	RCOHF6ctPYUtuQwk1qbiFOFliQxafWzmZuod5Lrscl9XX6uzkErzxea1FmNjQtNtYzix18
-	ijoQcslSoA3/Z1rYR67YnHmRcPbOO34=
-Date: Wed, 15 Oct 2025 22:04:36 -0700
+	bh=SL78+SZbXELe5OjpiYZ40otsTW6VBbAoBUm1tT/or+E=;
+	b=FTcCEw8OcsKmnS2xpF5y4/01cO7h6DUhp9XjAGXchEX2KrVSNm5gZ9D6UVdUsOHknPwMCt
+	W4ZTFdf/dWUdOnt/U5ils/1FL3Xc82phE7pzHbev6i5VxX8bz86Xnk/2kDtQJRjGXtuRV6
+	Np4OAHAklcrs7lFy1vMRtB3XoBpdwuU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zr8bqUfl;
+	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.128.181 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760591135; a=rsa-sha256;
+	cv=none;
+	b=W7TBW5wOtmGh3eUcSj0UeuEYtKilT5a7PnvxToP2NT0BW4sODgX6N+XkExGGWprX6909Fp
+	UXPbIYCQ8Ol5J7Ogeu5lZWBIriCcuG3+l666tuM8dmHgC3VYXr4I1e0dpt/GOTKH9XbqTf
+	vGeE0CX6u5euVPDSn4V62fbUZwP2530=
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-7815092cd0bso3045087b3.2
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 22:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760591134; x=1761195934; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SL78+SZbXELe5OjpiYZ40otsTW6VBbAoBUm1tT/or+E=;
+        b=zr8bqUfl2/p/3R4wlF8DscrrAKGEMdGweImxtUHC787CVUhbMCfC8bsgdQmW2FISc7
+         k7q7amMiFUTSM9tjFM3ROcCPqz8VnAo2EDzGwSusrTdpbrCuZwgmxmdOIN/tzCSzgbpU
+         IMmLtCoWvxM+e0rP7JQbsuX3VJzSJ5peOVvc6b3SQdVc9+5+jgz/UeQBMyEG4WVvK4RE
+         BV80QmTadOa8kjkdy0lYs+KRqxxZrqc4SFjCl/fLcyx3TlpTh0yHlPLMHQOZDTIVlfgC
+         ZDWrYZKhyHoCoNWPwf6C3Kj5ZmSq8sa9zbi+nE+E78mVre4oEb5DpuHTL90nS9RxrnmB
+         70Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760591134; x=1761195934;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SL78+SZbXELe5OjpiYZ40otsTW6VBbAoBUm1tT/or+E=;
+        b=fB0JxF6bMG11WWyFG5krjVWb6yAy6eRtsDIZzHj+YCOiJdKJ6QnnO7XqGYZCA2PQyq
+         6wY3VAtEgaQzJCO8XRJOMjYAP51zRml8ClKm+3d+JBh8gXn6DbtJcwTXBuJQHdbKsEka
+         OLcrwUAh26J03oaR9VVl+6qNteZtO4lhrx4703QfbtyvcFaiFflc8nEXW+EaH613asUX
+         LQw4NhhKIIodSUb1Q90trI8fQydFds/WK88z2IMJ3oeGXJatt3cjitnjRJUPBXmJFea+
+         QMeC3GGSUe8FvpKTwkvv+d8b3Ag9b/UbtI4LEDyb7/ngbufaDmTaPdnuibuyzS1qhYhv
+         sUew==
+X-Forwarded-Encrypted: i=1; AJvYcCXgyw7DC8Gjy1rl7zjtP8/L/5AZvU1OoCq6mGaNG/t3lom2h7sGOuzXFPEDaQFFHC1+ciqqoe2NEQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzrmh7qQfNChdzUoRPQft71ywL7Ontsw7kbdmuoArDDJxHlwjzQ
+	rJrT0CnjppjpMOMg+7URCabWXXwq/XSAhtE8LqmqZRQh/s0FDuR/QF8CfoxJO2NohA==
+X-Gm-Gg: ASbGnctXZI4heneX5AS1ZBEJ452ReoLoyhMx9f+BnLXmBENxQk841aeZBFDhxr7JaRP
+	xR7N6eu0VY0JtpqnMFSs7Dta+kB78ZpP9KdC0RX3mefgXHqqymKgbzohy13/AZ+yhZ0mFiASPSA
+	BWCsPgLyWj9I7OnF//Ldy0tnR6Fy7JhGzwSyZsDnBkK430GOsshm3s8O0VdnmtmLsSEakKK66Lo
+	SmP9GqjPSJRexQkxYTif4guY7vR8ukUWYE/8GT9buRFUNjxmhjOslS/WoxEHDR1jBRe4l4eRgMm
+	oCkPr5ZUtRRSd9O2sua2qe7rdRKK+OBlypiV5y4MmLw1VE5/Mu/zgaJDie1TACL87k52zsd0ZXG
+	LSdg6qSUVD3H6hoNdEW6w8RjO7UhkWaU2rXMqafysuIUNg13A2y/LofUgKMr2z0vtrp2NXPUiSc
+	7+gebFO1JJ5AMQau27cvG7d6twRiY1GAnfdlgcwEUnbPm6mRhO685SW+ni8W0nsV8pli1PpTblD
+	6LvBZxdO0C7/KY=
+X-Google-Smtp-Source: AGHT+IGKHjTCfZs9WliaOHICesM+L1X3EuoBynLJInRo210xgEeIFS6mewEtS3BfqWgQnxUg9wNNRQ==
+X-Received: by 2002:a05:690c:670b:b0:783:116b:fc5 with SMTP id 00721157ae682-783116b1024mr9954377b3.33.1760591134146;
+        Wed, 15 Oct 2025 22:05:34 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7828d7b9deesm4928007b3.26.2025.10.15.22.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 22:05:32 -0700 (PDT)
+Date: Wed, 15 Oct 2025 22:05:20 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kalesh Singh <kaleshsingh@google.com>
+cc: Hugh Dickins <hughd@google.com>, akpm@linux-foundation.org, 
+    minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com, 
+    Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+    kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
+    SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+    Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+    Juri Lelli <juri.lelli@redhat.com>, 
+    Vincent Guittot <vincent.guittot@linaro.org>, 
+    Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+    Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+    Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+    linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+    linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit
+ checks
+In-Reply-To: <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com>
+Message-ID: <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+References: <20251013235259.589015-1-kaleshsingh@google.com> <20251013235259.589015-2-kaleshsingh@google.com> <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com> <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/2] memcg: selftests for memcg stat kfuncs
-Content-Language: en-GB
-To: JP Kobryn <inwardvessel@gmail.com>, shakeel.butt@linux.dev,
- andrii@kernel.org, ast@kernel.org, mkoutny@suse.com, yosryahmed@google.com,
- hannes@cmpxchg.org, tj@kernel.org, akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- linux-mm@kvack.org, bpf@vger.kernel.org, kernel-team@meta.com
-References: <20251015190813.80163-1-inwardvessel@gmail.com>
- <20251015190813.80163-3-inwardvessel@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20251015190813.80163-3-inwardvessel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: osza13bh79cfamwru4g6gwid1imc9jrf
-X-Rspamd-Queue-Id: B33BD1C0006
-X-Rspamd-Server: rspam06
+Content-Type: multipart/mixed; boundary="-1463770367-1513627236-1760591132=:18627"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8CC74C000A
+X-Stat-Signature: 7nton35iqorgwt87scznmu5xmfwcnhsc
 X-Rspam-User: 
-X-HE-Tag: 1760591090-294036
-X-HE-Meta: U2FsdGVkX1/9KF5eeB+ozAMEx4mwddeOtV+uE7XBi+GIJTuZP8ZSNMk4cp7/qsSRzHhvM2PbQ6i/YpJi2TQF+KTBzULzmRGY0VvqBvFbKTNZdtgic1tks4cOKivzfeDeVxn4sj2HFBl5S4yZAxXOMG7kRvW3lbeOB5kpvMl66ZaAqSDwFqCCFJZBl5KVylZKcHoSaEjdhzSBdCR/Et550wRd0niNjBD28q8hovlTKUOC7wim0Wb1XaOXEvwfJVWjRw1eZbH8ZTzYMIAm2+sxooVFaU5Il8FmXp0BV4R9ZP3JQ++z05vo3Y1IBUgAHxlOiwdLbcjjEAdzB85ysvY7x5OqkcYLlp9kY1+1g2GHWhEQbD1HbgQ1SjHURa519zxpQr57RPOpzbGe4MF85zuVc3LSJTFyUQFQYa1JMPp31XDBokIAFdjOEN+Ca0D7zwVnUHdirhroQuDm+h0mcyshbNVhyQBAQHEqlOsS3RmEZhwQuvZ5XeBX6sQDlq3jy+Du0ZXkQQRwZn88S6tHdxynZ5ODAp5MgpJJSsjFEAsCk4waU1nNWm1qzLy5gy9M6gzSObTn20+XrldU038jEvlACpc5NrtsxPICgULRy+y4bZJp24Ti9pGx4V93Sf1TNmFBx+tcNwOVRFtFzvyiLwxu47escJzyk1TeiIhsQ+LhRzE7FZMSQ6TuLWGsLiE7HtwlFvplUbL90aHx2cO70tKu/WijstKGiu+a48Kk+Lf+XqjVqVqVnlSW6I36+RBBlxX4hVjueKhJe/tAGA3c25TtFnTMr5MeDuOO9nyYa6LpQiWZrYsGY+mfgPWGnt68+QBmV5EXUnmFjwhZ6yU6VDdbjDiWziSFRWmkDVi8ye5UAKLwwAD0GKRrXKmwtv9ds5HcrXB7aUnk1hpcYNwMIhho3ly1sMig6w68JunYEl0Nhp7VyI660EPstW7FNo1CGaL4ZEN0APER/PAnfWdZRUn
- dNfRnqwE
- gDj1/R69o1gRq9SmtCivVKiSeft+urgPkwc3kAr05IC1rYRDbXpc3c57O0kD3WB24AbiCIFhiP3rcA1aQYC+jDjXXIjwBNjl+FuD1ocZ8uPm3UtGmVW5PC/LIdppnCOAJ47P7UhcohO/C2bGowcPNAf9rALmNUz/k+WTsSWOHcfHqxV8pUDA+wBCDaP7b6RxlkswLwZPeSOkulBUSHVl1b373hE+ZK5L7bImIgUWNps++AwHezdO+qzk2SOB3imkKho1E
+X-HE-Tag: 1760591135-747530
+X-HE-Meta: U2FsdGVkX1+DLCFu4BM6dMKrqtcl5nngdK3rF2wrHkROVQPRQ39vcsnhHzCSIOemp1asU0NndsdqGABCZertU5CPtV2BPYL451buqZUK2nvTHA9oxITiSMMURgnGuYF9R4H4WZwQR503u/J9pVAwkdq4fLveawnCVynC9Wf4GLVZaXMkhIZBo2KrhpdfqcAztO2yPrqfy3VD/loTzHqgcTDU1NAV76sNOOMzZfQntbvC0eRnmdf0Jkh4wl7Hs8CpDMO5jALcfKWJFLPs62CRPieRvOwCWVIFMpqOrRxGSBPHyMPqxTZefIYJWqPj0857ZWd12rMrjyvkES21oBsQADLqDHaWvTBUDgIdd5xFVy0uQRCgbGc28ZQHcouzfWJ0jztw0ZBgm6tYOTVAWub/Z7oOX5IgoACcYEcihB5BeDeEfcq6AVBWU+PhmR0JIyCHzrjr7zmMCce3jpolFS79JFaIj4gQ4rX+TPPCVaC2R9oUd3IN2KymFSBfNDzQ6alMAkeIFnEEmZUJugt0APt3hvvDKTxfn3K8ogEJdVjT8e+UG0scnZh+39WvNwWTzuzbpWWD1cnKKBMW9sN0rTbQE07nfjn+RHhI5y8QvnPWA/u7pHATE+HnEAbKn/ozy16PgsKHxIIrcl9ziGZ+0mI5dyl4qj7ebJqE/k1QHz00CXhcJNRLI1FAqkCxP3wYvFt5UpPuUunKaSu5/hrc67RjISGo/6Pipb+uWvpoXsq6hFixYtc9q7XpoXfV2NqvQ61vfXFwu40WsPYkOU74vyr9EcD72L5V5gFecWfAGh7Llak3fG6nR+yy3O6BEWeEd8dWLGHWFM1XDtd95ct473HHkPglijzxeG18LwKL0qrnRruGJnQHV0cyMw8Cim3EHp7zm+dsE8h9ML8UkkNfi0B0qhDGGL912dYfOEXoSQbE7SoDCk6X6uufS5gEIzShXNk/hcp6hHe5QHsMtU9zOct
+ TkMNg0fu
+ 0nX4ykdwp9873gNefm9el05Qt6DeSXetYDb6+ZxK8LAsBRT9hratCKJnU+Gysy/TPlezDdbTCsrlLMi81wMWwLb/kA9XrOM5vBcs7uqZ6xhQUyl8MFGj9kJzZRd/dY29RwPlzKGpPem1RLWQ9GraokiOvkOfTqXQQA41XM11u/rau3qO297GXCsk9CnnjykZZHe0osTbpXmjSXqHUMR6Fw+iSGuFm5/RpFOI1rkZLiQA4Ckhqy2b0GGxjB3QlG4lcG944VGy1xhDoWK7+niznq4XrMi1/NVw0bnvv5bcSAvEddRa3OQGyJfC/19xqZkDyEjvDGTpdKomTyI7T1nVoCeJ/MrblkOEbwzqofvvfjTzm+uNQHzYH6n1Pz9vMeNRdgvOcJ5/L+IA3cAVbYjS+5j2LS6NMjI6GCS+dvdo6FICznz0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,483 +136,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+---1463770367-1513627236-1760591132=:18627
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On 10/15/25 12:08 PM, JP Kobryn wrote:
-> Add test coverage for the kfuncs that fetch memcg stats. Using some common
-> stats, test before and after scenarios ensuring that the given stat
-> increases by some arbitrary amount. The stats selected cover the three
-> categories represented by the enums: node_stat_item, memcg_stat_item,
-> vm_event_item.
->
-> Since only a subset of all stats are queried, use a static struct made up
-> of fields for each stat. Write to the struct with the fetched values when
-> the bpf program is invoked and read the fields in the user mode program for
-> verification.
->
-> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> ---
->   .../testing/selftests/bpf/cgroup_iter_memcg.h |  18 ++
->   .../bpf/prog_tests/cgroup_iter_memcg.c        | 295 ++++++++++++++++++
->   .../selftests/bpf/progs/cgroup_iter_memcg.c   |  61 ++++
->   3 files changed, 374 insertions(+)
->   create mode 100644 tools/testing/selftests/bpf/cgroup_iter_memcg.h
->   create mode 100644 tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
->   create mode 100644 tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
->
-> diff --git a/tools/testing/selftests/bpf/cgroup_iter_memcg.h b/tools/testing/selftests/bpf/cgroup_iter_memcg.h
-> new file mode 100644
-> index 000000000000..5f4c6502d9f1
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/cgroup_iter_memcg.h
-> @@ -0,0 +1,18 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
-> +#ifndef __CGROUP_ITER_MEMCG_H
-> +#define __CGROUP_ITER_MEMCG_H
-> +
-> +struct memcg_query {
-> +	/* some node_stat_item's */
-> +	long nr_anon_mapped;
-> +	long nr_shmem;
-> +	long nr_file_pages;
-> +	long nr_file_mapped;
-> +	/* some memcg_stat_item */
-> +	long memcg_kmem;
-> +	/* some vm_event_item */
-> +	long pgfault;
-> +};
-> +
-> +#endif /* __CGROUP_ITER_MEMCG_H */
-> diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
-> new file mode 100644
-> index 000000000000..264dc3c9ec30
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
-> @@ -0,0 +1,295 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
-> +#include <test_progs.h>
-> +#include <bpf/libbpf.h>
-> +#include <bpf/btf.h>
-> +#include <fcntl.h>
-> +#include <sys/mman.h>
-> +#include <unistd.h>
-> +#include "cgroup_helpers.h"
-> +#include "cgroup_iter_memcg.h"
-> +#include "cgroup_iter_memcg.skel.h"
-> +
-> +int read_stats(struct bpf_link *link)
+On Tue, 14 Oct 2025, Kalesh Singh wrote:
+> On Mon, Oct 13, 2025 at 11:28=E2=80=AFPM Hugh Dickins <hughd@google.com> =
+wrote:
+> >
+> > Sorry for letting you go so far before speaking up (I had to test what
+> > I believed to be true, and had hoped that meanwhile one of your many
+> > illustrious reviewers would say so first, but no): it's a NAK from me.
+> >
+> > These are not off-by-ones: at the point of these checks, it is not
+> > known whether an additional map/vma will have to be added, or the
+> > addition will be merged into an existing map/vma.  So the checks
+> > err on the lenient side, letting you get perhaps one more than the
+> > sysctl said, but not allowing any more than that.
+> >
+> > Which is all that matters, isn't it? Limiting unrestrained growth.
+> >
+> > In this patch you're proposing to change it from erring on the
+> > lenient side to erring on the strict side - prohibiting merges
+> > at the limit which have been allowed for many years.
+> >
+> > Whatever one thinks about the merits of erring on the lenient versus
+> > erring on the strict side, I see no reason to make this change now,
+> > and most certainly not with a Fixes Cc: stable. There is no danger
+> > in the current behaviour; there is danger in prohibiting what was
+> > allowed before.
+> >
+> > As to the remainder of your series: I have to commend you for doing
+> > a thorough and well-presented job, but I cannot myself see the point in
+> > changing 21 files for what almost amounts to a max_map_count subsystem.
+> > I call it misdirected effort, not at all to my taste, which prefers the
+> > straightforward checks already there; but accept that my taste may be
+> > out of fashion, so won't stand in the way if others think it worthwhile=
+=2E
+>=20
+> Hi Hugh,
+>=20
+> Thanks for the detailed review and for taking the time to test the behavi=
+or.
+>=20
+> You've raised a valid point. I wasn't aware of the history behind the
+> lenient check for merges. The lack of a comment, like the one that
+> exists for exceeding the limit in munmap(), led me to misinterpret
+> this as an off-by-one bug. The convention makes sense if we consider
+> potential merges.
 
-static int read_stats(...)
+Yes, a comment there would be helpful (and I doubt it's worth more
+than adding a comment); but I did not understand at all, Liam's
+suggestion for the comment "to state that the count may not change".
 
-> +{
-> +	int fd, ret = 0;
-> +	ssize_t bytes;
-> +
-> +	fd = bpf_iter_create(bpf_link__fd(link));
-> +	if (!ASSERT_OK_FD(fd, "bpf_iter_create"))
-> +		return 1;
-> +
-> +	/*
-> +	 * Invoke iter program by reading from its fd. We're not expecting any
-> +	 * data to be written by the bpf program so the result should be zero.
-> +	 * Results will be read directly through the custom data section
-> +	 * accessible through skel->data_query.memcg_query.
-> +	 */
-> +	bytes = read(fd, NULL, 0);
-> +	if (!ASSERT_EQ(bytes, 0, "read fd"))
-> +		ret = 1;
-> +
-> +	close(fd);
-> +	return ret;
-> +}
-> +
-> +static void test_anon(struct bpf_link *link,
-> +		struct memcg_query *memcg_query)
+>=20
+> If it was in-fact the intended behavior, then I agree we should keep
+> it lenient. It would mean though, that munmap() being able to free a
+> VMA if a split is required (by permitting exceeding the limit by 1)
+> would not work in the case where we have already exceeded the limit. I
+> find this to be inconsistent but this is also the current behavior ...
 
-Alignment between arguments? Actually two arguments can be in the same line.
+You're saying that once we go one over the limit, say with a new mmap,
+an munmap check makes it impossible to munmap that or any other vma?
 
-> +{
-> +	void *map;
-> +	size_t len;
-> +	long val;
-> +
-> +	len = sysconf(_SC_PAGESIZE) * 1024;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		return;
-> +
-> +	val = memcg_query->nr_anon_mapped;
-> +	if (!ASSERT_GE(val, 0, "initial anon mapped val"))
-> +		return;
-> +
-> +	/*
-> +	 * Increase memcg anon usage by mapping and writing
-> +	 * to a new anon region.
-> +	 */
-> +	map = mmap(NULL, len, PROT_READ | PROT_WRITE,
-> +			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+If that's so, I do agree with you, that's nasty, and I would hate any
+new code to behave that way.  In code that's survived as long as this
+without troubling anyone, I'm not so sure: but if it's easily fixed
+(a more lenient check at the munmap end?) that would seem worthwhile.
 
-All arguments can be in the same line.
+Ah, but reading again, you say "if a split is required": I guess
+munmapping the whole vma has no problem; and it's fine for a middle
+munmap, splitting into three before munmapping the middle, to fail.
+I suppose it would be nicer if munmaping start or end succeeeded,
+but I don't think that matters very much in this case.
 
-> +	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap anon"))
-> +		return;
-> +
-> +	memset(map, 1, len);
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		goto cleanup;
-> +
-> +	ASSERT_GT(memcg_query->nr_anon_mapped, val, "final anon mapped val");
-> +
-> +cleanup:
-> +	munmap(map, len);
-> +}
-> +
-> +static void test_file(struct bpf_link *link,
-> +		struct memcg_query *memcg_query)
+>=20
+> I will drop this patch and the patch that introduces the
+> vma_count_remaining() helper, as I see your point about it potentially
+> being unnecessary overhead.
+>=20
+> Regarding your feedback on the rest of the series, I believe the 3
+> remaining patches are still valuable on their own.
+>=20
+>  - The selftest adds a comprehensive tests for VMA operations at the
+> sysctl_max_map_count limit. This will self-document the exact behavior
+> expected, including the leniency for potential merges that you
+> highlighted, preventing the kind of misunderstanding that led to my
+> initial patch.
+>=20
+>  - The rename of mm_struct->map_count to vma_count, is a
+> straightforward cleanup for code clarity that makes the purpose of the
+> field more explicit.
+>=20
+>  - The tracepoint adds needed observability for telemetry, allowing us
+> to see when processes are failing in the field due to VMA count limit.
+>=20
+> The  selftest, is what  makes up a large portion of the diff you
+> sited, and with vma_count_remaining() gone the series will not touch
+> nearly as many files.
+>=20
+> Would this be an acceptable path forward?
 
-Arguments can be in the same line. Some other examples below.
+Possibly, if others like it: my concern was to end a misunderstanding
+(I'm generally much too slow to get involved in cleanups).
 
-> +{
-> +	void *map;
-> +	size_t len;
-> +	long val_pages, val_mapped;
-> +	FILE *f;
-> +	int fd;
-> +
-> +	len = sysconf(_SC_PAGESIZE) * 1024;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		return;
-> +
-> +	val_pages = memcg_query->nr_file_pages;
-> +	if (!ASSERT_GE(val_pages, 0, "initial file val"))
-> +		return;
-> +	val_mapped = memcg_query->nr_file_mapped;
-> +	if (!ASSERT_GE(val_mapped, 0, "initial file mapped val"))
-> +		return;
-> +
-> +	/*
-> +	 * Increase memcg file usage by creating and writing
-> +	 * to a temoprary mapped file.
-> +	 */
-> +	f = tmpfile();
-> +	if (!ASSERT_OK_PTR(f, "tmpfile"))
-> +		return;
-> +	fd = fileno(f);
-> +	if (!ASSERT_OK_FD(fd, "open fd"))
-> +		return;
-> +	if (!ASSERT_OK(ftruncate(fd, len), "ftruncate"))
-> +		goto cleanup_fd;
-> +
-> +	map = mmap(NULL, len, PROT_READ | PROT_WRITE,
-> +			MAP_SHARED, fd, 0);
+Though given that the sysctl is named "max_map_count", I'm not very
+keen on renaming everything else from map_count to vma_count
+(and of course I'm not suggesting to rename the sysctl).
 
-ditto.
-
-> +	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap file"))
-> +		goto cleanup_fd;
-> +
-> +	memset(map, 1, len);
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		goto cleanup_map;
-> +
-> +	ASSERT_GT(memcg_query->nr_file_pages, val_pages, "final file value");
-> +	ASSERT_GT(memcg_query->nr_file_mapped, val_mapped,
-> +			"final file mapped value");
-
-ditto.
-
-> +
-> +cleanup_map:
-> +	munmap(map, len);
-> +cleanup_fd:
-> +	close(fd);
-> +}
-> +
-> +static void test_shmem(struct bpf_link *link,
-> +		struct memcg_query *memcg_query)
-
-ditto.
-
-> +{
-> +	size_t len;
-> +	int fd;
-> +	void *map;
-> +	long val;
-> +
-> +	len = sysconf(_SC_PAGESIZE) * 1024;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		return;
-> +
-> +	val = memcg_query->nr_shmem;
-> +	if (!ASSERT_GE(val, 0, "init shmem val"))
-> +		return;
-> +
-> +	/*
-> +	 * Increase memcg shmem usage by creating and writing
-> +	 * to a shmem object.
-> +	 */
-> +	fd = shm_open("/tmp_shmem", O_CREAT | O_RDWR, 0644);
-> +	if (!ASSERT_OK_FD(fd, "shm_open"))
-> +		return;
-> +
-> +	if (!ASSERT_OK(ftruncate(fd, len), "ftruncate"))
-> +		goto cleanup_fd;
-> +
-> +	map = mmap(NULL, len, PROT_READ | PROT_WRITE,
-> +			MAP_SHARED, fd, 0);
-
-ditto.
-
-> +	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap shmem"))
-> +		goto cleanup_fd;
-> +
-> +	memset(map, 1, len);
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		goto cleanup_map;
-> +
-> +	ASSERT_GT(memcg_query->nr_shmem, val, "final shmem value");
-> +
-> +cleanup_map:
-> +	munmap(map, len);
-> +cleanup_fd:
-> +	close(fd);
-> +	shm_unlink("/tmp_shmem");
-> +}
-> +
-> +static void test_kmem(struct bpf_link *link,
-> +		struct memcg_query *memcg_query)
-
-ditto.
-
-> +{
-> +	int fds[2];
-> +	int err;
-> +	ssize_t bytes;
-> +	size_t len;
-> +	char *buf;
-> +	long val;
-> +
-> +	len = sysconf(_SC_PAGESIZE) * 1024;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		return;
-> +
-> +	val = memcg_query->memcg_kmem;
-> +	if (!ASSERT_GE(val, 0, "initial kmem val"))
-> +		return;
-> +
-> +	err = pipe2(fds, O_NONBLOCK);
-> +	if (!ASSERT_OK(err, "pipe"))
-> +		return;
-> +
-> +	buf = malloc(len);
-
-buf could be NULL?
-
-> +	memset(buf, 1, len);
-> +	bytes = write(fds[1], buf, len);
-> +	if (!ASSERT_GT(bytes, 0, "write"))
-> +		goto cleanup;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		goto cleanup;
-> +
-> +	ASSERT_GT(memcg_query->memcg_kmem, val, "kmem value");
-> +
-> +cleanup:
-> +	free(buf);
-> +	close(fds[0]);
-> +	close(fds[1]);
-> +}
-> +
-> +static void test_pgfault(struct bpf_link *link,
-> +		struct memcg_query *memcg_query)
-
-ditto.
-
-> +{
-> +	void *map;
-> +	size_t len;
-> +	long val;
-> +
-> +	len = sysconf(_SC_PAGESIZE) * 1024;
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		return;
-> +
-> +	val = memcg_query->pgfault;
-> +	if (!ASSERT_GE(val, 0, "initial pgfault val"))
-> +		return;
-> +
-> +	/* Create region to use for triggering a page fault. */
-> +	map = mmap(NULL, len, PROT_READ | PROT_WRITE,
-> +			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-> +	if (!ASSERT_NEQ(map, MAP_FAILED, "mmap anon"))
-> +		return;
-> +
-> +	/* Trigger page fault. */
-> +	memset(map, 1, len);
-> +
-> +	if (!ASSERT_OK(read_stats(link), "read stats"))
-> +		goto cleanup;
-> +
-> +	ASSERT_GT(memcg_query->pgfault, val, "final pgfault val");
-> +
-> +cleanup:
-> +	munmap(map, len);
-> +}
-> +
-> +void test_cgroup_iter_memcg(void)
-> +{
-> +	char *cgroup_rel_path = "/cgroup_iter_memcg_test";
-> +	struct cgroup_iter_memcg *skel;
-> +	struct bpf_link *link;
-> +	int cgroup_fd, err;
-> +
-> +	cgroup_fd = cgroup_setup_and_join(cgroup_rel_path);
-> +	if (!ASSERT_OK_FD(cgroup_fd, "cgroup_setup_and_join"))
-> +		return;
-> +
-> +	skel = cgroup_iter_memcg__open();
-> +	if (!ASSERT_OK_PTR(skel, "cgroup_iter_memcg__open"))
-> +		goto cleanup_cgroup_fd;
-> +
-> +	err = cgroup_iter_memcg__load(skel);
-> +	if (!ASSERT_OK(err, "cgroup_iter_memcg__load"))
-> +		goto cleanup_skel;
-
-The above two can be combined with cgroup_iter_memcg__open_and_load().
-
-> +
-> +	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
-> +	union bpf_iter_link_info linfo = {
-> +		.cgroup.cgroup_fd = cgroup_fd,
-> +		.cgroup.order = BPF_CGROUP_ITER_SELF_ONLY,
-> +	};
-> +	opts.link_info = &linfo;
-> +	opts.link_info_len = sizeof(linfo);
-> +
-> +	link = bpf_program__attach_iter(skel->progs.cgroup_memcg_query, &opts);
-> +	if (!ASSERT_OK_PTR(link, "bpf_program__attach_iter"))
-> +		goto cleanup_cgroup_fd;
-
-goto cleanup_skel;
-
-> +
-> +	if (test__start_subtest("cgroup_iter_memcg__anon"))
-> +		test_anon(link, &skel->data_query->memcg_query);
-> +	if (test__start_subtest("cgroup_iter_memcg__shmem"))
-> +		test_shmem(link, &skel->data_query->memcg_query);
-> +	if (test__start_subtest("cgroup_iter_memcg__file"))
-> +		test_file(link, &skel->data_query->memcg_query);
-> +	if (test__start_subtest("cgroup_iter_memcg__kmem"))
-> +		test_kmem(link, &skel->data_query->memcg_query);
-> +	if (test__start_subtest("cgroup_iter_memcg__pgfault"))
-> +		test_pgfault(link, &skel->data_query->memcg_query);
-> +
-> +	bpf_link__destroy(link);
-> +cleanup_skel:
-> +	cgroup_iter_memcg__destroy(skel);
-> +cleanup_cgroup_fd:
-> +	close(cgroup_fd);
-> +	cleanup_cgroup_environment();
-> +}
-> diff --git a/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-> new file mode 100644
-> index 000000000000..0d913d72b68d
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/cgroup_iter_memcg.c
-> @@ -0,0 +1,61 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2025 Meta Platforms, Inc. and affiliates. */
-> +#include <vmlinux.h>
-> +#include <bpf/bpf_core_read.h>
-> +#include "cgroup_iter_memcg.h"
-> +
-> +char _license[] SEC("license") = "GPL";
-> +
-> +extern void memcg_flush_stats(struct cgroup *cgrp) __ksym;
-> +extern unsigned long memcg_stat_fetch(struct cgroup *cgrp,
-> +		enum memcg_stat_item item) __ksym;
-> +extern unsigned long memcg_node_stat_fetch(struct cgroup *cgrp,
-> +		enum node_stat_item item) __ksym;
-> +extern unsigned long memcg_vm_event_fetch(struct cgroup *cgrp,
-> +		enum vm_event_item item) __ksym;
-
-The above four extern functions are not needed. They should be included
-in vmlinux.h if the latest pahole version (1.30) is used.
-
-> +
-> +/* The latest values read are stored here. */
-> +struct memcg_query memcg_query SEC(".data.query");
-> +
-> +/*
-> + * Helpers for fetching any of the three different types of memcg stats.
-> + * BPF core macros are used to ensure an enumerator is present in the given
-> + * kernel. Falling back on -1 indicates its absence.
-> + */
-> +#define node_stat_fetch_if_exists(cgrp, item) \
-> +	bpf_core_enum_value_exists(enum node_stat_item, item) ? \
-> +		memcg_node_stat_fetch((cgrp), bpf_core_enum_value( \
-> +					 enum node_stat_item, item)) : -1
-> +
-> +#define memcg_stat_fetch_if_exists(cgrp, item) \
-> +	bpf_core_enum_value_exists(enum memcg_stat_item, item) ? \
-> +		memcg_node_stat_fetch((cgrp), bpf_core_enum_value( \
-> +					 enum memcg_stat_item, item)) : -1
-> +
-> +#define vm_event_fetch_if_exists(cgrp, item) \
-> +	bpf_core_enum_value_exists(enum vm_event_item, item) ? \
-> +		memcg_vm_event_fetch((cgrp), bpf_core_enum_value( \
-> +					 enum vm_event_item, item)) : -1
-> +
-> +SEC("iter.s/cgroup")
-> +int cgroup_memcg_query(struct bpf_iter__cgroup *ctx)
-> +{
-> +	struct cgroup *cgrp = ctx->cgroup;
-> +
-> +	if (!cgrp)
-> +		return 1;
-> +
-> +	memcg_flush_stats(cgrp);
-> +
-> +	memcg_query.nr_anon_mapped = node_stat_fetch_if_exists(cgrp,
-> +			NR_ANON_MAPPED);
-> +	memcg_query.nr_shmem = node_stat_fetch_if_exists(cgrp, NR_SHMEM);
-> +	memcg_query.nr_file_pages = node_stat_fetch_if_exists(cgrp,
-> +			NR_FILE_PAGES);
-> +	memcg_query.nr_file_mapped = node_stat_fetch_if_exists(cgrp,
-> +			NR_FILE_MAPPED);
-> +	memcg_query.memcg_kmem = memcg_stat_fetch_if_exists(cgrp, MEMCG_KMEM);
-> +	memcg_query.pgfault = vm_event_fetch_if_exists(cgrp, PGFAULT);
-
-There is a type mismatch:
-
-+struct memcg_query {
-+	/* some node_stat_item's */
-+	long nr_anon_mapped;
-+	long nr_shmem;
-+	long nr_file_pages;
-+	long nr_file_mapped;
-+	/* some memcg_stat_item */
-+	long memcg_kmem;
-+	/* some vm_event_item */
-+	long pgfault;
-+};
-
-memcg_query.nr_anon_mapped is long, but node_stat_fetch_if_exists
-(...) return value type is unsigned long. It would be good if two
-types are the same.
-
-> +
-> +	return 0;
-> +}
-
+Hugh
+---1463770367-1513627236-1760591132=:18627--
 
