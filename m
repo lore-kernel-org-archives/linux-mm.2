@@ -4,196 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8627CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 20:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FFC4CCD199
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 20:26:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CD6D8E002E; Thu, 16 Oct 2025 16:22:41 -0400 (EDT)
+	id A52398E002F; Thu, 16 Oct 2025 16:26:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07DE08E0002; Thu, 16 Oct 2025 16:22:40 -0400 (EDT)
+	id A22FF8E0002; Thu, 16 Oct 2025 16:26:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60C98E002E; Thu, 16 Oct 2025 16:22:40 -0400 (EDT)
+	id 938398E002F; Thu, 16 Oct 2025 16:26:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D31E48E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 16:22:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D25213AF6B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:22:40 +0000 (UTC)
-X-FDA: 84005100480.16.5AA1160
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013015.outbound.protection.outlook.com [40.107.201.15])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B0F89C0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:22:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=btwrNHDD;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760646157;
+	by kanga.kvack.org (Postfix) with ESMTP id 827428E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 16:26:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47280B8317
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:26:12 +0000 (UTC)
+X-FDA: 84005109384.17.65548DF
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 61578180008
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:26:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cwv8DTAR;
+	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760646370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9xQP9XyCZLqUTYq1Y8XH5nflS2dR5bys8ZFEddppgM=;
-	b=LTlULAOPaKEDI7ui043Z18KtmRkzXI7iTUuC0j+jxjuqe46hhBgM2Y6i/yV5u1q01zKjHQ
-	IVMI4JJK0eKBi5OcKQo8yT6peim0kOF3SYIcEFshiChtJmiq9auiRTRl7BvF/Q+8N7mYJh
-	xprxQ0v6D6frVZerNJd6SOro4B/WPnQ=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=btwrNHDD;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760646157; a=rsa-sha256;
-	cv=pass;
-	b=dLPTm4QDPTgHrz38UCHTZ61exLT9t2S6A0siGrP6JEhzYiCnhdOGPyAZJsCRryX6JkhuXF
-	ubnSdwyqHmgRU4xe0ovv8+RsZEFDur7Vz/3j5Rj/Xom/YuI7f2+kYyHQQEpbRPdpvisUoj
-	sSQzKbfS8iimd5l0JRGSpnLF8wKGfHE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a7mK3JbfnCWBIoP430a5wCiGPlMvHeruCD9vKwn5G9WMqTUbTy2/hIIjdXD+3ifwpSgu6Z0RdlG14uSi7Hb2FrCkDLgBNpcOVlcBsr+xjLaRsOhkCVOoMOXQxOd972uolWbKb+w4i50CdCLkmb+2osE3kdZ6wOuLBhL9hYmrWbWZdFYzZ6BIBTRQtUcL5rdsBqKJuEml95arNoJtJRpKK6vzV1dHGvS9rNetYWg0m9csyWr5Xu8PLJ7R9Moc51PHtPLCVn8qHFKT3G9DpWAdbJX9glb/649+fEP9uHGRkWytuN9AcZkEBqKZaBlGMSuOHuZVZzLeYx+DQpfjIfTMwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f9xQP9XyCZLqUTYq1Y8XH5nflS2dR5bys8ZFEddppgM=;
- b=vU/9CERYxTsqHg6MX2nzoagrbnegklL0hesg9QvRi83KC0YPAu5nI2XXMt6LmFcuKfUB++46gIv/Wj1Ry/FXRZlUGkP7p4GCIf2AOfuuZbBBJu5JzFag6YEofaQdkzY9xdiZVNXd62wMRSaRsf3IDWFyLH+vxjq/P9bWmWSNnF5BqyVHhat5mwNdh2sTYXM7AUH3fHBBersBd0OCiyFi1f8hQRfGdzztroHSbNSAWyP1TMYIzDNS+9sgPdko4pNjP6tNq1d3+bIWpyPGSUav3DTLQwOw0GmrXXaZjASD9eYhfx/hYWvIjRg3VipwUqvFMRpIODlEbLLGFxeIcg2TTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f9xQP9XyCZLqUTYq1Y8XH5nflS2dR5bys8ZFEddppgM=;
- b=btwrNHDDBxEH7pug7RhFX+mmUWESSUJblaLSLQhFXIeSJnJY4OWkrKKPCIEIXEEEqYAEiCyYof9FoeVNjza8FAf9VGoh3Lv5VXefAbnK825khcTo3F/la73uaAY4wVjKcr1BsHS8RtC9L+vrofc7B7YcdQCTaqIAEiWMmNzP0fEIddH5Eo3Zq07vcNwp3kOzecIJKrft3PWaVHiDIxS+jiDGsu32zkIHfbLIvnkIhrtAMgksImYl0Kljb3fHdOTDzhAfB2+lrPRvJPTZFWmc5bbTH5+WUuD32qXyiOPav7BXHJ1sof/NfwnzlguBSu5wBm0j7mKBEllvl6rF/CG1bA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM4PR12MB6230.namprd12.prod.outlook.com (2603:10b6:8:a7::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9228.12; Thu, 16 Oct 2025 20:22:31 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Thu, 16 Oct 2025
- 20:22:31 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [Patch v2 2/2] mm/huge_memory: Optimize and simplify
- __split_unmapped_folio() logic
-Date: Thu, 16 Oct 2025 16:22:27 -0400
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <BE1A9E45-A304-4A54-AA4A-C8ACF889262F@nvidia.com>
-In-Reply-To: <99d5c245-3b0f-4b33-8d44-bc2b203a5a51@redhat.com>
-References: <20251016004613.514-1-richard.weiyang@gmail.com>
- <20251016004613.514-3-richard.weiyang@gmail.com>
- <99d5c245-3b0f-4b33-8d44-bc2b203a5a51@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0569.namprd03.prod.outlook.com
- (2603:10b6:408:138::34) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=e04unfMcA+wl94OLQlNjKMIVqI1fY+KiZvebuibHwws=;
+	b=d4IONkRl8JtynOuHCO9ixCAKV2eD2HJsCrIqj7cB/2ZTDd2X2BZy0fRnWv6cYCTLANmKDH
+	jHAH0Shv1G+PsX18ekrBDwjOgh7zcxtJo87r57mJauu6LD8esBikYywQ/DeXb6Ba5qv7hW
+	Ro944FRfP+dcx5L/B1kfg+As+NTZLH0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cwv8DTAR;
+	spf=pass (imf16.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760646370; a=rsa-sha256;
+	cv=none;
+	b=C+d8O41htB8xtZVGm9iN50+wM23fwiMtcQYcIOoZZfy/p9GAk+csMShuQtDa+bmRPT96pd
+	wL+ghReLDNdLQ5DKH8JghYnRcbYbp6fNTvtC8z8Wbl/nfjCHnhXAkZph/fvZAu+CmR5ouc
+	3JQBy0NfnqNPOQznp1zB+cKvLzNfUjI=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-62faa04afd9so844a12.1
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760646369; x=1761251169; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e04unfMcA+wl94OLQlNjKMIVqI1fY+KiZvebuibHwws=;
+        b=cwv8DTARnrKWVGua/TXQ0ul3tuxqVVKr0j9CSDrEkut2AydzXmPYyhlQOvaX7d32WS
+         XXuv3RjDU6Eq8xuX8dz1/mjRl6T2hzDVNRpVn915lmr2Lyi1FyXbvZwrxLnE93ujhNdi
+         kGkycY5KOor3yhhcwCrY5bn1xdpHEjxCp5Bs4y+MzQIz1J1VM4ZpQrpFt+O7+/NeHm3g
+         kk04tYGp99mFmBo+imP7dOhnJs2FtDgQlWzR5iL2TnuvC1r7QXRalFOw+IaaXATpqLMQ
+         DW7AdW2TnbCY05RGwdZwOTJuUe+YNwjFGgDLSe6VnK5J5gHsPaG1gC5KQ1pf7/R8Dm9I
+         7ChQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760646369; x=1761251169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e04unfMcA+wl94OLQlNjKMIVqI1fY+KiZvebuibHwws=;
+        b=EWU2gkze51csW8L8sXCszIaLzWlI72uTyz/OigeKwo2X0Xxm8x1qJpn6j2ej5VajZN
+         H0Vwpy/PmPdwAoMcCBVGkC5+xsrFlqA44idD+KiFVqCQgDCSiTclNWL4RPkpkvtQfv7r
+         iTgjgramZ708HNUERhegN1dOX4zH8WCeeShhszT6nwG7KEdIyI/QsAnDvCb3FQOUae8S
+         6rp6C5gW1rnHkEgol8Sc5sPKYQgZAKj+MCfEic1Uh9q35Q/gg17NxSaIrbljF+Jsg4/L
+         vmXlJeo2C2BDKDruEREw1MO4tQER2GrX3O5DUJXB8rtqJ5dIXEuP3Gia3Bn0njzuL+b8
+         YGTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG4C5WaHA/q48596kBEuIRjt1YolhiCl0bYVOHcTGFKntYKdIirmRcXKu+xl+jS0ar30Wn8pHSIw==@kvack.org
+X-Gm-Message-State: AOJu0YxxS4y4Jp2rmQ78VSBM2HsxyIUzoCRtx+3kiKJpsfjWvjA8lpcD
+	LVA4l0BBTpnMO50npYjsCsT2n/9t9mP6dNrTr9sC06VmF8xOUCqqO3Cu/AYzfEdfBil4STsJdEb
+	CnCi15L9Qxu14yz/50kuVfGapcoorewY0ZjmOeiKQ
+X-Gm-Gg: ASbGncsUuvy59SDIbvsNa7CmlwKcD62MD+8BgJsl3BMYvYP8LeP44DQCgzN9oBuYFXY
+	LPFaghJ6Gm/qMqS40B9RGxiYw7ZX1KKId6sLlUTnT9yi9Zt5NvLFd39X6zDhtPQ+sc239RK5NoV
+	oj33dlsn1TTyIuDgJfdOWX07yJwPgyqh0qDok2NiYjHW4eDP3gSTluxC968HXtsIh1SckluAwuR
+	4bLZrcvqOdwBZc4Q4g/bG/8j8uxnN1F6sc8+g6ZlbRlXx4WwEpRvpxYOPSS/HH48bENL5o0SjyH
+	csrt+l3ekK2QwOmohLleSKkOyw==
+X-Google-Smtp-Source: AGHT+IH/u+FCKbAoouZGXJNTy6nZ13eBN9Yk1uXZGrSCfrKoknUB+Gt38BROwONPAKp2ZAt70A36LU2nCFlzOIYu7Lk=
+X-Received: by 2002:aa7:d144:0:b0:634:90ba:2361 with SMTP id
+ 4fb4d7f45d1cf-63bee07418dmr245479a12.7.1760646368450; Thu, 16 Oct 2025
+ 13:26:08 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB6230:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c7823e4-63d2-4d0f-aefb-08de0cf1bbab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VjZOM0dVbkRGNkc2THk3WXFucWExanpiclBhY0tsNk1KR0lvWDdUZFB5d3Jv?=
- =?utf-8?B?bFVYRGJOUzhUUHZZeFJ6Q1A0VFNjcCtDT1RSdzFGalp4cjd6QmVZUyt3ekxT?=
- =?utf-8?B?Q1BWMlpPTytZOG9WMWcwR0Y2WFd6bE05MUlXTnBrRFRtdzBxOXc3YVF3TG5y?=
- =?utf-8?B?NDZCRy9PMUJCVzROREg0VSs1VXhMcmZMa1lpa2NMeHBaKzEwTEcyS0YzeGNC?=
- =?utf-8?B?SFlFTUljaS9la2o1RXVuQnR3VStlN3dQNDE4bGV2eTI2WWJFaWdnZU13SXFh?=
- =?utf-8?B?Z0pjTWxFaDFWM295dnM5ZFY2SXgyY0xhVDJXcGFjNGYzRTNlU0hNWmRwR1VM?=
- =?utf-8?B?aDRJRFlXVFR1Z2h3em9jNWRWNFJlMks5SVpvZEZxYjArazZhTVo2cXFiQ095?=
- =?utf-8?B?aFgvYkNZVmk2QXV2SEdFby9lUkkycS82TUJHT3ZZNnZuc1dWYzc3M0dBTGl0?=
- =?utf-8?B?TkZoVE1PVFBmUFpyV1o1R21vTTc1NDdCUksxclhRUTZhSldqS0wzMVdZa3ds?=
- =?utf-8?B?STE5dDNTUGRaWHhYSnpCVlJhRnAvN2x4RS9QOXBMNUtLREpIb3Z4cXZyc0tt?=
- =?utf-8?B?bTFTVS85SXZEWXgyVHR2QktjZmVSaHRBRUVLMlJwaE9jUkYvSDE3bzZlUU1q?=
- =?utf-8?B?MGQ2eUpCNEVjUWJkelFFQ3JjRlBwN3FHa01wSTVTWGRwcURXL1RwZXNsclRJ?=
- =?utf-8?B?S3QyUGdvbXU5cjFoMmw1bHNjN1pBaEVOZXhNZlBrVEZMZDIvZm1vZlMrYlpW?=
- =?utf-8?B?OTVuMXY2VVpVVjZEeWx2TjJ5YWsxSEt3NjZpSHByVmhxbVlhWkFhakpoY3pr?=
- =?utf-8?B?aEJlS1JYb01iUmFOSGNtS1VjNTlPTFZrNCt3QWVleWQ3bk9YSXk0eStEbUhJ?=
- =?utf-8?B?MnEvbHVqUXBqaGFtVzgySnNMZEFMazc0K0hPVmFyaXZIY1JWWjVPN2tmNnFW?=
- =?utf-8?B?VW55SGUzWlB2bGVmT0MxdXQ0Z0tYS1BXcGswc2pCVlZGbUdYTXJtM2JGZ2F4?=
- =?utf-8?B?NHNnbUxyU3QremlxdUM5dGtRVDdUZmo1L0ZmQ1RJQ0lJTHdwRThoNlIvM1R1?=
- =?utf-8?B?bEtWdDR0Nm5wWkl0U0dhN2ZGY3UvTms2ckhxZ3cvZW1yQ1hUOG1kMUlzRzZO?=
- =?utf-8?B?M0NLM0hDT3E5KzcwQmIvajUzN0RBQUhrbnFGVlNEQU90Yk4wcTR2ZmdmWTFi?=
- =?utf-8?B?YzhGeUpYYmdIdnpzc0xLa2wzc0d4K08zYWhYVEhvbVZ2ZnpjWFprcDhjMDJI?=
- =?utf-8?B?ZURGblBtQlFFM0xYb1pVbTJEZU8zcXhBUUhHaHl5eDYzZ2twR2ZyUm1DdE1a?=
- =?utf-8?B?Yyttc2hBcktmM01zQUVmWFhRQ25URjVTVklpUjl3RG9abXZjbUN0YVh5UHc2?=
- =?utf-8?B?T3hrR3RCaGZadWFkZDFHWVEyUXVPZmVnZ2ppOFFLei9hMG9hRDZIMDdOclI1?=
- =?utf-8?B?UlZOR0Q0bktCTWxxbE5kblZ4YUV4d2tuV1BoSnh6bUNlVURMSnpJLzJPOHh0?=
- =?utf-8?B?TmxVU05yempLcWZHN1gyVHJYSmhBQUF3YnRCdXJXM3lJYXplVUF5TDlYdWUx?=
- =?utf-8?B?bEFYK2hiSUE0ZjVwbHI1d0hiWFloTVZWZ1d1NklBNCsweUtvTWtXOXNjNUhO?=
- =?utf-8?B?YUY3NVp4UEg3R281c1lDNHhZdUhxUXhEbko5YVlmNitaTTRPQ3pFT3BaRHdU?=
- =?utf-8?B?OEVsMHEvNmdRSElhNkdkNUZVdkJ6cHpqS2dxVW8zR0ZRdTY5clQ1UFRaMDRm?=
- =?utf-8?B?ZkoxRU0vUkdXbmozaEVxOFdQQ2NFbVhkNkZWV0QreVpvRFJ0SjJjSWkxT2NW?=
- =?utf-8?B?SlNJbStkUGw3UUJtdld6c1NYUmFaeUlFTFZtcS9QTkQxWWxoZmhEYit6UFFk?=
- =?utf-8?B?M0psdml2MzJjeVI4V1hKeFExVCs4UDFPNlVwSElrMjQyN0I1ZEt4UHJMQXN2?=
- =?utf-8?Q?g7BpEtdDpmXJQjAEq2nNSgLK1T974wIt?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGpMRnVUbnl2YkJhUWUreVVRcVFqNTRvUUVlNjRxZmllbm8wRG02dTNDTnVR?=
- =?utf-8?B?MXNXb21OV2RkYUdPRU9NQUkyZEdndkFDOXdqQVBuaDEzSGwwRTllQ2tOSkpF?=
- =?utf-8?B?R2lIVTg4K0tpNm5NdDlxT1VKWnVSa3hNUUErQWttRWVCWEFPWGtYY3B6Rnht?=
- =?utf-8?B?YVM0WFhGS0VjQ0tEWjFxTlNxWDhacEdxMlFyQTBuQzJIRDRTbG1IbFVkVFZR?=
- =?utf-8?B?cjZKS1ZqWWpDTDEwRW0xeHJqakV0aXZxcHYvbmVGd3h2NzdBZGhSbWd5N2hr?=
- =?utf-8?B?ZHJtQlo2akpQUk5HS251UXdQWWJmcllIYTI5VWtWVFRFZjYvT3JhRVg5ZU9T?=
- =?utf-8?B?WmViWXBaV3NqSjZEQXNpWjUyb1FZV0h1Q2g4VXdWK0NNb2hUdlBabW10N0Jk?=
- =?utf-8?B?VDlaL2tlQUUvckZIanRDU05MNm1LL0pXWFRURGlRN1FQdFk1ZEFEbW12MzBJ?=
- =?utf-8?B?d3JPRTdnN0l0TkdtOEtZU3c4eXFmbWlMM2Q0UDF2eWVTUVNNNVI0RlRMS0Nn?=
- =?utf-8?B?cVNROTM2SmVwRzlrcmpwdnR5QTNERTRCQVBwNTErazNldGE2L3ZaZStyZ0Ny?=
- =?utf-8?B?cFFZSm9xdi9yUmU3dE9nVGNnQjBUMm9KQ254OElhM3hmOWluNVUyanhIRDJu?=
- =?utf-8?B?WnBFY0tBdFIxNmFSNHluY3kwbVIrVnllSFFWeWNsN0tjZkRQODNtLzhXeExv?=
- =?utf-8?B?Q2IxbnhPdHVRd3Uxc0VNeWJxUTF2OERTMVF6UGtkU1M5NDB5TjdnRkE0clNC?=
- =?utf-8?B?SG1xU21jYmhkMHFQdTBYV0hieUZIRkVJTFhTUFBZK0NSbFl1MnpEMHAxWk1N?=
- =?utf-8?B?ZnU3U01xMGd0WFFhbFlNU1JFWS9xQytraDZYWVlhNlI3SVg0WVRqemlLL1JQ?=
- =?utf-8?B?MUc5YytNekhzWnhRS0F6L1RiNXc4cFFHSGVmWTNWN0psV2RCMGdLQlhDYVhq?=
- =?utf-8?B?SUFRcUdMQWNaZm85L1JrdmFkN1ZaOURlT0dRc3NwTWdUZGVjNVROQXpGZlo2?=
- =?utf-8?B?NjdoZEppZWRvUjVSNSt6REtGVUxSQzR0ajhkZFlMWHJhREJWREl0OU1iOFBy?=
- =?utf-8?B?RGlReGlkdmFaUllLMFVZejkvYzZ3TVlKemVxc3cySmJ5aXZ6ZjdrVFpEOThB?=
- =?utf-8?B?QldaVVEzQU5SUUxqcXkyTWxLc29sa3hBeXcveTg4bnZibTUyQmdDRW1uU3hG?=
- =?utf-8?B?L0s1VGhibTY0aWN3eDYzbTRXenRjYVRDREN0K2UrbE1pUXA1alQ2VUk5OGZz?=
- =?utf-8?B?VTRqQlpYRndLZUorL0dVTXJVeDdCNUVzRkFXZlJnb0J6NGZabm10Y0RaKzBB?=
- =?utf-8?B?MlRNK1U0eHpYTnZPWGZTcmVsUkRvRnZQTXJhb3ZpcWxJeGdCMEJCWFFjaXly?=
- =?utf-8?B?bHluaTVYSkVTS2M5MjZMdXNLaFVLamZXSng3QXJjMXJtQnlPRWRpMXRPNUkr?=
- =?utf-8?B?dDByRkRHR1htT1MzZFFqRjJpSmdrR3NrRlFCamFQeGxITzhxTUhSRytGbFNR?=
- =?utf-8?B?TzFQZWFhRlE3TzlWL0N0K1hCTnh1MmdZWkRja3NLMHM3dTQyaGdySFhSRkVx?=
- =?utf-8?B?VEdCZGF3RENNbnFlRzR6SkhMR2FUbGpDbWxQTk1WZFdNRm5JWjVHQ0J0ZVVO?=
- =?utf-8?B?MEw0dWNZVmpxSGUyWmhFZFVmMUlXY0JHZ2poR0lLMEY1dmpjdGsyZEIvR3l6?=
- =?utf-8?B?dUpmVkMzVCtpTjJJY3dVcmZYODVSbmN3N0F0S3NkNUJCRDdWOTFZaEZzTGx4?=
- =?utf-8?B?dUtkb2ptWHpGYWhaT0FLQnpaaTdGSm5rY0FqR0xQVEowUnBpSElPWDk2RURB?=
- =?utf-8?B?NVR3bVNrQ3I4TnpBbDZ1RWJETGoyd0JHbGoxR2RLSjJGNmtzN0R1TGRyOE5W?=
- =?utf-8?B?WlZJMXk2dnMwbHFYVWdyWUJJdzNCR2EyckxZb3lTQnVwVlZIVlZMTDU1Z0dG?=
- =?utf-8?B?NWVEM1kyU3ZadHZDWDdqTVZJTVNyYWxNaDVXdnZWZEdKL295VzdxNndxWFpO?=
- =?utf-8?B?RnU3YUNDWS9BRlQ3SS9FckpGQjZTQngyMmhiUDJPT1UzRmlFQ1dOWHA3cDZa?=
- =?utf-8?B?cTNscnF2ZThkT1NZZWcrazFmNlg1V3BwUzJqKzRYS1FSbHlBN2xBenhYN3pO?=
- =?utf-8?Q?iG88X2REvgRIWx2xdRV4Rsjoy?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c7823e4-63d2-4d0f-aefb-08de0cf1bbab
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 20:22:31.0049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KMluzIW2MfCPVr3z2pbVfzz24Mpmdal3oSDI1HbKxtCUIj6QHdYdbMImkLR28bdt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6230
+References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com> <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+ <e4277c1a-c8d4-429d-b455-8daa9f4bbd14@redhat.com> <CAG48ez0yz2DauOuJy=-CcpQpqReWhYH1dpW3QGHPSHQ1VbAf3g@mail.gmail.com>
+ <9d9912fe-3b0b-4754-87f6-6efb49d92a7b@redhat.com>
+In-Reply-To: <9d9912fe-3b0b-4754-87f6-6efb49d92a7b@redhat.com>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 16 Oct 2025 22:25:31 +0200
+X-Gm-Features: AS18NWDLSb8iiK3deIr5crIXEpUg4U0MpY6QS-BO0TbZ3uZrFMySHGIdBYHCiHQ
+Message-ID: <CAG48ez3P6nH-NFTvihmZW1nS3Q7UCz_BxCBk-jzG82-zUdF2yQ@mail.gmail.com>
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: David Hildenbrand <david@redhat.com>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"trix@redhat.com" <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, 
+	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"muchun.song@linux.dev" <muchun.song@linux.dev>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 414bmdqopmfueowei4p9f7c7ymntcwpo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0F89C0002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 81etrd4gx9sn3umsbuae7g8gy4bt7fnp
-X-HE-Tag: 1760646157-117854
-X-HE-Meta: U2FsdGVkX1/9XAhy8rdDSP09nVtS9Wra3SnEEOhT2HjVx2rzdo26W2Wf/g5X612hQBKKyVjlC1MRg3h2Qo+tZzRn4S4dejK8Kw8JL7J+H+Ny1XrlbSmfmc3xIF2ou6JdFt6l2WYftJy/uGUAJ2cubJOWRvXyPjINRhWECrBe2ONfPfY+EdX20+FNlThHsf3lXcABhQNjl2q4pU0HeNb15Te0G+A8TpiO8969od8++Q/2NtanZzOROGgiPA2O6jEX4xkt/x1EIia/rrkO3lnW2ihNGpCFen8oFb+l4mCAq17LtweTdW5G/Q75seC2vC7umtYOaOuuYjOROVkm63xWh5FZcHvn+HTEtIdr8h+2A5XL1d7flEGvU6rc9IZIUMfhAjcS7ZP0FROkdW9lA8n3C0DVIpyFdDndmJXUnhrJcfFDUBWLYHJ+ArF4whfVg4q5vputiM80Yd+Fvl1uZ/EaOlZHadvf/QdEv5CPjSrMVElJVp+e0CVP06OZBLEo42gM73gHd+Wiovn53dy+NSfPtdK4XdFClMpVCQAmL3tFKN+K0HucJvu3LQn5IjSE3cr30btmABsl1K34X+Q/LKNRqJKrmJKmsbAAd3m0rq8gLmdGpLlIGjMZVPxcsI5QWkzKsdogC3jwn8uGz8vfh0FzYD6dm45D9j+Nm73h+NWoKdVensIp3l7fEaSnxw0HO2LPOepW/aQcNHSr6TwXdKVDwwQ4/CD1I2j9fw9ey7gXtL3EYZW0pe1WKPcQNaISNQxe+ZSvxGt9znFeZ6w+wZShvwBuYwUfJN9vIRM+4oBYmKBt4NkIwsZ9mbywwxPmBmke3dIbKIu4eCJyaXFIUrggaluPDhjJ673Zaywx28v40dnbi2oShFDull5oohI6lN1kEYNUGpSZ+5UlyOIhsMbheN18oFMQ0GMvhzosNX3J+agLas6Ajke34m+cB+BaIvptJ3evd5lZuyeQn9gJS5Y
- VcgapoJz
- 0baj8+yUThgoYgtt4QrYJyru+xYVd8pQKXFpZzvJChEsRtN0MH9FEI6TqRTQVQmPj0GK+pEqE3Mb3Khj9SXD4rzmRaLBfjhjOL882jZev4znTVeCFxwhNTOkrV8M2xaEzPbJy0U3xhtayspFLKeCt1sAp9sawLQpDJvcOpQ2JzfNxrBF1PK5LfRc8fNNI1k/1E+FPHDcU40IoR8ihyShQA0YfxJMaheW4ZFsAZ35PQ9gHMZ7nEK6bO47PCiZYPUNPcAqW7xdxf/I2amXIcGNFu7CQe+6ze1Dq2KtSHlgiiFPJiFiXY3NEBv0T0Id98iVEl9TeHgIC41DKTGq//V/WEbTgSzgbvZKGO/NCW/D6F4xZMsT6JM9Vqu7AoUVt8Tvi4NWAC/qphndpzFhQrMMclGjcDH0PmCXOhRYNS1J0hgklY9Co5liI44+f8DKOILKxq9ZO6Pwp/Q6tDkjkXp5hYHyjSgSl8e4rmTxlAtHaX7Okug4JSfXWGM+h+rDCfwufbzR6V39Mx8+0q1EPLkylnJtECMyWaLeob5mwKKdSTEg8Doych/YQ5FQaSQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 61578180008
+X-HE-Tag: 1760646370-293449
+X-HE-Meta: U2FsdGVkX18M0xqDikSbnZvoU8muhnjVhx74im+rR8xlDtn4duAx8VinRUyfQosx01PT7z7RZz+wc39AnBdbXTsIH3J87pVK+Bd0ix7TAFmPk7srCGhlKO3By8+9+aF4iLr5ifkfxcEqRHvgRGO+0s1tv6gDJA5sFj0Vel3zAhqC4ygAqdqS9sfGTwRuLPzHjHmfWyKshP+xxLVUYPshwOwbkEXjX0mvYUdqWRjPXSjUcuLneYVmaR59HJLvQqUiUhY+e0POtlAhuhxVgTL2eURGwCKA/mssPAfJFf1B1l6YdFOo0axUMVZp1SD0gKmXKqgaaLBE+txfuqWDnBugasykStbTwropV6yP12hmJUAHOa17JR4hwl4LEIddvXt+E197fCd/9OsYfWmLvDPMrP/LxMw6TCVa1qqYxQDm6vOUl8LNj9Oj3/ctnULV+qgMNgdF8A6dbjpKuU4oNsk3verwbxm3W46sf/rmnMYkEoeqlMRhghM7bTBDQhWtGxbXADeETdwbYkun35Kqccq3EqiPzUZQO4pawCDwgpY41UQG4NWpPqBtAxoXaPhNK63OLo+yP5d8sG9leWqml2+axE+zc8hmbhLfeBwGM1QIBBS2h4PqZ+QCxo3unmmAidugLOx4pizI2Xrif59DCj5qiO+ubWiT29/pIjJQqZ0SefI86Q89zH6E6SFAFaFxjIF7UfRo5LAVoTtjYhp/VitpDWpBsLiMRy5vKqnFbrCI50ZrApsf3xLekZUWbzd/EfyWo7h6/cYISe8eCgaznM9yUcnWY1eh6Lzh5DDwV25DftcbJZSiwPSlDN8J+KfoviDXJn6XFgC2MEbDaBNm+LDHTme0HSC6T85pT4Ch4cj+pG7OI7Jf/5C15JwCPv6YMKM9UtyEJxVnaDofj+JrpqtEfjU+NY6QO4hn30Fcc83QnVz8AVoyEqts37FAOxIkfamsgGfHmqvfXPNTgye7EBB
+ tQsjnCj0
+ G8vewdo4wYaVFwY9O74fdQm+aRU9eoPxbUcdTLW25Bsdlq3sYiWhTJ5HfV9T/2iynGyaxYuvG3kQ5MKZ+LMQZOmcvM5PYgkBfxQ1GDhwGH/mf85B1K/Y9OfOANdOprmAj8KZYe5ZdHpdzk/p6oc0DnKbl90XrUylIJYzCR3+Vqd2WyRALz+877BHMuXE+5E4MEEZCaFiQA/TTfUgfaXpQ5WLIJwZuWyF99ymuKZvKiFaGxkHQn4cGtLbRLmmQSj9yUVNwCqOd4jbr7ZM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -202,72 +126,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16 Oct 2025, at 16:10, David Hildenbrand wrote:
+On Thu, Oct 16, 2025 at 9:45=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+> On 16.10.25 21:26, Jann Horn wrote:
+> > On Thu, Oct 16, 2025 at 9:10=E2=80=AFPM David Hildenbrand <david@redhat=
+.com> wrote:
+> >>>> I'm currently looking at the fix and what sticks out is "Fix it with=
+ an
+> >>>> explicit broadcast IPI through tlb_remove_table_sync_one()".
+> >>>>
+> >>>> (I don't understand how the page table can be used for "normal,
+> >>>> non-hugetlb". I could only see how it is used for the remaining user=
+ for
+> >>>> hugetlb stuff, but that's different question)
+> >>>
+> >>> If I remember correctly:
+> >>> When a hugetlb shared page table drops to refcount 1, it turns into a
+> >>> normal page table. If you then afterwards split the hugetlb VMA, unma=
+p
+> >>> one half of it, and place a new unrelated VMA in its place, the same
+> >>> page table will be reused for PTEs of this new unrelated VMA.
+> >>
+> >> That makes sense.
+> >>
+> >>>
+> >>> So the scenario would be:
+> >>>
+> >>> 1. Initially, we have a hugetlb shared page table covering 1G of
+> >>> address space which maps hugetlb 2M pages, which is used by two
+> >>> hugetlb VMAs in different processes (processes P1 and P2).
+> >>> 2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
+> >>> walks down through the PUD entry that points to the shared page table=
+,
+> >>> then when it reaches the loop in gup_fast_pmd_range() gets interrupte=
+d
+> >>> for a while by an NMI or preempted by the hypervisor or something.
+> >>> 3. P2 removes its VMA, and the hugetlb shared page table effectively
+> >>> becomes a normal page table in P1.
+> >>> 4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
+> >>> leaving two VMAs VMA1 and VMA2.
+> >>> 5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
+> >>> example an anonymous private VMA.
+> >>> 6. P1 populates VMA3 with page table entries.
+> >>> 7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
+> >>> uses the new PMD/PTE entries created for VMA3.
+> >>
+> >> Yeah, sounds possible. And nasty.
+> >>
+> >>>
+> >>>> How does the fix work when an architecture does not issue IPIs for T=
+LB
+> >>>> shootdown? To handle gup-fast on these architectures, we use RCU.
+> >>>
+> >>> gup-fast disables interrupts, which synchronizes against both RCU and=
+ IPI.
+> >>
+> >> Right, but RCU is only used for prevent walking a page table that has
+> >> been freed+reused in the meantime (prevent us from de-referencing
+> >> garbage entries).
+> >>
+> >> It does not prevent walking the now-unshared page table that has been
+> >> modified by the other process.
+> >
+> > Hm, I'm a bit lost... which page table walk implementation are you
+> > worried about that accesses page tables purely with RCU? I believe all
+> > page table walks should be happening either with interrupts off (in
+> > gup_fast()) or under the protection of higher-level locks; in
+> > particular, hugetlb page walks take an extra hugetlb specific lock
+> > (for hugetlb VMAs that are eligible for page table sharing, that is
+> > the rw_sema in hugetlb_vma_lock).
+>
+> I'm only concerned about gup-fast, but your comment below explains why
+> your fix works as it triggers an IPI in any case, not just during the
+> TLB flush.
+>
+> Sorry for missing that detail.
+>
+> >
+> > Regarding gup_fast():
+> >
+> > In the case where CONFIG_MMU_GATHER_RCU_TABLE_FREE is defined, the fix
+> > commit 1013af4f585f uses a synchronous IPI with
+> > tlb_remove_table_sync_one() to wait for any concurrent GUP-fast
+> > software page table walks, and some time after the call to
+> > huge_pmd_unshare() we will do a TLB flush that synchronizes against
+> > hardware page table walks.
+>
+> Right, so we definetly issue an IPI.
+>
+> >
+> > In the case where CONFIG_MMU_GATHER_RCU_TABLE_FREE is not defined, I
+> > believe the expectation is that the TLB flush implicitly does an IPI
+> > which synchronizes against both software and hardware page table
+> > walks.
+>
+> Yes, that's what I had in mind, not an explicit sync.
+>
+>
+> So the big question is whether we could avoid this IPI on every unsharing=
+.
+>
+> Assume we would ever reuse a page table that was shared, we'd have to do
+> this IPI only before freeing the page table I guess, or free the page
+> table through RCU.
 
-> On 16.10.25 02:46, Wei Yang wrote:
->> Existing __split_unmapped_folio() code splits the given folio and update
->> stats, but it is complicated to understand.
->>
->> After simplification, __split_unmapped_folio() directly calculate and
->
-> s/calculate/calculates/
->
->> update the folio statistics upon a successful split:
->
-> s/update/updates/
->
->>
->> * All resulting folios are @split_order.
->>
->> * The number of new folios are calculated directly from @old_order
->>    and @split_order.
->
-> That makes sense.
->
->>
->> * The folio for the next split is identified as the one containing
->>    @split_at.
->>
->
-> That as well.
->
->> * An xas_try_split() error is returned directly without worrying
->>    about stats updates.
->
-> Why is that change ok?
+Yeah, that would make things a lot neater. Prevent hugetlb shared page
+tables from ever being reused for normal mappings, perhaps by changing
+huge_pmd_unshare() so that if the page table has a share count of 1,
+we zap it instead of doing nothing. (Though that has to be restricted
+to shared hugetlb mappings, which are the ones eligible for page table
+sharing.)
 
-Before this, the code decreases 1 for the to-be-split folio before
-the split actually happens, so for a failed xas_try_split() the stats
-needs to be fixed up. Wei’s code updates stats after the split,
-removing the stats fixup for a xas_try_split() failure.
-
-How about?
-
-* Stats fixup is no longer needed for an xas_try_split() error,
-since originally stats was updated before an split happens.
-
->
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->>
->> ---
->> v2:
->>    * merge patch 2-5
->>    * retain start_order
->>    * new_folios -> nr_new_folios
->>    * add a comment at the end of the loop
->> ---
->>   mm/huge_memory.c | 66 ++++++++++++++----------------------------------
->>   1 file changed, 19 insertions(+), 47 deletions(-)
->
-> Skimmed over the rest and LGTM, but it's all a bit complicated to understand.
->
-> Trusting on Zu Yan here :)
-
-;)
-
-Best Regards,
-Yan, Zi
+I thiiiink doing it at huge_pmd_unshare() would probably be enough to
+prevent formerly-shared page tables from being reused for new stuff,
+but I haven't looked in detail.
 
