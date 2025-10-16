@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4A27CCD185
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 00:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6692BCCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 00:36:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99D0F8E0027; Wed, 15 Oct 2025 20:21:54 -0400 (EDT)
+	id A80AF8E000C; Wed, 15 Oct 2025 20:36:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 974FB8E000C; Wed, 15 Oct 2025 20:21:54 -0400 (EDT)
+	id A311C8E0008; Wed, 15 Oct 2025 20:36:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B1B78E0027; Wed, 15 Oct 2025 20:21:54 -0400 (EDT)
+	id 8D2528E000C; Wed, 15 Oct 2025 20:36:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AD758E000C
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:21:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D32261D9BA5
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:21:53 +0000 (UTC)
-X-FDA: 84002074506.05.C1E3A2B
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D84FF40005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:21:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WDVw1Psw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760574111; a=rsa-sha256;
-	cv=none;
-	b=OWOf5I2LozNlmVvkJ7ORCEm4qWeHfG7j6EU6rnGM2AJow3GTS3SiKwaL0q9Qxd4IgTlhtV
-	nVSgkRy1afhiZUmzxMaugEH+f5Oqr7hM3O7sY5NYvynzHEFBZbjvYuFjdz2jGWZwtJtQlt
-	MP3ENUuhmQo3WlJ6zhfkoxlRMDNvYKQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WDVw1Psw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of inwardvessel@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 75CCD8E0008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:36:12 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BA881A0111
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:36:12 +0000 (UTC)
+X-FDA: 84002110584.25.CB3ADEA
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 18A2C10000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:36:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ESl5R15b;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760574111;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1760574970;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+uYbmyg7U3B88BGBaRnrEy2BORWFbRru8RT/OdSqk4=;
-	b=tGSSmtFodqcs1gQ8vF9dxHB2i/UKf+Rra2GCkTdef5fzIAPRJnKgc5V4GWOYKVmHqxEce+
-	9sGR6HvRnkvs0uFF4xH5Nk6Wz1Yy9MMPAPfLHj5RXkL95R90vcZZ1eTU16qPPF45chQ85p
-	y9VoQzSvn+SxRbOX/TNg9sZFZ/QsUYU=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-78af743c232so178731b3a.1
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:21:51 -0700 (PDT)
+	bh=0yxwXkcho2R7zxZKj/he209S7yXTurt+F1j0Pf0t67Y=;
+	b=8Zi6aVMpN7IuWqoZp+wHW/KRxiOjjYYbTOjoP4AuPbSdSL7bDZ5hQSKEY3l50C5f+jMHWo
+	K3pID6bHX8CizZtALw5JfCexA4jUy/dI2T0r5xYoXr/KOnQi4gBbKb+QsO8kZhgwnPHyp/
+	KKDCdfqlyF0/QySO50wIQqFm0S4PI+0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760574970; a=rsa-sha256;
+	cv=none;
+	b=mwR7TuUkn4nPLTpEn3KyZo0KCbRkSQ+XPSBLsYUmFoPJlniWkBEOJfgYnp+5r/G4JrJ6D7
+	h3xlwm3ECLl02BL61YryNFrue47B3zYd/s3IB78jr+wBIKJGduz9rfUumovYW83VK6rIEE
+	HGWWfuoRAzMpuIoBhYR8zxpT/Do58aY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ESl5R15b;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b3c2db014easo35883866b.0
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:36:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760574111; x=1761178911; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+uYbmyg7U3B88BGBaRnrEy2BORWFbRru8RT/OdSqk4=;
-        b=WDVw1PswuvCmcCT5OcK0ssBPJ2LdiJ4GLfA1kqaKfczBLLZ6/LPCc3IomHhks6/eqy
-         dMKswC8KjmxctrUFrW+0xEsVYS2+y3TDQuQdlJgj7QpgmAZoufIdvDcZtZzXTW9Qqz+T
-         LmmVE7SLlp/hLIwxAwZavnANCyXcmn47KIM7klF3HgO0AVRyWcEFgl6aviCX9s6xm1YR
-         wohCykQeWVbyYcDKFa66zGaeKP27PeHSTKPIBy1rRR1icr+rrs3rIDsbsKOKDdGlMJQ/
-         M+B2bIHsSlHKqaQ79iRmckEUdV4UKcNDIXgcPbGdwv/A6yhWNLBXj3a3gh7rIViGwZf8
-         GjCA==
+        d=gmail.com; s=20230601; t=1760574968; x=1761179768; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0yxwXkcho2R7zxZKj/he209S7yXTurt+F1j0Pf0t67Y=;
+        b=ESl5R15bcd+9lMwkyTiMCGbNAJgbiDL3z+Pc1zgf6z1WrfL8RaAZUFg1bewugeVo03
+         S8xLT3ks0zfq8y0VttpI2X6iYNPAf6dl3uBt7LXCvqV+czvCR2SS/8lRL+7F9v3Mattr
+         aQeXdhoDV9G/0FRhTL/bB5ndskKijwM2uwdKcezVMCaESKCAijYaOVVroFxU5jo1LTle
+         GGyh/e4FN/3E7pyivPF9CglQelx8S6E6NesC8sj5H4gsEEKE+86mAkOz7GIWXWMEULkd
+         dR70xdPXCXy+pjFnFPnmpOSssnkL+uzKdlklJS7YiObYA7VuOdeGrgQBtkuGLPDbHcKL
+         TFFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760574111; x=1761178911;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+uYbmyg7U3B88BGBaRnrEy2BORWFbRru8RT/OdSqk4=;
-        b=FvocyrJymo+1llLNbVWZSFnHiV3eXv0czI3kfk1biyLLK73Y9C+97Q68KDyrgofkce
-         +9EN0skU+Ibgkge1c3lZCUmv2mHEQDb+0DiBGxO0k/vJpjnPjLFtaBPKX3jqU0HzHYv3
-         6WpMWcgxakXc2SsLH521Jo8DdGjieyVKoTsOHDdTkNQMdlcy9TwIZGesincZ23JczjYo
-         GASg8dmldPs54eNTCCC12fHAz8wJCYtRTQr5pS3GcJz519sHJ/vJhg0BNwpMVbUd+MJS
-         RGyiAjoySZJNSOUOMFDkj2s2V1GL1/FuToIQw3OFwkWAiLmj0aQCxYS/EugFbNvIhIDq
-         RaJw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+dnKlCvqO/Kk2qHlAKRovQ8iocMK+SG3xxLJUihr53ptKXdmDvPK8SB/ah/Y6ovYM3Q5/XM3MMQ==@kvack.org
-X-Gm-Message-State: AOJu0YwZO6G06F/9/HT0l4VcFZKjPSnWUJpiRkek5oVVQHaH8aOmXPtG
-	ERMZU5JLrld+0gqZ3islGWZiPpRNXuqdad1jLVwVkOE+hjJ7hhc/L+l1
-X-Gm-Gg: ASbGncuejZkPovnMdplx07KOjqdTTD+JrOjGiewjH08fPTHwHWgoVizk856gpFT3hIv
-	3gXXr61wsxl5Y9R88dxpDdBp9lw8poBXXM/O+SvQq4qvP3a2383jEjkiokCT+HR0WfSAigyq2oF
-	Q7gkc6zYKmTmjPVBzdD0lIPEwl/U4f7g0nFNQOSWdGb+uwQ/aActaVHqYO7zdhGMJ+hgaJQXLwP
-	WG+hd3QSYFl4bvb+DygPZ7LWRLKEizQ00v+Bv3OhaX0plaBPp0MW0F1lW/J1xcnewTtLxsIg8Vw
-	krobRDG7nnt7gcT38nlKpyujxLhq6fPruc8p1B7GC5C3OzuQsiYTJlazkVxtPnLMfEEugOCcnwM
-	6kDeBcsR3sn3XK8fWN49BGZhQYcgZxxyMX8chgu2wPxUkvCexERNS+mkt1WrUfShrrQm1DawwMg
-	PqXd3P1OYxM2Y7+vznyCbO+MRXF7T7jz4k
-X-Google-Smtp-Source: AGHT+IFJoepWNlU4+NBSNDZxjoH+m9KoM5DtxMqbC0OMbJN+YNUJKDrPJWuArAGQancBO2mZtAQxFg==
-X-Received: by 2002:a05:6a00:4b01:b0:77f:1550:f3c9 with SMTP id d2e1a72fcca58-793859f34b3mr38869276b3a.12.1760574110523;
-        Wed, 15 Oct 2025 17:21:50 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1151:15:b813:d910:1b7:5928? ([2620:10d:c090:500::4:c263])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d0966d7sm20056806b3a.40.2025.10.15.17.21.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 17:21:49 -0700 (PDT)
-Message-ID: <e102f50a-efa5-49b9-927a-506b7353bac0@gmail.com>
-Date: Wed, 15 Oct 2025 17:21:46 -0700
+        d=1e100.net; s=20230601; t=1760574968; x=1761179768;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0yxwXkcho2R7zxZKj/he209S7yXTurt+F1j0Pf0t67Y=;
+        b=fi1QK7nm4lTt1eCiMD4rGCKMI0Q/4aswYIf5Utgp0oGURcSytGyvIuOt2mwE8MtC4u
+         4b/bA/a+OZbj9aqodGq7H1LOmqNNJlDSjcjZ5Z8+cSyNF1TDPmvv2O/mxzfFe9YRVGdW
+         HWeTvrhSf+7pm9BLml+nnrgKanZ7zriadVuAYs8ok5DfdiA1gEzF3d9wb+PYUVU/hqwa
+         T+kARzk+AVT0Ipf9VvOa1GwoKcEtZwmbjUjcL1J6UNgiFRZrszFfd5eG1TlxGpKirWlZ
+         0nG+aHEZufvdN0yC0HU5DwCeX/xokOz6Ff9p7Ry1XzHVY0LoDRl18/o1tQYzXmAZuYYq
+         jBMA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8u65G7gHuDAvWWOdrzZ3TsSrzK6LRdDCaJRuhVz+HiDc6eTiYTs1Z7EqrcedeB7Pjx9cpsbKyFw==@kvack.org
+X-Gm-Message-State: AOJu0Yz9zFW54sL1ezzNwhCpR7a2n+9R6izOEiPnWs8VMVCzAZQ06ikA
+	9Y6TFrXFU8yzwzWV8kIhPYRMtGyWFSJYbUkdayMGu+v4EnfIdZrinR8d
+X-Gm-Gg: ASbGncusQQCa6ee8+hUiqOnf78F+opdhy8BHWrJ55Cn1US9efv6PZ0A8Y+nutDQ2hiD
+	crx5sK9fH25id0QtH3aHaKBfI/v/ID3j2anLB5DDfFrhKe0B9uyxaSLNeWcNCnt8dXM0Gs1Qi4P
+	9yBu6WelE2zXxrcKy/oYsrdTCvG3ztlW9lDlhOhA0zRduMrBT+vAscVOVssdFPzA42f9l+yIWAK
+	kUFCo10acBsuYz7hgf8uRTlJEwEmpgm5bgJ8amlf49vtW8/E0fYpUs3roMQPlYO5c/DaFSXvwX5
+	vgRct1VbRB+dAu7h/7VWG/ux0DfoTDl6t33T7Fll4aMsIM13WgQexlXWkaav60hV5n3hIAEBYfU
+	sJ49/9+rPG3skSPgZ0jT+M/L4ZZjiahZupG1guD3ePICH8JjvRj0W8eNS4+Txv10MAc3g0d4tdv
+	A1TokoAmZMKA==
+X-Google-Smtp-Source: AGHT+IEMwY5oV5fPMf8agqxLOoZCtErLmHXKCDhFHyqaLSIca96fhp4FnyJvfP2izgTzzRkCgXWt/g==
+X-Received: by 2002:a17:906:c109:b0:b41:abc9:6135 with SMTP id a640c23a62f3a-b50abaa46ebmr3194746466b.41.1760574968260;
+        Wed, 15 Oct 2025 17:36:08 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b5cba06b7f6sm379598566b.30.2025.10.15.17.36.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 15 Oct 2025 17:36:07 -0700 (PDT)
+Date: Thu, 16 Oct 2025 00:36:07 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] mm/huge_memory: cleanup __split_unmapped_folio()
+Message-ID: <20251016003607.bhy6mtu2b2vh4r6i@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251014134606.22543-1-richard.weiyang@gmail.com>
+ <B19F20C2-7B99-40AD-BC1F-944FF92ADECA@nvidia.com>
+ <20251015081535.qesjcj2mhb7flq6f@master>
+ <DFC8430E-9225-47F8-A477-B032FD9E7959@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] memcg: reading memcg stats more efficiently
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: andrii@kernel.org, ast@kernel.org, mkoutny@suse.com,
- yosryahmed@google.com, hannes@cmpxchg.org, tj@kernel.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
- kernel-team@meta.com, mhocko@kernel.org, roman.gushchin@linux.dev,
- muchun.song@linux.dev
-References: <20251015190813.80163-1-inwardvessel@gmail.com>
- <uxpsukgoj5y4ex2sj57ujxxcnu7siez2hslf7ftoy6liifv6v5@jzehpby6h2ps>
-Content-Language: en-US
-From: JP Kobryn <inwardvessel@gmail.com>
-In-Reply-To: <uxpsukgoj5y4ex2sj57ujxxcnu7siez2hslf7ftoy6liifv6v5@jzehpby6h2ps>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 4snmwp36t6xib1cciac4xodkouxguaue
-X-Rspamd-Queue-Id: D84FF40005
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DFC8430E-9225-47F8-A477-B032FD9E7959@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam05
+X-Stat-Signature: h9uz18zjgu89swx5g5mzfum93swo9z3o
 X-Rspam-User: 
-X-HE-Tag: 1760574111-426031
-X-HE-Meta: U2FsdGVkX1+IKJ1qhV1NxwGZ9L1krYV/Es0xQGiGCq8WC9qlnkGHb8WY+zwBu9Kw49qVoL3PUv5/jk+8lap4H7MdYOgrs/jS0VtrCCdrO0YcW9qtTvH8Bi9sJWWrYazNEOrap+9ijsXozgA4n1bpD3UGZM70pyDNuNYTcZLGh6NZ9CKJqJCx1UYGb6W+1H657H5lNJ0Zd2nWr+eMY2rwPb+KDhTGkNgVHMJ83+595VkYp+oPIJA3aF2jZ25H+4SZnhvKYVAmYVqwzEMlMrzC9umNm1+3b7QlZHR9fw5mY6o4IVK+0MLmIL1kZLyr+2JPhBp6R24m3KNppIbGX3v6MXkt/OvIaBcRtCdsUU25jV+s3CiZSXzLJgdeBq5y8c4CwlyNXCUu0FeorQyHVHr2wmT0hPizSiCqRRg+ksimYwP57/dQ8yi4gZuCjfR5hrcXYZmOk2+iO10zMKbzuBN9ivCO26TiEzCTfICnrSvegVapaeR0oUtuMErmQD13zgtLNgherHF7nPjNCarH24D8IbxUP+W08CWTTmQ9ELWDTVVbxXGTo5gn/rqx16LZAoy670efobHhwHMy1Bog9DOys6nnc+2MLrEc+6tEvvt6B5MA4v9kMxg4MkDWbPY5h1dR67py/KZVyMbfYf3kIM97b4axb5Tz8xz0R93wDm+4UX2XN2L+4eJ+mXREbcTSPcRqevzWQnrHYagspKbrLnEpGBbMA+meB1EROgwLqKzMagVSPSH4ZSjDBQPaN7XbYz55yqblxdpJ3wGW8ins2vYhu/XLl0Y1jvghfh+P8gnD7dat4Vr6zXSkNbNftYjYoVVxyGNuOe0xKm27FCEHhdUKL/mJ8qQDZeGJwm1EmF3Ihz70l+LYQksp2jAmudISKgL11cIeo7GJ+PLbHLReBudwxWppAzrVXbh89I/7nYYRH0iZgxDPTG5XNMm4gDE/LzeOFiCO5copkYy9VVGo0Mw
- /1OSvGPI
- AdePMs85518pxzTgcXU5gNeGXSVTZCe9DOMKzRjS4/ew4uvvq+guN6nw/sCSpCEGEeAgs01DwBJnIw5W0tXUYpL+8M7OUEwszhf+eRCn3b0mDCF7dX9BMEaYY918ZrokIT74S0ETFZumFL6DU4R0TCx3wL0qdlEnUlAESisc6e2U8t76Qrnf6/olTUQWznBvbM/nv8Fm+tqwYyzzotVcEaEX4+6FB9/zvzpTtScleXoegqCTDpPqunBIsIGKYBFwjdcb2lTqpmLdpQEA7Ab5kwM6bmH9WfvDtuvVByYfAZI4ae8cxL/go699FThOI1r/+D36ZmEF7MBwKC1HQ6pWVjMC+hdzIFgiL2Ddy9U0FGqu8S+o85oU6tYi83TQyrNqtJZ7NkiFIsPcijSEtIWeLkU2z/3WYIfYl3B5NFobSJlXwjYtV5tZE3GUE6FXdTub2nGOkb0Q19n7ppIPI1g9wTS9vnyTF45pk/gpoQwsfI7aN7dRfpqaLiIAy8knmiB8HA6tZ
+X-Rspamd-Queue-Id: 18A2C10000A
+X-HE-Tag: 1760574969-132469
+X-HE-Meta: U2FsdGVkX19/JYg4/HGxZJ6M1aLj3sNTFRX9rsg8drBjNe52HGtGOeTtSX4M4UcSF2mY19IOUYd10UEZwd0Tt0Zxf2kRI94+JnKV08PawTJkDIc5HSVf4mZ5Il0XmwjJbBi+Zg18Vtuv4AJK7McEOM+Nw81IMY4ijGLWdl5KnQO6tt9HjXOGAZlE0STZekTIihV2/bZF2kofKvsqQ4/FlCVvW1cimF1tZEhmtFHOKI6CwWbh2i2yjEYmJXqU7dFgZTB8euSEMW8dmbY3Gbu/XWLzMFQ3yKkl3+Wyyst0o8vJ2TFnX8LSDoEfZONG7YvzOdDcPV7EiMiNkJzU71uHLDksnwjbjRxd5VNT2qKVk9qXP4kCN97LjLlMro6FKJyye5+VudJQBHfIWUfaWoBfF3ol3AQMmEzvCly0RO3Z1JzvctevJqEhJBBtHyfbDbTa95WGwL/PkZcyy2zzN700hKHjtBuNR3DatRrtVyERNaNUHyK0VBerT+Ii1SxTTMTvxqT1MBhqMIDwHqvDCC+6RyP8pw5OADJIHawPo9Lo2RHcMAuxqDKsVEokry7gVORKbExtgSZ/6V7o7RVRpvDpGxi+yXKniN4X8ng8Fr64G1xqhuaD26JOEkghlVaDaXeGKBQk92QizrDKk5apxZ8D2Dyr27IC1ri0SD2DUR4PznZkYkHWCsvsx/VvVUrxACilSzcSZXprHOefrOCkIsJqQ9lbyAOqThtZy3j9V+rYTtneXoi1hWx3Fpr54l8hwhI2Ntv/pqhBUXIyJpX0T5d2ianubNVgzTfP1HUerODg4iCR11Y9PUqtNNKlxCQRPwPfKGi+FN7gI0vPc5gdUPxQ3BvaeAJ7KWJ4jyhAsgG8UCaJmFoJjhlBIZn27B7YPDxTB8NMLnwGQwHTeOVQfF80k5mZy9bupAiaa4N8c1mlGgfmc7xeBIhVtD2eBPito+aSTF6LmAt4DaO8Dq99RSv
+ FPEehgKH
+ A7+1J1IRcIpLCZvgTIM0OZg9Hf96rYJkuDVfl34IYPjOV8AZmRE9KLsQK8VOT4rnP99hPxIpNbJVuvsHaY6RnBARxnFPi1dlXNCg/tvLJNrqoNF02JFc32jJnapD7cHzbtppzErKZW3deIdKtiXognB0dwXrn4rOruNUGDKh8HSj+zYoe8+dW6c2MFkEjw2vMmLRL5PCMY1BL/8lMUG/2G/gf5se6kox7GJIBJC2DJUrUGFn6PN9kQ+Wiked08j6TfiC4TENtxk7Tanr4AZDbU/Azo/LE+dUwvyPMvg6eCNM3wGUHNxApyKQ64hG53/G2xSi2uBsN1nmXcgowCDoTQTV0zlkrmOPRThkIB6aEpYP/wxhoMGREgw73B+Eu1aX8GNwvvlqMW3T8aTEwBBCCcC4brxMmR8J4yOcawIGE4csy3KGNPAEPP4+uXITzhdrG03rSYeO5PyjD/5m98WvsPGGKrBKuXrs14u0hb1FYbeelSN78ujIlgU6LA3PEt0yiaQ6abst1cH9B+bzdE4/wFsEokKzCsE9Xqu3ZipRH3xkTcCToRBaXPS+YoGNSObym+W/a3+y/FLDV3QS9mC+Hmq2u+U5tLcZ8JsZS82jnDBac6JM5nSNFb83d3sJZm0Z9LJcWbibzSoKu3pDC5DLOVhyPPcvcNs5f8u0p2zmZjdwTXKxxMMcNOPzY7gRf2mgAjMTQMfZMB7LMwEDoP+v6hVOp+PhrYAFr/yorhhsfYotzz/z9sfzQATokMzes7WEbGLheuJSAiKfhQyp0jESZdPrvtA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,138 +127,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 1:46 PM, Shakeel Butt wrote:
-> Cc memcg maintainers.
-> 
-> On Wed, Oct 15, 2025 at 12:08:11PM -0700, JP Kobryn wrote:
->> When reading cgroup memory.stat files there is significant kernel overhead
->> in the formatting and encoding of numeric data into a string buffer. Beyond
->> that, the given user mode program must decode this data and possibly
->> perform filtering to obtain the desired stats. This process can be
->> expensive for programs that periodically sample this data over a large
->> enough fleet.
+On Wed, Oct 15, 2025 at 09:34:39AM -0400, Zi Yan wrote:
+>On 15 Oct 2025, at 4:15, Wei Yang wrote:
+>
+>> On Tue, Oct 14, 2025 at 08:45:43PM -0400, Zi Yan wrote:
+>>> On 14 Oct 2025, at 9:46, Wei Yang wrote:
+>>>
+>>>> This short patch series cleans up and optimizes the internal logic of folio
+>>>> splitting, particularly focusing on the __split_unmapped_folio() function.
+>>>>
+>>>> The goal is to improve clarity and efficiency by eliminating redundant
+>>>> checks, caching stable attribute values, and simplifying the iteration
+>>>> logic used for updating folio statistics.
+>>>>
+>>>> These changes make the code easier to follow and maintain.
+>>>>
+>>>> Wei Yang (5):
+>>>>   mm/huge_memory: cache folio attribute in __split_unmapped_folio()
+>>>>   mm/huge_memory: update folio stat after successful split
+>>>>   mm/huge_memory: Optimize and simplify folio stat update after split
+>>>>   mm/huge_memory: Optimize old_order derivation during folio splitting
+>>>>   mm/huge_memory: Remove redundant split_order != new_order check in
+>>>>     uniform_split
+>>>>
+>>>>  mm/huge_memory.c | 70 +++++++++++++-----------------------------------
+>>>>  1 file changed, 18 insertions(+), 52 deletions(-)
+>>>>
+>>> The final code looks good to me, but patch 2-5 could be merged into one.
+>>> The diff below is the patch 2-5 and is not that big. My comments are
+>>> added below inline:
+>>>
 >>
->> As an alternative to reading memory.stat, introduce new kfuncs that allow
->> fetching specific memcg stats from within cgroup iterator based bpf
->> programs. This approach allows for numeric values to be transferred
->> directly from the kernel to user mode via the mapped memory of the bpf
->> program's elf data section. Reading stats this way effectively eliminates
->> the numeric conversion work needed to be performed in both kernel and user
->> mode. It also eliminates the need for filtering in a user mode program.
->> i.e. where reading memory.stat returns all stats, this new approach allows
->> returning only select stats.
+>> Sure, let me try to merge them. The challenge for me is how to merge the
+>> change log :-(
+>
+>I do not think you need to explain how complicated the code looks like now.
+>You can focus on how your __split_unmapped_folio() works.
+>
 >>
->> An experiment was setup to compare the performance of a program using these
->> new kfuncs vs a program that uses the traditional method of reading
->> memory.stat. On the experimental side, a libbpf based program was written
->> which sets up a link to the bpf program once in advance and then reuses
->> this link to create and read from a bpf iterator program for 1M iterations.
-> 
-> I am getting a bit confused on the terminology. You mentioned libbpf
-> program, bpf program, link. Can you describe each of them? Think of
-> explaining this to someone with no bpf background.
-> 
-> (BTW Yonghong already explained to me these details but I wanted the
-> commit message to be self explanatory).
-
-No problem. I'll try to expand on those terms in v3.
-
-> 
->> Meanwhile on the control side, a program was written to open the root
->> memory.stat file
-> 
-> How much activity was on the system? I imagine none because I don't see
-> flushing in the perf profile. This experiment focuses on the
-> non-flushing part of the memcg stats which is fine.
-
-Right, at the time there was no custom workload running alongside the
-tests.
-
-> 
->> and repeatedly read 1M times from the associated file
->> descriptor (while seeking back to zero before each subsequent read). Note
->> that the program does not bother to decode or filter any data in user mode.
->> The reason for this is because the experimental program completely removes
->> the need for this work.
-> 
-> Hmm in your experiment is the control program doing the decode and/or
-> filter or no? The last sentence in above para is confusing. Yes, the
-> experiment program does not need to do the parsing or decoding in
-> userspace but the control program needs to do that. If your control
-> program is not doing it then you are under-selling your work.
-
-The control does not perform decoding. But it's a good point. Let me add
-decoding to the control side in v3.
-
-> 
+>> Below commit log looks good to you?
 >>
->> The results showed a significant perf benefit on the experimental side,
->> outperforming the control side by a margin of 80% elapsed time in kernel
->> mode. The kernel overhead of numeric conversion on the control side is
->> eliminated on the experimental side since the values are read directly
->> through mapped memory of the bpf program. The experiment data is shown
->> here:
 >>
->> control: elapsed time
->> real    0m13.062s
->> user    0m0.147s
->> sys     0m12.876s
+>>     mm/huge_memory: Optimize and simplify __split_unmapped_folio() logic
+>
+>Existing __split_unmapped_folio() code splits the given folio and update stats,
+>but it is complicated to understand.
+>
+>After simplification, __split_unmapped_folio() directly calculate and update
+>the folio statistics upon a successful split:
+>
+>* All resulting folios are @split_order.
+>
+>* The number of new folios are calculated directly from @old_order
+>  and @split_order.
+>
+>* The folio for the next split is identified as the one containing @split_at.
+>
+>* An xas_try_split() error is returned directly without worrying about stats updates.
+>
+>The above commit log would be sufficient. Your code is quite easy to understand.
+
+Thanks
+
+>
+><snip>
+>
+>>>
+>>>
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index b2a48e8e4e08..46ed647f85c1 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -3528,9 +3528,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>>>>  		struct address_space *mapping, bool uniform_split)
+>>>>  {
+>>>>  	bool is_anon = folio_test_anon(folio);
+>>>> -	int order = folio_order(folio);
+>>>> -	int start_order = uniform_split ? new_order : order - 1;
+>>>
+>>> I would like to retain this, no need to inflate the initialization part
+>>> of for loop.
 >>
->> experiment: elapsed time
->> real    0m2.717s
->> user    0m0.175s
->> sys     0m2.451s
-> 
-> These numbers are really awesome.
-
-:)
-
-> 
+>> Sure
 >>
->> control: perf data
->> 22.23% a.out [kernel.kallsyms] [k] vsnprintf
->> 18.83% a.out [kernel.kallsyms] [k] format_decode
->> 12.05% a.out [kernel.kallsyms] [k] string
->> 11.56% a.out [kernel.kallsyms] [k] number
->>   7.71% a.out [kernel.kallsyms] [k] strlen
->>   4.80% a.out [kernel.kallsyms] [k] memcpy_orig
->>   4.67% a.out [kernel.kallsyms] [k] memory_stat_format
->>   4.63% a.out [kernel.kallsyms] [k] seq_buf_printf
->>   2.22% a.out [kernel.kallsyms] [k] widen_string
->>   1.65% a.out [kernel.kallsyms] [k] put_dec_trunc8
->>   0.95% a.out [kernel.kallsyms] [k] put_dec_full8
->>   0.69% a.out [kernel.kallsyms] [k] put_dec
->>   0.69% a.out [kernel.kallsyms] [k] memcpy
+>>>
+>>>> -	struct folio *next;
+>>>> +	int old_order = folio_order(folio);
+>>>>  	int split_order;
+>>>>  	folio_clear_has_hwpoisoned(folio);
+>>>> @@ -3539,18 +3537,14 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>>>>  	 * split to new_order one order at a time. For uniform split,
+>>>>  	 * folio is split to new_order directly.
+>>>>  	 */
+>>>> -	for (split_order = start_order;
+>>>> +	for (split_order = uniform_split ? new_order : old_order - 1;
+>>>>  	     split_order >= new_order;
+>>>>  	     split_order--) {
+>>>> -		struct folio *end_folio = folio_next(folio);
+>>>> -		int old_order = folio_order(folio);
+>>>> -		struct folio *new_folio;
+>>>> +		int new_folios = 1UL << (old_order - split_order);
+>>>
+>>> nr_new_folios is better.
+>>>
 >>
->> experiment: perf data
->> 10.04% memcgstat bpf_prog_.._query [k] bpf_prog_527781c811d5b45c_query
->>   7.85% memcgstat [kernel.kallsyms] [k] memcg_node_stat_fetch
->>   4.03% memcgstat [kernel.kallsyms] [k] __memcg_slab_post_alloc_hook
->>   3.47% memcgstat [kernel.kallsyms] [k] _raw_spin_lock
->>   2.58% memcgstat [kernel.kallsyms] [k] memcg_vm_event_fetch
->>   2.58% memcgstat [kernel.kallsyms] [k] entry_SYSRETQ_unsafe_stack
->>   2.32% memcgstat [kernel.kallsyms] [k] kmem_cache_free
->>   2.19% memcgstat [kernel.kallsyms] [k] __memcg_slab_free_hook
->>   2.13% memcgstat [kernel.kallsyms] [k] mutex_lock
->>   2.12% memcgstat [kernel.kallsyms] [k] get_page_from_freelist
+>> Sounds good.
 >>
->> Aside from the perf gain, the kfunc/bpf approach provides flexibility in
->> how memcg data can be delivered to a user mode program. As seen in the
->> second patch which contains the selftests, it is possible to use a struct
->> with select memory stat fields. But it is completely up to the programmer
->> on how to lay out the data.
-> 
-> I remember you plan to convert couple of open source program to use this
-> new feature. I think below [1] and oomd [2]. Adding that information
-> would further make your case strong. cAdvisor[3] is another open source
-> tool which can take benefit from this work.
+>>>>  		/* order-1 anonymous folio is not supported */
+>>>>  		if (is_anon && split_order == 1)
+>>>>  			continue;
+>>>> -		if (uniform_split && split_order != new_order)
+>>>> -			continue;
+>>>
+>>> This is probably dead code in my initial implementation.
+>>>>  		if (mapping) {
+>>>>  			/*
+>>>> @@ -3573,19 +3567,12 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>>>>  		pgalloc_tag_split(folio, old_order, split_order);
+>>>>  		__split_folio_to_order(folio, old_order, split_order);
+>>>> -		if (is_anon)
+>>>> +		if (is_anon) {
+>>>>  			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
+>>>> -		/*
+>>>> -		 * Iterate through after-split folios and update folio stats.
+>>>> -		 */
+>>>> -		for (new_folio = folio; new_folio != end_folio; new_folio = next) {
+>>>> -			next = folio_next(new_folio);
+>>>> -			if (new_folio == page_folio(split_at))
+>>>> -				folio = new_folio;
+>>>> -			if (is_anon)
+>>>> -				mod_mthp_stat(folio_order(new_folio),
+>>>> -					      MTHP_STAT_NR_ANON, 1);
+>>>> +			mod_mthp_stat(split_order, MTHP_STAT_NR_ANON, new_folios);
+>>>>  		}
+>>>> +		folio = page_folio(split_at);
+>>>
+>>> This is where non-uniform split moves to next to-be-split folio.
+>>> For uniform split, the for loop only iterates once, so this one
+>>> and the one below do not affect anything.
+>>>
+>>> A comment above this assignment would help reader understand the difference
+>>> between uniform split and non-uniform split.
+>>>
+>>
+>> How about this?
+>>
+>> 		/*
+>> 		 * For uniform split, we have finished the job.
+>> 		 * For non-uniform split, we assign folio to the one the one
+>> 		 * containing @split_at and assign @old_order to @split_order.
+>> 		 */
+>
+>Looks good to me.
+>>
+>>>> +		old_order = split_order;
+>>>>  	}
+>>>>  	return 0;
+>>>>
+>>>
+>>> Otherwise, looks good to me. Thanks for the cleanup.
+>>>
+>
+>BTW, does split_huge_page selftest pass? If so, please write it on the cover letter.
+>
 
-That is accurate, thanks. Will include in v3.
+Yes. Will add it.
 
-> 
-> [1] https://github.com/facebookincubator/below
-> [2] https://github.com/facebookincubator/oomd
-> [3] https://github.com/google/cadvisor
-> 
+>With all these, feel free to add Reviewed-by: Zi Yan <ziy@nvidia.com>
+>
+>Thanks.
+>
+>--
+>Best Regards,
+>Yan, Zi
 
+-- 
+Wei Yang
+Help you, Help me
 
