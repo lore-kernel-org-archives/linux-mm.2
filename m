@@ -4,102 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3852CCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E2CCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:39:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F20238E000D; Thu, 16 Oct 2025 02:30:48 -0400 (EDT)
+	id A76218E0007; Thu, 16 Oct 2025 02:39:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED0358E0002; Thu, 16 Oct 2025 02:30:48 -0400 (EDT)
+	id A264F8E0002; Thu, 16 Oct 2025 02:39:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBF908E000D; Thu, 16 Oct 2025 02:30:48 -0400 (EDT)
+	id 8EE728E0007; Thu, 16 Oct 2025 02:39:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C93938E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:30:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7915E1A020D
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:30:48 +0000 (UTC)
-X-FDA: 84003004176.23.CA8E76C
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C7E09C000E
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:30:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=kS8thQE2;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=gsQG4Jpu;
-	spf=pass (imf28.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76EB98E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:39:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 10075160201
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:39:54 +0000 (UTC)
+X-FDA: 84003027108.06.861BF2F
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 463CB40009
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:39:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AzqtwqII;
+	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760596247;
+	s=arc-20220608; t=1760596792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f6IbjrRyjIzJUEdaRWMx1gg2BH4tKEtdFB7rtOCxaFg=;
-	b=fYIdq8I9fCiPArOBHDUJAFjd95IDq16GxaJC5M8zN5mLQtOW2qArkxNo6CSQlXKroSDSVC
-	1wfrZVCqo4OWT5EQSLCJiO3w9W8dk6PVMWMw8Neh1p17VHYDicRD6+cdjBAj+iE/LrSuXS
-	Bafs+jwg2F2dWULy78Y2Xe7CV/TyXGo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760596247; a=rsa-sha256;
-	cv=none;
-	b=2UctSEvy/a43Jv7wWqaT6145cvo9+4u2WWelTXilAGPf55dXG19H4XvqItrZ09WxP5fVVU
-	V0AbK8M474rQOP6ng1L6YOkAJP0zuLSvejcTgqTO4qoIKswS93dWgQ5TX8zEMu6PUlCqYR
-	fmkHTDGf/4qX3j+m9RK4tupf0dToMn8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XLYz+sxApW+N3B2ZP3MIw842hzBlsff9zJ8nO/j1d5k=;
+	b=hTwMnWZr/TSXAY7YbJFmSFmXPVK+gWBSWBYvqBnhOAjvpIiYo2a3Pon58R9DMrCMRLPAsG
+	t12YXsgKUJiCAz+ommF30ep1hTU3HzuDG6EMeMid90QqF7QBQB4WWyVrXUaAlC7QTMB2fe
+	9nPCCn94TpJW5Y1XcuVmmbEJSqi536o=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=kS8thQE2;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=gsQG4Jpu;
-	spf=pass (imf28.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Thu, 16 Oct 2025 08:30:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760596244;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f6IbjrRyjIzJUEdaRWMx1gg2BH4tKEtdFB7rtOCxaFg=;
-	b=kS8thQE2Zc4rb0h4PzRI5Lxac0/ZR7EKxYmT53N42hsNkIkcBSl+WW7KNAXlrO+VxxT6+j
-	8QNHgR7fTaTA0ks2XVXgJhgzCN9+uZyHTPWwd3fk5QwIa+TgLW/hQ1hQST88IQWJ8WNfLr
-	VXKmqLMyLJVwCgXyp/azHrKXtE4asWAIbgEvo+gdfxxWAvOuCDrkCPQISf0jWkP1CabynH
-	cegCTyu/WmbEE4ig03rD4M3Z1xFIzFb4yeyMiVKeszyPYmYWdMnjHjtUgN7JlYjEDRgNJ8
-	Wx00LSM22OFmSWLHV99+J0jgUm2TDXBNWfXpH3ueCDRDNcZ6eXnXa/zmGx/kVA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760596244;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f6IbjrRyjIzJUEdaRWMx1gg2BH4tKEtdFB7rtOCxaFg=;
-	b=gsQG4JpuEXx2WtyG9BB4RZX6kMF/vuCCYpilNX3xbWHvvlJ6BtMmNjFzmsSPlwRRYJsWEH
-	TeuX3dawgh8NP4Cw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH] mempool: clarify behavior of mempool_alloc_preallocated()
-Message-ID: <20251016063043.AqrS2HeR@linutronix.de>
-References: <20251014-mempool-doc-v1-1-bc9ebf169700@linutronix.de>
- <aO_taH9CKxmJPnhV@fedora>
- <20251015192717.HvwzCChE@linutronix.de>
- <aPAkNZDr_HAA_d75@fedora>
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AzqtwqII;
+	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760596792; a=rsa-sha256;
+	cv=none;
+	b=dpp99DMsrjlnaIhgSQLtvobfMlUAfaiCBfrDbmgjQcTcvJ7Yx536Dem0R7br0JA/PS16E0
+	e7IkIsS70v6utC2h00hoyO77iSeh6zJc94sWEXxZLqHmdvBiAqn7eaOgaVaKoPlFTEzZi4
+	dP8Ib+qGTYnMd64sLchdL12JBirLJFM=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-27eceb38eb1so4478055ad.3
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 23:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760596791; x=1761201591; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XLYz+sxApW+N3B2ZP3MIw842hzBlsff9zJ8nO/j1d5k=;
+        b=AzqtwqIICpF6Ew+IVbI00Yb7NCMPMYRhAfO5YQvSMW5nwRzjL1D67t0nP9DU7RGrAD
+         MGilGPqmDvdoMCjNlPsy+b+yRv6tPpL4TDpePGKZHCJOWXPlfvSlDOKoaEcMUHqdiwOQ
+         exAXuq3ENzUp1XfbUJlG5nBSnristnxbXQw0WiZAn9JYkp/LkBwlgzgcwGFoPe5xw/0/
+         ZxTTWXTY5sKAH14HB1Rq+njz3Z8buZ/lFxNWYmO+Well05lGQ4nRykNootw59VeKXBzl
+         aT2isCxZed30XIMWaOIS9k+QkXscfQB+GKaVsCPk5Xq+yu70j/uqm50rqQKL1jTOmI00
+         gNtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760596791; x=1761201591;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XLYz+sxApW+N3B2ZP3MIw842hzBlsff9zJ8nO/j1d5k=;
+        b=UV3uz18Plf/07AiY5NzQ4awbVTrZvAgdhioTNe5RP4EetrLS6ICxP6NeGfEHDz4tA/
+         PNKiDeLRF6s1JDDbuJP4OYdFekqa7s0MOX9BB6/Dp5VeKO9kTxlTVXA5uohln3PgaewG
+         i4nh/x1C5OJ0qSZroAERemi3ZkK0LagxCOLJlhgA0SQH+aJDjxQlLqnHvfJRd9bwKByX
+         Qihc4xIL1u7xUnYiYb0FR5gRn8qookmolIWKI+hr0AAL76wiXyc/suDsz4841NPzfQMm
+         VGjO7guW+hrv9yRxdWViL6fmmJZfp7wC7lseo/6Gzow2F+LbxvqrVOWzot8Clj+nFNIS
+         BW1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVc1SNrVZhKQbEL6UtKTucwwJQQ2f3LCHVAfZF/hCnVkUzeAUBYEL5a+VwKr3xvl8KCIIPZgkr5ZA==@kvack.org
+X-Gm-Message-State: AOJu0Yz4MDAkHEgR7IAGzgTQ89bCKLwzcIVw+rXQ/a6k8eqUcjyp2S63
+	1l7yQFFBIsXX8+6XJkEYg9JblbtGgEsEjtL9P7N/jLJcwkXb77qa6XbI
+X-Gm-Gg: ASbGncsphPMzxZd1Z+jnXqPz9MVFY2V8q8ittrZCxa7BvDFe3f9nJyS3PksQbY/v+Dd
+	LcJ63JicKn/B5QVFL/PvYQ9X8lrnuoLTwExSBSHGRFSbss/tidYJwoSb35o6nAzLSkkBFBRfPu2
+	GWE94dXDWEexGvNoqxyRRzjsgU9D3huHfsOdvzvQAtlXFq8xiHE/x5kdsC/Nq/iUR8ekjEoW1W6
+	WlBclDnRIK+HPTc7AZfaNQ26ao87bS6cGHtqp1tIy71OBkCB1544UOE2zpdf8UrRsba3sLq/CZQ
+	zhKEq9RKbdlivJ6GTScVfieQTNgQ5HvHMYSp/PrBs+TSUluyVfGIw8RLJedCbWm0lu7Vj99BGyW
+	Xg72dIMPziBKR1JBdaHGPaG9uIuAIpHLTeM8RoLf6igv3DA8ugHD2ORcbnf4RHOMZl56w+O864m
+	8+32UB6zl0VWankPpScWOYFyZ2n2PhB2/E/edqiFg4BwYlJqJPcDw=
+X-Google-Smtp-Source: AGHT+IERjmYAk4jdxuLqgB3pee8YjcgnDd7TPXuBe1q9Otc92V9NoAqnoqGjA5dhRZzhmASR6Uev6A==
+X-Received: by 2002:a17:902:cf0f:b0:290:a3ba:1a8a with SMTP id d9443c01a7336-290a3ba1d59mr18628905ad.53.1760596791121;
+        Wed, 15 Oct 2025 23:39:51 -0700 (PDT)
+Received: from localhost.localdomain ([2409:891f:1d64:636e:f4f7:9293:7b0c:3078])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099b0215esm17555295ad.112.2025.10.15.23.39.47
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 15 Oct 2025 23:39:50 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	root <root@localhost.localdomain>
+Subject: [PATCH bpf-next 0/2] bpf: MM related minor changes 
+Date: Thu, 16 Oct 2025 14:39:27 +0800
+Message-Id: <20251016063929.13830-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aPAkNZDr_HAA_d75@fedora>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ukbib6ycwumzgsacu86iia4ssz1g8tin
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 463CB40009
+X-Stat-Signature: aspofm9685rucpuobcznih5sfqw8mmz8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7E09C000E
-X-HE-Tag: 1760596246-323827
-X-HE-Meta: U2FsdGVkX1+08rxXnxjvoZarKRBcp0YTqWBkVQf7K6HGV+XmicLuMvIvSFlVknoa0QI8CTTE9Ob9KZ2Vy7iVtNAtswXAo7siVeUa3yFg//cM6Sm3Y1O8rogwbQnUi2d0pa6Ec5GYvkj2MYarQzH8pnMnVaCTtyIZGBke0BfyikvbKamsBPG6+/fB1AwRRFsgqwX0/GNAwhW6f+fEzChePmiq0CUbxMsQ7EES+NTfoUEvL/xkDEGYR+zkUii2GTtLa9FTtvkCeGHteZNxAC+JpYirIbX0LPLzQqvmppOdbf9Pqf8EdmqARtlI2oRZn5idcZrctGYG0U64IEHEYSKXiQSflrW/E8L09lAecfcdQcXQd5H/jYBi2F0DPHCHgfuEoqqg7a92w+xi8aztIB71Xe4/8quu6QqeMEC3HN70xt1ffUEMATn9pkNywUlz99wAj+TmSYJvpu2xxIIMkIsuHvRYzcwfKUc2W/DOLcrc4ZE2w4L+QLCxrUzNDNBsavLON9NZEZraMSklDlbJfozP27nJ11spshVq1b5eINbbyJBbmaB5z5C9UMgmeKxY69iFfIZtMtcL6X1SA2Gk1nkgkEJ16nua3GIcdZ12+sfuH5W81vimPgktx0an8KPRiyq52IqdHJHJYY3EGyLLo8YPAds6mtHZ0o/ZJLW5HM/h7qDHkY1lNB5tkpcmGI22qclJ5fd9Fg1PqNbmmkdB6FLhZk5T7HNtOFl4Oz2Lj8BUDFt4Q3BL0g0tBmW7q1jdGWgw/Gbetc6nxmhXxAX/Vo61nNlHcXM84QNz+Ly+Iz+QyfkmO7PL/YEcPUR/uCToX79dpgIN7OlrbiXafRwCHplxJJBzVBvRAPhsUQiehM06hHm0cApDAt2KUR+ER7kBEEmQ8cBajJaNbsHy5QrL2IlaAksiMs0todFK41CrgthF7WGt4q9U7bF3LULVwqh5ZvxWZMAmm3LOCyhstqFX990
- wQBReAwN
- z4GgvA7YOSvCZX1iiXanDDjABeofLKY+/uwHFhPPuXkxJI0+jPMTz3hxPeSSFrE5SwQG9btCQpABl5ohFSE1/5oOlFe2dPTgDKx9KHAJlTTzmTIVmqzjwDvy97mgDCW4asUBi76P2GAay55rvym6rX0EKwCXwWDLKvUU4M8+vudcF29I9kwlywMawtMh0hzss+tNLyePguWtu1gjyqLwau7PDiUHKhHLuyQjJWt2tNmI6jzexqUiNhkMfsJPycAJoWbscbMO5CmEAngHgOvG0AgwMXaQqMs5z+SFoanvdMg7WPeVlJHaTBKQhuA==
+X-HE-Tag: 1760596792-228181
+X-HE-Meta: U2FsdGVkX1/FHxHnPONWtRIfR1qIOfzG3LU3E9JVhIYP5SYdGZY3f3+LDZUCwB61FSPd+nNPArul+7Bs/p+1S+BEwmvLue48WaHcBgoljGYGyViAmlbbD9UzEYfnbqFHFWezBXMej9JEVPm/0LcPKW9GpVPB++Ipq7JAIGgOSqrxYLeRKzDqKC6XAoFO5EBgqk7AtoCGa55mR8a4WnYj0AWi4iVkh7k+wFT91+yCOci/aLJ8f+MpbzLoTpjhZHuW5WOC9N4vkwu72cyzU5yTKAWP64NBlkp23sRDHoyD/RZRAlT7RY1wcylrViWtQIRuILQx9pmyueL9Nw4l/dpA2WmrbXagSCMtJrhXDSIvW/Y+ALQmJy5jXUknNYdUtY/QHreQFIeEsjIDIq/eROch1qMa6f9cfFz/o6pJq3Z29cF70D1qfdZ+us/rRDfxDns6sUBx80YlyQmkGRKRwwpNv5Heo5IN/MjmQsJDtekZ40Tuw6UByVtvwimN1RgfK2OCWfo7nHhOGGu7yDP4SjZjbv7PcrpTeVgFj4qhO7Ajs5n7ycDxzLNuYlGDnPChjcGAcW8fRrF7JK+XiMlrRKT85d3UH7mQepU78hTUWCQTQoj+YeWrXLFu4ylghNaaVfiKYB/ARyN7MOwS8Wky6Mg5icJ2Tx+YS/p42OZIVGpAzOI0mFXYpRWcNOpa+OXuD2tqV/hIdb9RlHKZW9YH4vQwVbSEyRax8DB/ECmgZRmGAtpIZ/gaxzHzLNFuPNZFgi6i7+h8Oy4lwn+RszdyCVpem++mRYJXS+2H7MHx0J/ZCkMvRUsm00is33GbQv0UVWkV4stbZ0QA+px/ucPCk5m/ejpOPAcC4thxm3WqposnDMJjO1RqSSxVaKUMtkgRJqdGQTBZITtouM3a9aqlQ+UU6D2zCLA4UqUALFDYdjf3f1u3ZiqSzvQsftbkahbzGltDwQmtluGJAcHHpUPKB3p
+ cOzStH4h
+ WwfZhE2/9RcJzNB8S4eWdG6tgu1DsT1GZWiPUpacE2gbjNIVex+v66D8GnfCy5laGQ6547uuzTCL90yzaqe0EELkr56/trE5m1RC88a1Rp5SihprdLlkk0Sfe3wLVZ4qwQ0J21nl7lFVMQqaq66nNaaZXTqJBQnv3DD77QTEElS8JomaA5M/ik9LyJxlnAtBdNrboJjEr3Zx1Hr2owqgw3PGuMbaBlE0fr3kGFXWMYz8gOYqPvf16hatPzIWi3R2nLDkbfH4JcwnMrDoDZ/QGphHsmMA73GFnTASzD4HuxQ5VMOUftRNkfK61jQQlet79XGAZLNYTpDWu+V2HMtWHKbROWUQRl6HSL3SpCm3b5Sp2KSfM4+a/2FfHb5K9uU+TbVqZto9AetM8EaU2UccPsSQauEKZAXDnSbloxUo3Tt9r3heeMjaKZcjDtL9Qq7fnlJZssc8Kkpag2qHYbHnii10Vsft0Yo+FpNuqzdaYgyCpY+XyuXghyXfdR2VCPylxVrG6zsECYjR3JcYI6bQkgP9c+3PhXSs7WIm9XiPOAzkkXLDqlN7gc2Jv+iRnOv5/9hqeIsNmopy9aJx4C7SR5dGX2Ve/N1mmVrcA9SXS+KfPDLQ6ESgA6SQTuVLS+/j4Kghx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,41 +128,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-10-15 15:46:13 [-0700], Vishal Moola (Oracle) wrote:
-> On Wed, Oct 15, 2025 at 09:27:17PM +0200, Sebastian Andrzej Siewior wrote:
-> > On 2025-10-15 11:52:24 [-0700], Vishal Moola (Oracle) wrote:
-> > > > --- a/mm/mempool.c
-> > > > +++ b/mm/mempool.c
-> > > > @@ -461,8 +461,8 @@ EXPORT_SYMBOL(mempool_alloc_noprof);
-> > > >   *             mempool_create().
-> > > >   *
-> > > >   * This function is similar to mempool_alloc, but it only attempts allocating
-> > > > - * an element from the preallocated elements. It does not sleep and immediately
-> > > > - * returns if no preallocated elements are available.
-> > > > + * an element from the preallocated elements. It only takes a single spinlock_t
-> > > 
-> > > Might it make more sense to say "It may sleep" instead of "takes a
-> > > single spinlock_t"?
-> > 
-> > May sleep usually refers to something that can not be used in an
-> > interrupt handler.
-> 
-> Gotcha. 
-> 
-> > > I feel like the fact that we take a spinlock isn't the important part
-> > > here (especially because we always drop it before returning).
-> > It actually is. A spinlock_t can not be acquired in hardirq context or
-> > when interrupts are explicitly disabled via local_irq_disable().
-> > Therefore you should use the function in a local_irq_disable() section.
-> 
-> As someone not too familiar with how the locking intertwines with the
-> scheduler contexts, seeing something like that makes much more sense
-> to me than seeing "it only takes a single spinlock_t."
+From: root <root@localhost.localdomain>
 
-I am not too happy about this wording but I don't have a better idea
-either. However "may sleep" is too broad. The spinlock_t is at the very
-least documented in
-	Documentation/locking/locktypes.rst
+These two minor patches were developed during the implementation of
+BPF-THP: 
 
-Sebastian
+  https://lwn.net/Articles/1042138/
+
+As suggested by Andrii, they are being submitted separately for review.
+
+Yafang Shao (2):
+  bpf: mark mm->owner as __safe_rcu_or_null
+  bpf: mark vma->{vm_mm,vm_file} as __safe_trusted_or_null
+
+ kernel/bpf/verifier.c                   | 9 +++++++++
+ tools/testing/selftests/bpf/progs/lsm.c | 8 +++++---
+ 2 files changed, 14 insertions(+), 3 deletions(-)
+
+-- 
+2.47.3
+
 
