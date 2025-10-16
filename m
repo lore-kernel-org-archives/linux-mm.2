@@ -4,99 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21397CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B882CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB8D8E000C; Thu, 16 Oct 2025 02:42:30 -0400 (EDT)
+	id AA3488E0010; Thu, 16 Oct 2025 02:43:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 792918E0002; Thu, 16 Oct 2025 02:42:30 -0400 (EDT)
+	id A7A728E0002; Thu, 16 Oct 2025 02:43:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A8458E000C; Thu, 16 Oct 2025 02:42:30 -0400 (EDT)
+	id 969EA8E0010; Thu, 16 Oct 2025 02:43:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 551718E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:42:30 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CA52118BD1
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:42:30 +0000 (UTC)
-X-FDA: 84003033660.29.73AA386
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 20D014000E
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:42:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4bJPn/D";
-	spf=pass (imf17.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 84BFB8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:43:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33E15B726C
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:43:24 +0000 (UTC)
+X-FDA: 84003035928.04.8977D2C
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1606E140007
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:43:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F8i+5ItO;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760596948;
+	s=arc-20220608; t=1760597002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xwymle1RI5deN1YZysEWyTkaWWkdCc1UvMTlc0d69Rs=;
-	b=7WS4JxnFEJ04P1XwkRJf94jG/n/Z6LrZPmys2nhrLOmuzdQawC5jrsNlJTrurfKsn2gd7x
-	VfHDNM5aO0zvktlxRiuOIUadYjFpM0rewO56f02/Xzg2VpJntprjBhjT1ZsPuyKCqryhbc
-	EE99SGhfjnhgjcVlO1nxO6gosJiev8o=
+	bh=uMB4WotgJMB2B9lnpkEFb08bYlsI5GtgT/xlgxrxy7I=;
+	b=6faSLBuRS+2c6ucDCo8HiyljjYf8XadCQUPiUI6eayjLXvLWsRhf2jx9tRAwBmjs5zm5PF
+	T+4YqB/guN9My6jYIkBYgyAfyMvKmMOgn0i/C7LVsYx+2s7edM8saw37yDIy++NfDlLhSl
+	jCzD+9QEIfH7Un8+zXlbbWLHSA1rOPg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f4bJPn/D";
-	spf=pass (imf17.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760596948; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F8i+5ItO;
+	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760597002; a=rsa-sha256;
 	cv=none;
-	b=DHjiTndNS9DqCBcIAgY6AmDKhq0M2eiO7eZg8NyREb77ScddSRdu1sxyZgMYRyuGUXjAjU
-	mAcOeZuV58r4L+hZTv3w45cnayfi6mjR8iyGOLGy6sc7cj5RrjnbvDI3OPMYH9osN1aTH6
-	H2GyvQd+eyqBh7GGGKK5Yxwm4bhR79o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19610407E3
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC778C113D0
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:42:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760596947;
-	bh=Xwymle1RI5deN1YZysEWyTkaWWkdCc1UvMTlc0d69Rs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f4bJPn/DpnUgA7kotw1MXERFp/4DM7MKCgNaU6MFBEUIc0ONsK0C8ggnZbDxnGrgF
-	 tR2OtQxrBnPYCWinlOtBtwtDjSl020CPuvLETp5fANNiTf5Bfs6Hzdnoyl9CKyrtgQ
-	 NzrcYMsDv/UemkZFTBxEg8VFiAxfpttKdmCV8dC8nWl0zkkLZay3Yg35RkRyqRTkyT
-	 J85LosJyuWOck/ArSWO8v8f/gMj+bHLbA4LL5uK/xViAQyWaWRTYfCGAM5ZFR9Y3e9
-	 Sb9riU0oWUI9afqOU9oSYVjpwZxELTn2HusteZWC1lYj7dzuXvGR9k8oX05iQj5nt0
-	 9FsKAr7t4tSJQ==
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ee13baf2e1so227625f8f.3
-        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 23:42:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVbgQ3UNUp4Ff/A3GdgHXPhBzGKkqfeHbLr60wSAaD9Pv26uBFb8Dx9sf8i6EZEKur53g7X/dfEyA==@kvack.org
-X-Gm-Message-State: AOJu0YzpyKy/T18cNHikTLb+86ZvwIKVUXatz+oHvCqLSzgm1ml+PRFd
-	EiZdHRWQOoPDL1IuUyJm7mW/+FIkHP3cmrRC7w55HyC/CrYTKvX7cWvaA+13llgFv2IKOhfAN1b
-	c6PFZxkwsMvEhMs0t5A1kak3HoezWEvo=
-X-Google-Smtp-Source: AGHT+IGMu6/5tkdwgl3TJA54YC+DSQnG+626+3ajWtF+4ixc5KZNJofj28aYCYE+Pd1fkwBRWHURZ3ViZoPyv4GSZyg=
-X-Received: by 2002:a05:6000:2385:b0:426:d57a:da9d with SMTP id
- ffacd0b85a97d-426d57adaa3mr11257702f8f.59.1760596945568; Wed, 15 Oct 2025
- 23:42:25 -0700 (PDT)
+	b=Ieom5K8rRVn4+lcqZuT5zL34zGNez6W19OGojmgGZFiID8PPaWmh+w93HO3FYH0gaf84EM
+	2unmqs20iAzbUAUAUBzdC2XkdD8kZ0+whtz7xNiwW7ZJJ+/420xiHeVG1B/gz9bQmKwL9s
+	gICLZ7TqIDhjMx7QM5gcAac5YA9gFDc=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-74f6974175dso4174507b3.3
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 23:43:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760597001; x=1761201801; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uMB4WotgJMB2B9lnpkEFb08bYlsI5GtgT/xlgxrxy7I=;
+        b=F8i+5ItO75BWM6pUSSiREheKsoJ5/876fhz0A5oP+1W39OdpUxYOk1H7FNoZjHk1cG
+         yMxeVhribFxCs4qua+Mt69Ww5sgTfQokgSDSKyaVs3eUEDXUaaKEuwrO4IFKjPXWBQoI
+         Ohka/e+mHW+vTnX/jaQ+l6XQFO9QGSy+5L8hAFlr6LvxKLpk0kHJHCMcPgWxc2Zji1dt
+         TjGEtpDsAsAoYAB2jU7F04wMx8cQ3fZO6F6QA3hr+jOARLL25NsVm/YKXSotdmp4oL/G
+         v0T4dlpMl+E/Kys3ak+PgLjn4Lmhj1hScFdkhiNLcQYACmrV3Ei7fsLNTuL0MK7CI1Gi
+         rfVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760597001; x=1761201801;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uMB4WotgJMB2B9lnpkEFb08bYlsI5GtgT/xlgxrxy7I=;
+        b=giGfVqP5TEPTRkrtoHq8Ax7O/xW3kDODD9WOLUpDTEDsWdNJmoicKKwo6IVHmxnkqT
+         B67HLj8kMRnA4LR3hTsULUgrHU0/f1KYa2kPKecyYtEt1kcLro+XmvDHaOxGgbefzXkv
+         6cn+9zNutav/UmFt3sjyypsAccrazJ7KWOiV21iv/rmbTi/FV2oMkAmkRgXyfX8Z4uq0
+         1l8ffnyk5UeUMAhxxDhMzqTrwNnnLIvvL62dkctuUnZnKz0oCioyNwRgprkoQGm+Ps3P
+         jypGwY1YSJwpuyVDLd5iZGyIIyiLdNRC5S4KVvl+xj8AmZOiIVYPMKN1YflKr3WdgPCx
+         cZYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmiU4l9FG2EdDzS9y2e/T4FbS0zyxBRKedloIkx1guOShxnw84HfDatlPAYlaaCpzXHehVAbpENg==@kvack.org
+X-Gm-Message-State: AOJu0YywI83JVmth4w7URU/ef+7QuMjappokipjV5oibfdZ8nGUqCZd9
+	J55yOvNzL5JWZl2EYLAalz1Xd05GDtP02mfeFc9rdpUPNE+vnwFylowwUxiJYJ8Fnm1fnTltuEp
+	Pa3EHgPbKF1ep6lHwDJA6r5k2b4JlYY0=
+X-Gm-Gg: ASbGncshihfN781zs64Jl5aotuIlnRrI56C6B+jKF5luU9ANrYFsLCSouk2kH1atTfb
+	QW23KjnXyjz80u8c9NSAFTwbcM/JRQjXYI9eyUoINKbTHqjgQVt5JCZL9egMOmxeINd+uOKnlWL
+	tGv6tVOWXIwBOQx1LH21s2PDDk4Oahsa0GwiZnBRWpaJ3es/aurfMWKQ4WREi0EWe8TYebjN6JL
+	OrvDRZNb79zCyD+hv+t8uF3VMlQ+7gDTrloZrdd5oyKrlHAsDgMnHgm2iI4F4ZTyjkG5DuX
+X-Google-Smtp-Source: AGHT+IHt55ghDR10vYNQX2CPbLTIfDAHnS68w7Y8BthdNCorUSQCnA/OvTwgVVZCE/MUA6kZegO483oB/tunMLgJW3w=
+X-Received: by 2002:a05:690e:130e:b0:63e:1138:e0a8 with SMTP id
+ 956f58d0204a3-63e1138e2a7mr167963d50.14.1760597000939; Wed, 15 Oct 2025
+ 23:43:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251015064759.2993842-1-rppt@kernel.org> <CAJF2gTTgG2DhqLC2B6URsNusjzcwCaxi-k=MUZTc1FTEHbaf+g@mail.gmail.com>
- <aO-O_2lhxZ8I78cl@casper.infradead.org>
-In-Reply-To: <aO-O_2lhxZ8I78cl@casper.infradead.org>
-From: Guo Ren <guoren@kernel.org>
-Date: Thu, 16 Oct 2025 14:42:12 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQ0mcU56XKFcXcxDPv0bXGWm5WXHHpTP9YE2GK67XF7Pg@mail.gmail.com>
-X-Gm-Features: AS18NWAu7sEuMJK-AO5mkdGBB98AzUtrOqZ7rI9LP75NnkmgevB_U4njX0yf2U0
-Message-ID: <CAJF2gTQ0mcU56XKFcXcxDPv0bXGWm5WXHHpTP9YE2GK67XF7Pg@mail.gmail.com>
-Subject: Re: [PATCH] csky/mm: fix build errors cause by folio flags changes
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251015141716.887-1-laoar.shao@gmail.com> <20251015141716.887-7-laoar.shao@gmail.com>
+ <CAEf4BzZYk+LyR0WTQ+TinEqC0Av8MuO-tKxqhEFbOw=Gu+D_gQ@mail.gmail.com>
+In-Reply-To: <CAEf4BzZYk+LyR0WTQ+TinEqC0Av8MuO-tKxqhEFbOw=Gu+D_gQ@mail.gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 16 Oct 2025 14:42:43 +0800
+X-Gm-Features: AS18NWCmAzqewH7c8lKNSOM6N3YN2rFyfdEP9RCIkzoVhyDUX8WzpaYI1pA7pxE
+Message-ID: <CALOAHbBFcn9fDr_OuT=_JU6ojMz-Rac0CPMYpPfUpF87EWy0kg@mail.gmail.com>
+Subject: Re: [RFC PATCH v10 mm-new 6/9] bpf: mark mm->owner as __safe_rcu_or_null
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com, 
+	rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
+	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
+	rdunlap@infradead.org, bpf@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 20D014000E
-X-Stat-Signature: r5za4bexa3wa847pfwq1nfu6a1iiui8g
+X-Rspamd-Queue-Id: 1606E140007
+X-Stat-Signature: nga55hry9kurgbeogiky1ha6skudarf1
 X-Rspam-User: 
-X-HE-Tag: 1760596947-510458
-X-HE-Meta: U2FsdGVkX18PPsH3n/+ZavoqscJ50V91fDnKs5DlaPNzgUK1USxhxYAXKUT2BRqCMqfWOkFT7yd0Px1qIuUfhEKWdtABWD9Bc+cq1W1W3Wln7w96yN5DA7LTlKenT86k1duxyx9gp/QYJA/201R+U8Gdz/4fvcc0Z91/6nmKfEyoliWUhgs2dTDMJh5gZNMJoEKZtO9abJXGTTNV4wP7F+6nIuJr8FFqZVJlaW+6eW3WIsfxSqbbVz3oO/XJGk09XazObhVT5n7K+pXcvB8fBh0eGcMBy3vt9Tps2xPHmUK/2JpLd4K9UbChabwKhvCPkfeF6kTkbqhPasVeMOLrDCQ89Z+uKTgCMX2Ntk2p2u1ApTkvGPS/liQt9MbxSf5qrqJCqTHdBXgN5EVTJUo9XZCqqUjfrOQAlVzJiSeY7sf6ur9TOsPaZ9Nvy7qyl+20LJCV/dH1HHbEGRPGis7eYE66atgiAyRvUnY+ClpLQkarkv7+Y1O1eerJrjmCVeNJMw4yNqrb36OBxNNNf3OHi79rk6R3JoL11VxEL2eoRRVEm2z0+pCRnijqCz50929fI5a/nzf2XBA9oTruWpJrc77WFbWQ1EXU2QTAD1Xtz8mhpUAVzQvQcXArCOebzQPBNSaOcX0WGf38rw4s9oCggI0af4NATTSc8oax7vcOh4NmBbnQaVpkxdTkj+63OCuiJkKiJC314zM7YspXRjU/bacbuiygoCrur8FeY/JWBkrzYU1RAV3+7sU89Zdi0Kpuaeei5qKWRGyFPyeC8z+0s4sOywnXxQdruAs8iQeWcBQ+p1vYvCn/eRoDrNwnclN1C3ML9nSAupzIX9radCofUmCeEoMH2Doi+3AAiMTN+O6+35hmEd2+H+jgnGZiv0aq4C0gjfW5LSqeKfmSPZokaN/aJzrPhU6ztQOd3vz6ZI1qN+5EDXLNEPkzbQiu1h88/3L+DZW/UQ36ybG+pFG
- 8gPDpnrq
- eYKPPMRk7WXbcUcPq6q9eWJv+c7OWugMOy9wf710EJL+loyZXc/zU7ah/w2nVUcOwXtDioRLQPwTbfXtVbmMssX2u7blkgyfRyOy9hSqJ/S6ad5qW8D0qSsFiHQJvRHXU8YAHfLvVpQvPKdk7CFg+yAwL1M6PnZ9UGYm4ajJFA+7hTZctLDALR6rJhkThVEHP65gTFiUHbqfZ521ZJMiIR2nEOniDKzd42xhOPhFx/fW6bHOFpp5KvATfVrtp+1EawGFzH4ORY+92hoB4YTEOTrCQs6Yn++39UP58gjzq3ATBWAjKbcFvBGPftmmI95uIKx0l6bizfpksvwq0IjKcpnACTogGW2oiif0wNilrdlPEjIA=
+X-HE-Tag: 1760597001-241573
+X-HE-Meta: U2FsdGVkX19xB2rczZ5HGqWaOUvcyY/d2JFiJXqRnzlLShjM3ZL5S/o4hYEDzDy9H3ECAO7EbH5u4pfJiC1Ju7vVI3k9D0bcehNJk0jONOo6TmIVpPBSMh+hoGC7Dh4wKWKWXu6O6AZmYh0IiNB6n369v3zXDhVcZYT61vzeitlx+1yYktUaF0TP+EgZVdq61tc/Q9xblzEU1H018s+hU8544TtmnF5csVa7twhIJBxndaPZA/y8JL7GWwhXh6U53WwU8U756LLyOLjF5GNiD1oSe3E4o9LWkiV506yTixBGXlXGm9FzmxQpRtFQj+x2OCuy59SLHuuO4ti9t2aErwg01JiwrP6fg+FJO/CIK2h7urVOXNoVhvK45PMxEOD97aBjzAR4Bi4+64HohhIbn8Nf5AM/VrkzCvIqsOZmlRWV1tDjVLh2VvTJG5FYSLKuizndVK+zcZb+sb4F/Efh0TbCNJz+dNKPrIchL2CoOjEZfS4zUPrHSWgMmcwG10EYpT3xCJIyHprVxfmqzcFxO3mto7oNfkoNDWR01iYVyG37ODk4VH8tlQUDIyoqYNm0fx9WiVgUfr5cqGJRI1x8A1jEt0LuDUYmYxYiijn1RuZ5NHmRCp64d6jKDSBOF4WpZJAAFVqiuTLeWHtdKyyE5XRnz5opdau6Ld9FYOY24HFQ9WPCIUwlB+gxbJhaZt/EXoYoGsukncgvRdzqu/CEscz+Buv6q/SVFGuMMMFHO2k8B/Ul/rZnIE6KlQhp+2zOTkgxOBOWq858fs8tZi1EsNIJSpwxuzNAg8ELYgzaIZFhFc70Q9yYUCLc/hN/CBrJgggd8xcFVgoZFgJMBKa+pDcMtUMg+jrfiAB1GhHfN4deQwtTnU+S7vw6J2SJCFZS9xor/waw1g6KJ5OvWKSshmG35SCcMP1/umGWswVoMVe1rl1Vn8Y9/O6d3kxTFkR5cMzgoQk9UgYUcWTB1lz
+ bk1CAIal
+ 8Gf/QqykmerRcOMvTfqVIweFKmX8A7JePnPX61r4gI7+SCLfo9RofdqsCsd0HLdHQNCe2aMMeRXIt06iaLZjfkIsi9nRVZW5qVS/g83bascwXGIBx498v1lBw9l0Nfe6fT24MFIFkNgPa4u+4Lbhgynbi1QK37GdwCfmYK+qdRKwR/nsz8JPb8nQZdhZ1Iy+iuAP2gchYM7VODi4wDFzSm7hbTT3+pcGoo2GL8Uh7vRiLBA1rInZ7r+pGyj1+f6a+Ri+x+J7SU/8hirVbr6HD25eZ+jpW51tNAMSqmUKtIa+fdYJEpVQgsPcau/5DMcB+I+bU/E93tIt9o80KST/W8XsNC6ZcBHGa2Yxo37XbFREW31ZewblmMZNWit1p4rKiom3oxJH2QF7dC7YejC7DYGNTGcY1xKcre9Lv3HvcZMBVfG4RdB5mGGm/5WYsWkRLvQNnb7I/KJYQpGs/0TBuR/gD3HlYnPMay1cdII4TLKcc/zhTU6Ey/ZNUKvh3H/Mow61nFCBNtLQjiFMAGWHIdy1ORNepit2jfQKPqQZCievYqTJ82vwFMTNq/+AD8EcBOJXHJK6w7MhnzUc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,26 +125,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 8:09=E2=80=AFPM Matthew Wilcox <willy@infradead.org=
+On Thu, Oct 16, 2025 at 12:36=E2=80=AFAM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
+>
+> On Wed, Oct 15, 2025 at 7:18=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com=
 > wrote:
+> >
+> > When CONFIG_MEMCG is enabled, we can access mm->owner under RCU. The
+> > owner can be NULL. With this change, BPF helpers can safely access
+> > mm->owner to retrieve the associated task from the mm. We can then make
+> > policy decision based on the task attribute.
+> >
+> > The typical use case is as follows,
+> >
+> >   bpf_rcu_read_lock(); // rcu lock must be held for rcu trusted field
+> >   @owner =3D @mm->owner; // mm_struct::owner is rcu trusted or null
+> >   if (!@owner)
+> >       goto out;
+> >
+> >   /* Do something based on the task attribute */
+> >
+> > out:
+> >   bpf_rcu_read_unlock();
+> >
+> > Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >  kernel/bpf/verifier.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
 >
-> On Wed, Oct 15, 2025 at 03:51:53PM +0800, Guo Ren wrote:
-> > Thanks for the fixup. If you want to go through your tree, please add t=
-he tag:
-> > Acked-by: Guo Ren <guoren@kernel.org>
->
-> Why haven't you merged the original patch from October 6th?
+> I thought you were going to send this and next patches outside of your
+> thp patch set to land them sooner, as they don't have dependency on
+> the rest of the patches and are useful on their own?
 
-Sorry, I didn't pick that patch up and just replied to the acked-by.
+Thanks for your reminder.
+They have been sent separately:
 
-I'll investigate it tonight.
-
->
-> Message-Id: <20251006-csky-folio-flags-v1-1-a91dcbdbf988@linutronix.de>
->
-
+  https://lore.kernel.org/bpf/20251016063929.13830-1-laoar.shao@gmail.com/
 
 --=20
-Best Regards
- Guo Ren
+Regards
+Yafang
 
