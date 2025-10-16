@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD457CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:07:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C85CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:11:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 237E68E008E; Wed, 15 Oct 2025 21:07:25 -0400 (EDT)
+	id 240248E008F; Wed, 15 Oct 2025 21:11:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20FA98E0008; Wed, 15 Oct 2025 21:07:25 -0400 (EDT)
+	id 2176C8E0008; Wed, 15 Oct 2025 21:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14C778E008E; Wed, 15 Oct 2025 21:07:25 -0400 (EDT)
+	id 154008E008F; Wed, 15 Oct 2025 21:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 043778E0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:07:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B83C6138385
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:07:24 +0000 (UTC)
-X-FDA: 84002189208.20.64D64DB
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 60F35180008
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:07:22 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=b2MjVqg4;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760576842; a=rsa-sha256;
-	cv=none;
-	b=IwFk8XPLQEDIDu00ZdAZWV5dBG7JR6zlaCqW8PagThljYmc9vtbGZJWMcSOndwLBFmBUY0
-	jfzuKmS6rJ+H3eSKl/gWIkPBM1wLTXOftDE7gsq+28V8CZ4ZHfHDekWNAE0Q1K/XnBNfYJ
-	duVv5hqXLmXVUyPDPUSkrWpWTumjER8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=b2MjVqg4;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 089758E0008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:11:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A779A1DB16B
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:11:04 +0000 (UTC)
+X-FDA: 84002198448.07.C7ACECE
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B67D740005
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:11:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UjNeyfN1;
+	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760576842;
+	s=arc-20220608; t=1760577063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1fSdo6OTYpw8UnovCNMxTtGNTkjfRe+lg0EXGJ2/iAk=;
-	b=dnxns9RA+iF3ePX0TvRowbV0tY9RRcfY7P/wI/1gmSrKTb824wPBAlyRv94Ikdxl+JHA8P
-	m+Y00DEa4E8nV8TDBNFDpyladm4qxDzhP12lbnuitpAHH6mzD1eOLbvUfucWfs9QXfN7vb
-	Vl5A8AdVDqrzyp4sddWWWrlxqSTGGts=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1fSdo6OTYpw8UnovCNMxTtGNTkjfRe+lg0EXGJ2/iAk=;
-	b=b2MjVqg4vScim2ZiRKaXK45p6N4swHfyYP/+OKER/4a9kjAumM52J9IhubvCnFLN2N8iibMGE
-	LwCy6ZdNwRXIBB8+UPP8aF+qGrtD0ILUUvVyj0EG2BDJms2PC4htNzetgZFPBCAsmuPo07EL5vT
-	vYMwlGjfOdKAZ2Or4vU5ERQ=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cn8t00fnBz1T4G8;
-	Thu, 16 Oct 2025 09:06:32 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 814DA140156;
-	Thu, 16 Oct 2025 09:07:17 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 16 Oct 2025 09:07:16 +0800
-Message-ID: <fb525b11-c60e-4a97-a5ed-be0792957ef6@huawei.com>
-Date: Thu, 16 Oct 2025 09:07:13 +0800
+	bh=9eWglOj1q+AvMecMj1okWvapeunhbN56i+AV+BTzGlg=;
+	b=fVZ+X4q+BBFHhCGVDgJQ7R7i1oMqF5UK4jIFxYoi0bnOt6ayl/aisK/7MRhXb2UCC3itX0
+	4WKa3ITnzed26m8Tvtpe+6qTo1wxNw908m1Lc1VVjNvliHOmafW5YpDglv0iwLJKOAQf+n
+	aO/5kRYu6Bq5HIWPI94YUHx2XdFT5GE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UjNeyfN1;
+	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760577063; a=rsa-sha256;
+	cv=none;
+	b=NrjKSaqEQB3pMtxyMWEFWyQPGxU4DkjjN/NLuDbTKvqzruGUyN4HnUnPzFtb4Z6wHg4KOu
+	jnmspQX3aOgSAsQ4uEOulqE6ecDfrr94Y8j+OTvUJ+ZAAIshu3DmVHDBtxyEzMdq2P27cr
+	QNJUZoq4rOo1vtPmyq7gpFmzIkwAonA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760577060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9eWglOj1q+AvMecMj1okWvapeunhbN56i+AV+BTzGlg=;
+	b=UjNeyfN1lT1QbHQB+SBjn0crZxw3AICe3s9vXl69EmVdsbWMGRugblFUU+RtOSrApnbuYn
+	qsCHcCG9o2C7orU+K/C7S5ix0iMllM0rqLx3c0zQqw3cXquoFBBCtvZMdJqdhRfToEAkVd
+	8vY7AV0p6MJ6tuTF+BMvv/UuTc+Bd7M=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: JP Kobryn <inwardvessel@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,  andrii@kernel.org,
+  ast@kernel.org,  mkoutny@suse.com,  yosryahmed@google.com,
+  hannes@cmpxchg.org,  tj@kernel.org,  akpm@linux-foundation.org,
+  linux-kernel@vger.kernel.org,  cgroups@vger.kernel.org,
+  linux-mm@kvack.org,  bpf@vger.kernel.org,  kernel-team@meta.com,
+  mhocko@kernel.org,  muchun.song@linux.dev
+Subject: Re: [PATCH v2 0/2] memcg: reading memcg stats more efficiently
+In-Reply-To: <e102f50a-efa5-49b9-927a-506b7353bac0@gmail.com> (JP Kobryn's
+	message of "Wed, 15 Oct 2025 17:21:46 -0700")
+References: <20251015190813.80163-1-inwardvessel@gmail.com>
+	<uxpsukgoj5y4ex2sj57ujxxcnu7siez2hslf7ftoy6liifv6v5@jzehpby6h2ps>
+	<e102f50a-efa5-49b9-927a-506b7353bac0@gmail.com>
+Date: Wed, 15 Oct 2025 18:10:52 -0700
+Message-ID: <87wm4v7isj.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: mprotect: avoid unnecessary struct page
- accessing if pte_protnone()
-To: David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>, Zi Yan
-	<ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
- <20251015123516.2703660-3-wangkefeng.wang@huawei.com>
- <db3fedc0-6ed3-429d-b124-d1e67992d6f8@lucifer.local>
- <2c2a9527-e52b-46db-ac8b-b13f4ba6d0cb@redhat.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <2c2a9527-e52b-46db-ac8b-b13f4ba6d0cb@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: 7weg9birsenyx5ozb8byenffmw5e9u1f
-X-Rspamd-Queue-Id: 60F35180008
-X-Rspamd-Server: rspam06
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: z756e4b9d9pe9aokxynw9zg3zxziois9
+X-Rspamd-Queue-Id: B67D740005
 X-Rspam-User: 
-X-HE-Tag: 1760576842-152530
-X-HE-Meta: U2FsdGVkX18uCq4vovOiqTRtlZJbOSk1QYd3UuD5JlvbrstzE7Zs4rCSCmroWwSWyO3o85irziujhPjuYPDHOu8YU3pHFmAQbSWI/KLU+EVH0yYY72+1ZNuWeKSMXmOISZoZ3NnAeMRwtViS0qJU2/zxQ/D3T3uM1vUJ+VpU2kMPKrlTL702aCPfNQGpOlIFsGpeV1IctDcbmnJnYPdgmxWcOnovWkOOowvT7g50Bt7rkycMyZEZ1n9ZiFUwcPctL6mR95I1UNawLEQvCqLcOi7IGbwkyiJXPtfuUh9SRClxuJxE/0gmURBzBacYAC+XIeluS7P5kVLo+6Tn7SgXhAu1hVROOCM3+y2leVqaibkXDnyMFHue2+V2iBPMqnD7iKnFLVtRelACGCRnkmCsC1orc61RaK8BrpHPcAuwHIUVoJmwyS9NeVkGQlEBNfGMYBHUoLfOEP0TviN+ZfpxmwCdVA6HVIib5H1sFdHJcq20hXnx7s70r6ULtpHcPnSYQ2bgKAXJhM6jIdNN2IodStd1qo8o0t8qO9STGtlsE+3FI3SC3gX5uTrPJ+dqzItxC4mFL+1irmfT7skcrGzyaXwp6de+Q4I6Pk9nG5Wd3MrFEof5BwpYWYcoHLyE9djJA8rA3Ddd2gKC/Xl3ieNQ0r+IQe1xs3NhESNF2zlLiFd4B8y4vXGJoOH4TY8mUtjdDaNJ7uiv2SeVrjrDtAxgS3anEeKfcAp81mL4KEUVo9i0lwmicP3VFEPFYfdpIk0EWW+4lCfvRm9ReeSVz9uIVAPOHU/dHoBy6bP1aXZLp5mf324gh60jM4aoWSpVFpdKEyLfO9FpC/5NGAjDymT/vRiqAzxC8BYm50RL85K+QlVPI4T9598oXrwmhhuZEh1mqKF5tNOpZWQlFn1iXR3mVrbqoRQ1G1bVY+XDUOIZBS7b+neQWfRfGEaf2a5vRV0fT4r44vu8LCWXXbkEgc7
- +Lpqj5Gh
- IqnCdolW/p9w+b8H764ZT3xnaDiYl4Gr2Nb6H6EXNk2asFzh5jmjNp+iNbfB06mlHI4jndH514UhnU3x7WvpOVjAINw1sIx9kDgRms2VYnU3qj6Tu3q9wgE+GbbKkduF9GnwQDnWBVR3J52TlhpqGSApUwZTC6ba5MiIQnKO4zRrsbDMptmX4MCw1Is5tieN0KcHHNgWfsHCUEt6yERxqokwXc+P2eKQkgnn4vEkLfF1EcEyldGjRaFQEMg8F8/q5OKUP3h4tyFpdARmkhK0AxJvaG2niVNmf0tWaJ96KPUmJZxZSdUEBhPm6uOMpftBuI7pb8VY4JhVsvRTqD8v4mQCeYTaD3rZOtVgQx7ePU5OX9KY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760577062-722929
+X-HE-Meta: U2FsdGVkX1/0+qpNIM1cmAjs9CYFA0NUrv1g/jkxr4TLbtkkYW21PnDY5W7I88+1NhywPZnvQCDoUGEURkKrjVQoME2FCX7CemnlJkOfAZsDME6RA3EvVSN/2We2IqpUj6NiTrXActXC/thKyHGtCqYctSxMQ/1tqADYIkQBzL6Z3xAx+wXKHYem3j2uvmJiE4Am0P0Edu/AHrP3QEwnRiuSBBE+qgGDECvz31sZegqfoxuxKpd06GykxZOMSPTy5C0KsiYr8A1UJmijdBu1CWgpRYXliSzSb8B9QqQ7n4p6Ugl7Uvp6pc0G5FhPs0C61FCSC+QKJYX3pbiTOZJG8qOSwPLGEtfwqmhLj24X3iUcMdFGdgq2Fv2BXHLCwOYwM3JDjJFS5hacVEyXHNw+PuRZcIb+CVnu1Hn3otTkIkTSDXU6kNCA8hAs2ekel02Rlf21TRa7NRWxKZtiC/7vhxOrAHrZohGkili7Nrx+XFVnKCINKZhV+tfwjDzJbZRGqg3MJD9THtc31GQimdHnyT0T3og6QBfpLgO4mwLm+exjkhsJnN0dxJ8ONlODCLODYh3z3C+/AX/xalwBWhSgOXW/skDEiy426vXoB/24rmvm6aH3f/i1/4FnEAyFszHsueBgD7xl3zNVoQOrbnY4cEHzqTtyMzCmISb3GnKNlNEUBw7zcBdodxSNLT5Tjus22FPsTZfsxESjdx/CbjE9qEf2CHZL6h9GmLjU/LlDS06hpr/Hv4WYR/Us3rsMtkNlYnbTSu0vGyFsuyPAr1lIaQf/UakIMhXMGy9U9mGzvPV75BxOU4J+IkEULEzlia2yeL3++T3NX9I/mT3HiFWQ6OJ9hs1n4nMX4+D8T4/b8MUXjqClrBW/lq5t4RPXcyUSy8SA05HgM6nC6462igDeBFMWyxBqGTvfIOusgFZQmqvqKxVHl5BtcifyDSN0TOWnqCnhk2CRnyIUff510KB
+ pRG/MQoR
+ /aHYMDJU0Dz/40rHo/jzopqgmmZtQw9/hOOIH4G5GPzlsMaF/sx09CKdLRYLRoLQTnK1BHsYKTSFu9NYdV3rZfJo2hMn6WizFK86qRp8MsikrAeMi+CRZGve4MPQh4FtfDadLf5o1hBuF1paG17bowIax27+JimW1RYXbTSWMb2S9EODncOHCybgduucFI1MWQ5Ub6J08tySKioRZvCz4rc43NZM91hIc1l45rFPdKzLa0cHt/RPZpjv2Kw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,30 +93,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+JP Kobryn <inwardvessel@gmail.com> writes:
 
+> On 10/15/25 1:46 PM, Shakeel Butt wrote:
+>> Cc memcg maintainers.
+>> On Wed, Oct 15, 2025 at 12:08:11PM -0700, JP Kobryn wrote:
+>>> When reading cgroup memory.stat files there is significant kernel overhead
+>>> in the formatting and encoding of numeric data into a string buffer. Beyond
+>>> that, the given user mode program must decode this data and possibly
+>>> perform filtering to obtain the desired stats. This process can be
+>>> expensive for programs that periodically sample this data over a large
+>>> enough fleet.
+>>>
+>>> As an alternative to reading memory.stat, introduce new kfuncs that allow
+>>> fetching specific memcg stats from within cgroup iterator based bpf
+>>> programs. This approach allows for numeric values to be transferred
+>>> directly from the kernel to user mode via the mapped memory of the bpf
+>>> program's elf data section. Reading stats this way effectively eliminates
+>>> the numeric conversion work needed to be performed in both kernel and user
+>>> mode. It also eliminates the need for filtering in a user mode program.
+>>> i.e. where reading memory.stat returns all stats, this new approach allows
+>>> returning only select stats.
 
-On 2025/10/16 1:45, David Hildenbrand wrote:
-> On 15.10.25 17:43, Lorenzo Stoakes wrote:
->> On Wed, Oct 15, 2025 at 08:35:15PM +0800, Kefeng Wang wrote:
->>> If the pte_protnone() is true, we could avoid unnecessary struct page
->>> accessing and reduce cache footprint when scanning page tables for prot
->>> numa, the performance test of pmbench memory accessing benchmark
->>> should be benifit, see more commit a818f5363a0e ("autonuma: reduce cache
->>> footprint when scanning page tables").
->>
->> Hm should benefit? But you've not tested it? Seems like rather than
->> guessing you should actually give data. Otherwise I don't know why we're
->> referencing a benchmark.
-> 
+It seems like I've most of these functions implemented as part of
+bpfoom: https://lkml.org/lkml/2025/8/18/1403
 
-Yes, I don't test it, just find the above commit which does same thing 
-before and it shows benefit in a benchmark.
+So I definitely find them useful. Would be nice to merge our efforts.
 
-> I guess it might be harder to quantify, but theoretically it makes sense 
-> to me to just skip in any case.
-> 
-> ... and it enables patch #3, which is nice :)
-> 
-
-My initial goal was to skip unnecessary steps for pmd folio when prot numa.
+Thanks!
 
