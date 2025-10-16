@@ -4,124 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94755CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45A60CCD19A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:53:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E44A68E0020; Thu, 16 Oct 2025 07:48:17 -0400 (EDT)
+	id 7E7AD8E000B; Thu, 16 Oct 2025 07:53:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF5558E0003; Thu, 16 Oct 2025 07:48:17 -0400 (EDT)
+	id 798828E0003; Thu, 16 Oct 2025 07:53:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0AFE8E0020; Thu, 16 Oct 2025 07:48:17 -0400 (EDT)
+	id 6AE638E000B; Thu, 16 Oct 2025 07:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3DD8E0003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:48:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76C5DC027B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:48:17 +0000 (UTC)
-X-FDA: 84003804234.23.08ED587
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 76DFD20003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:48:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZUVNTOY;
-	spf=pass (imf03.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E2FF8E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:53:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90F0EB8218
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:53:19 +0000 (UTC)
+X-FDA: 84003816918.17.64BF787
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BE41440005
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:53:17 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cLA6mMC1;
+	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760615295; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760615597; a=rsa-sha256;
 	cv=none;
-	b=L+lA6nshLOzIdmUmkNpJHsIhhHpPc9OWjwf99H33LyB0IiVD7s8oqiEWfFKl2JMpJuCvYe
-	YXYY8C2av4YHaq3fKjVrtXkoDO8L6KxrRVYh+4XbFzwIbGXi7f27H95swYBXtdk/WnKwDW
-	ukoxnVh47XylpPhCOUARGjE7LeizgwY=
+	b=EbpxZmjtmIOpflbP1Zhhqn4LWPmC2FNkcIHAEkiAJqRpP0J9SmsHIslxlIdb1afUYteFOL
+	Ci0PVnnNBgjE/3yD9z9MUqRFy65GgfeaaRgDGyJEaz9BiUw8kaEmDa7CpEEeJJOC0cETYN
+	yyRkDodV/LHQEHTjq5sFEMBrT94qtdY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZUVNTOY;
-	spf=pass (imf03.hostedemail.com: domain of yiannis.nikolakop@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=yiannis.nikolakop@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cLA6mMC1;
+	spf=pass (imf17.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760615295;
+	s=arc-20220608; t=1760615597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DbfblspUf1NHvFa8rqaPO/OBh7bIieHqwYUbGcwqhUY=;
-	b=mjTrJoT7+K1/YjtS7hoErQP0dNEZxhDlpjO40poJ1QNZbuxAoxZklWraq87oslZAwHuEbK
-	cbRDlCUuDF9+ojeU7czgGdvGiAUh3Y+Gozbje3mClposMR1SVJBJFzl7BiBJAEl3HMGl7V
-	JnR3ltQCOJk01CBdcqLws8zGBBhcSHo=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b00a9989633so122886566b.0
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:48:15 -0700 (PDT)
+	bh=H9/WZc6tWPP7q2IgMsfnC644i4MdiMeKhOgO7bjxkm8=;
+	b=coDtj7DMbTO2CTZNR9SasJ0kkVN/aWRGWqXzUhhTIG+L+DldaL/LRnpFKM88TavCeXRPdr
+	qbrMjJG47xTH91X8eI0898P3fxRF2BJwZDmdLsbzdiAq3N2yuXUK0/fdY2MtcVh1iwQg/4
+	t9JvOYXlXGtfFewodTCV1RaoOZ4wAZM=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59070c9111eso721506e87.3
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760615294; x=1761220094; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DbfblspUf1NHvFa8rqaPO/OBh7bIieHqwYUbGcwqhUY=;
-        b=RZUVNTOYRQlejJ+i5nNfugWbAIVQDMoUjVKDEv6ZcnKwv0oda9SkyZySzi1/7pWi8J
-         oxQgkadYkV6EDFb70KQR4fvkl5J//S36fQj+4RsBYAuPQL7Q6KCifowvv3cnzKpMf6mS
-         5a9oLH3m+YrBueKurMIgKNIiEPMfWyZ5hjfiSTUW+oR5YW2IPF21qtMG9ahM2bi7q646
-         ByysOc0xdjreNVPqIyb+tYr6z61o9dDVUBA/rr8K0qUZXvVv8AQGUlCfniT1xnxYKAVX
-         2OwckUwPOD27T7v6MImFCSWDcOw+wq9EawFYTLL8DtNidmQS9l4NfIiNbbiVyAP02j7e
-         HfRg==
+        d=gmail.com; s=20230601; t=1760615596; x=1761220396; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H9/WZc6tWPP7q2IgMsfnC644i4MdiMeKhOgO7bjxkm8=;
+        b=cLA6mMC1CXCj55hwBb0c911q4Cj/I5S0rUOgrQqXkmIHhI+IIErAXtgYO7st3GJRq/
+         TYYoy/fgyiNMH9RiKYwV2soD1c1tw1pfHH7a8gmO0DUMClf6NbCK/jAd8Sn3ez0uWvVM
+         d6d/hSC5dlqwk1i33vlAcAvLdC5NBdtp1HD+cxcdJqolJBJmg9SGup2fGMo1ueV//gnI
+         vAVgebNitH2jw/LQjS0xP36JTm95jCT/jrikGfH8JZZWB6xCFf9kvBJxlMTEXOcXCyx+
+         2QnfeCy81pnKDvZRjjBQh6WKf1LPbkv3ZUWubIfbWheBXZSgXdlyh7swFVahxKasvG7X
+         EUFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760615294; x=1761220094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DbfblspUf1NHvFa8rqaPO/OBh7bIieHqwYUbGcwqhUY=;
-        b=rh3b9Us6zZ3V3go9ULUZcP1gA/ZAbk0rvTRQSkj4gJMjcRFKjO6AEPC8V8rl6gy3FY
-         RX6177qKhLNP4sgP6csmv6wvGmWuk9wHM/hhcIM0bnDx2Tbde/0bh9s7oOA2who6nLNo
-         mJjLvxSs7FCXeUsedr7CFf7EUlaHY8lZruiDHDn/doVwSkB/26E/cCxCH9o4ftJoz+Ez
-         9gkittnLn2rElEYPOn30yfnehL28bKw6m337MJVLgvhvaC+9DPx4PLipnz3BsPL92DVH
-         Hze8wMKsIBhJCr8hVnSkLag+ARPI27I5D0QxMh0hLR3z2CIkeloqbkfPm+7x1sXU8nfe
-         HwEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCbzN5HlNKAfYHFkx6BygKT2ztw+QM7rKtw6HY5ZSsNtyO55/hFh8YxZqpljcLz3pslu/ccT6OGA==@kvack.org
-X-Gm-Message-State: AOJu0YyFN4rDpDKU2naP5fSaBMAv7LyBFOQ5RY2u8lOwHvwfQYyOx+Q1
-	BipdyYsozAYub8tjr0aZUYXoa09bgRkFoLS49UcYokZhCCEhgDaM4MuQqx9470Qx08ocwwjVEuC
-	SRFEZ53ZnYE2mpRhGWAinQZnPYIB05J8=
-X-Gm-Gg: ASbGncsHdaNAXxPgHHwhpvqJvuPQRzBWXq5388Ab3uyL3AdvrscPLRyQ4BVabkGN7z+
-	Ubb7EGHcy/b7PHrA2rN9e1Yf4wqJh2XbQKJMppo4w02HHX/BlNeFs9wl7HLrFjf4VTkGbZkq2tJ
-	gjFF5hD4zS06jEFRmKuI7aOBraA6WMgJP1YQOvXK0dahzcbewi0dYz/Ba7ya2hZ4uMeVOTgEZzW
-	a+NgBRfqMwGui0Gn627dShydGpwkxD+ejZyCaawPOrCmwJOvBMzgp9VpSRsWJuczL6Hqki+hpGj
-	fXaWc49e
-X-Google-Smtp-Source: AGHT+IGcC+rv81VWhZTcZBUgRu0dX8VfUzA2nML1FlKIlGwDvZnd5mmYfiM+F+OaoWEvfM+30LqIrY79KpIOMbvrCOM=
-X-Received: by 2002:a17:906:ba85:b0:b3d:d30b:39c0 with SMTP id
- a640c23a62f3a-b605430adffmr404516466b.21.1760615293429; Thu, 16 Oct 2025
- 04:48:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760615596; x=1761220396;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H9/WZc6tWPP7q2IgMsfnC644i4MdiMeKhOgO7bjxkm8=;
+        b=OnGH8XIeeHkAxNxVqwo/0u+XrlqJR3olfWKcdOfrTPyqfnuh3qehNeDoVaSrjtnwRK
+         o7uwcV58BCknPPF8FHlo/vQgyZ+UQGb7MvTNkar615dCTRId9pavX3TIYWq5vst4X5an
+         sCLpvCmKpW3GbKIi0Rw6ZzWAXkW3K8U8TZ7ZFww6x3jdkHZ4Fb0xxpmr7NxQ4i6z6nQQ
+         mgz2N1g3VwxYvfYzwEBnZhWoSKkAbiUmvN+5MYFFHjhaLMCPDQPk18RE8wer6z1AuasT
+         mFfeC2wdtBHLZlenZ+rrZOPbjb3w89cSgHgboeEBW2MvDiUgqgOw71/Tn4pD0DAo5sYq
+         9OXw==
+X-Forwarded-Encrypted: i=1; AJvYcCU83+f591pNNoiPiC2RLNf1SXRn+8AVPcL0eXV9Z/emxIe9Am8ArGhxoFTuT7K7QXV05Ip1TMooWw==@kvack.org
+X-Gm-Message-State: AOJu0YyDjtAF6tKtCqB5qAEzpQPDw9PHRACjdvqKTLmG8NgcK1V43Nb3
+	uAONIdlxjadO2/EWIqtD5IGLInQ83LXoTpCd3iZct4Kbc/YWYg4MUOPU
+X-Gm-Gg: ASbGnctPCROTeC9CbCesuc529xlhP3amkWSFlkCcOASh6KBXyStkrnSOJDLByi+ou/M
+	d5QPFzi+rAee5di267QLjJrj8RTNJ2H6ftqgYuObe6qGTK3e/TRkxslTeLzOVQDcfSy3XfPGSwH
+	j78q1tSEjGQqsfOnKuwSSG1lZKw5W3/nub97SOf22H+sooRXvrdHRn6iH3XzySCphCLhrL9LqqL
+	e77z6AzhzsAyaM30e2H+IN8wCWgrA3Vtc6E2h6HomtVV8jPpJ7cG4Qm4DX3rXiDrHsVby1JOdIN
+	xn1dAJGPeRjXEVqQfMOupCCRjPki6HuEnkryYrmzHoWfGRvZ+RHlt55N6lySKSPdn9FSQb2qqxI
+	BJSMI/mo2ddjezlfEUkP4GkoYyeTxOz7XLko2IlJwRt0=
+X-Google-Smtp-Source: AGHT+IF4BoxL8i+TQCVTGE+8R5s02XQLVhbg1to8ADSbMDVrwm5ieJsYsFq7vaP2gTbLxO7SMudzMA==
+X-Received: by 2002:a05:6512:1511:20b0:591:c202:45db with SMTP id 2adb3069b0e04-591c20248e0mr2615876e87.39.1760615595507;
+        Thu, 16 Oct 2025 04:53:15 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e577asm7050809e87.11.2025.10.16.04.53.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 04:53:14 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 16 Oct 2025 13:53:13 +0200
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aPDcqeHUj5xJEbV4@milan>
+References: <20251014182754.4329-1-vishal.moola@gmail.com>
+ <aO9Z90vphRcyFv2n@milan>
+ <aO97BjvNZNh0UV3u@fedora>
+ <aO-Wxj7al7I-IadV@casper.infradead.org>
+ <aO-k2hBimow9oYuR@milan>
+ <aPCXdDPlBMdfFQgK@infradead.org>
 MIME-Version: 1.0
-References: <20250910144653.212066-1-bharata@amd.com> <aMGbpDJhOx7wHqpo@casper.infradead.org>
- <aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F> <7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
- <CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
- <20250917174941.000061d3@huawei.com> <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
- <aNVUj0s30rrXEh4C@gourry-fedora-PF4VCD3F>
-In-Reply-To: <aNVUj0s30rrXEh4C@gourry-fedora-PF4VCD3F>
-From: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
-Date: Thu, 16 Oct 2025 13:48:00 +0200
-X-Gm-Features: AS18NWDJVaOLg3sD89oqQ0S3zxcwWAIbzuo4fkT0WRZGgszNkjVK1a-hVthyEu8
-Message-ID: <CAOi6=wTXSTgTB+KUpn+LOUGvXg4UeEz-DN0mh-LjChn3g8YiHA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion infrastructure
-To: Gregory Price <gourry@gourry.net>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Wei Xu <weixugc@google.com>, 
-	David Rientjes <rientjes@google.com>, Matthew Wilcox <willy@infradead.org>, 
-	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	dave.hansen@intel.com, hannes@cmpxchg.org, mgorman@techsingularity.net, 
-	mingo@redhat.com, peterz@infradead.org, raghavendra.kt@amd.com, 
-	riel@surriel.com, sj@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
-	dave@stgolabs.net, nifan.cxl@gmail.com, xuezhengchu@huawei.com, 
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com, 
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com, 
-	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com, 
-	Adam Manzanares <a.manzanares@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPCXdDPlBMdfFQgK@infradead.org>
 X-Rspam-User: 
-X-Stat-Signature: thy7j5oi7nee75qx1q5h66x53ded3sui
-X-Rspamd-Queue-Id: 76DFD20003
+X-Stat-Signature: gefopy8imqy8a5tpb4jefbwwseconu85
+X-Rspamd-Queue-Id: BE41440005
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1760615295-718163
-X-HE-Meta: U2FsdGVkX19CrhU0hc1ADooxQu+ykqNC5ZAYhthdf35JXkzCZSsLc+qS2boeTZf9YZOzdWNA7GPYHSI5GsWYGmPdMJLCshPHgeLHMK3HzY6HU+JgsMK2yfK6Pw8OylLEZjWky014cx0053FbSldbGLbGXhlTNKLGnJ+bW78T67zweCZRUBsZn25xvIIKtVdp1nd87EYz3MFz9jWrAzeld2KKch3t6KfpnqcQlUsy3jP4y/T/zWGuE66QTQsg98qLYSkX/DSp6VjcuoCRRZR2relfHfBHrk+j5nLAHzeEXxteCPSs8PbkNxSwlV7rwkNHf59aBsL1p/wxAuYcPnCZboo/AI8yczgUNU1q+DUdtYEcyVsuau5CaYp62dt2c7zjaGZOnceTE4D1HbLJz0YVjsif0U8YLWVFcdOGOSp8VMTasRpRsOG7wjWrwydzVexVYE7qUzATCShVyWDmWMTYD/OEGnubgMh/L0lerdO5JoM2wPx1jlQ0RAXG7A2or0VOARsG965p/rDnmTmIkIuF6zdvKeoXY2Xj3kakcwxG6srlJL/KA377b7OJ7/tnnNCzEC12pnlrlHx4DOasf8+N7f8PZe3cDHVaeaRsInXE1yg5umdOy8VpTQpTr0yiG+Dk1/2RcH6EluLVa5qX9aWp8A4kOLQwYH1TRfi7ooibCn+7NDPB6Rf6bD0IVBSOkmwsuUEg4iSyY/iRLNL2JdfkobqATTpwFXbSBlqXm8042ltAJyVObMki/I8aoSqfRSVRqdq7toK4sHIgwsuQurofMjhuJ3G8IsdqE5/yL4oy9U0ANxTFlJbeCj75Q4A+/bh7uWwm3OznSCvsq5fw3hGsxl6et5QceKY8Zh1XEy/1dGf5tGc9elYCArIOYOxhmYmjZKDOiX3leVMgfOajm6F0cI7PIcXg/yL0YMPVm1Rf3mZUnx49ZKQ4A/SloThYIiS6A0tJUKBo4UV54Y1surN
- Uy8YC3Z8
- f61Z4Z0DzXtbGFFHsFapdeGwEdADQth7qtmjKA4ue+bIz2yqDKb6vAfNMMPc2K9x02Tz0QQKIzNmRtik8hRjqT1+KTG1vTbAdjGZtojbvdhQio9SCTIrFDD90y7KYBC5FoJBlSFblCKhLz3uxglI2xElodgtNTnnqwQe8YBZvZJqYOO1f7C5oZGk7ZfNp+3pg2OVcWbh5vyUsOVSe79fsTWQ2gy35/j4aggbYw+lbVOI2/wS81Jd/CkJ+IY+syM/SaBs6eIXwze/5CTNCZx7Vi9fb7GHa+sUCt+kS2o9L6YlqAeZxbdIcDZRc3DtVmlzz8/lBpqafHgOcCQMB4Yz6UlOoNLT3VnL+cmn26pF/wIEwiH69ue1l4eBsyO8E9RWkROuV88iQYGhf4j8LpxrzwaH5crLurQayU4TzVrvuSVo5SlGUEJwWBUWbC0wQyrahsnVM9sGYmNO+2YPubS0bud4hXMkKQDzdmG3MxSd2m9QSd0jd1udsJWLAuxNKwuKDN3e9/KYMHvRBK+4=
+X-HE-Tag: 1760615597-554416
+X-HE-Meta: U2FsdGVkX18zrTRxyixvyjqsCickltfrdswnB9rmVO7pv19G3UOCs8danysAgn6Vl5dtYCdEgKVU2VqMimXD9+ohjmLVdXauVsSpaklg36ZChJW1kcpD8btkMljEPU872J3l6qzNxyrB5fytfSlIrYaXfMKoBjDpOl/O/EseyadeqxreYVUGZg5K1YyDtd6ncXPmBxQ1Xcryik2tSO1Y4+20aYKPBaCNA+binbnhZZy6bOP8iB84aqNK2FoOCdRzYf4vdd1FHDLQMFxmbK4m0ynqs6b4yNifHP36zNb5g4F+2alGMQje5hn+z4B1riVJJphqDZ6YpPFsDjEsB0JHjj0GwlfgC1Tg/EBcfjhNWmEWK83LM6LgSjnMHiNS5cBE/BJvJjm7O18rQei7qZR46J4r2YJoOxlF83Iq+W9IDioQW/JLbKrW0KLYQSiLE8nhUoxr0TBK/VAzrM+/Pywfxy4J8L5tR0DOt4fwMjqIL5911+izK12neGPPf1tCGu9KMjjoD+8fAs8AEEwKKRWWecJwpkcBhWWYo5S/dKNjSICbIMVtjbBYEUPfWUDBIo/MJCwgxqZySrmhwXsscC0/hivplWUYMMGQosEu1EeJ3vtfaP7/5y6ZEAHBmwf8VlQmRNoGu42upCyLJMbhfIzzTRspY+k3o3yPL7esvTaR1fJX4y5Gh24YpfDtLQ4rbXEQ/VTo85+J/J+l3LefhKKaT+rY1Ne3HajNJwNWuMYEtkCxoVH+oQHEv5uiyORBbeaIR5SVEr44BTl/9QUGMFNUvohsrmrrp5JRFJuljdSeHDNzopopEPYA5fe/Vs5D2iRINXmTu5vkTJJGmTK7+SAvzAI+gCZVUrFNeXYTFqIpe2SQ5lENqROMSKtUHCzVzueiEv8xctqOv1ImQcWCm8Qeb4yr1exfXBb8xIacdu9hopaq1CdO1hrWa4SZCUBqnLCPNK68RYmUqQmSKnm71Bm
+ I+45mtfP
+ 1tM5/s36PNqctvtFmkwlbmMEEUnkKyBa2PJfIbp2/wQZQR0STQp1bH3t7EtjUKCendTHVTLmDf7Fbudy6Eo/AXJQuTq9mXdmCfW6RYeAjHqPSnIBd90eeMHjtWQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,106 +127,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Gregory,
+On Wed, Oct 15, 2025 at 11:57:56PM -0700, Christoph Hellwig wrote:
+> On Wed, Oct 15, 2025 at 03:42:50PM +0200, Uladzislau Rezki wrote:
+> > Agree. We do not want BUG_ON() in split_page(). I think it is better to
+> > control this even though nobody invokes vmalloc() with __GFP_COMP.
+> 
+> Please explicitly warn and reject vmalloc calls with unsupported
+> flag.  The fact that many flags get silently ignored or dropped or
+> could lead to behavior in gfp_t based interfaces is a constant source
+> of problems.
+> 
+Thank you for input.
 
-Thanks for all the feedback. I am finally getting some time to come
-back to this.
-
-On Thu, Sep 25, 2025 at 4:41=E2=80=AFPM Gregory Price <gourry@gourry.net> w=
-rote:
->
-> On Thu, Sep 25, 2025 at 04:03:46PM +0200, Yiannis Nikolakopoulos wrote:
-> > >
-> > > For the hardware compression devices how are you dealing with capacit=
-y variation
-> > > / overcommit?
-> ...
-> > What is different from standard tiering is that the control plane is
-> > checked on demotion to make sure there is still capacity left. If not, =
-the
-> > demotion fails. While this seems stable so far, a missing piece is to
-> > ensure that this tier is mainly written by demotions and not arbitrary =
-kernel
-> > allocations (at least as a starting point). I want to explore how mempo=
-licies
-> > can help there, or something of the sort that Gregory described.
-> >
->
-> Writing back the description as i understand it:
->
-> 1) The intent is to only have this memory allocable via demotion
->    (i.e. no fault or direct allocation from userland possible)
-Yes that is what looks to me like the "safe" way to begin with. In
-theory you could have userland apps/middleware that is aware of this
-memory and its quirks and are ok to use it but I guess we can leave
-that for later and it feels like it could be provided by a separate
-driver.
->
-> 2) The intent is to still have this memory accessible directly (DMA),
->    while compressed, not trigger a fault/promotion on access
->    (i.e. no zswap faults)
-Correct. One of the big advantages of CXL.mem is the cache-line access
-granularity and our customers don't want to lose that.
->
-> 3) The intent is to have an external monitoring software handle
->    outrunning run-away decompression/hotness by promoting that data.
-External is not strictly necessary. E.g. it could be an additional
-source of input to the kpromote/kmigrate solution.
->
-> So basically we want a zswap-like interface for allocation, but to
-If by "zswap-like interface" you mean something that can reject the
-demote (or store according to the zswap semantics) then yes.
-I just want to be careful when comparing with zswap.
-> retain the `struct page` in page tables such that no faults are incurred
-> on access.  Then if the page becomes hot, depend on some kind of HMU
-> tiering system to get it off the device.
-Correct.
->
-> I think we all understand there's some bear we have to outrun to deal
-> with problem #3 - and many of us are skeptical that the bear won't catch
-> up with our pants down.  Let's ignore this for the moment.
-Agreed.
->
-> If such a device's memory is added to the default page allocator, then
-> the question becomes one of *isolation* - such that the kernel will
-> provide some "Capital-G Guarantee" that certain NUMA nodes will NEVER
-> be used except under very explicit scenarios.
->
-> There are only 3 mechanisms with which to restrict this (presently):
->
-> 1) ZONE membership (to disallow GFP_KERNEL)
-> 2) cgroups->cpusets->mems_allowed
-> 3) task/vma mempolicy
-> (obvious #4: Don't put it in the default page allocator)
->
-> cpusets and mempolicy are not sufficient to provide full isolation
-> - cgroups have the opposite hierarchical relationship than desired.
->   The parent cgroup will lock out all children cgroups from using nodes
->   not present in the parent mems_allowed. e.g. if you lock out access
->   from the root cgroup, no cgroup on the entire system is eligible to
->   allocate the memory.  If you don't lock out the root cgroup - any root
->   cgroup task is eligible.  This isn't tractible.
->
-> - task/vma mempolicy gets ignored in many cases and is closer to a
->   suggestion than enforcible.  It's also subject to rebinding as a
->   task's cgroups.cpuset.mems_allowed changes.
->
-> I haven't read up enough on ZONE_DEVICE to understand the implications
-> of membership there, but have you explored this as an option?  I don't
-> see the work i'm doing intersecting well with your efforts - except
-> maybe on the vmscan.c work around allocation on demotion.
-Thanks for the very helpful breakdown. Your take on #2 & #3 seems
-reasonable. About #1, I've skimmed through the rest of the thread and
-I'll continue addressing your responses there.
-
-Yiannis
->
-> The work i'm doing is more aligned with - hey, filesystems are a global
-> resource, why are we using cgroup/task/vma policies to dictate whether a
-> filesystem's cache is eligible to land in remote nodes? i.e. drawing
-> better boundaries and controls around what can land in some set of
-> remote nodes "by default".  You're looking for *strong isolation*
-> controls, which implies a different kind of allocator interface.
->
-> ~Gregory
+--
+Uladzislau Rezki
 
