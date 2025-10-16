@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BCCCCCD185
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 04:38:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3645CCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 04:40:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B4CF8E0003; Thu, 16 Oct 2025 00:38:05 -0400 (EDT)
+	id 940368E0003; Thu, 16 Oct 2025 00:40:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78C538E0002; Thu, 16 Oct 2025 00:38:05 -0400 (EDT)
+	id 917758E0002; Thu, 16 Oct 2025 00:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C91B8E0003; Thu, 16 Oct 2025 00:38:05 -0400 (EDT)
+	id 854E28E0003; Thu, 16 Oct 2025 00:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BF428E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:38:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F12551DC071
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:38:04 +0000 (UTC)
-X-FDA: 84002720088.13.041DCA2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 755AE8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:40:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0791B56C9B
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:40:07 +0000 (UTC)
+X-FDA: 84002725254.16.7C34C80
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 467D21C0009
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:38:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 41B5F140011
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:40:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760589483;
+	s=arc-20220608; t=1760589605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qAQWpqBi4Y9ARqz/o5TVbnlImi3rzVO7lsHrGTN+Zg0=;
-	b=GdLokx9kqHTEjW8bjrKS1O1g3p9SdHm0Vfn4UPbIpYw9gTe0+89pCKk4ZUttx6gwSatFNe
-	EI6TNJxVD3m2vs5cH1jal5+QgcVJyzLLuPC67lf8IV/U2OxIptVMDH57MBBsO4oYjUTna3
-	7xVwac0qs2xaw44UhyFv0si4E6ysPPw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760589483; a=rsa-sha256;
-	cv=none;
-	b=tEx69X6gmBcGhzc5NNNAmY77KztNy8/0d1pa/fVefzD3e0gvCM6Juk0lRAWRuJtuNGL/Pp
-	xf8Qn6hgCW1OD9rq0JL4iGrwIeR6muk/e36XBdwHmf59ddfkr05LJB5wlOD0F7j+9DTzrH
-	FkxtJGP9jY2lbJ3UPaI4JTSPErWEtCM=
+	bh=IGu4B6i6lZ5uoanEkR6444y6uwGd+D+P8YbVRH+XEnA=;
+	b=xEpV7tC1L4jf0ZMmMaCwIH2a6yh0vMk7kdlqBrLsIIA6Qof1KqjhVlSpSbBqS0KzXLyZfY
+	yLaIAf7z7dcBwTboRA4KbvB03P5ACOjnoW7koogaWPNmjJnpIJW74TzD9Veg/JmcrdyCOQ
+	0cdapSF+N1jLfiAGnV2z2qVRrJaCFJc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
+	imf26.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf18.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf26.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760589605; a=rsa-sha256;
+	cv=none;
+	b=fpCqLAkPAK/0rEDPRzfR/UHBqa1xzeOV3ZpHIRz26/IoL5+Nv+7tiC+zKJRQU2QzHs9VCa
+	K4S1nrxCmjf6PXwTbXfjk4LkwrH/3296ZY2OaxcO35CEPjSVac0P+L+cFy46IdlFwH8jY4
+	9LuQliNs8IyCu6SDrfQry6D0kQhwzfc=
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5C7DB227A87; Thu, 16 Oct 2025 06:37:58 +0200 (CEST)
-Date: Thu, 16 Oct 2025 06:37:58 +0200
+	id 66F11227A87; Thu, 16 Oct 2025 06:39:59 +0200 (CEST)
+Date: Thu, 16 Oct 2025 06:39:58 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: "Darrick J. Wong" <djwong@kernel.org>
+To: Dave Chinner <david@fromorbit.com>
 Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
 	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
@@ -60,21 +60,21 @@ Cc: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>,
 	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
 Subject: Re: [PATCH 2/3] writeback: allow the file system to override
  MIN_WRITEBACK_PAGES
-Message-ID: <20251016043758.GB29905@lst.de>
-References: <20251015062728.60104-1-hch@lst.de> <20251015062728.60104-3-hch@lst.de> <20251015155735.GC6178@frogsfrogsfrogs>
+Message-ID: <20251016043958.GC29905@lst.de>
+References: <20251015062728.60104-1-hch@lst.de> <20251015062728.60104-3-hch@lst.de> <aPAI0C23NqiON4Uv@dread.disaster.area>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251015155735.GC6178@frogsfrogsfrogs>
+In-Reply-To: <aPAI0C23NqiON4Uv@dread.disaster.area>
 User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 41B5F140011
+X-Stat-Signature: 8qy4kezf5chth48tq3bf7iq3c6hcwtaa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 467D21C0009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 51schdbaxoqzsqrak8jmk1axwtajm3n3
-X-HE-Tag: 1760589483-826554
-X-HE-Meta: U2FsdGVkX18AvAZQl8EWZaSdlPtBU8BzvsNXzpwtFp6cYqaxlbjW27F73yuJ0ShHyYeQe7VWNZkPB+y/blzeayHCb8e+0M1g7r/BV7AMY9owaxjnUAVdzpZVNDfSCYTnVRSEQq+fDGueDkY8x6x7dOf5ys4WYXeJbQFDtux8v3ll7w4FEVyIfS6ynAPBiN8pWuzLfV493VZwvPO9e+2fiFm8jM4UmYVFpJ9omMD0m1ziufcO9B2+bJ7bGmoS0awG3JzF/rRQq5kxhAb0AU9+lHGrpiHsKO+4Idqy8q1MiPh+qGCUcbxHz+AWpACjAEvS6ew7OchuEXAqmyNWyZ4nOwJo8CKcHe9UvZCLUpDpmBDjIh/9SS78lMsLsP6G10YxJfctSN2D8+1tkCeB2skeg3EIqjSXgiZDxI+Ehn0jjc864+UuFcYv/iW+KMzogCeVOeNUSUewx0uRotLOG44mqpmid+t8xn0hZBZyWK182/+ezd2Rp70f4z/2HzKGgzHfM7RXb2nOiyafQIEXPaHH9i0fgVlvVcqAe4FTqvK9ZnMfdu/mJh44ZsZ99lXpeuw5QVtS4EYVYUzhaupmwtr5AruyFbFZhu/C0tYTQ1Cm9HJT9Etqfa0NWfZEraiJz2yZf7NpQQyz7yqTrgyBAqOeMXe9+Myjpmo62ajc6BFZUaJt2koF9JgUn7o8oIYCGVE9lXFVrM6Nks9TPBrTp8WHBWqJc1nY/gGcoXuBL3spBrn4a1KrvSuqjOLUzs6y9LV0RBMPMfC8iawSQFuhTjd+Ueuihq2fKwQP6zguJvdYNJnXbt+a9E7PMgyysC2ilrWwRx3ilMKWDSr4hSuZNdmU/Ox+hOVD3knqgP0+NQXUXvp+QHHaG/DpSOXDObxplbmeF3MdU/DrLdb5N7dIkAwXPjwCJgKZo05lXea/IM/vn10tNlzi/CamphygNiPtCuBKyfCmcJ2xxPGf7aNa3l5
- AW6lq+Lk
- K6wYajEpOThXe4caXnHMewiMt466I1TvCdgPLxrF+5coLVgMbxkpiDHwFl4TlaVcntesGr6yHT4QqFq7EbOY2c7ToCYcEd+Frp8ikAtawoTBhN06qfd0eUtNeYOdguB6SLrBJ91ldXnx2GcU=
+X-HE-Tag: 1760589605-350417
+X-HE-Meta: U2FsdGVkX18oUtKHEHDmjlkqP8v6lU+u/MbHt+Nh/QrTWZFwpSbc/sQf4FrIHR6HN8clBqZH79WMf9Gss7u7zeBJtNGB+W0o9BYBYHXgy/1P9cc2TLm6kqipDsPKxU1BLj82Mem5TKkEYlTCBlCquYEGWemlPI0LGBn5RbKtgN+zBtK3rSN39TDa/H7QTkLPpv/i5/NMi+cx/KeODUAWWy3RODjh8Dm8Rj+7kwrmJwndHzvlOBwICF7pn3x+i8QUajtVbWW+Bb8ju1tXg/YU/QOb+JBIdfylr9A0aketlNF9NXELUv5LI7CwfPw0cK5f0hVqJTWIjekvYlOGBRuSdCa4CIrVGbf15K8+PBPwttL7q1vBfFmI3TWYSBsRV+lXLctPBLrOFFkkuhNwNtmaNsS7XYXr1wMIUx5wmVFQron82VtqYy56aOuznjE+j4WZZsLQy8TdJ6fhAzrei8F7Zas6JNLI0NqbJ/RhyFnVbs/V85JxrT4Nau1IhGS4PQS+g6VttrbyIvlnBGJYdcDivO0vT8vsOC+mLgt+bj+jvNid2n7nVoevS3PLdD0wvnwpzJQ6xGLjQaXSwFF8bdTVCvN3E3M7h0zYU+NvobprRb9BpjFtBji0yoZOVO0SXlwLUqrYKwYlAi0Nph5Q6mcsTNTPoNNT1lpX1byPf7UoqHgvdXeLzah0sWj2Nv3CancJaR3YkdOqZJuBoVhmy3s/MXvojLgHhw/SP4e1ErcmaI+9SjR9FHCi6Kfx9gCE+apL4KSfbchcsqLHAhVl6NKrrotoM+ccP4KC100P7ctbUGclENbPryJp2jHY2yVrHc3DlH3n1YccHlEXegMP3AZjvy3jFrA6YI5+OuBiVHkRAZYopFUWFfIgQpFTemIXECoapkWDpHXRi0e/NnxepfOlRQ7pum4o1YqlY6qp8q7C6657aJzQiDRlAmu3zunsYgflePuHD2H51h19gw8VriR
+ GDH59ofU
+ kR/axlz76/mloBOVWOCLRnZ/xLq+49j/aNScKt5Y6Na+Nv6I8LTYv9nA3ngG30didC2NEJH56IOu/ZMSImREJ1BgzhwErHZuIT4PpJNpitDG5mgei/qHlRxrb8Rk86uPaohNvJUNmTo/DUVohBV9H5YOWxx8NUf/K3JOPGJKyDbn9wrmjzc1ac8rCrpH6zsvqVGE4vc+BLIvyCJA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,36 +83,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 08:57:35AM -0700, Darrick J. Wong wrote:
-> Should this be some sort of BDI field?  Maybe there are other workloads
-> that create a lot of dirty pages and the sysadmin would like to be able
-> to tell the fs to schedule larger chunks of writeback before switching
-> to another inode?
+On Thu, Oct 16, 2025 at 07:49:20AM +1100, Dave Chinner wrote:
+> On Wed, Oct 15, 2025 at 03:27:15PM +0900, Christoph Hellwig wrote:
+> > The relatively low minimal writeback size of 4MiB leads means that
+> > written back inodes on rotational media are switched a lot.  Besides
+> > introducing additional seeks, this also can lead to extreme file
+> > fragmentation on zoned devices when a lot of files are cached relative
+> > to the available writeback bandwidth.
+> > 
+> > Add a superblock field that allows the file system to override the
+> > default size.
+> 
+> Hmmm - won't changing this for the zoned rtdev also change behaviour
+> for writeback on the data device?  i.e. upping the minimum for the
+> normal data device on XFS will mean writeback bandwidth sharing is a
+> lot less "fair" and higher latency when we have a mix of different
+> file sizes than it currently is...
 
-The BDI is not owned by the file system, but rather the gendisk, so we
-can't just override it in the file systems.  I still hope that eventually
-changes, in which case we could revisit it.  Having a tunable sounds neat,
-but I'd rather get the fix out first and then design something like that.
+In theory it is.  In practice with a zoned file system the main device
+is:
+
+  a) typically only used for metadata
+  b) a fast SSD when not actually on the same device
+
+So I think these concerns are valid, but not really worth replacing the
+simple superblock field with a method to query the value.  But I'll write
+a comment documenting these assumptions as that is useful for future
+readers of the code.
 
 > 
-> XFS can have two volumes, should we be using the rtdev's bdi for
-> realtime files and the data dev's bdi for non-rt files?  That looks like
-> a mess to sort out though, since there's a fair number of places where
-> we just dereference super_block::s_bdi.
-
-Each file system only uses a single BDI, which in case of XFS is the
-one of the gendisk that the main device sits on.  Only the bdevfs uses
-multiple BDIs (one per file{) and that required hard coded hacks in the
-writeback code.  I don't think there is any benefit in having multiple
-BIDs for real file system, the parallelization work that just got reposted
-works inside a BDI.
-
-> Also I have no idea what we'd do for filesystem raid -- synthesize a bdi
-> for that?  And then how would you advertise that such-and-such fd maps
-> to a particular bdi?
-
-btrfs allocates it's own BDI.  And I hope that we eventually move to a
-model where the file system always own the BDI as that would simplify
-object lifetimes an relationships and locking a lot.
-
+> -Dave.
+> -- 
+> Dave Chinner
+> david@fromorbit.com
+---end quoted text---
 
