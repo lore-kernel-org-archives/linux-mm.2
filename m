@@ -4,95 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5885ACCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:22:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12D2CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:43:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95BAB8E0024; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
+	id F0A598E0006; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90C658E0002; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
+	id EBB188E0002; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FB1C8E0024; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
+	id DD0328E0006; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA348E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05D6A1DFFBA
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:22:56 +0000 (UTC)
-X-FDA: 84004798752.29.8A951E6
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DE392180013
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:22:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Rzgp548D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB9708E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:43:51 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6878DC036F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:43:51 +0000 (UTC)
+X-FDA: 84004851462.21.EE1E002
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 35DEE1C0013
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:43:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fwlfK2kx;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760638974;
+	s=arc-20220608; t=1760640229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hYYv/LwA1GURrWhGh2MDAllNLGQ7zQ8O8L85h5N1Cg=;
-	b=IK/w80wKv3hrwiUH6Snt5QB1uSah5mCAis9XtT1NfJ4ts3cs88k5vAIptGJSwq5FcdLTAE
-	N5fFgKe2uNBLenQcNq0V178ZSRRB/8ozvCnpchISOWoRgmdRoLOmnoaDJKOfbgZ+kLCqnk
-	IeM034kWD028ir3P3AuT/kGZYL232W8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Rzgp548D;
-	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760638974; a=rsa-sha256;
+	bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
+	b=x/xPfonpqgfvlaUhsWvLCsqd/K/qRa9cgb61eKfyw1jbMX4ABrnXa+mFyywtOLMJDa+lNS
+	zxijoNXSE8yI6hWQqk0XCyV1JD1Ab3tkZZTUKb4z9PsSdWLYwDBBYx1Ob0itGHFssDYdJR
+	DF2hDk5rWYvfySsk1XauCpHJPJGtM14=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760640229; a=rsa-sha256;
 	cv=none;
-	b=m10IQ3GYdIDtRm3FtGBJIDx+0d5+X+rP/TZ9kaPZhzvnnL7Zw5/8JzTWjMFiwuB23sVqvW
-	O0Azr2d4bEXEuxggtVhTIyvNYGkSYPLqKRmwLo2Bwtyo8bBcuBOxqZtsMROIBgLOKxRXId
-	lrk8ffRkB9+FeiTsCObDBs+hMxKRtNs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0hYYv/LwA1GURrWhGh2MDAllNLGQ7zQ8O8L85h5N1Cg=; b=Rzgp548D+FBSB43kwyHxqonghH
-	42O4W2Z8TY77zuQ9poKmtvJObgCWVNT3JfIjesTFpvm/ShNqIvGnHC77bY09mhQ87U2VKDQSIdHyZ
-	78ZXZYduDtDxyQGi3hQOWhD/q8yqr4SnTUzqMJ07rdZLesOVAz2L6EU7tBO1cBuFHPa2qIP3MLqcu
-	XJCMmNGPDaKSSYP8Rw0tfLh7qXFKQ82fuVLdJnSggVOhDZd0jGX+5/1BSjSHBI1TNe+gDY3cYhsNX
-	O2G6GCXwBDfX7s/3sXay9XEas3Y4+p9GGp0hxcVEXUwmYI0sX/tHSk7nBMmD3rD+Vl/Su7AUjYLDq
-	waLsZxnw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9ScS-00000009YoF-2lgw;
-	Thu, 16 Oct 2025 18:22:32 +0000
-Date: Thu, 16 Oct 2025 19:22:32 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Yin Tirui <yintirui@huawei.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	anshuman.khandual@arm.com, yangyicong@hisilicon.com,
-	ardb@kernel.org, apopple@nvidia.com, samuel.holland@sifive.com,
-	luxu.kernel@bytedance.com, abrestic@rivosinc.com,
-	yongxuan.wang@sifive.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, wangkefeng.wang@huawei.com,
-	chenjun102@huawei.com
-Subject: Re: [PATCH RFC 1/2] pgtable: add pte_clrhuge() implementation for
- arm64 and riscv
-Message-ID: <aPE36PlriswJWSKD@casper.infradead.org>
-References: <20251016112704.179280-1-yintirui@huawei.com>
- <20251016112704.179280-2-yintirui@huawei.com>
+	b=smZDyca+7zQu0eunRilcADu+/qf4PQce83l8kLGhlqtz+G8suJrMTUqSbDTBz6Y4mgoJSd
+	2d1ZL1eLCJQCz8CF0xVkf/hNbIC15qv3+8L3WqIeY+TJxQuFq4vVRtXJEjyFyapjMZNDIH
+	M8pmOM6PXQQdwle7AnVvpqDvvyYsW7I=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=fwlfK2kx;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf18.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-426fd62bfeaso490049f8f.2
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:43:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1760640227; x=1761245027; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
+        b=fwlfK2kx8yDb3PoZWSAp3rjrSCsikHWId7ai8k4WkE5S8xR4ZAkfqRk4/OCSLzhFJT
+         XEUe050IyTsix55GLoBFi05dVzmPS8jDaEUA8snxYqC69SDFJwFcFCzrou7yJLluwVB4
+         +HLo8kSTakk913xH7XOGtwVngCVoEDBg+amXPh5a4LgHN7PLm2Nelc2dl0tkBqnaVn66
+         oQdpl0M7GyOK4PMt3ozocDY+NrnvuuPdB2proL26/U8lFiVBzXcbUNtStxnRUWuGOsT7
+         tfSCHHE0LHA8Dj5twmUE8YynPnCYWs6p2hLoD0LgAXA+IGtVR4dtdUwzIJJQ1CZrwhEm
+         7mHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760640227; x=1761245027;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sZf/xOnYZ5AB4g+Afgo4f1SIJz1a8qeaJvzviov59ws=;
+        b=sRGrUOXvv4NQWbUePlWZU1lwdMO0PPfUPDvYojda94G6LfGplEpayONSX3PGvEVlVY
+         9whDn8h3xS8koC8TbdJZdUq+wUrpnrfsTt6hdkyIc/X38Q/ScnjukqPzeJWQqhfCcazp
+         hAMS/mjJ7BJ891JZ/92YaboRWtjl+X20HsuZFQW7weCow0LbBCMkVjTbmHMH9iZWTdGA
+         KKYJpJz/LTKskdFBoAnhl0T8EtJW70CpF5TrmMgeoWTv30NwUsSZF3TrAmi5EXlM1cSl
+         GuYxJg7dKHShDAPPAfokyugqvYkoznJuQRVDKVwhOaNxN2dBY0nSpE9AAXVAlhOPBdM7
+         VX1A==
+X-Gm-Message-State: AOJu0Yxqn1EGPN3DpDkFqvq992SzOUeVM9rYC0Ke8xGoooP3G0mbJWoL
+	okJjsNt92bFZielE5VhjAxlg52IgJ5LuSB0VG3TSR2GA5Wq6RwTGkmeISXt5ankcqow=
+X-Gm-Gg: ASbGncs3Tf28/jlH0nXHA7wm4dE9I96YmLwOBjMYB6wpT23bogRm+OKmgHCuZGsAJj7
+	c5spa3gmQtikUaSZq6uVv6IuWWmvQM/lXB8a4MFSKihzQ77Y1yljxu0DRA+acd44Y+SIk4+pAtE
+	nWoQSb51NqYAIskcRv2j3uXEIrHM+bEHiL0LjfSCUY9x+OXQHGorGa9FxbH0S+i7gDPp4tNk71r
+	X0EM0kJ7EDslnR174C92hzSw5TbwJyj3uLl4GInvHjxHh8xYqhZWj31Bk1XZ7t5vgcHQhbcPtjG
+	1TakhNhRCIQ0MabCO1gg6uQO4RfWm5Hne99mCfFVzTfyDXuNuFUonTL07BEN65dZPklM78Kvakw
+	S4t8AovLyC/D5qSRe4AlWqRM9PNOiOG4+JXYJLucfyQOt42GaZnQYLbAaxmfxqlXxYtShY1feMv
+	fhJOnY30MA0hs=
+X-Google-Smtp-Source: AGHT+IGo6y5lk13djMjMMq4R3viE+pYB2nSrAPV8y+Kp8nAdZ4R6ve9ypzaXAl0LPNYCFR1kJAQtiw==
+X-Received: by 2002:a05:6000:250d:b0:3fd:eb15:77a with SMTP id ffacd0b85a97d-42704d143e3mr765616f8f.6.1760640227495;
+        Thu, 16 Oct 2025 11:43:47 -0700 (PDT)
+Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471144b5d48sm41689115e9.9.2025.10.16.11.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 11:43:47 -0700 (PDT)
+Date: Thu, 16 Oct 2025 20:43:45 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: Add retry logic for cgroups with
+ memory.low in kswapd
+Message-ID: <aPE84XfToVH4eAbs@tiehlicka>
+References: <20251014081850.65379-1-jiayuan.chen@linux.dev>
+ <aO4Y35l12Cav-xr4@tiehlicka>
+ <a6cd4eb712f3b9f8898e9a2e511b397e8dc397fc@linux.dev>
+ <aPEGDwiA_LhuLZmX@tiehlicka>
+ <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251016112704.179280-2-yintirui@huawei.com>
-X-Stat-Signature: jj5wo9dowh9at31tyt1cid4uoc3sc8jq
+In-Reply-To: <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DE392180013
-X-HE-Tag: 1760638973-492716
-X-HE-Meta: U2FsdGVkX19xgxL/QT98m6/dNubpXIT6Bh9inN35agp6LpD2D8e99P0vGfdaettagYwM+zJTrKXVzsIoXP1lilNYXcjQ1XzOH4rdUnTm+vnnmShQCOEbAzy4x59JvoX7tLVCsQfrrTEpC+o94Y44H+9t3UG/13wUMlZHdQr/pS34q0c/aHoNJ07Dk46Kar7B3+QQgKL6Q0GuSk/LTpg+4Mt0Cop9HE3i8u5TW5CY6/Zkoseuu+QKr3PHIBQqwoVXTIwEEdCIgakmjMND7iF2gqY5qKZONz4CnZShVarm/TNZIuFV+eL8Vxgk5lwFN7Sia6yxShPFzUDEYK+0eqVackN+m3YS80pzwjGiPkZnDgy5g5KpEE99SlY4lQk9DeLNsD12RtowhFUP056bibcOqL88X1FDkPAJYzgXVDQ8AiHNVW5NpF+XVLmjwBepT34G4mr5UMy9gpfOFZE/sdTg64Gqb4wTQBR0NXNu73TVCjx+OAq88uPbkeIakfJXEXM7Fs7olBTJzvAHW3YQORD+LUeEQFvHMc4GIiJr7KmSzZKceLpENHRTj8NIVXXZa86Rux4ned/tPbBSJvxginADLQDWUvMx66bluXWZeT2AaQoLIOzn108XebPvuy28Otn69aZ9n0uMCplzKxVeIfOsWe7YdnAeKxUw3F7eIh3DUWRFLoJXPtsm5Rq1nGasLH0YolPKi+BGS5Mb0BmwGJ/22Dbp7pGbk1Cyk9WMIrx5vpSUgRZZn3yJCcUFpmqL48eS977NMpI3Mxo94P7HYvNo9Fi+osh/Cv2gjinn1MGy9oBYcshY6XowCQbWt+2zS2iylzlugkFJm8e/ShAGnIo3PlX3Zt9nWgovsg+du/eM7NqYktOOylfSzo1iZ7pBnB73b1QjmkTNv6TmU4NNnpB1ctQPm8Jugrk3BwUz13oBhXo8ahHdf2J3WbVTmqemQZNaaAXJVqNIeRZdseySk5+
- x6jBMEih
- r9kAp6y5bXoxhJp04JVLJV2xyEiiwJJJ0hbSolR7dJIbY40EtjF6vbcvZdtlbGUucp3KMqVWHZWUrxdyJuRX1y6605SCsyCX//wLwcgNUKfw/YmbM8LznOALSZnPeiUEGq82nPaHKj53JrVrnGW67cpNTE8CkX+7+qKSVD+7Aow33A6CJPvhoX3BxddICE9RFdk7eR/SE2DPJDIrbAKGg8O9FYtPevKJmtunc
+X-Rspamd-Queue-Id: 35DEE1C0013
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 18khny3obrr5swheygs5mtn5i35a6ygp
+X-HE-Tag: 1760640228-531403
+X-HE-Meta: U2FsdGVkX1+xbmxJfSWe/vpv6JhdWMv/SFkB5qD7fjEvCAJ7NiG7lfn6Zi3KGNRgtfbsNrN+Ry7BpeoywBHDVM3/OHtPfjh2D0LF0R5sdH488auv91Y/KQz0QnkVz5SX0RAjZ4OLXulnZ74q3M9Nif4LruP/EtAyevCC+Px51FCvOz+re1sE2BI8Hx8TX7XXobyqNztV75d7Zj0odJU6OJ8KTTd71d9ZZ+qGO3a5GvKlLu3OqSE3wlRBp2O0ShB+HktchAlKNPo2i2xqVATGU+wGYpCSfuQJg8C1DI5TGm0mXxsUCjvF1HXgQn3R2lUJ2ZvwNrCUhF8xpPEcv1Duq4+lkA6B8KyEhpb0h7fFJh7xedI9SGtl5yJ8KaJbBStJzQMzbpg94oBy6YwhK9nLkl5Fggeyfg4nZblGXTCvOfbWGcNkfrSWQnFYaiAlTh7C+1WL8NmioIgh9/IXxfezYfrLZd5Y1Zliq6phiPLBkuZQVurkuspM4aAgcIDvUvRhAGaR3elnt6gVpkuOLKlRT/gk4/AmCR40D1Ncx+JR23RFAfNDVMovRI1RLBQv4ZFAFGknS12VXXB4iCbETnJSVBUqAzdTHlL+rsTCPYZtSbhh+43Z1bSFnC5Q2cp4k/qJhfdPkXHS+qS5vb2+Xvdr3HZOSLCw+oabXcTKuriPY6IGSx+Mqnh9KF6wccU6ZowCQ85GeSWjpzi7XCqDlanwlmU0YELLwTsYlNRYiP1sclDbf27GC/imzdSJQW56lYBIxuxomBJeZMAS1rZmr75qa+uoLpZmgr3HB+S0n5AJddvbWSr8ofmWHwcYWHrsvkN4LjSGVO31QVlcYUqVQhbdCJbQSfA2dn3Ws7652uDZFcu5C9cwMrV2X1EONCqfzJ6M5xzXORnxe84t5zTgSzCp5H0mIfll7F8ItwYNuv83IfoqlpieRo0RKSbG1+INQ4ElOdTD849vPbgT2gwGLC3
+ ovysSxq3
+ gOlr01DQa9a4VULr0+vQfurGbBid20yt/R6YB7UnagERd5hmIDQPk/fOQEQW9PUZ8BDhbFc9c5kAnfShCb2ZNPaFaUiSWYCicsx96uOUTO8fJC4r0QuA0xWrXXYJtqrNUz3aLX6Bco0RgN62RNUysxSHergTvGjxNn0/uYwV3lX6TAzLWI1yBynWenfHv4zkAF+ytaM9NrQNxzxhwj3PqFfduj6eAhhPgxh0uruoxajIQk5Bgi3DmrODEBjccOQOAZFpIt25a1Cm6p1U/uLkRdgVC8Pby4rubyykJ1vlTplbRFDhj8FKOLEXN1QBmIzX0PIBR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,12 +129,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 16, 2025 at 07:27:03PM +0800, Yin Tirui wrote:
-> Add pte_clrhuge() helper function for architectures that enable
-> ARCH_SUPPORTS_HUGE_PFNMAP to clear huge page attributes from PTE
-> entries.
+On Thu 16-10-25 15:10:31, Jiayuan Chen wrote:
+[...]
+> The issue we encountered is that since the watermark_boost parameter is enabled by
+> default, it causes kswapd to be woken up even when memory watermarks are still relatively
+> high. Due to rapid consecutive wake-ups, kswapd_failures eventually reaches MAX_RECLAIM_RETRIES,
+> causing kswapd to stop running, which ultimately triggers direct memory reclaim.
+>
+> I believe we should choose another approach that avoids breaking the memory.low semantics.
+> Specifically, in cases where kswapd is woken up due to watermark_boost, we should bypass the
+> logic that increments kswapd_failures.
 
-I really would prefer to see pte_clrhuge() removed first.  Otherwise
-this just goes onto the long list of "somebody should clean this up some
-day" and nobody ever will.
+yes, this seems like unintended side effect of the implementation. Seems
+like a rare problem as low limits would have to be configured very close
+to kswapd watermarks. My assumption has always been that low limits are
+not getting very close to watermarks because that makes any reclaim very
+hard and configuration rather unstable but you might have a very good
+reason to configure the memory protection that way. It would definitely
+help to describe your specific setup with rationale so that we can look
+into that closer.
+-- 
+Michal Hocko
+SUSE Labs
 
