@@ -4,138 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009AACCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A94CCCD194
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:34:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E91E8E0007; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
+	id BCB7C8E000B; Thu, 16 Oct 2025 06:34:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0658E0003; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
+	id B7B348E0003; Thu, 16 Oct 2025 06:34:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5FC8E0007; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
+	id A697F8E000B; Thu, 16 Oct 2025 06:34:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C0F58E0003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7AE7119466
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:31:31 +0000 (UTC)
-X-FDA: 84003610782.05.48D3324
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EBA2914000C
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:31:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="lY/NlE/b";
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F1DB8E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:34:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D9041401FF
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:34:55 +0000 (UTC)
+X-FDA: 84003619350.15.6B15694
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 47D8910000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:34:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vy5TVNsv;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760610893; a=rsa-sha256;
+	cv=none;
+	b=nVeSuftADJuP1vP2GDcpkO+ZkAhxst6NRtPZNtrzfL2EnzeR93es0aZHdNbb4n7tTA3os3
+	VuZTp3iH5mTG8fMkCPHkNSCSDsjkgGXiDiMFmRGfWdzRca8wjzOrAfodKnPYQIv6GAr+o2
+	6vbwab/ThprcHGHzoRCjM5OoydZZjLU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Vy5TVNsv;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760610690;
+	s=arc-20220608; t=1760610893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UxTkzxZWRqOwIOCFQgXcutuiJic9xI7p5Uhf9tCak18=;
-	b=BEdheRDyXY054/BmUMII2+R2Sw9dIeq5s+AZafc6xuMdbxk5FR3+CPHfDzUH5rzZVy9zC2
-	dTXG9fYnGWCjisEWVuKDMc/xK/p+uKEHg0Pm0DXM0Vs8+Xp/4Qgz/ydUmC8L4O7sKmbIw4
-	DZ1xVtnrTOqUHc7UvxaEINwuaOM4KCo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760610690; a=rsa-sha256;
-	cv=none;
-	b=u4KT8mecU2xyL0FafslGC2BeJKcYqXFwzBciYFpat2P9d8o45+zGO5DL9ZpB0Upm0jbfM9
-	GjKOfIH47GLiUPlXuSfJucrDmezL98/SaU63GkfFKac41EtyobdEyA/fKjzDDwuEhtPFOg
-	vEdkOJMGwpvnxDqrRlANWeV9k2xt9xE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="lY/NlE/b";
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AE95240E01AB;
-	Thu, 16 Oct 2025 10:31:24 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id CjO_OZbZHhXX; Thu, 16 Oct 2025 10:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1760610680; bh=UxTkzxZWRqOwIOCFQgXcutuiJic9xI7p5Uhf9tCak18=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lY/NlE/bP8Uu488fCJhG0VgYb0R1RmofyVlWeYU0XvzJXOtwqnI+xxMcDXjl2A0Pl
-	 6ELFwVzaFEpa8Hry+XC8jnIRWF3YDqcSeRawxxnaTJCQPb4jPJvQtFosFivqcrTsss
-	 HdpxBZnmI6dw76swAIymhgwGB7IxO6t1OROHcIbFL3u5sgabLhNsOfTgJYzayQJR8r
-	 lYyQuWIEhPQC/ZZ+7P8u4d/JAwWKYRnszVzsDdw4gK6KdB8DMN403K0WHxyvYdLagE
-	 PfPidmueKn6PshP/FAV89SYV0jlguwSOYh4915QLvOyFjlaFaD4hWx0tyza+azW7Ah
-	 oeYwG+7IqlCxVPwsJ4fhl7LqhALZZjrNycfQ6g6SI4ukTtFzxVT6wx5OsInC80ktRR
-	 nOER+slSxz8ZYxAhUqJBivxp7sYvMiSWHedt5myWyLkwjP/58eQ1QDHGdIcAXPas6v
-	 JexQQYLu9I1jME/Rldi0WojMbP6915UBKD/cV2iVxm/aj3F4A4P7JJ3eb5lmZxkDmz
-	 0hWzTXQ/H4p5S0mPONWZDPpuh3q1O5ifLAwCghGaJ0BsggbS0GPDzIk4Bgojw6lm7b
-	 Ok44P94ia/XsBtmEMjwOfruDT5DxMkXhRHWof1dTAMRywZPG9ThHIFUpg9DZ51ug5/
-	 DmuV376y+aDKY5bmrbLXff3Y=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1977140E00DE;
-	Thu, 16 Oct 2025 10:30:45 +0000 (UTC)
-Date: Thu, 16 Oct 2025 12:30:33 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Message-ID: <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
-References: <20250902173043.1796-1-shiju.jose@huawei.com>
- <20250902173043.1796-2-shiju.jose@huawei.com>
- <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
- <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
- <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
- <9433067c142b45d583eb96587b929878@huawei.com>
- <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
- <20250917183608.000038c4@huawei.com>
- <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
- <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
+	bh=yb3aSlgVfgrN90R89QkXPn9jNMxJ8WgHu1blEz8RSiY=;
+	b=IbDO9ElsSk4uNHDRU9CDL7GdBNTIx0D6nCdd5w8tqOx5Z3d773ux4/B7XmAbKSixeVq3QG
+	uttGRvjqBTfnxTMyjDaGdjqa6G+l9OG4Ko6nJc0zz5mnz4blY9o4/DDmDSU3cvHOc5DWiy
+	G4P0tyWTidHu5CSyE45+nvM5jZJBWpM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760610892; x=1792146892;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VZDy0vrN8u7n/1W5AyMEFHFQCIwaQ3bG9u+5tTcVhok=;
+  b=Vy5TVNsvsTE7DfZGhCNEySI3IgpPqBd/RebV7sf3/3JAmGvie6f0Kd4k
+   m31syKWOdP3TkolW3kq5gcJiJhZZBXYdOi5UfzhGsaHMQ6S6NdDMTOiyH
+   yxutyTMiU1DEUL9bMnSO6eQJ5M7ZG1NnPmE2A7Bu5DuLs+rbtayEfDNdd
+   /UcqB1PjYjWb11VO7Ly0kW7TfXtO8SMATxOu2C2m4aVykiXnLzddzB+MK
+   o3nHlYhRIv6OuTrllnmWrfrRiubqqZ3j4wrjrpdI/WTfDgnAh5NoEXM/1
+   9or5N8JQaoRcCZ8PgQUdSEXOWFPN1Tbqu7ZryYRPOAtoOpclnrfNzCb6f
+   Q==;
+X-CSE-ConnectionGUID: go1juw8dSD22kVXCBWYyug==
+X-CSE-MsgGUID: JKD9pYS2Q4S/2p4SmCdZ2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="66662343"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="66662343"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 03:34:51 -0700
+X-CSE-ConnectionGUID: IkronhQIRV+O9w2fLMS2OA==
+X-CSE-MsgGUID: WGp9F29oRwqrVtgcUTtTxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="187514273"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 16 Oct 2025 03:34:45 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9LJR-0004hr-1H;
+	Thu, 16 Oct 2025 10:34:30 +0000
+Date: Thu, 16 Oct 2025 18:33:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Takaya Saeki <takayas@google.com>, Tom Zanussi <zanussi@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ian Rogers <irogers@google.com>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH v3 13/13] tracing: Have persistent ring buffer print
+ syscalls normally
+Message-ID: <202510161708.yF2I7Qqq-lkp@intel.com>
+References: <20251015173550.225723717@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
+In-Reply-To: <20251015173550.225723717@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EBA2914000C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: rad9qnqsojseugaz6fgc6xz1x9isuxcu
-X-HE-Tag: 1760610688-821562
-X-HE-Meta: U2FsdGVkX1+WNx5UPTHFQ+jlvneY+66r3kBMlgNiIMULfK6aoZJlDTdH3faBVa9pV0WH3x7Yp+CIj/HEjFd9IPVjiVr0DmuSa8iwoFD6DRcprFXG1FBkbO2RkLRXmhS34ZncjGmv+THWhizTwRt6sMIltcieAIcJJrEVO3a0ZuOLMeqdMQm9v7jjzJMYoW9ao8XXHb0t48OwglWXZGRJ/IjFC+Osc1HNoBPSDqtyWSs+X59LA5V0DhVyfj9KNUsS8YALSc+zMDrWdYNW9DuU8Dzmr6vl51LVrjTOBpKxwKRaI5n9sR2MPaQaLSF7Sh/s4yujITTESaBhPltEeXXi2DwUz8ll+O5DipAzHTRAZlMhMhp0RxAfwzeh+uPdzTSAxJXo3v1FWXO2Y+BX96VIPZUYPp5yGqvn9++foEt91WK4gewMqxLI+k5eYTe+Ve8Oc+UfnKSiXMGEO3vTaVoafv0h89uVlu7+JcPFVMzeJl761UI4W8PUWnppdjShPh7q1gekLX8nWmQlzTD8/pQ5QUXZBxVTm6NBZY6aay9dZ6LmF2DqTFOuvJSn2bQ7htaLLqOPjfEiSk7hGjK57Ed4MK0NWnobVkTUQUma6VCE2RVQM8xNdjIYl16UKLZNLTAlyjrUjXbNnjMaegNphZXgR/JuCJuEBUjE8tNnqL9HsRtfjKMw6VlhJopidflivILWhXA23avddyO/PJbgiUXlJo6dBlN9MZ9E96ZmD9B+sBH5BHGE2xghmCgMcttL3HKH4JpffQz4yX6kZUCzqo8LfdR1GtOk0dtXotvPMe6qbQMBPJbgd9I5f2Xj5OhLFjZ1Grg+FFLlTht756B2hLMw5bTGvIw67NCfKwKHMhsFpieW+LH5FkIzkn3fo4E3GoNHjPOZ0iL4ZBtiEGthXWXT6EmMz39qN0uvOmkNsTLzNlFufo+c5xAiMbRBkV+vLGCCDKG6jWMPSB/IjPflX+6
- VQudrIBV
- bYTa0SYB36IOlba8SpBA+kQrIZDvEkPAxzT0d9eAUhg21s27KtXGTJgJ7mpMcOFtu7MQMRlT1bewe2A+bZvXleQ5wwH6789iiE5cPAjLB+u85Tm0xQRGhkLJtmL4NRbJLr7W6ZQJJYFovrLQg3x3cixg24cbvDnQ3CEkU4EmryF0dm1hLaPvjEjzA6gqQC5Bm8uyUJ/k4FICRG3cDTYibqQVB/nUFiBimWUfcwtQH+Jy6c2PioUhvHGdm+iYMMfrmWijPoslq2ZVnehnWSyisxCB6Lj6QgkkbJAlktVYyP62F0POfsvdJIwh2rY+OrRQI3VlHUUfWjK+1Fhq28/sB9RMH1w==
+X-Stat-Signature: qgk4hdqz6fa67ajzbn14j5nysdwt7ix9
+X-Rspamd-Queue-Id: 47D8910000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760610892-28509
+X-HE-Meta: U2FsdGVkX1/trRy6UpqmN5SP2mWuTKaz0uGLhMaugQmmCXBuSraQx95igqLqQrpCOaoXv+/X86VI8AV7fwChXqx5YTTjy+KBHeXy47UuqhyOSUHLMFEi4fJIozx7OYGEqNjMh8MeCw+mG3I3QTV+2ADFQ8+5zDPXTnBzffBD4mz+sI03fGCEhN804tjpruL35YsWI6FYOrBCXJK84u29pyzZWcE8Px6vNPhgAjzNjjnRIRAMJfoERZdkauZf055oFCukT57GfnjwRiZdQFLEn8VIJEWzqGi9hcD/AYYhfUGpZ/yDSCdrqbrYPRVzw+auzfBg+dWV8ATGcuoUgZgX09OD7DrXmCnkKMoUoNAtrVx33BLejDHt0UwEogr/S/IZz4Ja96PvyF0kKirkO7sDl6IbdFdP3gUFSiDR1E9JeooSo2/3Qbh+TSHbIqGqcPKqCLTguYxlQ22YaPbUxt+CaGp2wfeY+Ti6A7Ddj1exC2IRdmpCPI6i0mxsHj0JOSHDdEl5cUbSZ5e3k3qa3KDcv1nwtTEIVK3Wg8CIHJUBJNNxqBrqR+8ReHgXKSS3NmW3eGrA/ZHhsHZRxViCfbFelN9tKVejEAQvIFhD5fQozQ9pvPa2XLJfbx0T256WksqUiakUQDQ8uKl6tUBgo87tQy7TFzOWTBMnWilQefmk2wCoZiw1N/vbeHcITgmpVnSAKIs1BLEdwe8HyA0cqR1UbKsO1DVW47iWByaN3w5aqvF5c+MA8aHQh1lAp7/cGx9HHQxm3dvCycDWkiouqS19QUMqMhONinMUYn9f5u2ZHKUOQZyaqBEhSJ67AGOuyHtXVclrVpzF68ZsKGT30xoka7txk5OwHf3W0Ez01172UbNehqDZINrISzCRFwrzDjJCJUQ8PB2ANWgOX1uBQTBFIpxtW2gw8aFBoQk4ue1B7nEQog2H+CWekQOPXiqdIYFVc9lxohzMYxgwKPjevsa
+ QHlS65BX
+ Wctf69mpHMZ+FghbDwKk8WOV4ybysPAHugV39+zW/7cPfVV1fcpggAEFvllBxqs2ktTEd/mRMDICgzqnJYp3KWhZMiJje3R2cpVCQ79QqqUmuq9OLWqGGemN1bIOOAAPBwr8VixDYnHbQxegk6IlFIPbRvSo13qjM5J+K+qhN/fc26D/Zj3S6pXrRrnNkHTeLR9HlcqhWMnN8B0VgMbW9Mw5FZpYFuk9WivFAnj1lgoEveZJ+HWZypQzDk+LCxp5r3C82b7PG5iuBgsVQaSm3q1mDa9eD+LXCLqx3qGc9FcckCYrFcxfhBcRwffzbNJFT9PbiURnAzCVOHisspZYOnjHtTpuQpSIBBPKq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,78 +124,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 06, 2025 at 10:37:39AM +0000, Shiju Jose wrote:
-> 1.Scrub rate
-> 1.1. Scrub rate is common across the NUMA node domains.
-> 1.2. Common min scrub rate is max of min scrub rates across nodes.
-> 1.3. Common max scrub rate is min of max scrub rates across nodes.
+Hi Steven,
 
-And you need scrub rate to be per node because...?
+kernel test robot noticed the following build errors:
 
-Why can't it be a system-wide scrub rate?
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on linus/master v6.18-rc1 next-20251015]
+[cannot apply to trace/for-next acme/perf/core]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-If the use case appears which needs per-node scrub rate, then you design it
-this way.
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Make-trace_user_fault_read-exposed-to-rest-of-tracing/20251016-014059
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251015173550.225723717%40kernel.org
+patch subject: [PATCH v3 13/13] tracing: Have persistent ring buffer print syscalls normally
+config: s390-randconfig-001-20251016 (https://download.01.org/0day-ci/archive/20251016/202510161708.yF2I7Qqq-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251016/202510161708.yF2I7Qqq-lkp@intel.com/reproduce)
 
-Or you already have a valid use case for it which dictates this design?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510161708.yF2I7Qqq-lkp@intel.com/
 
-> 1.4. Scrub rate allowed to change only if NO demand and patrol
->    scrubbing is in progress
+All errors (new ones prefixed by >>):
 
-Right.
+>> kernel/trace/trace.c:4258:26: error: use of undeclared identifier 'enter_syscall_print_funcs'
+    4258 |                             (event->funcs != &enter_syscall_print_funcs) &&
+         |                                               ^
+>> kernel/trace/trace.c:4259:26: error: use of undeclared identifier 'exit_syscall_print_funcs'
+    4259 |                             (event->funcs != &exit_syscall_print_funcs))
+         |                                               ^
+   kernel/trace/trace.c:11443:32: error: use of undeclared identifier 'CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT'
+    11443 |         global_trace.syscall_buf_sz = CONFIG_TRACE_SYSCALL_BUF_SIZE_DEFAULT;
+          |                                       ^
+   3 errors generated.
 
-> 2. Demand scrubbing and Background (patrol) scrubbing
-> 2.1. Background scrubbing request enables BG scrubbing
->      on all NUMA nodes.
 
-Right.
+vim +/enter_syscall_print_funcs +4258 kernel/trace/trace.c
 
-> 2.2. For, demand scrubbing request 2 options are identified,
->      with (b) tried. Please suggest the right approach?
-> a) Enable demand scrubbing on all NUMA nodes, hope for
->      the 'Requested Address Range(INPUT)' field, can use
->      address set to scrub and PAGE_SIZE(or similar) for all the
->      nodes.
-
-Why do you need an address range? Why not start scrubbing and have it be
-fire-and-forget?
-
-> b) Enable demand scrubbing on a NUMA node for which
->      the requested address to scrub is within the PA range of
->      that node.
-> 
-> 2.3. Demand scrubbing is not allowed when background scrubbing
->      is in progress.
-> 
-> 2.4. If 2.2. (b) is chosen, should kernel allow BG
->       scrubbing on rest of the nodes, when demand scrubbing on
->       some node/s is in progress?
-
-It seems like all scrubbing should be mutually-exclusive... or is there
-a point in scrubbing in parallel...?
-
-> 2.5 The status of the BG scrubbing exposed to the user space
->     in 'enable_background' sysfs attribute.
-> 
-> 2.6 The status of the demand scrubbing exposed to the
->        user space in 'addr' sysfs attribute. However when the
->        demand scrubbing is on multiple/all nodes are in progress,
->        which demand scrubbing status and address in 'addr' sysfs attribute
->        as status should be exposed to the user space?
-> a) May be the status of the first detected node with demand scrubbing
->      is in progress?
-> b) Does not show the status at all, just fail the request if the
->     demand scrubbing is already in progress on a node/all nodes?
-> c)  Any other suggestion?
-
-First we need a proper granularity defined and then everything will revolve
-around it: should it be system-wide, per-node, does it need to have an address
-range or can it be started and no need for any further user interaction and so
-on and so on...
+  4222	
+  4223	static enum print_line_t print_trace_fmt(struct trace_iterator *iter)
+  4224	{
+  4225		struct trace_array *tr = iter->tr;
+  4226		struct trace_seq *s = &iter->seq;
+  4227		unsigned long sym_flags = (tr->trace_flags & TRACE_ITER_SYM_MASK);
+  4228		struct trace_entry *entry;
+  4229		struct trace_event *event;
+  4230	
+  4231		entry = iter->ent;
+  4232	
+  4233		test_cpu_buff_start(iter);
+  4234	
+  4235		event = ftrace_find_event(entry->type);
+  4236	
+  4237		if (tr->trace_flags & TRACE_ITER_CONTEXT_INFO) {
+  4238			if (iter->iter_flags & TRACE_FILE_LAT_FMT)
+  4239				trace_print_lat_context(iter);
+  4240			else
+  4241				trace_print_context(iter);
+  4242		}
+  4243	
+  4244		if (trace_seq_has_overflowed(s))
+  4245			return TRACE_TYPE_PARTIAL_LINE;
+  4246	
+  4247		if (event) {
+  4248			if (tr->trace_flags & TRACE_ITER_FIELDS)
+  4249				return print_event_fields(iter, event);
+  4250			/*
+  4251			 * For TRACE_EVENT() events, the print_fmt is not
+  4252			 * safe to use if the array has delta offsets
+  4253			 * Force printing via the fields.
+  4254			 */
+  4255			if ((tr->text_delta)) {
+  4256				/* ftrace and system call events are still OK */
+  4257				if ((event->type > __TRACE_LAST_TYPE) &&
+> 4258				    (event->funcs != &enter_syscall_print_funcs) &&
+> 4259				    (event->funcs != &exit_syscall_print_funcs))
+  4260				return print_event_fields(iter, event);
+  4261			}
+  4262			return event->funcs->trace(iter, sym_flags, event);
+  4263		}
+  4264	
+  4265		trace_seq_printf(s, "Unknown type %d\n", entry->type);
+  4266	
+  4267		return trace_handle_return(s);
+  4268	}
+  4269	
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
