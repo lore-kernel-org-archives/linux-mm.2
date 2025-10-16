@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DB19CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:02:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5885ACCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 18:22:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 709CF8E001A; Thu, 16 Oct 2025 14:02:18 -0400 (EDT)
+	id 95BAB8E0024; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1A98E0002; Thu, 16 Oct 2025 14:02:18 -0400 (EDT)
+	id 90C658E0002; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7568E001A; Thu, 16 Oct 2025 14:02:18 -0400 (EDT)
+	id 7FB1C8E0024; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 516B28E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:02:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 006811603AD
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:02:17 +0000 (UTC)
-X-FDA: 84004746714.05.797C2B6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31871C0007
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:02:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA348E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:22:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05D6A1DFFBA
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:22:56 +0000 (UTC)
+X-FDA: 84004798752.29.8A951E6
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DE392180013
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:22:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Rzgp548D
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760637736;
+	s=arc-20220608; t=1760638974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CDyD+83Zo3DzePbPJTIkzIjAtOee0UDN1S4jTNJhoE8=;
-	b=7qRaoypVnr9WkbgNluOjvBElNXaFxKw7MrEbEEgC+swdu1tj/Bxj9S7IiZRHngYWtembR6
-	DewiMbfjgEa12ToB71bdDj+GNBw1lAhoHG2d3DO00Wbp1HEi+0z/gzM9poRKWR1fYUtcCP
-	JCLYdxzkwBlWWTl4M1wSTOKTI6qUyG0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0hYYv/LwA1GURrWhGh2MDAllNLGQ7zQ8O8L85h5N1Cg=;
+	b=IK/w80wKv3hrwiUH6Snt5QB1uSah5mCAis9XtT1NfJ4ts3cs88k5vAIptGJSwq5FcdLTAE
+	N5fFgKe2uNBLenQcNq0V178ZSRRB/8ozvCnpchISOWoRgmdRoLOmnoaDJKOfbgZ+kLCqnk
+	IeM034kWD028ir3P3AuT/kGZYL232W8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760637736; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Rzgp548D;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760638974; a=rsa-sha256;
 	cv=none;
-	b=t9xbdGo8SaBTOW7zDL9RYlW5vxk1ictNaIRREUOJi2JPhgz7bhmh6ifx3l18F102PaAe4H
-	H1OF/h564Dz0qCYNzNA1ZsxjkSQOIlhNLu1FHi/LeEUtuD6nWm7cQHN4EOGo8v1NQUNw6k
-	V/Ic4PlLQFhR/HZZ3h8O8Erw90Vs4C8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 48A041655;
-	Thu, 16 Oct 2025 11:02:07 -0700 (PDT)
-Received: from [10.163.66.205] (unknown [10.163.66.205])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 450B13F738;
-	Thu, 16 Oct 2025 11:02:10 -0700 (PDT)
-Message-ID: <5a5ba43e-e575-4b7c-8dc6-80c25cd77a74@arm.com>
-Date: Thu, 16 Oct 2025 23:32:07 +0530
+	b=m10IQ3GYdIDtRm3FtGBJIDx+0d5+X+rP/TZ9kaPZhzvnnL7Zw5/8JzTWjMFiwuB23sVqvW
+	O0Azr2d4bEXEuxggtVhTIyvNYGkSYPLqKRmwLo2Bwtyo8bBcuBOxqZtsMROIBgLOKxRXId
+	lrk8ffRkB9+FeiTsCObDBs+hMxKRtNs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0hYYv/LwA1GURrWhGh2MDAllNLGQ7zQ8O8L85h5N1Cg=; b=Rzgp548D+FBSB43kwyHxqonghH
+	42O4W2Z8TY77zuQ9poKmtvJObgCWVNT3JfIjesTFpvm/ShNqIvGnHC77bY09mhQ87U2VKDQSIdHyZ
+	78ZXZYduDtDxyQGi3hQOWhD/q8yqr4SnTUzqMJ07rdZLesOVAz2L6EU7tBO1cBuFHPa2qIP3MLqcu
+	XJCMmNGPDaKSSYP8Rw0tfLh7qXFKQ82fuVLdJnSggVOhDZd0jGX+5/1BSjSHBI1TNe+gDY3cYhsNX
+	O2G6GCXwBDfX7s/3sXay9XEas3Y4+p9GGp0hxcVEXUwmYI0sX/tHSk7nBMmD3rD+Vl/Su7AUjYLDq
+	waLsZxnw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v9ScS-00000009YoF-2lgw;
+	Thu, 16 Oct 2025 18:22:32 +0000
+Date: Thu, 16 Oct 2025 19:22:32 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	catalin.marinas@arm.com, will@kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	anshuman.khandual@arm.com, yangyicong@hisilicon.com,
+	ardb@kernel.org, apopple@nvidia.com, samuel.holland@sifive.com,
+	luxu.kernel@bytedance.com, abrestic@rivosinc.com,
+	yongxuan.wang@sifive.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, wangkefeng.wang@huawei.com,
+	chenjun102@huawei.com
+Subject: Re: [PATCH RFC 1/2] pgtable: add pte_clrhuge() implementation for
+ arm64 and riscv
+Message-ID: <aPE36PlriswJWSKD@casper.infradead.org>
+References: <20251016112704.179280-1-yintirui@huawei.com>
+ <20251016112704.179280-2-yintirui@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: mprotect: avoid unnecessary struct page
- accessing if pte_protnone()
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Liam.Howlett@oracle.com,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
- <20251015123516.2703660-3-wangkefeng.wang@huawei.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251015123516.2703660-3-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 31871C0007
-X-Stat-Signature: 4c9o3sxca8dj8t6cwen3r7sbo89rzzro
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016112704.179280-2-yintirui@huawei.com>
+X-Stat-Signature: jj5wo9dowh9at31tyt1cid4uoc3sc8jq
 X-Rspam-User: 
-X-HE-Tag: 1760637735-176019
-X-HE-Meta: U2FsdGVkX1/s8iDhJivWvan3ouwUqVJ2aQ2OnPJ/Je8KjbPab36DvSXqq5ujoAvHFfW6tAdRAQs7KWkC3DmTiO+5Rr40LOks2oBpax0GYoschpsQHddAwLB4VChUDYSaFknt0XVOhKEgiq5ssvToBUUvlB8PF8f0gw2qUuSW0weEuM8doGbsxG5GaU3sePKXhf1BFZ5NvfyH1iyhMfUxHoJuCD7IhvndyV8qTx44fB7uxR5x8iey9bKVdUt+GLXAInyT56TOUt0je9aqt+eJ1H3CzZ+WVfsc2ZHYesbeiYkxVc0YXSaIkMtc0hUUwUfHJCJHahfQWIb/v7e9lhHBY2a51hFpm/dpxQTq0n4unYYJ6OD4rzO54KnL1i/gyKhomerzKHaBILLQoTQKgtIXUVdqDQvTUnYexeo3zAgOsbDpSrjo96cQUp4n1HyRYfs8fnXX8wIyRwbZNF/UHIuMB0vqsuzVCifSx5U9VN4X2zcWEZCSxHy4Bp86gLPdYuB09rR4UbG2bdpA25XPD3gdEdEb0TnEC67av6+nuViVVRdGkN+yhbgvPIor0sh83c4/Z1JYs1QRk1UcM5gtB7AdcATTYcGnYQ3VU1dhbAyAtXEQH0WEt+S/KpGyMdDO2hc2F3Q99BedRx1vLcEdPdGjeS1kg/CUr8Ab8jGs1a2vRo2dtlB4c6zjhUw3kNnvOTWjx/o/csCaSnraiKRvUdGItpvL+uESkrFtQ9AYVNo+ErkTA4U2rm9fL4GmgsE7XlxQPbqEBp91haMucJK4uIxzy0io1cgvN73BnAjtSRitj1nuSUxKfWDhf/KgYIGH93OnUCz1xnPEDp7JqfgAi99GOrhYA2YXWm0qhaJ9TiZJrNfrYCosOJpA3QezQvBaXvhrex6HFIuRUALxYAvpXTUYo7GW+7ZO4It9hmrnYq/0Z0EzUHvVAHtjK/q5Ta92rmgk6Iq+eZpWqW4x66Rktdu
- xgFM4o7q
- N3iwu7JHXOLeriRNgDo8jlDJrHHgYOXexQrcw6AYqwjSBtSRTm2LjsJfBZzlAPNju3lY9woUmfnLphDKt9TRruh/Ye6r1Nv0RfkpkmiF/c5Thk2YfqPw0Zij0DYvh6n344JDX360W6m25bVc0lTfid6mMDhid/X+G4pUausqKkbk96uKmVfw1U+OUtMWEJ7FjS/U8UPlT92pC7nLzi8xjmkBaM3k70kTJdKaD0x1RhIr3PqdX6S3Z/WFjhoPN3L/H/IeG+DwnInOiEC/O8ettHx4fdwnd8+sAVJ2to+fWp5Zc3Y8=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DE392180013
+X-HE-Tag: 1760638973-492716
+X-HE-Meta: U2FsdGVkX19xgxL/QT98m6/dNubpXIT6Bh9inN35agp6LpD2D8e99P0vGfdaettagYwM+zJTrKXVzsIoXP1lilNYXcjQ1XzOH4rdUnTm+vnnmShQCOEbAzy4x59JvoX7tLVCsQfrrTEpC+o94Y44H+9t3UG/13wUMlZHdQr/pS34q0c/aHoNJ07Dk46Kar7B3+QQgKL6Q0GuSk/LTpg+4Mt0Cop9HE3i8u5TW5CY6/Zkoseuu+QKr3PHIBQqwoVXTIwEEdCIgakmjMND7iF2gqY5qKZONz4CnZShVarm/TNZIuFV+eL8Vxgk5lwFN7Sia6yxShPFzUDEYK+0eqVackN+m3YS80pzwjGiPkZnDgy5g5KpEE99SlY4lQk9DeLNsD12RtowhFUP056bibcOqL88X1FDkPAJYzgXVDQ8AiHNVW5NpF+XVLmjwBepT34G4mr5UMy9gpfOFZE/sdTg64Gqb4wTQBR0NXNu73TVCjx+OAq88uPbkeIakfJXEXM7Fs7olBTJzvAHW3YQORD+LUeEQFvHMc4GIiJr7KmSzZKceLpENHRTj8NIVXXZa86Rux4ned/tPbBSJvxginADLQDWUvMx66bluXWZeT2AaQoLIOzn108XebPvuy28Otn69aZ9n0uMCplzKxVeIfOsWe7YdnAeKxUw3F7eIh3DUWRFLoJXPtsm5Rq1nGasLH0YolPKi+BGS5Mb0BmwGJ/22Dbp7pGbk1Cyk9WMIrx5vpSUgRZZn3yJCcUFpmqL48eS977NMpI3Mxo94P7HYvNo9Fi+osh/Cv2gjinn1MGy9oBYcshY6XowCQbWt+2zS2iylzlugkFJm8e/ShAGnIo3PlX3Zt9nWgovsg+du/eM7NqYktOOylfSzo1iZ7pBnB73b1QjmkTNv6TmU4NNnpB1ctQPm8Jugrk3BwUz13oBhXo8ahHdf2J3WbVTmqemQZNaaAXJVqNIeRZdseySk5+
+ x6jBMEih
+ r9kAp6y5bXoxhJp04JVLJV2xyEiiwJJJ0hbSolR7dJIbY40EtjF6vbcvZdtlbGUucp3KMqVWHZWUrxdyJuRX1y6605SCsyCX//wLwcgNUKfw/YmbM8LznOALSZnPeiUEGq82nPaHKj53JrVrnGW67cpNTE8CkX+7+qKSVD+7Aow33A6CJPvhoX3BxddICE9RFdk7eR/SE2DPJDIrbAKGg8O9FYtPevKJmtunc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,38 +101,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Oct 16, 2025 at 07:27:03PM +0800, Yin Tirui wrote:
+> Add pte_clrhuge() helper function for architectures that enable
+> ARCH_SUPPORTS_HUGE_PFNMAP to clear huge page attributes from PTE
+> entries.
 
-On 15/10/25 6:05 pm, Kefeng Wang wrote:
-> If the pte_protnone() is true, we could avoid unnecessary struct page
-> accessing and reduce cache footprint when scanning page tables for prot
-> numa, the performance test of pmbench memory accessing benchmark
-> should be benifit, see more commit a818f5363a0e ("autonuma: reduce cache
-> footprint when scanning page tables").
->
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->   mm/mprotect.c | 30 +++++++++++++-----------------
->   1 file changed, 13 insertions(+), 17 deletions(-)
->
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index bb59a42809b8..ed44aadb7aaa 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->   	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
->   }
->   
-> -static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
-> -			   pte_t oldpte, pte_t *pte, int target_node,
-> -			   struct folio *folio)
-> +static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
-> +		struct folio *folio)
->   {
-
-Wow, so while refactoring stuff, I had introduced two unused parameters :)
-Thanks.
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-
+I really would prefer to see pte_clrhuge() removed first.  Otherwise
+this just goes onto the long list of "somebody should clean this up some
+day" and nobody ever will.
 
