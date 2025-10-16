@@ -4,119 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC7DCCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 08:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ECB6CCD19A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 08:23:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E82C8E0010; Thu, 16 Oct 2025 04:18:48 -0400 (EDT)
+	id CE1388E0011; Thu, 16 Oct 2025 04:23:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BF838E0002; Thu, 16 Oct 2025 04:18:48 -0400 (EDT)
+	id C6A278E0002; Thu, 16 Oct 2025 04:23:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC348E0010; Thu, 16 Oct 2025 04:18:48 -0400 (EDT)
+	id B0B938E0011; Thu, 16 Oct 2025 04:23:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 301EF8E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:18:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C39BBC020D
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:18:47 +0000 (UTC)
-X-FDA: 84003276294.26.A268986
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EA50C40004
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:18:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FT1VsG99;
-	spf=pass (imf27.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 98B628E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:23:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50A0AC0224
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:23:22 +0000 (UTC)
+X-FDA: 84003287844.15.AB8ED5B
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 557C314000F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:23:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=GnVLqwwg;
+	spf=pass (imf23.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760602726;
+	s=arc-20220608; t=1760603000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zgHYOgNqUKqEBxe2gRboRiYdQxE4NjF5ePcPPbuQMg4=;
-	b=vGd6Rcfm74KzLX1XYUiObiO0LxZx8C2zx41gf64c/9HVrFHydBtFpdvtW7v4DgU8hksSBB
-	V7TzUGGRBx9E3UjSbujNHmyX+JPrqb4BHCKNlNY16/53i9GiGNv6A/0X54z6Pi0Q4wLJcz
-	GzKwoOaIN3JMZuni5KIxbvgMdfYc13E=
+	bh=+0VUZMtcOk9KdtskCy8ElFmsJ9tky1TG1GiZcpekt6s=;
+	b=1d8vi0LMw4KHmqaAMoNHP06wo80PLSHD9N0Hf72bHCaWmjJ/sXAbdFigyvy6rXuw7frnAi
+	Q9rBYPELFvKb+mmGwAnl/GPhf8bYIxca6f55/kS7bgKrELewLh6SP/mw0CNLTEXaurbA/T
+	2RojUeet2q+ApiumCdvAWBHQoWEG2q4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FT1VsG99;
-	spf=pass (imf27.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760602726; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=GnVLqwwg;
+	spf=pass (imf23.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760603000; a=rsa-sha256;
 	cv=none;
-	b=f6cYHDz1oW1efGoClC1IL9Whwgg/Tx7frdMBvAZqKZs78p1IMqNha2KcGUi1U0tDTyLtBY
-	41OdciWw7ROOwBDU+0LqDVC8Rvzzf2vNiGze+xhVfR2zaeZlLtQ06n/+7S3WwR9sucBqDq
-	Ji0nmxc+NjVA7+pP658JRCbzkbwX9lo=
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-77fac63ba26so4778927b3.3
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:18:45 -0700 (PDT)
+	b=fTRwg86Qma7nvcnUmSpCpLWoVxvDFEgnhvYmZguVC4RbFkvsn3BQwzUjkiwfruqnAj2U68
+	rSbpJ5WCnJtuEANOk1/unlzfBrsGVYjMBaw7nj9IwQOaM/qBr/lqg3Bv5hXkIyOPiPFrFt
+	zILxDapS84vMSzVP7TVHMRBUWZoPP74=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2698384978dso3451675ad.0
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760602725; x=1761207525; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zgHYOgNqUKqEBxe2gRboRiYdQxE4NjF5ePcPPbuQMg4=;
-        b=FT1VsG99HZ8rzeR1YhTgYD/VFhMqIqTCYtLkzQ9Wg5H9xdzfxjT7Eg4dx2Q7mv/3U6
-         2cvoXwWaUeMBpp1qJMJPTqkHBrXI7jwCe3MIgAKXJe1Fr7buOr3exY9Ghh47CPR+9Mb6
-         Qq04G7Aiu+iUSLJmXTOoIoJQizY0nADr1xEvR4eCwLgBsUVRQONvmI+/gYLXYLc0ZQpf
-         DHeC601pJbRPFgXqgBcul+Bo/zGIdJ7kkELWqfKz9Gf+dt6XxtOd4Po3hjuIgvuKVFD0
-         fGD2PNI83KVllqaPR+crp4T7wRlToORUcb1Fq9F0zqNWmWrnSnGfCKeDUQnUdASBT+wD
-         ecRw==
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1760602999; x=1761207799; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+0VUZMtcOk9KdtskCy8ElFmsJ9tky1TG1GiZcpekt6s=;
+        b=GnVLqwwgiV0BDTZtjTrCKmNK46R20eaRbYoZBiq+Pe5wkKUyRDLrexHHnov8rbJ8o1
+         oy0WXsgRhE3gGR2zTkynlIyrEBfahXZWaKkziVWFpgmqKV1FMndz4W8Hzgt35TF1XUlQ
+         5hj9etcnObseXcIGzwMwjno6lRVTpWCmLE2PCsAqnGA5ihQX6syWD9LUOSzmVUhIqwbE
+         +LM/iqGkcOr+2NoUzij1GwHJdQFOky/rR3YSk/gFkDZCcsbUQVgxglpCTEK+j+Cv5V74
+         V/OxWI+DV5CFXG54aAlLra1UsAEeKdnvPM5iW24FnmOBVYL4rC+dZeJ4CCVjiqZ82Myr
+         25QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760602725; x=1761207525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zgHYOgNqUKqEBxe2gRboRiYdQxE4NjF5ePcPPbuQMg4=;
-        b=TCsZcmWO6WEBko0vIIVRHzCkCiBNdOm305C4+OzYLEOEBEZsRurvHTURTDmSvbZHS4
-         kqB3Q7hmQOmPlFIhS2f7R6WM4bPU186+PfCn9Hf1m1MKUH9p3Q1cmc53SRgU/Wm4NZPz
-         cEHGjLP+IJNZxrld43VTnrToTIJK245+Z3938xXakAnE1E4WHNXPRaqHyMzOdt/kLozI
-         OK6JQR6MfjmWYEPZe+N+//9amqU4b4KpTid8W++wRvolHBSY534LvLV3nO5pE6Et7t0S
-         A5dPA73Pqb+dFcpGayreLy9SFydoMR7TeRsK0Rq1MjK9woIwkkARtNWtA5QUiawmFju8
-         eTwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVorlitUaQu1rIEdubAUZeR33c73893X+aNADcFRC3cfROG/MsuqIyQ+iPv7EgylUQeBUEDgufxkw==@kvack.org
-X-Gm-Message-State: AOJu0YxuJEV/2OaMcSedPH+/tuU4va+utS1uQC8T+zLKTKMA28dpLA9p
-	LtZbhkxwFy3fvE6Nw86UW04KVo/luF09VIGoS8uWgBAfhCpma6t/3wp4+mQu1qK5IiH+SMsQieA
-	LelnvZ6ZcxsmAAWNc7w7bbN1LZeutq0o=
-X-Gm-Gg: ASbGnctFZCT0Ub7yASqEp1c/dkFenh0TtRZqBQhOmGUHIdJxt41hyLVZOLiXdTwrRWo
-	xEVNkZjzJ1e8zf++Dnr32djbNEPqI8GNRSwJidLM36AmxckJ2cl6Mz3LBfX73C4VEq2oNRlmsoi
-	oKb1UCYKhm/A0GwYMlHf1LAkzzo65aDmd9W8q61fiRM1jcsthuOx85kpfYh13e6aJiS0M+tdxKf
-	vQWtDdoRW+5rDmUQpVQKd1jfEEKYVl9UjajhBw6LNrQAfKrXP/kDCGVSILGZnhZw1W1FqBR
-X-Google-Smtp-Source: AGHT+IHVqXd5quXoFkL7TseeikvmflCG1zrHiGi4zY5UsuuarF4PtLzgSuWNSHW7MIFsJygYWpoqCYW0WFpL9IgIR0g=
-X-Received: by 2002:a05:690e:4007:b0:63e:dbf:ab89 with SMTP id
- 956f58d0204a3-63e0dbfaf6dmr985502d50.21.1760602724828; Thu, 16 Oct 2025
- 01:18:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760602999; x=1761207799;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+0VUZMtcOk9KdtskCy8ElFmsJ9tky1TG1GiZcpekt6s=;
+        b=fp2VI6RKTIWx/ZRda60mndO9Nt5uv/X7xsj95NLmfvKCemrzpe9qmDJme2LqTO4K2x
+         dEkbh5r4HfWbDx9e7sRFP1P6acXs88X58Jr9a72zbrT5wh5XhV/zugtEBk5fpegQx1Oo
+         rAFwrJONyET5pePNlXK+tl8Al+XrabU3oapXvivdQPOjXEdhA2CGjfe5Bs2wYX7Lib1L
+         AUCLPyLA2h2jafY25Ilsigy7jNxh+NwFSq5dVGdTXnNU1ZfhHfdm1rSGWcL2wtiFwQ15
+         51pTDhqMmJYlDKLsLhTOI+Hddh/Y4BgBGbnvOXrC4zY9h8B2/sX8Ra/LREKG8STR+/QQ
+         rSIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoy/bPLYChkWDyE+ydwx25S50FPCB1hNmR9nOJvT37Iqh4XTmh/VBy/eE5xpi7xI7se+tjWpNhbw==@kvack.org
+X-Gm-Message-State: AOJu0YyZLYGQJxlgXRt1G6Auizht64cxM8Fe+IXF7FkT0qKwU8woeFJE
+	KV2iFN/h8n/q2gipLaWktZbFTNNnwgTPa+Hhk94AOD67LgZnoC6n8hj+9V39H6nOmyM=
+X-Gm-Gg: ASbGncttGmej2MqG/ZqxJB6RQYEkde9Y629vK9Nf4LEpeE3mcbYN/n6pFSl41EinqnH
+	CcYx87O1DbRO80iAylxN/wvlfIcRoWtEb+KcHO20J1Cbzj4/uRVnPOvTUOHtbqjpIhg2MpBmcR/
+	SU1x0EzEH8LjWa1F9+w96EoCtGjlEp1/UN9GNynzQoPJUbESwZXvUl6nJr5/Oe3qWIeQWKWfwk2
+	nnN7DyU6ygJXEM3UlvJ7RF81WkZipxEvsukWFL0v+BMlrdooGvtgyiiU3dFHlCa+gJ4i2PgpjDa
+	828jzm1bumpP8dbvf2cfBLuD6cb3Z7/DaC12BTKMkQijbbqia0T3iaAv7EGOsEVGVax7rQp99w4
+	kZkHDDncy0sF36eOXBXLCbgYlp3nkx642wMqnXReGA7UsvHyHdzwXOBrvNO910LxxSeNt0hW9Mi
+	P6JwOFa/vAtREzF3WCeBaCfE2c6AKVMJqrgHeCcoQn0jJxEqRBGSabtzjqqdgyRJ5k6o/ICQzd
+X-Google-Smtp-Source: AGHT+IF1CQThIQIcsUYNeKF6zSjisAw+PGIYgUlb6D8gypneTiF3iak1UWrAgN1vx7iI8WrWlF2NeA==
+X-Received: by 2002:a17:903:1b4b:b0:26d:353c:75cd with SMTP id d9443c01a7336-290272409c7mr413436515ad.21.1760602998773;
+        Thu, 16 Oct 2025 01:23:18 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2909930fd3csm21322745ad.12.2025.10.16.01.23.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 01:23:18 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1v9JGV-0000000FW7S-1kMH;
+	Thu, 16 Oct 2025 19:23:15 +1100
+Date: Thu, 16 Oct 2025 19:23:15 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Carlos Maiolino <cem@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+	dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 2/3] writeback: allow the file system to override
+ MIN_WRITEBACK_PAGES
+Message-ID: <aPCrc5GvQRkwmTOU@dread.disaster.area>
+References: <20251015062728.60104-1-hch@lst.de>
+ <20251015062728.60104-3-hch@lst.de>
+ <aPAI0C23NqiON4Uv@dread.disaster.area>
+ <20251016043958.GC29905@lst.de>
 MIME-Version: 1.0
-References: <20251015141716.887-1-laoar.shao@gmail.com> <20251015141716.887-7-laoar.shao@gmail.com>
- <CAEf4BzZYk+LyR0WTQ+TinEqC0Av8MuO-tKxqhEFbOw=Gu+D_gQ@mail.gmail.com>
- <CALOAHbBFcn9fDr_OuT=_JU6ojMz-Rac0CPMYpPfUpF87EWy0kg@mail.gmail.com> <ebf60722-34e1-4607-b6a7-595fc2091998@lucifer.local>
-In-Reply-To: <ebf60722-34e1-4607-b6a7-595fc2091998@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 16 Oct 2025 16:18:08 +0800
-X-Gm-Features: AS18NWD2AXGKlmvFo5UH1F2cQyeA_L5yHcpBAgeZL4_sZgqmARGxyWqYqUTXbrc
-Message-ID: <CALOAHbDnJyou=MUwPBCEwWeeK+9w2MiOXjpkkcCALExfnsj=_A@mail.gmail.com>
-Subject: Re: [RFC PATCH v10 mm-new 6/9] bpf: mark mm->owner as __safe_rcu_or_null
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, akpm@linux-foundation.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, 21cnbao@gmail.com, 
-	shakeel.butt@linux.dev, tj@kernel.org, lance.yang@linux.dev, 
-	rdunlap@infradead.org, bpf@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EA50C40004
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016043958.GC29905@lst.de>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 557C314000F
+X-Stat-Signature: ph4cyawkyhr9n8mk7yt8zqcioztysxcp
 X-Rspam-User: 
-X-Stat-Signature: dk6wt96q1hcqgifpmgwuqfjhmr3dh1zf
-X-HE-Tag: 1760602725-513729
-X-HE-Meta: U2FsdGVkX1+cFWB8bccL3uwbBA4S+B58GORsMWTvti+UwDRx/HDq/QBqGKdT5vTC/17tuds2J0bZp0uA0urGErJ3UqhAZ4HmtOuLFfud7X0w0Lm2xfRJNgYUKyFCAJYPIJgvZkCWDagsIF4Y9MEI4Z99k0e/WwZPutu6VgXsO8oaLngXUUcWFJZT86XXCT0IR4/jFgp/bWPB9R/ByuyXll9arUmkPbq8L9MypyCHfv0dT0lg0pLENEYVLAr+OnyJfRPcUXmarYBTksJEFEp6j5I3oouEklK7gEsPnbw7vtci2ffOs+0t3Jdh7cGMN1b6AhFVwSME3P+9nXHnYkL/sKsTy58XozEYGOjdIs7fuDd9EoDjedlykVEykNZGNZ+dMX4otAB/QuhDNUmJ9SfhvdGAfOI9mKbadQhPvCVC9edWH0scnp6BW7jlgcDE/FQtRHNakdstde6Luc6cU2tCD8mvLZNGjr0R6o/hSOlJ/iQvlcKwucPgLfNQvGCLdcGBmXJUqgzpug8Fn5evjqVahXujh9VUZIhvot/bVqbmCuzC3dlL3vRlSJOm1XkBm/A/nLISAseuFw7SpWQAdbXRjEj/emrHkl5COsr9rUAJQIRRtWy59lOw5Cz5vlWRPaVTrmP5jmXQoYRnOomQmTAZU2S2g07RdJ8ug3zzNN/uu+xtww5cCRNGdXxRCcVmpfprhLugGCEtSf/BNrYkvfYz6kJMSaGIjA3pvgM/po3vC5NgeizR530jmmmecCdW0y9cO3UjPtQyc4VongGqVjPJtwlVguff/tO6iccfN9qNjAWotaLI0Y9fI6og8/DHCrJY4Hf6Jtskhjb3lMI7v4JE8hJvvs0RRM+4FXDlQquxwjMtHvcflSKhocaMm1+k/5Iu3flO2rkSN9iftnpyMTkMkzTBDTP/v2zE40NkyfYzEIdWO5UTSJGwwHVT+d/CKlM9vumrZQhGWEJVFgXUtcW
- KWIzoaeT
- yMYzlNdmH/LYe5NXIqUIotY+cHTxl2oWVwrOCyvT69syTnPPN23m1K8IzsM2bLg8VQwgB7/vcuj1svdhljLFEI+zCMEdje9CfFlR7HnKeo0yld1COw0FX5wo279gvDVGdbyjtmMXQcw7zNPdiFSUfxotlKHJxqoXV70sZ/zvCX5HRi9r2z4o3ex7+fh12W+ENnbPW+K8afAE+pa0UhfbU17hld3QQhoA6fMi8d5qk+thLmSQ1J9NIbeyNe36DbJbSefoBiI5TEpyRC55WjClwknyNTRGtOVJGf9T24wssOf7MbNtLA4ZRiErKbeVIyhLETFXRVtIAd/ldJtFmAX6DR1kVT8utmIKzqDDRkLxbHcm9IqhkAFwsJuNki7vOuanygtJG9AYOqoIi5KctozpwgqoOFJSlfj0ftS8d0J78BvJJhKXzzx9Ah+P881kY8aXjALeJXi5miWI/QeczPl0dcyBGatQmgFVi7myup3noVOVRHiRWssyJhd4tHbyg44mJPh5HGQwwJVm1wvZUrB4deJ1A9dzU1MINnWzfhbSV00KOKjYqK8bcrUOEM0HJTEG9TzLeSf18d+iS65A=
+X-HE-Tag: 1760603000-922
+X-HE-Meta: U2FsdGVkX1+/0MWEHh1meF1Dk2KEyl9SmgppFeb1gN1e5P0JZrmLC4iV/Rt+6cejbFmCnlsGREzwT4lAWWBRDYISYGl1NYdw+NjRi17Ao8EcBF722ni3x9AhMLOlzjJfxzK+7UcS9vxMTRywcByUaGYK/FXWz29+xJFHUb2lvZOmRI/+1wy82FKUSc0PX/KY39vsdGpcbHKcOt4wPtjhy0a1q9MRwdbe83V3BG4MSxLB+PotGYXTjhVDBqVCNLPi2qIiGYHtvl1CSLwvQh/UL1QUGKoIXfRBZkJDZIo2wUaLqH4Kq1Yx/dI0naM5SLWt3l3NbDAeJseXJUETOxyxOBvtxWvZ7++LwROCOfXFjcrwtE8hoo2rSP70nsgU1MrShOJ4QcyWBBGXJ/1hFB6a4nGWCvYT4ItCF74d2z8Aq4brRcpfcAJ3o2dnlsHTOYDwzxGjv7FBHoiINq4Pb0p+D24IykyuG4OsZa+EJNfoqzvJDizeslOblWzwFZHtvmPTS/c6uAHeL+7tmbLXDWoG9BuDuBi2yVdMdGBm2CCpXlU7iqaBqme/pvrtZ0HTmW656/6j8neW+wdEbj1jPYgPuLALNgv7vrWsBe6uSSrdIjNQFLbqOYJDPHnkYVrfx/aMSIim1tmWZrjW6aaXUc+EdTTXIVpKgYydGuqIGDh0ELORNAIOqosMUhVYearHRQP6lQ77P4eTfuJ/9yGi2mVb+kJE/l2J3hgx2zCUhUVUsSTiFa2rDq1MNF+sdErHx7ELU/CJA2VcCNLLPZgjHCVJHHJ189qrRVO54LIQ+6q4YPsJoJHQRn1Mx4wK3CZoHyLEEt7l8LdGyJKG8H34HM/LJT6XkMWyrE7oJJGzQa3OAIVwTun5dOyX03PSPjT31ZKIBRI7Ji5vqqCRnDeSQrB2VWwyhmxGhVE+ZDejFNuiDSaQf8ZcF9zq22MDCTX8dZGk+mzP8ph0IWN68dByrvo
+ IGck25Gq
+ mxEPZSont8T+Ejfz9jwCdAOmgmFsO8ZvporwcA8vs0zKCc+loqoElDpdIdrRYyv2S2FLuSrO3S+IlVEztOJVHEB2Bww6S7E4eK+kbvl3yrTI27eOogp32Fiz6ppa2C4tOiire3tmWu/dxdbWtzGOPL1G21msFRq7TosDESD+T8UP1VHC1GBkV8Joz9ZiXLlafvRE03iWKs7jPFVMFGx9Zp439bhaYec/bijlUPp5m8cd84z4oSLN/n/1eT0RnJVuoUmBAo1C+BlEjy7OZM/79hdu9ElPs961f3KwUbDvwMgoqJte/Chw4JTN8UZelHvvR3JP+QIaPDeP2w43tit9Nuzzez2cIGQKJpEZNBsp+XHNGCw49+Un4SGyC9AkuHBmWIR6CeXLFlM8jW4CX8Eed/2NHBByD/+Qe3TjbHSzC8L7nt+HzeAd3G2bVGPC6Wmc8dq3D15YuzN9Yt/0QfmcrjV4+oC98n0vWjW1xAMREaNUx2tfFQnAbS2r7PA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,79 +129,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 16, 2025 at 3:21=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Thu, Oct 16, 2025 at 02:42:43PM +0800, Yafang Shao wrote:
-> > On Thu, Oct 16, 2025 at 12:36=E2=80=AFAM Andrii Nakryiko
-> > <andrii.nakryiko@gmail.com> wrote:
-> > >
-> > > On Wed, Oct 15, 2025 at 7:18=E2=80=AFAM Yafang Shao <laoar.shao@gmail=
-.com> wrote:
-> > > >
-> > > > When CONFIG_MEMCG is enabled, we can access mm->owner under RCU. Th=
-e
-> > > > owner can be NULL. With this change, BPF helpers can safely access
-> > > > mm->owner to retrieve the associated task from the mm. We can then =
-make
-> > > > policy decision based on the task attribute.
-> > > >
-> > > > The typical use case is as follows,
-> > > >
-> > > >   bpf_rcu_read_lock(); // rcu lock must be held for rcu trusted fie=
-ld
-> > > >   @owner =3D @mm->owner; // mm_struct::owner is rcu trusted or null
-> > > >   if (!@owner)
-> > > >       goto out;
-> > > >
-> > > >   /* Do something based on the task attribute */
-> > > >
-> > > > out:
-> > > >   bpf_rcu_read_unlock();
-> > > >
-> > > > Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-> > > > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> > > > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > > ---
-> > > >  kernel/bpf/verifier.c | 3 +++
-> > > >  1 file changed, 3 insertions(+)
-> > > >
-> > >
-> > > I thought you were going to send this and next patches outside of you=
-r
-> > > thp patch set to land them sooner, as they don't have dependency on
-> > > the rest of the patches and are useful on their own?
-> >
-> > Thanks for your reminder.
-> > They have been sent separately:
-> >
-> >   https://lore.kernel.org/bpf/20251016063929.13830-1-laoar.shao@gmail.c=
-om/
->
-> Could we respin this as a v2 without them then please so we can sensibly =
-keep
-> the two separate?
+On Thu, Oct 16, 2025 at 06:39:58AM +0200, Christoph Hellwig wrote:
+> On Thu, Oct 16, 2025 at 07:49:20AM +1100, Dave Chinner wrote:
+> > On Wed, Oct 15, 2025 at 03:27:15PM +0900, Christoph Hellwig wrote:
+> > > The relatively low minimal writeback size of 4MiB leads means that
+> > > written back inodes on rotational media are switched a lot.  Besides
+> > > introducing additional seeks, this also can lead to extreme file
+> > > fragmentation on zoned devices when a lot of files are cached relative
+> > > to the available writeback bandwidth.
+> > > 
+> > > Add a superblock field that allows the file system to override the
+> > > default size.
+> > 
+> > Hmmm - won't changing this for the zoned rtdev also change behaviour
+> > for writeback on the data device?  i.e. upping the minimum for the
+> > normal data device on XFS will mean writeback bandwidth sharing is a
+> > lot less "fair" and higher latency when we have a mix of different
+> > file sizes than it currently is...
+> 
+> In theory it is.  In practice with a zoned file system the main device
+> is:
+> 
+>   a) typically only used for metadata
+>   b) a fast SSD when not actually on the same device
+> 
+> So I think these concerns are valid, but not really worth replacing the
+> simple superblock field with a method to query the value.  But I'll write
+> a comment documenting these assumptions as that is useful for future
+> readers of the code.
 
-Sure, I will send a v2.
+That sounds reasonable to me. Eventually we might want to explore
+per-device BDIs, but for the moment documenting the trade-off being
+made is good enough.
 
->
-> Thanks!
->
-> >
-> > --
-> > Regards
-> > Yafang
->
-> I do intend to have a look through the various conversations on this, jus=
-t
-> catching up after 2 weeks vacation :) in the kernel this is an eternity, =
-even
-> during the merge window it seems :P
-
-Huh, we've been refactoring a bit too fast and furious since your last
-review ;-)
-
---=20
-Regards
-Yafang
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 
