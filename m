@@ -4,117 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB64CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5247ECCD19A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:17:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF32C8E0016; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
+	id 914298E001F; Thu, 16 Oct 2025 07:17:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2E38E0003; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
+	id 8C4768E0003; Thu, 16 Oct 2025 07:17:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91978E0016; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
+	id 7E18A8E001F; Thu, 16 Oct 2025 07:17:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C29B98E0003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:07:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE388E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:17:14 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68F6F58359
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:07:59 +0000 (UTC)
-X-FDA: 84003702678.24.2322FC6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2420CC0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:07:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="oI3KR1/Z";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D789C028C
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:17:14 +0000 (UTC)
+X-FDA: 84003725988.24.139DA8E
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EB6F24000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:17:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=hxewQKBU;
+	spf=pass (imf27.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760612877;
+	s=arc-20220608; t=1760613432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sdQ9RHb7v7NNLdjW+oTREdHZ4KKafpNrMj5Dc8vh2Fk=;
-	b=ezWsdLucfP722Xj/0nbLuYVOxbkALuHOq6Pl32fTkysuvdrNwUF9fZkoEooczJ8zxi9WSh
-	twlq/XZVCumeh5pLotxf0S5Etpbl3KvgAnZKHcSx90hcXFT1wG2atthWdxNcG/TpAzZDf8
-	efQHoIS4FmddnT4ro4hRFioRay5PM7E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="oI3KR1/Z";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760612877; a=rsa-sha256;
+	bh=MqRY3Czjb/qmaEQM0EuyflNGhq0tB06IT5PcEAa34z4=;
+	b=B6eSnoXa7wIQZqhs07pKGkb3SVRB93Zl+9sOpFKI8ZCAQHdqM4QuW7BAtIhEGD1A63ny4u
+	lMYe+ouqtK72RB2NRVF1W6+5yThrkvf1I1slkyPqaQNQlj5SqzTJtqMr9rCDUK3yncKt6A
+	Qn/94SCtgd7esgPh9wwHteYnacFutJA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760613432; a=rsa-sha256;
 	cv=none;
-	b=s7DiPvd5oz3gKqyd2F8QGG3HROrV9sQjQAcI9DDRqDiZEvZzqsBa0vcTrf1aWgDiwu+NTx
-	HR4DKPdVQ3tEN43uFFt+Fh7jH+TqwgLwQEghx+K6Hw7SgW0EfKs9Mc+BcLS0mzLlAzCdcs
-	l7XfLE5M3YKs1Mj+OkCzB3uHiK9JrRI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760612877; x=1792148877;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=X9aFNc43N2mIzbQN88dQuc9eSgi7CWull+Rn9afMSbY=;
-  b=oI3KR1/ZBJ7uP75OvV8dZ2UCkewBMeJLlVOlKn2N/NUzUw52SXTg/bH0
-   wNOyFc4B/DWeTgqcnfK2u+w/8tSxdOKgOEwG7EfJiBJTtnEH+B5KYX7y+
-   RMXjno21Kv9CCs17MRNHZKMlOKsCznDCn1lEu5Mv7zyYmQ4k1R+grBqMo
-   t7GPm3UKRE186IbD6zVEhUtCspYRYnexMFWXnrYWqd4iZGLl4Mol0vqW8
-   G07clOxG2haO92xHAVZoV0MWm9NQBR9X7Yeq+isjO8UJhUATTZUjsDNsP
-   5yE0Ru+0I2u/G7GUJpWkgF7wjXQiqsbf5JVYKhCeWkY7t5a0E66zz55sF
-   Q==;
-X-CSE-ConnectionGUID: c04vRDeZQniXY/bS+3WdlQ==
-X-CSE-MsgGUID: WfezB8z2Q5mww8Iik1LOAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62011187"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="62011187"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 04:07:55 -0700
-X-CSE-ConnectionGUID: ci2VY5XdR1OYxkSl6SuILg==
-X-CSE-MsgGUID: +Wi3BTgZSgu3rjkmdKn1pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="181557081"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 16 Oct 2025 04:07:48 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v9Lox-0004jL-1a;
-	Thu, 16 Oct 2025 11:07:17 +0000
-Date: Thu, 16 Oct 2025 19:05:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Takaya Saeki <takayas@google.com>, Tom Zanussi <zanussi@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ian Rogers <irogers@google.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ingo Molnar <mingo@redhat.com>
-Subject: Re: [PATCH v3 03/13] perf: tracing: Simplify
- perf_sysenter_enable/disable() with guards
-Message-ID: <202510161858.5hz4HLnc-lkp@intel.com>
-References: <20251015173548.540984239@kernel.org>
+	b=q7pumACL3fMxasKIb59z8iS0ZzQSOzmKBQ3spx51e9oNm5gOFKxqXXsfRV974LSpqCKXVu
+	96wEzvPMAFzGT84tFvNnr05hhyAn0OM+NspK09e1+xRlP26thxnJKjX+P6TJwiFui/x8AJ
+	2HeXnBf8hmwi0uUyo5f6uiYElrj3vag=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=hxewQKBU;
+	spf=pass (imf27.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760613429;
+	bh=DSWwjOXOC7bi7nAeIFr1fihi8RD0f4mgzm3t1e4srsw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hxewQKBU4XBHVdn3n/KWzRglcS5kWQfTmJoEpRWVU198WIarQ/E/+omVH/nlKQX86
+	 zAeUuogdHv/xjZLpNQ5nYCedzd5JkS8lINjMIOZ+2UbMzQLQO2ie1ZhE/JJ8+rSr1t
+	 gU6UQhHE0FeXHYklZgaWiD7c4UI1m1YLcHSrqe/gcID9ypINTXCRdjOjrQU9APyPJh
+	 IQ7djMFdCLeplC77JE9a1JNCPjJPBYOGMzeQ7JOk2pHwdEnPDqf8t9CWC5Mm6/lqIk
+	 +WSWiXPyBreEMGKgPGQZPAEGB887tu0Is9V//WxznJuFGUUVk/Z5bfYL3y1/LCK1en
+	 jE954CUpZbWmQ==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0F59C17E0C54;
+	Thu, 16 Oct 2025 13:17:08 +0200 (CEST)
+Message-ID: <f564735b-7cbd-486c-9dd4-a4555e73edde@collabora.com>
+Date: Thu, 16 Oct 2025 13:17:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015173548.540984239@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2420CC0002
-X-Stat-Signature: e3xsrp1amzs389jxnkoqy4o3bg5c63qj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/13] drm/shmem-helper: Map huge pages in fault
+ handlers
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Boris Brezillon <boris.brezillon@collabora.com>,
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Bagas Sanjaya
+ <bagasdotme@gmail.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251015153018.43735-1-loic.molinari@collabora.com>
+ <20251015153018.43735-4-loic.molinari@collabora.com>
+ <aO_ZmA6yoqbzTKt9@casper.infradead.org>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <aO_ZmA6yoqbzTKt9@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: m5be4ompig4sqfgwgjuwsnmpmjj9gqhy
 X-Rspam-User: 
-X-HE-Tag: 1760612876-692225
-X-HE-Meta: U2FsdGVkX18etIKovvHfEj2NzVtkrWlxVMDql2pOxDaz0GuWyi5KcgfMt+fBTbsdkTv7qPI/T/78pg2ZI3CwduV8p112nZCDrZXSKXOV0ZAMz84nidZx0ripqIqTzUhZNC/qkN85CHP/V/SJ3U6EOcMDrf6O9TL0xm+Xj4sgzOSrMupX/BpCl51rmuKHTFxItEaFCCjWMEHtaKq2Qlq8igAH2doUrPDc+v1/HMYGmNW8Crf1WPBdNZhUBT/w94afgauYbdx7wywLlR/aI/22Sqv3dZM7uZD6EMHyVztEUtdIaXQqVT7ky1C7J2sscLoDBNFBjDHdmWl+D0w3cvLRCs1LVRbT9jIRHtuEtk9uz914xkQV/SGP/jZK00Hi5WtOVcXQkmpna0rPQlXccHWkXvtAHCpu6GJ+uM0PPKFRo+veAjnqufDYNXZvVZB7Uta+JTVtGH92G7hoXjfPnS6bkgSlkzmx3jBIJjRIz9hqUDgX1rW9g+Rgy5HTjYsm7T1bu81OGA+vepoe4tIaUeszdIzgdm+3j123JkaYrKe18kjPUboW3J2XCT8i+6hJp8JW66BVYU9PiVdpekgyN7xzmx6Z2XsSYoEgDHBBnnANdkOvqUe87xfkRFZHqJfYhQARyCyqwqFXxuAth/Iqv+6j9tk8WnSg79rRoTNPWOlFK0n+obWzkilYABPzb0YjISyxiNZr5BlKVAGxMdiplUf4J9uFpnAYVCl16rdJGcu6elBTsWr49q2dsxLmdyhyCT9TVsjOzf74MXu+nuEDceZ2+f5W3+NtaLUwLuTzezi+HMofBO79/g0YcjKagMCD3RUh93VrSt+hidACY56HB3UprsQZzEuD123PkO7FwAxNOvAOACYm6xPTIghN261936uQr46euxn7MWb2aYjCowe20ZZHArVmY6tDUuEhwst2/Jk4oRDYzJxINNFtd10xUA5+velJBAD9FxUMVZcYBp5
- S85Ai73d
- a1bLFjfhSkNvMzY0/NFBWZKOWIYT8UekOhT1Em9FAqrjBEYA7ERAzKOes7BNBBRaNr2dkWaq+eNVA8w3h2KyxVrxPU5ZAKSxa/+dHNxx74XkfqpRvok0j3JLUWFohB1d5V1heVR+qVy+mZunVtbNrTcH3pNvnIhmQxIxcgJqrvSO+13fAP/8CenP6xuMbGRKzETrWmvauK89IYxI2n3FIqGQDKmmFORFMeT9nrzZeRM+CRkrZ01/EBhfE1aA913JBgFiiiCc2eNLomHIP6PMUcYCQVaEmC2j21/Rbwgbm+72PpUmcYnApZ28xe1XwOnKWDf9GmDesFo45HuDB/4v1eK4Aom74Cb3vtax+ZLgDMV7n9fFO4tpAtf6bUg1UEy/Hk/H8CGElAorFs1Nrc2sOvuXUsA==
+X-Rspamd-Queue-Id: EB6F24000A
+X-HE-Tag: 1760613431-784847
+X-HE-Meta: U2FsdGVkX19r2r3IUcFGtF4Ly+1ZTJX5IML/x0iQlapQkX/8MtVaiXsdpF560ro+SHj0iQo1eL4/cCYsUVZNWU3KUtJY3XZix5sdwmOIdEARY3GXlE9jh1Isz+hKboyNGCoBc5hdO5yyL4A2v6I0rsrVyisHwd+IFyenJNe/CrEL/2/TGDfORceHxZ8YUGA9EGnTOBJJAVfWQDXAQakVpCryPAkx/0MsblPMlDovQp2EsFsBjgKaoKfSVHDC0bEu5WsrpakE/lDEl9x9qQ2hZoRZ+v2GcvJgSJUYCCSbz2ocJ9aPfXq2pwvCTprpe2Xc1smfznTv39MgHs8LdLpCypCsaIrHCcpD84Pl198E6pW/awVH+KD7EUQ3rRAMoDT0SVTQ72HwIy8kDikqJmF8IpggzHs+Bl1ETBgpPphC/X2l/1gCgm/CvchjzGoxsS4SHBgzVOVJml8jo5hanLdt5DCwYTAT1J3Pf1zNdaS/mzpiUJ1/1EwB0nI8qIg4eWvt6x10dtftR/Em3Weg8lZ8qJWYm4yZGpMAHlpJoTxd70TTobbTMMUqOkIhpq4/Kx9K+TgN8kizXSSdi9szKdHkqpJdOvqeiQ8deGMRurYUH7jS45guygZ4pUAipxhOjHFxpbE5tAceWx6Hoz//dxBsrxW+/quO5BDCjuVM/WUZotVrN1hrJEg3jjNPozoJ9RGHtICASFHTcBSroIG1A5IDC9tWFupqdALChINCQXaHleomb8Ioiii3BH02PN46gloVOVc7GJ5RMU9KJU42ZOsFxSfy9M3GO3Xxp5hTwH+yuLdc7PzGju6xDIZpR2OxsY8kfagTcBDLInBFF1Ti7aHE2polg4wnmWeYYeF8YaM7OG+Uiojv3qCr+G6lAfSLlJwtaEyDFbtcAoqflr4fHmnVM8HSphORXhTbkjkfroatwjk+/GmZXPbdbGQC9dLWHZd96HI/1XJEfFAVfdAhYLM
+ HBM43lW9
+ V0wK2b+6CotOq16qYSIbL/eT9/hDicLp6ER/SeriMhcRe9Xlnjg6t5/rBFXu597ijSCltWmIlprpTZjZFHXIzLQAzM0VWpYYQzPCnQVCHJyca4E25saAVoQHtuYJehpkh8F3dR57SecfBYAf3bFgnPFpz1Byc5L3ylVm5SilTUt5U6yN9/cjMPzo9zJYOUfigVyiCNHmLmb97ex6PxNyxHL7p1ry7NLUiD6dLwxh4QD3uOkv4k8UD8Ee9gVSjQ1kc/eoMb2REN5PJUjgHN2MYGueImjMbxHYD+LDsMnjY9a5N94m9emVCdUTIkZr3SGAXnucz1mxfEV3gQJ36Fto/QP79f8PNBuhnoFfB7wgbF3OSIvN7TNN+sMHbtUAZXz4oBNDpUVfxfiTwzSEeXcqAMYje4cUNXy6z52Gss7WA9+ZbwAhpHF8CWvy8+kQwPsfK5MM46aIvCUX+jWkSuYe4b4uhfgr64OrhULF43MGd3nnC6E+Nu5KxlARzhSBupntwRSmMK3O7i7FE0Sw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,86 +118,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+Hi Matthew,
 
-kernel test robot noticed the following build warnings:
+On 15/10/2025 19:27, Matthew Wilcox wrote:
+> On Wed, Oct 15, 2025 at 05:30:07PM +0200, Loïc Molinari wrote:
+> 
+> This looks fine, no need to resend to fix this, but if you'd written
+> the previous patch slightly differently, you'd've reduced the amount of
+> code you moved around in this patch, which would have made it easier to
+> review.
+> 
+>> +	/* Map a range of pages around the faulty address. */
+>> +	do {
+>> +		pfn = page_to_pfn(pages[start_pgoff]);
+>> +		ret = vmf_insert_pfn(vma, addr, pfn);
+>> +		addr += PAGE_SIZE;
+>> +	} while (++start_pgoff <= end_pgoff && ret == VM_FAULT_NOPAGE);
+> 
+> It looks to me like we have an opportunity to do better here by
+> adding a vmf_insert_pfns() interface.  I don't think we should delay
+> your patch series to add it, but let's not forget to do that; it can
+> have very good performnce effects on ARM to use contptes.
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linus/master v6.18-rc1 next-20251015]
-[cannot apply to trace/for-next acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Agreed. I initially wanted to provide such an interface based on 
+set_ptes() to benefit from arm64 contptes but thought it'd better be a 
+distinct patch series.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Make-trace_user_fault_read-exposed-to-rest-of-tracing/20251016-014059
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251015173548.540984239%40kernel.org
-patch subject: [PATCH v3 03/13] perf: tracing: Simplify perf_sysenter_enable/disable() with guards
-config: x86_64-randconfig-r073-20251016 (https://download.01.org/0day-ci/archive/20251016/202510161858.5hz4HLnc-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251016/202510161858.5hz4HLnc-lkp@intel.com/reproduce)
+> 
+>> @@ -617,8 +645,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+> [...]
+>>   
+>> -		ret = vmf_insert_pfn(vma, vmf->address, page_to_pfn(page));
+>> +	if (drm_gem_shmem_map_pmd(vmf, vmf->address, pages[page_offset])) {
+>> +		ret = VM_FAULT_NOPAGE;
+>> +		goto out;
+>>   	}
+> 
+> Does this actually work?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510161858.5hz4HLnc-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> kernel/trace/trace_syscalls.c:1018:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    1018 |         if (!sys_perf_refcount_enter) {
-         |             ^~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace_syscalls.c:1027:9: note: uninitialized use occurs here
-    1027 |         return ret;
-         |                ^~~
-   kernel/trace/trace_syscalls.c:1018:2: note: remove the 'if' if its condition is always true
-    1018 |         if (!sys_perf_refcount_enter) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace_syscalls.c:1012:9: note: initialize the variable 'ret' to silence this warning
-    1012 |         int ret;
-         |                ^
-         |                 = 0
-   kernel/trace/trace_syscalls.c:1123:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    1123 |         if (!sys_perf_refcount_exit) {
-         |             ^~~~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace_syscalls.c:1132:9: note: uninitialized use occurs here
-    1132 |         return ret;
-         |                ^~~
-   kernel/trace/trace_syscalls.c:1123:2: note: remove the 'if' if its condition is always true
-    1123 |         if (!sys_perf_refcount_exit) {
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace_syscalls.c:1117:9: note: initialize the variable 'ret' to silence this warning
-    1117 |         int ret;
-         |                ^
-         |                 = 0
-   2 warnings generated.
+Yes, it does. Huge pages are successfully mapped from both map_pages and 
+fault handlers. Anything wrong with it?
 
 
-vim +1018 kernel/trace/trace_syscalls.c
+There seems to be an another issue thought. There are failures [1], all 
+looking like that one [2]. I think it's because map_pages is called with 
+the RCU read lock taken and the DRM GEM map_pages handler must lock the 
+GEM object before accessing pages with dma_resv_lock(). The locking doc 
+says: "If it's not possible to reach a page without blocking, filesystem 
+should skip it.". Unlocking the RCU read lock in the handler seems wrong 
+and doing without a map_pages implementation would be unfortunate. What 
+would you recommend here?
 
-  1009	
-  1010	static int perf_sysenter_enable(struct trace_event_call *call)
-  1011	{
-  1012		int ret;
-  1013		int num;
-  1014	
-  1015		num = ((struct syscall_metadata *)call->data)->syscall_nr;
-  1016	
-  1017		guard(mutex)(&syscall_trace_lock);
-> 1018		if (!sys_perf_refcount_enter) {
-  1019			ret = register_trace_sys_enter(perf_syscall_enter, NULL);
-  1020			if (ret) {
-  1021				pr_info("event trace: Could not activate syscall entry trace point");
-  1022				return ret;
-  1023			}
-  1024		}
-  1025		set_bit(num, enabled_perf_enter_syscalls);
-  1026		sys_perf_refcount_enter++;
-  1027		return ret;
-  1028	}
-  1029	
+Loïc
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://patchwork.freedesktop.org/series/156001/
+[2] 
+https://intel-gfx-ci.01.org/tree/drm-tip/Patchwork_156001v1/bat-dg1-7/igt@vgem_basic@dmabuf-mmap.html
 
