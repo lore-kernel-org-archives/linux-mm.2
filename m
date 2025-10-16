@@ -4,102 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22C27CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 059B0CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 06:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8C08E000B; Thu, 16 Oct 2025 02:10:33 -0400 (EDT)
+	id 0819C8E0008; Thu, 16 Oct 2025 02:15:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7794B8E0002; Thu, 16 Oct 2025 02:10:33 -0400 (EDT)
+	id 058CD8E0002; Thu, 16 Oct 2025 02:15:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668538E000B; Thu, 16 Oct 2025 02:10:33 -0400 (EDT)
+	id ED7DC8E0008; Thu, 16 Oct 2025 02:15:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ED888E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:10:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0E008567D
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:10:32 +0000 (UTC)
-X-FDA: 84002953104.20.505D07B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 417AEC000B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:10:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BG3eEDCS;
-	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D849C8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 02:15:11 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71A91C0200
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:15:11 +0000 (UTC)
+X-FDA: 84002964822.22.18F5ED7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B0BCE4000B
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:15:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760595031;
+	s=arc-20220608; t=1760595309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNC+Pv8wPGSzgriynq2jKZkAbPBm2TP2bwWbzPM384U=;
-	b=x8eiVotrkAHnzoHs3UVO8tja04ZO23gXwzqAdKwh7JK5ncB9Rhs9ap73m1wcAAtYmgjw0n
-	aF0b2Bm1IiEyv2ZNcF9pKeZoWm/P0Pwe+vpQ3MHMDnR5tkC74JtP4leAzJmVXTRol5hgH2
-	tJdENDxlEtMMMaRcruKCnLDq14YO03g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ajEhGlo0LJCYEq+n3GOEYfI0lN1GDBwwoZA6Ee8JhME=;
+	b=MWMDEk8OMK9WUgDcdXZhrBcntZd3LLD562F6I8ZvSZAar0kN/foKltOO+/3RC/G72PjZqj
+	sJ6XY4ZCUGnPC9HdHLXQ1Se+0kXe29L8NdwjQV96F+Z90EoJTFICxoHj14KE6PdI3irQkF
+	4vujOyDuE3jM4UrAFdba/ekGzQw1U9U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BG3eEDCS;
-	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760595031; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760595309; a=rsa-sha256;
 	cv=none;
-	b=rty+2j0MJF6Lp0yAguH3uZSROS7vehApeczfBo5pEaLYbuUifqX+MMzN0I9Yf0y7cnBZxw
-	t4tuwyolQkh1uwpJbcgQjzhkTlyqKNKdBw+X0/O/bVo7XQ6bEXVb7gBN2chllUAGT6ZqfC
-	lo0ctfa5WMus2vD3JJe4PSw9r3SPiXk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E092F490D6;
-	Thu, 16 Oct 2025 06:10:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39906C4CEF1;
-	Thu, 16 Oct 2025 06:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760595029;
-	bh=tT6N7q0N+tYnpCuKuxnxGLzsNtDaUUpQ+9IuABIG9g0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BG3eEDCSI/HeqTCyC/0LCNKBgZ3zo6ECD9ngmXBKIPPl5NBH22Bn7mghAB8et/H6G
-	 Mk66piiBKnfchNsu3YfuJzNnwCXFrqb8msDY8Om7bdz82Hkljjp7CPmpHtnH9rNGgs
-	 KlMJt91fqlCWGDLVdc6FP/YNLaLQ7lPh9mflRMeup/0Wzsexbxj6A0mkigA65Vzw0x
-	 gbAD3ImrXMKJVAfq/R2QbmWKCY7eNvtD8O8jYdRtYFKQ5Hq1PrhccrO90mG8ylxJEA
-	 UlVJ3lTR+OmS5SyBhCnebiq7W+a6V2pL6QQLerxSwT6B4ZcH42Z/KxX0dqJOEZ6gTV
-	 xAaHdT8g/V/0w==
-Date: Thu, 16 Oct 2025 09:10:25 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 8/9] vfio/pci: Enable peer-to-peer DMA transactions by
- default
-Message-ID: <20251016061025.GA6199@unreal>
-References: <cover.1760368250.git.leon@kernel.org>
- <a04c44aa4625a6edfadaf9c9e2c2afb460ad1857.1760368250.git.leon@kernel.org>
- <aPBwEVJSzezdii1V@Asurada-Nvidia>
+	b=0L74E0EhmBoTw6ZsxDxmBh8CMhC7UrMH/YQTGnYZXOeRKO4AMp+vofzpttnn90cWL2k4qf
+	nlAlGFIl0VdjAlRbdi5GLAm3KpANmbL9DlurGf3BxfqimIhtXeLWJJXMvRhKDBFXBkaHOH
+	imSCiTKKV0y4b/sUiKrcWhosQnJtCrY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B764A1688;
+	Wed, 15 Oct 2025 23:15:00 -0700 (PDT)
+Received: from [10.163.68.150] (unknown [10.163.68.150])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD8CB3F738;
+	Wed, 15 Oct 2025 23:15:03 -0700 (PDT)
+Message-ID: <debdccdd-1a4a-4039-bdc3-64b68525d03c@arm.com>
+Date: Thu, 16 Oct 2025 11:45:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPBwEVJSzezdii1V@Asurada-Nvidia>
-X-Stat-Signature: xfwn7g9aokk5ke76nznowdbu83f3zsia
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: guard is_zero_pfn() calls with
+ pte_present()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ ioworker0@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, akpm@linux-foundation.org, david@redhat.com
+References: <20251016033643.10848-1-lance.yang@linux.dev>
+ <ab4e7044-c285-426e-bf9c-fa06a0f47ae9@arm.com>
+ <d5d2fe20-9d63-4304-8b36-9708309791ea@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <d5d2fe20-9d63-4304-8b36-9708309791ea@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 417AEC000B
-X-HE-Tag: 1760595031-727609
-X-HE-Meta: U2FsdGVkX18fIFIWEyDgZBb9SzdH2I2SqJTOhCXQ+znD2Dqoi0GibSL3D/f/ETn3YX4N806WfJzm3i4zOso+8MaIvjXzH0ReU2dJvHw7Dk2PSnFjQUOsF8KkbaVHZ+x57lb5J3nrdcmy/nZN+Vn7TEQMCBj2RcmAtuMOMov4peabZBviKLrINuNz7+jGdnbC2XBjApEPjFETSpri1Ommm4YeA11rmS5M/r//vcA9vtoeYow8vebmGP6faKeGpnohYx5DzxTcgpUQOMHo4z9FdHvE6moyHoXFC7vjWtWJAsvvnMJ+JOlFu1OH1nhJlUIHkqYhQC9qDS/wxgRIzKOD2h+81marb02sSDUwSnjmKjUvj82R1HUB5/5Hw+gW85N637ysWRVCn+WZrRNj+SxwKwq2UQYTTqYyaGB42VApFnQjsAg5h4vfIlhiTRKCtsRTInNd5fdo/291elYLxKZcSc4OisJqd3SMWzMqTwHzZ9hRWEvUEVwscN3IGLHfe1nn5LvRJ+VfMBKknFpQIOn1uMgHlY1R4N4q73KQhj6xkvEsAVhh1XrrxKGTomvxodHZo3Cs4uA6lHU9FtoEa0kwIpnkj2mU1rb+CFpKu4qi2ZnEss9YysmAI+aYde1HppytMJsuBT59iryWL2cUNicZenN1Athdw3tg9loaz89+d9tyClDHlftgOEWYzvBETiyyc4LMQTX+xbgHIiIGuvpmJOXliExsR3S6vupxpP/A1HOJe7MsRfCpsg9RBZVwl+weL2yeyiNtotcbH3j8yXqWmXo6gwhc6629x0LKr0DQAN0AS+b5I19IIr7BsKvxV1KiwfhYjY6Nr+Y2WUHRQjbCDl+d0MrNBb7JlY+jT04yWZOR/E99HuzavP6+Dwp56Y3D/SWEtlzvlr7RKywFgFUdIXcoMptC2+ANN15+OzgOidk+k8ExT0k1N2KrzjHBuJse9Q8ZKUcSd2jTLMZnz/8
- alMT+SCB
- KaE2DpVNXs7qse0ZGi7FpjSfJaDJRMMQpg+JrD4uWJqrIiqieu7zzHV1GoA/F+BCP50Jwkj/MMuTZT9A4iFcfYzHkAx8CfUycjnukoCANfZ/gB55P/qNsUKGKyJI33KA5bdJ9zG28vQksCOPw5O7WLg5/yTyjDuc6yHeCEtXO3DoHho7rxtnr3vBTN+jEqJYoL8SLj0QLbOxyUc/mc6hD2+vQofzMAdNERHD1K/6UisHofi9s8i7w5L/P5A52T79zmXHt
+X-Rspamd-Queue-Id: B0BCE4000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: jft7bz4m5k9ua1uhq7qr4ew7uburhqhh
+X-HE-Tag: 1760595309-492124
+X-HE-Meta: U2FsdGVkX1+pEg8Ruf7c2MWJ3LsLCELvEo28Xa5o8CvY2bOw3pGj8Ar39bZ5r+Lu29Kujbgllw17ku+jl0KRYmjz14p7QGUl5fLi9ZzeiLsLn0TbaHE/Hxsn/VIl6TgcwbgSU+cPjzBqcc29I/gb0Tp1gdloVXIVY0jvsqo3BopT5kikXdSrFaqf6j7lqA0S+jyb93lJ5WKXxyx8HTE+c6F7tBXVJOvALGnXcXUkEHNVDgWONSjW05qv5+4wjfpVOBfHRVfBR07MkW6A4txg8aSIpjsfFPeB5TWr8LyjLhR0koJRJRK2YeIbVB/xUF35vYuceQGgMUhOgyw31hUZ3QqjnWf/4mdFF2mx8qL2iZiRHGIqAAD10a6vqk+wqxadApL/wQbbkPbVXpcXw7/lgeUrJy+I6haJmXFcsQT9CBgsqNgT5xzdjYc/mYGA0eCSrH1FLDDoklDSeQp38EydjM20vsPL8nil4hLbQSSbvW5gbJEamHFn5ihcZ1fhN/DTFsVN4Oy/j+5hPOm88Vxcdl1Q2TgA/35gr/X7x+taXVSJURIrq0U+Hj4uu8l6CCg30mrKI9l5BXazQdrWgOogQFmeecI/E5W3x4H0vH+GDD0/tS+8HaiU/qabB7YAN8Sy3cOwBQ6O32NxONLcNoP6tVTGQL5sVOAXBCNhH3F8EIbwiBN9dpmOE8E/bZyWkMuWjXHbaULuaaCn4k82EhIwY7HqPJvAbCY0aNaZd47aTCrUmJNzyvIy2q4a/dQ8sF5BPozkgGYu7CGnQAGhzgTykjTldxwd/X+nJLeXL4/tbfcPDiP1Q39mbUqUZGapsdKXFIO0vOBwC8bWIIFZ3zDlyMs6jAJa/6Pnvf49VnUz9oQ46hA13paqbfhXCEws/12uQoIwJUDlnfXPhMmBRt2GjvqT1Fx3O8WYq7ua09DqbiUb8kwZT30zsxET0asyUM9dC/Y8rEMOcnHNlB56L+a
+ NHKtUR4f
+ LPsGoORFjXjQzB13Z4yq74hIpIVHQ6kgq/mMNl/nNGTLULDtjPjeKbfsjiiUN/NLKNowH9QlF4oJj3fi8HqGDdUW7TGmOkHOt6mobpPd6sFfX1+ukcIHzBxASERTSh8g4xRF6snTdf+2EPjGaYJtah/+YGRxJqz5HV29NC0k2jdx+7ixkgJ8lbBuAoPMQWrCbh7uMqCBvZNAmoZY/2Xn3cuRDVRoQ4CrUfulWkGxIgecdskk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,32 +90,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 09:09:53PM -0700, Nicolin Chen wrote:
-> Hi Leon,
-> 
-> On Mon, Oct 13, 2025 at 06:26:10PM +0300, Leon Romanovsky wrote:
-> > @@ -2090,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
-> >  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
-> >  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
-> >  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
-> > +	ret = pcim_p2pdma_init(vdev->pdev);
-> > +	if (ret != -EOPNOTSUPP)
-> > +		return ret;
-> >  	init_rwsem(&vdev->memory_lock);
-> >  	xa_init(&vdev->ctx);
-> 
-> I think this should be:
-> 	if (ret && ret != -EOPNOTSUPP)
-> 		return ret;
-> 
-> Otherwise, init_rwsem() and xa_init() would be missed if ret==0.
 
-You absolutely right.
+On 16/10/25 11:29 am, Lance Yang wrote:
+>
+>
+> On 2025/10/16 13:34, Dev Jain wrote:
+>>
+>> On 16/10/25 9:06 am, Lance Yang wrote:
+>>> From: Lance Yang <lance.yang@linux.dev>
+>>>
+>>> A non-present entry, like a swap PTE, contains completely different 
+>>> data
+>>> (swap type and offset). pte_pfn() doesn't know this, so if we feed it a
+>>> non-present entry, it will spit out a junk PFN.
+>>>
+>>> What if that junk PFN happens to match the zeropage's PFN by sheer
+>>> chance? While really unlikely, this would be really bad if it did.
+>>>
+>>> So, let's fix this potential bug by ensuring all calls to is_zero_pfn()
+>>> in khugepaged.c are properly guarded by a pte_present() check.
+>>>
+>>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>
+>> Thanks, I missed this.
+>
+> Me too ...
+>
+>>
+>>>   mm/khugepaged.c | 13 ++++++++-----
+>>>   1 file changed, 8 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index d635d821f611..0341c3d13e9e 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -516,7 +516,7 @@ static void release_pte_pages(pte_t *pte, pte_t 
+>>> *_pte,
+>>>           pte_t pteval = ptep_get(_pte);
+>>>           unsigned long pfn;
+>>> -        if (pte_none(pteval))
+>>> +        if (!pte_present(pteval))
+>>
+>> There should be no chance that we end up with a pteval which is not 
+>> none *and*
+>> not present, if you look at the callers of release_pte_pages. So 
+>> perhaps we
+>> should keep this either the same, or, after "if(pte_none(pteval))", do a
+>> WARN_ON_ONCE(!pte_present(pteval))?
+>
+> Good catch! Yeah, but I'd rather not rely on the callers ...
+>
+> Wouldn't it just be simpler and safer to always have is_zero_pfn() 
+> guarded
+> by pte_present()?
+>
+> I don't have a strong opinon here, though ;p
 
-Thanks
+Yeah same, I think we can leave it to what you have done.
 
-> 
-> Thanks
-> Nicolin
-> 
+
+>
+> Dev, Thanks!
+>
 
