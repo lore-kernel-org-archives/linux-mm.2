@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF785CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 19:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7DBFCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 19:26:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CE18E0024; Thu, 16 Oct 2025 15:19:46 -0400 (EDT)
+	id CF8908E0025; Thu, 16 Oct 2025 15:26:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324598E0002; Thu, 16 Oct 2025 15:19:46 -0400 (EDT)
+	id C82238E0002; Thu, 16 Oct 2025 15:26:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23ABB8E0024; Thu, 16 Oct 2025 15:19:46 -0400 (EDT)
+	id B299D8E0025; Thu, 16 Oct 2025 15:26:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 11A288E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 15:19:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ECBC58F6D
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:19:45 +0000 (UTC)
-X-FDA: 84004941930.02.84BC517
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 366DD1C0018
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:19:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0eQrpaP;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB298E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 15:26:36 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 45FF313AB9B
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:26:36 +0000 (UTC)
+X-FDA: 84004959192.16.34AC4EF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B6216140004
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:26:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D2R1ZmEF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760642383;
+	s=arc-20220608; t=1760642793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yb/0fjZKRdUPIMg/FjU3+zKOM59G4HAx5G6i741PI2A=;
-	b=A5pL7AxNxOH8KUfcDZjCV4jmjRRQ8MXem1UniasFGb8b9noD8ab98pldbxrhQq9fDLKNo2
-	++ff+hfb2K40wJ2Jv9cgNBa0bxQT2pniN4ombS5k9PxWzW/miBKsFnl5j66QrQgCY4ypF7
-	6M7yz5IhdQQk5bPTY0gPRKAgTUuJxOo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760642383; a=rsa-sha256;
+	bh=msR0ZBpYEHAnmAg4rddKbDGdznbasqHjFLWWxAmY12M=;
+	b=gZTGh442XbaXKnN9H9k1/vMt5LA8qMF90IwxJT5e7cQVrIsErp56biF5addn5VxhUtmbk+
+	EMjDNsmDKgz617o6aTvCBNy+XtV2aaazkXeBoM1iyNPmPt+nv8eZndriU3vzZVIcWeO/+J
+	3bba7KHnYac4OFQ5t1Y7JbblT72+JnA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760642794; a=rsa-sha256;
 	cv=none;
-	b=YV0asLL2BRjaAAD4CR/X2G6zGh00HphufHpnPp+eCFYqQ/Tw9hSxOuLfJDOx1RWtIN7u39
-	J0vq+b8fUc7mrDDHPUgVJBfUDBmt0WqUo85EMWFU0iYQrwuHEuLD8UeRmpL5zjKAttF4j+
-	J45SLeki9fz0bZqhBRV6Pnxcp+jsxM0=
+	b=lLfk5H23wxbyB6MCdgN/cmG54KehLSWRb2K0tUq9CXftJvCcXnFBmZRILMLhX8fN6eMz+3
+	Jf9jHJ0HAoPqPg0ikk9jRqRD25pljIuZjWg0WSH02tu0HKss8enHf64SKpBsiMMt9p4ys+
+	SrObrCzvsjckVAZSsWtczheUJoGzouI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0eQrpaP;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=D2R1ZmEF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760642382;
+	s=mimecast20190719; t=1760642793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yb/0fjZKRdUPIMg/FjU3+zKOM59G4HAx5G6i741PI2A=;
-	b=A0eQrpaPbTobmN/4VCVEmlVjAEfCxVhGWMd/Jk6YLxrLKh3DfVRdttzK+ekxCNO57px0Ft
-	C7jgi/ubk2LpjYCNYZuvpVg9uVKR9hxUN4A40vC3vbBusKlAoC3+3K/9ZqkFHFstVNsADm
-	XYZsaH3bPjZ7f41dIOuvQS6rgeubCcc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=msR0ZBpYEHAnmAg4rddKbDGdznbasqHjFLWWxAmY12M=;
+	b=D2R1ZmEFRsuZ0fk4R6XDjLbi83xJxExxA1ZMJoT3nRswC1UXEPAwX5UnlsdNPvx0GsY4DK
+	rUP2eN8zyBG/1xNMOPhvDHb9gTuVCM+HM629WQ8IXOrLZM1k0H2jEZOfSeOUF35uLKdkOt
+	DmpouqCzBD6e2ZA5gjl0MGS4MgLYzBg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-AEcUmDYbPfOgLvFANtgU2Q-1; Thu, 16 Oct 2025 15:19:41 -0400
-X-MC-Unique: AEcUmDYbPfOgLvFANtgU2Q-1
-X-Mimecast-MFC-AGG-ID: AEcUmDYbPfOgLvFANtgU2Q_1760642380
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3f7b5c27d41so746129f8f.0
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 12:19:41 -0700 (PDT)
+ us-mta-631-NJDcKRL6MvqCe2cPalVZVA-1; Thu, 16 Oct 2025 15:26:31 -0400
+X-MC-Unique: NJDcKRL6MvqCe2cPalVZVA-1
+X-Mimecast-MFC-AGG-ID: NJDcKRL6MvqCe2cPalVZVA_1760642791
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ece0fd841cso692873f8f.0
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 12:26:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760642380; x=1761247180;
+        d=1e100.net; s=20230601; t=1760642790; x=1761247590;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yb/0fjZKRdUPIMg/FjU3+zKOM59G4HAx5G6i741PI2A=;
-        b=DNl/l6mfZHB4qAkheZ0gYrP1VjGuBiIO27Icd9OQMll+hUlo2j38IJKp2IrcjQg2In
-         enVanHpxedkQ1N66eMTMEDXz10VivOiUU3xx3kKJOUHCLvcsAxOo0WqJqX9Es5GVkJnU
-         FtTTR0Ukchfdp/gI/4KPbj4X3PTssTh5Ton3deAWC0yXLvXxip9Ot8ndBGMkDWDRKCnw
-         L0NDvLPRsRBXqOVC+m2lAtc8V7737bOZNbuKbuPnG6nekEfezHMu0SgeEVHk7di27hfk
-         pUMs5zN9C0FHeJR0EecjWTzeUhvWy6wTCPxqOo2sh42vAyqWWZmZlL55oM0o667NQ1Qw
-         zsRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpW1nYXIqu03F3ehz2wIzC3Q2IqnKzMXkveBvu0dZg10cfPcrUq2vo774+lt71NbYQpfFZwe8aAg==@kvack.org
-X-Gm-Message-State: AOJu0Yx5xGZReRVStLcUiI4xOG5kguqM3QGI8z6xJ53u6wSU9G5jm9Jf
-	jBIJktU1JxPzmMP9RpA0/ZK8D0q/HMH2ezohX+jhq5gXNlWyE+WxB2l7TFcaOROWlZxeNMLcUis
-	hE5Dcji+o/lsNGtoYPbkhain/3c0H88E8f9uzB3SImtRlFfLDdeMZ
-X-Gm-Gg: ASbGnct/CzP4SZNzVxyvj7dE2N5yqHBve/uQV+fq9rhOJtFWdR2Ag+K+PAVD2gheVA3
-	UeX4AofZjYQ/HryoxqtjDlWdhqEaSy3IqqhHzsjUlzcWRavvTUWWBN0E/oEHVs/VfmVFOYiGGeD
-	qX60PG8XvyxLz2x1wk7quQxCF07CZ8Eddds1IFdb4OR8uLFz5BgBf4TRP77xLfQmnyqlXSsEzuA
-	wIhrgIBENCOVbCR6ENnUm7vRlZ5SRMAS/LTpwWwFu5bZRniGOZYkhDC4skd8TMKOZeWwyKlCx15
-	V7+YmjBJjGXXENsFrU3ldHgznTJ8iQPX3pxo1veVYxQrzod5Qc7MaChCFVWkPuqkTyH+B/Vonuk
-	DO3bv8N4heEAQfjoKeh2Y9+52dDMHF4EgiRKcAKJtxNuAkMr45HU+XRhu5L6z6y3RRh6M630rNC
-	1x9zq5gUg3nqXxqv9prrVsmFNvg1Y=
-X-Received: by 2002:a05:6000:40dc:b0:426:f4b4:f0fb with SMTP id ffacd0b85a97d-42704b3dbefmr1160852f8f.2.1760642380079;
-        Thu, 16 Oct 2025 12:19:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLw8poqBeKMwG+Y17fin/AxZjfBGfrix3JG7ScO+xNrKVpK/Tuqp8mBFFhdUCO1uufmUy+qQ==
-X-Received: by 2002:a05:6000:40dc:b0:426:f4b4:f0fb with SMTP id ffacd0b85a97d-42704b3dbefmr1160831f8f.2.1760642379606;
-        Thu, 16 Oct 2025 12:19:39 -0700 (PDT)
+        bh=msR0ZBpYEHAnmAg4rddKbDGdznbasqHjFLWWxAmY12M=;
+        b=NNRPkWRX89xebpI62I+Y7FDTaLYsxvjk2eVH6tLsmWF+v+Spak2/NHVqlwar6H3GeV
+         /wOPi+Z1zZM4qtD0ZJVtPdWWHepaDLaIubt5QHcQO4Q2xTurE/SnZffEbVDD+JdjfKSt
+         pnWUsOohnVbbEabTlbd2BM8HgTdBhEb4eYXd3eThVDxzXSEE8rZsupZ2zyC09apdZSw1
+         xRNmKkK7/ZgcPsyvQX0R0SHBEU6HjB2/JFuXnNz4f8Yy0dm3Ri/HQf4A68Dlb2Redkiy
+         3rb1VWubPe7IgesI0ubRFRIY0qkrxVyARa6LaG35Otx4aT9NhGpWUII74CbrwCKzdjVY
+         mAhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfIVEehVtGNOUB0oULAeEbfaxpkBTzsnO+dJhLg94xaqYyWP//2qRPlfYGJRQCdU1p6eEPU94OLg==@kvack.org
+X-Gm-Message-State: AOJu0Yz03Y+a/kmSr0VHAb/AOS42YtW1UuSAv0thNio9mym24QaIU30f
+	4HwEPpPcxOQh3tt3W/m1SOaTOXLseIt3aBF22ovA/UaE+La6g8HNQOgvclyP5woqNVDOuScxiDY
+	H+S9PRPolKWsi0kN93lZ30hmfVsSk01fqipHNLqyANXjDEzPsj3s7
+X-Gm-Gg: ASbGncsREm7QCuybxJJNTqQ7KpMxSKsF1IYBJoeDn68iv//Nn4byw4EbcDqs6Zm1bY+
+	SuyHnut1zHahO3HJv3dwrt46Xo6UZ7dxbiRa2gOQZ5ESnrVhiBek4ZRdJKr4pdSCvEPLp/v7f2u
+	tCPzmufQ6T4itUPS1maHadLjrjZ0h9/KhcVWvAJQicPc3ghS3JYUnOjcBQZTOo55ELVGmBhkiNL
+	lLXIArJUynrNbEjLJzZEsrJgiRwRuk9YLqK7ZEggNMiFQ07ShA4Mf4L9eRrZvGmoANSADDKdN1l
+	AFIKp9xvuBpJNamCyGFtFu8be2ew9cjGCrxeH4cNYM9C95lOj+6FiDbKqpOLjBTTZA9Lx4u+jj9
+	nCYPxlQJNmsKgM1ZVwu4xwkWcaS9OYv1bJCGJzvlwOFL21P0pf7UoFnNgm+TkjTVkovepSyZF3P
+	wwgdYIamMKoAmEwcvWZFfUxZc/SRA=
+X-Received: by 2002:a05:6000:310b:b0:3eb:8395:e2e0 with SMTP id ffacd0b85a97d-42704dab124mr776075f8f.51.1760642790386;
+        Thu, 16 Oct 2025 12:26:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyMIju1bud+5UvtGP+4+k2+lDXhOQIehYLmTBnYw4ldcLbEqw/fyQAEb5hw8VUiraCPtRD+w==
+X-Received: by 2002:a05:6000:310b:b0:3eb:8395:e2e0 with SMTP id ffacd0b85a97d-42704dab124mr776067f8f.51.1760642789941;
+        Thu, 16 Oct 2025 12:26:29 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42704141cd0sm2838360f8f.11.2025.10.16.12.19.38
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cf71dsm34704508f8f.29.2025.10.16.12.26.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Oct 2025 12:19:39 -0700 (PDT)
-Message-ID: <fefe4510-c105-4e7b-8468-3ef6e32a244e@redhat.com>
-Date: Thu, 16 Oct 2025 21:19:37 +0200
+        Thu, 16 Oct 2025 12:26:29 -0700 (PDT)
+Message-ID: <7f5fe813-5921-4331-aa81-8be9aaa6a8d4@redhat.com>
+Date: Thu, 16 Oct 2025 21:26:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] mm: huge_memory: use folio_needs_prot_numa() for
- pmd folio
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Liam.Howlett@oracle.com, Sidhartha Kumar <sidhartha.kumar@oracle.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
- <20251015123516.2703660-4-wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v6 1/7] mm: Add a ptdesc flag to mark kernel page tables
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+ <20251014130437.1090448-2-baolu.lu@linux.intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +170,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251015123516.2703660-4-wangkefeng.wang@huawei.com>
+In-Reply-To: <20251014130437.1090448-2-baolu.lu@linux.intel.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: c3Rj8K6HPUQb0-53B2KW2Ajo69e_VjMYOo92L0IG4Rw_1760642380
+X-Mimecast-MFC-PROC-ID: a6OKss68u-4eYH0ZVb8UJITMXBKyhIwFDTn2Bc-91lM_1760642791
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: a85giyph5ekn5474q7iitk3uxajci8js
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 366DD1C0018
-X-HE-Tag: 1760642383-110832
-X-HE-Meta: U2FsdGVkX1+KIx25s0KuEafY+vYPOEu5At27nPQGD1WOX7jGc7hO0b2HOo9YZbSEKcSPG2sKMMu7cLNsE0BfTydUo0bT79+niXhljsPuw6Ae0yjyKXCiwvi/6+lQ2VTrNKc0nQw8fPeLC2PZCWnUrUQLX8NrVp70dH8absBmz4LtE6iRXHk+0H2NgDQ/RZeyhB0i90purjUhvFLJqaH/zZjjtDlBh8v0t/MgyCMaHf9XnUt644xocR8ksx58W2r/oZiBkN6+TzQQPVgbPBN2tvmbIq6+hZjpKw7HvRXmvL8jGZQVQHefndDkXcPtzhVsfCZNtb5QeuBaIqs+EU7kLTkFpwhJ0u3oTorRfKCNQd6Pt/lkciVmg3bkomH1ET80z+EwEE8w2awNiyBm/HzkTNPju9OGs8Rs5zVRRsHdxoxaDRL+NdO6S15RUHni/UUizt8H6YXGwnqzKnh0/apW+LhtCEbQi5ZhM0sm2vwrvqtig74O6dCslOgIa1oRBXh5Brg1u0lEvuwcqSukVqBFGK4UtgAPeWX+XjKHwH4Vk3QrkUu2BcpAlpKcB4PfJIpiR8vVKCs8e8agN2cFVTizyQqxtgbAjJryTr9Fi2YDjMEaLYsWIVOMVoGv0EtoxsZcp0s+5t8X1WdLR7V2g2j6HNi3KIN5L0Yo1ms9uIR9ybpvXtbJSAFmjDS+oCVJ5s1Iw7JYxHULC3AvfpfhwNk1kdqDE9BUb65LoN2dUWpASzlrVD5+JP/tamXCFfho8oT9NAAAA48fnKtPzHRjU6YUjY1pRnwEi1/C+qfuFQPnjUSyG4tCdhDoDSl1u18KJcIFHzn40PoRzkH+uZ6mnjnsT9okV5lUkPXk7MFN2gJUZr+Rx1Yy/MdTSTgaq6mAuTSKj+rxne97aN8+gGXwmg0jn/RyiYnbtRB8vN3J8oKCYOdm+wa2io72sjmWt5eqGFNIVSB4c48Gpt4vD9KhMkQ
- bock0oiv
- aBcZLpqXISb0qsEZvImTsr6uDecYinYc9zAZ4rdnDydLLPK5m0Zb+MZmqzQ==
+X-Rspamd-Queue-Id: B6216140004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 11ctb8dafnp8uj5fi3bmbgbgsroinc7x
+X-HE-Tag: 1760642793-101777
+X-HE-Meta: U2FsdGVkX1/pqpBQTnpf6PJNTfJ971gYQ/ZPOJKtlSy7x2jMMG6BRuwqX2epSK9uuVYGYEheTL7fwwy5nKqtRWU3v+JuFhYFe7x4z3XsvezOJQZ7QM08PJRXQUIHiK1YAl3ulgi4eBFvPZtEIwVr5qpf9dO0r2BMbTIlZfEcfwev/pbHyIGzwMUs+aramGRcbuVRplIcacms8TtNHsvCiJGcoanjqD1cjZtERgQlacUt3VvRcyf2GGSnG8JT/pdrj+9zTACd3BpZW6YTDgU4ll7f7bEMdlkC0DUq/+sPuhjGap9naGhY83OxoFJC3dDFe46osnjvTS/1Gv7ZejfCMaTxsWv+zUNFLTLob3iucp4rAAz/uo6DChdWp6kdm+OFkqg3SQOvMwCctqiweCkQqSvOHSFO5GCZcBAuhfDIjcA/ekl8vhmd8MXL9dU7v+21azI/mdbaEHnJ0kAS+KdCXCBbVMlw4iPkEAs8JIPDgFpHKfszRC1nxQ0Ij5JSOjyMfjd13DE3r00OhpfnI7IwYS/4ErHrd8DmWmQu0lZe20Yp0b5DUx+FX2/sSWe85QdbQp837vuihO1KQ+H9jxLdZUtBrsFIkWAFq8DbO8sW+O4OtTnvT7wSHDOwEm/9Q6vusSCjVdsHJUxMBJVcE60rz8THKbPyBS2400P3DFTHTL99Z11kydob4/BF/WFrNYWpYfjK1NfRe3apWN8hU9+mcCJicdRyR58oIGlSa26tcRp/auojWsVFISgIbJbdmUDUVe14CWT8HLzIW8C93sv5ZzolUB8NuV/gAVuC4Y06jSQ4Q05xAE2l04/vWQN0YYCB6aUAn0855GSexE6QQJ0POKaIOUks4CLpvTj9zLm1o9/2DxUglELLEViwuQptzomUpQmgxO4bXidFxoGqEZlStxuzkF9Z/Z53VNTEivC33H98niBTg6BlW0k+nghn4/zJLhlTmfG4ORGRHvCsrmy
+ iZ0SRUYq
+ oEYqvxDbpeCh+LYzyp8W2vICypeFyeOf+7QyYBo7gixGn/Vh69CvqL9AcInhjXwoQGL6lk0EkCXHwaxII/GCU/IcBCJpDawoI4wd5imp34VEWsdzOFyWISxDl6e/AywAMry4ST+rS7okwUnJoC8W2/YfcvZ4qCZtUkYD1ui3EQeb/5Zc2B0EuEtrgoZ8X6mGDOcFpgefskedsuuGNaAZeyHy5pUUYOZewiOFZBoiQKfNWqBPQXhSzniknQrJxB6J3luANaTSo64Jlzl+x31xtUKP1E9VvzwXdYYcuNmKdcfvLqSZks4TXerHaz5iHNSBlvgoayLq8/9s1Pezxsqvya41KafOxJlYebTvQboMhK8/eg4xT2KIIXqleDhE7xyI1EiTYuwjpZqXTJE1SraUVRfR9VXu1/ENXQeuPPb27UKIZtNcUGj6RPbQ88JLHcMrJH7D33gt7ZjCxuuuWDg5P39REyA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,130 +193,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.10.25 14:35, Kefeng Wang wrote:
-> Rename prot_numa_skip() to folio_needs_prot_numa(), and remove
-> ret by directly return value instead of goto style.
+On 14.10.25 15:04, Lu Baolu wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> The folio checks for prot numa should be suitable for pmd folio
-> too, which helps to avoid unnecessary pmd change and folio
-> migration attempts.
-
-It would be good to describe here which additional checks we are now 
-performing in the PMD case.
-
-Because that's a real change.
-
+> The page tables used to map the kernel and userspace often have very
+> different handling rules. There are frequently *_kernel() variants of
+> functions just for kernel page tables. That's not great and has lead
+> to code duplication.
 > 
-> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->   mm/huge_memory.c | 21 +++++++--------------
->   mm/internal.h    |  2 ++
->   mm/mprotect.c    | 45 +++++++++++++++++++++++----------------------
->   3 files changed, 32 insertions(+), 36 deletions(-)
+> Instead of having completely separate call paths, allow a 'ptdesc' to
+> be marked as being for kernel mappings. Introduce helpers to set and
+> clear this status.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1d1b74950332..c7364dcb96c1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2395,8 +2395,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   #endif
->   
->   	if (prot_numa) {
-> -		struct folio *folio;
-> -		bool toptier;
-> +		int target_node = NUMA_NO_NODE;
->   		/*
->   		 * Avoid trapping faults against the zero page. The read-only
->   		 * data is likely to be read-cached on the local CPU and
-> @@ -2408,19 +2407,13 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->   		if (pmd_protnone(*pmd))
->   			goto unlock;
->   
-> -		folio = pmd_folio(*pmd);
-> -		toptier = node_is_toptier(folio_nid(folio));
-> -		/*
-> -		 * Skip scanning top tier node if normal numa
-> -		 * balancing is disabled
-> -		 */
-> -		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
-> -		    toptier)
-> -			goto unlock;
-> +		/* Get target node for single threaded private VMAs */
-> +		if (!(vma->vm_flags & VM_SHARED) &&
-> +		    atomic_read(&vma->vm_mm->mm_users) == 1)
-> +			target_node = numa_node_id();
->   
-> -		if (folio_use_access_time(folio))
-> -			folio_xchg_access_time(folio,
-> -					       jiffies_to_msecs(jiffies));
-> +		if (!folio_needs_prot_numa(pmd_folio(*pmd), vma, target_node))
-> +			goto unlock;
->   	}
->   	/*
->   	 * In case prot_numa, we are under mmap_read_lock(mm). It's critical
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 1561fc2ff5b8..5f63d5c049b1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1378,6 +1378,8 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
->   
->   void __vunmap_range_noflush(unsigned long start, unsigned long end);
->   
-> +bool folio_needs_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-> +		int target_node);
->   int numa_migrate_check(struct folio *folio, struct vm_fault *vmf,
->   		      unsigned long addr, int *flags, bool writable,
->   		      int *last_cpupid);
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index ed44aadb7aaa..0ae8f4a277b2 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -118,26 +118,30 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->   	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
->   }
->   
-> -static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
-> -		struct folio *folio)
-> +/**
-> + * folio_needs_prot_numa() - Whether the folio needs prot numa
-> + * @folio: The folio.
-> + * @vma: The VMA mapping.
-> + * @target_node: The numa node being accessed.
-> + *
-> + * Return: Returns true if folio needs prot numa and the access time of
-> + *	   folio is adjusted. Returns false otherwise.
+> Note: this uses the PG_referenced bit. Page flags are a great fit for
+> this since it is truly a single bit of information.  Use PG_referenced
+> itself because it's a fairly benign flag (as opposed to things like
+> PG_lock). It's also (according to Willy) unlikely to go away any time
+> soon.
+> 
+> PG_referenced is not in PAGE_FLAGS_CHECK_AT_FREE. It does not need to
+> be cleared before freeing the page, and pages coming out of the
+> allocator should have it cleared. Regardless, introduce an API to
+> clear it anyway. Having symmetry in the API makes it easier to change
+> the underlying implementation later, like if there was a need to move
+> to a PAGE_FLAGS_CHECK_AT_FREE bit.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 
-I guess you could drop the other Returns like
-
-Return: true if .... Otherwise false.
-
-> + */
-> +bool folio_needs_prot_numa(struct folio *folio, struct vm_area_struct *vma,
-> +		int target_node)
 
 [...]
 
->   
->   /* Set nr_ptes number of ptes, starting from idx */
-> @@ -314,8 +315,8 @@ static long change_pte_range(struct mmu_gather *tlb,
->   			 * Avoid trapping faults against the zero or KSM
->   			 * pages. See similar comment in change_huge_pmd.
->   			 */
-> -			if (prot_numa && prot_numa_skip(vma, target_node,
-> -							folio)) {
-> +			if (prot_numa && !folio_needs_prot_numa(folio, vma,
-> +								target_node)) {
+> +
+> +/**
+> + * ptdesc_test_kernel - Check if a ptdesc is used to map the kernel
+> + * @ptdesc: The ptdesc being tested
+> + *
+> + * Call to tell if the ptdesc used to map the kernel.
+> + */
+> +static inline bool ptdesc_test_kernel(struct ptdesc *ptdesc)
 
-You can fit that into a single line to improve readability. Alternatively
+We fancy const-correctness now:
 
-if (prot_numa &&
-     !folio_needs ...)
+static inline bool ptdesc_test_kernel(const struct ptdesc *ptdesc)
 
->   				/* determine batch to skip */
->   				nr_ptes = mprotect_folio_pte_batch(folio,
->   					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
-
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
