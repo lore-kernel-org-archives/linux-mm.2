@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C41CCCD185
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:35:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF84ECCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 01:40:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 730978E007A; Wed, 15 Oct 2025 21:35:42 -0400 (EDT)
+	id 31B938E009F; Wed, 15 Oct 2025 21:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E16D8E0008; Wed, 15 Oct 2025 21:35:42 -0400 (EDT)
+	id 2F3528E0008; Wed, 15 Oct 2025 21:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0488E007A; Wed, 15 Oct 2025 21:35:42 -0400 (EDT)
+	id 2303C8E009F; Wed, 15 Oct 2025 21:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BA488E0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:35:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E75DCB61DD
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:35:41 +0000 (UTC)
-X-FDA: 84002260482.15.0E18095
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EBEA5C000F
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:35:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=v86NiB8o;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 102FA8E0008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 21:40:24 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9E0E1A0190
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:40:23 +0000 (UTC)
+X-FDA: 84002272326.23.576B8C7
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1A009160008
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:40:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FVQIDwjy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760578822; a=rsa-sha256;
+	cv=none;
+	b=5aQUpWqQcvxrRcPPjrQc/r3sT7roH44STBaxuxfT8NS7QF/y53JkiShTHWAoHaZPxO3Eka
+	jZvpS9LnvwwNUv45rfNgWKSTmD4V+jUcDjL/7+uxE4Aki1dbSzABk1GqgQ6B92xwe2XzLQ
+	Ml7Zl/CHhSOA8fX1vKTyGU+7nJu1sK8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FVQIDwjy;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760578540;
+	s=arc-20220608; t=1760578822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0U8b94M/QxLDvLHBTc5mvJQnf2bosiBnQnhzMdzbqA=;
-	b=q5W9qxxabUFJQnt3SazQ2n2ULYW5shE4bAN+K6CqrnzUtWeIMS72TDD0hKJWxb7tgZ4+Us
-	XzBclwLlSFFAISlIT4yx/cb0MfNQBHYtGOp/2dSUKB3FJevRhr+YW2/hb8ahgqtYjNxpX3
-	plmU1G0Qq3XHRBdqOeN+bM/nQ3Lz9No=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=v86NiB8o;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760578540; a=rsa-sha256;
-	cv=none;
-	b=tyiqWrP6IBG0J95ML94bG2P3Mc7TDcH9srp9wIFX56S/BD4hpDqGdeeU2/sDQrqJtPhUiS
-	ww/cOSeL2+joB+zkDF/e6mZk+0xvSliwlb7oShvXtTIt0J0rMYxAlnQYtrexl0Eh3YWGYO
-	h9G/XJBcQIRtyF2uhWh7qoTCpfHf1dQ=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Y0U8b94M/QxLDvLHBTc5mvJQnf2bosiBnQnhzMdzbqA=;
-	b=v86NiB8oBJDOdXIvcpvZU0M2MjO6gTYhquMHgzkz6XUN1/F6nBR0Rrc02n9NTE662QFgcFJxc
-	T+7WkO6euCjiXxlMPuRsCX+MnEVRFGqKX4WWDCblyXZjcRtmbBL0S8DYhNZuMTPk2F97hSKbLSr
-	wYmihLWPi/zyKno0DrkU8nQ=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4cn9VQ07n3zpStq;
-	Thu, 16 Oct 2025 09:34:38 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id BDF181400CD;
-	Thu, 16 Oct 2025 09:35:33 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 16 Oct 2025 09:35:32 +0800
-Message-ID: <9c8834d0-cdc2-4c04-bc9d-0bab5ae26f76@huawei.com>
-Date: Thu, 16 Oct 2025 09:35:29 +0800
+	bh=8j77l8B/4CaGghMinMZVNzQZrb0KQZNw9uL/x2i+5pg=;
+	b=a725D5Q/xQDaMgKtcEa7bV60TwGi8djNutNg0q2FAOhIhb5tf+Tls3o/Q5EcFB2raWNwUh
+	ESOo9e/y5SYnaQxFsNHLarEej2s7AEPlRaMmkk0SRJ9rdlbBZdKJkd2r4S08oAlM2w21Yi
+	FXAlKA4GlP8gVJ5DGXV5n05vCiZzrIw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760578820;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8j77l8B/4CaGghMinMZVNzQZrb0KQZNw9uL/x2i+5pg=;
+	b=FVQIDwjyLwrgfsQ9ZgN0VC3paYaWI3yRv04UlT5EMyyAXUVIr4sKEme9jspNGClnzu0jm8
+	qpFtRWn8QHyTS2xll53HCNN0IPcGwfXSeux8e7VNKPmGH0ovn67oOqWf9ttLsfGaun+6GR
+	4HFwY21reLopqPQtP/hmBvQJqGA9/l0=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Johannes Weiner
+ <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,  Muchun Song
+ <muchun.song@linux.dev>,  Tejun Heo <tj@kernel.org>,  Eric Dumazet
+ <edumazet@google.com>,  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo
+ Abeni <pabeni@redhat.com>,  Willem de Bruijn <willemb@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  "David S . Miller" <davem@davemloft.net>,
+  Matyas Hurtik <matyas.hurtik@cdn77.com>,  Daniel Sedlak
+ <daniel.sedlak@cdn77.com>,  Simon Horman <horms@kernel.org>,  Neal
+ Cardwell <ncardwell@google.com>,  Wei Wang <weibunny@meta.com>,
+  netdev@vger.kernel.org,  linux-mm@kvack.org,  cgroups@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: net: track network throttling due to memcg
+ memory pressure
+In-Reply-To: <20251016013116.3093530-1-shakeel.butt@linux.dev> (Shakeel Butt's
+	message of "Wed, 15 Oct 2025 18:31:16 -0700")
+References: <20251016013116.3093530-1-shakeel.butt@linux.dev>
+Date: Wed, 15 Oct 2025 18:40:12 -0700
+Message-ID: <87o6q77hfn.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: mprotect: avoid unnecessary struct page
- accessing if pte_protnone()
-To: Zi Yan <ziy@nvidia.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	<linux-mm@kvack.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
- <20251015123516.2703660-3-wangkefeng.wang@huawei.com>
- <DAF946DE-0D7A-4B15-BF28-BF6464ADFD2F@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <DAF946DE-0D7A-4B15-BF28-BF6464ADFD2F@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: 4tyisn9s7ukaqsewkwrdnwh7dscyhznc
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EBEA5C000F
-X-HE-Tag: 1760578538-554993
-X-HE-Meta: U2FsdGVkX19+AVGZjnK6XTTqdKPrJuOJd/L7JPQRS5PHMjKSS6Bt2EYKJAa9u0SZUzUH6KGCNITfn4xo26gyfdihIyovqrzWEST6/aAGNLDG/Uczx2WhS057uE93fGLXkCIlpZFyeEkqI4ywgVtrovOYEiKE+l1BcfsA5Z/3UcpMto1cY1QLIp0ExagfTqh17gsL99dIR9SiBuW1JskqKzXF32UR8cvINOWQxNXHeGsyMxAVmzOIbdMA23+gdjI5cW6iETpFs09weqIt1Y1Tl99OMk83je96pZgdsQoGpagChnGwMdXJS/QFjaJeai8qLevgPXArjTc0u0lN4cysLR+CwabB5N0NMUDOgeugd9HSto/50Yn/CRVZbVc4E5IGKfjr8ni710aAxpChL/6osFbAaj7D1sLVApej7S+5d5QxZERX4rXm5dz+1LyzWz8jpu6LfUrkMUpwHm8LKjcwNMEkEK5lwpnMd2vSk9x9ScChVSMgzQ94wNcUAIgWuSQTJ5MTfIOermc6qXM8m2CPJ18B4mndp9e4xAI6G9l6HNMWUH7RvTrE5Bsx5mNgq3UFzL9b1NrkCdfenBFjxgOnm6uBDpGizYXCf7QnPkB7gkpg9gwPuaiyM2TTlX9dNDefTwcWlGM9GZrsGqiOQCapqtwgALHIBprOoNtwisUvZSSsY61CCvu9C+lbe0u6k9/0/e0RLikt84puEOJ+47ThV5P+UaYPlVWaptILQ3KxeQv+QDnIMHdJZcJkHaZ+mtUJrIJ3MMi5Em9QsPI6aPw6A9Nzv2hg12w7U+A+q9Cm3/OWR2TZ0RkoyqhSXBbHOfO9pSrGIZJfOe5EdlnHsiaZQnqqt0YNuSgJ3S1mkac95hYmKK8fiArkD2lD4DWRzXAIquISkj6okpeS///TJe5OLq0keDiom600KQ8Sb4JWQ1lNygpAcv32O4Ag8TBIloOXPtbBe87dOPJVWzON1Nh
- vj2FS/1L
- 3wzWvfR1z2BxD7VTHKxHmEi2ktCP2nA7UUhHSBXyYNYJELFs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1A009160008
+X-Stat-Signature: yox158zrezc1d6ebmkqu4u8a3unkd8bz
+X-HE-Tag: 1760578821-825210
+X-HE-Meta: U2FsdGVkX1+7+Qg26gVFgu1UWHm0e9pMXzGy6nExE0CdENE8J9MI7udhPD2s09QXP+UOnBiGQ9IZU78t4Kbwb/IIr6nXnFQ8xk5B/GPJObO2EHjtWwtRlJyh/baGdXWxm8PkpCSFb6cwntnDKzvCl3i/Zw+VxXRcxQLc0T9/t3dJJiWGVn2XOmh5BN5z6h5ZnQmsImyuujJH4PS69MwGQ+oyGmzDXldyijCg/9DS8bkc5URZpvsBh7EkhnJ0rnNgzQY/FSJ+40Qlq3qfDfmrJ/P1yt4JuMnRFW6ScrFEM4UdRIvqBhI9NNiARwPGrYKeb5gL5aX/a9D+ha0qgl4yfP4BqTeej/n8LX5p0WnnvVRqg98/rRHuT6y0uQq4+h7mtnGAvWjakv/BjcNcqAd5IggBJGKG0hjjdm/njdiSYclb9v5eknqjew7nrEpD3Dui3spAZv6b/eWkwcf+I4A5xupEm8dEMMdV4UR6PXVGTmuLyL3hBNKf/wXkGIGrolD8TAeB8PKlU3DExnKcfpaz959YW/eQtk2xFQqxSPtxRhfPkn8rSDM6XZmC6nKCp065bAIN54FfEKMfuJZBTG2JzoDRsndlNwj5HUuPd02RDX2cho7DgEYxao7cU1BW1P/ZhizxPLLnAMYsDyg76nMJGlAIhtQU4n40I5GRH8aDDahajybIMczDUt9wIQJvjNVaBePcMf3b18uEmj9D3mpxHPft573UMOD0DKGg1j79GSUZAnmtkIAJ13MaRmplrb/DAhw+dITT0PTJGgOR/B0Gd6HXtXGVV8hKM3eDEIQXwDjchigckX8kLuWpxC8dhyvPuzli/FDVObGLItCoFcrQNcr2CqXRL9gPJ1+kVVHWgK/e7xpylG1EzdYZdNGg/xos1U6TU+gUWB1uojuPWcK/7eSij+ODFFaNK/MHYaH011EVKACFUaV8EWZgP98sMJm5qG/BZtQm+UODZk9/BMZ
+ bJy3cS3m
+ iT1x+R+aPRhXJf4qZ36ud8YDLJRrzPanhVbhYWS+B3N2kXpn4SE/MB4LO+Z1zIKFgLMwu+w7W6aqeslwKXnyHgCjOQ1UL6SWdb8U9+gzffB5TkDGjQ6wTPsPt5OIuexOF+EjQDNwDAz6ai8PGnu6GP5rj1eogMsEjT2W8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,100 +97,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Shakeel Butt <shakeel.butt@linux.dev> writes:
 
+> The kernel can throttle network sockets if the memory cgroup associated
+> with the corresponding socket is under memory pressure. The throttling
+> actions include clamping the transmit window, failing to expand receive
+> or send buffers, aggressively prune out-of-order receive queue, FIN
+> deferred to a retransmitted packet and more. Let's add memcg metric to
+> indicate track such throttling actions.
+>
+> At the moment memcg memory pressure is defined through vmpressure and in
+> future it may be defined using PSI or we may add more flexible way for
+> the users to define memory pressure, maybe through ebpf. However the
+> potential throttling actions will remain the same, so this newly
+> introduced metric will continue to track throttling actions irrespective
+> of how memcg memory pressure is defined.
+>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>  Documentation/admin-guide/cgroup-v2.rst | 4 ++++
+>  include/linux/memcontrol.h              | 1 +
+>  include/net/sock.h                      | 6 +++++-
+>  kernel/cgroup/cgroup.c                  | 1 +
+>  mm/memcontrol.c                         | 3 +++
+>  5 files changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 0e6c67ac585a..057ee95e43ef 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1515,6 +1515,10 @@ The following nested keys are defined.
+>            oom_group_kill
+>                  The number of times a group OOM has occurred.
+>  
+> +          socks_throttled
+> +                The number of times network sockets associated with
+> +                this cgroup are throttled.
 
-On 2025/10/16 9:28, Zi Yan wrote:
-> On 15 Oct 2025, at 8:35, Kefeng Wang wrote:
-> 
->> If the pte_protnone() is true, we could avoid unnecessary struct page
->> accessing and reduce cache footprint when scanning page tables for prot
->> numa, the performance test of pmbench memory accessing benchmark
->> should be benifit, see more commit a818f5363a0e ("autonuma: reduce cache
->> footprint when scanning page tables").
->>
->> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   mm/mprotect.c | 30 +++++++++++++-----------------
->>   1 file changed, 13 insertions(+), 17 deletions(-)
->>
->> diff --git a/mm/mprotect.c b/mm/mprotect.c
->> index bb59a42809b8..ed44aadb7aaa 100644
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
->>   	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
->>   }
->>
->> -static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
->> -			   pte_t oldpte, pte_t *pte, int target_node,
->> -			   struct folio *folio)
->> +static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
->> +		struct folio *folio)
->>   {
->>   	bool ret = true;
->>   	bool toptier;
->>   	int nid;
->>
->> -	/* Avoid TLB flush if possible */
->> -	if (pte_protnone(oldpte))
->> -		goto skip;
->> -
->>   	if (!folio)
->>   		goto skip;
->>
->> @@ -307,23 +302,24 @@ static long change_pte_range(struct mmu_gather *tlb,
->>   			struct page *page;
->>   			pte_t ptent;
->>
->> +			/* Already in the desired state. */
->> +			if (prot_numa && pte_protnone(oldpte))
->> +				continue;
-> 
-> For a folio pte batch, instead of calculating nr_ptes to skip, this just
-> skip PTEs one by one. Looking at folio_pte_batch_flags(), this way looks
-> better.
+I'd prefer sockets_throttled or sock_throttled. And same for the
+constant name.
 
-folio_pte_batch_flags need a folio, we want to avoid it,
-maybe use pte_batch_hint() here.
+Otherwise,
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-> 
->> +
->>   			page = vm_normal_page(vma, addr, oldpte);
->>   			if (page)
->>   				folio = page_folio(page);
->> +
->>   			/*
->>   			 * Avoid trapping faults against the zero or KSM
->>   			 * pages. See similar comment in change_huge_pmd.
->>   			 */
->> -			if (prot_numa) {
->> -				int ret = prot_numa_skip(vma, addr, oldpte, pte,
->> -							 target_node, folio);
->> -				if (ret) {
->> -
->> -					/* determine batch to skip */
->> -					nr_ptes = mprotect_folio_pte_batch(folio,
->> -						  pte, oldpte, max_nr_ptes, /* flags = */ 0);
->> -					continue;
->> -				}
->> +			if (prot_numa && prot_numa_skip(vma, target_node,
->> +							folio)) {
->> +				/* determine batch to skip */
->> +				nr_ptes = mprotect_folio_pte_batch(folio,
->> +					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
->> +				continue;
->>   			}
->>
->>   			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
-> 
-> Acked-by: Zi Yan <ziy@nvidia.com>
-
-Thanks.
-> 
-> --
-> Best Regards,
-> Yan, Zi
-> 
-
+Thanks!
 
