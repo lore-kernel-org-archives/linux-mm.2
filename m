@@ -4,93 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D516CCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D51BCCD194
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:22:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 600FE8E0002; Thu, 16 Oct 2025 06:19:45 -0400 (EDT)
+	id C20B58E0017; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B18D8E000B; Thu, 16 Oct 2025 06:19:45 -0400 (EDT)
+	id BF8E28E000B; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479A48E0002; Thu, 16 Oct 2025 06:19:45 -0400 (EDT)
+	id B0E418E0017; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AA9A8E000B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:19:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A93CDC021A
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:19:44 +0000 (UTC)
-X-FDA: 84003581088.07.FACB137
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3FE1418000C
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:19:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=cgQc73VU;
-	spf=pass (imf16.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E2DD8E000B
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69842C026F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:22:07 +0000 (UTC)
+X-FDA: 84003587094.05.DE6BD56
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1B564A000F
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:22:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 0H7RB8";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=P2jcDerb;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760609983;
+	s=arc-20220608; t=1760610125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=270gr2GlhcdRXsppPlOLN/loQsGJhOZfzMqO8Lv0EOQ=;
-	b=kFwGN8SZ9aDK7MyoiFAC2PHkEzGlI45BoQSIhabZQaF2d6OZ9KXNfZ0/9Uqfs7iw96+HtD
-	fS+l6IuA5u6OSHkzF27DzP5qV+f4f1Y2Tpg7kmba9YQ3uaLys/s2xQ4GmISBrTIggacUZf
-	xz4xbI9m5WmfzwIUNp+YnII+4LxUuZ8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=cgQc73VU;
-	spf=pass (imf16.hostedemail.com: domain of xialonglong2025@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760609983; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPBngz1cPTs=;
+	b=4QlxSYWBwJYYeA6NGHRXwlD60Mq4jA+4ARqfHvDfPU4JY3qpE6aqsf4SWiy+6fYR6rDVHG
+	APuN8VqryeZJzkqj+HwU4Zszvj4E1EwLGcUP+JgolahFmEO7gJ5NEQdj9yACkn1VgtlanL
+	zhDXb/F/CcFv/PdH2p3hxSvAsGMB8tg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760610125; a=rsa-sha256;
 	cv=none;
-	b=QqnI3Vi06CVZWDBW4xu+G8tpbg2bx11gHVmQrCRtSvT5ETKgGhAiETt03w9am+Ee4iugUa
-	7rXYB0dXSAXyFBfKmuhONfpnH82Af5U/p/Fx/NkXfzq2Im0WdPsrZjwyN3v0BmA/XpzLgT
-	Xizd9/D4sOSwICKKcTs7SBZZgd2hu14=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=27
-	0gr2GlhcdRXsppPlOLN/loQsGJhOZfzMqO8Lv0EOQ=; b=cgQc73VUFSh/vB3tLT
-	vptjlO8XFmpvYW1MA9MCmxyf4Jhmq4fSOb/I2GfmI4f1Fo0r8qRDtzWNbEHbwmqu
-	IXZjRR4mQZshyEgyLwqvJGf5GBVhmffT2oZRX+yDtAbB30vFycv+sd174NnLGkJB
-	3GtoWahdt7/cK4YY9eEuziUok=
-Received: from XLL-9950X.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wC3v6GsxvBoxGKIAg--.5453S2;
-	Thu, 16 Oct 2025 18:19:25 +0800 (CST)
-From: Longlong Xia <xialonglong2025@163.com>
-To: linmiaohe@huawei.com,
-	david@redhat.com,
-	lance.yang@linux.dev
-Cc: markus.elfring@web.de,
-	nao.horiguchi@gmail.com,
-	akpm@linux-foundation.org,
-	wangkefeng.wang@huawei.com,
-	qiuxu.zhuo@intel.com,
-	xu.xin16@zte.com.cn,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Longlong Xia <xialonglong2025@163.com>
-Subject: [PATCH v2 0/1]  mm/ksm: recover from memory failure on KSM page by migrating to healthy duplicate
-Date: Thu, 16 Oct 2025 18:18:12 +0800
-Message-ID: <20251016101813.484565-1-xialonglong2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	b=WTAAX4CYyt0ZsIUpnF8QwGA4KFRZDfKA3rFJbFYdlpPfy9YDqvldNo+XPK5F29Olx3hgz9
+	FelK8pDJI8Ja9iy+no6UsohWfTDzs3BMeBFnZdlvoKwosq/YhR10EBHZhWk17oyLNiBrL9
+	fj9km3yRdo82J7IJNHNIk1o/W3hyWjg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 0H7RB8";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=P2jcDerb;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 608701400208;
+	Thu, 16 Oct 2025 06:22:04 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 16 Oct 2025 06:22:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1760610124; x=
+	1760696524; bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPBngz1cPTs=; b=V
+	0H7RB8kX6dTe4pJfkGYa84CFGKQi7NQQwlIG5JtdXa17rPgjGU7VP1Im0x2JCx0C
+	erNolu6GR6GrwirzS9l8PkU+m7UIbkA7XvpPXC7ZFyxsPYDEIbw1RrFzpxGqkE0I
+	XSX2c5KYOu4R22qernV1tzWejdNPVpiF6l4acfHqHponV+OQwKMyBJBac6s3srED
+	hFX3UEvTtKGF2/OHDDBf5m2oNLPo9+mcCfSWNi51R4gTtStNacgN9I+rh/zOeCdI
+	bzeQI6SB+IMUgCVz7V3V15HPW5Ew/NXITdHFdAV6G//4gfIEajOAOqA9Yzk/TrTw
+	tQ6ZnYipFhCaAm0qTeNoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1760610124; x=1760696524; bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPB
+	ngz1cPTs=; b=P2jcDerbD5gusICBdwO0U719/hGR3gBgsrnEyk/uej3H9tIAQJG
+	v7VgnltT3EvGvGG8+qrHW8D01JayYRv3okQbhAmUsijIbYrDIUKZ6S3S5/B9uLUr
+	sSSx+QliS0zx1jH0Gxkvh7EyhpBHhERXy7acCWQLVRCPtOoRUXrp0MEcdkW7nZjF
+	p/YgXjCydO23+cAAi/nmtPR0J1TjbTgQCUbErZT3E3/AZQlhYg8dzAaolvdkjNEN
+	dC7i/NUPFe6YIqVV+eM8q9ZRv9QGFDBjT52AcCsxFfamN6djOIogNSb9V9SX4oeH
+	phBvOoSe7RTOsP15zKrE1xGb5EaNosPQYkw==
+X-ME-Sender: <xms:S8fwaP4ttjK6p3ef3wmSGFlFfKLtlDlXeqs087EFm0bPMRMUebjRmQ>
+    <xme:S8fwaKboqjlnMreOaFW1YHCqKvbBO6P2TuqFlfh8IEkjbZQgdM9xKqtWmQfsXMwBa
+    eyyGchYRW-Yp0dAfXK-Z_Zi10RRSNQLw7RbhXPhlaNigx4QAxQo1g>
+X-ME-Received: <xmr:S8fwaOzJ7OkTL37tgtZuF7fDFCGl3u50u-MZSNoL7SAdZxEofOAvPqJ-qotFZw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeitdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    kedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghp
+    thhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprdhrrghghh
+    grvhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopeiilhgrnhhgsehrvgguhhgrthdr
+    tghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:S8fwaOPAgsDds0-ECl8Xyiqk0Z-xHO-Y5a8K0wNF6vpeVGcbwlcHDg>
+    <xmx:S8fwaE7JMiDYacnKnQrAKBYRmKVV46Zunrxozt_3-856GxaGppyfZw>
+    <xmx:S8fwaMfTCaQfJZvxTeKiGbOA4RU1D_fhU49T0yoOfv8RAIr7fuoCpQ>
+    <xmx:S8fwaFJTy47n8Wuhx5FhwgBa-ro_YtmFJybzJQGxDhY7vB3dhQVNMw>
+    <xmx:TMfwaHOsd3ep1ugD0EAPyXlN6Es_j3EWvKWJGeCH2CtZJr8affGgsJqb>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 16 Oct 2025 06:22:02 -0400 (EDT)
+Date: Thu, 16 Oct 2025 11:22:00 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Darrick J. Wong" <djwong@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>
+Cc: akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, xfs <linux-xfs@vger.kernel.org>
+Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
+Message-ID: <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
+References: <20251014175214.GW6188@frogsfrogsfrogs>
+ <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
+ <20251015175726.GC6188@frogsfrogsfrogs>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3v6GsxvBoxGKIAg--.5453S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Gr18Xr1kCw1UuF1xXryrZwb_yoWxuryUpF
-	9rGFs5K3ykXFyxu3WIqws7u343X34kCw4UG3s29w10kr4Yg34jyw1ktw48Way7Xr4Fya1x
-	J3yvqr17Ka1jyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U1KZZUUUUU=
-X-Originating-IP: [101.82.139.53]
-X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbBcx-o+Gjww-s9qAAAsJ
-X-Stat-Signature: ioo5bg14y65umyiyj139w33astr4a64t
-X-Rspamd-Queue-Id: 3FE1418000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015175726.GC6188@frogsfrogsfrogs>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: wkuya6jc8hqrds6b38jz4rt3j5jctwx3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760609981-143061
-X-HE-Meta: U2FsdGVkX18L4SvdciGHZ2EnB8rPuUI2e/L6SZMTOX3IdJ7Y6OVC2A1Ba46MJEMdrAKbObY5BnKlZV9lMfzwpS5k/XF5yGR31/fEj9U4qbp1ITTqK55/pQyr4j41nL8BrmNTjptAAgdEFvOp99IA+Qwu9TMvnita5zuFSexrLj1S8cVGQ7wRQdi0m64B+aQwWQuIyY2KJ/cYnA32x4GGflTSH4fsjwVCBdomJ7bWYjGStioVOC1AkJJnv+TapK42NR4YjzEsq61Wh7W0nQNt7PcdfkCGersz4nlpQbWQFa2iVfAcvMZCSY9OzjBn/qxsqXrTZMIMSRQg+Yq0DkbwibepkNAsx1hcAit93pciJuErWN/mIJxbWPwbTLoQKlVSU4XIa2W6asoW/jaN8Qoqb0U7MOxvUc/yzC76Rd8hV8SZ1ZMw4JbZQ2Jqnart87rotH/U1Wfb4ds2rLQkCMnb5tRXG3/oc9PHxPi0Xdyj5vNyM0akbWmcPF345/mXZP6zfzHFAItRF6ThtH/IgMIg16ymhqLcxRyvi3Z7mD4WAhV2b/0m06n9bcMoilQERRG13rbJ3sgoUreRmAQY/fUp7DqfAEziVU5033UuEC0TzGLJZ3NK290TcYUEmnTnu1Y4lZYo8UOiE2Cz/BGBWkVtrOL3T+YMNttHsCuSCKEwwiyQRXhEDRA2VnCUuhdf+R+uDMVe7vrxIoIXAo6BxYqYVbYt9agquGeBGQc/NF+KS/tmiaPNHIdU/iSmxfvebzuPwKS/89wn7GAiHoEnC1+1M+ALDAGZ3cHGeAT4bJDhvw+pJ1QOLT/z5rSVJqmf0foE/QY82VKN5sT4dGQkFGYGpkq1IaHMk1/vRWRnHuv1aessn0OyNl+JcoO8fFjFRXVdVYGMJ2JrYJAqwcv4j7aBkMutAeIXHRA63R6Q/jlIXl4EisqINL3kyvH8VpOyog928hLxT/EyBCWqrI5+6GB
- tRuFADU2
- PgtneI6rtJtC2dypd+GCk26FegQY62uz48Q268BkuhzKUFOA6Lc8uQKRnPqI0XdGABeedfsqY/ylbvzts6fhW8REucIPN6nKQlG86ApbBlJgnypa1O5FjGloSmSXHIK96K1rbl4UHijYY3sKScOyruiWHHF5YFQp+H4Ep6YKyE0BuNJxeghy0BqXxsXfvxLieR9MEnMTbFDTecw6FwbfU1+9ZlU12J8FrOIXi1yrGZFuJnk8oKIKyl99WKoQ6fi7BrPtOklBg23s+o+KQgPRhcPv7AFAqhdiLZFzJFvvJlEmTt4/rpzby8ZsS9WK3DcmKowI1GhzGqFez8gb7Eiu7ok2wN5EVniJBmPEKlnrgH05xed1rr3W7Wz5jUar895XWfrRDAk04Qtjq7i797wPgaVU0/4A87UeS9J+cZlUV1cblSlhZ2TP3mWC7i/YbzPW9kvVU3Ot47L721EYRWa85CdcyDg==
+X-Rspamd-Queue-Id: 1B564A000F
+X-HE-Tag: 1760610124-923682
+X-HE-Meta: U2FsdGVkX19LLlpNB8tukNuPA6fHHPD/OpXgGspSibiPgfWNfuxDwhmlHsUgiheM7uiSExZBZYij5haLMjl5nEICeyRcF5pbk1FBYfVGWq5v6VpqU5TykVfnMaZwBhz0aPMT9uJ6F08AqoVflsXjZvuK0V9Lh/MSCSmaBEkJ4bQie2B0Wshr52T+13odpoMU/cr5f9+iDsf+70By3FVrFrQjUzGFKz3tydJeQTn6SpRkulMJcE3OLmhizlq+yPDje1UxJCzUapkELW06MukUOgCjtHF+H5iUmunbGI9dz4U6pSRVi1WThmTjd7wkGYgYNgv8gZJOLloBCIuroZQN/mgca1/SeEdgCsUGrdqPF5vcoNhHaGtTotVYHobggJZx2DAHQIM/UpR5XBEbRzK5ZGs2DjY5E4HW/LZGTTxrmdmnloe+c4XHTP8O/CB0+TcETP1xghjCZou19qOkhTHXo7LQ+txCrpUo1ZSsFJVo9R0fwfrPVznVKZjryWZ02BGsDvPd06DruMUWfW3igRofYfI2/lIRizto7mmevw2IN2WkGxZh7kRgqPjXwNNq/97Q5xLV0fCxu83GYVLOD1yuVLS7K+DscS+8ajRiBVG2IFtgrG63LRiPPER1zrkx99wLtBKRN6EVpEJalioV139iio70BZ5aYnsNPVdTeYSZeOMdTEtJnKMnuWNIm9Nhsdog8GRoob7PMCu1ne962rB8YrC+fN0CbBpF+7iqNMCEYupXkeROMYfjjS8VX3agWFQvMYLDJ6K+TekKEfcCKHen98ThqfPn4/YobHHcc/ih79MFKOyLA3nwWWCfd5+qDvkh/++gFt4cegXvw3SNxvi/k+jDGXFyM6UMWrN7UfL3PjU0T1IVOX2JSdAnDYHusKZ6W1U1c2gIS1Eot/cxsnYauaBj4HrCPk/+8YNT8nsD9D8RS7NHja55+S3OHSk2gCtpbv0WTnwv+Oz4grE+Hh7
+ 0BlCNMuu
+ ytHyDXW41rsLK+Dk9LANwwiRBwdYtSAoZDCPxulgQRHqpGeu9vU69Wtfb71nl41uwpCkpeso0MwheVSlTIUOf6j8BlxRtuBBxE6sYsYaoBIkn4Qvx5kvTebMj+Nq0cJK8VKwbjx9kvthsBk+pBuA1tU03oeo/d+qOYfdRvQ3gn7C5kM4E/OC4123VhknGWiOEK5FmCabIWOPhV8Rhu0DXsSwHnuYP8BrFYlyVIm4+SiKkXlXV7HoD9n73OQzVKwC3AWZGFd4aq/bXNj66SHE27zQDwMs1S72fSqOVm2DwSBu8u9v+WL6WquzsQ+WzP3ErveBkgbzdTDtfgoP5XzkoMsMp+whKIdudJSWgsYJaOM/0Vn2v/o/0y8RLthPeVR4BX8Oe+SPS09H+MJjPjYZU4hxxgg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,154 +138,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a hardware memory error occurs on a KSM page, the current
-behavior is to kill all processes mapping that page. This can
-be overly aggressive when KSM has multiple duplicate pages in
-a chain where other duplicates are still healthy.
+On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
+> On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
+> > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
+> > > Hi there,
+> > > 
+> > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
+> > > with the following:
+> > > 
+> > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
+> > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
+> > > @@ -1,2 +1,10 @@
+> > >  QA output created by 749
+> > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > >  Silence is golden
+> > > 
+> > > This test creates small files of various sizes, maps the EOF block, and
+> > > checks that you can read and write to the mmap'd page up to (but not
+> > > beyond) the next page boundary.
+> > > 
+> > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
+> > > folio to cache the entire fsblock containing EOF.  If EOF is in the
+> > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
+> > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
+> > > to the second 4096 bytes should produce a SIGBUS.
+> > 
+> > Does anybody actually relies on this behaviour (beyond xfstests)?
+> 
+> Beats me, but the mmap manpage says:
+...
+> POSIX 2024 says:
+...
+> From both I would surmise that it's a reasonable expectation that you
+> can't map basepages beyond EOF and have page faults on those pages
+> succeed.
 
-This patch introduces a recovery mechanism that attempts to
-migrate mappings from the failing KSM page to a newly
-allocated KSM page or another healthy duplicate already
-present in the same chain, before falling back to the
-process-killing procedure.
+<Added folks form the commit that introduced generic/749>
 
-The recovery process works as follows:
-1. Identify if the failing KSM page belongs to a stable node chain.
-2. Locate a healthy duplicate KSM page within the same chain.
-3. For each process mapping the failing page:
-   a. Attempt to allocate a new KSM page copy from healthy duplicate
-      KSM page. If successful, migrate the mapping to this new KSM page.
-   b. If allocation fails, migrate the mapping to the existing healthy
-      duplicate KSM page.
-4. If all migrations succeed, remove the failing KSM page from the chain.
-5. Only if recovery fails (e.g., no healthy duplicate found or migration
-   error) does the kernel fall back to killing the affected processes.
+Modern kernel with large folios blurs the line of what is the page.
 
-The original idea came from Naoya Horiguchi.
-https://lore.kernel.org/all/20230331054243.GB1435482@hori.linux.bs1.fc.nec.co.jp/
+I don't want play spec lawyer. Let's look at real workloads.
 
-I test it with einj in physical machine x86_64 CPU Intel(R) Xeon(R) Gold 6430.
+If there's anything that actually relies on this SIGBUS corner case,
+let's see how we can fix the kernel. But it will cost some CPU cycles.
 
-test shell script
-modprobe einj 2>/dev/null
-echo 0x10 > /sys/kernel/debug/apei/einj/error_type
-echo $ADDRESS > /sys/kernel/debug/apei/einj/param1
-echo 0xfffffffffffff000 > /sys/kernel/debug/apei/einj/param2
-echo 1 > /sys/kernel/debug/apei/einj/error_inject
+If it only broke syntactic test case, I'm inclined to say WONTFIX.
 
-FIRST WAY: allocate a new KSM page copy from healthy duplicate
-1. alloc 1024 page with same content and enable KSM to merge
-after merge (same phy_addr only print once)
-virtual addr = 0x71582be00000  phy_addr =0x124802000
-virtual addr = 0x71582bf2c000  phy_addr =0x124902000
-virtual addr = 0x71582c026000  phy_addr =0x125402000
-virtual addr = 0x71582c120000  phy_addr =0x125502000
-
-
-2. echo 0x124802000 > /sys/kernel/debug/apei/einj/param1
-virtual addr = 0x71582be00000  phy_addr =0x1363b1000 (new allocated)
-virtual addr = 0x71582bf2c000  phy_addr =0x124902000
-virtual addr = 0x71582c026000  phy_addr =0x125402000
-virtual addr = 0x71582c120000  phy_addr =0x125502000
-
-
-3. echo 0x124902000 > /sys/kernel/debug/apei/einj/param1
-virtual addr = 0x71582be00000  phy_addr =0x1363b1000
-virtual addr = 0x71582bf2c000  phy_addr =0x13099a000 (new allocated)
-virtual addr = 0x71582c026000  phy_addr =0x125402000
-virtual addr = 0x71582c120000  phy_addr =0x125502000
-
-kernel-log:
-mce: [Hardware Error]: Machine check events logged
-ksm: recovery successful, no need to kill processes
-Memory failure: 0x124802: recovery action for dirty LRU page: Recovered
-Memory failure: 0x124802: recovery action for already poisoned page: Failed
-ksm: recovery successful, no need to kill processes
-Memory failure: 0x124902: recovery action for dirty LRU page: Recovered
-Memory failure: 0x124902: recovery action for already poisoned page: Failed
-
-
-SECOND WAY: Migrate the mapping to the existing healthy duplicate KSM page
-1. alloc 1024 page with same content and enable KSM to merge
-after merge (same phy_addr only print once)
-virtual addr = 0x79a172000000  phy_addr =0x141802000
-virtual addr = 0x79a17212c000  phy_addr =0x141902000
-virtual addr = 0x79a172226000  phy_addr =0x13cc02000
-virtual addr = 0x79a172320000  phy_addr =0x13cd02000
-
-2 echo 0x141802000 > /sys/kernel/debug/apei/einj/param1
-a.virtual addr = 0x79a172000000  phy_addr =0x13cd02000
-b.virtual addr = 0x79a17212c000  phy_addr =0x141902000
-c.virtual addr = 0x79a172226000  phy_addr =0x13cc02000
-d.virtual addr = 0x79a172320000  phy_addr =0x13cd02000 (share with a) 
-
-3.echo 0x141902000 > /sys/kernel/debug/apei/einj/param1
-a.virtual addr = 0x79a172000000  phy_addr =0x13cd02000
-b.virtual addr = 0x79a172032000  phy_addr =0x13cd02000 (share with a) 
-c.virtual addr = 0x79a172226000  phy_addr =0x13cc02000
-d.virtual addr = 0x79a172320000  phy_addr =0x13cd02000 (share with a) 
-
-4. echo 0x13cd02000 > /sys/kernel/debug/apei/einj/param1
-a.virtual addr = 0x79a172000000  phy_addr =0x13cc02000
-b.virtual addr = 0x79a172032000  phy_addr =0x13cc02000 (share with a)
-c.virtual addr = 0x79a172226000  phy_addr =0x13cc02000 (share with a)
-d.virtual addr = 0x79a172320000  phy_addr =0x13cc02000 (share with a)
-
-5. echo 0x13cc02000 > /sys/kernel/debug/apei/einj/param1
-Bus error (core dumped)
-
-kernel-log:
-mce: [Hardware Error]: Machine check events logged
-ksm: recovery successful, no need to kill processes
-Memory failure: 0x141802: recovery action for dirty LRU page: Recovered
-Memory failure: 0x141802: recovery action for already poisoned page: Failed
-ksm: recovery successful, no need to kill processes
-Memory failure: 0x141902: recovery action for dirty LRU page: Recovered
-Memory failure: 0x141902: recovery action for already poisoned page: Failed
-ksm: recovery successful, no need to kill processes
-Memory failure: 0x13cd02: recovery action for dirty LRU page: Recovered
-Memory failure: 0x13cd02: recovery action for already poisoned page: Failed
-Memory failure: 0x13cc02: recovery action for dirty LRU page: Recovered
-Memory failure: 0x13cc02: recovery action for already poisoned page: Failed
-MCE: Killing ksm_addr:5221 due to hardware memory corruption fault at 79a172000000
-
-ZERO PAGE TEST:
-when I test in physical machine x86_64 CPU Intel(R) Xeon(R) Gold 6430
-[shell]# ./einj.sh 0x193f908000
-./einj.sh: line 25: echo: write error: Address already in use
-
-when I test in qemu-x86_64.
-Injecting memory failure at pfn 0x3a9d0c
-Memory failure: 0x3a9d0c: unhandlable page.
-Memory failure: 0x3a9d0c: recovery action for get hwpoison page: Ignored
-
-It seems return early before enter this patch's functions.
-
-Thanks for review and comments!
-
-Changes in v2:
-
-- Implemented a two-tier recovery strategy: preferring newly allocated
-  pages over existing duplicates to avoid concentrating mappings on a 
-  single page suggested by David Hildenbrand
-- Remove handling of the zeropage in replace_failing_page(), as it is 
-  non-recoverable suggested by Lance Yang 
-- Correct the locking order by acquiring the mmap_lock before the page 
-  lock during page replacement, suggested by Miaohe Lin
-- Add protection using the ksm_thread_mutex around the entire recovery 
-  operation to prevent race conditions with concurrent KSM scanning
-- Separated the logic into smaller, more focused functions for better
-  maintainability
-- Update patch title
-
-Longlong Xia (1):
-  mm/ksm: recover from memory failure on KSM page by migrating to
-    healthy duplicate
-
- mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 246 insertions(+)
+Any opinions?
 
 -- 
-2.43.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
