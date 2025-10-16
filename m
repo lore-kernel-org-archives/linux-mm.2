@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60892CCD183
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 21:47:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311D3CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 22:28:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0908E002F; Thu, 16 Oct 2025 17:47:46 -0400 (EDT)
+	id 600C28E0030; Thu, 16 Oct 2025 18:28:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8CD8E0030; Thu, 16 Oct 2025 17:47:46 -0400 (EDT)
+	id 5D8408E000A; Thu, 16 Oct 2025 18:28:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86E2A8E002A; Thu, 16 Oct 2025 17:47:46 -0400 (EDT)
+	id 514CB8E0030; Thu, 16 Oct 2025 18:28:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 64CBC8E002F
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:47:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1CFF9B954A
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:47:46 +0000 (UTC)
-X-FDA: 84005314932.26.C4BFB7D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5FA2240005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:47:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fwtCxPKD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760651264; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F8838E000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 18:28:50 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D620113B032
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 22:28:49 +0000 (UTC)
+X-FDA: 84005418378.14.6C4F741
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E8BF61C0009
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 22:28:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fr3Ib8E1;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760653728; a=rsa-sha256;
 	cv=none;
-	b=3PxC8iH3QunaWgX94rnzASspxesE+uTlQcJ8MjRZHCfpcKrVxnCaYwigdknn9FEBUEutMt
-	yLR5lmy1BJqCWBZ6wy8VICyVj6hBS/KbP8nH+l3ocBROjzpFZ1+2/gBfWPPS9qpXBlGR3r
-	ToBrwd1MNtR7NV3F+dsTOMVwbDbKCz8=
+	b=6kdF88BXOZFyvACvsAiPQerl1lotjae33h+lC6Ut1EtDtniHFeMyIsRaczfh7c9QdMIBsX
+	nc62Zm4wMf/dC4yCWQBxnyWKAE6KAcq23mOq4vih/6SO6ogCCc/dEW6OzKqh4NBLcyuoFf
+	NfWWeljZjFGmwwGxssG5REnOkg0elM8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fwtCxPKD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fr3Ib8E1;
+	spf=pass (imf20.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760651264;
+	s=arc-20220608; t=1760653728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/l13o1LGQX9CFVU0DWJ77IvROUD7NcsXdxUTb6Lu0Y4=;
-	b=LImAifzU4N/ilyCOfIHTzB9x6mtdM+GwQcV5vHAQsdXOF0DZTclYntBttwHkneGczIkXX/
-	evBDp93mRwQdjTQOlfcMV3L9Ogl+aKeKkNZZu0pKg6zuv7WAZZztrY26SRza66jo5qhkLk
-	IbASSUee9vfXT8DffD3p0qiRyDyXNwE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59EF84AC06;
-	Thu, 16 Oct 2025 21:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02161C4CEF1;
-	Thu, 16 Oct 2025 21:47:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760651263;
-	bh=g99OCDg+O4NaDOs/ndbyxSF/STWXFkeOPJ9vC+7TBxg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwtCxPKDqmHCnbO7A67EvI3Zlstl4VXZX1AamrcGOZrkXAEICzZIAsxq78wBX+nv/
-	 PtSt9V3NfdD4xtGOEd/+vx5CyX6YzOnuQaq/WFOqa6EM1eTfwgKbtqE+qo/DTG+3T0
-	 aJgJ2LwxviUNGfqViVRkKk7fkDxFTO4fHzlc/TUdTsi6e1Jcn15UP/94A0dlqAq8bd
-	 jApCbDSu/1Fsj5PQNERwnOR7L7R7yngVSpG0P0v3mEeQBgUxDRPFawnQUGjUjppTAS
-	 GGi1+rz0T5Z6SCqNigNXpGO2XHzilnI1XroYo285su7QIek5BYiLioImbmCdhNbpLf
-	 fIJSKRFX1UU5w==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	bijan311@gmail.com,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 4/5] Docs/admin-guide/mm/damon/usage: document obsolete_target file
-Date: Thu, 16 Oct 2025 14:47:31 -0700
-Message-ID: <20251016214736.84286-5-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251016214736.84286-1-sj@kernel.org>
-References: <20251016214736.84286-1-sj@kernel.org>
+	bh=nj9+IfJZF5APVuTp7YjLZ/pdP+otEkyyNxER/NRZbH0=;
+	b=I2PUgKyXE6wwOqxQ/R81OM2s6gZgx1A8eI1RT4mXJJifMCiL8+tOU0o0VhwztRwJEsjMzq
+	dmM/pbvfqHXvXdJWGsg65pGl4EJYQVJ1eifdUMcJl82mk2uFKjgec+dnTZAb5iyNBQ5VJI
+	zIZoUlaHRrdT+QWdNWUtqWWaeSAjWxE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760653727; x=1792189727;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ciKQIk52+iRfgjCWilAdkX6YNbNDCJyfo9BtEuwQYqQ=;
+  b=fr3Ib8E1DPpXXyOHBgiXMvGqvT9LCUULAsCtbtZcqdiy+P6+7lzQIY8n
+   rIZ366anklcImXwRDM6vSV+ReH/FRwBM46hQWE0xALQM498u+TorXuMUM
+   Vw4hImJZv3U1MXGN5qLj4PJlaHO+gyn4ngOWp4O1pUsacn/zo7s63M4Fq
+   ifDyvc0c4HS0s4iWfX7O28EJ4auJI6eio2KkwYZ64fZPo11vt7K7tse3R
+   HkIuYNLv5SVWdsanpR0QJ5GvmmRZLxYEm4JC1McyfGXPrmGDsBlLGsHJR
+   7uBT6RgFftAEcjEaNdMY+fjVDbAkNqKzqN64xSFZmxUJKjf3fnjHdQcSF
+   g==;
+X-CSE-ConnectionGUID: j7epWjiSSd+d2dxF6BK5fQ==
+X-CSE-MsgGUID: Ztn3KxRMTueEUcHMq1Lwug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="62071724"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="62071724"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 15:28:45 -0700
+X-CSE-ConnectionGUID: /2MsaDmgTJmh3x2o1fWcuQ==
+X-CSE-MsgGUID: 4Xm1/v/rTaScrK/tKgO49Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="182132113"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 16 Oct 2025 15:28:41 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9WSd-0005J9-0C;
+	Thu, 16 Oct 2025 22:28:39 +0000
+Date: Fri, 17 Oct 2025 06:28:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: JP Kobryn <inwardvessel@gmail.com>, shakeel.butt@linux.dev,
+	andrii@kernel.org, ast@kernel.org, mkoutny@suse.com,
+	yosryahmed@google.com, hannes@cmpxchg.org, tj@kernel.org,
+	akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 1/2] memcg: introduce kfuncs for fetching memcg stats
+Message-ID: <202510170654.s2j4GuCs-lkp@intel.com>
+References: <20251015190813.80163-2-inwardvessel@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bsdu8ee36kqn3kjucxn5ext6sderj4qj
-X-Rspamd-Queue-Id: 5FA2240005
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015190813.80163-2-inwardvessel@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1760651264-739041
-X-HE-Meta: U2FsdGVkX1/HFYnrZOhwyBfKEfJdz5iL9z3XQE4nmlrPSyUHxcVTBB2M0zFn5WEI4TPu83ewY5hkTEwfJ2aCzsXI/TlYHnACQmb2IFbT6sP1EJU0iXiWUSAq5HPbUgIjiw9uT91kHi0xoEBB7KL3X4WioD2O8yrujTatKuIVSmKIl5AL4ctcPPAZjRGQTDAadkQW4gn4kj4OAGbomen7hw36Hvu5bF4+MloxUqVKvmnD2rcTtQPrRPfW375XaUwB8lFQ4ddCtMUwsWQgDhg6ClYXPh5JvbLJd3IbxKz/67dAr6qWwNBEew4nVrFLonlSf112TmMqyAQWsZVVwyBhlxaj9uBVFwQg+OC/qwvaG06AA8bql0r4gO5HZ5lDEStRmuzSpUMWQNis0GfcO3YrSzlxcuNOHr7Z4mHke36v7b9ydRYqNK/OeJuxJ1sx3uYBzkhnd8zklC87mbERJ3lmd6tQYz/oynGD/o1vkpkdnWJQz8+tfmtLAMLhhjx+me0bThbAK9GRfArVOPzQ5HixYTS7xRbOGF00UqfecUTPY+V/3LZY320P/41dU/SUbZHAWO82+WJFRtzKX7gZv4t0g7+R4LVogL5EA3irczuw1NFCrCuXKaBw+ULhHX1t4b2nuQf6a+uvStt9l1YU7uTc5VFYRf5lHSP65/y/EW6xqswt0Ax1ydpfMopY6Y/nlrBhiW1Z4JfPMlPoAN34MTbzaBcPimqBK9uCmj8lVSkZwm0uxYZc26QKOsTfBJ+wLjbpkjR1KydNN1xFA0YTbI85ZKExl63l/6dnJb5scjYlbWPbWRgskbmuIPhyjI1N1OLVb8INPSM0dYD0TJdr1y8xHZqtvNb2eLeFlaIcM9GvFTszpqwvX6d5nXYmwE29kjTI7MtKmnaAz/MQYSmMMIjaooowy7Vw7NKoztpF88n13cUOfjTeSdguv4uRP9Hlx5fH6crNYLkohShPL3QEFZm
- IWVeyxR2
- M7oZ3EpaHhSSkjVz8ed1UdAZFmYYLPo7DKgApHFum55xPDfto71Z4ScRleNSngiimMA26bMYkBtU1ySCdqZm6lBc6bN2QWR8hPi5eRnA88ZLL0bjfAeUdpQ//N2idxefn/BjnIdiwmd0fLoN45r2Ws7EWaoSBhiNXze++87tut9tRXdEXhblCc6J00yWyqCivM8fH2bm7XFoklPqhmdE7A4tj+8T2yVN67iFSK1mvWFEYl+uMtxoG4oegBKlMW7Ldss/5HnGx+5LCtwPURMfb9fHU0D1KcWvaISJI+rnb8pm9o2LpeVon50pCjzStra1mTIVAA+rVv74wI8Nd7BtfNSyHgjuE+rXuEFjx
+X-Stat-Signature: 7tigw5xw51x1cfypeuqi6nbf4i1apbmn
+X-Rspamd-Queue-Id: E8BF61C0009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760653726-764768
+X-HE-Meta: U2FsdGVkX192/jXeMNoqewEaOXtVT+EEAA7mG078U71YbHPitCq4eQzuWLApL/Di2RpDlDJ+eisJ+0SkG8i68o5N4bOryMtBVnqCNHTRJwxwv9IYr0RBMaIssLgrsk3TH72hoCTJzoyHOZW0LdWwbM7PH3mp4OsjuKvuVuraxs79IMKqeR95JbXtcZlMIW7sAKFbGdSvcaQNij9G7rUZn+tZolhEEurYr9fDAB1f8oNSFwuKCiPuRAG8tvL6ekzuMftapwrPXT8ygYNNiwRRhaoECq8lyJslDAkk0Hc2LLL1UXnqrvSH0MzvRdyEWdO2VXxB1EeqzTx7tzmrYi7aJVFS2gRVmMP6EHwLwdUnttCeFcA0Ypbvitq9FQzdlPgdR62AIxOXY/xC/YO9HwJdJMucVtuRiAme5h36P9FSY3iUzvQEfErhHFmE0knn1Ix++pnYUKfxekFHoGi9Bxp2JErxIMVb0nqPT/bhWHdhqnRxFNXw82oAcMsZYWru5HLXGFjFVdFnj6giOhVfDjT+xeIajhvdU2p5rrOdRj/IUWYgZNs6BwQsDsLwQ2q5Vcd+/tPFzdNrfHrkBpbC6UGTl6BBuuF5jcMBcvKeYazZB7vclIwWVDqC/G72nHzRlnIE0OKfllP2LR2UPT3Qsbn53x+gZhjsccwV2y3xGUTsYxdeOhoAYgwjJLYxyFTgs/zY6ubJFdIUO1+b3iy+YVUHZJWGkC65NWiZmc71o6mZ4qi/8sZ2x+tDmwFOnl/5WSf8m8GEWfY93/ZalO4Lb9n2TuGTSxD0Nw/+Ib6I4D7Hf6x0rhv9UmxJiDouftp1+kuAz2NRkTzbcwJOFzzZtJs3NWYrw0C4NaKvJ8GAlX1vYXNyJgIQlKwWFgcb1IsFASUY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,49 +109,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the newly added obsolete_target DAMON sysfs file.
+Hi JP,
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 98958975604d..d8a3d6e740b3 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -67,7 +67,7 @@ comma (",").
-     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
-     │ │ │ │ │ │ nr_regions/min,max
-     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
--    │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target
-+    │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
-     │ │ │ │ │ │ │ :ref:`regions <sysfs_regions>`/nr_regions
-     │ │ │ │ │ │ │ │ :ref:`0 <sysfs_region>`/start,end
-     │ │ │ │ │ │ │ │ ...
-@@ -264,13 +264,20 @@ to ``N-1``.  Each directory represents each monitoring target.
- targets/<N>/
- ------------
- 
--In each target directory, one file (``pid_target``) and one directory
--(``regions``) exist.
-+In each target directory, two files (``pid_target`` and ``obsolete_target``)
-+and one directory (``regions``) exist.
- 
- If you wrote ``vaddr`` to the ``contexts/<N>/operations``, each target should
- be a process.  You can specify the process to DAMON by writing the pid of the
- process to the ``pid_target`` file.
- 
-+Users can selectively remove targets in the middle of the targets array by
-+writing non-zero value to ``obsolete_target`` file and committing it (writing
-+``commit`` to ``state`` file).  DAMON will remove the matching targets from its
-+internal targets array.  Users are responsible to construct target directories
-+again, so that those correctly represent the changed internal targets array.
-+
-+
- .. _sysfs_regions:
- 
- targets/<N>/regions
+[auto build test WARNING on bpf-next/net]
+[also build test WARNING on bpf-next/master bpf/master akpm-mm/mm-everything linus/master v6.18-rc1 next-20251016]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/JP-Kobryn/memcg-introduce-kfuncs-for-fetching-memcg-stats/20251016-030920
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git net
+patch link:    https://lore.kernel.org/r/20251015190813.80163-2-inwardvessel%40gmail.com
+patch subject: [PATCH v2 1/2] memcg: introduce kfuncs for fetching memcg stats
+config: x86_64-randconfig-121-20251016 (https://download.01.org/0day-ci/archive/20251017/202510170654.s2j4GuCs-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251017/202510170654.s2j4GuCs-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510170654.s2j4GuCs-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+   mm/memcontrol.c:4236:52: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   mm/memcontrol.c:4236:52: sparse:    struct task_struct [noderef] __rcu *
+   mm/memcontrol.c:4236:52: sparse:    struct task_struct *
+>> mm/memcontrol.c:876:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct cgroup_subsys_state *css @@     got struct cgroup_subsys_state [noderef] __rcu * @@
+   mm/memcontrol.c:876:55: sparse:     expected struct cgroup_subsys_state *css
+   mm/memcontrol.c:876:55: sparse:     got struct cgroup_subsys_state [noderef] __rcu *
+>> mm/memcontrol.c:876:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct cgroup_subsys_state *css @@     got struct cgroup_subsys_state [noderef] __rcu * @@
+   mm/memcontrol.c:876:55: sparse:     expected struct cgroup_subsys_state *css
+   mm/memcontrol.c:876:55: sparse:     got struct cgroup_subsys_state [noderef] __rcu *
+>> mm/memcontrol.c:876:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct cgroup_subsys_state *css @@     got struct cgroup_subsys_state [noderef] __rcu * @@
+   mm/memcontrol.c:876:55: sparse:     expected struct cgroup_subsys_state *css
+   mm/memcontrol.c:876:55: sparse:     got struct cgroup_subsys_state [noderef] __rcu *
+>> mm/memcontrol.c:876:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct cgroup_subsys_state *css @@     got struct cgroup_subsys_state [noderef] __rcu * @@
+   mm/memcontrol.c:876:55: sparse:     expected struct cgroup_subsys_state *css
+   mm/memcontrol.c:876:55: sparse:     got struct cgroup_subsys_state [noderef] __rcu *
+   mm/memcontrol.c: note: in included file:
+   include/linux/memcontrol.h:729:9: sparse: sparse: context imbalance in 'folio_lruvec_lock' - wrong count at exit
+   include/linux/memcontrol.h:729:9: sparse: sparse: context imbalance in 'folio_lruvec_lock_irq' - wrong count at exit
+   include/linux/memcontrol.h:729:9: sparse: sparse: context imbalance in 'folio_lruvec_lock_irqsave' - wrong count at exit
+
+vim +876 mm/memcontrol.c
+
+   873	
+   874	static inline struct mem_cgroup *memcg_from_cgroup(struct cgroup *cgrp)
+   875	{
+ > 876		return cgrp ? mem_cgroup_from_css(cgrp->subsys[memory_cgrp_id]) : NULL;
+   877	}
+   878	
+
 -- 
-2.47.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
