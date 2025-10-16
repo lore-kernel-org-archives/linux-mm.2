@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17218CCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE2CCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:55:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E1C18E001A; Thu, 16 Oct 2025 06:51:22 -0400 (EDT)
+	id EB2388E001B; Thu, 16 Oct 2025 06:55:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 692718E0003; Thu, 16 Oct 2025 06:51:22 -0400 (EDT)
+	id E62C58E0003; Thu, 16 Oct 2025 06:55:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5816C8E001A; Thu, 16 Oct 2025 06:51:22 -0400 (EDT)
+	id D51D58E001B; Thu, 16 Oct 2025 06:55:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 461D28E0003
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:51:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFB681602A3
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:51:21 +0000 (UTC)
-X-FDA: 84003660762.18.91FFF63
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 555EB40005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:51:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y8dFtMSF;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C542A8E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:55:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B4B01602A7
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:55:26 +0000 (UTC)
+X-FDA: 84003671052.25.0325738
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9D96CC000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:55:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CYZEB6xB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760611880;
+	s=arc-20220608; t=1760612124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9mltHsNfESF6l4m5rH9ATu3tuf/qXFwaXLTvvIMtUic=;
-	b=VFeT5nB9B9zTVAXVno1fvx0w2a3kniwAOh853okgqb8t9NFGM7CU5eY/D9E4CspdC8qRUH
-	yvn3fttyJb6nbNGUpoZcLZppOGsVVcJ6vmYwogKUvFn8+icDsKMcYMqkUB3cjLD8c5e7Va
-	4MYmzzo0xtwAHHZdlhJcP16gpqpvdhs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Y8dFtMSF;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760611880; a=rsa-sha256;
+	bh=onSbeOmoNnOUhQFdTYMo4opVD5xdl68I1+VoP8OXoBM=;
+	b=EbElXQ9IMr+FlqyEbZjknmDWRMwK1o9Mw5sqh+Od2vLasbXEJK83/kEyk6/PAqUTpVNRME
+	NBXYOC3uE9DjIu2kO6+TYVIGMeMBlsVqc6exdUWmQtw0BmCv4IHJoTg4yb6KLqOZ6YkR/S
+	dqrY26y/e0jISUjLUQxgYPV+BDzfhcI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760612124; a=rsa-sha256;
 	cv=none;
-	b=HU4e7QJJx7eG9Wd6NDd2A5341JRwamshNFdhQqPz/i4tWmYh9raCG0pHUPNcIlyRIn12Qe
-	11BRUO0+wm8s03+B757t+TW3SjzkTN0rehnAbusmXr7fzaXrjDnmhXPTQ48R5pzfNUj+Df
-	kecN6F438DgE5mMeGpwag9NPNlfY2tk=
-Message-ID: <d288fc83-a1ee-4409-a457-83bc21356306@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760611873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9mltHsNfESF6l4m5rH9ATu3tuf/qXFwaXLTvvIMtUic=;
-	b=Y8dFtMSFd2GFUHd/xc6W8OPZmvtzDWg8pzpUHsJvZ0LD7wjSiAGvP8TTPwSluyfDINmjgQ
-	HcsIAZVUH3iqf9VJvdnkmMCmOm4N1nUk0FUC5Sr/RdFeOfieW+x2mK8qys+WJJRnm33ryb
-	V8NrgyCfkxYfXuvDAYi4LGm8FqoPF9I=
-Date: Thu, 16 Oct 2025 18:51:02 +0800
+	b=0CZjZ1xrYfgu+/GPGCqbPR14YPrwgoauYxX8utEW7pArmoeBhGhztvPpKVCYCrBDhmxoNN
+	eks8nTt8jl1yWJtRGqZQAVxQ7h/YgU9yBbaf2bkINuf8rdAjpNEntUtVSOH0VjWi3g+3/W
+	qm0gGhhXw4hy9xBwl9w2ipTzR6Kw9JI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=CYZEB6xB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760612124; x=1792148124;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+kiiKROK28TM5gnwbZCyi+ykIDPugSZOQFkBToxu0jo=;
+  b=CYZEB6xBm19T2gkWKfahdTCQNhbu59nMuvToccLHnRDIoorESaxxVlLJ
+   96ddZhdwDysVGQ4Khr733gNumUIVeOMnopyWFfAwa+/ciE+zY+XVy2mNl
+   ++MOSlKdhP9u+zhKixYAw9QM1E8HrRduipVLoAXsFTnCaDc9LrtvaS8fs
+   uXSACoSJWopJQMjyxoXKb1YtB5S38MMdzY2hU69XOeHcxmAwDmJ0ABjfg
+   v2okIDne8twJt6y4O74AlFcpMO6IT0yfS/CgxEdM/Ay2txn09eO3apr+q
+   xH1FdVThQpXh8BBs075qKJ3gj+TytwpOxNISiIHPsGcmEY7GGWzNZMRah
+   A==;
+X-CSE-ConnectionGUID: v3aOFRZOQACkTZOH33qNlA==
+X-CSE-MsgGUID: Ieys9iPySBuPsYNu0w6IDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="88270171"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="88270171"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 03:55:22 -0700
+X-CSE-ConnectionGUID: 6Pwt631hROa6t2dloMedSQ==
+X-CSE-MsgGUID: nVF/XZuOTxaj+SsEOmyH0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="182406928"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 16 Oct 2025 03:55:18 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9Ldb-0004il-1P;
+	Thu, 16 Oct 2025 10:55:15 +0000
+Date: Thu, 16 Oct 2025 18:54:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v9 4/4] tracing: Add warnings for unused tracepoints for
+ modules
+Message-ID: <202510161811.9iIH3K15-lkp@intel.com>
+References: <20251015203924.731213165@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new 1/1] mm/khugepaged: guard is_zero_pfn() calls with
- pte_present()
-Content-Language: en-US
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251016033643.10848-1-lance.yang@linux.dev>
- <20251016093310.rilvenglgnr65ojq@master>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251016093310.rilvenglgnr65ojq@master>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 555EB40005
-X-Stat-Signature: 798moqjc4opsfifrj7h3sj6trb5unn68
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015203924.731213165@kernel.org>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 7ucib7aj8fkp6hak6xa9wmd973i9msps
 X-Rspam-User: 
-X-HE-Tag: 1760611878-551935
-X-HE-Meta: U2FsdGVkX1/NaG3ZqZah/t8M3gn7SqffzZtAHz5if6uWufKsKbDNx8KiWwd5HatPrw83Uyp7heMPxYH4CuU4Q01p47uw6Vi8EcLRShMUFc+ZAewhWjDlXh9ltZ095TXxDaKbfXfVuUZuQzjUV/CN9SHs0ExcBmKTEZB9cz2pQZm7o6jntSF+6PCW5btRwTQWX0p+jiQHDCWeHTphPBRv+Yi6exKYwS7XNBbvQ2cnk5J8TKbkmptGaxJWWtOEmnNFwyEVHy83zTt1VK5wMpCFaFfUslb4ZDD4rYmvVTRv3dB1fuBibEGO7GogiKrjqQojcsVMJ9SumzqJ0AoXt39kj9mo1deSz6lGAtqQh1jO6n11+PQuYkUsn6UyFUxT6nHfvVgOR17OH7VCW0mXlDoadkVNAPbTIEfva+7XvV+9VB37J7k+aBRFQs6gUAzZc0TSxFAEmBQPEobuC8Ym9BuWo8+DwhmKfUaMPgHKBMEc7VRG+TOlWh6L0nGmR41qIC+aP6eXHfJ0B3QM4FPYO2+3lsSbYOXprhLLaofZP/kKBTHPTkbiMQjeaxZ7YLuMkglc7XHdxlC4rm8uc9g8hht3oz2SlsKFLf1Uzv1qsk8CHmCivPf+KTh4fdM7lQYLCHl85SIUAOqNnKXnFn1o0i0OKuRcCvWkRFbs7I3+Ivly7W/ktRsJYYfK2XUbWSoVehJtrhVWyJG1Aru+J1ATKgxKNZEF5VgZ2+X6W76Fg4c87K6x8Lb+PDlSn56K3GvLNFOqO4BgUkz31oJEQ0bZhe8/e1zCSGIJTguBm8IQ+utKAlJS7y4wsN49jhTWD7LiXs91ktRxfbKBJVl7zzImOpcGApzN8kiF42q7OSM1+1DMH16kNEicfW0iDYOndYASpKFgLt5hWom1PIJ/FdyLz3idTF+nYesZTDB6Q8D34ma0vBfq6/XCbjy3SAeE5I36B1mRfNwBfYfJonJ77wCWPNt
- eWSTmO3D
- 8MiuMOOXFWGcyn7XA7wkoQpvvfarSvCThSHkBLyACZSy9t6/K9+X4blLQBbsqKpckQuY1NYkRx1hXInRJAlO9Zj9iJ9eb8THjkUFKBfP5vZvE5lAWjL1oCt1xMrPi8kxtroilZMDwiRMd81N4TcZEBD3nHNq75l8h7MnBtW0+wjPIrSAi0/fqrg6WC7SuP7PzWXsPXAHiuhTfaq79gMM/GPBYpwarHUBk7wUlRhJU1R1UXCqCS/4XmqGFdMGhIjDvInugktkK11sdjGxwkwPOXPmEMtHmVeFB8VdGs8XykETZsBYN6N5qjiazu2uYcygcGYMuDwx5JKkhbnkmoRFMvpZ/eutelj15oYmE
+X-Rspamd-Queue-Id: 9D96CC000A
+X-HE-Tag: 1760612123-383754
+X-HE-Meta: U2FsdGVkX194gRen+KsqzT8lPrIOJX4o/ZiKoOl1x7BOTOLvCXFoWNLj5u2okVcDr3vzuvUEAScT8AXHZ4z6sOciXBp1yiUu8WHHONghyQgZlLhD4P209q5Wwg7fMBrSqWo+BcQvnX2U/k99dPAvgNoJe2oX/uUG/GXWt/m/W4jt8J1yxREs5s1Ft9wrbW/eZjCyEWSBLhaspv/fA2k8YaRjt1bDY+fwZgbsYK8C22PA4SHBz+v9LBFyEkaHQ25RQGtxtja0AXZ7s3wrUbAeHfIZr8mAvgOgasH94cGpjep74ZiFepNx0cCmR5zphAliR91OSaBxTq0Fv1azMc4IFK2NK5I3y+o2g+UMjDZoFZBWMMBUPxhVsNXc6/CaxfGmpM9U6GNun+rhh2apEI3eqXyRmLAgc2KwTOH2wp1L62O63K532qMJzcKU4P/cPq3394qsoEczcTYrpVyZhFAFr2bjpc2dSclG8C3HrkYLbeGYJ0Y7yTCyxfgxSM9E7bZmOMMtCgnAcsr+ug3r8MwCkMNKMyTaqESwJ/YmbodY6w45avmM8cBHezi/vab6LhJRv1eMf5Odpm5F3lUVHasRvOPtoanAt7xr8MTyiDfPIkLYIfhEJZ2udpe6YDUMyJ1fIK9UkrOT9/F++AHR7tM7wRCOwkAHSe0Cj0Gtcv2ZQGsnOTVcK21awv5Uq3Jcipc08y4wUWUVY6KBuq9myqFRewQNxiB9onmqp4mYMWQM5Forl/Wv35PKLjaosO81t766f8fF2AyluMH2ZKnLJwUDu2tlGd053oHt029T6i4RH0mSvD1cVjR7RVwX5v5U4geYW2aMbfNYlNJQrggTIUR/TVPhJUodZNfjF3R69W+2zxV2aC9XMB4mTaUNtVdrN0uP9X3JUNQgVIbeZFGYFs7I1pBGLTzdNw7OsTBaMe5phGLp+J+VmA5OGJbzpiwEXOWdyx03TO0qyM1sSkjgVzk
+ NMYm32k+
+ PFXzNETdlIAGhkkPAvZTVvUUaRJIvoAz5gPj/uZXMVPzPpWMbWAZKybUjweGVewQ2n0J3dnwreyftxjrfBZ4/ymasNbN0IFwuoK4pSpMiby5kRvFgJzL9MuJF7Y0VGYCiVdjS7sLtxMSiEJnODK9qMLAVtyEAD/X4q3m3VwjC/l7s0n8xe+tzh5y5uedNIntSm86GlyQDtaurGaRWkO0qIXeBGZIxDJNoa84Q8oMeiTedulYPjGlsDuC/FVyhLg6m6fdmoBbHjngHcXOl98aXAH/oYSTLOW8ouCJLGKfTQ6i0ayJal61GA+DQPc5ldKi1vwG7rfTQBQoUAmMGkx5DDWiBoadaU4HOc5NJB58aT9IUjpsj3z+oGCGoRgerLcUogxIxtCzJIMC8qoI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,29 +119,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Steven,
 
+kernel test robot noticed the following build errors:
 
-On 2025/10/16 17:33, Wei Yang wrote:
-> On Thu, Oct 16, 2025 at 11:36:43AM +0800, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> A non-present entry, like a swap PTE, contains completely different data
->> (swap type and offset). pte_pfn() doesn't know this, so if we feed it a
->> non-present entry, it will spit out a junk PFN.
->>
->> What if that junk PFN happens to match the zeropage's PFN by sheer
->> chance? While really unlikely, this would be really bad if it did.
->>
->> So, let's fix this potential bug by ensuring all calls to is_zero_pfn()
->> in khugepaged.c are properly guarded by a pte_present() check.
->>
-> 
-> Does it more like to guard pte_pfn() with pte_present()?
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on linus/master v6.18-rc1 next-20251015]
+[cannot apply to trace/for-next arnd-asm-generic/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Exactly! My thinking was that by guarding pte_pfn(), we're ultimately
-protecting is_zero_pfn() from acting on a junk PFN.
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/sorttable-Move-ELF-parsing-into-scripts-elf-parse-ch/20251016-044008
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251015203924.731213165%40kernel.org
+patch subject: [PATCH v9 4/4] tracing: Add warnings for unused tracepoints for modules
+config: microblaze-defconfig (https://download.01.org/0day-ci/archive/20251016/202510161811.9iIH3K15-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251016/202510161811.9iIH3K15-lkp@intel.com/reproduce)
 
-So we're on the same page — I just described the end goal ;p
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510161811.9iIH3K15-lkp@intel.com/
 
-Thanks!
+All errors (new ones prefixed by >>):
+
+>> /bin/bash: line 1: ./scripts/tracepoint-update: No such file or directory
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
