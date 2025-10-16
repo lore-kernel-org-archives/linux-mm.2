@@ -4,132 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D51BCCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 009AACCD194
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 10:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C20B58E0017; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
+	id 2E91E8E0007; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF8E28E000B; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
+	id 2C0658E0003; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E418E0017; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
+	id 1D5FC8E0007; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E2DD8E000B
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:22:07 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0F58E0003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 06:31:32 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69842C026F
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:22:07 +0000 (UTC)
-X-FDA: 84003587094.05.DE6BD56
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1B564A000F
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:22:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 0H7RB8";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=P2jcDerb;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7AE7119466
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:31:31 +0000 (UTC)
+X-FDA: 84003610782.05.48D3324
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EBA2914000C
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:31:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="lY/NlE/b";
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760610125;
+	s=arc-20220608; t=1760610690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPBngz1cPTs=;
-	b=4QlxSYWBwJYYeA6NGHRXwlD60Mq4jA+4ARqfHvDfPU4JY3qpE6aqsf4SWiy+6fYR6rDVHG
-	APuN8VqryeZJzkqj+HwU4Zszvj4E1EwLGcUP+JgolahFmEO7gJ5NEQdj9yACkn1VgtlanL
-	zhDXb/F/CcFv/PdH2p3hxSvAsGMB8tg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760610125; a=rsa-sha256;
+	bh=UxTkzxZWRqOwIOCFQgXcutuiJic9xI7p5Uhf9tCak18=;
+	b=BEdheRDyXY054/BmUMII2+R2Sw9dIeq5s+AZafc6xuMdbxk5FR3+CPHfDzUH5rzZVy9zC2
+	dTXG9fYnGWCjisEWVuKDMc/xK/p+uKEHg0Pm0DXM0Vs8+Xp/4Qgz/ydUmC8L4O7sKmbIw4
+	DZ1xVtnrTOqUHc7UvxaEINwuaOM4KCo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760610690; a=rsa-sha256;
 	cv=none;
-	b=WTAAX4CYyt0ZsIUpnF8QwGA4KFRZDfKA3rFJbFYdlpPfy9YDqvldNo+XPK5F29Olx3hgz9
-	FelK8pDJI8Ja9iy+no6UsohWfTDzs3BMeBFnZdlvoKwosq/YhR10EBHZhWk17oyLNiBrL9
-	fj9km3yRdo82J7IJNHNIk1o/W3hyWjg=
+	b=u4KT8mecU2xyL0FafslGC2BeJKcYqXFwzBciYFpat2P9d8o45+zGO5DL9ZpB0Upm0jbfM9
+	GjKOfIH47GLiUPlXuSfJucrDmezL98/SaU63GkfFKac41EtyobdEyA/fKjzDDwuEhtPFOg
+	vEdkOJMGwpvnxDqrRlANWeV9k2xt9xE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="V 0H7RB8";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=P2jcDerb;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 608701400208;
-	Thu, 16 Oct 2025 06:22:04 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 16 Oct 2025 06:22:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1760610124; x=
-	1760696524; bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPBngz1cPTs=; b=V
-	0H7RB8kX6dTe4pJfkGYa84CFGKQi7NQQwlIG5JtdXa17rPgjGU7VP1Im0x2JCx0C
-	erNolu6GR6GrwirzS9l8PkU+m7UIbkA7XvpPXC7ZFyxsPYDEIbw1RrFzpxGqkE0I
-	XSX2c5KYOu4R22qernV1tzWejdNPVpiF6l4acfHqHponV+OQwKMyBJBac6s3srED
-	hFX3UEvTtKGF2/OHDDBf5m2oNLPo9+mcCfSWNi51R4gTtStNacgN9I+rh/zOeCdI
-	bzeQI6SB+IMUgCVz7V3V15HPW5Ew/NXITdHFdAV6G//4gfIEajOAOqA9Yzk/TrTw
-	tQ6ZnYipFhCaAm0qTeNoQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1760610124; x=1760696524; bh=4cgizSnh8FyjftsIcMN/5doeb/L5sYJZzPB
-	ngz1cPTs=; b=P2jcDerbD5gusICBdwO0U719/hGR3gBgsrnEyk/uej3H9tIAQJG
-	v7VgnltT3EvGvGG8+qrHW8D01JayYRv3okQbhAmUsijIbYrDIUKZ6S3S5/B9uLUr
-	sSSx+QliS0zx1jH0Gxkvh7EyhpBHhERXy7acCWQLVRCPtOoRUXrp0MEcdkW7nZjF
-	p/YgXjCydO23+cAAi/nmtPR0J1TjbTgQCUbErZT3E3/AZQlhYg8dzAaolvdkjNEN
-	dC7i/NUPFe6YIqVV+eM8q9ZRv9QGFDBjT52AcCsxFfamN6djOIogNSb9V9SX4oeH
-	phBvOoSe7RTOsP15zKrE1xGb5EaNosPQYkw==
-X-ME-Sender: <xms:S8fwaP4ttjK6p3ef3wmSGFlFfKLtlDlXeqs087EFm0bPMRMUebjRmQ>
-    <xme:S8fwaKboqjlnMreOaFW1YHCqKvbBO6P2TuqFlfh8IEkjbZQgdM9xKqtWmQfsXMwBa
-    eyyGchYRW-Yp0dAfXK-Z_Zi10RRSNQLw7RbhXPhlaNigx4QAxQo1g>
-X-ME-Received: <xmr:S8fwaOzJ7OkTL37tgtZuF7fDFCGl3u50u-MZSNoL7SAdZxEofOAvPqJ-qotFZw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeitdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
-    kedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghp
-    thhtohepmhgtghhrohhfsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprdhrrghghh
-    grvhesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopeiilhgrnhhgsehrvgguhhgrthdr
-    tghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehlihhnuhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:S8fwaOPAgsDds0-ECl8Xyiqk0Z-xHO-Y5a8K0wNF6vpeVGcbwlcHDg>
-    <xmx:S8fwaE7JMiDYacnKnQrAKBYRmKVV46Zunrxozt_3-856GxaGppyfZw>
-    <xmx:S8fwaMfTCaQfJZvxTeKiGbOA4RU1D_fhU49T0yoOfv8RAIr7fuoCpQ>
-    <xmx:S8fwaFJTy47n8Wuhx5FhwgBa-ro_YtmFJybzJQGxDhY7vB3dhQVNMw>
-    <xmx:TMfwaHOsd3ep1ugD0EAPyXlN6Es_j3EWvKWJGeCH2CtZJr8affGgsJqb>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Oct 2025 06:22:02 -0400 (EDT)
-Date: Thu, 16 Oct 2025 11:22:00 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Darrick J. Wong" <djwong@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>
-Cc: akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, xfs <linux-xfs@vger.kernel.org>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Message-ID: <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
- <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
- <20251015175726.GC6188@frogsfrogsfrogs>
+	imf23.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="lY/NlE/b";
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf23.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AE95240E01AB;
+	Thu, 16 Oct 2025 10:31:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CjO_OZbZHhXX; Thu, 16 Oct 2025 10:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1760610680; bh=UxTkzxZWRqOwIOCFQgXcutuiJic9xI7p5Uhf9tCak18=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lY/NlE/bP8Uu488fCJhG0VgYb0R1RmofyVlWeYU0XvzJXOtwqnI+xxMcDXjl2A0Pl
+	 6ELFwVzaFEpa8Hry+XC8jnIRWF3YDqcSeRawxxnaTJCQPb4jPJvQtFosFivqcrTsss
+	 HdpxBZnmI6dw76swAIymhgwGB7IxO6t1OROHcIbFL3u5sgabLhNsOfTgJYzayQJR8r
+	 lYyQuWIEhPQC/ZZ+7P8u4d/JAwWKYRnszVzsDdw4gK6KdB8DMN403K0WHxyvYdLagE
+	 PfPidmueKn6PshP/FAV89SYV0jlguwSOYh4915QLvOyFjlaFaD4hWx0tyza+azW7Ah
+	 oeYwG+7IqlCxVPwsJ4fhl7LqhALZZjrNycfQ6g6SI4ukTtFzxVT6wx5OsInC80ktRR
+	 nOER+slSxz8ZYxAhUqJBivxp7sYvMiSWHedt5myWyLkwjP/58eQ1QDHGdIcAXPas6v
+	 JexQQYLu9I1jME/Rldi0WojMbP6915UBKD/cV2iVxm/aj3F4A4P7JJ3eb5lmZxkDmz
+	 0hWzTXQ/H4p5S0mPONWZDPpuh3q1O5ifLAwCghGaJ0BsggbS0GPDzIk4Bgojw6lm7b
+	 Ok44P94ia/XsBtmEMjwOfruDT5DxMkXhRHWof1dTAMRywZPG9ThHIFUpg9DZ51ug5/
+	 DmuV376y+aDKY5bmrbLXff3Y=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1977140E00DE;
+	Thu, 16 Oct 2025 10:30:45 +0000 (UTC)
+Date: Thu, 16 Oct 2025 12:30:33 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
+ <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+ <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251015175726.GC6188@frogsfrogsfrogs>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: wkuya6jc8hqrds6b38jz4rt3j5jctwx3
+In-Reply-To: <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1B564A000F
-X-HE-Tag: 1760610124-923682
-X-HE-Meta: U2FsdGVkX19LLlpNB8tukNuPA6fHHPD/OpXgGspSibiPgfWNfuxDwhmlHsUgiheM7uiSExZBZYij5haLMjl5nEICeyRcF5pbk1FBYfVGWq5v6VpqU5TykVfnMaZwBhz0aPMT9uJ6F08AqoVflsXjZvuK0V9Lh/MSCSmaBEkJ4bQie2B0Wshr52T+13odpoMU/cr5f9+iDsf+70By3FVrFrQjUzGFKz3tydJeQTn6SpRkulMJcE3OLmhizlq+yPDje1UxJCzUapkELW06MukUOgCjtHF+H5iUmunbGI9dz4U6pSRVi1WThmTjd7wkGYgYNgv8gZJOLloBCIuroZQN/mgca1/SeEdgCsUGrdqPF5vcoNhHaGtTotVYHobggJZx2DAHQIM/UpR5XBEbRzK5ZGs2DjY5E4HW/LZGTTxrmdmnloe+c4XHTP8O/CB0+TcETP1xghjCZou19qOkhTHXo7LQ+txCrpUo1ZSsFJVo9R0fwfrPVznVKZjryWZ02BGsDvPd06DruMUWfW3igRofYfI2/lIRizto7mmevw2IN2WkGxZh7kRgqPjXwNNq/97Q5xLV0fCxu83GYVLOD1yuVLS7K+DscS+8ajRiBVG2IFtgrG63LRiPPER1zrkx99wLtBKRN6EVpEJalioV139iio70BZ5aYnsNPVdTeYSZeOMdTEtJnKMnuWNIm9Nhsdog8GRoob7PMCu1ne962rB8YrC+fN0CbBpF+7iqNMCEYupXkeROMYfjjS8VX3agWFQvMYLDJ6K+TekKEfcCKHen98ThqfPn4/YobHHcc/ih79MFKOyLA3nwWWCfd5+qDvkh/++gFt4cegXvw3SNxvi/k+jDGXFyM6UMWrN7UfL3PjU0T1IVOX2JSdAnDYHusKZ6W1U1c2gIS1Eot/cxsnYauaBj4HrCPk/+8YNT8nsD9D8RS7NHja55+S3OHSk2gCtpbv0WTnwv+Oz4grE+Hh7
- 0BlCNMuu
- ytHyDXW41rsLK+Dk9LANwwiRBwdYtSAoZDCPxulgQRHqpGeu9vU69Wtfb71nl41uwpCkpeso0MwheVSlTIUOf6j8BlxRtuBBxE6sYsYaoBIkn4Qvx5kvTebMj+Nq0cJK8VKwbjx9kvthsBk+pBuA1tU03oeo/d+qOYfdRvQ3gn7C5kM4E/OC4123VhknGWiOEK5FmCabIWOPhV8Rhu0DXsSwHnuYP8BrFYlyVIm4+SiKkXlXV7HoD9n73OQzVKwC3AWZGFd4aq/bXNj66SHE27zQDwMs1S72fSqOVm2DwSBu8u9v+WL6WquzsQ+WzP3ErveBkgbzdTDtfgoP5XzkoMsMp+whKIdudJSWgsYJaOM/0Vn2v/o/0y8RLthPeVR4BX8Oe+SPS09H+MJjPjYZU4hxxgg==
+X-Rspamd-Queue-Id: EBA2914000C
+X-Rspamd-Server: rspam02
+X-Stat-Signature: rad9qnqsojseugaz6fgc6xz1x9isuxcu
+X-HE-Tag: 1760610688-821562
+X-HE-Meta: U2FsdGVkX1+WNx5UPTHFQ+jlvneY+66r3kBMlgNiIMULfK6aoZJlDTdH3faBVa9pV0WH3x7Yp+CIj/HEjFd9IPVjiVr0DmuSa8iwoFD6DRcprFXG1FBkbO2RkLRXmhS34ZncjGmv+THWhizTwRt6sMIltcieAIcJJrEVO3a0ZuOLMeqdMQm9v7jjzJMYoW9ao8XXHb0t48OwglWXZGRJ/IjFC+Osc1HNoBPSDqtyWSs+X59LA5V0DhVyfj9KNUsS8YALSc+zMDrWdYNW9DuU8Dzmr6vl51LVrjTOBpKxwKRaI5n9sR2MPaQaLSF7Sh/s4yujITTESaBhPltEeXXi2DwUz8ll+O5DipAzHTRAZlMhMhp0RxAfwzeh+uPdzTSAxJXo3v1FWXO2Y+BX96VIPZUYPp5yGqvn9++foEt91WK4gewMqxLI+k5eYTe+Ve8Oc+UfnKSiXMGEO3vTaVoafv0h89uVlu7+JcPFVMzeJl761UI4W8PUWnppdjShPh7q1gekLX8nWmQlzTD8/pQ5QUXZBxVTm6NBZY6aay9dZ6LmF2DqTFOuvJSn2bQ7htaLLqOPjfEiSk7hGjK57Ed4MK0NWnobVkTUQUma6VCE2RVQM8xNdjIYl16UKLZNLTAlyjrUjXbNnjMaegNphZXgR/JuCJuEBUjE8tNnqL9HsRtfjKMw6VlhJopidflivILWhXA23avddyO/PJbgiUXlJo6dBlN9MZ9E96ZmD9B+sBH5BHGE2xghmCgMcttL3HKH4JpffQz4yX6kZUCzqo8LfdR1GtOk0dtXotvPMe6qbQMBPJbgd9I5f2Xj5OhLFjZ1Grg+FFLlTht756B2hLMw5bTGvIw67NCfKwKHMhsFpieW+LH5FkIzkn3fo4E3GoNHjPOZ0iL4ZBtiEGthXWXT6EmMz39qN0uvOmkNsTLzNlFufo+c5xAiMbRBkV+vLGCCDKG6jWMPSB/IjPflX+6
+ VQudrIBV
+ bYTa0SYB36IOlba8SpBA+kQrIZDvEkPAxzT0d9eAUhg21s27KtXGTJgJ7mpMcOFtu7MQMRlT1bewe2A+bZvXleQ5wwH6789iiE5cPAjLB+u85Tm0xQRGhkLJtmL4NRbJLr7W6ZQJJYFovrLQg3x3cixg24cbvDnQ3CEkU4EmryF0dm1hLaPvjEjzA6gqQC5Bm8uyUJ/k4FICRG3cDTYibqQVB/nUFiBimWUfcwtQH+Jy6c2PioUhvHGdm+iYMMfrmWijPoslq2ZVnehnWSyisxCB6Lj6QgkkbJAlktVYyP62F0POfsvdJIwh2rY+OrRQI3VlHUUfWjK+1Fhq28/sB9RMH1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,61 +144,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
-> On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
-> > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
-> > > Hi there,
-> > > 
-> > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
-> > > with the following:
-> > > 
-> > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
-> > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
-> > > @@ -1,2 +1,10 @@
-> > >  QA output created by 749
-> > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > >  Silence is golden
-> > > 
-> > > This test creates small files of various sizes, maps the EOF block, and
-> > > checks that you can read and write to the mmap'd page up to (but not
-> > > beyond) the next page boundary.
-> > > 
-> > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
-> > > folio to cache the entire fsblock containing EOF.  If EOF is in the
-> > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
-> > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
-> > > to the second 4096 bytes should produce a SIGBUS.
-> > 
-> > Does anybody actually relies on this behaviour (beyond xfstests)?
+On Mon, Oct 06, 2025 at 10:37:39AM +0000, Shiju Jose wrote:
+> 1.Scrub rate
+> 1.1. Scrub rate is common across the NUMA node domains.
+> 1.2. Common min scrub rate is max of min scrub rates across nodes.
+> 1.3. Common max scrub rate is min of max scrub rates across nodes.
+
+And you need scrub rate to be per node because...?
+
+Why can't it be a system-wide scrub rate?
+
+If the use case appears which needs per-node scrub rate, then you design it
+this way.
+
+Or you already have a valid use case for it which dictates this design?
+
+> 1.4. Scrub rate allowed to change only if NO demand and patrol
+>    scrubbing is in progress
+
+Right.
+
+> 2. Demand scrubbing and Background (patrol) scrubbing
+> 2.1. Background scrubbing request enables BG scrubbing
+>      on all NUMA nodes.
+
+Right.
+
+> 2.2. For, demand scrubbing request 2 options are identified,
+>      with (b) tried. Please suggest the right approach?
+> a) Enable demand scrubbing on all NUMA nodes, hope for
+>      the 'Requested Address Range(INPUT)' field, can use
+>      address set to scrub and PAGE_SIZE(or similar) for all the
+>      nodes.
+
+Why do you need an address range? Why not start scrubbing and have it be
+fire-and-forget?
+
+> b) Enable demand scrubbing on a NUMA node for which
+>      the requested address to scrub is within the PA range of
+>      that node.
 > 
-> Beats me, but the mmap manpage says:
-...
-> POSIX 2024 says:
-...
-> From both I would surmise that it's a reasonable expectation that you
-> can't map basepages beyond EOF and have page faults on those pages
-> succeed.
+> 2.3. Demand scrubbing is not allowed when background scrubbing
+>      is in progress.
+> 
+> 2.4. If 2.2. (b) is chosen, should kernel allow BG
+>       scrubbing on rest of the nodes, when demand scrubbing on
+>       some node/s is in progress?
 
-<Added folks form the commit that introduced generic/749>
+It seems like all scrubbing should be mutually-exclusive... or is there
+a point in scrubbing in parallel...?
 
-Modern kernel with large folios blurs the line of what is the page.
+> 2.5 The status of the BG scrubbing exposed to the user space
+>     in 'enable_background' sysfs attribute.
+> 
+> 2.6 The status of the demand scrubbing exposed to the
+>        user space in 'addr' sysfs attribute. However when the
+>        demand scrubbing is on multiple/all nodes are in progress,
+>        which demand scrubbing status and address in 'addr' sysfs attribute
+>        as status should be exposed to the user space?
+> a) May be the status of the first detected node with demand scrubbing
+>      is in progress?
+> b) Does not show the status at all, just fail the request if the
+>     demand scrubbing is already in progress on a node/all nodes?
+> c)  Any other suggestion?
 
-I don't want play spec lawyer. Let's look at real workloads.
-
-If there's anything that actually relies on this SIGBUS corner case,
-let's see how we can fix the kernel. But it will cost some CPU cycles.
-
-If it only broke syntactic test case, I'm inclined to say WONTFIX.
-
-Any opinions?
+First we need a proper granularity defined and then everything will revolve
+around it: should it be system-wide, per-node, does it need to have an address
+range or can it be started and no need for any further user interaction and so
+on and so on...
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
