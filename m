@@ -4,92 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60667CCD19A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 14:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB46CCD195
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 14:17:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BF2A8E0003; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
+	id 50B238E0014; Thu, 16 Oct 2025 10:17:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496F38E0002; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
+	id 4E3118E0002; Thu, 16 Oct 2025 10:17:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D3D68E0003; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
+	id 3F8998E0014; Thu, 16 Oct 2025 10:17:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D28B8E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C41E3B8939
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:02:34 +0000 (UTC)
-X-FDA: 84004142628.27.BCA6185
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2FAA32003A
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:02:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=fkSWMqHi;
-	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CA528E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:17:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C29901DFD71
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:17:33 +0000 (UTC)
+X-FDA: 84004180386.02.F1068DD
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CEBCA1A0016
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:17:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GVVnseUS;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760624251; a=rsa-sha256;
+	cv=none;
+	b=GNTqQgGYugDMAuj1762neHtL/NOnnxHHLwoEGF86D3EzSQBBGZAP/8TkEPk9MpTsbQCtns
+	qc+28KWWfrck8DAOlPxP3JQ/pVuC5jmmt7pcEiqVbJtgtRLXdqPXPZvNbYw2goyZnt9+Nd
+	Sj9p1XBC6JM7cIacGRZHMaRJcVYhIms=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=GVVnseUS;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.50 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760623352;
+	s=arc-20220608; t=1760624251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=olaNr81UT3i0XgE7r39ZIOMvOjEJR62WYdjIOT7ahzU=;
-	b=TeHd2/mqc0NLTloFpUBc7WwJPFS++zPrY8T5/+Q33HutTvO2vvmUzrn06NtO6nsh2j9auy
-	V3oXZMNnfolR/UgacKolbaMZQFV2kx5Ivk+G5vL+NR6xpcbFekspPBDVqsGFtmyHETIt1T
-	+PIOsZmNvQNIa8rsu7ecCwx3t4DBA9U=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=fkSWMqHi;
-	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760623352; a=rsa-sha256;
-	cv=none;
-	b=rdZ2hhhMaKH2s39mQrkAPwE5PZeyosqQmUyID4v18ieW0t4eIGIUwunjOYYu5bc7imGN/z
-	XAc4CN6ylvwXMv+k3H1CR5Ys9w57H7fSolTAzUlAbyaYCcRdLlKsq+mEZ3s+8zMPhQXFEM
-	Zrb/Zc3eEU0INrF3qUWW2xF4H6XKDYU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=olaNr81UT3i0XgE7r39ZIOMvOjEJR62WYdjIOT7ahzU=;
-	b=fkSWMqHiDBDAH7Mt9zDgehSnE9WBou3iEPzz+XFM/xtmJrLnN65EzekUOZXGZzOkITDZzkEGt
-	QxdoquzGoWQBuVv3tz2+BY0gy04kXzEDqwT36tOboaep4za9bN0CtwFKBm+kjPEtiRPsdoORVQ4
-	A15p9HG/dvEEFtIzqObSjgQ=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cnV4n3sHrzKm5G;
-	Thu, 16 Oct 2025 22:02:01 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 709011A0188;
-	Thu, 16 Oct 2025 22:02:22 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 16 Oct 2025 22:02:21 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
-CC: <will@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
-Subject: [PATCH RESEND] mm/memory-failure: not select MEMORY_ISOLATION
-Date: Thu, 16 Oct 2025 22:02:18 +0800
-Message-ID: <20251016140218.15579-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.48.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vDx8+7T+MYrCmWnRteKVa1iC6/sCWZvHc99T+OB8RqU=;
+	b=w+zBTzgVU1ck1xLrJ9GSl5Lhlzz7SzBUFqHvs7eq7HIVnpjZDLaWGW2vK7GuiQCIGtB1H8
+	GVv6ZsArHunwfxwOJz0lT+jPiwpgQ40V+uIJnYvuxpHMfD0JPWphSvfiL3DDhFzTH4hmmQ
+	AKVjhhPI5rcaLQM5eKhZ+i7A44UVy3A=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-87c1a760df5so11184146d6.1
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1760624251; x=1761229051; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vDx8+7T+MYrCmWnRteKVa1iC6/sCWZvHc99T+OB8RqU=;
+        b=GVVnseUSEHU79pgSY8IdwYlCYE5GVdXxijx7T/DuSHil9jqKhm3t27MTVvVx4UsaLX
+         ITpY++gvnskPbOHBJwRckUs+5Kaw562Nh3SBlDBia0FSchBoWSEXWrw9EEDsBEAEJ/dQ
+         fvGahLRowvdzqbizppjT7hzHlmUofV3zo7XhyUkt4yk2GlZPIoLoy8lvCXnzgj8HM/EO
+         mWTFq+wFVj/96JbniZWXwJiQt5q5jYMZqEg9ooad+CQQru62QLm6L5kjBkV4p6JGylUt
+         Gwd4cTh28toRb1wFs6mp0pDBNm6GIG4EAZzVbX7SU/9JxYuMYVp/HAge+NUZNtdsSMjR
+         Sjow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760624251; x=1761229051;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vDx8+7T+MYrCmWnRteKVa1iC6/sCWZvHc99T+OB8RqU=;
+        b=m12u5OtFMxsj0wPjTuCZu+uQ/EaQgj8rDaATtMlMltin00d3j9ap/6M3bngh9DVgdx
+         9QscpuzqJknyteaIyuBf8r/anPDvU7BUbpJbyxR3/vf0J/knyT3jCW3kfx5TSuhB29nG
+         AFQ/gX+e6GuSI737pT1MRgD9W8kXmu5hovSx25jtcLZYSFgO1LXqvAOsKWs9zqWSKlrW
+         I7ftK+UZVbiofsQbXhNZkz/HI5Ex/xrWvcuZ9ZmWyqlOOmIBpbB6dnV2URvezFsMzeDE
+         QW9RDh3J3YMca5sT72Ee1rWpxSliewkWRqz6nXTCoGOYRmfIbpM/MjyRKgjIb4e/nF16
+         9oBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcXJ/7ajEJ+xPHvXgbdIbEmXh9vnAFg/JixfDXVN6/1jAgHEK4aWbSp+zNqT/1Bf2A1haUtdnDiQ==@kvack.org
+X-Gm-Message-State: AOJu0YwwijZgOdxSA3AySoqR29uodIasflWL54Qnuxv6NXuC5LXyAKkd
+	u3dCwdE7F/3E2P8VgETih3lNKp9WO1CTtFevbi1RJVD7UB6Mr0mW2AZy/912kwDzh3k=
+X-Gm-Gg: ASbGncvbkZpKKYX226qxTt+8nlEd1za7746GbvtM+JSrbD37OxZtTnM/BKdHImjyymo
+	zvN3Jf5jud9a4aehTVrdVqeQd0ep0jeXdf6c/eBxVqTNP6n/og5fXFtsp/UYxW9ZRNeijQOkrZj
+	v+9MyIdwQCNKyiytvJqhEOAjVF6EuPbcP8bjxgQO/iaSRNGEbBFVSEtWZJChxDyX0iaElL7i0bv
+	8vX0RujqHyZiWo200Wm7LTAQ8VlK/NsrCvreSl4dfzBd3cmFFYZVwTvFd33cWEc3c+oYSIarRle
+	bxp56UQj4SCu0jhIiVQx9uAHlPyaIN2t7kbAUnK41hldQ+bLGdftPtNufRsByh5y+lxQf5Clejw
+	3iGaIzEBpy/ksceGGMqa0oPhFoiEnzu0stp/xP6SY2x59+a/9yIdISEyiy/3W9rHAiUmNTQdqAY
+	iMGObtD/9bUmnCF5edItTlg6ZDgXD0ioljiXOjKLxUupPaxGBv5PskmodmnK7uIT3iYy3MKg==
+X-Google-Smtp-Source: AGHT+IEMapVQRI0ck2KCGxvEYuBB3a+08a/2JspNz86EbcND1SGuRInp+B2xwxF3NumJMeFQLVJPkQ==
+X-Received: by 2002:ac8:5883:0:b0:4e8:99b0:b35e with SMTP id d75a77b69052e-4e89d263140mr4179321cf.30.1760624250594;
+        Thu, 16 Oct 2025 07:17:30 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8955b07e9sm13309541cf.27.2025.10.16.07.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 07:17:29 -0700 (PDT)
+Date: Thu, 16 Oct 2025 10:17:25 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Shivank Garg <shivankg@amd.com>, jgowans@amazon.com, mhocko@suse.com,
+	jack@suse.cz, kvm@vger.kernel.org, david@redhat.com,
+	linux-btrfs@vger.kernel.org, aik@amd.com, papaluri@amd.com,
+	kalyazin@amazon.com, peterx@redhat.com, linux-mm@kvack.org,
+	clm@fb.com, ddutile@redhat.com, linux-kselftest@vger.kernel.org,
+	shdhiman@amd.com, gshan@redhat.com, ying.huang@linux.alibaba.com,
+	shuah@kernel.org, roypat@amazon.co.uk, matthew.brost@intel.com,
+	linux-coco@lists.linux.dev, zbestahu@gmail.com,
+	lorenzo.stoakes@oracle.com, linux-bcachefs@vger.kernel.org,
+	ira.weiny@intel.com, dhavale@google.com, jmorris@namei.org,
+	willy@infradead.org, hch@infradead.org, chao.gao@intel.com,
+	tabba@google.com, ziy@nvidia.com, rientjes@google.com,
+	yuzhao@google.com, xiang@kernel.org, nikunj@amd.com,
+	serge@hallyn.com, amit@infradead.org, thomas.lendacky@amd.com,
+	ashish.kalra@amd.com, chao.p.peng@intel.com, yan.y.zhao@intel.com,
+	byungchul@sk.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
+	michael.roth@amd.com, bfoster@redhat.com, bharata@amd.com,
+	josef@toxicpanda.com, Liam.Howlett@oracle.com,
+	ackerleytng@google.com, dsterba@suse.com, viro@zeniv.linux.org.uk,
+	jefflexu@linux.alibaba.com, jaegeuk@kernel.org,
+	dan.j.williams@intel.com, surenb@google.com, vbabka@suse.cz,
+	paul@paul-moore.com, joshua.hahnjy@gmail.com, apopple@nvidia.com,
+	brauner@kernel.org, quic_eberman@quicinc.com, rakie.kim@sk.com,
+	cgzones@googlemail.com, pvorel@suse.cz,
+	linux-erofs@lists.ozlabs.org, kent.overstreet@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, pankaj.gupta@amd.com,
+	linux-security-module@vger.kernel.org, lihongbo22@huawei.com,
+	linux-fsdevel@vger.kernel.org, pbonzini@redhat.com,
+	akpm@linux-foundation.org, vannapurve@google.com,
+	suzuki.poulose@arm.com, rppt@kernel.org, jgg@nvidia.com
+Subject: Re: [f2fs-dev] [PATCH kvm-next V11 6/7] KVM: guest_memfd: Enforce
+ NUMA mempolicy using shared policy
+Message-ID: <aPD-dbl5KWNSHu5R@gourry-fedora-PF4VCD3F>
+References: <20250827175247.83322-2-shivankg@amd.com>
+ <20250827175247.83322-9-shivankg@amd.com>
+ <aNVQJqYLX17v-fsf@google.com>
+ <aNbrO7A7fSjb4W84@google.com>
+ <aPAWFQyFLK4EKWVK@gourry-fedora-PF4VCD3F>
+ <aPAkxp67-R9aQ8oN@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Stat-Signature: w6wcfub66p65mssr34tq1t3u3zjjs9ws
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPAkxp67-R9aQ8oN@google.com>
+X-Stat-Signature: hff518dqdm9dk3d75i9weo7u4bmujf4z
+X-Rspamd-Queue-Id: CEBCA1A0016
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2FAA32003A
-X-HE-Tag: 1760623351-580391
-X-HE-Meta: U2FsdGVkX1/zRGG6NQQZ6Qs1dEP18/P59O9gDq+lohSt+Lcxyn0wn0VAJfCEheDant+ufwQc5p8+LGhHwAaWzfKYbFCsp6DjFQqoOgD+yIfn7d0S6r0H7d5LReU92tS1aUrmmgoZs+tc4UQ11wKCMhG/ad5IiriAd7t6FmhxQ4ocSl1WdHBTPQUmK4C4lVhQEp7FrD0lhS7kl6B8HmSVlTw+ZqC4XPAVKF8EwPDM3Hiurkokt0FEM8O7OEhTR78w0GIUCIxtVdS9PshlgTBXKhuIDXwmxKG21yyfHksBT+f3qqLGSUJPTnpkvHE42Nbr86TYl5BLWGI6myHg56wAPdVRs9O25KwHPtq1FECU2r74XHLb81lvGHaZISM/CXh/tLL2DTZaAbo3q1wTx5ekZPt0j2aa0USTil4FqEsOqzZ3pg91A88cUlcrRAvNlKD9xxjBA4aew87QXFRuPuqQ5nxi8uizcjdPAfH4+Q2kyR5tDVYnf2Cg0P1v9SAwoyVqnDHca99pnPkv+kp9Ci+BvjetYi2BvPLWaETqfYUkbXlcC5brmhIPBMPrvKmoKaywJUtP2yHf04WmlcTFhMvn5kuo85lRRuHmcWQHu+JUkT2yazU0A3RFhmXwK7e8LDbUzLKeeO5iO7smpDFIp2iQZGN4s3VjjzHKKabUvlp4CbRR9Xd2qOxc4CaPJJm+diS99MpkOKkWWTCB3WD3xiqlHnv0Rx7MQsRrze8vkOrgpSfgjwPt/HDhcOLyGwe1geH5RdemUeGwEb8ccc4F9UlCdReYFqwGm9cHYKDQW9BdQObXpi+U/4n4khM5fWtC9hclDLXMkqCGzsp7WkSKjZcmQuxb4meXlgfDgStBI2qqFM2u5uQM2lHuOfHVwBl7SaDWvmMDavzs/3LcR3fhj4m/EnH/O+CEHr8rAKTzq9+XeUlxjdcvy4yhHpjZZoQbTxmYRQGHbSpO1WeUhFdUtjw
- lVl/kcg3
- yvNYYAZXwOh58tN3GrgkQlugVbBkfv4mhWkGkUQpyKfScEr/smIz4ZpHPD8tzQOTN6pLZynvl08Gpmn4ZKlyn1Oqhbbf5Tpf1XVIpUkowhErRShg5LUBRAwvB70ovQDanVG9l+dkby3UO8S78hUk6UYL19S0wvWwUJkAEmJAK+J2OLiCFoW/7ZVQZ9NC9NSJ5g3sd4EX1LiXy/c46Sg/rAAVYAs5wGrLXSXOjpo+9sGIBIopJINYk+hlAio6OOGuOksVYBwXqWOxnOIhLUcBFniH+FuYyGZ+6iWs2xqrl40iRxfMNqDH8k2Jl4hbHXyHwUoY8beiQSyVl0RGr89oGYxrZsygpcd4gmvrcYHgTIaRtaGOrtUrj2q5Jmkehjp6x8YFAn6wRh//2VSGLRzwUbTZdew8ZeuP16D5TquWIb1PyTCDAvrm5Ve5LVOuPqXIUaOaN6f4nF+BxTL5HqrOAjw4ny5Ioo6esVq+BtzfMnqx9cGE=
+X-HE-Tag: 1760624251-634579
+X-HE-Meta: U2FsdGVkX18xz4YxYHaxgy/Nf+gZwqrdowrWT9waPFHtHf938MwaWI4BcF0lAm2rhTQuby09gE3p7T7+N40NVGSPdAaxohvXflRmIwdnWAmZDmItcLTjMcFSq+OjFNuU2azUC7TUDVuObFVKTQUiQBrAvklbG2dp9JC0KqoSj5mN3Ej45Gtu6VRZBwLkHLze0XaVPnCQjmeh+VU2OXjUnwZHSFPC8o0W4McJhQrYEiEUs+vE7kJ3tF1IpIQ8azWyftCV+aDsD8lzhmJcX4oS34SPL64IkPuoKVD9UtLG+g1LtM1xsdAHMep1Pd+cO4mZ/7ObriiAGLtTkpRLgBbDrRrR6vnv7ccvMCaswdy1Oupw4ZR5H70ekSkpbEyM4BeaKCWWxZ1EUvzKTdUF5pPMZ4JZ57DhTbzaG/Gf3pefQ7PyvmGCz5i3r8Dx0bSYbJ3aL6Ix743S0poSqggkEdv6Ezurblt6XjdPlir0/hsRvSNzENcFxq1O6gZYI8dT+1SRNrC2XaKvavqC/NBrmpVOf6lVchUo2wUcNh74tz0yPVroUpp0s3SO8mLIgus2OacHRv9DBo+NkIwiFjFVTWktcEoCQAj0qtLd54hJ4fZd6t9ZELIts9vJdTY7eSkWok+3L6DdfeoxV9hXrSaVMeY+pFqOzBFPPU4Fwuh4Up3P8gYvOvwZdxabTxZL4yShDge/Vn7UOUGopB+a2ydYTiPbwPVDsCkdURQXijldrMTrNoaYB8KIPQI+SseMbiZjvS8tVYxJXoTeIoDjTmsv4qIKiSZuTQqyWeb5slYCLokJziRevCMHE+hrr5VNAAV01qwy2dOj6jNW1R0uNYG/4MmpArod1HeYNBEru6YMv4r2hPgUPO6JNgyseEu9vW946CelSpzNWtnwd7K1ZZwkfYeRQcd36o72w4AD0gYAQy717u2G0NYWlCBATS4QJIj8cmUK9174/75sHWpWuGJBlnt
+ PpWLEJ97
+ h0tIR8rSSMLVF/YlISpzvJbGByxbzyGubnztNOoxkIHE0LkQ93yHV3dsq0pjbDvcdwoOMARu+FP6ZA3HVRskaK3Apc/mNbJFwvpRLg56ZBPVBhYaZEWAkkw88V38qZSaIu6ul5emy/j7U6Cgh0OACyn96ZXsMwJvA+TM7TYER7aZ/754ihlh+45q8gD/Rm4N8QH6TUCHRpf7X+4E0MIaNX7gyTx9/Ss9Xqsc1WQwt1rBdIQrZlyfgM2kdHDgVaLJx6vrn1rhMU5fDoO+uk7RsgtlqSz8JgFLaGfKCvGVFwEhF2J8bFHiV7CakZdDrZkT3ugd8uOe+4sSsvttCCgG8k0FHCPTYNqtNJzFSS79h6aIrg6jZbMojmVEzTYIet8p3zml/1JJLrz1j1K1fZYYrU7McZN3Rt8gGB8O/pnhdNAoG4UWutd7chvP92iW1rdsFMKuB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,53 +153,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We added that "select MEMORY_ISOLATION" in commit ee6f509c3274 ("mm:
-factor out memory isolate functions").
-However, in commit add05cecef80 ("mm: soft-offline: don't free target
-page in successful page migration") we remove the need for it,
-where we removed the calls to set_migratetype_isolate() etc.
+On Wed, Oct 15, 2025 at 03:48:38PM -0700, Sean Christopherson wrote:
+> On Wed, Oct 15, 2025, Gregory Price wrote:
+> > why is __kvm_gmem_get_policy using
+> > 	mpol_shared_policy_lookup()
+> > instead of
+> > 	get_vma_policy()
+> 
+> With the disclaimer that I haven't followed the gory details of this series super
+> closely, my understanding is...
+> 
+> Because the VMA is a means to an end, and we want the policy to persist even if
+> the VMA goes away.
+> 
 
-What CONFIG_MEMORY_FAILURE soft-offline support wants is migrate_pages()
-support. But that comes with CONFIG_MIGRATION.
-And isolate_folio_to_list() has nothing to do with CONFIG_MEMORY_ISOLATION.
+Ah, you know, now that i've taken a close look, I can see that you've
+essentially modeled this after ipc/shm.c | mm/shmem.c pattern.
 
-Therefore, we can remove "select MEMORY_ISOLATION" of MEMORY_FAILURE.
+What's had me scratching my chin is that shm/shmem already has a
+mempolicy pattern which ends up using folio_alloc_mpol() where the
+relationship is
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
----
- mm/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+tmpfs: sb_info->mpol = default set by user
+  create_file: inode inherits copy of sb_info->mpol
+    fault:    mpol = shmem_get_pgoff_policy(info, index, order, &ilx);
+             folio = folio_alloc_mpol(gfp, order, mpol, ilx, numa_node_id())
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 034a1662d8c1..0e26f4fc8717 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -742,21 +742,20 @@ config DEFAULT_MMAP_MIN_ADDR
- 	  This value can be changed after boot using the
- 	  /proc/sys/vm/mmap_min_addr tunable.
- 
- config ARCH_SUPPORTS_MEMORY_FAILURE
- 	bool
- 
- config MEMORY_FAILURE
- 	depends on MMU
- 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
- 	bool "Enable recovery from hardware memory errors"
--	select MEMORY_ISOLATION
- 	select RAS
- 	help
- 	  Enables code to recover from some memory failures on systems
- 	  with MCA recovery. This allows a system to continue running
- 	  even when some of its memory has uncorrected errors. This requires
- 	  special hardware support and typically ECC memory.
- 
- config HWPOISON_INJECT
- 	tristate "HWPoison pages injector"
- 	depends on MEMORY_FAILURE && DEBUG_KERNEL && PROC_FS
--- 
-2.48.1
+So this inode mempolicy in guest_memfd is really acting more as a the
+filesystem-default mempolicy, which you want to survive even if userland
+never maps the memory/unmaps the memory.
 
+So the relationship is more like
+
+guest_memfd -> creates fd/inode <- copies task mempolicy (if set)
+  vm:  allocates memory via filemap_get_folio_mpol()
+  userland mmap(fd):
+  	creates new inode<->vma mapping
+	vma->mpol = kvm_gmem_get_policy()
+	calls to set/get_policy/mbind go through kvm_gmem 
+
+This makes sense, sorry for the noise.  Have been tearing apart
+mempolicy lately and I'm disliking the general odor coming off
+it as a whole.  I had been poking at adding mempolicy support to
+filemap and you got there first.  Overall I think there are still
+other problems with mempolicy, but this all looks fine as-is.
+
+~Gregory
 
