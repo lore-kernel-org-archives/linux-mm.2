@@ -4,134 +4,261 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51A49CCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 08:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D1DCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 08:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD2818E0003; Thu, 16 Oct 2025 04:32:23 -0400 (EDT)
+	id 533DB8E000A; Thu, 16 Oct 2025 04:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83578E0002; Thu, 16 Oct 2025 04:32:23 -0400 (EDT)
+	id 50B658E0002; Thu, 16 Oct 2025 04:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9720B8E0003; Thu, 16 Oct 2025 04:32:23 -0400 (EDT)
+	id 384F28E000A; Thu, 16 Oct 2025 04:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 83C478E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:32:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27C94847FC
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:32:23 +0000 (UTC)
-X-FDA: 84003310566.24.4246ABE
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 25953100013
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:32:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=nb9MbyP6;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf05.hostedemail.com: domain of zong.li@sifive.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=zong.li@sifive.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760603541;
+	by kanga.kvack.org (Postfix) with ESMTP id 224B08E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 04:34:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEDDD11916C
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:34:43 +0000 (UTC)
+X-FDA: 84003316446.14.1FF1E6F
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 77473C0006
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 08:34:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="hyR1/O2U";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yt+HF7IL;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760603680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YGUnawecL83edOGjPf+u6bC7T95P7jfXKCNsQBzg0rA=;
-	b=u7HRUVWVwJSNwljc9aW3msE3kcAHxko/Q/eLBWDdmV2Cn9S8RFB5y5FC3Vv0gvCvesPour
-	rkpi/1zRt9uXF4bHXoMYZovZFO8AT9CZEIynQGY3CVDMO/BJxKob4OJmuIbL9jo0y0pyRt
-	6GG5besl32L6z0Y8re5HJupk5Kdnuco=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=sifive.com header.s=google header.b=nb9MbyP6;
-	dmarc=pass (policy=reject) header.from=sifive.com;
-	spf=pass (imf05.hostedemail.com: domain of zong.li@sifive.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=zong.li@sifive.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760603541; a=rsa-sha256;
-	cv=none;
-	b=fM9P2s9OC3HMca8rFA9S+Rm1Qzb45EzIG7lLHXyE4wjqLvaoYSO4kb6P0neKpwuNuS//aQ
-	EbL5DO1n3kxOrovpApQBulnUVNP5nu42BRYgZvZDqZfSBaYlOIci5bj0xePsU97azRbKxm
-	Q2cmkuC9AFX/wrK2z9ZTXs2NzSvw+eM=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-62fc0b7bf62so653548a12.2
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 01:32:20 -0700 (PDT)
+	bh=0/sd88coQ6lgIZsVSAWGs93BgI0y/tbo5viUxeeuwM0=;
+	b=QIEmZQO1ivVhqpu/nSGgnXHpCuI8rvxZm/+cyCHxfrxktfnwm71mqWZZrKpZmHzElPjzIu
+	UkOnepGzdpvgNFkgvY0890WW+28IoJKULI9PLDZN7pkGAnyXRz3Upldp7BRFeG6hBq7tfO
+	Pg3uKWPDgE6CSDeRN0OKxEVwLgKp6QU=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="hyR1/O2U";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yt+HF7IL;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760603680; a=rsa-sha256;
+	cv=pass;
+	b=19o6+JPBojHoN0GdcwGrNStP8414D+WAYTi6gruHAGCaTLx1QAEFPgZ96IlZ0rvV7aPMLN
+	t0HnsbHqFj1MDIxapQ3Cuj3u12dDmdMydjHCmO9szMf5u9ZgTdqbJ0cAJ52usLEXgzEDCl
+	TvQejGQO1RqnsV9SCka9UnVoD0BadhU=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59G6gxer010695;
+	Thu, 16 Oct 2025 08:34:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=0/sd88coQ6lgIZsVSAWGs93BgI0y/tbo5viUxeeuwM0=; b=
+	hyR1/O2UwMkdl0bsm1bbwerhWYqherzSrM+ePT0VGQRG4Nr3GsSx1eHu+rJfU2FZ
+	RNC7oDcRpX2Oqq+J3AJz3bTqeGAOwQ5g/WsOLBFlce7/KAvsWhEUa17NRORVVdC5
+	Y07FHMk2B+HeicFdomWBSPALCQVN52NDMci4caD2kcg8N/DVd4mvzQawwLy+jnOn
+	xOCeNBxHHtegK5/xgKU80C/3zOKcWWuojcW7SHePMiQul06QW2x020ETD/eKqCKp
+	ps0WzPXgQ/XtJfUFlMCoTFTjIbgFUL/HTIfZPXfApOQwd8w4NighPKkjF7LWbqen
+	lzCt4qAvHyyGD1s2tBtH4w==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49qdnc8csy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Oct 2025 08:34:26 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59G7mvsJ018074;
+	Thu, 16 Oct 2025 08:34:25 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011028.outbound.protection.outlook.com [40.107.208.28])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49qdpbd7fq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Oct 2025 08:34:25 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Do2BHFg9Sgq09CtPHUasHk14U4vBjNzpGAQaz6oawAOiq1nXvirZpjnlzdIN2BJB0gIxZfmrIUysEI4LgjKxLQo7u5DzpdUHMTdvnE7gA92WDrZ6NiOTotS6K1Xz4EEs9Ajd+RO4H4MV6t0A8s7x8cB/ghunsdUR8zY1VWSOqu4MHl2uqRHnl/n27o5Lh6ilKNnTu3cIlYo77cJakRyKwpndsUDp9Lt7D4Vrm1OYQxhHuyHCHa/0gMg8wbhGlnNjqi/W8uexGfLkh5IgkgUYwh5gzUfe3RBNU58mWRrSHCH9q7ip07RInUkYFsSTsxqY/X4PgszgzUT7FivZe/tgfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0/sd88coQ6lgIZsVSAWGs93BgI0y/tbo5viUxeeuwM0=;
+ b=fFI7EIIkAIMfJDT9Cp4/A6l3aMCXtfkIa8jFCAPtbbHhfhTLg4E2LLi48yirK0B0bqdaq+mUdZZcCVqaZJ2ZFPiTUZXmTX6VlELthHUEFb0n/Kcl796QA+/Dhd6BVHkyk0LUovPwoQDPmBs3zy1rLGTC0wgLYGwql08DGt++XVKO0EkBTpjUnwY++VpUs2oHTrhqvMK34rYOxcJpBTOth1thBUlkQptvpm5R7n2UK7QklzIISb3Kq4bZVbltCk547BVXRr73AvBzrfYK8kf/hsnUA/uDHFW1DHIWJgfPNk6dQ88hvXG7aMj3SwbQgFrq/h4KAdV3G+IPsFz5VmQpCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1760603539; x=1761208339; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YGUnawecL83edOGjPf+u6bC7T95P7jfXKCNsQBzg0rA=;
-        b=nb9MbyP6nNCKVBWh5XPeDYoJugAKI64Ti5OCQZh+M2I2hZrHbq5o0gsv9OOmt8aShC
-         MOOVep1x7D3yXEpBXPX6YCJlswQAWC2VP09OKeDXmyUVAvhz/en50vtHCOsoJN/OIkZ4
-         27BubV1OLa/os07APPUm8fHBrXIfRxyjvh4eUKqnzRAcsTdXn8Ivu3l8cMkE4ONNfxxU
-         f7IdLnCCWgfd3eGl5EQ3o6+2F9sr3zpZs2KN6183A5lDn9Ha78MNa4qLIGNyrgFHJudJ
-         PAQAGUb8RKYz6zVBO6+0Edtl9hyasAtJpfJdaBgQT3YmcBDO2kS2sEyxDBklQYChub75
-         hPuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760603539; x=1761208339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YGUnawecL83edOGjPf+u6bC7T95P7jfXKCNsQBzg0rA=;
-        b=XZAgGzFkSTSCp3wgJ0NPC2z6JdgX/QVxDvkKwDqjs7N6PKr5Qrwsy8BGwJfFqjblpT
-         ufluA5WihVETgyAXGFCY34RAz+bWCCmlG4ifDXyTAiR86mBf1ke1lkgy/aA9zZZuAbC2
-         Y87PRU/5bPZAmt6zDGXi1UaL+YWx4O6FvDkjuyVly8rAMENsnWUwr6t4qN3mqhXUJXIi
-         zjrhb8wecSOhwLuizEOiKVtbRpSFZdU4KBlj1BcYIkH3NvxlDvpOMSmfdvuf7ITNy6Jf
-         BNaumKz9CYZlJSLDmmiFzryzny2HosalF3ljbwOpYk5i/Ujn/NKD7gbc1JnKd/oa/Uqd
-         KaEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOEy2rsXzOPfxZRztiuUCfmQOLd/3A/VDzB+8XBVuGbe4jcLj/L85+hecRBVdi1lSCuAnFLV4cTA==@kvack.org
-X-Gm-Message-State: AOJu0YyH7xeyecVnYI2yMU4Lfv8U7rru5my7Is3GAxLE/87nYqdQUF/a
-	rMsm1+kjE6K77ftkn/7UAB+2ZfQIlIASkrMUgExtzHqRyDs/xy2lAbxi8HPRj09WowZuwf2ZlRt
-	5xtqP3cnwPbxtg4hkVKgvQwcxaSe0UT9G68TkNljgUA==
-X-Gm-Gg: ASbGncu148dVyWTdy6WL17aT1brmqmbXSW5yJ7SPquzgqY/pnyaLSMNEfqeucmPf72O
-	a6t8sfogqsYbYgAk3IaKGCiPjyNnGEdPjYg/4TrN+tjLCqWt89ARj0Y68sZXvIvdgKGmpdh1tEk
-	Fq7cJMIawU2P1bt5mmImSi/dpOr3CTvCwni6rPmTJS7V0mvkE2uApjQvyEiURQdVCbAU8vHFlId
-	M0nZQ91oxFbxM9VFuir9K6dIBrnD/aU27R6M2OSTXt8k0bBRpe/Lirgq0JwKC5ZVEskRzs0EA==
-X-Google-Smtp-Source: AGHT+IFHq55tnkrijYl7UmxNSZkHg8MUK7rL86Qec+QFny2Jj+Nqgl6hHNvXTQ4ak+tVR4IZPuR8dIifQEuqb6CMGOw=
-X-Received: by 2002:a05:6402:2706:b0:63c:1066:8bec with SMTP id
- 4fb4d7f45d1cf-63c10668e2bmr685991a12.35.1760603539325; Thu, 16 Oct 2025
- 01:32:19 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0/sd88coQ6lgIZsVSAWGs93BgI0y/tbo5viUxeeuwM0=;
+ b=yt+HF7ILaQJwYfxfBmnQC/w+xzsqbAxE3ZJ6faJGpNVGv+PRG9jyuvS/U2cBJLIUvPsBGiI6f1dNveIqB6y8YtogqJsjQnnnC8czHCKgFMQ6NM5MNr1C5ZNoFeww4LCTgOlNguHrLrjAyd5ppt50eHBv00OQrYsJcIlz9alEHyA=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SA3PR10MB6949.namprd10.prod.outlook.com (2603:10b6:806:319::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Thu, 16 Oct
+ 2025 08:34:18 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9228.010; Thu, 16 Oct 2025
+ 08:34:18 +0000
+Date: Thu, 16 Oct 2025 09:34:16 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
+        kernel@pankajraghav.com,
+        syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org,
+        mcgrof@kernel.org, nao.horiguchi@gmail.com,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/huge_memory: do not change split_huge_page*()
+ target order silently.
+Message-ID: <350b69d3-0680-41c9-8b3e-578504894372@lucifer.local>
+References: <20251010173906.3128789-1-ziy@nvidia.com>
+ <20251010173906.3128789-2-ziy@nvidia.com>
+ <d7243ce2-2e32-4bc9-8a00-9e69d839d240@lucifer.local>
+ <9F4FC13E-E353-4A4F-BEB7-767CF4164854@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9F4FC13E-E353-4A4F-BEB7-767CF4164854@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0225.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a6::14) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-References: <20251013-v5_user_cfi_series-v20-0-b9de4be9912e@rivosinc.com> <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
-In-Reply-To: <20251013-v5_user_cfi_series-v20-24-b9de4be9912e@rivosinc.com>
-From: Zong Li <zong.li@sifive.com>
-Date: Thu, 16 Oct 2025 16:32:08 +0800
-X-Gm-Features: AS18NWDdABXVeVU4BxVD4PUOdUQ6DbOXUTRdVQ9iYOyQ5bKOkgL4sYwtV7PCBF4
-Message-ID: <CANXhq0rVGisy33n6gB-P8B0ALiB2LqqYbKsSqgJLCNNRecP9TA@mail.gmail.com>
-Subject: Re: [PATCH v20 24/28] arch/riscv: dual vdso creation logic and select
- vdso based on hw
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA3PR10MB6949:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74fe22e7-1ae9-444a-0326-08de0c8ecc27
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?b09LSThXZ1J1U28zdUJiKy9LY3BhZUFERmMzQmZMcFBFaWptclZCdDYxZGp3?=
+ =?utf-8?B?akN3V011MmdHMnBRMFFKcHZVT09pTFY2dWhyZUtENTRGdHNWS1VtSkVQUUwx?=
+ =?utf-8?B?LzB0YWR6eHR3K2VkSlJTVnU3aXNQL2p5NVozNVhiTEI4NWpML1dRTEJYbk9Q?=
+ =?utf-8?B?cU1qN3dCQTQ1bE5lQVMxNDkrNC9TY3o4bGFHVUlrTmM5clQ1TVV2dmJ2Q2tj?=
+ =?utf-8?B?Qnc3cmp3UW0yZ0FpMWpWYmdqVUhEcnlUZjBPZVlzbDlCLzVUOWxlZHB2QnhN?=
+ =?utf-8?B?dFNXRklFSlFvM2EyWnBaVWdSc2F2dFRMdzVUMFllVkJjRW9sUXJPaUNib01v?=
+ =?utf-8?B?b3IvN1QrL2d1Q2Z2aExkWi9mL3pkQVErZ09Wb2hrWmVzQTR3cjZXdmpWTFR3?=
+ =?utf-8?B?VWRzSkNrYmVmQURxSms2a05VMnZ5SkVPUGc4eVJJSTZWTVUwWUMzVktEaUVY?=
+ =?utf-8?B?QjErUS82WW5Qd3R6R21tTmd3RUUzQlk5VHI2a1lhbncwMk9YR3M1dVlMUDUz?=
+ =?utf-8?B?KzBYOEpmdm5COC9janVuOVVVWTNDTTdQUUN2TldZak9walNKV2YvOFoxWkNO?=
+ =?utf-8?B?OHhNayt0YWJoN25ldXdhb1dPbGNZUTl5OFc5cjBFWjEvemZNTXRjb0xYL1ZZ?=
+ =?utf-8?B?bFZ5Umtnd052NzMrbm5xMlJYOUMxL0liT0lrTVRwR2NwZktYU0lIcE02Y2ZE?=
+ =?utf-8?B?WHlJOFAvbVd0ejBHNkwxS2loc3VlbWJaYVRMOW5lc3dvSFF5NDFUQUd4UEp2?=
+ =?utf-8?B?M2hQMVVleDBlL1hvQjVFRnBLeUJ1ZVB2ZWNGcFpXcThQenU5eVkyYUZPL2RL?=
+ =?utf-8?B?aGdGRk44Y2Zjd0tqOEhUZGtVbnVhQ3FzTk9mNGVRUGRUbEtMTXdaWEh0a0l6?=
+ =?utf-8?B?aGhaYUZGZ0FMa0krSVFQL1BWaDBxekJJOGI4ak9QeGF5c3ZLc25YSFJDckVm?=
+ =?utf-8?B?UFZYWVZnaXBaZml5UzNsV2ZjSzJ0SW5wV1NpUVJKNlcwR1dkUWtTVkhhekdm?=
+ =?utf-8?B?VCtGRFlxVzViSmhYMkZSOHc1ZE9WN3VzdU1IUG12V2Z5TVNndjdqbVo1L25k?=
+ =?utf-8?B?a2x2WXRXVXVZSUk4c0pTTDhmK2duYTNCUEdlS0tVS21QcFhvVFY4RU81b2hU?=
+ =?utf-8?B?SFRlYjZaNUhscHBxR3ZCV3FRdVI3bWcvNmpESm43MW5YOVNJRXVzUnJHUGIz?=
+ =?utf-8?B?dGx0cWhkUXhIS1NvSHJMSGVYcGI3TXdKT2k3TGtwT0MzMXhjV3RscS90dHFK?=
+ =?utf-8?B?eklJWUVBbnE5Q290ZU0zcXR5WldCMitKaUk1S3ptTktLQ0w5bWo2RUl1U1d2?=
+ =?utf-8?B?Tk5LU1cwOXdtUzlLOWs2UzkvTUdKdGVnRnlBZ2xNK3hSM1lab2V3dDYxNlhK?=
+ =?utf-8?B?ODRJY1U5WjRtWHdLbjFIdWV4UFJqMjcwQUR4RGR5MzZHYnlmWnM2bG1tcnNp?=
+ =?utf-8?B?Umk1QTdlQmRjWGxrbFN4c01JTExockZKZHBBY1ZLZXBrUnVyLzRRTEpyV3RQ?=
+ =?utf-8?B?QThUNVFBS1VOakJVZXhiSjhGWFE4azh3R25tTmVTMmp2ekd0eDdWQUVGRlRr?=
+ =?utf-8?B?UDJZZzVGQU5XWmVIMEFBd1hRcXprZ2RWSEx3U3p0Y21iZDZHR0dDUzFJYVZr?=
+ =?utf-8?B?UjdmV0l3blBvWEd1Ty9IYU9JMmRDcVpNN2lWWlpPOXpwSWF5cHllNjRRYWwr?=
+ =?utf-8?B?T1VVQWhicDIyOUprbjlXMFpsNFJTOUFxUC9uVXFLaGZwRXlxOFlrZWFIa3ZD?=
+ =?utf-8?B?bXBaV3pNZ3JnaWM2MUVrc0pDcWQ2TktoZnhGWmZibkIvMEptQTZUTnN3UktB?=
+ =?utf-8?B?NWVaR2hYK1FvY0F1TzRqODBNaTF4TktGaGFQZCtBVko1WklOY0Nuakt4OUlx?=
+ =?utf-8?B?cUpiYnBkcitWbWZJUkFUMFk0Q003OWgrUzFZWng5NDV1SWc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aVVPUmtkdVN0WTVRUGw3N25OTzBFU053eG1ZQjcrU2pyUEkrM1BEcDRSZnk4?=
+ =?utf-8?B?OFl5VTM4MmQ5cHpvYVBVUkhrUUgrMW9wSW9OZjlZSkJjbUJjUnVJRE1oNTRw?=
+ =?utf-8?B?OHhTMWptbWRKR0JZak5UNW1LWDlTNVB1OTBKZnE1VTN1Q0FGTmcxbEh0WVRC?=
+ =?utf-8?B?SmhrS2RHVjJpV2o0RXRHK0NQa1hUYmR3R3dRTzZvWXg3U2FlV3g2YXFDUFNS?=
+ =?utf-8?B?RjZlZ1ZWLzZoN2VzODQrOWk1UkFPY04ySE5FNnE2S2MzWkFuc21TcVJuTjM3?=
+ =?utf-8?B?UytxaU95QURCdHRQR3dpNEN5T05PUmpqcnE0a2xVNHptWFg2bDd3K2hIOEdy?=
+ =?utf-8?B?R25HdDk5VlAzS2RMaStuVFVDcHF6NHIzYmFGNlFtbndHOGM2TzZxL01SR3Nz?=
+ =?utf-8?B?R0RpeUp5N0l6NERRTlB3N1JzUnN1ZldndG96RFpNcC9aQ3NCZGROOWQyNlJV?=
+ =?utf-8?B?T0xsa3NzQm0xbXZaZkk0clNtK0dkWXVMOTdMeVN2bEIwRmZSVnp2aThQeTlC?=
+ =?utf-8?B?MHR5cW9FcDFoOHAyRHVHV2pUTms0cnVuVGpnc3VQN0VGQ2g2NExkMDhPQTRt?=
+ =?utf-8?B?T2RkRzE3K0pNSFJCR05rRlVsaW5rZ0pKYU5QMmZ6WnhNK0U1Q3AxN3Q3N2h0?=
+ =?utf-8?B?VTNibnFwWkxvdERUTEZVeEwraXRMdTNnZ2ZSZEtzd3QyaEFQL096OEV0em9L?=
+ =?utf-8?B?MkxhSmtvVnJUY0JRT1FwZk5WUTl1K1dsUkFFU21WdkcxcnY1aHJlYTFsZ0ox?=
+ =?utf-8?B?T2tGTFIvOHRVZ3pxVVZmOEt2TzFleC84ei9zL3RQck94cFNnNnFhb2Ywdjgv?=
+ =?utf-8?B?NXBUNDV2RDd4Z2Z4WUs4SnpTQWRKNDU3djRDOXhkdW9rajR4QVVjakJjZkFp?=
+ =?utf-8?B?aE44VHA4c2REM2xIWXBTYk5VSk1YWTQvZ281Q0xhd2V5QnJocHEvVFJMbGtk?=
+ =?utf-8?B?RmZ0cC9OZjF1YkszUnNtbFd2RTcxK0x6UzNvZGZHVFZkbTN6MVJxSkNXU3Bk?=
+ =?utf-8?B?OXhUdzF3TlNuTnIrcU1lTnQzeG9pc0ZlNmZjaGhxc0lZWXEzakd1U2JVazE5?=
+ =?utf-8?B?eFh5bUVQdEhWQ0xZQi9NVy9EWHQvMTRwemlacnJ2M0dzTGpaTjM1eDhxT0NQ?=
+ =?utf-8?B?WFR1RlE2cXU0UjRBclltdnRyZzRGMWhSZHFJU2xIa3lGMjNjNzUwMm1VajBF?=
+ =?utf-8?B?OG52d2JNb016SDZMN2Z6TFQxTXB0aWVBRnRsWFZXeFVSM0wrVnIrejJkUEls?=
+ =?utf-8?B?b1JwOS80RzhZY1NOa0I1ZTJKbmZsaDB1ZDYraFlwSW9TSXQyN0hPcFVxZ0g3?=
+ =?utf-8?B?b05RN3ByVVFtN2dLVGZJM2s1MXBNQ2dWcWxUVFZWeUEvOS92ZFhWS1dqd200?=
+ =?utf-8?B?U3BaQjQwS1RvVy95amFyVStZS1BxZ21Ia3lGQUF3cFh1VnltVFZqRjdhSFpt?=
+ =?utf-8?B?SHZETjRJMEpxallWRHFpWm9IRFBudnpJb1I0L0RaWGdwbEQrU0xzTHpQTU9r?=
+ =?utf-8?B?ZlF1a2dNbm5nSWdFMXJCNngrT1ZPS0dMN1pmZE9NYnNPd09XR0tuY3ZrM2wy?=
+ =?utf-8?B?MEpxQ3IvYUJ2ZjhrN2t0NitwRlpRUThEOWVhWVVWUU1lRkRncWtDRWFmOGNq?=
+ =?utf-8?B?Ry9MbHpmc1pCSGk1ZTh4ei9lMEJ0dHJHdUNmV3lWUFo4dUthVGE5VUxDSWFL?=
+ =?utf-8?B?NXJsdWw3b0toQTR4ai83MTZXWkJZM1RRcnpPd3h3VjhkWEw2WDdLbjJUZ1F6?=
+ =?utf-8?B?UWNpSmNtZmVNMFZGNURZUGVnZjdDb3FjNEFsRFFRUDRKZ0RqWHp6VzRtLzM5?=
+ =?utf-8?B?SDBwWGlMRVNlZlZiTmFNS3hxUXRZL0FUWEtiU1FhOG5tTDAzekluNE9FclM3?=
+ =?utf-8?B?TnNyY3d2dE9SYjRlb3dHRGJmSDl6K0dWZlFvTGE3L2Z4Si9lTEVha2tJQXk3?=
+ =?utf-8?B?WTZEWnBjRlJlM2s2VVlsdklyWE8wV0FPbGc1ZWJ1NTVkdmxZN3YwSWwybThh?=
+ =?utf-8?B?ZmkrWE5zOVFMNnA3RERIRkI5WlZPVTRpUGY1MDE4ek00MnhQWWZGNDZQUjl1?=
+ =?utf-8?B?ejBmZ0JidVZndE13ZGM1a2t2cmsyWHlZVXUzZGovNzZzNU9ZdE1tNHo2c2RF?=
+ =?utf-8?B?YnZ5bU44Si9BSGE4UWtVNlkvZndWTmhVQU5aVDY5ZlpEaHQ3WGxHRlJQb3lM?=
+ =?utf-8?B?a0E9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Pd/3NPcnU5SwoWjEQOxZHUbUE0qeq14G2Ysw1LxdjQKEKKorB+PKk0KM6Lqrz84nGVC+lKppLKL3TNOxyqSLv2lSnP8LzG+uxbVTPUxl/eIjmR+fPjHbEPtiHwFzeOCKFI7ANOUavgbAm54XN0GD0QOPeHb4Rd1Z8on49kD7BxSf9KX31WfMiBvBG7eKrhTToTgAQ6ON/GIMYFdBxnagpTLyNEbpZvtZsVv3VybmyZMtSDIYnhrTC5AScoIKrQYq66BcxPpisxBhhGNNCQ363U4mVLaMtSNCImA8a1/WWM0fG3zSmp8neYAdNi+Bue6vtNMqdLD00mfvQieJRrgPwgupInE1aTBcitAW0y+vqxkmsC1oyfuduKQWT9CppHgAwj5oRyug6dRb9yKmNAi4KKlHxZ2STsPEzsI69VoH4fs8D5XrXuSkGKjBxlaSxdu8jVpjdkxiGhhNVVJNJDA+fAi7a0O5RQygeMa1U/cw+OC7cF17h2FoymoHgx4R4UDh8cov05S8ip6JvhriQYbHgUVkGc4wbF8d3P4bWhfGrRkFSDB9VXVy/eRjRgr+5KrxSzDwxx4Cg7rvu2b76I31/MZit9wKaRbx2n0LjbpH+78=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74fe22e7-1ae9-444a-0326-08de0c8ecc27
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 08:34:18.3865
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i+Z1J8utVXn/w/T1A0pALEWEWj+9AnXbvRILit/Fu+myLb2qiFOqfo7X6R9l0Cz/6Fha0m+hsf4QBi0KRFwpvbddEH9af4GzjYiyaAF6E1I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB6949
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_01,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
+ definitions=main-2510160066
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAwNiBTYWx0ZWRfX9+2fArU5ka01
+ VgRngPNnIiUHDvNpqBewJk7eK6qmTE46hZ/ULQDw8vPzASx3VREByHTnLh4iEnF3CjFbnU0afl5
+ BBWCzX7eqPqX+d/Kvou4Si7eDhJ/0CA90gphFaU3bBbfEluRyF3tVt1pO4uRRg4uQA0q1qQFBWS
+ uDJnQq0bnrzqGwu+F1MG927kij+5/eCpwKsOUWLqcONZ9Af6pKhx5rZrtkV0gvnPbzP0coY7TrM
+ NMt0GQhws/seobdT7D4mm/UNxSga6Wz74LD7LG0yxmQQ5iEGN/N5AwnNcoaaYal2L+jANUN8Rlp
+ P51ZXckoL/a2Qs6g9gAvhZRu6W7Kl0CLIVTsKKJhEg6G3Vthx5Fj4ltstnYdGXFAZqKa3TnghQM
+ Eri72lvYtgcfOFBUNkoJ+FF/y2an3A==
+X-Proofpoint-GUID: s0MfEy6C1NYzR3uCPEHKr1bLpvlVxR-8
+X-Authority-Analysis: v=2.4 cv=ReCdyltv c=1 sm=1 tr=0 ts=68f0ae12 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=hSkVLCK3AAAA:8 a=Ikd4Dj_1AAAA:8
+ a=jDO9k1tB2vECKtU-ZyMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=pnI2m26_WTs5bHz79ivh:22 a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-ORIG-GUID: s0MfEy6C1NYzR3uCPEHKr1bLpvlVxR-8
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 77473C0006
+X-Stat-Signature: e7rmkc5aqn73qfgows8oj4kr7wri7mmq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25953100013
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qzud3xddhu3tp4kpe5zbfmy3p47ts5r7
-X-HE-Tag: 1760603540-98593
-X-HE-Meta: U2FsdGVkX1+xpujkUdOun/X0giJQzjkWK/0W+Cc+/w9gTnIMCKYCcCIUwWXGke1nx0T2UP//tYSZvvlmcBrbua75bKkSUXYgn8o36Rai09xMln749UqYmHLjs7ohSnLLM0rl+tAl8JRa4qpsUqd2Quwr0Z96ltyGlLppINKVJyQgjVECwHxFmh0NdyCYaWxClA3gaTdh0N0A+SxK/dqBG1x74z/qyGDCZruZbKjRK2/BRw1gWbAt1ByfGtS3Tv/TPBjVEiuIfhDFCf9+p65paTSAG2xI83XURR29qtQEJ/GSDbkdpb6aJ+Hkj8tIuzamrYLeg+3zV0Ee6+JZDlW/6pwmb3Bz3b76cNOllD4jdg30LtD60f414bPhWSrlbK6RlMb7VxRj26vo+5PWWuJ4xksBggsEVkFvHMMQq1FIneFmvyH9fR2Ss0U5YPamFhCc5pcMFrnmDkFB9/ba3xOlyZd8r55NfBZZfpX2OFLXJ7bMF5HSWeU+JOr9//XFQ8ibS0l6t1w8SoCSU+v7FMd+UsFYkKmy4jxfVKlWd/Gf4rI65ddrilcspOn7DdD2v3voE2WFEJQdHU7TzwBQigJGW+gKeZ7yXWwwJ6uU4fsB3o1QQWi08d7OoNzJ95vU49tdLk6cJl3IJdHJRLpamD9+IiQvb8aPVNkKUFVakbonYciOOVWDDdXKDNnp7YKk0FKHWo4vsEzk3y41FwhgBmEf+wrfJsIUnwDyzzlNJ4GElQajTz3mAjWNz50cVVkX66gCRYHjo+j/SqzDAPR8Za/hSWQbj1Pur87UUZv+lzK1RbgpsY48+XGkflxEJ8cBzg5Kw1fV89twbGFl+Uab8+vygIbIkqpvv1yWQd9lu8MlcKsfINlvvEM6U5DhCXaD8A7AwbgDWjg68KA5t6rWM1M8YT96tlfVqjHFSRpjWRhCikyenHlgvMes5J77CtjA27oW+bFZs58MzN7dEJIEvQn
- lE3gy49J
- /om0WQXXrtgVWNbyFTKZZ1IAwpd1zSbqQEXlVIbPwLssi/uUDCKV3K6M1xhSa9Bx5G/mGZmC+QZUOt15ROiqyRjX3x5fWR0MouZ5XlYZ91LkHlcNTWaP688GlhRjQwcZPOAXLpAuyDv3o+1rPHeVbh8WNka7NK/iNT/5z1BPBvaeYjNIRTsvkKVejFln3RlCZvMKOsm/GDbh+PVEzSA0SDEdEkWVjMKMXWafBin6JTvfDodfJ9AyGxCzIG99Vmo6FxLjiiR+g2jckrRf5QHxKyUlh86k1lrpusjbvaGQYpZgLftmE2djLIkuza8UB6DNoBzAobgeI23q7acbiCuuTJXBS+rJ53sQ9/6jlprMZfQZwBAUEWR6CYCQ6MOPT6zAMf7KW
+X-HE-Tag: 1760603680-879490
+X-HE-Meta: U2FsdGVkX1/sxmi4AP7lOVYe+a+Ib0kP+MlHOlL3UuTLieO2YRMZhFzBCOud+HdutMxDfDYTpYf57WnhABiIjkfYSMZ6kgtq+gtG4eFDRa9gqbqtCm72j0Rf3pCmxyfGyTVzO2An8XfIqAm3Kf44BYBOQhkVQo00Fe0bQGtjvkZpMi0bJx9HjEWQxP324h127krxy6ASopEiAf+TW33gqOfkYLkESv/J5t5LJrN6e1Qmr1UqvdRYFEAxYJkLwmGDa/88HPPluW357MiKjPiTm9FZBpB47cnUJI8iGpy6t/5ybRUa5ALjTRuUU2rARNcFs1VurAD7kMwV+E80gBzELb4oFTZ6B2OhzNSywXBoBjcXoRblgYWVPExW2sE6oANRnwSqzYfFhpFa8miUeXH77p/tfEr1Z4BztJHwkFLAhSLzSNyay6V3JasYZI2GWsVq4Jo7dfKGbMLPS4G40AC8ai3aCTigaqPKfs2Gc6BC52N0AdssU91EGUa2+dek6c+jIe7vGp+Ubp8lafbs/1k90f+/dVDmNazfAcJG8UbFxjSpqFlXHF4bs5xjJh9LbfTGuVCaN+c5RdB0Uuh7hMBXmovUHoKPCJPDq3wHM4YcRcrigQdxGi733rLsfJwYEIKWLShi2lBUxgoIGZU+3N0zeORC/WFLSHw8+Q61T7QVjzNQnbLUHqfhDJ/mF4UrCkT+g3Io7NtVPn8mqPAslyUzhxuIWB9UaDg9ja5FvGK5rQbY2ZPsJ5An1EK1J26E8Y0KbK6k6dVpjIM9RVR59NxsU3Q6VZezl/6vk1idT10ayVS/s4cei3tWpVoOScO6AJu8TYQXmtm+KCWEHcL3huOFPg9J8bkKgUP8UqkdvIYm4j4qQ6zuKqI/MWiMD43pbdGObqv9cyCONY26vlGcSBnPsG80OAyQs1CKQJ+9BHUkKn1XPqsHw3g4RBHK+He2e17iNu+yEXeBY7MY24HiccK
+ jlG3I6Mt
+ xqAhpjENxxqmfp3zBh3abnNogKmyWMOJxKLURzTgO+rzyPvgxO/16LT29C3ZpDHjn5KtD3q8tn2eZxtKzff9uxcv4al/PQjR8e48PM1ZJ1n01KWMyRqbq5sw1v1hYJJ4S14Pe19fIz/KEpa9Ee8EPYNNEvlMTp8n/Vt+CC3KlpJyL+vMW+dPP5pw4JOjInYccaHCbT9Rwl1rv0WQvolmcHGRfEURXkhoLBifkR04YQz6wSwKDQt6+iAWpsqJDOZv3u3JmoM4GOz1ch33gpPTvJqAaAAgZwQK7OqruTKWnpiPUc6rFacPolOFvR6pEYpCAYMvZTQR2V5Jzby1/GKVNzJs+N9+bhTGsR9ffMXNGSrpZTPC1bmAGpxuH2Y++4ncISf44coXz/CIPgqppvnj50GTAHlBWBPfk2Hr8znvbbSjh4CWNon074ut6sHR7UvddtqJCcb3Nzzq8tfGVog8mJYExpUvLRAxu9cpx/0E/ktEQFFf17Pg9COKkMWYLMWRrnlBpEx9cRRaxPBpebPPpDZdalif3D/zjlsStLjOU9seR2pRaTgZmBljE7VBTL4VEi6hskQ4oIklg/OFb4XRdodqhPh2I+ZSu0Wohskximr6p/iHVQF/0Wawe5TprA5Qo6/O0cRmptbmHNB/jlAIIrtK9uU8U4A2YY9+ohDZ/eydAMYwRz5h24iTflKQk3wiu8Er9Hkz9xj+GQdYcfEtetue8G7/2c9tUbfKhsY6s2CME5raLN6tds/sg3Z0GQFTwjPb0bnsMg7SHnNG+mI2LX7R93EbZSiJeAVdtoYdz7uTB/OJKE4KfvZoCwSaewoUHmERnIwC3ZazDk5WBIPol+IWTBw0p/jYvBXDV0RSgy65M+G2NVKwBEwNvHNInIT8tTqarZJ9xNOZqYCZ3cWXEfYml2fCevlXKy2mWYFnDcGHd5dxKibtM3oOqMLrIbsSExHxarJmmqs7Cpbg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,280 +267,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 5:57=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
-rote:
+On Wed, Oct 15, 2025 at 06:57:37PM -0400, Zi Yan wrote:
+> On 15 Oct 2025, at 10:25, Lorenzo Stoakes wrote:
 >
-> Shadow stack instructions are taken from zimop (mandated on RVA23).
-> Any hardware prior to RVA23 profile will fault on shado stack instruction=
-.
+> > On Fri, Oct 10, 2025 at 01:39:05PM -0400, Zi Yan wrote:
+> >> Page cache folios from a file system that support large block size (LBS)
+> >> can have minimal folio order greater than 0, thus a high order folio might
+> >> not be able to be split down to order-0. Commit e220917fa507 ("mm: split a
+> >> folio in minimum folio order chunks") bumps the target order of
+> >> split_huge_page*() to the minimum allowed order when splitting a LBS folio.
+> >> This causes confusion for some split_huge_page*() callers like memory
+> >> failure handling code, since they expect after-split folios all have
+> >> order-0 when split succeeds but in really get min_order_for_split() order
+> >> folios.
+> >>
+> >> Fix it by failing a split if the folio cannot be split to the target order.
+> >>
+> >> Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
+> >> [The test poisons LBS folios, which cannot be split to order-0 folios, and
+> >> also tries to poison all memory. The non split LBS folios take more memory
+> >> than the test anticipated, leading to OOM. The patch fixed the kernel
+> >> warning and the test needs some change to avoid OOM.]
+> >> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
+> >> Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
+> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >
+> > Generally ok with the patch in general but a bunch of comments below!
+> >
+> >> ---
+> >>  include/linux/huge_mm.h | 28 +++++-----------------------
+> >>  mm/huge_memory.c        |  9 +--------
+> >>  mm/truncate.c           |  6 ++++--
+> >>  3 files changed, 10 insertions(+), 33 deletions(-)
+> >>
+> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> >> index 8eec7a2a977b..9950cda1526a 100644
+> >> --- a/include/linux/huge_mm.h
+> >> +++ b/include/linux/huge_mm.h
+> >> @@ -394,34 +394,16 @@ static inline int split_huge_page_to_list_to_order(struct page *page, struct lis
+> >>   * Return: 0: split is successful, otherwise split failed.
+> >>   */
+> >
+> > You need to update the kdoc too.
+>
+> Done it locally.
 
-I notice that there is a typo for shado"w" stack instruction.
+Thanks!
 
-> Any userspace with shadow stack instruction in it will fault on such
-> hardware. Thus such userspace can't be brought onto such a hardware.
 >
-> It's not known how userspace will respond to such binary fragmentation.
-> However in order to keep kernel portable across such different hardware,
-> `arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-> compile `arch/riscv/kernel/vdso` sources with cfi flags and then changes
-> in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-> on whether underlying hardware(cpu) implements zimop extension. Offset
-> of vdso symbols will change due to having two different vdso binaries,
-> there is added logic to include new generated vdso offset header and
-> dynamically select offset (like for rt_sigreturn).
+> >
+> > Also can you mention there this is the function you should use if you want
+> > to specify an order?
 >
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  arch/riscv/Makefile                        |  3 +++
->  arch/riscv/include/asm/vdso.h              |  7 ++++++-
->  arch/riscv/kernel/Makefile                 |  1 +
->  arch/riscv/kernel/vdso.c                   |  7 +++++++
->  arch/riscv/kernel/vdso/Makefile            | 29 ++++++++++++++++++++----=
------
->  arch/riscv/kernel/vdso/gen_vdso_offsets.sh |  4 +++-
->  arch/riscv/kernel/vdso_cfi/Makefile        | 25 ++++++++++++++++++++++++=
-+
->  arch/riscv/kernel/vdso_cfi/vdso-cfi.S      | 11 +++++++++++
->  8 files changed, 76 insertions(+), 11 deletions(-)
+> You mean min_order_for_split()? Sure.
+
+No, I mean try_folio_split_to_order() :)
+
+But ofc this applies to min_order_for_split() also
+
 >
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index f60c2de0ca08..b74b63da16a7 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -176,6 +176,8 @@ ifeq ($(CONFIG_MMU),y)
->  prepare: vdso_prepare
->  vdso_prepare: prepare0
->         $(Q)$(MAKE) $(build)=3Darch/riscv/kernel/vdso include/generated/v=
-dso-offsets.h
-> +       $(if $(CONFIG_RISCV_USER_CFI),$(Q)$(MAKE) \
-> +               $(build)=3Darch/riscv/kernel/vdso_cfi include/generated/v=
-dso-cfi-offsets.h)
->         $(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
->                 $(build)=3Darch/riscv/kernel/compat_vdso include/generate=
-d/compat_vdso-offsets.h)
+> >
+> > Maybe we should rename this function to try_folio_split_to_order() to make
+> > that completely explicit now that we're making other splitting logic always
+> > split to order-0?
 >
-> @@ -183,6 +185,7 @@ endif
->  endif
+> Sure.
+
+Thanks
+
+> >
+> >>  static inline int try_folio_split(struct folio *folio, struct page *page,
+> >> -		struct list_head *list)
+> >> +		struct list_head *list, unsigned int order)
+> >
+> > Is this target order? I see non_uniform_split_supported() calls this
+> > new_order so maybe let's use the same naming so as not to confuse it with
+> > the current folio order?
 >
->  vdso-install-y                 +=3D arch/riscv/kernel/vdso/vdso.so.dbg
-> +vdso-install-$(CONFIG_RISCV_USER_CFI)  +=3D arch/riscv/kernel/vdso_cfi/v=
-dso-cfi.so.dbg
->  vdso-install-$(CONFIG_COMPAT)  +=3D arch/riscv/kernel/compat_vdso/compat=
-_vdso.so.dbg
+> Sure, will rename it to new_order.
+
+Thanks
+
 >
->  BOOT_TARGETS :=3D Image Image.gz Image.bz2 Image.lz4 Image.lzma Image.lz=
-o Image.zst Image.xz loader loader.bin xipImage vmlinuz.efi
-> diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.=
-h
-> index f80357fe24d1..3fc8f72b8bfb 100644
-> --- a/arch/riscv/include/asm/vdso.h
-> +++ b/arch/riscv/include/asm/vdso.h
-> @@ -18,9 +18,13 @@
+> >
+> > Also - nitty one, but should we put the order as 3rd arg rather than 4th?
+> >
+> > As it seems it's normal to pass NULL list, and it's a bit weird to see a
+> > NULL in the middle of the args.
 >
->  #ifndef __ASSEMBLER__
->  #include <generated/vdso-offsets.h>
-> +#include <generated/vdso-cfi-offsets.h>
+> OK, will reorder the args.
+
+Thanks
+
 >
->  #define VDSO_SYMBOL(base, name)                                         =
-               \
-> -       (void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-> +       ((IS_ENABLED(CONFIG_RISCV_USER_CFI) &&                           =
-       \
-> +         riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) ?           =
-       \
-> +         (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_off=
-set) : \
-> +         (void __user *)((unsigned long)(base) + __vdso_##name##_offset)=
-)
+> >
+> >>  {
+> >> -	int ret = min_order_for_split(folio);
+> >> -
+> >> -	if (ret < 0)
+> >> -		return ret;
+> >
+> > OK so the point of removing this is that we assume in truncate (the only
+> > user) that we already have this information (i.e. from
+> > mapping_min_folio_order()) right?
 >
->  #ifdef CONFIG_COMPAT
->  #include <generated/compat_vdso-offsets.h>
-> @@ -33,6 +37,7 @@ extern char compat_vdso_start[], compat_vdso_end[];
->  #endif /* CONFIG_COMPAT */
+> Right.
 >
->  extern char vdso_start[], vdso_end[];
-> +extern char vdso_cfi_start[], vdso_cfi_end[];
+> >
+> >> -
+> >> -	if (!non_uniform_split_supported(folio, 0, false))
+> >> +	if (!non_uniform_split_supported(folio, order, false))
+> >
+> > While we're here can we make the mystery meat last param commented like:
+> >
+> > 	if (!non_uniform_split_supported(folio, order, /* warns= */false))
 >
->  #endif /* !__ASSEMBLER__ */
+> Sure.
+
+Thanks
+
 >
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index 2d0e0dcedbd3..9026400cba10 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -72,6 +72,7 @@ obj-y +=3D vendor_extensions/
->  obj-y  +=3D probes/
->  obj-y  +=3D tests/
->  obj-$(CONFIG_MMU) +=3D vdso.o vdso/
-> +obj-$(CONFIG_RISCV_USER_CFI) +=3D vdso_cfi/
+> >
+> >>  		return split_huge_page_to_list_to_order(&folio->page, list,
+> >> -				ret);
+> >> -	return folio_split(folio, ret, page, list);
+> >> +				order);
+> >> +	return folio_split(folio, order, page, list);
+> >>  }
+> >>  static inline int split_huge_page(struct page *page)
+> >>  {
+> >> -	struct folio *folio = page_folio(page);
+> >> -	int ret = min_order_for_split(folio);
+> >> -
+> >> -	if (ret < 0)
+> >> -		return ret;
+> >> -
+> >> -	/*
+> >> -	 * split_huge_page() locks the page before splitting and
+> >> -	 * expects the same page that has been split to be locked when
+> >> -	 * returned. split_folio(page_folio(page)) cannot be used here
+> >> -	 * because it converts the page to folio and passes the head
+> >> -	 * page to be split.
+> >> -	 */
+> >> -	return split_huge_page_to_list_to_order(page, NULL, ret);
+> >> +	return split_huge_page_to_list_to_order(page, NULL, 0);
+> >
+> > OK so the idea here is that callers would expect to split to 0 and the
+> > specific instance where we would actually want this behaviour of splittnig
+> > to a minimum order is now limited only to try_folio_split() (or
+> > try_folio_split_to_order() if you rename)?
+> >
 >
->  obj-$(CONFIG_RISCV_MISALIGNED) +=3D traps_misaligned.o
->  obj-$(CONFIG_RISCV_MISALIGNED) +=3D unaligned_access_speed.o
-> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-> index 3a8e038b10a2..bf080e519101 100644
-> --- a/arch/riscv/kernel/vdso.c
-> +++ b/arch/riscv/kernel/vdso.c
-> @@ -98,6 +98,13 @@ static struct __vdso_info compat_vdso_info __ro_after_=
-init =3D {
+> Before commit e220917fa507 (the one to be fixed), split_huge_page() always
+> splits @page to order 0. It is just restoring the original behavior.
+> If caller wants to split a different order, they should use
+> split_huge_page_to_list_to_order() (current no such user except debugfs test
+> code).
+
+Yeah makes sense, though now they can also use try_folio_split_to_order() of
+course!
+
 >
->  static int __init vdso_init(void)
->  {
-> +       /* Hart implements zimop, expose cfi compiled vdso */
-> +       if (IS_ENABLED(CONFIG_RISCV_USER_CFI) &&
-> +               riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) {
-> +               vdso_info.vdso_code_start =3D vdso_cfi_start;
-> +               vdso_info.vdso_code_end =3D vdso_cfi_end;
-> +       }
-> +
->         __vdso_init(&vdso_info);
->  #ifdef CONFIG_COMPAT
->         __vdso_init(&compat_vdso_info);
-> diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Mak=
-efile
-> index 272f1d837a80..a842dc034571 100644
-> --- a/arch/riscv/kernel/vdso/Makefile
-> +++ b/arch/riscv/kernel/vdso/Makefile
-> @@ -20,6 +20,10 @@ endif
->  ifdef VDSO_CFI_BUILD
->  CFI_MARCH =3D _zicfilp_zicfiss
->  CFI_FULL =3D -fcf-protection=3Dfull
-> +CFI_SUFFIX =3D -cfi
-> +OFFSET_SUFFIX =3D _cfi
-> +ccflags-y +=3D -DVDSO_CFI=3D1
-> +asflags-y +=3D -DVDSO_CFI=3D1
->  endif
+> >>  }
+> >>  void deferred_split_folio(struct folio *folio, bool partially_mapped);
+> >>
+> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> index 0fb4af604657..af06ee6d2206 100644
+> >> --- a/mm/huge_memory.c
+> >> +++ b/mm/huge_memory.c
+> >> @@ -3829,8 +3829,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+> >>
+> >>  		min_order = mapping_min_folio_order(folio->mapping);
+> >>  		if (new_order < min_order) {
+> >> -			VM_WARN_ONCE(1, "Cannot split mapped folio below min-order: %u",
+> >> -				     min_order);
+> >
+> > Why are we dropping this?
 >
->  # Files to link into the vdso
-> @@ -48,13 +52,20 @@ endif
->  CFLAGS_hwprobe.o +=3D -fPIC
->
->  # Build rules
-> -targets :=3D $(obj-vdso) vdso.so vdso.so.dbg vdso.lds
-> +vdso_offsets :=3D vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),)-offsets.h
-> +vdso_o :=3D vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-> +vdso_so :=3D vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so
-> +vdso_so_dbg :=3D vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so.dbg
-> +vdso_lds :=3D vdso.lds
-> +
-> +targets :=3D $(obj-vdso) $(vdso_so) $(vdso_so_dbg) $(vdso_lds)
-> +
->  obj-vdso :=3D $(addprefix $(obj)/, $(obj-vdso))
->
-> -obj-y +=3D vdso.o
-> -CPPFLAGS_vdso.lds +=3D -P -C -U$(ARCH)
-> +obj-y +=3D vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-> +CPPFLAGS_$(vdso_lds) +=3D -P -C -U$(ARCH)
->  ifneq ($(filter vgettimeofday, $(vdso-syms)),)
-> -CPPFLAGS_vdso.lds +=3D -DHAS_VGETTIMEOFDAY
-> +CPPFLAGS_$(vdso_lds) +=3D -DHAS_VGETTIMEOFDAY
->  endif
->
->  # Disable -pg to prevent insert call site
-> @@ -63,12 +74,12 @@ CFLAGS_REMOVE_getrandom.o =3D $(CC_FLAGS_FTRACE) $(CC=
-_FLAGS_SCS)
->  CFLAGS_REMOVE_hwprobe.o =3D $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
->
->  # Force dependency
-> -$(obj)/vdso.o: $(obj)/vdso.so
-> +$(obj)/$(vdso_o): $(obj)/$(vdso_so)
->
->  # link rule for the .so file, .lds has to be first
-> -$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-> +$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) FORCE
->         $(call if_changed,vdsold_and_check)
-> -LDFLAGS_vdso.so.dbg =3D -shared -soname=3Dlinux-vdso.so.1 \
-> +LDFLAGS_$(vdso_so_dbg) =3D -shared -soname=3Dlinux-vdso.so.1 \
->         --build-id=3Dsha1 --eh-frame-hdr
->
->  # strip rule for the .so file
-> @@ -79,9 +90,9 @@ $(obj)/%.so: $(obj)/%.so.dbg FORCE
->  # Generate VDSO offsets using helper script
->  gen-vdsosym :=3D $(src)/gen_vdso_offsets.sh
->  quiet_cmd_vdsosym =3D VDSOSYM $@
-> -       cmd_vdsosym =3D $(NM) $< | $(gen-vdsosym) | LC_ALL=3DC sort > $@
-> +       cmd_vdsosym =3D $(NM) $< | $(gen-vdsosym) $(OFFSET_SUFFIX) | LC_A=
-LL=3DC sort > $@
->
-> -include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
-> +include/generated/$(vdso_offsets): $(obj)/$(vdso_so_dbg) FORCE
->         $(call if_changed,vdsosym)
->
->  # actual build commands
-> diff --git a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh b/arch/riscv/kern=
-el/vdso/gen_vdso_offsets.sh
-> index c2e5613f3495..bd5d5afaaa14 100755
-> --- a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-> +++ b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-> @@ -2,4 +2,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->
->  LC_ALL=3DC
-> -sed -n -e 's/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#defin=
-e \2_offset\t0x\1/p'
-> +SUFFIX=3D${1:-""}
-> +sed -n -e \
-> +'s/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2'$SUFF=
-IX'_offset\t0x\1/p'
-> diff --git a/arch/riscv/kernel/vdso_cfi/Makefile b/arch/riscv/kernel/vdso=
-_cfi/Makefile
-> new file mode 100644
-> index 000000000000..8ebd190782b0
-> --- /dev/null
-> +++ b/arch/riscv/kernel/vdso_cfi/Makefile
-> @@ -0,0 +1,25 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +# RISC-V VDSO CFI Makefile
-> +# This Makefile builds the VDSO with CFI support when CONFIG_RISCV_USER_=
-CFI is enabled
-> +
-> +# setting VDSO_CFI_BUILD triggers build for vdso differently
-> +VDSO_CFI_BUILD :=3D 1
-> +
-> +# Set the source directory to the main vdso directory
-> +src :=3D $(srctree)/arch/riscv/kernel/vdso
-> +
-> +# Copy all .S and .c files from vdso directory to vdso_cfi object build =
-directory
-> +vdso_c_sources :=3D $(wildcard $(src)/*.c)
-> +vdso_S_sources :=3D $(wildcard $(src)/*.S)
-> +vdso_c_objects :=3D $(addprefix $(obj)/, $(notdir $(vdso_c_sources)))
-> +vdso_S_objects :=3D $(addprefix $(obj)/, $(notdir $(vdso_S_sources)))
-> +
-> +$(vdso_S_objects): $(obj)/%.S: $(src)/%.S
-> +       $(Q)cp $< $@
-> +
-> +$(vdso_c_objects): $(obj)/%.c: $(src)/%.c
-> +       $(Q)cp $< $@
-> +
-> +# Include the main VDSO Makefile which contains all the build rules and =
-sources
-> +# The VDSO_CFI_BUILD variable will be passed to it to enable CFI compila=
-tion
-> +include $(src)/Makefile
-> diff --git a/arch/riscv/kernel/vdso_cfi/vdso-cfi.S b/arch/riscv/kernel/vd=
-so_cfi/vdso-cfi.S
-> new file mode 100644
-> index 000000000000..d426f6accb35
-> --- /dev/null
-> +++ b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright 2025 Rivos, Inc
-> + */
-> +
-> +#define        vdso_start      vdso_cfi_start
-> +#define        vdso_end        vdso_cfi_end
-> +
-> +#define __VDSO_PATH "arch/riscv/kernel/vdso_cfi/vdso-cfi.so"
-> +
-> +#include "../vdso/vdso.S"
->
-> --
-> 2.43.0
->
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> This is used to catch “misuse” of split_huge_page_to_list_to_order(), when
+> caller wants to split a LBS folio to an order smaller than
+> mapping_min_folio_order(). It is based on the assumption that split code
+> should never fail on a LBS folio. But that assumption is causing problems
+> like the reported memory failure one. So it is removed to allow split code
+> to fail without a warning if a LBS folio cannot be split to the new_order.
+
+OK fair, we shouldn't be warning if this is something that can actually
+reasonably happen.
+
+Cheers, Lorenzo
 
