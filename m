@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CD0CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 21:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71FCDCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 21:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C8718E0029; Thu, 16 Oct 2025 17:10:56 -0400 (EDT)
+	id 69B3A8E0013; Thu, 16 Oct 2025 17:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 078BE8E0002; Thu, 16 Oct 2025 17:10:56 -0400 (EDT)
+	id 67AD98E0023; Thu, 16 Oct 2025 17:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0738E0029; Thu, 16 Oct 2025 17:10:55 -0400 (EDT)
+	id 588578E0013; Thu, 16 Oct 2025 17:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D83C18E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:10:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4A5213AD9C
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:10:54 +0000 (UTC)
-X-FDA: 84005222028.27.62C4C51
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 408518E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:47:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA77386F92
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:47:44 +0000 (UTC)
+X-FDA: 84005314848.30.EF778FC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2AE991C000C
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:10:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tMIsdnEG;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3A7401C000A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:47:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5TPF4h1;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760649053;
+	s=arc-20220608; t=1760651263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y4jFRnAOr0dg4XHLgf1Bmfn1kqWTnjJWnkTccVUl28U=;
-	b=t7e0KSZDFxpV5U3ne28j4IUcyzBtv+OUKhysfXgVY216ewqGja6FvjuwJeADR0rJi5A5pQ
-	SZBZVTOh/nvpE1jzNbWtErBg+vwUBdyBzpDuyTv68+c3csuaXFqm5txNa1B/Q2NLGkwV6z
-	MNNMLwn/X+JSaBreCPh8aUK4dBx65BQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6Qn94BgJN1I/pTalflI57p+vF+omrb7YFJ3RXAzX7ec=;
+	b=ksZ3N1MkumDDztK/nwxds5f+4noOmNbcHSyraAkRWX6DoA3q8GzwHOEIKVvFEu5TLH2JQK
+	AdUos3S8ur57fPyZZfIvbVjFLUx7EqtETCqGCIeW4EHViEsLu6Ks98EsM3oqO5U+/3D4i8
+	+181IMPxHsSVOqfiXeLueM2bZHj6zxg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tMIsdnEG;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760649053; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5TPF4h1;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760651263; a=rsa-sha256;
 	cv=none;
-	b=HLrrWBRBxIod84yr/FGOGtkJujB8NaAz/gOARQpAbbUZY4Ju3eACnaKXcMPgmXNv5Z4If2
-	oOYN/1MpfTFn7oge1chm1rS1V5CmUW0RxNdmUmAFq826y0xIFsh6G0Ki4ro4tWOFmNY2Po
-	olD5L0mI5WsZDSz3YJYnpups1Pxe2co=
+	b=btZHhULd0kizeREgghCpE4ioAnhDy5p1dJMAFXWyaXhldd8zf0jJEbKC/vJL0pN7VccYNG
+	XTkl1+IJ+BADoUXAwHSwLerY4/Haj/IwaKM4qzuSjerA3FTCUR5apQe1fKLqJ8EOo/fH+7
+	RgcGX6XDH1g6BrduhGHc1AVDAXFeJAM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5DA00601A3;
-	Thu, 16 Oct 2025 21:10:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CB2C4CEF9;
-	Thu, 16 Oct 2025 21:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760649052;
-	bh=udbT2Uw9/9LSBWgicmhF40FOD8d0WVUT4E1G6lBM7D8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tMIsdnEGRjraIxkLmDAKIaWmx+XjAhRBRaST6evWWblC4vMC0GWML50Vu7nv0BUAe
-	 U9OfHdAjpPOxm+sI/F59U7Ri4Z11dPBS8P0KCfIDu1AqULQQ8iuyJCDym0s0kHY3Qw
-	 DZukSIZQ/RIEDjWUxnrlBS5TCp/At1ZtLaoJeefw=
-Date: Thu, 16 Oct 2025 14:10:51 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand
- <david@redhat.com>, <linux-mm@kvack.org>, Zi Yan <ziy@nvidia.com>, Baolin
- Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, <Liam.Howlett@oracle.com>, Sidhartha Kumar
- <sidhartha.kumar@oracle.com>
-Subject: Re: [PATCH v3 1/3] mm: mprotect: always skip dma pinned folio in
- prot_numa_skip()
-Message-Id: <20251016141051.27e9ce8b47aa242724ae97a4@linux-foundation.org>
-In-Reply-To: <0d26ce96-2c59-47bd-a034-d7810ce6aa5f@huawei.com>
-References: <20251015123516.2703660-1-wangkefeng.wang@huawei.com>
-	<20251015123516.2703660-2-wangkefeng.wang@huawei.com>
-	<47f69b78-8141-42a6-b04a-f67ba0b90ee9@lucifer.local>
-	<0d26ce96-2c59-47bd-a034-d7810ce6aa5f@huawei.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2AE991C000C
-X-Stat-Signature: mpjcsmraqb7iemxtnu9e7sah4hwqqfnc
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F6556412B;
+	Thu, 16 Oct 2025 21:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E558FC4CEF1;
+	Thu, 16 Oct 2025 21:47:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760651262;
+	bh=RINJiyTikiCSrabu3YKbaCnLP0ZEjScHL1FfEOY67sE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i5TPF4h1h+JX0pSFrm5nYS4UT9bNVvnMIafjwjgt2VpykD6J/qjRAzpm3l6gA44e1
+	 8W1uHL0mZP8kN29CaJ2hG/SrG/HvqLyna66MAzK1j8763yRE157exXKJBDaRvtb1xD
+	 meHmwHBkwhJUrsCHUhskq62xXQkphkpRs/5/1b5l1z6YB+p1MUsiPcgjpYXzdQDtaK
+	 gtqo9Sb02SfKwCR3tzjQO3L0qVYwD8+uHeBVgEVvtQETYTihZXqGeDY0V4nUUawTNe
+	 oEe2HozesoxP5FEnzoszPdrb9U3mW5JFmvkIV8aBddHYKGVBbmTM3zBJuGRw5a6tOt
+	 mCgLTA/cpazBQ==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	bijan311@gmail.com,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/5] mm/damon: support pin-point targets removal
+Date: Thu, 16 Oct 2025 14:47:27 -0700
+Message-ID: <20251016214736.84286-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3A7401C000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1760649053-809410
-X-HE-Meta: U2FsdGVkX19JxciR/QaJUBQywGn62wqAI0kNi81eUlVgKRE2WdNezHD3vqT8M5VkDlSMRgqt/Z87OsFzu4/zxfioyCbtHjVUL8TMmbIeg7Wv4hpbq1n2cd5Ab/nxybxwwpUx8fA2VKyGge94+ef8iTteA0JBk6ADZ3GRPC93V/w0Xh96hRaPQBAl14FQCxJZ2e0NgN4cUvyLacw0Q4Cg4Qwc9vwD8W5OuiMpKq3S2YmgjyQOVOQZj5jVoFnBVW5ofm4Cny+Eq9nBMw88R8iwTwuXgAQFnQrW+GLSHVZcKBqBKbnwyWoGDGHrIZaNhhv26NfC+PXDF2uRmjIgL1CQLHwHGGQgohF73AUtzefnDoMo9w3v3EVlZDYCCn5jHf1Mq3SXYVZni0uIl5X6kQd/FhdPZ/X1Wq63UDkpGxmKr7zo0jc98ZXqQFWvKVcBoxFaalfg2+D2B7nc1JwV72dCxIKe3Ks/ZHrE43jjRMTyrwefS69oUIUWAYYCjreEwelVGR3w0n0fqjP6TylgNFRJ1SX3nCcrhcMbVnUHoPZgTIjHrWl8VSP/J6vU3s3JYh6tXgJR9cD06cl7LGr6sOWKaA4ObXq/Fvlvw/XpLXXVCods+A3l/mqe29lAUBNlVFvEnVu+xh8ghLLmBl/+VRJqKpUQmCFXDjrh1cuPhRH2iQPmJy66e6VDr1B/jan2S0arPpkcsDwPvlDnOqo7swGls8AVNY3cSL4/la3t0dNk9LXVjromin7UT33Qc5SAj7UYIODCRdbsdjlSh5FIujLcDu+mleijkiuZb+L1wefXP+c6yA3/4+YEs0TEoNrpzS7Uk/cHPJ9i9BYH/xzSe30V6GKfwSpn92bx/zLaZd0OBF0wk6LtgHfQ89vxG97bqdcKbPPkfAhwlZq9fJ2U47EqfV92bROPz25z2nDNDDh5q5OUF6XRVhF1vUPMk7rwnZPtZBOHWOUUICSP3Gr7ZyT
- +En59OV3
- uZSfvtB3cyUZAtKVu6e63HscjJMT0z0hM7jOzjnNuqwxoAAMwYiykqdoaEQo+knbmOSgmyhEBwvTSKFC2JQykXyayUDNto7S95tLAiFpnqatQglaXZCpgRXGpoAMEiJnSroRe5tgDd121w7UPNWP3f7zcNs9dAOBLF8Vi67R1Y+n/mOfjOyw6Mmc8vd17P5rWNXeERP71vHZErxZD7XA2PdzHZruppWASmG5P5YJPq3o6iHw+ZzVyq46+pTDsdLhnguBQYLV8TrgYdheq4JuJeidlvFKEGNBTPB+LHxX30bWtNxT2QiMMPXYwfFXudHx8vHgURV+2akn97iIKgJkHQLw2hg==
+X-Stat-Signature: br7xomqq537b6msso5kmj9urx93jzchj
+X-HE-Tag: 1760651263-144694
+X-HE-Meta: U2FsdGVkX1+m1k9lhgBBek/sooqVWV454iRulvwneY7GShLU2WYZwksz/19X+lVo88ABKBgxc0jVw8RN5R8NGddD7TCVbyHmaf3heJuoDuV/wC6UHF/3KatkPH0KepjKMm44x/TYY3SSvgxPVGPOAC1fqeQI9mj2T2sm8pk4KsUMOMlkOBBFerCMu67DRKayIymaXqcuPOsbH8qjkpsqegoFFvEFJ1fcuPo1TN02u4HoAxSjF2RuBTreUwQnYPsFF20KjXcKpQobwUskt9lkQSBnun78/uMQfni4ghumfPJ5T6mpLzvio6TyGCT6WBQrNu97PKzv4QgU7Od6t1E8mkIy34JkQz1VBxcy/NJXOTrBtcA2HppQGHqZUgGXX+pdR0IiPgWOW3Lsavt7pz09WENt/70TxSMZV0xTAxfMJrwhaJ81Y3XTkCU65NXkSAZvSV3Ur5RRXuSzYdVKoWUYCA5IPoY5Uu7FaCben4T8uadrnQWaOUihHEfJSH38tKCKlAcprNTjaHsELcsM1xRz1JahGMbqpZJPMUhDSyoSbtNaT3ROAwqSV2KeCyuqu0vnt/ooUb4GuEEc332pSG838807UWD0PCoqLlbpqOQB12FguwMrmYCQQh2lvyHYrQT9gFjIvZmV9b3G8gCHrFL/tF95ZQ46JjzrohIK08a1U5zwFYkLrOeUDwY3lcUZIO94wgAXxgABGQawjZwwwbai/vbNDrIUPH1wL+veP6gDae2ZOwldT8RfVoKTAUkO/6lwbOWmyodSfN1NVc3WRHSqcHmN6ANZ/VScfVCMa90KuMsT2jaTQ8sNXPyPfyRXW5GyvPH1Qc3X8fKWAJ/hCc7QNe5CpFCNAJp4j7UGE4kisnbQDCXfiivOFQSZbb2PabRP3TLKvuiZJLDlQxC2ofgPaLgRwNfIXxhLYcnplYCqTtfAisDsF0bSTrpnK3Co9bZsZ/Nim7+PoWmDZApQKt4
+ xphg4cqc
+ 2MQ/T0quYKVNtNYfXfgNMQctLi47663lLQSaIKbAQIEqQeYEHufYnwKmnE3cA2z/knRvkDY4HfvIf+oOHntQWSaJpHX9MWp+YI63ZEPzgMEkgevOH9+X6J3nxXDT7HUNfD/pbC0MI376IDzLYUqWoBIiH8FEXvlBUpCYcYNZWzFyAaKo3Vx8C0LaJ221FgXC7IHsrHrr/k5drVztPMf21zECX+XeEv0+XbkUpXItGcNK86TY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,25 +102,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Oct 2025 09:00:34 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+DAMON maintains the targets in a list, and allows committing only and
+entire list of targets having new parameters.  Targets having same index
+on the lists are treated as matching source and destination targets.  If
+an existing target cannot find a matching one in the sources list, the
+target is removed.  This means that there is no way to remove only a
+specific monitoring target in the middle of the current targets list.
 
-> On 2025/10/15 23:32, Lorenzo Stoakes wrote:
-> > On Wed, Oct 15, 2025 at 08:35:14PM +0800, Kefeng Wang wrote:
-> >> If the folio(even not CoW folio) is dma pinned, it can't be
-> >> migrated, so always skip pinned folio to avoid a waste of cycles
-> >> when folios migration.
-> > 
-> > NIT: 'when folios migration' -> 'when folios are migrated'.
-> > 
-> > Maybe worth saying 'due to elevated reference count?'
-> > 
-> 
-> Hope Andrew could help to update the changelog.
-> 
+Such pin-point targets removal is really needed in some use cases,
+though.  Monitoring accesses to virtual address spaces of processes that
+spawned from a same ancestor is one example.  If a process of the group
+is terminated, the user may want to remove the matching DAMON target as
+soon as possible, to save in-kernel memory usage for the unnecessary
+target data.  The user may also want to do that without turning DAMON
+off or removing unnecessary targets, to keep the current monitoring
+results for other active processes.
 
-I changed it to this:
+Extend DAMON kernel API and sysfs ABI to support the pin-point removal
+in the following way.  For API, add a new damon_target field, namely
+'obsolete'.  If the field on parameters commit source target is set, it
+means the matching destination target is obsolete.  Than the parameters
+commit logic removes the destination target from the existing targets
+list.  For sysfs ABI, add a new file under target directory, namely
+'obsolete_target'.  It is connected with the 'obsolete' field of the
+commit source targets, so internally using the new API.
 
-: If the folio (even not CoW folio) is dma pinned, it can't be migrated
-: due to the elevated reference count.  So always skip a pinned folio to
-: avoid wasting cycles when folios are migrated.
+Bijan Tabatabai (bijan311@gmail.com) has originally reported this issue,
+and participated in this solution design on a GitHub issue [1] for DAMON
+user-space tool.
+
+SeongJae Park (5):
+  mm/damon/core: add damon_target->obsolete for pin-point removal
+  mm/damon/sysfs: test commit input against realistic destination
+  mm/damon/sysfs: implement obsolete_target file
+  Docs/admin-guide/mm/damon/usage: document obsolete_target file
+  Docs/ABI/damon: document obsolete_target sysfs file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  7 +++
+ Documentation/admin-guide/mm/damon/usage.rst  | 13 +++--
+ include/linux/damon.h                         |  6 +++
+ mm/damon/core.c                               | 10 +++-
+ mm/damon/sysfs.c                              | 51 ++++++++++++++++++-
+ 5 files changed, 82 insertions(+), 5 deletions(-)
+
+
+base-commit: f82c3c7358c244b2ba14dadcae822c8d36cf2163
+-- 
+2.47.3
 
