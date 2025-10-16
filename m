@@ -4,165 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BD3CCD185
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 00:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC51CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 00:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F36D8E0035; Wed, 15 Oct 2025 20:39:11 -0400 (EDT)
+	id 393318E004F; Wed, 15 Oct 2025 20:46:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A3EC8E0008; Wed, 15 Oct 2025 20:39:11 -0400 (EDT)
+	id 36B758E0008; Wed, 15 Oct 2025 20:46:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46C2F8E0035; Wed, 15 Oct 2025 20:39:11 -0400 (EDT)
+	id 2A8168E004F; Wed, 15 Oct 2025 20:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 319B18E0008
-	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:39:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BADD7833DA
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:39:10 +0000 (UTC)
-X-FDA: 84002118060.21.EA8A04F
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 550A2140005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:39:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760575149; a=rsa-sha256;
-	cv=none;
-	b=UlCuUMSw9EDeeoj7hOOqLFPCYvGW/T8Q65taF0UJZUKuzuqHn0wY/8mTGde3GQ/01HIhVI
-	3KHJIRQ3j39XkxmFqVjJoT9N7tK9/WzdpTRtBL15a+sZF1uX22mW6imendDEtQyo7CXLeM
-	z51tMRg6Kebr/s4W8HjVkfofBB9RBG4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 175C98E0008
+	for <linux-mm@kvack.org>; Wed, 15 Oct 2025 20:46:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9134516013E
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:46:24 +0000 (UTC)
+X-FDA: 84002136288.30.60CA6C7
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D7123160010
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 00:46:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LO2EVWI+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760575149;
+	s=arc-20220608; t=1760575582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LuXI50/6tAEAjARg0bR1W05fYC0JZzg2N2vQIAS38HE=;
-	b=Kjpkhc5RlNTxwBqTXemn5ljn0y+KtkvieddX+hNNAIeFVYdlt4SiGQ+hKmUYSURQTSxqgL
-	yQ3ujCqJ1Ck53ZXLqI6eNRSohdVGoxGfvdxeaRkZxHk19ErGs5DZOWK3VvNli2yweAEr0G
-	QiUphdlH8JDHHn5Kyf9OFdrazMY2H1g=
-X-AuditID: a67dfc5b-c45ff70000001609-f3-68f03ea9ff1a
-Date: Thu, 16 Oct 2025 09:38:59 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v17 01/47] llist: move llist_{head,node} definition to
- types.h
-Message-ID: <20251016003859.GA2948@system.software.com>
-References: <20251002081247.51255-1-byungchul@sk.com>
- <20251002081247.51255-2-byungchul@sk.com>
- <2025100230-grafted-alias-22a2@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025100230-grafted-alias-22a2@gregkh>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sb0xTVxjGd+499/bS0OVaYTvKPixdUFP/DSTx/TB1W5btJtuii/vC9sF1
-	cmMboLjyT+bMqkjHmFNoAl1bYAVmLW23sRL/INQgal2jMHCEkUpBEJUGmBu2cyila2vM/HLy
-	y/M853nfkxyOlrewqzmNtkTUaVUFClaKpfOprRvbt/+lftV1QQkjh3sxRMLVGBp/drNQ7TEz
-	MPiTC8FEpBpBVVcMQ9Tok0B48aYEYl4fgoYhIw0POpZZmL20gKB+cpoFU+gwhtCVd2B+opuB
-	WPAeBfbpZQqiDfnwfWsnC4/7f6PBVD+IYKbjKwRexxEW7tSepmE4cp8Ff/03LMwPNVLwZwcL
-	tiNeBpqsxvioJg+GodklCqymysQxQ0H9j90ULNqdErjeNobBrs+EKYdFAkuTWRCzFYHPdU8C
-	s3eNLExcNTBwVn8rvvzwJAXuY3dpqD4fweC5PcKAN7AeWgw/YDA3j8XfHQ0j8J2bouD3840s
-	HOs4zcC4O8aA3vqQgRuuQQzXfL9i8FvaMZz8Y4h6PU94WHUcC87OM5RQdSPKCu5mNxIePzIi
-	oao2Tkc7y4WT1+ZYoa5/o9BlCUoEm6dUOHp5nhE6HUqhrSdECS0LEUYIzG7bte4j6Wt5YoGm
-	TNRt3v6JVG0L6CX7x5kDJ4xWRo+6cA1K4QifQ66bZtin3FbZTicY85mk0qBPZlh+LRkdXUzq
-	afw6EroSiOtSjuatGcTVb04aK/kPyYjLmbwg47eSgVMtTCIk52sQ6bV0U0+MFcRvnk6GaF5J
-	RpdDcZ2LcwY5tcwl5BR+C6lrOI4SnM6/QnrPXKUSPYQfTyFzJgP1ZNNV5KJjFNci3vJMreWZ
-	Wsv/tTZEO5Fcoy0rVGkKcjapK7SaA5v2FhV6UPzj2g8tfXwOLQzu7kM8hxSpsluO+2o5oyor
-	rijsQ4SjFWmyrQfn1HJZnqric1FXtEdXWiAW96EMDitelGX/U54n5/epSsR8Udwv6p66FJey
-	Wo/qUg+V6B4wTY92TnVl5w78y+lLo1njSj67O71mz3ettbz03eBbPZFAeEN5466Mmzt22huM
-	wzkvvJ82dtk5EUzPznz7MyfxPpcW/gJO5C9++ctA7Gvjp9Jv//6g+U1/T8CQW7hj76Wcl9+4
-	o8197/m1bUsH/dYtK+g16uBL5nxtq/J2jwIXq1VZSlpXrPoPX6yAprQDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTdxTG83/vNOv22mH4h/rFGrNNI5u76HFuxsRs/OfE7MO8hJhIM9/Y
-	BiikVYSZJYXaSdwi0KQltDILxNJRLAjqZKRLU0cdMgTEMUQuYjqxyGVBkCBQ9tJlmV9OnvN7
-	nic5H45Aq2JssqA3nJCMBm2WhlMwiv07LVu8u/7WvdMd2gF9hUEG5maLGbjQUM9BcVMFC91+
-	H4KRuWIE84suGqwtKwws28I8zC484GElEEbg6LHRUH+1kIJnjTEOnt6cQWAfjXBQHi1kYNrz
-	PQLnYxcP0bZUmBxpZWFlaIyCP59PIPBEYhREgmcRLDsy4WJ1MweLnV00lNu7EVSNDtHwpFE2
-	r4aHEQS8RRz8VXqNht7Iq3BvbpqDdvt3HEz2XKBgqpEDd1GAhUqXDYGlpoEDR2UTAy0Pf+ah
-	5+kSBYMOGwW+pjQY8TxmoKO0mpLvk1NXksBVbqHk8YQC++VWChY8dTz8XjPIgMe8EVydvSw8
-	8jp5WBrdCivuHAj7xngYKrEz4J/sYnfbEZm3nmdIXfN1iljvLnOk/od6RBZf2BCZvWShibVU
-	Xm9OTNPkTPMpcqljgiMv5v7gSOC5myG3qzEp69xCWpxDPDnzywD/xYfpio+OSVn6PMn49q4M
-	hc49YOZzh9n8EpuLNaMW5hxKELD4Pq6x/EivakbciC3fmuOcE9/A/f0LcZ4ovomjbQMyVwi0
-	6FJjX2dF3Hhd/BL3+eriBaW4Hd+prWJXQyrxHMJBZyv1r7EGt1dE4iFa3IT7Y1GZC7JW49qY
-	sIoTxPdwmeM8WtVrxQ04eP0WVYqUzpfazpfazv/bbkTXoUS9IS9bq8/6IMWUqSsw6PNTvsrJ
-	bkLyV3q+WSq7gWZ7U0NIFJDmFeVD77ROxWrzTAXZIYQFWpOo3H56QqdSHtMWfC0Zc44aT2ZJ
-	phBSC4wmSbn3kJShEo9rT0iZkpQrGf9zKSEh2Yz06o/Hwj/51207mHnfMv+o274vLRb9laf2
-	7ymaPCvORAwzpGHzYTKcf6Rkj/ezULqQdHzntoB1fPzaukLz6Q2nbiWH1+B7qbql4N72T9M7
-	mIuN+wY/ea3iLf/l6s/X51ahyh333x2/O9U19ez2oQN9bWWalLTh3Rm1M+vV/qTfYodvaBiT
-	Trt1E200af8BW/SRTpEDAAA=
-X-CFilter-Loop: Reflected
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=DybicCIAAnWMrVWVtE/wSbSxIbiEfhd9wpDlnlEPQY8=;
+	b=vSuKD+RrDdAAFOaYb2ci54383mKzsyzfv7cMxEskfraYjNdgMuQpoQ08F8WdhwUy+LQQ3r
+	qAmCJzY9QYLMndp/ZOrmPaiFCLayhpK/hXo1baH1tI+0y1B14aU5T/XBi5io1extrbIto4
+	kCLG4TdwYhqmKfeXDocmSqqH3a2KYPc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LO2EVWI+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760575582; a=rsa-sha256;
+	cv=none;
+	b=fZ/dIDTIxJAk+wMmb38ED3rjJVkoCvyeOrdrEMyZ3PonPsDfKE/E072IjwAXCMKsNZpUtA
+	EBzWJ3Hjb/d73fwXgcI5kvgEuMn3akhHh03AVRZVpUjHKVv7XQ5+tSamVvoJMgcUiICL/w
+	m9tSdgoxQmuK+BDo+dBNUCy+aKDfT5A=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ece0e4c5faso170664f8f.1
+        for <linux-mm@kvack.org>; Wed, 15 Oct 2025 17:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760575581; x=1761180381; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DybicCIAAnWMrVWVtE/wSbSxIbiEfhd9wpDlnlEPQY8=;
+        b=LO2EVWI+nXSCDlfpdMwyztNgvRWbSGDdqpG32IL+w7wo4RVnM2umnwnkM6hsiEksb5
+         GN1wpv6IAK6VbPqlt9jXYM0gM3wBWDp1gWC09kewnzZmOtrAfWgOu88h31JTU+y4F84N
+         y2wYjq6WTD7sXhxwe0Spq2J8rnJHmdJ3rfwygdTybK5C0bTqbdxxBk+naWd/ptlD09Vz
+         pgCU6TzsVhi432TGXTYUOcvn2G/b/vHThow17Akp1/Yjb75jOylmel6WBxJRXop4SbjC
+         yrzwYkfPNX3B3DieHxZIZVNmn0wllW3DF2zcfmS3SRFDNHlEfdLIXJPGpZmzbnTz5uJD
+         6CUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760575581; x=1761180381;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DybicCIAAnWMrVWVtE/wSbSxIbiEfhd9wpDlnlEPQY8=;
+        b=jkVRRbF63JSDOOTAei1Q+Ey1Zqsob2KaOf/DYeMwHKNQ9fXrOjcNtMleGGPlZtr6rK
+         LvwFB4UjYU3DETR0jUNAJiTnnNZxm0B9ZVbXIfMbl6B2UFGOaVMxEy2t+jhfwrd27xs6
+         SQs8wW7XyQXwRRjpxfnyyF8FwImq9IcrWupC86zscSdoa+0Kbf/B8kVI72FQcSuyxvp2
+         IDsx4Bl+oMOMJuP1zqNe0TXNJZc4KSBrXluxzCGD5NHnAfRQVTSg6lmNdZq2IUWW/YVg
+         FqgJcpgdetcclTDh2b3YfjxN8innPmPi990kjZ7yI7qjaRcKhR9iVjyHoQrYUwV5Vs8X
+         FHcA==
+X-Gm-Message-State: AOJu0YyCT3Rm4mi7PeB5MPti8e+eBsUKIbMxjAhEvhBYQB/ubVD8UwVe
+	M9pLfa0Tq02vYDxpwXsVsSRvenHHaxpjM7gUHkxyNNXNIbZGJUHflfc3
+X-Gm-Gg: ASbGncvJEui8Y1rOlWBGb4l+Q9poWJzC/Gu05y/UyQk2hGH/JZVYmga5cANMnKqhz9z
+	1sobjTbaNElWPg4wcxyuYOzvQ9F7ZwyWwDzhj5BKM/jH4gtw4MRZjr+X4mZWIHpjZTVYC0sEVwu
+	BPM+/p2ypaNWxy4jJjWnbDy+n1LmmoexW2caupy/PqntG/5ZgC6zF2hPloQTOh1drB+hxAltacA
+	ghlNFBDwUJEN5CazW7K+/aCsK/urmBh7rRD7IbykjB6k6fQuWKAUp40mGqKF03OM06Q6BU1x91a
+	T7y65ESIbcolS6TIpW4MqGF5P3zx3r0r1z72a2ok2Tj1glmbnBLCapzZWjPNmtEKD5Pz1QVBWNO
+	e/S97X6p2+w7QhF9kUvnBMo4jPFGLoUs6PL2bzV9VvPUffy5HJ8Q2N/78gidBVZOC7k7u1NETJv
+	eGoNokEJgSEw==
+X-Google-Smtp-Source: AGHT+IGRGjaNq3j+nRp27GkpGfVXhEViDLCxJes4PGiQKePV40SDpgr88n7QzOSiAxTMt/zTAKc5vg==
+X-Received: by 2002:a05:6000:2c01:b0:426:ef1c:91d1 with SMTP id ffacd0b85a97d-426ef1c91e3mr5195896f8f.41.1760575581065;
+        Wed, 15 Oct 2025 17:46:21 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cfe74sm31167443f8f.35.2025.10.15.17.46.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 15 Oct 2025 17:46:20 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v2 0/2] mm/huge_memory: cleanup __split_unmapped_folio()
+Date: Thu, 16 Oct 2025 00:46:11 +0000
+Message-Id: <20251016004613.514-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-Rspam-User: 
-X-Stat-Signature: cpkj98isfduc14bkyki9kxhao46zh3nn
-X-Rspamd-Queue-Id: 550A2140005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760575148-196275
-X-HE-Meta: U2FsdGVkX1+HLmgVMfxg8KlsiTwOSiozFAtOLmOpmZacOR8NJwFVnq+MgcgNKA3gdweKfTUrFlYTcVlPvN2zkchkaYYhApCGhh2pGmCs2kJfGnLrtzL/G+ZFF/vPkaad9sXyitNCGv/sNn8tbuig4fC7Huo1CxRBHHsOjTytiJTk8/NJIY0C5D4AiwCv1nwj7vNqvPmQz8SxkGSPjL8ftwM5Emh2SzqHJDrQTTaAAfYAGJ8b39CeLRpNRiQ1Sca0AOm7rBIZMBrlg1GtuJcRjRp5DKxrQ9JoPMxWjONSSacKkHPZ4OjclDoLq2bggYZsoNi1iqps1fQpLfotvtY7SIXzmVUranQ3qciO2C6q851kOLnCQoJZ0qD/5JUt0OWtsMi/3CJPqVd2h3Tc0nC1ldMrWXwWW9zjagGCp1U5Ol0tkAB3JyWt3xe1MUQCaKjJR3i/wDW2pRE62X8UZuOLoP/3xwaCwU44SlKOK0AXSRmCy5BuKN25xWiShnSm6VQAYJMNAqB8z1dmlQwk9PDZjvTHiXxg0BDLcIenFDMKiwvvGvaq3nKD2KrArrX8cLSlWSS6lqH0r2FssUu89rit+5z8fPrIN+REGcCv8i0yYfiqwUvKpVvrUrprzww3VKwgsbaNtKUTi2oOJ/IYet+4H+rJxzY6/tXru9V4lE+CgdtTa7BVrI89zO1zYQBfGnFgJP0B2ZWnqJU1pS7HmxRQxs7QxZtPQJwTyNyhk8D+5X8ovLcev8rH+EByetvDhZ+5zCIHvtDdr1T90m6aRKmmg5cpRUs3eVMR6ziAtU0Qwuu7bc6RH2rZBCTaszQ1wL/F/7ltJudCc/7b0ZDL5/wYl56Qx+jMtb6xj0l7ES0YTT/9E36uNRgFAUliBaNlrR/opYWncWKUUxHQZT8FCcrgLAlY1visg1CrRMdq1I9zGRdp6nZEjJs2ANgx1UHn2VKia0dLuxYY3tbtp4Mp0bz
- 9SRlAyd+
- uNXBJeo2gx8bPQQZZ9K7IFS/hTul//jB4YrvZRCv+J7eG3htFjSn69tf87AasDEfsp2aX
+X-Rspamd-Queue-Id: D7123160010
+X-Rspamd-Server: rspam03
+X-Stat-Signature: og1jp4exjmoc5mpxhc3swpyqy4dpw5uo
+X-HE-Tag: 1760575582-300829
+X-HE-Meta: U2FsdGVkX19pcf2V/q/wbmKahIEO4BmfOJN6hbH33Sz3DtBJNS4ASuIU9JiGcNU1WggDX8I4NIrF5wjQVXdWsatdWVv8tDixrh8P+7e4DhF34BMBppXeYVbLcf/pF4cA9BJTp4PDfU9XKU3YdTbuvMcNmz0M570NxYKkjdR9QI7NEOgv75SjjKdQGHZpfEwhj0PIr4pzwuxy7w3yJ33OHJPh+oz37T/d22kFHJPB9Ds9VQ6tzhpMcB5WdtNPbCTjV+SZujhGeVyh1vCgM8diuut8ITM2TVkEzfYaBlNajW8yQrjFcCgOqDZN/3/4YPVaqiLtcvosEOKO4VSY7G6JAmTKTblOsY/ur6kt52MguCC4U7BC8Cmcst9PgdfikVd/D3Qlzvs+Vy9bBNi83KyA8PF4lQEibt1D13O+cOc8PJTR5jCHZjdiEc9I3VrLNJ/aqmLVx+zq1VPi/rS7hBFbTy7LA5Cw7wBjLiqY+qRuJd4dJruVjLFYC9unir/l55Y13+52HlsgbUFOm43XJ4aerB710C11mqCR3xa0iwf2nAlx3LhreIQrcQqu1C/gFKFzuq9ONfZgaKvvNRrDWYKRbicBzaT1nYYVDu+/tNh7EhjjDqxybzPFDiKh20XFrjLedRnmevmP5qQ8UDhqxw7OSjzGK+sCaVpPQ3HVnxsRHMHqXsH1VyMCAAnGrMnW4kCIgJPVQdP6pzAtanSHJ0mNQ7IFbdVdCTe4CCxLaBTVF9QNsYNUPTqj4lFnykTpyLL+hP0Vyb1Et1DQgMdDyvjx48ZPUDho/sLb/uIWDSbq4r9NvAZTZI0SsR7KiluqohtXIKYGtC7Un0CpIf238LTnSXc/CgWGOnCm4guNRyiGkty8q2NDDoYpRKWHN4SFHejc9V/zxeiHgYWBl9lI4rzfl6kJVtB1n6soWJZfg4hM+HR2blsKYT2VFhh3qNnCV7Vo8+Ndfb3oOVk1jyvFmwg
+ CLG+x44k
+ KxdOXyxXVmwjo1DWRWw6vb8Nc0s0XoRSs49QV5GYDtDy+fdGhplgAwxWznVcVBWhkFbDcDTPDdWtwvuPaJ/ooFpdcXA7EiQ45IiVUVbVatyvyLJphPtZ31mGtUUo7/z1vfjoBu6Un/lgreApBrTkwtDgWSXTGOBq2MFgNYOx74/2gFjshJIrzrfzciKHubXxhTN8bOYnjtLCUqSDsxz55vB9titQQqbBQ88rXZh4QwbRCpA5LhIUh8yTwvZxBlf44SSBwRy3NoCyFX5oN39fSJKAoD8sV41F6ql2mh/MECj5Q5D8NRm935iwYk4DQdRNgOaJlaROR0Pr/xGnfPyNF5eHZFUnT5DHm+iGPYypf1zp+Bk7v/NIIHaW0JRmkdH3nCuvvGa5wXpgniozCMgKiwbJNYwzqFDRfd1UalccQ4y0tcg2Qor9ehmYpjaTWAi/5eBO/ysEJyAhU1/FajkL7UJOoEsrExsp+BS0XtFOAmTPQTr8LaqEdpZuUCrWm9gU4iwMR1nl0AKBTY16mlSmJUSV7WImZXh8AiKiLF4FPh2AQ4m/LIQyflrpAMSVYSj7EQUs3Y6RC4yfCZKr0uXRFGYtZ/Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,26 +121,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 10:24:41AM +0200, Greg KH wrote:
-> On Thu, Oct 02, 2025 at 05:12:01PM +0900, Byungchul Park wrote:
-> > llist_head and llist_node can be used by some other header files.  For
-> > example, dept for tracking dependencies uses llist in its header.  To
-> > avoid header dependency, move them to types.h.
-> 
-> If you need llist in your code, then include llist.h.  Don't force all
+This short patch series cleans up and optimizes the internal logic of 
+the __split_unmapped_folio() function.
 
-Eventually, I found out another way to avoid the dependency issue.
-Thanks anyway for the feedback.
+The goal is to improve clarity and efficiency by eliminating redundant
+checks, caching stable attribute values, and simplifying the iteration
+logic used for updating folio statistics.
 
-	Byungchul
+These changes make the code easier to follow and maintain.
 
-> types.h users to do so as there is not a dependency in types.h for
-> llist.h.
-> 
-> This patch shouldn't be needed as you are hiding "header dependency" for
-> other files.
-> 
-> thanks,
-> 
-> greg k-h
+The split_huge_page_test selftest pass.
+
+v2:
+  * merge patch 2-5
+
+v1: 
+  http://lkml.kernel.org/r/20251014134606.22543-1-richard.weiyang@gmail.com
+
+Wei Yang (2):
+  mm/huge_memory: cache folio attribute in __split_unmapped_folio()
+  mm/huge_memory: Optimize and simplify __split_unmapped_folio() logic
+
+ mm/huge_memory.c | 69 +++++++++++++++---------------------------------
+ 1 file changed, 21 insertions(+), 48 deletions(-)
+
+-- 
+2.34.1
+
 
