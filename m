@@ -4,126 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D242BCCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 17:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38082CCD199
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 17:23:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0D218E0005; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
+	id 4B5C38E000D; Thu, 16 Oct 2025 13:23:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE5058E0002; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
+	id 48CF98E0002; Thu, 16 Oct 2025 13:23:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFB0F8E0005; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
+	id 3C9DC8E000D; Thu, 16 Oct 2025 13:23:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0218E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 814D31602DD
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:20:04 +0000 (UTC)
-X-FDA: 84004640328.23.A940B37
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9A720A0015
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:20:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WTLU2qjZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C1978E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:23:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B958A1403B9
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:23:38 +0000 (UTC)
+X-FDA: 84004649316.13.61E0749
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F289940009
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:23:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Cptmv/rQ";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760635202;
+	s=arc-20220608; t=1760635417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
-	b=ult392POHMSRBzqCCfYwBEwMWDZgOPS0HWqo8t/LkoHI50eivIFAhmMsg/sikk9ukCLLIS
-	44gywSeh/0KBkBWe0n65N/umEeY4nNheuRtM8gjXdv4n+NUEb3AbaSFBZsJnRfrNR/AAlz
-	6H+AmYmrNe75dMsNdamX3/IKe+RNqFY=
+	bh=4rCT4znV237QOkBlxQoKrSlSCe6zr1l4d7Z1n6pK7lg=;
+	b=liHO8wizUr2LqzFfooj3sEt05LxRY0b9SzfCq267g4Aw9r0EIKe2rPA2T13DvgNv7Hdqzd
+	MZsb8J4afTkqyFjpIANWHG+UFCxsa/MkkxIaZ2JA1pEqHkAwpqvkFTxHXzg2xuuPJQMlns
+	IsfVXjNgd0YWk9xRl0QaiQyblk3Tr/c=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WTLU2qjZ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760635202; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Cptmv/rQ";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760635417; a=rsa-sha256;
 	cv=none;
-	b=KsDU8AZgSJEe44jVUD0L28b1v/1gq/EQvKr8sSHerzx2Qezf2Z9XN/pQc55DK3BoTOyqG4
-	Heix151SUkFrkTiasy72CKvuaOLWK+mKafWi/WC+AyHwbgNZJe2heoaPOJskR3A/AEjDsn
-	AB/h4IPDhEfWZmfDVVVgGGfI/WoF/4w=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2681645b7b6so8715ad.1
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:20:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760635201; x=1761240001; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
-        b=WTLU2qjZjS9Svk0bN5Nocf4v53ak7co8clUfbAnIZpXrDm+UbxvCwq/Vd99BckP445
-         FMT1vekFWUrprah2uME7igOYhBq7S5sMBU/L1/NfE1caP+Pr9i95N3xyTbjCt38/X0eh
-         pPSArJ9Es61TwbEiaP63jiOUoqZvyl2WSybdRGqTKC69cOdw7F3U70qJMoatqBK9fQov
-         XFx+PraMbYDXpeUnj+ploaoJGStJrYlmouUrkeMU5JIYTlfyFMp4FCOL1tPmuWce4ScK
-         rA1NDaM19B+H8RVpcfBoz2gM5YzzYC8U2n0bT2azAQlrZuKWlOCbJ+fLycOvwZtguZ+B
-         6Qtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760635201; x=1761240001;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
-        b=aQs9wFk/w8pWTDalgEbbXlTtszIrjiABP/FlFrfXx1ExPsHd16hVW+NKi9A2BU5v1q
-         FKr5iSE/T/ArYZMbUvpryBrMi4dIfzAQ30dTe59eEW/fya15utbQRGVoIjvKol/iNDFl
-         gCS6UWC7KZbEj5SaO4Esi0ki2u7qzEFqHrd2z/n3y86Z63miM4Qwrrey1jez9uAYxAD+
-         ryYrmzFRsUGK8gvgTdwjbN03KYTp6J14ZpFgnPMcRWgDdkB32m/pvdTCQtuvQgLYYp3j
-         ENGasSq0bQXgZv1APS49LK+jZa0pNqXgN5iGBHeSMy5jP/DXWYWbLBl7wiD/FtUk7vxC
-         BMgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYBy4bsoUb2+MfQrd93TrXv68V+chqqYlbbuU+wZX8Kreze3+aBlqlKq6KUhBYRxfFLLZIfXO9ug==@kvack.org
-X-Gm-Message-State: AOJu0Yxxm26gXz9/0i5eJoVUbtGRgOrLP+f3T6B66BKvAroBSjBV8Yq6
-	w/tGqzJ4S24AVIHZX3wYKEzXjULqic7LbhzG02PexezoQSXTIHPJBBZD0PAHFT6vQUhdbCEdgEh
-	fLp/g8IU9TwIj0zH9nYDU625XoBHqcHKENToAZCW0
-X-Gm-Gg: ASbGncuWtVslQarWbGQuRx6O1QPe5W3tDpkCO0u2gXZ7eeq9mOeRfgVp+9NqPgmPY2r
-	gMU8r0UQtQ018a93tIE7RGlKAwpEXHweo0IXANR+0MJVmAjNoT/wC/RfAojs51RBq6dNS4keRO7
-	te+WHdqdzR5/e54DPn+GnZuYR+4DZfBetBvSg4mpRRqN6ZJNMK09x8N8V0AwtMcE3MgZCtrn0w6
-	XbBynjz0IU4p5wPZ3hlEMTc6ag6a76f5BBlWrA7Qgc1ReqieHeAfCTIZPIECeOR+FJwc0m9rJNB
-	Iw6R01GpRjCkYvmx3dfBOWQp
-X-Google-Smtp-Source: AGHT+IGaLBYMUVA3dp2bngz8sd3zdctlajyDpg4Q5ej9rYFdWUESUT7d4RcwGFB4ciRjNT7T8e6kC8pvy75+YgR2Dh8=
-X-Received: by 2002:a17:902:fc87:b0:290:cd63:e922 with SMTP id
- d9443c01a7336-290cd63eff9mr828755ad.15.1760635200981; Thu, 16 Oct 2025
- 10:20:00 -0700 (PDT)
+	b=EojlXVwx/SBTAy6pTqVV0kiICk7DY9Jt1lmVC0BPVTnDRoLmkYcRCM8V4t8f57sidfjVF+
+	ZX3Go1bH8oaGntj7wYJBwGkAkcSVKpc8zuLGxqCDYYGPzH5BLFU8qI+fQKQTWwX96vzcW3
+	zdp/hNf4XRopRL6qWKaANDwQ9xzT7K8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ACEF43905;
+	Thu, 16 Oct 2025 17:23:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6947C4CEFB;
+	Thu, 16 Oct 2025 17:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760635415;
+	bh=8KRuOdH4Sfs4m7wXTsUqeB7BF0nvFp/6nP6RfB3vC9w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cptmv/rQwjCU+10SBpptRWsJuD63lNF0MMf7RXVIGHafcknkln+9JuU26krey9Zgo
+	 kcGIqczaJhZyLB3waJHIP5ZXdqg+wtuNtSlxX5xgvpADcvRia4n6jX/gfBfLpL9ZoB
+	 WADQbY7H39rjtZPZmB53I7xcSTigi08z+2KlmEvKJ/RkH3W6pMSSnrp0jnm5+e8R3C
+	 wQDKgLdN/ylAeZYEEK9aGbO2waDGwWIsu4G+kwXodzQGj+EFUMRO8I1f/ghku16Ps5
+	 OgIGHEimWmIAwf2O/knQxg6WunIwkTCgCFMpmEEN0kpnpye3PD4BwJlfvIBjyWChTA
+	 A8x4NSp6Io+4g==
+Date: Thu, 16 Oct 2025 20:23:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
+	dmatlack@google.com, skhawaja@google.com
+Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+Message-ID: <aPEqDfajAlNnhoeN@kernel.org>
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+ <20251015053121.3978358-2-pasha.tatashin@soleen.com>
+ <aO9ZiERHff7vQiBL@kernel.org>
+ <CA+CK2bA5Eyz6TUMTy3pa5HBvZ7KkiHX3EHn17T=d6LX_X5i3bg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20251013235259.589015-1-kaleshsingh@google.com>
- <20251013235259.589015-2-kaleshsingh@google.com> <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
- <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com> <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
-In-Reply-To: <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 16 Oct 2025 10:19:49 -0700
-X-Gm-Features: AS18NWDUcYhiaJ_iuWpblZjVBlLRKBf3hDw80qWBei6Spqkt0F1pWUwG8jn-Ias
-Message-ID: <CAC_TJvdy4qCaLAW09ViC5vPbj4XC7_P+9Jjj_kYSU6d+=r70yw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit checks
-To: Hugh Dickins <hughd@google.com>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
-	kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
-	SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+CK2bA5Eyz6TUMTy3pa5HBvZ7KkiHX3EHn17T=d6LX_X5i3bg@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F289940009
+X-Stat-Signature: pg997bftafj5xmncnrymugjzppy61p71
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A720A0015
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 884reirrzehggc6yyyupci5oxbmeecap
-X-HE-Tag: 1760635202-488452
-X-HE-Meta: U2FsdGVkX19z/O4mL7uf4VtKCG21zZEYAvSDMm+gFvkwR2t+JMsOfq9xCYDYIBgfx1FoIQMDRHCnoQiAwvfeAbMrbcApVqRoRJY8wGWQLa+5luOR0bZ9fJeMTikdNfk3asSTP9SmbM0cSbb4EogE11eHq1y0zg+PM2CCWAliWkeCadBjyrlTMRjlSavZ6G1tqr63clcABZE0/K5J6IrPRRpIJ2fLnz1Rd3T+dh/JsCNTRUOqt5nRqoXJK3isAoDvZ+H25/jeit27f8Uxi6tbUHRqL/73G/fdRsejQ2nFN9Qz4PHNZndVqF5iH3AJay561XZd4xdeOCs87Jh0naI6EGAueMZQTTjlOd2s+Dby08FLPju7F1SAhTzo+NmfB8JBpQ7r6EFoR58HB8tLHxkO/s5rBeS7bdfAArOX87mbosG/WAGe0mPCWZ/aZ8fGgWmZxq0K6VU9aqmDUglIm5Hv/q5GT8sOfLCKHETHH4YS3o6gX2V4hhyNgpr2Th/b6sEhPieWGgJSYYBEHZkfcFzyZBjeFCsqL1S8pavkKtxx9mcl0Ha7NLN71N1gLtxRobmxPoh1OBdI4zOc2wm4Qcgoi66lhr9nzpbEm/GwQXwW+e4WstRtBFADNsccbU98k9Z8eJfN5xs7h+sg36mDtp2KJg8c0i89UZM3DOndbPg3qu/2CcJL6e5jqFW9k22aErjMbyAnxQgZXJ4by63sfQ8+jDyCYIjxoyipOVqU/+E5wiFsefAJWsFkvmAGmbq5VSqlykj15njNB1aVJfLrzo+0R9ZkgqZJa31bMybAagHOesjVE1Z0DmU+KVEx6QjYuVHiZ68NA/3ma6aeolXd0VF2YiULkpnaaJFdlT78SRGC0EJY92F3uIW1aNmn2MCVnBMPJHMYFNRhrdCa3KgUC7K5YQ1bf2pYkwp6ksgLnB7D25g8W8tYKGIBCGZ6DWGaP4wNPWQ5KfRpoOebMysGPx8
- U2KQUANV
- vdfzS5aJ1I8ShE9S55fQyUsnGEOcXfxfCHeD4zO4ES2nkdvNM48/ZjqzAUd8EkcKJZISyTFf0D7d4fArpVMzIypM15+/BUStVRjyvsUCIaNOrhYkgYSNriIPyH/RI4a3Tc0mQZ+SItKdrpBKrJ6ipxO7+4zunhvN4zMUsPSfLaK9A+mSwta5KlkMH/Osbmm+5wP2fN4oBFkLNj07vDyucH0ASb/fpxKNqqLXJ
+X-HE-Tag: 1760635416-502061
+X-HE-Meta: U2FsdGVkX1/F6rfUbW9S7l6ajj/Vx0G+O8xZruTjIymhOQGi1F3VV1hECqUQ2oAG9zGrxboAENfC/vo5DCo59UkAEenXUjJ3TEpfvHjsv59K4IptYScAGEO/pO6xFk9Grcrpdf3JZrkULKRbrcKfb/iG8TyDThu8oDcNDCPgpp+CjC0o8Xl7gQ81e/XfE00zsmSQN3e4WmaYBG14s+lDzuNNNQ4cintulQ6Lao8eZJ/G2q1Gu8cohM5lP7rPkuZhdxKb3x0Yrx5ygkaltzaJFnulssZzVPXkcOyMeGIRvA1Hw9HikDSLitzCb50VoIVgTNKGWxITC1YIMgU/oi+gPCvpilg6tZdlJfNFL8ej52clQMpA3ehy9o6oiPIlDOM3ay3oHQJhgstnrbZSqNTID9cMJX9bSNJ6YQaz0LGVxRrV8qko1dTjXRuK8KGYjYX1ugoa3I/mTamwHJul27bcjV/Fwv6tMoAvovEjdxvdXmrzKEL8+6OQndOwD5Od9Gk6az+gxUYHIDZ7esgGml6E7b8ULVzKf71vGyRCoZvPuzGE/fYbpnXXr0qECVfT0P+bkBV5Wz6KXsCkVhoRh5/chy7YsyvjrJSZP/bmVWrO6r7rmZ4fhSnKGOJxWllmq+jDqj4Hbk9022p5s87nrwX77pCCUsQIZR2Lg5mKdSsFIbVTXqlVmNUy2QnRRfOFzJzyzxqRDa7zfHrEFSvVnJc1plkIcvHf+wbbAsdN2YHbL+10APPRrLeqO5CODRKo2YBur67dGfLEbgVrI7d6z5gZEtNDBtf2yUKAUYSpu0+dLtHvAfOyKu2BdPmwc1FQ3/TynCxtxzeyEFjlp7wpTCbs8rRczROIwfCHMhR/o2mII7ENDplvBznLMayd5FvJ7KntYdUGJT5GUnWPFP1DqdQf+htnGatm03BccZZ6+g0MJiPlLn7ePoxmf9xJZJUvZGWu60vKFUWNhKa47O8V2rJ
+ Pw5ezE4e
+ UfDc/Hw6R4Q3wSDl1e9HQg7hBCnaWdDT/EC/15Rrxcns6f+2iER8EWUXM+mQJBLOa/iyOztujqa8MJOn22NDyQB2wEMvPL5VmoqJwx+mRfTTIrHp5ORNRxmYRc1M4Wj1Fwq7Xrkr6EKg5CDvVmM5faICwNojvrQppLLsZabP31qdyzB0jXIQoJfW1rTBZXWzj+02wC+HQKO5NagGbeLFXTnEO/i53HzbvOWlQtseVA7w4TIy3I+HWXZass60BvfcON8b+3Je0vxWsnyvLysEYInI8Kj/9dEbQLOrX/CgpIR8lvxBOO/G+O3IH4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,137 +99,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 10:05=E2=80=AFPM Hugh Dickins <hughd@google.com> wr=
-ote:
->
-> On Tue, 14 Oct 2025, Kalesh Singh wrote:
-> > On Mon, Oct 13, 2025 at 11:28=E2=80=AFPM Hugh Dickins <hughd@google.com=
-> wrote:
+On Wed, Oct 15, 2025 at 08:36:25AM -0400, Pasha Tatashin wrote:
+> > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > ---
+> > >  kernel/liveupdate/Kconfig                   | 15 ++++++++++
+> >
+> > Feels like kernel/liveupdate/Makefile change is missing
+> 
+> It's not, we already have KEXEC_HANDOVER_DEBUGFS that pulls in
+> kexec_handover_debug.c
+> 
+> That debug file contains KHO debugfs and debug code. The debug code
+> adds KEXEC_HANDOVER_DEBUGFS as a dependency, which I think is
+> appropriate for a debug build.
+> 
+> However, I do not like ugly ifdefs in .c, so perhaps, we should have two files:
+> kexec_handover_debugfs.c for debugfs and kexec_handover_debug.c ? What
+> do you think?
+> 
+> > >  kernel/liveupdate/kexec_handover.c          | 32 ++++++++++++++++++---
+> > >  kernel/liveupdate/kexec_handover_debug.c    | 18 ++++++++++++
+> > >  kernel/liveupdate/kexec_handover_internal.h |  9 ++++++
+> > >  4 files changed, 70 insertions(+), 4 deletions(-)
 > > >
-> > > Sorry for letting you go so far before speaking up (I had to test wha=
-t
-> > > I believed to be true, and had hoped that meanwhile one of your many
-> > > illustrious reviewers would say so first, but no): it's a NAK from me=
-.
+> > > diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> > > index 522b9f74d605..d119f4f3f4b1 100644
+> > > --- a/kernel/liveupdate/Kconfig
+> > > +++ b/kernel/liveupdate/Kconfig
+> > > @@ -27,4 +27,19 @@ config KEXEC_HANDOVER_DEBUGFS
+> > >         Also, enables inspecting the KHO fdt trees with the debugfs binary
+> > >         blobs.
 > > >
-> > > These are not off-by-ones: at the point of these checks, it is not
-> > > known whether an additional map/vma will have to be added, or the
-> > > addition will be merged into an existing map/vma.  So the checks
-> > > err on the lenient side, letting you get perhaps one more than the
-> > > sysctl said, but not allowing any more than that.
+> > > +config KEXEC_HANDOVER_DEBUG
+> > > +     bool "Enable Kexec Handover debug checks"
+> > > +     depends on KEXEC_HANDOVER_DEBUGFS
+> > > +     help
+> > > +       This option enables extra sanity checks for the Kexec Handover
+> > > +       subsystem.
+> > > +
+> > > +       These checks verify that neither preserved memory regions nor KHO's
+> > > +       internal metadata are allocated from within a KHO scratch area.
+> > > +       An overlap can lead to memory corruption during a subsequent kexec
+> > > +       operation.
+> > > +
+> > > +       If an overlap is detected, the kernel will print a warning and the
+> > > +       offending operation will fail. This should only be enabled for
+> > > +       debugging purposes due to runtime overhead.
+> > >  endmenu
+> > > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> > > index 5da21f1510cc..ef1e6f7a234b 100644
+> > > --- a/kernel/liveupdate/kexec_handover.c
+> > > +++ b/kernel/liveupdate/kexec_handover.c
+> > > @@ -141,6 +141,11 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
+> > >       if (!elm)
+> > >               return ERR_PTR(-ENOMEM);
 > > >
-> > > Which is all that matters, isn't it? Limiting unrestrained growth.
+> > > +     if (WARN_ON(kho_scratch_overlap(virt_to_phys(elm), sz))) {
+> > > +             kfree(elm);
+> >
+> > I think __free() cleanup would be better than this.
+> 
+> Sorry, not sure what do you mean. kfree() is already is in this
+> function in case of failure.
+
+There's __free(kfree) cleanup function defined in include/linux/cleanup.h
+that ensures that on return from a function resources are not leaked.
+With kfree we could do something like
+
+	void *elm __free(kfree) = NULL;
+
+	if (error)
+		return ERR_PTR(errno);
+
+	return no_free_ptr(elm);
+
+There's no __free() definition for free_page() though :(
+
+The second best IMHO is to use goto for error handling rather than free()
+inside if (error).
+
+> > > +             return ERR_PTR(-EINVAL);
+> > > +     }
+> > > +
+> > >       res = xa_cmpxchg(xa, index, NULL, elm, GFP_KERNEL);
+> > >       if (xa_is_err(res))
+> > >               res = ERR_PTR(xa_err(res));
+> > > @@ -354,7 +359,13 @@ static struct khoser_mem_chunk *new_chunk(struct khoser_mem_chunk *cur_chunk,
 > > >
-> > > In this patch you're proposing to change it from erring on the
-> > > lenient side to erring on the strict side - prohibiting merges
-> > > at the limit which have been allowed for many years.
-> > >
-> > > Whatever one thinks about the merits of erring on the lenient versus
-> > > erring on the strict side, I see no reason to make this change now,
-> > > and most certainly not with a Fixes Cc: stable. There is no danger
-> > > in the current behaviour; there is danger in prohibiting what was
-> > > allowed before.
-> > >
-> > > As to the remainder of your series: I have to commend you for doing
-> > > a thorough and well-presented job, but I cannot myself see the point =
-in
-> > > changing 21 files for what almost amounts to a max_map_count subsyste=
-m.
-> > > I call it misdirected effort, not at all to my taste, which prefers t=
-he
-> > > straightforward checks already there; but accept that my taste may be
-> > > out of fashion, so won't stand in the way if others think it worthwhi=
-le.
+> > >       chunk = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> > >       if (!chunk)
+> > > -             return NULL;
+> > > +             return ERR_PTR(-ENOMEM);
 > >
-> > Hi Hugh,
-> >
-> > Thanks for the detailed review and for taking the time to test the beha=
-vior.
-> >
-> > You've raised a valid point. I wasn't aware of the history behind the
-> > lenient check for merges. The lack of a comment, like the one that
-> > exists for exceeding the limit in munmap(), led me to misinterpret
-> > this as an off-by-one bug. The convention makes sense if we consider
-> > potential merges.
->
-> Yes, a comment there would be helpful (and I doubt it's worth more
-> than adding a comment); but I did not understand at all, Liam's
-> suggestion for the comment "to state that the count may not change".
->
-> >
-> > If it was in-fact the intended behavior, then I agree we should keep
-> > it lenient. It would mean though, that munmap() being able to free a
-> > VMA if a split is required (by permitting exceeding the limit by 1)
-> > would not work in the case where we have already exceeded the limit. I
-> > find this to be inconsistent but this is also the current behavior ...
->
-> You're saying that once we go one over the limit, say with a new mmap,
-> an munmap check makes it impossible to munmap that or any other vma?
->
-> If that's so, I do agree with you, that's nasty, and I would hate any
-> new code to behave that way.  In code that's survived as long as this
-> without troubling anyone, I'm not so sure: but if it's easily fixed
-> (a more lenient check at the munmap end?) that would seem worthwhile.
->
-> Ah, but reading again, you say "if a split is required": I guess
-> munmapping the whole vma has no problem; and it's fine for a middle
-> munmap, splitting into three before munmapping the middle, to fail.
-> I suppose it would be nicer if munmaping start or end succeeeded,
-> but I don't think that matters very much in this case.
->
+> > I don't think it's important to return -errno here, it's not that it's
+> > called from a syscall and we need to set errno for the userspace.
+> > BTW, the same applies to xa_load_or_alloc() IMO.
+> 
+> HM, but they are very different errors: ENOMEM, the KHO user can try
+> again after more memory is available, but the new -EINVAL return from
+> this function tells the caller that there is something broken in the
+> system, and using KHO is futile until this bug is fixed.
 
-Yes, your understanding is correct. I meant that currently, we allow
-for an munmap() requiring a single split to succeed even if it will
-temporarily exceed the limit by one, as immediately after we will be
-removing one of those VMAs. However, if the process has already
-exceeded the limit, say, due to a non-merging mmap(), then an munmap()
-requiring a split will fail. It's not a big issue, but I found it
-inconsistent that this succeeds in some cases and not in others.
+Do you really see the callers handling this differently? 
+And we already have WARN_ON() because something is broken in the system.
+ 
+> > > +
+> > > +     if (WARN_ON(kho_scratch_overlap(virt_to_phys(chunk), PAGE_SIZE))) {
+> > > +             kfree(chunk);
+> > > +             return ERR_PTR(-EINVAL);
+> > > +     }
+> > > +
 
-> >
-> > I will drop this patch and the patch that introduces the
-> > vma_count_remaining() helper, as I see your point about it potentially
-> > being unnecessary overhead.
-> >
-> > Regarding your feedback on the rest of the series, I believe the 3
-> > remaining patches are still valuable on their own.
-> >
-> >  - The selftest adds a comprehensive tests for VMA operations at the
-> > sysctl_max_map_count limit. This will self-document the exact behavior
-> > expected, including the leniency for potential merges that you
-> > highlighted, preventing the kind of misunderstanding that led to my
-> > initial patch.
-> >
-> >  - The rename of mm_struct->map_count to vma_count, is a
-> > straightforward cleanup for code clarity that makes the purpose of the
-> > field more explicit.
-> >
-> >  - The tracepoint adds needed observability for telemetry, allowing us
-> > to see when processes are failing in the field due to VMA count limit.
-> >
-> > The  selftest, is what  makes up a large portion of the diff you
-> > sited, and with vma_count_remaining() gone the series will not touch
-> > nearly as many files.
-> >
-> > Would this be an acceptable path forward?
->
-> Possibly, if others like it: my concern was to end a misunderstanding
-> (I'm generally much too slow to get involved in cleanups).
->
-> Though given that the sysctl is named "max_map_count", I'm not very
-> keen on renaming everything else from map_count to vma_count
-> (and of course I'm not suggesting to rename the sysctl).
-
-I still believe vma_count is a clearer name for the field, given some
-existing comments already refer to it as vma count. The inconsistency
-between vma_count and sysctl_max_map_count can be abstracted away; and
-the sysctl made non-global.
-I'll wait for feedback form others on how to proceed.
-
-Thanks for the thorough review and discussion.
-
--- Kalesh
-
->
-> Hugh
+-- 
+Sincerely yours,
+Mike.
 
