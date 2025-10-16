@@ -4,118 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53406CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 19:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 526F9CCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 19:10:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 634A78E0011; Thu, 16 Oct 2025 15:03:11 -0400 (EDT)
+	id AB1238E0013; Thu, 16 Oct 2025 15:10:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60CA48E0002; Thu, 16 Oct 2025 15:03:11 -0400 (EDT)
+	id A88CE8E0002; Thu, 16 Oct 2025 15:10:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521BA8E0011; Thu, 16 Oct 2025 15:03:11 -0400 (EDT)
+	id 977AC8E0013; Thu, 16 Oct 2025 15:10:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FFC78E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 15:03:11 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0BB88C03FA
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:03:11 +0000 (UTC)
-X-FDA: 84004900182.05.C742FE1
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 08203A0005
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:03:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HKn7JGqI;
-	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8453F8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 15:10:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD7AA1A0418
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:10:12 +0000 (UTC)
+X-FDA: 84004917864.29.DF9D0D9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 32E61140007
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 19:10:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NjLeukwb;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760641810; a=rsa-sha256;
+	cv=none;
+	b=Lr7TTPquQX3J48rgJE4ngjEIQjM/D5/8JJT1zdgN6o1wSIFrs+gPIX+0i6QpLZZyCX2MCy
+	7bBE+8BOeICFayHd8WN7JbOk9Zm6eLM37hbofb8CK/96z6/8wmRjpuOCmsM2ey0olSF+tD
+	uw2wVsIV9OpUj0ZcfbV3nsWsUZn059g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NjLeukwb;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760641389;
+	s=arc-20220608; t=1760641810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bElOFzybJYApx11r2UithqZnt7BeVh4JMgw683hHLlM=;
-	b=CPQvNnT4lWYBqI5Gh0XXV9dhQQIFX1fAy7PcBm2G9R7GTjlFDatKKLc8NRv3iexvNiIW/f
-	gqBO1+/rv10MXRSsVgR5dhFIq65DeYYe5dgs07hPO0fVs2C7pfB6CvNpHV/L9qavPSUgN6
-	bWWO98lv97ahAFqPYMuAS0mFII12H0E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760641389; a=rsa-sha256;
-	cv=none;
-	b=6kBiCvJAnhXh9VFZtopvEimnOnwAjXji9wXNcgHxvfPS/ST79pHOhCkV20f0UhT+8iaodY
-	U7HzhU8mxgJYrYr9fEaWcFsSqUVA9VyxXmR/roLMj3KBeRxo7VyR/VqHISz6fi4YvmxmiB
-	PY4SEdY1LSPrshEUbMNAcGYQU7dnkrI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HKn7JGqI;
-	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47112edf9f7so5971535e9.0
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 12:03:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760641387; x=1761246187; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bElOFzybJYApx11r2UithqZnt7BeVh4JMgw683hHLlM=;
-        b=HKn7JGqIYGjSDI6xfZ5nVXI7LKvJHg6H9yyAmGHRkE2Dr06mQEdaYsrtlEBH+LyLaW
-         TI7GsdIZmLAw6uqiYzbyUtWB180Qm2D232iiYogC1ZXXvSE1/DEaxn3y23ckdFBeS5e/
-         QDyn8SybUDD4VNK/gzA35INTc2ijezzDCePZWL2lEGZKnBUGWqm/8eSMImUk9+bPQ4HH
-         PErKz1dCU1wysrS6sg8W/QfEwlJCFUvrBobjM24V8silrz63YfgfFEl3LUkAK/6V0zBX
-         hzk9rmIL1LJO5rSUeeAk+bGVy0Yu4vdGaJOlwTIuV68jzklRQOh1d2AW3gR9YgHJKsCx
-         5WmA==
+	bh=+3AAg05Yf1Z3P5L48FsHnTWstB0ReAZ8G/euj8J0YSU=;
+	b=rzPeoUIOcGzwDtdO/L3cPMRG9b+I4mhWCdi1hqmbuyqL3PFY5U3TWltdlYZFPU5u92KPgs
+	01KdeHJDfDpM2ApeVnvcdb3CeOj4h5a+UZxX8nj347MHcZKRvcfpljQz6D+ZAmcIJDcWR9
+	MnlDGDxcqw/4/PKY5FFP/WeN5JMu2o8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760641809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+3AAg05Yf1Z3P5L48FsHnTWstB0ReAZ8G/euj8J0YSU=;
+	b=NjLeukwbyEwUSijjrrh3WkN/oVmKT0eU5Mx7mjQtaYMYe6sk6MYR6IlqjLBWBccdSXPs9M
+	npELlC/RDxWIfU6PtFYgLlj9tNNg+QGydnECoMMQBOJXdeWUPX4UAyPXGcnrt/TPnpxZzj
+	tlW8c3+khb3dYS1ewIG60os4IKvbdhk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-Giln9wB3MVSX9bTfy8ojpQ-1; Thu, 16 Oct 2025 15:10:08 -0400
+X-MC-Unique: Giln9wB3MVSX9bTfy8ojpQ-1
+X-Mimecast-MFC-AGG-ID: Giln9wB3MVSX9bTfy8ojpQ_1760641806
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46b303f6c9cso11693355e9.2
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 12:10:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760641387; x=1761246187;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bElOFzybJYApx11r2UithqZnt7BeVh4JMgw683hHLlM=;
-        b=iQiIxZhra0h1y1eeD59PzsUevxVdq1CwseThtteMD2BFyF52kFXgKoD3qzVKO7OAxY
-         chUIPakSaBn+WY9ATm4wv0BGK3nhKoQZ35h7ciGt96y+WVmlSngKaUawvtjbdJ8lSRmQ
-         evigcnciSJmpFjutP4MI/zxxD66YzC6nEV804ar14K8uy6L+JyhcW14kZIuQVNDsaSah
-         7yGLD/+dJ4CuvTWtj9oAoJiuBE5deWuaHXEV/Q7CG32pd6REC5zYE8heSepn2yc7bjES
-         TGE63A9/cpvZOE0jBvFNzAHrB4heP5JcYBKB1UHqdqkvfSyWA2FO7pabqOlTK/Bbsbgs
-         Le8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXQG5bADmnqHKlZkmrm745qtIfV9yvefH1vtxAxK+feSYyT00KcFNpn2kExarPs7zRFJ9ZG2EA7fg==@kvack.org
-X-Gm-Message-State: AOJu0YxSbOm1q3GjT5IAbTyWY8QnSBr8ZZR+a2E6VILR9VoGV574Dgl7
-	9XgoXrnevoluND/q/c2M2N3jYeSbUHJhatwY9zNsK22chqalPwSOuIpl
-X-Gm-Gg: ASbGncvSS6/gApdFSBjxkwSWU6ra6vrRskaMt3LZH6QHRZnm7hJQycPS2PeWwbWM6ER
-	DyPdfDIaQsPvRcXHVgbl11x+GUgcNzvMjuPN/Q7Jwc/3oKwe5mDTklSIxZTM/+/O1LFXLHLGcvz
-	UBr5GpHAqerJCEed4F1DDEm+51VfsmpxuGvxG5x1lqUDuQ1W+DR+3h89TpZpQIrxeBQLDND5E4x
-	WqyKHeafeJlQlvP+Fd2dJEmwgdsf9WjOAzLWmXhO7WIy2PJ+Yx/8zob+VgVPDvqk5A48zf1wotK
-	8mjLRXGMBKPVxGRtK4gUR1W/TPhTuP5pLzSaCX0PndMsP3dv1vIhK12zKti9eN3MiL1pCI5pULa
-	1deaAyRnqTZoLx/eYwHRmdHPqjkJB/9Uat7oodOhAlmlbbRvR+zDfbtSbOOjhjAEdgY35wY3KIp
-	H/hRBZPSNKrqyt7ZGm
-X-Google-Smtp-Source: AGHT+IHpqR+b9nmFiD5VjfH6g0TM8Sg/3RCXImNqlBAhdaTBB5kxjSgRISQMrKRjkf7dkKnh9/bQZA==
-X-Received: by 2002:a05:600c:3553:b0:46e:1cc6:25f7 with SMTP id 5b1f17b1804b1-4711789daf3mr7304675e9.9.1760641387210;
-        Thu, 16 Oct 2025 12:03:07 -0700 (PDT)
-Received: from fedora ([31.94.20.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4711435b06fsm52679605e9.0.2025.10.16.12.03.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 12:03:06 -0700 (PDT)
-Date: Thu, 16 Oct 2025 12:02:59 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RFC PATCH] mm/vmalloc: request large order pages from buddy
- allocator
-Message-ID: <aPFBY_OtG0YTAaHv@fedora>
-References: <20251014182754.4329-1-vishal.moola@gmail.com>
- <aO8behuGn5jVo28K@casper.infradead.org>
- <aO9pUS3zLHsap81f@fedora>
- <aPEZdHJlNOofy5tm@milan>
- <aPEubI4kWvzSC5RN@fedora>
+        d=1e100.net; s=20230601; t=1760641806; x=1761246606;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+3AAg05Yf1Z3P5L48FsHnTWstB0ReAZ8G/euj8J0YSU=;
+        b=SbydknfjElUfGqWOJxd4GRwC5vhDbm8UEEO6OtRd1s8Ck13E5rEmpb4Z8C7kH1tDqy
+         aFgbNDcFe0aPlrjx6cImIjcN43T2WUi7gmO0uAIt3Orij1rDPiT3U1zKlE2Of7o2SLGE
+         3TTpeQ3wXHYGZk9bcE9fC51qv8AUD/KBnuXfOMFx8u1VBO6WwiOzXHLUZd3GEX38yVAs
+         BtkZdnAb0Pjy+DDF+g4sh760ZXrutIKND7eosA9C8fBdNwFDx79Hc3IeIIXTwSgYU1Ys
+         0iTmOYlKUN9cOq75Q/BLv8GfRQ0qhDdmfBuh/6+WTQpJ7lOAUJAalitkZbVy1EHK/VNb
+         6keA==
+X-Forwarded-Encrypted: i=1; AJvYcCVK178c9P3mDlXm4cSxVmA1fC8wjy8hI+JyXLa0Zdo4FhUTzc3PFUL7VHVL+Ugjuo3q82YlkAjbTA==@kvack.org
+X-Gm-Message-State: AOJu0Yx3bVBr8bclxIz03FtcL5aLsCFLu9KynaZ0FSTOfDrR2ED9IhL5
+	bioXcjYDTNyJLEqvV6d7onA39HdDNmjef+OIrrbyj1YLFIOYX1ChThvYKE8vSma3D3fl2nK3EbO
+	yZ5x7uLp2Gk6VhuPec/yf4Z8TkOI1BTOWhwAJysNTeJk+n3uVBCaG
+X-Gm-Gg: ASbGncsaSjX56PD2VVhe38pmHP3RK9BzHJxN0H+A9K9+pkcAqz2Fz6lbr7niX+zk9SQ
+	iz3EDNd+NoLIDQzyZ6QqS3wFRaIgwjvu66uiCsq0UjR2hOP+X28cn7F/obtSw0AQgsu6CGepvcB
+	WJkw/C0nKGbJN39lbnxC+6/yc/kj8L05XvO73KbwrKfTI1bJNCpHWTRQ6zO4WIC4/shmhILyOKB
+	bEWqIfhrykGF+sia790r39ElNjThWtsFvYHwENlK46mVsdoNZaZJz6EJnGJ4HdWLFV0v3m26hIQ
+	hSqLzHKfFc4LbfUfDpX6Kx7ZdAblDbVwtfQG4tcJw2T2ySsq0ykWyiuEC297L2oh+o6NFh+vVFK
+	JPPSpHrgow0eiMM99mcpfyXcDFhJkJC3wqzfAvs5mm1N6G1qhrkTnbmkoJai3Dp/MQ8wJapfsu5
+	vDVfP/jENsWzjaEL7IduBuNbUVAnw=
+X-Received: by 2002:a05:600c:3b83:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-47117925171mr12363945e9.34.1760641805971;
+        Thu, 16 Oct 2025 12:10:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGc5h2vbpz69OVWKGuaFjCUjxbNEASV+GvR8Na4j9NprkAExd41lL0K2813EC7L3Hmt8vs2XQ==
+X-Received: by 2002:a05:600c:3b83:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-47117925171mr12363635e9.34.1760641805466;
+        Thu, 16 Oct 2025 12:10:05 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4711441f776sm46310535e9.3.2025.10.16.12.10.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Oct 2025 12:10:04 -0700 (PDT)
+Message-ID: <e4277c1a-c8d4-429d-b455-8daa9f4bbd14@redhat.com>
+Date: Thu, 16 Oct 2025 21:10:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPEubI4kWvzSC5RN@fedora>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: sqyuoh7xpm4b4s7f31tx5z4fnr6q3gpt
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
+ huge_pmd_unshare() vs GUP-fast race
+To: Jann Horn <jannh@google.com>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
+ <trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "liam.howlett@oracle.com" <liam.howlett@oracle.com>,
+ "osalvador@suse.de" <osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de>
+ <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
+ <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com>
+ <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9f8kDo6L7a_1k5BKaIVJPLBJ0xfUOYVaP4YV5q8ly60_1760641806
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6rap3wrgdo3yi7nbsm1jfxkzpip1zs7f
+X-Rspamd-Queue-Id: 32E61140007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 08203A0005
-X-HE-Tag: 1760641388-375572
-X-HE-Meta: U2FsdGVkX19glFtuXJf5z/n4/CJlU/vLDbybfAiQN/NxbSyQj//A63/DPBrvTXI7Vt4c+sDZyM2yi3fw/+gBhLbqUASYwagAtpaoUJURGxcmzeSfxEPnVs0EQfsLI5JX8zTgjOGmF4o5+1YM0s1+Ss5DL7siBGvLLzYBPpVY4IFCh34ERZmWI/tAr0XGwFoDVWMhVhNzlZRXsM5T31j8agKlQLY0T3snCgSAhi+wnt2KmNhgUwKE+1MvYPqgKESsfKsvhfGKyhEm9CQnYcs52McShgzyu2CapIRGp/B6L0r/otbZ0HZn4JEx2XJM2iTxWRyYi7nUb1weZezt2JRtCYN6sYlOsoqEdb4/aPO+eNA+fvaeuKzMBppBNpiOcTCIMR0ETm8+bE7twi681Dx51qkpyINphd4WuEbc0hn08mLUWrLHZEZ0d+vpQCDXcWe3NblOnTOL9ybt6mLkSR3o+0CH+KSDqOparW/3rB3QDYAgHYdN2NnNWSx6jEasa/VfJnK3iojo11hLCHBWiB4DpcvMVMta33srOmu3y/m00WkaqoqADAp7F0xAfQM6XV57HqlCdqphRyh5kK05q+1v+7ghLYP4DXGrzk1IAHasdzXHN1y7WJ9xsze5/bBfxIV9zdhv8HRM+heSKFpHcd5Yd+TGNoYhbruZtKuMLgIEsIbN2Ii6GcfpbyX5qD5r5LsyDfR3YkbJ/Mxv3qt26mq6LjvhyoHi2dbzuzVukehUuf4LZ595Kd4bqd2mP6VOynbVi1pmZQW+tFSPVO7ZCFyUDOKz8Gi6AEg2/fliOUcynDcxybLD6MK6js61bw3cgVV7umacUyX+04GTBJDLcpaR8WA1NJCEAruyLEouuxz3/3ZFEgVevWIqfvOniq+NJ6jobyYaiCOYuUnuLx6GeXjYbHQnO+8WaHHT3EIUJbEp4OcotxMYMfHuan+9FHoGVPbI/P9FrB0hhaF81bI626v
- XiFFWI0d
- PoLm7f3QRSg0TOD0ZQYwMUn5HULOzpkWK7b3+QRuPOcmi5b0C8EDUZW9v2Zku0ouK1b5q5Yb7KanWcZWv3WoR+ixOOfclJVK50QNYmXKmlC+gLOx9F6Cp8soRb0lm3+k0Va+LeJLKQuSdP0JLuwLIueUgRRkvu+5VRZAb8ZKLxStHZ3UfhlXjTxM39bQ75diPT7eSnGEskvis1bbwaFTUMjcwwKm7eV45SD3YnRdEJFUBBSP0NeuQswpKbm5J1jm0it5vi/siaBHDbS6stDhlKHu8UI6HzTQBtMxNeLFYSNBQPDGvWMGBRnfCyTfUz+JlND5B8USp346qNY9NnIpWLZEHT5/xRIxpZ9S0j5qlhaG5Awr8faFAVBX7kKk2KjdjT71Hv0fCZmsLtCSXT4RCV03Zo1hqdUM9jx8Pq8XyXlTsPwvi2Y9VYruA6mqCQsGA9J9Tlkr+hgm2THwMdD31MnRpCw==
+X-HE-Tag: 1760641810-938148
+X-HE-Meta: U2FsdGVkX18nqfpNX/0ntwvTHkQYKlsr+eAbCiQTtx59naPhyLKvMoPUEjKY4QMf3hraCquqEILJHZCPdAv1ZCcq45sjNwfrJANhgWKClzGDmsh0VuGpQNS8b6Xgy717dxJr5wbe4qVOFjfSxrhG+gWOJ+nN+bu1UwlfJ1pi1V7/6NIAqMt2KYjTXU9ueGRYz5wQPMqqtwvWSyDSvVYbkQJMtKtj5eOKCjBu3sorF7Q/cXBVT8vSuQE76RQ0xDnqL3Rwho2EVHe0BCoVDizmZRxRIn6SiWI8vZimXh/HBTFj9QyE7pxRMxd//8krrog1WkxThayBs65oQxd+RTW6fBlfk/2fH97aK+t0FOI7u5cFhlJUw1rRlFA9qHLKE6q632vobsi1PaoArtI/VeCs2VBLv6OuvVE196xyKrvTUVGM1PV/xQOFUFkRM8C2Gtn8dBjCpsk9VNmGLnJBEeErE03JCakg7SMhtHiL9D6duivGMYhfTcxK/K0S3Bs/yvr/ZdqBxGV/REndKcNyEJJkBDYzhVshsK3qUYSIIILBnMAJbb15LDHHl2CbEX4HeXGCJQfs/AZo2eLqRNHi3ZVIfjf2SxWWhTeQBe484JvooriLHhpaLJBzEWSI+8Xhux4qcqIVIt8zxpUDX8e+lW1F6jhjhaSTWvW3OKsdFx3cynJ2de8cbIRJ+l3cdvoEvwophb16b0eoy5uaIgHJR1VWWOc76PmJmcBO9Nak73W6l6UsWOQgsi7eOCHh55A31egZbly4nJbNx7pilVm5t+8W9M7jbFZVerfcgGNs8nob4HFMk7yNJ0p6qVR85Dc+qxjUvvk1Ah20jMB27rNnMj6vsrYBfOz6fkS4AShiMlNnFuCJyH2INu/Y860uLykBzLjwtFgPCRbFERdu8oWpnHWU9LtjdVCNaB7/UShaQDZixX9uzkP4yagMRUAcAJhNPVl+1Uo1vLBmvaZBTdJxgtz
+ pa3gLV76
+ QYNcofuvfa0Xn1Ix0DfDQOm1sXqzLyV4psytTFF2GO4Yzlor6JtypOVmWnjNWo8uid4/uARExH84fVGrbb5UIX28rDiL1WOTT9LvX+90DCtcxKfMB4RuuOvbadhBnT2/CsmLmyCYIIhXPnvmY1gG41T8mI4kcC+0mAZQKy6o+UGnVcFGPzgRv3NfGODNXbFZR087Cs9+XQ2YVtPoZM3apbS2ERkNNe8TqCuLHKm5oPOeevbqMB3FZwN5JwkxzjkqxQRo2RZvlasTg74mxDHY1uKmjie84/cJL6o5NVqH7JnTxGZcAK4bK/Yemhjqq8VKrDFGu27nmncUWgoggTRfZAwDd7+yR95cKlc8yCxyWro7eL9GUWnydY9CFCwdqjg02eKXJJjHYXFmGGDhANyeiGMrOVqIBZnyggbH5dQo746I/Aa9Eagd/p7XhpQvgqroUe8Dwm1YH6TvVZzfyRRJlkXyjblgoCH2ADMyc/enjvD2DKTEZ3KUJ2yqNAh81gM0qj13qN3MW09oI9bU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,139 +190,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 16, 2025 at 10:42:04AM -0700, Vishal Moola (Oracle) wrote:
-> On Thu, Oct 16, 2025 at 06:12:36PM +0200, Uladzislau Rezki wrote:
-> > On Wed, Oct 15, 2025 at 02:28:49AM -0700, Vishal Moola (Oracle) wrote:
-> > > On Wed, Oct 15, 2025 at 04:56:42AM +0100, Matthew Wilcox wrote:
-> > > > On Tue, Oct 14, 2025 at 11:27:54AM -0700, Vishal Moola (Oracle) wrote:
-> > > > > Running 1000 iterations of allocations on a small 4GB system finds:
-> > > > > 
-> > > > > 1000 2mb allocations:
-> > > > > 	[Baseline]			[This patch]
-> > > > > 	real    46.310s			real    34.380s
-> > > > > 	user    0.001s			user    0.008s
-> > > > > 	sys     46.058s			sys     34.152s
-> > > > > 
-> > > > > 10000 200kb allocations:
-> > > > > 	[Baseline]			[This patch]
-> > > > > 	real    56.104s			real    43.946s
-> > > > > 	user    0.001s			user    0.003s
-> > > > > 	sys     55.375s			sys     43.259s
-> > > > > 
-> > > > > 10000 20kb allocations:
-> > > > > 	[Baseline]			[This patch]
-> > > > > 	real    0m8.438s		real    0m9.160s
-> > > > > 	user    0m0.001s		user    0m0.002s
-> > > > > 	sys     0m7.936s		sys     0m8.671s
-> > > > 
-> > > > I'd be more confident in the 20kB numbers if you'd done 10x more
-> > > > iterations.
-> > > 
-> > > I actually ran my a number of times to mitigate the effects of possibly
-> > > too small sample sizes, so I do have that number for you too:
-> > > 
-> > > [Baseline]			[This patch]
-> > > real    1m28.119s		real    1m32.630s
-> > > user    0m0.012s		user    0m0.011s
-> > > sys     1m23.270s		sys     1m28.529s
-> > > 
-> > I have just had a look at performance figures of this patch. The test
-> > case is 16K allocation by one single thread, 1 000 000 loops, 10 run:
-> > 
-> > sudo ./test_vmalloc.sh run_test_mask=1 nr_threads=1 nr_pages=4
+>> I'm currently looking at the fix and what sticks out is "Fix it with an
+>> explicit broadcast IPI through tlb_remove_table_sync_one()".
+>>
+>> (I don't understand how the page table can be used for "normal,
+>> non-hugetlb". I could only see how it is used for the remaining user for
+>> hugetlb stuff, but that's different question)
 > 
-> The reason I didn't use this test module is the same concern Matthew
-> brought up earlier about testing the PCP list rather than buddy
-> allocator. The test module allocates, then frees over and over again,
-> making it incredibly prone to reuse the pages over and over again.
+> If I remember correctly:
+> When a hugetlb shared page table drops to refcount 1, it turns into a
+> normal page table. If you then afterwards split the hugetlb VMA, unmap
+> one half of it, and place a new unrelated VMA in its place, the same
+> page table will be reused for PTEs of this new unrelated VMA.
+
+That makes sense.
+
 > 
-> > BOX: AMD Milan, 256 CPUs, 512GB of memory
-> > 
-> > # default 16K alloc
-> > [   15.823704] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 955334 usec
-> > [   17.751685] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1158739 usec
-> > [   19.443759] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1016522 usec
-> > [   21.035701] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 911381 usec
-> > [   22.727688] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 987286 usec
-> > [   24.199694] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 955112 usec
-> > [   25.755675] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 926393 usec
-> > [   27.355670] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 937875 usec
-> > [   28.979671] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1006985 usec
-> > [   30.531674] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 941088 usec
-> > 
-> > # the patch 16K alloc
-> > [   44.343380] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2296849 usec
-> > [   47.171290] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2014678 usec
-> > [   50.007258] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2094184 usec
-> > [   52.651141] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1953046 usec
-> > [   55.455089] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2209423 usec
-> > [   57.943153] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1941747 usec
-> > [   60.799043] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2038504 usec
-> > [   63.299007] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 1788588 usec
-> > [   65.843011] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2137055 usec
-> > [   68.647031] Summary: fix_size_alloc_test passed: 1 failed: 0 xfailed: 0 repeat: 1 loops: 1000000 avg: 2193022 usec
-> > 
-> > 2X slower.
-> > 
-> > perf-cycles, same test but on 64 CPUs:
-> > 
-> > +   97.02%     0.13%  [test_vmalloc]    [k] fix_size_alloc_test
-> > -   82.11%    82.10%  [kernel]          [k] native_queued_spin_lock_slowpath
-> >      26.19% ret_from_fork_asm
-> >         ret_from_fork
-> >       - kthread
-> >          - 25.96% test_func
-> >             - fix_size_alloc_test
-> >                - 23.49% __vmalloc_node_noprof
-> >                   - __vmalloc_node_range_noprof
-> >                      - 54.70% alloc_pages_noprof
-> >                           alloc_pages_mpol
-> >                           __alloc_frozen_pages_noprof
-> >                           get_page_from_freelist
-> >                           __rmqueue_pcplist
-> >                      - 5.58% __get_vm_area_node
-> >                           alloc_vmap_area
-> >                - 20.54% vfree.part.0
-> >                   - 20.43% __free_frozen_pages
-> >                        free_frozen_page_commit
-> >                        free_pcppages_bulk
-> >                        _raw_spin_lock_irqsave
-> >                        native_queued_spin_lock_slowpath
-> >          - 0.77% worker_thread
-> >             - process_one_work
-> >                - 0.76% vmstat_update
-> >                     refresh_cpu_vm_stats
-> >                     decay_pcp_high
-> >                     free_pcppages_bulk
-> >                     _raw_spin_lock_irqsave
-> >                     native_queued_spin_lock_slowpath
-> > +   76.57%     0.16%  [kernel]          [k] _raw_spin_lock_irqsave
-> > +   71.62%     0.00%  [kernel]          [k] __vmalloc_node_noprof
-> > +   71.61%     0.58%  [kernel]          [k] __vmalloc_node_range_noprof
-> > +   62.35%     0.06%  [kernel]          [k] alloc_pages_mpol
-> > +   62.27%     0.17%  [kernel]          [k] __alloc_frozen_pages_noprof
-> > +   62.20%     0.02%  [kernel]          [k] alloc_pages_noprof
-> > +   62.10%     0.05%  [kernel]          [k] get_page_from_freelist
-> > +   55.63%     0.19%  [kernel]          [k] __rmqueue_pcplist
-> > +   32.11%     0.00%  [kernel]          [k] ret_from_fork_asm
-> > +   32.11%     0.00%  [kernel]          [k] ret_from_fork
-> > +   32.11%     0.00%  [kernel]          [k] kthread
-> > 
-> > I would say the bottle-neck is a page-allocator. It seems high-order
-> > allocations are not good for it.
+> So the scenario would be:
+> 
+> 1. Initially, we have a hugetlb shared page table covering 1G of
+> address space which maps hugetlb 2M pages, which is used by two
+> hugetlb VMAs in different processes (processes P1 and P2).
+> 2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
+> walks down through the PUD entry that points to the shared page table,
+> then when it reaches the loop in gup_fast_pmd_range() gets interrupted
+> for a while by an NMI or preempted by the hypervisor or something.
+> 3. P2 removes its VMA, and the hugetlb shared page table effectively
+> becomes a normal page table in P1.
+> 4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
+> leaving two VMAs VMA1 and VMA2.
+> 5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
+> example an anonymous private VMA.
+> 6. P1 populates VMA3 with page table entries.
+> 7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
+> uses the new PMD/PTE entries created for VMA3.
 
-Ah also just took a closer look at this. I realize that you also did 16k
-allocations (which is at most order-2), so it may not be a good
-representation of high-order allocations either.
+Yeah, sounds possible. And nasty.
 
-Plus that falls into the regression range I found that I detailed in
-response to Matthew elsewhere (I've copy pasted it here for reference)
+> 
+>> How does the fix work when an architecture does not issue IPIs for TLB
+>> shootdown? To handle gup-fast on these architectures, we use RCU.
+> 
+> gup-fast disables interrupts, which synchronizes against both RCU and IPI.
 
-  I ended up finding that allocating sizes <=20k had noticeable
-  regressions, while [20k, 90k] was approximately the same, and >= 90k had
-  improvements (getting more and more noticeable as size grows in
-  magnitude).
+Right, but RCU is only used for prevent walking a page table that has 
+been freed+reused in the meantime (prevent us from de-referencing 
+garbage entries).
 
-> > --
-> > Uladzislau Rezki
+It does not prevent walking the now-unshared page table that has been 
+modified by the other process.
+
+For that, we need the back-off described below. IIRC we implemented that 
+in the PMD case for khugepaged.
+
+Or is there somewhere a guaranteed RCU sync before the shared page table 
+gets reused?
+
+> 
+>> So I'm wondering whether we use RCU somehow.
+>>
+>> But note that in gup_fast_pte_range(), we are validating whether the PMD
+>> changed:
+>>
+>> if (unlikely(pmd_val(pmd) != pmd_val(*pmdp)) ||
+>>       unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
+>>          gup_put_folio(folio, 1, flags);
+>>          goto pte_unmap;
+>> }
+>>
+>>
+>> So in case the page table got reused in the meantime, we should just
+>> back off and be fine, right?
+> 
+> The shared page table is mapped with a PUD entry, and we don't check
+> whether the PUD entry changed here.
+
+Yes, see my follow-up mail, that's what we'd have to add.
+
+On an arch without IPI, page tables will be freed with RCU and it just 
+works. We walk the wrong page table, realize that the PUD changed and 
+back off.
+
+On an arch with IPI it's tricky: if we don't issue the IPI you added, we 
+might still back off once we check the PUD entry didn't changee, but I'm 
+afraid nothing would stop us from walking the previous page table that 
+was freed in the meantime, containing garbage.
+
+Easy fix would be never reusing a page table once shared once?
+
+-- 
+Cheers
+
+David / dhildenb
+
 
