@@ -4,170 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59395CCD199
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 17:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D242BCCD199
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 17:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E5908E000A; Thu, 16 Oct 2025 13:06:37 -0400 (EDT)
+	id F0D218E0005; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BDB88E0002; Thu, 16 Oct 2025 13:06:37 -0400 (EDT)
+	id EE5058E0002; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D3EE8E000A; Thu, 16 Oct 2025 13:06:37 -0400 (EDT)
+	id DFB0F8E0005; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CC318E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:06:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CFDDB90F7
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:06:37 +0000 (UTC)
-X-FDA: 84004606434.27.FA0FFB7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AF08318000A
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:06:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FXpcm/xg";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yHAAefFe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FXpcm/xg";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yHAAefFe;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760634395; a=rsa-sha256;
-	cv=none;
-	b=rTB6jQQ4cDB5EYGEGN9OTSd+XrfCEgDEYU3UHkiBIQeHJzZbvL9lNns9mVm38r7jsstS3z
-	uNwSL9XcUnIB5/PrSUhJMP45VF2FJMdzZoMSuUORi0+1NQwAWgVPQR6y+9vef5sE/e7mt7
-	cpUm/EK5DfkOG6QZfj07UyjJOoQTBzE=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FXpcm/xg";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yHAAefFe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FXpcm/xg";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yHAAefFe;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CD0218E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:20:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 814D31602DD
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:20:04 +0000 (UTC)
+X-FDA: 84004640328.23.A940B37
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9A720A0015
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:20:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=WTLU2qjZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760634395;
+	s=arc-20220608; t=1760635202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tl311XYVAOn09pFWSpinVxhawpIQPj2GkLdiW8nSnMs=;
-	b=omZTzPfXfhqXKYyCx99CUzdG48mhmfem3q22//0u1f/aAq3oPWlXTCOTRZ65fVTQ6SDw/F
-	keUXWrq1H/N1CMPHsGQQKgV0kL9DT9y59SuS8lLdteo/FFcNT+t2LZCntTdYL4wAPtiXvO
-	2/jTU38gH+uOGIdt8Kta6faVBdBJE44=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1B9741FBA7;
-	Thu, 16 Oct 2025 17:06:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760634393; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl311XYVAOn09pFWSpinVxhawpIQPj2GkLdiW8nSnMs=;
-	b=FXpcm/xgGAymhCCPnMjdpSRkxQ/SrihP+XQ1vEQMudgIlG0HbT8gkCxAL5G0VJsdPzHNN/
-	Jf4+aRwWfj1Ac8Vr3HTNxQqGhww69r+6Ul1ZiqlWiqnrNhDy3sK4JPxJXrneKgJyM+vDaH
-	vVe/KkAmZB1e9oMin73OCM2HRHi7W14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760634393;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl311XYVAOn09pFWSpinVxhawpIQPj2GkLdiW8nSnMs=;
-	b=yHAAefFe/ReESZIvFbe/XHnmc3A2Fnug7abPcONYqdqjgNgbnmenOOtUmYxTF6wR7cAnRi
-	LzH4T+2B8cjjbOBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760634393; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl311XYVAOn09pFWSpinVxhawpIQPj2GkLdiW8nSnMs=;
-	b=FXpcm/xgGAymhCCPnMjdpSRkxQ/SrihP+XQ1vEQMudgIlG0HbT8gkCxAL5G0VJsdPzHNN/
-	Jf4+aRwWfj1Ac8Vr3HTNxQqGhww69r+6Ul1ZiqlWiqnrNhDy3sK4JPxJXrneKgJyM+vDaH
-	vVe/KkAmZB1e9oMin73OCM2HRHi7W14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760634393;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tl311XYVAOn09pFWSpinVxhawpIQPj2GkLdiW8nSnMs=;
-	b=yHAAefFe/ReESZIvFbe/XHnmc3A2Fnug7abPcONYqdqjgNgbnmenOOtUmYxTF6wR7cAnRi
-	LzH4T+2B8cjjbOBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE8B01376E;
-	Thu, 16 Oct 2025 17:06:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Qp7oORgm8WhdHAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 16 Oct 2025 17:06:32 +0000
-Message-ID: <80241934-7d4b-4196-80b5-713aa740edaa@suse.cz>
-Date: Thu, 16 Oct 2025 19:06:32 +0200
+	bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
+	b=ult392POHMSRBzqCCfYwBEwMWDZgOPS0HWqo8t/LkoHI50eivIFAhmMsg/sikk9ukCLLIS
+	44gywSeh/0KBkBWe0n65N/umEeY4nNheuRtM8gjXdv4n+NUEb3AbaSFBZsJnRfrNR/AAlz
+	6H+AmYmrNe75dMsNdamX3/IKe+RNqFY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=WTLU2qjZ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760635202; a=rsa-sha256;
+	cv=none;
+	b=KsDU8AZgSJEe44jVUD0L28b1v/1gq/EQvKr8sSHerzx2Qezf2Z9XN/pQc55DK3BoTOyqG4
+	Heix151SUkFrkTiasy72CKvuaOLWK+mKafWi/WC+AyHwbgNZJe2heoaPOJskR3A/AEjDsn
+	AB/h4IPDhEfWZmfDVVVgGGfI/WoF/4w=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2681645b7b6so8715ad.1
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:20:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760635201; x=1761240001; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
+        b=WTLU2qjZjS9Svk0bN5Nocf4v53ak7co8clUfbAnIZpXrDm+UbxvCwq/Vd99BckP445
+         FMT1vekFWUrprah2uME7igOYhBq7S5sMBU/L1/NfE1caP+Pr9i95N3xyTbjCt38/X0eh
+         pPSArJ9Es61TwbEiaP63jiOUoqZvyl2WSybdRGqTKC69cOdw7F3U70qJMoatqBK9fQov
+         XFx+PraMbYDXpeUnj+ploaoJGStJrYlmouUrkeMU5JIYTlfyFMp4FCOL1tPmuWce4ScK
+         rA1NDaM19B+H8RVpcfBoz2gM5YzzYC8U2n0bT2azAQlrZuKWlOCbJ+fLycOvwZtguZ+B
+         6Qtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760635201; x=1761240001;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oar3IC5PlLSvEtc/2ze2EFC5XBWzyZXV5aWJayEgfz0=;
+        b=aQs9wFk/w8pWTDalgEbbXlTtszIrjiABP/FlFrfXx1ExPsHd16hVW+NKi9A2BU5v1q
+         FKr5iSE/T/ArYZMbUvpryBrMi4dIfzAQ30dTe59eEW/fya15utbQRGVoIjvKol/iNDFl
+         gCS6UWC7KZbEj5SaO4Esi0ki2u7qzEFqHrd2z/n3y86Z63miM4Qwrrey1jez9uAYxAD+
+         ryYrmzFRsUGK8gvgTdwjbN03KYTp6J14ZpFgnPMcRWgDdkB32m/pvdTCQtuvQgLYYp3j
+         ENGasSq0bQXgZv1APS49LK+jZa0pNqXgN5iGBHeSMy5jP/DXWYWbLBl7wiD/FtUk7vxC
+         BMgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYBy4bsoUb2+MfQrd93TrXv68V+chqqYlbbuU+wZX8Kreze3+aBlqlKq6KUhBYRxfFLLZIfXO9ug==@kvack.org
+X-Gm-Message-State: AOJu0Yxxm26gXz9/0i5eJoVUbtGRgOrLP+f3T6B66BKvAroBSjBV8Yq6
+	w/tGqzJ4S24AVIHZX3wYKEzXjULqic7LbhzG02PexezoQSXTIHPJBBZD0PAHFT6vQUhdbCEdgEh
+	fLp/g8IU9TwIj0zH9nYDU625XoBHqcHKENToAZCW0
+X-Gm-Gg: ASbGncuWtVslQarWbGQuRx6O1QPe5W3tDpkCO0u2gXZ7eeq9mOeRfgVp+9NqPgmPY2r
+	gMU8r0UQtQ018a93tIE7RGlKAwpEXHweo0IXANR+0MJVmAjNoT/wC/RfAojs51RBq6dNS4keRO7
+	te+WHdqdzR5/e54DPn+GnZuYR+4DZfBetBvSg4mpRRqN6ZJNMK09x8N8V0AwtMcE3MgZCtrn0w6
+	XbBynjz0IU4p5wPZ3hlEMTc6ag6a76f5BBlWrA7Qgc1ReqieHeAfCTIZPIECeOR+FJwc0m9rJNB
+	Iw6R01GpRjCkYvmx3dfBOWQp
+X-Google-Smtp-Source: AGHT+IGaLBYMUVA3dp2bngz8sd3zdctlajyDpg4Q5ej9rYFdWUESUT7d4RcwGFB4ciRjNT7T8e6kC8pvy75+YgR2Dh8=
+X-Received: by 2002:a17:902:fc87:b0:290:cd63:e922 with SMTP id
+ d9443c01a7336-290cd63eff9mr828755ad.15.1760635200981; Thu, 16 Oct 2025
+ 10:20:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [vbabka:b4/sheaves-for-all] [slab] 16e7d1ea82:
- BUG:kernel_NULL_pointer_dereference,address
-Content-Language: en-US
-To: kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-mm@kvack.org
-References: <202510161341.61ccb50f-lkp@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <202510161341.61ccb50f-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251013235259.589015-1-kaleshsingh@google.com>
+ <20251013235259.589015-2-kaleshsingh@google.com> <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
+ <CAC_TJvdLxPRC5r+Ae+h2Zmc68B5+s40+413Xo4SjvXH2x2F6hg@mail.gmail.com> <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+In-Reply-To: <af0618c0-03c5-9133-bb14-db8ddb72b8de@google.com>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 16 Oct 2025 10:19:49 -0700
+X-Gm-Features: AS18NWDUcYhiaJ_iuWpblZjVBlLRKBf3hDw80qWBei6Spqkt0F1pWUwG8jn-Ias
+Message-ID: <CAC_TJvdy4qCaLAW09ViC5vPbj4XC7_P+9Jjj_kYSU6d+=r70yw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit checks
+To: Hugh Dickins <hughd@google.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de, 
+	kernel-team@android.com, android-mm@google.com, stable@vger.kernel.org, 
+	SeongJae Park <sj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
+	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF08318000A
-X-Stat-Signature: ww974kfq8quadt5f99oz86z7et7b93xq
-X-HE-Tag: 1760634394-813455
-X-HE-Meta: U2FsdGVkX18F4kH0isyBrp1nA+iNi8JAXzZR018C7zRVZyYC57ClhezOTD8sx147AUsfSUBkkT4pGigMCTg3/WWv4V6TClN5Xy8+8GaBgo7sHI5nuJTHnDmB0nJ10S+1CYro0Grd/5rMRLMS5X47fuVpkJZKDNEGP50AdJwhzxQ8J1xE1jtcvClx6fzViwJnvhYknNk4vokT3OTuHuSy43F+kO+RuiFv8scFP4DAluF8BklfMglQSJaUyC2pQ4+k6+whHO1tIWnOHNU2N0wJJ3wqgu4zi2hdDbq3UgP9ZMMLQcNy3+PKHdrYP0JlDE63N8JI/M4fBCb7P4HtjqsBRzV9W2QkFzJrS1gtDYBQrK7z32VLNRp2DrhmWSmsPahGBysBotVNb2GcQenxnDnrKR3+yizSrgNmJzqe7SGxIyktfHqOr9OKGQYFjVCn6o5w6pu5/1JBVzH2C+Mng/nXz4VD6bNoNENMP8kDEhzrwX5/CXE8hd4yVJQWW3B9Or0QMUJ3kfyeGKIQmN/lKnCFiNScAxMKUITJFKrpT3j8x7acrtFVjdFvGWcxe5Wxc4sBV9PtaD51UcakTInmBc5E9/XLcSzuRfCETvLMTyshItRLPccRMQaUKAvO+pmT9ZwS48HwLdOBusRxx98gQ4CIPEacDUIFK7A9MGBUsx62NutRu63NZreaTiSNVTnWVt9SFqPFIhiID09Y/4TJfADZf2XNojj9xXi3jCfv0TsgAdrlHQL0NaJrfIJd56ZTXDAZSyqZDKBxAy461v1i+Z7IFQaVObS0L44ujbuUU4cqErEiI7Aemzk5jjYEt+VO8IUlLKZCd9IwPljZfekaCtv2C8hGu7jWqaw08OiHOvOjtszmv76vL5HIwc7JXF0fK5OCaXjOhmE9nmPHZ6Od9SDhfmKwIjlWCjZT+MmXLN/meEzlRMZwmyhoD7/lKrRpQ0RexljXwYsEHMmR+mtOz5G
- QD0YOtyB
- VNhBDG90i0kBm8lQ9U5QbjoQlRVedCI5cV9imvQ/J64VdvT+J2SI8cMc76nmUCjNHeDIqA9UkqzVB90JmW7jaiZgfxH8t3JFaGUD4USBagrnccUxmk+qSTFa/yIecBp3jPXTd2Ej6x1x7F0WGyiKZxIC/DMpp3rRbatMVoscmjC6IEuoIIZ0aLfbTmGK3j8x2OVbrCGTtkCMDBcqQXicbOdW+E1vjnznGRym4WgFYGeAPT2LLxxFiDZyYUcSBf+zFg1DuMSOyRVAu+SjVqSwhLpjzOrjlOVztTTVvxeEJWVPlQhw+1XQeyYKKoY8KsDbBexgGGiwDutksiF2OH8jo8EkKNOUYF1Q1c2QqxddNviOTOsCNGXK1cvJyL9hdv/ALQ1p9fExncqkr12i9ApnGAAz8ny6jL+DERv1p
+X-Rspamd-Queue-Id: 9A720A0015
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 884reirrzehggc6yyyupci5oxbmeecap
+X-HE-Tag: 1760635202-488452
+X-HE-Meta: U2FsdGVkX19z/O4mL7uf4VtKCG21zZEYAvSDMm+gFvkwR2t+JMsOfq9xCYDYIBgfx1FoIQMDRHCnoQiAwvfeAbMrbcApVqRoRJY8wGWQLa+5luOR0bZ9fJeMTikdNfk3asSTP9SmbM0cSbb4EogE11eHq1y0zg+PM2CCWAliWkeCadBjyrlTMRjlSavZ6G1tqr63clcABZE0/K5J6IrPRRpIJ2fLnz1Rd3T+dh/JsCNTRUOqt5nRqoXJK3isAoDvZ+H25/jeit27f8Uxi6tbUHRqL/73G/fdRsejQ2nFN9Qz4PHNZndVqF5iH3AJay561XZd4xdeOCs87Jh0naI6EGAueMZQTTjlOd2s+Dby08FLPju7F1SAhTzo+NmfB8JBpQ7r6EFoR58HB8tLHxkO/s5rBeS7bdfAArOX87mbosG/WAGe0mPCWZ/aZ8fGgWmZxq0K6VU9aqmDUglIm5Hv/q5GT8sOfLCKHETHH4YS3o6gX2V4hhyNgpr2Th/b6sEhPieWGgJSYYBEHZkfcFzyZBjeFCsqL1S8pavkKtxx9mcl0Ha7NLN71N1gLtxRobmxPoh1OBdI4zOc2wm4Qcgoi66lhr9nzpbEm/GwQXwW+e4WstRtBFADNsccbU98k9Z8eJfN5xs7h+sg36mDtp2KJg8c0i89UZM3DOndbPg3qu/2CcJL6e5jqFW9k22aErjMbyAnxQgZXJ4by63sfQ8+jDyCYIjxoyipOVqU/+E5wiFsefAJWsFkvmAGmbq5VSqlykj15njNB1aVJfLrzo+0R9ZkgqZJa31bMybAagHOesjVE1Z0DmU+KVEx6QjYuVHiZ68NA/3ma6aeolXd0VF2YiULkpnaaJFdlT78SRGC0EJY92F3uIW1aNmn2MCVnBMPJHMYFNRhrdCa3KgUC7K5YQ1bf2pYkwp6ksgLnB7D25g8W8tYKGIBCGZ6DWGaP4wNPWQ5KfRpoOebMysGPx8
+ U2KQUANV
+ vdfzS5aJ1I8ShE9S55fQyUsnGEOcXfxfCHeD4zO4ES2nkdvNM48/ZjqzAUd8EkcKJZISyTFf0D7d4fArpVMzIypM15+/BUStVRjyvsUCIaNOrhYkgYSNriIPyH/RI4a3Tc0mQZ+SItKdrpBKrJ6ipxO7+4zunhvN4zMUsPSfLaK9A+mSwta5KlkMH/Osbmm+5wP2fN4oBFkLNj07vDyucH0ASb/fpxKNqqLXJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,59 +132,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/25 08:02, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
-> 
-> commit: 16e7d1ea820782b8335c2a52052e4a0d9ca0d4b0 ("slab: add sheaves to most caches")
-> https://git.kernel.org/cgit/linux/kernel/git/vbabka/linux.git b4/sheaves-for-all
-> 
-> in testcase: boot
-> 
-> config: x86_64-randconfig-004-20251015
-> compiler: clang-20
-> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
-> 
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202510161341.61ccb50f-lkp@intel.com
-> 
+On Wed, Oct 15, 2025 at 10:05=E2=80=AFPM Hugh Dickins <hughd@google.com> wr=
+ote:
+>
+> On Tue, 14 Oct 2025, Kalesh Singh wrote:
+> > On Mon, Oct 13, 2025 at 11:28=E2=80=AFPM Hugh Dickins <hughd@google.com=
+> wrote:
+> > >
+> > > Sorry for letting you go so far before speaking up (I had to test wha=
+t
+> > > I believed to be true, and had hoped that meanwhile one of your many
+> > > illustrious reviewers would say so first, but no): it's a NAK from me=
+.
+> > >
+> > > These are not off-by-ones: at the point of these checks, it is not
+> > > known whether an additional map/vma will have to be added, or the
+> > > addition will be merged into an existing map/vma.  So the checks
+> > > err on the lenient side, letting you get perhaps one more than the
+> > > sysctl said, but not allowing any more than that.
+> > >
+> > > Which is all that matters, isn't it? Limiting unrestrained growth.
+> > >
+> > > In this patch you're proposing to change it from erring on the
+> > > lenient side to erring on the strict side - prohibiting merges
+> > > at the limit which have been allowed for many years.
+> > >
+> > > Whatever one thinks about the merits of erring on the lenient versus
+> > > erring on the strict side, I see no reason to make this change now,
+> > > and most certainly not with a Fixes Cc: stable. There is no danger
+> > > in the current behaviour; there is danger in prohibiting what was
+> > > allowed before.
+> > >
+> > > As to the remainder of your series: I have to commend you for doing
+> > > a thorough and well-presented job, but I cannot myself see the point =
+in
+> > > changing 21 files for what almost amounts to a max_map_count subsyste=
+m.
+> > > I call it misdirected effort, not at all to my taste, which prefers t=
+he
+> > > straightforward checks already there; but accept that my taste may be
+> > > out of fashion, so won't stand in the way if others think it worthwhi=
+le.
+> >
+> > Hi Hugh,
+> >
+> > Thanks for the detailed review and for taking the time to test the beha=
+vior.
+> >
+> > You've raised a valid point. I wasn't aware of the history behind the
+> > lenient check for merges. The lack of a comment, like the one that
+> > exists for exceeding the limit in munmap(), led me to misinterpret
+> > this as an off-by-one bug. The convention makes sense if we consider
+> > potential merges.
+>
+> Yes, a comment there would be helpful (and I doubt it's worth more
+> than adding a comment); but I did not understand at all, Liam's
+> suggestion for the comment "to state that the count may not change".
+>
+> >
+> > If it was in-fact the intended behavior, then I agree we should keep
+> > it lenient. It would mean though, that munmap() being able to free a
+> > VMA if a split is required (by permitting exceeding the limit by 1)
+> > would not work in the case where we have already exceeded the limit. I
+> > find this to be inconsistent but this is also the current behavior ...
+>
+> You're saying that once we go one over the limit, say with a new mmap,
+> an munmap check makes it impossible to munmap that or any other vma?
+>
+> If that's so, I do agree with you, that's nasty, and I would hate any
+> new code to behave that way.  In code that's survived as long as this
+> without troubling anyone, I'm not so sure: but if it's easily fixed
+> (a more lenient check at the munmap end?) that would seem worthwhile.
+>
+> Ah, but reading again, you say "if a split is required": I guess
+> munmapping the whole vma has no problem; and it's fine for a middle
+> munmap, splitting into three before munmapping the middle, to fail.
+> I suppose it would be nicer if munmaping start or end succeeeded,
+> but I don't think that matters very much in this case.
+>
 
-Thanks, most likely this, will update the branch.
-----8<----
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cf443f064a66..e42aa6a3d202 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -57,9 +57,7 @@ enum _slab_flag_bits {
- #endif
- 	_SLAB_OBJECT_POISON,
- 	_SLAB_CMPXCHG_DOUBLE,
--#ifdef CONFIG_SLAB_OBJ_EXT
- 	_SLAB_NO_OBJ_EXT,
--#endif
- 	_SLAB_FLAGS_LAST_BIT
- };
- 
-@@ -238,11 +236,7 @@ enum _slab_flag_bits {
- #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
- 
- /* Slab created using create_boot_cache */
--#ifdef CONFIG_SLAB_OBJ_EXT
- #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
--#else
--#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
--#endif
- 
- /*
-  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
+Yes, your understanding is correct. I meant that currently, we allow
+for an munmap() requiring a single split to succeed even if it will
+temporarily exceed the limit by one, as immediately after we will be
+removing one of those VMAs. However, if the process has already
+exceeded the limit, say, due to a non-merging mmap(), then an munmap()
+requiring a split will fail. It's not a big issue, but I found it
+inconsistent that this succeeds in some cases and not in others.
 
+> >
+> > I will drop this patch and the patch that introduces the
+> > vma_count_remaining() helper, as I see your point about it potentially
+> > being unnecessary overhead.
+> >
+> > Regarding your feedback on the rest of the series, I believe the 3
+> > remaining patches are still valuable on their own.
+> >
+> >  - The selftest adds a comprehensive tests for VMA operations at the
+> > sysctl_max_map_count limit. This will self-document the exact behavior
+> > expected, including the leniency for potential merges that you
+> > highlighted, preventing the kind of misunderstanding that led to my
+> > initial patch.
+> >
+> >  - The rename of mm_struct->map_count to vma_count, is a
+> > straightforward cleanup for code clarity that makes the purpose of the
+> > field more explicit.
+> >
+> >  - The tracepoint adds needed observability for telemetry, allowing us
+> > to see when processes are failing in the field due to VMA count limit.
+> >
+> > The  selftest, is what  makes up a large portion of the diff you
+> > sited, and with vma_count_remaining() gone the series will not touch
+> > nearly as many files.
+> >
+> > Would this be an acceptable path forward?
+>
+> Possibly, if others like it: my concern was to end a misunderstanding
+> (I'm generally much too slow to get involved in cleanups).
+>
+> Though given that the sysctl is named "max_map_count", I'm not very
+> keen on renaming everything else from map_count to vma_count
+> (and of course I'm not suggesting to rename the sysctl).
+
+I still believe vma_count is a clearer name for the field, given some
+existing comments already refer to it as vma count. The inconsistency
+between vma_count and sysctl_max_map_count can be abstracted away; and
+the sysctl made non-global.
+I'll wait for feedback form others on how to proceed.
+
+Thanks for the thorough review and discussion.
+
+-- Kalesh
+
+>
+> Hugh
 
