@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 473CCCCD194
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:33:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E424DCCD183
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 11:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 790808E0006; Thu, 16 Oct 2025 07:33:22 -0400 (EDT)
+	id 321618E000C; Thu, 16 Oct 2025 07:33:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7408F8E0003; Thu, 16 Oct 2025 07:33:22 -0400 (EDT)
+	id 238AA8E0003; Thu, 16 Oct 2025 07:33:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 656638E0006; Thu, 16 Oct 2025 07:33:22 -0400 (EDT)
+	id 0B1D18E000C; Thu, 16 Oct 2025 07:33:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 50D238E0003
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EDA9B8E0003
 	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 07:33:22 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB672580F3
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:33:21 +0000 (UTC)
-X-FDA: 84003766602.19.AC0B8C5
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 810CEC000A
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:33:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S9aEoxsh;
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1BD51602D7
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:33:22 +0000 (UTC)
+X-FDA: 84003766644.05.B4FD6BE
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2E3A980003
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 11:33:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BWk3T7by;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com
+	spf=pass (imf30.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760614400; a=rsa-sha256;
+	cv=none;
+	b=Erd+ADJjlDFskLVev70TTpaLHSIdMHw3QM6z2qxmA87UJvjT30kBW/eqsSG9uuKBa4vqsb
+	ACUMUWdtQrWLzDD0Fhzkdbqk1YVAdTuiar7UnXG0WiaGCoTxIHGuDTOz6YXomJypCEaWw7
+	GpbgpdjFsUp1O0ReA5ZMtvuCOQVIZJI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=BWk3T7by;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760614400;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8/Q9I7t7Qi4x/ZrI5Kaz0t842MDdUKD3sBtEPlbIMk=;
-	b=tm7zsOKl89SaTmHpR+Pnc6qKD3mOGMHuk6C5vLQc7ve5oCGIBlnhw2qROHRryOgh5FnrK3
-	w/LItko+jqgAB+GZj6tFYMlCR7/JWeOrLq08M2mHFjP6wMYv/WRWubrjT0wMJzg0VUiyxO
-	YBUd9VUawao/QTmrCARS31LW4ZqGows=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760614400; a=rsa-sha256;
-	cv=none;
-	b=KfDTJOkkGrUlp1sNCu/KXGr5lKrV/qlyhq+h/v7oATvQiUZiamz1ZQe9V9UMTksN6HTgVm
-	Zhwd9sL8CIHCF6Yrz8TbFS+izKcCRFygzMuTxT3ZCrlPG4SpErIgpbku7OLhXLUBCRI6Iv
-	D7exthQAaxx5gJtwjiU6m4ddq7ofSDM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=S9aEoxsh;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf10.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0UKd0DgpGQsGYxSRnc1QTa5DFfPy1+JMKOudjICLDX4=;
+	b=Po6RTuz2/vPRnU51CmVy+KomULfU5/uylqcOdy7tC90jUfDo25IFCkSBA+37424VBgcZjk
+	v4upYs5Ktkctn/sb/ZaPsB2xHWWHaHm0xDV1ZaeUWHaF2JJO5DosI23iRb3OZpd2Yy1G6L
+	OHE8wzDiByH3ldkHGkOKwQ8zHzgvvU4=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=I8/Q9I7t7Qi4x/ZrI5Kaz0t842MDdUKD3sBtEPlbIMk=;
-	b=S9aEoxshqgJ1DGVDyxEs704Lhfm/eP0YArwn6D7TVeJAzSaVZleG2UL/AteUOOOW1+p0/dpR1
-	RIEMjxyngwhUFbMkJMvey91qwrJiQwRo+BFSLN3X0uTmdncij78NRBLOfh7FmW61eP/8lMha7Rq
-	yhIYbwtgEzbjRnQW1uMkw60=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4cnQmj57QwzLlVc;
-	Thu, 16 Oct 2025 19:32:53 +0800 (CST)
+	bh=0UKd0DgpGQsGYxSRnc1QTa5DFfPy1+JMKOudjICLDX4=;
+	b=BWk3T7by4Gqj6OH9NWVZDbjq67GSZ67jdcwjlCLfysKIlZ6nT28rytCDkXZkicX7CT0rbn/tS
+	lubE/MwlGBKZNPisd5GKxP+wJium1FsiwU5ziGQ+MxNI+PuBCfL6WcCFFVJ1Kv5X1ftct8FAuaS
+	I+wpLZQc4YLs256mo1Ph1vc=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cnQlw3KzPzcb4M;
+	Thu, 16 Oct 2025 19:32:12 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id A4CE61A0188;
-	Thu, 16 Oct 2025 19:33:14 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C1772140257;
+	Thu, 16 Oct 2025 19:33:12 +0800 (CST)
 Received: from huawei.com (10.50.87.63) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Oct
- 2025 19:33:13 +0800
+ 2025 19:33:11 +0800
 From: Yin Tirui <yintirui@huawei.com>
 To: <akpm@linux-foundation.org>, <david@redhat.com>,
 	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
@@ -82,26 +81,24 @@ To: <akpm@linux-foundation.org>, <david@redhat.com>,
 	<linux-riscv@lists.infradead.org>
 CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
 	<yintirui@huawei.com>
-Subject: [PATCH RFC 2/2] mm: add PMD-level huge page support for remap_pfn_range()
-Date: Thu, 16 Oct 2025 19:27:04 +0800
-Message-ID: <20251016112704.179280-3-yintirui@huawei.com>
+Subject: [PATCH RFC v2 0/2] mm: add huge pfnmap support for remap_pfn_range()
+Date: Thu, 16 Oct 2025 19:27:02 +0800
+Message-ID: <20251016112704.179280-1-yintirui@huawei.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251016112704.179280-1-yintirui@huawei.com>
-References: <20251016112704.179280-1-yintirui@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.50.87.63]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam01
-X-Stat-Signature: t69a7o7376a76a4659o1ka6mgeua7k3u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 810CEC000A
-X-HE-Tag: 1760614398-687502
-X-HE-Meta: U2FsdGVkX18PdFZuQUKo1zRudjYXi9jNsFsU8PcQWCkrEH2gJD5gEIS5hGNtCV7DnyCQeyohd/dJkQXHoMaGUIEE/MsFOgwGsBBWCmV1XCWxiQZnlEgKynvOy5ZHLSDqhBRLM0l01dJN5PufmhPSqobJTwe0qiMoAscgZ1ft/lbpzfY9uj7UtoqpQW29/dezJNAT5hkEoGmYPFJ9P860V1+NB7hTyeH/Pi/HCVyYqtqZyvSAMiMwR14ecNiDTLUX6a2HyALDu3iwwtxC+03HsWu1GYtMeYUVRDd4ASpXActLfmdUc1eOjTvBoq4EONDvYvXa3eLNeRL9pQlrUZMDHJ04xsVMYZm/NiI0a5lUyeaGv/KSfPjEqY+iWM3z0kwBMAVt4XW/L10FazB5xkMOw6l3eVW+/tX7nNrfC2EJMtc44eVrG97Uqr+wuuNAOw8S3090BxUuak+HowiRnMuMfyHXwU0toJRikQwU8tJYhZ7sFvf+nFMl8JenY9nBCp7ky0v2JJPCI8foXAz4JC4Z2maLJuRIO7Gf0KRes0wcDe9EisRZ9pKMUM9mTf73N07eCvu7WsmsstdsSdSDEZMmT3/0ixFFG/zNSO2/nB5mZ+3ArpolPNihLUllGvj1J7TgD0IP9Ms1EonCponZ6hiCEJbXiK17DqJGX6Nj2iYIZXe6MM8/4LfNQXRuTI6nckgk6pNusuyiK0han3BqG+lxJkMUIgF4j1kIt1p0uT4RIf6ro0gNQa3A9T6kXaA7DykHRXkXjWk8hxLkOWpzH7qy0VVucjYueTCGueRM3xmr99duIQr24KYOQY0VWDf3eaqLIqhBjKpz7lA10bwhcg+wBGcIJhJAtuDTeqcARqL6rAJBLwFwzPMZy0HmaBd1S3hZlhebs96XBTg3NpHmApJfAu9DxOJBefTwMDLDqsCKjIXKEqjO3LmPcRvT5tvxDcO/N/jXntQ6KKPpjuxGB4l
- KN8I8R6J
- 7yuXW0W40eC0JVCFmC2sW/WDPZF8SuAaWe7BLjZqXB+E82sIWgMD782urCBNjJt/T4UgHBYXLcZNXMic=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2E3A980003
+X-Stat-Signature: py8fy3uerqjanuhkqoh5pspjt5ew71eu
+X-HE-Tag: 1760614399-113018
+X-HE-Meta: U2FsdGVkX18uCVAAvCLzeUMzq+rsoQM6fpAuwCKCfvMy4sKARA0nhiGG9BU7hWborsZRgrVeNj8+p6i0GnoLvmrTuPw6gqIj+hTOJTFZgUyadrkp4YAApeFCOviXrnkPv5X6xV8RpeEeFJ6CNskvLoyjYYsxfTu2jj16H/C9T0VXb7axexlifyEGRPp+mmlKPWoFiuF9B8QutUmkwE+5SnptW7HoB8EAgrcCpStQkaosJv8B/oH0B1+FR3lsgZicmAl5Fq9g8YPI8A7VDAKG2P6oIcRXHdKBWH1lbcwS9E9KijLx2Jr/yw4Cs4AF3k+wXG7UrdeUshyanlSMjGF7/kIEPQxuVd1Uk47ennmZY4rAosXa4/DMDrGy/FwvE8w4QpkmehC68OCCOYfRPcWEf6TNfl+EE8+RqEo+uuzwf8PPaIeeIa42HYVANXt13Vti/2/3ls5SysRGUyd+jrklFih4I1XBcCcTYlAtELaJwjw1xLk1aNm7tuvUnMqLPzxjPR8JBtkDxjLLELXcaWmF7uiarNclJG7AGtS/Dk53HfgJIP9JZ4kbHAxsRw55zSMp5DhuLnYixPH8RcOVC8kUPrS7j9PORVfhqxdBpyfcReBq9OtB/2jK0+rbHMtwJua5K+57hkpnyOt9uuLBdG66mZIwszHQgeGkOVCYutmNTbNBOpfT3T6gs5qlQCuFoQrBdP9GddA1tQv7CAkSCDVkMgdscfehntG2l6LfrKX6xAr3kVc00kxi9KuhRXjf9MKo3+enXPyInRKkmb43ETPbW4JIeXu2WTxvp4oEAuUHggVIjV33YRAxiSTJPVQ8g6077paXHNJzyoQI39zNR30TKnvs2vkUq3qSjsYBDq6qdxIbhabOPamRZqiGL+fJXe1m2nobY60RDaCSb2gWrurrQHc9QEJErqzx8KX7kq56b9doqYgXIZc/iRofM3ODWO26wH1A3dO7px1LoIv3ecf
+ BSB4vOwB
+ ERCwuCEPHmqm/ZYf/vj8rdEoKhm5qk95GMRaT+an1mIXOFJ6xeuHYwdJvX40wcP7+vk0pwXQA55z0DbukThaB+HvQe43sNsg+iLrN1BChTqZEDcP9hK3TnQgfZsNrVpdVV+L2dz+5C9f7KxS8UFvOkt3hfGSL+VuOo5KMh6k43KlSoFAJuUoh1Rnpz1fwnnU0KpEz4eC7Yn1D18QM6rEIORz4fEWuARfH7DuVIIOEZ6VvCKHYf7HsON4uq6VzdYqRuDxBZTPJcXkGbEvFDvEusuQ6I6wszZkhS1H0S5u+1RGHEV8Y3C60HJmBpJxZqBPQBi+b6UvHsYPWqngiNtUa+1PGtLkIilX3mCgBbL2wQgDcTemA2oj4QiDS6RIVbu9Wlnps
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,140 +107,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add PMD-level huge page support to remap_pfn_range(), automatically
-creating huge mappings when prerequisites are satisfied (size, alignment,
-architecture support, etc.) and falling back to normal page mappings
-otherwise.
+v2:
+- remove "nohugepfnmap" boot option and "pfnmap_max_page_shift" variable.
+- zap_deposited_table for non-special pmd.
+- move set_pmd_at() inside pmd_lock.
+- prevent PMD mapping creation when pgtable allocation fails.
+- defer the refactor of pte_clrhuge() to a separate patch series. For now,
+  add a TODO to track this.
 
-Implement special huge PMD splitting by utilizing the pgtable deposit/
-withdraw mechanism. When splitting is needed, the deposited pgtable is
-withdrawn and populated with individual PTEs created from the original
-huge mapping, using pte_clrhuge() to clear huge page attributes.
+v1: https://lore.kernel.org/linux-mm/20250923133104.926672-1-yintirui@huawei.com/
 
-Update arch_needs_pgtable_deposit() to return true when PMD pfnmap
-support is enabled, ensuring proper pgtable management for huge
-pfnmap operations.
+Overview
+========
+This patch series adds huge page support for remap_pfn_range(),
+automatically creating huge mappings when prerequisites are satisfied
+(size, alignment, architecture support, etc.) and falling back to
+normal page mappings otherwise.
 
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
----
- include/linux/pgtable.h |  6 +++++-
- mm/huge_memory.c        | 26 +++++++++++++++++++-------
- mm/memory.c             | 40 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 64 insertions(+), 8 deletions(-)
+This work builds on Peter Xu's previous efforts on huge pfnmap
+support [0].
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 25a7257052ff..9ae015cb67a0 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1025,7 +1025,11 @@ extern pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- #endif
- 
- #ifndef arch_needs_pgtable_deposit
--#define arch_needs_pgtable_deposit() (false)
-+#define arch_needs_pgtable_deposit arch_needs_pgtable_deposit
-+static inline bool arch_needs_pgtable_deposit(void)
-+{
-+	return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP);
-+}
- #endif
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c38a95e9f09..b5eecd8fc1bf 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2857,14 +2857,26 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 
- 	if (!vma_is_anonymous(vma)) {
- 		old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
--		/*
--		 * We are going to unmap this huge page. So
--		 * just go ahead and zap it
--		 */
--		if (arch_needs_pgtable_deposit())
--			zap_deposited_table(mm, pmd);
--		if (!vma_is_dax(vma) && vma_is_special_huge(vma))
-+		if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-+			pte_t entry;
-+
-+			pgtable = pgtable_trans_huge_withdraw(mm, pmd);
-+			if (unlikely(!pgtable))
-+				return;
-+			pmd_populate(mm, &_pmd, pgtable);
-+			pte = pte_offset_map(&_pmd, haddr);
-+			entry = pte_clrhuge(pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd)));
-+			set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
-+			pte_unmap(pte);
-+
-+			smp_wmb(); /* make pte visible before pmd */
-+			pmd_populate(mm, pmd, pgtable);
- 			return;
-+		} else if (arch_needs_pgtable_deposit()) {
-+			/* Zap for the non-special mappings. */
-+			zap_deposited_table(mm, pmd);
-+		}
-+
- 		if (unlikely(is_pmd_migration_entry(old_pmd))) {
- 			swp_entry_t entry;
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..4e8f2248a86f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2705,6 +2705,40 @@ static int remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
- 	return err;
- }
- 
-+#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-+static int remap_try_huge_pmd(struct mm_struct *mm, pmd_t *pmd,
-+			unsigned long addr, unsigned long end,
-+			unsigned long pfn, pgprot_t prot)
-+{
-+	pgtable_t pgtable;
-+	spinlock_t *ptl;
-+
-+	if ((end - addr) != PMD_SIZE)
-+		return 0;
-+
-+	if (!IS_ALIGNED(addr, PMD_SIZE))
-+		return 0;
-+
-+	if (!IS_ALIGNED(pfn, HPAGE_PMD_NR))
-+		return 0;
-+
-+	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
-+		return 0;
-+
-+	pgtable = pte_alloc_one(mm);
-+	if (unlikely(!pgtable))
-+		return 0;
-+
-+	mm_inc_nr_ptes(mm);
-+	ptl = pmd_lock(mm, pmd);
-+	set_pmd_at(mm, addr, pmd, pmd_mkspecial(pmd_mkhuge(pfn_pmd(pfn, prot))));
-+	pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+	spin_unlock(ptl);
-+
-+	return 1;
-+}
-+#endif
-+
- static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
- 			unsigned long addr, unsigned long end,
- 			unsigned long pfn, pgprot_t prot)
-@@ -2720,6 +2754,12 @@ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
- 	VM_BUG_ON(pmd_trans_huge(*pmd));
- 	do {
- 		next = pmd_addr_end(addr, end);
-+#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-+		if (remap_try_huge_pmd(mm, pmd, addr, next,
-+				pfn + (addr >> PAGE_SHIFT), prot)) {
-+			continue;
-+		}
-+#endif
- 		err = remap_pte_range(mm, pmd, addr, next,
- 				pfn + (addr >> PAGE_SHIFT), prot);
- 		if (err)
+TODO
+====
+- Add PUD-level huge page support. Currently, only PMD-level huge
+pages are supported.
+- Consider the logic related to vmap_page_range and extract
+reusable common code.
+- Refactor pte_clrhuge() and related functions.
+
+Tests Done
+==========
+- Cross-build tests.
+- Performance tests with custom device driver implementing mmap()
+  with remap_pfn_range():
+    - lat_mem_rd benchmark modified to use mmap(device_fd) instead of
+      malloc() shows around 40% improvement in memory access latency with
+      huge page support compared to normal page mappings.
+
+      numactl -C 0 lat_mem_rd -t 4096M (stride=64)
+      Memory Size (MB)    Without Huge Mapping With Huge Mapping Improvement
+      ----------------    -----------------    --------------    -----------
+      64.00               148.858 ns           100.780 ns        32.3%
+      128.00              164.745 ns           103.537 ns        37.2%
+      256.00              169.907 ns           103.179 ns        39.3%
+      512.00              171.285 ns           103.072 ns        39.8%
+      1024.00             173.054 ns           103.055 ns        40.4%
+      2048.00             172.820 ns           103.091 ns        40.3%
+      4096.00             172.877 ns           103.115 ns        40.4%
+
+    - Custom memory copy operations on mmap(device_fd) show around 18% performance 
+      improvement with huge page support compared to normal page mappings.
+
+      numactl -C 0 memcpy_test (memory copy performance test)
+      Memory Size (MB)    Without Huge Mapping With Huge Mapping Improvement
+      ----------------    -----------------    --------------    -----------
+      1024.00             95.76 ms             77.91 ms          18.6%
+      2048.00             190.87 ms            155.64 ms         18.5%
+      4096.00             380.84 ms            311.45 ms         18.2%
+
+[0] https://lore.kernel.org/all/20240826204353.2228736-2-peterx@redhat.com/T/#u
+
+Yin Tirui (2):
+  pgtable: add pte_clrhuge() implementation for arm64 and riscv
+  mm: add PMD-level huge page support for remap_pfn_range()
+
+ arch/arm64/include/asm/pgtable.h |  8 +++++++
+ arch/riscv/include/asm/pgtable.h |  5 ++++
+ include/linux/pgtable.h          |  6 ++++-
+ mm/huge_memory.c                 | 26 +++++++++++++++------
+ mm/memory.c                      | 40 ++++++++++++++++++++++++++++++++
+ 5 files changed, 77 insertions(+), 8 deletions(-)
+
 -- 
 2.43.0
 
