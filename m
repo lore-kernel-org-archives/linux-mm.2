@@ -4,178 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 223F1CCD19A
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 13:18:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60667CCD19A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Oct 2025 14:02:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF2E8E0013; Thu, 16 Oct 2025 09:18:42 -0400 (EDT)
+	id 4BF2A8E0003; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76F268E0002; Thu, 16 Oct 2025 09:18:42 -0400 (EDT)
+	id 496F38E0002; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6371D8E0013; Thu, 16 Oct 2025 09:18:42 -0400 (EDT)
+	id 3D3D68E0003; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C4898E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 09:18:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA4B8140315
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:18:41 +0000 (UTC)
-X-FDA: 84004032042.09.7071DF6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3B9E3A000E
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 13:18:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dbnd8t8u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zvuPBjFf;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dbnd8t8u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zvuPBjFf;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 2D28B8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 10:02:35 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C41E3B8939
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:02:34 +0000 (UTC)
+X-FDA: 84004142628.27.BCA6185
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2FAA32003A
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 14:02:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fkSWMqHi;
+	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760620719;
+	s=arc-20220608; t=1760623352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OpLoFhO55qvXCeDSb7iOIrT14k8fZCmzlAT2djDZro8=;
-	b=kyi0NNnWNN0d5qi1kpzDScgugRKGP5i9wD5GuLStsWzO0DNXSRQSyTdz6f2+oRHHpdC27C
-	IgwspvWu7EL5rPRPnwxg5tcHeuxSgqsPmpNXZ/PDJjBYKSK1FJnqL9T10FTTlC9CYMGXWV
-	I5arQt87CfZiGAnAN2JBIgtoxW5McsI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=olaNr81UT3i0XgE7r39ZIOMvOjEJR62WYdjIOT7ahzU=;
+	b=TeHd2/mqc0NLTloFpUBc7WwJPFS++zPrY8T5/+Q33HutTvO2vvmUzrn06NtO6nsh2j9auy
+	V3oXZMNnfolR/UgacKolbaMZQFV2kx5Ivk+G5vL+NR6xpcbFekspPBDVqsGFtmyHETIt1T
+	+PIOsZmNvQNIa8rsu7ecCwx3t4DBA9U=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dbnd8t8u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zvuPBjFf;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dbnd8t8u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zvuPBjFf;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760620719; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fkSWMqHi;
+	spf=pass (imf03.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760623352; a=rsa-sha256;
 	cv=none;
-	b=FVf8wEkH4BWwm4tfmAMgSlwv/tF5kHBsJItkX28zUl9yTU5WTannta42ZJgn65c1HmNrfs
-	d2CQLl6snk+HjS5cuwqcZBTGn9d+Cwr/QMhjE5C2FK5E2Zti127YVYRi+DblPSTAqGcqsf
-	lSYBI3OFopF0F+GSoMfoWbRLoqd5958=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 65555218D5;
-	Thu, 16 Oct 2025 13:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760620717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OpLoFhO55qvXCeDSb7iOIrT14k8fZCmzlAT2djDZro8=;
-	b=dbnd8t8uLQkbNc/NSTihLLGx1dltH3xDCI4PH64Wqf2A3qv7rosnVa5zwviVN3jZT9y4u2
-	TH77bEfWkxXkkUiW04qH+ZiOXkBvMnysVYuVtVpQ3bEKzPa67DsBiYn2SNQp5b8o6CwqYd
-	ZDjfgjniBP0shiMsVevQpFgomyqtowQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760620717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OpLoFhO55qvXCeDSb7iOIrT14k8fZCmzlAT2djDZro8=;
-	b=zvuPBjFfEEHya0Hpgowsl+Npc73ts7wIQ/X5S0XK1B2pzX4gBBKK998c81xBWz43gn0ol+
-	Iz5i61dREyu9zYDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760620717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OpLoFhO55qvXCeDSb7iOIrT14k8fZCmzlAT2djDZro8=;
-	b=dbnd8t8uLQkbNc/NSTihLLGx1dltH3xDCI4PH64Wqf2A3qv7rosnVa5zwviVN3jZT9y4u2
-	TH77bEfWkxXkkUiW04qH+ZiOXkBvMnysVYuVtVpQ3bEKzPa67DsBiYn2SNQp5b8o6CwqYd
-	ZDjfgjniBP0shiMsVevQpFgomyqtowQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760620717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OpLoFhO55qvXCeDSb7iOIrT14k8fZCmzlAT2djDZro8=;
-	b=zvuPBjFfEEHya0Hpgowsl+Npc73ts7wIQ/X5S0XK1B2pzX4gBBKK998c81xBWz43gn0ol+
-	Iz5i61dREyu9zYDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 420131340C;
-	Thu, 16 Oct 2025 13:18:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id g/LWDq3w8GhyOgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 16 Oct 2025 13:18:37 +0000
-Message-ID: <d64db373-cb98-4142-ba44-1aa5ccbdcb45@suse.cz>
-Date: Thu, 16 Oct 2025 15:18:36 +0200
+	b=rdZ2hhhMaKH2s39mQrkAPwE5PZeyosqQmUyID4v18ieW0t4eIGIUwunjOYYu5bc7imGN/z
+	XAc4CN6ylvwXMv+k3H1CR5Ys9w57H7fSolTAzUlAbyaYCcRdLlKsq+mEZ3s+8zMPhQXFEM
+	Zrb/Zc3eEU0INrF3qUWW2xF4H6XKDYU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=olaNr81UT3i0XgE7r39ZIOMvOjEJR62WYdjIOT7ahzU=;
+	b=fkSWMqHiDBDAH7Mt9zDgehSnE9WBou3iEPzz+XFM/xtmJrLnN65EzekUOZXGZzOkITDZzkEGt
+	QxdoquzGoWQBuVv3tz2+BY0gy04kXzEDqwT36tOboaep4za9bN0CtwFKBm+kjPEtiRPsdoORVQ4
+	A15p9HG/dvEEFtIzqObSjgQ=
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cnV4n3sHrzKm5G;
+	Thu, 16 Oct 2025 22:02:01 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 709011A0188;
+	Thu, 16 Oct 2025 22:02:22 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Oct 2025 22:02:21 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
+CC: <will@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
+Subject: [PATCH RESEND] mm/memory-failure: not select MEMORY_ISOLATION
+Date: Thu, 16 Oct 2025 22:02:18 +0800
+Message-ID: <20251016140218.15579-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] slab: reset obj_ext when it is not actually valid
- during freeing
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <20251015141642.700170-1-hao.ge@linux.dev>
- <CAJuCfpEpO_HaJuV3ukDtTdw_5zCq9R0MnMexC5PoEwOcKWjuYg@mail.gmail.com>
- <0928dcc7-a4e0-4641-9381-6adf2ad30493@suse.cz> <aPDud4tUzZ_NxE_R@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aPDud4tUzZ_NxE_R@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3B9E3A000E
-X-Stat-Signature: 5ohoztqagjssp4d5tjuswsnf47unjdzr
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Stat-Signature: w6wcfub66p65mssr34tq1t3u3zjjs9ws
 X-Rspam-User: 
-X-HE-Tag: 1760620718-107011
-X-HE-Meta: U2FsdGVkX18J61AS4cgnjvx6f9XUnd113d9Evj0nZehr9dy5f4qs/f7nK5eVsb4VnQsbhCoh08wPyXw/hHAZ9oyy0aHpAwGLl905hYlb/6tFvz7PlbbRBHUMWtPq+Z3vl0XCVao+hSIa7FzXrnGaCLlWXE3IVLOAkTtZ4fIJDye8Bt2Rhj4csXrSi7CBlxyJGJSiy3KLlJ/Y8+FSYi184LC81IJVNKvXXGMEuMcHDHELDpoCAgyCCSymnIUyBSBrdDtw3PTt9SJsZESS+WD9kE9DJ2JWdmZZxUn1IOH8Ge6DFH7Ld2Yc4kxe2Wgo5xWuLQ3NAfZJfCoF+pLRZHegnNx88uXxc8IVroGaPwAeaosta5/lpLwMXIIBLHuvaum7TDSkNOfPYLkMEhLGNABGui9PJjAtCQkyRoMgSnfR/BNt1ekKR5tEmxQ761h9DilAxWqLr1I0QI7x5jtuVwO756Ga2T/etbEx7NGN0137c8hZfy3xBeE974I82Hf1uu/W7xfO+bYamyIvDVBCiv/Z48CDZPwEip3UJ0NxbYCsfYZg5Yl+I2KBUKuYdIRMLohpMqt9d6flBCzjahzpYeAAO25l5S4rmQCRhOwq8WtAK0flm9ELPgMWgvNLcA7++JXjsYCkYef1EqJkqob1575RESiPVRlYiDVhQ1aXcdYYG7qUZTsBgF8Wu0cN5/ScvpD0UvaT5/ooDVqZHSMdswUwFQS5OOWQUijXNRg4iU0ZB7mybzoJo4DCh6CnF9VwVe3bWkPUmirUOLj5i0G4dxh7BVW6V7MMlAVSDGLzzRb3pdbq7V4wqc2axFJQ+BBdSUNY1OXOA8RN8LYdE+A0sKGz37PNtbVdOFNL2eo6F2oqDZp37pVy+sOSSi8XGsH3vj2w5UT+5SgGxAR+Sund3vcvzolAoFiyzcLGm24T274ahnz7FrKxdqdChxgD81q/6kynejxlkAvgNO0eFkn5BAj
- 0LIWtYfD
- myaiFb6SG8+lCW6D+UtxJO46zAKInnFGT8PuvGya/XqRQFk94v+PwZUJ6bbFVBnrXLEr+he9n+ZN8xLrsT+/0cj9KzX0JJ82jCec0vaLzbkx9QSDrnOqTQaZZ66KwqsO/vO2HV0pqBq43zRvOlDQ9C3CixujEkHk4L8KU17+2xHbqCeX67NtnhIYO5/iTsvD8rguSQhOuRb7FPUVujLo4xHBDYG1BugdiH/uxiLkeAgWWfG7CdVMiwD13N5GnuJ1avrySbqf/kKV9GuVFf1gaq9Ol/3OIsvllSbbHH4ZTEGA+wh+308DOLfEsFKv9ZK2rw1nv5OOH5Fus5tvVyFFpLAkwk78pWIv/vLOlBmqYwbsygpB8clhstkJq0EmEEgWZwAYD
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2FAA32003A
+X-HE-Tag: 1760623351-580391
+X-HE-Meta: U2FsdGVkX1/zRGG6NQQZ6Qs1dEP18/P59O9gDq+lohSt+Lcxyn0wn0VAJfCEheDant+ufwQc5p8+LGhHwAaWzfKYbFCsp6DjFQqoOgD+yIfn7d0S6r0H7d5LReU92tS1aUrmmgoZs+tc4UQ11wKCMhG/ad5IiriAd7t6FmhxQ4ocSl1WdHBTPQUmK4C4lVhQEp7FrD0lhS7kl6B8HmSVlTw+ZqC4XPAVKF8EwPDM3Hiurkokt0FEM8O7OEhTR78w0GIUCIxtVdS9PshlgTBXKhuIDXwmxKG21yyfHksBT+f3qqLGSUJPTnpkvHE42Nbr86TYl5BLWGI6myHg56wAPdVRs9O25KwHPtq1FECU2r74XHLb81lvGHaZISM/CXh/tLL2DTZaAbo3q1wTx5ekZPt0j2aa0USTil4FqEsOqzZ3pg91A88cUlcrRAvNlKD9xxjBA4aew87QXFRuPuqQ5nxi8uizcjdPAfH4+Q2kyR5tDVYnf2Cg0P1v9SAwoyVqnDHca99pnPkv+kp9Ci+BvjetYi2BvPLWaETqfYUkbXlcC5brmhIPBMPrvKmoKaywJUtP2yHf04WmlcTFhMvn5kuo85lRRuHmcWQHu+JUkT2yazU0A3RFhmXwK7e8LDbUzLKeeO5iO7smpDFIp2iQZGN4s3VjjzHKKabUvlp4CbRR9Xd2qOxc4CaPJJm+diS99MpkOKkWWTCB3WD3xiqlHnv0Rx7MQsRrze8vkOrgpSfgjwPt/HDhcOLyGwe1geH5RdemUeGwEb8ccc4F9UlCdReYFqwGm9cHYKDQW9BdQObXpi+U/4n4khM5fWtC9hclDLXMkqCGzsp7WkSKjZcmQuxb4meXlgfDgStBI2qqFM2u5uQM2lHuOfHVwBl7SaDWvmMDavzs/3LcR3fhj4m/EnH/O+CEHr8rAKTzq9+XeUlxjdcvy4yhHpjZZoQbTxmYRQGHbSpO1WeUhFdUtjw
+ lVl/kcg3
+ yvNYYAZXwOh58tN3GrgkQlugVbBkfv4mhWkGkUQpyKfScEr/smIz4ZpHPD8tzQOTN6pLZynvl08Gpmn4ZKlyn1Oqhbbf5Tpf1XVIpUkowhErRShg5LUBRAwvB70ovQDanVG9l+dkby3UO8S78hUk6UYL19S0wvWwUJkAEmJAK+J2OLiCFoW/7ZVQZ9NC9NSJ5g3sd4EX1LiXy/c46Sg/rAAVYAs5wGrLXSXOjpo+9sGIBIopJINYk+hlAio6OOGuOksVYBwXqWOxnOIhLUcBFniH+FuYyGZ+6iWs2xqrl40iRxfMNqDH8k2Jl4hbHXyHwUoY8beiQSyVl0RGr89oGYxrZsygpcd4gmvrcYHgTIaRtaGOrtUrj2q5Jmkehjp6x8YFAn6wRh//2VSGLRzwUbTZdew8ZeuP16D5TquWIb1PyTCDAvrm5Ve5LVOuPqXIUaOaN6f4nF+BxTL5HqrOAjw4ny5Ioo6esVq+BtzfMnqx9cGE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,50 +98,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/16/25 15:09, Harry Yoo wrote:
->> ----8<----
->> From 8151384e5baf34db5812ed51e2e463796ab6e973 Mon Sep 17 00:00:00 2001
->> From: Hao Ge <gehao@kylinos.cn>
->> Date: Wed, 15 Oct 2025 22:16:42 +0800
->> Subject: [PATCH] slab: reset slab->obj_ext when freeing and it is
->>  OBJEXTS_ALLOC_FAIL
->> 
->> If obj_exts allocation failed, slab->obj_exts is set to OBJEXTS_ALLOC_FAIL,
->> But we do not clear it when freeing the slab. Since OBJEXTS_ALLOC_FAIL and
->> MEMCG_DATA_OBJEXTS currently share the same bit position, during the
->> release of the associated folio,
-> 
->> a VM_BUG_ON_FOLIO() check in
->> folio_memcg_kmem() is triggered because it was mistakenly assumed that
->> a valid folio->memcg_data was not cleared before freeing the folio.
-> 
-> nit: maybe this can be massaged as "a VM_BUG_ON_FOLIO() check in folio_memcg_kmem()
-> is triggered because the OBJEXTS_ALLOC_FAIL flag was not cleared,
-> causing it to be interpreted as a kmem folio (non-slab) with
-> MEMCG_OBJEXTS_DATA flag set, which is invalid because MEMCG_OBJEXTS_DATA
-> is supposed to be set only on slabs."
+We added that "select MEMORY_ISOLATION" in commit ee6f509c3274 ("mm:
+factor out memory isolate functions").
+However, in commit add05cecef80 ("mm: soft-offline: don't free target
+page in successful page migration") we remove the need for it,
+where we removed the calls to set_migratetype_isolate() etc.
 
-Thanks, applied
+What CONFIG_MEMORY_FAILURE soft-offline support wants is migrate_pages()
+support. But that comes with CONFIG_MIGRATION.
+And isolate_folio_to_list() has nothing to do with CONFIG_MEMORY_ISOLATION.
 
->> Another problem that predates sharing the OBJEXTS_ALLOC_FAIL and
->> MEMCG_DATA_OBJEXTS bits is that on configurations with
->> is_check_pages_enabled(), the non-cleared bit in page->memcg_data will
->> trigger a free_page_is_bad() failure "page still charged to cgroup"
->>
->> When freeing a slab, we clear slab->obj_exts if the obj_ext array has
->> been successfully allocated. So let's clear it also when the allocation
->> has failed.
->> 
->> Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
->> Link: https://lore.kernel.org/all/20251015141642.700170-1-hao.ge@linux.dev/
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
-> 
-> Looks good to me,
-> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Therefore, we can remove "select MEMORY_ISOLATION" of MEMORY_FAILURE.
 
-and this too.
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ mm/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 034a1662d8c1..0e26f4fc8717 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -742,21 +742,20 @@ config DEFAULT_MMAP_MIN_ADDR
+ 	  This value can be changed after boot using the
+ 	  /proc/sys/vm/mmap_min_addr tunable.
+ 
+ config ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool
+ 
+ config MEMORY_FAILURE
+ 	depends on MMU
+ 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool "Enable recovery from hardware memory errors"
+-	select MEMORY_ISOLATION
+ 	select RAS
+ 	help
+ 	  Enables code to recover from some memory failures on systems
+ 	  with MCA recovery. This allows a system to continue running
+ 	  even when some of its memory has uncorrected errors. This requires
+ 	  special hardware support and typically ECC memory.
+ 
+ config HWPOISON_INJECT
+ 	tristate "HWPoison pages injector"
+ 	depends on MEMORY_FAILURE && DEBUG_KERNEL && PROC_FS
+-- 
+2.48.1
 
 
