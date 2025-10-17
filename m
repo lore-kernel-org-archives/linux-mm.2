@@ -4,81 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07102CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 18:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12BF6CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 18:20:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F87A8E0012; Fri, 17 Oct 2025 14:06:25 -0400 (EDT)
+	id 38A768E0012; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D0CD8E0006; Fri, 17 Oct 2025 14:06:25 -0400 (EDT)
+	id 33A9E8E0006; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00D308E0012; Fri, 17 Oct 2025 14:06:24 -0400 (EDT)
+	id 229AE8E0012; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E08108E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:06:24 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5938B118DE6
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:06:24 +0000 (UTC)
-X-FDA: 84008385888.15.03944C9
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4468E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 835334D1F2
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:20:17 +0000 (UTC)
+X-FDA: 84008420874.07.B1F7D43
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C740A10000A
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:06:22 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+	by imf10.hostedemail.com (Postfix) with ESMTP id EFAD1C0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:20:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vwq2wUjl;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760725215; a=rsa-sha256;
+	cv=none;
+	b=GM1JIo/BZFo75v+0L9JFBkVdyBJvbRMPq1m7/8ZlIJGKMEPzmNNwV4vMfxnUmNNmDoHqLt
+	/C7EpZRv6RLoXw5uMcqnJgGikwE3p22DpIEan/3dp3xIRzR7Ec0xRoDBStFCkX7HXPZXJh
+	er0qW7JG2uyzoMW+0jzNxyIvPP7CPQk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vwq2wUjl;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760724382;
+	s=arc-20220608; t=1760725215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uZ7wmyeoCr/n+eEz+2rVPc9HZYTWQxyrTPZm5rRd0V8=;
-	b=AYetPoX4C87ww3ARu/2s6jUaV0VRJ+V/7JOgSWcdUFsXrTjbRipHr4brhb9kbOMYmNqrEj
-	J3MlUnu2bsu3o6oJaCR1H+YgcliSW1nQ8v1lxIt/5VKbBeTa8RX/THCYmttjMNjTUW5H+v
-	IN3MRr2Z/t4okxjBXWr3lf6JD1sEZfc=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760724382; a=rsa-sha256;
-	cv=none;
-	b=qPQ8+I/MvfAU6rBrPqCGtyZZr05EUTBLW+c+w1pI/QJIFNXHPi78NJ/7YDsD85WeUrP9um
-	nhqJgnsHmK/6erCJ8p6ZzddK8aRWj8cUabYsSsAU/DeHsCsLPjNnXvgUlMj/6kFuTdoFKq
-	wB6PwAbQdpB1/0Fp6TDaW5A9TJz000A=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AM67p9xsM/ybJDetY9mA0SRKrMHwMnPpNPBtQIGWPaY=;
+	b=p6dlQa8CIHrOCsep5KLhRG7JpoYj1rV3K8PvG1vBINlS1NhyyrqrbAwnNTcyLLRqIXLe0h
+	J6+07xdFp9hOYa2q9TVQby/t+hPJQx3qB8bGyWuYk2e9ryfde88Y95L87XWbcPFpVxisYm
+	VNcpECw5YS5EWw3wMYuoUQN5eiifuek=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BCB2F6482E;
-	Fri, 17 Oct 2025 18:06:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76468C4CEE7;
-	Fri, 17 Oct 2025 18:06:19 +0000 (UTC)
-Date: Fri, 17 Oct 2025 19:06:16 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Gavin Shan <gshan@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F8C464831;
+	Fri, 17 Oct 2025 18:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6BBC4CEE7;
+	Fri, 17 Oct 2025 18:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760725215;
+	bh=N7DJTkgdFq2cVtwSeDRgEDmegzhxtatOlmC9hFsx/jU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Vwq2wUjlPQJ305VOVK2SUdxUZv760Gg2pHU/yKSLZwbT+CW2S4XSTDxOuK8fXDRd4
+	 GsPNGXzw6fKokxPiVFRR1goVQ7VTX6Ah5i9z1BDLQceUOCTibvomTJpiiP6ZLr2du6
+	 S02vW7CQLJ/YgK5IYYldYJghS+ADZYHw4qzM/x4bXsQjDoGj0fM3F58xYTGd6fCHlo
+	 ksPaoup8k/GOIAZOh1+ew70+l/6K2YIuE7q/7mw3go4kCoHUzMGrYYmlwKU5rIQH2N
+	 7qPAXa9d1qjFJ8KwKrDUqRrfYw+lrT+zsecq9IcP5ZhBo/wyMIfCFRKwe9v7th2hUP
+	 CUZYfpRtzAsfA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
-Message-ID: <aPKFmHg-FrkGJxWd@arm.com>
-References: <20251015023712.46598-1-ying.huang@linux.alibaba.com>
+Subject: Re: [RFC PATCH v2 03/10] mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP
+Date: Fri, 17 Oct 2025 11:20:03 -0700
+Message-ID: <20251017182006.124211-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251009212042.60084-4-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015023712.46598-1-ying.huang@linux.alibaba.com>
-X-Rspamd-Queue-Id: C740A10000A
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: xohfuciumwbbbhg7iqzg6y99xzxzpfk1
-X-HE-Tag: 1760724382-769738
-X-HE-Meta: U2FsdGVkX19Z/5h0+/brZKsE6mGTYZNn+nbncuFQCJZwbr4rZ7VT2YFlRdpSFl24y0uihiBKD2NENWPv4nnzltqRZPeDgh8lMzXd7VuFmdoYvivac8ieYSoHw0s+VvtrvMCgDFtUFudNyXB7u1qVBpwNP89+mEvDuarWBGbOq6xeoiMMRM4R8luOuAWM4fd9ALuRWyPh1vKagfbempybAAgoHsbP7xwvdCLuKRnJ/oLb+xq8dGeJXNsiggtg8MARNXFb9R6osIimNhMPvpltK9VOoIR1betnyTwBZtk8iqNAaWAdtRylvpP/4MmfcasLsSt4tg84T3VN2y1IAAhPzLhjKs9tIbjn/1UuZxr/ktmN0dBLLCbo93WR2BnAnMD2LORCEr6UzCkmGI8qLZ4HrDWeLZTfAu9IroY75I2Ck0LlpmLhT6GVzlQnd/YUIS0SxJBM61uMUmdLhxJNYpbOCGgdh73qB4n7P4ORKCXo9VBE45XK3Nk03RC+HLYi+H5RSEeIrNugpHd/XohBeWjIsCbyBaXG+xSGxmjMAj3GNZcG4/Uq2S+c72fqe+OmT87PEqKb+s4KSQPbMnChVpWTre+wdhW+aarHgcBkGnBWKFn4gXuTU3yWdOoxKhNTXE2GefxDSP07AwgxRIAMkX63ibPyKRbIzU/ajH+Ux0apcDPNnAqlT2A2O6fsmG38m+J90q+BQms4eh0hNPCVLO//hqLJ6jl7nP9++Mu0mVn80Eak6nkdPj5BjgOwLrxd/oIfHbkiDIYbAJEp9ZlDtMYiQgzud+ZV4k2LgCT4U68MJ3ie97oBEaubNkOFJGFuaLeXbPGGY4vn9jHoUUm/+CIbUICnyspBaLtkI4ucHYxajnpCJStOJ8Q2K8C5jlIFGi44FYhP+Lrxzlpn32sShnvFE3Y08lj7s4reREIHXqC/ZrFcqJSH+5uBGD/VUyzKkLgJ5mhRoNcktgu73CwJkVF
- sj7IdZre
- UTbScx0C/L3Vc7KfPWYus5O7GVL8UX3lQlZtqWNi/kO5JIdCs9dA583FwNAHV64IlAWeXRh7+mGZ0DHIj26VWCozO8z+D0ADZ7vEXuBW8jfT1BCVXuZyH93mmUocYObOee4nYJE03zfRHqXvQD/aW2oq6j0v9mNxHDsk/zU+6E5ArXxSkoe3lanNNnU3WidvEVr8r8KUXzo/G81HUMK/ybicAxXCmeR0PMwKLc6K8ZjxjfSmcfU+QxNFOBP5YHEARYruN3ScsV45E/I1U+4KyKLuzWcUNRtfBHEHZZvTWncstM+ScYiBxi8yleso9R0fWHJWgKC1KlYNC/zdIDNIr6NRvN0APzaC8A3lcOihCGGUy7yYxGzr4+BQGjSUtgJOiMLHdzzdxJ8hJC3GcumZd73eQ+y3X+K2iqcytw3woO9q+3eWx2jqoNsHhjYaMs3Zbb0YTNqEDKPm3lAjH7FLIrWzCJk/h3sDIVptJ2JQ2q9+CngV5UZhPEtcDtFmNMMVHLE6TnjGFHl8EdaZEJT+jLnC7NZAL8+I61H4sgfIIM1aVi3REnIH/IsL9YnCivp5UTMGO3rLnL/xOcugbSzgW0kaBFMAPdHzU9NlIaXcNGw1BC0ZIV/Y073O11Rn+0cJVTQzl
+X-Stat-Signature: dxw5hz3p5wekzfbd39pyj79eoincq8xj
+X-Rspamd-Queue-Id: EFAD1C0016
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760725215-11440
+X-HE-Meta: U2FsdGVkX18fmsbF1k2eoW9LHBksbJECVKQy4MbAPQb6/DWO6mG9G+k8sHTDg5J/F48pRgykHAoC7nf/ORQiodbJ+dFfOXN4I8QmhNpSJAAhej8ju9cJ/jL9grcpcO239KF4B7BP9Y1CY27Wt2lcVE20y/iGfuXK1fsFxAeut9O4Vhuy9Rj3vsF0s2Vxmd4o3+Tv+X0WhzR7BwiCYy0bfd05XSBZz8lJyquudstltLVu5LCm8UYYTpy/iEV7fyDcnd6Q6tPccMJivraiLI+5q/bty4TzHRHIONaMmmcaqVfgwqMo+n+pQT4ik4k8a4/LrBEVMPoFsUwJF9t0XRZmpq+TOyhq+6w0ZKhH1cDdOrviKpRr4bxvxLhVEynETvCBddouBnRTa6ndNIaYv/v/CGoj4wLQthiBVzMUHm1IHX3W+Val0FZ5sAg3yGySnWaS8vFCuO1fWrOtZuK7QZbue0QqgTPzisyLKpR30TxC6IiSdGsTYOibEaHlLe2PTT11uNi8ZqheWHUBsq+74Zwf6ajxkOymEW2p7yZTOE9OMM/8GVriUwP0P5DRB2oKAVqUkT9goZCxrz3W/5BurMSp+OBB0mAaugfrtfih6BcqzO/YPt+FoQ/gc4Lcw2DjBq6MQ1tF0D0ySRr35kcJbp8yGJuC27fqbZEFDfoaR0ai/KdvE43EMZviwHx6wBcRzXyq/FJq8AZKjaztlCK/hUfT5CAeE2khQWsmMIpzCENs5+bg4aL7o8SHrh4J2ju8nmuD9f/NHEAm91oNPp0Ocy8EoO7B8LbEGqfKqNot3qsod6Bt6grec3pH/53D2QAGtWd6F2FTeZp8QvYQZ++l6rMsGCuWnR7DgaVED7/CLcF5x0NXMyf6d3bbjT+6R5EEpeDzkmxcQnQBPbS989Cxd+ej1+UnbyuXDMReDE+F7o9ChoAF/2VtSTkirWcHzKBnvtJZGn+eIqXcqoJLYhatJF2
+ yrw5gjP4
+ b4YgOUMFbUd6IjE6cbhIl9XhvkFme+3MRYWAi+aNPMH7ea1RLgsKRv+/GS4XuDW5cYZXuohaYSvywyog8PYq3b2+mN66F7efLvpwUAASMfVHXZYtCbzE1e1TNmnd1TkN14ft9/EDXCwZw82IQElGINiBSROFmYnAIeFIAbDRglvdHb0bqvOF+9LdUFE72tv5p8X7aG2Auf5YnD2m6QdywCuCyAB5tBegKGbQoi2VzDrM8BGg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,95 +94,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 10:37:12AM +0800, Huang Ying wrote:
-> Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
-> mark some pages that are never written dirty wrongly.  For example,
-> do_swap_page() may map the exclusive pages with writable and clean PTEs
-> if the VMA is writable and the page fault is for read access.
-> However, current pte_mkwrite_novma() implementation always dirties the
-> PTE.  This may cause unnecessary disk writing if the pages are
-> never written before being reclaimed.
+On Thu,  9 Oct 2025 14:20:35 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+> Implement the handling of the new DAMOS quota goal metric for per-memcg
+> per-node memory usage, namely DAMOS_QUOTA_NODE_MEMCG_USED_BP.  The
+> metric value is calculated as the sum of active/inactive anon/file pages
+> of the given cgroup for a given NUMA node.
 > 
-> So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
-> PTE_DIRTY bit is set to make it possible to make the PTE writable and
-> clean.
-> 
-> The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
-> Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
-> pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
-> clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
-> are set.
-> 
-> To test the performance impact of the patch, on an arm64 server
-> machine, run 16 redis-server processes on socket 1 and 16
-> memtier_benchmark processes on socket 0 with mostly get
-> transactions (that is, redis-server will mostly read memory only).
-> The memory footprint of redis-server is larger than the available
-> memory, so swap out/in will be triggered.  Test results show that the
-> patch can avoid most swapping out because the pages are mostly clean.
-> And the benchmark throughput improves ~23.9% in the test.
-> 
-> Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
-> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Gavin Shan <gshan@redhat.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: Yicong Yang <yangyicong@hisilicon.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
->  arch/arm64/include/asm/pgtable.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  mm/damon/core.c | 38 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
 > 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index aa89c2e67ebc..0944e296dd4a 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -293,7 +293,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
->  static inline pte_t pte_mkwrite_novma(pte_t pte)
->  {
->  	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
-> -	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
-> +	if (pte_sw_dirty(pte))
-> +		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
->  	return pte;
->  }
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 93848b4c6944..1eacf78aa358 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+[...]
+> @@ -2058,6 +2093,9 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+>  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+>  		goal->current_value = damos_get_node_mem_bp(goal);
+>  		break;
+> +	case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
+> +		goal->current_value = damos_get_node_memcg_used_bp(goal);
+> +		break;
+>  	default:
+>  		break;
+>  	}
+> -- 
+> 2.39.5
 
-This seems to be the right thing. I recall years ago I grep'ed
-(obviously not hard enough) and most pte_mkwrite() places had a
-pte_mkdirty(). But I missed do_swap_page() and possibly others.
+In addition to damos_set_quota_goal_current_value(), this patch should also
+update damos_commit_quota_goal_union(), like below.  I will add that on the
+next spin.
 
-For this patch:
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -825,6 +825,10 @@ static void damos_commit_quota_goal_union(
+        case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+                dst->nid = src->nid;
+                break;
++       case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
++               dst->nid = src->nid;
++               dst->memcg_id = src->memcg_id;
++               break;
+        default:
+                break;
+        }
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
-I wonder whether we should also add (as a separate patch):
-
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 830107b6dd08..df1c552ef11c 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -101,6 +101,7 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
- 	WARN_ON(pte_dirty(pte_mkclean(pte_mkdirty(pte))));
- 	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
- 	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
-+	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
- 	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
- }
-
-For completeness, also (and maybe other combinations):
-
-	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
-
-I cc'ed linux-mm in case we missed anything. If nothing raised, I'll
-queue it next week.
-
-Thanks.
-
--- 
-Catalin
+Thanks,
+SJ
 
