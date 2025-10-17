@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18550CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 03:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E7CCCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 03:46:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 630A78E0034; Thu, 16 Oct 2025 23:46:34 -0400 (EDT)
+	id 017A18E0036; Thu, 16 Oct 2025 23:46:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 592C48E0002; Thu, 16 Oct 2025 23:46:34 -0400 (EDT)
+	id EBABE8E0002; Thu, 16 Oct 2025 23:46:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45AE68E0034; Thu, 16 Oct 2025 23:46:34 -0400 (EDT)
+	id DA9B98E0036; Thu, 16 Oct 2025 23:46:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 304B28E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:46:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B11B21A01FD
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:33 +0000 (UTC)
-X-FDA: 84006219066.14.CCEF2C2
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C30B28E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:46:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5AE5811A394
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:38 +0000 (UTC)
+X-FDA: 84006219276.13.71CBDF7
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1D910100005
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4buTEpGP;
-	spf=none (imf14.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id C257B140004
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:36 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=L6ZRrXUs;
+	spf=none (imf23.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760672792;
+	s=arc-20220608; t=1760672796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YKsfrgXDaorO3CUsvOJQhLL7y61inEH+Bd5/BDdkvPw=;
-	b=eBROcV4CTFAmFwffeXb0kaanMCtllaGh8zI34VVT4QdT51ikhQ3od+3YMyqlr7a5qXOhUu
-	gdVKZ/8sAvJRK0pYZkgm7WndpJRBZ85ejtHHv78onmga3WwhomDFvXLXGLCjhJVPr1L4L/
-	oWgfyBYUUZsiHEBiFK6AVNPwVPfbkWc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760672792; a=rsa-sha256;
-	cv=none;
-	b=BCds4g6Op204xNl1n5xDi5YMrgmhJUDEX2dCPMaAUJcrJ2sEd1RfeJtYKXxoWNOKzKa9RA
-	BkxiCXM1gMTnAYhJR4do1q0pPpVL2z4p7HrwgWz8DEabv8PdB/bqIqWoG87FSsl8xNhcDn
-	th3dVm5UEJqCgkSGjRsncloQ+huemvY=
+	bh=OzhIS791DbWw/BkeeiAXVxsk/8OZmh8JD9FoPLYpoC4=;
+	b=pKuXn/WcgfFiOtnEmbcGVuUABh9AtgLF/kh4YVkiiZ+XAqw5pFDWi1CVUV9HewW411Ob1N
+	PdeAk12s7qvQ76fuQdQKdikIkjfUzYvSBg0wEyDwY6IIGTSsQ7BUgHpcoEQyt97DLEVKiO
+	wuX+1hi3M9LkjbTAezxHatzNFSsjjOA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4buTEpGP;
-	spf=none (imf14.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=L6ZRrXUs;
+	spf=none (imf23.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760672796; a=rsa-sha256;
+	cv=none;
+	b=K/aBe15kr3lARUmRARyW0x1SHucNr3/7wqw0FHXB62tavcxt/USSxCRm1IHuACzAmum6Fj
+	FxvMFLg7feajaHopr0YljBUlaZnbHDHsOMlapfvD/ILbc+GQiRv3MgnQZNfD3XVLNbCAWl
+	93TJlnWRP3XeXqyjuTtwvMYNMuSsNbE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=YKsfrgXDaorO3CUsvOJQhLL7y61inEH+Bd5/BDdkvPw=; b=4buTEpGPEo6NSTYStECW27un8S
-	6A0/K7zKACjM+GCGgU3G0n7fF8aoL6jLPYrGKWyhfsEdwRPbZttIM5EfuGRiHfVEHdiFGuNwuG7KI
-	pM1VLyvQoTkuD31kkEu+ChXPzhHmsOSISP/MS4snVyI4TmqgkIWQKyHElWw6A0MJ/b0bHnjAndVVl
-	XHEBxKjfjohYKpWejuBcyvUyp5ALvzpOEzc7HRp3xhVLblq6HJC0YSCQRMLNsGsWDCO26nafq2BJ4
-	iUvEv+9UBhqe99Q4dpLUHwn9/mofAsN75USNw8x3dk7K3B7G7dmSnzXVGrTUbk5OobQ6fv18pDnHu
-	7WFgEYrw==;
+	bh=OzhIS791DbWw/BkeeiAXVxsk/8OZmh8JD9FoPLYpoC4=; b=L6ZRrXUsGgGd6cwNkJ2KANK2wb
+	ls0BUyl6KmamfjFMchiK3B0qzIvIWTHtiuoK5pUlLP9AbOHrFlSCeoB4NuNHr6eAKbTV5gLRWKOgL
+	lJrw0i+C30z61rABpx7J4iBsaDku9jsb6HGieq4SckKhm998/z41jlbDE8OlAaimIhz3sE9pIqA7n
+	y5+94uX2OECUs0PDzwSzlx0sMqhfDV6eObfKm4imcPOETfF2FWwyuNLOznDhmK1VKYi3Gv+YoDyxO
+	4AP4k/wBtb81x2AJOvIpYCe2ZBlw7rRdfD1rzm1aqp9PWpOPdTuLgnYjc9+C/EIx4v8h1TcEVCpJc
+	BpRDFYOw==;
 Received: from 5-226-109-134.static.ip.netia.com.pl ([5.226.109.134] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9bQE-00000006Tyi-1K4F;
-	Fri, 17 Oct 2025 03:46:30 +0000
+	id 1v9bQI-00000006U0W-2Y9j;
+	Fri, 17 Oct 2025 03:46:34 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Christian Brauner <brauner@kernel.org>,
 	Jan Kara <jack@suse.cz>,
@@ -72,24 +72,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	hans.holmberg@wdc.com,
 	linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-xfs@vger.kernel.org
-Subject: [PATCH 2/3] writeback: allow the file system to override MIN_WRITEBACK_PAGES
-Date: Fri, 17 Oct 2025 05:45:48 +0200
-Message-ID: <20251017034611.651385-3-hch@lst.de>
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 3/3] xfs: set s_min_writeback_pages for zoned file systems
+Date: Fri, 17 Oct 2025 05:45:49 +0200
+Message-ID: <20251017034611.651385-4-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017034611.651385-1-hch@lst.de>
 References: <20251017034611.651385-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam05
-X-Stat-Signature: c5431rm1776gd6qridji43grzd9jyj6k
+X-Stat-Signature: zj6bkqskeu5r9qnafkc6mmec1zgkpfqw
+X-Rspamd-Queue-Id: C257B140004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D910100005
-X-HE-Tag: 1760672791-926859
-X-HE-Meta: U2FsdGVkX19O7Gyu/FoHZcaX/fx4A1XTCRcLeG2MbyKqdoWKA1I5XUppT3PWomc9uQpakKh7JcUAlZw9Z+d6eTWdYTXflYJkOi6Di4vinEKoMoWca6OOrQWBwt8yulPKLg8vBWS1DQgbsM0f6m/d5pWZ9ny8ip1EMalCDKoo8Kjl5C8hVuPZawnKPSn9dUDC20sl1Jc8TfBlP6BNmrXyeBZ9+DzC9wgQqtO+66SVrwhPT/5JqMM3glVeqfSW7hY1kZz1tl8QpevxjFqo74DfReR7yOo74084BE2LFt3Qm+wjdnnzi5kXUM4jkjylh2tzyM81+Rw8SN91+jrtvYOlwbrQOpdvx8X1npT0quT81hR05M23yIW3dY+yiqILG4Ujze+HX+4YZhx7AzoI/Fx9zmX3ABd0QTqTfa556AvYBnRamnlw8ER4XobDYGVRNoDEAcvmS2Td4+XJNckamIpnGc1ZyIij6CE+xtqdiaheK+tM+02JEG8Sya3bd5HjINGjb4w9P4dDLoP8RZHcSZEA5DdjHHKDLJoDzvScMFhFmFAgO/7depJaUxwE4LgQY1HAV25Uu4JRgDMHvTkv1qyyoOWOjUYH33vHtO77xzwk/tBf7FuNXk3yRFRmSKIV7QtA0XQ2vfUFuUgvjLY01ZAtnPp1NwCHigtg+JMt0QVrKX1rAo4z9+06OZYKSwQjsXqon5eHuU0YCR+6dVHFOxEnwzOrL8f56W9jUbBLKYJ29TZEjFaOijxuZfi8a3bWV87+Vqf8YfYYtw5G80O0GFlGIKTyh4HVPXG+eonwpvIHZnJxQDWT6aGRC/Mh2qdGhtcaN/aGMkLJEXpejBvQ9ZOwKeVF93Wm3ma447Y4lQSKibp6EFb6fgBUprkFgdKo5TvZxydE3pi/fgmgZTDrWoAespo/W1AgcR0bYsZVBhCOc7287o8snM5l5v9Zz7pa8em4S5jzpL+1QXdxKQSqw3C
- GsNd6736
- UveNqrMYibtByJpBDAlKRkviF7NfdZDmwBXi4wKdlHJHMB16gJPIZt/aNkifvlvE37JlviSmQe04HwLinKCugpShjShqF65Du/PvZ1oNsUMMuAyppbh+seWSG0zxZK/wetuSGOp19lmioPnqp7BnduXXI6vwCtoVn2iifdM0XwkVHQ9qK3puIRjTtOwrJ4wcHWAj9AhHEIywEORA3yBVI5nUpmu3Ghg85GrN5LPLdyJcy8rF/n7nmcNftLoJyUrJXPBEOXGbojPBsBZ4g4/N1RB4hmNCKSs98N8jxQca8s26XBhKxPeWBacV/8PPWA2ag8Nv6LF/iwCY+g+KvZ3Z0I2dtOwTVQdQKeNhbTJ+pt0PzCexfYzHYpR2ycbWeQIcFTwKp0CaGasqKc2wGgKSBekDHxyIhbpC/VKPP0TeZO6DLJAXUmpjWL0bFUVJ+aZjE1kUxGlUafPlbAS5JClXt+jovEGqJx0kFZdPKmMufk+CPmXigg6CI8gfqyPVpxp9U79p0esDGYgVWXh7eBymrAmROfawAl7iQg0EPA6b1lmGTk9D7qahmldYpNou2MU5jqc5PVl2zCSW8wxX05oEganLlwcQ+blaG42ON7LvgZVIwiY8=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760672796-25340
+X-HE-Meta: U2FsdGVkX1/CxnQJ87kKCnplaUO9w/u1BpS1I5w/nXC1k20eSeJO0XOOIkT+bKGAWbOBbuqPy0bkG1pvl2ZQmrKa3w3J/XpK/NrlyfCPG06ypBO0OCBfD4G/WqkN/S0N+HN1C0Yhn58svJIYVWbiOBU0WjhxqjVfVKdzYULjxaTq23F/lje1401Z7VcsPrhMWnf7wBoDZ6E/dP4UBsWBz3SLZAB5yXo2dt6x6SNioARDHIa0mqS5GASOYeH5Ch4hwc0W1aHp4fZzgM7eRfVhpcLncLKK+BQALCH7hWrErHOrVT6vVKBK0QXo/Imy+WGQVWO2KduWG7KO7zY5AHV7mtg1n8dV7x+qA+CWteEsfkb8DlnAd1g2PKzNjVtD50iPZEhK9r149U8cR46+0MM8lXovd01dw69uFZo7OT6lWpeVksEX+fBZaALIs5gQPJ/+ZMRMtfN5g5Uft5E5l7K5/1RxcllSYp974hdKFH7aAlv6iKSv+e8hVY4M6T/BkyEr1XJKPIkkSyUxoCuH8kutE2h8EooL5gj5XW+RpK7Q4i//GpzeLSEd12hkO42p+mlhTkMTzb6n/4CdHZKdCQBOi52PqFWnzlpqAdNJTTbcM9NbSXvPgrSjeUN5sEhc1zTShWjuj6v4WE+dh92mGdtFjuzpuu89r5e2V2Hjf9XyFFWdwcB1GyAPh/DRDo+lPhdC1uNBioQ3i+5eM9GhlbwhniJxco6i3/Q/dP+hZjbK1B50biWzDg1hxYRQr16N8O3+CvNHaL+x6mzOnPFY6IfO+oOVvs9qw778zcAPWnVU5dUVfKtNe83wny5LO6mZPt0R2Wke6QlgN9W7bLf16NzONJMNTVZ3t9XwyiZKC1uzkj7gZ3VIjE8oRDNmZR8fUuuyMhoxi9qATX6uDWmm01rKj6u5LITWtz4FURhI24Pohz8R1xFwBBL3V4sRyJ9IERmQkieMcXHuj5nbYoka92p
+ EDxUT04v
+ P3W6dQyErp/zdA7qvcVjwzJeikHDWW821pPiGCgFHBvQB/ALOUK0y+mWQjUN2qQ1U2kO69OnCjIikAwpo2E/YcsK1yu/r30NydjiIA16VVwldTNt8Cdt/ykKdNzoUoUM5CzMjVFN4V1osUdeQnz7lZsQ1fwPgjFPM7Mqs93TK3EOlCGeaQlflViUFNpdM3tzGCkebBMptbaar9qzLRUqe9ITJkSFd4wT0rIUlJhSWcjRV7JIP9ciglRUYsaQkWBaaGz24B/jt15vmx/jwjKQ1CEnORGdt6GrbhOOsuSHlpOuz4lf3twCrn24fE1tFCj2FgzN7a8z1GzFWr5kIgYqjKTKbY2MPDktl3L175DtSPS1keEpNpRPQ0IYW71+Ozy1vrCnyxckg5ynp7uscxfGIa+IQry79oGwa9qxxGU+PX1nRdwFZH1GmTKWnStPSf3neDAB5P1949/e7uk+tjEtgNjBiH765r5rRTRFDlhcY1QEl3DqU7G9MI3oWaakVo8KQbG7kc7ODBaRNOUFI8WLhK8w2Sz5DnsexcuYt4ItQctCxxVvmoF2BGxyF6AK9JrL9wD8YPSNatcexV6XvcNeT9kkW0j0PH27pTjgy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,107 +99,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The relatively low minimal writeback size of 4MiB means that written back
-inodes on rotational media are switched a lot.  Besides introducing
-additional seeks, this also can lead to extreme file fragmentation on
-zoned devices when a lot of files are cached relative to the available
-writeback bandwidth.
+Set s_min_writeback_pages to the zone size, so that writeback always
+writes up to a full zone.  This ensures that writeback does not add
+spurious file fragmentation when writing back a large number of
+files that are larger than the zone size.
 
-Add a superblock field that allows the file system to override the
-default size.
-
+Fixes: 4e4d52075577 ("xfs: add the zoned space allocator")
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/fs-writeback.c         | 14 +++++---------
- fs/super.c                |  1 +
- include/linux/fs.h        |  1 +
- include/linux/writeback.h |  5 +++++
- 4 files changed, 12 insertions(+), 9 deletions(-)
+ fs/xfs/xfs_zone_alloc.c | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 11fd08a0efb8..6d50b02cdab6 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -31,11 +31,6 @@
- #include <linux/memcontrol.h>
- #include "internal.h"
+diff --git a/fs/xfs/xfs_zone_alloc.c b/fs/xfs/xfs_zone_alloc.c
+index 1147bacb2da8..c342595acc3e 100644
+--- a/fs/xfs/xfs_zone_alloc.c
++++ b/fs/xfs/xfs_zone_alloc.c
+@@ -1215,6 +1215,7 @@ xfs_mount_zones(
+ 		.mp		= mp,
+ 	};
+ 	struct xfs_buftarg	*bt = mp->m_rtdev_targp;
++	xfs_extlen_t		zone_blocks = mp->m_groups[XG_TYPE_RTG].blocks;
+ 	int			error;
  
--/*
-- * 4MB minimal write chunk size
-- */
--#define MIN_WRITEBACK_PAGES	(4096UL >> (PAGE_SHIFT - 10))
--
- /*
-  * Passed into wb_writeback(), essentially a subset of writeback_control
-  */
-@@ -1874,8 +1869,8 @@ static int writeback_single_inode(struct inode *inode,
- 	return ret;
- }
+ 	if (!bt) {
+@@ -1245,10 +1246,33 @@ xfs_mount_zones(
+ 		return -ENOMEM;
  
--static long writeback_chunk_size(struct bdi_writeback *wb,
--				 struct wb_writeback_work *work)
-+static long writeback_chunk_size(struct super_block *sb,
-+		struct bdi_writeback *wb, struct wb_writeback_work *work)
- {
- 	long pages;
+ 	xfs_info(mp, "%u zones of %u blocks (%u max open zones)",
+-		 mp->m_sb.sb_rgcount, mp->m_groups[XG_TYPE_RTG].blocks,
+-		 mp->m_max_open_zones);
++		 mp->m_sb.sb_rgcount, zone_blocks, mp->m_max_open_zones);
+ 	trace_xfs_zones_mount(mp);
  
-@@ -1898,7 +1893,8 @@ static long writeback_chunk_size(struct bdi_writeback *wb,
- 	pages = min(wb->avg_write_bandwidth / 2,
- 		    global_wb_domain.dirty_limit / DIRTY_SCOPE);
- 	pages = min(pages, work->nr_pages);
--	return round_down(pages + MIN_WRITEBACK_PAGES, MIN_WRITEBACK_PAGES);
-+	return round_down(pages + sb->s_min_writeback_pages,
-+			sb->s_min_writeback_pages);
- }
- 
- /*
-@@ -2000,7 +1996,7 @@ static long writeback_sb_inodes(struct super_block *sb,
- 		inode->i_state |= I_SYNC;
- 		wbc_attach_and_unlock_inode(&wbc, inode);
- 
--		write_chunk = writeback_chunk_size(wb, work);
-+		write_chunk = writeback_chunk_size(inode->i_sb, wb, work);
- 		wbc.nr_to_write = write_chunk;
- 		wbc.pages_skipped = 0;
- 
-diff --git a/fs/super.c b/fs/super.c
-index 5bab94fb7e03..599c1d2641fe 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -389,6 +389,7 @@ static struct super_block *alloc_super(struct file_system_type *type, int flags,
- 		goto fail;
- 	if (list_lru_init_memcg(&s->s_inode_lru, s->s_shrink))
- 		goto fail;
-+	s->s_min_writeback_pages = MIN_WRITEBACK_PAGES;
- 	return s;
- 
- fail:
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index c895146c1444..ae6f37c6eaa4 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1583,6 +1583,7 @@ struct super_block {
- 
- 	spinlock_t		s_inode_wblist_lock;
- 	struct list_head	s_inodes_wb;	/* writeback inodes */
-+	long			s_min_writeback_pages;
- } __randomize_layout;
- 
- static inline struct user_namespace *i_user_ns(const struct inode *inode)
-diff --git a/include/linux/writeback.h b/include/linux/writeback.h
-index 22dd4adc5667..49e1dd96f43e 100644
---- a/include/linux/writeback.h
-+++ b/include/linux/writeback.h
-@@ -374,4 +374,9 @@ bool redirty_page_for_writepage(struct writeback_control *, struct page *);
- void sb_mark_inode_writeback(struct inode *inode);
- void sb_clear_inode_writeback(struct inode *inode);
- 
-+/*
-+ * 4MB minimal write chunk size
-+ */
-+#define MIN_WRITEBACK_PAGES	(4096UL >> (PAGE_SHIFT - 10))
++	/*
++	 * The writeback code switches between inodes regularly to provide
++	 * fairness.  The default lower bound is 4MiB, but for zoned file
++	 * systems we want to increase that both to reduce seeks, but also more
++	 * importantly so that workloads that writes files in a multiple of the
++	 * zone size do not get fragmented and require garbage collection when
++	 * they shouldn't.  Increase is to the zone size capped by the max
++	 * extent len.
++	 *
++	 * Note that because s_min_writeback_pages is a superblock field, this
++	 * value also get applied to non-zoned files on the data device if
++	 * there are any.  On typical zoned setup all data is on the RT device
++	 * because using the more efficient sequential write required zones
++	 * is the reason for using the zone allocator, and either the RT device
++	 * and the (meta)data device are on the same block device, or the
++	 * (meta)data device is on a fast SSD while the data on the RT device
++	 * is on a SMR HDD.  In any combination of the above cases enforcing
++	 * the higher min_writeback_pages for non-RT inodes is either a noop
++	 * or beneficial.
++	 */
++	mp->m_super->s_min_writeback_pages =
++		XFS_FSB_TO_B(mp, min(zone_blocks, XFS_MAX_BMBT_EXTLEN)) >>
++			PAGE_SHIFT;
 +
- #endif		/* WRITEBACK_H */
+ 	if (bdev_is_zoned(bt->bt_bdev)) {
+ 		error = blkdev_report_zones(bt->bt_bdev,
+ 				XFS_FSB_TO_BB(mp, mp->m_sb.sb_rtstart),
 -- 
 2.47.3
 
