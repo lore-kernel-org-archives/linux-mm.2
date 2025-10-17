@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E84CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 06:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C57ACCD184
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 06:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5338E0039; Fri, 17 Oct 2025 02:30:16 -0400 (EDT)
+	id B9FA18E003A; Fri, 17 Oct 2025 02:31:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAC758E0002; Fri, 17 Oct 2025 02:30:16 -0400 (EDT)
+	id B779B8E0002; Fri, 17 Oct 2025 02:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2738E0039; Fri, 17 Oct 2025 02:30:16 -0400 (EDT)
+	id AB4B08E003A; Fri, 17 Oct 2025 02:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A803F8E0002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:30:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F246140561
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:30:16 +0000 (UTC)
-X-FDA: 84006631632.03.A442C9F
+	by kanga.kvack.org (Postfix) with ESMTP id 985188E0002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:31:59 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F8F759739
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:31:59 +0000 (UTC)
+X-FDA: 84006635958.08.347802B
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 766A640002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:30:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="FfObMG0/"
+	by imf21.hostedemail.com (Postfix) with ESMTP id C1D7B1C0004
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:31:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=493urc9v
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760682614;
+	s=arc-20220608; t=1760682717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7pd8xu2BQLfOjempHtq7iHnkhNuH0dguXz1a13wDXOQ=;
-	b=LUwBw2nUeO5SyuTcdcL8Sjj4IvVgpxAUd4/ENXtSj2JWUT268ue2uBwjigd8mqg2FY+raV
-	GJpX/GN/1Rjgbz6mYP5l+NYahG/+60BmMW4PE9l5ES5xfgpIuXMVIWwaMCyhkzYX/gOnS0
-	o3lziCBd3+/z2b4IxQ2BcJosBae7lC4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760682614; a=rsa-sha256;
-	cv=none;
-	b=UfCdg6mNCBpaKIW4PF5dmjFb6QfE8yiI2zbsz2/WcRxx3u3BxJ7zVlfsKlXRlLhERHHod2
-	YN+sz9CCErcNnS2Lf3pogRJTGnsSzgS8HIQESKNKsKQPrcAS5mFJqnMa7hiFL++XTxCUJw
-	CGspmMY7vhzXiJU8jQrY1WxDwPpZk6E=
+	bh=pmHn5+tRqJO2fDf6pS/Dahy8vpk/9cVU0mdR9JQWhq0=;
+	b=EZWKN+KzCFtwHlHtG3YWcTqiD9EwgIzcG7FTRjKfP+O2y5YETLe9EqWhH6/x7JUCfRp1bx
+	HhgJauxeK4QGMBOT7U0bigxhA/HHBcI2rfzl3RNGgXAWhtOA9rx0dXsgST7UfW7GslOj+q
+	wdNrn6Mv9sLiQtM3QsrUju48a0lp7Yg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="FfObMG0/";
-	dmarc=none;
-	spf=none (imf11.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=493urc9v;
+	spf=none (imf21.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760682717; a=rsa-sha256;
+	cv=none;
+	b=6S/Old7CGvuPtwjP/fRfTXR6UIgPv1KLDBap9HEZ7gxzuLZQQmWAJXsi2OaOKH3vnXPEjq
+	6zifr2fws5zirlnLygv8iT8DonHfI8CdT/TJZ5kiIw5srsgKTnzFwZIJs2fSDCTaYht2Ml
+	ZfwALeR4jZqi+COkW1d8wztbntcn8YU=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7pd8xu2BQLfOjempHtq7iHnkhNuH0dguXz1a13wDXOQ=; b=FfObMG0/tRIyrpoLwagMgvca16
-	ZBCXDWqMeZdoS/MkWG/P0NiNjEObHEld5ZrPkjGCYV9ht7av76XBdbzq+UHINeirBZSMjnv5iGAF6
-	pJB+mcw13Grq4C5oq8umF4dIhZkQXk5UW7gi0gp74MglLK8g/bcf90kHvTe4EA9Y3231+veU5nPp6
-	qVaJDBvzWZ58NbVAASJSU45+HmKPK9o1e/lIAXcS7KDAvBhiYpjnepl6/ptnGwBjRDbo0V5PHbk1x
-	V71HMJ9pcrRpCGvX+EEo5h8TCxTuIy18KwdQsjnR7rxLfY0FFb8DO4O1/RLTpsn+yc+z6mXGaRhzz
-	O7iEvjlA==;
+	bh=pmHn5+tRqJO2fDf6pS/Dahy8vpk/9cVU0mdR9JQWhq0=; b=493urc9vdCLUHtN/APrPDMt+Nw
+	AAbBU0C8dfMa1U8/04w8afM0UbQ7W4gfcGrT1PBGuKApCfeI/yVbNcy67l/1CHbSzWig+DgEMzhl1
+	ZzpKrqbkQ86pXT09AHT/LEn9pdUs7xyx39HR4pPuC0C9RK1ZEmdj52vKjGs8HzpfXkoQOv3DRNBAo
+	iiC9vjRotySW9JM5FhYFwF21OgRE0gkvj0t2hF3xqmFaqwWaYjuZbpS5u4slbgR3A/lwVwbjv0Qs8
+	3wRUKZuJqg22v24KQ247pwYg+VEk3THzgctOopEJX1pwFYWtXV1JYoFEi9fP+5GDHzAhdIYSMFrOU
+	EcuOZFYw==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9dyY-00000006mal-41MA;
-	Fri, 17 Oct 2025 06:30:06 +0000
-Date: Thu, 16 Oct 2025 23:30:06 -0700
+	id 1v9e0H-00000006nP1-0jS7;
+	Fri, 17 Oct 2025 06:31:53 +0000
+Date: Thu, 16 Oct 2025 23:31:53 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -79,24 +79,23 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 1/9] PCI/P2PDMA: Separate the mmap() support from the
- core logic
-Message-ID: <aPHibioUFZV8Wnd1@infradead.org>
+Subject: Re: [PATCH v5 4/9] PCI/P2PDMA: Export pci_p2pdma_map_type() function
+Message-ID: <aPHi2c2BQNB4eqm_@infradead.org>
 References: <cover.1760368250.git.leon@kernel.org>
- <1044f7aa09836d63de964d4eb6e646b3071c1fdb.1760368250.git.leon@kernel.org>
+ <0fa715706e1adf5e26199dc3eaa3b1ff3b14db67.1760368250.git.leon@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1044f7aa09836d63de964d4eb6e646b3071c1fdb.1760368250.git.leon@kernel.org>
+In-Reply-To: <0fa715706e1adf5e26199dc3eaa3b1ff3b14db67.1760368250.git.leon@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam01
-X-Stat-Signature: k57xtjoo9e5xpsjbbwyz7b1ifpzgym1s
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C1D7B1C0004
+X-Stat-Signature: x9rp9ke8wuwceaj73eho3yj1ao8tphpc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 766A640002
-X-HE-Tag: 1760682614-165943
-X-HE-Meta: U2FsdGVkX18cHV4U4UOZoXSm/nxv8nIX8WPVTRe3jjcVHgFnqIBFKiRVDSQ3/RrIYdEPEE/3p5f20kuULfErfIaynJbSuN0Tf7dki4zWaJjBV64LyDzKHpoyqvP+8mRk2CXkXF+8U1GakrqTqnMAhNYg+937ptw+dMRrNm7HxJ9n8DP0UTHxCrRlnPavSd5bgSQTGUPOLORKmiqFz8J6jSaYKSpmjl1FJG3yha3+mmG6BixTmi/UFUfxCfH4zC8pKMfWUZyglRapqUti9irG+C54xkkUp4yEpHF/JcWw7uy38ofA3h6/iLkc5MKEy+9mVr9qYB1APIgDcg3rBfwgj/Gz+0QcNYeLoOoJVBsRfQXd332H5I+cWnSfU75EMjj16OMDA8i41T2z+Y1/7poU+3YOR6a/u+3Jasqwg9AJRAsPnG/rojcJvR+0/iwsNi/9o97T+MZ5jJSnkp4PK36cpTMU/fYOjsmUb+QnvIr2IgYHz8CTk1bYFRZT2pG+LFEcieBR+LBIOlNzCkY8YlbAcqsWYP9AC7Qq/UIPFfC9SokQN2g8E+whIvB1VjpYUxgwiW/R3SGKsqV6qvsB1TVZ7Wv+TZhl+qdy1T+QgswCxw1wWCW4b4x5BBqM9vkTmyH6At8phqQ3Rn/gFFG8xJrVw/+vLsuX4Xg/kswp1nD4QV6rhMeQI3xpyaDq+HbR1s0TdlKO8Np9B4OWA+9UnVPih4HA4otBlOdY/ReS/BNUip+xfLjAhnK/IKBiKe36rYYh4o5tIGkNEiQPOZXo8Uv0RVOpyOVlEdCnPXpsDidnxYAoDTW0EXJOLLEYc/5XxsiDQB2thKO336uHUshbQPOWfe1nNfWi1aPxzAW1+o9DDqCQflWqHOCRjTcs0YnlNvjwNaz7Ce24RiBXrzYkWPLEhCOu5r0aLbuNNDJMnaP8zzPwt0ZoOI6gmIhnQL6ovnB9m0t+9OA6JntNpvvqAqo
- L3zdJ432
- QmbZ4oI8Dr1UyGyQhQW/JF/GDdN89dMymfkfPcewCsJBiXBKIfwl0qzdK5StiX4gVAz/60iBO6MHUGLl+0SWM30Y7IFCXeRfXuu1iCr8PmaCQTIAX0+2EAbC7AHXguXcbIpdDtjqyhA6tQ2MHmVWKQSGhkXVDcWG7OSkg1ReTGHJDrhaeMiApwOFsUJSvfT+OqVixvIR/m2K71drKFVVDjOPnp/RdL12sEy5sK1AdMUM32asFcq6dpMFc3qJI7rxxV8wEB30lBG9IfX14mxN73WZ98j3SzBwwId7kjUCPJi9f9SGdeKlEyauJtsyu3enaBs/uY9GVXpt/vWKixk4VbouOAWMPXTTNrUdGsB4UZ+2lwkwI1l/cOBHA+Rx+e0KsXvFHhqUTPuOH5njBlfWszP8o3Hz4u8tpPsPi5xD4x/Au+9A=
+X-HE-Tag: 1760682717-387374
+X-HE-Meta: U2FsdGVkX1/BU07V/sRFsCVZqLkVekz8/AqU2Ahf7K5HNtG3eDbFQ0ztQbL+dZyXCYC1IvFNxIxXEVNR2ZqJbIE0eNVVphizJG3WfO3GKcN1JnVnUKCNBz1VoGfRBHQwYeUDkLEeEUFFrP8UAuuCckHOz0nmA9JdTm93XwnKjNJwDSpDf+tyNc2jXuHkBclNBkKh91iabXyWL+JWoBprlRUBgkTzIhKc5Q2sd2OaB8AMZC+JOUWY7/uc2gM6c6YDFWBZzEi0wuP+nmuGeM7ARPVwvl08O1fyUH5Rg9R+l+ViIo/ljpnpE0LoE3H+ygigEGXmMLc5Oq4aNQ0hgzqlNXWGBA+wphCPas9BHnXMtuJgdCUhu6aLMg0xBj4KlJTBuYvlbEjk0a/fg+QDv0iGSqYTh8mNt+YdgIM7dop3VYTjd6vdeC1EKi+o4aJS1nsi8oX1FkjYljxJ8i/l/51nCCRvVyXKms9Iqx+IZQjDWce7HM2boV5CRotehVkLknUZzaWu0J5nJ9c1NMaDxHh8TxG655RbT9Iai6aNkfsMA9o1A5I+X6RX9E8KjzJuiNsaQrmT9VCYOfFicefccpw/+L9htK+RYlLJ07/1jVD3xfb7LZs+zP1/NpZzcFgsSQQNNWXfGnqsHuT7xeRdu75dxgeQ0lXeQsK4muLC/RncmewPAYnMxJvoTV6B+kkAD/qpFRzWsIEnjnnkvRQ5hrnm6tsonk9L1NT5/A+y6TfPrJ1+NB2gXWhZnu0AnTSoE2MCRIETJ78I9eBz4dY72Auh4vjpsAtpKY32iTdxT3i4HJ/sXa/sTbxqhaEu9Yc3U6P5s7LiU2zyvx7qsd8jhnmS4CM894oHppIiQFNwukfMCNCLLx6rP5GT2fe6/dYxAxcaw4s0WjVilUEFPDDfg5ZHioJVdN5RcTrMItLnp3CJYc4QzPcaO/mLoY3B/UqXWz4U3n4MKbSghjeA8VzqrfL
+ /3zG/RGw
+ LdYCdhE8waVwGd0oDf+1w1LT3wYflei55Bs+i9VZ1R+7mRE3XpaNQSh1leHXcHlm872QXHfqGNSQu5dsMlnMCQEjEVGpoSuTpLFiz0D6Cdld6LsNBhFo9e8VsvUN+MhINvXVe4Yb3vBjOU3/g9ctlI79ve8Q15MCsY6PcPcjnVlhTdp7PotXiEMINHLF+C89waSECQx3s50TMwwu4azWqQh0O4g7T7tJyvPraU2iyTpQPs5bPuPcGDOaLPY2QE9AeeEJ5AgXlrpgAF73ekLZh9PHfi0tYznDG+FuDiuIG6RG8LcjeMZ63dmfkXhXAwX6CHyEqaxFOCvehyECENN6jApqM/C6qZheMMikFAI6AloSthCiWnzEmNKSuvA5HwbknKu4UCjM4gTQraspDxBtnnkTPbe6EOgYvFHF4OL6SOvvFXiocUXvjk1KYjjTo77d2WXqmxbT/LuYSlPexn54hu8OJ5HSlcrh6qztjNXHKK/Tn3MenCKpbHIaYVfPSUsGG/LTM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,16 +104,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 06:26:03PM +0300, Leon Romanovsky wrote:
-> The DMA API now has a new flow, and has gained phys_addr_t support, so
-> it no longer needs struct pages to perform P2P mapping.
 
-That's news to me.  All the pci_p2pdma_map_state machinery is still
-based on pgmaps and thus pages.
+Nacked-by: Christoph Hellwig <hch@lst.de>
 
-> Lifecycle management can be delegated to the user, DMABUF for instance
-> has a suitable invalidation protocol that does not require struct page.
-
-How?
+As explained to you multiple times, pci_p2pdma_map_type is a low-level
+helper that absolutely MUST be wrapper in proper accessors.  It is
+dangerous when used incorrectly and requires too much boiler plate.
+There is no way this can be directly exported, and you really need to
+stop resending this.
 
 
