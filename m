@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AB0ACCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:12:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90C04CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E5328E006E; Fri, 17 Oct 2025 05:12:32 -0400 (EDT)
+	id E93398E006F; Fri, 17 Oct 2025 05:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58E928E0016; Fri, 17 Oct 2025 05:12:32 -0400 (EDT)
+	id E43288E0016; Fri, 17 Oct 2025 05:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456638E006E; Fri, 17 Oct 2025 05:12:32 -0400 (EDT)
+	id D0A3B8E006F; Fri, 17 Oct 2025 05:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 314E58E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:12:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC5AD479E4
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:12:31 +0000 (UTC)
-X-FDA: 84007040502.06.96973C3
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E88181A000E
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:12:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QE8JOszR;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1F18E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:12:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6185D1405E3
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:12:59 +0000 (UTC)
+X-FDA: 84007041678.14.F5B3A1B
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3F26E140007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:12:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=FrhR8d8+;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760692350;
+	s=arc-20220608; t=1760692377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0AzpApDbX8CFEbC2P7WHNPH2gra+XDIh1eSQ6GUhJZw=;
-	b=0LdqN3WDW8vbymZWFUfaLXzAdPI6M3hIjhy4SKkiWfzZXurzKDnDfWt5dD5nTPJuMf5hGo
-	K8aans+1W9mZAYbeVfbx+pwbI06mEqFAzCdVZCkGkok3l2eLN4HJHjw73iLxHnQf1dPXZ+
-	DIOWs5/TeEhTuVmen7V9E4WPltUdp4w=
+	bh=FhepguEQ0VZAS3etCeAAj5D/xXUqupnQ1wf0VPifqWY=;
+	b=QvetXDhwpRb1kyK1jJEV1ntVAiytBULnp8BD9YaqZRmSTk01aSAWauARJl9o6kf9ijgxos
+	vUN5g+ZnL/0ltjvdsDbxMhe6LL7TB9NaPYsLz6J4HWaBBEQj2h4+zR7gA2WAmSmzP9RcOa
+	VN4p8YI2X3FJ42HfVRY76E8fE/ftNI0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=QE8JOszR;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	imf23.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=FrhR8d8+;
+	spf=pass (imf23.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 44.245.243.92 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692350; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692377; a=rsa-sha256;
 	cv=none;
-	b=nxxxuKdgKvwUbFiClFaFrm9z1T2PcC0hLkjHp2dLEhY6LomZkGQ4wd57I0ShVR2N7GUhqa
-	HZEc5FuP39w6y0LPmBy+oZwSwYCdmI0DCLJQ8jOvBuWBXXccSsd6aVqDXZrU1b8bHUtND6
-	2aqNEQguEGRQwiaUKHMre/4g7VDbEqU=
+	b=S6N2VDXV3whpnXHJcxXNJDU6O5EzPm4lOGOww3qhxP7soLyBck0OPXTwz2NgMnnoW+lqoy
+	PIgOg2A6PDouvRCZjkC9+/sr2kqb8bpes8lxbVqUT2p/NyO33OOlVqzhKigZu40o5r5neh
+	8BHPPV/uEbI4zXSATpOfv+L6QSxubL8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760692350; x=1792228350;
+  t=1760692377; x=1792228377;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0AzpApDbX8CFEbC2P7WHNPH2gra+XDIh1eSQ6GUhJZw=;
-  b=QE8JOszRb2Ip9FCwEATNmlqlIZ/vqbeQllJBNprnVmQzfxZZ9Qx9WBAH
-   X0xIUd0Hzm3f5nzdIqkV9hAzvCBY6wyk3O1hW9CBgIsBkMmp09KnJ2DdL
-   3ckg8kTlk5u4O8hNuvoaPNDOLmrfmS4TT/XifxqCw9p1BCvZCz6WYwXnb
-   cPVPE5wkzyYIBzQtZRIw1wRFDzVX34GMrdzjFKp0h2pLTTw9A9f5/R1sk
-   S60ybatgJEEKbNLGixySbeOuz75RKEojSc0X1eKppf/jRFfJFfJozkC0H
-   P3PcDArA1DejFllViajWypBC4i5IO8ADNoqHuBIZA0h3CTWgC/GpTNfjJ
-   A==;
-X-CSE-ConnectionGUID: bTqjfIDhQrKPx+D5VJtRrg==
-X-CSE-MsgGUID: A/3LiItrTFOsBgjb3vL8og==
-X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
-   d="scan'208";a="5072939"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:12:28 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:28556]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.58.51:2525] with esmtp (Farcaster)
- id 143397ca-ae35-4539-a40b-e7fd0de0bac1; Fri, 17 Oct 2025 09:12:28 +0000 (UTC)
-X-Farcaster-Flow-ID: 143397ca-ae35-4539-a40b-e7fd0de0bac1
+  bh=FhepguEQ0VZAS3etCeAAj5D/xXUqupnQ1wf0VPifqWY=;
+  b=FrhR8d8+4KaMTX4ODPJ5cavIHKfdCwqLibkrlFbFfmP/+N1/r/3JRrza
+   v2F1wSLDVdv9/kFaOLNmp6/6Wxo5IXstBo9YHIGn1KMJt/s5djqFUD1GY
+   /8qSVPhofsLrv19ob9QboMUDaKF35Ib/IQpkJfvAxpl/QSLalmY2OzdHW
+   rGzBG/r2rF0v13FKlxT83CYjhVNLKt+Ilpmuvj0NMfCtj3EKtaxp1QKO6
+   l4Qd55B+MPaDE+PpdXtz0tLlsmw5sb69OPXBphOEfUTMGyvlYyeYkVfaj
+   HpS0F4RRRvZl0PsYRBqAWdY4T9BJjqyIf7woApI5wO5u+sfu1cRENjiOm
+   Q==;
+X-CSE-ConnectionGUID: 0cfG+9P7TVqqkWZRtcLjSg==
+X-CSE-MsgGUID: 2bbXtpN6S7eCK3lm7W82rg==
+X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
+   d="scan'208";a="5073680"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:12:56 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:2557]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.50:2525] with esmtp (Farcaster)
+ id bd6808e9-5cac-44f8-aa91-1626264ae0b2; Fri, 17 Oct 2025 09:12:55 +0000 (UTC)
+X-Farcaster-Flow-ID: bd6808e9-5cac-44f8-aa91-1626264ae0b2
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:12:28 +0000
+ Fri, 17 Oct 2025 09:12:43 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:12:12 +0000
+ 09:12:28 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
@@ -133,9 +133,9 @@ CC: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>,
 	Dan Carpenter <dan.carpenter@linaro.org>, Jens Axboe <axboe@kernel.dk>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mateusz Guzik
 	<mjguzik@gmail.com>, Pedro Falcato <pedro.falcato@gmail.com>
-Subject: [PATCH v2 22/27 5.10.y] minmax.h: update some comments
-Date: Fri, 17 Oct 2025 09:05:14 +0000
-Message-ID: <20251017090519.46992-23-farbere@amazon.com>
+Subject: [PATCH v2 23/27 5.10.y] minmax.h: reduce the #define expansion of min(), max() and clamp()
+Date: Fri, 17 Oct 2025 09:05:15 +0000
+Message-ID: <20251017090519.46992-24-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
 References: <20251017090519.46992-1-farbere@amazon.com>
@@ -145,20 +145,22 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: i3grwudkkgj58un8medmjozg899y3tp5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3F26E140007
+X-Stat-Signature: 8zodzrof55qk1g8ruey79z3s9yfb61rm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E88181A000E
-X-HE-Tag: 1760692349-164374
-X-HE-Meta: U2FsdGVkX1/JgyXNn6VV7P/9TojkZdNGAJylA/6CWdo+MESNsdDnL9Mi2HhbYqYycN8HwFM4Z7U5CZIO2+53DPo2Xsx8S5jVgi1WXEjQBKhiLTUMBwFwYZwEx089CoB4/gkj8WUMpBx0kDnFd8PrxGECD598/NvjEpK1UBTob/c7xDjx8KGUDt5EuSVU12wvAVQbwZb+vLmpeZmad8VTW9E2VPajblMeHo7OkcJRaTggRByclTxcowBksP3PHvmAHHhDR6cSd1n+onUI2hPhIMb6hhAK6lmkc7eDX1HwJb50g0GOKfW+Dh+LDfhmScW3id8rQetpLA8ImJooUIpH9azizX2/IjWA/SQOEzTUJOKK1Vk3yubXa+l9V9KlWDc27ciAJq/H4liJ3vWXNQ/B7Qa331CqROq1xLlmT9E/kCLOvRNk4V9kS+lOsHp2lx1NkCoKfv1TsTj1QNy+QBmGWEPZr5abxfUOCCyKZZjf/kR8bdWXqlTSW6wTgcN5SZKcTmv4CCPfA9RJj8YlWtvYiNOwGAac87XvdXO0hAeeQI2N16rra/EL75c7W0WohMSuumRcE8mFA7DHD+lVBvTlfINzpekJDda8gT71S5uKTibp2lhqV8BHF8lA85hsjvviSfikTMxmiA7Xp61IdHqg9+jcnjzmYv91NwxiWZAfdb0at98gtuwD6vzgy/RpMxN4CEcHymD6vc0R2pIu1J8H4iR7GrjTdj0iQoD0sHYY4EmCl137V808cu7Y4oSeNsdzTpjpGuAlASnXELi+iXkTp8mydyViFjTEN3LA77q/tXVNtVwQ1aLi6EZDn9R+aX1dnwPDZGwGl+k4nhAkQfWbSzXQN0+MRUBq2tqu6xueaBGktEECvo3ktQ90OL1DbYd+k9t1SCvF9C3inPxC2nE58kRz/wALRLw203ZD5T8javVoVf+a8Ezqbuel2aPnv63eQ103K+pbdtt+q/cLAto
- 2+lUby/k
- DhDKbHTAM46JIUqJgOt7xUsPw1Sr+V15Qat79XUaj071d1Rwyu7kW/RJizijnlr6Qol5doKd+OY9pnzP8enc2IsZyJsJRfAVSjNG5JWnD9KKXs2WEnbf9Pczpa08WLHry+/AQQhIXYPLFjiPsNTRFVG+h3jUD+iwOWJGpKNcu/4RrvVRB6kwdwWHRr4DnTb48TvhKKEPTig6MaW5zFb6q2N5lO9IWGGjCM21boyAZpjZa3djFtZanClZPIuqsy9dHGVDCLN04U2Utwb0Ur/pRdMjOvWN9SoerokiC+pLqTshQXSOwA2Z3akVKJdEckKnArWY+VWPDT+FNOAwQKm9IfP5SEyBu9UI5i62Nzeue3ArwaStGizcIzxdUMcPYleQFD8fHb1s7g5T3eg5cLMuBO2sMlQQ+lEiRBs4mAqfXNpaDPi0kWDFaWWcP5x1EYMQuBN3+FQ4FUsJ4rwpApa5XKXqqvCsBwiy+RkZNjFvPtij60/vOLaxol6/vK/EK2OKvXajyS5r2YCS+h41g8dBaxs99SRQubkaFZUBIVP2Fky0E4RsKLq/Sis6D8IHLQMuxoXdFILN9FUEq/hw3m3qpglnRTPn0QaHmQ8zah7yakBhGiHI712Wo2P3CH3Lhd2CP9QzvE02IUW4w+Cwjpbwq3FKT0nPwsPsHcsmtBoIJy06Lu14L9cYVgi/ou3BBzPKOuteQ5YCs0+HRtx6d+kb39fcmdo9zanL228wQWzmZ06rOj5E3fKbMFFZ/2sgZzAl5Mzo4xS/u7oZsCtzy1zbYSdd2F9evulIK2TSq5zY3mKhc78+Kdfhe0e/Tqj6pInM/NDA2L+CjQTNT1BPrP3kyKtfk8fOSEeDWxl7SctfN5th1asVdz70uymTel/tvU0eRpesx6Q2tfRFfXj0K581X5zXMKM5VegfYjs9l1zusaUsG21V3GEHUJfFywOFtNxBqnX8STOi6aWj2oFkti0JH653xfBYp
- aGBBVGav
- HP0tZ8YhDKcCgbBeNgx2z/Jyy/0kbvtpPZdcn3v7kXhf7IhQ3txt/yrFQGXB4Onymi+ML/xNiKtX8xhvMZPLFuuovUXoD/4MCrKIL23BkAl2hiweUOmtlVBKZCAParVRriYEj6WoPyQspHVPIgzWdR/NkqBqVONcqrPfd5WyopcfK0/t3h30EnUlPODg03mJcu3jz289HEXTl4gEomGOtRk9H5dE9ZOx6Iui6HO/Bfs0zOnlvX/CaKYcmiTpeVtpaLPKd+k1PU0Y4mNKQgHYXLMuerKHBdzPFs95iN7EAlXvCiMaElYxb7hpdrSMRdsPtEo3IZIp1M+K3E7+Y1lz5LAMhxU4ityjCXXrgFhgqYcWc9yVDCO0aOoXjFRf81ycMiTRiKlwNX0kVh8zJQZ0GwiHlUSllcww5QL59IvIw52s/XSjNur1QZs8eV2zO2xNWBF9+K9nI24hfvox+IlJy3wazzK0xAUwAwZTW0GBrGPIBoWYiGAENFlNKv2EK/C1Q7p1PLrc9lsf5AlGhvbha5BqD7rX6GWms2IntsYVcbBoJ5E05JfQwKO7mVHhWheGw4MA8wYIEWeLnWrtqcWKnNwarfvmKKtmgW9th+BMzfJ32l4q3XxX2R8T5nAsjPxaxa4U8uY/5Qun9DHgCocUEia1KalWolUjYA3aAgLySRgMru5ycELhcGotk3FSQz6gHb+PlLqcrD+cZgZ1vlelJYjLUK0+maY2jjvr/jgtinBAWZU/5pbiLbCJ2qCdX7b/Y4J3RlMXuwLQhhRuEoJn5JDEACRVVQCT3zoURkn0vLR+zMBxl3xCRWyfedN/MJ43ddYyzpHOIeTZXW2vvHDLH2otCRszM0wWA+YgTm5qzTZLyEKAtg1VCqjOgRQSASgsnKul8nFnDVJBGZMkh9A8CiU6TwSqioqcHwFVt6BNawfxop/46fStrf6vkOnskin/TajVNu+ju5KzjyNWS81jMwA0gqNlA
- NLgPwYnE
- xrseVk90YuQ2Birk5rvsOv9RgNuHn4NG3ON0IVnfnDGRdSgZmEv46fFyafygc45VwCSOp3FvnWRr6jPsRMutuGrpjMrNVo6sbBll50ed+n5MH64Nsg8Hm1wAUsdctd8ud4SJozzwsUDVZArm2IDRbWYvXyYp8FlsvXE88IRIl+8A+hBfPzNsq3jQDA3IsyqtbERho3GNZ7fCknCQP8+SFv/QbJ/14qRf7gxP8enuA2h7iGdPzrPwplhQgIFDipQEl49a+VI4uXGPhNhDmHjwC9CMxGFXmqJ2KWSlNKsWgzhg+7HJrcBc4TciPHLrsYmwibot4kHr4EOMg/VOQlQPch2V9Jx1NzLyQuBydi73SEhoG4Zz7CPx2HIadBBPFlgGr/Ae8LBUOKOD0kUVGr5frN+pB2YPBxYn/HAZZyPzCdgdRcs7GtAwrcB6ebeWTshALlJ/fVBbpF6W4jRQhkATb+ifNHJRHYIQjAOr/b54q8gJ9zOb/rF7ifaCxg2yawAv+DN0/q2TQuTLJNp1JE0Yba0O5ESU30ucx4RG49lhXbFPOsHvLgQhuNI8iJL77QKv1Ps2mfXFIMkQ94allHYgTm82Qe8ZquOUwYWzEgDN3kNukzxCpdD3yJmIIl0IU4lbD4yjHhAEHo7aUQdeaOy32PpUZSKGHlfoaDyiVky3aDqzRuDEGIdjyMsSvpVWk+mwhlmVy01Y9q4aSeWKqY7IQdiwaebAnHmRGxU/VfqUHtT4kPCEgHHyHCpaveTkVg+sMmqXGy0zFXMCz1ycWDJXEe6+6qGCD54Ps+ZoF467W1daWH5BTfm4Uqqzo0Mx7skD34+r5N2YsFeUvL69Ik4Y08Rk9/h9XXe4sl9P3Rte92jhgmwOV+p3omtKQ3mytM3JR1exN9yrTZ7IGe20HzbT5EbVH342pTyMVGTNqimkQtpa0i5BGuM57IRe7hyz9eo3vg7eiRy752jN8d13bJnBuzimtxDGN
- q3SNYUl2
- VXiwtvZog6/j6LvR8Xf1v1UyMY04V7Hat28r1HVQQLelV2usHkUn/G9lnCSQiT8gTiCmGg6cI5REV6D83wLEOKXGd7rJ3kheeC1QOoIBb5rczQLhUKQp1aWbYQk0/28mSRuXpLYBmJg/Z8T1MNy0GSFfTDC2t5cbxOMIeHOHu950Wj7JV9eNjc0EjayHfJ1Lj0GZ2uKoK0++5fX5raiwuOJRQrTY4WLnDL7MUf2n6Y9c16yFFbkFX6B+E/cA80148rdTjTR6Zy3CHeulNwTn7lalY6DPmGmQvdOhAqbcEAugf0tuSjvgciENNUFc0vAhJlEu9d2cwZaCttyxqpc+gDnYUPK+ipToae55c/YtRKqEaZwTt0hcw0LF4swRf6dXYU0MzF2GrbD3TWGsz0to6SQd54fF3wHSMiYG4iDYtDHOJ8p3rtng66y/76TrWZnQYlcpEAcgKtROJvZ6QvZXgNcgEef5hoF95A8EmcKE5v8xZ4pI6JSDoko2QIYrz9hNAn2dP/WKP9hFHiUUw1Xyc0XZqa/U1k6ogZ4EJjHxVTmKElHZcdTy/EouGyeVVtSSLLm7msthRGiQ==
+X-HE-Tag: 1760692377-805422
+X-HE-Meta: U2FsdGVkX1+6Ii2gqtmtLLZpUx01C4eX+1Sl/yg8wQAwWNAESYyYoPB4g9ENZHci/ZQhY3B2aWstvNp3NcVOnhvVamo3QSFIWVYZYJGKDfRQRAHpju/uK9BVyHcEUSbJxt/86y5a7R9R5LauL6/Bf7kehs9za6mC1vWQReh9Ef350MjDfCNsLZdmGbsuzqG+VawDKKjQ5jJYle9qKMMQedF3/RLM1EyW6080FAwwk1K1T+IDy1KfzAiutPH0eHxVGqudqUnkvRwLTRfHZCHdkCh//qotbl6Gz9CkKIqpRiesX5m1CZCJPzaF4YnboIsNHVPA6ayFmg9v7v6Z0SkFP02nkKdJTx4lQEHkuzDleA2d9ShbNhyuuyEayk5bS1jP2gHulBzHtiTBPhYo+U3xWq31+EwtmAHwAMMiYuH1BPjWEy2DxU6LYUbr1lc5XObt2Qfzkdmdk4PYhYjxyjuQvwXj4NrOfN7feGsU2EHLbRBWL7kk50maQkZxLgVVUvc5reG2D5FBu3QlCJbGRQS96kDh79GBxjVGwN9WW9j80A2DHgcDCl0lnt6u/m2sl9tU/45DRW6y1JbEmh7QaWVe3Tynq3Tp1XO4ikP6LjbmPOPyvRfyLYG6ZvjwrHp43KHUK5ei0kq2zGSiUaFwpiMIEx9wjPJxfHVWCAYPjd0CED6mUut+6OleEgwkz0ALx//EFSsfPkPACO+H9XvIi5yaNowswaIYE9OBiYz3csgafCCja3907BDOLXH5H/bWn1BgEj6Ykb4W+iF0EduxmNobYJNOHDjjmS8DbX+bRHvmgmyDarbSXUYFYvoKkGWFUiS7c1nfd0tQWfq2EivO5ZCyY+mx73itfUBBeV2i5guhtOrpCh3AHpgY1WKp2PsKwFEs0m5BEprrF+VRqnfNVrGyqpCn7n2zX3rwtJ2iZpz1HVoDbJv9PthpJqmhNS/VeOJ8mfBHTpppaeMaylPgSo0
+ oo1ZnHFX
+ zlxMN/l7bNEaOjvSHpFRdkGb2K5U1V1hpwyNmIKCQahKCRzijZWiQ6cuHP6gTxrBjErZYBYuW0r3gbYWgCvBtgbp+ChKif1kLiCdqDBCtKKYAm00KxpCErQQMIY9hWqMy1mD+NBzlisqjhPWr3nAtlJuJYtR6zzHiVZvQ+M38UVbjuxanIhO6pXST36NnvI1psVio959C21R1PFWS6h96jReY5/+sy/BkboAuoAqmTo4lmPo2o11MBr7AkOSGKwU2EIl9pkjElaCRa6xRK0e10GdXCcqG3v6SbQlIkARmPBLHEEGBlE6G5eJUZ0aRcf/xLHPGTqo1VG94FiAaC3P+acUXt29mm6OX/0JhM/b3/2rFgeVEvEUDqyAgo42ZtnRoC2q1dXjDSJGi0IU6H3/0gGkCc3LnVcJrmEWUTbVq8PpQf0wdGL5VkyiUMLcBtGYM/oBUpKXRY+ln9Lr+X7k7vih71lRLP/8H4LfZdzDpsE+Zm4uHH9QbJT5R9rvrFdJB7Ju5HCDwumGEj2y/OR+hlrmkwboqxlk2a5NAiELToPl5WLdboqHsKQBpq6neoViaVB3awTrctufszWPN/khHOeT9wvD+AZN5DoT+zuuicMBLFmucdIlMr5YDJVOh3rIItchB54WnBJObi6NLzLuPoYLWCNmQyn4mipffPdc9p4IiG/Ue/hnvCnAl/Q9N/74PayBFZ+Lff9RVdHE9oXldbQrJptgv4+XGKmE9jwdaV6olYei74KGZCPdcVDLuqv0xyyOFnxFa4UNMi1WsQRRMi29xY7Dvz86hKKP71J5EBYE1+YpkbJAD0wzxOIbndLsQCczT8l/duP17cfkb2n/74CYyrh2ZQygYH7IBZLuFnfDFvrcPagifU9j0gbG/Q+NELFdGLLv48mH3SN+g7cbnvU5naYCqhCt5TUhx8aVB6c1HVVbA2aEFnuEH+bvjAWI1oiHeArXihrRwNF4CRcKz+hp21ySH
+ hdPamuDb
+ BxJCIf2eOPH1fKO1MWjkRGJq1Kh94fnDn3k81wbFeqntE4L6lda+lGUbymhbuvrlC6+nPdSYcecfHAOxgXa4IpT5RW/yfuKwNogqd/vP7UaZcTpLP9L72VBmWM9guLIzERssDXPu10vdvqv5auliiKy4+/96THyZm32sPA+5zl04HxSqu2rNefI5879XtopHP06uT9Ad5hCr+aCbLygTEGimxr1utJoIchKIcpKZvkaW9eV7yyPkqxSHNx4M2qW0fh+hITT5ArZJYbYcxFMeil+UK2rLTbnGp3jaeIs1lFcHUaWPVZa6HilxPURYrcp3dzWUk2U8rPBn4HKQrGoNzNL95FxgutmC2phqrYdisgUBP+Lw6cIA2zUYilYNuEqE/DvqDSmdJk4obbiNvWZFWveVifou014h20XOTjnD6q6Tug9W+fvvJaVFEimPhqSiy3YBJy5r/vh8zLEKIkmijYFirZ3XJsTVNhK//8oGbuV/8FALpNUff8P3aTsCyOaCUXGsOd7K7A/bL48qS+RyJJYQvWNqlNuWlI/WVMHoHVaoVeawlqdZWIaBIGG3JkLCdU8nNBcBdvJsQfOQxpoteTPsbZj/gXo6+gqz6PpYn3oes7ZFstJEcQdBtKoVH+tI7vzH74gi16bnNoD4itg6Vgke/5Ou7y3X4AkFMlKM4gN1wpX3N+UkjjVKipSOiOPoQrdQS8aAIpMzpmS+F2LiPUqtTO+oBjMCqVIZLWUt+TGL+xvbebCafQ3YaF7TLNr/ohWx54CRb1UoLBZS4TZ7xPFOnrSGo3hFGV8mUQRnKmsQF4Cj/z+QSxRruJg4D2mcJIxoMbchuMw0PsUs/InsmnZw86q/izkxK0jIJioq44HlSzhxZUivdKYzwFG+ySImDDn5XtNDFP2oRVngjMqFpmlwhL3wWaBq+b9hy9quZc1JWkXJhC9vr26bT196MNc4ES86fOHP5icQS3S+KOehNCguy13wb
+ 4HeGGf05
+ j5IqyRbdKyKMIxJ2Lof5CXe4oXVCEKhq0zC1yfJrg5/LuN2P4sPYuIiaz4I9fC2bwIV1bG9wY71RXOmTVcYHbioGJR3JQ3wzwdGACyYWt/6UwFdft7cbhnVVN8pdse7Y2vtWGB2QHGs4XDNdwczD/TGmyF/xrMgn/dYldqt1V1I0SNJs6mrraZlQIYm+8VqHGsbHOCxNacNd7Zn0pnLsdelcL08xoAcCk9m1fLsV5107Vg6y4ZmuvIrYnoP4OvesCW40zi5K0h5Sr96Z29E8GiHwgiy3vXW26WPCH0vw8nP4Ffe/4xDfw6rKOuq5ObQfc1JU+aspnooKMiT/KxQid23V6gWrkdlC0xpsN/ZWg88q7CsJf4w72j39yj4wBVJEksYN60R4ozw0PnL2DxYyINeLSSgwb9T5XLInHMIPPuOo4XSg0O5amx5FjbuVsJ9LMw+Rp5TVVqPclO5pcNd5Mb6RKrdixeMcBSXmkrzz5v6jfvbtpkQGi4QismyRQ7LWcheVdZ8U12SiskbEA/LXcZKpC9WNlOGR4l822r/UCZEa7McM/vL9HpZsaTtQg+Rv6CYNzzfpCKuRTxRyp6h1xsRClaJWYSSJRkfblqPUq1JuPgp9pX7F+nihFLxKN20NQOLd2YmdygKjsrqfhCRlAvTQtDmmXdpp7X2v87AqizhTahpzGxOCXlHOpOpc/s+mh13OzaS7W5/zo0pXTUMOzyar0eOs4BHus0HXLV2qboWsN5rmU+mWStzRjNmmtkXke7Kbq3mfyta5P3cjEwnHcFPHdtMfSwTKI1ReJYesLZ8RdW+SbpzEo1LHhr/0mjfTFVB7FF7jkvZUkD+bMprtnYNZOZgzNckYyXFcIOdpIDX3guaZ3Xp913tPUN8JuRefv6z44P1cyvlmA2y3ztw9jdWBpMC43ER1WKkA6FKhwGwb8W8T3yCZQZVnI7EgN4jIM/iGBx511bNUi/kBBYLDb0VEgA6Pp
+ SQCHAcff
+ vkibHO+7qRkyH+qtaWiUUYmKLaH6oOb7qUpiEdjt/l47dqM6CZZy5HDagXScrqOETrIwXBIOzApwaBNiQt/OM0ZctwIPFtxdbEOjUZraXv72rW8IKSsws3hPO10d3w02ywH84RMtY6uxkDUjZUXNsf8ulv/qgbY1sQI3mQBcC9Kgw9BtGiEQEKPIAdRQwan0YuXCujpNSMOD95S0CdmdWXLHpLd5AjYPUoZPyOYG2QcR/n6lKvncLu0CKYNmShOkXSfgj8dpnlch1OWX0rZj+szYahkuoH5qg2xI3lNNXt0tLCTxgpPixpk0UD7KEq59uB71WAF3DQgCtAkRq2dDiwSCpVKxO23vAfLn+iyaFerqccZB7e5ZvGp6QJ6xmq5+NOHU2iBjFaeKngPIpNLqtMW/WCSN7k8JHbqthTGn8uD6rggRkmgot4afnQUAlnjM+dFoJ/yzEkmKS7SmMLW1oCsCt8W5Pr9X/e//1+zc2+SCZOYEfggvuel6x9ajgMBx/RJsvgiX2BNDqvML/ds8fLdxGhcatrJkXN7sdWcqG4oZEDxjCtQroofgI63HCninKhzroZMm/nPA8fWaCTazG0/ymJQ1A2s40AeA+ebI2FMuChJrf5Srg9F4MIcKwluzEoCB+kuxEBUPnMJbMETGwTEvy0LVyDcPANgtHkfLKNeoIoeIeak5fKXMJUAqnktsbwDyiMXuKJS/ZL/wXkkn2tAOJ+dhqvR9423w8EmuIQX4KnN7ZtsrjibI0ja11xPXC14oxPCRqIYIQQWwSfRFzHQkxPZPzBjTt/HAmbpIga/vrsEc5PyKtYB3F3XUQwVGEuwx9C90KkB47TjRmudEN9t2ngMhe9SIFBm9iFS9zuZ6xTmxDRvgyeO0BJ9QBJ/h1xphNaVOmB+ZdqG9q+5qDaxt8KlB5THET+zERdbsVLlnEgIdZ3SQjhaskZeuYw7pYX0lzzYqCiAQ9m75If62CvANiJtRZ
+ 7NEzeRix
+ cZej8sRfWLJ+0WKU6tRaeJBrBhniAqt3l/QX408LlY4OHBYDfgMV0Ewi6Q1+P6rfem2qpMC+2hgcUcCXWUt7YDBvmxdm/9UN3YXOiEx0vZzQtkKNV7kdUuMXTKQSiJNSfS1XJjWOzxanZs9o0sbNrDqeiPlsHlnScAvBssSk1v+BjtoCmCWYIdKAVPp5SzbsP/XBt+oA/goTNKmeRA1OxkIaQE1hXCpzVkWRD/sUcgyFSySj8BjHp6BZBHgPwezdq5+3jPiP0cmBY89lyixtOyRnlzuxs5wcsIbjpH4R0pLxEV8gv6AwUHfwBlOyAbUnYK3iBscx0yhp7EGiIHyT1ENztY74=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,16 +171,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 10666e99204818ef45c702469488353b5bb09ec7 ]
+[ Upstream commit b280bb27a9f7c91ddab730e1ad91a9c18a051f41 ]
 
-- Change three to several.
-- Remove the comment about retaining constant expressions, no longer true.
-- Realign to nearer 80 columns and break on major punctiation.
-- Add a leading comment to the block before __signed_type() and __is_nonneg()
-  Otherwise the block explaining the cast is a bit 'floating'.
-  Reword the rest of that comment to improve readability.
+Since the test for signed values being non-negative only relies on
+__builtion_constant_p() (not is_constexpr()) it can use the 'ux' variable
+instead of the caller supplied expression.  This means that the #define
+parameters are only expanded twice.  Once in the code and once quoted in
+the error message.
 
-Link: https://lkml.kernel.org/r/85b050c81c1d4076aeb91a6cded45fee@AcuMS.aculab.com
+Link: https://lkml.kernel.org/r/051afc171806425da991908ed8688a98@AcuMS.aculab.com
 Signed-off-by: David Laight <david.laight@aculab.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Arnd Bergmann <arnd@kernel.org>
@@ -193,97 +194,74 @@ Cc: Pedro Falcato <pedro.falcato@gmail.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 53 +++++++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 29 deletions(-)
+ include/linux/minmax.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 51b0d988e322..24e4b372649a 100644
+index 24e4b372649a..6f7ea669d305 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -8,13 +8,10 @@
- #include <linux/types.h>
+@@ -46,10 +46,10 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
+  */
+-#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
+-#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
+-#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
++#define __signed_type_use(ux) (2 + __is_nonneg(ux))
++#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
++#define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
++	__signed_type_use(ux) : __unsigned_type_use(ux))
  
  /*
-- * min()/max()/clamp() macros must accomplish three things:
-+ * min()/max()/clamp() macros must accomplish several things:
-  *
-  * - Avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - Retain result as a constant expressions when called with only
-- *   constant expressions (to avoid tripping VLA warnings in stack
-- *   allocation usage).
-  * - Perform signed v unsigned type-checking (to generate compile
-  *   errors instead of nasty runtime surprises).
-  * - Unsigned char/short are always promoted to signed int and can be
-@@ -31,25 +28,23 @@
-  *   bit #0 set if ok for unsigned comparisons
-  *   bit #1 set if ok for signed comparisons
-  *
-- * In particular, statically non-negative signed integer
-- * expressions are ok for both.
-+ * In particular, statically non-negative signed integer expressions
-+ * are ok for both.
-  *
-- * NOTE! Unsigned types smaller than 'int' are implicitly
-- * converted to 'int' in expressions, and are accepted for
-- * signed conversions for now. This is debatable.
-+ * NOTE! Unsigned types smaller than 'int' are implicitly converted to 'int'
-+ * in expressions, and are accepted for signed conversions for now.
-+ * This is debatable.
-  *
-- * Note that 'x' is the original expression, and 'ux' is
-- * the unique variable that contains the value.
-+ * Note that 'x' is the original expression, and 'ux' is the unique variable
-+ * that contains the value.
-  *
-- * We use 'ux' for pure type checking, and 'x' for when
-- * we need to look at the value (but without evaluating
-- * it for side effects! Careful to only ever evaluate it
-- * with sizeof() or __builtin_constant_p() etc).
-+ * We use 'ux' for pure type checking, and 'x' for when we need to look at the
-+ * value (but without evaluating it for side effects!
-+ * Careful to only ever evaluate it with sizeof() or __builtin_constant_p() etc).
-  *
-- * Pointers end up being checked by the normal C type
-- * rules at the actual comparison, and these expressions
-- * only need to be careful to not cause warnings for
-- * pointer use.
-+ * Pointers end up being checked by the normal C type rules at the actual
-+ * comparison, and these expressions only need to be careful to not cause
-+ * warnings for pointer use.
-  */
- #define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
- #define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
-@@ -57,19 +52,19 @@
- 	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
+  * Check whether a signed value is always non-negative.
+@@ -71,13 +71,13 @@
+ #else
+   #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
+ #endif
+-#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
++#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
  
- /*
-- * To avoid warnings about casting pointers to integers
-- * of different sizes, we need that special sign type.
-+ * Check whether a signed value is always non-negative.
-  *
-- * On 64-bit we can just always use 'long', since any
-- * integer or pointer type can just be cast to that.
-+ * A cast is needed to avoid any warnings from values that aren't signed
-+ * integer types (in which case the result doesn't matter).
-  *
-- * This does not work for 128-bit signed integers since
-- * the cast would truncate them, but we do not use s128
-- * types in the kernel (we do use 'u128', but they will
-- * be handled by the !is_signed_type() case).
-+ * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * But on 32-bit we need to avoid warnings about casting pointers to integers
-+ * of different sizes without truncating 64-bit values so 'long' or 'long long'
-+ * must be used depending on the size of the value.
-  *
-- * NOTE! The cast is there only to avoid any warnings
-- * from when values that aren't signed integer types.
-+ * This does not work for 128-bit signed integers since the cast would truncate
-+ * them, but we do not use s128 types in the kernel (we do use 'u128',
-+ * but they are handled by the !is_signed_type() case).
-  */
- #ifdef CONFIG_64BIT
-   #define __signed_type(ux) long
+-#define __types_ok(x, y, ux, uy) \
+-	(__sign_use(x, ux) & __sign_use(y, uy))
++#define __types_ok(ux, uy) \
++	(__sign_use(ux) & __sign_use(uy))
+ 
+-#define __types_ok3(x, y, z, ux, uy, uz) \
+-	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
++#define __types_ok3(ux, uy, uz) \
++	(__sign_use(ux) & __sign_use(uy) & __sign_use(uz))
+ 
+ #define __cmp_op_min <
+ #define __cmp_op_max >
+@@ -92,7 +92,7 @@
+ 
+ #define __careful_cmp_once(op, x, y, ux, uy) ({		\
+ 	__auto_type ux = (x); __auto_type uy = (y);	\
+-	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
++	BUILD_BUG_ON_MSG(!__types_ok(ux, uy),		\
+ 		#op"("#x", "#y") signedness error");	\
+ 	__cmp(op, ux, uy); })
+ 
+@@ -109,7 +109,7 @@
+ 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+ 			(lo) <= (hi), true),					\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
++	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
+ 		"clamp("#val", "#lo", "#hi") signedness error");		\
+ 	__clamp(uval, ulo, uhi); })
+ 
+@@ -149,7 +149,7 @@
+ 
+ #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
+ 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
+-	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
++	BUILD_BUG_ON_MSG(!__types_ok3(ux, uy, uz),			\
+ 		#op"3("#x", "#y", "#z") signedness error");		\
+ 	__cmp(op, ux, __cmp(op, uy, uz)); })
+ 
 -- 
 2.47.3
 
