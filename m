@@ -4,134 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69787CCD1A4
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E02CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:50:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E568E0097; Fri, 17 Oct 2025 09:50:08 -0400 (EDT)
+	id 7DA588E0098; Fri, 17 Oct 2025 09:50:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF6618E0092; Fri, 17 Oct 2025 09:50:08 -0400 (EDT)
+	id 762F38E0092; Fri, 17 Oct 2025 09:50:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE5438E0097; Fri, 17 Oct 2025 09:50:08 -0400 (EDT)
+	id 62AB88E0098; Fri, 17 Oct 2025 09:50:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0528E0092
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:50:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 68A141DA6D5
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:50:08 +0000 (UTC)
-X-FDA: 84007740096.25.EB3A401
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D8DB8E0092
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:50:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 293421DD45C
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:50:12 +0000 (UTC)
+X-FDA: 84007740264.03.F68B4B1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 93936C0003
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:50:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=GnSRlmd0;
-	spf=pass (imf10.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2DEF120003
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:50:09 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=QQvl9e40;
+	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760709006;
+	s=arc-20220608; t=1760709010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=8qH74T/unu+vyyxcXmOmm9hgYi9a+jF2BcueMkCbFM0=;
-	b=M0Z2zYDknWrFbamM79cTi+CJk6j5VLMZ5zcJ+38NrKeyYV1LMHQon2RzWwNcfEAHU2NfYE
-	rfggyEVl/WCkPm5YRoTkMUFYQ1X8tdi5e7kCSIV0JGttN+A5lWTtLyZabfFuml2jEzBfpX
-	RkNdwHIRcOLhHfHfEoZgl+eFq+pQ5+s=
+	bh=UYzw1dID8+R8ExzCg1CmFwT1K3hLj2TH9qgB3G+ibSU=;
+	b=v8q84PTTnHPXyXAnkun/vYKB6O+/VlOxIRyQDZ2zAsQshFcFLm2B8H+v5tWBABYS/aHvW5
+	HaNdW5hi+T/UQFN7r8E13Y8Wv5DwdUViZSdhYC5cuwNhz0pTB44uyKemIrqWfwDIBKKSdh
+	RtjywN21ADdfQHPP9JULrAIcyvJujeE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=GnSRlmd0;
-	spf=pass (imf10.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	imf03.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=QQvl9e40;
+	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760709006; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760709010; a=rsa-sha256;
 	cv=none;
-	b=2mG4VNvAlTJqHtdaoBGyFlPpbTYucSSIXbfC2jcDqeWf4Ooa84lpnDHAKCFLoMz+XQfI8E
-	CWIqD4NjUnufpkWvSjCmUlrmhDpLlgUWUtJaBKqZO81iCe1H21BoMLgLn4s2dHc1uamjLi
-	r7oTgzqt1kUe8pDH/ifkvwNyxcVb4so=
+	b=JNlV/a27DoAUbSSqcNzbcndvKiLtmRDESGthfPbpmRtj3gZuzE49Fx916NXzJv/56nnwGH
+	RriJfY/pBI489j/i+HbNwqGEGsS9dPlMTAj7/POtBAPvCFUViUo3DuGq/Gll4z3tH7QiIn
+	xznel/hdO1gaaImfXIA4kp0q+h5PVXo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92B854B415;
-	Fri, 17 Oct 2025 13:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428C7C4CEF9;
-	Fri, 17 Oct 2025 13:50:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3825C4B445;
+	Fri, 17 Oct 2025 13:50:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC21C19422;
+	Fri, 17 Oct 2025 13:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760709005;
-	bh=dmLSOb2GYlnT9o1IkzmIVv/9ztWuUVzDp82QHtRSSS8=;
+	s=korg; t=1760709009;
+	bh=aJ1FeCzYiHnuirC7SjoyZ/906lDvAeKCgeUR/M/OHDA=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=GnSRlmd0RtwXk/OVucv97XC2fxDtarMsik6x8upmP4o2u+cekk7MY6s05aPjBeFFp
-	 h/4X3h3X9WtLvRI9Scrx2awB4Y6i95XAs6CRIzzTr+coAWKcQM5/+HnmipPa1yqZxv
-	 YFKLIh7u92D3jKwiQ9EUaSnbdBWSj8l3R2t2eUwk=
-Subject: Patch "overflow, tracing: Define the is_signed_type() macro once" has been added to the 5.10-stable tree
+	b=QQvl9e40eoJIz5OjPU38kmBnM8TABl/ks1uGA0/Mhxs7sVliFqw8W1LB50FVBJdKi
+	 bGf6SNHiQ88bIg7HeKY30IT1f9Xcp5Tw2VAZcxDk1ygRl673ogyf5L3c4fxHgrUv2z
+	 07TRdIQHMElduF3J7/HcjTst+VJJcuKv7p6HT+Ps=
+Subject: Patch "minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()" has been added to the 5.10-stable tree
 To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
 	akpm@linux-foundation.org, alexander.deucher@amd.com,
 	alexandre.torgue@st.com, amd-gfx@lists.freedesktop.org,
 	andriy.shevchenko@linux.intel.com, anton.ivanov@cambridgegreys.com,
-	arnd@arndb.de, artur.paszkiewicz@intel.com, bp@alien8.de,
-	brian.starkey@arm.com, bvanassche@acm.org, chao@kernel.org,
-	christian.koenig@amd.com, clm@fb.com, coreteam@netfilter.org,
-	dan.j.williams@intel.com, daniel@ffwll.ch,
+	arnd@kernel.org, artur.paszkiewicz@intel.com, axboe@kernel.dk,
+	bp@alien8.de, brian.starkey@arm.com, bvanassche@acm.org,
+	chao@kernel.org, christian.koenig@amd.com, clm@fb.com,
+	coreteam@netfilter.org, dan.carpenter@linaro.org, daniel@ffwll.ch,
 	dave.hansen@linux.intel.com, davem@davemloft.net,
-	dm-devel@redhat.com, dmitry.torokhov@gmail.com,
-	dri-devel@lists.freedesktop.org, dsterba@suse.com, dushistov@mail.ru,
-	edumazet@google.com, evan.quan@amd.com, farbere@amazon.com,
-	fery@cypress.com, freedreno@lists.freedesktop.org, fw@strlen.de,
+	david.laight@aculab.com, dm-devel@redhat.com,
+	dmitry.torokhov@gmail.com, dri-devel@lists.freedesktop.org,
+	dsterba@suse.com, dushistov@mail.ru, evan.quan@amd.com,
+	farbere@amazon.com, fery@cypress.com,
+	freedreno@lists.freedesktop.org, fw@strlen.de,
 	gregkh@linuxfoundation.org, harry.wentland@amd.com,
-	hdegoede@redhat.com, herve.codina@bootlin.com, hpa@zytor.com,
-	intel-linux-scu@intel.com, isabbasso@riseup.net, jack@suse.com,
+	hch@infradead.org, hdegoede@redhat.com, herve.codina@bootlin.com,
+	hpa@zytor.com, intel-linux-scu@intel.com, jack@suse.com,
 	james.morse@arm.com, james.qian.wang@arm.com, jdelvare@suse.com,
-	j@kvack.org, dike@addtoit.com, jejb@linux.ibm.com, jmaloy@redhat.com,
-	joabreu@synopsys.com, josef@toxicpanda.com, jpoimboe@kernel.org,
-	kadlec@netfilter.org, kbusch@kernel.org, keescook@chromium.org,
-	kuba@kernel.org, kuznet@ms2.inr.ac.ru,
-	linux-arm-kernel@lists.infradead.org, linux-erofs@lists.ozlabs.org,
-	linux-mm@kvack.org, linux-staging@lists.linux.dev,
+	jdike@addtoit.com, jejb@linux.ibm.com, jmaloy@redhat.com,
+	joabreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
+	kbusch@kernel.org, keescook@chromium.org, kuba@kernel.org,
+	kuznet@ms2.inr.ac.ru, linux-arm-kernel@lists.infradead.org,
+	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
+	linux-staging@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-um@lists.infradead.org, linux@armlinux.org.uk,
 	linux@rasmusvillemoes.dk, linux@roeck-us.net, liviu.dudau@arm.com,
-	luc.vanoostenryck@gmail.com, luto@kernel.org,
-	maarten.lankhorst@linux.intel.com, malattia@linux.it,
-	martin.petersen@oracle.com, mchehab@kernel.org,
+	lorenzo.stoakes@oracle.com, luc.vanoostenryck@gmail.com,
+	luto@kernel.org, maarten.lankhorst@linux.intel.com,
+	malattia@linux.it, martin.petersen@oracle.com, mchehab@kernel.org,
 	mcoquelin.stm32@gmail.com, mgross@linux.intel.com,
-	mhiramat@kernel.org, mihail.atanassov@arm.com, minchan@kernel.org,
-	mingo@redhat.com, mripard@kernel.org, nathan@kernel.org,
+	mihail.atanassov@arm.com, minchan@kernel.org, mingo@redhat.com,
+	mjguzik@gmail.com, mripard@kernel.org, nathan@kernel.org,
 	ndesaulniers@google.com, ngupta@vflare.org, pablo@netfilter.org,
-	peppe.cavallaro@st.com, peterz@infradead.org, pmladek@suse.com,
-	qiuxu.zhuo@intel.com, rajur@chelsio.com, richard@nod.at,
-	robdclark@gmail.com, rosted@kvack.org, t@goodmis.org,
-	rric@kernel.org, ruanjinjie@huawei.com, sakari.ailus@linux.intel.com,
-	sander@svanheule.net, sashal@kernel.org, sean@poorly.run,
-	sergey.senozhatsky@gmail.com, snitzer@redhat.com, sunpeng.li@amd.com,
-	tglx@linutronix.de, tipc-discussion@lists.sourceforge.net,
-	tony.luck@intel.com, tytso@mit.edu, tzimmermann@suse.de,
-	vbabka@suse.cz,
-	whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com,
-	willy@infradead.org,
-	wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com,
+	pedro.falcato@gmail.com, peppe.cavallaro@st.com,
+	peterz@infradead.org, pmladek@suse.com, qiuxu.zhuo@intel.com,
+	rajur@chels.kvack.org, io.com@kvack.org, richard@nod.at,
+	robdclark@gmail.com, rostedt@goodmis.org, rric@kernel.org,
+	ruanjinjie@huawei.com, sakari.ailus@linux.intel.com,
+	sashal@kernel.org, sean@poorly.run, sergey.senozhatsky@gmail.com,
+	snitzer@redhat.com, sunpeng.li@amd.com, tglx@linutronix.de,
+	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
+	tytso@mit.edu, tzimmermann@suse.de, willy@infradead.org,
 	x86@kernel.org, xiang@kernel.org, ying.xue@windriver.com,
-	yoshfuji@linux-ipv6.org, yury.norov@gmail.com
+	yoshfuji@linux-ipv6.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:34 +0200
-In-Reply-To: <20251017090519.46992-2-farbere@amazon.com>
-Message-ID: <2025101734-uncertain-tragedy-c5de@gregkh>
+In-Reply-To: <20251017090519.46992-25-farbere@amazon.com>
+Message-ID: <2025101734-evaporate-tipper-a41f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: akrnf3hz31cez1rxso8xm8tg4nmmqmgx
-X-Rspamd-Queue-Id: 93936C0003
+X-Stat-Signature: smw5jbbeafbuxtysgqyo7m48mrhsbptj
+X-Rspamd-Queue-Id: 2DEF120003
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1760709006-800282
-X-HE-Meta: U2FsdGVkX1/zk1MhOBU1kScc2NpOCZai4yh/OMFtDg6zbPcUX3rDe7WhCXgMX0hk0JnBe/7fA0YkpdVGs9HVbHQAQNknxLdJeVcPWRzwyf9y2vd+EhdUEgU0nL/oIZLAa+ovjm4rzHr/caztvEz2YYQYfno03ayzJHjsoE0kc7QVx8Nf6vtHXE04tC5J/WemPyK4zm787hm8fYmRRJQmFSSkhqU2R3N1Lmoz+hJMXMlrrJGzNWtRa7MH9ZVZVpMWznbit9+DRAEVRSw5hQF7qQMW02Qph394fkd9ro/1TkujGeidxk93/UuuBHBM+vTavMmbdVmPYJ24oIws4mzjOwSw/GCf0kCLf/ZmwDCfMu4LYJg+oUzPO/V0FWnKl/p4x2cW7JXurc5yEZeGx3NINek3IbcCxslDIhDadKIR3+TouAgY5BTtiCUyk7seFHbB7nVCiDgAN2vOtCUGKO2Pkkf6J6vuwFMOJQQFrOI6nQm3DAcvZTFdQf6ixE3kB4GlNP5SgAulXXh+Nl+twHIP1xtu1Ewhqg4dyL17UXpRcAXEZPaIOZaH0kuz1FCy4/WfshZ7ry4B/L69C5IBuchVMntl59RpPSZc8VUOxXnMH5VAAIzv/1UyBPDLzc8kE3/dCxSvTZYSAFiaBF8IEv71caqwYyZXQDRqGcCK0UMQa6Lk+NdePohdS0AfXhZ6CWI7VFedtSy8hHcFSZtJiUTGBxTPx0WscxC+l8rqqUyx5aMTkO3uWD95MSKYIzI53VSPU00rbQMLBNWTUlHOK7j64YCqsjqgmMdxdy7RI7kQA73SEdwMCKRAytM8KugGTfFF6i5peYI2qQ0VeYivHLpdmfd+1BtRSivCvixcMaNF/J//UYEQi0uGGBw4B87wAZC9X97O4GXZf7CVwl1IrSxZ8C5IxKqv5/I/t6D90ohlnExmYnmuFeDyLY8FGGluoXb3cQ6htJLoc8T9hExvUU3
- MyE/yOXX
- +V7uspkyrB44GbyNeYSS9pvF713TRZUoICs4H3YoxbHI01avkcnMDvGlIszeErv980J+eeWiTukM35bBlNCawjOR81UdGT8kzag6LEzypGm9050chGy3EkWS77VKtLRzanaHjG/1VNeD1Y/RJQne1s3djUk4LUsvcEYHlGBp2r2cV784HTImBuwJNQA8wNi2+WHRAqwGNAu1bnscL9J2x3j0QGxL7BLZu/3HfbV2ZoS/QyZ8mIvdwOMQ9UQ0iRPAU9QGDRlbsjhTR1spgjVFCB2ihYiWiS51uABXb7vz2uMN4QJ3Ki+bJM8jZFOFKMb2P5i15QWrj0HYpn31OU8m/CVwRsijGTpmAvD6kvstlIex2SbFt5r1Z++KGNfXd9hscMHhrhdwMPcarZ1kT2p7pVTG58TyH22j0y35EiUGDhztUCxvHxyfUbxTxlX4mhwIFkvo/Wcbf4Klew7mWYtkgEtOuXMxZlHR1Jcd6FfRt66ENZvUDWv7I0y9M14WlpaJh/EBtXk8x2QozwQutp14IMwEx15DEzl7PQhbOpQ3I4FoA4jjpVN2aO1tFoLL7ImmMqXr2dQFdxzN3qSVgLVMOp0DD+pY0ER2bbwjekgy4ehEHPkWZtXUsqkSsEr+QszjmB29vWDhqF/Ym48Vkrsu0FNlt3NYw/JgjBNIAdqQvRR2a7rZHnwpHlj44lVpryCzApeRQoIyvD6Aip6DhREBh9K+ZeEpjKlYtr1mHYYkjtydTGodB2dJrjACkCQpizqfclzseTH96/9IQLSQv/NoJRYN7W+1gFukTcA5Ip7x0v7T3HbtUgAhLpyOJaauU6tJCAttX1HCBjhzbrZwkQ+ZZ2+HCjPcsimQQc+/oYonp+v96TEXIuHunq9TB2Cu1OnhFlwWUmOdrSJinfB/hvEreG0vbBVISCYtsjbnhMLI52p+LqCiNukhfEGM71JxjtDXre/KLL/ZWidjKxSgicXun4pgyMn0U
- pJf5ITej
- 3fW83CK9Jem/UAbqZRUM2/MtlLhaCseycneHNnESl+K7xwHxhUk+haVi+6GIsUlo4ZqxDWcvdlxhkU4B4oTg9k1O9/s1egS7bA8R6WtJMAplW8aEBJghJiUvZxPgMHxGOOIqKNVqjJI68uYEb5Cles7NPku9veco5CGD/2kUYYSFnrSCXCe3KcQxWMlIFACyFy4uJHQMGCIlMW3XPPX2IsIE/SV/f9bn+Wvw2EkUIYljlMwa3F0I+fGAjX0DmhkiENtPbR3nE1cFN2+gSAwNNSzd/y9ZIFT/AGI5IF3jCsUI6wYOeIjxrsLOTBIo/GoqjyM7vOvbEMvEiwRhv/plW9Gv3UdzGDGL3jbfaXy3KJfmN3gKk6VAy9SDHeSSP0Ci5p7pfNgVShUbRiS6+MWQthjJlqQoUZyUU2jnIu54BbmxU4entu7NNJPjRQ+GDkQ3JCSHCqDZnk0XUaXPEGJBBPylydEdGhlQoY97BmvIkPVQx6VToi9HeJels9ZBOD6Nl9Mlac1sYAOqkue3MeZhzyCGhjEFUF5vfxhlMXafsOPq9HiiXqYLqtDAouNMYV8XOMcxsPtzfBh5ptSXzOP0QY0pwoDzFfTL3RcxyKwfRsR+wo2Z4yWSBJkUNrT+J7IVHnGQ3cmv8Sk/xh/tLonQKZna0CxzwqAL8FLtgYPvHpGBYiPmqAlqFoB5AXUCnvrgNRL/B/5YQYubOf1eQhX9jYb4fgZ56tVd3L7DEUmTPiMM126ojYFuDJO+RBu5tnpPQqyf5b9FIsjkUKLFl3b5f8lce3bU4NfMwyKtuDoEcCVgJxqPUUvvtvxBfGiYPkxt2g1YWKeyo5UPSyLXX4ZGczPuOoBV9NN1RCQDrP2JRzOZ/AMuc7HVGT3sRtQPc5mDCwVCei5QRyt/KW8WSiM/Xqq2n/pEpovl7gzuDkam6i8BhiDcg+W/IybmHfPCsCzAokpctSubaJMNNcYoWiWMHdtdQXC02
- 9KbGmpss
- fFTS+s/o+vBfX4CKWksM025G8PVGOC+soJ1yZo6tyqc3gxaDp77VhKvGZL1VqV7w018UscdG4KSNvjGi5YobWWiNGn88az6vlNwUM08aogFID5fkLKwHoB7A2imSow6ZEvqAlwxC6tV0t/RAwdXFURtSvPwrA5O52Bxfx5FaepG1J+yrPmEqiAEuacpiliaobiLXvebejI6azelffF2Kw7jphq/lvaFjPDKtnRwqRQNUIYL3w==
+X-HE-Tag: 1760709009-229973
+X-HE-Meta: U2FsdGVkX18ACB0PnJBxkJAPXPwiNMsTeZlfoO8WMgmD3UFUEOatk0DbIXmj5h15RcaK6X9Z+l+CHUHF7w1y7yj6IwpczVJbHBur1pKTI4Kz9y/a4x8YGP65GvnUoKD10pEvaGmTOzDgtKuuM+tSmaQzfg9klH16FflQLVYifUjKJv/nu2spz8YFM8dSnCGX2PmRd/6qIcSc2sgEjxOVqgBUgtkWPIQ5C8UGXNj1aTL2tcM1NfluhWnyMDQuPX4V90lx9L3yatSxkNqXCmxHCsdUHbDNJsBmZN0rQbEiLpzCx7M9pvjKUVuRxCond0JX2hHyR6LUR5yoWX9Ied1iU4mhq8jjsecbfzQmTIPmVby5KuHbu2A+3bDBwbhK80GOmMF4HGlbGYsOqSk4Q6xl7N8zt3R9Wg+D0pJAPqUrDrs/fB1teY/bw+sODVYYy6x5Yeq3uQQmMwxRAmcswH1zcYAFH3I+Hz4bcf29JGJYiNWT1KpNMg9u5MR0rC01pfGaSOUrQAAH2A7xoHHvwrK6YhHQYzyC0qO4wgPn7WFsFvdr14Dmvj+FOXQkycJdqnZNfBbVUmdG7IOSpOaAAPlbZns+y1/d0uP7eR9wIk0YZyLWG6/otF8Ai96UHp1MPLecu3jYpuK9DCfvwwKZ5lJr6DGOxtUiAr+49+w3IFaBemhdxZVBFWQ4iYVRouWOpUnAFnMKL+woV+CK5MDsZm8vKWZ/VTt+M9slV1m6w4CGrZijEfww1Qz0Rkoqt3OfrqpYUNWNesqbsE5Yh1cbZuzWHDtzYo5tR4Lq9Fn1nO1J2ovtJv/hE7igk/ssPKuB/cFH6+oLq9AyA7X8o3xBMrO6XzONB3ZVVxANUj6y1k6MyX+fVEego045XQZTKuu+VQDE0+OEg970ggofqdov7Fsov8DfsGP7CxCTRVJuwhjJP2bdSUbi4IQYReUbRRa6NGUXccP/ZRSy7dw3cJG+Yt8
+ 1PGkMjMP
+ aWv1A9BNBb6UYtn6l5xzN2XGvU2JnpLtizT7hAy86fck0JSNOQKyULLo2HYUzKmBo1+4Z2bmhO+RSld6rVFzmkxahE6o4cRXzF3ieBXaRbVtylAyBhmsFS6DLxxU2owOOYjQQp41R9BEWB9ka0zYB1R5qvLUoFr+t0MKhSAIRPy/9rmtZornHPGhd7EqPrgUIUChyhSZ/QBrKMhtEQlQBBlLUj1NG1+PDTUsmbRJl2sjWZXjJN3lPwoQ07bYaDx14iWAsVYc+37BRbJKcrkuxkHQYcdhWiwXAEsrz2zmGqYwD8IXPmBgWw6bW4pui16TijtKEUOdknzB64k1C0RoDubKOyHABeSzliuMthxrTeIl8XZ8ED631YoPbodXgEfwoLqm2CysOLDi9axnWBlCTstinT7xNXuStmPkMm3zzV6yjeROrVo2V32Yr9VnIh8GIjnWdpttWX+SRgS8jm5cFdPsVpR6etPdO0qG7umjCuQEXUvjMRgZ9DJkXVuO/zpFziodxnizvwoAKJuYW5BHkz1iLRd+IJMdN9AM0kRtDap6v45SfKdIrmZFkBcytRwZhFWRLIFVGU8drMngLRQkbo92kuap2CD2RCYYggf9/GG877+TNbFqGtOVBYq5IWkAzbTMcvWtWCqblIANiUaQPq55fZWvzrzL8TfeeNAxYBF77q1xnKtBlg5eum8mWzfIqy8kE3Roc2G9314AwZjZJB5Q6Nn9UU/OXfNUkaw3ELfowKKmbusT4p+beJ7O7BRyTKwh+jr9l/zyHL+LwpDddJiiAUZsbFZHaqYeErspFw5YDdQQFgfC0MFS0AMFo9+wBamwXIqmTRlTPLyoBG1a/Ah1zR0SuV5YliCgMrH5/Sh1rg5bJ7kla1ESL5IAkPEYuywTkIYC7nlmi+DV4tkFR0GaZTR3p/Bxfo6G7UvFVJYAWye1pQ3Ez43YOhPSGCoyLnrRY+BzV0Yyu3/6cJyc5ZC1wQLoq
+ YE4MeeNj
+ IZ/t1RFQQW24j1TD42wQD3IhkcLPQuq8K+IN8+WEQaw4XDIi3POVNBNJ7oNF2Yfc5itgsb8k5L/4iL4n2T40F6lu3+AZ9apLp7xA2A7BM9QG9RZmOhQRDqKx0WKwOkMARkFZFSiyqXruXU/of+Zo0sHa+/SwF/rHve5UWbZg99IXqoWtc5PbPxIrj92dJdB6zyxtHkpRdwexc8JEGFjmrsLG3Y6lcVuBSHrTqMytwbtJW9BM5PTQ9KU+osIo5y9ou3Ra1/pDfuOXXVOOCyGUTSUAt1/YcXKoFRhSszZekak/f40sVSrOPKbugcvDLg8bVaNEyz5bvxCRtYiE5S2W3UYoXT/u5COozW9qGBhkmuNOwW8w3nyzKq6zzb0vvmFc3Z3NidiFaTOpZ8tSdPCXJl2JhMehnYyC56EvgjJKVJ1AQXdlF5qhe3FXPKkJLmZwRI7leNkn+l9EDf/LDt+iL+hE9mfY0WmP9mRpnFeDrgxNiVEoYfMuIeOdN5a3pMcjaw7ag8ZbMlGn37Z2EaMGd3d5hShkCg6qBga5z2LbhPKFoGBDkDsLI/T1nTw11ehBanyfNVlgPoqKKrZuBuYecSnTyLwCRYjoXFCwRSpnO9uQY/meJCwFpRalwgHIv9klhPRvkkEqyUM1JIOdDfFNBwRkh4Rf9QpslgrnWsN/xZQX/MgAvRO2nXapAhDNq0uyiCGgLrfxggMzkdDe3dKutHqpcBlSIC6jswfOhRBRD889djM75eBssExAnY6Pw8C/HyWFOMXaqttkjDd1WDI3GaMo16WGXIQn+5vXQp2mUGzeUjCQl5P08bSnsyMV8dmrwvJPG68sR5TQblnmpHbVSJ6GiP1cjYNopV3Puh7ZSVvB07d3tOL50tt3bWVsZVZ9g/04Y4kFGV29uxYZRH8f2Th9U8qXEaCadSMYfxx9+HTqoCnQu9Gba1d0saLtvSFsMj/d2XAwSR2G54zS7/S6UU7OIYENH
+ oOb9UbfT
+ eiDgviMNjJFMhT+DOeSaWIrZqE50rLGiosM9JLTDZl4PQSUh6O/fGCfH6UB+Vfr3eSEJv1a9rM5XCuBhw1mDzN4hR/e
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,23 +141,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    overflow, tracing: Define the is_signed_type() macro once
+    minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     overflow-tracing-define-the-is_signed_type-macro-once.patch
+     minmax.h-use-build_bug_on_msg-for-the-lo-hi-test-in-clamp.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From linux-staging+bounces-34939-greg=kroah.com@lists.linux.dev Fri Oct 17 11:09:40 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:13:15 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:04:53 +0000
-Subject: overflow, tracing: Define the is_signed_type() macro once
+Date: Fri, 17 Oct 2025 09:05:16 +0000
+Subject: minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -167,88 +165,48 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Cc: Arnd Bergmann <arnd@arndb.de>, Dan Williams <dan.j.williams@intel.com>, Eric Dumazet <edumazet@google.com>, Isabella Basso <isabbasso@riseup.net>, Josh Poimboeuf <jpoimboe@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Sander Vanheule <sander@svanheule.net>, Vlastimil Babka <vbabka@suse.cz>, Yury Norov <yury.norov@gmail.com>
-Message-ID: <20251017090519.46992-2-farbere@amazon.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>, Dan Carpenter <dan.carpenter@linaro.org>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, Pedro Falcato <pedro.falcato@gmail.com>
+Message-ID: <20251017090519.46992-25-farbere@amazon.com>
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+[ Upstream commit a5743f32baec4728711bbc01d6ac2b33d4c67040 ]
 
-There are two definitions of the is_signed_type() macro: one in
-<linux/overflow.h> and a second definition in <linux/trace_events.h>.
+Use BUILD_BUG_ON_MSG(statically_true(ulo > uhi), ...) for the sanity check
+of the bounds in clamp().  Gives better error coverage and one less
+expansion of the arguments.
 
-As suggested by Linus Torvalds, move the definition of the
-is_signed_type() macro into the <linux/compiler.h> header file. Change
-the definition of the is_signed_type() macro to make sure that it does
-not trigger any sparse warnings with future versions of sparse for
-bitwise types. See also:
-https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
-https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Isabella Basso <isabbasso@riseup.net>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sander Vanheule <sander@svanheule.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20220826162116.1050972-3-bvanassche@acm.org
+Link: https://lkml.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler.h     |    6 ++++++
- include/linux/overflow.h     |    1 -
- include/linux/trace_events.h |    2 --
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ include/linux/minmax.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -246,6 +246,12 @@ static inline void *offset_to_ptr(const
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
- 
- /*
-+ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
-+ * bool and also pointer types.
-+ */
-+#define is_signed_type(type) (((type)(-1)) < (__force type)1)
-+
-+/*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-  */
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -29,7 +29,6 @@
-  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-  * credit to Christian Biere.
-  */
--#define is_signed_type(type)       (((type)(-1)) < (type)1)
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct t
- extern int trace_remove_event_call(struct trace_event_call *call);
- extern int trace_event_get_offsets(struct trace_event_call *call);
- 
--#define is_signed_type(type)	(((type)(-1)) < (type)1)
--
- int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
- int trace_set_clr_event(const char *system, const char *event, int set);
- int trace_array_set_clr_event(struct trace_array *tr, const char *system,
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -106,8 +106,7 @@
+ 	__auto_type uval = (val);						\
+ 	__auto_type ulo = (lo);							\
+ 	__auto_type uhi = (hi);							\
+-	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
+-			(lo) <= (hi), true),					\
++	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
+ 		"clamp() low limit " #lo " greater than high limit " #hi);	\
+ 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
+ 		"clamp("#val", "#lo", "#hi") signedness error");		\
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
