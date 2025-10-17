@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12BF6CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 18:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70264CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 18:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38A768E0012; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
+	id B7FE98E0009; Fri, 17 Oct 2025 14:23:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33A9E8E0006; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
+	id B0A1C8E0006; Fri, 17 Oct 2025 14:23:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229AE8E0012; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
+	id A1F5E8E0009; Fri, 17 Oct 2025 14:23:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4468E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:20:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 835334D1F2
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:20:17 +0000 (UTC)
-X-FDA: 84008420874.07.B1F7D43
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D3D38E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:23:21 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 318EC1190BD
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:23:19 +0000 (UTC)
+X-FDA: 84008428518.02.36BF10A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EFAD1C0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:20:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vwq2wUjl;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760725215; a=rsa-sha256;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 934F780002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:23:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NiTtH/NM";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760725397; a=rsa-sha256;
 	cv=none;
-	b=GM1JIo/BZFo75v+0L9JFBkVdyBJvbRMPq1m7/8ZlIJGKMEPzmNNwV4vMfxnUmNNmDoHqLt
-	/C7EpZRv6RLoXw5uMcqnJgGikwE3p22DpIEan/3dp3xIRzR7Ec0xRoDBStFCkX7HXPZXJh
-	er0qW7JG2uyzoMW+0jzNxyIvPP7CPQk=
+	b=nMGER+n8ZunG9SjURgiK7Toxpp04tyaEzXB3koeZx0NsX1mKUFUNF4xevxebcWovyRrg1V
+	uVPaSrRz9JBLEcBZgfMT5uVNd+R0NaxOxh/qZExMQCw76G0yQ2IeoI4QPqYizAMlq7387k
+	aQhcmHXehF7FaxtFHQEPLpmDPedpUi8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vwq2wUjl;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NiTtH/NM";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760725215;
+	s=arc-20220608; t=1760725397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AM67p9xsM/ybJDetY9mA0SRKrMHwMnPpNPBtQIGWPaY=;
-	b=p6dlQa8CIHrOCsep5KLhRG7JpoYj1rV3K8PvG1vBINlS1NhyyrqrbAwnNTcyLLRqIXLe0h
-	J6+07xdFp9hOYa2q9TVQby/t+hPJQx3qB8bGyWuYk2e9ryfde88Y95L87XWbcPFpVxisYm
-	VNcpECw5YS5EWw3wMYuoUQN5eiifuek=
+	bh=9D138k6BmKmfIaMfOCaoDNtzs1ScrJQc6/3mcUUFmss=;
+	b=DWqFDKewjLCfULcOFKE3tITItQCRbsYick5a1pIMspiu58TYzJWSb+Y6Uu7RE/ym7ViDm5
+	41OeyurDpR/yR/JWjXnTqCm7iwEXS3LUbT81zmrC1RooODZr/BMYD0zZPVy+4WqPe51NDm
+	3SdzsIpiRs46FFD47mxTle34VgOIVeU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F8C464831;
-	Fri, 17 Oct 2025 18:20:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6BBC4CEE7;
-	Fri, 17 Oct 2025 18:20:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 07C696483F;
+	Fri, 17 Oct 2025 18:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FBDC4CEE7;
+	Fri, 17 Oct 2025 18:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760725215;
-	bh=N7DJTkgdFq2cVtwSeDRgEDmegzhxtatOlmC9hFsx/jU=;
+	s=k20201202; t=1760725396;
+	bh=S46XaZclhcxXbcJdWjNUfPnuzr9HjUARlDUOAUroKTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vwq2wUjlPQJ305VOVK2SUdxUZv760Gg2pHU/yKSLZwbT+CW2S4XSTDxOuK8fXDRd4
-	 GsPNGXzw6fKokxPiVFRR1goVQ7VTX6Ah5i9z1BDLQceUOCTibvomTJpiiP6ZLr2du6
-	 S02vW7CQLJ/YgK5IYYldYJghS+ADZYHw4qzM/x4bXsQjDoGj0fM3F58xYTGd6fCHlo
-	 ksPaoup8k/GOIAZOh1+ew70+l/6K2YIuE7q/7mw3go4kCoHUzMGrYYmlwKU5rIQH2N
-	 7qPAXa9d1qjFJ8KwKrDUqRrfYw+lrT+zsecq9IcP5ZhBo/wyMIfCFRKwe9v7th2hUP
-	 CUZYfpRtzAsfA==
+	b=NiTtH/NMd7b5WSERP3F1DvIifA1SxqgGtCVD+HzfAC9rq4Rm5cC39HEnAXS+Ww8eu
+	 HwLZXyqELYPbcHPeo069rgenaWcq7nb/gIX3Jm3WlykVSBoP9Kp59sj/8ujAgK5RjK
+	 +zXfqO227jnawL/KiWdFb5iKmuoTUh8hmkKgpcXV78AjV2LJhHL6dHRkKOimKOA5/s
+	 bFfHkzIo9M+3laZugBJL4y4Zs0c/1hwLN4xZatUaG+uRlch8GIQilb2tiu3FgEGB9s
+	 M3IP9eti2nxCT1+Cg2VT17/9Ylsspp7LUJRRUPturDrOl7MKVWhWGBF+Kk3PjEPsH5
+	 6OwDNW9Oq7RNg==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -70,22 +70,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 03/10] mm/damon/core: implement DAMOS_QUOTA_NODE_MEMCG_USED_BP
-Date: Fri, 17 Oct 2025 11:20:03 -0700
-Message-ID: <20251017182006.124211-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v2 06/10] mm/damon/core: add DAMOS quota gaol metric for per-memcg per-numa free memory
+Date: Fri, 17 Oct 2025 11:23:08 -0700
+Message-ID: <20251017182309.124449-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251009212042.60084-4-sj@kernel.org>
+In-Reply-To: <20251009212042.60084-7-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 8tbrdum9pcm68xwi5zc1hers4m1yy7j5
+X-Rspamd-Queue-Id: 934F780002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: dxw5hz3p5wekzfbd39pyj79eoincq8xj
-X-Rspamd-Queue-Id: EFAD1C0016
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760725215-11440
-X-HE-Meta: U2FsdGVkX18fmsbF1k2eoW9LHBksbJECVKQy4MbAPQb6/DWO6mG9G+k8sHTDg5J/F48pRgykHAoC7nf/ORQiodbJ+dFfOXN4I8QmhNpSJAAhej8ju9cJ/jL9grcpcO239KF4B7BP9Y1CY27Wt2lcVE20y/iGfuXK1fsFxAeut9O4Vhuy9Rj3vsF0s2Vxmd4o3+Tv+X0WhzR7BwiCYy0bfd05XSBZz8lJyquudstltLVu5LCm8UYYTpy/iEV7fyDcnd6Q6tPccMJivraiLI+5q/bty4TzHRHIONaMmmcaqVfgwqMo+n+pQT4ik4k8a4/LrBEVMPoFsUwJF9t0XRZmpq+TOyhq+6w0ZKhH1cDdOrviKpRr4bxvxLhVEynETvCBddouBnRTa6ndNIaYv/v/CGoj4wLQthiBVzMUHm1IHX3W+Val0FZ5sAg3yGySnWaS8vFCuO1fWrOtZuK7QZbue0QqgTPzisyLKpR30TxC6IiSdGsTYOibEaHlLe2PTT11uNi8ZqheWHUBsq+74Zwf6ajxkOymEW2p7yZTOE9OMM/8GVriUwP0P5DRB2oKAVqUkT9goZCxrz3W/5BurMSp+OBB0mAaugfrtfih6BcqzO/YPt+FoQ/gc4Lcw2DjBq6MQ1tF0D0ySRr35kcJbp8yGJuC27fqbZEFDfoaR0ai/KdvE43EMZviwHx6wBcRzXyq/FJq8AZKjaztlCK/hUfT5CAeE2khQWsmMIpzCENs5+bg4aL7o8SHrh4J2ju8nmuD9f/NHEAm91oNPp0Ocy8EoO7B8LbEGqfKqNot3qsod6Bt6grec3pH/53D2QAGtWd6F2FTeZp8QvYQZ++l6rMsGCuWnR7DgaVED7/CLcF5x0NXMyf6d3bbjT+6R5EEpeDzkmxcQnQBPbS989Cxd+ej1+UnbyuXDMReDE+F7o9ChoAF/2VtSTkirWcHzKBnvtJZGn+eIqXcqoJLYhatJF2
- yrw5gjP4
- b4YgOUMFbUd6IjE6cbhIl9XhvkFme+3MRYWAi+aNPMH7ea1RLgsKRv+/GS4XuDW5cYZXuohaYSvywyog8PYq3b2+mN66F7efLvpwUAASMfVHXZYtCbzE1e1TNmnd1TkN14ft9/EDXCwZw82IQElGINiBSROFmYnAIeFIAbDRglvdHb0bqvOF+9LdUFE72tv5p8X7aG2Auf5YnD2m6QdywCuCyAB5tBegKGbQoi2VzDrM8BGg=
+X-HE-Tag: 1760725397-190105
+X-HE-Meta: U2FsdGVkX18aJFnY5aFg7RcSUybDActaR4P6QKMAIu1nx9zEgO5Sbfazzm8R1h9qT2C8swb6psxfopKl+EroWyLczfbNdlQlt3OS2zcV0hSVM36lWVcSn8zpQ6r7cqBjZ1mXtA/i0DXDJS6MPwCQ9TMo2GdMA1KuIuVIkKod8OsxcEWB4huHJ8uMNzM5yJg68dhaYYDj/XjAhCfQeRoJtuX1w1vzcaFg8WAw/l7vfGpOOscgBsIpZceQieLrD2kQHifzT8URfkpi01axUMDtWvG990R4Ym6G1Mfvhle8q43aJE1ohSZG3AxxaSWGkU/RLfRP+195zQkQC/XAO6v8Keqwm9AIAyy23RfLx5r5xByUKl7k858j7d3md9Wh0bsiRjFKlrMT2ICe38kxfHnbwosdVAziLK99htEw/CsB0Qw1FLtx+wafxbaM32So9MIq4COO55An0c6pu92mf/9NOGLwJMySgRDCQYIrnXdabxNwuswE8AIf37inPxDJ5ee8w72Oq0KyFLGdRDd7QHYZjv9ysvLXhsS6eR4be2OMlJf+FmtI5W4xlL8eIRXT4WLN85b5v+2kHK9vtPvYYJDYdklIJAPG7Cu+xAa1NFxcB9rZoRjpLEPBCuUu0z3ZhBmWqX3gu7vHUfHM0T+IjZ2/ufL9nZr1tw/I8ccjvNVXsFeceJ+Q4KXAUvsPwxeOl0uU1U1orHiGVa2JZSOF2QRAG8igmkKDm7xxgRvEcK6jZBx8eLhQq8r+ditCaw3c4YjV6eZ7wf0mWbwErC99YQLAfqwxVqVOi0I7s6OCI2OG7LCKLvjDu4XJxdY/5ZV3HcKFvJcrE5IoWPk7i1Cvbl2YXaefT/7DGUwlVs9dwqsGKTAnFvFh36HrdNlDw44S/klPrsrQ7cRO/vmAd51933dXOFpmbZSK93QVxRPg1uyHWHdprNNvguUZziOcr6qk4vtQ7+FWO1CBH1iuEFgGTxw
+ K1403fO4
+ kS/LuDDhtz59TQPLH/HUZdu/mWVameQPqgRM4WJ9UQwVspCaI900XPYKpuP1P2v14s6MCEv0XtAR07+TGwJL641+kmWrBDJaV5qmABiov+Tx3eSJJmMKmS1gMV3xtFRCQyG4Am2xJ1lsYriHoAP1F8hBXpb3I76sJAZRkO4lYp+jsJ1FC56aY6JJephhQjDhEi16pifi5y7KvIEY2tIVpGrM3VfgYnxfZ3uSP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,53 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Oct 2025 14:20:35 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Thu,  9 Oct 2025 14:20:38 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Implement the handling of the new DAMOS quota goal metric for per-memcg
-> per-node memory usage, namely DAMOS_QUOTA_NODE_MEMCG_USED_BP.  The
-> metric value is calculated as the sum of active/inactive anon/file pages
-> of the given cgroup for a given NUMA node.
+> Add a variant of DAMOS_QUOTA_NODE_MEMCG_USED_BP, for the free memory
+> portion.  The value of the metric is implemented as the entire memory of
+> the given NUMA node subtracted by the given cgroup's usage.  So from a
+> perspective, "unused" could be a better term than "free".  But arguably
+> it is not very clear what is better, so use the term "free".
 > 
 > Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
->  mm/damon/core.c | 38 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
-> 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 93848b4c6944..1eacf78aa358 100644
+>  include/linux/damon.h | 6 ++++--
+>  mm/damon/core.c       | 9 +++++++--
+>  2 files changed, 11 insertions(+), 4 deletions(-)
+[...]
 > --- a/mm/damon/core.c
 > +++ b/mm/damon/core.c
-[...]
-> @@ -2058,6 +2093,9 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
->  	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+> @@ -2039,7 +2039,7 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  {
+>  	struct mem_cgroup *memcg;
+>  	struct lruvec *lruvec;
+> -	unsigned long used_pages;
+> +	unsigned long used_pages, numerator;
+>  	struct sysinfo i;
+>  
+>  	rcu_read_lock();
+> @@ -2059,7 +2059,11 @@ static unsigned long damos_get_node_memcg_used_bp(
+>  	used_pages += lruvec_page_state(lruvec, NR_INACTIVE_FILE);
+>  
+>  	si_meminfo_node(&i, goal->nid);
+> -	return used_pages * 10000 / i.totalram;
+> +	if (goal->metric == DAMOS_QUOTA_NODE_MEMCG_USED_BP)
+> +		numerator = used_pages;
+> +	else	/* DAMOS_QUOTA_NODE_MEMCG_FREE_BP */
+> +		numerator = i.totalram - used_pages;
+> +	return numerator * 10000 / i.totalram;
+>  }
+>  #else
+>  static __kernel_ulong_t damos_get_node_mem_bp(
+> @@ -2094,6 +2098,7 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
 >  		goal->current_value = damos_get_node_mem_bp(goal);
 >  		break;
-> +	case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
-> +		goal->current_value = damos_get_node_memcg_used_bp(goal);
-> +		break;
->  	default:
+>  	case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
+> +	case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+>  		goal->current_value = damos_get_node_memcg_used_bp(goal);
 >  		break;
->  	}
+>  	default:
 > -- 
 > 2.39.5
 
-In addition to damos_set_quota_goal_current_value(), this patch should also
-update damos_commit_quota_goal_union(), like below.  I will add that on the
-next spin.
+Like the DAMOS_QUOTA_NODE_MEMCG_USED_BP case, this patch should also update
+damos_commit_quota_goal_union(), like below.  I will add that on the next spin.
 
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -825,6 +825,10 @@ static void damos_commit_quota_goal_union(
-        case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+@@ -826,6 +826,7 @@ static void damos_commit_quota_goal_union(
                 dst->nid = src->nid;
                 break;
-+       case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
-+               dst->nid = src->nid;
-+               dst->memcg_id = src->memcg_id;
-+               break;
-        default:
+        case DAMOS_QUOTA_NODE_MEMCG_USED_BP:
++       case DAMOS_QUOTA_NODE_MEMCG_FREE_BP:
+                dst->nid = src->nid;
+                dst->memcg_id = src->memcg_id;
                 break;
-        }
 
 
 Thanks,
