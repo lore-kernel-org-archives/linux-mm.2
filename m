@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A078CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311D8CCD19F
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED2C8E0086; Fri, 17 Oct 2025 09:49:05 -0400 (EDT)
+	id 89A7F8E0087; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69C448E0006; Fri, 17 Oct 2025 09:49:05 -0400 (EDT)
+	id 84A0E8E0006; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B088E0086; Fri, 17 Oct 2025 09:49:05 -0400 (EDT)
+	id 73FF48E0087; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 443AA8E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D6C208542F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:04 +0000 (UTC)
-X-FDA: 84007737408.03.FCD3B4C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 39D88140003
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=sGHlqpNC;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B1AB8E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F164F1A01D8
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:08 +0000 (UTC)
+X-FDA: 84007737576.07.9885949
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1EC3E40012
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=UsZdQ3N3;
+	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708943;
+	s=arc-20220608; t=1760708947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=U8uI3irMc21KXnyDZVuPJT0aSh0IRadWAJ6vHMjtRig=;
-	b=VaV2V33ZT6Dw4VC8cd5h2ETo9IKIm8k2P6rJAl9lY5wRA447vTSt0v5grWJdb2c0yVrPkA
-	8CvgMlJzH6bnEoBHk6SrTfsx8seEr233uWr29yDwK8hTAP5i5C8yeqUoD+ki0sb+GxszhM
-	HdT/uBvoXT8bsDLc13i9dK0LKJzBKj8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708943; a=rsa-sha256;
-	cv=none;
-	b=mvvJtDOQ2Jr51ONjvvMWTg6HHUB87eookUzPXDSo18MWCW8Fb4FbItm0qVSuXe/qWCE//r
-	1/5kOfhk6O/UFN+EASnFCcVbBR0nzrhE7MxYCl0o5cb9h+k7hhc2g0VvAHPt4xZgJ9EyQK
-	oAJJjbAzagyUYuoL0XJNCmnxZVFNWvE=
+	bh=YDVsGftE6aJuwamkz4Ur/ANosowbY0ooFVtToKnljoc=;
+	b=d2CZcAXIyXX6Nr7dXHQj/dwri4g4ODmuX3ObeqljIc2Y+CoBRl2pNYxghRwlfwuJQqbyxi
+	AM3ueIcMca9/WpPmU1Br8SWAtehBD6klv6ANk7mDDKHfE8stdgBybtoyxL2ax1S+z7hNme
+	fQrjF1m7Aa75QxamDUxgsGWs28qPE9M=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=sGHlqpNC;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	imf12.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=UsZdQ3N3;
+	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708947; a=rsa-sha256;
+	cv=none;
+	b=xdA1yBdIzhw3vqVaLUwQ1d3CRnxgEnQvT402XmJQf+HPuFjlrAEm6CTrGiweZYnTmk4bKh
+	USbARTbl0pKHFqOJ/2moRkbckiDheOneR1LpUkkBklNtzI6bsqLaOQP1t7Jcx1qBoVznqU
+	wzfIEjE8jrL4O+O/juR2c9kggl5wIDI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9800764376;
-	Fri, 17 Oct 2025 13:49:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27ADC4CEF9;
-	Fri, 17 Oct 2025 13:49:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C3894B40F;
+	Fri, 17 Oct 2025 13:49:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38DDC16AAE;
+	Fri, 17 Oct 2025 13:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708942;
-	bh=ywoIoTQPJihrdgM5VHryYn1SAz5PWHvRXI+LMWpHDzA=;
+	s=korg; t=1760708946;
+	bh=lNulQj6Pf71EV1G9N3rtKDxmU4z4cUa0H7/cVUNj/bI=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=sGHlqpNCTaWpThOhLkiPmT+5JamWTA9ZTHhjaKQMzLaWaFL09I2VbBdpSyowlJ8kf
-	 NjHTI/QszjDCGnSUt32YkQ74ZFu/vm95iTbAPjIi+HtvG5rARduNTerfBnXNj4QLSj
-	 W0lj/N9be/EBqLOVsfkr0FsBCmxE5i6i+jObqRow=
-Subject: Patch "minmax: fix header inclusions" has been added to the 5.10-stable tree
+	b=UsZdQ3N3g1HA9IRop9e0zSxN4roBsUzfuXh2lOF7Ls0u+zs8T+DbQ/PIbdvi3tAUB
+	 QmRlkdqorz+9DT4OB5ssGlIv1gvHCWHSThGhzuH1HTR44BAshXSkft+F4USe5TvZ1M
+	 r5d8OpcowDu70hyNjetpCQQo/K2qgth9vKzGMuhU=
+Subject: Patch "minmax: clamp more efficiently by avoiding extra comparison" has been added to the 5.10-stable tree
 To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
 	akpm@linux-foundation.org, alexander.deucher@amd.com,
@@ -107,23 +107,23 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:29 +0200
-In-Reply-To: <20251017090519.46992-9-farbere@amazon.com>
-Message-ID: <2025101729-anyhow-embargo-b20b@gregkh>
+In-Reply-To: <20251017090519.46992-5-farbere@amazon.com>
+Message-ID: <2025101729-giddiness-scrubbed-89be@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 4miz3nuhdz8ss41x4cpr1a9zzu6thsox
+X-Stat-Signature: quzwko5dme9km9mpnsmcsm154bnc1zf8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39D88140003
-X-HE-Tag: 1760708943-214950
-X-HE-Meta: U2FsdGVkX1+jMKLg9dS+gpfyY5Hfca/dpzjocDse7+7FmL1uikabN/OfmQF7Nz5UntetA8jJpE3Zt/iM5TYJUPlaZWxF+r/aqEfFZmP2Xue47cDsFjovUPYY/wynHlca3maoWGOMnvknQkXwnLVzq+EoaXyOO7IEEuV1N9c1QF3xpME3qj88VYPxoW23gevpgCv6rd/huPQYInsBDHIZBo8Z2glRxi2IeIwhfoMC4OYGCW89DjATcmjpkJ6Um/iJYtVTcBfDqvblD4hRqYl6rMUf6QAzJI3290UJ+IcAs1LkL49rXbxn+4rj3bfEEP8gK2RWL1dxh9+aNwdwjrjJGMo73ohN4dsnpDs8kzicJAlb6TZFgVLplmKoYbU6CiqjkKD9JuHPtIlk/ppUbWI+WqzEKp6KsJhvN4Ej9hPBdIp1aWo99a8+LBhBBe+Ziqzzo9KaQsXpZPHkKGKfub+lvLG9pW0EmibSkaLGXvefM6yGgt0Imyzrk4N02fmoP8OmCrkzSkOJPk2OdEm+1gyMQfnSxnYS3I7nTlCG1Ff8/nuM87T8IqY1PzOHauo5cQd2FIH6MTyL7ZSR547AjkvKbV3d+XlLcjLwQWsFA6SLOuYI82uk4CRF4VdS39+Ba3UQhYcDtn/PcBnOoP86MCf30ACw3eY/kFEsqH1P3ZRmx92+PpBXHZP4yi5wsJjpqZCzkUyS9Id9Z5SUxGoz8g2Fi8kpYWmX/MT2TPXb5L48c9/t/2DlknydvZ5THWxwBCwEE1gNComfX2Fmv94S3pxN7PMSdcHg8j/VvZRNjrChBRP+VLsQEuI/N/Gb6oatIwceQ//61AnN+pNUtDZyf7sd/B+2dv/HPNHH0/4+hsk2s9xAa077aYM+eG08Hv09IDsADh/nlq/xNl1iGP1JkRgDfmLCdUMRgb2N3mSvmOjKoKZBvPEPKPkqqD9jUXcNZBEEbIf5X6gxAvAmgKca/5R
- W4NWOza8
- wkem65o9Dy9NwcQQMNY6LU+9iR5+wByy0wL8mpzBrutsM1XKoseK8Pavxgfw1MxBIpNKsydZy824yZxBftbtctleDKoNXZwz2DjoQ+p3lxEhg4RjMh7mU0PKGjES8YSTUWWgkGEcqyKMuZuTWnrUVrY9Mnwgbor06tSZyxZ2Y6IwycQsSJJlb2naDSlsi/g0+mUVHgP0cYjZLQrWcawLzFsOIkC4LiCCknhtXz9Owm7YVv531xMegMptklNNXIvRELdGgprSYgDP98GFCAaWNcyHFluikf1Suugwqsp3T++BmQ9Jmmn201Sy93XhbnUUUlADJvlqEMk5O3BBdp1CPBVoz7chYlIeky9dzm5MpwV1X55kN3+4/lnXz+xnd5lSADH91ar+yA8aSJWizZo4QExkvf43XWmlG0ilDWBFfQXXOzsswhPBuQiXI+YsrsDJxQzA3XFHTv0i2OMHqXVt8/PcNsABN51X44MH8WpE2mIQUwYP/Z7JsEAJIThu2QP+Cv4D/FMDHUb0RUq0zTRBqV5uQ5yXTCSm+MLNkNJCnQ4eiee0LZM1FBt38nrAAd6UxLym11kmv5OInK1dtZKRjhC0xAKdfEtIG0wNhHQYr9wF7qCAm3EE7/eOE5hIK7R6Eb38CyfpQWsPINe2OlKtlzcAtamEV30pD0iyuI8sfP/keP1v3SVZYWCI3vxIMN7Z4wIYk7CMuUbkjEBppQlZJXztnctryRk8skyyJEYbCzyG4xX0N9d9XTX/CyLXESy50xCHs5ml8Xk0yHlvxsUqyVi+61dKFzEPiJ+/Wc81USFbenQhsTobwmzqxunhCfWOJCzC2oWw3V4mtkTo+QtzTQO3sas3HtVsgAOkZbru1r5sOBYrNH3HNf3VKzqfCVijUsLIJDEtRrXieAH5Tv8COB/BCb5eQCXMQHYxBNvXtuhzy+s5bhwPRPfS+RB2sZjLZYTjwp+lYsB6t3rtT9BxS7MpAyHpI
- RmrDllgT
- vIZDDXcWid2r3odgyHetNjiRCew1bop9OsW5feW5yctHXGXiEn3fWvlZukcgkL2ayWH3PF3fN9FRncPQCn5I9kHcDA0Dj+QCh429Qy1hjoxphzKdmGyPItrMBJLRs6ZdnxwSgCIDkkUXhSOjDdnHbKsS8iAYBPGo0evtKIzoCwLZrMTqWoUJKw2YLyXa6ofGlppdUkVdvjJn+ABBBQTCD+wxzj/QbobiN9O+h+lh1ddga+sqWRlwukWLQeT1tRpFtU3flCzkKhsA7WU1QNj1oHWhaFH0RurSPF5gI6YIxZM2SyKBvDFuGQreGKN/3rlUpdG2r/cRpoaujUd11ZY3V6M9ynwtalP6Q1wtqlT6smJhLb+juiiKpgDOdtbTX2tCn3agUhNY2flFpKQF9Y6sRnakHeC7DQVd0EPAPelRCe2K2lqz1rgOq0+aUsxZQr4hYHgheSYxsl4Bh4NvP1TVsJsqM4CtEQAZXD1uL0Q8IHUTdFrO3CvkCahmA0jt8NmXfCM9zfIHSD9O6tHeD15pE54H+u6cpWt25Z5loHjUpEcGhRkyxjEsJG/XbYCG3adtIVyv2wtKWpyFmBFDU7ubTuRpnOhwvLdkF7QZa9a6+OiFou+qH8cY1+UcurAjp3rF0StNie0XoCacjsE9b7Ql+QK4XYlQ9PLlUqXKl5Wrk+dp8BPO0dMw3AYu7ui7neezE8CiVk4OCHsC9Tjt0ONwk3NwcYrp0K9A5vxVKAiCgaPNmSvL8cIRbt6MWG383cu48ZUD9+UwBFFhEcbzUPR5beS7h+q36of912ksibIE8UpIoP+PbNRnfaUPxaBF+H5TsvIOkw9DZQBfU6dvsrriHFsjbytzz5Jn7dCIxV8TQvQk371x2ZOOVIWY94yKWUIBg8nYdDATMBeA8edW3UM5SBPuGSb3Pe6fUqg2yIaGUZ0=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1EC3E40012
+X-HE-Tag: 1760708946-387782
+X-HE-Meta: U2FsdGVkX1/+IFTCKwV4c0GCYeIva5TeMdXyIsGzrY7uO3m9qWtlxQMwC8jzbCAKgOhUziz02+sUjelzpT4y9PPSxHq14Nya1iAiIBl2BYDGI5J7qn0o2ozquXAPF0SMiYc7cS0yT8SPqbNZvJBJmZNSwUqXB/XMBkXq+OxfpSWpjkhDH20HM/nbwYE9kuBLVW+vTx0MO9ADrRISc7JzEQwDICklhmN92uyJ59KQRNfdXORFOY8OiwW81JiOheXqueYb73KmoFgnisP96+zB+Vx0faaf9qfk/Z1KpD0ltQ75rvZqdPfj4RlXN4kKOG2NkCtxk12+Cq4zD/e8q1NEbo0NbuWLZoU+TLBdie8lmOnQRWUNYIro98Rt7H89q2q8k5Dhkph/XnJ3VIqKl4LGlGCSFAOmEs/ZfE3gkgpKZoBiIN/WR8gvmWCQZ5gsC1AbAZFrYodxwx1FdNnQhe1lSoa/fj/BXodJJ0DtqVhta4GA61m3FGA6zn67pTqVk4KSUf1dU1hOBZ5HTfgCEiraH3ZNLZb0YM1HexOJDuCGqpLa/QfBbezi6/uX88rmJxTZFPZ19ROaAY5ztGmXckG95jsXgPQPCniO72T1UPvhzY+T39hYg/6qN0SkyV7lPq4LslivCMz5ZZGTiUYs4RpqT90GRAgMOypcMERyXZz219/QsBSIfGLsfK0coplyJynq3yxbZfUHRysPb1+xThLSg/Df+VyYCr3CEL/D9Szfxe15HuIM6e8M/wGwcR5qcmtogg99+Ub3UydiFMqHVtGAn7W31Hq5TJzzdBmYcdqvTf4TGPP4GTZi1epGN9oylSsKf/aCX27C7HkE58h8fin+sKan0U/RzNOWz0c2EgLnxrj2ApUYzzWPHgWHbtKYcaSDWVEuETGF+QO5KrIQQYoMK+/Y0/gZOVLVAQFai0UtzSA7NjK5IFgKiN/PPhKGsLIGSvzMSOqrF1ZYgenbvbE
+ YiLdoEXf
+ BxyBnSiBYe+Vi1UugHgsxSEiIFqyPuhrJm6w0jV5bBBIEDubVERrSF+LxvkpI8bQS/1czgG+epNJJdlDMMsp9odr3JlOmsp5op9W6E9qH6pMTciJnZIIBC6/WJUxOySesf0H0HKhV3SNKr6nYs/EsmxxH/FQloqVFPgzs0MJdSL/PaisBLSO2zNBjIZJUQv/OILU3iY82PYeisHmcDwepDtX/2A2Q/Yws45SzBpYGgb5xzQdwp/HZrZbzPHcmBKBxTTFz60/XU10diIvMk6yGptke1m3HoVf3k43+SzkG17AzpTIJUs9smO4G/0zpkdmoZ/fe7OHQtLUgf1XaopYw3uFQ74UHRLQbxgbhPLj4MK06PXMCK+B8CRdwIVgyQv1lMjo22IRHT4XaOkYfCZf3v2jbF3r+F9fYOvJtUPRVC9NbdDT1iDeFdoeO1OtEB2Y+3YFOl1wDixnW1VZ1eFHOHjH1cVsVEejkTAj+4mN1xsWv9/G5+wot08AmvObroTY6DMWD1tM37oVQtuHf3RZL9fxt5wkRQMMCRnqj9UtyRASnWhcHrI7fub9K/SCR+aWYM8Z0N3a5xmP40KUKHiixbsxTyitj454Ks1jUnLb1UCF409iT/rOZ2R93190XVd/IOZXmtV2KCH1ORGdA/i8f2kZgVkbsaJU6UZSDFp/sZy/9ERghIufKigQ3Ge3bNirIoX8gk8adfDt3XMyTkYzMKyfp3ENlMEpVsqRNQjYSgP/qnd4On104BYnZHE1k5cYuxu9yWvED63DRI94ZYLSyMw7Rb12wedhOBXVwJoDSS1bDGIWrhw/r6pAg3D+yBs0enLA3kAS9xKvTvshUBSqGzlc+j8lT4agsb6WCUmbI7o4lA69Wx4y08teKIBcC4mLjEDp/nvIi7EMo3x/ACHxmiP+tKBzOAgA44qMsw68bdXmV0JeNOyKJtG7tqL9m03lbmKRxaXKmmeUSgry64VGVlMDFTqkb
+ BTH7QR7W
+ 0qUGKRgejL0hyOuhXaV7RwcRpr5c7MYdvdzKklFYQvjG7vpzqB3WgV/8lpdh5A6TvGdcMOzJhkf580MvoHLaKu+09pvlh6C5wqvNg6WJ0oBeio4cjQLdZYL045CWg2+4st99ZV4Q9aOAH+8LT7trkkVEyDdwXaZCpH4MpsW8IHlO2ZLSRBxPXZjiGNG9Obnmy3F01W0x19F9mt8oy+BH5u51QfV5iy4tKtq5IouKaVWYqLabVOgdi73HrY078Znpqz5PVZeQ/zFRcH09N5WwqTsoqS+Wv/dsXoQU7YWpJQyxUra3WwF5EEfsIua7i1feO1ddlTTqtZTwSKe8LLvJW1tuK1LUe1cPkBNXGprtnq+FEobaX7Dma/hm9rJVxDtT7x7XV5X5/Y6j2vqHOfjNJPQZwCHUJ23iNPSY/gfOg8y4cr+KBGfjY600qZNBh+WjIMZGyUocOXlPrDo48k5wTUG6niDZwVLjXNa+Gk0EEOQMw2iuED0+A/S3JO6L3/1q4OZIV1GjUN6qZveMdVgMm+5fE2uusGSdz1zYOfcETOxmMyi0aDjgtd4iO1iNEgGpbca0xzrSnytOXTqeGlVTFu26JAHEVTWv6rYhONC5g0pe10G2Uqv2SdY8VnIuY1Z0cLfhHllp09aGyfJevI3oDDheNwTNYsRvqEzbefPV1bq9tIETGxVnVzQLru9VXRnJjoaOfqEYN9y/sxHkrrU1RLTPr4NrP5nLQGaZqGUATDEE/04yRZ2LppUGLp1xioyR6XY4kPp5u25e9Aw3oyCcZ0Prqav7mKGWQIROQfWSwkVa/f2S7uqqPJC3oTYZB+ynE/t/NFRNx5UDBIctmiFXqd/VLn7qfbLOvFGHiMppQKBIa9/5dnAy8xxKWg20VIqyoKd7X4FTlpITIOxVLF2Ihb+8ZfdTDdgkYPVR0q2mmG9LtQ009OKpK2VC2N/JPo5mN7+1NnyaPZsWZJ+kuuSUqQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,23 +135,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax: fix header inclusions
+    minmax: clamp more efficiently by avoiding extra comparison
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax-fix-header-inclusions.patch
+     minmax-clamp-more-efficiently-by-avoiding-extra-comparison.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=378230090=farbere@amazon.com Fri Oct 17 11:08:16 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:07:07 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:05:00 +0000
-Subject: minmax: fix header inclusions
+Date: Fri, 17 Oct 2025 09:04:56 +0000
+Subject: minmax: clamp more efficiently by avoiding extra comparison
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -159,40 +159,185 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Message-ID: <20251017090519.46992-9-farbere@amazon.com>
+Message-ID: <20251017090519.46992-5-farbere@amazon.com>
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-[ Upstream commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b ]
+[ Upstream commit 2122e2a4efc2cd139474079e11939b6e07adfacd ]
 
-BUILD_BUG_ON*() macros are defined in build_bug.h.  Include it.  Replace
-compiler_types.h by compiler.h, which provides the former, to have a
-definition of the __UNIQUE_ID().
+Currently the clamp algorithm does:
 
-Link: https://lkml.kernel.org/r/20230912092355.79280-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+    if (val > hi)
+        val = hi;
+    if (val < lo)
+        val = lo;
 
+But since hi > lo by definition, this can be made more efficient with:
+
+    if (val > hi)
+        val = hi;
+    else if (val < lo)
+        val = lo;
+
+So fix up the clamp and clamp_t functions to do this, adding the same
+argument checking as for min and min_t.
+
+For simple cases, code generation on x86_64 and aarch64 stay about the
+same:
+
+    before:
+            cmp     edi, edx
+            mov     eax, esi
+            cmova   edi, edx
+            cmp     edi, esi
+            cmovnb  eax, edi
+            ret
+    after:
+            cmp     edi, esi
+            mov     eax, edx
+            cmovnb  esi, edi
+            cmp     edi, edx
+            cmovb   eax, esi
+            ret
+
+    before:
+            cmp     w0, w2
+            csel    w8, w0, w2, lo
+            cmp     w8, w1
+            csel    w0, w8, w1, hi
+            ret
+    after:
+            cmp     w0, w1
+            csel    w8, w0, w1, hi
+            cmp     w0, w2
+            csel    w0, w8, w2, lo
+            ret
+
+On MIPS64, however, code generation improves, by removing arithmetic in
+the second branch:
+
+    before:
+            sltu    $3,$6,$4
+            bne     $3,$0,.L2
+            move    $2,$6
+
+            move    $2,$4
+    .L2:
+            sltu    $3,$2,$5
+            bnel    $3,$0,.L7
+            move    $2,$5
+
+    .L7:
+            jr      $31
+            nop
+    after:
+            sltu    $3,$4,$6
+            beq     $3,$0,.L13
+            move    $2,$6
+
+            sltu    $3,$4,$5
+            bne     $3,$0,.L12
+            move    $2,$4
+
+    .L13:
+            jr      $31
+            nop
+
+    .L12:
+            jr      $31
+            move    $2,$5
+
+For more complex cases with surrounding code, the effects are a bit
+more complicated. For example, consider this simplified version of
+timestamp_truncate() from fs/inode.c on x86_64:
+
+    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
+    {
+        struct super_block *sb = inode->i_sb;
+        unsigned int gran = sb->s_time_gran;
+
+        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
+        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
+            t.tv_nsec = 0;
+        return t;
+    }
+
+    before:
+            mov     r8, rdx
+            mov     rdx, rsi
+            mov     rcx, QWORD PTR [r8]
+            mov     rax, QWORD PTR [rcx+8]
+            mov     rcx, QWORD PTR [rcx+16]
+            cmp     rax, rdi
+            mov     r8, rcx
+            cmovge  rdi, rax
+            cmp     rdi, rcx
+            cmovle  r8, rdi
+            cmp     rax, r8
+            je      .L4
+            cmp     rdi, rcx
+            jge     .L4
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            mov     rax, r8
+            ret
+
+    after:
+            mov     rax, QWORD PTR [rdx]
+            mov     rdx, QWORD PTR [rax+8]
+            mov     rax, QWORD PTR [rax+16]
+            cmp     rax, rdi
+            jg      .L6
+            mov     r8, rax
+            xor     edx, edx
+    .L2:
+            mov     rax, r8
+            ret
+    .L6:
+            cmp     rdx, rdi
+            mov     r8, rdi
+            cmovge  r8, rdx
+            cmp     rax, r8
+            je      .L4
+            xor     eax, eax
+            cmp     rdx, rdi
+            cmovl   rax, rsi
+            mov     rdx, rax
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            jmp     .L2
+
+In this case, we actually gain a branch, unfortunately, because the
+compiler's replacement axioms no longer as cleanly apply.
+
+So all and all, this change is a bit of a mixed bag.
+
+Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/minmax.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -2,7 +2,8 @@
- #ifndef _LINUX_MINMAX_H
- #define _LINUX_MINMAX_H
+@@ -38,7 +38,7 @@
+ 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
  
--#include <linux/compiler_types.h>
-+#include <linux/build_bug.h>
-+#include <linux/compiler.h>
- #include <linux/const.h>
- #include <linux/types.h>
+ #define __clamp(val, lo, hi)	\
+-	__cmp(__cmp(val, lo, >), hi, <)
++	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
  
+ #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+ 		typeof(val) unique_val = (val);				\
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
