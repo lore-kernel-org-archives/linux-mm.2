@@ -4,184 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EDD0CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 18:26:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F377ACCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 19:11:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD7918E001F; Fri, 17 Oct 2025 14:26:50 -0400 (EDT)
+	id D25918E0009; Fri, 17 Oct 2025 15:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAD8E8E0006; Fri, 17 Oct 2025 14:26:50 -0400 (EDT)
+	id CFD798E0006; Fri, 17 Oct 2025 15:11:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9C738E001F; Fri, 17 Oct 2025 14:26:50 -0400 (EDT)
+	id C39DF8E0009; Fri, 17 Oct 2025 15:11:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D5728E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:26:50 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2FF8557A27
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:26:50 +0000 (UTC)
-X-FDA: 84008437380.26.3E6217E
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010048.outbound.protection.outlook.com [52.101.46.48])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E6E27100004
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:26:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PgJEafak;
-	spf=pass (imf05.hostedemail.com: domain of Suneeth.D@amd.com designates 52.101.46.48 as permitted sender) smtp.mailfrom=Suneeth.D@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760725607;
+	by kanga.kvack.org (Postfix) with ESMTP id B38518E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:11:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4FAF31DF223
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 19:11:34 +0000 (UTC)
+X-FDA: 84008550108.03.366CD57
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6DEB1120002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 19:11:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WzOsduJI;
+	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760728292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ieCfesjACEJ/SJsEQs4DTRcriEvIAR7+WXFZiF0M8kI=;
-	b=15/AIgm7kDA0uVPzH+nNt2QVVSBgvoPjHl/LGiDKRCuQJcUr+z/d6mdKvKL7OdshyWy6dV
-	GHUTJB73aPNK6PoH9BR5lOcoJBPYNQbF3YcJTHCVxoJFS6CetPdeUuVWD5oxvAuY0ttbVl
-	NaxpwsvPMiSGKI4X7FYDuXI9/KPueMw=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PgJEafak;
-	spf=pass (imf05.hostedemail.com: domain of Suneeth.D@amd.com designates 52.101.46.48 as permitted sender) smtp.mailfrom=Suneeth.D@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760725607; a=rsa-sha256;
-	cv=pass;
-	b=uMZQ0wSsHxlQBZIR/ELH9YUMvQxyD8LxxOpJ/9Sk6jq5MXoAa+9nFz360Bs+aE8QVr+X7i
-	ynTeM/aizC7QZTzZWFtSBg/7EZ9P0XQkJO8BefDEHcQAzZN8YZjCZtdKgpAtmlZH+oCqF4
-	CSwWoLXEcMRRrmK5OKPHkPXBWoiDco4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bKzsFxq00o2IVeeeNSmVp+uoTAvQSERoynAIJf5YAqKzKMxp+J/d54aNpvHxS5r+v/kXsTvf5lXiKIVki9TKS+Ms/UcBhaptpzJ5/i1siiNLXf4erLywcyyzHIDRaLKMvN8Aie/mBtgdMrTwIlsNZV0bpEItydcF6gY1FlXNH8Qfjd/+Pb+HV9oxbdBm0KzBMIFxYOSJ3BeKGOENfeMI3y4VVI2LfG95JVdk3NgbIt4LTtgm9E+h2M7ElLhp+23oA2KUXEi2r3JZz7/OU49IhEXmTAH4rIGDkqfppkkn9Oy8gjmVVUj0ecE9B3Iglyr1/RXkOK3jmIG0b3nr4SOz+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ieCfesjACEJ/SJsEQs4DTRcriEvIAR7+WXFZiF0M8kI=;
- b=P8YIUtM1tOf8eHQmuFtgbTBpH+R2VoBn6QAtQP19U4gyaTnBQ46Vlsspk92CIf03IKi2vtQTesIHnUF1dlm31dlsj+r510Pxo0RRNOVsvETSDC+GpBZQzlsmV0uJ3//Xj2wVtvk7yv+m/q9vBh9iF2wPgGU/nbrZUEbdm60pCF9Yqds6YV/MiPKGCuqClTRuNBE+LrdXKF75PxOrQ941ylaASxQV8rwSaY+B2TAB7wzQueBJv1YIcR7jWstreLebCnVjTQAANu1u9S6fSTJSjtjbCRboa32WlDusBJ71pBkCv/eJO8Wepblxl2EvwA1+mceIR3LnO5pm162AyRlfmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.cz smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ieCfesjACEJ/SJsEQs4DTRcriEvIAR7+WXFZiF0M8kI=;
- b=PgJEafakqcUu42FRqJt6q97QHc29tCZY9PX/o50JJ/RG9n6fmQznHFJI0XAJYwRD7Nf4RYFv0w3hUWZ7KSPrKyKB3GO2KTsJVXL+/O9CGIEyVx4JLrLwdaWiDSVpcI8pQIjR+C2RpJxJ0Lfg7IzfeVOPuhH0CI6xQbBGrpB7dPE=
-Received: from MN0PR05CA0006.namprd05.prod.outlook.com (2603:10b6:208:52c::31)
- by BY5PR12MB4132.namprd12.prod.outlook.com (2603:10b6:a03:209::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 18:26:41 +0000
-Received: from BL6PEPF00022571.namprd02.prod.outlook.com
- (2603:10b6:208:52c:cafe::ab) by MN0PR05CA0006.outlook.office365.com
- (2603:10b6:208:52c::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.7 via Frontend Transport; Fri,
- 17 Oct 2025 18:26:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00022571.mail.protection.outlook.com (10.167.249.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.7 via Frontend Transport; Fri, 17 Oct 2025 18:26:40 +0000
-Received: from [10.252.200.214] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 17 Oct
- 2025 11:26:32 -0700
-Message-ID: <156a1377-167a-4455-8a9f-6ad98094a7f5@amd.com>
-Date: Fri, 17 Oct 2025 23:56:24 +0530
+	bh=hhR7N/1fveVtt6wxaFP4nn/bZMr+K94/sut3rmsfdTg=;
+	b=b180NaF5nfbAeOaI/rx4gG0jVPyG+hXzi5CvKPrXtv0kTCZDo09ghwSzLQjVMDG5e7D12I
+	QV2Q8fKgiMe3593zFPy2tQGvYSQMMYyzZTl5DBbPipbM0RKY7Wpkila2RqqnzPy9ZQl7aH
+	uzJho8O+zq1+4nDLIl4mYAVPoIqwCNA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WzOsduJI;
+	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760728292; a=rsa-sha256;
+	cv=none;
+	b=UfUdFQcsbaf0x+bnDTNkNeIEQDQwlTqsCCf+9Tqu9LMXuwo32VIEK2YqH50Bf0emDqjgNn
+	ASyZasA/F8ImsL72M4oyLIvn6sL+SRyuP9lqiTOAtY5uxBe6BwdToQ4BskGgtUCvXPellu
+	sK0mepbm/c/WSk8d3n8UGEZJuLT+YJM=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b3dbf11fa9eso439995466b.0
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:11:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760728291; x=1761333091; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hhR7N/1fveVtt6wxaFP4nn/bZMr+K94/sut3rmsfdTg=;
+        b=WzOsduJI5Rl5l4Tu+Nr2A32hdH62qi8J2CYdbKnXgBCJm3eVoVUySsh+vCKjnxM4My
+         gkyc7KKm/RkbMwdfCSX6/vF8hj02MgiHsZLvxdku/JLC6kg9+T8SSAvh0nUdhM6P7dyX
+         AVMK+mUC7mVXXNT9Va9UDJG4kKbgw97uR5wLGk6h9qv1zgaFuQTt7SZ6WpxeCYUwySI1
+         JG/GtP/mmdR4BsVGscQ2SC4pw7vaaRwtSyQyWc0JEHFvHOjkFSB/J8xu9zPhXqKgvBCO
+         mr2uyaI/AH9b10BWgm4XcK0au07sd51BW831HpdAHel2bEOY0YekINB+QdpjRFx2/EDR
+         fLkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760728291; x=1761333091;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hhR7N/1fveVtt6wxaFP4nn/bZMr+K94/sut3rmsfdTg=;
+        b=RZybwyavJzkUj5vrqu6gJFhuX/Qsx2jn75oqpuwz789Xz/kNjnLCp31N5H0ath9DK1
+         pnBypnB709JOuQTnRdRhKSwmOTejOvWJ4p0lvaywHNo1OePM2taAw0j/UpnHqh96CMt/
+         1ByIZ9yGQsh0QUMNmGjJve1RpailsDph24nLqWXkwsXsKHNzkxSZup+fYQfsxA961ejM
+         8FWbpHUsSV4T13c1cP/I9qLrbVBfqBYeDWY+hMCGEMGIGoCHDGdZQa49T0SrXPwzGZdm
+         GVk1j5PdRoNnbCQWDjT7Uju9QNAWHhHbymjptpzn4KSEh1YjNk67IKldu7vykDRvtzX7
+         w4ig==
+X-Forwarded-Encrypted: i=1; AJvYcCUvm7whQ0PNhzwJL3h+xkphfz1cdWD2lwHwv5z5LmWYimCAIPgg7MYmtTB7Un24m0FOb+CVBOADSw==@kvack.org
+X-Gm-Message-State: AOJu0YwE0zf4l0w0TxmGt3vYlYZJZuDLstF1U54AarCtf+RbDT2u3wOn
+	Qau5jF5rgkVROJKNSea/hL+EtjFUVTqAYt/MM5ZMJvY6UZoOzeHU25tOJ2mdSyBbTH8pNSa7f4A
+	RSS4m3qcLLGBvGnCMqBgip5mBKStljrg=
+X-Gm-Gg: ASbGncvlf1ihCzl5ReS1n1N2THgqrSHzoqcwSIlz4L/ch4lrcQW3gZjf0miJcIlDBJs
+	DdvT8D6nRoZJ/N65Yst19Oyza5c3ZKRvwLiIVShsbLXRMJ2D1ZNE5ptp/kcnxtR4ewJhUuzt9FB
+	UWmSHkkkQJp90ML3rSr/ekG4muqndnzPTIZvbt2J89bNCJhQJF48++lWcosg3Yrnsniq/AfmZMj
+	WcB2XV2egJ3beUzovfIwFJI4fyqN0xPoC+rKO0QQbfHA0qPjXkhJ4xBFjZirwo7oblnzh9YCVjV
+	1GIX0g==
+X-Google-Smtp-Source: AGHT+IFDOlJ6XYwDeGzUOeuUv7tu/n9jNAnoTgbcA/YtbUqQ9ooDi0ZvO1Y7Lz1HWF/EaVHKgjB6T0ljyIDFi13wLII=
+X-Received: by 2002:a17:907:940f:b0:b40:e687:c2c with SMTP id
+ a640c23a62f3a-b647394ce7fmr469325666b.37.1760728290384; Fri, 17 Oct 2025
+ 12:11:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "D, Suneeth" <Suneeth.D@amd.com>
-Subject: Re: [PATCH v8 15/23] maple_tree: use percpu sheaves for
- maple_node_cache
-To: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter
-	<cl@gentwo.org>, David Rientjes <rientjes@google.com>
-CC: Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo
-	<harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, Sidhartha Kumar
-	<sidhartha.kumar@oracle.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <rcu@vger.kernel.org>,
-	<maple-tree@lists.infradead.org>
-References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
- <20250910-slub-percpu-caches-v8-15-ca3099d8352c@suse.cz>
- <262c742f-dc0c-4adc-b23c-047cd3298a5e@amd.com>
- <ad9864db-a297-44d9-ab1a-61e0285eac5f@suse.cz>
-Content-Language: en-US
-In-Reply-To: <ad9864db-a297-44d9-ab1a-61e0285eac5f@suse.cz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022571:EE_|BY5PR12MB4132:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd0b8834-6592-4572-b490-08de0daab77e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NzlQbVVIOUNNZjRzUmUxUTI5N1I5bWNtQzN0UEd3TkpNbUpETlA5SE9uOXFr?=
- =?utf-8?B?V1RxWDlSVVVzYlZBUGU4RlliRDRwYzdITXlwRjZMK3JLOU5haVVxSUR1Q1NW?=
- =?utf-8?B?T3ZWOXpGTFY0T1BUbVQ1TFQ1TkhHMi9JblMwcS9pM1ljN0RhVnd4dzZ0Z2lS?=
- =?utf-8?B?TnhPdUEydHFIWmV4NnU0b3NqWjFnU0VZcGtLZi80TGUzZ1NhZUwvNjdvdkto?=
- =?utf-8?B?QVp4MzFKK2hObUlRMXFzSWw0ck9NODNDbTFsRjRKY1NoOGIzeHNJTFB0by9y?=
- =?utf-8?B?dXJ4MmlwaXJMbWVFcExXMlRXWm04bGlnaEtWZmlaUDdmNHVYZXFwL2R2ZE9Z?=
- =?utf-8?B?dzJ0UlNFUVhrVTRmb0tRK29SeU9BbWh3ZGdtU0UzYjRBOW1CeHFmSEVRRHNt?=
- =?utf-8?B?VXJHOElEeDBtRjVOOTg4MFZqZytXYkxjNmhVNGRNR2Z6UjNyZWZXbk9QSlN0?=
- =?utf-8?B?TFZ5ZElDTXhFQ0xEdTRiQUtCZllINkZXZkdQWHhCUkN6aW1zUG9DRHZtdldr?=
- =?utf-8?B?RmhMZFNGNEY5MUg0RVUwYU0zSVhlbmNkd1VuZU9FTmgzOVVhWXc0M1diYmxk?=
- =?utf-8?B?cXZtMm44RHZOSUFqVGtRbGFvcVVFUGxZbDByUERPVzA3RllyZVpjUjA5ckgr?=
- =?utf-8?B?dW9hNXh6YThHREJKTEFaQXI0VEVFVVpPUnZoRUQ3c2UrdkNOWmZyVlJwNFR3?=
- =?utf-8?B?V1p3U0MwTHBpZ0ZYMGZhMkgzR1ROV0ljQmFWcXd3bGk5YmE5Y1pHT25iditY?=
- =?utf-8?B?SlBLeVZYTFhBQU1vSVhHTFdaOXNWZFkydzlCMXNTdThrQ2tsM1NRYVRiK2dM?=
- =?utf-8?B?UG11OHMwaXo0YUJ1TGhzSmpUWmxQa3U1QUtwR04zbmZsakQ5bzd5NTZwREY5?=
- =?utf-8?B?TzZSMFIwSG9YM3BTZ1BsaHpIQnVOTlFaMjhkMS8reWEwS2JlSENMek4yQ0Nq?=
- =?utf-8?B?V25aUktPbXI0SjE2MGNpM2tQK0NqTGZvR3NPSlVaenZVMWpIZXpMZk9xT0Jw?=
- =?utf-8?B?TTVQT3l3ZnZVOEhCaW1GT0hPMS9hR2YxLzgySUZWWkJwKys1NTJNNHFwMVk4?=
- =?utf-8?B?ZlQxeWVSeG13NlppbG5WRVZxb0FDVkJ5MDRNczVmSWNHYWdmWkhIa0p1R1FX?=
- =?utf-8?B?bVpEMDVRS3FLUEhkMzNQWGxXaTFZNDNKdFVQN3lVdUVSUVAxem4rMWJ4Ylcr?=
- =?utf-8?B?QW9SZlp5ZXhSU1RZY1hvaktwUEVwR0VtN052ZzVpRG56U3ExVjZKWFFJbW5L?=
- =?utf-8?B?akhheXRKaFhQZThSOEljZ0JqcmdiTHJNdFBVTU9qdnlYOUxVSzM4SjJCMFBi?=
- =?utf-8?B?RVpQR1c1bzBSTklCRTRCV3R5RUE4NFpycTVNeWl5a0FlSi92c2RkSzltQitm?=
- =?utf-8?B?MENJVnlQb2hzdTQwd1lpWk1qSDJabExTd0Y4SStubC9WRWVOdnFZcWkrbXRa?=
- =?utf-8?B?MEFnemMwTGo5R0xqT0VNWlVhQ3cwWFpkd2NqMFJWeTdZV1RVUWZqdmtvWk14?=
- =?utf-8?B?TnRXRjZIMG9Id3FVMDhKOFY5bGtsU204L2crUU56R3h4QnBrNDJqVDlSejdw?=
- =?utf-8?B?aEIvOWxUUEZzYVFhZ2dvTmZiYTNmSHZYdENXVG5kMG51UDM0NThBSFpkR0Ro?=
- =?utf-8?B?dUFMcVkwdEFDMXJic016d3AwNVFINzkzQlFwSVFNR1VQYXBlTHpDbllEUFZT?=
- =?utf-8?B?ZGhxRmJYTVNtRllpbGNrLzFSUGpqa0loekJVQ2pUUlVVRzhRdk1GQ1g4bUVn?=
- =?utf-8?B?a2ZnWWptRno0eFJGRmN1TmdIT0VUb1VXdXVSc0dUV1pMME8zN0lCQkFlYVBu?=
- =?utf-8?B?TkRjZk1wdWZuVW8wQjROZS9mTWtkaWs5ZkVNb1V2Qko4L3U5TUF4bUFKbUFV?=
- =?utf-8?B?V1AwS2ZPSmg0L3MrNzArd3NlaGcyKzlTTTF1cVp0UjYyVGJOaEpsdXBlMGpl?=
- =?utf-8?B?UUZuSlNnWjVzaHMyRnFYajJUd3NjS3BoLzQvUittbWFXSlh5dFRKQ21WOHhX?=
- =?utf-8?B?UlpOOGZydlkreDJxTVE0ZEJDKzAvQ2d2KzlCSkNXT2owOGtxREN0UC9HWEZ5?=
- =?utf-8?B?eXpFaTVWN2d6YlBlNkpZbU5ERUNFby8xL1FrY1dwdFFpQmt3UjdoYVV2Nkcz?=
- =?utf-8?Q?WFzrrN2LSA+4rMvSMeedCfItX?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 18:26:40.6886
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd0b8834-6592-4572-b490-08de0daab77e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022571.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4132
-X-Stat-Signature: z9ssibwsiff3ari8eqgkukc3mtzkmned
+References: <20251016033452.125479-1-ziy@nvidia.com> <20251016033452.125479-3-ziy@nvidia.com>
+In-Reply-To: <20251016033452.125479-3-ziy@nvidia.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Fri, 17 Oct 2025 12:11:17 -0700
+X-Gm-Features: AS18NWBFTKLOBvlIpa6FLOiYX2FyPcTBMCd4lweftBhZd_zGhKkHrG1wKzTNxSo
+Message-ID: <CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/memory-failure: improve large block size folio handling.
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com, 
+	kernel@pankajraghav.com, 
+	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
+	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6DEB1120002
+X-Stat-Signature: 9jtb8ewgj3py8nptc9h35pd7h8kty71a
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E6E27100004
-X-HE-Tag: 1760725606-966926
-X-HE-Meta: U2FsdGVkX199mN/tBoJbhhpvR5H7OPfvntFzGye0TPKmfT2y6TvN4yIW1XCQHls9+iVbMYynZkVfUS2vkKLbvEXbchgmVmP5s+mMzZjxb8vbnQUZQ+WE8dC2AIl6Y8vaD6KXUl/I3jryYJcdwuLZs9AmmF1iyqkEf7D1vagJSQsIZ8xLWkIbaRB21R4mu2of2Zgd/fBDHL2AGSSC6S49ZJeDv1Vf6U/v3zPnWU/TlGdViFq7YGoABvZ0P8iOlLAvKzAJ9JhqVjc8LeBx8u/Z6cCGGkCErGLJlWcGeeSBBhO7IdS7pEoyjkoLc0wb9AgtVfQ7Va9i+SSgzy1gUpYpJ7HoDXcnUxpfGwmN5MNselpl+KYR0tg8V+kaU+jOZYiMPSN7BIVhpjTOOK9U6ALsgLpusZD+QylPAiQeOBdXeGPcaqa7FJSUtI8ZF8pXHtvfXiXaaIuaRin0BX7Dbqw7PRhn46vyhen0WFWqlZ9t7bt7wj07RX9sa8Onw/T1agnTQDRCEC+AXbh9zYfZLxreTQHpJM9jIr49sKjQObDJ0ujOMknaQ6MWMSSvQ0SrnIHsxxQwqcwvXnnEEgPek1kuRMkbMbgH9GOiibAP00IYPaX9IgS5F4P8RvjHppOM00x6SEMd28o7uPsPM2MgkILBbs0KI66ejG6M1T+wrh1mgXdtxRtC/9BGx/nboqNa/5QMZ21RNiuDQZZ4nF5JYHdhowLCd5NPQVRHyruL4VOjvZhx55zUa1UjYxsa0CsgCrPEfrDh/BN0P9JrKDKc++QnJop+JwfOQSfFfTxfQ1YGHBq5ATVQtME9tULNq8IRYpgGvlOTPjmZxHcRhqTk9RfKlA3e8amZLBlSrCQOk0F4A1o6Rv1wlH017U5EEtwFNphWibpPAG8euC/M0vlRAabBnXeeicdr5jqX/JQnecU3rHjoXx+PBE781nmJkX8YBB78GwZZpg7rXkbL2t+qvDt
- KUAk0bmv
- 0amthhy+1HjSQMYWhzEZmCtMM86bBI29rfZOzfycDWiUi1OOo695BB2fZ4mLNfWruaf8z8RwH5d5g4SwmltMscMoqbFosNBcTC123uB4sBYPrvYLp6mIccmMCXWUu//ETzs4M4ZPS2Vycpeby/gd5oUGW0atdLwZEGkkk8GUXYka60Kd/2RLduMwovQE5pFXgy3f8nEcUv9SaKervPkSrSajrHvtiBjEE4EvkBfJxJK//OQVS+kJU6iXVk3EY41BGt/qMGUjz6ChLBOdr7khNg/FhCOhfQQHIxDpMfVSI7xYpnDXU+2AhhmHLpGzvsxIJ6Kqxx4g68+Wtvk0yx0aQiuKvebIrsbyv2MSn37JsDjf4rUplHuJS7YocoPIPVstZEGovYo712SglgmQWRHMwvXZlvThk5WqrnebE6gWenploMr7EgpoInkP7INOzRAwFr7m/qQXkAoukuyTS/RRjd5jVTjZXqxZV9OQrBQqUy/RC4Y7Z2eyjgod6yVE0K/X3Ai9/W3NhxEhhvkz6vc6tWyMwt3bJD2QieFlpw9XJoJe8I4ntAllHAcgWiIA/keJOIacQHRimcJyh9pOHrtpLkY4j4gFZsP93afqSGb0al6f+LyjwD4cCx2ItDOlhLfqDsSAN
+X-HE-Tag: 1760728292-114286
+X-HE-Meta: U2FsdGVkX19dRPkgJ7diS4Ap5SJAq2xa7GrrVaWa5oouHJAtQqPT66wGNhZS5R7K2FZY2zJ113HWJoimjd0zHzcH77Rjx4f4fV3KcuSZMpHMe6rsYL0BL/vMFgrTCi828vSxxIZ1jcq5Ge0rGKgG/a51XeBR3M2qY84HXoHaE8/4FddHPhpfMnvrzpKYAXEahf+nWJnej+75GXNwS4jylN5VRzPTYDg26ruWoub489msLU+JBnEXwaYxOZPaQYJ+2KKO6APeOrbT2Nbo8skFQw7dZISS4SLy4zBsHQRQsjD72WRkeBS+H6uqDWovM5/H8Nyq3SoJg0J+9pZvkoB0QaGcwhMPvNb2GxFgXQv2qwWYnRDAuhyp5nbGDlSL1dvepzCHjYSwXkvrFcXY9yank4c9f/8dAiZNIktTNDbCdgtZSwKkzM1bzc4XAzT8tHIPJFpKebyUVC2LQ5N8LGRYbKKvh0KOGb0YdIBa3SbP4bDWWvJhI08xP7LoNXZKUZL+yAtXUb9U2yW/YDsIVQaLcryixibFZ+2bMo0K8/vXJsYNUQHb+s874aMs7/j2VbBG1J7Xr+zsTKMoZScFQSPOfbZINJ0ZlJzWmIubmjrL1v7TMdojtgtxeVOTuzoO/0qV9K+cYEiPx+uUrKPnQjC/CnutNHw1lV5RmFYOGpNUzmfYxkI2ZoSmJt0dsu5xaZeetBUjZvRUNJPbmyIBmgayqaCB+sW1/xUX6IxQ4rtFHaYB9v0Q3wep9SIO1eBC1gUgwbGNF5xiSJyjr0tBgnOKxULAFGAoiSN0Th41Mx7CiC9sjr/cuAVwMweKnxACU3MLYdfV5o5mASCi6YQK3M24iwBndtA1KNn3dGq5RINJ6k2Q1xwRtOJuzY8AXxrCiU9gu4vYoiUAKRm0t12iGK+2G4qCKKE79CbepGjjLT3dGHvgByZdy1aM1J4w+9x09ykADfWcC8lRWoy+usfwvXx
+ 0I2crYsc
+ qaKWa/NQf7rEEqLDxwioRvW3VtoU2e5zFM7cVfZ+m0LrL5BH6sPy1zCEWu9E+viQFYXLqJ35LEVCyT/q5YYeoAlAdmQjC4L7jw06ReKeff1j9iGP2wbhzpWz1hQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,170 +126,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vlastimil Babka,
+On Wed, Oct 15, 2025 at 8:38=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> Large block size (LBS) folios cannot be split to order-0 folios but
+> min_order_for_folio(). Current split fails directly, but that is not
+> optimal. Split the folio to min_order_for_folio(), so that, after split,
+> only the folio containing the poisoned page becomes unusable instead.
+>
+> For soft offline, do not split the large folio if it cannot be split to
+> order-0. Since the folio is still accessible from userspace and premature
+> split might lead to potential performance loss.
+>
+> Suggested-by: Jane Chu <jane.chu@oracle.com>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> ---
+>  mm/memory-failure.c | 25 +++++++++++++++++++++----
+>  1 file changed, 21 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index f698df156bf8..443df9581c24 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1656,12 +1656,13 @@ static int identify_page_state(unsigned long pfn,=
+ struct page *p,
+>   * there is still more to do, hence the page refcount we took earlier
+>   * is still needed.
+>   */
+> -static int try_to_split_thp_page(struct page *page, bool release)
+> +static int try_to_split_thp_page(struct page *page, unsigned int new_ord=
+er,
+> +               bool release)
+>  {
+>         int ret;
+>
+>         lock_page(page);
+> -       ret =3D split_huge_page(page);
+> +       ret =3D split_huge_page_to_list_to_order(page, NULL, new_order);
+>         unlock_page(page);
+>
+>         if (ret && release)
+> @@ -2280,6 +2281,7 @@ int memory_failure(unsigned long pfn, int flags)
+>         folio_unlock(folio);
+>
+>         if (folio_test_large(folio)) {
+> +               int new_order =3D min_order_for_split(folio);
+>                 /*
+>                  * The flag must be set after the refcount is bumped
+>                  * otherwise it may race with THP split.
+> @@ -2294,7 +2296,14 @@ int memory_failure(unsigned long pfn, int flags)
+>                  * page is a valid handlable page.
+>                  */
+>                 folio_set_has_hwpoisoned(folio);
+> -               if (try_to_split_thp_page(p, false) < 0) {
+> +               /*
+> +                * If the folio cannot be split to order-0, kill the proc=
+ess,
+> +                * but split the folio anyway to minimize the amount of u=
+nusable
+> +                * pages.
+> +                */
+> +               if (try_to_split_thp_page(p, new_order, false) || new_ord=
+er) {
 
-On 10/16/2025 9:45 PM, Vlastimil Babka wrote:
-> On 10/16/25 17:16, D, Suneeth wrote:
->> Hi Vlastimil Babka,
->>
->> On 9/10/2025 1:31 PM, Vlastimil Babka wrote:
->>> Setup the maple_node_cache with percpu sheaves of size 32 to hopefully
->>> improve its performance. Note this will not immediately take advantage
->>> of sheaf batching of kfree_rcu() operations due to the maple tree using
->>> call_rcu with custom callbacks. The followup changes to maple tree will
->>> change that and also make use of the prefilled sheaves functionality.
->>>
->>
->>
->> We run will-it-scale-process-mmap2 micro-benchmark as part of our weekly
->> CI for Kernel Performance Regression testing between a stable vs rc
->> kernel. In this week's run we were able to observe severe regression on
->> AMD platforms (Turin and Bergamo) with running the micro-benchmark
->> between the kernels v6.17 and v6.18-rc1 in the range of 12-13% (Turin)
->> and 22-26% (Bergamo). Bisecting further landed me onto this commit
->> (59faa4da7cd4565cbce25358495556b75bb37022) as first bad commit. The
->> following were the machines' configuration and test parameters used:-
->>
->> Model name:           AMD EPYC 128-Core Processor [Bergamo]
->> Thread(s) per core:   2
->> Core(s) per socket:   128
->> Socket(s):            1
->> Total online memory:  258G
->>
->> Model name:           AMD EPYC 64-Core Processor [Turin]
->> Thread(s) per core:   2
->> Core(s) per socket:   64
->> Socket(s):            1
->> Total online memory:  258G
->>
->> Test params:
->>
->>       nr_task: [1 8 64 128 192 256]
->>       mode: process
->>       test: mmap2
->>       kpi: per_process_ops
->>       cpufreq_governor: performance
->>
->> The following are the stats after bisection:-
->> (the KPI used here is per_process_ops)
->>
->> kernel_versions      					 per_process_ops
->> ---------------      					 ---------------
->> v6.17.0 	                                       - 258291
->> v6.18.0-rc1 	                                       - 225839
->> v6.17.0-rc3-59faa4da7                                  - 212152
->> v6.17.0-rc3-3accabda4da1(one commit before bad commit) - 265054
-> 
-> Thanks for the info. Is there any difference if you increase the
-> sheaf_capacity in the commit from 32 to a higher value? For example 120 to
-> match what the automatically calculated cpu partial slabs target would be.
-> I think there's a lock contention on the barn lock causing the regression.
-> By matching the cpu partial slabs value we should have same batching factor
-> for the barn lock as there would be on the node list_lock before sheaves.
-> 
-> Thanks.
-> 
+folio split will clear PG_has_hwpoisoned flag. It is ok for splitting
+to order-0 folios because the PG_hwpoisoned flag is set on the
+poisoned page. But if you split the folio to some smaller order large
+folios, it seems you need to keep PG_has_hwpoisoned flag on the
+poisoned folio.
 
-I tried changing the sheaf_capacity from 32 to 120 and tested it. The 
-numbers are improving around 28% w.r.t baseline(6.17) with 
-will-it-scale-mmap2-process testcase.
+Yang
 
-v6.17.0(w/o sheaf) %diff v6.18-rc1(sheaf=32)  %diff v6.18-rc1(sheaf=120)
------------------- ----- -------------------  ----- --------------------
-260222              -13   225839               +28   334079
 
-Thanks.
-
->> Recreation steps:
->>
->> 1) git clone https://github.com/antonblanchard/will-it-scale.git
->> 2) git clone https://github.com/intel/lkp-tests.git
->> 3) cd will-it-scale && git apply
->> lkp-tests/programs/will-it-scale/pkg/will-it-scale.patch
->> 4) make
->> 5) python3 runtest.py mmap2 25 process 0 0 1 8 64 128 192 256
->>
->> NOTE: [5] is specific to machine's architecture. starting from 1 is the
->> array of no.of tasks that you'd wish to run the testcase which here is
->> no.cores per CCX, per NUMA node/ per Socket, nr_threads.
->>
->> I also ran the micro-benchmark with tools/testing/perf record and
->> following is the collected data:-
->>
->> # perf diff perf.data.old perf.data
->> No kallsyms or vmlinux with build-id
->> 0fc9c7b62ade1502af5d6a060914732523f367ef was found
->> Warning:
->> 43 out of order events recorded.
->> Warning:
->> 54 out of order events recorded.
->> # Event 'cycles:P'
->> #
->> # Baseline  Delta Abs  Shared Object           Symbol
->> # ........  .........  ......................
->> ..............................................
->> #
->>                 +51.51%  [kernel.kallsyms]       [k]
->> native_queued_spin_lock_slowpath
->>                 +14.39%  [kernel.kallsyms]       [k] perf_iterate_ctx
->>                  +2.52%  [kernel.kallsyms]       [k] unmap_page_range
->>                  +1.75%  [kernel.kallsyms]       [k] mas_wr_node_store
->>                  +1.47%  [kernel.kallsyms]       [k] __pi_memset
->>                  +1.38%  [kernel.kallsyms]       [k] mt_free_rcu
->>                  +1.36%  [kernel.kallsyms]       [k] free_pgd_range
->>                  +1.10%  [kernel.kallsyms]       [k] __pi_memcpy
->>                  +0.96%  [kernel.kallsyms]       [k] __kmem_cache_alloc_bulk
->>                  +0.92%  [kernel.kallsyms]       [k] __mmap_region
->>                  +0.79%  [kernel.kallsyms]       [k] mas_empty_area_rev
->>                  +0.74%  [kernel.kallsyms]       [k] __cond_resched
->>                  +0.73%  [kernel.kallsyms]       [k] mas_walk
->>                  +0.59%  [kernel.kallsyms]       [k] mas_pop_node
->>                  +0.57%  [kernel.kallsyms]       [k] perf_event_mmap_output
->>                  +0.49%  [kernel.kallsyms]       [k] mas_find
->>                  +0.48%  [kernel.kallsyms]       [k] mas_next_slot
->>                  +0.46%  [kernel.kallsyms]       [k] kmem_cache_free
->>                  +0.42%  [kernel.kallsyms]       [k] mas_leaf_max_gap
->>                  +0.42%  [kernel.kallsyms]       [k]
->> __call_rcu_common.constprop.0
->>                  +0.39%  [kernel.kallsyms]       [k] entry_SYSCALL_64
->>                  +0.38%  [kernel.kallsyms]       [k] mas_prev_slot
->>                  +0.38%  [kernel.kallsyms]       [k] kmem_cache_alloc_noprof
->>                  +0.37%  [kernel.kallsyms]       [k] mas_store_gfp
->>
->>
->>> Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
->>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->>> ---
->>>    lib/maple_tree.c | 9 +++++++--
->>>    1 file changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
->>> index 4f0e30b57b0cef9e5cf791f3f64f5898752db402..d034f170ac897341b40cfd050b6aee86b6d2cf60 100644
->>> --- a/lib/maple_tree.c
->>> +++ b/lib/maple_tree.c
->>> @@ -6040,9 +6040,14 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
->>>    
->>>    void __init maple_tree_init(void)
->>>    {
->>> +	struct kmem_cache_args args = {
->>> +		.align  = sizeof(struct maple_node),
->>> +		.sheaf_capacity = 32,
->>> +	};
->>> +
->>>    	maple_node_cache = kmem_cache_create("maple_node",
->>> -			sizeof(struct maple_node), sizeof(struct maple_node),
->>> -			SLAB_PANIC, NULL);
->>> +			sizeof(struct maple_node), &args,
->>> +			SLAB_PANIC);
->>>    }
->>>    
->>>    /**
->>>
->>
->> ---
->> Thanks and Regards
->> Suneeth D
->>
-> 
+> +                       /* get folio again in case the original one is sp=
+lit */
+> +                       folio =3D page_folio(p);
+>                         res =3D -EHWPOISON;
+>                         kill_procs_now(p, pfn, flags, folio);
+>                         put_page(p);
+> @@ -2621,7 +2630,15 @@ static int soft_offline_in_use_page(struct page *p=
+age)
+>         };
+>
+>         if (!huge && folio_test_large(folio)) {
+> -               if (try_to_split_thp_page(page, true)) {
+> +               int new_order =3D min_order_for_split(folio);
+> +
+> +               /*
+> +                * If the folio cannot be split to order-0, do not split =
+it at
+> +                * all to retain the still accessible large folio.
+> +                * NOTE: if getting free memory is perferred, split it li=
+ke it
+> +                * is done in memory_failure().
+> +                */
+> +               if (new_order || try_to_split_thp_page(page, new_order, t=
+rue)) {
+>                         pr_info("%#lx: thp split failed\n", pfn);
+>                         return -EBUSY;
+>                 }
+> --
+> 2.51.0
+>
+>
 
