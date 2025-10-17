@@ -4,138 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8B7CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFD09CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:05:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19BFE8E002E; Fri, 17 Oct 2025 13:00:18 -0400 (EDT)
+	id 577A98E0029; Fri, 17 Oct 2025 13:05:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D78A8E001F; Fri, 17 Oct 2025 13:00:18 -0400 (EDT)
+	id 54F6D8E001F; Fri, 17 Oct 2025 13:05:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBAE38E002E; Fri, 17 Oct 2025 13:00:17 -0400 (EDT)
+	id 43E178E0029; Fri, 17 Oct 2025 13:05:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D34938E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:00:17 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D2418667D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:00:17 +0000 (UTC)
-X-FDA: 84008219274.03.8172307
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E5A4740014
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:00:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="L YEeNVU";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="lHyF/q8a";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF7C8E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:05:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EBFAF1DF179
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:05:35 +0000 (UTC)
+X-FDA: 84008232630.18.4705611
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 23707C000C
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:05:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d4bqOC7R;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760720415;
+	s=arc-20220608; t=1760720734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3YqjzpkSvYXEk=;
-	b=ozKzgR01J2WItcoDPRVAzBeySh/a30YXpKOCD3v790zA5ESEPSIlv3u8Ug2gU9ORK7eIT9
-	gRb5oVjOrMyrMQ08qLHpS+q6uEaKxHLejuNDf9scDOgksB3uEtlgJ6Hs7Mrz7/IHQqFgZx
-	JltzGJ8i46BDHmlh3GjAoOxsEqxh8+4=
+	bh=Xau/di8dHoV7rfStQMoXpw4yp7gRe6aUdJC4UQzxpuA=;
+	b=Taqyr8AkXYXHr+uSE/i4X+1boWCslbNkH5erukCWlyCIg13VnGu81ABnUDWbvzlgIWCYpZ
+	3YScLOUSn9cXcqz5hM/t9oF7fBWTDUQZmSYTWRztHloEj7jjCaQa6yA0qyNewYj7G93bP5
+	zxVeq8nkotaDMHureaReCbtqmp+201g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="L YEeNVU";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="lHyF/q8a";
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760720415; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=d4bqOC7R;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760720734; a=rsa-sha256;
 	cv=none;
-	b=b4Y7rUi0CS1S7qgSyHN70zWy5EXEaTYrC1wds6p62v0D9m0KGOeKA6hX9jqFXUoMoNLCO8
-	gGHDaMXh5wOzbrGcH7/N9kofbj6ljFz43x9vcpMqJADPz3pnF2+fY02lhNKEb2k3/vI4+R
-	YEE4sMFl9QLjOEZ2XbYKGVsTiURFW/o=
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8DE74130074E;
-	Fri, 17 Oct 2025 13:00:13 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 17 Oct 2025 13:00:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1760720413; x=
-	1760727613; bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3YqjzpkSvYXEk=; b=L
-	YEeNVUi/9EqRu8aINAmTgi97ip/bfdsnzAod6qhb1fATOgyYJOymJ61PJdRpLbfz
-	KE/5rtXyrO5mxjBAgsf2XX3uAK94kscXmKkAo692H/rdYW7750fgVEN5LeDXAO3u
-	AkPKykEO4qGIMy8DckWtbE1xfKTdbn3fofU5VYQklmK1Frt2YdfNWM/rszptGF3D
-	MSCLY6wSin1fAd9CsjADQ6V3M5lEZ7T9iP0/3i/i+N5Q8K+Go4bG+RrV3B9e0g9W
-	z3b0Rzc7mJnWPN0ADSKWFWrs+F+uDRGb0k+DO7vhv+anGTDmvqxkYBHqDTW15p0f
-	FaWEKXHczG1iXljTUT0iw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1760720413; x=1760727613; bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3Yqjz
-	pkSvYXEk=; b=lHyF/q8auVcPkYBtF/i4yGzZNyGpmUeLbBTOhY5tXfkGtWcrhby
-	brA66/eRwRTjQKfL86nlHFYvvCFfG8+PEiBZrxAKSzH/FSQEfizDxoAcgXv+tFun
-	MpLiM1IytVS5i/HtEIS5isZWtzPG/OFZarK8ww0lwqQwpfytffqF10i67BSJxUFD
-	T/mGFZKDepkl1wqRcIuqAt+QrdFJMg4Nx2lrWhZ8n/Paz9WtYah+O9k4sR8eJFCJ
-	WlbibUAIwLR7PUzzr3OZqdnL1HXqP9KhAjMgHQzMEbpX4nko66NejRuGljWVfyU9
-	dJxJjv6ed17yPYjslzVmDMPdLOZ/kB92Bwg==
-X-ME-Sender: <xms:HHbyaF50ErfQ7-IyA2sJ_MPN6iRS1Wbxo11_-S2HR4z9pPDS6Sx2jw>
-    <xme:HHbyaDXHfG0R7heMApuKjBTsSfdt4TEWE1c-2XKTXxikp4bkfm3cIcY3xFiJxo4ud
-    KIkGOL2BPG9h7X9skeG7MGcu6ROqDDY21XMp4FlyEu_DCP_gPReIeA>
-X-ME-Received: <xmr:HHbyaB6ztCj2bQSfrFMoqKlCenY59AGw9wcmDhJ2v7JFc9fR3UX-hoong955Ew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeljeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhi
-    ohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesfhhrohhmohhrsghithdrtghomhdprh
-    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhgt
-    ghhrohhfsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprdhrrghghhgrvhesshgrmh
-    hsuhhnghdrtghomhdprhgtphhtthhopeiilhgrnhhgsehrvgguhhgrthdrtghomhdprhgt
-    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
-    htoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
-X-ME-Proxy: <xmx:HHbyaMGOveeNjZzAudyjrneAsdQGCnxByQQ3CeT6yrPQXV1mM_U-sQ>
-    <xmx:HHbyaM-mmumzQdSLYF_ohtJW-tIDdjFEnZRfFZiRd7Put-BzBVmH9w>
-    <xmx:HHbyaGUHVMec6kjyA4moEn1w_zq_DjqTYrS7npJoD7GOn0HPmlX34g>
-    <xmx:HHbyaGHJSStwXVZPq5lbZP0eP8Y8sp0bv-dbLF7I2qita5FdKSZl9Q>
-    <xmx:HXbyaGDxeFYyep87XcNsuCiogm5tjteWZHVpNxCOXMXxQ3J93r6agDIe>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Oct 2025 13:00:11 -0400 (EDT)
-Date: Fri, 17 Oct 2025 18:00:09 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Darrick J. Wong" <djwong@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>, 
-	Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>, akpm@linux-foundation.org, 
-	linux-mm <linux-mm@kvack.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	xfs <linux-xfs@vger.kernel.org>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Message-ID: <r74wgxke6ewkt3okbkrnd6lbatjrms4rcxws7dhvfwf2oi4yb4@g5aev2vz4nl4>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
- <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
- <20251015175726.GC6188@frogsfrogsfrogs>
- <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
- <aPFyqwdv1prLXw5I@dread.disaster.area>
- <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
- <20251017160241.GF6174@frogsfrogsfrogs>
+	b=AB6cI1iuEF9S9ezTNTmp2VYht/LVgeobtis/Ixtvivbps5l/S79tW+1AF+K7iWgjqun6/b
+	vpw+PKwVEIxS3EHqMMAKin/sE42YG/+umKkz66yQjgfi/vXRw5jotI1Sbtz4fh6JNc5Q0T
+	HduN8FOyhN8H0cd4qN+3VKrdZEHDb8M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760720732; x=1792256732;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Xau/di8dHoV7rfStQMoXpw4yp7gRe6aUdJC4UQzxpuA=;
+  b=d4bqOC7RYafymhSU1vrWNM4B/A8RDIdwn6/OLP3GS3qLe97T3gmz0AAW
+   nIbwwe2ZY49WZXTBVrIZQjQFSVPpw5ufYQwEl7TVO6UMcNsdKxLeRRhDZ
+   zsaGW0IdmOgfXWaGiEU1BLEmzwq3Vwy8kLZiLHTr7tZjOLwfRtSNF5ZUI
+   XPFc89oc503vSDr1J5Bivo4UyQXpu26QCSTFjd6VV9Z+UDIdpLjJ9BV/N
+   ueAul+LwplIcvekT6obAEdRFd3z5KMkSzRrc1K/IWZd064fGLfziIpOdi
+   53w9kq902pMJAEf/t3wCBPz/QoJD/yMHOBa7SR6/8V8RV8rf1k8AN92t8
+   A==;
+X-CSE-ConnectionGUID: FYH0mflxRK6K7dLS0+wHtA==
+X-CSE-MsgGUID: iXdKk7C+TBGi4EuSw5TcjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="88407053"
+X-IronPort-AV: E=Sophos;i="6.19,237,1754982000"; 
+   d="scan'208";a="88407053"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 10:05:31 -0700
+X-CSE-ConnectionGUID: wv14bvpDRaysAp063ScWFg==
+X-CSE-MsgGUID: 2JORsTsMRYCDyk5UOPg6Rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,237,1754982000"; 
+   d="scan'208";a="181970680"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.108.40]) ([10.125.108.40])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 10:05:28 -0700
+Message-ID: <f170f6d5-a1f7-4dde-b966-6d6a5aa18f21@intel.com>
+Date: Fri, 17 Oct 2025 10:05:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017160241.GF6174@frogsfrogsfrogs>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: Baolu Lu <baolu.lu@linux.intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, david@redhat.com, iommu@lists.linux.dev,
+ jannh@google.com, jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+ <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E5A4740014
+X-Rspamd-Queue-Id: 23707C000C
 X-Rspamd-Server: rspam03
-X-Stat-Signature: p936iwmc3m3zgbcw98asy7b3mng8hq5b
-X-HE-Tag: 1760720414-422115
-X-HE-Meta: U2FsdGVkX1+yotEpIRPMXadVHFF8P4Uloshpcpl3PvTmhFuVTg/v20aFrgaBngto0zZSrg2vvpkal6QIw/F4Y2DC+Hh14Qsiv/57EJtJ22Q8cpCe8FngsWRTY1ARu3f9jXFqOkmwakQEo6kDcAYfV+q/YjSKyJCKEfDJ/JcEzNFEt9qmKJACitJZVfMegiN4fKVufh/jTkYRuDKHRO9HBUk9w0Ufw8iCyq8tXsJC7BYaqUTKWjwUIy2V+cOCW4uNhr/VJEGdPswS7jCf+ehDM2oerHli+3yMLW/lvThMYUMnwuTzxKf3TkjnQP5Nn1udCy9ZSdB8khepItDxYY8MDd1aSTCCrfZeS4wMZuX/+jteKHrt4tOtKLehIA8TJWQTyziKt35W+IdbvVyrhNKaWvXjUVs1nCMSUNwXLc1i3ScasHopOUur75UcG1PuUoHs4x2UpJmyqZY3uyWjAipVVb1ZWfCLMRXV1Jgv7pHfE5xORPRomNI3ljdwZd6WX5pU0wqjm6N2ZfeRwWpiuNKsrrwhTNyhNcdcQKPIe0AcdDW0++/YAqK2IxJWUmu5gXTlQPf3mkG/hMyCSQrRLd2GuW7h5sbhJWMWmYBTzZTSz6idSBQ1SREIYWV2ejdlAAqpjIVEqrxej2xIFEcinpY1SWgRAYZ7AnZmDsP6tyzKUaXxDWRZP2lFRpsx0godYyhjiyEpvpB3MumCCZtSnzu1EFauL+9rPyfg5p8feihg9q2JAhiTTdsBjo0o3NKfPIGUbiG6AUhGNByizyOln4A2wX7/ZZ415hvXKpR2VRib5E3kVjGKpXijD4kv01YpPvOwL9OPeonTSaUCLL835sU1S+CL1fzdFRAYm1eNxFcH4UIcefG1ZJEWE7HBICiB3BXH2dyAstzugWph2yDr/P8OiilS3tfyGueaL7H02/uyKEGCiWsjVMhX/Vx6lDKcl1fGXSMD70LH08D49b0aphO
- 2E9Sk5wT
- 5kYBnZgeUKgECUIigGwlt7LTB/BBFrDIX/MAU/0NT1S15SdWDEb8Oc1MzHVTQk5O+CeuEqsEyw412c5uEAmK6TRXfLyTtN6VITViZKhdZL2cmFHYUti7xkcvg9xE8nx8RFlWGN2dV9EDWwwC7ve9o8ja+8wVvLAYWCT4Zkm8DLm8ibin690H/wAjyxa7fMcuoyevjznyTIxfCO6Zwnu94nzQrfskssv4aGdsNJ6GdSK0gyKCf3Vi/ApZRBRejhER0QBXkPYpoLVaxPGCrPGH+ek8TcNuUwgsL0bGjBh2luJdvNkcluN38yLK3/JliJMYHTsubcHogTMHlDnsRB/jfKy9JR+1lg0ogK6UDSxuK2AJiz+A0YbYcLji/EhHQPoMEyo/qtXjuiQANuvkWP99bwGT2kpf6Sx/aBT2HUO2jjAl2oSLh/AWpaVl+m9+tpbeDBUOa
+X-Stat-Signature: 33frnnk8kmto5e4m55op1dmofb4mh431
+X-HE-Tag: 1760720732-345309
+X-HE-Meta: U2FsdGVkX1+0EOO5xhF+wc9szjrGF9rP5XmUkoPqSA3k3rRuQaV4LgDZdOYGA4blIScGeCcTs309grHVQrD1+2ZNaskbAM91/xndL4N6oHKBLZf8OyX6QqiwlJULeopl1g6X/9dcRBbUb0hGKXqPl8S0bOogRzEvvs61gu1dgfEHnP/bpFfbT1CxG1kfjOFl58b7YAqeN4sNNsDb/8RonPhFGjgbcukXOTUZ+x7LBQwY4qWR+oLeW5ahbY5K2BhTNAhWraWbmffMrdX8d9+Y7sXBWd5luu9bB9euJyMEHkf0FQvZQPyBbqKGteE4B5/6OYa8SqqawLVCt1463pUTK99rFx/CRqcOhOW1ePJFvCEs7I22VYisGIzonOII/iUIBbd6pFilUU5MaUYpoLAjHk/p1bNjmqRcZwSGpuLB5vaa/oVlyyZEpNHHzRjtD2hODiurc2XxVQISXR5kTL/SB9GJ5EInzHHkhztyqmhBh5KRwAc15E/o2MoVwRxEaOvTDgxucEOge1mm57OuAR6xdjSswrmcPrzoYN9eAueEeZkwUJkMBA1JaWI5SL9Y+zc11oeW5KELWZ/66hR+KqBwks8aIBTNUv3iDbOIeDk1XqpHYn9mL12DZi0Ibt1pR1XRtrd8GRNGjlEzfec5629ceP/FEWlLstGbD0qtxiCKJSfEFuUMLk8yR2EMbJggVtQ2TL/dd1EVk/123Lnn5QLg6Hpx+tdYo465oNqMsvkeWbOMbT6sZZohziO/bDaXN/7A/IKFpxmir+aeWjn3DicuWfBjL3nnyATkZH5LgkEkEXewZB1SLZRj6345cz6WjwbcNcGVQeqWryNFnWHUXOdKU46uwSeZuvTf2dCloRyW7DViaMClRgAtqKLA/bqNDB9h/nUkFbs4uyon2d/TaU4lVmQIi8osUe4y6lAvLnb8splBUbdVN01Dr/hHo/0Mx77XPi0qI1Bc3Cwid2J5eYU
+ n8ErQ+EV
+ WT592
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,148 +161,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 09:02:41AM -0700, Darrick J. Wong wrote:
-> On Fri, Oct 17, 2025 at 03:28:32PM +0100, Kiryl Shutsemau wrote:
-> > On Fri, Oct 17, 2025 at 09:33:15AM +1100, Dave Chinner wrote:
-> > > On Thu, Oct 16, 2025 at 11:22:00AM +0100, Kiryl Shutsemau wrote:
-> > > > On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
-> > > > > On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
-> > > > > > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
-> > > > > > > Hi there,
-> > > > > > > 
-> > > > > > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
-> > > > > > > with the following:
-> > > > > > > 
-> > > > > > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
-> > > > > > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
-> > > > > > > @@ -1,2 +1,10 @@
-> > > > > > >  QA output created by 749
-> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > >  Silence is golden
-> > > > > > > 
-> > > > > > > This test creates small files of various sizes, maps the EOF block, and
-> > > > > > > checks that you can read and write to the mmap'd page up to (but not
-> > > > > > > beyond) the next page boundary.
-> > > > > > > 
-> > > > > > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
-> > > > > > > folio to cache the entire fsblock containing EOF.  If EOF is in the
-> > > > > > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
-> > > > > > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
-> > > > > > > to the second 4096 bytes should produce a SIGBUS.
-> > > > > > 
-> > > > > > Does anybody actually relies on this behaviour (beyond xfstests)?
-> > > > > 
-> > > > > Beats me, but the mmap manpage says:
-> > > > ...
-> > > > > POSIX 2024 says:
-> > > > ...
-> > > > > From both I would surmise that it's a reasonable expectation that you
-> > > > > can't map basepages beyond EOF and have page faults on those pages
-> > > > > succeed.
-> > > > 
-> > > > <Added folks form the commit that introduced generic/749>
-> > > > 
-> > > > Modern kernel with large folios blurs the line of what is the page.
-> > > > 
-> > > > I don't want play spec lawyer. Let's look at real workloads.
-> > > 
-> > > Or, more importantly, consider the security-related implications of
-> > > the change....
-> > > 
-> > > > If there's anything that actually relies on this SIGBUS corner case,
-> > > > let's see how we can fix the kernel. But it will cost some CPU cycles.
-> > > > 
-> > > > If it only broke syntactic test case, I'm inclined to say WONTFIX.
-> > > > 
-> > > > Any opinions?
-> > > 
-> > > Mapping beyond EOF ranges into userspace address spaces is a
-> > > potential security risk. If there is ever a zeroing-beyond-EOF bug
-> > > related to large folios (history tells us we are *guaranteed* to
-> > > screw this up somewhere in future), then allowing mapping all the
-> > > way to the end of the large folio could expose a -lot more- stale
-> > > kernel data to userspace than just what the tail of a PAGE_SIZE
-> > > faulted region would expose.
-> > 
-> > Could you point me to the details on a zeroing-beyond-EOF bug?
-> > I don't have context here.
-> 
-> Create a file whose size is neither aligned to PAGE_SIZE nor the fs
-> block size.  The pagecache only maps full folios, so the last folio in
-> the pagecache will have EOF in the middle of it.
-> 
-> So what do you put in the folio beyond EOF?  Most Linux filesystems
-> write zeroes to the post-EOF bytes at some point before writing the
-> block out to disk so that we don't persist random stale kernel memory.
-> 
-> Now you want to mmap that EOF folio into a userspace process.  It was
-> stupid to allow that because the contents of the folio beyond EOF are
-> undefined.  But we're stuck with this stupid API.
-> 
-> So now we need to zero the post-EOF folio contents before taking the
-> first fault on the mmap region, because we don't want the userspace
-> program to be able to load random stale kernel memory.
-> 
-> We also don't want programs to be able to store information in the mmap
-> region beyond EOF to prevent abuse, so writeback has to zero the post
-> EOF contents before writing the pagecache to disk.
->
-> > But if it is, as you saying, *guaranteed* to happen again, maybe we
-> > should slap __GFP_ZERO on page cache allocations? It will address the
-> > problem at the root.
-> 
-> Weren't you complaining upthread about spending CPU cycles?  GFP_ZERO
-> on every page loaded into the pagecache isn't free either.
+On 10/16/25 01:00, Baolu Lu wrote:
+> while, in this patch, we need the page descriptor that a pmd entry
+> points to. Perhaps we should roll back to the previous approach used in
+> v5?
 
-+Linus.
-
-True. __GFP_ZERO is stupid solution.
-
-I think the folio has to be fully populated on read up from backing
-storage. Before it is marked uptodate. If it crosses i_size, the tail
-has to be zeroed. No additional overhead for folios fully with i_size.
-
-But if you insist that is inevitably going to be broken, __GFP_ZERO
-would solve problem with data leaking at the root.
-
-
-Whether to zero the memory again on writeback is less critical in my
-view. It could only have whatever legitimate user wrote there and is not
-a data leak. Or am I wrong?
-
-> > Although, I think you are being dramatic about "*guaranteed*"...
-> 
-> He's not, post-EOF folio zeroing has broken in weird subtle ways every
-> 1-2 years for the nearly 20 years I've worked in filesystems.
-> 
-> > If we solved problem of zeroing upto PAGE_SIZE border, I don't see
-> > why zeroing upto folio_size() border any conceptually different.
-> > Might require some bug squeezing, sure.
-> 
-> We already do that, but that's not the issue here.
-> 
-> The issue here is that you are *breaking* XFS behavior that is
-> documented in the mmap manpage.  This worked as documented in 6.17, and
-> now it doesn't work.
-
-As I described, it was broken, but in a less obvious way. Order-9 folios
-are mapped as PMD regardless of i_size before my recent changes. They
-*usually* get split on truncate, but it is not guaranteed because split
-can fail.
-
-We can "fix" this too by giving up mapping folios as PMD (or coalesced
-PTEs) if they cross i_size boundary.
-
-I think it is bad trade off. It will require more work in page fault and
-reduce TLB hit rate.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Yeah, we should roll back to what v5 did. pmd_ptdesc() is a bit deceiving.
 
