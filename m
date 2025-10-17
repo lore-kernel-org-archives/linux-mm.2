@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72898CCD184
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 08:16:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57592CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 08:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF4CA8E0048; Fri, 17 Oct 2025 04:16:50 -0400 (EDT)
+	id B20348E0049; Fri, 17 Oct 2025 04:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7E728E0016; Fri, 17 Oct 2025 04:16:50 -0400 (EDT)
+	id AD1648E0016; Fri, 17 Oct 2025 04:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D838E0048; Fri, 17 Oct 2025 04:16:50 -0400 (EDT)
+	id 9BFAA8E0049; Fri, 17 Oct 2025 04:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E8598E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 04:16:50 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 691811DFDAF
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:50 +0000 (UTC)
-X-FDA: 84006900180.10.7A63F4F
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 83F428E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 04:16:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CE54C05B6
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:53 +0000 (UTC)
+X-FDA: 84006900306.14.511BE5E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9692D18000C
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=gXjndgCu;
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4B6341C000A
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=yZp8pO+C;
+	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760689008;
+	s=arc-20220608; t=1760689011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=PHuEhSEl4MRmNCzo4Ub5GpIUeSTcy95EXO8KXcEcLGY=;
-	b=peBrHI326z/QKkbnZ3/rlGw1pvHIagh6LZX/ri2FSdhTJofIj81GAQD/q6H+RJAjdfnHCL
-	0/28gZk4BUVpawidv7ji9eX4hCmT1ti0njq3nNEEoHSTQctOZmXK5JftzUeoEkWj2pUcYg
-	PoOSavx3K8RUwrEyeXMK68Pakpt2CA8=
+	bh=xoI1OycUcWM7QtXYmHaSyIS4e9V3U/F5LjtqbaP+WNw=;
+	b=caktTDqS5SOay5nl3Fb+jru42LJHgiQZAiFAWVH3tseNLd2KiAbnEXak/mgUps2KBagLk8
+	Cq1NW5yFeI9WK1XOV4javugn83wdkCv2xZWD0KFNnfKhQI3E8S+ypvKMrZIB/ZWxrIjUdf
+	5XBanwAdtM2ok1SuuFVrx/PHTiSBpeM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=gXjndgCu;
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	imf20.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=yZp8pO+C;
+	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760689008; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760689011; a=rsa-sha256;
 	cv=none;
-	b=QR4YlDqohDFiWsh+mi2mfB+wT72/mhhceou2hK34LaZcTADmpJMej3d1gSepUaNPKtRv85
-	s4Is2xjZjbI/91N1txKE9qsbuHl+TEUOaHVuEvsxaWJIpQGZl8fdDv647FgOjC9JdzS5hj
-	4MAEo+omUQZlkM+ADlRORT8l34lH8vk=
+	b=TOmEg7vOpanhckz5jyL21ZYiyCtGVB845S0ycultnvrrfb5BO4MLi7074a3KmWbJ6IVX8v
+	HmJGh12UmilI6bFdYB3d9h7IVvjCKGPuepIwTAanGfGpGJTDO+VDNmWF65hRoscE1TnpBK
+	fYtVUVzRqt3uK1RSRSrm4GGk0lKqcPs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9351B4B002;
-	Fri, 17 Oct 2025 08:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67D0C4CEFE;
-	Fri, 17 Oct 2025 08:16:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 530FF409D3;
+	Fri, 17 Oct 2025 08:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC2CC4CEF9;
+	Fri, 17 Oct 2025 08:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760689007;
-	bh=IZp8/GMuXp6QraNcAKXUTsG2tBOrqDuZVa9XkkKMO+k=;
+	s=korg; t=1760689010;
+	bh=9gnnvv3Ezt6vrJIZX/HYPKclBhyyVc53iiep71r9Gjs=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=gXjndgCup14D+INtA6mLCK2+v5u3qEF7Mn+kggU8yY8OK293VssE4VTJ6fcOpTYn2
-	 ZPc+NhWns7dzp3+03VLLsLe+AynUge9PlCpdE7uu6ssEzQky+YuevQV26hRvceGrnU
-	 6KjOJKuI0Pzip6fFYffMA/J23JsJLwqJt1aINpv4=
-Subject: Patch "minmax.h: simplify the variants of clamp()" has been added to the 5.15-stable tree
+	b=yZp8pO+CPx9UpU2pA1zuE8HzKAfopDNSTo2jE+UQ8UwXM698oXMjTGNvRQFQ07p/v
+	 bk2GH4ZeqdaYT/Qt/AXqzPoEl9YoH0t811lTNuOyWeMDgZnprJBOxuD8DYCX/K87xi
+	 7RQ2H2yca89Nzja6n0WztHY4T3PZeQSoYAFw+L84=
+Subject: Patch "minmax.h: remove some #defines that are only expanded once" has been added to the 5.15-stable tree
 To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
 	akpm@linux-foundation.org, amd-gfx@lists.freedesktop.org,
@@ -103,23 +103,23 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 10:16:19 +0200
-In-Reply-To: <20251008152946.29285-19-farbere@amazon.com>
-Message-ID: <2025101719-art-pang-4c25@gregkh>
+In-Reply-To: <20251008152946.29285-20-farbere@amazon.com>
+Message-ID: <2025101719-basket-sanitizer-712c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: k77trx5wsmyg8b4cpfjs8f161ckukjm6
-X-Rspamd-Queue-Id: 9692D18000C
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4B6341C000A
+X-Stat-Signature: xn4pczbstjwqw4szyecpjappmh6u4kow
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760689008-203335
-X-HE-Meta: U2FsdGVkX1/rqaeii7uJuryXt613T0EkcRGjfqXd8cwiYiGPb18lSWawhl74F1+ns5U8SI1uUahySc65YhL28ntpbU3owgDB3O/MNMiy3ksjNB9xUSOm4od0RnpVKKj8uV4HeBj+MV4Vrp9mVD1FN0sExQgLngwRkNwIgtFv6CvdXjtFJ62ZslhBoBtY1oZSFjlpqXn0MIHUeDIL096weUQI1LjXOtu8iws+Da07DDBRtM8pbAy8jQbcnUH9BeBG0bev7QGBA0WdnIwgObWJWiLfpl1OMUXGo1p+a7Jlg6pOMnpsTSiDG6pF2zx47QbBOCf0t8ZOKw+F/ssTcTUuLUXMLK7qt8MUWmnyqimg1Txennnb9MKs01BgIq+/hDCHTtjjEaFujLw5oH5KLEZ2m+4nAod8BNSu/hVp3C618rmPBhXV0xiAMyTpy3GYstg7gq3sHyctYgyU1LgzQgYpZprdOBd+MRaVu0dLYmKNTi5Dws5VNbu7GnxQZZK6oe/CyjxBdgiMvsi5+KAWlA58PVSivvikaX31orTaGoGITQashtgKhsiJCRW6HUqJzoAG4+tzdkmu96+1tInt5uVJ+jmxu6mjmBHmIQbSjxwl5WE8SkuDangX2Q5/CHLlc0J4E5t2tPoiUa0/DhPG5nBN+mZDaPnoPhaN4becUs1AVZwWIb9M0zFBEJV11ut24vvIG98PfkY9X1r4/o0wE3sBNHEV+i1vzyfSoXrKxQudGRlqqBaHqXg8HFgfnPTa4EJuTemDKvaXdA3g92YQ7+mMFBbpjIDIbIgplkaU8ep/kvPr+OziE6BPsY8YoSn1MsW4dpSqn+jluqAVz2fbwFf0wOgIxNEeHAsMYvH8YSqWFUN45Q/NP+oipPtkv8HnAgToO0yFhPLhoTGvT4dML7K+x/f/YOPTXWZ1NfeNBTXzInDGaigqedTqPZavgrlUD4nIBGSZD5XSh+60LLfLjeW
- lfRRLu9D
- lfSOXARw0hleuAEXLByhDxsgCoyLdOAqtK72eb6LhJMkEWsMco25pMLDsOwDLE+FFMDo+MCnIba/28ftE9M4B5/JSzojuX4szD4l9FQR7+ksz1n0RHexvh4xgeE/gJxXiqtA+e99S6CEZ0thYcNLd9NLzLcFXntbzp7OD7iFojeS57ATUlVnIUK6bFHyeJ+YjSCwdmq6p5fBAzM4njqy+tpt5jvH5InOsP/BkB9G70TxfqbGqLxD1Zw7ByJsBqVGRO0uvL0hi/CfCZnhOVcZRN+50oIygGFLiBJXGfC5iQ7Xbb1Z+41GbtQXIx1QD1v53Q/BLBeVSM8K2m+n7yLaqcuwzHrm7g143NgUcYu3luDEQdBdSR0ORMuWRTHB3u1+HybsDx1htiuoSrZZrR3n3ZY0yHY59gc22tkqlyF8/L8hDXkVUiBc2WqnAM4607zHx0rgYdfywqSCBIveSdQ36WSvtUt9ExuwI9bdxfQzIdmi6jYRENzG1BOD/pXcAWtE4j5IVis/viACL0OFSTI4HTHv80yY8zyMyDHgiNJfe11KHEbOvPbZCHJXqiaDitkmD3pHncVfjL8UhCWtZP1HTcpRMlh6DIc9yIIWaC+Cj4dsJc8896tbbBa40b9bwlRVGFpxqL7pq2mpbbTztLrisECV64fSQBxvkJxp9I8Yf7NS/vInPxknXeAOk4guXm0kWxUb+hyimcVodNvm9ZIP9lbJdnJt9RqaijdRDoMtG95wYUEAfKf4JRoo09l3CNQsovwC1S0oV5aN+oNcIyqLcat7fU0bw+DmVIzYWCYRQsTeSAwKZdBMsYuDIRHU0xz1KWqAjgn2K1NnptMe23gmxodwSA1CQETwyOdD7IYe5rdI0KhAZMGptcE11ieb5l4SMdJEZOPvw+hYwF15AEgD8teeLZdqxjccxvWMIm3VHhFes+3DmY+KPzcs7ZtsPB5U1dgqPW5aJ7+jqJGFFnefaA2IRtphZ
- sR/QtFmk
- 9n9eSTolPN3h4oaHbSM5McHBnLgvaM53mQTSwp36CmxovlOmRlaeGh/EruxgwBo4P2pqpZ/THt9xLPAoYEjM/fQT1eVsVwqxtUDD6sDxZSkQlGxrbLvTGhRyZpdJQKpjlnQ7WnvKxzM01qcGNjqLgl0T/DuEaKoHFgPkcKAVO9b+ErlV4by1zFsN+GW9a6VCgro11bg/YRaSxpjrLo0NKXL+y2slh5xnZYKKJTno/1fm4L1obHd4MaJK59PvnziG2kpCBu+IrhrKpmPiGGi0FGHAXcYu5or14PIaXC7PmcF5ML0JSPtZWC/Wks20+sFFA/iE2c9GRdZff627pAQ2E8z1m690WXiUNKXRljFwBvtb5LWHaIPDwm9RSPCjzyLZmFm1TWw3MGDP7el7TpNjg/INIeZ+NQPEutrl7hmW9ggwRuonQS5DSbZBKblmQocbe/RTLJ+ClkXa7cY61NoKjQ37bUCtY3J1LbE/eNShVuojK7QIlNAA/Kke2mF2qq8QVnNQ1c6Cgjmfu7wJfd3iDpgE3UKP9FT5EDKnOp5jWQoiwefJy2k5SUlWki+w4upzIrUxEwDaGdEF6A7n1wPm1XHSsWnU57/g3FnIIiiawV7uW5ori37g3XKeHPf1hLTogYmxZXy9MV61L0mxOnTF9Y3lubAi7R85cHL3nncRFyTSq20QzhmQmBrD4qVpL0AjCAXE4lBuFVrjoJ+rPdG2xtiR9rpWG+0No9D0cPe7qnzoZ1xrA37HyXpmHjpSz3wSUtn1fFp1Yrjb8QabT8BiMm/cUoeKbFzEBDuJP4JQBBVEZwxW1KbzCFxfImhxvEeg/gvevOQixoDjDlAGHbBiidCsYVIIb88ddsT5YngXJmF+RuaVmqGTHEhgM+9tZ9Rs
+X-HE-Tag: 1760689011-660995
+X-HE-Meta: U2FsdGVkX18muuXB6f0Vg3a4WmOyynz+VYhd9kLZYmcdeiLJtdVf6bdAWJGsbvaJAEBzLocqTnGd6NxD6owP2bCB01jifUbfSKs2wvSeDgEHGz93bxV/TIeWO0E5mBGQxdpGA8hAP7rXDarBZAD86SLG3ME6g0lS9XJ2b48YFqRT92JaX2qkIM0TtBukY7EBZrPwtu32yPfall7prSV0Ewbu8WAgXZJdYKjdo8nahkqEpylzhtIv1R2gxQFEAQsuSDl9DoPr6VUAp/EaFrA4m762MIh3Xmm7r/eTemX9dWtG+87hjg2Yo46JfVZYk87HQS66iRUqfNjFsssTloxu8d4bq/s6cbFjAXxmkh7PU9ItKf09FoCoFQcB1z3ctncYB68vB4EEdBgmfU/8EQ7dpB1OAtWyxt6eqDtuy9O8qh91NmCLBwva8oz9ZpcTzuf1Oxt75pioQMjyLMxVRuNaKZk2wA3WFlKMSphPPyoT9BNsViWJQyMDa4gLCxDjbPgPcN+TAOJag5UvbySd0nsVEZWkvMZyrmuK/hFNTO+ADc/S9RW5dmf+WSup2h2GOQ5sb1tnWGslTM2TIkp9/Ks5f8fFy4KvutYzToZGNDX+Jpvjk00iv7QuALOwzcdnsW5m/aE442YbWhhdazqBBYcc7/Jzwa+2bKBVN9VBYjNL7r5sddilouzYLNsUeMTlXhFNy3M8NNaaI6ti3wkO7VlPV72Hme2S4qeOLm0H/P5RJWjJ2lvGsGW/0olc9L74rgPdIa4KuMItiXGYA1TREn7r6BtQmqd7zDrmTsstGyq+8+brXkmN/5gVsyhuPkEL1W6m4ExwfQOzVjYWs9BAlpfzxtF10GHXv7MANo89qX6SXxeojHDzxWyJWhXDSzhm05j2r1VNALAhnl+36I3B6ACkfnLbr3q0as82rfaQNk5LSBnMp9+XhWbyLIoQOt59pes3GH1XCyVuzV2DlpV6b5J
+ xq9QWDH7
+ +QEaCyskYacJgH0AjwL+PbCZGt7PHtGXS65wJmAOyaPokjYqQFhVrcCPaYpWs8lNId2WVAR0i/3vXqk1bIYzFncQenf7I3fixxCh/8XZCHPpuMk8IPmhUvQ35u3tm7hpH6jD+F/vobY7xPjRE5bvXWqlSylSKzHrCZNnnvauFQt2tfwaI+pvyVpfFgZsoEOMN+t2i+UCrh0NXQZmpAGUHDbuiF3n3yuwzAM4P3snUshSRrUb5wDpNe2DgEnwJiICoQ8XIqmG458aJOvVRJoK5Gxtv1x6yDfpOhfNSJ96GpmPQ1LqdvHoYWsCKIH/qflX+c/N8xgyycwujSXjJuaxIx3pnAzBDiUdqYPEsUCym0gGp8+fz+plTgXI3MzpHM7I87BQTeZEYcD+YpCPu6yXIzAPE0q5IHauORbh0jhnebSVnQ3uzOA9og/l5JBh2Q5mXzKy9PZQen0RxzgqHz7WBzQgM1nJ/Cps27ZKpk+5RWqyO/u7fY2fh90x9MXMf02jdL8yGxn74GN7uIIBwfCNxgzgRi5AgQFYnM7Mgq3+5mzA1qn7EMmClLSK5dOdvQhffDQCCKC1Hq1BMTFC70+ocaAmVTm1Htk/bMB9f4b7LLrjGyLsWhavATsyqBkN5FS1vwH7pOLsxUbp+FiL74of1qm0QYWhikeptMKLeuZhsPfQV2eTTbFXa4XvLBMwmJXvak8G6Rppc8GNz9jNey1KQ9+imnJOZykczH0XHCEncp9CzGp5v3ZYmxsxHQ5HPEE0ZDB7tn542noJgiX33/TjS0W1ezoFX1Ueq3kfXp4zleiGgOJn7isPpo4E2+kx6Ne30der1huyNDkd1MP61f/P4T2VCUdfm6qFNzcIHBRGtXOp7ejKgQE2YrF/aeH2SrFFVSlQKlCO/qfZ+s/8gGW05YDFwMc//X/7Uxt4gaJwccp5vlM51Zmewq6EYiIJN/bPpvAZ1ydzvsuJqjOyMM/ZnvijrxQ0B
+ u4NjIHVs
+ 4UEUQiCgLC3IWAPdf9F9Pio5tF2+Sah2B3jzCxNwMmJ7Ny0X0vW0SgkH4v0iKQyaMO7nsW2WHrbMefPrpbmO+xDI8Ai43+Dbuq6M00Rbq6P0+2xI5kmKEzxvRvJqK+1fRqjD9Hezh8ii+fA9N5miWoPOFnp/LhZ7H7KREiz5i80kuqm98nJNFH9zvFApKHdacqflfF3Z/6LxI0/AWnkyRwxvE4ski6eyojZ4MWQR+J3bP8JBSMzj0UOPxNNtvvXWTh6IQhlWswtjt26Yrltdp1+EpGFLpFY78i51b/aONm0bcr1DUnS7QiR4oXEutK4etPNPMGh9K8oLdIn4VqpoZDbzD3MbnfYctUnmDmjb/fF+8OGInkd3xPfuxVB4b++Ylw9bIUt/ANiTXqU5TwTYAM8sjBxRqxLz/qiIRIUulGHx/FXjGu/SOf49ZSr8uRj6CpBtUkjJBd+qwQ9lEZpOf1bxjNDoFju8FBYOlK/A1vRpFUyK5slWPe5U4zmcyXPwyQgwDJ49hp4eNk24Qutcz2s3vU8HMZj6HqTJqrA1xZfBQ+xhpr/u+LkazbfDhYTpgVjIfrMK2lmjIX9iIIcXjwuscoSnxd9660v4u3r7WctdtFaO64n8NJvCqOvZeyIFaIcQt8EzZD4Iljo7sctRWrUbDYkDPduZi4ZTNhqr+4Gqlrr4aAi1scJj5PF41L1YDB7/XKkgSZvKNzSqMf7Hr7HWTcHmp7dTWY3iJZRHG9bVyqtBO9DnqAGPfp0o2g1C0kz817PX1Olr7/sIqM9G5Q3ACDok4rJskVbotXSNrGjQAig8xF+0RTb2f7dWjTwebYEco6xZz/YkTzs8J1wu9LjbVAJ34Wrx/s98ump45UsxYJKtwXMN5A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,42 +131,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax.h: simplify the variants of clamp()
+    minmax.h: remove some #defines that are only expanded once
 
 to the 5.15-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax.h-simplify-the-variants-of-clamp.patch
+     minmax.h-remove-some-defines-that-are-only-expanded-once.patch
 and it can be found in the queue-5.15 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=36971892a=farbere@amazon.com Wed Oct  8 17:35:26 2025
+From prvs=36971892a=farbere@amazon.com Wed Oct  8 17:35:37 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Wed, 8 Oct 2025 15:29:43 +0000
-Subject: minmax.h: simplify the variants of clamp()
+Date: Wed, 8 Oct 2025 15:29:44 +0000
+Subject: minmax.h: remove some #defines that are only expanded once
 To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>, <rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>, <jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>, <mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari
  .ailus@l
  inux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>, <willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>, <quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <fre
  edreno@l
  ists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>, <linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
 Cc: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>, Dan Carpenter <dan.carpenter@linaro.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, "Pedro Falcato" <pedro.falcato@gmail.com>
-Message-ID: <20251008152946.29285-19-farbere@amazon.com>
+Message-ID: <20251008152946.29285-20-farbere@amazon.com>
 
 From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 495bba17cdf95e9703af1b8ef773c55ef0dfe703 ]
+[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
 
-Always pass a 'type' through to __clamp_once(), pass '__auto_type' from
-clamp() itself.
+The bodies of __signed_type_use() and __unsigned_type_use() are much the
+same size as their names - so put the bodies in the only line that expands
+them.
 
-The expansion of __types_ok3() is reasonable so it isn't worth the added
-complexity of avoiding it when a fixed type is used for all three values.
+Similarly __signed_type() is defined separately for 64bit and then used
+exactly once just below.
 
-Link: https://lkml.kernel.org/r/8f69f4deac014f558bab186444bac2e8@AcuMS.aculab.com
+Change the test for __signed_type from CONFIG_64BIT to one based on gcc
+defined macros so that the code is valid if it gets used outside of a
+kernel build.
+
+Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
 Signed-off-by: David Laight <david.laight@aculab.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Arnd Bergmann <arnd@kernel.org>
@@ -182,69 +187,49 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ include/linux/minmax.h |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -183,29 +183,29 @@
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
- 
--#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
--	__auto_type uval = (val);						\
--	__auto_type ulo = (lo);							\
--	__auto_type uhi = (hi);							\
-+#define __clamp_once(type, val, lo, hi, uval, ulo, uhi) ({			\
-+	type uval = (val);							\
-+	type ulo = (lo);							\
-+	type uhi = (hi);							\
- 	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
- 	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
--#define __careful_clamp(val, lo, hi) \
--	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-+#define __careful_clamp(type, val, lo, hi) \
-+	__clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
- 
- /**
-- * clamp - return a value clamped to a given range with strict typechecking
-+ * clamp - return a value clamped to a given range with typechecking
-  * @val: current value
-  * @lo: lowest allowable value
-  * @hi: highest allowable value
-  *
-- * This macro does strict typechecking of @lo/@hi to make sure they are of the
-- * same type as @val.  See the unnecessary pointer comparisons.
-+ * This macro checks @val/@lo/@hi to make sure they have compatible
-+ * signedness.
+@@ -46,10 +46,8 @@
+  * comparison, and these expressions only need to be careful to not cause
+  * warnings for pointer use.
   */
--#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
-+#define clamp(val, lo, hi) __careful_clamp(__auto_type, val, lo, hi)
- 
- /**
-  * clamp_t - return a value clamped to a given range using a given type
-@@ -217,7 +217,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
-+#define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
- 
- /**
-  * clamp_val - return a value clamped to a given range using val's type
-@@ -230,7 +230,7 @@
-  * type and @lo and @hi are literals that will otherwise be assigned a signed
-  * integer type.
-  */
--#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
-+#define clamp_val(val, lo, hi) __careful_clamp(typeof(val), val, lo, hi)
+-#define __signed_type_use(ux) (2 + __is_nonneg(ux))
+-#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
+ #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
+-	__signed_type_use(ux) : __unsigned_type_use(ux))
++	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
  
  /*
-  * Do not check the array parameter using __must_be_array().
+  * Check whether a signed value is always non-negative.
+@@ -57,7 +55,7 @@
+  * A cast is needed to avoid any warnings from values that aren't signed
+  * integer types (in which case the result doesn't matter).
+  *
+- * On 64-bit any integer or pointer type can safely be cast to 'long'.
++ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
+  * But on 32-bit we need to avoid warnings about casting pointers to integers
+  * of different sizes without truncating 64-bit values so 'long' or 'long long'
+  * must be used depending on the size of the value.
+@@ -66,12 +64,12 @@
+  * them, but we do not use s128 types in the kernel (we do use 'u128',
+  * but they are handled by the !is_signed_type() case).
+  */
+-#ifdef CONFIG_64BIT
+-  #define __signed_type(ux) long
++#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
++#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
+ #else
+-  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
++#define __is_nonneg(ux) statically_true( \
++	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
+ #endif
+-#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
+ 
+ #define __types_ok(ux, uy) \
+ 	(__sign_use(ux) & __sign_use(uy))
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
