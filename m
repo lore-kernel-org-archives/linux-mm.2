@@ -4,139 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE9A1CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 06:48:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E4CCCD184
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 07:19:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26D8D8E003A; Fri, 17 Oct 2025 02:48:47 -0400 (EDT)
+	id A87EA8E003B; Fri, 17 Oct 2025 03:19:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 245138E0002; Fri, 17 Oct 2025 02:48:47 -0400 (EDT)
+	id A09EE8E0002; Fri, 17 Oct 2025 03:19:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1345C8E003A; Fri, 17 Oct 2025 02:48:47 -0400 (EDT)
+	id 8B5A28E003B; Fri, 17 Oct 2025 03:19:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D938E0002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:48:46 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 807EABA0C7
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:48:46 +0000 (UTC)
-X-FDA: 84006678252.04.84C439F
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3A79040007
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:48:44 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=B6juZ8Iw;
-	spf=pass (imf27.hostedemail.com: domain of kassey.li@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=kassey.li@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 732A08E0002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:19:16 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4A3811A574
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 07:19:15 +0000 (UTC)
+X-FDA: 84006755070.12.7A23074
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8F434180008
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 07:19:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=eZu7sJ0e;
+	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760685554; a=rsa-sha256;
+	cv=none;
+	b=2TwaN8MSweXsV2JxpzrxaeEMQ4W3hQmbeiYUm5cb8dJzAq12C8x0lEQEzmNZjI39f0JOH4
+	QbqNxRIS4wsnQiuLQN/uAf4D1YlVhqWed9G3NOVBB/hObcgUTkEQBYqQLsCIMxJ8O033R+
+	fmayNu5j5G0Z+9kSFPRNtgQcAKtGtSU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=eZu7sJ0e;
+	spf=pass (imf24.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760683724;
+	s=arc-20220608; t=1760685553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=b45vcD0RNhdyBBimrVOHx32/MG2SgQ7pep5TrbKAkCo=;
-	b=RF4mdVqJ7idJP1B5CxDDnkkMpt0pnI/11r+RZgG3aVTyhcIc0ZI6JRU5oihZFc3DTRIESL
-	JSbiYKA2CYFa+n1KwVMy8KMWN4GNPMbam57Dg0qDi+2H9jrOSKYvMAOtl+Z7J3NFt2PeMY
-	Gad30d3rxqSYNatADtH40/4JQq1vbm0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=B6juZ8Iw;
-	spf=pass (imf27.hostedemail.com: domain of kassey.li@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=kassey.li@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760683724; a=rsa-sha256;
-	cv=none;
-	b=c7hUK1UWgecToQyxFzFTc34X2BQV0VFFJCq/MbBeow0+Nm+jn07FREHA3QrYAPpZzubCnI
-	8Lgr0eA392l2/8G+icmdsJXklbDbsvhFUr0DXPqiAXlJPOtR46qhF0OL1OEujYsW/qnBFj
-	XmXZLoOZpaqYn7MDM4bdig7GPzddLng=
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59GKLW8N020342
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:48:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=b45vcD0RNhdyBBimrVOHx32/MG2SgQ7pep5
-	TrbKAkCo=; b=B6juZ8IwqBtekP3afXrB8DmDOcLSuaktWF18+ylupHLZ1JFjf14
-	mIyH1zVPuBiPCGFBsv63DUhKercf0PEwCzP/b39Be5hp0Ukj+5MnSpqZ8gsRSGEY
-	dW9gQe/VUqYuICyxYWsr3Y+1I0208+yeJnLhfqVGRcIPVfFhnMz0XZ8G5LCStqRw
-	/zMmLzEGv5ggN2Wr8X7xkgKs8rnRaMQYG4TvwXsUcSAn/2ciXceFWxX8PwYPm9Ku
-	GqcG60KAZXBMBqawVSDJZM0fk/ejPUiPZ78P0o3/E9xOrKWKB/oUWzF0NCnp5z5N
-	qopHf9cLDrOxPF7ZDDasJqpGETHhn5D94kw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49tqvpmjyk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:48:43 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-33bba464b08so1175656a91.0
-        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:48:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760683722; x=1761288522;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b45vcD0RNhdyBBimrVOHx32/MG2SgQ7pep5TrbKAkCo=;
-        b=ne0bTWHJAt5/DjSGyqQh6lHQ4EScO7Od3KgkhklbR964ViodOuxQhdIAQesyWt7kD/
-         c87WUWGzaPaFBsW3tuHir/Z/S2aNam4roNPXKEpReLDi4ElrFTZS1lnOfkkMWFnRNlR8
-         t63wlMGRkV/uLqRuJPNhcLyN8Tpb0vd5VKEvgi1B+JAfAtBHATBsqbbuJjDdhXjIKwjY
-         6CEm+RJlYtuOYdiMz3YyWfEt+mvogl9XSly0cE36y+OcJcyCcSscL+GHvn1MCmq26vgk
-         QD1DZSS6sFBKajQ+QQV/truV8MzZ9974IkRfRVrE8MzG0T2lqcAze5qZ7UYZdi8VI+mG
-         zwsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVG0CTgPMdDzYWft5SIoM4Zo/uWockuk0pGOU580l/zWuNGvPqdKKmhDbdhFfsc7csUO2lXfVS4Iw==@kvack.org
-X-Gm-Message-State: AOJu0YzoKTVU4lBDClHl9DDDu8h/hNPwSugjyxBd3ZB2OTXmGjNjcAES
-	woKcvu4/KX8j/otZ9frZRWALoNWE8ygTc4j70AALiJjq3csVHehosQDPuO5jguwJXD4Mta/H5Ym
-	QB3yWH43SPyxUs6lsPG7tsl9uHULf9hZsGJHoWMOy9ynzmY2vGMiHhA==
-X-Gm-Gg: ASbGncv8ZTFGvP2uuGuM3DO6WO+6iWR9dTo8On8z9KGYiwPbLJSjLpDS3Szi0ruBkTP
-	T0v2LSuxfAVou+JuThD8AToOhIBI21iprTQHuUFaWIljzVc0mCacMgWN2OE0BSHgxEOYRbRhDra
-	3jz8Lr3GBI+4Ea6zZzVp7yesbHOVN2ZSEXHo9dQtQAiljJAm48sp4TQgDCp078m2/QebHUM/oOR
-	0x3X2b38R9aF9bfJyrwS+BmFGu104Bh885v41ytqfVo5vonp7f7hR/oXJHX1ZxSsCWSia8+XXTj
-	TC33FtHQ7oE6qXPlQTVXtVxSIrA32VPjfbJYl96JChFIuYETZfYHhG6OPhU6DR7etrGS+LaMU1K
-	Yp8eG0xt3olYNpk38RdtopuEtwYeNCdofsmHXPbk+r4gNFDYGIQ==
-X-Received: by 2002:a17:90b:5111:b0:33b:c5ce:3cb0 with SMTP id 98e67ed59e1d1-33bcf8e4560mr3348982a91.20.1760683721817;
-        Thu, 16 Oct 2025 23:48:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwIThdK9ZWr13FTpAec3JJm/4DOASnbw4evWs77j00Y0lv0/Fv57JQjbJhk2VxOhsxJNt8vg==
-X-Received: by 2002:a17:90b:5111:b0:33b:c5ce:3cb0 with SMTP id 98e67ed59e1d1-33bcf8e4560mr3348962a91.20.1760683721410;
-        Thu, 16 Oct 2025 23:48:41 -0700 (PDT)
-Received: from hu-yingangl-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33bd7b3177asm1665151a91.13.2025.10.16.23.48.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 23:48:41 -0700 (PDT)
-From: Kassey Li <kassey.li@oss.qualcomm.com>
-To: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
-        rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-        linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, kassey.li@oss.qualcomm.com
-Subject: [PATCH] slab: add flags in cache_show
-Date: Thu, 16 Oct 2025 23:48:39 -0700
-Message-Id: <20251017064839.585204-1-kassey.li@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=r/Dks+48w1BdXiFzek6OOlKb+iAYgvFGifA885CHgUw=;
+	b=QRKu9f6fOLwG3yYTS/RVgUsZ3bqRXGd2ZPSNnhC8uyEn1UOG2kS6bQ5yGTOqbHRZ3MB5Q5
+	u9RQ2L11BE27f5O/WRMyUie5ktCV66Kn/mkD64VXxf1r1t6O83G9abgK9kfqE0XAhNdvfa
+	b3YsQ0ijT/++HDYf7fe2GKxuPgxiHqo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=r/Dks+48w1BdXiFzek6OOlKb+iAYgvFGifA885CHgUw=;
+	b=eZu7sJ0e+229j+RC4MywSEDBWrs+KVDQyTl+VENlmbkw7f8upDzW1NTdgzpX40SSkuhkTK6aA
+	qNUHyjvG5ux8FoIZi9dpaA4www0y5SCAFmwlHqYdEC/zg6yKMM5Waf1UgD8b26UUAcjwEdJknqZ
+	MtHgdYH9vOEmHGjhpzs93HM=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cnx516Bccz1prMP;
+	Fri, 17 Oct 2025 15:18:45 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id AF7DE140123;
+	Fri, 17 Oct 2025 15:19:07 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 17 Oct 2025 15:19:06 +0800
+Message-ID: <56ad383f-80c4-43bf-848e-845311f83907@huawei.com>
+Date: Fri, 17 Oct 2025 15:19:05 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] mm: page_alloc: add
+ alloc_contig_{range_frozen,frozen_pages}()
+To: David Hildenbrand <david@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>
+CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
+	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
+	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	<linux-mm@kvack.org>
+References: <20251013133854.2466530-1-wangkefeng.wang@huawei.com>
+ <20251013133854.2466530-4-wangkefeng.wang@huawei.com>
+ <e1f7ca22-a249-4b24-b308-d46afb2afb29@redhat.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <e1f7ca22-a249-4b24-b308-d46afb2afb29@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=aPD9aL9m c=1 sm=1 tr=0 ts=68f1e6cb cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8
- a=blH2SsOzjbYzLah_e6kA:9 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE2MDAxNyBTYWx0ZWRfX71Hxi5hkdkOZ
- zELZaRjOWAzJcA0cZZs5kRSJedzUK/mTXIUNqvu+4o1FPMVzza3LY+TCuIsMqnPOM6YSCWdF6/F
- MJcV7NKomvKqvvSUNswq+xZv3ObzhVHRbTjeUEfwHzfDTHNa0kFy6LVaOedt28f05UOWPoAKzDd
- LhV09Cb+kc3gNF43VuWXL9/I+9TmYVS6u8MkM4VbVfzg+kwHG7B5vcHwSfkI963eqwj07Kays4X
- kJQACi8BIusabiNV2oP7fhPpQ5nAF8sQIeoRYrJyltPQZcqsY5J5O88hra93m9Smm3ewzPb/oUg
- /0Z8YDN+nvo+dwKbc6SELVDxyURwDqYpFODyIEONdr/LdYSrRc5ArDwCYsHlk9TFpBMYawLuoeW
- wzpvFtxyza/E/gP0m3rEocPy8bMdDw==
-X-Proofpoint-ORIG-GUID: 7bNr_5sDDw-j7_PUF2GzTesR6J2NgARH
-X-Proofpoint-GUID: 7bNr_5sDDw-j7_PUF2GzTesR6J2NgARH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
- bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510160017
-X-Stat-Signature: tnmxkg5b1mbfwaqf5stra9a3jw4hjaig
-X-Rspamd-Queue-Id: 3A79040007
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760683724-352779
-X-HE-Meta: U2FsdGVkX1/dnfWoZzIE4Tai6iGT0O6nmK7VMCftro8AFe+O3o7VsJyRV+Jjxm2CSUzDVt+OH7/cAH05y5LEw4KrY+Hb09J96TT6BoXTV4oEYXpIoXLw+jA58Bv9j1oHUQiPcmIPHtaRNufJdsS7FiV5tFSRO5h3ai0fKPc/op+OjOreEeqEy0C0HB3cZ9AeeqP/i9RO/jEK7JXkl6AlPWwmd41jotDaJFURTinWpS8hI3b39AFpgdjjO9OAL0lB6hxVSlyacRQxmdVS3Zss4fODWzvFppcAM+BIPikwRRGoN+UI9czc3ihsjPEfwe5reNlFm5pYYC6xQdjSYl8zkw5g9SMlzaa7fzJn3DZlUcTv9kvK2VJBAcD8UVsGXNr/DjqeXyEo925o7l+gDXOqD42GBz7IwdUrB6O7fDaQlDg6/3VWKqi6MDfKWlkOXZ4OM5Iru4aqEutbeysAPFKw3kenlQ4G7Pr3zhcyzqpP9b0aB6oKNWy7tBVL+AR9UZsXoUKAAxNYdLcG1vNdvcvvd/g4FSMXVy4LP+wOjWd0K+a38buIvsE+IGddhdJgmgJHngM+dGVT7HpCfysZyplom8xCJIcT869cKJIHsWeHdiws81EF8g9GAp2KppEJrLuTE/NyxgMF9/zEL7yQgFpVMMbNgG7610WEuNUkJilUpmFAQFFrRhKYTCw9Kr9MGQdPep/VscIb0EA3rQ79ggGXCRUnIc1BmXLM/GyjEIdTXx7V0W9icn5sv2RwzGpAIMDOeG/Zle40myuwYJ7V2lyuxC21uq7lWnBB6rxHpUF+cc1QKS6ctyXPLbU4/5s05i1XKNp9SjPcJb4JvH8bBynOmZyf+zzMdaE3njrneOLunW7QvYETNj0NkA1vBm4U3VNEPOJTQEWqrdwzO1LLKBJAdZ6oGByx1NE7+KkvHvlXOKKy2M6LiNhxD0WgY297H9rW+AwExUEOYnJq3Y9T6mo
- 8XzlLwvI
- FurBRn1opbgVIJqKUAi7azVOd0/a1aaVx9aIZjfWR9vD8l2HeBJzJ1eo/Hqx50cKuOgwoNFxCEB3B1JqN1BrefLIOl0J9sSeu/sjCQno9rObTVBg3J1oaU6/PEDOfM5K4DQbrHtmMo25cEeSvs8pe0Bq3bwKfKuZh/BiaWp04AptQP7zzlRa1i8QJP9wfU2Opr6tyvEO+zMdt565vKG6whoy9CA+3Vj1NZ6gCRYyejzteyzhcuT/SlaiH+DorfQ36ug2G8dHdVoLzh88x4QN6k0T8qvlYtBwMw1eJ4EjVY0fpeLBEGpuGfDqtT6YqFoxqmD2985rZsqDGqUzak3XYZ4xbV644xWF91pHnj3x560tuZmtg7IHT0NRofwDkSmcDK+jA1xmTeGxAbINgFXd4K70fHUUYKB2WupBKor3ttKaHmm4=
+X-Stat-Signature: rmqtowe8qifwzda1fb1ux7ywoifief6d
+X-Rspamd-Queue-Id: 8F434180008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760685552-292255
+X-HE-Meta: U2FsdGVkX1+1FaWHejICG/XoXzuJgFTZXE0gsipziKkDW0PQl8dFWX08M1HKmJsHutGe6mkNFObsfjjipQvQSC0OfFxxp2X+TekffVLhz+XkuyntGJEyRbPyEHcu4G2Z/cM0HY95mWw1vPZYJOpqlvcEZCs26AzFUKqRNybfXoX11rrpCMIjDG1M1cXy046GTqTK7GXVjOMPv+UW7n+xb8X3LVAx773qviov78rLEJSpLJrummumGluLPsGBs2tSKLZmVariYkojHmG+Oo/MAF/PwYiulreG7t7qvRYEdvPz4Ii5nW6PU+C2ZuVIOqpC2UQVdt3FoB6BpP2Gj2mCR3KXvpx1rSJFghv02/z8GuoxzOAnk/XVBJQSF+iZNg8LRLpS9kG2x5J2Fl/eb/G0+JOgFKT3b0MAb0BXoMg1zkEdghPrHL0MqIm9hkCxQzc3PDWmkleAPK9xHEnupzpuuQKLX4iXOESrGDaLebQpJEDLaaB90QQ/jSvLtadh+3UkRpmXd3KzO2dubWH3ClS/vCoxIpFNEMGdI1C7gkXmM1fk9/4XW9rKCJT1jawKK48ZQpg1dMeAQDELZkbl5VpUwwP7zwbmGMqtj6s+dCqf+oPOIqTyoG3XYvPgRAbI4sprNLMA+eQ5JFsKuy9t4qiGzMpvuMQSh5SU5DEpCfyE4SCVgeE8YsAmL4eMmB2oQGJ/wRcS1mJVnT64QOsZ3QL5JDW2fIGqUQX87GcDAeVA06G+pjtijiqXh+oFB/6zjPUh8F84CvMTfiDL7HYnDwpAz8NJoqu6rTQ1aU+RYzP+lRxPNgVZo1L67+3p5GL5hhp1heiU05cP8Pl2lLJmwNx2mec92bUWNHEBQNvs0sRLnNFa1VwN0zN5C602fG/xVtUTcShfWOY7zuWWCUljdFF1tfYnLYcz2Mwp1LXgo4zQ9jUwpwyk1t9bHI3hlkUwBn36i1H9KonYzcatZyZ6x/C
+ 2nQS+YUE
+ KS6nnuRWlKfOXUP7Vclm8BJ0IQww5gU6/L8YeQnIVvNejeG4hOK/vW1G4sOAvi9J8pITI4z+PuU9s4kFv1H3xflcNvZPXPG3NjeyHW2TtNW58MlouUzr6nJgmRRU78beBolm43IKL5A5/P8xFrquziEU5yhsSRfy2N+8RBdD0zgPBM2aIRy59YUEofKl+H/8kdFwgnZ8ouQD585tmSLSG4mB8eSVOvAPYRk3fpZ+TCHdaaBB1/mMHh1Pu4ThU1iXtxkUByT5DsvUxyYquV7vfRSHne9nfPijCqGnSRvIerN0l05xQWPq5UJsAvyQZVF25THaZ73Jc5VtBSBoUUHKem/mUPYn2lrdUefW5mr7qC4Z51j5l4EGvDaWcqXNQvhVXA1dJxd7V2chaJ7oebP9kBMBzOGXlr9V1Q3yF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,43 +106,395 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Flags info is useful to check the slab type.
 
-for example, _SLAB_RECLAIM_ACCOUNT:
 
-    0x50100 _SLAB_PANIC _SLAB_RECLAIM_ACCOUNT _SLAB_CMPXCHG_DOUBLE
+On 2025/10/17 4:53, David Hildenbrand wrote:
+> On 13.10.25 15:38, Kefeng Wang wrote:
+>> In order to allocate given range of pages or allocate compound
+>> pages without incrementing their refcount, adding two new helper
+>> alloc_contig_{range_frozen,frozen_pages}() which may be beneficial
+>> to some users (eg hugetlb), also free_contig_range_frozen() is
+>> provided to match alloc_contig_range_frozen(), but it is better to
+>> use free_frozen_pages() to free frozen compound pages.
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   include/linux/gfp.h |  29 +++++--
+>>   mm/page_alloc.c     | 183 +++++++++++++++++++++++++++++---------------
+>>   2 files changed, 143 insertions(+), 69 deletions(-)
+>>
+>> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+>> index 1fefb63e0480..fbbdd8c88483 100644
+>> --- a/include/linux/gfp.h
+>> +++ b/include/linux/gfp.h
+>> @@ -429,14 +429,27 @@ typedef unsigned int __bitwise acr_flags_t;
+>>   #define ACR_FLAGS_CMA ((__force acr_flags_t)BIT(0)) // allocate for CMA
+>>   /* The below functions must be run on a range from a single zone. */
+>> -extern int alloc_contig_range_noprof(unsigned long start, unsigned 
+>> long end,
+>> -                     acr_flags_t alloc_flags, gfp_t gfp_mask);
+>> -#define alloc_contig_range(...)            
+>> alloc_hooks(alloc_contig_range_noprof(__VA_ARGS__))
+>> -
+>> -extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, 
+>> gfp_t gfp_mask,
+>> -                          int nid, nodemask_t *nodemask);
+>> -#define alloc_contig_pages(...)            
+>> alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
+>> -
+>> +int alloc_contig_range_frozen_noprof(unsigned long start, unsigned 
+>> long end,
+>> +        acr_flags_t alloc_flags, gfp_t gfp_mask);
+> 
+> Just wondering: given alloc_contig_pages() vs. alloc_contig_frozen_pages_()
+> 
+> Shouldn't it be alloc_contig_range() vs. alloc_contig_frozen_range()
+> 
+> And then free_contig_frozen_range()?
+> 
 
-Signed-off-by: Kassey Li <kassey.li@oss.qualcomm.com>
----
- mm/slab_common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sure, it's better to align them, not thought much about the naming.
 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 932d13ada36c..f43239211e69 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1083,7 +1083,7 @@ static void print_slabinfo_header(struct seq_file *m)
- 	 * without _too_ many complaints.
- 	 */
- 	seq_puts(m, "slabinfo - version: 2.1\n");
--	seq_puts(m, "# name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab>");
-+	seq_puts(m, "# name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab> <flags>");
- 	seq_puts(m, " : tunables <limit> <batchcount> <sharedfactor>");
- 	seq_puts(m, " : slabdata <active_slabs> <num_slabs> <sharedavail>");
- 	seq_putc(m, '\n');
-@@ -1112,9 +1112,9 @@ static void cache_show(struct kmem_cache *s, struct seq_file *m)
- 	memset(&sinfo, 0, sizeof(sinfo));
- 	get_slabinfo(s, &sinfo);
- 
--	seq_printf(m, "%-17s %6lu %6lu %6u %4u %4d",
-+	seq_printf(m, "%-17s %6lu %6lu %6u %4u %4d 0x%-8x",
- 		   s->name, sinfo.active_objs, sinfo.num_objs, s->size,
--		   sinfo.objects_per_slab, (1 << sinfo.cache_order));
-+		   sinfo.objects_per_slab, (1 << sinfo.cache_order), s->flags);
- 
- 	seq_printf(m, " : tunables %4u %4u %4u",
- 		   sinfo.limit, sinfo.batchcount, sinfo.shared);
--- 
-2.34.1
+> 
+> Do we want kerneldoc here as well?
+
+OK, will add a short kerneldoc for this one.
+
+> 
+>> +int alloc_contig_range_frozen_noprof(unsigned long start, unsigned 
+>> long end,
+>> +        acr_flags_t alloc_flags, gfp_t gfp_mask)
+>>   {
+>>       const unsigned int order = ilog2(end - start);
+>>       unsigned long outer_start, outer_end;
+>> @@ -7003,19 +6982,18 @@ int alloc_contig_range_noprof(unsigned long 
+>> start, unsigned long end,
+>>       }
+>>       if (!(gfp_mask & __GFP_COMP)) {
+>> -        split_free_pages(cc.freepages, gfp_mask);
+>> +        split_free_frozen_pages(cc.freepages, gfp_mask);
+>>           /* Free head and tail (if any) */
+>>           if (start != outer_start)
+>> -            free_contig_range(outer_start, start - outer_start);
+>> +            free_contig_range_frozen(outer_start, start - outer_start);
+>>           if (end != outer_end)
+>> -            free_contig_range(end, outer_end - end);
+>> +            free_contig_range_frozen(end, outer_end - end);
+>>       } else if (start == outer_start && end == outer_end && 
+>> is_power_of_2(end - start)) {
+>>           struct page *head = pfn_to_page(start);
+>>           check_new_pages(head, order);
+>>           prep_new_page(head, order, gfp_mask, 0);
+>> -        set_page_refcounted(head);
+>>       } else {
+>>           ret = -EINVAL;
+>>           WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, 
+>> %lu)\n",
+>> @@ -7025,16 +7003,48 @@ int alloc_contig_range_noprof(unsigned long 
+>> start, unsigned long end,
+>>       undo_isolate_page_range(start, end);
+>>       return ret;
+>>   }
+>> -EXPORT_SYMBOL(alloc_contig_range_noprof);
+>> -static int __alloc_contig_pages(unsigned long start_pfn,
+>> -                unsigned long nr_pages, gfp_t gfp_mask)
+>> +/**
+>> + * alloc_contig_range() -- tries to allocate given range of pages
+>> + * @start:    start PFN to allocate
+>> + * @end:    one-past-the-last PFN to allocate
+>> + * @alloc_flags:    allocation information
+>> + * @gfp_mask:    GFP mask. Node/zone/placement hints are ignored; 
+>> only some
+>> + *        action and reclaim modifiers are supported. Reclaim modifiers
+>> + *        control allocation behavior during compaction/migration/ 
+>> reclaim.
+>> + *
+>> + * The PFN range does not have to be pageblock aligned. The PFN range 
+>> must
+>> + * belong to a single zone.
+>> + *
+>> + * The first thing this routine does is attempt to MIGRATE_ISOLATE all
+>> + * pageblocks in the range.  Once isolated, the pageblocks should not
+>> + * be modified by others.
+>> + *
+>> + * Return: zero on success or negative error code.  On success all
+>> + * pages which PFN is in [start, end) are allocated for the caller and
+>> + * need to be freed with free_contig_range().
+>> + */
+>> +int alloc_contig_range_noprof(unsigned long start, unsigned long end,
+>> +                  acr_flags_t alloc_flags, gfp_t gfp_mask)
+>>   {
+>> -    unsigned long end_pfn = start_pfn + nr_pages;
+>> +    int ret;
+>> +
+>> +    ret = alloc_contig_range_frozen_noprof(start, end, alloc_flags, 
+>> gfp_mask);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    if (gfp_mask & __GFP_COMP) {
+>> +        set_page_refcounted(pfn_to_page(start));
+>> +    } else {
+>> +        unsigned long pfn;
+>> +
+>> +        for (pfn = start; pfn < end; pfn++)
+>> +            set_page_refcounted(pfn_to_page(pfn));
+>> +    }
+> 
+> Might read better as
+> 
+> unsigned long pfn;
+> 
+> ...
+> 
+> if (gfp_mask & __GFP_COMP) {
+>      set_page_refcounted(pfn_to_page(start));
+>      return 0;
+> }
+> 
+> for (pfn = start; pfn < end; pfn++)
+>      set_page_refcounted(pfn_to_page(pfn));
+> return 0;
+> 
+> 
+
+I like this one, avoid gfp_mask check in the loop.
+
+> One could also do something fancy like
+> 
+> unsigned long pfn;
+> ...
+> 
+> for (pfn = start; pfn < end; pfn++) {
+>      set_page_refcounted(pfn_to_page(pfn));
+>      if (gfp_mask & __GFP_COMP)
+>          break;
+> }
+> return 0:
+> 
+> 
+>> -    return alloc_contig_range_noprof(start_pfn, end_pfn, ACR_FLAGS_NONE,
+>> -                     gfp_mask);
+>> +    return 0;
+>>   }
+>> +EXPORT_SYMBOL(alloc_contig_range_noprof);
+>>   static bool pfn_range_valid_contig(struct zone *z, unsigned long 
+>> start_pfn,
+>>                      unsigned long nr_pages)
+>> @@ -7067,31 +7077,8 @@ static bool zone_spans_last_pfn(const struct 
+>> zone *zone,
+>>       return zone_spans_pfn(zone, last_pfn);
+>>   }
+> 
+> 
+> ... kerneldoc? :)
+
+Sure.
+
+> 
+>> +struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+>> +        gfp_t gfp_mask, int nid, nodemask_t *nodemask)
+>>   {
+>>       unsigned long ret, pfn, flags;
+>>       struct zonelist *zonelist;
+>> @@ -7114,7 +7101,9 @@ struct page *alloc_contig_pages_noprof(unsigned 
+>> long nr_pages, gfp_t gfp_mask,
+>>                    * and cause alloc_contig_range() to fail...
+>>                    */
+>>                   spin_unlock_irqrestore(&zone->lock, flags);
+>> -                ret = __alloc_contig_pages(pfn, nr_pages,
+>> +                ret = alloc_contig_range_frozen_noprof(pfn,
+>> +                            pfn + nr_pages,
+>> +                            ACR_FLAGS_NONE,
+>>                               gfp_mask);
+>>                   if (!ret)
+>>                       return pfn_to_page(pfn);
+>> @@ -7126,6 +7115,78 @@ struct page *alloc_contig_pages_noprof(unsigned 
+>> long nr_pages, gfp_t gfp_mask,
+>>       }
+>>       return NULL;
+>>   }
+>> +EXPORT_SYMBOL(alloc_contig_range_frozen_noprof);
+>> +
+> 
+> kerneldoc? :)
+> 
+>> +void free_contig_range_frozen(unsigned long pfn, unsigned long nr_pages)
+>> +{
+>> +    struct folio *folio = pfn_folio(pfn);
+>> +
+>> +    if (folio_test_large(folio)) {
+>> +        int expected = folio_nr_pages(folio);
+>> +
+>> +        WARN_ON(folio_ref_count(folio));
+>> +
+>> +        if (nr_pages == expected)
+>> +            free_frozen_pages(&folio->page, folio_order(folio));
+>> +        else
+>> +            WARN(true, "PFN %lu: nr_pages %lu != expected %d\n",
+>> +                 pfn, nr_pages, expected);
+>> +        return;
+>> +    }
+>> +
+>> +    for (; nr_pages--; pfn++) {
+>> +        struct page *page = pfn_to_page(pfn);
+>> +
+>> +        WARN_ON(page_ref_count(page));
+>> +        free_frozen_pages(page, 0);
+>> +    }
+> 
+> That's mostly a copy-and-paste of free_contig_range().
+> 
+> I wonder if there is some way to avoid duplicating a lot of
+> free_contig_range() here. Hmmm.
+> 
+> Also, the folio stuff in there looks a bit weird I'm afraid.
+> 
+> Can't we just refuse to free compound pages throught this interface and
+> free_contig_range() ? IIRC only hugetlb uses it and uses folio_put() 
+> either way?
+> 
+> Then we can just document that compound allocations are to be freed 
+> differently.
+
+
+There is a case for cma_free_folio, which calls free_contig_range for 
+both in cma_release(), but I will try to check whether we could avoid
+the folio stuff in free_contig_range().
+
+> 
+> And do something like
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 600d9e981c23d..776b4addc3685 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7123,29 +7123,25 @@ struct page *alloc_contig_pages_noprof(unsigned 
+> long nr_pages, gfp_t gfp_mask,
+>   }
+>   #endif /* CONFIG_CONTIG_ALLOC */
+> 
+> -void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+> +static inline void __free_contig_range(unsigned long pfn, unsigned long 
+> nr_pages, bool put_ref)
+>   {
+> -       unsigned long count = 0;
+> -       struct folio *folio = pfn_folio(pfn);
+> -
+> -       if (folio_test_large(folio)) {
+> -               int expected = folio_nr_pages(folio);
+> -
+> -               if (nr_pages == expected)
+> -                       folio_put(folio);
+> -               else
+> -                       WARN(true, "PFN %lu: nr_pages %lu != expected 
+> %d\n",
+> -                            pfn, nr_pages, expected);
+> -               return;
+> -       }
+> +       if (WARN_ON_ONCE(PageHead(pfn_to_page(pfn))))
+> +               break;
+> 
+>          for (; nr_pages--; pfn++) {
+>                  struct page *page = pfn_to_page(pfn);
+> 
+> -               count += page_count(page) != 1;
+> -               __free_page(page);
+> +               if (put_ref)
+> +                       page_ref_dec(page);
+> +               if (WARN_ON_ONCE(page_count(page)))
+> +                       continue;
+> +               free_frozen_pages(page, 0);
+>          }
+> -       WARN(count != 0, "%lu pages are still in use!\n", count);
+> +}
+> +
+> +void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+> +{
+> +       return __free_contig_range(pfn, nr_pages, /* put_ref= */ true);
+>   }
+>   EXPORT_SYMBOL(free_contig_range);
+> 
+> 
+> Just a thought, I dislike current free_contig_range() and the duplicated
+> variant.
+> 
+>> +}
+>> +EXPORT_SYMBOL(free_contig_range_frozen);
+>> +
+>> +/**
+>> + * alloc_contig_pages() -- tries to find and allocate contiguous 
+>> range of pages
+>> + * @nr_pages:    Number of contiguous pages to allocate
+>> + * @gfp_mask:    GFP mask. Node/zone/placement hints limit the 
+>> search; only some
+>> + *        action and reclaim modifiers are supported. Reclaim modifiers
+>> + *        control allocation behavior during compaction/migration/ 
+>> reclaim.
+>> + * @nid:    Target node
+>> + * @nodemask:    Mask for other possible nodes
+>> + *
+>> + * This routine is a wrapper around alloc_contig_range(). It scans 
+>> over zones
+>> + * on an applicable zonelist to find a contiguous pfn range which can 
+>> then be
+>> + * tried for allocation with alloc_contig_range(). This routine is 
+>> intended
+>> + * for allocation requests which can not be fulfilled with the buddy 
+>> allocator.
+>> + *
+>> + * The allocated memory is always aligned to a page boundary. If 
+>> nr_pages is a
+>> + * power of two, then allocated range is also guaranteed to be 
+>> aligned to same
+>> + * nr_pages (e.g. 1GB request would be aligned to 1GB).
+>> + *
+>> + * Allocated pages can be freed with free_contig_range() or by 
+>> manually calling
+>> + * __free_page() on each allocated page.
+>> + *
+>> + * Return: pointer to contiguous pages on success, or NULL if not 
+>> successful.
+>> + */
+>> +struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t 
+>> gfp_mask,
+>> +        int nid, nodemask_t *nodemask)
+>> +{
+>> +    struct page *page;
+>> +
+>> +    page =  alloc_contig_frozen_pages_noprof(nr_pages, gfp_mask, nid,
+>> +                         nodemask);
+>> +    if (!page)
+>> +        return NULL;
+>> +
+>> +    if (gfp_mask & __GFP_COMP) {
+>> +        set_page_refcounted(page);
+>> +    } else {
+>> +        unsigned long pfn = page_to_pfn(page);
+>> +
+>> +        for (; nr_pages--; pfn++)
+>> +            set_page_refcounted(pfn_to_page(pfn));
+>> +    }
+>> +
+>> +    return page;
+> 
+> Same here, might be able to make it easier to read like I suggested for the
+> alloc_contig_range_noprof().
+> 
+> Or that part can just be factored out?
+> 
+> void set_pages_refcounted(struct page *page, unsigned long nr_pages, 
+> gfp_t gfp_mask)
+> 
+> or better
+> 
+> void set_pages_refcounted(struct page *page, unsigned long nr_pages)
+> 
+> And deriving __GFP_COMP from PageHead().
+> 
+
+Will try to fact it out.
+
+Thanks.
 
 
