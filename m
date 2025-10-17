@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37BE0CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 06:34:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDC2CCD184
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 06:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90A888E0032; Fri, 17 Oct 2025 02:33:59 -0400 (EDT)
+	id 1C7038E0034; Fri, 17 Oct 2025 02:43:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E20F8E0002; Fri, 17 Oct 2025 02:33:59 -0400 (EDT)
+	id 19ED08E0002; Fri, 17 Oct 2025 02:43:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F83F8E0032; Fri, 17 Oct 2025 02:33:59 -0400 (EDT)
+	id 0DBCE8E0034; Fri, 17 Oct 2025 02:43:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E6E28E0002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:33:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31A6E13B3E9
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:33:59 +0000 (UTC)
-X-FDA: 84006640998.25.DAFC86D
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8813A1C0005
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:33:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kgXwThbl
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0090D8E0002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:43:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79FA4B9F95
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:43:50 +0000 (UTC)
+X-FDA: 84006665820.09.547A008
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2D2E618000E
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:43:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SF6trazP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760682837;
+	s=arc-20220608; t=1760683428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ML0ZgsQwKly9k9OLN9ariPKzCdeQwaMi+RURL/74y5o=;
-	b=SGTb3ANS4v1CmMmecRG+7HtGzuNhQT0yP5lQb2qtnbnHhu97yc7suIaeBDiqdJAaw6HhQ1
-	ie1muDKkScrAT9c6yoRCc7U/hZgS8F3sip3cfAalPl28gMBmh33v/k9QCxeaiYatSMfubG
-	HjU7cIMnnEX8aNtxdbpxPgVfDPmX/fQ=
+	bh=27ILP3PisFWMzeZ0qER84rVbx10h57G1tQZ/rIsZYvs=;
+	b=ESBvKQCm+W9Ff+wWVZ/mBbtQsVJgo6iK8yGdm/ZoBXu/3dF/yMpD+iUneg12PLKKGcaWQ3
+	IvoCY3LxXO7JmT5w1rTslenXl9PKkPahA1ufSum43iOg8RLaj/3SZh7Xz2gXC1v+RTc7Et
+	YN0Vmr2SsjOdPPOJ6ZG8DGLR4c3r+7k=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kgXwThbl;
-	spf=none (imf18.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760682837; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SF6trazP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760683428; a=rsa-sha256;
 	cv=none;
-	b=dWe9OiwtwTjGC3/aWOuf4sliWftHOQGoGcDSfyFGjKqe2h/DMTOF5QRlpeby2Yo6hJQTOG
-	lX82J1QIYKLHXFmD2vCDkUWE/9IN69GzrwGvyrTzpirhjk5qf7jZSoT9Isi3w2SgbzHQmW
-	2rJKzPn8RSUPshnCHapetZKDDHbjuns=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ML0ZgsQwKly9k9OLN9ariPKzCdeQwaMi+RURL/74y5o=; b=kgXwThblotIMu/PlIEfFDKXZfo
-	K95mDhvWqtDdyERtA/kL/z+tdlffM6N8LIh88s49u3HkUN//18g2gwifMWr/9OLicGxqj94QKXQby
-	zKeSAFtwAkReclA4mMI8OZwxnOHpbXdSYVqBf38EmZy5+KdM5Y8/88abcL2lfrknINoN2BCEYl4Ko
-	y36VGJpN+dporTSjGe3LQGDS+0xxuWxfrZMUdS1l8dp24dR6D932C8DCnVv0AoDH1j0E1YF/VdNL9
-	pnoI2wt49ziVh6Wkfy872ZsRyFO2x/UTllIrX8rgdnhy1QTt8qP8o9PCeO2YkNmnYBMv137O+AE5L
-	gBDRqq8g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v9e2D-00000006nxh-02Mg;
-	Fri, 17 Oct 2025 06:33:53 +0000
-Date: Thu, 16 Oct 2025 23:33:52 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <aPHjUP7pdIXuEPIq@infradead.org>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+	b=ArcJz87WTS57iKH3D9za4mnfBNKI0s9xUB8uVrqDSmxEv8RVch39lVF6k7Uk2X4YqZ2Dcc
+	F7Ki/DMMgpNKtBj0vWOHN9vCtWCrfXMirI2d72mbkB+QwRiD6zhvmc76ugKWtYpSe8teGu
+	tV2d+Rv8V2WDXpI8WvQewJD6fSXHZlA=
+Message-ID: <556352a6-70dc-4709-a0d2-038e2cd4fd88@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760683425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=27ILP3PisFWMzeZ0qER84rVbx10h57G1tQZ/rIsZYvs=;
+	b=SF6trazPBL787T7iEDAxBvdVButWkO6CS5V+nuyrFgUYLqFoXBQRYYcui4o8yhzXVDAw6Q
+	73trCNxynS1BqseH1RPxZQBN4Ly7rQp7FOJSdRs+TKSYB8InQ60aiRNZv0gsjG4iTOwKtA
+	DPrLw/8OxW3fwKx1kn7FASkApJxUPgI=
+Date: Fri, 17 Oct 2025 14:42:56 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: pmoh9fg936u94iedykz5jusprkhsir9r
+Subject: Re: [PATCH] slab: Avoid race on slab->obj_exts in alloc_slab_obj_exts
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Hao Ge <gehao@kylinos.cn>
+References: <20251017045749.3060696-1-hao.ge@linux.dev>
+ <aPHcqbQkPV--NCt8@hyeyoo>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <aPHcqbQkPV--NCt8@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8813A1C0005
-X-HE-Tag: 1760682837-722248
-X-HE-Meta: U2FsdGVkX182IrH9VJ8A0JAauomKSFSL1Ivd04P05pdRHYjBTa7mlglY6af6X3fwgQS6ykorWCzoD3dFu5Yu2A9sYedCaD8syrwRXh086mTHg3qtWowc38u7WITRmBJYGWf4AH2LCOgZ4dFyN/8fgfyid19zyDKnOCbxK4vBDsrb3QHtYd3i5DZIkf6vqtoWQsuZlFGBmIN6rnIIXWQPhuxPqBd3rQ2a+fiDyl9NXGsK7PUlt8ulGVgvC9OgC9ONDjB2J0El+cto5lQAxKQs+rQYsCL1VEWUoGTGd34biNE4hAOMosdwvpphw7k9Gf/jo60q5/NLcd6rnuvfSbbuEcP6R6oQDwlq1M854i1ACJ3MhKE7tMWdABlyu1coYFz772enBPV/2gD3AkT7+44kiLKdzIgXUa5b8CnkWqNYp97mplIbttvBaBBu7xYkEoBrGZ5mDPbq14s0dTGZg/h8NWHq8S4kE3xe6GlEiIwyxW75q/s7Yr7G+hcMRTRBM3LhCAaDbkpo3kSExw4XDCHWl2NixBkHzcTF6oUek4d60LvLC0rTEhlFlaSFyyLOzNDWtog0LWThL3lOAGNw5oG+1R4LUBCwbdzekTEBcduxyGDnYVse8oGVIOgAxRnF0Pss6eN1U1f+acS6vAyDykq2gh/PbQNpu7RiqQWCm5fnny5GaPrW8pQrD0SINfeDX1Af2vnaP5FKVNOqYaFGlIM9G6OGNB3PNTFTgasBC60UdB177fLGRx1adTc3VQya9DFs7vfxwBiBTvtrM/WRqJuGkB8hoZhKcYK3rYKmgcrfhI3h987GomJ4upHCIHyMKJ1tWy/Q1JoiRNtvKwG3Xgrqr86wE3TSIcBLXE2KT364kFST3FtcZpU8cxc/bjBt+ekbLtfpTEM3saeNxDuukjmyX+k6NZy8IRXSf9r0biZOip+EcQfdmR+N6EBFmhGuAZCBCfUYAX84aXOvEuUXr4x
- G3L+sG1v
- x12MZuEw+roylsZ5Eb1y0FJBFtrUHqX4rzGVgK6m+slXIKHezAjN69yrc1RRfMitEsGYFkHLcQ50cXXDrkOv2QoPEGZQIwsQoAvUTYnc9OT7bF5m4Xi0UarWX142NAdDpzw23HwFcReOYcofTAmeQBdfyH0rxcDiljYGYXCYE9iewbhZ7zK1XP0coREhpKvai/0Ps6lEMHI1k33sqNR3jfN/5yNjnm5Ahx0zcIWbcli00AFBsgoaezOEwtEMGJelDIhMVvm3YdDX43ZjbbPja7l1bR3G7zW0z+3DY+kLD46usFPWPkc3eq9UGGQm8SnC5uf/EE6iU8I6w5SEarUZEHrfTdPVkelmPcBd7IJGi2ppLRnJMJj1ZYKWTP/np7Qdwb6V1feLxxPT3+f86OoznCQHd0w5wnThfs2g1huWqfwexExWaeJZMinMmGitsMyG0CbE6dJeL5PtMs9x2jDeqoz1N5mCd3FEsYMm3
+X-Rspamd-Queue-Id: 2D2E618000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: i13kewshhkdiizcgeisnd576kzcui8bq
+X-HE-Tag: 1760683427-118490
+X-HE-Meta: U2FsdGVkX1+TZ+8v7tkE/ygOy1vNCPxTWLXSiYpUrc0YFb//wJLO+kys6ByeVsseycPzODV2L1wwMTc0tfGyz+EBRpwRoDx4twWgG3fXHxy+y4opmm0SYiKrfn68Vhsn4CUsibdTsDa2Nj0Cu1zjsDBarIb8/PxXwhRGL0tZb46WnFtOSlrzMDO4FVy8Tn/dxlMRF4AinCfUYt3NyvQuEnCpS8Eb5ICkangRHhy2jHSSM5ErHlNY6TO6FBm/yfj7jPf8p3XYTMVrwTAK8ZWywC4RHUuFn3moUKEynfXAZ6dIYrRpD7musB4XqCky702nI7Z7u6O+8w6Fmuhb8FZWNZX/FBw9U15xZZYjqr3ivc3eFf3CxxsXP2N+7JrWGttDaJ+ZKNKOCs7neGJFWpBFr3ETG/nx9Ooko+bzcPwGkhZAOw1oMKVI3WH+O5AXYursHepJSkCIopcRfAgWSb8BL3dG/dMbSbU0mRR7bTjKdRsjbLx0KPmLHInkbsSC6YPc7TkKAJWy94uFKytG3ogoPSrcj/XCW/LvYwdpNh9J6y3OxOEkAaUNQGpEPYI3R4UFfbFQFaKVZW5ERw6UQYLJ2yILvHKQYDwPC19HbhvwfTKkPNmHpAjiYVXY8VZl3zu8boeCN7wXNFQ1ExlXuCs5v5IfPdIyuI5KZzA4jFCbYsz1J3MMV1SrDzffFwYQtO49N0yCMageihYXn/F13V5neaCRPkWeMNoofUEipqAtQ98zQYoszgYY/cLhU9qWEo7NjBcPb3aYFQeEQqhpRwGoj5e7aHXEsfXsZD0iEgB37ve5ZNaMmmHX38j5dBkN+GPh0HzmuCLqXQElcXW0Epm7EDZxn3ArD8xCQ457+aMf5LnKAFNmwXfa0FF9XQXWlETJQhefOBcW6aDpNUHAnhCHdsDUkYkK4HysU4uEEvVsyK5Aw1riOs/nGs1ZRKw4TFNel/lj0FzSZQ1DKdesG3y
+ InxrJbLC
+ z9ZIU4ptStX72JbE9V9a9nmTAt+mscS8JImNVTK1RWYde5J+buD7FPq3d7pKM7rFnYFSFGPc7/CEkYAyec4W6zfRJsFFXVb2bc6vEO28fm2dMe0PwSOqsOw5TXUGXK+06cIXM18UKxrbC74bTlhM4pF4R6ZtDltPrhhOvkzu8K16vgvtpu/RZV5BBPt5wiIo3uASNbs7FZkNOBjo3gwTfFtzY1h/R1iEaSpKgGVQYdGe+971lnhDHWfo2zWQf2ecCo505UhCKF9iPTSJL1PJl3Np0FQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,21 +96,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Add support for exporting PCI device MMIO regions through dma-buf,
-> enabling safe sharing of non-struct page memory with controlled
-> lifetime management. This allows RDMA and other subsystems to import
-> dma-buf FDs and build them into memory regions for PCI P2P operations.
-> 
-> The implementation provides a revocable attachment mechanism using
-> dma-buf move operations. MMIO regions are normally pinned as BARs
-> don't change physical addresses, but access is revoked when the VFIO
-> device is closed or a PCI reset is issued. This ensures kernel
-> self-defense against potentially hostile userspace.
+Hi Harry
 
-This still completely fails to explain why you think that it actually
-is safe without the proper pgmap handling.
 
+Thank you for your quick response.
+
+
+On 2025/10/17 14:05, Harry Yoo wrote:
+> On Fri, Oct 17, 2025 at 12:57:49PM +0800, Hao Ge wrote:
+>> From: Hao Ge <gehao@kylinos.cn>
+>>
+>> In the alloc_slab_obj_exts function, there is a race condition
+>> between the successful allocation of slab->obj_exts and its
+>> setting to OBJEXTS_ALLOC_FAIL due to allocation failure.
+>>
+>> When two threads are both allocating objects from the same slab,
+>> they both end up entering the alloc_slab_obj_exts function because
+>> the slab has no obj_exts (allocated yet).
+>>
+>> And One call succeeds in allocation, but the racing one overwrites
+>> our obj_ext with OBJEXTS_ALLOC_FAIL. The threads that successfully
+>> allocated will have prepare_slab_obj_exts_hook() return
+>> slab_obj_exts(slab) + obj_to_index(s, slab, p), where slab_obj_exts(slab)
+>> already sees OBJEXTS_ALLOC_FAIL and thus it returns an offset based
+>> on the zero address.
+>>
+>> And then it will call alloc_tag_add, where the member codetag_ref *ref
+>> of obj_exts will be referenced.Thus, a NULL pointer dereference occurs,
+>> leading to a panic.
+>>
+>> In order to avoid that, for the case of allocation failure where
+>> OBJEXTS_ALLOC_FAIL is assigned, we use cmpxchg to handle this assignment.
+>>
+>> Thanks for Vlastimil and Suren's help with debugging.
+>>
+>> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
+> I think we should add Cc: stable as well?
+> We need an explicit Cc: stable to backport mm patches to -stable.
+Oh sorry, I missed this.
+>
+>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+>> ---
+>>   mm/slub.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 2e4340c75be2..9e6361796e34 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+>>   
+>>   static inline void mark_failed_objexts_alloc(struct slab *slab)
+>>   {
+>> -	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
+>> +	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
+>>   }
+> A silly question:
+>
+> If mark_failed_objexts_alloc() succeeds and a concurrent
+> alloc_slab_obj_exts() loses, should we retry cmpxchg() in
+> alloc_slab_obj_exts()?
+
+Great point.
+
+We could modify it like this, perhaps?
+
+  static inline void mark_failed_objexts_alloc(struct slab *slab)
+  {
++       unsigned long old_exts = READ_ONCE(slab->obj_exts);
++       if( old_exts == 0 )
++               cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
+  }
+
+Do you have any better suggestions on your end?
+
+>
+>> -- 
+>> 2.25.1
 
