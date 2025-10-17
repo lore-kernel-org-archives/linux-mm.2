@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B077CCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:07:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53050CCD1A2
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4C5F8E005A; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
+	id AB3408E005B; Fri, 17 Oct 2025 05:07:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB368E0016; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
+	id A63AB8E0016; Fri, 17 Oct 2025 05:07:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC38C8E005A; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
+	id 92BB88E005B; Fri, 17 Oct 2025 05:07:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3FEC8E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 676D01605CA
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:05 +0000 (UTC)
-X-FDA: 84007026810.23.5B57EA0
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3C37EA0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 74BF98E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:07:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 268CCBA3B5
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:20 +0000 (UTC)
+X-FDA: 84007027440.05.1167FE3
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E6B3EA0008
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:17 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ll54v3tK;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=XQ+rClRF;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692038; a=rsa-sha256;
+	cv=none;
+	b=OciE2noWk1p6kX14ImKRsUWslbac6J/rCD8Qtwz1Ucdo/ZeVFuntnfj4CTw7WcHEHNaH5F
+	tfB9k/lMV0d/uKdL7B2tTnP3xfU3nzS9U6cCPP4ITv7qagijkJL488Emi5uaWpKEATbaz2
+	I2eTmhXs7beGY+Bzq/CRetU2k3qkrbA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=XQ+rClRF;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760692023;
+	s=arc-20220608; t=1760692038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QGaAvozmIqIzV143yBTS5nQtsGF8X9DZFIMkdv4YYLs=;
-	b=PUc8XkjNJ2xlmYeKxbNHhLvEAfbuQCjDPGd8K5gw73l4ByYL9EmmmDbgeQ6jt0gQGMxEW0
-	FMT2dMIg2WAIAWS2a/O4wiM84z5E2rJPcV3Xk0qoWeZueDnJ4WcB/RZX4DLwGHYulAkxLV
-	rLCtfMVrF3Vl2/bmKU685TcdJEWBppQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ll54v3tK;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692023; a=rsa-sha256;
-	cv=none;
-	b=V45TskAM9zXzX13+TlsMYv0o0CciKeslz5Uk0zo9PtDmYcf2/nrrLJLE8XLZ4sIkNmPerT
-	KmAfo6XbQXW8/kyI4YTXDHJmWPMFnEhrvELaUIEw6OgcJTEhR0MRfpS1H6sReAaLkrrniz
-	L7wRjVIk/OiRU0aHRTCVEzdbu5L9QaQ=
+	bh=IyCE+4rtsA0oj5GYV3ldh81I3wYriob8vp0F6h3lfsk=;
+	b=06tTb9f9/Wc2zGDQaDSy532K5y/yq/ifLdrTbxlV7YYbXEpH4YLRJA1PcfnK4W8hIpXnyq
+	9gcwoyElhB9UH7wypwCgHwd4C9SWe90E5PKfaxyr0euytQp+wx1DJqTxyaL7S0B/vJZ4Mz
+	DJMDuDzIrC7JvQnKPhtmpBnl9qUVxRw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760692023; x=1792228023;
+  t=1760692038; x=1792228038;
   h=from:to:subject:date:message-id:in-reply-to:references:
    mime-version:content-transfer-encoding;
-  bh=QGaAvozmIqIzV143yBTS5nQtsGF8X9DZFIMkdv4YYLs=;
-  b=Ll54v3tKecSVVbFL3dlUcXLtbPVSuSwJp+ROzoW9s3i3bjG6nycIZSv4
-   hwRg5hydN29hc2p9xMIMBXo9t0qEvvV4qR0MHCjewR0d+rBdp8wB8gyiG
-   N0nTYGQYwV4xOhahMQBAMJ4RuXvsxIwumPBTTar+DDYPdCivrqlLoacd0
-   jlmRtSIAVvBC69wKMhGJ9b6+Blip8WtjJzLhP9xTd38ReA1SkMF/gy68o
-   UmpjjVceHp4h+50eNBcZfmUftTZI0NPt2DXLMEe1x1d7URtPfvGxscnw5
-   7rKcGQsROaoofrgZ6s5TmBLLOAFActkfJ1Mc0loVATBLk0NtM9ofa948C
-   Q==;
-X-CSE-ConnectionGUID: zWrYvXLbQjiOYymOyGvz5A==
-X-CSE-MsgGUID: 76/3AHtyRme5brVPZGOntA==
-X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
-   d="scan'208";a="4877962"
+  bh=IyCE+4rtsA0oj5GYV3ldh81I3wYriob8vp0F6h3lfsk=;
+  b=XQ+rClRFNk/3pbi1wiDZof9ryCs9jwqXFKqSuHuL0H8k7RLZoYE2Mh9u
+   Ld+TtGa7KggFol9tPpYPJhe5EzlMPsf985q/OI5LpIMf1uUlgylJfGIzr
+   R0SDr5zQW150hSHFBjn8ct6bROmGAFFO31uYLRmR117CBru94PUn7v4SP
+   eqXsAN/JjxlAdepS3UFmEN0z/0Ts9wJT7S5TJHTmEXYK/3gDs++kBaTO6
+   GJ1tYWcMnhi0vrJqK/NqdNYebBIO6F/WDuwYJW1r8P19sCJa29sd3st40
+   9KVdb6nLxwsSFp85CurmEDf44ljj5g2ggkdTYTMBYqWKZS9oVywKkFY/+
+   A==;
+X-CSE-ConnectionGUID: PBaPil64RkyjQRIyw3fArQ==
+X-CSE-MsgGUID: dQOAK5UvTV6Tnygb3yTl7A==
+X-IronPort-AV: E=Sophos;i="6.18,263,1751241600"; 
+   d="scan'208";a="5073187"
 Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:07:02 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:7581]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.167:2525] with esmtp (Farcaster)
- id c402a081-eaf9-4041-86d8-805021e16bf5; Fri, 17 Oct 2025 09:07:01 +0000 (UTC)
-X-Farcaster-Flow-ID: c402a081-eaf9-4041-86d8-805021e16bf5
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:07:16 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:19756]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.52:2525] with esmtp (Farcaster)
+ id 06ca39e4-8fe7-498f-b29c-85942ac08926; Fri, 17 Oct 2025 09:07:16 +0000 (UTC)
+X-Farcaster-Flow-ID: 06ca39e4-8fe7-498f-b29c-85942ac08926
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:07:01 +0000
+ Fri, 17 Oct 2025 09:07:16 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:06:46 +0000
+ 09:07:01 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
@@ -129,9 +129,9 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
 	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
 	<tipc-discussion@lists.sourceforge.net>
-Subject: [PATCH v2 04/27 5.10.y] minmax: clamp more efficiently by avoiding extra comparison
-Date: Fri, 17 Oct 2025 09:04:56 +0000
-Message-ID: <20251017090519.46992-5-farbere@amazon.com>
+Subject: [PATCH v2 05/27 5.10.y] minmax: add in_range() macro
+Date: Fri, 17 Oct 2025 09:04:57 +0000
+Message-ID: <20251017090519.46992-6-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
 References: <20251017090519.46992-1-farbere@amazon.com>
@@ -141,22 +141,22 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C37EA0016
-X-Stat-Signature: jpujjtt4uffjbmnj95yrici6du496aox
 X-Rspam-User: 
-X-HE-Tag: 1760692023-138960
-X-HE-Meta: U2FsdGVkX1+1rNL+ORPmku3X3iFXcR365rl+M8/m1e0e3Jbf2fGAJh7BP4jsFEE1l7vjR8wXVe/p6UnvKUwlLiWhTKANS3GBzExowJTyj7FTqgaeZMsA554sHcLDKafXYvFrkkDbedOhDetFpmrRgmMT7Ieq6hqG8l5xvDqr48C08qxl3lc3C77aHHNoorygfKIRZcTVuhparMrJnEFw8bAoz6sa7WHxAojdaXVV0RK30hZcnGbAdwKK6chZAhhTCQRyGxnoqI6zpR60Ht/Xf1Glho56qQPxcOnQgcEzwh9jSFedf8WyRh6mO8JTt4nOWYIFdSlJsi9GhSgKkJYLWrFMMP7IKFXzenBXHsYknBwJiJ4gUoNADKRM0qOTNrNzdoERflMT3d3Q0qHm/lESUhgyGPSFM7sZhfrzf4pDTUjEy7HMf3G8zZR/UqBWzgIWupYR6U/6DSBW2wWIQw3ujVTGnrlgRhEZu16mCn8xHNSWuLcrnGoRzOiS8EKE5xJ1OUiNKek3Bt6An/0FqE1GoSXKaHy48vL/RKozQ6JU91k2bh6QU+IfjvBOqlQB8+PW1ONWPj7k6/JwsA5qnjiJgMHl4PMaWECvYC1xXpxHysVdg5LiyckzofQ97noFWtniHrM8vYlhlEYZfDfYtjvOBu1naSOQf4xbe/7P45Q7qU35wFM5w8Z76tdxM1CegWlzZ0vk1ENqkvq3VCqJovV3uJ7tlTFQ/Z/4HYfdWEZLvEr4b0ZBfekpNkDVLqihX6ecyouA+PHBA0eqHsl1DvdRoiDjGdrLiSD9rkKAnIg7z81JnZPZcN0BTKRk4wVnQDD0LSK2vyBzeLCjTHC+Yi+289jkgiqTk2cxoanmm/RPFyNyHix6Am6soLadbTyI2OQyNEcoMeGguddZUz8CSYMio9Gdxh4rk266C+ZOMVlr+Orc/NzjXz6ceuXltSFi3gMzn6g6KakkYHk9Qh01IMF
- McWVoQck
- ymUxEbDaO+mmQz0mPHubmISKav1v4eppBwEHIcw1wRn8hjl3MZ3OM0JC4b4qbAgGrKNNk5DUCoxBZB5e0lBRVN4qgTRCDGmiGd/LjVWoAR7TEut7nUH3Fqrnsop6Z7j82TrQw0VIbclgSoMGq25D/Ti86fmPtnZpOpaKSULCh9hmjRiKWiTKuHbj3mEcl+AUFOMomdadN3Nz4JWir9VNST1HLLZ//W6XTT+wPzeqTO76GCdN/rxJjZutkbCDlFC6PC6/EkE26nrjlG2J4R0lF9jioYvF67/EwSaX8jgxiTpEbI9sfS07AzI98vCGg/8zZ922ApTVfNwRJ9G2olSzMFJbJH6AjAo2iSEFf59FHst42jVnHSbU5bXNueO75G6ZRJHT3l3FZNL6qu9rUBkvjJcgFemv1EtQzIzpPN+IKc3B8g40bqMhjhxbevpxvNDk7KmCRoU7hDZoWQehjljTJsNrE5lV5XgbSANE/lMg05gT0reqrYZMmX0ihhWp3U116ct5RFiuwZWFwSItoij+bdSzqcxLy9SgvrHFr0NetsGHkAlfeiu4W/xoD8O1wugkCSYyF2vsvT6cewUIU50YQj6Lijo0ymJ7nh78rZX7u8FbzQzkPjeDC2FKpolV1geFocf8dkyiNJ0XLa5Qb5Lp7DALD1QhGy+2Amjmd8nL4wltiRm+TPlU7G3yXWbMi9MweIYe3v7QHUtPN18fx7bCaFh1k4dptrL4ZTpxdvhitalH362oAvevyZzkPnJaM/iM5LyFtO46R1/RXyOZDztet+Clw4Axhk/cuEeLSbo64MFRGKklcrZfD+PP9cye4o818fRtqNsb3u8VJFpOa2aPalfdmWIJGRghLiA9HlApRX+5QKJmrCUry68XMnO7rVLuyJBzEothRAhpaOSSvyZJ0bmE/oBzuyhAWu4b7kbdGL1Z2OKcnelYjCJiZOKhHMfiRJiSkqL9OjlwtbdmaYsN+niSMEVuP
- RiJhrOiJ
- rNxcV+RgRmvL3t2V4guvtn20OcL1TOuxufACHVQkzatCx7DUno2EjPxc+W9DzHHH1mIqCkafxo0p04nClmk7WYfuu4CuRllYmY90XtA0lIFZ6tLpow7mlTbzfsbkNphn7tAyD8crtqUcYgOdZln+KUqhZKtgwY4TuD1jiZvzZ5lJFbyC9vUN+GPMlsbBT/Eoqoy4o/ThL25kbP3EUrokQGqtWI/VOMfFqbGv26NoQZ2KKi03lj42IPWRQr3BSzCA7jWx1D3PRnZMDivb8SmVCeGvNY0UPy551rc563PRmPkbX3uXX9PFiN3QKtbBZ6AzRH28umAzidJvOVcGMDwZSBWkC9p1wCM/42G45HwQWFSpZNagKRBnlsb0xK/XyKpG0CHQmTimVQ0C3424/l1C1sDlJH6wtjsp+jsS8dNnKUw1OfE5VcJRqDtv137pnga76psKv+rOk9YheEQuVnyAKzB4dK4nLUaJ3N4u5BtT5kXZot2Iu/gdfdj/+yjtUhdaNhSnpz2D+VvBHJTLhVzTHLaM+qoKBB6mcMy/iBE7h2BueFLTMCnwxFJzEX5HzGY+VNJvhAPHvxIemO48AqPiX1K+B19c7juk58wy3EGHiGX/lDqRQgnKS7Y5vZcfO6BPFPB30kdzr+a+J1ovwnYE1jBJ5hiWgiUmr8BzlboNLMnbGyX37lraWw9orO6T4a+OiAL3a2+bFayDxRVlL98xpeK0J+aCszF02RCsQt56FxWE+KCO6EmiBJWzS2qRhJ9NlnNCQxD+7HGNd7ZeIzjBLj8A+1RJWAJfade3jSedORldqIt2og3uoX4P9Mn0mcjzBVGlSt2+ozdrhNBUgJlV4IoFU4eUMQ4KJ68msyxEccR16h1T0pNU0uu7JCxsW9/1C7q3zCV2rCd85TwLtILOREKure85r0ISh0Lt7AbtcSRq6ttr8G+3tEaiFyk8C60MiqZprI88GB3Mdd6swCbyiuHB8yp/A
- qu+b2ntT
- K0GiWOY5YsBKfohd0A9Z0OXB5hfVnKdcDHK9Uy5ORdM5XtcTF1GF0XO3w2ZJ7iCi0ROcdtzJdEfyGnuqqzhL9dS766PYoCP5D2ZZQ+zVepJJ1g1Gwh/vqLQzHv4Z7zBnHDNiO5mcdXhB9nx+Q9IWHSI/6Pwu3rRiPLpgFeZ4XQrjeBGEL7DJKeC4YWUQrPJBf6iQtUCZBxptrI83ssOoI3GhbBr/WPqReQpJN6OeHkzYfZbwdTnZw5UmX6udnDrAt0wA+aK4XaqnwbF3WoK9v6lzoYMPArcEV1JrpeuoeRK4k5xDCEq6tUF33nZw4LP18vxFW83Jc1XnAz7Jx4mVBBoH429LFZmDbLBlankh99P2aAe/mnkf3E5RR2Gj8KNUeqNKQzFX0umsjJcV1QZt8Miv+PwYZRAtzfx5WBm40OVDeS0RxySL5uLZy0vku0ZJs1wx4x9u/GyboU7st5K03cQF7YoWwWHsH8TBrK6OEjbnJuHPICTSHn8ycin4WFeSYiVJlP4FaVu0n7M5GWf/4ldv0PRDxSFyEPan3UgJv9hYuk5aGQ7uePyr4b1xbbDXhVk1zGx7UlEZLZDFuzTPBMPcBRon8eYX9yf2eewzsxQRRU6ro//NAxC8QsxUAifffKU0I0S++O99jlcRNGkm5mtZlUW6t4/hMJioLlR6Ua7pgIog58fQZidV2pomi0cE051HcLKykFUdUt0lxzRP4W9IIPlKnp1RhiBHSBOz5N3n7IXocWGJL5gKrBq4omkM4sliLtntWIXpFdfvMXlxmoZAWUKoMvrdH/DiNpGN9OlFcePQv6FqK+cbtJ9Te/yKwXbopmldJhN+gi+H0Yw82b76P7V9b0h375BRHmAq2syolUMX5koLSeSh5302bZzJyljPhiFMKJWLxjfVAFdTg84IoQKWMmoACZIOG6Ci5RxW8/d9oZd0U9SoBfmdKCMlnscPMNm4VgPI1zKSYbHmbvHj7wSlC
- YkfOQxX5
- aies3YYmD5WB4yF+8NZ5CMIdkb8aMGX92GiIuJrD9s6apMs6MCow7VHQ9+cPtoXJgMy4pX9ec1mfGDHS8F8lfhvijkkZvo5GYo15N9a17icn53fjcOrP5OsVGEWBBESYqHIjSLTWeG18emRxk1fgVlSwghwr0Mu9E26U5GEJJLU+JbQiPt8UUDfRSXkM9qixV7gdl4R29XPKozOmFl3HnF3OfdBVI/FiLmYkUr8R/W0YxpHwah6r4nf5DiS2+4bLu2zyfeyCJZuCbtVQadPotpccOcFkIRNS4kGzMLM7oSUu21qfme+vikRbuY6tpuywJkh/uXYURIjZCdiNxjx1QSMaXfhrcH6UOnOE4Y/mkArDk2t7MMlOg6wiJYuMgrob6/c1PLFPbpBuMDAUcAwj2VFGjyNJ+wMvSB4d1m/dLpJQUAIQAkBqIIV1LSOs2WxERRLgaRLJ20MWSn3L3R+xwlBQR0Ds5c5xglcZj83oN5oFoCX8aseMvBN6TWCYxljgEshjBWSq98o5E6eKQJgrTN6pymZZIj6bicmtTE/GiqnmoeoPI6yOeSV8lezseSnG4zvZDk7e2IIeNZaSpTDKxNocTtooL7R9wk+vsMypf2tEhAhIgTxYpRlkELMieeJwHF98ZgEHuT2ejjuYikbPy27KJ6zWAqVyChbyXtUeuUm0MTAvCIIUO5pI32eXS6vKRd7PKTDfaKRtLnhke6cntAZr9bASK2nJv2FvwMXXL1K/kmVaDTMYgrbXzslQ0NM79/elyF4HYK32WFgGnv9uLfrnebJbj0ZqDTaOpMxoxlMIutasgMkTSczGNXkrarBzk2ME+SdMF6ttkoNMvbDwCmNe6O+VmdzpJabr2WgHsRZveNEWtAVQ90ZGAYu3/WX/joSrihvIm3OOfcAS6ZevR+naWXAt9mohxdGWT8DPf94QW5NkCRYxDQMedUGa/ZKz4474LObQjWxdezGDWo3i4Ep1ROA7r
- az9B5dTS
- ruo497pttXiC0Wu091fcFMeqzzzGtIaCOg3YZGNs2yHaaW+JUWEhoBBlOy3GxMhOkq9jwx4N32fkxRKpb9Uud5NJIzNZKZ35p+qW3CCM+NRqhBEFl
+X-Stat-Signature: 6r3punnnuy6pz41w45narrmg81sa37h1
+X-Rspamd-Queue-Id: E6B3EA0008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760692037-861901
+X-HE-Meta: U2FsdGVkX1/ThE363xN8VHqkNziDMXq6rGdQ81a1ccHz+CacnNsBFfwUgHDBWMSRK0rI8IfVrZJhvruBMtDgosnUvwPYuzyg0GRhaoHTZuHMgt4SD7rzLyCZVQLq9NBU6c4ZC4UMbzJriS9RCzjPZshR1B+15XH6WX/CWAUzmy/r85I1K9suYAQfxx6pABBG38lzw9rx4PokSN8tVJp7ECr2H9b8rz1JhBxFjooCo45HPRqngUNbpCsZ903J5n6mMTPcrnisw4P7wzUO31LfMCfp2uPzYI5o7KacwdmsP9Dp0jv3m2zk9QhJ6HsszG5XGkQCoGvdbFv01YHI/NJE3lQPaA7sNE8A+Z/rGTPd059e8G1JnBe6lPDBT9jp5Ir1Em2yT98ea1h3qm38bayUu2QnUQpY+BzHShwuZaRrhbjJ0nvO0SP56428Y6gcu/nXar0dhn0vq6+H7E4mxFazKt4VQoEAdD542pUnA6P5WKs8J6e2q8+X5V7RMPAfcnaACWB6AWvtFNBzX6UJFj+2DsFzwQOJWKKTaCa6Y8G9s3dyt01wVDMo41RDQYM67mXMHETA9vdqV5PcG7KYSSpFKo37TKkmzTiNv3T3wFEf2GQ/AdZ7AFFzCxTYuzWDxKQ0q9cMGm+fKEOf/Y6D4pqrrWA/cCfr87lQqdAMFK8QecClaQNBNuQCEHwmr5ZEvxVAdXAIGIJHpJhksRAmwCRYKE1EgXpY+87x9eBHf7sNXYchX0iS6y7hYsQ+jX3CbxnWQnkwlCu0M/GAImJ/TdNiY46dWHoRWPAfLiPwSvzeCS7Ah5VyzyyIc+dSNWCksFyhAMITIkNMFmFPIZqzI3wyIWWd6IkgupOBShmUOxdQI4LOqLig8IagkyFkGIEZA40N4Y0PRwSaJgxTcM0/BdhaWsYuRAQxYx2NC/OqhBx5jS5q8djiqWV0EoFizpDDfchQYaf1o1wdw21Az8TWxAr
+ tksq6R8a
+ px7yV/VUetPdnXDM8nb+Yq+KqBOum2gvUHrUrCy9kQwoKPbK3jbO80MstbTkoKGZ1YrH/PnpoQUlnrVAf1CMKFcruEp6+QmpUCb1aTTg8EqnyYSvQ7gKHowGsXPs2SFl/fKSK5LLpr09qzLMtUiHPwbeC5it+cut0ll78ZXegKWCWMZCO/zFmYO2ZvUApYEsRbhquVMHJgpn+tilpOy570+Qah4ShBGbne89T6rqdv9R3QqvtCzzcDufeVGymPy1jsfhGyaQ837thZvnH9dQyM3A9uUSdnPZkI92tADSGzc8BcCANAtvci3SvoB6bgvIlDqdPuCkN5wBJtznq6e4F2SZzt/AF5D0NO71RfXvlReJ5t+Qpa1MHbyoInc2OuoLf8isczXpQV6z0oi9eFI9Z1akQxoB5jrqJOqE8MhsMXdbi1LaASUoBO8HnuX7dEA0oJnZKczprCJoaRSdO66YWPZPieqOtHvr6SOrYUr+6T8dj66GKxcNmxcwfgTRtHYqsn+loOCgzRDrS0HctRJzwigLmWX9tj0CY2u6pUku/JsVaKHHOSgEPIrlh3T4d1AfG6V9Tp6ppw7ag4Uzm4losg2MzsmaQ71LkJemTMj/JBe0XV/U5+uSP3KkeUEwgdfVsF/b+pNB7ZZe/OKuSjnIWP551ALLnwuyL+pUl/c2RH/PE8liiaCNcQkrd0wHvSwfXYByT9EfYUZmFAGhHwb4GNG5E27bT9JQPfwvaCOD3cYyMX3asYnsSNwMHOCE7FmuLQ4PcFv++e9pu9iao2GuPRMREiRNj4/1+YXi22PBcYxGgdMnnFh8BDKQuFXItKvMGU9yTjFcDdgIr2QLlRwWlACU40vzxCZUDYvrBdJOyF6koFh5QiYu0fYPjVClPajygoujB74CP9BhbX5ZeFOmjz7PyJx7maw42pQuC/auhsyY6hvqtXvFYWZ+2x1HCZvOQFU6hLKFhD7qEZ4sxvg6l/GyvS37s
+ 6c1lt48M
+ /pNPbPukIyI8fVHjC7YbKW7t543RgueQkv26htYKPYXjtry/Wjrz5ru4D2ApKnSgAU49GbiVAZfhdHVSw7JeLI1LU7WVngzt2kgc3eq2Tl+mDrZwurtV30nPMdd4sguduToNaHXYLm8HuG4D9/57it7gm2/hoxz12GWuuqqo0acKgT0kPYcdYvg2loy8BZvpLeEtt0o5g9tBrm0JV/p8QppqIsU/FgYgblHcHF20E9/vDVT+QdH1BdDBIZAJEj/EKJpvPiNkfvYTKbyPghnpbXMGjyVUK4tbJUXLnk8T2nXRpYcKg4fw+AuR9CQdKBSrhqh/whXVm/io01r3l2DSpQalPfXvwbU5AU5hXEIFEVFRU9UqSC9PT81kEQ6s3TS+l0hOfbjTLj390QGK2q6zg34Ffn8opPpZMYmozIjU6gyBBMEWGJsoZb+dsE2QhSCPi0AqmULUhaQQTjMlMUM6+hNoYLF2MBKVL841Ba0R99/XuwfzAQjEQhlqCBFsf3DNHtR28x6vaAGhQ9Jzn/d9BHO7sJqwipz8ictFOBGOkYnkay14Sp13N0dfkmCqmP0nz8Hn2gL0Dj3l/lUr+bV/OefBNmk6apHAJ0MvJOZyPNj21MzED5plBvzt7m39gpsykp992mitV+rmzsyfpgtOlFXkOb3xXzmvNwOc0StkL/8vdIiDD0GHnrsvqUUtKgxwVch6RRaIqdXsOKU1846/7EioZzVbJoAomIdQmZGg4bRhb6doihk2GBrjoKLs1ohK+yNO0oB4TuiI3uqYTWlRPrVTZiZuT+tZUK3QaDWTMy+JSOxC4zhrBFDuAMpefvKq3DsrcM6JcOF979ZfhKPvQfCh/LQcwOSB7QP60cpKFk5vz4bjz37IsB7K0gZ1MovShNvfilhfAHjh2oLMS81MPIa5ExN0VGaWzjgtDfPH0QAiD3aNREGGugxLUnaJHJJ/YNxQZRGkbR/Trhr4Rn3aB+92Ltkuw
+ zt5gD6+q
+ Mz1BYpBaO8n53vD2EEIBb0w2WRILMN6yoyCBdMv2vFzEkvp7rL8+hY/5NSXLxIypdW65ZFgimn2RYydUyd/1/fegXV6f+MFrlJWYm4ReatvCe+Lb5WM+b7tWCY5jeJ+d0cxEMAbUYMYgx81q4/MaokWWp4dFw7pLPgvVS0o3F8oapIuOAg66dW6luCZQY4vDXWoKur9U+hlpgzqrXnl7qsdaPQxloQRf2E0+r+LULTlNPVcCYB7jPN+fOmjtR9V1oQ+OH2VRClwQ6L38ngvuL20UqeDPD0KP9rOU0DqrBEJsKYq9qr/ZNThP5JPI1YxzlBJ+y8imA92cncgsNtCk27wbSUFpOquRWB0TNMCCMLioOpN9MZtDToClabWBPDDD1TYO5WH5VvWKthfJuuubHm5JoPd28mY1f/Ff8CCvMINlJDUGq+bFYCkGzLfDQqfl5anGE7lvResWpZRoGcLq+Ut0jAOIJqg0I3KVC9TqB1WRgkWGKkyI5HGkxfGAEdIQ5WoTcLhbX5m+smoU3HqtDLgUGy9mLoG1rTcwNh7wsETZ+nrx7OYkqDJK87cj9Kejc3e8YsQ1Siy82zoJT/5aeY2WL1fKyV/MuQjsBNxgKRc97Dkv1wHNP15w4FtLLb4xq2Vd7BIOPYSvu8LXjJxi+/jnlfEg/4vVVLfBWsZfwA1GziFe7NbSwLnD/lCllJk9po9XbphRpoHuDySJQ8VcMnwImqvOFDOqp7Ht5hrLJ+bWR4l32XHk/GsK+Jxf5g3qAwcLdWLsV9+4qsAnQqpVp5KqV6GmGWfQJu7qgXxsxWx45PVfDJPl3ZIstvG/kcmd0eusw31N0/XuFcm1TUf2FUxqNUKtUI0PpDl0eXnNEmUE40jzSbGM7UztuE6QlRB2vCA/7UH7VmD/ewzrpP1WzqxWfi4u+QjJ/TNWLLI6MZcrUXw6yclKbQv6749j8aALmbhnGrM48DgZwhY9g08NP77/V7YBl
+ WmY05owA
+ OhaJp6xY0A+mA7LQzRjnGT7sHeTJToKKfK42pRSv9lhvZeugpd01ktOyx6PRQkzSH9uXyaoGxLmqy+JPmeUBHTeESZ+UyBaYm3lYneRa+KBGcsrY7YfrJaFFl6q9iw5OX2uHoejh+lB+yAxyBFC9Yh2/oTOpMtOe1XXcnpSeQ8Eiqs6AEa5PqxvH/NH2QuVo0P91pfgElbMoBUeEZzfB3w1aMC09oEVFeqREVOCyhwrVbCn2lGdejR9+lQ4D6TW0se8g8vQDDs6LrKCn+nQqIx7Mle8+WLyde76Q2Qdtvec0SKo01inM+bMo3OIqxIblEFLh3f555TY+7WaPdDBsFFrSjP/vV3mzcA2E+M0uTGA2KEMZxPpNxyOXZfDJHgW21o3OCLHhEaCOjuBbPPMVl+L8cSxUFKnMoUNwYSGTSAYl6YBRnj3KX1JMEy0iPyNBmrL9ADd/9GJDKx1MT5eqEidHTgozAE2/QCctMNI1mwN0FTh2aQSv8WXBR+ewPznhxss11kzD4YpkR/AFpuPKCVoLyCE4sq8rCjr4hyt9+Y4xWOgwz/qwx60BNn9OeNVq5HERu2MllyYVETZT3WVUv28J3s8hAhHHTDCdM/OFWo5/Vbl7aA8QVlEea+IalPkCtOnajSOFMUocTrFnWzq5uVJyZ3SfgIoriNDPHtCa6sMucWkP3UyHMd1D2Zq9QzOJCYWc/MgSRuTd5XsFzJRktSDC4zUDITTpqvdXtD9L+6ENdDOyunKjOfa8+zjerOZjeo2nwQCAp1MTkXE7Zfwdg00XYSGFN+2xeQ58+IYpKlOlweLlydrSac4casVyB4HpTUGQpjkNkNrM8ZgBdUTj6XXeq8+FB3Flq5MgVilv2DpAVT8A3rZegodLwPkL8CdkjuhncxbFF7rGWRHk1ER20wB9fdDeeRkAnaLx2RKwkkW4xqTFHcWl7D1A2TGNRyiMPsVqHPk4zxpfrPq4tpIt9XTtlNWX2
+ QLcm5Yem
+ eFvOnbzStdY7JEoSk4eEgx8wjxUvpWhwXDCcP94poGtedo2yY3FsHNjrlfeujh3kHNnkpPZR+Ip4WUyB21jz4cUrR62P0RIcv+8duH0AeQFB8umIusfRNIaNRj0UF3R46DTS31o+F2Nik6w4C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -165,184 +165,458 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-[ Upstream commit 2122e2a4efc2cd139474079e11939b6e07adfacd ]
+[ Upstream commit f9bff0e31881d03badf191d3b0005839391f5f2b ]
 
-Currently the clamp algorithm does:
+Patch series "New page table range API", v6.
 
-    if (val > hi)
-        val = hi;
-    if (val < lo)
-        val = lo;
+This patchset changes the API used by the MM to set up page table entries.
+The four APIs are:
 
-But since hi > lo by definition, this can be made more efficient with:
+    set_ptes(mm, addr, ptep, pte, nr)
+    update_mmu_cache_range(vma, addr, ptep, nr)
+    flush_dcache_folio(folio)
+    flush_icache_pages(vma, page, nr)
 
-    if (val > hi)
-        val = hi;
-    else if (val < lo)
-        val = lo;
+flush_dcache_folio() isn't technically new, but no architecture
+implemented it, so I've done that for them.  The old APIs remain around
+but are mostly implemented by calling the new interfaces.
 
-So fix up the clamp and clamp_t functions to do this, adding the same
-argument checking as for min and min_t.
+The new APIs are based around setting up N page table entries at once.
+The N entries belong to the same PMD, the same folio and the same VMA, so
+ptep++ is a legitimate operation, and locking is taken care of for you.
+Some architectures can do a better job of it than just a loop, but I have
+hesitated to make too deep a change to architectures I don't understand
+well.
 
-For simple cases, code generation on x86_64 and aarch64 stay about the
-same:
+One thing I have changed in every architecture is that PG_arch_1 is now a
+per-folio bit instead of a per-page bit when used for dcache clean/dirty
+tracking.  This was something that would have to happen eventually, and it
+makes sense to do it now rather than iterate over every page involved in a
+cache flush and figure out if it needs to happen.
 
-    before:
-            cmp     edi, edx
-            mov     eax, esi
-            cmova   edi, edx
-            cmp     edi, esi
-            cmovnb  eax, edi
-            ret
-    after:
-            cmp     edi, esi
-            mov     eax, edx
-            cmovnb  esi, edi
-            cmp     edi, edx
-            cmovb   eax, esi
-            ret
+The point of all this is better performance, and Fengwei Yin has measured
+improvement on x86.  I suspect you'll see improvement on your architecture
+too.  Try the new will-it-scale test mentioned here:
+https://lore.kernel.org/linux-mm/20230206140639.538867-5-fengwei.yin@intel.com/
+You'll need to run it on an XFS filesystem and have
+CONFIG_TRANSPARENT_HUGEPAGE set.
 
-    before:
-            cmp     w0, w2
-            csel    w8, w0, w2, lo
-            cmp     w8, w1
-            csel    w0, w8, w1, hi
-            ret
-    after:
-            cmp     w0, w1
-            csel    w8, w0, w1, hi
-            cmp     w0, w2
-            csel    w0, w8, w2, lo
-            ret
+This patchset is the basis for much of the anonymous large folio work
+being done by Ryan, so it's received quite a lot of testing over the last
+few months.
 
-On MIPS64, however, code generation improves, by removing arithmetic in
-the second branch:
+This patch (of 38):
 
-    before:
-            sltu    $3,$6,$4
-            bne     $3,$0,.L2
-            move    $2,$6
+Determine if a value lies within a range more efficiently (subtraction +
+comparison vs two comparisons and an AND).  It also has useful (under some
+circumstances) behaviour if the range exceeds the maximum value of the
+type.  Convert all the conflicting definitions of in_range() within the
+kernel; some can use the generic definition while others need their own
+definition.
 
-            move    $2,$4
-    .L2:
-            sltu    $3,$2,$5
-            bnel    $3,$0,.L7
-            move    $2,$5
-
-    .L7:
-            jr      $31
-            nop
-    after:
-            sltu    $3,$4,$6
-            beq     $3,$0,.L13
-            move    $2,$6
-
-            sltu    $3,$4,$5
-            bne     $3,$0,.L12
-            move    $2,$4
-
-    .L13:
-            jr      $31
-            nop
-
-    .L12:
-            jr      $31
-            move    $2,$5
-
-For more complex cases with surrounding code, the effects are a bit
-more complicated. For example, consider this simplified version of
-timestamp_truncate() from fs/inode.c on x86_64:
-
-    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
-    {
-        struct super_block *sb = inode->i_sb;
-        unsigned int gran = sb->s_time_gran;
-
-        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
-        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
-            t.tv_nsec = 0;
-        return t;
-    }
-
-    before:
-            mov     r8, rdx
-            mov     rdx, rsi
-            mov     rcx, QWORD PTR [r8]
-            mov     rax, QWORD PTR [rcx+8]
-            mov     rcx, QWORD PTR [rcx+16]
-            cmp     rax, rdi
-            mov     r8, rcx
-            cmovge  rdi, rax
-            cmp     rdi, rcx
-            cmovle  r8, rdi
-            cmp     rax, r8
-            je      .L4
-            cmp     rdi, rcx
-            jge     .L4
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            mov     rax, r8
-            ret
-
-    after:
-            mov     rax, QWORD PTR [rdx]
-            mov     rdx, QWORD PTR [rax+8]
-            mov     rax, QWORD PTR [rax+16]
-            cmp     rax, rdi
-            jg      .L6
-            mov     r8, rax
-            xor     edx, edx
-    .L2:
-            mov     rax, r8
-            ret
-    .L6:
-            cmp     rdx, rdi
-            mov     r8, rdi
-            cmovge  r8, rdx
-            cmp     rax, r8
-            je      .L4
-            xor     eax, eax
-            cmp     rdx, rdi
-            cmovl   rax, rsi
-            mov     rdx, rax
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            jmp     .L2
-
-In this case, we actually gain a branch, unfortunately, because the
-compiler's replacement axioms no longer as cleanly apply.
-
-So all and all, this change is a bit of a mixed bag.
-
-Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <keescook@chromium.org>
+Link: https://lkml.kernel.org/r/20230802151406.3735276-1-willy@infradead.org
+Link: https://lkml.kernel.org/r/20230802151406.3735276-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/pageattr.c                        |  6 ++---
+ .../drm/arm/display/include/malidp_utils.h    |  2 +-
+ .../display/komeda/komeda_pipeline_state.c    | 24 ++++++++---------
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |  6 -----
+ .../net/ethernet/chelsio/cxgb3/cxgb3_main.c   | 18 ++++++-------
+ fs/btrfs/misc.h                               |  2 --
+ fs/ext2/balloc.c                              |  2 --
+ fs/ext4/ext4.h                                |  2 --
+ fs/ufs/util.h                                 |  6 -----
+ include/linux/minmax.h                        | 27 +++++++++++++++++++
+ lib/logic_pio.c                               |  3 ---
+ net/netfilter/nf_nat_core.c                   |  6 ++---
+ net/tipc/core.h                               |  2 +-
+ net/tipc/link.c                               | 10 +++----
+ 14 files changed, 61 insertions(+), 55 deletions(-)
 
+diff --git a/arch/arm/mm/pageattr.c b/arch/arm/mm/pageattr.c
+index 9790ae3a8c68..3b3bfa825fad 100644
+--- a/arch/arm/mm/pageattr.c
++++ b/arch/arm/mm/pageattr.c
+@@ -25,7 +25,7 @@ static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
+ 	return 0;
+ }
+ 
+-static bool in_range(unsigned long start, unsigned long size,
++static bool range_in_range(unsigned long start, unsigned long size,
+ 	unsigned long range_start, unsigned long range_end)
+ {
+ 	return start >= range_start && start < range_end &&
+@@ -46,8 +46,8 @@ static int change_memory_common(unsigned long addr, int numpages,
+ 	if (!size)
+ 		return 0;
+ 
+-	if (!in_range(start, size, MODULES_VADDR, MODULES_END) &&
+-	    !in_range(start, size, VMALLOC_START, VMALLOC_END))
++	if (!range_in_range(start, size, MODULES_VADDR, MODULES_END) &&
++	    !range_in_range(start, size, VMALLOC_START, VMALLOC_END))
+ 		return -EINVAL;
+ 
+ 	data.set_mask = set_mask;
+diff --git a/drivers/gpu/drm/arm/display/include/malidp_utils.h b/drivers/gpu/drm/arm/display/include/malidp_utils.h
+index 49a1d7f3539c..9f83baac6ed8 100644
+--- a/drivers/gpu/drm/arm/display/include/malidp_utils.h
++++ b/drivers/gpu/drm/arm/display/include/malidp_utils.h
+@@ -35,7 +35,7 @@ static inline void set_range(struct malidp_range *rg, u32 start, u32 end)
+ 	rg->end   = end;
+ }
+ 
+-static inline bool in_range(struct malidp_range *rg, u32 v)
++static inline bool malidp_in_range(struct malidp_range *rg, u32 v)
+ {
+ 	return (v >= rg->start) && (v <= rg->end);
+ }
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+index 7cc891c091f8..3e414d2fbdda 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -305,12 +305,12 @@ komeda_layer_check_cfg(struct komeda_layer *layer,
+ 	if (komeda_fb_check_src_coords(kfb, src_x, src_y, src_w, src_h))
+ 		return -EINVAL;
+ 
+-	if (!in_range(&layer->hsize_in, src_w)) {
++	if (!malidp_in_range(&layer->hsize_in, src_w)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_w %d.\n", src_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&layer->vsize_in, src_h)) {
++	if (!malidp_in_range(&layer->vsize_in, src_h)) {
+ 		DRM_DEBUG_ATOMIC("invalidate src_h %d.\n", src_h);
+ 		return -EINVAL;
+ 	}
+@@ -452,14 +452,14 @@ komeda_scaler_check_cfg(struct komeda_scaler *scaler,
+ 	hsize_out = dflow->out_w;
+ 	vsize_out = dflow->out_h;
+ 
+-	if (!in_range(&scaler->hsize, hsize_in) ||
+-	    !in_range(&scaler->hsize, hsize_out)) {
++	if (!malidp_in_range(&scaler->hsize, hsize_in) ||
++	    !malidp_in_range(&scaler->hsize, hsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid horizontal sizes");
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&scaler->vsize, vsize_in) ||
+-	    !in_range(&scaler->vsize, vsize_out)) {
++	if (!malidp_in_range(&scaler->vsize, vsize_in) ||
++	    !malidp_in_range(&scaler->vsize, vsize_out)) {
+ 		DRM_DEBUG_ATOMIC("Invalid vertical sizes");
+ 		return -EINVAL;
+ 	}
+@@ -574,13 +574,13 @@ komeda_splitter_validate(struct komeda_splitter *splitter,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->hsize, dflow->in_w)) {
++	if (!malidp_in_range(&splitter->hsize, dflow->in_w)) {
+ 		DRM_DEBUG_ATOMIC("split in_w:%d is out of the acceptable range.\n",
+ 				 dflow->in_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&splitter->vsize, dflow->in_h)) {
++	if (!malidp_in_range(&splitter->vsize, dflow->in_h)) {
+ 		DRM_DEBUG_ATOMIC("split in_h: %d exceeds the acceptable range.\n",
+ 				 dflow->in_h);
+ 		return -EINVAL;
+@@ -624,13 +624,13 @@ komeda_merger_validate(struct komeda_merger *merger,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->hsize_merged, output->out_w)) {
++	if (!malidp_in_range(&merger->hsize_merged, output->out_w)) {
+ 		DRM_DEBUG_ATOMIC("merged_w: %d is out of the accepted range.\n",
+ 				 output->out_w);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!in_range(&merger->vsize_merged, output->out_h)) {
++	if (!malidp_in_range(&merger->vsize_merged, output->out_h)) {
+ 		DRM_DEBUG_ATOMIC("merged_h: %d is out of the accepted range.\n",
+ 				 output->out_h);
+ 		return -EINVAL;
+@@ -866,8 +866,8 @@ void komeda_complete_data_flow_cfg(struct komeda_layer *layer,
+ 	 * input/output range.
+ 	 */
+ 	if (dflow->en_scaling && scaler)
+-		dflow->en_split = !in_range(&scaler->hsize, dflow->in_w) ||
+-				  !in_range(&scaler->hsize, dflow->out_w);
++		dflow->en_split = !malidp_in_range(&scaler->hsize, dflow->in_w) ||
++				  !malidp_in_range(&scaler->hsize, dflow->out_w);
+ }
+ 
+ static bool merger_is_available(struct komeda_pipeline *pipe,
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 655938df4531..f11da95566da 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -657,12 +657,6 @@ struct block_header {
+ 	u32 data[];
+ };
+ 
+-/* this should be a general kernel helper */
+-static int in_range(u32 addr, u32 start, u32 size)
+-{
+-	return addr >= start && addr < start + size;
+-}
+-
+ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ {
+ 	if (!in_range(blk->addr, bo->iova, bo->size))
+diff --git a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+index 8a167eea288c..10790a370f22 100644
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+@@ -2131,7 +2131,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
+ 	.set_link_ksettings = set_link_ksettings,
+ };
+ 
+-static int in_range(int val, int lo, int hi)
++static int cxgb_in_range(int val, int lo, int hi)
+ {
+ 	return val < 0 || (val <= hi && val >= lo);
+ }
+@@ -2162,19 +2162,19 @@ static int cxgb_extension_ioctl(struct net_device *dev, void __user *useraddr)
+ 			return -EINVAL;
+ 		if (t.qset_idx >= SGE_QSETS)
+ 			return -EINVAL;
+-		if (!in_range(t.intr_lat, 0, M_NEWTIMER) ||
+-		    !in_range(t.cong_thres, 0, 255) ||
+-		    !in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
++		if (!cxgb_in_range(t.intr_lat, 0, M_NEWTIMER) ||
++		    !cxgb_in_range(t.cong_thres, 0, 255) ||
++		    !cxgb_in_range(t.txq_size[0], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[1], MIN_TXQ_ENTRIES,
+ 			      MAX_TXQ_ENTRIES) ||
+-		    !in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
++		    !cxgb_in_range(t.txq_size[2], MIN_CTRL_TXQ_ENTRIES,
+ 			      MAX_CTRL_TXQ_ENTRIES) ||
+-		    !in_range(t.fl_size[0], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[0], MIN_FL_ENTRIES,
+ 			      MAX_RX_BUFFERS) ||
+-		    !in_range(t.fl_size[1], MIN_FL_ENTRIES,
++		    !cxgb_in_range(t.fl_size[1], MIN_FL_ENTRIES,
+ 			      MAX_RX_JUMBO_BUFFERS) ||
+-		    !in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
++		    !cxgb_in_range(t.rspq_size, MIN_RSPQ_ENTRIES,
+ 			      MAX_RSPQ_ENTRIES))
+ 			return -EINVAL;
+ 
+diff --git a/fs/btrfs/misc.h b/fs/btrfs/misc.h
+index 6461ebc3a1c1..40ad75511435 100644
+--- a/fs/btrfs/misc.h
++++ b/fs/btrfs/misc.h
+@@ -8,8 +8,6 @@
+ #include <asm/div64.h>
+ #include <linux/rbtree.h>
+ 
+-#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
+-
+ static inline void cond_wake_up(struct wait_queue_head *wq)
+ {
+ 	/*
+diff --git a/fs/ext2/balloc.c b/fs/ext2/balloc.c
+index 9bf086821eb3..1d9380c5523b 100644
+--- a/fs/ext2/balloc.c
++++ b/fs/ext2/balloc.c
+@@ -36,8 +36,6 @@
+  */
+ 
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ struct ext2_group_desc * ext2_get_group_desc(struct super_block * sb,
+ 					     unsigned int block_group,
+ 					     struct buffer_head ** bh)
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 1dc1292d8977..4adaf97d7435 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3659,8 +3659,6 @@ static inline void set_bitmap_uptodate(struct buffer_head *bh)
+ 	set_bit(BH_BITMAP_UPTODATE, &(bh)->b_state);
+ }
+ 
+-#define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
+-
+ /* For ioend & aio unwritten conversion wait queues */
+ #define EXT4_WQ_HASH_SZ		37
+ #define ext4_ioend_wq(v)   (&ext4__ioend_wq[((unsigned long)(v)) %\
+diff --git a/fs/ufs/util.h b/fs/ufs/util.h
+index 4931bec1a01c..89247193d96d 100644
+--- a/fs/ufs/util.h
++++ b/fs/ufs/util.h
+@@ -11,12 +11,6 @@
+ #include <linux/fs.h>
+ #include "swab.h"
+ 
+-
+-/*
+- * some useful macros
+- */
+-#define in_range(b,first,len)	((b)>=(first)&&(b)<(first)+(len))
+-
+ /*
+  * functions used for retyping
+  */
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 8b092c66c5aa..abdeae409dad 100644
+index abdeae409dad..7affadcb2a29 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -38,7 +38,7 @@
- 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
+@@ -3,6 +3,7 @@
+ #define _LINUX_MINMAX_H
  
- #define __clamp(val, lo, hi)	\
--	__cmp(__cmp(val, lo, >), hi, <)
-+	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ #include <linux/const.h>
++#include <linux/types.h>
  
- #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
- 		typeof(val) unique_val = (val);				\
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+@@ -175,6 +176,32 @@
+  */
+ #define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
+ 
++static inline bool in_range64(u64 val, u64 start, u64 len)
++{
++	return (val - start) < len;
++}
++
++static inline bool in_range32(u32 val, u32 start, u32 len)
++{
++	return (val - start) < len;
++}
++
++/**
++ * in_range - Determine if a value lies within a range.
++ * @val: Value to test.
++ * @start: First value in range.
++ * @len: Number of values in range.
++ *
++ * This is more efficient than "if (start <= val && val < (start + len))".
++ * It also gives a different answer if @start + @len overflows the size of
++ * the type by a sufficient amount to encompass @val.  Decide for yourself
++ * which behaviour you want, or prove that start + len never overflow.
++ * Do not blindly replace one form with the other.
++ */
++#define in_range(val, start, len)					\
++	((sizeof(start) | sizeof(len) | sizeof(val)) <= sizeof(u32) ?	\
++		in_range32(val, start, len) : in_range64(val, start, len))
++
+ /**
+  * swap - swap values of @a and @b
+  * @a: first value
+diff --git a/lib/logic_pio.c b/lib/logic_pio.c
+index 07b4b9a1f54b..2ea564a40064 100644
+--- a/lib/logic_pio.c
++++ b/lib/logic_pio.c
+@@ -20,9 +20,6 @@
+ static LIST_HEAD(io_range_list);
+ static DEFINE_MUTEX(io_range_mutex);
+ 
+-/* Consider a kernel general helper for this */
+-#define in_range(b, first, len)        ((b) >= (first) && (b) < (first) + (len))
+-
+ /**
+  * logic_pio_register_range - register logical PIO range for a host
+  * @new_range: pointer to the IO range to be registered.
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index b7c3c902290f..96b61f0658c8 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -262,7 +262,7 @@ static bool l4proto_in_range(const struct nf_conntrack_tuple *tuple,
+ /* If we source map this tuple so reply looks like reply_tuple, will
+  * that meet the constraints of range.
+  */
+-static int in_range(const struct nf_conntrack_tuple *tuple,
++static int nf_in_range(const struct nf_conntrack_tuple *tuple,
+ 		    const struct nf_nat_range2 *range)
+ {
+ 	/* If we are supposed to map IPs, then we must be in the
+@@ -311,7 +311,7 @@ find_appropriate_src(struct net *net,
+ 				       &ct->tuplehash[IP_CT_DIR_REPLY].tuple);
+ 			result->dst = tuple->dst;
+ 
+-			if (in_range(result, range))
++			if (nf_in_range(result, range))
+ 				return 1;
+ 		}
+ 	}
+@@ -543,7 +543,7 @@ get_unique_tuple(struct nf_conntrack_tuple *tuple,
+ 	if (maniptype == NF_NAT_MANIP_SRC &&
+ 	    !(range->flags & NF_NAT_RANGE_PROTO_RANDOM_ALL)) {
+ 		/* try the original tuple first */
+-		if (in_range(orig_tuple, range)) {
++		if (nf_in_range(orig_tuple, range)) {
+ 			if (!nf_nat_used_tuple(orig_tuple, ct)) {
+ 				*tuple = *orig_tuple;
+ 				return;
+diff --git a/net/tipc/core.h b/net/tipc/core.h
+index 73a26b0b9ca1..7c86fa4bb967 100644
+--- a/net/tipc/core.h
++++ b/net/tipc/core.h
+@@ -199,7 +199,7 @@ static inline int less(u16 left, u16 right)
+ 	return less_eq(left, right) && (mod(right) != mod(left));
+ }
+ 
+-static inline int in_range(u16 val, u16 min, u16 max)
++static inline int tipc_in_range(u16 val, u16 min, u16 max)
+ {
+ 	return !less(val, min) && !more(val, max);
+ }
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 336d1bb2cf6a..ca96bdb77190 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1588,7 +1588,7 @@ static int tipc_link_advance_transmq(struct tipc_link *l, struct tipc_link *r,
+ 					  last_ga->bgack_cnt);
+ 			}
+ 			/* Check against the last Gap ACK block */
+-			if (in_range(seqno, start, end))
++			if (tipc_in_range(seqno, start, end))
+ 				continue;
+ 			/* Update/release the packet peer is acking */
+ 			bc_has_acked = true;
+@@ -2216,12 +2216,12 @@ static int tipc_link_proto_rcv(struct tipc_link *l, struct sk_buff *skb,
+ 		strncpy(if_name, data, TIPC_MAX_IF_NAME);
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own priority if peer's priority is higher */
+-		if (in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
++		if (tipc_in_range(peers_prio, l->priority + 1, TIPC_MAX_LINK_PRI))
+ 			l->priority = peers_prio;
+ 
+ 		/* If peer is going down we want full re-establish cycle */
+@@ -2264,13 +2264,13 @@ static int tipc_link_proto_rcv(struct tipc_link *l, struct sk_buff *skb,
+ 		l->rcv_nxt_state = msg_seqno(hdr) + 1;
+ 
+ 		/* Update own tolerance if peer indicates a non-zero value */
+-		if (in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
++		if (tipc_in_range(peers_tol, TIPC_MIN_LINK_TOL, TIPC_MAX_LINK_TOL)) {
+ 			l->tolerance = peers_tol;
+ 			l->bc_rcvlink->tolerance = peers_tol;
+ 		}
+ 		/* Update own prio if peer indicates a different value */
+ 		if ((peers_prio != l->priority) &&
+-		    in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
++		    tipc_in_range(peers_prio, 1, TIPC_MAX_LINK_PRI)) {
+ 			l->priority = peers_prio;
+ 			rc = tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
+ 		}
 -- 
 2.47.3
 
