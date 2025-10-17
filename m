@@ -4,152 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D19CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 15:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E57CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 15:04:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D2AA8E0052; Fri, 17 Oct 2025 11:01:58 -0400 (EDT)
+	id 71C048E0047; Fri, 17 Oct 2025 11:04:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ABE28E003B; Fri, 17 Oct 2025 11:01:58 -0400 (EDT)
+	id 6F3608E003B; Fri, 17 Oct 2025 11:04:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDBE98E0052; Fri, 17 Oct 2025 11:01:57 -0400 (EDT)
+	id 630BA8E0047; Fri, 17 Oct 2025 11:04:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D79CB8E003B
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 11:01:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 821DAC021F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:01:57 +0000 (UTC)
-X-FDA: 84007921074.17.07D0451
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0717540014
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:01:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OCn34bF2;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf12.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 514EE8E003B
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 11:04:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CCCD4140232
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:04:52 +0000 (UTC)
+X-FDA: 84007928424.23.E50E686
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D556DA0002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:04:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HgsDgMKr;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760713491; a=rsa-sha256;
+	cv=none;
+	b=XJYQ6CC8ysZphDXiSVaPR+V5aF3uFsG2MLbbUMcaGyC2zzSySob76UWlAty9cGcLx79mss
+	SJfjHldJYEjee8FpDmxzItyz1FQzCKh1PxvG68zrXsAVriT/fyKYs101cqQ6VP2PALAZZ2
+	iJBfHaiPvNo+TbKu55rDap5rpFg7yXc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HgsDgMKr;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760713315;
+	s=arc-20220608; t=1760713491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WjlOEpjA/dZDxYCSjsqfVgbZFM/SxanKWySMXDeQTRA=;
-	b=s8x6o4AXIhdpLWtNphr2vhUihs1zQTC+++0jt9HTOuM6HQ/jWs1x20Xd9GFbYUaESiNMDK
-	+D7MeFUvk4wvofSbfk4Swc+ajTBeWE5osGnBWoddXtC1qHI6vB3ZtMvA92rf8N9AVmHdeX
-	jWDDMORJOU5NRsGqZeamXtAKfn8D++Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760713315; a=rsa-sha256;
-	cv=none;
-	b=jhXc7507A5xrTMLMI6wVaMK2DmDQS3Kk78hxPrDOXm9jALYfu6KeGl56KLS7chaRwvgg3R
-	yb8Hw7RpTPOqI/TOePfW/01zm+6hKFKzgqE26MPsn8YmxgAHsLTP19kaz6acsS+hXOZuf2
-	jBfvkt06rnvQUZ6lucyg4wf1xix3qQI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OCn34bF2;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf12.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59HBHM9h021066;
-	Fri, 17 Oct 2025 15:01:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=WjlOEp
-	jA/dZDxYCSjsqfVgbZFM/SxanKWySMXDeQTRA=; b=OCn34bF2k/4rTHZa89TN+a
-	tJKPMQDGoxH2pn9ne2v6SOaGqeVSxpPjHe/iOg5w/NXb5+58U+J80m+CDwg0WZ6U
-	DY9ssF3TJmj8rLrVmIQkObSShDGbdGdd3+JJIpxjN3lnvCq+e2UGidVRTL3trVh8
-	Mbh+epPmp8zruQgMiRuj9VbWP0cLNmAoWlBVbIj6jGWy2mfkiHhqmR3w4ndJOQqS
-	IPORSIeVzR9+5OFTlGysUwxV6uOitTHZnEuToToFS24otgwEj1BSALjizSgTBdfJ
-	b0dLnWC2Ixo1T2Yoy4SFlRczoKLEN9UWT1G0iqHDLsEH8uDPk5aDwpZDDtExCGMw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hwd6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Oct 2025 15:01:45 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59HEY0SR015227;
-	Fri, 17 Oct 2025 15:01:45 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49qew0hwd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Oct 2025 15:01:45 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59HBd3uE018917;
-	Fri, 17 Oct 2025 15:01:44 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49r2jn5x58-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Oct 2025 15:01:44 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59HF1ge619988834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 15:01:42 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E81E20043;
-	Fri, 17 Oct 2025 15:01:42 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E57DF20040;
-	Fri, 17 Oct 2025 15:01:40 +0000 (GMT)
-Received: from [9.111.36.47] (unknown [9.111.36.47])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Oct 2025 15:01:40 +0000 (GMT)
-Message-ID: <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
-Date: Fri, 17 Oct 2025 17:01:39 +0200
+	bh=6ipsUjbeu91dDs7Ml8KfMCH/cB+JE6gc+gafMQFlHgY=;
+	b=LnkmuOsNLGpMGAMecYC02/+ABMRFCm2WtkgwkbHf88+oVkZwpaUGqHOUuUXoUNT0Ic7fb+
+	KTlLEzLEytN3f+rNk9o2nhMRxG9n+S7/6lWKIkdFlz1XdSRsjY7D0vYrLM8Ee4ceiydJPY
+	jZr861Op8TfL4J5/q3JMZRKmjRI/D+c=
+Message-ID: <ab724372-8efa-4642-8240-2f28d090d1c0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760713488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6ipsUjbeu91dDs7Ml8KfMCH/cB+JE6gc+gafMQFlHgY=;
+	b=HgsDgMKryhNnwMN/ITSI0mJHUPe1aoHFEettJVOvu5MMft480FW6TcOIQaa72BlvM81e4i
+	BRsSKwH5txiZWj5M8cFMRqLtB0rcB4PJCSbMT6s6xtEvdawatH5R4wtdnpJiZ+qC5IIDJI
+	GqkU/Enizl55v/oaRojGF1O2kM4n6ps=
+Date: Fri, 17 Oct 2025 23:04:05 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: KVM/s390x regression
-To: David Hildenbrand <david@redhat.com>, balbirs@nvidia.com
-Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
-        apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
-        byungchul@sk.com, dakr@kernel.org, dev.jain@arm.com,
-        dri-devel@lists.freedesktop.org, francois.dugast@intel.com,
-        gourry@gourry.net, joshua.hahnjy@gmail.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        lorenzo.stoakes@oracle.com, lyude@redhat.com, matthew.brost@intel.com,
-        mpenttil@redhat.com, npache@redhat.com, osalvador@suse.de,
-        rakie.kim@sk.com, rcampbell@nvidia.com, ryan.roberts@arm.com,
-        simona@ffwll.ch, ying.huang@linux.alibaba.com, ziy@nvidia.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-next@vger.kernel.org
-References: <20251001065707.920170-4-balbirs@nvidia.com>
- <20251017144924.10034-1-borntraeger@linux.ibm.com>
- <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
+Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: guard is_zero_pfn() calls
+ with pte_present()
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, ioworker0@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Wei Yang <richard.weiyang@gmail.com>
+References: <20251017093847.36436-1-lance.yang@linux.dev>
+ <1937040d-5e70-4d9a-b77a-261bf0f4994e@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <1937040d-5e70-4d9a-b77a-261bf0f4994e@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9LKX8Nmv4XcVUXrLvHE_HxecLxk_cP8h
-X-Authority-Analysis: v=2.4 cv=eJkeTXp1 c=1 sm=1 tr=0 ts=68f25a59 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=U-Hwjmto4vr2S7wfJqkA:9 a=QEXdDO2ut3YA:10 a=nl4s5V0KI7Kw-pW0DWrs:22
- a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNCBTYWx0ZWRfXwHOgqQ6tTe+U
- eJeOmxYOFp6+xojNs6VzBRrLhYngNWxnQYx4056hPZU3A7tztlpmQKe0jl4dRsHm2EY5V4OwECd
- wfXh8kvLFSBLNWQO6YChYGy8sO5WM4VZzr8m4sgqW6h5Ode2RGLfx0nNgfJ6/OIZqgqp3jebCHe
- dmip45P6cxhsJignJNv2FmPri77wdU9CW/FxJ8EHR1zW+g4xOQmIisNydT7y5lhEebl5F7X762z
- F59ssPdVoDm8ELtqeqRw8YLucK+fiFaZoZ6bzLG5yyQGtkx8T1J2LG04XKhx60ksW8Zheieeyiy
- hdZEIis1wsxG2DnvxK4WS+PNIjnS5x8eC2KBhybUtz5i6wzPM91FG6A/3s+VFhy+r+YRTQPrmaJ
- LApWx8jnpGwmr0TM/gRlRO66VANL4g==
-X-Proofpoint-GUID: P8unXoLWz4BehbTrBCBmfoLT7VBR8y9s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-17_05,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510110014
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0717540014
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 38tcqf1aychkfaix8e9ujyqfda1h3ez7
-X-HE-Tag: 1760713314-681627
-X-HE-Meta: U2FsdGVkX1/7Qj8fa2Q3cnYYfqUKzb6/h9wBa54UDTV+fxfSujfWpuwdVr81hurUN8Yw7iDgX2wKrCYFuU4IIb7qd8oKpJgYc3EFi4/XYWSCvIMx6FFTmxvcLxJIxJRVILIN2GoIVhWXoqXcLZ15IdCDvrlpL3058pdFabDJsrz29Fh1PAA/nKpMA4cwkz14RxoA2ERddFPhv400v3KEO+0dlfLXY0g1/g+ZM280neVK5H4LA2XOaiLP1sUUOYb+M3Q2nA9Cy0tQQtl0jmMf8uHAzjG9A7+S6AhpaWN050yS19+r1JlVrA4x/CAERVpv2ti/1iYMjy8NHCpiUuhw9NaHk0sNe0WIZcx+YfBPrjbgM8V0H7+t6PX+3B1bFLbe77jOZkPZJ9ECHbYnHdxmAlr6Y2go7qRNSHokpNCiGSDRqxPkxZWKohYsJfANTFphf9EL3YOw3o0QwI+PRumdvO93lQ7EVIZIh9c+2DhW6R3IQ8ngW3BoRZXbWICgvmaAjEt6hOkZnY0ktYONmY2wWhNUAtFcPMbAGmmbFGH5oIYZeDQHoO5KoiXo6wEnRzN6IBcCzXiRbq4QvhAOOhwAFWhatGIgSukSm495LjXJpMQm8FtlkhuADY7+ytoBtV4uC3sTB8GY87aYi9BTGeofCKIaO+FVsVpXbc6yodNA+3OezKKAEsjQq1ZOB/uXd4a6uayuY/1yyR9jvdwfBxBYYjybiLxPuybY4/msbOQyRCcFMnn06Yguf5XJ1I+TmevQGtgvRrQ1LmSJD3Kfe/T5jwk+xMBupyfuXxVhdN5ocN6ApoZgV9y7Rh0NlwNbiupXKDSmlwvw5dmAoozzUV3qjlFxjaPKY6sOpMDoBYlrQBYv2u1J/g1rKj0A2pMeh7nMSmMwamJnh7ejYAY1zGBC/es6wci3uqWtivENxiBrLoYjm+SRIJYnBNdstswe2juB9NahD6MTFsR35oo5B+W
- G4xQHPIs
- QN9G6sXbaWiBndo5joQGYNym/sbt79u8/w7Uvfa2Per0+QZY0lIkBlRhQPNma8dUMYaH60ntLLIvOluOHxdPbM2WhWVR00+ZpEHDWe5Y41nPZt5ewJszm2JbCbcEQFdeIVLWCppYcwe6hmJt/IDy+cJJBB6F0GG1dDrmxt3VVd5+/M3MqD3cRY2N8tHtYyvNL7/uYsbX5wyPp4BaWkmh9xteNW1itL1WoJF1ixy4VsXY7nUgOGX89pRInaZfphH9zD6gUC1bsqSoOe3sQJsbyAqHXn1nk4TQPCMAE/tvqKIX6Wy0=
+X-Stat-Signature: nkqm7geg54jdypaxyh15yjqc7sftf3ww
+X-Rspamd-Queue-Id: D556DA0002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760713490-963060
+X-HE-Meta: U2FsdGVkX18tJg4TjG8Gd/PdE9WUkeu8WWsmrzIc5YrxITSCIuA/AE3p6kAWiWeV+JYIZ6uTryAfx9Vr9Nisx/UCiDMhIiHWdbxDc18aVw6JAXUeRm3Bl6onnseo5crxzt0PExU8TvZDMlcn3T9J7KTT2H1F7EmgMVo1HLACkku3ouUiDdmJbdMf2gewfEu5DNXvXRF+mT3SkaQ1Kk1sUbCr3qQfikW0gKNRZRYPlSFN8XyuJMJNQ8+feZdi9zXTxWqiCb5RSge1jcq/OhPZ6ROJsRR3DzOznOBnHgg2ZK/sz9vQzlDyay+HWjPYH7GZQsD1mtrw1r9pU9Od+pkVUrBG0EBCw4uS6lUnITsrBEQOoAs1FB5WDuglLtcrO4+FOYl6n9+NaTQ4ANOBogQF+qDnAw5cwx1JThmjW2cHVl8FznAakhC5hWNEhn1KyYl9E8ZAmHAlbiFfZqZQg/XjTBh0YfEzO7HCDfTRQDOSRB1X8tQZOWRNNOYaD/bCUubSZe323iN/VCN2C2LHaqO8DBi9ERnNhDXeAZZ7InjH0/BN3GKluVtn/0KWFDiyDM+Ycj7evCeUHdA5axWkKIF2CZeuKDbkDdwQE3uKV9w3Fn6mYn2oALqYS8TUvpO7w07fLDdZsn5m3qRzps+Btkt+xgOaC+4i3Du4g4UVxrR65ns4NLphZqAIkiFpaHNxL35aeCN2K9euaiHKedgqtf0HglQLxBM9b9gMKSDSHGfpn/KxKxtHN9d0M5lh4NbloIQZA+vn5bopZADObJLS2gBnP/VN83TTgj8g53CSwyYsc+K20hS+aIkgUD8hTgsDpeYjbXIqYrdejrA2baUkzjM6adxwc9Fal4zaDHWO3ElMRI5kSppM4WKmw9pdGCgIQgfr89kgOIYSpNxDVnDO9ICgpeLrtPoSPCONzxv+pk/nVe62vwDPYWN6abDlV1gLKyYfpXJPPCZ0eB+9nIuH6NO
+ qMPiJJB6
+ GdU9+h/dp+IU3Z6Y6P3DYJnsGIgtiLDDSRAaCGzHFb0REWLTlu9BdgDNkzyLtCxHnpjlrKgiXAJPaGunbrsR3yLZx0aINe+LV7T7tQkLmu8cZkYvTXUa6ttwK/IUNlQphID/mFNqsD+4vsg59Cqb2eiygCZ8SlweDfjaF3iEx3UahNX6DHUH+04ayC5UDIoHEiyeTaKnCkFfnR5HIAli818IdgTUjEtx+7TQoSYwQBd4h8tvKTL0Qou2yaFOx+vHhunfjbANh3lmOwlGyzUR9RKhQ4xeyDOK9tU7mizEYi56WIHAz/hPORzVDQqGR68eTJivK5SdNAJiFS6bA6OtzIKVC1KXfef2IzC/+MIZ4jFp3dFS1kzD4VewNHTarskapxQ6XjoaWBMrpM2d5emYU90qyGwED5UGepcIEMi1VeFbe9HR1GPjn3Rlp37sPdkusZP5pH04YkWYfU9AfG9XON+iriz2NCjd3yg5UrhYSTmEB+G8v/97dUqREcw8lvwIm5Yc0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,25 +95,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Am 17.10.25 um 16:54 schrieb David Hildenbrand:
-> On 17.10.25 16:49, Christian Borntraeger wrote:
->> This patch triggers a regression for s390x kvm as qemu guests can no longer start
->>
->> error: kvm run failed Cannot allocate memory
->> PSW=mask 0000000180000000 addr 000000007fd00600
->> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
->> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
->> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
->> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
->> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
->> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
->> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
->> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
->>
->> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
-> 
-> Only when running KVM guests and apart from that everything else seems to be fine?
 
-We have other weirdness in linux-next but in different areas. Could that somehow be
-related to use disabling THP for the kvm address space?
+
+On 2025/10/17 22:51, David Hildenbrand wrote:
+> On 17.10.25 11:38, Lance Yang wrote:
+>> From: Lance Yang <lance.yang@linux.dev>
+>>
+>> A non-present entry, like a swap PTE, contains completely different data
+>> (swap type and offset). pte_pfn() doesn't know this, so if we feed it a
+>> non-present entry, it will spit out a junk PFN.
+>>
+>> What if that junk PFN happens to match the zeropage's PFN by sheer
+>> chance? While really unlikely, this would be really bad if it did.
+>>
+>> So, let's fix this potential bug by ensuring all calls to is_zero_pfn()
+>> in khugepaged.c are properly guarded by a pte_present() check.
+>>
+>> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Reviewed-by: Dev Jain <dev.jain@arm.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+>> ---
+>> Applies against commit 0f22abd9096e in mm-new.
+>>
+>> v1 -> v2:
+>>   - Collect Reviewed-by from Dev, Wei and Baolin - thanks!
+>>   - Reduce a level of indentation (per Dev)
+>>   - https://lore.kernel.org/linux-mm/20251016033643.10848-1- 
+>> lance.yang@linux.dev/
+>>
+>>   mm/khugepaged.c | 29 ++++++++++++++++-------------
+>>   1 file changed, 16 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index d635d821f611..648d9335de00 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -516,7 +516,7 @@ static void release_pte_pages(pte_t *pte, pte_t 
+>> *_pte,
+>>           pte_t pteval = ptep_get(_pte);
+>>           unsigned long pfn;
+>> -        if (pte_none(pteval))
+>> +        if (!pte_present(pteval))
+>>               continue;
+> 
+> 
+> Isn't it rather that if we would ever get a !pte_none() && ! 
+> pte_present() here, something would be deeply flawed?
+> 
+> I'd much rather spell that out and do here
+> 
+> VM_WARN_ON_ONCE(!pte_present(pteval));
+> 
+> keeping the original check.
+
+Right, it's much better to be loud with a VM_WARN if we see
+a weird PTE, as Dev also suggested :)
+
+> 
+> 
+>>           pfn = pte_pfn(pteval);
+>>           if (is_zero_pfn(pfn))
+>> @@ -690,17 +690,18 @@ static void 
+>> __collapse_huge_page_copy_succeeded(pte_t *pte,
+>>            address += nr_ptes * PAGE_SIZE) {
+>>           nr_ptes = 1;
+>>           pteval = ptep_get(_pte);
+>> -        if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
+>> +        if (pte_none(pteval) ||
+>> +            (pte_present(pteval) && is_zero_pfn(pte_pfn(pteval)))) {
+> 
+> This now seems to be a common pattern now :)
+> 
+> 
+> Should we have a simple helper
+> 
+> static inline void pte_none_or_zero(pte_t pte)
+> {
+>      if (pte_none(pte))
+>          return true;
+>      return pte_present(pte) && is_zero_pfn(pte_pfn(pte)
+> }
+> 
+> initially maybe local to this file?
+
+And yeah, that logic is crying out for a new helper.
+
+Thanks!
+
 
