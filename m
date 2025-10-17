@@ -4,191 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35709CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55285CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:02:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94E1F8E008A; Fri, 17 Oct 2025 12:01:10 -0400 (EDT)
+	id B251D8E0033; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9237F8E001F; Fri, 17 Oct 2025 12:01:10 -0400 (EDT)
+	id AD5968E001F; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812458E008A; Fri, 17 Oct 2025 12:01:10 -0400 (EDT)
+	id A12D58E0033; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70CC08E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:01:10 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3B63B7761
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:01:09 +0000 (UTC)
-X-FDA: 84008070258.04.963A8DA
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011002.outbound.protection.outlook.com [40.93.194.2])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 34B2D80010
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:01:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sEhuEtYy;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.2 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760716867; a=rsa-sha256;
-	cv=pass;
-	b=aUyRfL6W9smXuCffNg240jSXkkATBvHWo9uIPXevQLTdJwACXK8vBHpM6UoK3aNOh5aAlN
-	zsnRi6ZjPgB+1AOCoOuIq9uSnZW2eS4ce0o2GRitKgXzvPRIJpUDQi0/+QQa55yvaLbwk+
-	Nki00c7XOZ96wP5d2SVIKl0s0ritZ64=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sEhuEtYy;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.2 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760716867;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9079B8E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 637291DEB15
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:02:44 +0000 (UTC)
+X-FDA: 84008074248.02.5633805
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C2B61C0003
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:02:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyrJXv5A;
+	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760716962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y82xXlZCCoWv3AoNxPuBst7fTgDKzhDGPAn+Kop7zYo=;
-	b=ZaTo5N6lNwW57oed/cEQeX4aHe+rPobjd69m4Zhwl3cJCZiZ6yR5qprs4tSaV0revQ8sls
-	xovXdV2LEOpeuSR6+ihTEoeMqetVJTL137gB33cdHL8JJjhgWF1ACgPTqD+szt9JBpcfr/
-	0MqrQKaCVZLcGChFtLiI2OBh6xnhJPo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m3jFsuGPVx0bitpaVgd9TTjdTV8XKZ+9Ww3d7fiJK9TnOmtsHhk4HbX9aB6E3H/qpBTCnGb1CIrNpgbo46p8Ytz4AwH8xEOAd3dy4Vx2NoMDWKBib3iomOEnKj++g07/b9J+LdK/pt6yMgpufXuEPT14P81KPR9sMV02UaakL9T1i9Z7y6tNGl5BB3VitTVl3AbwWdKCdqJx+NGzcdiDY6s0X6GGxi+TJLsrWqEhwe5idh8MeWJWB1V3MHqgKh+35GIm62A9IpqvQFQMQA1exJ1fsl3w7JuYMSS+S7JpROER7fn89L94bmcPvy2qjhUp0o9rkVeZBmHATP/kwtEnVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y82xXlZCCoWv3AoNxPuBst7fTgDKzhDGPAn+Kop7zYo=;
- b=axukzX1XduhM2fAflbh4qt9SSQoQ2umhUlxZBP89bOmboD6VM/wVvOG+KoazJmGS/0wZDrkFtvspxCPdKmnaelIcKAq69T7Aw8A2CJIK0xrpfqLZc0RubuIvaZEeZdhSAjF8ZkBqojaH9a0Y1HimU14fMApAGmXbrruWZ6HavTSCXa9+AWitoPwv1Cx4BsbOivcDFLqUIvAZ8+Fq1cRFFDn5Ekda+TB21+Uw+M+nspSTv+EqSHflvGx7Vz2/DqIDzqRoUSZbkvKBGGwuo8pYbvxkdcjiKJieyP5Bbe0Bk7co6CQ9MTQPCrxkS+kuUlNn5/23R8ueqHR2YYhR0hRHUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y82xXlZCCoWv3AoNxPuBst7fTgDKzhDGPAn+Kop7zYo=;
- b=sEhuEtYyzNwULX5+Nc/c6rJPVRbjxiVIF9Q3713xNNVhu7hzqCmnM2njJPC9wKh1lLo/sB0q/PpI+g55uMSGzUdOzDUi4Z0eo6CqdnIKKbgs2DquI2zujWzcEy57He5FYsaJtW5waoXmjq+J1M6f/96n2gTbYKAjlzKNHGvIlrMHc3UW2OQ/GrFkHPt/Iqy5xHtPCpr1pNu0GRfOGzhtCfppV2QcxG40K75oIkGszeBawVLbJGUcXrasY1PQ63qPKMbfpc4cYvqcqHh87W49uPqH5/YscghEq1m1KREni8D1Gs266eLNq/EBjl//7Fboo9jrQ4DVfnAny3uy5DMWTw==
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by MW4PR12MB7237.namprd12.prod.outlook.com (2603:10b6:303:22a::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Fri, 17 Oct
- 2025 16:01:03 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9228.010; Fri, 17 Oct 2025
- 16:01:03 +0000
-Date: Fri, 17 Oct 2025 13:01:01 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20251017160101.GO3901471@nvidia.com>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
- <20251016235332.GA265079@nvidia.com>
- <20251017054007.GB6199@unreal>
- <20251017155850.GN3901471@nvidia.com>
+	bh=ND5eB1QCFY6Skiz3g8KOlcxvtTH/lier+fk4n0rckNI=;
+	b=UERSZeJ+uIH23hsp4FjalpKbrfYPx0LKAX2w6QP9rD6UKR3jjtK4TwywpXdy6VM7N4JBeZ
+	awoyYrdwPnwrm1ZYqTwCi54zcJQ0A6gEdDM8txlWaQ0bnaNkJTX9wVRRK0bCWzjIpVFecI
+	tXxhMAkXZOF22w9P7bVsfG/+zt/LRIs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyrJXv5A;
+	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760716962; a=rsa-sha256;
+	cv=none;
+	b=46bA4PRhzSk3i+uKGB4nWNC18nB9gnrmio4q5jySRGcdhhvjJTTGmowOPBHLwi9GJCoKfs
+	ykya/anQdFos7dEpmCWG9JTGKzpHy78RhduqQLCKDqobLBNntQ/d45SgGf7iiRj44+aYhp
+	b6ybd7diK123Te5YlH6WyTaqR3fW0s4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D6C964768;
+	Fri, 17 Oct 2025 16:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8862C4CEFE;
+	Fri, 17 Oct 2025 16:02:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760716961;
+	bh=3mM1lWUTizz6VVL4elvU1BRGI2YzNN2VMRwTvXHMgBg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FyrJXv5ACeinmvzHl5wHECEdtIt9rBJrFJ8bp6CJbsqurAL0J4hn2Bcdw9CoKoChJ
+	 ZKhv45UwKPRDAAvkpA2sA3k0CZiyyl17HSISQODpwPBsowr8SlXYv81OwnTwNbWb39
+	 Ild3/43ULgbZf4M4dH8yq128Zg0srGNIFqcECBRnz2l2tBP/GH7FMa9PDd40dCtgHt
+	 AGswEEmu67omIZ2IjK0ppEM6s2efJAjWI2/XU6+R1COfUi3OCmLytLzj4UZSXGC2y8
+	 MLk5zuXafk0BRFgdIOIMg+FPBevs50BmAhTwdGW/wLJxao2ty0oQDdcuQG1NzqNa45
+	 JowDMc74vEM+A==
+Date: Fri, 17 Oct 2025 09:02:41 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Dave Chinner <david@fromorbit.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>,
+	akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	xfs <linux-xfs@vger.kernel.org>
+Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
+Message-ID: <20251017160241.GF6174@frogsfrogsfrogs>
+References: <20251014175214.GW6188@frogsfrogsfrogs>
+ <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
+ <20251015175726.GC6188@frogsfrogsfrogs>
+ <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
+ <aPFyqwdv1prLXw5I@dread.disaster.area>
+ <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251017155850.GN3901471@nvidia.com>
-X-ClientProxiedBy: SN6PR2101CA0014.namprd21.prod.outlook.com
- (2603:10b6:805:106::24) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|MW4PR12MB7237:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4155e212-d03a-4d0f-841c-08de0d965f8a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?lH1mN6ye+aIC3KjEo2L2o6rOhp96eiRtLcFlMlpCyUnfvCUeJa4qHEhYdcZf?=
- =?us-ascii?Q?y331eYoRRMw3g2HbwlNrGnskKwVC4RHKODe2yU8X1GeGhwmVv1HH5vr0IrEo?=
- =?us-ascii?Q?6BNO2QewT00Nf2UaZPwb/OaLBdc+xUAOmL3JZEgbYdSi1OTGxs7U+C4OStaB?=
- =?us-ascii?Q?GrUQEaQpxOKffZg7G9uiBoPQ3SUa6wjFdTQcJFd6oB64n7qIuQg9mO7Xl6Il?=
- =?us-ascii?Q?FOwkXkzPjZyQXUK445u2GK0ajbZMvKkS7pBBazk7WPftW7l8PUS6sgllOmzg?=
- =?us-ascii?Q?KUsX2oFjaPanRBR983xvL4U30YlycrIeRUeNB/wN0gpCXZnXPxkk7aoQkZO0?=
- =?us-ascii?Q?ajTxGmlhMJ/5l/ThJlZ+BOxT6u64ddze56TRAFexgDZINPXPkEBKve2PS1BB?=
- =?us-ascii?Q?CM0+dLqxKaEyUDQXmecHM757sTSI1iis4USqYs5owqWnjO87j0Q3VXdYEQch?=
- =?us-ascii?Q?HwhPphELrhLCWxU0pIPp2AbTuVLJQUS71cEpVjFA0DzT46urv66ToD5ogi68?=
- =?us-ascii?Q?+IdqPRITVrhX+2UCATkiP1GX4eaJ1qyvSRXe6lmVUEx053ihW0mmwQsUJxrQ?=
- =?us-ascii?Q?19LHWhWZb4PXktIU3ZBuRbIxlPZ4+JINnCfYULDybw0fNQb4HQV6OmLUGsm9?=
- =?us-ascii?Q?yRPDAERTbR7oLQAAY040tdfMK9HrrCkvBSS9ERZVqZfhAoPyHL8o+SDYM4s2?=
- =?us-ascii?Q?KpLOivo8xeupZzRKYlT4qTWNNPtOqi18R631O5SLwtTbbE09GqNXO68CvVp+?=
- =?us-ascii?Q?SoXPhF1fs7/0fFuqMlo7dFd6zZ7s34pZEeFaQa7n1XgY7FkytSctBsXmp31K?=
- =?us-ascii?Q?yKcA2kns02b4EKRsHpEV8EAo2MsxjKL1a5Xi9GmzONn/6W7ldHl8rcSDYBlr?=
- =?us-ascii?Q?AbMj0twZQkE2Uu90FQeRuPgKRAZQIcSimOlb1WGA3eX958NyPKPYSn7lyWl/?=
- =?us-ascii?Q?yov0owrMWbgjSwuSBGEmCBR0OU7EHGNDjQftL/VRes7rzU80vkpPnko+9l6C?=
- =?us-ascii?Q?JqvCFOrGOYpo6bty3Xt9IgYRm/NgjR20Xrs+aqgH845irXaJW1AKdaZOPVUn?=
- =?us-ascii?Q?/0H5NjysFNpSjwuw/kUk6B7P2RaKTTlqXYu2Fa3kDzCulvu0jtX+FZB47eXz?=
- =?us-ascii?Q?I4P9JuIMUCHuIV4Z9cr+4S4Wo0qiORzgZHeoiqlp9ulumQwGBN/ifeEHUZrQ?=
- =?us-ascii?Q?1KWSSWl8YQmeHMRVPMw09IrWql+3BiG5OyWdmhsOkabpxremEg2KH+2c5CA9?=
- =?us-ascii?Q?2M/gsYYmncZqGC0qlS+69aNScatx7JHmnf2DHT1hgNlFUFND8qOABGQNzO2Y?=
- =?us-ascii?Q?B4v88iqQD8nju7I0ja3BzXFLdfcanei6MdOieycYrePZkMO71AMW4p0TPsI6?=
- =?us-ascii?Q?3Cj6p9sVAqpOzfUOORriKPTi1FnDH7UsswLMOdi0RHF2Rex2oVqrBs5HIggH?=
- =?us-ascii?Q?dNhU+sBnVlSg3k9XR87rqZmqVAUZoXej?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kBu9N7hZGGARp37UosIoW//cgPBrRqdAZA+mqc+l5/94XwDqWRqpo4/POhX6?=
- =?us-ascii?Q?ZZ9824nQntoxhlAmeYlWBWMiN49uw+YpAtwVqziJ4XgDaRpl363/7vytMIn+?=
- =?us-ascii?Q?7tXVk53dPXpXYfS56vPTMf2iKSCY2qeQH6AXkn3W2zcXofZd4nyuS2YXO9if?=
- =?us-ascii?Q?mtOVScR33LaWhwIRdXwuULx+HR+WD6HnqGpilDVUYna9ZYYiALGrr61gLeKt?=
- =?us-ascii?Q?PK62+xyEKaiWAGP6iTiWSpZZT1PCdbbHkP7LRwPEGJWq8soytl8kMR7oQ2Bz?=
- =?us-ascii?Q?NVz/gA/kP52BCDE4ieAMLpbA4U7+PlYO2YVZtipqvR0+NxrotWzxTY2Fr2DF?=
- =?us-ascii?Q?ze9kjcIcsXrEAqtNOw4bDfnk/PXVCFQFuH1B/6feR1NvrfzgkK0wJNjhuLUR?=
- =?us-ascii?Q?GnKsrJfT8b2mx+AgxLqDTfbOIVYS2SVug+HWH1O4oM7FSFkDIf7SSEYc7NSI?=
- =?us-ascii?Q?MicdlyB2kLQzoK13fTKSztcPmVAbPAj2Xogsggb0FGRMdX5DC3YheBL3yUSp?=
- =?us-ascii?Q?iuERtwhWKPTDXRvFTOOw6o+/FhQkBLLfQcKUdz4I5tm18GbZpbtdueS5bGZc?=
- =?us-ascii?Q?XyxLcPsI8Y4Oh8bJp5d+bqkqLWV7kD5UZ6SnxJJYF28AKOPd0BnC4zEoBo5u?=
- =?us-ascii?Q?u3igsTttS14LBJYdzi1OI2i6WUpfcgPQucQei1vozXYjcjMdTJcprTswYUeD?=
- =?us-ascii?Q?51LdXJqurdOVvWn6gix8i3w49t/ZE00viBs/p5uq4Yp+n8IGkq5BKMNsJAie?=
- =?us-ascii?Q?1UQx2BiETHkUncI22lYKhx3SxRIJBq8rLZhF/4nhM1qp1Vt0eDmnFkjxp+hJ?=
- =?us-ascii?Q?cQR7A2DhYfzVDiHzHiwM4AKfU2XLYIZh1J94D2K4c58KUsGqO7rNpCtlh6wR?=
- =?us-ascii?Q?T90e66/hWenRUf6FZWg8YMW3E+U9i11vI43P8EoQ8D1DtZOat3y84s8ezf1o?=
- =?us-ascii?Q?vi6eV7LSUTvimz9eCJ5yAN8FviJOnl4pdRA5MsZ9KfZPat9w3r3nD6D/NUWe?=
- =?us-ascii?Q?B49wmSRynmwxOxfVgR9QlYFDL5hSq/B4BkAK2VAkzc9qrq5L4fDsZeoiQGG1?=
- =?us-ascii?Q?4rW+AwmlD+UJEQdfJTavha48z1pS/mORBALUcEZuw2/JDD9ZcjCUy+2shyQM?=
- =?us-ascii?Q?K/wGTPgAr4bZeRJHg0RRAbfLCnT36BfYLl857WOCJ87ukgftkSslk4AzYLzz?=
- =?us-ascii?Q?nYINUwtGLXnsHauByAvtxJnGa2h2mfwHEvo73seue55UseO6rprfGwGiyRwt?=
- =?us-ascii?Q?glEO6GII+SaUZL+vMy9T5S8v46Mn4zy40upCQwxQrC9NMEs7Ri6sXB7scg9l?=
- =?us-ascii?Q?qp4Q4hCA1d5Bv4auG2H74kXDOZwZMeNS0okh+CvLPABJVzoQjIFJkjbbf2TE?=
- =?us-ascii?Q?V8CaAz3OJMEPSkdU22Cb4qbldxDBi/q9KUrxxy+XODloTiQ4MkC2fCdl4TMD?=
- =?us-ascii?Q?aQoxrhWNpgHI+TUb97/YP4pCvY7EaUp7yefBEZkIU43grZHC3qJOz7rrnkY7?=
- =?us-ascii?Q?xwSSVAxTxLTqD2NaqfbGkSdatDfwhwaLrHYiU7cRBFh3YYeWUMYUFObbL5qh?=
- =?us-ascii?Q?cb4+9B0IaDFLxqXN+BGNIUFIQBsY4yzhUuVPM8AQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4155e212-d03a-4d0f-841c-08de0d965f8a
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 16:01:03.3858
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ePKq45QTNlb4TNCVnqQR7loqjURQiQSxnhbuExu1lF6dfCbBR5wDwPyM6le85jcH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7237
+In-Reply-To: <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C2B61C0003
+X-Stat-Signature: 3ky56g9yd5ygg1pcadifryz1ze5qrjh7
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 34B2D80010
-X-Stat-Signature: ius9dayp6bs69zgee5i8j6fxnoowj74i
-X-HE-Tag: 1760716866-818875
-X-HE-Meta: U2FsdGVkX19dH+uhbScnm0j8CstP/nbWOHMLOxGE5/C113HWoiOVCdtzfKAoBEmNkOZEqGN8hCh8ggNMpGy2Ev4rVPTNFxrPZL3uds+A3Vpsil8LVRXWwrEIIe4QUkkngwDFvRR5SOGFioKRh2eXP2NDoOqZljulZZG1BDFfJFUfSakRzNAqOKo03b57/tldaW4YHyiqaTXbJyWGVDAAuYmYK1x1Xj76YwtPFFrJgFu67XaybPZ99wYE0ELNzpNynX2VENSPOMpqTK5/o7idWZcvrdJ9K4JasdDImxQ9HKRGQCO9eYUK0pyf/uS0Imq7Mby6ceZ/n3QjAe8xmtp34DUB1yrPAEu0nAhY+deJ5Fuptn6Y+vS6MrSqngq1kVzrl1Lf1wFSIqCNSpsOKSOtPFG7NqIk+1EppHHL1dgwsFFuenDiJJdQcwvXv7/XmNYvnplFWvaayoEMyCBEotWB5v0KQ5drQ/GPIZgqOc12RudWJK8gt7x12fJKgfVgZFiCvXqgj1o02RsF+v4yDMe47afD6Lq6GuQ9TzXJ2P4JUlccl03wGPSVgfBbJrITW7h/OON5b/HgD+T6WhRoOvEvaDkmuAUw7pEIOSoADIgj2HLx9v1BiWCJYz/KJlMnWLXzFEkw0bV+QyKuiV2Lcb6xKTpiCCHce+49474c1LovK8qRsPo50evw7lqTlUaNjsVinHNdJ0n5qgO6baG+SmGUPIK9syomra3MB5tvSEylOfrqh0VSJIm1pC2C0x6+P/QvvTjxOcZIaa+6cpP6fh7SiAv8+Gv6/x8So0+BBHywU1w3gOPHh/IygX9i/tLhR9jiuto1a5I7tYdkU21aJz7jDLRNWlsnoymrBvAZeT3qei8MzYnEtnO8ePsGJsnz3RHm/7XF/ctrXDtsGfYXVC1xRr9QIQVW54SYdzEzjiFih3Vr9p6foIBE6wgmvasDm3mww0/5VAAdjyns73vMSDs
- Rb1pJqyj
- HUp69QuiokG3cIAugCmkEBuDzD3bwec0FasZ2eCnwcF15A15zBqW0Rw2F/2k9ZDTNXNtxCPelYLuu6rO327GQlL3D6yBGQglS3bkrnFBTlBchWZHkynCb1TJpOc3F4DOlRUeHrqt6w0xxEeUi3N++diJZzmvG4p7uPjvBQqjHgpuEAkSuRiE1AWw4pawmPstnpIy5I9zhPi27hoWs4Cj9QQ4kntdghpytJ4MXU/0PiUZGqCgZgQOJdJ/tcttE8Ddtcyu65louLRqRn3MCe6f+mLklF9exl341Dml8vvU0n6A584gBPj+byF3ZIFEJBhZed0+YdgdN6BVcJjmaCCny1Cyd/kwJ2nVu3N/NjigWSN9wPp8XXZf/XPYVIwjpVseUblrXUDs0SWRQy2FVc8RLMCQgJA==
+X-HE-Tag: 1760716962-604628
+X-HE-Meta: U2FsdGVkX1+aefVdOqz/9wM2nSaIvvwghuKFrrRPABsiPu00dkikHW0/5uIbeLCEq4uySDyeLgmANn2gz7qVHaoJWDPK2c6THKRAIqfPur8oTAW9QtrPQCvMUtNLW2zSKA+9Db/wr74/CN1PpAa7PvhvfIQP2RzNsjBax7RpCIf2Zmu+5aX/0glHI0hgUPIdD5oPD6L9L83nkdUfqhEAkmRWTo7azRknkPJj8Btds1VZWYxKi+UTdkIJ6l0Y8DtD1ozSwmE0nWyXgwGS71E4op5/uF5QwDnS+Y+sC+oBwgetvu6zNtbHckcBarUxfCOfz5xkcaZndh/1wDNrkl6Jb7l8LnxjU0nKgA6XgQu9rxdz+SK0j36VwrYu363uFGK9yfznOvpUzgyHGKkOhDaFpuFmuBlIsqxq9cybvjg2fpUgcOjiVdaqSpcwR86+8cdjw6OT+LNWBorVbNB/UcB6P4wLVxu29p+rSmaiDG/WhyQJd9CmNF30VlDsOC0CUTDUb6aWwF+Q/2ojS/1CmslWuPsLFJqNTWfKLIfsP0y3ia1+2r6aaScq3OOTtD48FRncEBVioYnJaWhVSn5pc7bZSQHdqsWX6BVCsLPGZnDk2nAu61uM28qtyHrJzTCiwmr2ytlHohs0FjKqv6m7DeFWuuTgEFhjbGClhmeK5HsEGEElIXnr9QBq7u7dBxSjgYjOW5/zQbM8y/PMB6coJH1aCICQyqjOII5RecarAWOwZIOc4myhiAhoat3PxdJcm4OUJKGEWSzeMLf94hfsxs2iv5OCwCDcW6auCVuE2Xe1tPWMvoJPfYmScc7Ou4/Rc9geZyUkbp8LbYtILs0oM4w7xJ5dEIB+5CBWfsoDettzON2fV85KEetPAHIes7y3q+ROJuJNHuu+ehKTwqNL+oZ72GicIWr/OkA7SmcJEUHM5DDupxwp2g7x/zEhb4oBu6C0/sEVRpW6xtNfRCFMdm+
+ 4LP3fn8+
+ DHiGDF+AKaqX8dQKoGJo6KiX12x5jHssnzwrkWN+V30nhbl2Mq5oO8twV+hDyJic2EJrJYQAiMUBC+M/EsAlKcbBkV9+pJo0bY4D7e4PMwk5bln+W9aDuOrdwoUUvlyhpZFO3nxvBjY8SBSh9iLNcBB33yV0xa8TN3riEqrCTzPHSNgcVFMgeKYUSe76OTqUQrzb7EYoreBd9bIJGIe+tFmlL3HsyW9l8A8aECP3qD5mneUmgGw0idbYmMIpUtL5+XFoE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -197,39 +101,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 12:58:50PM -0300, Jason Gunthorpe wrote:
-> On Fri, Oct 17, 2025 at 08:40:07AM +0300, Leon Romanovsky wrote:
-> > > > +static void vfio_pci_dma_buf_detach(struct dma_buf *dmabuf,
-> > > > +				    struct dma_buf_attachment *attachment)
-> > > > +{
-> > > > +	kfree(attachment->priv);
-> > > > +}
+On Fri, Oct 17, 2025 at 03:28:32PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Oct 17, 2025 at 09:33:15AM +1100, Dave Chinner wrote:
+> > On Thu, Oct 16, 2025 at 11:22:00AM +0100, Kiryl Shutsemau wrote:
+> > > On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
+> > > > On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
+> > > > > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
+> > > > > > Hi there,
+> > > > > > 
+> > > > > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
+> > > > > > with the following:
+> > > > > > 
+> > > > > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
+> > > > > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
+> > > > > > @@ -1,2 +1,10 @@
+> > > > > >  QA output created by 749
+> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > >  Silence is golden
+> > > > > > 
+> > > > > > This test creates small files of various sizes, maps the EOF block, and
+> > > > > > checks that you can read and write to the mmap'd page up to (but not
+> > > > > > beyond) the next page boundary.
+> > > > > > 
+> > > > > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
+> > > > > > folio to cache the entire fsblock containing EOF.  If EOF is in the
+> > > > > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
+> > > > > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
+> > > > > > to the second 4096 bytes should produce a SIGBUS.
+> > > > > 
+> > > > > Does anybody actually relies on this behaviour (beyond xfstests)?
+> > > > 
+> > > > Beats me, but the mmap manpage says:
+> > > ...
+> > > > POSIX 2024 says:
+> > > ...
+> > > > From both I would surmise that it's a reasonable expectation that you
+> > > > can't map basepages beyond EOF and have page faults on those pages
+> > > > succeed.
 > > > 
-> > > If the caller fails to call map then it leaks the iova.
+> > > <Added folks form the commit that introduced generic/749>
+> > > 
+> > > Modern kernel with large folios blurs the line of what is the page.
+> > > 
+> > > I don't want play spec lawyer. Let's look at real workloads.
 > > 
-> > I'm relying on dmabuf code and documentation:
+> > Or, more importantly, consider the security-related implications of
+> > the change....
 > > 
-> >    926 /**
-> >    927  * dma_buf_dynamic_attach - Add the device to dma_buf's attachments list
-> > ...   
-> >    932  *
-> >    933  * Returns struct dma_buf_attachment pointer for this attachment. Attachments
-> >    934  * must be cleaned up by calling dma_buf_detach().
+> > > If there's anything that actually relies on this SIGBUS corner case,
+> > > let's see how we can fix the kernel. But it will cost some CPU cycles.
+> > > 
+> > > If it only broke syntactic test case, I'm inclined to say WONTFIX.
+> > > 
+> > > Any opinions?
 > > 
-> > Successful call to vfio_pci_dma_buf_attach() MUST be accompanied by call
-> > to vfio_pci_dma_buf_detach(), so as far as dmabuf implementation follows
-> > it, there is no leak.
+> > Mapping beyond EOF ranges into userspace address spaces is a
+> > potential security risk. If there is ever a zeroing-beyond-EOF bug
+> > related to large folios (history tells us we are *guaranteed* to
+> > screw this up somewhere in future), then allowing mapping all the
+> > way to the end of the large folio could expose a -lot more- stale
+> > kernel data to userspace than just what the tail of a PAGE_SIZE
+> > faulted region would expose.
 > 
-> It leaks the ivoa because there is no dma_iova_destroy() unless you
-> call unmap. detach is not unmap and unmap is not mandatory to call.
+> Could you point me to the details on a zeroing-beyond-EOF bug?
+> I don't have context here.
 
-Though putting iova free in detach is problematic for the hot-unplug
-case. In that instance we need to ensure the iova is cleaned up prior
-to returning from vfio's remove(). detached is called on the importers
-timeline but unmap is required to be called in move_notify..
+Create a file whose size is neither aligned to PAGE_SIZE nor the fs
+block size.  The pagecache only maps full folios, so the last folio in
+the pagecache will have EOF in the middle of it.
 
-So I guess some kind of flag to trigger the unmap after cleanup to
-free the iova?
+So what do you put in the folio beyond EOF?  Most Linux filesystems
+write zeroes to the post-EOF bytes at some point before writing the
+block out to disk so that we don't persist random stale kernel memory.
 
-Jason
+Now you want to mmap that EOF folio into a userspace process.  It was
+stupid to allow that because the contents of the folio beyond EOF are
+undefined.  But we're stuck with this stupid API.
+
+So now we need to zero the post-EOF folio contents before taking the
+first fault on the mmap region, because we don't want the userspace
+program to be able to load random stale kernel memory.
+
+We also don't want programs to be able to store information in the mmap
+region beyond EOF to prevent abuse, so writeback has to zero the post
+EOF contents before writing the pagecache to disk.
+
+> But if it is, as you saying, *guaranteed* to happen again, maybe we
+> should slap __GFP_ZERO on page cache allocations? It will address the
+> problem at the root.
+
+Weren't you complaining upthread about spending CPU cycles?  GFP_ZERO
+on every page loaded into the pagecache isn't free either.
+
+> Although, I think you are being dramatic about "*guaranteed*"...
+
+He's not, post-EOF folio zeroing has broken in weird subtle ways every
+1-2 years for the nearly 20 years I've worked in filesystems.
+
+> If we solved problem of zeroing upto PAGE_SIZE border, I don't see
+> why zeroing upto folio_size() border any conceptually different.
+> Might require some bug squeezing, sure.
+
+We already do that, but that's not the issue here.
+
+The issue here is that you are *breaking* XFS behavior that is
+documented in the mmap manpage.  This worked as documented in 6.17, and
+now it doesn't work.
+
+--D
+
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
+> 
 
