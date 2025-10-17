@@ -4,132 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B89CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 23:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9AB9CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 23:40:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB36C8E0008; Fri, 17 Oct 2025 19:33:44 -0400 (EDT)
+	id F0CFC8E0009; Fri, 17 Oct 2025 19:40:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8B0C8E0006; Fri, 17 Oct 2025 19:33:44 -0400 (EDT)
+	id EBCE88E0006; Fri, 17 Oct 2025 19:40:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA0668E0008; Fri, 17 Oct 2025 19:33:44 -0400 (EDT)
+	id D84D48E0009; Fri, 17 Oct 2025 19:40:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA9248E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 19:33:44 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39BA013A90D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 23:33:44 +0000 (UTC)
-X-FDA: 84009210768.14.AE55AE5
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7490540003
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 23:33:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=18RqkOgV;
-	spf=pass (imf17.hostedemail.com: domain of 3VNLyaAsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3VNLyaAsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760744022;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFBE28E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 19:40:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 50461140156
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 23:40:57 +0000 (UTC)
+X-FDA: 84009228954.04.66F1CF8
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011006.outbound.protection.outlook.com [52.101.57.6])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 77E5B180006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 23:40:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g8j4QTMo;
+	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.6 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760744454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LwfPpMJqaisEQVUu9wiIDJQK1raYpWFG3P+DdjsMb18=;
-	b=HECLXwCPYQrTH0ShTThiCbSN4mYhuKyBlBshliMXP6ZM9y5S1fomfpcpGwkZs1lULm8CIu
-	4Q7O7HWSlYQC/rQT30cqmrvFxI0BGmMDsaeJz1W/3jfV0Sty96iNatWxJHCReCZXQfDJBz
-	vzV8IyrEXBPX4M8ey1awLPwqq5g15Wk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=18RqkOgV;
-	spf=pass (imf17.hostedemail.com: domain of 3VNLyaAsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3VNLyaAsKCBMtv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760744022; a=rsa-sha256;
-	cv=none;
-	b=bRpTw4eBPUE4183cDrxKx/xTA+srxm1OKEzrHX49Wi9rk0ytvoy9u9sUzmRG1l1lphU2/k
-	+dFT8rOhNq9JW6H5QxJGfOppsNjNOB7iLe/Yef1tj8z37LL5HnG9ryJeuWmUjHB7hLeXqi
-	KeaOaThOvPxD7LDzJoQHKZa2IomtVD8=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32eb18b5659so2102744a91.2
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:33:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760744021; x=1761348821; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LwfPpMJqaisEQVUu9wiIDJQK1raYpWFG3P+DdjsMb18=;
-        b=18RqkOgVAXprOdNUYrlCo+rRoYjyXIP3vzcbVaPDxnV2QCnT0gN3tyRH4j+9Ya2rog
-         L5WNpetOpvROJlAc88j7EyaJj0RXUDT34xr7edlFv0eU4RMogzk32vWcRyOcocd1L01K
-         rNIS3I4a+aaALfwHHUrSZh3a4m+lsTAV1UasgC+a9uo3rjvRFpguDiVFVLui+V9hLMCq
-         rzqc/epr9tNL2U23i4uzyzI4M1uKkVRFAY+m9enfyFVFH3nJ+HoTJE0D+9XlfPJjgpqQ
-         Hy8SBEYtyvKSoFed8129vSnKteKFCBMs15O12KjgoRawuZCeypLuWLxkSt+4DrYUEFNc
-         5MEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760744021; x=1761348821;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LwfPpMJqaisEQVUu9wiIDJQK1raYpWFG3P+DdjsMb18=;
-        b=Bk3KLZNDQ/QTHzoTWgRRbcmVkl8dRtoVLzw16Xc2pD9vvCieuOc2ADEGR8XY8jhbID
-         ReFW2RzmMLvQV/FeyQhxTTD33Ev6ccHkydRYiMTkNwmv9jK/Byen9vWuWu5iKgOroASU
-         uuA9GjqtjM2LxFeJN+8hvReTXpLOivgUIAO1v4/sAIJtnjT0DD4ANaAZw+z4MRhDAHxR
-         Ku0nbKxIps7TV4MssbaBB6tyyhGeFyv0Cs2kgeqH/YDqexGYwuV1oMoEPKkSXYuVNzXz
-         eUk41ojuRuYVm/j1iinDhJMRQwZrODDszMOvMs1lj4kJtGQ6aU7TZ4LQN6DV97Q6OHci
-         0boA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdU2aJOor3nB64wn3USq4AK3XNafPkRx7g1ljoKkBa46lYm0DZBQ92JXssers+nvaeQiz2f9d0Wg==@kvack.org
-X-Gm-Message-State: AOJu0Yzk+PZ0cHQlHST9bpZCfcRKMtpRLawnnUO30HSFjBWeOrGSG4vR
-	qhCgQ3VPGN0Qn1ADN9CAuoqUyggCxfxNBjHaDlYg4vQW+/8tkfMycJni+t7GFYw/goQCafZJGHq
-	0muMFI9Yriyj3oMOS/xXZmlx1Uw==
-X-Google-Smtp-Source: AGHT+IEJkm1Y/xUQeOW9OSrw7fOIA8LhUvRSTlkRcfM+UNWeMSJmrld0H6KUJsXbTWNmxyDTB1XySSWqNmUDg7YYhA==
-X-Received: from pjtn11.prod.google.com ([2002:a17:90a:c68b:b0:32b:8eda:24e8])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1d88:b0:32b:df0e:9283 with SMTP id 98e67ed59e1d1-33bcf90e86cmr6755629a91.34.1760744020326;
- Fri, 17 Oct 2025 16:33:40 -0700 (PDT)
-Date: Fri, 17 Oct 2025 16:33:38 -0700
-In-Reply-To: <bb336979b10ee5b9c6b3c3934ec3aff19330b3e7.1760731772.git.ackerleytng@google.com>
-Mime-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com> <bb336979b10ee5b9c6b3c3934ec3aff19330b3e7.1760731772.git.ackerleytng@google.com>
-Message-ID: <diqzcy6lp0h9.fsf@google.com>
-Subject: Re: [RFC PATCH v1 26/37] KVM: selftests: guest_memfd: Test that
- shared/private status is consistent across processes
-From: Ackerley Tng <ackerleytng@google.com>
-To: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org, 
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, 
-	hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
-	jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com, 
-	jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com, 
-	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
-	mail@maciej.szmigiero.name, maobibo@loongson.cn, 
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org, 
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	peterx@redhat.com, pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, 
-	qperret@google.com, richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, rostedt@goodmis.org, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shakeel.butt@linux.dev, shuah@kernel.org, 
-	steven.price@arm.com, steven.sistare@oracle.com, suzuki.poulose@arm.com, 
-	tabba@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, 
-	vannapurve@google.com, vbabka@suse.cz, viro@zeniv.linux.org.uk, 
-	vkuznets@redhat.com, wei.w.wang@intel.com, will@kernel.org, 
-	willy@infradead.org, wyihan@google.com, xiaoyao.li@intel.com, 
-	yan.y.zhao@intel.com, yilun.xu@intel.com, yuzenghui@huawei.com, 
-	zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7490540003
-X-Rspamd-Server: rspam11
+	bh=b4uhacFgjnegt4IZUWAQcIlzyMCEyF1jTEN6paSmLLU=;
+	b=jMxweSnaB1T70DhRAd2feKFqyUx/XOSDWIDpCev4K6Ea0/u6w5ACfa3K3HRTC6YyEBULG9
+	U1RX0bVF7QYCH3lHQ27nFGIzUh7gYe4MwihXAWq7WkKSjg5HuM81foo2IhokyoKdY0xuHN
+	z41fOyWKLShLshtPQMR2MXvADUoVFu4=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=g8j4QTMo;
+	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.57.6 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760744454; a=rsa-sha256;
+	cv=pass;
+	b=denhZE00MrQdM9SaxHjCBHRrN8FdB+HQwnmU0DrKpzPLVagh1ZWprovBUws8zBhQaqu5d3
+	q0yJjL415DKeYEQZOvDYC7a7kaKrTbRJIr65GJw88F0YSizgJhBVsb29+hxIzJkXdzYExP
+	nNmwx1sI+zXx7gUu6Mjtt8hvVMVZBaM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nWyKZ1s3bB0z0F46+QVf0NLcVvEYxEMjmah3vJxbvcnIufF6RuyUPRU7Ax2oBqPD/avzg2wtq/ILD3EX18dVKHWSBN5BLCI6YykV2tiX2QHNBqWWmyOO/oc/9yL/DbOeigCf1IFSxQZL2QvugYqcXVWveBHiAedwlJ0a4PtMk7A6zlYrWAjKjsZ0qkuFx5APCXQrEV1/ArnkLAtuIDsHxDgJ8ilSEj8uwlKDgjRsRYw71ZUDEHfpYom0A1RQk5rpHhDImuvthtJ9i4MdbRf4hpBNgekl+3PmCb1Gsj/wxQUddpSoGvpoo5C7k5c0nqP0tW4X8THLrYoNOvK0DZcOKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b4uhacFgjnegt4IZUWAQcIlzyMCEyF1jTEN6paSmLLU=;
+ b=AVNXWMQ1BWkXcVgkkZf0e9gtqv0HTDfkJCQ7KdxBFxHczkaQ9tpsfx8an+j113flA6TyD6SeUm6dMa5A7cK7HCHg0cNVmrsEUMoiYQr0JqcKCCYRNgLAFrIDzOuqYlZ4IZYHHjGIF1bLVSKDFRwYuLCEoiMY28CuqW5hvtXHad9zEXrfdrHUdRs6f7u02HR0e4kusXcA/eJzHRzlW4p1P/rDCtI2xDk9mAzxaWMjE2J5FEki0xv1VR1/23eeA5yYmVURGCk7w2OYV4OH2x438+dwIx/xpywvqF787F2TNZJFQC8jDKpZhXIer8SDVOEDXzi9Dny+p7f9nhZ39fd+WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b4uhacFgjnegt4IZUWAQcIlzyMCEyF1jTEN6paSmLLU=;
+ b=g8j4QTMoXfIWXxAr8RPV7UvFrDSLIRbq2HwDgjNE4tZ9xoANKxUrc8jO6EDodHJ2NhkBv+ITDiounC+wnwlbzoMHPQoYanNZbuajpTyYbk5QqCWF0rRW1bN+1JeSx+/8hjujAWFfFm3ZxNS1HZdEkhEG9dUwxZ7C0krAEIVQa7JalBwtyHmbEpOG6Ij1YaobMVAVa/tDRyFS/O1PbsqiM1QAUrxAMh5Ixs/abK4y34qgIL60BkVrYF3yQ64a8XI0Z9Tun/B3F4O7Sg6timo3QqvVkoW/TIeIfU7dj2LPHPe4OW+yvpwws0o0+B3o72f6aFZ0BGVR/he+pYJKzLm5HQ==
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by PH7PR12MB8014.namprd12.prod.outlook.com (2603:10b6:510:27c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Fri, 17 Oct
+ 2025 23:40:50 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9228.010; Fri, 17 Oct 2025
+ 23:40:50 +0000
+Date: Fri, 17 Oct 2025 20:40:48 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251017234048.GA344394@nvidia.com>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+X-ClientProxiedBy: BLAPR05CA0029.namprd05.prod.outlook.com
+ (2603:10b6:208:335::10) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|PH7PR12MB8014:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7335667a-b140-4946-7537-08de0dd69a85
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?u0relGhU7zo5CxgW8Hmj8Pp97LthOAW6M/oMhEQwGA0XLFLLH9yt+YChMDp9?=
+ =?us-ascii?Q?k7PmSKNuEnKdh9EmB8dSuZIFg5+jw+Ko4lVNh7IpjQ3j/bHAf+MST5say2lj?=
+ =?us-ascii?Q?oES5rOUTtoXTKbkH0POtG162aXcX+Pf4OPwcyzadNZLCspKCQBaIQOdyi5Kn?=
+ =?us-ascii?Q?KE9kb2TofxkfsDrQFB5aMSTl9GZOTl7f5QwUt5cxc8fwghdQfitRctf3fSgq?=
+ =?us-ascii?Q?ZrICN3ytfzIrnJwRcS2CJVfCG38y/dq3R+21nUYa7JrG4r3znXQoDSrw0Fy1?=
+ =?us-ascii?Q?gIo0lGia8UIZKSPoO7T9xa+CCOfHFvr8+09e8fbTZqtL9nVPLs1OsnfGYvtU?=
+ =?us-ascii?Q?vWd+MEGJxlNGHNDLUZnp11AJWxKeiad6l+GqDDe5uodqYXGzuTDpMEcezLiM?=
+ =?us-ascii?Q?zJGbm2l5HrWDe2PzfEH0apraY90nMoBWfohmbogiJ/yMmRr21IaVTnMevBcA?=
+ =?us-ascii?Q?DCBzC50t0GeFsv4ZxXLT9wfKQbaVC7zU9nIGFZpnZ6Va5ZG8c4PXqlGqh8Mi?=
+ =?us-ascii?Q?VvzcRx0CO5fyqZ/5wmM3QO05NyKw7r4Ueb/nytdN1eTtZwgR7ZNF8RdFr7Fy?=
+ =?us-ascii?Q?alaJQN0m2jSfep/sUk7P4eek14tDPTS929iAr73q0OZlB4EpF34x9+GejhFj?=
+ =?us-ascii?Q?d6qbNHKwXrhDvYB5y2FNtlRn8vXku9PZ25fk12MgsEPOPcF73FMP+24lad7C?=
+ =?us-ascii?Q?6B+at16Q774h1mVvmJqKN1jrFHiMi7RMdv4NsvHZLUskjr+NytZvp0aIpL34?=
+ =?us-ascii?Q?iRrQ0n8YneNgKSI1lm5Dt5heIN/5OuQA0PDxRVmouhTlODKyfTabtA2+V6hS?=
+ =?us-ascii?Q?YPcdKRJCxrUi1PRfc0OetmopBR+GhbO3VDflsVoMTArt0RI2+tXL8rUQkxzl?=
+ =?us-ascii?Q?Obf1iwdqwMbPTTT0AvnVty0fAzNc6ESxXwBDhSZXLgOB08FLiQLhIi+RO1OP?=
+ =?us-ascii?Q?qSUX4CdMXKdclpCiHOTDKPBDzCERxjlBV3QxfmexrV20Z1K5zbSlke/ZScKw?=
+ =?us-ascii?Q?posStlWPFEIgg98BlF9J/DktlA94LXkJvjR8Ko+Pe3niVhtIuZ1YgNBjBKBP?=
+ =?us-ascii?Q?r2cDsSAcFPP59NPONDuEgKoNWXp7PiuHzBxOWzi8rN085I8sKE9+PeV6IfWe?=
+ =?us-ascii?Q?2k6+odGXzlDx/7nivFPPfyxjK2ymRFZWQaABLieiVfght0Kgd4ilLDdfamgI?=
+ =?us-ascii?Q?/H5Gckjj6bmhZ9DlpZ5iaGfgRFKrr2buvlcB6x+T5O8bMhCqY5vbSuS88DYb?=
+ =?us-ascii?Q?q0VQqSErVwlrPWXVmPxdAlHGS6RVSh6Ahk4HlbjKxUjEPvUJta9X3/fNqOEy?=
+ =?us-ascii?Q?0LC1ycDYoPYd+nx5Ff+rXLRMVwfvGfB5I9r4KkRPEtaPBuuFVBv+cngY5WQl?=
+ =?us-ascii?Q?yaf9Xs4fiHoKIhRASPV/gujOriKwqQSnnFqFOMnAg9FjOghxuyFGNcSS5S7b?=
+ =?us-ascii?Q?nGd+urVHWc/7nXw7PPJbcuLJHXpgs5EN?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lEKTsYBIWNQ1VK+ABzHCZq4PcJePgOb3GTYPsGep6USPvz0/ZI8KtiScqvsI?=
+ =?us-ascii?Q?oJHeiBaqiC8XITleJKi96ULY8UeTujrFM0DLe0iZqieIpLqNGQ27ZcVd/UCc?=
+ =?us-ascii?Q?DOj0t0fhTFWaoZXpZbjkU+DmHopxKspG0hHFhVubcibFsQQCkXcLGT/4gBpf?=
+ =?us-ascii?Q?8tMuelozRH2dPYHI6gjvmnAeY8XVQkVOtZ8yKwl87eTv0VbqWtccgzJZbJdx?=
+ =?us-ascii?Q?u3MXbP5vrQCx/nXGIowc1hoqy5AyLrLSTcrApmnD/BPikqX78CovqJ+LjOtk?=
+ =?us-ascii?Q?vy5PP7igu7uRgB2GgydAZ3GgmJdwDyYKGLO228qmCaQT8pzTud2VtiConCxa?=
+ =?us-ascii?Q?HSPvIsGPn64cLulRsLQ2rzGJsy7yMM3QX37p3wK2S8Xz8ssLyXYyMTPfzI42?=
+ =?us-ascii?Q?xtl2NWskoiEHLdLwD5lkkMx4XaJvJgEOYkFdv6e0naAa8dsmg2O9CzaaWdyx?=
+ =?us-ascii?Q?ZSR095GIbm2E9nE8t/rhfSYxjr7zDI87gWMWph/95VOBM0uW4vhphsSlruj1?=
+ =?us-ascii?Q?o1vfKcwE005l96Vg4KnMgn9utyCbQEO3LnPeUNJAreo7Ymqi48NsPjCm3Fbi?=
+ =?us-ascii?Q?VbIQyeMjQuCikVmZ0Zng7oJbzqMId0j4dzoolVe1Y5maDakky5OBd+2bhMN5?=
+ =?us-ascii?Q?CTCgyuNZO15zOGxteauy8xmJNUV+5iyVlBrhS4Pv2zX9JZWNlVdcvYsXk/VK?=
+ =?us-ascii?Q?DB5TrUzrKKqsJfGpVLcIGWe61bmcA0e5epaTuwIaKBWI/ndI4oIM8ETM8IfJ?=
+ =?us-ascii?Q?1dejEw5Ml5H1MlSqd4eV+Vyz4wOrtY7a/B4nRQNpbvjQV6NAYHBy7pU4Oq6W?=
+ =?us-ascii?Q?eIIL3bzElx5Zsjjmgn45KwywtInYskv1l0Z/3iJ1lwQwXv9SZcJl93pz8ZIy?=
+ =?us-ascii?Q?vS7WAxcWfJm2wTC84kTGpsCgrIfmvZbQxtZ4bgvJEcIMn/il2udn0p0HwofY?=
+ =?us-ascii?Q?UNexsM4btJq5pTseNF9ZGoivODI0400mu+yKLcqnXeI6//dND/+7AbUMgJav?=
+ =?us-ascii?Q?lVwG/WpfBGKQwQo4nDZD5XS6rdG1g7y+2NFxwP7WcpH8jG4VrMxzsrgPnBVX?=
+ =?us-ascii?Q?8sIu/y1vGV1taX3lv/M6S3TnuZISk8Y5dhPlsbUgo49bS9yGBX2jDMRXnAyy?=
+ =?us-ascii?Q?uODkFeP7tIceoR6Cdy0IwUFKXR5roK++SmXmhxGjIi1eWOJa5RqUdQ3/9opc?=
+ =?us-ascii?Q?OMFF3UIAMHZIaQq5E08dbSfKbo8PDRjUXN92vO1aUHx6CWZuxirfO7pROdgT?=
+ =?us-ascii?Q?xizXtVAZXGrK6mo/CUyfIwnG6GuSr8zGMEiWs4r6edq1/o3nEeHqeeziQnsH?=
+ =?us-ascii?Q?9mCcFHWomf1CiCDaAVR2tWIkOmvGGlcrb9M2p8dHwPBbzx5hU2gRo5d9wTXk?=
+ =?us-ascii?Q?T+D83Phu/Fdd+IGWX0CihigwLf9agD9STTrvcvvyo5wfYiKPETj0jMSfipKF?=
+ =?us-ascii?Q?RJV6laPh1KfpszCXqf35Kb2U9W3CTQimL2zpECT1I1Rs5Ten7C4LYLD4t6Zm?=
+ =?us-ascii?Q?G429yvnas7lg+jf2jpuGZETIyu/h8kjW08lDZZEOVazP087zSQ8hBUZpAIS1?=
+ =?us-ascii?Q?o5QIEF3pur0MHcCyJo7+domFgpmNMZPmsJ/mXxI8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7335667a-b140-4946-7537-08de0dd69a85
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 23:40:50.3278
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mMpK5s2DJZF5w4QR4yzHR0KLISfa5Ht+JQhKpF9zx2leYxaHxXpGj9YzvwEqqdw9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8014
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 77E5B180006
+X-Stat-Signature: f8axjqiw6t7fp4k75oqeimhx5m9omc44
 X-Rspam-User: 
-X-Stat-Signature: h5qoiemhti9cm9jmitpme1cziyzbq4sk
-X-HE-Tag: 1760744022-914721
-X-HE-Meta: U2FsdGVkX1+6TZz/WNRjTsjLYsE/UWKUTBsrShBBgIjXR/ZCkNRnF6iDeODn9Q6wiKCXTk/4JHtP7+uIZKts+G8BkF/h3xtNZ+fcZEcTvTN9Z8lzk1XcE9Z720L2rc9g6xYBO2luWzmunB7gYLvAgRnpUqnSijThEqvNyzYxhYKIl88CuSENP5AfNi0WiLVqIcFFxFMKCe45DcxUrYjZSKrekFW2uZDC2cbBh7Bexi43Av25zd3keEtnixPXNK9om11FVPP3XetCNuyrs1QvqX6fX3WJ+U3qOCBwLLv8No1KPcK1gBZ6KFpZZP2AqKEiBjoVDwgHnEBZrvuuMN7VFW+45CT38mmS7m3wui8yznp5/MFX4MSE6pnDwXjy/D3HbRpvMuBgFNDF35kecFdYTuEN1EI9WQQA5s28tVI3P+IfKgsL6TARkgSoyrMwiKcyYpP/lQaOEAZsrtNGBiJo4MASBVGqnY6VGuJynf0ng4bLu2aGAIOtLOw2UEKnAnyNJQ84foBbUY3Y+S+HbABfs5SUIFFTN5VNL87v5mqbE3NxxgJ/UnBEnpkOY4JcKmURi7YX00gHgRNDXhHpHJV02RxogMvATnYVMMGQXLkdOKqQ0YUBZFhHIp3T+ae9epTRVbuqA/6FGpkWZwoufmcAr5uwRa7PUEWL0sBvNj6eWS3O6JbC/MyU4HYYHMnbOerV/3wJpqXMXKv2gZEazUWmM8KmxsFtZqZwhGq+bciCShrRwLxTM1QT+my+kU7e4R12gS8zqTWi1cFfMPEmNUbphGgZMOfyuXGMR8vdhBZIzQm/imDctO06MVwEaRBDKvcB7CJGZRHL+JfYgKN9B/jRiAhe36NCUX9H3zi7mk53qhd+JxiD/LWEdMS3ay8vIqO5C/d3UofZe6yG2KzWZbS7uxWd0UAmP7s9cFL0YhFfvYGf5m8JDCCGIQmiCjviv//OTmK552O3jARMJajWyzp
- 5e0yig+E
- IcUElDJYGq3hK2r5rcjPen/Rg33mA2bsYxqUJ587umD/xETo1AgWgcyfhZ6vpboWATxr3GfIkUky+tsrxjmFQPrEWIYXmd+aTVSPOm3ScPubghLaSzaV02+HW75P/nvDuVdqXqxLoE5weA+9GMShCcrGP0XqvmRN0QMBazEbv3Dp1DMSa5aeWBsKNmLhM0yAduNuEHd5e9PZJ8Df+R9eZi0EQusCNatC97teXihI0ILPjeNY4U5O1fredEnoQIOF+wLQCBvsAmKIZb7yQYLGVC3/qJ2+9GyhAVpcpxpgXp+2h/FF6ZQj1ELsx2oxiAiuyxTyCPBQ8QEgEdDb0jqT0tqFzE/Eni4emygEFqB9bWKQep+FGdQQtcBgY0qxUpgTTBt3EybS9CE29bpCifYXl9MWPdZg17skMNj1yW+4S4wYAX5oQxivEgwUxB9Hdn5Mjys7EM2e1zTQFQQjqJCK0CfVFlCqh9Gu/zoa8AJFq/AaHp03bGLYBUMMMe6loFErFCaVp7fTq90sA8BYPyPqf14qZzYvytJW5mwW8mRo2qx2g3TWaT2NUhic9TcLZ9doHtcWA+mlo5xOH4eYc+iSfmJlIUad5Dt8ga8Uu7Azh+du7p8dvRu0ULRX3TAYV3ufpJ//2Qir+f4Je/ldN/YiIIORm1a92QQ3zCO8m3mB0nfsnvrZcqITBy8NWnCywMH4vDhO6yhCCIFtEemNBjYeHpbRCzZPQuwTRcf2sahczcSP/i+Zma5Dgb0x+FBb8whZqrcGl
+X-HE-Tag: 1760744454-517491
+X-HE-Meta: U2FsdGVkX1+JLmYbFlavLC6aCnub+4YW7K1Ocrypf62PwcgOH9GIpTzP+sorTodKWbSWkBqCewITN/U1gTv+qvbl29ECVEmSuy+CnMBgKHhCL6uiLSVY6l2kEVWFyCo6IyqxxmzJX2135JxhAkXjnrHlZUqJxHKRXOjuHgH59bzGMmBr/kr6pbfcPynGhc2NJDjMPNAcsGJZnpeyKUX5jFOsmhsgcEstckbA71w8Rz0o41mWWEX/ujhGNfUPmEA8Afjd2htlX7IoNmN195hTEdJLd0zn8OlzMLuuYPl62fxI6LJFUypPsX2XB+tO/2SWy4TLcYxyQOfhmeHH5R8w6Y7W0SwO1jWel0vPHioT6f7A8TdBVLfm7TrEez1DsqABGiasnRn083AraYrAvassNcig79GeYlFYbsMZIz9XvZgjXyoUxOlRITQXUBmiN6Y0TRXqOIr66OE524cZvQe6AGZSUMqDIplWWnsHcUvzbv4AM2H9fG6cM28r1RVC2+h42/wkRZ6eENLjQXznWaz+5uPLKxGXhdrYw58WeJmdJUboM7u8j3rEvmXOZXgqVtQ9PS+nucjX4Himhsfwc6DptuJ0dfwvH1YtehOPm/oO/TYln6U6OyntCmvgsP0v7mY3UADu+QZ3+zGPt2ltYqLqrISc362gxUDK8FACxySnZffDr+NX2kEQ5vIKyevdlWZaETqEv/Gd8LKlT5TNWaKehHPvmbUxoumTAMXaTXugc9aUNpzzAI+nVsIT046dxbABupMJVxsIIVWvqpXpXLE2l4VS62Z7i4vtqU+z5rMFLL15+HQgEDDKBuZI1+YX/+vl3cRv+TQCVFzKzdPR5NuB2Ln9RwgRc1r6bsV6DRTy2ayitlBo1JhcrEvL4Dba+bLXSSwM/9P8fQe944MUQgR86t30mdLcyQS+fBVfjvkQymAkOnbt+IdGJu/Ph4v25CAV5y85G9Wgb1KUjjeRNfA
+ jUJXK03I
+ bfVcM4J9lbsclbA+7pcDzxtt3fQFmStzzXR2qDYf7WbncvCxzGyp68fitP2jJIym8eXyqL1Qx0G6rR0VEw/0Ljk3s2tAz2qB/W6vNtJx2uhmUT0brFp2lUiSCxxXmcsKsii4fyyPM+viOhB8QDM1DvVj9GABcFC6R6jhF7dJd+5eQ2/IRgEfy8f2+n2NqOuKK4Q7K8A7yZq6bA/iFGEUbzDJuqm2NMy6I1INTVJGrSqhD15jnF8hoYapQktOBkIqTG044IksGfZgtQQgr/am2JJCA1geYe/RuMieRVE5/3JiBe8IDkoFXVKSEz3AxHKND3q1Ji8vxKTeChIjN++i/r7BaVjtozsdTkojCarlCVGxuVo8nJ4T57l7T1fix4uFpbM0vHwht4alc2Pxv+K8fPf2Q4BbrRy7nKjffFKGoN+6a60XCMJplv4JPjZ9fUHvirMYGBBwkBRHXAD7NrusSTgVRJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,36 +195,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
-
-> From: Sean Christopherson <seanjc@google.com>
->
-> Add a test to verify that a guest_memfd's shared/private status is
-> consistent across processes.
->
-
-Missed copying Sean's note from [1]. Rephrased:
-
-Test that on shared to private conversion, any shared pages previously
-mapped in any process are unmapped from all processes.
-
-[1] https://lore.kernel.org/all/aN7U1ewx8dNOKl1n@google.com/
-
-> The test forks a child process after creating the shared guest_memfd
-> region so that the second process exists alongside the main process for the
-> entire test.
->
-> The processes then take turns to access memory to check that the
-> shared/private status is consistent across processes.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  .../kvm/guest_memfd_conversions_test.c        | 74 +++++++++++++++++++
->  1 file changed, 74 insertions(+)
->
+On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> [...snip...]
-> 
+> Add support for exporting PCI device MMIO regions through dma-buf,
+> enabling safe sharing of non-struct page memory with controlled
+> lifetime management. This allows RDMA and other subsystems to import
+> dma-buf FDs and build them into memory regions for PCI P2P operations.
+
+I was looking at how to address Alex's note about not all drivers
+being compatible, and how to enable the non-compatible drivers.
+
+It looks like the simplest thing is to make dma_ranges_to_p2p_phys
+into an ops and have the driver provide it. If not provided the no
+support.
+
+Drivers with special needs can fill in phys in their own way and get
+their own provider.
+
+Sort of like this:
+
+diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+index ac10f14417f2f3..6d41cf26b53994 100644
+--- a/drivers/vfio/pci/vfio_pci.c
++++ b/drivers/vfio/pci/vfio_pci.c
+@@ -147,6 +147,10 @@ static const struct vfio_device_ops vfio_pci_ops = {
+ 	.pasid_detach_ioas	= vfio_iommufd_physical_pasid_detach_ioas,
+ };
+ 
++static const struct vfio_pci_device_ops vfio_pci_dev_ops = {
++	.get_dmabuf_phys = vfio_pci_core_get_dmabuf_phys,
++};
++
+ static int vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct vfio_pci_core_device *vdev;
+@@ -161,6 +165,7 @@ static int vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		return PTR_ERR(vdev);
+ 
+ 	dev_set_drvdata(&pdev->dev, vdev);
++	vdev->pci_ops = &vfio_pci_dev_ops;
+ 	ret = vfio_pci_core_register_device(vdev);
+ 	if (ret)
+ 		goto out_put_vdev;
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+index 358856e6b8a820..dad880781a9352 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -309,47 +309,52 @@ int vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_dma_buf_iommufd_map);
+ 
+-static int dma_ranges_to_p2p_phys(struct vfio_pci_dma_buf *priv,
+-				  struct vfio_device_feature_dma_buf *dma_buf,
++int vfio_pci_core_get_dmabuf_phys(struct vfio_pci_core_device *vdev,
++				  struct p2pdma_provider **provider,
++				  unsigned int region_index,
++				  struct phys_vec *phys_vec,
+ 				  struct vfio_region_dma_range *dma_ranges,
+-				  struct p2pdma_provider *provider)
++				  size_t nr_ranges)
+ {
+-	struct pci_dev *pdev = priv->vdev->pdev;
+-	phys_addr_t len = pci_resource_len(pdev, dma_buf->region_index);
++	struct pci_dev *pdev = vdev->pdev;
++	phys_addr_t len = pci_resource_len(pdev, region_index);
+ 	phys_addr_t pci_start;
+ 	phys_addr_t pci_last;
+ 	u32 i;
+ 
+ 	if (!len)
+ 		return -EINVAL;
+-	pci_start = pci_resource_start(pdev, dma_buf->region_index);
++
++	*provider = pcim_p2pdma_provider(pdev, region_index);
++	if (!*provider)
++		return -EINVAL;
++
++	pci_start = pci_resource_start(pdev, region_index);
+ 	pci_last = pci_start + len - 1;
+-	for (i = 0; i < dma_buf->nr_ranges; i++) {
++	for (i = 0; i < nr_ranges; i++) {
+ 		phys_addr_t last;
+ 
+ 		if (!dma_ranges[i].length)
+ 			return -EINVAL;
+ 
+ 		if (check_add_overflow(pci_start, dma_ranges[i].offset,
+-				       &priv->phys_vec[i].paddr) ||
+-		    check_add_overflow(priv->phys_vec[i].paddr,
++				       &phys_vec[i].paddr) ||
++		    check_add_overflow(phys_vec[i].paddr,
+ 				       dma_ranges[i].length - 1, &last))
+ 			return -EOVERFLOW;
+ 		if (last > pci_last)
+ 			return -EINVAL;
+ 
+-		priv->phys_vec[i].len = dma_ranges[i].length;
+-		priv->size += priv->phys_vec[i].len;
++		phys_vec[i].len = dma_ranges[i].length;
+ 	}
+-	priv->nr_ranges = dma_buf->nr_ranges;
+-	priv->provider = provider;
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(vfio_pci_core_get_dmabuf_phys);
+ 
+ static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
+ 				 struct vfio_device_feature_dma_buf *dma_buf,
+ 				 struct vfio_region_dma_range *dma_ranges,
+-				 struct p2pdma_provider **provider)
++				 size_t *lengthp)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	u32 bar = dma_buf->region_index;
+@@ -365,10 +370,6 @@ static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
+ 	if (bar >= VFIO_PCI_ROM_REGION_INDEX)
+ 		return -ENODEV;
+ 
+-	*provider = pcim_p2pdma_provider(pdev, bar);
+-	if (!*provider)
+-		return -EINVAL;
+-
+ 	bar_size = pci_resource_len(pdev, bar);
+ 	for (i = 0; i < dma_buf->nr_ranges; i++) {
+ 		u64 offset = dma_ranges[i].offset;
+@@ -397,6 +398,7 @@ static int validate_dmabuf_input(struct vfio_pci_core_device *vdev,
+ 	if (overflows_type(length, size_t) || length & DMA_IOVA_USE_SWIOTLB)
+ 		return -EINVAL;
+ 
++	*lengthp = length;
+ 	return 0;
+ }
+ 
+@@ -407,10 +409,13 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	struct vfio_device_feature_dma_buf get_dma_buf = {};
+ 	struct vfio_region_dma_range *dma_ranges;
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+-	struct p2pdma_provider *provider;
+ 	struct vfio_pci_dma_buf *priv;
++	size_t length;
+ 	int ret;
+ 
++	if (!vdev->pci_ops->get_dmabuf_phys)
++		return -EOPNOTSUPP;
++
+ 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+ 				 sizeof(get_dma_buf));
+ 	if (ret != 1)
+@@ -427,7 +432,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	if (IS_ERR(dma_ranges))
+ 		return PTR_ERR(dma_ranges);
+ 
+-	ret = validate_dmabuf_input(vdev, &get_dma_buf, dma_ranges, &provider);
++	ret = validate_dmabuf_input(vdev, &get_dma_buf, dma_ranges, &length);
+ 	if (ret)
+ 		goto err_free_ranges;
+ 
+@@ -444,10 +449,16 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	}
+ 
+ 	priv->vdev = vdev;
+-	ret = dma_ranges_to_p2p_phys(priv, &get_dma_buf, dma_ranges, provider);
++	priv->nr_ranges = get_dma_buf.nr_ranges;
++	priv->size = length;
++	ret = vdev->pci_ops->get_dmabuf_phys(vdev, &priv->provider,
++					     get_dma_buf.region_index,
++					     priv->phys_vec, dma_ranges,
++					     priv->nr_ranges);
+ 	if (ret)
+ 		goto err_free_phys;
+ 
++
+ 	kfree(dma_ranges);
+ 	dma_ranges = NULL;
+ 
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 37ce02e30c7632..4ea2095381eb24 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -26,6 +26,7 @@
+ 
+ struct vfio_pci_core_device;
+ struct vfio_pci_region;
++struct p2pdma_provider;
+ 
+ struct vfio_pci_regops {
+ 	ssize_t (*rw)(struct vfio_pci_core_device *vdev, char __user *buf,
+@@ -49,9 +50,26 @@ struct vfio_pci_region {
+ 	u32				flags;
+ };
+ 
++struct vfio_pci_device_ops {
++	int (*get_dmabuf_phys)(struct vfio_pci_core_device *vdev,
++			       struct p2pdma_provider **provider,
++			       unsigned int region_index,
++			       struct phys_vec *phys_vec,
++			       struct vfio_region_dma_range *dma_ranges,
++			       size_t nr_ranges);
++};
++
++int vfio_pci_core_get_dmabuf_phys(struct vfio_pci_core_device *vdev,
++				  struct p2pdma_provider **provider,
++				  unsigned int region_index,
++				  struct phys_vec *phys_vec,
++				  struct vfio_region_dma_range *dma_ranges,
++				  size_t nr_ranges);
++
+ struct vfio_pci_core_device {
+ 	struct vfio_device	vdev;
+ 	struct pci_dev		*pdev;
++	const struct vfio_pci_device_ops *pci_ops;
+ 	void __iomem		*barmap[PCI_STD_NUM_BARS];
+ 	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
+ 	u8			*pci_config_map;
 
