@@ -4,133 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 636B7CCD19F
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE24BCCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:16:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0E4F8E009C; Fri, 17 Oct 2025 10:15:46 -0400 (EDT)
+	id 0C3EF8E009D; Fri, 17 Oct 2025 10:16:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE5CB8E003B; Fri, 17 Oct 2025 10:15:46 -0400 (EDT)
+	id 074998E003B; Fri, 17 Oct 2025 10:16:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFBC18E009C; Fri, 17 Oct 2025 10:15:46 -0400 (EDT)
+	id EA67A8E009D; Fri, 17 Oct 2025 10:16:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4B98E003B
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:15:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B0785708E
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:15:46 +0000 (UTC)
-X-FDA: 84007804692.29.E6A8BAE
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 763831C0005
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:15:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=blFZLEF+;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=CDdAk1cr;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D62D58E003B
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:16:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9AB7C56FBE
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:16:03 +0000 (UTC)
+X-FDA: 84007805406.10.37C692A
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 90693C0007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:16:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=qPDdpRwr;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760710561; a=rsa-sha256;
+	cv=none;
+	b=yEr/sEY7XlNRz0lLMeiXJELBUes4KtT1wHo26lrXDqpLhwBC17QCAA/+7OPKG+2b636+gG
+	w+DM+2wIphYqDVlvo0HVMxmPNu3StMScl22u8cIadlKmqEzVSigO64pE7RYCLnxe+/D1e3
+	gFajxisZb4NU4eZ8dhH4p3OplplwBsY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=qPDdpRwr;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760710544;
+	s=arc-20220608; t=1760710561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XznzYYQp85lnz56N/CEQHyV0F4DjobXqczPLHaaXFUs=;
-	b=cmAfIS4/BU+/FO/sQQf9RUV20TiMh/y1k1WapMM0AYUl0Xa1GSGVLt6asODgBRhb8RUUUl
-	cjpw/Fid0uzdFemtn6l7kfPM/lDIc72AUiGW7lrDRhPtUGQ36ISjAFy1pe2bUmiqqgVLMb
-	qNgCWWILVXEgxFGdlXDhY25S8Aa3VzU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=blFZLEF+;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=CDdAk1cr;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760710544; a=rsa-sha256;
-	cv=none;
-	b=7AJsTgpQhUmjJS4aXSxVTmnEJpc7p78q7hNY9JBPM9qNTTWsRQaRrC4KPF/GXnbJGqUWDH
-	DGhZLyfvWmEXlf5/5fGCdJmtOhmBgJubGkMCuqn7mE1PVm7PfP5UOvUmQbfM/lURHCZkp1
-	te3j/3cCFVzDM58hBFePWh/EIOqW3PM=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 753CC1D000CC;
-	Fri, 17 Oct 2025 10:15:43 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 17 Oct 2025 10:15:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm1; t=1760710543; x=1760796943; bh=XznzYYQp85
-	lnz56N/CEQHyV0F4DjobXqczPLHaaXFUs=; b=blFZLEF+mpvwVf56IuvrB7AVZX
-	YdbDzZ6d+ArFIIaW4fVC6P8+nMxEKU0AWupeGvHnh+BOdzGdeVNXEWq0r8A29X4X
-	GrNwPhYdO5eYXmCNUDpXUmRrVRfkFcvGvPs40PDjyhyLtqRO1h+CyJ+NeOvLd9lu
-	ent+Xml4zsWg0qeZaq8sV8HFyI12/6FSTwGOuxLhkRVcqTidAst5j/fx7iTrxDiO
-	5J5c7/LPn56tzKKjnRVsV6N8Y3Ajfr+CvSTW6VV57Uh3XD0oM2rxiJWg4Z7bjVEm
-	Pl3DAHocwiolq9ghNvVHBAEPC1m0GTD9mDpGeudpVJ5lKPsLP21J2Z9LedTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1760710543; x=1760796943; bh=XznzYYQp85lnz56N/CEQHyV0F4DjobXqczP
-	LHaaXFUs=; b=CDdAk1crhrSRyZG3x+5D9TDJ9rvUKnN6m4OdTZS1jQK7+aFB77B
-	0h7OSWFP+Q6RXaTcdkFFgv94VjhWrghxckNcEzs90ESNJHbQPREhPBJUxLAf+qzJ
-	9tmr/jw+jCk+rd9sc5AG+VbybpdcsqdYg18gFML5/S2vevvzEYceYz5MMpSnRjs4
-	uiFp10FGv0P0QwPEm367L6FzIS0Gx0Y4b2fA5WUCpGLcaIklejGkr+Fz5rWnoHOm
-	f2CE6E79BZq36Eo+yw6vScv8axDTuryaI9LZ7t4l0B//ubuJ0ituOG6oRxBWdV2H
-	HrSKaf2ub/LAJAlgf/IBQ9oRiMHfUrsgc8w==
-X-ME-Sender: <xms:jk_yaF2m6WVIDny7XIol6hEXLEkVdePN_7_LHGLLizDv5Do-AUoR_w>
-    <xme:jk_yaH7O4BDI_8FkSHE0-VCvJP6SttIC6cweHu_IGai2hTS5Dm3miLeYgNCJK2pb4
-    nS39fNi0gi8NicJ1Cd5pEmxodACMwU5ZPunavzb-2yx9GMyQcmXTdM>
-X-ME-Received: <xmr:jk_yaBRZtpFam7tIpulsSusyFkjVL5WBLTTr4n71uDGoDKitdSVJ1Rt7rO5sHQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdelfeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
-    grthhtvghrnhepteffudduheevjeefudegkedttdevtdfhheefheetffelteeiveehvdef
-    gedtheefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduuddp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepth
-    horhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthho
-    pehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepsghrrg
-    hunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgii
-    pdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:jk_yaMUiyofeomhY943Ti4ZnJHljHkikIa7UKk8iX7uIO097WX4qMA>
-    <xmx:jk_yaGFidJZ3rvuFS8PqLtZd99iXxZmg2RtVEo7RVx15ResnOqKOGw>
-    <xmx:jk_yaPfaW5pE7STkkp3FGK_bVohL1Zf-y-sv3wJ_K1M0LeQevxDlgA>
-    <xmx:jk_yaPoyIxdduKb_WzCQWkNwKoY9MnhsGAtrzbtC5TpJbo46_0FKXg>
-    <xmx:j0_yaMr17OULJE6LWUBJZxhKURYY8TtFzUEugu4jXiTwGlAZhyR7L3PC>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Oct 2025 10:15:41 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qVzUxOueMoe23PedV99GX09iPb7gK5CB+nvolBA9pVM=;
+	b=NQ7BdIokcKo0XyWNNDJmgmNdXoEwwM8ZVHlWV7OPjDIgrgKGoQDyfNhJcsLQp6u03TFUBk
+	N7xvhXJqCCCtwv0Tswn6RNp1Zbv+k7Rkzyu/jpf2GFRDpJ0dXE2KvUxQrIVO2sxR8oDko4
+	gC3QS6CWMsf5jI1H1iFr6wi/fvT+YO8=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-87c237eca60so12632256d6.1
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 07:16:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1760710561; x=1761315361; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qVzUxOueMoe23PedV99GX09iPb7gK5CB+nvolBA9pVM=;
+        b=qPDdpRwrqplhntWFsq3Xz+ZrC7NX2ZWmpIXdHbZAqMALjrKhfXFa2j++rEUshazAEA
+         5PG8/YreNhbCj/wDAcKClWYIRaq2RTn3/HcN6QzwSJSwAGo0XHNu0UdAzFpT/VCqI7v/
+         bSrUMdtRFfHgJ0sDamyGTWVJ3pEgcvvXLAMNoa0NA+7HvtWfXrstBGbAsILYkXUj3gLH
+         JMmG/8H3n8srUdGcHUx3RcSs/0CoKceWXMgx3JRtKcNgsYNizCBLDTr3Vk9qCtDQbt73
+         t6qFEBNRzGVy1BjIdu7DoA8AvWKOJSCNndM011v9nT9/Z0qMh4TWotGS0lzP1jkTm8kx
+         uVyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760710561; x=1761315361;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qVzUxOueMoe23PedV99GX09iPb7gK5CB+nvolBA9pVM=;
+        b=Sz5k1qrfAG88CKnq7G2ZwlPrRmC2kY2oqBvrn9XEix5Meu9C7OdLq+5h62Z+OWlBUC
+         CjWxjv/51jENZ6z6339KVUAYy9Ih2N6ahyuqMzlvzp4ZXEpY4dY6fpI2iiyM5PEsbGDr
+         ZfBb94C1eMDBWgHymSsn6AsvfoTJ8A9+amslSFAEJiJpimFDFwJEKfuFexHIIm/Jcfo9
+         Tp86Tb15US5w6o+HfLbXdxH2B20ItfNMMdYRLU1/yw6xXG9rfgBeB+U3UFDl7oxT6o8O
+         Lh3IOll/KIhhnA62Nchg66bK7ESjpJzmTFH3GFrBaq/aIZLTExDB8wHoFO/05swscjdw
+         pO3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ1NVtgwh+TvkSB1XfBu0YLwD7zf9dRghPedv5kQlCCuLjjlu7OoHJ0lwiRAl/3ERsf6lkaP2x4g==@kvack.org
+X-Gm-Message-State: AOJu0YzzQ1A1iEKueUPA1IFSZoc6d6SeILu59moDWGd+gy/zxfh0wF4E
+	E8vf1owtZw7QOKPMRyFafpbJayoP1nL7tFiTOTQ5MyhYIFxH4fQBP/4G5Tde+CJuKT8=
+X-Gm-Gg: ASbGncslK4nL0m6EbRCdMw+vx3gbbMC+D+ZFaf/fHkn2E0CTor8vfyABCVKz0HEUHCD
+	BxnPvWWM2QCQtOUa8dJMXv29JFsvgZIP5rPh+RVImMxFvaeBrWQ91M3f2LP+trqOBCDEoJis5eC
+	QJKdWoG92XKmVhoaKANPXbul9VJscESK2QWyGJy/TRRZlmeoridyAcbMOa4RtktkVBLObEn2Gfl
+	XNPOSlLTRvLuBSX5zV9d1hytoRylI62GcnbTkdL5FatT2AY5cLTuXHIocE3BXSQW7hbFavC7+pF
+	Sl9jIKhTH5LnlsEBnPT1CecnD94XXrJLTQwfduOOq/xLWpvGm8XbAoKXClxHSLDjlzHZYOVbxRE
+	6fD0jer3dIc8rmklKeBGBvnJnD3XW0y2H1XqGwTmUNQhOCcfm84FvjsEN4P+qkpcNBI3boVSFYl
+	3dX9IYE9f0/O2LSjVMNg7jD/RSLutmvipVbBR+56GQFcz+56b9zCPcq1qeJYyqAaWBt84MPA==
+X-Google-Smtp-Source: AGHT+IHYGMe/FQy2ELhyRR228KkbeZxsT8SFrCJQWGcsvds5mR5O+zJihPxkSY4vC4O8HUM03y5vTg==
+X-Received: by 2002:a05:622a:15c2:b0:4e7:20ed:2fc3 with SMTP id d75a77b69052e-4e89d1fe50cmr43536201cf.5.1760710560578;
+        Fri, 17 Oct 2025 07:16:00 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e881c8a219sm66162341cf.18.2025.10.17.07.15.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 07:16:00 -0700 (PDT)
+Date: Fri, 17 Oct 2025 10:15:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>,
 	Matthew Wilcox <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>
-Cc: linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH] mm/filemap: Implement fast short reads
-Date: Fri, 17 Oct 2025 15:15:36 +0100
-Message-ID: <20251017141536.577466-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.50.1
+	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dave.hansen@intel.com, hannes@cmpxchg.org,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com,
+	Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aPJPnZ01Gzi533v4@gourry-fedora-PF4VCD3F>
+References: <20250917174941.000061d3@huawei.com>
+ <5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+ <20250925160058.00002645@huawei.com>
+ <aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+ <20250925162426.00007474@huawei.com>
+ <aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+ <20250925182308.00001be4@huawei.com>
+ <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
+ <aNzWwz5OYLOjwjLv@gourry-fedora-PF4VCD3F>
+ <CAOi6=wTsY=EWt=yQ_7QJONsJpTM_3HKp0c42FKaJ8iJ2q8-n+w@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 763831C0005
-X-Rspamd-Server: rspam11
+In-Reply-To: <CAOi6=wTsY=EWt=yQ_7QJONsJpTM_3HKp0c42FKaJ8iJ2q8-n+w@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: dwfienywog65773xyggqasjht4apkw8e
-X-HE-Tag: 1760710544-828323
-X-HE-Meta: U2FsdGVkX18ZbDsgG7UvZ5o6NykvOfkqS5sXBYF9bqlnvD8Y7hO+gsCkbX1XOw/F+ZR/mG6M2lgrk/6oJEwJvhVHEdDGUhxMfowEHiiTnDRj7DdNe7cUXG+sCTMI4WBrTPomTj12GdfBKZk407QssICCLoG6Ge7KlaITr2somIblF8g+kQRL3JJfDt7pxiZxcFuQrc900Z6zF/KnWBQ+JibtxfbMgCrOxH0UMRxmBX1R94H2W36tMogvchUy87UvOOAtf3uxY/l1+7Ouull2IUqDt/QWbEy6lDA9ZhMoSM0QLLcJt9RK3f40Aqt+ww3NkPseU5HIp6mp2q3luViQdbM2ZvJWyRQHDmm7xM1nX+Yx4TzNJpB8qSg1bItFEXqJg5SXzg3OxhgnrkU+Dki4EXjsHH1RHkMWBmgPUqDHWsEJTGUndbSjYSBgNRubs/qtqQHs40ASfFCaGC/0K6gGghd/HmhemRrwrZWWwXB33iswAQmfXrYuQfFHJRpL18JU7nE/fJgVZbFaGaU/MtCZrsUZ8s91ny/PqJVUbdAZa/cZrJoiyZtvch6y2CuJ55tB37diOGEAC1NHU7PiE2Kxpv6vG/aqltsfZeJZzUDZi+r5QOT1AbSOB18fxbwAc/SUQA8NZ/tfSyU4VKfqZ+sscFqz82wQ0Y7JIhFLMg0bqX75qOcUyRRr324Uc27pwrLfVl1+vXd9VhUMNDJ/YoyF/3bJD6q86FdNVfm7uck1THsEtD1oIMPvFXKvv7DSfeCIEWoz/lCpLKu0TxO3lbGZIPxD68RHUPrJcqaaEpc1kRAF4MKj1feMY6wr/vHhhC4Rgg6JuqwAmSwhZ6SNaqb/4FJD7lOyNYj2jgOKHi60GoUDoGf3O3N3xRRqFpLWWt7ZCd4y1/iXwxa6C63iQhlllCxsdguZvdtaD9OHaJ6nyisQvnyYsLpAs5mVNMA0LiFaZls3krP2J909Xidk4Zb
- 1Dr8Icfa
- pHFNUa7CrfUbFQpJ8O/cKeu/ptGqTYQYDZ3EdTIu94ZP27gjIJ/utfGuQQ3F6rWyvPSGDdm9pAg+60kyK2j5H2OsWB0srQ1NnUAmW0WgHGHMqcCVJr1h3mBIwnxHrsa1WFR6f2H+kUh4IQ/h8ij+qLTXpcKWXH9HWFa+zB1r3Mug/m5ff3PJF4qE11YG2/yvW6GHVCagXHQiEsJ5rSxLKELViL8YJAhWnnvhZku18tt8oFCfI5+XEqhXseIMakU/CoXlOoFPHOWbOECcZu3CK5yZUsBPBF3tzf7mLsKzcZLqb+WtEZBExlkcgVb4nITKEcS1P9Ywudtkh/T86eCzTw0hqT0nFuInNhBU0/zpCwiMExf0OCJlZhS4f0grU3fyJEWDGkcJJxm/NJQRMsgz7rMzF3B/hGkgMrAKy4rwodpVSsjlHlzXi6r5JD8lHpbKShhtJ3T5wh5NOKF7RxsoslhXDRlXzMeivw+lMk2xStiCTPQeCRv33EZHTkefYAjKrJvse
+X-Stat-Signature: qby3zgkqthdtkb55wudd5e6qet5ya6r1
+X-Rspamd-Queue-Id: 90693C0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760710561-327030
+X-HE-Meta: U2FsdGVkX1+hEUCH7tkkj9h5vb0mDUDSQuKEcG4pnN+F0Hp28F82s8uhCieQ2Rp1l/Op/rFF4yrk1sGQZ0YIXZs5W3rWt3IGZ3koWD0h3UMqmeV1VjkiS7yNhVZLnNYMgXsDE4ISO+hA0/C71w0QGPQ8nqFT7GuFAuMSi4Z1SLPD0iKtIbPq/y+aAMhv3EMHwobt13pdaFZAc3UjGuG0NNE344APjc1kxRUKQkWzAVuJlttb9YkTtzqy1UyH929k7J1YWx85BaaLlSyil+ctFeckdgkkXLGhRAFDzSvcp23iwEkCxP+ljvbDRI+rmDEByoi9j1mDyOpo9isyvOGRFPZfQv51ofLRDt4mODq3m20e4NIOw8Ev+ircpMSlLjhQshDkNen/p2pLQF61UQXx30bxVfnKRn4hMPJhh+ailCE+N7EzyOa938+mx81mfNP+Zi+UNSs0eR2kIcDH/9zDyzBsrQljVaR+Z/3NkNy3rFQ8QhtHrat1TJslfmdeokBaPxSKYuPm5gXlOMjrRCG87b0rJ6f2jAw0xt7rrds9FRpR7q6hMQtLAdJC96D6xxnRqNnPAtE2l0Fr1FTaHn0CbwRm3tE9vMQNGm5yLdQE5VtRkR4IlZtn1/shlbxyUknVB283gW3DHgsYDGZSH8bC2WLcYk6TVHEwdI14RtdEoHO0Vg6wIF9r0RhYuSdsFJ9q6K2FraMI/RZDPm3shH6UzjYftiffLstso0LtfkSHDm5959gcTDOq4YQAaQpW8sYu5PTChy51EF6a7S9ewJG0Cj4FedA4e5WE46Dm7IX4cUppTonB65DWILw6W9iAZaa22RaofGYwz8h02NqQvhmLgQ8q0yJH37BXzxs/+QJTia43aMDH7hMrcOuWNupYCLt7RqtXbYAFfAZ8kekN90yWGtQSbiikfM+cbJ3NvToN6E+x/CARX4EZNKEQhlOsjI+GpVZj1iA7EndrOznUFoj
+ EO5CAYmn
+ ungd9gN71x1HomOK5ULjd57Axo3CD4OiKaEYGf0WT4q7cWVTTJTglJPigY02ewOk34KMX51+NfRl60JXkTqxKOz6PuegF3dHPUctoXiMStJ7cB2bV/asyb8/LQyXU7ibUikWJgBChix0uBN0bGsECG888DihRQ2qht5Rby2uVhCKdUy0dpniLeIZHR1wWPQnAE1M6bcDIlvuv3TFGSv9zmZZbu8FpDnhFl2a4ct+XgjDtCSran4ynPweid1uVZ0oRlpw5BFsvs/kkAFkJ0E/xJK962piAHEbG4SFJNbumbL4BpfcGgfc0tcLfyzOJSDu7MF8OYhYHMtsFHf/kXkRgc45O3klb+uRXJFtuW5hdSto8vIc5Cw6nOBx1K6XCeXoauj3l+6OJpxH9M60nTX4n4kaI3jIXyGkyCycpS7rynlHeuZhPj3n/RtD9fe/NwyX309oREGORezXGGk2T57VhzttBSZPgYLaiVdaDs5cUGYEZAfI35eiCPVDBvLhdDg/AYpxYVdbRNLNIaCW2u462B2TZQthMfJXgehrOxVewfc5jr0ILhe/fvy0QIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,305 +142,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kiryl Shutsemau <kas@kernel.org>
+On Fri, Oct 17, 2025 at 11:53:31AM +0200, Yiannis Nikolakopoulos wrote:
+> On Wed, Oct 1, 2025 at 9:22 AM Gregory Price <gourry@gourry.net> wrote:
+> > 1. Carve out an explicit proximity domain (NUMA node) for the compressed
+> >    region via SRAT.
+> >    https://docs.kernel.org/driver-api/cxl/platform/acpi/srat.html
+> >
+> > 2. Make sure this proximity domain (NUMA node) has separate data in the
+> >    HMAT so it can be an explicit demotion target for higher tiers
+> >    https://docs.kernel.org/driver-api/cxl/platform/acpi/hmat.html
+> This makes sense. I've done a dirty hardcoding trick in my prototype
+> so that my node is always the last target. I'll have a look on how to
+> make this right.
 
-The protocol for page cache lookup is as follows:
+I think it's probably a CEDT/CDAT/HMAT/SRAT/etc negotiation.
 
-  1. Locate a folio in XArray.
-  2. Obtain a reference on the folio using folio_try_get().
-  3. If successful, verify that the folio still belongs to
-     the mapping and has not been truncated or reclaimed.
-  4. Perform operations on the folio, such as copying data
-     to userspace.
-  5. Release the reference.
+Essentially the platform needs to allow a single device to expose
+multiple numa nodes based on different expected performance.  From
+those ranges.  Then software needs to program the HDM decoders
+appropriately.
 
-For short reads, the overhead of atomic operations on reference
-manipulation can be significant, particularly when multiple tasks access
-the same folio, leading to cache line bouncing.
+> > 5. in `alloc_migration_target()` mm/migrate.c
+> >    Since nid is not a valid buddy-allocator target, everything here
+> >    will fail.  So we can simply append the following to the bottom
+> >
+> >    device_folio_alloc = nid_to_alloc(nid, DEVICE_FOLIO_ALLOC);
+> >    if (device_folio_alloc)
+> >        folio = device_folio_alloc(...)
+> >    return folio;
+> In my current prototype alloc_migration_target was working (naively).
+> Steps 3, 4 and 5 seem like an interesting thing to try after all this
+> discussion.
+> >
 
-To address this issue, introduce i_pages_delete_seqcnt, which increments
-each time a folio is deleted from the page cache and implement a modified
-page cache lookup protocol for short reads:
+Right because the memory is directly accessible to the buddy allocator.
+What i'm proposing would remove this memory from the buddy allocator and
+force more explicit integration (in this case with this function).
 
-  1. Locate a folio in XArray.
-  2. Take note of the i_pages_delete_seqcnt.
-  3. Copy the data to a local buffer on the stack.
-  4. Verify that the i_pages_delete_seqcnt has not changed.
-  5. Copy the data from the local buffer to the iterator.
+more explicitly: in this design __folio_alloc can never access this
+                 memory.
 
-If any issues arise in the fast path, fallback to the slow path that
-relies on the refcount to stabilize the folio.
-
-The new approach requires a local buffer in the stack. The size of the
-buffer determines which read requests are served by the fast path. Set
-the buffer to 1k. This seems to be a reasonable amount of stack usage
-for the function at the bottom of the call stack.
-
-The fast read approach demonstrates significant performance
-improvements, particularly in contended cases.
-
-16 threads, reads from 4k file(s), mean MiB/s (StdDev)
-
- -------------------------------------------------------------
-| Block |  Baseline  |  Baseline   |  Patched   |  Patched    |
-| size  |  same file |  diff files |  same file | diff files  |
- -------------------------------------------------------------
-|     1 |    10.96   |     27.56   |    30.42   |     30.4    |
-|       |    (0.497) |     (0.114) |    (0.130) |     (0.158) |
-|    32 |   350.8    |    886.2    |   980.6    |    981.8    |
-|       |   (13.64)  |     (2.863) |    (3.361) |     (1.303) |
-|   256 |  2798      |   7009.6    |  7641.4    |   7653.6    |
-|       |  (103.9)   |    (28.00)  |   (33.26)  |    (25.50)  |
-|  1024 | 10780      |  27040      | 29280      |  29320      |
-|       |  (389.8)   |    (89.44)  |  (130.3)   |    (83.66)  |
-|  4096 | 43700      | 103800      | 48420      | 102000      |
-|       | (1953)     |    (447.2)  | (2012)     |     (0)     |
- -------------------------------------------------------------
-
-16 threads, reads from 1M file(s), mean MiB/s (StdDev)
-
- --------------------------------------------------------------
-| Block |  Baseline   |  Baseline   |  Patched    |  Patched   |
-| size  |  same file  |  diff files |  same file  | diff files |
- ---------------------------------------------------------
-|     1 |     26.38   |     27.34   |     30.38   |    30.36   |
-|       |     (0.998) |     (0.114) |     (0.083) |    (0.089) |
-|    32 |    824.4    |    877.2    |    977.8    |   975.8    |
-|       |    (15.78)  |     (3.271) |     (2.683) |    (1.095) |
-|   256 |   6494      |   6992.8    |   7619.8    |   7625     |
-|       |   (116.0)   |    (32.39)  |    (10.66)  |    (28.19) |
-|  1024 |  24960      |  26840      |  29100      |  29180     |
-|       |   (606.6)   |   (151.6)   |   (122.4)   |    (83.66) |
-|  4096 |  94420      | 100520      |  95260      |  99760     |
-|       |  (3144)     |   (672.3)   |  (2874)     |   (134.1)  |
-| 32768 | 386000      | 402400      | 368600      | 397400     |
-|       | (36599)     | (10526)     | (47188)     |  (6107)    |
- --------------------------------------------------------------
-
-There's also improvement on kernel build:
-
-Base line: 61.3462 +- 0.0597 seconds time elapsed  ( +-  0.10% )
-Patched:   60.6106 +- 0.0759 seconds time elapsed  ( +-  0.13% )
-
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
----
- fs/inode.c         |   2 +
- include/linux/fs.h |   1 +
- mm/filemap.c       | 150 ++++++++++++++++++++++++++++++++++++++-------
- 3 files changed, 130 insertions(+), 23 deletions(-)
-
-diff --git a/fs/inode.c b/fs/inode.c
-index ec9339024ac3..52163d28d630 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -482,6 +482,8 @@ EXPORT_SYMBOL(inc_nlink);
- static void __address_space_init_once(struct address_space *mapping)
- {
- 	xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
-+	seqcount_spinlock_init(&mapping->i_pages_delete_seqcnt,
-+			       &mapping->i_pages->xa_lock);
- 	init_rwsem(&mapping->i_mmap_rwsem);
- 	INIT_LIST_HEAD(&mapping->i_private_list);
- 	spin_lock_init(&mapping->i_private_lock);
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index c895146c1444..c9588d555f73 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -523,6 +523,7 @@ struct address_space {
- 	struct list_head	i_private_list;
- 	struct rw_semaphore	i_mmap_rwsem;
- 	void *			i_private_data;
-+	seqcount_spinlock_t	i_pages_delete_seqcnt;
- } __attribute__((aligned(sizeof(long)))) __randomize_layout;
- 	/*
- 	 * On most architectures that alignment is already the case; but
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 13f0259d993c..51689c4f3773 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -138,8 +138,10 @@ static void page_cache_delete(struct address_space *mapping,
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
-+	write_seqcount_begin(&mapping->i_pages_delete_seqcnt);
- 	xas_store(&xas, shadow);
- 	xas_init_marks(&xas);
-+	write_seqcount_end(&mapping->i_pages_delete_seqcnt);
- 
- 	folio->mapping = NULL;
- 	/* Leave folio->index set: truncation lookup relies upon it */
-@@ -2695,21 +2697,98 @@ static void filemap_end_dropbehind_read(struct folio *folio)
- 	}
- }
- 
--/**
-- * filemap_read - Read data from the page cache.
-- * @iocb: The iocb to read.
-- * @iter: Destination for the data.
-- * @already_read: Number of bytes already read by the caller.
-- *
-- * Copies data from the page cache.  If the data is not currently present,
-- * uses the readahead and read_folio address_space operations to fetch it.
-- *
-- * Return: Total number of bytes copied, including those already read by
-- * the caller.  If an error happens before any bytes are copied, returns
-- * a negative error number.
-- */
--ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
--		ssize_t already_read)
-+static inline unsigned long filemap_read_fast_rcu(struct address_space *mapping,
-+						  loff_t pos, char *buffer,
-+						  size_t size)
-+{
-+	XA_STATE(xas, &mapping->i_pages, pos >> PAGE_SHIFT);
-+	struct folio *folio;
-+	loff_t file_size;
-+	unsigned int seq;
-+
-+	lockdep_assert_in_rcu_read_lock();
-+
-+	/* Give up and go to slow path if raced with page_cache_delete() */
-+	if (!raw_seqcount_try_begin(&mapping->i_pages_delete_seqcnt, seq))
-+		return false;
-+
-+	folio = xas_load(&xas);
-+	if (xas_retry(&xas, folio))
-+		return 0;
-+
-+	if (!folio || xa_is_value(folio))
-+		return 0;
-+
-+	if (!folio_test_uptodate(folio))
-+		return 0;
-+
-+	/* No fast-case if readahead is supposed to started */
-+	if (folio_test_readahead(folio))
-+		return 0;
-+	/* .. or mark it accessed */
-+	if (!folio_test_referenced(folio))
-+		return 0;
-+
-+	/* i_size check must be after folio_test_uptodate() */
-+	file_size = i_size_read(mapping->host);
-+	if (unlikely(pos >= file_size))
-+		return 0;
-+	if (size > file_size - pos)
-+		size = file_size - pos;
-+
-+	/* Do the data copy */
-+	size = memcpy_from_file_folio(buffer, folio, pos, size);
-+	if (!size)
-+		return 0;
-+
-+	/* Give up and go to slow path if raced with page_cache_delete() */
-+	if (read_seqcount_retry(&mapping->i_pages_delete_seqcnt, seq))
-+		return 0;
-+
-+	return size;
-+}
-+
-+#define FAST_READ_BUF_SIZE 1024
-+
-+static noinline bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
-+				       ssize_t *already_read)
-+{
-+	struct address_space *mapping = iocb->ki_filp->f_mapping;
-+	struct file_ra_state *ra = &iocb->ki_filp->f_ra;
-+	char buffer[FAST_READ_BUF_SIZE];
-+	size_t count;
-+
-+	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
-+		return false;
-+
-+	if (iov_iter_count(iter) > sizeof(buffer))
-+		return false;
-+
-+	count = iov_iter_count(iter);
-+
-+	/* Let's see if we can just do the read under RCU */
-+	rcu_read_lock();
-+	count = filemap_read_fast_rcu(mapping, iocb->ki_pos, buffer, count);
-+	rcu_read_unlock();
-+
-+	if (!count)
-+		return false;
-+
-+	count = copy_to_iter(buffer, count, iter);
-+	if (unlikely(!count))
-+		return false;
-+
-+	iocb->ki_pos += count;
-+	ra->prev_pos = iocb->ki_pos;
-+	file_accessed(iocb->ki_filp);
-+	*already_read += count;
-+
-+	return !iov_iter_count(iter);
-+}
-+
-+static noinline ssize_t filemap_read_slow(struct kiocb *iocb,
-+					  struct iov_iter *iter,
-+					  ssize_t already_read)
- {
- 	struct file *filp = iocb->ki_filp;
- 	struct file_ra_state *ra = &filp->f_ra;
-@@ -2721,14 +2800,6 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 	loff_t isize, end_offset;
- 	loff_t last_pos = ra->prev_pos;
- 
--	if (unlikely(iocb->ki_pos < 0))
--		return -EINVAL;
--	if (unlikely(iocb->ki_pos >= inode->i_sb->s_maxbytes))
--		return 0;
--	if (unlikely(!iov_iter_count(iter)))
--		return 0;
--
--	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
- 	folio_batch_init(&fbatch);
- 
- 	do {
-@@ -2821,6 +2892,39 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
- 	ra->prev_pos = last_pos;
- 	return already_read ? already_read : error;
- }
-+
-+/**
-+ * filemap_read - Read data from the page cache.
-+ * @iocb: The iocb to read.
-+ * @iter: Destination for the data.
-+ * @already_read: Number of bytes already read by the caller.
-+ *
-+ * Copies data from the page cache.  If the data is not currently present,
-+ * uses the readahead and read_folio address_space operations to fetch it.
-+ *
-+ * Return: Total number of bytes copied, including those already read by
-+ * the caller.  If an error happens before any bytes are copied, returns
-+ * a negative error number.
-+ */
-+ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
-+		     ssize_t already_read)
-+{
-+	struct inode *inode = iocb->ki_filp->f_mapping->host;
-+
-+	if (unlikely(iocb->ki_pos < 0))
-+		return -EINVAL;
-+	if (unlikely(iocb->ki_pos >= inode->i_sb->s_maxbytes))
-+		return 0;
-+	if (unlikely(!iov_iter_count(iter)))
-+		return 0;
-+
-+	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
-+
-+	if (filemap_read_fast(iocb, iter, &already_read))
-+		return already_read;
-+
-+	return filemap_read_slow(iocb, iter, already_read);
-+}
- EXPORT_SYMBOL_GPL(filemap_read);
- 
- int kiocb_write_and_wait(struct kiocb *iocb, size_t count)
--- 
-2.50.1
-
+~Gregory
 
