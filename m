@@ -4,189 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1277CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 00:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11406CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 00:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BA0A8E0020; Thu, 16 Oct 2025 20:01:59 -0400 (EDT)
+	id E1A908E0006; Thu, 16 Oct 2025 20:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291388E0006; Thu, 16 Oct 2025 20:01:59 -0400 (EDT)
+	id DCB6D8E0002; Thu, 16 Oct 2025 20:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180248E0020; Thu, 16 Oct 2025 20:01:59 -0400 (EDT)
+	id CBAAF8E0006; Thu, 16 Oct 2025 20:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED6558E0006
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:01:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 90E0014046A
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 00:01:58 +0000 (UTC)
-X-FDA: 84005653116.10.64F9AF2
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011012.outbound.protection.outlook.com [52.101.62.12])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C57D740012
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 00:01:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZRoOZV7d;
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 52.101.62.12 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760659315;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B52BC8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 20:46:16 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 546F558B9C
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 00:46:16 +0000 (UTC)
+X-FDA: 84005764752.09.5EF35B5
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5504820003
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 00:46:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPdmNRfq;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760661974;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qNFi/T0O6onYwX6wMbMLQY7Fi8krZio4eToeCivwXwE=;
-	b=BpaGMzSUIbp5nuuu8h5FeAROu9njOphK7zy42AuFO20purMBXgEHsNV/+bi/zZe9Vm6txA
-	eVVcnQaQRBN8ZyagEsexlwGupQiWrgWzoB6wDfB99fUBnVIaVQSOzZqd1QDeIs56Is9vN8
-	nUVSY0XqZ0ta9U7Ipib87WHT0eu3c4A=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZRoOZV7d;
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 52.101.62.12 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760659315; a=rsa-sha256;
-	cv=pass;
-	b=m+jERf1Z3oXMrGMSCaWhAWlJAKFu4HSmEI6jWDOwo576Tbndd2VTFw1RP3elvN2x77AaXz
-	zzhBJ1vRNCIHSsM72phR7lE+ujwfmLq0gRJWq8m8t3589looPHS3Ogtd6vMcFmN3VW+yOr
-	J1dGvh0ygklRaUzXcYMKW5fMyhYb/uI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eO0Tnpm1JrA2hZphdCIZMrevJJo2mjGzL7U0ipp+YM8MgOqjkGKwGTQD4C3YODLDbk3joSu0LkpKEw8JIHnVbBhKgyOh3IrU9IaUXbdZO7RtmRAmXKF9qSwKEEmMSvzS1Q2LTbOZHyiCMabPjlW9F4KUJKzWqC/nYeS9Aw0svtnAcjDv/1rThwaeqSckm2QKvyG7QgxuHgGrxXjqe4miAXun3me/82y/GZ+RYTtqFpS2/eCZqFeTUZia9a8CntaJd/n0+UAwwA3mK8KljlsV6/rD15TFj3eXPV/AoHJjAk4cVjvSK/g5T6U3q1vVd/U+rYa0SE/7ZAb3bbwvEYyLaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qNFi/T0O6onYwX6wMbMLQY7Fi8krZio4eToeCivwXwE=;
- b=R9yGI6oxyKzECJeNImplsyoYLh0QQ1NLWBLBLA9fg1yFdv2lwgTm72hb1HtoF79xw6RS0WNslKJ9D1/oSA87WeGaEDPPlAoK7DIJ4qi0hZEwHYx0B3ooiunwuI34GmFcQzILKYWHe0m0CYtHIlqt2QwUJB7qoZz+d8rOob+3XeYEbJczTMUR7JirF3ALkWwppiaFNJNVwxY/UxEQWSPnIIRT/jlLoR4vt1vL1G6blqNy/V5J3oHzlN4uZH04I7Vk7HRLnSSeDTBWeoZ+FIzTrh3J2mPQxKKDnzm7RCXVcS2NO3SgR8nRqofn9N+MakjBqNscjQBJM2sgHkA0ij77Qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qNFi/T0O6onYwX6wMbMLQY7Fi8krZio4eToeCivwXwE=;
- b=ZRoOZV7dYRg6m+Y+GM6SofIfaChQsEChOOl2CpG9/Bv5kIs/faTscqx3Z8UgI9Br/GBs/U18luGcV3O909t94fuObHvA3Uf1X5dDNS9bPw3Pi2LHf1ZgEHCk5DoVn+mvYRIwG8jl51Eks4WOvlMxeHPWCKkPTEf1Ri8jT1EiKd5cs3ZSR4rq7ANklpOuQOfUHGz19oRGdV7FVLCosArzyCH0F5TyunKYdD5pSUan5SDxIhFTUSsDG1eGOuBuZezctyVHm0VuDM8GqeqIoRmPe6YE083poptoqcazOjO0CeDDaQE5s1GFthxnXg8/Vwc7tmons+ocip6aB59fIbU3fw==
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by CY5PR12MB6273.namprd12.prod.outlook.com (2603:10b6:930:22::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 00:01:50 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9228.010; Fri, 17 Oct 2025
- 00:01:50 +0000
-Date: Thu, 16 Oct 2025 21:01:48 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20251017000148.GB265079@nvidia.com>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+	bh=+B/rNIxGB0E8lYNQb7e+4S76Mddht/U4IBaRSdc7uX4=;
+	b=7VvSDVinmWMBcKVIz8uZIvU9A71hNuJ0qVhjd5WWcqwhjHhZ5BHzTf6L5e5JEvR7w79r9J
+	kB8fbtv5tuZ+DKl3ZO7kcOeUBp8zMfA2uqI7gLgulPdjLGrNuTB18C70aexZXPTdhQqDpO
+	S63AK6zwLxr1CSRLmvurQAhFMN4zz3g=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPdmNRfq;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760661974; a=rsa-sha256;
+	cv=none;
+	b=08p2tmPiwtZMj5ya4f1HaZ95rtRgn9j7FtVSdK2PHcUdvrjMW+xMBKnDM2YngItunD+pCC
+	lQAJMveKcwkzw0EerxLL9GyyGv7Y7u8eKIPcdlxqzzcjafJPoIpPaCBsaED6p5OqPP/yZQ
+	EKOqvcPu35tUHQ3cVPyiF1nhMq5tr28=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-63bea08a326so1815292a12.3
+        for <linux-mm@kvack.org>; Thu, 16 Oct 2025 17:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760661973; x=1761266773; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+B/rNIxGB0E8lYNQb7e+4S76Mddht/U4IBaRSdc7uX4=;
+        b=TPdmNRfqcCZ3g0NL5e4VNoS/QeUPF8XCzt7F25/X9asqAGivmhmyg1IdUSudrOsM6b
+         hcknCOQn/owVS7sw1Zmd+G1U0mFNJLzMJEyw05XhcrvezjuT6lKzPnwG2qMJZ6Cgr1uG
+         XYupYzMeGI8o+dtA8kK4JTxrZq6jkEoGQSnBkuxr8wz1AYLvLO135AhRUPWfSLYGsX9b
+         qg8Ds2BtigyqofaVNO0ivY7XyzILD4urUNK7houqB8/lQlt6GXTIe3uaSKNd8LGzagSz
+         kyUuNiFpFkvFzsU1YLPpNk0XXPlnN4RL4hMhxLQVbztiDiOO2vRhMYWgyqDW2YkoD+GJ
+         DenA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760661973; x=1761266773;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+B/rNIxGB0E8lYNQb7e+4S76Mddht/U4IBaRSdc7uX4=;
+        b=avRE3ciVsT1o6UisSQU2TRfKBYPddE4WfY7Wpe0Cyt4YCes4pbhELiqgvpi2dR8y9a
+         9GjcB214ALgGQXy6eni+ngyi3Q1U3r9PTXxCsvydM/KQawR2HNMUI6SyWcvYkvT8lICf
+         pBDwtOE1kkz71ylpZAEAL2wPWOuXbwR7SXgzh4NPEXuFinmfWx3l20tAGYl6VLM6+/Jz
+         WYOjJiZxf149g2D/W44VLBeM0LL9p/cJmuvcf9IEzoHSNFqUAXtH1wNrXiPN3euGN+BT
+         0h3CyWXylnRz148CON622vQ2VnAOGZfbNrFv5R6THxOpp+qKwB/c5KNSNYzv+a3bfygx
+         NuqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrEjhvau0Ncl2A5BqfPIq66u6jo5fO6pawZuIAyB7RjociJ+DyFjag8Q0Ou6U2e+JTdgGWLvEcyg==@kvack.org
+X-Gm-Message-State: AOJu0Yzglu0WQ9LLRohCTJ1J2CE+qaBg5GKoGwkuqRH3Z9nrlEUP7Ia4
+	aXZrNON+rQr2hppq07dHUjxRYy1JoZtYBP5+IF+GD4bw8F1x2AdRppm7
+X-Gm-Gg: ASbGncs1yuJ8hXg5fauzRrrcYMQ9TOQYPjyNyaLtFLCZGc1Rf21aIkgpqg3MuultDvd
+	PbH66gpVixSZ8+dFU2ZuSu/Sx2ivx4TQwbRiEUWdp3Z0xlfW2UMqQp3yqb9II1pgZx/MZVvmBW1
+	GiY42MX8fQihi3cuVE9uE4pMdaqQ3866uUM+1Q8A2RNqQ6PIBD0a8qKMCUkRhrOjgI+pFcpMrdX
+	41a+KcB88BMpm387cueVQlcISWoI8ToB5SY0YgGOe5fbz7D+HVpbLrSH7O9DUAvSd4dklGqpi3Y
+	uVh3eeAptpeb9N22NcxmCdiHOXxtiKGKu2BEpscz9UVp0YQQtTxeb72t+G7soEsYObRt0cA2OXv
+	EqZJV7M28yCmQselXIlv8MfGT009XMzMSk+SeazZ2FBFMgtyyWDDvfMm3glLW11935dtDt03WNk
+	RgscFDS+WxAjyKeA==
+X-Google-Smtp-Source: AGHT+IHIrzM9nmQS/QH3e+TBJNCq5g1hcZGI45fz5wnzA+TbcN3hecCz0LjMxm3I+m+5Dg3KP8R8Xg==
+X-Received: by 2002:a17:907:3e85:b0:b3e:8252:cd54 with SMTP id a640c23a62f3a-b647395033fmr219806766b.32.1760661972374;
+        Thu, 16 Oct 2025 17:46:12 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b5cba06b7f6sm689297966b.30.2025.10.16.17.46.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 16 Oct 2025 17:46:11 -0700 (PDT)
+Date: Fri, 17 Oct 2025 00:46:11 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, harry.yoo@oracle.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v5 3/4] mm: thp: use folio_batch to handle THP splitting
+ in deferred_split_scan()
+Message-ID: <20251017004611.ccjq2343v43mimqq@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <cover.1760509767.git.zhengqi.arch@bytedance.com>
+ <4f5d7a321c72dfe65e0e19a3f89180d5988eae2e.1760509767.git.zhengqi.arch@bytedance.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
-X-ClientProxiedBy: DS7PR05CA0003.namprd05.prod.outlook.com
- (2603:10b6:5:3b9::8) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|CY5PR12MB6273:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2323c3cc-8071-4249-0649-08de0d105f41
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IVl3uEn/tGdy+KFySrOqQCK65JuY4gChC4O8RRvzMR6yZhsMGaW4Ey0RTCQV?=
- =?us-ascii?Q?T8SEKVG5JyqCmB5DFUYgLm2+ITOoqn6KZQ96Qo3h5BjKem2vz/eF16G6Qhzn?=
- =?us-ascii?Q?7Vb1k2lpvjNxVmQ3wBYNfW8aYMQFr9kKANQAG+GkccAMHafQ0zU+QwEe2kWu?=
- =?us-ascii?Q?aQ6o9tXVmvFWvGOIfKPcq1/N29ySPluR4NRUjxSjJU46B+qFqLdi0euQjLjf?=
- =?us-ascii?Q?TzWXmGgF6uVUoy6oSEJkXwA/jI2wg4M58GqeabEpNL7yY8EXzqTBT7AzjRG1?=
- =?us-ascii?Q?/uMCRZcAESzGdLkP2E+Er23OWn2tdWiD6ty5bTL/bxQIBHcuC0SA2uTskjn/?=
- =?us-ascii?Q?GnEujgIKsoNd/8OFahcHA3H/Ea82k1fuCtLKYYRct4UNGuZFO6/0/B+txszT?=
- =?us-ascii?Q?Q7T/ryJMsw7feCMKkXUBCNg3LqYqkiym/rGfsYOrAhTuCUlD8nfN5SLSZxG2?=
- =?us-ascii?Q?FaMX48E3NL3b1Bekr6wXA4n2KA4s+C4rLrX0UXoOs/V06lHM9IiVeQdfMYPi?=
- =?us-ascii?Q?086+X+u1bAdXe+XWg9pxcltAIU9LA98g7SpEwV8nN+3AvxdFtxEELXAlOT3E?=
- =?us-ascii?Q?wXmkwc/2WvCoYsywry9OKiPxu1UFWLaRbQ5rLPQdJ9k9sz1Ax0cinyl4jVBl?=
- =?us-ascii?Q?nr4N06dReFGqcXHo8818jgRnStnolqJ7sm2hwJiVjziMctoGrqGMnfElwg2a?=
- =?us-ascii?Q?VtO45z3MuvHKrKHagZQ4KHCAvyp77Y4JfBgXQAV4tC3X9e6pu3tKhqzPzcBk?=
- =?us-ascii?Q?9exoZTpBeH0JiI5PMBqr+iBaa0O1kreg2WFm8z9y02Qy/5VOjckEVxQzUKc8?=
- =?us-ascii?Q?lx1zpzLRUPgS4kJZGqcNgF+6NW7SbJ14EMMeUH5yAhuwSN+3fEyFVuxJ2ksr?=
- =?us-ascii?Q?XOAMD46Z2S3+e/nxglHLd6NFCMVGAvjlFRGcapgzUhBGnMuNdnsk9NqPCnzP?=
- =?us-ascii?Q?oB+XsA8pbI4MXV1WG7ugE3wX0SBKIZ/tfFPr/o7ZEFP5fUQltwH4tpWispnF?=
- =?us-ascii?Q?Qw3JSNnOLvlzKgpK+eI377/KAT2MtMkE/eimmRMZbnrAkjzQQMjHno58No/s?=
- =?us-ascii?Q?A3O1Z31CWczMBO9DU8LgDmpGkIVN92JU2gYFiLNVIQXa5G4t9MjMwH4PfthK?=
- =?us-ascii?Q?/rh7fphu4JQHQzVXXUEqSacwV9rcLNWESeWY27xj+6LExQm7B5wPWbTvJyOx?=
- =?us-ascii?Q?IqmQLSyvZ+V32cVKOgmaFL2KbEmwvTLejhjbn+uWuCO87AhX5vXm0it3+Q6D?=
- =?us-ascii?Q?sytzyUk+lcSvgZwX7OSBXtxQRYqKbklKoe/c+zcvlnGSxBdpFc0viCTyvGAp?=
- =?us-ascii?Q?i+TQVN87dzcVtZtDHnPmsVyWfXRNZXQdqLUBKzH3v8bOfmPLEWnAMaqEkuoZ?=
- =?us-ascii?Q?BiHwl5op1KgMS6/ElH1k/cupOvhxOxpmZQJ2itsym/ct7kt/46p/GLIf7BR1?=
- =?us-ascii?Q?RaqOAix7+f7LB0KIJHNxFaPpr5yfZLR3HMgsI7lZ8a0aaeMfk22KRw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7jIUOGUuyP5n6kK5KC+4875YQ9fZuUWgtWbbCiJL29DJB4jsf5kXsDZEPvp8?=
- =?us-ascii?Q?BAUVYDRGBGDW4pGTfmdW/76gEAsJUWIxyylUgz89+J4jfLPgSXpi+bufK0E7?=
- =?us-ascii?Q?SNKWQ2TSesu+poeAvnJykXTDnIAeiGX5gYl7mO5hN1UxRgyfgM0q+4rNdHFa?=
- =?us-ascii?Q?R5mbhtRiPtTEnfYH2/8bmcX/N68bhMEDrT8MbsmrmqFHMk2u/jfdIw0KcUN6?=
- =?us-ascii?Q?lH6aact9TnRt+pxravffANhmR3Sa3gwMfwSTNbRduN2RjzYr0uwt4cMPioQN?=
- =?us-ascii?Q?ohgaBKvlXHOfjH6dO9h/UTqIMds6aNGbwtHA2Sb8aM3KnBHFR2gc7fwsEF0V?=
- =?us-ascii?Q?MThtSkTCo7DSAARQCvwSfk9XU0ldUITvKQtWiQ6/CY6CFriGFXM19fvtRNtc?=
- =?us-ascii?Q?HXyXYEMviigjJWwXzQdWu+6tICfAKSnHTL3iZba/CTD3ttLr677w4ghwY5XL?=
- =?us-ascii?Q?l6mjd9bqceF9H2PhiMc+rKR7jU5jLi+P4wu9gRXNAALi7cL2QJ7LDssrgDHf?=
- =?us-ascii?Q?YslTsqR4938Qt5znZz0RhFnHrOiWuuz/xTA43SDtzDKFf0gHdmEu3c6rvObZ?=
- =?us-ascii?Q?tLU6u5cvLU575kAYlbYea1G5e3+PJXX7udQjA6lg26Nd3N3bMboGq5e2IID6?=
- =?us-ascii?Q?exutH+k3wa7SvyMq8VhbUTezIkWhk4kKTA9Glw54PBd3IsOLgTOHv1URU/H8?=
- =?us-ascii?Q?P70hWKcXCLCH8v3cYIrmJEgKRxSgpcbf7IN3R0Bc85VyrDFh88mEaKhr/Njv?=
- =?us-ascii?Q?ACAsAO2GHxwZdbC520jZgBh2QCsZNQsuWm0d6JFacRSP7QhK53UPybMOLCe8?=
- =?us-ascii?Q?TCRcsm+SE36qXogCe+7K4Q7vEDQX9nGvRuB50YMe6Iy6wIWUziDyxc/evtu0?=
- =?us-ascii?Q?BekxzHKFV+TUMvHQzGU3F4NLvgZATPBPvak2cNTSyDQZMdJvXLyWhdbsBJnH?=
- =?us-ascii?Q?C2L5tcYEN1dwvITmTr/xLTuDYYhxuWb0Xe/We/l0FT7rMPQuSHCOTMA75yCb?=
- =?us-ascii?Q?EbUDQVBUyL9czvpppKQAK75LIo3vutDB3gjJdfwxSpFGOCWwqcvKbPuicSGq?=
- =?us-ascii?Q?I6KRLl08PWkj1QK2AqwupOeGi3sjBmbewKjhsqpB0xjGyVGPn4CeGut4tLPg?=
- =?us-ascii?Q?docp5RSt+3V8vRLrnIs9XznnUGrhlRxZQacPJSwHp2jkIOCp53how6zUK78n?=
- =?us-ascii?Q?pXvjMSdvMQL9YsFCT5VCwXK+ked9XsJIs64YNH3FFH07g59rcFfIVtPzWFT/?=
- =?us-ascii?Q?ogqKPuONWJ8tfzhGoyJ6VGsUZhNYmEG4G9hpVLlY5JXAHLKKSu8P14m6Geh1?=
- =?us-ascii?Q?CsNRQDa6KGgvrtk/F7Wr7G+NAyqFuVG3uFrdYiPbOtkr3vbWb5ROwqIk75W1?=
- =?us-ascii?Q?4hn0LODLYyYlBNV6pTCXCHlcPMtEaceYNDpSd7PLDjg239LI3K01Ikx3Svt4?=
- =?us-ascii?Q?ZfM3IUDMREZ9zHQgzZU4EiSrBDKUIiwKy+LUG+52W+2XhdrF5ewlLggrJkmH?=
- =?us-ascii?Q?oOMj0f76yQEeUYsT2p7HGLKByHWQvoAaShGYACpdIchD52jvqwbQS9Xpfv7d?=
- =?us-ascii?Q?1oBcCoJfh7yJ3n4xJI6tepXdS5YkKLNT+LvWovwR?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2323c3cc-8071-4249-0649-08de0d105f41
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 00:01:50.6287
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MVfEc4OwOXa36QaSzTdnEFDXSNbA4jEap5/NO1z81Y7+cBlUdATyFglhUEbUaqPW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6273
+In-Reply-To: <4f5d7a321c72dfe65e0e19a3f89180d5988eae2e.1760509767.git.zhengqi.arch@bytedance.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C57D740012
-X-Stat-Signature: reqn9wkwhhximhi36pamc8i9he8ht71m
+X-Rspamd-Queue-Id: 5504820003
+X-Stat-Signature: nad3141cazforxzsfy8e3hnw36gd63wr
 X-Rspam-User: 
-X-HE-Tag: 1760659315-244997
-X-HE-Meta: U2FsdGVkX1/Qln+lW0HAezUK7yNe8pPiPbGGNPLoQ8HvBi2UuI5ufkjonnAgk/3t+s8Lx3yjxcC9Lq3//mbauZ4RevcJ3T+k3M97j3DT7QUok+kjQkh83wUcUFxPaBzJAv1G3kZ5QR0L2DIcn2BNjkuyRJxNA6kjijWqGxHCrEQ3seLaX845nGNinrlqncwnVPEwBOPrlQO/54DqAA1WQFocMUS59IF3dlurJpDqyv6lm9DRZHnDtS+IiFuYmhjSEvWw4h1BVMIEo+6ksysLzE/Xk5iuBczxqxZvb35e1jldnK5x+TvFvKXtAZNtmlSS7DAPb18+gyQJkEVQJOqg2rRzXKpySDVm6w8+hBwtiDhNEVbFgJFwlem2d+Prk4zD0PNZt1KIYZIdby1X2G07frznV1N0x/UV6m+uvEhpbz18MnyinplCHczeBN+glaaFHEtcxmz9swE7ubHhkZtKIYq/pTebPGtKMK/FEGQqnQQ4WeFdIBiuM0w6d4h/2vZpbAK26g6/T0HdzC/SVV8lr77b+4trNPgXHQZUR4qEk25vm83bYd0whZs6ASV+CnF5DeznzpzBrdDVb5onX/8gEWm5EkZjPIkBAXPz9khNMqSi4et73vVFOpRPh18LheHYxQHXOgt8QfE/Xo49MjoHafnI9pK51KIs3Qvjt/2I5WserPBcxmgKOm3B7pOIICCzJi2ZdD7tzAFZ+/13nurCFqPeNtdLNQz6brcbiQ1sgiESHOk6G19oRID4YkZb3JPczMBEN7GF4QuBme5PqfbZrQZszyfKxBeL7nulim+CusWZxnju7IvA6h6/VRuPSHc4BkmI5MuhzPC8sGnrDvjEvija+1cX4FYH2RsDwaw4Sgs/RxFeiNxulV3g5F8SPDeiLG5uR0JJuxVsOilmOfgEzA1VqwMYg7IkvTP/FJc6riTXwfDqpiT0fzFwtfE19uy7A6zNyJcbSpw1Z2XRnR5
- Og9BTi5E
- CaFsEm9SpK541Y/zoNULkI/36zG9IUp/5KPQCxHzqbh9WSL+JFuGKeo9FY78CAjYYDE51bGw9Pg0D/D/ItYo05DqfmctTjK1+0TpJQ0QhakZId1xiqlgU8wAz4dI2gnQK6j6lK8bj409ZwTedR4gVHguU8BlN9STBRRgPeVRLFFvabOdiVrPlcaumW8MqLVM90F+TqcJ3KIPFL/5evSoKtR4akemwBzNH86hWcdMN3Auwyr+6RQre8TeHU4S2h2BznMfBvpmLvCovHRybx7hZJbOsUFFya1N5ZJxLFBejRhD6glIfz2Tp77MzMn6pw1ZniqWgenA/cco6ttLVOkKbJpheyDIWKwkUVG36tJkoN2iYezxHJJV5SXV2KUcmf1wjyM+PP3HK/Ej0Cl5+W3fE/wo1i0nccI6frSfBcgDqXbrKc2CAJJSsXraKfIhdloqnk/tJ3p6oeHF2zmk=
+X-HE-Tag: 1760661974-802247
+X-HE-Meta: U2FsdGVkX1/anmD/Lxadn02HeSmh33csGcdtetOP4vcZcoObgq9JmsS4GdwV4Q3u4N3eCfpK+at1wViV1D2ZsFdcQBgTn2hcXO1cfKmoT6qIeNP+1KWo1k5Q306fjn5Raczsl0gXstvgJpndh8JTULtxjPwtxw309seToZTqFUdsGq0RgIdZITbxYHBSzNhaNXvQFqauH8foroay9y8HiXSCtJkq96EE+w6IOOYKdQSSxJAg2T/ItIrucSWM1P6AJ97SH1JqmmS7Eyk8FxhfKMxrc7u2ze7rfdbRFhqQbTJNaBRygfKe1+yezzUuYat3sZk08FCPE31A4PUfkZUXYn4/f95zo4Cu1tuP1aMemOsoK73FW+bw/XsmHCN42VkHFLzQ1xB2AUGgvAPOzk23ZJlAXWPmHoLmv8ApWucO7DiDn0bizaPV07yG/bS909O+VFruiwSxwOBmTYDczWHHGMohmWDQGqxHl1CuSSt461cSIoaHAqxfigFsQEjwQ9MlO5mI+TPBhYCz2eovpPVK2q4/1UTOjFbsd0yMxVIOgKcYuA+WJL8eoQmpl0XYgsmYN3XCj+KyOJznAWf+w+It1OsUWA04k5p9ax36sKmwC3d/bsEA5i+oxsK6VJ+phVoeW5Z25rYkK37G3xjVGGI/0kLx48TKxkkuHv6Gsljx7wnOFC3a+et9S7/7bChaUDhJTPvm06LMlL971MDg1CLZHNzPLzm84b7BqIsPXh0eTn1UeZh2pbIxwbuX5bZRsIc+uCJTvVt0Gecn8AF+vjjI8kzrW9h9Wa5F1qPk1l1iD9k4YWQ7bMajrRGu9cd+1836ILs3LnAE+TBw0LxSp8GBaLZ06lmLCBtl0RKTZTO8GY3siPN3LmNgZjMXLgZyWb4yIxFAOTmO+ZWXkezbQC+/2D/vT5SIrFRRPc4JC4mEl8kOTwcomtIcZEBijT8cD1p8nZEZ9p+YD3iRm+hRLmG
+ lLmRNhjA
+ CAvxG1/FpC4Zc9zdoo8OZVwo9Zr1CvdAQjVCRmSiwl25Y+j7xvztgRqSYOXoYf/hQp/2W5MnAqt0QB24bV6+T9DwXg2jYxjf7r5GYX2J48UoeaB39EgC6Nyb+NjUEqy2meOxGSyqKAdiXOlHFFW4SgvwW75VMtFcwjPbf+nu7YHH1hbqx0Prsd+yFaSdqTv5jVp+jdyYI4oSBRznw3OZDAugQZGNv2vqKCes59oxIlYqQ5s5d+VQOw5s8f9ymZP1XiGCn7tnQAdq6+MKYwRzNsyQ4Cptg0o3Wf1Xmjj5E2Ycl/jd/H7flZsNdVmKzkNOxEyUaWexDMjc0KpQZw0dRa96MNpe9sjbnUsqeoris+MABZccKNaCVdd9XMS6G2cjlevHYPrNerC9x+Ep5WrRZFn+LIK5GzaqIgIUxqiTeynummI3BugbHtA99gr7KaMvGJe5TE19R9kloRFbBflESbGr04svBy7/ah+yVOqlDHdkRovcuMmzPPK+BOWog0jzsPWudbNhIMhcJk3gM4DPWl3oo4XPjJSJaMirSeDK+0/9L2F8JI5F+KiSIxr3kYHCPNwFbfgiHzomV2MD0mC0MWV2xoHZyo9mi9TYJPMQyYUSSeyzm5YbPHUDeQ+Q0z91XnhR3UROVdG5xPZqyi9WXPpf9USRUSbhonvltfoHR4wfWJxPcA7P78PRICI3RGgAtzNLKbCPlc5A6F/HgwlajEefxeOOGTujuswaLRb4OcVJEYJc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -195,300 +131,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Wed, Oct 15, 2025 at 02:35:32PM +0800, Qi Zheng wrote:
+>From: Muchun Song <songmuchun@bytedance.com>
+>
+>The maintenance of the folio->_deferred_list is intricate because it's
+>reused in a local list.
+>
+>Here are some peculiarities:
+>
+>   1) When a folio is removed from its split queue and added to a local
+>      on-stack list in deferred_split_scan(), the ->split_queue_len isn't
+>      updated, leading to an inconsistency between it and the actual
+>      number of folios in the split queue.
+>
+>   2) When the folio is split via split_folio() later, it's removed from
+>      the local list while holding the split queue lock. At this time,
+>      the lock is not needed as it is not protecting anything.
+>
+>   3) To handle the race condition with a third-party freeing or migrating
+>      the preceding folio, we must ensure there's always one safe (with
+>      raised refcount) folio before by delaying its folio_put(). More
+>      details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>      split queue not partially_mapped"). It's rather tricky.
+>
+>We can use the folio_batch infrastructure to handle this clearly. In this
+>case, ->split_queue_len will be consistent with the real number of folios
+>in the split queue. If list_empty(&folio->_deferred_list) returns false,
+>it's clear the folio must be in its split queue (not in a local list
+>anymore).
+>
+>In the future, we will reparent LRU folios during memcg offline to
+>eliminate dying memory cgroups, which requires reparenting the split queue
+>to its parent first. So this patch prepares for using
+>folio_split_queue_lock_irqsave() as the memcg may change then.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Acked-by: David Hildenbrand <david@redhat.com>
+>Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+One nit below
+
+>---
+[...]
+>@@ -4239,38 +4245,27 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+> 		}
+> 		folio_unlock(folio);
+> next:
+>+		if (did_split || !folio_test_partially_mapped(folio))
+>+			continue;
+> 		/*
+>-		 * split_folio() removes folio from list on success.
+> 		 * Only add back to the queue if folio is partially mapped.
+> 		 * If thp_underused returns false, or if split_folio fails
+> 		 * in the case it was underused, then consider it used and
+> 		 * don't add it back to split_queue.
+> 		 */
+>-		if (did_split) {
+>-			; /* folio already removed from list */
+>-		} else if (!folio_test_partially_mapped(folio)) {
+>-			list_del_init(&folio->_deferred_list);
+>-			removed++;
+>-		} else {
+>-			/*
+>-			 * That unlocked list_del_init() above would be unsafe,
+>-			 * unless its folio is separated from any earlier folios
+>-			 * left on the list (which may be concurrently unqueued)
+>-			 * by one safe folio with refcount still raised.
+>-			 */
+>-			swap(folio, prev);
+>+		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+>+		if (list_empty(&folio->_deferred_list)) {
+>+			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
+>+			fqueue->split_queue_len++;
+> 		}
+>-		if (folio)
+>-			folio_put(folio);
+>+		split_queue_unlock_irqrestore(fqueue, flags);
+> 	}
+>+	folios_put(&fbatch);
 > 
-> Add support for exporting PCI device MMIO regions through dma-buf,
-> enabling safe sharing of non-struct page memory with controlled
-> lifetime management. This allows RDMA and other subsystems to import
-> dma-buf FDs and build them into memory regions for PCI P2P operations.
+>-	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+>-	list_splice_tail(&list, &ds_queue->split_queue);
+>-	ds_queue->split_queue_len -= removed;
+>-	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+>-
+>-	if (prev)
+>-		folio_put(prev);
+>+	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue)) {
+
+Maybe we can use ds_queue->split_queue_len instead?
+
+>+		cond_resched();
+>+		goto retry;
+>+	}
 > 
-> The implementation provides a revocable attachment mechanism using
-> dma-buf move operations. MMIO regions are normally pinned as BARs
-> don't change physical addresses, but access is revoked when the VFIO
-> device is closed or a PCI reset is issued. This ensures kernel
-> self-defense against potentially hostile userspace.
+> 	/*
+> 	 * Stop shrinker if we didn't split any page, but the queue is empty.
+>-- 
+>2.20.1
+>
 
-I have drafted the iommufd importer side of this using the private
-interconnect approach for now.
-
-https://github.com/jgunthorpe/linux/commits/iommufd_dmabuf/
-
-Due to this iommufd never calls map and we run into trouble here:
-
-> +static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> +				   struct dma_buf_attachment *attachment)
-> +{
-> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> +
-> +	if (!attachment->peer2peer)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (priv->revoked)
-> +		return -ENODEV;
-> +
-> +	switch (pci_p2pdma_map_type(priv->provider, attachment->dev)) {
-> +	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-> +		break;
-> +	case PCI_P2PDMA_MAP_BUS_ADDR:
-> +		/*
-> +		 * There is no need in IOVA at all for this flow.
-> +		 * We rely on attachment->priv == NULL as a marker
-> +		 * for this mode.
-> +		 */
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-
-Where the dev from iommufd is also not p2p capable so the attach
-fails.
-
-This is OK since it won't call map.
-
-So I reworked this logic to succeed attach but block map in this
-case.. Can we fold this in for the next version? This diff has the
-fixing for the iova lifecycle too.
-
-I have a few more checks to make but so far it looks Ok and with some
-luck we can get some iommufd p2p support this cycle..
-
-Jason
-
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index eaba010777f3b7..a0650bd816d99b 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -20,10 +20,21 @@ struct vfio_pci_dma_buf {
- 	u8 revoked : 1;
- };
- 
-+struct vfio_pci_attach {
-+	struct dma_iova_state state;
-+	enum {
-+		VFIO_ATTACH_NONE,
-+		VFIO_ATTACH_HOST_BRIDGE_DMA,
-+		VFIO_ATTACH_HOST_BRIDGE_IOVA,
-+		VFIO_ATTACH_BUS
-+	} kind;
-+};
-+
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 				   struct dma_buf_attachment *attachment)
- {
- 	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-+	struct vfio_pci_attach *attach;
- 
- 	if (!attachment->peer2peer)
- 		return -EOPNOTSUPP;
-@@ -31,32 +42,38 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 	if (priv->revoked)
- 		return -ENODEV;
- 
-+	attach = kzalloc(sizeof(*attach), GFP_KERNEL);
-+	if (!attach)
-+		return -ENOMEM;
-+	attachment->priv = attach;
-+
- 	switch (pci_p2pdma_map_type(priv->provider, attachment->dev)) {
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
--		break;
-+		if (dma_iova_try_alloc(attachment->dev, &attach->state, 0,
-+				       priv->size))
-+			attach->kind = VFIO_ATTACH_HOST_BRIDGE_IOVA;
-+		else
-+			attach->kind = VFIO_ATTACH_HOST_BRIDGE_DMA;
-+		return 0;
- 	case PCI_P2PDMA_MAP_BUS_ADDR:
--		/*
--		 * There is no need in IOVA at all for this flow.
--		 * We rely on attachment->priv == NULL as a marker
--		 * for this mode.
--		 */
-+		/* There is no need in IOVA at all for this flow. */
-+		attach->kind = VFIO_ATTACH_BUS;
- 		return 0;
- 	default:
--		return -EINVAL;
-+		attach->kind = VFIO_ATTACH_NONE;
-+		return 0;
- 	}
--
--	attachment->priv = kzalloc(sizeof(struct dma_iova_state), GFP_KERNEL);
--	if (!attachment->priv)
--		return -ENOMEM;
--
--	dma_iova_try_alloc(attachment->dev, attachment->priv, 0, priv->size);
- 	return 0;
- }
- 
- static void vfio_pci_dma_buf_detach(struct dma_buf *dmabuf,
- 				    struct dma_buf_attachment *attachment)
- {
--	kfree(attachment->priv);
-+	struct vfio_pci_attach *attach = attachment->priv;
-+
-+	if (attach->kind == VFIO_ATTACH_HOST_BRIDGE_IOVA)
-+		dma_iova_free(attachment->dev, &attach->state);
-+	kfree(attach);
- }
- 
- static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, u64 length,
-@@ -83,22 +100,23 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, u64 length,
- }
- 
- static unsigned int calc_sg_nents(struct vfio_pci_dma_buf *priv,
--				  struct dma_iova_state *state)
-+				  struct vfio_pci_attach *attach)
- {
- 	struct phys_vec *phys_vec = priv->phys_vec;
- 	unsigned int nents = 0;
- 	u32 i;
- 
--	if (!state || !dma_use_iova(state))
-+	if (attach->kind != VFIO_ATTACH_HOST_BRIDGE_IOVA) {
- 		for (i = 0; i < priv->nr_ranges; i++)
- 			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
--	else
-+	} else {
- 		/*
- 		 * In IOVA case, there is only one SG entry which spans
- 		 * for whole IOVA address space, but we need to make sure
- 		 * that it fits sg->length, maybe we need more.
- 		 */
- 		nents = DIV_ROUND_UP(priv->size, UINT_MAX);
-+	}
- 
- 	return nents;
- }
-@@ -108,7 +126,7 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 		     enum dma_data_direction dir)
- {
- 	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
--	struct dma_iova_state *state = attachment->priv;
-+	struct vfio_pci_attach *attach = attachment->priv;
- 	struct phys_vec *phys_vec = priv->phys_vec;
- 	unsigned long attrs = DMA_ATTR_MMIO;
- 	unsigned int nents, mapped_len = 0;
-@@ -127,7 +145,7 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 	if (!sgt)
- 		return ERR_PTR(-ENOMEM);
- 
--	nents = calc_sg_nents(priv, state);
-+	nents = calc_sg_nents(priv, attach);
- 	ret = sg_alloc_table(sgt, nents, GFP_KERNEL | __GFP_ZERO);
- 	if (ret)
- 		goto err_kfree_sgt;
-@@ -135,35 +153,42 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 	sgl = sgt->sgl;
- 
- 	for (i = 0; i < priv->nr_ranges; i++) {
--		if (!state) {
-+		switch (attach->kind) {
-+		case VFIO_ATTACH_BUS:
- 			addr = pci_p2pdma_bus_addr_map(priv->provider,
- 						       phys_vec[i].paddr);
--		} else if (dma_use_iova(state)) {
--			ret = dma_iova_link(attachment->dev, state,
-+			break;
-+		case VFIO_ATTACH_HOST_BRIDGE_IOVA:
-+			ret = dma_iova_link(attachment->dev, &attach->state,
- 					    phys_vec[i].paddr, 0,
- 					    phys_vec[i].len, dir, attrs);
- 			if (ret)
- 				goto err_unmap_dma;
- 
- 			mapped_len += phys_vec[i].len;
--		} else {
-+			break;
-+		case VFIO_ATTACH_HOST_BRIDGE_DMA:
- 			addr = dma_map_phys(attachment->dev, phys_vec[i].paddr,
- 					    phys_vec[i].len, dir, attrs);
- 			ret = dma_mapping_error(attachment->dev, addr);
- 			if (ret)
- 				goto err_unmap_dma;
-+			break;
-+		default:
-+			ret = -EINVAL;
-+			goto err_unmap_dma;
- 		}
- 
--		if (!state || !dma_use_iova(state))
-+		if (attach->kind != VFIO_ATTACH_HOST_BRIDGE_IOVA)
- 			sgl = fill_sg_entry(sgl, phys_vec[i].len, addr);
- 	}
- 
--	if (state && dma_use_iova(state)) {
-+	if (attach->kind == VFIO_ATTACH_HOST_BRIDGE_IOVA) {
- 		WARN_ON_ONCE(mapped_len != priv->size);
--		ret = dma_iova_sync(attachment->dev, state, 0, mapped_len);
-+		ret = dma_iova_sync(attachment->dev, &attach->state, 0, mapped_len);
- 		if (ret)
- 			goto err_unmap_dma;
--		sgl = fill_sg_entry(sgl, mapped_len, state->addr);
-+		sgl = fill_sg_entry(sgl, mapped_len, attach->state.addr);
- 	}
- 
- 	/*
-@@ -174,15 +199,22 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 	return sgt;
- 
- err_unmap_dma:
--	if (!i || !state)
--		; /* Do nothing */
--	else if (dma_use_iova(state))
--		dma_iova_destroy(attachment->dev, state, mapped_len, dir,
--				 attrs);
--	else
-+	switch (attach->kind) {
-+	case VFIO_ATTACH_HOST_BRIDGE_IOVA:
-+		if (mapped_len)
-+			dma_iova_unlink(attachment->dev, &attach->state, 0,
-+					mapped_len, dir, attrs);
-+		break;
-+	case VFIO_ATTACH_HOST_BRIDGE_DMA:
-+		if (!i)
-+			break;
- 		for_each_sgtable_dma_sg(sgt, sgl, i)
- 			dma_unmap_phys(attachment->dev, sg_dma_address(sgl),
--					sg_dma_len(sgl), dir, attrs);
-+				       sg_dma_len(sgl), dir, attrs);
-+		break;
-+	default:
-+		break;
-+	}
- 	sg_free_table(sgt);
- err_kfree_sgt:
- 	kfree(sgt);
-@@ -194,20 +226,24 @@ static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment,
- 				   enum dma_data_direction dir)
- {
- 	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
--	struct dma_iova_state *state = attachment->priv;
-+	struct vfio_pci_attach *attach = attachment->priv;
- 	unsigned long attrs = DMA_ATTR_MMIO;
- 	struct scatterlist *sgl;
- 	int i;
- 
--	if (!state)
--		; /* Do nothing */
--	else if (dma_use_iova(state))
--		dma_iova_destroy(attachment->dev, state, priv->size, dir,
--				 attrs);
--	else
-+	switch (attach->kind) {
-+	case VFIO_ATTACH_HOST_BRIDGE_IOVA:
-+		dma_iova_destroy(attachment->dev, &attach->state, priv->size,
-+				 dir, attrs);
-+		break;
-+	case VFIO_ATTACH_HOST_BRIDGE_DMA:
- 		for_each_sgtable_dma_sg(sgt, sgl, i)
- 			dma_unmap_phys(attachment->dev, sg_dma_address(sgl),
- 				       sg_dma_len(sgl), dir, attrs);
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	sg_free_table(sgt);
- 	kfree(sgt);
+-- 
+Wei Yang
+Help you, Help me
 
