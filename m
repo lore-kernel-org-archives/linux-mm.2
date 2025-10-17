@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6B2CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E58CCD1A4
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:48:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2567B8E000A; Fri, 17 Oct 2025 09:48:35 -0400 (EDT)
+	id 3680A8E001F; Fri, 17 Oct 2025 09:48:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 207438E0006; Fri, 17 Oct 2025 09:48:35 -0400 (EDT)
+	id 33F988E0006; Fri, 17 Oct 2025 09:48:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F6928E000A; Fri, 17 Oct 2025 09:48:35 -0400 (EDT)
+	id 22EE08E001F; Fri, 17 Oct 2025 09:48:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F26158E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:48:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8799CC0193
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:34 +0000 (UTC)
-X-FDA: 84007736148.17.5890163
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F9198E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:48:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A25AE1DD543
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:37 +0000 (UTC)
+X-FDA: 84007736274.20.89C5B58
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9867E80013
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=geDc2iCZ;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id C996B14000D
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:35 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=SqMt7pWo;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708912;
+	s=arc-20220608; t=1760708916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=9rW2Q0Blw7Adku9sXTiD9ouZyVSq86OMut3vIa3kXvw=;
-	b=mKWjWzEwRzOdChuX92R+MhUaiyfpwg6a8UsPaTvqq9AbCGbe0+dA13fPaOQys0bJqDaWci
-	sJVTmUnU5utLbARivvvYtc0NESS+8UYrlCX1vNz8hcA6bF6w6z6vIcApY3u5xyG5qysmEX
-	Ue9Nvrxdi2xO5P3MNl8YdUeV3pQppR8=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=geDc2iCZ;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708912; a=rsa-sha256;
+	bh=MO/P20s7A2IENyOXHHNbrafi0ereoMwReLWLHzBsT2Q=;
+	b=Kd3GDZbDRcbTBeR+JhHO70pf19VL6NV3IeqXYj3bDwtnZg6VrzqIOcoxrMAo9T4Pnn7Y/A
+	97nUXmt+JZZMaMaoqQPzDA5Fk6FVd/rZzA6cdaObTAXkd8nC61DNvdR+uggPPdjGx2j/jc
+	R/WcZ7wVS/8jiIt/1acfPWvFKf7jvvQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708916; a=rsa-sha256;
 	cv=none;
-	b=wLnKf4DRf5R2LUDnf/CciDtBpB9BS6Oaj5nXNwf8UUfXrv4EqCfkN597wY3nehTwqjQl44
-	Y5cPoHhLOrSIFDIwHsRMzO0h4m1pdNp8szArW08UziV7UNHdXG0O//HfJa9UWta2NCYRvY
-	eCvX4W+m7tmLbLAU1oZuEGGQorORsRk=
+	b=tLAoMmq5DBtWAR14ZM8szi5kbbBLtLvc/cY0Gyvm1cA+cDpyb0dxow2OUlcHAeUy9J2r7e
+	Soc/vgkgmRHrRhWBY01MMIAVjsybKgXx2kY/ThBQWGNh/iIO93xNnp1a+0SeR76/tQoQIN
+	sg/UDzVHeSicRVEIy9KFtaXHigaqr0c=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=SqMt7pWo;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 317AB4597D;
-	Fri, 17 Oct 2025 13:48:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00E6C4CEE7;
-	Fri, 17 Oct 2025 13:48:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0B8B4B3FD;
+	Fri, 17 Oct 2025 13:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E919C4CEE7;
+	Fri, 17 Oct 2025 13:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708911;
-	bh=U5rI6jYEm/hebyL7q5VHjDrSgx3DOa/8Xq1mYhcV3sc=;
+	s=korg; t=1760708914;
+	bh=9IqCPytQAaQwXETei1k8GMH0FlmiLk+NVpvQYCV17Ew=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=geDc2iCZaiiH7/CSUypz4O9I5saDR5an2Eg++KxC8Hq7g8IcRp597KfqnToeoir6V
-	 xge/WwSeEjp3RxzrcnE5Cy423LnZtgz6ZfL4FOcq2lmukly5ea6Lavkp3UVXVIKFLG
-	 g3yZ+gFrdzFeY4zNZ5z82ZnOI/Ec3n+iFfp0BoS4=
-Subject: Patch "btrfs: remove duplicated in_range() macro" has been added to the 5.10-stable tree
-To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
-	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
-	akpm@linux-foundation.org, alexander.deucher@amd.com,
-	alexandre.torgue@st.com, amd-gfx@lists.freedesktop.org,
-	andriy.shevchenko@linux.intel.com, anton.ivanov@cambridgegreys.com,
-	artur.paszkiewicz@intel.com, bp@alien8.de, brian.starkey@arm.com,
-	bvanassche@acm.org, chao@kernel.org, christian.koenig@amd.com,
-	clm@fb.com, coreteam@netfilter.org, daniel@ffwll.ch,
-	dave.hansen@linux.intel.com, davem@davemloft.net,
-	dm-devel@redhat.com, dmitry.torokhov@gmail.com,
+	b=SqMt7pWoq/PPtCjS4+kCy7WRVSYMJQSC7k/FTbyt/iVBrTJ3+Y9dkcT0qreAYSHxA
+	 ia0xfzksCLob1Tz8EcVIIAD8GbtmqYZ+FHzUvOzWBbfqKetv0HOdcWccYPojyu0/i+
+	 iMzswuHyvtcwv7LtO8vtvcObt+SyOCtkvP2zgNfU=
+Subject: Patch "minmax: add a few more MIN_T/MAX_T users" has been added to the 5.10-stable tree
+To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
+	Jason@zx2c4.com, adilger.kernel@dilger.ca, agk@redhat.com,
+	airlied@linux.ie, akpm@linux-foundation.org,
+	alexander.deucher@amd.com, alexandre.torgue@st.com,
+	amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
+	anton.ivanov@cambridgegreys.com, artur.paszkiewicz@intel.com,
+	bp@alien8.de, brian.starkey@arm.com, bvanassche@acm.org,
+	chao@kernel.org, christian.koenig@amd.com, clm@fb.com,
+	coreteam@netfilter.org, daniel@ffwll.ch, dave.hansen@linux.intel.com,
+	davem@davemloft.net, dm-devel@redhat.com, dmitry.torokhov@gmail.com,
 	dri-devel@lists.freedesktop.org, dsterba@suse.com, dushistov@mail.ru,
 	evan.quan@amd.com, farbere@amazon.com, fery@cypress.com,
 	freedreno@lists.freedesktop.org, fw@strlen.de,
@@ -79,18 +79,18 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	hdegoede@redhat.com, herve.codina@bootlin.com, hpa@zytor.com,
 	intel-linux-scu@intel.com, jack@suse.com, james.morse@arm.com,
 	james.qian.wang@arm.com, jdelvare@suse.com, jdike@addtoit.com,
-	jejb@linux.ibm.com, jmaloy@redhat.com, joabreu@synopsys.com,
-	johan@kvack.org, nes.thumshirn@wdc.com, josef@toxicpanda.com,
-	kadlec@netfilter.org, kbusch@kernel.org, keescook@chromium.org,
-	kuba@kernel.org, kuznet@ms2.inr.ac.ru,
-	linux-arm-kernel@lists.infradead.org, linux-erofs@lists.ozlabs.org,
-	linux-mm@kvack.org, linux-staging@lists.linux.dev,
+	jejb@linux.ibm.com, jmaloy@redhat.com, jo@kvack.org,
+	abreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
+	kbusch@kernel.org, keescook@chromium.org, kuba@kernel.org,
+	kuznet@ms2.inr.ac.ru, linux-arm-kernel@lists.infradead.org,
+	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
+	linux-staging@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-um@lists.infradead.org, linux@armlinux.org.uk,
 	linux@rasmusvillemoes.dk, linux@roeck-us.net, liviu.dudau@arm.com,
-	luc.vanoostenryck@gmail.com, luto@kernel.org,
-	maarten.lankhorst@linux.intel.com, malattia@linux.it,
-	martin.petersen@oracle.com, mchehab@kernel.org,
+	lorenzo.stoakes@oracle.com, luc.vanoostenryck@gmail.com,
+	luto@kernel.org, maarten.lankhorst@linux.intel.com,
+	malattia@linux.it, martin.petersen@oracle.com, mchehab@kernel.org,
 	mcoquelin.stm32@gmail.com, mgross@linux.intel.com,
 	mihail.atanassov@arm.com, minchan@kernel.org, mingo@redhat.com,
 	mripard@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
@@ -98,35 +98,35 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	peterz@infradead.org, pmladek@suse.com, qiuxu.zhuo@intel.com,
 	rajur@chelsio.com, richard@nod.at, robdclark@gmail.com,
 	rostedt@goodmis.org, rric@kernel.org, ruanjinjie@huawei.com,
-	sakari.ailus@linux.intel.com, sashal@kerne.kvack.org,
-	l.org@kvack.org, sean@poorly.run, sergey.senozhatsky@gmail.com,
+	sakari.ailus@linu.kvack.org, x.intel.com@kvack.org,
+	sashal@kernel.org, sean@poorly.run, sergey.senozhatsky@gmail.com,
 	snitzer@redhat.com, sunpeng.li@amd.com, tglx@linutronix.de,
 	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
-	tytso@mit.edu, tzimmermann@suse.de, willy@infradead.org,
-	x86@kernel.org, xiang@kernel.org, ying.xue@windriver.com,
-	yoshfuji@linux-ipv6.org
+	torvalds@linux-foundation.org, tytso@mit.edu, tzimmermann@suse.de,
+	willy@infradead.org, x86@kernel.org, xiang@kernel.org,
+	ying.xue@windriver.com, yoshfuji@linux-ipv6.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:27 +0200
-In-Reply-To: <20251017090519.46992-3-farbere@amazon.com>
-Message-ID: <2025101727-garnet-vegan-53e8@gregkh>
+In-Reply-To: <20251017090519.46992-15-farbere@amazon.com>
+Message-ID: <2025101727-crabbing-undusted-2c52@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: nhajipd5sh1ne95ttc97kzpz5q9hoyuj
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9867E80013
-X-HE-Tag: 1760708912-637602
-X-HE-Meta: U2FsdGVkX1/xbZK7VnUfsn9EbMlyUNyy1ocRxxcfksW9sCwEeMxb5DKwTkqqss92wVRkv74gwJv3RbZvWa1eKJ0BGA+fiovZmUrWKjydY1KFax+FkwGLuZMka9UiqGkuPLfFA9dY1k1NbmvMhQWsfjB/C1F6uHjfg+yLK9V3TlXMVVygfqd+485sSh+YJmHI/aRXYFMiL9IGrksfUiVZZjGcVDMfES5fiWG14mQhbwRIHdbrs4E2IDj3r+PaKURyInVkLToMDITcOkTD3fIh3YtSvsKI+gCCvkpzqupIUIxqxhTWqLqhpdrgLWy68whh0GWqb9v3GNGqXWCW0DqdLjBKBkXtoIKMtpehr9uFXOXXipYdB12AincVj02osvQRvoBZdHHGlLtd/H1dcRiOrYq5ORtleGG4DAPxzMk/HAATk9v/EqZjFpA3Gbjt7PQWPmB+I07LPJ9AX8fTNHmdSViafjh4Ji0bLp63OptzVTm/lWrFpHzUV/V7Vcjbvh1eo6zEZrPjzPKGsBrxsce7M3Mw/8qyXywiJ7p3OF0i2S0v/6F32rBopDLgAnkGtwl6v2QCnwS239SY6UzJE3Rdg/jOddTWjCPm5YAtrTnCAU+0GJTAh29ANgIIMco+mUxSbWA+tN3gnp9HfUMVTAVvtwLDb1oANSarq6y5p1Iha8lQ6kYUdrzuPjde1ZeXGggeYQkpGcJzmjYGmk9CxN2TN1dShVGkU3BBinXwCxXJW5oGmfIiPAVMI8JAoFF7DhKnppRe2ORmbr875BELC62ENm0xqMHsIYT8KObtt0W5Y3pHPoHkFQwRtq+ywZ3rSVHDgyhS0IZsmNaHf5WkqolHrEMLL5JLVckU2q0DgR6g43uJ6VMFBZ7v62W5R4tM+Vu0xNcjWZx7dMuJvJEnjX9kcKCtvQsJod+KW91zqr6XjfEq/KmsH6OhXvcBm6R6+jw2oBHHYZsjagH79AidG+Z
- o+weVszE
- uG3VKm65kUbnBTJqD90HdwK+mBuW4mjKN8pTu/qf3C1tX85hIusJVhY1+gURg7vqCIrwrnrY5H1IZAmma4J14z7/bpR+ShpSE7EQ68P0KiOWdc5UzpmvJu2X+MI/s92hOyzDKwwPZkgYigWLkKt5o5qOzyB3uXWCI8M+iSuZn9V0fLR5m7DfDgE55KR2wgPEwhfygz5XEf2oPKKhlmb7l4RXkKFOt0yF2Zx8J/4ikfk3WLhMD/6gXeogzVx4pjsuwjDXFSmCM6IJQbpytLQNSRoFD4zkr0tzSZU4xpm2a1v2vTCU0XcHau3ymkXQxo3EK3dDwAN0lCAb1w4BtyTUC/2N8Yu6LAVm83oyhoDxZhs4MLAmYBgD1lRu6n7wWkn9y9nsvIhl72S1uz3/NrGrVnvP9gjIDkvntZGcS/i+BcQN46hMKtxWOSQDMKPE6pYHluRoaYyG2EXFBCYjq2KQ4yc4jqwbufxeJ7A66z78lE4L2ACqpLgyWODo7Vubf3EP/WsYo4z86JCVNgp/we5P8fD9/n/o4AwL4hZkx8hbmY6GZs2FwoN9s0U2J6fCzK4g/DByOKyfPp3Myt1ySoasWDrl2oQXAapACSq5pfrnZTJIB0azrzBO7NsWjMIawofIA7wOF4wPAG3SDueQt4igSP9u7dc+UlAD68ZZiiCXFnBeZMLntMo1yYIF7WWszDP9Q7Asfa1VrteQentgRyS5X9vg0Ev9q9XcErSm4tfm51jFnZMpEDmf5BZlglN1oC9b/B9ZVuV4Ox/al9a2p2Z4cnmgbwVcukbtxzIgsvWbY+73rguX//vfP17GKGv0KNZFOMrrQOEmekaGQd95V9jcVM0qxR7vm6QlRQI4EW653T2OquVOLd7l3fl9e7ciGfwRjMgQtSMzuwEBGuBX3Ne1PceHON8V8NdoQdqxIVS2Gox0Akv0MUUswN/bNl8h5TR+W+GksZuRZ4gnPeFpeNkmKcPux2yDP
- DOGJtZDV
- L22iif1LsKgdadElYfpMGattlZ86HU4TFjKCarfWYbz+ySZai3J0nehVbeOYN/jso9zyN+/A+9wm6UhStRxg292d0hZP7t318N5UAjomrql72k1btCOucQuDrbzL5YoAUEulG30CtL9laXNtn+VkAIe58lqDblA5aNEnia1PN6WcnT6TFY/0jBjSKlvSiPVweTxgdoWUzWaDWizrBPBOro0BZbnwPqhXus3a+Boan9QtZaQn3AnOmDiflXSOXjBX5CDatV7nucyDRHZOh+bb5G1FihviijnRjLNCcM+Nc7uI6nVexrtWw+0Op4YfiM/pRyYGWRAh89S7il7UalqT7lUxDwzcqhYZQeP8sTmXdv8IkLgCt5JOHZ10kE+mRlSTZty3cI/KvsSdXFILusO4SbBV/OXq7kW4w9bCeniBz8UesQDvkImVzUfXMYXWTuIwIROqjBMVN92Vb7vkOJ+NkVnrpXGKdzvcMXdCDI2JnALKsxcTDyWBvtVj6BoKjIaRlXKkau+Yf5fUZMI7XWnatVuhSEsQloU0hWTMggKqIqwoIPQDfjdaOWsj1dyv2Mdv/89IT3zcRTC/oY+eIiCve5f23GAUHV66K198J9MiEgKs/0UyCwjmKAWwHAsdVSVT5DYBhLX4EmY5Rj3B15ZP6rohMWv5vSyrwmm5LQzTCeNFsPKomrGEdMsTPfMbDi6XDyuNmD7Gtd7DzkJ/Yhgjp6YTdwms+fCrFrIYb3xaJcuxIdkH61jk0InPva5mo02oguppuxWZuawQ3hOtMDmA+dQPOYyioC7hffTSj8V1X2ynxASJX0UJ5EZAXbY7XHwPMoWggMZNkhxXbNYRujRrVRoyREfwIdM1zpbZIET98ryxDlXJVMsYAzPbVbCY0c4Sp8emWVxWgkiND7H4m8+6FMhBH/eZtdTXGSeCNTcUuDk5MSCqb/xFi02hx0uSiPcog8WNVMZKJ9tcIDTW6973ffjZ5a2k7
- xo+/r6we
- tU6ufgbTUKMAI4Eew==
+X-Rspamd-Queue-Id: C996B14000D
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 6x65kr1zb6njx5xi9mgzb47ncqebrm8p
+X-HE-Tag: 1760708915-924848
+X-HE-Meta: U2FsdGVkX1/15yHkm3IQ0qgx3NIz8E2HFRRLOPqVlNs9hLHEzhZMwuYPfUaBw0WnjiOiZ62HTCO/3jcMYZlOWai1NzUe1Cu5poQr2vs9/jRwAVhvrhtmlNTKcRMFD8KzPpa8gcCsgrjYXiKa5ms6US1Ps2ZEITDO5i4sG2+gapjbO7hXC/Rl48+PlBqSyI1BS/LUCssNFefik5jFKXc31nn40qVR90g5N/ujVGDYYCWBC/HhwkXM7fcidsrqmZIMDIqnQ45Ph1jtnkdejzq+bmaljjWsyCMCx4xs0qWEPLRc3/2336xOzS1VcX3fIqtwvMMIR3PXXlPEq/j0eUR9gUNt7dM2b8u9sTzq8cqawzYJkybWe+jbdCTHv9sWW2EkniIA6m4p+Ygb+iSmNvtU6XLKkS3aPr28NR09piViOxGiyQMpsGsxVBGmGM0hgQVyuVPR/sm8+D/J7zzD8hoF65tGIbBZK76uAMM4JZDF7hOGvKYw1QVaMhK7RhIJLzfEG4OzUlQDfC0j+SVsega37o6IXBHMmNzQNcjZHhMb77GKvleh0r9lTggqDdv3L3MB0lzvtFZ3uv+JzAY9iH4g6CJ1aleVOEXBPSXHvflCWABY+7fmHDpxXcvNPT21nEDssjZaYx8Ulp92cRFZR+EizHdd7mJatWTs2F0G/rYlBKBaPqwGDr1z2xl3HqZmIju7ArAjK8L4LSfWCkHklyr1XkDvqMsAJpc+aCJSPKdPCvRr+CYwQ5YiY/WVX8EuwQhLfrxJvRgZo8rwaLbDGkoCOyqlowiAarL1gXVddA8QgmXeonofgBV9AgpfTYbUKpynSwCRHSCdvNx9KWz+VMxBAx93TPd6Is0x9OusLiMvFP+xo0fGNMRFutQONv+R3kWqB0rbgj6zm6yK37yK9xHDamd6SLnyQrv0M4nxK1wC+sFdalDZmYiMdLNTgJ6DjZJa0bnnLwJKzqtmoDP5KdH
+ JZzgsuDX
+ mg/s6hGSEGx4J9kuBSJ/v+z/bETqArJqXWjAJ89dJyTjkYSFyCX6BbxMQpq+RqzMuNttLK675l4KXf5ST/QR3Q8k+PQij8uu7tWbIxo1IWD2TTQxSsH1xwtwPtgnjajp4v9AXHDOOMOF0P/ScGQGBGbWwZMg6H++H7CMPLqAjHyJDLJEA+N3jdTDJZWs6T5yBqN4ieS2FmRAbdbpgVs5sS3tCOj9x6Ew4qzQKRz6LtlibKSIjOIUkUljeG2Sfu9DPNGYS6/AQHBWxv3rgGvgTIg04XECWQCzjxev/ZrbMkOUrQ9lZR24z1vjWVGFsR0SNCKxu1g2lXf159QJ15Lclh+kV6Op3lNCDnRbaaL9NQm4aXf/je2j7cS8j41rUmSDRBrFZV3MNPbY7pHNIUVNBe3X0I5++MSVoWg0KQDiQ1l1z5b1apGKBeyH05/Bl+YmBKL6luz3RGTahy7kZd4GMIwBuUp+6iDmkuserBnPojWo9SjZ/mZxKIegEaW2PxbUEcfr6XXc96uuLI9wYiQdTjPuYJzy4+sHF4o9Luf6vJM4XucqhTRj7SWsiIOWlWU8wXRSGn2uuCuzlYyyWBQkCmWmRDAzjClIv4xYxPh0ohfAfnYWr/nbvPL2+GlxiBucPf7B2Ua+Hb+rMe/cB/svJOwe5ZXSrbzdmAQ73t5q7KhvUKTd0Ek/dG7CYoueDic54gCUQ4quXMmWWevdkfMpJN/BRzcG/k0H2sshl1pGSzUiGdjR+1jxBHLbNzFf/l1Di5erg1VqmcZSKUaAzpnS/nz5TYX3NXXKbpYo7L0PiCvq8j5V8Ay2co/9Vv9EIuQ70wxBmdm8lnHseNWm03lX2lukryDDkELISFKCWl3kCxuzRXIX6DXY/Y3eD9lrAGud3CrLgXVsdaQjOXojV7Ob0oMSS7JFGbqdp4cQzNp4PasTVOM7EMGMHBV7KJweTCLhwIlDfXVHGuoi4o4NHM3UDX7SQR7FV
+ MA6eMick
+ VDgrl2Z8n0yZdIYeqGtWQRVkRYlWzQopRj3tkNQqYEnvTTaNVzQ3mbaXGbOXkfZNQ6isCxgpwz90q8OhwEdru2pKQnLx1ij4YLUSbZcXoXXMIx2MuMnwqXmPV26c8uJaobJbD/aUwT+EeZPsRZnbRNu19cQvYj460hjUBz/OM6H8uULNc/s+U/1OJreDeWlLlVhr8KqkB4IpxSSQb89uF1Sbba8cAPXm5sg6X83yLSpveNce0Fwk+woiHeFHL+mDdGL4h6kNbhGPaKvaWsdWBInZD5NBII6xAOi+gGj6ScLMO+z1Z3BIPoQ8ldm7/HLwPhycxdqie5lvzlFZWMsiShfXxp/vZOK7oeXQ9Pay3htfZk513TciFRPeK4+a9M+78OVJWlIHTwPSfoeI6u9etZo1SHwBhHFRLErtgDGhq5oIdyU2ILThgtxOlierRUADeYjsl/n2ARXVqjlTF3FBIpZvp5XL836NuRncOr3iTBq0EKoefGp3L/aF7lQnLUMc8XeSWMljOCmo59LU9nN/w/gLzuVT/phdymdEP7NIQl2oV9xStRzOoHEpVi2AiRO0lAzrnMyJ6m8cWZp5qpcMgeHNwQLkAkl9agzbgSHnfEUGQh4DvAdMmPF0ZpK9RRG2asGOX/KsQt2boBCtV4DdLWK5UidZd4bKkfxETjdnQOt3Kw5I5pdFfpgfLLq/D51egqJOpImLUtSTGvS3uAO1Fbmbn0yhlpZiHe2Kx9E/Z0dFEvDSn/4ImKtqjgspuScOTyihCtj+u9GZcbUWmyEQWFJyolABoyxvSmjX1rnD8IT9WeaHW+HAWzxqt3bkKxByjAU+vBlptzF1ywhdYZNPl22147wfrSjTb+IKOdUMj4blfQfWEkJ/9fPqc1vBerCDLxhN4PN5LF0Unl9RiMSV11kmbBIe5EkDJf76nvicrONnU6EiLOKC9VAQobHVld5KzQnagP2SG4dZR120ZzqsKbghzwRCO
+ 06aVq3O5
+ 0Q/gYHZ9unwmWKi44fQB8WphgZVWK2CvucX3vnB3sGePlm7uKkG4VeMsORX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,23 +138,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    btrfs: remove duplicated in_range() macro
+    minmax: add a few more MIN_T/MAX_T users
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     btrfs-remove-duplicated-in_range-macro.patch
+     minmax-add-a-few-more-min_t-max_t-users.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-186267-greg=kroah.com@vger.kernel.org Fri Oct 17 11:08:02 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:10:08 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:04:54 +0000
-Subject: btrfs: remove duplicated in_range() macro
+Date: Fri, 17 Oct 2025 09:05:06 +0000
+Subject: minmax: add a few more MIN_T/MAX_T users
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -162,71 +162,155 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Message-ID: <20251017090519.46992-3-farbere@amazon.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, David Laight <David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Message-ID: <20251017090519.46992-15-farbere@amazon.com>
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit cea628008fc8c6c9c7b53902f6659e040f33c790 ]
+[ Upstream commit 4477b39c32fdc03363affef4b11d48391e6dc9ff ]
 
-The in_range() macro is defined twice in btrfs' source, once in ctree.h
-and once in misc.h.
+Commit 3a7e02c040b1 ("minmax: avoid overly complicated constant
+expressions in VM code") added the simpler MIN_T/MAX_T macros in order
+to avoid some excessive expansion from the rather complicated regular
+min/max macros.
 
-Remove the definition in ctree.h and include misc.h in the files depending
-on it.
+The complexity of those macros stems from two issues:
 
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+ (a) trying to use them in situations that require a C constant
+     expression (in static initializers and for array sizes)
+
+ (b) the type sanity checking
+
+and MIN_T/MAX_T avoids both of these issues.
+
+Now, in the whole (long) discussion about all this, it was pointed out
+that the whole type sanity checking is entirely unnecessary for
+min_t/max_t which get a fixed type that the comparison is done in.
+
+But that still leaves min_t/max_t unnecessarily complicated due to
+worries about the C constant expression case.
+
+However, it turns out that there really aren't very many cases that use
+min_t/max_t for this, and we can just force-convert those.
+
+This does exactly that.
+
+Which in turn will then allow for much simpler implementations of
+min_t()/max_t().  All the usual "macros in all upper case will evaluate
+the arguments multiple times" rules apply.
+
+We should do all the same things for the regular min/max() vs MIN/MAX()
+cases, but that has the added complexity of various drivers defining
+their own local versions of MIN/MAX, so that needs another level of
+fixes first.
+
+Link: https://lore.kernel.org/all/b47fad1d0cf8449886ad148f8c013dae@AcuMS.aculab.com/
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.h     |    2 --
- fs/btrfs/extent_io.c |    1 +
- fs/btrfs/file-item.c |    1 +
- fs/btrfs/raid56.c    |    1 +
- 4 files changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/mm/pgtable.c                             |    2 +-
+ drivers/edac/sb_edac.c                            |    4 ++--
+ drivers/gpu/drm/drm_color_mgmt.c                  |    2 +-
+ drivers/md/dm-integrity.c                         |    2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    2 +-
+ fs/erofs/zdata.h                                  |    2 +-
+ net/ipv4/proc.c                                   |    2 +-
+ net/ipv6/proc.c                                   |    2 +-
+ 8 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -3597,8 +3597,6 @@ static inline int btrfs_defrag_cancelled
- 	return signal_pending(current);
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -107,7 +107,7 @@ static inline void pgd_list_del(pgd_t *p
+ #define UNSHARED_PTRS_PER_PGD				\
+ 	(SHARED_KERNEL_PMD ? KERNEL_PGD_BOUNDARY : PTRS_PER_PGD)
+ #define MAX_UNSHARED_PTRS_PER_PGD			\
+-	max_t(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
++	MAX_T(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
+ 
+ 
+ static void pgd_set_mm(pgd_t *pgd, struct mm_struct *mm)
+--- a/drivers/edac/sb_edac.c
++++ b/drivers/edac/sb_edac.c
+@@ -109,8 +109,8 @@ static const u32 knl_interleave_list[] =
+ 	0x104, 0x10c, 0x114, 0x11c,   /* 20-23 */
+ };
+ #define MAX_INTERLEAVE							\
+-	(max_t(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
+-	       max_t(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
++	(MAX_T(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
++	       MAX_T(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
+ 		     ARRAY_SIZE(knl_interleave_list))))
+ 
+ struct interleave_pkg {
+--- a/drivers/gpu/drm/drm_color_mgmt.c
++++ b/drivers/gpu/drm/drm_color_mgmt.c
+@@ -421,7 +421,7 @@ int drm_plane_create_color_properties(st
+ {
+ 	struct drm_device *dev = plane->dev;
+ 	struct drm_property *prop;
+-	struct drm_prop_enum_list enum_list[max_t(int, DRM_COLOR_ENCODING_MAX,
++	struct drm_prop_enum_list enum_list[MAX_T(int, DRM_COLOR_ENCODING_MAX,
+ 						       DRM_COLOR_RANGE_MAX)];
+ 	int i, len;
+ 
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -2431,7 +2431,7 @@ static void do_journal_write(struct dm_i
+ 				    unlikely(from_replay) &&
+ #endif
+ 				    ic->internal_hash) {
+-					char test_tag[max_t(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
++					char test_tag[MAX_T(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+ 
+ 					integrity_sector_checksum(ic, sec + ((l - j) << ic->sb->log2_sectors_per_block),
+ 								  (char *)access_journal_data(ic, i, l), test_tag);
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2267,7 +2267,7 @@ static void stmmac_dma_interrupt(struct
+ 	u32 channels_to_check = tx_channel_count > rx_channel_count ?
+ 				tx_channel_count : rx_channel_count;
+ 	u32 chan;
+-	int status[max_t(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
++	int status[MAX_T(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
+ 
+ 	/* Make sure we never check beyond our status buffer. */
+ 	if (WARN_ON_ONCE(channels_to_check > ARRAY_SIZE(status)))
+--- a/fs/erofs/zdata.h
++++ b/fs/erofs/zdata.h
+@@ -182,7 +182,7 @@ static inline void z_erofs_onlinepage_en
  }
  
--#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
--
- /* Sanity test specific functions */
- #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- void btrfs_test_destroy_inode(struct inode *inode);
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -13,6 +13,7 @@
- #include <linux/pagevec.h>
- #include <linux/prefetch.h>
- #include <linux/cleancache.h>
-+#include "misc.h"
- #include "extent_io.h"
- #include "extent-io-tree.h"
- #include "extent_map.h"
---- a/fs/btrfs/file-item.c
-+++ b/fs/btrfs/file-item.c
-@@ -9,6 +9,7 @@
- #include <linux/highmem.h>
- #include <linux/sched/mm.h>
- #include <crypto/hash.h>
-+#include "misc.h"
- #include "ctree.h"
- #include "disk-io.h"
- #include "transaction.h"
---- a/fs/btrfs/raid56.c
-+++ b/fs/btrfs/raid56.c
-@@ -13,6 +13,7 @@
- #include <linux/list_sort.h>
- #include <linux/raid/xor.h>
- #include <linux/mm.h>
-+#include "misc.h"
- #include "ctree.h"
- #include "disk-io.h"
- #include "volumes.h"
+ #define Z_EROFS_VMAP_ONSTACK_PAGES	\
+-	min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
++	MIN_T(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+ #define Z_EROFS_VMAP_GLOBAL_PAGES	2048
+ 
+ #endif
+--- a/net/ipv4/proc.c
++++ b/net/ipv4/proc.c
+@@ -43,7 +43,7 @@
+ #include <net/sock.h>
+ #include <net/raw.h>
+ 
+-#define TCPUDP_MIB_MAX max_t(u32, UDP_MIB_MAX, TCP_MIB_MAX)
++#define TCPUDP_MIB_MAX MAX_T(u32, UDP_MIB_MAX, TCP_MIB_MAX)
+ 
+ /*
+  *	Report socket allocation statistics [mea@utu.fi]
+--- a/net/ipv6/proc.c
++++ b/net/ipv6/proc.c
+@@ -27,7 +27,7 @@
+ #include <net/ipv6.h>
+ 
+ #define MAX4(a, b, c, d) \
+-	max_t(u32, max_t(u32, a, b), max_t(u32, c, d))
++	MAX_T(u32, MAX_T(u32, a, b), MAX_T(u32, c, d))
+ #define SNMP_MIB_MAX MAX4(UDP_MIB_MAX, TCP_MIB_MAX, \
+ 			IPSTATS_MIB_MAX, ICMP_MIB_MAX)
+ 
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
