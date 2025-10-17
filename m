@@ -4,133 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE436CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94C9CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 21:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 415B48E00A2; Fri, 17 Oct 2025 16:13:34 -0400 (EDT)
+	id AD9B78E0008; Fri, 17 Oct 2025 17:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3306D8E0092; Fri, 17 Oct 2025 16:13:34 -0400 (EDT)
+	id A7F6A8E0006; Fri, 17 Oct 2025 17:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A2788E00A2; Fri, 17 Oct 2025 16:13:34 -0400 (EDT)
+	id 9951B8E0008; Fri, 17 Oct 2025 17:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 03A378E0092
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:13:34 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEA08B8045
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:33 +0000 (UTC)
-X-FDA: 84008706306.02.F4113D4
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 10D6E8000E
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r+zcZ+bO;
-	spf=pass (imf30.hostedemail.com: domain of 3aqPyaAsKCMkprzt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3aqPyaAsKCMkprzt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 848FB8E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:08:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25E3C57D35
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 21:08:00 +0000 (UTC)
+X-FDA: 84008843520.03.BF58D96
+Received: from smtp85.iad3a.emailsrvr.com (smtp85.iad3a.emailsrvr.com [173.203.187.85])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 33BBF40008
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 21:07:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.85 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
+	dmarc=pass (policy=none) header.from=deepplum.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760735278; a=rsa-sha256;
+	cv=none;
+	b=snNJ2heqVlEic/0TqJOoh10yVLc/19AIXnUUvNqbxw/yCBCO9sRsS2gnrVv081V15PQFfh
+	x0bRXSPpL081K1IArwxBEJNJ58i03ZHTHwFSXeeHfS+PyhlynMC5NhgA64v1qyP2KReXK/
+	hL2Ku9U44UGn0zIgEhAxewMiHCvH7Tc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of dpreed@deepplum.com designates 173.203.187.85 as permitted sender) smtp.mailfrom=dpreed@deepplum.com;
+	dmarc=pass (policy=none) header.from=deepplum.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760732012;
+	s=arc-20220608; t=1760735278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjvPBfWPeDDoysxeGmNxm2XVFXiN0LW7diKaU3jXVt0=;
-	b=ePptQXH6kP0ywY4T0SvwVK7hiEqPV70ltJJzBZsnL7LCIgHhpJHLqNq/QYlUWdJ54eJx8t
-	CG0RjMDUcV6hj+jU23PFtFuSGcBh1iwjyGaMMz4jEGXlw2G5dP8WuCcWDfJiTwjLe8i2BA
-	OfHNXF/fgncbfCCldq6TCGEpBEWvSRY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r+zcZ+bO;
-	spf=pass (imf30.hostedemail.com: domain of 3aqPyaAsKCMkprzt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3aqPyaAsKCMkprzt60tD82vv33v0t.r310x29C-11zAprz.36v@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760732012; a=rsa-sha256;
-	cv=none;
-	b=ks2+OUFgEgQ0emizUZzduU1N6ECUoo3z5lkowdH0VeahoYGIN3mCDyz/Tv4gMZdPw5m22L
-	y4UHO+7gxYjybv8hNuDs+DZyldQghVrjyEbSWvWEhpZpA+jpd1c8YxSbXQid7bQQIJNI5J
-	jVWXwFC85wtTZ7WR4lzta0Gm3G4+x/0=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7811a602576so3228140b3a.0
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:13:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760732011; x=1761336811; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjvPBfWPeDDoysxeGmNxm2XVFXiN0LW7diKaU3jXVt0=;
-        b=r+zcZ+bOCdoeC9K2WjV0Oy0Q+FzrDTmCf53Pd5EU8CSkH66tCfwJas2vsXDxEZX+nA
-         NvJBSSq7aA+I9pAUQwLklL/MqOvRvrURulicvNDsFtsubfDd3UUh50y6fM5YMpJJX+pK
-         FgsVKzXTL2BOO+de0MrabLj8sF9hz3h3WVG8FemAuYM3es/kk9jmrDumXDGfxtUbUMye
-         NjzS/IKw5lF2Xa73+HnTtEQoOxACpZS6vnMxjKPWZMmFhoABjbhFkZofkEG2xW+JMWOD
-         mqgqDM/3lwMhic1GKEDLPqeH934LO3AjAttzPgPm8/wIS7IXKHj2aTd12aA6UM0AufIi
-         80fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760732011; x=1761336811;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjvPBfWPeDDoysxeGmNxm2XVFXiN0LW7diKaU3jXVt0=;
-        b=ElKTkPWMVHv8i8xv7UCcVdjk0I+4jU5XOym5GzU+BGQUTqd/y+AA6IILZxNdBC41BF
-         Rkp2Cp3Wni0P9jkuZlK/8EgqJYDVh3kelalg2Xppg97OJtkQ+IwnbC0ffLbyd2sBId09
-         FolOw7MEyA/rA3E+rrXonlx9l5FAr3GIva9rcjKt6BsXRtZlo9AlvK2sI9rdUPNm12yj
-         /4CbNVL/MqUMbmtbGPCSjzii2FCX+sHuRrjspkHcK0j1PPkuk/ELnHHEpMtShyLRUzhf
-         3eMmM8uzGHzXH5ZD+5VvAU8LgENFRRE0R9AnTc49LXq7K9fre4St1RUKNCbBDFK8BC1N
-         KPlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWITm1dvQM7mtkEqxA6epCcAdLWUsVglQy68N8twIrjZAgnkTzK4ErybHvJxiYPZEtv8b70Ohzajw==@kvack.org
-X-Gm-Message-State: AOJu0YzPkUgv9erTIdTpDs8/i9pd+BgmhxemMFkJncGsm3t5BO6f2TMk
-	P32RW08ECaufk0jaGff2wRyo+mabpjMUTHGVvt8qN6n8sKLbQ8GMzfQ+WQlRb1Sco5HW5WEATfE
-	OIhInGhHbJhU5dJDc3U+dwCkDKw==
-X-Google-Smtp-Source: AGHT+IHIFgvKx4iQssAvfWvw05fzS3tjPMxtqzDzpUfFs2q0tZQVlLhulOrO+VXHlGdzU4khsfJPAu1rlwqetjJf8A==
-X-Received: from pjbpj3.prod.google.com ([2002:a17:90b:4f43:b0:332:4129:51b2])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:9997:b0:334:9e5e:c2c2 with SMTP id adf61e73a8af0-334a84c81famr6743421637.13.1760732010737;
- Fri, 17 Oct 2025 13:13:30 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:12:18 -0700
-In-Reply-To: <cover.1760731772.git.ackerleytng@google.com>
-Mime-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <f326fd44695d94438b6061c0c5881c6a17ad84d3.1760731772.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 37/37] KVM: selftests: Update private memory exits test
- work with per-gmem attributes
-From: Ackerley Tng <ackerleytng@google.com>
-To: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org
-Cc: ackerleytng@google.com, akpm@linux-foundation.org, 
-	binbin.wu@linux.intel.com, bp@alien8.de, brauner@kernel.org, 
-	chao.p.peng@intel.com, chenhuacai@kernel.org, corbet@lwn.net, 
-	dave.hansen@intel.com, dave.hansen@linux.intel.com, david@redhat.com, 
-	dmatlack@google.com, erdemaktas@google.com, fan.du@intel.com, fvdl@google.com, 
-	haibo1.xu@intel.com, hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com, 
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com, jack@suse.cz, 
-	james.morse@arm.com, jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, 
-	jhubbard@nvidia.com, jroedel@suse.de, jthoughton@google.com, 
-	jun.miao@intel.com, kai.huang@intel.com, keirf@google.com, 
-	kent.overstreet@linux.dev, liam.merwick@oracle.com, 
-	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
-	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
-	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
-	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com, 
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
-	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 10D6E8000E
-X-Rspamd-Server: rspam11
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NmzrxdWGr3Yum5PMaBwb76HUqwH6RzrG37YIpzZZZys=;
+	b=KQ69JW13gjWGW4c5TrYrzdXatychMVnc34QEttnOnRVbv/7Pm3MjmNeZndwl799E+QeGkv
+	3cfaYWkmLurhJ4kzCBjapoVhA2KxbkDJSEt4uMPswu/hQvkdv2gAZxSSHtRvxvSneq3twr
+	qI9ILDvlU8DkuF5mEh7o5s60h1J6VYI=
+Received: from app11.wa-webapps.iad3a (relay-webapps.rsapps.net [172.27.255.140])
+	by smtp35.relay.iad3a.emailsrvr.com (SMTP Server) with ESMTP id 650D4658B;
+	Fri, 17 Oct 2025 17:07:57 -0400 (EDT)
+Received: from deepplum.com (localhost.localdomain [127.0.0.1])
+	by app11.wa-webapps.iad3a (Postfix) with ESMTP id 4A5B5A254F;
+	Fri, 17 Oct 2025 17:07:57 -0400 (EDT)
+Received: by apps.rackspace.com
+    (Authenticated sender: dpreed@deepplum.com, from: dpreed@deepplum.com) 
+    with HTTP; Fri, 17 Oct 2025 17:07:57 -0400 (EDT)
+X-Auth-ID: dpreed@deepplum.com
+Date: Fri, 17 Oct 2025 17:07:57 -0400 (EDT)
+Subject: =?utf-8?Q?Re=3A_PROBLEM=3A_userfaultfd_REGISTER_minor_mode_on_MAP=5FPRIVA?=
+ =?utf-8?Q?TE_range_fails?=
+From: "David P. Reed" <dpreed@deepplum.com>
+To: "Axel Rasmussen" <axelrasmussen@google.com>
+Cc: "Peter Xu" <peterx@redhat.com>,
+ "James Houghton" <jthoughton@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+MIME-Version: 1.0
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Importance: Normal
+X-Priority: 3 (Normal)
+X-Type: plain
+In-Reply-To: <CAJHvVciLe9--JnNn1=q=ycrgQSTVt7Zq0e01KhaRmOeSLO86dQ@mail.gmail.com>
+References: <aMmMnfU-Koopc9mL@x1.local> <1758043654.112619688@apps.rackspace.com> 
+ <CAJHvVciL-6OLMPDGQjZ=VGDwvwKJznq0BL49uSj+DSq63LOUYQ@mail.gmail.com> 
+ <1758052343.971831541@apps.rackspace.com> 
+ <CAJHvVchHKxiVKFjUz4ir4PVDvUihLhiSRMBWqpMEZfwLdereuA@mail.gmail.com> 
+ <1758306560.96630670@apps.rackspace.com> 
+ <CAJHvVcj_gd=48k-dgbLeEoqn_f+QD-ifscu_DPvpAmPd1Kg=GA@mail.gmail.com> 
+ <1758998720.44976697@apps.rackspace.com> 
+ <CADrL8HW0eNsHnEsEdKYRNvFRBMvrDMrHawa55Kik9QFeVNEwgA@mail.gmail.com> 
+ <1759175092.67312651@apps.rackspace.com> <aNrsXJsKaw24ADAp@x1.local> 
+ <CAJHvVciLe9--JnNn1=q=ycrgQSTVt7Zq0e01KhaRmOeSLO86dQ@mail.gmail.com>
+X-Client-IP: 209.6.168.128
+Message-ID: <1760735277.29994480@apps.rackspace.com>
+X-Mailer: webmail/19.0.28-RC
+X-Classification-ID: 6b9bf787-4465-44b0-9c48-cb8cdd93f1f7-1-1
 X-Rspam-User: 
-X-Stat-Signature: 614h9655jnxx7t5puy8nowweoqctx9ah
-X-HE-Tag: 1760732011-437005
-X-HE-Meta: U2FsdGVkX18CQ+MyGiIuiIvg/KuCTiGsyvObUcKY7+CxnSfP0WxgFJ04Lqhn5rDNV0jy2KEorszUOyvwIkkAg6X/NUalxVZvXAr3PoUUiSB+i0IzUa5VQjVqasIdQeHyi0/fvhIojaM2lFa3R4Xc835za1rr3yz/xAVC+H/EhVijJsk11o75JUX0HJl4wgKql3vLdx417X33XORTqUR3iw0u9RX+d6Vx51Ti/vAANo/IKMBNyeA3bZ9kqa1GN9/AjTvZAO/2bLgC8q6KOKTbx2O+bFEuMS5F2CchosKNi5jqh1xm17l9LcyHYu2CwlRFfXKBysOwTt3CNMDlNi3nCafYaWyeHFKSg+vLIVyiOlB1hxP2OY9LCEdruEJ2mFau24A+5vMsyp0ZI7LciLuOauGYmnN4zIwkbz1jUj3FP5vnFUTpJ8BJGAAlpBN0HbiGvA+RTslEqT9pVw5ZWcQNb8UT3IiFUQpwgXTgscImMVrDApgNclycMDuUfPbG0AJBvbc60CZQ05d//n/yKQuQyQBBZpSCbc2Oo7QwT46yGdv94nCCbFi08acwso3WYvMZF7itygifdHOWWMU/MpsEMY4OF0lmXNPAte7gu4lF1OI+LZBpCirgjQG5ZZ+Ca4XsjCpaVJi8pXprMm3MFZLx6/bCU/k4n3yigf9hGPzx9Ztx4v/YtmyRiphg0sZ3khi8zaU3p+8lufi6JYdpht7tIyeZV0GwU/tjlMLXSJ/2RIKoav936iP21sbW/4ptmAlMg/SYq5t9JfsWMgJLW4wUYI3lSgFjcG3IFyTadhoNMCVRr8DUGWkGLDwxDllb/hA9z38yfA4hw5Fh14G8B+/VbfPLvG98nA+t4v2brjeeP1OkvG5ekuyYrrroRrfa4IUJca48cVAozONL5BLgSteUJzxVL4x3uhCnsbGeOQMurTgS75l6R5E3LK3aKtOXZzfVdpmXulWNk7BvTyl88mj
- A2tuQ4a1
- jqy27ACGOuyu+l0u9bSc5Y6LTruq84q8ZH37B9oQ8fkRk/crxbLj1iIg2oYI7ffkvOsbw5k4hHgefP9M6Vv8hQtCX6yMav9kXMujILaaRdoRXZAOLlKwSCmQGmkSrTwjavczd6Mw+mFWchLXiNbDI9xaNr5i+HL5HQ67kWMQC1bvWempxwXSZ6K0e2T6x6Jr+NqH5XWQ7TINxJucX+FppKDstp8d+L12AsiyHOPaO+ZUZjpddiaOEY7QA0gSGdo0ZEMTqVQx8vbgs9lZiBQa+gQehwcFpc9NmiM+y5qJnxHYoy43SRG/OxW3tw+NgurxIqZ4DachMt1rJSOyxTaaTkqjCkmpWcd2/6hx82GWTo51InglK4HmWZ2v5kDaV4/SEG0yS306/I/UwO8Ed4nwyPEwrCJlSICq50ovjb8bcCtpmHblea3gWyVv8tTvOozt/TQNomLkQRGhr3fy8Qtl2TjMV82F8+4zRdSLXuvWGh+1y27hkhIyPnGquu/hoJTSZD3XMlPB2WakDk54rKm8hgNAmZA5232aknamaTqg8E8inX4DhsAeSc7SizbmkrVphpIdYzxU/HgvtN/kH7NPhhBMvceIqUIXcrNQpL3GHsoeNCJdDdkWmn8r7PSZL5tm+hq6mL6qCF6CHRx7LgGLpMKRiSQ==
+X-Stat-Signature: rqttad1g6jqij8r7ugpu4sndwrr5cd7o
+X-Rspamd-Queue-Id: 33BBF40008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760735278-172883
+X-HE-Meta: U2FsdGVkX18mCQqLT/qVDu3Cm7hoqxsh8DPq27uSGJYY0dUj47X5V5Swb+kuizVfw80Vg9Q5puBCpQ6tRRERv7yuwoUjCn1RKVnCT5jEyVb8VROxBUpe9sM+QmCSunCVCmzBVHgUeuJ/XtuMEezCP3SbS57InvkjBcz1Ag2DZBqmRvWanEvaI24ElyeG1m0+6M2oCfkEeRHHHHV0/llH1oiT/iWNc1eBZBH1fh+3jbJUg3OW49oL2NrBkeO9nRam3c0lgQTPHDEtidpKu3ErCTNiyP7Vd6rg+w++xmOt+Ixy03fuCgNkNAGj/i+m0w+rqNZOfN9bvA094HcXO5hxhifFEJ7P48XmIQZtekTXEUPBsujPmv//XAYYwwdTf9vdh2lG8Sfrp36BdX/htHknxl+tmkqDzkXszasK8H5NNDkvjur7I88395gpOyfzBdpC/rYZX9MFllg7weGUWzajByYRMXj43Fr/YgJiQQgXJppEoLre54S57WIiakzkcnYSdwEhTmIMZ+SNoPwcx8Sc7Fq/9zsUxJ7h6FqlcKwBWWiDk7ZMoiAYkQ+ne5Il+HToWH4ramTpSk6JiRttF35s0a8IdreXG42eHkVhYv7WH6I1ZtmFwVdln0Op6rKWhpCbtXp1FMzHF27pUSNS5TjUqZg0QcWcKcmm/AJ00Q8mru3T5C8q9stX7LcWjkzPz7MjbVk5f/fsezmZyYO0emef3u/BxZCY3mfAHMux6ufxY3qwJ/Ro8S/GkTq+VDn7qTh2L7Ls6CqMlB8N9ekbaKEqOrr8fzSNOMjTBBDs2R+RwQgrVfnrpAHDk0tdZAsB7jqnBrpW9IAwCuytSp4r253HXd5/5m1c7y9RA077r6tp9CglK4DPWrRMhLevzMJ9Js5Y+jxJxvWYUw+vwL+M56LiBMogBT79LK6eDoYz/sa0f91SuutL11g4G6jp/nAsLOXqeFW/HrLXakvhrLWPhOs
+ 80I1hkGj
+ VBW9DfvXfsphzu69Wj5TBeyH/NyJ70u7BS1b6c5FnJAITmfr6oTAW9jsFtB29JTduZn1WU+3aRbRKLCwPGmTm7HTDBolLWIo9ICQCZP4WFPtpBcRpWbIHEQDZmLk/xf+Oi/NhOfLEr4V0pnFNHzzGkk18chRrgX2vqwXfY75j68obF6XLN3GGsrfmPCT++2GhYJL7FXGT3h8ZKSLQUhPB7PF+Tg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,90 +105,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
-
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
-
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
-
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../kvm/x86/private_mem_kvm_exits_test.c      | 36 +++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index 13e72fcec8dd2..10be67441d457 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
- 	pthread_join(vm_thread, &thread_return);
- 	exit_reason = (uint32_t)(uint64_t)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(uint64_t));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	uint32_t exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
--- 
-2.51.0.858.gf9c4a03a3a-goog
+Hi Axel -=0A=0AThanks for the long reply. I've been focused elsewhere for a=
+ couple weeks, but I'm getting back to this.=0A=0AComments below:=0A=0AOn W=
+ednesday, October 1, 2025 18:16, "Axel Rasmussen" <axelrasmussen@google.com=
+> said:=0A=0A> Thanks for linking the ExtMem paper David, that makes it a l=
+ot more=0A> clear to me what your expectations are.=0A=0ANote that personal=
+ly, I'm not trying to do what the ExtMem people tried to do - implement ful=
+l memory management in userspace. I'm simply trying to monitor all the pagi=
+ng activity in a set of processes. So in many ways my goal is less ambitiou=
+s than theirs. And userfaultfd almost does everything I want, with the exce=
+ption of the case of anonymous+private paging.=0A =0A> =0A> I think basical=
+ly, userfaultfd has evolved incrementally, and it only=0A> has a handful of=
+ features needed to address pretty specific use cases,=0A> it doesn't have =
+the full flexibility / generality you would need to do=0A> "full memory man=
+agement in userspace". Not to say I think it shouldn't=0A> be able to do th=
+at from a philosophical point of view, I just mean to=0A> say it would take=
+ quite a lot of work to get there.=0A> =0A> Performance is also a big conce=
+rn. Userfaultfd performance is not=0A> great, in fact scalability issues ar=
+e one of the reasons we have been=0A> pursuing guest_memfd based approaches=
+ to VM demand paging, instead of=0A> userfaultfd.=0A=0AI don't really want =
+to do VM demand paging. I've done that before, at a previous startup I co-f=
+ounded, called TidalScale. (well, you could call it demand-paging, but in f=
+act it was more complex. However, HPE now owns TidalScale, and it would be =
+silly for me to focus on that stuff (distributing virtual memory, virtual p=
+rocessors, and virtual I/O devices throughout a set of big servers, migrati=
+ng them among the different servers). We did some amazing things with that,=
+ but I also learned that there's a limit to what virtualization+migration c=
+an do, performance-wise.=0A=0A> =0A> I don't disagree that in principle it =
+makes sense for anon private=0A> swap faults to generate userfaultfd minor =
+fault events, it's just=0A> until now nobody had ever wanted to do that, so=
+ it hasn't been=0A> implemented yet. :) For what it's worth, I don't think =
+this would get=0A> you where you want to go by itself though, because the o=
+nly action you=0A> could take in response to such an event today is UFFDIO_=
+CONTINUE,=0A> which would simply swap in + map the page, you would have no=
+=0A> opportunity to e.g. populate the page contents from elsewhere, you'd=
+=0A> be delegating all of that to the existing in-kernel swap=0A> implement=
+ation. So it doesn't really get you all the way to "full=0A> userspace memo=
+ry management".=0A=0AYet, that's exactly the additional capability I want -=
+ just to get the event and continue, after doing some stuff with the inform=
+ation at the time of the event.=0A=0ASo if I could have just that, it would=
+ be great. I thought that it was there already, since the restriction isn't=
+ mentioned in the documentation.=0A=0AThe alternative for me is to write a =
+lot of "out-of-tree" kernel code that hooks (using k[ret]probes?) into all =
+the paging mechanisms in the kernel, and then maintain it across releases. =
+I don't really want to do that. And to create a hypervisor extension just t=
+o do this from deep below the applications seems silly.=0A=0AI realize that=
+ there a performance drag to using userfaultfd, but for my purposes that is=
+ pretty irrelevant.=0A=0AAnd I'm kind of surprised that this case doesn't "=
+just work", since supposedly one can register for minor page faults on othe=
+r non-file-backed pages, just not "MAP_PRIVATE" ones, which get rejected at=
+ the "register" ioctl.=0A=0ARegards,=0ADavid=0A=0A> =0A> =0A> On Mon, Sep 2=
+9, 2025 at 1:30=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:=0A>>=0A>> On=
+ Mon, Sep 29, 2025 at 03:44:52PM -0400, David P. Reed wrote:=0A>> > I thoug=
+ht it was a general purpose interface. My mistake. But I think it=0A>> > ca=
+n be more general, at least encompassing my goal of having a userspace=0A>>=
+ > "interface" that monitors processes' page faults.=0A>>=0A>> To James: th=
+anks for the great writeup.  Somehow, I just feel like userfaultfd=0A>> (as=
+ a linux submodule) got some sheer luck to have you around. :)=0A>>=0A>> To=
+ David: just to say, I still think it's a general purpose interface, at=0A>=
+> least that's the hope..=0A>>=0A>> I agree with you at least on one point =
+you mentioned, that shmem also can=0A>> swap, and that was accounted as min=
+or faults when swapin happens at a=0A>> specific virtual address.  It doesn=
+'t sound fair if anon isn't doing the=0A>> same. Indeed.=0A>>=0A>> It was j=
+ust not in the radar when minor fault was introduced by Axel, even=0A>> it =
+was for a solo purpose for live migration at that time.. but the hope is=0A=
+>> the interface designed should service a generic purpose.=0A>>=0A>> Now t=
+he problem is, userfaultfd wasn't initially used for monitoring system=0A>>=
+ activities.  As its name implies, it provides the userspace a way to=0A>> =
+resolve a fault, but only if a fault happens first..=0A>>=0A>> Meanwhile, s=
+ystem activities should definitely at least involve swapouts,=0A>> which un=
+fortunately doesn't involve page faults, but only happen the other=0A>> way=
+ round when the system wants to secretly move things out.. that is what=0A>=
+> userfaultfd is out of control.=0A>>=0A>> It just sounds like it won't suf=
+fice your need even if we could add minor=0A>> fault support for anon priva=
+te memories on swap cache. However, if=0A>> userfaultfd is used to do every=
+thing (including swap in/outs), then it's by=0A>> nature all trappable + ac=
+countable, on both swap in/outs to/from any media.=0A>> Then swapout will b=
+e driven by the userspace too, then everything will be=0A>> in solid contro=
+l, including monitoring of the activities.=0A>>=0A>> Thanks,=0A>>=0A>> --=
+=0A>> Peter Xu=0A>>=0A> =0A
 
 
