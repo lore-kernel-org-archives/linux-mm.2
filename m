@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06948CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:48:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EBCCCCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:48:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58D248E0037; Fri, 17 Oct 2025 09:48:45 -0400 (EDT)
+	id C1BCF8E0054; Fri, 17 Oct 2025 09:48:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53C3D8E0006; Fri, 17 Oct 2025 09:48:45 -0400 (EDT)
+	id BCC3D8E0006; Fri, 17 Oct 2025 09:48:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4057B8E0037; Fri, 17 Oct 2025 09:48:45 -0400 (EDT)
+	id A94538E0054; Fri, 17 Oct 2025 09:48:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2827D8E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:48:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B202C855CF
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:44 +0000 (UTC)
-X-FDA: 84007736568.26.F887DB2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 94DA28E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:48:48 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5ACDF11858E
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:48 +0000 (UTC)
+X-FDA: 84007736736.14.06E2144
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 21EDB1C0007
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=iGUYOZ0c;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id BFFA5C0009
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:48:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=ZUiTpU27;
+	spf=pass (imf28.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708923; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708926; a=rsa-sha256;
 	cv=none;
-	b=ENjb8tj/tQHdB3AxHbTecvao1Uvvxf9JCxmNqhSho83UNsAYxkwuxnydCLICCCLOnqjUIM
-	VKxh+KRwWQtGz0EmjHgH0bqsx++xtaAdlz9+EcAQX/QZtJHqImZ57wrNLdPxuqEaXdHjq5
-	blMguAYOu4imUffCTtk+FYk7DqbAb7Y=
+	b=8Q+eb/h0agrQL+9PO2yrbmyG0JV/bevG0kGNizDwRY+QyA/nib9ubg6RBfnEgRH+4koYcY
+	4LK+m5GwcAiitqDKd8cUYsi0goRR8wF4uGy8/rH4O1SfCNrMlUdSlb+tWYA4AniG+eM4I/
+	shuANIHqDBQBT8OuiPTM1eOTZCy1EOM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=iGUYOZ0c;
-	spf=pass (imf20.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	imf28.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=ZUiTpU27;
+	spf=pass (imf28.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708923;
+	s=arc-20220608; t=1760708926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=dBNzy2s/UN9Bshlvp35xCSZUDgDeSJP2leryAX7oGr8=;
-	b=NmK1/Z6BHonfpqBstGe5Fdp84n/6HXcsHuOPC2WaR9M7KsIy6D//Pm+SknT+4weNMHeroB
-	ANtYBfRkqQqnkBqcp6R32xxom1KT3i1U13sRPitf/TJgoKRU49nB9ZlEFoXBtwnnJtROwM
-	vA/Lk8YutC66nweXEE9K/bfzf4DOg28=
+	bh=LIfQAWc6iDxUrEKLw7kUhty1bGxVVMj2qynqDt7n1IE=;
+	b=4tKNfuZQyxZMVjz939/zF2u1GpU2nikJ6JVNhMAqdvaMWWBIs4XA6tr6TlisDdgRqmtLm8
+	73O3x4UPiNxc5TFK38FOlD8dKNvhYdlUTfYc5i2meL+/Ap1vOc5uy7MxDLHy99V6RPEkm5
+	UPZbNIxQXnU7+p3VDlZLyAPW3DA8pkE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F5C46434F;
-	Fri, 17 Oct 2025 13:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7136C19422;
-	Fri, 17 Oct 2025 13:48:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D91064367;
+	Fri, 17 Oct 2025 13:48:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BA7C116D0;
+	Fri, 17 Oct 2025 13:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708922;
-	bh=tgzAnA2OkjLe7htmZ7GtzRbBBQ/ZgR6eYFTdikkqqg0=;
+	s=korg; t=1760708925;
+	bh=10r9Xtz1rDNNvILUwyhaJv5e8XY9QMUCuk0X3ZFE0ok=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=iGUYOZ0cHe2PutTEbIruDm2iopRb/fs6f5Gpyi63EqmMzO9ZGK6qAhJUExLl0GmvX
-	 JiHKgUJJ4A74VVhDyYkqnfXyjrQagNYuVS+sD15S5vrB58bZmtXhZNOc9jM3PgMZHf
-	 JOMNhgJZKz0/fhRMiIpBvOi0ErW3haguI/7b0Iz8=
-Subject: Patch "minmax: allow min()/max()/clamp() if the arguments have the same signedness." has been added to the 5.10-stable tree
-To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
-	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
-	akpm@linux-foundation.org, alexander.deucher@amd.com,
-	alexandre.torgue@st.com, amd-gfx@lists.freedesktop.org,
-	andriy.shevchenko@linux.intel.com, anton.ivanov@cambridgegreys.com,
-	artur.paszkiewicz@intel.com, bp@alien8.de, brian.starkey@arm.com,
-	bvanassche@acm.org, chao@kernel.org, christian.koenig@amd.com,
-	clm@fb.com, coreteam@netfilter.org, daniel@ffwll.ch,
-	dave.hansen@linux.intel.com, davem@davemloft.net,
-	david.laight@aculab.com, dm-devel@redhat.com,
-	dmitry.torokhov@gmail.com, dri-devel@lists.freedesktop.org,
-	dsterba@suse.com, dushistov@mail.ru, evan.quan@amd.com,
-	farbere@amazon.com, fery@cypress.com,
+	b=ZUiTpU27mOB3KjcvoO0braTUaFH4ae5yNaSKeLT0nR1Ya//9fJCcTVe6EcRHp6Xe4
+	 V+mr9MlnOz1AsaKy4RgcHmsmpF7LGkzbasqgw12Bcb+CvCd2ba7CmuHXwcVTq1KJEu
+	 m47X1B6Y5tJKREw9hbVGvnHkMwTy4hbkls7NECgI=
+Subject: Patch "minmax: avoid overly complicated constant expressions in VM code" has been added to the 5.10-stable tree
+To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
+	Jason@zx2c4.com, adilger.kernel@dilger.ca, agk@redhat.com,
+	airlied@linux.ie, akpm@linux-foundation.org,
+	alexander.deucher@amd.com, alexandre.torgue@st.com,
+	amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
+	anton.ivanov@cambridgegreys.com, artur.paszkiewicz@intel.com,
+	bp@alien8.de, brian.starkey@arm.com, bvanassche@acm.org,
+	chao@kernel.org, christian.koenig@amd.com, clm@fb.com,
+	coreteam@netfilter.org, daniel@ffwll.ch, dave.hansen@linux.intel.com,
+	davem@davemloft.net, dm-devel@redhat.com, dmitry.torokhov@gmail.com,
+	dri-devel@lists.freedesktop.org, dsterba@suse.com, dushistov@mail.ru,
+	evan.quan@amd.com, farbere@amazon.com, fery@cypress.com,
 	freedreno@lists.freedesktop.org, fw@strlen.de,
 	gregkh@linuxfoundation.org, harry.wentland@amd.com,
-	hch@infradead.org, hdegoede@redhat.com, herve.codina@bootlin.com,
-	hpa@zytor.com, intel-linux-scu@intel.com, jack@suse.com,
-	james.morse@arm.com, james.qian.wang@arm.com, jdelvare@suse.com,
-	jdike@addtoit.com, jejb@linux.ibm.com, jm@kvack.org, aloy@redhat.com,
-	joabreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
+	hdegoede@redhat.com, herve.codina@bootlin.com, hpa@zytor.com,
+	intel-linux-scu@intel.com, jack@suse.com, james.morse@arm.com,
+	james.qian.wang@arm.com, jdelvare@suse.com, jdike@addtoit.com,
+	jejb@linux.ibm.com, jmaloy@redhat.com, jo@kvack.org,
+	abreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
 	kbusch@kernel.org, keescook@chromium.org, kuba@kernel.org,
 	kuznet@ms2.inr.ac.ru, linux-arm-kernel@lists.infradead.org,
 	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
@@ -89,9 +88,9 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-um@lists.infradead.org, linux@armlinux.org.uk,
 	linux@rasmusvillemoes.dk, linux@roeck-us.net, liviu.dudau@arm.com,
-	luc.vanoostenryck@gmail.com, luto@kernel.org,
-	maarten.lankhorst@linux.intel.com, malattia@linux.it,
-	martin.petersen@oracle.com, mchehab@kernel.org,
+	lorenzo.stoakes@oracle.com, luc.vanoostenryck@gmail.com,
+	luto@kernel.org, maarten.lankhorst@linux.intel.com,
+	malattia@linux.it, martin.petersen@oracle.com, mchehab@kernel.org,
 	mcoquelin.stm32@gmail.com, mgross@linux.intel.com,
 	mihail.atanassov@arm.com, minchan@kernel.org, mingo@redhat.com,
 	mripard@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
@@ -99,9 +98,9 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	peterz@infradead.org, pmladek@suse.com, qiuxu.zhuo@intel.com,
 	rajur@chelsio.com, richard@nod.at, robdclark@gmail.com,
 	rostedt@goodmis.org, rric@kernel.org, ruanjinjie@huawei.com,
-	sakari.ailus@linux.intel.c, om@kvack.org, sashal@kernel.org,
-	sean@poorly.run, sergey.senozhatsky@gmail.com, snitzer@redhat.com,
-	sunpeng.li@amd.com, tglx@linutronix.de,
+	sakari.ailus@linu.kvack.org, x.intel.com@kvack.org,
+	sashal@kernel.org, sean@poorly.run, sergey.senozhatsky@gmail.com,
+	snitzer@redhat.com, sunpeng.li@amd.com, tglx@linutronix.de,
 	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
 	torvalds@linux-foundation.org, tytso@mit.edu, tzimmermann@suse.de,
 	willy@infradead.org, x86@kernel.org, xiang@kernel.org,
@@ -109,25 +108,23 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:28 +0200
-In-Reply-To: <20251017090519.46992-10-farbere@amazon.com>
-Message-ID: <2025101728-math-crafter-245a@gregkh>
+In-Reply-To: <20251017090519.46992-14-farbere@amazon.com>
+Message-ID: <2025101728-trickle-valid-0eb9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
 X-Rspam-User: 
-X-Stat-Signature: h3ua4rzquybtqeq1f77trdhn1tfwhjcy
-X-Rspamd-Queue-Id: 21EDB1C0007
+X-Stat-Signature: uza9xwzhc4w8cy1oxrpfaod8e8591zbm
+X-Rspamd-Queue-Id: BFFA5C0009
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1760708922-360847
-X-HE-Meta: U2FsdGVkX1/689x3upjWT7rrSXTEQmIdZHBNqS0gjXKu9MBwh7lOlFuRXBvcuSieMAYqlr7xPaOvenlAQ9bKr/VhoiyTuRKrBDfdeS41eqb3BdqZoNLCySPF6vqW8PQCUt10xLQJG5W2Aot/3kKGx1j163XV/IiBm+yg3FBQK21yRMOovIT9fUZ94w3XbwKMsxcMcbXXlfWEAEqmTi4deQ1XOtdY8Xv2LhCvFnsYxJbgR1cvsc5Bdl8TAQ4jXIgwCQ8w8OpxLIjL4CEmzKIbjgJhH25561yEpXR/Py0a96TwQOEE5ffUo4UPildmt2zq6FSwn8MGfESlMfrNz5vSU2mrZtQYEsFD4MIuwWnOZJQJKQABDoKIce3dfipqs2gZRZwBUELZGhhb0Ca0NYRHPwRGRfUF6IF/Pfs1QZ/l2NkO4JCAuTJEteXTalVfjEn4BulFu7BVbU1M8mKEcVXg6eu40BzJJYOCj10JslkpLobS03JN1E5HBQJT5ZkviJ/lEvzFopTKZ0F66DxKTfrPLkUrXgBka3OD+27X9u0CZ/RalkigYPOjwLZt2zFFG4mi1ULWzVCF3pz2wAR8IRZpvwa/ebKOdLcqb0TTPSfm0dig/2WjG/1TwPWaSYJKdxtqK2lf7S7638PZo+LXrzcAACPjLhd6227cX7z5Rp5H22k4/xZvZKEAjJMEyVCH0JjOpNraS147ot0kBaBmol5w2uSvM4X2FN2fyl9jzZd2Aai0U9auGdv7wZxqdd8xATFJ9Me7zO9IUNYniqcEW9+nuqXrKOwSLrIIjEkVwHSedNfrOWAYz6BVJ7mNlOoxyCHlLWdJTleav/c3xbLPuikMdk6gqYUH6H8NZ5JLQ0fAWX+A3c7csYoK/sSNv6za7SUMnB8IB5/x8RpOD7ZK7em6CaZHr0jjrp2aDcEeYGy/cSxIc7xwwR84B1Uq/W/qNdVP9WGvnWHFiUlg08SOAKQ
- RFMRqwQC
- VRtOifunNSHgavNpMCgiPwdYdz6Q3z6+wBsUd7PBJIIBdts9LgT1SO/VCSpIEy7xTCwel4ozA2cFKDVd4mx1i0YC2PM9roJwsjRbvNB/fi1bF+DiS+YQBFR8Z4l52G5cHz9HJtR+v56Tw7GTHyFabtH+/rKr2qRkSIx3qLU189sT6R0VUokHmwJb86wITb0lJDBFNiwAr/3Hf+8JCibsrvMOwpZC5gRtj5+mnMmZnJe/YuT8KQq/afibvOhXEY902PjHfRZSQ90SQiZCjP8nrV8I6IFgLOwhkMgv46/7Zj+BEgVTf3lzYuN4NcuQKDBFWYifyiv54AJimz+evJiIjI8nnfUcucI3RCvkMnlNFoX1xhNk1wiXwBxWGQZc5CSBQZ/vaX64Cdvl4FV2RvGazcw48mGHNwBcF4sZ4WG/GdPzVu2MdGYRL2H6CKXsCVA0L+0qt1579IDXS/+q7VoAeaIZxH7S+Oh5afJAt7u76RlSOQlSY5d5Wa2IsHYJTbRviVjIxuAXHqMuwnHXGdigj3RRI4eBqN7tiRmmkpuyd46yKa9OPXPUuwQb+XfwkMSyjZXOZI2NLk5WWx+gElmBdYU/ZXEJ/lnOGhqs/iQ89BQJPuZHPBD8qR1gBKHIJ8GMq/ni/MMlwAVWl51zpYSDNRrawWeQPJh//JJYj+ZUyq6h4fKOCvz0T5eiewNlbErHfy35C+S8bb0GIncdOdigo+VSMdKcNF9jgsn6bsmBZMmhwHOrIuscYz2ehcRnPj4GGj6YuyzoHqwxeVubg8Z72+zqVdR1JW4qy6NpGXBkSHyivNOrpTI7f31mUNumUUa1i/n0HUd7z3P4eXfm6QiaPMHprXRMgo8NR1OlRlnFTm29WgYsxDfgLdHaXUHg5Y1WffE1AIdI1odjBYxlIMb0T43xF0RTFFteYgw6bPaa+2FPnn+XnTdrve1Z5VWicX7UCU2sVJH4Enaod6fxqwwuphXAkjKZL
- MUiwgqv6
- N8LqvlPKnRFhGDHJVtZEBNvpyXLDUWeqwNGA7f2MZ8BDU1WMZd7++S53DgbjVyROHzj3vR4HFa3jSypbTAwgdA6BrzIrXpnXvTplTBq18AVbybSN5rIVg7kfqz+4+6HBKEj6z1omJv4B6GmBUr+tw9Gh88nYGu4qNQ7qEybG7QugFEu7D5Uuxq3Tp1JGHIGjNIhQAMnlXG2mEhXG2noCi/OxGW/vPiglF1XUOza+W6K/dY4FJqg9I74EPlpLslExpiskea4j/hqZtFehZHaFywglLvrrgz5vC4uz7IPJ19g9JXGdo4SpsPQWjMFiN2Qav0vCwKxGHJzJ0AfgJ8Nz2QbRVNaapiYzArwD3aXBa8osEUOYHRAnRPr3usuGSsbhAuj5FtpErSPtNVbQ36ET9KqHXCfU637nut7CzGlPihUJ6QDsbq2fOX+JuSxukfjbx446AppHWWotzRF2qpkm0OrMVM1jGlUmZ2fPduFpssnLxp7vJik4CmUTw9aH0fbuHB4Orl2hbXq6ggvE0akEbiZqqnpf5rEpcXiTxlLtGcQ8U5YMnGXWuY85gZ5+32Ps4Qk9jySlnKl5AGJAObHVcAGjnUp2dUajP3DP2h9l2bfuWqHJ9vRQ647+GhGfwszClMZywHBsGlxIdiMSGyCl2Y+jLmuXooOEB7UsRe5jmw9XaZvE2T0VhWG5cbN0lxNK/0hutORnuQz7c/RIx+O28lN0YNMwuX7zw1ZixMMENxrr6igJQ4wzieePh9M+38Opl7grnOF9Gop1rqDwmS1T0JCH6XJd3vFh0Z00BrPgWCZyYwiqxMBGxyoUgiGF/qq2IIi3kDrvqT3DOkKn81Ca6GptBEb2uhXnGupMCCEgyl+5u7S47viQp8ZK3Fwai3nt27LaqgN7goA0VBazmgznZgdgZ0AX7hhzFlnodpA5wFwV80nK5KDB9qZiYqpSWbq6mIHp6AZUyE4xqozOck+C0VHUPLo6n
- F8WiSvSN
- oz5pzUacGiWKwRVQw==
+X-HE-Tag: 1760708926-849098
+X-HE-Meta: U2FsdGVkX1/LKfnO+Q06mAEwbYu/dsfMu6d5v0s1MpnfgV8MFBBhhphrDVMSAyS3hGDJG5KHwhRprA2Nrx1ROMbQtPTL/JmXHRix7DqwIYbz0zXU3ps/dgu3M65KESYs14eDWfQepacBa4HMxmP3HBYV2CHrkFvYzB9qwA/zSnaOAYHKDv+xkYyVJTSrL03ZU27NeTFRzsqZ2549ysSbPzK9yWruzRocDaJAkmMUCca592XlgaTPJ5E3YqVoMQTLIo5XylB3gWCgqYxGN8qupzn+i8mBlC0lLFhJPIWS5RBf6qUx7nPwYpnN4Rcl3tDc5CoJSdoi0fgBoau/Ke9padORntkax0n0YTfCJZTU5agIdkSvYZDMkxeI7AQjE/nIZ1cthDBGfpiq134GKnejRDyYiW4oZFHp4JDhgqJaPhjzHArrUe6bTIF/9zriEZ0DcHEj2Kd4hE4z5Fzu7mmSIraFMBXxP5dHupT7BwGsBotE1evzvpmT3ovCzDLk8wm1K1Yp0jp87mu+AnnQAp172pvIwbrezlaqZLqNxx1mEXj7AATVBqBGjIEYovob7UzWUvt8a3D/GfwO/CUd+cbsmcZ2Cejbn37lbf8Nv2XyqM7hEn6kYjvBPYoVuapRPpE/H3gVuJna/6+4/1Y0Ny9anMAxzrQZheFl5Pc0fbGBskTtBpnZ4rR5fBncVo7X30nx/vYYdEng9ro6gyX1I6PmONYMTXW6YtemAuioKzHDCgbPKZz5OSRFukscIe1wJcnwasYedOMl7g7F+EFN/zH96cFz7D/RSZHGh61XQ4t6iLC/0Qlkb9TbB6kHgt/3gtA46/cePWJv5V5xq1HHzoZVFb8IUqCR8cPpQbcjrMtrfrA0MP+voGZjzswt1UDNxnWcgSixr/3OV87aEev1Xdh9hTqToUwGXC6iEeZdC+IznbOgguzzo4ZvwALhkcB3f5JjZSA8dWyX7NxoTZrZh0m
+ JRiV8CLL
+ DLuGMlSNTaHPH+JrkGa7zbnXdwjXT2Et2+QM4qCo5XM1IuuErx+3fPCARAVWYfmI3KrFuWDa/ZQj/ZyYkf5L5Y6JrkAgtGi6ic9L/T2RjCTtI+c3K3ZKYzTDp9Slsk3HdKfkNRIey1L2ZFrFM2EqQYwwmsKmlgpHdkr1wdUwGoakSYjLw08raPNZ3oXOLHe7jJbmcdMzPv3UsadWyrYYnyVqCETVzQDsnSkOIKRdBwDyIitX0kPgLrhIV/hcmTRgi7rcn5Z134khR4cm7M6Tadp42pKW1odlYkMgTrNkyrkYUBe0kVgh3TozLgssv0OROwggeAEPIxFQOIV3VDtEJxB9LVFxRgwY6a1qk69qdTX9KvxQ2lrgEi++0/KPa9Mhn5qYiWbiFDHGFIjiAtjx4zcu49SKaNzfspP4FPVJVDr5lL2RLYBF24U0X5LT+PAred1YimttxdZEwQ2zajO3oLDuPPnFvzFATJaUUqOjx0XQgTXX36HID/rwSsM4peczYag2ddDUsrA39IW0uiOkuqv+4VfQXjxLscCxjgiSX22NhDO6g+eLGH9ShTnmrPKKqMYCZY/lUwYBkkD4/ySoB38YBMbZ6qfERoGzZONN7p8IgIUoOj58hmtRFbRCGwMXnudrm41gA+SdohpddsyWtqA2iE4DSSJ2ZiMxfqVJrrTlVy84FpBKet/50jBz6ldXEGv/i20IxfbLwX34mN3c3+g0atnGW+CbnoRml1SD034EiJFWsaLcl2QjlVLmaZeA095x+Kjw0QoSkAbq93nV71lWK/9wyfDyb1fHb7LTm6yxm/sfsz0UKyaKPodrPKLIIkA958mALt09lVARZJhFJ9CvnJKpTYKxBJweyH8b0jmGFkakMW+dPmKGSP1mVrEEB47P4hWd9xWo4PjPr+Kez4yRsfhsBqZWaRV0yAKybLZuiCqEq8L6oN1Uu7eDZ4nk99kuun37IvzXwFeaXs6g3l5dtmUUz
+ iAIqv/sa
+ sj9slDRlX/bex6DhybtWCJKE7lG1MTrezyjkA/3/Ooz7qaNmE/6PkgfsrOjCJ5bWKA2yBceAY9oinvOgCgnsnjI183pTFpJ5Qt0Z/bIRfaWNUQZzgWaR7VULKeT51GeYLql4iOZNqC1PBNVbz0OCI1A4l5aOCsXPLrMCGNqofJaNfqQo30X0xdJSbBiSy5MmmhpTfn/Hd0PH3eKWPHgJav9SvYpff04gQoykp6WsdDLZ5y/ATSWeANvQFlcmqjS7XTKJJMq/XiHrfnDpnXUC1wuT/MhaB7dTeVo1NqRmQTSJtwNLdMiLMFrvt5EjeD0bjjAToQa2x33VDSSbhUp/CM/6nv4+KNa326LasDOuLxTiAo3ox1uIizMiZ/99zWStnHpRxXlIp0nVwIMgIhp2VpSfkHgKBml4KaTEcfjmPCERXWZ7enQ+xYEhNWY4RWPkHlBtsXFV+gShivLIyMx7VolL5tuslp57kyR+I80wAsRTHlhhC3u87MKoH8nGlOvXK+0eLJTw4J2NW8mZT8xiXsmEQNWF7ZeYapzXm0rBwo7/o22Y292pWbupxZd/unTwQ5KkJ8Jgk7XURkV0kuDGoGBXqxCMtWmzqCXeSa02bM56MpS+mLEnN/QncVsG8N3dAtxWesRLaHIurkOYgBL3q/GOdWYOSGB+EqlWfU5RkIHhR0gYaL9U5lrCE3XaisP9CKRubG3fKD1yOaKUs26wNBvewvw6NrMjjtOvM06NtsbTFmUeYloVzx5/sIvq3nJSPjneGcd43MhHaAsRTbf7hHIbQaIWJUU4MaAaxxGBuw4mw6Gt1v/ZXjjcRc6nYbePsjM+O124+oSKu9yh4JLwAehNZVlrRryiwpDLk6brMMasx5yZAPthVvW9WglMajJ33eA8lsEfGoadCUyjRaC5B1Dhnu6kYn0mTO5QsTr1SgM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,23 +136,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax: allow min()/max()/clamp() if the arguments have the same signedness.
+    minmax: avoid overly complicated constant expressions in VM code
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
+     minmax-avoid-overly-complicated-constant-expressions-in-vm-code.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=378230090=farbere@amazon.com Fri Oct 17 11:08:35 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:09:55 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:05:01 +0000
-Subject: minmax: allow min()/max()/clamp() if the arguments have the same signedness.
+Date: Fri, 17 Oct 2025 09:05:05 +0000
+Subject: minmax: avoid overly complicated constant expressions in VM code
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -163,175 +160,67 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Cc: Christoph Hellwig <hch@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID: <20251017090519.46992-10-farbere@amazon.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Laight <David.Laight@aculab.com>
+Message-ID: <20251017090519.46992-14-farbere@amazon.com>
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit d03eba99f5bf7cbc6e2fdde3b6fa36954ad58e09 ]
+[ Upstream commit 3a7e02c040b130b5545e4b115aada7bacd80a2b6 ]
 
-The type-check in min()/max() is there to stop unexpected results if a
-negative value gets converted to a large unsigned value.  However it also
-rejects 'unsigned int' v 'unsigned long' compares which are common and
-never problematc.
+The minmax infrastructure is overkill for simple constants, and can
+cause huge expansions because those simple constants are then used by
+other things.
 
-Replace the 'same type' check with a 'same signedness' check.
+For example, 'pageblock_order' is a core VM constant, but because it was
+implemented using 'min_t()' and all the type-checking that involves, it
+actually expanded to something like 2.5kB of preprocessor noise.
 
-The new test isn't itself a compile time error, so use static_assert() to
-report the error and give a meaningful error message.
+And when that simple constant was then used inside other expansions:
 
-Due to the way builtin_choose_expr() works detecting the error in the
-'non-constant' side (where static_assert() can be used) also detects
-errors when the arguments are constant.
+  #define pageblock_nr_pages      (1UL << pageblock_order)
+  #define pageblock_start_pfn(pfn)  ALIGN_DOWN((pfn), pageblock_nr_pages)
 
-Link: https://lkml.kernel.org/r/fe7e6c542e094bfca655abcd323c1c98@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+and we then use that inside a 'max()' macro:
+
+	case ISOLATE_SUCCESS:
+		update_cached = false;
+		last_migrated_pfn = max(cc->zone->zone_start_pfn,
+			pageblock_start_pfn(cc->migrate_pfn - 1));
+
+the end result was that one statement expanding to 253kB in size.
+
+There are probably other cases of this, but this one case certainly
+stood out.
+
+I've added 'MIN_T()' and 'MAX_T()' macros for this kind of "core simple
+constant with specific type" use.  These macros skip the type checking,
+and as such need to be very sparingly used only for obvious cases that
+have active issues like this.
+
+Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Link: https://lore.kernel.org/all/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
+Cc: David Laight <David.Laight@aculab.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   62 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 29 deletions(-)
+ include/linux/minmax.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -12,9 +12,8 @@
-  *
-  * - avoid multiple evaluations of the arguments (so side-effects like
-  *   "x++" happen only once) when non-constant.
-- * - perform strict type-checking (to generate warnings instead of
-- *   nasty runtime surprises). See the "unnecessary" pointer comparison
-- *   in __typecheck().
-+ * - perform signed v unsigned type-checking (to generate compile
-+ *   errors instead of nasty runtime surprises).
-  * - retain result as a constant expressions when called with only
-  *   constant expressions (to avoid tripping VLA warnings in stack
-  *   allocation usage).
-@@ -22,23 +21,30 @@
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+@@ -270,4 +270,11 @@ static inline bool in_range32(u32 val, u
+ #define swap(a, b) \
+ 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
  
--#define __no_side_effects(x, y) \
--		(__is_constexpr(x) && __is_constexpr(y))
-+/* is_signed_type() isn't a constexpr for pointer types */
-+#define __is_signed(x) 								\
-+	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
-+		is_signed_type(typeof(x)), 0)
- 
--#define __safe_cmp(x, y) \
--		(__typecheck(x, y) && __no_side_effects(x, y))
-+#define __types_ok(x, y) \
-+	(__is_signed(x) == __is_signed(y))
- 
--#define __cmp(x, y, op)	((x) op (y) ? (x) : (y))
-+#define __cmp_op_min <
-+#define __cmp_op_max >
- 
--#define __cmp_once(x, y, unique_x, unique_y, op) ({	\
-+#define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
++/*
++ * Use these carefully: no type checking, and uses the arguments
++ * multiple times. Use for obvious constants only.
++ */
++#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
++#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
 +
-+#define __cmp_once(op, x, y, unique_x, unique_y) ({	\
- 		typeof(x) unique_x = (x);		\
- 		typeof(y) unique_y = (y);		\
--		__cmp(unique_x, unique_y, op); })
--
--#define __careful_cmp(x, y, op) \
--	__builtin_choose_expr(__safe_cmp(x, y), \
--		__cmp(x, y, op), \
--		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
-+		static_assert(__types_ok(x, y),		\
-+			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
-+		__cmp(op, unique_x, unique_y); })
-+
-+#define __careful_cmp(op, x, y)					\
-+	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
-+		__cmp(op, x, y),				\
-+		__cmp_once(op, x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y)))
- 
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
-@@ -47,17 +53,15 @@
- 		typeof(val) unique_val = (val);				\
- 		typeof(lo) unique_lo = (lo);				\
- 		typeof(hi) unique_hi = (hi);				\
-+		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
-+				(lo) <= (hi), true),					\
-+			"clamp() low limit " #lo " greater than high limit " #hi);	\
-+		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
-+		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
- 		__clamp(unique_val, unique_lo, unique_hi); })
- 
--#define __clamp_input_check(lo, hi)					\
--        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
--                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
--
- #define __careful_clamp(val, lo, hi) ({					\
--	__clamp_input_check(lo, hi) +					\
--	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
--			      __typecheck(hi, lo) && __is_constexpr(val) && \
--			      __is_constexpr(lo) && __is_constexpr(hi),	\
-+	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
- 		__clamp(val, lo, hi),					\
- 		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
- 			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-@@ -67,14 +71,14 @@
-  * @x: first value
-  * @y: second value
-  */
--#define min(x, y)	__careful_cmp(x, y, <)
-+#define min(x, y)	__careful_cmp(min, x, y)
- 
- /**
-  * max - return maximum of two values of the same or compatible types
-  * @x: first value
-  * @y: second value
-  */
--#define max(x, y)	__careful_cmp(x, y, >)
-+#define max(x, y)	__careful_cmp(max, x, y)
- 
- /**
-  * umin - return minimum of two non-negative values
-@@ -83,7 +87,7 @@
-  * @y: second value
-  */
- #define umin(x, y)	\
--	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
-+	__careful_cmp(min, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
- 
- /**
-  * umax - return maximum of two non-negative values
-@@ -91,7 +95,7 @@
-  * @y: second value
-  */
- #define umax(x, y)	\
--	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
-+	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
- 
- /**
-  * min3 - return minimum of three values
-@@ -143,7 +147,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define min_t(type, x, y)	__careful_cmp((type)(x), (type)(y), <)
-+#define min_t(type, x, y)	__careful_cmp(min, (type)(x), (type)(y))
- 
- /**
-  * max_t - return maximum of two values, using the specified type
-@@ -151,7 +155,7 @@
-  * @x: first value
-  * @y: second value
-  */
--#define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
-+#define max_t(type, x, y)	__careful_cmp(max, (type)(x), (type)(y))
- 
- /*
-  * Do not check the array parameter using __must_be_array().
+ #endif	/* _LINUX_MINMAX_H */
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
