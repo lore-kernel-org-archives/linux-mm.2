@@ -4,118 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A87CCD183
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 01:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC0ABCCD183
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 02:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87D7D8E0035; Thu, 16 Oct 2025 21:46:04 -0400 (EDT)
+	id E1F7A8E0008; Thu, 16 Oct 2025 22:34:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82CE68E0002; Thu, 16 Oct 2025 21:46:04 -0400 (EDT)
+	id DF7268E0002; Thu, 16 Oct 2025 22:34:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7427D8E0035; Thu, 16 Oct 2025 21:46:04 -0400 (EDT)
+	id D33F68E0008; Thu, 16 Oct 2025 22:34:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 620D28E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:46:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A44916049E
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:46:04 +0000 (UTC)
-X-FDA: 84005915448.27.DBE2DDA
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C2BA2C0002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:46:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IBZqdZMI;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BBE208E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 22:34:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8F1D160499
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:34:16 +0000 (UTC)
+X-FDA: 84006036912.11.7C87732
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 05AFC20007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 02:34:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WMC7+Kml;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760665562;
+	s=arc-20220608; t=1760668455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KAKLfnCjWpLz6SBHg7ZJemM91nvEm2nAdUCxZzhPE+s=;
-	b=AuYNjslIEqglX99YDYr/NUwvYylHK2SZTTvEcH44AutfgfRjuQNQ+/Tfg2d/ZthZniHZF4
-	dU13hfxuoS2cPCSCJrSwajodWy4YxNf6vvbQwFdEkpy+MQaQ6Zh/8qYRwyh7POqAUV7r2k
-	LvDdMFwfXjPpofrXngMhYzi7sUUmADs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760665562; a=rsa-sha256;
+	bh=IbO5pn8l4Y/yw529hagzahAyjhXmntVuhxc4yNmU1u4=;
+	b=tif+TtxLEF+hgGJ68HRel9z08OlIchI7VLh36XLV5//n93Y6VEX6d68BkDqE7+STJH+gqv
+	xp6O3lvNdlgWOQObgoy4H7TCiQJxoJyOQckwlTCW5Hs0NlRV6kuK5Whu0PJHCobBEnEz4s
+	d0zUECehsOd0h3PAKujty9YMEc8amb0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760668455; a=rsa-sha256;
 	cv=none;
-	b=ob3ZOyLs/tuQdqTEwCZdnrGjcVka55gerCvFzItDP3Skg8eGbrqpAALOOafXkcUGMF69kC
-	zVO4R01DwrbH1DFflGb6Nw+y9iRm9BnGkTNZ3vHeKjOAA6DqGS4ItvTa4dYFnhmrWTGCEQ
-	QjC5HCHuWc24/+FEfqTvj/jxjw2Ce/c=
+	b=G+AQkcPVFtjVyrp3/h1oahCd8ods+nczlMC+c2vwdxT9v4p+c+XKRdXh7MK65sqNAbIYKM
+	s/QpVKG7zk7w14h9qWv32oMv1kBuTd/pDr2WVoRaeNsLY8Lp0cIPLzTOIRe3U+wYDifzif
+	7pIgtgCkkMvcLbFPcudoJM7y07WUl+w=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IBZqdZMI;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760665562; x=1792201562;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=STs8Y+GLuT3+amxLmUST+PZ8gj8KTQE9Glui5npCtTo=;
-  b=IBZqdZMIR6JyI3/Ne/QY7hujicEiWg23kfoNXplmGu9MrmNX12V1LtP5
-   rOpH3p4SqfX7XUcAlkTKG7x17cHJL4DJzarKo36leaOt3IGJ6OlkJ2Y4S
-   2UrUaO3E28V45ZvyRgSyx/PWjk4/PfLRqaJfnku+KWyg1P4u036yF7iHN
-   3Rs1n8RP5f6/0HFyP4xHc0NAunpyEAWucEHNpw8R6a1erQ1Tmem3HZyeb
-   yvqyjERcxdTLDaCHXm333ouOqvyQj4RUxwApdfOi8dg3ctrHwHxIN4Qe3
-   02S9FGIilpquLrGxRC6k50AP2ZE2dYe56HGnPJpBv9W2f/0J+NtMldgPk
-   Q==;
-X-CSE-ConnectionGUID: Ap3cbfwmQf+9OV77C3XEkQ==
-X-CSE-MsgGUID: bBiHj9LVS9aMsQl2CcEzPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="62082046"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="62082046"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 18:46:00 -0700
-X-CSE-ConnectionGUID: VLbXrEyqS+mO5QoMlH6F3Q==
-X-CSE-MsgGUID: YKaojFyXR1qwVxffdSsIwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="181744500"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 18:45:54 -0700
-Message-ID: <11cad2be-9402-4d45-8d2b-c92d8962edfc@linux.intel.com>
-Date: Fri, 17 Oct 2025 09:42:10 +0800
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WMC7+Kml;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <0c263545-9b22-43b8-b919-3613ecc15553@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760668452;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IbO5pn8l4Y/yw529hagzahAyjhXmntVuhxc4yNmU1u4=;
+	b=WMC7+KmlXtDn9J4nhg8GF3Fm7UZt5r8Z4BaRv4R6V+R0nrHNDGd1t6lgC57DEWPq98Cmdb
+	y6XwFfBLXRhCkOM0Z9IESnjfmJ5GxY2Y7ukcw94YcmNwT4HfreVnVwIAw0zMwWN9QrXFOg
+	2zTZiKCh8Sxd9VSVJNBi4ynxmA16p14=
+Date: Fri, 17 Oct 2025 10:33:57 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/7] Fix stale IOTLB entries for kernel address space
-To: Dave Hansen <dave.hansen@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jann Horn <jannh@google.com>,
- Vasant Hegde <vasant.hegde@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
- <20251014174339.c7b7d2cfb9f60d225e4fe5ec@linux-foundation.org>
- <6b187b20-6017-4f85-93ac-529d5df33aa2@linux.intel.com>
- <ecee3200-c8e2-47ec-a219-c88e8e905b32@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <ecee3200-c8e2-47ec-a219-c88e8e905b32@intel.com>
+Subject: Re: [PATCH v5 3/4] mm: thp: use folio_batch to handle THP splitting
+ in deferred_split_scan()
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ harry.yoo@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1760509767.git.zhengqi.arch@bytedance.com>
+ <4f5d7a321c72dfe65e0e19a3f89180d5988eae2e.1760509767.git.zhengqi.arch@bytedance.com>
+ <20251017004611.ccjq2343v43mimqq@master>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20251017004611.ccjq2343v43mimqq@master>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4hyaki6ue9faiprkrs914xhag3nppxzu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C2BA2C0002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 8byosmqmobofh47geooah5k7ekczwhm7
-X-HE-Tag: 1760665561-449956
-X-HE-Meta: U2FsdGVkX1/IALCuEHDeoZRlIkMBBBYLB8aT29SfQl5mPr3QWndW8uzbZk69GdYqH/uGKAq/nz6ojBzkibtFxHIICFHTz+mVYh3uCWFeXwgGz9lJSoKhwdk6fFZ4v/WO6RdfEqDSC+01GBAuGfuwOpmiHssW5+OgOmPU4A0YrsunmPUNqOM0wTSL92+fG1+CchAAGG0wQXFbQUzkWSK89OVuibENU4f11XbK7+gwbZzO+EuzmapZDYKe39ZmVYZGTfYwmOr4iv/Z4mNR8BMnemCBebdeHjXUTrSmsO9MEIlzzgLVCn83gt4pLYLWE2Gdkwt3PTi2DaaaDGkxC6h0a4r5OdtduE973YUnJJH28GUAMJ0Gi5F3H+WEdsaA7u+OiJPv2OlUGdN1hVtuniDZe/Dsg7LhCFAOOotCTpvUIc9sAOi45WM2Co+nlPpMW32kGWHqB4K4sTFGDK/V5apqfKmg7aeTZ12TiXF9kFzNi+JnpTKrhBRMVIa9yIwf+2VLoKslq2pxfho08AwzGdv6FVjx2qKiMtx11nJpUPid2+SWoh8uPkKXJVmy1yv2zi7fJAGhPs/7GUtUUCd8sA9ZIBYzjf6aBDVJdCT3wf1uPVeBsLS8oUd9gWfAeAixPngerzilykz2j1VxWHoH4vwhicWdpgmuaceL4UnvKVEOV8CrOTtYAteknGUlJM4ZDLYJ2c9sxsbFsVFGFu630Ev/oUacFvxSyk7he2fsz6kuMnMgMRboh72gga4k1RERMAzQPtQpSJ6C2schpTUuoZ0bByFx3fQltiUNn1Wj5e+p8tao6YAHNu0ki38cE7pH9XbNXGcCHEjr1QYaPm9ovpFVylEWlfxHKPXjCYiu0XcxTSp8H0BdXrv9e+kYZuPtaPWnJuwR/jDiGx9PoVp4XiCE6HfKCRTO2bKN0qvi8/+xR/zPMYarF0xg4tfkb0+aTQDiqsnn3ZaCHmaHE71azeJ
- J0DKqNq1
- +g77few5MFKeAuo04dUsjgGZjzIomaA+ue3j5p9nF1f53Mbt5U6s/u1VeCoXVahwulsQO2+LI1lsiKqff0hQuZkO/7eC7HbqKrn92CzTnorjq/yefz2Bh/qN8qULdziJV9dIdhSlqXyJWSjzmGtiAk1jsWWuKftVo/9EkkLKafi90eLxrzPcXn/R0epbd5veCcpxjl+mAnm1nISZPIVBq2InBQ6lGzhr7RtlB
+X-Rspamd-Queue-Id: 05AFC20007
+X-HE-Tag: 1760668454-449340
+X-HE-Meta: U2FsdGVkX19acXZ1Rub7ZVzwtY21ZgVvVt0tCv6W3kF3fYchyEgdbarhxRF03N9UreIMYX1W6WxGIz4qjzZYsBCKaeRiaF/CHhydNIev9yDnI+wCaapelltq4REYHLS7HVug7zqxZCx72e2/NWhan0SlqRAFIxGhmWhvRzf/KMK7I+moNesGHWukq1xkTZftdMQ1seSxcNwAAYK+8VNKhDQSDEUIhswjJTMP/5zSSp210Fe9rVhGPW7wjE1/f8hyLcaYqvxjeb0NrDeIFOeVjGTJjB+59EfMwxQxJ+Gj6Ec+TKXEiJZCjY0RKlwdC72WOFFJtdKZ9RkwOJSz4jpuoGS/+SlA2MXZQgA/WedNwM5d9Iw1LdyXyY1kR3ZMmDoUyEd5oCPhYt1RsTsoodMKyzNyvC2V0BlqhBSxSoRAK95X+eWLPNR9WtBqgl4CqhH63HH6L/X9KCnmaBCwsa2MxBVWSKX1VE/etdxYzBMoRe8buVATFviMVpljqx5nFUHCpM9IPLMuHhs1TBZSgz4AM466v+KucafZhpGXpWvIrPV6beVZM9pjPteR1gfSmb4hqWXqaMiy3QQcBdXObja7kJC7mhYHoS8VzH7Oel2uM/tYJTIdlmtL5BEUCfJ1fB/AE3t4fcqVceeXDcPZWTE3OlEoFrQ5Uf6BHzZrsV9+B3RkcmQ3IFvSEZRb+EBfmIzHjbM6JIL6XLVylfOPIdwzpfgT1A1Wwajbvpttot9Tulf7aRjgxphvZOakMu3qwqSYckHdoKk1cbN4FUr43sZdGpCHXYURa9eqxPUD3QKLE2o4i8pKZP8j5c3XuS+vhNMiJ7aC98yB8buwkC5fTiVPNvHufCVe6UWKxh6i2nH88h4ZmlRW4ObYtU9w47hOBRfY7q7jbqZ0iLAN9OyCxvRtyHexlfV0sbXwi57fvl4jMyddcnDkx0+RwY4y8T4rSbELlXckKxU3csswjgYTQhA
+ /UkrDcXt
+ bjKF3unOLERdAVcM/Ljfhi4+0ZVvvy1NLNNCQsvFCJsra7Uzsu/ACIK8w1rTTZbziyaa6GOYPGIzDuBySqOU1NB/a5W8vSHdKfTzfkOY5394qpbUhdaydU3ILp8KP/Oui/fG/WrPq5alKYvclHGvXZMGAbOEzAJaqGpHNJExbCCESE5gUGKzfeP1ZCZmjIn7k/TUydgA/No3yEemS4I+e7yW/dZlUi1nPBI/w1sL6O8k+4FDBdA026U5LrRThSBM5WGl2aRUiq3h6IRDbtYs3Iv+A3X+EQT90kw2Ss3EEC7JBGQRqivQLGl3Y8vZAnmjRrUCZdGpkr8CrGkATEE+Mk0+FZOluaH2EISpYiQBBsAWnypsS27nkXkqBV05XkS7iKf4G
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,29 +99,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/15/25 23:55, Dave Hansen wrote:
->>> Only [7/7] has acc:stable, even though that patch is not at all
->>> backportable.  Please give some thought and suggestions regarding
->>> whether you think we should backport this into earlier kernels.
->> Yes. We should backport this series to stable kernels.
+
+
+On 10/17/25 8:46 AM, Wei Yang wrote:
+> On Wed, Oct 15, 2025 at 02:35:32PM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
 >>
->>> If "yes" then the size and scope of the series looks problematic.  Is
->>> it possible to put together something simple and expedient just to plug
->>> the hole in older kernels?
->> Squashing some patches is one way. But would it be workable to backport
->> this series manually? Say, could we send a pull request to the stable
->> mailing list after this series has landed?
-> I honestly think we should just disable SVA in old kernels at compile
-> time, or at least default it to be disabled at runtime. That's the
-> simplest thing.
+>> The maintenance of the folio->_deferred_list is intricate because it's
+>> reused in a local list.
+>>
+>> Here are some peculiarities:
+>>
+>>    1) When a folio is removed from its split queue and added to a local
+>>       on-stack list in deferred_split_scan(), the ->split_queue_len isn't
+>>       updated, leading to an inconsistency between it and the actual
+>>       number of folios in the split queue.
+>>
+>>    2) When the folio is split via split_folio() later, it's removed from
+>>       the local list while holding the split queue lock. At this time,
+>>       the lock is not needed as it is not protecting anything.
+>>
+>>    3) To handle the race condition with a third-party freeing or migrating
+>>       the preceding folio, we must ensure there's always one safe (with
+>>       raised refcount) folio before by delaying its folio_put(). More
+>>       details can be found in commit e66f3185fa04 ("mm/thp: fix deferred
+>>       split queue not partially_mapped"). It's rather tricky.
+>>
+>> We can use the folio_batch infrastructure to handle this clearly. In this
+>> case, ->split_queue_len will be consistent with the real number of folios
+>> in the split queue. If list_empty(&folio->_deferred_list) returns false,
+>> it's clear the folio must be in its split queue (not in a local list
+>> anymore).
+>>
+>> In the future, we will reparent LRU folios during memcg offline to
+>> eliminate dying memory cgroups, which requires reparenting the split queue
+>> to its parent first. So this patch prepares for using
+>> folio_split_queue_lock_irqsave() as the memcg may change then.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 > 
-> The other alternative is to have arch_vmap_pmd_supported() return false
-> when SVA is active, or maybe when it's supported on the platform.
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+Thanks.
+
 > 
-> Either of those are 10-ish lines of code and easy to backport.
+> One nit below
+> 
+>> ---
+> [...]
+>> @@ -4239,38 +4245,27 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>> 		}
+>> 		folio_unlock(folio);
+>> next:
+>> +		if (did_split || !folio_test_partially_mapped(folio))
+>> +			continue;
+>> 		/*
+>> -		 * split_folio() removes folio from list on success.
+>> 		 * Only add back to the queue if folio is partially mapped.
+>> 		 * If thp_underused returns false, or if split_folio fails
+>> 		 * in the case it was underused, then consider it used and
+>> 		 * don't add it back to split_queue.
+>> 		 */
+>> -		if (did_split) {
+>> -			; /* folio already removed from list */
+>> -		} else if (!folio_test_partially_mapped(folio)) {
+>> -			list_del_init(&folio->_deferred_list);
+>> -			removed++;
+>> -		} else {
+>> -			/*
+>> -			 * That unlocked list_del_init() above would be unsafe,
+>> -			 * unless its folio is separated from any earlier folios
+>> -			 * left on the list (which may be concurrently unqueued)
+>> -			 * by one safe folio with refcount still raised.
+>> -			 */
+>> -			swap(folio, prev);
+>> +		fqueue = folio_split_queue_lock_irqsave(folio, &flags);
+>> +		if (list_empty(&folio->_deferred_list)) {
+>> +			list_add_tail(&folio->_deferred_list, &fqueue->split_queue);
+>> +			fqueue->split_queue_len++;
+>> 		}
+>> -		if (folio)
+>> -			folio_put(folio);
+>> +		split_queue_unlock_irqrestore(fqueue, flags);
+>> 	}
+>> +	folios_put(&fbatch);
+>>
+>> -	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
+>> -	list_splice_tail(&list, &ds_queue->split_queue);
+>> -	ds_queue->split_queue_len -= removed;
+>> -	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+>> -
+>> -	if (prev)
+>> -		folio_put(prev);
+>> +	if (sc->nr_to_scan && !list_empty(&ds_queue->split_queue)) {
+> 
+> Maybe we can use ds_queue->split_queue_len instead?
 
-Hi iommu folks, any insights on this?
+Maybe not, checking whether the linked list is empty before traversing
+it is more natural, and the overhead of the two methods is not much
+different.
 
-Thanks,
-baolu
+> 
+>> +		cond_resched();
+>> +		goto retry;
+>> +	}
+>>
+>> 	/*
+>> 	 * Stop shrinker if we didn't split any page, but the queue is empty.
+>> -- 
+>> 2.20.1
+>>
+> 
+
 
