@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25E4CCD183
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 03:12:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D9C6CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 03:46:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28A958E0033; Thu, 16 Oct 2025 23:12:11 -0400 (EDT)
+	id 9DA6E8E0005; Thu, 16 Oct 2025 23:46:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 262448E0002; Thu, 16 Oct 2025 23:12:11 -0400 (EDT)
+	id 98A4E8E0002; Thu, 16 Oct 2025 23:46:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19F708E0033; Thu, 16 Oct 2025 23:12:11 -0400 (EDT)
+	id 8C7388E0005; Thu, 16 Oct 2025 23:46:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0885F8E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:12:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DB34119D62
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:12:10 +0000 (UTC)
-X-FDA: 84006132420.01.906D1B4
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0129620008
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:12:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gMJT8zxU;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA7D8E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 23:46:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B86821A01FD
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:24 +0000 (UTC)
+X-FDA: 84006218688.09.0FC9A66
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7AF81100005
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 03:46:22 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RdLrCNOh;
+	spf=none (imf14.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760670728;
+	s=arc-20220608; t=1760672783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcvrMD3sQma3OYREUgSzhCQmw7Fa8hfqaZyefSFbX3o=;
-	b=8kW40Gqy2SpAxN+3z3iuTieyOyn89bOKOEiVMFO/6xFJaw09I+2VuTKKTxMC9EF5f2JZwe
-	5ilw1j/s71pOq8buf0XqAs8st64uFFod743QOKAreZhtdJwjI6cB5h41hzXqOpcJpE9ASP
-	OZ9Abn9AS4HP0b3ZnbwHMN5gaCLA+a4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gMJT8zxU;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760670728; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=K4A1fNA7jBkelNwgEEMa2038bA7E1kb77kUqqLoY588=;
+	b=lZeAhJ1tHQmnWTbtfVTy1fjx94k1tmHjzT/hn5ReTBfkgthbTmyfSuGCWTzFEbdXgefEjp
+	HiZ5wPUed4EYWuHISVoVdtW67SCmQdwS4nX578f68dNM8Dhv24Euq9qa+68oos9L+SMJrm
+	6FjUriM3WRrr9ZWZUScsTW7BY3GZv20=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760672783; a=rsa-sha256;
 	cv=none;
-	b=HifwlBsPaU/6TkQXDPoyVQVa6aNlmNcz5Y/0zo2vptm5dxsmMgFyh6BhIFeANwXpXrJeIp
-	iavy2vZDTUN/wGgnPZg16CiJcf/52XyVrkmSGZ5AihKdeCxUJKzy/dgemrgYZ9s7DBs/WM
-	K43AlOhuvIV0MCOMaU4ZSHk5UZku4g8=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=dcvrMD3sQma3OYREUgSzhCQmw7Fa8hfqaZyefSFbX3o=;
-	b=gMJT8zxUzHGc/AelXSc6QEx7C+SjQ4cXio4lyn84xfFtq0ygyFg6Vm25uv25TuTNI8JNi67O1
-	G6SZ70HTCQGbA5j/tybwGp1RgWoUiw348EQUaNdU0/ZNAQHVBYXXY6DXINVYbN1XNdxXslHzn8J
-	wl/G7VC4fmIpKFA7FGV2WWE=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4cnqbw6LWqz1cyVm;
-	Fri, 17 Oct 2025 11:11:40 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3A9C7140294;
-	Fri, 17 Oct 2025 11:12:02 +0800 (CST)
-Received: from [10.174.177.149] (10.174.177.149) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 17 Oct 2025 11:12:01 +0800
-Message-ID: <4c2e5879-e554-49c0-8f05-094031cbb64a@huawei.com>
-Date: Fri, 17 Oct 2025 11:12:00 +0800
+	b=clvS0hVwKt8M895Xmtq0CJY7aVFGwtaiX0y9jaInRIhJDs3d6Sn9cruV4Y2fWZTs1YT2d+
+	jVIwZ0miDia9fGIek7KpsNU+IiMqSh9fnZsotFd0VHWWvils0v8aRcAUP91CnvOUw2FewD
+	93F+xBR++hAm2BCFxIN7Z6EOvVjww8A=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RdLrCNOh;
+	spf=none (imf14.hostedemail.com: domain of BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+4b0bb848bbbfa73029ae+8090+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=K4A1fNA7jBkelNwgEEMa2038bA7E1kb77kUqqLoY588=; b=RdLrCNOhaq3CpPOvWZR3PLSpVT
+	7fSHTcc7swz+B9JYH2j+PoouNvhYL5pPKiZIYmPZnQgIUk8c4sz93/0RSXVUArj//8077yQt96hs8
+	IYOfv6BfVzizo1nrwmF8KiYAtkc4tiY5urOHqWMHc47asXMJtDbIUhNZnrP1FXLHSJUmrT0s6X35r
+	2NWS7i9DeW288vw2ADQE8IuG2DrEBi8kepvke37dmpCLEdVN6ytRNWKL7YRpeYt4AxtTQmxZyFiOx
+	CiZyTxgwz09xfYYlgDb/djgNlNKVN5Cdu4gUQ4OdkKl1R0UYvhWVCCjbwvp592mfyvmq7+1q4dWCS
+	VJAOXCjw==;
+Received: from 5-226-109-134.static.ip.netia.com.pl ([5.226.109.134] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1v9bQ3-00000006Ty9-0SSV;
+	Fri, 17 Oct 2025 03:46:19 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Carlos Maiolino <cem@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	willy@infradead.org,
+	dlemoal@kernel.org,
+	hans.holmberg@wdc.com,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org
+Subject: allow file systems to increase the minimum writeback chunk size v2
+Date: Fri, 17 Oct 2025 05:45:46 +0200
+Message-ID: <20251017034611.651385-1-hch@lst.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: add a min_sz_region parameter to
- damon_set_region_biggest_system_ram_default()
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-References: <20251016194851.65981-1-sj@kernel.org>
-From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20251016194851.65981-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.149]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 0129620008
-X-Rspamd-Server: rspam11
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ygjrodfsmtcz66uy8i51m1gt5c8gzunu
 X-Rspam-User: 
-X-Stat-Signature: xqd9xwt59e16k4n9bkom8p4rjimaus4t
-X-HE-Tag: 1760670726-474096
-X-HE-Meta: U2FsdGVkX18IeCjK62ZWv/AXL4NWpk+xF/PROfHJfWYlCPFOnvhUXouyLNvsaKxZ73qPINS3j1vovmieedkavMTUuGIglnrFigDBfUhRqm1rTYNUaSrCoyEPpVhFnPkDcjvNCMq1Mg9NBBK9EH3ZPzQ9ipnq0mFPxQB8HOcUrRTuW4Iiu3bcu9YOxNKLGAgn2/EBtgBw5r1x8WhJBChIYys+ynpk7PbgdMza0nTJBDhEH+b3q6umFASy9Uhxi3z/DFHZnwuoFN74mts3TFQUSS5xZ5wrlt7231prHics2aES3xmF/hlnxdsmp68gKTJTY/G1V+poJAQ52Qqww1pGy3SlYSgmO2nZgx62OOX6kj3ptfWQDHm6DZ+JBvwvXexjPCFfYgl2in/h4h24AzaO82Zoyiv5krmPcVnmbw1PtasnxQXwHglXLOUYy2UDKr7Pa6D1ByuLoIIGGqT/dWzEEEZZt0lH4da/lrKO7XBFV2+h4K/vdiqDUtSKiWwMhPDNshvfAsYutNfIXl1jMZzNUpgd7pqZ2CLrgpFW3br164QCoxRXfN6ncTyxBeRP/DQtQqqpKZMZiaAyXG+cUTHyxYi2uPXJPw6kcjfT4Xywvy6gDph/ip1EjHgMYzkTUOSEBj+OsdZUj31Xfc+qVMltKcmujDoUJWr51uaMg5sSqyEl+nioARV8LaXU+cpN8cSO7jkD2zDxfjz58hGbLt0em4CODurStsDNch0tigZNzwfm7mmtyTCHmzofBCAi6uRqK3XjWQutt2st9PrAu7sUZKZYlVc76lGHQyysPns2vVY02KyZVh78bvdPzUEDJXI5HBdCs6kuxfUwuRrRi8BnwpG6GWIOQv8yBawXbsYvj0pBy510bZprdCLxHL1+dl+cirScRJ9eh5AzxCq/wKGci118vVgcmS21fD60qaymwa2ESk4EKZ1kDCcYPIdDQxt1lugjkXHgPBfb3we3B8J
- Uwbns2XZ
- V5z5b3FNRcdP+HilX2D4obYcYJuV+5D6sIgTfIENSXppz1eJJUkWl04D8xtlMUwr2BPfHcCh/wD/pk6JGqXQW85Xw5gqqHqS5vJ3c1HgOKrPdEn0aiVtPffcgykxJEhC0BIHwgyXV3vTcBUCPBeADreFyvxfbWrqdm7kmTUP1Mr6+Z23Wqfsxr5HxmJR75XApb/OXAAszdab62cPq4FlaFUknQ34KsarhhNHTObDHZxm3WOZppRpuHW1LA7WJUowq5fCWoC+1u+Gp03iqY9uWUcPcrkSqAYaIPYZgboqhZ07Zl9jRLl8qqUp9TEUyNHD34M7FttSL9ZY0/z0aqNhm862e+BAU/v/uSG/CJzcUjGRQ4hWF/qIilG23z0Lh0c6rQ9QQSV6E4iPd9Ht/JQGptaZyXtMRkQkUxOts
+X-Rspamd-Queue-Id: 7AF81100005
+X-HE-Tag: 1760672782-579119
+X-HE-Meta: U2FsdGVkX197JcRM9QQ/4rrvBCCBW7qMl2T/AUODWuwmfms03DTQbZqDgbCTSAbiaxGP8RrqT/Dh/yHS7R+bN/6z8DKO5Sv3HNNXh+KzKD5aMSmJyBSsNhvGkx5sgHGjs6VK61GgU91ePKwL6eRdObhfQfXRtbbQm4GGkutCRMlcjH0pbsPWsbGztrb5eaCsgn1p/HOpesC4O4Ky+/IBEwX8+s8Pk4ElO7b8xkMddXSmdMtzgmMfTgwM6DPZ7mJxu1fY73fzWgaeHI2rjSUFXW2vlYsL5gf8YYg32KHHSWKD15ZqlqZgBE946uLWXWYXpUgVejvsL8CL+psrEPMFVbwBeie98hWsWo6vJ/UJS//+4GScb+otiWmZYSWnd/nwFFtzj3sGikRsygAO7guVaTqHaexixmiPV/UOk4ehE2JgLUMmXPXCgI/cokrAH1S5AycMSd6eo1xNhEIq0NF2V+ZmatCauL705005DjlqMFchopLnI/3zycEYGhFSyMhmzeMvZ/T6i2PFaoycTn7PX1E87yqu/84KeylkvVZeLyaoRGRHTHlaDFf38AZMFj9jQ7fz7ZcggZwXwHujp+ST4EMRSBZdkhE/VfNFVOBhi4mxmA80Gc/HlkmpEI+QD0d5feF6ELuk3z75jkKteolTd8k0nnRqzXO3TfPZi5RvI7Nt157hOXvxZNfg0TkMlfIX6C/zA9sgujgwTph2lJ5JiBVzWg++KbwxnohTMMGxkuoO61/oFNTAwvOJ61GbkiPoknmIERNM7KNUEvtHHqOCAcD2iiKAmgNrsLjE5S12gtA3469f4Ga+9AYTnXxy2JEukXYtg58VR7JAY1wn5zhz4o67hWn6KOARTryNHNtBDUuHfChflttxxr5a5cih1f6aJPzp2gp7s+EUflCkJuPE2PyiR2pKBq0CsMefw+BBwNdYAcs24cg2QLEjDC9ZbhrKd/AJfQcotYrJ3PXq41s
+ ttWhg6Jy
+ u/7VDfaj7XQHps4PDaeSL2PPlPAL6s+v41StTIFfuNSLf/cTillAeDRs8UaXYWXArP1slK5wCNBMVHjSciOE16StTxNdqEniahQ30JSt19JjGu/7T5wX+CaLwK215y1tmzSaMnp68Hkbth4e654x2igCLJAVPgp3J8iqRZc9MFPWNUtqSCsDvczlfdhf7xhUKiXrU+JDw2DipI94e0qx90WDatWx4VW/JdrGzkEqL8VVXNkpq9O12ohX5gjerOsgL5S82Xyh3nhNIWxVrra3o5/MB8tKdklLIgiP/L/fXJtLG6GGEiZnvWHM0LKtcqE8m+iRqR2hW2CV4gh4ArsfTc8OpHIgy7Dwn062xZolShq9Sy67+LejC8DBXBkwRpyIGR+6CKDvkRJJjJKHiOfNx3corECHlfZxgOlikQN3RY3mcVIxwlL4/2JuiLfTL9bDM54zBXuahYajHvDdqRhiOIHKUVrjlRaJmnt68KiqvMBwgvM6VlgWJXeeleECbk+vsPOpTntfz8bUZgfSSkd73AcY+ug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,86 +96,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+Hi all,
 
-在 2025/10/17 3:48, SeongJae Park 写道:
-> On Thu, 16 Oct 2025 18:47:17 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
->
->> After adding addr_unit support for DAMON_LRU_SORT and DAMON_RECLAIM,
->> the related region setup now requires alignment based on min_sz_region.
->>
->> Add min_sz_region to damon_set_region_biggest_system_ram_default()
->> and use it when calling damon_set_regions(), replacing the previously
->> hardcoded DAMON_MIN_REGION.
-> Can we add more detailed description of the end user issue on the commit
-> message?  My understanding of the issue is that the monitoring target address
-> ranges for DAMON_LRU_SORT and DAMON_RECLAIM would be aligned on
-> DAMON_MIN_REGION * addr_unit.
->
-> For example, if user sets the monitoring target address range as [4, 8) and
-> addr_unit as 1024, the aimed monitoring target address range is [4 KiB, 8 KiB).
-> But damon_set_regions() will apply DAMON_MIN_REGION as the core address
-> alignment.  Assuming DAMON_MIN_REGION is 4096, so resulting target address
-> range will be [0, 4096) in the DAMON core layer address system, and [0, 4 MiB)
-> in the physical address space.
->
-> So the end user effect is that DAMON_LRU_SORT and DAMON_RECLAIM could work for
-> unexpectedly large physical address ranges, when they 1) set addr_unit to a
-> value larger than 1, and 2) set the monitoring target address range as not
-> aligned in 4096*addr_unit.
->
-> Let me know if I'm misunderstanding something.
->
-> Also, if you encountered the issue in a real or a realistic use case, adding
-> that on the commit message together would be very helpful.
+The relatively low minimal writeback size of 4MiB leads means that
+written back inodes on rotational media are switched a lot.  Besides
+introducing additional seeks, this also can lead to extreme file
+fragmentation on zoned devices when a lot of files are cached relative
+to the available writeback bandwidth.
+							         
+Add a superblock field that allows the file system to override the
+default size, and set it to the zone size for zoned XFS.
 
-Thank you for the additional explanation! Your understanding and description of
-the issue are entirely correct.
+Changes since v1:
+ - covert the field to a long to match other related writeback code
+ - cap the zone XFS writeback size to the maximum extent size
+ - write an extensive comment about the tradeoffs of setting the value
+ - fix a commit message typo
 
-Our ultimate goal is to have the monitoring target address range aligned to
-DAMON_MIN_REGION. In the original logic, however, damon_set_regions() did not
-take the newly introduced addr_unit into account, and directly performed core
-address alignment based only on DAMON_MIN_REGION. As a result, the monitoring
-target address range was aligned to DAMON_MIN_REGION * addr_unit, causing
-DAMON_LRU_SORT and DAMON_RECLAIM to potentially operate on incorrect physical
-address ranges. Therefore, we need to use min_sz_region instead of
-DAMON_MIN_REGION in damon_set_regions().
-
-I will add the detailed commit description in the v2 patch.
-
->> Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
->> Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
-> Let's break this patch into two patches, so that we have one fix per broken
-> commit.
-
-Yes, I actually considered splitting it up before submitting this patch, but found that
-doing so might make the patches look odd. Since we're modifying the input parameters
-of damon_set_region_biggest_system_ram_default(), all the call sites of this function
-need to be updated accordingly. It seems we might need to split this into three patches:
-1. Preparation patch: Add the min_sz_region parameter to
-    damon_set_region_biggest_system_ram_default(), passing ctx->min_sz_region in stat.c,
-    and passing DAMON_MIN_REGION when calling this function in reclaim.c/lru_sort.c?
-2. Fixes patch 1: Modify lru_sort.c to pass param_ctx->min_sz_region.
-3. Fixes patch 2: Modify reclaim.c to pass param_ctx->min_sz_region.
-
-I'm not entirely comfortable with this approach. Would it be acceptable to submit this
-as a single patch?
-
-
-Thanks,
-Quanmin Yan
-
->> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
->> ---
->>   include/linux/damon.h | 3 ++-
->>   mm/damon/core.c       | 6 ++++--
->>   mm/damon/lru_sort.c   | 3 ++-
->>   mm/damon/reclaim.c    | 3 ++-
->>   mm/damon/stat.c       | 3 ++-
->>   5 files changed, 12 insertions(+), 6 deletions(-)
-> The code change looks good to me.
->
->
-> Thanks,
-> SJ
+Diffstat:
+ fs/fs-writeback.c         |   26 +++++++++-----------------
+ fs/super.c                |    1 +
+ fs/xfs/xfs_zone_alloc.c   |   28 ++++++++++++++++++++++++++--
+ include/linux/fs.h        |    1 +
+ include/linux/writeback.h |    5 +++++
+ 5 files changed, 42 insertions(+), 19 deletions(-)
 
