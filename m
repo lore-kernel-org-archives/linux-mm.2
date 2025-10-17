@@ -4,125 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2543CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 659D6CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 493EB8E003A; Fri, 17 Oct 2025 13:08:05 -0400 (EDT)
+	id C136D8E0029; Fri, 17 Oct 2025 13:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46A6A8E001F; Fri, 17 Oct 2025 13:08:05 -0400 (EDT)
+	id BE9FD8E001F; Fri, 17 Oct 2025 13:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 359728E003A; Fri, 17 Oct 2025 13:08:05 -0400 (EDT)
+	id AD8C88E0029; Fri, 17 Oct 2025 13:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E5778E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:08:05 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB01AB6BB9
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:08:04 +0000 (UTC)
-X-FDA: 84008238888.24.DAC6B9F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3DC7080007
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:08:02 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CfReh0RU;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 99D6D8E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:10:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4ECE71A02AC
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:10:36 +0000 (UTC)
+X-FDA: 84008245272.29.7570BA8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AF64412000F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:10:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XeZXesqc;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760720882;
+	s=arc-20220608; t=1760721033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z24I92BnG9R28uKM3ytM2okJi6Ci8baUDtE0rgRavFw=;
-	b=IeN1xBan5kZfecjaFqFww5B/Y+U3B8gIuKOEEpEy/kE4WTx/uZj/3VYW2BVjEfL1umWp3Y
-	f+WIYRcPp/fAavJ8WVSjvpzOnHbF0qInBldJQfWW02DjL5NjpoqGg4fpr6QxmyFjVwy5Fm
-	BDPI74zlsAdhh8aQIiiIKs7Cfn2ZhMo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760720882; a=rsa-sha256;
+	bh=UK8HD9G+Kwd4HVQdRALdCmHeg5SXgo45lh6yR0QBxjc=;
+	b=F1ND4GBQWBLgplFNVvuLSus7ZS/Omslgi9oezcxsfWai363Wle4kgfC4voxwb2nOh1juGJ
+	ta0Mzbp9yXoiB5jyoAz8vqjPjTZVGcaq6IDomS9B23XS0EccPyddP+QaPT0JULuHgx7Tkq
+	/u22RhO4UnqM1b7vtUx+ntuNnGu7s4A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760721033; a=rsa-sha256;
 	cv=none;
-	b=3ndFEJZMC1SqFohBuimMbp3MeKboTHR805EXcZJ6/i1pTqov19rblsE/rnnTK7qINaqpdu
-	Zjhzk6sCGknGh/tvWxFF5GTCcbOiKi6xR8LcW3jzdoWtNA5uFMCP/TZIuBvuhEQ2LCK+Gy
-	zdFXIovLcITOjyBiADecbGVM+cxVTVM=
+	b=xuED7L6FW6MFw6si7h+u9lbDGRKr0ffZ41dy7VKv+TK94aYW9QF84fImJepEZJvWF7F1cE
+	ntigrnS+MGo0dES1uET3vMWHyZ0jlrnBddblR8ul8mDoFKb75WRNlRWt6yB7t9i4ULCmzR
+	wBWLUSOEuByXduxjhnz9WE9uXCUf4ys=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CfReh0RU;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XeZXesqc;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760720881;
+	s=mimecast20190719; t=1760721032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Z24I92BnG9R28uKM3ytM2okJi6Ci8baUDtE0rgRavFw=;
-	b=CfReh0RU0e2l+JZa/+EyyRGL7RGrqBPwkpwwzYSU+C4Ob6YORnpROwYPZ64AciqHvp2nrN
-	Q2cN/PuqUp5vULKDL7LFvoWRFFE1AZp2EAA32HzTHsc+Qzqhkk6wL/0Yv6fLghCGl7yGlS
-	KkF4tLQECC8RZMd2rYsral5+vbL+/cE=
+	bh=UK8HD9G+Kwd4HVQdRALdCmHeg5SXgo45lh6yR0QBxjc=;
+	b=XeZXesqcKcSzCERaE+ZcHSi71eLSGGUmPpiJ0NzzPICe9ZNtBXkHYbNUEcXIqNieaFMd/E
+	EWi43DUwrNcZJPWd4+gNN9GVB+9Hj0gnpu0O1uumyBFq9pPJ9Mcx2s4f0cPRH1QR/vTn+q
+	Y7kCneCmgghxjcVwHKMGwuwZonO+NFk=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-AxvYpillOcm98CMBBRg2WA-1; Fri, 17 Oct 2025 13:08:00 -0400
-X-MC-Unique: AxvYpillOcm98CMBBRg2WA-1
-X-Mimecast-MFC-AGG-ID: AxvYpillOcm98CMBBRg2WA_1760720879
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471005f28d2so9706475e9.0
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:08:00 -0700 (PDT)
+ us-mta-290-pvaEcaJqP6S7LsVfrVRrmA-1; Fri, 17 Oct 2025 13:10:31 -0400
+X-MC-Unique: pvaEcaJqP6S7LsVfrVRrmA-1
+X-Mimecast-MFC-AGG-ID: pvaEcaJqP6S7LsVfrVRrmA_1760721030
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471168953bdso15403335e9.1
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:10:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760720879; x=1761325679;
+        d=1e100.net; s=20230601; t=1760721030; x=1761325830;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Z24I92BnG9R28uKM3ytM2okJi6Ci8baUDtE0rgRavFw=;
-        b=Xxi4jmT2pnq54WJnNNx2SUX4aq4O7CsXOE1HMerAWSacBdiLvlV9KCPVV9CUY2sY2E
-         yUb1J8rfwEXAH47ZkECPh8RJFqbv6iBHbV88sRyCoWdHCM/IHr89PnAdt649NuIfP8HL
-         K6aAiFVfkqPdgvnfn3Ed0gFJ55+UxSinMejzONWQZGvs20Z7Hb9aEGLLeYJ5qlHqXYZT
-         Na8LLdxdb9lBB4nhJiKF0Gu62w1wwLeQRE+QJQBt7tkOtjmrbgvwcF7Hvv36Aaxek/QF
-         Bm/iYUDUdpx1kw6R4k8Rx6fy+aZEl5sLukDC4kM7MwEiaXLXGmGI27pqCCy/co3L7HZA
-         idQw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+Zjnv0ujMKlIkL0M6RHUCiUIUYDkkwgvDdq0zTgonPCdNnnH4SJ2RYcnYZsLsCMl0Pe2FlRm9uQ==@kvack.org
-X-Gm-Message-State: AOJu0YxyHtkx2Uyjez5qGK2VZ0gF8tgpiXbcdC9L1CjabYQuhF+LEu8D
-	iBlOAf//RR5Vgvsq3LbcwxoqkiDNag6WtO1+Bd2EbbBKqWUVTGpC+jUGd/YSOyy1UAzBYlilPEV
-	fTUzoHnddAv7meRwm80n1XOP16lAJteY1uTRUNFSDMBnrO12JxP88
-X-Gm-Gg: ASbGncsTFs9qfM5MIzhBAPDYRQjgCek7XSzoh8jPgdwK7sP9/Lo/vnRbI2v71PjTaHe
-	OigN1QKQOgEc3uoNF9tylhYM1VFRXaXKIuN6WX5IFQ1LlTshaRmOU9gzDcunih7ghyZcG7Bk7cw
-	KbByIPO4203/tzcgVjE0vJ3RUqDoqok3X29qW34Zw36TqebFUT91McYyZN3oPqLlRUfp8EI8xDR
-	b4BQxdyzNwd8OyplsmHwKsCSCQh46A25PY8LGN+Ouw6jfLGokb0XbXtVK9BzTYAyzO76i579d8t
-	P2vOPnS1ejkt0dAJKpKuasKzdCaEIa7frzAeVvL5RRNFsKVWNxIMNAJCcjedhtXauKqz8CA4VSX
-	cv0sO8VrELABhz5bRJPFLuglI6qC0OWG0ALhLafV8i4SmaN/bpxLf6oO2kcTdNbwz6hKd/E0FaC
-	85jenK45PM/QDMisbPNIqQC7EC4yE=
-X-Received: by 2002:a05:600c:8b8c:b0:46e:4287:a85e with SMTP id 5b1f17b1804b1-471178a4af1mr32117625e9.13.1760720879253;
-        Fri, 17 Oct 2025 10:07:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0wYIRs5BvgxV0rKkXoRn76PeLh5TeG9Gq12PJQFOLbCPpMAp+gPbGh/AVsOgKNhG3Gab2NQ==
-X-Received: by 2002:a05:600c:8b8c:b0:46e:4287:a85e with SMTP id 5b1f17b1804b1-471178a4af1mr32117185e9.13.1760720878815;
-        Fri, 17 Oct 2025 10:07:58 -0700 (PDT)
+        bh=UK8HD9G+Kwd4HVQdRALdCmHeg5SXgo45lh6yR0QBxjc=;
+        b=Muy2AFBCfTeowFQLRoEMZ14ENZeRBQzdDgpfEUDQtELZRG511GGPRJ7VFlhf4ftdgs
+         0UCLiJluDunrUmkjog9t9NmeJBvrAw5VwkJcHaQ4zjy7uRQt6rKsBZO+AicD02TUWGEe
+         LrSXl5dUWVnrqBepYSIrkpblLPT/lS5ABmC7HNyK+VJVjB0JnQy6UuFzf/yttIH0MUjC
+         xYWdQXdDK1q55EIgnNMQbqHDx1TF1xT3KD6N6o6R3eRjWwqGGT5hIMtIDkd/vsk9uJ6T
+         xnhEwXcQT7VSIilVLfF2QpS6W2jNFZBvDFGKez8s9Su3YxqPrEZSCyStCWPaGpt5OhDK
+         AHJw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Ert5rdoI8K8tWeGN9qcIh2cGCNxN2T0LwEfQ8gLcZElIdFNbseYcae5vp0yPz3NsddxmRfjUMg==@kvack.org
+X-Gm-Message-State: AOJu0Yyjx1NNMogCmGa6Qa6kyOnaiS5DHGxBEm4BjOU9K1Ftb3Plznyn
+	UbUgtb/+Bo1PthG5vDKHWP1g7ZLPeJyMwKJ0SphyWwAKUeMOj3DeuAlOx6a6MTYvWLRuvt1+mC+
+	FIvRuREUk55Jnswa14zP5R7uh0keNOupJTFbdeTyyDxPW50iNBCfT
+X-Gm-Gg: ASbGncvMZBVkDTCtyRCdo4r+nvCF+f2Vc9IevAW9+Wn6RCm9iVcGpIWo1KMgoJRiSgB
+	iSMD6yz0LbnWPjHm+OBu7lkDsIkZlhyAZO5d5bqkiPk0uPWn2WQ1CB8tf336Jq0juIZ1/qxYYqz
+	nkbSn9IlMsTmJ6qVAMm78UXHzPzZv8vnSIu95vW5RfPC1+KMOPAp7retzRGBu/yjnIT70gza/aK
+	HJKcWWDP8/ct2RyyCocNPAFqyfUiUTBTqpeG0Nw2O83JfDW0xTqXKXIRmduk782DqIJOMS3jMoo
+	c+AGR0AlidXRDe5C2wj/sxEclZch8x0a3IBWabIxjl3y/QBwPh8+qNQgS0m46ZDf/2CKN/JFSyN
+	BZOXLNaD1nSwmBeaxV7anBbw286lNKiGWmlbXLTxIm5GYfuC1egQFM1cVKKWN6Fmuk3M9MFNkE2
+	R722kzAjI8jT2VCUoXPWvcOSeFuts=
+X-Received: by 2002:a05:600c:294b:b0:46f:b42e:e363 with SMTP id 5b1f17b1804b1-47109b5f8f4mr47517135e9.20.1760721030368;
+        Fri, 17 Oct 2025 10:10:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvb0y9fCRtWnytuEMED2PPHaBvVSeuDvOip/abNeYWVJN8mhS8t8p9uAnDfOHyvUkNRDsLQw==
+X-Received: by 2002:a05:600c:294b:b0:46f:b42e:e363 with SMTP id 5b1f17b1804b1-47109b5f8f4mr47516765e9.20.1760721029880;
+        Fri, 17 Oct 2025 10:10:29 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144239bdsm123442385e9.3.2025.10.17.10.07.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715520dd65sm3981765e9.15.2025.10.17.10.10.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Oct 2025 10:07:58 -0700 (PDT)
-Message-ID: <84349344-b127-41f6-99f1-10f907c2bd07@redhat.com>
-Date: Fri, 17 Oct 2025 19:07:56 +0200
+        Fri, 17 Oct 2025 10:10:29 -0700 (PDT)
+Message-ID: <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+Date: Fri, 17 Oct 2025 19:10:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: KVM/s390x regression
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, balbirs@nvidia.com
-Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
- apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- byungchul@sk.com, dakr@kernel.org, dev.jain@arm.com,
- dri-devel@lists.freedesktop.org, francois.dugast@intel.com,
- gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, lyude@redhat.com,
- matthew.brost@intel.com, mpenttil@redhat.com, npache@redhat.com,
- osalvador@suse.de, rakie.kim@sk.com, rcampbell@nvidia.com,
- ryan.roberts@arm.com, simona@ffwll.ch, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-next@vger.kernel.org
-References: <20251001065707.920170-4-balbirs@nvidia.com>
- <20251017144924.10034-1-borntraeger@linux.ibm.com>
- <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
- <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
- <8c778cd0-5608-4852-9840-4d98828d7b33@redhat.com>
- <74272098-cfb7-424b-a55e-55e94f04524e@linux.ibm.com>
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: Baolu Lu <baolu.lu@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, iommu@lists.linux.dev, jannh@google.com,
+ jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+ <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -168,21 +166,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <74272098-cfb7-424b-a55e-55e94f04524e@linux.ibm.com>
+In-Reply-To: <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: G6hd7PsPCSz0V8CmrnZ1XdlzW2JzPuEAL4SWxixTAyI_1760720879
+X-Mimecast-MFC-PROC-ID: r2BYNhbTjZL2AUWrVjoPETahMvOgVDAzEXZS0zPdfVY_1760721030
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: d8tizo6ro3eep4kan7ftoxyh1schnbxo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DC7080007
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 3keuymas56hmxejogoxtcp94qw4q99wf
-X-HE-Tag: 1760720882-601898
-X-HE-Meta: U2FsdGVkX18dX6oOr8aDXz1Z4o4AzMe9x03MlyzKGj1l7FqrHctewi+JaP4l7ivcGf+v2+uxRJNm6lnKpBTqmpXXY/zqBxhQ4wwrztjC2C7VhvE6QDFPOqVy5uvh+Gno8b4a8EnxL08oUL41TndZaOoH9YOuUJHwdBWh+z/m7zU8qkJdlSTdBMcfxot2WmZ6RVuYPFAnxiK7Bf0MqYkULQ6/LyQKayYQ9JX2MvHUjAWKXIBnLn6pjFUvQU3wr7Cgwok7m39LUpSPPavxPMi4hzo7fP8KFpGNdH3ZMCCpjsY8EUeSTWcNyu5zWsndRu7FRqzeNvfbRcyia/s/ZOwzY8/oNWNEVir4GpYvdz6xUniorfklqqV+KiDIcI5huswtmOL4u59y2ByXzBtogTc2njPJOJn9XNqPSRfezXlIx+7nTepVbVlIzCQW/mDQLyH+ghN4lzhl37gmTDgcsrk+Ro6z4ogiqkArpuu6OSLkMdayvb5qnronx6hThf1jFYUuliclyYZpb3bqE5iNr9G0gIDTRSIHAH2ObI/l326tGhMKN+vZ6YznqFPVFACyKH6SmPHe1S2qq/UWznQXUwLISqRJZ3Y62qDGg/Zd8Fi+Q174CXFSfKHFLnO/KQ0//UkguGHmtdY5IjJ1RGeTIQ+HRJ2eaIGPuWXbEeg+bhVr68qA/bZGzckxWhp5x5ImND0P7lLtq4D3ASITBZGbGBNCJb7q1JvBDAoqQ4h7NymOc3F+ZxeFhtUfLzGozdDhuqsab9xaC3G6xw0HwPP8jenJI7JPOmvt4QvRFfY/F4iJ67xv/usoL9YJ7Lo4ehVWWkOVl5a2p5LTsAjNKqNpn0m2ga+nD3rs259ZXMjuryuNb2LyyuBRu63+MOv5rNWqHQFZADrPU3E12GRU4WtgsGsRLg5vMz3I8PYsjaoTU1Sj3WDq/QiOKaHIjqy7b/lkBqsE/hd09Xd3ipMyAEJDBP0
- hjQ9pExs
- 71qnTbjTsOzobA0scJmzcL8r6Y976RG13Nsdp7ouKiunHdwfkMK9loLoVm8jNKvK36m9uuANgFPJLeiHWPxmSbf+zka4UYYmtP+KRR2e/8p7lPEA9GitzbRmWT9a3iIGwe0TnzfuR7x++9JX+qXQ+w2b1b4qxXe28C2TuGsmidbYI4rqDViaBSShiqY7VWCFGHfFWt0XCsCl1RGNWIzYODo+zRYgPY8LQLuYIYs+9UqwSExmx4/9IdmOXAhbQeZKYBI9DVXxkpWULNmxy2TFe8jrCnCHvKHeAj69hFdikqUMWDh8+xQlbIu9Dl8YxTZhBIZaV8ZfWNcOAuYiwSaPwjPtLZc+hRvC4GiXwR24vGFBMQHy/5m9vUMpGASOCPGbfyNOnKMUHgLW2myNqi8gZnTyGEWb+79/jLUzBpGQmJtY80v2RejgMG95A3cn1kidKAXwFcKNfs5247OYlQipy9b6ByWcVFoSE8nxNVY0H0CLqsWctQvsGc+9yxfBeznj3B9V6FpLlhHZTeK3hePRi3763CiYq/8UfbfKtepMIdgjbwS13lnyUVH07jKfZXLew2dnA/zJu3cDVWQcneJ3gZI0Eqg==
+X-Rspamd-Queue-Id: AF64412000F
+X-HE-Tag: 1760721033-950137
+X-HE-Meta: U2FsdGVkX19YRrUBxMhkMNOApHcKCNiA2YLRMv5XtJtUv1Xj+UyHll1Sx08PPAAy/EP/MwUpWCpTEbQjwppzUdVRVL+zYjYpEOgeY7+cDr8Ssk4hYqZa+IQLYJmYD4oQH+e74+pQL0Ty3xuYBojpdjTPFxcGQMjcVvQUGchM9q/8hpZKyEkutWAkrbadNFkg3UbVjyMDQaPdbh3NiAtjn9Ng1RvS2upuOjkmCdrC4EioiDEx6YKWAplIlWoICDj2cywlywcEV/uzl5EqLhSdtb+eLJ3A6AI8iH5icPdVeiCj2Xu3P31qTCkLm5tsi7shvoiw7Ju4cshHtsQRqc7sNbaNMJbZgWUTtOjELhyQDzEwm9uvfkEGPKmnsbdjoysIBuKEMC+3ZyTMlvtDnlXWiQ+0z1kgnQtBAy0xy9Ls1xfGBGM5b3tZ/LKlJZb0cZ6HbrEcVTSIyI4nIovKyX/fx13V/w4bapSUx6QJbDpY4Zt46V+xQS24JewHYf/Wg0rP0TMuZZ0iYtBO4A2jaaQ9Zn8mTAn6U0O/16Kf4xmWImHeJ4nUpxpMVsfkXwtRWL/ciO+H4uHKVufllkfFbSkY3LVjVMPX5oHqiwViGAGdrdDpe83yqN15nt6Nlfc/7lhDqzB4MBlJOc6A2wmpu7hGfTV1fuZCkJoAFCazHFALH3wHD/uh71sw/8L/UVeenE0UGwFrMA7X9LdIpk8pFCJeqhOheNngfq4GVhfmKTi//KSz6LjqDx/69b+CNFV9x+S+aN0X6OdOEvIiVZ5TXnBoNX7VOaSniOuCzfRJMrvEZGzFW38Slb7xJuSeUA/UFhf4wqh7A8Bpc0Dph6uLHhlY5BVcLLPMIubRyZ0O1SWR08mpB/9ofzYuOb6acDOOjtVHRWOvfFwznlEWSL0oI5oYV6woCOuqnDDmP+UXFsPzz4O5xzEwOXx0/tyQThHTZ2FXnd/ZuWPKAWJq97wPgKi
+ qQPxJLIx
+ K5qzDKWUZU/xSPXtpIUUGH5VlB/ww+Q8BsVcmA4r5FOJQjWMF//9N4elSjnz6/2EcBSxNd1AtmhzCIuMLyKiOPxb6EJFJYwnAHfqn3001uzW2SxcqwtN/b1lmcrqIt/1Ab0QWpbEi6WQ25epZdY945Ws++XIDTUu/LMBMFGACFWjgxotF+4A9WDm8X3LHw4tAW0zATDqK1esoCYEbWnTLogrwEkR0K6XSZ/dUAbvPaaDEvGp3VmVjlzCS3GKwq4jzpaDYnnEvyKZP+bA29UCuU4Qqh/czK2gy5VDCR7mSkCGMYv45drh1mDjWAB7IfS203HmJYwbQy94UGeYyZN5rshKxMb7YbleFpoC1FNIXBjp65HrF+hJCAWXnR0XQii0Lk9FQIdcXpIvb3JcIiEl2kQgwJS/I2mai4cD5vKkP/gozi66rI/+pZtuHoa2ZN4X9VXdM9PzrtrYJ7QLXkWAJxpGQypBRaIw+yQxcLJ+JQWv7FygMzjrlFhY0meoam6stu0TYsqLAVEbF7bJ7OnfSQ9Vx2WFPOJKC1rukYudsj9s9NaEYu1RYAZulXR6Blc3M6+xTIS3muJ0i/977/ZQPE9QfO6pgEaG/ASCr2IT8CS9wghI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,79 +189,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.10.25 17:20, Christian Borntraeger wrote:
+On 16.10.25 10:00, Baolu Lu wrote:
+> On 10/16/25 00:25, Dave Hansen wrote:
+>> Here's the part that confuses me:
+>>
+>> On 10/14/25 13:59, syzbot ci wrote:
+>>> page last free pid 5965 tgid 5964 stack trace:
+>>>    reset_page_owner include/linux/page_owner.h:25 [inline]
+>>>    free_pages_prepare mm/page_alloc.c:1394 [inline]
+>>>    __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>>>    pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>>>    vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+>> ...
+>>
+>> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+>> stuck around so that it *could* be used after being freed. It _looks_
+>> like pmd_free_pte_page() freed the page, returned 0, and made
+>> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+>>
+>> But I don't know how that could possibly happen.
 > 
+> The reported issue is only related to this patch:
 > 
-> Am 17.10.25 um 17:07 schrieb David Hildenbrand:
->> On 17.10.25 17:01, Christian Borntraeger wrote:
->>> Am 17.10.25 um 16:54 schrieb David Hildenbrand:
->>>> On 17.10.25 16:49, Christian Borntraeger wrote:
->>>>> This patch triggers a regression for s390x kvm as qemu guests can no longer start
->>>>>
->>>>> error: kvm run failed Cannot allocate memory
->>>>> PSW=mask 0000000180000000 addr 000000007fd00600
->>>>> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
->>>>> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
->>>>> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
->>>>> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
->>>>> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
->>>>> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
->>>>> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
->>>>> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
->>>>>
->>>>> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
->>>>
->>>> Only when running KVM guests and apart from that everything else seems to be fine?
->>>
->>> We have other weirdness in linux-next but in different areas. Could that somehow be
->>> related to use disabling THP for the kvm address space?
->>
->> Not sure ... it's a bit weird. I mean, when KVM disables THPs we essentially just remap everything to be mapped by PTEs. So there shouldn't be any PMDs in that whole process.
->>
->> Remapping a file THP (shmem) implies zapping the THP completely.
->>
->>
->> I assume in your kernel config has CONFIG_ZONE_DEVICE and CONFIG_ARCH_ENABLE_THP_MIGRATION set, right?
+> - [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
 > 
-> yes.
+> It appears that the pmd_ptdesc() helper can't be used directly here in
+> this patch. pmd_ptdesc() retrieves the page table page that the PMD
+> entry resides in:
 > 
->>
->> I'd rule out copy_huge_pmd(), zap_huge_pmd() a well.
->>
->>
->> What happens if you revert the change in mm/pgtable-generic.c?
+> static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+> {
+>           unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+>           return virt_to_page((void *)((unsigned long) pmd & mask));
+> }
 > 
-> That partial revert seems to fix the issue
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index 0c847cdf4fd3..567e2d084071 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -290,7 +290,7 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
->    
->           if (pmdvalp)
->                   *pmdvalp = pmdval;
-> -       if (unlikely(pmd_none(pmdval) || !pmd_present(pmdval)))
-> +       if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
+> static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+> {
+>           return page_ptdesc(pmd_pgtable_page(pmd));
+> }
+> 
+> while, in this patch, we need the page descriptor that a pmd entry
+> points to.
 
-Okay, but that means that effectively we stumble over a PMD entry that 
-is not a migration entry but still non-present.
-
-And I would expect that it's a page table, because otherwise the change
-wouldn't make a difference.
-
-And the weird thing is that this only triggers sometimes, because if
-it would always trigger nothing would ever work.
-
-Is there some weird scenario where s390x might set a left page table 
-mapped in a PMD to non-present?
-
-Staring at the definition of pmd_present() on s390x it's really just
-
-	return (pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT) != 0;
-
-
-Maybe this is happening in the gmap code only and not actually in the 
-core-mm code?
+Ah. But that's just pointing at a leaf page table, right?
 
 -- 
 Cheers
