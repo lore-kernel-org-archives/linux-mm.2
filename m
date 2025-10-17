@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311D8CCD19F
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77AF8CCD19F
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A7F8E0087; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
+	id D2DD18E0088; Fri, 17 Oct 2025 09:49:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A0E8E0006; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
+	id D05908E0006; Fri, 17 Oct 2025 09:49:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73FF48E0087; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
+	id C1BD58E0088; Fri, 17 Oct 2025 09:49:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B1AB8E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F164F1A01D8
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:08 +0000 (UTC)
-X-FDA: 84007737576.07.9885949
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B02358E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83E9B1DA6D5
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:12 +0000 (UTC)
+X-FDA: 84007737744.23.C48A577
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1EC3E40012
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=UsZdQ3N3;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8B646180006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=2GmGpWKa;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708947;
+	s=arc-20220608; t=1760708950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=YDVsGftE6aJuwamkz4Ur/ANosowbY0ooFVtToKnljoc=;
-	b=d2CZcAXIyXX6Nr7dXHQj/dwri4g4ODmuX3ObeqljIc2Y+CoBRl2pNYxghRwlfwuJQqbyxi
-	AM3ueIcMca9/WpPmU1Br8SWAtehBD6klv6ANk7mDDKHfE8stdgBybtoyxL2ax1S+z7hNme
-	fQrjF1m7Aa75QxamDUxgsGWs28qPE9M=
+	bh=c+/ax8IVm8HQITY/oOf9lQaTpZiFmRjyNkKKSjWTGA4=;
+	b=sZYXajLMiZtByNvA7KexDLW35irzwWNHuphWJK2efUwZhHt5tCitmUnJ2k4sdHH0PaOqI+
+	8PiiTB5iaiJ3FhPJKyy9zTcdBywsBqESJqQa07uE9cIuTr+Ttmz4jAkoay5hJ5vPJKYYTV
+	fFqBYeNl5FOMxGrr/HCNNnZKBJzwfoA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=UsZdQ3N3;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708947; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=2GmGpWKa;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708950; a=rsa-sha256;
 	cv=none;
-	b=xdA1yBdIzhw3vqVaLUwQ1d3CRnxgEnQvT402XmJQf+HPuFjlrAEm6CTrGiweZYnTmk4bKh
-	USbARTbl0pKHFqOJ/2moRkbckiDheOneR1LpUkkBklNtzI6bsqLaOQP1t7Jcx1qBoVznqU
-	wzfIEjE8jrL4O+O/juR2c9kggl5wIDI=
+	b=3lQFxvG5Sr9Rsjubt+AU6PNecwOm/3PFlpgVL8KC3VmS1JBIbWR5in5kilVnSTYHlIRlSD
+	xQJMdFAl1L7QS2ztHpZ7MC6E+kLTOaVgexffPBvmp5fr8mn0KRK/tm/qb/ES07HDocjavs
+	vjLMyu2k6Sam5Cck1A0oEsvi4AfHm0I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C3894B40F;
-	Fri, 17 Oct 2025 13:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38DDC16AAE;
-	Fri, 17 Oct 2025 13:49:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 940574B42F;
+	Fri, 17 Oct 2025 13:49:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CBEC116B1;
+	Fri, 17 Oct 2025 13:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708946;
-	bh=lNulQj6Pf71EV1G9N3rtKDxmU4z4cUa0H7/cVUNj/bI=;
+	s=korg; t=1760708949;
+	bh=tVTvontwEkFnFaSP/Yd1+iVEaBo4mmfNXkjW+7MHkWU=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=UsZdQ3N3g1HA9IRop9e0zSxN4roBsUzfuXh2lOF7Ls0u+zs8T+DbQ/PIbdvi3tAUB
-	 QmRlkdqorz+9DT4OB5ssGlIv1gvHCWHSThGhzuH1HTR44BAshXSkft+F4USe5TvZ1M
-	 r5d8OpcowDu70hyNjetpCQQo/K2qgth9vKzGMuhU=
-Subject: Patch "minmax: clamp more efficiently by avoiding extra comparison" has been added to the 5.10-stable tree
-To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
-	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
-	akpm@linux-foundation.org, alexander.deucher@amd.com,
-	alexandre.torgue@st.com, amd-gfx@lists.freedesktop.org,
-	andriy.shevchenko@linux.intel.com, anton.ivanov@cambridgegreys.com,
+	b=2GmGpWKaqj/TN7DoK7ta/xAO7I1YRna6yYzc3iy3XjOLB2hT9uJ3ImcSAXQamVbBz
+	 gBSVRKLog00GGi8y38I3rNXrLd83rOf3KpXiLIOhIGD4iBUDIvP+hBf5g2UE68sm0J
+	 NnghUJUow81W4vtjLN66ctS2fcIshMbdy0oqztKU=
+Subject: Patch "minmax: fix up min3() and max3() too" has been added to the 5.10-stable tree
+To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
+	Jason@zx2c4.com, adilger.kernel@dilger.ca, agk@redhat.com,
+	airlied@linux.ie, akpm@linux-foundation.org,
+	alexander.deucher@amd.com, alexandre.torgue@st.com,
+	amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
+	anton.ivanov@cambridgegreys.com, arnd@kernel.org,
 	artur.paszkiewicz@intel.com, bp@alien8.de, brian.starkey@arm.com,
 	bvanassche@acm.org, chao@kernel.org, christian.koenig@amd.com,
 	clm@fb.com, coreteam@netfilter.org, daniel@ffwll.ch,
@@ -79,11 +80,12 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	hdegoede@redhat.com, herve.codina@bootlin.com, hpa@zytor.com,
 	intel-linux-scu@intel.com, jack@suse.com, james.morse@arm.com,
 	james.qian.wang@arm.com, jdelvare@suse.com, jdike@addtoit.com,
-	jejb@linux.ibm.com, jmaloy@redhat.com, joabreu@synopsys.com,
-	josef@toxicpanda.com, kadlec@netfilter.org, kbusch@kernel.org,
-	keescook@chromium.org, kuba@kernel.org, kuznet@ms2.inr.ac.ru,
-	linux-arm-kernel@lists.infradead.org, linux-erofs@lists.ozlabs.org,
-	linux-mm@kvack.org, linux-staging@lists.linux.dev,
+	jejb@linux.ibm.com, jmal@kvack.org, oy@redhat.com,
+	joabreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
+	kbusch@kernel.org, keescook@chromium.org, kuba@kernel.org,
+	kuznet@ms2.inr.ac.ru, linux-arm-kernel@lists.infradead.org,
+	linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
+	linux-staging@lists.linux.dev,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-um@lists.infradead.org, linux@armlinux.org.uk,
 	linux@rasmusvillemoes.dk, linux@roeck-us.net, liviu.dudau@arm.com,
@@ -98,32 +100,31 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	rajur@chelsio.com, richard@nod.at, robdclark@gmail.com,
 	rostedt@goodmis.org, rric@kernel.org, ruanjinjie@huawei.com,
 	sakari.ailus@linux.intel.com, sashal@kernel.org, sean@poorly.run,
-	serge@kvack.org, y.senozhatsky@gmail.com, snitzer@redhat.com,
-	sunpeng.li@amd.com, tglx@linutronix.de,
-	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
-	tytso@mit.edu, tzimmermann@suse.de, willy@infradead.org,
-	x86@kernel.org, xiang@kernel.org, ying.xue@windriver.com,
-	yoshfuji@linux-ipv6.org
+	sergey.senozhatsky@gmail.com, snitzer@redhat.com, sunpeng.li@amd.com,
+	tglx@linutronix.de, tipc-discussion@lists.sourceforge.net,
+	tony.luck@intel.com, torvalds@linux-foundation.org, tytso@mit.edu,
+	tzimmermann@suse.de, willy@infradead.org, x86@kernel.org,
+	xiang@kernel.org, ying.xue@windriver.com, yoshfuji@linux-ipv6.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 17 Oct 2025 15:48:29 +0200
-In-Reply-To: <20251017090519.46992-5-farbere@amazon.com>
-Message-ID: <2025101729-giddiness-scrubbed-89be@gregkh>
+Date: Fri, 17 Oct 2025 15:48:30 +0200
+In-Reply-To: <20251017090519.46992-21-farbere@amazon.com>
+Message-ID: <2025101730-wannabe-kilowatt-1f94@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: quzwko5dme9km9mpnsmcsm154bnc1zf8
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1EC3E40012
-X-HE-Tag: 1760708946-387782
-X-HE-Meta: U2FsdGVkX1/+IFTCKwV4c0GCYeIva5TeMdXyIsGzrY7uO3m9qWtlxQMwC8jzbCAKgOhUziz02+sUjelzpT4y9PPSxHq14Nya1iAiIBl2BYDGI5J7qn0o2ozquXAPF0SMiYc7cS0yT8SPqbNZvJBJmZNSwUqXB/XMBkXq+OxfpSWpjkhDH20HM/nbwYE9kuBLVW+vTx0MO9ADrRISc7JzEQwDICklhmN92uyJ59KQRNfdXORFOY8OiwW81JiOheXqueYb73KmoFgnisP96+zB+Vx0faaf9qfk/Z1KpD0ltQ75rvZqdPfj4RlXN4kKOG2NkCtxk12+Cq4zD/e8q1NEbo0NbuWLZoU+TLBdie8lmOnQRWUNYIro98Rt7H89q2q8k5Dhkph/XnJ3VIqKl4LGlGCSFAOmEs/ZfE3gkgpKZoBiIN/WR8gvmWCQZ5gsC1AbAZFrYodxwx1FdNnQhe1lSoa/fj/BXodJJ0DtqVhta4GA61m3FGA6zn67pTqVk4KSUf1dU1hOBZ5HTfgCEiraH3ZNLZb0YM1HexOJDuCGqpLa/QfBbezi6/uX88rmJxTZFPZ19ROaAY5ztGmXckG95jsXgPQPCniO72T1UPvhzY+T39hYg/6qN0SkyV7lPq4LslivCMz5ZZGTiUYs4RpqT90GRAgMOypcMERyXZz219/QsBSIfGLsfK0coplyJynq3yxbZfUHRysPb1+xThLSg/Df+VyYCr3CEL/D9Szfxe15HuIM6e8M/wGwcR5qcmtogg99+Ub3UydiFMqHVtGAn7W31Hq5TJzzdBmYcdqvTf4TGPP4GTZi1epGN9oylSsKf/aCX27C7HkE58h8fin+sKan0U/RzNOWz0c2EgLnxrj2ApUYzzWPHgWHbtKYcaSDWVEuETGF+QO5KrIQQYoMK+/Y0/gZOVLVAQFai0UtzSA7NjK5IFgKiN/PPhKGsLIGSvzMSOqrF1ZYgenbvbE
- YiLdoEXf
- BxyBnSiBYe+Vi1UugHgsxSEiIFqyPuhrJm6w0jV5bBBIEDubVERrSF+LxvkpI8bQS/1czgG+epNJJdlDMMsp9odr3JlOmsp5op9W6E9qH6pMTciJnZIIBC6/WJUxOySesf0H0HKhV3SNKr6nYs/EsmxxH/FQloqVFPgzs0MJdSL/PaisBLSO2zNBjIZJUQv/OILU3iY82PYeisHmcDwepDtX/2A2Q/Yws45SzBpYGgb5xzQdwp/HZrZbzPHcmBKBxTTFz60/XU10diIvMk6yGptke1m3HoVf3k43+SzkG17AzpTIJUs9smO4G/0zpkdmoZ/fe7OHQtLUgf1XaopYw3uFQ74UHRLQbxgbhPLj4MK06PXMCK+B8CRdwIVgyQv1lMjo22IRHT4XaOkYfCZf3v2jbF3r+F9fYOvJtUPRVC9NbdDT1iDeFdoeO1OtEB2Y+3YFOl1wDixnW1VZ1eFHOHjH1cVsVEejkTAj+4mN1xsWv9/G5+wot08AmvObroTY6DMWD1tM37oVQtuHf3RZL9fxt5wkRQMMCRnqj9UtyRASnWhcHrI7fub9K/SCR+aWYM8Z0N3a5xmP40KUKHiixbsxTyitj454Ks1jUnLb1UCF409iT/rOZ2R93190XVd/IOZXmtV2KCH1ORGdA/i8f2kZgVkbsaJU6UZSDFp/sZy/9ERghIufKigQ3Ge3bNirIoX8gk8adfDt3XMyTkYzMKyfp3ENlMEpVsqRNQjYSgP/qnd4On104BYnZHE1k5cYuxu9yWvED63DRI94ZYLSyMw7Rb12wedhOBXVwJoDSS1bDGIWrhw/r6pAg3D+yBs0enLA3kAS9xKvTvshUBSqGzlc+j8lT4agsb6WCUmbI7o4lA69Wx4y08teKIBcC4mLjEDp/nvIi7EMo3x/ACHxmiP+tKBzOAgA44qMsw68bdXmV0JeNOyKJtG7tqL9m03lbmKRxaXKmmeUSgry64VGVlMDFTqkb
- BTH7QR7W
- 0qUGKRgejL0hyOuhXaV7RwcRpr5c7MYdvdzKklFYQvjG7vpzqB3WgV/8lpdh5A6TvGdcMOzJhkf580MvoHLaKu+09pvlh6C5wqvNg6WJ0oBeio4cjQLdZYL045CWg2+4st99ZV4Q9aOAH+8LT7trkkVEyDdwXaZCpH4MpsW8IHlO2ZLSRBxPXZjiGNG9Obnmy3F01W0x19F9mt8oy+BH5u51QfV5iy4tKtq5IouKaVWYqLabVOgdi73HrY078Znpqz5PVZeQ/zFRcH09N5WwqTsoqS+Wv/dsXoQU7YWpJQyxUra3WwF5EEfsIua7i1feO1ddlTTqtZTwSKe8LLvJW1tuK1LUe1cPkBNXGprtnq+FEobaX7Dma/hm9rJVxDtT7x7XV5X5/Y6j2vqHOfjNJPQZwCHUJ23iNPSY/gfOg8y4cr+KBGfjY600qZNBh+WjIMZGyUocOXlPrDo48k5wTUG6niDZwVLjXNa+Gk0EEOQMw2iuED0+A/S3JO6L3/1q4OZIV1GjUN6qZveMdVgMm+5fE2uusGSdz1zYOfcETOxmMyi0aDjgtd4iO1iNEgGpbca0xzrSnytOXTqeGlVTFu26JAHEVTWv6rYhONC5g0pe10G2Uqv2SdY8VnIuY1Z0cLfhHllp09aGyfJevI3oDDheNwTNYsRvqEzbefPV1bq9tIETGxVnVzQLru9VXRnJjoaOfqEYN9y/sxHkrrU1RLTPr4NrP5nLQGaZqGUATDEE/04yRZ2LppUGLp1xioyR6XY4kPp5u25e9Aw3oyCcZ0Prqav7mKGWQIROQfWSwkVa/f2S7uqqPJC3oTYZB+ynE/t/NFRNx5UDBIctmiFXqd/VLn7qfbLOvFGHiMppQKBIa9/5dnAy8xxKWg20VIqyoKd7X4FTlpITIOxVLF2Ihb+8ZfdTDdgkYPVR0q2mmG9LtQ009OKpK2VC2N/JPo5mN7+1NnyaPZsWZJ+kuuSUqQ==
+X-Rspamd-Queue-Id: 8B646180006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ih1x771ajqadfumqya9r3npwxgezesfo
+X-HE-Tag: 1760708950-966391
+X-HE-Meta: U2FsdGVkX1+pGySgZ19ChhCeEukyU/yrUERQjlD1jfqb5Cv3DHIVaEqlNH0fkzVWNWkBjS0hFdvGncnuRlWcMQWN2H0zp2v5Mf3tISFkxjPvZOA/P5DJT307c8pc0XseoJAiIglPOHwWZ6gT2K5gi+jeUlNmIYy3kPPAuvv/LMdDFfSjkbeUkO57Ids4OIq/n5uFmDTv5CXgGo6GAFNlcyNKIFnD7sAU/dsOyfAkqv7neCbDxxirKo9THKg6EN/MxI0hnNnA0Dk9qeEg9Jtaa7JTU3ZAGF9zCEYFrOmLMMWj8Nq4SlQIYpE2IAhumBZumwsY9qceJTrOVDc9N0XH0NHDWR8PizvH9UJSXSPRWSSKELflK8bUq9BCx3rRLgHUiepUex3JFd7p478SVkzNImNq3cyAPGkt7BT0dZVzcf++gUoPdnhz7KSy14O6eCeNn8gJTrYfPwKA7wpB/r39Se0+6bBcWJMACs/jO2l+pYTJpUiSYg9DZLbazvHSIU+neimLtOcKYQEl7v0GHfInNsxM00nze9LEQg44g14dYGEyJTRA10iltRl4rgGZa+Lj3zioQuHjlKAtJZ6d3zfAqeFSKayMpFXtwgZvIL1QRBB8JHrn+fBNhnCETOQZF/rDoUGixtrO/F/Diti8Ao/tHBE6EXXWyA/G1mtI0JELaM5kpibd4JHUNWP2ciKRU4MsITAEqOw8OVn5Qr+jtjGLaJo+h3ODMajXlakzhJRo0ccjyFJprYrw7zoq0jmSMfaEUZWHxTgpXXJ90e3xCdASz7PXQXInzr4jWv5PB+xr1GFb+Th02Tg4VETFZH1Axv3G9bOGUqPB8v6qUf5k9c2PnSZTzEibBY4XzKObaj1zfqD2TQHQ6Hr5ecWxnySAtL2NvXF/RuCmVSxFpGxWOQQyIVEn/BIo33B9MgkjQVdinfG/B32qACpoVe5Ub9til11byfAG/HZZFoGBiCf1h40
+ Jg7xXOgT
+ txicgg5DelqlVnm8iqN8t6bkMyfNcQEP9ahek1+gvJYmx6sHiy7kEgXaB73jKt+kre4E8TP3JnWsL4jmNAFvnf49Jyy03W5ANqM4qa/TtpbLywJi2Rx02Cc0rp34h5jW17HDZ7s0GQd9BVVbzvtSeqbAZdeCrc4egNhY2flafF2lPi+aaFl0p5UD+wLKLKMAkFzFiDGQt/ISCWaF+izmWcPW/wlNJfqCnxsJ22q2bEbjHhpHKwnqa7QmHkM6d+F/t0uDz+q5vjlhLuLCisMsoht+e2F03p2qpQddfWUBQTjSyr6wYpt2fILwqiNo+1ajmr1OlfVCdcnRzH/1RbRwZc+le1rHxHMQLAQFUk75Rle6Eo/t2tdgzsBZLpqc/HbZDCGUYGbHc7A+uJN11GKlBz7rtCYFSXEhy8KBZax0G/5d5Ik8+b+mht/v9eLfeIAMwRA4XqYar6YRLglHZObG65u5iql7CPwtnpcEZB8XPnSJXIbb++XcWCJ0SwfOR4n23Q7Pb4ot77CsWx+N9UrGkSYxWKHZTJDwiOdakb4pEnDXbwhyo4ANF8+ACGcjjHJxrzatOntveINFzN2QRM6ft3Gu+74UXNXtpKZzFFM9f6NBx/G4IzKPLlSsR0ed8zXC67bqnnOGyihEDMOvjpMyzvMSM0IQLz+PdTUoMvqP87/UUcZS9uh1cRt6aoPVZPiaCUm/8+WkTunkwtqDyNE2XB8ULRd4qTmjXfs3IRVGtsc2rsI3Yc9355M4omjWBp+cDDfR+iAwQDJgPhOVOMIIywwZNqT+e157lUY4G8ooAB3qS3EvFVHMGXiSLjcyAhSsyFZaYPpHapZmTxoSmASdVsF8uaWdOx0gHS/dC4rq6Pj6gzJWrZ5U893+FpX9hX0VH3Gz64Jq29ZYG/3yJwV6el2r0myjwBJyvp4RStrvqW2lzR3n9RhX55FlXf8SEuhUURODTaVxThG2I3OYqf0kVdyToIECN
+ 6BeRtFMg
+ EVLHNFo3oiUhiYVGWLZ15jqZ1E3HFAQkQQdTvO85tsysZB4tYEJEurCPeQeSjROnhUwquInijrAOPIXqt7jjDugu7LdF1Yq8nWprreg89xaL3rtRkaqjFQNCEoJw03TU7X7/2DceKNhkF+bE4ilOeCa43VZdMQmR8GdUDL8BaW0Kz4PH4D2VrD89PHYRRYNUV9fZRtwDr77fX/N9F0SJp8Uxo4JzNTNELeM8Bia7kabnKga9Qx1ZBXR/YOWvpDNKE4MSi6a71Q9xKErk5k1Vpp2pAibuzeO3lGLgXvdR3wGXhxLHveKmGJwKYpoycAjmPz04ZHpWDPUOcit2OQ6S7x3Lk4cGr+ZDQqxBFkQrOB//h8B9oMvhvOZ/a0vuF/iYfAuanPucDAnL6eAo1ORVxrnxiJwLTxQaFxlFFMh78nvPu0dw6O7cb1hAeyG7qRdN5KwB8CzG3+YjUuLbyHAkuEAIwSOPJ/7MsaSNfjpsDCmNt55/gWT/BM/MChY7zA8/qVX9p184ukaFFa2dfVXCE0T4LVpTMTb9vAF8dUod0hg7vnwAPNyu5dq4q23OJZbEaK6HJ5akHmyP18D2Wqq+MJ0YoU6hOupBDPJa1Bix6XqqPmr1yrVZdONmHsRIEi8LvpSE4Evti29E+GpF41qJtjAsXArDo332cn8PRWng/ddDS1+jCEb4VnbRbG7FECfSUzekEWSUXzF62ct0f0vSCRzN4LNwKr8RLgIrUGGRCiRZ02mwFPEhB5u8aEFbrK0GDobDTuPHW8UzzAZjVY7sppoigMi2IZChPgC31wXVCBk5M2tDhti59LjihzpnvfA+x+0Gb/yQbUXtmnoQE2ebNd1yjPucdosEQtmFYJEaOezFa7yBWHGJ52TjgUdMlyQI5ZqQBcPyP7DX+HuuSx7fBWJFRtkVXZ5n5O5CKNWut9c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,23 +136,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax: clamp more efficiently by avoiding extra comparison
+    minmax: fix up min3() and max3() too
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax-clamp-more-efficiently-by-avoiding-extra-comparison.patch
+     minmax-fix-up-min3-and-max3-too.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=378230090=farbere@amazon.com Fri Oct 17 11:07:07 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:12:01 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:04:56 +0000
-Subject: minmax: clamp more efficiently by avoiding extra comparison
+Date: Fri, 17 Oct 2025 09:05:12 +0000
+Subject: minmax: fix up min3() and max3() too
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -159,185 +160,80 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Message-ID: <20251017090519.46992-5-farbere@amazon.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, David Laight <David.Laight@aculab.com>, Arnd Bergmann <arnd@kernel.org>
+Message-ID: <20251017090519.46992-21-farbere@amazon.com>
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 2122e2a4efc2cd139474079e11939b6e07adfacd ]
+[ Upstream commit 21b136cc63d2a9ddd60d4699552b69c214b32964 ]
 
-Currently the clamp algorithm does:
+David Laight pointed out that we should deal with the min3() and max3()
+mess too, which still does excessive expansion.
 
-    if (val > hi)
-        val = hi;
-    if (val < lo)
-        val = lo;
+And our current macros are actually rather broken.
 
-But since hi > lo by definition, this can be made more efficient with:
+In particular, the macros did this:
 
-    if (val > hi)
-        val = hi;
-    else if (val < lo)
-        val = lo;
+  #define min3(x, y, z) min((typeof(x))min(x, y), z)
+  #define max3(x, y, z) max((typeof(x))max(x, y), z)
 
-So fix up the clamp and clamp_t functions to do this, adding the same
-argument checking as for min and min_t.
+and that not only is a nested expansion of possibly very complex
+arguments with all that involves, the typing with that "typeof()" cast
+is completely wrong.
 
-For simple cases, code generation on x86_64 and aarch64 stay about the
-same:
+For example, imagine what happens in max3() if 'x' happens to be a
+'unsigned char', but 'y' and 'z' are 'unsigned long'.  The types are
+compatible, and there's no warning - but the result is just random
+garbage.
 
-    before:
-            cmp     edi, edx
-            mov     eax, esi
-            cmova   edi, edx
-            cmp     edi, esi
-            cmovnb  eax, edi
-            ret
-    after:
-            cmp     edi, esi
-            mov     eax, edx
-            cmovnb  esi, edi
-            cmp     edi, edx
-            cmovb   eax, esi
-            ret
+No, I don't think we've ever hit that issue in practice, but since we
+now have sane infrastructure for doing this right, let's just use it.
+It fixes any excessive expansion, and also avoids these kinds of broken
+type issues.
 
-    before:
-            cmp     w0, w2
-            csel    w8, w0, w2, lo
-            cmp     w8, w1
-            csel    w0, w8, w1, hi
-            ret
-    after:
-            cmp     w0, w1
-            csel    w8, w0, w1, hi
-            cmp     w0, w2
-            csel    w0, w8, w2, lo
-            ret
-
-On MIPS64, however, code generation improves, by removing arithmetic in
-the second branch:
-
-    before:
-            sltu    $3,$6,$4
-            bne     $3,$0,.L2
-            move    $2,$6
-
-            move    $2,$4
-    .L2:
-            sltu    $3,$2,$5
-            bnel    $3,$0,.L7
-            move    $2,$5
-
-    .L7:
-            jr      $31
-            nop
-    after:
-            sltu    $3,$4,$6
-            beq     $3,$0,.L13
-            move    $2,$6
-
-            sltu    $3,$4,$5
-            bne     $3,$0,.L12
-            move    $2,$4
-
-    .L13:
-            jr      $31
-            nop
-
-    .L12:
-            jr      $31
-            move    $2,$5
-
-For more complex cases with surrounding code, the effects are a bit
-more complicated. For example, consider this simplified version of
-timestamp_truncate() from fs/inode.c on x86_64:
-
-    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
-    {
-        struct super_block *sb = inode->i_sb;
-        unsigned int gran = sb->s_time_gran;
-
-        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
-        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
-            t.tv_nsec = 0;
-        return t;
-    }
-
-    before:
-            mov     r8, rdx
-            mov     rdx, rsi
-            mov     rcx, QWORD PTR [r8]
-            mov     rax, QWORD PTR [rcx+8]
-            mov     rcx, QWORD PTR [rcx+16]
-            cmp     rax, rdi
-            mov     r8, rcx
-            cmovge  rdi, rax
-            cmp     rdi, rcx
-            cmovle  r8, rdi
-            cmp     rax, r8
-            je      .L4
-            cmp     rdi, rcx
-            jge     .L4
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            mov     rax, r8
-            ret
-
-    after:
-            mov     rax, QWORD PTR [rdx]
-            mov     rdx, QWORD PTR [rax+8]
-            mov     rax, QWORD PTR [rax+16]
-            cmp     rax, rdi
-            jg      .L6
-            mov     r8, rax
-            xor     edx, edx
-    .L2:
-            mov     rax, r8
-            ret
-    .L6:
-            cmp     rdx, rdi
-            mov     r8, rdi
-            cmovge  r8, rdx
-            cmp     rax, r8
-            je      .L4
-            xor     eax, eax
-            cmp     rdx, rdi
-            cmovl   rax, rsi
-            mov     rdx, rax
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            jmp     .L2
-
-In this case, we actually gain a branch, unfortunately, because the
-compiler's replacement axioms no longer as cleanly apply.
-
-So all and all, this change is a bit of a mixed bag.
-
-Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Requested-by: David Laight <David.Laight@aculab.com>
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/minmax.h |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -38,7 +38,7 @@
- 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
+@@ -152,13 +152,20 @@
+ #define umax(x, y)	\
+ 	__careful_cmp(max, (x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull)
  
- #define __clamp(val, lo, hi)	\
--	__cmp(__cmp(val, lo, >), hi, <)
-+	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
++#define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
++	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
++	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
++		#op"3("#x", "#y", "#z") signedness error");		\
++	__cmp(op, ux, __cmp(op, uy, uz)); })
++
+ /**
+  * min3 - return minimum of three values
+  * @x: first value
+  * @y: second value
+  * @z: third value
+  */
+-#define min3(x, y, z) min((typeof(x))min(x, y), z)
++#define min3(x, y, z) \
++	__careful_op3(min, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
  
- #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
- 		typeof(val) unique_val = (val);				\
+ /**
+  * max3 - return maximum of three values
+@@ -166,7 +173,8 @@
+  * @y: second value
+  * @z: third value
+  */
+-#define max3(x, y, z) max((typeof(x))max(x, y), z)
++#define max3(x, y, z) \
++	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
