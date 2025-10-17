@@ -4,247 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46B84CCD19A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC42ACCD1A2
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:05:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A841A8E0054; Fri, 17 Oct 2025 05:03:57 -0400 (EDT)
+	id 04DB38E0055; Fri, 17 Oct 2025 05:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5BBB8E0016; Fri, 17 Oct 2025 05:03:57 -0400 (EDT)
+	id F403F8E0016; Fri, 17 Oct 2025 05:05:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 923BF8E0054; Fri, 17 Oct 2025 05:03:57 -0400 (EDT)
+	id E2F028E0055; Fri, 17 Oct 2025 05:05:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 754D78E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:03:57 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1802C87AC6
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:03:57 +0000 (UTC)
-X-FDA: 84007018914.13.0FACD6D
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id ADDFD100006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:03:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="UWb/bP7y";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MS3YvpUo;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760691833; a=rsa-sha256;
-	cv=pass;
-	b=XC4xPbop/R3VkkHbH7mD6qOO7tAtG+GgoLLdqWSiiUs9F9D6MjEBijGnobaVmwan6/Olhk
-	YLVv8/a7YCVzCwXHxxF9LcSb+ggKJoSRO2BZMAKap7Fj07RsgIQQiGWFB1UUzXkP1jfg/n
-	xje4+mTA6WqgOazDF4ZRUKHQJ/k32xk=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="UWb/bP7y";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=MS3YvpUo;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760691833;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C19028E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:05:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56FCBC05B9
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:05:06 +0000 (UTC)
+X-FDA: 84007021812.11.741D902
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A8437140007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:05:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fErQ56rG;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760691904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbCY97W87G2lEKThQVst1nRgGL3XdD7eCfrGoBwyeyo=;
-	b=Sx6bbtWlcTFyPgW5bVGA5GvN6VZEFV+2a2kC86L+CxhD6d1PBLc+OyA+gi40n7rnksX5Kr
-	EDYe4t4t9vcK1P+2BAVQoMfqvPWPIMU1/dd+mUz8MAUh3nhDwIOdyXO75PSrUKabwRYuJI
-	L2e3tzu+XYP7W4+tOvWxFXlPbyIBTrw=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H7uQAX029351;
-	Fri, 17 Oct 2025 09:00:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=KbCY97W87G2lEKThQV
-	st1nRgGL3XdD7eCfrGoBwyeyo=; b=UWb/bP7yWVnTE8dV5aZQnTNYcUorA8bxSd
-	UXwcgNMGBteJ8oUNkG1t3G6pc6+wRQc4KajrG4HXX/gK34RalrAOmrCpcOAwpOak
-	lGTVFLqEyDCE1A8mqlzLjUrqj7j8jWLmQK7XjTiuRxT5Q+8itrXHZMew/QoNFTvH
-	s284iBkWxEhFUtfUxUkzksf5vyCcAs1DGWRSBZZyN9XbNiJ/yc/rk7z0nawRIYxi
-	ek+BoAKil7zs4+4pU/H57pdDYhh8kYeUnAC3WlDkNP3nBR7+ekgP0Kmlb0feTTw0
-	JXGuzuAlabKR0Z+mktquhx/7qfHDcgMBugwgS9Xc92fZpMQfXmdg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49qdncah4e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 09:00:27 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59H6Ww2p025967;
-	Fri, 17 Oct 2025 09:00:26 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010002.outbound.protection.outlook.com [52.101.46.2])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49qdpju07d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 09:00:26 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JMlNUm4lIADQrCzDlcWilvreG6jIedwvcxCHBxWIPRTv2y3elLU38zXmy6ey3uGzb/tk+7s0gFCbcUbLebIFuSLGxyoUh+9eqXuzPQMf9tRAWHFSvieL4r6QohqUU3dxPFJvQNIe+xBZdsXVQUOBEmnU9bEA1E2ID1q80UCIQoL6Kb2OWcBbIJsSx0sLFyHhEuFquwAnhM5haUbum/KlcZNwMQX11d6JE8ZD0lmRXp1/6moq9zheCey7210IKEmGRr8UMK+j+RftRy6KGJHchKUEU8+0tmGnyPWx8xbQMEiOvga/hhQd6KLe1taKRdLDxkh3Tc7DbxVesKFY/keJSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KbCY97W87G2lEKThQVst1nRgGL3XdD7eCfrGoBwyeyo=;
- b=la6VZ3N5H2I/hGMDFh9osnRFz9rR2FAoLbeqFqnjB/ePxQE20sX2hnUDv6Pc/u1OQvLOlu8waheatchgjSh9E3we23d/Aoa8u2lGF3ACAOhMgdKIgsLC9J6WV8iVYXn0qf3KfE34bdPsqL3yAuYkX30hnaoRj/wfcq+pJCJCaBdXswFY9pvvjyBTM9fENvfnOrLP2DEOIUDpHC8ROvDy/cKsCmY4xn7hHVowj75wtkxzs7UWyYLO63wovZPjk061ad9bpc4zsmDL29bSN2Jo2Ol2D6GYwLRKWlUS/p4Socsei7HEXXa/ihoomPj6kAVoYtOvHrh3eBi7eGnAll5tQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KbCY97W87G2lEKThQVst1nRgGL3XdD7eCfrGoBwyeyo=;
- b=MS3YvpUoqI+7tmeH4k/aVIb9ky9V4EmVMjRErwnDgEF4xSv96MImzwjpcV1Wv815edp1O7QVQw4pSUblilEqY+RyqlDT7HV57xT5cZzo0YuwTDqQG6gFJzyOlcWHs0fy5cg3cDd0Erhy7C2epUuZPzbQocQwly/I2zZE2kx22ZY=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS4PPF3B1F60C81.namprd10.prod.outlook.com (2603:10b6:f:fc00::d17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 09:00:22 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
- 09:00:22 +0000
-Date: Fri, 17 Oct 2025 10:00:20 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Hugh Dickins <hughd@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
-        minchan@kernel.org, david@redhat.com, Liam.Howlett@oracle.com,
-        rppt@kernel.org, pfalcato@suse.de, kernel-team@android.com,
-        android-mm@google.com, stable@vger.kernel.org,
-        SeongJae Park <sj@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jann Horn <jannh@google.com>, Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] mm: fix off-by-one error in VMA count limit checks
-Message-ID: <098b030b-9d5a-4b1c-ab44-55bad474e70f@lucifer.local>
-References: <20251013235259.589015-1-kaleshsingh@google.com>
- <20251013235259.589015-2-kaleshsingh@google.com>
- <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <144f3ee6-1a5f-57fc-d5f8-5ce54a3ac139@google.com>
-X-ClientProxiedBy: LO4P265CA0272.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::12) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS4PPF3B1F60C81:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4c0d4d3-835c-4a70-953d-08de0d5b9b00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1byi+RaGRGwyLcbzaOpqWYtYiT4sznK/vcOwlABKkLaVX4NVkMMDFTziAfCl?=
- =?us-ascii?Q?nS3ca1gL0vwYOjJJoOP0KEgZWVYXNNWgonNn5HT4Y99cDAwfEPyBXzxR/pAA?=
- =?us-ascii?Q?HJUj/KwK1gZ/D3teErQ99iaRJtJKD7z9XaMxuGkHy6is0lZ65rH13NzVjJq/?=
- =?us-ascii?Q?o0pzkvRRvNwd82s1e1S+ML5HgjQq3JrTjQgTnWQPgcWYfe+oNOnPmcnduBZU?=
- =?us-ascii?Q?S70tZwZb1Mx8W/HA2N/7kBp7tEgDm5Xlh/gv8So7B8bKR9Aom2v7Mh+QAj6J?=
- =?us-ascii?Q?x8vXvGvaVRXN/tg3Y8plJqo32G7jxwvzGXHGEeXnwtweY4+ta7007ewBvBVl?=
- =?us-ascii?Q?WlHKn910pIh8CBlOtcQ5hu7TOuxVGC0uHmW9NvaOdP5LfZuLRTxmO7QnCcP2?=
- =?us-ascii?Q?n3RKgeWBHck811gFHrqSsL/6w0lPHSeFrJpCoiqBiiUi7D6ziJbxhyTWQ5Ip?=
- =?us-ascii?Q?pFpFZmOkY4ALhRwNBFZav8Wu1e3LHoOCCYXTfb+ZqCczHnCUUK5Yn7W0iTE2?=
- =?us-ascii?Q?tA7CwYlXKAb9aXxEbFSQyjLpRXnWPG6x26RYrW1PYC61yu02Se1AjL+vdL4M?=
- =?us-ascii?Q?q9iNfruw3+fH9ohyDU1yPJ7ptyO0UanY3wCrgMYYepVcVMq6nm2Ta+gvRMOc?=
- =?us-ascii?Q?tOf5c5kaiLSBnjRXmVlk/URri/1Wav0AnxLBRebZllNYHU9o1bWJ2X4DjpJ1?=
- =?us-ascii?Q?dxiQ1Oeo7RPhZg09b+GruTdl1d4+3eh1NMDYbER6fjjSBQoJBxfv2IetIru4?=
- =?us-ascii?Q?3Vi0BZf6KF6j7NHMuZ6d7rlmdUevEoyXQDm5nJhqMHyg3/Tan6IG+vToWPbi?=
- =?us-ascii?Q?KhDfYb5Y/n0eRQ8yhyYzzCMRnMOObNhej0TZRxjTy0+d6bAeVkH4UJjHGj0s?=
- =?us-ascii?Q?GaUFByV3fads2e/nR/Ndpy6CwVf+v+5K41jrifXCYomTpykFjdUI16Ih06Go?=
- =?us-ascii?Q?Xj9ttIy/JYEX6PiA4eqgpo8sEEVa7Nh5JeHBUQrcKP4eX/r88bl67QO7KHPQ?=
- =?us-ascii?Q?PdMSf4crm2lnL6IRFVasfXJ4KdOdrxCb2ueA7+nJTp+5WUn6yThldgsWakxK?=
- =?us-ascii?Q?giu/rocGH7DjaNwlZR9v5rQLf9YFC6sO47jujgKZSAUOgjlUsWaob3u8Mwta?=
- =?us-ascii?Q?uh8jl+1n3hLTFbPfgZf4DzY4T+9h55GH8MNirZ7M3i1yEyxvgnYEhb7PeDWI?=
- =?us-ascii?Q?FF34OS6Fb2ts1XteDdcSfdeXPiSxSDVKKtapzWuCTXSLUvo10becxTg0QEHc?=
- =?us-ascii?Q?3ynMtJwg86Zx9Q80ZV48TE9yilXsaAlwR08Xt5WMTQpJKf9IcaPjEHNhUodj?=
- =?us-ascii?Q?uh1zgrxriyqDzPW/xjk+b04C5OalUml7xyRYEUlMheSPiX+pzqHNBC0YXGmZ?=
- =?us-ascii?Q?Ziuh527tHJOd/Xlr57RRYUsSzJtP1hwRnRkVlYHZ5R+tbLCAhSc0uQwTev6d?=
- =?us-ascii?Q?seJ7LFLNH/YirOd3R26OsoAMAeHVQ/FT?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wK8snhsK2yB1EKw/RXiRRFmcUGsbgOV7JVQDbx/d2wdEMXKTy29t0++JZ7W8?=
- =?us-ascii?Q?j8AVL0jWV2RYe8t3g95mWakzMMOc7c2KN+rjH19zUjCWvprCgNaXSFeRfC98?=
- =?us-ascii?Q?UIL9b467T+UkxtqmIB/U7TnWT+rhlUsy5mpPzKDJNeS7TqgvoX0a/DAPjVVD?=
- =?us-ascii?Q?Kchc5gAP0pSWkTEqoPEVv4EYVYeuOGl8T2OBwSvAZZbZ0AH2n2I3eAT/Lq9S?=
- =?us-ascii?Q?H/Im/twMVm0OJ+uTcj9/Z2MNcYFhf+pjaxr4dYCQ6XbSR6vcrnMtiIR5Km65?=
- =?us-ascii?Q?uohcaNeWfuVsHOwUigeqsFfEo7e6O73vdL1RfgFU7sMB9cp7ldR6I2mxlbvO?=
- =?us-ascii?Q?uMAYp5DT4rP7XP4zPmxA484icS8vwkNA33NOiYxmySXAYTVO/IYJGbZrxAIS?=
- =?us-ascii?Q?j02EvdY1dk4PU7IlyC6ax0PxbpbDbuKq0579nmwFZmXkLgKqF5ooU9BkijJv?=
- =?us-ascii?Q?tSFroMmE1IgP/jw3ckIxu0SULJViTCIYGqS6/RO9I/6OCxbC8EcVxfT8aIWH?=
- =?us-ascii?Q?keoqMpi8J1dJUQOT7bkAlotY1/xqrbweiILFMfF4t3cgSffDFALxkBNSBy1E?=
- =?us-ascii?Q?FbjuR07f8LHAW2X8E/Qp16efzfmEaG4qMOHdO6jGmRd7rmVdvAo+8n0dfYU/?=
- =?us-ascii?Q?Q4OfpYHCEmhTMqrHa8W8/MWI8VdvbLTbRJA9GVqTzbghtOzXUgzKZlsPmi+7?=
- =?us-ascii?Q?jjAp9Jm3UtykeyOizHrBDzyoANkFO1XSYkIABiRroQuxhbQo08cw7O/p62SO?=
- =?us-ascii?Q?E/cLKXkXOoTbtg9vj8dOp9qYxfDep5XoQ9/JDlsIbHAUby8sUzenr8YWO4gl?=
- =?us-ascii?Q?uUsg/b3tZzUSE+JGfK9pyJ17lkYscrBVQ0V4jSp3RKNAPdCsG7QfA+CiZVsg?=
- =?us-ascii?Q?ZrgfZLOKjfzM/hZ0dLbhWEbe8N4XC8Q2jUkmdsF6RR7zJ1L4B0nMdk3EJlwi?=
- =?us-ascii?Q?mNoVye3yXS4W0ven6MMIz4lt5WnXzk+jQknKjGY7LgmPdMwN/8P/j1x8by7o?=
- =?us-ascii?Q?p8sdskJS6C8g6HSAWxxvjYmZBczvsJJ77h2hwPYxmvSXk7MrTVmd9lx7UtDF?=
- =?us-ascii?Q?we5kDA2VX8KlGKdzpzSiYOUlidSOWHswacplWOzyNybPQ0vCz6EswuQGRThU?=
- =?us-ascii?Q?N0nZALn+2lX84Z4t6h9zASUlyRiPCY4kyfko9xVmiKKnn1QhncSs58gpD2xH?=
- =?us-ascii?Q?ximLbF2GEsX4wlRspiHNqN1TFfpc3znkWMzjp2GH8n8MuUGBwnXQwT6WWiGe?=
- =?us-ascii?Q?8PFHrxV9Z3DCjPkQJR7Xx1fTzwxtkZFYuO/TmOy3yMhPDV79iYhog/5JU1aa?=
- =?us-ascii?Q?Jir32vgvr1NuNwMAUOszx6SRDh+HG/bArvT2bfwiMhXYBpL08KEjlMhi3f+Z?=
- =?us-ascii?Q?/ErR6bAVcD2L9kIWV7AAYRVxXOrE3bR4Qnbd1jLuqrVSeAnT6HMOVINfONkm?=
- =?us-ascii?Q?aRJUspxGm/WVRf6bV188gWdbjORl19htx5H9FGtwOHzV0wMl2ZdgZcmk8zX9?=
- =?us-ascii?Q?mSWilBOpHU5zlhr9/61g2SNYko5aPNe7UqwDF0ba4rHR6190ltDTHLlyZ8v1?=
- =?us-ascii?Q?novF4pe/k5g0cYWs+Glw2u6bvBDIAFTYnJiFIHYAiCqlVzdYunIZskGvtxzJ?=
- =?us-ascii?Q?LA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	KRiSGvxcWPJ6lNgo7J3vGs/IwpxrUpXkl7o3dZDnZFu0619XlxsnOny4y4y/eSXp+9OtsFQnS2nMvQPBLL7hIpyZyfl9ZM33pk+JKV7XSJEqc/7O7NHwJOs6viTdtCnDm1d7kXtdKGllrOO69vrUgwkthBKUhd6wj3+uTUIzRVHAVWjUQPHcWFpGo/8+cHImmG4dteSC3YOz+OCcyg9/VcOBL50MV3/iEj02KI1vkiUEXrPaj0/snilqw4X4zZAVe1jR7Zin04RwcdU8EFpO97EPv+10DU3Yn15d2Rkyjv89G7d5/28+/4Pm+Hl9/zhq5f+JkW59glR1LdSTfWuhO+aX+IXHzYYP9BRNfdVIZjlVBr06kXsgbQ+2cq6GvhIGzJ38tMd5vGOwaCpJoK+3qH0sJISRGXvi4FYkZH2CVv3cCX+tZOqsTl4CTKqr/8i3VEhnGatSU3Rsf2TnXAyt/ROD8YY9gRkcUt+h30VoajpPOvjqQbd3d3YMO4BjxhKkkAjUJpYjTGwKFYp0qJeO0r1QkDLEO0OtFib8hfg8SQzwuqsRykmemD24hr3EohxSdzB0ODoN2+qiNjJpYKCiuAa7eA8DGYDTnNnyz49ydfk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4c0d4d3-835c-4a70-953d-08de0d5b9b00
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 09:00:22.7672
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mYBQLPdACpEEAaQuhLE8/PFa2Xz9a7LPvJolYfNDuCf7xSWm8lSzjEUfY6pJCB9mEDy6Mpos9VUqxhZZPWRuEJg/2ANTVbOeVCOua+3Eick=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF3B1F60C81
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510170066
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAwNiBTYWx0ZWRfX9F1llmOjGo9v
- WtObXC0Gz507GLf483rA2o3KL/RsK8PL3Qq2Yj+iTdQTf/aoUrFOMDL5vyUFE6W4swAcd6mvoN/
- +E69uW+VEBsuFnOG1UkZR2BQyMy/BuTtWhvZaa5E6O6qURwI+kugIQYJMIaP7vp2ZEIUx+YPspY
- Ohrk9M9yhxPNkcy1pkwTKdHolh0B0oWBnrxOAxqBCXXgYpWmxA07ZB+zTl82Hu6kR+elBRBfOLo
- Nk1COnUrHbaW2bOW1NYlR3+F17pijtjwU2OkrDDpV82g5C7PdymrbUYT2yh6h1rfMLLfSNJGgoh
- rJEiztsWyFF0TYqH62dD6bvZ1yQUFFpbK1OnIZmqrhirG5GlfQZcSoyEukk61+L0UCI4VR/o9B1
- tMHldjJc+i6pejfyxPquba9UwVsU5j9l6RLykyyspxH8BQlSV6o=
-X-Proofpoint-GUID: MlOWhF07ViXwl4l00E3AxCJNQHmRwkgg
-X-Authority-Analysis: v=2.4 cv=ReCdyltv c=1 sm=1 tr=0 ts=68f205ab b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=1XWaLZrsAAAA:8 a=XRCz9ig3qRNXVpmZX3MA:9 a=CjuIK1q_8ugA:10
- a=HkZW87K1Qel5hWWM3VKY:22 cc=ntf awl=host:12091
-X-Proofpoint-ORIG-GUID: MlOWhF07ViXwl4l00E3AxCJNQHmRwkgg
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=In3DWbp7n180h8T90yh8iUKIqqEfVs642KBaKPktN2I=;
+	b=auhLlTvy3J8LVU6KwFHYajN/G4O3lcI69uGnmZH8uI6D3gb+aZFvhhKJCFuWG2h/o4Jbx6
+	K5QIlS/v1dxQKGzujJfOifXiznHA4IV/LgIj2WpGBse1RbqSUrHHQ7czMV9HAp06jCRg1F
+	5inrfZjhqBTZryagrf+pke9sIcF7IXA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760691904; a=rsa-sha256;
+	cv=none;
+	b=ppJAu+cLjCfVqhS/yrFxUsotUD0fivyjz2zksZl0UJIQvXVeAMb8qa2NYfOqd1IGHW0a1P
+	8873stoCVmaotBIrLXwOboGdIIZqBtxoZPoAgoH4UocJ/PA/BrIYvUbibLeTRv9rcNCByJ
+	wp9dGuk1IO0uZhcsI+vOT+Ye28gTxXs=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fErQ56rG;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760691904; x=1792227904;
+  h=date:from:to:cc:subject:message-id;
+  bh=oZVjQuhntO3Lg1O4SrjFMa8sN/M85GTHYXsqLo/YXDU=;
+  b=fErQ56rG87YfhjQ1DBJBjwxkFPSHGmWgwpNnItohCYcIpCIhI/F+MxYq
+   kRpYhqWD6uKCEl13GRe3ze6IIzjDbUng2pbCrSML0EUqq3SmNGUZoAVFx
+   LTSHz0U6gzmEU/6vkH8mOZzKD9OP00m7kIwa6z53j6oACBgGWb1ovczM7
+   QnF+vPzsddxPu/0GtTGoTEmjKtImh39aBHuBYFGsmldd9eXaf/k1bogxh
+   xPLBZDnnUyz1z2ltmT/e+kWlNwxzLQb3lokUrsxAiICv8pWN0AEFP9SsP
+   Qj4g3pwD+hb9Tnpk8gZE7M0r8KuuaGHgHk3eSA/fMURb4NoiNeVAnMX7Z
+   w==;
+X-CSE-ConnectionGUID: kVxUUaCCSUqgauhgCSJVfA==
+X-CSE-MsgGUID: VHfobsHnSUWBmpaInoJBCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="74243372"
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="74243372"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 02:05:02 -0700
+X-CSE-ConnectionGUID: tyBk4gm4SjmllerBUtNXjw==
+X-CSE-MsgGUID: AiGCUkAlQBe+p1odixmeTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="182372411"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 17 Oct 2025 02:04:56 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9gNH-0005mt-0R;
+	Fri, 17 Oct 2025 09:03:56 +0000
+Date: Fri, 17 Oct 2025 17:03:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 2433b84761658ef123ae683508bc461b07c5b0f0
+Message-ID: <202510171756.4npPyBuH-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 9woumqxtazu5wrpipmscgo58tjzsastx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ADDFD100006
-X-Stat-Signature: xe3i8qwzob9j5dz3rwfcxqjuenrt1wjm
-X-HE-Tag: 1760691833-82198
-X-HE-Meta: U2FsdGVkX19LObY/S4TWZ7R6tN6nLdEVl0igTymnM6OJzKY1tj6dnCyr8nXrJO0MF3hbMt9HabLIbPgH83KyniH+XjTaAXwzz79A848ePp2as9rXyxzSyZS/emR2uIvDvAWbxvy73tnopSGQLFJK839Z7Szw5anTQTqWj1PWcxjU4p/wp2vMtvEkNKlY6lkHq0uXAg6dabIqomdZVVGR8vkrpMHEhFoRLR5xQC3SkoNZETEE6HNi6LGYxxcwoc5EQq6dhtXKZASARHU0WV7SdrBGOnBA0TrLFXrq9jogZO+URX6ZRNaLtZwNtCIBNaP+3aZoM/euFIuG4g5tfW8608AElWetUgllIFLRCY/EFTdOMOo/mIKfFTj1AlvaFQ9CjjChv0hgnEpm7rsuWb6YbcpexBmvQAVqnbydQ1DxI+nTY+j+0ND9gd1BzCl6aefXatWWYsYhssRkgSOucmfnYlYZARdeL+DpKJ75KDsv7RfKnh+YxcE2Dg/DrwtS0Ipvpq8FZg1WVsY1UYKjJkP59/y6tc48Czf2s9l982uNbTZs8+69BOmOdcdkCmQQ+IQPAA+AnfmX9UsKLDw7H6jGAhOAEaeAP/8Eutrjbx0FXtG48Xht4w4mCgWtjJifktgEu6G4QWOoe61CgZdLn+PGeWiIK/r90nDajVx1TRdaB/jmFOZdcSPI3WsOG8kxWQ1AstEhikXXa7OBH30TPVC94Y7qMf0YzeSED25efTCnZ0QO0LVqzolRo9uKT7FbG3r8UcQUuMziMC1b0PxhZB1BtvxeJ8t4agOw1vT+c3gK8+7sXvSe5hxFORlmx/ooQWZag6l4KZ7owbk3zBm4nX/OmHdvOn9zqK3hdcuDlB6hdfY5Y7yJ5CfbLlqZCghVYSih0tEKakNMuoimRfM7l0wyF0kzTAZR6hOHWOVJ2h98CoX7EiZjfiZHd/rg6Xyk+ryYlJ7DaH+R2JHChXkrI2Y
- xVoMY2n1
- WlZQE0eMJLfrWFyTn+rdl2eLWBEhzL0UwuGQ4/yGrECfKVeHSqzXJpFWfNnfrr8MOiFsSWYNMSi1PX7J1ESgfBgNTeZdFokrWk+6yY8f+gXnCN29skYRLiIrqilPjEOMKyUPO7N2J2TB1lEFkawFuM+xUs2x/Bhyy/Ayg2HxQoUj+MD+iuigKSZWLv1mjb/hfvQKARGBCH447fm6XW6bpandu5EjCBZW4w2A9b/ZnZgrh2MELfkvVesb3fCqGmfmhJsacrSf5l/EXFu4gCvKoFsWdpRgxElNezy2w2mLP6nGtblmFN9nacq5+ZXfABfoNGT4uNyUJCNzmosTMn7rF9ZsCTy9KwlCyfiOmXkVVy7Fw+5hf18sf3bL3RL9yOXrw3lAus/lW90Qfa+3o+vVwlV4aMMJE/Z5wa7HRmEGemcAUyR0gzucv8ykQooEJmVZadbzl4HR0vDCiGmOXopNsRrryksoUu5AQ3mFYOtTOkEV1WfJNzqAEyAM4MAZqfatYVgtDrZlIjugqbd2R084wntesXcebY5KF+vjX2vZghmh3JkQap8jbU3rRBJTbdtjP6YWV943IxjQniYUtOM7wCsdpZFJ2w/z6kzJdmO7mqhixNm9k+Tf60AD0gAJcKuG/VSyeH0PqdPArK+ZPbmHrN9j7S2+xxGXhxNQiuhujJqU+gPm2ZxaN+R8cdJkSeuRyV8Fm/bx0OKP40XITPiIxKEHg6EIdPFGpGqXP8q9vEBT9wvZNymNx4SKbwRlUSuAyaxIq9nDFKE4xYzdVxlCUnLDT4A==
+X-Rspamd-Queue-Id: A8437140007
+X-HE-Tag: 1760691903-500981
+X-HE-Meta: U2FsdGVkX1/qXalDo/1EQ3oDkTdfNG5SCTGhDMkw+Y3SjSg+B7ZRhqnFgutXRwS3qqfMV9g3Z8OJSvJWzm6/53pM/gnWlshdScet3i5w7CkfUIw1dtCw3k8UN4Uj7+0dk9DHaauwXe6Ye2XK/p9CBbE4HMUiZ/7JS7HXVMWjL05Hy+eXcdUAEC+POPBt5+PKTgVazbXms7QB/A9gkLZMcoZujtZ8VJJznM3ggv3XZl/0P7+PiC3ptA4UBS+wdZbfxZFfVNg/ghlzVEP/mJrG2PBV0/TxzHQHWEhnVrxQiIHhP4KWmUobTpIbC8lyyvi52VR1b8WUBdQMtRles31x/Dk4nIcYhq7ANOcfvjJ8U0WYJXmNfSZDMhIug3kFIcGlvYup5jwx7UNAE7nz8tfjNiJj4c6/Ket6S+AUrjkOineRziG0oFo5Uggm8GvxRXC1RVKoClqOaORgxmDmbJBmBcmx3EB8Yvcvb4xtbUeknisj8Lp/QY4OlBkDfx6278q5eFIn1mhA3OXV1wjHTMGvAMtJbBM33kr3pWqCJb1U/FCu2eITVbrvy0YDXk1/KQa+RhP9vo0AMhsPVe5lnfFHmz7gIWh1o7JJUQEGDMjjcbREKbRy35knBDaaFy7mpo1as/7Q97Wx+v5EbMtUculLXQKkkWo8HGckA9XgpOfKSq0ZmqIOa0RmGSZVC9rbmOtkWMaDRze4R/K+I97BkQS7KNjz9tSQLGOuhfbOp8fGLCNEnwYQXLj5KNplBfqOMl5LbSfYqI8z6T4kIXVO3v6VT8VZ4Au+6P9oMqj4FyAHRG9ZcNjn/s+N17x7P/anclKcQU7EEap2CKL6/Q3wsaRRZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -253,144 +100,613 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 13, 2025 at 11:28:16PM -0700, Hugh Dickins wrote:
-> On Mon, 13 Oct 2025, Kalesh Singh wrote:
->
-> > The VMA count limit check in do_mmap() and do_brk_flags() uses a
-> > strict inequality (>), which allows a process's VMA count to exceed
-> > the configured sysctl_max_map_count limit by one.
-> >
-> > A process with mm->map_count == sysctl_max_map_count will incorrectly
-> > pass this check and then exceed the limit upon allocation of a new VMA
-> > when its map_count is incremented.
-> >
-> > Other VMA allocation paths, such as split_vma(), already use the
-> > correct, inclusive (>=) comparison.
-> >
-> > Fix this bug by changing the comparison to be inclusive in do_mmap()
-> > and do_brk_flags(), bringing them in line with the correct behavior
-> > of other allocation paths.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Pedro Falcato <pfalcato@suse.de>
-> > Reviewed-by: David Hildenbrand <david@redhat.com>
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> > Acked-by: SeongJae Park <sj@kernel.org>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > ---
-> >
-> > Changes in v3:
-> >  - Collect Reviewed-by and Acked-by tags.
-> >
-> > Changes in v2:
-> >  - Fix mmap check, per Pedro
-> >
-> >  mm/mmap.c | 2 +-
-> >  mm/vma.c  | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 644f02071a41..da2cbdc0f87b 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
-> >  		return -EOVERFLOW;
-> >
-> >  	/* Too many mappings? */
-> > -	if (mm->map_count > sysctl_max_map_count)
-> > +	if (mm->map_count >= sysctl_max_map_count)
-> >  		return -ENOMEM;
-> >
-> >  	/*
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index a2e1ae954662..fba68f13e628 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -2797,7 +2797,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >  	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
-> >  		return -ENOMEM;
-> >
-> > -	if (mm->map_count > sysctl_max_map_count)
-> > +	if (mm->map_count >= sysctl_max_map_count)
-> >  		return -ENOMEM;
-> >
-> >  	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
-> > --
-> > 2.51.0.760.g7b8bcc2412-goog
->
-> Sorry for letting you go so far before speaking up (I had to test what
-> I believed to be true, and had hoped that meanwhile one of your many
-> illustrious reviewers would say so first, but no): it's a NAK from me.
->
-> These are not off-by-ones: at the point of these checks, it is not
-> known whether an additional map/vma will have to be added, or the
-> addition will be merged into an existing map/vma.  So the checks
-> err on the lenient side, letting you get perhaps one more than the
-> sysctl said, but not allowing any more than that.
->
-> Which is all that matters, isn't it? Limiting unrestrained growth.
->
-> In this patch you're proposing to change it from erring on the
-> lenient side to erring on the strict side - prohibiting merges
-> at the limit which have been allowed for many years.
->
-> Whatever one thinks about the merits of erring on the lenient versus
-> erring on the strict side, I see no reason to make this change now,
-> and most certainly not with a Fixes Cc: stable. There is no danger
-> in the current behaviour; there is danger in prohibiting what was
-> allowed before.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 2433b84761658ef123ae683508bc461b07c5b0f0  Add linux-next specific files for 20251016
 
-Thanks for highlighting this, but this is something that people just 'had
-to know'. If so many maintainers are unaware that this is a requirement,
-this is a sign that this is very unclear.
+Error/Warning (recently discovered and may have been fixed):
 
-So as I said to Kalesh elsewhere, this is something we really do need to
-comment very clearly.
+    https://lore.kernel.org/oe-kbuild-all/202509181807.I4frBSXx-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509190923.UgSxMzx5-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509192136.CR5pSGKJ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509231815.d1EjWp8Y-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509240828.ng1OXTUj-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509251326.SYA3QL9j-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202509260906.O3Ra2nGg-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510031615.GardRYTk-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510110109.hIUbuESQ-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202510100941.GZGMq64U-lkp@intel.com
 
-Or perhaps have as a helper function to _very explicitly_ show that we're
-making this allowance.
+    arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-balcones.dtb: pressure-sensor@76 (infineon,dps310): '#io-channel-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-aster.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-eval-v3.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-iris-v2.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-colibri-iris.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger', 'stmpe_adc' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval-v1.2.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-eval.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.1.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora.dtb: stmpe811@41 (st,stmpe811): 'blocks', 'id', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-nitrogen6_max.dtb: i2c-mux-2 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c2mux@1', 'i2c2mux@2' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-nitrogen6_max.dtb: i2c-mux-3 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c3mux@1' was unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: stmpe811@44 (st,stmpe811): 'blocks', 'id', 'irq-gpio', 'irq-trigger' do not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: stmpe811@44 (st,stmpe811): touchscreen: Unevaluated properties are not allowed ('st,adc-freq', 'st,mod-12b', 'st,ref-sel', 'st,sample-time' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt2.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-revc-lt6.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-reve-mi1010ait-1cp1.dtb: switch@0 (microchip,ksz8873): Unevaluated properties are not allowed ('interrupt', 'pinctrl-names' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6q-skov-reve-mi1010ait-1cp1.dtb: switch@0 (microchip,ksz8873): pinctrl-names: ['default'] is too short
+    arch/arm/boot/dts/nxp/imx/imx6qp-nitrogen6_max.dtb: i2c-mux-2 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c2mux@1', 'i2c2mux@2' were unexpected)
+    arch/arm/boot/dts/nxp/imx/imx6qp-nitrogen6_max.dtb: i2c-mux-3 (i2c-mux-gpio): Unevaluated properties are not allowed ('i2c3mux@1' was unexpected)
+    arch/arm/boot/dts/nxp/imx/imx7d-nitrogen7.dtb: touchscreen@48 (ti,tsc2004): 'wakeup-gpios' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx7ulp-com.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+    arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-hdmi.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-bd500.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-bd500.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtb: switch@5f (microchip,ksz9893): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/freescale/imx8mp-skov-revc-tian-g07017.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+    arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dtb: i2c@8b10000 (hisilicon,hix5hd2-i2c): Unevaluated properties are not allowed ('label' was unexpected)
+    arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dtb: i2c@8b12000 (hisilicon,hix5hd2-i2c): Unevaluated properties are not allowed ('label' was unexpected)
+    arch/arm64/boot/dts/mediatek/mt8173-elm-hana-rev7.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
+    arch/arm64/boot/dts/rockchip/rk3588-jaguar-ethernet-switch.dtb: switch@5f (microchip,ksz9896): Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+    arch/arm64/boot/dts/rockchip/rk3588-jaguar-ethernet-switch.dtb: switch@5f (microchip,ksz9896): pinctrl-names: ['default'] is too short
+    drivers/hwmon/gpd-fan.c:231:2: error: call to undeclared function 'outb'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    drivers/hwmon/gpd-fan.c:244:9: error: call to undeclared function 'inb'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    include/linux/kernel.h:334:46: error: called object 'strlen' is not a function or function pointer
 
-I do agree we should err on the side of caution, though if you're at a
-point where you're _about_ to hit the map count limit you're already
-screwed really.
+Unverified Error/Warning (likely false positive, kindly check if interested):
 
-But for the sake of avoiding breaking people who are doing crazy things (or
-perhaps I'm not imaginative enough here :) yes let's leave it as is.
+    kernel/liveupdate/kexec_handover.c:1337 kho_release_scratch() warn: iterator 'i' not incremented
 
-But I really _do not_ want to see this global exported so, I think an
-appropriate helper function or use of the newly introduced one with a
-comment are vital.
+Error/Warning ids grouped by kconfigs:
 
->
-> As to the remainder of your series: I have to commend you for doing
-> a thorough and well-presented job, but I cannot myself see the point in
-> changing 21 files for what almost amounts to a max_map_count subsystem.
-> I call it misdirected effort, not at all to my taste, which prefers the
-> straightforward checks already there; but accept that my taste may be
-> out of fashion, so won't stand in the way if others think it worthwhile.
+recent_errors
+|-- arc-allmodconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- arc-allyesconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- arm-randconfig-051-20251017
+|   |-- arch-arm-boot-dts-aspeed-aspeed-bmc-ibm-balcones.dtb:pressure-sensor-(infineon-dps310):io-channel-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   `-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|-- arm-randconfig-052-20251017
+|   |-- arch-arm-boot-dts-aspeed-aspeed-bmc-ibm-balcones.dtb:pressure-sensor-(infineon-dps310):io-channel-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   `-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|-- arm-randconfig-053-20251017
+|   |-- arch-arm-boot-dts-aspeed-aspeed-bmc-ibm-balcones.dtb:pressure-sensor-(infineon-dps310):io-channel-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   `-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|-- arm-randconfig-054-20251017
+|   |-- arch-arm-boot-dts-aspeed-aspeed-bmc-ibm-balcones.dtb:pressure-sensor-(infineon-dps310):io-channel-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   `-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|-- arm-randconfig-055-20251017
+|   |-- arch-arm-boot-dts-aspeed-aspeed-bmc-ibm-balcones.dtb:pressure-sensor-(infineon-dps310):io-channel-cells-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-aster.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-eval-v3.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris-v2.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-colibri-iris.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-stmpe_adc-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6dl-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-eval.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora-v1..dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-apalis-ixora.dtb:stmpe811-(st-stmpe811):blocks-id-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):blocks-id-irq-gpio-irq-trigger-do-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-novena.dtb:stmpe811-(st-stmpe811):touchscreen:Unevaluated-properties-are-not-allowed-(-st-adc-freq-st-mod-12b-st-ref-sel-st-sample-time-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt2.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-revc-lt6.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):Unevaluated-properties-are-not-allowed-(-interrupt-pinctrl-names-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6q-skov-reve-mi1010ait-1cp1.dtb:switch-(microchip-ksz8873):pinctrl-names:default-is-too-short
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c2mux-i2c2mux-were-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx6qp-nitrogen6_max.dtb:i2c-mux-(i2c-mux-gpio):Unevaluated-properties-are-not-allowed-(-i2c3mux-was-unexpected)
+|   |-- arch-arm-boot-dts-nxp-imx-imx7d-nitrogen7.dtb:touchscreen-(ti-tsc2004):wakeup-gpios-does-not-match-any-of-the-regexes:pinctrl
+|   |-- arch-arm-boot-dts-nxp-imx-imx7ulp-com.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|   `-- arch-arm-boot-dts-nxp-imx-imx7ulp-evk.dtb:clock-controller-(fsl-imx7ulp-smc1):clock-cells-does-not-match-any-of-the-regexes:pinctrl
+|-- arm64-randconfig-051-20251017
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-052-20251017
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-053-20251017
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-054-20251017
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- arm64-randconfig-055-20251017
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-basic.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-hdmi.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-lt6.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revb-mi1010ait-1cp1.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-bd500.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   |-- arch-arm64-boot-dts-freescale-imx8mp-skov-revc-tian-g07017.dtb:switch-5f-(microchip-ksz9893):pinctrl-names:default-is-too-short
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
+|   |-- arch-arm64-boot-dts-marvell-mmp-pxa1908-samsung-coreprimevelte.dtb:clock-controller-(marvell-pxa1908-apmu):compatible:oneOf-conditional-failed-one-must-be-fixed:
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
+|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
+|   |-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):Unevaluated-properties-are-not-allowed-(-pinctrl-names-was-unexpected)
+|   `-- arch-arm64-boot-dts-rockchip-rk3588-jaguar-ethernet-switch.dtb:switch-5f-(microchip-ksz9896):pinctrl-names:default-is-too-short
+|-- i386-buildonly-randconfig-002-20251017
+|   |-- drivers-hwmon-gpd-fan.c:error:call-to-undeclared-function-inb-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   `-- drivers-hwmon-gpd-fan.c:error:call-to-undeclared-function-outb-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- microblaze-allmodconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- microblaze-allyesconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- openrisc-allyesconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- parisc-allmodconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- parisc-allyesconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sh-allmodconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sh-allyesconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- sparc-allmodconfig
+|   `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
+|-- x86_64-buildonly-randconfig-006-20251017
+|   |-- drivers-hwmon-gpd-fan.c:error:call-to-undeclared-function-inb-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|   `-- drivers-hwmon-gpd-fan.c:error:call-to-undeclared-function-outb-ISO-C99-and-later-do-not-support-implicit-function-declarations
+|-- x86_64-randconfig-161-20251017
+|   `-- kernel-liveupdate-kexec_handover.c-kho_release_scratch()-warn:iterator-i-not-incremented
+`-- xtensa-allyesconfig
+    `-- include-linux-kernel.h:error:called-object-strlen-is-not-a-function-or-function-pointer
 
-I disagree very much, I see value here.
+elapsed time: 1046m
 
-Avoiding referencing an ugly global is a big win in itself, but
-self-documenting code has huge value.
+configs tested: 244
+configs skipped: 9
 
-In general mm has had a habit of hiding information as to how things work
-for a long time (when writing the book I really had to decode a _lot_ of
-this kind of thing).
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    clang-19
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    clang-19
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    clang-19
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    clang-19
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    clang-19
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20251017    clang-22
+arc                   randconfig-001-20251017    gcc-8.5.0
+arc                   randconfig-002-20251017    clang-22
+arc                   randconfig-002-20251017    gcc-11.5.0
+arm                              allmodconfig    clang-19
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    clang-19
+arm                              allyesconfig    gcc-15.1.0
+arm                                 defconfig    clang-19
+arm                                 defconfig    clang-22
+arm                   randconfig-001-20251017    clang-22
+arm                   randconfig-001-20251017    gcc-15.1.0
+arm                   randconfig-002-20251017    clang-22
+arm                   randconfig-003-20251017    clang-22
+arm                   randconfig-004-20251017    clang-22
+arm                         wpcm450_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    clang-19
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20251017    clang-20
+arm64                 randconfig-001-20251017    clang-22
+arm64                 randconfig-002-20251017    clang-22
+arm64                 randconfig-003-20251017    clang-22
+arm64                 randconfig-003-20251017    gcc-15.1.0
+arm64                 randconfig-004-20251017    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    clang-19
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20251017    gcc-15.1.0
+csky                  randconfig-002-20251017    gcc-10.5.0
+csky                  randconfig-002-20251017    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    clang-19
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-19
+hexagon                          allyesconfig    clang-22
+hexagon                             defconfig    clang-19
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20251017    clang-22
+hexagon               randconfig-001-20251017    gcc-15.1.0
+hexagon               randconfig-002-20251017    clang-22
+hexagon               randconfig-002-20251017    gcc-15.1.0
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    clang-20
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20251017    clang-20
+i386        buildonly-randconfig-002-20251017    clang-20
+i386        buildonly-randconfig-003-20251017    clang-20
+i386        buildonly-randconfig-004-20251017    clang-20
+i386        buildonly-randconfig-005-20251017    clang-20
+i386        buildonly-randconfig-006-20251017    clang-20
+i386                                defconfig    clang-20
+i386                  randconfig-001-20251017    clang-20
+i386                  randconfig-002-20251017    clang-20
+i386                  randconfig-003-20251017    clang-20
+i386                  randconfig-004-20251017    clang-20
+i386                  randconfig-005-20251017    clang-20
+i386                  randconfig-006-20251017    clang-20
+i386                  randconfig-007-20251017    clang-20
+i386                  randconfig-011-20251017    gcc-12
+i386                  randconfig-012-20251017    gcc-12
+i386                  randconfig-013-20251017    gcc-12
+i386                  randconfig-014-20251017    gcc-12
+i386                  randconfig-015-20251017    gcc-12
+i386                  randconfig-016-20251017    gcc-12
+i386                  randconfig-017-20251017    gcc-12
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251017    gcc-13.4.0
+loongarch             randconfig-001-20251017    gcc-15.1.0
+loongarch             randconfig-002-20251017    clang-18
+loongarch             randconfig-002-20251017    gcc-15.1.0
+m68k                             allmodconfig    clang-19
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    clang-19
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.1.0
+microblaze                       allmodconfig    clang-19
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    clang-19
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                       rbtx49xx_defconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-15.1.0
+nios2                               defconfig    gcc-11.5.0
+nios2                               defconfig    gcc-15.1.0
+nios2                 randconfig-001-20251017    gcc-15.1.0
+nios2                 randconfig-001-20251017    gcc-8.5.0
+nios2                 randconfig-002-20251017    gcc-15.1.0
+nios2                 randconfig-002-20251017    gcc-8.5.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                generic-32bit_defconfig    gcc-15.1.0
+parisc                randconfig-001-20251017    gcc-12.5.0
+parisc                randconfig-001-20251017    gcc-15.1.0
+parisc                randconfig-002-20251017    gcc-15.1.0
+parisc                randconfig-002-20251017    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                          allyesconfig    gcc-15.1.0
+powerpc                     ep8248e_defconfig    gcc-15.1.0
+powerpc                  mpc866_ads_defconfig    clang-22
+powerpc                      ppc64e_defconfig    clang-22
+powerpc               randconfig-001-20251017    gcc-14.3.0
+powerpc               randconfig-001-20251017    gcc-15.1.0
+powerpc               randconfig-002-20251017    clang-22
+powerpc               randconfig-002-20251017    gcc-15.1.0
+powerpc               randconfig-003-20251017    gcc-11.5.0
+powerpc               randconfig-003-20251017    gcc-15.1.0
+powerpc                    socrates_defconfig    clang-22
+powerpc64             randconfig-001-20251017    clang-20
+powerpc64             randconfig-001-20251017    gcc-15.1.0
+powerpc64             randconfig-002-20251017    gcc-15.1.0
+powerpc64             randconfig-003-20251017    gcc-15.1.0
+riscv                            allmodconfig    clang-22
+riscv                            allmodconfig    gcc-15.1.0
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                            allyesconfig    gcc-15.1.0
+riscv                               defconfig    clang-22
+riscv                    nommu_virt_defconfig    clang-22
+riscv                 randconfig-001-20251017    clang-22
+riscv                 randconfig-002-20251017    clang-22
+s390                             alldefconfig    clang-22
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    gcc-15.1.0
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251017    clang-22
+s390                  randconfig-002-20251017    clang-22
+s390                  randconfig-002-20251017    gcc-8.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                ecovec24-romimage_defconfig    gcc-15.1.0
+sh                 kfr2r09-romimage_defconfig    clang-22
+sh                 kfr2r09-romimage_defconfig    gcc-15.1.0
+sh                    randconfig-001-20251017    clang-22
+sh                    randconfig-001-20251017    gcc-14.3.0
+sh                    randconfig-002-20251017    clang-22
+sh                    randconfig-002-20251017    gcc-15.1.0
+sh                   sh7770_generic_defconfig    gcc-15.1.0
+sh                            titan_defconfig    gcc-15.1.0
+sh                              ul2_defconfig    clang-22
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251017    clang-22
+sparc                 randconfig-001-20251017    gcc-12.5.0
+sparc                 randconfig-002-20251017    clang-22
+sparc                 randconfig-002-20251017    gcc-8.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20251017    clang-22
+sparc64               randconfig-001-20251017    gcc-14.3.0
+sparc64               randconfig-002-20251017    clang-20
+sparc64               randconfig-002-20251017    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    clang-19
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251017    clang-22
+um                    randconfig-001-20251017    gcc-14
+um                    randconfig-002-20251017    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20251017    clang-20
+x86_64      buildonly-randconfig-001-20251017    gcc-14
+x86_64      buildonly-randconfig-002-20251017    clang-20
+x86_64      buildonly-randconfig-002-20251017    gcc-14
+x86_64      buildonly-randconfig-003-20251017    clang-20
+x86_64      buildonly-randconfig-004-20251017    clang-20
+x86_64      buildonly-randconfig-004-20251017    gcc-14
+x86_64      buildonly-randconfig-005-20251017    clang-20
+x86_64      buildonly-randconfig-006-20251017    clang-20
+x86_64                              defconfig    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251017    gcc-14
+x86_64                randconfig-002-20251017    gcc-14
+x86_64                randconfig-003-20251017    gcc-14
+x86_64                randconfig-004-20251017    gcc-14
+x86_64                randconfig-005-20251017    gcc-14
+x86_64                randconfig-006-20251017    gcc-14
+x86_64                randconfig-007-20251017    gcc-14
+x86_64                randconfig-008-20251017    gcc-14
+x86_64                randconfig-071-20251017    clang-20
+x86_64                randconfig-072-20251017    clang-20
+x86_64                randconfig-073-20251017    clang-20
+x86_64                randconfig-074-20251017    clang-20
+x86_64                randconfig-075-20251017    clang-20
+x86_64                randconfig-076-20251017    clang-20
+x86_64                randconfig-077-20251017    clang-20
+x86_64                randconfig-078-20251017    clang-20
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251017    clang-22
+xtensa                randconfig-001-20251017    gcc-12.5.0
+xtensa                randconfig-002-20251017    clang-22
+xtensa                randconfig-002-20251017    gcc-9.5.0
 
-I think it's time we moved away from this, and tried to make the code as
-clear as possible.
-
->
-> Hugh
-
-Cheers, Lorenzo
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
