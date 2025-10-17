@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 295E1CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9109BCCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F13C8E0057; Fri, 17 Oct 2025 05:06:00 -0400 (EDT)
+	id D97228E0058; Fri, 17 Oct 2025 05:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A3038E0016; Fri, 17 Oct 2025 05:06:00 -0400 (EDT)
+	id D46D98E0016; Fri, 17 Oct 2025 05:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 642008E0057; Fri, 17 Oct 2025 05:06:00 -0400 (EDT)
+	id BE87A8E0058; Fri, 17 Oct 2025 05:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C228E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:06:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECCAA1605DD
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:05:59 +0000 (UTC)
-X-FDA: 84007024038.05.4936075
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BE975140010
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:05:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=cxkK2KXT;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A5F808E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:06:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 393FD1405D7
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:06:15 +0000 (UTC)
+X-FDA: 84007024710.08.9630E55
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1719E80012
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:06:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NOxCyy5c;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760691973; a=rsa-sha256;
+	cv=none;
+	b=PZLlVJIz0/E3A8I7VOe9RWZYYfK/4m1DnO3bFCyzePgydtWfbS/go+E0GZ6gFu0KiDLCmd
+	EW3AYjf6GeegjjQvfB7OdZM31hxlpusj8bwtPASnHFp5/msiuBA47q+EJT8o8TG89ibg8J
+	Kj6cN4twJUTNVFHqh1T8rXKTJXq8fwk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=NOxCyy5c;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf02.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760691957;
+	s=arc-20220608; t=1760691973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kFRk/YEfanxcwxn3T4iYIqsiSiWmkv1ShCNggWcZo/w=;
-	b=ESm4H79lA+AFFbGbr6M1dgC2i3iAkaDty9bUQmIoe4qu5YwjxGy2kHzfk2oht9A3dj0dwZ
-	kXq7322W3svmxDYR68PwdkD5LKSFghSayS1K18uQo0EShldyAUxOJhSuorpOvmrpTDzaYR
-	4fkZs18L2pJn2u+kbV64nOwwiGiBc5A=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=cxkK2KXT;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760691957; a=rsa-sha256;
-	cv=none;
-	b=LqG+y6kc4CU23lER3cVztPeuRodIs5FzVIPTjS2qAl0Kvt2F+7vDyReHLt1NwxfvEQzi8x
-	E5+hihmeKF8JyTpjMasFr02wwlM5LSWIvOYfwdJvNhy5t8yFMYDOdFwqxsuvs1YQZXv8hT
-	s9any5jfsjm2OywvGWmbneHErPAz2e0=
+	bh=LUfhSEtyrzlTvFjtMARdG8e1ebgK9JT+esac/DH/XMI=;
+	b=1h6PmPEC6PlFgCUrJy53/q6CdpPkmjB+CIZ8JdyLuH4j4gZanJ5Q+mijtJKLW/Y9IZRjix
+	4azh2J9PgDzH8PAWyQpUS9k/bupjvgwIPnZa2yXt2unbA4jeD91zf08t3Jw5LHo1iZnQow
+	PiPRHXSx2rLGUmW1kIPaOodvZNNmhHY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760691957; x=1792227957;
+  t=1760691973; x=1792227973;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kFRk/YEfanxcwxn3T4iYIqsiSiWmkv1ShCNggWcZo/w=;
-  b=cxkK2KXTGMe+4xuTUF5gr+bP2faaAdiXzuRNI+WmQi/EQoTGeK2tzz2y
-   k9KRIuuFrx6Ma3WLy0r5lRyb4MV1D6AE+UdedU1ONE3bHQcA+kp5Lfs5D
-   dD7WSpymXC1k5XWcDnI42/xAGTVlprYouQ+6+GhCrkMrIh/lGwyOf9RPE
-   nZ9DvJCLzwNA9HcjqdNalDB5GCbfRf+QIZVZwr5wVzY0VyNMBDCyiMMO3
-   zc9farIfVO7U7pQ5WYWNDSbcVOWwiItCKH34KKBLuxagdZfBbKvN7ggXL
-   lYpGrdv8O+LV6MV0m9Y0ipL+4q3QPLVshIwa6ZKB5mpO6d2FH/upSS2y2
-   w==;
-X-CSE-ConnectionGUID: mmWdkVVjTsyPnw62us7gdA==
-X-CSE-MsgGUID: zCG8tz2uQkG3AJR2iQRSzQ==
-X-IronPort-AV: E=Sophos;i="6.18,263,1751241600"; 
-   d="scan'208";a="5073156"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:05:55 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:9202]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.38.191:2525] with esmtp (Farcaster)
- id b995c6ee-454b-49f6-9b2c-0072079f78ab; Fri, 17 Oct 2025 09:05:54 +0000 (UTC)
-X-Farcaster-Flow-ID: b995c6ee-454b-49f6-9b2c-0072079f78ab
+  bh=LUfhSEtyrzlTvFjtMARdG8e1ebgK9JT+esac/DH/XMI=;
+  b=NOxCyy5ciPbmpC+Nyjv8TEiMbWoED3iFf7i91kC45FQCswPVxMfGhKtK
+   e6AzE8+SXqH1Mi9QHZ/qwq6DSIIkOaYTQ2DQxXflj47EAN8zu7ieOrAow
+   azXWRemg81oDK+JGHABN+06WXtwuFICyIsW6JKSxv5qATn+5/Z9AdisSj
+   +E+tnjMlcZYH7/RCbEPzmlUePdsypL9uCeansbPDE3BED9628od+K09ej
+   Kzv9Cet4s3bfigaKI0GjglJU6ZU3/QgIzSpTJxmdMUrEnsTJnq21vdYiR
+   xgymogfanmgr0qQF49Q2rzGTYelLJVsdfpUBd3JCaDbIR9CgfH3xdZaZU
+   A==;
+X-CSE-ConnectionGUID: 81vXbaCaRnGCbaxjqgyfrw==
+X-CSE-MsgGUID: HnF/i6jVSpy9xn0uhETRhA==
+X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
+   d="scan'208";a="5073896"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:06:10 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:20862]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.50:2525] with esmtp (Farcaster)
+ id 7be30397-534c-444c-a389-19ecfbe849c7; Fri, 17 Oct 2025 09:06:10 +0000 (UTC)
+X-Farcaster-Flow-ID: 7be30397-534c-444c-a389-19ecfbe849c7
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:05:54 +0000
+ Fri, 17 Oct 2025 09:06:09 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:05:38 +0000
+ 09:05:54 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
@@ -129,14 +129,10 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
 	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
 	<tipc-discussion@lists.sourceforge.net>
-CC: Arnd Bergmann <arnd@arndb.de>, Dan Williams <dan.j.williams@intel.com>,
-	Eric Dumazet <edumazet@google.com>, Isabella Basso <isabbasso@riseup.net>,
-	Josh Poimboeuf <jpoimboe@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Sander Vanheule <sander@svanheule.net>, Vlastimil Babka <vbabka@suse.cz>,
-	Yury Norov <yury.norov@gmail.com>
-Subject: [PATCH v2 01/27 5.10.y] overflow, tracing: Define the is_signed_type() macro once
-Date: Fri, 17 Oct 2025 09:04:53 +0000
-Message-ID: <20251017090519.46992-2-farbere@amazon.com>
+CC: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: [PATCH v2 02/27 5.10.y] btrfs: remove duplicated in_range() macro
+Date: Fri, 17 Oct 2025 09:04:54 +0000
+Message-ID: <20251017090519.46992-3-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
 References: <20251017090519.46992-1-farbere@amazon.com>
@@ -146,22 +142,22 @@ Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
 X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: ndmya83hfs9gcxrqy8a6bcgd83y9mjup
-X-Rspamd-Queue-Id: BE975140010
+X-Stat-Signature: oaqzmrrgjcrwfy1arf6xnrn8z8mzdqqj
+X-Rspamd-Queue-Id: 1719E80012
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760691957-552667
-X-HE-Meta: U2FsdGVkX1/zLrNhPgj36GMaHZJzW3EePkZOzVrbAhtiYDh52Q5O/pqzWyyQfc5Z227YqG6ng9LN7nwk9H0svUBSRm3x5+VhYBkMN7wqroNfREx3DAU0TN0S9f+fm9/kk6yupCnSCW/b3DybUWXUM717UM2MpAIsA80J0SsE5u4rY91ESUe+ae9UGhJIKW3totvP95wGwGRj3i/lTJHxiiKJYiO96XkbQjA/5bekwoVBygrrv02N4mp5PotuTcdBZzoYmXa7Grh93+eovYAw/+2rvUiYT2iy5fjhgeqpHfSN9o00bzcWc4HkgWwCv6145g8Su3bSQbuD0VTRPsXj4vPpWV+v07KlsUPSk+P6o97Y+bnbpjFc0DNmKYgwyPt7K0oADcs3WTHp7zcrgLvqedf6KAWoKNmTWoNqGBc15K35pbLvZg8wHZYmsX7YCRliOxymwfR/0CmehGLXWoCjjzF7P4nPKaYDVNrJeSO86FGH1/OuCZ3uLAEFlMGgqpQwDQZsVjp43j3tpwxd/7nOlz07M73PFvxyPYQZ05O1tV6IFDoQ+cABAre2T2canHnCr1OLSmwoSccB5LLETp1wuKLErI8roj+rlIUDUwxYX6KB8RkPBXZ24XdxJwyDSVxr81Ff7MEQGK8T5Z+r8dg+4R+dC7H8utUOVo00ZOiy4P+KHUSmZXAK5tNSh6EE3a8oe0I3UQhLEDdWp9Ewdl49i0Bhz0CKW2KeDNYETi/vpQQYY+NQ9T9krU/vJ1asfZJyOXuQobBE1iWdbQRRZtCuoz55BLN2+yFg2BEQcCtyyoV9NlFIs5z0hhiBMKQlf4zWhhYdaDDAc9z4BX6kEm+wRlhYhWj4f044NE5Dctluv7gTmaINXUPClrveMocR8R/qr//tpCRildDa9gz4OAfPMR0ZcNypGssRhlpacXNFe4K0U4Utj1RYXeUKp4rSG2UoRWFUQPCsemRNlEQb8yG
- tTPcMee1
- hu9bN+DdpwGZgIrcIN4WnastWFWsxMrNs9ex2no4yYezLPIpLrDfuC+Mb3zqH5lXhj7Wl0ZUpHi0l0H2vaRFqQ/vZHh2EB6mETjqLKRCHB2VIlgKX9cMztgJrsUO9ygu1BHBpIM4gbrEIrB2Z1Pmifpe2ktaEYpNcNRfNAc4qpIjFybD26QO5UkflUnbND+ksJVKio+BPk+YYlSm9/gGxQ8wnYqvr/tf3ul4JeYm91/vvuQYZcyxS9ORs/iqlreZSlI22DLROlA7HAqMmoAv2CStbbpBX7urL0OgO0wUHpibE98zFGnFYG0UDfcgaSscfF9aj5tsddaZJzzaFFExx1DXx5r9GS0atEfwb9qVqP0QGiy9DDyVQgcOE/G4lLjChrOEzFydtU0OOTA911NfhQlW9WFR+Mkeu66Xd6RMcRnQEElvubBjYQ881VZavc+DaryJer1AT3v4v68Wk5tHZkdb1W3mHFqYLHSNqHcfwxu/OoU/VAc0mp2h4H/wcNy3FTeDQ1crgLVWBho5UVSk6gb38HYWkWBoiLJgjwNnJRTP9mwl6OZRdVEq2EX6Ly9v1v92vk078xw9JOKKG7O0UGg0GFNdiSPUdPdqilxLSnFaZKp8jhr0iewE+KXwS9IR6/lwDhe55MQGWO/mT8/hGXFLu/2+KdAr1d6M2zQQclm54wlJDkaO3YIqSFOT5azEemTiVHRMjYRtATpYhC4DxGm7Flgk/HpCoaWALfVfXciS/hjEl/EH4E5ZFwluVlgJ1GZE0P3vdXKqzGSJUIEH+AMZOEOpmM1voliXtCE59pgEOBjY1kOeo7mNxmUldbPHqRTT+iuI9KRWUYs/zfYWKgXWyM4skJJO36A6hhHp+doWFrBwAq8VDNvZ5ZJ9aKc/ymTa8i0cZx7oNopXzqpm4SurYjW46XcCvXtSAJXW/Xd+sY1spXo2cOsSRcPywqfIEyxTeDftM9oNPbHg5iLEf1SIo6Hdg
- 87rUl4Ej
- XhfwrXVW1seyg7kbBwyOL8EkR4B6o9rgU48zJhfivgzuCkXNm/qI6cF+t1wta38GT7+pi/P7TyHgkylbSMjengQ8uyh88fA8aD4uT0ei0tQPK5E/M9E+5NKP3Yr20dE/u7obMgYkAJBitL8iEnWvk8i375+JufKG8QWqPSZW0VXpRBVgoOGybQytz2fb+CE+D5oNaqwTN8QdZYlZO61GL/dj9RT4I/0Vsvl4l2ay5lo2VInm/BPA/4LCZNrYn0QB9xSNfnstu8ubiVNd6TCvEPWjm/xEgM4wNHWImHlGG+n/B6d7m2V/ugX9EflDZm2ZkBoVQiNgDQPNbDEYWkOHpPH8KA2UWOSRMY4Ppnvw9DUI0ApMT4HLU6oKlEQr4EPQskB2hO0J8zYMYVq5ot7vsnmo8TKjiXCq1ggH3ApKujDlurcR60GLX1/ZBAvVdZ1dZAz1cpHYQhMX3lyJ/ouHU/DQsaN96NUuLPz11YV0c4rs1MdK8nmPdAPC79jqblKoCYIGAVaVSJUisvS8SEpjzC3lELNcXJtuMgOvH+18pjGFy3TMGG51b8ZcaPAI7Kk+tB6Dpp0CoPJBMNWWCfjyF1/FUuHuwx7jnCNVmhuLiGNrwwsfx3DN22ExewcZbzPiO1qp2VqfRGvpN4OPoGSMgxrJp9K6+4lZenXLMeI7DYoI7eFW9dKlftFpaNhdBS4OgLdlaIycYqLR8GVPVpemPs9IE8r4lPd30drgxZu2A7o5TGj01KPELAgjmEgc6EDSzX8/j60ueg0AR7cXg981YjyJx9/k33+whl44VSTgt+cHJv5vL9OeXecwuO3bXDzRwwKmxAXek+EkedIh4NTGOI55dqwJAfpD/73icT8ZPukxOXQTXNlIW+ZSBOBxdObm0AYa2CN3VLfDG9WyPA7kgRToSWk7nUfCXQFC7L+aVQmSOmQW2qfBtryvXk9XyxtcOrQBau+zLy8dbIpFQeM/Np92eNHdm
- iyFJiP7F
- fdQmWLwVcOCSnVwlWmfNOoMVSKWCWNEKa/36mpzmmT2RJ8UJAAEgiBpILFjaSjexJbqlh0fE+gHLI1ZBN9aZuhceMu5tfQ4PcKsERnc+i6+hTelXtEBG6VItC9PMSy1vOA5UgcIU2R026dy1AgAl4vqEoffFZ6bv767cPByRC+cqf/BGW65Dj3bAZkGAb8J/7zNL4IMgF1BTTxaRbfwXFJ45LlEzo+VenP7hfosjHkV3Rf0OovbLe8WiJiK0uC+lRV9zG6CeuuJ5/kSV7M2tN+CQB0Pc6U5EShbWcwVMpSF4yoGL68DmUwCKnMmas9mYcCdgctNSgPnhmihz6lQc9WNSdRxKnathZvX+D8S/u+mmWw7ZIvBgPic8WPjazzRXz1NeyoaIwkZKXU5Jp1uWsOfHKMAG6J3MWPV4IP9jPWpxExKWHmuEdLw8BNENAoISUmGVjh/snTXQ9Z479VY51Hm/JjHRtlMm4l34WSprTdu43+Oq+nPnpakW4PGaZ2KCx/7Ow8jhrVUYloIcCPBhVEiACD7FxPQy1pYl6U//ezheJ6iMbxstK9pYWixCLWXec8MQp9/ikMWLjcJ6Vi+suCQvoQjr3GJEiKYjYuEUV1pi7sCsN8ERvekSg7DC/vy/gSZwljiC2C7rwmNownGD9YwDOn8RleE0dIDGHVWZt8CZ2wy1thbco8JGO+C9hjFz6k/utCSKWejx9IobG3RiPqJIqUv6F7Tc9/RzOE0G34Cg1Haj6iIyYESRhEm9ooy2vcJJi4CBr8VQ2QasZGCu2N+4ia+OARi1Ez8HZ8ZMGhSp+XqYeN9/dKScs8fo//TuOL3qgCDYqSc9YG3ktFFmqzl3RPY6Xvh4xCtGxMiUdebWpmLtqrJoCyCfuKvkoUU63D997pu5HUmyQQ1C4x9F6/e3LiOcxveMvFwyusDnyK9zzJqYMBxd/UB5YlyKUaEWEhseh5tALDdJX5sT2fFw84Y5U9aTW
- OyyO3d3J
- 6F0W5044AL6gHkbjoOipSFqlynddT98NeQzwp5w1wPfCqP9k2iVF8re1Az+85JWEEXXsXT4myxqNwjBWLUZ3rEIhZljL7GbxiOuukqdVOox0INQl6NjN1A97huK2G8CxLYkTl+WS0fkiA+6iaMR5/Qc0gH5Ziy9iD+k64yfyxBww/BUS73pYsEdNxKU0bp9D1dYCX+eBrr5ePgX1+zcykP1AKxmoWTohBprTF1bQc1w8cGbqD47rx3bl2yY4bI2g7YrlFGCo02e0devz0GO1fuz4YJ8xP+qANuZ6nu3xlpOCtvaFlWXb2IHkZ0HqK8sekqICuUGupO776/4dZ2n+1q4Phl4XLXERKUIDGiDAzeuWCTYcjexc2U2PHR3pgw/T9P+VHwSdKGSeMcwkDTTYMmoVpT6TSQKsQFtKE57zPGzC2ag7+WcBqAiHtGSQSN/yu72x0WdiSDQNrImILrxPlD35S4rW9LOYj8A92RLlAsqBdBXJRydgkM5AQWz2YFhvdMhAtF/HNPNwxhgCsohhokZyZCp3Jv4lXWyNplom8NPm9r22+QTBt3BBYtSFDmIOy6Ctiur041ttN8+nMqf1ERaMqMc/GYiLj6JyxH+/YuyDrsP8tPH+BFAlwboIw7EeHyYwTppjVa3NQODeEQsKmeDKAg/2YRDHgRKRlXW/F6j46RdNDnTr9cDZ2GLx63PLMb0mQac2Cw2FrVdQqe8/k+/oLOsb6f8zLza6LBLWS7EF/tSA2IMO+R7ZEMJz9gFtbihmasNp8f6hx8uWRAXxJqw5mGhjWaRAVQvsFAErb/Qv3RN/Nal8QUzp63B/A/vkgAbzoBIxLWSF6DdKPi7I/VoU6zTBeEAfg7+y2sFKdsAR+rNECBYC5hhiQUUWryRHogO7kP6HIw3hmc2SEz3wozsrqjE5QUa2EiO/i1NZjqnAS7wU4odFSkpnHVFe0RWaTvCNF1ADhMehkNJaulpB6Zh9KvJbZ
- PyX6D7s3
- YbaLidxZxdYKvT2KQhGXpi+NOI2VYn6I+wthnMN4Ml3k5guGdk1d4n2MQb12lu2p2xsq/S79ZfcK87nKguqn4KMFl5Tii+2pFc+BQ/8vQt6evZCn/qCzJ9YFQFF/x42u4JzdqiEve1tpgatJ5sLlfu5aq51ni48EPE+USDThH5WK/6yUC8DeoSyTgZuFLQFwk8xsNX97iILRyCZBxcKGkJrmgmroHdHxuJyrUvmpMJjhh4Ow0tY07t4jJpjaRCklNtJlu0jMTqGVug7YpsydbmfTo7RoqEallZ/f+/pr14ndSwYZe0NVkZIIbstQioDls+oPAuOECW5TqCZyKyH/JU31spetjSNP8c77ryX/vLPVxq6jiIPVThh/NInpdbWKA93rPXRjBiEOGVtqlnk1dSQY72xSTv52t+S0+VeewhcmpypQ+naFHuOPBqgd46mE7Dsih8E+8YbyeBSI7aTr7wKBMwQlzq8xia1e7Xtp6WdOwuL6LBeQW7h6+st4qqe8wcEL49sQbiru1jwiCKIyaW9So731T48KnZyqmFg==
+X-HE-Tag: 1760691972-265737
+X-HE-Meta: U2FsdGVkX18njWXRyv1bGNm3Ugy3JKnZmrQ6vKaHPgiHjmplA8+1q5T2FbCMWWyRZHHbJmWt148SevZ2Qk9h5JWaxm0uSZUL+6Dj3f8iPJ0JXvTp1b/HfHlUDJGDTu8rpgrTHm24uqtzgu1QS0fA4aMK1zTJAAYd5PrhvJKgBLFNIick0LN+GBwjdpjFRNPzgt/P0/kkgt3hctk8MFadhXRvpsWD9pRkVkUMuFTIv4a6x6yJQXrQL48dUhxX0z0hBVdWZ1vmc8XrrwzSsbJDENSOjXhiWKWe3LB0pxa+1ZBmQvFKoLGJ04k+Opof56/THKRfVZqANH3yoJV4xBtNUYscdwMZLibwHgDuKthJzCN2GL7b1zwMjVtgZCvpRoDKqaQ8EgEtlkD+YpA9Kp2x/YLiRmq0EHJDFdk+r9AwBKZGlIK8umuij+C9kLwiAmR7Z/qj0UcTz85KyY9Y+pI0JAb+vlpvMRDhtyVCy88eEr1YJQ2KBMO0z7N6lzzMM1tRaMeYDsWQEvM6xuaeoKxIrjOG2fdHI6A2/FNBWkhZlT6831oMLgw9u4l91v2b7eu5eIBvEzs4eG3DCeu9eGRXZOoyevsURRFQWvxf0j1zQ2g+ODSC3Ch9RVLdlzLCL1em8rh41MJNts3rugU4lKWZ87AN588Dx44m5434SFILAGZgzfjJUlKlUXzdx1DgDRphP6ybmoBJHFI9JKz3sRU1fUA1tJTyx2c/Y3OTIBZ93BckPr9izIbMRDPQEdVIkzjSzQhjcy7hyepGVDgLNaEAAURlFrV8yXph5deKDqAtZd1gepVhacb4TBw8ACfVNSS6Ng68gsOYGicPLG1dXipHrWPdudF+GSRCVGnLM4bqmiNAIWbqJXmsn3X1qlnGZud3rwJ651Ja+3YKE957bRo7tZsLuhO7nD7H/Esr9R9WYEBSBjCHI1y+Rimbj8/9FagE41RuesSoJdnidhlr7pE
+ O30DAzmS
+ G44Gjlk6Js/1rsXb46qkYHnfNEkOLBNV4vEKhUGdPkOK7TmheIsm1OUtE875lnAWO6Idq1yAyYFFBVFDY6qA3vUeGiUyTxxFWb3NxYBzs25lLHAJqNmdmucNw/tbG3cEAMSGzxMvugdVztpNRl/gIaNqELcogTsmQfLSiDQCQf06QFH1Q2gw0Wzyt8++mtlqClRxJXy+jcGAxQBVJoCbc3xnhwaJ6fwEt6vskBXIE9+N97LymmkQXIQmjz+emzotrbgnQr0AVKU6sUW2ya2HSBfFVGc1kDUo93eL5aC/zff5WV5dlJEexOHvbzbCZtsyHvgNEY35vWP352H6xiWWdhWOJAdEXSqcayIEpE8sN2YSyPuBWzPpL15ioI5DwcITGU/MFFL1r/Ig1SmUgXBZvpi2sZ1QyMI5JIpT8QHzbodx7duQktOVsl1nhs3/hTLFDMEnsXQiifFy6Nm4iVILdt9RhN4BcIVq9yRq7+OPyP7sI1UB/HFm1+ybmxKPZphbnwDtx38WVbaghcga23xZGNJuy4rRhhzTh/ZnkM6Mfo5LRSZ8LA55IZl73fKDuh/43icMFF9kwJ4p0sovbrxM1n4bXcnPuld7y3YpMmOborI2kE61DLt+qlmJFlMWBDMu7SNZRVUSyZB1vd7JMlOGKB6+wp1N10r99dlUvWjZeHii+l6+ditJOU1rpuMcBCGw2NZlZaWVtlRV6o67WwW1oY2m4S8VGk1nue3nkfm/ZY+uNkBJbHytb3TwxyPYc5kKkISSjBKmhV/FOWQwj2L/Y8AdYtV/OAo/Ibc1fiZrSDJOoy6LX9gkb0qkZnr1fa3USI+Iy+2y2Au3de3iSl7hG67+ovtCoUULm9MTZJFtI2Cq03FiqpNeZiHiesObY0AKGbmEypEw4DkEp52httns3FNr7wyqeDVFDkMbcaUH+AlJjqJOmBxi+3yboSBIhnnMnN2F/7m7xohRZa++Z8s5D0ri29Mzo
+ 4SBg+Qxs
+ Eyi7jVfoctmddwGYSkSAQMwnIJ5cd0n65PeeU02jveBJ0DQgOuJSYbyPScuzGeHSKXIJeET5fWyo0lrU/19w5bMxghy399W9sajJvwsnyRn8utHIZPltmXfhHgzdYSqAY8mJ1HwJVF0oRbZcfJpQBtHDSd7P5notWRVwNYqXqNr3vDWBb4eM+T8L6UcO1em+sTCrrimltLkzQirV8feDXe4oxZ6W3QHXIijz4d2zpFQExbqm6242oTyITCVwZceT0/MRSz+4ytLNSaKq8Bgo8zO4jmXXd5EGt544nBPheRcuI//oH9mfzimJoZYRjOq4iYukumfEjpuiXqV+HIINbeXqlM97QVtNBhY9qsiiFY3T7bIRvPxkCjI2W8KDsijC5nlcW+ftM97au9tPkvjirWy6fG/gWEh7fordf4dJ5wSVBXcOKMETHpjLQtmFT10zYXQ8X4lJDu4P+LvQb1uOkySMzDjsOp1wx2iOO19WOEONQYK5yQAhFwXcufu1ftQIlTWQdI8kyCQUXdlQQCg/3VkA6rHyVWCeWiwLYtUxoUf9q2xIwGDOiwOWWOt4HC8u/ELonC201IZGrMG8dUM2SGMTmS6xUjuvQxKpjpRTWgWDQ2R8Y1Y/qUnbyTPGrWULNchb4BFvUGfTk/8nwVETsX3vLVruafr+XraxU7rujK2tK71xsD9ZxNk2RoZk6Ker9Swdq0YUum+U5AfqS4fRNUnwcaYAc1SCymQ7YDMJjV3v458tGFbO1QmXDFy7OcUEZg9mh+evHIygQY8t6L6d1g06kOAUZW3tDyGpYdovqkXD3wSFIPOFvqnHuYzbF1YqkP4GLE3FQqLBt/WYTsuK37jiCO76DJuznl8sNSppwRWeEIImC8wqo9JCpmVRArqdwzGDVjS52/+1joJ46Qkl/3XKhvZikevUEh8jPf8UKQy+j/w0tPzE6eUeXX0v0BbHYEBXlEw/bppAz5wXeHuBV5EdgqXz4
+ kvJ2y/+w
+ OlFmIr3XKLc+Eloif6scsK/2P3kKvNIY3aC7qQM0hlUxttas3N+RKVDZTZZfRbe593o1aDzBdDCoS5JA1HXvFGNYCzkJMXJdOMEydIj4JQjrsHegWyrV4zCxH1j8j72U8F1gYYCWxp9bTO3bqgyI9aQbxa4HM1IMKlc2GNqDvKitcXVOSaYWXkGItUN9AEK9Rv5zudM59nhQxPp7v9HrXkeU9yq7vgy61eIBqWPgzwnL1ax3Dz2Grl59O+OoKm2eIs99A78qNrS36xIAzuNupUmKjkMblxEg+TFJKQKkYZ+acICmK7bVjvoAp+sqJO7jTKjvdTWHZM/v1pKebA7fH31B2oGkrCh0dZ+SSSq0XK30Q9Fek6BoX9HWv86iTqShTEDhNlOcnX6pQhyZw706SWQRabP/+/CD8ZhHaeuWJXK8Gd/OIBQQ0SBV5yf7rZ2DiyKNzt/mUegV10ISlWkMJ1BcYX92wO1QzjQlrPWI52E3Jmnjc0UivG0S2yvKwZXgNhY+MvKJ4NCDvW7xyTKb1WXDFgmx7gHmygSLvwmgG0zTEgP4+uzEC0C1B5HIyFALH5LEcfFao2jvoBNJ9ui9m8SwGBE8/PAuJbLs9MOPxFXU09bkP7hCESisUvBPilb9T8pRXHdB5MpI95GMHK14g6ij3sIVWzPXzokGYF7gJWVQ8t9zy5ehZcF5iA2oZ9SzB0PVPNSsnEdYTD8Rdut/zn1lwBovMqDqzxvicvVRGGLR4yDK9BMWmWt2XiSECxQ21WCbR+uzx44Ov6g3Sf+0DD9q+5Ehnv+t7mW/rhTNAAyy5IRbNydqzmxpJlwaIbVe8iblp2imjq/398lz2YOu7D50jULC8z+350vu5BFbSuY2MMci32HlwL1eGEsvnhYK1yoa6ib1XfnWef6Q3Qe2LCrvEd7KeoEyJAxsUJ1Qtyj4tQHqmD431YsXj0To+PjKp/c0kymUJvaRaavjHCocyyvL/vQ2T
+ DAtidoYQ
+ zVbd2WqVAmnzzra8S4/xjOYiM3x/dy1Ig2R0u7SJwGHm219swdRoXvZS9KlcL7mt3UfgNCO+PsZ9GIPu33d4vXzOwQ5fRagW/pDfRVlRwcEwdpqj0hHvytdWEWGy4YoApsxth0bnzHkjv0u6JK85RM7l3koGdD5N/0vmE+M0777bxy7XT2bYlzo3S2x9iyfcnIJq8ahAVTNiIc8Pvq/fYZ0S9UyLhRujgap2wIAoBtF8c3QANUYjOJcGGXS4MIaFeaa5rtipVKkN0XZg6VT/fq7bUs5JmuM/cXa0eVtOXcDbmqDagRRN1XqS8OjmfN220Zy/oE2Sdr/4KK0RNKJTnht4tVnfXov2csynpl6HtvkqtqKKLr6FJI61yZWggaFR7lM7vTZH8RKM6Ex28uwER8bcvUB4vYkQZP59gQqdfsvEg3AibSAIA41d4dcHAAHiLgiKLYs7FpRnwLXVu/DSwLKkRFeCFSxoQDQ1cRxBi6m9/WYja2aYxixqj2PNZwqptQKB+SyAkjrj38kLPxeHAto7v3oW+slYNuQAEuxLl7JXGpBsIO3hsoEgHbTrMUhgd6XxGbaxPW412d+24Esw120dMokmyYldHgBkMhuJShwb1m3/1iQKPyRlwWBztU9dH8idk18s84YaLkYkWRAcvr0tFdEUfRYJDftME9F2i9CmI/DNKuOWsYvTy7Jmxz9o2md9dBi7+1z+2LndFbZSO72E2cdCdA8g/+srvCW06J+a02dWWV1BBz3cGsP/KFOoPYE5XgxirZDHZlhti7cptKkMuqN7fFBBeddESuho168LEjfj2Y+lS1za4KigaOChd9jCfQR3Pk9ziGg84IMJlvDB0RdBbQN8AVyVJ6zgO8Tz/6vtO9/h7C16Cc5O+fHCRzHuPAvlQn3v4aZcxKgdeDKYaai+QZX2zAvBBTrV8k0OGEEMQntnvEsXxFhwS/CjOinPPulE83yvJzClChLluSIm4Ce1u
+ Qbq22mlb
+ MVOY+kYnJovLI86eDZimHbhHnC1B/+kd10HVxTuq8GKi497Xe3RIp+d9YzHBCQthePds/vDiJsk5G6DJB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,90 +166,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+[ Upstream commit cea628008fc8c6c9c7b53902f6659e040f33c790 ]
 
-There are two definitions of the is_signed_type() macro: one in
-<linux/overflow.h> and a second definition in <linux/trace_events.h>.
+The in_range() macro is defined twice in btrfs' source, once in ctree.h
+and once in misc.h.
 
-As suggested by Linus Torvalds, move the definition of the
-is_signed_type() macro into the <linux/compiler.h> header file. Change
-the definition of the is_signed_type() macro to make sure that it does
-not trigger any sparse warnings with future versions of sparse for
-bitwise types. See also:
-https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
-https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
+Remove the definition in ctree.h and include misc.h in the files depending
+on it.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Isabella Basso <isabbasso@riseup.net>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sander Vanheule <sander@svanheule.net>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20220826162116.1050972-3-bvanassche@acm.org
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/compiler.h     | 6 ++++++
- include/linux/overflow.h     | 1 -
- include/linux/trace_events.h | 2 --
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/ctree.h     | 2 --
+ fs/btrfs/extent_io.c | 1 +
+ fs/btrfs/file-item.c | 1 +
+ fs/btrfs/raid56.c    | 1 +
+ 4 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index bbd74420fa21..004a030d5ad2 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -245,6 +245,12 @@ static inline void *offset_to_ptr(const int *off)
- /* &a[0] degrades to a pointer: a different type from an array */
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index d9d6a57acafe..a9926fb10c49 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -3597,8 +3597,6 @@ static inline int btrfs_defrag_cancelled(struct btrfs_fs_info *fs_info)
+ 	return signal_pending(current);
+ }
  
-+/*
-+ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
-+ * bool and also pointer types.
-+ */
-+#define is_signed_type(type) (((type)(-1)) < (__force type)1)
-+
- /*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-index 73bc67ec2136..e6bf14f462e9 100644
---- a/include/linux/overflow.h
-+++ b/include/linux/overflow.h
-@@ -29,7 +29,6 @@
-  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
-  * credit to Christian Biere.
-  */
--#define is_signed_type(type)       (((type)(-1)) < (type)1)
- #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 5af2acb9fb7d..0c8c3cf36f96 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct trace_event_call *call);
- extern int trace_remove_event_call(struct trace_event_call *call);
- extern int trace_event_get_offsets(struct trace_event_call *call);
- 
--#define is_signed_type(type)	(((type)(-1)) < (type)1)
+-#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
 -
- int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
- int trace_set_clr_event(const char *system, const char *event, int set);
- int trace_array_set_clr_event(struct trace_array *tr, const char *system,
+ /* Sanity test specific functions */
+ #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ void btrfs_test_destroy_inode(struct inode *inode);
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 8498994ef5c6..489d370ddd60 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -13,6 +13,7 @@
+ #include <linux/pagevec.h>
+ #include <linux/prefetch.h>
+ #include <linux/cleancache.h>
++#include "misc.h"
+ #include "extent_io.h"
+ #include "extent-io-tree.h"
+ #include "extent_map.h"
+diff --git a/fs/btrfs/file-item.c b/fs/btrfs/file-item.c
+index cbea4f572155..6e46da3ee433 100644
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -9,6 +9,7 @@
+ #include <linux/highmem.h>
+ #include <linux/sched/mm.h>
+ #include <crypto/hash.h>
++#include "misc.h"
+ #include "ctree.h"
+ #include "disk-io.h"
+ #include "transaction.h"
+diff --git a/fs/btrfs/raid56.c b/fs/btrfs/raid56.c
+index 9678d7fa4dcc..ed3e40a4a3cb 100644
+--- a/fs/btrfs/raid56.c
++++ b/fs/btrfs/raid56.c
+@@ -13,6 +13,7 @@
+ #include <linux/list_sort.h>
+ #include <linux/raid/xor.h>
+ #include <linux/mm.h>
++#include "misc.h"
+ #include "ctree.h"
+ #include "disk-io.h"
+ #include "volumes.h"
 -- 
 2.47.3
 
