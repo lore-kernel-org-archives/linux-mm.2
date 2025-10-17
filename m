@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5AACCCD19F
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB67CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 345078E0090; Fri, 17 Oct 2025 09:49:42 -0400 (EDT)
+	id 3BA6A8E0091; Fri, 17 Oct 2025 09:49:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F4B08E0006; Fri, 17 Oct 2025 09:49:42 -0400 (EDT)
+	id 391198E0006; Fri, 17 Oct 2025 09:49:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCBC8E0090; Fri, 17 Oct 2025 09:49:42 -0400 (EDT)
+	id 281968E0091; Fri, 17 Oct 2025 09:49:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 093488E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3CAAC0178
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:41 +0000 (UTC)
-X-FDA: 84007738962.30.4C2A759
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4C189C000C
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=12v9Z5qH;
-	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708980; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 1056E8E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C349D1401C1
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:45 +0000 (UTC)
+X-FDA: 84007739130.27.79AF9C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F2B1080002
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:43 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=piKF3E5N;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708984; a=rsa-sha256;
 	cv=none;
-	b=RrzJX3ryCWGy8UMchHXwp9c4eNWm+txm+1CevcF5g+7C5Nxgy00r3nGVgrI4YYTqMUMhtF
-	BZZkbKWZI7GLtKUR8jCaQIwiAeGSsw05rDiHKelQa7lcOiCljnlXkb3IuZX+Crt5ZzMoH7
-	vYiPlCZkrlw9VVr54Fw9t0iM/ObQ1xQ=
+	b=LYIJSNCp/7z8CPodDTlURaii5ZF+seqPF7zZlWU742BG1+S4Oy7aagxm4kwLlBCi2SOMSJ
+	zeU+1Gsh89Jh236ailiHilzqIBxH9Po8g8UpQ7ViAC0rBaRIC93YV+RyWYUZNgJ+14Gzdv
+	d9uBvE1XpxczbdKPO+hge7y95wxpyYY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=12v9Z5qH;
-	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf30.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=piKF3E5N;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf30.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708980;
+	s=arc-20220608; t=1760708984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=JUH80vnk/oli6Xyk9aV0rlpuQQQXkZ2zaYa3aqyuhmQ=;
-	b=7nm70hUqHIzktCw4WQrpV5p+E0z0rVQxT2RX6xV/vcowgBUA87YwoWGngqitxfbspcHhBi
-	bsUUBch4hvwzXAK9sDRebg48m8YnymWz8kW+4rTKHkS+WmPYvuY7d137xeG5XDvyA9WJSR
-	dnDRslUumWgPv24j+hmbUEl2RC8yf24=
+	bh=LCCTFhOpm5ZTT7S3/peueBw8Hng5N/dbi0f4vcLE3r8=;
+	b=7q0MRvDyipuHoqB81zdyBJAM9Hg7QoFR1eC+Y866d+Iey15WyetAfWS3gmwruYft8wF720
+	ejEJsPKV0rD1jdueYDKoVwOjUcXHq3cdhf3eA8rJ81o6NoSSrXAcs0UYmH/kgj1386pIFd
+	QGu1VZD1vTvlbUqKEHPx5srqMc5B/zM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9CA9464383;
-	Fri, 17 Oct 2025 13:49:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031FEC4CEE7;
-	Fri, 17 Oct 2025 13:49:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CB8AD4B441;
+	Fri, 17 Oct 2025 13:49:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8400BC4CEFE;
+	Fri, 17 Oct 2025 13:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708979;
-	bh=77fRcp8Y5/0/V3lmKJbc1PtslnDv7sstGibn1fbfA5c=;
+	s=korg; t=1760708982;
+	bh=d0Lj/2AqY2X8XCUF/V0nGmJ12l2I6aL9uJ3UcdWXAAw=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=12v9Z5qHF75zkpAYkHasJ+VMVsMH83kqsDRfwtCqXNMv1WMFeBfp8VUXSecRKxYZh
-	 aKuwB3Ee8Ha0JqX+rwQp7Cdt6GklrbtaJqc040wFtJaMRAJhNjNIxI6RNfN9GWelkl
-	 MZhb23Wh2BsASE1CjyKujW7j2k++ATmRHRa9VXXU=
-Subject: Patch "minmax.h: add whitespace around operators and after commas" has been added to the 5.10-stable tree
+	b=piKF3E5NOTogSiG2bqw2AlRUUhPn2MnFQmyQHase3t8PHdRy01JpU7J8csTljlN9F
+	 5qredvA7i+PtSPOuoAMsl1ERDx3Dlklt7HoMccXcSz/XoUvVeSZLbpH/bAmYz43xbs
+	 kfvHuE512+fNJMnD/OXpj2N15LN/T8LVhVLi4nJ0=
+Subject: Patch "minmax.h: move all the clamp() definitions after the min/max() ones" has been added to the 5.10-stable tree
 To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
 	akpm@linux-foundation.org, alexander.deucher@amd.com,
@@ -111,21 +111,25 @@ To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:32 +0200
-In-Reply-To: <20251017090519.46992-22-farbere@amazon.com>
-Message-ID: <2025101732-unlocking-quarterly-112e@gregkh>
+In-Reply-To: <20251017090519.46992-26-farbere@amazon.com>
+Message-ID: <2025101732-maximize-compound-46ca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
+X-Stat-Signature: sotkfbcgzzgmckjtmmu45qae537tfspa
+X-Rspamd-Queue-Id: F2B1080002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: eei5u5x9ijrkid4ua7nk1jw9qdnq5k8f
-X-Rspamd-Queue-Id: 4C189C000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760708980-224429
-X-HE-Meta: U2FsdGVkX18VHm1gaODKhDpv5UR+kC0km2D1DW4qLzR7Wlfy3zIkEih6qJnXpTQ+qM0BKUTLOslrQ1xynE2V6Ni8bJQ8FSBwWkMDF1vNVc1BOmnnOnGzyHITFy0FyRWpInk2qqVjSoQ3DgW31uAmE3S8ZQRFd9fsT9P3/GugYqhFcGttvZioXAvgY25Il7kiidhAsq5eb3kcAzqWUMMeFsZ/NxDbMD7uxudUaLcSVGofihiqJpSkAsb/Xym0BLnVOt8pGz17CxkomsPvebdwdiO3VClBbAgpjGPt/Jm4YZ/B3+ZGJ9wKNs3Y/SvxqgKvvjIkbFyrKzULXDur95rO5J2rwkQe2mEx1AQGMTs3VsyVtNpBh7W5AxXmkTdGUrWDP8ZxYHT9vDDuhL0AZPtm1yhc3rMnb2OCBKLVZ5AOxFbhLsGq+M62dt5/CX94RC7vcLXrhnOy4kqtgI5S2yN/Gi0KLlL5KMEIrri561gx9xLyxyvC+bylZ4dljQys0Bq3hGlmi4TZmDqc6yKO9h5PqoQ0UoZtSeFHYsBil9X/CAfmmpMk+nNqMm/siU/Xv/5S0l4ujpmc+jrAHmxOu7fq2GMtdWWltrIK6NrJIaQdYhDj5Opw75L18/d+YEk13tSy3N3yRu6d/F2PBvfqb8n1OUq1BC8exg5lEGhzt65cn65DT4wD3KkBik5ic1o/VqgTqDKpCSxsYEnOUh3FOMvqvpKa4AXVHrsQd6VqaIHU2snhSllkocSa8sjWiUuuvp6Ca+lXpaz4sROmnK1j61DPHV2vmFfmQ7Knv58TK1Vnzd4QKjtYMPDKa7vYoXobvVXbmyj58VWAnwBU8lhKUe77nAAnrGBzl4Zm7YTcpQ32MOeNRX5ga3hqSwORFIJnNmI340GFCZn31roOqZ+Sd78hRr4VyBXK4PbWiNtBM0CoFL072skZcgPvD5merhOFre+b03uKwUfbJLlJ/93IVMi
- LyZLK5hY
- VO4eHfw9JBUVu/qPSrCHb7uaL0d90P9IbPM1Z/Q/q/+zysMhMZIEkCIy7CaNnPwrH8w5e2SG61BWLJU3gXGWLylla3/iyVESzGpAuyKkfmzr03j44ut/pF9YIbLurYGFBVmbIRcnIwX1UbcA0JYir4bSLtQ==
+X-HE-Tag: 1760708983-868258
+X-HE-Meta: U2FsdGVkX193CzHtPFJMWEF/m0TYRhHFR1yidlicPcswBy7DX63KKXmjTCJBgWFSa6Ct+e/IA9L6In8WwwGW9+SltyC51YM9DYZbl3VZGps5VUoWjK6IzxQ7GjFdpA+FNlF10DBjf9oT+63xEW8adyLgCdJsvScOT6HVjSNTWxOQu3eNMxSAoF5Czxa1ucmonWpQhaIsFqqCavbny+HANk0ub37iAT75aTN6Of3MoRXlrFNAfxQqzq/IAc3D+lfmMX5hR+rWM7HJcdoBeTpB7vr5y9GGCP3D7G9WlfOhwEXHYWovHCGDqe4QCP9ztM+WAkafHAMWNck8m4sxOOHD6FAIF5tmFtjOgft5vEHtUM+RkeSKH74/gPo7yCAlhuFmUjMQx6dY7MUiWnBrEC+xsPcBPtsHpW6gkwymzGaTtTXZO1oasqtlPlQRBtPLS+jeV3fWVOcy9O4ro4BUr0+apX4BUsrg4HbhzCqTdTTh2Qv73oKIMIrOOrjq/VRI0WcRRRRSNNn6F7lANVDP+xcsHQvXyjF02u3N1dB+QE9dyjr4B9jDNg6s3U7x8RypeQ1WuCsiiedmGXsQFZmAfu3cVmmkkC4lx83hyJqjBCW8iC3bd/GLe7X0xeqE/mygpPAnCr6OZFwhXi51/aJoNeg4vAmbheE/MdD4fHR6hIwz1cgQArvqPhWryogB7/KBokNIdXbAl6N5BSyo8SVqw5wCKLn8KxQdzPkhG6oEFroqacniq6K16QP5PS1cXaI/uLNW4cnuqDyp7aZh40hQFVIvZ0TzNoxdmJRzM32fJy2oDAN9Bvg45v01nMeKfQfddI8t+J5lVzEs2CbUdPP7V0ftbV4M4wH1YgRo05mVg3nVlgeJP/8wrja0OtSkw8DbBP3bf1KLXwUDjPVXAWIt7kMtHGDUO67M/lGNoLzxCzUjV/aWi1T93MOQC58ES/dQ/uWPz1cAYh7XwKVU72mvnu3
+ Pk/NGX2X
+ lDGBmQiYxRdjbiy5cQCAy4nQkmsJn8+Moe03GjZQxjcFuuhtkev8oUOLon97wCXlFy6c9Cl2T5pnkFGGeT9HCfktdIBpBJQk2UaNb71GVOhFCEgePRR1oEanybjYPeuo+EAdruYEPjOtSQfkKAP3qsWQEopuzvUkDyI3OfMpa6ivvk7a2LtxbPhUS+69vXFB7+ko95t+GhzpgT0YSku3zKPFvo4QEpwHdlrOlBSR14Yvp9ngGxXoSJFVqHbMkAZPgEBX4Cxn1ps1PX+jM8kAGnMxlGgl9ZOA7F6immTnlUEo/kK7/bXhXxWCauzga95Qdu5qu4giJEhchqj3dBRD+Iopq7pYx8Bn4h2AewQ5LVKrynm9tanXMyluDlvcK+xQMdBHP9VMdTz3EPHlAGbbd05uaeNdkjZVkypkuqpjf5Y5YWxK48VuGz4DNMl4yjcBhzYEQ0cKooaKKvWrVlHvGhx2F6RjRB/rvaeJS+UMoENyQbIipcMRzHpuZ2R5kusJKpALY1AVVJXLbA5EiF7yrRYHcWX3BOlnY/KOyuJ/cT2OHxqHWnV/T2TPWJSVYT8CrnXKxg58rvvjoagHfJC4NgensATaKetNWPcrgfWlZ5ZrsGTkI8jzRrE9oh71hllCv9Zm+hAX/VjJG5drkiKz1vKoX73jpK4qCy+OKT5wATQVPD5v46dT/7wLVYbCXeNi7aItN0/o2SVXV4353/kR9YwOp5KWD+bEhv0XLfbRR40wJciLHS17WwQ6FX3P5vgWoTK7hzstk2j+ADc6CyKvPEhzxvFFkheVF9FMXWMssLYYDoXTX46sDKRnE7WXg77edKtPXubSd1KpAbrcZKLsTtBy1cz+SAe+mcgbHcbMkJFS1yb728+GZrq1rqBq7bQe8Zw925YA/WCeUifLQcpQz9Bx1Nv6amiVlKZUh8nsO0RzRsigs5k3eiql2of7xXOHj9QQxbRjww04FuAD2z6+EPVQJNHNG
+ xkGrQWNv
+ i+U/VwTp47Wi0FuhrUCT8ZDt8u7SwwUyZSkUNO063QT6Fk/9O8iiMdt/2CWF4iQ/AAhK2/CHUIHv3vVXbXg/RMTSI77NTO1VnWwhbNXfTh4lfhYpukiySZRAfcdtPilZePvxtyrNYkHF3nrS/o83eeT36ZRstPD5yJMEhJwe2V/McFKsWsQ4PmieOsnPu+eSipxZ5NL6J1rKG3I9YFtl+/SExMDYb64D0sjBcRfCSqWcW34OuCnnDN8gZRjLdij6pt63tUh+HgIpO01BRI6P86um3wzVoO72P2EbmCSjNi3geYSCfDLdBcqAEATkdCKPStYPGAqOi1l9iz+WC6MvwC4tZPV8bWEIBE8RGVvmr4aUljDypSW1qHuXpw7x5MXBlE8kV6HdgTZwkbynropNpenKQha0ZyCIBZh+B5nIiuafUzgyfsK8/ZG+VJOwn2xI3vwbwuo2flancaLGxnchcEJ/Vd58f2bhkJg4UsNYor4K09D0yBXk1m2hEFvZbMinSDIeWnGQNO38vDeIUlVSX2LghivVGTKPtvhghqJpwaNuzcCS5zcxBaUiLOn4JOp8SV83UqhLAuMc9KuK2TDMrvlmKURmpKy64KC3uPqHqCqAujMeP+axW+/rgYSPaEIciimMMu78he9D8keTlvUP0nFBTrVJZcn+B0VDRsZIysYyXl+SZs95SMjPMsjV1u2R+43WInqtuK9Z/neXZPF2tBlZvn/ii7V+FIGCs9CRatrr3REL5n0SAEd99wLSB6281fyDK512unbOemSAq4p/ODC4vM3dPdGPPIY+i3dYVzSIsXy26OxTD0hcHj5gum+uU4XsPFv+e749PMNedCsQrl1SjdiqIWOgHHrmWMJiesrWBprmsb3IetPlBrlJhKackBt4nhRTqmhsG5BWNpYeEgwaV+sV6n/UFIQYVW7qgVZW8/MAzKWGWMzw3wwLQh57MQGnXsvUK77SIc0g1NmvdcnfUdtxb
+ Cpm9Eqjg
+ eGmFjT6etj7F0J3g+8NOjmL8CaB69KUqFulOO4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,23 +141,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax.h: add whitespace around operators and after commas
+    minmax.h: move all the clamp() definitions after the min/max() ones
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax.h-add-whitespace-around-operators-and-after-commas.patch
+     minmax.h-move-all-the-clamp-definitions-after-the-min-max-ones.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=378230090=farbere@amazon.com Fri Oct 17 11:12:16 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:13:38 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:05:13 +0000
-Subject: minmax.h: add whitespace around operators and after commas
+Date: Fri, 17 Oct 2025 09:05:17 +0000
+Subject: minmax.h: move all the clamp() definitions after the min/max() ones
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -162,20 +166,17 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
  cussion@
  lists.sourceforge.net>
 Cc: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>, Dan Carpenter <dan.carpenter@linaro.org>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, Pedro Falcato <pedro.falcato@gmail.com>
-Message-ID: <20251017090519.46992-22-farbere@amazon.com>
+Message-ID: <20251017090519.46992-26-farbere@amazon.com>
 
 From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit 71ee9b16251ea4bf7c1fe222517c82bdb3220acc ]
+[ Upstream commit c3939872ee4a6b8bdcd0e813c66823b31e6e26f7 ]
 
-Patch series "minmax.h: Cleanups and minor optimisations".
+At some point the definitions for clamp() got added in the middle of the
+ones for min() and max().  Re-order the definitions so they are more
+sensibly grouped.
 
-Some tidyups and minor changes to minmax.h.
-
-This patch (of 7):
-
-Link: https://lkml.kernel.org/r/c50365d214e04f9ba256d417c8bebbc0@AcuMS.aculab.com
-Link: https://lkml.kernel.org/r/f04b2e1310244f62826267346fde0553@AcuMS.aculab.com
+Link: https://lkml.kernel.org/r/8bb285818e4846469121c8abc3dfb6e2@AcuMS.aculab.com
 Signed-off-by: David Laight <david.laight@aculab.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Arnd Bergmann <arnd@kernel.org>
@@ -191,89 +192,160 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/minmax.h |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ include/linux/minmax.h |  109 ++++++++++++++++++++++---------------------------
+ 1 file changed, 51 insertions(+), 58 deletions(-)
 
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -51,10 +51,10 @@
-  * only need to be careful to not cause warnings for
-  * pointer use.
+@@ -99,22 +99,6 @@
+ #define __careful_cmp(op, x, y) \
+ 	__careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+ 
+-#define __clamp(val, lo, hi)	\
+-	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+-
+-#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
+-	__auto_type uval = (val);						\
+-	__auto_type ulo = (lo);							\
+-	__auto_type uhi = (hi);							\
+-	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
+-		"clamp() low limit " #lo " greater than high limit " #hi);	\
+-	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
+-		"clamp("#val", "#lo", "#hi") signedness error");		\
+-	__clamp(uval, ulo, uhi); })
+-
+-#define __careful_clamp(val, lo, hi) \
+-	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+-
+ /**
+  * min - return minimum of two values of the same or compatible types
+  * @x: first value
+@@ -171,6 +155,22 @@
+ 	__careful_op3(max, x, y, z, __UNIQUE_ID(x_), __UNIQUE_ID(y_), __UNIQUE_ID(z_))
+ 
+ /**
++ * min_t - return minimum of two values, using the specified type
++ * @type: data type to use
++ * @x: first value
++ * @y: second value
++ */
++#define min_t(type, x, y) __cmp_once(min, type, x, y)
++
++/**
++ * max_t - return maximum of two values, using the specified type
++ * @type: data type to use
++ * @x: first value
++ * @y: second value
++ */
++#define max_t(type, x, y) __cmp_once(max, type, x, y)
++
++/**
+  * min_not_zero - return the minimum that is _not_ zero, unless both are zero
+  * @x: value1
+  * @y: value2
+@@ -180,6 +180,22 @@
+ 	typeof(y) __y = (y);			\
+ 	__x == 0 ? __y : ((__y == 0) ? __x : min(__x, __y)); })
+ 
++#define __clamp(val, lo, hi)	\
++	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
++
++#define __clamp_once(val, lo, hi, uval, ulo, uhi) ({				\
++	__auto_type uval = (val);						\
++	__auto_type ulo = (lo);							\
++	__auto_type uhi = (hi);							\
++	BUILD_BUG_ON_MSG(statically_true(ulo > uhi),				\
++		"clamp() low limit " #lo " greater than high limit " #hi);	\
++	BUILD_BUG_ON_MSG(!__types_ok3(uval, ulo, uhi),				\
++		"clamp("#val", "#lo", "#hi") signedness error");		\
++	__clamp(uval, ulo, uhi); })
++
++#define __careful_clamp(val, lo, hi) \
++	__clamp_once(val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
++
+ /**
+  * clamp - return a value clamped to a given range with strict typechecking
+  * @val: current value
+@@ -191,28 +207,30 @@
   */
--#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
--#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
--#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
--	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
-+#define __signed_type_use(x, ux) (2 + __is_nonneg(x, ux))
-+#define __unsigned_type_use(x, ux) (1 + 2 * (sizeof(ux) < 4))
-+#define __sign_use(x, ux) (is_signed_type(typeof(ux)) ? \
-+	__signed_type_use(x, ux) : __unsigned_type_use(x, ux))
+ #define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
+ 
+-/*
+- * ..and if you can't take the strict
+- * types, you can specify one yourself.
+- *
+- * Or not use min/max/clamp at all, of course.
+- */
+-
+ /**
+- * min_t - return minimum of two values, using the specified type
+- * @type: data type to use
+- * @x: first value
+- * @y: second value
++ * clamp_t - return a value clamped to a given range using a given type
++ * @type: the type of variable to use
++ * @val: current value
++ * @lo: minimum allowable value
++ * @hi: maximum allowable value
++ *
++ * This macro does no typechecking and uses temporary variables of type
++ * @type to make all the comparisons.
+  */
+-#define min_t(type, x, y) __cmp_once(min, type, x, y)
++#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
+ 
+ /**
+- * max_t - return maximum of two values, using the specified type
+- * @type: data type to use
+- * @x: first value
+- * @y: second value
++ * clamp_val - return a value clamped to a given range using val's type
++ * @val: current value
++ * @lo: minimum allowable value
++ * @hi: maximum allowable value
++ *
++ * This macro does no typechecking and uses temporary variables of whatever
++ * type the input argument @val is.  This is useful when @val is an unsigned
++ * type and @lo and @hi are literals that will otherwise be assigned a signed
++ * integer type.
+  */
+-#define max_t(type, x, y) __cmp_once(max, type, x, y)
++#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
  
  /*
-  * To avoid warnings about casting pointers to integers
-@@ -74,15 +74,15 @@
- #ifdef CONFIG_64BIT
-   #define __signed_type(ux) long
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
-+  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
- #endif
--#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
-+#define __is_nonneg(x, ux) statically_true((__signed_type(ux))(x) >= 0)
- 
--#define __types_ok(x,y,ux,uy) \
--	(__sign_use(x,ux) & __sign_use(y,uy))
-+#define __types_ok(x, y, ux, uy) \
-+	(__sign_use(x, ux) & __sign_use(y, uy))
- 
--#define __types_ok3(x,y,z,ux,uy,uz) \
--	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
-+#define __types_ok3(x, y, z, ux, uy, uz) \
-+	(__sign_use(x, ux) & __sign_use(y, uy) & __sign_use(z, uz))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -97,7 +97,7 @@
- 
- #define __careful_cmp_once(op, x, y, ux, uy) ({		\
- 	__auto_type ux = (x); __auto_type uy = (y);	\
--	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
-+	BUILD_BUG_ON_MSG(!__types_ok(x, y, ux, uy),	\
- 		#op"("#x", "#y") signedness error");	\
- 	__cmp(op, ux, uy); })
- 
-@@ -114,7 +114,7 @@
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(val, lo, hi, uval, ulo, uhi),		\
- 		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
-@@ -154,7 +154,7 @@
- 
- #define __careful_op3(op, x, y, z, ux, uy, uz) ({			\
- 	__auto_type ux = (x); __auto_type uy = (y);__auto_type uz = (z);\
--	BUILD_BUG_ON_MSG(!__types_ok3(x,y,z,ux,uy,uz),			\
-+	BUILD_BUG_ON_MSG(!__types_ok3(x, y, z, ux, uy, uz),		\
- 		#op"3("#x", "#y", "#z") signedness error");		\
- 	__cmp(op, ux, __cmp(op, uy, uz)); })
- 
-@@ -326,9 +326,9 @@ static inline bool in_range32(u32 val, u
-  * Use these carefully: no type checking, and uses the arguments
-  * multiple times. Use for obvious constants only.
+  * Do not check the array parameter using __must_be_array().
+@@ -257,31 +275,6 @@
   */
--#define MIN(a,b) __cmp(min,a,b)
--#define MAX(a,b) __cmp(max,a,b)
--#define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
--#define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
-+#define MIN(a, b) __cmp(min, a, b)
-+#define MAX(a, b) __cmp(max, a, b)
-+#define MIN_T(type, a, b) __cmp(min, (type)(a), (type)(b))
-+#define MAX_T(type, a, b) __cmp(max, (type)(a), (type)(b))
+ #define max_array(array, len) __minmax_array(max, array, len)
  
- #endif	/* _LINUX_MINMAX_H */
+-/**
+- * clamp_t - return a value clamped to a given range using a given type
+- * @type: the type of variable to use
+- * @val: current value
+- * @lo: minimum allowable value
+- * @hi: maximum allowable value
+- *
+- * This macro does no typechecking and uses temporary variables of type
+- * @type to make all the comparisons.
+- */
+-#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
+-
+-/**
+- * clamp_val - return a value clamped to a given range using val's type
+- * @val: current value
+- * @lo: minimum allowable value
+- * @hi: maximum allowable value
+- *
+- * This macro does no typechecking and uses temporary variables of whatever
+- * type the input argument @val is.  This is useful when @val is an unsigned
+- * type and @lo and @hi are literals that will otherwise be assigned a signed
+- * integer type.
+- */
+-#define clamp_val(val, lo, hi) clamp_t(typeof(val), val, lo, hi)
+-
+ static inline bool in_range64(u64 val, u64 start, u64 len)
+ {
+ 	return (val - start) < len;
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
