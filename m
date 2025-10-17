@@ -4,80 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 674AECCA470
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Oct 2025 16:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F20BCCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE0FE8E0024; Wed,  8 Oct 2025 12:13:18 -0400 (EDT)
+	id 82CAF8E0082; Fri, 17 Oct 2025 09:21:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7EB8E0002; Wed,  8 Oct 2025 12:13:18 -0400 (EDT)
+	id 803BF8E0006; Fri, 17 Oct 2025 09:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4938E0024; Wed,  8 Oct 2025 12:13:18 -0400 (EDT)
+	id 6F2308E0082; Fri, 17 Oct 2025 09:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E9EB8E0002
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 12:13:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FF148E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:21:26 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4251EBA908
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:13:18 +0000 (UTC)
-X-FDA: 83975441676.05.57B8E13
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6762E14000D
-	for <linux-mm@kvack.org>; Wed,  8 Oct 2025 16:13:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LtQzG6vE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1759939996; a=rsa-sha256;
-	cv=none;
-	b=NxlP3MLMs070Y4YHiq1YBGXKxbWtJrTQrBypq+OYZk60q2p3twiztWBxMh3t7BRu/fomF/
-	aEETQfevxpi4E+DGLE/DRU3/b8CJwqLtKZqWyBDbleYAxsmnJfIvcc0buZte0vPP0eaOSn
-	+L5sCCZkoujT8YjpMQCq+hnID+MEgc8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LtQzG6vE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0718CB6377
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:21:26 +0000 (UTC)
+X-FDA: 84007667772.05.DDAD0FB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 32B66180007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:21:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WO0rcs1L;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1759939996;
-	h=from:from:sender:reply-to:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=GhaQIw0YWCJevxGPseQUuOnhPulu+oVpbQ4S6ejkTkQ=;
-	b=BVtZluOV6l6bLkesLc676u1rMk29Y5Kd0HRx5a7dcdDv4QWDyCVd1xROn1VdH9K0vCQ1YE
-	OUA74hc9cQNvA7UtQfyulAe/P09BeVGbbVS8BrcrdC6iEHr9o0yq+L4qMYYgH4RbBPuJfB
-	b/0xo1Tqt1JPLNrMjD2GuaYwGyC7DOU=
-Date: Wed, 8 Oct 2025 09:13:04 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759939994; h=from:from:reply-to:subject:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=GhaQIw0YWCJevxGPseQUuOnhPulu+oVpbQ4S6ejkTkQ=;
-	b=LtQzG6vEX+0mnRrrNSWhbb5wvkg3DmJEFE2Wvv+t7ECRR85RzgFqBrNFA4zE4ODmBbPEsg
-	a5AHrVJfQ/nA6c2PyyDBXF4CWLps8lwGHsZc2Hn3FI8+1TRyPc9JfUiVksdr9rXjdAsZrE
-	TyRTZ59obYWiWIJDANvMbM9YkdA4hsU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, yangge1116@126.com, david@redhat.com, 
-	hughd@google.com
-Message-ID: <ub7i6tidjmezzgjqxk5wk3ckf2ce25fv3yxuyfgqe7f2f3llfk@eutbtrb5kpyd>
+	s=arc-20220608; t=1760707284;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=56OXg1nKeWPq+MWPcoL1m/OzS1LkaZY47nEYnJFyoIc=;
+	b=jKce0zGWTDw8spm9ApdORcoXyVs6lBHdqcc91y31Ba5lDN2U+emuOLn3178i/Ky50pBIlW
+	2eaHQprqrgTVXjC3BxQPa3g2WXHPitXr6nzS0OWXLNg83Y17lRIfK5Jst7qZJp2oiXikr+
+	c5lvvoUrL6CizrbYfS++kuslN5FpPoA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760707284; a=rsa-sha256;
+	cv=none;
+	b=e0NiOgjR/IO5V028HSjy0At3sis8tQg2m2IeJKg9Goyy4pkQWaqjqXJpvAhPbX+0GrqLXI
+	yGvxPfc5495yU93BuX4c9AfLU8QV57d1OfEfBNufiS7qG6jFJTuFKTej12iHK9jNoGI/IZ
+	nRdin2fblv/ETJgp5Jx4vJzdHYhZi7E=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WO0rcs1L;
+	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A32F04AB7F;
+	Fri, 17 Oct 2025 13:21:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD3EC4CEE7;
+	Fri, 17 Oct 2025 13:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760707282;
+	bh=TsK5Tt2ouVurdxip4F9N9xRTQrAAUe+nydbZDh4kkR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WO0rcs1LB08EtrlI4UYOZp3vA2LU4PF6GUqMUMIpmEXqmoXG3Qcm749CWSEMtRx21
+	 yd1cGcnjGwOdTi+mZWhyxu/7KjiFh8ulKGdwL02YJnjsySVFFQu9HMse0CT5qdfDbQ
+	 MZ11xTjtf2Wz3cpg9lhgccKHoyKXK7QAQW5csdhc=
+Date: Fri, 17 Oct 2025 15:21:18 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Farber, Eliav" <farbere@amazon.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"jdike@addtoit.com" <jdike@addtoit.com>,
+	"richard@nod.at" <richard@nod.at>,
+	"anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"qiuxu.zhuo@intel.com" <qiuxu.zhuo@intel.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"rric@kernel.org" <rric@kernel.org>,
+	"harry.wentland@amd.com" <harry.wentland@amd.com>,
+	"sunpeng.li@amd.com" <sunpeng.li@amd.com>,
+	"alexander.deucher@amd.com" <alexander.deucher@amd.com>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>,
+	"airlied@linux.ie" <airlied@linux.ie>,
+	"daniel@ffwll.ch" <daniel@ffwll.ch>,
+	"evan.quan@amd.com" <evan.quan@amd.com>,
+	"james.qian.wang@arm.com" <james.qian.wang@arm.com>,
+	"liviu.dudau@arm.com" <liviu.dudau@arm.com>,
+	"mihail.atanassov@arm.com" <mihail.atanassov@arm.com>,
+	"brian.starkey@arm.com" <brian.starkey@arm.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>,
+	"tzimmermann@suse.de" <tzimmermann@suse.de>,
+	"robdclark@gmail.com" <robdclark@gmail.com>,
+	"sean@poorly.run" <sean@poorly.run>,
+	"jdelvare@suse.com" <jdelvare@suse.com>,
+	"linux@roeck-us.net" <linux@roeck-us.net>,
+	"fery@cypress.com" <fery@cypress.com>,
+	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+	"agk@redhat.com" <agk@redhat.com>,
+	"snitzer@redhat.com" <snitzer@redhat.com>,
+	"dm-devel@redhat.com" <dm-devel@redhat.com>,
+	"rajur@chelsio.com" <rajur@chelsio.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"peppe.cavallaro@st.com" <peppe.cavallaro@st.com>,
+	"alexandre.torgue@st.com" <alexandre.torgue@st.com>,
+	"joabreu@synopsys.com" <joabreu@synopsys.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+	"malattia@linux.it" <malattia@linux.it>,
+	"hdegoede@redhat.com" <hdegoede@redhat.com>,
+	"mgross@linux.intel.com" <mgross@linux.intel.com>,
+	"intel-linux-scu@intel.com" <intel-linux-scu@intel.com>,
+	"artur.paszkiewicz@intel.com" <artur.paszkiewicz@intel.com>,
+	"jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
+	"clm@fb.com" <clm@fb.com>,
+	"josef@toxicpanda.com" <josef@toxicpanda.com>,
+	"dsterba@suse.com" <dsterba@suse.com>,
+	"xiang@kernel.org" <xiang@kernel.org>,
+	"chao@kernel.org" <chao@kernel.org>,
+	"jack@suse.com" <jack@suse.com>, "tytso@mit.edu" <tytso@mit.edu>,
+	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
+	"dushistov@mail.ru" <dushistov@mail.ru>,
+	"luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
+	"rostedt@goodmis.org" <rostedt@goodmis.org>,
+	"pmladek@suse.com" <pmladek@suse.com>,
+	"sergey.senozhatsky@gmail.com" <sergey.senozhatsky@gmail.com>,
+	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+	"linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+	"minchan@kernel.org" <minchan@kernel.org>,
+	"ngupta@vflare.org" <ngupta@vflare.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kuznet@ms2.inr.ac.ru" <kuznet@ms2.inr.ac.ru>,
+	"yoshfuji@linux-ipv6.org" <yoshfuji@linux-ipv6.org>,
+	"pablo@netfilter.org" <pablo@netfilter.org>,
+	"kadlec@netfilter.org" <kadlec@netfilter.org>,
+	"fw@strlen.de" <fw@strlen.de>,
+	"jmaloy@redhat.com" <jmaloy@redhat.com>,
+	"ying.xue@windriver.com" <ying.xue@windriver.com>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"ruanjinjie@huawei.com" <ruanjinjie@huawei.com>,
+	"David.Laight@aculab.com" <David.Laight@aculab.com>,
+	"herve.codina@bootlin.com" <herve.codina@bootlin.com>,
+	"Jason@zx2c4.com" <Jason@zx2c4.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	"kbusch@kernel.org" <kbusch@kernel.org>,
+	"nathan@kernel.org" <nathan@kernel.org>,
+	"bvanassche@acm.org" <bvanassche@acm.org>,
+	"ndesaulniers@google.com" <ndesaulniers@google.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+	"freedreno@lists.freedesktop.org" <freedreno@lists.freedesktop.org>,
+	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"linux-erofs@lists.ozlabs.org" <linux-erofs@lists.ozlabs.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Isabella Basso <isabbasso@riseup.net>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Sander Vanheule <sander@svanheule.net>,
+	Vlastimil Babka <vbabka@suse.cz>, Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH v2 01/27 5.10.y] overflow, tracing: Define the
+ is_signed_type() macro once
+Message-ID: <2025101740-scion-flavoring-3a21@gregkh>
+References: <20251017090519.46992-1-farbere@amazon.com>
+ <20251017090519.46992-2-farbere@amazon.com>
+ <2025101708-obtuse-ellipse-e355@gregkh>
+ <CH0PR18MB54337BD648C23CBE40C1060CC6F6A@CH0PR18MB5433.namprd18.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CH0PR18MB54337BD648C23CBE40C1060CC6F6A@CH0PR18MB5433.namprd18.prod.outlook.com>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: zbcdpzabsu96fgt7byzzqoozty7dq13r
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6762E14000D
-X-Stat-Signature: m9oxqco6our65izzmrkmq5o44zz1knjj
-X-HE-Tag: 1759939996-738183
-X-HE-Meta: U2FsdGVkX18V4TewTUdsmO26ozbf1K+n61Hefc6Y5MaIAniZ4FeL+qXgz0obFhxgInHfrJgQOLkVUoS0SiW9NwjLq4X9PbDYS/EkAm82g8nhx9VOOUWEQ41RLPP8cghfZb3Vccnq/VIvUQ5GqDhaFLaptVF6UeICHLwC79VBorvvESyC+b7EJ9eXvyhC+x+TO9y+wxCX6nGISqyeGsQx87GBRRme9ZAkdBa/64cC75cVvkg40mCkQa9tR93OzDawlYu/t8fKEZiaIU9lBAQ332R8W8lBYA41gWxS1rmL1xOPGJqt+K/w41lMUtAPSsW3glw3LXBB2Gr8e1zgkCNTIWuP8IN4qaxsBcjli/Uz/HJJ4QlH5EL7ktbXE+58fSC5Sn75BV/NlszVaajHjFzHAfMwx+Djytbe3VmUVIpLiRLEJHi5Xliva5VXNebS0Ga3fcAZuRtwwQHEhrkP+xE0xSqobWekq7DhLjo4CU7/mOmp5b67MCcfmTzDCyKkS0Y+5jIpviHKbmJgG206SDhwO0fUIWd6qBU0tItEV5DW8E/5+wJd/fyL2eCbo6lf7gnuNWL6HEcRYr0ZgsM8ErreRf/g+W+ECIz5x7qkqFcE2UZeerDYzLCxTMgQpFu5CfrrAjzvZA7IzF32jmbi9K6V3GdSHmNB+A/aEPJaKWTM9PKQejnAxFMx38JEbMbIcwbh5Fs5lNzdektk8AY3EaH+GOM4K4SregO/pVC3nUJtZv1HDsD8IXmcvU4gQJ1PlIQIO1kd6pqhEs0Tlf36sKbeg2qjmrY4Ym/LNoTIinzFu+dDs03fFOKOCfMyltpkObOiaMpMlgvVVJUxGThfXnkVuo3JCXMsS0jdNa+p9x8d8HYfDAj+nhtggPMGqD0ke3kw4rmAcriD4t4GL7eGnDPOXUo2ZGcllLfZ0uLO8CchsanU/JcgCraE8I3Eo0who1FKhEE4p87JYHEZD0Yj3wz
- NcThLAOM
- bN4ycTKt9AoFsV7YLAYCO1ZxgV1F6k7tkVlJdj8qqFoe1aKcezidcESozBnswVum7hG0bFMLKmAcGzBe0QA8y9oXxjAD2247u2ptzjwYmK/VHZUvBWN55QrVE+OdI+ICn29kzeSP2oimKqw5o2vMlH5OUUSKiCRTop41DTFBqsHIVAQSd8qJLANX+5MiISEgdfAtUs6AG555giB1xOOVDYPcWh958V5HxMfiQ7IqimjXDHUMQJOzTXXalE8xVJcjktnfEuRddU3IiEvjj8L/D1EInL2QGxpB10V8IF7qtDrENj4J7W5kAyEgpcllClbfDqBPxJuBCc1JxE0AqaVN++4KAYJPob1RR+kyAQDqNt+JnVbRgD0HKrQx2xaZ9kuYf9RM3ohfsnXbronNmXrvurPGM8VE/fu2/WxvF/OiKzJhoewE=
+X-Rspamd-Queue-Id: 32B66180007
+X-HE-Tag: 1760707283-217426
+X-HE-Meta: U2FsdGVkX1/sMVDZeBpmlmHomapkGh+2GIH/pe6pa2sFhlCQoMKDftaEhvbVBRaNJFjBBetML5Yoye/ZWfZjeYw+GgVvMnAgulVbURE6MeBziroXGrGatNZrGxGefS4skyiMvOpEtfSvJQ61GrT+jynsQ2Z33BgXNlnnBi8s/xRahsd5u26RiYwUM3x9g09zy46NCP5W9iw2/ypM5HdI+JZ14ZwAxjM2MxQKrwt5Q3/uRFiPYSbpbWyJjTu9DW9dd219gzdcswwf6Mfxrxaxytgk9fZjeqhAnq/ufrm4bAZNtU8iJRklPF1P3Y40qraKFVD4QMpYfTJPGNZ5rMh3mIoDLzhvCxhyIgFPnQdG8YbRcbVGdjo8DMgdX0dRN28jXIOk/GYyO5njRCvFrbIipdDKdFs9nmxuQ3bwTSs9A93z6WkMgbggq7C5ZFRtEHJvz3N1JcSziqePNXzn+hBL0Ubt8sLzodIp6Mm+OHeZSd8zMQDL7iZMkFRfyP30S00rEkBbGSg5kRhbd8xZ1klODKvX8Ax8yKb5xQhRJB+TEsOb3Ap8YNhLOWlo1MIOYKf3dKDuu2MUPt5D7MqwyZyu81tgVxiBUkw1W5FIElgX1jc6WQ0oJRduFUsYcUPB0jNJrKhgDZvjEwDIQNOnJTPnlzUEhN1mCSxnRINIQajPCV6nZaoQJRjof8gNNnMfMoibAmo6ucoSvynLRWZ8WPcMJeUg9FmB7EgeKcin89msb3LagvbYSYkNTaOTQdA8J4yVL/dYNLvpwHHDlrQ2Q/LeBrJzdZLxJfxg+Hhwe9eVNhePzDvEUBXByfXZFlMxXHiw0as7UHcqzB2/hI6xp6LK1v+30gINcmT86iM15wcTZ+yP9gn9NNIbUFZFyCI/YAHWoww/isc7kWAThkSG6fIqTk4v0i8XwTvBhTTLtUQPnXNCeoSzKcegehjqnd9knilMKUpo97Q3lO1OPB89iYR
+ o+kq6cIb
+ ut4inHSB++f51pXHdXsykPD40QV53gTxY/sWVSA2k59BVawECISmaD6UtI4L6T4oGOcveG2SQwFB+vTNFjLMPl2pIgxgglVAMyTcEs9x9hzFQdFndsnN3krHODg4p7KANlqxe93PHNmn7Xp5Y1rDG8ryJ5v4Ti4HuQ/AElj6D165Q6Y8JAcCMoYwKNQP+qTpzV1wQjFIYs+79fxirknI7tmLqH/ip77NY9VSSFQqkspBYZ16yFe+3b9qR4sRqDRC1BwwBbGAS9Aly2D3gtaoNe/IU7JlZzAWgSOHDWNjaxDLn/oSHemc4J3XnZGXBsTK6sMNAdMBAKKhmTpJoT4pvZBaC6FK9C51uAcDvRrbTxUmYTjIN6WplBAgj2KSPW5EfJN9g0+FcCfJ1eiloskKV13Al8ySTzxRXr55B6hqXw8IykodW97P41F5nmyzYFHCHTUbwyOHkonuJcXP785s3iB5eGRhNtJXbRsb8TTwGpkE0cG5t7LewRxBeCV7ZtBT1T8oUmDxitbRF6lgVrIQ2V5H8sEfesRHtLwHSF8Q9Dd63azdg3rLm8wmtFp5J3Biw5U9IsOsncnaENPKFZYVWLFwVrBKZRHiyPTsC0RvH23lDFz2SkCNht1BYdKuxtgCxPK0d3m1NHZTzBS6uVWhJ40ZxkrG7ArGOZe6NyesMk+nwuXCoabURTG/AalGTHSVcKYG9mpZhHLO/s7qTkRa2SyQg3K6t96QfZRmW/rybCrxl25Xwzo1tPcEaRlqcz0S14KnO+dyyD+DoV0eg6inGDXB3T8gAtUsCZDAZBJyK+liAo+Q3ddSNAp58b7ba1VCoAtkqJyKcjQOYiV3OLo0Y3AdR2cDdzio1BRLTPsNxTHR2YDd9oa2kMF+0pMy/41LJOaStasyeEpe4t71gUSHBHxsWTVh+OQcfQd42hf+R8bK2WshdVOfkwC+7vw8PTXyviz9mUogkKJ+Bqt52/nuGwPSjPOEW
+ mD0KEGUV
+ e5+jcyTaKzKOON3SAHmMNsZC+VMqU0EQFviYwm+6VsV9m6svXGIUd05dfwL+2LiT4hE8qXpdHUfVLhMLNBNpmBiULwSiU2r49YSGJhkEU2w4lNfNgeDAlIlEoB2UhLFWbvRY4VXiPsmhZXw4Ekb3P2UO57WHuxCtYG4HL4H8Jh50/SRZOFUvxxJm1p6LQQ/94wEuSB2CM0Ex0lu56N5F1BXtQVfJCmFCs9biRSzZo7sPpymf/h4JThx0geXizTy5TxLmuK63Jy37x6RMD7mo6LJlQ1FIVCtIxZqXxTt1Mv8tAwI/lrD0JQc9+Oh/Z9NhJ3uH/g9ApbAJovAKVX43lWHvgVVoVhLl/OKXXc2BrQUGUNf1+ckibUz6SIZ1F8+6+pKTAvZ1bI1nEJtmjWiukO42Y3w2Yu204BxaSAVi7czC09ttC6hvTja8uUG6YQiHSrFVlKH4oqKnnpOhPZ99AbUKoatqhu7RzAoqjwrzsVnzTPqUeV2aOEZHEfIUfFqCFdJ+26ajSUT1S0h2xvDWXvywj6rYJvgL7CNVuzMYncdPzmqh4NNWzlkILxgy/ETEo2b3i9+6vYfVYt8LQa7DY1oK0S1R97l193EaGj8KF6V23BfJMct/0q0jRDjZYHAo0kNJraZ59NQDMA4dXLFZM89Jx1Ioh6eR/GPlYhTceTVUcSSJOl83eD9JiHC+c3nCURTfkwO2XUNC09qU1CRNeCambjHWSlOx/mhss7NUUEhshikTK4jbaaG3UlxIIkiuxPjtz268QUhf+CSHdp+tu/3Hmns68Ms/e2Idk2hMUIJz0KPuvvCkRO6J/m/vXaIg/WUHP0wPJNKdZecBe29J7xmu17CHdQDw2kPoR+tzc5VN83JUzkw2ClKEn6+GgbhPRKIkZe402YydpfKkwXW/sltdb7GR/Zr2eOKsoJRzV5vg8ekX1H6GmsQYJWPabreFnUDg97jvmpR25jKNQ54qO3zmn5kKB
+ NKkNeTeW
+ 1bJaaGMKmOLi9ltxeM0AZNfA5oReAwOCqPHhBAMQmm1fNrthGGyNxoipjUg4hjCOvmaW/O+O5SSVFUXoh5KutNuJMfJCQ17SERtKHOY/SKhhVTg8w8fVIc1XPQZAEgs2snMIYIC0l68qeuCTp0/E+csS3+tlJOXQ+ehvvRSR1pGusgFr6hTPpQUMT303qbhZNmNbqD5hf90+FPkenRaWsG4UcCZV8oH1x4zgnpHYDGzZ9+uf/doRwMEvb8DGUu7N0x9S9sN+0nb2JCwJ/E0LVdKYiwEAu9lNDQuuK95Rkz3c9/no2pq/lWiitiQUBH44AQwM8RmSnpzbP6N9COkflZfle+rpvWy/lPCyJbb1PwBdmiuTX0qh8ksauZBJNZ+mL9lenx/2UkXVeiHf24ghfdv+pxJx3A2LyiXqGRpMp+lTLlpbyG142t/VjuFzIbAMLLQrhs1sSzAPLpf9RW1Tyr72JZnntAMRYVeY2ErnhHPzHNE+GjRxtniZIrITnDxnm5TY32nk+1wnx8h+3obdC0P+iTB3ZxIkhRd1NsD0aQpAK68V0HCdElgVedIy/SzFYwJJVlgU4CnyylBhUUNpEQ2Xsd66k2bvtXFGclDTJswgMHnDT5pWVM75V5J2joAQpAT1T8wPIMp7EYn8jOdX/8y6XROuoffp4i5OVQ7nT7CBJ4jIPHixqWQoogzfVA5cf/KnJ8MQQP9h2zYxsGAI4icP0r0+yBY1zX3B9fltN/rwxiup1YW6cwH8APFV70QPDcS86eCO5/uwYIF3BHcWmQ9DG4i1BgaCJrfet8mI/KBX3aQvGo6Pqgw7zI838l71KnFaCkdigQPvv3P/nWu1eScSi9cKKNqLDDlye+mq/Xj7r05zHNho/csFDd4hyyzTs1HeB0CzgpRy61pBjghNg0T0JddRVbORxkoCGy0H3kIqn+pgqxJlBZIj/uhoqtBXjxH2BqFnLvuFX29c36AFXrfpCydXx
+ NKtL8ODP
+ +R+xGOs3/36pGlm1N4/Sn3YXTYspZ5gA/OKSLhg55cqYyKl1F/Mhp06jDtEiSimuzuq7ozWlzrLGY17cyyVNmS6lA1MwEVPGMiX9Pltx0SmbFv8tCTbIM1bglnMm7rpiCGGCFTgJVdeHfMQTcE8tuLOJbrEG2bdLzMsH+1XTnjClXrTbWHdwZOCvUO+Q918SRQh485GOM+Vr0sRC6ADQcmzPR4B+AXaWTltTDZ7wW+4XtjYZAxzNNqI+Y8YDa4DsJVE3pFuP5orkYj7iDJueqRIT1iWKLTTmcm9QvXaLnpX+c1xSFWmZqOYZsfDeoqZ/xA6q3q8ucF2PtThwCqzbCig1B+DPzFpcqPomfuX4wuQblJhaZU8UobsYzDiyYS3ZEvtKrCPEkQ5bkus60xf6X8E5Gx3RiBt2XBwR2FzJzDPrKF96PLPQwadoZ+c8sl2WMEuNAiJaFen9C9U+RgbXPsSvrZeDakwU7qw8W2SfcXarwu477D2t/4DBbEqFdEcPTyHu5xdERYKU3iqFMXSjzlkZqwb4Do+EUGLofJRxGaTBaBsii/zML0U1vq69d5+jLw8WVrf3bUvgMVWN3PrCz1LrwEWhyWfdqD8IiTsskx+OVIGwy4CgLvaabO4NEO719whnWsMCDoMzDAlj5mkydBUL5n76odtRrnycu+9Jo+DA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,85 +218,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Bcc:
-Subject: Re: [PATCH v2] mm: skip folio_activate() for mlocked folios
-Message-ID: <mkfwoqg3k66632ltgg2t6rp3l2pmkrhu2jfgip2nsn7qp7aveo@l3ajbhzvzuns>
-Reply-To:
-In-Reply-To: <aOPDRmk2Zd20qxfk@shell.ilvokhin.com>
+On Fri, Oct 17, 2025 at 12:16:27PM +0000, Farber, Eliav wrote:
+> > On Fri, Oct 17, 2025 at 09:04:53AM +0000, Eliav Farber wrote:
+> > > From: Bart Van Assche <bvanassche@acm.org>
+> > >
+> > > [ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+> >
+> > This isn't in 5.15.y, why is it needed in 5.10.y?
+> 
+> This is the mainline commit:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/overflow.h?h=v6.18-rc1&id=92d23c6e94157739b997cacce151586a0d07bb8a
+> 
+> The commit hash is 92d23c6e94157739b997cacce151586a0d07bb8a, which is
+> the one I used for the backport.
+> 
+> And here is the corresponding commit in the 5.15.y branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/include/linux/overflow.h?h=v5.15.194&id=ed6e37e30826b12572636c6bbfe6319233690c90
+> However, the commit message there references a different hash:
+> a49a64b5bf195381c09202c524f0f84b5f3e816f.
 
-CC Huge, yangge, David
+Ugh, that hash is invalid, I missed that :(
 
-On Mon, Oct 06, 2025 at 01:25:26PM +0000, Dmitry Ilvokhin wrote:
-> __mlock_folio() does not move folio to unevicable LRU, when
-> folio_activate() removes folio from LRU.
-> 
-> To prevent this case also check for folio_test_mlocked() in
-> folio_mark_accessed(). If folio is not yet marked as unevictable, but
-> already marked as mlocked, then skip folio_activate() call to allow
-> __mlock_folio() to make all necessary updates. It should be safe to skip
-> folio_activate() here, because mlocked folio should end up in
-> unevictable LRU eventually anyway.
-> 
-> To observe the problem mmap() and mlock() big file and check Unevictable
-> and Mlocked values from /proc/meminfo. On freshly booted system without
-> any other mlocked memory we expect them to match or be quite close.
-> 
-> See below for more detailed reproduction steps. Source code of stat.c is
-> available at [1].
-> 
->   $ head -c 8G < /dev/urandom > /tmp/random.bin
-> 
->   $ cc -pedantic -Wall -std=c99 stat.c -O3 -o /tmp/stat
->   $ /tmp/stat
->   Unevictable:     8389668 kB
->   Mlocked:         8389700 kB
-> 
->   Need to run binary twice. Problem does not reproduce on the first run,
->   but always reproduces on the second run.
-> 
->   $ /tmp/stat
->   Unevictable:     5374676 kB
->   Mlocked:         8389332 kB
-> 
-> [1]: https://gist.github.com/ilvokhin/e50c3d2ff5d9f70dcbb378c6695386dd
-> 
-> Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
-> ---
-> Changes in v2:
->   - Rephrase commit message: frame it in terms of unevicable LRU, not stat
->     accounting.
-> 
->  mm/swap.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 2260dcd2775e..f682f070160b 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -469,6 +469,16 @@ void folio_mark_accessed(struct folio *folio)
->  		 * this list is never rotated or maintained, so marking an
->  		 * unevictable page accessed has no effect.
->  		 */
-> +	} else if (folio_test_mlocked(folio)) {
-> +		/*
-> +		 * Pages that are mlocked, but not yet on unevictable LRU.
-> +		 * They might be still in mlock_fbatch waiting to be processed
-> +		 * and activating it here might interfere with
-> +		 * mlock_folio_batch(). __mlock_folio() will fail
-> +		 * folio_test_clear_lru() check and give up. It happens because
-> +		 * __folio_batch_add_and_move() clears LRU flag, when adding
-> +		 * folio to activate batch.
-> +		 */
+Thanks for the info, I'll go work on queueing these up.
 
-This makes sense as activating an mlocked folio should be a noop but I
-am wondering why we are seeing this now. By this, I mean mlock()ed
-memory being delayed to get to unevictable LRU. Also I remember Hugh
-recently [1] removed the difference betwen mlock percpu cache and other
-percpu caches of clearing LRU bit on entry. Does you repro work even
-with Hugh's changes or without it?
-
-[1] https://lore.kernel.org/all/05905d7b-ed14-68b1-79d8-bdec30367eba@google.com/
+greg k-h
 
