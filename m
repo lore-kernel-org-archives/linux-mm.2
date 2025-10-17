@@ -4,109 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD722CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D17CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C39A8E00A1; Fri, 17 Oct 2025 10:51:16 -0400 (EDT)
+	id 993A48E00A2; Fri, 17 Oct 2025 10:52:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 374478E003B; Fri, 17 Oct 2025 10:51:16 -0400 (EDT)
+	id 9447C8E003B; Fri, 17 Oct 2025 10:52:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23C4F8E00A1; Fri, 17 Oct 2025 10:51:16 -0400 (EDT)
+	id 833208E00A2; Fri, 17 Oct 2025 10:52:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10FAE8E003B
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:51:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FFA2B6FFB
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:51:15 +0000 (UTC)
-X-FDA: 84007894110.26.29863CF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F1E6A40014
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:51:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iHZQKr9H;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F75F8E003B
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:52:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00E48139C51
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:52:30 +0000 (UTC)
+X-FDA: 84007897302.29.5B55B76
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0F9C5A0007
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:52:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TtBjoiCR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of bijan311@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=bijan311@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760712674;
+	s=arc-20220608; t=1760712749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iBgvSFA9wqQN42AVm4tDtxe28Jc5wuc+NIBnNh4EXQ=;
-	b=Q90RjLIh6RguOBWymTx0k5hdWkgY1nkKu68v9DGYW5mbT0yYnhIP1Z5+HrNu/6IeQhHEHT
-	oxLjuCp9gZPOwgrBdWq2aRE9yBhIyyPlZYCgPSAgEGgLCseBPdZJEwEKdf1NLCk56O+svr
-	69vyHp4oQKBIvukgBzBunnmvvM1OsyA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760712674; a=rsa-sha256;
-	cv=none;
-	b=ijaS0vrftuRbYalckrFI0lPypf6rLgq25pMAnBwm+G98+rw5Bd7DTo7YODLpcjqN9NvaCB
-	7E/ww24BqyoY+vcPeBF/WC80GqC7+QEtZnKZ2dntzs5X6asr4Ezj4jWocRPSdkmQBHvhOt
-	ysVNvemy+voTEaZVKS8MfZzAlDnCTU8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iHZQKr9H;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760712673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2iBgvSFA9wqQN42AVm4tDtxe28Jc5wuc+NIBnNh4EXQ=;
-	b=iHZQKr9HtKiMKEzakFZoHIAIoXZnQ5Ab1VAd9pUL2WobM0YWIVFjy/gMGHzehPjQGCvM4Q
-	tjhHZC/PKZXdt0GszfROD1ouRtlbvlWzYAYQCAWnwUG1LLMiFlyPsfWwqZkeQYuulb5N/M
-	VYmvfsTn/lzRJeOP/MGbS/OnPq91HOo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-190-5Vqg52vFMhKqn6iP4ELsRw-1; Fri,
- 17 Oct 2025 10:51:08 -0400
-X-MC-Unique: 5Vqg52vFMhKqn6iP4ELsRw-1
-X-Mimecast-MFC-AGG-ID: 5Vqg52vFMhKqn6iP4ELsRw_1760712666
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 39FC41956095;
-	Fri, 17 Oct 2025 14:51:04 +0000 (UTC)
-Received: from h1.redhat.com (unknown [10.22.82.94])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2063A1956056;
-	Fri, 17 Oct 2025 14:50:54 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: lianux.mm@gmail.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [V2] mm/khugepaged: fix comment for default scan sleep duration
-Date: Fri, 17 Oct 2025 08:50:51 -0600
-Message-ID: <20251017145051.13842-1-npache@redhat.com>
-In-Reply-To: <20251015092957.37432-1-lianux.mm@gmail.com>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=40nyfgQShmFtY4cCrB122dpcbOTCXgM1IQYT54zJSJI=;
+	b=PMB+8w7prpoHzhS3f+8h1lIsv5m7UcNP7OsdNWhV0Mu4gItMDAB1elJWRsLSlkfHEJ0Yll
+	//N7KrbBlkRXIUoJo1lTH5eyJMrblzPnsvLY1wB0Qk0eSvxBVVhjWKC4EE/+L/pc5U2Ivo
+	lBNPVQrIhclIdrK9TOPJVlv9L8q3tFI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760712749; a=rsa-sha256;
+	cv=none;
+	b=dnzsDW08IoqA9xcqw0hZvqvHUp/zPlueTe5Vffvsuo4v+whbW79Clzd/B057KoLSY5jMho
+	Se2//o6HjR+w7XMxOnLsX+HnTa98EIP8Z7dSu8vf6eThwXUyec96pafsGvFrUK4aSdvLwj
+	+RJnZ//Blvuovq64wGBM/VUBYOyGUlU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TtBjoiCR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of bijan311@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=bijan311@gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b4f323cf89bso403463766b.2
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 07:52:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760712747; x=1761317547; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=40nyfgQShmFtY4cCrB122dpcbOTCXgM1IQYT54zJSJI=;
+        b=TtBjoiCR4mKnD4QPJ8XsSD4iKFI+qCUFIdu1K2d0VRSn9GvRJsD4qaWUfL0Q/w3spK
+         R9++005azhbNX0yPbVFbUwRuL0kYg99R8VIV49O6Nb4gnA7nZKO1uHb+UDZzAbT9Bc73
+         ifYpXtYFxktTjryLnYNcYZnVUnsS22/Xzf183olOObP2+PeCU0OrcxoIne6Tv7Vnij0x
+         qI0B6UUoyH340LYNc2SdwtSgGGhF58vbKxTxDU7wm36sMgJCrrULYhf5etuzd3QQfe7O
+         0Mwa3K89SicuPQB4HEIi82fU/VXaWI1WNH41n7cI3YNRGB7UGGMxs1uLLaV25SVvS+70
+         tALg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760712747; x=1761317547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=40nyfgQShmFtY4cCrB122dpcbOTCXgM1IQYT54zJSJI=;
+        b=UVpLwivZHekDr6kVwePbdVnCINApcXXB+PzUbWhFc1b5trGA08HmfKAk0dqwxK3RrI
+         WjBWDNvEa3hL9i4gIbRoWnQNhiNYzRILNX/Xf0rHe7SzFZZNbfESgtT7LgpA9Zmgxt3r
+         Uw8vsARSLJHAvLI2Uy4jR/MfNiBB4j9gQUneIyUI7HDuKJIPwSItb2c3bdaAZR6sMgm3
+         Y+5h+wXoOpEXgGoDfyyAZSXBeDQ2U4kXCqtuuP2EHR151uavdJdcD2WiR+CKDpKnaJ8f
+         OV32GP6dYUEtuxsX063EYBR0iJlfvaP1ItKE+hc5Sz0TSqF6ifcR+Wrx2a6ya1rFxats
+         yYSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpTLaU4go3x0T19t4e9a7oowhT9csh4O60a1+wb+Os9NU2NvMyz98S3ZfJinkdl0TEf98GyJwKNg==@kvack.org
+X-Gm-Message-State: AOJu0YyQZjfZIrbPos0vtVljY1a80FaJ3G5Dho9Vadt2gk0fqJiGDyvs
+	dDtaOSuuR/V1T+7KOA5TKb5r0d0TWl+ormv0o82JWCmd78EiVi6xMj/JjOjtq3jN15h8QCbh4Ye
+	8O2phHE4EixsxM95cV9/gwaqFxNNDniI=
+X-Gm-Gg: ASbGnctALRMrx5jAowWn3tUEqELVvc2voe2+/mvC0PTxRJFThAd/o76OzBFTj18266b
+	U5FVS1WNddg7Mw3mH7Fk+bpyKS7u+ddtGo7HnhWCDDSYMDtBKc7zzNzIrn2rzJ2GtZfPxHGfXi5
+	vUrcn3uWEv9+TDGjxj/Mzz86zs7rg2TCvLrFtnLpfCsu0i0DFD5gRxjr4BqZ5jv+KR+PGhlp3Hl
+	LsV7M87e635OZKzckxONC6uuMrOFWS5EPrawVy8Ve02vqJbWSFwwz+2Ad76bB/tXvhLj4AqQH7v
+	v/8i2B2VR8OmQZr99Yy5Rva+wfGlm7WHps8lj7a4
+X-Google-Smtp-Source: AGHT+IHPzDupjD0Il6mQHY689RSKcqmRwHuLVog9TXEikEgPhZiar0EVjUFWzMXKGPxBV3Id5cUnWwGA2ivTsIhmnlU=
+X-Received: by 2002:a17:906:6a0a:b0:b4b:e419:9af9 with SMTP id
+ a640c23a62f3a-b647314722dmr428460066b.23.1760712747066; Fri, 17 Oct 2025
+ 07:52:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3aigq9cwypz3kdbqki3b3g5e9hhqcy5k
+References: <20251016214736.84286-1-sj@kernel.org> <20251016214736.84286-2-sj@kernel.org>
+In-Reply-To: <20251016214736.84286-2-sj@kernel.org>
+From: Bijan Tabatabai <bijan311@gmail.com>
+Date: Fri, 17 Oct 2025 09:52:16 -0500
+X-Gm-Features: AS18NWA4XEij6yrkeDg-VPpESDp_j8R5n_TLSBbuEV9pdxP1CdAdhVV-XNND_i0
+Message-ID: <CAMvvPS5gjn6J1dF1O+Hj3CmVcPTQG__zRwqqdBMoRNtptQeOyg@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/5] mm/damon/core: add damon_target->obsolete for
+ pin-point removal
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 915ruqoo6fjr3umo4nbid863dgfksids
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1E6A40014
-X-HE-Tag: 1760712673-827450
-X-HE-Meta: U2FsdGVkX1+XKRi3LbT8eJ3fhftdCFxBXiHhbdKhPoGcLeQcv5zdy3uxmmcCD1LyCpMuM0Ypq77jh3gpD2p8im0zi0JqHFiij1jUUVSQczXTs7/e7j7zagCEYmSycvZMpDIJ69AvKWldNIJxNXLCAe79afp2clbpLC/D53vimbbO5VMuTmDjdb8MvHbf9W5DQWDCrXX2uxbGxvpSXuBqapRt/R45OcZ80NVWZfpFHxfSqusQgGPKcZhPprvxlaoBiMWZCXCOJqLaAbR7GTrkHiXIidaaypmc7Sr61YVbcNKn4PIVrx7SPixzbEV8eNZZczmv70YyUzy6uC5hSz1wpnDazpGtR6/hXGmuxoHzZ7yIdOvbaCBlpk//1FZmGnvFs9NowKwGYugjFl4+l6fhlyfSbN3YYy8QPSnj/R1NQnqC8+dNNKx8LlzB0/SGd+tSsC8YZcAGJYRJCI3a1MB/PkIdAMuy4Jy0uYtjevkEiT5PeBwv96cdRUJSAQFYUpQFeYE0z8Vq1PRgynPy9ChSw+bmwHjwo8Qtq7pBTUl7rjRucLni03vz7ReqEjP99nrkjdPepR46Sa6KACh3E2h57FSlF7htQuHcDwDm7oHnuzrTYBvj1VBwgO4MzyFzN9Y0PGwZ91zGC1pQaX0uH++IZwU//bcJqJ2ZCTPjhU/6x4pm1gAvhqsGXFemrbd5LVqnwAwTdQsuG02ghpVvvb2B38LyO2XwpY2D4Kijuhq1i2rVIFiAw6QihkQEeP2xV3sC3t8pgU4tET2ZX9UEDderfy7XokcAheRQItOR02fWd06guUtjd2kUqY1CeS9Ej94ufRh4RQdYqVplA3qeEFYcssxZNBNIQb+uAocnMpcevXz65LWqjCpBD9nFIQtDE1p+k0twzBcTzDNGmylgqBbbiilZOYfrv7SOHi26bGr/xiH5FhH0gSTTDJy4pET5venMesvRy2foWwvZE0XmB3Q
- dgSbkjey
- qKXLeFlJirgfhAiKTal1mD+v1b6rNzkrgKMdQ2ePSSkPLkUn9T1rLqHQgbsLWlyoWVdodzosjX/us5cKv36b+nOEca71gu6MLjAyrIzgFZqNG7wbaw75K7wYGFDeyRMk4/SIV
+X-Rspamd-Queue-Id: 0F9C5A0007
+X-HE-Tag: 1760712748-13197
+X-HE-Meta: U2FsdGVkX183fM7qbZ3dyyTre+UO0qG5z4CAw/3G4M3xbojxFobE/7betmNZ6laUAlBNizA8fEuFMs0VqgfMw8RMqTsA/Y6F49W32qGX9DTFRUH843C10WpBibsolXpk7TgP39EAbWxNKdBrxuOky6dNE7aq2LWzwe43ESZ/f3sKSxK3HzHqyn6BjPAGKQ2nLBASi4+hE4jeRx30aEMHBupXVcllYy7ibB5auRQ67FU7LNdJKcjCZZnVO6Podq++UQvK3j73avfmxwh55BHbM4mQCbSH5GO7pETqKbDB97H5u9BDbL08kPnDpBlAATzOUogugqB8nUhm7P6hDMAPhyybregHO3vgb95qewKUCCLjhZTmq+U0xBvFt6BY2sLUVoGS6OM3sLgD0qO4086gDNVqntuA+l8+lvd3aatHDE8yT72XVGu4f4iaDhec/IGOUyiEYnxIL6nbM9y4L6DIl6HLL98j+fcjOShuGGlLt0QFWLi+Tbf/5usKHpOZJWnqmSUx5sV2JYQKYAMS3nvb/NdA00ZTu1pfaXzpXPVecKJ7+RshbIITzJ/hcNVbIXSRde7NUTnIenMb+2r3mSlLBHwutbWNS5fp6Su4zO773KJhbGTiV9lfpIUnQ9SELWudEkFuRGmkxuPi5b/BqhJVkM4ciDVw5zMUCOpfjS15AANJv9IaFCPJxuw3FDoB526mM2etrj6MzOxCPsBobYRlpmi4xszGqhweTn8avHzg+/9UighAHR4381UulR8F4XNSeSVnDg5R3tdlhjIF/s1QetnSMONkAtq1ttas4w0UxXzy/OrsUGvGjd781wNpwJa/i31hwSvW4Ia/Z4IN/bYvXZEiAkh3crZjA+IZ/hauhiMw2450+U+AzNs120xzc9XjghI6BuOm8uZn6bk/K3FikFdZzukk7lRpAc2OdVgi3GcU9yT/0d1z2tyE8rButPbeIHvG7WaShFOTSJTtQOU
+ 1/N6LrTq
+ sXyJ9Pp0Qq7ZpLyP7j9BFt4PPtkB+h6OAnUjTLuZzGjC/TfzkIhCBkVEu8LotxRGdEOT+mOKH3dLLtNAm9i0oIHAVS6Pu2z19LGhCeHGga1jLvLrSRWA+bM6vyXjrdf49baZzH57KxrIILGJl5WlbJywbGl3h1IM194rRflj8KIrV33UN2ltokL52ImU+r9X/JFO7O2WMhXtAxQQjtkiX2pk0wj6a7kOoYW7BE5QNSU3Z1X6U94QohJNrMIEaUEPZCqAxrcjnV9V4qkccKgJaVmi8EzhBgl+w/UPknm7j8HoUrfuJ58v3PNBgOOw2nbwWrvuGWwxLY/2/9b1bBcPG9WIvg+0gtHoezqx8uJU+UK1WyjNrXjgSiUjzmAssFIzcDeIIQ38fb0ZW6pTOo1Y8p9mS2tiUXndlgbcJGs+7Np68yhZjS9AmVA2xJ9lTCbDgLEhd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,41 +118,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The comment for khugepaged_scan_sleep_millisecs incorrectly states
-> the default scan period is 30 seconds. The actual default value in the
-> code is 10000ms (10 seconds).
-> 
-> This patch corrects the comment to match the code, preventing potential
-> confusion. The incorrect comment has existed since the feature was
-> first introduced.
-> 
-> Fixes: ba76149f47d8 ("thp: khugepaged")
-> 
-> Signed-off-by: wang lian <lianux.mm@gmail.com>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Thanks for working on this SJ!
 
-Nice cleanup for the comments!
-
-Acked-by: Nico Pache <npache@redhat.com>
+On Thu, Oct 16, 2025 at 4:47=E2=80=AFPM SeongJae Park <sj@kernel.org> wrote=
+:
+>
+> DAMON's monitoring targets parameters update function,
+> damon_commit_targets(), is not providing a way to remove a target in the
+> middle of existing targets list.  Extend the API by adding a field to
+> struct damon_target.  If the field of a damon_commit_targets() source
+> target is set, it indicates the matcing target on the existing targets
+> list is obsolete.  damon_commit_targets() understands that and remove
+> those from the list, while respecting the index based matching for other
+> non-obsolete targets.
+>
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 > ---
->  mm/khugepaged.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e947b96e1443..d635d821f611 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -67,7 +67,7 @@ enum scan_result {
->  static struct task_struct *khugepaged_thread __read_mostly;
->  static DEFINE_MUTEX(khugepaged_mutex);
->  
-> -/* default scan 8*512 pte (or vmas) every 30 second */
-> +/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
->  static unsigned int khugepaged_pages_to_scan __read_mostly;
->  static unsigned int khugepaged_pages_collapsed;
->  static unsigned int khugepaged_full_scans;
-> 
+>  include/linux/damon.h |  6 ++++++
+>  mm/damon/core.c       | 10 +++++++++-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 524dea87cac7..8a7b45b9e40d 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -92,17 +92,23 @@ struct damon_region {
+>   * @nr_regions:                Number of monitoring target regions of th=
+is target.
+>   * @regions_list:      Head of the monitoring target regions of this tar=
+get.
+>   * @list:              List head for siblings.
+> + * @obsolete:          Whether the commit destination target is obsolete=
+.
+>   *
+>   * Each monitoring context could have multiple targets.  For example, a =
+context
+>   * for virtual memory address spaces could have multiple target processe=
+s.  The
+>   * @pid should be set for appropriate &struct damon_operations including=
+ the
+>   * virtual address spaces monitoring operations.
+> + *
+> + * @obsolte is used only for damon_commit_targets() source targets, to s=
+pecify
+> + * the matching destination targets are obsolte.  Read damon_commit_targ=
+ets()
+> + * to see how it is handled.
+>   */
+Nit: Twice in the above comment you've written "obsolte" instead of "obsole=
+te."
 
+With that fixed
+Reviewed-by: Bijan Tabatabai <bijan311@gmail.com>
+for the entire series.
+
+Thanks,
+Bijan
+
+>  struct damon_target {
+>         struct pid *pid;
+>         unsigned int nr_regions;
+>         struct list_head regions_list;
+>         struct list_head list;
+> +       bool obsolete;
+>  };
+>
+>  /**
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 70e66562a1b3..3242a9573db0 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -492,6 +492,7 @@ struct damon_target *damon_new_target(void)
+>         t->nr_regions =3D 0;
+>         INIT_LIST_HEAD(&t->regions_list);
+>         INIT_LIST_HEAD(&t->list);
+> +       t->obsolete =3D false;
+>
+>         return t;
+>  }
+> @@ -1213,7 +1214,11 @@ static int damon_commit_targets(
+>
+>         damon_for_each_target_safe(dst_target, next, dst) {
+>                 src_target =3D damon_nth_target(i++, src);
+> -               if (src_target) {
+> +               /*
+> +                * If src target is obsolete, do not commit the parameter=
+s to
+> +                * the dst target, and further remove the dst target.
+> +                */
+> +               if (src_target && !src_target->obsolete) {
+>                         err =3D damon_commit_target(
+>                                         dst_target, damon_target_has_pid(=
+dst),
+>                                         src_target, damon_target_has_pid(=
+src),
+> @@ -1236,6 +1241,9 @@ static int damon_commit_targets(
+>         damon_for_each_target_safe(src_target, next, src) {
+>                 if (j++ < i)
+>                         continue;
+> +               /* target to remove has no matching dst */
+> +               if (src_target->obsolete)
+> +                       return -EINVAL;
+>                 new_target =3D damon_new_target();
+>                 if (!new_target)
+>                         return -ENOMEM;
+> --
+> 2.47.3
 
