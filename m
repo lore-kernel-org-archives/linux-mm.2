@@ -4,89 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88114CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:34:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8B7CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE02E8E0029; Fri, 17 Oct 2025 12:34:22 -0400 (EDT)
+	id 19BFE8E002E; Fri, 17 Oct 2025 13:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6B0B8E001F; Fri, 17 Oct 2025 12:34:22 -0400 (EDT)
+	id 0D78A8E001F; Fri, 17 Oct 2025 13:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32898E0029; Fri, 17 Oct 2025 12:34:22 -0400 (EDT)
+	id EBAE38E002E; Fri, 17 Oct 2025 13:00:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA938E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:34:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3412F140272
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:34:22 +0000 (UTC)
-X-FDA: 84008153964.05.3EC3D85
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4A3E310000A
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:34:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myr4SkXl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760718860; a=rsa-sha256;
-	cv=none;
-	b=zWtwztYY8NgTk/j3C2KHH7ISZUJstA7gz/CfjmeJr4/lRZIFYSMLhljdGYUMxaydAUhM0o
-	2nGcsg+pfzGmbOXx/jVfCAMlp2mMq5Q9I84AUvoPzgRxwqQrFfrCz/Ey1QFtRZWvl+pgu5
-	pSEQrLunZ1Xn/ZI5UlaTcoJA5wW3Fvs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myr4SkXl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D34938E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:00:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D2418667D
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:00:17 +0000 (UTC)
+X-FDA: 84008219274.03.8172307
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E5A4740014
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:00:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="L YEeNVU";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="lHyF/q8a";
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760718860;
+	s=arc-20220608; t=1760720415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63B5giuwsrqD1TGKgD2XpSY/kJTU39pBIfxGfSElwbE=;
-	b=kHN/ker+1G8zMU43iDssmc1vS+r9pDoTl2Mr11T3sG+Mvx34ZsK7tHHcnfJhyew+gAlS7j
-	2KhRSDCGH9WgqR3kK5vDuWqKBpiJ3KrutosbtphN4xZVR07OZvZE0TqwrYhIudwvI+UccL
-	AqPdetpeN1AvM1MNJznRHhltKgcgGNI=
-Message-ID: <b5627e83-489c-4e16-910c-fe7e56912793@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760718854;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=63B5giuwsrqD1TGKgD2XpSY/kJTU39pBIfxGfSElwbE=;
-	b=myr4SkXlD/tSQXoAAqWnIf/m5D6HT9/H7eXzK5HeGTxdmgUN3DYlbUnK+zxNqiiSySBSoV
-	hNkDgI6sWXwlX03YMuBVX5jcBMo51F+f3hhbmX2dVdi836d3Q/f87KGWA3+03tT/g2JgIJ
-	UqXYROFPCR1U/jG0JEkVo3IGM8hX1JE=
-Date: Sat, 18 Oct 2025 00:33:33 +0800
+	bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3YqjzpkSvYXEk=;
+	b=ozKzgR01J2WItcoDPRVAzBeySh/a30YXpKOCD3v790zA5ESEPSIlv3u8Ug2gU9ORK7eIT9
+	gRb5oVjOrMyrMQ08qLHpS+q6uEaKxHLejuNDf9scDOgksB3uEtlgJ6Hs7Mrz7/IHQqFgZx
+	JltzGJ8i46BDHmlh3GjAoOxsEqxh8+4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="L YEeNVU";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="lHyF/q8a";
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760720415; a=rsa-sha256;
+	cv=none;
+	b=b4Y7rUi0CS1S7qgSyHN70zWy5EXEaTYrC1wds6p62v0D9m0KGOeKA6hX9jqFXUoMoNLCO8
+	gGHDaMXh5wOzbrGcH7/N9kofbj6ljFz43x9vcpMqJADPz3pnF2+fY02lhNKEb2k3/vI4+R
+	YEE4sMFl9QLjOEZ2XbYKGVsTiURFW/o=
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.stl.internal (Postfix) with ESMTP id 8DE74130074E;
+	Fri, 17 Oct 2025 13:00:13 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Fri, 17 Oct 2025 13:00:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1760720413; x=
+	1760727613; bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3YqjzpkSvYXEk=; b=L
+	YEeNVUi/9EqRu8aINAmTgi97ip/bfdsnzAod6qhb1fATOgyYJOymJ61PJdRpLbfz
+	KE/5rtXyrO5mxjBAgsf2XX3uAK94kscXmKkAo692H/rdYW7750fgVEN5LeDXAO3u
+	AkPKykEO4qGIMy8DckWtbE1xfKTdbn3fofU5VYQklmK1Frt2YdfNWM/rszptGF3D
+	MSCLY6wSin1fAd9CsjADQ6V3M5lEZ7T9iP0/3i/i+N5Q8K+Go4bG+RrV3B9e0g9W
+	z3b0Rzc7mJnWPN0ADSKWFWrs+F+uDRGb0k+DO7vhv+anGTDmvqxkYBHqDTW15p0f
+	FaWEKXHczG1iXljTUT0iw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1760720413; x=1760727613; bh=FHeABDDNpBcuH/HxHTgtiS8h1Pih1w3Yqjz
+	pkSvYXEk=; b=lHyF/q8auVcPkYBtF/i4yGzZNyGpmUeLbBTOhY5tXfkGtWcrhby
+	brA66/eRwRTjQKfL86nlHFYvvCFfG8+PEiBZrxAKSzH/FSQEfizDxoAcgXv+tFun
+	MpLiM1IytVS5i/HtEIS5isZWtzPG/OFZarK8ww0lwqQwpfytffqF10i67BSJxUFD
+	T/mGFZKDepkl1wqRcIuqAt+QrdFJMg4Nx2lrWhZ8n/Paz9WtYah+O9k4sR8eJFCJ
+	WlbibUAIwLR7PUzzr3OZqdnL1HXqP9KhAjMgHQzMEbpX4nko66NejRuGljWVfyU9
+	dJxJjv6ed17yPYjslzVmDMPdLOZ/kB92Bwg==
+X-ME-Sender: <xms:HHbyaF50ErfQ7-IyA2sJ_MPN6iRS1Wbxo11_-S2HR4z9pPDS6Sx2jw>
+    <xme:HHbyaDXHfG0R7heMApuKjBTsSfdt4TEWE1c-2XKTXxikp4bkfm3cIcY3xFiJxo4ud
+    KIkGOL2BPG9h7X9skeG7MGcu6ROqDDY21XMp4FlyEu_DCP_gPReIeA>
+X-ME-Received: <xmr:HHbyaB6ztCj2bQSfrFMoqKlCenY59AGw9wcmDhJ2v7JFc9fR3UX-hoong955Ew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeljeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughjfihonhhgsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhi
+    ohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesfhhrohhmohhrsghithdrtghomhdprh
+    gtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhgt
+    ghhrohhfsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprdhrrghghhgrvhesshgrmh
+    hsuhhnghdrtghomhdprhgtphhtthhopeiilhgrnhhgsehrvgguhhgrthdrtghomhdprhgt
+    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
+    htoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+X-ME-Proxy: <xmx:HHbyaMGOveeNjZzAudyjrneAsdQGCnxByQQ3CeT6yrPQXV1mM_U-sQ>
+    <xmx:HHbyaM-mmumzQdSLYF_ohtJW-tIDdjFEnZRfFZiRd7Put-BzBVmH9w>
+    <xmx:HHbyaGUHVMec6kjyA4moEn1w_zq_DjqTYrS7npJoD7GOn0HPmlX34g>
+    <xmx:HHbyaGHJSStwXVZPq5lbZP0eP8Y8sp0bv-dbLF7I2qita5FdKSZl9Q>
+    <xmx:HXbyaGDxeFYyep87XcNsuCiogm5tjteWZHVpNxCOXMXxQ3J93r6agDIe>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Oct 2025 13:00:11 -0400 (EDT)
+Date: Fri, 17 Oct 2025 18:00:09 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "Darrick J. Wong" <djwong@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>, 
+	Matthew Wilcox <willy@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>, akpm@linux-foundation.org, 
+	linux-mm <linux-mm@kvack.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	xfs <linux-xfs@vger.kernel.org>
+Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
+Message-ID: <r74wgxke6ewkt3okbkrnd6lbatjrms4rcxws7dhvfwf2oi4yb4@g5aev2vz4nl4>
+References: <20251014175214.GW6188@frogsfrogsfrogs>
+ <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
+ <20251015175726.GC6188@frogsfrogsfrogs>
+ <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
+ <aPFyqwdv1prLXw5I@dread.disaster.area>
+ <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
+ <20251017160241.GF6174@frogsfrogsfrogs>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2 1/1] mm/khugepaged: guard is_zero_pfn() calls
- with pte_present()
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- ioworker0@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Wei Yang <richard.weiyang@gmail.com>
-References: <20251017093847.36436-1-lance.yang@linux.dev>
- <699b143a-cca4-486c-a4ad-d0be561d4ab2@lucifer.local>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <699b143a-cca4-486c-a4ad-d0be561d4ab2@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251017160241.GF6174@frogsfrogsfrogs>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4A3E310000A
-X-Stat-Signature: 49nnom1qnwg6zu7gijfq58xgk14sircf
-X-HE-Tag: 1760718860-600942
-X-HE-Meta: U2FsdGVkX1/emGXvis1hYNqr09VqFkhpvxQbGZw+JvBojhZnzNQ5uuMvjXqfWnA769VIGOic9MYV78xEc/vm3hhjBn/vaMEDNlAfzQDJfmRwndq+In9kdjxfMcWTPXQ7B0jg35D6HQk1GfkqdBtRgllyHrHez7e64+QiDw6Fh2plm3/FCBQvzcvQ8og3PkmCm8xCShJ0y8RgQ8uJPPM2OFSBD7g5h+l2Sni/DFe8MOaRLC3USa2T0Vq6gl4zBzvcqaPc8Go3cAptfOAUmFBtf3BCY5hb3Tb0JZfAAJvpGOn1c8Qx8cUFZtdiXXJGF59THbNsPTqh0lwSMh23xoPQFlxeM6r65gwfxHZG6IDjLyka74V2A7EaKmkrCFdlekInztb1pG6bauO93MydsndbZ5+AbNDzhxiYyPCeBH4qTzOX3CFu5brlyT7Z6GPjuH6fILowtr6LmR/n8fHiYvrRDzlifBlwS1M7dWBVcrHx0wm091Y+ZgU8S9sASUXEh9vXAyWRHI7LZYScObZ9ftfkgeddDl46rhCdi2PBPzGn1lIH6QRaOK4ZkAN3p6vM1l0x/MxJ+EKyHEJhhw1LF+rTEj6DO1GzjFCO/Fr3sGrOTM3+orbp3i+vGRIflpCPPicbkCr0dRrTciYUrmKXMTMHPNvOFh78GlN5lVsDFru6v6ecImDMafF6w1nRIV/kqtHJJ1uYNXshaGVrUO0ZeU+KcJHM4qjJwTBW9cldayAo1cOL9J/GRbNiI1FeF05Cgnih2MI8Saj2f5DD9nkmqaL1HKGeoErWy4kVhHXZuQt8MwUupntc7F3Yv+Y2WGl5O7cBrv8riIeGXSt9/2THhPb1ymHPe2xGy9gEU+AwDI+hucUz7+jnK0ksBazK5/UVazyvpsXlwf4Q21R/9JutMKUpsyAc1TZOzqAaTBru74v0GkF+fkm0xn1QwcL1zFoL2Ff6sN/k2H0Tne8hO25xtNM
- jV7QHm5j
- TonSNDsFwdqkljPr/Jwp/RqI1ClW1AZEGBXHw0+QDfXCgBm+T9d1pmKFe09zMvlCHQ23HtbV5xs/TnGDEGeB6HLGfB7j8BAii9HETs+NOuO8+Dt3lVbCpAeYuWCAw6kILMvz61F/ttW5kdoZE8QDOIAknaZ1wHo8vDTdDNPTi43lp1QR/y5T6g3J4WDVIpbCYVIU+VSIgvSRKxIgJ1dQJfyEPYyitssRRmUngbzyBRWU679FUL/T8M9+cYZoHxwgpQ1NxW5QQzyYze6xbH3mhgPKK0Y29YMaRuXltvy0+gOsTPdMhRRDjLzIJOqLPrBSFdi2SoXWMAU7yrSCuWGEpYn7kACJkNheB6gDimDkz1xBdVzV42NUVncXUwJZzIqLjnlBZPg8ZJ1X31sbaNFd9oJ3tFdXzR3hVVb5A/1evqQPt5OhqEh8AgsvYl2VAEKXdlLdCXBjbi9aK5mZdH5y+Si4PL9CgQ+BgrFvy
+X-Rspamd-Queue-Id: E5A4740014
+X-Rspamd-Server: rspam03
+X-Stat-Signature: p936iwmc3m3zgbcw98asy7b3mng8hq5b
+X-HE-Tag: 1760720414-422115
+X-HE-Meta: U2FsdGVkX1+yotEpIRPMXadVHFF8P4Uloshpcpl3PvTmhFuVTg/v20aFrgaBngto0zZSrg2vvpkal6QIw/F4Y2DC+Hh14Qsiv/57EJtJ22Q8cpCe8FngsWRTY1ARu3f9jXFqOkmwakQEo6kDcAYfV+q/YjSKyJCKEfDJ/JcEzNFEt9qmKJACitJZVfMegiN4fKVufh/jTkYRuDKHRO9HBUk9w0Ufw8iCyq8tXsJC7BYaqUTKWjwUIy2V+cOCW4uNhr/VJEGdPswS7jCf+ehDM2oerHli+3yMLW/lvThMYUMnwuTzxKf3TkjnQP5Nn1udCy9ZSdB8khepItDxYY8MDd1aSTCCrfZeS4wMZuX/+jteKHrt4tOtKLehIA8TJWQTyziKt35W+IdbvVyrhNKaWvXjUVs1nCMSUNwXLc1i3ScasHopOUur75UcG1PuUoHs4x2UpJmyqZY3uyWjAipVVb1ZWfCLMRXV1Jgv7pHfE5xORPRomNI3ljdwZd6WX5pU0wqjm6N2ZfeRwWpiuNKsrrwhTNyhNcdcQKPIe0AcdDW0++/YAqK2IxJWUmu5gXTlQPf3mkG/hMyCSQrRLd2GuW7h5sbhJWMWmYBTzZTSz6idSBQ1SREIYWV2ejdlAAqpjIVEqrxej2xIFEcinpY1SWgRAYZ7AnZmDsP6tyzKUaXxDWRZP2lFRpsx0godYyhjiyEpvpB3MumCCZtSnzu1EFauL+9rPyfg5p8feihg9q2JAhiTTdsBjo0o3NKfPIGUbiG6AUhGNByizyOln4A2wX7/ZZ415hvXKpR2VRib5E3kVjGKpXijD4kv01YpPvOwL9OPeonTSaUCLL835sU1S+CL1fzdFRAYm1eNxFcH4UIcefG1ZJEWE7HBICiB3BXH2dyAstzugWph2yDr/P8OiilS3tfyGueaL7H02/uyKEGCiWsjVMhX/Vx6lDKcl1fGXSMD70LH08D49b0aphO
+ 2E9Sk5wT
+ 5kYBnZgeUKgECUIigGwlt7LTB/BBFrDIX/MAU/0NT1S15SdWDEb8Oc1MzHVTQk5O+CeuEqsEyw412c5uEAmK6TRXfLyTtN6VITViZKhdZL2cmFHYUti7xkcvg9xE8nx8RFlWGN2dV9EDWwwC7ve9o8ja+8wVvLAYWCT4Zkm8DLm8ibin690H/wAjyxa7fMcuoyevjznyTIxfCO6Zwnu94nzQrfskssv4aGdsNJ6GdSK0gyKCf3Vi/ApZRBRejhER0QBXkPYpoLVaxPGCrPGH+ek8TcNuUwgsL0bGjBh2luJdvNkcluN38yLK3/JliJMYHTsubcHogTMHlDnsRB/jfKy9JR+1lg0ogK6UDSxuK2AJiz+A0YbYcLji/EhHQPoMEyo/qtXjuiQANuvkWP99bwGT2kpf6Sx/aBT2HUO2jjAl2oSLh/AWpaVl+m9+tpbeDBUOa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,207 +144,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Oct 17, 2025 at 09:02:41AM -0700, Darrick J. Wong wrote:
+> On Fri, Oct 17, 2025 at 03:28:32PM +0100, Kiryl Shutsemau wrote:
+> > On Fri, Oct 17, 2025 at 09:33:15AM +1100, Dave Chinner wrote:
+> > > On Thu, Oct 16, 2025 at 11:22:00AM +0100, Kiryl Shutsemau wrote:
+> > > > On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
+> > > > > On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
+> > > > > > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
+> > > > > > > Hi there,
+> > > > > > > 
+> > > > > > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
+> > > > > > > with the following:
+> > > > > > > 
+> > > > > > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
+> > > > > > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
+> > > > > > > @@ -1,2 +1,10 @@
+> > > > > > >  QA output created by 749
+> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
+> > > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
+> > > > > > >  Silence is golden
+> > > > > > > 
+> > > > > > > This test creates small files of various sizes, maps the EOF block, and
+> > > > > > > checks that you can read and write to the mmap'd page up to (but not
+> > > > > > > beyond) the next page boundary.
+> > > > > > > 
+> > > > > > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
+> > > > > > > folio to cache the entire fsblock containing EOF.  If EOF is in the
+> > > > > > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
+> > > > > > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
+> > > > > > > to the second 4096 bytes should produce a SIGBUS.
+> > > > > > 
+> > > > > > Does anybody actually relies on this behaviour (beyond xfstests)?
+> > > > > 
+> > > > > Beats me, but the mmap manpage says:
+> > > > ...
+> > > > > POSIX 2024 says:
+> > > > ...
+> > > > > From both I would surmise that it's a reasonable expectation that you
+> > > > > can't map basepages beyond EOF and have page faults on those pages
+> > > > > succeed.
+> > > > 
+> > > > <Added folks form the commit that introduced generic/749>
+> > > > 
+> > > > Modern kernel with large folios blurs the line of what is the page.
+> > > > 
+> > > > I don't want play spec lawyer. Let's look at real workloads.
+> > > 
+> > > Or, more importantly, consider the security-related implications of
+> > > the change....
+> > > 
+> > > > If there's anything that actually relies on this SIGBUS corner case,
+> > > > let's see how we can fix the kernel. But it will cost some CPU cycles.
+> > > > 
+> > > > If it only broke syntactic test case, I'm inclined to say WONTFIX.
+> > > > 
+> > > > Any opinions?
+> > > 
+> > > Mapping beyond EOF ranges into userspace address spaces is a
+> > > potential security risk. If there is ever a zeroing-beyond-EOF bug
+> > > related to large folios (history tells us we are *guaranteed* to
+> > > screw this up somewhere in future), then allowing mapping all the
+> > > way to the end of the large folio could expose a -lot more- stale
+> > > kernel data to userspace than just what the tail of a PAGE_SIZE
+> > > faulted region would expose.
+> > 
+> > Could you point me to the details on a zeroing-beyond-EOF bug?
+> > I don't have context here.
+> 
+> Create a file whose size is neither aligned to PAGE_SIZE nor the fs
+> block size.  The pagecache only maps full folios, so the last folio in
+> the pagecache will have EOF in the middle of it.
+> 
+> So what do you put in the folio beyond EOF?  Most Linux filesystems
+> write zeroes to the post-EOF bytes at some point before writing the
+> block out to disk so that we don't persist random stale kernel memory.
+> 
+> Now you want to mmap that EOF folio into a userspace process.  It was
+> stupid to allow that because the contents of the folio beyond EOF are
+> undefined.  But we're stuck with this stupid API.
+> 
+> So now we need to zero the post-EOF folio contents before taking the
+> first fault on the mmap region, because we don't want the userspace
+> program to be able to load random stale kernel memory.
+> 
+> We also don't want programs to be able to store information in the mmap
+> region beyond EOF to prevent abuse, so writeback has to zero the post
+> EOF contents before writing the pagecache to disk.
+>
+> > But if it is, as you saying, *guaranteed* to happen again, maybe we
+> > should slap __GFP_ZERO on page cache allocations? It will address the
+> > problem at the root.
+> 
+> Weren't you complaining upthread about spending CPU cycles?  GFP_ZERO
+> on every page loaded into the pagecache isn't free either.
+
++Linus.
+
+True. __GFP_ZERO is stupid solution.
+
+I think the folio has to be fully populated on read up from backing
+storage. Before it is marked uptodate. If it crosses i_size, the tail
+has to be zeroed. No additional overhead for folios fully with i_size.
+
+But if you insist that is inevitably going to be broken, __GFP_ZERO
+would solve problem with data leaking at the root.
 
 
-On 2025/10/17 23:44, Lorenzo Stoakes wrote:
-> On Fri, Oct 17, 2025 at 05:38:47PM +0800, Lance Yang wrote:
->> From: Lance Yang <lance.yang@linux.dev>
->>
->> A non-present entry, like a swap PTE, contains completely different data
->> (swap type and offset). pte_pfn() doesn't know this, so if we feed it a
->> non-present entry, it will spit out a junk PFN.
-> 
-> It feels like this somewhat contradicts points I've made on the original series
-> re the is_swap_pte() stuff. Sigh.
+Whether to zero the memory again on writeback is less critical in my
+view. It could only have whatever legitimate user wrote there and is not
+a data leak. Or am I wrong?
 
-My bad. I didn't get your point before ...
+> > Although, I think you are being dramatic about "*guaranteed*"...
+> 
+> He's not, post-EOF folio zeroing has broken in weird subtle ways every
+> 1-2 years for the nearly 20 years I've worked in filesystems.
+> 
+> > If we solved problem of zeroing upto PAGE_SIZE border, I don't see
+> > why zeroing upto folio_size() border any conceptually different.
+> > Might require some bug squeezing, sure.
+> 
+> We already do that, but that's not the issue here.
+> 
+> The issue here is that you are *breaking* XFS behavior that is
+> documented in the mmap manpage.  This worked as documented in 6.17, and
+> now it doesn't work.
 
-And this patch is not intended to touch is_swap_pte() ...
+As I described, it was broken, but in a less obvious way. Order-9 folios
+are mapped as PMD regardless of i_size before my recent changes. They
+*usually* get split on truncate, but it is not guaranteed because split
+can fail.
 
-> 
-> I guess that's _such a mess_ it's hard to avoid though.
-> 
-> And I guess it's reasonable that !pte_present() means we can't expect a valid
-> PFN though.
+We can "fix" this too by giving up mapping folios as PMD (or coalesced
+PTEs) if they cross i_size boundary.
 
-Yes, I think we expect a valid PFN must be under pte_present().
+I think it is bad trade off. It will require more work in page fault and
+reduce TLB hit rate.
 
-> 
->>
->> What if that junk PFN happens to match the zeropage's PFN by sheer
->> chance? While really unlikely, this would be really bad if it did.
->>
->> So, let's fix this potential bug by ensuring all calls to is_zero_pfn()
->> in khugepaged.c are properly guarded by a pte_present() check.
->>
->> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> 
-> Not sure I really suggested something that strictly contradicts points I
-> made... but I guess I did suggest guarding this stuff more carefully.
-
-Sorry, I didn't catch you again ... Will drop the Suggested-by tag.
-
-> 
->> Reviewed-by: Dev Jain <dev.jain@arm.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
->> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->> ---
->> Applies against commit 0f22abd9096e in mm-new.
->>
->> v1 -> v2:
->>   - Collect Reviewed-by from Dev, Wei and Baolin - thanks!
->>   - Reduce a level of indentation (per Dev)
->>   - https://lore.kernel.org/linux-mm/20251016033643.10848-1-lance.yang@linux.dev/
->>
->>   mm/khugepaged.c | 29 ++++++++++++++++-------------
->>   1 file changed, 16 insertions(+), 13 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index d635d821f611..648d9335de00 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -516,7 +516,7 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
->>   		pte_t pteval = ptep_get(_pte);
->>   		unsigned long pfn;
->>
->> -		if (pte_none(pteval))
->> +		if (!pte_present(pteval))
->>   			continue;
->>   		pfn = pte_pfn(pteval);
->>   		if (is_zero_pfn(pfn))
->> @@ -690,17 +690,18 @@ static void __collapse_huge_page_copy_succeeded(pte_t *pte,
->>   	     address += nr_ptes * PAGE_SIZE) {
->>   		nr_ptes = 1;
->>   		pteval = ptep_get(_pte);
->> -		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->> +		if (pte_none(pteval) ||
->> +		    (pte_present(pteval) && is_zero_pfn(pte_pfn(pteval)))) {
->>   			add_mm_counter(vma->vm_mm, MM_ANONPAGES, 1);
->> -			if (is_zero_pfn(pte_pfn(pteval))) {
->> -				/*
->> -				 * ptl mostly unnecessary.
->> -				 */
->> -				spin_lock(ptl);
->> -				ptep_clear(vma->vm_mm, address, _pte);
->> -				spin_unlock(ptl);
->> -				ksm_might_unmap_zero_page(vma->vm_mm, pteval);
->> -			}
->> +			if (pte_none(pteval))
->> +				continue;
-> 
-> Yeah I'm not sure I really love this refactoring.
-> 
-> Can be:
-> 
-> 		if (!is_swap_pte(pteval)) {
-> 			add_mm_counter(vma->vm_mm, MM_ANONPAGES, 1);
-> 			if (!is_zero_pfn(pte_pfn(pteval)))
-> 				continue;
-> 
-> 			...
-> 		}
-> 
-> Doing pte_pfn() on a pte_none() PTE is fine.
-> 
-> Obviously as theree's a lot of hate for is_swap_pte() you could also do:
-> 
-> 		if (pte_none(pteval) || pte_present(pteval)) {
-> 			...
-> 		}
-> 
-> Which literally open-codes !is_swap_pte().
-> 
-> At the same time, this makes very clear that PTE none is OK.
-
-Emm, I'd prefer the new helper pte_none_or_zero() here:
-
-if (pte_none_or_zero(pteval)) {
-	add_mm_counter(vma->vm_mm, MM_ANONPAGES, 1);
-	if (pte_none(pteval))
-		continue;
-	....
-}
-That looks really clean and simple for me ;)
-
-> 
->> +			/*
->> +			 * ptl mostly unnecessary.
->> +			 */
->> +			spin_lock(ptl);
->> +			ptep_clear(vma->vm_mm, address, _pte);
->> +			spin_unlock(ptl);
->> +			ksm_might_unmap_zero_page(vma->vm_mm, pteval);
->>   		} else {
->>   			struct page *src_page = pte_page(pteval);
->>
->> @@ -794,7 +795,8 @@ static int __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
->>   		unsigned long src_addr = address + i * PAGE_SIZE;
->>   		struct page *src_page;
->>
->> -		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->> +		if (pte_none(pteval) ||
->> +		    (pte_present(pteval) && is_zero_pfn(pte_pfn(pteval)))) {
->>   			clear_user_highpage(page, src_addr);
->>   			continue;
->>   		}
->> @@ -1294,7 +1296,8 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->>   				goto out_unmap;
->>   			}
->>   		}
->> -		if (pte_none(pteval) || is_zero_pfn(pte_pfn(pteval))) {
->> +		if (pte_none(pteval) ||
->> +		    (pte_present(pteval) && is_zero_pfn(pte_pfn(pteval)))) {
->>   			++none_or_zero;
->>   			if (!userfaultfd_armed(vma) &&
->>   			    (!cc->is_khugepaged ||
->> --
->> 2.49.0
->>
-> 
-> I mean all of this seems super gross anyway. We're constantly open-coding the
-> same check over and over again.
-> 
-> static inline bool pte_is_none_or_zero(pte_t pteval)
-> {
-> 	if (is_swap_pte(pteval))
-> 		return false;
-> 
-> 	return is_zero_pfn(pte_pfn(pteval));
-> }
-> 
-> Put somewhere in a relevant header file.
-> 
-> Or again, if there's distaste at is_swap_pte(), and here maybe it's more valid
-> not to use it (given name of function).
-> 
-> static inline bool pte_is_none_or_zero(pte_t pteval)
-> {
-> 	/* Non-present entries do not have a PFN to check. */
-> 	if (!pte_present(pteval))
-> 		return false;
-> 
-> 	if (pte_none(pteval))
-> 		return true;
-> 
-> 	return is_zero_pfn(pte_pfn(pteval));
-> }
-
-Yeah, I'll put pte_none_or_zero() in this file first.
-
-static inline bool pte_none_or_zero(pte_t pte)
-{
-	if (pte_none(pte))
-		return true;
-	return pte_present(pte) && is_zero_pfn(pte_pfn(pte));
-}
-
-> 
-> I think I'm going to do a series to addres the is_swap_pte() mess actually, as
-> this whole thing is very frustrating.
-
-Excellent! Looking forward to your series to clean that up ;)
-
-Thanks,
-Lance
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
