@@ -4,94 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79788CCD183
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 01:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA9C7CCD183
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 01:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C53338E0030; Thu, 16 Oct 2025 21:09:47 -0400 (EDT)
+	id 33C098E0033; Thu, 16 Oct 2025 21:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C03DA8E0002; Thu, 16 Oct 2025 21:09:47 -0400 (EDT)
+	id 2ECE58E0002; Thu, 16 Oct 2025 21:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF2E78E0030; Thu, 16 Oct 2025 21:09:47 -0400 (EDT)
+	id 2298C8E0033; Thu, 16 Oct 2025 21:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 993BB8E0002
-	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:09:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1155EC0480
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:09:47 +0000 (UTC)
-X-FDA: 84005824014.17.88435B4
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EED9EA0002
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:09:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=qbcQPSRg;
-	spf=pass (imf15.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 116278E0002
+	for <linux-mm@kvack.org>; Thu, 16 Oct 2025 21:19:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9337011A19A
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:19:20 +0000 (UTC)
+X-FDA: 84005848080.15.E91B637
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CD3C2120004
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 01:19:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="imTp//37";
+	spf=pass (imf29.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760663385;
+	s=arc-20220608; t=1760663958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dg9UrmyeMX3l+vmZbebYqb6LMNHNQPPuGCglxcVhywk=;
-	b=wx0+qPzDyH2aUm9yNXqvZKT8VkpIJngHQEr5GbIwRy6lt1Rm0Lh4okBjBsY8vSXPW8hp5t
-	GwaA0KsBws/OZn0vaTvW+wVcQNA2Z+PfdNeIgKr0pRlnGjrO8w/b9hcAmW8pQix7lZ6tqO
-	oJjW80ZrC/IAiUwIgU7nOHpXGTLNSeU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=qbcQPSRg;
-	spf=pass (imf15.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760663385; a=rsa-sha256;
+	bh=8GdIKXKSuyoQ2I8o+Rbq8hN819PD6bayvqWnle+WNBA=;
+	b=IaevztLtn3mX3aAN5osYbs/d1UQOleqDsR1Wd2wEIZ3yRxiuaAthQTpmZ3IJSaXyFGb/l9
+	t7/qQRmalCj9TznDZqxW5rO0a8QLH6GgrArJBqfNpI/lfZhivJBU8kI4M/Ej+S3rjHkJ/E
+	V+tYoMQLs1yHd+O7HJf0I4X9R597Khs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760663958; a=rsa-sha256;
 	cv=none;
-	b=HvGivR9eEM/3Y246uVw5ACz9CoyDOO8OVUnewlCGfEADTU8ujJNQNzpSb4043FeuPiQwfg
-	097LHg9PDYK60ylk5StT2QkQG0yerLoEVuN1GCNmgquGiZSaQpKcJsn+zfEAkSAFAyeE5l
-	sov/mg9EpEQ/aohBr4WW9mOG5hhOkvU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=dg9UrmyeMX3l+vmZbebYqb6LMNHNQPPuGCglxcVhywk=; 
-	b=qbcQPSRginp3zT2ooRQz3ELG230xVO5RMIK+33anIhQR+2nchY8murdgvYBLZ0V633tXYE2i1m3
-	samNW1mzPP3Ti+htL4q1rZ/VmrY43UFU7womf5MhHRJ/JaaW7V0ZrNd58SJW34CRg0EyHLdq40Vnm
-	TyhpFsHOAmpbgdSlRC9azpuUzh0msbI8egLKuQxVj7kuPlEhbIPUK2W6w5Im6/4ExkXb1DzV+uquX
-	QjdbnVDbGWbcN0oXNuq4JZR9DU/HeT3MQigmcijBQ1NxjqKM+5WQNdOkm49AM2SfU2Yr41e9uIZ0P
-	9UAOgF6YIc4DKNefHbYdTcFD1N10kUg/ckcA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1v9YyR-00DI4R-1l;
-	Fri, 17 Oct 2025 09:09:40 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Oct 2025 09:09:39 +0800
-Date: Fri, 17 Oct 2025 09:09:39 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	usamaarif642@gmail.com, ryan.roberts@arm.com, 21cnbao@gmail.com,
-	ying.huang@linux.alibaba.com, akpm@linux-foundation.org,
-	senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com,
-	linux-crypto@vger.kernel.org, davem@davemloft.net,
-	clabbe@baylibre.com, ardb@kernel.org, ebiggers@google.com,
-	surenb@google.com, kristen.c.accardi@intel.com,
-	vinicius.gomes@intel.com, wajdi.k.feghali@intel.com,
-	vinodh.gopal@intel.com
-Subject: Re: [PATCH v12 14/23] crypto: iaa - IAA Batching for parallel
- compressions/decompressions.
-Message-ID: <aPGXUxRZeYLO_CUo@gondor.apana.org.au>
-References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
- <20250926033502.7486-15-kanchana.p.sridhar@intel.com>
+	b=V1bcXhRJL2Jb2xFW99sW5VtrJBzvFfV1+dZfIWfuTt/VSm3d65fL9DdsivmY2zawzI3bQz
+	Q2L3IZIte4i+ZvejTXO1d0l1sjRtk6Z/ZK0GtTcE4dvExpfDqJCLWs85ACZDKdNlTDKEvJ
+	zx02dkaM5N9/b+j7vBFMwezu2Vdu448=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="imTp//37";
+	spf=pass (imf29.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <51f86d0e-e9dc-42ef-baee-0dfdd39b7cab@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760663954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8GdIKXKSuyoQ2I8o+Rbq8hN819PD6bayvqWnle+WNBA=;
+	b=imTp//3755IrNDCBBNh+hP7nBOKNj+g3rU0OfOwdNwRYq7dnSjQkADbbgS7uGpGkm6vTse
+	MIhzcPlu+Jw+G2bTUVX2bPyPPNzDOuAEwmwtzV00isvxhy7cXYPfc2yBFdmxMVx4gm3F+2
+	XmMNLjwILu2ktOoE2KtPPW+J3PyLDJE=
+Date: Fri, 17 Oct 2025 09:19:09 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250926033502.7486-15-kanchana.p.sridhar@intel.com>
-X-Stat-Signature: d8b7w1hquz8pwnnixrj4ghpe74c81dej
-X-Rspamd-Queue-Id: EED9EA0002
+Subject: Re: [PATCH] tools/mm/page_owner_sort: add help option support
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251016201051.67097-1-sj@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20251016201051.67097-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: rc5se5mepmnyor9boqaq59q485sawfw9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760663384-345467
-X-HE-Meta: U2FsdGVkX19kMDP+1HYfAk9w3UJh7YROy7tQuI81Y+kEH0kmviWgk4x4NaPqQCyb+MkDvOzs8Z1lt2lrTzty3ZXZ+q0Tp2diQ4S6LCIH0ZP2F5NAinXhr6BSavtQPacLXdGGepY5ZNFGofaIUhMxeVHKXWp4EcmuT28NC+obKtlgNoG/rz2itYa4N2oOX0naM7mDNx+ohIyfjowc59z/FsbExuiEg1gQs48SMlW1aC0axc7IppE4JJNX5H+0EBNHsOfMVR/nv2vMWEhnOYxsmT6z5g77bZ/CGqWImfoKNBJRCMgfA9nNwKnWkLqPLexUHwT/UERsrOnjPOUSVUYdyHKctiOm4vQ/f7ljBzQoj0tw+3fZncJnLI8E8QswT8f9CWQqnq6/cTVMUkK3hljLrElt77NGmuK8uVLNdBgnx8o6Wb+SQZKoK/aecDS1JkAzyqHaEVLI+l1ONx2tdjpbgGsBTC6OaYbfV7SuR75i2vLKdPCDK+zPoL9S7dFGd+8lTwzMy/Rqkp4kpT4826Z4WJaUmud10t9Y4/WiPh41DRlNtts27JQYREzeBh0sUhkdpeeRNJTtR2vLKF09bjM+UFuH/DQs9LC+Xo8QbpKc/lVLY+8UJ0oGDhJYotx1txlrIBOPYqDndC/Ho4kySVEzbft2iekmk6QkrJ9K52/k0BCsM0DnADidEBVvPoQQf0ch5PbV8V0JmEKhAgFWHTvslqRpSO0agNWmEXdlM6HzkPEPK3RYTbXMmUoPE6UldqwP3HmDKZz0ZtceX0c4zVAs90aVX4UGhD04wnxjbZs5eq0rimYM2mUcYPWjLs3Jzp+SGbaKzAXMy5o4xrYWzGy3vBB8e7ZLEmDaXA2d3Uhvn7lInma/8JL5rN35Vulmdv/15XcRMPdd5lmQNM53seYGIsjBoyy9KKYXlh8L3ZNSIFn75S6Egtpykx/aUdbET8d4gl6R7p3ZQ2M4wGEJKrl
- tn2jDzZK
- IJ4H2GwES53AmbgZMCEC2GDTynEAxgEIJh448MqKaYfY+s2J4Yfu8Eo4QeQ19+/Ucz5M+vQqR1CoTPMCGXOyfXtrGtpJ1Igswst7693NXAg96ibHtrhEFOFlCZ0ntpzRIqqHJRJdZDtq7fkpiUOfjqwmP18KoTf5KJSYBRf2DkbFAygjUEtNsTDPUzytFkrDy+WizgYqMdhzR7nMET8gYQmRzJKW+EwQadpG5dVt3N92FZlKBaxxvAS9vCvgadVkX1sO9Bsbfrft77CZvXdZV+rJMm4cR2BJkjRfP
+X-Rspamd-Queue-Id: CD3C2120004
+X-HE-Tag: 1760663956-63628
+X-HE-Meta: U2FsdGVkX19yEVD3gKDzZbSJ5EH8ltHnS2vg/UL90zMlKNOaGak388h9PMpAhCcENynYz6l+zp4AEHS+YMTHHMUMuqvsXpLDWtyFbLTAQpyKIolj+ilrH5ITKN4WpmHb47WpTsDsdiic6y9oxzj5uSPnwt6GnMQbfVbKqvJeYGsedbTe2nZc2Xe2F+SiFipz0s8Pnxyas94pNEmIleXbIf4nZhFZPfHmgd6CnwoKZwS+o/pgl9XH2af6rcafd/QJD3EmDdn8E1aNPuoqb5jQvONic82jb0hBzzzRD2uq/c8fqi1RudYkKO9PWl4Zz09j5pnVYZtJ1x8cYjtfuVb2HGHVBThMyfkdhNPaKiwp4Hg/LEivxCWWcGyadrf5tjvoaEmrN9O/9C01sAKb/CTg2/GLP+BMV6o7GSIjCNaiAQ0QoVJG0bPd46F3PSFmRqkf4nljiXN4YrvLrH4HkRWB7+bRuiC47r9K7luOQdLuNLyyW/gb5CD0FYgGXjv0Jujof6jMjUzYyt6Hr/psRM/eWz05MgM7/xx5dWJ/sO4nCs5qQgJspbaEy2L+qXjxjoaEsuLiQIIWijHaRUmBIyENtVwK8a0beUYHvo/kLb5rpZfhaBz4UZkssa3KfcEw1ZQmLXam7H/7MhiHkecV/7/YaOg+iaG+C6FmKJJjOasCdCM88ZfgHF3wN17mspQAdnECQ2o2axkTq1kF0n0iFlgqnc/Ixv9pdSqCc1RTO0gzYcLdmk9Il0hmTj+ll+tu+nqqwAmDHbSga7HJwww3sO4vAHjzVB+z6Qq2O+3ga4QUFfxkVpgJmQT3LeUZ5/LO1xKRZdelzdq3GlTODL39DKz8/X0gz6U/nd5JrN2REbZYlmO3DgwdmhiBRikzfvEumeWvVOBRTkBVq0OHZMjuR6BbA/wzjEmr/brAEbcJgI9spBKYvz0BT+YpaSePFcuTtJw+a7bMw2ZT1OmBZp6Bgyx
+ Kx0/XVxF
+ orDGiC/TbGKCEy+CPjyFowkZKSU5Ijzp1941esU/0cKYQum4sx5IKzJ4LCb4tgTpUH/oEv+Zf2gnIETeBI29UFzCTvSQ9Z4kuB3sV6d/OSbENQb4FxKpODnfyITl9X61112QBPNzNkPP9/6/KR3FZl8xpSn5ncrBUOSIbHHpj1RWlOtokDnt6fadnMFoIMFvf/lZssWYTKhMsBUsFgdW/Rob6AavFRnJLVVdWMvqHO0blYj0kX2+dsAPcSusVSUWJv7uK79xYWnaNVA+fVgmmvzEgggXpoJ8QPTNDckpWS3hOwLPhgz8VPmqDP8gl/LF59bBAbDFqJnJG9AK8UxT0KHgVdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,31 +90,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 08:34:53PM -0700, Kanchana P Sridhar wrote:
->
-> +__always_inline int iaa_comp_compress_batch(
-> +	enum iaa_mode mode,
-> +	struct iaa_req *parent_req,
-> +	unsigned int unit_size)
-> +{
-> +	return iaa_comp_acompress_batch(iaa_ctx[mode], parent_req, unit_size);
-> +}
-> +EXPORT_SYMBOL_GPL(iaa_comp_compress_batch);
-> +
-> +__always_inline int iaa_comp_decompress_batch(
-> +	enum iaa_mode mode,
-> +	struct iaa_req *parent_req,
-> +	unsigned int unit_size)
-> +{
-> +	return iaa_comp_adecompress_batch(iaa_ctx[mode], parent_req, unit_size);
-> +}
-> +EXPORT_SYMBOL_GPL(iaa_comp_decompress_batch);
 
-What are these for?
 
-Cheers,
+在 2025/10/17 04:10, SeongJae Park 写道:
+> On Thu, 16 Oct 2025 13:49:25 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> 
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> Add -h/--help option to display usage information and improve code style.
+> 
+> Looks good to me, though I have a trivial comment below.
+> 
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  tools/mm/page_owner_sort.c | 10 +++++++---
+>>  1 file changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
+>> index 880e36df0c11..202eafed66a9 100644
+>> --- a/tools/mm/page_owner_sort.c
+>> +++ b/tools/mm/page_owner_sort.c
+>> @@ -669,14 +669,15 @@ int main(int argc, char **argv)
+>>  		{ "pid", required_argument, NULL, 1 },
+>>  		{ "tgid", required_argument, NULL, 2 },
+>>  		{ "name", required_argument, NULL, 3 },
+>> -		{ "cull",  required_argument, NULL, 4 },
+>> -		{ "sort",  required_argument, NULL, 5 },
+>> +		{ "cull", required_argument, NULL, 4 },
+>> +		{ "sort", required_argument, NULL, 5 },
+> 
+> Seems unnecessary changes.
+The spacing changes fix inconsistent formatting in longopts array.
+Since the format fixes are simple and in the same context, I put them together.
+If you insist on removing these changes, I will drop them in the next version.> 
+>> +		{ "help", no_argument, NULL, 'h' },
+>>  		{ 0, 0, 0, 0},
+>>  	};
+>>  
+>>  	compare_flag = COMP_NO_FLAG;
+>>  
+>> -	while ((opt = getopt_long(argc, argv, "admnpstP", longopts, NULL)) != -1)
+>> +	while ((opt = getopt_long(argc, argv, "admnpstPh", longopts, NULL)) != -1)
+>>  		switch (opt) {
+>>  		case 'a':
+>>  			compare_flag |= COMP_ALLOC;
+>> @@ -702,6 +703,9 @@ int main(int argc, char **argv)
+>>  		case 'n':
+>>  			compare_flag |= COMP_COMM;
+>>  			break;
+>> +		case 'h':
+>> +			usage();
+>> +			exit(0);
+>>  		case 1:
+>>  			filter = filter | FILTER_PID;
+>>  			fc.pids = parse_nums_list(optarg, &fc.pids_size);
+>> -- 
+>> 2.43.0
+> 
+> If you remove the unnecessary changes, please feel free to add below:
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
+> 
+> Thanks,
+> SJ
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Thanks,
+Ye Liu
+
 
