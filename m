@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B5FECCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ED75CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13128E0052; Fri, 17 Oct 2025 16:12:55 -0400 (EDT)
+	id 615BE8E0055; Fri, 17 Oct 2025 16:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA2708E0006; Fri, 17 Oct 2025 16:12:55 -0400 (EDT)
+	id 522B68E0006; Fri, 17 Oct 2025 16:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B16048E0052; Fri, 17 Oct 2025 16:12:55 -0400 (EDT)
+	id 4118C8E0055; Fri, 17 Oct 2025 16:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 99B338E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:12:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59303C027D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:12:55 +0000 (UTC)
-X-FDA: 84008704710.07.ED9BB88
+	by kanga.kvack.org (Postfix) with ESMTP id 2B1A98E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:12:57 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E84D31402F8
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:12:56 +0000 (UTC)
+X-FDA: 84008704752.05.7A4020C
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8056A14000F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:12:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4OsKrnrz;
-	spf=pass (imf09.hostedemail.com: domain of 3RKPyaAsKCKMDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3RKPyaAsKCKMDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 25E73C0010
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:12:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G2qUso1I;
+	spf=pass (imf22.hostedemail.com: domain of 3RaPyaAsKCKQEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3RaPyaAsKCKQEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760731975; a=rsa-sha256;
+	cv=none;
+	b=8nW9J8ydhBJlzFT3f4dzYG4FPNI0hZyYSSS1gbih9wRyJT7rU+556yYVdo6afsWb+fOgzo
+	25uZIxo5EoHt1Ti3Es/x9Lhb12MrmGc20ySzcmfrgvCbkayT+aSTGKi/Jy64IIqpqGIae7
+	hQ2I1kn5CfYhMnI6j5rJLqdlQZQUZCQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G2qUso1I;
+	spf=pass (imf22.hostedemail.com: domain of 3RaPyaAsKCKQEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3RaPyaAsKCKQEGOIVPIcXRKKSSKPI.GSQPMRYb-QQOZEGO.SVK@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760731973;
+	s=arc-20220608; t=1760731975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ao2Kri++l8bJKnFCz6AaoQPgwufHNu91Ime+tmGl4cI=;
-	b=SpYTUbmsq2l3L6TMVd0PhGgnlnPint3EULhRxQJqC2fjq0eK7dxU5KDB6OnbSS/voVj2w/
-	1fuki3AHYx0L8kIC7A7sNfk6eVuAM86Nr2cfA+DnnMghYY6muORJah/sv7DWsTW6i/eSZP
-	iYgSAKMlLZqvMgt3jQ30xczkx+uhAtk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4OsKrnrz;
-	spf=pass (imf09.hostedemail.com: domain of 3RKPyaAsKCKMDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3RKPyaAsKCKMDFNHUOHbWQJJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760731973; a=rsa-sha256;
-	cv=none;
-	b=ZXY0tkAtYskhubvDy3E0HsvsWgLV1XW/6S5QHoNDPuOWwsd5a+lPvHQ1fMJaFvzqf/t8uh
-	epAj9rdK2J99R7EnwnAbdZxy83U3xxH+wbTxl6drrZZur/E01nuQltZxDeHB4s0BsqIrez
-	sg+2/AafNwJZ7B7WjFMuAWwd0uU/Zvk=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-336b646768eso2679881a91.1
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:12:53 -0700 (PDT)
+	bh=aywn3p1OuroHc7cbdG3tEKHp3pq1LL6GKGiRpb5Sgiw=;
+	b=Fkmazw7ec4yzRKa8e+SpL1jXr5wnx/NE7vz42+nIDV2hB1qNoF8/so2WLTIFH0jF3KKycG
+	6MxjomDXXTz+geFgGdLhcqTdFrja4y1tiufOptaYzyR04Pq3Ls04PQgAjh8U5zYdNWLiLg
+	PINwMf/3TstljawN0GIspdLGY83DKDk=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befc08so4999627a91.2
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760731972; x=1761336772; darn=kvack.org;
+        d=google.com; s=20230601; t=1760731974; x=1761336774; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ao2Kri++l8bJKnFCz6AaoQPgwufHNu91Ime+tmGl4cI=;
-        b=4OsKrnrz5214YOdsg3aqB2fWWFsIB3x03WW3pns/K/TLUQ/tSmi0jTxSgWOZlEL9o+
-         jGimIPUU+0EoiBLMlFWzdQBdT3+oDu04IpQj6ZftxRkuorcSSCkOxr5RPQt+ka1kzg/C
-         fLvOvGfl63V/2gcbvYG1WPjfcBnP6SEuw9ZCC2UBHEA2m1qMsbde/kzC8kTeezq4GYKA
-         BMeHVRha95AB56bAetSeYlewv5emWaDdJJU8il42me6U1F7WN5FTUuuos3Ozzwcp+mdX
-         FrJ+7TXdGcuVlgTH1l2jossScWkWShPwiAWdEVFsNCjZVfZt50vEjEw4jtYHF/ZLVy4D
-         fmcw==
+        bh=aywn3p1OuroHc7cbdG3tEKHp3pq1LL6GKGiRpb5Sgiw=;
+        b=G2qUso1IbeWwDvcRsMRngZlucdIzXVgFHmvpyFSVV85iUNwGRLQOxpWp3tvhyACh2U
+         lfPks4GOtPwHualg/Oap3g7baPkYjecKjibsGWhyLvksVCCj8k7Zzhv2N5TEm5vBhvMX
+         t7cGTnKvtM2VzU0JsnAp59QndkMx5HPdweJpJBIpVK9JQXJuqbmbGdQQshtoWa6r7f0K
+         1kWxUC4v6atdWBrbVLkZPo5mO+W3qRUyeUtEFaJ2ONc6N2MFUnObriBR5yfo9gDf3ybh
+         ywpM6IUp7ODL8Z5ivC1oHq48D0zpw4sOj9U5qqZh0YgTdxUpykmXIvOHtMtEeN3e9sTA
+         s/2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760731972; x=1761336772;
+        d=1e100.net; s=20230601; t=1760731974; x=1761336774;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ao2Kri++l8bJKnFCz6AaoQPgwufHNu91Ime+tmGl4cI=;
-        b=D6faNIrmowEn6HfH2RXpJaVJmU25UGd32iL7nmAtFFTe+Z1bKjfw7N1nds3tXVSf+x
-         FL+mqiIg1MkJwgSKGvhb5FLq3ptCb1YjrGq5TtoEhj+//SJLPYYkMcPVtGzSfIQSBtHU
-         fjsT+Qa1uThPKq4hhpsEfaWBqCTd9YQ0mvoM2BI8sA2exe827nNVGJclk7lddO/y+EBN
-         VFHeaXB2qFjpQ3xxatUEkmselavwxtDErtdXxkd3iCJ+l9YszanADXp2Tfbbsuerb1zh
-         J7FFrj5MCHfCjgojmFiqbWZpIHe+RtX6eFVYdff5vyBul955kgyNUebqcPFbV0Z2igKZ
-         Lexg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSIDju01y0mNGMe5UgS71HHvPY3KEnbRumFfAidhSpEgJstbFCMunrtFKc6URg2hKIjaZK62EN4w==@kvack.org
-X-Gm-Message-State: AOJu0YwC7RCtH/tBXT5KdVeZ2xXLu+aaBY04leJG3v1+r1iT8xK7++6W
-	N11upSB/j5JBzHIg8cTNrtbFuSGnRxF9KCf2lxabG3DiOx7iiPGqZpMUBX18bDL4aeTw13Uoc5I
-	GxOKocI6f+40KVcqpXotdEETjCw==
-X-Google-Smtp-Source: AGHT+IFKI0OPxPHpIm/VduWDdNt5Az35Cg66pdGdSmypT2yzUK++BzgJqMs1A6JN527BCeH9t7suOJAHUyZ4cW0VZQ==
-X-Received: from pjbfa18.prod.google.com ([2002:a17:90a:f0d2:b0:33b:51fe:1a94])
+        bh=aywn3p1OuroHc7cbdG3tEKHp3pq1LL6GKGiRpb5Sgiw=;
+        b=JGx7O8wZ7javLh0MiloFxL43/1+BNHdBdpKZ7x9b1cfuT4Z/jmHCg7jrOQVxGy6sSI
+         YlKOi9jByhV2Cl0ZJecywOF0vJRXC2iyGqr7iRNhiPDBfPgE9NtfbvI+77ebo1PhZJo7
+         AfrKrpacd3xHDqo8f3hAdVPWQ0ZrSHZh1ncP342XD/J97OvxfPIDx0KhC3uT7uFWLV6y
+         ynjjTJ/Uw7zIlBK6y+a49vnItU2LhkgzZ2zglwyB0sZqJefanvka0bIYoNwjXITsJCea
+         ZznlrYDE1MiW0BRrKVaYvmwIeuvfZdK0XBYVj5Av3dMZYSAyivLudOUKuQ6uZtt/yB47
+         rH3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXe/DY2aXt+Mi0Okj+iUwJNqUOFfF+o5SqyZ3P52m9DFKg0HWCKl0FMpNiTOJVY2pUQ6KxjRdSwug==@kvack.org
+X-Gm-Message-State: AOJu0YzMu8bpxaU9lVJ8xriDwoYsAmXCnFu2+lxrY1538GkzeCU2F9hn
+	gSOhDkDZ+NNgc+Y+SPpoDk/hFmhg1m5i/IjZUJgcXLLVza37mbQGOhEicVgUne3itqEDrEFixcl
+	57o9dGCoZlKcEwWMrmp7kD8Rrgw==
+X-Google-Smtp-Source: AGHT+IGCFLZDb5cyrEN1NOozFPEt/0O+VXA7q/ZXGXzCvaMHmS50bIpyR021wTre8w3PZtNhA8jj0eOMny4OOvLYpA==
+X-Received: from pjyl20.prod.google.com ([2002:a17:90a:ec14:b0:33b:8aa1:75ed])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4c48:b0:32e:d9db:7a86 with SMTP id 98e67ed59e1d1-33bcf85313bmr6308556a91.7.1760731972070;
- Fri, 17 Oct 2025 13:12:52 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:11:55 -0700
+ 2002:a17:90b:3f8d:b0:33b:be31:8193 with SMTP id 98e67ed59e1d1-33bcf85d59dmr6510945a91.6.1760731973870;
+ Fri, 17 Oct 2025 13:12:53 -0700 (PDT)
+Date: Fri, 17 Oct 2025 13:11:56 -0700
 In-Reply-To: <cover.1760731772.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1760731772.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <5ee20908e7a67204215ed17c502a466a516d0ae6.1760731772.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 14/37] KVM: selftests: Create gmem fd before "regular"
- fd when adding memslot
+Message-ID: <19167e80b65bce484d91c7ba4d1967a7d12ef90a.1760731772.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 15/37] KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
 From: Ackerley Tng <ackerleytng@google.com>
 To: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -123,14 +122,14 @@ Cc: ackerleytng@google.com, akpm@linux-foundation.org,
 	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
 	yuzenghui@huawei.com, zhiquan1.li@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gmhuyts48gqcrrmtsfynh1pxdfoaoi74
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8056A14000F
-X-HE-Tag: 1760731973-949234
-X-HE-Meta: U2FsdGVkX1/LTBfEIscVSy56jxhcEiWDaBUCfaiTXi7SykuKv9Ks9VmZbj6eynEBaFhw1AxZu9QukCLceqEp3peKapIJw27RMlCJiZrekZ51zAbRHHoYC8aylKbopYD4KNoOPYYhfaW6ZSCGSeqqbqDTN2a9ftSpf6FpZ6jbLGKRDMFYQXc6nSX2QV9wjQBPgH0hCvtUCd+bZ19oGgjjC04lENIJUckzlHtRhVjzmGFfbCHV8iI79we1ldyvmfqpc8EHQvfpUSFYvV8CG3lf4zE0hXINLuZwPx8PlN/IJYXEbyTyCLFQIsWHhkKx+E0BaQapORjwand0QYAwge49Kigvyci4ZoUMVr0U/mYZkBdveAHJ1j8//EJGjMmCeVvZ3BNEzdOuLyXdBUkE8nsPuzR9aCOtEvrZakYHwMaLv7JZyi2kT0IQF9bhZ/wKhM1Uu0wPO0jPoyTqxxdp80MPJKX5IMo1G/i82eWTPGSLj2ugZOVoc7l6qy9xGoR330Aq6463Zxq1OAHVh9g+fx/UV3AXqLZAMmdxnTHkzilq1hZe3pDNiYtWUq2bCxqKvC9dhUyamuvEGp5i+meXBibUoqHuUIst7NAmc61jVS0EN5d5pLe2uO9oKyqMDZWjO57tsf1GqAXkTe+Krid01utu6lyAejPZ4la0Q6yxChNHBRHfcNum01Jq9Uw+HXE7q2SXjtj1nezl1KzEQIwHwpqKyfNqJKjpFeLgphe4GXqS1aCUEzhNLfub5YZikYwwT7fYKoRhGhDqklyqeWONT0leTMTpUb/rKQO2bG4tavM9iO1KdZkrvXWapB0U9BA/3pTGd3awCsUPYKt92UHhnO4YftIsOLn5SWQZjGbuCT2eVSeHe9wNswue+V8wi4O/VegovW7IghaHRTUItCY5L2qecBHvSTvkbNEbi4O12teO1sPd/nG4BsD8rVK1rxSwlDmb2sO92yWMtlxzX32+O8l
- 0wqpObgU
- dqZEgiL6urzdByHbEJQS9GUwGtK2JdIOMDiPq+3FT0NvugyYHArclJ3omrqpiO09ol3UjpcVt1wJa1MEHNULohc/mEiWAwkMEBsZUYQlAea8sLwwiFZTTST8hQW2aKHVbNXrXDBDaeH6YYVqYsrEJSWekLkDo2NviBwAZBltTsbUwpxQTaVJp9igLpsoL0AxomwtiSZqMLeMvwua0jxIHnws3fPYqZEApHMiRD6YzT3dzZKGaOPu+K63nA5COrIxqMifZcOkT99qRLhBWv6FmpPFLZHNkfmYibaCqi+8TTwEkg1yD1G8AqPYBDHWGsm8LhKFBe7vTiAvMY+cNncUK3ZKIVPr5QYELNamJsbtqCZhNg4s6yxjziMeFWnOsCbvs08SVHat8WVEam2jtP9DCI0s/4YQlD3cTxatuY1sa0Azxf66Zo9xMQ2ep7BruKfe4JQIXd0iJrzlUuv8qIzK+3+zkCiHOjTCk/gHEpwwtJysAR7Fb6EVvjHbHY2Sugiug+cUG2L+foIISrpbcD8I0VHJI48j7dcUO32PUJ8MwcsB8FX0ZnyS3WPCvsgZkXN6hCfkIbbfwgStKBQC1URdF793zvIRv1/p5OpTC/JJIj7zA/6sQx4MRRCCercbfRyCLVGeqhnVB5ByF7x5Ivwzz4NotUA==
+X-Stat-Signature: mqzsko93gwdkd97qqwiai6f8dznk6t9c
+X-Rspamd-Queue-Id: 25E73C0010
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760731974-380558
+X-HE-Meta: U2FsdGVkX1/GGKPkCxZ7wlde17hsSQsjkGBYgnL/+A60mYyf+xdcSTSmEGHRIJ5SOOFcVWclwfG683RDJKcVOLfe2ZE0fj7YTdv4zFh9+yZqRIKn897FDLFsiBJzMOYTTfY3gI1io2HBDRQVOlABjn3O1pqHV93oVUCGPGl7NhF1DG+JyWP9VWR5Ga6u/Afz0921YlDPmWCUfZt/iLl9hIsZGDDmDPTKSAijk6FdSn/IHc8/k8vSS4USHZavSWnLoi7hVvzrSVMPx3y2gIbDL4M6XtWrxBsysjdNsezsErzQEE6X23+AjDPHCkDWZ7l+UL/POjmKj9dod1gOfPJXEmDSXQPHAOM8etjdTs0COQI0r6TP76jho2sWi7lucYD6vWa24NfTw2QyLWRJt+87ZtSFVZ9ARzfY9KW+tOxAzYYlh/8dJERDFLXyR+/zCnXXl4goZCjyIkKwdBd1/0PzTJSgVqqxKF6DBq+XRWryQAt7mu5VUy2e4qnq39c2dBf/M0yPosnphPktUrT2C/fzepPYYsWGHJQcvJyRJpHjRoMpOXG4xv4/uklvggciGPKuYslzaHKN+dkEcFsxk/mnYSWVZBAX+4sNi3dZfK5qn8wp1S3ye74hgY/9GOYU/RZGu1RWJMZguoNt548VlUD2SjLOnMRJaWEUxQyfSVdt0GvXWoru5ccziT2Ori6T9LhO40I15QUZvZvaE+OrRYa0vy11Ii21x2jc1n+g1UzcQmKJoNQjjR+aVOAd5PyMLfrASQsPs4RSThyvZQkZoQOygcHNOZ31R8TDZ4fKDhE6JmNjPlkgbglXcLdTiTnPXs1aDNzd32Y2J0MBBKShIcCPJ64nVyFVExFNBWG2T/CSrYcm6gUx2htL4r3MeLedv3cZrkILTrZrgHN5foxMORG6KXz9AM2+VWEErFcdhbDwW6vO0mavQMKT1Q7ruFySTVGgqgasQLCqtgozUuu73Vb
+ iLDUwNLc
+ 1oXBlADq4/1RcYhb52TwW4vj4nYz4SOUzdVFcXn0BqFDKPW8bfbGTbOYZj9HClquMoY96a3ZP+w9y4XYfE4XUpixKyNWCIz6byaaT8v21+8eGBifMAgxnrbVlEhwgScclmGDd/XHGV2mOSeLwW0u87YTlGt2/vl0TRjXrwHfc9q3Y8kqwQ+2VkBVoKUOCJ47nUPQMlCrNNFJF4zaAIwLf4bhgalH0OUV/5IPDq4+ZRBDsP3dFpaioP+KchnnZkhLpBc4dLzYKfCjIviW6iAakgjEuLt7QXzqcSh1JayqLiRZXPjuN4sIhaJdg8+SGlvqqMzCOqPJ2C/LTImsx4obrsBXqyErjUuf/G5ngZS462ySpPZkAFL0dYDbjyX21MSYrA3AMW2gm0cGr5/ppv+lAgbmPdJlTBAgvbpijKVPOSbgKyZEYyVaPNFd5JWJTgrQrCnSXrEYvRb28LCugJ7f585Y8MICAptevsWDeCG8lP0zO0PKCZxbCtzy1RPeLEvW7UFdjx9ri4jLZlg3RDQIK3FxaEWM/+AL7myT/atlMK6QZtbLLwM6YuOnRnN+anT/ShfTiuial9MB/QhM4o1DH5u563Txjc2VJFgkAoUdQ2qcMW/4uqqfXzlAL0PQin6zEHyPnIy0DitCuaXaf2E9Wcspz60Yj3Fi+ZKMhEnVgXq4yqzCbObQ22QjLI4h3HEwhXxjl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,79 +140,95 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-When adding a memslot associated a guest_memfd instance, create/dup the
-guest_memfd before creating the "normal" backing file.  This will allow
-dup'ing the gmem fd as the normal fd when guest_memfd supports mmap(),
-i.e. to make guest_memfd the _only_ backing source for the memslot.
+Rename local variables and function parameters for the guest memory file
+descriptor and its offset to use a "gmem_" prefix instead of
+"guest_memfd_".
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 45 +++++++++++-----------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 26 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index eef6de9a7f4b1..e35c65a173606 100644
+index e35c65a173606..8b714270cf381 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1026,6 +1026,29 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 	if (alignment > 1)
+@@ -912,7 +912,7 @@ void vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+ 
+ int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+ 				 uint64_t gpa, uint64_t size, void *hva,
+-				 uint32_t guest_memfd, uint64_t guest_memfd_offset)
++				 uint32_t gmem_fd, uint64_t gmem_offset)
+ {
+ 	struct kvm_userspace_memory_region2 region = {
+ 		.slot = slot,
+@@ -920,8 +920,8 @@ int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flag
+ 		.guest_phys_addr = gpa,
+ 		.memory_size = size,
+ 		.userspace_addr = (uintptr_t)hva,
+-		.guest_memfd = guest_memfd,
+-		.guest_memfd_offset = guest_memfd_offset,
++		.guest_memfd = gmem_fd,
++		.guest_memfd_offset = gmem_offset,
+ 	};
+ 
+ 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
+@@ -931,10 +931,10 @@ int __vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flag
+ 
+ void vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
+ 				uint64_t gpa, uint64_t size, void *hva,
+-				uint32_t guest_memfd, uint64_t guest_memfd_offset)
++				uint32_t gmem_fd, uint64_t gmem_offset)
+ {
+ 	int ret = __vm_set_user_memory_region2(vm, slot, flags, gpa, size, hva,
+-					       guest_memfd, guest_memfd_offset);
++					       gmem_fd, gmem_offset);
+ 
+ 	TEST_ASSERT(!ret, "KVM_SET_USER_MEMORY_REGION2 failed, errno = %d (%s)",
+ 		    errno, strerror(errno));
+@@ -944,7 +944,7 @@ void vm_set_user_memory_region2(struct kvm_vm *vm, uint32_t slot, uint32_t flags
+ /* FIXME: This thing needs to be ripped apart and rewritten. */
+ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 		uint64_t gpa, uint32_t slot, uint64_t npages, uint32_t flags,
+-		int guest_memfd, uint64_t guest_memfd_offset)
++		int gmem_fd, uint64_t gmem_offset)
+ {
+ 	int ret;
+ 	struct userspace_mem_region *region;
+@@ -1027,12 +1027,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  		region->mmap_size += alignment;
  
-+	if (flags & KVM_MEM_GUEST_MEMFD) {
-+		if (guest_memfd < 0) {
-+			uint32_t guest_memfd_flags = 0;
-+
-+			TEST_ASSERT(!guest_memfd_offset,
-+				    "Offset must be zero when creating new guest_memfd");
-+			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
-+		} else {
-+			/*
-+			 * Install a unique fd for each memslot so that the fd
-+			 * can be closed when the region is deleted without
-+			 * needing to track if the fd is owned by the framework
-+			 * or by the caller.
-+			 */
-+			guest_memfd = kvm_dup(guest_memfd);
-+		}
-+
-+		region->region.guest_memfd = guest_memfd;
-+		region->region.guest_memfd_offset = guest_memfd_offset;
-+	} else {
-+		region->region.guest_memfd = -1;
-+	}
-+
- 	region->fd = -1;
- 	if (backing_src_is_shared(src_type))
- 		region->fd = kvm_memfd_alloc(region->mmap_size,
-@@ -1055,28 +1078,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 
- 	region->backing_src_type = src_type;
- 
--	if (flags & KVM_MEM_GUEST_MEMFD) {
+ 	if (flags & KVM_MEM_GUEST_MEMFD) {
 -		if (guest_memfd < 0) {
 -			uint32_t guest_memfd_flags = 0;
++		if (gmem_fd < 0) {
++			uint32_t gmem_flags = 0;
+ 
 -			TEST_ASSERT(!guest_memfd_offset,
--				    "Offset must be zero when creating new guest_memfd");
++			TEST_ASSERT(!gmem_offset,
+ 				    "Offset must be zero when creating new guest_memfd");
 -			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
--		} else {
--			/*
--			 * Install a unique fd for each memslot so that the fd
--			 * can be closed when the region is deleted without
--			 * needing to track if the fd is owned by the framework
--			 * or by the caller.
--			 */
++			gmem_fd = vm_create_guest_memfd(vm, mem_size, gmem_flags);
+ 		} else {
+ 			/*
+ 			 * Install a unique fd for each memslot so that the fd
+@@ -1040,11 +1040,11 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 			 * needing to track if the fd is owned by the framework
+ 			 * or by the caller.
+ 			 */
 -			guest_memfd = kvm_dup(guest_memfd);
--		}
--
++			gmem_fd = kvm_dup(gmem_fd);
+ 		}
+ 
 -		region->region.guest_memfd = guest_memfd;
 -		region->region.guest_memfd_offset = guest_memfd_offset;
--	} else {
--		region->region.guest_memfd = -1;
--	}
--
- 	region->unused_phy_pages = sparsebit_alloc();
- 	if (vm_arch_has_protected_memory(vm))
- 		region->protected_phy_pages = sparsebit_alloc();
++		region->region.guest_memfd = gmem_fd;
++		region->region.guest_memfd_offset = gmem_offset;
+ 	} else {
+ 		region->region.guest_memfd = -1;
+ 	}
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
