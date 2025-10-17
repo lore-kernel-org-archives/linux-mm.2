@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8367BCCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 08:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5019ACCD184
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 08:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D69558E003E; Fri, 17 Oct 2025 04:16:20 -0400 (EDT)
+	id AA9F48E003F; Fri, 17 Oct 2025 04:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19A38E0016; Fri, 17 Oct 2025 04:16:20 -0400 (EDT)
+	id 9E5078E0016; Fri, 17 Oct 2025 04:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08588E003E; Fri, 17 Oct 2025 04:16:20 -0400 (EDT)
+	id 8D43E8E003F; Fri, 17 Oct 2025 04:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A07C08E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 04:16:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 310F41605B1
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:20 +0000 (UTC)
-X-FDA: 84006898920.10.C0984A2
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 726F58E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 04:16:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B7781605AC
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:23 +0000 (UTC)
+X-FDA: 84006899046.04.73F65D6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 559211A0010
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=bcNOBDQA;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7D1324000E
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:16:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=Ljnhb1SV;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760688978; a=rsa-sha256;
-	cv=none;
-	b=aqJC7Mk6lNR8WAYVfhtM8k1rEBYfAUgK7dcLghruS8JbHRXD536Z76A+6iqdgNfx/Uz9sw
-	xKEY3uwTjxzngKSZ8usaRATIvsUI05n5qwBaxu1JXl2ZZC+SJvGXIAHGCz3W04eV/2ennO
-	eWq1Fx1y4eteb8/dZ2OraEfSWGeG2qc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=bcNOBDQA;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760688978;
+	s=arc-20220608; t=1760688981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=inCbmCUnkb/NXoTK0MHp5fGLs6BbivzSKfTQxewZZEc=;
-	b=zqErjBOy0BdDnLoz0wPJwuHLl3vVAWnMDCkRT7+8rXKQY308zmm1C57drgrwridxbXAReD
-	hDBW4afdltev0/cAdt/O7axAWVge013K9gk8B6KcnHBkU+2qHRjRpL3FH+qjNnAiD0FUrJ
-	a0IZf/EL7YINKmVFTTlB3wE4Ij9ndlc=
+	bh=EohpMiVWnXh7nkx7DDLhqem6p5VXDDblshphr99e540=;
+	b=0RZXutKbqykoQY/oKcWfQBJbatzpJyK+K1m+EtjPFPBawW+AyPrzDO2Q5YpdBml9ZNi1w9
+	Dh0t0aw8Nki1UIjjHk7rMo5qU1xlZ4mHCEYqIcnTKU3xnt5qfBhk+rcXjnlkb/ietkVMiT
+	/yMq969JUj1MJ/UCirdClp3CvzPBX0c=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=Ljnhb1SV;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760688981; a=rsa-sha256;
+	cv=none;
+	b=xPZdO4hjhBoj8UN6YbN8ZmaPSh8GPYYlyxXOhWsd8Pk6a3IXGpRZgWUgkI36GxKFHsu0cF
+	MzEWlAoPf/JHfRRfBPgyPMAe2c+yb0h2zBxZ1JfitR/616TsMgNORjDPeONtD0OfY8F+Nx
+	QQ2FeQQAcPq/dkgLTbKTsLMRBu/Z05M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2FFCF4AED4;
-	Fri, 17 Oct 2025 08:16:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78357C4CEF9;
-	Fri, 17 Oct 2025 08:16:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 746A241B61;
+	Fri, 17 Oct 2025 08:16:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98EFC4CEFE;
+	Fri, 17 Oct 2025 08:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760688977;
-	bh=PHE61ocZpAmbcR8Zt6lhiDv74Fbgrfjoc7lG+GFvvjg=;
+	s=korg; t=1760688980;
+	bh=KGscHLo4lmwttty+FbyKIhMbZVDGdMbkHROcEjxJKR4=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=bcNOBDQAVwSZ8Gw7PDF8jKMOTbGQssjr4ZV43XpXV/ijYkoiBmu/AuaRm1D9AynKy
-	 8xVWFzjJ5XtopifK2sr8p3u7Uo/87NOdIDhkHvixLm2IL5EMheCU7SdZKI5suu9Zqx
-	 vmUc2IXhg5amhjCQCNmSOSceBxpJW6H+LiXqkcsQ=
-Subject: Patch "minmax: add a few more MIN_T/MAX_T users" has been added to the 5.15-stable tree
+	b=Ljnhb1SV3+uNrpurZLUI7wIbg8U95WGLdT+ziKWmAFefAX0AEi/bTB9q+xQWuLXSj
+	 RIqHN6IABcpRyHupKXDSqp3U6LsD0mI0JK6Jqxelvm3YK52yddKOjIH75HrkcNw7kM
+	 /rikgip+gGkoylbYO7BA6JNw3nHTSjYC8AY9HWgI=
+Subject: Patch "minmax: don't use max() in situations that want a C constant expression" has been added to the 5.15-stable tree
 To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
 	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
 	akpm@linux-foundation.org, amd-gfx@lists.freedesktop.org,
@@ -101,23 +101,21 @@ To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 10:16:14 +0200
-In-Reply-To: <20251008152946.29285-7-farbere@amazon.com>
-Message-ID: <2025101714-crisping-parakeet-ceba@gregkh>
+In-Reply-To: <20251008152946.29285-10-farbere@amazon.com>
+Message-ID: <2025101714-woozy-dolly-87b8@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
-X-Stat-Signature: us79uommmjzkqr3cdhdj6csot8eim7jj
-X-Rspamd-Queue-Id: 559211A0010
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760688978-266081
-X-HE-Meta: U2FsdGVkX1/HhptWINfC+2+zg/9f0ugmVXTonisz+LTTM0FxSW1Ggjot7l0qIeQN36U1s8aKSliFqKZ6t/quztnqwQBQ9FrZp72XrZgTUK9aoxQWV2rsF5cWp5d2VdTytz13ft9JA59RtEPv5y0sUQrXmPNagi9VzJ6+014hWrt66iFgoK746ooSu7L7t/1B8r9+sai7NEVmK8O/7x4QiDYl+M24hIGbWV7+YU35zTURQhY0B2cD2qVCH+VIL/okuqCcsmYoJeqBfYprvwUVyjSHGs/RzuI6BZ1eelzBJ0lh4xikaAtIp61B38qUuIKiURm2IVY8EYEk3/JYXOgoYutW9Z8pIY1YH5doIp5yq+oS5aggsIkidkmgDhneBlZhqVf7IdLE+SIcJzlQFSP290wb81HD5l/00+yIfgFoCIDL9d7Ac4Xu09Rpn70rehXfB6RycVF/WcRWwYta34B1TaXMe9mFW9ae9gBfrzBMl5aNxWeXBOweHoeWHdtfK1KNgVzUM1LExzeOouCrSiLs/Opze77SFqeX7Fwlazmc8cWnrNWFp2xlT6pxKnxL5x++EOehlclhGx3AbyaXF4gTMWsXirjGadlwlEUXychBxws4e04LtfXjAFrUMq7L65EQweuor2wIg7UWGpFW+ZlcurvnWh70k3KB3fTy/8yFoFnoGolbeiVs8FHCD1mnOvRMr0O4PT+zcTccBgWmblDfYeXtmYKxHXoGLjD9j55+au4RcpgxvswLBT0cq/79iJIMMDw5oPDl3hrOzf2P6HSrsuloe/z1oCT8Ss6OnB+S25q+j5+X7kPjRu/PU/z+pLRoHlhLm1IUWLpkvklD63O6amANS+kteWWcRv8esw2ZAzQxuRegF9Eo+n4cG8VEAqA+UTizIUgg+eZZqXKs9BEepFns47rLyujLr0DltmcxPP2K0uALk72prmFcQh/h8gpz9xEoqI8155lrZzNukSO
- DzTrqXWC
- XZDs7BSBRrMQu0f+f8b29i+jkFMobPT9gmuKJza/7Wf0SKmPJVdKKkZnfv1RrvWs/bSWEEIQmkl+s549Eo+cP80cMnhJqK66xBzyOmHAH7KIKoRsTwCJINb/lZVeKfsHNvlUeDAGhqqDO0r8/pxX3Cbl430Yciai6yWzKgW5y8oQRDBytjI6zKeWlFvac355HbNnKqIBwWS/MtZYEVUnEGv4FoxSLiBc8suHg79RC2fmpGGpWOmwwR+X1O+YtOmcyacoo8UEWVK97NqvmMGr2yY8K8k1S/q0G5sSW2vYJbmQR825h/ljsXv7dzWm0E80NhykvNP264zKp7r2oX9f/+9+wqq1OCi4gpMdb2KAmFx6L/swwqcfIahhAoAzhP5iSD8ZOy4aQk+aLEEKEJuReaij1O6cCvSP5PGQU1X6+ds6dmPemAAA+rZGdyaYNMQE7myM+QaDDlhyrG8yHSqHlA/L6yx9NRo9ARkhHMcNiu7I8neXOwvBP6M7rgk1FSzE53Fc7dJKoaohtjv3b2YbLh3PimzGQx8UbNIVDl8QErVhGiYG+AHhmDyKDSZbxxt52maPW6IgQhheMGOV/tW5eGS1ISFSXrHXDW55aPrFc32vBEKUPXg8PdWMlX1fM9yzcc82VtbpdeacGcPJiILTYyTgzoTrUbGiSU8X5i3/r56WdTCSa+vj0nxtlLvOADXoCjoyeCMHKmhmVRnbiT+JX1V4VWyrLgvqPBcfFXA+yApN9toMqc23WaHiLUI2k45KOV8pXOY6RF8WQHyWS4ya5CFi6cghp6iZGY1Lki1C4V51TAVUUT/s5VFW0IKqcgoCrz7bSGJHMLYUl3riLu8RAdAZBv3n93Cp6gUs5bABGdm84GCWRC610mLmjUdBg383jXkbxmJQsCQxJoB7m3Ol2e13HfMKb4BR9Hj9JY2u2d2565Xb+ZlyAMh4wASI8acOGsSQpFk34ydP9UDsIgb4IISw21NUa
- dnD/TGnj
- a54ZoUSPa2k4IIw6POwtAl0vj1ziQAu5aovWhnbuq7RvmlDjkNU4rVyoCDvWismsaQEnlfavD6CCb1eUW+Y9QUEDcqKr45hGhGSOTpdiEhki+UYQ1jw/S+Uxq+evAzw4seG72DvQEYGXnSy5k+3zxZz8J6eQZwuRmiZZG1OtVuizx1XsRXwJspy0Zrsa0hUAJic0mT7f+KXfWaEqVbdZ5dnkYuH1tGhU34aObJBESv7VlDiGQstNYx+f+aoPS4Bgqu5M2kh7yqS8z01rNrnnonN3sX2GJdHvSYHDQ03zLF+hFlxD5x6ZUOZFrYIsGrhsy83N3/I0hqz4Nzq4MCbk9F8E9xN1LtT82WXF8q7nDvQnCi1EokkU/FPTcgX/XG/EznVDnz4iqRDQk93UTighdSr9LIVkf1AfZyFjhisKUMWcTTKrIty/qiIUJ1iNm19a64Pxw8V2iIUxAnk3RrwI0/3WgFmK5cwNiN1rA7sB4fjNJK2kw2eRiOoQJuGPst54kDI9yOP67lWZ+9jaiTqEYZk7uxSrfSA620S4HTHQS1yIOwypjesIzj3takanAtP/FHgASi1x88RSlJjDT2DFDQ2YW1cs5GCgZZB2qkbM2p1eC38tSXaITTJvTeqGVZ8LEY0sbPFF0W52EELhmDJW6F4lUwRYeFdxPPkNGeBX3/0AKBK5wpxvQsB9RAPP0ZkiAWNpFQD4eRwYFsY7EWB/AVExNg4fClPnpA+yZTQF8tsNN5D5gqbqPn5p9ZHEiVBFI3dJ2Ls0jHUIiKto3KoTVaamu2zreDgOKpPCE7b2lTpbNjcLVuvO1qQaoePokgaGCpGBffnk8hr0hI5mmjaBl5cItFISNo6pv2Ef5b1sTMcUtwOKCYSRdBqAGD4yYXCQTJiHAds9YHDE4OeK81GvW5swrhJBs5WedBH5AnUgJEk=
+X-Rspamd-Queue-Id: 7D1324000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: nxcmik95u5d4y5ksk5zfki69sirw8j99
+X-HE-Tag: 1760688981-923953
+X-HE-Meta: U2FsdGVkX1/NoZH7POjHEra1nLl75Rpcs4D5PwVKl6STru9UomOwHiFY8LcbLmcO6ozwrUsLsS8yZu8h5aCEfWQFbLWy1Eiar+Jb+TDIp8LOXl5yirGRZ/vsno80xsYlo7/IejE9Kg70AXUd5k2EvAUsOnZxDkcp4H08GwR6atc73RIBWcHtDprvmff/X7Q8Bq5sOHM/4HhC2syXlr9Nc3CH35N4BVLoNbSvkrtwVRhIfo40ACUPOjGiCGcwg0SE84/NERAApWjeSfrTyevvGl0TR/NibeZdnEsaziE4sYHZWCE7YMrwsfBkE3Qko+Tu+qo/QEApvoh65aEV4oQvmMS203Jnoy2kchtcZffbZGqPYcIWl7mVNMQ+B36luUG27qZlTOKP7h9odc4uisGzHyfBv0a8UcnLQWraQRy7u5ELTUoWShxFe5ZuzoqzmiZ5U79+/fDE6VdhKyg1EJczTXbOiPah2NDR8G/AMQQRIdkXe1qqZF2kJQ8jRO0kc540raeleOxNehKcc2BrHU9AeB/+L2eDHJJtr9wGAf+kdyyqIHjAQKctonCTR7UUuUkVlCyQgfPCIvIEChapKnDZoh3oZEuSNNZt4+ipyoSDfSzb4CGu+aZI73Hv6twWaaSUtV5xNkEmu11XcXQ6EfGJnH8NE0Ikh44GQafublmBe7kZyrmSzNIx7QsHfDthy9z7S3cjpj5YQDW9ikMdLROE3A6XkDptyIo0yCYJMY9Nze/GLgov/q+hBAUelpAUM93UASHR+JK1uzSWx2cxzMc/mK4rqZexicW+ujSsGh83uW1lQYMZ6UdeWMSUWQ1Bwqoxx+FTa5KOgyarImyXbjvn12kF88QkrBZT428dvjFW8fp34AU+HjOKx7xYBTEjWDxCTmufYBQDcQhETxDZrko3GEMV/VLuXwisxzcfIH9zf1J2rxXilrVP5xqnWFJumDKXZIizbVuWL4eBVX2OQWg
+ dIP2qXfL
+ rsuLinhpyQYYEW0l6zynWKn+2HJDAgVuL/pqefJp8Z0eIodZ+W7hMYA7i7PdvRMkBpi6Jdv2j6yvIvYTq5UE+y4V8WTGQMnvUYD9ae1LhWXZENJurAXvcQHXRBZErH5qxoZNdX3rm8Xl3KTz4nacWkVy+9w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,210 +127,110 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax: add a few more MIN_T/MAX_T users
+    minmax: don't use max() in situations that want a C constant expression
 
 to the 5.15-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax-add-a-few-more-min_t-max_t-users.patch
+     minmax-don-t-use-max-in-situations-that-want-a-c-constant-expression.patch
 and it can be found in the queue-5.15 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-183618-greg=kroah.com@vger.kernel.org Wed Oct  8 17:33:30 2025
+From prvs=36971892a=farbere@amazon.com Wed Oct  8 17:32:28 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Wed, 8 Oct 2025 15:29:31 +0000
-Subject: minmax: add a few more MIN_T/MAX_T users
+Date: Wed, 8 Oct 2025 15:29:34 +0000
+Subject: minmax: don't use max() in situations that want a C constant expression
 To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>, <rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>, <dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>, <jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>, <mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari
  .ailus@l
  inux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>, <willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>, <quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <fre
  edreno@l
  ists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>, <linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, David Laight <David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Message-ID: <20251008152946.29285-7-farbere@amazon.com>
+Message-ID: <20251008152946.29285-10-farbere@amazon.com>
 
 From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 4477b39c32fdc03363affef4b11d48391e6dc9ff ]
+[ Upstream commit cb04e8b1d2f24c4c2c92f7b7529031fc35a16fed ]
 
-Commit 3a7e02c040b1 ("minmax: avoid overly complicated constant
-expressions in VM code") added the simpler MIN_T/MAX_T macros in order
-to avoid some excessive expansion from the rather complicated regular
-min/max macros.
+We only had a couple of array[] declarations, and changing them to just
+use 'MAX()' instead of 'max()' fixes the issue.
 
-The complexity of those macros stems from two issues:
+This will allow us to simplify our min/max macros enormously, since they
+can now unconditionally use temporary variables to avoid using the
+argument values multiple times.
 
- (a) trying to use them in situations that require a C constant
-     expression (in static initializers and for array sizes)
-
- (b) the type sanity checking
-
-and MIN_T/MAX_T avoids both of these issues.
-
-Now, in the whole (long) discussion about all this, it was pointed out
-that the whole type sanity checking is entirely unnecessary for
-min_t/max_t which get a fixed type that the comparison is done in.
-
-But that still leaves min_t/max_t unnecessarily complicated due to
-worries about the C constant expression case.
-
-However, it turns out that there really aren't very many cases that use
-min_t/max_t for this, and we can just force-convert those.
-
-This does exactly that.
-
-Which in turn will then allow for much simpler implementations of
-min_t()/max_t().  All the usual "macros in all upper case will evaluate
-the arguments multiple times" rules apply.
-
-We should do all the same things for the regular min/max() vs MIN/MAX()
-cases, but that has the added complexity of various drivers defining
-their own local versions of MIN/MAX, so that needs another level of
-fixes first.
-
-Link: https://lore.kernel.org/all/b47fad1d0cf8449886ad148f8c013dae@AcuMS.aculab.com/
 Cc: David Laight <David.Laight@aculab.com>
 Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-V2 -> V3:
-Fix fs/erofs/zdata.h to use MIN_T instead of min_t to fix build on the
-following patch:
-In file included from ./include/linux/kernel.h:16,
-                 from ./include/linux/list.h:9,
-                 from ./include/linux/wait.h:7,
-                 from ./include/linux/wait_bit.h:8,
-                 from ./include/linux/fs.h:6,
-                 from fs/erofs/internal.h:10,
-                 from fs/erofs/zdata.h:9,
-                 from fs/erofs/zdata.c:6:
-fs/erofs/zdata.c: In function ‘z_erofs_decompress_pcluster’:
-fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array ‘pages_onstack’ [-Werror=vla]
-  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
-      |                                                             ^~~~
-./include/linux/minmax.h:49:23: note: in definition of macro ‘__cmp_once_unique’
-   49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-      |                       ^
-./include/linux/minmax.h:164:27: note: in expansion of macro ‘__cmp_once’
-  164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-      |                           ^~~~~~~~~~
-fs/erofs/zdata.h:185:9: note: in expansion of macro ‘min_t’
-  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
-      |         ^~~~~
-fs/erofs/zdata.c:847:36: note: in expansion of macro ‘Z_EROFS_VMAP_ONSTACK_PAGES’
-  847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
-      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+ drivers/input/touchscreen/cyttsp4_core.c |    2 +-
+ drivers/irqchip/irq-sun6i-r.c            |    2 +-
+ drivers/md/dm-integrity.c                |    2 +-
+ fs/btrfs/tree-checker.c                  |    2 +-
+ lib/vsprintf.c                           |    2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-V1 -> V2:
-Use `[ Upstream commit <HASH> ]` instead of `commit <HASH> upstream.`
-like in all other patches.
-
- arch/x86/mm/pgtable.c                             |    2 +-
- drivers/edac/sb_edac.c                            |    4 ++--
- drivers/gpu/drm/drm_color_mgmt.c                  |    2 +-
- drivers/md/dm-integrity.c                         |    2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    2 +-
- fs/erofs/zdata.h                                  |    2 +-
- net/ipv4/proc.c                                   |    2 +-
- net/ipv6/proc.c                                   |    2 +-
- 8 files changed, 9 insertions(+), 9 deletions(-)
-
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -107,7 +107,7 @@ static inline void pgd_list_del(pgd_t *p
- #define UNSHARED_PTRS_PER_PGD				\
- 	(SHARED_KERNEL_PMD ? KERNEL_PGD_BOUNDARY : PTRS_PER_PGD)
- #define MAX_UNSHARED_PTRS_PER_PGD			\
--	max_t(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
-+	MAX_T(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
+--- a/drivers/input/touchscreen/cyttsp4_core.c
++++ b/drivers/input/touchscreen/cyttsp4_core.c
+@@ -871,7 +871,7 @@ static void cyttsp4_get_mt_touches(struc
+ 	struct cyttsp4_touch tch;
+ 	int sig;
+ 	int i, j, t = 0;
+-	int ids[max(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
++	int ids[MAX(CY_TMA1036_MAX_TCH, CY_TMA4XX_MAX_TCH)];
  
+ 	memset(ids, 0, si->si_ofs.tch_abs[CY_TCH_T].max * sizeof(int));
+ 	for (i = 0; i < num_cur_tch; i++) {
+--- a/drivers/irqchip/irq-sun6i-r.c
++++ b/drivers/irqchip/irq-sun6i-r.c
+@@ -268,7 +268,7 @@ static const struct irq_domain_ops sun6i
  
- static void pgd_set_mm(pgd_t *pgd, struct mm_struct *mm)
---- a/drivers/edac/sb_edac.c
-+++ b/drivers/edac/sb_edac.c
-@@ -109,8 +109,8 @@ static const u32 knl_interleave_list[] =
- 	0x104, 0x10c, 0x114, 0x11c,   /* 20-23 */
- };
- #define MAX_INTERLEAVE							\
--	(max_t(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
--	       max_t(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
-+	(MAX_T(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
-+	       MAX_T(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
- 		     ARRAY_SIZE(knl_interleave_list))))
- 
- struct interleave_pkg {
---- a/drivers/gpu/drm/drm_color_mgmt.c
-+++ b/drivers/gpu/drm/drm_color_mgmt.c
-@@ -528,7 +528,7 @@ int drm_plane_create_color_properties(st
+ static int sun6i_r_intc_suspend(void)
  {
- 	struct drm_device *dev = plane->dev;
- 	struct drm_property *prop;
--	struct drm_prop_enum_list enum_list[max_t(int, DRM_COLOR_ENCODING_MAX,
-+	struct drm_prop_enum_list enum_list[MAX_T(int, DRM_COLOR_ENCODING_MAX,
- 						       DRM_COLOR_RANGE_MAX)];
- 	int i, len;
+-	u32 buf[BITS_TO_U32(max(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
++	u32 buf[BITS_TO_U32(MAX(SUN6I_NR_TOP_LEVEL_IRQS, SUN6I_NR_MUX_BITS))];
+ 	int i;
  
+ 	/* Wake IRQs are enabled during system sleep and shutdown. */
 --- a/drivers/md/dm-integrity.c
 +++ b/drivers/md/dm-integrity.c
-@@ -2536,7 +2536,7 @@ static void do_journal_write(struct dm_i
- 				    unlikely(from_replay) &&
- #endif
- 				    ic->internal_hash) {
--					char test_tag[max_t(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
-+					char test_tag[MAX_T(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+@@ -1705,7 +1705,7 @@ static void integrity_metadata(struct wo
+ 		struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
+ 		char *checksums;
+ 		unsigned extra_space = unlikely(digest_size > ic->tag_size) ? digest_size - ic->tag_size : 0;
+-		char checksums_onstack[max((size_t)HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
++		char checksums_onstack[MAX(HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+ 		sector_t sector;
+ 		unsigned sectors_to_process;
  
- 					integrity_sector_checksum(ic, sec + ((l - j) << ic->sb->log2_sectors_per_block),
- 								  (char *)access_journal_data(ic, i, l), test_tag);
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2805,7 +2805,7 @@ static void stmmac_dma_interrupt(struct
- 	u32 channels_to_check = tx_channel_count > rx_channel_count ?
- 				tx_channel_count : rx_channel_count;
- 	u32 chan;
--	int status[max_t(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
-+	int status[MAX_T(u32, MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES)];
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -608,7 +608,7 @@ static int check_dir_item(struct extent_
+ 		 */
+ 		if (key->type == BTRFS_DIR_ITEM_KEY ||
+ 		    key->type == BTRFS_XATTR_ITEM_KEY) {
+-			char namebuf[max(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
++			char namebuf[MAX(BTRFS_NAME_LEN, XATTR_NAME_MAX)];
  
- 	/* Make sure we never check beyond our status buffer. */
- 	if (WARN_ON_ONCE(channels_to_check > ARRAY_SIZE(status)))
---- a/fs/erofs/zdata.h
-+++ b/fs/erofs/zdata.h
-@@ -182,7 +182,7 @@ static inline void z_erofs_onlinepage_en
- }
+ 			read_extent_buffer(leaf, namebuf,
+ 					(unsigned long)(di + 1), name_len);
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1100,7 +1100,7 @@ char *resource_string(char *buf, char *e
+ #define FLAG_BUF_SIZE		(2 * sizeof(res->flags))
+ #define DECODED_BUF_SIZE	sizeof("[mem - 64bit pref window disabled]")
+ #define RAW_BUF_SIZE		sizeof("[mem - flags 0x]")
+-	char sym[max(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
++	char sym[MAX(2*RSRC_BUF_SIZE + DECODED_BUF_SIZE,
+ 		     2*RSRC_BUF_SIZE + FLAG_BUF_SIZE + RAW_BUF_SIZE)];
  
- #define Z_EROFS_VMAP_ONSTACK_PAGES	\
--	min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
-+	MIN_T(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
- #define Z_EROFS_VMAP_GLOBAL_PAGES	2048
- 
- #endif
---- a/net/ipv4/proc.c
-+++ b/net/ipv4/proc.c
-@@ -43,7 +43,7 @@
- #include <net/sock.h>
- #include <net/raw.h>
- 
--#define TCPUDP_MIB_MAX max_t(u32, UDP_MIB_MAX, TCP_MIB_MAX)
-+#define TCPUDP_MIB_MAX MAX_T(u32, UDP_MIB_MAX, TCP_MIB_MAX)
- 
- /*
-  *	Report socket allocation statistics [mea@utu.fi]
---- a/net/ipv6/proc.c
-+++ b/net/ipv6/proc.c
-@@ -27,7 +27,7 @@
- #include <net/ipv6.h>
- 
- #define MAX4(a, b, c, d) \
--	max_t(u32, max_t(u32, a, b), max_t(u32, c, d))
-+	MAX_T(u32, MAX_T(u32, a, b), MAX_T(u32, c, d))
- #define SNMP_MIB_MAX MAX4(UDP_MIB_MAX, TCP_MIB_MAX, \
- 			IPSTATS_MIB_MAX, ICMP_MIB_MAX)
- 
+ 	char *p = sym, *pend = sym + sizeof(sym);
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
