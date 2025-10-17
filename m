@@ -4,184 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22184CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 354ADCCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83B298E0047; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
+	id 7F7228E005A; Fri, 17 Oct 2025 13:28:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 813948E001F; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
+	id 780678E001F; Fri, 17 Oct 2025 13:28:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7029F8E0047; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
+	id 620C28E005A; Fri, 17 Oct 2025 13:28:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E48B8E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA5CE1192CF
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:24:46 +0000 (UTC)
-X-FDA: 84008280972.15.972CD49
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011003.outbound.protection.outlook.com [40.107.208.3])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EDADEA000D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:24:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZizsTron;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760721884;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 47A118E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:28:56 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D6D481A02AC
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:28:55 +0000 (UTC)
+X-FDA: 84008291430.27.77DA4C6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1B38140019
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:28:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZYj23XdT;
+	spf=pass (imf01.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760722133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
-	b=Mao0K81ViPfbpLFUXqqK5N5GCtRzJ2aysYa99dX6pEVGs2NSPtCCQiIfp1RX5Nf2y9ynv6
-	GLMLF+gMPYjigJ/70xFIJBK6DqbjjVO7nmrwzOICdisfzbQ4N4P8KB/OwPoPk9IW/Snanz
-	BVVXdWC51UihBGgbI7+R2m8GbEUcwaM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760721884; a=rsa-sha256;
-	cv=pass;
-	b=5e5EUcCiP4RACcv4q9Z+2Fc4r3B7Hha9NjOOy78IHoPtHte2JA9fbp9i5xN6wpZmZl1HXB
-	X8Z25fth1eTISkc+UN3up8svHjOWu86o9Ui3RDeTiQfuxaG9WZk7OT6tt89IMEpkuguTW9
-	P8iilAgV1mxunxVwAH1is2h82V5Fj+I=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZizsTron;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yXUl8Ac/eOY7fu+BbvfysCX9gS886dS2BxZ35FvFI9HPva0Li/+uLl5UQwdq8V05Z+rAG58Ql8jKoP8Cc+f5D20NzQhlExW2VYxJ6iH3GzuUFzOJorT2yLkKGDUtPolklsWDARCS0xtxFEreFQ4dT6O/QXDeiIqG/dxzBjIiupmfeHhsUjwIR4p6Jzjr5P8PSEG+cM/md/eBW6d+C4n69GaFZo+5TT9RGxXN3J9ZepRf7xjdyqtnHp6aCUETyTPKci4+f+Gw1+e896gEO2vzpYPNaOi3CsB8jWBeO6aVGqoeOe0ZclZuem5II7frt0hwJNsGGWgk5sa8wwOie1gfSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
- b=rHM1n8iD7xuH0oQRjUW2QQZ2G821YKInUj/u8vScabDNVM5nFmjYs3xzZTEoGXsDAp3dmJYkZw24HrrAZY380mhO37MmQ6HxNdznYvF3LWfhnZpdtf8vtNWCVp+C4JqilVSzCNUqmV8ha+Swm0LE1MgYAn1JTqkk6JWBX/uxDqJn7NbFWqU3maGOeY1S53dLHbqrkt30J0mvcfOaAPuTCPTVZq5qMApglfEbobj6v3Vi7GwOhyw+fAX+CIdodEclpojLxHdFvpu7feaNT0MBuXr/HWyv6E9JK4XmsuXajedQR42zyBsOnNkKKLMYmwi4OMVzfZgkib7+V+IKWOTQiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
- b=ZizsTronnRuho4IFvHzbEBGgCUWctRAYUeCYYBgojSyjSVR2xQ2t+4dv15D3REhyH2dJRDJaybVjERLzC/WR2zmcOmAdNxmYXIOSoYni2oFNNuGGJ6ZU+0AeR7Y9AMMvMULvA3/TKqM/c70fOjPChosXXSJObJD+ZOCRY2u7o0hQnRxTwXIDzoxYcJON87W+k8OGpgsPEFHdmUGVre3iNulNnH7DqG/4AaiL2wdY1BqnFAXHrG4PSXbRdrWgGtOO093gfcmwmNjOSYMsCnvjsZ9hky/DxIOnj7gRXBQMr5wFdDPaZdMuLCY/NuAhdeP29EE1Pi/0Ia4vWjgSIUPo0A==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- MW4PR12MB6976.namprd12.prod.outlook.com (2603:10b6:303:20a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Fri, 17 Oct
- 2025 17:24:39 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Fri, 17 Oct 2025
- 17:24:39 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [Patch v2 2/2] mm/huge_memory: Optimize and simplify
- __split_unmapped_folio() logic
-Date: Fri, 17 Oct 2025 13:24:37 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <A67D1276-D59B-41E9-8A88-E54E05A0F479@nvidia.com>
-In-Reply-To: <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
-References: <20251016004613.514-1-richard.weiyang@gmail.com>
- <20251016004613.514-3-richard.weiyang@gmail.com>
- <7ed84d61-0a7b-4961-82eb-fc8d38b77162@lucifer.local>
- <154924ED-0CD0-458E-B760-F9F0A92CDC89@nvidia.com>
- <d0a2c81b-a0e0-4457-b355-2363f30ecfb8@redhat.com>
- <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR05CA0044.namprd05.prod.outlook.com
- (2603:10b6:208:236::13) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=SvKQ/17WNYzFeQtnqjZcX24DdJXumkbVdSqHG56jAyY=;
+	b=ZyC8nTi4qCVHUTaQZy/vMfSqKni6qwZI6C5WPXmmRW9pClIPQcpA7UjugqwBi670s98GOg
+	pdJc8wR1Xg7c3gV7rAnnWGinzY/R+7NwvySkkXQ+3educSjoUPf6uPwYf0Ud0145a2hgLx
+	lmf8977ui6BfJ2h2ctAIjEogZw/n7nE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZYj23XdT;
+	spf=pass (imf01.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760722133; a=rsa-sha256;
+	cv=none;
+	b=45buqe2Gxsl2S7EYSR4+P8t0xFUw0DoYxaCNMKiCcYXOOim6d/7pf55A3IVw3y1zPza1W1
+	YPiiGL2PKyuG+DrQ9qteG9v1JFtHtr3Qu/O+bTZPe+ll0fkCNhNz8aJX6RurqtSA4yjJCZ
+	Zk2Hzzocxjxq5lWgbhFAHOGZLGzUPZo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760722133; x=1792258133;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to;
+  bh=SvKQ/17WNYzFeQtnqjZcX24DdJXumkbVdSqHG56jAyY=;
+  b=ZYj23XdTeyH+gai4U4YKJpOt4gtMUg45bnsvBqp3I9XFc1sKk/BHtqCL
+   8xZpvVZPRac5d+4DTw7/c6y/xqLqlt4rwkIEgYNQL7J5/7UsjQGNsCXyV
+   ee7/AONfepqfrUBbYbjszoaNaJTWc9C6ssb9WPpL+wl+Da/yiCSSff+jq
+   15XGrU5tzIbqYIc0KzuMcsLTMifFStvww+icBW9drKctO3th/vWKLZK97
+   JN4J41WMrJGAyCbWIqE7V0Di2OkGjBfFEMhmsZaRQxRcR81Kt7UNsEwEy
+   BwmHqttbzdGKuVz6u4AGI4vL+ZNGPMzWw2t9XQhe3DAlFf3DC0v9x+Y7K
+   A==;
+X-CSE-ConnectionGUID: cJ9IzfjoR4acxQRk1USn8A==
+X-CSE-MsgGUID: jfLZlHTdT3yH3LGOipTlgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="80383761"
+X-IronPort-AV: E=Sophos;i="6.19,237,1754982000"; 
+   d="scan'208";a="80383761"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 10:28:51 -0700
+X-CSE-ConnectionGUID: 4dIFaWtDQWWjFKptpRyRCg==
+X-CSE-MsgGUID: uUiANFI5Q9uSKDD5Q5s3wQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,237,1754982000"; 
+   d="scan'208";a="186807165"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.108.40]) ([10.125.108.40])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 10:28:51 -0700
+Content-Type: multipart/mixed; boundary="------------GwXy19Mun0gf93RLFz0jKSy7"
+Message-ID: <c3eee56a-7fe3-454c-878f-cff37467fb7e@intel.com>
+Date: Fri, 17 Oct 2025 10:28:50 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB6976:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ca3c153-50cb-4b2e-7308-08de0da20d31
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qQs3jQ+Vhx3MBHU+Q9Ktg2CQJfI4lFrartx+hssSvvO0fYxIdGq1TnYUZieS?=
- =?us-ascii?Q?LgUKRSlcqVLXgFKYfqIdOHSm3IhmoHBCVhKrJryo4GYbNAcQcH451O/B/loq?=
- =?us-ascii?Q?a3ALuvhXCPsZ24CAIDB+a0OVoXzBYgsDs1/yvZp+XJt99TqSZwXNK85W833k?=
- =?us-ascii?Q?bejzRpiWLvReNu22QlQxe+yVpVF3yBCU5sZi1atCVtqgPsYKjTlF14Ruufqz?=
- =?us-ascii?Q?fur2SkLk73CZ9fv33gjh1Zf9XSjWKmBpRhsAzgUKQ8Xuu6g3D5CzyyK2qo15?=
- =?us-ascii?Q?dRr/ZsfBdAUU2cJM19KgeeTLe20pPpRuOVQ8lKigiEWVC3ANeaqTGJeuP9lF?=
- =?us-ascii?Q?Da8TpxD3ymRu6D/+FZzsGUCtWkacsfJdu5AVe83ujVZ7cv+fIuCNZ1gLFtoA?=
- =?us-ascii?Q?0KjGb+371TlsYmEugkD084oh4CYqyO6sWtVMl/vndgi2SvgHzQDzMBtqh8Ju?=
- =?us-ascii?Q?WwYTwl/NBqd6uI0B2gOdpAEAUfnZ06GLFqJ5EDq2ABRWJA+gM0MKWUGtoDTJ?=
- =?us-ascii?Q?uUB88uS9e9+b3W3c5EMpolegNE2JtuK39aaF+2izS/dW9nN+KThIJHdD0net?=
- =?us-ascii?Q?vJPZ+xiWZsVZWitycMT2sudkuiABnlJzkmzDSHgONM+tmAqhOTfgAPAzI1Z+?=
- =?us-ascii?Q?BI6t/sAYB9oQPMTwPdnuDtqY8NL4f/PaWbFWoCM3vY2ssVAjLwiRhy1l2CvK?=
- =?us-ascii?Q?IqstEh2fxIWUbdyLk+TqwAUMVcYNtpf5c6cmbJydiF4s0dQmHfzEs/72nsVl?=
- =?us-ascii?Q?JCZNP7xvaR1XqXCpwR9QCN9YoavVexpbZUpuuK/znI75bBlmSJ1FZXLmcTXU?=
- =?us-ascii?Q?RBmh5r880UvkOtYezo9fOCgUHXsoXBOlboNEz5F5bNzOMiLEBvOFA3QE7zJS?=
- =?us-ascii?Q?ZR/OJT7LfJZb00cpAWsuL637cIUkLav7VZhzMNO6fS2n7MdF+ZBuJ0T1kXUF?=
- =?us-ascii?Q?CpUl/ZcFK3mZ6R1Lmh02gHjZALRn2Ro7mH8UMoVjQiMMouapGGdtMXHE3dx7?=
- =?us-ascii?Q?/mTFO38pRBsamZXBFooPAbMNOjbSodlAEDydg0AEYkvKKip5qTnTW0OeKNpz?=
- =?us-ascii?Q?Yue/e70rCcHmx3uB0+Imw3JX501DlA00i+DmRF2XuPRaHZc2M+5xIKHG/20C?=
- =?us-ascii?Q?U7047y/Hw+zi+Ju5or7coWEmkYdmbbUutNjuuUATuS1li2cCsdSnLLgOnCFV?=
- =?us-ascii?Q?nn1LjS15QD4qWlnFzURRci2yILVr4YFnRJGUE7EaXxLZJ2f7FgUZFy4jZBvY?=
- =?us-ascii?Q?kV92YfooTpjLU8e2LUJPkVGLDjkUr9kvRFL6dKqpKSkDtKsLVwC514yUs9NO?=
- =?us-ascii?Q?Z9Ig9iPRephsiel492gI4TnLg7gXoP0nfrwBwU0bIjcDDkp0OM86+tB8Vwnn?=
- =?us-ascii?Q?wYVjz8KVIqVCrU0nNA4fkvTZrHaFxCFJB7/TByi7GEy9rG9Qt3OcFTVEVI2E?=
- =?us-ascii?Q?NaQgEjNlHIWyPe6JEdiQ4updXd5HFDuBTSsr/jNh58wsB2FHpEh+Tw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8TgMfY/XaPAXTAMRMZF4HaxQSpioVKKIsH4l31lIyl8iUwea70qjJNMMBY1i?=
- =?us-ascii?Q?teeaAxmwSBkWw3QOYVXPS/2SojEsbH5LyAtZGSk6HaL8TUeZopmlUjZGA8nx?=
- =?us-ascii?Q?psrlEZ1rLprxB8eA6hA1oiia99R7FLcEqauFMYStwQlvdNKey4cDQcvDiLyQ?=
- =?us-ascii?Q?HJe4psIya/tBrGI0yymHS4iZuWvsbe0jA6q22nG4026kPdbbNWDya4OIgARB?=
- =?us-ascii?Q?SrGy3dxeq6DDWcjqBEP004hOJlvhikkNsWanA75NwTI+vUGY3M+bDuCYN0Dt?=
- =?us-ascii?Q?bF/gb7DSfDFuEXVe8pjjiKA9qNdv9cvQzhCdZXBaGXHJ7MAvQeOhROBKY3fI?=
- =?us-ascii?Q?8oDkQENPfQ6y6e6MmFc5mgUHxrugued7VJgIIKmEYU5grMl8+ORxMf6jknQd?=
- =?us-ascii?Q?F2/TcjApWtLffaS0mBkV8+HwB1Dxb0hhLNj6cImxHi5FGd2FsU78cPwjQj+C?=
- =?us-ascii?Q?o5fg/VWum67wwvef6M4SuZmjQvEcgX7xB5jUlNTkfIYzp+YzjWGDt7CQ+Hwg?=
- =?us-ascii?Q?o9snOo5udbwfKr7+WdVudIXzL6JN9vHeif1Y5TMVe80ljwWGim/vqXPxwLDo?=
- =?us-ascii?Q?4hrdS0bSJ8F2EkaqpS18Tzw2aJVYaSZypHCYK62v4LlCMqEWsqOMWxrhHcDP?=
- =?us-ascii?Q?r+95sm219SOG7HyDI4S2A/OiYJ6HBINsxFHkqXmZurg0tGbXQuEWebcnbV+R?=
- =?us-ascii?Q?R52zilqkEiU22vPbydmW1h+ROk9lDgvJSCY0L0EOitRgexMo2vb3dJmiVvUh?=
- =?us-ascii?Q?TbJ6PLS1IDuO+52lWLA3pNrVegQ11r3VL/iRpe8jM+ireWZNGOyctsQrL4Fa?=
- =?us-ascii?Q?zjRnYphuTzdc3fCMWCBF3TUON1f4/vRcweEGAfc7d6n8JVD6k6ows2DtLfdM?=
- =?us-ascii?Q?Wi4rWbvFCYiE1r5Tq/TVXvs3FBqfvcZcfJFjokMTmkezPxQLUZqcewoE1WqC?=
- =?us-ascii?Q?xbvsIem7ndnGyPGJ8LmZMCJcWugi3S6+F1HW/CtgmO6xVPz8WQhhe2P1jcn5?=
- =?us-ascii?Q?clnyggsnWxmwMlUYN/HjshHAxCXC1P/XXS6isVfQymbmEaXWpHIgjd6H/4fV?=
- =?us-ascii?Q?nSYkgXWK6ARTAi1oobaa80ech0IOFaRWYEhU259uXcRU8Nan/cXW532GkDRy?=
- =?us-ascii?Q?nVMbWTCtI/L+Fxw/4OYrakTVMN5Io/de0thm3R7NyVPQ72jG8+BNwDQ4BvCN?=
- =?us-ascii?Q?eoAUJB2Lnh+AXn+Rbq54qVOxODtI1Arc4B4KODu41v2GctJXUCGO6sDYR9eZ?=
- =?us-ascii?Q?4hgOmoJtgF2doTq5Iwx1Ify2n9QMTks3NHM0K7D4tfnKWz4adyVZg8wNt3Po?=
- =?us-ascii?Q?mHnAkXmZt5uLsdQ+n6IzsAB9OSZtUunlfybHKe7ZoGI4KEBkJRlUofL2a2Bh?=
- =?us-ascii?Q?wHDX30Uy2t6C7KU2CzDbI3fIm4LlTs3BoNLe/vA8zE+zFN7MG32it4lZky2Q?=
- =?us-ascii?Q?HA/SoHhPc9Rzx7elXJWFYGJ38qPeuHy1AaCskSECk9bozSUM8XflxIw4Q5vu?=
- =?us-ascii?Q?l/d4BwTDZgiXUZhlltGJrslc67ioCnHqQ+zff8QcFNmj3CG2Tre7GRc2DbxG?=
- =?us-ascii?Q?ds158maPCeXfLpSp413dMjG2lRNomOJILsWbYH05?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca3c153-50cb-4b2e-7308-08de0da20d31
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 17:24:39.2024
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UBmnl/cnaSsUXIbbn9sSQFHsOVtlGmEgU1Q+MQPV/YLbPAI0UVMpJOBIXOsV3mM8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6976
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3h7nydpppbb8ipa65ee5wmc588ja7s5j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/7] Fix stale IOTLB entries for kernel address space
+To: Jason Gunthorpe <jgg@nvidia.com>, Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel
+ <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Michal Hocko <mhocko@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ "Jiang, Dave" <dave.jiang@intel.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>
+References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
+ <20251014174339.c7b7d2cfb9f60d225e4fe5ec@linux-foundation.org>
+ <6b187b20-6017-4f85-93ac-529d5df33aa2@linux.intel.com>
+ <ecee3200-c8e2-47ec-a219-c88e8e905b32@intel.com>
+ <11cad2be-9402-4d45-8d2b-c92d8962edfc@linux.intel.com>
+ <20251017140101.GM3901471@nvidia.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251017140101.GM3901471@nvidia.com>
+X-Stat-Signature: kw5e6ttnjyyr339yosgnkp3knj9xcn51
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EDADEA000D
-X-HE-Tag: 1760721883-683838
-X-HE-Meta: U2FsdGVkX18ZARxYlU+C1Wm8BjiIjuA3eRwMvN6R73iseqbdJjKzYysKH5j2+TecF6IcQMQA5fIbMqL0T3RHJZqu8WCRPYf0IjDTb19svAFaebKgRLBbNRO0Y2YZfhbBQCsnAj3BnFoa0rS9w6zuLZMetD6pzYEEm9CJa7NddmYu7VG+3MX273jUdeFIb6TamCHEkF1i+eE3tunEy4WSMdfu1jqfvpwRhwgEIxsQMK1vnJq1tLT9QrFBekU40NvQmzxz3HD2fR6QQy/zY3ihVmJKeIq7cvQcpk33eELmia7VvNbRR+vb1zh7mTjOnc+iCqajXkFoddkZJD7tmZAQ4JzQGKQm30JJ/2P6KNn34l4L48tgRpQ6rOdWFnsbTQ3YyXA7uceWbgGJzGi3d9FJXfYI+ffkSVXX0ehLUklvMxrMUZ2uTt81wPH5bkbBSSxBYWXcPWFJ1SCn95ohUTIRDOySofpwYxmk3RVIE+15jPP3JxP0Qn2QKkoYi52XKi/AaBf0H89fGWxp2yxnygPJ7juRdDY717r4S2XERGWbey+1HW7ZzRf5/0PogriuSnYfJ2jlpPquemlL3hUZ3r1pZFC5r4V7sizjYr6JOYxWv7+EsiClqlAXdCZ8ZFFOv2zeR+K5DMXD9d5kQF1efd6HzRbKFvbGKO4B0mDIjdXBQuemTT/5GsRuQ0v3YD/5chDNp89ATWBRj1XMA735Yj7xFs8AGiNJ0B47piMfOovvLK5zVAPwn6tzI3GWhP6BuPhBGXxxqzXOA7S0IDFgQYdXUifer9DF0HNUpVttnK7jnFhp9KEP4w9WsIOf00p9KQvHiki2MsrsoMoQFwVEwD7hA0Rx7lJL6+0HBFphf+5ZaKFVij/dzfN36JsifzfC7Cm2q4sYZq3Jze2rRiszerBDIIAwxAtpXDPirOoEx7705OVLkAA8mTHcPIZd13zk65E8C1Ma8UGJDonzfPF7fY/
- N+LI5vOf
- OCB6WbUfjSY4Tl2rMeiDaJQAHjxM5zl/lr92QidzRlZpiilaX6NvmqcQUQlEMy7TRPYsXFnVkACgISEFuSqoSDhzZ5w+nzbGS3mdprm25spd4bJVc5ol3/7iOct4Yc5ooy2nEuGmVIzTJWXBQLVgPloQAgHJXP0YAhcwTf5wET9naQXmV2eywmrXkzCtZ0ohUq5BZZx6y6Py8AouTJYlsbCL835PVqVLt6OixsKPjuYZVgXebQMgYZb8ViwhDKrZQdb4zXLl7Mwu1eXu4Pkygmm+WlGZmwOdkImz8CU3lm4G+Wj7pmmIuqATOaPFNzKREBnLbYobVQnGb/GyWXICvzMVTMpSN2B9exdU4BJWg7GFEFyx6QP2yRKrb3K7BJgkjcUj9X7UKs1SPnJ2yBC5gXsuyNy9cARlp5DdPSZGrOusPPUAv3g+vEHTVYPtYrBtFDNdBcQBjW5nhXOAoj6aSvhGMJAEorOqgLsC7VHR9Tm4mk59/Z64/W+u7Wt14btmaHbDIAoZpB7/UV9bsdLiHGo+rf2GVrKOOtN1SjIyYhDCnjg4DEF1qMdUaiYOw0APpIvAGNTIWRj9zOhh7Yx2FaI+hng==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1B38140019
+X-HE-Tag: 1760722132-889681
+X-HE-Meta: U2FsdGVkX18wGQxLza1xJUyI+EA7RejWYYGNMbEVlq4p3vEO2dswu/zAfUc8pj80JQSsAg9Trj9gAhmiYLlFtOSHRVeilGQVeWr1qfV4piTvdOrzYZURDqsgXmy3PbPRGo3xmVPVT0n2L2cuZxI1aL5584quUn5cbmUeiEefvi9vPpIvuqyrbp9ixTEKTK6oPcdA86rb8N0CY73kvG2/DBOR5Ilp0Pn7poIxbJT/MsdHdBEPXXYgP8Z1/aOJfwO44p7cN6dum71B/exTLDmQU9PBIokFKtf2MIypmacjo5YQuCG/b19rl2sK/0xNVxxgLgzteEtvtloQkzJr9gWZ4k/7VWA6sTFjwLGid94JGZivti09zMk3XdQ9rqQG2c6yvSlwaoO+md/JNpJpmDpCcYevujrulhZodjw690ze7tLtN2Nmt9+M608L97I80k6zoqVPHukz/F2175S3JHBewJrFsbbCxRc9fQGQ6+3leh8rMI33c4Zkh2mYUaKPiNNGPKRP9oLUsxtekUNoWc0REnjYskf3K1kEjcUx4tFi+pKJHLLo/hpbFvAKX+X6UA73NW48x49CYAzOP6kI+gpUojpOiCpdnHnUpIKmHzawfaj6P+ZXjl3210nGD7DZ0wj6ONQI9Qx7zge5yUa8X7yk3+tEewYtCoa8kvhLc3/WXEgdlQGX+CQS+PT6QbW8ODgdarL1AfS1JJmpME9Jk7O+wHNA0rkIVotyvtWQr5iPPJkNNwO7GOXMQ/Zfn1s9xUB0uuZzJGqtU2k/gDTP7Zf+wAAoFdhTFNiLwMpXjwGqU3NCwVCxWeGPFE8uFkHSEwwG96hSxC5cE9Hkwt70w00kSy410F7C40nPJhgak9yTsLdRlhYyuA+B78qOG0mpFbC1MbHvmSb+9Z9AsrQW5aIAHYhaaRBqYcSzlsp+/RJCQ+VHl6/AdMK3eJxxSgma+PCMgsqPOZ8RXbQJ8ID/LFE
+ hKkJUV+3
+ sNDnsj+R1TcR8zTBXBiF16wZv8BFX7vl2nH9MCyjdohGXEOrBruEokTBBnURn6jJvOQh17fFPPQJTV66iiu4LJrTWL5/2xhun6l0Dq/sEZIu8OKs/02UoHd+8fNMSzM7w28Ks2fR61S0+u+cKHWrWTRf/uqgEvbBjB8lESeWUDqubVGPBGzDq3nDgxnqSf2KAL2/IxlzY3ve50aIvPTb5k4ZUiKTJoiWUgoRrCdoZ6Eocz1b8E1n2W4VaoCq0CRk9LqT5RWvQbjN+k0T3PHtJ93JgXUjF/YP66KY+fvh5hQXY8DwjyBRyrbe00FmxM8yrRsOSEFqrHaJ94u8XDU+/SeNqcCiU2P/SVt1aW8oWnfG/2Y2tk4dpMkgDkh93sJyeGXMjTHkAKb1UQkG+P98ui5Ph0SGQGLn5wXojzI5qB9WcHB04aqE9L411+fz9IhQTWLs5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,277 +168,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17 Oct 2025, at 10:55, Lorenzo Stoakes wrote:
+This is a multi-part message in MIME format.
+--------------GwXy19Mun0gf93RLFz0jKSy7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> On Fri, Oct 17, 2025 at 04:45:17PM +0200, David Hildenbrand wrote:
->> On 17.10.25 16:26, Zi Yan wrote:
->>> On 17 Oct 2025, at 5:44, Lorenzo Stoakes wrote:
+On 10/17/25 07:01, Jason Gunthorpe wrote:
+>>> The other alternative is to have arch_vmap_pmd_supported() return false
+>>> when SVA is active, or maybe when it's supported on the platform.
 >>>
->>>> On Thu, Oct 16, 2025 at 12:46:13AM +0000, Wei Yang wrote:
->>>>> Existing __split_unmapped_folio() code splits the given folio and u=
-pdate
->>>>> stats, but it is complicated to understand.
->>>>>
->>>>> After simplification, __split_unmapped_folio() directly calculate a=
-nd
->>>>> update the folio statistics upon a successful split:
->>>>>
->>>>> * All resulting folios are @split_order.
->>>>>
->>>>> * The number of new folios are calculated directly from @old_order
->>>>>    and @split_order.
->>>>>
->>>>> * The folio for the next split is identified as the one containing
->>>>>    @split_at.
->>>>>
->>>>> * An xas_try_split() error is returned directly without worrying
->>>>>    about stats updates.
->>>>
->>>> You seem to be doing two things at once, a big refactoring where you=
- move stuff
->>>> about AND changing functionality.
->>>
->>> No function change is done in this patchset. The wording might be
->>> confusing here, it should be read like:
->>>
->>> After simplification, __split_unmapped_folio() directly calculate and=
+>>> Either of those are 10-ish lines of code and easy to backport.
+>> Hi iommu folks, any insights on this?
+> IDK, the only SVA user on x86 I know is IDXD, so if you do the above
+> plan you break IDXD in all stable kernels. Doesn't sound OK?
 
->>> update the folio statistics upon a successful split, so An xas_try_sp=
-lit()
->>> error is returned directly without worrying about stats updates.
->>>
->>> David suggested a change[1] to make it clear:
->>> Stats fixup is no longer needed for an xas_try_split() error,
->>> since we now update the stats only after a successful split.
->>>
->>>
->>> [1] https://lore.kernel.org/linux-mm/518dedb8-d379-47c3-a4c1-f4afc789=
-f1b4@redhat.com/
->>>
->>>>
->>>> Can we split this out please? It makes review so much harder.
->>>
->>> I asked Wei to use a single patch for this change, since the original=
+Vinicius, any thoughts on this?
 
->>> code was complicated due to the initial implementation. After my
->>> recent change (first commit 6c7de9c83)[1], __split_unmmaped_folio()
->>> can be simplified like Wei did here.
->>
->> I think it was too much split, agreed.
->>
->> This patch was a bit hard for me to review, not sure if there would ha=
-ve
->> been a better way to split some stuff out more logically.
->>
->> Most changes just complicated way.
->>
->> Not sure if splitting out the stats update change or the calculation o=
-f the
->> number of folios could have been easily done.
->
-> I mean as I said to Wei/Zi, my objection is both moving code around and=
+I'm thinking that even messing with arch_vmap_pmd_supported() would be
+suboptimal. The easiest thing is to just stick the attached patch in
+stable kernels and disable SVA at compile time.
 
-> making complicated changes that require you to really dig in to figure =
-them
-> out _at the same time_.
->
-> It's perfectly feasible to send separate patches for non-functional
-> changes, I've done that myself, each building on the next to make it cl=
-ear
-> what's going on.
->
-> I'm a little surprised at the oppositon to that...
->
-> But if you're convinced there's no other way this could be done (bit
-> surprising as you're asking 'why this change' several times here) I gue=
-ss
-> I'll sit down and try to decode it.
+There just aren't enough SVA users out in the wild to justify more
+complexity than this.
+--------------GwXy19Mun0gf93RLFz0jKSy7
+Content-Type: text/x-patch; charset=UTF-8; name="svm.patch"
+Content-Disposition: attachment; filename="svm.patch"
+Content-Transfer-Encoding: base64
 
-Let me explain the changes in details below, so that we might find a
-good way of splitting it up for an easy review:
+ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2VudHJ5L3ZzeXNjYWxsL3ZzeXNjYWxsXzY0LmMgYi9h
+cmNoL3g4Ni9lbnRyeS92c3lzY2FsbC92c3lzY2FsbF82NC5jCmluZGV4IGM5MTAzYTZmYTA2
+ZS4uMGIwZTAyODM5OTRmIDEwMDY0NAotLS0gYS9hcmNoL3g4Ni9lbnRyeS92c3lzY2FsbC92
+c3lzY2FsbF82NC5jCisrKyBiL2FyY2gveDg2L2VudHJ5L3ZzeXNjYWxsL3ZzeXNjYWxsXzY0
+LmMKQEAgLTEyNCw3ICsxMjQsOCBAQCBib29sIGVtdWxhdGVfdnN5c2NhbGwodW5zaWduZWQg
+bG9uZyBlcnJvcl9jb2RlLAogCWlmICgoZXJyb3JfY29kZSAmIChYODZfUEZfV1JJVEUgfCBY
+ODZfUEZfVVNFUikpICE9IFg4Nl9QRl9VU0VSKQogCQlyZXR1cm4gZmFsc2U7CiAKLQlpZiAo
+IShlcnJvcl9jb2RlICYgWDg2X1BGX0lOU1RSKSkgeworCS8qIEF2b2lkIGVtdWxhdGlvbiB1
+bmxlc3MgdXNlcnNwYWNlIHdhcyBleGVjdXRpbmcgZnJvbSB2c3lzY2FsbCBwYWdlOiAqLwor
+CWlmIChhZGRyZXNzICE9IHJlZ3MtPmlwKSB7CiAJCS8qIEZhaWxlZCB2c3lzY2FsbCByZWFk
+ICovCiAJCWlmICh2c3lzY2FsbF9tb2RlID09IEVNVUxBVEUpCiAJCQlyZXR1cm4gZmFsc2U7
+CkBAIC0xMzYsMTMgKzEzNywxNiBAQCBib29sIGVtdWxhdGVfdnN5c2NhbGwodW5zaWduZWQg
+bG9uZyBlcnJvcl9jb2RlLAogCQlyZXR1cm4gZmFsc2U7CiAJfQogCisKKwkvKiBYODZfUEZf
+SU5TVFIgaXMgb25seSBzZXQgd2hlbiBOWCBpcyBzdXBwb3J0ZWQ6ICovCisJaWYgKGNwdV9m
+ZWF0dXJlX2VuYWJsZWQoWDg2X0ZFQVRVUkVfTlgpKQorCQlXQVJOX09OX09OQ0UoIShlcnJv
+cl9jb2RlICYgWDg2X1BGX0lOU1RSKSk7CisKIAkvKgogCSAqIE5vIHBvaW50IGluIGNoZWNr
+aW5nIENTIC0tIHRoZSBvbmx5IHdheSB0byBnZXQgaGVyZSBpcyBhIHVzZXIgbW9kZQogCSAq
+IHRyYXAgdG8gYSBoaWdoIGFkZHJlc3MsIHdoaWNoIG1lYW5zIHRoYXQgd2UncmUgaW4gNjQt
+Yml0IHVzZXIgY29kZS4KIAkgKi8KIAotCVdBUk5fT05fT05DRShhZGRyZXNzICE9IHJlZ3Mt
+PmlwKTsKLQogCWlmICh2c3lzY2FsbF9tb2RlID09IE5PTkUpIHsKIAkJd2Fybl9iYWRfdnN5
+c2NhbGwoS0VSTl9JTkZPLCByZWdzLAogCQkJCSAgInZzeXNjYWxsIGF0dGVtcHRlZCB3aXRo
+IHZzeXNjYWxsPW5vbmUiKTsKZGlmZiAtLWdpdCBhL2FyY2gveDg2L21tL3RsYi5jIGIvYXJj
+aC94ODYvbW0vdGxiLmMKaW5kZXggMzlmODAxMTFlNmYxLi5lM2NlOWIwYjI0NDcgMTAwNjQ0
+Ci0tLSBhL2FyY2gveDg2L21tL3RsYi5jCisrKyBiL2FyY2gveDg2L21tL3RsYi5jCkBAIC02
+NjUsNiArNjY1LDcgQEAgc3RhdGljIHVuc2lnbmVkIGxvbmcgbW1fbWFuZ2xlX3RpZl9zcGVj
+X2JpdHMoc3RydWN0IHRhc2tfc3RydWN0ICpuZXh0KQogc3RhdGljIHZvaWQgY29uZF9taXRp
+Z2F0aW9uKHN0cnVjdCB0YXNrX3N0cnVjdCAqbmV4dCkKIHsKIAl1bnNpZ25lZCBsb25nIHBy
+ZXZfbW0sIG5leHRfbW07CisJYm9vbCB1c2Vyc3BhY2VfbmVlZHNfaWJwYiA9IGZhbHNlOwog
+CiAJaWYgKCFuZXh0IHx8ICFuZXh0LT5tbSkKIAkJcmV0dXJuOwpAQCAtNzIyLDcgKzcyMyw3
+IEBAIHN0YXRpYyB2b2lkIGNvbmRfbWl0aWdhdGlvbihzdHJ1Y3QgdGFza19zdHJ1Y3QgKm5l
+eHQpCiAJCSAqLwogCQlpZiAobmV4dF9tbSAhPSBwcmV2X21tICYmCiAJCSAgICAobmV4dF9t
+bSB8IHByZXZfbW0pICYgTEFTVF9VU0VSX01NX0lCUEIpCi0JCQlpbmRpcmVjdF9icmFuY2hf
+cHJlZGljdGlvbl9iYXJyaWVyKCk7CisJCQl1c2Vyc3BhY2VfbmVlZHNfaWJwYiA9IHRydWU7
+CiAJfQogCiAJaWYgKHN0YXRpY19icmFuY2hfdW5saWtlbHkoJnN3aXRjaF9tbV9hbHdheXNf
+aWJwYikpIHsKQEAgLTczMiw5ICs3MzMsMTEgQEAgc3RhdGljIHZvaWQgY29uZF9taXRpZ2F0
+aW9uKHN0cnVjdCB0YXNrX3N0cnVjdCAqbmV4dCkKIAkJICogbGFzdCBvbiB0aGlzIENQVS4K
+IAkJICovCiAJCWlmICgocHJldl9tbSAmIH5MQVNUX1VTRVJfTU1fU1BFQ19NQVNLKSAhPSAo
+dW5zaWduZWQgbG9uZyluZXh0LT5tbSkKLQkJCWluZGlyZWN0X2JyYW5jaF9wcmVkaWN0aW9u
+X2JhcnJpZXIoKTsKKwkJCXVzZXJzcGFjZV9uZWVkc19pYnBiID0gdHJ1ZTsKIAl9CiAKKwl0
+aGlzX2NwdV93cml0ZSh4ODZfaWJwYl9leGl0X3RvX3VzZXIsIHVzZXJzcGFjZV9uZWVkc19p
+YnBiKTsKKwogCWlmIChzdGF0aWNfYnJhbmNoX3VubGlrZWx5KCZzd2l0Y2hfbW1fY29uZF9s
+MWRfZmx1c2gpKSB7CiAJCS8qCiAJCSAqIEZsdXNoIEwxRCB3aGVuIHRoZSBvdXRnb2luZyB0
+YXNrIHJlcXVlc3RlZCBpdCBhbmQvb3IKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaW9tbXUvaW50
+ZWwvS2NvbmZpZyBiL2RyaXZlcnMvaW9tbXUvaW50ZWwvS2NvbmZpZwppbmRleCBmMmY1Mzhj
+NzA2NTAuLmE1ZDY2YmZkOWU1MCAxMDA2NDQKLS0tIGEvZHJpdmVycy9pb21tdS9pbnRlbC9L
+Y29uZmlnCisrKyBiL2RyaXZlcnMvaW9tbXUvaW50ZWwvS2NvbmZpZwpAQCAtNDgsNyArNDgs
+MTAgQEAgY29uZmlnIElOVEVMX0lPTU1VX0RFQlVHRlMKIAogY29uZmlnIElOVEVMX0lPTU1V
+X1NWTQogCWJvb2wgIlN1cHBvcnQgZm9yIFNoYXJlZCBWaXJ0dWFsIE1lbW9yeSB3aXRoIElu
+dGVsIElPTU1VIgotCWRlcGVuZHMgb24gWDg2XzY0CisJIyBUaGUga2VybmVsIGRvZXMgbm90
+IGludmFsaWRhdGUgSU9UTEIgZW50cmllcyB3aGVuIGZyZWVpbmcKKwkjIGtlcm5lbCBwYWdl
+IHRhYmxlcy4gVGhpcyBjYW4gbGVhZCB0byBJT01NVXMgd2Fsa2luZyAoYW5kCisJIyB3cml0
+aW5nIHRvKSBDUFUgcGFnZSB0YWJsZXMgYWZ0ZXIgdGhleSBhcmUgZnJlZWQuCisJZGVwZW5k
+cyBvbiBCUk9LRU4KIAlzZWxlY3QgTU1VX05PVElGSUVSCiAJc2VsZWN0IElPTU1VX1NWQQog
+CWhlbHAK
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 4b2d5a7e5c8e..68e851f5fcb2 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3528,15 +3528,9 @@ static int __split_unmapped_folio(struct folio *=
-folio, int new_order,
->  		struct address_space *mapping, bool uniform_split)
->  {
->  	bool is_anon =3D folio_test_anon(folio);
-> -	int order =3D folio_order(folio);
-> -	int start_order =3D uniform_split ? new_order : order - 1;
-> -	bool stop_split =3D false;
-> -	struct folio *next;
-> +	int old_order =3D folio_order(folio);
-> +	int start_order =3D uniform_split ? new_order : old_order - 1;
->  	int split_order;
-> -	int ret =3D 0;
-
-These remove unused variables and do a order->old_order rename.
-
-> -
-> -	if (is_anon)
-> -		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
-
-In the original __split_unmapped_folio() implementation, I probably
-moved the stats in split_huge_page_to_list_to_order() (now __folio_split(=
-))[1]
-in to __split_unmapped_folio() and needed to handle xas_try_split() failu=
-res,
-so left mod_mthp_stat(order, ..., -1) here. It should have been put
-together with mod_mthp_stat(new_order, ..., 1 << (order - new_order).
-
-[1] https://elixir.bootlin.com/linux/v6.13/source/mm/huge_memory.c#L3622
-
->
->  	folio_clear_has_hwpoisoned(folio);
->
-> @@ -3545,17 +3539,13 @@ static int __split_unmapped_folio(struct folio =
-*folio, int new_order,
->  	 * folio is split to new_order directly.
->  	 */
->  	for (split_order =3D start_order;
-> -	     split_order >=3D new_order && !stop_split;
-> +	     split_order >=3D new_order;
-
-stop_split was used to handle xas_try_split() failure, since the stats se=
-paration
-I had in the initial code, I needed to add the -1 stats back. Now with We=
-i's
-change, subtracting old folio and increment new folios are done together,=
-
-stop_split is no longer needed.
-
->  	     split_order--) {
-> -		struct folio *end_folio =3D folio_next(folio);
-> -		int old_order =3D folio_order(folio);
-> -		struct folio *new_folio;
-> +		int nr_new_folios =3D 1UL << (old_order - split_order);
-
-stats for counting new after-split folios.
-
->
->  		/* order-1 anonymous folio is not supported */
->  		if (is_anon && split_order =3D=3D 1)
->  			continue;
-> -		if (uniform_split && split_order !=3D new_order)
-> -			continue;
-
-split_order is always new_order when uniform_split is true, so it is usel=
-ess
-code.
-
->
->  		if (mapping) {
->  			/*
-> @@ -3568,49 +3558,31 @@ static int __split_unmapped_folio(struct folio =
-*folio, int new_order,
->  			else {
->  				xas_set_order(xas, folio->index, split_order);
->  				xas_try_split(xas, folio, old_order);
-> -				if (xas_error(xas)) {
-> -					ret =3D xas_error(xas);
-> -					stop_split =3D true;
-> -				}
-> +				if (xas_error(xas))
-> +					return xas_error(xas);
-
-xas_error() was not returned immediately because the -1 for old folio nee=
-ded
-to be fixed later. Now since the stats is not changed upfront, it can sim=
-ply
-return.
-
-
->  			}
->  		}
->
-> -		if (!stop_split) {
-> -			folio_split_memcg_refs(folio, old_order, split_order);
-> -			split_page_owner(&folio->page, old_order, split_order);
-> -			pgalloc_tag_split(folio, old_order, split_order);
-> +		folio_split_memcg_refs(folio, old_order, split_order);
-> +		split_page_owner(&folio->page, old_order, split_order);
-> +		pgalloc_tag_split(folio, old_order, split_order);
-> +		__split_folio_to_order(folio, old_order, split_order);
->
-> -			__split_folio_to_order(folio, old_order, split_order);
-
-No more stop_split, so all these are unconditional.
-
-> +		if (is_anon) {
-> +			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
-> +			mod_mthp_stat(split_order, MTHP_STAT_NR_ANON, nr_new_folios);
->  		}
-
-Update the stats when the actual split is done, much better than
-the original one, which assumes the split would happen and recovers
-when it does not.
-
->
->  		/*
-> -		 * Iterate through after-split folios and update folio stats.
-> -		 * But in buddy allocator like split, the folio
-> -		 * containing the specified page is skipped until its order
-> -		 * is new_order, since the folio will be worked on in next
-> -		 * iteration.
-> +		 * For uniform split, we have finished the job.
-> +		 * For non-uniform split, we assign folio to the one the one
-> +		 * containing @split_at and assign @old_order to @split_order.
->  		 */
-> -		for (new_folio =3D folio; new_folio !=3D end_folio; new_folio =3D ne=
-xt) {
-> -			next =3D folio_next(new_folio);
-> -			/*
-> -			 * for buddy allocator like split, new_folio containing
-> -			 * @split_at page could be split again, thus do not
-> -			 * change stats yet. Wait until new_folio's order is
-> -			 * @new_order or stop_split is set to true by the above
-> -			 * xas_split() failure.
-> -			 */
-> -			if (new_folio =3D=3D page_folio(split_at)) {
-> -				folio =3D new_folio;
-> -				if (split_order !=3D new_order && !stop_split)
-> -					continue;
-> -			}
-> -			if (is_anon)
-> -				mod_mthp_stat(folio_order(new_folio),
-> -					      MTHP_STAT_NR_ANON, 1);
-> -		}
-
-This loop was needed to update after-split folios in the xarray and unfre=
-eze
-folios, but since last refactor, neither is here. And the stats update ca=
-n
-be done in one shot instead of the originally one by one method. So
-this hunk can be removed completely.
-
-> +		folio =3D page_folio(split_at);
-> +		old_order =3D split_order;
-
-These two are for non-uniform split, where the code moves to split next
-folio after it splits the current one into half. And the old_order needs
-to be updated, since the folio has been split.
-
-For uniform split, the for loop is done once, these two effectively does
-nothing, since the for loop ends.
-
->  	}
->
-> -	return ret;
-> +	return 0;
-
-xas_try_split() failure is handled above, code should always succeed at t=
-his
-point.
-
->  }
->
->  bool non_uniform_split_supported(struct folio *folio, unsigned int new=
-_order,
-
---
-Best Regards,
-Yan, Zi
+--------------GwXy19Mun0gf93RLFz0jKSy7--
 
