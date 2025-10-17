@@ -4,244 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C7F7CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:10:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AC50CCD19A
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:11:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 823938E0067; Fri, 17 Oct 2025 05:10:33 -0400 (EDT)
+	id 9D3828E0068; Fri, 17 Oct 2025 05:11:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FB008E0016; Fri, 17 Oct 2025 05:10:33 -0400 (EDT)
+	id 9828E8E0016; Fri, 17 Oct 2025 05:11:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C2A68E0067; Fri, 17 Oct 2025 05:10:33 -0400 (EDT)
+	id 84A3F8E0068; Fri, 17 Oct 2025 05:11:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 58F248E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:10:33 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C8A88E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:11:01 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 290D8477BF
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:10:33 +0000 (UTC)
-X-FDA: 84007035546.12.0E84C92
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C8AB480007
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:10:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=h9tfKfc0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PMYi1R6q;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760692229;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E9191405D9
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:11:01 +0000 (UTC)
+X-FDA: 84007036722.12.7B606CF
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 14E5840004
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:10:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=c+4vr5j6;
+	spf=pass (imf11.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760692259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dAPSVXptXMUJQto8IzGuVXhjgZqArNGT6m3k8qQFaVU=;
-	b=DsnXEssVlLjcwRJz4KRqhxL0MtrlvnG3I6W5ckw4EXnc2JmdZY2TXsnOAdHBt+XSEr6Zf1
-	If6dAB2QJ59DLD5lPKh8bjUqBMpdgfQe5XTGfAGs3y3iDhHt97auVMlwSBU69SzSyw/10S
-	S+Eu3pAtENP/OO1M9x2T2ZK+7vY3s2s=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=h9tfKfc0;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=PMYi1R6q;
-	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760692229; a=rsa-sha256;
-	cv=pass;
-	b=PGv9d7+EUMiySOQ+q84me+HegvxG1fF92PyG/+Q7WVsN9wrHc/6n6m4jOo9AFvyW6d28/G
-	Hn2dKAcfYk21mGEWwaiJz4LnJ/bPbYG11WZ5weEa7eMlSyGSWS67ziNFy587EoJxBCfH0b
-	x/ktPQ5pCYgB6ywreYB8ez1Q+vcN6Lk=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59H7uc1T021087;
-	Fri, 17 Oct 2025 09:10:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=dAPSVXptXMUJQto8Iz
-	GuVXhjgZqArNGT6m3k8qQFaVU=; b=h9tfKfc0SNXvX8smqdnnW2nZrDsZ4zDDhx
-	qMDDhOs1eHahV9N2ELA5XbJN+IRdPYJ1OFvcPXFA6nKL56vt0mFTgTTuJlOlXPpA
-	pomXrS2iN6+FeEMNagrsxrL6JdU0/Q/xNe/QezvT0RKQGAN0kU5qFq/59DWupX5K
-	baO4w7lG8G1/gE8YijSWk55dWEILPmDNeuQxTutgTlu8rnXpJGApYNqjxu3/EZ4+
-	vv+spp3O3qXLLP6LE6tLHvhZ7OtzyFeDvKTHfsO/Bl1Qnvr2y1RU5WURXh7p3hKc
-	9uHwvFnAEB8+oF8ZUCLDGjcvq5+W1yauPmVHwF9dZ1Dfd8gBXgPg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49ra1qhnje-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 09:10:12 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59H6wlRD024919;
-	Fri, 17 Oct 2025 09:10:10 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013005.outbound.protection.outlook.com [40.107.201.5])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49qdpcu5da-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 09:10:10 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uGVDjNYOCtgza5lnN8NkMOJpW7DwFbmweU6rtTfZILoe9be9JDsabPiuaRFqQvqJ8H4CcFtXESjrrSBpO3DBZvKAdMixn7m5ICxiBUT4nl64Ai2FKDnmQyE+iz8NolTCRWIeDn/VfzetTtF3GXjlXnxua0hmJy5q1hRfDRWuBq/Bpps594AaFqv89MhpVyTVXG97vB4bd7dAffVikhMm2uWVjz0MWtLjJkOdK3EBwxUPZYyBgqhSPYNMTVnwNRCsT1ipgLR2bha4kJ9uA4tDZylp+J5BqWBxKgTJTkbq/OQw2DRW68vc/nGgP7Jvu29/rPfniNXYEdy2JwyzHseJJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dAPSVXptXMUJQto8IzGuVXhjgZqArNGT6m3k8qQFaVU=;
- b=ly78xgRRsrWCe8CaTOjW+JU8dL4tdB4y4vUPMA+ebmDcHdjoO6nzqdlT93nYmWbJ/0YWwatuoq3Pxnp/hiMUSEXQQbKR76yus6namXyoKY8gp6cvPpVNUJW6Q6fZWRP3BDgdrHUk+s6tw7SMm1mKrQevs7JPBDeDT1XkUG8P0pjdqFWoAGAfS8Tl5NCB9FU98fet/Anbm/gyhvVJ6SZ84nQy3LFVsoJXiHYGZAcMu/ttEEXPKDdSkpEdO4cbF2ARygNti7IW1IfaCaeF14geX8MKxLELPgxcytcUcwZKq5yagHr1PiKo2Owz2lowGAvRCj8+9IUW9zTySH7Nwl6afw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=2um4itFa7R6bmR1cOnWiQ4hvHyXTQc+TUC2WBV0osSM=;
+	b=ZHymTLw5LDqpX8wPaYeKsXTUP/MwV9v2VidZ+/doOikF7RwlD4fS/2T2OtkWGETAun0GV4
+	HTNPAc8gUr4kvaNWzRAUC1uuMqf4OUyRIGunjwEQ7oYR1msQmwh2pSPLlnb1K2JbbxFBGY
+	lijt8DHxGjNz4P1irKESoqxlSw/7SBc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692259; a=rsa-sha256;
+	cv=none;
+	b=7YBOnLXbok456x0a2BG7oOHlii4yFRcCddFOcsEUCYRdNjWimTyrITURFI6qTwQCKH1aHD
+	F94AqPr7qg6j1KQMhWkQIGo4x1gardORGGhdApf1FucH1PtFJr9ZzobHVXHhERva1HAKHW
+	PLoRXvaKLKlhoBSEXjh9nPaXsS9XZvA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=c+4vr5j6;
+	spf=pass (imf11.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.155.198.111 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dAPSVXptXMUJQto8IzGuVXhjgZqArNGT6m3k8qQFaVU=;
- b=PMYi1R6qy47X/Xxk6iSTPuqSYJRPs+o+9oYtZKaJdeh3vvBcpovr3xJTYD6PQYDeHWIQaSq7whcTDPqHXxgmGAv4qDpeTZyfvTgSPOVsPnc8yrW239bdXQQx3/Q1jHmNlTI8+X5h1KrLSdJwcHO06eGNF+wpbCgBKQqzPucWORA=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by IA0PR10MB7351.namprd10.prod.outlook.com (2603:10b6:208:3dd::12) with
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1760692259; x=1792228259;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=2um4itFa7R6bmR1cOnWiQ4hvHyXTQc+TUC2WBV0osSM=;
+  b=c+4vr5j6jZ8uUFf1ALXH+rA/gcqW0pfz2h3m9Gn6/70pwfRwyFB4YhlL
+   TuE6CrjiT3HApNdz4UNImhP/RUbtXOSrRz9LNrHgYB+xbFiXEpqkrZ2Ur
+   hinIX+yYIgjH2ydwlmBXFhXEMoNHprdZvLllBQOsuQGeQ8MZrSrnc9sCF
+   9OcKsJ5DRb8iRPVVNdvfSs/+EoC98sTpuDLv1IH7JJ+f2KNuwX54OBm4f
+   yIw8q7/CLGM+HznA8FjRj3nDsA5YuDMvBWWUIm48mJ4CgMYpLjJ0ZVnlc
+   TNhmGjU2AoO1Ijt0tlHAo5pvLF4Eb6Eoo1cuOBcU92rl8UF+5hWmwCpfm
+   g==;
+X-CSE-ConnectionGUID: oT/Oymp4RQWRnFkUx7cDQg==
+X-CSE-MsgGUID: m7HI+2jdSnunzdfjsiCfqw==
+X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
+   d="scan'208";a="4957075"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:10:52 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:9966]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.38.191:2525] with esmtp (Farcaster)
+ id 44fd2346-0069-41ac-8a04-2b36498a64f8; Fri, 17 Oct 2025 09:10:52 +0000 (UTC)
+X-Farcaster-Flow-ID: 44fd2346-0069-41ac-8a04-2b36498a64f8
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 17 Oct 2025 09:10:47 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Fri, 17 Oct
- 2025 09:10:06 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
- 09:10:06 +0000
-Date: Fri, 17 Oct 2025 10:10:04 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Wei Yang <richard.weiyang@gmail.com>, linmiaohe@huawei.com,
-        david@redhat.com, jane.chu@oracle.com, kernel@pankajraghav.com,
-        syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com, mcgrof@kernel.org,
-        nao.horiguchi@gmail.com, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2 1/3] mm/huge_memory: do not change split_huge_page*()
- target order silently.
-Message-ID: <9567b456-5656-4a48-a826-332417d76585@lucifer.local>
-References: <20251016033452.125479-1-ziy@nvidia.com>
- <20251016033452.125479-2-ziy@nvidia.com>
- <20251016073154.6vfydmo6lnvgyuzz@master>
- <49BBF89F-C185-4991-B0BB-7CE7AC8130EA@nvidia.com>
- <20251016135924.6390f12b04ead41d977102ec@linux-foundation.org>
- <E88B5579-DE01-4F33-B666-CC29F32EEF70@nvidia.com>
- <16b10383-1d3a-428c-918a-3bbf1f9f495d@lucifer.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16b10383-1d3a-428c-918a-3bbf1f9f495d@lucifer.local>
-X-ClientProxiedBy: LO4P265CA0195.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:318::12) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
+ 09:10:31 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
+	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
+	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>,
+	<james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>,
+	<sunpeng.li@amd.com>, <alexander.deucher@amd.com>,
+	<christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+	<evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>,
+	<mihail.atanassov@arm.com>, <brian.starkey@arm.com>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
+	<jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>,
+	<dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
+	<dm-devel@redhat.com>, <rajur@chelsio.com>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>,
+	<joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>,
+	<hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>,
+	<artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
+	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>,
+	<josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>,
+	<chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>,
+	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
+	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
+	<sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>,
+	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
+	<akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>,
+	<yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>,
+	<fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>,
+	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
+	<ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>,
+	<herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>,
+	<kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>,
+	<ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
+	<linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>,
+	<freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
+	<linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
+	<linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
+	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
+	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
+	<tipc-discussion@lists.sourceforge.net>
+CC: Linus Torvalds <torvalds@linux-foundation.org>, David Laight
+	<David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH v2 16/27 5.10.y] minmax: make generic MIN() and MAX() macros available everywhere
+Date: Fri, 17 Oct 2025 09:05:08 +0000
+Message-ID: <20251017090519.46992-17-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
+References: <20251017090519.46992-1-farbere@amazon.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA0PR10MB7351:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a453f20-8322-467e-8452-08de0d5cf713
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ESOUzJkiTuQik8SgC25N2tjp++eG2luIBDp+RKzxzS1HT4BlUD9p5T4mOs66?=
- =?us-ascii?Q?hMumqUD40Uh92b8flZ6tzewm9tD+YsySSXivjmesCMHhhXZVshbmwofcOunf?=
- =?us-ascii?Q?WMdlfAlk38us6M6OwPwBiDmVrckW0wnkaMcgfIKWtmhjb43SPgE6rXaQePUt?=
- =?us-ascii?Q?MLQieajplu/NWheEWZ8XSnK/joQ1E+930nIYDgxl4h+LqWSDCeRx75eoYKEJ?=
- =?us-ascii?Q?/zy+esEGKAddvQqXhJbgIqQJXyyIzpPYOKIM9knI7WAo0GugUI7LEz9JQ5Ed?=
- =?us-ascii?Q?6ij/vZ4nqcMQ948JW0ng4vJkEojLaS7vrOyspgs6Tj/RQAJcpuIsrBn2hVn0?=
- =?us-ascii?Q?hQ9TKMZqOD24/YpkSxqJrG+Pk3LuluS+jf/0IXYHGfoLP2F3gIj9PhJDzFYf?=
- =?us-ascii?Q?9WpUhQEUdbqHOmTjJ22CqYrFnQwTwjchD5GHsf0QtiH02i4cOWasvx12/HKG?=
- =?us-ascii?Q?KxwvGdo+eh+9vdbiLjBJSY6nOnDxetB2G8TkzKhZlvRzLaXJqJWOv3gSb1B5?=
- =?us-ascii?Q?wk0xY+UeuBlgtdVQfbgugtDsSg2UcJELkQ20HaJ7vbJ/30DC1mIy1FSBsT3a?=
- =?us-ascii?Q?Uro/6V7mbMztQGRmqqqxbyLNB/KkxJ40ohLeT4BPIEukI5R/6SEV/el00l8R?=
- =?us-ascii?Q?TMhR8IHJ/6S30BG5wF1upg3V/JCe3zX3koHHeScV/pw8EfPOeB+YGqWb3bv9?=
- =?us-ascii?Q?Z0t5837b6TBim8h3HYB32O5SGknhKfnznjjd/zX45ard+SCp2WK2xJ5fe7Mr?=
- =?us-ascii?Q?DpYlsh76xSIR5eNWWgqOPL7+cgIUFueYBm2hYi7gK1BpLbIGmMRemKda4WfS?=
- =?us-ascii?Q?kZ1ZETErWcdtsObv60Y+r8XjYDXbYpyxg40YqhkYBVPbyaD5qNSZvKmuUOFP?=
- =?us-ascii?Q?Cq2ST78YnnwVT98jdDUXuxzBn3XyZc5PY9UlkZUDjkJp7ZQKa/bpUjFaShct?=
- =?us-ascii?Q?pfPvybdB5RpsJE+jnh3qHnxXpMeqceb7eDc1/qsTnH7TWGQTv/kGkTL5DDSG?=
- =?us-ascii?Q?laf2PTUrjix+3iuboBQJnFQAYBEjrKFPGFt0JHIdGVRfWEqJOoAPPyu9u33+?=
- =?us-ascii?Q?o/rX7i0O7k1l1U1YK1F2pAH0ezY2VUlscO7mcbKaY9/koYk+AiIwMRXn+8Md?=
- =?us-ascii?Q?XuXOOQIlXhENm1E31HOp423PhFxkVvxqPsr3opzPpHJxFdl5x+LKA2TDHrlj?=
- =?us-ascii?Q?vjRoQeFZQ7oScHystWkc+NfCPrTpl6Vjs7wQb7XNCMbH8VpbWAX7uXdSBPtV?=
- =?us-ascii?Q?uN2y98Vu0rwGMhnqiRxGYCDmzkAcAWFVjvbn3M8IUlHXWajCmCqwSophhXEp?=
- =?us-ascii?Q?yAOGy/sRC86MljMY9ufc5hgxXrHXZjHQhwBDLGbKUy05iXxfeCQInw6HPXwn?=
- =?us-ascii?Q?rfpSS8n+EgDDP1MTcU/UQ+K2gC50gscwifCksDeJ4g3Hvo/7Q8rzgtUgggu4?=
- =?us-ascii?Q?qCQpnlFGnBo+DhJKDN5lBwIE5uz4bSoD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?t4581mQ7a9ybyYZ3wMY3L7DWX3c2tF4Uw7mJc1PS835PPmmkloWt7IQP+tvO?=
- =?us-ascii?Q?aIZn+qiUb3oSZ+FODwKWKIiLn94nPUmziwWz00fcNvDsWNxuVaPpOsI43VkO?=
- =?us-ascii?Q?EsXb/N+O7Ujrxr4UizTPSOtxCi46KivGggOEY4dPiMrAQU8tMJI3j6tZiI+s?=
- =?us-ascii?Q?pjTvIlrf2n55Ya6PGhZzEor5SydZIvCSuRkpKBlLdNtAo1jPYn+omsRdmEQE?=
- =?us-ascii?Q?cAA59jglYE0YQlGpgjMW2Su1vPjCEmSDjnadGvcQhaOCxaV6yWlD6T29rxEa?=
- =?us-ascii?Q?IVfENhKF7ss3LyrneP/5LQRUNSOCZGGNchXvc3pWcWVD9cjIPT9OlWMBGHYq?=
- =?us-ascii?Q?GnLwpAJckNM7qGx3ohBUaklJXImusxORHaf9TwSERmqUTEPua0YQBMpPPOT4?=
- =?us-ascii?Q?6trCjeTZvHDhAQZxyzJoRwcmy/ZU+Cbd9dqcDuxbqI4DqPgViSa/oOtf0JAo?=
- =?us-ascii?Q?elggzoPheLURI/BvyESJ1dvXupRccJ7lHIFg+0LR4RaHYYRwV2WecbPNM3NB?=
- =?us-ascii?Q?sg9M06XrhqgJw0BOymKc/jm0+oJol+keJuMWIXkyuEUOj4+ghV2LvBl6n2kz?=
- =?us-ascii?Q?dXSAwXW3eG0lFp+d70zRfqVb6GZBmie/S9aZGxROyBYtAGqtc6qoPU9QP5Jt?=
- =?us-ascii?Q?/YRa8BvcsOy7ViuS8BZl5gM22L5WlI8IjMcnMvECQiIWx3Ruh3kFXEPB9xVF?=
- =?us-ascii?Q?ehp6F9wNwjy6J9sxLD1ap+6y3dWTlKGmKdyUv21OxSWd/9jMzNnQoicSFvR1?=
- =?us-ascii?Q?1YlQK6cndz7Qrs0Qp6VH6auuoxUTvvKR8AXBVjWDGroBdlEMCnZ5P1J/yR6J?=
- =?us-ascii?Q?ZaEpYhIPdaHV/5qhU/HcanhNm96lhZglawIe4krE1e0QVyNXfvXgsC6SbZyU?=
- =?us-ascii?Q?fbwOXq8Falcwf77PCzLaS7RsgR1WuNRyEj3FmG2OVXMMK4/n3aaeVM1eqoWq?=
- =?us-ascii?Q?paykOVWqJcRELZvxjXEMb0dqB0TABoexzXhswid4tGboqZH1I22t7QA4oyik?=
- =?us-ascii?Q?Oskdt4w20sUVLqKgvuIYFjAAORoU6j3pZMnvsY5zelhjwmwu3NqFhNIAkp6s?=
- =?us-ascii?Q?VuXkKLO2hp0xEAAVTGEP9rPw7SdFMlWSarAxK1ygrCdwwIG0WoP9pNhFVh7J?=
- =?us-ascii?Q?NgD7jqv1V3NtOav2/BuDmo+QFk0oTMxiGBaMonVtIesIat6CViuoGNLAGYO7?=
- =?us-ascii?Q?DtKJHiF7M6JlftQeOVZhiXvbEy27DpJEhkgJYm4g7O5FiYeGXFUOSWZQOdLh?=
- =?us-ascii?Q?7n+WEnJ0jhQ6LWleB0pUADxrCDlV1aN1vmtX64CmgnbZBNLQm1gY5EHZDLWM?=
- =?us-ascii?Q?fqYHYa06JEGeDrflZF9Gk2AWbY9nNNZTvuhjaghBkYNliK0tx1f501XLtxSa?=
- =?us-ascii?Q?8m+i1QB62U8yJdc9LC8g7dAiyR5E9ADv8JLGmxega7UDuotlnsuW4O7sBdGW?=
- =?us-ascii?Q?AZyfudIiM3eib54vJM+ZR+aWr/X2ypa8x+T9abGeNJcUUH9a+tEB/X9BDU/C?=
- =?us-ascii?Q?n7TAaXaTKlgh/E0Gu0N42riVZfvPS2fluaeK0aJMwMQNUGgFPUihmqPg4Gmh?=
- =?us-ascii?Q?qC8zytUYBopUfgGd4sOUTh3ZBHZVGx0ux1aiUb1V7XeJWFMRU49yKlW5hwLa?=
- =?us-ascii?Q?Vg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	0LKI61xUzf3z8Tf28ALj+lWNDRR940UKLUDA3p5wK743v87taLc1+tUV0cqw58ipRDEoy6wuVKlqsLnw3mCIvpT76aT/CihLfEVK3f/44OWKJsUPIorZD1xGdisDgMgTMhRO4Eb5pw6+lkQQf3+H8AfTbeX0WNNNf3JtmgfPDs4/MSMa/HRGapGjYVN4SaIrJ+eh6ITq2zgBe3/xl3q7aEXUSep7GeB50aRXoTgBruVpFP8oxUV2QhZwXrbWTllAGLufYpMgDxs+Nc71Q3urrIW+Df5MOzQ8E7bIUTyzPlQJ/ckrxV/6LmKY8P5TEk0wR8cl3zKV6MrhGAJ4FXhUqJDTFMVCFXsl+//v7DPAkcFw0CdVhEUmEt2Etis+vderNx/MMt823BNY5NfXSVeM2vTEFS9t0ATPephSpcdWV5kmtvbrXPWpBtDHmKSmQuq5M07pzoK5/npHAPIPdVk22e7AuGI8Yir/FKAHpVVjb7D9xnaZpk4RwdxM0qu3e43SO+rghTXliZKqPB1FSCLBPq/P08MoolXhqXXODdER+RmVGccpaisn/32kDv0GL2a1oUuX0LfAi4JZMfbB6XArf9f2iWkx+UeJtfyWOaCUWGc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a453f20-8322-467e-8452-08de0d5cf713
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 09:10:06.7182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xl7otfd6VkW4gXaRvDHFlITZMnZEyQ7RiY7OZkcin8AajTN4QCZKxMLxQucqD19ndo+mnNntMDpgqlIAiFjQBy5iiGQQek8CHM/I4DjxFw4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7351
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510170067
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDEyMDA1MSBTYWx0ZWRfX8ywzuDrPfXV8
- R5hEPAT3/uIFWXI0IAxJ8bIx7xRxStaUePsKOQsf/HpBJzSu5+5KKyX6HT3QtaUxkuqDet8dKRx
- 2AnUK9p/wKyiCBGuNFBavty+x73ZOSLdTTdol7znsEsBOn5hIL/FxE3QKUgfeRT48ld4MZtmhM1
- JWrdwZK/j9XWMfPODSPZKBbOOv8cI2mCIFPbakeDn3XrypoM46uPSsrKmC/NvLv9+ZtJwLm+Kpn
- jC5kPhcKoaHWsJGDU+1Y7HuR7oj6yrD2Q8WAfRIJu70hqvgh1+cG7BigAU/HFRXlAujWeJBFvql
- WBLynQ/PhZyAajUbm4ZUOUXl0e57RPBX2RxKvHQ3RxuDXo28Ek4umFHC4SSNXJGYT74kKaILIju
- 5ZbuzArB952r+UUQ5etcaMGFKZKwwA==
-X-Proofpoint-GUID: GsKsLDt_OKOY-y7pSnHc97Fyrljy-6Lx
-X-Proofpoint-ORIG-GUID: GsKsLDt_OKOY-y7pSnHc97Fyrljy-6Lx
-X-Authority-Analysis: v=2.4 cv=GL0F0+NK c=1 sm=1 tr=0 ts=68f207f4 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Ikd4Dj_1AAAA:8 a=yslvDyFX3O9xw1xFRTAA:9 a=CjuIK1q_8ugA:10
- a=pnI2m26_WTs5bHz79ivh:22
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C8AB480007
-X-Stat-Signature: e9oxgy65znkyqoygegaemcmmzk1i79mk
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.19.116.181]
+X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nkcqcghw4i56iiirqomudy8u1qtpas8k
 X-Rspam-User: 
-X-HE-Tag: 1760692229-504966
-X-HE-Meta: U2FsdGVkX19crwmj+vkhpcCw4Jmf8csW44ZxQUdRpYrmVKXrNwfBkX1jRGtuVR2Bnxsi6Z0/BKC7oX7r2/jN3RDl1EZvsfJ0hzbpz9SzlN2Derq/HcAQYhXKyxKlfS7uCAr+G0FfVy5xp/+Pj591L96D5YQNdGyuLUJ2BMTCJbKp9bTlbgHhrQ/QkZ7nfUVajVTvJu5NC4YXYfQFTlQrcKgESb9/CXovFGrwMFb/Fbcn9EHcwDOOSjcfngG0C2H8i/79H3WKnxBYFJpXAZrawfkJ/ZXWLV+XLWEmu9FR3F6YNYKaS1Vdd1Jj+L3Sjg/oxZFb7wCuwMXSrlHF3n5TuGsANybaPXn43tDjURNmgSxyoTOxVcz1W5VAsXvmKajaQT8rBIwIPdtKCdOqhcWFPSe2ZojPLXMak6v8kluxDVzcJwQyMPgbwBiaByXfoxtmuDzWm0g+M1XT+2XznzS1/wjEjFugi6g6LHKlpuGXVkoB7GbmSN0IrPpsTYPXdTSWL5f20QsQna4AO6DqYzdNWdKupbv7YcV/X+xluj6TrljnckJov3/xCj6mKzkvULQ0X0oJEj3Z+wp0xWVc+yKIdHi7kivhRR+lEEcPggPZ0jdXmLl/P65wu2m2Fewv1FHYcsP1mKHWftgVTREA2u5hvpJqh3dXnngRw0GjTAWCbQUuTyGYauEUdp7ZndupI0yD2AzqubTz7tmTs9qyxqZOVPe6GxUi95nGFjnlwUNsNPVMibR1TuCChqJTzNW72HabIChRggf21Q7MJmvRN7s5CvvLJlbjn5qEna5qXBkaLPXZbS3CzV+K9tokk5HKhTBmAgXKoot5U6FDVA1GFVTm+dmRA6knmTVUBhyvjgXVyrt+tgA6vzt5KX4yfedMcFm3Uxf/SkDOZIGZbLedrRR7CQMqKd1+h2g6OcEhyB/rDbpnNx4Mds+ghIq/ps4v775wBFKz7E5BFa1XYkXFoFz
- E+Uv4G/h
- mkY8UV1MP7ptatc3RJyTNpw8v9mAjjRXgEdxRE1cGsj+VaibNLn67ZfAJr2Zv4iTSGl3tvJ4wJa5onFOBVKhEXGdRjnCxbf5eGAaGMaU8g8SVoEvkWFz2o5kdtEmvS1QZOVPukVi09SM+0H+BJ3dNHgTJcO7Q8sr/Efu67UqcPGPxdxcWiuN1CBIzl6SNNmZv+yYJI+0vmf/SsWtY95UenqLFBdjiQikjPBaYvfdpDBmZLYYilm21KHxCgWtDspR8i7LToHq6L8RqApVVRM2uEh5KHwJ71D0oS6dcQo7ZzCbyyi89WyDdp1aJ9lwX5YkWVkj57n6vb4PlOL7b7vZMEG7qxIDcIM8GX+VjBX4lo4kuQlxaIsnIvL5oHZL/873UYAX/gL0K89scAmT0KCXXGoZMJWZfzpUhBWY2te80DP8Y49kgUMjWdzzv4cfebFr/6wcJ8vIPhCnzpCQZj2dj9dIHIAUtG9xTyqlu2Pg40Vb4RqG9gieK3HSwjGnKwY/s58eQFmqa8oJh7TzdIGMCf8WW5gwhFijIje+JfMUCJ0zHDj+HbLHch/CAj4+kjwo6DlJaGoaK/NvrmBdDvU7uMbKUz99Tom/inPvvFJznR+pKtPJpWoZdsBoqID8e/BtOxP2CTK2WREcDHzgD1MWjpYZ87MPmnvMF2yiUrdNNOV7q7CDcQPNzBGW/rTQw5sCWGyKAeNWuHSZdnfkvbtxGtd88cq5KrqVbAuJbpeWIMSQJszL4az8sf0Zrg7R4gy0BgR5g/zcxcSFwK2OPYCWK2h9ZZOGVlH/yZJAjpb/nCU9+9QslLg2tKNj8qPWzxDkPFrORyAE8yb4UqKk=
+X-Rspamd-Queue-Id: 14E5840004
+X-HE-Tag: 1760692258-438805
+X-HE-Meta: U2FsdGVkX19YSqgSOUsmaesvLKEsu14ZmIrSe/ByNZx8yVT5CsWrrMhkysTAduGiyECe7eRQpJA/VafwDvUAF0W4gKZtEdKd/CVwyim6BSJOnIoT7XQKWJ/D7msBsW2nipgembSJkznA5BQ2qSr4um5otQLROcPuAKVUGoR3MwcplnmrF38meFMxz8ckMrU2muG9J2bJJehmOiSJ/oxb77Y/G1p2rIOuzcCAmZjw2ymvtBMt2QwlTG+fc77DVzzFMq3TCjz0BvEFL7ms4vBCPTUahQRQ+xuKQoNzqQirxY9h8hN2f4jmboZI/+nhfSNxWJOJ2KQz/lGwsdVlHYLVn5NXi0nF8T+saqc5p2C2Jhi7DA/kA++nXWoZ3hZo+AokWBVENDV0TF1ZzxGwfir/x3s+o6aLP0sKxwD7ToyY3Hy3g0vbhrZBbOcFwXwbFgjf04FxtJUiTsge+zJzirkJpsFa/L+7UDjAmNU9P0zq8Kc4WNpsUlJNerh75l3XnpHJwgsAkf1fSiol9bMPFftTt1CD6ianibPTMPZOXy0P+Wc6cRvanxvSlW2d0oW13LAaM6VuGNXHc2sHg2PGBK+WJp7j8nuoYD5OQrBhZenY+eCstJMqiV2w3GHba/fpsIe56bp9bX1QisP5nz4+1+qqyd3xocczkNd/mEZLqqIpjXaQKZNwQ+zU1MRZD/Q8iMxlW0leufAjyPwIWE1bn9NSyYusCAHN6wcq8THXEUEL+Mi1C8k+sDCNKw3IWz2KUHiBGb6pZiTJRA9eXXEIUQCQ5GFaHjnCtM/TFoCLjNeIYPZGBUTygTFc9tcVXlqGlFCNvJTz9k9ncRczmh+PROpiyD69GrXpk9vmtkrw+rf6AAKN6F6QDvkWkK9jDIuBcDAxKAI5hHZGj+t6ETg8rB77JwrcamYEqkpw/Ejl29oLHKIpL0F0F3+B3cFrzYEVLdTzI5fSU7tMtrpRXrEHYLl
+ 0GaP7Ufn
+ iqUnhFrviquH4rHohpeKnvCwu3WMjmKrU30sGlVIJNZLDYJ5GruHrzPxwoxYDc+Tn/Os1oYp9X/7XiLl5aViTWRZKMuHWHkTaOLFXtcIMwkOzXgPUSfa7hq+cwEs/TywEyIh09gbwKRl8IPzDuz0f/aAwFw4gsPiE7fwILC/cj1yF8NTVusQUTA86JWnPCmMDm+RiA4FWL8noI97BH/qzEoQbWjvu07k0XjZrFEb9aQHDA2njrznJysCTvM1/jROhk9qEAfYf+mUKgi2xH5YMQcrkUnyY9c+k+/xlnqnwPAFeuL/gMaLEzxahJ63U+ZLk9TaqtO0ZBOGxVXqc+gaRVkkCfYx2H00StF/o3XBw2e+eobaIBPHsnQqi8M+332/tE/BYaAzFaIQW4hezviIWjwB4lrolQlo0Fhunc77MihkZ3In0U3kYMKZS+iI/PDUHKpysyCp15qEEFsWlh01j5ZLykXOx4vXCuzDloAbVm9cpci75IKZcQSEpnk/t/BfP2g1QGjyjaPAuItklGz9P77tGYbABtELSFsksEAePw1s6hEGRcEhKoH7OZaSJQfyRGHzH+pdU6rn18zs/Z+gILxyJagX5/w9PK+xr5WSLPMkB3SglF5G3SBfVcqSfyshI1rbLVb+1oJiKUxGJJLvfibsA1OLOsMRMgjrf7PJLfyNEog8v0T4uK31mZqEeed+ZmPvZN+73IktbXa2WleSuOHOq4wpjVw6Xc3qwgpV1I06Q0mmiyydgk1wuoe/4KpFXUg3FqGvlB5TKcbLadwFBIkySqa4c0WH52jxPIcKL/tEY5GgFY/CJcEi8cl9VHPM1ki3ikanJKUC3WWLJ2UgpdvJAfMFw8VPj/ZaRAAi8S7zIbOSTINiS0DMd62tUSYWjzk7QYwMQ2QUlVZfFs+hpN2RpU8e6rLNd7WzThEhzO0CNaxCWrEq0EXUSIJs40g8tX7JUQ22TwAmSPFOgST882YVebfo+
+ GMxPBIb9
+ 4hRpAalpTD4hjRIcdndKJZ7WHDqX+OAUQkS8+vPktqxByu6zyjIw3L+t7+z+NFcFlYD28o9Be19iupVEU0wPnpshJU9e7B6N7TcSeuvnZzkbiRXi7Jv675gzJH9Y4SsQ3g/6anoBDNrpbYP8nV9M30tdYpbZIK+9O9ZrH5Kj/AncNDTT4glG7YRE2nlYxHW4W5Gfwxkpjmj79LTIq9U2cdrNcjGJa8QxkQ3bXMZnOG2u56xyFBPhU912tJ+EqNPLZ74jdohH/Omk99bpgLKnSsVQagvtRkfGq2DYfhLVg6cPI/A7gPxJcRHh38pFMpqshgKMALRQLg8Xe6S+23qBsCtT/LnmTpD8lAAOVFHbDQ4IOyDr1HzOfugx2mCnhAGzdxrOvV1Rl7ifYbv9wzUUMcBkZfsjuomVY6mMm6MKhhM2U2w0xrRJqpJxW05SBLeRC2JaAhHUIJGQXYk1YGZ7jThmO9NUKPVoSnP8600nlogLI1mzTgkoqH7WC1o0bLb8xdzsxyj37mEl2tu/l7H3TsuwDlcQfbUhcG6J2qC+9zwXNQIQ0SHeNljY5IF94V6xPa0rsE2Kq2Ih7iGC5NSfOSAgTcZkbxiUpP4Ca3FXwx1B5haE98Bcpck0JhO07L70K0vBYsss52mnQGPKJgHu80vcMThy6W37Uw9uK1sT4HUR1tTr1eqjBT1MbxPB9/I3WRxZhIYro6pR4tnDpcaVgzWmi4Se1BvARodW70MUHzhFlUrNPP3W0ourOrOm7lQ3LAkAlGD/rFIcmKX8iazT4RVOTY8USp4nUGPulUfeg6pXg1mrs0NozecXcbbBLQ8bXev1cxwMuRyF46M+dxaPUTExm719Yw/EaBvUnzANNWYl6UE+4fuSJIQvFWVXe3dACgpmvTOWMbp33DmGEu5uZDNEehqlhUrzI4WZRaCCK2FUWax0bew8yIyZM7hIfQsUDu0mIScnyYA/r2NDmxC7YMw4yf8jx
+ /RYTlN2R
+ 098kZabc4sTMMPIYYQjuUl3oNCn9Pgu1UPZRKzHZ7oP/gICAtocKXizh0cRrGNb8b3YmU7WqjMNgf7ntk94yrYZOSoy+obOfP4j5jJPz6ZitHCMGWK52uZmEdUP1qbybdGOpMTISsygX8pagIGEoljgsN1f0nc8UR4jGsYphN96U5f2OV6GrYES3yf+lz2eZG7dMU0FN891I4Hdcy9/L3ybGCxhvXN5u/bnNFRK+YmMbrJnff0n2I6RY1ABy7+8rl+q/yYwrOpGBtElExF5ZQMCyp95h3Kp8GCRc3fi/e0ano3GEn3+NdeNNdHi6SkjcZw6fYGJc0sPniDk+/O6GqSw3IxnttFEH4Bh/577Yc5xXV6xzA2CqXDcR/OAKKCCqIG0sjMXAGAfdofdQpJhT+32XsMuzqmPY5aB6qQGP19JIZ7N5/qE0DKkqkeMBh1MUpTxdLDKRMqiGwj9u1UOi1Ia9jJc0ZMNQTAdCKzSKb5JcQwBS4PjuN04/GEki0OcMMV61fk8h2Fbu8guWTHBHsefM3V014ZtTPzsxTicCI4yNxNOO1bqlo/AbU5QFmiQYxbW23k9zRTGvYAl+par3/ZdgBHvi2SqxSPH+gy3/XDZY/+OIjR5RDZR0nbn0i0+Uiylp66LcfRcvpUQpCA9x01HPBofRImwPFNIHiAsC4p6ssKGiMF+SQZGAhR88eWtxGhAr4KwjSji2Nn0cuV3VnPUiavJOG1QHlucV4bQgda84Sh2EkK/bIAskkUy/vCPyAjtBu1ccYkauq60F4IKE2DY9/K1HuQKCS85zCcihlL2uTB8LA0Vzopd+n8MrZyXJupkSDOAdBW0/b1+7L3H2QPkRyBJPiq2fGFSnWSQwoO7B3v91ll5jMZrVJhDpTb0bACW+S2dcDgWTdd78r6lkp1QYp5hTVLo/aGOYJVykyo5vFpVOz3a3PMGErsNnQCmrW0vYGowbmDFoEMxbdxMubKup6y5d6
+ PBbQ9507
+ XdfOhjN29zTcel46iMZgKCBDq8b7XkGXFJptIJIfjTheW3gd5vNE4J9Aajj/P3XNxN54KQOcOpWjuO+WLWZLZSSDk+g0xBUEICmrSB7VFL+l/Mxn6H5EI9vfoYmj6tGrldBIRIu7qvvRFHgCqeaxiIfbS80xwV2fRc3f8Jwk0Bk/f9ocUmV5hqrluurJQUR5vYkvKRCdudkQnEBSVqJ97Yy6WYryG2djuHzGR7iw8OXpTHM9Ph4Wvfv2SdB1yxzsVGjiA5XdPnyVVgqUqqNp7FvGoIO+vLxgQ19RkexH0djtXXOFBJsEIk1NuwYBs7WTUz/PyBXShtXZ2BatqpmS6NG9ilxXbTpXn6SG6tF0AoVC/tekAAA2ZA00ibVIqxyAJ0luFEuVzk0l90DbonueeUomncdSyzT1bY6fc3uydo/6ScJRJY2QgdJza6U/jBxnhX9w1NsF+u1doaKZqEuDHTyoJDZy47eVfVI3NhbtkjNmYFe5z6sSq3b69aYDx77T/pi+BQKDdJZnPBzNMYwtUxT7jcehuLhoPOocxZeJyoZ+8uiSTcFBzz+xO5pIr261vi7wV2O72WUw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,36 +165,376 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 10:06:41AM +0100, Lorenzo Stoakes wrote:
-> On Thu, Oct 16, 2025 at 09:03:27PM -0400, Zi Yan wrote:
-> > On 16 Oct 2025, at 16:59, Andrew Morton wrote:
-> >
-> > > On Thu, 16 Oct 2025 10:32:17 -0400 Zi Yan <ziy@nvidia.com> wrote:
-> > >
-> > >>> Do we want to cc stable?
-> > >>
-> > >> This only triggers a warning, so I am inclined not to.
-> > >> But some config decides to crash on kernel warnings. If anyone thinks
-> > >> it is worth ccing stable, please let me know.
-> > >
-> > > Yes please.  Kernel warnings are pretty serious and I do like to fix
-> > > them in -stable when possible.
-> > >
-> > > That means this patch will have a different routing and priority than
-> > > the other two so please split the warning fix out from the series.
-> >
-> > OK. Let me send this one and cc stable.
->
-> You've added a bunch of confusion here, now if I review the rest of this series
-> it looks like I'm reviewing it with this stale patch included.
->
-> Can you please resend the remainder of the series as a v3 so it's clear? Thanks!
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-Oh and now this entire series relies on that one landing to work :/
+[ Upstream commit 1a251f52cfdc417c84411a056bc142cbd77baef4 ]
 
-What a mess - Can't we just live with one patch from a series being stable and
-the rest not? Seems crazy otherwise.
+This just standardizes the use of MIN() and MAX() macros, with the very
+traditional semantics.  The goal is to use these for C constant
+expressions and for top-level / static initializers, and so be able to
+simplify the min()/max() macros.
 
-I guess when you resend you'll need to put explicitly in the cover letter
-'relies on patch xxxx'
+These macro names were used by various kernel code - they are very
+traditional, after all - and all such users have been fixed up, with a
+few different approaches:
+
+ - trivial duplicated macro definitions have been removed
+
+   Note that 'trivial' here means that it's obviously kernel code that
+   already included all the major kernel headers, and thus gets the new
+   generic MIN/MAX macros automatically.
+
+ - non-trivial duplicated macro definitions are guarded with #ifndef
+
+   This is the "yes, they define their own versions, but no, the include
+   situation is not entirely obvious, and maybe they don't get the
+   generic version automatically" case.
+
+ - strange use case #1
+
+   A couple of drivers decided that the way they want to describe their
+   versioning is with
+
+	#define MAJ 1
+	#define MIN 2
+	#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
+
+   which adds zero value and I just did my Alexander the Great
+   impersonation, and rewrote that pointless Gordian knot as
+
+	#define DRV_VERSION "1.2"
+
+   instead.
+
+ - strange use case #2
+
+   A couple of drivers thought that it's a good idea to have a random
+   'MIN' or 'MAX' define for a value or index into a table, rather than
+   the traditional macro that takes arguments.
+
+   These values were re-written as C enum's instead. The new
+   function-line macros only expand when followed by an open
+   parenthesis, and thus don't clash with enum use.
+
+Happily, there weren't really all that many of these cases, and a lot of
+users already had the pattern of using '#ifndef' guarding (or in one
+case just using '#undef MIN') before defining their own private version
+that does the same thing. I left such cases alone.
+
+Cc: David Laight <David.Laight@aculab.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+---
+ arch/um/drivers/mconsole_user.c               |  2 ++
+ drivers/edac/skx_common.h                     |  1 -
+ .../drm/amd/display/modules/hdcp/hdcp_ddc.c   |  2 ++
+ .../drm/amd/pm/powerplay/hwmgr/ppevvmath.h    | 14 +++++++----
+ drivers/gpu/drm/radeon/evergreen_cs.c         |  2 ++
+ drivers/hwmon/adt7475.c                       | 24 +++++++++----------
+ drivers/media/dvb-frontends/stv0367_priv.h    |  3 +++
+ drivers/net/fjes/fjes_main.c                  |  4 +---
+ drivers/nfc/pn544/i2c.c                       |  2 --
+ drivers/platform/x86/sony-laptop.c            |  1 -
+ drivers/scsi/isci/init.c                      |  6 +----
+ .../pci/hive_isp_css_include/math_support.h   |  5 ----
+ include/linux/minmax.h                        |  2 ++
+ kernel/trace/preemptirq_delay_test.c          |  2 --
+ lib/btree.c                                   |  1 -
+ lib/decompress_unlzma.c                       |  2 ++
+ lib/zstd/zstd_internal.h                      |  2 --
+ mm/zsmalloc.c                                 |  1 -
+ 18 files changed, 37 insertions(+), 39 deletions(-)
+
+diff --git a/arch/um/drivers/mconsole_user.c b/arch/um/drivers/mconsole_user.c
+index e24298a734be..a04cd13c6315 100644
+--- a/arch/um/drivers/mconsole_user.c
++++ b/arch/um/drivers/mconsole_user.c
+@@ -71,7 +71,9 @@ static struct mconsole_command *mconsole_parse(struct mc_request *req)
+ 	return NULL;
+ }
+ 
++#ifndef MIN
+ #define MIN(a,b) ((a)<(b) ? (a):(b))
++#endif
+ 
+ #define STRINGX(x) #x
+ #define STRING(x) STRINGX(x)
+diff --git a/drivers/edac/skx_common.h b/drivers/edac/skx_common.h
+index b93c33ac8e60..5adba76c3f4d 100644
+--- a/drivers/edac/skx_common.h
++++ b/drivers/edac/skx_common.h
+@@ -36,7 +36,6 @@
+ #define I10NM_NUM_CHANNELS	2
+ #define I10NM_NUM_DIMMS		2
+ 
+-#define MAX(a, b)	((a) > (b) ? (a) : (b))
+ #define NUM_IMC		MAX(SKX_NUM_IMC, I10NM_NUM_IMC)
+ #define NUM_CHANNELS	MAX(SKX_NUM_CHANNELS, I10NM_NUM_CHANNELS)
+ #define NUM_DIMMS	MAX(SKX_NUM_DIMMS, I10NM_NUM_DIMMS)
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+index 1b2df97226a3..40286e8dd4e1 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
+@@ -25,7 +25,9 @@
+ 
+ #include "hdcp.h"
+ 
++#ifndef MIN
+ #define MIN(a, b) ((a) < (b) ? (a) : (b))
++#endif
+ #define HDCP_I2C_ADDR 0x3a	/* 0x74 >> 1*/
+ #define KSV_READ_SIZE 0xf	/* 0x6803b - 0x6802c */
+ #define HDCP_MAX_AUX_TRANSACTION_SIZE 16
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
+index 8f50a038396c..96b03a342f38 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppevvmath.h
+@@ -22,12 +22,18 @@
+  */
+ #include <asm/div64.h>
+ 
+-#define SHIFT_AMOUNT 16 /* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++enum ppevvmath_constants {
++	/* We multiply all original integers with 2^SHIFT_AMOUNT to get the fInt representation */
++	SHIFT_AMOUNT	= 16,
+ 
+-#define PRECISION 5 /* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	/* Change this value to change the number of decimal places in the final output - 5 is a good default */
++	PRECISION	=  5,
+ 
+-#define SHIFTED_2 (2 << SHIFT_AMOUNT)
+-#define MAX (1 << (SHIFT_AMOUNT - 1)) - 1 /* 32767 - Might change in the future */
++	SHIFTED_2	= (2 << SHIFT_AMOUNT),
++
++	/* 32767 - Might change in the future */
++	MAX		= (1 << (SHIFT_AMOUNT - 1)) - 1,
++};
+ 
+ /* -------------------------------------------------------------------------------
+  * NEW TYPE - fINT
+diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
+index 468efa5ac8fc..3ce87e5f90f7 100644
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -32,8 +32,10 @@
+ #include "evergreen_reg_safe.h"
+ #include "cayman_reg_safe.h"
+ 
++#ifndef MIN
+ #define MAX(a,b)                   (((a)>(b))?(a):(b))
+ #define MIN(a,b)                   (((a)<(b))?(a):(b))
++#endif
+ 
+ #define REG_SAFE_BM_SIZE ARRAY_SIZE(evergreen_reg_safe_bm)
+ 
+diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
+index b4c0f01f52c4..1e0678eb0077 100644
+--- a/drivers/hwmon/adt7475.c
++++ b/drivers/hwmon/adt7475.c
+@@ -23,23 +23,23 @@
+ #include <linux/util_macros.h>
+ 
+ /* Indexes for the sysfs hooks */
+-
+-#define INPUT		0
+-#define MIN		1
+-#define MAX		2
+-#define CONTROL		3
+-#define OFFSET		3
+-#define AUTOMIN		4
+-#define THERM		5
+-#define HYSTERSIS	6
+-
++enum adt_sysfs_id {
++	INPUT		= 0,
++	MIN		= 1,
++	MAX		= 2,
++	CONTROL		= 3,
++	OFFSET		= 3,	// Dup
++	AUTOMIN		= 4,
++	THERM		= 5,
++	HYSTERSIS	= 6,
+ /*
+  * These are unique identifiers for the sysfs functions - unlike the
+  * numbers above, these are not also indexes into an array
+  */
++	ALARM		= 9,
++	FAULT		= 10,
++};
+ 
+-#define ALARM		9
+-#define FAULT		10
+ 
+ /* 7475 Common Registers */
+ 
+diff --git a/drivers/media/dvb-frontends/stv0367_priv.h b/drivers/media/dvb-frontends/stv0367_priv.h
+index 617f605947b2..7f056d1cce82 100644
+--- a/drivers/media/dvb-frontends/stv0367_priv.h
++++ b/drivers/media/dvb-frontends/stv0367_priv.h
+@@ -25,8 +25,11 @@
+ #endif
+ 
+ /* MACRO definitions */
++#ifndef MIN
+ #define MAX(X, Y) ((X) >= (Y) ? (X) : (Y))
+ #define MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
++#endif
++
+ #define INRANGE(X, Y, Z) \
+ 	((((X) <= (Y)) && ((Y) <= (Z))) || \
+ 	(((Z) <= (Y)) && ((Y) <= (X))) ? 1 : 0)
+diff --git a/drivers/net/fjes/fjes_main.c b/drivers/net/fjes/fjes_main.c
+index 2a569eea4ee8..9a9ca5a8918e 100644
+--- a/drivers/net/fjes/fjes_main.c
++++ b/drivers/net/fjes/fjes_main.c
+@@ -14,9 +14,7 @@
+ #include "fjes.h"
+ #include "fjes_trace.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN)
++#define DRV_VERSION "1.2"
+ #define DRV_NAME	"fjes"
+ char fjes_driver_name[] = DRV_NAME;
+ char fjes_driver_version[] = DRV_VERSION;
+diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
+index 4ac8cb262559..b9a58a424933 100644
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -126,8 +126,6 @@ struct pn544_i2c_fw_secure_blob {
+ #define PN544_FW_CMD_RESULT_COMMAND_REJECTED 0xE0
+ #define PN544_FW_CMD_RESULT_CHUNK_ERROR 0xE6
+ 
+-#define MIN(X, Y) ((X) < (Y) ? (X) : (Y))
+-
+ #define PN544_FW_WRITE_BUFFER_MAX_LEN 0x9f7
+ #define PN544_FW_I2C_MAX_PAYLOAD PN544_HCI_I2C_LLC_MAX_SIZE
+ #define PN544_FW_I2C_WRITE_FRAME_HEADER_LEN 8
+diff --git a/drivers/platform/x86/sony-laptop.c b/drivers/platform/x86/sony-laptop.c
+index f070e4eb74f4..a66a2ee3a9ed 100644
+--- a/drivers/platform/x86/sony-laptop.c
++++ b/drivers/platform/x86/sony-laptop.c
+@@ -757,7 +757,6 @@ static union acpi_object *__call_snc_method(acpi_handle handle, char *method,
+ 	return result;
+ }
+ 
+-#define MIN(a, b)	(a > b ? b : a)
+ static int sony_nc_buffer_call(acpi_handle handle, char *name, u64 *value,
+ 		void *buffer, size_t buflen)
+ {
+diff --git a/drivers/scsi/isci/init.c b/drivers/scsi/isci/init.c
+index 9d7cc62ace2e..8c7594720ef3 100644
+--- a/drivers/scsi/isci/init.c
++++ b/drivers/scsi/isci/init.c
+@@ -65,11 +65,7 @@
+ #include "task.h"
+ #include "probe_roms.h"
+ 
+-#define MAJ 1
+-#define MIN 2
+-#define BUILD 0
+-#define DRV_VERSION __stringify(MAJ) "." __stringify(MIN) "." \
+-	__stringify(BUILD)
++#define DRV_VERSION "1.2.0"
+ 
+ MODULE_VERSION(DRV_VERSION);
+ 
+diff --git a/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h b/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
+index a444ec14ff9d..1c17a87a8572 100644
+--- a/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
++++ b/drivers/staging/media/atomisp/pci/hive_isp_css_include/math_support.h
+@@ -31,11 +31,6 @@
+ /* A => B */
+ #define IMPLIES(a, b)        (!(a) || (b))
+ 
+-/* for preprocessor and array sizing use MIN and MAX
+-   otherwise use min and max */
+-#define MAX(a, b)            (((a) > (b)) ? (a) : (b))
+-#define MIN(a, b)            (((a) < (b)) ? (a) : (b))
+-
+ #define ROUND_DIV(a, b)      (((b) != 0) ? ((a) + ((b) >> 1)) / (b) : 0)
+ #define CEIL_DIV(a, b)       (((b) != 0) ? ((a) + (b) - 1) / (b) : 0)
+ #define CEIL_MUL(a, b)       (CEIL_DIV(a, b) * (b))
+diff --git a/include/linux/minmax.h b/include/linux/minmax.h
+index 9c2848abc804..fc384714da45 100644
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -277,6 +277,8 @@ static inline bool in_range32(u32 val, u32 start, u32 len)
+  * Use these carefully: no type checking, and uses the arguments
+  * multiple times. Use for obvious constants only.
+  */
++#define MIN(a,b) __cmp(min,a,b)
++#define MAX(a,b) __cmp(max,a,b)
+ #define MIN_T(type,a,b) __cmp(min,(type)(a),(type)(b))
+ #define MAX_T(type,a,b) __cmp(max,(type)(a),(type)(b))
+ 
+diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
+index 1a4f2f424996..91a3f4006ae6 100644
+--- a/kernel/trace/preemptirq_delay_test.c
++++ b/kernel/trace/preemptirq_delay_test.c
+@@ -31,8 +31,6 @@ MODULE_PARM_DESC(burst_size, "The size of a burst (default 1)");
+ 
+ static struct completion done;
+ 
+-#define MIN(x, y) ((x) < (y) ? (x) : (y))
+-
+ static void busy_wait(ulong time)
+ {
+ 	u64 start, end;
+diff --git a/lib/btree.c b/lib/btree.c
+index b4cf08a5c267..b12f99d4c45c 100644
+--- a/lib/btree.c
++++ b/lib/btree.c
+@@ -43,7 +43,6 @@
+ #include <linux/slab.h>
+ #include <linux/module.h>
+ 
+-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+ #define NODESIZE MAX(L1_CACHE_BYTES, 128)
+ 
+ struct btree_geo {
+diff --git a/lib/decompress_unlzma.c b/lib/decompress_unlzma.c
+index 1cf409ef8d04..5b9c7a1bfaf4 100644
+--- a/lib/decompress_unlzma.c
++++ b/lib/decompress_unlzma.c
+@@ -37,7 +37,9 @@
+ 
+ #include <linux/decompress/mm.h>
+ 
++#ifndef MIN
+ #define	MIN(a, b) (((a) < (b)) ? (a) : (b))
++#endif
+ 
+ static long long INIT read_int(unsigned char *ptr, int size)
+ {
+diff --git a/lib/zstd/zstd_internal.h b/lib/zstd/zstd_internal.h
+index dac753397f86..927ed4e8c11c 100644
+--- a/lib/zstd/zstd_internal.h
++++ b/lib/zstd/zstd_internal.h
+@@ -36,8 +36,6 @@
+ /*-*************************************
+ *  shared macros
+ ***************************************/
+-#define MIN(a, b) ((a) < (b) ? (a) : (b))
+-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+ #define CHECK_F(f)                       \
+ 	{                                \
+ 		size_t const errcod = f; \
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index f5f80981ac98..bd66c28afb5c 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -126,7 +126,6 @@
+ #define ISOLATED_BITS	3
+ #define MAGIC_VAL_BITS	8
+ 
+-#define MAX(a, b) ((a) >= (b) ? (a) : (b))
+ /* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
+ #define ZS_MIN_ALLOC_SIZE \
+ 	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_INDEX_BITS))
+-- 
+2.47.3
+
 
