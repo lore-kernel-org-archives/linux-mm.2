@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4828CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B077CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 09:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13B7A8E0059; Fri, 17 Oct 2025 05:06:30 -0400 (EDT)
+	id D4C5F8E005A; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0ECFE8E0016; Fri, 17 Oct 2025 05:06:30 -0400 (EDT)
+	id CFB368E0016; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF5D68E0059; Fri, 17 Oct 2025 05:06:29 -0400 (EDT)
+	id BC38C8E005A; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D773B8E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:06:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C5648842D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:06:29 +0000 (UTC)
-X-FDA: 84007025298.21.55CCA9D
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 48797A0009
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:06:27 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=GaMgLo9d;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	by kanga.kvack.org (Postfix) with ESMTP id A3FEC8E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:07:05 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 676D01605CA
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:05 +0000 (UTC)
+X-FDA: 84007026810.23.5B57EA0
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3C37EA0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:07:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ll54v3tK;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760691987;
+	s=arc-20220608; t=1760692023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LF9YnUdrpKxMSkc+LEc4zqlPhsgbROXsY4bZTz/lajY=;
-	b=FxgpYF6Lnq+9azsUCcHgszJWxV4xPF0+KpkQ/GNlye7jDWVnnGhfhWJP3ofnMQej/93KLr
-	Cfx/8oxmqSnDAC5crcjh0hPVcNqP4Jf9WBjXCJar1JAgpmPKLzLhNfHJ83otGeyj7k5dqz
-	cJC6s6Kbqe4qMmy5CI/af0FpZiU9YGk=
+	bh=QGaAvozmIqIzV143yBTS5nQtsGF8X9DZFIMkdv4YYLs=;
+	b=PUc8XkjNJ2xlmYeKxbNHhLvEAfbuQCjDPGd8K5gw73l4ByYL9EmmmDbgeQ6jt0gQGMxEW0
+	FMT2dMIg2WAIAWS2a/O4wiM84z5E2rJPcV3Xk0qoWeZueDnJ4WcB/RZX4DLwGHYulAkxLV
+	rLCtfMVrF3Vl2/bmKU685TcdJEWBppQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=GaMgLo9d;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 52.13.214.179 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
+	imf15.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Ll54v3tK;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=378230090=farbere@amazon.com" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=378230090=farbere@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760691987; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760692023; a=rsa-sha256;
 	cv=none;
-	b=ofdDyUTCXNlWdfYlTWTs3LHovV3z1mrAkEFUkguIug+Izx4QI5hW4dMG7VvNSU57JHPoVi
-	JAO1V40hStyOA7FXdn1dYDZXt1DAwGm52bZ5bdfiS6AqHEyI7yG6IziBDO7bsD+Cgqg1JE
-	nJApr3ZYFhwirvS+cHg5x+KX9hwy6IM=
+	b=V45TskAM9zXzX13+TlsMYv0o0CciKeslz5Uk0zo9PtDmYcf2/nrrLJLE8XLZ4sIkNmPerT
+	KmAfo6XbQXW8/kyI4YTXDHJmWPMFnEhrvELaUIEw6OgcJTEhR0MRfpS1H6sReAaLkrrniz
+	L7wRjVIk/OiRU0aHRTCVEzdbu5L9QaQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760691987; x=1792227987;
+  t=1760692023; x=1792228023;
   h=from:to:subject:date:message-id:in-reply-to:references:
    mime-version:content-transfer-encoding;
-  bh=LF9YnUdrpKxMSkc+LEc4zqlPhsgbROXsY4bZTz/lajY=;
-  b=GaMgLo9dfLYH/j3Zun7L1RjrT1/OkT31tp+/CcPtPXt0qbsE9aKNV1eq
-   SxPQMdPTuz/PbqWDh3th5oQIapdnre9Bz9U9+AXbNRSDxPxceXxrzJGBJ
-   JEwG4OKASlg1+9ryP4zudhuFYYnvN2gK1BB2q83XFyM2r4TH6bni8BBtx
-   Ts+5xC1zk9q86bj1vzSgZC8ttwRMIps5VI2KtbtaL9uw7W1ZsmtVZJFXa
-   0f9eFfjzQF9m/Z1C1X68MYRkcx8SVo8Up9DUGw6ksWpDaXqhvgGVOmjLM
-   /NbCHpMSEmcyP6QEmRxrctxGma4eUIaYNNu8R78N3+zLr7KPhL8nGqlsB
-   w==;
-X-CSE-ConnectionGUID: 5Ag1YOJ9QUe3HoWK3ykUZw==
-X-CSE-MsgGUID: SCV5PFljR42xA+XpgG/CcA==
+  bh=QGaAvozmIqIzV143yBTS5nQtsGF8X9DZFIMkdv4YYLs=;
+  b=Ll54v3tKecSVVbFL3dlUcXLtbPVSuSwJp+ROzoW9s3i3bjG6nycIZSv4
+   hwRg5hydN29hc2p9xMIMBXo9t0qEvvV4qR0MHCjewR0d+rBdp8wB8gyiG
+   N0nTYGQYwV4xOhahMQBAMJ4RuXvsxIwumPBTTar+DDYPdCivrqlLoacd0
+   jlmRtSIAVvBC69wKMhGJ9b6+Blip8WtjJzLhP9xTd38ReA1SkMF/gy68o
+   UmpjjVceHp4h+50eNBcZfmUftTZI0NPt2DXLMEe1x1d7URtPfvGxscnw5
+   7rKcGQsROaoofrgZ6s5TmBLLOAFActkfJ1Mc0loVATBLk0NtM9ofa948C
+   Q==;
+X-CSE-ConnectionGUID: zWrYvXLbQjiOYymOyGvz5A==
+X-CSE-MsgGUID: 76/3AHtyRme5brVPZGOntA==
 X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
-   d="scan'208";a="5072643"
+   d="scan'208";a="4877962"
 Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:06:24 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:13608]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.150:2525] with esmtp (Farcaster)
- id c710c685-0588-4c81-b341-b34011b0873c; Fri, 17 Oct 2025 09:06:24 +0000 (UTC)
-X-Farcaster-Flow-ID: c710c685-0588-4c81-b341-b34011b0873c
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:07:02 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:7581]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.167:2525] with esmtp (Farcaster)
+ id c402a081-eaf9-4041-86d8-805021e16bf5; Fri, 17 Oct 2025 09:07:01 +0000 (UTC)
+X-Farcaster-Flow-ID: c402a081-eaf9-4041-86d8-805021e16bf5
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:06:23 +0000
+ Fri, 17 Oct 2025 09:07:01 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:06:09 +0000
+ 09:06:46 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
@@ -129,9 +129,9 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
 	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
 	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
 	<tipc-discussion@lists.sourceforge.net>
-Subject: [PATCH v2 03/27 5.10.y] minmax: sanity check constant bounds when clamping
-Date: Fri, 17 Oct 2025 09:04:55 +0000
-Message-ID: <20251017090519.46992-4-farbere@amazon.com>
+Subject: [PATCH v2 04/27 5.10.y] minmax: clamp more efficiently by avoiding extra comparison
+Date: Fri, 17 Oct 2025 09:04:56 +0000
+Message-ID: <20251017090519.46992-5-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
 References: <20251017090519.46992-1-farbere@amazon.com>
@@ -139,24 +139,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [172.19.116.181]
-X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
+X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: qb9yopn19woxbpztgr1oxx5u86k4eyoa
-X-Rspamd-Queue-Id: 48797A0009
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3C37EA0016
+X-Stat-Signature: jpujjtt4uffjbmnj95yrici6du496aox
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760691987-785869
-X-HE-Meta: U2FsdGVkX18HDGtttW3YiHi45MvpR8XucrrHU6qOV6MY0Muo9TZcCG4q8d9JHjjtmt63IkLSAVzsU35B1ukFrtksgbYMSfqczqAiq62KNuSMDCwfdwZZ5RPO7Evc2za/HZk+ViSCsJ3snuXSNSb5j3BJyebSVV2D+DDclDxFmWsRbOIEIlBUjx7lm6C7CdWDvWgWQzAxF41MpmBWmsqX/n71B8TCBP5ydybkjvNzYQRC00r7sdk28akDFTAkZByetRD3oU0t1AZkAqEyet6X9T2WtdSZhIGQjInjAirBUJm5J0/cjZ+RN+x6jukYDxDnu9IWjqtCmHLaN0tzmlhqGyQTExSIxb6ttpOTQdYzGq/6aKsX9Mn+McSEnzcag8uiozWcIVmpGnW89+3t94aBFi4WfGyJ8bKjnRdVU9SZmkpgvysPn4wXuVFSovyN7LQOb+un3jLKDjlHMjLIrmldep6hKnO3zMFNo6U7mXkVH2c8Qj3yGhk+Q0bISwZlTcdR7wuzGQcWDI2hQelSSSeeVnOohnLihfldW0+BrNaDS3S2t1GjD+UmRbRClscZ42SoANQybyEo0LZk8e/NAFGawZT9tRENjFS6kHDTO3QEysLNCs5Fjy2QVXb5qvOQ952NcBNN3Yk7p/UD4dL1FwN4HAzge8HQsYdpmdUAKjMUkjF0wJ50DCmLD+LI5dVAK93GMGbZ+3nPAIbUO1V7U635FlmoNKuqm4KRMx955fLAQHPEo5VnkAKnevXSSwVUQTKcwytcPVyMEO8iY145i1aoxZHIvCUgFsbuFbqcGcNcpB9rg4vsP40J0erscDlElNVBB+n3r5TKUhRfYOVSd6/L9nYw8lGyvAmD/trL+9Ns5qHQsrhReDXsD4fr8qXni3WYEsY2M+kQCO1LrOZV92TbxCvDpTEHWOELxg4NpnwIIF2g7RqYkilIugjE1LqteILEBprkDe61rWMCft1OOvU
- eof+i+UX
- 9q6WiOiIWnD1gFlQNUwxRs8BLfz/XSIhfiZoIamfMXMWbKY0AwgNvsoYwLoa/HJwe5aiIahNoSiNRuJExDurVwOKhYDmm4m37Srwaz5MsUE33qhWWNw1lMicasrUtVKUlpJ9NxK36ADzXegY6j6nkLHGDDyE6C4Re7gvPktM3oAQQg3Hx9FpnBG1TeUP7e0B+FcesET6OaC++3Gz8XS8glftdWMsy6koAhY5o/Nm9Tztuzi2YY9IcdQ07dvJ+C7594VKv3/PjBMG3WXhjoyi8sfsFxnhdcy2KL5lGeYKTSGKLHkME878XtbUH7d3xNwjKp/5O/D7PzuGMybcJMSnqVKthiIFfJQ8D9Jk78Z1+MopEQ2QHjyTapSeZMQX2u+nAoUEMtAfoPjgKRlJ5g+ALWQRuUpVqsf+FjHTSqcGxSH/y2ke6dap9xNdRdM5SM0jCsuEcdz66VakvdS9niZS/W5UNpSYX5ZO7G/DuyoT2DhMHSgFm+QL4t4LelXxcVqueKMILDncsUPPPifh9Cggf+DwTkeRpKCDs5aE9PDdD4YOSW6cmdjK99A/8Gbl7XvqE47wce67930XC0vznIq8LIUFd/Lii5ZkO6PE5QhZkqVcjjDsZf8SodSXtkf/jLYkMYnItU/1MvcAVuab1oZCmoevH090FMnqGotVhG0tpzzpRuB5Ahh7Pt4BC2GKp0Nb4HTJi/4isrZUezKV9wQ2OQIbpQ/7VawTZzKaZOxT9iIEaodEZQeTxYd/EQIBCuYc+kTy4K69J7jzRJ/fdNuKrRypKcS44rmNJWgurElZk6J8Guaa5MKAqVds0Jo7CCGcZL3CdwgMbrVooGfAlOk4CJXYZKtOXgOiwL/2bjwjy08WCP4YIyJvX/qwX1F6V3qdrOc5xOWBT5AWEfucdI9nA6MpjH9xTVxRc7JFLV0W1ZVu7cog6xichl8R2RSf6V/n0PXZaEDdM2nUvGXrxECAiZx0XKfow
- BOzeCAw2
- eomwBO8+RVut9AjpE+XATg7Y0i9kGlGtDvpDbnEH5v9+cEYj6s55554ca2LJyKGXqVHTIXGKZ+nJkFIAspHp8GjCfW3QjC+aT5HSme1JsfRdoQ+KaQrAvPgEJcqACdmijZoljJcWwlRiXfPtTutz722zr2LntnyOFudhn8A/6txUCJUhBZxpPUc/ih1gnDjvh3ptJtjOMT85GKvEmvrfJCjk7qwwVnT9kHQjJrnN1cDqVO7NRokdZ5yVChie0V2ZPL3zJJPSd13+nb40dBJIAMBVJR7ZRe/fkqbGLnuNXvG+Fu1yyUGdaJMRiDKvcpw1OXw+3CZKhvLwVeg2D5pbN7xUK4hy+XM+exS9WogvhdXUQFZ8ZefxnYNB83vAp3nM4u2IL2oPxJRPFlnNQldQFAt+hz1FB0T7dPiVQ0UACQZ05ML2EyjwNCLRzXLmLP71YcBHbZ1COmJt7mAGIG7AqnQ2d0oeHNeIqs/IAU/g39lVD84niCwSwywXgYtzQi5vRt5P10LLV8r8+YEB9ypUUiUlstabxDqVqiPyYkTU+cxd9JSorvsRaLwsRqysPU4T4LhioT+rzc4AkbXKFVTrZCWoL1nDezkj5fPg9n4H7nV0QNjm/tImpjSAZJlFK+clLy7WjKP02jHJjhIHDDDPQbxgoaGjFHSIlInF6CyZq42kDcxtKlBQ2/9aBtaz2c8nqvpLIj52c1Dnsp+W/lIUx45uhUKEFh2RTZA2zxkejuJVNnGEig0N/lm/QsLYRdh+WEgm9mlunzVxkNulfxkcLLdGr4Dgqqyke5krXgo/doWAPgoT8LhSleV1f4N+TA2qC/MtKFd+G2vdz3maP1M7cuqOzht84mBJ3sjOnNQfm57Cc+wR0cBKpavJDoRCQXF2gqGollUDyrihB81vE/jWEX8TP9r2gBB8vBUSv9mpqisLPwVFGc9JTj01wlaMK774hQ20lQAGSo3kUYLHTnRUh8GSxMcwR
- Rq7TTflf
- UBnUKzs1yZ3otQlFS/rLmAh2nxCmhMxeN8JWQqOVdCPZtIb5asVHiqfydU3XT4thUFFIDhquaOCw/AS1gR2WOFaZpNPY+wrjVJYGh3S/s8AqLvz/QN5bku3IRoZ5No+gqf/GzHLgf9R8lNPcS94Hcgo4YFJ9d9Fn0DRP7Hpfexa9BRBN1xHRfqYeaX0d5fw/KXDDKT6AtlGas33vZcaYrEZLsbLxFLSPceNz6LrlhMumJS9PYEmPLQH2W6H3UD2ZPxgyopxAKgwyEglhv2v8YZ/D3ZWybiRgis0ed48nb2lW8janmKenIbpNSyF2xA9h9NeCxZ9pEB5nC8H0csoz/wTeB+FsAHiTrb3QtQmLY3qk5kRvseT3eVIMkWjoUV8tEZqhQAFzlfn7D51cw54ho0E2iOVdv2cmehXpYVp6t/YgyvyJrn7p+IPfiy1GAzQKoAJPRQxM67hg53DXlRWfBI3ONaPWTI0EaJH6+Ll+LQQ9aldR9bgOaiuRAzgJTdlhR7AjnYNoj4jv0nimmNKEqRt4QmHWtuzDC6HQi41ApRlleoL+4sy8+t1dD+6hygWgNbOZ2kcfiROzGhy/ftT1Z31zh1txN+C5NcbPToJg6COsoNruyCIUE26/pjYULuC9ZHdyJmNvN2CnH7D0Uh77aSAmDzuOYjLOtL3T5jxAyxox0GZSIdBXpbGbONwcw+mnGojHYZAAnp4BDi5knPqi8p/2OaglM22YBKtPpWLkCKi7Tx07e2fRILl2nMkpOG24ugFp6DC784WCGFFEwFyvyqeqre66/WKi+j2Y/z3rdUmLJRhbzJ+Fq8eeBqQr9L7sCc9FaYoiEAExF/q31mcRmme2YyOun0ZNyAL1K0PmdNbAdcMR1zRn1tmw6jj5WcmPu3G7zsG+//xn6uveI0EmPv/v5J4WH5E6/7le9l5htwvpPt7QJOY6NuzHXr77gVvzULDvxI98Wx7dOee/MuzIqUYH2Gn6t
- 50oco2yN
- GWQJ11PBQOtzPO1Rac47ul5tq4dnpsIZnxMpMt98OUPhstpzb6niMA2TB2goYGIN8IxMColwqiOXb9ChsTiBtgyWdnAvYf0AoLZrOq4cYBevB/8xJe7QRo/0EHIWM7ejaWln5kDzdocSv8g9dfBS/daQoiHTKk5oFdGQdoJEs1Y1mSxgJ48JXNENuQsOetkeg22I1PaW9r9xkJqsb6EsWdyIs3nnm/8HCJnrNiN/JkCxvBR7OqzUKBbq5uD7zzfZn9OffPv3CVSYMofhPMObO1VqNCeak8ZQ5CtiYI01HwrhfSYjGT61Od3wvyqI4rtrwRkTsn8fFEkZs4pHM9pD9dvl91mn6o5WmGUgIXkY1CQ5QYlP+9B1ytZntZwfq1iTvSsT04TBb7pkwn2diiEuoVJEUXZUaAHLOhbc+1Jtsmg35EliyVGWm4Pihwl4WwpK89dfqaGo8r5kWfEIldcoM66KN28qYDqUz0s7OhT5e//0XO2kcQOVoO4pEnwzZMe+xFqvm3IpBa/llNX9hnHdXgXTdNsmwR2yJVqkkh1JUtgz2AcE6PX3+zkZQmqlHUbj2vUBeiz8NDs0gWDsQFB8w4VlwvLKf8zoazwnOkczKZUrkrVg4tzzXtJiC5NrOuIN6rQ+kQsxfp4xucABBMZoA3BdtE+DLnJcfI5EtlqW9/UmOHj9gm7w/24aJdM3QQfxpO/r3DWwspj0umO3Jl1m451oL9p21qq0eWANo11zJUeKyyNVg2yXJpjmay/kRA+DrrWuchgOWabcwnZiFT6C4DMqLQjdIzTLlhDnSVBsdbyt2zSK/xyPQUcB2nNNsss1CLsj32En1lf1Zx7HK2JOr2By0lgrsgs5RhpgZSssiJgea7kgFqz4LLibOWNFylZeniVNnhGad6VykDjX6+dfwdGLzTm1uNbiRFXDGcLg0UC1jaZEnhwyD2fdrGzzxBq5NVUL23haNIFBGMLQUa01KzEUStnU5
- 0Hikj3K/
- joZkftrn8BbINMgHAjVXFgMynE+3vyThypHxnwPuOeJtvDg8lEd+X4UYoviNahFSbVLIpzhNIAi1j6X70jpp496Agk5+98UF8Q2oSbHojLgRDGmg2
+X-HE-Tag: 1760692023-138960
+X-HE-Meta: U2FsdGVkX1+1rNL+ORPmku3X3iFXcR365rl+M8/m1e0e3Jbf2fGAJh7BP4jsFEE1l7vjR8wXVe/p6UnvKUwlLiWhTKANS3GBzExowJTyj7FTqgaeZMsA554sHcLDKafXYvFrkkDbedOhDetFpmrRgmMT7Ieq6hqG8l5xvDqr48C08qxl3lc3C77aHHNoorygfKIRZcTVuhparMrJnEFw8bAoz6sa7WHxAojdaXVV0RK30hZcnGbAdwKK6chZAhhTCQRyGxnoqI6zpR60Ht/Xf1Glho56qQPxcOnQgcEzwh9jSFedf8WyRh6mO8JTt4nOWYIFdSlJsi9GhSgKkJYLWrFMMP7IKFXzenBXHsYknBwJiJ4gUoNADKRM0qOTNrNzdoERflMT3d3Q0qHm/lESUhgyGPSFM7sZhfrzf4pDTUjEy7HMf3G8zZR/UqBWzgIWupYR6U/6DSBW2wWIQw3ujVTGnrlgRhEZu16mCn8xHNSWuLcrnGoRzOiS8EKE5xJ1OUiNKek3Bt6An/0FqE1GoSXKaHy48vL/RKozQ6JU91k2bh6QU+IfjvBOqlQB8+PW1ONWPj7k6/JwsA5qnjiJgMHl4PMaWECvYC1xXpxHysVdg5LiyckzofQ97noFWtniHrM8vYlhlEYZfDfYtjvOBu1naSOQf4xbe/7P45Q7qU35wFM5w8Z76tdxM1CegWlzZ0vk1ENqkvq3VCqJovV3uJ7tlTFQ/Z/4HYfdWEZLvEr4b0ZBfekpNkDVLqihX6ecyouA+PHBA0eqHsl1DvdRoiDjGdrLiSD9rkKAnIg7z81JnZPZcN0BTKRk4wVnQDD0LSK2vyBzeLCjTHC+Yi+289jkgiqTk2cxoanmm/RPFyNyHix6Am6soLadbTyI2OQyNEcoMeGguddZUz8CSYMio9Gdxh4rk266C+ZOMVlr+Orc/NzjXz6ceuXltSFi3gMzn6g6KakkYHk9Qh01IMF
+ McWVoQck
+ ymUxEbDaO+mmQz0mPHubmISKav1v4eppBwEHIcw1wRn8hjl3MZ3OM0JC4b4qbAgGrKNNk5DUCoxBZB5e0lBRVN4qgTRCDGmiGd/LjVWoAR7TEut7nUH3Fqrnsop6Z7j82TrQw0VIbclgSoMGq25D/Ti86fmPtnZpOpaKSULCh9hmjRiKWiTKuHbj3mEcl+AUFOMomdadN3Nz4JWir9VNST1HLLZ//W6XTT+wPzeqTO76GCdN/rxJjZutkbCDlFC6PC6/EkE26nrjlG2J4R0lF9jioYvF67/EwSaX8jgxiTpEbI9sfS07AzI98vCGg/8zZ922ApTVfNwRJ9G2olSzMFJbJH6AjAo2iSEFf59FHst42jVnHSbU5bXNueO75G6ZRJHT3l3FZNL6qu9rUBkvjJcgFemv1EtQzIzpPN+IKc3B8g40bqMhjhxbevpxvNDk7KmCRoU7hDZoWQehjljTJsNrE5lV5XgbSANE/lMg05gT0reqrYZMmX0ihhWp3U116ct5RFiuwZWFwSItoij+bdSzqcxLy9SgvrHFr0NetsGHkAlfeiu4W/xoD8O1wugkCSYyF2vsvT6cewUIU50YQj6Lijo0ymJ7nh78rZX7u8FbzQzkPjeDC2FKpolV1geFocf8dkyiNJ0XLa5Qb5Lp7DALD1QhGy+2Amjmd8nL4wltiRm+TPlU7G3yXWbMi9MweIYe3v7QHUtPN18fx7bCaFh1k4dptrL4ZTpxdvhitalH362oAvevyZzkPnJaM/iM5LyFtO46R1/RXyOZDztet+Clw4Axhk/cuEeLSbo64MFRGKklcrZfD+PP9cye4o818fRtqNsb3u8VJFpOa2aPalfdmWIJGRghLiA9HlApRX+5QKJmrCUry68XMnO7rVLuyJBzEothRAhpaOSSvyZJ0bmE/oBzuyhAWu4b7kbdGL1Z2OKcnelYjCJiZOKhHMfiRJiSkqL9OjlwtbdmaYsN+niSMEVuP
+ RiJhrOiJ
+ rNxcV+RgRmvL3t2V4guvtn20OcL1TOuxufACHVQkzatCx7DUno2EjPxc+W9DzHHH1mIqCkafxo0p04nClmk7WYfuu4CuRllYmY90XtA0lIFZ6tLpow7mlTbzfsbkNphn7tAyD8crtqUcYgOdZln+KUqhZKtgwY4TuD1jiZvzZ5lJFbyC9vUN+GPMlsbBT/Eoqoy4o/ThL25kbP3EUrokQGqtWI/VOMfFqbGv26NoQZ2KKi03lj42IPWRQr3BSzCA7jWx1D3PRnZMDivb8SmVCeGvNY0UPy551rc563PRmPkbX3uXX9PFiN3QKtbBZ6AzRH28umAzidJvOVcGMDwZSBWkC9p1wCM/42G45HwQWFSpZNagKRBnlsb0xK/XyKpG0CHQmTimVQ0C3424/l1C1sDlJH6wtjsp+jsS8dNnKUw1OfE5VcJRqDtv137pnga76psKv+rOk9YheEQuVnyAKzB4dK4nLUaJ3N4u5BtT5kXZot2Iu/gdfdj/+yjtUhdaNhSnpz2D+VvBHJTLhVzTHLaM+qoKBB6mcMy/iBE7h2BueFLTMCnwxFJzEX5HzGY+VNJvhAPHvxIemO48AqPiX1K+B19c7juk58wy3EGHiGX/lDqRQgnKS7Y5vZcfO6BPFPB30kdzr+a+J1ovwnYE1jBJ5hiWgiUmr8BzlboNLMnbGyX37lraWw9orO6T4a+OiAL3a2+bFayDxRVlL98xpeK0J+aCszF02RCsQt56FxWE+KCO6EmiBJWzS2qRhJ9NlnNCQxD+7HGNd7ZeIzjBLj8A+1RJWAJfade3jSedORldqIt2og3uoX4P9Mn0mcjzBVGlSt2+ozdrhNBUgJlV4IoFU4eUMQ4KJ68msyxEccR16h1T0pNU0uu7JCxsW9/1C7q3zCV2rCd85TwLtILOREKure85r0ISh0Lt7AbtcSRq6ttr8G+3tEaiFyk8C60MiqZprI88GB3Mdd6swCbyiuHB8yp/A
+ qu+b2ntT
+ K0GiWOY5YsBKfohd0A9Z0OXB5hfVnKdcDHK9Uy5ORdM5XtcTF1GF0XO3w2ZJ7iCi0ROcdtzJdEfyGnuqqzhL9dS766PYoCP5D2ZZQ+zVepJJ1g1Gwh/vqLQzHv4Z7zBnHDNiO5mcdXhB9nx+Q9IWHSI/6Pwu3rRiPLpgFeZ4XQrjeBGEL7DJKeC4YWUQrPJBf6iQtUCZBxptrI83ssOoI3GhbBr/WPqReQpJN6OeHkzYfZbwdTnZw5UmX6udnDrAt0wA+aK4XaqnwbF3WoK9v6lzoYMPArcEV1JrpeuoeRK4k5xDCEq6tUF33nZw4LP18vxFW83Jc1XnAz7Jx4mVBBoH429LFZmDbLBlankh99P2aAe/mnkf3E5RR2Gj8KNUeqNKQzFX0umsjJcV1QZt8Miv+PwYZRAtzfx5WBm40OVDeS0RxySL5uLZy0vku0ZJs1wx4x9u/GyboU7st5K03cQF7YoWwWHsH8TBrK6OEjbnJuHPICTSHn8ycin4WFeSYiVJlP4FaVu0n7M5GWf/4ldv0PRDxSFyEPan3UgJv9hYuk5aGQ7uePyr4b1xbbDXhVk1zGx7UlEZLZDFuzTPBMPcBRon8eYX9yf2eewzsxQRRU6ro//NAxC8QsxUAifffKU0I0S++O99jlcRNGkm5mtZlUW6t4/hMJioLlR6Ua7pgIog58fQZidV2pomi0cE051HcLKykFUdUt0lxzRP4W9IIPlKnp1RhiBHSBOz5N3n7IXocWGJL5gKrBq4omkM4sliLtntWIXpFdfvMXlxmoZAWUKoMvrdH/DiNpGN9OlFcePQv6FqK+cbtJ9Te/yKwXbopmldJhN+gi+H0Yw82b76P7V9b0h375BRHmAq2syolUMX5koLSeSh5302bZzJyljPhiFMKJWLxjfVAFdTg84IoQKWMmoACZIOG6Ci5RxW8/d9oZd0U9SoBfmdKCMlnscPMNm4VgPI1zKSYbHmbvHj7wSlC
+ YkfOQxX5
+ aies3YYmD5WB4yF+8NZ5CMIdkb8aMGX92GiIuJrD9s6apMs6MCow7VHQ9+cPtoXJgMy4pX9ec1mfGDHS8F8lfhvijkkZvo5GYo15N9a17icn53fjcOrP5OsVGEWBBESYqHIjSLTWeG18emRxk1fgVlSwghwr0Mu9E26U5GEJJLU+JbQiPt8UUDfRSXkM9qixV7gdl4R29XPKozOmFl3HnF3OfdBVI/FiLmYkUr8R/W0YxpHwah6r4nf5DiS2+4bLu2zyfeyCJZuCbtVQadPotpccOcFkIRNS4kGzMLM7oSUu21qfme+vikRbuY6tpuywJkh/uXYURIjZCdiNxjx1QSMaXfhrcH6UOnOE4Y/mkArDk2t7MMlOg6wiJYuMgrob6/c1PLFPbpBuMDAUcAwj2VFGjyNJ+wMvSB4d1m/dLpJQUAIQAkBqIIV1LSOs2WxERRLgaRLJ20MWSn3L3R+xwlBQR0Ds5c5xglcZj83oN5oFoCX8aseMvBN6TWCYxljgEshjBWSq98o5E6eKQJgrTN6pymZZIj6bicmtTE/GiqnmoeoPI6yOeSV8lezseSnG4zvZDk7e2IIeNZaSpTDKxNocTtooL7R9wk+vsMypf2tEhAhIgTxYpRlkELMieeJwHF98ZgEHuT2ejjuYikbPy27KJ6zWAqVyChbyXtUeuUm0MTAvCIIUO5pI32eXS6vKRd7PKTDfaKRtLnhke6cntAZr9bASK2nJv2FvwMXXL1K/kmVaDTMYgrbXzslQ0NM79/elyF4HYK32WFgGnv9uLfrnebJbj0ZqDTaOpMxoxlMIutasgMkTSczGNXkrarBzk2ME+SdMF6ttkoNMvbDwCmNe6O+VmdzpJabr2WgHsRZveNEWtAVQ90ZGAYu3/WX/joSrihvIm3OOfcAS6ZevR+naWXAt9mohxdGWT8DPf94QW5NkCRYxDQMedUGa/ZKz4474LObQjWxdezGDWo3i4Ep1ROA7r
+ az9B5dTS
+ ruo497pttXiC0Wu091fcFMeqzzzGtIaCOg3YZGNs2yHaaW+JUWEhoBBlOy3GxMhOkq9jwx4N32fkxRKpb9Uud5NJIzNZKZ35p+qW3CCM+NRqhBEFl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,76 +167,182 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 
-[ Upstream commit 5efcecd9a3b18078d3398b359a84c83f549e22cf ]
+[ Upstream commit 2122e2a4efc2cd139474079e11939b6e07adfacd ]
 
-The clamp family of functions only makes sense if hi>=lo.  If hi and lo
-are compile-time constants, then raise a build error.  Doing so has
-already caught buggy code.  This also introduces the infrastructure to
-improve the clamping function in subsequent commits.
+Currently the clamp algorithm does:
 
-[akpm@linux-foundation.org: coding-style cleanups]
-[akpm@linux-foundation.org: s@&&\@&& \@]
-Link: https://lkml.kernel.org/r/20220926133435.1333846-1-Jason@zx2c4.com
+    if (val > hi)
+        val = hi;
+    if (val < lo)
+        val = lo;
+
+But since hi > lo by definition, this can be made more efficient with:
+
+    if (val > hi)
+        val = hi;
+    else if (val < lo)
+        val = lo;
+
+So fix up the clamp and clamp_t functions to do this, adding the same
+argument checking as for min and min_t.
+
+For simple cases, code generation on x86_64 and aarch64 stay about the
+same:
+
+    before:
+            cmp     edi, edx
+            mov     eax, esi
+            cmova   edi, edx
+            cmp     edi, esi
+            cmovnb  eax, edi
+            ret
+    after:
+            cmp     edi, esi
+            mov     eax, edx
+            cmovnb  esi, edi
+            cmp     edi, edx
+            cmovb   eax, esi
+            ret
+
+    before:
+            cmp     w0, w2
+            csel    w8, w0, w2, lo
+            cmp     w8, w1
+            csel    w0, w8, w1, hi
+            ret
+    after:
+            cmp     w0, w1
+            csel    w8, w0, w1, hi
+            cmp     w0, w2
+            csel    w0, w8, w2, lo
+            ret
+
+On MIPS64, however, code generation improves, by removing arithmetic in
+the second branch:
+
+    before:
+            sltu    $3,$6,$4
+            bne     $3,$0,.L2
+            move    $2,$6
+
+            move    $2,$4
+    .L2:
+            sltu    $3,$2,$5
+            bnel    $3,$0,.L7
+            move    $2,$5
+
+    .L7:
+            jr      $31
+            nop
+    after:
+            sltu    $3,$4,$6
+            beq     $3,$0,.L13
+            move    $2,$6
+
+            sltu    $3,$4,$5
+            bne     $3,$0,.L12
+            move    $2,$4
+
+    .L13:
+            jr      $31
+            nop
+
+    .L12:
+            jr      $31
+            move    $2,$5
+
+For more complex cases with surrounding code, the effects are a bit
+more complicated. For example, consider this simplified version of
+timestamp_truncate() from fs/inode.c on x86_64:
+
+    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
+    {
+        struct super_block *sb = inode->i_sb;
+        unsigned int gran = sb->s_time_gran;
+
+        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
+        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
+            t.tv_nsec = 0;
+        return t;
+    }
+
+    before:
+            mov     r8, rdx
+            mov     rdx, rsi
+            mov     rcx, QWORD PTR [r8]
+            mov     rax, QWORD PTR [rcx+8]
+            mov     rcx, QWORD PTR [rcx+16]
+            cmp     rax, rdi
+            mov     r8, rcx
+            cmovge  rdi, rax
+            cmp     rdi, rcx
+            cmovle  r8, rdi
+            cmp     rax, r8
+            je      .L4
+            cmp     rdi, rcx
+            jge     .L4
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            mov     rax, r8
+            ret
+
+    after:
+            mov     rax, QWORD PTR [rdx]
+            mov     rdx, QWORD PTR [rax+8]
+            mov     rax, QWORD PTR [rax+16]
+            cmp     rax, rdi
+            jg      .L6
+            mov     r8, rax
+            xor     edx, edx
+    .L2:
+            mov     rax, r8
+            ret
+    .L6:
+            cmp     rdx, rdi
+            mov     r8, rdi
+            cmovge  r8, rdx
+            cmp     rax, r8
+            je      .L4
+            xor     eax, eax
+            cmp     rdx, rdi
+            cmovl   rax, rsi
+            mov     rdx, rax
+            mov     rax, r8
+            ret
+    .L4:
+            xor     edx, edx
+            jmp     .L2
+
+In this case, we actually gain a branch, unfortunately, because the
+compiler's replacement axioms no longer as cleanly apply.
+
+So all and all, this change is a bit of a mixed bag.
+
+Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Kees Cook <keescook@chromium.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/minmax.h | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ include/linux/minmax.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 1aea34b8f19b..8b092c66c5aa 100644
+index 8b092c66c5aa..abdeae409dad 100644
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -37,6 +37,28 @@
- 		__cmp(x, y, op), \
+@@ -38,7 +38,7 @@
  		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
  
-+#define __clamp(val, lo, hi)	\
-+	__cmp(__cmp(val, lo, >), hi, <)
-+
-+#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
-+		typeof(val) unique_val = (val);				\
-+		typeof(lo) unique_lo = (lo);				\
-+		typeof(hi) unique_hi = (hi);				\
-+		__clamp(unique_val, unique_lo, unique_hi); })
-+
-+#define __clamp_input_check(lo, hi)					\
-+        (BUILD_BUG_ON_ZERO(__builtin_choose_expr(			\
-+                __is_constexpr((lo) > (hi)), (lo) > (hi), false)))
-+
-+#define __careful_clamp(val, lo, hi) ({					\
-+	__clamp_input_check(lo, hi) +					\
-+	__builtin_choose_expr(__typecheck(val, lo) && __typecheck(val, hi) && \
-+			      __typecheck(hi, lo) && __is_constexpr(val) && \
-+			      __is_constexpr(lo) && __is_constexpr(hi),	\
-+		__clamp(val, lo, hi),					\
-+		__clamp_once(val, lo, hi, __UNIQUE_ID(__val),		\
-+			     __UNIQUE_ID(__lo), __UNIQUE_ID(__hi))); })
-+
- /**
-  * min - return minimum of two values of the same or compatible types
-  * @x: first value
-@@ -103,7 +125,7 @@
-  * This macro does strict typechecking of @lo/@hi to make sure they are of the
-  * same type as @val.  See the unnecessary pointer comparisons.
-  */
--#define clamp(val, lo, hi) min((typeof(val))max(val, lo), hi)
-+#define clamp(val, lo, hi) __careful_clamp(val, lo, hi)
+ #define __clamp(val, lo, hi)	\
+-	__cmp(__cmp(val, lo, >), hi, <)
++	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
  
- /*
-  * ..and if you can't take the strict
-@@ -138,7 +160,7 @@
-  * This macro does no typechecking and uses temporary variables of type
-  * @type to make all the comparisons.
-  */
--#define clamp_t(type, val, lo, hi) min_t(type, max_t(type, val, lo), hi)
-+#define clamp_t(type, val, lo, hi) __careful_clamp((type)(val), (type)(lo), (type)(hi))
- 
- /**
-  * clamp_val - return a value clamped to a given range using val's type
+ #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
+ 		typeof(val) unique_val = (val);				\
 -- 
 2.47.3
 
