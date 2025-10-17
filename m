@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1EBCCD19F
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50986CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 13:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 713888E0089; Fri, 17 Oct 2025 09:49:16 -0400 (EDT)
+	id A49508E008A; Fri, 17 Oct 2025 09:49:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C3F48E0006; Fri, 17 Oct 2025 09:49:16 -0400 (EDT)
+	id 9F7FC8E0006; Fri, 17 Oct 2025 09:49:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58C218E0089; Fri, 17 Oct 2025 09:49:16 -0400 (EDT)
+	id 8C21B8E008A; Fri, 17 Oct 2025 09:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F03A8E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 062431DBF1B
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:16 +0000 (UTC)
-X-FDA: 84007737912.18.149B7B8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6446F1C000D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=ltfarP+2;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708954; a=rsa-sha256;
-	cv=none;
-	b=6cI5hmfGvSxzi5lMFceCoNuoahtfmSY3tR4Skm/vP5kM355xhQ3s6bbOee4f+SqOwlRfJR
-	KSLKmy4TbwGw29BrAnsSJNxyj93Rw/O4NWi4wB2hvzE5SvcMa5O0dh1WrBksXbG/zIKelr
-	5vGc0mTJrlPEePpLPuVOZVqlRpUHn2I=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=ltfarP+2;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CF08E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 09:49:20 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3780E1401CB
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:20 +0000 (UTC)
+X-FDA: 84007738080.26.0095C2C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7198C2000A
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:49:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=Z4Tv667f;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760708954;
+	s=arc-20220608; t=1760708958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=xVQVKYUXJGhPBhUnGNwR5axfL//onxkclLjb9YP+0rQ=;
-	b=jQrTgOJhkV1t2dkUAssnhtWtVA4o6WcZslaFsrWj2H9k5PVzUMDR340yde1LXPJfvZKGWi
-	5ySVtL/JcFH2QvaVeNXZF2HuoyX3ygIIhnyzzClGm34DsEzJvq1RyAGc1MEnUNAajOfCTi
-	OUUv7D7EtgE1vC8dMW+mlC08Ki+7Stk=
+	bh=hkRQvs+tjcaMr/Brm/MFRXAK5Oqsqkw9vFrK+/9N43M=;
+	b=Z4smjG3xEcMTHAXW6+6bwPXGlnsG/2REdzYytBaxsA3814ioiGSxflGAaYyTOQn8etUVzc
+	H/waXFGTJD8dg3TNlNT4irxvUHzGdk9kQG7JApcLp+16CVrOfXB4Ts8T07rJZnG40oP160
+	TGKzJIXVbT//vygGlkUfVGlwHequJ1Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760708958; a=rsa-sha256;
+	cv=none;
+	b=FyMeVU9TsHe1Yz27XMN84EZozNCCUPdeq6CW7o85b+Zk50DT8e4R7tIS7FrBb3BXVdtMaC
+	RdLalWb5qznm6DzNpe80Ps/TYbft6oDwXt7VK82cmhqxhbwR0PveWCYEtU65sRUe/mdhsH
+	skN+rezFHfA5kuCBifGzZWnFmDdZryg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=Z4Tv667f;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8206164378;
-	Fri, 17 Oct 2025 13:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D256BC4CEE7;
-	Fri, 17 Oct 2025 13:49:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 83D524555D;
+	Fri, 17 Oct 2025 13:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C146DC116B1;
+	Fri, 17 Oct 2025 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760708953;
-	bh=/SFhsPPhi3DTw2DVlHMYbfvarQ68KRPlJ5dKQf2wo5Y=;
+	s=korg; t=1760708957;
+	bh=Ua7vCzS3o009KwoPLTQB4DGIeRIPg7Y50HxDIYzrkHY=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=ltfarP+2rXkk3f6zchK6vHPHoVrFh+Uip+PhTMq7KYU5Zm4iLOYROfs8sh+rWdOOy
-	 cHgQoWBZmxirMehC+6J2KHCgfo+Vo1kXnI0RQ4SJ75n7xjFFmvU+9NeN53sPVxMv+9
-	 T2ZerlqQFpL1VsSO+GPm+TX9MgnEu2m9guBl7hR0=
-Subject: Patch "minmax: improve macro expansion and type checking" has been added to the 5.10-stable tree
-To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
-	Jason@zx2c4.com, adilger.kernel@dilger.ca, agk@redhat.com,
-	airlied@linux.ie, akpm@linux-foundation.org,
-	alexander.deucher@amd.com, alexandre.torgue@st.com,
-	amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
-	anton.ivanov@cambridgegreys.com, arnd@kernel.org,
-	artur.paszkiewicz@intel.com, bp@alien8.de, brian.starkey@arm.com,
+	b=Z4Tv667f5UNsoyLfrw8kT7YN68oXeKQt6imFGs/Kn9Gn+qDiFqGAGFVqsG0aPf1EL
+	 9T/5lD4QTM19vxB9s6LQp6/mpKzrJcj4f8NKn+85bbDL2Kmx2L73KEzP8pFO9JUsFU
+	 GiujvVza0TVDfwa22jt1Ague8WXkgNrILyzqRHzM=
+Subject: Patch "minmax: Introduce {min,max}_array()" has been added to the 5.10-stable tree
+To: David.Laight@ACULAB.COM, Jason@zx2c4.com,
+	adilger.kernel@dilger.ca, agk@redhat.com, airlied@linux.ie,
+	akpm@linux-foundation.org, alexander.deucher@amd.com,
+	alexandre.torgue@st.com, amd-gfx@lists.freedesktop.org,
+	andriy.shevchenko@linux.intel.com, andy.shevchenko@gmail.com,
+	anton.ivanov@cambridgegreys.com, artur.paszkiewicz@intel.com,
+	bp@alien8.de, brian.starkey@arm.com, broonie@kernel.org,
 	bvanassche@acm.org, chao@kernel.org, christian.koenig@amd.com,
-	clm@fb.com, coreteam@netfilter.org, daniel@ffwll.ch,
-	dave.hansen@linux.intel.com, davem@davemloft.net,
+	christophe.leroy@csgroup.eu, clm@fb.com, coreteam@netfilter.org,
+	daniel@ffwll.ch, dave.hansen@linux.intel.com, davem@davemloft.net,
 	dm-devel@redhat.com, dmitry.torokhov@gmail.com,
 	dri-devel@lists.freedesktop.org, dsterba@suse.com, dushistov@mail.ru,
 	evan.quan@amd.com, farbere@amazon.com, fery@cypress.com,
@@ -79,8 +79,8 @@ To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
 	gregkh@linuxfoundation.org, harry.wentland@amd.com,
 	hdegoede@redhat.com, herve.codina@bootlin.com, hpa@zytor.com,
 	intel-linux-scu@intel.com, jack@suse.com, james.morse@arm.com,
-	james.qian.wang@arm.com, jdelvare@suse.com, jdike@addtoit.com,
-	jejb@linux.ibm.com, jmal@kvack.org, oy@redhat.com,
+	james.qian.wang@arm.com, jdelvare@suse.com, jdike@ad.kvack.org,
+	dtoit.com@kvack.org, jejb@linux.ibm.com, jmaloy@redhat.com,
 	joabreu@synopsys.com, josef@toxicpanda.com, kadlec@netfilter.org,
 	kbusch@kernel.org, keescook@chromium.org, kuba@kernel.org,
 	kuznet@ms2.inr.ac.ru, linux-arm-kernel@lists.infradead.org,
@@ -89,9 +89,9 @@ To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-um@lists.infradead.org, linux@armlinux.org.uk,
 	linux@rasmusvillemoes.dk, linux@roeck-us.net, liviu.dudau@arm.com,
-	lorenzo.stoakes@oracle.com, luc.vanoostenryck@gmail.com,
-	luto@kernel.org, maarten.lankhorst@linux.intel.com,
-	malattia@linux.it, martin.petersen@oracle.com, mchehab@kernel.org,
+	luc.vanoostenryck@gmail.com, luto@kernel.org,
+	maarten.lankhorst@linux.intel.com, malattia@linux.it,
+	martin.petersen@oracle.com, mchehab@kernel.org,
 	mcoquelin.stm32@gmail.com, mgross@linux.intel.com,
 	mihail.atanassov@arm.com, minchan@kernel.org, mingo@redhat.com,
 	mripard@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
@@ -99,33 +99,34 @@ To: David.Laight@ACULAB.COM, David.Laight@aculab.com,
 	peterz@infradead.org, pmladek@suse.com, qiuxu.zhuo@intel.com,
 	rajur@chelsio.com, richard@nod.at, robdclark@gmail.com,
 	rostedt@goodmis.org, rric@kernel.org, ruanjinjie@huawei.com,
-	s@kvack.org, akari.ailus@linux.intel.com, sashal@kernel.org,
-	sean@poorly.run, sergey.senozhatsky@gmail.com, snitzer@redhat.com,
-	sunpeng.li@amd.com, tglx@linutronix.de,
-	tipc-discussion@lists.sourceforge.net, tony.luck@intel.com,
-	torvalds@linux-foundation.org, tytso@mit.edu, tzimmermann@suse.de,
+	sakari.ailus@linux.intel.com, sashal@kernel.org, sean@poorly.run,
+	sergey.senozhatsky@gmail.com, snitzer@redhat.com, sunpeng.li@amd.com,
+	tglx@linutronix.de, tipc-discussion@lists.sourceforge.net,
+	tony.luck@intel.com, tytso@mit.edu, tzimmermann@suse.de,
 	willy@infradead.org, x86@kernel.org, xiang@kernel.org,
 	ying.xue@windriver.com, yoshfuji@linux-ipv6.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 17 Oct 2025 15:48:30 +0200
-In-Reply-To: <20251017090519.46992-20-farbere@amazon.com>
-Message-ID: <2025101730-passing-upcountry-57a7@gregkh>
+In-Reply-To: <20251017090519.46992-7-farbere@amazon.com>
+Message-ID: <2025101730-mumps-protozoan-aca4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore 
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nkzbm6f1km7sgmtacqfqna6bsdhumzsu
 X-Rspam-User: 
-X-Stat-Signature: 8sdhxnro8e3jcnu1jwn4rchhqnu7k756
-X-Rspamd-Queue-Id: 6446F1C000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760708954-252736
-X-HE-Meta: U2FsdGVkX19cmwVnTRZ34Wu2QRknCsRbMYjzIZP7uN65YIPER3dW1s7kTPSYAlM8reH6o2D7pYO2aWQ9Bqwx/yG9ceLUnUDCENtSxxEAZF9omePOTLChys7y/xS+Q9pOaj4JrG6VYLPzwDITlp/x4ZwUWWIoWAF76Y1IOQaW/+wJ+1WvSHTNoPBynTICnC0rUGNvwSqasHmLRk3j8D/xVJDZy82r+qI+R5rBBxGKH7eDtYi47BKkX6wX5Dxmo/mfwCA4OzPlHwirAlMew0wv4I+yPTNlM18XcYB9bpWPHvrk4BbjbldXbeyabF2ph25eI7bveyuAZ26IGtrhOmPHNlvqavWm5YAlH/UUi3HynL8PntkSSe06XOe60JHu7LXKJp+wLLAJVOveBFCK5yOH5YFEgLSUNwktKCspVWjO7nijL5gbbxcMugnrmS9Ounsqnx9e/zNKnYSGXiOZUNXvaWJjNVgL7CLMa7JoQgHeYXwxX3FmriUuhAeZKIc2UoUUF0vlKxT6qH6dNTAIQZBDlSV+z2kAnu37zd64h28xbgRXwYELU7NsDSbNdFPrK1Q+jxv7n0TyM1RU7JBjvKMxzdnKqbPy6XZlPsywhhpGpSOE+020JwDgOLFzFybex6M5Xq7PDkwA17qGaJFpYzv94vZxPpc8CxszF85b9t1JgZfU0hYeZXwYtRuTn3nOqADBlrnedC2FcFD8DOBe8m7wa5E8+015DX5nFE9ObFnNA3c6RmgjMhMJPXMYMqrFkzYXdLZP+V5w7T5a88j51jXMVu/XTutvjKDHVDOynHJKu4/0YC0AFPN9QuNnyIIcxuA4dhPkDAbtbxzXc5dKzksYEMnoVWqEH2vBE7dhBQm/6ixJ6F5yDSnrJLQY5YrXoBurkJU8+2u0TscGMpB9mYci7JVzmb1H8NTTos/wnqOXPm7qxAGIomRoIRFbQArwhX8N6MnOzDIGFJM/8pf/J+s
- R7J/TO8w
- UhtDVhZwlUeJLsFrnvC9EMhdVO7vM+zpjFMwnTGERy/eW0gCi5GY3yPaQTIZjAVgJ2QUaA4SjZpo/35kre91EUm49YKBh2KTUjucS0nK+NTYt4YYBsP6IA9APkvMqRmYkkl8x0438ZQoViw8cmI63I7sjWrzyWc4CPvEagFUghcVgQRWoij2nyzt9fqpqKAQCD8jxleoLG6GD90WiU+nGWtrrQwKwUcazzlC6XXvXxLoWKcFopGYOwlEX0uIbZg76St0Vmf2ESojS8lpmVeEB0Duga8qjorx6Yoa0lBURQLWs+GFMfbML7PlBhpBK+C93Syn6AKbp4z9nTUMGgM7OeKwbCjjAm0VYf4RvhpiR7WyZVm9TmdsJDVpCj77pQmHSwjcWf8YQpdwckREXX/K68cEcbMVI509miu1vMmBcloi6+2kzcB8o3crn8EV3EDZ1viY5jTQHeI/6Q7QTCV1SzzDGdb7ZQ1aaKSVFdJvduG4KAiC3BYYyCDDnn63ZKnHBeHFo8ZszVclp1GwCVklrbkt8uXiM8Aj3gi3AmaPs7WXp+pV6ltnbCNsVh9AuJzBRZ/NuQ3fv/E3ByYBqB/x9KSTTN1OosgXzeYQa4W5Of0YBp834gaUDO8Lr8ip4bC4lfByP97m4MSBqF1ixVkVB0rx6mJMTJbTwXUh8aIeQmTHp8Yv+ybkM2j4ovnzia6+3NVKtF5zZCcTaAwEMs3Veg3lA6rfJiaj7cIJKNu/vM9B00eqawW+I+RtnNOpQ5hTBA5LBl4eGtocpWUM7hYeMxdDpQvBTpbrS1qZDwjU/hak9nnbTwmlS3PupgytioDqBkmcToyfd3DaKBmT3LE7i/L+w0/FMW2WA+JI9piDnyMlrU4EWOBp+VPMQg0ry+SRdpP5cdLFQY/2P3biGY8vPd4fGRF6RPbWrURLhdxmk2j+A5OwrA0q2Hc4u1l799SfnqE5B9I0FnK/3sm5rm3XpIEHGH4hU
- uTRBsu21
- JZRN64HMxP69cms3mU+vYQ0KikFZ5Dv7RQsvmBm01fVug9DPi6K0D0hTw6oEAQ+MjmMexB8kww8dL55UU+zd0LRaWxmiP/YKormlDofErU+i2ih3H0pwKrnlHTYrJF/+cOZr0o6aTnpzp6eEYXGX2Z/awdx5uVuazqFBTJd7zIbVgO9ZifkyXdxRdtbbr6RgOGGdbPKCLUI20duXOgvTZWV302aR/NLOBDWrxU/UCsSica7uRvFC1rmtsbSxpUThwOyjTAuwsuz1SPr3ZsMgw7U+p68BQrPJIGvqc+trVgJgnVWWgs5329Br3y9rGs2kebIYasn2wu96CXYv1FflK7AhaefwlV03vXkO/Al4krlukEPfyiy5TSYQyuMgW3B+oGNNE8skp/bpapZisDqB/v2Q/R+RCPL8XS2GivByKWYBv90YRgsqeoczVYskg2Wr+hRnBiyXoIobJZeZzs2nymAUXz2SB81HrVj9o/xASw5ItzTQNx+ixmivwvGVdDfdGZY85iZscxCSWVD5eqggU5Sexaxyyk/nASdDk5f8Cvu29b/FaWftHDRP5J0k7/OxEPh5FVKEV974YccGTrQWBzwunEBdAy1nj9Dcx+6hwv9/MJgnOqWJTYfW19LPwer1OqVE+W4JuHt2+zEviuTIX9ZnaMH3W+LM/OUxyyJ+nusVN8ZsXwbkJW/XOUZUPk21vyzdB+zvNGcJQZZ7XYhIKJHUyl+ViQ9ZWZDDHLZL8pRAEunJtrb97WDDJIk45BR15t3jZ2nar6OwHtBqeGgcoDjrNFWg389VXuhcVxgzWrAwaK5uotB5IyzvghnQ4v5uhuB1pB4dljAjLjaH3V0LQArWxrI+wLkwXvqh23fO60GMwBys3+DPFEM8pb2wlwTlhsCJZzyKFejGaGbpStdvuZbREHa+Dmr2GgL03NjCVHpnLDehRIgRun6KtC46P0KdwxNgdIxHxVc=
+X-Rspamd-Queue-Id: 7198C2000A
+X-HE-Tag: 1760708958-755497
+X-HE-Meta: U2FsdGVkX1+BvMqs/W2zbnDpcumZzOgxePhhz6cIQvGXk4PlVVBI0yxBOKSMpK6eijSMPJoUPbdt2jSrul64tuY67S7Z+ztktIArXc3gNT+UaRXo54mfCVeH49enm+enw9KBNsCnRA8YQQ68lP5QyNx0SL40XDmLwbv1VQnBdZ6MJzSxIfxporATg2tYwq62HJO8gaFIxcoFYMVFbJOnYwlPbRcy2mIHve3cGdodNuxyNyV2U4//TmdF1X6rLhC11pGKIUHXcEh2ZEQxgw9iRezLtGmQ08NSHAD6OFKTNiMZCIoPMPKsoPIoUh4WjTy/V+s5kai7FJpi47NnqDsa5rpj7i8LPFllRKWH2G86ZgzY41fl/xfPkPbYxn5PFVuWMhc/PX8xIL8IQEgjV3YInSjpC1DRKU24S2FRSDjHBiphA1gagczTSmmQoA30HCFrqdlvY1Cyq5pfpI6JJJqp5XNsT9yMIBiYvb/Ec2jmH5ZcqqDJwTUJ6UGt/+FgJgnTJtHhQRVtCMrSyTQKZ+Wk+4Rz8Ybcxqg70MscbwAsADnXcVpMhVbarN/o6GqQIIe5Jj9rKZM8vAJs9BdEgsPdrlVcA9U5hmsPaaA5xbCZczKRiohloR8rAbHVCpDnjgCiCeq+dfWX0QXVJ9FHKUQtaW99jCkOrNFSiAp6+icd+s+3Nxpj6BvWaAXX34OzwBPPbby8nH2FSnnYM9LLdNCYTPaakisG4Xz33CYn38ToQKk9hnDrpgVKFrdM/R8U3zm3E9hz03lHNdT3kmAHdbXC9NTJQbuXoe0307xqbvDzMYF4pli3Jc2GdkIuf2zGNJiWvyZgzmaLhXaDi0h0j0Mn2XRYAd1FGOMYYkCy+l1IPvACFTwllxAraC3Kci1+7SHLPwa7gG5PRDRB4E39Mb9IRHOPdx+B9i84J9vj6SEdfryqUeWeG38vIom7Sj3OtP//sREyw+XLw/ZRrS56QBW
+ QHXIDy4Q
+ EwdcRv0eFfIF8xwQiqexSckyEoviWIt71rYH7egvkq55K7qNBdwxnEkw2kJnsvaJdTwzAJI+wUWgMafQJQZ9Tw2lepNrR6RSeUAXcirGRTrnkd1R92lzynVX+gYajjRYqEoDwKruJZn4yumxbGbMYX+XY+Zg6R52Y+aX+tbQmzsxfCxlyn0uYIh+L7uFkBblBtiASjuAmFCn+RtGDEydO2HQZAayS/qA8Y5898TglP6Lxd5RbtdO5w6eWSV7dI04qSVwVgw4jOhviElDO53gCI2opNBGBsAqK9VxVztb+EVq4jn/++1zoHaexNXaCtw7ELffndFSnpZMCSrPOtclw9RzOghG+ds/6FfQNnGfcojKH7pacc7Z74Vf0b2aBSjlE6f2LDl+JrWDKGGXSf3H3rtJUFXOpXxBDE1MndW8xnUrfQYw7hRIbKo4rcfr4q9QO3fTLJd6gbnahhhtNrJL6l/fC+It9uFCZ91CWSxVxvMal+oOuqN8+2niH3UpJ/Dubc9dSR8mfPBNDZyfO+fIMWrXZUEVzNpBWz+uNEPZ5zfFw95WCfM/SmPKkV6S5HwqpdIxT1FP48IUxyVArZKi7x8lISLoFRTIxlzNg7WoSOxzvvueMaYJl1pGy7h1r/PGLtpyThsOn6RT4vJ+chhGsRUalSb9TFpaSKooYp+uXHYGBKHXAls8/hpPE3wHQeemA6b1b0Uj5fG6yOkGw/t+/rnT57spTlk83tAgCIlE4XYzjup2czz46jQjSw+mtTZYZDysg8Z/SY9vK9Il61tdYI6Q5Ak+URcpQr7eWiA9RQLrMg8I/EAbtnahS57xKPLLo3Aizw8iEv2Mt8TNgQHyCYug5vpzvZR6MB3DMqiJVlMDO/jrwI+UGFWlj/HUrz6g9PNXFr5wK++2btzfhYvhACmi+uVK/haHGnQrjK9SskYGDTrOxptOfJlKMs+I7xpJph8VhVlJ8cYMu2edyVllZ21/360SI
+ rypYjF0M
+ R/mHdYRrydknIRtDT83mkXQ/37S7WTMoqsDYDI9XqBMFzGr+QwOclTdJr4tTCJfG3Yx3S6e7e4Jt4xA6VPpenrtgi5t9zxMkHB4wK6cG5Bvzkc5PyhMRX73q3q5NQ7yPx2BHT5UHgLofSGERZgQljdGouC9aXTFAcBGgxVG8aj+45HEz4qnVQWEvfJrHe/mkXcplRssjxCRjoy3lTg2MNPGuOqrfeix8tNyS0xw/jK7d3E63/c4O1ksiDVztjUKXdKn+hFy8qVuIJNKxvt2+Mf9u55Zwl+sdWUdtUhKtDs/pUqQAP/0slbfd1DIhIILX3f5NRWhYsPInV99l3n/6WKuQVuo8rBw/cn855vu0RTNc7fAOphY5jivtcHQUtm16VvwGP9leUCENPKKOD3K5r8f/VT39MgAI11Uhg4vDPaSX/16XFlf8+Rq42WhgyOQe/9uNsNmfjkIAbTgvlRWYYogfmUeRykCX+hRLGpfxAGGKhsSkNV8jkbw3Re+EaPsWmlPhQ3CTOjf7hOK0hQwM+BFx16aYpJClrgTuJzrKKU6eN4HG+5FLAmxEdOt9CpXeecxcrNqTMaoFY3WOpX0C7hjGQVBxiWsfLEw+g5XS3mtlE+oN7SaydxHImnSboIt59Tk9hsqIRi559wDmCK/7IhmNfZngIYcjZvioo16f4f2Jux2X3S+GEkn+iCcnHuNnX1lMExvKouPrKEVN/h9I2G4cBFZLOAG0cH4mRTWDZ8ZC84ASDiQtb6CKFr3oL4v4MOf2bsf/l6/TNJ7pj9Eyx9yMRmlao4ZGsDMFi4fuN0OK664yNsEXTvG66M5QfrAQUwv334V0tzR7ZtIqMFblXx5nnwmH4JyFZQUEf0/dh1FTbNPc9c9MF0PadJ3hGsHHOreTSgTsNfy56Rwvl6cRXuiK1t/dNKmkk+Sp6riyJ8lrFnJwRvYdenvkbuvE++j5jrmso2zX890Xp2+ES2Q2nBeEtleus
+ VQ0CjzGm
+ s9aeW0uFRjG9sdK/S8BmmCkMWz2eGD2KxXvYfn11UgQKLG3Vg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,23 +138,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    minmax: improve macro expansion and type checking
+    minmax: Introduce {min,max}_array()
 
 to the 5.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     minmax-improve-macro-expansion-and-type-checking.patch
+     minmax-introduce-min-max-_array.patch
 and it can be found in the queue-5.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From prvs=378230090=farbere@amazon.com Fri Oct 17 11:11:40 2025
+From prvs=378230090=farbere@amazon.com Fri Oct 17 11:07:34 2025
 From: Eliav Farber <farbere@amazon.com>
-Date: Fri, 17 Oct 2025 09:05:11 +0000
-Subject: minmax: improve macro expansion and type checking
+Date: Fri, 17 Oct 2025 09:04:58 +0000
+Subject: minmax: Introduce {min,max}_array()
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>, <anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>, <luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>, <tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>, <james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>, <sunpeng.li@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>, <evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>, <mihail.atanassov@arm.com>, <brian.starkey@arm.com>, <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>, <tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>, <jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>, <dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>, <dm-devel@redhat.com>, <rajur
  @chelsio
  .com>, <davem@davemloft.net>, <kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>, <joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>, <artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>, <martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <dushistov@mail.ru>, <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>, <sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>, <linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>, <akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>, <yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>, <willy@infradead.org>, <farbere@amaz
@@ -161,203 +162,100 @@ To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>, <linux@armlinux.org.
   <sashal@kernel.org>, <ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>, <kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>, <ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>, <platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>, <linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>, <tipc-dis
  cussion@
  lists.sourceforge.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Arnd Bergmann <arnd@kernel.org>, David Laight <David.Laight@aculab.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Message-ID: <20251017090519.46992-20-farbere@amazon.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <20251017090519.46992-7-farbere@amazon.com>
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 22f5468731491e53356ba7c028f0fdea20b18e2c ]
+[ Upstream commit c952c748c7a983a8bda9112984e6f2c1f6e441a5 ]
 
-This clarifies the rules for min()/max()/clamp() type checking and makes
-them a much more efficient macro expansion.
+Introduce min_array() (resp max_array()) in order to get the
+minimal (resp maximum) of values present in an array.
 
-In particular, we now look at the type and range of the inputs to see
-whether they work together, generating a mask of acceptable comparisons,
-and then just verifying that the inputs have a shared case:
-
- - an expression with a signed type can be used for
-    (1) signed comparisons
-    (2) unsigned comparisons if it is statically known to have a
-        non-negative value
-
- - an expression with an unsigned type can be used for
-    (3) unsigned comparison
-    (4) signed comparisons if the type is smaller than 'int' and thus
-        the C integer promotion rules will make it signed anyway
-
-Here rule (1) and (3) are obvious, and rule (2) is important in order to
-allow obvious trivial constants to be used together with unsigned
-values.
-
-Rule (4) is not necessarily a good idea, but matches what we used to do,
-and we have extant cases of this situation in the kernel.  Notably with
-bcachefs having an expression like
-
-	min(bch2_bucket_sectors_dirty(a), ca->mi.bucket_size)
-
-where bch2_bucket_sectors_dirty() returns an 's64', and
-'ca->mi.bucket_size' is of type 'u16'.
-
-Technically that bcachefs comparison is clearly sensible on a C type
-level, because the 'u16' will go through the normal C integer promotion,
-and become 'int', and then we're comparing two signed values and
-everything looks sane.
-
-However, it's not entirely clear that a 'min(s64,u16)' operation makes a
-lot of conceptual sense, and it's possible that we will remove rule (4).
-After all, the _reason_ we have these complicated type checks is exactly
-that the C type promotion rules are not very intuitive.
-
-But at least for now the rule is in place for backwards compatibility.
-
-Also note that rule (2) existed before, but is hugely relaxed by this
-commit.  It used to be true only for the simplest compile-time
-non-negative integer constants.  The new macro model will allow cases
-where the compiler can trivially see that an expression is non-negative
-even if it isn't necessarily a constant.
-
-For example, the amdgpu driver does
-
-	min_t(size_t, sizeof(fru_info->serial), pia[addr] & 0x3F));
-
-because our old 'min()' macro would see that 'pia[addr] & 0x3F' is of
-type 'int' and clearly not a C constant expression, so doing a 'min()'
-with a 'size_t' is a signedness violation.
-
-Our new 'min()' macro still sees that 'pia[addr] & 0x3F' is of type
-'int', but is smart enough to also see that it is clearly non-negative,
-and thus would allow that case without any complaints.
-
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20230623085830.749991-8-herve.codina@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler.h |    9 +++++
- include/linux/minmax.h   |   78 ++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 70 insertions(+), 17 deletions(-)
+ include/linux/minmax.h |   64 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -252,6 +252,15 @@ static inline void *offset_to_ptr(const
- #define is_signed_type(type) (((type)(-1)) < (__force type)1)
- 
- /*
-+ * Useful shorthand for "is this condition known at compile-time?"
-+ *
-+ * Note that the condition may involve non-constant values,
-+ * but the compiler may know enough about the details of the
-+ * values to determine that the condition is statically true.
-+ */
-+#define statically_true(x) (__builtin_constant_p(x) && (x))
-+
-+/*
-  * This is needed in functions which generate the stack canary, see
-  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
-  */
 --- a/include/linux/minmax.h
 +++ b/include/linux/minmax.h
-@@ -26,19 +26,63 @@
- #define __typecheck(x, y) \
- 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+@@ -151,6 +151,70 @@
+  */
+ #define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
  
--/* is_signed_type() isn't a constexpr for pointer types */
--#define __is_signed(x) 								\
--	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
--		is_signed_type(typeof(x)), 0)
--
--/* True for a non-negative signed int constant */
--#define __is_noneg_int(x)	\
--	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
--
--#define __types_ok(x, y, ux, uy) 				\
--	(__is_signed(ux) == __is_signed(uy) ||			\
--	 __is_signed((ux) + 0) == __is_signed((uy) + 0) ||	\
--	 __is_noneg_int(x) || __is_noneg_int(y))
 +/*
-+ * __sign_use for integer expressions:
-+ *   bit #0 set if ok for unsigned comparisons
-+ *   bit #1 set if ok for signed comparisons
-+ *
-+ * In particular, statically non-negative signed integer
-+ * expressions are ok for both.
-+ *
-+ * NOTE! Unsigned types smaller than 'int' are implicitly
-+ * converted to 'int' in expressions, and are accepted for
-+ * signed conversions for now. This is debatable.
-+ *
-+ * Note that 'x' is the original expression, and 'ux' is
-+ * the unique variable that contains the value.
-+ *
-+ * We use 'ux' for pure type checking, and 'x' for when
-+ * we need to look at the value (but without evaluating
-+ * it for side effects! Careful to only ever evaluate it
-+ * with sizeof() or __builtin_constant_p() etc).
-+ *
-+ * Pointers end up being checked by the normal C type
-+ * rules at the actual comparison, and these expressions
-+ * only need to be careful to not cause warnings for
-+ * pointer use.
++ * Remove a const qualifier from integer types
++ * _Generic(foo, type-name: association, ..., default: association) performs a
++ * comparison against the foo type (not the qualified type).
++ * Do not use the const keyword in the type-name as it will not match the
++ * unqualified type of foo.
 + */
-+#define __signed_type_use(x,ux) (2+__is_nonneg(x,ux))
-+#define __unsigned_type_use(x,ux) (1+2*(sizeof(ux)<4))
-+#define __sign_use(x,ux) (is_signed_type(typeof(ux))? \
-+	__signed_type_use(x,ux):__unsigned_type_use(x,ux))
++#define __unconst_integer_type_cases(type)	\
++	unsigned type:  (unsigned type)0,	\
++	signed type:    (signed type)0
++
++#define __unconst_integer_typeof(x) typeof(			\
++	_Generic((x),						\
++		char: (char)0,					\
++		__unconst_integer_type_cases(char),		\
++		__unconst_integer_type_cases(short),		\
++		__unconst_integer_type_cases(int),		\
++		__unconst_integer_type_cases(long),		\
++		__unconst_integer_type_cases(long long),	\
++		default: (x)))
 +
 +/*
-+ * To avoid warnings about casting pointers to integers
-+ * of different sizes, we need that special sign type.
++ * Do not check the array parameter using __must_be_array().
++ * In the following legit use-case where the "array" passed is a simple pointer,
++ * __must_be_array() will return a failure.
++ * --- 8< ---
++ * int *buff
++ * ...
++ * min = min_array(buff, nb_items);
++ * --- 8< ---
 + *
-+ * On 64-bit we can just always use 'long', since any
-+ * integer or pointer type can just be cast to that.
++ * The first typeof(&(array)[0]) is needed in order to support arrays of both
++ * 'int *buff' and 'int buff[N]' types.
 + *
-+ * This does not work for 128-bit signed integers since
-+ * the cast would truncate them, but we do not use s128
-+ * types in the kernel (we do use 'u128', but they will
-+ * be handled by the !is_signed_type() case).
-+ *
-+ * NOTE! The cast is there only to avoid any warnings
-+ * from when values that aren't signed integer types.
++ * The array can be an array of const items.
++ * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
++ * to discard the const qualifier for the __element variable.
 + */
-+#ifdef CONFIG_64BIT
-+  #define __signed_type(ux) long
-+#else
-+  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux)>4,1LL,1L))
-+#endif
-+#define __is_nonneg(x,ux) statically_true((__signed_type(ux))(x)>=0)
++#define __minmax_array(op, array, len) ({				\
++	typeof(&(array)[0]) __array = (array);				\
++	typeof(len) __len = (len);					\
++	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
++	while (__len--)							\
++		__element = op(__element, __array[__len]);		\
++	__element; })
 +
-+#define __types_ok(x,y,ux,uy) \
-+	(__sign_use(x,ux) & __sign_use(y,uy))
++/**
++ * min_array - return minimum of values present in an array
++ * @array: array
++ * @len: array length
++ *
++ * Note that @len must not be zero (empty array).
++ */
++#define min_array(array, len) __minmax_array(min, array, len)
 +
-+#define __types_ok3(x,y,z,ux,uy,uz) \
-+	(__sign_use(x,ux) & __sign_use(y,uy) & __sign_use(z,uz))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
-@@ -53,8 +97,8 @@
- 
- #define __careful_cmp_once(op, x, y, ux, uy) ({		\
- 	__auto_type ux = (x); __auto_type uy = (y);	\
--	static_assert(__types_ok(x, y, ux, uy),		\
--		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
-+	BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),	\
-+		#op"("#x", "#y") signedness error");	\
- 	__cmp(op, ux, uy); })
- 
- #define __careful_cmp(op, x, y) \
-@@ -70,8 +114,8 @@
- 	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
- 			(lo) <= (hi), true),					\
- 		"clamp() low limit " #lo " greater than high limit " #hi);	\
--	static_assert(__types_ok(uval, lo, uval, ulo), "clamp() 'lo' signedness error");	\
--	static_assert(__types_ok(uval, hi, uval, uhi), "clamp() 'hi' signedness error");	\
-+	BUILD_BUG_ON_MSG(!__types_ok3(val,lo,hi,uval,ulo,uhi),			\
-+		"clamp("#val", "#lo", "#hi") signedness error");		\
- 	__clamp(uval, ulo, uhi); })
- 
- #define __careful_clamp(val, lo, hi) \
++/**
++ * max_array - return maximum of values present in an array
++ * @array: array
++ * @len: array length
++ *
++ * Note that @len must not be zero (empty array).
++ */
++#define max_array(array, len) __minmax_array(max, array, len)
++
+ /**
+  * clamp_t - return a value clamped to a given range using a given type
+  * @type: the type of variable to use
 
 
 Patches currently in stable-queue which might be from farbere@amazon.com are
