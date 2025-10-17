@@ -4,125 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FC1CCD19A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 10:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02B71CCD19A
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 10:50:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0371D8E003F; Fri, 17 Oct 2025 06:40:36 -0400 (EDT)
+	id 2C1E58E0041; Fri, 17 Oct 2025 06:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00E2D8E0016; Fri, 17 Oct 2025 06:40:35 -0400 (EDT)
+	id 272488E0016; Fri, 17 Oct 2025 06:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3F8C8E003F; Fri, 17 Oct 2025 06:40:35 -0400 (EDT)
+	id 13A3F8E0041; Fri, 17 Oct 2025 06:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D10628E0016
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:40:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 871AB1A011C
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:40:35 +0000 (UTC)
-X-FDA: 84007262430.13.243DF0E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F09908E0016
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 06:50:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BE0A83279
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:50:55 +0000 (UTC)
+X-FDA: 84007288470.11.4DEB9EF
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1181E160008
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:40:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sRSgXxBC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="i/7QJkxp";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sRSgXxBC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="i/7QJkxp";
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760697633; a=rsa-sha256;
-	cv=none;
-	b=ZvbEG2iDIHFEyNVkgfhGASqeX7s2qiKUdjsP+8BoM+kC5Nk1deBTZ5EnYDoZUNGtOMMGh2
-	5E0wZgWKetQYnT5TDZFidGaz+K6dQhjqOIdYX1YY1k920S9duwhE184EZ0QDE3GK0IKPGX
-	/dFYyb8lyOn9FseMkoStS3G9c86NLmk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sRSgXxBC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="i/7QJkxp";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sRSgXxBC;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="i/7QJkxp";
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf09.hostedemail.com (Postfix) with ESMTP id C8B8B140004
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:50:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kEserYOD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Pgzi70xs;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rdUu+4RH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a9++KeDQ;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760697633;
+	s=arc-20220608; t=1760698253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WFmr5m5ApwaLvw1kC/IwmGZr0B7ly+XAnDh5ibV2XJY=;
-	b=BF9NjeNpZqo1tshN2vE/lI8c9TwOApVFgTrY4FexKH/E4i1VFQb6nFOGiAELFtkeIgkt0O
-	gMRKpto3Atvlzcqq/QgygOzyOLV5norbyLEeoA2E85vCCLvw3Agghb3LzW3i6W+zsspY3K
-	QSJm1jjUdWVohYXf+TxjHXOsqnkfsQQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=+PM4LvESjlxri1zpp6vFK06PmdSmf7nPh7+Rq9mCaMw=;
+	b=5+h2cCaHvx2GyAnDUDBuiwTWgj0dNIAsb1LakIROHZxMy8A5vKuuFeARNxS3lbAnAwXlsB
+	d1h8dCt6ClFEcI7JQgq1+OwVrS18C1AXAgbkkk2wP66Htx/z7/aa5ah+btixjbQ3yCLbVm
+	/VtB86IycRjR9J5er7UK0/43ymEOgHc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kEserYOD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Pgzi70xs;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rdUu+4RH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a9++KeDQ;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760698253; a=rsa-sha256;
+	cv=none;
+	b=L5Kxv0T3nynzTsNZkhIuYO80DoZni5QVqmpwnZsAH2PObQ3G8CCdatH9uzrv/rWO1MW6NW
+	vw4bpXQiVUxAx4uxkR7llHJlfzPT4VOjK6e7lG5EmApO0Cs1R6xXVF3q9Bbdtc3g+rt+7A
+	IbOrNjA2JEt1vyrFTGt9t7x6Gmqn/Yg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E34F1FE36;
-	Fri, 17 Oct 2025 10:40:31 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 27B5F1FE33;
+	Fri, 17 Oct 2025 10:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760697631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760698251; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WFmr5m5ApwaLvw1kC/IwmGZr0B7ly+XAnDh5ibV2XJY=;
-	b=sRSgXxBCsJwbv81IdJGDC+x27PZqiAh1a6tDYJm1lt+ijXp6mDFc/PWHda//f968AW6ow+
-	IM94o9qqrZ9Dsn1dmz+gSATebjY3fM238lleDPcgdmBqAzjo864FtWwN76gnZwv5r8GUvz
-	rw+L+7GXfBxbgcrH7zM5kAyNGCHbbbo=
+	bh=+PM4LvESjlxri1zpp6vFK06PmdSmf7nPh7+Rq9mCaMw=;
+	b=kEserYODQ1NQlb0UU4M3ueJ3R6GrfFkgYZTUnv3eQNpYBnjdLz/k6F+xzRY5YaRUG2wO/q
+	vSImeS8ba/zGf6DVJluKTMoOwwQqfQjI6OLcajSd4+6rlBvlOtIdNtZLqmkd92xB+H9UEp
+	8ANMUo1rq68mvWGDQeevgHsj7c+Kuc8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760697631;
+	s=susede2_ed25519; t=1760698251;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WFmr5m5ApwaLvw1kC/IwmGZr0B7ly+XAnDh5ibV2XJY=;
-	b=i/7QJkxpG0SiSuB3xNw+STi/5Vi9DuA/9Nv3q7F24CF5Vda/ZAd8Dfn7E1K7BFhE4Z0f4z
-	1wQxYVi5B8S6nYAg==
+	bh=+PM4LvESjlxri1zpp6vFK06PmdSmf7nPh7+Rq9mCaMw=;
+	b=Pgzi70xsKmTHTVC//R9Wfu2fSPU/gAFoncw/5Aj1BFz7JHbqcr/YP5kV/9XMLh1K1vkL1p
+	Mox1x4/s7/WbpBDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760697631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1760698250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WFmr5m5ApwaLvw1kC/IwmGZr0B7ly+XAnDh5ibV2XJY=;
-	b=sRSgXxBCsJwbv81IdJGDC+x27PZqiAh1a6tDYJm1lt+ijXp6mDFc/PWHda//f968AW6ow+
-	IM94o9qqrZ9Dsn1dmz+gSATebjY3fM238lleDPcgdmBqAzjo864FtWwN76gnZwv5r8GUvz
-	rw+L+7GXfBxbgcrH7zM5kAyNGCHbbbo=
+	bh=+PM4LvESjlxri1zpp6vFK06PmdSmf7nPh7+Rq9mCaMw=;
+	b=rdUu+4RHyct0iiYy+MA+ak6xf7fpY0IeTeFUFJ5v4swQ0QhXrjVU28wqM0rXueATnCenhp
+	GnMQQydafP83DQXzKcik2IXxtlY/VyOdgsAx2T0R4UC1FMjAKUPEXcwDjAFoZMYclKurd1
+	JkrJrPPfbPOOhvL/AUseJ76DqNLFiYA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760697631;
+	s=susede2_ed25519; t=1760698250;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WFmr5m5ApwaLvw1kC/IwmGZr0B7ly+XAnDh5ibV2XJY=;
-	b=i/7QJkxpG0SiSuB3xNw+STi/5Vi9DuA/9Nv3q7F24CF5Vda/ZAd8Dfn7E1K7BFhE4Z0f4z
-	1wQxYVi5B8S6nYAg==
+	bh=+PM4LvESjlxri1zpp6vFK06PmdSmf7nPh7+Rq9mCaMw=;
+	b=a9++KeDQg2WP9ZxiWakCB3cvR+Op92WSkwFBPqR02HE7IokrfB8Awcg3TevD3GfDwIbOXS
+	jHEEKhDbWI+I1sDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 32F9813A71;
-	Fri, 17 Oct 2025 10:40:31 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09EE113A71;
+	Fri, 17 Oct 2025 10:50:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KMwbDB8d8mjldQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 17 Oct 2025 10:40:31 +0000
-Message-ID: <7791b2b8-5db8-458c-89e2-49a0876c13a3@suse.cz>
-Date: Fri, 17 Oct 2025 12:40:30 +0200
+	id mwEVAYof8miWAQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 17 Oct 2025 10:50:50 +0000
+Message-ID: <910a1d39-ca72-4e79-9f6d-66415794d9a9@suse.cz>
+Date: Fri, 17 Oct 2025 12:50:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slab: Avoid race on slab->obj_exts in alloc_slab_obj_exts
+Subject: Re: [PATCH] slab: add flags in cache_show
 Content-Language: en-US
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hao Ge <gehao@kylinos.cn>
-References: <a9ca7cc6-f4d1-4fba-a9aa-2826b9a604bc@suse.cz>
- <8F4AE1E9-7412-40D6-B383-187021266174@linux.dev>
+To: Kassey Li <kassey.li@oss.qualcomm.com>, akpm@linux-foundation.org,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ harry.yoo@oracle.com, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+References: <20251017064839.585204-1-kassey.li@oss.qualcomm.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -163,18 +158,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <8F4AE1E9-7412-40D6-B383-187021266174@linux.dev>
+In-Reply-To: <20251017064839.585204-1-kassey.li@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C8B8B140004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: fdmn5fd75awjuhcas7ycxir548xoz8aa
-X-Rspamd-Queue-Id: 1181E160008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760697632-60944
-X-HE-Meta: U2FsdGVkX1+aftY3qlgne6IVy17fDraUMpNDz+8AiZ/Ydpbmfe98OEXuN4zR+WJmoCHu0TiMMlgIyRY5UVkUrkoJx+BlYk2wxyUaSONX1MqRmJwf2X5Q2u3rCRPlP/fcBFT6n/i1NXZH6QMFgSxRtmRLSr34r1RveE1X9G1fT5R+7CTFePsQ4R2GNVwU2/9ncCqHsZVVK6uJUQBcDOArMaALV3JkIO1JcOH10yqo/3e7SDwK7+uVw262oFyGWIFz4CrkyuSYHWEhRTD/x690s1pdc3V9SdWnUu6bG3XCA+ZSjSP+q6oc1G2he63Uh5kzdGx9SA2mjfnB6D9tF/eoSJ51RL4XIkEM6cx2sfF9JljClWIOYg2OlZg9S/Bk64ghAfBpbJfeuVpqkGHhPMwGOEYixlV7ZViacO2dOd+l+rd2by3ZnypbSmbm/cStfj6Kvc1/ibrwbDFsEOWeDLOurdHWSgGkilEgj+lYclLUHr4wnNjdwPC68JHLs9Fhsh0Ep5fbwWw2jwn/y97I0lLXOhDvxGnASO0wyI0oqfeRX4m18SkJZnbZCFjoD9kVeRJBKA7e/3rTKqALyEnb/t/yxC+Hu+tkQNQ7ncQJUBXF2p+NaWYtSO4YU668afmdCIV4OznZqWSXy+NpLncYC1ZyJ/RI9C8xD/Zpw3DYTc/gauzKbaIXa9CSfbgNsWu1nYamTWm0Y3s5HUSIJbCUIuCAq1z0Kyjl87a4t8c4ujTBPKcl8GZIvpDQkqc08BfoXywAelZCRalM2TTuFC5DMsm+w77WCUeABUVbbAL6BO1y9cfztmWinMTH5mc/9kiPHcyuP/lVRGy/GjOr4iGb7vRdTtgWhFosrxPyUy5AaQyTjrFsb6LQYrLj257S/btFaRZKfk0rpttwdWWNEhGYUWQgof5Gi9QZo7Nsc5zd2T1Jp2DiBEm5/qUIQLkLWfkQk51LrpdYjnr/Vrz8E2L7b1C
- TgoaKgzG
- /K+X+ystKoFttRrdJ5NuY00HEzjo6M86ruOmw5Y3uZIPmqeq6coHPlonY9sf2ORvQ/tyHKKd9icGGvpRV8I23J717G5LJqo8EfkOMKLunsxhnf6xg6Fq2gLf0eUBonf121KN/QXOPpCeRoTuGvOmJuPmq8boAFdgobMBSaZmCzS7tsZg/LnGYXrxkNaolBfozuAgCY7FDIJT89xFj4U5aDoaXN7CiPjuiQyLBYnJu2d7BIP1FPm+p6XP5UMraIaN0a/AyD3rYpVgnXpQIPHVNznFuYBoNIGMuFaDCGlgnWGK8CGk3iukilKiKdd60xZmH7LhvBVsA0i7ocd5DSdd4qpzU841OYGWsVKVupBeyccoTvv4=
+X-Stat-Signature: ejpat36yxj1fkn7mtwprxxem3a8wocrx
+X-HE-Tag: 1760698252-192308
+X-HE-Meta: U2FsdGVkX1+9vfG0Rw7sLIsa/crDeSyxWVSzb/8lIpTTMt/t723FOoLY1vnOHxybsKLj5+WY1xNDUCvx1ySe+MpJ1OPjvErJC/dFe5WEqU+LQWh7T6KxjsIPAknFvwNW/SMVfinBUKEMdDjzZP0Dg7/gHYxf5ImvVKDvkQ7RDBXreTzU2snHH1HZilEyIl9GlkQU17+lcA6NWf6LJivySH2ObtAWnrW1aMjXdFlDxclqcma2vywk/ykg2yzs12Aq5BiSZN2I20lwPYGQsKMgDGC8dxvKaKu/P6d2eE3QJPdAlpo37FJehlyZ6xdGToIMXxxNEGslze9NFeNVCYkTqR62T4qeTnbesiEU3MoKKCgajhnHUrvoqic4anRrD8Qnd7Wxk0FJRYJg1VGB+Hi+0tmXd5whF9GeOwbYaeoH9GglEh3AgQ0ZQrpP6yt7Vy3VgpRYxrKzm3d2WcbvMFcIPlDr/R93tGW7/3g/coOUWvdfuXaBF0u2jrKPjUgkdEDG8DUKkQWcRTNHtsz6Oxc1QcC89CztF6DgPq/ipITX1+DUK35/dYw3j/JlNXUxXlXiEUjnUOzCIU5i7cgn7KfeufOTvl/STUHOTLi4wQoeavpTNE7s9VlG+9RHPdCVy6byNEAdxyMAkGWZO49fu/MbJ+UGlObY//vPv8+xX+qOvDTgPTdDsZlnotrEjsokpmPmiP/W9g6F2RP8TfdcC4pFwt2jt9DtGuFpxpeKXOdXWo5XpP+wxy2/kYUTz/dQJGPgyDLGTMVIw7CAQUMquMQIWF9saRg4FT0ykoDOz8NPCWYGxA2I04hJ2t5LW+DZL4kL9RekfOUDVqllrGfoNLdmZ5GUm+Rrwo4oe/d5n8ZbNRxPnMNufxxZ07flEf+jwuo9pboNZgv/jGKsRK9PT4lQg95zJ+tN9ukzlDA2QIvwKf/MWKWETFjHSJe9UCbE+PYkG9utDIhFJehgXLC7rI7
+ 5uxjC+Z4
+ glrG9qhMhj0BSpb6ZSLYzXpTxxgnaYMP1sGq+sh8ww+d/c10+2OYenwuHaUK/pXkq+J0T+9CrhDgegY9EC6NCcDaAXhBA4Kj1IQKQvP7GvJaEtdiJjFftXCzZz/SqHdcYCWBkNdUznU1hpimwXPX4u18QbmwzxCFMeTZNj9T2oz+0SqBafKFGN3vC1eAQhA13JtowIEJ5kgMzA1o/AneFG4CFunWr1GMLUaZ7e65TYu120bt9MNNMXGeJ3ToEcKD8OSusAr09vdEjFDIWaGINN+ph+06Q39WXzTr622PoPUDwVuaYiA7RfWkN34XtiqeSXPTDWFaI9Brce3TJn85VhxQSJU26pcesDbBM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,139 +177,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/17/25 12:02, Hao Ge wrote:
+On 10/17/25 08:48, Kassey Li wrote:
+> Flags info is useful to check the slab type.
 > 
+> for example, _SLAB_RECLAIM_ACCOUNT:
 > 
->> On Oct 17, 2025, at 16:22, Vlastimil Babka <vbabka@suse.cz> wrote:
->> 
->> ﻿On 10/17/25 09:40, Harry Yoo wrote:
->>>> On Fri, Oct 17, 2025 at 02:42:56PM +0800, Hao Ge wrote:
->>>> Hi Harry
->>>> 
->>>> 
->>>> Thank you for your quick response.
->>>> 
->>>> 
->>>> On 2025/10/17 14:05, Harry Yoo wrote:
->>>>> On Fri, Oct 17, 2025 at 12:57:49PM +0800, Hao Ge wrote:
->>>>>> From: Hao Ge <gehao@kylinos.cn>
->>>>>> 
->>>>>> In the alloc_slab_obj_exts function, there is a race condition
->>>>>> between the successful allocation of slab->obj_exts and its
->>>>>> setting to OBJEXTS_ALLOC_FAIL due to allocation failure.
->>>>>> 
->>>>>> When two threads are both allocating objects from the same slab,
->>>>>> they both end up entering the alloc_slab_obj_exts function because
->>>>>> the slab has no obj_exts (allocated yet).
->>>>>> 
->>>>>> And One call succeeds in allocation, but the racing one overwrites
->>>>>> our obj_ext with OBJEXTS_ALLOC_FAIL. The threads that successfully
->>>>>> allocated will have prepare_slab_obj_exts_hook() return
->>>>>> slab_obj_exts(slab) + obj_to_index(s, slab, p), where slab_obj_exts(slab)
->>>>>> already sees OBJEXTS_ALLOC_FAIL and thus it returns an offset based
->>>>>> on the zero address.
->>>>>> 
->>>>>> And then it will call alloc_tag_add, where the member codetag_ref *ref
->>>>>> of obj_exts will be referenced.Thus, a NULL pointer dereference occurs,
->>>>>> leading to a panic.
->>>>>> 
->>>>>> In order to avoid that, for the case of allocation failure where
->>>>>> OBJEXTS_ALLOC_FAIL is assigned, we use cmpxchg to handle this assignment.
->>>>>> 
->>>>>> Thanks for Vlastimil and Suren's help with debugging.
->>>>>> 
->>>>>> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
->>>>> I think we should add Cc: stable as well?
->>>>> We need an explicit Cc: stable to backport mm patches to -stable.
->>>> Oh sorry, I missed this.
->>>>> 
->>>>>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->>>>>> ---
->>>>>>  mm/slub.c | 2 +-
->>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>> 
->>>>>> diff --git a/mm/slub.c b/mm/slub.c
->>>>>> index 2e4340c75be2..9e6361796e34 100644
->>>>>> --- a/mm/slub.c
->>>>>> +++ b/mm/slub.c
->>>>>> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
->>>>>>  static inline void mark_failed_objexts_alloc(struct slab *slab)
->>>>>>  {
->>>>>> -    slab->obj_exts = OBJEXTS_ALLOC_FAIL;
->>>>>> +    cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->>>>>>  }
->>>>> A silly question:
->>>>> 
->>>>> If mark_failed_objexts_alloc() succeeds and a concurrent
->>>>> alloc_slab_obj_exts() loses, should we retry cmpxchg() in
->>>>> alloc_slab_obj_exts()?
->>>> 
->>>> Great point.
->>>> 
->>>> We could modify it like this, perhaps?
->>>> 
->>>>  static inline void mark_failed_objexts_alloc(struct slab *slab)
->>>>  {
->>>> +       unsigned long old_exts = READ_ONCE(slab->obj_exts);
->>>> +       if( old_exts == 0 )
->>>> +               cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->>>>  }
->>> 
->>> I don't think this makes sense.
->>> cmpxchg() fails anyway if old_exts != 0.
+>     0x50100 _SLAB_PANIC _SLAB_RECLAIM_ACCOUNT _SLAB_CMPXCHG_DOUBLE
 > 
-> Aha, sorry I misunderstood what you meant.
-> 
->>> 
->>>> Do you have any better suggestions on your end?
->>> 
->>> I meant something like this.
->>> 
->>> But someone might argue that this is not necessary anyway
->>> if there's a severe memory pressure :)
->>> 
->>> diff --git a/mm/slub.c b/mm/slub.c
->>> index a585d0ac45d4..4354ae68b0e1 100644
->>> --- a/mm/slub.c
->>> +++ b/mm/slub.c
->>> @@ -2139,6 +2139,11 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>>        slab->obj_exts = new_exts;
->>>    } else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
->>>           cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
->>> +
->>> +        old_exts = READ_ONCE(slab->obj_exts);
->>> +        if (old_exts == OBJEXTS_ALLOC_FAIL &&
->>> +            cmpxchg(&slab->obj_exts, old_exts, new_exts) == old_exts)
->>> +            goto out;
->> 
->> Yeah, but either we make it a full loop or we don't care.
->> Maybe we could care because even without a severe memory pressure, one side
->> might be using kmalloc_nolock() and fail more easily. I'd bet it's what's
->> making this reproducible actually.
-> 
-> From my understanding, it only affected the obj_ext associated with this allocation, which was subsequently deallocated, leading to the loss of this count. Is this correct?
+> Signed-off-by: Kassey Li <kassey.li@oss.qualcomm.com>
 
-Yes.
+Many of the flags are represented by files in /sys/kernel/slab/<cache>/
+If you miss some, we could add it there. Changing slabinfo output could
+break some users and the raw hex value is not a stable representation of the
+flags anyway.
 
+> ---
+>  mm/slab_common.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
->> 
->>>        /*
->>>         * If the slab is already in use, somebody can allocate and
->>>         * assign slabobj_exts in parallel. In this case the existing
->>> @@ -2152,6 +2157,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>>        return 0;
->>>    }
->>> 
->>> +out:
->>>    kmemleak_not_leak(vec);
->>>    return 0;
->>> }
->>> 
->>>>> 
->>>>>> --
->>>>>> 2.25.1
->>>> 
->>> 
->> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 932d13ada36c..f43239211e69 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1083,7 +1083,7 @@ static void print_slabinfo_header(struct seq_file *m)
+>  	 * without _too_ many complaints.
+>  	 */
+>  	seq_puts(m, "slabinfo - version: 2.1\n");
+> -	seq_puts(m, "# name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab>");
+> +	seq_puts(m, "# name            <active_objs> <num_objs> <objsize> <objperslab> <pagesperslab> <flags>");
+>  	seq_puts(m, " : tunables <limit> <batchcount> <sharedfactor>");
+>  	seq_puts(m, " : slabdata <active_slabs> <num_slabs> <sharedavail>");
+>  	seq_putc(m, '\n');
+> @@ -1112,9 +1112,9 @@ static void cache_show(struct kmem_cache *s, struct seq_file *m)
+>  	memset(&sinfo, 0, sizeof(sinfo));
+>  	get_slabinfo(s, &sinfo);
+>  
+> -	seq_printf(m, "%-17s %6lu %6lu %6u %4u %4d",
+> +	seq_printf(m, "%-17s %6lu %6lu %6u %4u %4d 0x%-8x",
+>  		   s->name, sinfo.active_objs, sinfo.num_objs, s->size,
+> -		   sinfo.objects_per_slab, (1 << sinfo.cache_order));
+> +		   sinfo.objects_per_slab, (1 << sinfo.cache_order), s->flags);
+>  
+>  	seq_printf(m, " : tunables %4u %4u %4u",
+>  		   sinfo.limit, sinfo.batchcount, sinfo.shared);
 
 
