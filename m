@@ -4,95 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55285CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:02:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC85ECCD19F
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:09:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B251D8E0033; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
+	id 31EB88E003B; Fri, 17 Oct 2025 12:09:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD5968E001F; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
+	id 2CF2E8E001F; Fri, 17 Oct 2025 12:09:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12D58E0033; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
+	id 1977C8E003B; Fri, 17 Oct 2025 12:09:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9079B8E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:02:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 637291DEB15
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:02:44 +0000 (UTC)
-X-FDA: 84008074248.02.5633805
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F3A138E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:09:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4383B77AB
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:09:53 +0000 (UTC)
+X-FDA: 84008092266.14.FE89D8F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C2B61C0003
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:02:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyrJXv5A;
-	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 11713A0019
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:09:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YtSviiKK;
+	spf=pass (imf15.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760716962;
+	s=arc-20220608; t=1760717392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ND5eB1QCFY6Skiz3g8KOlcxvtTH/lier+fk4n0rckNI=;
-	b=UERSZeJ+uIH23hsp4FjalpKbrfYPx0LKAX2w6QP9rD6UKR3jjtK4TwywpXdy6VM7N4JBeZ
-	awoyYrdwPnwrm1ZYqTwCi54zcJQ0A6gEdDM8txlWaQ0bnaNkJTX9wVRRK0bCWzjIpVFecI
-	tXxhMAkXZOF22w9P7bVsfG/+zt/LRIs=
+	bh=nX+mtnNcQcWlv9JGlUu/KrtXpqebuR7wZinuAUmv6BM=;
+	b=gXuzx+ZLuEaFDhRzng945R+d8aSLGKhbBVPV9BYSEwJELgCXgBRQcGE2eHBcAW5i6N8BIn
+	MzZ+b5q3UHDkFFy0uozlEexcTQTEYqs2jilGYHOuEUzGDb+nBrM4f3upnPSMd67cdRAUVK
+	nOBlndqcw3uVEOAHmZkEPKhugaZLaMk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyrJXv5A;
-	spf=pass (imf10.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YtSviiKK;
+	spf=pass (imf15.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760716962; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760717392; a=rsa-sha256;
 	cv=none;
-	b=46bA4PRhzSk3i+uKGB4nWNC18nB9gnrmio4q5jySRGcdhhvjJTTGmowOPBHLwi9GJCoKfs
-	ykya/anQdFos7dEpmCWG9JTGKzpHy78RhduqQLCKDqobLBNntQ/d45SgGf7iiRj44+aYhp
-	b6ybd7diK123Te5YlH6WyTaqR3fW0s4=
+	b=n2MnKnr8cqMM09jvibKdwoAGMpThXR1XQpChBWjCIfC9NyIcXTicWHF0bbBi/+37tZz3C3
+	aa+2Pg1a8JWvuerTcplWVD6af7Ku413ypfFwdzmt7Nd0LCQYWyyKZ2i28RVHgltm8zImHq
+	Q/nw1/00w94R/ttXRXYvMhNJkQsR4Cg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0D6C964768;
-	Fri, 17 Oct 2025 16:02:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8862C4CEFE;
-	Fri, 17 Oct 2025 16:02:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4990C60546;
+	Fri, 17 Oct 2025 16:09:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE17C4CEE7;
+	Fri, 17 Oct 2025 16:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760716961;
-	bh=3mM1lWUTizz6VVL4elvU1BRGI2YzNN2VMRwTvXHMgBg=;
+	s=k20201202; t=1760717391;
+	bh=BOrYC+tXjLjRqJyXcD4crvrBNK2lkUpKkjfEmyc87bI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FyrJXv5ACeinmvzHl5wHECEdtIt9rBJrFJ8bp6CJbsqurAL0J4hn2Bcdw9CoKoChJ
-	 ZKhv45UwKPRDAAvkpA2sA3k0CZiyyl17HSISQODpwPBsowr8SlXYv81OwnTwNbWb39
-	 Ild3/43ULgbZf4M4dH8yq128Zg0srGNIFqcECBRnz2l2tBP/GH7FMa9PDd40dCtgHt
-	 AGswEEmu67omIZ2IjK0ppEM6s2efJAjWI2/XU6+R1COfUi3OCmLytLzj4UZSXGC2y8
-	 MLk5zuXafk0BRFgdIOIMg+FPBevs50BmAhTwdGW/wLJxao2ty0oQDdcuQG1NzqNa45
-	 JowDMc74vEM+A==
-Date: Fri, 17 Oct 2025 09:02:41 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Dave Chinner <david@fromorbit.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>, Zorro Lang <zlang@redhat.com>,
-	akpm@linux-foundation.org, linux-mm <linux-mm@kvack.org>,
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-	xfs <linux-xfs@vger.kernel.org>
-Subject: Re: Regression in generic/749 with 8k fsblock size on 6.18-rc1
-Message-ID: <20251017160241.GF6174@frogsfrogsfrogs>
-References: <20251014175214.GW6188@frogsfrogsfrogs>
- <rymlydtl4fo4k4okciiifsl52vnd7pqs65me6grweotgsxagln@zebgjfr3tuep>
- <20251015175726.GC6188@frogsfrogsfrogs>
- <bknltdsmeiapy37jknsdr2gat277a4ytm5dzj3xrcbjdf3quxm@ej2anj5kqspo>
- <aPFyqwdv1prLXw5I@dread.disaster.area>
- <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
+	b=YtSviiKK7XhOypmn1B0JMTFJNg+aK9xkicr5kleBJoGLQsIHX6oRtRnPJgXbXWtLH
+	 cVrvwZYIhcft0nkxK/ZQBpXxxHeWHw5/VEilYnGTD4lEZyzXP8wqDKjbklEc7PQZxX
+	 jrw7mNWuagcjs3SnKes4mzFKMKH2tiSDMTY+zRgHS/b+KVlZKnLK4gb6spqja1+1F5
+	 LtRKkkOtABvH8jmUIF+maywb5ma9DVPFdB4So5FQ7XdD3Y3FN97CNzQWMZICjSRgyi
+	 XbXdYmBkEWUiq556ItdRa+tvmxGUk+V9ozsqtDgWFGhyHQtvMVM573eif+FMsCQ1J7
+	 ilRe5q/VN9eDQ==
+Date: Fri, 17 Oct 2025 17:09:24 +0100
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Eliav Farber <farbere@amazon.com>, stable@vger.kernel.org,
+	linux@armlinux.org.uk, jdike@addtoit.com, richard@nod.at,
+	anton.ivanov@cambridgegreys.com, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+	tony.luck@intel.com, qiuxu.zhuo@intel.com, mchehab@kernel.org,
+	james.morse@arm.com, rric@kernel.org, harry.wentland@amd.com,
+	sunpeng.li@amd.com, alexander.deucher@amd.com,
+	christian.koenig@amd.com, airlied@linux.ie, daniel@ffwll.ch,
+	evan.quan@amd.com, james.qian.wang@arm.com, liviu.dudau@arm.com,
+	mihail.atanassov@arm.com, brian.starkey@arm.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, robdclark@gmail.com, sean@poorly.run,
+	jdelvare@suse.com, linux@roeck-us.net, fery@cypress.com,
+	dmitry.torokhov@gmail.com, agk@redhat.com, snitzer@redhat.com,
+	dm-devel@redhat.com, rajur@chelsio.com, davem@davemloft.net,
+	kuba@kernel.org, peppe.cavallaro@st.com, alexandre.torgue@st.com,
+	joabreu@synopsys.com, mcoquelin.stm32@gmail.com, malattia@linux.it,
+	hdegoede@redhat.com, mgross@linux.intel.com,
+	intel-linux-scu@intel.com, artur.paszkiewicz@intel.com,
+	jejb@linux.ibm.com, martin.petersen@oracle.com,
+	sakari.ailus@linux.intel.com, clm@fb.com, josef@toxicpanda.com,
+	dsterba@suse.com, xiang@kernel.org, chao@kernel.org, jack@suse.com,
+	tytso@mit.edu, adilger.kernel@dilger.ca, dushistov@mail.ru,
+	luc.vanoostenryck@gmail.com, rostedt@goodmis.org, pmladek@suse.com,
+	sergey.senozhatsky@gmail.com, andriy.shevchenko@linux.intel.com,
+	linux@rasmusvillemoes.dk, minchan@kernel.org, ngupta@vflare.org,
+	akpm@linux-foundation.org, kuznet@ms2.inr.ac.ru,
+	yoshfuji@linux-ipv6.org, pablo@netfilter.org, kadlec@netfilter.org,
+	fw@strlen.de, jmaloy@redhat.com, ying.xue@windriver.com,
+	willy@infradead.org, sashal@kernel.org, ruanjinjie@huawei.com,
+	David.Laight@aculab.com, herve.codina@bootlin.com, Jason@zx2c4.com,
+	keescook@chromium.org, kbusch@kernel.org, bvanassche@acm.org,
+	ndesaulniers@google.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-edac@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-sparse@vger.kernel.org, linux-mm@kvack.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	tipc-discussion@lists.sourceforge.net
+Subject: Re: [PATCH v2 00/27 5.10.y] Backport minmax.h updates from v6.17-rc7
+Message-ID: <20251017160924.GA2728735@ax162>
+References: <20251017090519.46992-1-farbere@amazon.com>
+ <2025101704-rumble-chatroom-60b5@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <764hf2tqj56revschjgubi2vbqaewjjs5b6ht7v4et4if5irio@arwintd3pfaf>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C2B61C0003
-X-Stat-Signature: 3ky56g9yd5ygg1pcadifryz1ze5qrjh7
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025101704-rumble-chatroom-60b5@gregkh>
+X-Stat-Signature: qp4n4rshs6zbwp8sch7qryw33brx1tfa
+X-Rspamd-Queue-Id: 11713A0019
 X-Rspam-User: 
-X-HE-Tag: 1760716962-604628
-X-HE-Meta: U2FsdGVkX1+aefVdOqz/9wM2nSaIvvwghuKFrrRPABsiPu00dkikHW0/5uIbeLCEq4uySDyeLgmANn2gz7qVHaoJWDPK2c6THKRAIqfPur8oTAW9QtrPQCvMUtNLW2zSKA+9Db/wr74/CN1PpAa7PvhvfIQP2RzNsjBax7RpCIf2Zmu+5aX/0glHI0hgUPIdD5oPD6L9L83nkdUfqhEAkmRWTo7azRknkPJj8Btds1VZWYxKi+UTdkIJ6l0Y8DtD1ozSwmE0nWyXgwGS71E4op5/uF5QwDnS+Y+sC+oBwgetvu6zNtbHckcBarUxfCOfz5xkcaZndh/1wDNrkl6Jb7l8LnxjU0nKgA6XgQu9rxdz+SK0j36VwrYu363uFGK9yfznOvpUzgyHGKkOhDaFpuFmuBlIsqxq9cybvjg2fpUgcOjiVdaqSpcwR86+8cdjw6OT+LNWBorVbNB/UcB6P4wLVxu29p+rSmaiDG/WhyQJd9CmNF30VlDsOC0CUTDUb6aWwF+Q/2ojS/1CmslWuPsLFJqNTWfKLIfsP0y3ia1+2r6aaScq3OOTtD48FRncEBVioYnJaWhVSn5pc7bZSQHdqsWX6BVCsLPGZnDk2nAu61uM28qtyHrJzTCiwmr2ytlHohs0FjKqv6m7DeFWuuTgEFhjbGClhmeK5HsEGEElIXnr9QBq7u7dBxSjgYjOW5/zQbM8y/PMB6coJH1aCICQyqjOII5RecarAWOwZIOc4myhiAhoat3PxdJcm4OUJKGEWSzeMLf94hfsxs2iv5OCwCDcW6auCVuE2Xe1tPWMvoJPfYmScc7Ou4/Rc9geZyUkbp8LbYtILs0oM4w7xJ5dEIB+5CBWfsoDettzON2fV85KEetPAHIes7y3q+ROJuJNHuu+ehKTwqNL+oZ72GicIWr/OkA7SmcJEUHM5DDupxwp2g7x/zEhb4oBu6C0/sEVRpW6xtNfRCFMdm+
- 4LP3fn8+
- DHiGDF+AKaqX8dQKoGJo6KiX12x5jHssnzwrkWN+V30nhbl2Mq5oO8twV+hDyJic2EJrJYQAiMUBC+M/EsAlKcbBkV9+pJo0bY4D7e4PMwk5bln+W9aDuOrdwoUUvlyhpZFO3nxvBjY8SBSh9iLNcBB33yV0xa8TN3riEqrCTzPHSNgcVFMgeKYUSe76OTqUQrzb7EYoreBd9bIJGIe+tFmlL3HsyW9l8A8aECP3qD5mneUmgGw0idbYmMIpUtL5+XFoE
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760717391-378778
+X-HE-Meta: U2FsdGVkX19v0Q2h9NX2v+h2MLuw3EaRrzB9+4ANPr7+weOUDWbp6ey5EEbcMtBTbudxTOE8aH90oaB3+P+x90WaeeFNEHAonOgTSSDzZWPPVzlaEPRH0N6IC0WmCB0fJ1UEaG+cIf/1EnetgWYEngXzSiwAl2+3S8EJruP9t2masIleIqQ7Ri43S4onZUBJPolI9JjSya5a/ZuJyppALjUNBFdMWjfEkRg6aAJ6xMOTGSpsx4ldo0ZHSJy27KXpgODKtp5ovH57MQcBAFArYf3ICs1XZVEBGFYKQ+fJsZq4V0oSpiXR45+ppn5VvR/vF67tlLwV6n2nRqMFygCCWPQg+W6zwze/nsOD6FvuYv6rravJPUOI8yO7zAM9oMV4GaiK2UGbpJbkCYWlKNsW3BuB5eAFZ+FBr+YHqAV3yiRCXAVnhUyhENHJc0/RQLEx6DU3W+q4W7SUjBPwzCCEB+8GECnZWXNWDyu/4G5AGwteVxaFl4FpjIY8lL5BIQPmMYdsNXkhk1Fqw48VMFtozf6sRPGpK6IwFf+0a/DtoimmK5/En+Onkh+ElYjj4o5CmsuyD0pjqGTXWUmkdnnrAiLNEZlyzKVPKDG8JWGxAe2nwYkCRKrqRS4pa0td2F0xbnhw2Cl5123oJY4M8PIIWbKuB646wcdXizpSqNj1Vu+MRftLwP+mtXt/sNCic+6bhH+ygBkD1iQxhwXkA8wo5KYZMn9RbCFxxryy9kn/vKd31OXmCqUyPtQuRRB2JFV4nmsElVn+N/txNQWCOWMDsakLb6svRcq5v1hWwW/b+i+Ldiz/rBnSSXz/KvGnFOkCec1wn+TYnWU4n0Zd6H9JYo63qmfYcQVcg0T3gOuImG9ofGTXQG8FR+Mo+sMPE/3kFGS5lZ8SIrng+EtG7dJOQPQNv6tI48Y3GUnQUodBIcvFfoQoULLLSXjaeDh54Nn24AtvuPdCDPJ1zpGYBSp
+ LdhPlq46
+ Yg7RNLSXry5RspEfdjGcG3qvGByXNhqcBI73700ANEpepf0Y9v8gSTNJtE2fC6pT99vfk4k6XnDSoYSJftwF/dt5noGxGYMSoLYHcPZfDMugQByZdoB1QuAlk8IcIcW/Y6a1q7BUGXJdXKRPuaHQM2HRnnjSFm4x+Gq200NpJMEFw9wy/AHfx+d63riBhciRcNXUU8ICmqC07IKXEw2paAro9eZTwMsoqxQmIb2qCqeMwEyCxxo/h283o7HBMetB+m0EiXK1ZsEeTxdUnFLkuQ/rSFKCb06nt7wciB9bHREBr6hI4ukNUjOY2Evi9Xm4CQ/VbHPjp1BpMyFKobWyLrJAnA/3BkFwT8bfB2t/diaP9LdndEkvZJhZ63Xv0sklrt+3SY8A2NrPHV1VCpIj9BWptHANL0pL0o/+bUs/6jtZZbKa6KeM+oCmRDrGO1z7uLl4M8UqRuXFnMeEHYS686cZd9KQHhNCUF6CJJiImVNP9f4cpYdeMFeFzJ2eQYks7Ita/KxTNnB8LDgOK0T9VrDC5jWRllGuLPuDCKXwJJysGIiYOnOlBguIqeB1bSmretgHLHQHuoC1Mpyuua6zuyKlNvqTHeyZdO0boVGHGL1+pzmb2vdTFeT1rRRxu/qow3fqacImGMMQT7HwhBCAJzqwhLk8FuT7M0CPXD5Zv7m5FDoubLuh0zFlUHRdhYfEjGLuWqul+WvoaEz73I07zfqPII1PV+Wr51cn18/sAbrddHJ8kYNZ9PDynZti+sXqF5BuDxUuNwzbtJEalfxTcUg8FlK6/gP+GqFkIKHeILrMMyNNUVG4paiTDdGc6mqbdxDbIykXH9Mnj0MOpltWX/T7dLFg6j8dG0ABlt7KKJFG2B0csCBxGXuW6xNMFfyQ1xnGm6kN5yJ1L5+YwtC2bN+aBQH+3zA05t2VUNk+tLz3QbIydd6yzgHZAk3vz/eMQf6jvRsxUlrysPwZT1OLWCiO1QQYK
+ paX8KceA
+ DIwf3W5x1meW0magtrHgwnPUMPczhAAvJHE0Gg9mR2SB5GnpTr8o7wCy0pRdG6MpF4mKjD7GN0EdKnelUCZRVggT9aIDAvcyNWCadSvbZDNiGdrf6vp2nGAmEbvEztqnfBNmrYmAjZiEqJ7VqFZlvaq0s9pnRsuq1IyyhnpbyRhsPVRpAiTAd5GLqFmJZXa95eTLOjvMZA94KQPqJexJmNQ62pOreFDzl+RRzFoeriLEnHWC/buKM+VEYa8xeNd3ENPqkyqjP2U8oEkD0mFPmMZtIPF5esNnQUVCvyu7+G5ohulm2xc0D5X/IrzewUh4hqtU1593M74YYLFkr7Y3MbXFX+QwMnUnwbmz98cf8baePkmawg8m92bFyBxeQXj3EdnxF3OSJxwPDaiNAw2iYc1Ba5Rq0tT74VMxfdOCx+MaEYlphyIe5g3rss/1kU2MSwuHjfqfuW97bk37xNE7gJT126sCma6lz5Fyyb79s8UcJNxhqQOW72cencRccU4iSBXjpxMsk6hBSMEe3R7qymmkNqQG1Z1S5e/kiEzDOS9XsDW3YAyDtZFj4vauc6bPTdroQVlUB6GaeAkVYfQnYa4elO1mBwbeLWtNmFoc1+4bCg5S4gj2+PCZzrLvieMXu8oNu2UN4G5dHM1T/n5bnyBDPOP3DdTDaKup/uoPQAGDQvCZsSSBJc6p2gWTLvUJWllZiw+Fq1hSomaX/zHi4pWlnwnlERUhKLHtTemUsFU9PVFQN4aHLjqIGoauz0yQz+SCIS/ZYv/T7MRLx0hMHk71gvJLlaWVYWilEIehCoOKhznDFSjhi8VFvdeHBOsNmY4CyGP4swU2ly4fihrdmv7/KbgONX4Ed9JduyXra3u+BOYKadqHvX5uNsYxrvNWC6DgHJnAOer2AiMXy+LPgs89FookqQGZi78Apw3ZTc2gwxmjLdjtau2TQ2HexRynHXOjUHUjeIfIwruuQdCeTr/Vm04Ys
+ 1KMpG2J7
+ DiygV5V23EGKyWmbOsrjNPGGYmFAmnMyUu357Ti9iJCl37JgGtHlvLwJROW7m3jzCXjJwUh+cvl/tIp6g3ioonfXP1l/8eBQa+FIb7mXd8QS8M1ZDcpNHSuRW/3VWKWN5su0Nzun4ucZYCndfdqaWB0m6lDpV28IMb7TaREy1VeBki6ZefPj4HGZLacT03jGGc4C6JbGelE2wR0f3X//QUuk+BlcJdFVMkZ4s+Hk4ZBKtf/e5flE49yz0en/HgNFqF0SXZuA87exzpCIhSbF8JJBSj1KGqiD/rUMtlaFSnHVw7ejoQuuemHOuqLsfXZ92Irc8kVLR////2umKGm2Tonv6X0wwxLYhnSQp5+Bx6d2CfslMwagJ15u44ifBg0yUSg078q4A14fiPkOFe6yIHA62Nm8uhi4HlQElagFk9VbvD7+fSV++GXm2iua5CsbIoqKHLnxTu+8SeoZ9IsVyc80F4O61sATBxkrc66uMbq/WHTw4lkRJ6O5ItXM8Gga0qOwDYYUtVXrI4AkwZkj1VsCa/FiBZOTaU57MUr+Odm+3e8OPTn+wyr6PyBnX0n3OyFZnMbWEr6LwuYlKrAulVY2wgCsn+X+eHSCauxgtrnCbikgRlyEFyt8fNNTyPrlAIXn7grWTbm8o2fI6RaMbI7Z6INWMEkzN+nWsNTmE/QOqBBivWgz4eBYgX0f3yDJZPGX2C7AosVuQlnHgHWT9YPQSL7dwCV4/ShwLVOQKbwvpsuzYSCHhg7iDVCvN9g/uxA9sSUms9cnSHJrjjWRi5ggaW3Z3ejxXpZjZKcugrLD5ROi99PrkhZID0PSODE+hfN/6+WRrrndp4FlKJIQ74eHqVKYiJ7iumWlZgTyZb1lNE1LtXWvGHyEMTeJZsxuRy1fmn9FzmjPx1obGzUcs3XIqGG2IZ5NcWEZNDcuYuLxcyLMA5mlScCfjj9DRifQNRcUnuQo/YQEvXsgRZQOGhuTeWyfu
+ SlKP6Pnq
+ 1H67QEhPg5yjfRLT2aCtBtkL7r+7FvJAJ+ztiLfL69SbQ0+ty24y+YqdzlRfx8xQjvL8+3i5/XfHLkNXOeWYUD+FETNc9S2RCq3gWOoyHEU4EQ86gC7/HKAf1TYj5qDr9tNitI5YR4Oq8QAA5uwJqItfci5C776O01s4dK3FliGynBpj612ngyo5n8Juo3QhH305yt3SQnKP4j1iYuUrtbiXGyr33/7Jgpvdtm7Bc6Bcv8Bk6DqJlw2OJy7wYdpqJy588jcah1bktiC4cERpgKRkxXc90O1TCe7lr+ciHEQzhXNjL0uVaLSn9V+3oJxMDegXQqVicON4oBlnCaribRHEmWi164xftOTdW+8AxM7S7RKCdhu/BJmvaclB0dsej7E93YYz+0W7nxopihY3f5LKXIhx1Gl1l+2GekbzYb2Xrte8Gut8+uFi4XC65c1cwLSQzKVh+U+hCpzdEexmoKNzrwhMuhxrOasDAvXZg0n2UxAAdksXnEHFedXRXLPas=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,123 +144,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 03:28:32PM +0100, Kiryl Shutsemau wrote:
-> On Fri, Oct 17, 2025 at 09:33:15AM +1100, Dave Chinner wrote:
-> > On Thu, Oct 16, 2025 at 11:22:00AM +0100, Kiryl Shutsemau wrote:
-> > > On Wed, Oct 15, 2025 at 10:57:26AM -0700, Darrick J. Wong wrote:
-> > > > On Wed, Oct 15, 2025 at 04:59:03PM +0100, Kiryl Shutsemau wrote:
-> > > > > On Tue, Oct 14, 2025 at 10:52:14AM -0700, Darrick J. Wong wrote:
-> > > > > > Hi there,
-> > > > > > 
-> > > > > > On 6.18-rc1, generic/749[1] running on XFS with an 8k fsblock size fails
-> > > > > > with the following:
-> > > > > > 
-> > > > > > --- /run/fstests/bin/tests/generic/749.out	2025-07-15 14:45:15.170416031 -0700
-> > > > > > +++ /var/tmp/fstests/generic/749.out.bad	2025-10-13 17:48:53.079872054 -0700
-> > > > > > @@ -1,2 +1,10 @@
-> > > > > >  QA output created by 749
-> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() reading beyond page boundary
-> > > > > > +Expected SIGBUS when mmap() writing beyond page boundary
-> > > > > >  Silence is golden
-> > > > > > 
-> > > > > > This test creates small files of various sizes, maps the EOF block, and
-> > > > > > checks that you can read and write to the mmap'd page up to (but not
-> > > > > > beyond) the next page boundary.
-> > > > > > 
-> > > > > > For 8k fsblock filesystems on x86, the pagecache creates a single 8k
-> > > > > > folio to cache the entire fsblock containing EOF.  If EOF is in the
-> > > > > > first 4096 bytes of that 8k fsblock, then it should be possible to do a
-> > > > > > mmap read/write of the first 4k, but not the second 4k.  Memory accesses
-> > > > > > to the second 4096 bytes should produce a SIGBUS.
-> > > > > 
-> > > > > Does anybody actually relies on this behaviour (beyond xfstests)?
-> > > > 
-> > > > Beats me, but the mmap manpage says:
-> > > ...
-> > > > POSIX 2024 says:
-> > > ...
-> > > > From both I would surmise that it's a reasonable expectation that you
-> > > > can't map basepages beyond EOF and have page faults on those pages
-> > > > succeed.
-> > > 
-> > > <Added folks form the commit that introduced generic/749>
-> > > 
-> > > Modern kernel with large folios blurs the line of what is the page.
-> > > 
-> > > I don't want play spec lawyer. Let's look at real workloads.
+On Fri, Oct 17, 2025 at 05:03:02PM +0200, Greg KH wrote:
+> On Fri, Oct 17, 2025 at 09:04:52AM +0000, Eliav Farber wrote:
+> > This series backports 27 patches to update minmax.h in the 5.10.y
+> > branch, aligning it with v6.17-rc7.
 > > 
-> > Or, more importantly, consider the security-related implications of
-> > the change....
+> > The ultimate goal is to synchronize all long-term branches so that they
+> > include the full set of minmax.h changes.
 > > 
-> > > If there's anything that actually relies on this SIGBUS corner case,
-> > > let's see how we can fix the kernel. But it will cost some CPU cycles.
-> > > 
-> > > If it only broke syntactic test case, I'm inclined to say WONTFIX.
-> > > 
-> > > Any opinions?
-> > 
-> > Mapping beyond EOF ranges into userspace address spaces is a
-> > potential security risk. If there is ever a zeroing-beyond-EOF bug
-> > related to large folios (history tells us we are *guaranteed* to
-> > screw this up somewhere in future), then allowing mapping all the
-> > way to the end of the large folio could expose a -lot more- stale
-> > kernel data to userspace than just what the tail of a PAGE_SIZE
-> > faulted region would expose.
+> > - 6.12.y has already been backported; the changes are included in
+> >   v6.12.49.
+> > - 6.6.y has already been backported; the changes are included in
+> >   v6.6.109.
+> > - 6.1.y has already been backported; the changes are currently in the
+> >   6.1-stable tree.
+> > - 5.15.y has already been backported; the changes are currently in the
+> >   5.15-stable tree.
 > 
-> Could you point me to the details on a zeroing-beyond-EOF bug?
-> I don't have context here.
-
-Create a file whose size is neither aligned to PAGE_SIZE nor the fs
-block size.  The pagecache only maps full folios, so the last folio in
-the pagecache will have EOF in the middle of it.
-
-So what do you put in the folio beyond EOF?  Most Linux filesystems
-write zeroes to the post-EOF bytes at some point before writing the
-block out to disk so that we don't persist random stale kernel memory.
-
-Now you want to mmap that EOF folio into a userspace process.  It was
-stupid to allow that because the contents of the folio beyond EOF are
-undefined.  But we're stuck with this stupid API.
-
-So now we need to zero the post-EOF folio contents before taking the
-first fault on the mmap region, because we don't want the userspace
-program to be able to load random stale kernel memory.
-
-We also don't want programs to be able to store information in the mmap
-region beyond EOF to prevent abuse, so writeback has to zero the post
-EOF contents before writing the pagecache to disk.
-
-> But if it is, as you saying, *guaranteed* to happen again, maybe we
-> should slap __GFP_ZERO on page cache allocations? It will address the
-> problem at the root.
-
-Weren't you complaining upthread about spending CPU cycles?  GFP_ZERO
-on every page loaded into the pagecache isn't free either.
-
-> Although, I think you are being dramatic about "*guaranteed*"...
-
-He's not, post-EOF folio zeroing has broken in weird subtle ways every
-1-2 years for the nearly 20 years I've worked in filesystems.
-
-> If we solved problem of zeroing upto PAGE_SIZE border, I don't see
-> why zeroing upto folio_size() border any conceptually different.
-> Might require some bug squeezing, sure.
-
-We already do that, but that's not the issue here.
-
-The issue here is that you are *breaking* XFS behavior that is
-documented in the mmap manpage.  This worked as documented in 6.17, and
-now it doesn't work.
-
---D
-
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
+> With this series applied, on an arm64 server, building 'allmodconfig', I
+> get the following build error.
 > 
+> Oddly I don't see it on my x86 server, perhaps due to different compiler
+> versions?
+> 
+> Any ideas?
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------------
+> 
+> In function ‘rt2800_txpower_to_dev’,
+>     inlined from ‘rt2800_config_channel’ at ../drivers/net/wireless/ralink/rt2x00/rt2800lib.c:4022:25:
+> ./../include/linux/compiler_types.h:309:45: error: call to ‘__compiletime_assert_1168’ declared with attribute error: clamp() low limit -7 greater than high limit 15
+>   309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>       |                                             ^
+> ./../include/linux/compiler_types.h:290:25: note: in definition of macro ‘__compiletime_assert’
+>   290 |                         prefix ## suffix();                             \
+>       |                         ^~~~~~
+> ./../include/linux/compiler_types.h:309:9: note: in expansion of macro ‘_compiletime_assert’
+>   309 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>       |         ^~~~~~~~~~~~~~~~~~~
+> ../include/linux/build_bug.h:39:37: note: in expansion of macro ‘compiletime_assert’
+>    39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>       |                                     ^~~~~~~~~~~~~~~~~~
+> ../include/linux/minmax.h:188:9: note: in expansion of macro ‘BUILD_BUG_ON_MSG’
+>   188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
+>       |         ^~~~~~~~~~~~~~~~
+> ../include/linux/minmax.h:195:9: note: in expansion of macro ‘__clamp_once’
+>   195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+>       |         ^~~~~~~~~~~~
+> ../include/linux/minmax.h:218:36: note: in expansion of macro ‘__careful_clamp’
+>   218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+>       |                                    ^~~~~~~~~~~~~~~
+> ../drivers/net/wireless/ralink/rt2x00/rt2800lib.c:3980:24: note: in expansion of macro ‘clamp_t’
+>  3980 |                 return clamp_t(char, txpower, MIN_A_TXPOWER, MAX_A_TXPOWER);
+>       |                        ^~~~~~~
+
+Missing commit 3bc753c06dd0 ("kbuild: treat char as always unsigned")?
+
+Cheers,
+Nathan
 
