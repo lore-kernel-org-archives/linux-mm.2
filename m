@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5609CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A76CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E0DC8E0088; Fri, 17 Oct 2025 16:13:13 -0400 (EDT)
+	id 1CF578E008A; Fri, 17 Oct 2025 16:13:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945228E0078; Fri, 17 Oct 2025 16:13:13 -0400 (EDT)
+	id 12C5B8E0078; Fri, 17 Oct 2025 16:13:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809268E0088; Fri, 17 Oct 2025 16:13:13 -0400 (EDT)
+	id F0EED8E008A; Fri, 17 Oct 2025 16:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7878E0078
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:13:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 210C113A78F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:13 +0000 (UTC)
-X-FDA: 84008705466.02.490E58B
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 391BCA0007
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zCVq6KhS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of 3VaPyaAsKCLQUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3VaPyaAsKCLQUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D908D8E0078
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:13:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7A921A02AB
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:14 +0000 (UTC)
+X-FDA: 84008705508.26.8CEFD16
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D2D86A000F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J3MnXqvw;
+	spf=pass (imf25.hostedemail.com: domain of 3V6PyaAsKCLYWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3V6PyaAsKCLYWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760731991;
+	s=arc-20220608; t=1760731992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZ34d+VZkuHwS4Tl5hmiFloUpUjtvLj/jsnwlnFoI8s=;
-	b=W/jXiy+pnYa6jYDnfrEqkgNi61sx2SuOqhQTKu1koEr8MeAzqA8ZYUSUZxy7RjNa2q/g3g
-	r7kHVmv/skOGUqE/8uUXxXZtdUhVbdLA5PHJjYfYsjxepR3mHmt3YRPe+ECjll+rjcBZrw
-	R0gRT2WpVU1NqQbjNd76igIS0kVKtFA=
+	bh=a410UVUkGWxYqDToM9eO24m2S1wWqIP4ItBf1At6t3A=;
+	b=EfnL3LaRr5dGVYYgGXIuT/idY+GEqPb0bFRVwoS+/9/e673y88T95P9XPRKgfTXg22dhzD
+	PQRMLpQ11MQ52xLYvhtHg14jpqNwmZvL2SKg98skRXvUBi4MwZ49dtQgbUayrRuC1nW3Qf
+	3DsaQ8OWNe9d3SOU+L6FYX72ubyYk8A=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zCVq6KhS;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of 3VaPyaAsKCLQUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3VaPyaAsKCLQUWeYlfYsnhaaiiafY.Wigfchor-ggepUWe.ila@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760731991; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=J3MnXqvw;
+	spf=pass (imf25.hostedemail.com: domain of 3V6PyaAsKCLYWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3V6PyaAsKCLYWYganhaupjcckkcha.Ykihejqt-iigrWYg.knc@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760731992; a=rsa-sha256;
 	cv=none;
-	b=kdm0NeSjMa7WOgZxa3HNjKrk400KJb4vgCKIAtrUmpMAiO6PQidxMNGSmhdGBzImqpUCdg
-	q2AXGAYg+bWZEa5QN7DIkZLjOhLCYUB9EhbEP3ehDh/mEOEz1Cg/BnNvtjzSX+0/tKkdqS
-	YBP21f9yCVe1PhJReowoEy4SDySs35w=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33ba9047881so3096537a91.1
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:13:10 -0700 (PDT)
+	b=WhyzU0II0wyeZBVvp78q83MNcmuCdUeF5BqRuLae4uJ7/gaF8IZjjtR0RYQRbw+/iOaiJg
+	LX789jGl1cFjcKEEsXf8zP0iZ0v03baooIPmHnKmM3jKVQZux9qWdiGtgMcxezMYRW7T4T
+	zMqJh95HAgxWqVH+TRQisA9xfA+qAdI=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-339b704e2e3so2392718a91.2
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760731990; x=1761336790; darn=kvack.org;
+        d=google.com; s=20230601; t=1760731992; x=1761336792; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZ34d+VZkuHwS4Tl5hmiFloUpUjtvLj/jsnwlnFoI8s=;
-        b=zCVq6KhSy2YF2i9PjXiTW/HoPNF6lpVQXR1BttNYu93gmlmE+lkQ5ni5FXcrSra1Ed
-         yeQEnK4vrjXmdkZD9lnsgOr2zpJWmWE20zmD/vMxHch7ODWrw5fd7O1w+JtBBTwgqdTv
-         yah4+tdBOaChNvL3M2qvzAEwF2ILufFynKPENrMP69lZh01WkJqsqQ/DDpSklLk6R6cs
-         yKAIqzJg9rh5sgTQbBpOiROyqGJaVz+RvGzvWu5WxxfO2KyAamqlhLkx+fHJL+9rh1k4
-         UK0s/T6UFm1wxA4AnnOrGjHpx0LbTK2z+Zju6g9QI9REzSwRZIRED4DWfjtxmFBy95sj
-         qW0w==
+        bh=a410UVUkGWxYqDToM9eO24m2S1wWqIP4ItBf1At6t3A=;
+        b=J3MnXqvwJt76xc3p9EB/zLBJcN8a14/yonrnwqPPiV4kc7X8Rr5uwwlaAZ/PXa+jbY
+         0IwrGxHBlczY5mspGaBz7EgsJ2dwrySn1nxzNFO7LEs5SJsoCkTND/F+zOKLK07S39Qs
+         z3C+XRyBrkp3N3BPH9VQKh3i5BWM8tXrDHJ2MhWeRwwqitGi+UaxONDRfpDypErPUJna
+         EcNCveRRgfIYELrQ9QvtwNjYsoCEvjA93sg/tyX6MvWQ8HvyvwnunA45t2oRXuC7gvGy
+         gyK9SvemVG6qHR3th3xo9Rvw/ybppW8tQ3gA+sQjwht/UojKquZKyMo2SyFpJdoHZKXM
+         ztbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760731990; x=1761336790;
+        d=1e100.net; s=20230601; t=1760731992; x=1761336792;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZ34d+VZkuHwS4Tl5hmiFloUpUjtvLj/jsnwlnFoI8s=;
-        b=CkaVh8d3/0Carw6zp68rCePU+A1cpQUdJD4gUUk9Om8PhPFLSVomo7ywBzx46JQkMO
-         EqrfbeXnnjph1gWC2brvPuSvO9G46cR+iQS8KY45+XWkQF1u1ihZYtfyT8inRa7zTFZ5
-         yOP+15ktSQLrb+FrVhKsxkl7kpyVpr5a2IlpDmpsN29qL6K+SNmvJf6eWMqhGFq9aC0L
-         IVNzyL6m2jcfgPePJMGmqgvPQPj0S5bx4j7blECusLCj0nUOu0W36KjjsGk+3tLy4d51
-         K13wtmG2CrKR+GvQLyD/MWNXJNwQeFktcc6eJ21Xis7Lvux5SoyY2wEUWk3Qz8dfU5wi
-         VpNA==
-X-Forwarded-Encrypted: i=1; AJvYcCU70oqCg+uLWDl8fgsQIELM+nIxPfVSiAYp9yBX6CTF1X7smGYNZ+dtWXZsrVPugQUC9dT7+xLD3g==@kvack.org
-X-Gm-Message-State: AOJu0Yz9wZka2HVFnNYrxdWj4nqaR5wBrGaNgUZnak1/+KX1iSQlyjjJ
-	4U1MGzyrBgcdT/zrEK/kPoxMe6GUejrhGc6BLYF1xIgMQ5GbiPk165RcNytxEIAxl4zUBdCqcLX
-	M61FxzYEgBsEqpPX76hn+lb0Wqg==
-X-Google-Smtp-Source: AGHT+IHzx6Q3hHG57ljkrAP15mW/fSli8KOfzlU9yowcOYAMM7uKRQLpZuKh9dqK1n26N00k3XfO53kYXQVOFNP6YA==
-X-Received: from pjbpj3.prod.google.com ([2002:a17:90b:4f43:b0:332:4129:51b2])
+        bh=a410UVUkGWxYqDToM9eO24m2S1wWqIP4ItBf1At6t3A=;
+        b=RzpGpxntsh0DVKgT66wBMaM4yyu3QJfzQpeG7A+0vGh6e3Lu6onRqTD5rZJd+w0a2B
+         Vr1dwxwir/fId4VWz6lY3sLwN+PmEX5i2KVhf46wtnsglBAZLBoDYfbKvNC1FAyqkPwc
+         ODTMU/BHKAkb4YWLx5gkIFU9GRCSeBgDxRsROoCjpoFyGLPvPA1r07HmZrZMV3bNGDVS
+         lL3jFlSzatsR2d+Rq7z3fshA7U4d8TcW2AAKimrL9vXfjYAWlHKVGoCBoIbphqA4ZJwT
+         uI/kVjGgw5iSsTuO6IJoEw4DCpFOpF0SDzd4MM/QtuA2LExA9OPfVCb0+ULGVo64bNiQ
+         sQgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQTJB23xTT2UA79n+R6/HorQviI5ITWDJ5wF1cPN/nhMJgNltIkmE4xlSK1Fn0mfjMMMGFEeEI0g==@kvack.org
+X-Gm-Message-State: AOJu0YxmqxpDEqB/dJjOpD1pNeezVkugxpAGSCs32QTeDqUqMVWzhyih
+	kIwDDJncOqUDTtXO911uYFLYeurvVqHSgI9wO9YL/OaTGvKcwW7s/BTpuCx+28f3+V8cGECD4iP
+	ufxPGPkquSLufmTLkmvDfdgCBrA==
+X-Google-Smtp-Source: AGHT+IHRvzzwMR4y0ztHkD4pksfFtRgb0k5+ziur45rOES6dge9lLW63A0tWR3m6aINjc/jUiO+gZmGPknwu1Q9I7g==
+X-Received: from pjpx13.prod.google.com ([2002:a17:90a:a38d:b0:33b:51fe:1a93])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e7d0:b0:32e:23c9:6f41 with SMTP id 98e67ed59e1d1-33bc9b8dd13mr6981801a91.5.1760731989968;
- Fri, 17 Oct 2025 13:13:09 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:12:06 -0700
+ 2002:a17:90b:1dc4:b0:33b:ade7:51d3 with SMTP id 98e67ed59e1d1-33bcf8f78c4mr6385553a91.20.1760731991624;
+ Fri, 17 Oct 2025 13:13:11 -0700 (PDT)
+Date: Fri, 17 Oct 2025 13:12:07 -0700
 In-Reply-To: <cover.1760731772.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1760731772.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <00b93a008a75a345f71b61ac67a2ffa068bc67d7.1760731772.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 25/37] KVM: selftests: guest_memfd: Test that
- truncation does not change shared/private status
+Message-ID: <bb336979b10ee5b9c6b3c3934ec3aff19330b3e7.1760731772.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 26/37] KVM: selftests: guest_memfd: Test that
+ shared/private status is consistent across processes
 From: Ackerley Tng <ackerleytng@google.com>
 To: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -123,14 +123,14 @@ Cc: ackerleytng@google.com, akpm@linux-foundation.org,
 	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
 	yuzenghui@huawei.com, zhiquan1.li@intel.com
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: zfud7pyjjudxuuyku5eiowuxj6zozd94
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 391BCA0007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 59jcbd9xcfee56daesidfxxuyyx71ajh
-X-HE-Tag: 1760731991-799242
-X-HE-Meta: U2FsdGVkX19aJto2F2nuAVrJ05p1TlLzu2Hn0rkleKkF4NtzXpvNCAfwMuptNYBLOEdWu/MonSDTFYZB7A7jvweE/5FmmeScp4LMg7ncWfbUb3rwjUZ6h7VS4LBfQkWm84vC+86YiaHppPCihpJgmsaTf6M2WoapUQHftcus8ajE+uarE7jffKFyPkky5YcYhDo16YG33CLUikos5XX09n4IrrLxx5goVsQiR+5E3nP15gyuk3hbqN45hT6UgLBO8lArT0HLOSvi4K3Jh6Eg0t8joo04HBsjf0Pmi8qJ/2JFdEOeMblJJ4T6L0ENP2UkI7iywF2h/fbp1kFL3uBuutU9lMF7Z74PgGLhrhH4aMXQdrwohReRlRGmqqE0cCGlWx1Q5r3Kg8gVw3hM2XftoLGfP1mz3Nsk5qktkC51KIoJBl7XKpKfVxuC2WRyJgCr46ThPLYvyddKO9tMMkgK0PrmnNzZluLWuFZgQg7BzmQ2W2u7Iseevze5yweQz+Kr8JWaOzqmb6NAHQS2pC5kxa5GKhNt/8bY8frQpp6fVu5UCjm/zaQy4exPs8E/ntG+zEWhxaub+eIJCjyWCgAUtmAqe/DFf5zs8GGcKWKyJWnf6JLl/K7wLNLl0rEvdtyOstaAHOFo1Q3gYpGdTxZfbb8HPVdBmM0taxYu5q1amTbqRlo0cL81V064H6ERLcje5zliENpp9qpD2Pyy7BRsSygb3c48uPC0YHer6acoXfOmPrEw9LtXcDWs7AnWKazcigXH6yn9Wm7FB3akRHx9YklbAdBrOmu3oYkCU4Cta71jjiXd4HvihdqMf6+FGgbRwOGsB5kVduTMND5Ir7EwuaOl2zB3aus2gtxEHzyaDP2H3gAIND+koGUp+Yx3iibxss3rf5YwDTkJvFJmWi6DvbWhZPItmQCDvbIuffp+6bMTweRJvcK9gE6tL1wN19kwx9ZBMLdtxJfWfwDk1Fq
- XDkGaNWI
- TF6x4Bd08MLccOcvBAVH5/ae1fQFhEhVRP7xx7hLkjAaGgQCJBDvER1HMkGvA+IPgghPGYgFKNkz0nV+PK/cY4pIV2ztjJk6EGCHA/BYT37jFTrZ1DU8Y/Fw1SrfU5dP6kjEUKnqezLALXhmmnfYPiLQ/6suJ7y7uNg5SfAF8Ev7GoMeJQ0UnTrfPndDBD/CvQ9mdZIaUq84OheSUhUkMyE1tHHSbZrN9C7O3SF4JLn/YY9GRqs0tI8xO+zicR2W5QOftPsETPd4BUi6Rn5MIiGrjBthKwEjGVoHsAnXqenP/8IJUvW5yeVOgW4BPoXpunxl7hQ31SoD3KZ29NVeWF2ioanp/Z2BN0xyr4CDwMdIhjx47u96nXYmpHCcC0T1xtuCTdN6PptjkB8UWrveG8tlwHe5FBincxPXdvwiwKZFZi78YZGNtcSm4GFeroqXqP9hxRvaNqoRTzql64dkcvxsuhEh8h7uCZzlsOwl3oouxiGgsubLfeHkCeLXKFkKT9fksPWQyVp0EqkEoLKMTSPI+eLQQcjUipfJMiDwiZaaN6ubpKVXKC0qdtA7ZgU+WGzcSYU3XFSi1ADUpM1wbpqix+i5y1aKm7wHDC8fw7OS6QRnj8z6vAGOwNP2IwEAE3WQOUHQJfqIrLcCR6riCKMngdtCKk/LGaemqtqVmmk+NX3Ua4yyylrPZXYkySXwQn00TTPzamT+PMZPAKUt9Ydfu4DXcrW98QqqvwegCP3morfE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D2D86A000F
+X-HE-Tag: 1760731992-745295
+X-HE-Meta: U2FsdGVkX184nn4BQgR9Q3rE02jPgmu6bFmFrglR3ZKAQAmUn5ycEqTC1/ZgVM+1eAnuNEMrgfpPaTlIEkq0hDS9pdnbsXLWww7sS6rjA2N3H1GHnzJjf81PfOhTbATWw5aAR2UAXOMm+wKTSURVc+gCEIA7BGTdwD5vsyWRe6kCjPnhb0HVszuN8rrFVnPdE2adfG+OQmFjbq5B3WuEaloJbV+tQnpk0ghMYK8KHmE+8swKwawe3x8I0KoAF84dTTJwCuLaMZd5cViqqjjXPJdoYEa7EhFADihi8Pr8k9iosMT8G2lLCkyltZdxbKfV7W6zXpKcm8wxzQkmSU/0chV4w74laimeTEr9oDHdM+cdsWZtK/rSYqWRpBJ2ENQx3y1p/KcmgsrcheR/TlbwRKzOaNKSb5tbmGEz2S7bHRbPnryMlRmef48N7iNeStoRIFxPD4hMvyKo0HhhKMdP+oATTkAlnWSlBp12N9L6qHEi8CWVGqMDttreVjkTDxZO3EOQr3ax+lO47URvIPQuft7HVrf+ZxRFuWVErY9EtaQUMWAwrgg+dTDaq7H8XhMcAe9pKIsMHKVMw8yfEWirLF4i53/faJ1W2zkF/e7T3gN1x0E39pcVMnycecJWiodaopVyGqmVK5CcrR6NLlaWxSX2FU2cVsL3xOoEDRv6KxqhcfNuIirCnAfXWIkiWTesYZmOzb/1gLJ/O4Xe5CcbmRY+DTQ1Vs+HaG/fibh5xn2C/T2PJfJZ8YpzPcdWZvec3JB0JPLrtWFWjHPfknx39XvO5PEFLXE3YSqn0sSD4S4Pzi+vwyu/YBPieeSUiTyKGZFZnn4XQJXHA7/OfVZzmZlJB2GdqbMqynGrfvX3ArcGkk7f7iBiL6yTvR6L6qR2np6ZZnMos9e07+5+Aj7EDfzoeq7/485OD5rEPzEzUgR/tsMbjj8ea1Zop4fow0O5xdPnvJiWwWQ25yhvuEZ
+ MXdtwBLw
+ aQik77xpDkZHVEzpsNg8pYCJnKvxkto7NBXOkVEOSMKJ/a6EERq3dsIreURtcbLMkyErHi584dwb06MWfyy7EEA74E2fbQXI8hHG5MI32ChHgVqECY317rXmzY4Wv61xwrT1ggREClwQkbAY9BgTrxM6HVjBt9EgVNTrf9e56jrK8gUjv/In2EISo/4YXN9W5t8jBAcKvisyqje1ZvJpyTTO3MKuPAw83chCl7ML3QZmVDsTKscumyLl6MLv00lArGRqM3hT4dCgxg8BxuOqQd5YRQviKIDDa5b4nurn+Zb7PZ0YsqO2rzVBYJFWFqTAokpA1JuH+zSrqLEVo+InVK00h+TyeCz/lDioDD0JMPlek79ZfsRcXZtn6MQTSxCTIqY6ybYcU5grVn+RcYgQXl5uSfinKQW/0lvUfbP94oM4HatTc4Yy0NZVfcONmqIk3OnPcbxh4hUOrbhjXS+mpPyegnSJfEKF9AmBYiLrbHqxh30Q8gopvVob7JMT36EtsF9hUKpyttXEip8CEcPguRtXJ6fgwaJb0pS+hAEf0EoJekuB9SWywtz9IeElSoGb3G6BqiSwewTn9j1vHsevdi/X5vaN/9XiN5TwlhmaFN4OlkKpNzzTYmi9nVmih6+DszCeOGddNOB4nxw72fOkkoqvO4+Gnssmb+yEuSgvFqNZ+a8hnTCPZRFrQXhJtfFyPtORx9gNrqPZ/zWBMLeeOqW4fZgEeS4BvOZ5JjFfwQu6Cz4Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,49 +139,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test to verify that deallocating a page in a guest memfd region via
-fallocate() with FALLOC_FL_PUNCH_HOLE does not alter the shared or private
-status of the corresponding memory range.
+From: Sean Christopherson <seanjc@google.com>
 
-When a page backing a guest memfd mapping is deallocated, e.g., by punching
-a hole or truncating the file, and then subsequently faulted back in, the
-new page must inherit the correct shared/private status tracked by
-guest_memfd.
+Add a test to verify that a guest_memfd's shared/private status is
+consistent across processes.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+The test forks a child process after creating the shared guest_memfd
+region so that the second process exists alongside the main process for the
+entire test.
+
+The processes then take turns to access memory to check that the
+shared/private status is consistent across processes.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../selftests/kvm/guest_memfd_conversions_test.c   | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../kvm/guest_memfd_conversions_test.c        | 74 +++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-index 43efe4af1403c..907d415d72315 100644
+index 907d415d72315..e6abf2d30c62d 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_conversions_test.c
-@@ -10,6 +10,7 @@
- #include <linux/sizes.h>
- 
- #include "kvm_util.h"
-+#include "kvm_syscalls.h"
- #include "kselftest_harness.h"
- #include "test_util.h"
- #include "ucall_common.h"
-@@ -316,6 +317,19 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
- 		test_convert_to_shared(t, i, 'B', 'C', 'D');
+@@ -330,6 +330,80 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
+ 	test_private(t, 0, 0, 'A');
  }
  
-+/* Truncation should not affect shared/private status. */
-+GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
++/* Test that shared/private memory protections work and are seen from any process. */
++GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
 +{
-+	host_do_rmw(t->mem, 0, 0, 'A');
-+	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
-+	host_do_rmw(t->mem, 0, 0, 'A');
++	/*
++	 * No races are intended in this test, shared memory is only used to
++	 * coordinate between processes.
++	 */
++	static enum {
++		STATE_INIT,
++		STATE_CHECK_SHARED,
++		STATE_DONE_CHECKING_SHARED,
++		STATE_CHECK_PRIVATE,
++		STATE_DONE_CHECKING_PRIVATE,
++	} *test_state;
++	pid_t child_pid;
 +
-+	test_convert_to_private(t, 0, 'A', 'B');
++	test_state = kvm_mmap(sizeof(*test_state), PROT_READ | PROT_WRITE,
++			      MAP_SHARED | MAP_ANONYMOUS, -1);
 +
-+	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
-+	test_private(t, 0, 0, 'A');
++#define TEST_STATE_AWAIT(__state)						\
++	while (READ_ONCE(*test_state) != __state) {				\
++		if (child_pid != 0) {						\
++			int status;						\
++			pid_t pid;						\
++			do {							\
++				pid = waitpid(child_pid, &status, WNOHANG);	\
++			} while (pid == -1 && errno == EINTR);			\
++			if (pid == -1)						\
++				TEST_FAIL("Couldn't check child status.");	\
++			else if (pid != 0)					\
++				TEST_FAIL("Child exited prematurely.");		\
++		}								\
++	}
++
++#define TEST_STATE_SET(__state) WRITE_ONCE(*test_state, __state)
++
++	child_pid = fork();
++	TEST_ASSERT(child_pid != -1, "fork failed");
++
++	if (child_pid == 0) {
++		const char inconsequential = 0xdd;
++
++		TEST_STATE_AWAIT(STATE_CHECK_SHARED);
++
++		/*
++		 * This maps the pages into the child process as well, and tests
++		 * that the conversion process will unmap the guest_memfd memory
++		 * from all processes.
++		 */
++		host_do_rmw(t->mem, 0, 0xB, 0xC);
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
++		TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
++
++		TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
++		TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
++
++		TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
++		exit(0);
++	}
++
++	test_shared(t, 0, 0, 0xA, 0xB);
++
++	TEST_STATE_SET(STATE_CHECK_SHARED);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
++
++	test_convert_to_private(t, 0, 0xC, 0xD);
++
++	TEST_STATE_SET(STATE_CHECK_PRIVATE);
++	TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
++
++	kvm_munmap(test_state, sizeof(*test_state));
 +}
 +
  int main(int argc, char *argv[])
