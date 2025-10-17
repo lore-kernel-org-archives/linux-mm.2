@@ -4,246 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C960CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7A33CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 14:36:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8E318E003F; Fri, 17 Oct 2025 10:32:37 -0400 (EDT)
+	id 1D3DF8E0047; Fri, 17 Oct 2025 10:36:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D16388E003B; Fri, 17 Oct 2025 10:32:37 -0400 (EDT)
+	id 1833E8E003B; Fri, 17 Oct 2025 10:36:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACD0C8E003F; Fri, 17 Oct 2025 10:32:37 -0400 (EDT)
+	id 0C0228E0047; Fri, 17 Oct 2025 10:36:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 879A88E003B
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:32:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ECCA98E003B
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:36:24 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3EBAF1A0214
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:32:37 +0000 (UTC)
-X-FDA: 84007847154.17.4880395
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C847414000D
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:32:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Q73qeB59;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jGl9TSo6;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760711553; a=rsa-sha256;
-	cv=pass;
-	b=vz5tE8+2aZeZT0b4LORK4dBFFJ0d0O/HlyRYRscmHGcail5X3Z0K9tNK6yBlHzhesL2vp9
-	qbwqaQD6x38uKYgeUm1RlqR2egT6vOweFYY3lYKjhx6+L/foPQE69G+JshQOTfh/Htp7p3
-	M3w1bLjgs/qEOd56K6aOL6A1h0qY7uM=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Q73qeB59;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jGl9TSo6;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760711553;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B16541DCC31
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:36:24 +0000 (UTC)
+X-FDA: 84007856688.17.5323BD0
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0B3EF14000A
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 14:36:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760711783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SNTVvqY3KSKVp8CVvSJq1X3ZpFlyhLREguTCkXPefyQ=;
-	b=YiQVB9kXEMhJNssI0r8MvgFKjQx9tw/pSfb7Mykvpom6w9140MsTGVSAyCuJJT+o0iYbw8
-	/e2fQk6MJQ+QE/yOqcGwUi/MewWpV+neCG+j+1d99pYmZalq2BJ5g79aEOg3kYsKkOTR54
-	SZuQaxG0bWre/cVfFr9B4Qg2TeGbcrw=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59HCdals014041;
-	Fri, 17 Oct 2025 14:32:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=SNTVvqY3KSKVp8CVvS
-	Jq1X3ZpFlyhLREguTCkXPefyQ=; b=Q73qeB59E/43J1VNQ7u0JwW/TOH7s7iG4/
-	rZc2eJb2QslqAY3av0+xeFlSgyb8JbOSikEVfjdTmeDNb+DGvMFFk3YpgU+uS3tL
-	y8fr3Bm5JRnasgwnsP6T1rkY4WwVYd2Q6vcwxnX0bNznY3ELKnydVXHHlQYwI2qK
-	++Ni9LH8e4GKxB0LTLELrEsYQNN07pVXoapaqMMm8cO5JIzD+vug50cg2Rsz+vro
-	pkxwEseRZAaNeJP3Tl3u/EI0r/Z1i5mgIqASOJgz3OuXgnqE18+HrKeXQ5tA5pKM
-	1ldW/vRv71KhU6SfpaDDM/xptiMG5GhjksZdKj/+/9cM9f80h1zw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49qf9c35gj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 14:32:20 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59HE4F7E002310;
-	Fri, 17 Oct 2025 14:32:19 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012038.outbound.protection.outlook.com [40.93.195.38])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49qdpk5atq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Oct 2025 14:32:19 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LbCEr/5XLDJiB9DF7xkrBT/RWA5fIaMVE2DHcXMoIpVvhxl9+ZcbfR3SBf9DTeTlaFKd7lx7ZeJ6a9eoErpipBwRiIu4eBTOMJu4L4iyiA5FpDHk4nrIYabxh9iBOJN37RIfJP4QdFFE+qu6XJUoRZWgWQmTC0EygC5VPPg10T2BQHTBkCz6xJs9yDg123q1bDOyiLdAv0SVepnecu1JTPZLl2WwQ6Sk6naAON2kA4BcgZ2KFtxfqkcozIPaqBDsQkvN6Lge3jMldOkVFetfY4hQLzjV6ple2sb0SXJh4ct1k1Lqwr5c64sJG/k7IARZo7YxIitUwGiKcQ96cqhCOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SNTVvqY3KSKVp8CVvSJq1X3ZpFlyhLREguTCkXPefyQ=;
- b=JZ9diY8qfCbEhtPMcnQikkE5ddNXxQziQK1XYQ6KFbSPE/qQ+wnsXoMXu6RwqmmxEdUhqGEmDHjLyuos6th+NIwlas6aTb903LQfhEOiNwM9pg994Cm+zZ0O9mrRwXxKT7gJ6upyEXVw6ah5d/jSDo2oAowsywXd52VjCMKUWe2hIyLhuMUdamFDyjUjePrCN9sfAQhtRITSa+r28LSWUr9nS4ZlvSRD96J7p32CMzh8/1nLYAu9oD+Znp1C1yrraGF5ZVpBU6zh8sTc7cvZ7RwoKyT4SvAUc5rNzqIltF+Cq24a/b8gekad+3y+3rVqfAwtfk4HbHuqQCsxlBHI6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SNTVvqY3KSKVp8CVvSJq1X3ZpFlyhLREguTCkXPefyQ=;
- b=jGl9TSo6UGTn+bpyprfNVN30XVj0LYr2nvtMBFaOpvzdlQcEnvxbWiQahvYwQNfdm2sn08Cpd1/prmEMtyD72CEqxYvzz1UQdmG7dxeNpIaepwjgIAa/nQdfucVYdtAqnknx54ZPkOC9i3Iy3RHYNgxJkLQzLKfttU6cJsR3g+A=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH3PPFDB63D4CC3.namprd10.prod.outlook.com (2603:10b6:518:1::7cc) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 14:32:15 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
- 14:32:15 +0000
-Date: Fri, 17 Oct 2025 15:32:13 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Wei Yang <richard.weiyang@gmail.com>, linmiaohe@huawei.com,
-        david@redhat.com, jane.chu@oracle.com, kernel@pankajraghav.com,
-        syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
-        syzkaller-bugs@googlegroups.com, mcgrof@kernel.org,
-        nao.horiguchi@gmail.com, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2 1/3] mm/huge_memory: do not change split_huge_page*()
- target order silently.
-Message-ID: <557fd56d-1a4c-4c65-8db6-34546c9ce8be@lucifer.local>
-References: <20251016033452.125479-1-ziy@nvidia.com>
- <20251016033452.125479-2-ziy@nvidia.com>
- <20251016073154.6vfydmo6lnvgyuzz@master>
- <49BBF89F-C185-4991-B0BB-7CE7AC8130EA@nvidia.com>
- <20251016135924.6390f12b04ead41d977102ec@linux-foundation.org>
- <E88B5579-DE01-4F33-B666-CC29F32EEF70@nvidia.com>
- <16b10383-1d3a-428c-918a-3bbf1f9f495d@lucifer.local>
- <9567b456-5656-4a48-a826-332417d76585@lucifer.local>
- <FEFDFFAF-63BD-463A-B8B2-D2B2744DEE2F@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <FEFDFFAF-63BD-463A-B8B2-D2B2744DEE2F@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0021.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:151::8) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cuKjCkzehuBLP/u773WqlHFZYm3QCk3WwLmJemwyh80=;
+	b=JUhCrvwFwhuGj5gMHQandmr3tKh3L4HVdzeIjywRna+SVVWugZ8jiYKuHIX21XMOvKm1gR
+	HuB5h8DWE+J2MXQsnX0xhRXKbraKmvfPAv53ByvrhdpbAwn/FThzmqTXKmqQWCvXzzNw/e
+	zosEoeb8/bSClsoTYci7hF6Bos5CBgo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760711783; a=rsa-sha256;
+	cv=none;
+	b=vmv2VpTZXbJDjfqXRi+FW2EZnKQUgiHhYJpDr12TyX3sKsi1+aInq1P1qermaoliy3MZnA
+	avL0Vik1+bDE41wF8VXpuOiqZQWPxE6wUrIIWvsHAwCGUK1zVIg/U7eRim19Gp0qdmoZyi
+	GczYWPLqre9lJryJZR+tkGr3h6ato8o=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cp6kQ1HMKz6L5Dj;
+	Fri, 17 Oct 2025 22:33:18 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id A2C5B1402FF;
+	Fri, 17 Oct 2025 22:36:16 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 17 Oct
+ 2025 15:36:15 +0100
+Date: Fri, 17 Oct 2025 15:36:13 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>, Wei Xu
+	<weixugc@google.com>, David Rientjes <rientjes@google.com>, Matthew Wilcox
+	<willy@infradead.org>, Bharata B Rao <bharata@amd.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
+	<riel@surriel.com>, <sj@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
+	<yiannis@zptcorp.com>, "Adam Manzanares" <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <20251017153613.00004940@huawei.com>
+In-Reply-To: <aPJPnZ01Gzi533v4@gourry-fedora-PF4VCD3F>
+References: <20250917174941.000061d3@huawei.com>
+	<5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+	<20250925160058.00002645@huawei.com>
+	<aNVbC2o8WlYKjEfL@gourry-fedora-PF4VCD3F>
+	<20250925162426.00007474@huawei.com>
+	<aNVohF0sPNZSuTgI@gourry-fedora-PF4VCD3F>
+	<20250925182308.00001be4@huawei.com>
+	<aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
+	<aNzWwz5OYLOjwjLv@gourry-fedora-PF4VCD3F>
+	<CAOi6=wTsY=EWt=yQ_7QJONsJpTM_3HKp0c42FKaJ8iJ2q8-n+w@mail.gmail.com>
+	<aPJPnZ01Gzi533v4@gourry-fedora-PF4VCD3F>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH3PPFDB63D4CC3:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b139f6e-eb32-41ba-e4df-08de0d89f812
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?g0LXv3e116tesfThWOUrm1BIhYBVNdNLg/5FX+RxFslpTLjX31An1aOsp7qm?=
- =?us-ascii?Q?t1RBjSWbDl0PHGTKQ0nnzTphVa7qBtPgZBXsTtF6NrNIk1v1xx2+yhFgCz8N?=
- =?us-ascii?Q?9fA99Ye5WU3s/So1c2cS4ElTElMzvK3pU7BminEVaarznJCOzHDTUF6q7xTA?=
- =?us-ascii?Q?dAfH0TZxnVDXz6Hrh2F5xLoA2ztrGFmozJv/u/BMduaSB6qsoQKuLwlYAMRv?=
- =?us-ascii?Q?k3dxQrs7gTRhmMBV6EYCpCts9Xn5cpELs6fejbwM6RM/YeudCyJfww5QWVjd?=
- =?us-ascii?Q?HvmP16O4HV+IncC/TNkKmJLwleaCk7QfG/n6gp0xH+AqOQHGpmfUCL5vYYqk?=
- =?us-ascii?Q?6xh+1qilS0SNBIGtVpLoHYDIpc04k++QfR4zRmqhI8+Fsp2GiVg4JGfxsHXv?=
- =?us-ascii?Q?q//rtTCrhQXs3XEdP7MuQ03fMdpid+bzcQOUQR2yPczz9X+jvGx4BuxFiV7f?=
- =?us-ascii?Q?lYntTYseZujPMx3vtzCe024XFAkflPGX5U4XGxF2y8LdWAbGtkn4ifrvz/ro?=
- =?us-ascii?Q?E6YSQoZ+mwiOX+QpCpLCbpIc9d4Gv+J/FMI3CRJqIkutiWUjWUw3wfAT8BE/?=
- =?us-ascii?Q?wcXRaqMym0QaL32FlmA/9auh9bYX3H2cL0c5CoMhnSdIrllx+HMP/ShlrE/L?=
- =?us-ascii?Q?MCt+VcJU+YGDqwamxlMrKpXbFnoGddHmLm3VAjqCuqlsPiVgvkHnorvtvWn2?=
- =?us-ascii?Q?NDmjjCUfovMiDfSyq0JKhJ4pTVhF71uS7tSvVmNRyIeyqK83Ye9Tbw1mC624?=
- =?us-ascii?Q?SSap9yjLDlZNjJkfKGVicijj5b9j6TiAQxd3i0BwIlYUxSIUX6AkqvvTL+YN?=
- =?us-ascii?Q?yRO9TgLVnRbiuF7Oa6db8wNYcrCg6w8jCa0IXTpbe9ZngX3DXx3+xCh7Tbrk?=
- =?us-ascii?Q?/Go/rHIrFrrs7yJISrRwBEZa13tShzlEZCvIigsLZp10/nrqnatdU5DqwQbo?=
- =?us-ascii?Q?XN9C/DLmpHM3JEsuqmKJJa/QGn6Ef9FJXsYop3+UJsCtJ6b2oB2f1MfCcezc?=
- =?us-ascii?Q?tYhbfaiaz9OGqwAccqpWA2cr347dfbjzctp4AvQ+Cci+hKO1j0BqQcUiLHA3?=
- =?us-ascii?Q?rC+gRWHBen2TVY+z6fpvm5PpmnT2UL14vU9mN4XCCKu4YEKL1JgcLsgrwmwJ?=
- =?us-ascii?Q?ZHTO59znYrIGOUVay2t/QnlMAWBTr540n9ChmTfmmkw4nqxUc2H/MHBrhxt6?=
- =?us-ascii?Q?yeMEki9GTL3aLYrnPrBZUfKCkh687IZ6aibPbtlpqlmEGDteHLxttZHaFbOn?=
- =?us-ascii?Q?1rGPcbOXRcu9dseT4hJuy8b7JRkufTWVotKnVu7TJh/AKydXO4X+QsqrFeyw?=
- =?us-ascii?Q?pkVSyHEjZTTgtqPI9CMH8xIMBNedcvhKtyzrtgrEwou8OvXlEgCtN0QWxgYG?=
- =?us-ascii?Q?3g1JYQZiqg/KzIUxRL0S8je+4mnzJNbC0HdXpl0UG9iu6xPyEzE5PJFrdx/s?=
- =?us-ascii?Q?vZVjgicRKcUIvBW0wS9WN/rN6dQyqca6?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9aSYjaTNAIXWKEKCHrNJD61uFQZumObbG/atJY8dNFTIvJia6GUCu9zAQmEg?=
- =?us-ascii?Q?eHOd+bradggnzwdD5yub3V7UNgi3xEFBwjOlQSLg9UYR8qswPZgw76UdBAFe?=
- =?us-ascii?Q?G220ZaTvQECt+kpQj4WoIQMG/sovZcG0A8aAJT/o+VR81nUfXNE+9xz1+J4F?=
- =?us-ascii?Q?0OkjY8EISWYZejIhXJeEPeEiAiAx5wDsqzjdvmBUK9McYSWDb8BphZ3/dtcY?=
- =?us-ascii?Q?zeQmm6LVC6hRt9CiAE2O5lny9KvCYlsn/suRkgfmvXzJmdETQIBe4WPj2Sao?=
- =?us-ascii?Q?5BGLNeFW20FURSX0VF5G+x6voTIMHczxhNRMsCCMtMx+ge/bn4Mv9+5dP+W2?=
- =?us-ascii?Q?rkB589hJUU0mDDsMwR676YC7YREpbe6cOseC8oBFeQ/wmwTOcxMmSbuQvZ21?=
- =?us-ascii?Q?Ft3ELQFdDGWZfBn/J+C2w1l4iy6ZK0FyfLnta7Uf+wKTcsH6DM+13iYeiXB0?=
- =?us-ascii?Q?03SNHfssuy4EXWqNOH0a2Aes+rkM9JiC1eS24nsKRd3dFvTPDy8+S8scttR8?=
- =?us-ascii?Q?ZtI1wiRhqMlEWXDYvjWj1dKHlyikZNUajeV+SQYKFlnm2sMmh7oqUO7LK/Eb?=
- =?us-ascii?Q?qDFwpN6/cZvKZKpfUh7lQhc1o02w8o7+3w4FL0ckhu1l5+igI0+u86Y2DG7N?=
- =?us-ascii?Q?VZEoVGHGnLsmTP26n6Z+fX5tBFHnqfyFJnK5k6mkVeLF8v+FiBm7mMa9B10U?=
- =?us-ascii?Q?tdwrBBslyHPj0q2Kl21+yuXpb1y9fBPL6uhQQod/cv4TGjbmh5fwfPIzUS6D?=
- =?us-ascii?Q?MlNipN86yGLDZGZqETIWkVf4aWs/HrWkGIenzdJsdCDEpFUg8g2S0LxGQaZ/?=
- =?us-ascii?Q?0wEqFWf7Na3pnTgd4HAexO+JoIfZWDhsMr4Y+Oe63r4e9y028A6ROV4Fc/EI?=
- =?us-ascii?Q?6Nx73a/5JwXbdFAnfUwAIb20Ag4VpLsVUWOPU5ReVRbCQNpaL/2h4l/qiPM8?=
- =?us-ascii?Q?J7UEUEjcy6Tk3qxLLc4MUdz0xUJOEJwwFEc8Xthw6vstWBckWZTOd3oYL4du?=
- =?us-ascii?Q?HpEGphUnhWn1P1ii97GTzfKegRuXZo5PAtcJKqZr6CDX0nslZsJu4so4LnTl?=
- =?us-ascii?Q?qtwyC8jdPm/N4+OL/9TlKDkCCyfYOA/eZQqXUE5K5+XO4PMMcqL70HcwadtZ?=
- =?us-ascii?Q?naJcu0zq8xPpUHkZI6LhUqPV6VHaxTIIn1bl0PRNl50f1S4U5KDG+HvisIUc?=
- =?us-ascii?Q?0nYQxK9ktP8lOPXLG9ZxBl5qQguzmMB9uW22PTXnov2T3FHhYRKREyDuqFsa?=
- =?us-ascii?Q?NbGvHPPJhXxPPv2yv3MOEvywM3CoN+V4AcOMw/nK0Y9X0AjEWCxUXfr+ZCmh?=
- =?us-ascii?Q?Bg84AKNvWoLmWEbaHnTBVmT4GDUIm+t7kCvujomxBRsvWhSpbrr3CCjrc/d/?=
- =?us-ascii?Q?3yLDAQsG/kdl1DG3IJHVuT2JgBJeOGQHaAJodrcy6KDOFA/UQ8q0p/kn1vE8?=
- =?us-ascii?Q?vJLVide8+nG5LQGiACwqBp38se8ux5RxqhHTdycoZ1qxw1dtDMxkkKbgno4U?=
- =?us-ascii?Q?O8cfd/gR28RjoCHWIeCTqLAoZQgu9d+HKwL1JzNA4u/fxKdcf2v7NyrXIak6?=
- =?us-ascii?Q?P/sxu/haw0NUWEwrWg9u2zVDmXNn5+YFx9CeF4Zaht1yOG/Guj2HJNwVm7qq?=
- =?us-ascii?Q?Sw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	BqOqkb3SWeWAy0x1cVQMbRl1VQfrvf7Dt1snia83x+KvtTcvQtljYinSuZh3LSbGcaaCDAzf5UqznDjoN8dFaOchdjQuA637XI79893oPFkUGVgo/J/a6lbG/YypATW283boqWROokJwLHcWLpy6DHxyIcEHLtd3rAmBmj2D+c4zqirg/raGrTnT14VMTheVg5RKEJ27c+M7n9Cpwa6lz7qJwwXyslHjW1WPE2SNkpQY45cy1ukbbblAX/jg3qpwsUnVcf+RXabM1b89ATaaS2wBHNtecsJnqXyDtynBs3NVO0SupYDe/ptBTOSOpU3N0RyHnsnJIERJFRysVHGN5KWpit/NwB4ah4vlMMDnubh8EsS1LasJnKs0XyAs5pc3zECJrYjYf2kSfT8WcTxHKR/WbjdTQ/YX7i6zus6u6BjrbwfVe27FXzmQo8YMbLc7glVxlli8lyPok4pNXy/QQMw2VdJMIabPSesY4U4C5tXpcBeHa6ZlopW4copal1wTWA9FZk/Yi2n+QvH4FfeAErUyG7rkM3XnS1t4K0RECSVAAk+lk/IOnqqrmxUA5lsHRyhunsnkRbiKN23WYOEGkcMBcCVEoh+vyyl9iSZEvzg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b139f6e-eb32-41ba-e4df-08de0d89f812
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 14:32:15.7625
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UZqV9F/2QrDAqlYME4j372kwybdfuMrJ5sbUm89p3aYWjMxTknVxoRfUp1SwcXtMduB8XC+hoYuu1FMuc/AkfwsJqC/fBbFslcnYHqcHrPw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPFDB63D4CC3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-17_05,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 phishscore=0
- adultscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510170107
-X-Proofpoint-GUID: 5MRR8ecsvjZshdOwhrK9r0QGxS_gU6DR
-X-Proofpoint-ORIG-GUID: 5MRR8ecsvjZshdOwhrK9r0QGxS_gU6DR
-X-Authority-Analysis: v=2.4 cv=QfNrf8bv c=1 sm=1 tr=0 ts=68f25374 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Ikd4Dj_1AAAA:8 a=ocnp0TCbM65VgZBstS8A:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12092
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDExMDAxNyBTYWx0ZWRfX/1fI+S08Ej5D
- SxPcDcuRhEa2yHRBPeC161ruacpMA/9igwTGArgf+epvtXlaoaHqMFt1RYH+OsghX97Zb2yM1X4
- eJC27NgRdOVwsjMvem+UGwZ84qBsWVvmpy1LwI5qM+wEyPjAEpgRRPGFNjY/XDHmHr9P818Nlkb
- sm20kfdTcCCLQVMtoUatOMr/K0neMMpzblyb+Nco1mDmLyCHeOnp06Mb27qRZcfLcF13AjIStPe
- qYv5TnH0f30a0NSG4ZrtH/VLB8KOPyaqRQaeCLpLhbsjnTmDiGdKOAhU4diqNeFmVPYBMKT6Ps0
- zh1beJnYqUgZ9pEp+BGSgSbtD8wQ7S4bq9DoGKNozt0D2H7kwSPmsj7hgklRCMRtJeLLVadxo7j
- cRftt70g33sdkBVnichCqs8rUwTgbMLNuivH63F+oP5GFECZTyc=
-X-Stat-Signature: yqir5ahf9t5corhfs3wgmycd5xo6n7bd
-X-Rspamd-Queue-Id: C847414000D
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Server: rspam05
+X-Stat-Signature: py5iw18hziua596drjfijygm68gss61m
 X-Rspam-User: 
-X-HE-Tag: 1760711553-295103
-X-HE-Meta: U2FsdGVkX1/t6aPal4xmY7xC3r0iEsUAnEfyUWByg7ar4SR8Z6iju4VfFFmVJdPcB1o9UeBvEJRVyBdmnm6dIh/WofXUhszQmY5RD/HoCAHC1Zed7fjhnSxoQXUfh87/Z52YbF/OxRemWnhd8UWzzfOM62xfeq/whrRqa5jnK57MEZdVacQzLyweJm5SCZopRyoEOybOcWdzyr3lxaPU911Rnkv52glnPLbs0piw64j7TbpOuknZV+xIlkNPfU0dZ1iQlUZ1ijKMbD4yj8XbXolafJVSlcCn00Yu5lkIw10IRkXLblxjdxQuvjR9/gVbYIIkXQ4zQUhfT2TfpD7DGyy/izbUHS4t0vUEes47XhfrkNCPbQec8wDcLassKlP7SeC7+1X3EnPVBO/zKxUIegfRO1cCI7Zhoss9o8DAR/a+yiuTgGzTofg7gVwPFOoop8oeGDY7TgTAaOGu6AzIFNrlLwa7fFVWNWx3aN9AeVYcq3KgxTQVjQjzDDHk61g73TZHxgEKiqHYw6D/2m40ay7Itjkp7J8buiy9hT243/naHYWMjXxbq5BzJJea4gya36AAxnP5FK6sdqeeGiRUYYaJauMDx48Q38m0QY45uMX6fVMUUGAJjn0WLHUDBeKZwynRaCYW1Fw7PRE+vfOj6KgHTVTsj0PqLnZlnp58aUmLu7Dh8lPPMq89tIW+ay3QNFtAi09CJmyEB53QKlYusIyksfoAUtO23D1X299vmC5a6wHiA0OwrTt0T37VITmUOEKaObpr2piyS4h6gByaHkR1u8BpP4mbTGXocv819jnsGCdL2TpSsPp2VZtGzHa4I0lGcxazLSiujtDBEDaiLZHRJuARbAVeMTkUbX9kT2+aaFRuyaxaFBxHbWc3CMjBcRhWSDdWE5twskZjmehyQ9hriWssVgJs4IssvrpllN810ZMb1vCkRUe+Hv0xgJJapBQbz1QDsn3vQ/WYpNa
- sT623JLa
- Nsp117sFksbmcSVVXjTM831KenvypRHweYYH3ZshQMU8trUCx7jDBW+LDC4eX7sUCnPDhN0W80uwO6mHnyOm8fBrslT261E6ZarkC1ZDfqVuKPEr6dJM0l8Wgp8l5HiJe6aNuXHQFMr/ete6VkOH/eksJKi9Xf4FxPScjjwMYcbyIADVEF/07NHwUz0MAAYEaKfVaLjE40NTeXhaoUlvmbPtb0E9YsokYs5yZ0tqGFNHUTcGsmt37yW/WYA2SqFuhTeOgoimHnSxqpK3gDwyO+G3/aUk1bPHLJiEG4/w7RVrCJAAhmj9yuW/H9HnXQFJYr1uRXHyfg/P4gU4DzWRJnEa78kvp/eMQX1B3Ikt+YsAcEbomkgoDTBrw2vR7vWXkGusq9JsQpoHr/Tw3TGOSxZX769b8dO2Kik2xkYvhnWigOFzXLyLM0uuyysuVmb/VD06dPot9YdpJjMavyWNGM1kk6CUAINnRqL+8acP1HpmeRQdq8GdEpuI6P9X9gtQv0YodkrsMzniOl2WRnvUTCDoAQxnSLms/sDgXNANWfv12P5PX1fCqkXd2Z1vKG/tU4mAqmgBV/TFlRny3YKwd0enSx7LUO+sSz39+H/JnUYJt1EwHIloYvnvMFqr/kAoMC0xFcp4dEEO07/2QzCDy1M653PR+jaIXge3ILtUKbRD9x6+lgNv4L9koohRdzRCEgp8/vjbAwoxCjysxypk3MGaDFaA1WfM77h9B/W37DvIux/+pAA6PzUKxbZ+0W81+gYIdG0y3nzBm4ywpg22JHMPUjFZ0iXzUCJCMV04EtdsO94WTO+pCIs+8PKbRX2BjvtVfDsE/3WAv8ZI=
+X-Rspamd-Queue-Id: 0B3EF14000A
+X-HE-Tag: 1760711781-405923
+X-HE-Meta: U2FsdGVkX1/DUfp+WjInjc1IvapcA+uZrOuED3HqxRKhlpJyupNbpWt+vQ7BYCHeiFe/lLmuNJ04MIbNclFhkQDLRTMXU8HJy1coUceRVgL1EEQ3cwgwDueNlDMMggpDYiDb+N3qV6vmXgg7/Vzb70QXjHNNHn4g9+BUQswfOnbDQjXpaJTB0chR1qMG+fSWEvrOa6qp+ji4RUvt4oy7V2/mMYx6VCwKWoWwPjOBiU4etPx2r4v4RZWf2q90VePyLRSS3Y22Y6/zUX1D5IBQ8k0pLEDA+aR5pZiX6DjPpo8ePoz7ROWf+y8FEeIi9GeRScasTIIOFrDH3mBmQXR0FIxOPPkfr2glsbEBcpZPh3VqD4YqB/e2DOrUhwTkVpIrHQ2r5xIWQQKyMk65AVVhFO/9KQW6muUdpPvhUNahafHFkRt495k0PVMJ+kzo5iVxVGyTywmiphs0/zxsPaYa1xhcEPzaLh0lJcy6O1L2YS+qSj8YPYUzgI+edS6xV8uAsS34pyAOiyulCY98kxPRP88AunCIfKgWablNnNIR7BaAt2UXskEJ8USxEBwKkF9OgZ2HNdeV2GrYKIwa1hQnoFHmNCMqJrDUtZrbEtdgMMxTxpK/alXb9vSbIpnizjusWQaRLZcUWvHS7MsS3QRb2MlC2JJIn9hpUrN3XolzLqzsI73QjVj+Wpyspoe6f62vT/viaKyy8KLAII4HhcgyLban+g+05lcZIhOQnF5EBMG1C/qkLNNyNPM8whqSYXXHJsdgs07m3uWgsBKKoL+VsRqKBzAixYJ6/9ovxl1V37Za2nN+k3gFwccHPClmLnrHZ0toqMwDcbwfdifyWV0R6G+qtT1oz9Hot9uBo6pveauSlotac1iAvovbcLrS2tzssr7KSm4XiISXoqRdzV4Pn9J1k+Vz5/S9ZmQwj5k/co/sXWuzkCsFBWD0WX/mvY6KFHitoENxWm9syWpqJD7
+ 3KVl+zVr
+ 81kE5WFbU9g9PebCsRX8KVra5hXlQd1XXO6aiPyANosXL6+KDmDbRCJRZUky/xgn18eXwsEtKWhbEgwJkFAVbB3Eudi5/bN6k6D4AG60qc+tDNQuy+9k1m+IcFq/RZO0imlLDNExIoiHdqKsLVqEMCfdYzfaHuYewhx68AoZ2CI6BnCb5yO4AN4obYJi6vrfZ/FQpf1P+Sxj+wbyqKwOJUYMWOgIf1NZLe4ldVXvboXOmWSLAjmVJiFVyUuGKv2gZm6uSPMxM4PeZmGTxgZzPh9bz43sw4i0CrZPziA7JFlbygbUSOU8mVOWvUHHosOuXpZldmcvE3kW5wSr61ZeBRO82QwsV6eesMdumUnF5LHRpJoE+us8VELvMQIC09/QzWolCsVU99DMW7/gvuRyGKxaVpv5T4JKQTUddCFqfMrHmpCA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,88 +112,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 10:16:10AM -0400, Zi Yan wrote:
-> On 17 Oct 2025, at 5:10, Lorenzo Stoakes wrote:
->
-> > On Fri, Oct 17, 2025 at 10:06:41AM +0100, Lorenzo Stoakes wrote:
-> >> On Thu, Oct 16, 2025 at 09:03:27PM -0400, Zi Yan wrote:
-> >>> On 16 Oct 2025, at 16:59, Andrew Morton wrote:
-> >>>
-> >>>> On Thu, 16 Oct 2025 10:32:17 -0400 Zi Yan <ziy@nvidia.com> wrote:
-> >>>>
-> >>>>>> Do we want to cc stable?
-> >>>>>
-> >>>>> This only triggers a warning, so I am inclined not to.
-> >>>>> But some config decides to crash on kernel warnings. If anyone thinks
-> >>>>> it is worth ccing stable, please let me know.
-> >>>>
-> >>>> Yes please.  Kernel warnings are pretty serious and I do like to fix
-> >>>> them in -stable when possible.
-> >>>>
-> >>>> That means this patch will have a different routing and priority than
-> >>>> the other two so please split the warning fix out from the series.
-> >>>
-> >>> OK. Let me send this one and cc stable.
-> >>
-> >> You've added a bunch of confusion here, now if I review the rest of this series
->
-> What confusion I have added here? Do you mind elaborating?
+On Fri, 17 Oct 2025 10:15:57 -0400
+Gregory Price <gourry@gourry.net> wrote:
 
-There's 2 series in the tree now:
+> On Fri, Oct 17, 2025 at 11:53:31AM +0200, Yiannis Nikolakopoulos wrote:
+> > On Wed, Oct 1, 2025 at 9:22=E2=80=AFAM Gregory Price <gourry@gourry.net=
+> wrote: =20
+> > > 1. Carve out an explicit proximity domain (NUMA node) for the compres=
+sed
+> > >    region via SRAT.
+> > >    https://docs.kernel.org/driver-api/cxl/platform/acpi/srat.html
+> > >
+> > > 2. Make sure this proximity domain (NUMA node) has separate data in t=
+he
+> > >    HMAT so it can be an explicit demotion target for higher tiers
+> > >    https://docs.kernel.org/driver-api/cxl/platform/acpi/hmat.html =20
+> > This makes sense. I've done a dirty hardcoding trick in my prototype
+> > so that my node is always the last target. I'll have a look on how to
+> > make this right. =20
+>=20
+> I think it's probably a CEDT/CDAT/HMAT/SRAT/etc negotiation.
+>=20
+> Essentially the platform needs to allow a single device to expose
+> multiple numa nodes based on different expected performance.  From
+> those ranges.  Then software needs to program the HDM decoders
+> appropriately.
 
-v2 -> with a stale patch 1/3 + 2/3, 3/3
+It's a bit 'fuzzy' to justify but maybe (for CXL) a CFWMS flag (so CEDT
+as you mention) to say this host memory region may be backed by
+compressed memory?
 
-v3 -> 1/3 separate
+Might be able to justify it from spec point of view by arguing that
+compression is a QoS related characteristic. Always possible host
+hardware will want to handle it differently before it even hits the
+bus even if it's just a case throttling writing differently.
 
-If I use any tooling (b4 shazam etc.) to pull this series to review, it'll pull
-the state patch.
+That then ends up in it's own NUMA node.  Whether we take on the
+splitting CFMWS entries into multiple NUMA nodes depending on what
+backing devices end up in them is something we kicked into the long
+grass originally, but that can definitely be revisited.  That
+doesn't matter for initial support of compressed memory though if
+we can do it via a seperate CXL Fixed Memory Window Structure (CFMWS)
+in CEDT.
 
-if 2/3 or 3/3 depend on 1/3 then it's super confused.
+>=20
+> > > 5. in `alloc_migration_target()` mm/migrate.c
+> > >    Since nid is not a valid buddy-allocator target, everything here
+> > >    will fail.  So we can simply append the following to the bottom
+> > >
+> > >    device_folio_alloc =3D nid_to_alloc(nid, DEVICE_FOLIO_ALLOC);
+> > >    if (device_folio_alloc)
+> > >        folio =3D device_folio_alloc(...)
+> > >    return folio; =20
+> > In my current prototype alloc_migration_target was working (naively).
+> > Steps 3, 4 and 5 seem like an interesting thing to try after all this
+> > discussion. =20
+> > > =20
+>=20
+> Right because the memory is directly accessible to the buddy allocator.
+> What i'm proposing would remove this memory from the buddy allocator and
+> force more explicit integration (in this case with this function).
+>=20
+> more explicitly: in this design __folio_alloc can never access this
+>                  memory.
+>=20
+> ~Gregory
 
-All I'm asking is for you to resend/respin the 2 patches without the stale one.
-
->
-> >> it looks like I'm reviewing it with this stale patch included.
-> >>
-> >> Can you please resend the remainder of the series as a v3 so it's clear? Thanks!
-> >
-> > Oh and now this entire series relies on that one landing to work :/
-> >
-> > What a mess - Can't we just live with one patch from a series being stable and
-> > the rest not? Seems crazy otherwise.
->
-> This is what Andrew told me. Please settle this with Andrew if you do not like
-
-Didn't he just ask you to send 1/3 separately? I don't think he said send 1/3
-separately and do not resend 2/3, 3/3...
-
-> it. I will hold on sending new version of this patchset until either you or
-> Andrew give me a clear guidance on how to send this patchset.
-
-I mean if you want to delay resending this until the hotfix is sorted out then
-just reply to 0/3 saying 'please drop this until that patch is merged'.
-
-Otherwise it looks live.
-
->
-> >
-> > I guess when you resend you'll need to put explicitly in the cover letter
-> > 'relies on patch xxxx'
->
-> Why? I will simply wait until this patch is merged, then I can send the rest
-> of two. Separate patchsets with dependency is hard for review, why would I
-> send them at the same time?
-
-So you're planning to only resend once the hotfix is upstreamed completely?
-
-Sometimes this can be delayed a couple weeks. But fine.
-
-As long as there's clarity.
-
->
-> --
-> Best Regards,
-> Yan, Zi
-
-Thanks, Lorenzo
 
