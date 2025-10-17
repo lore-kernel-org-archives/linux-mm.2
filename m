@@ -4,91 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE2EFCCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB66BCCD1A4
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 20:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B86F8E009C; Fri, 17 Oct 2025 16:13:25 -0400 (EDT)
+	id 72DC18E009D; Fri, 17 Oct 2025 16:13:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943598E0092; Fri, 17 Oct 2025 16:13:25 -0400 (EDT)
+	id 65E248E0092; Fri, 17 Oct 2025 16:13:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798CE8E009C; Fri, 17 Oct 2025 16:13:25 -0400 (EDT)
+	id 468A38E009D; Fri, 17 Oct 2025 16:13:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 60C9F8E0092
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:13:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B6E286DB9
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:25 +0000 (UTC)
-X-FDA: 84008705970.20.855D91C
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 58459140005
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rt9G1wum;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3YaPyaAsKCMAgiqkxrk4ztmmuumrk.iusrot03-ssq1giq.uxm@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3YaPyaAsKCMAgiqkxrk4ztmmuumrk.iusrot03-ssq1giq.uxm@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760732003; a=rsa-sha256;
-	cv=none;
-	b=RyJ0FxisBoSUfkAYHzHnYSbS/FiZEYCiqyhHiXte5KW6pnBzSMYpRErMX9bMWmOfASpkN7
-	HEc1YG6Prbp4VL7e92Jpt9qVxH3ypWoM8WMs5mD5VrrRJsv7hSzDG3BxVJK9K1LEr19Wej
-	/kSrm4jDIxeFlqe4U+PLuf7qqzHtojQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=rt9G1wum;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of 3YaPyaAsKCMAgiqkxrk4ztmmuumrk.iusrot03-ssq1giq.uxm@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3YaPyaAsKCMAgiqkxrk4ztmmuumrk.iusrot03-ssq1giq.uxm@flex--ackerleytng.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760732003;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1221B8E0092
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:13:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CCBC21DF816
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:26 +0000 (UTC)
+X-FDA: 84008706012.11.8872CF8
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 96D2C4000A
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760732004; a=rsa-sha256;
+	cv=pass;
+	b=BBJ/EGtvAD70oYZD8hfig/HRPaot+hCCVsPvu/j0YtUfkad1+6NO7vuaJBrT1SpocB+0Rj
+	QM4EP2tUZpkWCkC+letpbkcQXNg5+IoRexkIQR6aJIweGK/KN3po5OrbKnV0RMqpIWq/1L
+	SgsWzj5KKQ7lEXqbHnfGVX2OzBc4AsQ=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760732004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0mpVwCYbwMET7AecOcE2QimVcHIz1TOOFcfyLkjDeGo=;
-	b=0QpdlR53J42Rs1LvwQM0wPYvvvli0B2oza10hOwyw6ScTGjV3bsNMCIN/3tw9gbqJ/lOOS
-	9eSqI3RRstWa4CgFIS8CHPjtpB9nsJvCyDkPxcth/TUqPAiP0aK2Yf+IxqtoRVCHOwsgM1
-	f64tQvo81UcXsmnlyoNAGVm3yrYeiP0=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33428befbbaso2806609a91.0
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:13:23 -0700 (PDT)
+	bh=orndpBTxP9JNgsL+ZAOMK9xM6Hxdzt16XLD7BCy6nI0=;
+	b=ZUoUVnoEuZTYgzQsgIej0AgRmfOl/Y4+RoW9w6coZCijRdToDSogtImixYtw4Rab37XdsI
+	l1fYVASpgcSCpyzGA+NzPum3friNdrLCeItwzkUC013JC2dl2YNHte7QjADh7tud7EohKb
+	ypPNaWd8V5DQbsCBpaMJO8kaE0wBVGg=
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2EDF11402EB
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:24 +0000 (UTC)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00F201402E3
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:23 +0000 (UTC)
+X-FDA: 84008705928.23.D4BC228
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A2EB914000D
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 20:13:21 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760732002;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=orndpBTxP9JNgsL+ZAOMK9xM6Hxdzt16XLD7BCy6nI0=;
+	b=o7/21lJcmpwvMnIRBK+OwOFE0h0rTSoHupny1po457G9MP2fLI1DM/al0Qc32Da4gJmz3k
+	oOAyikuzEHjjqSftTBRIPzyrdbVabLg/YjezaozdasTCX1YoACWXoeSMCvarJ9krIMNv3U
+	xeVoJB70fOMh9hxHurt+nhSJL0r5SvY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3ECljKrX;
+	spf=pass (imf26.hostedemail.com: domain of 3YKPyaAsKCL8fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3YKPyaAsKCL8fhpjwqj3ysllttlqj.htrqnsz2-rrp0fhp.twl@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760732002; a=rsa-sha256;
+	cv=none;
+	b=0cRKDWZtcIameWMtxqMYUT/HYbbQ7ftTL58vuH7TVExvhjfh8ShdIE7zbp1iGep42aquA7
+	d1AoK44ZTB96XPTBTyFtOAnaCp8weOspq7SbFoBYnMjgy+a5FoxyWiOZ+K8edpg+/tlB7t
+	3fvUz3Mw80c+IEPBJc2hn4ZlNn2inOw=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32eb18b5659so2009278a91.2
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760732002; x=1761336802; darn=kvack.org;
+        d=google.com; s=20230601; t=1760732000; x=1761336800; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0mpVwCYbwMET7AecOcE2QimVcHIz1TOOFcfyLkjDeGo=;
-        b=rt9G1wumBB4CoCgSjro3z3/o5K2AbnfZGD0NtPYpS1xH/TNiO3K30GobitlounrZGN
-         cNyOoTvfe8JY+R1G44KFJtVOpSvcnXleXcDcDXm5Ai1LPPvJoscZ/sNEaJW415u9LRg+
-         0fpEeLCLd9q/4eV3DqQPJ4qHM7KCQ2k9Wy86S/U7soBUl4NYmifKKlukhyLvDmK4TS+B
-         Nh9W3qfSIvVDgqrz4UCt/3ghk/fV74jLUVOjyGfKZSs+bZowWqbTrurGEgg8SDLHmvzt
-         ekjL7CEe++dNVktzG+DoHpMrmgfVRHv7h3NnsPMud9zKYFEHfH8WG3DYGCwOvKvvDCJ0
-         y6tA==
+        bh=orndpBTxP9JNgsL+ZAOMK9xM6Hxdzt16XLD7BCy6nI0=;
+        b=3ECljKrXHJdfIKV/u1Ocs2Wh61M/qLX6y9zxcGAvv/03ejDJK0GW40UFSBPl2j2hnf
+         5KKayHewZtXW2p0ulBTiPbG6ROPNPb0ILV567r0g7HYRn4r3SoFwp0ipvD/Zb7N09OgO
+         +SwUZBpOC5ttmLOsQYmb5eqtwhXxD6aEbzDp0fkRg2F2VW2hjq1gYH58YUrl+2+humKk
+         SIFgquJG3MbgugemqmcU2cyBRG99OqoKue/c0Z+nF2eUNfFOYg4h2/+CzsFw5abl+uni
+         ji4sPxqkmZNkyhLJuVN3EOzuECQyxzfyOYbDbBN/ZsBA/sAr70YGrgcQ17gNDbHfXFYy
+         XRbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760732002; x=1761336802;
+        d=1e100.net; s=20230601; t=1760732000; x=1761336800;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0mpVwCYbwMET7AecOcE2QimVcHIz1TOOFcfyLkjDeGo=;
-        b=S9CJcZXLS+VmSk3wK2cDyGn4K1jVuEIXaoG0CdO69mXiiYLPxySTtOK8WrT/arzfeH
-         mfV99upfZzuO1lAystxqZP7qi7S2eIyN1kpsoBlsAX0ay/CxaR+xy2h0d2JvGKI86nTt
-         vfVN7J/jXUECpSbPNsXD2DPyApDYuizAprrR8mXRHMSL/CWDMlt44mFKUubDP81QoP8w
-         kRk7SzRpa0dFQ7mi+5rM8BLquCLzBR2NSDsxROkYh8hOvNMq4sbVJAW0rLBvd9ByYSOe
-         A1HRnyOiQGtokTiXkScv1IEI1A+5ilsBZPr9FnAkJOnQ5biN/YmEuiTpWrA1te4bz8jo
-         GFsw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjOj9KpenEvR03Dz1AEXBBvMN9FC1ba7ChpkPT8LZ1jct4WFu2ygTlfBYdhIr3Q2y0g5//kSjspw==@kvack.org
-X-Gm-Message-State: AOJu0YzzV2B9Q2yUgtlaATtqiG6IcveUPpVuuN6VAZgguhOXtGDGX7CS
-	dTwz444T/gi5hZakSBqeBDDkaQN075RAytcrnUYCDpby/Iu7GgYanaQTXV8I+P1Jym0ZIV8eYKO
-	78nyJBrI8dQ05sIHi8L1Osul/lw==
-X-Google-Smtp-Source: AGHT+IHcO4NwxOJfZLNEBbx6WNz/S52BTLMchZETWWpFSftU3iw+fmFyD6t6Of9AgSIAzGHhdhWoKd+61TBtvxNmOQ==
-X-Received: from pjbfs17.prod.google.com ([2002:a17:90a:f291:b0:32e:bcc3:ea8e])
+        bh=orndpBTxP9JNgsL+ZAOMK9xM6Hxdzt16XLD7BCy6nI0=;
+        b=kG8KoFWDX8EP/g8QSWE2Oz0SCp/oLxvZqaG+Yd9IoxTxWtcwsJhTIMplJ+nljykxRx
+         4uilAhB7QCSpqYh3Cwb4nA4NuttzYh2eO+UzqhujsJuM8R1I1AbfejEo9MveMTLRLwve
+         y45XvXEBVmkdYXLoUDZt2SBghDPvk77GHEY4Ja9XpnSvuVKNpq1kYYavr66tjnFQjKBg
+         qzZW4X1OU7DZ4O5V8z0UuIztGDRdy7KU4ZN2A+DEJJlZeoFOmlScYekuqPZlmmB4HnYa
+         Sw6K79/nxMtHrHyXkMZ5AgjYcEgbf8W5eBJhWtfRnml+LAqD8FImvk2tp2eysZeXtET5
+         yOXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyYu0tO1YnuFGOIYWbSlZu8x3t9ZbCiokgqWlscDXym2TQTu8aBJ8jy1jgBNpH5cYY+HYIpb/IDA==@kvack.org
+X-Gm-Message-State: AOJu0YzDKrTBvY04kc4mzXog8i0SO36Mi+iod3HBxUn+tUzn/yFVdwgJ
+	uXlV/gGTRK4TECSs5m0Ekn9By6MG3MG79ECFxex3PYcVia2JhSGPk+DYpK+/6A8LmgvjL9ZT/xL
+	xfPT5vM9ea0JeLx3lFl0c0Bqssg==
+X-Google-Smtp-Source: AGHT+IGeWtAhjkWefmdEnHuUzNA6r2JixiN55bt8CNgXz5dhA+P7k5CcuR+ogb7zE+Vv1FAI4nVZ4b3YH8H7OkxqhQ==
+X-Received: from pjbft18.prod.google.com ([2002:a17:90b:f92:b0:33b:dbe2:7682])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3d87:b0:32b:baaa:21b0 with SMTP id 98e67ed59e1d1-33bcf853679mr6444234a91.6.1760732001959;
- Fri, 17 Oct 2025 13:13:21 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:12:13 -0700
+ 2002:a17:90b:2690:b0:33b:a5d8:f1b8 with SMTP id 98e67ed59e1d1-33bcf86ce26mr5766621a91.15.1760732000433;
+ Fri, 17 Oct 2025 13:13:20 -0700 (PDT)
+Date: Fri, 17 Oct 2025 13:12:12 -0700
 In-Reply-To: <cover.1760731772.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1760731772.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <a3126618d7cb353faad7b231e70c2b732498f449.1760731772.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 32/37] KVM: selftests: Check fd/flags provided to
- mmap() when setting up memslot
+Message-ID: <e1e189b70461a6bf0cb8e71c1a18e0f9b553fee2.1760731772.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 31/37] KVM: selftests: Provide common function to set
+ memory attributes
 From: Ackerley Tng <ackerleytng@google.com>
 To: cgroups@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -123,14 +149,18 @@ Cc: ackerleytng@google.com, akpm@linux-foundation.org,
 	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
 	yuzenghui@huawei.com, zhiquan1.li@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xroxxr4etqxu7z6b7w8ma68ds5e17jba
-X-Rspamd-Queue-Id: 58459140005
+X-HE-Meta: U2FsdGVkX1/E8bXLWP4YOo5cyfrNV0C9TSlzBYHBDLEhdWMxE+uDp6InA7y4/eLMEAu75MVCmS9EsLphVsb1teXmz63B8zRN/g3vHNldR69B3yM0KHLnsDCcskgyZ6VHdk+OfoHsKlEcrrHrR1bFKz6qn0x6GmOkJw2OA+iSdwxwdkmBW0dCjNOl3tYDTdncu90I4FkQLfpoMPzc6lao+6sdK6kaWXBoj/6pURpAXn4jPc1fJoY8a22CwRmmtQMbZkWstM1LFlEL/NdsRo8pRqOorTxzHPc7PfYXrM4li/PLRk1l4VLvAaWwwwGKXONBLY49Xj4rALCzlQkISayGWAkr98imF4pHKW6sFgCOaPOHmbE/3BlVw3pIHJYIdV7gprTWukaDo4+v5P77A7tCUdouiWNC+ziO0vzLW/cfHxbo3WafbmYfTNFXj2xrTguSmsxrOH85hRHjyBPfMSAdEGEvq53U1tpZ5O6dWKbnQ/74V3miLE08yxnzY9C6fSBIp8tUnNmd9o9eLZG2CV5UF0h2N9FXvsGOKZ6qPhwB3FRKnVtW+te3/bgMLGwo3P5d3+YAKMSpdXatXoUS87kgELXU+t+u2Rm9Y8hKN2JtiIDqlgVdneLxflvrC4hF2CqOxzYiw7/0zP/xC+8I/F7RwMg0TU4mmvY3v25U51tTON6eFN3r6fZBAu+ejYHzUocJGd5dYpGYHY5/eJBNFcR0DPjglORVhlrpAOB0xYZighWoRxqT1zekeWaJObaNTLhS1SHT5m30JJ/44EJ25XYHCxYjPmPV63Wq/cmzxVNU38XxJxphBcWat2VLrJDB7IybSQ9uYtKwSmkKUAChbS802iH/SYVkef4ljiWeWbnFwh3JbJZpRqjJwiRtBiAP8eeo5yk3+Q1CtslhQnucaP4PqBiuLqpLq8oh4BKZadUIiveAQr3tURsD6ixmCSIYTmrRAniSHOyH3UWqoom7LQ7
+ fJiY85tW
+ OFlcfDI+tKFeNRuu1/IEi/vZCEAfaIWWDCxlHWBC9ZK3EwlAefgFwjDsCzikGfsAlZwcgyjsiuAOqNyFpA4IYUOsj8YH+ckBJbjj+b26eIDAhTapKnZld0lONJ9rHixqeyxP0sFI5qoprl5CHqFa3LE81EHd6kwge70sKh5rQkolvWb/7asD9WolQTMTrM6vfbHRiE1CWrHDhLSX0Y6tu1WesMbmS/xjeG/FL6xIBzpcNcU8qjx5cF1I8vr5WtzPTZFTWBV1MdTbaLUMSFcgFzBIrUgA348EO7TZZi7MhK2p2WlAwhGn3Ilxs8qTCOwWfXmBtT6lSKgmzqEglzZOMcuGjmkCHtnXeLX0kT3Y6K0n7bZZbx5fN6dWLa0W+CyntxYsC03QrqtWxKG1xOJx6T1Sqh15vI++WD5V6+R1NuGFuqO2CZ0paxg/oRdRjyO3cHI/M7/Skvgng3q5C6QcSXYmsO49yfi81Ukvnl55OjbDM1NSLSAPzt9pJgdFzhlhuV4Oroyp2YM/Cy/SK8xjIFOsHV533IBdLD8on4hfvmydi3ZjCSRjQ7kdhNWQViDz2GRlX5kG0wap8YKCsxcsslMmnK1Uka71vx6yciBrgIgLC4i+np9E5Ww5FSonTl8ygDXpt4UVGj8VxamE4yWCzm20sST1bzi2t+xT9LNX/y0OsX1e2jQ7PxeHf/g==
+X-Stat-Signature: 7bjwm3674mzbm86chyr4ustw64hrdwd9
+X-Rspamd-Queue-Id: 96D2C4000A
 X-Rspamd-Server: rspam06
+X-HE-Tag-Orig: 1760732001-346883
 X-Rspam-User: 
-X-HE-Tag: 1760732003-964708
-X-HE-Meta: U2FsdGVkX187kPnQMwL3CPw4fozbGVs3UDi4lvyp3Kh8PayZ8zZoEwz8oH93TpJvd0y7jieaxYdrDX4gPmtEfpwPJEeJYKPtW5QUM4eEyyLMJ5fWBzc4jY0/YjlSE6LeH2eZWzwu0omfcipvIyqlql3w69dySwpuLkIeGDwhPbg615Auv2Yy3kTF5oo2I7vPlCLg01PE0PFwgxw/CzoBtUNP07jiZg5mF/riLo0nU3LFVIpY+vvRQS68Cfv9Y4TRyo28sRimE0XCEso6hKoa5xqBFwOk8S68e0rXj+jcDclxudCPCsKZfOpxbf2QDsmS9Jhif/xAxCKrFg4OnCfk6Qc/AtMMdrkliqCSyLdWNGrPGKPo0bGblC8gYa9GSNW0+skEEc54Gp8E7QGcHrGX/wbS+X0h8RalomsAuylud0g40e9lZP4mDS+leXs4giyHT85vfOdC/rxJTDEk5DzNh09mqLBliumoyFiN95NwM3rgjbQLyu6EOR8FC8MXcSD96HEKANpkF8+1wBgR5rB0UL3EUhtQws6QDaeDV+a2q4EHi0DsK/zgl6f60soqbnFhI+ElYLgUKx8ZNM/KC/AGnGLv0cruKBgWUtWk92+Fx0nK39JroNe9GAoSSnVERmDnPPxjopwuUbOnvYSTgijONXNM/L4uN9+/12Yw8LI0el5hRzhRxvZ876gceHMoVmcqgqpyBZjEgUit4W6KDAdDxDXUNM6PnF/dUyBSOe7sVfMdZoGI8mZilVd4V1ua0OXYT7FTLeJQpLZ8egOvVyVP+Y4hvZiFb8Op9tm0Qv3iY/Nzxf6y/Vp98jW00s2Dq6IXjbTHaFtXUPvLizeIgBRsEk9l3wwNqX3D+IHWJWdk8kzCOFcPxmfr1VIIiNHUpLbALhRtROXf5VtFb+4QRNky4ZrmNnSCY9JC91dnEbtC3zVrGf+pQlOvUP6FfdnEx2DM8/h3fUmzdzhCMR5frfE
- hTDXREWw
- w1XA5+SrTxewzLaoL4pVw2B0i15vXoZEC7uGK0zjVQpAPqQhUNedAoylK6Zh2bO84r1OzRy8GvpBzRO462i2ED32jWBBgcspbTNwRMNtggJcrmkkr78VObQ/dePygqsAI6r4/WTAWtmotOPoupSe+veBlj6ofNXQGrez1bZHNfmGQsvEqLfomyLEOnyxREL93zd1UDEO/bLP4W1M1JB7G7TAE32lpe6j4tC/nXyBVpGcwdtPjQpclH2lEGh2zhQDgrEQyF9nCARThtKp0kBCyZSsHJb49fSRvRh0rvFKn8mYnlEo+X3Ce5v3WbHAUwuKT9cmdiN41/BASQqBeTF8D37TShAi57lHiihiXmJvIXgDFn0r0UOa/kwaw8r2u6lq6PwAMjQtmAaOVYMeQ7hPyDCfCKUfQG0wc1FDQdvlAy92uQNIe70ONIIa8jwxzD9YRMpggCWLTPbS1POi/v+G4J1Hb1wmwl63hv4smSYhvilvnqsWxeQfactZ1NJNNtG9+O2UM77Y/gL0uec4q2kFjgodW9nhVmpI1ULtR5AOfMzz89+hn1uSxDVZVt9dUnU1Wf0E3q4vnZf43+clu8U3Tro94D/WH83YVg1ny9/jPpKNu5Nw5mtUXVTbgkQPvVRG6JqU/zaWrhazSQMlxBO37kXMZ3w==
+X-HE-Tag: 1760732004-144743
+X-HE-Meta: U2FsdGVkX1/Z4Pu9FmtVVrX8jc9E78ZjPfPW/0voWVT6fBJJwAZ1enJNAnZJ3IACfYJ6ApwmO3WOobX7paGO+OQJ5BpPs05Q67Tv3bBI9TOC94G/FR+NK+SgVDMoKs1//DmXPNpkJKVzRIqgYk24PI1ozCGfuF+RCNanXyyxFgC0bt5W3QhoS3JNpBmMYTv3wGIskBXY7Xo/JW18t5+EvnB8cW6s+7iMGVohgPysizy4q5Ia8L5zj5otK4ai42TRDDq7fNqI+JQqkP3gQgoO3r6AnqFkB6AigqM/75qbzGd1kTtA3bIZqmMAwFZ/LPnl1Z6nYA5JKv+SA32kb5ST5icffWfONih1grk90SzgpWzR3FYH1Xn7LEIRt2OhkUC5toP8NnCRTjQjJxpDale8zrYqNXAugDwiH29wYdHPUltJhCpgfWrJeQwY+nSDI2DFJ4J+FbwTDSqtSnKejfkr5A77TTGnmdye16yFZW6w6XRtoWf9AmST9Khjj4VQdnhZI9gdgxwKjfuwjtqTwyNP63bhbnZyb3m0kcsavDunlfDA2a1G/10nbt5XFec7wIirk9mtE2qRCqjXjBXEF8oVeDwQHj1r84UXNUJ8wksSY8BOnOhWXyufnFBC3YCTnesz69oApF+NXwC09d4RMsYGej1WKsULBUzMcFqz2vsETrJrpKZL1xvsQ10Gz47CC5aV0pBq7oGXxvXGoAXutmHWXy7oLRw4Yy2A/eSPvo1luIQab68aTE4AvVxNWw8ym6Rr4SOuTZPWKoonTZm+Wzs5UIkXtAWvSd4MHMfJN/Cn7+eBn34SzkRR6x3apPOmfXRECiZIyEq/b3x7apPKnY0BHBgCFMpa/qCVSduVWUE3/1i7HvySo2ONfwHph0R5/dNQXRdQDxzDPLP2Xla0lnUXV7DMOvMSS48qKeKjrS+/OVWzMwS+VyGGmBZDPajPVHQF2IoOocZ72gTnHk8KLb0
+ vz+8I0ws
+ 71lwTaZYXMewD4WOMbwHOoz3GbBvoeMwhGTEid/oVNFp3h5LcOC77wI11o7QO9UGOnkRhoNJeIICdQDHT+MrVBi0gCkicIYFiHTuzpROmaQQ2E0Njro+KZZ1knZ8DgNwpwHdXP7LrKyURNAr3NqgkfvQtxdPU71J5JdQ0AjV3H/B1ULkAMcal/GvhmtUeQmvfRaQ6seYLhlDKIEJYGZksD7JNXVyfoTmsuf68aU/uG8IemqSSxahh9D6QnGiDztChyIk8r1qmb11DLtOX5wqqQ0TJrnp3IxgsKnNjJ0nY3eSk/UGySsozEM0lmDDwXHIbiFKdShir1sGJEW8Kd0w9HYw5Al2h7IbWpMIJ16ChGs0MSQLoqAgnAagdnJVKNSwWH6m0n/Pn6K1M8CFAxmTR5zJHkJveBtb13pP9fm2a6WDIfVt4BrUsKGpf+lU+nMwdpbQtBMcj0eFKNvocuYZ00CiPVFqsqEo1wv9xfu3lq/Okowk+XF7H6z/1+MT0jnplSiajBtBMEdRpzCjB1OPy5LUUu0bIBs9ZSn4ZyplnOFrcIDeOmmwrxG3kMHkzg9jdiALs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,36 +171,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sean Christopherson <seanjc@google.com>
 
-Check that a valid fd provided to mmap() must be accompanied by MAP_SHARED.
+Introduce vm_mem_set_memory_attributes(), which handles setting of memory
+attributes for a range of guest physical addresses, regardless of whether
+the attributes should be set via guest_memfd or via the memory attributes
+at the VM level.
 
-With an invalid fd (usually used for anonymous mappings), there are no
-constraints on mmap() flags.
-
-Add this check to make sure that when a guest_memfd is used as region->fd,
-the flag provided to mmap() will include MAP_SHARED.
+Refactor existing vm_mem_set_{shared,private} functions to use the new
+function.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Rephrase assertion message.]
+Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../testing/selftests/kvm/include/kvm_util.h  | 44 ++++++++++++++-----
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index cb73566fdf153..8603bd5c705ed 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1057,6 +1057,9 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
- 		region->fd = kvm_memfd_alloc(region->mmap_size,
- 					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index e9c2696770cf0..9f5338bd82b24 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -435,18 +435,6 @@ static inline void vm_set_memory_attributes(struct kvm_vm *vm, uint64_t gpa,
+ 	vm_ioctl(vm, KVM_SET_MEMORY_ATTRIBUTES2, &attr);
+ }
  
-+	TEST_ASSERT(region->fd == -1 || backing_src_is_shared(src_type),
-+		    "A valid fd provided to mmap() must be accompanied by MAP_SHARED.");
+-static inline void vm_mem_set_private(struct kvm_vm *vm, uint64_t gpa,
+-				      uint64_t size)
+-{
+-	vm_set_memory_attributes(vm, gpa, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
+-}
+-
+-static inline void vm_mem_set_shared(struct kvm_vm *vm, uint64_t gpa,
+-				     uint64_t size)
+-{
+-	vm_set_memory_attributes(vm, gpa, size, 0);
+-}
+-
+ static inline int __gmem_set_memory_attributes(int fd, loff_t offset,
+ 					       uint64_t size,
+ 					       uint64_t attributes,
+@@ -507,6 +495,38 @@ static inline void gmem_set_shared(int fd, loff_t offset, uint64_t size)
+ 	gmem_set_memory_attributes(fd, offset, size, 0);
+ }
+ 
++static inline void vm_mem_set_memory_attributes(struct kvm_vm *vm, uint64_t gpa,
++						uint64_t size, uint64_t attrs)
++{
++	if (kvm_has_gmem_attributes) {
++		uint64_t end = gpa + size;
++		uint64_t addr, len;
++		off_t fd_offset;
++		int fd;
 +
- 	mmap_offset = flags & KVM_MEM_GUEST_MEMFD ? gmem_offset : 0;
- 	region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
- 					vm_mem_backing_src_alias(src_type)->flag,
++		for (addr = gpa; addr < end; addr += len) {
++			fd = kvm_gpa_to_guest_memfd(vm, gpa, &fd_offset, &len);
++			len = min(end - addr, len);
++
++			gmem_set_memory_attributes(fd, fd_offset, len, attrs);
++		}
++	} else {
++		vm_set_memory_attributes(vm, gpa, size, attrs);
++	}
++}
++
++static inline void vm_mem_set_private(struct kvm_vm *vm, uint64_t gpa,
++				      uint64_t size)
++{
++	vm_mem_set_memory_attributes(vm, gpa, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
++}
++
++static inline void vm_mem_set_shared(struct kvm_vm *vm, uint64_t gpa,
++				     uint64_t size)
++{
++	vm_mem_set_memory_attributes(vm, gpa, size, 0);
++}
++
+ void vm_guest_mem_fallocate(struct kvm_vm *vm, uint64_t gpa, uint64_t size,
+ 			    bool punch_hole);
+ 
 -- 
 2.51.0.858.gf9c4a03a3a-goog
+
 
 
