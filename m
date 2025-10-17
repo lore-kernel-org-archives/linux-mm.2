@@ -4,143 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C67BCCD19A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 11:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 204AFCCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 12:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90F88E0016; Fri, 17 Oct 2025 07:59:40 -0400 (EDT)
+	id 7CC2F8E0031; Fri, 17 Oct 2025 08:02:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D67C58E0006; Fri, 17 Oct 2025 07:59:40 -0400 (EDT)
+	id 77BCB8E0006; Fri, 17 Oct 2025 08:02:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7C828E0016; Fri, 17 Oct 2025 07:59:40 -0400 (EDT)
+	id 690CE8E0031; Fri, 17 Oct 2025 08:02:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B74658E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 07:59:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9334B1A0156
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 11:59:40 +0000 (UTC)
-X-FDA: 84007461720.24.32DFFBF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EB7A6160005
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 11:59:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cSItTMlZ;
-	spf=pass (imf08.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5601C8E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 08:02:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E7B3D137DDB
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:02:54 +0000 (UTC)
+X-FDA: 84007469868.30.056F37E
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BB954C0012
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:02:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="U3k/aCbs";
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760702379;
+	s=arc-20220608; t=1760702573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JanebDxbE/kr6ucVM486lEx9oeuMHOmRkDUFLuDZlZo=;
-	b=k6lMfJe6nNQTbf16Go6Uzj79iDnM8lI3hWav2Iat1GafHmIQMye4ZtpqB8MJqwF9dKJ/4X
-	GjQLEaIWUgb9PsT+YeZVB0rvYI5uCr4nuucFFzO2R8SyTT1Sd2BAp3eNcoYMKZ0IwM54KX
-	R3mNZXVa9Dy6kkB1c3f/OYv/XpPt1bk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760702379; a=rsa-sha256;
-	cv=none;
-	b=iZ1U8mzm2vOP4cRnaxriLp0KEsGXTKJYNsBay5X5Q2JwYkEI7JWtPXAy82fqSAxK3lkgHp
-	yhfvF+LXOag3OV+msbohlH+ZNPJ/8yFB3IyYAJcU6lelc6cY/p/15sr50sBWwFnX4fsE41
-	D3Nt73vIYyZlsZBPAgupJWGnLj5QTC0=
+	bh=/JPR8GH5hcgadFN4LhX9XG9fVjAZMNhtsFHX93XBRmk=;
+	b=zy/zNYaxf5MCzQjJTSKTXQ7lnse1vTCUCVmGdYefAtnifY7zHl9OCMdCN1HU4mdWp/pWx3
+	zC55jrC8VdH+DTlab7L23lhQRLK8Ov9LfYMm0SupbOYuLSxyGI0JG0/Xk2uIUcMXXcSDOy
+	rDByrp0w0B40U5CgcjBuOryEKqi1QeA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cSItTMlZ;
-	spf=pass (imf08.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DEF60604CB;
-	Fri, 17 Oct 2025 11:59:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3037FC4CEE7;
-	Fri, 17 Oct 2025 11:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760702377;
-	bh=38uFLiDTAO+A1PWpRP2bVJ1ijHpCWsegoKBcJwzF2PE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cSItTMlZ+xkWo77L3dJDjTz61eq44oatBXCgbcCC5ycxjVd62F5ZBD5t/I/P7IMAl
-	 lQe+zy+uvgq1Iphq58yIzjQNmbjsJLGcQk9xMD89Oyn29Qra+kKcuYPJON2XTLg6Wc
-	 Tx4/0gvLYtBA9RdvGnygRkoazMU/mLdzs1fx2bZA=
-Date: Fri, 17 Oct 2025 13:59:33 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Eliav Farber <farbere@amazon.com>
-Cc: stable@vger.kernel.org, linux@armlinux.org.uk, jdike@addtoit.com,
-	richard@nod.at, anton.ivanov@cambridgegreys.com,
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, tony.luck@intel.com, qiuxu.zhuo@intel.com,
-	mchehab@kernel.org, james.morse@arm.com, rric@kernel.org,
-	harry.wentland@amd.com, sunpeng.li@amd.com,
-	alexander.deucher@amd.com, christian.koenig@amd.com,
-	airlied@linux.ie, daniel@ffwll.ch, evan.quan@amd.com,
-	james.qian.wang@arm.com, liviu.dudau@arm.com,
-	mihail.atanassov@arm.com, brian.starkey@arm.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, robdclark@gmail.com, sean@poorly.run,
-	jdelvare@suse.com, linux@roeck-us.net, fery@cypress.com,
-	dmitry.torokhov@gmail.com, agk@redhat.com, snitzer@redhat.com,
-	dm-devel@redhat.com, rajur@chelsio.com, davem@davemloft.net,
-	kuba@kernel.org, peppe.cavallaro@st.com, alexandre.torgue@st.com,
-	joabreu@synopsys.com, mcoquelin.stm32@gmail.com, malattia@linux.it,
-	hdegoede@redhat.com, mgross@linux.intel.com,
-	intel-linux-scu@intel.com, artur.paszkiewicz@intel.com,
-	jejb@linux.ibm.com, martin.petersen@oracle.com,
-	sakari.ailus@linux.intel.com, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, xiang@kernel.org, chao@kernel.org, jack@suse.com,
-	tytso@mit.edu, adilger.kernel@dilger.ca, dushistov@mail.ru,
-	luc.vanoostenryck@gmail.com, rostedt@goodmis.org, pmladek@suse.com,
-	sergey.senozhatsky@gmail.com, andriy.shevchenko@linux.intel.com,
-	linux@rasmusvillemoes.dk, minchan@kernel.org, ngupta@vflare.org,
-	akpm@linux-foundation.org, kuznet@ms2.inr.ac.ru,
-	yoshfuji@linux-ipv6.org, pablo@netfilter.org, kadlec@netfilter.org,
-	fw@strlen.de, jmaloy@redhat.com, ying.xue@windriver.com,
-	willy@infradead.org, sashal@kernel.org, ruanjinjie@huawei.com,
-	David.Laight@aculab.com, herve.codina@bootlin.com, Jason@zx2c4.com,
-	keescook@chromium.org, kbusch@kernel.org, nathan@kernel.org,
-	bvanassche@acm.org, ndesaulniers@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-sparse@vger.kernel.org, linux-mm@kvack.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	tipc-discussion@lists.sourceforge.net,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Isabella Basso <isabbasso@riseup.net>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Sander Vanheule <sander@svanheule.net>,
-	Vlastimil Babka <vbabka@suse.cz>, Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH v2 01/27 5.10.y] overflow, tracing: Define the
- is_signed_type() macro once
-Message-ID: <2025101708-obtuse-ellipse-e355@gregkh>
-References: <20251017090519.46992-1-farbere@amazon.com>
- <20251017090519.46992-2-farbere@amazon.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b="U3k/aCbs";
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760702573; a=rsa-sha256;
+	cv=none;
+	b=mwTRa0wwQYO0eHj3fcxM9EfqbdwV/2yAV752+DxnkC1iUGZunbr+p2ecsi+3WMUmCL75Mf
+	5JT0miAH961k23B+CoU1TIimp+GDx9uRAWFTch6E44za6DdXvj/Fa/nVWdwKIRQ0c4UD6i
+	NtdSM0B9Zzx04cCGfaKGb9fiytFxmJg=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-427007b1fe5so1072899f8f.1
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 05:02:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1760702571; x=1761307371; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/JPR8GH5hcgadFN4LhX9XG9fVjAZMNhtsFHX93XBRmk=;
+        b=U3k/aCbs8o7vYULApAftc3j+JjMy9Y8ZTPMXsyDN28pKQXmBizqkPDWlcr4udUOUjW
+         Vl/b6dsJAxqE/P3FW+D4bsCSAvtpw4fBGx43uD8bzvZiHLKjJbqoSvAPiBSUCJ1eNlYH
+         2WMN19n4Clvz+wBt7hf+3T2sVIahn09kLKUSvferBwD4yG+ULPmHq4EKz0emlfkZ7si6
+         Lsw/Ijq61q1MtaPq7rU1P13TvoSGrP4QZNj0HPWonHvclsLzYhoRMMUNIuC4wnEX0Vsp
+         6BHqUK328EpSW0Pug0qju58qCEzOFL4kOaPu5ZVILQ6i6UiIJi7SP9AqZ8SjfHCYWmf1
+         mcWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760702571; x=1761307371;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/JPR8GH5hcgadFN4LhX9XG9fVjAZMNhtsFHX93XBRmk=;
+        b=crCOgP0vKL0h3cZYg6ivrhrsaDM8n30mC+QpHvjmEoPsD/Q9j0bVgpIG2TzoQx188v
+         3nybUEMNWFzC/BURGHEMMSj+z892yXTf32dIzoae0232NYFSncctiqdgd0G000XwwBhN
+         YneaDQeKJkYxP684+/cyVFln6c/3vuDraFTq/RJlFCpN6tlFjYedImlNXxpfiUQ3m2a8
+         QHE5epQ3DABu+QBGiR8IU17tQEVdq6kXavqKSLfpuDB3w0U22871bF+lkzCenJ0T18+D
+         KLOdUCVsqFpxRzKso8Zp3PkPZgAkCXZjX9qS8hTXGh7D/bXWgB8HfjvD+fU932SVgRji
+         0j8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVLc8Tpd7Wc8KreKbiuL6iyRp5jEKOy/ScPfN5DfK2rPM/C1mOE61plXxi3s/xDJ6NqFBYrFoZBNA==@kvack.org
+X-Gm-Message-State: AOJu0YwT8JyvWJsSR+E01Vif4gvZP3FVc364RhSXUsrN962h3PRp0+7l
+	+tX+2YiKwWCu21m/A0xmp9g/0NBqZCSaQbzhU3jRafmWJotw69ycm6QP+PiUziYDLBU=
+X-Gm-Gg: ASbGncvs4pugB4qPMNOqJcFwXblwCoadnn8rIb+ZSHPOesWVZ1h/gjS7QEfCVciyMwL
+	/MBIXna4ZbuLfxr7UIyhRe7mjuyU5tPMJ6bwiqBh05FFwTAOhL98Odx2jhFHLDB7LtvnGxdleV5
+	/Cxoj9tbERhOGwoTIkpAmjyOqBuiQ6GQHN01vW0AEPZw3D52B3WP8ct2Gk40B6dEXQFnbfIN86+
+	lXUsLq49O0KXsowHz+xFyzqbqbO/r02/77Pc0oz1as1kN7LdY3NzHJI/95/odRBrNsBpA8GgXsW
+	bP3xIPsAeiWEWAl4pGRPwEzCKgZQy4o685aaO4O5+4fHO1AmXUnjYwjvBsDmbqMvSHtHdqu8c67
+	eR2OsmGYlCe5Xv+oNBhhF8MpZPYEw37yPnBxJcFlKc3tB0F/kRxj2l2DSAjUEgvk57KA9Z2OMR2
+	00X6m3+9WUH+0=
+X-Google-Smtp-Source: AGHT+IE06r98UHWFT2Xk7ldaGKsG7wzyanlhTrg8kwfuMMKG0UEDDaMDa+nIp24NV8a0FkDRNf9r/w==
+X-Received: by 2002:a5d:64c3:0:b0:426:dbef:9abf with SMTP id ffacd0b85a97d-42704d8e0b2mr2471395f8f.23.1760702571075;
+        Fri, 17 Oct 2025 05:02:51 -0700 (PDT)
+Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4270665ef67sm4048567f8f.28.2025.10.17.05.02.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 05:02:50 -0700 (PDT)
+Date: Fri, 17 Oct 2025 14:02:49 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+	lorenzo.stoakes@oracle.com, hughd@google.com, willy@infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm: vmscan: simplify the logic for activating
+ dirty file folios
+Message-ID: <aPIwafJOKUh3N4zX@tiehlicka>
+References: <cover.1760687075.git.baolin.wang@linux.alibaba.com>
+ <ba5c49955fd93c6850bcc19abf0e02e1573768aa.1760687075.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251017090519.46992-2-farbere@amazon.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6enjg5hmkg95c1xhdr3ers7z6dpzqo1u
+In-Reply-To: <ba5c49955fd93c6850bcc19abf0e02e1573768aa.1760687075.git.baolin.wang@linux.alibaba.com>
+X-Rspamd-Queue-Id: BB954C0012
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EB7A6160005
-X-HE-Tag: 1760702378-539363
-X-HE-Meta: U2FsdGVkX18NSYxu0d/nV1n4UI0y2eAbsLaRkicWZINzcc4TNoQEL0qS5G5dPGIOQ7h/ijROomWKt3bjyQVxptwQ8Eu3yGVkae8/vD6vSz3zkz8dprQsfSeqevpvN51agWeQk5UVlWLvukeeK/SgKhimBmxNC4dSPkbvVSaNGz/W+IWiVoHtxr2hneTBxKI6Uy4bF3XwPRH43adaytBB3WPH8QkaC8hgzKolP6UMsI9OJRK3523k/7u/1n0TkjWEQgyIm99r4hv+Z0Les+vE9+Bgor63/pKJxWSlIetvS5vCnXQV6kodJTZCOH9pECr/ZUrmNmUpToM0tU4BmAj/+GW/YxjkVJM+B9qHeAdLr54TW2WDKj1kEL5uMeH4QtsSKXb8tC8f3oQGduv5MK4lFP8MwaXSgNB6Xb6MwxKvNjvc9fpSeOJ9jqdCxftzwQ30vS8+icpY28AGXS7kx/NM2DmkmGKk4NLrXjLb8m6DHiua5HjJHJrGF7wpc6jgytJDC2uym9CauB29uv30CPAK1OfNqKbncLFE/craEb8Z1zqDAL4NKB8HBPat+72jpS1CZc04Auvc0VFCTtdmzPDUkeZlpN8YKSSW6J/bU6JaEWb7Bxuu0b4wGuYDlQG5pmzRrD7z3Ob/OeHl2R8URueFBrbUFGr2sPQTNUIy8FEr5zbUSJBCnUSy+1bA/ihsY/3Yq7F8JXnKA/9IShB0gvg6ChN5tfLWmvVT3JcQt3mZ3ati6GzMe2WuDrrNL/MtU00QYJHHeGE/0Cbk96QZurKLU5IdLPFNnZMHK3bR/wF4ZHvOyYm8QZGh+Ze1mwRudBybs8IM+IaAyxN8R/8NRivVBAlrcGE7Hz++l7RLxdI+KhRGZAJO+mzoRSUKYBZzSCCPZzPepVSlkYLg8xmNM7PZk80Pp0DY2sieVtJdYS3EfFHM7/BUQM0pUi+x60iIhn4ygRw2qZkzJkc9K1c712Y
- oEKXFojz
- IfK2Auo670KJg4dIogxE+yOkKgD3eG4q0O8tjpQtMzds8GZb6EBLwCPB1p55wKeCtacBc/kTXSetaFfexmsQJSPxoS9Pig92lrW8h+YeOZ2gdVfEwilw7boTCR/9m4FhN7vI8r7n6CA/WrUZgEuLR7r3gSxVEe4mofJ+s6e1aLnokfKAie2qsi0yzfeK7s/DR+O/41CH3Iv0OdDHSdyHEvXTbJEmgokHpWti8VGFMRYZCQzrFAENQhS789eKvoYmMac1oVLIF07HwvliKcsP7vWDmk9a5mUS4TMgrsPXomOhly95ZDk1KHYgFZb5f7npO6pAH+/Vj7DeUkdwt8/u11dsPvz+60bAva7jwQUJiIQc3QSfxPjG2/Wee0k5YZHA77vHFv/7KW2oN3q+e8lWTcAjGtbNNsbl/OQM/7Vj1oj5B7lRAUT9FIm5QADomjDZb9x8IdC8irh/48ObDU2qoVi9pPswcbJAqGJJfVEVI+2i0OsbwJ/m60QbyaIgyR381GicoMIn7yevmYgOX7YCGLFnYr7YdbrgFFCGL1zWaQuLCia37G58/H5vnezGFri5srhlagMSIM5Km+A3mD/0q19POh2XuDcDnXMrFEEwitcEDSo4EL2M11oAdiQ/w+PXAbjPER7c6HvNverxvsYYTKa00Ytc0JfxGZAb1tsPi1H6KSfDsLCVPSeSjAmmxHWomtLgbcCFHLYW9neu09eKPnCDzitceBTlkATYhmn8iAznShgZY+GCHUosJeyWo976XvPWy8QTZ6Le0+C/ovDoWnbPCwfqC5X03EzchntQ6314u9QTc4AGOsk3WhV48Uf9bu9tPqiYdJzHSIzArs5rUmv6l30786J1+boiO274jHiLOznVuXPtmRnP9LFpfmFRowESVVt0BCH49OiJjCqb79Ec4ssgO5dCF9SejXtpO9yOWhCeiOG2QkKauKX+3ch1UipqhBWVlSjp38OH7yS2+18LyUD6J
- zioBK9R4
- PW3rrcZyUncTrULV7Tdse6BciACsTdbuMLxwRYFb2ldHEaOeRR0EEPQlx3Lix8hrA/TPAU3I/4BQi2OWuDv7YrNG2huguxwKzecTIMVe5dU5Nq+o+vbBmzoEy/ZYknFzNuAsljxo8csZO+ze+gJsP0qNgIOoK66zk4D0HYN7lUlHabxcPkVC01mJbH1ReZL3CF7MM6TAl4dfHAs3mt8NxlBM2VvMx4W9PUsuLUZwOGstvNq5/zdy4GuZ1mGyo3gsbF01ypQcTe2aOD5cUrRQ0no8u0Y/Nn5c/8DFTv1yPY1/YmrToYEdkgWqj1wbYmCnB8/0kN8YuQcX6lmXq8hKsuXp2ki8hLuKwLU/hJrAesaLNpxf1DeDvifEMp289uQp0EHvSlcVe8QhSkbaG6RnxWGGjJdkCbOC9SgsXizPglc+PspwtlziZuODVGkYL05fbu1GzXHfupzPO5k6FyiE7X5MEfKxg3t1pMgCpFARU3b2ROieF5Ux1OOeUWWaykRbUDwFlDwUfAFLbol/Y4SpM8hwKT+ml/52GFvyDpt8jAxIJxUGpx/ZZFk7HlNQvaPRoNVFB7phaBZlluBGS0oNmxu2XsGx8l1Bj/OAPK9lpxjchvm9KD9Mk5rErmrPhA6rM1u6L2o0i0gW25RZo9WvnFneMvVtb47ZSIq06eQ1l46mxvDtl3C2Kf0j2aL7N+SF1iLsZDjzqYWCKiTs03oJM9047cBiB74cY2DpZWLVvVHS/Cduj3MjeYrhocw53/3BSwhhSCI2saLH0sNgAKBYndxHRMIewq9vebmpOh4z+KaxDKGgqVuDxbtz2D9pCqnnuyQRYLdOiLC7g8LK+mgR7VcCd4SX3KkqrD7h9KsNnJnpVWliPufaHZS00Ow0vJg3NxQkZi1+iAopyOkEoo6zZqifM2eOTK0AJtjRsz6ejd73tImA1JIvzaTXuSt54hiWAWOUCLUfvJ10QPNrTQcVwTEFJROts
- IvInGtol
- 5OBwZWOTGqSIdXraCMaXloXjGG5QoTKwzM138Oc4KVAEi/m/DxDi58IPkG1/H1mEXmi+I8J+wjZUu1ZqCCtdcD778pWRJf8EPN4PGGLk8QmD9tpCu9/4v0fsJGXzdP33SiE0zedR16Dbip5LrK+zRx7RWYjVf7eS4CxrPSUYrFr2vjnr4saQKKG22SizKKebDbKUb2AYBcFaLhgzucb5dA1r/iETLYwsN2F+u8YeMnlvC+pYq2JSmegGiavhFXF8zEV9jyyOZ0+c4/8ZZfF8szKyaTae168Wufh9aTVKHuB1rsL/h1tRomhdxSZuAbvGgAAvigwD/VMlW3rh0tiXkHJCW2AEp8/g+tC9zK3QgZkRSWsoAC5PoJrOpvKlRr0pRdDkcqGkgWKNojRoYMkTfRFO4sjJ2Vlfwcc8DixBAHmrwELQAubH2H+vigv+U9ib5wUJ+52+IaGMt1J7tfaynv6u/6ZjDa5dQKj3ytAY+5dwQxZxD4YfVDSaptoDoVcWuPAFFwqcJy8fj31EIW1Wvu8l/lGtJN21rtAkWifm7lzZHoqNmYDtSIkFMj3F3VMdZy4PCb/fC55lExBxHgamHCauJUj/Xp1pdxE5Cwd7UlukLxGFKIorQO1cQxwhPn3puGMYDWrH4sDJTk7u1/JOUNX+bDQL9vnCuJyvfGbNhEh3KQg0cPEEBpbbHYUKFL1cNlM40hjMCFkj4OPWb2Bc5CsJAD66MkHKL8nlwsu6+5QwZ7o9JaATOuxSXmsmrp0xkf4on/P/a8UeUd6FUgBz69vL0f9EEOtx7ocgaF6tuPciw5bcSSFtIu48cybE5Cj/O/XfWHOONbKC54Wov5P9IqtULaMMKFZSYQFJpiIEWuGn7YGmBp0CtrhfKEp9FxRz7PGvkiJj4iK6RbDrXZkd2r1adfCAOaq4K36doPLYDIXIYWWw5eXR4KbubqFExZvSXQttxM0Edo9NMnsoOgEVr3V4R2PJz
- tiy4S4FX
- Jj5zBa7FfqvEIliu53hz2qlxkOwU4SLnQsGY0S8LVT/O019q/0lHKmqClYVHNqkAb2xB/IcbFwGZ2HCGMSXDFmO1Ejg/rVsLf+RU7z+UoFmVTYdmjhC0oD9qJz9uHLLQkguEgHQEJYlmU9BN0V7X7HDDHikeW7EX3zKxEHiXBCktN4hZP1GKCljkrWwB6Pnd0SlXUjy4OzSmckuQTIenHtw2dd+l1nmRiQOlI1YGfhLCYDIgZJun527Hw4K893rI6XkT2ByTDudzX0U2wzfMWzIVYLznrLQrFxxm1y6iDxJR8wQIK8FamU5p/Gp9tQysAbI+TykjAJ/Hth1l3KL9Lufd8icsFQmF6RDb2bT+TJwKlBhUt8cxT3cIeaDoGQku50iav6TI2R9mOkKqJwTlBPTZ/WDtHlyirpNok3r8XVbExMM3WkAswRDWzvoS6ta9A8FGUyqHoIm5Qe6Vq7Z9fRzD7VLBjVnucbWBrxGr4sBWqsD0wtP6g9rkvV5Flr3hlCuBbTbVit1P9Xe9TvB1HJlqaUja/O2WY7AynX+3ry1fNHZZ4sYNpFW3RKEBCW42Pj8fcEoY+L0ZpqruzRh5ANgyUEqzqZ5scpddvJ7h4xkEc5G7GQhFqioTbv3MnYLcE=
+X-Stat-Signature: mkj735n5atfnw3hkdmeadko6hr6d95zg
+X-HE-Tag: 1760702572-254933
+X-HE-Meta: U2FsdGVkX18nfQoOFv/FFtZlse5piOLiNFIjXHggMw/Y1EMhAeB+5HMYiJJRMFXe1DVRDmYjjvFlJU7KT7IQQMqKxPMYh4YaUg22mrGd2rqQpSR0874RFsHp9IWVupnD0j2X16E3wfOL8YXLzREu0IbpsiO1rcVaZc/6kxYPyQdfNGMb8Qc/yzNYAKOO0sbhQmpTmvXc+FnCG1a503U/y6vstUaMCXHQdvGSEjlz5ihG1XLK8XCB16DLQNYzMclX/ePlU++Gd5FdHkrbA/cusUvfnQ+sC5/aeydYUTy6/C+Jcy4mZjvmZUx3IP6afchEcOPGIClcpMqaLB0k+lGsaeWyOvp9SnadvrdBwRRpaxEb+3nQHc57tcveOLYc95wz/cqDczQ+bO2nNOw9KMigKEfg/MzNVHJRBhaf1fZCIcW+vXsH27iYhtvhII3nFE92lepqqxnEtKzJSTCfD5p9Q28dmvzjO2gIgawRH05oLvmeE4MaGIb5QJFNb27gRb9+MrX/8l+4/4v0dh1dEZ4r7wDy/onK3AanGOE39tGR+Yg1hiuKbhD4Yu8+Rpd/9YdMTciyOEeLtQRypX/uvbZa/jWP6FtEWRhPOvyAUPoDyNobivNQtGdxIqcK3KT+wtLUQrlk6Ys48ssWC0eso3N5zKSmDMYY0Bg7sEaKxQkeHpmff8xfcoL8qSXxqTvshj0Txfgusn/wY9wk+MeOx2BsQMGZ7TJnteggLS1hF6yAnSdgT0P6HIDpUi0Docco7rNq1wDRNEjv7Vs4XZcFgPzHXZPjc7sCrUeOl82VizS3YSjReGdNkI34nqFjVSwngqWY0kuke1X/2EQKajfUzQlgyXQrLR6BS7BYHeiqx6Vf3lif4WaU0ENKoZQbPf4rUGViCsW6ASZgPPfIP5wrBBgwV0a8XiQ8YURWjBmd1BNJz6rLva1hn/KXcccS51zrt97F92W/D7HUqzKIEOor8zo
+ 1m1clQAq
+ faBASWubx0jQJ2sZIbFzevsoaq5LPm0D5wjHn+NGl71PoZj1SR5BHxUiT7QDmZe4nk5xhUSGJIGyomrbTf62FMVz91AkToiV4+7sOSzqRKorcm/kn2safJIfW5LcSUWTJyRjeLFAgSEUaHTxn9kIFYrbfdZh0SMZrvDlMR9dAhhdwg3KniyAHz+xN7afG73OEubGQwyYYNvWhUdAf6hwbnZyvjP3dUafDLejHlSYrInG2i1QbBswmp3ct2BKDjh7YdmMqRSdqrO4mg5nvtRfZSh0bImthBB+Uk+8Bb6gVjH3saG1wCTN6K1tKYqEnj7436AEooFr+FeJUHMVnxpcAVtXc2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,14 +122,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 09:04:53AM +0000, Eliav Farber wrote:
-> From: Bart Van Assche <bvanassche@acm.org>
+On Fri 17-10-25 15:53:07, Baolin Wang wrote:
+> After commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no longer
+> attempt to write back filesystem folios through reclaim.
 > 
-> [ Upstream commit 92d23c6e94157739b997cacce151586a0d07bb8a ]
+> However, in the shrink_folio_list() function, there still remains some
+> logic related to writeback control of dirty file folios. The original
+> logic was that, for direct reclaim, or when folio_test_reclaim() is false,
+> or the PGDAT_DIRTY flag is not set, the dirty file folios would be directly
+> activated to avoid being scanned again; otherwise, it will try to writeback
+> the dirty file folios. However, since we can no longer perform writeback on
+> dirty folios, the dirty file folios will still be activated.
+> 
+> Additionally, under the original logic, if we continue to try writeback dirty
+> file folios, we will also check the references flag, sc->may_writepage, and
+> may_enter_fs(), which may result in dirty file folios being left in the inactive
+> list. This is unreasonable. Even if these dirty folios are scanned again, we
+> still cannot clean them.
+> 
+> Therefore, the checks on these dirty file folios appear to be redundant and can
+> be removed. Dirty file folios should be directly moved to the active list to
+> avoid being scanned again. Since we set the PG_reclaim flag for the dirty folios,
+> once the writeback is completed, they will be moved back to the tail of the
+> inactive list to be retried for quick reclaim.
 
-This isn't in 5.15.y, why is it needed in 5.10.y?
+Is there any actual problem you are trying to address or is this a code
+clean up? How have you evaluated this change? 
 
-thanks,
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/mmzone.h |  4 ----
+>  mm/vmscan.c            | 25 +++----------------------
+>  2 files changed, 3 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 7fb7331c5725..4398e027f450 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1060,10 +1060,6 @@ struct zone {
+>  } ____cacheline_internodealigned_in_smp;
+>  
+>  enum pgdat_flags {
+> -	PGDAT_DIRTY,			/* reclaim scanning has recently found
+> -					 * many dirty file pages at the tail
+> -					 * of the LRU.
+> -					 */
+>  	PGDAT_WRITEBACK,		/* reclaim scanning has recently found
+>  					 * many pages under writeback
+>  					 */
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 65f299e4b8f0..c922bad2b8fd 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1387,21 +1387,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  
+>  		mapping = folio_mapping(folio);
+>  		if (folio_test_dirty(folio)) {
+> -			/*
+> -			 * Only kswapd can writeback filesystem folios
+> -			 * to avoid risk of stack overflow. But avoid
+> -			 * injecting inefficient single-folio I/O into
+> -			 * flusher writeback as much as possible: only
+> -			 * write folios when we've encountered many
+> -			 * dirty folios, and when we've already scanned
+> -			 * the rest of the LRU for clean folios and see
+> -			 * the same dirty folios again (with the reclaim
+> -			 * flag set).
+> -			 */
+> -			if (folio_is_file_lru(folio) &&
+> -			    (!current_is_kswapd() ||
+> -			     !folio_test_reclaim(folio) ||
+> -			     !test_bit(PGDAT_DIRTY, &pgdat->flags))) {
+> +			if (folio_is_file_lru(folio)) {
+>  				/*
+>  				 * Immediately reclaim when written back.
+>  				 * Similar in principle to folio_deactivate()
+> @@ -1410,7 +1396,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  				 */
+>  				node_stat_mod_folio(folio, NR_VMSCAN_IMMEDIATE,
+>  						nr_pages);
+> -				folio_set_reclaim(folio);
+> +				if (!folio_test_reclaim(folio))
+> +					folio_set_reclaim(folio);
+>  
+>  				goto activate_locked;
+>  			}
+> @@ -6105,11 +6092,6 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+>  		if (sc->nr.writeback && sc->nr.writeback == sc->nr.taken)
+>  			set_bit(PGDAT_WRITEBACK, &pgdat->flags);
+>  
+> -		/* Allow kswapd to start writing pages during reclaim.*/
+> -		if (sc->nr.unqueued_dirty &&
+> -			sc->nr.unqueued_dirty == sc->nr.file_taken)
+> -			set_bit(PGDAT_DIRTY, &pgdat->flags);
+> -
+>  		/*
+>  		 * If kswapd scans pages marked for immediate
+>  		 * reclaim and under writeback (nr_immediate), it
+> @@ -6850,7 +6832,6 @@ static void clear_pgdat_congested(pg_data_t *pgdat)
+>  
+>  	clear_bit(LRUVEC_NODE_CONGESTED, &lruvec->flags);
+>  	clear_bit(LRUVEC_CGROUP_CONGESTED, &lruvec->flags);
+> -	clear_bit(PGDAT_DIRTY, &pgdat->flags);
+>  	clear_bit(PGDAT_WRITEBACK, &pgdat->flags);
+>  }
+>  
+> -- 
+> 2.43.7
+> 
 
-greg k-h
+-- 
+Michal Hocko
+SUSE Labs
 
