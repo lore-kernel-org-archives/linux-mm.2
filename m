@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D728FCCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076E4CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 16:30:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 323528E003B; Fri, 17 Oct 2025 12:28:37 -0400 (EDT)
+	id 460FB8E0047; Fri, 17 Oct 2025 12:30:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D4528E001F; Fri, 17 Oct 2025 12:28:37 -0400 (EDT)
+	id 411B38E001F; Fri, 17 Oct 2025 12:30:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E96D8E003B; Fri, 17 Oct 2025 12:28:37 -0400 (EDT)
+	id 3276D8E0047; Fri, 17 Oct 2025 12:30:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B8818E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:28:37 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 621A413A231
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:28:36 +0000 (UTC)
-X-FDA: 84008139432.30.FF2EBB7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DEACBC0003
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:28:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pvib35gR;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F6558E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 12:30:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8EC9119357
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:30:26 +0000 (UTC)
+X-FDA: 84008144052.10.80F8C13
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 085C040024
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 16:30:24 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QazJII0s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760718625; a=rsa-sha256;
+	cv=none;
+	b=blJW5J7G2uS4o8iJt0/KXU3BZkkwHcCU9iDOQ+y9INKd3xTDwE9ccDw3UsT8H0NTWywLqF
+	gpoad/ZVqkXRCFmXy3knRgf4b0goD2T9ptGSKNH2OlkoS8RBuuOJ38bma+RiwClCKSkou6
+	EtaLrpERad7xMKuWlsEjgwxVjCOYkio=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QazJII0s;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760718514;
+	s=arc-20220608; t=1760718625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HyiafsZ0Mfts0KO/fNhIeGvjyVj2CpPQYnnGh5OHsu8=;
-	b=hJzA5VmahXHLLUQrGMDrdfHbBlIXX19FNh5UOkBkxg17jN2nHxacXO69vrzH9mcwYCAhTR
-	A+E4wyG55YbaXSuTL6cWj3sCj5gVloHppPHJ8URz14ProZtn+qYShm2PTIN827PJLAIeCd
-	2nT4U+E5ftOfmOK4ty+rlXtJ0ieXCwA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pvib35gR;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760718514; a=rsa-sha256;
-	cv=none;
-	b=g/CUHGSrMfwOko8WIpkaDEjBf5Mq+Tfq4RBd/9UNvAigjq1yB8QJ3e5iPZ7B25XuVwQFVD
-	C7CfuAoK6itxdiuhQX6nQkLfya/azU7Ujl2X8FD4ERUu5DJkiNbbwpeUWzrCLg0Z+edqhC
-	RCw2wGfCOQL1Bnn3xWQFZYV7kHPb6JU=
+	bh=bmJ6BMKCC70hg2co/vhWRvi2FNRQ11Z/Oa2/TYvN/C8=;
+	b=jS9e+Im07YUU+XxJ5rbQ8PevY++IId6/LUKM5H1Vx6rnzMgWQd6zZPqfq0IJVUsYKMzUvF
+	SSdaKs/ehGFLmGOycYU2NescHUNwuAN62V65z78RQ7n4S0BUO0aXjBhFfQELBOKpVrrqVs
+	XdeHcwEBsbA1/m3MEQkYHy4dfRnX/Fc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0804F6052C;
-	Fri, 17 Oct 2025 16:28:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D86C4CEE7;
-	Fri, 17 Oct 2025 16:28:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BDC544439E;
+	Fri, 17 Oct 2025 16:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B149C4CEE7;
+	Fri, 17 Oct 2025 16:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760718513;
-	bh=y6vYbALsJkMlFJydwFebCPjCAMuCiquwR51ZP9B99Lk=;
+	s=k20201202; t=1760718623;
+	bh=0A95aUQlDuwkcx0jSODD8EHq026+LKD+s5SAlpUXlEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvib35gR53GA95T0WTt9rTSAbf8JRkzineRX9qYxrL0MAZE+MbO5z2EXazWk4zd0E
-	 2X5u+UvXa6WaJFaRocHXa4iaq7BRw2i+XYLLwSAEatPT9e1r6g9LNGlIc+qJXq7ASH
-	 /TVIPLRKcWPc9/1VK1Tj5mR9hCqJutjQBBfVVzubKfr5HHYmVMlOy4gEfGIpNxrztL
-	 hnPwIAhuOeggTsP1KQKhG6S5dHWC56rfxc+SXJUWx+dBlq9csN5Ph6M3wFXrYXYdRc
-	 0hGgvHgKQDmqEkdYK3s/aARELIJ+jckxlkIg1NGZs8pr/BSkY/hG2RzdcCgVijcG60
-	 mlvcBx8ywGjMw==
+	b=QazJII0s7tH8e2F7DgxwngRuHw2DH80TtOZ6Uqj3lAFc+iJ8oZN6PNVihCp48SU0q
+	 gYk0Fr5azA4bIs+Yx9J41/OChxwqzXjL/9wv3vJx1uY9e6z24ihD2L3gjwXIerHp6U
+	 +keBxh984t/6Y99GvpuwwACopO7NRW8C3Lq3ahLMlcFuH/bubjLEyxrudUBMZyJIH3
+	 8ejTNSJrY6rHwCzOT+ZFFeI/EkXRN9JPvpGgGOEhHHg3S0DH2PBsU8nts77BysSQHx
+	 SgHicqQE/P4XiaNgAsaS4Xq3gSvYz3btgM119QfJ7WKtdeK0Nh+BXam/MLiNEm2134
+	 f6QZXMDLSZU/A==
 From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
+To: Bijan Tabatabai <bijan311@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [PATCH] mm/damon: add a min_sz_region parameter to damon_set_region_biggest_system_ram_default()
-Date: Fri, 17 Oct 2025 09:28:28 -0700
-Message-ID: <20251017162831.116160-1-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/5] mm/damon/core: add damon_target->obsolete for pin-point removal
+Date: Fri, 17 Oct 2025 09:30:19 -0700
+Message-ID: <20251017163021.116255-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <4c2e5879-e554-49c0-8f05-094031cbb64a@huawei.com>
+In-Reply-To: <CAMvvPS5gjn6J1dF1O+Hj3CmVcPTQG__zRwqqdBMoRNtptQeOyg@mail.gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DEACBC0003
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 7srsac9b9fow75qm73b6xjosiiin6wwi
-X-HE-Tag: 1760718514-693852
-X-HE-Meta: U2FsdGVkX1+fSAo20eW8dvik+/aZ5rezwJmJ7CcGwPUsurE5YhDzo9bQvbcI5aUFz0oGwzU2nGvElj0w18dQZiKNlE6dt+ot0OWO/sV0819GOUkEv8wzQejEu78pWYlAwFk9Sny8GmkVKvrSLtP+kgbsMWzydxBZ/nXP+vDz7sSxEtZyy4f3BpJmaDszUo+F9qdVS6gYYnU8S8MYh3tRJaXK/6fsPabSHVa/e4dGlamD0gbIazvV1VBI2zm7v90NoogS4qM3wCMgrk6SHtM7RYvq7EM7IjQu1m5wwu6HgJPbBSBqUjsWbT0bIow0rN5uguPltFvUtADIc4McmtOqAWfx+1Mp1/QFsUt98ZbxZtLl9/OnHil1yjqCAHEekCvv4t9ILuTWwvXI8S/iufXzgRnJS8VKz+MSxEJXLbd8Mfrfode9PbQ3hWcQjAXEn7aMI3ow58OGia9ymPgw3NS13XsmfX+hJbSiiQC/dgas1U1BOlI0DuRsBWQrrTXjFPEvOgFs9AUa5uUqR2G6xanuz1Zac3/FQ5n5hjQJRcqSbkX2SbP4ekMOfEdCmZEjCT4/TBtucDdr/LyvEivTKtxcfZ9EHypV6Y8wyv9TVDC27Ree6J3DndpSKBk3NW5Zph+l9UpmkEtWrWtHfWzqbbmQj9R/I2bojcOWLA3i75CGhURFQu37QPNVLIbahmkvpNShy29ryDortI7eSKQDC80sPCOlooyiV8/SXy9cp/O+o5N+iVilh3cg6pVoTFRjOuwKNwiZNALJ5o8HYpfqPgnlVQziFxhBGahygCqP6HZJbihh8cnT7FzHB2Rl2Ap7T942be51oXwZMGt6LpU1i0IumaW2tkK0PGDMJ64JcpEQzPSmBbethfHQGDCFBaG4WJ1wtET7o4qUntlmXePqiIhzeDQ97BFGB23vwm9QwV/rDoYumGpjndB2zg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 085C040024
+X-Stat-Signature: c764wczg9kat6kp8zuwf3kmtwwphqu38
+X-HE-Tag: 1760718624-860487
+X-HE-Meta: U2FsdGVkX19EROYK3K2uiq66kv7jCdSMWZVMJgX8twl8OFEy3nJMpvFI/WzUM61PgSCtJ+6lp6irLCz5yXOwNlTzzQmFryEGW/bb9/IEJov7AbEx6Eh7mR78t2KIHPhyVuMEWxmPbnaCezpmaOKxorkZrhud3Pptsm/PJeyDhAgfJKn4qnPPC/0z0Nm3pEfgDl0s4aocxKR0hwCr6QgsHJK3ha+rlI+sjcgrJhvWmaVZt18flD01dFAB2K+zPfWsT3a0QcqyWLvAfm1onngWxzFIWC3TrBTNBoM/Sls2lhdp7rJlBaIiGWDiyxNz+4sz/NUe+kJ1UWOF+a8BwTSOtKeyduy/gC3QZQLt5mPuatf06d598BJcerBA9P+EuU9MWKtXaHW+xvtrTrakNmyP+2Vt4O00sPc1VqgGv8UPf1DOp6l3fTmooeNRlYXAhbvSwJej7AEku3UGVy92x8wshsJOuYz7zlGX04oQX83oa9Vpnp2RQFVnFvgUAzOUo+3SxLV83Vn4maP3wsw3yslCfxLJXZ2oWTJjQmP8PcRaRJunhHLhELOcvujyoXoaVpJuQ8+UfdjTD9vaprCDRKClfoUMbp4R2lwDS+lWvVq9a9UWDdMI/WjLEZRLnHF6kOFrfjwUccuJ45gx/iSZlHZPiLAcCAc76KXcgN7hWi0O0ux5HlKN6RYzeFT3k31VAOgyix+vQU5JW3ehOhD9W5yLnJc3oDM4F/KJImlNiRNANFdulIE/8VdQ1wWQ6M/hjFzTGzQ1KALQgNbCIKxY5+nxUTvZYGuGKieQ0xn9uqB6Et2c693+ZnKGDcAnZmEy2/I+jwSsl5OVeTAlTiNWSWTZ5Ou96cEqymJtbeZ5ARojgtUD+Ra2y0Yl2TYml9sv9Th45EQDntE3D8U5/PZy2WGPh0GQXnUdkeNj04TqUM7hDS5oFqIGkhVqMSoEH8vDPpClx1O91/VDGJ4L/RxKYKX
+ zhuh14ga
+ xE5gG44H6AYaKBC+XK9h7ldVvDvCZ95yq2kyLM78dqM/YJDzRKG02a9Ic19BrdOFnVDMqhcACIdS3kvGpMmKZn5ujDjpurGnvoa1DIYgn0gCFwGlbPo82bToRvIEfnugh9pMuAO18ucLgnNtxyVrxOWkO7PdWOGX3WveXtzN7yVqIVI+Le0DKiFhi61ER1IrZt5vuSTiYeVjArzwIXEopLe7i+A/u5WXxXuy8F1piIya6gsVb2GXb/oREXEhYcsAaQNd+ILkrnAD3QQ2zVHQwMy/baG1RvpP36jx/ED2Qv3E1w1Y6Xta7wr7ynD4DpUVao0QmTFAfwjmMKhFNaSAPu1/eDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,82 +96,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Oct 2025 11:12:00 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Fri, 17 Oct 2025 09:52:16 -0500 Bijan Tabatabai <bijan311@gmail.com> wrote:
 
-> Hi SJ,
+> Thanks for working on this SJ!
+
+My pleasure!
+
 > 
-> 在 2025/10/17 3:48, SeongJae Park 写道:
-> > On Thu, 16 Oct 2025 18:47:17 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+> On Thu, Oct 16, 2025 at 4:47 PM SeongJae Park <sj@kernel.org> wrote:
 > >
-> >> After adding addr_unit support for DAMON_LRU_SORT and DAMON_RECLAIM,
-> >> the related region setup now requires alignment based on min_sz_region.
-> >>
-> >> Add min_sz_region to damon_set_region_biggest_system_ram_default()
-> >> and use it when calling damon_set_regions(), replacing the previously
-> >> hardcoded DAMON_MIN_REGION.
-> > Can we add more detailed description of the end user issue on the commit
-> > message?  My understanding of the issue is that the monitoring target address
-> > ranges for DAMON_LRU_SORT and DAMON_RECLAIM would be aligned on
-> > DAMON_MIN_REGION * addr_unit.
+> > DAMON's monitoring targets parameters update function,
+> > damon_commit_targets(), is not providing a way to remove a target in the
+> > middle of existing targets list.  Extend the API by adding a field to
+> > struct damon_target.  If the field of a damon_commit_targets() source
+> > target is set, it indicates the matcing target on the existing targets
+> > list is obsolete.  damon_commit_targets() understands that and remove
+> > those from the list, while respecting the index based matching for other
+> > non-obsolete targets.
 > >
-> > For example, if user sets the monitoring target address range as [4, 8) and
-> > addr_unit as 1024, the aimed monitoring target address range is [4 KiB, 8 KiB).
-> > But damon_set_regions() will apply DAMON_MIN_REGION as the core address
-> > alignment.  Assuming DAMON_MIN_REGION is 4096, so resulting target address
-> > range will be [0, 4096) in the DAMON core layer address system, and [0, 4 MiB)
-> > in the physical address space.
+> > Signed-off-by: SeongJae Park <sj@kernel.org>
+> > ---
+> >  include/linux/damon.h |  6 ++++++
+> >  mm/damon/core.c       | 10 +++++++++-
+> >  2 files changed, 15 insertions(+), 1 deletion(-)
 > >
-> > So the end user effect is that DAMON_LRU_SORT and DAMON_RECLAIM could work for
-> > unexpectedly large physical address ranges, when they 1) set addr_unit to a
-> > value larger than 1, and 2) set the monitoring target address range as not
-> > aligned in 4096*addr_unit.
-> >
-> > Let me know if I'm misunderstanding something.
-> >
-> > Also, if you encountered the issue in a real or a realistic use case, adding
-> > that on the commit message together would be very helpful.
-> 
-> Thank you for the additional explanation! Your understanding and description of
-> the issue are entirely correct.
-> 
-> Our ultimate goal is to have the monitoring target address range aligned to
-> DAMON_MIN_REGION. In the original logic, however, damon_set_regions() did not
-> take the newly introduced addr_unit into account, and directly performed core
-> address alignment based only on DAMON_MIN_REGION. As a result, the monitoring
-> target address range was aligned to DAMON_MIN_REGION * addr_unit, causing
-> DAMON_LRU_SORT and DAMON_RECLAIM to potentially operate on incorrect physical
-> address ranges. Therefore, we need to use min_sz_region instead of
-> DAMON_MIN_REGION in damon_set_regions().
+> > diff --git a/include/linux/damon.h b/include/linux/damon.h
+> > index 524dea87cac7..8a7b45b9e40d 100644
+> > --- a/include/linux/damon.h
+> > +++ b/include/linux/damon.h
+> > @@ -92,17 +92,23 @@ struct damon_region {
+> >   * @nr_regions:                Number of monitoring target regions of this target.
+> >   * @regions_list:      Head of the monitoring target regions of this target.
+> >   * @list:              List head for siblings.
+> > + * @obsolete:          Whether the commit destination target is obsolete.
+> >   *
+> >   * Each monitoring context could have multiple targets.  For example, a context
+> >   * for virtual memory address spaces could have multiple target processes.  The
+> >   * @pid should be set for appropriate &struct damon_operations including the
+> >   * virtual address spaces monitoring operations.
+> > + *
+> > + * @obsolte is used only for damon_commit_targets() source targets, to specify
+> > + * the matching destination targets are obsolte.  Read damon_commit_targets()
+> > + * to see how it is handled.
+> >   */
+> Nit: Twice in the above comment you've written "obsolte" instead of "obsolete."
 
-Thank you for confirming!
-
-> 
-> I will add the detailed commit description in the v2 patch.
-
-Looking forward to the v2!
+Thank you for catching this, I will definitely fix those on the next spin.
 
 > 
-> >> Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
-> >> Fixes: 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for DAMON_RECLAIM")
-> > Let's break this patch into two patches, so that we have one fix per broken
-> > commit.
-> 
-> Yes, I actually considered splitting it up before submitting this patch, but found that
-> doing so might make the patches look odd. Since we're modifying the input parameters
-> of damon_set_region_biggest_system_ram_default(), all the call sites of this function
-> need to be updated accordingly. It seems we might need to split this into three patches:
-> 1. Preparation patch: Add the min_sz_region parameter to
->     damon_set_region_biggest_system_ram_default(), passing ctx->min_sz_region in stat.c,
->     and passing DAMON_MIN_REGION when calling this function in reclaim.c/lru_sort.c?
-> 2. Fixes patch 1: Modify lru_sort.c to pass param_ctx->min_sz_region.
-> 3. Fixes patch 2: Modify reclaim.c to pass param_ctx->min_sz_region.
-> 
-> I'm not entirely comfortable with this approach. Would it be acceptable to submit this
-> as a single patch?
+> With that fixed
+> Reviewed-by: Bijan Tabatabai <bijan311@gmail.com>
+> for the entire series.
 
-I think you can merge the first and the second patch into one single patch,
-resulting in two patches each fixing the issue on DAMON_LRU_SORT and
-DAMON_RECLAIM in the order.  It doesn't look odd to me.
+Thank you!
 
 
 Thanks,
