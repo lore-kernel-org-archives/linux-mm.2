@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3468CCD199
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 21:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5979CCD1A4
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 21:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F4CA8E005D; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
+	id 9F6368E005A; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702D98E0084; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
+	id 94FE48E005E; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30AD68E005E; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
+	id 4696A8E005A; Fri, 17 Oct 2025 17:27:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C36B98E005A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B940D8E004C
 	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:27:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8072D1602A5
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 83FE458571
 	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 21:27:18 +0000 (UTC)
-X-FDA: 84008892156.25.E9BDEB2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DCDA7180013
+X-FDA: 84008892156.21.D68D097
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F051E1C000D
 	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 21:27:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmDnI+Zp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UT5NK01b;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760736436;
+	s=arc-20220608; t=1760736437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DJ7rgVkzeelFFPQjQtdyCdthGWFMzT5Or2X8odlRjdY=;
-	b=prymOA7wtqmaY+FIN8lKNW8VyCADrkp+WNHjP1Fzk9+YI/bMNygDies0W3vo7ars4ZPsdc
-	fXON8uA9SkQvxyz1vTjRUcncvSr20hpbwSpU+aHPLW6TREFjQ/aDfqFwDLZ02l6r1OCGX9
-	xWL5mYWmux+iKD9AJ6HVTI/cSr09hAA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760736436; a=rsa-sha256;
-	cv=none;
-	b=zl0c6ZiIgVjR9n+A4YQyiTGECWFCuhEbWdfEUzMbX5PqrKXvAi6xIvw/06peyFp3xnfQbg
-	E2LNtExrF6x7d+NJRMDJZzs40dlSmhsHhlGFc+5Xd+fnjRczdsg640AWwzLJGzhBhVM1gf
-	KsPYpCHZJB+R2/evgD+CKnlG89F5R5U=
+	bh=lzh4xmPN/QSEFLQ5QBUrhXTrPECb7SfdwKvdJG9iJl4=;
+	b=tbK3gMPkWmjN7RvgXZOHLDqJNk5MjuoF82Jpue9BNP0dQMk72DUwsI+g941Hd7dcq3NSM1
+	I6HGFy+gBWGnDbz67v0W9PXsrcMH3w/kiddniF7uMF9fMnmipeQdnenEDPPuLJG4IywV+1
+	hNEv1KtyHhvOtstqyntp2Tu5IG/zm5k=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmDnI+Zp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UT5NK01b;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760736437; a=rsa-sha256;
+	cv=none;
+	b=P13e3Og+i35gSp5JuzpFOO5XYnIx0ZkobQk27vS+G0h2gHBj1XNor3dPZdlhg34gJPws5m
+	+oNDo6u2FqNgxxWRDcu0/CIBy4utyiTNa0nW1xdBd6f3MNssZMIfw/XOAiAt1aimAFnHqr
+	bN38Hwyxx1U1+xUZZu5lCroCIkoq2T0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 66ECC645D2;
-	Fri, 17 Oct 2025 21:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1FCC4CEE7;
+	by sea.source.kernel.org (Postfix) with ESMTP id E6D274BAE9;
+	Fri, 17 Oct 2025 21:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F48C19422;
 	Fri, 17 Oct 2025 21:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760736436;
-	bh=host/mbZFT4OeHnIo2pSXmMweFfCPczlM3sHm3V1brI=;
+	s=k20201202; t=1760736435;
+	bh=V8w4yj3tuugTS097FYP8SAgCD/yVrkYxTz+kNf50q2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmDnI+ZpiNNPmsjHtEWSkv9ZcnwkWPozf2psauxop1e/pHt9eWGb85ceQ5fkLGlX6
-	 LIbfkJ7IHB5rCN4/zZf3L8XpvpH6dGudQ9YXrd04Q5Shsz0yeSckPtbCpw6DLPdSLG
-	 H2qgY2WsgsBlxXvsjsfgfLtBt82eEn9Fij+ojuhTkbZRY4ltkmaLB6BZ35rGL7q1WB
-	 C77fXR7MQQMUZXq2aQevv7rTEtHZ8s0oxMZ6iQ5Dy2w1AjDYgiKBgAp886W74lLGnc
-	 NjXCWCZqBmVSC351gDh7hTNUJhvmXqDbrwHvQnDjAW3vs/+r5lbUMtwyLRpzwMyV7e
-	 iKQAsRf2zB57g==
+	b=UT5NK01b01kbT+h4k/RxowBNijmS1AZgQgKRn0oY4+Cj6DOeCy/eMAxD5PxbcvhIE
+	 cIrRcdBvbtP2/FeCXIDZQEd86C3FcIwm/0BsO/TTnKI8sRhFxlJV4mAkiMvRgwtt+q
+	 1m2LpO6u6oFoLbQHqM5MHvOOB3Qji1Jor9OUACyQQEM26LiQpqtHo1t3khjE9Zlav/
+	 ACJoV+jM+tNKWdt53CBsEX0zYMvxfNFo93Yh0BrGrxhmGjoUw+VGafcXKRDaZw7fhx
+	 2FJ0tD8RIv4wyDll8MJDNRIMea3z3/LMaqupsn38mV3FqsFHz5OMQbPCfZV4JlxcE0
+	 Wf43xP425Iowg==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,23 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 09/10] Docs/admin-guide/mm/damon/usage: document DAMOS quota goal path file
-Date: Fri, 17 Oct 2025 14:27:01 -0700
-Message-ID: <20251017212706.183502-10-sj@kernel.org>
+Subject: [PATCH 08/10] Docs/mm/damon/design: document DAMOS_QUOTA_NODE_MEMCG_{USED,FREE}_BP
+Date: Fri, 17 Oct 2025 14:27:00 -0700
+Message-ID: <20251017212706.183502-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251017212706.183502-1-sj@kernel.org>
 References: <20251017212706.183502-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ractrsg1pzfcynthfm3w4d7dqkf18kz3
+X-Stat-Signature: 19ei5jawmsu656mp9njiiu76op1qesgx
+X-Rspamd-Queue-Id: F051E1C000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DCDA7180013
-X-HE-Tag: 1760736436-507749
-X-HE-Meta: U2FsdGVkX1+aO3Tpol9BhKZZmOA2aSpKD1nvYA8jCKgcfVj4EfpNMCVk8TdC5kQL9N6cbJJeyF3pkYiNukO+LssZPn2T3/OMX/1kcmHG5DHMe7+OT9ApL6ARwckIETyY1oA5cbi69UGrgAmTgiK7phSipHk8v8qMAL3UX3awh+8zk+P24lLGkB/06XqgsGx1eKEm/f2uUrRyjtltB5oucCACBDZcfM4CTAxxDu3cb/2Bo/ZyFHEEMXWjGXYwDjUELfxA6TXDAccyfl6IQBJ/Ee0H/vThbPrM8uPRkyoJ2Y/uPToFY+v3J178XvFGMXA+rcLyZoZabqLRnLS2tjxC3SbeD6eKTzN6aV5QoCeMoNl0EOG0nmCNyYvAuo6Lz9O2LcZTknZB9Nf4TFcLYxzD0A/mg7X/CdF9dZn0zspcRKQy2WJMf7rZpYuz29YAmn0oZDxI8IEElOW3gunLFbdzgjiT6GZKiZm0RuFg0+OKDmVsv9ycnCMeZKSCY3Lw1QmKhLrKHbb5NNhnFvsoKR73722+uWH67CLBmXG9eQgkE5MvhsXzAPIW504hr45f+jGs2YyZFIjNJPoypX+q+6goHnpY/n/Lzne4fPujpIyTgvEnOopmQjhYubTtJBdrZj7XcFlZHBJe8SNu3mZpTwt54OhOnKFuFwwIBZfL+HihkSgtMbzDiwlFHO6ieNDJoXB1sZ58vKtb2g8E6Ns2iIGERLLVykceS0MP3NT4gmytiKG0waxkFyQGScNNOsG0d5BiW7w2PS1ZpxEVTmfredfLwaOq4nbNf2C41LKedzxA0+9DlCabm6QXY9jKlrxEbxZwJ95XTIID4tK2tT7mDSPbbraKJYuGws7AFxuVKUQumpTzXtlQulD3kPcFVsTyXmWu+3Zm89+n9R1X4++QyGdrZdRIxvxSZM2YuIOijlqI165JjZmknZAenRQifMqGNe0G2f0pofnUY1p6bcilM9s
- /V+34gq4
- ePx8EE7e5XTFk0/cIu/YSf4dHzyi/R9C9p9TU2rZT/+5jQZ08uZMSFki15SbJPTQBwRG0mbLq7H4lq4b3gXDLRm+sBItttl0LBvCXGMKumLd3BsE04ZEXSOtryGGBIa4cEfz85lIKH92lXdSDCFkta7yC4M9dbJxnpG5lqkm6ryObs9Odo3DYVTQEqmUAw1dgSdRQQHrBqY6G/yijFqx/Bwg94FK6It9+YImmLwNmprD6XqNRKuQLpC8MQb1Jss6Z2lcyP4ZTfzxVkMgDERV2nDQGZIKomM3tZMm5Rr6RSQRK1Bn+cHVurk+n6Q==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760736436-547810
+X-HE-Meta: U2FsdGVkX18kkduV9OtBCU3OIzmsHXDodTxthTy6HyxBMK6dNV/QwW+C92BnbHr/XaWj7SM8evCcojRN/iNprVDBzJ6HoZKfGukfFcGnmScYTxJSF5IhZj9cwlJi/5EQIoDaA395sEr8Nu8uPCDIqQK/FvjavK7ID7Gvq8hXvBZg0o9xijWBWtvDutRFnScKbSd9GFViOaFBYa3lI2ZRxyqOsSV9m4eDVUzPDJsUfRFjtYUXFR3tawCRFPbOpppAyQyRRAQVMJZg9h3oKj5gEP+vvFPhTXesD1HmX5Oo2cVTmx98WPGt9nrZk2lz2xE/INrZTaat5OArQCW9Gz5/PxC/HjV763I9BhRX0Fz6sPoMg2+2khLWt38WxC1ZbJK2OkFU+6WAZn4oRRWRto5TAV/nGowGfEBERhVRTlo+KQqE0Okul63CHRZBUaC8MIXST9kfcYqXtSeVmVDyWgNbw3p0OzQfSm786vk9Dy7Fwl7X/kLEkR/2FqKvSBSMXc4WPvtyjpFUY6678UusHXABbtfdpTxXr89I2wfm1pHROVgo08iBFZqtok/cOzr1+dwpKUgfU6x1eBmZXEFc2h8k8avAQLYmPN3BGprSbAyvA/OBYyJ8DzGJ1pC/+ZtghfLqDgTMcIhBT4lPYRCASfCH34B3Hkd9h+AS0WHKlrt3RcX3g+nXbZZ2MU/TV9QkN4Wvv4jlgqAZwVHpc1qN/Epd1fKvLc4ncWGukzHHvJRiHZy4VevjzccqYhybcExZtaKLwoBcZP8tEW/Lcj0AAUsDu3VBfrRzxv/1Th1O0s4xWkUmM7QZIH3r3pRGZJ6ZQ3t/0j0iZnIGKmyfyrOwzpN1gzXyg+23c2K6jCpbEfB6y+3qPTdh4n3+/lHKjK1LuwMcIaaMf133CVF9SUVPKOoL7KKzYJKkHYf1YU6cFGYQWXkSboVwAOL0dqv+WW0UvHzwD8lLiNc1SO+djO7baoR
+ WOvQy2Rr
+ bgtsZFTJmxKZ+TUo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,42 +102,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A new DAMON sysfs interface file, namely 'path' has been added under
-DAMOS quota goal directory, for specifying the cgroup for
-DAMOS_QUOTA_NODE_MEMCG_{USED,FREE}_BP metrics.  Document it on the usage
-document.
+Update design doc for the newly added two DAMOS quota auto-tuning target
+goal metrics, DAMOS_QUOTA_NODE_MEMCG_{USED,FREE}_BP.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/mm/damon/design.rst | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index eae534bc1bee..98958975604d 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -81,7 +81,7 @@ comma (",").
-     │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes
-     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
-     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
--    │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid
-+    │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
-     │ │ │ │ │ │ │ :ref:`watermarks <sysfs_watermarks>`/metric,interval_us,high,mid,low
-     │ │ │ │ │ │ │ :ref:`{core_,ops_,}filters <sysfs_filters>`/nr_filters
-     │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,target_idx,min,max
-@@ -402,9 +402,9 @@ number (``N``) to the file creates the number of child directories named ``0``
- to ``N-1``.  Each directory represents each goal and current achievement.
- Among the multiple feedback, the best one is used.
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 80354f4f42ba..b54925ea78e9 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -564,9 +564,9 @@ aggressiveness (the quota) of the corresponding scheme.  For example, if DAMOS
+ is under achieving the goal, DAMOS automatically increases the quota.  If DAMOS
+ is over achieving the goal, it decreases the quota.
  
--Each goal directory contains four files, namely ``target_metric``,
--``target_value``, ``current_value`` and ``nid``.  Users can set and get the
--four parameters for the quota auto-tuning goals that specified on the
-+Each goal directory contains five files, namely ``target_metric``,
-+``target_value``, ``current_value`` ``nid`` and ``path``.  Users can set and
-+get the five parameters for the quota auto-tuning goals that specified on the
- :ref:`design doc <damon_design_damos_quotas_auto_tuning>` by writing to and
- reading from each of the files.  Note that users should further write
- ``commit_schemes_quota_goals`` to the ``state`` file of the :ref:`kdamond
+-The goal can be specified with four parameters, namely ``target_metric``,
+-``target_value``, ``current_value`` and ``nid``.  The auto-tuning mechanism
+-tries to make ``current_value`` of ``target_metric`` be same to
++The goal can be specified with five parameters, namely ``target_metric``,
++``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
++mechanism tries to make ``current_value`` of ``target_metric`` be same to
+ ``target_value``.
+ 
+ - ``user_input``: User-provided value.  Users could use any metric that they
+@@ -581,9 +581,18 @@ tries to make ``current_value`` of ``target_metric`` be same to
+   set by users at the initial time.  In other words, DAMOS does self-feedback.
+ - ``node_mem_used_bp``: Specific NUMA node's used memory ratio in bp (1/10,000).
+ - ``node_mem_free_bp``: Specific NUMA node's free memory ratio in bp (1/10,000).
+-
+-``nid`` is optionally required for only ``node_mem_used_bp`` and
+-``node_mem_free_bp`` to point the specific NUMA node.
++- ``node_memcg_used_bp``: Specific cgroup's node used memory ratio for a
++  specific NUMA node, in bp (1/10,000).
++- ``node_memcg_free_bp``: Specific cgroup's node unused memory ratio for a
++  specific NUMA node, in bp (1/10,000).
++
++``nid`` is optionally required for only ``node_mem_used_bp``,
++``node_mem_free_bp``, ``node_memcg_used_bp`` and ``node_memcg_free_bp`` to
++point the specific NUMA node.
++
++``path`` is optionally required for only ``node_memcg_used_bp`` and
++``node_memcg_free_bp`` to point the path to the cgroup.  The value should be
++the path of the memory cgroup from the cgroups mount point.
+ 
+ To know how user-space can set the tuning goal metric, the target value, and/or
+ the current value via :ref:`DAMON sysfs interface <sysfs_interface>`, refer to
 -- 
 2.47.3
 
