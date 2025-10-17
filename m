@@ -4,120 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CA64CCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:24:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22184CCD195
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 17:24:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1BC48E003F; Fri, 17 Oct 2025 13:23:59 -0400 (EDT)
+	id 83B298E0047; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF3158E001F; Fri, 17 Oct 2025 13:23:59 -0400 (EDT)
+	id 813948E001F; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08BC8E003F; Fri, 17 Oct 2025 13:23:59 -0400 (EDT)
+	id 7029F8E0047; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6758E001F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:23:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70E1786150
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:23:59 +0000 (UTC)
-X-FDA: 84008278998.08.133D943
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 80BC280010
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:23:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=VQUjiBXJ;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760721837;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E48B8E001F
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 13:24:47 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA5CE1192CF
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:24:46 +0000 (UTC)
+X-FDA: 84008280972.15.972CD49
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011003.outbound.protection.outlook.com [40.107.208.3])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EDADEA000D
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 17:24:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZizsTron;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760721884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwrEFhopX+T17eWRbQHqf7rS1iblWbJiljgu2wLc4+4=;
-	b=5SYUjk6cRbxQfOvqdZCLrN4NBJmS6kCwuPCV1WSCecd3mWGhYLGXu9IibB/MCgerD+uT0b
-	4Vsj9KsBxuaoJvkT5d3+ZyGEx0V41Wefh5RRoq8iBqciXRjNUHObwNDtFLQTFS4ATldz+j
-	Yol4KCfv+c1214C1Egjvk3e8jb85N+0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=VQUjiBXJ;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760721837; a=rsa-sha256;
-	cv=none;
-	b=07jcX+pFVGaUC61mS2rMHMsLA3bLzInrqrY6dzs4VPZUhXhHl1Vm3c17SyW9YWaGCanMbP
-	rfO606Goh6CBDedruCT7q1G7cKryTcEWzL44IkRAEgyMCtcefqZMsyDbDnwU4I84iRsFjK
-	rFUtRaDB7MaanmEIkZ7LKEgw7B2JYBA=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-87c1ceac7d7so28086036d6.1
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 10:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760721836; x=1761326636; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dwrEFhopX+T17eWRbQHqf7rS1iblWbJiljgu2wLc4+4=;
-        b=VQUjiBXJ4bHsGv+/15Z6EgZGwiDyF7f8yjlby95FWq5CtKeI1Y86R8xtE0rU04BJbm
-         58yMYIlphgA0JxKDY2XokyM4tBpm8gog2SmGnlcLUu0G4hXtRZ353sFoPNQROnsIOXEH
-         wwvGc+Jsd9pl1bkFO2DNoC0C/bFcBS4ukQAjHXFYcEdjrrQuqVYf9DA9yepYBzNTr4Z/
-         RHS2K1UKSq2IuUNfz8RBbDq//bQagA3G9ZYDm5xPlgNRXfx4jLsLS61NitWgQ2yMPEoU
-         x1J2WXMWYPOBmr/j1Vwtc9k1zy5bW/YNhtP00dw2oUvZYPTzF+bL8ML6SdteICl56v8L
-         GvTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760721836; x=1761326636;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dwrEFhopX+T17eWRbQHqf7rS1iblWbJiljgu2wLc4+4=;
-        b=E/90vpSmV8bG6HYjJdGpPG9gWBvEWbxwVvDE5sRmz7pmyN393uTsOueKkzqjBXR6vu
-         dDoNFytox+XaAGeallzkc4N2tp5Mme0ClT0wB+Ru4DG7zvjvSgUx/KSnEmes1XLtY1E3
-         O0mtJtbszkUL2RdE89JsSfjDQPWbo9QQHdd3Jas6VE7DcgrwFHN9z/8AXHxEIFK6CVU8
-         ev2oXnHJofkRg0P4Q++524qh6gQXaQsFDe7GLDp5zcSArudRPwFGBlw1rtwFjxcfB50Y
-         5FmrRhOP4tBZvdCffmVKNdxYfvnravAu13qseKKRRZ07DfXtT0PhTYvq6ScAf8TQZI3h
-         tUsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhTZ7kx6N3j6wxHd+7dB8C4RG4Y5LWKvzoKnDdEFkIl7tEiXMEnZuw7ip5CJyQuD2hKLL3IAC8Vg==@kvack.org
-X-Gm-Message-State: AOJu0Yy1hc5bj2kgQdcsI7CQZjiBTkNUwDkcwmsWR3kVZPp6cGUAg0Mc
-	g1ThFGjK0ImvU1Rk+l/Wg58b4UsVodZNw+z1JuIGsSNGUJcAQqw7K96dH0PxP3H7Br8=
-X-Gm-Gg: ASbGncvQefcj4hMfsafnuf5OSdN5h4MuZunNJTRd0ugtS9rrZ9ETfRF9s1ux9KpDlQG
-	1mb3SKxqpsMBPdK7WKdMl63UxMhP8k7kh8UrZf00Md9vDHzTAV3SoDcJOKdM55/CDceGdtjIIke
-	XJ35H7CiPeKtNk8GOC5hSuIU8sQ++qkEz80gdC1UZWXrDaXEE1BHdG18i9FIX4QMzYiEolhkR7l
-	oXvv6/ayFuqcNyFwS9xQavDHTKieAKG1rcdjWn0AS2aJF/EspIP+ZdfoSXmBuI81gcA8gmvThiN
-	Nc4CS9jqZynUmkA9dd8NnjcpGqJaYImoGPh68zXXpma560oZ7CKoyulBYu4F2+AUSzuf0eOuEEi
-	H0o3oazp5wbxfBWSzPfMeEV1Onl1fadpU0cQDzQeN4eEa5RgGPUGC7kx/FqoqVqpyInq+z7yhE1
-	ou7qbk6nks2NFSSm1MMqV8TBRJ5SIeRt90A68iVA5Jkq9/3+tqbamgTfk6qiKAq0BeKms/Avdcp
-	ZEfSRYe
-X-Google-Smtp-Source: AGHT+IG7Xp9f5y9hy8yPwbOBBYk0UemuYm+IQwWyBmJocf5cK17O94ZO9vp+HamzhJzQNeYlDTl7kA==
-X-Received: by 2002:ad4:5aea:0:b0:796:6034:c0fb with SMTP id 6a1803df08f44-87c20545108mr57988986d6.13.1760721836398;
-        Fri, 17 Oct 2025 10:23:56 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab0c3f92sm2246461cf.22.2025.10.17.10.23.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 10:23:55 -0700 (PDT)
-Date: Fri, 17 Oct 2025 13:23:53 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Rientjes <rientjes@google.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Raghavendra K T <rkodsara@amd.com>,
-	"Rao, Bharata Bhasker" <bharata@amd.com>,
-	SeongJae Park <sj@kernel.org>, Wei Xu <weixugc@google.com>,
-	Xuezheng Chu <xuezhengchu@huawei.com>,
-	Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
-	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org
-Subject: Re: [Linux Memory Hotness and Promotion] Notes from October 9, 2025
-Message-ID: <aPJ7qe_2xznFSUMZ@gourry-fedora-PF4VCD3F>
-References: <3a1586b1-4107-06dc-f630-8951cc044c5a@google.com>
+	bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
+	b=Mao0K81ViPfbpLFUXqqK5N5GCtRzJ2aysYa99dX6pEVGs2NSPtCCQiIfp1RX5Nf2y9ynv6
+	GLMLF+gMPYjigJ/70xFIJBK6DqbjjVO7nmrwzOICdisfzbQ4N4P8KB/OwPoPk9IW/Snanz
+	BVVXdWC51UihBGgbI7+R2m8GbEUcwaM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760721884; a=rsa-sha256;
+	cv=pass;
+	b=5e5EUcCiP4RACcv4q9Z+2Fc4r3B7Hha9NjOOy78IHoPtHte2JA9fbp9i5xN6wpZmZl1HXB
+	X8Z25fth1eTISkc+UN3up8svHjOWu86o9Ui3RDeTiQfuxaG9WZk7OT6tt89IMEpkuguTW9
+	P8iilAgV1mxunxVwAH1is2h82V5Fj+I=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZizsTron;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.3 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yXUl8Ac/eOY7fu+BbvfysCX9gS886dS2BxZ35FvFI9HPva0Li/+uLl5UQwdq8V05Z+rAG58Ql8jKoP8Cc+f5D20NzQhlExW2VYxJ6iH3GzuUFzOJorT2yLkKGDUtPolklsWDARCS0xtxFEreFQ4dT6O/QXDeiIqG/dxzBjIiupmfeHhsUjwIR4p6Jzjr5P8PSEG+cM/md/eBW6d+C4n69GaFZo+5TT9RGxXN3J9ZepRf7xjdyqtnHp6aCUETyTPKci4+f+Gw1+e896gEO2vzpYPNaOi3CsB8jWBeO6aVGqoeOe0ZclZuem5II7frt0hwJNsGGWgk5sa8wwOie1gfSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
+ b=rHM1n8iD7xuH0oQRjUW2QQZ2G821YKInUj/u8vScabDNVM5nFmjYs3xzZTEoGXsDAp3dmJYkZw24HrrAZY380mhO37MmQ6HxNdznYvF3LWfhnZpdtf8vtNWCVp+C4JqilVSzCNUqmV8ha+Swm0LE1MgYAn1JTqkk6JWBX/uxDqJn7NbFWqU3maGOeY1S53dLHbqrkt30J0mvcfOaAPuTCPTVZq5qMApglfEbobj6v3Vi7GwOhyw+fAX+CIdodEclpojLxHdFvpu7feaNT0MBuXr/HWyv6E9JK4XmsuXajedQR42zyBsOnNkKKLMYmwi4OMVzfZgkib7+V+IKWOTQiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=07+Bp0aFVjiCS7qOBK2OgV4GEc+6+W/NyT3hmmTN6Vc=;
+ b=ZizsTronnRuho4IFvHzbEBGgCUWctRAYUeCYYBgojSyjSVR2xQ2t+4dv15D3REhyH2dJRDJaybVjERLzC/WR2zmcOmAdNxmYXIOSoYni2oFNNuGGJ6ZU+0AeR7Y9AMMvMULvA3/TKqM/c70fOjPChosXXSJObJD+ZOCRY2u7o0hQnRxTwXIDzoxYcJON87W+k8OGpgsPEFHdmUGVre3iNulNnH7DqG/4AaiL2wdY1BqnFAXHrG4PSXbRdrWgGtOO093gfcmwmNjOSYMsCnvjsZ9hky/DxIOnj7gRXBQMr5wFdDPaZdMuLCY/NuAhdeP29EE1Pi/0Ia4vWjgSIUPo0A==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW4PR12MB6976.namprd12.prod.outlook.com (2603:10b6:303:20a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Fri, 17 Oct
+ 2025 17:24:39 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9203.009; Fri, 17 Oct 2025
+ 17:24:39 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [Patch v2 2/2] mm/huge_memory: Optimize and simplify
+ __split_unmapped_folio() logic
+Date: Fri, 17 Oct 2025 13:24:37 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <A67D1276-D59B-41E9-8A88-E54E05A0F479@nvidia.com>
+In-Reply-To: <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
+References: <20251016004613.514-1-richard.weiyang@gmail.com>
+ <20251016004613.514-3-richard.weiyang@gmail.com>
+ <7ed84d61-0a7b-4961-82eb-fc8d38b77162@lucifer.local>
+ <154924ED-0CD0-458E-B760-F9F0A92CDC89@nvidia.com>
+ <d0a2c81b-a0e0-4457-b355-2363f30ecfb8@redhat.com>
+ <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN2PR05CA0044.namprd05.prod.outlook.com
+ (2603:10b6:208:236::13) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a1586b1-4107-06dc-f630-8951cc044c5a@google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 80BC280010
-X-Stat-Signature: pxxgrizjgejjfxzbgnyerajdaxarhgrw
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB6976:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ca3c153-50cb-4b2e-7308-08de0da20d31
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qQs3jQ+Vhx3MBHU+Q9Ktg2CQJfI4lFrartx+hssSvvO0fYxIdGq1TnYUZieS?=
+ =?us-ascii?Q?LgUKRSlcqVLXgFKYfqIdOHSm3IhmoHBCVhKrJryo4GYbNAcQcH451O/B/loq?=
+ =?us-ascii?Q?a3ALuvhXCPsZ24CAIDB+a0OVoXzBYgsDs1/yvZp+XJt99TqSZwXNK85W833k?=
+ =?us-ascii?Q?bejzRpiWLvReNu22QlQxe+yVpVF3yBCU5sZi1atCVtqgPsYKjTlF14Ruufqz?=
+ =?us-ascii?Q?fur2SkLk73CZ9fv33gjh1Zf9XSjWKmBpRhsAzgUKQ8Xuu6g3D5CzyyK2qo15?=
+ =?us-ascii?Q?dRr/ZsfBdAUU2cJM19KgeeTLe20pPpRuOVQ8lKigiEWVC3ANeaqTGJeuP9lF?=
+ =?us-ascii?Q?Da8TpxD3ymRu6D/+FZzsGUCtWkacsfJdu5AVe83ujVZ7cv+fIuCNZ1gLFtoA?=
+ =?us-ascii?Q?0KjGb+371TlsYmEugkD084oh4CYqyO6sWtVMl/vndgi2SvgHzQDzMBtqh8Ju?=
+ =?us-ascii?Q?WwYTwl/NBqd6uI0B2gOdpAEAUfnZ06GLFqJ5EDq2ABRWJA+gM0MKWUGtoDTJ?=
+ =?us-ascii?Q?uUB88uS9e9+b3W3c5EMpolegNE2JtuK39aaF+2izS/dW9nN+KThIJHdD0net?=
+ =?us-ascii?Q?vJPZ+xiWZsVZWitycMT2sudkuiABnlJzkmzDSHgONM+tmAqhOTfgAPAzI1Z+?=
+ =?us-ascii?Q?BI6t/sAYB9oQPMTwPdnuDtqY8NL4f/PaWbFWoCM3vY2ssVAjLwiRhy1l2CvK?=
+ =?us-ascii?Q?IqstEh2fxIWUbdyLk+TqwAUMVcYNtpf5c6cmbJydiF4s0dQmHfzEs/72nsVl?=
+ =?us-ascii?Q?JCZNP7xvaR1XqXCpwR9QCN9YoavVexpbZUpuuK/znI75bBlmSJ1FZXLmcTXU?=
+ =?us-ascii?Q?RBmh5r880UvkOtYezo9fOCgUHXsoXBOlboNEz5F5bNzOMiLEBvOFA3QE7zJS?=
+ =?us-ascii?Q?ZR/OJT7LfJZb00cpAWsuL637cIUkLav7VZhzMNO6fS2n7MdF+ZBuJ0T1kXUF?=
+ =?us-ascii?Q?CpUl/ZcFK3mZ6R1Lmh02gHjZALRn2Ro7mH8UMoVjQiMMouapGGdtMXHE3dx7?=
+ =?us-ascii?Q?/mTFO38pRBsamZXBFooPAbMNOjbSodlAEDydg0AEYkvKKip5qTnTW0OeKNpz?=
+ =?us-ascii?Q?Yue/e70rCcHmx3uB0+Imw3JX501DlA00i+DmRF2XuPRaHZc2M+5xIKHG/20C?=
+ =?us-ascii?Q?U7047y/Hw+zi+Ju5or7coWEmkYdmbbUutNjuuUATuS1li2cCsdSnLLgOnCFV?=
+ =?us-ascii?Q?nn1LjS15QD4qWlnFzURRci2yILVr4YFnRJGUE7EaXxLZJ2f7FgUZFy4jZBvY?=
+ =?us-ascii?Q?kV92YfooTpjLU8e2LUJPkVGLDjkUr9kvRFL6dKqpKSkDtKsLVwC514yUs9NO?=
+ =?us-ascii?Q?Z9Ig9iPRephsiel492gI4TnLg7gXoP0nfrwBwU0bIjcDDkp0OM86+tB8Vwnn?=
+ =?us-ascii?Q?wYVjz8KVIqVCrU0nNA4fkvTZrHaFxCFJB7/TByi7GEy9rG9Qt3OcFTVEVI2E?=
+ =?us-ascii?Q?NaQgEjNlHIWyPe6JEdiQ4updXd5HFDuBTSsr/jNh58wsB2FHpEh+Tw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8TgMfY/XaPAXTAMRMZF4HaxQSpioVKKIsH4l31lIyl8iUwea70qjJNMMBY1i?=
+ =?us-ascii?Q?teeaAxmwSBkWw3QOYVXPS/2SojEsbH5LyAtZGSk6HaL8TUeZopmlUjZGA8nx?=
+ =?us-ascii?Q?psrlEZ1rLprxB8eA6hA1oiia99R7FLcEqauFMYStwQlvdNKey4cDQcvDiLyQ?=
+ =?us-ascii?Q?HJe4psIya/tBrGI0yymHS4iZuWvsbe0jA6q22nG4026kPdbbNWDya4OIgARB?=
+ =?us-ascii?Q?SrGy3dxeq6DDWcjqBEP004hOJlvhikkNsWanA75NwTI+vUGY3M+bDuCYN0Dt?=
+ =?us-ascii?Q?bF/gb7DSfDFuEXVe8pjjiKA9qNdv9cvQzhCdZXBaGXHJ7MAvQeOhROBKY3fI?=
+ =?us-ascii?Q?8oDkQENPfQ6y6e6MmFc5mgUHxrugued7VJgIIKmEYU5grMl8+ORxMf6jknQd?=
+ =?us-ascii?Q?F2/TcjApWtLffaS0mBkV8+HwB1Dxb0hhLNj6cImxHi5FGd2FsU78cPwjQj+C?=
+ =?us-ascii?Q?o5fg/VWum67wwvef6M4SuZmjQvEcgX7xB5jUlNTkfIYzp+YzjWGDt7CQ+Hwg?=
+ =?us-ascii?Q?o9snOo5udbwfKr7+WdVudIXzL6JN9vHeif1Y5TMVe80ljwWGim/vqXPxwLDo?=
+ =?us-ascii?Q?4hrdS0bSJ8F2EkaqpS18Tzw2aJVYaSZypHCYK62v4LlCMqEWsqOMWxrhHcDP?=
+ =?us-ascii?Q?r+95sm219SOG7HyDI4S2A/OiYJ6HBINsxFHkqXmZurg0tGbXQuEWebcnbV+R?=
+ =?us-ascii?Q?R52zilqkEiU22vPbydmW1h+ROk9lDgvJSCY0L0EOitRgexMo2vb3dJmiVvUh?=
+ =?us-ascii?Q?TbJ6PLS1IDuO+52lWLA3pNrVegQ11r3VL/iRpe8jM+ireWZNGOyctsQrL4Fa?=
+ =?us-ascii?Q?zjRnYphuTzdc3fCMWCBF3TUON1f4/vRcweEGAfc7d6n8JVD6k6ows2DtLfdM?=
+ =?us-ascii?Q?Wi4rWbvFCYiE1r5Tq/TVXvs3FBqfvcZcfJFjokMTmkezPxQLUZqcewoE1WqC?=
+ =?us-ascii?Q?xbvsIem7ndnGyPGJ8LmZMCJcWugi3S6+F1HW/CtgmO6xVPz8WQhhe2P1jcn5?=
+ =?us-ascii?Q?clnyggsnWxmwMlUYN/HjshHAxCXC1P/XXS6isVfQymbmEaXWpHIgjd6H/4fV?=
+ =?us-ascii?Q?nSYkgXWK6ARTAi1oobaa80ech0IOFaRWYEhU259uXcRU8Nan/cXW532GkDRy?=
+ =?us-ascii?Q?nVMbWTCtI/L+Fxw/4OYrakTVMN5Io/de0thm3R7NyVPQ72jG8+BNwDQ4BvCN?=
+ =?us-ascii?Q?eoAUJB2Lnh+AXn+Rbq54qVOxODtI1Arc4B4KODu41v2GctJXUCGO6sDYR9eZ?=
+ =?us-ascii?Q?4hgOmoJtgF2doTq5Iwx1Ify2n9QMTks3NHM0K7D4tfnKWz4adyVZg8wNt3Po?=
+ =?us-ascii?Q?mHnAkXmZt5uLsdQ+n6IzsAB9OSZtUunlfybHKe7ZoGI4KEBkJRlUofL2a2Bh?=
+ =?us-ascii?Q?wHDX30Uy2t6C7KU2CzDbI3fIm4LlTs3BoNLe/vA8zE+zFN7MG32it4lZky2Q?=
+ =?us-ascii?Q?HA/SoHhPc9Rzx7elXJWFYGJ38qPeuHy1AaCskSECk9bozSUM8XflxIw4Q5vu?=
+ =?us-ascii?Q?l/d4BwTDZgiXUZhlltGJrslc67ioCnHqQ+zff8QcFNmj3CG2Tre7GRc2DbxG?=
+ =?us-ascii?Q?ds158maPCeXfLpSp413dMjG2lRNomOJILsWbYH05?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca3c153-50cb-4b2e-7308-08de0da20d31
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 17:24:39.2024
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UBmnl/cnaSsUXIbbn9sSQFHsOVtlGmEgU1Q+MQPV/YLbPAI0UVMpJOBIXOsV3mM8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6976
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 3h7nydpppbb8ipa65ee5wmc588ja7s5j
 X-Rspam-User: 
-X-HE-Tag: 1760721837-305249
-X-HE-Meta: U2FsdGVkX1+ZKIdhRtQiSjeuY7iNqD/18aAY6AciQ21UyeTa/e8zUFs5DWqCfIz+ISJZVrf2HBljQpASGqX9xlY1HumyykPpAUYIgsTXUdc1PLmOxL5eFfxSUgJ7DaV/2pC/YoQ2eGEQ/lK5oX3zskXfcypevwWYkx75VdiP+d87Ae5sBtBEd2SnvxYbNuSIALW5i25dDPq1jw8t7QQId3z74PLuHQHqxyrd0NIaETCLO/opRmw2PLtn/ny5P1Us/5H45da2iJ19tJ97pZHALgs8rreM6kGYKoI+1KJzCW5+iYytDEsBg7SyEqlMdjNqbUHD4+6k+W3hUFCmiMnL+403ClwSwr23+4QiB+Ycc+YzvErQVFVysv79/NCQ4PN/S1QRsGmQ7ZysrYZr3TqLlQMA9QJWTXgQkIU22OeuWh6Q1m+PSCgV1tf2PmAsyKag9zHMi1tiMgEHDtEg7I3db1uxkm1NcI3dReTeloonVlrzPBKf6GHOqXslh0dPOmak53oRcGg/U7WM+hkzt+IoOZipbcAxRUlJ3KH/6ZU3AItgJafwxcXJBx57J4q+/GTGWjjGUJ2GjHw/9hZvJQytz4dk7TP2IigoVxdWsjTkKDnEmVKEcdF/nfoDg8KojGulTDPpFYq0M0e26ObywKbtguul8fGCn3JlqP8yhs5iVXwy7zg2yDmprgHmG8yl0EIDnvOze78YYTftiDHR++pO3g9go09lfILaX5orj0azGP30UoccjURFiLOHvfPjNqV6a0SLQtUt1hjpbFjtiMDDJrboKZAmp9HF8d6G3IvNVVPiPoBwOvzmyowtiT6TuBXOAO2iN+pfCfOPBkMDeeMEpbhS+uq6VCk8mIV3/f54onPP2gyxM58FMaaczeLh90vnFvkUMl2OLHjbyU8wD9H5lhj/lds9GjHSvz5x6DFh/7efz5ONsT3qWTUzVMBXXJAeqbGDRaHNBfLt6VjaWDM
- qsWVlqMY
- /n85ZQjbOnCuoFlcCEFg3jr+yIsWXIC+8ojPI9QRGT5DGiTBqlVv1Fb/yUYGSRDVQvC2DockoSAjNZPIrHE4WwzdFHXjmI/mSXkcWmg/x/SxnvTe7dOiVybKhLZ3jLiFjmzd/lw7+qD/jX8XZ6hUuti9ypCYIQjSPjz7K7Truq/HauUW9bifL2xJUGsCXZLfCL1s/0LgtpKsGyK7o+zrITcgPPTHHs66aPvDnF0yCWudYgqnsugDB0GtpXxWsyDh37lGd8dqGjPqDAtPnEW78PkGknEd5kJo6q6SD2pLXzX8iBbUASnPUxH2oSqNbnuVtZAe3qiE7Exm5BXdTeBBD6/SwYmFy45pO20OKkH2ayZ/nCjkdpO7U1xZZh8AD1iw7pZX+CkS4DngmN1VI13xu/xSFAg==
+X-Rspamd-Queue-Id: EDADEA000D
+X-HE-Tag: 1760721883-683838
+X-HE-Meta: U2FsdGVkX18ZARxYlU+C1Wm8BjiIjuA3eRwMvN6R73iseqbdJjKzYysKH5j2+TecF6IcQMQA5fIbMqL0T3RHJZqu8WCRPYf0IjDTb19svAFaebKgRLBbNRO0Y2YZfhbBQCsnAj3BnFoa0rS9w6zuLZMetD6pzYEEm9CJa7NddmYu7VG+3MX273jUdeFIb6TamCHEkF1i+eE3tunEy4WSMdfu1jqfvpwRhwgEIxsQMK1vnJq1tLT9QrFBekU40NvQmzxz3HD2fR6QQy/zY3ihVmJKeIq7cvQcpk33eELmia7VvNbRR+vb1zh7mTjOnc+iCqajXkFoddkZJD7tmZAQ4JzQGKQm30JJ/2P6KNn34l4L48tgRpQ6rOdWFnsbTQ3YyXA7uceWbgGJzGi3d9FJXfYI+ffkSVXX0ehLUklvMxrMUZ2uTt81wPH5bkbBSSxBYWXcPWFJ1SCn95ohUTIRDOySofpwYxmk3RVIE+15jPP3JxP0Qn2QKkoYi52XKi/AaBf0H89fGWxp2yxnygPJ7juRdDY717r4S2XERGWbey+1HW7ZzRf5/0PogriuSnYfJ2jlpPquemlL3hUZ3r1pZFC5r4V7sizjYr6JOYxWv7+EsiClqlAXdCZ8ZFFOv2zeR+K5DMXD9d5kQF1efd6HzRbKFvbGKO4B0mDIjdXBQuemTT/5GsRuQ0v3YD/5chDNp89ATWBRj1XMA735Yj7xFs8AGiNJ0B47piMfOovvLK5zVAPwn6tzI3GWhP6BuPhBGXxxqzXOA7S0IDFgQYdXUifer9DF0HNUpVttnK7jnFhp9KEP4w9WsIOf00p9KQvHiki2MsrsoMoQFwVEwD7hA0Rx7lJL6+0HBFphf+5ZaKFVij/dzfN36JsifzfC7Cm2q4sYZq3Jze2rRiszerBDIIAwxAtpXDPirOoEx7705OVLkAA8mTHcPIZd13zk65E8C1Ma8UGJDonzfPF7fY/
+ N+LI5vOf
+ OCB6WbUfjSY4Tl2rMeiDaJQAHjxM5zl/lr92QidzRlZpiilaX6NvmqcQUQlEMy7TRPYsXFnVkACgISEFuSqoSDhzZ5w+nzbGS3mdprm25spd4bJVc5ol3/7iOct4Yc5ooy2nEuGmVIzTJWXBQLVgPloQAgHJXP0YAhcwTf5wET9naQXmV2eywmrXkzCtZ0ohUq5BZZx6y6Py8AouTJYlsbCL835PVqVLt6OixsKPjuYZVgXebQMgYZb8ViwhDKrZQdb4zXLl7Mwu1eXu4Pkygmm+WlGZmwOdkImz8CU3lm4G+Wj7pmmIuqATOaPFNzKREBnLbYobVQnGb/GyWXICvzMVTMpSN2B9exdU4BJWg7GFEFyx6QP2yRKrb3K7BJgkjcUj9X7UKs1SPnJ2yBC5gXsuyNy9cARlp5DdPSZGrOusPPUAv3g+vEHTVYPtYrBtFDNdBcQBjW5nhXOAoj6aSvhGMJAEorOqgLsC7VHR9Tm4mk59/Z64/W+u7Wt14btmaHbDIAoZpB7/UV9bsdLiHGo+rf2GVrKOOtN1SjIyYhDCnjg4DEF1qMdUaiYOw0APpIvAGNTIWRj9zOhh7Yx2FaI+hng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,126 +190,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 11, 2025 at 06:48:59PM -0700, David Rientjes wrote:
-> Gregory noted that both latency and bandwidth were related; once he 
-> bandwidth is over-subscribed, the latency goes through the room.  The 
-> kernel wouldn't want to stop paying attention to bandwidth.  We should 
-> decide if we're just going to allow this kernel agent in the background 
-> continue to promote memory to optimize for latency.
-> 
-> We discussed how per-job attributes would play into this.  Gregory was 
-> looking at this from the perpsective of optimizing for the entire system 
-> rather than per job.  If we care about latency, then we have to care about 
-> bandwidth.  Gregory suggested two ways of thinking about it:
-> 
->  - we're over-subscribed in DRAM and need to offload some hot memory to 
-> CXL
->  - minimize the bandwidth to CXL as much as possible because there's 
-> headroom on DRAM
+On 17 Oct 2025, at 10:55, Lorenzo Stoakes wrote:
 
-Making the thoughts here a little more discrete, consider the following
+> On Fri, Oct 17, 2025 at 04:45:17PM +0200, David Hildenbrand wrote:
+>> On 17.10.25 16:26, Zi Yan wrote:
+>>> On 17 Oct 2025, at 5:44, Lorenzo Stoakes wrote:
+>>>
+>>>> On Thu, Oct 16, 2025 at 12:46:13AM +0000, Wei Yang wrote:
+>>>>> Existing __split_unmapped_folio() code splits the given folio and u=
+pdate
+>>>>> stats, but it is complicated to understand.
+>>>>>
+>>>>> After simplification, __split_unmapped_folio() directly calculate a=
+nd
+>>>>> update the folio statistics upon a successful split:
+>>>>>
+>>>>> * All resulting folios are @split_order.
+>>>>>
+>>>>> * The number of new folios are calculated directly from @old_order
+>>>>>    and @split_order.
+>>>>>
+>>>>> * The folio for the next split is identified as the one containing
+>>>>>    @split_at.
+>>>>>
+>>>>> * An xas_try_split() error is returned directly without worrying
+>>>>>    about stats updates.
+>>>>
+>>>> You seem to be doing two things at once, a big refactoring where you=
+ move stuff
+>>>> about AND changing functionality.
+>>>
+>>> No function change is done in this patchset. The wording might be
+>>> confusing here, it should be read like:
+>>>
+>>> After simplification, __split_unmapped_folio() directly calculate and=
 
-Bandwidth Capacities:
-[cpu]---[dram] 300GB/s
-  |-----[cxl]  30GB/s
+>>> update the folio statistics upon a successful split, so An xas_try_sp=
+lit()
+>>> error is returned directly without worrying about stats updates.
+>>>
+>>> David suggested a change[1] to make it clear:
+>>> Stats fixup is no longer needed for an xas_try_split() error,
+>>> since we now update the stats only after a successful split.
+>>>
+>>>
+>>> [1] https://lore.kernel.org/linux-mm/518dedb8-d379-47c3-a4c1-f4afc789=
+f1b4@redhat.com/
+>>>
+>>>>
+>>>> Can we split this out please? It makes review so much harder.
+>>>
+>>> I asked Wei to use a single patch for this change, since the original=
 
-On this system we have a 10:1 distribution of bandwidth.  We can think
-of 5 relevant "System States" with these limits in mind.
+>>> code was complicated due to the initial implementation. After my
+>>> recent change (first commit 6c7de9c83)[1], __split_unmmaped_folio()
+>>> can be simplified like Wei did here.
+>>
+>> I think it was too much split, agreed.
+>>
+>> This patch was a bit hard for me to review, not sure if there would ha=
+ve
+>> been a better way to split some stuff out more logically.
+>>
+>> Most changes just complicated way.
+>>
+>> Not sure if splitting out the stats update change or the calculation o=
+f the
+>> number of folios could have been easily done.
+>
+> I mean as I said to Wei/Zi, my objection is both moving code around and=
 
-[Over-sub DRAM] - CPU is stalling on DRAM access
-[cpu]---[dram] 320GB/s - would use more than is available if it could
-  |-----[cxl]  0GB/s
+> making complicated changes that require you to really dig in to figure =
+them
+> out _at the same time_.
+>
+> It's perfectly feasible to send separate patches for non-functional
+> changes, I've done that myself, each building on the next to make it cl=
+ear
+> what's going on.
+>
+> I'm a little surprised at the oppositon to that...
+>
+> But if you're convinced there's no other way this could be done (bit
+> surprising as you're asking 'why this change' several times here) I gue=
+ss
+> I'll sit down and try to decode it.
 
-[Over-sub CXL]  - Headroom on DRAM, but LTC hit as CXL is hot
-[cpu]---[dram] 0-270GB/s
-  |-----[cxl]  30GB/s
+Let me explain the changes in details below, so that we might find a
+good way of splitting it up for an easy review:
 
-[Balanced]      - No Over-sub, CPU isn't stalling
-[cpu]---[dram] 0-300GB/s
-  |-----[cxl]  0-30GB/s
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 4b2d5a7e5c8e..68e851f5fcb2 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3528,15 +3528,9 @@ static int __split_unmapped_folio(struct folio *=
+folio, int new_order,
+>  		struct address_space *mapping, bool uniform_split)
+>  {
+>  	bool is_anon =3D folio_test_anon(folio);
+> -	int order =3D folio_order(folio);
+> -	int start_order =3D uniform_split ? new_order : order - 1;
+> -	bool stop_split =3D false;
+> -	struct folio *next;
+> +	int old_order =3D folio_order(folio);
+> +	int start_order =3D uniform_split ? new_order : old_order - 1;
+>  	int split_order;
+> -	int ret =3D 0;
 
-[Under-sub CXL] - Headroom on CXL, DRAM may or may be at limit
-[cpu]---[dram] 0-300GB/s
-  |-----[cxl]  0-29GB/s
+These remove unused variables and do a order->old_order rename.
 
-[Full-sub]      - Links are fully saturated.
-[cpu]---[dram] 320GB/s
-  |-----[cxl]  32GB/s
+> -
+> -	if (is_anon)
+> -		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
 
-----------------------------------------------------------
-Minimizing Average Random-Access Latency / Naive Bandwidth
-----------------------------------------------------------
-In this scenario, you any given [RANDOM ACCESS] to produce the lowest
-latency possible. This is different than [PREDICTABLE ACCESS] patterns.
+In the original __split_unmapped_folio() implementation, I probably
+moved the stats in split_huge_page_to_list_to_order() (now __folio_split(=
+))[1]
+in to __split_unmapped_folio() and needed to handle xas_try_split() failu=
+res,
+so left mod_mthp_stat(order, ..., -1) here. It should have been put
+together with mod_mthp_stat(new_order, ..., 1 << (order - new_order).
 
-In our 4 scenarios above, what is the best state transition we can do
+[1] https://elixir.bootlin.com/linux/v6.13/source/mm/huge_memory.c#L3622
 
-[Over-sub DRAM] -> [Balanced] or [Full sub]
-[Over-sub CXL]  -> [Balanced] or [Under-sub CXL]
-[Balanced]      -> [Balanced]
-[Under-sub CXL] -> [Balanced] or [Under-sub CXL]
-[Full sub]      -> [Full sub]
+>
+>  	folio_clear_has_hwpoisoned(folio);
+>
+> @@ -3545,17 +3539,13 @@ static int __split_unmapped_folio(struct folio =
+*folio, int new_order,
+>  	 * folio is split to new_order directly.
+>  	 */
+>  	for (split_order =3D start_order;
+> -	     split_order >=3D new_order && !stop_split;
+> +	     split_order >=3D new_order;
 
-All scenarios trend toward [Balanced], and once we reach
-balanced or [Full sub], we start doing nothing, as we recognize
-any movement is likely harmful
+stop_split was used to handle xas_try_split() failure, since the stats se=
+paration
+I had in the initial code, I needed to add the -1 stats back. Now with We=
+i's
+change, subtracting old folio and increment new folios are done together,=
 
------------------------------------------------------------
-Minimizing Average Predictable Access Latency w/o Bandwidth
------------------------------------------------------------
-Let's assume we have perfect knowledge of the following:
-- [Chunk A] is hot and on a remote node.
+stop_split is no longer needed.
 
-For demotion to matter you actually need future information:
-- [Chunk B] on local node IS HOT and ABOUT TO become COLD.
-So we will consider demotion has having no affect on BW utilization.
+>  	     split_order--) {
+> -		struct folio *end_folio =3D folio_next(folio);
+> -		int old_order =3D folio_order(folio);
+> -		struct folio *new_folio;
+> +		int nr_new_folios =3D 1UL << (old_order - split_order);
 
-Without bandwidth data, naive promotion produces the following:
+stats for counting new after-split folios.
 
-[Over-sub DRAM] -> [Over-sub DRAM]
-[Over-sub CXL]  -> [Over-sub DRAM] or [Balanced] or [Under-sub CXL]
-[Balanced]      -> [Over-sub DRAM] or [Balanced]
-[Undersub CXL]  -> [Over-sub DRAM] or [Balanced] or [Under-sub CXL]
-[Full sub]      -> [Over-sub DRAM] or [Full sub]
+>
+>  		/* order-1 anonymous folio is not supported */
+>  		if (is_anon && split_order =3D=3D 1)
+>  			continue;
+> -		if (uniform_split && split_order !=3D new_order)
+> -			continue;
 
-1) All states trend toward [Over-sub DRAM]
-2) If you never [Over-sub DRAM] trend toward [Balanced]
-3) [Full sub] is now an actively unstable state.
+split_order is always new_order when uniform_split is true, so it is usel=
+ess
+code.
 
-But remember, promotion *drives bandwidth*, so the naive approach
-can easily push the system state into any given [Over-sub] scenario.
+>
+>  		if (mapping) {
+>  			/*
+> @@ -3568,49 +3558,31 @@ static int __split_unmapped_folio(struct folio =
+*folio, int new_order,
+>  			else {
+>  				xas_set_order(xas, folio->index, split_order);
+>  				xas_try_split(xas, folio, old_order);
+> -				if (xas_error(xas)) {
+> -					ret =3D xas_error(xas);
+> -					stop_split =3D true;
+> -				}
+> +				if (xas_error(xas))
+> +					return xas_error(xas);
 
-Overall this system trends towards [Over-sub DRAM], because [Balanced]
-and [Full sub] trend toward [Over-sub DRAM].
+xas_error() was not returned immediately because the -1 for old folio nee=
+ded
+to be fixed later. Now since the stats is not changed upfront, it can sim=
+ply
+return.
 
------------------------------------------------------------
-Minimizing Average Predictable Access Latency w/ Bandwidth
------------------------------------------------------------
-Now lets augment the naive approach with bandwidth data.
 
-[Over-sub DRAM] -> [Balanced] or [Full Sub]
-[Over-sub CXL]  -> [Balanced] or [Under-sub CXL]
-[Balanced]      -> [Over-sub DRAM] or [Balanced]
-[Undersub CXL]  -> [Balanced] or [Under-sub CXL]
-[Full sub]      -> [Full sub]
+>  			}
+>  		}
+>
+> -		if (!stop_split) {
+> -			folio_split_memcg_refs(folio, old_order, split_order);
+> -			split_page_owner(&folio->page, old_order, split_order);
+> -			pgalloc_tag_split(folio, old_order, split_order);
+> +		folio_split_memcg_refs(folio, old_order, split_order);
+> +		split_page_owner(&folio->page, old_order, split_order);
+> +		pgalloc_tag_split(folio, old_order, split_order);
+> +		__split_folio_to_order(folio, old_order, split_order);
+>
+> -			__split_folio_to_order(folio, old_order, split_order);
 
-Major difference:
-1) [Over-sub DRAM] has an off ram to [Balanced] and [Full Sub]
-2) [Balanced] and [Over-sub DRAM] now bounce off each other.
-3) [Full Sub] is now a stable state
+No more stop_split, so all these are unconditional.
 
-So in the most degenerate scenarios (over-subscription and
-full-subscription) the system will trend toward stability.
+> +		if (is_anon) {
+> +			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
+> +			mod_mthp_stat(split_order, MTHP_STAT_NR_ANON, nr_new_folios);
+>  		}
 
-This differs slightly from the naive bandwidth approach:
-   [Balanced] is no longer a stable state as we're seeking better
-   immediate latency for hot data.  Maybe this is desired, maybe
-   it's harmful - this comes down to quality of data from some
-   profile or whatever.
+Update the stats when the actual split is done, much better than
+the original one, which assumes the split would happen and recovers
+when it does not.
 
--------------------------------------------------------------
+>
+>  		/*
+> -		 * Iterate through after-split folios and update folio stats.
+> -		 * But in buddy allocator like split, the folio
+> -		 * containing the specified page is skipped until its order
+> -		 * is new_order, since the folio will be worked on in next
+> -		 * iteration.
+> +		 * For uniform split, we have finished the job.
+> +		 * For non-uniform split, we assign folio to the one the one
+> +		 * containing @split_at and assign @old_order to @split_order.
+>  		 */
+> -		for (new_folio =3D folio; new_folio !=3D end_folio; new_folio =3D ne=
+xt) {
+> -			next =3D folio_next(new_folio);
+> -			/*
+> -			 * for buddy allocator like split, new_folio containing
+> -			 * @split_at page could be split again, thus do not
+> -			 * change stats yet. Wait until new_folio's order is
+> -			 * @new_order or stop_split is set to true by the above
+> -			 * xas_split() failure.
+> -			 */
+> -			if (new_folio =3D=3D page_folio(split_at)) {
+> -				folio =3D new_folio;
+> -				if (split_order !=3D new_order && !stop_split)
+> -					continue;
+> -			}
+> -			if (is_anon)
+> -				mod_mthp_stat(folio_order(new_folio),
+> -					      MTHP_STAT_NR_ANON, 1);
+> -		}
 
-</wall of text>
+This loop was needed to update after-split folios in the xarray and unfre=
+eze
+folios, but since last refactor, neither is here. And the stats update ca=
+n
+be done in one shot instead of the originally one by one method. So
+this hunk can be removed completely.
 
-~Gregory
+> +		folio =3D page_folio(split_at);
+> +		old_order =3D split_order;
+
+These two are for non-uniform split, where the code moves to split next
+folio after it splits the current one into half. And the old_order needs
+to be updated, since the folio has been split.
+
+For uniform split, the for loop is done once, these two effectively does
+nothing, since the for loop ends.
+
+>  	}
+>
+> -	return ret;
+> +	return 0;
+
+xas_try_split() failure is handled above, code should always succeed at t=
+his
+point.
+
+>  }
+>
+>  bool non_uniform_split_supported(struct folio *folio, unsigned int new=
+_order,
+
+--
+Best Regards,
+Yan, Zi
 
