@@ -4,128 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C0ECCD195
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 22:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C030CCD199
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Oct 2025 22:23:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFD708E0023; Fri, 17 Oct 2025 18:15:11 -0400 (EDT)
+	id A40828E0029; Fri, 17 Oct 2025 18:23:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD51B8E0008; Fri, 17 Oct 2025 18:15:11 -0400 (EDT)
+	id 9F1318E0008; Fri, 17 Oct 2025 18:23:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC3BE8E0023; Fri, 17 Oct 2025 18:15:11 -0400 (EDT)
+	id 8B8848E0029; Fri, 17 Oct 2025 18:23:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BAB558E0008
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:15:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6808958428
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:15:11 +0000 (UTC)
-X-FDA: 84009012822.03.F3E63AA
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 74B118E0008
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 18:23:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD26CC02BD
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:23:44 +0000 (UTC)
+X-FDA: 84009034368.16.B7A0717
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CD6481A000F
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:15:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XxzuRKIl;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 65AEEA0008
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:23:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JZ1bpfou;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760739309;
+	s=arc-20220608; t=1760739822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p87jyAVhs2BuPZGE+8O/0+Webgsr4ZrQSN48o7Lfr60=;
-	b=Vps8QTst8TE3YVNYRJR7Z7v70qPgf37vubnBWfz/7rbf+66hGVEYZl1G8C21h+wwFIgqsc
-	7dr8pNA2IUBfo63IaksycwXTnqDE8VkxegGwai87zXRm84VSqHAqIlIB8MB0ATJjQ/4hqp
-	0d2XXieiapix1wPaoH6+/3CMlLNL1pY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760739309; a=rsa-sha256;
-	cv=none;
-	b=a/e0Z0olQuPbF+9K98i2CnBo+rvWlyZIxjMLnb8yyTHrBGBrjZ29cQkRcCGyoF9k4L67cD
-	kOQaCBR1gk6K3LOY0a/7pffwVYSG6I6nVkWisi9gyFETfK2deT7zvn09tObh7b89H0NB4J
-	ZTP6A9YGHBz192/5IP9VGLUnqcGEeNU=
+	bh=x+dVoUUzmBb0nQ+poBRDWT3Sih6gX5/+Nw8MS974GdY=;
+	b=r5cppJwe25X1sl8jRzM9MzpxEYbwsbhpoCesNiDiiZbGWh+c+DavH7LsjLdkNLsJO/PHvS
+	NiKMt+4oi7pTsoeKxCUbsTgk3Gd1WWTtXbk9KZhddERGDwbj2hcOx8RnP0dR+E7d/rC4k0
+	sNDf/X6KP/ylb9aU3svNXU+lDeKeDno=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XxzuRKIl;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JZ1bpfou;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760739822; a=rsa-sha256;
+	cv=none;
+	b=gVCtsxsrt5bw+kXtyKeGAre6tn3/XgQNktUzG/N6gLsErU6Er/Repb4snYr5CnnLxRD9ZC
+	rcxliPyf6GdhWoLhcX2kzIqiDxG1ulxhj/wsDjpksTL1X5V833rA34ZLBjAYmiLVIZYal8
+	d7SHCUhP+XpC1GYtuxwNtgQ6EjkkISA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760739308;
+	s=mimecast20190719; t=1760739821;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p87jyAVhs2BuPZGE+8O/0+Webgsr4ZrQSN48o7Lfr60=;
-	b=XxzuRKIl3TkMEEVxRz1kVUBwuG262o0DwC6XN+N33G5iX13jrkBwmPIsdINlQXncO1spLt
-	g8pmTIPnA1oBZGuNmNKipnx+4DtJWRZKJ31mXtWiIM9498qNQq3qWQCVXoTld816LG4XvA
-	c8Tt62LLmJT+DRVKKZTx8m8sjDJCa0s=
+	bh=x+dVoUUzmBb0nQ+poBRDWT3Sih6gX5/+Nw8MS974GdY=;
+	b=JZ1bpfou86RDbZI+O5JuLAE1YinbX78+nxceMT2DMGvOddLwkWGuIS3CMRMAqiqlXkS5Ps
+	Qv1KimVY399WxnXn175HBdv/z3slnpNh/1o4x3ABMwNSGitqDFueWE9ZDCWdjzU+9i1Fm7
+	pPq85+CRdTleHt0++YwhWATdiZ1iQsA=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-88-d5HDdlMxMk--sGHpr6dSvw-1; Fri, 17 Oct 2025 18:15:07 -0400
-X-MC-Unique: d5HDdlMxMk--sGHpr6dSvw-1
-X-Mimecast-MFC-AGG-ID: d5HDdlMxMk--sGHpr6dSvw_1760739306
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-471148ad64aso10850965e9.2
-        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:15:06 -0700 (PDT)
+ us-mta-486-qbFKMb3MMSushbmCxvhckw-1; Fri, 17 Oct 2025 18:23:38 -0400
+X-MC-Unique: qbFKMb3MMSushbmCxvhckw-1
+X-Mimecast-MFC-AGG-ID: qbFKMb3MMSushbmCxvhckw_1760739817
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so28899885e9.3
+        for <linux-mm@kvack.org>; Fri, 17 Oct 2025 15:23:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760739306; x=1761344106;
+        d=1e100.net; s=20230601; t=1760739817; x=1761344617;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p87jyAVhs2BuPZGE+8O/0+Webgsr4ZrQSN48o7Lfr60=;
-        b=ZNiA67bL8/hP14ZRMi2+7H9UgwCpMBokFDsXKxqvfXEsoEMr1HbWCWc9WsKjaeMkSh
-         bXsvXOtnJZltZYo7yZuzlfEiAj+CtoKeNFBpdbjlOf1iX8AEuNM6LwAjnRrQLeEIgwgG
-         ezdjf418PCwDG30LGIsM6a0HyWCU2eBbwVULShHBYu27i8rHfABC+JJhL/ALhwbJRamy
-         DciUQVi+YczFc6Im4+a+K2fZQqiWHoorhMYtbodFRKnwU7oEtRxAP7QXUQupbd/8+m6b
-         gv1omTcPTe7/5xN/mhNmjSRKKW/orx/XcNHDKQVUAsIZKT7F4a5kAuW8WODDwjb77d6y
-         0qjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUw8ifRSISm/50ZktXdtAWDnKIBWwJVt19qjneMCiKpkiLUquJV685gFBTd1Ukj35iku2XHqsHQw==@kvack.org
-X-Gm-Message-State: AOJu0YyQ/sQFqmV3WjBkjC4FsPelfmIKGbpvZFOxElIXWj0+gnoGEJF8
-	9CpYp8azZIOzBUY//IlejOAV8uBv/B9iZ3jUuJsn6kyN4+sOXfqYMX5Cut6pFJJHuuhhF7jG3N/
-	ANlFY0an87T17YdyhIbjXWZqcdffuLo5FuVxQ9Wj5o/W0Abh5IJru
-X-Gm-Gg: ASbGncu7m43r4wB42FYFrCF8oMvcxCJATUTOBOYZAwJmsbOBq/e/tAX+lC1cBZ/2Y9W
-	IQSJn27wLHdFd2dBalX8FhVV2uMhoIHbzEmixuqlXRv2p2MLWJzwhB3BxwSsVxDEJsHD/DYXwJD
-	KGt6Fc9XE7YvKft77mALG42soQxeMkUNGvs7iWGteWRY5oIczXdzd9IDPzNsA+RkdHNPbMAL+GE
-	kJ2tUxjrvqYfNv5IyuInSXfg//h5ckU4jMUN2h4y4dWfnorsgKMOHPC+Wq1KSYaa2toSaeJ+YjT
-	9zi7MlqJRiKIGRrpeMLJhp3mkdCniWd/DoT5VMhaIjLx5++p1E07/GOByl/dwHK0Heaw+AKCMV4
-	0QRbvXBifM487Muoae6va8dNH0vGXLkCwGShHRrcUwzEg3EU0psae7mYzepdm1VkXlsCUokCEah
-	lH7YxbJSqh5notu8/FqwfkdesoYSc=
-X-Received: by 2002:a05:600c:4e89:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-471178a236cmr39238255e9.10.1760739305659;
-        Fri, 17 Oct 2025 15:15:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJgtzXHc65CCqPCrsxYTy/FGHHoInqVbQf9Pu97ZUWTn7m80M3tFIb6Fx8eayPacnZBj7iXQ==
-X-Received: by 2002:a05:600c:4e89:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-471178a236cmr39238055e9.10.1760739305218;
-        Fri, 17 Oct 2025 15:15:05 -0700 (PDT)
+        bh=x+dVoUUzmBb0nQ+poBRDWT3Sih6gX5/+Nw8MS974GdY=;
+        b=fxNxBHOWslBBXpIAl3DyGG7100NJ5uitaOyc8RIskYMt4RQQ20wfKTYP2/iZSHdw3L
+         PMtpLSM5NpLht+vt9gzBrZ4uPZyc9ky4A0c4b4QsUfziHS08fhk1ac9va/b2OhDp/uxP
+         CuRPus4O/6Ty2ueuDVbjLn+Dk+tSC2BZHSoy7iC2Jq74frfVsKXdvE7m12E6DmvY00/X
+         LlJKC39whD0l4ekX+J2WKX+xYfXGZTcQ4xmXvwBhm/9MN4OLn/C4oUk355LUZq6X5SRd
+         mHG8wrejFT4dtPgLyn6pvY/0oox5c/M9BlreuUcMN1e888TxKGMVU4Rqa1+4rw9ij5Cp
+         /4DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVkISO2dhNe0ASV96RDsLYn8P0DHbsYCEv/MV+9g/g8mh37+PIUIQdOBbsdS9WYSEcMExw08c7/hA==@kvack.org
+X-Gm-Message-State: AOJu0Yw3CvzloeKtdJgmS2x00oBZL6PEWCgJnGh73o8JAlGmWEXuN/aL
+	sxI//pEe7LGvV8jeKgbamSaRh9NdaX/BhKS61l8qKhALQphEPeGC82yYy37LDfrkcZxtD7dtmsP
+	LiIE7OWqajAFaaMIomQvmSwBl0/6s2z58NYCwvab5awAsfunk6QtC
+X-Gm-Gg: ASbGnctTj87AfgzwI2RFE7hLgNxK97XLNS7DkNCuZHys4uquDVuEjzmeVOCPOLflWps
+	sjSpLrBdCzgBAAsjk0N6uwChEjt28tanJ96kV51pEQ83Ge4spQ6EbacnhOyNQjnVayyCqmBUmg4
+	1mkmv0pB4gnkGAPyKMxgVAuLD9sltaiOLlwgVAF5Mklys4CAf7cpe4Z+rqqn9sJ/YVk1lIpkVqd
+	YVIn956CUGX4b6/vH7LJ2Ia1kkC0OdpMw7tPPZxX75jWnjdJI0Z227fj8HqIU2LIBvDT2oE6nsN
+	lgwGGcagGS7nHQimcqKgQG3w6P+isWXfMx+vQw52M44E89JUoxMzH/QVBphKriyaLLe9KiQkSQo
+	/MnPe5jOfq3EW8DPp3LwPNxReUwb4IUKmDetg2nl6s94UOlxAzhlmucnY8oB3MYuhHotkZBbx2K
+	+txdF4W+0brs67apmBTwSl/CqssXw=
+X-Received: by 2002:a05:600c:4fc1:b0:471:b5d:2db7 with SMTP id 5b1f17b1804b1-4711790697amr33239555e9.24.1760739817111;
+        Fri, 17 Oct 2025 15:23:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtlt0Ihr/Aaaf0M+Q3hhi1pZYNkt89VmRxQ2siQChpIBmDIjC60WiNcyPKF+UdUFpnxAaGqw==
+X-Received: by 2002:a05:600c:4fc1:b0:471:b5d:2db7 with SMTP id 5b1f17b1804b1-4711790697amr33239455e9.24.1760739816699;
+        Fri, 17 Oct 2025 15:23:36 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce56csm1338836f8f.50.2025.10.17.15.15.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f009a976sm1525851f8f.32.2025.10.17.15.23.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Oct 2025 15:15:04 -0700 (PDT)
-Message-ID: <3a2db8fc-d289-415b-ae67-5a35c9c32a76@redhat.com>
-Date: Sat, 18 Oct 2025 00:15:01 +0200
+        Fri, 17 Oct 2025 15:23:35 -0700 (PDT)
+Message-ID: <844af749-374e-49b3-91f0-a72e951981c8@redhat.com>
+Date: Sat, 18 Oct 2025 00:23:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: KVM/s390x regression
-To: Balbir Singh <balbirs@nvidia.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
- apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- byungchul@sk.com, dakr@kernel.org, dev.jain@arm.com,
- dri-devel@lists.freedesktop.org, francois.dugast@intel.com,
- gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, lyude@redhat.com,
- matthew.brost@intel.com, mpenttil@redhat.com, npache@redhat.com,
- osalvador@suse.de, rakie.kim@sk.com, rcampbell@nvidia.com,
- ryan.roberts@arm.com, simona@ffwll.ch, ying.huang@linux.alibaba.com,
- ziy@nvidia.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-next@vger.kernel.org
-References: <20251001065707.920170-4-balbirs@nvidia.com>
- <20251017144924.10034-1-borntraeger@linux.ibm.com>
- <9beff9d6-47c7-4a65-b320-43efd1e12687@redhat.com>
- <c67386be-5278-411d-97e7-43fc34bf7c98@linux.ibm.com>
- <8c778cd0-5608-4852-9840-4d98828d7b33@redhat.com>
- <74272098-cfb7-424b-a55e-55e94f04524e@linux.ibm.com>
- <84349344-b127-41f6-99f1-10f907c2bd07@redhat.com>
- <c9f28d0c-6b06-47a2-884d-7533f7b49c45@nvidia.com>
+Subject: Re: [PATCH v3] ksm: use range-walk function to jump over holes in
+ scan_get_next_rmap_item
+To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>, craftfever <craftfever@airmail.cc>,
+ Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251016012236.4189-1-pedrodemargomes@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -171,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c9f28d0c-6b06-47a2-884d-7533f7b49c45@nvidia.com>
+In-Reply-To: <20251016012236.4189-1-pedrodemargomes@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Bsuk6JnuX1U2A30mn0ZU-WqZqi1N_Z11XRNtkjU0ogw_1760739306
+X-Mimecast-MFC-PROC-ID: B3E67wlqbUkqI_f2W6IVITKojaruoleAd5a44sm5g1A_1760739817
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: yemkhfp981rt3co8dmuz7iodqca5dct8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: aykqqarykwdr69cgcfx5utxus54qehgq
+X-Rspamd-Queue-Id: 65AEEA0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CD6481A000F
-X-HE-Tag: 1760739308-279384
-X-HE-Meta: U2FsdGVkX1+ktp14ZELqJHViLHXDuJWKmv0BGrGTugQ98LdKX5XTxarSeG6Gf8Uk6Ss5raUOhto/VgZFRt8EUvJNBpvPz6+naNbuY7ep+3BYeRQGTx4RVXy2wWF8dlKIw3jVh9ZfzQLYE3XazjvDZvsLQU9Q25aIx7vcNRucWgxpWay8W4kWYpug41TdnviLWuxCnpL4xLQr5W9t8tdtnCr4lnRqBaQHyK6MBdnBhcVHSyvb9XaMLBcBhCGCIe8+nAvHpx1pHu4esaVv3slJJ5TKqNRrBRN/jRS4O8mMoHNg3skHLoUIaPkld8LOdUw2zoH1QuOeXigFN3pJ+HIHgz5CJtjk7xH4Ej+5L4vko3VLVFRVwbdpb1FN/ED1Lb7MXwBTRA1yjds4sbxuLEYO8Ncy2GP8DM8qO1l8VJWyqJar2Lpxm10cmBF6YtW5BcFifo0SkffpOmxS8FUob2dbx5RStWoAQDWELxgdmO7pDVXGlpHWw3kr1fKOMJabJHSQAEN9A3GtRh7N48IaYpMSJTGHSS7/WIYTgRcDSUoaidZLYzhbRQhgNuz2cc8Nmzw9qmEX6yzdfMV3akGFsC1QVoayMO8+1Gqas8XsWqHKG+5XfzOan6oIVIW1/cqqkugc5BH3NXHwVZsVEr+wCckehHTTv68aBgGMrCyQ6uN9irZrdXUw3S9XkyUfRLdcMI3sadwC5wfKBXUiqRdvizeipcJ/2YZ2Ft94OJIoNovDdrY88DfskhY1SJNDM5bIlNy5BRkbbqiLGve8gtPZxh0l9fgW7xrCCq+7RFuZr8BZc7Ph0eWFHMkpOr2qR3nviALDDnj2yfN7acQo8OaLGroZKZFTKkZTdbcGEjSpiUJ5aMQRZb5F9MlRgF9WKWQw4yAmMw1cETaxXjPDR1mkqQkqr7YUZkeEQAzwmn1eB9U7s+ER5A9/j4m8PKx8JQgb/8GbR0sGwyhi2w6q8GevTbS
- vPTlOX+U
- t+1ZT4KD54+oME8DMJR/gdfWbJSDfO3W2zJ3k60hCKKg+caBj1s3fN4QVsFnfR0n7KIz8/kFffCCfuxOx1RgtLtS9t2Sbw6yOiBrJ3oWiD5jTe7U4Sb83lxmkgXZ8tDkEuJagM7AKBD60F+0GSRFTbYtugFYE0dhyVsclq5I4wBa+NZqgQ2PyA2tlkAmgLOOpDSxP0lQo/e1tx+rIIIpH6v85ESejR68m5HffGlirXUJnjx8Y6fmps2k5yRalfoqtpbM8qShPDjFAzVgZwpc0xUPnu3mMasi8Q6oXiAmqi7kr5z5iW5iCHXlBdOKJNZFR8zcs6u41FGtakCYYULSCH9ELeZf9dQrU5JFRu6C5wPNS/ERIQIiUosBPRXLlAAhz004lj3cRgieh7vQ+yDIv5JAUzgSGPd/JOHIRaytbp9/8VcBMv4sfV0gsgIXJt7W+liJ3/tR8sMQWfU+t8vraQEuze9yWS74AbF1jerc5kUBjwtuN0HYga5ptwHNP3ABmVXyaInMs9oaoe3bGPsFRHSJFDSGbQKYVgXl04YSnrG128oHa26v9eKuKlFpjCnF8Mo+6EXowi00e5KRz1i9eTFecaqBtJrvsF5zYvXf9pCxlf1Q=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760739822-598659
+X-HE-Meta: U2FsdGVkX1+fkBFsjzCseQ/f4DjRa9Ei4iq9FrmDocWWc4dmZyBxaT+kyb3DkUxFVSSehuFUkgaFjFXwcWEQAKf0DQYqKjVpHhWSYPuCZB2ermXh7P4uKTbjBgp3dzb+LqffPW6ERRxELF/KYQWkr5x+tHvXLqYiMVxp+rn8gqTOvFJ8/0mKlz4SxN/7IaXncFVsHnaz9In1bU7N8TNHmgjPn2RI4cl7+s9s03FdGfn+pUGBWH92neT87EOSWhCy4mfwwVoTvCL8VD1c7v/Px18WKwF21is7idOmrzIuN5nAe00qKgUbDY0uMuA3y+IPmd5P4mZa2yZJ9vqJnf38V7Yj6gTBT0QZSrRxm3tphRvOJa/0tS8rCfv+DU4Og49FNX9rJSzcMVmncVeH57/ZSh4OgQvIlAbQzA/kM832mzNj05xRIKdSgoaNbt4Q0iutYmlB+tylekKvFPo/qVH5n9VlOFZsj8wCYXB+pNkchuhe1m3e7GL39eXvV37ybbybT4Nw0UO/Q4Kf/QYUt3rXMyz89j+oD8U7sNoJDZ5Zid9nliXeyphR/eJ5og4M9I8OvDP96s9udhuEXnjkYI9wiTeO69kV0qH+Fn1W2B/scE2E+2JeAgE+T1dFs6i+z2IY+LXzwFECoO6L6F7vAWm8W2JaSagU03NoG0C4jfoOS94+bJPadUZLAbd5PH6qhHt7eOzNok0wajBE8tYQmeNv0Xg32JdlrbVpFWl9d3VGtxDHXZw51RkRw+4seF6e0FTqmga1CQkJ02DpD+GGbQDhzmPJrbHo/t1jhcnvL9tduGi4niRU0+xqr1vq0U7n7CEqBWERLiN60236PdVHUppckprsSDPfDFEfoRHd7Bp8XmRmNSmynfxj7Ob0cvvpQkbHoCgEDaQRKVvgoQODPF5A/GZnDJd8o2/IEQ01aHK3zSQJYnvmhY8UP6MY9LPr9xBmh4BVXH/vX4oWORMcF0F
+ yUC86k4v
+ R/ce377GwlRDX2DDbDI/a5xt2doXkchIhwZXzj4mNGw1Rx809tveJGTnhyZiwEZMGZ/DywKg4hP0FsDhyVJiT+c/SN2AvaPhC0VypaP2/uEhGH5s+ZM8VJ1bdP0LhgJB9cHlrwxv2LVyhsCMuXHgluMqEEL0MpxBRgEg+nN+f1hvJdhlKUdz67MmtxGPvb+g5IZgqHkUpOllMXgibU6IhFg8hJ9AWZpRbWQ3350tUthrJNhGrhC5yIkFDnDXGQahXg5L7geANXCeUf5bJNi+QRthObkis6Y2cbqaJuzWFiXv3Vj5V1ZBv71xelcg2Syg0xdt2ikf9twpBprOvhwSvemIeL5UYprkScWMlaeKbpuUjCFb68A4UyQNGDzH6/I1j2jvxWCUDiTB1qn3trc9FhydnGx1zHk/dm1kKN4/WSzzLwKq5MCv/R6si14Rd+k/ai+j6GNaizf4CJXY2IanhFnn9fuehFurdIbgSnUJaUcPZgPWJzi7HLVr62fxFLaRT0qP1TdQ3hiqGcIRh7ZEgJ5HrTxdeGfq1iL8415ajj4i1HiFEpszAi0faBhbTM5w1WyaCZ0c5itdPqh05BJz+dIxGhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,111 +180,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.10.25 23:56, Balbir Singh wrote:
-> On 10/18/25 04:07, David Hildenbrand wrote:
->> On 17.10.25 17:20, Christian Borntraeger wrote:
->>>
->>>
->>> Am 17.10.25 um 17:07 schrieb David Hildenbrand:
->>>> On 17.10.25 17:01, Christian Borntraeger wrote:
->>>>> Am 17.10.25 um 16:54 schrieb David Hildenbrand:
->>>>>> On 17.10.25 16:49, Christian Borntraeger wrote:
->>>>>>> This patch triggers a regression for s390x kvm as qemu guests can no longer start
->>>>>>>
->>>>>>> error: kvm run failed Cannot allocate memory
->>>>>>> PSW=mask 0000000180000000 addr 000000007fd00600
->>>>>>> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
->>>>>>> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
->>>>>>> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
->>>>>>> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
->>>>>>> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
->>>>>>> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
->>>>>>> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
->>>>>>> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
->>>>>>>
->>>>>>> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
->>>>>>
->>>>>> Only when running KVM guests and apart from that everything else seems to be fine?
->>>>>
->>>>> We have other weirdness in linux-next but in different areas. Could that somehow be
->>>>> related to use disabling THP for the kvm address space?
->>>>
->>>> Not sure ... it's a bit weird. I mean, when KVM disables THPs we essentially just remap everything to be mapped by PTEs. So there shouldn't be any PMDs in that whole process.
->>>>
->>>> Remapping a file THP (shmem) implies zapping the THP completely.
->>>>
->>>>
->>>> I assume in your kernel config has CONFIG_ZONE_DEVICE and CONFIG_ARCH_ENABLE_THP_MIGRATION set, right?
->>>
->>> yes.
->>>
->>>>
->>>> I'd rule out copy_huge_pmd(), zap_huge_pmd() a well.
->>>>
->>>>
->>>> What happens if you revert the change in mm/pgtable-generic.c?
->>>
->>> That partial revert seems to fix the issue
->>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
->>> index 0c847cdf4fd3..567e2d084071 100644
->>> --- a/mm/pgtable-generic.c
->>> +++ b/mm/pgtable-generic.c
->>> @@ -290,7 +290,7 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
->>>               if (pmdvalp)
->>>                    *pmdvalp = pmdval;
->>> -       if (unlikely(pmd_none(pmdval) || !pmd_present(pmdval)))
->>> +       if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
->>
->> Okay, but that means that effectively we stumble over a PMD entry that is not a migration entry but still non-present.
->>
->> And I would expect that it's a page table, because otherwise the change
->> wouldn't make a difference.
->>
->> And the weird thing is that this only triggers sometimes, because if
->> it would always trigger nothing would ever work.
->>
->> Is there some weird scenario where s390x might set a left page table mapped in a PMD to non-present?
->>
+On 16.10.25 03:22, Pedro Demarchi Gomes wrote:
+> Currently, scan_get_next_rmap_item() walks every page address in a VMA
+> to locate mergeable pages. This becomes highly inefficient when scanning
+> large virtual memory areas that contain mostly unmapped regions.
 > 
-> Good point
+> This patch replaces the per-address lookup with a range walk using
+> walk_page_range(). The range walker allows KSM to skip over entire
+> unmapped holes in a VMA, avoiding unnecessary lookups.
+> This problem was previously discussed in [1].
 > 
->> Staring at the definition of pmd_present() on s390x it's really just
->>
->>      return (pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT) != 0;
->>
->>
->> Maybe this is happening in the gmap code only and not actually in the core-mm code?
->>
+> [1] https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/
 > 
-> 
-> I am not an s390 expert, but just looking at the code
-> 
-> So the check on s390 effectively
-> 
-> segment_entry/present = false or segment_entry_empty/invalid = true
+> ---
 
-pmd_present() == true iff _SEGMENT_ENTRY_PRESENT is set
+This patch does to much in a single patch which makes it
+rather hard to review.
 
-because
+As a first step, we should focus on leaving most of
+scan_get_next_rmap_item() alone and only focus on replacing
+folio_walk by walk_page_range_vma().
 
-	return (pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT) != 0;
+Follow-up cleanups could try cleaning up scan_get_next_rmap_item()
+-- and boy oh boy, does that function scream for quite some cleanups.
 
-is the same as
+This is something minimal based on your v3. I applied plenty of more
+cleanups and I wish we could further shrink the pmd_entry function,
+but I have to give up for today (well, it's already tomorrow :) ).
 
-	return pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT;
 
-But that means we have something where _SEGMENT_ENTRY_PRESENT is not set.
+Briefly tested with ksm selftests and my machine did not burn down my building.
 
-I suspect that can only be the gmap tables.
 
-Likely __gmap_link() does not set _SEGMENT_ENTRY_PRESENT, which is fine 
-because it's a software managed bit for "ordinary" page tables, not gmap 
-tables.
+ From d971b88056fe3fefe50e5d4fa5b359e8c8331b2c Mon Sep 17 00:00:00 2001
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Date: Wed, 15 Oct 2025 22:22:36 -0300
+Subject: [PATCH] ksm: use range-walk function to jump over holes in
+  scan_get_next_rmap_item
 
-Which raises the question why someone would wrongly use 
-pte_offset_map()/__pte_offset_map() on the gmap tables.
+Currently, scan_get_next_rmap_item() walks every page address in a VMA
+to locate mergeable pages. This becomes highly inefficient when scanning
+large virtual memory areas that contain mostly unmapped regions.
 
-I cannot immediately spot any such usage in kvm/gmap code, though.
+This patch replaces the per-address lookup with a range walk using
+walk_page_range_vma(). The range walker allows KSM to skip over entire
+unmapped holes in a VMA, avoiding unnecessary lookups.
+This problem was previously discussed in [1].
+
+[1] https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/
+
+Reported-by: craftfever <craftfever@airmail.cc>
+Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  mm/ksm.c | 116 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+  1 file changed, 103 insertions(+), 13 deletions(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 3aed0478fdcef..8bd2b78c4f869 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2455,6 +2455,94 @@ static bool should_skip_rmap_item(struct folio *folio,
+  	return true;
+  }
+  
++struct ksm_next_page_arg {
++	struct folio *folio;
++	struct page *page;
++	unsigned long addr;
++};
++
++static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
++		struct mm_walk *walk)
++{
++	struct ksm_next_page_arg *private = walk->private;
++	struct vm_area_struct *vma = walk->vma;
++	pte_t *start_ptep = NULL, *ptep, pte;
++	struct mm_struct *mm = walk->mm;
++	struct folio *folio;
++	struct page *page;
++	spinlock_t *ptl;
++	pmd_t pmd;
++
++	if (ksm_test_exit(mm))
++		return 0;
++	cond_resched();
++
++	pmd = pmdp_get_lockless(pmdp);
++	if (!pmd_present(pmd))
++		return 0;
++
++	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pmd_leaf(pmd)) {
++		ptl = pmd_lock(mm, pmdp);
++		pmd = pmdp_get(pmdp);
++
++		if (!pmd_present(pmd)) {
++			goto not_found_unlock;
++		} else if (pmd_leaf(pmd)) {
++			page = vm_normal_page_pmd(vma, addr, pmd);
++			if (!page)
++				goto not_found_unlock;
++			folio = page_folio(page);
++
++			if (folio_is_zone_device(folio) || !folio_test_anon(folio))
++				goto not_found_unlock;
++
++			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
++			goto found_unlock;
++		}
++		spin_unlock(ptl);
++	}
++
++	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
++	if (!start_ptep)
++		return 0;
++
++	for (ptep = start_ptep; addr < end; ptep++, addr += PAGE_SIZE) {
++		pte = ptep_get(ptep);
++
++		if (!pte_present(pte))
++			continue;
++
++		page = vm_normal_page(vma, addr, pte);
++		if (!page)
++			continue;
++		folio = page_folio(page);
++
++		if (folio_is_zone_device(folio) || !folio_test_anon(folio))
++			continue;
++		goto found_unlock;
++	}
++
++not_found_unlock:
++	spin_unlock(ptl);
++	if (start_ptep)
++		pte_unmap(start_ptep);
++	return 0;
++found_unlock:
++	folio_get(folio);
++	spin_unlock(ptl);
++	if (start_ptep)
++		pte_unmap(start_ptep);
++	private->page = page;
++	private->folio = folio;
++	private->addr = addr;
++	return 1;
++}
++
++static struct mm_walk_ops ksm_next_page_ops = {
++	.pmd_entry = ksm_next_page_pmd_entry,
++	.walk_lock = PGWALK_RDLOCK,
++};
++
+  static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+  {
+  	struct mm_struct *mm;
+@@ -2542,21 +2630,23 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+  			ksm_scan.address = vma->vm_end;
+  
+  		while (ksm_scan.address < vma->vm_end) {
++			struct ksm_next_page_arg ksm_next_page_arg;
+  			struct page *tmp_page = NULL;
+-			struct folio_walk fw;
+  			struct folio *folio;
+-
+-			if (ksm_test_exit(mm))
+-				break;
+-
+-			folio = folio_walk_start(&fw, vma, ksm_scan.address, 0);
+-			if (folio) {
+-				if (!folio_is_zone_device(folio) &&
+-				     folio_test_anon(folio)) {
+-					folio_get(folio);
+-					tmp_page = fw.page;
+-				}
+-				folio_walk_end(&fw, vma);
++			int found;
++
++			found = walk_page_range_vma(vma, ksm_scan.address,
++						    vma->vm_end,
++						    &ksm_next_page_ops,
++						    &ksm_next_page_arg);
++
++			if (found > 0) {
++				folio = ksm_next_page_arg.folio;
++				tmp_page = ksm_next_page_arg.page;
++				ksm_scan.address = ksm_next_page_arg.addr;
++			} else {
++				VM_WARN_ON_ONCE(found < 0);
++				ksm_scan.address = vma->vm_end - PAGE_SIZE;
+  			}
+  
+  			if (tmp_page) {
+-- 
+2.51.0
+
 
 -- 
 Cheers
