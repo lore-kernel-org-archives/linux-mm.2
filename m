@@ -4,101 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F535CCD195
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 15:23:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3150ECCD195
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 15:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15CF78E0005; Sat, 18 Oct 2025 11:23:27 -0400 (EDT)
+	id 623E48E0006; Sat, 18 Oct 2025 11:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10DF18E0002; Sat, 18 Oct 2025 11:23:27 -0400 (EDT)
+	id 5FBC78E0002; Sat, 18 Oct 2025 11:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0232D8E0005; Sat, 18 Oct 2025 11:23:26 -0400 (EDT)
+	id 5116E8E0006; Sat, 18 Oct 2025 11:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E67718E0002
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 11:23:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D22411A3A7
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 15:23:26 +0000 (UTC)
-X-FDA: 84011604012.11.EEE03E0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1F40E8000F
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 15:23:19 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of hehuiwen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=hehuiwen@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760801004; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 43C278E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 11:28:52 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4456C047C
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 15:28:51 +0000 (UTC)
+X-FDA: 84011617662.23.1297519
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DEFA6160008
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 15:28:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Ge4wA8r9;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760801330; a=rsa-sha256;
 	cv=none;
-	b=jxomk8K76VTp55i0Win8XISAkK/xzUInZaTXj5RqAXb7ClVcjRB89ALVz5kJAsFQjuCOk5
-	ANL8vEasCAxvaLM+5+aptOV7ByH8n4jikFUo5GrmeMG84mv/NfvDn3QImb04+4xx+nhIEB
-	TvqYA5fjOOA926o63PLUrOP7+9YGUNY=
+	b=107PH1mHzcxnv10w59uSYfIWr0wiR0/ExhxVLQcdIp7MuOVDfhCaff6Mrx2cT0njtZD3e9
+	GPGGZIfl+DTgXZ5im6naqS/YcSS8XvteN9LO7IPh2huzxt+LSjCTl1a4jxBROrBceGVP4a
+	eo6FCiMz4bXlp23h6ufKSktMFUuEJkU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of hehuiwen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=hehuiwen@kylinos.cn
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Ge4wA8r9;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760801004;
+	s=arc-20220608; t=1760801330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=86/THeK/yNsDooA2Hco8FGz6cpzZ3hpcUDpbDur04Z0=;
-	b=6h8EU1Z742atkrNyhsQJ6SlJLUokOvrPg2G302tBIDup/r4PZMrN1/Z8GA35tN0Qpf4UT6
-	8cbEK9EL94Q9Mr02y3EuZ3bvYgfzHrkEI9dQQT1T6EZmAZjQlVyZgknAPrxJgNOWtD3a7Q
-	t3ekFWtnygoVt3sGMy6Fh6K40nl+n38=
-X-UUID: 5af3a1b8ac3611f0a38c85956e01ac42-20251018
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_UNTRUSTED, SRC_UNTRUSTED, IP_LOWREP, SRC_LOWREP, DN_TRUSTED
-	SRC_TRUSTED, SA_UNTRUSTED, SA_LOWREP, SA_EXISTED, SN_UNTRUSTED
-	SN_LOWREP, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:9657a6c6-2841-4262-824e-3fefe3e87ff4,IP:10,U
-	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:40
-X-CID-INFO: VERSION:1.3.6,REQID:9657a6c6-2841-4262-824e-3fefe3e87ff4,IP:10,URL
-	:0,TC:0,Content:0,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:40
-X-CID-META: VersionHash:a9d874c,CLOUDID:cb43a231f1e62819d6fbbce3c9e6b51f,BulkI
-	D:2510182147173C9T6SOE,BulkQuantity:3,Recheck:0,SF:19|25|45|66|72|78|102|8
-	50,TC:nil,Content:0|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:nil,BE
-	C:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5af3a1b8ac3611f0a38c85956e01ac42-20251018
-X-User: hehuiwen@kylinos.cn
-Received: from localhost.localdomain [(220.202.195.150)] by mailgw.kylinos.cn
-	(envelope-from <hehuiwen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 555464057; Sat, 18 Oct 2025 23:23:10 +0800
-From: Huiwen He <hehuiwen@kylinos.cn>
-To: Liam.Howlett@oracle.com
-Cc: aliceryhl@google.com,
-	andrewjballance@gmail.com,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Huiwen He <hehuiwen@kylinos.cn>
-Subject: [PATCH] maple_tree: Fix potential NULL pointer dereference if mas_pop_node() fails
-Date: Sat, 18 Oct 2025 23:23:05 +0800
-Message-ID: <20251018152305.1612722-1-hehuiwen@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Jp9qkiE962EqU6AuwTutKC7YuQQ5b1pauuoLKIDWLOA=;
+	b=6fq3eC6hyELR3jmFRWJpVduieWNjWJCuyBPYxkLBJnS9oEbGVnMvdqVQedHReifCwP+LFV
+	DGZHLXwhlaEY/4TP/g1krbiqMkFJx1clAu7lGy5y4BK1jX1Qtx97fMtTN3c8tZ4xawyM9Y
+	aw6xDGrEjUcyhrmYIKTjFzU9rETuXsg=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso1531589a12.1
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 08:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1760801328; x=1761406128; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jp9qkiE962EqU6AuwTutKC7YuQQ5b1pauuoLKIDWLOA=;
+        b=Ge4wA8r9qwLtHymLska5WfoJKZw9AjpVjx62mVQqJAl/ZFkNaCSbvHHHDoKsFQVQXF
+         DoiXv+Ub/f9x0t8IbhhtohnVJUNXReqaC0Cq5H13rXv25ZGsMhQzj0btOcom4mExpOWK
+         eAkbv9YxqhoMOrTRD2okVGXxKHDtRpKi52LNDOmbsXwKkTOCcagatT9j7APQyVlibjlv
+         Tx1Apcj9bqQI9LqSxY33OO5D7NU1MP931v9cuv8yCnn6wB4yfCVjkrGaQpizPznauktS
+         qQIvDnfJAMFsrqeVzUPY0FdNpwU3IG4TLADq4hQ2TOvqMlPOGPpOh5VsScI0Ps1iRvEI
+         JzQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760801328; x=1761406128;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jp9qkiE962EqU6AuwTutKC7YuQQ5b1pauuoLKIDWLOA=;
+        b=dpo4k/FxvNzKd/PeEhQHRnZA9huC7V84lHmEc9/YkRjBn1FeIRojLkL/ROCGRIKKPO
+         8eEuCXG44c0zCKD4LhvlJEpznLRReV7MP0gUbPf+QcGiOso8lv6a99udKvVCBzV2Buez
+         oj3W0vzcOEwuddwx8UsYD5X8hVHCww/E9eTGBpBWAeLaNUP7x6Xv/uRWtB92en/kRK8t
+         03SknC9ugnayVldVz59pKG0L+qT07e6mPZaQxfUTacVr8nER9SzY6w8w07R2g15BJxb3
+         N/t/l9Xk2q/C2aFYUGY8Uu7S2csijVsHsFXquma7phOnI2QgBG3WaSusxVuDDijbsZ/f
+         Icvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWe54m2LyvkVU/ebcRqTz6pHt9rf4Tr7NyTzmFxXzZUtgGhmQv/ZYgopYjiOnIG4mBEZBPDC2e15g==@kvack.org
+X-Gm-Message-State: AOJu0Yw6dulPAuFzhxTOV0QhjkGEK39s5/lQRB2kwjgmYvnN3MCCh77C
+	V6xkLEmQ1mo9Fj/nvldGSNFnSNU4UydD7VSWW26WkUoRTOOsDqcvBEgRawwhoY8Sg+CY/amsdop
+	A9md1LD0gtd0sFywj143ePagijo3FlmCvf6IEi43vUA==
+X-Gm-Gg: ASbGncsVRIhQ5cIzBdu4Sl4op1jDK3U+KjbyKEKbw/Yt5l9IfW36kCqNo5u0GWhP6A/
+	CzN0xefeYzg9e/WSHapP250JnOK7XXAp+5R5eYX1Can6liEZclUTAt7bP7RuhND/couJWj+dwPM
+	WW+H0bL3tOdUp0rioaQv7ShLLAf59JFLmQoFQzMWUO1mjuA+g3aXvkO+xVDlo5iYZvsObe17IF0
+	26YLdrvsAawcQAfpbBi65AGOKdR+vwYus1rZO+6Y9bmbBjagIRj73MTRjrpJrSafT0AUOjaVmW1
+	FDxuT4SEcg/LU5HC
+X-Google-Smtp-Source: AGHT+IGD+GIZ6cxCDQx+cpZ1B+6x/CWUhSAiqtZJo+SqncV9lu3xa66p7nHm+gyAAx9koD78PZnXe2MMWr42HEQvxQw=
+X-Received: by 2002:a05:6402:2713:b0:639:e5da:637e with SMTP id
+ 4fb4d7f45d1cf-63c1e1f212fmr6981739a12.6.1760801328092; Sat, 18 Oct 2025
+ 08:28:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
+ <20251015053121.3978358-2-pasha.tatashin@soleen.com> <aO9ZiERHff7vQiBL@kernel.org>
+ <CA+CK2bA5Eyz6TUMTy3pa5HBvZ7KkiHX3EHn17T=d6LX_X5i3bg@mail.gmail.com>
+In-Reply-To: <CA+CK2bA5Eyz6TUMTy3pa5HBvZ7KkiHX3EHn17T=d6LX_X5i3bg@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 18 Oct 2025 11:28:11 -0400
+X-Gm-Features: AS18NWC5SixWaTv6tISYyRfabBu0M2TA5NSlq-EJV7berBAV8wLpo3xmXCWe7Kw
+Message-ID: <CA+CK2bA=g3r7V92NCYZDWNKPguCM5EYdroqHxEH2YxUy68iDyg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net, 
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org, 
+	ojeda@kernel.org, pratyush@kernel.org, rdunlap@infradead.org, tj@kernel.org, 
+	jasonmiu@google.com, dmatlack@google.com, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1F40E8000F
-X-Stat-Signature: 9d1s8mnjptq97joti3dwz3p8aqoy6qt6
-X-HE-Tag: 1760800999-69632
-X-HE-Meta: U2FsdGVkX189LUaS/JMFuuBsC/26qK8w0/Ch1PwUrdTtLhyjqRndFuQg2t/LX8d7JWvClB7K5qRQ0vYqhS69Ebg+1ZRMBIqq6njJrDS5HGZ+UOfpaVPT1xXxMYPw2XF/R6JLWxDk4Jm7HAHSKO0Hz+FEH88JygFn9tnhY5fM8ja8T7XGJcy2NoXUe961OqwEYEH8blbmHlIEWSdpYKhCZEi/dAkwJCTQ++n+8Dvk5+FDxbi41o2TPPWOd3oxrlvF+r1BSgnxcY3X+MVtp+mqM9GRLLwGpwZl57tIG8TqqXIsctMijridsv052XpAYO0krqVhVZMmLbHuFD2+9mgA86StQhbE/CMSBXS4YjNHxK6m6hD0ztU2qjEe09eO12YCCIJtLk3YvVNtSjrtrbhpJkyMhGq34hyFox7TXXrcjo66XKRYvTiWbWqijy0+A40YMoZXYxo/jy4rY7M+CozFeN50ot5MYWDFdKAJLoa/RDPrlQyS/h9EUhM530ZGLxCOb4b22bZUf6QlZZ9BxZyNuVB1VAdxgdIq2OutpwX5EfVUypRgHGU6juZXMSEufr3I4k+ehz2rv+Pewj2pj2Hj1JY0lnS0KJfEY+QSzdcscHRcTJ2gIfiMNDzVae0Qwne/Qbnt6p6MDluWlUzuubQ0ZvXW5+dnBT46vCchvnxuYSpn+shk4LF2p7FkKW7+c6YBhoS+fAabexOXoZ2H085cBvJnc1hpPVFl01qKA/Mw8gBsIiMyb3Ono9ee5JGEcFMUuAt6qnJxa4yQIlPN6+Lx7UqEelHeNoZIBsB1N7zaaBXCLqqqGfExn1Ii2eTuurBEkGp4M7dlukIaje6hYd+qh0rQhkN245HeN4X6aIz7dvBIZgZT3naLsey6NdkTGU8h1aYPggUKVyrtyY4IiNMJhk2qf9KST2oeFP/6U7OpgrB7o3/YNK+AAPfR3JykrMlged7DQjVIHkZiOROaJAy
- 6BZk1EPn
- wBbO1gGqYue5iTtzCYo4PQ6ZgxYChQG6H9+6e78Sm62ymA3g=
+X-Stat-Signature: qh5wbac438noe5ehd7n6hayg4mxh6saj
+X-Rspamd-Queue-Id: DEFA6160008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1760801329-461012
+X-HE-Meta: U2FsdGVkX18assenIPpWZ8fVhkzF9z5nKETT3fp4+SoiZ+tRaoCgqLuumZ9krFYYUSlP54wtmIZexWajFaWuaEgz3Bn/Q7qhG7HiW4ndZYpRm+FtKDMlj3cAUKaU6pjUizU7kBWyJJXAxvNw0UuiXYAURSX3owT7RgT5hDuCiI/BRIv80ngtMd9pHkTZyUEklVPMmxHd7OeThotZeiyHcEs3ZbC8h2C8MSYOJIooH20vdf/kHDuz4KDfmU76+YCEzTcsygqqm/NZFWdCTfipJaEOY0FkKPOctC2EJFhVxjQN5yfUGwwnzyYA20y+1XeflhStPVcV3Ldc1Qs4P5p433F34qkdf1aD3ZnfJ4e8wXw8de0vsd1x2CYijnLA1fpVDtIfKdV/37NtQOLj9xoeznGTdpZ9vG9vSlJZe1LENKMwFEMU3iXOYBva1Z8Bp0BgR2dysMkog6J4BfdZlmLpDBwppaix9teX8n8paEXxjlkoSXKWZJ8X4r9btlrnd3TZWzseY2slz/S8e/twmrsdmNat9kbjUakBrNIa5uorz2J1eFRRF5EcjQobU2LoMHNcvY++T//e2CQRJfUA2V3RkzIysEHairEc/GSCWfOUbMBtN2qUKIeM+ssj2VUg03WdbF9BfBz41JaSMigqRFmSWfyGUBZLavnAIo7dJTnAyd+sBcwOlQBI1u18LKmSjqf8TA8lpIJBeHDGY7Rh74WMBdJpPHsBFUJLAU0ar7fBlsjSFMHbkjTtjXlhrdcbBBm7n8o/bQTwebVW60P8XvBOd2NEnDgUKuuqd+whjcTZyltCFilpLLQrfE7QQbDbBFFrQKqdjLpVWA3OOwv9rB94POkLGXoAqfHEvb3lv1HL9d3ENrjrQoSOD38RetoSIPzs9WLPju3c2awCT4tBolMGL8tDRx08kFZ8jPniJ+aOaFJMJb81uZoFQAZmBq+GTSe5xfH21v3sExSu0ES5r10
+ mFyZNIOy
+ E3XwkTnFTituKUJNCyjDGFKSH87jNhvWTpWgzEOYB8ZPU0aGOEV/QZHci7IhHxE3JOYetRIWWjYG1H/wzh0qRn04KG5U9h8Du0HXXkCyWm8RhV1u8lm2z7PK5ARIT3dHh1Gb/KvCjSyKTXLnPl8vfO0r5xcOc3Iaopk+t3su83qxQiqF5rjDIoRDSCjVL5BOiN0lD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,52 +120,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mas_pop_node() may return NULL when memory allocation fails or when
-mas->sheaf is invalid. Several callers of mas_pop_node() did not check
-the return value and directly dereferenced the pointer, which could
-lead to a NULL pointer dereference and kernel crash.
+> > Can't we check this in __kho_preseve_order() and not duplicate the code?
+>
+> Yes, that is possible, I will move it in the next version.
 
-Fixes: 54a611b60590 ("maple_tree: add mas_pop_node() helper")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
----
- lib/maple_tree.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Actually, I decided against this. The check might be expensive
+depending on how sparse scratch area. Why make it even more expensive
+for kho_preserve_pages() case, which might be calling
+__kho_preserve_order() multiple times.
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 39bb779cb311..524e1cfb4439 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -3085,6 +3085,9 @@ static inline void mas_root_expand(struct ma_state *mas, void *entry)
- 	int slot = 0;
- 
- 	node = mas_pop_node(mas);
-+	if (unlikely(!node))
-+		return;
-+
- 	pivots = ma_pivots(node, type);
- 	slots = ma_slots(node, type);
- 	node->parent = ma_parent_ptr(mas_tree_parent(mas));
-@@ -3367,6 +3370,9 @@ static inline void mas_new_root(struct ma_state *mas, void *entry)
- 	}
- 
- 	node = mas_pop_node(mas);
-+	if (unlikely(!node))
-+		return;
-+
- 	pivots = ma_pivots(node, type);
- 	slots = ma_slots(node, type);
- 	node->parent = ma_parent_ptr(mas_tree_parent(mas));
-@@ -3506,6 +3512,9 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas,
- 		newnode = &reuse;
- 	}
- 
-+	if (unlikely(!newnode))
-+		return;
-+
- 	newnode->parent = mas_mn(mas)->parent;
- 	dst_pivots = ma_pivots(newnode, wr_mas->type);
- 	dst_slots = ma_slots(newnode, wr_mas->type);
--- 
-2.43.0
-
+Pasha
 
