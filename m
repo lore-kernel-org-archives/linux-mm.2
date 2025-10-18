@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A7ECCD184
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 03:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 866BACCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 04:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 932C28E0008; Fri, 17 Oct 2025 23:54:56 -0400 (EDT)
+	id 88E508E0005; Sat, 18 Oct 2025 00:47:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E3928E0006; Fri, 17 Oct 2025 23:54:56 -0400 (EDT)
+	id 83F778E0002; Sat, 18 Oct 2025 00:47:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8CC8E0008; Fri, 17 Oct 2025 23:54:56 -0400 (EDT)
+	id 755DC8E0005; Sat, 18 Oct 2025 00:47:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9148E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 23:54:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FD9587A47
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 03:54:56 +0000 (UTC)
-X-FDA: 84009868992.07.67FDB4A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 68FF016000A
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 03:54:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bBC8BgUt;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 642F68E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 00:47:20 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C48D11603D0
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 04:47:19 +0000 (UTC)
+X-FDA: 84010000998.12.348BF90
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E9B8D140003
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 04:47:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F1M1X19X;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760759694;
+	s=arc-20220608; t=1760762837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u41eT8D5dqdLJHzAYU+XwTHwHVJl87QzaU3O5/jEDrI=;
-	b=DqK7DhJ/Ro1TpYW25iwEkWGY8sVN5nKeG3LCLiZ+Ek1dK0hvcFeSvbC/DhPVbaihuMmWjc
-	X1q/xu8K7tGba04c3klsHEPhZH6VnM2INLgffPM80x+5nYvz3FnmYWLd9pTFZMTMeXsrTh
-	u/tkyqwFiSZocJ8RHwY+Qj+Gr6oCg8Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760759694; a=rsa-sha256;
-	cv=none;
-	b=iBjYT9ymTdD6/ECoqyTJzFP18ABAOZvYjCHJ2YlCvHnq8KvixVGW5vnxK598bvfgO69/rx
-	h7xzje9Z644os1I6VXiGFmtSdOgHOZ1RxBxv4tCFfQu/aO78PWPVrBdHcnBLhZwBEDv6vK
-	P7rDgtcl9PHLvv3FVimx1mp6H6VGWu4=
+	bh=6T0nEHqgomWbSbqMkaLKOIss/3aw8Au3nJ3IWEwAVU8=;
+	b=0i2W5oCEq6rvuNx6wfaYgN2MIGQ/9Dw6OLszAebTc2V2ilxVmOnS5dxhyb8ZbAaFhco8uz
+	XRHZnq96hpXimhQl13kx3GvXj/mfdBqnermUBWRBZ9NgQcFFWg1UktfO9TfBekVAwUo9D3
+	EHpCHbyYkvyU0FDQm2KPQRQoQKFB2aY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bBC8BgUt;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F1M1X19X;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760762837; a=rsa-sha256;
+	cv=none;
+	b=LVw0tjkQImRZDWC/ckP+JwD0EnJnJgLhHZJJso+49auDDrt+nN/J2eS6hpZuGwPaUmFiVt
+	pIT+KWegMa6VrXswvHUkqg7yG6H2PTcPJ3WNkZBappLLWEf7QmIt+5ZROYuI7X6amCfhFW
+	T4RUbpVgY8cQqasjyQnhA4mgbITi1e4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760759694; x=1792295694;
+  t=1760762837; x=1792298837;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=okI3RpJTLrRj1PrupblKZE/45kDzmQjlxy+SRy5hI2c=;
-  b=bBC8BgUt6cOfZIyS/EZ9uOvbeKh05cVKfzelR/065Fl9S/Ajgm4WqasZ
-   PIxK3sQjJw5a1I1JIaGQLG2fuaR+Ad1f3FxpIN9Og4hVv5VXTZ3hy2N+s
-   7z7qOWfPGn5bmEpD/IOaHqacROplIKYpIbSwmsKPteqwcT2S/rA8+tZu5
-   KmaS+BX7RqN26/rqlDug3aDUstZOglyI5NigwwpeZL81Xe7kFG8Do/cu8
-   7oUB8QNk6F8e7ctf1ZwZV0RamAC0pQ1918gcGCaDcWRaoo07g92VEvdQM
-   kRNLmj4q5X5QhoE5JQI4Db9JmIJZccvIm8YIMq89KATpaoP2o90MkPing
-   g==;
-X-CSE-ConnectionGUID: CBExACFVTwWRTJjHDlP/pQ==
-X-CSE-MsgGUID: HYn12ZKdQ6+PJc5yMIq5cg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66808255"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66808255"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 20:54:52 -0700
-X-CSE-ConnectionGUID: lfkJnemmRKGrlC6HZMrttw==
-X-CSE-MsgGUID: kKFSxIhlRyyzUPXhaFL+Ew==
+  bh=VxEiGxEpqNGiOxmfppZ5EdKGKFhkf4LgSqXDCj9LQJI=;
+  b=F1M1X19X/iD2t71kCdPYga4XiAiuF+nWLBLb9Ma+J3DfN4ceuZLiJv38
+   bQ/E1U4D044+uFMpskgkqcYHENEm1/nnd/WO5/S9BeEAN1GCXFm+PVa9V
+   UhIGEmQsjXLigxSCd6+JkEhrKBLrKyEgZxaNQvE4uZHmXGIke+VZLE3Hm
+   DS/l+olmMu8NOKCWeB2X9d6ZJP5YhMjOALe+hbiwUNPT+G9+64I3vo+V+
+   DySljcDUkdbRfTl6vU0USyr9wePavGHuxLZ/12cc2bgJglT5/8/vr9OKC
+   uRWMs6CNZfs9L7VV8plTWnIeOmer6WYP+RGMPBe7kluVsk4n2+vyAaANa
+   w==;
+X-CSE-ConnectionGUID: LScmoh8LQxyBCNHhY3MAlw==
+X-CSE-MsgGUID: 377+mcg7RSaS8eC7cs4VJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="80605387"
+X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
+   d="scan'208";a="80605387"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 21:47:15 -0700
+X-CSE-ConnectionGUID: l+D+wMBVRre07wjM8mJ+OQ==
+X-CSE-MsgGUID: u/osHsXdTsqLlmkLee4BKQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
-   d="scan'208";a="182703077"
+   d="scan'208";a="182445076"
 Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 17 Oct 2025 20:54:49 -0700
+  by orviesa009.jf.intel.com with ESMTP; 17 Oct 2025 21:47:12 -0700
 Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1v9y1m-00082V-1y;
-	Sat, 18 Oct 2025 03:54:46 +0000
-Date: Sat, 18 Oct 2025 11:54:28 +0800
+	id 1v9yqM-00084J-1K;
+	Sat, 18 Oct 2025 04:47:04 +0000
+Date: Sat, 18 Oct 2025 12:46:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: Kiryl Shutsemau <kirill@shutemov.name>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -88,25 +88,25 @@ To: Kiryl Shutsemau <kirill@shutemov.name>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-Cc: oe-kbuild-all@lists.linux.dev,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	LKML <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
 Subject: Re: [PATCH] mm/filemap: Implement fast short reads
-Message-ID: <202510181107.YiEpGvU3-lkp@intel.com>
+Message-ID: <202510181215.jcL2gJMQ-lkp@intel.com>
 References: <20251017141536.577466-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20251017141536.577466-1-kirill@shutemov.name>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 4srbjqqkxmj68wzmxuigkgqd7bfjsyyi
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E9B8D140003
+X-Stat-Signature: g3n7g1tj77ckhr8jtcoksahiqpubjdsz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 68FF016000A
-X-HE-Tag: 1760759693-936923
-X-HE-Meta: U2FsdGVkX1+YIxLFRcem9T4orQoGw/SgkLpglmUGs4GLLGVfvG2HKV5blPpP2OtIF92/L+r6w7ejxwxpNri/SLTvVgRkAiCMQ/w3Cyt3SPT8oLstJrWZwphu3CXcAthm/MYa/Xjo4zol+Q0Mfi+2hyi+Qj4VkCtj+w19+lbiBTn+ZDfgds+T31ZRdB0FLTbh45z6QJ2YceCAKVtZrIvPdTSGnAYdweFO9AVOVbr2GrkvWqM2JZCk3XNJSExMIp8sFhv/jKWugaFQkTgC+7Y3o2s83I5LfFHR4fu0Z2KGdvIH/cpgCLeRWKTAHd4IZcT3XVRoCQGQkeD91mU27GckWv/Xs1QV8u5FzylYm+wbVzT6lytw8iO5aTrpFxGAd8FRP9MCoOUZdNEYONzbEHKLEQfDTbsGq+jTKBrOIEtytARKflup1jGbGbnKvehinB/92mIJpmYw1Y7asfcqS7RdmEJ0FqOQQdwsICQ4Zg35FRtYmp0sqhPKDTd7V2UQHA8hMseW3j+5ktLJ/LU2nBYhLXAmJTF5la2KTk/bzQZs3038p7agDO6z+3Ua7+NpD7a5SBrGOCMjFuW+Ozczgvm5UtmUTVDY10rdOOPaCuvERNAKMYmUOiKBmVoxag6hk7GxzQuS0ZFQXHBBIOtjJwmCZXweIZkC7uJufaR5aeHceSz2eurPKUKeO84GwjXSX2vL0WNf4NQwDxAcpxAy2ozKvhE6Qy6qkjJNDLc5C5+qU8FOG6QGrKqAPzw3qJrYfyJHdPursEjs6OJj6iBpvFyKtpB57D978d3s+z+ea0AeLU2a++/HZMhL9KTcOIaxSW8S/LfJv6FLFhSeEtmEywLZcL7j7L6mv+jSuebDZmZi/WWECWCOzfcfiD8OCefc02qeGnLSeoiSrZolC3Z5YqZzCzTHtBUgbAo6XVezxyt6j5OWc1ln+gIpOBqnY5aWbr1TVBlNavAg4ZSh1gyl2P/
- EWxQjDtG
- /Ge8NGbr85V0firWxlEN/qEyrLPY8nPD8/TMQ9oEMdThpkP2Qu4SAFz174gl2GEY5aLeAWfudzJXX79t73pXR2PQcBRR+F7vVj4nfep6ELxjMooX7bMkf4H+Q/KuMGZExj7A1kpWTeNiLHLcAWkrbLWskBiRh6Idwx3DlgAaZq6Ma+JdByW0zdM7A7zDhAcFT203xDYBR+N9Sm5JECzYlL05x4WaFshDpqJF5yHfG4WJlzwGuhL9emrB6CXw1vaKGnY/bqCzhOGwUDdrBOB2/BcYVROIyjdyFD+BYZgoSHBuebGm/9s76xt1klHd5khoElUPF6N4Un1GcgDs=
+X-HE-Tag: 1760762836-810108
+X-HE-Meta: U2FsdGVkX19soEC7ESchptaq3ALqGG3zCg9nbT0ZjXxCUzKHAOqWJDR4RX/bmqDwgr5tKxJ4ea52zfLp5/dT5WhSgOB4kvb71OaqCryDsucLFVU3NrNP2cmCvo0pxleP7hkpkcntOk5FltJEe8iR1AtosWvrfHkSEutVmq2WLow+sOuyCyBcqOYD3CR0maNeVwDQPiO1dMzrbqb4vRAZzlCtsT9GYEFYRfxH+NaIdh8iu9YiOZOEGwOdQow7SR5hVd8sAIKIFfhofGuK4XG7wpaRZfGzXoz/StyZc5/QC4eliEun/foWPTlp7yu5TM2g+SzeeJE6JfUpYV2Db7CxT9f4eW1n+0o8t9qiKmvwiLDpcMVWp6BzToc2vkW0kPuzSTM5FMCVPilRnOJPisdhckyaLsuv/5l92k15c2bLAelZP+syGRLiS1NC/aSgRHSFdixdMANZJZ6613xvrujVnA7y25MUZ/eR4HKfA+w6FYoH+0JDEKOq/evY+G96KKwkk4pcwtlhqbPGFtlVSOUCjZnWyLhgGEW/3CkmEDvRtqwVFXR6uvaPwaSjtnJ429YozzRlQ9qc50BnxGY88evFrt6UVDyLjoFtbjXm+iohMOjYj/jFtUiR2pOFvTLJMpB3g5qocQ96nQnclLXeIlbr531egAaEbPwPVXcxYU8o5aakc3Mllxk/aAgkLw2gKXIVarKBjfqkIxbUPs4ULZQ/jVfWq8w40mJzIWnM9nqBYwngLnf02Jlb6FrnEsQ+kpjChgdhvsi3vgPfL9w//f/MBqKYHRmxxJ+hqa08laszP/KRokuzA/m1hkHIFPS1oqvckSGjI+i43y5i3IeSN7T9unyRpENuB/2bpl3YGzdsSG6xGe27Rmkamug9UVii6l0A1oqSg2S1p7GFYcye3jxrCNnCZI21jIZDSkG6GGXYY5b1HtNrnXP+aY6EdaMFyw0jnTUaMnpiHDLsc0UYYUf
+ exMDZ70G
+ Rm1/Q7zsQOM2kjc9kwvlAxF1hsA6lKhSrYbtyot1AViOpFfosH3aXBPMMkSU//OGQJdRnzNufnoe8eiGPDPCaajs8yxs2a/+fF2E/e8CoXcr9Dx2wOop9suM2+x44sYHpQW1/xqbpIBnDMsDhwwbqBs7WrNUKuOVdHDyQrqJveAEs6xNV68pgQZ4/2KlYx/uqoqv8naQREey9BocWx2agN6oVYZ/1hYusO99d+on0nKNUE8Mk0/kccq4x0e0jEZFwAeP9ey2hq8uVocqT4XGeH29sgWl4RLmCQyGvLCze6/LodrD231PFtFjPHyZVi5p7FoaJJgIGGx/oPvU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,27 +125,27 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Kiryl-Shutsemau/mm-filema
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20251017141536.577466-1-kirill%40shutemov.name
 patch subject: [PATCH] mm/filemap: Implement fast short reads
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251018/202510181107.YiEpGvU3-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251018/202510181107.YiEpGvU3-lkp@intel.com/reproduce)
+config: i386-defconfig (https://download.01.org/0day-ci/archive/20251018/202510181215.jcL2gJMQ-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251018/202510181215.jcL2gJMQ-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510181107.YiEpGvU3-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510181215.jcL2gJMQ-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   mm/filemap.c: In function 'filemap_read_fast':
->> mm/filemap.c:2787:1: warning: the frame size of 1048 bytes is larger than 1024 bytes [-Wframe-larger-than=]
-    2787 | }
-         | ^
+>> mm/filemap.c:2753:22: warning: stack frame size (1096) exceeds limit (1024) in 'filemap_read_fast' [-Wframe-larger-than]
+    2753 | static noinline bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
+         |                      ^
+   1 warning generated.
 
 
-vim +2787 mm/filemap.c
+vim +/filemap_read_fast +2753 mm/filemap.c
 
   2752	
-  2753	static noinline bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
+> 2753	static noinline bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
   2754					       ssize_t *already_read)
   2755	{
   2756		struct address_space *mapping = iocb->ki_filp->f_mapping;
@@ -179,7 +179,7 @@ vim +2787 mm/filemap.c
   2784		*already_read += count;
   2785	
   2786		return !iov_iter_count(iter);
-> 2787	}
+  2787	}
   2788	
 
 -- 
