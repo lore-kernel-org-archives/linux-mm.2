@@ -4,116 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02C74CCD199
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 02:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52D49CCD184
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 02:55:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D4668E0008; Fri, 17 Oct 2025 22:48:29 -0400 (EDT)
+	id 85CE28E0009; Fri, 17 Oct 2025 22:55:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9857E8E0006; Fri, 17 Oct 2025 22:48:29 -0400 (EDT)
+	id 80D908E0006; Fri, 17 Oct 2025 22:55:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 873918E0008; Fri, 17 Oct 2025 22:48:29 -0400 (EDT)
+	id 722DC8E0009; Fri, 17 Oct 2025 22:55:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70AF78E0006
-	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:48:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 179A9B9265
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 02:48:29 +0000 (UTC)
-X-FDA: 84009701538.27.1D1F9C7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 99BB116000C
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 02:48:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mH0TK5WH;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EE3A8E0006
+	for <linux-mm@kvack.org>; Fri, 17 Oct 2025 22:55:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2D47B160325
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 02:55:09 +0000 (UTC)
+X-FDA: 84009718338.24.549459E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E435C40008
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 02:55:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YYrKx+CR;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of vinicius.gomes@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760756107; a=rsa-sha256;
+	cv=none;
+	b=yOAGABroVSwvFojNurx2woOdeLsa0n9W4OHaZg1+Jc/dLuaq6mYC993u/9LrrRDEHPYchj
+	sO92M0pfL8IV0DUiaDbqEG+Risc03zkVA1VEbuz0PtHl/SxtR32hT0q2xwUdTUWGTQMVXB
+	o1ub8n0EhXrNepim+IGiouXoyxbK4S4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YYrKx+CR;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760755707;
+	s=arc-20220608; t=1760756107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T9KHyritfTg/yTZkb6RALLTHSuifvD4D5Xd+G7m9W0I=;
-	b=C8iDJb90skuWUAf4mhAlaKdrlk4ctckEd6JCFxIYSLmy0kA0mmGTAjlyhW7R3s+tbpGmhu
-	nKLDrR7bmUSMyKpGOTQRB8TFLmqad30h2o3aJi64jPzsB45kVfbVvFOyskKtVFyZ6Ev0TA
-	D1ehdCLtwlwt2ynIT+4fwIF0p14hIoY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760755707; a=rsa-sha256;
-	cv=none;
-	b=UcrtISVl50u6vIEJW5PjM7RsH8cHEGOzp5mm2daFTLK56G89eaLeUpgMLVphgmm13lN0FI
-	8yu/s45221TL4pYVnemezdsdsc3xn5bkBEdgNDIB8hr5e32IOc460rHZ9ZPauiZgSzShnB
-	AB9z5kAcQgjLoZF+kS7CdAkaLCPCpcQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mH0TK5WH;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of vinicius.gomes@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com
+	bh=COyEg2bktwZwr2RohggXW8/PeNBCT4e4CyjsWH6taMk=;
+	b=l3ME5/Vw35WPrgFfrHsudEnFx5a2eUE3oAJl+4UjOmi+0B7UXBk8qg2JPKe1Q2u2y7Y3LO
+	jlj9zaq4+RD30xeYHSSWXeXfCwtbpy1fhRDLy+7U9NzKZ+FP3XQtKtGsD1EHYlDTG6CcLX
+	dsYEkPTvlPtEs85KKoQOBqLJgtDy3e8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760755707; x=1792291707;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=tEp8HH2rBzZ9bHQxIDQ0t/JriZ4BYmHaJTITiE1LyPQ=;
-  b=mH0TK5WHJcvSRg4szVCkUrIR5AxE7p4YJ20cT7AHY34qrdyUlNGqqmPW
-   Z+PN/Hz0O6KVicj4tNUkAyYkwTjpX7i7lm1zsRZbV2cWJmoU8L2wsH4yP
-   2lOnSIKXd9Lxl6m+G2BtTc2Rnyi9CebB8kwMrhjaE+uQbBJOcZQF7rIrB
-   ++p/B12Dw97IO2JbFd8FJDNkzZKJ3W8YfE3i/h31xy78NnDA7S4Kaxd9V
-   repChIZD486N6DOVulzdo3cMeGAxDa2MXRkXto4Hx2MfHQ3KoYzt6T52m
-   om/hnFL/kLRa96oqyguqC4p1w8xGH4PLpq0zx0/o9N5Qc1l3K0MCPUwgE
-   A==;
-X-CSE-ConnectionGUID: +AOo7q5cSGqncxupLIh2gQ==
-X-CSE-MsgGUID: T8dNn1czRryln/m/lRCjow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66802750"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66802750"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 19:48:25 -0700
-X-CSE-ConnectionGUID: NoGyMQ7ZTdSUCMLtUYDo0g==
-X-CSE-MsgGUID: DQPBNYLuTRa+xl2lmWU85A==
+  t=1760756108; x=1792292108;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/ZPmH4lYkHsggufwvRdkbwQ+doZooO3d11W3wHF8eTQ=;
+  b=YYrKx+CRri78y16hBNDGcoJjBD/OsQ7O1nSKhwduI3SSwH+KgB0JqaWZ
+   lU8UyaTdnbTOcjADUojv+fpSO3WGC6CDN+WqLf4z1B3ZDbvyDdoDhUFyu
+   AoS/+0Dl4GZjTQHU2UEU3DQesSLDrhivsCXrFmh6nzMtZkPMdRXY+4GT1
+   +hM8AKI3Vh8Jzqog1J4W42DVzHhS/h0OLptycbieXt5iBBcuNWkDSKSfV
+   NoHbD/iYrubCw7TPbQ80cqBGQM/Lb2d5E4GXt/cErfXNPQ0T1HmqXnIe/
+   +Z2wq9xG+iJe2zAhdpQ5/QzYyA07pSdrvi5OGdOwbGWdYKG8Lwjqyw8fs
+   w==;
+X-CSE-ConnectionGUID: sgY4R/qhTjm7aCnkW5nwhQ==
+X-CSE-MsgGUID: 3rTXPDkPSa+XCwuhyatCeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="74411062"
+X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
+   d="scan'208";a="74411062"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 19:54:48 -0700
+X-CSE-ConnectionGUID: 2DnvxapsRK+7j8rtICLRzg==
+X-CSE-MsgGUID: GxiTUOrDQKmJFNciETW/fA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,237,1754982000"; 
-   d="scan'208";a="182495563"
-Received: from dwesterg-mobl1.amr.corp.intel.com (HELO vcostago-mobl3) ([10.125.108.63])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 11:26:03 -0700
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel
- <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
- <robin.murphy@arm.com>, Kevin
- Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>, Vasant Hegde
- <vasant.hegde@amd.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Alistair Popple
- <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>, Uladzislau
- Rezki <urezki@gmail.com>, Jean-Philippe Brucker
- <jean-philippe@linaro.org>, Andy
- Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R
- .
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@kernel.org>, Matthew
- Wilcox <willy@infradead.org>, iommu@lists.linux.dev, security@kernel.org,
- x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, "Jiang,
- Dave" <dave.jiang@intel.com>
-Subject: Re: [PATCH v6 0/7] Fix stale IOTLB entries for kernel address space
-In-Reply-To: <c3eee56a-7fe3-454c-878f-cff37467fb7e@intel.com>
-References: <20251014130437.1090448-1-baolu.lu@linux.intel.com>
- <20251014174339.c7b7d2cfb9f60d225e4fe5ec@linux-foundation.org>
- <6b187b20-6017-4f85-93ac-529d5df33aa2@linux.intel.com>
- <ecee3200-c8e2-47ec-a219-c88e8e905b32@intel.com>
- <11cad2be-9402-4d45-8d2b-c92d8962edfc@linux.intel.com>
- <20251017140101.GM3901471@nvidia.com>
- <c3eee56a-7fe3-454c-878f-cff37467fb7e@intel.com>
-Date: Fri, 17 Oct 2025 11:26:02 -0700
-Message-ID: <87zf9pjsg5.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
+   d="scan'208";a="182064327"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 17 Oct 2025 19:38:54 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9wqI-00080Z-2r;
+	Sat, 18 Oct 2025 02:38:50 +0000
+Date: Sat, 18 Oct 2025 10:38:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	LKML <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH] mm/filemap: Implement fast short reads
+Message-ID: <202510181054.Fmf1S18u-lkp@intel.com>
+References: <20251017141536.577466-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251017141536.577466-1-kirill@shutemov.name>
+X-Stat-Signature: jspfxe65g6wpo4j84jsg4y19rhf6xm1r
+X-Rspamd-Queue-Id: E435C40008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99BB116000C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: bsk3siodzn1i5mkoyjrpozshd1mce4w4
-X-HE-Tag: 1760755706-307452
-X-HE-Meta: U2FsdGVkX19txI40mJ3FAMxZjmYRZOZ4KCmWcBqOCjaU73ZsMLn1uomQs2A/rDEh5oBDGOu8FzgQikj/jzgVWMgZLjaOg79jf51GkVnO/Qz5ximvQBRqUisan2h4sij8wDD1SStIbVEfVVKIPD/qRGtL0je+dsDc2N2WnMbYTn8czEBF9INyIOMHQgZ4f5G4r5r7sL5ejCfdMZG+QwDLNLaylznb0sBlhB5t4khCjoGHf5LEOsprZkv/vUCm6Zo+L/8AgGnOVwEwkicYFO5a+AZHlQ3cTvNaGqlCRR2bQxB9SG6Nq9k8UOHiWQJUg++/f7BTLls1o558ij9gqX8SiwvhAF69R7zJs/kU/xlBHJtNbGHKvBxP7phFhMpT7h9G6QEM0NIK0vtnA9oGddf5MpN+36W6ee5NkdPCxuymTGFt6m0El6pwfZEdJUVHxIQnsKcB1QfmPg0/iTkMDhG7nlDg0Dl+1dxe+nX+E/S0NuoLz18Mw+RlTBAqmJjGaQR5nJ3ds2L8C1XkCSSNK68Pp9NwGsuxRSRsajXKHt7jm4YdvRNwiNFULWvVWAUTMF3CMSvC87f1fnLBGNlPmJUJ7L6sdZ1upP9Mz4pwYwrBNLExwwFcLkPA2gLh/OsIg2UIPdwTJ7i9kIsKPa/UfvxIygiNXXoK4w5milI3K9nx0beyS9ZrftmVsnQfbNcaeLwbbHyRd+fam8LzpCMo6/tMa40Fr/R1ASQdFM0tgULqawQbRX70MT25bcuwUUR+McbBwuY+LHt9uBHScRNV9+B6bMrzYz5hd5NZ5MQiepCYCuHVf8x5px/S70viSAYdsxMMuLWendXkmOkqcqfbd8wy+ZDLTWiEcpsNy0tLTfPNKclZiUTH6Cfd4A==
+X-HE-Tag: 1760756106-444827
+X-HE-Meta: U2FsdGVkX18GuJyjBdfETsBQLQwdLYu1tmDx1fnhtHKRsWNAVXP1ks7KuS1zy4cpYQq/7Uechdy29jTfG/q9vWFW6JNMxj7BCmoi8YPnTBsnRFrVCpHzX2BT0nLO6ii14DrZqntMhQtIBT2L4xq+xVSnbc9TEypwGidi0BENSR5JT5IOm5ULJ3kIIyRSuoopoWw1mvTVWVEjTYi5aKY4TyOPJ6GaXUpsnJuXKIQRBgY8TJm5OH4zxWq23P80h8KJoTB5Ishl5FeNqzRJBzokm0xAx/kusbP+SGfGBZ5v6xaSeWj9Df4jQ3MgUtdlejA13ZPWe7k6MeM3sVbyWkQY5W3AryXAJlBQW94iPEw9JwCmVorhEtU12cTPD0GTe+9i9c6Hua+3oF7y1e90E6yxeT1I0VVqCZHB/Z4s76/4eX1I3IzUTn1bJBsMpAA34S7QQnegLY1tgvX/italYYthmKrHMSood4jg0cDJlczRLxgWa8mHkmS78Qf22nnjruKV/FcQjHEWeHrdOJmwySSVL8hKrDTUokVxapyfMulA8d29w76Q9EVWDovHQdLddoVROxi2CfoVCPLHCVclowx4p6W+Uhu03wDfN0FBKbwJtM7eKxTfUodIoFbjDgTBPejvdlvpNsR2hDIf6sdER63MiCFUWT/o5ybNSGV++rBw8n+Tk7x+EWwdjPkvuR/A9nOwxh8f7vaPlrZw1h/JVAIbqn7haTxF70D2wYrG8Jrw7L51UaqJchN92iTpDFks/GWCOPJ9yNe+K1dCq7E+U3GFAjIYElSwpjRCMOzsg5yWPZeTSgxNlmIrFDKJKEBowyNKHB+poN5QPUD3HZnSMUqkXUkQJhTQcekRQL/zYAjiikVEa5T/TrePh0y/oSuzpyhitUvREPxDZGvsstpTFI3TCB6ISdU9pSgwbCcWxNzMx4UICCEm7GB6+eNYO3ogaB4a+CcTq0vnBMF79HNr26J
+ 1+R7Ftl6
+ iO2ZKTiRsZ46nvaSumXY+cQNq1fGFeljFsh/sl4VuTcvpcuFRhSlARqGiu4Ziiy7RJJHnPpRT8vyeOQflkyVkAr1Scifys9fDPML1S9sNHUatOMkvE1iLiPT7VWj9uGmgEf0VCJ2ufjJ83JbcQ9VeqBOtttdNqF2uIAOiPcWeXGK91HKtTtEoi5p/8f4mCNuGCH4oQOes8Mr9R9x69laID0Gk+2P8ts9pdzEm1dwyvx7kRUxeZh2MzRM/GOVn4ynObpW8n5ZUG+xtevZP12ZjTo9mKLyCFlFTmiC/PPQjl0oN5/DSfJbD7da0Q0on1KeWLiDmiZRdWYgNrz8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,119 +115,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Dave Hansen <dave.hansen@intel.com> writes:
+Hi Kiryl,
 
-> On 10/17/25 07:01, Jason Gunthorpe wrote:
->>>> The other alternative is to have arch_vmap_pmd_supported() return false
->>>> when SVA is active, or maybe when it's supported on the platform.
->>>>
->>>> Either of those are 10-ish lines of code and easy to backport.
->>> Hi iommu folks, any insights on this?
->> IDK, the only SVA user on x86 I know is IDXD, so if you do the above
->> plan you break IDXD in all stable kernels. Doesn't sound OK?
->
-> Vinicius, any thoughts on this?
->
+kernel test robot noticed the following build errors:
 
-This won't break IDXD exactly/totally, it would cause it to be
-impossible for users to create shared DSA/IAA workqueues (which are the
-nicer ones to use), and it will cause the driver to print some not happy
-messages in the kernel logs. The in-kernel users of IDXD (iaa_crypto for
-zswap, for example) will continue to work.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-In short, I am not happy, but I think it's workable, even better if
-there are alternatives in case people complain.
+url:    https://github.com/intel-lab-lkp/linux/commits/Kiryl-Shutsemau/mm-filemap-Implement-fast-short-reads/20251017-221655
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20251017141536.577466-1-kirill%40shutemov.name
+patch subject: [PATCH] mm/filemap: Implement fast short reads
+config: riscv-randconfig-001-20251018 (https://download.01.org/0day-ci/archive/20251018/202510181054.Fmf1S18u-lkp@intel.com/config)
+compiler: riscv32-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251018/202510181054.Fmf1S18u-lkp@intel.com/reproduce)
 
-> I'm thinking that even messing with arch_vmap_pmd_supported() would be
-> suboptimal. The easiest thing is to just stick the attached patch in
-> stable kernels and disable SVA at compile time.
->
-> There just aren't enough SVA users out in the wild to justify more
-> complexity than this.
-> diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-> index c9103a6fa06e..0b0e0283994f 100644
-> --- a/arch/x86/entry/vsyscall/vsyscall_64.c
-> +++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-> @@ -124,7 +124,8 @@ bool emulate_vsyscall(unsigned long error_code,
->  	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
->  		return false;
->  
-> -	if (!(error_code & X86_PF_INSTR)) {
-> +	/* Avoid emulation unless userspace was executing from vsyscall page: */
-> +	if (address != regs->ip) {
->  		/* Failed vsyscall read */
->  		if (vsyscall_mode == EMULATE)
->  			return false;
-> @@ -136,13 +137,16 @@ bool emulate_vsyscall(unsigned long error_code,
->  		return false;
->  	}
->  
-> +
-> +	/* X86_PF_INSTR is only set when NX is supported: */
-> +	if (cpu_feature_enabled(X86_FEATURE_NX))
-> +		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
-> +
->  	/*
->  	 * No point in checking CS -- the only way to get here is a user mode
->  	 * trap to a high address, which means that we're in 64-bit user code.
->  	 */
->  
-> -	WARN_ON_ONCE(address != regs->ip);
-> -
->  	if (vsyscall_mode == NONE) {
->  		warn_bad_vsyscall(KERN_INFO, regs,
->  				  "vsyscall attempted with vsyscall=none");
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 39f80111e6f1..e3ce9b0b2447 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -665,6 +665,7 @@ static unsigned long mm_mangle_tif_spec_bits(struct task_struct *next)
->  static void cond_mitigation(struct task_struct *next)
->  {
->  	unsigned long prev_mm, next_mm;
-> +	bool userspace_needs_ibpb = false;
->  
->  	if (!next || !next->mm)
->  		return;
-> @@ -722,7 +723,7 @@ static void cond_mitigation(struct task_struct *next)
->  		 */
->  		if (next_mm != prev_mm &&
->  		    (next_mm | prev_mm) & LAST_USER_MM_IBPB)
-> -			indirect_branch_prediction_barrier();
-> +			userspace_needs_ibpb = true;
->  	}
->  
->  	if (static_branch_unlikely(&switch_mm_always_ibpb)) {
-> @@ -732,9 +733,11 @@ static void cond_mitigation(struct task_struct *next)
->  		 * last on this CPU.
->  		 */
->  		if ((prev_mm & ~LAST_USER_MM_SPEC_MASK) != (unsigned long)next->mm)
-> -			indirect_branch_prediction_barrier();
-> +			userspace_needs_ibpb = true;
->  	}
->  
-> +	this_cpu_write(x86_ibpb_exit_to_user, userspace_needs_ibpb);
-> +
->  	if (static_branch_unlikely(&switch_mm_cond_l1d_flush)) {
->  		/*
->  		 * Flush L1D when the outgoing task requested it and/or
-> diff --git a/drivers/iommu/intel/Kconfig b/drivers/iommu/intel/Kconfig
-> index f2f538c70650..a5d66bfd9e50 100644
-> --- a/drivers/iommu/intel/Kconfig
-> +++ b/drivers/iommu/intel/Kconfig
-> @@ -48,7 +48,10 @@ config INTEL_IOMMU_DEBUGFS
->  
->  config INTEL_IOMMU_SVM
->  	bool "Support for Shared Virtual Memory with Intel IOMMU"
-> -	depends on X86_64
-> +	# The kernel does not invalidate IOTLB entries when freeing
-> +	# kernel page tables. This can lead to IOMMUs walking (and
-> +	# writing to) CPU page tables after they are freed.
-> +	depends on BROKEN
->  	select MMU_NOTIFIER
->  	select IOMMU_SVA
->  	help
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510181054.Fmf1S18u-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/sched.h:45,
+                    from include/linux/rcupdate.h:27,
+                    from include/linux/rculist.h:11,
+                    from include/linux/dcache.h:8,
+                    from include/linux/fs.h:9,
+                    from fs/inode.c:7:
+   fs/inode.c: In function '__address_space_init_once':
+>> fs/inode.c:486:28: error: invalid type argument of '->' (have 'struct xarray')
+              &mapping->i_pages->xa_lock);
+                               ^~
+   include/linux/seqlock_types.h:57:26: note: in definition of macro '__SEQ_LOCK'
+    #define __SEQ_LOCK(expr) expr
+                             ^~~~
+   include/linux/seqlock.h:131:42: note: in expansion of macro 'seqcount_LOCKNAME_init'
+    #define seqcount_spinlock_init(s, lock)  seqcount_LOCKNAME_init(s, lock, spinlock)
+                                             ^~~~~~~~~~~~~~~~~~~~~~
+   fs/inode.c:485:2: note: in expansion of macro 'seqcount_spinlock_init'
+     seqcount_spinlock_init(&mapping->i_pages_delete_seqcnt,
+     ^~~~~~~~~~~~~~~~~~~~~~
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for ARCH_HAS_ELF_CORE_EFLAGS
+   Depends on [n]: BINFMT_ELF [=n] && ELF_CORE [=n]
+   Selected by [y]:
+   - RISCV [=y]
+
+
+vim +486 fs/inode.c
+
+   481	
+   482	static void __address_space_init_once(struct address_space *mapping)
+   483	{
+   484		xa_init_flags(&mapping->i_pages, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ACCOUNT);
+   485		seqcount_spinlock_init(&mapping->i_pages_delete_seqcnt,
+ > 486				       &mapping->i_pages->xa_lock);
+   487		init_rwsem(&mapping->i_mmap_rwsem);
+   488		INIT_LIST_HEAD(&mapping->i_private_list);
+   489		spin_lock_init(&mapping->i_private_lock);
+   490		mapping->i_mmap = RB_ROOT_CACHED;
+   491	}
+   492	
 
 -- 
-Vinicius
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
