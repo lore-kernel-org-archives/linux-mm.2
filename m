@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1597CCD193
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 17:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A677BCCD193
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 17:18:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13718E000B; Sat, 18 Oct 2025 13:18:06 -0400 (EDT)
+	id E3CAF8E000C; Sat, 18 Oct 2025 13:18:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9D8D8E0002; Sat, 18 Oct 2025 13:18:06 -0400 (EDT)
+	id D39E78E0002; Sat, 18 Oct 2025 13:18:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D228E000B; Sat, 18 Oct 2025 13:18:06 -0400 (EDT)
+	id C01C58E000C; Sat, 18 Oct 2025 13:18:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A74948E0002
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 13:18:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67AAA14038F
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:18:06 +0000 (UTC)
-X-FDA: 84011892972.14.724786E
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A0500140005
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:18:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CI2c9cfp;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFBD28E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 13:18:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62481119B73
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:18:07 +0000 (UTC)
+X-FDA: 84011893014.16.850845F
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8D3B714000C
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:18:05 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=K1rRTr6o;
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760807884;
+	s=arc-20220608; t=1760807885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e5WHxfW3SzIizo02A/UzhAYaawAGGPcI6431h04qDCk=;
-	b=XAzdorbHwq5CWH/7+ogELuOXRhaFnKD2mvmhnUp9wBMa8gOvxrGEumFHI4aLwMuGJJl5bo
-	IK10BGuz28z9z6rEOoTetrOZnHXN49lGq9bO/xtggaSvl1z0/QCA2kdoWR+yVrArodNeMi
-	Av6VeSe+bF9HBLoPxkctC88ZH2BQ2QQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CI2c9cfp;
-	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760807884; a=rsa-sha256;
+	bh=MeSkThIp0BgOUgzAnruASuFbTYnRMFC8HwaL1xWtkt0=;
+	b=iUqU9GY9ck1aKjepKK4ZSEMjCH/44skxCEBmuDbnJ2E7XFBt+SRbYhCM9FTNLkarv6J3S3
+	qvFomToezPH7kuvASVIqR5ppdXUAgR7qd8LSiTBdWOzMt7B4OE95b4jW6e/Hz0Pn40w9p6
+	MxDRUG27avqJ219CnKVVQoEvX1QyTdQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760807885; a=rsa-sha256;
 	cv=none;
-	b=5O0d+clDoxAyAnYGOt7SsDKZM48DnWnvI7AwYM8gszi/X1n9jJ7jHs8MDL/rZg8Vw1p9+p
-	lRn7alYTEeghjgONSkjURLurKY1czYiy32Jc0sMr+PfZCwjfTJRFogQD4PfQELmsO+RqdU
-	9BNGqQ3OFxCWYxUOTQJvR1EXLAJSG/o=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-87dcb1dd50cso14331486d6.3
-        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 10:18:04 -0700 (PDT)
+	b=SDLwO7JDtpzwnIlPO2GPBbthzIbpmx5jRQK0rjTKSWzll2i3le5Yu3fMe+zaLYqsnhVK4a
+	CRhRqp1GKVVcsEshFi5YBhzVWfHWd57kWrxvXDe9/gDt6LuNiKRME8YTMjVlMIVZl++p/E
+	FQ+JvQNtPIkQojvbLoObLuoINf5yGuw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=K1rRTr6o;
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-81efcad9c90so54406316d6.0
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 10:18:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1760807884; x=1761412684; darn=kvack.org;
+        d=soleen.com; s=google; t=1760807885; x=1761412685; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=e5WHxfW3SzIizo02A/UzhAYaawAGGPcI6431h04qDCk=;
-        b=CI2c9cfpVDH66DuIj0qAeY/7AKj+q+dQ93Kr0tu5AHxUJPIoMYncecF7r8KL7g6HDK
-         fdNHRJIxBKGMioHFbD0xRMU3IEyCUgmg0KgHWkS06vsk2f9KbMyDOQBezmatvkMtyyUn
-         VgKuWUHR6RIrxVtwA5nX5H9uFWaD1X0xETZMLmNNsapozibhb9xJCKt96f5wp63P2Qh4
-         kSlVlypSgKu7i9yhoEH3okfGTqyRoj0cSwEHQnH40jVKfcucMQoP/dqafiTHSO1lpaMC
-         NYx8OF68HXRdAq3slbvntjrC4tHKd9M+CTh36nwQlk4dla/jNjUgoO+zG3onfptKGmrw
-         0LBg==
+        bh=MeSkThIp0BgOUgzAnruASuFbTYnRMFC8HwaL1xWtkt0=;
+        b=K1rRTr6ofsmBrHTUmeIvUq2fjncQUPswprCzX73pFwaPuCS9kdPyUw5K7sEFW774l2
+         EhQ5Xhl9OZOFVodD4g4eCj6Kz16Uk+kytdX4qrVxgNMxNcPh+QfpLN3v/u4y+4UHvfDH
+         D38MUOKGPrn9l7TPYaK0XG0p/HOaGQjIZuI3GVHqL7xMK8lMYewXH3bfav5BUfMctcBF
+         ezij4hBIRXE5b74mktOh76F33CY3ksis10576fHxhNsncK0XpxkrZEMJWuWxRXlTDpLs
+         hUw4HiJ0enE8Z56kf8AXaJr5riUNWKv2DGArjlG4duaxftB1u156WNYEjEBzu4dAtH58
+         Uglw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760807884; x=1761412684;
+        d=1e100.net; s=20230601; t=1760807885; x=1761412685;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e5WHxfW3SzIizo02A/UzhAYaawAGGPcI6431h04qDCk=;
-        b=fR0ipSTO2yx8YXhYNKQ9TwVsuiaM/XFJBkVnIWqohEjg0YL2so1Rqugk3TVlruFuCa
-         G/zmq2NX3TidOz3MwOClrhYIxxPhpAn7SPKWS8obfDCTQs9U7z5gBve4H/VhdKbHG2gy
-         k+gWVTyCpsjm7YZOLGeU/bFjgvenpSfqfkE4riTPaIL23YA+nf7qF0r4srMYGcNrNOMV
-         vHRk4u+uQuxLQ6iduzo7IwClNDok5GC+AjCB0eUQRW+GPLWKDMpTpToGri7L6RnOzAog
-         cGw3QUWuISeBEtsWes7q+53+RJLXxWoumIcEx5iuDiJad/Zl3Ed2qdYGfCJ6yBo6qXJB
-         zzVw==
-X-Forwarded-Encrypted: i=1; AJvYcCXfmQGVYpBHfTnwZzQqfSLcjl+vMt+v6sMIZt8MEeWpUx3pgDlgIrY3c2nxF4E1ch3l/W0veH8QyA==@kvack.org
-X-Gm-Message-State: AOJu0YzAbY0JiBNcwwlPfBofBIRHuVWBrM3G8EZoBJshFEZsy4zw8vLF
-	1A6pc8I94qxJYI4tHsdrGxRJKODsaO8KZFKJpWzCrfq7WCT8mP1ziyhAZ7LVFiHqtis=
-X-Gm-Gg: ASbGncv20fU23pI55AXDz91+r3KSzl2F8+kD04VHejOP1Y2iKu924VEJz5yKTArA4OV
-	VGBtaWB05AMBk0La5PiCKXCSt1mPeeUO3vHPXE9lI7c3gk8TfgPqT2O3t+ErnzysCjDy39lS27c
-	js6JzHVXlwxiTVcKLNDQPizSJpPEcoExGeCkc1uMY3akT77TPnkMghikgwQ0uAtC2bE4L9sZuZ5
-	ytAeUpb+17/30lYI30WLKiw3p05P690Hu8SSwlQ4BhAGlDcsTyzwxShoaYrv0shAptTV1nxdJHB
-	E5bVop1rBJhq6tAqYpUQ5MjTr0ml1VQ6snlWCOGcYdUCJ5YnlzzZYeu9O0fxyxPxuIaPbd/uWzy
-	RKB4iIRwVkPLZlB2pqWWDkCRR6kazbol9wy9+WXUczuDZIfg5GC3C+CQa2Pyc4yyGpIj3kiRYff
-	XhPKMrGaRHM8UFBS8z451PUy7Z3ZO4IcMHy+CKbpGN2mzFWuXZhZSjhMw9bddRColV17TzOlu/m
-	cdyoh3y2L4wErYKSFv06w==
-X-Google-Smtp-Source: AGHT+IG0KpOyqwiHpmU8fcJJ9o2guHulcSg9jALnJeFdUCRHHRENhNr850M5g3dIeP0VTEoRasLhkQ==
-X-Received: by 2002:a05:6214:d04:b0:87d:cabd:d4a3 with SMTP id 6a1803df08f44-87dcabdd615mr25975966d6.49.1760807883659;
-        Sat, 18 Oct 2025 10:18:03 -0700 (PDT)
+        bh=MeSkThIp0BgOUgzAnruASuFbTYnRMFC8HwaL1xWtkt0=;
+        b=CJEUUt0d8o1f9pvL267A1EFcd/rN++w4UUP2vma+n+DKx8TMnlrqCuLTdZw3JAVujm
+         aIRAPvAR+yM+bRI/64YESywkq7QuVtsFLeYJFjgTy10LBtTaLDUTQZYGDwnQcyhjI5NO
+         cEdXr5jOIElVQYDVXLTKYwtqlJeJ3SHyc+LhDAwbiL6OCykkAH4TyEFOKhuSopl4cfyh
+         shDbgjsurGgiNlBFRspCdz56SkWQo207i+HngGKjHaMEQer8/lMp0Vt9wA+laCfoIRH8
+         5y6hQu8lJdys2D1Bb90FhfXWtslvLjGRhUAUSTn+VlOT/G42ACu6STJsAgCt/ulbSIAp
+         hSxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXMVKrRMlaFHWriN2eqxFsqAXv2zOZ15p/kNAv7vtKntK2W+5A/SEIneVxrcRU3MNX7XdQIn3KcvQ==@kvack.org
+X-Gm-Message-State: AOJu0YwZqAf+LmIDRV3c/5N7Lf0u7VY1wFpHI8zyq2+Bd/gUb/zJiGfJ
+	9c38hWhLeuaB1gPLQ3HeUpB4HZ6wgsv0nlL2fe/RfR8qRg3dK5USHKcFrdZg/PPBM4Q3ByKppJV
+	8Pc5l
+X-Gm-Gg: ASbGncuO14SLt8bWC3Xx2xJa1Wvzsjgrj50DUz4hqVxcnty6b8aq7KyF2DnsBClrILx
+	aEb3f2xMODIJXJOXYKlKG/lxixPXgNSSz9Aeo2AYS/KHGUadjNH9HIs4Y8umbZf8pmyxD8HmDhu
+	naa7r63A6/FlCg8pskguk/Zt45omqynaxAf2FYC3odLSvNtOHiMfpFlV+JbzR49Dw9D1WjeDu18
+	Tc5qjQSth34KRWn1u6qyi8Qg/SQzl8ytjnSaVO19kZW3tOoKLhaGYXW8yL17kN/Yrxu2X0mUOKR
+	gVchwkd/VTvgVoQLBLYt53GnwfpIpxvuyM22AxLyGgHALCQelqN02SSiI1MS3HxGSlPGxqf6f9Q
+	lVOLT/5eH/SkeGrJh63qSBAD3YnDBP7Pr4WsU0lzCKqwm498BUUzbgoYnKMU0ra4YhyQODhMk6G
+	9PbHWWWORZocyWfTRwCEK2XOeAqFwAr22adU8AJpjaXxcilHNogRg8YIHXOY186UUVZbxRP440R
+	UEGMvWpsjqzLE/fnSwIWg==
+X-Google-Smtp-Source: AGHT+IFdBNVKA7wbdhBQt+CIgKi8/22s9Ed+9OmPWE+pFu/N1e12A5/0MkyaV4HSpQyJ88+n0QIffQ==
+X-Received: by 2002:a05:6214:319a:b0:87c:20b5:6685 with SMTP id 6a1803df08f44-87c20b56795mr116436546d6.55.1760807884708;
+        Sat, 18 Oct 2025 10:18:04 -0700 (PDT)
 Received: from soleen.us-east4-b.c.cloudtop-prod-us-east.internal (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87d02d8e909sm18478116d6.62.2025.10.18.10.18.02
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87d02d8e909sm18478116d6.62.2025.10.18.10.18.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 10:18:03 -0700 (PDT)
+        Sat, 18 Oct 2025 10:18:04 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	brauner@kernel.org,
@@ -111,22 +112,22 @@ To: akpm@linux-foundation.org,
 	jasonmiu@google.com,
 	dmatlack@google.com,
 	skhawaja@google.com
-Subject: [PATCH v6 04/10] kho: add interfaces to unpreserve folios and page ranes
-Date: Sat, 18 Oct 2025 13:17:50 -0400
-Message-ID: <20251018171756.1724191-5-pasha.tatashin@soleen.com>
+Subject: [PATCH v6 05/10] kho: don't unpreserve memory during abort
+Date: Sat, 18 Oct 2025 13:17:51 -0400
+Message-ID: <20251018171756.1724191-6-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.0.915.g61a8936c21-goog
 In-Reply-To: <20251018171756.1724191-1-pasha.tatashin@soleen.com>
 References: <20251018171756.1724191-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8z1qakk9o6uwcgzzoc8a5c9iua7cgn3m
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ydmmchj7auwmzkfb788suph9wjbydcip
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A0500140005
-X-HE-Tag: 1760807884-239625
-X-HE-Meta: U2FsdGVkX1/vhYJgu+6MGCkdCRWvMTw07DgM/fpAdxXzRLYs4IT6dn/X9OyMitfJM1u6M6SE4gffxV75mGydd6loGWR/1gsamYXhak0GvpI79xNAEWUavhoouxpAWsBSvnw6U5DS/B+w9peQFw2uPao3BVPMs+fuYUjbNoXLpZu8RC5w5BdKLtzdfzWWo/oJ5u6ZYtLOAn46HQt5wA6uxrYz2TmYzfT+FYUzcWK3DUQK7wXXE2LygwAetyM+w1H66iN2QTDxB+BA+efb/5/kC5JCcjJ8U1Hwjumi6CE0Bezt3BddeStk0K3gLDupyrh0ZnNC4pqnZQ8wr23rZQUApouWKfWcD5ylTwTvoG7JuX9OLkI+Xqp4vYtRDmoNdRn6r+BkUDaFxk6qWSVbQYNstK7JtKdA/LPIsAQ+ShUouTBwJkcr9XgxiINGuFqb5yekpOaFqKUqdhWQbiby7MfKBDOKR+vmgNYAMkiMjACxLPO2MSJdXeqICKj7NGBJ3MW+i55GqA/10HeIsuaocvCygP9EI1OcEhOosEaaz4ZtQQK/efbN8EaO0z3WkudPUtXs7ElrwTDBc/frQTIlPyBI3dlabMpWptoxnS8hsMLoI2YnpyNPgeFMItzA0yZlTdwY/AH7rIDAxykoVBFHd7PRjObts6bkTjAGsF1LAR4cxFH+KqGW7m7i8GFhABdsUiOjl4gGVYFrtNqWV93zeRUIM/pduloDQuUQ+YA1o24uX9xs2hw86FImq9JGjCHq/gO4BC/Ud2nc1/KAT903NdK8cqz+T7xQPi8FgDavA3z6L0TW1dl0xPCxE67qblUa2n3hbz36o1MkiD1MdJXCc1aYcCiKvvw+sDfPpVttjytPSLsAZB0cUwGBD+AM1nGbxfQp8qNwldmffmP2/CW90tEPndWK6Cn95hllLxLCs3ZLzg1mbAYdaz/W9caBTCIKERS1t5rWoxsxjnbZI9GlnHH
- lSgLmqUk
- 0e0wz4GTnUVfLw8HLDLmUoBRJIQEDmOiSVzWq9mipH3MLcWZmomzUifyXGOqoJzEP8jKF5dr+FW9lPSgoEDUZbG7UaNbptZvlPP7EYR1AOjqwsy52gl7in+/Ei5RvAu/D4i2UHLyVIm7vqghtBlpk44RaJnh+kelt0r1YRorMaXnaOe7dScANGzt+nqS3Mm7C0pzpTE7JazBvoEanyy6nMnsL0HX5lvHAvcxkUqe+GaFqd8Q87pPlP6+4Dk0BtnM+e/okVAkPB7EHyv/AqyfD4bHWGCO1uoBomA34eNkLgpl9kqt8Vi8srqt79NCHvAcK+1i778EEz97PNXOhm1zCYgI4n/MRoGAlchmJ9i89OpCUWfM=
+X-Rspamd-Queue-Id: 8D3B714000C
+X-HE-Tag: 1760807885-360494
+X-HE-Meta: U2FsdGVkX1/bjDyH2FoLi4EeIvdHfpE/AYVBqxgCkX/Su5Inm/817tFD1MsPm8suBmvKE93YDW6aYTQbq+DEkFZPy8OfjHuK6tBoe2YAF9o2U1+YzQMhWXcvKyRwaGJfMzQdbmYytMcO3M9tMYLmgF5LD49tIBCKn7ULC9AaW5iNerQhrLTLT/A/hhtxDfRqBgx2tWqIqqFx7OeFsUlint6BOzYqkyLBhV3hUQeTMSs9wyOCLarn+L8WfUOg6jcMCoQAjjkveCTWSZ8+xSg/W1J6Miz9f2vg883Io7mlLZm7lkJlIAsyEdliJyIcZer+CLFO+NgpBdm1tj8/VvSGGVcLdAldyF4TiLheD6AxhjU1Bwv+KXDcsD/N0Zs7lPlXdml8NNPAvwgRVzIp8/nLV0+GtZ8KbErVBt3l4wGh6ZRFHJuMENdcE4zTM4dLbEOcjTNSljVgC6Pq9rLYdSI0ieATBvB67DDt+q1JM5uBipmV/qqgR0QklMlj8zoMVQF9wMausjuRs7aG5TI7DYxH5yYKs1EuAHl6C8pLEGyJP3vwbC0Zz27yyOsizQHKdSzmPDpXQbpWSJskcAVNTntoNaddbDLhroNTam9ceAF6wERG25IBAIBBfFgHfrgP7fXH36kPLWr6pWvcDylL9lzF7dwA/Cgs7advMC8evSwF0MAmEBRSzKDOf2UkvqlPL8GKUda4JCp2HJd0MJjkv0kwRwG+TI9CO0/xmL+6dMOldZ8d9kWKJlD8gJHG8bsT4/9PRPImn+UaBOsG7g6TVLi3ygnhtiAf4dPpVX5y8/V6S/B1tvFuS+N4GxtGizy+EPsP9fMpj1wGl18SUMxCcXlC4xmrU4SyGAfJqJVxTyjosZCZdaO/4QervllWS0Y3u4DCuE13AraNd0gMoIizsJk59t3VlCvY9tCUdbw9rMweXwai1l3D4SAcm8DNffsM+ThSciQTxmTLQKDSd1XrUDN
+ FaS3z3Fg
+ Uq0+jSXohlSRJEwvn1LtZm1ncl3Iz+otGN3OwkSld7FYHOWkr1IpcUV2McO0a0kKwwg6i714j4aOmfUV+790LlDApTTZIxi2HKGqqcUxSwXTPTnm65+4mMCd8phqjenQGrastIEWOE7dBiJZLDGrvghvhNr7IM1Co0YiNZ34rrUbNWRvT0XmlsPVRDWPLUqOLqihPTM2D+P1yGMAsfjvJaxi+KgPEr4++MqgftCzWhxG5rsruAS+asALECtlnejl4NGxy1qo/sdgPajtQk7LIqH9IS1X0wpWzp3OM1h4wBw3zgUa3yyPNBEsskSDpVX3l7Ln/ysr3WOVw2ZU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,168 +136,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allow users of KHO to cancel the previous preservation by adding the
-necessary interfaces to unpreserve folio and pages.
+KHO allows clients to preserve memory regions at any point before the
+KHO state is finalized. The finalization process itself involves KHO
+performing its own actions, such as serializing the overall
+preserved memory map.
+
+If this finalization process is aborted, the current implementation
+destroys KHO's internal memory tracking structures
+(`kho_out.ser.track.orders`). This behavior effectively unpreserves
+all memory from KHO's perspective, regardless of whether those
+preservations were made by clients before the finalization attempt
+or by KHO itself during finalization.
+
+This premature unpreservation is incorrect. An abort of the
+finalization process should only undo actions taken by KHO as part of
+that specific finalization attempt. Individual memory regions
+preserved by clients prior to finalization should remain preserved,
+as their lifecycle is managed by the clients themselves. These
+clients might still need to call kho_unpreserve_folio() or
+kho_unpreserve_phys() based on their own logic, even after a KHO
+finalization attempt is aborted.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/kexec_handover.h | 12 +++++
- kernel/kexec_handover.c        | 85 ++++++++++++++++++++++++++++------
- 2 files changed, 84 insertions(+), 13 deletions(-)
+ kernel/kexec_handover.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 2faf290803ce..4ba145713838 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -43,7 +43,9 @@ bool kho_is_enabled(void);
- bool is_kho_boot(void);
- 
- int kho_preserve_folio(struct folio *folio);
-+int kho_unpreserve_folio(struct folio *folio);
- int kho_preserve_pages(struct page *page, unsigned int nr_pages);
-+int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
- int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
- struct folio *kho_restore_folio(phys_addr_t phys);
- struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
-@@ -76,11 +78,21 @@ static inline int kho_preserve_folio(struct folio *folio)
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int kho_unpreserve_folio(struct folio *folio)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
- {
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static inline int kho_preserve_vmalloc(void *ptr,
- 				       struct kho_vmalloc *preservation)
- {
 diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index e6890fe6a171..78acaa218c12 100644
+index 78acaa218c12..89a8f839346b 100644
 --- a/kernel/kexec_handover.c
 +++ b/kernel/kexec_handover.c
-@@ -153,26 +153,33 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, size_t sz)
- 	return elm;
- }
+@@ -1083,31 +1083,12 @@ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
  
--static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
--			     unsigned long end_pfn)
-+static void __kho_unpreserve_order(struct kho_mem_track *track, unsigned long pfn,
-+				   unsigned int order)
+ static int __kho_abort(void)
  {
- 	struct kho_mem_phys_bits *bits;
- 	struct kho_mem_phys *physxa;
-+	const unsigned long pfn_high = pfn >> order;
- 
--	while (pfn < end_pfn) {
--		const unsigned int order =
--			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
--		const unsigned long pfn_high = pfn >> order;
-+	physxa = xa_load(&track->orders, order);
-+	if (!physxa)
-+		return;
-+
-+	bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
-+	if (!bits)
-+		return;
- 
--		physxa = xa_load(&track->orders, order);
--		if (!physxa)
--			continue;
-+	clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
-+}
-+
-+static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
-+			     unsigned long end_pfn)
-+{
-+	unsigned int order;
- 
--		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
--		if (!bits)
--			continue;
-+	while (pfn < end_pfn) {
-+		order = min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
- 
--		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
-+		__kho_unpreserve_order(track, pfn, order);
- 
- 		pfn += 1 << order;
+-	int err = 0;
+-	unsigned long order;
+-	struct kho_mem_phys *physxa;
+-
+-	xa_for_each(&kho_out.track.orders, order, physxa) {
+-		struct kho_mem_phys_bits *bits;
+-		unsigned long phys;
+-
+-		xa_for_each(&physxa->phys_bits, phys, bits)
+-			kfree(bits);
+-
+-		xa_destroy(&physxa->phys_bits);
+-		kfree(physxa);
+-	}
+-	xa_destroy(&kho_out.track.orders);
+-
+ 	if (kho_out.preserved_mem_map) {
+ 		kho_mem_ser_free(kho_out.preserved_mem_map);
+ 		kho_out.preserved_mem_map = NULL;
  	}
-@@ -734,6 +741,30 @@ int kho_preserve_folio(struct folio *folio)
- }
- EXPORT_SYMBOL_GPL(kho_preserve_folio);
  
-+/**
-+ * kho_unpreserve_folio - unpreserve a folio.
-+ * @folio: folio to unpreserve.
-+ *
-+ * Instructs KHO to unpreserve a folio that was preserved by
-+ * kho_preserve_folio() before. The provided @folio (pfn and order)
-+ * must exactly match a previously preserved folio.
-+ *
-+ * Return: 0 on success, error code on failure
-+ */
-+int kho_unpreserve_folio(struct folio *folio)
-+{
-+	const unsigned long pfn = folio_pfn(folio);
-+	const unsigned int order = folio_order(folio);
-+	struct kho_mem_track *track = &kho_out.track;
-+
-+	if (kho_out.finalized)
-+		return -EBUSY;
-+
-+	__kho_unpreserve_order(track, pfn, order);
+-	if (err)
+-		pr_err("Failed to abort KHO finalization: %d\n", err);
+-
+-	return err;
 +	return 0;
-+}
-+EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
-+
- /**
-  * kho_preserve_pages - preserve contiguous pages across kexec
-  * @page: first page in the list.
-@@ -773,6 +804,34 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
  }
- EXPORT_SYMBOL_GPL(kho_preserve_pages);
  
-+/**
-+ * kho_unpreserve_pages - unpreserve contiguous pages.
-+ * @page: first page in the list.
-+ * @nr_pages: number of pages.
-+ *
-+ * Instructs KHO to unpreserve @nr_pages contigious  pages starting from @page.
-+ * This call must exactly match a granularity at which memory was originally
-+ * preserved by kho_preserve_pages, call with the same @page and
-+ * @nr_pages). Unpreserving arbitrary sub-ranges of larger preserved blocks is
-+ * not supported.
-+ *
-+ * Return: 0 on success, error code on failure
-+ */
-+int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-+{
-+	struct kho_mem_track *track = &kho_out.track;
-+	const unsigned long start_pfn = page_to_pfn(page);
-+	const unsigned long end_pfn = start_pfn + nr_pages;
-+
-+	if (kho_out.finalized)
-+		return -EBUSY;
-+
-+	__kho_unpreserve(track, start_pfn, end_pfn);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
-+
- struct kho_vmalloc_hdr {
- 	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
- };
+ int kho_abort(void)
 -- 
 2.51.0.915.g61a8936c21-goog
 
