@@ -4,168 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 085D0CCD195
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 16:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 302FACCD193
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Oct 2025 17:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C90D88E0003; Sat, 18 Oct 2025 12:38:27 -0400 (EDT)
+	id 43AF88E0007; Sat, 18 Oct 2025 13:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C68038E0002; Sat, 18 Oct 2025 12:38:27 -0400 (EDT)
+	id 3EB238E0002; Sat, 18 Oct 2025 13:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7DC88E0003; Sat, 18 Oct 2025 12:38:27 -0400 (EDT)
+	id 2D93A8E0007; Sat, 18 Oct 2025 13:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5A168E0002
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 12:38:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C2AF1602A1
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 16:38:27 +0000 (UTC)
-X-FDA: 84011793054.22.C1CE997
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DEBC5C0010
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 16:38:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b=vgdy5QvA;
-	spf=pass (imf22.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.14 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
-	dmarc=pass (policy=quarantine) header.from=web.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760805505;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AuQWRY1xfxI05PYvn0L7vQqnU62iWJjchUF8NFBttXQ=;
-	b=yWv9vOXOq3HgQDunesBykMJ0+UhgcDsmVGHUVINg5P+tbz2o5NmyP3aTRULoEiUZHRfl/D
-	rmp3pQObO5s7am4kgB3m9wWixedfq83OhobXwPvFiLEgwl1Wyo8p2QNx/3KVQ3c2VpMQJ6
-	ogaK3QHWUzA/BH+fhzJJ6fKY0sIZnQI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760805505; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 15CA78E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 13:18:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97E43591DB
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:18:00 +0000 (UTC)
+X-FDA: 84011892720.14.E64B2C5
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D000212000C
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 17:17:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="TRFA8K/g";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760807878; a=rsa-sha256;
 	cv=none;
-	b=HIhvLqrM/jWJolz3WAlF6UgfU6lJxylV7Y+N6pyMX1GfFfqviV+1LAzMg8Ovu6j2fipY5d
-	NklpY/tYJdT3joFlBpeeBNkVCPTohHCIpMcVVkbU7cSlONNmr/eth8JeENci3MWt8qSbTd
-	ts8jEmUte0JNjGNeRghWwKdl1LR6hgs=
+	b=D7m5UVGOpzz1fv0ZicvBuAst6CCPl7Vvv/FUJWNDUxSn9kIeXmiqi9qRMsorzQFDmSddse
+	vibPS2jvA9eU1EFS6KIRp1fQAamckeKgnW8eOtGbhKbKDzee+j/pJhWbntmg5Ma/lW6N49
+	7p756XnUW5zK2LviZ/HqZAfwoXQa9Ng=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=web.de header.s=s29768273 header.b=vgdy5QvA;
-	spf=pass (imf22.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.14 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
-	dmarc=pass (policy=quarantine) header.from=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1760805494; x=1761410294; i=markus.elfring@web.de;
-	bh=AuQWRY1xfxI05PYvn0L7vQqnU62iWJjchUF8NFBttXQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=vgdy5QvAKDJd/Hpp+4k7MfK1JGqyOGQHTB5fJQDBqhYQQQh1qFXKW/bPT04rgp/w
-	 wn3idFB+X3xlH1weoiDSrHOMu/p+plOD+fwTPARnXOKo7S0rbKbNRczC4vW5xs49J
-	 txptKczS3JxFBYRTKMMkoUReqA8zsUVnUjTEcS4LAGhrU0dHcvaZ8ouxvf9IPigQS
-	 XIFTzGuAB8jpApDaEmdJqTuqmlJF/lNB8R0PELAHiUS0nNHJE7tQFAZcI2cKAyZNY
-	 2nojReJzHvzMy7PsePpIOBoEAstcc/bE2w0sq2pYQMi9h2z+MuS13MX/QWECEhD9U
-	 NXMKSBHV94vUmCHc1w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.233]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MjgXH-1uTRSn0T0t-00l0xI; Sat, 18
- Oct 2025 18:38:14 +0200
-Message-ID: <9092f8af-72d9-472e-8d5c-f950c8ce782d@web.de>
-Date: Sat, 18 Oct 2025 18:38:11 +0200
+	imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="TRFA8K/g";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760807878;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GZzPoVlS/aHxqNI+MR86s/hCO0+6teAIiedG4wDBRPs=;
+	b=5k+b7+ZQQCQ5Ox5QxhBmdVvtwslcmY391iWwX6rBmsa9/IWrfDHKGfxUKyPQsBsDIvGrv2
+	GGYPcW81p4arp1B1KLQOnHk7Ma1ypOhdAhbir+YAAbVdjoffz28JBV0WDIGUznKQyZy93q
+	+oM1WQzEk7cs5EFm4lu2oHfL98E1DnQ=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-87d8fa51993so13139806d6.1
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 10:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1760807878; x=1761412678; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GZzPoVlS/aHxqNI+MR86s/hCO0+6teAIiedG4wDBRPs=;
+        b=TRFA8K/gyiP8TqPYlhw1jIcL04rAVaRZLt118ljBwQP1JGiytfEUrWC4a+3WAUKodi
+         7BrLxLI5jD3/tni/YeFUdafvY8MYL3MuhC6wud+c47FCVQ4cqjvXAF9Q8kegcOyEpePy
+         +guvEx5aE7Tw0JfiKghkaZ0yu0R5V7Wvk6YnZGKwOSGMjX5nG7eHVY2oEjxabVWQkx1J
+         /1dv8ayAulQykERtX1zWz1u+9mFc/H8O427LcsW9XxSis02GbN+ROXYudInQJOpLvzi5
+         VVmP5ZudSw+rcYdl2EgGQdxKqdJwuUkm8FKWBrwK1/bYVhkzQ5t6rmGrNncbFFdxul9f
+         lo7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760807878; x=1761412678;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GZzPoVlS/aHxqNI+MR86s/hCO0+6teAIiedG4wDBRPs=;
+        b=NqERd9HnZuDtVTO1MVE6mcgqd/J5MypEjn7krYAH3Nuk21E21GWbQK4+Mm3UFQD4mh
+         7K9NHqwC/Ibw0GY7cHaXK2OC1BwMYwuxdFaMkcx4abcbTq86jQTzwtsVGu+iJqPsT8jT
+         uHn88WvEobk7QzRQFLsvet2fx+kfgX418QGFFKXU2rtojHX413X3DIBmjc+Z3W8IMJhP
+         Kao8zqdujrlriLzwM2BjXMG9RGw2KPzvBxf+xKAWBfSE7eIqzrlbrWYiScy1OB/wRkc5
+         BaTkEPI+WcsC52bNk7xDdnvxWaLqJR9tfugJlnyS/g+J7sjcNPZFo7SVQH3j7a7A6VNO
+         14Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPiCozCxC1cF8hHhZ5MgeuSEXKKhxNDTIYZ5iCwUHT9D/uyjsbP0DpZ8o/xvck/XKRRKkfWafLoQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx/Qs2hOgRHnONydO6DTmfqldGLJNhGrAo09DcdKZKV+La8vLjV
+	zmjDqc5SJaqKxmEsMiKEpfTo/HjzqWVP+KDANSrXwlw2v7aiZXAOILjRk9lkWoYfY7Y=
+X-Gm-Gg: ASbGncs8lrmWwD4wH9jfeovezaljKedf5IQH3bBQJzgU3IsS3wZQZB7H/9DpkOzUuar
+	qo9r4Y+Hc23hfX4aBm8ClXPpoOzlsZvbFLz6mIRBrrwAmajyFf/N/41q0zjHM6zKPvfKFCr5qdj
+	g6iwvdGcgHp2VnUi6kBY6LcRdty60jfA3k3xP65T+b0HkdzxbysKP/HK4AsMn7SYAdaOgpuCX4K
+	4TbcyfXC63euz9K3TCSiyLSEt7qOuOE04+iNpHoIqvFuHxDzTY0x2vJVHnsr+yRjixWHJFMUWsi
+	qHfNhS/L0Z+FMGCUhD3TDACbyyDOmq5XVcgerdd6ryW67YSJ0K/jzcqm6HEopub4GRTCXPD+YxQ
+	ROtCrSte/R0kzHGz6iTs7HVqmxPmLMcJddJTDaWO1Re9UznxwWVSqCzw+WVKkSpSh+GaLfUvuE2
+	cl9YVyef/QmnWhPPo2Iv4zUEoNWKslyB2axn2TfMH61RhGTXL5HeEJvn3WbjeU2nwpKip730fxf
+	rG1EXQptiWreuXmeUOOPw==
+X-Google-Smtp-Source: AGHT+IGv1aqeoBs230VoYjhUaedrhhH0BEcn6yibSCLCY4GSXU2MuZWJpHXeteVR05/zPVhCmOmGhw==
+X-Received: by 2002:ac8:57c5:0:b0:4e8:a4de:4703 with SMTP id d75a77b69052e-4e8a4de4883mr75059621cf.57.1760807877849;
+        Sat, 18 Oct 2025 10:17:57 -0700 (PDT)
+Received: from soleen.us-east4-b.c.cloudtop-prod-us-east.internal (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87d02d8e909sm18478116d6.62.2025.10.18.10.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Oct 2025 10:17:57 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	brauner@kernel.org,
+	corbet@lwn.net,
+	graf@amazon.com,
+	jgg@ziepe.ca,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	masahiroy@kernel.org,
+	ojeda@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	rdunlap@infradead.org,
+	rppt@kernel.org,
+	tj@kernel.org,
+	jasonmiu@google.com,
+	dmatlack@google.com,
+	skhawaja@google.com
+Subject: [PATCH v6 00/10] liveupdate: Rework KHO for in-kernel users & Fix memory corruption
+Date: Sat, 18 Oct 2025 13:17:46 -0400
+Message-ID: <20251018171756.1724191-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.51.0.915.g61a8936c21-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Huiwen He <hehuiwen@kylinos.cn>, maple-tree@lists.infradead.org,
- linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Andrew Ballance <andrewjballance@gmail.com>
-References: <20251018152305.1612722-1-hehuiwen@kylinos.cn>
-Subject: Re: [PATCH] maple_tree: Fix potential NULL pointer dereference if
- mas_pop_node() fails
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20251018152305.1612722-1-hehuiwen@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:tWq7IF+SHdHvK+h0mg0qdgE+1P+T1R4XpwQEm1ez0oPyPu+yHce
- 6h7C9PcnvEHIOlg/gY3KSmLpc+8ErrsFkyK3KbrotLwWYw5ihO5qgK2T63NgodCyui1miKL
- y6HNMbYZapukAMh+7/+Vj2a6GAgi8Kt0D0kHiuYIzTAd9/WTDtYj5pjnKhIdRgEj24/2Tnr
- Gr1JXbu59BZA/MaLxJ9OA==
-UI-OutboundReport: notjunk:1;M01:P0:JQQ5sRdm0qk=;xmbFgh8X4pPZlEzDCi0LhDyzskD
- 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
- K1TpA==
-X-Rspamd-Server: rspam05
-X-Stat-Signature: a1eooeougkzobmqxa5hgor5jn3eekjmr
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DEBC5C0010
-X-HE-Tag: 1760805504-795292
-X-HE-Meta: U2FsdGVkX19DkWf40V8GlvnflsijzJJc24ry+1miwNGIuVZRLWDPDEEsey79FgDE7mMYOpMu6hcYz50/YKdxUhqB+VWOjcE8wkZbr7K52MXyULQAxsALdq/LL5mVKf9apViIesrFziDrRBKFNqVjAgIfQACNShQrrGwH5Ef5foUOk9+SYeyT+f2Fbq0XWpmQDWKAF0DjoTZDMKzLBvt3yRX9uf4akpA2XxR/UpmTClZBaT7PqhmKs3UT0Xy+luS7TzI7PT5G6X47ZG34BXzzYDTC0ddPCa/sEHf/6oxrKD4yJFynmwH/+v247FU/lTIozMXT1GbzDyGmAgnnkgvORp0r9aY4uSMfA5cNjLE6TmDB+zWOHH16frbKbUPTW937LNX0zEMZk7kDIjIFueP7D/eMeiBVny6Wslq8rhdlvMgLFxEN/0y6b2N1hRVeNY91ImXeL6vZBbzDhXaee7Erl1MoLbnNsUurWHDLnzWjB9Jwnnp3JVWhQbEwe3ziDdFVzAK+iD7pfD1c0SbSwQjSFk01roK85iqe/U+oSBf+kXJZ7RIzpF6CuWzihFj2b6f7Hy0by1XTus6zznMuw76+WSwyZPYuCdPth0gjZP11rQSNRlRQOHSo0QdvYXbGs9urYpx9Gw/Muy94wpwLuI+w6VRNwyIrB5GqjGFCUxNLaLv0D/BQGg7yOD/yMZRSqL0U6PwLsosA753+Rlg7JswQC0XOKtUZlH00wY9CUYpBSLAOO2hX9kAhy0LS7dSpqJC4oi5ftwAKQKOZDiGX4htF80qANnbZqtviq3D3t3s4xaTqXy1tND256QSU7Hmuw8/0VXdmCWruJZkSZTObAAnvW3sqcrZzhKtFmig4zQybB7xLJQgY8/mEgCaRzG6USWxi4fujgdj4NomHd+aki1rll43hQ6VMZBisroGn5MtWacSaD2eRoiKlDlQb4SORzQlZ6RDyURpdaGw4P1fucIL
- /jd/hjBW
- 7fI3iQEJuzG+XkfPxFQHbmkvbrF4lAinCwLWCVhJ49c9XVrRrmgY3S/NXzv8R72HnD6sJcGrczDKVGnKggzWi5yznwKu/qRVWLyi89th7zkA7GJaqSn8KdCKTZNhNoleJd7G54A4+msihLCzshqmPdN7TiXN2hlGoarqjgYfFBc4pIFzgANQ10ILhnBwI/zbbGsCYi6cRca/qGYLwzvUwaD9uD0qxYbZAswxJaEL1gpcGvEublng5P0R94QcJLifPmj7Qppw1Z1aAtAnMR0jgGi+tzqCMARsZKObquz0sybZFJ+gHJ/M8cqAn5J6V7Q6hrFT/M/kSzWWVEjoR97yzSnvWQ8iQBxC+6SXxG17/uVYK73EzQX6LzEy3M7REAwENMm52g9xF0oGXnVsvsV3S2F4qbSZxkJhzEcl8OpzviGBhIyM=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D000212000C
+X-Stat-Signature: z8npuq15ujwezytg5ppqe5fydutnpajy
+X-HE-Tag: 1760807878-369516
+X-HE-Meta: U2FsdGVkX18ytjQFrTj5v93x3lPwJ4/1wvLSYdXK6ABgYKaDE/QXa6Dw1HB5iI7iNiEs64GNUWoORCI8OFKAs/BUB5FfhxAvnVxv/ixD7VLyrzzSHrDtRP9ylqiIO/CrPnsDhMAQb2GWJvn6hz85tlgpSZWneKZXlRDyG77kzhnidJU2acDm4nGFVu7JG1dXpewqVyPUAPtn+Q3qQ0VssC8/dQV5ehqGmFLbgSYrG+vulNLN8K+60IFdTGrnuVqOkXa92oSRGOcnFKVE4RL/d8L1wb2glreQbP8JLfgPU/l/fyEHtfxZ3h0iMppEiv61UrWDVSMTw0JkHvKePVfVjDZVDjBoRR/tUyspHHaEIpM2fHTPZ9kiW0w31CzD8eVmqejY+Ut1jxaUceIuAS8KefhxmOR3lIcbbwcJDKtHLDzzkUAO6vpX4zI7xUs9+fPR11+6aQqQl0LytMoejOE23ncLMMrXagyivBtRak2ylOW6NgmjgypoAkXcM8J1o1wdQW4CaCDqzgzv+qMLh8UYFcIZchkcdAqyfkZmtSJbCmWiLtmEVO5G50Wg2XndEHwM3b0XJFxeKyylsX5/ElVcOBaW4ZnUxzmZFy/gKp5fB+lMI9LaDxIrrLHPoI5n/NIOVNK1lXGFcUPvWJtQRcJiULxaVY5J9leuadK8DgFfk2mzgPnQnvb64BmILN5+bWe2unYVuPQhxM8JsCxwSzcb5Bek6/dEisK1+QX5N/H0cHNFmk0cGYR+KGV2E4AKP6KcBVfKY2ye0YHb7bfyPHG/hr3kvuFIONECZwIvZQy7JowQyfvpDu4qCaWrP1MAO7UmlUrZKk3yWX4NFdAF70NJkFSZXUjiSU60pzdmxRVZroz8A8fsrzfoXYiILPsBRt0j3Mh9DEVCy1KXcUU903aI7TK1PbjJ3Ykmr+47imJckfPTEYDjPTmOQ3k62m4V0jStSqbT+llfVHALr45oAt9
+ JOuMH60E
+ FKeHl9oOmJee0b/6V5cveAxqVLMKjpdesqJIdtW3recda0i9YePfHBao2/oC0UoUS6l2lMjEMTUB18J+K627+0kTttH7hqWVuOvBUlt9nK4ZE4wKI+3ZL6nhv+58cPIzLs1GtmYb0xzJF/0CpVoD7MSWZgzlocRj81zz08mi7VW/9Ti4xVxiZQojeJKYpASFTzb2nS8SOwPwlMNidMusPe34R1JxJQB47MboaBLm89Eb81I3fKkDmzOFg1e0phjLrL7/uiQlhWbPItwkeS5YBIm5SBxe7OFyMT5Al4139aFX0zpfy+oJx/T27kn7VX2S/inAE+pHvOt3YXEXoWpPeJXGXYdlUVYqtiZpm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,15 +130,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> mas_pop_node() may return NULL when memory allocation fails or when
-> mas->sheaf is invalid. Several callers of mas_pop_node() did not check
-> the return value and directly dereferenced the pointer, which could
-> lead to a NULL pointer dereference and kernel crash.
+This series addresses comments and combines into one the two
+series [1] and [2], and adds review-bys.
 
-Will another imperative wording approach become more helpful for an improved
-change description?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.18-rc1#n94
+This series refactors the KHO framework to better support in-kernel
+users like the upcoming LUO. The current design, which relies on a
+notifier chain and debugfs for control, is too restrictive for direct
+programmatic use.
 
-Regards,
-Markus
+The core of this rework is the removal of the notifier chain in favor of
+a direct registration API. This decouples clients from the shutdown-time
+finalization sequence, allowing them to manage their preserved state
+more flexibly and at any time.
+
+Also, this series fixes a memory corruption bug in KHO that occurs when
+KFENCE is enabled.
+
+The root cause is that KHO metadata, allocated via kzalloc(), can be
+randomly serviced by kfence_alloc(). When a kernel boots via KHO, the
+early memblock allocator is restricted to a "scratch area". This forces
+the KFENCE pool to be allocated within this scratch area, creating a
+conflict. If KHO metadata is subsequently placed in this pool, it gets
+corrupted during the next kexec operation.
+
+[1] https://lore.kernel.org/all/20251007033100.836886-1-pasha.tatashin@soleen.com
+[2] https://lore.kernel.org/all/20251015053121.3978358-1-pasha.tatashin@soleen.com
+
+Mike Rapoport (Microsoft) (1):
+  kho: drop notifiers
+
+Pasha Tatashin (9):
+  kho: allow to drive kho from within kernel
+  kho: make debugfs interface optional
+  kho: add interfaces to unpreserve folios and page ranes
+  kho: don't unpreserve memory during abort
+  liveupdate: kho: move to kernel/liveupdate
+  kho: move kho debugfs directory to liveupdate
+  liveupdate: kho: warn and fail on metadata or preserved memory in
+    scratch area
+  liveupdate: kho: Increase metadata bitmap size to PAGE_SIZE
+  liveupdate: kho: allocate metadata directly from the buddy allocator
+
+ Documentation/core-api/kho/concepts.rst     |   2 +-
+ MAINTAINERS                                 |   3 +-
+ include/linux/kexec_handover.h              |  53 +-
+ init/Kconfig                                |   2 +
+ kernel/Kconfig.kexec                        |  15 -
+ kernel/Makefile                             |   2 +-
+ kernel/liveupdate/Kconfig                   |  38 ++
+ kernel/liveupdate/Makefile                  |   5 +
+ kernel/{ => liveupdate}/kexec_handover.c    | 588 +++++++++-----------
+ kernel/liveupdate/kexec_handover_debug.c    |  25 +
+ kernel/liveupdate/kexec_handover_debugfs.c  | 216 +++++++
+ kernel/liveupdate/kexec_handover_internal.h |  56 ++
+ lib/test_kho.c                              |  30 +-
+ mm/memblock.c                               |  62 +--
+ tools/testing/selftests/kho/init.c          |   2 +-
+ tools/testing/selftests/kho/vmtest.sh       |   1 +
+ 16 files changed, 645 insertions(+), 455 deletions(-)
+ create mode 100644 kernel/liveupdate/Kconfig
+ create mode 100644 kernel/liveupdate/Makefile
+ rename kernel/{ => liveupdate}/kexec_handover.c (78%)
+ create mode 100644 kernel/liveupdate/kexec_handover_debug.c
+ create mode 100644 kernel/liveupdate/kexec_handover_debugfs.c
+ create mode 100644 kernel/liveupdate/kexec_handover_internal.h
+
+
+base-commit: f406055cb18c6e299c4a783fc1effeb16be41803
+-- 
+2.51.0.915.g61a8936c21-goog
+
 
