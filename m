@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F452CCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 00:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01DEDCCD193
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 00:32:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CCC28E0003; Sat, 18 Oct 2025 20:31:12 -0400 (EDT)
+	id 5E4ED8E0005; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67DF98E0002; Sat, 18 Oct 2025 20:31:12 -0400 (EDT)
+	id 5BC178E0002; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5938E8E0003; Sat, 18 Oct 2025 20:31:12 -0400 (EDT)
+	id 4F9318E0005; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 480608E0002
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 20:31:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E52241604C5
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:31:11 +0000 (UTC)
-X-FDA: 84012984342.17.B642CBE
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F00A8E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D047C59609
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:32:08 +0000 (UTC)
+X-FDA: 84012986736.19.45E55B0
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 00B68C0006
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:31:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YxoWqhT3
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6CD3C140008
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:32:07 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZmqW0tBY
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760833869;
+	s=arc-20220608; t=1760833927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=obiIiWXrbpLkc3mvTBdVrdtNhB5OOJsd4njuEApkCqg=;
-	b=xzCFM4IEByUvxluFTYRRXddeXmJ2hVUU0X9zNrPEgwCX2SnCFmV+iZ4aivhcsRawdlK5Ww
-	ZOcyYt2lwYtJn8k1lVKGgg+ZKpyqMaeAihbvgtLDO24YJ6Zw5rZyRVpgF74pZQNyNJag3+
-	K4KtJJJCxdgA5BLOXDhgEld36zYJ1NU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760833869; a=rsa-sha256;
-	cv=none;
-	b=HZkluO1gDhe8P03d2mNkLS8NFJjmWOwxm43cwe5qyYAbgy4Je1kcedSnLuJbBVGnDkWH4e
-	eBHyFrwOWMVKfTvj16xICj1U4hVSHuw890CbMQugeTgCLnNAZMDFhJHLqAb1uZR+2z1u28
-	Nz/MKN+8Nv3F58L0TpQq8LlTPIU9Sas=
+	bh=bDwpCJk3xs4cweUC7JTSnq7g+gl/B04N8QtBpC33QWU=;
+	b=JAFR0ykoYLhipRhIr7Gz/WXfC8K/HtGWIFzjTsV3C0xvvOI4FGR2NsOaJvn4Mpi+2EnXtc
+	thnU0QY2mNFn5u9GiyQbQPTurznYMEMclK7Fh8TH3KEqsW/4NtSxuf0vA3nJ/m92RhW18v
+	y7Zp9s5RV6V2UX3/mNhKQQDK3zyZpwo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YxoWqhT3;
-	dmarc=none;
-	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZmqW0tBY;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760833927; a=rsa-sha256;
+	cv=none;
+	b=p5aKhfoRN8b4BsZkMGIbyszPc7E5iGPZaatXtqBIQTNXGCesK8vyw0A2gzlkiswaHup6dv
+	XbOPKLafkQURNdg7PPySNmzCDkG0IDfMFn1jKdCdIgRxDz0WAfQLKgPZKQphONEUZ+QXde
+	co/0i+Qe/x+l0U4rZauu+Je4ZmQs7dA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=obiIiWXrbpLkc3mvTBdVrdtNhB5OOJsd4njuEApkCqg=; b=YxoWqhT3EO3YgwuL82eCnE6ZM6
-	cmRuUXUabSlX5GEZ6Ul79GcjPqjua02/dLakywJXS2RPOzu+usjGcDAwngL2UUanrCou1X3wlNzWJ
-	9A0UDIvNQU7LtoFNtOg9b1cqw7OUOGGmQSdgNxRtip/BaJifbpHtWaivgxPsGgxeCVDxIWKoV3mws
-	e3xh7T7BoX1lQPGuYACttufPUjtUM9om7ExPkJp/9LHH3oTzJFpjWEYy8zxiG41YMO9QTiV0iXwVX
-	CVdz31ZHOqAdmsD4elReFtav5/3a13M12aISa3WSpm/hgffczsMBPdvBxAkiLWrG2lyKQ4DksNWct
-	fmN+Rzaw==;
+	bh=bDwpCJk3xs4cweUC7JTSnq7g+gl/B04N8QtBpC33QWU=; b=ZmqW0tBYLxzSCCUm7Qcs3VwJwB
+	aXLfR1zJzPtROayNES+PAMWAiz5Ee8NvuDzRYfAPoP9Hi7WKSeCM+CQGOdZ6Omwr3roXI/Gted7nM
+	j2e4xm9k8uqo6eDwelETHOX50BLZRWD+0bKcJf1T4ydiNp+yZS01iKqa3h2c73cbT4k9FjFEv5La1
+	euGydgCCSzfRZpe1TX2LQZLhJUg7qnHDxCAC2tPSQdaqo5/BOfk2BAoPYw9ZjGPgjvWPP9ozotE9R
+	RqhWBUVaRrKtrBg0+f0Zfyru5RV2n4Rfgnzwm4ny41AUHB3SwNbbFXQnXMtXf0ORFQfbexMXdlhCT
+	524gkQYQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAHJv-00000000YBi-1hlF;
-	Sun, 19 Oct 2025 00:30:47 +0000
-Date: Sun, 19 Oct 2025 01:30:47 +0100
+	id 1vAHLA-00000000ZsS-1go6;
+	Sun, 19 Oct 2025 00:32:04 +0000
+Date: Sun, 19 Oct 2025 01:32:04 +0100
 From: Matthew Wilcox <willy@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] mm: treewide: make get_free_pages() and return void *
-Message-ID: <aPQxN7-FeFB6vTuv@casper.infradead.org>
-References: <20251018093002.3660549-1-rppt@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Huiwen He <hehuiwen@kylinos.cn>, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>
+Subject: Re: [PATCH] maple_tree: Fix potential NULL pointer dereference if
+ mas_pop_node() fails
+Message-ID: <aPQxhMH0CSZm86Lk@casper.infradead.org>
+References: <20251018152305.1612722-1-hehuiwen@kylinos.cn>
+ <9092f8af-72d9-472e-8d5c-f950c8ce782d@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251018093002.3660549-1-rppt@kernel.org>
+In-Reply-To: <9092f8af-72d9-472e-8d5c-f950c8ce782d@web.de>
+X-Stat-Signature: 3q77pt1pxrruy6ztd1p9z5k7qzuaf8ri
+X-Rspamd-Queue-Id: 6CD3C140008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 00B68C0006
-X-Rspamd-Server: rspam02
-X-Stat-Signature: cfk95ngcn7j7j5kcxoox8gtazeoadbz3
-X-HE-Tag: 1760833868-796959
-X-HE-Meta: U2FsdGVkX18dWt+p57VkjSSi2tWHuH09VmwXStYOrRKimVO9jRIXVjTrN6DxjPRMtLtN9ZbvBP2x/qiOMsEpmJvP0xPqQfk2HdM8vzjZqy6WTMNsyv+Es6dwGP6N/Ad4mQveOCjcx4o8WmbTB4ArM9NlTPT3Y8UOFI80KfdCQtDf/fFvc/su8ic0M0CDTar6+dxzz0ggiGPOg02LGMuyN/bDY7IrT4upgvZcKhOIbijSh9zL55yyqTu8RJ1ZtTvvqgDwQn+B0Eh8LKZxYv0KodpZmxiFRySOmsdfwKEBiAxwl4XbDQle7gVZRuVpoi8DjI1jSGEm8/+kGwyei8jn8Fdps+Yjqtj779T4D5OHdjRGczyFugiIiOT90v5HwlBBY8HWCwMITNEoXag/ZoKh+EFUx5VDYumEq8by1xE3zIKtgmDm83mnm8KQAn4KbmOKipnXXkfFbowTgBKkvYKKcDD+x5c3FkonDQ7caXxKuqulIwbYwbBFfoTp3EhY4QwEUDqVDDIN6f358r1zHZ8rhz/uO0J83fKYz84P05i+GLaX5uR72KPxiXPYzFXMT5rjqmTi/LoO94iYxcDgJrqoT6NtXa+3X3TOg7NTLp8fQqKhcy/uQZmlk4iQf6VzzgUYqYetbOBuUkZgDf8M+d6GKKYMXLtMVNyJ8LkSZc0cWjp87ySJs6+hA22hPoj+DvZBOk5QcAzzMYCK0wJmarzo9hXc7ko5p6B5PA5J759GyIzeWD+WaEAKaTSZi8//6hxINAGwiELJtm3hyR1r9JrBod9ZQr9NAgPA0kqwvByyqerYFBiUQDsE2uZo4WyGxSq6y0s/pRtqmbdRNLihx7j3F0RTnQD9dhJZJvBA8zAX9UT+3ZrDqAXQlf/2w9Q9Pz76hs8ilcu8NKHT525vTxmv1Ns17+187imzugApXqGI70htBRtmoWh5fSsQ/FVZgEMmkR52NvOlAF/SXIswGr1
- jEJnorWy
- uF+MTOeTuVD00S5UYcmN8X/YshbDHKPzqA+J7S4u8KA3iWDzC1YpHwLmJdPlFrk4Trx6cNnPFr3q/a3Ca5TlO3VMAHyaF8X6TuvnUXgSCPhap2m2f1nE89/gRUcsJ6Ai7bGM6OTgMqZirRDObNOB1wjIs8/1Yd0idXgPKTJqwVNB8eWaDAUonMfrZUCE2B53YxHmuG/jVZN3Q+n2Q77L8tN/oTCEUwQljGIQX
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760833927-307478
+X-HE-Meta: U2FsdGVkX1+Gx2m2x6ah2A/E8jEsbT4ALJ8PGFPiWw1aZfY6GUVCoC9hURkWS3JAXepPtKTaROPOGGa24NaIYivobxlCSedwsjnf1Uk3yKX4bUREZhpGxsbCUldPa9YdHYRme8LzLhz9bbPtNH5/6j4L944ehZzes/kseu2TNXDe7dZjgBUmPoheV/wY4Zhmo+shflNMl9jb1BhO1/qd5jrmLi5PjcfMbhp613o0OcrLx4etjtrKohH1ebUH4Ue+eGJbIu7yBtwwUCidcbQsz5tiSZOcCri44BauM3gLoZiBCXsYEQ1DmswWaT3MXCsBM5cbb1k74mr3sfL4ODm0nkJj8X+JnfmULbWTMnIP78j2P6FJ9xSFaKZfvfUzRG3KbRkN8Y/DJ/qOludaJmOHfAsHek41fJRr2bQ9dRXjKqeczlxnuMq/wG+JZCCYWL9eOBvds05uWa3ev901i/zdNJpHJv0vWhUkZ9wTYe4RWs0PZhx/Vk5xpmYquksytyu/ioYD8AxhcUgb4ohFBOOuqDbVIyN9s7m4R2Y3bNaVUH0XcOJb7jCVJCu0AIBmoMukeZs6oMa5mlao9NetTG4oT853+4Q99k6rMAWzyuOnwF1rejW+6wWJvq01dIDPhH9HaVDf1bARslo8ZWU6ivnj+P7opuymZxOdz/VHYy3PwtuuWLARK1vmcEgK1Ns5XH6595UgWOO5yu/9Bxt8gAGAD+L9gdgGUGWhfgS8NL646rCi9F4A4GyspAZotqsna5bXSiTCF3C1IK+WG39eZzsXAphGiVS5sAZ/E2wN6RUCY5v24eYgzQA7aGXTE1nFt2HZKw39A+Bh0BMAZrs9HGadT92uDVJf3roTIM3Fd+eaVs6HU2NFvrdP895vPAMKg4Jc59/HjSmH1ShlpLi2K8+QtQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,17 +90,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 18, 2025 at 12:29:59PM +0300, Mike Rapoport wrote:
-> Vast majority of allocations that use get_free_pages() and its derivatives
-> cast the returned unsigned long to a pointer and then cast it back to
-> unsigned long when freeing the memory.
+On Sat, Oct 18, 2025 at 06:38:11PM +0200, Markus Elfring wrote:
+> > mas_pop_node() may return NULL when memory allocation fails or when
+> > mas->sheaf is invalid. Several callers of mas_pop_node() did not check
+> > the return value and directly dereferenced the pointer, which could
+> > lead to a NULL pointer dereference and kernel crash.
 > 
-> These castings are useless and only obfuscate the code.
-> 
-> Make get_free_pages() and friends return 'void *' and free_pages() accept
-> 'void *' as its address parameter.
+> Will another imperative wording approach become more helpful for an improved
+> change description?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.18-rc1#n94
 
-No.  Linus has rejected this change before.  I can't find it now, it was
-a long time ago.  Most of them shouldn't be using get_free_pages() at
-all, they should be using kmalloc().
+Markus, stop this.  You've been told before.
 
