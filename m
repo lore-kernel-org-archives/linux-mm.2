@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E276CCD1AB
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3761FCCD1A7
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2BF08E0015; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
+	id AB7408E0016; Sun, 19 Oct 2025 02:17:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDAD48E0002; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
+	id A67A08E0002; Sun, 19 Oct 2025 02:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA0C08E0015; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
+	id 8E2598E0016; Sun, 19 Oct 2025 02:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C91E8E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 665D81A0580
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7800F8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4573F11A6D4
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:25 +0000 (UTC)
+X-FDA: 84013856850.09.7B34FBD
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 62D59140007
 	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:23 +0000 (UTC)
-X-FDA: 84013856766.27.BB4A70E
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 75A62C0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UPDXT5vq;
-	spf=pass (imf10.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eEttBAnY;
+	spf=pass (imf09.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760854641;
+	s=arc-20220608; t=1760854643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
-	b=EbPYWZFu/MhjF4dXfF2NWkVJnElWtmepXhyDuX//1eqjOWWRTP9bFp8781m87ye4Vb88aj
-	ezDY3h/rWY+c4G3x6czp8IFDba7L5yTs2GyyIbpKFpXzE8GYb6gnrvholU/5zmVQwz2S17
-	6LeQPNJvZeBiXglJ5+kUtwliUGk8R7w=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UPDXT5vq;
-	spf=pass (imf10.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854641; a=rsa-sha256;
+	bh=CHtfDmtNu58qaeT00d02kMdjaM8J6l+T+7ap5Uqy+yE=;
+	b=tL6VlYvL5oUOHASHbLv4qvEEzdLtW2+sRC4xrYk3vOgWeHc1/vrppmIwbL7uwZemljMVa2
+	qfFmYuXHyDJuk8z40PZfNCOUVZewxMptpPI30URF5w04JuaF0hojrC44eh7/erP1uadE0S
+	Z14XaJNShpJj4Bua5ChGtsxoTlk9XBw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854643; a=rsa-sha256;
 	cv=none;
-	b=TGPanf25lPrvvgJMq3olLz8yyfDDIBSVTtG/6kFP1CGkVvWk+0DKF07ZUi1Gnrv/eLtdmK
-	lg++9BBDAWRxSsPyDAthnAmXdh7Omk6cDOm5tnvVNhPP0jc3oUiUF/qyV4zbzZp/VNtO/L
-	QWQnc5P43UxAvOrYCNNroRpKkYlEujI=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-33d962c0e9aso303966a91.0
-        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:21 -0700 (PDT)
+	b=yHJyzXk78GHo2xFcEjJIkfGIMNQlSo7hEbZ8H2I63pZnXMxIyGtvxsqJDROXkQ38osNFzb
+	hXFtRLjnLRWbo4vTBD2VKx3e1zKjB4c1S/yo+YZOHM8soulM2QuaA4q4h91dxepyfN7u5T
+	oEjrpuI+7Lh0zKshINyubSqHSd7YGBA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eEttBAnY;
+	spf=pass (imf09.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7a226a0798cso1549059b3a.2
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760854640; x=1761459440; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760854642; x=1761459442; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
-        b=UPDXT5vqRjcdrceMG9BSdx9w4LMg47wmqSQxu+wK/MjtL2MRP1ngbiALmKBNZ6Y+aw
-         CPZjdiwGGaDN5RzFlCyEiAjEpO+h5BQN2dXzcrlqxjBQw+sB8Ih8Av0pXTqcERPJcxRZ
-         n0rR/P3r+/Z/EYls+dqRWhpWz6qanPSMi64CxfT6nDH5BH+tFaJ6QWxGvetEFalJInQk
-         sO6V3wd+YN5zdfs+nkBl0ntAY4YvF4hRiTnQ6Hq2eD3x23M7488sj04WJaInAEp6HNM3
-         oixUw/ScsWKZZ86awcemw7ChCOiMAQv41D0UgZ5p2g7YhAnZErFc24mmIIN7PjTGlk+E
-         FfRw==
+        bh=CHtfDmtNu58qaeT00d02kMdjaM8J6l+T+7ap5Uqy+yE=;
+        b=eEttBAnYbohNWBoPQhLnqv1U37DWoOuMoLgdAxXKmBjqSUaRHXrZfs4wnlEO2mWKnp
+         LvYbZbPcWK5q0oREkzA7+ANicrYT4dUB8vyc796x7iBi/67t4zs+0k/bDAXCZOW5fUdB
+         OmEbajhLOeaF3QCSV5e4mbybXbMRtlwVLP6Ei5CF+4YoUAc5wrq/8g9ss1yUwBJhpEGI
+         FznjbJ0MFQrMs0yngIIWOjBe5QoRHllpCabd6/b3zHfg1QeN/5dxDAD9v03ZUGRqALvF
+         LCpzolFs8C/1JSwjy3fnbKnR356FwxLQmleTgcrgkLo7uAiodfEyf0oQ5onxw2ePkNBa
+         oXyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760854640; x=1761459440;
+        d=1e100.net; s=20230601; t=1760854642; x=1761459442;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
-        b=dtewFKxofoKaE6xhLHJHGdsUZwB8f0B9Klkg2pTBoiHv3g+hIiIFLuwAC67nSryaAz
-         4AM7fHiVPsedY9kZfBI/h382zCCuZ2GFYEWxzON0V+cSABAIC2EWce9O7jJV3xbuNrOe
-         76M2VMVepr7hsC+jlzw3M/p/pnHG8U34sZMfO458uCSF8v012dPPB/EVi6IEogGxSF5k
-         h67ajTBD0h6O65xmunFDQGOGYg4T6m6y7/Z079b+DPO/PlaKBMr1T7QbqbeH5iSBy4wb
-         bbHebHsVlRBMIVAeC4ilFdVgvx5+TMJlDyww9ZT60EGACT9p4PnCCBohyXOR4i1E4Kk0
-         pEOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCoEWfNkcE2kWX46qNQYICZUViBZgS6QGvNzxcfBgYtXFz3nwRkrTZtzCbWAVMc8Grn9OiE+Jpwg==@kvack.org
-X-Gm-Message-State: AOJu0Yy1lFd9YXWmldkZKxLkU9w9QpW5OYVUTVn3HNveY6c4AjVIpTMI
-	LeaTDwzBvZFkxFPu1+mie7jhTRWf6fB+YXHA1tVBvHqjGmY/RbBBk7a1
-X-Gm-Gg: ASbGncuzA+0yyHXhrNiVz1YJdXDDfjz/DXE6Hq/qvwe4VHKwZVzxTOI2WZSiOoWbjXR
-	Ym5k8121kJvY/MaoC8ZdFjKIV5TBgT8rvq/MVHTk3YKE1inbSRSpHlzUCFSMLAWBdFYlJ4DziDi
-	n2JLAyi1vkYvRDOvTEzysnXaXU6mh5L9DYWevswtGAkzeIFv+I4nQL2XukHVlcRRIBNeFv6q48D
-	+WzMEvbnhTcoyzxFbNsCaX1uMiMGdbWLNWpDy7CbbQyXqRSKpA9Dm/ymutlxn/rWFugM64/FmwY
-	Ai2zzfpNkx6jhoEqgLDtAw+99gabdA6K/87tr3nupaex397D6FPhBKW86g9NP+n6AGYz8OJma5Z
-	5dxUjEbIMSovpsdt5ERv0YOiacJ+sBTXIAiHad29MFlto/k4rm9HCteujPvJhI0vEAa+77I5tg/
-	MzM13e
-X-Google-Smtp-Source: AGHT+IFB/9N4hWxuPbcz7xQxYSDMcrE9Ap+mI0ELEadewX8FBE7rytwKC4P01IfgOC+LAL66fL2HMg==
-X-Received: by 2002:a17:90b:3512:b0:32e:7ff6:6dbd with SMTP id 98e67ed59e1d1-33bc9aa6e69mr13206379a91.0.1760854640156;
-        Sat, 18 Oct 2025 23:17:20 -0700 (PDT)
+        bh=CHtfDmtNu58qaeT00d02kMdjaM8J6l+T+7ap5Uqy+yE=;
+        b=uqNhJpktMV5jIqkyuAqPFCL53oML6UbJvj0Pf4goqJnlyXH3v8vn88AXNo/zkwCaNa
+         P/kFddatqKrS7Pt3SNTiTJXstq0kY9MGT1yRHowcrdd3AMiYKwzhqUtIIya6EheJvP5i
+         f+KJlrZeixGeIY9Od2+0D9pt4JmrE4R0MN0N1tKmI1V8vADgUZ5/bU/to2U3PXk0qsgo
+         3sl7R9CrAj59Qe0VZZTWOJA9kn1OJOi8GLcp6ScjPauzBlNeW7Y3AoRJra40nCStMwJQ
+         Gd3pA053kLOscB53qpiOU5OIS6G96L8VMc/fPrDrueEXmYvaBBRSpZKMk5vciK1YbZuI
+         1vhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmj1iT+ZThcFLl6upSLeNx7fpVeZngvmeulR977zHJRPNpy/YA/hEh+a7BKPuKV4sGgy6OX10WUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy/bfNVAAaRZ/q3FPTdqJZc0j1khvwW4gvYZRE4irnKvzDFGJxS
+	Qs5S8GqextOwQ0x8Bj5hkG6YJVrzy5LwDupxaRgRkRmY7KeClMoUmuap
+X-Gm-Gg: ASbGncu6e+nX+VzNiBnVBXSO3yafxnNYNHX265ZqRUc3Gtg8QvriJIQlgXGwjT4RmRB
+	NoHJEet2fdEbaNnqfOoA7y/snUny78hy0RizhAWKXM6LRl5E5K59Zp3UKpFm2tLPLEdd8mGU8ng
+	gX7pMr8KbRpkEkXroCuy9MoT5jzfC7+2etRGCNv4SPBjEamPit7EbY7Ejup0AKuPXnOM3n627Zx
+	7GFXnQfYvHeEA3ohUy7bP00QgeR/bl34C+Xj2A831slYoJOfXIFYdqZPF5M0gxNSjiqhBtnyl94
+	RYKwMjmek3k+MaOqXoLd9C0+nZA5BdX0el41ZK5PMcrrTNk0vjMICcuEGWhro7eS5W2vunr3fPD
+	U5u0wW2s222/TlxjUZ0TTmBDS90NAvxrMeWszA2n2vVpByMiN8DIsZMleYxKNuVT/cFOSSMlYx9
+	WkqkHqHyCuEmpQUO3S1VS0hSafAQ==
+X-Google-Smtp-Source: AGHT+IF+l7vrEZFb1JvgrlXqJojLzFTrJb7A2HoVWh6qL7YExVTjo54P1fLRx45jmPuBVut01m7GGw==
+X-Received: by 2002:a05:6a20:3945:b0:334:a15f:8d2d with SMTP id adf61e73a8af0-334a8629db6mr11280818637.44.1760854642239;
+        Sat, 18 Oct 2025 23:17:22 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6881:9060:bc87:d8fe:3e55:7ffb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.18
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 23:17:19 -0700 (PDT)
+        Sat, 18 Oct 2025 23:17:21 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: linux-kernel@vger.kernel.org
 Cc: jiri@resnulli.us,
@@ -105,22 +105,22 @@ Cc: jiri@resnulli.us,
 	Changyuan Lyu <changyuanl@google.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [RFC Patch v2 14/16] multikernel: Add messaging layer for inter-kernel communication
-Date: Sat, 18 Oct 2025 23:16:28 -0700
-Message-Id: <20251019061631.2235405-15-xiyou.wangcong@gmail.com>
+Subject: [RFC Patch v2 15/16] kexec: Integrate multikernel support with kexec_file_load()
+Date: Sat, 18 Oct 2025 23:16:29 -0700
+Message-Id: <20251019061631.2235405-16-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 References: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 75A62C0002
-X-Stat-Signature: p48x6xcguzq6ecnoiznju98iuuktn1tw
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jmn9y7yt3dbcufzscef8se6fjonbpuek
 X-Rspam-User: 
-X-HE-Tag: 1760854641-154091
-X-HE-Meta: U2FsdGVkX1+kI2f0K8LisQWXrdRVJGvwwf0VBeR6c2+d0Z7MT8GRjWsSGs0pyjnPASkkljgoQ5oVvnMvRLsMMimUQc0VY52PofcD0HTv5UdZc9a0LAkX9DMiEeBgpd6yw4fxPtZyXrbeiIi/whFqRwa2ypKP/e5HRzazVc8Ws503UhdDGd3mAvpL3zi5MpAylT6PlPmJrFgBpyl5174wKsKxq5121gTMEAorOCHJlUMbUNvzlbTytlY9UsPOJWB0y04JQVl2oZwfd8DQloJsDY4E76coT4U+fkDcO85GSxp1catQnXbvFBQQaAsFYWjUaTnZ7sAncjidVVeYX651No2ftN+taQBBwRGlrD6eNot2UKPCZysD/A8vacMVhLDHTSpRJT7NajRlqj5Ng/KWbr3kOWJT2q3EUm3Cgi2nH4dnOw+PxrHGDM6Ky9iyVJMZmxaicuVhp8OVp3ZRUTi8H++57zrkj32l3e8rFHEMbPreus0GLrulnLiDplmRaozYusa9NQdWGQEqHYp8VnQFW1OEhEAY8lLPloa4qfQ/GvGYkR05hDftQVRCv487x1OJzSIWdqkZDPblBJ28Ng7bvCgXHNr4sC0Yev83aqkzrt6Wg5ANju3lnaIeTqXOwulnlqjjDJltqvwjASNzuiWxRg63s1/bwaEwAocM31YiYbs1tv8k7cUyqweVhu5PEYm6yewDNyo0jHGpIjKLZDIwrhVYmPr8JNBM1NhLPmxzTIqwqNpVvgW7iszPXljkoOyP/yKhGY6W3DZnkn8gFBlb+N4Tiathu4ZhyFzFv4uudO117BvsdpKZ6TJKLsyePh9KZiaHsdmsMq3scu0wgdRaW6g3K63/gqz641zJ2EU5v0rSScGXr6ZtgWxxO/AnK2+TvZueO9JtDLp2vwxdAhi9IGT0K5/CEdBV8oJDPgfyYuZ6omnx3M7r64iEGK+pCyVAXSTYPCLTMoAbAYfLuYU
- 5iAwCd/c
- 2r9t9/+HbC9U5yT2yA4C4uEem3zeg7JhUOV1uRRG+zsKaatEDOo/+VCeboGwo2Iip6SLcvuYYAnQG9jwdNCXbOGbyx/6ma8dMCPhp2d+x087AgOA0pPu0uW2vuw/3bF1qsaDeieAR99tPPeYKbeaJJieXC77SJiKUUFNnb7SqaA7+8+YZlupAjWx+GPbaKa32M7DXSX9IcYIRj4BZO+q2dLdt5yUFcXC/f1hH6QA2ROZpvus8PrjFFOonpl478YGm1m7AN1aNLXDs7d74u26L0uZhbFd6zuYzaOXbPiPGWS7W5ElbCoCJ44XGo/PEfL0XcOTDZ/a0mCa8HqLwKAJ+gJPAZq8YXhTWYmpD4+AFUR678yEAv9uvJeHYZeDOUc3siWpvTewpnvLSpSGqiTIHR2BTX8YuJZ5CQWy0Me/3A/ynDTYRXtLxuiYnoUCWhX9kc3xAl+VNRuQTO65TknUefpm74ZCr5zpUA4kwFiuq2iHgiXtz+UxY42AF2g==
+X-Rspamd-Queue-Id: 62D59140007
+X-HE-Tag: 1760854643-64472
+X-HE-Meta: U2FsdGVkX1+X76HV2Mx6ZBsF/z+blI5HQuPfVzZhj1BB4Iq1mEULa0DwzhEwFlyw6sEMpPYIuyo/V+oGyEdbkrLmxU3YpehIvgSiWkBHFbAj9b+Mwtw2Krrs0ZQvU9E2wZQzFO/0H7izfeY71cxJWX8wJjNy6bS4yjl9IJolCZPa20Fzv40yYYYQ90XBQt1OYMOZzIW7Rtx43mPgQbD71Vtq1IBDsnWMV1soQA3n9Lwpq78KHuk1+ZqBh0hrDWF3HeUZje9x/CCB50eRV6vYXuEpAYE2GuZvBDQHJak3HyUoGNoULAIrWkgMNMceOdyckYT2UobQ+vM/A6HCrYlQxkPKp1wSsvv6NIIQ8POj/VaOvJkVqeo9WW5lEABnwcPFmU5aZUwmDjIb3dBxKk8lPNUhRhZVZj2HLzGoSaJ0CvKI81dDE07ZyCLCLdbXvbGcP/FCZw/cAwL+oDBP98eUte31LfNxA8cDgYl1/EOGBdHUy+ddz3shq1XyHlhJJh7TVcO29ymS71PfQIhgQuJ7VrJH87U+seH+IZvfvoXP1s/wN7vKyiCA01L4xiJxtbj4vuusDzXnrN+qK8+yg7FG/PLXzyBst0bbV9ElLX4xbt3FhDclrI5tQsTnsE/qII9uTJdDpSUWdwnvBeM5+3DuDwytzm548mjcLKf9xG/FxDgQlqIkoM9AxPJ+CsO+Cx887nPetUDDHFDt23bxsZvqZpMV6Ma+s6OLPL63A14yrjQM+rTvlATA4ag5yWg2Rhym9s5DorZEQwQ+tJl/UNu/H5EOSXVPVfJRNsVWcC2mEWrJAzbgY4ktGs3FwKP9BlimaOCXSecuGgukctw79MYPBGRYYUt1umowdMVMdIYzoVJ7Z6N8Q0E7IMR91lHx/rc/srMAfsiKzeybfy7kpjzt0zujhckPYtpJvxogoacijJZ5M0jhc7Mh95rXzL8IO4WD7ynKDA1Qb67jspjmuHe
+ pf+jQ5Ky
+ 5BsMZSebVww4BOhe3z8j3tTiatmt0qOA75fTgW62sqs3v//OXTX7gNozTRKrBuY0+3Ec8Tx1/UVZ1L8eTqgTIQLTJMY/gxjNeKRdMOOaIfqmBDfFkKB4LL9nglD5dBinVf4k1eNQ80SyNT0eb46aNWzcVY+wNRJ84uQ6IwjK56gcC60noRi3G2/bsjLtxrY5HFyAggM0Ico7Z9pBgYQFSNATsxGXLHSaSyB/dvctKM05tqpbueSyp48qmZyCrcsEaXlj5S0LrsfFcb2NJr8Tkk0lZSRMbmnVGXq6PvPOZwQRxubOmyLJzzyR8M6ICCKGjHPNgE47v5GqNqfhKKNy34xsAFW3c8IPR61WFRhXhaWAnPX6sO/fne/qTZjWpulIF7TuXGeo8AuTpwtXhvFeB3Xr7691F7Zf1/kuikAIBbCr9xr3nvNnZrikTD7wLao5Pek0R2AWwP1RzzwxVkb6K2AptbkotyntHjckqL5+CqOsYn4UEzKEOkPtB72/vzWLHjHP6LGwliqqOehQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,572 +131,301 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-Introduce a structured messaging system built on top of the existing
-multikernel IPI infrastructure to enable reliable communication between
-kernel instances running on different CPUs.
+This commit introduces:
 
-The messaging layer provides:
+* Multikernel flag support in kexec_file_load by adding KEXEC_MULTIKERNEL
+  to KEXEC_FILE_FLAGS, enabling user-space to specify multikernel
+  operations through the file-based kexec interface with proper flag
+  validation and ID extraction.
 
-* Simple message format with type/subtype hierarchy for extensibility
-* Support for I/O interrupt forwarding between kernel instances
-* Resource management messages for CPU and memory hotplug operations
-* Type-safe payload structures with validation
-* Handler registration system for message processing
-* Convenient inline functions for common operations
+* Instance-based memory allocation for multikernel images through
+  kexec_alloc_multikernel() that allocates kernel segments from
+  instance-specific memory pools rather than system memory, ensuring
+  compliance with device tree resource specifications.
 
-Message types include:
-- MK_MSG_IO: I/O interrupt forwarding and load balancing
-- MK_MSG_RESOURCE: CPU/memory add/remove operations
-- MK_MSG_SYSTEM: System-level coordination messages
-- MK_MSG_USER: User-defined message types
+* Multikernel control page allocation via kimage_alloc_multikernel_control_pages()
+  that provides page-aligned control structures from instance pools
+  with proper alignment validation and conflict detection against
+  existing segments.
 
-The implementation leverages the reliable nature of intra-machine IPIs,
-maintaining simplicity and performance. Messages are limited to the
-existing 256-byte IPI buffer size, with larger data transfers handled
-via the existing PFN-based shared memory mechanism.
+* Enhanced kimage_file_alloc_init() with multikernel instance association
+  that extracts multikernel IDs from kexec flags, validates instance
+  availability, establishes bidirectional cross-references, and updates
+  instance states to LOADING during the load process.
 
-This messaging foundation enables sophisticated multikernel coordination
-scenarios including dynamic resource allocation, interrupt load
-balancing, and system-wide state management.
+* Integrated memory hole location in kexec_locate_mem_hole() that
+  prioritizes multikernel instance pool allocation over system memory
+  allocation, ensuring multikernel segments respect reserved memory
+  boundaries and resource isolation.
+
+The integration maintains compatibility with existing kexec_file_load()
+use cases, such as crash kernel, while extending it for multikernel case.
+Standard kexec operations continue to use system memory allocation, while
+multikernel operations automatically use instance-specific pools when
+the KEXEC_MULTIKERNEL flag is specified.
+
+This enables user-space tools to load multikernel images using the
+more secure and flexible kexec_file_load interface rather than the
+legacy kexec_load syscall, providing better integration with modern
+security frameworks and signed kernel verification.
 
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- include/linux/multikernel.h    | 200 ++++++++++++++++++++++++
- kernel/multikernel/Makefile    |   2 +-
- kernel/multikernel/core.c      |   7 +
- kernel/multikernel/messaging.c | 278 +++++++++++++++++++++++++++++++++
- 4 files changed, 486 insertions(+), 1 deletion(-)
- create mode 100644 kernel/multikernel/messaging.c
+ include/linux/kexec.h |   3 +-
+ kernel/kexec_core.c   |  61 ++++++++++++++++++++++
+ kernel/kexec_file.c   | 116 +++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 177 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/multikernel.h b/include/linux/multikernel.h
-index ee96bd2332b6..3bc07361145b 100644
---- a/include/linux/multikernel.h
-+++ b/include/linux/multikernel.h
-@@ -80,6 +80,206 @@ void *mk_receive_map_page(struct mk_ipi_data *data);
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 5e9e9ad1dfeb..b907b7a92fd2 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -477,7 +477,8 @@ bool kexec_load_permitted(int kexec_image_type);
+ /* List of defined/legal kexec file flags */
+ #define KEXEC_FILE_FLAGS	(KEXEC_FILE_UNLOAD | KEXEC_FILE_ON_CRASH | \
+ 				 KEXEC_FILE_NO_INITRAMFS | KEXEC_FILE_DEBUG | \
+-				 KEXEC_FILE_NO_CMA | KEXEC_FILE_FORCE_DTB)
++				 KEXEC_FILE_NO_CMA | KEXEC_FILE_FORCE_DTB | \
++				 KEXEC_MULTIKERNEL)
  
- #define mk_receive_unmap_page(p) memunmap(p)
+ /* flag to track if kexec reboot is in progress */
+ extern bool kexec_in_progress;
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index 7db755e64dd6..61ad01acd034 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -476,6 +476,64 @@ static struct page *kimage_alloc_crash_control_pages(struct kimage *image,
+ }
+ #endif
  
-+/*
-+ * Multikernel Messaging System
-+ */
-+
-+/**
-+ * Message type definitions - organized by category
-+ */
-+
-+/* Top-level message categories */
-+#define MK_MSG_IO           0x1000
-+#define MK_MSG_RESOURCE     0x2000
-+#define MK_MSG_SYSTEM       0x3000
-+#define MK_MSG_USER         0x4000
-+
-+/* I/O interrupt forwarding subtypes */
-+#define MK_IO_IRQ_FORWARD   (MK_MSG_IO + 1)
-+#define MK_IO_IRQ_BALANCE   (MK_MSG_IO + 2)
-+#define MK_IO_IRQ_MASK      (MK_MSG_IO + 3)
-+#define MK_IO_IRQ_UNMASK    (MK_MSG_IO + 4)
-+
-+/* Resource management subtypes */
-+#define MK_RES_CPU_ADD      (MK_MSG_RESOURCE + 1)
-+#define MK_RES_CPU_REMOVE   (MK_MSG_RESOURCE + 2)
-+#define MK_RES_MEM_ADD      (MK_MSG_RESOURCE + 3)
-+#define MK_RES_MEM_REMOVE   (MK_MSG_RESOURCE + 4)
-+#define MK_RES_QUERY        (MK_MSG_RESOURCE + 5)
-+
-+/* System management subtypes */
-+#define MK_SYS_HEARTBEAT    (MK_MSG_SYSTEM + 1)
-+#define MK_SYS_SHUTDOWN     (MK_MSG_SYSTEM + 2)
-+
-+/**
-+ * Core message structure
-+ */
-+struct mk_message {
-+	u32 msg_type;           /* Message type identifier */
-+	u32 msg_subtype;        /* Subtype for specific operations */
-+	u64 msg_id;             /* Optional message ID for correlation */
-+	u32 payload_len;        /* Length of payload data */
-+	u8 payload[];           /* Variable payload (up to remaining IPI buffer) */
-+};
-+
-+/**
-+ * Payload structures for specific message types
-+ */
-+
-+/* I/O interrupt forwarding */
-+struct mk_io_irq_payload {
-+	u32 irq_number;         /* Hardware IRQ number */
-+	u32 vector;             /* Interrupt vector */
-+	u32 device_id;          /* Device identifier (optional) */
-+	u32 flags;              /* Control flags (priority, etc.) */
-+};
-+
-+/* IRQ control flags */
-+#define MK_IRQ_HIGH_PRIORITY    0x01
-+#define MK_IRQ_LOW_LATENCY      0x02
-+#define MK_IRQ_EDGE_TRIGGERED   0x04
-+#define MK_IRQ_LEVEL_TRIGGERED  0x08
-+
-+/* CPU resource operations */
-+struct mk_cpu_resource_payload {
-+	u32 cpu_id;             /* Physical CPU ID */
-+	u32 numa_node;          /* NUMA node (optional) */
-+	u32 flags;              /* CPU capabilities/attributes */
-+};
-+
-+/* CPU capability flags */
-+#define MK_CPU_HAS_AVX512       0x01
-+#define MK_CPU_HAS_TSX          0x02
-+#define MK_CPU_HYPERTHREAD      0x04
-+
-+/* Memory resource operations */
-+struct mk_mem_resource_payload {
-+	u64 start_pfn;          /* Starting page frame number */
-+	u64 nr_pages;           /* Number of pages */
-+	u32 numa_node;          /* NUMA node */
-+	u32 mem_type;           /* Memory type (normal/DMA/etc.) */
-+};
-+
-+/* Memory types */
-+#define MK_MEM_NORMAL           0x01
-+#define MK_MEM_DMA              0x02
-+#define MK_MEM_DMA32            0x04
-+#define MK_MEM_HIGHMEM          0x08
-+
-+/**
-+ * Message handler callback type
-+ */
-+typedef void (*mk_msg_handler_t)(u32 msg_type, u32 subtype,
-+				 void *payload, u32 payload_len, void *ctx);
-+
-+/**
-+ * Message API functions
-+ */
-+
-+/**
-+ * mk_send_message - Send a message to another CPU
-+ * @instance_id: Target multikernel instance ID
-+ * @msg_type: Message type identifier
-+ * @subtype: Message subtype
-+ * @payload: Pointer to payload data (can be NULL)
-+ * @payload_len: Length of payload data
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_send_message(int instance_id, u32 msg_type, u32 subtype,
-+		    void *payload, u32 payload_len);
-+
-+/**
-+ * mk_register_msg_handler - Register handler for specific message type
-+ * @msg_type: Message type to handle
-+ * @handler: Handler function
-+ * @ctx: Context pointer passed to handler
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_register_msg_handler(u32 msg_type, mk_msg_handler_t handler, void *ctx);
-+
-+/**
-+ * mk_unregister_msg_handler - Unregister message handler
-+ * @msg_type: Message type to unregister
-+ * @handler: Handler function to remove
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_unregister_msg_handler(u32 msg_type, mk_msg_handler_t handler);
-+
-+/**
-+ * Convenience functions for common message types
-+ */
-+
-+/* I/O interrupt forwarding */
-+static inline int mk_send_irq_forward(int instance_id, u32 irq_number,
-+				      u32 vector, u32 device_id, u32 flags)
++static struct page *kimage_alloc_multikernel_control_pages(struct kimage *image,
++							   unsigned int order)
 +{
-+	struct mk_io_irq_payload payload = {
-+		.irq_number = irq_number,
-+		.vector = vector,
-+		.device_id = device_id,
-+		.flags = flags
-+	};
-+	return mk_send_message(instance_id, MK_MSG_IO, MK_IO_IRQ_FORWARD,
-+			       &payload, sizeof(payload));
++	/* Control pages for multikernel must be allocated from the instance's
++	 * memory pool to ensure they stay within the reserved memory regions
++	 * specified in the device tree configuration.
++	 *
++	 * We use mk_kimage_alloc() to get memory from the instance pool,
++	 * then convert it to page structures.
++	 */
++	void *virt_addr;
++	phys_addr_t phys_addr;
++	struct page *pages;
++	unsigned long size;
++	unsigned int count;
++
++	if (!image->mk_instance) {
++		pr_err("Multikernel image has no associated instance\n");
++		return NULL;
++	}
++
++	count = 1 << order;
++	size = count << PAGE_SHIFT;
++
++	/* Allocate from the multikernel instance pool (page aligned) */
++	virt_addr = mk_kimage_alloc(image, size, PAGE_SIZE);
++	if (!virt_addr) {
++		pr_debug("Failed to allocate %lu bytes for multikernel control pages\n", size);
++		return NULL;
++	}
++
++	/* Convert virtual address to physical */
++	phys_addr = virt_to_phys(virt_addr);
++
++	/* Check alignment requirements - control pages need page alignment */
++	if (!IS_ALIGNED(phys_addr, PAGE_SIZE)) {
++		pr_err("Multikernel control page allocation not page-aligned: phys=0x%llx\n",
++		       (unsigned long long)phys_addr);
++		mk_kimage_free(image, virt_addr, size);
++		return NULL;
++	}
++
++	/* Get the page structure */
++	pages = virt_to_page(virt_addr);
++
++	/* Check for conflicts with existing segments */
++	if (kimage_is_destination_range(image, phys_addr, phys_addr + size - 1)) {
++		pr_debug("Multikernel control pages conflict with existing segments: 0x%llx+0x%lx\n",
++			 (unsigned long long)phys_addr, size);
++		mk_kimage_free(image, virt_addr, size);
++		return NULL;
++	}
++
++	pr_debug("Allocated multikernel control pages: order=%u, phys=0x%llx, virt=%px\n",
++		 order, (unsigned long long)phys_addr, virt_addr);
++
++	return pages;
++}
+ 
+ struct page *kimage_alloc_control_pages(struct kimage *image,
+ 					 unsigned int order)
+@@ -491,6 +549,9 @@ struct page *kimage_alloc_control_pages(struct kimage *image,
+ 		pages = kimage_alloc_crash_control_pages(image, order);
+ 		break;
+ #endif
++	case KEXEC_TYPE_MULTIKERNEL:
++		pages = kimage_alloc_multikernel_control_pages(image, order);
++		break;
+ 	}
+ 
+ 	return pages;
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 2d9d5626c8da..f9979c1d9f9e 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -27,6 +27,7 @@
+ #include <linux/syscalls.h>
+ #include <linux/vmalloc.h>
+ #include <linux/dma-map-ops.h>
++#include <linux/multikernel.h>
+ #include "kexec_internal.h"
+ 
+ #ifdef CONFIG_KEXEC_SIG
+@@ -309,6 +310,7 @@ kimage_file_alloc_init(struct kimage **rimage, int kernel_fd,
+ 	int ret;
+ 	struct kimage *image;
+ 	bool kexec_on_panic = flags & KEXEC_FILE_ON_CRASH;
++	bool multikernel_load = flags & KEXEC_MULTIKERNEL;
+ 
+ 	image = do_kimage_alloc_init();
+ 	if (!image)
+@@ -322,8 +324,50 @@ kimage_file_alloc_init(struct kimage **rimage, int kernel_fd,
+ 		/* Enable special crash kernel control page alloc policy. */
+ 		image->control_page = crashk_res.start;
+ 		image->type = KEXEC_TYPE_CRASH;
+-	}
++	} else
+ #endif
++	if (multikernel_load) {
++		struct mk_instance *instance;
++		int mk_id = KEXEC_GET_MK_ID(flags);
++
++		/* Set multikernel image type for proper memory allocation */
++		image->type = KEXEC_TYPE_MULTIKERNEL;
++
++		pr_info("kexec_file_load: multikernel load - flags=0x%lx, extracted mk_id=%d\n",
++			flags, mk_id);
++
++		if (mk_id <= 0) {
++			pr_err("Invalid multikernel ID %d in flags\n", mk_id);
++			ret = -EINVAL;
++			goto out_free_image;
++		}
++
++		/* Find the existing mk_instance */
++		instance = mk_instance_find(mk_id);
++		if (!instance) {
++			pr_err("No multikernel instance found with ID %d\n", mk_id);
++			ret = -ENOENT;
++			goto out_free_image;
++		}
++
++		/* Check if instance is already associated with a kimage */
++		if (instance->kimage) {
++			pr_err("Multikernel instance %d already has an associated kimage\n", mk_id);
++			mk_instance_put(instance);
++			ret = -EBUSY;
++			goto out_free_image;
++		}
++
++		/* Establish cross-references */
++		image->mk_instance = instance; /* Transfer reference from find */
++		image->mk_id = mk_id;
++		instance->kimage = image;
++
++		/* Update instance state */
++		mk_instance_set_state(instance, MK_STATE_LOADING);
++
++		pr_info("Associated kimage with multikernel instance %d\n", mk_id);
++	}
+ 
+ 	ret = kimage_file_prepare_segments(image, kernel_fd, initrd_fd,
+ 					   cmdline_ptr, cmdline_len, flags);
+@@ -731,6 +775,61 @@ static int kexec_alloc_contig(struct kexec_buf *kbuf)
+ 	return 0;
+ }
+ 
++static int kexec_alloc_multikernel(struct kexec_buf *kbuf)
++{
++	void *virt_addr;
++	phys_addr_t phys_addr;
++
++	pr_info("kexec_alloc_multikernel: called for segment size=0x%lx, buf_min=0x%lx, buf_max=0x%lx, align=0x%lx\n",
++		kbuf->memsz, kbuf->buf_min, kbuf->buf_max, kbuf->buf_align);
++
++	/* Check if this is a multikernel image with an associated instance */
++	if (!kbuf->image->mk_instance || kbuf->image->type != KEXEC_TYPE_MULTIKERNEL) {
++		pr_info("kexec_alloc_multikernel: not a multikernel image (mk_instance=%p, type=%d)\n",
++			kbuf->image->mk_instance, kbuf->image->type);
++		return -EPERM;
++	}
++
++	/* Allocate from the multikernel instance pool using the proper API */
++	virt_addr = mk_kimage_alloc(kbuf->image, kbuf->memsz, kbuf->buf_align);
++	if (!virt_addr) {
++		pr_info("Failed to allocate %lu bytes from multikernel instance pool (align=0x%lx)\n",
++			kbuf->memsz, kbuf->buf_align);
++		return -ENOMEM;
++	}
++
++	/* Convert virtual address to physical */
++	phys_addr = virt_to_phys(virt_addr);
++
++	if (!IS_ALIGNED(phys_addr, kbuf->buf_align)) {
++		pr_info("Multikernel allocation not aligned: phys=0x%llx, required=0x%lx\n",
++			 (unsigned long long)phys_addr, kbuf->buf_align);
++		mk_kimage_free(kbuf->image, virt_addr, kbuf->memsz);
++		return -ENOMEM;
++	}
++
++	if (phys_addr < kbuf->buf_min || (phys_addr + kbuf->memsz - 1) > kbuf->buf_max) {
++		pr_info("Multikernel allocation out of bounds: phys=0x%llx, min=0x%lx, max=0x%lx\n",
++			 (unsigned long long)phys_addr, kbuf->buf_min, kbuf->buf_max);
++		mk_kimage_free(kbuf->image, virt_addr, kbuf->memsz);
++		return -ENOMEM;
++	}
++
++	if (kimage_is_destination_range(kbuf->image, phys_addr, phys_addr + kbuf->memsz - 1)) {
++		pr_info("Multikernel allocation conflicts with existing segments: 0x%llx+0x%lx\n",
++			 (unsigned long long)phys_addr, kbuf->memsz);
++		mk_kimage_free(kbuf->image, virt_addr, kbuf->memsz);
++		return -EBUSY;
++	}
++
++	kbuf->mem = phys_addr;
++
++	pr_info("Allocated %lu bytes from multikernel pool at 0x%llx (virt=%px)\n",
++		 kbuf->memsz, (unsigned long long)phys_addr, virt_addr);
++
++	return 0;
 +}
 +
-+/* CPU resource management */
-+static inline int mk_send_cpu_add(int instance_id, u32 cpu_id,
-+				  u32 numa_node, u32 flags)
-+{
-+	struct mk_cpu_resource_payload payload = {
-+		.cpu_id = cpu_id,
-+		.numa_node = numa_node,
-+		.flags = flags
-+	};
-+	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_CPU_ADD,
-+			       &payload, sizeof(payload));
-+}
-+
-+static inline int mk_send_cpu_remove(int instance_id, u32 cpu_id)
-+{
-+	struct mk_cpu_resource_payload payload = {
-+		.cpu_id = cpu_id,
-+		.numa_node = 0,
-+		.flags = 0
-+	};
-+	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_CPU_REMOVE,
-+			       &payload, sizeof(payload));
-+}
-+
-+/* Memory resource management */
-+static inline int mk_send_mem_add(int instance_id, u64 start_pfn, u64 nr_pages,
-+				  u32 numa_node, u32 mem_type)
-+{
-+	struct mk_mem_resource_payload payload = {
-+		.start_pfn = start_pfn,
-+		.nr_pages = nr_pages,
-+		.numa_node = numa_node,
-+		.mem_type = mem_type
-+	};
-+	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_MEM_ADD,
-+			       &payload, sizeof(payload));
-+}
-+
-+static inline int mk_send_mem_remove(int instance_id, u64 start_pfn, u64 nr_pages)
-+{
-+	struct mk_mem_resource_payload payload = {
-+		.start_pfn = start_pfn,
-+		.nr_pages = nr_pages,
-+		.numa_node = 0,
-+		.mem_type = 0
-+	};
-+	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_MEM_REMOVE,
-+			       &payload, sizeof(payload));
-+}
-+
-+/* Messaging system functions */
-+int __init mk_messaging_init(void);
-+void mk_messaging_cleanup(void);
-+
- struct resource;
- 
- extern phys_addr_t multikernel_alloc(size_t size);
-diff --git a/kernel/multikernel/Makefile b/kernel/multikernel/Makefile
-index b539acc656c6..f133e1eaf534 100644
---- a/kernel/multikernel/Makefile
-+++ b/kernel/multikernel/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for multikernel support
- #
- 
--obj-y += core.o mem.o kernfs.o dts.o ipi.o
-+obj-y += core.o mem.o kernfs.o dts.o ipi.o messaging.o
- 
- # Add libfdt include path for device tree parsing
- CFLAGS_dts.o = -I $(srctree)/scripts/dtc/libfdt
-diff --git a/kernel/multikernel/core.c b/kernel/multikernel/core.c
-index ee7a21327ea5..37dbf0cf4be6 100644
---- a/kernel/multikernel/core.c
-+++ b/kernel/multikernel/core.c
-@@ -505,9 +505,16 @@ static int __init multikernel_init(void)
+ /**
+  * kexec_locate_mem_hole - find free memory for the purgatory or the next kernel
+  * @kbuf:	Parameters for the memory search.
+@@ -743,8 +842,21 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
  {
  	int ret;
  
-+	ret = mk_messaging_init();
-+	if (ret < 0) {
-+		pr_err("Failed to initialize multikernel messaging: %d\n", ret);
-+		return ret;
-+	}
++	pr_info("kexec_locate_mem_hole: called for segment size=0x%lx, mem=0x%lx, image_type=%d\n",
++		kbuf->memsz, kbuf->mem, kbuf->image->type);
 +
- 	ret = mk_kernfs_init();
- 	if (ret < 0) {
- 		pr_err("Failed to initialize multikernel sysfs interface: %d\n", ret);
-+		mk_messaging_cleanup();
- 		return ret;
- 	}
- 
-diff --git a/kernel/multikernel/messaging.c b/kernel/multikernel/messaging.c
-new file mode 100644
-index 000000000000..be1fba8778ec
---- /dev/null
-+++ b/kernel/multikernel/messaging.c
-@@ -0,0 +1,278 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Multikernel Messaging System
-+ * Copyright (C) 2025 Multikernel Technologies, Inc. All rights reserved
-+ *
-+ * Simple messaging layer on top of multikernel IPI infrastructure
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/multikernel.h>
-+
-+/* Per-type message handler registry */
-+struct mk_msg_type_handler {
-+	u32 msg_type;
-+	struct mk_ipi_handler *ipi_handler;
-+	mk_msg_handler_t msg_handler;
-+	void *context;
-+	struct mk_msg_type_handler *next;
-+};
-+
-+static struct mk_msg_type_handler *mk_msg_type_handlers;
-+static raw_spinlock_t mk_msg_type_handlers_lock = __RAW_SPIN_LOCK_UNLOCKED(mk_msg_type_handlers_lock);
-+
-+/**
-+ * mk_message_type_ipi_callback - IPI callback to handle incoming messages for a specific type
-+ * @data: IPI data containing the message
-+ * @ctx: Context containing the message handler info
-+ */
-+static void mk_message_type_ipi_callback(struct mk_ipi_data *data, void *ctx)
-+{
-+	struct mk_msg_type_handler *type_handler = (struct mk_msg_type_handler *)ctx;
-+	struct mk_message *msg;
-+	u32 msg_type, msg_subtype;
-+	void *payload;
-+	u32 payload_len;
-+
-+	if (!type_handler || !type_handler->msg_handler) {
-+		pr_warn("Multikernel message received but no handler registered\n");
-+		return;
-+	}
-+
-+	/* Verify this matches our expected message type */
-+	if (data->type != type_handler->msg_type) {
-+		pr_warn("Multikernel message type mismatch: expected 0x%x, got 0x%x\n",
-+			type_handler->msg_type, data->type);
-+		return;
-+	}
-+
-+	/* Ensure we have at least a message header */
-+	if (data->data_size < sizeof(struct mk_message)) {
-+		pr_warn("Multikernel message too small: %zu bytes\n", data->data_size);
-+		return;
-+	}
-+
-+	msg = (struct mk_message *)data->buffer;
-+
-+	/* Validate message structure */
-+	if (msg->payload_len > (data->data_size - sizeof(struct mk_message))) {
-+		pr_warn("Multikernel message payload length invalid: %u > %zu\n",
-+			msg->payload_len, data->data_size - sizeof(struct mk_message));
-+		return;
-+	}
-+
-+	msg_type = msg->msg_type;
-+	msg_subtype = msg->msg_subtype;
-+	payload = msg->payload_len > 0 ? msg->payload : NULL;
-+	payload_len = msg->payload_len;
-+
-+	pr_debug("Multikernel message received: type=0x%x, subtype=0x%x, len=%u from CPU %d\n",
-+		 msg_type, msg_subtype, payload_len, data->sender_cpu);
-+
-+	/* Call the registered handler for this message type */
-+	type_handler->msg_handler(msg_type, msg_subtype, payload, payload_len, type_handler->context);
-+}
-+
-+/**
-+ * mk_send_message - Send a message to another CPU
-+ * @instance_id: Target multikernel instance ID
-+ * @msg_type: Message type identifier
-+ * @subtype: Message subtype
-+ * @payload: Pointer to payload data (can be NULL)
-+ * @payload_len: Length of payload data
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_send_message(int instance_id, u32 msg_type, u32 subtype,
-+		    void *payload, u32 payload_len)
-+{
-+	struct mk_message *msg;
-+	size_t total_size;
-+	int ret;
-+
-+	/* Calculate total message size */
-+	total_size = sizeof(struct mk_message) + payload_len;
-+
-+	/* Check if message fits in IPI buffer */
-+	if (total_size > MK_MAX_DATA_SIZE) {
-+		pr_err("Multikernel message too large: %zu > %d bytes\n",
-+		       total_size, MK_MAX_DATA_SIZE);
-+		return -EMSGSIZE;
-+	}
-+
-+	/* Allocate temporary buffer for message */
-+	msg = kzalloc(total_size, GFP_ATOMIC);
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	/* Fill in message header */
-+	msg->msg_type = msg_type;
-+	msg->msg_subtype = subtype;
-+	msg->msg_id = 0; /* Could be enhanced with unique IDs later */
-+	msg->payload_len = payload_len;
-+
-+	/* Copy payload if provided */
-+	if (payload && payload_len > 0)
-+		memcpy(msg->payload, payload, payload_len);
-+
-+	/* Send via IPI using the message type as IPI type */
-+	ret = multikernel_send_ipi_data(instance_id, msg, total_size, msg_type);
-+
-+	/* Clean up temporary buffer */
-+	kfree(msg);
-+
-+	if (ret < 0) {
-+		pr_err("Failed to send multikernel message: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pr_debug("Multikernel message sent: type=0x%x, subtype=0x%x, len=%u to instance %d\n",
-+		 msg_type, subtype, payload_len, instance_id);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(mk_send_message);
-+
-+/**
-+ * mk_register_msg_handler - Register handler for specific message type
-+ * @msg_type: Message type to handle
-+ * @handler: Handler function
-+ * @ctx: Context pointer passed to handler
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_register_msg_handler(u32 msg_type, mk_msg_handler_t handler, void *ctx)
-+{
-+	struct mk_msg_type_handler *type_handler;
-+	unsigned long flags;
-+
-+	if (!handler)
-+		return -EINVAL;
-+
-+	/* Check if handler for this type already exists */
-+	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
-+	for (type_handler = mk_msg_type_handlers; type_handler; type_handler = type_handler->next) {
-+		if (type_handler->msg_type == msg_type) {
-+			raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
-+			pr_warn("Handler for message type 0x%x already registered\n", msg_type);
-+			return -EEXIST;
-+		}
-+	}
-+	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
-+
-+	/* Allocate new type handler entry */
-+	type_handler = kzalloc(sizeof(*type_handler), GFP_KERNEL);
-+	if (!type_handler)
-+		return -ENOMEM;
-+
-+	type_handler->msg_type = msg_type;
-+	type_handler->msg_handler = handler;
-+	type_handler->context = ctx;
-+
-+	/* Register IPI handler for this message type */
-+	type_handler->ipi_handler = multikernel_register_handler(mk_message_type_ipi_callback,
-+									 type_handler, msg_type);
-+	if (!type_handler->ipi_handler) {
-+		pr_err("Failed to register IPI handler for message type 0x%x\n", msg_type);
-+		kfree(type_handler);
-+		return -ENOMEM;
-+	}
-+
-+	/* Add to type handler list */
-+	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
-+	type_handler->next = mk_msg_type_handlers;
-+	mk_msg_type_handlers = type_handler;
-+	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
-+
-+	pr_debug("Registered multikernel message handler for type 0x%x\n", msg_type);
-+	return 0;
-+}
-+EXPORT_SYMBOL(mk_register_msg_handler);
-+
-+/**
-+ * mk_unregister_msg_handler - Unregister message handler
-+ * @msg_type: Message type to unregister
-+ * @handler: Handler function to remove
-+ *
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int mk_unregister_msg_handler(u32 msg_type, mk_msg_handler_t handler)
-+{
-+	struct mk_msg_type_handler **pp, *type_handler;
-+	unsigned long flags;
-+	int found = 0;
-+
-+	if (!handler)
-+		return -EINVAL;
-+
-+	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
-+	pp = &mk_msg_type_handlers;
-+	while ((type_handler = *pp) != NULL) {
-+		if (type_handler->msg_type == msg_type && type_handler->msg_handler == handler) {
-+			*pp = type_handler->next;
-+			found = 1;
-+			break;
-+		}
-+		pp = &type_handler->next;
-+	}
-+	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
-+
-+	if (found) {
-+		/* Unregister the IPI handler */
-+		if (type_handler->ipi_handler) {
-+			multikernel_unregister_handler(type_handler->ipi_handler);
-+		}
-+		kfree(type_handler);
-+		pr_debug("Unregistered multikernel message handler for type 0x%x\n", msg_type);
+ 	/* Arch knows where to place */
+-	if (kbuf->mem != KEXEC_BUF_MEM_UNKNOWN)
++	if (kbuf->mem != KEXEC_BUF_MEM_UNKNOWN) {
++		pr_info("kexec_locate_mem_hole: memory already specified (0x%lx), skipping allocation\n", kbuf->mem);
 +		return 0;
 +	}
 +
-+	return -ENOENT;
-+}
-+EXPORT_SYMBOL(mk_unregister_msg_handler);
-+
-+/**
-+ * mk_messaging_init - Initialize the messaging system
-+ *
-+ * Called during multikernel initialization to set up message handling
-+ * Returns 0 on success, negative error code on failure
-+ */
-+int __init mk_messaging_init(void)
-+{
-+	/* No global IPI handler needed anymore - handlers are registered per message type */
-+	pr_info("Multikernel messaging system initialized\n");
-+	return 0;
-+}
-+
-+/**
-+ * mk_messaging_cleanup - Cleanup the messaging system
-+ *
-+ * Called during multikernel cleanup
-+ */
-+void mk_messaging_cleanup(void)
-+{
-+	struct mk_msg_type_handler *type_handler, *next;
-+	unsigned long flags;
-+
-+	/* Clean up all registered message type handlers */
-+	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
-+	type_handler = mk_msg_type_handlers;
-+	mk_msg_type_handlers = NULL;
-+	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
-+
-+	while (type_handler) {
-+		next = type_handler->next;
-+
-+		/* Unregister IPI handler */
-+		if (type_handler->ipi_handler) {
-+			multikernel_unregister_handler(type_handler->ipi_handler);
-+		}
-+
-+		kfree(type_handler);
-+		type_handler = next;
-+	}
-+
-+	pr_info("Multikernel messaging system cleaned up\n");
-+}
++	/*
++	 * If this is a multikernel image, try to allocate from the instance's
++	 * memory pool first. This ensures multikernel segments use pre-reserved
++	 * memory from the device tree configuration and respects the pool management.
++	 */
++	if (!kexec_alloc_multikernel(kbuf))
+ 		return 0;
+ 
+ 	/*
 -- 
 2.34.1
 
