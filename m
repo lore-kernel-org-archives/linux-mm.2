@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF56CCD1AA
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1EECCD1A7
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3B028E0011; Sun, 19 Oct 2025 02:17:13 -0400 (EDT)
+	id 2C7C88E0012; Sun, 19 Oct 2025 02:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3648E0002; Sun, 19 Oct 2025 02:17:13 -0400 (EDT)
+	id 2520D8E0002; Sun, 19 Oct 2025 02:17:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8B658E0011; Sun, 19 Oct 2025 02:17:13 -0400 (EDT)
+	id 0F23A8E0012; Sun, 19 Oct 2025 02:17:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9808E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 686FA13B41B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F2D7A8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BEA4E140579
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:15 +0000 (UTC)
+X-FDA: 84013856430.08.088A2DE
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1830D180006
 	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:13 +0000 (UTC)
-X-FDA: 84013856346.25.D8B329F
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 868F3160005
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:11 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KIctGdVC;
-	spf=pass (imf08.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=njSEUG0h;
+	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760854631;
+	s=arc-20220608; t=1760854634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+dhzEiy+8NWdg0h4CeSLeODHjNB3Z/i+xinCfvk2bH8=;
-	b=63yuUJiu+KWVYgIb5ybppOkpzq0v4EwDYOntfNZKIwvaErvABOzQjCGuAE29gAmTLvIKUv
-	V7QeTs9TzYtczH+6TrnZ5ifw6UiILLumPLM3aLNz22uv7u/GWdX5i5J9pmebU/5dLKimrT
-	q9TgBGTQZlAzvMjWdV5dCa/wSU8hMj8=
+	bh=Pa/MsfNPB6bG2GsTxSNKTLsrafwlRF2VsAPzt2eBf8E=;
+	b=mR2Gv5+nXU0waDLx9mDXjZj3NXhPEWv9KbA8fGJ8760W91/iQpJ/CUNJTHVzh8zfXUe89U
+	ave3ewUXs3WDxP7SX/Gma6aAhPIVCP0RefAJIjyp5FxbiW1p5IlydgEMX4u47gqr3rqdrJ
+	bJvds4TBmbsm3Rb55NIF+iT0vO0cnWU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KIctGdVC;
-	spf=pass (imf08.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=njSEUG0h;
+	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854631; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854634; a=rsa-sha256;
 	cv=none;
-	b=WBrY3Wvl6oo8h618HdYlUMtqDDYezRAgoHrficxWggiAFI/Lh+HtsKUTa4U3HH0JRjzrp2
-	OqYjnJtPbomNv487AsEh9FBd30DjsARllRcto9Zu4NRNc7Meh3i5Jcdj92vQcveiurOj8l
-	TO/QfYg1cWcnwjwmdhefQGeSBw3mFa0=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3307de086d8so2779230a91.2
-        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:11 -0700 (PDT)
+	b=ECWuOwFEHsqvVZ2GiMD+HS/v3IM1DHlCWP0Mbnnm2alvK41Qg1DG8SkB2bwh8YDAUcS6n0
+	8bsm0lcPcO+vdceUVQlxHJBYN0csnO+F9L8MPDOfXG7dKMxM+603Vr5II0SXZ/X0nU26pE
+	/q8eIDJQKRa8zlbJNhhdCRSKXPRBkAs=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-339c9bf3492so4088729a91.2
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760854630; x=1761459430; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760854633; x=1761459433; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+dhzEiy+8NWdg0h4CeSLeODHjNB3Z/i+xinCfvk2bH8=;
-        b=KIctGdVC1bQeShTAM2zWH8md62l1Alh27dObW0WheqmtLYqrKhDSBmZFUGOTg9hWq4
-         4SWSKgiaYNswnhV78sLbU8o1jW9TGmzWJnRUgM+hh9HPGcGEAxdWy11Tw8/H5Ya926Oj
-         pDgTNDqoNaAX9I+RlluVVFM/nerISIDZZVF0LlYvhMRKkj8PY+EQ69kR//ijLLtHtAik
-         134d1ZseQDBeM6zw4s2CEQyhpF/z9aClpj9bxmyXDVFvGPkEs83Zv3pFtK2+GC0XZnXT
-         0x4hpF1KGCWhwwl5Y9D/q2MOmZoIhVrs2f0AapxzyKM/EbJ+gOj8cbB4uqqc9qMafEi3
-         wJLA==
+        bh=Pa/MsfNPB6bG2GsTxSNKTLsrafwlRF2VsAPzt2eBf8E=;
+        b=njSEUG0hHakIO6Fg+h5iWKtljD9Am1h7j8Zoz8tU+TDBHqJS1F2nKDUST3o5NKem09
+         /PI4k81FoMiaKFzC7yVVldQab2cVtVlLrerDsqnih2XL9Z1UuzSVA0u5dpqbMWP9i9/u
+         pcg8VAsz99Un+0KQJ7UC9RCkNq70UBXka/WH9H7LujNQSRE3PTquh/qEKoeqOaGA/gQA
+         WBxOoQuDUpwxq/RjYFR0jmFmautA4sah4wWPRu80Shmk0fA+PIofrj7WjptNkJ7+v7C+
+         rA8HQMic7hWhbD8Mcyv8JcLJYo0Ad8KZq0cX158Tl5Eq9eXJNhMcpyl85IawvHajVSST
+         5gbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760854630; x=1761459430;
+        d=1e100.net; s=20230601; t=1760854633; x=1761459433;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+dhzEiy+8NWdg0h4CeSLeODHjNB3Z/i+xinCfvk2bH8=;
-        b=i5ciofM/KDEsihJnEGJcBFJ3UB5r0S/VdhoiXyDC3yB1w7gDzoWlAjwFu03/jvIHPq
-         xR1ZArbN3fIm3sqbQpyjUL2nukfhnBXhJqyX82gkJwioM89wicr6bQCKOPB0jPfcJwrS
-         FJq6xO5P62+LfppnWiOAZ2ISDmYfHRuuz40vInWwxeWN1GoEt2toJgoo/CiYmf6sAe6A
-         ogbrzUYcCQW0vsLdzOfQCJagt/Ua9GC1OqAuZ0B/ISKRnD3YFPePMPyYWpbCBFc1NYNl
-         yQrtUA8nmcM+aO3eIzenWjxWfbfLrsbWXvNtlkPON8R5jff0cplRscA6c1eVCuHPcOq/
-         jVkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUCNDXwtDeyCK/lklLMQgPz3R3R534YFeCC573b4VmzvbeSxo1pJtBp4SeqtPO7QAPu3fk70wMR1A==@kvack.org
-X-Gm-Message-State: AOJu0Yw1tW73XPWuPidh+EbbWZcx26jKI8jRKoApKHt9zl7mj+xyTPB4
-	dSO4CbQCCXDmKTq2JgXsGuXg6n5Zt14W3J4ZMUD6o3+jl4wQ2kQdYSsj5BMqFA==
-X-Gm-Gg: ASbGnctxuvypmjrmbmXA6ZhSM47TJvL5BrgmFpDd0GXFeE2Z1cZNuZTjyi0Gs9wG1dP
-	Twbdve+L5Ru31ado1deXVmJXcamtq6RwPUT6VX6Y5XuIktIBAxiR7PutyUDp+QE3IgGb378z7s5
-	erjkq5bz9EGREL0GDBo3Undlcg8ca+HkVf4vhf9dMYJzs6skqDQUbM9h8i/+ChHIc3T7nqWjMoj
-	9nHJOtj9yAQ4nCsdjkU3pkmWDdPrTr69Zqa+umyX+D6jqjvSTb/Du2s1qHCTlt6WVtKWI1DToFZ
-	n2XYmwxiFN82X8bJ/f8cWiEEY6yY0ky9SM/ZwZZihVqjJ0sjulJQ6z1/NXgEEglmqtkiXayBfMr
-	JDAY0MnrD67iB5mtVirRqvg21H2X05Dc0QwTK2k0HhxapVHcZmDL/Vz/fb/SOkmdqC/Zkh6b54l
-	Oxpp/VbXgFvLg/nkk=
-X-Google-Smtp-Source: AGHT+IHsfMse1ea3nbYNy4BvjdFagVFMuvl17zEl9LnMyhbIq3nsVQdQyV1KljR01j/1hJqe5RDh3A==
-X-Received: by 2002:a17:90b:1e07:b0:32e:7340:a7f7 with SMTP id 98e67ed59e1d1-33bcf85abb4mr10954646a91.2.1760854630353;
-        Sat, 18 Oct 2025 23:17:10 -0700 (PDT)
+        bh=Pa/MsfNPB6bG2GsTxSNKTLsrafwlRF2VsAPzt2eBf8E=;
+        b=a1NQoBDy4tiwNyricaoRANVj86aP3G9eRukieLtPrN7BPRkBjV8131Sd2y64Yks5Gs
+         KsIBJEjnfaBBv2NLlNNZMOMryl3AolSKzWT6tn+EQdU9Ux65dgrpnhFUzSTKgn4pqxeY
+         DgMXLD6fj1/X7DgjPfY9i8pOZqJVIMjbd964PAZzHTBAlh2TPgOlmVHJ/t43S0v6dB98
+         gs/odwccGL31+XvqXmj2N1M0NUulUhHHsub3ApKa+wv7Aymw9fYI6VAjTjS9QwD868t8
+         /ZECVCrSK+zzwKsf7VIjDFD+lmiiq2DMEB4vdM1rrVubDQ41ysEWc3UUDZggT7eSWG00
+         mkjg==
+X-Forwarded-Encrypted: i=1; AJvYcCV54r25GYlHM+avJFZXGFUZACaTG9pPL087HXP2JbI0WEp2UOqgBzSiN/N7PEkCKBY3sRZ3tgQVjw==@kvack.org
+X-Gm-Message-State: AOJu0YzaK0wmb4ilQHizeN6BzqWHrSf6KiEbfvYU/IltQo6hvW20BSZB
+	VlOvYS2811mq/H60NRMhMcxjprIwwNslVY2iV/IB4Z614gzkke324Vgf
+X-Gm-Gg: ASbGncvvEg1X7PMqTfzxKZtUOigtZZwb4BQQfOQuLNDYXH/9uS7Ri2iWNQ5Um0Puhpl
+	4LnuEQC2HOlPh9HAj7+4zphQK0oZ6HJTHTcpB3loZdkxptT8A2LOAC66gMU/ctqc9h+6nwwRTBq
+	CYMWgkRdbRYW8Q6Cz6XocTzrTjrjt6SXrZDjssfyzjf5WM4myluSIamT5b/zM2qMU040vx952Qx
+	alfMnf2w2+LNVx3+x8c9RuY2iq67GTpgjiexg4GDxh8kXhdXK+GTVF2mop//5OwO57vXRpWnBsv
+	Rh6jU3UKfibGxL9vkH32OrbYP3uZUxT0kRbS/iliOMLamZZXHLFjzr3nCu0JUeA2kYrWadWAyDc
+	CMs8XNzGahfVkS+aaNeEcqQK3xMwUPvZcPUIU2jKbh0v6xXVAyxVhvjiP3KwvvatOP90h7KSI45
+	zyZHO4ajZO2fWcrms=
+X-Google-Smtp-Source: AGHT+IEcU9YEdbUoIaZ58UmrsaoQiSd0FUGy1FLPQQWXoQbBycgCM+6raP4xZnOBinCzMBaBjeximQ==
+X-Received: by 2002:a17:90b:2ec7:b0:33b:6650:57c3 with SMTP id 98e67ed59e1d1-33bcf8ec60dmr11689870a91.21.1760854632902;
+        Sat, 18 Oct 2025 23:17:12 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6881:9060:bc87:d8fe:3e55:7ffb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.09
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 23:17:09 -0700 (PDT)
+        Sat, 18 Oct 2025 23:17:12 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: linux-kernel@vger.kernel.org
 Cc: jiri@resnulli.us,
 	stefanha@redhat.com,
 	multikernel@lists.linux.dev,
 	pasha.tatashin@soleen.com,
-	Cong Wang <cwang@multiernel.io>,
+	Cong Wang <cwang@multikernel.io>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <bhe@redhat.com>,
 	Alexander Graf <graf@amazon.com>,
@@ -106,23 +105,22 @@ Cc: jiri@resnulli.us,
 	Changyuan Lyu <changyuanl@google.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [RFC Patch v2 10/16] Documentation: Add multikernel usage
-Date: Sat, 18 Oct 2025 23:16:24 -0700
-Message-Id: <20251019061631.2235405-11-xiyou.wangcong@gmail.com>
+Subject: [RFC Patch v2 11/16] kexec: Add /proc/kimage interface for kimage tracking
+Date: Sat, 18 Oct 2025 23:16:25 -0700
+Message-Id: <20251019061631.2235405-12-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 References: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 868F3160005
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1830D180006
+X-Stat-Signature: cciwwpi4wcxkak1xpj319rrtwgy7tm7n
 X-Rspam-User: 
-X-Stat-Signature: qchk3ptrp41d4i36rm11oc4o5r9gjyfy
-X-HE-Tag: 1760854631-285179
-X-HE-Meta: U2FsdGVkX1+1S3KsbeY2FdSk+I0eE/+eHcA0EmfOyd/O85lN1TWSlnsM63uBMfOD0n3I7wD32ku9m0e+4SIdvwK/eSG0cL67E9h7gV4ve35h6XJCBIDWKGdcjblhFxANn8K3f30H5qJiN76OE3Y0vdPaGMkT0K1wtUooWt/tVSGPJIo1aSDTDKPEnRRpQMW5unlOI5gnryxmdLnAbg6uIdjL0q84CxuOtNCJXJC3xAxdD0RBF5tbQp0AVW76HKQ/wiDUQeRpVdWcVVQ2dR95gsKeuGCnQbHxZqxAKll7uR/OdgJVKS9sJaALT2iMfDCem9Y0fZCGL23WjeFDpfn9POb5YnhIbdr6P918RcLWjLVCQ8aEDt/wyGl2gBOGqMr0pNcU24UbTwyUDQeKEDVEacQZR4Lif0Dbn3+2It8h25PeXEiu38BFps8PHlgffBGNIBRHXMrQKR1LQkMDPifai6GtYp6dIDk2OeBe56DjHTu7TLETUDV3a3/sFJp+o2/1pzPIFizqWzlC5sauDfqxTpRaEfvnOOAS84113OQ0On4ZBSC/0maNclFPaLO+9gL8AA34ZRHneJ/CcDviokkQs0YeNUwDF9KmpLd/daP+7rqSAGJoS3pRa3Dk8y52dEvhGG1nn5pQ5DXAE6Elp3C3REh5OzUCvunH9/SNqRReyu4NYCol0Si54DrcR7+gsgyrO2I2JYwjNbvPmU4bfZw8YFDJDw2HNHh4rtBvbefwva+oQ4NhVrLkuzqcggpi3XMU5YWqYRV09MtUSk19i//qSpru9x4byL2miAatxcGT3SF28rK8/haU2rprolhkb9dYk8ahMxfQH/YkAEPfDquCuLz3cA/LGk6A4tpqgkROejciFVs10WbUOPJ3tnYTBfkJhK5nRVwycYcbY02j1uqEVwrxh2L4p45yOMkJcwsvN5zLsdYZZj0ks+q58gno7qlIvjhQg627antRiULIbvk
- AW/pPPHz
- qjq35KGv2hZgCIt+04qyPtDrzBtvnO24KTd/as1vdYb4rpiYH5Ka7u6mhxfOVMnD75qjc1VeSDMw9WuWLqgFeWgnrT2UXKJKdcMNWumu1+UouZRZNSa3wVUyPymwsfg4+KNRZbHtzZpTRbFi4uAeiYbKUaNL7xzu6sp/PfeF9vPCG6dQgLTwpqZ3Tjj6O7VA31t5PODV5QYkXUDKBaFUVHdt9aL69vEImsEIenUX3OWlULWVb8/J7yJV/4PTnRVuBT98LTBnPmvKzIE45uCH/NB5yM7QqySaul3AL74nbadl1nonLYjAgMbu7kiHG8GObwVeRzCUU7fXKyzJbG+IRL305MQxQ9dLC0C9iFsaHoRt/IAUKHkanrirU9UU6aMNMPA1oy1Z3yD1vwQCwz6L7lERKMN/UeXqcqG8TBu468xXnrTl/Qlsfl/7kFY2xdkzFQpJ/sfuXM/yJq757GIKlorEebTMoRKWsGCYLgE/sEzLvPhX43Cq2c5HKdw==
+X-HE-Tag: 1760854633-330163
+X-HE-Meta: U2FsdGVkX18UmUkzV4fZG4F+e7KofGGKMntDhegP7Fy3dhbE88Y06XNbcu/FqIDgpE58opdQ8bibBMlsRVwbBt19bLDGlv0JkmWm/E44ikZZy0/xeQafl1ic2UrSS/KbRX+zVMlikIsfwJu7ZaXI8sguZoTrzSgWrnF4qmlA9QL5HugQdtw8OWKJiA9HUL4OqA8UOylsWxuDcC4j/L3VnZu8SSooK5p25Ew0EzK+TtiPhh/NA7KM2xbB9a7kozMLC9UFJvh0WgYfzYgYuNGWi2E+sre+Ebqcx5okTrS87Q46pOLgQbf6BEb6d4DSWJJXF25kYBQh6cdIzXhM1MzaTQbfbvRbDIL88H2/+sXj37W35sy4dJrruseqEitcGjMIgvb3+/6S39DT9WDr3oPrqmg+wGUgv5Uv9+TCjKAY6s2H6vkGH+55HXjlSpYdPEiXjTm4PVNa7OApWmZ7VxEq+3aPgjHL7sW6llTwhZhapcihQ3pRQU67utFmtg0f2wu9ckpqKV6TtEhUm6vXD4Cs5pA93QarS4qiq7uxFbdJ4quw0SN73RpDnpdfrwS1mDCRhVzRbjmq3NeVPkiYza4sD4hRX1lFNYa5I3qs5Dt6xMDigqCerGG2I2CITqx5eAJH2dkZrLWo1xYFYcms6WZqbOyJNIGzqP+cb0ijiv9lLVLvBS8fGyrnxPB7A+xEEwW1KRXCDcuv0bk/sLnk8REUA/698JVijerif2szq90mUPCWRILzUMcD80/kMfg0iui7ITRjx6ifnCo501eQ0cuwi02p1y8P/imQ3qJbvW6rRo+hi7KWdwA/e7YzndSIYbyrporJ78Q7l3MBz19dGIcQ7qWORATi0Ln69x3t0wkWspXpC8sTR+EdxzhP6+6OyrynhTry036hcYjECfXADk4pDGDzJQFzzcCc6gvbk0jHvgQk9F1gwaTyqHK4AFQa59CC5jKrfaeh+sSBdasV+K/
+ sGYOOd5a
+ uOCyTZogNAbZ4WwKUh9sZMrLAD/V4HE9HW0pn7aEH+V5don36QAlOX0yR3T5ikXJWUYpj92ZYGN0fczTG8BvDpUKLFefQetPXsPCmgryVQQf0P3hopxA/1iqk8ZD1xXLAwFhB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,235 +129,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Cong Wang <cwang@multiernel.io>
+From: Cong Wang <cwang@multikernel.io>
 
-Signed-off-by: Cong Wang <cwang@multiernel.io>
+Add a dedicated /proc/kimage file to provide read-only access to
+all loaded kernel images in the system, for both regular kexec kernel
+images and multikernel images.
+
+The interface displays kernel images in a tabular format showing:
+- Type: kexec type (default, crash, multikernel)
+- Start Address: entry point in hexadecimal format
+- Segments: number of memory segments
+
+This interface is particularly useful for inspecting kimages, debugging
+kexec, and verifying that kernel images are loaded correctly.
+
+Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- Documentation/multikernel/usage.rst | 215 ++++++++++++++++++++++++++++
- 1 file changed, 215 insertions(+)
- create mode 100644 Documentation/multikernel/usage.rst
+ kernel/kexec_core.c | 63 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/Documentation/multikernel/usage.rst b/Documentation/multikernel/usage.rst
-new file mode 100644
-index 000000000000..a2ec8d56ca1d
---- /dev/null
-+++ b/Documentation/multikernel/usage.rst
-@@ -0,0 +1,215 @@
-+===================================
-+Multikernel Kernfs Interface Usage
-+===================================
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index ed5c97b4531e..7db755e64dd6 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -13,6 +13,8 @@
+ #include <linux/slab.h>
+ #include <linux/fs.h>
+ #include <linux/kexec.h>
++#include <linux/proc_fs.h>
++#include <linux/seq_file.h>
+ #include <linux/mutex.h>
+ #include <linux/list.h>
+ #include <linux/highmem.h>
+@@ -1214,6 +1216,52 @@ struct kimage *kexec_image;
+ struct kimage *kexec_crash_image;
+ static int kexec_load_disabled;
+ 
++/*
++ * Proc interface for /proc/kimage
++ */
++static int kimage_proc_show(struct seq_file *m, void *v)
++{
++	struct kimage *image;
++	const char *type_names[] = {
++		[KEXEC_TYPE_DEFAULT] = "default",
++		[KEXEC_TYPE_CRASH] = "crash",
++		[KEXEC_TYPE_MULTIKERNEL] = "multikernel"
++	};
 +
-+Overview
-+========
++	seq_printf(m, "MK_ID  Type        Start Address   Segments\n");
++	seq_printf(m, "-----  ----------  --------------  --------\n");
 +
-+The multikernel kernfs interface provides a clean, user-friendly way to manage multikernel instances through the filesystem. The interface is located at ``/sys/fs/multikernel/`` and supports automatic instance creation from multikernel device trees.
++	kimage_list_lock();
++	if (list_empty(&kexec_image_list)) {
++		seq_printf(m, "No kimages loaded\n");
++	} else {
++		list_for_each_entry(image, &kexec_image_list, list) {
++			const char *type_name = "unknown";
 +
-+Architecture
-+============
++			if (image->type < ARRAY_SIZE(type_names) && type_names[image->type])
++				type_name = type_names[image->type];
 +
-+::
++			seq_printf(m, "%5d  %-10s  0x%012lx  %8lu\n",
++				   image->mk_id, type_name, image->start, image->nr_segments);
++		}
++	}
++	kimage_list_unlock();
 +
-+    /sys/fs/multikernel/
-+    ├── device_tree         # Root-level DTB upload (write-only)
-+    └── instances/          # Instance directory
-+        ├── web-server/     # Instance created from DTB
-+        │   ├── id          # Instance ID (read-only)
-+        │   ├── status      # Instance status (read-only)
-+        │   └── device_tree_source  # Instance DTB in DTS format (read-only)
-+        ├── database/       # Another instance
-+        │   ├── id
-+        │   ├── status
-+        │   └── device_tree_source
-+        └── ...
++	return 0;
++}
 +
-+Workflow
-+========
++static int kimage_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, kimage_proc_show, NULL);
++}
 +
-+Phase 1: Instance Creation (Automatic from DTB)
-+------------------------------------------------
++static const struct proc_ops kimage_proc_ops = {
++	.proc_open	= kimage_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= single_release,
++};
 +
-+1. **Create Multikernel Device Tree**
+ #ifdef CONFIG_SYSCTL
+ static int kexec_limit_handler(const struct ctl_table *table, int write,
+ 			       void *buffer, size_t *lenp, loff_t *ppos)
+@@ -1285,6 +1333,21 @@ static int __init kexec_core_sysctl_init(void)
+ late_initcall(kexec_core_sysctl_init);
+ #endif
+ 
++static int __init kimage_proc_init(void)
++{
++	struct proc_dir_entry *entry;
 +
-+   Create a device tree with multiple instances:
++	entry = proc_create("kimage", 0444, NULL, &kimage_proc_ops);
++	if (!entry) {
++		pr_err("Failed to create /proc/kimage\n");
++		return -ENOMEM;
++	}
 +
-+   .. code-block:: dts
++	pr_debug("Created /proc/kimage interface\n");
++	return 0;
++}
++late_initcall(kimage_proc_init);
 +
-+      /dts-v1/;
-+      / {
-+          compatible = "multikernel-v1";
-+
-+          instances {
-+              web-server {
-+                  id = <1>;
-+                  resources {
-+                      cpus = <1>;
-+                      memory-bytes = <0x20000000>;   // 512MB
-+                  };
-+              };
-+
-+              database {
-+                  id = <2>;
-+                  resources {
-+                      cpus = <2 3>;
-+                      memory-bytes = <0x40000000>;   // 1GB
-+                  };
-+              };
-+          };
-+      };
-+
-+2. **Upload Multikernel DTB**
-+
-+   .. code-block:: bash
-+
-+      # Compile device tree to binary format
-+      dtc -O dtb -o multikernel.dtb multikernel.dts
-+
-+      # Upload DTB to create instances automatically
-+      cat multikernel.dtb > /sys/fs/multikernel/device_tree
-+
-+   This automatically:
-+
-+   - Validates DTB format and multikernel-v1 compatibility
-+   - Parses each instance in the ``/instances`` node
-+   - Creates instance directories under ``instances/``
-+   - Reserves memory and CPU resources for each instance
-+   - Updates each instance status to "ready"
-+
-+3. **Check Created Instances**
-+
-+   .. code-block:: bash
-+
-+      # List created instances
-+      ls /sys/fs/multikernel/instances/
-+      # Output: database  web-server
-+
-+      # Check instance details
-+      cat /sys/fs/multikernel/instances/web-server/id
-+      # Output: 1
-+
-+      cat /sys/fs/multikernel/instances/web-server/status
-+      # Output: ready
-+
-+      # View instance device tree
-+      cat /sys/fs/multikernel/instances/web-server/device_tree_source
-+      # Output: DTS format showing the instance configuration
-+
-+Phase 2: Kernel Loading (Kexec Integration)
-+--------------------------------------------
-+
-+1. **Load Kernel Image**
-+
-+   .. code-block:: bash
-+
-+      # Load kernel for instance ID 1 (web-server)
-+      kexec_file_load(..., KEXEC_MULTIKERNEL | KEXEC_MK_ID(1))
-+
-+   This:
-+
-+   - Finds pre-reserved resources for instance ID 1
-+   - Creates kimage using pre-allocated memory and CPU resources
-+   - Updates status to "loading" → "active"
-+   - Preserves instance DTB for KHO (Kexec HandOver) restoration
-+
-+2. **Instance DTB Preservation**
-+
-+   The multikernel system automatically preserves each instance's device tree during kexec for restoration in the spawn kernel. The spawn kernel will:
-+
-+   - Detect multikernel KHO data during early boot
-+   - Restore the instance's DTB and recreate the instance structure
-+   - Re-reserve the same memory and CPU resources
-+
-+Device Tree Format
-+==================
-+
-+Multikernel DTB Structure
-+--------------------------
-+
-+The multikernel device tree uses the ``/instances`` structure with ``multikernel-v1`` compatibility:
-+
-+.. code-block:: dts
-+
-+    /dts-v1/;
-+    / {
-+        compatible = "multikernel-v1";
-+
-+        instances {
-+            web-server {
-+                id = <1>;
-+                resources {
-+                    cpus = <1>;                      // CPU ID 1
-+                    memory-bytes = <0x20000000>;     // 512MB
-+                };
-+            };
-+
-+            database {
-+                id = <2>;
-+                resources {
-+                    cpus = <2 3>;                    // CPU IDs 2 and 3
-+                    memory-bytes = <0x40000000>;     // 1GB
-+                };
-+            };
-+
-+            load-balancer {
-+                id = <3>;
-+                resources {
-+                    cpus = <0>;                      // CPU ID 0
-+                    memory-bytes = <0x10000000>;     // 256MB
-+                };
-+            };
-+        };
-+    };
-+
-+Per-Instance DTB Format
-+-----------------------
-+
-+When viewing an instance's ``device_tree_source``, it appears in per-instance format:
-+
-+.. code-block:: dts
-+
-+    /dts-v1/;
-+
-+    /web-server {
-+        compatible = "multikernel-v1";
-+        id = <1>;
-+        resources {
-+            cpus = <1>;
-+            memory-bytes = <0x20000000>; // 512 MB
-+        };
-+    };
-+
-+Resource Properties
-+-------------------
-+
-+- **cpus**: Array of CPU IDs to assign to this instance
-+- **memory-bytes**: Memory size in bytes (must be page-aligned)
-+- **id**: Unique instance identifier used for kexec operations
-+
-+The system validates that:
-+
-+- CPU IDs are valid and available
-+- Memory requests don't exceed available multikernel pool
-+- Instance IDs are unique
-+- All values are properly aligned
-+
-+Instance States
-+===============
-+
-+- **empty**: Instance created but no resources allocated yet
-+- **ready**: DTB processed, resources reserved, ready for kexec
-+- **loading**: Kernel being loaded via kexec
-+- **active**: Kernel running in this instance
-+- **failed**: Error occurred during any phase
-+
-+Interface Restrictions
-+======================
-+
-+The new kernfs interface has the following restrictions:
-+
-+- **No manual instance creation**: Use ``mkdir`` under ``instances/`` is disabled
-+- **No direct DTB upload to instances**: Instances don't have writable ``device_tree`` files
-+- **Centralized DTB management**: All instances must be created via the root ``device_tree`` file
-+- **Read-only instance files**: All instance attributes are read-only for consistency
+ bool kexec_load_permitted(int kexec_image_type)
+ {
+ 	struct kexec_load_limit *limit;
 -- 
 2.34.1
 
