@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC81CCD1AB
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D0BCCD184
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33B338E0006; Sun, 19 Oct 2025 02:16:52 -0400 (EDT)
+	id 1197E8E0008; Sun, 19 Oct 2025 02:16:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EBFB8E0002; Sun, 19 Oct 2025 02:16:52 -0400 (EDT)
+	id 0C9568E0002; Sun, 19 Oct 2025 02:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA808E0006; Sun, 19 Oct 2025 02:16:52 -0400 (EDT)
+	id E5F708E0008; Sun, 19 Oct 2025 02:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AC648E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:16:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97D4647F53
+	by kanga.kvack.org (Postfix) with ESMTP id D307E8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:16:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 87B2213B341
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:16:53 +0000 (UTC)
+X-FDA: 84013855506.04.6D33E69
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8F4A240005
 	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:16:51 +0000 (UTC)
-X-FDA: 84013855422.28.59DE2B6
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C3FFB180005
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:16:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="MBdId/UL";
-	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YhklciWm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760854609;
+	s=arc-20220608; t=1760854611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZRMP2OfxaTGj9Ba3u31wGuIf4ugyC10QC83Sd0wi7Ek=;
-	b=H2poXLYbBmwHErXudHFECnAvYJapHTEk/AXGuDC9rD5sh/JhkND8dD9bn09J7FVJ87jbF4
-	GV67FYooFR8NBmVt3a2wWJasUU0f5wg3Xw9J+KYGSGkL9MbhNIYDopdMu77C++cH9bUZii
-	yQ6ZBPiYXkMowNjUCM/zb27Of6M+Zq8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="MBdId/UL";
-	spf=pass (imf16.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854609; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ASOuu0vLLkYA4SCgQcRVW0CFmaVqIaRDuU0cccUVqmU=;
+	b=dqTXMZ/qYJYVrpTbLNCJW0aTeB8HE5u5tfHDWjeqz+W3QXumjsGN88k1SvEwdVWT881oBI
+	OJY90aVey1ZCn2XJHephhDDIGQtfYAccTD4wstoJKgygtYBmF6djcapDP6PHW45M2xaGfq
+	Ig7ElsSl8RbORwFP2u4kKEbMWxTKTtQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854611; a=rsa-sha256;
 	cv=none;
-	b=P2/nIGxdrP8nmrltGEP/5AT/Cw9aScLKH1S/Tq6YlsSbUXwfS5fhawJk+MjKGQ6bL9Xxia
-	fQ/Bbfe9y7kgXiTZGz5S/103tDiBTgCUx0dRSDMZ/DjEaQNR3Fk4smmgpnZ2to6fNAmC4y
-	vOC6Feq7uj0OL579Yt23kEvHcfiziM4=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7811fa91774so2881956b3a.0
-        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:16:49 -0700 (PDT)
+	b=KM2ZO3h1MGeD7rhrcnhZbadvZ7rLuX7hiilhSUa0Dl8jWWJPccOlPCYvQHkBqJjDjkgdYO
+	4fahqXgAtCjGzvevXMub81H+jEVzJHYhWYxwGlMi58KZb0/O9h5ZwyxZivMihraDeSgcfw
+	xsr55Dq8uMpuUXqTfYxpebUfzTbWH8w=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YhklciWm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7a23208a0c2so647157b3a.0
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760854608; x=1761459408; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZRMP2OfxaTGj9Ba3u31wGuIf4ugyC10QC83Sd0wi7Ek=;
-        b=MBdId/ULOXIotsB2LBzqrFE2L2M8xarngSbilQDwKSVG1VfeZdllm6lPt/4PZ5XDX9
-         YdTtj7Chei7UUJz8Mk/B5tg6Z2m+Qg7W1zo4LNcRB1N5QiiABSwC9nfgPdqZq2J4Zqq2
-         aFudGKqq3bxWj+moyc2Kt1ZPkI4b0el6Lb1rEJ5CmBUVnRwBA0ddZfHI7MEF3mU9J+JC
-         ryMDoHmV2MDOKzRnoPKTpRqMcTbvey9ccnTyIbNrgSnPyf8w9Y1zxdWM7O3QeXQI2J6L
-         I4unE2M+tbkWVlHHXJMEjbpCDY+yJNVZVjlgnQYPdDK9CW/8sq3k+X6oYTqLaPN/ZMMq
-         X1Lg==
+        d=gmail.com; s=20230601; t=1760854610; x=1761459410; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ASOuu0vLLkYA4SCgQcRVW0CFmaVqIaRDuU0cccUVqmU=;
+        b=YhklciWmPCGzYAfpFpi+o5Xue/qbWNjCOuSX9JzeyuJEzuK5cfqQDFx7OErmUqMzCs
+         MPB9pIn3bRMeLt45NLsmHO8jP4XamdRxI+a6o+ybIvT1l5ysIsWP17KupdQU2SOUFZbq
+         3ElCbFsHClhCVR30/xMqy+uuPTZs+TxL5Sx3CkB5oxPSouRUca3cBpm6m1O3EZ0VFMsU
+         d5ng/DiTNI+4DDxPYnLZs8fv+KOX8RWFqNW+u75bcKIeAG2k+eIMY7yiU2Alyhq1I31h
+         alBbw7cTx5/XpD42pJlrnM3XUrnUaAI6poXpIJ46SOz/+SDucmc/kg8sFCYdeMPKttMC
+         7DvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760854608; x=1761459408;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZRMP2OfxaTGj9Ba3u31wGuIf4ugyC10QC83Sd0wi7Ek=;
-        b=MCxCNUPlnPNw+cANYy19bQ3u1oZSoycUeN2y8/0zPIuytJEPvRFBffKYXwf42P6E15
-         jfIrit/6pkQKL9Xg9D4xoUS40j1c4E5G8B3/lysu16ozm1VLV8zC2eoOD7ArCQWFpY+7
-         nQ3KqWijJl/cqEFohRD19eOsU3SjnWgkNB5zXOL/p1+RJnVe49PbEk/M3UZ9rYVi2G5M
-         PvacuR1dx1bbWXQFjU7dWcXupI1hxep/PvWlVgWHvaIyl0HKmA1CWpjdoO2RiHUC7PIK
-         UUmiHC1jvNYIJ5XHWcFbv6LmyGtIAA4BvrWwhV05E38Ys8pkfw/uPJ3LWn1YegvZBYWk
-         8wmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAS3GD6ZbESp1cQVlYkYY6/FtIsGHzz1HZ+zs1OunHzUem+Wf2RWp88h00xr8Z9rPAWyu1pp8+rg==@kvack.org
-X-Gm-Message-State: AOJu0Yw7QXPKoY8HRTBMyLJL1Z4qH1Zgdup0OWSqHBEUYIxKR+iduHeo
-	FlulbU8Qq/9vZ9ljairZJ7jSAsbFyYq15UieBn/veAg2AcR4QMyZhfbo
-X-Gm-Gg: ASbGncsdtCmKOVz5xsizvYUDDnXOhhDI4cTlB0iDectAnR5ulPVqkgq3eYjIOFX44i3
-	aKSvn15/ldLRN7T1Vo+vs8XNjLXEDqbxlVXcrogUt7kkiCXnbDNTBb9t32zM0IWWj3tyhfDFJGI
-	fhYsAmxMPpgRp98VkIjTCwVfldnEpTgwYEZ1THztP6UZZLmyygrVh1jYd1gDmRf39973poMV9Y8
-	lLSi8E1YYp9cXaNnOAb7SkQ3yMTJVHgAvv+CQ2TRwYRZoaPAazEfspjM3dJbZaFMpoTj+fzLMXE
-	OvLMy/80ypWfqfFFqKHqwZf2oHMHaupm7h81OwRhJt0kGAtEv/Hsu2leTZtIlsZxCCWLh48DD18
-	+Xwk9cKVo3mWAvKYk+z7w8hFJ0dMCz2/NU7eK6ngls/5bgvcO8d+1BEYaxWHfPVhKH4IC6Nw5f3
-	dlsbwk
-X-Google-Smtp-Source: AGHT+IGp4+Ph5e3LiXV7d0GmlI+i90WYkt6QaEte4wvTDN2FV/GISN5U6pAGNJ2hvtEGZmBPXg14lg==
-X-Received: by 2002:a05:6a20:6a1e:b0:334:9b5d:3873 with SMTP id adf61e73a8af0-334a85d9eedmr11700112637.31.1760854608328;
-        Sat, 18 Oct 2025 23:16:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760854610; x=1761459410;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ASOuu0vLLkYA4SCgQcRVW0CFmaVqIaRDuU0cccUVqmU=;
+        b=rFQlAI7x9C/CN98stSfcQF36jqebNLZteb4azqtgRNWAVNr3lnzVtq97MnL3z38OUl
+         IzXvpvY8POJQy/0S220bZeddbreno1AZ1u7ef6FCCrLiasAFE0ak8qasR4G9IbXRt6Gn
+         n4i/XtBCGJXQ0U8tcYWdA1wNd8RVYzPEB47jLho7+yI27Bj2VIeSJgYJ0lfwrTChNYEC
+         aTNhEtuQ0NsRfeU30kIhXisS7CRqZU0g1zrbbmVCkT6qzA5akTE2lL2KbvHdjZqE4lrU
+         Wf8SQTUDp9mgsLN1gFKql5gjPr2DabWoMz7hl1ODTAikDRvZCm9Ky9RXjjBEDluZYUcF
+         VI6A==
+X-Forwarded-Encrypted: i=1; AJvYcCVU/Pfufh58RjHSkmUtCR1fwgeZ+0q+k/Q+uN/+/hRy7DywfXlsCMS9f0mvR7bhHeOjDeQyIwIYlg==@kvack.org
+X-Gm-Message-State: AOJu0YyPMakkVpLFwbVV7Fjr0Ql6ug79I8n51sEbwN0/FQR4Q992gTNT
+	NoPvULo3jFtl+r9w412oQVR82Jeo9wDg6oYUx77Ot0sH6e6YL7AVL9S2
+X-Gm-Gg: ASbGnctYwLgDFNEf3L9yhi3MEQXv/AVCMN2OXYgzrIbTyoPTqOkewZ2HtE7dvxpT8+1
+	Tb5MAwlZRFM73l4sgoexSfdsV8chYNdgDbmWgg36xUGUQ/73ZkfKsjI+azZgsgDauSmubSXPROD
+	01/iQhIJErQijVRt5r20Aixmzm5T/rpSaSjQBajlonuyi9F40dsBHZ+9kahSVSaGc5hObsPrLbQ
+	Yu8VEO07/PBSjGrqYs3+mKPF9NLUWDd8yuD/L6qKGQPqyWKPLbAE00sLzqbKJMuPkEOZZ157Qhf
+	ZmikUH2ReC8E2Pga6gsU0xHBtgIqtx088kHVDL4Zu4QKgh/Yvae8VOkOpvIiL0ElkMDP3sr5LjR
+	MUME73+8o7uVE1hZqPnWaVuexTS58iYuxEZw7NtMXl28d1dz8E9zA+4xlRu+xFeEd58LmRzjgVh
+	1s/NPb
+X-Google-Smtp-Source: AGHT+IHcUYO9o6/V8YsIgbXToAumR6ZpDXIuRlYfIC0ZEiQ0uD3wnq9KGJNzH0DhGnF60uXtoY0gew==
+X-Received: by 2002:a05:6a20:6a07:b0:334:9f87:17e8 with SMTP id adf61e73a8af0-334a8610a1emr11564376637.38.1760854610412;
+        Sat, 18 Oct 2025 23:16:50 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6881:9060:bc87:d8fe:3e55:7ffb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.16.46
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.16.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 23:16:47 -0700 (PDT)
+        Sat, 18 Oct 2025 23:16:49 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: linux-kernel@vger.kernel.org
 Cc: jiri@resnulli.us,
 	stefanha@redhat.com,
 	multikernel@lists.linux.dev,
 	pasha.tatashin@soleen.com,
-	Cong Wang <xiyou.wangcong@gmail.com>,
 	Cong Wang <cwang@multikernel.io>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <bhe@redhat.com>,
@@ -105,20 +105,22 @@ Cc: jiri@resnulli.us,
 	Changyuan Lyu <changyuanl@google.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [RFC Patch v2 00/16] kernel: Introduce multikernel architecture support
-Date: Sat, 18 Oct 2025 23:16:14 -0700
-Message-Id: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
+Subject: [RFC Patch v2 01/16] kexec: Introduce multikernel support via kexec
+Date: Sat, 18 Oct 2025 23:16:15 -0700
+Message-Id: <20251019061631.2235405-2-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
+References: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C3FFB180005
-X-Stat-Signature: jxznt81k46y6jp3gi8ayoxot8z3exi5m
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ejhdo1w5ys8xiqnpagp5iaicf6j9qrc5
 X-Rspam-User: 
-X-HE-Tag: 1760854609-298015
-X-HE-Meta: U2FsdGVkX18MipRIKO5oXwQZ43t4sNRvMKlqXuzaDkJ/9SOdLEeTp1HRtcrOWwauJmGxnBjNNWlCFHn66DK9vvBEK31NYXzuBUnjV6p3U9MpOC8yJwTb7iO122eXMXslJChnrssiCysyv1DV+fzH4o2iLowALr3/C3QiKL1tQlBCNQiX+ephPkx3iy4xGFtCtZ+1Jt49/HZrw9a5E9W9cS8/c8tUK+UK+NRZSmCk4Q1H15Yk7zZNYhrdyMf51sdMHFyRo8lgyRurdRANzp6eqimPBvocHeyGD6zv0z4BQIGDx2dsW9dpeZM2AZHVMUcrfY+OsrYg3D6KKS8MR3yVZOyDSUuGyOTRkeb/itXUaenhnC4UuCBRJMJRwDQy9x0JGrsBct9QvfiJZvoFYe3ge7hlRBFFYQ6OFFr0gp6RmxqB3ONcKIFSxUb3Iupghejf6CkXC5MV84U26U1x6/vrqjcHyPsHEnOlkRo3PsSo/Vqp/suM6WFZwKEgHxmLui9mlQ8F9rSwXqWYDmpqoprdwRcjMZkAfjB3DhKV99tnzbcBp1K/jXc0WYe10KZ6IbNVGaR1CeuQfb8MBvlZcjquW0zSW2vXHt/DzsGogfxWdbCYlEAhTcNYYYZBHxVtTQ6GRDMAfjS9pPi036je4VraPEnFuX+04vW7qn8EyV3bFu7I5vJwTnjhHvRpQYV75FQZROqh3aSp8Q00XQigC++vP1wR04Kz8me3RkCODtSTLFRYiHd5b4kRUbRtnATbSEKbd2u+sycbCJQJA47JQ60aTE/7xzjhg/+yHn5+B9kYevPiB5Z1/i9peCLb4kQuQQ6Mmm5Y/cDeUpBFKur9IVhx3wZ2f3Qbcv6FIJTXecoGtaUDximdnQ6Sy+3V+QDlfeQXin4kp9xcnHvs575MU63ecrXkXVoj/3SIKLLXhrWNhIjSxRoAD03K/NmgUrFlIAd8ysM4mvb2H1AIalJWWnQ
- K05yK1ph
- jCTHG/WduMsb2qI4+Ku0EkkdZjhUvLQWG5jksLJcgantPFTC4howfb5MFmqGeJa1cghSVPqT/jF+cUaTmmA1ZBT7G4YRR5Wo3Q9R2r22KfTCDo6bjMsuqeuoS+IM9ClmPiYhzK/sX6pWF74UmuY5Tvhzl+om+hBbmOj+yks6wWrBz/cwBEwWG5I+ImKhTgzZNS4/oMV/ma2U/k4fxKZ1ReKU/LGiZwaOM2YqGxaopA6QJhMmjqNWU4bpkQ/289tBYqTMhIBtcRGY+/o2F3eVyaKkq0DLcL9uZsHHPbWID0YP/rsEMJNCM5kyLShskcH/gjLjd1tb2U/MluIw5YFkqhnTzZcQEceCuULP6uRD2HOar6dA/PIARVK3gtVhMZlHPy1yxr/LVhW5kgK35S9cam6wFTKzHthZco/mcQUoZ7/K4YLhqJKqECR9JyjIgr398eQGcPn7dzPzGRHTtUDbcZ2bzg0jfxoUyA4XX3Ng1vyACuvt5guT6jsd9ETmrs7XkvHWF9LoRbqzTMh8Q6kWATI7h0JgcZqIGnmuZgt5URuLt76pj01KgOQchFoOpIyRHmtJF22IL3jdYz6gpbgd1ZTabgMAUxDjQ4KWp/p7SV/i2lf8=
+X-Rspamd-Queue-Id: 8F4A240005
+X-HE-Tag: 1760854611-357744
+X-HE-Meta: U2FsdGVkX1/ihn6w1eFEnQ1yV2xFJgjy245y9oj+kj3XY2ce/V5oiJMBv8bRDQZekBvCK67F50eaAYAV3AJPSwGd7tbhxdRYFvYRPtizyUjAbVh4JILyaXKIjoNWPG4SdVYFDERPLL5katDb98XWCWYBo9eWr/z2G5YnrF8qcbLTABkOlKj1iVEuwIIojL1f6GSqDoDJZjlXhuFPP90r47+dNVUwK5vHrGDJ/SpOPxwz9K1TYjSwP0Z4mx93HWivu6BCUh7scHlXabLEjTEThsIlEq5z6sVBJWLv/HS74Z/AHTuXvfnjoR/M61uAAi24iALbiFPTvkGr1Twt8GifqKMvP10iFYff/4hjyL8nshWBQnL+J6mHO5krpouASRqnJQ7OgwSBsjDbHZVvhclbekpj4MyG5YKqDZiv+pSAEuL5BuI327XiKT12x6Qudty+xzQo6GIDC2v/JSVqPlzY9G4k1oiALIIXPn6SwbmBFIC29ZlfZkaE+UJotJB8NrhyU7MqCJNUDDkw9hJo7NdKPwCqVL1irHGKozkFX7rPQZZApc++3Pp+s6H2eLgdV1Tr+KUC3Gb08t2w9YApsYHN7F6n1nSNtlAj0SGdQSAzO1a7XYA+ScegLgbF5DipaLFklET/VWkmcOBrXos/wM4cGOvnDzT8u74BoL8MaO50Z7Z+kDhYDsT1U9XYrQ6X3tcCRf6+BKd7boZX+Ku+S9hZzKzJekQARR5IvBwRNFZkfgwqP4YtXIJgUpP6Br6xWlaZ4eWmxG1SLrMDwcEw47bT6OdGtno0XvmAaDfNFcytORtwmAlfmOljLBX/RQptdtZJANmUHdUTxnAkliBMMEvVIiiLTch4CTbpHDeMo1rX4kxUiTfuhy9p5RL/L8mMLZWHmUHMacBTjEZZoWmxWkC+gLboePQDDu8BZocWtkemZjtHRiw0OpLD+pKGQgW+vqQL0+8AeotmXje08o7PKyM
+ yeelvQ3y
+ K69IrsfZoNO8u6U6gcKFDzrx1IMZgz9RkqR7iHv1GOSQ/hz5eAdrcgWT9B6kac6uyuKqRuMeqSeAosyNuQ2D4iD97oC57fpqkApthZGq3LmRcuL77xN6PNIP9kTYwli2Hqeb7//BOChTbiy33JSbZvFsdkF4RqoOVwZwXjt4qp614vJHWrf0lW6gOt1kAru6S5eYEx9ueO8b6qH/uQFXalWGKlk+xI413LB7oRDITIVlIOtzSIi1sW4x1UcndDD3YFww9xvhOtRlyuWgqOOdzQ2WRHPdsiMTlkWocBpejpjmpPeR/IjAw4S+5DTXekbmSHEW2ytLC3kynycE+FAWVg/Cvda30m5O04kOU27Pazto/ZikhZnl1MG29iJqk2yRhpz2dQx/zQfdf2ljnYHgx5u3DFJXOq2dojXJmrdXLvJhvbCEKsy8fb9B56jqgv5yErFh4EKFpKfvRMqEtjKsiSE0eZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,156 +129,404 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series introduces multikernel architecture support, enabling
-multiple independent kernel instances to coexist and communicate on a
-single physical machine. Each kernel instance can run on dedicated CPU
-cores while sharing the underlying hardware resources.
+From: Cong Wang <cwang@multikernel.io>
 
-The multikernel architecture provides several key benefits:
-- Better resource utilization than traditional VM (KVM, Xen etc.)
-- Better performance than containers without noisy neighbor issues
-- Improved fault isolation between different kernels
-- Potential zero-down kernel update with KHO (Kernel HandOver)
+This patch extends the kexec subsystem to support multikernel
+functionality, allowing different kernel instances to be loaded and
+executed on specific CPUs. The implementation introduces:
 
-Architecture Overview:
-The implementation leverages kexec infrastructure to load and manage
-multiple kernel images, with each kernel instance assigned to specific
-CPU cores. Inter-kernel communication is facilitated through a dedicated
-IPI framework that allows kernels to coordinate and share information
-when necessary.
+- New KEXEC_TYPE_MULTIKERNEL type and KEXEC_MULTIKERNEL flag
 
-Key Components:
-1. Enhanced kexec subsystem with dynamic kimage tracking
-2. Generic physical memory allocation for multikernel and kernel
-   instances
-3. Multikernel-specific kernfs for managing kernel instances
-4. Device-tree based mechanism for static resource allocation
-5. Device-tree overlay based mechanism for dynamic resource allation
-6. KHO based mechanism for device-tree sharing between kernels
-7. Generic IPI communication framework for inter-kernel messaging
-8. Proc interface (/proc/kimage) for monitoring loaded kernel images
+- multikernel_kick_ap() function for CPU-specific kernel booting
 
-The implementation maintains full backward compatibility with existing
-kexec functionality while adding the new multikernel capabilities.
+- LINUX_REBOOT_CMD_MULTIKERNEL reboot command with CPU parameter
 
-For the complete roadmap, please see:
-https://docs.google.com/document/d/1yneO6O6C_z0Lh3A2QyT8XsH7ZrQ7-naGQT-rpdjWa_g/
+- Specialized segment loading for multikernel images using memremap
 
-For the Proof-of-Concept demo (prior to device-tree), please see:
-https://www.youtube.com/watch?v=bmC4JRTSDKE
+- Integration with existing kexec infrastructure while bypassing
+  standard machine_kexec_prepare() for avoiding resets
 
-For user-space components, especially device-tree specification, please check
-kerf project: https://github.com/multikernel/kerf
-
-
-IMPORTANT NOTES:
-
-1) This is a Request for Comments (RFC) submission. While the core
-   architecture is functional, there are numerous implementation details
-   that need improvement. The primary goal is to gather feedback on the
-   high-level design and overall approach rather than focus on specific
-   coding details at this stage.
-
-2) This patch series represents only the foundational framework for
-   multikernel support. It establishes the basic infrastructure and
-   communication mechanisms. We welcome the community to build upon
-   this foundation and develop their own solutions based on this
-   framework.
-
-3) Testing has been limited to the author's development machine using
-   hard-coded boot parameters and specific hardware configurations.
-   Community testing across different hardware platforms, configurations,
-   and use cases would be greatly appreciated to identify potential
-   issues and improve robustness. Obviously, don't use this code beyond
-   testing.
+The multikernel_kexec() function validates CPU availability and uses
+the existing kexec image start address to boot the target CPU with
+a different kernel instance. This enables heterogeneous computing
+scenarios where different CPUs can run specialized kernel variants.
 
 Signed-off-by: Cong Wang <cwang@multikernel.io>
-
-Changes since RFC V1:
-- Switched from kexec_load() to kexec_file_load()
-- Introduced generic multikernel physical memory allocation and per-instance
-  virtual memory allocation
-- Introduced kernfs interface for managing kernel instances
-- Introduced device-tree and KHO framework for resource management and
-  sharing
-- Introduced messaging over IPI framework, preparing for dynamic
-  resource allocation and zero-downtime upgrade
-- Grouped multikernel code in the kernel/multikernel/ directory
-- Reorganized and rebased all the patches
-
 ---
+ arch/x86/include/asm/smp.h  |   1 +
+ arch/x86/kernel/smpboot.c   | 104 ++++++++++++++++++++++++++++++++++
+ include/linux/kexec.h       |   6 +-
+ include/uapi/linux/kexec.h  |   1 +
+ include/uapi/linux/reboot.h |   2 +-
+ kernel/kexec_core.c         | 109 ++++++++++++++++++++++++++++++++++++
+ kernel/reboot.c             |  10 ++++
+ 7 files changed, 230 insertions(+), 3 deletions(-)
 
-Cong Wang (16):
-  kexec: Introduce multikernel support via kexec
-  x86: Introduce SMP INIT trampoline for multikernel CPU bootstrap
-  multikernel: Introduce basic multikernel subsystem infrastructure
-  x86: Introduce MULTIKERNEL_VECTOR for inter-kernel communication
-  x86: Introduce arch_cpu_physical_id() to obtain physical CPU ID
-  multikernel: Introduce physical memory reservation and allocation
-  kexec: Implement dynamic kimage tracking
-  multikernel: Introduce device-tree based kernfs interface
-  kexec: Integrate multikernel instance management with kexec subsystem
-  Documentation: Add multikernel usage
-  kexec: Add /proc/kimage interface for kimage tracking
-  multikernel: Introduce per-instance memory allocation interface
-  kernel: Introduce generic multikernel IPI communication framework
-  multikernel: Add messaging layer for inter-kernel communication
-  kexec: Integrate multikernel support with kexec_file_load()
-  multikernel: Integrate Kexec HandOver framework for DTB preservation
-
- Documentation/multikernel/usage.rst | 215 ++++++++
- arch/powerpc/kexec/crash.c          |   8 +-
- arch/x86/include/asm/idtentry.h     |   3 +
- arch/x86/include/asm/irq_vectors.h  |   1 +
- arch/x86/include/asm/smp.h          |   7 +
- arch/x86/kernel/Makefile            |   1 +
- arch/x86/kernel/crash.c             |   4 +-
- arch/x86/kernel/head64.c            |   5 +
- arch/x86/kernel/idt.c               |   3 +
- arch/x86/kernel/kexec-bzimage64.c   |  16 +-
- arch/x86/kernel/setup.c             |  11 +-
- arch/x86/kernel/smp.c               |  17 +
- arch/x86/kernel/smpboot.c           | 159 ++++++
- arch/x86/kernel/trampoline_64_bsp.S | 288 +++++++++++
- arch/x86/kernel/vmlinux.lds.S       |   6 +
- drivers/of/kexec.c                  |  20 +-
- include/linux/kexec.h               |  30 +-
- include/linux/kexec_handover.h      |  40 ++
- include/linux/multikernel.h         | 659 ++++++++++++++++++++++++
- include/uapi/linux/kexec.h          |   5 +
- include/uapi/linux/reboot.h         |   2 +-
- kernel/Kconfig.kexec                |   2 +
- kernel/Makefile                     |   1 +
- kernel/kexec.c                      |  60 ++-
- kernel/kexec_core.c                 | 384 ++++++++++++++
- kernel/kexec_file.c                 | 158 +++++-
- kernel/kexec_handover.c             | 197 ++++++-
- kernel/multikernel/Kconfig          |  26 +
- kernel/multikernel/Makefile         |   9 +
- kernel/multikernel/core.c           | 532 +++++++++++++++++++
- kernel/multikernel/dts.c            | 466 +++++++++++++++++
- kernel/multikernel/internal.h       |   4 +
- kernel/multikernel/ipi.c            | 471 +++++++++++++++++
- kernel/multikernel/kernfs.c         | 772 ++++++++++++++++++++++++++++
- kernel/multikernel/kho.c            | 356 +++++++++++++
- kernel/multikernel/mem.c            | 376 ++++++++++++++
- kernel/multikernel/messaging.c      | 278 ++++++++++
- kernel/reboot.c                     |  10 +
- 38 files changed, 5572 insertions(+), 30 deletions(-)
- create mode 100644 Documentation/multikernel/usage.rst
- create mode 100644 arch/x86/kernel/trampoline_64_bsp.S
- create mode 100644 include/linux/multikernel.h
- create mode 100644 kernel/multikernel/Kconfig
- create mode 100644 kernel/multikernel/Makefile
- create mode 100644 kernel/multikernel/core.c
- create mode 100644 kernel/multikernel/dts.c
- create mode 100644 kernel/multikernel/internal.h
- create mode 100644 kernel/multikernel/ipi.c
- create mode 100644 kernel/multikernel/kernfs.c
- create mode 100644 kernel/multikernel/kho.c
- create mode 100644 kernel/multikernel/mem.c
- create mode 100644 kernel/multikernel/messaging.c
-
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 22bfebe6776d..1a59fd0de759 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -107,6 +107,7 @@ void native_smp_prepare_cpus(unsigned int max_cpus);
+ void native_smp_cpus_done(unsigned int max_cpus);
+ int common_cpu_up(unsigned int cpunum, struct task_struct *tidle);
+ int native_kick_ap(unsigned int cpu, struct task_struct *tidle);
++int multikernel_kick_ap(unsigned int cpu, unsigned long kernel_start_address);
+ int native_cpu_disable(void);
+ void __noreturn hlt_play_dead(void);
+ void native_play_dead(void);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index eb289abece23..7b27fdc1d169 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -833,6 +833,72 @@ int common_cpu_up(unsigned int cpu, struct task_struct *idle)
+ 	return 0;
+ }
+ 
++// must be locked by cpus_read_lock()
++static int do_multikernel_boot_cpu(u32 apicid, int cpu, unsigned long kernel_start_address)
++{
++	unsigned long start_ip = real_mode_header->trampoline_start;
++	int ret;
++
++	pr_info("do_multikernel_boot_cpu(apicid=%u, cpu=%u, kernel_start_address=%lx)\n", apicid, cpu, kernel_start_address);
++#ifdef CONFIG_X86_64
++	/* If 64-bit wakeup method exists, use the 64-bit mode trampoline IP */
++	if (apic->wakeup_secondary_cpu_64)
++		start_ip = real_mode_header->trampoline_start64;
++#endif
++	//initial_code = (unsigned long)start_secondary;
++	initial_code = (unsigned long)kernel_start_address;
++
++	if (IS_ENABLED(CONFIG_X86_32)) {
++		early_gdt_descr.address = (unsigned long)get_cpu_gdt_rw(cpu);
++		//initial_stack  = idle->thread.sp;
++	} else if (!(smpboot_control & STARTUP_PARALLEL_MASK)) {
++		smpboot_control = cpu;
++	}
++
++	/* Skip init_espfix_ap(cpu); */
++
++	/* Skip announce_cpu(cpu, apicid); */
++
++	/*
++	 * This grunge runs the startup process for
++	 * the targeted processor.
++	 */
++	if (x86_platform.legacy.warm_reset) {
++
++		pr_debug("Setting warm reset code and vector.\n");
++
++		smpboot_setup_warm_reset_vector(start_ip);
++		/*
++		 * Be paranoid about clearing APIC errors.
++		*/
++		if (APIC_INTEGRATED(boot_cpu_apic_version)) {
++			apic_write(APIC_ESR, 0);
++			apic_read(APIC_ESR);
++		}
++	}
++
++	smp_mb();
++
++	/*
++	 * Wake up a CPU in difference cases:
++	 * - Use a method from the APIC driver if one defined, with wakeup
++	 *   straight to 64-bit mode preferred over wakeup to RM.
++	 * Otherwise,
++	 * - Use an INIT boot APIC message
++	 */
++	if (apic->wakeup_secondary_cpu_64)
++		ret = apic->wakeup_secondary_cpu_64(apicid, start_ip, cpu);
++	else if (apic->wakeup_secondary_cpu)
++		ret = apic->wakeup_secondary_cpu(apicid, start_ip, cpu);
++	else
++		ret = wakeup_secondary_cpu_via_init(apicid, start_ip, cpu);
++
++	pr_info("do_multikernel_boot_cpu end\n");
++	/* If the wakeup mechanism failed, cleanup the warm reset vector */
++	if (ret)
++		arch_cpuhp_cleanup_kick_cpu(cpu);
++	return ret;
++}
+ /*
+  * NOTE - on most systems this is a PHYSICAL apic ID, but on multiquad
+  * (ie clustered apic addressing mode), this is a LOGICAL apic ID.
+@@ -905,6 +971,44 @@ static int do_boot_cpu(u32 apicid, unsigned int cpu, struct task_struct *idle)
+ 	return ret;
+ }
+ 
++// must be locked by cpus_read_lock()
++int multikernel_kick_ap(unsigned int cpu, unsigned long kernel_start_address)
++{
++	u32 apicid = apic->cpu_present_to_apicid(cpu);
++	int err;
++
++	lockdep_assert_irqs_enabled();
++
++	pr_info("++++++++++++++++++++=_---CPU UP  %u\n", cpu);
++
++	if (apicid == BAD_APICID || !apic_id_valid(apicid)) {
++		pr_err("CPU %u has invalid APIC ID %x. Aborting bringup\n", cpu, apicid);
++		return -EINVAL;
++	}
++
++	if (!test_bit(apicid, phys_cpu_present_map)) {
++		pr_err("CPU %u APIC ID %x is not present. Aborting bringup\n", cpu, apicid);
++		return -EINVAL;
++	}
++
++	/*
++	 * Save current MTRR state in case it was changed since early boot
++	 * (e.g. by the ACPI SMI) to initialize new CPUs with MTRRs in sync:
++	 */
++	mtrr_save_state();
++
++	/* the FPU context is blank, nobody can own it */
++	per_cpu(fpu_fpregs_owner_ctx, cpu) = NULL;
++	/* skip common_cpu_up(cpu, tidle); */
++
++	err = do_multikernel_boot_cpu(apicid, cpu, kernel_start_address);
++	if (err)
++		pr_err("do_multikernel_boot_cpu failed(%d) to wakeup CPU#%u\n", err, cpu);
++
++	return err;
++}
++
++
+ int native_kick_ap(unsigned int cpu, struct task_struct *tidle)
+ {
+ 	u32 apicid = apic->cpu_present_to_apicid(cpu);
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index ff7e231b0485..edf64bc98ed5 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -358,9 +358,10 @@ struct kimage {
+ 	unsigned long control_page;
+ 
+ 	/* Flags to indicate special processing */
+-	unsigned int type : 1;
++	unsigned int type : 2;
+ #define KEXEC_TYPE_DEFAULT 0
+ #define KEXEC_TYPE_CRASH   1
++#define KEXEC_TYPE_MULTIKERNEL 2
+ 	unsigned int preserve_context : 1;
+ 	/* If set, we are using file mode kexec syscall */
+ 	unsigned int file_mode:1;
+@@ -437,6 +438,7 @@ extern void machine_kexec(struct kimage *image);
+ extern int machine_kexec_prepare(struct kimage *image);
+ extern void machine_kexec_cleanup(struct kimage *image);
+ extern int kernel_kexec(void);
++extern int multikernel_kexec(int cpu);
+ extern struct page *kimage_alloc_control_pages(struct kimage *image,
+ 						unsigned int order);
+ 
+@@ -458,7 +460,7 @@ bool kexec_load_permitted(int kexec_image_type);
+ #define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_UPDATE_ELFCOREHDR | KEXEC_CRASH_HOTPLUG_SUPPORT)
+ #else
+ #define KEXEC_FLAGS    (KEXEC_ON_CRASH | KEXEC_PRESERVE_CONTEXT | KEXEC_UPDATE_ELFCOREHDR | \
+-			KEXEC_CRASH_HOTPLUG_SUPPORT)
++			KEXEC_CRASH_HOTPLUG_SUPPORT | KEXEC_MULTIKERNEL)
+ #endif
+ 
+ /* List of defined/legal kexec file flags */
+diff --git a/include/uapi/linux/kexec.h b/include/uapi/linux/kexec.h
+index 55749cb0b81d..346e0ff4e663 100644
+--- a/include/uapi/linux/kexec.h
++++ b/include/uapi/linux/kexec.h
+@@ -14,6 +14,7 @@
+ #define KEXEC_PRESERVE_CONTEXT	0x00000002
+ #define KEXEC_UPDATE_ELFCOREHDR	0x00000004
+ #define KEXEC_CRASH_HOTPLUG_SUPPORT 0x00000008
++#define KEXEC_MULTIKERNEL	0x00000010
+ #define KEXEC_ARCH_MASK		0xffff0000
+ 
+ /*
+diff --git a/include/uapi/linux/reboot.h b/include/uapi/linux/reboot.h
+index 58e64398efc5..aac2f2f94a98 100644
+--- a/include/uapi/linux/reboot.h
++++ b/include/uapi/linux/reboot.h
+@@ -34,7 +34,7 @@
+ #define	LINUX_REBOOT_CMD_RESTART2	0xA1B2C3D4
+ #define	LINUX_REBOOT_CMD_SW_SUSPEND	0xD000FCE2
+ #define	LINUX_REBOOT_CMD_KEXEC		0x45584543
+-
++#define	LINUX_REBOOT_CMD_MULTIKERNEL	0x4D4B4C49
+ 
+ 
+ #endif /* _UAPI_LINUX_REBOOT_H */
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index fa00b239c5d9..7d89d00e2cde 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -41,6 +41,7 @@
+ #include <linux/objtool.h>
+ #include <linux/kmsg_dump.h>
+ #include <linux/dma-map-ops.h>
++#include <linux/memblock.h>
+ 
+ #include <asm/page.h>
+ #include <asm/sections.h>
+@@ -942,6 +943,84 @@ static int kimage_load_crash_segment(struct kimage *image, int idx)
+ }
+ #endif
+ 
++static int kimage_load_multikernel_segment(struct kimage *image, int idx)
++{
++	/* For multikernel we simply copy the data from
++	 * user space to it's destination.
++	 * We do things a page at a time for the sake of kmap.
++	 */
++	struct kexec_segment *segment = &image->segment[idx];
++	unsigned long maddr;
++	size_t ubytes, mbytes;
++	int result;
++	unsigned char __user *buf = NULL;
++	unsigned char *kbuf = NULL;
++
++	result = 0;
++	if (image->file_mode)
++		kbuf = segment->kbuf;
++	else
++		buf = segment->buf;
++	ubytes = segment->bufsz;
++	mbytes = segment->memsz;
++	maddr = segment->mem;
++	pr_info("Loading multikernel segment: mem=0x%lx, memsz=0x%zu, buf=0x%px, bufsz=0x%zu\n",
++		maddr, mbytes, buf, ubytes);
++	while (mbytes) {
++		char *ptr;
++		size_t uchunk, mchunk;
++		unsigned long page_addr = maddr & PAGE_MASK;
++		unsigned long page_offset = maddr & ~PAGE_MASK;
++
++		/* Use memremap to map the physical address */
++		ptr = memremap(page_addr, PAGE_SIZE, MEMREMAP_WB);
++		if (!ptr) {
++			pr_err("Failed to memremap memory at 0x%lx\n", page_addr);
++			result = -ENOMEM;
++			goto out;
++		}
++
++		/* Adjust pointer to the offset within the page */
++		ptr += page_offset;
++
++		/* Calculate chunk sizes */
++		mchunk = min_t(size_t, mbytes, PAGE_SIZE - page_offset);
++		uchunk = min(ubytes, mchunk);
++
++		/* Zero the trailing part of the page if needed */
++		if (mchunk > uchunk) {
++			/* Zero the trailing part of the page */
++			memset(ptr + uchunk, 0, mchunk - uchunk);
++		}
++
++		if (uchunk) {
++			/* For file based kexec, source pages are in kernel memory */
++			if (image->file_mode)
++				memcpy(ptr, kbuf, uchunk);
++			else
++				result = copy_from_user(ptr, buf, uchunk);
++			ubytes -= uchunk;
++			if (image->file_mode)
++				kbuf += uchunk;
++			else
++				buf += uchunk;
++		}
++
++		/* Clean up */
++		memunmap(ptr - page_offset);
++		if (result) {
++			result = -EFAULT;
++			goto out;
++		}
++		maddr  += mchunk;
++		mbytes -= mchunk;
++
++		cond_resched();
++	}
++out:
++	return result;
++}
++
+ int kimage_load_segment(struct kimage *image, int idx)
+ {
+ 	int result = -ENOMEM;
+@@ -955,6 +1034,9 @@ int kimage_load_segment(struct kimage *image, int idx)
+ 		result = kimage_load_crash_segment(image, idx);
+ 		break;
+ #endif
++	case KEXEC_TYPE_MULTIKERNEL:
++		result = kimage_load_multikernel_segment(image, idx);
++		break;
+ 	}
+ 
+ 	return result;
+@@ -1229,3 +1311,30 @@ int kernel_kexec(void)
+ 	kexec_unlock();
+ 	return error;
+ }
++
++int multikernel_kexec(int cpu)
++{
++	int rc;
++
++	pr_info("multikernel kexec: cpu %d\n", cpu);
++
++	if (cpu_online(cpu)) {
++		pr_err("The CPU is currently running with this kernel instance.");
++		return -EBUSY;
++	}
++
++	if (!kexec_trylock())
++		return -EBUSY;
++	if (!kexec_image) {
++		rc = -EINVAL;
++		goto unlock;
++	}
++
++	cpus_read_lock();
++	rc = multikernel_kick_ap(cpu, kexec_image->start);
++	cpus_read_unlock();
++
++unlock:
++	kexec_unlock();
++	return rc;
++}
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index ec087827c85c..f3ac703c4695 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -717,6 +717,10 @@ EXPORT_SYMBOL_GPL(kernel_power_off);
+ 
+ DEFINE_MUTEX(system_transition_mutex);
+ 
++struct multikernel_boot_args {
++	int cpu;
++};
++
+ /*
+  * Reboot system call: for obvious reasons only root may call it,
+  * and even root needs to set up some magic numbers in the registers
+@@ -729,6 +733,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+ 		void __user *, arg)
+ {
+ 	struct pid_namespace *pid_ns = task_active_pid_ns(current);
++	struct multikernel_boot_args boot_args;
+ 	char buffer[256];
+ 	int ret = 0;
+ 
+@@ -799,6 +804,11 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+ 	case LINUX_REBOOT_CMD_KEXEC:
+ 		ret = kernel_kexec();
+ 		break;
++	case LINUX_REBOOT_CMD_MULTIKERNEL:
++		if (copy_from_user(&boot_args, arg, sizeof(boot_args)))
++			return -EFAULT;
++		ret = multikernel_kexec(boot_args.cpu);
++		break;
+ #endif
+ 
+ #ifdef CONFIG_HIBERNATION
 -- 
 2.34.1
 
