@@ -4,121 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F321CCD195
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 07:51:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AD12CCD184
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 08:00:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 967DE8E001B; Sun, 19 Oct 2025 03:51:11 -0400 (EDT)
+	id 510E08E001C; Sun, 19 Oct 2025 04:00:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 917D38E0002; Sun, 19 Oct 2025 03:51:11 -0400 (EDT)
+	id 4E8588E0002; Sun, 19 Oct 2025 04:00:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 806648E001B; Sun, 19 Oct 2025 03:51:11 -0400 (EDT)
+	id 3FE408E001C; Sun, 19 Oct 2025 04:00:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 685738E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 03:51:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD065C0559
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 07:51:10 +0000 (UTC)
-X-FDA: 84014093100.29.CC21FDA
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DA60040008
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 07:51:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIQ6BQtn;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EE468E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 04:00:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D4B9F13B422
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 08:00:21 +0000 (UTC)
+X-FDA: 84014116242.12.37368E4
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C74F2180009
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 08:00:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iI4XPXk+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760860269;
+	s=arc-20220608; t=1760860819;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ypkd73druNXP019v4tiDfOhsVxCl67Os1cWm2iyI5fo=;
-	b=n77F962bPnf0RYmpaLlLFW6nwWII3WjaKprrVovDBRYarN7+1cvvgX1e0cJ/ExiXXmbB6v
-	+RJ+j+RxNV7W1dpUaWaSLr+hDO6B9RSUucBEPjIRpdC6o429TPYUdrKmV0qosFmPx8av5M
-	jZBpAPh31usTNu7X+WiogAv1kJ0iX+U=
+	bh=3I2g9EOqV3eXFKExtx63puEn8xP28gnfGls4tglvgVs=;
+	b=IFDwmlQdcwrrMOV62nb/5Oh9kARtKhdXR6YD9eyAuXk6gyNxqV8FFmEBERDKCit1sT4+Fe
+	fBHGPnxrE9wXSE+nw7Gr+N4HNX3FCdt7Oj0UHoRJj3qS1Ztyy/mP8bszDro6f/Tg5jgDNS
+	gexlzDCNQK3CF5ElVYX+xEgqFuufXDo=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CIQ6BQtn;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760860269; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iI4XPXk+;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760860819; a=rsa-sha256;
 	cv=none;
-	b=toec/OH/soVZWz5ped+RtEqbkUjBSkmx8zjiePAaCq0OqGQ/HEYE8H7q1lsPNTXMIRXFpY
-	TqzlzHOJMRlVUrdZEy12dx+rJdnPPDWLXUoyGa0ciUtMsj2P15vvwj0LogwXbaSuA/10GH
-	WTRv8+eL1ywpDuDtSD4thDw8tbpBNd8=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b457d93c155so481628866b.1
-        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:51:08 -0700 (PDT)
+	b=qkLwyxi4+YuRPlIJ/p1ik6No4lq2Mzy5sZrxYTjALQ1MJSE/XrJa3u/qyE5uTfASwnicGC
+	F/CYQ1h0JQVdXMTZ5GfEYx3oXPdWCQpLQGj66LTLoXO8WU1oMFopzVLRMGD296c0acr4bU
+	F8nGHDw8E9mwVlrIj1GBHEIwi/1f5WU=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso2238243a12.1
+        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 01:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760860267; x=1761465067; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760860818; x=1761465618; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ypkd73druNXP019v4tiDfOhsVxCl67Os1cWm2iyI5fo=;
-        b=CIQ6BQtniLuh0xvVGya6WMTH2AvD7bEcyNbjjMqBBpHW7AZLYx2epp6nm02uJKfncC
-         uxjgPVnviRyqb5T8AzkoXNaDF4Ld2Uk0IPhKElUr6L6wifpW2wd5LIzlZZnYxaNTcQTS
-         +yrEcTw15NEvWKdtSF6OltDCaBvkgKSlhnY+8AoMVQtJz+Io8eeGXGqUdnlBfgYRf1mF
-         U9c+7ufZ2eJeCBsc1lulyHFcaNyXdbjxIZmRcdSg9YslvSvyw9Skzlgz8sVRL7R25a79
-         PtyZ27PFtfyyZ/+WMfQWBKtsKb0BkV6+z1D5F/tqNW+8BrEeUa1199j2cfSki8m3NYFF
-         iIRg==
+        bh=3I2g9EOqV3eXFKExtx63puEn8xP28gnfGls4tglvgVs=;
+        b=iI4XPXk+woiExAkMIHNUiP0MzhollNe4b6ECmUIH+feXga1HJISoILIASPqAO57gZm
+         C2TuG+i7K3USG5zMMqe+Us8oiWe7Hvq8g7WEwPuPXDqw8pFiLtj2IBBBfXPKwNpBgL3R
+         nPpF2A045MAL5QjPf2DY5jDg53RO4wgHKw/gi0FaqLgzIHohz+L/EDAc4437/l5atSVC
+         AoEQT+01AF1SLJzMUlD4JEevEMbg9c+hCuFIH/M01A8K4H1FBM8Cwb+1wv7eodGbcwwq
+         gC+ADWRyja9wJhSQUD3asDC+9FWwWfg/1+ASN2DqXPuBOssWqbWuiWTz8ivwML1hEk5i
+         2xqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760860267; x=1761465067;
+        d=1e100.net; s=20230601; t=1760860818; x=1761465618;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ypkd73druNXP019v4tiDfOhsVxCl67Os1cWm2iyI5fo=;
-        b=jzl113lk8+KsB/EYvdCQY4P0jT2YcPlfyNFlyGQ4P7Clvmkxz6i/X041fu4/I0X47x
-         KXqgQY4T1qPzKq38JpseWPvgFBwizmEwabm7veaDnYQotkdS5KZ/sGkDEDCB1UjYDvuq
-         u1WMwvp3tEdNaZKgGhuSd91lIDaopGojSZ7Xl+J++nvwRs3CAD1dzV0QeGNR689ho8N9
-         dStd9A5RkR3RXpmnofKEYFCzXITjypzIeCrZalm2VoMWPq1fJe94ZT3+W7bX5S7I9kUc
-         gtTsVO7GmaXEdjDWu4jeUF+u672chti8m2f20GeQdItBWHHpw2aXMYwNdT8jTNVV4OrP
-         UqsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQkwE/7q36VikYHwqnjSHbjkb3Z/Zm3uTh/05HhEzTT0YDouED2oSqqTqTPVVroc9B/MWaC2ySmQ==@kvack.org
-X-Gm-Message-State: AOJu0YwjmHRI7df2IR/asG5FIalwtA5B5tWqCg68gwcgqlybCyfU8Knn
-	S+25uYpB2Nsu77yxlEuqYgoCAAPfBI1zwd1Fxpye0KHgIfC3+bgKd+XR
-X-Gm-Gg: ASbGnctlQIlK5Rq/U8CiGcv0H4xhb/RMrHo+8KK0O3ELM35+YS/mXwjqpyVhIO6ftxP
-	V/pknkK+++dTEL2ZTDFwGMD4vv6ZOm6Yy4oCuDWIp6sIJVYZj2k+Ed+SjbdmEzWw6EviYOpmS39
-	Aho87j4GdCrFqEr1NPlFijuOV/kayilzW0rw8jvU9mVy/XdpUAnxJGB6Q71sqrdoNdDz5p/1jhL
-	O2aCIJA7Fgxm95dQ9vcmg3gRTzF7YlzlC6m5HF3m9o2X2V1muLYyydyIzTAJBYLsbQJjZ3k3bMo
-	8Y/m6QjbaHJota6hUnRj93B3uOCE1aMEdmN6rznxVK6/ZCRqOhzCdE0oHi8Letn4r/ykBoMfIFr
-	+ZtacJV4NWhB/apEPB+mdUJFxgaLdklgnUNlqaAx8GInPNj9VCdaA+c0d3OnORoZGljnEE0fWZw
-	8ZH3/QLwuM4S0IxA==
-X-Google-Smtp-Source: AGHT+IEmg3bXseriMu/V+jASe+v0H/yns/gzxzzu0A23Eiv20soLkljjxNaG09+oArf1hj4b/zFRFA==
-X-Received: by 2002:a17:907:7207:b0:b0c:fdb7:4df5 with SMTP id a640c23a62f3a-b6472b5f08dmr1064767266b.18.1760860266935;
-        Sun, 19 Oct 2025 00:51:06 -0700 (PDT)
+        bh=3I2g9EOqV3eXFKExtx63puEn8xP28gnfGls4tglvgVs=;
+        b=JTe2FYH2ksCQjKbwXCATF2e9wseJGUlLoaNtDd1udhCC5/1lReDsEnl3j6Cqgtb9lB
+         spXQcM7HbIeKGWrXqZGRi2Aj463HjgX2W2e8ZMlq9Xw8ay+hKYWeTfVaqvIAp4TUKmkM
+         O7oPTdSiI4iCAPlG6RVmf4eFV2LAxb02/LpH8CPJ2EqiwmAWfysG3KjTH/srKRG0BIIe
+         zbeXQ1aypRy33iMc29QxRVNV+jrf04K52+RN7nM2/A1DHT4fTrqGotyn+PqSbhwJtUmn
+         YZ2D821Rtvg11GaM6UjmmDzCcvpkEnsHPpOkaPwSSrxDvYPKCAc9Al8BlbLZdB2CVQXI
+         XymA==
+X-Forwarded-Encrypted: i=1; AJvYcCUw/MnWySxtxoKk7RbzJu/Fko5TsSao4OPuubpTzpg0rl+2nWy92og1ptKIpV2B35M8fr4jk7HWUw==@kvack.org
+X-Gm-Message-State: AOJu0YzRbR4bR7lOQpatc5K5V9dOcbutLI/daQlC8s7+c3sNGF1VmGv+
+	OeMLcpOTM/NqFkyGrtmv858VjXx4ootStGE+Z8EiLaeSrha7dBk84aFD
+X-Gm-Gg: ASbGnct8GLtq0gUiKKHFJRl8+eo6ygc7f6qNedFNx+i8cQg5ipxO6a8B/RFjkW6QrMB
+	wIXaCLPZAWRkU5VwLxPkJYhr68FcNfbEgoETuD2cWyUlZ4p8ncGjp8XNYuBRP3wH2trlNCVRgTR
+	yyi2MLXagSYtt2AYUPvvw/HG6fNlgAGxb8c/e58DeY6ERBvDvV5FGjl3dJTmga7KgvCK0fz0p/R
+	QMgdVjxj1TAP0FxShfcWRu9CAC8zImvHzYcKXPko+q9FS1YW0JnmtohCtYYAoN05NYd6uPpYLq2
+	WXUcGq521WJiIn0XLfpRW0iEi2xLkDFI3+4JrVTbykOwWmarE+loHhFxOrWI+fiZrHma8OzLM0q
+	ReVhzx4upgBE+rFEIir90e9IIzvYpTbwrUrAJCOgmprSvOAg2XgOcB3nqlidfOB1PpwIRa8VooE
+	Q6w7Q=
+X-Google-Smtp-Source: AGHT+IEQKJALq7UfBR0TLARN7l+4hYZgdqqVSXNpKtxH1qT4P85awLDCJ07fn2O8CmlK2S54Ib6P8g==
+X-Received: by 2002:a05:6402:1d03:b0:63c:1031:7c60 with SMTP id 4fb4d7f45d1cf-63c1031816amr8085796a12.19.1760860817988;
+        Sun, 19 Oct 2025 01:00:17 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65eb036a3esm451254966b.46.2025.10.19.00.51.06
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c7267319esm948765a12.36.2025.10.19.01.00.17
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 19 Oct 2025 00:51:06 -0700 (PDT)
-Date: Sun, 19 Oct 2025 07:51:06 +0000
+        Sun, 19 Oct 2025 01:00:17 -0700 (PDT)
+Date: Sun, 19 Oct 2025 08:00:17 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [Patch v2 1/2] mm/huge_memory: cache folio attribute in
- __split_unmapped_folio()
-Message-ID: <20251019075106.jbnmgazdu77qyd76@master>
+Cc: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [Patch v2 2/2] mm/huge_memory: Optimize and simplify
+ __split_unmapped_folio() logic
+Message-ID: <20251019080017.oewm4744rvdtcmzx@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251016004613.514-1-richard.weiyang@gmail.com>
- <20251016004613.514-2-richard.weiyang@gmail.com>
- <3d4b9f1d-a420-4961-ada5-355b60909d4a@lucifer.local>
+ <20251016004613.514-3-richard.weiyang@gmail.com>
+ <7ed84d61-0a7b-4961-82eb-fc8d38b77162@lucifer.local>
+ <154924ED-0CD0-458E-B760-F9F0A92CDC89@nvidia.com>
+ <d0a2c81b-a0e0-4457-b355-2363f30ecfb8@redhat.com>
+ <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3d4b9f1d-a420-4961-ada5-355b60909d4a@lucifer.local>
+In-Reply-To: <cdd37933-d2e7-4675-82fe-62b7f0ccdd80@lucifer.local>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DA60040008
-X-Stat-Signature: arz7g373k1pufz7u8jk5eha5z68qoios
 X-Rspam-User: 
-X-HE-Tag: 1760860268-265751
-X-HE-Meta: U2FsdGVkX19Ey8NqVhugCqTo6DybMrqWP5vYB1uOpqH4Y3UhZQkIDgh4/2DASDXwDnqjk/A/cvXYiJmKCB6YFaCZ/KDfKTk5oyQwQhLwJ15UiH3mkgNAh5HtviN+Huurvpff7U7Hu8RGZM9GAMRypdKE//tPNmpOsIKr6lRJVzXqoUSpmMagxIpAjcL8OGnk6TXRldEeOiLB0u7vCuAF+iXT/pWWOruIaLO9PpJcBarsd9Ud74FTUAXSa8LBhIM6LjZfz8/Bq1cqWjsn0DcpGCrMgxibJx7afjSlNUJOy+pHcqD/Q3s8j+R9AgKQvaJadS4av3cbrQFlKALu9sg/LkV7iL8wOUGs0ADsLSaHZN8WyxlRwynEVVwpsj6bDhDjVFSRjL2D81oy8dhY5fh5fSa1UaOLrc6ZV7HAsO+yjjWCpW8yByvEC+5k1DueEUllDaRjTIsvXOAe5WGx7TI5pMN6Koyb4YctMk7gwg1q3sxiff1TfVYY+YExIP17h6OJ3AjzI8b7HTp7igM7B+9jGO8hHeqarLqVDpOz3c9uKTH2iWrpdfu7xy4LaKMh4/TQToMPPrUsJL1twacHYXj4pM8pbXRZBnmuv+zAWS1/qSfbfCOCYrK6dUTLkEKuKVJ5cKrHeEUioPG2BlT4cEgIU2TuFRMKoqBAcOA/b23Yzzaf/OIl8jcKNobHZ+sSaZXtY4Iz1OA4j0/gVUliCytDkkTNYXi7PhA15eX/y5rhUAW4NfefAINEaX9n9bEIqie2714WOGH9/jIg5WI/cB5KwzblJkhrEJF8dkGxMLr39HcpzFvgjKG2h84oKg5/Q7x+xlqFW9slgaYWUbDp5PSfnhvK5RZjxDvvljm79WV4qgowYP8+4UO6y8emOA874OLYyUVlGWHGnW/n9Izpr+qYPZglid/AHmm7/6EWZuYrKPCi93+4Wkg8fe5EzsLybUZiEZ5rVyeVGGKvgSyaZQX
- i+pnBdvS
- Z8couI5zJxFnFZNYhU/Suj3nkI02bK8Lp5rBarzGZOBIi8ptmNGUiVXMDqBdb0YA7U8r0W0ZBGgFo2BW520VdkceoJ5GAsQ0G92NLqimkEkxrH4yxRaDQFZcVhznQZ3m6CuUlL7dMe0hrPFqVuPuIS6mviOpY4SBh+Yo9+CNVi/VINUqKL8Z4dgyd8Bw4sebxmeXLz5JC24pvUo3oA63kW/qisPEj3kkezvewR9UM5AtvdjT4NJ5cYU6xA+HcvwARFJ1c/8FCY8TRIDC6q3+s7/Do59ez143vVCkGg8SLpLP8Y/16dSlCSgBt2i8KHC4eJOFrZ6iR4hxp5DbvWzujR2+tZ9Ecd7po4CUGojM0ZWJOXBAK6yeeVSs8PHat7oSSnNECbdN3hYM9/vUNMc0UeYDmsM0oJlaeeyPeY6sqvmDSorxiNe2HE2y8+ofR9Km58EJMXKBCx0wTa+gW0qBTqzXadbIokNarF3u8uTFiKMUebO8TMDakomQTelJXmXE/5kCV4mAIl+j9hSnJhwOxaWBLDt8mCjjA/V7to9ItRgOV10FPP2SVnZM+Jzpnkwy9piM5u8lYGJfAG2atgpoUQQehib6LxoxPTQZ7Ka9Ufq/zMnpd19G2ZgCtKsh/PL8AZ8o2uCZAC5fp1EWlHw+82UFIaGuEM352ghm2AD4ZXe6/9Xk5aedRe5HOy+GYNnbec/4RMcVb3I33BJWp+4TyTLxt8ScMXrXJfe/UWoUFkNK3DQ3GkIFx4c/0ORov+artr76K7HF8e5JUlZtihCnTyIqjbYgEnul/KCelnIZ5TvaErGQ=
+X-Rspamd-Queue-Id: C74F2180009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bnjxc6chfqb5udj3tz14aq85w9pyoo8r
+X-HE-Tag: 1760860819-918594
+X-HE-Meta: U2FsdGVkX18lGfnKBhaasm2RAbi2SfPsON4fqi+PD+R76E+zmyMseptNfog3/OChmMvk4qdwWLvUqis4CkM/c0N1hNj89uf6mFA/LunqYQ+7x56I6AKG0XWicbeuj/bjwTcAEJrx5DRnIFgti5TE/vX8hfNu6hfTJq0FmRBOui0st9VQfBEMZZZqRDOLPRay/FgwpBCLtS8JnLYZGzX8pUrPWZ5K93K1Vn+5s8Jz8/bu54z4ctZwDlokZ7pFAGzfUiCdmIA3weuFjSg+yDIGk+JD1wp/mn2LYpaNNvPqSJNssPqagP8L5TKFyVClGLJcAPY6IA9i5a1j3PoQNE5ORAzjf2F2ww5Ea5LOjUJOAzTOpICC0z0sKiSyL4nOTOM34+XYJKNSNKaZAD1maj2DZZ5lH4b9F8ea4VGqyNpdjxsxEA9HNKDUKK8w+v0xlDljHbHyBFQjqULwDqpk0acIVk2EsOQOuLV+mpHsev7MyaxnwaEcQpswHJV0qYF7Xx3OZX7kuh1PMEOrUZO4SrxNHmydbeXu8cHYHAn45kNJTtW42iKcjd87WRANzER/JBf2THcxbWI5fHYSMbxXEHkEBdYx7RhztdHmtjjUVR/1zQihq+LgdTTj+/YzYRLexXjeKJ07wUUZCPRoxikZKGOzf5goys8QpFvhXev4hQ1/pbDpIKgAFiW56DAom2gJlIr6vXjWoyoNTL6EFTBA62POnP7oU/7nxeOXScwGj9KdONGThWX2SATVeiVQmMe4+hbRJnDRDebgCjKViZClRTx7E3BfFR93HtnUg9r/skRb2lvYMf4t43je6/yhBBnn+KaWJ5GD4wSwylKEffj4aJHWPzSgEycDeotZ2QZD1eeJLW8wwQW1zWJU1p5hhoRnvlxeVgPOR6bCU0kB1aQKyFhXX7/DWGkIIFZ7FWJ58JphxSmQi3D4bMmujQBKmYfo+QR4QMkuNnGAsIaTV0TlOQd
+ 3tnuf1FM
+ prZHfOZxyH5KLn4tiwe/N1YICaDhSrF9h0mSK9qgVc9FJQbEZirvuWJWkXIJNT6nn1MiiryumsX2HqdDVOLvVAdQFdakCS+3A+oZxI/C3x5gy0xF50deVQxRJlGbBdy9M80rj515XiPDqm+vOjyWQPN7Xz0OA8brFHza+2hKqcOyls4eUbYcs7QylOzh3hKyQ2o071BB89DkaHq2++TflnPHO7UTuXmKt5+5ZpH34ZuQNpizkLUfhoSVhI+LG45Pb+SiletrEuPhhMB9cUZACPtiEaihd32akk0HpzUbQ3zl+CtstaglJOtKEJTgvplV9+QNelpPyibqjz7rzvrtIzDaRLtm3E8oC16SwCtVw+tAvozF1cftlNkcE0B4sftr7q8aHK+XAWr1fNqkoCgtwHHw/lXJwIxWOCaqxD1QGANu+mTOEx8iFcFTzu8MwkHz6PLwBmAcBNLP1zBQLf8Tr2zQ20kSQ1dX9I5H1/44xRul7jqNqaLUr7XfsXAqvoxYTIL0mgXA9KuZMw7fD82ZD6Q0avg2+yJLpAA3xEpLhrZBRKbCCCuoIvwIr8gIGvxj4f4em5Z8J1fJu4XdlGQs5DM8BINeP/kqJGRcyvL5nmYpSesfJ0gsxokBoCU98pzPn+fE+xryZdvAkwUlO8UzS8XQRRuVDby/xfKzYPBGwTOP6onVjE7mp24eWMoMc4GlDxGrKJ6nbkW5mYgrWwaTWP8QY2siZWYByNrNU2qHIhRfeRDgK2IJdRgRG8gRkuQVD7h6NNZVDHDqnR19DO5xbukDYm7KljBKRjJ7O
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,79 +130,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 17, 2025 at 10:46:43AM +0100, Lorenzo Stoakes wrote:
->I don't like 'cache' here. You're not cache-ing anything, you're relying on an
->attribute remaining constant.
+On Fri, Oct 17, 2025 at 03:55:16PM +0100, Lorenzo Stoakes wrote:
+>On Fri, Oct 17, 2025 at 04:45:17PM +0200, David Hildenbrand wrote:
+>> On 17.10.25 16:26, Zi Yan wrote:
+>> > On 17 Oct 2025, at 5:44, Lorenzo Stoakes wrote:
+>> >
+>> > > On Thu, Oct 16, 2025 at 12:46:13AM +0000, Wei Yang wrote:
+>> > > > Existing __split_unmapped_folio() code splits the given folio and update
+>> > > > stats, but it is complicated to understand.
+>> > > >
+>> > > > After simplification, __split_unmapped_folio() directly calculate and
+>> > > > update the folio statistics upon a successful split:
+>> > > >
+>> > > > * All resulting folios are @split_order.
+>> > > >
+>> > > > * The number of new folios are calculated directly from @old_order
+>> > > >    and @split_order.
+>> > > >
+>> > > > * The folio for the next split is identified as the one containing
+>> > > >    @split_at.
+>> > > >
+>> > > > * An xas_try_split() error is returned directly without worrying
+>> > > >    about stats updates.
+>> > >
+>> > > You seem to be doing two things at once, a big refactoring where you move stuff
+>> > > about AND changing functionality.
+>> >
+>> > No function change is done in this patchset. The wording might be
+>> > confusing here, it should be read like:
+>> >
+>> > After simplification, __split_unmapped_folio() directly calculate and
+>> > update the folio statistics upon a successful split, so An xas_try_split()
+>> > error is returned directly without worrying about stats updates.
+>> >
+>> > David suggested a change[1] to make it clear:
+>> > Stats fixup is no longer needed for an xas_try_split() error,
+>> > since we now update the stats only after a successful split.
+>> >
+>> >
+>> > [1] https://lore.kernel.org/linux-mm/518dedb8-d379-47c3-a4c1-f4afc789f1b4@redhat.com/
+>> >
+>> > >
+>> > > Can we split this out please? It makes review so much harder.
+>> >
+>> > I asked Wei to use a single patch for this change, since the original
+>> > code was complicated due to the initial implementation. After my
+>> > recent change (first commit 6c7de9c83)[1], __split_unmmaped_folio()
+>> > can be simplified like Wei did here.
+>>
+>> I think it was too much split, agreed.
+>>
+>> This patch was a bit hard for me to review, not sure if there would have
+>> been a better way to split some stuff out more logically.
+>>
+>> Most changes just complicated way.
+>>
+>> Not sure if splitting out the stats update change or the calculation of the
+>> number of folios could have been easily done.
 >
->Something like 'avoid reinvoking folio_test_anon()' would be simpler.
+>I mean as I said to Wei/Zi, my objection is both moving code around and
+>making complicated changes that require you to really dig in to figure them
+>out _at the same time_.
+
+Is this version better for review?
+
+http://lkml.kernel.org/r/20251014134606.22543-1-richard.weiyang@gmail.com
+
 >
-
-Will adjust it.
-
->On Thu, Oct 16, 2025 at 12:46:12AM +0000, Wei Yang wrote:
->> During the execution of __split_unmapped_folio(), the folio's anon/!anon
->> attribute is invariant (not expected to change).
->>
->> Therefore, it is safe and more efficient to retrieve this attribute once
->> at the start and reuse it throughout the function.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Reviewed-by: wang lian <lianux.mm@gmail.com>
->> ---
->>  mm/huge_memory.c | 7 ++++---
->>  1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 3c74227cc847..4b2d5a7e5c8e 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3527,6 +3527,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  		struct page *split_at, struct xa_state *xas,
->>  		struct address_space *mapping, bool uniform_split)
->>  {
->> +	bool is_anon = folio_test_anon(folio);
+>It's perfectly feasible to send separate patches for non-functional
+>changes, I've done that myself, each building on the next to make it clear
+>what's going on.
 >
->As David said, make this const please.
+>I'm a little surprised at the oppositon to that...
 >
-
-Will do.
-
->>  	int order = folio_order(folio);
->>  	int start_order = uniform_split ? new_order : order - 1;
->>  	bool stop_split = false;
->> @@ -3534,7 +3535,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  	int split_order;
->>  	int ret = 0;
->>
->> -	if (folio_test_anon(folio))
->> +	if (is_anon)
->>  		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->>
->>  	folio_clear_has_hwpoisoned(folio);
->> @@ -3551,7 +3552,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  		struct folio *new_folio;
->>
->>  		/* order-1 anonymous folio is not supported */
->> -		if (folio_test_anon(folio) && split_order == 1)
->> +		if (is_anon && split_order == 1)
->>  			continue;
->>  		if (uniform_split && split_order != new_order)
->>  			continue;
->> @@ -3603,7 +3604,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  				if (split_order != new_order && !stop_split)
->>  					continue;
->>  			}
->> -			if (folio_test_anon(new_folio))
->> +			if (is_anon)
->>  				mod_mthp_stat(folio_order(new_folio),
->>  					      MTHP_STAT_NR_ANON, 1);
->>  		}
->> --
->> 2.34.1
->>
->>
+>But if you're convinced there's no other way this could be done (bit
+>surprising as you're asking 'why this change' several times here) I guess
+>I'll sit down and try to decode it.
 
 -- 
 Wei Yang
