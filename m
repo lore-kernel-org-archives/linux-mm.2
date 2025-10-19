@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E05ACCD1AF
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E276CCD1AB
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 06:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22B0E8E0014; Sun, 19 Oct 2025 02:17:22 -0400 (EDT)
+	id D2BF08E0015; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DBB28E0002; Sun, 19 Oct 2025 02:17:22 -0400 (EDT)
+	id CDAD48E0002; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A53F8E0014; Sun, 19 Oct 2025 02:17:21 -0400 (EDT)
+	id BA0C08E0015; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CB29E8E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 606B159A6E
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:21 +0000 (UTC)
-X-FDA: 84013856682.11.C2BB6F1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C91E8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:17:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 665D81A0580
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:23 +0000 (UTC)
+X-FDA: 84013856766.27.BB4A70E
 Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 58D3BA0008
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bCNWLYZK;
-	spf=pass (imf25.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854639; a=rsa-sha256;
-	cv=none;
-	b=PeoMi4Gzv2LYltupwvszxk+Bqfv9eMb8d4eF7hsdMwLp7wd0jvIVzPE2guK/TB4VerZlli
-	S8k2p1qI0XA9V2D3hF3wjgvKCjz74WHVpBNn3/UufqeY8b4BWxWzjA+ulXP4dNctnsKzGp
-	pmR3t0THcG5PMCK6EdIDpnMe2dG55sg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bCNWLYZK;
-	spf=pass (imf25.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 75A62C0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 06:17:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UPDXT5vq;
+	spf=pass (imf10.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760854639;
+	s=arc-20220608; t=1760854641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7G7V2lDPyVtB8Vl6uN0jxj375YUrl6r66ag/KY1fjtA=;
-	b=bWevsych4//l4VpKQFFnAzwU8tQyLc7RFng04PHvMd1nQdFh/6Ry+ePEVE+4jiy1YqfKWZ
-	LpKSOGV8AOfrzJ1iWA9smcLNncxkrKCIkOYxSwQ6GDYL1ASA3SrBfXThOz2Pbtt57xO3kn
-	tbF4/l5hMa1ViPZKy1EzUjB1+J2RTFc=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-33d463e79ddso2060808a91.0
-        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:19 -0700 (PDT)
+	bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
+	b=EbPYWZFu/MhjF4dXfF2NWkVJnElWtmepXhyDuX//1eqjOWWRTP9bFp8781m87ye4Vb88aj
+	ezDY3h/rWY+c4G3x6czp8IFDba7L5yTs2GyyIbpKFpXzE8GYb6gnrvholU/5zmVQwz2S17
+	6LeQPNJvZeBiXglJ5+kUtwliUGk8R7w=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UPDXT5vq;
+	spf=pass (imf10.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760854641; a=rsa-sha256;
+	cv=none;
+	b=TGPanf25lPrvvgJMq3olLz8yyfDDIBSVTtG/6kFP1CGkVvWk+0DKF07ZUi1Gnrv/eLtdmK
+	lg++9BBDAWRxSsPyDAthnAmXdh7Omk6cDOm5tnvVNhPP0jc3oUiUF/qyV4zbzZp/VNtO/L
+	QWQnc5P43UxAvOrYCNNroRpKkYlEujI=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-33d962c0e9aso303966a91.0
+        for <linux-mm@kvack.org>; Sat, 18 Oct 2025 23:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760854638; x=1761459438; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760854640; x=1761459440; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7G7V2lDPyVtB8Vl6uN0jxj375YUrl6r66ag/KY1fjtA=;
-        b=bCNWLYZKu2Q/JjGAHCEJfjiSyZQSe8A0dS3dHH4eCMUCbiHdKQMxT7kmve6L9IL4bJ
-         em09wl6iFONXVgix/3Zz5zu5laH++7lVI6xoPnFAQuUrDlnPZYeGBIWAm3KMr8Yp+/jF
-         qHRRuHdhBo+aVr9iaVg2t+j7/qLOMJU+ugMGAj0jHk0uf+UJp8EY973rcjXxmA8zbdEi
-         UiDC2uKsDCudfqOh9sFz1UZ1sP5Bs8E55zge2JPPmtAzMT0TsGq6SdV46gobOPYoNSSh
-         KOcUxTU+gUcEJefhfUhppgCfQNw/0IxDml+YtReRJJmbzH0UoXm16rt9Bd/lyqCPr33c
-         vYhw==
+        bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
+        b=UPDXT5vqRjcdrceMG9BSdx9w4LMg47wmqSQxu+wK/MjtL2MRP1ngbiALmKBNZ6Y+aw
+         CPZjdiwGGaDN5RzFlCyEiAjEpO+h5BQN2dXzcrlqxjBQw+sB8Ih8Av0pXTqcERPJcxRZ
+         n0rR/P3r+/Z/EYls+dqRWhpWz6qanPSMi64CxfT6nDH5BH+tFaJ6QWxGvetEFalJInQk
+         sO6V3wd+YN5zdfs+nkBl0ntAY4YvF4hRiTnQ6Hq2eD3x23M7488sj04WJaInAEp6HNM3
+         oixUw/ScsWKZZ86awcemw7ChCOiMAQv41D0UgZ5p2g7YhAnZErFc24mmIIN7PjTGlk+E
+         FfRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760854638; x=1761459438;
+        d=1e100.net; s=20230601; t=1760854640; x=1761459440;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7G7V2lDPyVtB8Vl6uN0jxj375YUrl6r66ag/KY1fjtA=;
-        b=Qg5ooJzCHG1RzR1pJcgqkZqovBT++HPUK6+JQHBIv/HA1yWigIjaieUwx+d6OZWGHr
-         FEEMFJoeAyTHKlT4s02vY5a8kdYIxdRv1YXtYkd9jmBvr+z98pSarkXnnu4PZ+KhIF0p
-         4KLy1KyXw9YY6M91zsklDczknmYs8ggFw4g2VmSt8kFbzpMF67wWA/c9OTsEqyaK1Kt/
-         FxWFE7M7ksUidLYGr+bOk1mF/JX7xiK/jNWfXWdK9MLEfYwrFJU+2aYDKerCCbpcG7JM
-         QQiTza8+0mxM2pMFLcJxwqKanb65vMDObfyCzo8Meh8lgk01BojFZLcbar9dmZmJ2l1c
-         qDCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEzcBfe3UE8wQIG62rRmOl0463Pc0Mt2ERSw88CFaxyZRDIUagf/hLnc9OZ9cB6YAEPGr0TXVldA==@kvack.org
-X-Gm-Message-State: AOJu0YwDXSRgWbYSdOjqT6FXJb9MIkVjhAXCZIiTrgA8jH1qTunrUU32
-	7I5leHW6/XtEBElsRDtQMMKP52d3b6madrvf0x/3SyFTcoBT+xD1hKTu
-X-Gm-Gg: ASbGncsexgkURuBs3WNRmTAIQwh3kAV1RfuknEtv41bLZooFEgkjssDIN0+oZnVZrBv
-	wBwpF0UQHyv/p5RCXGOnZU47KTBXX31COkPFcw5/bRjbsVvc3pnulj0JzHwacCKEZDHxzZ+7aZA
-	GgDRpZFcyUcBKCbeOayrp+oomEG7wtMetH0VH2r3wi1ZdsMg8ZHw/hls7FQF7UKBHkQnIp9HUwq
-	U29aP98gCy+xowNK1JbswuGNdchPVokF0UJGiTLxA+w2MMBWRPASBW2+hWGITbq/PQVAdapVpW7
-	FmD1Lj+Vl7qwA60ZaJRBJN9WQzEJqrwGMUiOlIj+fklq+KIgtoRj24shzdj9WPG1XkWMCcdB36e
-	nD58WwffKACHKXGYmOvBfS7i/Qfix2i2adpBSepKskfppUBkKOiEBWhsSHCtB/EtreiUuHLMT1J
-	LPIaCp
-X-Google-Smtp-Source: AGHT+IEZPNwGCn+AJA9HvXAr3esIQDClPANaOupRBhLiMvPnsKQncqIOyoMxe8b/clUUmIYj68gmRg==
-X-Received: by 2002:a17:90b:3911:b0:335:2eef:4ca8 with SMTP id 98e67ed59e1d1-33bcf91b8demr14755422a91.33.1760854638154;
-        Sat, 18 Oct 2025 23:17:18 -0700 (PDT)
+        bh=CGfWBR5gpu5BpcnPXBhslXXLKaWQISUn3yoh9fDkD14=;
+        b=dtewFKxofoKaE6xhLHJHGdsUZwB8f0B9Klkg2pTBoiHv3g+hIiIFLuwAC67nSryaAz
+         4AM7fHiVPsedY9kZfBI/h382zCCuZ2GFYEWxzON0V+cSABAIC2EWce9O7jJV3xbuNrOe
+         76M2VMVepr7hsC+jlzw3M/p/pnHG8U34sZMfO458uCSF8v012dPPB/EVi6IEogGxSF5k
+         h67ajTBD0h6O65xmunFDQGOGYg4T6m6y7/Z079b+DPO/PlaKBMr1T7QbqbeH5iSBy4wb
+         bbHebHsVlRBMIVAeC4ilFdVgvx5+TMJlDyww9ZT60EGACT9p4PnCCBohyXOR4i1E4Kk0
+         pEOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCoEWfNkcE2kWX46qNQYICZUViBZgS6QGvNzxcfBgYtXFz3nwRkrTZtzCbWAVMc8Grn9OiE+Jpwg==@kvack.org
+X-Gm-Message-State: AOJu0Yy1lFd9YXWmldkZKxLkU9w9QpW5OYVUTVn3HNveY6c4AjVIpTMI
+	LeaTDwzBvZFkxFPu1+mie7jhTRWf6fB+YXHA1tVBvHqjGmY/RbBBk7a1
+X-Gm-Gg: ASbGncuzA+0yyHXhrNiVz1YJdXDDfjz/DXE6Hq/qvwe4VHKwZVzxTOI2WZSiOoWbjXR
+	Ym5k8121kJvY/MaoC8ZdFjKIV5TBgT8rvq/MVHTk3YKE1inbSRSpHlzUCFSMLAWBdFYlJ4DziDi
+	n2JLAyi1vkYvRDOvTEzysnXaXU6mh5L9DYWevswtGAkzeIFv+I4nQL2XukHVlcRRIBNeFv6q48D
+	+WzMEvbnhTcoyzxFbNsCaX1uMiMGdbWLNWpDy7CbbQyXqRSKpA9Dm/ymutlxn/rWFugM64/FmwY
+	Ai2zzfpNkx6jhoEqgLDtAw+99gabdA6K/87tr3nupaex397D6FPhBKW86g9NP+n6AGYz8OJma5Z
+	5dxUjEbIMSovpsdt5ERv0YOiacJ+sBTXIAiHad29MFlto/k4rm9HCteujPvJhI0vEAa+77I5tg/
+	MzM13e
+X-Google-Smtp-Source: AGHT+IFB/9N4hWxuPbcz7xQxYSDMcrE9Ap+mI0ELEadewX8FBE7rytwKC4P01IfgOC+LAL66fL2HMg==
+X-Received: by 2002:a17:90b:3512:b0:32e:7ff6:6dbd with SMTP id 98e67ed59e1d1-33bc9aa6e69mr13206379a91.0.1760854640156;
+        Sat, 18 Oct 2025 23:17:20 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6881:9060:bc87:d8fe:3e55:7ffb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.16
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm4332032a12.38.2025.10.18.23.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 23:17:17 -0700 (PDT)
+        Sat, 18 Oct 2025 23:17:19 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: linux-kernel@vger.kernel.org
 Cc: jiri@resnulli.us,
@@ -105,22 +105,22 @@ Cc: jiri@resnulli.us,
 	Changyuan Lyu <changyuanl@google.com>,
 	kexec@lists.infradead.org,
 	linux-mm@kvack.org
-Subject: [RFC Patch v2 13/16] kernel: Introduce generic multikernel IPI communication framework
-Date: Sat, 18 Oct 2025 23:16:27 -0700
-Message-Id: <20251019061631.2235405-14-xiyou.wangcong@gmail.com>
+Subject: [RFC Patch v2 14/16] multikernel: Add messaging layer for inter-kernel communication
+Date: Sat, 18 Oct 2025 23:16:28 -0700
+Message-Id: <20251019061631.2235405-15-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 References: <20251019061631.2235405-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 75A62C0002
+X-Stat-Signature: p48x6xcguzq6ecnoiznju98iuuktn1tw
 X-Rspam-User: 
-X-Stat-Signature: 5aahgn1bra47pn5tbsx7mmcqgbmniog5
-X-Rspamd-Queue-Id: 58D3BA0008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760854639-337090
-X-HE-Meta: U2FsdGVkX18sT8D8WrBuDXo5KzEH3bYlEfMeT5qXDQXlz317JVQgzIql3nkOaQhqB9H4QTTh/vLkjViBPKrewyJuR6rYFM2qffQicEJYQ06Ua1R/K7PyIOE/7whcb9S7/PZerKjZ+E36x0N2o0uuJiL5Jo+jX+UZNkcN3DlnqFv8KpMZ28BOo6iuS6AghyKDQnT150PCwgkvLY6bz2wmy9y4oO4rQIvWaMxwF8Bx+gvyT/kXJnLOfD5+5TDP8LD1nt6ZgJLgiJNxAzJY9UzVv82TapCV9f63TfDyXfHAStYA8EAGa6JS+hGy/qS46x1GQtX2YOVqgV3RZUbRqdwt41r8K7Pj9UruX+bIf5CO/dO5po46MS9WudQAz+F5j+b9Wrl9AlCMCLScXJ2ix4GPZ3bQKbCStdSdnqUohPFA+o1n0BXIQCt/BrvAkI0CE9l+c5p3fljk3W95RDfRfw/mphtf07lpiVDllWMd/Df4kdKY/O0DdK88TPIXntX9C7tx9ElGFDQQYEuQTC2U4582D46eSVCcHcP44/obDhd9xjL6V1dEv5byeydLEBbdA4tlAchu3jKFKIHHljEScbzW1IK81/+VI1WmTOQjxKXW3ofSeGscy1HNVajZmvFUsMgc/Su6g1lEltLl4nRwSTs0QSyzR+sXiqnrcOjBvy5Iqy+XcPviD61LWMPyfy4CuVsR3+3txta3Q66eTlkuDcvCoYM8S4h8z4y/d1zsNtBVSCGb7F4T3QTX13HCZSXnzQ8bSwaNktTpYU5piqmOAXPNYMnjNrNXOMjqRhsqh78e2r+0rjIR2vqq6JBllUPWS8vTJKKwY+7y9KpnUPwe8SVGRDcFcECbBAeMBEt8FaVZHm73spcKo4/wSSdOu5qPN5PV/8mZsjPYI8TFwrUbpm1F+QXW3DXlLXFt3hsdBOpzY+9+p73BEoFw6vSBACWNglKaGb9F1GBJI2In+t7cy07
- D8MqIENc
- F3xbqqNnsdMop8Rg/4Q4zt5IWen9Jvai5Ow5Bx+oS90/KBJXdnRRa/y8ZpC95RYtrylwiqKeme2XLsA2a6Owp1fXd0dLfyjcFBiaQoqilqzYjH59dWDM8vg1nWDI+EFOEhWVteWUXmDAyg8qHGIvhTB1PpV7kXCsS5QvEq/xk8SU53UdLo5QemkKPCvMp9ojafyPVabexosFBudafTvzI4vucyxC4IVejQs1hX43eLoLxHT8CVapuzagh/wYh6IAUhYo1lIllhnPifV2bdOhaSROF5NDk8AQqkeKJtwIA8aEHIaqZDSShIP5E/bC1Hmmf/3Sj7sISobsbMWpc+gn6oItXVdicldZIbwQUsqb8wIphwXeQtNJNgficf5ZmgiiPyp6vHcdR2y7LqSknCaYzABpYsL8bYE/P8mWd1wS6FWBEIG8+kgj6VBIpF34OiWEcL7lOU46dXoKcQqgLyLUKO83KtL7OYgyBrg8WFPNPewsXr+4=
+X-HE-Tag: 1760854641-154091
+X-HE-Meta: U2FsdGVkX1+kI2f0K8LisQWXrdRVJGvwwf0VBeR6c2+d0Z7MT8GRjWsSGs0pyjnPASkkljgoQ5oVvnMvRLsMMimUQc0VY52PofcD0HTv5UdZc9a0LAkX9DMiEeBgpd6yw4fxPtZyXrbeiIi/whFqRwa2ypKP/e5HRzazVc8Ws503UhdDGd3mAvpL3zi5MpAylT6PlPmJrFgBpyl5174wKsKxq5121gTMEAorOCHJlUMbUNvzlbTytlY9UsPOJWB0y04JQVl2oZwfd8DQloJsDY4E76coT4U+fkDcO85GSxp1catQnXbvFBQQaAsFYWjUaTnZ7sAncjidVVeYX651No2ftN+taQBBwRGlrD6eNot2UKPCZysD/A8vacMVhLDHTSpRJT7NajRlqj5Ng/KWbr3kOWJT2q3EUm3Cgi2nH4dnOw+PxrHGDM6Ky9iyVJMZmxaicuVhp8OVp3ZRUTi8H++57zrkj32l3e8rFHEMbPreus0GLrulnLiDplmRaozYusa9NQdWGQEqHYp8VnQFW1OEhEAY8lLPloa4qfQ/GvGYkR05hDftQVRCv487x1OJzSIWdqkZDPblBJ28Ng7bvCgXHNr4sC0Yev83aqkzrt6Wg5ANju3lnaIeTqXOwulnlqjjDJltqvwjASNzuiWxRg63s1/bwaEwAocM31YiYbs1tv8k7cUyqweVhu5PEYm6yewDNyo0jHGpIjKLZDIwrhVYmPr8JNBM1NhLPmxzTIqwqNpVvgW7iszPXljkoOyP/yKhGY6W3DZnkn8gFBlb+N4Tiathu4ZhyFzFv4uudO117BvsdpKZ6TJKLsyePh9KZiaHsdmsMq3scu0wgdRaW6g3K63/gqz641zJ2EU5v0rSScGXr6ZtgWxxO/AnK2+TvZueO9JtDLp2vwxdAhi9IGT0K5/CEdBV8oJDPgfyYuZ6omnx3M7r64iEGK+pCyVAXSTYPCLTMoAbAYfLuYU
+ 5iAwCd/c
+ 2r9t9/+HbC9U5yT2yA4C4uEem3zeg7JhUOV1uRRG+zsKaatEDOo/+VCeboGwo2Iip6SLcvuYYAnQG9jwdNCXbOGbyx/6ma8dMCPhp2d+x087AgOA0pPu0uW2vuw/3bF1qsaDeieAR99tPPeYKbeaJJieXC77SJiKUUFNnb7SqaA7+8+YZlupAjWx+GPbaKa32M7DXSX9IcYIRj4BZO+q2dLdt5yUFcXC/f1hH6QA2ROZpvus8PrjFFOonpl478YGm1m7AN1aNLXDs7d74u26L0uZhbFd6zuYzaOXbPiPGWS7W5ElbCoCJ44XGo/PEfL0XcOTDZ/a0mCa8HqLwKAJ+gJPAZq8YXhTWYmpD4+AFUR678yEAv9uvJeHYZeDOUc3siWpvTewpnvLSpSGqiTIHR2BTX8YuJZ5CQWy0Me/3A/ynDTYRXtLxuiYnoUCWhX9kc3xAl+VNRuQTO65TknUefpm74ZCr5zpUA4kwFiuq2iHgiXtz+UxY42AF2g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,625 +131,571 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-This patch implements a comprehensive IPI-based communication system
-for multikernel environments, enabling data exchange between different
-kernel instances running on separate CPUs.
+Introduce a structured messaging system built on top of the existing
+multikernel IPI infrastructure to enable reliable communication between
+kernel instances running on different CPUs.
 
-Key features include:
+The messaging layer provides:
 
-- Generic IPI handler registration and callback mechanism allowing
-  modules to register for multikernel communication events
-- Shared memory infrastructure on top of the general per-instance memory
-  allocation infrastructure
-- Per-instance data buffers in shared memory for efficient IPI payload
-  transfer up to 256 bytes per message
-- IRQ work integration for safe callback execution in interrupt context
-- PFN-based flexible shared memory APIs for page-level data sharing
-- Resource tracking integration for /proc/iomem visibility
+* Simple message format with type/subtype hierarchy for extensibility
+* Support for I/O interrupt forwarding between kernel instances
+* Resource management messages for CPU and memory hotplug operations
+* Type-safe payload structures with validation
+* Handler registration system for message processing
+* Convenient inline functions for common operations
 
-It provides the key API multikernel_send_ipi_data() for sending
-typed data to target kernel instance and multikernel_register_handler()
-for registering IPI handler. Shared memory is established on top of the
-per-instance memory allocation infra.
+Message types include:
+- MK_MSG_IO: I/O interrupt forwarding and load balancing
+- MK_MSG_RESOURCE: CPU/memory add/remove operations
+- MK_MSG_SYSTEM: System-level coordination messages
+- MK_MSG_USER: User-defined message types
 
-This infrastructure enables multikernel instances to coordinate and
-share data while maintaining isolation on their respective CPU cores.
+The implementation leverages the reliable nature of intra-machine IPIs,
+maintaining simplicity and performance. Messages are limited to the
+existing 256-byte IPI buffer size, with larger data transfers handled
+via the existing PFN-based shared memory mechanism.
 
-(Note, as a proof-of-concept, we have only implemented the x86 part.)
+This messaging foundation enables sophisticated multikernel coordination
+scenarios including dynamic resource allocation, interrupt load
+balancing, and system-wide state management.
 
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- arch/x86/kernel/smp.c       |   3 +
- include/linux/multikernel.h |  66 +++++
- kernel/multikernel/Makefile |   2 +-
- kernel/multikernel/ipi.c    | 471 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 541 insertions(+), 1 deletion(-)
- create mode 100644 kernel/multikernel/ipi.c
+ include/linux/multikernel.h    | 200 ++++++++++++++++++++++++
+ kernel/multikernel/Makefile    |   2 +-
+ kernel/multikernel/core.c      |   7 +
+ kernel/multikernel/messaging.c | 278 +++++++++++++++++++++++++++++++++
+ 4 files changed, 486 insertions(+), 1 deletion(-)
+ create mode 100644 kernel/multikernel/messaging.c
 
-diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
-index e2eba09da7fc..2be7c1a777ef 100644
---- a/arch/x86/kernel/smp.c
-+++ b/arch/x86/kernel/smp.c
-@@ -273,10 +273,13 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_call_function_single)
- }
- 
- #ifdef CONFIG_MULTIKERNEL
-+void generic_multikernel_interrupt(void);
-+
- DEFINE_IDTENTRY_SYSVEC(sysvec_multikernel)
- {
- 	apic_eoi();
- 	inc_irq_stat(irq_call_count);
-+	generic_multikernel_interrupt();
- }
- #endif /* CONFIG_MULTIKERNEL */
- 
 diff --git a/include/linux/multikernel.h b/include/linux/multikernel.h
-index 79611923649e..ee96bd2332b6 100644
+index ee96bd2332b6..3bc07361145b 100644
 --- a/include/linux/multikernel.h
 +++ b/include/linux/multikernel.h
-@@ -14,6 +14,72 @@
- #include <linux/cpumask.h>
- #include <linux/genalloc.h>
+@@ -80,6 +80,206 @@ void *mk_receive_map_page(struct mk_ipi_data *data);
  
-+/**
-+ * Multikernel IPI interface
+ #define mk_receive_unmap_page(p) memunmap(p)
+ 
++/*
++ * Multikernel Messaging System
 + */
 +
-+/* Maximum data size that can be transferred via IPI */
-+#define MK_MAX_DATA_SIZE 256
++/**
++ * Message type definitions - organized by category
++ */
 +
-+/* Data structure for passing parameters via IPI */
-+struct mk_ipi_data {
-+	int sender_cpu;          /* Which CPU sent this IPI */
-+	unsigned int type;      /* User-defined type identifier */
-+	size_t data_size;        /* Size of the data */
-+	char buffer[MK_MAX_DATA_SIZE]; /* Actual data buffer */
++/* Top-level message categories */
++#define MK_MSG_IO           0x1000
++#define MK_MSG_RESOURCE     0x2000
++#define MK_MSG_SYSTEM       0x3000
++#define MK_MSG_USER         0x4000
++
++/* I/O interrupt forwarding subtypes */
++#define MK_IO_IRQ_FORWARD   (MK_MSG_IO + 1)
++#define MK_IO_IRQ_BALANCE   (MK_MSG_IO + 2)
++#define MK_IO_IRQ_MASK      (MK_MSG_IO + 3)
++#define MK_IO_IRQ_UNMASK    (MK_MSG_IO + 4)
++
++/* Resource management subtypes */
++#define MK_RES_CPU_ADD      (MK_MSG_RESOURCE + 1)
++#define MK_RES_CPU_REMOVE   (MK_MSG_RESOURCE + 2)
++#define MK_RES_MEM_ADD      (MK_MSG_RESOURCE + 3)
++#define MK_RES_MEM_REMOVE   (MK_MSG_RESOURCE + 4)
++#define MK_RES_QUERY        (MK_MSG_RESOURCE + 5)
++
++/* System management subtypes */
++#define MK_SYS_HEARTBEAT    (MK_MSG_SYSTEM + 1)
++#define MK_SYS_SHUTDOWN     (MK_MSG_SYSTEM + 2)
++
++/**
++ * Core message structure
++ */
++struct mk_message {
++	u32 msg_type;           /* Message type identifier */
++	u32 msg_subtype;        /* Subtype for specific operations */
++	u64 msg_id;             /* Optional message ID for correlation */
++	u32 payload_len;        /* Length of payload data */
++	u8 payload[];           /* Variable payload (up to remaining IPI buffer) */
 +};
 +
-+/* Function pointer type for IPI callbacks */
-+typedef void (*mk_ipi_callback_t)(struct mk_ipi_data *data, void *ctx);
++/**
++ * Payload structures for specific message types
++ */
 +
-+struct mk_ipi_handler {
-+	mk_ipi_callback_t callback;
-+	void *context;
-+	unsigned int ipi_type;       /* IPI type this handler is registered for */
-+	struct mk_ipi_handler *next;
-+	struct mk_ipi_data *saved_data;
-+	struct irq_work work;
++/* I/O interrupt forwarding */
++struct mk_io_irq_payload {
++	u32 irq_number;         /* Hardware IRQ number */
++	u32 vector;             /* Interrupt vector */
++	u32 device_id;          /* Device identifier (optional) */
++	u32 flags;              /* Control flags (priority, etc.) */
 +};
 +
-+/**
-+ * multikernel_register_handler - Register a callback for multikernel IPI
-+ * @callback: Function to call when IPI is received
-+ * @ctx: Context pointer passed to the callback
-+ * @ipi_type: IPI type this handler should process
-+ *
-+ * Returns pointer to handler on success, NULL on failure
-+ */
-+struct mk_ipi_handler *multikernel_register_handler(mk_ipi_callback_t callback, void *ctx, unsigned int ipi_type);
++/* IRQ control flags */
++#define MK_IRQ_HIGH_PRIORITY    0x01
++#define MK_IRQ_LOW_LATENCY      0x02
++#define MK_IRQ_EDGE_TRIGGERED   0x04
++#define MK_IRQ_LEVEL_TRIGGERED  0x08
++
++/* CPU resource operations */
++struct mk_cpu_resource_payload {
++	u32 cpu_id;             /* Physical CPU ID */
++	u32 numa_node;          /* NUMA node (optional) */
++	u32 flags;              /* CPU capabilities/attributes */
++};
++
++/* CPU capability flags */
++#define MK_CPU_HAS_AVX512       0x01
++#define MK_CPU_HAS_TSX          0x02
++#define MK_CPU_HYPERTHREAD      0x04
++
++/* Memory resource operations */
++struct mk_mem_resource_payload {
++	u64 start_pfn;          /* Starting page frame number */
++	u64 nr_pages;           /* Number of pages */
++	u32 numa_node;          /* NUMA node */
++	u32 mem_type;           /* Memory type (normal/DMA/etc.) */
++};
++
++/* Memory types */
++#define MK_MEM_NORMAL           0x01
++#define MK_MEM_DMA              0x02
++#define MK_MEM_DMA32            0x04
++#define MK_MEM_HIGHMEM          0x08
 +
 +/**
-+ * multikernel_unregister_handler - Unregister a multikernel IPI callback
-+ * @handler: Handler pointer returned from multikernel_register_handler
++ * Message handler callback type
 + */
-+void multikernel_unregister_handler(struct mk_ipi_handler *handler);
++typedef void (*mk_msg_handler_t)(u32 msg_type, u32 subtype,
++				 void *payload, u32 payload_len, void *ctx);
 +
 +/**
-+ * multikernel_send_ipi_data - Send data to another CPU via IPI
++ * Message API functions
++ */
++
++/**
++ * mk_send_message - Send a message to another CPU
 + * @instance_id: Target multikernel instance ID
-+ * @data: Pointer to data to send
-+ * @data_size: Size of data
-+ * @type: User-defined type identifier
-+ *
-+ * This function copies the data to per-CPU storage and sends an IPI
-+ * to the target CPU.
++ * @msg_type: Message type identifier
++ * @subtype: Message subtype
++ * @payload: Pointer to payload data (can be NULL)
++ * @payload_len: Length of payload data
 + *
 + * Returns 0 on success, negative error code on failure
 + */
-+int multikernel_send_ipi_data(int instance_id, void *data, size_t data_size, unsigned long type);
++int mk_send_message(int instance_id, u32 msg_type, u32 subtype,
++		    void *payload, u32 payload_len);
 +
-+void generic_multikernel_interrupt(void);
++/**
++ * mk_register_msg_handler - Register handler for specific message type
++ * @msg_type: Message type to handle
++ * @handler: Handler function
++ * @ctx: Context pointer passed to handler
++ *
++ * Returns 0 on success, negative error code on failure
++ */
++int mk_register_msg_handler(u32 msg_type, mk_msg_handler_t handler, void *ctx);
 +
-+/* Flexible shared memory APIs (PFN-based) */
-+int mk_send_pfn(int instance_id, unsigned long pfn);
-+int mk_receive_pfn(struct mk_ipi_data *data, unsigned long *out_pfn);
-+void *mk_receive_map_page(struct mk_ipi_data *data);
++/**
++ * mk_unregister_msg_handler - Unregister message handler
++ * @msg_type: Message type to unregister
++ * @handler: Handler function to remove
++ *
++ * Returns 0 on success, negative error code on failure
++ */
++int mk_unregister_msg_handler(u32 msg_type, mk_msg_handler_t handler);
 +
-+#define mk_receive_unmap_page(p) memunmap(p)
++/**
++ * Convenience functions for common message types
++ */
++
++/* I/O interrupt forwarding */
++static inline int mk_send_irq_forward(int instance_id, u32 irq_number,
++				      u32 vector, u32 device_id, u32 flags)
++{
++	struct mk_io_irq_payload payload = {
++		.irq_number = irq_number,
++		.vector = vector,
++		.device_id = device_id,
++		.flags = flags
++	};
++	return mk_send_message(instance_id, MK_MSG_IO, MK_IO_IRQ_FORWARD,
++			       &payload, sizeof(payload));
++}
++
++/* CPU resource management */
++static inline int mk_send_cpu_add(int instance_id, u32 cpu_id,
++				  u32 numa_node, u32 flags)
++{
++	struct mk_cpu_resource_payload payload = {
++		.cpu_id = cpu_id,
++		.numa_node = numa_node,
++		.flags = flags
++	};
++	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_CPU_ADD,
++			       &payload, sizeof(payload));
++}
++
++static inline int mk_send_cpu_remove(int instance_id, u32 cpu_id)
++{
++	struct mk_cpu_resource_payload payload = {
++		.cpu_id = cpu_id,
++		.numa_node = 0,
++		.flags = 0
++	};
++	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_CPU_REMOVE,
++			       &payload, sizeof(payload));
++}
++
++/* Memory resource management */
++static inline int mk_send_mem_add(int instance_id, u64 start_pfn, u64 nr_pages,
++				  u32 numa_node, u32 mem_type)
++{
++	struct mk_mem_resource_payload payload = {
++		.start_pfn = start_pfn,
++		.nr_pages = nr_pages,
++		.numa_node = numa_node,
++		.mem_type = mem_type
++	};
++	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_MEM_ADD,
++			       &payload, sizeof(payload));
++}
++
++static inline int mk_send_mem_remove(int instance_id, u64 start_pfn, u64 nr_pages)
++{
++	struct mk_mem_resource_payload payload = {
++		.start_pfn = start_pfn,
++		.nr_pages = nr_pages,
++		.numa_node = 0,
++		.mem_type = 0
++	};
++	return mk_send_message(instance_id, MK_MSG_RESOURCE, MK_RES_MEM_REMOVE,
++			       &payload, sizeof(payload));
++}
++
++/* Messaging system functions */
++int __init mk_messaging_init(void);
++void mk_messaging_cleanup(void);
 +
  struct resource;
  
  extern phys_addr_t multikernel_alloc(size_t size);
 diff --git a/kernel/multikernel/Makefile b/kernel/multikernel/Makefile
-index d004c577f13d..b539acc656c6 100644
+index b539acc656c6..f133e1eaf534 100644
 --- a/kernel/multikernel/Makefile
 +++ b/kernel/multikernel/Makefile
 @@ -3,7 +3,7 @@
  # Makefile for multikernel support
  #
  
--obj-y += core.o mem.o kernfs.o dts.o
-+obj-y += core.o mem.o kernfs.o dts.o ipi.o
+-obj-y += core.o mem.o kernfs.o dts.o ipi.o
++obj-y += core.o mem.o kernfs.o dts.o ipi.o messaging.o
  
  # Add libfdt include path for device tree parsing
  CFLAGS_dts.o = -I $(srctree)/scripts/dtc/libfdt
-diff --git a/kernel/multikernel/ipi.c b/kernel/multikernel/ipi.c
-new file mode 100644
-index 000000000000..b5c4a06747a2
---- /dev/null
-+++ b/kernel/multikernel/ipi.c
-@@ -0,0 +1,471 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Multikernel Technologies, Inc. All rights reserved
-+ */
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/smp.h>
-+#include <linux/percpu.h>
-+#include <linux/spinlock.h>
-+#include <linux/multikernel.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <asm/apic.h>
-+
-+/* Per-instance IPI data - no more global variables */
-+struct mk_instance_ipi_data {
-+	void *instance_pool;           /* Instance pool handle */
-+	struct mk_shared_data *shared_mem;  /* IPI shared memory for this instance */
-+	size_t shared_mem_size;        /* Size of shared memory */
-+};
-+
-+/* Shared memory structures - per-instance design */
-+struct mk_shared_data {
-+	struct mk_ipi_data cpu_data[NR_CPUS];  /* Data area for each CPU */
-+};
-+
-+#define MK_MAX_INSTANCES 256
-+static struct mk_instance_ipi_data *mk_instance_ipi_map[MK_MAX_INSTANCES];
-+static DEFINE_SPINLOCK(mk_ipi_map_lock);
-+
-+static struct mk_shared_data *mk_this_kernel_ipi_data;
-+static phys_addr_t mk_ipi_shared_phys_addr;
-+
-+/* Callback management */
-+static struct mk_ipi_handler *mk_handlers;
-+static raw_spinlock_t mk_handlers_lock = __RAW_SPIN_LOCK_UNLOCKED(mk_handlers_lock);
-+
-+static void *multikernel_alloc_ipi_buffer(void *pool_handle, size_t buffer_size);
-+static void multikernel_free_ipi_buffer(void *pool_handle, void *virt_addr, size_t buffer_size);
-+
-+static void handler_work(struct irq_work *work)
-+{
-+    struct mk_ipi_handler *handler = container_of(work, struct mk_ipi_handler, work);
-+    if (handler->callback)
-+        handler->callback(handler->saved_data, handler->context);
-+}
-+
-+/**
-+ * mk_instance_ipi_create() - Create IPI data for a multikernel instance
-+ * @instance: The multikernel instance
-+ *
-+ * Allocates and initializes IPI communication buffers for the given instance.
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+static int mk_instance_ipi_create(struct mk_instance *instance)
-+{
-+	struct mk_instance_ipi_data *ipi_data;
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	if (!instance || instance->id < 0 || instance->id >= MK_MAX_INSTANCES)
-+		return -EINVAL;
-+
-+	ipi_data = kzalloc(sizeof(*ipi_data), GFP_KERNEL);
-+	if (!ipi_data)
-+		return -ENOMEM;
-+
-+	/* Use the instance's own memory pool */
-+	ipi_data->instance_pool = instance->instance_pool;
-+	if (!ipi_data->instance_pool) {
-+		pr_err("Instance %d has no memory pool for IPI allocation\n", instance->id);
-+		kfree(ipi_data);
-+		return -ENODEV;
-+	}
-+
-+	/* Allocate IPI buffer from the instance pool */
-+	ipi_data->shared_mem_size = sizeof(struct mk_shared_data);
-+	ipi_data->shared_mem = multikernel_alloc_ipi_buffer(ipi_data->instance_pool,
-+							    ipi_data->shared_mem_size);
-+	if (!ipi_data->shared_mem) {
-+		pr_err("Failed to allocate IPI shared memory for instance %d\n", instance->id);
-+		kfree(ipi_data);
-+		return -ENOMEM;
-+	}
-+
-+	/* Initialize the shared memory structure */
-+	memset(ipi_data->shared_mem, 0, ipi_data->shared_mem_size);
-+
-+	/* Register in the global map */
-+	spin_lock_irqsave(&mk_ipi_map_lock, flags);
-+	if (mk_instance_ipi_map[instance->id]) {
-+		pr_err("IPI data already exists for instance %d\n", instance->id);
-+		ret = -EEXIST;
-+	} else {
-+		mk_instance_ipi_map[instance->id] = ipi_data;
-+	}
-+	spin_unlock_irqrestore(&mk_ipi_map_lock, flags);
-+
-+	if (ret) {
-+		multikernel_free_ipi_buffer(ipi_data->instance_pool,
-+					    ipi_data->shared_mem,
-+					    ipi_data->shared_mem_size);
-+		kfree(ipi_data);
+diff --git a/kernel/multikernel/core.c b/kernel/multikernel/core.c
+index ee7a21327ea5..37dbf0cf4be6 100644
+--- a/kernel/multikernel/core.c
++++ b/kernel/multikernel/core.c
+@@ -505,9 +505,16 @@ static int __init multikernel_init(void)
+ {
+ 	int ret;
+ 
++	ret = mk_messaging_init();
++	if (ret < 0) {
++		pr_err("Failed to initialize multikernel messaging: %d\n", ret);
 +		return ret;
 +	}
 +
-+	pr_info("Created IPI data for instance %d (%s): virt=%px, size=%zu bytes\n",
-+		instance->id, instance->name, ipi_data->shared_mem, ipi_data->shared_mem_size);
+ 	ret = mk_kernfs_init();
+ 	if (ret < 0) {
+ 		pr_err("Failed to initialize multikernel sysfs interface: %d\n", ret);
++		mk_messaging_cleanup();
+ 		return ret;
+ 	}
+ 
+diff --git a/kernel/multikernel/messaging.c b/kernel/multikernel/messaging.c
+new file mode 100644
+index 000000000000..be1fba8778ec
+--- /dev/null
++++ b/kernel/multikernel/messaging.c
+@@ -0,0 +1,278 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Multikernel Messaging System
++ * Copyright (C) 2025 Multikernel Technologies, Inc. All rights reserved
++ *
++ * Simple messaging layer on top of multikernel IPI infrastructure
++ */
 +
-+	return 0;
-+}
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/multikernel.h>
++
++/* Per-type message handler registry */
++struct mk_msg_type_handler {
++	u32 msg_type;
++	struct mk_ipi_handler *ipi_handler;
++	mk_msg_handler_t msg_handler;
++	void *context;
++	struct mk_msg_type_handler *next;
++};
++
++static struct mk_msg_type_handler *mk_msg_type_handlers;
++static raw_spinlock_t mk_msg_type_handlers_lock = __RAW_SPIN_LOCK_UNLOCKED(mk_msg_type_handlers_lock);
 +
 +/**
-+ * mk_instance_ipi_destroy() - Destroy IPI data for a multikernel instance
-+ * @instance_id: The instance ID
-+ *
-+ * Cleans up and frees IPI communication buffers for the given instance.
++ * mk_message_type_ipi_callback - IPI callback to handle incoming messages for a specific type
++ * @data: IPI data containing the message
++ * @ctx: Context containing the message handler info
 + */
-+static void mk_instance_ipi_destroy(int instance_id)
++static void mk_message_type_ipi_callback(struct mk_ipi_data *data, void *ctx)
 +{
-+	struct mk_instance_ipi_data *ipi_data;
-+	unsigned long flags;
++	struct mk_msg_type_handler *type_handler = (struct mk_msg_type_handler *)ctx;
++	struct mk_message *msg;
++	u32 msg_type, msg_subtype;
++	void *payload;
++	u32 payload_len;
 +
-+	if (instance_id < 0 || instance_id >= MK_MAX_INSTANCES)
++	if (!type_handler || !type_handler->msg_handler) {
++		pr_warn("Multikernel message received but no handler registered\n");
 +		return;
-+
-+	spin_lock_irqsave(&mk_ipi_map_lock, flags);
-+	ipi_data = mk_instance_ipi_map[instance_id];
-+	mk_instance_ipi_map[instance_id] = NULL;
-+	spin_unlock_irqrestore(&mk_ipi_map_lock, flags);
-+
-+	if (!ipi_data)
-+		return;
-+
-+	pr_debug("Destroying IPI data for instance %d\n", instance_id);
-+
-+	/* Free the shared memory buffer */
-+	if (ipi_data->shared_mem) {
-+		multikernel_free_ipi_buffer(ipi_data->instance_pool,
-+					    ipi_data->shared_mem,
-+					    ipi_data->shared_mem_size);
 +	}
 +
-+	kfree(ipi_data);
-+}
-+
-+/**
-+ * mk_instance_ipi_get() - Get IPI data for a multikernel instance
-+ * @instance_id: The instance ID
-+ *
-+ * Returns the IPI data for the given instance, or NULL if not found.
-+ */
-+static struct mk_instance_ipi_data *mk_instance_ipi_get(int instance_id)
-+{
-+	struct mk_instance_ipi_data *ipi_data;
-+	unsigned long flags;
-+
-+	if (instance_id < 0 || instance_id >= MK_MAX_INSTANCES)
-+		return NULL;
-+
-+	spin_lock_irqsave(&mk_ipi_map_lock, flags);
-+	ipi_data = mk_instance_ipi_map[instance_id];
-+	spin_unlock_irqrestore(&mk_ipi_map_lock, flags);
-+
-+	return ipi_data;
-+}
-+
-+/**
-+ * multikernel_register_handler - Register a callback for multikernel IPI
-+ * @callback: Function to call when IPI is received
-+ * @ctx: Context pointer passed to the callback
-+ * @ipi_type: IPI type this handler should process
-+ *
-+ * Returns pointer to handler on success, NULL on failure
-+ */
-+struct mk_ipi_handler *multikernel_register_handler(mk_ipi_callback_t callback, void *ctx, unsigned int ipi_type)
-+{
-+	struct mk_ipi_handler *handler;
-+	unsigned long flags;
-+
-+	if (!callback)
-+		return NULL;
-+
-+	handler = kzalloc(sizeof(*handler), GFP_KERNEL);
-+	if (!handler)
-+		return NULL;
-+
-+	handler->callback = callback;
-+	handler->context = ctx;
-+	handler->ipi_type = ipi_type;
-+
-+	init_irq_work(&handler->work, handler_work);
-+
-+	raw_spin_lock_irqsave(&mk_handlers_lock, flags);
-+	handler->next = mk_handlers;
-+	mk_handlers = handler;
-+	raw_spin_unlock_irqrestore(&mk_handlers_lock, flags);
-+
-+	return handler;
-+}
-+EXPORT_SYMBOL(multikernel_register_handler);
-+
-+/**
-+ * multikernel_unregister_handler - Unregister a multikernel IPI callback
-+ * @handler: Handler pointer returned from multikernel_register_handler
-+ */
-+void multikernel_unregister_handler(struct mk_ipi_handler *handler)
-+{
-+	struct mk_ipi_handler **pp, *p;
-+	unsigned long flags;
-+
-+	if (!handler)
++	/* Verify this matches our expected message type */
++	if (data->type != type_handler->msg_type) {
++		pr_warn("Multikernel message type mismatch: expected 0x%x, got 0x%x\n",
++			type_handler->msg_type, data->type);
 +		return;
-+
-+	raw_spin_lock_irqsave(&mk_handlers_lock, flags);
-+	pp = &mk_handlers;
-+	while ((p = *pp) != NULL) {
-+		if (p == handler) {
-+			*pp = p->next;
-+			break;
-+		}
-+		pp = &p->next;
 +	}
-+	raw_spin_unlock_irqrestore(&mk_handlers_lock, flags);
 +
-+    /* Wait for pending work to complete */
-+    irq_work_sync(&handler->work);
-+    kfree(p);
++	/* Ensure we have at least a message header */
++	if (data->data_size < sizeof(struct mk_message)) {
++		pr_warn("Multikernel message too small: %zu bytes\n", data->data_size);
++		return;
++	}
++
++	msg = (struct mk_message *)data->buffer;
++
++	/* Validate message structure */
++	if (msg->payload_len > (data->data_size - sizeof(struct mk_message))) {
++		pr_warn("Multikernel message payload length invalid: %u > %zu\n",
++			msg->payload_len, data->data_size - sizeof(struct mk_message));
++		return;
++	}
++
++	msg_type = msg->msg_type;
++	msg_subtype = msg->msg_subtype;
++	payload = msg->payload_len > 0 ? msg->payload : NULL;
++	payload_len = msg->payload_len;
++
++	pr_debug("Multikernel message received: type=0x%x, subtype=0x%x, len=%u from CPU %d\n",
++		 msg_type, msg_subtype, payload_len, data->sender_cpu);
++
++	/* Call the registered handler for this message type */
++	type_handler->msg_handler(msg_type, msg_subtype, payload, payload_len, type_handler->context);
 +}
-+EXPORT_SYMBOL(multikernel_unregister_handler);
 +
 +/**
-+ * multikernel_send_ipi_data - Send data to another CPU via IPI
++ * mk_send_message - Send a message to another CPU
 + * @instance_id: Target multikernel instance ID
-+ * @data: Pointer to data to send
-+ * @data_size: Size of data
-+ * @type: User-defined type identifier
-+ *
-+ * This function copies the data to per-CPU storage and sends an IPI
-+ * to the target CPU. The cpu parameter must be a physical CPU ID.
++ * @msg_type: Message type identifier
++ * @subtype: Message subtype
++ * @payload: Pointer to payload data (can be NULL)
++ * @payload_len: Length of payload data
 + *
 + * Returns 0 on success, negative error code on failure
 + */
-+int multikernel_send_ipi_data(int instance_id, void *data, size_t data_size, unsigned long type)
++int mk_send_message(int instance_id, u32 msg_type, u32 subtype,
++		    void *payload, u32 payload_len)
 +{
-+	struct mk_instance_ipi_data *ipi_data;
-+	struct mk_ipi_data *target;
-+	struct mk_instance *instance = mk_instance_find(instance_id);
-+	int cpu ;
-+
-+	if (!instance)
-+		return -EINVAL;
-+	if (data_size > MK_MAX_DATA_SIZE)
-+		return -EINVAL;
-+
-+	cpu = cpumask_first(instance->cpus);
-+	/* Get the IPI data for the target instance */
-+	ipi_data = mk_instance_ipi_get(instance_id);
-+	if (!ipi_data || !ipi_data->shared_mem) {
-+		pr_debug("Multikernel IPI shared memory not available for instance %d\n", instance_id);
-+		return -ENODEV;
-+	}
-+
-+	/* Get target CPU's data area from shared memory */
-+	target = &ipi_data->shared_mem->cpu_data[cpu];
-+
-+	/* Initialize/clear the IPI data structure to prevent stale data */
-+	memset(target, 0, sizeof(*target));
-+
-+	/* Set header information */
-+	target->data_size = data_size;
-+	target->sender_cpu = arch_cpu_physical_id(smp_processor_id());
-+	target->type = type;
-+
-+	/* Copy the actual data into the buffer */
-+	if (data && data_size > 0)
-+		memcpy(target->buffer, data, data_size);
-+
-+	/* Send IPI to target CPU using physical CPU ID */
-+	__apic_send_IPI(cpu, MULTIKERNEL_VECTOR);
-+
-+	return 0;
-+}
-+
-+/**
-+ * multikernel_interrupt_handler - Handle the multikernel IPI
-+ *
-+ * This function is called when a multikernel IPI is received.
-+ * It invokes all registered callbacks with the per-CPU data.
-+ *
-+ * In spawned kernels, we use the shared IPI data passed via boot parameter.
-+ * In host kernels, we may need to check instance mappings.
-+ */
-+static void multikernel_interrupt_handler(void)
-+{
-+	struct mk_ipi_data *data;
-+	struct mk_ipi_handler *handler;
-+	int current_cpu = smp_processor_id();
-+	int current_physical_id = arch_cpu_physical_id(current_cpu);
-+
-+	if (!mk_this_kernel_ipi_data)
-+		return;
-+
-+	data = &mk_this_kernel_ipi_data->cpu_data[current_physical_id];
-+
-+	if (data->data_size == 0 || data->data_size > MK_MAX_DATA_SIZE) {
-+		pr_debug("Multikernel IPI received on CPU %d but no valid data\n", current_cpu);
-+		return;
-+	}
-+
-+	pr_info("Multikernel IPI received on CPU %d (physical id %d) from CPU %d type=%u\n",
-+		current_cpu, current_physical_id, data->sender_cpu, data->type);
-+
-+	raw_spin_lock(&mk_handlers_lock);
-+	for (handler = mk_handlers; handler; handler = handler->next) {
-+		if (handler->ipi_type == data->type) {
-+			handler->saved_data = data;
-+			irq_work_queue(&handler->work);
-+		}
-+	}
-+	raw_spin_unlock(&mk_handlers_lock);
-+}
-+
-+/**
-+ * Generic multikernel interrupt handler - called by the IPI vector
-+ *
-+ * This is the function that gets called by the IPI vector handler.
-+ */
-+void generic_multikernel_interrupt(void)
-+{
-+	multikernel_interrupt_handler();
-+}
-+
-+/**
-+ * multikernel_alloc_ipi_buffer() - Allocate IPI communication buffer
-+ * @pool_handle: Instance pool handle
-+ * @buffer_size: Size of IPI buffer needed
-+ *
-+ * Allocates and maps a buffer suitable for IPI communication.
-+ * Returns virtual address of mapped buffer, or NULL on failure.
-+ */
-+static void *multikernel_alloc_ipi_buffer(void *pool_handle, size_t buffer_size)
-+{
-+	phys_addr_t phys_addr;
-+	void *virt_addr;
-+
-+	phys_addr = multikernel_instance_alloc(pool_handle, buffer_size, PAGE_SIZE);
-+	if (!phys_addr) {
-+		pr_err("Failed to allocate %zu bytes for IPI buffer\n", buffer_size);
-+		return NULL;
-+	}
-+
-+	/* Map to virtual address space */
-+	virt_addr = memremap(phys_addr, buffer_size, MEMREMAP_WB);
-+	if (!virt_addr) {
-+		pr_err("Failed to map IPI buffer at 0x%llx\n", (unsigned long long)phys_addr);
-+		multikernel_instance_free(pool_handle, phys_addr, buffer_size);
-+		return NULL;
-+	}
-+
-+	pr_debug("Allocated IPI buffer: phys=0x%llx, virt=%px, size=%zu\n",
-+		 (unsigned long long)phys_addr, virt_addr, buffer_size);
-+
-+	return virt_addr;
-+}
-+
-+/**
-+ * multikernel_free_ipi_buffer() - Free IPI communication buffer
-+ * @pool_handle: Instance pool handle
-+ * @virt_addr: Virtual address returned by multikernel_alloc_ipi_buffer()
-+ * @buffer_size: Size of the buffer
-+ *
-+ * Unmaps and frees an IPI buffer back to the instance pool.
-+ */
-+static void multikernel_free_ipi_buffer(void *pool_handle, void *virt_addr, size_t buffer_size)
-+{
-+	phys_addr_t phys_addr;
-+
-+	if (!virt_addr)
-+		return;
-+
-+	/* Convert virtual address back to physical */
-+	phys_addr = virt_to_phys(virt_addr);
-+
-+	/* Unmap virtual address */
-+	memunmap(virt_addr);
-+
-+	/* Free back to instance pool */
-+	multikernel_instance_free(pool_handle, phys_addr, buffer_size);
-+
-+	pr_debug("Freed IPI buffer: phys=0x%llx, virt=%px, size=%zu\n",
-+		 (unsigned long long)phys_addr, virt_addr, buffer_size);
-+}
-+
-+static int __init mk_ipi_shared_setup(char *str)
-+{
-+	if (!str)
-+		return -EINVAL;
-+
-+	mk_ipi_shared_phys_addr = memparse(str, NULL);
-+	if (!mk_ipi_shared_phys_addr) {
-+		pr_err("Invalid multikernel IPI shared memory address: %s\n", str);
-+		return -EINVAL;
-+	}
-+
-+	pr_info("Multikernel IPI shared memory address: 0x%llx\n",
-+		(unsigned long long)mk_ipi_shared_phys_addr);
-+	return 0;
-+}
-+early_param("mk_ipi_shared", mk_ipi_shared_setup);
-+
-+/**
-+ * multikernel_ipi_init - Initialize multikernel IPI subsystem
-+ *
-+ * Sets up IPI handling infrastructure.
-+ * - In spawned kernels: IPI buffer is mapped from boot parameter address
-+ * Returns 0 on success, negative error code on failure
-+ */
-+static int __init multikernel_ipi_init(void)
-+{
-+	/* Check if we're in a spawned kernel with IPI shared memory address */
-+	if (mk_ipi_shared_phys_addr) {
-+		/* Spawned kernel: Map the shared IPI memory */
-+		mk_this_kernel_ipi_data = memremap(mk_ipi_shared_phys_addr,
-+						   sizeof(struct mk_shared_data),
-+						   MEMREMAP_WB);
-+		if (!mk_this_kernel_ipi_data) {
-+			pr_err("Failed to map multikernel IPI shared memory at 0x%llx\n",
-+			       (unsigned long long)mk_ipi_shared_phys_addr);
-+			return -ENOMEM;
-+		}
-+
-+		pr_info("Multikernel IPI subsystem initialized (spawned kernel): virt=%px, phys=0x%llx\n",
-+			mk_this_kernel_ipi_data, (unsigned long long)mk_ipi_shared_phys_addr);
-+	}
-+
-+	return 0;
-+}
-+subsys_initcall(multikernel_ipi_init);
-+
-+/* ---- Flexible shared memory APIs (PFN-based) ---- */
-+#define MK_PFN_IPI_TYPE 0x80000001U
-+
-+/* Send a PFN to another kernel via mk_ipi_data */
-+int mk_send_pfn(int instance_id, unsigned long pfn)
-+{
-+	return multikernel_send_ipi_data(instance_id, &pfn, sizeof(pfn), MK_PFN_IPI_TYPE);
-+}
-+
-+/* Receive a PFN from mk_ipi_data. Caller must check type. */
-+int mk_receive_pfn(struct mk_ipi_data *data, unsigned long *out_pfn)
-+{
-+	if (!data || !out_pfn)
-+		return -EINVAL;
-+	if (data->type != MK_PFN_IPI_TYPE || data->data_size != sizeof(unsigned long))
-+		return -EINVAL;
-+	*out_pfn = *(unsigned long *)data->buffer;
-+	return 0;
-+}
-+
-+void *mk_receive_map_page(struct mk_ipi_data *data)
-+{
-+	unsigned long pfn;
++	struct mk_message *msg;
++	size_t total_size;
 +	int ret;
 +
-+	ret = mk_receive_pfn(data, &pfn);
-+	if (ret < 0)
-+		return NULL;
-+	return memremap(pfn << PAGE_SHIFT, PAGE_SIZE, MEMREMAP_WB);
++	/* Calculate total message size */
++	total_size = sizeof(struct mk_message) + payload_len;
++
++	/* Check if message fits in IPI buffer */
++	if (total_size > MK_MAX_DATA_SIZE) {
++		pr_err("Multikernel message too large: %zu > %d bytes\n",
++		       total_size, MK_MAX_DATA_SIZE);
++		return -EMSGSIZE;
++	}
++
++	/* Allocate temporary buffer for message */
++	msg = kzalloc(total_size, GFP_ATOMIC);
++	if (!msg)
++		return -ENOMEM;
++
++	/* Fill in message header */
++	msg->msg_type = msg_type;
++	msg->msg_subtype = subtype;
++	msg->msg_id = 0; /* Could be enhanced with unique IDs later */
++	msg->payload_len = payload_len;
++
++	/* Copy payload if provided */
++	if (payload && payload_len > 0)
++		memcpy(msg->payload, payload, payload_len);
++
++	/* Send via IPI using the message type as IPI type */
++	ret = multikernel_send_ipi_data(instance_id, msg, total_size, msg_type);
++
++	/* Clean up temporary buffer */
++	kfree(msg);
++
++	if (ret < 0) {
++		pr_err("Failed to send multikernel message: %d\n", ret);
++		return ret;
++	}
++
++	pr_debug("Multikernel message sent: type=0x%x, subtype=0x%x, len=%u to instance %d\n",
++		 msg_type, subtype, payload_len, instance_id);
++
++	return 0;
++}
++EXPORT_SYMBOL(mk_send_message);
++
++/**
++ * mk_register_msg_handler - Register handler for specific message type
++ * @msg_type: Message type to handle
++ * @handler: Handler function
++ * @ctx: Context pointer passed to handler
++ *
++ * Returns 0 on success, negative error code on failure
++ */
++int mk_register_msg_handler(u32 msg_type, mk_msg_handler_t handler, void *ctx)
++{
++	struct mk_msg_type_handler *type_handler;
++	unsigned long flags;
++
++	if (!handler)
++		return -EINVAL;
++
++	/* Check if handler for this type already exists */
++	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
++	for (type_handler = mk_msg_type_handlers; type_handler; type_handler = type_handler->next) {
++		if (type_handler->msg_type == msg_type) {
++			raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
++			pr_warn("Handler for message type 0x%x already registered\n", msg_type);
++			return -EEXIST;
++		}
++	}
++	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
++
++	/* Allocate new type handler entry */
++	type_handler = kzalloc(sizeof(*type_handler), GFP_KERNEL);
++	if (!type_handler)
++		return -ENOMEM;
++
++	type_handler->msg_type = msg_type;
++	type_handler->msg_handler = handler;
++	type_handler->context = ctx;
++
++	/* Register IPI handler for this message type */
++	type_handler->ipi_handler = multikernel_register_handler(mk_message_type_ipi_callback,
++									 type_handler, msg_type);
++	if (!type_handler->ipi_handler) {
++		pr_err("Failed to register IPI handler for message type 0x%x\n", msg_type);
++		kfree(type_handler);
++		return -ENOMEM;
++	}
++
++	/* Add to type handler list */
++	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
++	type_handler->next = mk_msg_type_handlers;
++	mk_msg_type_handlers = type_handler;
++	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
++
++	pr_debug("Registered multikernel message handler for type 0x%x\n", msg_type);
++	return 0;
++}
++EXPORT_SYMBOL(mk_register_msg_handler);
++
++/**
++ * mk_unregister_msg_handler - Unregister message handler
++ * @msg_type: Message type to unregister
++ * @handler: Handler function to remove
++ *
++ * Returns 0 on success, negative error code on failure
++ */
++int mk_unregister_msg_handler(u32 msg_type, mk_msg_handler_t handler)
++{
++	struct mk_msg_type_handler **pp, *type_handler;
++	unsigned long flags;
++	int found = 0;
++
++	if (!handler)
++		return -EINVAL;
++
++	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
++	pp = &mk_msg_type_handlers;
++	while ((type_handler = *pp) != NULL) {
++		if (type_handler->msg_type == msg_type && type_handler->msg_handler == handler) {
++			*pp = type_handler->next;
++			found = 1;
++			break;
++		}
++		pp = &type_handler->next;
++	}
++	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
++
++	if (found) {
++		/* Unregister the IPI handler */
++		if (type_handler->ipi_handler) {
++			multikernel_unregister_handler(type_handler->ipi_handler);
++		}
++		kfree(type_handler);
++		pr_debug("Unregistered multikernel message handler for type 0x%x\n", msg_type);
++		return 0;
++	}
++
++	return -ENOENT;
++}
++EXPORT_SYMBOL(mk_unregister_msg_handler);
++
++/**
++ * mk_messaging_init - Initialize the messaging system
++ *
++ * Called during multikernel initialization to set up message handling
++ * Returns 0 on success, negative error code on failure
++ */
++int __init mk_messaging_init(void)
++{
++	/* No global IPI handler needed anymore - handlers are registered per message type */
++	pr_info("Multikernel messaging system initialized\n");
++	return 0;
++}
++
++/**
++ * mk_messaging_cleanup - Cleanup the messaging system
++ *
++ * Called during multikernel cleanup
++ */
++void mk_messaging_cleanup(void)
++{
++	struct mk_msg_type_handler *type_handler, *next;
++	unsigned long flags;
++
++	/* Clean up all registered message type handlers */
++	raw_spin_lock_irqsave(&mk_msg_type_handlers_lock, flags);
++	type_handler = mk_msg_type_handlers;
++	mk_msg_type_handlers = NULL;
++	raw_spin_unlock_irqrestore(&mk_msg_type_handlers_lock, flags);
++
++	while (type_handler) {
++		next = type_handler->next;
++
++		/* Unregister IPI handler */
++		if (type_handler->ipi_handler) {
++			multikernel_unregister_handler(type_handler->ipi_handler);
++		}
++
++		kfree(type_handler);
++		type_handler = next;
++	}
++
++	pr_info("Multikernel messaging system cleaned up\n");
 +}
 -- 
 2.34.1
