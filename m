@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01DEDCCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 00:32:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E6ACCCD195
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Oct 2025 02:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E4ED8E0005; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
+	id DEABE8E0007; Sat, 18 Oct 2025 22:30:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BC178E0002; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
+	id D9B048E0002; Sat, 18 Oct 2025 22:30:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9318E0005; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
+	id CD80F8E0007; Sat, 18 Oct 2025 22:30:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F00A8E0002
-	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 20:32:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D047C59609
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:32:08 +0000 (UTC)
-X-FDA: 84012986736.19.45E55B0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6CD3C140008
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 00:32:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZmqW0tBY
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE3588E0002
+	for <linux-mm@kvack.org>; Sat, 18 Oct 2025 22:30:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DA69140536
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:30:34 +0000 (UTC)
+X-FDA: 84013285188.06.6E57287
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8229A40009
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 02:30:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KwR86TUV;
+	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760833927;
+	s=arc-20220608; t=1760841032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bDwpCJk3xs4cweUC7JTSnq7g+gl/B04N8QtBpC33QWU=;
-	b=JAFR0ykoYLhipRhIr7Gz/WXfC8K/HtGWIFzjTsV3C0xvvOI4FGR2NsOaJvn4Mpi+2EnXtc
-	thnU0QY2mNFn5u9GiyQbQPTurznYMEMclK7Fh8TH3KEqsW/4NtSxuf0vA3nJ/m92RhW18v
-	y7Zp9s5RV6V2UX3/mNhKQQDK3zyZpwo=
+	bh=pOgq27wKJwXtSdzWirkOAdqPYtATP74fZtCRj6XX/Aw=;
+	b=BOYrub2Xub7wAlxR1nsG57KSefDjk+C5pubSxrJGfnO8ssTUaiw/5Azo0TCzAfRLSeTeMa
+	J5Kng5aUI53up7slxwZqNtMpq4bfSKHq/kG0MJvZoXhHSljV2J9P8P0NCpm6EFhDcBfekT
+	Ujs3v4ntC8vqnO81yT+hohg6RTYv/J4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZmqW0tBY;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760833927; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KwR86TUV;
+	spf=pass (imf27.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760841032; a=rsa-sha256;
 	cv=none;
-	b=p5aKhfoRN8b4BsZkMGIbyszPc7E5iGPZaatXtqBIQTNXGCesK8vyw0A2gzlkiswaHup6dv
-	XbOPKLafkQURNdg7PPySNmzCDkG0IDfMFn1jKdCdIgRxDz0WAfQLKgPZKQphONEUZ+QXde
-	co/0i+Qe/x+l0U4rZauu+Je4ZmQs7dA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bDwpCJk3xs4cweUC7JTSnq7g+gl/B04N8QtBpC33QWU=; b=ZmqW0tBYLxzSCCUm7Qcs3VwJwB
-	aXLfR1zJzPtROayNES+PAMWAiz5Ee8NvuDzRYfAPoP9Hi7WKSeCM+CQGOdZ6Omwr3roXI/Gted7nM
-	j2e4xm9k8uqo6eDwelETHOX50BLZRWD+0bKcJf1T4ydiNp+yZS01iKqa3h2c73cbT4k9FjFEv5La1
-	euGydgCCSzfRZpe1TX2LQZLhJUg7qnHDxCAC2tPSQdaqo5/BOfk2BAoPYw9ZjGPgjvWPP9ozotE9R
-	RqhWBUVaRrKtrBg0+f0Zfyru5RV2n4Rfgnzwm4ny41AUHB3SwNbbFXQnXMtXf0ORFQfbexMXdlhCT
-	524gkQYQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAHLA-00000000ZsS-1go6;
-	Sun, 19 Oct 2025 00:32:04 +0000
-Date: Sun, 19 Oct 2025 01:32:04 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Huiwen He <hehuiwen@kylinos.cn>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>
-Subject: Re: [PATCH] maple_tree: Fix potential NULL pointer dereference if
- mas_pop_node() fails
-Message-ID: <aPQxhMH0CSZm86Lk@casper.infradead.org>
-References: <20251018152305.1612722-1-hehuiwen@kylinos.cn>
- <9092f8af-72d9-472e-8d5c-f950c8ce782d@web.de>
+	b=CEkMZH6qz7ZGgXZk1XWc+CvR0pcTWZHLjKHal0QlTWyuwY0Jq1DQav2zkxTFJoUTZndoZJ
+	LKyCS+vJB8es1WPqHhXNFa7ydeGRYmRzNUhBgLmdZSa+mPXOh+WFMvlk+Bp4hzY9YvC40h
+	0hgHdb+SpCfEQbYuZA1rpc6UPZm/xOk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 70F44604BA;
+	Sun, 19 Oct 2025 02:30:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F57C4CEF8;
+	Sun, 19 Oct 2025 02:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760841031;
+	bh=0qVFoHQo2yjBLNpYoXs4/kA5nVD1EKKdm52aSMvUiGw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KwR86TUV9EGFVS2J473hRYlIJMOvn96/YOO0mcFHQ4ldU4bV7a65lkSDi4f5Q01EY
+	 XCZf2f+Jb5qXbWH+Jhu9JfzoPYryR+p7p+jzGCEJaGh3axR5UFgm/bwmtQO6lAXqIq
+	 RmtwD7wa61ma5g/PelQOfa2eBCZNhlDM4aZ8dTWkRjnBu4jjFmvU7Zt7xNUbeT9HbE
+	 XH33YqyOKxD/q3dpTC2Nl7aHCKMI217LTFBr/Y0ID3MR2YhfCgsPZsiA7ep78r/kMP
+	 Sa8YSG5amA9m8m0STdH8AbOUYd3vpSfmJh8+uUNIXdfWv8KGD0mfLesu3JoE3sfM8T
+	 bru1ifl4z+KUw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3644139EFBBF;
+	Sun, 19 Oct 2025 02:30:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9092f8af-72d9-472e-8d5c-f950c8ce782d@web.de>
-X-Stat-Signature: 3q77pt1pxrruy6ztd1p9z5k7qzuaf8ri
-X-Rspamd-Queue-Id: 6CD3C140008
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next 0/2] bpf: MM related minor changes 
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176084101401.3155740.15408477033569481420.git-patchwork-notify@kernel.org>
+Date: Sun, 19 Oct 2025 02:30:14 +0000
+References: <20251016063929.13830-1-laoar.shao@gmail.com>
+In-Reply-To: <20251016063929.13830-1-laoar.shao@gmail.com>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, bpf@vger.kernel.org,
+ linux-mm@kvack.org, root@localhost.localdomain
+X-Stat-Signature: oa8pihtot91abkkbjiygj3k8fziqxnx4
+X-Rspamd-Queue-Id: 8229A40009
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1760833927-307478
-X-HE-Meta: U2FsdGVkX1+Gx2m2x6ah2A/E8jEsbT4ALJ8PGFPiWw1aZfY6GUVCoC9hURkWS3JAXepPtKTaROPOGGa24NaIYivobxlCSedwsjnf1Uk3yKX4bUREZhpGxsbCUldPa9YdHYRme8LzLhz9bbPtNH5/6j4L944ehZzes/kseu2TNXDe7dZjgBUmPoheV/wY4Zhmo+shflNMl9jb1BhO1/qd5jrmLi5PjcfMbhp613o0OcrLx4etjtrKohH1ebUH4Ue+eGJbIu7yBtwwUCidcbQsz5tiSZOcCri44BauM3gLoZiBCXsYEQ1DmswWaT3MXCsBM5cbb1k74mr3sfL4ODm0nkJj8X+JnfmULbWTMnIP78j2P6FJ9xSFaKZfvfUzRG3KbRkN8Y/DJ/qOludaJmOHfAsHek41fJRr2bQ9dRXjKqeczlxnuMq/wG+JZCCYWL9eOBvds05uWa3ev901i/zdNJpHJv0vWhUkZ9wTYe4RWs0PZhx/Vk5xpmYquksytyu/ioYD8AxhcUgb4ohFBOOuqDbVIyN9s7m4R2Y3bNaVUH0XcOJb7jCVJCu0AIBmoMukeZs6oMa5mlao9NetTG4oT853+4Q99k6rMAWzyuOnwF1rejW+6wWJvq01dIDPhH9HaVDf1bARslo8ZWU6ivnj+P7opuymZxOdz/VHYy3PwtuuWLARK1vmcEgK1Ns5XH6595UgWOO5yu/9Bxt8gAGAD+L9gdgGUGWhfgS8NL646rCi9F4A4GyspAZotqsna5bXSiTCF3C1IK+WG39eZzsXAphGiVS5sAZ/E2wN6RUCY5v24eYgzQA7aGXTE1nFt2HZKw39A+Bh0BMAZrs9HGadT92uDVJf3roTIM3Fd+eaVs6HU2NFvrdP895vPAMKg4Jc59/HjSmH1ShlpLi2K8+QtQ==
+X-HE-Tag: 1760841032-477062
+X-HE-Meta: U2FsdGVkX1+vdqhwZpAIHDdPE8K0Yg7q+W7uHMxKfjCpHQJSe+lbne9muZRpAxrJgQZiX9B4giPzWVW8pAC7XYPZYea0U79Dju2sHnvT/p7R7T8Y5b4i51jD3CJ3WHVrSjYvA/zaZ4ka4b7DG0wtEgnL1YtYmp4Tq5pssL0RrGU+nc1iXwtNfX/1WiLoQrFnCxyVfSN+qbtO4G0QAzDyF1jQU2MmJUS1q+WwQ7X1nPEEjMRvddLEr2E9LqdeXTE+8spc2K/e5CGzgRyGpBXFkAGozCLaYOuKr8YDLIopAMq1T/jC7qqudvfvJYdFiTu4fTlRFqDWa6TBT8fAbF02Z3mXnfVooqRmiUjuLjSHLRhjPaA8Y2cOwCGRNyEVupqg9E2Y5Vuct4yYDvhHbxEgekP2YSRzL8cnUwGIByvp4okRpusVAaRqCy5LoSdjTl91mG22Dyn4DuIDiuqa6fW42gU29dXWRmkZSN7jyE2Dt4NIOmIXrpE6vXpwiBUxUvpaoQCZVq5bw/fTTPqoTpCIDh/qdgw4i6FWt/PEFA+3dzBq45SmCeGpR42QawNSyT3FE1eeO1soReEEuMtFMhdwUor46NqdsGzE+ZU6DC6drQ/T47dYHJCDjh8lyy+oqb/PIAm5jn4mb+Yh7iNQSdPzEqG2TZGw1oNBWGL8xpXueahiECH4fUfl33dBa+ZCoJ0i+esRZr44b51v9mkq4E9h8TSnILlC0JoACCP07R/ZWhzFgKzFxIA9JIVgpqo5V2zs0U1HK5tSS8tmE5846q1LcNzPwR9MKnhWLk6uizSGHTrzcR0On/qgeKWcB6iiBzKZJl/q+u7v/yUve12/rUNVG3eWtVWCBNgMIK3h+nBmYvAghit34rrRAe7SUiVyhuDm5mjUPKkgJaHgPR414ryGsyJ0gWEDuc+lEL8ekv1FncGGpCpfUZRc5PMgDeTQZMVKAgoU+wipycl4OPNSH3V
+ Rk+lC8kO
+ u9cg1lR1d2dVK5Ozxs3ZBZyHfZ5Fj7fsGTm/DbmWfbelMPg+S9KXqgERp3PIqTzEKI1wD5COSdN0dvSof9B5GPBRiltf5eXaz5oaSd3cKZ5Dw4oiT6GiYlpx8joNKVFlkZDy1afMymk130igjHb4ChP4RqjEMPnFbffpCXzi93wb0ceT37vPX16JcxCE07KWhF2YiksnfFUF5fDjn/cEwDEcmxXYmXMpB7tE/8GwdvSLfWNZcGmL/TrHI0yySwQY2zuAgXWArLLkaDknjrDJFiLZ7hr79nZ4mZjDvRTnIQuZ/quNgp4pDyWzzxwperII2EWDLNpTRLhsME1p6DZmupRfabvNArDw8mRpHnSLrdS6a+G3W6Kl8jW4CALYEveSm5pFHGVvw2cMmXKqku+Xm+8dCOaXPDB5eYc9Szn45JURXNLLgJ+lOsst55cWGxLdku6Gc9uPvjPKWMw28BJo5zd6AIy2+w/haTiDdmRGK2eEjMFoDu5bH5FU1MJnCFuSrPEXb8slqQjxBVPTM+waRks+l8hZhdzWMY07y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,15 +99,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 18, 2025 at 06:38:11PM +0200, Markus Elfring wrote:
-> > mas_pop_node() may return NULL when memory allocation fails or when
-> > mas->sheaf is invalid. Several callers of mas_pop_node() did not check
-> > the return value and directly dereferenced the pointer, which could
-> > lead to a NULL pointer dereference and kernel crash.
-> 
-> Will another imperative wording approach become more helpful for an improved
-> change description?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.18-rc1#n94
+Hello:
 
-Markus, stop this.  You've been told before.
+This series was applied to bpf/bpf-next.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
+
+On Thu, 16 Oct 2025 14:39:27 +0800 you wrote:
+> From: root <root@localhost.localdomain>
+> 
+> These two minor patches were developed during the implementation of
+> BPF-THP:
+> 
+>   https://lwn.net/Articles/1042138/
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf-next,1/2] bpf: mark mm->owner as __safe_rcu_or_null
+    https://git.kernel.org/bpf/bpf-next/c/ec8e3e27a140
+  - [bpf-next,2/2] bpf: mark vma->{vm_mm,vm_file} as __safe_trusted_or_null
+    https://git.kernel.org/bpf/bpf-next/c/7484e7cd8ab1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
