@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BC6ACCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 07:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 115B3CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 07:01:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 749408E0003; Mon, 20 Oct 2025 03:00:34 -0400 (EDT)
+	id 5C56D8E000A; Mon, 20 Oct 2025 03:01:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 720988E0009; Mon, 20 Oct 2025 03:00:34 -0400 (EDT)
+	id 59D4C8E0009; Mon, 20 Oct 2025 03:01:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63C5D8E0003; Mon, 20 Oct 2025 03:00:34 -0400 (EDT)
+	id 4B2958E000A; Mon, 20 Oct 2025 03:01:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 516848E0003
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:00:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A418889BA
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:00:34 +0000 (UTC)
-X-FDA: 84017594388.16.575AFDD
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3915B8E0009
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:01:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF6EB11ACB8
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:01:51 +0000 (UTC)
+X-FDA: 84017597622.03.EDE1DD1
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6511F20004
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:00:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nA+ShIrv;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760943631; a=rsa-sha256;
-	cv=none;
-	b=5yo2d11YaPakF10txtVCUB5ukoCSg1w93CRa9PeGvJjpLi3vWxsRH+mSTub98tzwo20U3r
-	EaXzNE2TWnaeIwCf2JvnvXnPU9uSfsEHC/F4Yia3W25eTe8CdOWX+aiaqlSB9JjmtovdCQ
-	meeJIsXJWxe/gUU1A+7A9zimMekVtFo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=nA+ShIrv;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf03.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com
+	by imf01.hostedemail.com (Postfix) with ESMTP id 56A404000E
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:01:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=P7+fKu6a;
+	spf=pass (imf01.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760943631;
+	s=arc-20220608; t=1760943709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kwfWDwUIMVAe4scHLJbjyWgTMOyfX6Qp1FmUT2omIyw=;
-	b=8MAO7C+eIlruFt7kzllW6oQpPoFNN9xLHIC+OxDTrzUzIIqcmxR+6O6Qx5kRl5OFfvrhQS
-	F5SkX8ANscEMqUmecwZHbgakgpNTWKudjtPsni2HJrmUu3T/iwMu3wgM/MR0OedcdyB5xV
-	4fMBNkDJBdvQDLZ+2yX6F6Hm80ymgN0=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59JNb78N018780;
-	Mon, 20 Oct 2025 07:00:17 GMT
+	bh=U04AMGuiqfCKuuu4HGpR+ogoEBa5LdNdpgi6t0TQSJA=;
+	b=NtZl7dTaWl5XR1u6GrdYtRXfnuxodW/VHGWD7RQtUsUckh/Dh5EbsE+aztJlpcziJG6vSI
+	CeQAvuq0fUjC2Oq5R7yNvHNcBDJI4QGOwetxNCqHuph5j+dZGSLW5JFn4sNghI553jtSAd
+	BCV7Q/Rlq5Dfws3/sGJltn3YE4BU7rs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=P7+fKu6a;
+	spf=pass (imf01.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760943709; a=rsa-sha256;
+	cv=none;
+	b=FAdy3dX7GoW7FEX4IhXFMaRdOomor2ARXyxGhhUkxNwct42MOYXkBj9dP4T9qcYsr8SuIs
+	8SpzaMH70ikcNmXdNyaxXN4ALlxAzSbSBJlx2IdLEaNXJLFIMgNNKKHu/6i1Ei0gms67PI
+	GMKkjVjd7kdkg7gPy2P10Yes86Wd2Wc=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59K5WDwe001436;
+	Mon, 20 Oct 2025 07:01:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kwfWDw
-	UIMVAe4scHLJbjyWgTMOyfX6Qp1FmUT2omIyw=; b=nA+ShIrvsHw0Tt2WMhgF1r
-	5wX1992zHaBRK3W+GYgrGV8AGoFzgMZLUUkI+qcxquafkJdq7hyucznLBi5KDnzA
-	e9VaH2eLKpl5snAwXrMZtgX/sZ5DLmx58dQixgmn0We+PjddBeh8AQHq7kJpSb7d
-	N5q9sBy2gv5NlDpoUA5RFi0zJ3kEtSSKnhfTD3QQ8Od8I4jtU4/qsKxDqoRaqIdD
-	/lK9xCnMVTjxZLuaePCbZu0rM6hsJsHIUPYHp6F6OUehNlumlPd35PWf3suOkh7k
-	TOhXRz7TB68QPv8E5lJQ1rgd79wwUGMW2Wjc/eg43Qhgk8uX7VL4QNuMLpTsbelQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=U04AMG
+	uiqfCKuuu4HGpR+ogoEBa5LdNdpgi6t0TQSJA=; b=P7+fKu6aVrSf5NLk7vZMfA
+	IA6DJtrB2ngzdctCND+mg/kC/S6My9g6DqwsDVLZjd/5Wz8DSUI1cEW0gQrJO7Yz
+	ui8EIAwbpNEvWd75cvROYSBTKI+ZRfIDJSxKgvKRp2nVvrNpirHL8KftLz3ID1gE
+	yy6tOozi3LGa1ZdH9SyaY9UQ41cMLy/YECSFuz5j7qozbniOAMzSArZgrIrrWAkg
+	S72HrmK4FrhV/P0AQsO120r6usynLV3T6IU1AWWXz+wL0OXmzeAgq9lFsWOZa3AD
+	VCsDRXxB1WYfvYnrkdpQZw7NJ6R35VKHB/U9Aj80/tBdbrqCHC1aRfGN0Gi3DsCQ
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326g4dd-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rr4cp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Oct 2025 07:00:17 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59K6wBNc032255;
-	Mon, 20 Oct 2025 07:00:16 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326g4cx-1
+	Mon, 20 Oct 2025 07:01:40 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59K71dtC030213;
+	Mon, 20 Oct 2025 07:01:39 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rr4cm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Oct 2025 07:00:16 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59K5qOHM017117;
-	Mon, 20 Oct 2025 07:00:14 GMT
+	Mon, 20 Oct 2025 07:01:39 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59K3J71u011033;
+	Mon, 20 Oct 2025 07:01:38 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vnkxmm7a-1
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx0v8by-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Oct 2025 07:00:14 +0000
+	Mon, 20 Oct 2025 07:01:38 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59K70CWj21037536
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59K71aIH21954904
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Oct 2025 07:00:13 GMT
+	Mon, 20 Oct 2025 07:01:36 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D092220063;
-	Mon, 20 Oct 2025 07:00:12 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7C19E20040;
+	Mon, 20 Oct 2025 07:01:36 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3788420040;
-	Mon, 20 Oct 2025 07:00:12 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id CC7D22004D;
+	Mon, 20 Oct 2025 07:01:35 +0000 (GMT)
 Received: from [9.155.199.94] (unknown [9.155.199.94])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Oct 2025 07:00:12 +0000 (GMT)
-Message-ID: <f5debf87-0477-4d6a-8280-0cd95cd09412@linux.ibm.com>
-Date: Mon, 20 Oct 2025 09:00:11 +0200
+	Mon, 20 Oct 2025 07:01:35 +0000 (GMT)
+Message-ID: <c163a247-4f02-4010-a860-5060e34a34db@linux.ibm.com>
+Date: Mon, 20 Oct 2025 09:01:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: linux-next: KVM/s390x regression
-To: Balbir Singh <balbirs@nvidia.com>, David Hildenbrand <david@redhat.com>,
+To: David Hildenbrand <david@redhat.com>, Balbir Singh <balbirs@nvidia.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>
 Cc: Liam.Howlett@oracle.com, airlied@gmail.com, akpm@linux-foundation.org,
         apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
@@ -120,42 +120,44 @@ References: <20251001065707.920170-4-balbirs@nvidia.com>
  <74272098-cfb7-424b-a55e-55e94f04524e@linux.ibm.com>
  <84349344-b127-41f6-99f1-10f907c2bd07@redhat.com>
  <c9f28d0c-6b06-47a2-884d-7533f7b49c45@nvidia.com>
+ <3a2db8fc-d289-415b-ae67-5a35c9c32a76@redhat.com>
+ <cb85aaa3-e456-4fd8-b323-46c75d453a02@redhat.com>
 Content-Language: en-US
 From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <c9f28d0c-6b06-47a2-884d-7533f7b49c45@nvidia.com>
+In-Reply-To: <cb85aaa3-e456-4fd8-b323-46c75d453a02@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f5de01 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-ORIG-GUID: v4AhxjdYPQ4pAwdTVyyGMZBkLltfsYnV
+X-Proofpoint-GUID: HGaWrDevPhF1ISP8dLXNWldbJ_jQHpwb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXzXLWYXdS7hpy
+ qNGKGWSJWyIeny2Q6sQf3+EEPv7O8gq0l5X1IuADybSQAj7A43xpS3Tps95MHeYYh9t33hr3A35
+ l+PG8dlG5bqCGLX/xUG4IP7aE1ULj006EF+/6bi8RH485thE3VpLhaoskEqPRC8mbjUa5glVK5x
+ zJzH4H2DSuJGnfnkd9h/ntuEjvvPAZS1xuZHQnrKIs00r+EuimU4rteVA9P10C4iNJnbz6/afoq
+ 2z2Wny7QHKj4t9il4LfDOEvvEoWOpiqXKv5WchRi1NZIjq1Yn++B7Mj82V00Q9QUF4lDex7ZGsD
+ dJW2zxk9pCCdadpiPi846uCpHbMBYdX6gB+l95RbAL1/BEsao6NPACr4YtGtW0HE4stXLrpctEW
+ YjeywxCKkh6foVSvhrI1VUR6adUAGA==
+X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f5de54 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=hRXosVVZac08vXWCpJUA:9 a=QEXdDO2ut3YA:10 a=nl4s5V0KI7Kw-pW0DWrs:22
- a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX98Cmyy2VIX+n
- dsuJUM5W4yhdubfkIxrTGiDf3eUSX6qAHVGDCj4nsCIHsAetsqanqBhooG+QFvAek1wt9EbD1Mq
- z805J4i24oMF+G5xVJyvQYVP7rgbzKYUNL5FX+QNIl0/Oyh2GIL9amX//9CWItIQhhckuUkLxnn
- CbizP2+lTQhHGC1J4/gyBrY0Ha9TEnnr+fxAzMRWtz8b+gooEk/TZcj2ulUgCoFx7f4r2v/Ds7y
- 3gMXqFGf4EjVRFamhAh4KhXHJKQXyTYOlpt8qBSLCFLQ0GXQgrOoGFltEODuj8dyauywZ8nxXGK
- A99WW2zj5N0tq1biHrypl+CxqoDXW20gJ014TK25xW2sEKYeXAgfme8Kd/xZ0ETPmxmB/2zOpVC
- IOMn9QEe/oXzoaLvTkWh5E9MXnriHA==
-X-Proofpoint-GUID: 21HjIMs8bZEwgOEHgip1sCXZekDNKoJ7
-X-Proofpoint-ORIG-GUID: azkXi4-8U0MxbTXNtBgIwP4eYW3FjhRt
+ a=vFDTLKEYg0PC3Nlu-GsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=nl4s5V0KI7Kw-pW0DWrs:22 a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-20_02,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+X-Rspamd-Queue-Id: 56A404000E
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6511F20004
-X-Stat-Signature: o3nxfm1zyxw9g1babrtxqgro63frs6ne
-X-HE-Tag: 1760943631-60765
-X-HE-Meta: U2FsdGVkX19VZs3wZGyfPfPhVdzOEEykHqZuFynvbfZz2LRMfNAjPCA6awLNN5yXMs57A105Yr97fqwvpqT8zPhyxNtq/nA+zDmfHgnTp/gPpzwBowEmB1/qoBXyRrNr/7S0YLCZAMC+ZxNABQl0i63I5ME3XBF1aSbNDifcXvvZobb5J05HyBbmDAxSEZ9RS27JU6fS/9Qg5Cbjt7lttEiIqNUGSfrJf8mSmASsTa6q4+69DQ2tuINAr7IB+SPTOQbud1VksFqmrHfG/LxHp/+jWz78JWg0kUYtgzSs5tHwiuR4ZzUrgKMG65C5IMmJGedS7VFPFXsj6okAJyK7qda0HifI8VvxGrBW03I+dLme+jWur9iZlHe+T9coQw7ooiKhuwodGeSBQLoOJwFclIieqbdO9zDqTulVMNMF2VGtj10hp/bhmccRWgf+WEzqEe1UwldSp5SBy+uq4Ce7pZcqS0KlNEVcw0CjihFbo23rMpQZZ+2LauVzDbr7oh5dfR4PGJqeaT9mQ8BbkLhg8UcPN4b2RWSIlnj3+H1NR0PIcNLluc+/lqIMDVtON2iTpndOjVbqOmkMfAZNqWrwrYDRopB9FmEze7Ut/iioe66AyCEimPTwmR1wPeqT1o+wTuh1U9IuSKi+sgz2DienjEFvkj7uVo/c+mLs2eBVDTcbapJ2h81LRyLo37lAwA0PaniSg25kCqiAve+sp+iBFJghBTV1VfEHEE9imuvLkJqZRh9TkjMrLFkrXM1yVwFEUnLfpg7+6V6K1D6DVaoWujWCZSCsVcDytDs4VuMjRrJswyKef3W8Jg8Zwree6PAFMHuZpVkY9K2whmH3lauYcloth1kLO0+/WRx6J2WJRWtow4zhtDIsd15qgQTTY/jLQ8TJvKNfBEQNXlhUxeEUpFdepTXAITQCXd65l3o8KvQrCnQVXM09relvxGKayXI4oLw/wwrAO3yUoXZmotn
- F4O37U55
- CPxkw9gvX4jxOE69Wjx7xWVuZkpNtinuTijE6y/7gH2kLcdx3VDl5S9DOCRnlcC8qN4P4wA6LInRApuIa0B06yY4KS2bsdosjt3GJyA4cHhuFvWsMJFmnJiFz2rdNDPtrYYDNz8JhfgVcTEPWGsPvvvMEsjVnEhPJv+DyMMZ0VZEHOAueeMlXYzSWoKFsDisHbyy/5mUJtiu05oYoqYZMlK4LovuCqtrfr9qHLt23+z6kBPqDwrq8GixfNYFBK9egUuxE
+X-Stat-Signature: iw6rwbys9ijjyezufp61gjufhmongzgh
+X-HE-Tag: 1760943709-519065
+X-HE-Meta: U2FsdGVkX18FOUCP+Ck/44LZOowW+wXDeOxzTyvQqM0QZP1xnBG0APkxKhu1klCVi7aV3FG9LhlRIh31NBDQZz2NsTVVWgi3ym13qvJww86WzRVo/cuIpGTjFItEfOh8LZWRp5DJAD3ZrNujxMYyYmXUy2g15i2NOoCG2Z0Ls+ovFzY6SehuIVP8ybsINjZ3Y8sKCZ/jM5Q2o8oCCmbdFrwZ2K36MQ/HJwk1DMvJ21fWN5fPksntXVji3R11MR11WKeo7LNGJpMPULGvIGztqSkXCzkBRMJ2iq+YK3y1Hm+dreJpciGXUvW31Dc9f73sK+Aeij8y4ulS7OnKeRQEtt3Q/2/8f5qK1Lw3uoKIgcj+Tw3AuyU+i26QXXhRmzfqACXL3/xwsK3bRwrRHNSFu2rIcidDp2Kma8syPh5DOFXFmmQRKjHouHLOxif0a3cOm78ceqKdU0T1Vs/PBzW1Kg4paBVZmQRByzZzPCHQHBz8JZanJMRtFheZRdgDiF7NK4+QTOlrcGs3qRulQdDw1AjejOVv42yKRu7dPkF8vdFWVVdZYB0gxEr9UYYmmGPqoB8T6Vkr9HsJwUeZtDZgKHHU30NdiAcloPrcnNaMyqtu0Ep1i+wPlQwMCTES84x/7+4jf9yeqYrEf9DIY2bZecL7RZ1MIlaRRJ8OHqEo/hN2GcravIcTuE2MPH49X4DrUNsoldbULWnU84y5VcjDiZVX4KDxe6Ia5YDXkcT5CcWRRq5yV/i0riwImel1sUKZzWIowoxqzRgWfB8Y6qbmjpB/Tlv3WNx+y8zsC51vQcZ3BE0YtRpkvOKzSVg4xDXUEHkeJwMxtTR1PnuTKHQHM9+yHLH5LdV6Xwn0lSQQPhJlOoRH1/l+z+xfSsIF6dtQu522OvcAojIsKa4fetvvgklCRRC530/QT8lPlcyibS2y7sRmdSAYqg7SmQCO2SJix0K8TW5yi5slAwLjRGZ
+ JAnBKGxC
+ ZnNHURVhkBMlXM2rhfP8K9W6ba7iNVH29a1yrsELO78jyRxBVZmhuqH9+NSyox7NZQOxE3utr0+sKCnNUOSvw+CfciH49uL1TKgjiXYzmwnxKLJnfM2RmUs34JeD4gPciSsLAQxagHSmq0+nR95MVa9tu5CaCILWf2Tt7Kd2wnaFCW0L6vRVw4EIHRCGA2oy3cohxw04bfjnuH56Kl+rWIFer1sdBJgcxzwDzEzw0iyaplAkDBB6Ow9mCDJEHW6gsL/1KRcQSse2fpr2E2g5Pj3NEqd9ULbkPYcQqJSIJMouARydxiHqGhqgS2rZZfty7TkyVdVPFo+6cLyTiA0rJ6GWWD1KBpuC0qmp9K11nVIobqSeHna4tPrqolSOKebH/OovaRg0jLeudHIJhl3ZjuI3WOA7ILq3cbq+gJ2z5wlpluiGLrrRNGAEqefC1dy0zkMYzVZTb2ZK0uTITb7QNBpf8VstnY9lzs1gxPxyYFYaGbak0buopNjH2ch25+MvL7NcAR3XTgDtl/IfuZHn+pm5QW/MDW88mtwT1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,26 +166,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Am 17.10.25 um 23:56 schrieb Balbir Singh:
-
-> In the meanwhile, does this fix/workaround work?
+Am 18.10.25 um 00:41 schrieb David Hildenbrand:
+> On 18.10.25 00:15, David Hildenbrand wrote:
+>> On 17.10.25 23:56, Balbir Singh wrote:
+>>> On 10/18/25 04:07, David Hildenbrand wrote:
+>>>> On 17.10.25 17:20, Christian Borntraeger wrote:
+>>>>>
+>>>>>
+>>>>> Am 17.10.25 um 17:07 schrieb David Hildenbrand:
+>>>>>> On 17.10.25 17:01, Christian Borntraeger wrote:
+>>>>>>> Am 17.10.25 um 16:54 schrieb David Hildenbrand:
+>>>>>>>> On 17.10.25 16:49, Christian Borntraeger wrote:
+>>>>>>>>> This patch triggers a regression for s390x kvm as qemu guests can no longer start
+>>>>>>>>>
+>>>>>>>>> error: kvm run failed Cannot allocate memory
+>>>>>>>>> PSW=mask 0000000180000000 addr 000000007fd00600
+>>>>>>>>> R00=0000000000000000 R01=0000000000000000 R02=0000000000000000 R03=0000000000000000
+>>>>>>>>> R04=0000000000000000 R05=0000000000000000 R06=0000000000000000 R07=0000000000000000
+>>>>>>>>> R08=0000000000000000 R09=0000000000000000 R10=0000000000000000 R11=0000000000000000
+>>>>>>>>> R12=0000000000000000 R13=0000000000000000 R14=0000000000000000 R15=0000000000000000
+>>>>>>>>> C00=00000000000000e0 C01=0000000000000000 C02=0000000000000000 C03=0000000000000000
+>>>>>>>>> C04=0000000000000000 C05=0000000000000000 C06=0000000000000000 C07=0000000000000000
+>>>>>>>>> C08=0000000000000000 C09=0000000000000000 C10=0000000000000000 C11=0000000000000000
+>>>>>>>>> C12=0000000000000000 C13=0000000000000000 C14=00000000c2000000 C15=0000000000000000
+>>>>>>>>>
+>>>>>>>>> KVM on s390x does not use THP so far, will investigate. Does anyone have a quick idea?
+>>>>>>>>
+>>>>>>>> Only when running KVM guests and apart from that everything else seems to be fine?
+>>>>>>>
+>>>>>>> We have other weirdness in linux-next but in different areas. Could that somehow be
+>>>>>>> related to use disabling THP for the kvm address space?
+>>>>>>
+>>>>>> Not sure ... it's a bit weird. I mean, when KVM disables THPs we essentially just remap everything to be mapped by PTEs. So there shouldn't be any PMDs in that whole process.
+>>>>>>
+>>>>>> Remapping a file THP (shmem) implies zapping the THP completely.
+>>>>>>
+>>>>>>
+>>>>>> I assume in your kernel config has CONFIG_ZONE_DEVICE and CONFIG_ARCH_ENABLE_THP_MIGRATION set, right?
+>>>>>
+>>>>> yes.
+>>>>>
+>>>>>>
+>>>>>> I'd rule out copy_huge_pmd(), zap_huge_pmd() a well.
+>>>>>>
+>>>>>>
+>>>>>> What happens if you revert the change in mm/pgtable-generic.c?
+>>>>>
+>>>>> That partial revert seems to fix the issue
+>>>>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+>>>>> index 0c847cdf4fd3..567e2d084071 100644
+>>>>> --- a/mm/pgtable-generic.c
+>>>>> +++ b/mm/pgtable-generic.c
+>>>>> @@ -290,7 +290,7 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+>>>>>                if (pmdvalp)
+>>>>>                     *pmdvalp = pmdval;
+>>>>> -       if (unlikely(pmd_none(pmdval) || !pmd_present(pmdval)))
+>>>>> +       if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
+>>>>
+>>>> Okay, but that means that effectively we stumble over a PMD entry that is not a migration entry but still non-present.
+>>>>
+>>>> And I would expect that it's a page table, because otherwise the change
+>>>> wouldn't make a difference.
+>>>>
+>>>> And the weird thing is that this only triggers sometimes, because if
+>>>> it would always trigger nothing would ever work.
+>>>>
+>>>> Is there some weird scenario where s390x might set a left page table mapped in a PMD to non-present?
+>>>>
+>>>
+>>> Good point
+>>>
+>>>> Staring at the definition of pmd_present() on s390x it's really just
+>>>>
+>>>>       return (pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT) != 0;
+>>>>
+>>>>
+>>>> Maybe this is happening in the gmap code only and not actually in the core-mm code?
+>>>>
+>>>
+>>>
+>>> I am not an s390 expert, but just looking at the code
+>>>
+>>> So the check on s390 effectively
+>>>
+>>> segment_entry/present = false or segment_entry_empty/invalid = true
+>>
+>> pmd_present() == true iff _SEGMENT_ENTRY_PRESENT is set
+>>
+>> because
+>>
+>>     return (pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT) != 0;
+>>
+>> is the same as
+>>
+>>     return pmd_val(pmd) & _SEGMENT_ENTRY_PRESENT;
+>>
+>> But that means we have something where _SEGMENT_ENTRY_PRESENT is not set.
+>>
+>> I suspect that can only be the gmap tables.
+>>
+>> Likely __gmap_link() does not set _SEGMENT_ENTRY_PRESENT, which is fine
+>> because it's a software managed bit for "ordinary" page tables, not gmap
+>> tables.
+>>
+>> Which raises the question why someone would wrongly use
+>> pte_offset_map()/__pte_offset_map() on the gmap tables.
+>>
+>> I cannot immediately spot any such usage in kvm/gmap code, though.
+>>
 > 
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index 0c847cdf4fd3..31c1754d5bd4 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -290,7 +290,7 @@ pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
->   
->   	if (pmdvalp)
->   		*pmdvalp = pmdval;
-> -	if (unlikely(pmd_none(pmdval) || !pmd_present(pmdval)))
-> +	if (unlikely(pmd_none(pmdval) || is_pmd_non_present_folio_entry(pmdval)))
->   		goto nomap;
->   	if (unlikely(pmd_trans_huge(pmdval)))
->   		goto nomap;
+> Ah, it's all that pte_alloc_map_lock() stuff in gmap.c.
 > 
-
-Yes, this seems to work.
+> Oh my.
+> 
+> So we're mapping a user PTE table that is linked into the gmap tables through a PMD table that does not have the right sw bits set we would expect in a user PMD table.
+> 
+> What's also scary is that pte_alloc_map_lock() would try to pte_alloc() a user page table in the gmap, which sounds completely wrong?
+> 
+> Yeah, when walking the gmap and wanting to lock the linked user PTE table, we should probably never use the pte_*map variants but obtain
+> the lock through pte_lockptr().
+> 
+> All magic we end up doing with RCU etc in __pte_offset_map_lock()
+> does not apply to the gmap PMD table.
+> 
 
 CC Claudio.
 
