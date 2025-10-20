@@ -4,128 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0DECCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2349CCCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:59:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D498C8E0013; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
+	id 6A34E8E000A; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9CB8E0002; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
+	id 67AE08E0002; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE8B78E0013; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
+	id 5B7308E000A; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A95C68E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53BCB139C0C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:52:10 +0000 (UTC)
-X-FDA: 84018934020.12.0A068D3
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 88DFB1C000F
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:52:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=A6RaCm47;
-	spf=pass (imf18.hostedemail.com: domain of 3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4C93D8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2D791601EE
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:59:06 +0000 (UTC)
+X-FDA: 84018951492.27.3CDBF69
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 93A791A0014
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:59:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bnhi+g3V;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jmb7mHUP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eDSbH0dq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=P5WSTFPT;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760975528;
+	s=arc-20220608; t=1760975945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
-	b=VBCJeEc2tbJ0MIR0uDBj9u0NfgGf5Dfwf8fHSt5snxiaDqQGpvZo2wyLNPCX8ViSJKdtkD
-	bdc2KGsv0kzVNE5LhdNsnsfdkxGEu/EZVahsAt8d2LV0pZujlWu/RDPEo/cHHgmTpMIzT2
-	lnXwRctg9h/ekifBAMLNMO1fEGLRLb0=
+	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
+	b=7f2+GVjSMHNnk8J9cKMuK/O+k0SEXmMf3SWMeqwsw6Z3IefVD1By3hhCHb1IvErcmBuCsH
+	OX4Oc/5hTPWPLKBhLosWV0BVxpDPWT5t65YmfBd8N4wDxwjOtEPeX5OzbFsrfz/Mu5kQB9
+	au63iIk5be1ZlbuzAKVXlY5c8dhXHP0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=A6RaCm47;
-	spf=pass (imf18.hostedemail.com: domain of 3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760975528; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bnhi+g3V;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jmb7mHUP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eDSbH0dq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=P5WSTFPT;
+	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760975945; a=rsa-sha256;
 	cv=none;
-	b=StuwKzVR90BOa1FLtWzqyyQBmwkwOp4K6DxdEXSqz+Exej/wiE5wG9u6Dzmw6eYkA/pH91
-	rzwEXbTXqSUnnt3BRz43lGncrZRDe3i7yTOHH2BwNW/vtNXj9NmE1WLm7bYiR1K8QbjRCM
-	tbBx5vTgVnDmkxWtLIOayOZNvgORyvM=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33baf262850so4461659a91.0
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 08:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760975527; x=1761580327; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
-        b=A6RaCm47KySJzu3brAzxmjWh69OeaxKzCJr3Z/YF2cJZM9Yo/DOMYi6Xa9dXuTKDji
-         M4XOi9uaR1Nol9dHvlwQy27OnJIi4gu/R8e8TeItvZhKo5ND/KrN/gm34KGEITSnlOFJ
-         tNFJOKb+AXRvLU/KLACtC9NKABuLAgk2r+RXtug7HsSQGdnkCyDymGwemPSe6kMVLjqE
-         eSYOgOqMfkn4Wafn9Q6BW7e55cWI/KKR2wtLrN7X7ctkWopmlOKqgoksOmcOmv41ZmUD
-         sIfzDIXWJtRdZcfstoZQbjqooQduKQk4dFXlU/PwUUnwbpIuCPfy25mzqMEy3PUrwvri
-         PNeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760975527; x=1761580327;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
-        b=kRH/WfBFZScAJsxpeX3lDYaYJp15Wi42AiyCqWMgYZfh/0hNaGle4icIqsbMXrnUmh
-         pn0AfS89guBt8b2bMqDf+NJwQfpjFXeMmiyNfqvHjHXgsomXxmajimtmEZlWAMm7pTF3
-         a1yGV95Gq+vsu4xlkpCCMBZA7gLn12yIqcWb7ehh0pdyM28KrocxNjOOrLRup73g34IG
-         kzTh5w2Xp+XqGYJTLqfszNvzVD91iAkZgT3ph9AAPCZQE3nWQ0WSpYrz6epQB1UEZ1DW
-         /0zI2twf6RDJrRtWxytmFCuPzC+nMOxsMJ0Een3XUDhRJhAhd+yOfrPCYskxKiBFzOPL
-         H2JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeD2NAegAHcx02b9Zfhqnun8CCLFRN9uaJEQrglf+pRq40wTwOuR7ZmY9yc8MMPcaM6GvWnDXt9A==@kvack.org
-X-Gm-Message-State: AOJu0YzUsDAjMxDpywoc32UoWmn5FyezxxxfNixvLk7SOX5qtYg/TdTu
-	9LNUUZ5tFdvrrGYRmTOfNG5rZuWJxIUavPLcKscYEliLrk3FoiKs+0kw/ydcWwJQKJqDStRmgHt
-	Msve4Cw==
-X-Google-Smtp-Source: AGHT+IHcZobfkAMYLqgP+952/xufHk4lZqraqyIEs0BsZFGgLzowAsqRVArAQbVQNZgQWXn7bmNPNT9qaaI=
-X-Received: from pjbds19.prod.google.com ([2002:a17:90b:8d3:b0:33b:51fe:1a84])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d85:b0:330:4a1d:223c
- with SMTP id 98e67ed59e1d1-33bcf87f421mr15625676a91.15.1760975526813; Mon, 20
- Oct 2025 08:52:06 -0700 (PDT)
-Date: Mon, 20 Oct 2025 08:52:05 -0700
-In-Reply-To: <176055105546.1527431.3611256810380818215.b4-ty@google.com>
-Mime-Version: 1.0
-References: <20250827175247.83322-2-shivankg@amd.com> <176055105546.1527431.3611256810380818215.b4-ty@google.com>
-Message-ID: <aPZapWWFGyqjA2e3@google.com>
-Subject: Re: [PATCH kvm-next V11 0/7] Add NUMA mempolicy support for KVM guest-memfd
-From: Sean Christopherson <seanjc@google.com>
-To: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
-	pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
-	Shivank Garg <shivankg@amd.com>
-Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
-	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
-	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
-	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	tabba@google.com, ackerleytng@google.com, paul@paul-moore.com, 
-	jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, 
-	vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, 
-	michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com, 
-	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
-	aik@amd.com, kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, 
-	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
-	rientjes@google.com, roypat@amazon.co.uk, chao.p.peng@intel.com, 
-	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
-	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
-	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
-	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="us-ascii"
-X-Stat-Signature: yybstiu4573i87z5qr7x8na54mz3f7ik
-X-Rspamd-Queue-Id: 88DFB1C000F
+	b=Pt5XZb1Ls2wbvjD9/0eASiE23cYt+eLHu0dv41oFNuDoahPqOXLGfmpqd9mNADyF3GR35b
+	AVJcGuAmmeyPTWM0uX5BT/Oad4uw3FU+/9nCTj8Ka32ZLuXVay+8K8TgbzLF71/VspwbZq
+	tQKXsvhOC/u+jZN3Jn2iRa7T3nQNMdY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B09F8211AD;
+	Mon, 20 Oct 2025 15:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760975938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
+	b=bnhi+g3V4guyjrFM7W2wvNQYgft8AKwfnrmdAJfYt+OshztZCGnA1OLjpJEGZIFD2RyIeB
+	0xCUTtvLxJmDGaz2Hjk5AUzrIJZ2m42QncakyNgpWMG5GRQloTyBkPAyCYSdl47ukrkEAh
+	Pxm1sV4k/jmAPJwphJBbggz9CK0Lt8g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760975938;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
+	b=jmb7mHUPVa8eqJyOkhrTMAJqcVl0YdILYwlGdaxHrB9Bg+CkElEHgd7V5CWs/1fw2LgFxM
+	7MiFG2FTf5cyVNAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760975934; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
+	b=eDSbH0dqSfRA6WHKd9eLOdNQcxqexCI4JCFeyuSRhL4zpE3t9/I286H+RaDKonEHzKtgkm
+	s5JBwkXqBlXOmjwrbCT9ixRSjikaAiX5mfxrkXJwfZY38sixPiNF2z25ST6srKiIHUFz4Y
+	vqVvzvIQ0MkIc6GcPvVoNyvIm7A+OLk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760975934;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
+	b=P5WSTFPTevE66kkbFzbp2BlR5n8P+P85VjF6E9ukLw6GquJTeMbJVLmhe4KZGa+kJD0dNh
+	hn8X7c3dF213TYCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A1EB413AAC;
+	Mon, 20 Oct 2025 15:58:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id V4+DJz5c9mhJeAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 20 Oct 2025 15:58:54 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 536C2A088E; Mon, 20 Oct 2025 17:58:54 +0200 (CEST)
+Date: Mon, 20 Oct 2025 17:58:54 +0200
+From: Jan Kara <jack@suse.cz>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, djwong@kernel.org, 
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
+Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
+ trust the bio from direct IO
+Message-ID: <xc2orfhavfqaxrmxtsbf4kepglfujjodvhfzhzfawwaxlyrhlb@gammchkzoh2m>
+References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
+ <aPYIS5rDfXhNNDHP@infradead.org>
+ <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
+ <aPYgm3ey4eiFB4_o@infradead.org>
+ <mciqzktudhier5d2wvjmh4odwqdszvbtcixbthiuuwrufrw3cj@5s2ffnffu4gc>
+ <aPZOO3dFv61blHBz@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPZOO3dFv61blHBz@casper.infradead.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 93A791A0014
+X-Stat-Signature: pfaqjhyopsr5ez8psa4umb3uefpseb4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760975528-611877
-X-HE-Meta: U2FsdGVkX1/o/uNR+gk87e21BtXFxzTTmhhKzzQ/KaFmmfUUyfH69vWjeICIXhkh65OTybds7lJAxDV4bmHR2pgMT0aTzs2jlyogUpaOCf0HpZtj3SQF1NG+X5YAM+UIuilnzuf36HnDovRnkaSopsP7LxDl8fco8t2YU7SZ+SrO7QxYGq2l9hUck0yYILejWp5iMppZVbPQBx4PC6MDm+yAkWfXqtIa5TPwpMMTbrrF9vtWa03+7AVVLfvqMonwGeQrxneKaBANPswepmuD77o0hzZXc8BE7RvJ4r9f/LSlx1op4vd5UP1N+k2RfumSxWfJc170JFni/ZY+zEWV2hxJXfLTKv0MWduYXQxIkXqOq1okQVLTMpthqqoWp11S+lYFKYX2d+wmJkYkjTdDon33D3fpwhSrxH5LMWTsOQ86zG+zxN0EHIoXrQ6o+34CLGecw3VMstBHel8Eu8MocXSWGUFAo7nnFtE61uDDhCorAzQx8E2eLEjlfohW74HN+ABsFSwNIjsnYGwPMpLB6mT3VNpTQxx3iMp7FpSMThHIHK4kyEiNCRUW+F7hyLC3+FkEgC0/BpOH31z2eCVNQEnIV/FsouRK5D8BnrENsJfWY7IM0r2YxlASNnrKm2PIv1SdF7OafYHq1cs02QQfAczNGh8ud3nKTYuS4Ss3sCK5Ryla/L45uipallBMPlpe0ZJi+DnxfnENGHbixyrYIc4ScWV5B9qETz7l8NaDjD4+QA/PfLOw5GEwqpbUJrusmCwYsCaMY43+pWYXoMbed7gq++Awih9xDZsM/8tUwh7hGNbRi4IlGX8bssyAKxKLAVVemDoWWPgG/YyyoOSXEydfyZqnnTb2c232WrRxQ3Qna6wIeYtYOAbii7JMfiOUqbsST20Q8ln2ZOd3n9ayqdXTxynWLVZTzqs/iwlzx8WLEciUddQZoRCWl+JeGkrjLgIpAV2oTZbiUPQHMra
- g49kt2zs
- R/sGdJrgbXejh+J58VVnpxUUxrcq0U8glwO7kZVUt8mUvknKkad0uwBd6NTYqL2jSLrf8aI2aF6Lh+YV5gsMt4jpy9lVqvVdxhCOuz1i6ej5XNYZSwZp7ccqURlf0aNUjuVgR7b5VY/Ua/SrNSZaU7tN6WeshIJhyupppUR0bDhdQxLRePdcWU/qe/w4tqlYLWwmdxkcOv882QFo9ZnW6CRUhGw5GYWjjehHCe4um1zN/aLRiqetGU5HPYWbucPc48BvGWh5lzW/l3aN/xwsRgx46ei3L5Ibucrshs225UqKb/j/nqrDKGLH7l4wKeEnEX+/ezMyeqYxf3EOmwzoDj1PD3xFmZXuekuisofvvrPG3DVGJG43JQ2gcHB0LB8cfM6H4dguiQ2HfueP1k8iyGp9mgTqE93QFX0EabS5awJBFFQknxifNLGHPEgmc7gTatlmW/Qmtmu/YraAnwwv1rdTY3YEx26V0+xiGXP7QaoKOx8Koc1h2EuIuwM37CeQYHynMs3G8w1MfYChcrqm4W9PLN8bbR59oc6+3hHBvrv8plj+w0ixWb5FpINrM772r8vbhxJgWeuALS7vAqNKH7zdS9iqyuKUSDKd4pT8XpUzmnAfiD5Y8B3usRmEi4wJQa0EH1Np0KdXG6z96EvI0GjpoE1Pln70jJemOeEIKAoKM/uiQW52DdXRPKg==
+X-HE-Tag: 1760975944-545251
+X-HE-Meta: U2FsdGVkX18Dfhhwuj8V00wu7xOo60tBldeksL5ZuoM/08ha3yPYRpmh7QxWj35teDkNGkkfmnoqzbeOYjHNFfz1FI/MDW1OmpdViZFRKFRkfJwjt2TwpMD8WeisdWwKPO65A0sgyUbmMYJzIXq3h6hqhmPVoZ+eVnAizKmFWd5xidbfoSH9xKlKqILsCVJtBU9Ofg9+A1yO3cFzqfn9W2XmQT69m88xJW5qNuxQPOIMyE9zLwnUCr2ZXIurg1pEbbwNnSjjWykpXBYCaury39SANxyXF4eDMtIsn4V6+DDFHMCBd9e4Ckfwvv1cr5N8sHc+MJTol0zSTkE3J3MWGWGyoNAmwbD8A2d9tUV3izsfXch6n3eA7vSRIdWJxMM9OpCWS+rL64xv1NaSf4/j2wz5q78InkW606TPGfa1pU+nTfXAP4SI+ERwoUx4fHw6wtWSE/8MN9vOkF+3AiUajFWZHuLwsCyLONL8cQVzz+zq0MqNniZGOVoq4jZJ0qt/TtTpAbeZ0z5wMima+l4P8A7Y1Q759hG8lcW4Ht/s/vOuBJ8eVraj4UvN1V7x9x9Ne2lk8j6kE1k0obQJM5HgVdglgeARQ+SCl1TslgSL04/xq6d+34oBYsxZu2p/PbjNqu4E4WkqtcOFCvqlajK6Rf4CyOVJ773OtmGpjr59zppTk3K6UFf203yUyXbmqiWMTbe9sce+bbrDzlWDybv+C4Ko8LFE3BwAtcJJ9RhCN1dfyhv2SbtW2QqgD6xmizHyTz0BgohIjBCb7/ujzZ0Uj7RmNCT2HRsIPuxLvFy0edk9qpZeLMd0iL/VnDEKpwU3fu9fOfufnBqHt+Quq9wOIPHy9cydT8Hi3eT/54+BltzZ4chRrzruO1jHbBkdsQzk4YFzRU5S/rdOphDtq630J2KtatHLxfuUU4cPts2qWr+/uQgUaLAJW8Zmpj4BcXARk8Tb1kMn9nkLsjfer6L
+ 0Xq1lADf
+ M2B2WVbnUWp1xysYsZmAlZHvEXAkhaAB1b4myKnZmdJdhpy9Ms0M8TSB+t5PKz61O9mqYdTkqA+LLZCy7Kr/7Zm13xto8Jj16eid5VNPbUAyizPAkujkYPHzx2n43WRLLs+IIM2eoWpbxH7VLiQBzBz98NzdpuPSkxWguCc0W5MRa8DgG7OyfikNc6bp+AZ9bWMo3+bF/5HMI0kegEJMZPiNdwqefnFKKbJc3wj8IZKh9jyVOR87mIQFAAjPCfhYkROnR6ZSwjVNTaXZfRNF9PKjkO5c6hb93csiW6tT0KPFQ9oTgZqtNbbe+2ODcs5iLXZEcIl3XkSPHe7e3WQV99JL7JOMbQnvGb4Mx3/lsio1WA0asMha7rdfu3BGoZLoOvY0CcQumVW5Uv+o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,44 +140,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025, Sean Christopherson wrote:
-> On Wed, 27 Aug 2025 17:52:41 +0000, Shivank Garg wrote:
-> > This series introduces NUMA-aware memory placement support for KVM guests
-> > with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
-> > that enabled host-mapping for guest_memfd memory [1] and can be applied
-> > directly applied on KVM tree [2] (branch kvm-next, base commit: a6ad5413,
-> > Merge branch 'guest-memfd-mmap' into HEAD)
-> > 
-> > == Background ==
-> > KVM's guest-memfd memory backend currently lacks support for NUMA policy
-> > enforcement, causing guest memory allocations to be distributed across host
-> > nodes  according to kernel's default behavior, irrespective of any policy
-> > specified by the VMM. This limitation arises because conventional userspace
-> > NUMA control mechanisms like mbind(2) don't work since the memory isn't
-> > directly mapped to userspace when allocations occur.
-> > Fuad's work [1] provides the necessary mmap capability, and this series
-> > leverages it to enable mbind(2).
-> > 
-> > [...]
+On Mon 20-10-25 15:59:07, Matthew Wilcox wrote:
+> On Mon, Oct 20, 2025 at 03:59:33PM +0200, Jan Kara wrote:
+> > The idea was to bounce buffer the page we are writing back in case we spot
+> > a long-term pin we cannot just wait for - hence bouncing should be rare.
+> > But in this more general setting it is challenging to not bounce buffer for
+> > every IO (in which case you'd be basically at performance of RWF_DONTCACHE
+> > IO or perhaps worse so why bother?). Essentially if you hand out the real
+> > page underlying the buffer for the IO, all other attemps to do IO to that
+> > page have to block - bouncing is no longer an option because even with
+> > bouncing the second IO we could still corrupt data of the first IO once we
+> > copy to the final buffer. And if we'd block waiting for the first IO to
+> > complete, userspace could construct deadlock cycles - like racing IO to
+> > pages A, B with IO to pages B, A. So far I'm not sure about a sane way out
+> > of this...
 > 
-> Applied the non-KVM change to kvm-x86 gmem.  We're still tweaking and iterating
-> on the KVM changes, but I fully expect them to land in 6.19.
-> 
-> Holler if you object to taking these through the kvm tree.
-> 
-> [1/7] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
->       https://github.com/kvm-x86/linux/commit/601aa29f762f
-> [2/7] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
->       https://github.com/kvm-x86/linux/commit/2bb25703e5bd
-> [3/7] mm/mempolicy: Export memory policy symbols
->       https://github.com/kvm-x86/linux/commit/e1b4cf7d6be3
+> There isn't one.  We might have DMA-mapped this page earlier, and so a
+> device could write to it at any time.  Even if we remove PTE write
+> permissions ...
 
-FYI, I rebased these onto 6.18-rc2 to avoid a silly merge.  New hashes:
+True but writes through DMA to the page are guarded by holding a page pin
+these days so we could in theory block getting another page pin or mapping
+the page writeably until the pin is released... if we can figure out a
+convincing story for dealing with long-term pins from RDMA and dealing with
+possible deadlocks created by this.
 
-[1/3] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
-      https://github.com/kvm-x86/linux/commit/7f3779a3ac3e
-[2/3] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
-      https://github.com/kvm-x86/linux/commit/16a542e22339
-[3/3] mm/mempolicy: Export memory policy symbols
-      https://github.com/kvm-x86/linux/commit/f634f10809ec
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
