@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D25FCCD184
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 03:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11FE6CCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 03:17:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88C4E8E000A; Sun, 19 Oct 2025 23:17:22 -0400 (EDT)
+	id 6B7998E000B; Sun, 19 Oct 2025 23:17:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8153D8E0002; Sun, 19 Oct 2025 23:17:22 -0400 (EDT)
+	id 6678D8E0002; Sun, 19 Oct 2025 23:17:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DD278E000A; Sun, 19 Oct 2025 23:17:22 -0400 (EDT)
+	id 508F88E000B; Sun, 19 Oct 2025 23:17:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5964E8E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 23:17:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4DB113B9CB
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:17:21 +0000 (UTC)
-X-FDA: 84017031882.11.204CF90
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0C6204000B
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:17:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I6E4vvwY;
-	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A76F8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 23:17:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD4C5140720
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:17:30 +0000 (UTC)
+X-FDA: 84017032260.05.8FD80D1
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F3528C0006
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:17:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fpaoyaqk;
+	spf=pass (imf10.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760930240;
+	s=arc-20220608; t=1760930249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYdtRER+63D5fwP+dPFGkrD4tSBc+ZR0Nj1GwO3r8rs=;
-	b=UJ89UL12kyokIRcxhQUJtGbzicDd7xTxwzuwJHUV77OM58cklAN0ByEm23PhAhdpVBUabY
-	gSWfsC6sdeIQcB1g3InPBk05Wg67yXcDzm81oH8/Z7w0mcnJU8/EaLXsUVussdVGWOT2AG
-	MczQe+OxD00IA/ruZZAllAM6u8TTeSo=
+	bh=kgY8zZ+/XYQ7X1ie6Z77HlsEOZA2/cqevW2Opv26tkA=;
+	b=D62+3kc49Gm0xyqge6oRmJIOzDwe9nGpiqqy5E38tGya+UAnQgnh29gwo50LQ/pNqQ5gI/
+	zBtVGpzzCe230PKV/lmdXbFFK4uOIsBfNa52VFLo0DXPNYZDKDuUMkAae6k3f4So008RJc
+	UsZFPWPGXYHAubZgOVfSbNhdFSYgF7k=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I6E4vvwY;
-	spf=pass (imf07.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fpaoyaqk;
+	spf=pass (imf10.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760930240; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760930249; a=rsa-sha256;
 	cv=none;
-	b=W/WUPcFVKRDPS6uv7E+6UJfyO0Sadq+dlevCdzeZklzJe+aWS6g8B+S4uJofvSCtZFc+ac
-	zXpMfVh0lx4BEAJi2bdre+6P9QQQSZ00PW7G01IxISJcZled2B8UJX3QpOvPJMrND98OBj
-	zI49QHTh+abGm0Xxkzyef0btTS7Ur90=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-27d4d6b7ab5so52639525ad.2
-        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:17:19 -0700 (PDT)
+	b=U+FjBhAbVDDuJvph7L88+femDri10g7RCJWvQbzcOB/tlUxdVEIU/TyN2dKeIh4u1McZwK
+	/IajjG1xkgO3cj/LaUsbeQySB5P/MqWLyzz6frFqo/7CqoFqtu7tfYqZU7in2E7b2oK49+
+	LzpK+0XbfqCn7ka7SXI7L4A8VaCfB1M=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b60971c17acso3177158a12.3
+        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:17:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760930239; x=1761535039; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1760930248; x=1761535048; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kYdtRER+63D5fwP+dPFGkrD4tSBc+ZR0Nj1GwO3r8rs=;
-        b=I6E4vvwYDGaQTlwKk/t9Rn5CAioWYcGL1zlipaKBzbwacfAh62GL15pVbxWXufWbVo
-         Usv8lVm8TY9ihk/6aLMXeSHZkQ1Y9H3gDw6zBwiL22NwqNkUYOG8ba5QphOvrPkQD/W0
-         2C6OQYh8/Sj0c3Xou9vjqGJ5jOiJE5n+X/v00QK1zbodOqyb9ovQ5JX9VT6D7ypvU9DQ
-         lpkImr4Mh10a6Ml9boVeVCzhJBz5AhNtCiFquVnbEelkJLXszxAxMqIcVEbKHBd2GOp1
-         /GljHTeegbje3XYX6hiQuWjJDo6m0AjTJRdbX8x0nmuRvXgtbNwhV3+KiauJtPU+9paE
-         QLGQ==
+        bh=kgY8zZ+/XYQ7X1ie6Z77HlsEOZA2/cqevW2Opv26tkA=;
+        b=FpaoyaqkjKQQBDfrWViQKMnasR3LLAHQkD40WX1DHhdg+HVUr7MOHPF3qbD1nwAvvc
+         34wVzNAPyd5akicplyo4w5qVHJCZG0NNDM4HSD8gD+ylu+duasFy998aQBIVDuLmrGNh
+         DmDfVyni5Fegzyr4dnF9IbjMXULTErDrCUn1RWQXQZccqx1TQTcmfaVBOSQC9HjT9vmP
+         dG3tmQd/HWeZtn1OGezuPzCW9dGC+4oqstJ7WM+OH5hCgQ82fZnBnhBIt2L0XTgOffI9
+         mEvJpb/lgIOpHQT17pFNiekZPRcm9jIrarQG07aySVaz6xFKrn0obx0ElJMvgiGn2p5t
+         zWPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760930239; x=1761535039;
+        d=1e100.net; s=20230601; t=1760930248; x=1761535048;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kYdtRER+63D5fwP+dPFGkrD4tSBc+ZR0Nj1GwO3r8rs=;
-        b=jgXqbd4hcoX3cq2r1vJZAxeO3qAx12iRe19HZt5GAg9ZJUxPMHpSx0aePnXTQ7+vip
-         Qo0yTE/ug5C6ZxjB7jXMDSf1GocGjO5ztg316DkzefaAbMAwN7Eqd6IdDZNGfJno+pCj
-         /fW0Nl6xyH4mOm0zM4B6Lm1L+bo4rfUFk+Mt8BJJPC3I3PPoQfZzT5a2cgcjgDIXAzvB
-         cwy+YWWmg1C1VhJ1GsWOwZHji+Of08FrffFR3tIpKD0EvboSHr83JafvU0I7NQf+Tnu4
-         WDElNMON4Ks1z2ZmX0zibB9PMs+JxUre8rfGOf3tQjyO88HcqrOUqxeuXgjvi4f6zwc3
-         b6pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIyEzwNEqrR1K8J+b6Kt8dchPNsXWthLTG0D4P+YC3xXqDzdbZ9cUfDE/hJNnZweUfl4qtGVRe5Q==@kvack.org
-X-Gm-Message-State: AOJu0YxKzqnktr8Yo9ePcf956Br5Z4A8sGorCn3LjUx/PblU+oV/o6LI
-	G/wMVlhdiIOFuEVLb1da1vHGRPgPXZ26VnFsvbVnkwSSsadrAe06q8NU
-X-Gm-Gg: ASbGnctOQwO90AA0V27PsfAhAeTZ1QuUn9eC66ZifA3+bAbnUNOEdjzU2MGzMmdWob6
-	yRFrtsusdzP33jIRHrEoPB9CpkN3ovrM30AO3wvvurzu/j0TlC+4k2eJ+BF+Uf3Y1ZJFngkwx2I
-	GeU6JdQ7G8s/5RYwA4U2MTNCppaB58if/gKtrGZceZc6gIkLo4ddnySp7UDGIykk0VNpF5P3cLB
-	lCHwEoSOXx5JugrMeJsHy7XkHlkNSg8n5VbzcCnGEh6rl4ym8ZxwoEiQuMHjGfJTYPV6VFVUSbu
-	7FLQjP1FBFfQTc/mOAtP9eHW8J42IqMb9KIJhzaNtC8VEMcB6h6hHY4+jk2G1NVwFPJfxU9VU2w
-	LRspdts0JQ48A0+sEDJPB8wrwQwajpUH3AIHUz3XGGATRHnMOv5wPP8l+7DMmXpk1GpdnHGfJHp
-	002Ck9SwnT4CVgIVlYXKgMyi4jYhbDGUTULNpMSTd3Ht6KXg==
-X-Google-Smtp-Source: AGHT+IGo/kUBmmZVSBiCCtDWJPQhX6W2PzXxnBQ3p+r5Rs/M8lNok3r/Ez1M0M2GbDWgxzLf0C8R3g==
-X-Received: by 2002:a17:902:dac5:b0:267:6754:8fd9 with SMTP id d9443c01a7336-290ca216ad6mr166008035ad.39.1760930238858;
-        Sun, 19 Oct 2025 20:17:18 -0700 (PDT)
+        bh=kgY8zZ+/XYQ7X1ie6Z77HlsEOZA2/cqevW2Opv26tkA=;
+        b=e5yUBW1HTvxobyVWLgC0hnE/VU9YrbkicOwaVosMS2B6aNm0+hBUTVPdtvoxSzRGp+
+         YkQqgR6SeQN9ivFgobPlNpul4sUOpM3DjxJMri76p+Xo6N5rSl5FIcWoR7/H0AoklPS8
+         hd1UVhPPkQT5TCEJojkPtw8yZaPn0t8ESTir/gKlXmRuX17b5HtHyssLGa5Qff8tK3Gd
+         GvTTXSsXlLxSrEp7i29bxtqIvhoyG7JimhUqm2iKYfbbgoI1TeTXkSj0qIJLZthKMexi
+         CtxY8QK6Id1zNoZdgoGQf8hlVvQYsMcfeGhOZiewCgEU1xeBwACGyb25FIn3YX7sDzrN
+         tsYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0sfPyIn3KkKqbr7Ook3VlX+szW+q3tpDMyhvDb4SDcbBC2IGTFJrmwtB/awCyXJ1IV+1tXXSv8A==@kvack.org
+X-Gm-Message-State: AOJu0YxXUXZTdn/0GsKC/yAoVa8oikCI1tNaNJ9sPCaUGyI4pcU+og2H
+	7NMHjc1mlBHEHbT8+KDra1IlPap6/P+89zzLIurA4oIBLSi0k+bTHuAn
+X-Gm-Gg: ASbGncuUWSsYB64uuIAwNNEChCr316ciD6BIjUukC5zy9WtrBgNKwJQNixjAPpwwyXl
+	E3Y+PcoaBVqDRPz4Etp6jeV9Pan5jaN1CHwtrQiKjJpNKbl+u1aBeHWR/GYLGbEiYm67kjtYlTt
+	o0btnLChraRuiarcfi1PvwsGT5ls27dG7yhIwUGKTjExlt6t71a5VPskyQwLg80995qm11qQsWk
+	u8pMfvosp6AWNwSjEF6mGukOfrn+3CoHwQxD3ko7jqw+VAExTqruRZ5psFX26kl5f6epkAKupZy
+	Vu5YNUgbRMf6HldRpexdwIV52iCxYjghCppoh7Jusr5Y89Ta3SlGGHEby9dQMhMPE0ZUWJJFb9w
+	ZyaviAJf7REJSB6vQGiNJcM6lZO9Anz2PGfOUSgIXJFA+tlbt9VRvkJflEeLevdKQJS3Ee2U67A
+	BRPqZE/DLwhtOXMoMbpkoNrBcmc/O7k6Z9Wfg6DWABUOJwmA==
+X-Google-Smtp-Source: AGHT+IHVM+3Yo7hTmlmKN8A82OrKb4FDTGmFMRc6s6X9qctctr9R21jaCigysyc8KxazAaAwSj+mYg==
+X-Received: by 2002:a17:902:ce07:b0:290:a3b9:d4c7 with SMTP id d9443c01a7336-290ca121944mr137614825ad.30.1760930247823;
+        Sun, 19 Oct 2025 20:17:27 -0700 (PDT)
 Received: from localhost.localdomain ([2409:891f:1da1:a41d:3815:5989:6e28:9b6d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471fddfesm66373435ad.88.2025.10.19.20.17.10
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471fddfesm66373435ad.88.2025.10.19.20.17.19
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 19 Oct 2025 20:17:18 -0700 (PDT)
+        Sun, 19 Oct 2025 20:17:27 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	ast@kernel.org,
@@ -129,22 +129,22 @@ Cc: bpf@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v11 mm-new 06/10] mm: bpf-thp: add support for global mode
-Date: Mon, 20 Oct 2025 11:16:51 +0800
-Message-Id: <20251020031655.1093-2-laoar.shao@gmail.com>
+Subject: [PATCH v11 mm-new 07/10] Documentation: add BPF THP
+Date: Mon, 20 Oct 2025 11:16:52 +0800
+Message-Id: <20251020031655.1093-3-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20251020031655.1093-1-laoar.shao@gmail.com>
 References: <20251020031655.1093-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0C6204000B
-X-Stat-Signature: nx5oijts1dyf37gbepamspjup8sps3dt
+X-Stat-Signature: g6hwdjudpeumz5kio6gs7stagyedimda
+X-Rspamd-Queue-Id: F3528C0006
 X-Rspam-User: 
-X-HE-Tag: 1760930239-94024
-X-HE-Meta: U2FsdGVkX1/cbi9r0NR6YmX49a8dgyaD+Cc6P+9AsqrgWNbWsHzTOditQ29t9VDyUQAxN57pyt6f15LO+0EBjRjTMgN5LooLX6YQUqYTDnQlxP2B4nqi30GH5lGnDb9yk+XuTEpIqsuEWlmARcNwq9YeH+3DBYBsToxvEdtJBgQ91zECyQ2lh7D5zvj23Ffp4hNOV6qB8TnhHgZ/iYi+RzI1UoypgGVK9lslgN6Z6nbH3gY9NNKBnUIzxqoNXfihH3ThRFe6xGpUQ+vJHRlsQVUzNqMryp5Ww+fIBi/aGbaaygyZybGz/pIUBQ1R1e3B6QdCaM2epenlJ4LEtvJdIqUdJ9wIiNn02Un+CGKg+Iyql5PN255Kaigr77mP5LxdJkVCAOLU+UuqwGFIGse+ogUXQ53rtjyEYcFPwNww9lwdCKdVHMcviP2SPdssZqosCdr/MCRxTHFj0xOmxZPg6KB18Z88qI74BHYGwBVhYIL/HGZMcEz+6KOtoJSNHB4fbjlOB6GnSHTRIpVdHEnczD3NZTQnIN4zddmHBRsu5JppeDd8RTI+iZr5s1v8P11iMyNvVbWKQ4tOBcdAMcRvx8wKDT2kZYKOpcIYfzYxWeHWrRk5LYQyTihqSa7sEeUBoOh32sx8r7TCntXlTudX2ht3ODZ6E5pwJ5xBim+75SLLot3tFN1UoAvvJfUtnH3ceOzYpGwuX4lhAF5nnYRu3fs2r/pOgzcrlF4r06hR59RGW8Jy4AsMN0YQ3BwWOsttHX5g7aa+X3bvyCZwn/trFdV43I6E+2haQxinL0KJNMtosbDvSnRfbW9mbTDVRtGhLyEzdpU6FM04QBoMU3EonA043fVQaxzsP9juOsYZFlNTjkEDQbeSezyZ8joyJr/87hde9LSqWoAfrPf6hfgOLXndZLsP++QLnUfExBFfkCfhMnzeUUUqKPMgvxoNmKPHYyxi4vTuOOEoM8WX512
- i/CR1hTv
- q5ZD3QCv81YLeHfbN7b6h1Hnox0jtfgEWh3iyzFM1OGyOi3NIgVWRltd3QTmrHrSd9E68vQH7f1b+XPikuEXkr3d28rviFiZ/f+yGckIJ0TACWI1rUk5dP/r7bX8+zvuxJjuI6B3yyPDym6Z7Lh9XKXxmOqfWbcH50Iq0PspSqTubnS7Kkkn3a8rHEWyJuTgm1SebwyO+wUuD39hSj087fUzD+kWk65lX4IMJW0MYTzJ0SvP+495Sgb56tDZwa2DVEAckBA295wx4nBX2PE8SNRea2pWslR2vry4xUaH7yHzkDGoEC2ZqoVpj6Lt1S8CQdPdCUpz8ktUfz2S3somm7T69lkSOQ35sPupS8DXvxOudc3VD0wGfqISshcEuPCdVH8spTBqXulm48n5NgazawG9AMFWSuoedVZXIQ40KwoighyY//EDvOlLy6G6gJHesU8Q89LbgHa/tU+90kunuLyP1QRrN42vlb2h+xsnzWNBpLyFjrdF6nA7efBlGgiaakqwl0mcfoB9ASzJbq23+dT/vq0fedPWig8SW1zpdb08l4or+pnoSqQBY4neBTgMThgjC2IzmT4Zz7dGlZNMDD+DiHe1fNfRV/QmT
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760930248-110961
+X-HE-Meta: U2FsdGVkX1/rnY0E1YSB4cCQjQAMIpFDbBgI6So+x5bRbuLp+0chw3QtiacUebfs5+KKq4LO/DBaMmVB6pRRUYYbFBlcVL6jhLcGZrJ4LyZJN+Xy2iWNYvWU48moOZqiEuHpjMTcmxBJsraqDmvw5iOhI9++BZrQSEyHm3BEEZXeRqNumBDhdwD1c9WcrEzFwfHqc2O6CSAZjb7WxYhozfSnezql3L78R0q/kOQCGCXRQxH6bu46KCbNb3WqV1Rys4Jk3JE3vV/es53pJMkWD+REdtBFHnsO8GI5Ur3R0iGlprhvjwWFFVzpz/FmI2/b2DKWX619JOCocgBoGB6X5QEgsrwb4e+6vZsnbzzaki63x+OS3YmCbXxn4uxIxR6JtwA9GxnOE85ZXNWmj/XQ2Bd0bpd9ptGHNBqXRk03VnLQVYsr0cvGaKKenygL57Ky47UqVJob6TeLcbRVRcCXJ/sTcNrgFn9bIVUZcoTy3IQSAKh5IpAK2ewmU2sVGQT4fXDnL47cbbhIbngiiRe+BFILT2GlGVF4G9oAhu0QRDOASwjIb7BFsQH2CQIjKMDvqLdHrXWsLk9zI2ru/AUFvTysp51hC+W0IFmGj/nS0BE6dOJMIVjB3zMQh8coW59aw1unhooq1YZAlb9t8cYPvyCrqIHV87GgMnrLOug3e0wEXbDwHelFWgnmM/ZjyKvTogrTVNnMyzRIXwEreOaIVW6HZ9zFCcY6otF468UpaEIQMMizBiBMF8EFO4RhKfR0mzaABBTqtRSAmaS1AE9Fb5EYs/ORx9Kn8UiYIFa0vhkihXRZK1b45/vtYTQpfOdyNWE2uQIxU8uJf5C2qKol/uYpR8+1/p2+/2eIhY8YLj63Bh3fawVTMW/kuZTkqXIsGIQK5d/FspGAyIHg3GbJO22waFU+4Wfw3BA/A4O6K/4cKIEqOvGCmzN6CyeG+5Ao63FFkIXvM6i3Y75wmKE
+ QgpbJPD8
+ 7NLl7YBlXosIiJwpT8l8amIIserv1uMJcYgxmtMSnxI6ghX+A19gtWCeFj9/C/OX8HXOGC2x1flu/LE8A//hBZG4EgwnohP5da8pjyK5PqRCU+MyqTuyU05AbOSEVywn1udQVay2HO30bSxLtueVGd2kPlyPJI8m4wM+qWht1pqH5rolNjRTaoQgAMfnN+2IUVqgkRP//tGh7xOpKGxfk07XoeKKKvV30NuAdcCn2RQCiGZ+E963Fjouch2JWPd1WZc610Jl/9lBjYMtovcxeVphFr+x2nDfZIrl+X0TPNwMOG63z3GbkcHw3OIPPYqnFXvny9ZFSyw3xNwWtMB2ooudKQOGtKu18U5RBGmCMeNHtQSfQZqn0YpRsLHPV3ScEQf8EpgMiwr9Bthk3KZZ+3i4RtnRH3L14k8D2cB0v6Xuah6yVJ7QmtVT8mHouONDix2EoREBr5vLs5S3ffJw9GCIK8xmAWrE8/+Sh7PUurdclV4lTX5n4MkxJxcRgj2WbIlSk6u3TQUAkz7A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,201 +153,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The per-process BPF-THP mode is unsuitable for managing shared resources
-such as shmem THP and file-backed THP. This aligns with known cgroup
-limitations for similar scenarios [0].
-
-Introduce a global BPF-THP mode to address this gap. When registered:
-- All existing per-process instances are disabled
-- New per-process registrations are blocked
-- Existing per-process instances remain registered (no forced unregistration)
-
-The global mode takes precedence over per-process instances. Updates are
-type-isolated: global instances can only be updated by new global
-instances, and per-process instances by new per-process instances.
-
-Link: https://lore.kernel.org/linux-mm/YwNold0GMOappUxc@slm.duckdns.org/ [0]
+Add the documentation.
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 ---
- mm/huge_memory_bpf.c | 109 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 107 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst | 113 +++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
 
-diff --git a/mm/huge_memory_bpf.c b/mm/huge_memory_bpf.c
-index e8894c10d1d9..cad1ca6f59a4 100644
---- a/mm/huge_memory_bpf.c
-+++ b/mm/huge_memory_bpf.c
-@@ -33,6 +33,28 @@ struct bpf_thp_ops {
- };
- 
- static DEFINE_SPINLOCK(thp_ops_lock);
-+static struct bpf_thp_ops __rcu *bpf_thp_global; /* global mode */
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 1654211cc6cf..4d2941158f09 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -738,3 +738,116 @@ support enabled just fine as always. No difference can be noted in
+ hugetlbfs other than there will be less overall fragmentation. All
+ usual features belonging to hugetlbfs are preserved and
+ unaffected. libhugetlbfs will also work fine as usual.
 +
-+static unsigned long
-+bpf_hook_thp_get_orders_global(struct vm_area_struct *vma,
-+			       enum tva_type type,
-+			       unsigned long orders)
-+{
-+	thp_order_fn_t *bpf_hook_thp_get_order;
-+	int bpf_order;
++BPF THP
++=======
 +
-+	rcu_read_lock();
-+	bpf_hook_thp_get_order = rcu_dereference(bpf_thp_global->thp_get_order);
-+	if (!bpf_hook_thp_get_order)
-+		goto out;
++:Author: Yafang Shao <laoar.shao@gmail.com>
++:Date: October 2025
 +
-+	bpf_order = bpf_hook_thp_get_order(vma, type, orders);
-+	orders &= BIT(bpf_order);
++Overview
++--------
 +
-+out:
-+	rcu_read_unlock();
-+	return orders;
-+}
- 
- unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
- 				      enum tva_type type,
-@@ -45,6 +67,10 @@ unsigned long bpf_hook_thp_get_orders(struct vm_area_struct *vma,
- 	if (!mm)
- 		return orders;
- 
-+	/* Global BPF-THP takes precedence over per-process BPF-THP. */
-+	if (rcu_access_pointer(bpf_thp_global))
-+		return bpf_hook_thp_get_orders_global(vma, type, orders);
++When the system is configured with "always" or "madvise" THP mode, a BPF program
++can be used to adjust THP allocation policies dynamically. This enables
++fine-grained control over THP decisions based on various factors including
++workload identity, allocation context, and system memory pressure.
 +
- 	rcu_read_lock();
- 	bpf_thp = rcu_dereference(mm->bpf_mm.bpf_thp);
- 	if (!bpf_thp || !bpf_thp->thp_get_order)
-@@ -177,6 +203,23 @@ static int bpf_thp_init_member(const struct btf_type *t,
- 	return 0;
- }
- 
-+static int bpf_thp_reg_gloabl(void *kdata, struct bpf_link *link)
-+{
-+	struct bpf_thp_ops *ops = kdata;
++Program Interface
++-----------------
 +
-+	/* Protect the global pointer bpf_thp_global from concurrent writes. */
-+	spin_lock(&thp_ops_lock);
-+	/* Only one instance is allowed. */
-+	if (rcu_access_pointer(bpf_thp_global)) {
-+		spin_unlock(&thp_ops_lock);
-+		return -EBUSY;
-+	}
++This feature implements a struct_ops BPF program with the following interface::
 +
-+	rcu_assign_pointer(bpf_thp_global, ops);
-+	spin_unlock(&thp_ops_lock);
-+	return 0;
-+}
++    struct bpf_thp_ops {
++        pid_t pid;
++        thp_order_fn_t *thp_get_order;
++    };
 +
- static int bpf_thp_reg(void *kdata, struct bpf_link *link)
- {
- 	struct bpf_thp_ops *bpf_thp = kdata;
-@@ -187,6 +230,11 @@ static int bpf_thp_reg(void *kdata, struct bpf_link *link)
- 	pid_t pid;
- 
- 	pid = bpf_thp->pid;
++Callback Functions
++------------------
 +
-+	/* Fallback to global mode if pid is not set. */
-+	if (!pid)
-+		return bpf_thp_reg_gloabl(kdata, link);
++thp_get_order()
++~~~~~~~~~~~~~~~
 +
- 	p = find_get_task_by_vpid(pid);
- 	if (!p)
- 		return -ESRCH;
-@@ -207,8 +255,10 @@ static int bpf_thp_reg(void *kdata, struct bpf_link *link)
- 	 * might register this task simultaneously.
- 	 */
- 	spin_lock(&thp_ops_lock);
--	/* Each process is exclusively managed by a single BPF-THP. */
--	if (rcu_access_pointer(mm->bpf_mm.bpf_thp))
-+	/* Each process is exclusively managed by a single BPF-THP.
-+	 * Global mode disables per-process instances.
-+	 */
-+	if (rcu_access_pointer(mm->bpf_mm.bpf_thp) || rcu_access_pointer(bpf_thp_global))
- 		goto out_lock;
- 	err = 0;
- 	rcu_assign_pointer(mm->bpf_mm.bpf_thp, bpf_thp);
-@@ -224,12 +274,33 @@ static int bpf_thp_reg(void *kdata, struct bpf_link *link)
- 	return err;
- }
- 
-+static void bpf_thp_unreg_global(void *kdata, struct bpf_link *link)
-+{
-+	struct bpf_thp_ops *bpf_thp;
++.. code-block:: c
 +
-+	spin_lock(&thp_ops_lock);
-+	if (!rcu_access_pointer(bpf_thp_global)) {
-+		spin_unlock(&thp_ops_lock);
-+		return;
-+	}
++    int thp_get_order(struct vm_area_struct *vma,
++                      enum tva_type type,
++                      unsigned long orders);
 +
-+	bpf_thp = rcu_replace_pointer(bpf_thp_global, NULL,
-+				      lockdep_is_held(&thp_ops_lock));
-+	WARN_ON_ONCE(!bpf_thp);
-+	spin_unlock(&thp_ops_lock);
++Parameters
++^^^^^^^^^^
 +
-+	synchronize_rcu();
-+}
++``vma``
++    ``vm_area_struct`` associated with the THP allocation.
 +
- static void bpf_thp_unreg(void *kdata, struct bpf_link *link)
- {
- 	struct bpf_thp_ops *bpf_thp = kdata;
- 	struct bpf_mm_ops *bpf_mm;
- 	struct list_head *pos, *n;
- 
-+	if (!bpf_thp->pid)
-+		return bpf_thp_unreg_global(kdata, link);
++``type``
++    TVA type for the current ``vma``.
 +
- 	spin_lock(&thp_ops_lock);
- 	list_for_each_safe(pos, n, &bpf_thp->mm_list) {
- 		bpf_mm = list_entry(pos, struct bpf_mm_ops, bpf_thp_list);
-@@ -242,6 +313,31 @@ static void bpf_thp_unreg(void *kdata, struct bpf_link *link)
- 	synchronize_rcu();
- }
- 
-+static int bpf_thp_update_global(void *kdata, void *old_kdata, struct bpf_link *link)
-+{
-+	struct bpf_thp_ops *old_bpf_thp = old_kdata;
-+	struct bpf_thp_ops *bpf_thp = kdata;
-+	struct bpf_thp_ops *old_global;
++``orders``
++    Bitmask of available THP orders for this allocation.
 +
-+	if (!old_bpf_thp || !bpf_thp)
-+		return -EINVAL;
++Return value
++^^^^^^^^^^^^
 +
-+	spin_lock(&thp_ops_lock);
-+	/* BPF-THP global instance has already been removed. */
-+	if (!rcu_access_pointer(bpf_thp_global)) {
-+		spin_unlock(&thp_ops_lock);
-+		return -ENOENT;
-+	}
++- The suggested THP order for allocation from the BPF program
++- Must be a valid, available order from the provided ``orders`` bitmask
 +
-+	old_global = rcu_replace_pointer(bpf_thp_global, bpf_thp,
-+					 lockdep_is_held(&thp_ops_lock));
-+	WARN_ON_ONCE(!old_global);
-+	spin_unlock(&thp_ops_lock);
++Operation Modes
++---------------
 +
-+	synchronize_rcu();
-+	return 0;
-+}
++Per Process Mode
++~~~~~~~~~~~~~~~~
 +
- static int bpf_thp_update(void *kdata, void *old_kdata, struct bpf_link *link)
- {
- 	struct bpf_thp_ops *old_bpf_thp = old_kdata;
-@@ -249,6 +345,15 @@ static int bpf_thp_update(void *kdata, void *old_kdata, struct bpf_link *link)
- 	struct bpf_mm_ops *bpf_mm;
- 	struct list_head *pos, *n;
- 
-+	/* Updates are confined to instances of the same scope:
-+	 * global to global, process-local to process-local.
-+	 */
-+	if (!!old_bpf_thp->pid != !!bpf_thp->pid)
-+		return -EINVAL;
++When registering a BPF-THP with a specific PID, the program is installed in the
++target task's ``mm_struct``::
 +
-+	if (!old_bpf_thp->pid)
-+		return bpf_thp_update_global(kdata, old_kdata, link);
++    struct mm_struct {
++        struct bpf_thp_ops __rcu *bpf_thp;
++    };
 +
- 	INIT_LIST_HEAD(&bpf_thp->mm_list);
- 
- 	/* Could be optimized to a per-instance lock if this lock becomes a bottleneck. */
++Inheritance Behavior
++^^^^^^^^^^^^^^^^^^^^
++
++- Existing child processes are unaffected
++- Newly forked children inherit the BPF-THP from their parent
++- The BPF-THP persists across execve() calls
++
++Management Rules
++^^^^^^^^^^^^^^^^
++
++- When a BPF-THP instance is unregistered, all managed tasks' ``bpf_thp``
++  pointers are reset to ``NULL``
++- When a BPF-THP instance is updated, all managed tasks' ``bpf_thp`` pointers
++  are automatically updated to the new version
++- Each process can be managed by only one BPF-THP instance at a time
++
++Global Mode
++~~~~~~~~~~~
++
++If no PID is specified during registration, the BPF-THP operates in global mode.
++In this mode, all tasks in the system are managed by the global instance.
++
++Global Mode Precedence
++^^^^^^^^^^^^^^^^^^^^^^
++
++- The global instance takes precedence over all per-process instances
++- All existing per-process instances are disabled when a global instance is
++  registered
++- New per-process registrations are blocked while a global instance is active
++- Existing per-process instances remain registered (no forced unregistration)
++
++Instance Management
++^^^^^^^^^^^^^^^^^^^
++
++- Updates are type-isolated: global instances can only be updated by new global
++  instances, and per-process instances by new per-process instances
++- Only one global BPF-THP can be registered at a time
++- Global instances can be updated dynamically without requiring task restarts
++
++Implementation Notes
++--------------------
++
++- This is currently an experimental feature
++- ``CONFIG_BPF_THP`` must be enabled to use this functionality
++- The feature depends on proper THP configuration ("always" or "madvise" mode)
 -- 
 2.47.3
 
