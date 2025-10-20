@@ -4,118 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1736DCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC8AFCCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:23:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 739828E002C; Mon, 20 Oct 2025 10:22:53 -0400 (EDT)
+	id 0D2958E002D; Mon, 20 Oct 2025 10:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 711118E0002; Mon, 20 Oct 2025 10:22:53 -0400 (EDT)
+	id 05C108E0002; Mon, 20 Oct 2025 10:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6260C8E002C; Mon, 20 Oct 2025 10:22:53 -0400 (EDT)
+	id EDB8A8E002D; Mon, 20 Oct 2025 10:23:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FD2C8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:22:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1ECC01401CB
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:22:53 +0000 (UTC)
-X-FDA: 84018709026.01.E639616
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 39CB940008
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:22:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Di4+tJdT;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DA33A8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:23:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97F061401C0
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:23:57 +0000 (UTC)
+X-FDA: 84018711714.17.481813F
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0924020006
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:23:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760970171;
+	s=arc-20220608; t=1760970235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ome1K21U8OKmqIh6cxr7UpkIOBQ/Su9V9X20JROSYuM=;
-	b=kh8RcusBF77AymOZEEs3lsprIAy6DgZOnTRnLsnuAaQLNSgjYaSehkHbWBYZWmK2N3dQBF
-	5O1xmy+71xN0SynNUgnRL54BpTVdUh5R+2YyHb7cZ0YeApb/Kb9NVr1gwnsEsKCoZdcUk+
-	OpZtuGhYo8BadexFI8Emer2HUsy4jlA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8YyJYDIZVh/nGjIqYIHs8JDKP4RfNnNfn6LQt5w8fxA=;
+	b=TRUdWr54bAsRjiNpiCaVoF59vW09PgVpbRSzk+PF/10wGMs/uSCwMrHlV0CM7qOY/LkO44
+	WtdsIqLW7Pqg+8RWUwZ/BYOv2q8+7IMPxNuZZgP6XxmNie0bXb81obspI4/XM6dGlT+uLm
+	J1l/kE3gUU19HprWWlMjBIwo2ttxk4M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Di4+tJdT;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.47 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760970171; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf03.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760970235; a=rsa-sha256;
 	cv=none;
-	b=6ke478W5oUlm+lWfJ2cRIW2VrqaJNuEb+kE3lvC7xx/SWTxbHdfAPe96zK2HAdjKsBoFLx
-	orHZcwRRrNQsU8bOTMxnftluEkBbBxVTufQs0XzH/T3JdXlETVwevFoV2iVq5wtwjHCLJw
-	FvImX1i6mWcpHp085d0ZC0S6WkXGCt4=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-78ed682e9d3so60773936d6.0
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760970170; x=1761574970; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ome1K21U8OKmqIh6cxr7UpkIOBQ/Su9V9X20JROSYuM=;
-        b=Di4+tJdTBoz1atxQO84Fmn0Jjh5wt+LUM+nuh4d7p335yDGL3kx5to/ysisjS+UV4S
-         5TyRJ90J9r1nobB3BDqnKWDe10wCLnK0TserLQC4x0vyndBKQgp3+OvF2yYxPpYzNTVL
-         D1f22a2I5xyCCZQ/+yRklfHGamXot+2H6+8na+A87GKQHnEkf5cTvDAGuv25ul9h07eL
-         rlcloWGDCBuytp9j5p4az/YVDzYtZkJvwjj8FFgU67vBxA0SCFUMKMGtcOGMeCxKJ3KH
-         rXGcFf0rHNBbK8q3u1O+IEzCB/c33lgNI0OAXtTckuZqORDZ0OKxlyiZCRO6hvYwilQZ
-         /y/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760970170; x=1761574970;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ome1K21U8OKmqIh6cxr7UpkIOBQ/Su9V9X20JROSYuM=;
-        b=FK+ouH0UlggaICTwYZxpHJrOdnDjFLmpHSeg4HR2tWTSfcL18R5mNIHgGJBxGwhH2t
-         MjXvHv9IcqkRnMZNs9/iuAR0pwVibfmxXmX5Pmzd85fcNsXRcGv64mw/4aWT0rSJxh4v
-         DVjcECG+7GFBbAyAMB5OrkP8fXTudyABRC6A4bYhaQKoijr53mOqIA49Xxj+BGJY3rEt
-         nkye8ueZlgHLInjEd9x05QU0sAttRg9nds92vh0IMR0fOGRl5k1OJq70al11ZCGRua1L
-         kBBD8OXhZaMyKYmDCp62fhsg934t8CJwIEvyRRexDmyDLe1e90JQzRynYRhtdA7YFqMW
-         PqsQ==
-X-Gm-Message-State: AOJu0Ywi7z0gpY/rnUXQ2sZ7rSrrKhb56gf0KtFBcx/SB26RVftyk6lI
-	sxzwItna5jZTrguTMhheH6if6QBNP+hgTqRPTYzaL/Hu2ku7Hhbq7trqFj7N3rttUVo=
-X-Gm-Gg: ASbGnctyYjHmqy43V2uVN00UjamGbJAlpI11ckLYYR0Mvonr5N+wPvD5ppoo/ENcvfh
-	DswPDy8kKXKTlbWi4lT7J41eniP9IgtUGPHNi4B2PreSyrmBYLTS+2IF69xKSFLNinlA+elA/84
-	Z+n27M7+kwdKtdH6EGQolqJ24/d0mo2zYBAo9BgG3L6KgmFTPMJjZ+C52ByWvfhwoSTzsGWWllK
-	vvMf7pIgBIxSL2epZJcVq9stWcTY75nAWdXwZmSj1S0juTwqN8FDLIjI6ozp7JIyphLOnQsF2lp
-	ZSzRSyHBX+r/bHj8lUYk+2kcYOxeCJdZXdVksPXeX3VQemqgZS/k7ROEnynE/sftmVOTYwkUzix
-	8ZwIF5vh0LEtUgvdz2Jys5cz7f6oK3cutahc9qUEbpd7hRLRGOcU3WSFfV8iv5L6Vzi9WsMNFkb
-	/KhHE4v39O4Md4/10IjDIXci4zghMSxPxa29RZ991TP3bHEHNTa9jua4XLUov1U+CG+v6ENA==
-X-Google-Smtp-Source: AGHT+IGL/jp9+4xUfY50jcRRy/t4MGHpw6jQ2O094KKD/LfcVRUdB+PlhBahj0B9OuP95IOnQE5uVw==
-X-Received: by 2002:a05:622a:306:b0:4e8:a85f:e4a6 with SMTP id d75a77b69052e-4e8b7cdf3cbmr81951421cf.81.1760970170265;
-        Mon, 20 Oct 2025 07:22:50 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cf0af579sm568871285a.41.2025.10.20.07.22.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 07:22:49 -0700 (PDT)
-Date: Mon, 20 Oct 2025 10:22:47 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, osalvador@suse.de, corbet@lwn.net,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	hannes@cmpxchg.org, laoar.shao@gmail.com, mclapinski@google.com,
-	joel.granados@kernel.org, jack@suse.cz, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [RFC PATCH] mm, hugetlb: implement movable_gigantic_pages sysctl
-Message-ID: <aPZFt05GcyTkGNQ5@gourry-fedora-PF4VCD3F>
-References: <20251009161515.422292-1-gourry@gourry.net>
- <6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com>
+	b=yN04HZ9Zu0zthRWK6uaiq997n4hYqUD5CC6sLPB3brHJPhJYFKr5jN2JR9RKlIxXOuh9qo
+	iGyq9vwy9R7CJx/1vOx+BOKA8VEpbIqAgq2gFdIztgjBLq7t9mUO1zfYJDzs7IIIlRoQMz
+	LeCQWOvQbYojIUFqb/lvfm8dHA1aWsg=
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cqyJW4hhLz6L5XF;
+	Mon, 20 Oct 2025 22:20:43 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id C3AD5140417;
+	Mon, 20 Oct 2025 22:23:50 +0800 (CST)
+Received: from localhost (10.48.157.75) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Oct
+ 2025 15:23:49 +0100
+Date: Mon, 20 Oct 2025 15:23:45 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>
+CC: Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>, Gregory
+ Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>, Bharata B
+ Rao <bharata@amd.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <mgorman@techsingularity.net>,
+	<mingo@redhat.com>, <peterz@infradead.org>, <raghavendra.kt@amd.com>,
+	<riel@surriel.com>, <sj@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
+	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
+	<yiannis@zptcorp.com>, Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <20251020152345.00003d61@huawei.com>
+In-Reply-To: <CAOi6=wS6s2FAAbMbxX5zCZzPQE7Mm73pbhxpiM_5e44o6yyPMw@mail.gmail.com>
+References: <20250910144653.212066-1-bharata@amd.com>
+	<aMGbpDJhOx7wHqpo@casper.infradead.org>
+	<aMGg9AOaCWfxDfqX@gourry-fedora-PF4VCD3F>
+	<7e3e7327-9402-bb04-982e-0fb9419d1146@google.com>
+	<CAAPL-u-d6taxKZuhTe=T-0i2gdoDYSSqOeSVi3JmFt_dDbU4cQ@mail.gmail.com>
+	<20250917174941.000061d3@huawei.com>
+	<5A7E0646-0324-4463-8D93-A1105C715EB3@gmail.com>
+	<20250925160058.00002645@huawei.com>
+	<CAOi6=wS6s2FAAbMbxX5zCZzPQE7Mm73pbhxpiM_5e44o6yyPMw@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 39CB940008
-X-Stat-Signature: hh67x3j3u19p5firci9a3zkce4sthhm7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.48.157.75]
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0924020006
+X-Stat-Signature: b7s3g6ahhgmpmjerf4chm3b8wd864qju
 X-Rspam-User: 
-X-HE-Tag: 1760970171-883174
-X-HE-Meta: U2FsdGVkX18ZzXfovoPwW8q8trqiSc6cloOEpfu71NvrZvTeI1TK069yShp1LKkahnwf/GJtXwT07sOGtOXvioXJACKbY2aZx371xFYinxV79Uypd+mAN+NQf2VmOtbkmxWvzKcK25+aQTboWd29MrNkilYKnxvc0ArVcqIjOsg7Hy2XKdTCaAfwFH/UH3Tb/JDxmlxVhJ53pcJlysoxs+GKglKLcNi7fEzwbnjQWj6IeqHpzeX6WUuPY6qpXkTGdb1YGDKaVfFmBQ0ceFw1QEka4pCVeN1XPQck5LOK/XgmKSM5/fLDQdHQIHa+sLLuciVBV94eLlcOix5ztMLBku59ljBnwzWSo37WCjJr3zKzGnRuxc1Ak4e4deGnN5aKV65Ym6HG43aZjxCWIBjk7D/NxutaYKr7AMkJyFeP0VhBLQl3yFrQrd0DO0j+t2dw0oKubhNBjryaScjw2jAjRldwJWCKUmyCAeVco6kdzzD43pdfvKNtuJsorpC9+lD9WXKLYfl/LecUIyhLJA7hfrMag84N+pk23mih/duyjv1sPeKZPz9CUUo8C7zGkm5p+mFcurBhje+uvE00YgCg0RxfMb0OHjsMcAZsS/VGLiwDyLIXO46pPKna+YCUwOvLBFJR95alyVRo4OhDT1SlTqlRBH7Far3G7Xz+7HX/gLKCQJxs0aRGum2LtUZtFbKlKcnJHBMGEO74dyMpPc1QtQcHaXX2Ui9KDLWclzQ1hXrsioiklBSaL8CUEVUt+ageF1HtHMaEqofPEeJMDNWSYk3D1DNEu9u+9IA7RPts/gRCARc1NcoseK8jgnFG/waRRTlO7LR9o9gRZwNODw0MOn7dTC1VSbI7FiEUO0593J+aTMsbrbLueXNrW8XyWLHqRyqZP82nUa+lC9+a/BpDuaETQ4bDcsN9YVd5sBQQDAs5gm73/0pVqzYucIlb3LX/qRGQj9FtlE8RWxHAc11
- aRuDAfgV
- 94l1b/w//r/IUM1f6Le1BH5UH/9XNXvDmq98JkfhfUPSnkRejGoCehCwS/LqR7N1QaSDJA0DnJvt/3OY6niBUFX0eXi1+5LbR7Cb3mktqLbWkM2bXhF+1Y/zEUAPHez7Cp6YB3klv272WeQtviKCEtGLN3RY92NKUEimGCMcPpNl86/Ei7UoiJS0QuE7c1PvY2RUNlg3kR3Ivb45YBbtNTl3dSIpFz6+aLmXuJBvKXq30VSIf9DjvX7o4BxEHwGU6mEq5tEoj0iIkI3glSKTBATsnoQeozp/DVq+dFMM7fUA030H/SISQGZ9svheThLyzsQwDNhqHULMGpVdCcCexmrCcPZARwp6BvwFi7BYKd32vKxGeO+z3Mwkh2cb5iLRMWxfahmJ3VVH9N2weOWwIOqKZGuTrrBXnyHbjZA3O1feDQ1hhd3VwUfh7vUs6tXG3Yefz
+X-HE-Tag: 1760970234-790956
+X-HE-Meta: U2FsdGVkX1+JcGauJICwK5htkS7y/YWMGlV0YLn5fvlcn4pO6D47n0c3yEe0uaQ/ZHEguK6JVFQUcyQMLr+lqx6Wv0ht1QzudZJ6Nb9gILYJrsGLogkbIaQwrNIXa9LwXHnuk+7pU+/rgxuvShFZTybvfbA4Jgz+XP0oS+YxK3FrjrdIpk0vIwL2tdGWoHjznpaeP6J0/w1JwnT8RGdOVbDDtwG6nhJIl2wKRXE1SjtRmzTwTyvwrPtRZU2PBAvDCiyDps0gTh1wzbi2ODsYyZXNoXASaWc+/PdA+Z8Vfkqvlon8RiQWAGZJtuq3K5oUZhu+OakPhrxp889cVKONXugtOwyyzbDf3waRhiB8+HQWiL/NEa5uizFzmcomHu55B7fAX5jtb2dH2B3DwCHDN7KPfjw0KJ6KNQE0pZkUFO0CZTBJ7GpKb0J8JcDZ51j68RwteNlI4N0pcngX7x7JJtnKO8wkPXgerwoLVim/peA4rpSwUJ4z2SCkqjoiQ1Bb/GMsbtvbNzWJDVlnjWwJBEiKj3vxMxObS7Lr08snWO7xPlVN4JhaGhDvyKSiTl7T2ZhMYQRTclEaclm/BbH+QXqzux6fNNj0SHsHNowyeckMVXUDMvJnK0AsYZPHD+smg2JOUSvNWUw+hYDE5PleEC7ayUuRvzKf0etDb9c6R2vLlgHrPg2eoNk6omZrHV38Kd5Y35up5CElk7ER9ZKnVpUiJpWOiUPKnj0ElR7AZrhwOsD2FEzBUVShb8xRCVxJhdY/Zjt0B1BHY0Z5bZzdzwc8YdRkrqkuGRgUa8aK56d5++w+xY0MRBidY+XkEqxzZIiHbjIXPX6nkm4Zo9p+xCb/H9Bah3W093fMEwAgcYhySKhcnbyC0reHBGXA/Y+KCNTJn4i9NVT/S4WdRep+L5BneGh3wK52snkUMKm72kPpoRaySihfktNX36rRu+l9JV0CKwpSvYqeRTxP8r+
+ 6qHgqNPw
+ 4E32kiaAWpsB3gvt6YE4yrluAOXk9/bUXERy8QXaLvaSVB6DN9hN41OsmUynriX4omtsS++YJCPHYh5+eiCiTw8e8YbtU3Rp7J6+iRfTmbgCD8j1rQwTItkweFSq1J8gQQ1uZ3H8XNwgK4fOMBCl7NtLPjkUZLCybmiAafAk+ZOcDfe7q9auRDQAddRAjzGa57hwpYwT7kLgRgLyWs6Q8cL/j4EXKSQd65kJrx4FiK2cnPuSHWHThqOeucb9suVp/MZsyltFsGMqPT6bMUGd5aPYoJtpfi67DIkqdo1v8hEtyNJA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,17 +109,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 04:17:06PM +0200, David Hildenbrand wrote:
-> On 09.10.25 18:15, Gregory Price wrote:
-> 
-> However, it also means that we won't try moving 2MB folios to free up a 1GB
-> folio.
->
+On Thu, 16 Oct 2025 18:16:31 +0200
+Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com> wrote:
 
-This may actually explain some other behavior we've been seeing, re:
-reliability of 1GB allocations.  Let me ask some folks to look at this.
+> On Thu, Sep 25, 2025 at 5:01=E2=80=AFPM Jonathan Cameron
+> <jonathan.cameron@huawei.com> wrote:
+> >
+> > On Thu, 25 Sep 2025 16:03:46 +0200
+> > Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com> wrote:
+> >
+> > Hi Yiannis, =20
+> Hi Jonathan! Thanks for your response!
+>=20
+Hi Yiannis,
 
-Thanks David,
-~Gregory
+This is way more fun than doing real work ;)
+
+> [snip]
+> > > There are several things that may be done on the device side. For now=
+, I
+> > > think the kernel should be unaware of these. But with what I described
+> > > above, the goal is to have the capacity thresholds configured in a way
+> > > that we can absorb the occasional dirty cache lines that are written =
+back. =20
+> >
+> > In worst case they are far from occasional. It's not hard to imagine a =
+malicious =20
+> This is correct. Any simplification on my end is mainly based on the
+> empirical evidence of the use cases we are testing for (tiering). But
+> I fully respect that we need to be proactive and assume the worst case
+> scenario.
+> > program that ensures that all L3 in a system (say 256MiB+) is full of c=
+ache lines
+> > from the far compressed memory all of which are changed in a fashion th=
+at makes
+> > the allocation much less compressible.  If you are doing compression at=
+ cache line
+> > granularity that's not so bad because it would only be 256MiB margin ne=
+eded.
+> > If the system in question is doing large block side compression, say 4K=
+iB.
+> > Then we have a 64x write amplification multiplier. If the virus is stre=
+aming over =20
+> This is insightful indeed :). However, even in the case of the 64x
+> amplification, you implicitly assume that each of the cachelines in
+> the L3 belongs to a different page. But then one cache-line would not
+> deteriorate the compressed size of the entire page that much (the
+> bandwidth amplification on the device is a different -performance-
+> story).
+
+This is putting limits on what compression algorithm is used. We could do
+that but then we'd have to never support anything different. Maybe if the
+device itself provided the worse case amplification numbers that would do
+Any device that gets this wrong is buggy - but it might be hard to detect
+that if people don't publish their compression algs and the proofs of worst
+case blow up of compression blocks.
+
+I guess we could do the maths on what the device manufacturer says and
+if we don't believe them or they haven't provided enough info to check,
+double it :)
+
+> So even in the 4K case the two ends of the spectrum are to
+> either have big amplification with low compression ratio impact, or
+> small amplification with higher compression ratio impact.
+> Another practical assumption here, is that the different HMU
+> mechanisms would help promote the contended pages before this becomes
+> a big issue. Which of course might still not be enough on the
+> malicious streaming writes workload.
+
+Using promotion to get you out of this is a non starter unless you have
+a backstop because we'll have annoying things like pinning going on or
+bandwidth bottlenecks at the promotion target.
+Promotion might massively reduce the performance impact of course under
+normal conditions.
+
+> Overall, I understand these are heuristics and I do see your point
+> that this needs to be robust even for the maliciously behaving
+> programs.
+> > memory the evictions we are seeing at the result of new lines being fet=
+ched
+> > to be made much less compressible.
+> >
+> > Add a accelerator (say DPDK or other zero copy into userspace buffers) =
+into the
+> > mix and you have a mess. You'll need to be extremely careful with what =
+goes =20
+> Good point about the zero copy stuff.
+> > in this compressed memory or hold enormous buffer capacity against fast
+> > changes in compressability. =20
+> To my experience the factor of buffer capacity would be closer to the
+> benefit that you get from the compression (e.g. 2x the cache size in
+> your example).
+> But I understand the burden of proof is on our end. As we move further
+> with this I will try to provide data as well.
+
+If we are aiming for generality the nasty problem is that either we have to
+write rules on what Linux will cope with, or design it to cope with the
+worse possible implementation :(
+
+I can think of lots of plausible sounding cases that have horrendous
+multiplication factors if done in a naive fashion.=20
+* De-duplication
+* Metadata flag for all 0s
+* Some general purpose compression algs are very vulnerable to the tails
+  of the probability distributions.  Some will flip between multiple modes
+  with very different characteristics, perhaps to meet latency guarantees.
+
+Would be fun to ask an information theorist / compression expert to lay
+out an algorithm with the worst possible tail performance but with good
+average.
+
+
+
+> >
+> > Key is that all software is potentially malicious (sometimes accidental=
+ly so ;)
+> >
+> > Now, if we can put this into a special pool where it is acceptable to d=
+rop the writes
+> > and return poison (so the application crashes) then that may be fine.
+> >
+> > Or block writes.   Running compressed memory as read only CoW is one wa=
+y to
+> > avoid this problem. =20
+> These could be good starting points, as I see in the rest of the thread.
+>=20
+Fun problems.  Maybe we start with very conservative handling and then
+argue for relaxations later.
+
+Jonathan
+
+> Thanks,
+> Yiannis
 
 
