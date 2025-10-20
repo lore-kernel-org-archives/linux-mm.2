@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60CC1CCD184
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:17:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BDFACCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:17:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28C7F8E0006; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
+	id 453F48E0002; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236F68E0002; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
+	id 3E42A8E0008; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 174528E0007; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
+	id 1E82B8E0005; Sun, 19 Oct 2025 20:17:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F04838E0005
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EFCDA8E0002
 	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:17:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9125987A2D
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C2E613B8E8
 	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:02 +0000 (UTC)
-X-FDA: 84016577484.08.3BA8107
+X-FDA: 84016577484.10.39E67DE
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5F4D7140005
+	by imf21.hostedemail.com (Postfix) with ESMTP id 567041C0007
 	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:00 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Mtkj5DTI
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760919420; a=rsa-sha256;
-	cv=none;
-	b=QF74Q2wIlX4+j9TeaaSISY0EIF6tVOinSX6NJvIrGdAWy8ySG+KazrfziVv06prEnpYxJY
-	kQli7rIoy9CKc1xgFTNOs9mqndHja6DiMonEimrqxeaoYHgcIwUKsFNK0xkMQlNSm1kWnk
-	fcBvJ641XpcZH42mWf8TT/Yw8jxXGos=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Mtkj5DTI;
-	dmarc=none;
-	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l8xa878S
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760919420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4T1e6AVB5ZVjOhmuiYbj1szBUmlhWaC/pG5gKcJDImM=;
-	b=0vf0v8V7zlsMkmKRuQhfNLcfbosI7Uz9gTnrqcvLvEPNDKdzWj8XqyFIg0vBMtAsW5qsOE
-	JWY0wMBZI6DPpp4EBq7hDZjuqJ8OZWIDcScF6FR9EMLbkCu5z/32eqDzdPdLIBnpqS5SKG
-	pjL3dbEkNPHbpuzMPMOYWyh6cI5YLJU=
+	bh=HsC4AVFnnb6VOsYWXU5qORHanYLvWN30fSNbU8QS7Rw=;
+	b=sWN2xP7ijYl1C/vHyweh4bjItLBRiZ0bp1krv9DIifReKJodc/y1vVJhafMi6zDK9GDbt4
+	jwlyk4Ot+j8YOlToyDP46rQ02eU/4klTM9hpLNZlGaMLuECXnE4uUUos2GO2wbua8YpTDC
+	rEsiwfqzSXY0nWiyP/DQHk9dL+Y+vVk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=l8xa878S;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760919420; a=rsa-sha256;
+	cv=none;
+	b=aMhzMwHbc4CTg2uvx4WtZOlQORHc0IUGHnXI0WLtbMC+/fpjWcWI/FM7+my8Gh377ow3fD
+	zXvkpGnNZ6tQ/fllR+BoBeIEB3MB/8+glGtlUis76cPK0nA+w+bmj3Xb/WYo2sSlGcElbC
+	eKYaXVrGzb5JZUOUPdS9ojW3AK+YZbY=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=4T1e6AVB5ZVjOhmuiYbj1szBUmlhWaC/pG5gKcJDImM=; b=Mtkj5DTIern+THtGtHJGtW9Hy5
-	9N918BNQy9niPv18tVUPni1v7LZCRWp0GTSUwn1gBuZe2P7JXYB8Gz+EaEJcAwA0maZUnqeLd6vPl
-	rIPh61eUAonjcwvSYbUDsxE3ASUG1nhFE+jdgl5MlpPDvr/s0DH6gdJw2th5ynLwIlHqH8ZEvSlLK
-	jf3pwehPeMmgVzcqsRcNI7S9lVrqP8kBfDTePgu85ywtYTxY3wbbUBG0kBQdg8OPFhn8pTVlDMQeq
-	GTmylSAckv9TMMH5XeIspfRtu4YeDfvC1FDCpRfLivo9fbGknlcCGWotrCUMYJDx447Nr0k4szImI
-	+e6ePpyQ==;
+	bh=HsC4AVFnnb6VOsYWXU5qORHanYLvWN30fSNbU8QS7Rw=; b=l8xa878SbbUf9srg3QGFs4H+E/
+	FghfMoB90iWI7v6u2Q9XNLJ2OPisEaCnFTN9OULZ15ry7KlHzZ5LE7ovgPVToNDQKp+f7EKg06bj0
+	uJ9c/e+FcemwkkkE+5jUK9P8e6R/AyvY4VsXWGETmnzWl/3G1BovgrjTm2ArN/mSoF29LhqdVmSoA
+	+yTKnt4QOSol0NKSGNv8Adjieth9SiMSa+4m3igvhIo6qQImPHVy5+4Xf47J2KhuqgtpX8LlkAzfE
+	tSHPajshBfwHareR1+ztHekbydXYDn+YdQ4Xy6Sh0fANPa9SImrt8il1QiVvTi29gEzFqfPsnf0C4
+	Ue6+qq5w==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAda5-00000008t81-3RBu;
-	Mon, 20 Oct 2025 00:16:58 +0000
+	id 1vAda4-00000008t6W-41BJ;
+	Mon, 20 Oct 2025 00:16:57 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Vishal Moola <vishal.moola@gmail.com>,
 	Johannes Weiner <hannes@cmpxchg.org>
-Subject: [RFC PATCH 3/7] mm: Mark pagetable memory when allocated
-Date: Mon, 20 Oct 2025 01:16:38 +0100
-Message-ID: <20251020001652.2116669-4-willy@infradead.org>
+Subject: [RFC PATCH 1/7] mm: Use frozen pages for page tables
+Date: Mon, 20 Oct 2025 01:16:36 +0100
+Message-ID: <20251020001652.2116669-2-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020001652.2116669-1-willy@infradead.org>
 References: <20251020001652.2116669-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7wwwsk4cdhcnjm5iybjwngcbbbaw8att
-X-Rspamd-Queue-Id: 5F4D7140005
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 567041C0007
+X-Stat-Signature: qkzicggtm84o16is7m3jcsj4dbqs94ex
 X-Rspam-User: 
-X-HE-Tag: 1760919420-107187
-X-HE-Meta: U2FsdGVkX1+x93xkfoRlkGJmpVRmtBU8LGahBv9WPI1XG+FPtd8Akg/IZ4NxBu/U3yh79mHHSMPmL7QiQBWo9QSNcg38XPbTdAzx70HfTHHWsrfILtNdOR5xJsggVW8eFJl18p0QG6Az5dvwUd2f4cfFRJ7JFkWUW/qUBUmRRbsl13fPjfan4s7Vs+Z5V3XXUXPuUs19wTSgm/YrZXmxW+6Ee5ycoDCbP7YGE/TKk7pWNOjrMPMk0CuZ0MWjKK/E73KHcLBtCRGyzud3vXAUsZrsn/e63aT4YJ/beqUC8b7+AqvkmuZPD5CFliy+TdmsAEq2t95LRT7IgX35fbdXEBjXDU4VPY7ewcOAwNONvy4yEz2pQJue3rf4qKMfUqg+Nc552zc0XrNqLGyajYNWjl8iXvyzHFauC/QWWncPZevuBsDFQTJyUkTF/KEpVLw/MxGDNUw0edz4jNMFFc6JMZcil4mq6NQnMys6UsFIV3oDyq2TTd0/rwnGmlo5KKYq/yI8LbARHE9mPtfGs9KfnYXU/xO7mlJYbacgjS0LZRSZEZaSKKVHMy9wpHtCDycqHoDr4gzdXnd94ItUVuHwHrY+8I7Q/u0wpVfJZLPTPJEZuBASz6dxSg/90BepR3vVXLFZg+Wi1+SuNYRg2u+2DooGboDe5SW0/dK0/GaTZ+s7tL8ktm5Nr2ssS0eDYFxA+9D2l7d+SRzbM3nIY9bDPwoeW0UVz+Io9hyCUNGeqFRuyIfPOud3HBT3JxkrezWx1edc3h2QoxJ+in13WacSubv1rTdCLnRCexZtBzvBpuyHv3G/mB2e4dFE8qeb9xOyUcLOrObhG/qywRjHPvKoRSq8+aZ+P13MrOHw1AZgu24w4yLVmTu2/Dp/eHw9D9GqAd30bD5ue7d/yvXMQocUpUeOL7FXVVflECLUhnMZOJDr6JCqI86e5QRCDTYemNSzNixc6eYz+JZ3PNp1YXG
- cSChcMSW
- jfhe1jcNBlEDJj6DgyPgg/i6wIVixyZX8rJP824A0iIaZVcI+NaSkO2DREkh7D8xK5oXNr9IEB8kZvmj9cEEmOPqRww/jcItxeG1b+uqcffNs8gYIi8/YCyeG/frNK8dhBk7TTQ2AHXmjNOALQ9hcQxwYbFx36goRiWcSMAR2drp9RuBntuw7zAnJcT70Y8GP0r5D446LWHV/5yKgR98f7q9nWZKCgof4hYyKRbYo2DGgxMnj0qMULnP2Jmw8YUWhJxT5wlANSv0i1N8EipCcprek9qkWOMtnr1aJwMnn+1/Grw8=
+X-HE-Tag: 1760919420-13349
+X-HE-Meta: U2FsdGVkX18G14AcXGmo+fqOtuNalIa2LoKLbc2+fUkGr66ff/Dyzw1vnjkRAN7BkQdlwKq8Vmhj6627kp3biWX/BQ9ZvfFC8dN7UXlqk3Nnocj5zRpfT0zb1NCGFmQiVKcloJ83kGHAvoWOCNq05Lyyt2nlplNWeqziuTf5WM+PjnObPqNyCbfLzrfSoit62IE4gc1AYb1r3hTFlX3IpMXZgH0xb/lIhU3p0S4veDcF7k4Z21JHBe039z5u70aVnC2yHIUZTzubMFKqUaLOOzv6Buqbq6IfreQEVvJc8mWlCCn594C7BSO1McgyyFXpef9Jq/ru1G+fnTzOiJp0p6MZFRFFeCLKKcdrVdKTElIAqnUuqaVpas5NtInT89tiM/tMKLi3SoYhJ677O0iURaEUQoBc3/bjZQGwRcMohjzAww+Omso8E8JImROhqs81O9gmAqoH6dM9UB9A9pOBHhK/M4EDIKteYaQpxXfpu5NECuWjkNh9rNBZqTrM7ioGu0fknlaZX+5TXAreuja9KizEqNxT/4cWlJd5xIUoZ1EEwR5O0rmbsZPl9SdD7L4FuhA+IIRILdrKJrLRlk3o1eXCUaOglEVTSQyPUQgIRgQsEwtE4QK/UzByoqDJFr9Dc6OzNAoPKAV4rML/Dr1s0C2hnKrKBByHVJm24zQmm6ik9ZAUw2DetDrEDVz7iTC5HzHK4Qkt8QfFChcOEGFTYbuJ3tVAhgWvziXRLD2wb4/Qfx5y2yLhyXTDN/RfQXZtj5AxczFN4shfMJae8o3Pd8NAPzCMWHo0RK93koIeIAaV/pHiXLemabhpYi3z+hjhQSjBdMLDksIP9anOZJ1slFOsJgeO2zu6WjuDer8SfbHeG4DVpiQ5j/PHiVlPqJO4hf9GYDuOKF4Fwzc+vNoJUBc0W/kpZapVAiGcbq8H8Wus5GtXSHxYpvjgGvZF5tKOyXEBzj0kyf0v+WCqNna
+ jIToXuYl
+ QVkOgz5xLetN+N4Zm4dUTi8cn267b4GaJoraJic00o/hBRF3eDcgDycnyaCum7a0B2pH1jEVoRX04rK8rPV9KDLKumK1Z7xHD3fcRc32U58rwkFIaB6P4ThwqSpHQ5CYIVtjma/wzfpblcTukNUhuyCkfSs/m5YUKJ5Qy1MwU+hBHHZ4msZwrJkENzm8TEnzchpq13RXrCBoF0kp2sjUJYDtfwkV+f1MD00ssWfQtah7HaO1jiO93ByFuvOx8QphmDN+4NKWL3KLdcCXmlXXIMNYK45eC+YiPI4jujuQwB9MHP5g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,92 +88,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the page type setting from the constructor to the allocation site.
-Some of the architecture code is a little complex to reason about, but
-I think this is all correct.  This makes __pagetable_ctor() empty, so
-remove it.  While pagetable_pud_ctor() and higher levels are now empty,
-leave them alone as there may be call to have them do something in future.
+Page tables do not use the reference count.  That means we can avoid
+two atomic operations (one on alloc, one on free) by allocating frozen
+pages here.  This does not interfere with compaction as page tables are
+non-movable allocations.
+
+pagetable_alloc() and pagetable_free() need to move out of line to make
+this work as alloc_frozen_page() and free_frozen_page() are not exported
+outside the mm for now.  We'll want them out of line anyway soon.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/mm.h | 11 -----------
- mm/memory.c        |  2 ++
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ include/linux/mm.h | 32 ++------------------------------
+ mm/memory.c        | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 30 deletions(-)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ade37df5ea2b..edcb7d75542f 100644
+index d16b33bacc32..ec9365375d9c 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3044,15 +3044,9 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
- static inline void ptlock_free(struct ptdesc *ptdesc) {}
- #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+@@ -2965,37 +2965,9 @@ static inline bool pagetable_is_reserved(struct ptdesc *pt)
+ 	return test_bit(PT_reserved, &pt->pt_flags.f);
+ }
  
--static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+-/**
+- * pagetable_alloc - Allocate pagetables
+- * @gfp:    GFP flags
+- * @order:  desired pagetable order
+- *
+- * pagetable_alloc allocates memory for page tables as well as a page table
+- * descriptor to describe that memory.
+- *
+- * Return: The ptdesc describing the allocated page tables.
+- */
+-static inline struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
 -{
--	__SetPageTable(ptdesc_page(ptdesc));
--}
+-	struct page *page = alloc_pages_noprof(gfp | __GFP_COMP, order);
 -
- static inline void pagetable_dtor(struct ptdesc *ptdesc)
- {
- 	ptlock_free(ptdesc);
--	__ClearPageTable(ptdesc_page(ptdesc));
- }
+-	return page_ptdesc(page);
+-}
++struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order);
+ #define pagetable_alloc(...)	alloc_hooks(pagetable_alloc_noprof(__VA_ARGS__))
+-
+-/**
+- * pagetable_free - Free pagetables
+- * @pt:	The page table descriptor
+- *
+- * pagetable_free frees the memory of all page tables described by a page
+- * table descriptor and the memory for the descriptor itself.
+- */
+-static inline void pagetable_free(struct ptdesc *pt)
+-{
+-	struct page *page = ptdesc_page(pt);
+-
+-	__free_pages(page, compound_order(page));
+-}
++void pagetable_free(struct ptdesc *pt);
  
- static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-@@ -3066,7 +3060,6 @@ static inline bool pagetable_pte_ctor(struct mm_struct *mm,
- {
- 	if (mm != &init_mm && !ptlock_init(ptdesc))
- 		return false;
--	__pagetable_ctor(ptdesc);
- 	return true;
- }
- 
-@@ -3174,7 +3167,6 @@ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
- 	if (mm != &init_mm && !pmd_ptlock_init(ptdesc))
- 		return false;
- 	ptdesc_pmd_pts_init(ptdesc);
--	__pagetable_ctor(ptdesc);
- 	return true;
- }
- 
-@@ -3199,17 +3191,14 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
- 
- static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- static inline void pagetable_pgd_ctor(struct ptdesc *ptdesc)
- {
--	__pagetable_ctor(ptdesc);
- }
- 
- extern void __init pagecache_init(void);
+ #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+ #if ALLOC_SPLIT_PTLOCKS
 diff --git a/mm/memory.c b/mm/memory.c
-index 033fc4e29232..47eb5834db23 100644
+index 74b45e258323..de9f999ffcf6 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -7287,6 +7287,7 @@ struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
- 
- 	pgdat = NODE_DATA(page_to_nid(page));
- 	mod_node_page_state(pgdat, NR_PAGETABLE, 1 << order);
-+	__SetPageTable(page);
- 	return page_ptdesc(page);
+@@ -7267,6 +7267,37 @@ long copy_folio_from_user(struct folio *dst_folio,
  }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
  
-@@ -7304,6 +7305,7 @@ void pagetable_free(struct ptdesc *pt)
- 	unsigned int order = compound_order(page);
++/**
++ * pagetable_alloc - Allocate pagetables
++ * @gfp:    GFP flags
++ * @order:  desired pagetable order
++ *
++ * pagetable_alloc allocates memory for page tables as well as a page table
++ * descriptor to describe that memory.
++ *
++ * Return: The ptdesc describing the allocated page tables.
++ */
++struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
++{
++	struct page *page = alloc_frozen_pages_noprof(gfp | __GFP_COMP, order);
++
++	return page_ptdesc(page);
++}
++
++/**
++ * pagetable_free - Free pagetables
++ * @pt:	The page table descriptor
++ *
++ * pagetable_free frees the memory of all page tables described by a page
++ * table descriptor and the memory for the descriptor itself.
++ */
++void pagetable_free(struct ptdesc *pt)
++{
++	struct page *page = ptdesc_page(pt);
++
++	free_frozen_pages(page, compound_order(page));
++}
++
+ #if defined(CONFIG_SPLIT_PTE_PTLOCKS) && ALLOC_SPLIT_PTLOCKS
  
- 	mod_node_page_state(pgdat, NR_PAGETABLE, -(1L << order));
-+	__ClearPageTable(page);
- 	free_frozen_pages(page, order);
- }
- 
+ static struct kmem_cache *page_ptl_cachep;
 -- 
 2.47.2
 
