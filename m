@@ -4,125 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6B2CCD19F
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 22:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E10CCD1A2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F40D8E0006; Mon, 20 Oct 2025 18:46:38 -0400 (EDT)
+	id 8603E8E000A; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CB5E8E0005; Mon, 20 Oct 2025 18:46:38 -0400 (EDT)
+	id 8380C8E0005; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E0E98E0006; Mon, 20 Oct 2025 18:46:38 -0400 (EDT)
+	id 74E878E000A; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A56E8E0005
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 18:46:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF08BC0308
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:46:37 +0000 (UTC)
-X-FDA: 84019978434.02.80FD7F8
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B3A0F8000C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:46:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=cl4CW6iS;
-	spf=pass (imf02.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761000395; a=rsa-sha256;
-	cv=none;
-	b=YahgcYaZO6znkym0FANwruoaT8p6NoXVaWgy7Pnv3U1Rr0H9Eql8QJvS3HWYIUlPbDVsT8
-	hRElfpzv3q4HngWrsAkRZrhVMKF8BZGQCPVKa+NY5fGI5chkaiJ1qO80E8YvEubSc6zAWL
-	SIKRkzVF6f6f63fBr+BNW1OZ9dogqPQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=cl4CW6iS;
-	spf=pass (imf02.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761000395;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66EF88E0005
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2302A119A16
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:02:22 +0000 (UTC)
+X-FDA: 84020018124.06.0FAEFB4
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013057.outbound.protection.outlook.com [40.107.201.57])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 600D74000E
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:02:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lu8NK64Y;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761001339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bUtWq6BwnjWVaI8PPEZSZXu56vepaxMGdapsduu3y9o=;
-	b=2k2HQ4EC0sxBYm+dcKdD/bPGtU34dsSW4qWOO8AbMxJl9sEqKZ/BA+UVLidSFOHd7YO87z
-	hHrh+sLML7FdEB/6aHV8KXXlG4fIk8SvHgyTIWdGOC7pKZwZTHfh5YxX3jGI1PcooiUDcg
-	q+qjxA6PuMJYuhGP26Q1HS5oCyYQzA4=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27ee41e074dso57777605ad.1
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:46:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761000394; x=1761605194; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bUtWq6BwnjWVaI8PPEZSZXu56vepaxMGdapsduu3y9o=;
-        b=cl4CW6iS6wwWs+LIQVvaWx+XJW77jqw/lP3gznyp7mGjN5MkfnQHIvPCEqz7CMxO0g
-         X4Dc/+deW7TJKZYmIhEl8ecV5iJ6yYDLe2/RLI8cOsRLM0SehnuzY/v3ov8nxZhDZpPV
-         D1UUhqXnH2rFe0OUufTF9ga0QNekAmP3d+dCowWok1HjTMOt8m56ddwSVq985Zok2dML
-         Xg73iquOm67B9y4cOD9lgIwe91oDtoEcM99mw5GI7adNVYH7RA7IXwyvsSaIpH9mBn3e
-         ruxrDn4rg2TWef6APF/qK+fSJitNwZdb7qHeHkSOdZjMbCiPdraTgfAb0ST6xZCmleHE
-         FcQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761000394; x=1761605194;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bUtWq6BwnjWVaI8PPEZSZXu56vepaxMGdapsduu3y9o=;
-        b=CMp0lXfcKS20OmL0qCwqqDY7PbpMsqJ4yQroTrA0XmVUKIVZ6/sp418TF17UJpmZmH
-         GsCuGXXd2lyLo+fSvNmiqmJSZqq8/8p0O1k5kxEtGq47i3SRYwNfWxeQ7XucwQGGaRJa
-         OdYKW+dSsRI2VEoINVajc9e3nTdeFeIzqvsvKIbTcS+zaL2GD0DHG34JMoLFLWFPdUEc
-         W5C4UCOuuuEPrTmVdnB3L2x/2doNFfiavSogRTgOWZ7Q0X4MmgGNBn1A45xjkBnvcyOD
-         z/2a8jQEcXlGFNqpojhRA0pEYDBYsSY19qeXgQ6EEXp0dxE33A9eoEzP37thzk5udfpg
-         8qPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWj8keX8zaWz+MQZv+4ygby3FyJY5JWaveMI4NxY+hW/SDMYk0XD1/TXq1YjOuqsNa4lvlEVJRqSg==@kvack.org
-X-Gm-Message-State: AOJu0Yy81mFA4Th4mZ6wE2pk5HxeQOZPiPELmpbFHyFNs5EmLb1j7Ntd
-	2T0e+zep3wDs82LCEMR0Z/bZXsOQP0lg+932H+5dO6hNzS1eRiMst3grVJkoqPe+flI=
-X-Gm-Gg: ASbGnct+w1xgjwZqmWscnDiHXXL8VEZ8+31NqCAlav6XqWzKJKR76AlRW5LjbpTq2+0
-	rWot2mte0Du+2uutBS+3nQ6wGonDMZTQ8V8I0L4ST1G9T+xS46VtbaCn28rJ8wL0lUu+Is92W3r
-	qpxY4ZEBysQl8nmrzGElam3p2CmFqSTWvkRRQTPOCmITXeZL4tcAWSR2DQ6FhoF09d+CwpHW4GZ
-	OGluS8ovKFHGRY3DF00jFKX7iAif+Dn3DjhPmnVNlzNVStAudZuBhYm/54u5f551U30lzq+qleB
-	mueH2qdYshOKfogBf9FaMFdCYPZAB7E5xDQIH7DtbAhGP47RWM9ZXp46fvatouTcvKNtXU2NTIk
-	DKWHWxNuyg249hY29IxJDhmR/50o5bj6IAHlC+a8iKeSUZdEhmiVGDvsGre8hG8DuaiNTXN5pRH
-	O7qwBRpf5UG/A5AKX+q9+qMTXQd0W7YF6Kc04S4ewIWRYiwA/WZ8M=
-X-Google-Smtp-Source: AGHT+IFUIIz9u3gROHoyBrX9GrfKv6A6QBpIppZbYxVF4pPYqH4Q7yX35XtiJX79fRgqZ/TJvN1KGA==
-X-Received: by 2002:a17:902:d4c4:b0:25b:f1f3:815f with SMTP id d9443c01a7336-290cb65f80emr187540085ad.58.1761000394302;
-        Mon, 20 Oct 2025 15:46:34 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d594esm90846765ad.72.2025.10.20.15.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 15:46:33 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1vAye6-0000000HVzd-2eTg;
-	Tue, 21 Oct 2025 09:46:30 +1100
-Date: Tue, 21 Oct 2025 09:46:30 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu,
-	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
-	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
-	clm@meta.com, amir73il@gmail.com, axboe@kernel.dk, hch@lst.de,
-	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
-	wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Message-ID: <aPa7xozr7YbZX0W4@dread.disaster.area>
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
- <20251014120845.2361-1-kundan.kumar@samsung.com>
+	bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
+	b=cWwr2jIA4stWMAWQgnLBlaRZP2W8IxMwF7XQqhmcShOkSGSx+zkMIBgjWE8L+Tp7nCWC7K
+	Cxd80oUSlvihRmHPhhhmTgDcLSuFWdjlWj3xMWExlDKCYwvmaZPoLBlKqzNz1OclEwajXe
+	trzA5aHZ1/DA/vY2zubVmVjqc3IIyOw=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lu8NK64Y;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761001339; a=rsa-sha256;
+	cv=pass;
+	b=jjiLE/RkgCmjhwkpGMzi2c9/5zUr2FEM81xcTtWilHQ9EJUgqyws3Jz04fe04jnQhlnRJM
+	eCFbry1JHvpf2XQZKqdyq3RyzfhMS4V3QzBa4H5FF7Q29ast2CF4/WKDgHvKDVoMPA3LcJ
+	v/DSrc9ICaWki+YBt76ODLn9BKGjyiA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JEzLRCfHeZ7qAXZ2ynbFwfgVKRmF0zbbjoGJhTpnfmZAx97KF0ar0dFx8/Z6rtPS8oLAOd8JWme/c8GQOQfp+QCyTByhRUKH5+s+3RdKvFfgjZ30x4zbpFkWVcZh016Gjbpg73twIrlx6ioJ4h9nBLarlXnlPCW1gazBVREDofpSfeU0kZsVhn7b/uBRKYNwiS6CczojH3nVtD7xS9ecimAx07ymuoxFBCKgIgToXodfjIjmVwR+ABYsA7Q2yD6+63/4ko7kvZAwCZ3Gcj418t4/IkvgF6QQpn62o/R5WECrZC/vw0JA31rinIe7ouM5Y6hxks7ERRsL3xpTqbxzAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
+ b=B8pkWHNsqKbNzV/LhO4px4MUMBs9g37Yz6lPlGGc5ODZ7XC4u06Kurd1qN/lXcHONO5HXh1ZZpk2h3iqoZ/l2w8hd+NCYM5tj7GY4hXb45y9sFoc11CinE6MIZDIhWT7JR6R3ygWYZhMmFsp0Gf0LQiL/wqVJ6xhO4TzF6RBAPAx6Q4GZ0DfY8RIISbQ7X54V54IgqmLtkPOfRCGAtsyIZc9WAEOeSeNG3ANx83tAvwVV8qfqqGI3C62gMmExweje6cUcaVtq5AVablBNHNqxhTd43mlxsz8JZdiUCuS/TiJg8+CvBL5/cwEdjEUAb6v3IxA374yGccZWvjOm5s4AA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
+ b=lu8NK64YNXo/zJ+mv/fx7baPkeoAHHdnw3JM5yOFNtxx7A2Q6AzZdLAuIngNQZKrnsEWolkrx3vHiInZRu19Pnw1yw67boMywEg0bK6EN+P/Tzn22rCB3uLV2XA3maFJWQLkyFqP25IaSy5PjhEazvTk9w1ds599L3+qRhOirby5xlwLGpD5LtEpnwXGcmE9uy82I6ImjAGBAnlosPiJPAsp2jHi2EKpWmaus2rR+EGfsdPsYAf41MitYl3EcwY6dDGNrEh7fNVlF9qyqRjH/tvYGB+ZL4nACLPfuQE641Sh51bowmfs9vumsUAa71ADGfDTzaL10LLoWDWFNMXXIQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DM4PR12MB6568.namprd12.prod.outlook.com (2603:10b6:8:8f::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.16; Mon, 20 Oct 2025 23:02:16 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 23:02:16 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ David Hildenbrand <david@redhat.com>
+Subject: Re: [RFC PATCH v2] page_alloc: allow migration of smaller hugepages
+ during contig_alloc.
+Date: Mon, 20 Oct 2025 19:02:14 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <8A6112F2-794C-4076-A6DB-F68FACCAAE93@nvidia.com>
+In-Reply-To: <20251020210816.1089910-1-gourry@gourry.net>
+References: <20251020210816.1089910-1-gourry@gourry.net>
+Content-Type: text/plain
+X-ClientProxiedBy: BN1PR12CA0009.namprd12.prod.outlook.com
+ (2603:10b6:408:e1::14) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014120845.2361-1-kundan.kumar@samsung.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB6568:EE_
+X-MS-Office365-Filtering-Correlation-Id: f366fcda-6558-47a7-204e-08de102cb6a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Xh2r/XS4gfgz9q7FxTPFULN8bzjdH6FYI2PtueooyKDrWQqOTxeluJtvaJQW?=
+ =?us-ascii?Q?FMvAKXcGt3+/4WdGzPinmV0T/P3hh5p16A816An6x4SQ66mOSM0GlN9u/Cmm?=
+ =?us-ascii?Q?i0psnd+Ltxop8EDQLUK6QqKxuy3sbc0roRO2itfWfrl+8H4ltc70YvtSEBtz?=
+ =?us-ascii?Q?7sdnwkoR6lyZv4Mj6a0P8eZyC7gSmA8IJJwD85UhDxVc1/Hy3GW1clokeRle?=
+ =?us-ascii?Q?GMfScrWjNh324J59KO+cMlqeiB7LIFI6mqfSV8+EJjy233Xx4VJeTvUKdGle?=
+ =?us-ascii?Q?5jIIGR+w7qFQbOZScjbnefujUcAvLtOufS32n4W4sfwb0/NRhiAfl3UTC2qs?=
+ =?us-ascii?Q?2eDpobhz8ZYktGc/ge6LTDWSK+ARA6Q14exLfJ8Qn6BceraMd/7VbtPR6Fb0?=
+ =?us-ascii?Q?myHkZPgptVZVkQe1Gzwom73WTEKj5mw078gQjtToXP06nIJdg4XLCXzWrRNi?=
+ =?us-ascii?Q?zJSNNcMxBZDoTOesu1P8y13pN6gZBekA7Z21DIVtltrRgf6zy844VMr5EZAV?=
+ =?us-ascii?Q?EuuOQEKzJPq/cUhBFKCJAU12KqjpZ7dMVU/2bbr3/Hhmbu43U0ccS2rITNwq?=
+ =?us-ascii?Q?CyDqDvkIfewqSiITH8i8SkxOAzEKgqPwnrtdOmxqXQl9trH7byQYZat7lCEN?=
+ =?us-ascii?Q?EAvgCTUdB2jxEy41gvq0eNvgfCvs6VqU07JOUOMDfwSpTKR5RKUVHVdB6bxk?=
+ =?us-ascii?Q?N4sEYIggS5nWINxDal3DUY82+x4vqqPExBtCHSmflSPTF8dUZztLVOe8vMxN?=
+ =?us-ascii?Q?lrxav1e8fUUOtvglN4SEE2J5WgXE9LYMf12f8zoQfe0muzOxyBszir2S+saP?=
+ =?us-ascii?Q?ht7v+h5HjrmwPsFcaWyfwkNxUngNh11Oryyp93Sy7Oet3igeHeHKoRgbFqNE?=
+ =?us-ascii?Q?osXTBgoSnLFvSFB+GYbfbXjReBwvWvWo2LFNa6Wa3VYpsxBT3uJqc4aTu6lV?=
+ =?us-ascii?Q?539o/JY0nxSnn8BGTIsXfFSHpDjX/xLJWA9jUgxV2E8kTuUvPx9+n+DUmO0B?=
+ =?us-ascii?Q?eXt4i+FBiLIaX+rYvylfnmfMjqpruHku8cDkmzT0GdMj+SbEWglG0g1WMSls?=
+ =?us-ascii?Q?3ClSNfnt2Px01deUij30IaWcKSQyVgoorBD26Guew/SzKou6TjKQteAskXMU?=
+ =?us-ascii?Q?uehF/dHSrmM4CbuSs1A02NRUU+JnswN3BFwNlN1DNLZXp2SZyD6fuPPaVuQC?=
+ =?us-ascii?Q?c2qMRDmNsbpRKf8G24qN4PDx4kR/dFJ4cyS4NmZbZN7nymnoKbZqHMZwVGZK?=
+ =?us-ascii?Q?DBnNM8G5sN23c+JaeKWSZiJ37FrZfbJMvuqgjdgBpCHWlzMTXflSCISQT/iT?=
+ =?us-ascii?Q?kQNLRBwSoW7NrHAicmFcie6mKpGhRP+/ytQto+RBe/fRYi8y5ehUrBUmLqO1?=
+ =?us-ascii?Q?pXithx961DdrrrzGXzusgUJtafm80FkFolfgvQaGrRWbW7/gZsIW8EwsD65X?=
+ =?us-ascii?Q?3de6HPdchQJ9XVeDIXkvry8hDSga1u8G?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gPg9nCCuzZtmD6SSE3v2hxwv20V3Q2jSX4kYDE91GgWyK7X3JQ6cZj0LNnku?=
+ =?us-ascii?Q?Ph0NLwb9DdOYbEfJkaXb4QT6KRBojJMRGNVpzjiF3ceZAxl/G/4rP0Zo9Uop?=
+ =?us-ascii?Q?1LelX8uGvcEYGrtPZo71ELT5K1fMq2DVwus843kfo9P/10FtUgMESMq2iZ1l?=
+ =?us-ascii?Q?9w047sltcd4MklZsLCup+eJqLTxVMb6iMySoOLu09to+PfKFNeVT/BjpxSgT?=
+ =?us-ascii?Q?KUPr2UFqit2V7s16lv3rQ/LHi19I4GV4xgemV4gdQjLRc+7dp8O8reBubdkZ?=
+ =?us-ascii?Q?uDc9XdR7R5UPK8uhCS90mOlBNwoVX3ud8QLDRfrOsbPZoWE6gBReT4bTi83J?=
+ =?us-ascii?Q?e7LEJNZ643YE8HD+SwvtWFBPPX3XWiT+TK/Wd/ftSLUUSg24cG8fyPfRS3KD?=
+ =?us-ascii?Q?XujOSRTeKLmFNSa55QtjOcgH1B8XFkmNFBIQ6HQn+NkDmcbZS1fMfXKQBtg4?=
+ =?us-ascii?Q?NtJ+OfN4JOdw6E2w/qsIRN+eU454GhoeD5xR8zyWkUoT/na+LljJN2UVBv7h?=
+ =?us-ascii?Q?kklcRv8Ytr1yv8jJ8r0gBa7Mg9qpOfizGpc2UbTWxEdc36KFiDbhVhOzXG3f?=
+ =?us-ascii?Q?bLM4tCP3P7x/DegkqaOXCtOCtnrkcB/EkNK4Av74NB5oH+/BwbL3ZtBVqL8l?=
+ =?us-ascii?Q?GVA1zFFFTkuneK56MLlQB/VJLb57a0JgYCIlLFiO/ZCIfwmTQ2blfelLBhBH?=
+ =?us-ascii?Q?1X/XT5AV3G7QBdEmGc4mF+BviIfzSPhsVFakxbejK46Eqw9lVVbiqe6LOm7L?=
+ =?us-ascii?Q?VcGQTdDZ3GwjPsYtCRL5NJR2IrJMml0qwwPuf40sVbpT2EhHu/GNrJtQ+A5g?=
+ =?us-ascii?Q?ZSDh3IdO7439XviiBUm5uFdc9Kp8wKREJo7088hWqtXOjH2Cg2X3BGrRP3RH?=
+ =?us-ascii?Q?G2zybU9+yA1vlBXvZaEBiNjnj8w8LSAaizrCC8fzu6N6xeoj2/TCzRzDAIFU?=
+ =?us-ascii?Q?e5oGta51oyhruN3GeSplYZ2/4zACkBu9+QVYS6gBwO2vYBfBs7CKPbBO8Bqo?=
+ =?us-ascii?Q?esRJceMTpOfylHE7hRZtWxlWBtMvWfzlwJAT26Yp6+EXqRPaanjgykQpnYUw?=
+ =?us-ascii?Q?h9yN+NbWJigiKmO92WqQZjJGPHb4KQjlf8j1P8+h3UkvD1TZE9IK8PrrCSp0?=
+ =?us-ascii?Q?TfaQN6wBkjmAaGXUjurM9i4r8zQf5FnvgaymrB6WCCAWJsbO1F5DBTJkncXq?=
+ =?us-ascii?Q?AWcjIh32bCUrTYNuAAAuQVFp2lsopZNrpNrb/GQxkm/lxkjvk1Yk6rG6PZvb?=
+ =?us-ascii?Q?oRlu5/7jy9bcgZwP6G7ajxuXS0YCcrC8TzM1netjOWzFJCvzuPmkSTnlh6oV?=
+ =?us-ascii?Q?OTXj9xqwmYzyw4O7AoW7dMVxnSgmQMJZN5S/lSzVBZ1RxR2bagdSkd3/6OfK?=
+ =?us-ascii?Q?nnzU2qVrG6lW0jMTd7h5k0/t5ZczNlUVfovOGMFSTw6qCa2/VcAsH+sdnASp?=
+ =?us-ascii?Q?yi6Wgh8vx9MVXr8wRwpFCAHYV0YZcUP2NB10Dn/TDeRDLYxKzlKfsWCyp1hG?=
+ =?us-ascii?Q?JXqAt3D35LDSR4F5PV7GLG44Yo12E624PpKzMWLasoLKSmOKSr6/IOpxhqZ+?=
+ =?us-ascii?Q?2s7CJM4Kn/63Q7pwgqC35Tu6eS5snh/o3+/Ds9XI?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f366fcda-6558-47a7-204e-08de102cb6a4
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 23:02:16.3639
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: udkOciQN8rX30WzBQwRoqpNQlj50/FbzYiggZH4Y61Qwe5JIxtfGlzA3wD9vlzV5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6568
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 600D74000E
+X-Stat-Signature: uuqokx58t7dgjr4g1x9b34dtb6zzenoq
 X-Rspam-User: 
-X-Stat-Signature: imry3ghequp6m457jyasd9dnm44g8574
-X-Rspamd-Queue-Id: B3A0F8000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761000395-789919
-X-HE-Meta: U2FsdGVkX18sGwgWB1FN1TMrKjBmamKqw1mDFlW5UxQBGU9dMmuajL27RBRLu8yvGMOdX/nRWFDbXSrex3igBRPzNL5cyX87I5Kg/w3r8HVAQUE25jtmDPxnu31Q2u5iNHlLu4jrNlqyYAinbddterIyKKvz4qFxqEhSrYUgfgFmEbVw22iOYX4x30jpgrghB2I4cbLDuwaUly+x7LBgAvuOxXCbt8rV81c9p7ycaC9o3NEm36xhF8ubUKhv6vN/5D1Zk4xIcRkmlrQ3YCRFhJQZqBkpgZjrcjpHaByU4c0L241qMRAj2S7BGtypKZWqKKaM+4aAL3pELLF5S2/1Xo66CWwydHM7pCKuq0DxqPFMU351SvpXysq2cmCiYvNPOoPDfFC523JINj5weNSwJi/PFv6ayFWRQsEU1s2+a9ZVDcSndrbUtkue6KMcfX1pZfcGk0h/SErOTGfXCn7AHu+eRFjTu8Fhx0KOMpd55ahT0m06Y+63hhRiggi4GyPF4I6dDx62BQrLSOHUR4ZtYGQTXzrUnuG/keDrMINEuV33f6faFsmWyai+m3znL8fzCnZE2ra9hA4CHy4owz7CL+MvmLx21RdYK6APpK0KgPcV3UYrmle15WVqIm4htNej0w+/EcTiXDkxHPjSptC47nXUvHI3HnGgbC92YQnNxojECSmihRQe7DOZwyOuw1qdr2aNpKyRqVCQL/yUFpK/8lHoD7nB6VzAuBWZdVu0oM+LBwVzQcvsdZ9DOd9mXx2LGDsfGTI5Hp/oJ1SIrlqvmafZoekTWIzf3J0Nz4z+WlVBhmNVYIXpr0t8fZq5MquebNmkuLqZl+URHFSjCLWy5DAKf8iorhRu6WRxxK7+twqmEqd5TPK8IXpp3jOsKR4nPuo6BLtdQ3a7Q/3LvDHQ4saJ6Bf8TAeqysiqpQwbt3fYdZ1+jiEJPoeNoAKS9qz8nlDNdEeDFqxhqcxk/TP
- oJGNC0AO
- y8Lg8VV1H+r6eDyR2aGZXgnxUK+UjFscBkDdM2Lm8vI65Y5X6k32ycjo863Twk5Dd7Mki57wkZIbovETAjpmUnkS7l8rk2nAdvV8yjdeE2rfZSbYcoYJ7F9qOZV4njBKU3z+DrBg01UkEaJuOJNdA1w+jNfgRcQ/hVcJDDdc8nPK2CB4420/2jx+QJbv6xlj5sNDrf79eJ7j0fC8sS9IMUGi7jEg25j0re2Cpnj1fZ5k4NyqcpAkKWh9Nx7N9QGZj4NhQYSTQu1l5h7BOugrOjifOzZrO9LqxjMh+35A195EP3AImLXCpw/JpEqrTTOMc+wnEIJ3G/VW23aeekUG988yHw6DbtP/TAh4Dr3O7lCEiNhywU2G6Nq/dEgy3WLZ2wMKc5uVUrLYVeUi8eeAnbJsplffLt0QkrLbI825lE8Tf0ouasql/i9G8xZOsh7XYef7Vw6S0pa3BUsQVFf4iHD+quAsgZO6kDBuQIyavGVdERCm3xJ+sS9F4TEWBvWia6d13RkGKumIGHkoTzs80PZtQbg==
+X-HE-Tag: 1761001339-23216
+X-HE-Meta: U2FsdGVkX1/7WUZOclb7Gx5H/TvwXrhzQTGhtLr/t8H3p4RNOJj7oQWhYxN5cHLgXe67QLH51sOeLeg2s65Vc6lxVf/vEPPCeHgCGLzqkCnkEK+q3EpiB65XaQDLeRCSH3KuGif4VidNe+F5lxj2rnHogKBZobTl2ee6Ju+1JK3KP4IVMrhUEaNjSj1HOSXPY4oqFSiXjn19KFde/mJ7D0AnRuPRkxskHc22Sx8mYPyIrzvCQJu/JtO0S8YuzLAjSo5xiXrENA7mGq4cFpoDNN/RcTPRyl3dYQhjBF/ZuFSkjxPsh0T9CPHzXQDOyojt5le3Jl09wefjsiJcXYQu8HzOelgFbtSlWayUxvtPhqSvzqWnvArNTPuYGQT7G8RO+Uo+j3MtmScdsrSyOb5AXwawyxI5AiBMvLUTXAjm24uN94hsUQRb6YLb/UnsnFbdvShkskDU32MdJoBWxATkITp3mJ509DYhxCAKmnJj4OA1MmgiKcfqNm0+KyRTfHzmEUeZx2yCaMbWvJQyMT5EWFX1mmNz+BzHXdEUQJgr5zWMQUHG3fPE7IhkF1Q/uScRFSDDkgW00D2HMSW5Pi4+YSLdfgJqEKgi8cD/UvJ6Ze6LdEyRbtt17KhRgEKS9eADzhoaAHNzKnFwwDTbItnCqRbVGfTQHBEqKHXIbMCzq568MAYm1zFALfGd34cJk1JgEhILhbtB37hTVxal46Pf1RtUPl1+7IUf0fYGCrhPuLVk+iBqI6/zNOva+QGPq0ZGCc/2rZCLjqi2ewUqTol6jXy3xMT9xl0wG9SLHcSsiBGpd4+UXfoOpygj3wRRuF7LjgNZ1Q9Qd7/FzU8dvSoUVl+rcKmuO1UC/Xdq4gfs0XD2euJmOiatok7CeGZ4LttWK+4HjDhwSBhtWCMT2aCKrn/y5xWEZC218wgrQ2DhZZbi0Kn2NgbTqd7KaFrQCVMeUS1s4iTxGKUj+Rf+dvu
+ 2Oe7MWzE
+ qAVTTa0kc1XdAoYL1DnQV2TUWMp4iiB0f3IDPfT4y0YP+wsRR8yTxmdMFqsrtxWDYRf2YZFjDwLSgNgF9tGEcF2BArr08k0x+NfTBoSDg5LKLDbusSCYohxZplBnHBm04lw6LOfV42T6Tyb2xfhJPs4id75f/PbJo3A7an2DqqkmcJMUWartbH1TOTMeH79hpPsTX7ZJ8grXiGWytaGrthajYUu/Kw/jZA9L6aeJxJrDZ3MEyOyMZ8lwZSvDG3ePK7jmsUvhJipkeUlIVYoVF45TZEiJ+W3xYbRh3weSOEOp0g5rNWwkqZhXCFmZNxEgybSefKyMHsvcSpLlLo/FgDWHgDjEw/N32NppMlZK7iK3YKmM5HYziMdn5yyX6n4Y8RuoyEudn99dGw6C01lDCIpzRUp02AIn2CJX1vTGg0s7NwNWz0OfbGoj4dOJNCSRkmMBWt54l1FbpbjQ62hqQ3KbeGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,174 +182,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 14, 2025 at 05:38:29PM +0530, Kundan Kumar wrote:
-> Number of writeback contexts
-> ============================
-> We've implemented two interfaces to manage the number of writeback
-> contexts:
-> 1) Sysfs Interface: As suggested by Christoph, we've added a sysfs
->    interface to allow users to adjust the number of writeback contexts
->    dynamically.
-> 2) Filesystem Superblock Interface: We've also introduced a filesystem
->    superblock interface to retrieve the filesystem-specific number of
->    writeback contexts. For XFS, this count is set equal to the
->    allocation group count. When mounting a filesystem, we automatically
->    increase the number of writeback threads to match this count.
+On 20 Oct 2025, at 17:08, Gregory Price wrote:
 
-This is dangerous. What happens when we mount a filesystem with
-millions of AGs?
+> We presently skip regions with hugepages entirely when trying to do
+> contiguous page allocation.  Instead, if hugepage migration is enabled,
+> consider regions with hugepages smaller than the requested allocation.
+>
+> Compaction `isolate_migrate_pages_block()` already expects requests
+> with hugepages to originate from alloc_contig, and hugetlb code also
+> does a migratable check when isolating in `folio_isolate_hugetlb()`.
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  mm/page_alloc.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+>
+LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-
-> Resolving the Issue with Multiple Writebacks
-> ============================================
-> For XFS, affining inodes to writeback threads resulted in a decline
-> in IOPS for certain devices. The issue was caused by AG lock contention
-> in xfs_end_io, where multiple writeback threads competed for the same
-> AG lock.
-> To address this, we now affine writeback threads to the allocation
-> group, resolving the contention issue. In best case allocation happens
-> from the same AG where inode metadata resides, avoiding lock contention.
-
-Not necessarily. The allocator can (and will) select different AGs
-for an inode as the file grows and the AGs run low on space. Once
-they select a different AG for an inode, they don't tend to return
-to the original AG because allocation targets are based on
-contiguous allocation w.r.t. existing adjacent extents, not the AG
-the inode is located in.
-
-Indeed, if a user selects the inode32 mount option, there is
-absolutely no relationship between the AG the inode is located in
-and the AG it's data extents are allocated in. In these cases,
-using the inode resident AG is guaranteed to end up with a random
-mix of target AGs for the inodes queued in that AG.  Worse yet,
-there may only be one AG that can have inodes allocated in it, so
-all the writeback contexts for the other hundreds of AGs in the
-filesystem go completely unused...
-
-> Similar IOPS decline was observed with other filesystems under different
-> workloads. To avoid similar issues, we have decided to limit
-> parallelism to XFS only. Other filesystems can introduce parallelism
-> and distribute inodes as per their geometry.
-
-I suspect that the issues with XFS lock contention are related to
-the fragmentation behaviour observed (see below) massively
-increasing the frequency of allocation work for a given amount of
-data being written rather than increasing writeback concurrency...
-
-> 
-> IOPS and throughput
-> ===================
-> With the affinity to allocation group we see significant improvement in
-> XFS when we write to multiple files in different directories(AGs).
-> 
-> Performance gains:
->   A) Workload 12 files each of 1G in 12 directories(AGs) - numjobs = 12
->     - NVMe device BM1743 SSD
-
-So, 80-100k random 4kB write IOPS, ~2GB/s write bandwidth.
-
->         Base XFS                : 243 MiB/s
->         Parallel Writeback XFS  : 759 MiB/s  (+212%)
-
-As such, the baseline result doesn't feel right - it doesn't match
-my experience with concurrent sequential buffered write workloads on
-SSDs. My expectation is that they'd get close to device bandwidth or
-run out of copy-in CPU at somewhere over 3GB/s.
-
-So what are you actually doing to get these numbers? What is the
-benchmark (CLI and conf files details, please!), what is the
-mkfs.xfs output, and how many CPUs/RAM do you have on the machines
-you are testing?  i.e. please document them sufficiently so that
-other people can verify your results.
-
-Also, what is the raw device performance and how close to that are
-we getting through the filesystem?
-
->     - NVMe device PM9A3 SSD
-
-130-180k random 4kB write IOPS, ~4GB/s write bandwidth. So roughly
-double the physical throughput of the BM1743, and ....
-
->         Base XFS                : 368 MiB/s
->         Parallel Writeback XFS  : 1634 MiB/s  (+344%)
-
-.... it gets roughly double the physical throughput of the BM1743.
-
-This doesn't feel like a writeback concurrency limited workload -
-this feels more like a device IOPS and IO depth limited workload.
-
->   B) Workload 6 files each of 20G in 6 directories(AGs)  - numjobs = 6
->     - NVMe device BM1743 SSD
->         Base XFS                : 305 MiB/s
->         Parallel Writeback XFS  : 706 MiB/s  (+131%)
-> 
->     - NVMe device PM9A3 SSD
->         Base XFS                : 315 MiB/s
->         Parallel Writeback XFS  : 990 MiB/s  (+214%)
-> 
-> Filesystem fragmentation
-> ========================
-> We also see that there is no increase in filesystem fragmentation
-> Number of extents per file:
-
-Are these from running the workload on a freshly made (i.e. just run
-mkfs.xfs, mount and run benchmark) filesystem, or do you reuse the
-same fs for all tests?
-
->   A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
->         Base XFS                : 17
->         Parallel Writeback XFS  : 17
-
-Yup, this implies a sequential write workload....
-
->   B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
->         Base XFS                : 166593
->         Parallel Writeback XFS  : 161554
-
-which implies 144 files, and so over 1000 extents per file. Which
-means about 1MB per extent and is way, way worse than it should be
-for sequential write workloads.
-
-> 
->   C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
->         Base XFS                : 3173716
->         Parallel Writeback XFS  : 3364984
-
-36 files, 720GB and 3.3m extents, which is about 100k extents per
-file for an average extent size of 200kB. That would explain why it
-performed roughly the same on both devices - they both have similar
-random 128kB write IO performance...
-
-But that fragmentation pattern is bad and shouldn't be occurring fro
-sequential writes. Speculative EOF preallocation should be almost
-entirely preventing this sort of fragmentation for concurrent
-sequential write IO and so we should be seeing extent sizes of at
-least hundreds of MBs for these file sizes.
-
-i.e. this feels to me like you test is triggering some underlying
-delayed allocation defeat mechanism that is causing physical
-writeback IO sizes to collapse. This turns what should be a
-bandwitdh limited workload running at full device bandwidth into an
-IOPS and IO depth limited workload.
-
-In adding writeback concurrency to this situation, it enables
-writeback to drive deeper IO queues and so extract more small IO
-performance from the device, thereby showing better performance for
-the wrokload. The issue is that baseline writeback performance is
-way below where I think it should be for the given IO workload (IIUC
-the workload being run, hence questions about benchmarks, filesystem
-configs and test hardware).
-
-Hence while I certainly agree that writeback concurrency is
-definitely needed, I think that the results you are getting here are
-a result of some other issue that writeback concurrency is
-mitigating. The underlying fragmentation issue needs to be
-understood (and probably solved) before we can draw any conclusions
-about the performance gains that concurrent writeback actually
-provides on these workloads and devices...
-
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+--
+Best Regards,
+Yan, Zi
 
