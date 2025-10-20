@@ -4,84 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB31CCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 10:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ECA6CCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 10:03:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4E0B8E0014; Mon, 20 Oct 2025 06:00:48 -0400 (EDT)
+	id 8BB978E0014; Mon, 20 Oct 2025 06:03:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25C68E0002; Mon, 20 Oct 2025 06:00:48 -0400 (EDT)
+	id 893578E0002; Mon, 20 Oct 2025 06:03:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3B458E0014; Mon, 20 Oct 2025 06:00:48 -0400 (EDT)
+	id 7CFC08E0014; Mon, 20 Oct 2025 06:03:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 903348E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:00:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4316D1DB012
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:00:48 +0000 (UTC)
-X-FDA: 84018048576.23.DA916BB
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AFB50C0006
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:00:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=g5ssFmka
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0148E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:03:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E75D01607A9
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:03:12 +0000 (UTC)
+X-FDA: 84018054624.30.AB7CFDB
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3EC94140007
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:03:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="v9m/FCtF";
+	spf=pass (imf23.hostedemail.com: domain of 33gj2aAgKCBc6xFBA95H3BB381.zB985AHK-997Ixz7.BE3@flex--jasonmiu.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=33gj2aAgKCBc6xFBA95H3BB381.zB985AHK-997Ixz7.BE3@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760954446;
+	s=arc-20220608; t=1760954591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=6vPGsipqewFH0An8fbqPgnRT3TdYk8QOTnwKOAIuU2w=;
-	b=6tKk60DCJFnIA/5zOhuyC7enud86K0mcSRLbv2kfkLHwX03fu4ImA8+R4eu9noqKMNlXSq
-	jJ8SAKYq9l7+Eke1ABwgzkfnMoLlvIYCFYBiI2zYIzdUUiqoux4VsVSjPonsq8LLeMNChk
-	QNz8/cmPUjhh8EgACpvkm+kL69f7Bx0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760954446; a=rsa-sha256;
-	cv=none;
-	b=0tLZSiaTrASOCSq89aWlkcOTnDuAA38xiP1c1SUehS/ZuUb3PPZ1VrhZogaVVNdPRDGlX5
-	T/HHsjrHnr+N4IQ0tg8qfPNXGfkc6UFQON/b8Ef9WMKIdtYcjSQVTRXQTPGSSKX/Id6VPG
-	bzuXQrLH7TR4cyrchfdcqVnMJ2YXGRk=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3zkkb3/hxx2ZrEmxAOPFPinoGf8SbvbCWVFeKCtPhzY=;
+	b=Ej9TMxKrsJiNDgs3VqRqRKNb2RH9D/4QLCdrxG5lD/au087iwR5L2oYNLyNeZo30Qb3yV2
+	vhxNTfKqVRetqZb0awfFa1/M/3PXHDzrMrqqZvgscsPmGJaxIY9adFlWktmmtc0lwNx2bH
+	b3t5Pd3AlJk/RvigjbTNi8CxsnTm1hQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=g5ssFmka;
-	dmarc=none;
-	spf=none (imf28.hostedemail.com: domain of BATV+17a2c00bf4ec3f455068+8093+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+17a2c00bf4ec3f455068+8093+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:References;
-	bh=6vPGsipqewFH0An8fbqPgnRT3TdYk8QOTnwKOAIuU2w=; b=g5ssFmkaJ1VQXeJw/jurNQB9hF
-	NmA72962DCoxCCFbk7cJHkSN8364lgsT3N+hE1YOCM+UQHysCTs3oy4M1RY7HpT3xQJW4TirD3v5j
-	Ckd46sg/3xxBJ9rFAyf2HU9/ZWQE+gIxn3T6D37gJstgLfXXoDeWidqtaV5FHFnMNGqhMwNJPkOR0
-	pXaEAeAnzwmswGB68QSou16iHjnLFBmv0zc1gHclJ7I0p2JfQUM/8CWlgx09HNHHZplH5O+J7EJ7G
-	ou/fQrD3j5eVqwZnxeVLfJS4tY3FJ7mCT6HsOEAPC6NRuwa70CTC9O9RIIM5wepN7xypSWGoy4NSe
-	6DFBFEyA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAmh1-0000000ChTZ-0C3R;
-	Mon, 20 Oct 2025 10:00:43 +0000
-Date: Mon, 20 Oct 2025 03:00:43 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, djwong@kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	martin.petersen@oracle.com, jack@suse.com
-Subject: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
- trust the bio from direct IO
-Message-ID: <aPYIS5rDfXhNNDHP@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam01
-X-Stat-Signature: adjhuuya65ts4if4oja1gz3f5gkkkong
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="v9m/FCtF";
+	spf=pass (imf23.hostedemail.com: domain of 33gj2aAgKCBc6xFBA95H3BB381.zB985AHK-997Ixz7.BE3@flex--jasonmiu.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=33gj2aAgKCBc6xFBA95H3BB381.zB985AHK-997Ixz7.BE3@flex--jasonmiu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760954591; a=rsa-sha256;
+	cv=none;
+	b=utjZL+Ik0gsSxM2u1p3pb5ievSEeMTG+9ruQhAUOMIu3RND8sQQ/ipYL0vSeAhqvrZuXM4
+	MYz6BIgCYRSpD+G0WGKeFyz1TG/kTYMBD3ccbe5wkgL/drpQqTaVSdo4oCiBKv0WWe6YA1
+	NbpXcnHVdxJOImdRwLr1b9YjbB/zGQw=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33be4db19cfso6486422a91.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:03:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760954590; x=1761559390; darn=kvack.org;
+        h=to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3zkkb3/hxx2ZrEmxAOPFPinoGf8SbvbCWVFeKCtPhzY=;
+        b=v9m/FCtFr3oaQawkTgPZc4tHcA4iCLVsVH7rlxd66h6m+Ka/yAvct9VMj9uolehEqb
+         rdnd+QOu/0ZzlHYIdv3llQC7kwY6kywLop/+ESGCrgVwxNjVnSBFTAMT6Ek2wWAUEQ3j
+         BEUwS7YIa/ChBR+cy4mMtCMuNWxHt+3GJ4Ghh+KdG+eXmsOtxRN/GC9loCQ31Uy6TT/v
+         IfWRtxjkNtmq8S9vY/Wudl0VFZ3fRZamA2YVfJzyH52UnOM++/lhkoq5uf+ocaZUKrsW
+         KVVT48Dsxj+hj4q+TvVYQVSUtfUTyIssoZjSSUO0h7vQdzvT+Ied+t9WiWNj1q8AeTya
+         zZqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760954590; x=1761559390;
+        h=to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3zkkb3/hxx2ZrEmxAOPFPinoGf8SbvbCWVFeKCtPhzY=;
+        b=l38EAmbeurrvUncjQMa4XZ06S1ICVdzg0rAzxZkmB1CdDRsSUKBTWLs11fvAnPM6E/
+         B96tZrbY/KfXEE5h4ZEoNkjs4uQoTSIDD6RkS0exRZ4ReEl5m7dalefzRieRfhZVeLYd
+         K2XHCsbg0o4WumNIEwCm8EKmh1pSZGUM5K3URSCaDqKpFfGfrgkTKgt5Jt6Pce7a3WeS
+         198uvDWkdE0MdmGcDnYIp4vu1BW07j05GZicNsuH/PcLKBGjRfm+uh6zw4z1ugA6n/GS
+         FKqYco3kjUnJ1bteclZak8kVmJD1cPbzENmHXPr9EBH6P4lrdIyPo3wksU7PPic7CocB
+         zKFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQqMNKcw3xSDZZ2Api42H+ZzzdTSduJkVubdjtUcZLh5EKhLwniNzgDgrN1LKV88vUHRFy0+2cuQ==@kvack.org
+X-Gm-Message-State: AOJu0YxXLp+QCYjdMaap0OjMSlVfbr6C020jt7FZLdK6V/jLe5mnVg0U
+	vMdMEFy7gh8FmQ6xrIWeXhXnKNbA4Xi1R2PxdoqqZ6x654AiqTF5ocQXOom9RJFRqHAERdlZmNh
+	EXww689B8PFedtg==
+X-Google-Smtp-Source: AGHT+IE39JYyDP7tyke6Ks7t0xTJvAaz4ioHAVUQMd14F2ylAQznE4GvniXnCX4D+Lio6mB0thI0FwjEvWtddA==
+X-Received: from pjtk2.prod.google.com ([2002:a17:90a:c502:b0:327:7035:d848])
+ (user=jasonmiu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:270a:b0:33b:ae47:fe72 with SMTP id 98e67ed59e1d1-33bceb1cf3cmr15607754a91.0.1760954590010;
+ Mon, 20 Oct 2025 03:03:10 -0700 (PDT)
+Date: Mon, 20 Oct 2025 03:03:03 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
+Message-ID: <20251020100306.2709352-1-jasonmiu@google.com>
+Subject: [PATCH v2 0/3] Make KHO Stateless
+From: Jason Miu <jasonmiu@google.com>
+To: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
+	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Miu <jasonmiu@google.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ok3p7x9n9absn1bgrjqyoxat6aua9bjq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AFB50C0006
-X-HE-Tag: 1760954444-817120
-X-HE-Meta: U2FsdGVkX1+191Ad60VuWs8kM95PCT3LC2jCgjzDdBWeecg2ytqpB3YbdCrM2Y9g46NW/7NUVvLgXxezyiu6mQIgu8GR8ajUItITODzKJvCHSH2K6zONEftalqWE20YDeNQ64d/HLLs5LLua9qWfRpIRpzESFjlx8r7w1DdBMr5ETZR6czmoWgLck0ebLefR+cZbtYenGq/GdEx8rkRofTsIgQr/3g2egRq8TvVB6P2LMGRN740rv2K/dZnR63nMeMM4yx11i0GGmd7SgV8Z+cIEYMvSjMxYLqsAwHvZYR91ZMTPyvAzAkpkeBK4cMzJ3+L0KaM+5cFt8jWqAU+Gm0RfY1t09WxH7uOtO7/ygSpdvabUY02nCUYes6fStoKD1VsNjASe2qfEWgBBP9SfHA72Tc0doeYWwDxOJabxnduoURvAkqLEXsxNSt5c/p3xzcGv7xB+5AGpP/UakynFfsqyxLK0GUZ1VHReUCKr3yvZVyWvZCtDOo2kQ06aLt/817LRLKl/WtIJ76vcHgT9j7U3uG74maSsfRgQ1S4reumdNfIfzcrWtKOjW2LJiF8voHDTVVkcDxL8bh+KZvxYN91listLnHFkhjmwz33QKcRhAjVonZO4D07+FctNyV+T1J92sHl92TRYm0cUBmx6xZcSDmLsy9BOrRTWKY9t7dcH82UCko55+uPN96sEpsmqCCxRmylylzLqXI7Ddh9BQoZXTl4vDY/e0OOfeSHXXp+U7LpbPep8BEPfnv5oprHcW1XiodvwdL05ne3OeH1IdiCZm5cjp/p0OJzAqJSKZJNrM7FPfmosHYOGNfRce18IMNXI+UNKMkKsOdQKP7TUa7DlSmcrq0vF+mQoibBlI8M+tX1f03LdQ/mt/1oHXwW9rNSxcUthAUReAg6P+AnRIfV58DS9l4YLtYIB/aAYYANxcWiJou7MDu18kaVOKcyGC6R161Y8Vev9L1Bukne
- SgHX+TkR
- dCJVt5C9e55anNIo/DHRuBuATm3E81BwY9fQr+sol0TNN4meVi1fUwGLPxWAP+LyTrIBdsQoVTyhCTjaKgzsbET5RBFWbP28UHTVB5oNpqoKLdfF6+KdP5RPgwJfDkC0p00nuXfPhmUGdwO9r53PJ1xLEHZ0ag6oDwnTInan1HDftCxnFP0d2I2UesSnu/bNYXNdM4mH0Y5l4cfusx6PtIw3brKEJsS7QIZh0JQ2CphqTFNuAAIGQ3Rxvzgo88IE0EPNCVJqLCpUq+pJaBIuxQxh5yuHj9TFkB/pyHSTYwawnRxDKxTAQinLMWQUDiJSpsKTfoHH0h5lrM1PxMbAtF01ejtmdtLUw6bhOj2OV3JsHVF9tdK+uipmq/ppbq54NRgDf1j1yqgA59B2mYWc5tg9Zl8WhgnnBcJs6DeIEq6I65wtMv992dT4AD5Ofs8JZum7hZ3P2HaRIgH35Sag4UMTfr7ve1Ttjmf6q
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3EC94140007
+X-HE-Tag: 1760954591-161278
+X-HE-Meta: U2FsdGVkX1/yoCWT9wQotOOh5AMfBG2ryR6X/RXppSk97QR0PQB2FpzSpHrV/G5mjHWtKBNonUTS1E0gUYetmAyQMBxnPdRDy6pXgW+Q2dx9iUjnmO5XjTgUJbQLy+8wng/ALwM7cspaKXKsvKlmdeq01l81OnTqf2/YGA/XWgjKkd4+EqMmaWGtoZlhEN3PfsIFjNkDlaaxyQN3jOaHapXekxsfD0SnbgCitJAQY1gAoAiev1eR7uwKzl3UPic348QlyE+NPGTXxggYacc3L3O0JEG3+T4x+3Cw9SgsDzH2Xiek1YqHgl/OxtNLZoYvBuagJv4A+Cl8HpLiBCVvV7vExMQbiRjiMwrFQ44JNbJsBtv0gSDALHhk5aEwOjPY/l9KeAQtIQeWu+M+gUfYdooSW29KnPdqvPGJavo355hWdE7+hGEmTalWSGgmm87D+Sg2a7TtnTm92mf4lRY7Ewuvz6Yhr7KbguO6b76F9VE1Xt0bj2273hf/ZfKId9LA5NiN+Q9PpOHj8Yt4RZE9RiTLTEN9tT3vLdYJXG7o+gIu0hCES8H5OFESBAHVUNmWWVlDbL3R80W0V3QmND8edYvPkIBxgP8M0xRj8TN8T/9OBuGhpsm7SzFcIRhPEbeD+q9GMaOnYaROGdWRNFKSpeFOZdwFkyu1XL3ndhdzJmi6gLSJKKkAdpMyi+POQ7ezGiJ42ofy3hQXMLP6OPf53gWFURMwn0o1TuPaIIPByg3uT/6O/d99q3fiGpt82Rb/UViujKdO3LgXssZs+hAuhZGVolTVlTZfcpFRf9Kzr9OaFfku3Cr336atd8+G54MDEmwZuQPCwAoO2U8NYikFqTI49hMpFfOzGYInST4Q17ib7QNCqqJiYIt2f39OgObEF9o2lFFnK5AcStBz3v2bjRHcH9ywJP6yqXpRMc9CtLOirVfwl7jDjRGvK2Bz0wK35+KPoI9EFD2bRZmkY8R
+ H1fInWSs
+ T8xmw6hP4fPrjuhY9sRyQJ3x/SndZb/AXY1GqvJOv+qmOLhex0hKCMH/9ln92yVZ17CuXrDOaE01Hi/JtsOTV3a+vad8htX7Bn43QvgD4Y8+fvzDsSq5RBpByMfoEqqwO8+pxEsSlTFBcA8sbYebJNr1S+uFeul/97Z7D0y0OvmNOQnmYZlNvY241yi/G6835MJABsHAlBhON3hn7A26fOiFolOQt/nz8ciLM6Vxxs2vBuxJOciGoXXN5fbR+LARR3sxpUcRqA3o9HrjylxHO8j0lNrd6yBPaYzKY9kV0wk82NwtREx7kWxCEGkuTGEqFtENJl9TGv5zVAQcintF1bFuUIhoZ6p0FqMBWia6pjKwg+ER5vWnSBM0sAgZb79WJ3vTsd8EXXgKNUr4zcVuPyzBjxROioD3laktzWXtwX8lnQ3zcaVqrIQYYfwiFVqnJxSaIA1J/dkOzPjw+RBEYVrEhU7QZP1INI5Q5KjWPOPNwVe7bfkzzo6NBLTHA1efzD2AgLOTalsE49i3f5rneNzLqVzYZLzeA2ng6DzXoVijlS+WEGIDnctw6qobZUOK2CqB3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,61 +109,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 07:49:50PM +1030, Qu Wenruo wrote:
-> There is a bug report about that direct IO (and even concurrent buffered
-> IO) can lead to different contents of md-raid.
+This series transitions KHO from an xarray-based metadata tracking system
+with serialization to using a radix tree data structure that can be
+passed directly to the next kernel.
 
-What concurrent buffered I/O?
+The key motivations for this change are to:
+- Eliminate the need for data serialization before kexec.
+- Remove the former KHO state machine by deprecating the finalize
+  and abort states.
+- Pass preservation metadata more directly to the next kernel via the FDT.
 
-> It's exactly the situation we fixed for direct IO in commit 968f19c5b1b7
-> ("btrfs: always fallback to buffered write if the inode requires
-> checksum"), however we still leave a hole for nodatasum cases.
-> 
-> For nodatasum cases we still reuse the bio from direct IO, making it to
-> cause the same problem for RAID1*/5/6 profiles, and results
-> unreliable data contents read from disk, depending on the load balance.
-> 
-> Just do not trust any bio from direct IO, and never reuse those bios even
-> for nodatasum cases. Instead alloc our own bio with newly allocated
-> pages.
-> 
-> For direct read, submit that new bio, and at end io time copy the
-> contents to the dio bio.
-> For direct write, copy the contents from the dio bio, then submit the
-> new one.
+The new approach uses a radix tree to mark preserved pages. A page's
+physical address and its order are encoded into a single value. The tree
+is composed of multiple levels of page-sized tables, with leaf nodes
+being bitmap tables where each set bit represents a preserved page. The
+physical address of the radix tree's root is passed in the FDT, allowing
+the next kernel to reconstruct the preserved memory map.
 
-This basically reinvents IOCB_DONTCACHE I/O with duplicate code?
+The series includes the following changes:
 
-> Considering the zero-copy direct IO (and the fact XFS/EXT4 even allows
-> modifying the page cache when it's still under writeback) can lead to
-> raid mirror contents mismatch, the 23% performance drop should still be
-> acceptable, and bcachefs is already doing this bouncing behavior.
+1.  kho: Adopt KHO radix tree data structures: Replaces the xarray-based
+    tracker with the new radix tree implementation and removes the
+    serialization/finalization code, thereby eliminating the KHO finalize
+    and abort states.
+2.  memblock: Remove KHO notifier usage: Decouples the memblock subsystem
+    from the KHO notifier system, switching it to use direct KHO API calls
+    and adjusting KHO FDT completion timing. KHO selftest is also updated
+    along with the APIs change.
+3.  kho: Remove notifier system infrastructure: Removes the now-unused
+    notifier infrastructure from the KHO core.
 
-XFS (and EXT4 as well, but I've not tested it) wait for I/O to
-finish before allowing modifications when mapping_stable_writes returns
-true, i.e., when the block device sets BLK_FEAT_STABLE_WRITES, so that
-is fine.  Direct I/O is broken, and at least for XFS I have patches
-to force DONTCACHE instead of DIRECT I/O by default in that case, but
-allowing for an opt-out for known applications (e.g. file or storage
-servers).
+---
+Changes in v2:
+- The radix tree now uses 0-based level numbering (previously 1-based).
+- Added a new public API: `kho_remove_subtree()` for clients to remove an FDT subtree.
+- The output FDT is now protected by a mutex.
+- FDT properties have been moved to a new header: `include/linux/live_update/abi/kexec_handover.h`.
+- The KHO selftest has been updated.
 
-I'll need to rebase them, but I plan to send them out soon together
-with other T10 PI enabling patches.  Sorry, juggling a few too many
-things at the moment.
+---
+Jason Miu (3):
+  kho: Adopt KHO radix tree data structures
+  memblock: kho: Remove KHO notifier usage
+  kho: Remove notifier system infrastructure
 
-> But still, such performance drop can be very obvious, and performance
-> oriented users (who are very happy running various benchmark tools) are
-> going to notice or even complain.
+ include/linux/kexec_handover.h                |  42 +-
+ .../linux/live_update/abi/kexec_handover.h    |  10 +
+ kernel/kexec_handover.c                       | 869 +++++++++---------
+ lib/test_kho.c                                |  28 +-
+ mm/memblock.c                                 |  45 +-
+ tools/testing/selftests/kho/init.c            |  19 -
+ 6 files changed, 464 insertions(+), 549 deletions(-)
+ create mode 100644 include/linux/live_update/abi/kexec_handover.h
 
-I've unfortunately seen much bigger performance drops with direct I/O and
-PI on fast SSDs, but we still should be safe by default.
-
-> Another question is, should we push this behavior to iomap layer so that other
-> fses can also benefit from it?
-
-The right place is above iomap to pick the buffered I/O path instead.
-
-The real question is if we can finally get a version of pin_user_pages
-that prevents user modifications entirely.
+-- 
+2.51.0.858.gf9c4a03a3a-goog
 
 
