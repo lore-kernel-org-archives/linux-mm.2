@@ -4,90 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F4ACCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B40CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:06:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A0328E0024; Mon, 20 Oct 2025 11:06:31 -0400 (EDT)
+	id CEF228E0025; Mon, 20 Oct 2025 11:06:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3505E8E0002; Mon, 20 Oct 2025 11:06:31 -0400 (EDT)
+	id C9FEE8E0002; Mon, 20 Oct 2025 11:06:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B5658E0024; Mon, 20 Oct 2025 11:06:31 -0400 (EDT)
+	id B8ED68E0025; Mon, 20 Oct 2025 11:06:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D8F98E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:06:31 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9AFB1399B1
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:06:30 +0000 (UTC)
-X-FDA: 84018818940.23.5E8C106
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2ED0F40004
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:06:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZdcZcDB;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B35F8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:06:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1936C1A01DE
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:06:36 +0000 (UTC)
+X-FDA: 84018819192.18.8833EC0
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1637B40012
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:06:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ft6eRI9/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760972789;
+	s=arc-20220608; t=1760972794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EETKSaBBadv9Qa09qrJ0ao8aohhvc/sv6C7kZ+5YJaQ=;
-	b=IsD62m2I4D7xASvIiFfWT5EbwoU9INTLTmhZzxbMye5IuWsQNP4SJ1JeBcvyAhBqiKetAy
-	w22mbSdKzoGWSL9m1Ax3z7GDBuqJcQr4T88N6x2fz2ntEszVA2BkSMWYoXYoiJenr0mA8r
-	riHYMYr2kPMi4RCwQV+aa7Hu+EgpmXU=
+	bh=pEYAPg0/9P8i0AqXf9KQgQ5ijvrv79Y+WAS0UJoYxic=;
+	b=a53uknmvmUXVDqOoFWgvl/8rM+Vi3u8+tgMzG34zd/llhqkjQNtC7DMpj3nnO7zD9hb/Zl
+	PyW2ErfjEBZS4/twGjlMKluytJcGtgm4EuQJaNi55nFeQGDiNfzSnJARzxMpPC3WizCabE
+	XLODKgZWXFPQqzfAzaQIqyy/BlKqYUI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZdcZcDB;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760972789; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Ft6eRI9/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760972794; a=rsa-sha256;
 	cv=none;
-	b=p5IposLyzUqYjj/UWpD7exuI3h8kmVgiJTXQ7Q4tzSbmvkh7f1JInb1nwmEajgpwtJbwtZ
-	KnvIGdZ2ozRgBO4dxd/dEZElDWvsn9/SftimhJe5xvPisyPYh35dcNopbdstAz2oXUxhTD
-	jE6tSXfQHWcI/nFkSSfPkTKz8YKJvuE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52B1761FAE;
-	Mon, 20 Oct 2025 15:06:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC2EC4CEF9;
-	Mon, 20 Oct 2025 15:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760972788;
-	bh=Jx+0bHoZRra68oiIu/Fb1T1NX9AirIX/qKXZ/176/eI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZdcZcDBryJILGpdBSHUtPft7MCimeWMPyB0O+afFG7JVBbqrnkXhvMI12vtYWiFA
-	 NAsGpNr5s45X6ortFiSnLfngd58KVOInHf2GHjurEgfx1c9pB7bUr5W754Vl1pJFIk
-	 p9cFAxiyFRqhXAPnPNfWoTzdyhOJsTo94VkSV6U9zOy+7QLCTTYXEbKmJuD6YTypwv
-	 fWrfYol2ndYIeWcWvjtP/BTgazY1luJhuCfoKnguZGmjjmNp2U2GFHKBlgsUfZypbn
-	 lzp/sMEgkyjck01zD+xHEvKjydSAVpYCAjGHEVdF8C5gzTjyTgokiRPQ3JYw9wbpmw
-	 Gydx1eD2T+9qw==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+	b=W/4r6XnUxCI6SWIz300rDBufNI7wqwwxEc53bkkjbGku+9Hqt4x9yJdo98qaaZn0NYo/ki
+	ZnYirwu12Rf07fJsCmYWsGCOg41RFR4AL/RnZxPE2Wms4ErDj/Rgs7UU1WY84tiC8IaTqa
+	69/UaPCB4ruFmBzGirj0LTvUPN30pLo=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7811fa91774so3907198b3a.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 08:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760972793; x=1761577593; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pEYAPg0/9P8i0AqXf9KQgQ5ijvrv79Y+WAS0UJoYxic=;
+        b=Ft6eRI9/aJsoJM2dfNn+LA+V12tDIE2E6XaxNPInqyU0XGKarDdOKigM4XGRHh5giK
+         hjqKL3am4ggPY4l/dBPdREdW24KXA4giHT/TIHqOnXTH8wMPyNaWKHEChh38Q+fd75Yx
+         EwU3tQQIKh8TOez0l1s4K6Yzxm2J0XHbe/cZzlgPC5tdOxm5hvXeJPqFoJGNGGs/vFrw
+         evyiSI5Bu1U+U7gLylp/5MM1lswewEBNdPgMy7PuTqoeiox3XNJpYp57fCYC5/jE/Zrb
+         /b1GP/c4L/MQ002TBMGAkY9xhAvy80dQjAqONfRBogWMptC3PQcfRXGw1cwpokq9P159
+         sZOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760972793; x=1761577593;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pEYAPg0/9P8i0AqXf9KQgQ5ijvrv79Y+WAS0UJoYxic=;
+        b=IMNapI871N86NGG4GMR/BUa4iaacuZ3Gto/5bwLw6pAAWDxD9HwPcQbzHBkrW2sRLd
+         532fSYK5lxipiGGao5hXToiRbfioKsLvWWqj0UXRIugic/aAZ1fshbmpWHSb4np8Y3a0
+         4nz9kbAuGJC9JDtcRhVnaGSV4CRCsx9hETL4ekKtR2k/effBtz+YOikvUQp6RXmnMXli
+         k9EAgULgPZA5Ds0CzVUUZB4xq/sDWtbWYwTxykAHy8m8rdiREQyK0DUqdJsfiWmKYf8w
+         rVxhZTWHCae3KwSQxeaxhzfz7k+PspXrebOaIS3o3OZS+7+XzIku2J24PR960uMcKrRv
+         JXaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbDqOuuaV7KQkHwY/wSLNgtOKODNz2DVSPTbsKCPK3CnM+jJTtoMpHCpPbVhL1ZL6Me0D+Gux2Rg==@kvack.org
+X-Gm-Message-State: AOJu0Yx1k0d22sEgN63hmOcX14qekQFBOWakUD7yQBrFJ66Ra1ql/0Lb
+	sEsdfe+Kn6HPaUpKzskgvvxngAgQEeAw/ICoPBtF1PhjCi/IDL0o3upH
+X-Gm-Gg: ASbGnct2GIK9zRhViq8erU0xAFjYmkujUm2A/Yz6YwUmFOIfOeP4q3s6NtftLNZWgeS
+	ktouujlnutapg5lbvgGnGjF1kCMga1CJiN3OfpmcQ6DTQ3LE4MPgsLLE+6y24NbACGyDZI9E2HM
+	7DlPwJ5GmK7r4nNeKF/jOT8qNzb7akKGV5fmxTnAQT6ETSexeQEAix4tgbC92Qs9gVd059ZSpHY
+	m7GJEcZKLf7kQExjrIKwVZXFFdTo2b7yePS8O783/Cm+MVQO7mJXmYPGA0Y09iUBF+nVT4nUmqk
+	8rIsmS2ygOKpCIai1eouTTlAVbcgqfO/I0sPfpdP8v2Gv8W7bKo3paU2yG89HisO/A2SM2GXzTi
+	ALQc8A//tYY400/yciyoPGoY8sJYktgLzlHV7TCnImncP+dhIbOC02/Qtuevlmj9mB1VIoM1eeX
+	u6qfk=
+X-Google-Smtp-Source: AGHT+IG4hAvaiT9qMc124aUjhAwGQoPr0u9gLyEZ2Bp4eQLu89aAOxbW8d4Nq6BNuCuodFW2fP8ZXg==
+X-Received: by 2002:a05:6a00:2ea1:b0:793:522:b8fb with SMTP id d2e1a72fcca58-7a220aaf9e8mr14700226b3a.25.1760972792539;
+        Mon, 20 Oct 2025 08:06:32 -0700 (PDT)
+Received: from daniel.. ([221.218.137.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a230121f96sm8577259b3a.76.2025.10.20.08.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 08:06:32 -0700 (PDT)
+From: jinji zhong <jinji.z.zhong@gmail.com>
+To: ziy@nvidia.com
+Cc: akpm@linux-foundation.org,
+	feng.han@honor.com,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	jinji.z.zhong@gmail.com,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com
-Subject: Re: [PATCH v2 0/2] mm/damon: fixes for address alignment issues in DAMON_LRU_SORT and DAMON_RECLAIM
-Date: Mon, 20 Oct 2025 08:06:25 -0700
-Message-ID: <20251020150625.34941-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251020130125.2875164-1-yanquanmin1@huawei.com>
-References: 
+	liulu.liu@honor.com,
+	mhocko@suse.com,
+	surenb@google.com,
+	vbabka@suse.cz,
+	zhongjinji@honor.com
+Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
+Date: Mon, 20 Oct 2025 15:06:25 +0000
+Message-ID: <20251020150626.2296-1-jinji.z.zhong@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <7B0DF4ED-FBB8-48E5-95B7-4C32B645F4A6@nvidia.com>
+References: <7B0DF4ED-FBB8-48E5-95B7-4C32B645F4A6@nvidia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2ED0F40004
-X-Stat-Signature: gdnbpfp41ocdskj3uqgxues4t5qfyxc7
 X-Rspam-User: 
-X-HE-Tag: 1760972788-390384
-X-HE-Meta: U2FsdGVkX19GC7a70nqC7m6rWKCSjHLr/j+YIhPibyB4wrRu0tBoHOdZmZsSKYCZZIXdKad1JisdCNwpq64c2MA4LBTIgVnmKcZV5t6tOzMmLat2iIed1YUGi6Ycj9UVkzGnA0Zx3zlxt3e8aTRxTHIgbhAhQAykEt1v1fNVq7KQkrcrma+HNvViZftJ0lHuIgygQ2iqS6Dg+S+bHS0jU/A8uH68cIi3uCnwAW1DSxougewRkHEgn+D+I6nzH8oMLk5S8V653lmB5wXMkW/+SBMwNtOIcVjZFIs6Xio37S5708RZpNE1OYTz5s0t4WlW5U7VTN+PaUNVlqkkTozZArttqphHR049j+RU8Y2EfpCVt3ydXt87EbLdsA4RV8rQIsvf9PHxWraWe57z+lsbcwy+MPUG6ekA86qfKZkDD73nHJ4vLyc0EGLcQp6kFey++aguqU4ib3pQkJwx0OYbZpIvQIshpVobyiUnwMIZ5ZUKlM3TQAuA16ROUNWE0bRMd3DkQLdWs+Bv1smyj+Ks+CYiEL9+9S5//SKcmyZP5d1mZkywQLiUQMzAoEyth1TKHBi4+QdGxgxYRaMv/hnA+skX207+WG7oRus/vxShzYVWQWjLAYHvMGFRlvRbx83ApmijY2XbkH+mQYGx/k7/a2HA305Y25FWJiyHHxuB5xdq0+W017tR7QsoHqREZvYuoKqb1jwo2WLS9K988PTCQyDbXVasQfWbNE5ATk+sn8bgqF3XDD+/yMeoEpplxvKecmUHm1Moz6xHZERXYAHEnNwg9ot6MuiuobAhA7IVQmfa1pqJdfQPxLQGOliGbusnsQ8fyPL/HjObMMH/spxZnJpCi4yRSo2z7MXuciupCquLjg9T3nNzGaMC1vXMO9UMsKtDbp6nokI04TldX65d4RqnG0wc/RSMxq3Oju3d8S7pWJdZStXQfLaFlqYfda+cbETpdQTzSVPfiXQlX+F
- Ae5SZqdV
- ur3z5QLJOzBUPLVGEERX4v0Vk5FnWD7OqezhtZpXnX6DPZ8m62W92YyLoVwW4BmJcm0AjXS3U0hPTD/BRNnMhoqvoCblCBShoaFWyr1dkgzIxx4KyFf9bImPs2S/8L/ZLK0EqaFWHYUm9sQ8QkOQj2QIPIm8CTFUftM2aNC52PnrFfyX59xwI15lZl4574CAr+yGg6iy7jqqaBoT5jMwFJUYrim9ipw5RjXlMOj6KLW4YNwGeWA8WSQ3ZwoVrL6+CwmsBar8lmj7FgyZnue6NrWMxJrO7ha5B01dsUCyD5SiyTVA=
+X-Rspamd-Queue-Id: 1637B40012
+X-Rspamd-Server: rspam03
+X-Stat-Signature: jxorndtcnfx43kykawb1uw6mwu3nbrt8
+X-HE-Tag: 1760972793-63525
+X-HE-Meta: U2FsdGVkX1+w0wbrHspnjMai1gD4H5xF0k0sHmkexSjOEARr+S/pr5+eAafirV1OvHJFvFxWYA076v5jc8HqpLTanTqnucuG44YiFHSmeKH9Bd1bJ7tJv7X0PzNrlKEUaiOMIBhm2PkSEicfgyqY86zCSSwhS+r540jJRcRQz85NQBLoX5TCmBbVIF7pJxgYLiun0s8Ex2fQoj5zcpUK6C+5lyTUu1yDEeY0nuv3tJnChQzY5Xg1MqFlOTZXNgygKiZh8eWxD11ssALoi1rhGZtJMnWMh0OKOJJYkfV9+vbauaMDbrZgRYrnhnstS0Ap66CcMvKLB00nMZY2W3P7XZxWKW5RPtvzIFfTFOtio+OHM24uDLnMHnivRDgPGhDWgd4c10s5rX8LO3JrSVbIsaOCPtt0JYBqy+8QjpVg+/TyXSJZvMwnWmoJNyrYmj24QnnM9YsweRNwQbDosnW0vqAFhtaTryjljNg1lha4n1kcy2ObE+XPRNtfQZCCkD47QCRUkwtdDOHq0s7KzC/+RdaR+fIHRHUD9tuiT3ytde6Jx0prT1H/s8uOtmMb7Kdy8Z45wvQ8C/ZEK5SwdLuqKk9a2Ka94kUW9I9GB7+fam+ERdK9VUBFsdx1NqxgyhgOVLt9r8901RvmGvz9eN5BE1PsdzNrEWZIqwf0ssbbCE4ChC0f+ScF+lFkmDt7WndtMEwYyX2cRUZ0EVwB+Tt48ib8bWv14tZDjIpDhZG2EIq4O0sZmNonKO00T1PYTqFbaS8laypKVLd+2LesupWwpKk9opCBC/WIKDOTcn+Es+g5T9Rkfd1pdEuJ2qCW2BTgIKzAOzU3vSMthwirR2rauylylGAvT0yTEg0otgoODYJoLssYU8t7q/bdAd2meZaD0/1z2Plo4I9klI956RJBpRFWRLp619kWe7RydM3T/3LtiG9ETYof3UU59aK+oFRdCidbgdjUddeAtvk3SPm
+ XbgjsN2j
+ Nbcr++z1P/9KXUBoEQ3UfiDc3hSIxgOmdUToqNM+0j+wpNQ/jd15xjFNixXDMDP0uXX21gKwQFmcK1tzxm+zAYENbVuDwUCSnegABfViOGVgfBB/t01lDgMM+9usrpyVfH2hDu1SLbHfIJR4IzqZytdHd3YYSEej1Q/z6oVSDzd+iqKiKfMC1GNdJPuuLSe+0NtWEqIdshROn+BMf97CqoNu6vN86fcZ+mfoYCw0u3cuQ9lN0wwgVYl7LHiwIr0pZLRHDRw4dTjTegM4yLdO3S5hF5dwbQEfYfhAybZBXtepL5eSgq+b8uo/tcw3PJxUXhdbSdoHXTW8EB/tK0JjScmqsSnt+o11BO46V9ViCfR6wmv55gq4qH0oLMzCgwSn9zthJAASgDCWF4mx5FLv0cyYnYN9CKBP4Mo7PXpwCYcZCPWFfyBFgmYICB+faQGlQlv2rmNfGEQ+aNF0CZP1SRaQ1MNoWrZp9QMsmvgBaBCVyZGyY+6cBwOGRibXyTZJ4AYhKpWg6mykX3TDvyTbxy4Buv0vY8k6YfuNuQnPrNdwLQkDG5ZDguoXeoEM8ruvW6hkLSzlC/JE5Zoup8TTjw11ONDzx/S8Pd5+eB7LOClMRLO9SKiOExsn2W5C99l60BkdLL0oflrd9nhP+9KXsgGlvZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,37 +131,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Oct 2025 21:01:23 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+>On 1 Oct 2025, at 0:38, jinji zhong wrote:
+>
+>>> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
+>>
+>>>> On 9/25/25 10:50, zhongjinji wrote:
+>>>>> It is unnecessary to set page->private in __del_page_from_free_list().
+>>>>>
+>>>>> If the page is about to be allocated, page->private will be cleared by
+>>>>> post_alloc_hook() before the page is handed out. If the page is expanded
+>>>>> or merged, page->private will be reset by set_buddy_order, and no one
+>>>>> will retrieve the page's buddy_order without the PageBuddy flag being set.
+>>>>> If the page is isolated, it will also reset page->private when it
+>>>>> succeeds.
+>>>>
+>>>> Seems correct.
+>>
+>>> This means high order free pages will have head[2N].private set to a non-zero
+>>> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
+>>> head[N*(2^M)].private is M and head[0].private is the actual free page order.
+>>> If such a high order free page is used as high order folio, it should be fine.
+>>> But if user allocates a non-compound high order page and uses split_page()
+>>> to get a list of order-0 pages from this high order page, some pages will
+>>> have non zero private. I wonder if these users are prepared for that.
+>>
+>> Having non-empty page->private in tail pages of non-compound high-order
+>> pages is not an issue, as pages from the pcp lists never guarantee their
+>> initial state. If ensuring empty page->private for tail pages is required,
+>
+>Sure. But is it because all page allocation users return used pages with
 
-> In DAMON_LRU_SORT and DAMON_RECLAIM, damon_set_regions() will apply
-> DAMON_MIN_REGION as the core address alignment, and the monitoring
-> target address ranges would be aligned on DAMON_MIN_REGION * addr_unit.
-> When users 1) set addr_unit to a value larger than 1, and 2) set the
-> monitoring target address range as not aligned on DAMON_MIN_REGION *
-> addr_unit, it will cause DAMON_LRU_SORT and DAMON_RECLAIM to operate
-> on unexpectedly large physical address ranges.
-> 
-> For example, if the user sets the monitoring target address range to
-> [4, 8) and addr_unit as 1024, the aimed monitoring target address range
-> is [4 KiB, 8 KiB). Assuming DAMON_MIN_REGION is 4096, so resulting
-> target address range will be [0, 4096) in the DAMON core layer address
-> system, and [0, 4 MiB) in the physical address space, which is an
-> unexpected range.
-> 
-> To fix the issue, add a min_sz_region parameter to
-> damon_set_region_biggest_system_ram_default() and use it when calling
-> damon_set_regions(), replacing the direct use of DAMON_MIN_REGION.
-> 
-> Changes from v1
-> (https://lore.kernel.org/all/20251016104717.2194909-1-yanquanmin1@huawei.com/)
-> - Added more issue description in the commit message.
-> - Split the original fix patch into two separate patches.
+Some users [2] do not reset the private back to 0. When the page is a tail
+page, the non-zero private value will persist until the page is split.
 
-Thank you for nicely revising this!
+>->private set back to 0? And can all page allocation users handle non-zero
+>->private? Otherwise, it can cause subtle bugs.
 
+Yes, you are right. Some users(like swapfile [1]) cannot handle non-zero private.
 
-Thanks,
-SJ
+>> we should handle this in prep_new_page(), similar to the approach taken in
+>> prep_compound_page().
+>>
+>>> For example, kernel/events/ring_buffer.c does it. In its comment, it says
+>>> “set its first page's private to this order; !PagePrivate(page) means it's
+>>> just a normal page.”
+>>> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_buffer.c#L634)
+>>
+>> PagePrivate is a flag in page->flags that indicates page->private is
+>> already in use. While PageBuddy serves a similar purpose, it additionally
+>> signifies that the page is part of the buddy system.
+>
+>OK. You mean ->private will never be used if PagePrivate is not set
+>in ring buffer code?
 
-[...]
+In the ring buffer code, it only uses the private field of the head page,
+but I recently found that the swapfile [1] is assuming page->private is zero,
+even if the page is a tail page, which seems a bit dangerous. Adding this
+patch will make this situation worse.
+
+link: https://elixir.bootlin.com/linux/v6.17/source/mm/swapfile.c#L3745 [1]
+link: https://elixir.bootlin.com/linux/v6.17/source/mm/swapfile.c#L3887 [2]
+
+>If you are confident about it is OK to make some pages’ ->private not being
+>zero at allocation, I am not going to block the patch.
+>
+>>
+>>> I wonder if non zero page->private would cause any issue there.
+>>
+>>> Maybe split_page() should set all page->private to 0.
+>>
+>>> Let me know if I get anything wrong.
+>>
+>>>>
+>>>>> Since __del_page_from_free_list() is a hot path in the kernel, it would be
+>>>>> better to remove the unnecessary set_page_private().
+>>>>>
+>>>>> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+>>>>
+>>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+>>>>
+>>>>> ---
+>>>>>  mm/page_alloc.c | 1 -
+>>>>>  1 file changed, 1 deletion(-)
+>>>>>
+>>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>>> index d1d037f97c5f..1999eb7e7c14 100644
+>>>>> --- a/mm/page_alloc.c
+>>>>> +++ b/mm/page_alloc.c
+>>>>> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+>>>>>
+>>>>>  	list_del(&page->buddy_list);
+>>>>>  	__ClearPageBuddy(page);
+>>>>> -	set_page_private(page, 0);
+>>>>>  	zone->free_area[order].nr_free--;
+>>>>>
+>>>>>  	if (order >= pageblock_order && !is_migrate_isolate(migratetype))
+>>
+>>
+>>> Best Regards,
+>>> Yan, Zi
+>
+>
+>Best Regards,
+>Yan, Zi
 
