@@ -4,139 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C086ACCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 07:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CD79CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 07:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 227008E0009; Mon, 20 Oct 2025 03:06:57 -0400 (EDT)
+	id 32BA08E0009; Mon, 20 Oct 2025 03:35:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D7FC8E0007; Mon, 20 Oct 2025 03:06:57 -0400 (EDT)
+	id 302C48E0007; Mon, 20 Oct 2025 03:35:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C7188E0009; Mon, 20 Oct 2025 03:06:57 -0400 (EDT)
+	id 23FE68E0009; Mon, 20 Oct 2025 03:35:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EAFEF8E0007
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:06:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7A0D5B014
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:06:56 +0000 (UTC)
-X-FDA: 84017610432.05.4E6C823
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C04AAC0011
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:06:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N7aMEBaN;
-	spf=pass (imf22.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 115A78E0007
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:35:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 832D9888F3
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:35:07 +0000 (UTC)
+X-FDA: 84017681454.20.B59DE53
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6BBC2A0009
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:35:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIujCKHk;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760944015;
+	s=arc-20220608; t=1760945705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJybHeYE1ztYL9iPMAUStMessAVsBbSF1Nn5wdontMY=;
-	b=moQM/qLplMxdxxQv79jMUkD9l2YO2Uf4eqPzOrxtrGKo3z5251wv3jafOPZvN9scsqom/D
-	qbkK7uSmk+tcyeRlopYxonWZTejnbH/INwTAF+yXErOVEMsuGp1erPGdc4Q4aK/63dCasI
-	ReygxTNoxAlEC35FO10+nEUVlrGpMC8=
+	bh=FwY4Mw2Hsvl9+mXWTXLCL2RzlZKdk8AHQMi9pCkPNSQ=;
+	b=72L3wisq2yLNpW0KDep1weUhWCKz6VXUl0RvA4d4TQrTfAQgYyHZNasWiu/vIicOpeYqEC
+	9iQlYxHTQZpXn0vU8fJcCl/MMW6UgHZpfYpP6U/ENoAer4WbTFOBgmTC7Giw/4AfrLqw67
+	IGm4Rm9ZAeN3F8nPlvIXbQzMbdjYS4Y=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N7aMEBaN;
-	spf=pass (imf22.hostedemail.com: domain of jirislaby@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jirislaby@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760944015; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sIujCKHk;
+	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760945705; a=rsa-sha256;
 	cv=none;
-	b=s6s5CWR1rBMZtQBWQW3gSUXkF6bG0e6k/Nxo6VyI3BcsT1tSrSZp+/gmNOkDXZ9mE+sHEC
-	g9qwPwQTIbjW4NJlcUC+a5/VpxDVBwMf1kOX/xGFC9GfX7Sstj0gwa4/bF0rVB9xYD4wbI
-	E4HvEXcnGeONx0NlxSggBxEGhJyHP4o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1298436B6;
-	Mon, 20 Oct 2025 07:06:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADAFC19421;
-	Mon, 20 Oct 2025 07:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760944013;
-	bh=kAdrSJwNBkfZ9vuaqIPPnTjBY/9PNf8m8VL7RRKS3sk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=N7aMEBaNYZAUdtx97Nk6t48fjl0eFR71lZ68OlF1dPu1kPW0wCBRwej0RI6ETsqqv
-	 nWr3dJUGIAt+aKaRJ7caDSTMp7z0IX8SSZi5xpqlM3JeTNh1PL4QWDyx4UiTgMdKTA
-	 aDMC2Ja+g8OyUC4W/Wv7FXSPNtN5PwHh4y9410Zn4HUZuPDSpS1/pvG2a6TkNdiv68
-	 H2o+BV+2UHGFTFXgd0nKFBYMMNfASPbLdcK29gbp94I3za9CT6wlViaH+wWcVgZ0es
-	 Uxgj1wd2w0wcMdsvwTyOMRtCiqiUL8n+xZWVtveUq7x1fPv7gRuJIaLWjaOfMOU7hm
-	 OSHRBEIxoJc+w==
-Message-ID: <85707316-3f2b-4e29-b821-a32f9097244e@kernel.org>
-Date: Mon, 20 Oct 2025 09:06:48 +0200
+	b=Cp4kOwQPiVqcqcmnkgbCxfW4QSray6UMCzxdZ+aM42fL86jqHATGgRaKgQHYjEUUTY7wTU
+	lZDW0F+/H+iChP0nUKFQUOBOOk8Ns/Cz9ILNIiC7AzucnSufYO6rRxgKW14PIrVg7tSCiV
+	+ZNftkG9n7/S/W8pxooRXgOZk4qLkfM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760945701; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=FwY4Mw2Hsvl9+mXWTXLCL2RzlZKdk8AHQMi9pCkPNSQ=;
+	b=sIujCKHktqqskuFN6L4JjV+lGcV+zkZ/8v8eYJ0u/4DB0Zr3tvg2r8qj6fkxVeKtEm9ztl62cMCSlv8cXyoFPp8ZFhIAjwLilNB8qg7sTJjUz++k5Wf9M//xo1MGTOW88JHzDQHiX3j6rLyIFm1KT3ppVjwdeYrCTbOPIjNKb1U=
+Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqXxQTq_1760945699 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 20 Oct 2025 15:35:00 +0800
+Message-ID: <3971f97e-399c-425b-979f-55334eacd925@linux.alibaba.com>
+Date: Mon, 20 Oct 2025 15:34:59 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: treewide: make get_free_pages() and return void *
-From: Jiri Slaby <jirislaby@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, David Hildenbrand <david@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Julia Lawall <Julia.Lawall@inria.fr>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251018093002.3660549-1-rppt@kernel.org>
- <aPQxN7-FeFB6vTuv@casper.infradead.org>
- <3e798b9e-4915-404f-9197-ed3c32587141@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <3e798b9e-4915-404f-9197-ed3c32587141@kernel.org>
+Subject: Re: [PATCH v2 2/2] mm: vmscan: simplify the logic for activating
+ dirty file folios
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, david@redhat.com,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ lorenzo.stoakes@oracle.com, hughd@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1760687075.git.baolin.wang@linux.alibaba.com>
+ <ba5c49955fd93c6850bcc19abf0e02e1573768aa.1760687075.git.baolin.wang@linux.alibaba.com>
+ <aPIwafJOKUh3N4zX@tiehlicka>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <aPIwafJOKUh3N4zX@tiehlicka>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ijid9kso14tnit4hotcwfbt1srudywx
-X-Rspamd-Queue-Id: C04AAC0011
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6BBC2A0009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760944014-10254
-X-HE-Meta: U2FsdGVkX18CYMV9FYa6cl61Ptom4aNtI/XjalnhrJQB1NcJyk5iMkFtxDMk0z8dhl5H694Ba6rtfepiGdU3zBqwC+c5sHYw6rjxbrtk7vS79n0HM0dDYA7JZMqLvJzu2m3H3kHqW3GRupJAw35np505VW8VDq+caECulFHWNAaSH+NG+27nchyuPHAZjM3T6AtL32hYCECzpuJS0Vf6P2hp+4G59mbTlYOWfNcGLSS38EuJGBRX2nA0zJghjY1iQ6HeLMAMezk+KDojzGk8q6l0GTfH+RI8+Nc8gIVXqzo7BJGvs49/RDf3rOfIwaNeoadlBRs5+wHhTD8NbBrLCqsSQy+P87lB+w2QjvLvhKKhIL6sJ7rmzTsonfDIeIGwBCPvib2dZsj6yUm1WLAbD2CZOibaqBrqYt2l5SQ6Dt1wBY39xMoGdBtGq8a6A2vpa9GG8k+YGOoglJThfMY1rfhLAkqlkWhxE+G7W+N70Aj7JnztMOgtG/sNzwAzcIXTQoFT4sJgaK+38uZ8Q17VNgUaga7bXGcwUk6zJ4QhbvMJDUVhbwVKg9aszdlIQ95whqSPLNXdfo5Rx3YstQDugSGo4wp8I2PvppGVcfDpFMt4R00VUyj4p9JjWcSE2wK65Z8P5wqF4hmqGAFOgxKIfaB/rMwiS9UczNX5cpEEh7FjsoKKHYRJsuNm4t5kaSq5akSiDJSlu+JkgoN2kc6qbeTB8VjQYTsLXfCOG9a5+R+6zTs+XJKZlM25ecKME/Z4H9Ra26dKhe6Wi2hAwffvL/VREMwZqPlkoB5pSDe4VZAmS8BqRWAvWU0GUDCuNitcbeGzPJ+TiFY3MF4NwhYK9s/fvMFIA3so8PFejMsoA1K/kcCBJzTEuR50WUtWDGpW4kDcVn2OhAYBmphn3D1/G+efH4Z0BsGzBvPUe5HA7fmemz/vJiSZrkoOkAgrHlRw+6B5NPty7fc2CY4wwUQ
- XNovRvL5
- igrNAjieqMo4caltYFXVMpTjQD7nJrcCJ6OvLXx43WpPpKnV59PJRPTWo3gCSsV7HUf/uJhosU1wnGl8OXdeHG+oJUDg+HHX2U2WZIF/8VTB9TM0nz13Tale+682OKrtt2GJxoj25gyNHmSrp/U4mmLAY9R1CgjEeLVT2v050Wpm6E5lsx8OIIrZoba84XCwTqFBXR00XqvtsrsNI8pfJnY1ey5i+ilYeoAzKEgRAy/SmgLDzQ6JkZQoVXfG+8dJ3h7/OwttM7Y/kphvFvL9E7YGlCZXTJMYvMIWGKe+dZc8XrfmESVNaE4mRH2upW/CrMj7Ygi79GQw29FZfhksI44s1KYJWy6txnwVvz8oEvqMwnoJwaLAAbyqZ5QQM/sxD/oICFXiEMGTFcMacKez5NMY9fcl1xbHU57eyB72JsIc6HMlP1mT82cExXA==
+X-Stat-Signature: hojiippnm5mmc8uywokuknsodfg79tmp
+X-HE-Tag: 1760945704-179099
+X-HE-Meta: U2FsdGVkX19SrMnDDHDry8ade2lCCl/Vgs+7E9DBxqTPvFeaH5mcvpQcDXLeli3cMypYyZrnXbS5b6eYdts+vE4iRhK3pXrMdJXrkGAxau9kdX9qzTawGH61ahBXJZKzJcFU9MS/+RGJFsNpZUO2JpbAjYnaRpd+rTAd2I3DR6p4T75DiiV8O66EfHDgELtQje2Lbmdn1/VJBqG6B4+TV+TdRSVkiGwqttaKnLGUXtOrfZaQruIfSf+oXyujz7TR2sRNY0cbTqBwUQa4LvmowbPVOG5Xtzj5qAtwOVlC+M5Af1cBqCxGy1m1K+HLSXEUJfm7FAHE+kyptU4kdXixpPxwoIO5joNDCjz4LY2KSu5CE4mWh0hGrYyBm9Sgs0Q51JModVKhfBZgvXAiQdjoLmDoZxEL7JL2NcAMa4SEk5j6UzstRy/6xKbBdG/lmR2HUjcNm8m4nD+wF7MttdPPCMIcOJJ8MkZpAbZfFlMSy9AdFxa5fhYZidSWXxfV6m5lwqiWaqgjBvJwLJ0Vmd04fk/tvmVcudNuaXUpEWZ+v2uDuiqAXzgYftbaNAMoWn1ojb03/7qFsR1FCpfDRnDc1Yt54bHOnJqF5/s6mzeQP5I2y6tHm/zUQdouCQdpDtwQXDz2Qtzrdm0rCd23NtWC9L4BexmiYWeyyL2vOcXdEjSBr5MWaZYb9FLZTqPBgijHAs/K9x7i+MPrm66X7cxA/zK1/oq82zdU4V3gGHcw7bQ0Gs9uXZT6SNz4GWRtQU64uYPlHYXpDWkVFYGLAPe0As+y51g5zOCiIGRW5DvxGijNsKsL5sMcYrj0v9DBafsgtc2DZ8R7HpJ7pcmre5Srg6gkSdjhfzXBLZc9N0M8QzwrJp0JQy94lcHG4tUBjhMkMFR9AHccpV4meXNwFWRoHBtP/dTBqPUrX566KA16Ouw8g1A1dNI2T502uNjHk6a+TTp9myjwyZUjk3FAzi9
+ m74ggeQ6
+ 6deosgVUzxNxhWXCzvFx6KcYK0lADbftPFzY/v+aPMJGOKG0lREc+WlCYbvgVgnHESWVk7bVIDvvcFOzmgKhRJ9WWUF3aTBO8r5Qa38Ey1VxloPJrmgYvTIC3bO5XC4xhj1/deeeiQVtAB9zBKKVfM6TdB16jyp9PZRLlJDDgvIqDTH62XmKftby+W8H0rRIDHQbC962YqaieXNmqOPBpneCycohYWJTCY3znuEXl3hzIn7oR4CJ+tTacdxuS+C9Dh201H9aeQqAmoPyct6vG8GQDAxpKsD4cj8FqBGVAI/TDGMmyavLASjrnV/kavFjgC3U1LuQU0wywmyk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,36 +91,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20. 10. 25, 8:58, Jiri Slaby wrote:
-> On 19. 10. 25, 2:30, Matthew Wilcox wrote:
->> On Sat, Oct 18, 2025 at 12:29:59PM +0300, Mike Rapoport wrote:
->>> Vast majority of allocations that use get_free_pages() and its 
->>> derivatives
->>> cast the returned unsigned long to a pointer and then cast it back to
->>> unsigned long when freeing the memory.
->>>
->>> These castings are useless and only obfuscate the code.
->>>
->>> Make get_free_pages() and friends return 'void *' and free_pages() 
->>> accept
->>> 'void *' as its address parameter.
+
+
+On 2025/10/17 20:02, Michal Hocko wrote:
+> On Fri 17-10-25 15:53:07, Baolin Wang wrote:
+>> After commit 6b0dfabb3555 ("fs: Remove aops->writepage"), we no longer
+>> attempt to write back filesystem folios through reclaim.
 >>
->> No.  Linus has rejected this change before.  I can't find it now, it was
->> a long time ago.  Most of them shouldn't be using get_free_pages() at
->> all, they should be using kmalloc().
+>> However, in the shrink_folio_list() function, there still remains some
+>> logic related to writeback control of dirty file folios. The original
+>> logic was that, for direct reclaim, or when folio_test_reclaim() is false,
+>> or the PGDAT_DIRTY flag is not set, the dirty file folios would be directly
+>> activated to avoid being scanned again; otherwise, it will try to writeback
+>> the dirty file folios. However, since we can no longer perform writeback on
+>> dirty folios, the dirty file folios will still be activated.
+>>
+>> Additionally, under the original logic, if we continue to try writeback dirty
+>> file folios, we will also check the references flag, sc->may_writepage, and
+>> may_enter_fs(), which may result in dirty file folios being left in the inactive
+>> list. This is unreasonable. Even if these dirty folios are scanned again, we
+>> still cannot clean them.
+>>
+>> Therefore, the checks on these dirty file folios appear to be redundant and can
+>> be removed. Dirty file folios should be directly moved to the active list to
+>> avoid being scanned again. Since we set the PG_reclaim flag for the dirty folios,
+>> once the writeback is completed, they will be moved back to the tail of the
+>> inactive list to be retried for quick reclaim.
 > 
-> I'd be interested in the refusal thread (what was the rejection exactly 
-> about). In a need of whole pages, why would I want to alloc more for 
-> metadata (using k*alloc)? Or what am I missing?
+> Is there any actual problem you are trying to address or is this a code
+> clean up? How have you evaluated this change?
 
-OK, AI yielded:
-https://lkml.iu.edu/1512.2/03853.html
-and an LWN summary:
-https://lwn.net/Articles/669015/
+This patch is more of a cleanup patch, since dirty file folios are also 
+activated in pageout(), so there are essentially no significant logical 
+changes. Moreover, this patch set is a continuation of the previous 
+cleanup work[1] for dirty file folios, and further cleanup and 
+optimization work for file folios reclamation is still ongoing.
 
-> thanks,
--- 
-js
-suse labs
+I conducted some evaluations (such as building the kernel in memcg to 
+reclaim file folios and running thpcompact to reclaim file folios), and 
+I did not observe any obvious changes in reclaim efficiency.
 
+[1] 
+https://lore.kernel.org/all/cover.1758166683.git.baolin.wang@linux.alibaba.com/T/#u
 
