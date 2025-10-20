@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AA48CCD1A5
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 20:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AB43CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 20:23:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2481F8E001D; Mon, 20 Oct 2025 16:23:09 -0400 (EDT)
+	id A5ED98E001E; Mon, 20 Oct 2025 16:23:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F8CA8E0016; Mon, 20 Oct 2025 16:23:09 -0400 (EDT)
+	id A35CC8E0016; Mon, 20 Oct 2025 16:23:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8438E001D; Mon, 20 Oct 2025 16:23:08 -0400 (EDT)
+	id 94C108E001E; Mon, 20 Oct 2025 16:23:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E01FF8E0016
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:23:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDB631A02AB
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:23:08 +0000 (UTC)
-X-FDA: 84019616856.09.C1B5F91
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C3598140005
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:23:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Yh9Wk8F2;
-	dmarc=pass (policy=none) header.from=rivosinc.com;
-	spf=pass (imf26.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=debug@rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760991786; a=rsa-sha256;
-	cv=none;
-	b=LAEUPo6gTUhf1QMxnfP76WzAZaK8a6pST8ivURtpNyUibxwJ2ff6q1L23KRm+qz9Itgadn
-	nNSJsfiIcTamWXs2XCjBdc83uOlDPL/lQNzhMoJb9IQY/r+FD81CunHKY5QBmE+qhDMesq
-	9bDfMmU6Riy1D3PvbVXjpiSxQi8LP8U=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=Yh9Wk8F2;
-	dmarc=pass (policy=none) header.from=rivosinc.com;
-	spf=pass (imf26.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=debug@rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 845668E0016
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:23:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 612231A02B4
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:23:13 +0000 (UTC)
+X-FDA: 84019617066.04.E730A84
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6D84E80002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:23:11 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=DvbQHHN8;
+	spf=pass (imf02.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760991786;
+	s=arc-20220608; t=1760991791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=onJTLyAT2VPRFnCvpohSuEDJCgAog1RY1q0ATUvr2yY=;
-	b=coGdXJz5GhKoqQHKx6kQf5TtvE7EPSlSo1De/ZjYDUokl2SjO/cAQ+ZDZcxFzrjSzL28L9
-	D/0oBXeFw5iWchcdySjGSSYj58XlIGFJckkbj0wc9cuvUp9etNgjkz+gHY5m3RYnSWWhCu
-	bQdRuyfAwdWphkeSXY8jpKcOTinoKx0=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-79ef9d1805fso4430953b3a.1
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:23:06 -0700 (PDT)
+	bh=TCkPPrp9gQEUL0ggbSzTHBQGf1uIlxDvndQy0b8riqo=;
+	b=CGXYtYPnOlciM9dXqrxaXZxeWTAPaJfEurMQNy5KttUnpNuDeN4E/TGaAiWyTRHgFqqjDz
+	loHcKgssI4B5idxLa7DM+Jxf5YC/7jGjeHlbRYa2yJOW6A4akmNsClDmQPpnQOPjPA+YKC
+	1oeruoPvIUON/ksLNbxGyM9WEPHHmhY=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=DvbQHHN8;
+	spf=pass (imf02.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760991791; a=rsa-sha256;
+	cv=none;
+	b=jua+6hlNwkg/zyOyQwr9GURVifwsWIKHtsQdtr17CkGQlPx717u6fXBE/o/LH2yKoMSrwk
+	vR9UKCtbeL3wwwcjFjBqew1uj8gE7EV6m+Rz3asUG3vYvSLVwDNxZ40MF3BWpcqd/PmEys
+	vIBsLZNd4ouXv/7OYpHXP4GnkvXYHfM=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-782023ca359so4680254b3a.2
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:23:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1760991786; x=1761596586; darn=kvack.org;
+        d=rivosinc.com; s=google; t=1760991790; x=1761596590; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=onJTLyAT2VPRFnCvpohSuEDJCgAog1RY1q0ATUvr2yY=;
-        b=Yh9Wk8F2pkyEY58uEaciFwJkhMiSooynfale5tmISiK214uEMKpR5GUfqu/GO2yXPf
-         eBDNI3OodWxH+unXJSQYiVBbor6nmVgIMEZBP3zrC7rGEr6kqw0AhqGl9dlr476fBQv0
-         0z64hb0jg7AAvOgg4jd3wT2zwOTLK1oAKK8Z72RHCJ6cXTLawDuyo+Ji1OQQrVKOq+Lj
-         x/5c48KjTpw7xU3hng7nvSlMa1eIo7JtUwIZFz5E8nG7xVRaYSOPIolQ8EvzMBg/mmEn
-         rtsYiRjv3MAsv+PCOxvRL3B0IHxBw3VZYS9b41nLiMn6Lpzd4vs0DlRLRAplK/gSMUjh
-         rIVw==
+        bh=TCkPPrp9gQEUL0ggbSzTHBQGf1uIlxDvndQy0b8riqo=;
+        b=DvbQHHN8WEynapNEJIv1bjHbX21/RQpoaJt9nXjt/zzqUWdbSt3JeqiCxjqV4gdCq/
+         D1yDsZoTkweTUBjV+SWQkMX9HwU259ZjDcfdB/nxpyXsW9JHz1/C6fYWeQflJzmcbSjk
+         9+ZCquqrBcMzNSQnBsK2HOoMoI0O2rcdHln+nkreMBowQQSUwo1Cy8vzGqKsGS8K8eDn
+         kkcQGDCqcfwykp1tcS+b62Zptzc50kCc5aU+S5uYO7ZZzDK7ki9bBLcDYEMpTvYo9MT9
+         PrUuENPMAq1tk2tSEujGuMwOSjYx0zOc4WtpCG4wiaJANTarUGwhnN5y4wJk9UJ9tTBP
+         0gfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760991786; x=1761596586;
+        d=1e100.net; s=20230601; t=1760991790; x=1761596590;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=onJTLyAT2VPRFnCvpohSuEDJCgAog1RY1q0ATUvr2yY=;
-        b=gGSdWp0HBce25AQXDDuZLUiVbDm6aePu/klSOJGeVlqLIKbhoal63YozmKuJV1oWr6
-         Ld69QO20uDL38PHWdr8tNMwmP/XmpLl+zApdCjAQC93ygOfSVyg032FO5l2Q64LX78wp
-         1FcJWlk78jXF4mjNiG7Yno4ywAgJD3kPkQRU8YFM39w6P1ZG9J93PLwq9rLgdW4rVSzO
-         J2fW7X3w8aiPMhhUFeKLJ/QpftvbuLrWWi3mmACSuNeub9kiMP8tT+aSkhENLU4p2qIg
-         1GbJcKssONK107bBrId49riYcSrlie/Ji0t4issa0G3SDl3GoLfe8XsMSARFXpwQTsa5
-         k9qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoNsC2AJgZ5A11eDavaKDwXOd7cZDC/yBI3hgsRRqZbiB9AxoOhgisxlCHk4st5/Z37NllLsQ9RA==@kvack.org
-X-Gm-Message-State: AOJu0Yw5UWfiM3oluTyjWmtmWxdYjyYuU/oUy84TxZMECxAt8sDWH46S
-	GRPME40xVsGgrw45pa030ve5Gdy5Dw3ciCu3HlU0eEX9qBXl4IaXqPbLK8Rfqv4LmZOYJMucLrz
-	X0J5l
-X-Gm-Gg: ASbGncsdZUKkrB2mhnMG66dUCVKuD3SrKh0o/ovqtK8qtRPz5ISNq9nQgvjr9EVJRMo
-	yMztPColo+ukrNJNbBXDAFElk3I1klaxMA7X2gzyke+iM9lqOCOndVsBLiKyae6uEQnkj7AYgJN
-	mRX7iK+KrHhqrqHJdvVRAPfI5c5jUSUo9AmIsX/vf+tQnq2W5yShuYIm6m+rM0IrOjUe8QdAY78
-	hIlFko3PZssKofv/lEPNJkhotS38bzPDRzYqxpFrY9T29agl8AnzIE+C0g1G5OY2zRNwGEmO32w
-	VjJiH+jVoIZFOjtbmii98mobGzapUL2Xya/IbKcLXAZ2wXljsjdECchMhEUWLfk0rtHcaVkXvPq
-	PPn6+deh6iBJwfgRl0tkdCLUAh9Bpv27cTzgabO2834XnATl2OSrwD4YeCypQiKqIqO94IWQDZp
-	nLN50UD5XL0CkU6yLtJyLK
-X-Google-Smtp-Source: AGHT+IHh/UrUOY89GHtMFCf9Rpq/9P8bpcM0SZDwdlokV9lYi59u1PZSxoPSLk8u3SBzCNoLWXD20w==
-X-Received: by 2002:a05:6a20:5493:b0:334:a124:4583 with SMTP id adf61e73a8af0-334a8576cdbmr21530106637.26.1760991785475;
-        Mon, 20 Oct 2025 13:23:05 -0700 (PDT)
+        bh=TCkPPrp9gQEUL0ggbSzTHBQGf1uIlxDvndQy0b8riqo=;
+        b=cZDoPPpyvn/ZluphnEEIT1yhh6ZRG1aJRoKKZ64p++cfLnRtl0+CCH/WroLAkm+K3l
+         ud4KXh2RWvTCNyq8b4jOCb9grkv3zsL/QXe4Zwbp6wvP/QUItj0qMpSVhaOxjhJRktLx
+         52ai5yHFAm+MAWZlbH1pm7uR9Cu/mkPHx+XuRE42seJ7Rk/OGTDhNonx7Ku+nqMLleOc
+         og3+Vq5T4Q00cZJp6hHqCWoVTTDirwetRPj6bEV5awT+X/XPUiyNU7f21NK8uzXoZVZ0
+         eU9QtV1KAoUHTyH+DGEGA5NSfvhoS2rmJ6pNn2ISRy8akD3kXcHdEOW0yg5S7dkluxDL
+         6fhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmuGaHsy4rdTp00fFMUP0m5qUVUj9T+cT6pW/504io+pQ/z2qu43k/mfdCKXytHzSkLN7Pvf9GCA==@kvack.org
+X-Gm-Message-State: AOJu0YyIrYEvVprjRYjsdjVEOtxY4ED3Cl9SPJI5ZxEC/0GrqyuCrNyI
+	cuqOg37ItqzBtm8VdqVlu2wfn12tQwn9nT3J5OzaIve7K4O3rha92sbnrG5ZO9VJR3g=
+X-Gm-Gg: ASbGncsWKJ8svmkg5KZryix694uYhqHZQunSlKt9VG/OVv6ZCsRR5K/w2w5P7HpZ1t2
+	mz0nTUIQJYPSrYXqPGr66tQB6xbvbRZJfwGJOMzVe7E0XxIj/e0LyUuB4tVykjzyAnOhQ46MBxR
+	ux4snQnKWEQ9V6TXaKtw4+jDsevhP0sVm7QLDjfXgSHnTFXgNPlbL5cjsjlv4dOgW2HfM+dltPt
+	fvI/Vk4n1OrPs8GGSeKxXcAtlVELv9grTzur1wCOiYUl9297PcXU+Bfeq2C/S0/tQhiy+ofYyB6
+	72Va3y4r/5o3okrmnOlb8iB24dBm5b+sd/5yTOmLXvzDNn+RNzaaZMGuMvsBgo2hD4tDbLmImug
+	oVuyuJrC6NB27LM5gVDgWToDa8XfjQPA0SvbiKcmsD4rPmCtY8tuy3W7PPMGNb2lvfyxe3h+fcQ
+	IzS7UF1brFv6OSTLT8ZOQq
+X-Google-Smtp-Source: AGHT+IFeAiK1pEjnzeQ76oKm8s3fmG8FE4Cb0oIxKjxN+P2vkwg0OCkygP5H08wijF/1nv8wkzENEQ==
+X-Received: by 2002:a05:6a21:6da1:b0:262:da1c:3bfb with SMTP id adf61e73a8af0-334a84854b9mr19250556637.7.1760991790129;
+        Mon, 20 Oct 2025 13:23:10 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a766745dasm8443240a12.14.2025.10.20.13.23.03
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a766745dasm8443240a12.14.2025.10.20.13.23.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 13:23:05 -0700 (PDT)
+        Mon, 20 Oct 2025 13:23:09 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-Date: Mon, 20 Oct 2025 13:22:41 -0700
-Subject: [PATCH v22 12/28] riscv: Implements arch agnostic shadow stack
- prctls
+Date: Mon, 20 Oct 2025 13:22:43 -0700
+Subject: [PATCH v22 14/28] riscv: Implements arch agnostic indirect branch
+ tracking prctls
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-v5_user_cfi_series-v22-12-66732256ad8f@rivosinc.com>
+Message-Id: <20251020-v5_user_cfi_series-v22-14-66732256ad8f@rivosinc.com>
 References: <20251020-v5_user_cfi_series-v22-0-66732256ad8f@rivosinc.com>
 In-Reply-To: <20251020-v5_user_cfi_series-v22-0-66732256ad8f@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -135,14 +134,14 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
  Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6D84E80002
+X-Stat-Signature: et88pt4abj6b4j7p664dj3ritpq3cth8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C3598140005
-X-Stat-Signature: 8imce6b6qam988xxdenxfgy4ibhum11h
-X-HE-Tag: 1760991786-501147
-X-HE-Meta: U2FsdGVkX1/fuqIKukorOArhBNFSyLtfh27/JYmq/7p/p0txe7k43JoJPeCArMzH2BFCQURMR4fqMo29HqIiKAE80LIS+rqyV1ril6bQIuZyoPyRWsmsrgvaK2MC9+40GEYzhVb1EEUoJAwzOtdJZ+qVpfMq+M2/AtUGxkGzMi8CWfG/t737e31yR/us4h4e80K//Dw6WRzwi38Hk+UUlE9JrROXUtt5HbeOeJQHSUxkdTPC/JuJGjEkmAN5/GlugfShCyPmYTL/WdoLB5uV9lLjLrpYKZKQX9M4iRUbGttRCgNr+iPXHuuOHAA1CVlrNqxKyOiKWpmT4K1vya1IKuBJCD+P1bComFlfqDFBjekToOHIOixGVwTme4/f1xMZrCudDx1CLFfd35n+Xa/QO9cVI3H/hE5Lh9gVFpLsUXbrOqhhcNYGZ9aY5e4VNkjXfPkSOyK4puKrGBJiR/UvlyoSP0T7ZilR9klmT2purMl6AUHDl8Igswas6X4O7wZG65Nt1BJqkTvJAxzLU8CsGEeJ96wf+c+FBWE3NfGHH0HclEWGsspZhSzROtQMk+iP6Dz7kb4MjzXsUCZBjUP+QSxcj8OyDPU8ByqWkre8el+cDzVWCMaJgXyLWJfIiSGUf1pXYar8Ep0IyLKBTrx0/jda9czo+ad4DREO7AObZOCNY2PHlXOthXUTEBDP648+2oPRpNRyC3toDRs6xCcQ7odbm4A4FpJwY7pvHZzYBabVJIsliVJBEw2K0fRwhdYHbqTyYR12hseex40/nfyBrBo8LuDauJG7n4LFSkxBy6n4fBFj7uuvdXbodyhYctwpzJW9bfYynKpLMw7XOVIQ+MFuuj7sV7IZOXw5qJXJTK74PFCH32Wx5aiRwMEMlnnTdjr/O3Ke3DUie52kQBuhrutjjidr9OVdJzEtu5eNtTTVhSuBfH4ALj+4g9BNswdLZ+JV9OwKbjUkFN+z2SK
- sO/oZ2fF
- Kcy3fdx2CebWmY+e4RZB7tGv0Nzb0HIImiofSlyA/+riteDG0akbiYDfQtLhoRVDUuevUaljNuwh+jiA3cvAnwUHVNsl45+HabzcgA5Y7RNz1qyoOJI0CPM0pLmB0RSyiuTLQSlp7npoiEdI7xnoM0FjBTUGa+nrUWo34jUoFwLKLMZ1Iej7sG29MaKoocdj2my268yfjkVwCl6mLsvYpIYLLxE50MP/VNHdNFX5hAa1+nHnYWxPcIXo0/Wfw9NUxDJG84LUhpfDzVzfxWQLXcENFUHdjn4ciSTLDS96CRR4dymgTWquC38grrwhITvNL6KO4j1RXLGZe5aEIiI8rvq7gs462oX4PZ6fWVKTjlnpIZfc+scf7OFyrai3j5eM3P6RusI4mliKvTsSrs8tWRam4jfUezFLmt0ou1ZszaReXHb+0pXWPJFxFxw==
+X-HE-Tag: 1760991791-492697
+X-HE-Meta: U2FsdGVkX19PDPuBjWfIF7leS3hPEK3CKU6A7SEBzTcqb44+zj8aoGC87nEsAHbbcnEGFOnkbgPuHyKQt0kll+Mb0kQdY4BPAfgqyPfJfbzFAqAQ2s3QMJcAytl77UuoFmISVdfw4YoyUgFq/BJRe4jPpCMYxW0XG4dezm0Q8UYjtM04ki2S8V2ovL7ZQHnm7gSzTfgUWDBDNZCFQ1w7G/tepYTg0F7nUjlcGdIE7qM0p0gnqyQnWP8VatKBHGrS0YG2uN0s05D5C295Nmv/WT900buDzdY4VsjK4OPUVxLyO1vL1oUlCQdMUe3NKy7gI8Hj0ncHFFeV5ZFAs9yBEYPa6FLy0kJnAFtetMSGQJoF3L2J+KZbHqpeoPLCBT8iIBkc5DaC19Zi3w0zwNIB2VSsWZBDcw2LnE7y84ALY6du74lzEYkn/7+H1FmKFmXdA0o8v93zMlaw7znmWPx+xpIgcElgo8ISYE3bWCULO40/nFso6Tl2reAlvYXn4XtgLkc4Ju6PiaF4bWnrwyc9ElSkqAxLfjemNjAL6NS5Q/wh/5YgQ9wI+XglEJViKWvWOZ6rLDnvhDtCRKmDSbOVFObjjq6rdXLMIJi+sUINMqrCr/AmjQ3E4621HRRT8ybP2ezxfPIcJ5T4uBHLN9zevzFClkkz2/AD94qWsPRNWWIUtPpKL2RoQVaZkstVoJmKQeCQW+awSzsfDJK8LlfcGXCO2dw1wAjYGmjKGVOsabIlmuUZEGZHGlpEVF8kLxrib3y7KQVkT85QcoUHbIMwMjjxU6+Jv3vpmC2F3oh/cjbIXeUm099PWOx2jleoTCXAR4Li+NEnWsotQzUuH5xnNEC91KVlCu6iDUGAn62MxLBWmaPShF458ECQa0ve+Pr/0m23vw6vzVfPkIjIiW57m7nfbiZOiNTw/KJkQD2exXEC++2uODImOZU1lVYrn9rI4agmWB8Pdoyzg7HJ655
+ HZIt3tb1
+ Ad58SsJYvj7no0PhNau8FeKHkfMz6pThOdYPAUiF8AOvrtFPDa+GWVs1NYeVKtl5Mqz1o0S9Cs4qjp3zp2asHOpnGO1osaH29zrGuD/VyHBTiT8uc0QRzE674YV1lLCcthx97biRgodTvCl2lPAboOfjeWhjaWG2zG6vS1dgy6gyAq+EgSQ0n6m/RHZ/20r8pOspJXhkA5d552nCIyPPNPqcyJ54sSIlV+0v11JkO2hK1qYYiiIgwO/mxhZbrVaV8XomQuhu41VDO2B4c95Z4kZou6UZ4XGuuOgLBFvfMCXTPHf/JwlJrSJNX96JXIYYlINvoOrW9rmIY1aPwqoKaw/3DEoa3JXS9hqKuTQZZaxyHJK5oth1sR2TZd0xkYTf/6cUkUgw6zIemR1omPwbr9fw5PbyK/YQhDJO+GcRnS4c1nql2ey1ZS0wZQXPvEk1//xU1rYUBYJqjEn8rmPPNoikCOr1wrJdmGYRPhL2IlxWwH3b7rG2fmy7vaTnPW1gGcglv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,223 +150,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement architecture agnostic prctls() interface for setting and getting
-shadow stack status.
-
-prctls implemented are PR_GET_SHADOW_STACK_STATUS,
-PR_SET_SHADOW_STACK_STATUS and PR_LOCK_SHADOW_STACK_STATUS.
-
-As part of PR_SET_SHADOW_STACK_STATUS/PR_GET_SHADOW_STACK_STATUS, only
-PR_SHADOW_STACK_ENABLE is implemented because RISCV allows each mode to
-write to their own shadow stack using `sspush` or `ssamoswap`.
-
-PR_LOCK_SHADOW_STACK_STATUS locks current configuration of shadow stack
-enabling.
+prctls implemented are:
+PR_SET_INDIR_BR_LP_STATUS, PR_GET_INDIR_BR_LP_STATUS and
+PR_LOCK_INDIR_BR_LP_STATUS
 
 Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/usercfi.h |  16 ++++++
- arch/riscv/kernel/process.c      |   8 +++
- arch/riscv/kernel/usercfi.c      | 110 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 134 insertions(+)
+ arch/riscv/include/asm/usercfi.h | 14 +++++++
+ arch/riscv/kernel/entry.S        |  4 ++
+ arch/riscv/kernel/process.c      |  5 +++
+ arch/riscv/kernel/usercfi.c      | 79 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 102 insertions(+)
 
 diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
-index a16a5dff8b0e..d71093f414df 100644
+index d71093f414df..4501d741a609 100644
 --- a/arch/riscv/include/asm/usercfi.h
 +++ b/arch/riscv/include/asm/usercfi.h
-@@ -7,6 +7,7 @@
- 
- #ifndef __ASSEMBLER__
- #include <linux/types.h>
-+#include <linux/prctl.h>
- 
- struct task_struct;
- struct kernel_clone_args;
-@@ -14,6 +15,7 @@ struct kernel_clone_args;
- #ifdef CONFIG_RISCV_USER_CFI
+@@ -16,6 +16,8 @@ struct kernel_clone_args;
  struct cfi_state {
  	unsigned long ubcfi_en : 1; /* Enable for backward cfi. */
-+	unsigned long ubcfi_locked : 1;
+ 	unsigned long ubcfi_locked : 1;
++	unsigned long ufcfi_en : 1; /* Enable for forward cfi. Note that ELP goes in sstatus */
++	unsigned long ufcfi_locked : 1;
  	unsigned long user_shdw_stk; /* Current user shadow stack pointer */
  	unsigned long shdw_stk_base; /* Base address of shadow stack */
  	unsigned long shdw_stk_size; /* size of shadow stack */
-@@ -26,6 +28,12 @@ void set_shstk_base(struct task_struct *task, unsigned long shstk_addr, unsigned
- unsigned long get_shstk_base(struct task_struct *task, unsigned long *size);
- void set_active_shstk(struct task_struct *task, unsigned long shstk_addr);
- bool is_shstk_enabled(struct task_struct *task);
-+bool is_shstk_locked(struct task_struct *task);
-+bool is_shstk_allocated(struct task_struct *task);
-+void set_shstk_lock(struct task_struct *task);
-+void set_shstk_status(struct task_struct *task, bool enable);
-+
-+#define PR_SHADOW_STACK_SUPPORTED_STATUS_MASK (PR_SHADOW_STACK_ENABLE)
+@@ -32,6 +34,10 @@ bool is_shstk_locked(struct task_struct *task);
+ bool is_shstk_allocated(struct task_struct *task);
+ void set_shstk_lock(struct task_struct *task);
+ void set_shstk_status(struct task_struct *task, bool enable);
++bool is_indir_lp_enabled(struct task_struct *task);
++bool is_indir_lp_locked(struct task_struct *task);
++void set_indir_lp_status(struct task_struct *task, bool enable);
++void set_indir_lp_lock(struct task_struct *task);
  
- #else
+ #define PR_SHADOW_STACK_SUPPORTED_STATUS_MASK (PR_SHADOW_STACK_ENABLE)
  
-@@ -41,6 +49,14 @@ bool is_shstk_enabled(struct task_struct *task);
+@@ -57,6 +63,14 @@ void set_shstk_status(struct task_struct *task, bool enable);
  
- #define is_shstk_enabled(task) false
+ #define set_shstk_status(task, enable) do {} while (0)
  
-+#define is_shstk_locked(task) false
++#define is_indir_lp_enabled(task) false
 +
-+#define is_shstk_allocated(task) false
++#define is_indir_lp_locked(task) false
 +
-+#define set_shstk_lock(task) do {} while (0)
++#define set_indir_lp_status(task, enable) do {} while (0)
 +
-+#define set_shstk_status(task, enable) do {} while (0)
++#define set_indir_lp_lock(task) do {} while (0)
 +
  #endif /* CONFIG_RISCV_USER_CFI */
  
  #endif /* __ASSEMBLER__ */
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 8410850953d6..036a6ca7641f 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -174,6 +174,10 @@ SYM_CODE_START(handle_exception)
+ 	 * or vector in kernel space.
+ 	 */
+ 	li t0, SR_SUM | SR_FS_VS
++#ifdef CONFIG_64BIT
++	li t1, SR_ELP
++	or t0, t0, t1
++#endif
+ 
+ 	REG_L s0, TASK_TI_USER_SP(tp)
+ 	csrrc s1, CSR_STATUS, t0
 diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 72d35adc6e0e..a137d3483646 100644
+index a137d3483646..49f527e3acfd 100644
 --- a/arch/riscv/kernel/process.c
 +++ b/arch/riscv/kernel/process.c
-@@ -156,6 +156,14 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
- 	regs->epc = pc;
- 	regs->sp = sp;
- 
+@@ -163,6 +163,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+ 	set_shstk_status(current, false);
+ 	set_shstk_base(current, 0, 0);
+ 	set_active_shstk(current, 0);
 +	/*
-+	 * clear shadow stack state on exec.
-+	 * libc will set it later via prctl.
++	 * disable indirect branch tracking on exec.
++	 * libc will enable it later via prctl.
 +	 */
-+	set_shstk_status(current, false);
-+	set_shstk_base(current, 0, 0);
-+	set_active_shstk(current, 0);
-+
++	set_indir_lp_status(current, false);
+ 
  #ifdef CONFIG_64BIT
  	regs->status &= ~SR_UXL;
- 
 diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
-index ec3d78efd6f3..08620bdae696 100644
+index 08620bdae696..2ebe789caa6b 100644
 --- a/arch/riscv/kernel/usercfi.c
 +++ b/arch/riscv/kernel/usercfi.c
-@@ -24,6 +24,16 @@ bool is_shstk_enabled(struct task_struct *task)
- 	return task->thread_info.user_cfi_state.ubcfi_en;
+@@ -72,6 +72,35 @@ void set_shstk_lock(struct task_struct *task)
+ 	task->thread_info.user_cfi_state.ubcfi_locked = 1;
  }
  
-+bool is_shstk_allocated(struct task_struct *task)
++bool is_indir_lp_enabled(struct task_struct *task)
 +{
-+	return task->thread_info.user_cfi_state.shdw_stk_base;
++	return task->thread_info.user_cfi_state.ufcfi_en;
 +}
 +
-+bool is_shstk_locked(struct task_struct *task)
++bool is_indir_lp_locked(struct task_struct *task)
 +{
-+	return task->thread_info.user_cfi_state.ubcfi_locked;
++	return task->thread_info.user_cfi_state.ufcfi_locked;
 +}
 +
- void set_shstk_base(struct task_struct *task, unsigned long shstk_addr, unsigned long size)
- {
- 	task->thread_info.user_cfi_state.shdw_stk_base = shstk_addr;
-@@ -42,6 +52,26 @@ void set_active_shstk(struct task_struct *task, unsigned long shstk_addr)
- 	task->thread_info.user_cfi_state.user_shdw_stk = shstk_addr;
- }
- 
-+void set_shstk_status(struct task_struct *task, bool enable)
++void set_indir_lp_status(struct task_struct *task, bool enable)
 +{
-+	if (!cpu_supports_shadow_stack())
++	if (!cpu_supports_indirect_br_lp_instr())
 +		return;
 +
-+	task->thread_info.user_cfi_state.ubcfi_en = enable ? 1 : 0;
++	task->thread_info.user_cfi_state.ufcfi_en = enable ? 1 : 0;
 +
 +	if (enable)
-+		task->thread.envcfg |= ENVCFG_SSE;
++		task->thread.envcfg |= ENVCFG_LPE;
 +	else
-+		task->thread.envcfg &= ~ENVCFG_SSE;
++		task->thread.envcfg &= ~ENVCFG_LPE;
 +
 +	csr_write(CSR_ENVCFG, task->thread.envcfg);
 +}
 +
-+void set_shstk_lock(struct task_struct *task)
++void set_indir_lp_lock(struct task_struct *task)
 +{
-+	task->thread_info.user_cfi_state.ubcfi_locked = 1;
++	task->thread_info.user_cfi_state.ufcfi_locked = 1;
 +}
-+
  /*
   * If size is 0, then to be compatible with regular stack we want it to be as big as
   * regular stack. Else PAGE_ALIGN it and return back
-@@ -261,3 +291,83 @@ void shstk_release(struct task_struct *tsk)
- 	vm_munmap(base, size);
- 	set_shstk_base(tsk, 0, 0);
+@@ -371,3 +400,53 @@ int arch_lock_shadow_stack_status(struct task_struct *task,
+ 
+ 	return 0;
  }
 +
-+int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *status)
++int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status)
 +{
-+	unsigned long bcfi_status = 0;
++	unsigned long fcfi_status = 0;
 +
-+	if (!cpu_supports_shadow_stack())
++	if (!cpu_supports_indirect_br_lp_instr())
 +		return -EINVAL;
 +
-+	/* this means shadow stack is enabled on the task */
-+	bcfi_status |= (is_shstk_enabled(t) ? PR_SHADOW_STACK_ENABLE : 0);
++	/* indirect branch tracking is enabled on the task or not */
++	fcfi_status |= (is_indir_lp_enabled(t) ? PR_INDIR_BR_LP_ENABLE : 0);
 +
-+	return copy_to_user(status, &bcfi_status, sizeof(bcfi_status)) ? -EFAULT : 0;
++	return copy_to_user(status, &fcfi_status, sizeof(fcfi_status)) ? -EFAULT : 0;
 +}
 +
-+int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status)
++int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
 +{
-+	unsigned long size = 0, addr = 0;
-+	bool enable_shstk = false;
++	bool enable_indir_lp = false;
 +
-+	if (!cpu_supports_shadow_stack())
++	if (!cpu_supports_indirect_br_lp_instr())
++		return -EINVAL;
++
++	/* indirect branch tracking is locked and further can't be modified by user */
++	if (is_indir_lp_locked(t))
 +		return -EINVAL;
 +
 +	/* Reject unknown flags */
-+	if (status & ~PR_SHADOW_STACK_SUPPORTED_STATUS_MASK)
++	if (status & ~PR_INDIR_BR_LP_ENABLE)
 +		return -EINVAL;
 +
-+	/* bcfi status is locked and further can't be modified by user */
-+	if (is_shstk_locked(t))
-+		return -EINVAL;
++	enable_indir_lp = (status & PR_INDIR_BR_LP_ENABLE);
++	set_indir_lp_status(t, enable_indir_lp);
 +
-+	enable_shstk = status & PR_SHADOW_STACK_ENABLE;
-+	/* Request is to enable shadow stack and shadow stack is not enabled already */
-+	if (enable_shstk && !is_shstk_enabled(t)) {
-+		/* shadow stack was allocated and enable request again
-+		 * no need to support such usecase and return EINVAL.
-+		 */
-+		if (is_shstk_allocated(t))
-+			return -EINVAL;
-+
-+		size = calc_shstk_size(0);
-+		addr = allocate_shadow_stack(0, size, 0, false);
-+		if (IS_ERR_VALUE(addr))
-+			return -ENOMEM;
-+		set_shstk_base(t, addr, size);
-+		set_active_shstk(t, addr + size);
-+	}
-+
-+	/*
-+	 * If a request to disable shadow stack happens, let's go ahead and release it
-+	 * Although, if CLONE_VFORKed child did this, then in that case we will end up
-+	 * not releasing the shadow stack (because it might be needed in parent). Although
-+	 * we will disable it for VFORKed child. And if VFORKed child tries to enable again
-+	 * then in that case, it'll get entirely new shadow stack because following condition
-+	 * are true
-+	 *  - shadow stack was not enabled for vforked child
-+	 *  - shadow stack base was anyways pointing to 0
-+	 * This shouldn't be a big issue because we want parent to have availability of shadow
-+	 * stack whenever VFORKed child releases resources via exit or exec but at the same
-+	 * time we want VFORKed child to break away and establish new shadow stack if it desires
-+	 *
-+	 */
-+	if (!enable_shstk)
-+		shstk_release(t);
-+
-+	set_shstk_status(t, enable_shstk);
 +	return 0;
 +}
 +
-+int arch_lock_shadow_stack_status(struct task_struct *task,
-+				  unsigned long arg)
++int arch_lock_indir_br_lp_status(struct task_struct *task,
++				 unsigned long arg)
 +{
-+	/* If shtstk not supported or not enabled on task, nothing to lock here */
-+	if (!cpu_supports_shadow_stack() ||
-+	    !is_shstk_enabled(task) || arg != 0)
++	/*
++	 * If indirect branch tracking is not supported or not enabled on task,
++	 * nothing to lock here
++	 */
++	if (!cpu_supports_indirect_br_lp_instr() ||
++	    !is_indir_lp_enabled(task) || arg != 0)
 +		return -EINVAL;
 +
-+	set_shstk_lock(task);
++	set_indir_lp_lock(task);
 +
 +	return 0;
 +}
