@@ -4,115 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D75ABCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 05:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BD47CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 06:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFEB18E0003; Mon, 20 Oct 2025 01:59:06 -0400 (EDT)
+	id 4AC978E0002; Mon, 20 Oct 2025 02:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAF5E8E0002; Mon, 20 Oct 2025 01:59:06 -0400 (EDT)
+	id 40A588E0005; Mon, 20 Oct 2025 02:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9E238E0003; Mon, 20 Oct 2025 01:59:06 -0400 (EDT)
+	id 2D1E48E0003; Mon, 20 Oct 2025 02:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C54648E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 01:59:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 496661A0768
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:59:06 +0000 (UTC)
-X-FDA: 84017439492.05.E73143B
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7DD4340008
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:59:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NUd69dFd;
-	spf=pass (imf12.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 17CFB8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:20:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 965EC160725
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:20:09 +0000 (UTC)
+X-FDA: 84017492538.27.37BAABA
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 725CD20008
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:20:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="sa17P/66";
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760939944;
+	s=arc-20220608; t=1760941208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jh6W7krdQiiiaYxBqeKiYxYtQ0S05p25BmbNHj4vO4Q=;
-	b=MoEwRCdGqawgy8TJwtaET2LLIbpHmaeJ+YE9shWfNQ75nwLwGmfobfhoc8ukF5goIVLEVK
-	fO2F6D6UzvqSXGsRJETDy9JBYzKUq/ufAatKOdUnxCm1MOA232Z8pz287F0feyI4sZUTYe
-	f3Bs1BVZiT4Ikk7MPPxhADu0xCepbzc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rC0U2WaQCsKbfP/n1ywtWAKT6+zOU+YhhJGODgZAC9M=;
+	b=1yWTjxeLfy9LJLKgB8hSziKFBFo3zjQfslInk3yHCZmjuMhr+1IiFA/nJ8fyeUtqVhiKi7
+	ogXE38+FJkrdz4oQGrb0nh8QYBhdI0P/mgD7tHCOq6FaEQx5aQsxL+90M21aEYSk4yHq/u
+	2QONQbFAKqqkXPqZEtzafbYix2LzkO8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NUd69dFd;
-	spf=pass (imf12.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760939944; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="sa17P/66";
+	spf=pass (imf03.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760941208; a=rsa-sha256;
 	cv=none;
-	b=5dWUujERPlwMhMvSCMtSPLEQfbVKMtnALtuh5QEb4Pql8BBNLmn7bDi/g5qh8fqG8dMf2R
-	Mmj1iZmS9k5OAVjr9/rEwMbBKuvbUVlID4jM9VIqsnbke9sq5dJ5vWoeQUXS8yZHFIkWJU
-	utYXo/wuLyoSl8SeHCa6FKYZ19a/hOY=
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b6a225b7e9eso2790267a12.0
-        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:59:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760939943; x=1761544743; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jh6W7krdQiiiaYxBqeKiYxYtQ0S05p25BmbNHj4vO4Q=;
-        b=NUd69dFdUPXJtHlwecvML1YzeQQMVXORQ3EX/1vklhEIgAN0vV328rUoXvTOw408Rc
-         6rlKteWhoaU3+hMMg5TtRK6Bu4QSZ51JgEUd3N8YhjDjAKBQYqu0pChscstZKWaPJ0Yk
-         7Wy9VlOZVEOBxVbXt9NIUjZx6rrmY+DkNTB6VfOFWfxmVVkH9ZjZgZi18sdnWMY29zsp
-         li9QXUPKzV5udAYftzbN/X4eIpixc17LKiJhgLKKb5wotf21EYv/FMYNFKKFdZiLgRMa
-         zGaXfsbsG8xxdKJhLogJO71Bil15bE0j+bfZFaGGCcjgCejHTUsnHLQGssMXZWyCblgm
-         2xqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760939943; x=1761544743;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jh6W7krdQiiiaYxBqeKiYxYtQ0S05p25BmbNHj4vO4Q=;
-        b=NfySfxOWfSMnVqmuWRJTxUpos+K8ed7eoLiXtlMNbTu2P284s1BLVqI9pMuYAtEVnV
-         p5xXT+0oc/UyLV3cBvzaLTgUKpe+gGdu7CzFIDuqji5pbkUNO/J3cSt3wforTkhWtK3U
-         ZkgWlKjlWe4Ict+fTSqgSO24eHY8msy4/l7zgXTjO77lkUPHHzN957iCvcZA6OVxHYaa
-         wXnEGSa+KeTY6G11Hfh/Es0WVZHA5zNsre+U7CcFj6DPcfetBZSPay0sj8yEQSZkGay1
-         7LAbf5LxIKz9UrxJTz6H/KP5gVDlH9V3hZEWCNqASud6pZDCJ6hSLSy2h3v6Dzb/tezQ
-         ZtCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCE6wlGUjjE9rPc22DUPTg7tvxx2OGuSucaoPfN2oAJLV8NPdKKpT8fqMVhLvpaN2Ktx7FYPnNqA==@kvack.org
-X-Gm-Message-State: AOJu0YzzFqceunF9/U//rvBAgXXMgfRozrQj32Cwi2j8tucVn9dPxlcu
-	dIWY/KVsXhwr2lWWowB6v3AdkvZQQFL7u+yIoC5hQcSB+CZS9mb+Z5KC
-X-Gm-Gg: ASbGnctCxqJeS4cFnVTX/ht76PDjFDVG3Xlydy9IvYlYvFIvSo5cSHAFWgcA2nYpUB7
-	Ti2WBqKkWcx8LSYAF3KQ+wo3IvgwbcRxDzlt39fYxxWwC25vBChFUk+7GQ1DubwY8RlZsML/rH/
-	flwozuNOpExmSjxZPB0xCYeeSu9qGWheoCAd582FvG+P5Yk4EKHIhBNQSQef03KvA6M9FcPUIRq
-	GzrXx8pjbgsYWBy0YzQa1JUuZN0T/cBXsCI6oWyljjL0mkFiXJqUvnGduN3T6UZTdT9CvmAbOSu
-	dv0WShunlFP6V/JY4WOP0MRI5W1vvsXBJzEzCht0+pAQvw0q+sbyWrgK2Isa+c9qVWhP+IWXUpj
-	ZqhYyCNaa06rP2ZDZQhE9A9aqYelV5v/UwB7fFGH2YcU1+U1epyKyQnmn27/T4lu8llVpbqgiTK
-	LzhWsudXdS
-X-Google-Smtp-Source: AGHT+IGlZYGHdGgTHh1H3IPWV/+DfKsNTbrDi5Reqk7UDbn9zs+s3vYh2q9TI7qZwuSkPn3vMBTWxw==
-X-Received: by 2002:a17:902:d584:b0:275:f156:965c with SMTP id d9443c01a7336-290cb65b61dmr142564905ad.52.1760939943138;
-        Sun, 19 Oct 2025 22:59:03 -0700 (PDT)
-Received: from LilGuy ([2409:40c2:115f:7331:acce:2657:d834:4048])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29246fcc795sm70386805ad.30.2025.10.19.22.58.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Oct 2025 22:59:02 -0700 (PDT)
-From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev (open list:DAMON),
-	linux-mm@kvack.org (open list:DAMON),
-	linux-kernel@vger.kernel.org (open list)
-Cc: skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Subject: [PATCH] mm/damon/sysfs-schemes: Validate nid usage in nid_show()
-Date: Mon, 20 Oct 2025 11:28:24 +0000
-Message-ID: <20251020112824.144391-1-swarajgaikwad1925@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	b=LQYQ5c5E8xpsV7iPohWgrwaLEMDBFYTXGsyUb2giL90xWtTQHPkGT8nDi17NeSwpAN7jqP
+	ddPfc4GL5k+IJ0QVEkOW62Tu2eHlDWEePXRsb/k6XKniOFdxtBeZBJ1HV/6jInQexVdtlV
+	jZdQSPhIhaIRLLbAuqZIDh9hcQ3TV2M=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=rC0U2WaQCsKbfP/n1ywtWAKT6+zOU+YhhJGODgZAC9M=;
+	b=sa17P/66dDkM9Fhntp1LxfEPza/i8dLy86QdDKt1/yTmEMynCHiy9NDGijyLIhQBGJy0jC/5g
+	1VOqVaozAxffe9iQi3oPWZzb6zt253UCahR0GMBXnHsjgpg5pCNDHJthdxwhRFdofrxoFTgOv02
+	uuTvwvcde7MYJ6/DMN4KONk=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cqlcv2Kd5z1T4FV;
+	Mon, 20 Oct 2025 14:19:11 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8D6D9180488;
+	Mon, 20 Oct 2025 14:20:02 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Oct 2025 14:20:01 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	<linux-mm@kvack.org>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: [PATCH v4 2/4] mm: mprotect: avoid unnecessary struct page accessing if pte_protnone()
+Date: Mon, 20 Oct 2025 14:18:43 +0800
+Message-ID: <20251020061845.3347258-3-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20251020061845.3347258-1-wangkefeng.wang@huawei.com>
+References: <20251020061845.3347258-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7DD4340008
-X-Rspamd-Server: rspam11
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Stat-Signature: d5hsoa8wugrjjn6r6asg68qi5mscto3z
 X-Rspam-User: 
-X-Stat-Signature: 969pi6ou6a9z7ktdyzios595kktr914n
-X-HE-Tag: 1760939944-595428
-X-HE-Meta: U2FsdGVkX1875tPcAvpw7aSXzeRovZgTZ8IEAR4/3yyRHgr+50CStjCzq7GOw2p4tWQar/InTU4pDx9ngBhUdi7j2UM12B7PXo2NUYR4fqe3OK0BYgQKznp6Fx59OiwQVjeCbcezX41h2lyScEzIbhUDdeAd6UFJrKxf5YEv0thc/zY/NGfj56X1PNOFFe73rN22zg3kcn2FLRyJ7/BKFLUGC+qumblU+vnaNIHe6BYkcUfZow2f7OBLWPID2sX2jqVvmEoBfl8t1pOAf8UZh4T/Ok55vnQkpi7cfbofCzAKpqRYhywPql7SXrRZuIvCf42/vfAv1OiPBda+b0+m4qkEnku3H1I80NGf6WJAm6KyRpat4QAO1Wso2a5p/ay0p2Wcqqeg98v8dDYXPbNYv1AZROYvLT/GYm02ImodgDjTGKjokQVL1MFHjOBXfQ7tQYPTAdmqcHYyCew0gBUMHU8ag+7JjqPPEivC0q7NOZCQtahdZL9abSOA1ka6cY7ITCULaVJ+kEImptnGjCfW6JKQRLvanZqL78JCIQ1Xvtfj6nrX3rq3Upyqu++21xc8JOxIyVA54yEp9afmzAf4Qf+nUQdo95jc/Xeil8enQJVfNJflwKpdA/kXM3XExDt34SY687AWW/WorE2ozdHqTMDfQgG0n+FtJDDBrbm0ztPXjvEgGu2wjsiFOv5qLRXw6H54lCW3kiYHt9FGPMkApiiJYq/+tXvP0/cK64rIYd4oFVRyMhF5+Uy1qNeotcTHtTk04D3HmQFhXuD6X/RYZbiLk6gQN49zdkz9owvrDYLSD/vAL9h38JXlJTSHkO1/MUTABV7jYB1uJ0Q3im6feJRlqsZQDUDJRqALo9aGNH3VsTeOwL6DGwWYaNh5QMWhMc7LrIgzDs4u3ThtUhFSF5ZnVJkUt1+6VJdm1zl6HOwgsjy2zxRXUw+1RdQEHuv+QeuxE35gEJi/98Uigso
- jKXs/3h1
- NaJwxOmpdfmU0iuZITHl+uMEKi40JEZ1XIgXnnHQzcKqjL8+pYjY1Uok5TQQKOwOZ9lnR93rXAsr74SWwUsRvSDmtQesuiuwsxLhT7f9sJ1hy29YkakQfpEk87aKiCd7fdGWK2LvEEBI+X9mjB5uQrsrZ7x1Q1EJriBdr1qI423N1PNHHEasjwkULub/PtZbDShapWzv+R9HjMx6tbkcWjBmHwfi3hjWqfNYg1hMa7K0vUxh97xt+vLEeNVxDh+HHOVkkB7ni59SyZ9NbYiyLTYIxqAbrS8v0OHWuIxvgs7O5AY7/EJSjVmURu1bQe965JfCFFM/zeF1BqHJBPxe4vNetpRZIbHfp1wHvZV2Iycka2iS0PRq8EPFrMRfc6Ioddz0oBywDRYcHiqtqsDYFarEP/gc0zLQQxBFsUZD98uSo2OUNWVjos1ps6zB5D1OG7GXzFT3XvZZw3n5sc5an4gNewNKkvu3wTL91VlZXdOq1J1nAQ3VdTGVSeeancDZ3zFrp1IX2zGO+Tcd8I4HG9rcb/OOuuEe8LWl5tLsKLxNh8Jw=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 725CD20008
+X-HE-Tag: 1760941206-158974
+X-HE-Meta: U2FsdGVkX195mkhZ5+6i+HOxMPthwaLh4l8QebvFN9h6Fs1GDAyakPkBaXgLMBlCbomli7Gl80G+8xWKLnnyQjbtY6l6xw8OPS6x9BNSywvcVzBW88344SfkDe+GA+CNI35LExC6KGOaUAGw9bzPkpWVAEicKQ+nrsxFP3ni/EdHp5NIwk1/9ZdkwNYg7547TJ2YJzzyzfEI1euqzF++AWZaCB9wfnTKd1dtG/4T1+ItZ9vtunpc/6QfwH8lXspKRrhgVFJOJ/JIzwN1NB2QgxZ66l61VY6/dd51ZQyJO2ij8g45ThG3l/6VQj5xfdHB+ec35I7zHDjzLQkEymby1cFoqY4k6Bad5Mj3vy+C8tr1ul6xb21sjkUip89Xb8BSiKD7sney4mlPALz1rMfMApubWexBIW4BahUmTEGJOKzkIf4HbddR+AN+0z9AzDZJ6/jmR66nc6hd19Qc3ky02GqfRcBFNMr/GoLUDKeM4rrUjiPl+IR3TGaQENte5yON3zAXWpQKrD82eNf99virSCShWRamHjybQ6UcVko0qhfXqlzNJiO7JEGU78DMmHc1qyrpJ76ZMCqzZ56068ge8l8MQ44Q4IRWBLheu5YP/HhtUpIg1PdDVqOvjUCRloRZhxIEHy6N9Lc9zS4zLHAGZPgvv2eyg3fH94ZmH7F4b/IFR7Y4T8JtyXypeYP2AtHx9I8ZRaFnCOnVhW4R4qn/wkaQ2NPgWuMAv8Uou9SIhpYp0bUjADsX2ffWnJx16INtUcqocWIGdzoc7fVvpxCsIlkJNRpq2FpS2Afa4VOkbfBITJ215jZhvMDNiAx+Hfp4CfpeATOXYqGknF9pXWEaUh9WuMDTyOGRarG1Y090ZkeMeqNjVbT+OO+ttknwi94F7RsGB8vfAnahPDUe2HU+NpK4NpPksRNT7HNp+1hpOCyDDpXNc0PkJ6DrJUMw0OXz7kwmTA9yXRGV58jAN5r
+ BsrD5sUR
+ JSLPQo1ZtueA0XKu5Fngb+sg4UQlGUB6JypIkZ6XnPxt7TDw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,54 +103,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The nid_show() function previously returned the node ID (nid) without
-verifying if the goal object of damos_sysfs_quota_goal was using a
-node-based metric. This could lead to incorrect reporting when the
-goal metric was unrelated to node memory.
+If the pte_protnone() is true, we could avoid unnecessary struct page
+accessing and reduce cache footprint when scanning page tables for prot
+numa, there was a similar change before, see more commit a818f5363a0e
+("autonuma: reduce cache footprint when scanning page tables").
 
-This patch introduces a validation step to ensure that nid_show() only
-returns the node ID for valid node-based metrics:
-- DAMOS_QUOTA_NODE_MEM_USED_BP
-- DAMOS_QUOTA_NODE_MEM_FREE_BP
-
-For other metrics, it returns -EINVAL to prevent misleading information.
-
-Tested with KUnit:
-- Built kernel with KUnit and DAMON sysfs tests enabled.
-- Executed KUnit tests:
-  ./kunit.py run --kunitconfig ./mm/mm/damon/tests/.kunitconfig
-- All 25 tests passed, including damon_sysfs_test_add_targets.
-
-Based on commit 3a8660878839 ("Linux 6.18-rc1").
-
-Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/damon/sysfs-schemes.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ mm/mprotect.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 6536f16006c9..23a73b94fe53 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1112,7 +1112,16 @@ static ssize_t nid_show(struct kobject *kobj,
- 	struct damos_sysfs_quota_goal *goal = container_of(kobj, struct
- 			damos_sysfs_quota_goal, kobj);
- 
--	/* todo: return error if the goal is not using nid */
-+	switch (goal->metric) {
-+		case DAMOS_QUOTA_USER_INPUT:
-+		case DAMOS_QUOTA_SOME_MEM_PSI_US:
-+			return -EINVAL;
-+		case DAMOS_QUOTA_NODE_MEM_USED_BP:
-+		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
-+			break;
-+		default:
-+			return -EINVAL;
-+	}
- 
- 	return sysfs_emit(buf, "%d\n", goal->nid);
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 056986d9076a..6236d120c8e6 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+ 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
  }
+ 
+-static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+-			   pte_t oldpte, pte_t *pte, int target_node,
+-			   struct folio *folio)
++static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
++		struct folio *folio)
+ {
+ 	bool ret = true;
+ 	bool toptier;
+ 	int nid;
+ 
+-	/* Avoid TLB flush if possible */
+-	if (pte_protnone(oldpte))
+-		goto skip;
+-
+ 	if (!folio)
+ 		goto skip;
+ 
+@@ -307,23 +302,25 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			struct page *page;
+ 			pte_t ptent;
+ 
++			/* Already in the desired state. */
++			if (prot_numa && pte_protnone(oldpte))
++				continue;
++
+ 			page = vm_normal_page(vma, addr, oldpte);
+ 			if (page)
+ 				folio = page_folio(page);
++
+ 			/*
+ 			 * Avoid trapping faults against the zero or KSM
+ 			 * pages. See similar comment in change_huge_pmd.
+ 			 */
+-			if (prot_numa) {
+-				int ret = prot_numa_skip(vma, addr, oldpte, pte,
+-							 target_node, folio);
+-				if (ret) {
++			if (prot_numa &&
++			    prot_numa_skip(vma, target_node, folio)) {
+ 
+-					/* determine batch to skip */
+-					nr_ptes = mprotect_folio_pte_batch(folio,
+-						  pte, oldpte, max_nr_ptes, /* flags = */ 0);
+-					continue;
+-				}
++				/* determine batch to skip */
++				nr_ptes = mprotect_folio_pte_batch(folio,
++					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
++				continue;
+ 			}
+ 
+ 			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
 -- 
-2.51.0
+2.27.0
 
 
