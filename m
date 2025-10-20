@@ -4,118 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA63CCD1A2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 21:02:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EA8CCD1A2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 21:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622E78E0006; Mon, 20 Oct 2025 17:02:24 -0400 (EDT)
+	id 483748E000E; Mon, 20 Oct 2025 17:08:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FA588E0005; Mon, 20 Oct 2025 17:02:24 -0400 (EDT)
+	id 45AE78E0005; Mon, 20 Oct 2025 17:08:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5106A8E0006; Mon, 20 Oct 2025 17:02:24 -0400 (EDT)
+	id 3982D8E000E; Mon, 20 Oct 2025 17:08:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F66D8E0005
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 17:02:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F21A7583A2
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:02:23 +0000 (UTC)
-X-FDA: 84019715766.13.6166966
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2A6FC80002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:02:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JvWFnz0J;
-	spf=pass (imf02.hostedemail.com: domain of chuckwolber@gmail.com designates 209.85.166.181 as permitted sender) smtp.mailfrom=chuckwolber@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760994142; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E378E0005
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 17:08:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA8D11602B3
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:08:33 +0000 (UTC)
+X-FDA: 84019731306.12.9FFF86F
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3CE36A0003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:08:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=VGy3JZFQ;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760994512; a=rsa-sha256;
 	cv=none;
-	b=hVXkEQBjpWBiixNSZQql+Ko0PbedmMWHNYr2kkqTf4veH2Om3a/WDFEkFURPy+R3sGuRac
-	5k275nZ99bU79vOm2ojS+64r5LwkdoDlFXhEqvCsdSCiZuqch3PJZSB5jcwim9L51PsRnF
-	dsE/V/cCErPsbmh6zNq5HCMHyqIAlqE=
+	b=0Yy8iMhkI1Nid6sa8rcuySIGdugny8f2PV9kYZbW+c+F4sRKey2wDLwq9+gKB7ufsWJM8E
+	Pg5KaahwAR0VVvIrRPjkccqKvKtp9KDENODx7PxpoddL3yfNTqsppNVUiE0sZdT8K5ekba
+	1RbVVNu27uujsN5jfof9A0qdPwXEIBY=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JvWFnz0J;
-	spf=pass (imf02.hostedemail.com: domain of chuckwolber@gmail.com designates 209.85.166.181 as permitted sender) smtp.mailfrom=chuckwolber@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=VGy3JZFQ;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760994142;
+	s=arc-20220608; t=1760994512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bEuxap4uXOw4PVhBkZanJl9OA3DpfYNQ9aSaoCPuf2A=;
-	b=nGCdL1BW/ZdtFj86GdxT1+1Ev7cV1pO8Z5jqiWCyHK+KZuGFmgLA0ygZvzFiRk3MRHZMhW
-	o2mlgvQvuC9xrszY9YN9HY1hUd2t31nsZvc1Ig9iHYkBHdfU75eaBGPf1n1qP56325JfbY
-	3wpd0v/bsiF4uvwCZkdJGe4BkcuhQN0=
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-430c180d829so18519845ab.3
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:02:21 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OWs3rixB8Mzl55PE6ULVQfSrvZtFhlgG1JKGhyoVWm8=;
+	b=s0LQs9I7TmrGyV3X5rpHvrGgkiyg7G0vYDbro77fAVj95T7to258T7WcOerzrnwV/IoiEv
+	7BhY9rYANAMcEVB3ZEY3lvsk/EeEs7IIXGKyvj3SR/WarpgBrTyFv9bzN7qiuXCXOcuk8Y
+	g9qpW2+qTZJI3TQ7aWN3kbJZqhCy5T4=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-87be45cba29so68459716d6.2
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760994141; x=1761598941; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bEuxap4uXOw4PVhBkZanJl9OA3DpfYNQ9aSaoCPuf2A=;
-        b=JvWFnz0Jue9d2FRBn53EFEWC7j2LwF46FBLSOPdN8WHwQAdbGTC7YWXNgii96CxhlP
-         yShBziJOeazB5Evycmz6hbNHkp6E3cBEIzcqbMnplXEdHpOFnieDKSQOrPuFzF/L/dxX
-         EGOT8iCtVeehFEFdCEPNC+SX60rcMCTocfJ+vtuete9bgOBq7AMQOiLQX64J2NWSi53i
-         BRZGy1fuTzKshvjSOqUsU/Tl9tbNrAt96HglVaJfVZ/UcH+169+F6aBSGObQGebdtczX
-         ScltjcCfA32IJjPKNkq8y1ro8cRn67pk1GZwTeWY2MCtgrj+MRexk085VfrOnxTON2NN
-         JH2g==
+        d=gourry.net; s=google; t=1760994511; x=1761599311; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OWs3rixB8Mzl55PE6ULVQfSrvZtFhlgG1JKGhyoVWm8=;
+        b=VGy3JZFQHGHcjL5ZXEYo+eCYzuskRrSG8zMm3hLH8eGKB/LZHXEKDohhoKtqJlgKup
+         PK8F46oRhTzWyx21/oDH2CoZtajwbfycO1fDEdM5q/b3+IOAO2mFPGU5pfqNoUYin83i
+         wqhZccbRn3p7XjibLCa3L9mIFYeVUl9e0936NsSiSnytj3wa7iiTymEcRLNwV7nWiCs0
+         /PwswMInA5U7zj+EQG4OgOvtEaJxLt5AHSqVKabwE/zYDAIpnxjHktaFxDkG/8RN4sOI
+         pgk6ch9wLv2XE+h59FfQoDjZ/SGgQcIvlb4OY1vvd4sVLXfDcfJf8mL5l/e1SG9X/i5c
+         F1uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760994141; x=1761598941;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bEuxap4uXOw4PVhBkZanJl9OA3DpfYNQ9aSaoCPuf2A=;
-        b=J3ZwfPE1yLy2kyRQ9eOd6OGhkT4F3Ku6HhUd9m8nk8IDUIcevasvQD+A4wROUhc19Z
-         +Swze+p64/7d7tdKfR1pOUoZR8kmS9Jbqja3N1ffB9JdfFZkHMraCHv3X8ocEzuHI8zc
-         ubXMKP96BYoHfimYdV254YFyicuhEZfAnT8wJalHOhZY1tBeJ5mAk0bEk9pGsvF0hvZc
-         uOUCZ0D3FcEzC7QMsCAkKhNr7efjq28X/KV692t3kCsC5vbftjAbirqMOAtCCANwuz34
-         tkfAGo5+5HoAT9jNzP+915OazjPgYHSwc3B0wSrrE7b1NoExi86gTrQ9hTF/twHt2JgH
-         PgZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXe9u7btahfuHTpH8FhcOEVoGb8WMCQFTUtCvYDpGX2Fpg0DNSAxEKesLc/Pcq0Z+EzgFyJmy0z+A==@kvack.org
-X-Gm-Message-State: AOJu0YyoWRASCWqPtO/R3bZGDj9/UTglux6jfq8HEJSgsUgYtifH+uTe
-	DhMsMlwvkN/wnPIEdJNCdYVAFlzcdANOzcbhw8pnkwWBH4jD1Te85Sb6GsLNoVKnRr0sHiBXpsI
-	g7ZoXWun1ShFRBPDrTV3eqqBVCT3t6Is=
-X-Gm-Gg: ASbGncszA/NL5DjHRiZ14EAd+kwalpEN0SQXC+R4CDdVoNucHBkjdYWFfH2x65bPR/8
-	86ByUPimznkxfo6vou3laZDechXkFE9ts2iC9kz83jwdBIv5xQvJ66ZaAvhmakn7KlrodZCNoCW
-	PMEMPPdnf4T278BL+G4p57d3vYljMznz+ItZwpPkoiyYrPEyivzSOwJmSPzt1+RjO2I3QCGSiRL
-	zf3imhq9mhwUY8s9WcWI54mYK+OD69k0S/G2tGEQ3Pdosy75khUXnhXL8x58UBRj+mHiybPmbQT
-	0d/AUspAhsXqi5aXakLjsnI+4db5P9rqoDNIIBrVAI5lKBICHIEq4MK0JL0w3kkvPQr8+ztetJl
-	TmV6mXrmg3wZnUINA9mj2GKwKoMDUJYD9YodmP0hOG1DrAnBOs79+N4GK
-X-Google-Smtp-Source: AGHT+IGAeJGAQIBM2nto3h7wo4Ux1j4JQv5kFnMFKMPjSOsA8laTc7KGJRta+EANCOydZnJICpXKfizFw0bVF/vJHG0=
-X-Received: by 2002:a05:6e02:1fc5:b0:430:e9d2:8f3b with SMTP id
- e9e14a558f8ab-430e9d28f40mr20917205ab.27.1760994140614; Mon, 20 Oct 2025
- 14:02:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760994511; x=1761599311;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OWs3rixB8Mzl55PE6ULVQfSrvZtFhlgG1JKGhyoVWm8=;
+        b=kMC4cDenGp0x2qTprDrzhRcfR31d45Ljv26pNZkXU+pho7buAEdbHJsrHRsW/ORz6o
+         Ebxo3hbMUJGrOjqAcHUiDBcnhyNyK282joMVeqOahheT4OHFuPqca0vxanoxTetQzP7O
+         mR4dnFH3sDTGWzeVP84b/Ae+dXn92i5ckYZG8C104iCU6HI6XNWhpCqxbE5IkjAGf4Gk
+         4+fisy6RKwvOlfNgY3gFSQA+0F79tP0QKu9HjCeV8ExByPR8slqi/ikuNumelfh5zpgA
+         mqSDJqqmY6ApW/9ib11JIaQrvr5CndVPvz90SdWoGLAho4ANFFcMsG9lWj220CRgOY5n
+         1TKw==
+X-Gm-Message-State: AOJu0YxnfIoEM2DyKzadTU00aQQwFSbD1BF6e8+io94A3/ZN+wUmQMfr
+	oH4KpRWbZLlAr3H/R6Oyb5gPHDyAXuCzkTEZ3TaUoFRYK7RfTOF9zhLFQa5Jw/bAstxONEIwSlh
+	4wLXd
+X-Gm-Gg: ASbGnctJYiKHvTeEExfBIC8VQqYNSkXpQJWwbVTRkdXeS4e6npfTjx1dsLId77JySof
+	HDKa6DOCJJDT1pVXBGrmXDI+LKkO3ggJ1lGMocDY1KoKjsQ0ILU2d+YcUSEAvGb9XlpIWdteWru
+	Fg5UT13XBdC3ilqaoZfXk4riBBFE5LC5IyEJKg0D/Ts7Ah86fp1NHrp6UywtBcwvCjpI22PlSCd
+	RAncV3CG/HnPzPv2lcMeFelaQYa7Cwqai7D9JVG3dNgU7JUZuWuJ3WDk2I9XH8Q9qqssL0C9N0m
+	+AJkoGlIDcNWeGdjFZ4wH8HPLlKrTTw/BTuXHnqdTE5zt5XVFfmydi6cmgl9KaLRtKjpcDz57lc
+	ptUjAgKnpojkJ7EZv2DtJ6VV2l8puSsdTQiUPXTUUzofm96RMHhEbRjgfgsdtSRteAySBL1PrR2
+	cQRVVzIpdLMgdIXQtiSEn42ZryWa8rlTXzM5PMFGGsD4hKkf5heDC3ZVG+4MT6yEss7BVDbGgZy
+	gk=
+X-Google-Smtp-Source: AGHT+IENfTNM2VO5U6qloud+UsMTLsA87azdHw6yWf8IBWAYsxqF8ZYo9h/XbXj3UiJ3yHUAuGEmrA==
+X-Received: by 2002:ac8:5a8f:0:b0:4e8:ae73:f548 with SMTP id d75a77b69052e-4e8ae73fe70mr96782901cf.82.1760994511076;
+        Mon, 20 Oct 2025 14:08:31 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8aadc2032sm61826211cf.0.2025.10.20.14.08.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 14:08:30 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	David Hildenbrand <david@redhat.com>
+Subject: [RFC PATCH v2] page_alloc: allow migration of smaller hugepages during contig_alloc.
+Date: Mon, 20 Oct 2025 17:08:16 -0400
+Message-ID: <20251020210816.1089910-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250910170000.6475-1-gpaoloni@redhat.com> <20250910170000.6475-2-gpaoloni@redhat.com>
- <878qifgxbj.fsf@trenco.lwn.net> <85166a8a-ad54-42d0-a09f-43e0044cf4f4@redhat.com>
-In-Reply-To: <85166a8a-ad54-42d0-a09f-43e0044cf4f4@redhat.com>
-From: Chuck Wolber <chuckwolber@gmail.com>
-Date: Mon, 20 Oct 2025 21:02:02 +0000
-X-Gm-Features: AS18NWAdMqoSfNFq5XutKr0MnkgQ82Rnk3fUSUQqpBl0J3sT2E2MC5yWctws4W4
-Message-ID: <CAB=6tBQP3aCDWch4ZcEYMqFsJ4OKXSyC_hb9V9hA7ZZty7vFeQ@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 1/3] Documentation: add guidelines for writing
- testable code specifications
-To: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Gabriele Paoloni <gpaoloni@redhat.com>, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, gregkh@linuxfoundation.org, linux-mm@kvack.org, 
-	safety-architecture@lists.elisa.tech, acarmina@redhat.com, 
-	kstewart@linuxfoundation.org, chuck@wolber.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: onbs7st8pikyxinrfeqt5bamd39ho4m6
+X-Rspamd-Queue-Id: 3CE36A0003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Stat-Signature: xgc4s1ryqm7op3oixbsgjq43kj64iddj
-X-Rspamd-Queue-Id: 2A6FC80002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760994141-635999
-X-HE-Meta: U2FsdGVkX18SiuT0rzXCtSYtUtD7iQNZxAmNfItAa+jXuQSrhRE0vweZqomBheg6nIoFisWjUJYdgpbUxDy9P+kc3+KSMxOXBXMX045uZirTWmuf5lxUL4wAyTgJPyU8SbxJ2rYZfkkTBzTvTX+s7dTuh2oe4Kk/IC7XCYG7E6bgt5Ys6+UQlPDOJ/9Xr/tOYnOP0l9dBHFoe7K85JeIrGxH/z/qWcQBEkFympUxxglN3o0fpDNKjXVbwTfEZlMejQ1ky7NJ4BhJIYfmDUO1ohIRdE55NgMqlROEoNXBBt8hYUEddIx1CNX1UyWVRh6QRzXBf/luMbwTJSvI0oj2wr0zxPjF5DeETa6eygyBzkZTkc8kOQjlrA4feUvU6aSAVptqaaLyQ3rPsWwHJYTOHN5I7HIuGYtzF0G0p90Ya3ngMa0fHb4y5v/zK+BF2QpvlkfnGRTzQpy320OMcrFI0hQYJ4zXK81Pdui0IEegcEg/neVzAZ4w1V76FmfHzjQy7tFN/787M6IYfJhlWDqKEmwwYlbot33YprhqzRPT8BBGQK1WnHRXdsVaY1OqVNpzD4wZoLt+Ifmv5qlzAEzNlqOmvUXmyCujwqBnVaE3UgUljzl2XXPypcUrJv1Goj5XoRoMQrIHcBSdzJxjxVXGx2Ok3zzkO1IesjQwOu4cPfm8ndNz/dWU6EQ/h4W48Nb9Lh3tNL5jDSsfvCYC7C3wlw1LqQb0z6s2c0n4sYZcDd0het2SjISEUjLAxuDLSSy50TtSwNZiHVL4Zx/97cqGzIPzfEUpyZ5NKE1zzjMM14wzgLmj67n5jrUYvRVqjFnaMUg4Jgrf8eHvbsRTX+ZzG0lCWa12Ux51TLzcdwoMk7m8TnJ/EuLvxrhvjksO+aKbIhwpd0AmLDC0Qp1pKMYY1BA3aibQ/BVAezV4qLS40JLvSdwRwZKl39Heh0XFZS2gOKDOROslRb6ZEF2oiRY
- Ajke0rUN
- gjIgSzpPcMfxd0QFjQNSabKq7YeMiehUQsUX5ltlfoALfDa+i4iSoG7gJ0LsX1JnGMryEmmBN4FuOTRUWAquJaPqTMGovbJghQsgpo9mgjvIK0k5rhSj8aBytmz8Pfc9LtSJ4hykxS/mAT3OorK1yXY5hwMobtejKCFAZWdDvX9Htr0ozk/fZn76tJX+UAJ0O2203XZMDubdA4n+TbVkqIOOImD33eH6lfSQNbFatc36mahC+5rCts8SfgiUqEjdcFvVeZCoO1h0PxP4mBq6Qbvme+CIPHgpmK0I+Cjt49mahErMMDAbIhYv92ddGDAjAWbsLhgTy9tiUUQH/XAglLNm1uhiOKw2snXYONkyQUACnUzwWTNNVP6xgWyGzW5zQ8UnR
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
+X-HE-Tag: 1760994512-259204
+X-HE-Meta: U2FsdGVkX1+GL2++TDu/iz21N4flDHRolD2dN1+dyj51G7Iq35FZsK2s7GccKUxUVOJrkkcyFR6haOLmc3GDBpXsfZzpkgyg2cHPhtkUuj95rOv3e3zcOvS1zYhNvqmav+QZvT/+z2O2CIsMErTxGMtVndHbWXkfIox34GYp4kTiRR6narYel7lAyO0SqTM0X9s0AZoBSByNHy87pFtaXHD70PGqmI9HyyyqQPxd6gkDDPSrfvH2rXTF/nq0EcnvVqWCkDJ/SB7WWgO6Pp/m9Noz54oGYdOMed1bWA7cuGEqFGxYZ3bbnmQVHbQOs+idFdXckvB0pQjLjNvSSckaM0q23SAJnBGfL8q1enHXF016A8IaIlWczmQ/hnOl9F7EborS/D+9naYXZHpOQSCgBKZ7meM9RmLlgl4GujJDRsH64oWRz+CcswX0m66VDnvhhC/RmREpOjkiYdyhUoaQRWuc9DgVl2dXm8EVu5Ga+02eEzicciuugJW7MgqmT2KrcU3xYN/WilpK1Vh6iIhabeN9u2yT8+5Y5P4sLN5A7s09xLy87il0tHwV+U1geAGDa76Q09yPAkuO1RaUHVNXhtBHcrBp1nO4UOOwrMS9wdeNo0iC9HSyrutiGFm9f+avs8PmhafvSRQINdwcUmIWFvLIXPTmZRQOq6dnrZNrPDe9xzolgrFoYN+wGGlJRw6OErIh4A3T196hi+dFAnZQ7mCyaR13krCrNLgRtEykWnassuOZssBlJTeQckRP3F0/6HEwrWa1bdOZ05jcb0fL6vbd7Jf9Gyt2oa4K8Ytwi3e+lvTq1S7eWJuUBzG/+mZcPaqww9ex5quoTFrNMXQqCz1vzkuuB/XMGoaxCORb0WtOlReEyXHyFalyVQcbWNkcj5LeBd+wFmHlnB8ht3xZPt2OUbEYUiXem3CY2mCu9D4+FxPJmIvw8hYFw96+VI+iazdkU8CmOotD93lKzbR
+ UIqKoLfj
+ ir+MtUYYrvG6iZF/oxJd18t9UoAJPkSBqwHO5ihELMCHgcfnacwlM0AB7vpQFteM6Do1LFhL+kDr9f3w=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,54 +125,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[Reposting with apologies for the dup and those inflicted by the broken Gma=
-il
-defaults. I have migrated away from Gmail, but some threads are still stuck
-there.]
+We presently skip regions with hugepages entirely when trying to do
+contiguous page allocation.  Instead, if hugepage migration is enabled,
+consider regions with hugepages smaller than the requested allocation.
 
-On Mon, Oct 20, 2025 at 7:35=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> >> +------------
-> >> +The Documentation/doc-guide/kernel-doc.rst chapter describes how to d=
-ocument the code using the kernel-doc format, however it does not specify t=
-he criteria to be followed for writing testable specifications; i.e. specif=
-ications that can be used to for the semantic description of low level requ=
-irements.
-> >
-> > Please, for any future versions, stick to the 80-column limit; this is
-> > especially important for text files that you want humans to read.
-> >
-> > As a nit, you don't need to start by saying what other documents don't
-> > do, just describe the purpose of *this* document.
-> >
-> > More substantially ... I got a way into this document before realizing
-> > that you were describing an addition to the format of kerneldoc
-> > comments.  That would be good to make clear from the outset.
-> >
-> > What I still don't really understand is what is the *purpose* of this
-> > formalized text?  What will be consuming it?  You're asking for a fair
-> > amount of effort to write and maintain these descriptions; what's in it
-> > for the people who do that work?
->
-> I might be wrong, but sounds to me like someone intends to feed this to
-> AI to generate tests or code.
+Compaction `isolate_migrate_pages_block()` already expects requests
+with hugepages to originate from alloc_contig, and hugetlb code also
+does a migratable check when isolating in `folio_isolate_hugetlb()`.
 
-Absolutely not the intent. This is about the lossy process of converting hu=
-man
-ideas to code. Reliably going from code to test requires an understanding o=
-f
-what was lost in translation. This project is about filling that gap.
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ mm/page_alloc.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 600d9e981c23..da2e65bf63e3 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7048,8 +7048,19 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+ 		if (PageReserved(page))
+ 			return false;
+ 
+-		if (PageHuge(page))
+-			return false;
++		if (PageHuge(page)) {
++			unsigned int order;
++
++			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
++				return false;
++
++			/* Don't consider moving same size/larger pages */
++			page = compound_head(page);
++			order = compound_order(page);
++			if ((order >= MAX_PAGE_ORDER) ||
++			    (nr_pages < (1 << order)))
++				return false;
++		}
+ 	}
+ 	return true;
+ }
+-- 
+2.51.0
 
-> In that case, no thanks.
->
-> I'm pretty sure we don't want this.
-
-Nor I. If you find any references in our work that amount to a validation o=
-f
-your concerns, please bring them to our attention.
-
-
-..Ch:W..
 
