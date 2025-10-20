@@ -4,176 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E10CCD1A2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA77CCCD1A2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8603E8E000A; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
+	id 8EE1F8E0005; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8380C8E0005; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
+	id 8C55A8E0002; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E878E000A; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
+	id 8021F8E0005; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66EF88E0005
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:02:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2302A119A16
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:02:22 +0000 (UTC)
-X-FDA: 84020018124.06.0FAEFB4
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013057.outbound.protection.outlook.com [40.107.201.57])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 600D74000E
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:02:19 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lu8NK64Y;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761001339;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F09E8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F0A2119A4E
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:28:10 +0000 (UTC)
+X-FDA: 84020083140.09.4DC3CC8
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0B2B440009
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:28:07 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=STSep3YB;
+	spf=pass (imf11.hostedemail.com: domain of david@fromorbit.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761002888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
-	b=cWwr2jIA4stWMAWQgnLBlaRZP2W8IxMwF7XQqhmcShOkSGSx+zkMIBgjWE8L+Tp7nCWC7K
-	Cxd80oUSlvihRmHPhhhmTgDcLSuFWdjlWj3xMWExlDKCYwvmaZPoLBlKqzNz1OclEwajXe
-	trzA5aHZ1/DA/vY2zubVmVjqc3IIyOw=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=lu8NK64Y;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.57 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761001339; a=rsa-sha256;
-	cv=pass;
-	b=jjiLE/RkgCmjhwkpGMzi2c9/5zUr2FEM81xcTtWilHQ9EJUgqyws3Jz04fe04jnQhlnRJM
-	eCFbry1JHvpf2XQZKqdyq3RyzfhMS4V3QzBa4H5FF7Q29ast2CF4/WKDgHvKDVoMPA3LcJ
-	v/DSrc9ICaWki+YBt76ODLn9BKGjyiA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JEzLRCfHeZ7qAXZ2ynbFwfgVKRmF0zbbjoGJhTpnfmZAx97KF0ar0dFx8/Z6rtPS8oLAOd8JWme/c8GQOQfp+QCyTByhRUKH5+s+3RdKvFfgjZ30x4zbpFkWVcZh016Gjbpg73twIrlx6ioJ4h9nBLarlXnlPCW1gazBVREDofpSfeU0kZsVhn7b/uBRKYNwiS6CczojH3nVtD7xS9ecimAx07ymuoxFBCKgIgToXodfjIjmVwR+ABYsA7Q2yD6+63/4ko7kvZAwCZ3Gcj418t4/IkvgF6QQpn62o/R5WECrZC/vw0JA31rinIe7ouM5Y6hxks7ERRsL3xpTqbxzAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
- b=B8pkWHNsqKbNzV/LhO4px4MUMBs9g37Yz6lPlGGc5ODZ7XC4u06Kurd1qN/lXcHONO5HXh1ZZpk2h3iqoZ/l2w8hd+NCYM5tj7GY4hXb45y9sFoc11CinE6MIZDIhWT7JR6R3ygWYZhMmFsp0Gf0LQiL/wqVJ6xhO4TzF6RBAPAx6Q4GZ0DfY8RIISbQ7X54V54IgqmLtkPOfRCGAtsyIZc9WAEOeSeNG3ANx83tAvwVV8qfqqGI3C62gMmExweje6cUcaVtq5AVablBNHNqxhTd43mlxsz8JZdiUCuS/TiJg8+CvBL5/cwEdjEUAb6v3IxA374yGccZWvjOm5s4AA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UC4ru6M4K9KavDSATdEHcw7K35SUPeHeyT7DBobv4ys=;
- b=lu8NK64YNXo/zJ+mv/fx7baPkeoAHHdnw3JM5yOFNtxx7A2Q6AzZdLAuIngNQZKrnsEWolkrx3vHiInZRu19Pnw1yw67boMywEg0bK6EN+P/Tzn22rCB3uLV2XA3maFJWQLkyFqP25IaSy5PjhEazvTk9w1ds599L3+qRhOirby5xlwLGpD5LtEpnwXGcmE9uy82I6ImjAGBAnlosPiJPAsp2jHi2EKpWmaus2rR+EGfsdPsYAf41MitYl3EcwY6dDGNrEh7fNVlF9qyqRjH/tvYGB+ZL4nACLPfuQE641Sh51bowmfs9vumsUAa71ADGfDTzaL10LLoWDWFNMXXIQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM4PR12MB6568.namprd12.prod.outlook.com (2603:10b6:8:8f::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9228.16; Mon, 20 Oct 2025 23:02:16 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
- 23:02:16 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- David Hildenbrand <david@redhat.com>
-Subject: Re: [RFC PATCH v2] page_alloc: allow migration of smaller hugepages
- during contig_alloc.
-Date: Mon, 20 Oct 2025 19:02:14 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <8A6112F2-794C-4076-A6DB-F68FACCAAE93@nvidia.com>
-In-Reply-To: <20251020210816.1089910-1-gourry@gourry.net>
-References: <20251020210816.1089910-1-gourry@gourry.net>
-Content-Type: text/plain
-X-ClientProxiedBy: BN1PR12CA0009.namprd12.prod.outlook.com
- (2603:10b6:408:e1::14) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
+	b=j+Cc3olEW7eocWIsXdf1ioqsP7mTUvyHTISHbg0DrAzgMc4KnzHfxEgTGRdyA1wEF00NPX
+	RzFLRoNFck1OjhTWqGaoU4BixzDS/XOS6MHxkGyOQHpWW2GxjqGRtUTAA0VLTnEdlEPBZm
+	UrUljiidw0tx9Yb4K5ALY4P4YcQSS1E=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=STSep3YB;
+	spf=pass (imf11.hostedemail.com: domain of david@fromorbit.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=david@fromorbit.com;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761002888; a=rsa-sha256;
+	cv=none;
+	b=p7E1JcDP62VI2WYQKMeALt7FZCNrlgRXVZES9Z7lDUqS4rBMdXKSHi926qZ1NtyIdte5bc
+	joMArjHubG2A7EtKv49+XDkp2BCN+Ypj6WUhtozKA/rr+fwGhaW9fVkXaE0JnvfbrpjcWC
+	g62nbR1YY0hCANlpEe71r/zGNSG8YI4=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-339d7c4039aso4280161a91.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761002887; x=1761607687; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
+        b=STSep3YBRVuJKgcISFnKLoZ/dnbkSlwuDFWzvw0E0dnRZ1Y0hrF8p6PrNQJk5xMbL1
+         zs3bp5HBMPx5qmL9rVLJxZFIROUSrwcyaZ4HkO+k7iH6WTn2d1YmUaPYd33sAERaC3Cd
+         SxoZu4wa7nRAnLJe1NhXF3sY36F+vqQBvKmguH7xBM46ooB3zEzuyeCFyDtdl3u1Wq/n
+         8KuEiX3hwlVLfh6s4MEz7W3WEU832VT/1e8Bklnu6PbNzz0gCS1QRyU0BLtxS6ZWDo4r
+         2DdjIvWq2KpshXFTqiXofb6z3959WYlZYJOlRfhxLm8PcpJ7Xg7+dj4unFYcIKHfHQA3
+         dB/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761002887; x=1761607687;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
+        b=kUgI08sno7ZZckAgZrkjmKU8MtYB/ZjGDP2OEXQ/u4TswysOlJVROebySSD2/A5rR9
+         OnCAd5b+Sr7fCiSIdQyUdVgTbq+KvNWrsEZtBaQE3h6VHJ+zMMUweP24Rbj7t4+EGqWr
+         lrJpT2UQ4gB1NOSHTc8yiuOt+KU6SxBORwMWaqmbVj9zq/MnikfGheyuqO+4/vwZpdh0
+         aTDVysjpM93aJfCNc781RZ1lyCrfXjTVDJKm2eMFe0YHCOb/uXHuuYr+habfYmIUqIiv
+         bs5mYyH+kRuwYXtu+jnsax7831aL0411NLx0fG3FXFNgBAaFO+3lDFZSC0Gi37xqIGJZ
+         iVGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8B9jizCGBbJXU83kugNiu0X6CC9yeTybWt4B0Z05XYORGa1/LmgDsq97aMHT9GYuoHaaXaMswfw==@kvack.org
+X-Gm-Message-State: AOJu0YyhKqkxhVJjY3NrKx8f6vSZjGJKUJQwNsdC61mjd81Kn0TpM4i/
+	PcMkYnyAoPn3g2kqOHjh4YoEODg+9A+ni/RTU4ZwBFC0Q4kDkcFfxUZbYMw1n1mLEtk=
+X-Gm-Gg: ASbGncuJaP6FmgwrBeN2d8o0+UdywahKw/QNpjBXbZ9Wyh936t74vL1K31BgyEx6mJH
+	ZMbd2QWZ2rJzYh3Av4Gxr5ZMYqcsrX853SJ/y9q4L5aSTQQuabSzjjVUvOooV+HfHPCzik0llUL
+	Hq583GiaIwqCF2iF4+6SRgLH1a13gNKkzPfW4oBuKpFjf0ekNXve8O59VzEAVE5I3rSk/jdn8aQ
+	T8Kh80e8G5wRQc2K6qpMTbxXboEdGro21kUiDqPJB5X/Dqb2nanwuRTttV+uAWQuAlaQXByMKO7
+	qLulTrDFLBlK1VpXAEyIj+PVPxM46EVTMTZKaFqmo/xwVMGLLMMdYgF/ZMkM2AejKHfjzrgQpbs
+	ng9DjB/PHxy58YJ0YYaHQ8mdk9tqQMpO1Dvq+RKqPWoHo+Oh3Lx15DdcWA0pTNEgYGeNi5MMwsu
+	xf4IB3IuypCSXoit4Ue93sbmLBmYPQqnFTNXgzjZtzWRbxQ9Rd0VXYntXYZ2s3zg==
+X-Google-Smtp-Source: AGHT+IHcdNH2fOOHB1cm0EXB4SOj6iMNk8Mq9qAcSjpJ0ejuGeU6N8u1EfzBX4tQCCgAhIt/5tgbDg==
+X-Received: by 2002:a17:90b:510a:b0:33b:6e60:b846 with SMTP id 98e67ed59e1d1-33bcf87478dmr19465934a91.11.1761002886592;
+        Mon, 20 Oct 2025 16:28:06 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33dff3f6c2esm192671a91.6.2025.10.20.16.28.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 16:28:05 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1vAzII-0000000HWu0-1ddK;
+	Tue, 21 Oct 2025 10:28:02 +1100
+Date: Tue, 21 Oct 2025 10:28:02 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
+Message-ID: <aPbFgnW1ewPzpBGz@dread.disaster.area>
+References: <20251020163054.1063646-1-kirill@shutemov.name>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB6568:EE_
-X-MS-Office365-Filtering-Correlation-Id: f366fcda-6558-47a7-204e-08de102cb6a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Xh2r/XS4gfgz9q7FxTPFULN8bzjdH6FYI2PtueooyKDrWQqOTxeluJtvaJQW?=
- =?us-ascii?Q?FMvAKXcGt3+/4WdGzPinmV0T/P3hh5p16A816An6x4SQ66mOSM0GlN9u/Cmm?=
- =?us-ascii?Q?i0psnd+Ltxop8EDQLUK6QqKxuy3sbc0roRO2itfWfrl+8H4ltc70YvtSEBtz?=
- =?us-ascii?Q?7sdnwkoR6lyZv4Mj6a0P8eZyC7gSmA8IJJwD85UhDxVc1/Hy3GW1clokeRle?=
- =?us-ascii?Q?GMfScrWjNh324J59KO+cMlqeiB7LIFI6mqfSV8+EJjy233Xx4VJeTvUKdGle?=
- =?us-ascii?Q?5jIIGR+w7qFQbOZScjbnefujUcAvLtOufS32n4W4sfwb0/NRhiAfl3UTC2qs?=
- =?us-ascii?Q?2eDpobhz8ZYktGc/ge6LTDWSK+ARA6Q14exLfJ8Qn6BceraMd/7VbtPR6Fb0?=
- =?us-ascii?Q?myHkZPgptVZVkQe1Gzwom73WTEKj5mw078gQjtToXP06nIJdg4XLCXzWrRNi?=
- =?us-ascii?Q?zJSNNcMxBZDoTOesu1P8y13pN6gZBekA7Z21DIVtltrRgf6zy844VMr5EZAV?=
- =?us-ascii?Q?EuuOQEKzJPq/cUhBFKCJAU12KqjpZ7dMVU/2bbr3/Hhmbu43U0ccS2rITNwq?=
- =?us-ascii?Q?CyDqDvkIfewqSiITH8i8SkxOAzEKgqPwnrtdOmxqXQl9trH7byQYZat7lCEN?=
- =?us-ascii?Q?EAvgCTUdB2jxEy41gvq0eNvgfCvs6VqU07JOUOMDfwSpTKR5RKUVHVdB6bxk?=
- =?us-ascii?Q?N4sEYIggS5nWINxDal3DUY82+x4vqqPExBtCHSmflSPTF8dUZztLVOe8vMxN?=
- =?us-ascii?Q?lrxav1e8fUUOtvglN4SEE2J5WgXE9LYMf12f8zoQfe0muzOxyBszir2S+saP?=
- =?us-ascii?Q?ht7v+h5HjrmwPsFcaWyfwkNxUngNh11Oryyp93Sy7Oet3igeHeHKoRgbFqNE?=
- =?us-ascii?Q?osXTBgoSnLFvSFB+GYbfbXjReBwvWvWo2LFNa6Wa3VYpsxBT3uJqc4aTu6lV?=
- =?us-ascii?Q?539o/JY0nxSnn8BGTIsXfFSHpDjX/xLJWA9jUgxV2E8kTuUvPx9+n+DUmO0B?=
- =?us-ascii?Q?eXt4i+FBiLIaX+rYvylfnmfMjqpruHku8cDkmzT0GdMj+SbEWglG0g1WMSls?=
- =?us-ascii?Q?3ClSNfnt2Px01deUij30IaWcKSQyVgoorBD26Guew/SzKou6TjKQteAskXMU?=
- =?us-ascii?Q?uehF/dHSrmM4CbuSs1A02NRUU+JnswN3BFwNlN1DNLZXp2SZyD6fuPPaVuQC?=
- =?us-ascii?Q?c2qMRDmNsbpRKf8G24qN4PDx4kR/dFJ4cyS4NmZbZN7nymnoKbZqHMZwVGZK?=
- =?us-ascii?Q?DBnNM8G5sN23c+JaeKWSZiJ37FrZfbJMvuqgjdgBpCHWlzMTXflSCISQT/iT?=
- =?us-ascii?Q?kQNLRBwSoW7NrHAicmFcie6mKpGhRP+/ytQto+RBe/fRYi8y5ehUrBUmLqO1?=
- =?us-ascii?Q?pXithx961DdrrrzGXzusgUJtafm80FkFolfgvQaGrRWbW7/gZsIW8EwsD65X?=
- =?us-ascii?Q?3de6HPdchQJ9XVeDIXkvry8hDSga1u8G?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gPg9nCCuzZtmD6SSE3v2hxwv20V3Q2jSX4kYDE91GgWyK7X3JQ6cZj0LNnku?=
- =?us-ascii?Q?Ph0NLwb9DdOYbEfJkaXb4QT6KRBojJMRGNVpzjiF3ceZAxl/G/4rP0Zo9Uop?=
- =?us-ascii?Q?1LelX8uGvcEYGrtPZo71ELT5K1fMq2DVwus843kfo9P/10FtUgMESMq2iZ1l?=
- =?us-ascii?Q?9w047sltcd4MklZsLCup+eJqLTxVMb6iMySoOLu09to+PfKFNeVT/BjpxSgT?=
- =?us-ascii?Q?KUPr2UFqit2V7s16lv3rQ/LHi19I4GV4xgemV4gdQjLRc+7dp8O8reBubdkZ?=
- =?us-ascii?Q?uDc9XdR7R5UPK8uhCS90mOlBNwoVX3ud8QLDRfrOsbPZoWE6gBReT4bTi83J?=
- =?us-ascii?Q?e7LEJNZ643YE8HD+SwvtWFBPPX3XWiT+TK/Wd/ftSLUUSg24cG8fyPfRS3KD?=
- =?us-ascii?Q?XujOSRTeKLmFNSa55QtjOcgH1B8XFkmNFBIQ6HQn+NkDmcbZS1fMfXKQBtg4?=
- =?us-ascii?Q?NtJ+OfN4JOdw6E2w/qsIRN+eU454GhoeD5xR8zyWkUoT/na+LljJN2UVBv7h?=
- =?us-ascii?Q?kklcRv8Ytr1yv8jJ8r0gBa7Mg9qpOfizGpc2UbTWxEdc36KFiDbhVhOzXG3f?=
- =?us-ascii?Q?bLM4tCP3P7x/DegkqaOXCtOCtnrkcB/EkNK4Av74NB5oH+/BwbL3ZtBVqL8l?=
- =?us-ascii?Q?GVA1zFFFTkuneK56MLlQB/VJLb57a0JgYCIlLFiO/ZCIfwmTQ2blfelLBhBH?=
- =?us-ascii?Q?1X/XT5AV3G7QBdEmGc4mF+BviIfzSPhsVFakxbejK46Eqw9lVVbiqe6LOm7L?=
- =?us-ascii?Q?VcGQTdDZ3GwjPsYtCRL5NJR2IrJMml0qwwPuf40sVbpT2EhHu/GNrJtQ+A5g?=
- =?us-ascii?Q?ZSDh3IdO7439XviiBUm5uFdc9Kp8wKREJo7088hWqtXOjH2Cg2X3BGrRP3RH?=
- =?us-ascii?Q?G2zybU9+yA1vlBXvZaEBiNjnj8w8LSAaizrCC8fzu6N6xeoj2/TCzRzDAIFU?=
- =?us-ascii?Q?e5oGta51oyhruN3GeSplYZ2/4zACkBu9+QVYS6gBwO2vYBfBs7CKPbBO8Bqo?=
- =?us-ascii?Q?esRJceMTpOfylHE7hRZtWxlWBtMvWfzlwJAT26Yp6+EXqRPaanjgykQpnYUw?=
- =?us-ascii?Q?h9yN+NbWJigiKmO92WqQZjJGPHb4KQjlf8j1P8+h3UkvD1TZE9IK8PrrCSp0?=
- =?us-ascii?Q?TfaQN6wBkjmAaGXUjurM9i4r8zQf5FnvgaymrB6WCCAWJsbO1F5DBTJkncXq?=
- =?us-ascii?Q?AWcjIh32bCUrTYNuAAAuQVFp2lsopZNrpNrb/GQxkm/lxkjvk1Yk6rG6PZvb?=
- =?us-ascii?Q?oRlu5/7jy9bcgZwP6G7ajxuXS0YCcrC8TzM1netjOWzFJCvzuPmkSTnlh6oV?=
- =?us-ascii?Q?OTXj9xqwmYzyw4O7AoW7dMVxnSgmQMJZN5S/lSzVBZ1RxR2bagdSkd3/6OfK?=
- =?us-ascii?Q?nnzU2qVrG6lW0jMTd7h5k0/t5ZczNlUVfovOGMFSTw6qCa2/VcAsH+sdnASp?=
- =?us-ascii?Q?yi6Wgh8vx9MVXr8wRwpFCAHYV0YZcUP2NB10Dn/TDeRDLYxKzlKfsWCyp1hG?=
- =?us-ascii?Q?JXqAt3D35LDSR4F5PV7GLG44Yo12E624PpKzMWLasoLKSmOKSr6/IOpxhqZ+?=
- =?us-ascii?Q?2s7CJM4Kn/63Q7pwgqC35Tu6eS5snh/o3+/Ds9XI?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f366fcda-6558-47a7-204e-08de102cb6a4
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 23:02:16.3639
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: udkOciQN8rX30WzBQwRoqpNQlj50/FbzYiggZH4Y61Qwe5JIxtfGlzA3wD9vlzV5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6568
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 600D74000E
-X-Stat-Signature: uuqokx58t7dgjr4g1x9b34dtb6zzenoq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251020163054.1063646-1-kirill@shutemov.name>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0B2B440009
+X-Stat-Signature: rfeyfb8c7hfooa9q4ybhknefgubz1zuf
 X-Rspam-User: 
-X-HE-Tag: 1761001339-23216
-X-HE-Meta: U2FsdGVkX1/7WUZOclb7Gx5H/TvwXrhzQTGhtLr/t8H3p4RNOJj7oQWhYxN5cHLgXe67QLH51sOeLeg2s65Vc6lxVf/vEPPCeHgCGLzqkCnkEK+q3EpiB65XaQDLeRCSH3KuGif4VidNe+F5lxj2rnHogKBZobTl2ee6Ju+1JK3KP4IVMrhUEaNjSj1HOSXPY4oqFSiXjn19KFde/mJ7D0AnRuPRkxskHc22Sx8mYPyIrzvCQJu/JtO0S8YuzLAjSo5xiXrENA7mGq4cFpoDNN/RcTPRyl3dYQhjBF/ZuFSkjxPsh0T9CPHzXQDOyojt5le3Jl09wefjsiJcXYQu8HzOelgFbtSlWayUxvtPhqSvzqWnvArNTPuYGQT7G8RO+Uo+j3MtmScdsrSyOb5AXwawyxI5AiBMvLUTXAjm24uN94hsUQRb6YLb/UnsnFbdvShkskDU32MdJoBWxATkITp3mJ509DYhxCAKmnJj4OA1MmgiKcfqNm0+KyRTfHzmEUeZx2yCaMbWvJQyMT5EWFX1mmNz+BzHXdEUQJgr5zWMQUHG3fPE7IhkF1Q/uScRFSDDkgW00D2HMSW5Pi4+YSLdfgJqEKgi8cD/UvJ6Ze6LdEyRbtt17KhRgEKS9eADzhoaAHNzKnFwwDTbItnCqRbVGfTQHBEqKHXIbMCzq568MAYm1zFALfGd34cJk1JgEhILhbtB37hTVxal46Pf1RtUPl1+7IUf0fYGCrhPuLVk+iBqI6/zNOva+QGPq0ZGCc/2rZCLjqi2ewUqTol6jXy3xMT9xl0wG9SLHcSsiBGpd4+UXfoOpygj3wRRuF7LjgNZ1Q9Qd7/FzU8dvSoUVl+rcKmuO1UC/Xdq4gfs0XD2euJmOiatok7CeGZ4LttWK+4HjDhwSBhtWCMT2aCKrn/y5xWEZC218wgrQ2DhZZbi0Kn2NgbTqd7KaFrQCVMeUS1s4iTxGKUj+Rf+dvu
- 2Oe7MWzE
- qAVTTa0kc1XdAoYL1DnQV2TUWMp4iiB0f3IDPfT4y0YP+wsRR8yTxmdMFqsrtxWDYRf2YZFjDwLSgNgF9tGEcF2BArr08k0x+NfTBoSDg5LKLDbusSCYohxZplBnHBm04lw6LOfV42T6Tyb2xfhJPs4id75f/PbJo3A7an2DqqkmcJMUWartbH1TOTMeH79hpPsTX7ZJ8grXiGWytaGrthajYUu/Kw/jZA9L6aeJxJrDZ3MEyOyMZ8lwZSvDG3ePK7jmsUvhJipkeUlIVYoVF45TZEiJ+W3xYbRh3weSOEOp0g5rNWwkqZhXCFmZNxEgybSefKyMHsvcSpLlLo/FgDWHgDjEw/N32NppMlZK7iK3YKmM5HYziMdn5yyX6n4Y8RuoyEudn99dGw6C01lDCIpzRUp02AIn2CJX1vTGg0s7NwNWz0OfbGoj4dOJNCSRkmMBWt54l1FbpbjQ62hqQ3KbeGw==
+X-HE-Tag: 1761002887-563103
+X-HE-Meta: U2FsdGVkX18kgzl0wvJuFCKP3uQ7wTfx8ycH3ec0RjAlGPwyNZdIrlUKznfaJp1nkz6+4Id8pLu26x964McEfhM89d4/iQkpN989ILlBPVabhKz9TLFLlyt1ZHt/mj6IVh4AdR3L1tVl1bevvF0Hp3WWzUJICA2GQS8Mssp/FkEXBcOZLIiS/9/7QvCRio6+qbQfyALZAgFipPB5LGk+p0Lzi2VvtTdo2ImRTeSkFTIBEIguADqArOc0UHgIZD9an0sCoQOXB/FNtoFZv64cAXx6Pr+J7LtzSljQz+YykStqacGIpITZUFacIuAYNBZb7lH+xaz7QHXesN9A0NBUIN0i2SH/9/v8QNGfhoh3OQF7eFFOn5ts6EM+zJHXMd6vbQ68BLpkSnMg4LomAyLZs+QMRGehMZzSLc7pxcoMKEM1PcxGI2Gvt60Mx5WMqfXaIOvGQ4P+rQZBJPEVh5x00oMHldMcBAYhumBVEQcSTaijMeJr7u1LLX1uSZJ1v+IQaLlWys0dmVzjYM73DhZnohO85zWqc8k6DsVkmqey5BcMFy3BpHoI8I2n3S9X1JA87zHsHIiLzWLM/lyu3HLUTBs0ODcsGQw+O7ugTNIssrV30FNpTPKnGFC3o1XN2136kbuelAUfSPSMXoo9l/qDhGfUz9nE2+YVrbmanLlH/66b4hLXbUzR0B7nhQN4amnptcwQ8wbXTNml7m5xEl63g3iW7MTg9C4L5Dp064qumVep8O5FPueoh9touYz4vlPl836WNcJ6uu3Cum4rF9uJL57ldXSuNen39B9WoFpWhiU8CMSMFzLLYFVXuII28fq09+riGzZXxHXuWpu2dBDVj1tJvysaKazK50E1kvMVsYef/L6houMbgwcz4YWTgKmcwNc1qMb20UCVILO3JgvIWYpZvCaeENEMM+KtTm6yqWMmYXFW8KxFrkn8XUJmYpvQ3WrVxSWChMQ68QhGAuX
+ RZ9Suepb
+ WiiKUaQzQCrgVzHHPg1WYqsAtJmZ16LsV9CQ/pCLVWI051psuNw36Onr+1M/sMA2t3UsyA7xY8IMALEWrD/B0P8Jgeu1kM++jcQ+FcvlNHLB7y/KFtjn5b/W0I5RbZsYTttyRr4T4EeVi0B4RlqcfIxqNThbQWzq8NgVcUjjA+zAB7jQUOxZywvjQX/GICjOZ2+ZDQc8/AZM71ZlicMhVXDY1gfRZrmFqbYClQQ1c2zcQkhoyzaFpArBqQ+/UtOCR86dxzoTYP06jIqZCSnCat113l7aWH7wU2idAniVyAsMnOMJuVMzSo1HAqLZADnJ6Pii5GQOwZtI2NgzLm1mtipqCBEIw7SceHBlx2TBNiTiRXbSQiAzhy+isB91tIfcXu+yGVvWrwQBJusjRYQpCoHxC6D9aWn2FuD2rued1t6a6FE3jc+IPCvSqQxpXbUMYXNqFZi89g+wk5eCclPQXGAHt8HzIZsb3qPv2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,25 +138,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20 Oct 2025, at 17:08, Gregory Price wrote:
+On Mon, Oct 20, 2025 at 05:30:52PM +0100, Kiryl Shutsemau wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> I do NOT want the patches in this patchset to be applied. Instead, I
+> would like to discuss the semantics of large folios versus SIGBUS.
+> 
+> ## Background
+> 
+> Accessing memory within a VMA, but beyond i_size rounded up to the next
+> page size, is supposed to generate SIGBUS.
+> 
+> This definition is simple if all pages are PAGE_SIZE in size, but with
+> large folios in the picture, it is no longer the case.
+> 
+> ## Problem
+> 
+> Darrick reported[1] an xfstests regression in v6.18-rc1. generic/749
+> failed due to missing SIGBUS. This was caused by my recent changes that
+> try to fault in the whole folio where possible:
+> 
+> 	19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+> 	357b92761d94 ("mm/filemap: map entire large folio faultaround")
+> 
+> These changes did not consider i_size when setting up PTEs, leading to
+> xfstest breakage.
+> 
+> However, the problem has been present in the kernel for a long time -
+> since huge tmpfs was introduced in 2016. The kernel happily maps
+> PMD-sized folios as PMD without checking i_size. And huge=always tmpfs
+> allocates PMD-size folios on any writes.
 
-> We presently skip regions with hugepages entirely when trying to do
-> contiguous page allocation.  Instead, if hugepage migration is enabled,
-> consider regions with hugepages smaller than the requested allocation.
->
-> Compaction `isolate_migrate_pages_block()` already expects requests
-> with hugepages to originate from alloc_contig, and hugetlb code also
-> does a migratable check when isolating in `folio_isolate_hugetlb()`.
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  mm/page_alloc.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
->
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+The tmpfs huge=always specific behaviour is not how regular
+filesystems have behaved. It is niche, special case functionality
+that has weird behaviours and, as such, it most definitely does not
+set the standards for how all other filesystems should behave.
 
---
-Best Regards,
-Yan, Zi
+> I considered this corner case when I implemented a large tmpfs, and my
+> conclusion was that no one in their right mind should rely on receiving
+> a SIGBUS signal when accessing beyond i_size. I cannot imagine how it
+> could be useful for the workload.
+
+Lacking the imagination or knowledge to understand why a behaviour
+exists does not mean that behaviour is unnecessary or that it should
+be removed. It just means you didn't ask the people who knew wy the
+functionality exists...
+
+> Generic/749 was introduced last year with reference to POSIX, but no
+> real workloads were mentioned. It also acknowledged the tmpfs deviation
+> from the test case.
+> 
+> POSIX indeed says[3]:
+> 
+> 	References within the address range starting at pa and
+> 	continuing for len bytes to whole pages following the end of an
+> 	object shall result in delivery of a SIGBUS signal.
+> 
+> Do we care about adhering strictly to this in absence of real workloads
+> that relies on this semantics?
+
+We've already told you that we do, because mapping beyond EOF has
+implications for the impact on how much stale data exposure occur
+when the next set of truncate/mmap() bugs are introduced.
+
+> I think it valuable to allow kernel to map memory with a larger chunks
+> -- whole folio -- to get TLB benefits (from both huge pages and TLB
+> coalescing). I value TLB hit rate over POSIX wording.
+
+Feel free to do that for tmpfs, but for persistent filesystems the
+existing POSIX SIGBUS behaviour needs to remain.
+
+> Any opinions?
+
+There are solid historic reasons for the existing behaviour and for
+keeping it unchanged.  You aren't allowed to handwave them away
+because you don't understand or care about them.
+
+In critical paths like truncate, correctness and safety come first.
+Performance is only a secondary consideration.  The overlap of
+mmap() and truncate() is an area where we have had many, many bugs
+and, at minimum, the current POSIX behaviour largely shields us from
+serious stale data exposure events when those bugs (inevitably)
+occur.
+
+Fundamentally, we really don't care about the mapping/tlb
+performance of the PTE fragments at EOF. Anyone using files large
+enough to notice the TLB overhead improvements from mapping large
+folios is not going to notice that the EOF mapping has a slightly
+higher TLB miss overhead than everywhere else in the file.
+
+Please jsut fix the regression.
+
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 
