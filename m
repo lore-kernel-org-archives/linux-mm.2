@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82980CCD195
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:17:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD44BCCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4AE78E0005; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id D5B878E0008; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 852728E0009; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id CBE588E0009; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E00C8E0008; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id 9DC338E0008; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F2818E0005
+	by kanga.kvack.org (Postfix) with ESMTP id 716D98E0005
 	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5A134818E
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:03 +0000 (UTC)
-X-FDA: 84016577526.17.292D47B
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F73A8710C
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:04 +0000 (UTC)
+X-FDA: 84016577568.12.CFEDC30
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 360B3A0009
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2D14720003
 	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=u3IZxZof
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sMRhuMPt
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1760919422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ei07tRCM+AHUPWDR/dd3eg4DKS0PPHhz9cQIXO1h0Ek=;
-	b=59tUvlqwbmZDKYiJkA/k1RLqACJTDSE7sEDHcD3p3TGkb7YW5b96TuqD8jzia30Xy0EK5Q
-	UKB0zksXHjvzS+qgtdAP+apcHFVdFdYbZWx4PduFSkusvJHo4O4wJavDjCBgvULW9rXhJu
-	mCEzXzaGi/qRFX79ukbagRgx1xm3hCQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=u3IZxZof;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
+	bh=AEApLyQP/b3KWylzRVCY886fGhUNpEUKEq+AzuyUBmU=;
+	b=V8q4NJUtjsTnfgDZxzvmcse2ncj22NQlluwEHEXpygsq5DQNcWiZGGMUHQNe7u57SErOZf
+	r0IemzCWEwGzI3X9zB7prD9mX9Aj34Uf5WYTOAHir4T2DMFYO/9m3IYilrI/zSRiJK4mtB
+	ofo4Y8rEP8Xlez0sdikh/PuAsGnjHQ0=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760919422; a=rsa-sha256;
 	cv=none;
-	b=dtku70Cr6KOopB4aJjmn8Uy/MsB03o3IRlT25Duq7JxeGJkgEyc1TvaBmt/U7KXdIq99VL
-	xgQrkM1ala9mLGQJSYe0kvld8l5TB/qFs4amEOtTcLkKdUe5tdEcyKpNOCp2+mM/+Afvfy
-	fkIaAAO+jEdsCPjKQ5v5Y44cx3MUA9g=
+	b=SEeDu/uVxGeOQGJOKpNW9AJkNrJWHQLUEi19bhEr7wEDVD1jIacftpnz3I5d0rh1F+FQf9
+	zEBg+014HUZPaz6MYQUycB1hQ4Nrpe5pX7kK7Ag3dSf0v+1U3AqCmu9HP+JDjKjrphOGA0
+	HYnx0rY1Eog3i27GVAX1bf/7upoVjes=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sMRhuMPt;
+	dmarc=none;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=ei07tRCM+AHUPWDR/dd3eg4DKS0PPHhz9cQIXO1h0Ek=; b=u3IZxZof/u6PDqnLQyjNUbAes8
-	GdxWroRujnwwkJFIlpViMIBuvGxMNMuz72Waw4di7Uqg98HoJ8TMHbg1jXcYuhjitrPco7zL+JC3P
-	sL8bzHax/pq3qVRE+QKSa1BRr9lkfdaOTg437sTlMfznibHg1Vv2VnLOyaIpk+qcZBH6liqERcnlo
-	6vbHbsaPu+aSxPWkTtMj3+wf+YocWjVXOSKiPwbNEJs1D26YwYTAMDTgq9buxFPdvR6BD8K4YLwov
-	5q6QkYPLzNaPgznj168MBC5xzCjJzvn+dqlj0Ho1PNI1/2it82f+56qa8p/BL/ZI2mu9IfyuAp6Dz
-	TS8n3GQw==;
+	bh=AEApLyQP/b3KWylzRVCY886fGhUNpEUKEq+AzuyUBmU=; b=sMRhuMPtBd99Fstr6ealDP6E27
+	4DmeJ11xuYlvsEvnip2EyJrUQyshGco7faS8SIH8dIUjgbWlORPrH9GveSTqxCavf3AV3Sda7VGji
+	te70L+aOgzcOG4dXzEDBofD2RLfiirCMKskKfdX29Ahcy43Vo8oOhalDSxtRp8vWtkLVE5Rj2XJom
+	UpUPBiGmgpL471NooHBRp5rGAR5Kuv5/MRAlRFbuuODNXFuSwVyRI5YhJ+L7H0LBe2jVMrqp7aECA
+	k60WqotHCSGGf2w83Z0lm9zv3gPaUgwc4LSURK9+qDZsF8Tmpn5iNg1mxUTi9X9HBsbiRcq4pBdKd
+	SsjWE7KA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAda7-00000008tDZ-3bMk;
-	Mon, 20 Oct 2025 00:17:00 +0000
+	id 1vAda7-00000008tAc-0ZeH;
+	Mon, 20 Oct 2025 00:16:59 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Vishal Moola <vishal.moola@gmail.com>,
 	Johannes Weiner <hannes@cmpxchg.org>
-Subject: [RFC PATCH 6/7] mm: Add alloc_pages_memdesc family of APIs
-Date: Mon, 20 Oct 2025 01:16:41 +0100
-Message-ID: <20251020001652.2116669-7-willy@infradead.org>
+Subject: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
+Date: Mon, 20 Oct 2025 01:16:40 +0100
+Message-ID: <20251020001652.2116669-6-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020001652.2116669-1-willy@infradead.org>
 References: <20251020001652.2116669-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 360B3A0009
-X-Stat-Signature: sz8kooffybc67zdnpfx8u9oxtx4tr3pf
+X-Rspamd-Server: rspam01
+X-Stat-Signature: paifozasqizntzn4hjf1cs9si6x5sqg4
 X-Rspam-User: 
-X-HE-Tag: 1760919421-501153
-X-HE-Meta: U2FsdGVkX19p+5GUQO67wpQqMlw0FLfKCizvb3yjV7ketPK1zKNO3ZBgUcGTz2S27GCFth2E8KPHpLofk7Hw/exx9kjz41jNKP/cpT4THuLon77xoAOBJlQGpAcvegOWMJMmLevvcnO/hJWMxlo5d/rh0MwXF2ZFQpA9kjGiKbDX1ivWC3ZcxZI29p0PB2T6JYEJsl7o9/da/mrPJd7cJSMjIuCRHCuJpXMgPNa3KYuy26x2jdXVrqKpOEI2BFPMEHIWgTBalZwjWocRqlK7jHiWG7DInZwakvBKypqPehHaLacE0H5ac21SrQEwqPXWzw7HTlZtaQv+Ocj1O8wIHKLz/iza3mFVddm07lDP+ZLpPq+KTgkJNtNVmjMpLX2m7gpyJPx6B3eyhQn7fwZJu3BQsdGRtrPKAOjrr6qm3WHoc/GTyFLJhdWRyPacclDcfoKvAwnArArcDYui17qHeL+LNAaQyPjV3ka6Alhv3akBr/Ubd5hvp7MVS4cR8ZKTPsC2f7VqqgfXr8taSJ7zuYvxowRV+zbRlXmin7zziKFgidtz31T4vcLkStkz3ErwMLvMFLKmUJ90TIeucqRUtVz0iuiEsACYaeXR7sp0tIbEK+q8aA7gvjm5Ibj6uWmXbSiYxLmYqEgCXRDgqKFxTK539DFHkuEML6Zpgx5CK9X7JaxvZRLIOq6noO9oF8fLIMVcJYIa/gNrqHbn27D+3/onLuAd1OXuUOdyBn3jMFCgPAvMCU50glqWsKlNCjqukkUHObbSikjTn9iiodpdSPJjKzB2v+oRe5kH40nUxEPS2QH/ZTZWbdq2BgbA71u72QarZ4Bq2bbtTKbSjaDqj5Jo7JdfjF75FFqXzf4OAk+1GnOvtZFJf7uHhnGeVEQFH3G0YK19dikzyheF92zh3Evw3aqWJFd5Jh/13jFTyDBwtk73dByfWAz0mHk/v2cr/VLvzeLZHv9ohK2jYM8
- tFmsn05+
- IVTusooG2xzPQFMd60FAITh48LKAYul6hcL+kCokcbmv49NYKqTyq8MRdKUkT1kCHx+kjZpAEkbHsUNoxL4jMmf5ZE4fVqWkPo9MpsQrGHPf2gxoXshbiTqJGfdD+EdURugfApnQmEcDnYLnC8UbdImrtFfyJKouGtH+qBziv45golVl8aG8OOHECqM56yLZMRwpnXV7JZAmovt3L7oMKfPlHJL1mzGzvYiyiTOb5XCOXUnD8HwfxLAOq/nzzRcceW5D+GEPSU+q/nYU=
+X-Rspamd-Queue-Id: 2D14720003
+X-HE-Tag: 1760919421-892980
+X-HE-Meta: U2FsdGVkX18l5N/0efiUWYtmDPobGsUE41n8zID556see3zKICerDDjY9YfNBjEB5g8eMIOMqiIq0fajq7E5vnvzEuwglbRwaZYcoDMDbu96brCq9kaRWvyY55zTN0iWir0boP4fi3CinqdH/ZqNC+5vT7WJXzkegl+F47vJtSCOD8VHL+zHeNkWJtkcjLvoANS2ZY0PvfbduOqjyoEfdXoSiMY/7PkdwFmzZVACkHVnMQx2tp+vjjtnWpyYRP2Li5SV9GW8am0gRkwz9QMSRcM8L0WmGz3/UqEM3fof39Q7xN4AWWoC4ACi/5IDInEzVF2mg0EWsOQ4xhZieomNnqKsZhe9vsLSSyAolpKZxomRd+0MTjFcv3nPyaIyfXVxEFpQGOU/9vKV/TeXMFQfG57BzDUY0ogCdnLDDAlAUvfCxmJx6hVGjipkqAA7i0nYlOSLSpE4fFU8RZMQo+vuE/O74rZfo3Lx5nln8xxkC08CANcBaIK216zsQS0/ZcXl4OAqTrogVgQuUJya4whx0d7hsaTBfWFf5hWyijJFNREYSZgHCumadrfjgI2Ptnw2/zb0KSzFwJcZ3lh6XhpKGZAERD86gmymzXvsxbKCtpRnyPuSt9+KMaFCnLOc7XdRQOkEJIFB4iIJKLdffsN7xhHE8PDz6OI8L2j45erMHNGcRk7PXgpdXzCNmhbGDgu5UXHI7dsO0gsY6Mueils7ohV4zEDElFOlWdKL7xU9D992DM5jGJCfUzoaDJAl3YP21gbqCymMdy8zF0YkEorEm1awlEwlZHsFl0rBOobYKIgmNHYBpr9sv0UxRDfwjk0kEkxXqykPBjZowqgrW882zO7Ft8qs2bY8IciFWwolllaYr1jae78PRUAHc7hpzg5C7mIPlJNHanquJpkDbjKsSCSba2nLcvqx4+PMFhaY9VqEWi727WoARUH+Lktpvo4z5OpUifpYAtrN9gn3/St
+ iQL/nuCz
+ pWSrvtDLG3WZjYTLHtogZ/GLyjd/9wNy3XFUqI2vC2wKY6a1DNDArxLhxMjiFlU1sOCS0Fha+AX2kewBfXdFi/aH8vLORgHDEJE/7P7PJNxq/QnOrJiqsljMbu333Z/hSTaqc0W5gQ0iPmzJTl8aR05XVcZCfF4Or7OcBZMzUwu9aW58KUxgGVwyyYlXGFPvAY9kkcN9u+kCFP0IzhKdGkcBDKs2CnmiWDdTDQ4WV3bUz6D1IZ1j8y834utc5pE/MxNIVozK6Uf7Gko6DnOD4pDCG/bUSEewj/gRcMDJEdkamJmHKi9Rm19LYrxeZg1r1qQ77Y6A3z9C6ICJJL6a917NCuw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,275 +88,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert the alloc_frozen_pages implementations into alloc_pages_memdesc
-and add wrappers to keep the frozen pages users working.
+When separately allocating ptdesc from struct page, calling
+preallocate_vmalloc_pages() from mem_init() is too early as the slab
+allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
+vmalloc_init() which is called after the slab allocator has been set up.
 
-This hasn't been widely tested; I bet the build bots will find something
-I missed.
+Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
+before it goes upstream.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/gfp.h      | 13 +++++++++++++
- include/linux/mm_types.h | 25 +++++++++++++++++++++++++
- mm/internal.h            | 13 ++++++++++---
- mm/mempolicy.c           | 28 ++++++++++++++++------------
- mm/page_alloc.c          | 12 +++++++++---
- 5 files changed, 73 insertions(+), 18 deletions(-)
+ arch/x86/mm/init_64.c |  4 +---
+ include/linux/mm.h    | 33 +++++++++++++++++++++++++++++++--
+ mm/vmalloc.c          |  2 ++
+ 3 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 0ceb4e09306c..6e13e0b829f8 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -225,6 +225,10 @@ struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_n
- 		nodemask_t *nodemask);
- #define __alloc_pages(...)			alloc_hooks(__alloc_pages_noprof(__VA_ARGS__))
- 
-+struct page *__alloc_pages_memdesc_noprof(gfp_t gfp, unsigned int order,
-+		memdesc_t memdesc, int preferred_nid, nodemask_t *nodemask);
-+#define __alloc_pages_memdesc(...)		alloc_hooks(__alloc_pages_memdesc_noprof(__VA_ARGS__))
-+
- struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
- 		nodemask_t *nodemask);
- #define __folio_alloc(...)			alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
-@@ -315,6 +319,8 @@ static inline struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask,
- 
- #ifdef CONFIG_NUMA
- struct page *alloc_pages_noprof(gfp_t gfp, unsigned int order);
-+struct page *alloc_pages_memdesc_noprof(gfp_t gfp, unsigned int order,
-+		memdesc_t memdesc);
- struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order);
- struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
- 		struct mempolicy *mpol, pgoff_t ilx, int nid);
-@@ -325,6 +331,12 @@ static inline struct page *alloc_pages_noprof(gfp_t gfp_mask, unsigned int order
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 0e4270e20fad..5270fc24f6f6 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
+  * Only the level which needs to be synchronized between all page-tables is
+  * allocated because the synchronization can be expensive.
+  */
+-static void __init preallocate_vmalloc_pages(void)
++void __init preallocate_vmalloc_pages(void)
  {
- 	return alloc_pages_node_noprof(numa_node_id(), gfp_mask, order);
+ 	unsigned long addr;
+ 	const char *lvl;
+@@ -1390,8 +1390,6 @@ void __init mem_init(void)
+ 	/* Register memory areas for /proc/kcore */
+ 	if (get_gate_vma(&init_mm))
+ 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
+-
+-	preallocate_vmalloc_pages();
  }
-+static inline struct page *alloc_pages_memdesc_noprof(gfp_t gfp,
-+		unsigned int order, memdesc_t memdesc)
-+{
-+	return __alloc_pages_memdesc_noprof(gfp, order, memdesc,
-+			numa_node_id(), NULL);
-+}
- static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
- {
- 	return __folio_alloc_node_noprof(gfp, order, numa_node_id());
-@@ -339,6 +351,7 @@ static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int orde
+ 
+ int kernel_set_to_readonly;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index edcb7d75542f..e60b181da3df 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1160,6 +1160,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
+ }
  #endif
  
- #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
-+#define alloc_pages_memdesc(...)		alloc_hooks(alloc_pages_memdesc_noprof(__VA_ARGS__))
- #define folio_alloc(...)			alloc_hooks(folio_alloc_noprof(__VA_ARGS__))
- #define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
- #define vma_alloc_folio(...)			alloc_hooks(vma_alloc_folio_noprof(__VA_ARGS__))
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 90e5790c318f..f5d9e0afe0fa 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -38,6 +38,30 @@ typedef struct {
- 	unsigned long f;
- } memdesc_flags_t;
- 
-+/**
-+ * typedef memdesc_t - A typed memory descriptor.
-+ *
-+ * The bottom few bits of this encoded pointer determine the type
-+ * of the memdesc.
-+ */
-+typedef struct {
-+	unsigned long v;
-+} memdesc_t;
-+
-+#define MEMDESC_TYPE_PAGE_TABLE		15
-+
-+static inline memdesc_t memdesc_create(void *p, unsigned long type)
-+{
-+	VM_BUG_ON((unsigned long)p & 15);
-+	VM_BUG_ON(type > 15);
-+	return (memdesc_t) { .v = type | (unsigned long)p };
-+}
-+
-+static inline unsigned long memdesc_type(memdesc_t memdesc)
-+{
-+	return memdesc.v & 15;
-+}
++#ifdef CONFIG_X86
++void __init preallocate_vmalloc_pages(void);
++#else
++static inline void preallocate_vmalloc_pages(void) { }
++#endif
 +
  /*
-  * Each physical page in the system has a struct page associated with
-  * it to keep track of whatever it is we are using the page for at the
-@@ -126,6 +150,7 @@ struct page {
- 		};
- 		struct {	/* Tail pages of compound page */
- 			unsigned long compound_head;	/* Bit zero is set */
-+			memdesc_t memdesc;	/* All pages, not just tail */
- 		};
- 		struct {	/* ZONE_DEVICE pages */
- 			/*
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..15d64601289b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -824,15 +824,22 @@ extern bool free_pages_prepare(struct page *page, unsigned int order);
+  * How many times the entire folio is mapped as a single unit (eg by a
+  * PMD or PUD entry).  This is probably not what you want, except for
+@@ -2939,9 +2945,32 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
+ }
+ #endif /* CONFIG_MMU */
  
- extern int user_min_free_kbytes;
- 
--struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
--		nodemask_t *);
-+static inline struct page *__alloc_frozen_pages_noprof(gfp_t gfp,
-+		unsigned int order, int nid, nodemask_t *mask)
++static inline struct page *ptdesc_page(const struct ptdesc *pt)
 +{
-+	return __alloc_pages_memdesc_noprof(gfp, order,
-+			memdesc_create(NULL, 0), nid, mask);
++	return pt->pt_page;
 +}
- #define __alloc_frozen_pages(...) \
- 	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
- void free_frozen_pages(struct page *page, unsigned int order);
- void free_unref_folios(struct folio_batch *fbatch);
- 
- #ifdef CONFIG_NUMA
--struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
-+static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
-+{
-+	return alloc_pages_memdesc_noprof(gfp, order, memdesc_create(NULL, 0));
-+}
- #else
- static inline struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order)
- {
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index eb83cff7db8c..866d6609a758 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2338,7 +2338,7 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
- }
- 
- static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
--						int nid, nodemask_t *nodemask)
-+		memdesc_t memdesc, int nid, nodemask_t *nodemask)
- {
- 	struct page *page;
- 	gfp_t preferred_gfp;
-@@ -2351,9 +2351,11 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
- 	 */
- 	preferred_gfp = gfp | __GFP_NOWARN;
- 	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
--	page = __alloc_frozen_pages_noprof(preferred_gfp, order, nid, nodemask);
-+	page = __alloc_pages_memdesc_noprof(preferred_gfp, order, memdesc,
-+			nid, nodemask);
- 	if (!page)
--		page = __alloc_frozen_pages_noprof(gfp, order, nid, NULL);
-+		page = __alloc_pages_memdesc_noprof(gfp, order, memdesc,
-+				nid, NULL);
- 
- 	return page;
- }
-@@ -2362,6 +2364,7 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
-  * alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
-  * @gfp: GFP flags.
-  * @order: Order of the page allocation.
-+ * @memdesc: Memory descriptor.
-  * @pol: Pointer to the NUMA mempolicy.
-  * @ilx: Index for interleave mempolicy (also distinguishes alloc_pages()).
-  * @nid: Preferred node (usually numa_node_id() but @mpol may override it).
-@@ -2369,7 +2372,7 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
-  * Return: The page on success or NULL if allocation fails.
-  */
- static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
--		struct mempolicy *pol, pgoff_t ilx, int nid)
-+		memdesc_t memdesc, struct mempolicy *pol, pgoff_t ilx, int nid)
- {
- 	nodemask_t *nodemask;
- 	struct page *page;
-@@ -2377,7 +2380,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
- 
- 	if (pol->mode == MPOL_PREFERRED_MANY)
--		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
-+		return alloc_pages_preferred_many(gfp, order, memdesc, nid, nodemask);
- 
- 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 	    /* filter "hugepage" allocation, unless from alloc_pages() */
-@@ -2399,9 +2402,9 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 			 * First, try to allocate THP only on local node, but
- 			 * don't reclaim unnecessarily, just compact.
- 			 */
--			page = __alloc_frozen_pages_noprof(
-+			page = __alloc_pages_memdesc_noprof(
- 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
--				nid, NULL);
-+				memdesc, nid, NULL);
- 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
- 				return page;
- 			/*
-@@ -2413,7 +2416,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- 		}
- 	}
- 
--	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
-+	page = __alloc_pages_memdesc_noprof(gfp, order, memdesc, nid, nodemask);
- 
- 	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
- 		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
-@@ -2432,8 +2435,8 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
- struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
- 		struct mempolicy *pol, pgoff_t ilx, int nid)
- {
--	struct page *page = alloc_pages_mpol(gfp | __GFP_COMP, order, pol,
--			ilx, nid);
-+	struct page *page = alloc_pages_mpol(gfp | __GFP_COMP, order,
-+			memdesc_create(NULL, 0), pol, ilx, nid);
- 	if (!page)
- 		return NULL;
- 
-@@ -2473,7 +2476,8 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct
- }
- EXPORT_SYMBOL(vma_alloc_folio_noprof);
- 
--struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
-+struct page *alloc_pages_memdesc_noprof(gfp_t gfp, unsigned order,
-+		memdesc_t memdesc)
- {
- 	struct mempolicy *pol = &default_policy;
- 
-@@ -2484,7 +2488,7 @@ struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
- 	if (!in_interrupt() && !(gfp & __GFP_THISNODE))
- 		pol = get_task_policy(current);
- 
--	return alloc_pages_mpol(gfp, order, pol, NO_INTERLEAVE_INDEX,
-+	return alloc_pages_mpol(gfp, order, memdesc, pol, NO_INTERLEAVE_INDEX,
- 				       numa_node_id());
- }
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 600d9e981c23..c1451ca0acc1 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5144,8 +5144,8 @@ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
- /*
-  * This is the 'heart' of the zoned buddy allocator.
-  */
--struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
--		int preferred_nid, nodemask_t *nodemask)
-+struct page *__alloc_pages_memdesc_noprof(gfp_t gfp, unsigned int order,
-+		memdesc_t memdesc, int preferred_nid, nodemask_t *nodemask)
- {
- 	struct page *page;
- 	unsigned int alloc_flags = ALLOC_WMARK_LOW;
-@@ -5205,9 +5205,15 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
- 	trace_mm_page_alloc(page, order, alloc_gfp, ac.migratetype);
- 	kmsan_alloc_page(page, order, alloc_gfp);
- 
-+	if (page && memdesc.v) {
-+		unsigned long i, max = 1UL << order;
 +
-+		for (i = 0; i < max; i++)
-+			page->memdesc = memdesc;
++static inline struct ptdesc *page_ptdesc(const struct page *page)
++{
++	memdesc_t memdesc = READ_ONCE(page->memdesc);
++
++	if (memdesc_type(memdesc) != MEMDESC_TYPE_PAGE_TABLE) {
++		printk(KERN_EMERG "memdesc %lx index %lx\n", memdesc.v, page->__folio_index);
++		VM_BUG_ON_PAGE(1, page);
++		return NULL;
 +	}
- 	return page;
- }
--EXPORT_SYMBOL(__alloc_frozen_pages_noprof);
-+EXPORT_SYMBOL(__alloc_pages_memdesc_noprof);
++	return (void *)(memdesc.v - MEMDESC_TYPE_PAGE_TABLE);
++}
++
++/**
++ * enum pt_flags = How the ptdesc flags bits are used.
++ * @PT_reserved: Used by PowerPC
++ *
++ * The pt flags are stored in a memdesc_flags_t.
++ * The high bits are used for information like zone/node/section.
++ */
+ enum pt_flags {
+ 	PT_reserved = PG_reserved,
+-	/* High bits are used for zone/node/section */
+ };
  
- struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
- 		int preferred_nid, nodemask_t *nodemask)
+ static inline struct ptdesc *virt_to_ptdesc(const void *x)
+@@ -2957,7 +2986,7 @@ static inline struct ptdesc *virt_to_ptdesc(const void *x)
+  */
+ static inline void *ptdesc_address(const struct ptdesc *pt)
+ {
+-	return folio_address(ptdesc_folio(pt));
++	return page_address(pt->pt_page);
+ }
+ 
+ static inline bool pagetable_is_reserved(struct ptdesc *pt)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 798b2ed21e46..9b349051a83a 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -5264,6 +5264,8 @@ void __init vmalloc_init(void)
+ 	struct vm_struct *tmp;
+ 	int i;
+ 
++	preallocate_vmalloc_pages();
++
+ 	/*
+ 	 * Create the cache for vmap_area objects.
+ 	 */
 -- 
 2.47.2
 
