@@ -4,231 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47458CCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:12:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A32CCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:12:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2C88E0025; Mon, 20 Oct 2025 10:12:42 -0400 (EDT)
+	id 60EA88E0026; Mon, 20 Oct 2025 10:12:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7A828E0002; Mon, 20 Oct 2025 10:12:42 -0400 (EDT)
+	id 5BF0C8E0002; Mon, 20 Oct 2025 10:12:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9420F8E0025; Mon, 20 Oct 2025 10:12:42 -0400 (EDT)
+	id 487F18E0026; Mon, 20 Oct 2025 10:12:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C0F8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:12:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 44B1D1A01A0
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:12:42 +0000 (UTC)
-X-FDA: 84018683364.05.E3662A5
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C5D651C0007
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:12:38 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=pnVIvRVX;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=P3582lXy;
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760969559;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 33A888E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:12:46 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04B805641D
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:12:45 +0000 (UTC)
+X-FDA: 84018683532.09.78515FE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 92A2C40003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:12:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N1k1w/RT";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760969563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JAmNDW+yxAq8Q81Ydsfben1tGBq6z1hgCzj9jnOL/vI=;
-	b=QxXhHrcOhyzD9mmtmvJ25A3aT+S/DEwDPpNYYtPtpvwkkE9YTkajtl2WoErYaNNLMS+ZvU
-	qe/eUvYeeQO5Pd8FJKDDOocBLQTSk5tqPMxvRWZyHLj/J6AUvHIk6JlwTohNbnWy4QPEJ5
-	ER3k9FPsXASiEXBNAJ6tT0jPgPO27NE=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=pnVIvRVX;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=P3582lXy;
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760969559; a=rsa-sha256;
-	cv=pass;
-	b=yi6SY/95Sl9Wbay38qhgEKy/yc4XxZXu0Yn2e2VUPTIUwUL8kCoQ0o3vXCidpQPl4Sf43D
-	sGBNSVX61J/XfwArJNFCjkArB7XqtuQS9RUeVoXLEI6UEaz3UIjzif80lhMbx47DOE7DDd
-	+eI/VMJImcGNqSoeT3fSSiBfveoyEHE=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59K8SIjK001407;
-	Mon, 20 Oct 2025 14:12:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=JAmNDW+yxAq8Q81Yds
-	fben1tGBq6z1hgCzj9jnOL/vI=; b=pnVIvRVXcUbrYlh/3H5Nq13VNdrQOxKWkB
-	kasWILjkP84ZcZkyNodx065joEI21uoUOPIR1MHT2/7gRxC8y2r5ZAXLCe3isbUe
-	yEb0V1OTQ9zxe9MFDKqB5slqeDjpQw8tyEupcnvCcGFiv8ch7iYwvhgGjTD/8orr
-	0PiCe1+bNcFVf/8OgyYIST/ZO8wvB9R5m4FMK+E8vria1dSmnVm0mRMuHxnTkm65
-	RJVxPosKqzmUQUB7j7r7UO92OiwH0Rb1jgAKxNbhGwyZ753u50Cmr247F0QaLNge
-	+ai18BTvYgV49KF0xsfWzQ4bYFg/w5ccL6O4PmYaVwgmm0itU3Dg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49v3072b7s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Oct 2025 14:12:34 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59KDdJXs009331;
-	Mon, 20 Oct 2025 14:12:33 GMT
-Received: from bn8pr05cu002.outbound.protection.outlook.com (mail-eastus2azon11011043.outbound.protection.outlook.com [52.101.57.43])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49v1bbyte6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Oct 2025 14:12:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Df09s6emAgA2yYNy5NZsuRg2PxQAZJtw8Hnutq1w9X/yK94XQZ+Rck0MFhWYwWO8qbIezYzc4Du9HbjzHeuVHwyPg/K32+V4fDVCi3bOYAxcbxK9ljRao+oYSQ9a9h2UhGURPoHYDX+0rAlHuV5S0AVQSLLLRx7rSJ1xVDkSDqq3Jgn+yhvGFEvHuYb2pPuzzERw4JHJG6e6GJDH0BUK2qqyf0SR9hbY9VrvoxqQPzMOBxmMLqOsV8uzwDYOZwa/HMJrQHMk8tCkZth9rmr9wQ88KVUPSPQHNVqrlB175h+iE/PVxyVrwju1VOLMjTnJM6yRoFu074zwQOIk5T02nQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JAmNDW+yxAq8Q81Ydsfben1tGBq6z1hgCzj9jnOL/vI=;
- b=dWyNeHOztMf2W+NjC6WxX3BZ3suUuL1EkMsy4iY7jJj3RHAkTauP33IQezUeeJjkBfle+Z4h//SPSlSq2lJtjRgfx2D+H4i1PgGvRCSlIC34oFK4E5UiWenschNPumStdfmmKylLn+pKFoE9KWLgU+wtB0aEKJ0cIPj5ep5a6OTsxacd5C+Y1HipZBTOywB6vvDbyWMHIzWUvWKs0S9hx9zXxaGlFLVkF+kHVQuCTABdg1utWifdd+7YLFeppENMzqedXeBpQngnkKHvgdVHj1Ycx843l++S+wa2l5QSlcnzzH0nNxZlPCDyV27DM9RI+28V1VGwENjyyQlqNxp5iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JAmNDW+yxAq8Q81Ydsfben1tGBq6z1hgCzj9jnOL/vI=;
- b=P3582lXy1xCmRIJxQUb/nXjIdcntXMkZSTr5WqC2YZPR1Y5cWLuE36YfgczO3407TJyLndz7QEALnVTGjjgITiNLvlZNRpS98cPEf9GlmeP9PpHZN5ZRFu3quxPz5cdM80Y4sVUR+0FiSVmurnsce8+86W61MdaeXARi979kRlg=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ2PR10MB7669.namprd10.prod.outlook.com (2603:10b6:a03:542::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
- 2025 14:12:29 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9228.016; Mon, 20 Oct 2025
- 14:12:29 +0000
-Date: Mon, 20 Oct 2025 15:12:27 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        linux-mm@kvack.org
-Subject: Re: [PATCH V1 2/2] treewide: include linux/pgalloc.h instead of
- asm/pgalloc.h
-Message-ID: <9e713326-776f-4499-a6cc-e3405544598b@lucifer.local>
-References: <20251019072509.9488-1-harry.yoo@oracle.com>
- <20251019072509.9488-3-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251019072509.9488-3-harry.yoo@oracle.com>
-X-ClientProxiedBy: LO4P265CA0056.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2af::23) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=c1SLWf+q8pqu9k/Xw2FidgUt4uiKg7Qzo/H06ERg2kQ=;
+	b=Ipq9ONBmpCw4pMSRQNJlCvwXxQTiR6iR/2XOeNlCqLnnG1FI3oJbLebNzNHQwLn6rH2JhU
+	E4LUN00BaOn12VD/1r+E4u6GE1hK4/4/K5CgrktpWxHZEt+sgS2oI0ZHxmZpWPfOkuFDMe
+	YASB8F4XJ3SWOSF4m8Y9kao9seJ/NOc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N1k1w/RT";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760969563; a=rsa-sha256;
+	cv=none;
+	b=0hCnjERvwMmrltUobsqhOsrTTFYL5wzFq3uC37LhXy8wg7e9ffZNI7rwGIgwN3duMiTH2v
+	GgXuXp8E68vFunuICnobxpYXr8svMppP7ZWDVYPp7tnUcznDgZD5XhlJV4HciKAbuuyAa1
+	yxW7j3D3ocDOkOjdj2bur73Ow0AoPjE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760969563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c1SLWf+q8pqu9k/Xw2FidgUt4uiKg7Qzo/H06ERg2kQ=;
+	b=N1k1w/RTScwkxltY8Pz3tGTv0koqE59lbZ4u0wdFFkzUGniepavdj4BjFUzc537GxlpOra
+	RYzzrrCRpLFM7l7Yau4MpD9hy5xJWQsAswPx0tv29Mr+J8X5dIA9zE+QInjuFR1RBUplk1
+	EqGa/vU5we5gheo9qgJhqnuQ1eJ3lOw=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-j09QRk6xPqG-6S8ez-FkyQ-1; Mon, 20 Oct 2025 10:12:41 -0400
+X-MC-Unique: j09QRk6xPqG-6S8ez-FkyQ-1
+X-Mimecast-MFC-AGG-ID: j09QRk6xPqG-6S8ez-FkyQ_1760969561
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-81a8065daf4so81555936d6.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:12:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760969561; x=1761574361;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c1SLWf+q8pqu9k/Xw2FidgUt4uiKg7Qzo/H06ERg2kQ=;
+        b=QyEfSKBW2haWTsZFWT7gTFnG0UNb+N/VgYkDhaY2o3Bbi9w/5dL8tcDbnn04KUbsWw
+         P4fd3EWHotNxorJEM3GGFfVDKVWQYSwLcOmz+hgjq43dQ4Cdu59l5ICl6JyIe1dvc9D2
+         emgC9443Xtb1+7wMe9to/+pJAcgKiQinf1Kgsf14hN2BU1g4g9ze4KLlVpuyfoxBGunR
+         tTms/XwcNg04O2pzhErgC6J7dWmw6/qbKisO1Qz/sXzpu156HZx09by6TMBixt7c6Cvj
+         BpDAUABy0eBnMNF3BP1eCw9cnwBfcRF4pM5XDWM0uFCOjhr/8wr9k13udoje/xozvS2H
+         gLAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUL4/EpnB3aLfWO+8/WFxExh4vZMMGOoLbxE50dnWsmT9j39B48cnyKOx9vba0W7h4eJLe2CbV6ZA==@kvack.org
+X-Gm-Message-State: AOJu0YySPTs3mqWPu11mJppnR8fDerrYJ2k+Mj6p7XbSF3wgENvxuuHp
+	koX4Uido8udQj4tXy3JTuMy71ZZ6608FNhk0r1yKxcLPn5fvb7OQFp23/RM1mo5IzpbeXDGZhia
+	/9DHkRdPiSy8k5/wtDHB1RFo1JnLbEqmSgrCmSSvONGSPSA7LRD7a
+X-Gm-Gg: ASbGnctlY5NsYTXVO57HQDVParfK/CX4Nl/fLv4Ksc7R8fUrFLE9NkoNFQdjehZD3v1
+	1yacl4cxdI8ZeUBGMfE/u72zoV1m6y5UvSAQsC9/d+wGMqMobvyuC9mmBOLRYZITk/ZPAPLTaki
+	pxOhTrIwYLpAv/8aMf2gBaLTeLLEuuq/S5tlMIPFmTib4fIHV/K9mCiO0oixUhmOk03LkWR6yIJ
+	GY3iBHcevLpBNqSjOrPkbnVd+fCthBR51pDJaOgFC2TxmRIydq7ELwrIaW+ExvhJI+i7WJ2Gvw0
+	OFeGWOHlSiF2F0ubdrTnEwzeLBCgdm5xTm3YMNVqPw/NJlC/ymrqQb4gHJQ8Go6Li7k=
+X-Received: by 2002:a05:6214:d8f:b0:87c:43f0:374a with SMTP id 6a1803df08f44-87c43f03a03mr110220716d6.29.1760969561078;
+        Mon, 20 Oct 2025 07:12:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPrzPkMbuISrfnHZgsrYNiZtDHPQtpyHP3udmFtcHznS6vhG46dJMdI4kcVza4Yso3LXCMzA==
+X-Received: by 2002:a05:6214:d8f:b0:87c:43f0:374a with SMTP id 6a1803df08f44-87c43f03a03mr110220286d6.29.1760969560391;
+        Mon, 20 Oct 2025 07:12:40 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf52209cesm51317176d6.23.2025.10.20.07.12.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 07:12:39 -0700 (PDT)
+Date: Mon, 20 Oct 2025 10:12:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Houghton <jthoughton@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+Message-ID: <aPZDVuscFsYSlQjI@x1.local>
+References: <20251014231501.2301398-1-peterx@redhat.com>
+ <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ2PR10MB7669:EE_
-X-MS-Office365-Filtering-Correlation-Id: f29639ce-33e6-44d6-936c-08de0fe2b43c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7u1lIfbczmcXwwNDvRVOkEhF8yhME3n9N0sP1lmYGUSVfMrCDxJ7OBjLwra6?=
- =?us-ascii?Q?3u77eiN5gdaiFN0KHUv2YCFimE3QgVosGmfsDcgDkgtZ5xdeE1oKFsTOroTQ?=
- =?us-ascii?Q?EjkSX//kc0/oFcvdS6KdDq9HgpjWeVTJaE8m79j6fPBBs8t4dBHj/VBSx4px?=
- =?us-ascii?Q?jccXUOXSj0dDxhthWDnpLesNQaNKyqm5tNWfUZjboTYfZxQm3fH9NmPeEX/A?=
- =?us-ascii?Q?ShnTzt3zzRYjWih0saOM9EdhYehWDnTDzFh1jvaozsE1DXAZLyE5SOA8Igfi?=
- =?us-ascii?Q?qaMY47Wjhiqh9X1beFavndj/kS2eGN8Vw56tK+ZHQ7ByNA6NP9UG8qb5L+WN?=
- =?us-ascii?Q?gymte0Ce+WVzYZ8oD7sg4f37cAl0o5pbjT0HvOnLUU+wxDSpAVAPDoTwUFJQ?=
- =?us-ascii?Q?reXO8TmX7CAuCBS06IRoR7F5m4kp34Sqy7QALPqpTVAWn+aQwuWOnZZqzJ8X?=
- =?us-ascii?Q?LSs0mE4mWd/1T9msiYXrRTDAMDNsHS7UvN7d2/lJ8XVEixDQZoNQr9XVbAta?=
- =?us-ascii?Q?1xUN2HoaD97jLrzNbPHNT3sKAxzCM5R6v4d5YoLKJF4vHORph0gGtzP7tlCn?=
- =?us-ascii?Q?V/fMfzm51f+I/YidZLeuXz/pzHVgcNdL3f48ptuX+q0wEMXgeu+tmJmKHNAk?=
- =?us-ascii?Q?D5CXr9xpptkNoXqO2o7MTyQG73r2O6aod229O2ZNBTJlu4SlzxAOJbqbBkHP?=
- =?us-ascii?Q?ZUBm+wQEyknbUOQNH6lfIxNvTGAtX+Bt7Y/bWElFxj0BJljBEcvKHYUmbfYy?=
- =?us-ascii?Q?aR44ncJ/7rvVlm3lAcXBxtDnxfghZniuOEU0iYKvfpNKinWiHq6V403e4ypm?=
- =?us-ascii?Q?pk+Rn6WAhAx8D1Ln6hsAhAZdcIzcmgcvB4wF7al7G8htiV+dgaDYHf9x9OBh?=
- =?us-ascii?Q?JPBLsM/Q+k1+MSvt+iNoy0wcVKLNz3imrDKi1iInjEhvzFj9T5+A/32XeFTL?=
- =?us-ascii?Q?fQW9QMnN0dZnzWiiO7BPoi1+/6pIRr1BSeMOORFMxhOH6iPl6ybfdFNZNeH0?=
- =?us-ascii?Q?6/0nJBlQOu1e6Vr7UwrEjzwuo7ZLb4Z66/SSIAlD/qvoZg6pkFo2MDPtPrwG?=
- =?us-ascii?Q?Gd62UFDHhwH+1zYO5q2hVpPijD6slUnSqetot8xQlsVommNr3r1Rmz8kQOA5?=
- =?us-ascii?Q?ydV639JsOGk+5B3Uk71BkZK9E9LjdfsO311KS5SuQP3jhQ/9A0TFGaZEnxYl?=
- =?us-ascii?Q?6ZX2lXT20QeXAhrCh+PpBh4ElKGhOoTFBHBiA7Sq7i8/ndQjc9gZp35XOmSr?=
- =?us-ascii?Q?8N7jMoS709wOtB0aMcPHOjfAtJJ+G2/2Ob7PrwdX0yGZwwN4AL/IwN6pu+WK?=
- =?us-ascii?Q?Ulc5SpW918ytX94nQKgo6iN60e9j5DcurGk2SXTGetaRHAoNr5mZX7yXCjqv?=
- =?us-ascii?Q?blzxj41QY1HyJ5kyOq7wzsvqnUGlp2mUQqVBVUAnNsdc7Q9HuXoq2h905ivp?=
- =?us-ascii?Q?xmQgVDiMXAD9f7Bn8jZ0sWDyqXauYnXj?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a6y//KIDldGAu3vYtqYKw5lvp7Wpv3pTZRyTvIgCAE1/jwTq4sTBYu4K54GA?=
- =?us-ascii?Q?AfJ6EowCWnlSiWnBJ0k7E4X0MuW+crBNb7kQDVSR8JxUIfDgAYwYlRZy3mV9?=
- =?us-ascii?Q?FwA1aQkP2Im6xHC+vsdBKrkpUV8wIW3YYRk/U6S042M+uPUNKL3ZGEze+D+C?=
- =?us-ascii?Q?GV9uZfrxFi3MkjlUEPv6wx+2frwIEKHOodHe7Koo9JiII8+H3GjjSGKFh97g?=
- =?us-ascii?Q?6GccElNjja8PLRY7TkTOZzgAWMIoP2w85sJTtdE2WYKA8MWsel7MYfsO9ADo?=
- =?us-ascii?Q?2ktD6jbbU7UTeMnouvEzXr3GICssATAsT1a30z10wLhqUgK33uCyepHBdHCf?=
- =?us-ascii?Q?bNWLbFSeCdPWpyHEbLo3xNbcYLZ96A5Q4PsyhIjhBqLQ9wr7FxDSjTVP+dWh?=
- =?us-ascii?Q?3Z3qFGUNxGFMtYvv5/7EP4bnsJsPiWsUjOKrPVOCkvoragGkHKeTwo3Jogwj?=
- =?us-ascii?Q?sl6cttuuuDhXhYHwdLbU7h22c59ki7ZwrHtsJZmjaKHscfSepSDRwBiHCKQ3?=
- =?us-ascii?Q?9kBmwEW2rnV3gOs1OPPH6RHhwChR2mCZgvrk/LD2bZqTd6MUCjaTx+2ByVY2?=
- =?us-ascii?Q?ivvMjjUC6zJPHE09LY0I4rFlI0jfaIbjXgzDvPF3belVEQC0h+3O0Emtv+pX?=
- =?us-ascii?Q?diVwZi05Gg9XY+sijtQtslUk8h/di8SCYvBWxDp/tz1MVNX7Qee07nVOk2/3?=
- =?us-ascii?Q?Y+F+KYy+bjmYJRIkMG8Nc8xgZaaiNdafdYPUTa8d1a8cy7fvZhs8WIyaAkTy?=
- =?us-ascii?Q?m1rGuI6IE1gptko7bs3+lCdi18aRIazU4HCZ8W0In6qJxX96GuXJSfhK0axd?=
- =?us-ascii?Q?8WxNlUvYun4AXHn3GvZ2UEzt45KJlpcfzFBdpxJ1Kwhc+Dc9rASAAD3JV8Jb?=
- =?us-ascii?Q?5nEU56i4WTboIEA+IBR1HV1C1rW5C4JxEApfKzVkxtJu4J6K6rcOFbv8pb9T?=
- =?us-ascii?Q?IJLNQ25hkCilcPol949GwYBP7OQaBNlwLou26SzAu23tIKCsmTJYJXSKTfRI?=
- =?us-ascii?Q?NwNrCOTXG02s6nXDjIsGO4pjnLnpiZYRkl1lcm3344ZQBrt8/932vDnOWgYG?=
- =?us-ascii?Q?ziIGd3IcYm3QiT9re+/uaMmnZeXzEzXu0ktLZ1EzossEuiTN1Y18RgZQpTwg?=
- =?us-ascii?Q?Cfj/q630VAdHuZ3xPGAURtQwgISP0D3o571R3vuBLDSyJ3g7h3vhEQX+S8m+?=
- =?us-ascii?Q?oP4gTjXq0DWqJ1MAC5AxHBR//Bgb+McZd1IUIA67KZXNHE86336US3W/Upwh?=
- =?us-ascii?Q?DjgBsTKB06SbYMjlHp6vb2pvJbU2NXpyoaYQEsHkfgACr7f/7en7U6WM9/Kl?=
- =?us-ascii?Q?e9PxDT7ku1+J95HVpseQCwpwxyLI3+k2rolOo/UoSYpP1u7s2HIhffBKRxSk?=
- =?us-ascii?Q?rZQH8eppo9PN74N3yn7OfAYJm+dJLprN0gFHl8VN1K9noEzs26dw+Nj/fTtT?=
- =?us-ascii?Q?KPHC1qTwBToqAFTABffoOHw3W/xzsp/ua5T6znZfSCvHkCvMpPgDXYbBZDod?=
- =?us-ascii?Q?PNOdcoxyKiLeONAjRIbEnIVdVgQVbTbGwZdLxUFezkZY0j6rgnLz3KHYzdcR?=
- =?us-ascii?Q?caxIjijUA/0CH8II88Y0fG5LFF0LO3QDgcuxjJHcu5SBYK1A9OBWKL0MwR57?=
- =?us-ascii?Q?iA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	VauLKE/K+rI1LqyNybyKj7OMDavU35v36vBmaCy12RS6nwHf9C/YdTMPBuLCN0/0PrXRd16w9LfVJi2zXD2GZOZDPHG0uQtXaDIDBXI/NZDTS7mHnjqw2BQpvXjd2UR9kGrAgduvu0iCy6HoDEEyx5coa4QtgQ02UKog9V99jglLe417T1x6GRvli1UfWMZUMCe6tuEnIwmOxf5LppZooKz1iUrY2gxaEBNm5Yz5MP9wuF0/EkePVxkkD53LT8bfyg+Od2OvkoTQ+XtMiI3+ybZTTEIqR1y2OaeYlHRwihn8C0GPsm7rkKjTXP7eEBiv6o8a2TOTE5wh7HHsCqPLBN1uiUjuDS/grOQgco8EdlzPoaT/R4aXoE4KYqnpp95apBi5WUWNp4RTBCm8w3GLgDyocfD2uxEL3OvztgO8etMwx4k1Z2IFK9ETlMm0WV6W7pt0G629kh836XRfA2cHaIVSB19OndMnCHs5WckdzlY76Qf/II4cz+tb94IVQMHiadyLOzhOB8OGJzophQ1O/BFPH5HPalpNzZfpAePOSCOFGqSfjPU/UnzkTmU/t3d7xt8eYjpFw3ojqa6/hs/HmKCj6sRfkyvZ8oPJiMus9H0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f29639ce-33e6-44d6-936c-08de0fe2b43c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 14:12:29.4746
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3lYmb03zXi91k2fIk4AwSeK3YA2ik64H/CB51AsNkNEIb3ZkJD8MgpnrW1s6Yv74ZAQkHPaF41WuH7Lb+T0xkIxy3TbPQ0LUf11D+FJYFfc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7669
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510200118
-X-Proofpoint-ORIG-GUID: 1jwZelxDy0daX7M1haorNgNntQrI3tVw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMyBTYWx0ZWRfXwjAYFWOxJm8E
- b33n3fzETKyV8ftykmkXpKsbcSWABiRkyAaV3WErXdVKXV6LFeGkf8AAQ6DZvJBazsiU4yoiOuD
- /Cll1ab3t4VRQx5QFHDtA6yh449U5QpblbDw6Th1BHCbwzKEfINd6vm/KZdt5AkbhjjoPoLWBI1
- Xj8V0Tf7G9dwucT3je28ZrE3kwaP2BBHSchCogzDno79DaHOCyC25cMPJFFsTkStXv7vDiSOz9P
- DY6LXr0Qma18BBfeK6OGe6C6gksKjKkcTUkCupW2inFy9Kupgt6/AEnW7OtkkoBjoMTcaY9OKED
- ADpwURkvdttYl3xMe28MvEEUVE+qdvzC923NOwsEggATuvCM3qlpib0qLgZ9pDKB9eVjG9+0dOg
- KpBhW6gZlrNYIB3dxch0L/ppiiSDAc3ivDdeKIl9J/SD5xMqy6U=
-X-Proofpoint-GUID: 1jwZelxDy0daX7M1haorNgNntQrI3tVw
-X-Authority-Analysis: v=2.4 cv=csaWUl4i c=1 sm=1 tr=0 ts=68f64352 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=ZCXTmdebBlu_TJ6Qe60A:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12092
-X-Stat-Signature: m918nodedcwrcjfiqt95p6kene31jo3s
-X-Rspamd-Queue-Id: C5D651C0007
+In-Reply-To: <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JULapz-P66h3PmRar3pc8EIWDnv3Za4q1QXYlI3x5zA_1760969561
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760969558-105147
-X-HE-Meta: U2FsdGVkX18byPsrGFwzogvnGl9jV9mp/0k3fNW0bTNNDPf3Pu3vSL8jv8vboUhXwc5rPBBleopwPXiywa12H/UTcHF0ydC2lkTuTy+beCJYf2OWAxlPMvJDQasSf8ccv0+9lErm3tiZxjeiuQyPBH4Sh1FdgHS4K7M7rmTfN4wpTWYMXb6ZbOgqUWJOgQGCvaeLzmcmXs/J4GyUslb/PDBWS7VLb42ZuPlUt8W7/jdY55kIbgyrlAVleFzgHPdlbMa9yGLkzVAyZKpJZ070R8vCOk5k4GdFZGXF0dxeZINdezFVUUFkPuBgNSYUx02HL+0kLdO0swyOlzqXlKFALJj9zZ9tHBGF6WmGWuRa+vz3JbmraKklsmMY3j3GNRdYbtLKiWQFeQ7FJhrpWsRujsHCVZZDGk+XvXM1mdXOXV+en+kRrPu6/M8srWGTIK78E2sYeFivrlUBJtQzpc5stLrTHyUEWaphXlGfk5XNug+qMRDVQ9ciXh/D59xRObV6zEnow8ipzoltQfGHgYs3AHrHHyz22hyk/fpfQQrzxS+MEowYgXFNiyp1Ak1+sr/gHNKpeT98oVmkBaPL3TJUvlxK/paV0XU/KUVJLnWvpy9S5Op7Af2SagNrKNqq/qDokdvggKI/QwFXAHZjlN50ENk42LNZSeX17aYbsy1S63RLOxNH39rWuymwmLVZQDGj3zbQckVZMbOTjPFlLcu56ktGRbQ6uYEwpHzX+Ye0ixqhyZeFsdlVK4vd0wqGja412tFXPFbrtwTcAC4PQlIjydVDlCpDamaDNd96+jdrTmVf+l9nCZsLfKegww5c1yxwrJxMYaGaiQcWD1O8VZCP2EIPqmKYoACNIua8M6sP27gY0KM0Wf2I6eX3X6iciYQ2LCBJG7O8PLHlXZUMbIHkETsy0QM9lMVKfL3Z/xzC8oY2wKzMZvVEVKKeZC+TlA71thVni904SURskEjGA8K
- a/98NLv2
- YHzvdndKUupf+07dGo8xJBdX3Yv8hv6VCLmXRq5Hd07MfWxT9v0FGnXcOltqmC9CPsv9M8gCNR55017uk12ZbTuxfbcw0UAS/HnHBokKpXmlwRmEFC2antwIVVTsWjB8slTLdh6Bhnm8afGxdEuTzJUMlWgRQHAaFA7V+s9dgMoBYhR/CSW8NNJ9hU0zLmRyHRkplYUgmSVIsPIW5e9gJT/jluGZvi6gagk3Twl/S2vHFJsxf5l63pI13mZjBD/vRx3d/qxHeP5V/xp78eePW4AhllN7BF+q4wsV0FIE0/2NpVysr9vOYFE0qNTpbsOdcBOxsEKoW2zS5xjXlMYZcBjLZfGkMIfLjGSfLeU0hWR7vtHuYAPB5KvfFpQMLbxcF+52ZWXdsfP1IvQORx08FxAEBnYCuL8cNOeuMOlMC4crm87g6yx91JihP3pw01VpGhLYjKjr9Cok6q+5rvSpIvxIlvIa/w67lf5htg3W3GLJUWiBW5tznewmo3eop4CgX9BgZGLG5kYOoMaK2xa67XBIagfizCuDNC0lbRQlCb4R0W46ap5z3BBA61daR+lFtah03ve/Sq34Oqoodk9oVYxGPUra4xbeh/LG89uqNtqit6ux2481c6JscBxhuGVoChPpc+MTABYDrdyHeLVl4lU7PjEtrPI8QcBPe1L3nCX/Qtv4=
+X-Rspamd-Queue-Id: 92A2C40003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: xors5ompzoch7qopbw94441acepi33m4
+X-HE-Tag: 1760969563-459941
+X-HE-Meta: U2FsdGVkX1/XDWCcbR9koLoJjR6Zdtl7tOMMKxsO+N6qdocYVIOaeNtYs/g+8BDAxp4xeDEz0ELtLIvgJMxWlAfwGLdc4ypmyVA8mdAdLaZOUn2TIsj7uiDgPdfcyHZ+2BhMzRgTiL75YeLh48CaG8pEivc6D7h1wEU99kUUoD/ANQXcwTl5jGADeN5KTgaCbLoiMvgEuqLvvNgP6YdJM53ZEbp2X3kaJSnb6vAd0uFfa0EA0E+/mgefq7BVJo+BUx5I7XtRhzEQXvB4y1Dz9TnURz8O/qOjeEUkoVDi93xARTtSzI/VKdEArxJbcOfqFLaKy2OoMIMPcE2p96YLch4iIWRUAJhWWpyeL8ghGRfy4zdxUdd42/zZ5+GSH6hyd2qZaaFMSr1YTGSxViAt7QuSb1h0pB0L1UuvKJd9IgOMzBHgE0h+z0+eiz5tgQKDwfJCEFc0AL0A6uNXiJYftqDJLgWYkZzeVULSj2O4VW/edQ4iZv6HY+9PRjboF6I1UnRyAF6TrSFIBUHmNXSoWrLYvX/UH0a6gDd3xw1WCDVYNZ2RbK+gISfF0MpZxrJBD1XervH48dyK0wm0wRuG8Mo5Lf5Yp4emq15PfxArvp+TFgMLfeRBEPbhKlbJAjRNMd+W3O7FtavGBfjjaA8wW26nTMmdwBC6LawoaM46fzOD5x/u/Boko3ulzFHJUjZKM/roJnUrUzk11XMKeFpwmYXSd5EvZM3aAfByvWSPujNPlF7GJp4u0xcDY0giXIOQx9fSmrXBvyEHMFhlYxMyJOK8nxtRpMwuTf91sf03R6q8yjpizlKbDAPZKh2+ZYZwn+I7gnDhg23/b60cMyjJx+40h8MM0n1xwPP6fra5crFTALxrbEXf+NMC6mQPAcSThvHFsZ30Yos5ndEBNjzr83iYpzftkTMMI/A5hL29RIH8OIJm7VYW9VQ7Hg8M/50PCx3/NnkAPJBcgfsKnnc
+ j7o2QAMa
+ FGLXg4s8jdEk0cvyBdGghTrshVrOxUqX7D0GZQ75uXi268UWgRqjKsfgjVeBiJZIbXOiTq/iwft55vielL/gg3F7DRxkf83VB+zpf7uvidCYt6Zd6iaJUIBRraS9oBZoGvGjIHcRBa4GVQsNrmUzdV18joBbuEE2/w38e+Iq1WVQh3xzz3pjgWhaUNWQi7G0/dClpch+iuFDakLHcaXJTzTGlA1qXc5bXUPtcfLIlwjCUPFW9UNH5p00/AiKjZhPZbHup+YkofoiCYj+hcSbkI0cAyMHACC2OYzXlO+xtkOHD4G5iIfsPLq92HpAN0P6wwQLADaYzqM0CvmsbJMN3QBsPq9yY2BR29EkwfwtQzK+o6eGklJfm/X0GPGz+dyV2nTADX5L9PsMjfIT6d6iW5XP2iEQm0FykAJyCecwuQ6rBH4d+zOtGox9oeJolN7etq+PmxfzOAPTYjiBpxwzlFxj0XTJSVgBwac3g1UPB/1tYUJJICnKWoU3WAbzw55B940MD7N3kcS6bl8ndVR0YwJSMLNSXSK76GKy7g3KyMieBEDbRRwbVDJwbraxA6gYV+X6B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,270 +140,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 19, 2025 at 04:25:09PM +0900, Harry Yoo wrote:
-> For now, including <asm/pgalloc.h> instead of <linux/pgalloc.h>
-> is technically fine unless the .c file calls p*d_populate_kernel()
-> helper functions.
->
-> But it is a better practice to always include <linux/pgalloc.h>.
-> Include <linux/pgalloc.h> instead of <asm/pgalloc.h> outside arch/.
->
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+On Mon, Oct 20, 2025 at 03:34:47PM +0200, David Hildenbrand wrote:
+> On 15.10.25 01:14, Peter Xu wrote:
+> > [based on latest akpm/mm-new of Oct 14th, commit 36c6c5ce1b275]
+> > 
+> > v4:
+> > - Some cleanups within vma_can_userfault() [David]
+> > - Rename uffd_get_folio() to minor_get_folio() [David]
+> > - Remove uffd_features in vm_uffd_ops, deduce it from supported ioctls [David]
+> > 
+> > v1: https://lore.kernel.org/r/20250620190342.1780170-1-peterx@redhat.com
+> > v2: https://lore.kernel.org/r/20250627154655.2085903-1-peterx@redhat.com
+> > v3: https://lore.kernel.org/r/20250926211650.525109-1-peterx@redhat.com
+> > 
+> > This series is an alternative proposal of what Nikita proposed here on the
+> > initial three patches:
+> > 
+> >    https://lore.kernel.org/r/20250404154352.23078-1-kalyazin@amazon.com
+> > 
+> > This is not yet relevant to any guest-memfd support, but paving way for it.
+> > Here, the major goal is to make kernel modules be able to opt-in with any
+> > form of userfaultfd supports, like guest-memfd.  This alternative option
+> > should hopefully be cleaner, and avoid leaking userfault details into
+> > vm_ops.fault().
+> > 
+> > It also means this series does not depend on anything.  It's a pure
+> > refactoring of userfaultfd internals to provide a generic API, so that
+> > other types of files, especially RAM based, can support userfaultfd without
+> > touching mm/ at all.
+> > 
+> > To achieve it, this series introduced a file operation called vm_uffd_ops.
+> > The ops needs to be provided when a file type supports any of userfaultfd.
+> > 
+> > With that, I moved both hugetlbfs and shmem over, whenever possible.  So
+> > far due to concerns on exposing an uffd_copy() API, the MISSING faults are
+> > still separately processed and can only be done within mm/.  Hugetlbfs kept
+> > its special paths untouched.
+> > 
+> > An example of shmem uffd_ops:
+> > 
+> > static const struct vm_uffd_ops shmem_uffd_ops = {
+> > 	.supported_ioctls	=	BIT(_UFFDIO_COPY) |
+> > 					BIT(_UFFDIO_ZEROPAGE) |
+> > 					BIT(_UFFDIO_WRITEPROTECT) |
+> > 					BIT(_UFFDIO_CONTINUE) |
+> > 					BIT(_UFFDIO_POISON),
+> > 	.minor_get_folio	=	shmem_uffd_get_folio,
+> > };
+> 
+> This looks better than the previous version to me.
+> 
+> Long term the goal should be to move all hugetlb/shmem specific stuff out of
+> mm/hugetlb.c and of course, we won't be adding any new ones to
+> mm/userfaultfd.c
+> 
+> I agree with Liam that a better interface could be providing default
+> handlers for the separate ioctls [1], but there is always the option to
+> evolve this interface into something like that later.
 
-Thanks for this, LGTM so:
+Thanks for accepting this current form.
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+> 
+> [1] https://lkml.kernel.org/r/frnos5jtmlqvzpcrredcoummuzvllweku5dgp5ii5in6epwnw5@anu4dqsz6shy
 
-> ---
->  drivers/firmware/efi/arm-runtime.c   | 2 +-
->  drivers/firmware/efi/riscv-runtime.c | 2 +-
->  drivers/s390/char/sclp_sd.c          | 3 +--
->  fs/dax.c                             | 2 +-
->  kernel/fork.c                        | 2 +-
->  mm/debug_vm_pgtable.c                | 2 +-
->  mm/filemap.c                         | 2 +-
->  mm/huge_memory.c                     | 2 +-
->  mm/hugetlb.c                         | 2 +-
->  mm/hugetlb_vmemmap.c                 | 2 +-
->  mm/khugepaged.c                      | 2 +-
->  mm/memory.c                          | 2 +-
->  mm/mmu_gather.c                      | 2 +-
->  mm/mremap.c                          | 2 +-
->  mm/pgtable-generic.c                 | 2 +-
->  mm/pt_reclaim.c                      | 2 +-
->  16 files changed, 16 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
-> index 83092d93f36a..2e3b5131df32 100644
-> --- a/drivers/firmware/efi/arm-runtime.c
-> +++ b/drivers/firmware/efi/arm-runtime.c
-> @@ -19,11 +19,11 @@
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/pgtable.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/cacheflush.h>
->  #include <asm/efi.h>
->  #include <asm/mmu.h>
-> -#include <asm/pgalloc.h>
->
->  #if defined(CONFIG_PTDUMP_DEBUGFS) || defined(CONFIG_ARM_PTDUMP_DEBUGFS)
->  #include <asm/ptdump.h>
-> diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
-> index fa71cd898120..5b8d72885fee 100644
-> --- a/drivers/firmware/efi/riscv-runtime.c
-> +++ b/drivers/firmware/efi/riscv-runtime.c
-> @@ -21,11 +21,11 @@
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
->  #include <linux/pgtable.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/cacheflush.h>
->  #include <asm/efi.h>
->  #include <asm/mmu.h>
-> -#include <asm/pgalloc.h>
->
->  static bool __init efi_virtmap_init(void)
->  {
-> diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
-> index 129b89fe40a3..7a791cb35aea 100644
-> --- a/drivers/s390/char/sclp_sd.c
-> +++ b/drivers/s390/char/sclp_sd.c
-> @@ -17,8 +17,7 @@
->  #include <linux/vmalloc.h>
->  #include <linux/async.h>
->  #include <linux/mutex.h>
-> -
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->
->  #include "sclp.h"
->
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 89f071ba7b10..1c78fc02462c 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -24,7 +24,7 @@
->  #include <linux/mmu_notifier.h>
->  #include <linux/iomap.h>
->  #include <linux/rmap.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/fs_dax.h>
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 3da0f08615a9..9d48646e659f 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -107,7 +107,7 @@
->  #include <linux/tick.h>
->  #include <linux/unwind_deferred.h>
->
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  #include <linux/uaccess.h>
->  #include <asm/mmu_context.h>
->  #include <asm/cacheflush.h>
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 830107b6dd08..25a823bddb92 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -30,9 +30,9 @@
->  #include <linux/sched/mm.h>
->  #include <linux/io.h>
->  #include <linux/vmalloc.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/cacheflush.h>
-> -#include <asm/pgalloc.h>
->  #include <asm/tlbflush.h>
->
->  /*
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 893ba49808b7..ffcdf4f81d0a 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -48,7 +48,7 @@
->  #include <linux/rcupdate_wait.h>
->  #include <linux/sched/mm.h>
->  #include <linux/sysctl.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  #include <asm/tlbflush.h>
->  #include "internal.h"
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index bfb52c564fb3..b4d18172cd53 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -39,9 +39,9 @@
->  #include <linux/compat.h>
->  #include <linux/pgalloc_tag.h>
->  #include <linux/pagewalk.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/tlb.h>
-> -#include <asm/pgalloc.h>
->  #include "internal.h"
->  #include "swap.h"
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 86e672fcb305..1ea459723cce 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -39,9 +39,9 @@
->  #include <linux/memory.h>
->  #include <linux/mm_inline.h>
->  #include <linux/padata.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/page.h>
-> -#include <asm/pgalloc.h>
->  #include <asm/tlb.h>
->  #include <asm/setup.h>
->
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 96ee2bd16ee1..69d71e048e16 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -15,7 +15,7 @@
->  #include <linux/bootmem_info.h>
->  #include <linux/mmdebug.h>
->  #include <linux/pagewalk.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  #include <asm/tlbflush.h>
->  #include "hugetlb_vmemmap.h"
->
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e947b96e1443..cb2245085879 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -21,9 +21,9 @@
->  #include <linux/shmem_fs.h>
->  #include <linux/dax.h>
->  #include <linux/ksm.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/tlb.h>
-> -#include <asm/pgalloc.h>
->  #include "internal.h"
->  #include "mm_slot.h"
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 19615bcf234f..449d3c312fcd 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -80,7 +80,7 @@
->
->  #include <asm/io.h>
->  #include <asm/mmu_context.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  #include <linux/uaccess.h>
->  #include <asm/tlb.h>
->  #include <asm/tlbflush.h>
-> diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-> index 374aa6f021c6..247e3f9db6c7 100644
-> --- a/mm/mmu_gather.c
-> +++ b/mm/mmu_gather.c
-> @@ -9,8 +9,8 @@
->  #include <linux/smp.h>
->  #include <linux/swap.h>
->  #include <linux/rmap.h>
-> +#include <linux/pgalloc.h>
->
-> -#include <asm/pgalloc.h>
->  #include <asm/tlb.h>
->
->  #ifndef CONFIG_MMU_GATHER_NO_GATHER
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index bd7314898ec5..a7f531c17b79 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -25,10 +25,10 @@
->  #include <linux/uaccess.h>
->  #include <linux/userfaultfd_k.h>
->  #include <linux/mempolicy.h>
-> +#include <linux/pgalloc.h>
->
->  #include <asm/cacheflush.h>
->  #include <asm/tlb.h>
-> -#include <asm/pgalloc.h>
->
->  #include "internal.h"
->
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index 0c847cdf4fd3..7b50efe9c477 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -13,7 +13,7 @@
->  #include <linux/swap.h>
->  #include <linux/swapops.h>
->  #include <linux/mm_inline.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->  #include <asm/tlb.h>
->
->  /*
-> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-> index 7e9455a18aae..ec6fe4eb2644 100644
-> --- a/mm/pt_reclaim.c
-> +++ b/mm/pt_reclaim.c
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <linux/hugetlb.h>
->  #include <asm-generic/tlb.h>
-> -#include <asm/pgalloc.h>
-> +#include <linux/pgalloc.h>
->
->  #include "internal.h"
->
-> --
-> 2.43.0
->
->
+I have replied to that, here:
+
+https://lore.kernel.org/all/aOVEDii4HPB6outm@x1.local/
+
+If we ignore hugetlbfs, most of the hooks may not be needed, as explained.
+
+If we introduce hooks only for hugetlbfs, IMHO it's going backwards.  When
+we want to get rid of hugetlbfs paths, we will have something more to get
+rid of..
+
+We can wait until some use cases to appear, that may help us to better
+understand what might be more suitable to be abstracted. Especially, if
+there will be any consumer for missing faults.  However if guest-memfd has
+it optional, my expectation so far is there'll be no real demand on that
+for the foreseeable future.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
