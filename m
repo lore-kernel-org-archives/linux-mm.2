@@ -4,114 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEE2BCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 11:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22755CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 11:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6C28E0012; Mon, 20 Oct 2025 07:10:33 -0400 (EDT)
+	id 4CFD08E000E; Mon, 20 Oct 2025 07:17:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4975D8E0002; Mon, 20 Oct 2025 07:10:33 -0400 (EDT)
+	id 47FE48E0002; Mon, 20 Oct 2025 07:17:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 337AE8E0012; Mon, 20 Oct 2025 07:10:33 -0400 (EDT)
+	id 347D98E000E; Mon, 20 Oct 2025 07:17:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 12C408E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:10:33 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A80414D1F2
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:10:32 +0000 (UTC)
-X-FDA: 84018224304.15.E54E359
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C1A09160008
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:10:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fWpBAqe0;
-	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F23C8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:17:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F48C83BCF
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:17:00 +0000 (UTC)
+X-FDA: 84018240600.17.A996B99
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3821A40003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:16:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S+sF83a2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="PXB/R9hX";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SoUIqli+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWPipZFK;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760958630;
+	s=arc-20220608; t=1760959018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q1GwM38mh3nqijwky0hI3l2FSxHPE+1vxrvYPxKuFQQ=;
-	b=d/Hptyl5ZqtLfaZTtZgQkREPGZ0JT2uN4P9doDbk0JD7f5+Hnj7HybOOEz7hmNvfMuZFep
-	N8aJrqmT6ugZTp6eUBxeOoHSZZuQyOYu7+Q7RKcaF/vY19VfAqyANoEvzxp/keGWeoSGQz
-	u0Wbe87JGKtWW5YKb11q1VnaZTJhwRc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760958630; a=rsa-sha256;
+	bh=xM1PbaYDZEV6JMqVRTGxnqw+sNH7uxtqulhhY+yBP4Y=;
+	b=QloVptDzQTMCe62gYoUX+469I8sLgMARGk1qtXMGhe+vOSShYoRlCecEXq/+8t6GoQb3ch
+	gD1eA0z9Mp/iIKE+SiB7aedHAn+yQ7LGlpfaAzLLXowV3mjU7WfftdeLGc3k2kqHf+MQ9b
+	/sFsRvH8sq82jsVlFpwlzoS1mCCHgK0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760959018; a=rsa-sha256;
 	cv=none;
-	b=kCuQ8HU6+CvcEnbuGdsZHDl6ARRV6KNm2k2poqHAIDNxOdH9m8OO81y3qbFFzJx+WhnyV0
-	wNGfYkudEgubY2nzs3vBLBxM7yNwPiHvhSr8W14O/cat9Qp8DJF8EmByhMqsXZtVdPtBkH
-	zLShwFcGF0x17rNPfkingji1W0Xn524=
+	b=E/rR5F8Fi65mFGZGwteDWkFuSd0Ln4Kc+f2QlZ+sIdKc/U4oGkjPe8+mY/uYchmaZPVVOv
+	Xqf5FIl/8FYoRHWQEUsqkoYUZTUqeroqgzKoY/5D87OvvdIIp2R+Fg/Jbno7qBSZumMiUN
+	zQTIx58cgV3ljElQil8LAJHHg0rdPK8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fWpBAqe0;
-	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47114a40161so46438725e9.3
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 04:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760958629; x=1761563429; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q1GwM38mh3nqijwky0hI3l2FSxHPE+1vxrvYPxKuFQQ=;
-        b=fWpBAqe01CKV1lvs/r3tkVm4xKtkrSrpDBH5QfVP5VszTrsXEiYPeevn/XqpXT0jdd
-         CCPePVPlNWAa4seTw/rXmRqXe3/tlqw8GGHLnIWJVz8ciFnV3lhxKD3SL/IsVcnG75xE
-         cZ0AoTqe8WKB/We92b01GURkL062sRHlkXawD2fiFRQxQcVYldBf8ZLb0A7oZQGE+eQg
-         Cwr2eahaG3VS6NczRgEgHpqSWYERIglvpam0SMIpYhe2Fk6OXHUMeOuzf3chHHaQQd9w
-         iXsql7RaYKmMKGUNrvBo0Ua2m7YM2OC2GMd5k0l3UYAbk3BZIK7qTt+G5OiRp7L50nXN
-         29Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760958629; x=1761563429;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q1GwM38mh3nqijwky0hI3l2FSxHPE+1vxrvYPxKuFQQ=;
-        b=p210WQhTPPCtk6cGOixgfbANZUmuv/XLA7vqBuEci3Eyg5041wXBvb5DrTux7UE2fW
-         5P/0dDscE7spTDkzjRJResTEFbuN+fspL+Sw9Z6GW4aGrxZj6xVUuwUYSWjl8wTp4Amt
-         Mr62xpnUqKtclpNYtg3UzesqLPzmNgkk1j8qHqXkCEfZx5dGaM0yiQ3Bm9SmGtGCuNCw
-         YZxp+YLzwOvd/hEMXqpddmPRCEwBoElJHQl38GqZ7+h+4ZUTAPqVjmZLTyHLI6LoMkFD
-         XBq+5spMCeJ8dAnaT75d6cg6h0he16aYooZGWMdcrVZmxutqna2khCIHDOCUfoarLNmK
-         7K2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXMnzuWdCLScCea8DgisMwCDXKLEZHH603j64OzPGr5jrqADeB9gFrzKQjQj7eK3F9hYbkkfO9o7A==@kvack.org
-X-Gm-Message-State: AOJu0YxhcEFb0mtX1YWRciE1rNBDM5BrLSnWEZN71yel1fL3CYI1TB5G
-	eTZAHjLfwamZgKEYgn6j7cZA28JVksP60scfwJClxGhBoXarMzRvxnLv
-X-Gm-Gg: ASbGncvGEYs+VuU0uYnO24b/ELCN5wsbYmno0Jlp2sdftSctiMTnPvZrJW7nl9m5dqa
-	DC3jRwfNmnl7X2Lwpc8vhxDhW9HWM5htcFE/hbToB/uOI+ZKfNNcSSO6iHvWKRn/H+9JOupc3wo
-	tsfo0AZTzl1odkE1CE6Uj9DoVRZHvkKCHhbGA0pevUG3AHmO+AYgtkBIRdccNT3xdcRiQ6Co6IZ
-	nR3ADG2+TWGuXXZ3V+BCdZAR3KgkHPXBNalt1ZMDiTCTZFmokxkaXvvEa7Y8Ap32TPyGYJGyhSg
-	PZGkEna2zsh2JIxmtJVVojyhP5iWj4IX0bbi0rB9xeajBTEhlJv4TgVH/CgCmb9iUS1Eyfzgm3F
-	fBI0O2tdpAC78hzIEOu6BAbFfM8WDLqskjFj22Oe2wlBLmozOJPedrRnw19K5lMuSpWA3UgDtzi
-	aeW3h1RA==
-X-Google-Smtp-Source: AGHT+IEmMMoOjYfBUT5RqT6xtTVyMvQoeiu0xyX3gRg3r0UUnIXnqBqTe5A7yX+Qs8G91aoDug12qQ==
-X-Received: by 2002:a05:600c:8505:b0:45b:7a93:f108 with SMTP id 5b1f17b1804b1-4711786c71cmr94484055e9.3.1760958628958;
-        Mon, 20 Oct 2025 04:10:28 -0700 (PDT)
-Received: from fedora ([80.195.98.51])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144c831asm218234765e9.13.2025.10.20.04.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 04:10:28 -0700 (PDT)
-Date: Mon, 20 Oct 2025 04:10:26 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	linux-kernel-mentees@lists.linuxfoundation.org, khalid@kernel.org
-Subject: Re: [PATCH] mm/vmalloc: Use kmalloc_array() instead of kmalloc()
-Message-ID: <aPYYovFBtHYKpgg4@fedora>
-References: <20251018201207.27441-1-mehdi.benhadjkhelifa@gmail.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S+sF83a2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="PXB/R9hX";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SoUIqli+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nWPipZFK;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 52AB821186;
+	Mon, 20 Oct 2025 11:16:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760959012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xM1PbaYDZEV6JMqVRTGxnqw+sNH7uxtqulhhY+yBP4Y=;
+	b=S+sF83a20Ne66kDF5CGiT6xsZ9SITj2hEv65D9O2iwEKXinPrXQp2vhthmDy/CPwb9UMf3
+	kL+jeVh6D32pE1QasGxJRhlIWljFFY6EM6fn4pAhtAFfzfmbLd02b8BbDw6jmeXwFbwpDy
+	HIkCgrpVW1DSl4wzqy3VHcrLqEA57I4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760959012;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xM1PbaYDZEV6JMqVRTGxnqw+sNH7uxtqulhhY+yBP4Y=;
+	b=PXB/R9hXqpxh7QhcHr5MuqvTLIYBlfcLAijFu+QLNCm1MFwNQLvqZ5PLK9zFQ2CNH3FNhS
+	ycZm218ZBtcOZwAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1760959008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xM1PbaYDZEV6JMqVRTGxnqw+sNH7uxtqulhhY+yBP4Y=;
+	b=SoUIqli+giSYZWF902ETGINdXPBqGYCpcLge4Cg9t11vNHRXbdWedh1Tg/idW/QkzjxfaH
+	fYjcgbwL4ojJdpx0BN5fm7d8PK3hLG6EWrrSwiTN95wi/jBDQQ0lqsj5jrjZx8sxPW/s9k
+	Bpt2jf72qOlF5/eDU6U3vkomhtDtdng=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1760959008;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xM1PbaYDZEV6JMqVRTGxnqw+sNH7uxtqulhhY+yBP4Y=;
+	b=nWPipZFK3OAgu7JM7tjXRmd21rccbIxPJZvoRGYTM4mJ09OvOYqtEnsJF34gg176RMan5c
+	WtNJcuflHcWXnqAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 48A3313AAC;
+	Mon, 20 Oct 2025 11:16:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6sC2ESAa9mjFawAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 20 Oct 2025 11:16:48 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EA6B5A088E; Mon, 20 Oct 2025 13:16:39 +0200 (CEST)
+Date: Mon, 20 Oct 2025 13:16:39 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, 
+	djwong@kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
+Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
+ trust the bio from direct IO
+Message-ID: <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
+References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
+ <aPYIS5rDfXhNNDHP@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251018201207.27441-1-mehdi.benhadjkhelifa@gmail.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3m7z3h9thsbqr87ga75ate3rydxdzorx
+In-Reply-To: <aPYIS5rDfXhNNDHP@infradead.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Stat-Signature: tcpatwqdms644jrcpdr3bim4yu7qaqek
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1A09160008
-X-HE-Tag: 1760958630-802543
-X-HE-Meta: U2FsdGVkX18iip8Wox1U0mf0+2SS5LI6C+dMkVWPDJYKhN+JOgMaO/vtcOQiFfrRsqq3LrNeePJluK3sDEzGXILJc87X3kUNnLpsr6rFTzO+Bj+yJHI0j7iHzMiHTOc/6Zehy0aR1ac+Q6zMHtHnOfeFdXwgDg/9SJRdLXi9RwIDgN/vPUw4d38tljRQOBdZENz8WfK3n67HArVkBXQ6+HTQzeD0CjbZAYo9SIjQVyVsdVPPaNQ8s4xceeHLeB1iYgf5ADdftmmlz6WiYp/VZz/69Wht4n0yEYpDtbULay9o9X9NMD1Ko9aDO2zraImhRfwzoT4THGJaLA2y7T6RLCIWDFU7KQc3tvWQ4fKbNj1+uuSVA/HHfc4+XFG58cNFST3FSUgGBObbAApWh9lwcNRNeWKigXmyYqNvlkUHYQwsidlH9inJuLYzU0qeykA8NEcTVvaxjYoXe9Ngx/LXg8aSJWLthRGV+qOpMlnxPPnonkzL6qA4F0q5jjdBmaS69Agu+eBCdjaeQs6fVH+/7V1He0AnSqJPcvi/BfZPG8uNzd+DboU7x919JKIe8vYGUxkQ0Cit3ekb/vwyqUbMlhM1t2m+I2yQYNMmmAXmL2A2eeuj261POu32kaFxUYu8hbwzgUKZnZsOr7G31ns1CgcePay8BYH+0sRxbu6ypWelXv50QWSATRfcmmxb/p7cGORLB9UWy1LhsEsV888jW20vUbe8un+Hf+Os2ATAaKVjuozPZgpHE2lzR0ji2um4fegeu+vs44TxoENgjB/K/OxMrtB/pnn4CT/6931ZiEzA6BNVPXb6+2kickhbwiswDMbnPho/AbBa98UFVdDVQM4K8pgOSWl0nZaI09ryM3blpDB9wujfw8Yhce9gFv/S71bucfJmFERSUwGeOuikPsEeARhoPilRwu8oDiOFEUs3q9EagN62U9wfpAbYSQ+RHkBW9TCJfxZ60URGX9J
- RSW2Xo1a
- mzMCYyZ40w7ug98vcNXiqh2AoIddu0pE5J7zkAK/oPsTA1JXBOb4h9zpAG0QMEZ5BY4/SS9j7YvIpPh54dzBu/1c+6G2yov1OFi98UcueTRJrf2xGV3j4WGhKTRYNpZWiLtbCJBnYoHNCy0TLnEuyj285x0F2KVn6IKAJ9CCpV1eBGCfUY1emulOL4EeGL89bZBK6/qJFZFFWn6sk5evA+9QcSLMIl2RPHZrBxOxRW9DcKIivplwQWkGFK3jOgkEml1Cnt0E30zeR+mHsLsDG6ET7upcbJvIk4GTsGmqpSDdpnVQ+Vwcnh0ct+RH2wRpF783exmPgCYUXUkvHR5ih0Z0WVvvMax4FwkxdnSfv1xioiTlv7tLS+n7EJfabOCX46zy9BpRkc8kY2N/8j47wiAL+sckW8+OX4jb2bG7FpxEPytsv8kpm/kCUx4+W830yCbVB7FpGyRODgUgPNCgKuT5tOJLNZsHCFbjGJFghVLFN5fChurkAWkrlouxvAl6vJHQMSkI/2alxjks3ox1VtoBhTlVl1yBjtUWwoNRjXYHPTHcTqkcGjuyAdW2WXkSP9SHlQD3ZHTjpdWH820VK0gBs+AJFhiWN+UFc
+X-Rspamd-Queue-Id: 3821A40003
+X-HE-Tag: 1760959017-782736
+X-HE-Meta: U2FsdGVkX19XRB+a2EvoKlCTrhxp1rIy3dL22vd2U5qGH4MrQc3E3f0YxYLEfaRMUGIHyxlXpNfsVSULgoR7gR1rlxBQUh1OjW7LDt1NT6zNHwER8GJAr2ayVxnSdDhf/jPRDBFkajpDqepUci6Kmyv5QIo17a8k087f+RtWZmHPFIN52aih93bqQ9Y4nvTw5/wOCVQiznY3HOHYrUfW6AQ+z8wv7FkperratpFmUEjtPqWFA7/mf5gdoXVIz0yWcfD8w/XBRuGVlewWou7D0m8H+5PW8qSRUfE6/+ywInfxbjerKoKpqx0LX+wl1k95tWRQymMPw7065tsj4xyiLrOhNoI5ERuMBlKEzgmM4i4bLXb+LiOcUlUNd9Dz5sZ4TymLwN1btA7h5zP+pp5rgFTtfmc3DggWdW3TYlBlNE8sp0OfThToQVX2VXcmwx4vC020QEza9XPJ4R9YvN0d+ZsGhiwyG5kNwBXCNTvy7FnmwyKjHrnKIUq3W69DknPkhqVToQ1oVSt/+zv/AtU2HEo6CGdMOabDh1jHIWuNpNkXSX3KJ3R/0tpKSKE+GzU+hbNg03F6hu+LlPxQ+tJwituPnrumlLyzzAni7H6qscfpeyfJsFwAcDOqKeyyz9TqtleasA0eg5JzIFs9BJOhjmSm85LvDqjX7uLGiukbeG1csaOAozTSmi/5Db/m+ns3oWamUYOkilYTC5elEp+z7l+wRnNXpZALjzzluKW+I3vDC0ZIuWtsMh7RrBC5hY2vaDz03qVEVf41n1m+egvej7v+8F/IdIKfHgUlHOnEBJ73dk0gH1IctwBKiWHtznX6YwZaGhFsVALAUWQ66/WLdu0RMq13htqkk3+DTVbS83ZqznwJjoUuOyuryl6m9GKJyPGm3LOXRg3afSV50y2nKJaJUKbm8PWZdjn5ePCGSZGyJW1+MyttcgZOxuQsE1ES7GY3eV/U34MRA1H+Ror
+ Kexnpn9O
+ 2xPF7vsX+RYm6pK8/Bq7vhj0vPstNSmKZGX2vqH3qZ+FGcqXeT1/TpyJVkDlHuxPcQ6Zi3vL7JSFJcmeukMqn1KIBL9yGYdyC1o5rgbcmaGBijB49T9Q8ZXm0RvEe6j7VDm7YKBtMrBc1mezNVeCS6kj3dai4NWZi6xH9dX9lJFzOMoIq6SErqg/7zU7gqpDjr0V44cLvffz/xOI4VoxwKnOM16iMxBHR8556ogPiWs8HzPvW7WReTHDX5yKjw0E7LFydOEn9EwbUbMi+q0XIbZqRr7SIjKgsH/9GLdZwnO7Z9XoZZrNfpX7ILlhSxSWuxcD/iAoy7qzjyJBRghBdre6IjoQ11d5GHlDQMBcA9UcapmRghEnqsDZ2kLceubxUu6DS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,16 +136,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 18, 2025 at 09:11:48PM +0100, Mehdi Ben Hadj Khelifa wrote:
-> The number of NUMA nodes (nr_node_ids) is bounded, so overflow is not a
-> practical concern here. However, using kmalloc_array() better reflects the
-> intent to allocate an array of unsigned ints, and improves consistency with
-> other NUMA-related allocations.
+On Mon 20-10-25 03:00:43, Christoph Hellwig wrote:
+> On Mon, Oct 20, 2025 at 07:49:50PM +1030, Qu Wenruo wrote:
+> > But still, such performance drop can be very obvious, and performance
+> > oriented users (who are very happy running various benchmark tools) are
+> > going to notice or even complain.
 > 
-> No functional change intended.
+> I've unfortunately seen much bigger performance drops with direct I/O and
+> PI on fast SSDs, but we still should be safe by default.
 > 
-> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-> ---
+> > Another question is, should we push this behavior to iomap layer so that other
+> > fses can also benefit from it?
+> 
+> The right place is above iomap to pick the buffered I/O path instead.
+> 
+> The real question is if we can finally get a version of pin_user_pages
+> that prevents user modifications entirely.
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Hmm, this is an interesting twist in the problems with pinned pages - so
+far I was thinking about problems where pinned page cache page gets
+modified (e.g. through DIO or RDMA) and this causes checksum failures if
+it races with writeback. If I understand you right, now you are concerned
+about a situation where some page is used as a buffer for direct IO write
+/ RDMA and it gets modified while the DMA is running which causes checksum
+mismatch? Writeprotecting the buffer before the DIO starts isn't that hard
+to do (although it has a non-trivial cost) but we don't have a mechanism to
+make sure the page cannot be writeably mapped while it is pinned (and
+avoiding that without introducing deadlocks would be *fun*).
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
