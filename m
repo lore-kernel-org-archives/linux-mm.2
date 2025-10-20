@@ -4,119 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6997DCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE0DECCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:52:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EA788E002B; Mon, 20 Oct 2025 11:34:04 -0400 (EDT)
+	id D498C8E0013; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 973C68E0002; Mon, 20 Oct 2025 11:34:04 -0400 (EDT)
+	id CF9CB8E0002; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 814FB8E002B; Mon, 20 Oct 2025 11:34:04 -0400 (EDT)
+	id BE8B78E0013; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 692038E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:34:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 305421DBEB2
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:34:04 +0000 (UTC)
-X-FDA: 84018888408.16.AB355FD
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3797D14000C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:34:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pyjkcCg0;
-	spf=pass (imf23.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A95C68E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:52:10 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53BCB139C0C
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:52:10 +0000 (UTC)
+X-FDA: 84018934020.12.0A068D3
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 88DFB1C000F
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:52:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=A6RaCm47;
+	spf=pass (imf18.hostedemail.com: domain of 3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760974442;
+	s=arc-20220608; t=1760975528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zoMPjv5QaA2iaHSWt7qx0y0ZWWey1KUmhoM8Z4ibSWU=;
-	b=G27fkuQD37rLx6C2lL9eax+LhBjuHnIhdx0Gr7SQXagSjsBUIgw7atQCch1HifPlECIRP9
-	y+n8oLtghPrnH61yP9F1L5U1xk97WRipFIbljQyYXeUfypGGONUOQQm9veObCg9yy5j5F0
-	3oqX6OHxm9vIKY3D0NzmIbGTntsNONI=
+	bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
+	b=VBCJeEc2tbJ0MIR0uDBj9u0NfgGf5Dfwf8fHSt5snxiaDqQGpvZo2wyLNPCX8ViSJKdtkD
+	bdc2KGsv0kzVNE5LhdNsnsfdkxGEu/EZVahsAt8d2LV0pZujlWu/RDPEo/cHHgmTpMIzT2
+	lnXwRctg9h/ekifBAMLNMO1fEGLRLb0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=pyjkcCg0;
-	spf=pass (imf23.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=A6RaCm47;
+	spf=pass (imf18.hostedemail.com: domain of 3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3plr2aAYKCIMzlhuqjnvvnsl.jvtspu14-ttr2hjr.vyn@flex--seanjc.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760974442; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760975528; a=rsa-sha256;
 	cv=none;
-	b=p12k2gLuEffcvpfCEsXKraygR+yqzkwqxq0rQEV3qBBZC4uDx9rrjXGliKxB1DPZWRCs7x
-	B23WfX7PfH98V4fJkote0e9ntYmuFc063SZmgtCXZyywdezYnzrJlMdRhhs2jPTDp9Nr/x
-	+v+d3W7y/vvfGjBKs3VnEajsPIAZL5M=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-63c2b48c201so12645a12.1
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 08:34:01 -0700 (PDT)
+	b=StuwKzVR90BOa1FLtWzqyyQBmwkwOp4K6DxdEXSqz+Exej/wiE5wG9u6Dzmw6eYkA/pH91
+	rzwEXbTXqSUnnt3BRz43lGncrZRDe3i7yTOHH2BwNW/vtNXj9NmE1WLm7bYiR1K8QbjRCM
+	tbBx5vTgVnDmkxWtLIOayOZNvgORyvM=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33baf262850so4461659a91.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 08:52:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760974440; x=1761579240; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zoMPjv5QaA2iaHSWt7qx0y0ZWWey1KUmhoM8Z4ibSWU=;
-        b=pyjkcCg0Y+IOaZyqq/+aPMxKkRGKI9ruuWnE6kCTnNbWzRPUPYYQogiKcv3eFWtMVB
-         T5xbwykewBwtowTocwyLvHBRz986gOXx1o8mFubOd5hHNLrvfaFeyZufsZ/QFp5jUefL
-         e+KRAf6rUY5drH57TLqztce+KD04fXtfnjgRimCx7VJDKOjUdXO5XEcuJr5FmQ/+vbMP
-         wXg2e5JYRR9Q0yZoTKo7yA8CqgiPgIBgaYA5u2hcNCNFaRgInSOqX/gbZ5RnOy6Fc87U
-         DLCxZzYb7p97rhQ+mshHCgw15Q049+Rm1i8Q2iyj2kkK03gN9vKxUF+M+84kp0xls3u/
-         EWww==
+        d=google.com; s=20230601; t=1760975527; x=1761580327; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
+        b=A6RaCm47KySJzu3brAzxmjWh69OeaxKzCJr3Z/YF2cJZM9Yo/DOMYi6Xa9dXuTKDji
+         M4XOi9uaR1Nol9dHvlwQy27OnJIi4gu/R8e8TeItvZhKo5ND/KrN/gm34KGEITSnlOFJ
+         tNFJOKb+AXRvLU/KLACtC9NKABuLAgk2r+RXtug7HsSQGdnkCyDymGwemPSe6kMVLjqE
+         eSYOgOqMfkn4Wafn9Q6BW7e55cWI/KKR2wtLrN7X7ctkWopmlOKqgoksOmcOmv41ZmUD
+         sIfzDIXWJtRdZcfstoZQbjqooQduKQk4dFXlU/PwUUnwbpIuCPfy25mzqMEy3PUrwvri
+         PNeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760974440; x=1761579240;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zoMPjv5QaA2iaHSWt7qx0y0ZWWey1KUmhoM8Z4ibSWU=;
-        b=lxxvtXrkvJ0o+j+8zqn9cFf+ugKkzz6pQnq5AHAUyAHmKrnsuxbwrHqVHgYbIeLW+l
-         ZvUCDfxoeNn/0IyibIf4jeBXCNWOE6OuzhDzZBzF2ZrwXfVRd2EEYo8gWif2ZK9F4AbF
-         PNriAbKJ1RfWV6/dKHufhMpz5MyjfB55xFMiCAd+eMYC4x8qFkBVjZDq/urSYAyUsdBM
-         jK/TcOckqAyXWc1sHzlOS5dqDYktwnxCOEZcGBneWNy6cnqCQZSBIwW3DQWKDoSlfDEN
-         8smuicWQ41Wd+GSmzk6va7jN/3tv5D0aeoceP3tcV0L+TXV9+VUWK9SyWSFdXuRdNEfu
-         51MA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+UZe9B6qqTUmhmhVOiTYcVLprqgnmmTjzKOdMau85dfTpdNQT8v1QkzFKbVgJQ4AY5mNBdiAPGg==@kvack.org
-X-Gm-Message-State: AOJu0Yx5CVsJwPcQAqqCyM1ij2kvuSJYTrU7tECqNrS1uJUmI9DzHdFv
-	eRwHz6SUtJa8ZZ8Sx/9iaSDFztOFbFzs2IqKWQxVtlkuGp5e/DpoXnLZDUyz3CGloj1EOOsrmWk
-	VKXBLaFbkunMHowwdLha50JzLqHaX0rC6QgXsT6SF
-X-Gm-Gg: ASbGncsPVNB+Rsc/pnPIJqn6dA4WUF9TMa1QP+hynYTnJeRkU/Zbk+jlOiNaIXfdbCD
-	MTpqRhHcAMHFATW6QPyAfzRWBNR10+0+07zutyyPeDo6v3nBh5HCHIRdryTBNZHsROAKgHmWOtI
-	UggyAfmfkzFPgkPxzMLvmkoWQ8Kr8cEEWnNi4bUu8MywPXDMiF00/untuY5P55C2LbC1V+DC4/K
-	S5pKUIJ6ywQ3zUt55jJvg14Vc+Grv5yXWv+MedGu9+FJuMEQy5DzoOY7O+0eZ8hBPumLmOzpYIJ
-	Sg5ZmhZKVQdV+Q==
-X-Google-Smtp-Source: AGHT+IEMH+U2cQKjQIsds+8fm6Kq7It+MUdS3Lsmva3FmgSZShNlk6REjMdRJGcVQFJhUkJjZdCtVYUnoT8lrmP5r+g=
-X-Received: by 2002:a05:6402:1284:b0:63c:11a5:3b24 with SMTP id
- 4fb4d7f45d1cf-63c11a53bd3mr332815a12.1.1760974440107; Mon, 20 Oct 2025
- 08:34:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
- <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com> <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
- <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
-In-Reply-To: <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 20 Oct 2025 17:33:22 +0200
-X-Gm-Features: AS18NWA-e4MpKGPDrMbiZevTJxybzfCgX9TbhLW59-uk1AksQpJ17-n6IgH3c2w
-Message-ID: <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>, "Uschakow, Stanislav" <suschako@amazon.de>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com" <trix@redhat.com>, 
-	"ndesaulniers@google.com" <ndesaulniers@google.com>, "nathan@kernel.org" <nathan@kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "muchun.song@linux.dev" <muchun.song@linux.dev>, 
-	"mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
-	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3797D14000C
-X-Rspamd-Server: rspam11
+        d=1e100.net; s=20230601; t=1760975527; x=1761580327;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
+        b=kRH/WfBFZScAJsxpeX3lDYaYJp15Wi42AiyCqWMgYZfh/0hNaGle4icIqsbMXrnUmh
+         pn0AfS89guBt8b2bMqDf+NJwQfpjFXeMmiyNfqvHjHXgsomXxmajimtmEZlWAMm7pTF3
+         a1yGV95Gq+vsu4xlkpCCMBZA7gLn12yIqcWb7ehh0pdyM28KrocxNjOOrLRup73g34IG
+         kzTh5w2Xp+XqGYJTLqfszNvzVD91iAkZgT3ph9AAPCZQE3nWQ0WSpYrz6epQB1UEZ1DW
+         /0zI2twf6RDJrRtWxytmFCuPzC+nMOxsMJ0Een3XUDhRJhAhd+yOfrPCYskxKiBFzOPL
+         H2JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXeD2NAegAHcx02b9Zfhqnun8CCLFRN9uaJEQrglf+pRq40wTwOuR7ZmY9yc8MMPcaM6GvWnDXt9A==@kvack.org
+X-Gm-Message-State: AOJu0YzUsDAjMxDpywoc32UoWmn5FyezxxxfNixvLk7SOX5qtYg/TdTu
+	9LNUUZ5tFdvrrGYRmTOfNG5rZuWJxIUavPLcKscYEliLrk3FoiKs+0kw/ydcWwJQKJqDStRmgHt
+	Msve4Cw==
+X-Google-Smtp-Source: AGHT+IHcZobfkAMYLqgP+952/xufHk4lZqraqyIEs0BsZFGgLzowAsqRVArAQbVQNZgQWXn7bmNPNT9qaaI=
+X-Received: from pjbds19.prod.google.com ([2002:a17:90b:8d3:b0:33b:51fe:1a84])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d85:b0:330:4a1d:223c
+ with SMTP id 98e67ed59e1d1-33bcf87f421mr15625676a91.15.1760975526813; Mon, 20
+ Oct 2025 08:52:06 -0700 (PDT)
+Date: Mon, 20 Oct 2025 08:52:05 -0700
+In-Reply-To: <176055105546.1527431.3611256810380818215.b4-ty@google.com>
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com> <176055105546.1527431.3611256810380818215.b4-ty@google.com>
+Message-ID: <aPZapWWFGyqjA2e3@google.com>
+Subject: Re: [PATCH kvm-next V11 0/7] Add NUMA mempolicy support for KVM guest-memfd
+From: Sean Christopherson <seanjc@google.com>
+To: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
+	pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
+	Shivank Garg <shivankg@amd.com>
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
+	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
+	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
+	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	tabba@google.com, ackerleytng@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, 
+	vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, 
+	michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com, 
+	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	aik@amd.com, kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: yybstiu4573i87z5qr7x8na54mz3f7ik
+X-Rspamd-Queue-Id: 88DFB1C000F
 X-Rspam-User: 
-X-Stat-Signature: wts8ogwdk6atzm755exkq81fnsy9on45
-X-HE-Tag: 1760974441-612634
-X-HE-Meta: U2FsdGVkX1/cvd9t8rKbPbLlS47zTARVjZZMKD/S1q3lLhSQ/BRNOnTba/egpZqxqbpxp7/Dw5HKarNX/rR0lbotptIZ8Raqm5O4dZ4lTTp7KvbaiOHixBFim+Z8IgjVtejMJKJHz341EFJQ8+1F06XwTAyCTURoi0CtV3POXlxNXu404ozzsUZWq9i+q8/ItsTZtgsG28B16WbNACGXq111YX+f4RplDphrkcJkECGLOjmc5z1IYr/XX0zvbfKDa3mae1+wcSGfS0DAdn5n1Mxe7n7qbN+MZzlayCmGX7gBJOpddkb0oplMLlORDK981g9bBvX5cc0InVcw5jWpwFFaW3ra0P0/hotbKb6CD8ZmwyT+VIKDcp0X1WW4Qhqn5H/wO4uNAFRcDnESMVf4VqBoUnUIFROqrnDvTkkl9DQfcWGSNbuoIHdOqyU81aXI+QQRGywHcUT2uVYLzpmEShbHUs/r/rneQfCvMgA9JHb19xDF7RycQM6vFhSfXZRqXZFmYNFeSf8eu+LMCopHJ09Dr8FLeGz0w+i0BegtjC+RaoHlRdLLtWCyNK7phuiHsV0aLZLSDqRyMqmig3UzMUUAJEYBkceErLzWFN/8ZUSf3I33Jp6uhzmiZxqi3JDxrn+Idfjd0Urk/Y6xy6gvB745ZmAZxwZIeV/t+5P0h3VAwEUrkKor3oI/mbvr45xl1XHfd5LgGez9lwZZ1TJpoNUkwxmc7qsakSpjLgi9GEi7EsBDRVRf+4jU8vgOwdykIwz9XpmT40eE1Tb3xW2C2xdk06IktLD0AHmdRnsOB98BEnWQVjh0nviSo+uflUyl8iTqIYG3FijFFIBQxkLCnfu0EsPQLd712iEkSNXEhfmKHyIsgd3j9u/HbijoXuC3YZYY0m/uxAIVtajFgQ2j52k3KCD5jzyk+6if0pgl/d3QVRS+aoJm+Rqv1lUM8OfT30SwzsBr1IGSoicGZMQ
- 7JPr75Me
- j43XM9UI8WT81kGQpYxWHZCsj6l5KZwS+rO1iUXFTIVJeeFmjaRdtuPKGQbIqfjKblBh6IzxSuQBRDWCSLtvHn9sL7+NLJ+GN/gVH1tPLbqVk1nAZg/gFLiaRnsGJFltLp7Cl8OkvWJ9gWHkbSSXTgzGIXDx00EicA1QBWqpyT0A4iXjJsw8q3O2fLJb16KpSHNuqDCvr36v/nlixEB/wXRh1WMbhex9wQC+z9IG2qBOCsoK7RMMD4+Tq8s6hTK2mUUgYE59ZHYlbXcQXJSQdY/tsxBhZNKp1PaEgTGFSseqAbGPHPtPAZauJ0qwC/M4YJkvmjxodPMGbsmM=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1760975528-611877
+X-HE-Meta: U2FsdGVkX1/o/uNR+gk87e21BtXFxzTTmhhKzzQ/KaFmmfUUyfH69vWjeICIXhkh65OTybds7lJAxDV4bmHR2pgMT0aTzs2jlyogUpaOCf0HpZtj3SQF1NG+X5YAM+UIuilnzuf36HnDovRnkaSopsP7LxDl8fco8t2YU7SZ+SrO7QxYGq2l9hUck0yYILejWp5iMppZVbPQBx4PC6MDm+yAkWfXqtIa5TPwpMMTbrrF9vtWa03+7AVVLfvqMonwGeQrxneKaBANPswepmuD77o0hzZXc8BE7RvJ4r9f/LSlx1op4vd5UP1N+k2RfumSxWfJc170JFni/ZY+zEWV2hxJXfLTKv0MWduYXQxIkXqOq1okQVLTMpthqqoWp11S+lYFKYX2d+wmJkYkjTdDon33D3fpwhSrxH5LMWTsOQ86zG+zxN0EHIoXrQ6o+34CLGecw3VMstBHel8Eu8MocXSWGUFAo7nnFtE61uDDhCorAzQx8E2eLEjlfohW74HN+ABsFSwNIjsnYGwPMpLB6mT3VNpTQxx3iMp7FpSMThHIHK4kyEiNCRUW+F7hyLC3+FkEgC0/BpOH31z2eCVNQEnIV/FsouRK5D8BnrENsJfWY7IM0r2YxlASNnrKm2PIv1SdF7OafYHq1cs02QQfAczNGh8ud3nKTYuS4Ss3sCK5Ryla/L45uipallBMPlpe0ZJi+DnxfnENGHbixyrYIc4ScWV5B9qETz7l8NaDjD4+QA/PfLOw5GEwqpbUJrusmCwYsCaMY43+pWYXoMbed7gq++Awih9xDZsM/8tUwh7hGNbRi4IlGX8bssyAKxKLAVVemDoWWPgG/YyyoOSXEydfyZqnnTb2c232WrRxQ3Qna6wIeYtYOAbii7JMfiOUqbsST20Q8ln2ZOd3n9ayqdXTxynWLVZTzqs/iwlzx8WLEciUddQZoRCWl+JeGkrjLgIpAV2oTZbiUPQHMra
+ g49kt2zs
+ R/sGdJrgbXejh+J58VVnpxUUxrcq0U8glwO7kZVUt8mUvknKkad0uwBd6NTYqL2jSLrf8aI2aF6Lh+YV5gsMt4jpy9lVqvVdxhCOuz1i6ej5XNYZSwZp7ccqURlf0aNUjuVgR7b5VY/Ua/SrNSZaU7tN6WeshIJhyupppUR0bDhdQxLRePdcWU/qe/w4tqlYLWwmdxkcOv882QFo9ZnW6CRUhGw5GYWjjehHCe4um1zN/aLRiqetGU5HPYWbucPc48BvGWh5lzW/l3aN/xwsRgx46ei3L5Ibucrshs225UqKb/j/nqrDKGLH7l4wKeEnEX+/ezMyeqYxf3EOmwzoDj1PD3xFmZXuekuisofvvrPG3DVGJG43JQ2gcHB0LB8cfM6H4dguiQ2HfueP1k8iyGp9mgTqE93QFX0EabS5awJBFFQknxifNLGHPEgmc7gTatlmW/Qmtmu/YraAnwwv1rdTY3YEx26V0+xiGXP7QaoKOx8Koc1h2EuIuwM37CeQYHynMs3G8w1MfYChcrqm4W9PLN8bbR59oc6+3hHBvrv8plj+w0ixWb5FpINrM772r8vbhxJgWeuALS7vAqNKH7zdS9iqyuKUSDKd4pT8XpUzmnAfiD5Y8B3usRmEi4wJQa0EH1Np0KdXG6z96EvI0GjpoE1Pln70jJemOeEIKAoKM/uiQW52DdXRPKg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,198 +134,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 5:01=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> On Thu, Oct 16, 2025 at 08:44:57PM +0200, Jann Horn wrote:
-> > On Thu, Oct 9, 2025 at 9:40=E2=80=AFAM David Hildenbrand <david@redhat.=
-com> wrote:
-> > > On 01.09.25 12:58, Jann Horn wrote:
-> > > > Hi!
-> > > >
-> > > > On Fri, Aug 29, 2025 at 4:30=E2=80=AFPM Uschakow, Stanislav <suscha=
-ko@amazon.de> wrote:
-> > > >> We have observed a huge latency increase using `fork()` after inge=
-sting the CVE-2025-38085 fix which leads to the commit `1013af4f585f: mm/hu=
-getlb: fix huge_pmd_unshare() vs GUP-fast race`. On large machines with 1.5=
-TB of memory with 196 cores, we identified mmapping of 1.2TB of shared memo=
-ry and forking itself dozens or hundreds of times we see a increase of exec=
-ution times of a factor of 4. The reproducer is at the end of the email.
-> > > >
-> > > > Yeah, every 1G virtual address range you unshare on unmap will do a=
-n
-> > > > extra synchronous IPI broadcast to all CPU cores, so it's not very
-> > > > surprising that doing this would be a bit slow on a machine with 19=
-6
-> > > > cores.
-> > > >
-> > > >> My observation/assumption is:
-> > > >>
-> > > >> each child touches 100 random pages and despawns
-> > > >> on each despawn `huge_pmd_unshare()` is called
-> > > >> each call to `huge_pmd_unshare()` syncrhonizes all threads using `=
-tlb_remove_table_sync_one()` leading to the regression
-> > > >
-> > > > Yeah, makes sense that that'd be slow.
-> > > >
-> > > > There are probably several ways this could be optimized - like mayb=
-e
-> > > > changing tlb_remove_table_sync_one() to rely on the MM's cpumask
-> > > > (though that would require thinking about whether this interacts wi=
-th
-> > > > remote MM access somehow), or batching the refcount drops for huget=
-lb
-> > > > shared page tables through something like struct mmu_gather, or doi=
-ng
-> > > > something special for the unmap path, or changing the semantics of
-> > > > hugetlb page tables such that they can never turn into normal page
-> > > > tables again. However, I'm not planning to work on optimizing this.
-> > >
-> > > I'm currently looking at the fix and what sticks out is "Fix it with =
-an
-> > > explicit broadcast IPI through tlb_remove_table_sync_one()".
-> > >
-> > > (I don't understand how the page table can be used for "normal,
-> > > non-hugetlb". I could only see how it is used for the remaining user =
-for
-> > > hugetlb stuff, but that's different question)
-> >
-> > If I remember correctly:
-> > When a hugetlb shared page table drops to refcount 1, it turns into a
-> > normal page table. If you then afterwards split the hugetlb VMA, unmap
-> > one half of it, and place a new unrelated VMA in its place, the same
-> > page table will be reused for PTEs of this new unrelated VMA.
-> >
-> > So the scenario would be:
-> >
-> > 1. Initially, we have a hugetlb shared page table covering 1G of
-> > address space which maps hugetlb 2M pages, which is used by two
-> > hugetlb VMAs in different processes (processes P1 and P2).
-> > 2. A thread in P2 begins a gup_fast() walk in the hugetlb region, and
-> > walks down through the PUD entry that points to the shared page table,
-> > then when it reaches the loop in gup_fast_pmd_range() gets interrupted
-> > for a while by an NMI or preempted by the hypervisor or something.
-> > 3. P2 removes its VMA, and the hugetlb shared page table effectively
-> > becomes a normal page table in P1.
->
-> This is a bit confusing, are we talking about 2 threads in P2 on differen=
-t CPUs?
->
-> P2/T1 on CPU A is doing the gup_fast() walk,
-> P2/T2 on CPU B is simultaneously 'removing' this VMA?
+On Wed, Oct 15, 2025, Sean Christopherson wrote:
+> On Wed, 27 Aug 2025 17:52:41 +0000, Shivank Garg wrote:
+> > This series introduces NUMA-aware memory placement support for KVM guests
+> > with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
+> > that enabled host-mapping for guest_memfd memory [1] and can be applied
+> > directly applied on KVM tree [2] (branch kvm-next, base commit: a6ad5413,
+> > Merge branch 'guest-memfd-mmap' into HEAD)
+> > 
+> > == Background ==
+> > KVM's guest-memfd memory backend currently lacks support for NUMA policy
+> > enforcement, causing guest memory allocations to be distributed across host
+> > nodes  according to kernel's default behavior, irrespective of any policy
+> > specified by the VMM. This limitation arises because conventional userspace
+> > NUMA control mechanisms like mbind(2) don't work since the memory isn't
+> > directly mapped to userspace when allocations occur.
+> > Fuad's work [1] provides the necessary mmap capability, and this series
+> > leverages it to enable mbind(2).
+> > 
+> > [...]
+> 
+> Applied the non-KVM change to kvm-x86 gmem.  We're still tweaking and iterating
+> on the KVM changes, but I fully expect them to land in 6.19.
+> 
+> Holler if you object to taking these through the kvm tree.
+> 
+> [1/7] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+>       https://github.com/kvm-x86/linux/commit/601aa29f762f
+> [2/7] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
+>       https://github.com/kvm-x86/linux/commit/2bb25703e5bd
+> [3/7] mm/mempolicy: Export memory policy symbols
+>       https://github.com/kvm-x86/linux/commit/e1b4cf7d6be3
 
-Ah, yes.
+FYI, I rebased these onto 6.18-rc2 to avoid a silly merge.  New hashes:
 
-> Because surely the interrupts being disabled on CPU A means that ordinary
-> preemption won't happen right?
-
-Yeah.
-
-> By remove what do you mean? Unmap? But won't this result in a TLB flush s=
-ynced
-> by IPI that is stalled by P2'S CPU having interrupts diabled?
-
-The case I had in mind is munmap(). This is only an issue on platforms
-where TLB flushes can be done without IPI. That includes:
-
- - KVM guests on x86 (where TLB flush IPIs can be elided if the target
-vCPU has been preempted by the host, in which case the host promises
-to do a TLB flush on guest re-entry)
- - modern AMD CPUs with INVLPGB
- - arm64
-
-That is the whole point of tlb_remove_table_sync_one() - it forces an
-IPI on architectures where TLB flush doesn't guarantee an IPI.
-
-(The config option "CONFIG_MMU_GATHER_RCU_TABLE_FREE", which is only
-needed on architectures that don't guarantee that an IPI is involved
-in TLB flushing, is set on the major architectures nowadays -
-unconditionally on x86 and arm64, and in SMP builds of 32-bit arm.)
-
-> Or is it removed in the sense of hugetlb? As in something that invokes
-> huge_pmd_unshare()?
-
-I think that could also trigger it, though I wasn't thinking of that case.
-
-> But I guess this doesn't matter as the page table teardown will succeed, =
-just
-> the final tlb_finish_mmu() will stall.
->
-> And I guess GUP fast is trying to protect against the clear down by check=
-ing pmd
-> !=3D *pmdp.
-
-The pmd recheck is done because of THP, IIRC because THP can deposit
-and reuse page tables without following the normal page table life
-cycle.
-
-> > 4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
-> > leaving two VMAs VMA1 and VMA2.
-> > 5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
-> > example an anonymous private VMA.
->
-> Hmm, can it though?
->
-> P1 mmap write lock will be held, and VMA lock will be held too for VMA1,
->
-> In vms_complete_munmap_vmas(), vms_clear_ptes() will stall on tlb_finish_=
-mmu()
-> for IPI-synced architectures, and in that case the unmap won't finish and=
- the
-> mmap write lock won't be released so nobody an map a new VMA yet can they=
-?
-
-Yeah, I think it can't happen on configurations that always use IPI
-for TLB synchronization. My patch also doesn't change anything on
-those architectures - tlb_remove_table_sync_one() is a no-op on
-architectures without CONFIG_MMU_GATHER_RCU_TABLE_FREE.
-
-> > 6. P1 populates VMA3 with page table entries.
->
-> ofc this requires the mmap/vma write lock above to be released first.
->
-> > 7. The gup_fast() walk in P2 continues, and gup_fast_pmd_range() now
-> > uses the new PMD/PTE entries created for VMA3.
-> >
-> > > How does the fix work when an architecture does not issue IPIs for TL=
-B
-> > > shootdown? To handle gup-fast on these architectures, we use RCU.
-> >
-> > gup-fast disables interrupts, which synchronizes against both RCU and I=
-PI.
-> >
-> > > So I'm wondering whether we use RCU somehow.
-> > >
-> > > But note that in gup_fast_pte_range(), we are validating whether the =
-PMD
-> > > changed:
-> > >
-> > > if (unlikely(pmd_val(pmd) !=3D pmd_val(*pmdp)) ||
-> > >      unlikely(pte_val(pte) !=3D pte_val(ptep_get(ptep)))) {
-> > >         gup_put_folio(folio, 1, flags);
-> > >         goto pte_unmap;
-> > > }
-> > >
-> > >
-> > > So in case the page table got reused in the meantime, we should just
-> > > back off and be fine, right?
-> >
-> > The shared page table is mapped with a PUD entry, and we don't check
-> > whether the PUD entry changed here.
->
-> Could we simply put a PUD check in there sensibly?
-
-Uuuh... maybe? But I'm not sure if there is a good way to express the
-safety rules after that change any more nicely than we can do with the
-current safety rules, it feels like we're just tacking on an
-increasing number of special cases. As I understand it, the current
-rules are something like:
-
-Freeing a page table needs RCU delay or IPI to synchronize against
-gup_fast(). Randomly moving page tables to different locations (which
-khugepaged does) is specially allowed only for PTE tables, thanks to
-the PMD entry recheck. mremap() is kind of an weird case because it
-can also move PMD tables without locking, but that's fine because
-nothing in the region covered by the source virtual address range can
-be part of a VMA other than the VMA being moved, so userspace has no
-legitimate reason to access it.
+[1/3] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+      https://github.com/kvm-x86/linux/commit/7f3779a3ac3e
+[2/3] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
+      https://github.com/kvm-x86/linux/commit/16a542e22339
+[3/3] mm/mempolicy: Export memory policy symbols
+      https://github.com/kvm-x86/linux/commit/f634f10809ec
 
