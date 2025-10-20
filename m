@@ -4,93 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D903FCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 06:43:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8D9CCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 06:57:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4518E0005; Mon, 20 Oct 2025 02:43:17 -0400 (EDT)
+	id E20DD8E0005; Mon, 20 Oct 2025 02:57:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 265898E0003; Mon, 20 Oct 2025 02:43:17 -0400 (EDT)
+	id DF85C8E0003; Mon, 20 Oct 2025 02:57:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17B2F8E0005; Mon, 20 Oct 2025 02:43:17 -0400 (EDT)
+	id D35448E0005; Mon, 20 Oct 2025 02:57:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 056BA8E0003
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:43:17 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B9E7140777
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:43:16 +0000 (UTC)
-X-FDA: 84017550792.22.6ECAA0C
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A4DAC2000C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:43:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of 3Adr1aAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3Adr1aAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760942594; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id C0AE88E0003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:57:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 79A3C48258
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:57:47 +0000 (UTC)
+X-FDA: 84017587374.21.2EB43BA
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A91DE140005
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:57:43 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6AmWEWZD;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangyushan12@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangyushan12@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760943465; a=rsa-sha256;
 	cv=none;
-	b=krkiD6tbZwXKQGWBss33Vp/lw93btWNYw6KY4QoZzM1XKXzONIuVx3gd56N33+mr7cCkrH
-	qXQxS62xM9Ztihe1GTebOiq1zfsQ2IsuyyvAMvottC7+OfGoIt2m2B3eJskTk0vPH+sgUZ
-	CK0WVZeBAgVtmfm+8FFs/ltclEqwnfA=
+	b=6sjLxVkiwxgfiqWmkY4VbBO/1E5ky+YhS8AgGbHd3drTm4WEyiSfTBJNbFCedR3FJsBAlj
+	YKaYvJ3J/oM9ufxmdUWZfmthsOFioviggsqn7Q+bqbORl0If0ojk3HkHpz4lFXP0p08EnE
+	X+pPhr9bPD/9rfGkXofN1URJa/zHIMk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of 3Adr1aAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3Adr1aAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6AmWEWZD;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangyushan12@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=wangyushan12@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760942594;
+	s=arc-20220608; t=1760943465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=HqrCkr2sjCfBLL7q9AdHaNdtwcieYGi6wC0wgKB8odU=;
-	b=y14mUiSoSsRtyDmMHo8dBJYOXp72QvPqqKW8H1CQuAsuzeHtDbfAHvi/a6FGwyDP2N47Ty
-	AdYP5MI5yJw2+S0VmbnV0V+WusrWMJ23tiXCSk0KR5iumWgmJszh3RW/AvyQlk3b/fzHXw
-	h5cVZcu7A0DVlTQhhVF8nV8QOT1QFp0=
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-429278a11f7so43229205ab.1
-        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 23:43:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760942593; x=1761547393;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HqrCkr2sjCfBLL7q9AdHaNdtwcieYGi6wC0wgKB8odU=;
-        b=rXx87ttmKXwiG5JZ2cVCBqGoT8OQhQngMITTj4BiQl7p9yjTMmMTZ9tsT4Qv3PiY+k
-         4bStThVjHEbf0BW3Ro8/Sjtfq9QeaBZYrFYk26Kv5JzE81NJJyaF3UeLLQ/kLV/Q3h+U
-         niUTMvIB6UHSHY2GO6wucXL3HB98dO/yHAq8mozaYP5RQCqKA9doENEZcpYkVitQodZF
-         gg5BdJxz47WwfPIGYvzuII3HNI7XL8PAfwEU7RPU/9N3rgFFQHqC0CCUR8qJJnUKggWJ
-         0hFqkvf2wNfkWGoZAKJ1W+l/ll49USnMfAZrvr7nD7mtI0glwZdC/m2vKx+9umns6jKd
-         1taw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzGEyl3XT9BFlLLbaDXwRYg40U3q1KNvKLrRotCPCfxcJlhgvwjfNiF1LYiI50135Q9MjYYB2zPA==@kvack.org
-X-Gm-Message-State: AOJu0YzQ1m+nFneOnWBTknTvwiepDDXZsR8QoZ/I4GkfZiaLUNwQEjzd
-	knHTXHMYQjWjMaSmMpDjC3gielBJjsg6jV9A5vHUB8unjJxQkfM84C7b8WvD3YAOir0q9hj3g+r
-	MXHU063yDk9lkP4nr9OB/dW0v4oqhxQhiuNefjcyXSysL/7Cj83EmkcazTZM=
-X-Google-Smtp-Source: AGHT+IFIz8Mu/jwsmlKZvzPM/2PEC3SH2VPM/vNb6A+2t3BVkUwtQATCp/9khxbUgmnGmEy2M1TnTZY5OES4n+QzTGnMT43WoKgg
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=GOddeF4CmeQdoAneSYg3qKOAfjZnCurbFZKwrmWO7Wk=;
+	b=uAknOSx+LhZKqy4U/WAeB96A0JMQxCh2mCJWFx6yKcCFmksf63PsuBq0LPplw/L9n/9bE8
+	RsK3UESH/tsRqo5yHO4ZPtLD2TkNKyIZc3atw/2m15lmW2x4xAigRLeCdMyQCy3BpEbGWD
+	2hTaxnL5jSIEmv6B48XMmyYNKNEcQxw=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GOddeF4CmeQdoAneSYg3qKOAfjZnCurbFZKwrmWO7Wk=;
+	b=6AmWEWZDDRnn5UyfKveUzHV4h+LumJnl6lEA+NJTGFTcVzF9o37u4jLl/ljs1KNqP+VqWMnTW
+	jPLmWAJ2+/99CsIABgpC+hYZSAbpcqKdI1DY1hUtwCpaZ7GHP4TU/oP5LsMtz43Ld8EC/zMW8yv
+	QVYWBdteLf6HBHFiLBrWgxA=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4cqmSq0TzpzRhsG;
+	Mon, 20 Oct 2025 14:57:15 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 962A5140257;
+	Mon, 20 Oct 2025 14:57:38 +0800 (CST)
+Received: from kwepemn100008.china.huawei.com (7.202.194.111) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Oct 2025 14:57:38 +0800
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemn100008.china.huawei.com (7.202.194.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Oct 2025 14:57:37 +0800
+From: Yushan Wang <wangyushan12@huawei.com>
+To: <wangyushan12@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	<james.morse@arm.com>, <linux-cxl@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, Will Deacon
+	<will@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso
+	<dave@stgolabs.net>, "H . Peter  Anvin" <hpa@zytor.com>, Peter Zijlstra
+	<peterz@infradead.org>
+Subject: [PATCH v3 0/8] Cache coherency management subsystem
+Date: Mon, 20 Oct 2025 14:57:37 +0800
+Message-ID: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.33.0
+X-UIDL: 286386
+X-Mozilla-Status: 0001
+X-Mozilla-Keys: $label3                                                                         
+Received: from kwepemn200008.china.huawei.com (7.202.194.131) by  kwepemn100008.china.huawei.com (7.202.194.111) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.2.1544.11 via Mailbox Transport; Wed, 20 Aug 2025 18:29:54 +0800
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by  kwepemn200008.china.huawei.com (7.202.194.131) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.2.1544.11; Wed, 20 Aug 2025 18:29:54 +0800
+Received: from SecurePC-101-06.huawei.com (10.122.19.247) by  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id  15.1.2507.39; Wed, 20 Aug 2025 12:29:51 +0200
+X-Mailer: git-send-email 2.48.1
+Content-Type: text/plain
+X-Originating-IP: [10.90.31.46]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To  frapeml500008.china.huawei.com (7.182.85.71)
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:03.7121070
+X-MS-Exchange-Processed-By-BccFoldering: 15.02.1544.011
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:1687:b0:940:d7b0:e766 with SMTP id
- ca18e2360f4ac-940d7b0e8camr393999339f.16.1760942593629; Sun, 19 Oct 2025
- 23:43:13 -0700 (PDT)
-Date: Sun, 19 Oct 2025 23:43:13 -0700
-In-Reply-To: <20251020001652.2116669-1-willy@infradead.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68f5da01.050a0220.91a22.043f.GAE@google.com>
-Subject: [syzbot ci] Re: Separate ptdesc from struct page
-From: syzbot ci <syzbot+cia36a04b74f498e9d@syzkaller.appspotmail.com>
-To: hannes@cmpxchg.org, linux-mm@kvack.org, vishal.moola@gmail.com, 
-	willy@infradead.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemn100008.china.huawei.com (7.202.194.111)
 X-Rspam-User: 
-X-Stat-Signature: krxc5jo7f3e76ruk5omkz67zdingrxd6
-X-Rspamd-Queue-Id: A4DAC2000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760942594-1872
-X-HE-Meta: U2FsdGVkX1+awschX7M9KV5BmiVBd6AOJ3kY5dTVXLuqQyhRITUkdUFnlw9yeTORr/mKfhBrkUUdy1r9i0K/UHEBu+GTyScffiSCBE8qk8etDJw7YHHYyMBNbIh7QBi3YhTKGhEBp2vrXoo0OfC2lq2QMri+OYicwkUh7PxhGOWClCdRkat6QnY+8qIEize7KnBhYI11PL67vA9neUqqgwffzB/CiRdkJXcA3vskl2MEf6CicIT6oM+XkxE6QAUTxbOcGk20xODjlidXx4cz6l5AwWwjZzONL1Xr9TVJvpR6+MBj8OsufcLnuFsTnVAQczOGo+LOz4gpXhV3mL0FC2LY7LIDNEWY7rOyiAIMkRuOzNdlX8zgwAldU8+s0gwfU55N4Cxp9/yVBsjtOpQZQlEN24npstFn1fZCYA9jHCR7oacNV5ZRfwH79FNo7hjgfJ8chtjvUPunH7MfMnwsCNaF0Kbse2QY1TbU7ssKmDp7+nrfSqMfut1nKeJTLztNfefNJmaf7vuJ+4fF+2eD5X1dWNiChOTdk3CkCzQXYhizJ6BhNeyl+cDcsX3UXPUetleGCdaF/uuIa1FZNi5tYe2M04rvI5Ttx7YZLUfEYb1kVEXUv2hWJfUYsinFEmRKhw8jutZh5y4WBueKGE4ZpUJ/2CALF2giHwWMY+Uv1w+6SBlFnmcjptTWcEIq1b3FIkkkFCUX+NrIbYsQbUSqOforGCS18tnwC4xD3CrSCRpWxE6ZMMM6nV7Zwy0DUTYmaHEMIJ9HByXlI38ski23RNU87QKfRxF3kpfiVtqGDX+mDYUISyE60fxCMDHaVW/CwtYa7WqPm6yYWQC0aUQJH+/AohuXOU0VEEJxcHPGxFiWcEV9/CThE/kHd/B/wk1tIrPd3Vvfef6Xu/mRzv0uEt0srqufxS32LM9W8auTiNESloX6S718k2jCEGZUI4dpycYzXHRkFOQjHPjl1Uf
- 1jX5f3OW
- d9zdFGoS3nm9chmg1BVZvlLcZjvIp9GEMpAPTV16t/xQyRG4W1fLXdoxLObuy48cKXQ81POmtEFMXLGSOQqYU4NauRTZyr/4jn+CiC7o3QXwdRNQH3eFDfvwaoyjYg/saMlaI7gotkFdTSKJyXbwe3jnqOxsfOmF9fTay6dy3a5syiYoLLnNaNOuzTV8zBkF8ZeKI/TA7hvt1IjmsAZw2BSwDAl7vSP8jDZgV72iOPC0kxvi5ehTDrtlTTeIKHRIqWJL/AsY6I1YbiP0rMWcsL1pHRaanFogiQDcDs9HffK3tYHp/rsKMQNgs+JVX+kReaYXMimgqf8a+76y4XgYa4EqzlcWEtn3gAW5oXe+iU8NcfcpD4BsIJmRHb0zXaj4//qjTS1Ufwy3JgKvYiJuNM9oP3jRCYpeT+b2wkjesVIROndW9Wd5xDP9JkSBRQicHCdjrVBDr6lzwLIlUdhvpnsFZg4WhqDzDS5LCsAHNCwv1yJmFf4t3euAQkL68hXc0vpJI9XurXqdR0k47OZiVt0a/7ydjDGIhpkqaJfuO0gF91vAJHiXyRWMWR0aSsbEwaFxdm9kmaA0ntWZ/O+LhoeDHoyyLxcs0b4RW9wjW49CSBrji3Nah89wFlOPTUulM+zio50V4TxS5cJAIMK/EOJG+5ksjYJ/8BdKQ3JunnikCePunEAREqRi+cTFoCkmnfgx9CVXBrsGYFBTIG9h1ltbikFnJFJqcvMWNl1nn24UceiVYoNHdFZoRadAsLkfDMPXcPgajs4YZBt1BnOExbD0Q3qeulgmlAH0/5hKzQxOACf8y9JXBXndwwspUMrMqP4E2Q63Kjeb7F/V1Dub//bPqFTUjnTC4YobYihHOcTGazFpNXlYzA4lpUlHpb1cOGwWv6xCaA/XVwO/eLKOOmr6WnzGh9NBMuFvNQBUyVYTr5X6XtKpWq5onR5TZCYxgfCUuMsDAztnf0AZoP+zCls1uVObY
- kffmLu4B
- MwjOTfTcqvAuT9R4z6mFmSSGjakB70Cuj2KC5Lh9i6H0GcvTJlZvV+4lfRvQ4vFetzsp07qOVA1LkrWvuNwtHvjZZvmynDhEG2w2EgEgAnH4QA4cvy/+NPJatledD2F4ZqGJD8M6PXs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A91DE140005
+X-Stat-Signature: jy4zap8d7p4qj6y6aswt4u4ka8ud7ngb
+X-HE-Tag: 1760943463-27299
+X-HE-Meta: U2FsdGVkX1+F2/he5UCaMLB58Kl7cm+dgfTZc8chLEjxUZQa2oKSrBD7rofEQ1jw0v2uZ8bGqQGyuMRWw+1x1gCxcl1z6IvHW1+E0wzE+Yk7RbzZVEqwPWHZUWptZUDogeZR3MrWF7IJFg2b8RZjMA7xUL7UvUBFq6x9rvamEE52ObppJIVqWd6OKXEXoA00yU0fzJzlGLv5D5/EyeBH2aDf0UWhmB6ZcJBLrkMWdcJ7EIlZFL4vyK4uN//2utAZBojoMXuW6QhdFEsC9C1/tCuQsCR3vHO5dZUPVLgIzABXtZXAQ+tAmCR6HjHeGZ1iRdShnpp28oWEQEGFEGyoyQXtfRhy7+iJk3uPehu6MBgwruzlnAAS5oKziOjx2QK2JQ/MzLhxS7de15MlWPlPsH9/hbcOQJIR3z4BrDCUxDc2Efi3wQi1JaOo5QfiBhz8eGm8Hidrq3X1FMI569/WgD2cIEx12BygMaAPO6qy5VPau6NaUf1/H5LC3iAUNLdZKa0/WVePEYx0pqcmLGIkZg17V80KhlAyuR2JYQNV8aN0d+0M3fsYyWTBxCf402Q7mMNKysGwd7m08m4R4Rujhs337Sx0g2ZJrMJ/3dKPDFHa2bgYdIf3SJa6EC6ABmh250hPi+m+jI1UGHEmyPpNPgASdnPAUWxcgaM6jrT210+EkMD+YIr92/lbg4jk7185SlyJhv/VNiFTOfVfAEYmEHgpEtfHP44HZmL3zK+azz0qs48Vbm5BhnLIP5w/3hAzSv7BNs8vVJZwDhzwF2jwYAFsUgz/8e7xSY+00j4LO2krDoI7Fi8/LYCABBpYlagqZ/jQpZ2TfZb2bh0bEP27oYSQwuYV53++RWNfyg7MoW3BVdZlWttpN00P9QWIDzVVJmFhHPKw+WJ2I/M3RaDSdir4mjYvE4uxXL+fLyHVGZIc02vYYdwXoeCwXFnrt9kFZLaSVhelHupAXjGOfvl
+ zuk5O1fp
+ vb82EORVO5G7AqiC2JBwIXPhKprjJReJTMp/jMB9Qd7rofD03w8AUWPicwvC+m2s0gZ/PP3J4pl37YRulguJFSHHCzO1MNqYdGJrPqP7I1px8PfHUf8R65O+PcdLOfTe+/TMnDgyCrUXEm5DyHUFAyD53EACjoMALIzFdxDpAevbpxevRIfyw/IlrEPvqoqeoi49kVY4XyZRnIOMR2yT06SjpzNqkFXHM0duhBYYx5QudOXvRcop2psqagDzLH2nKG5NFtneUypFohOvwS4DhTYqc/0Ld7MoSujb8A9hmEdHW3M4h1aSaYrnChLT/D1gPbGJwxAgwtpWGdTHAQcDmTPqFHZust3/N6C23
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,189 +112,141 @@ X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+Message-ID: <20251020065737.WdVHZeR5rdBn_30NDB0Pf9iEyft-NKrVWWpRxnQlZYU@z>
 
-syzbot ci has tested the following series
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>=0D
 
-[v1] Separate ptdesc from struct page
-https://lore.kernel.org/all/20251020001652.2116669-1-willy@infradead.org
-* [RFC PATCH 1/7] mm: Use frozen pages for page tables
-* [RFC PATCH 2/7] mm: Account pagetable memory when allocated
-* [RFC PATCH 3/7] mm: Mark pagetable memory when allocated
-* [RFC PATCH 4/7] pgtable: Remove uses of page->lru
-* [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
-* [RFC PATCH 6/7] mm: Add alloc_pages_memdesc family of APIs
-* [RFC PATCH 7/7] mm: Allocate ptdesc from slab
-
-and found the following issue:
-kernel BUG in pte_free_now
-
-Full report is available here:
-https://ci.syzbot.org/series/034eb8df-67a6-4c07-8ba5-3ac0df045a40
-
-***
-
-kernel BUG in pte_free_now
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      3a8660878839faadb4f1a6dd72c3179c1df56787
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/2cf2c360-080f-4864-9be9-e277d29fc594/config
-syz repro: https://ci.syzbot.org/findings/1f85642a-695a-4b8d-a5ee-b95a5105cc53/syz_repro
-
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:723
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:739
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-------------[ cut here ]------------
-kernel BUG at ./include/linux/mm.h:2959!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6093 Comm: syz.1.54 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:page_ptdesc include/linux/mm.h:2959 [inline]
-RIP: 0010:pte_free include/asm-generic/pgalloc.h:115 [inline]
-RIP: 0010:pte_free_now+0xc2/0xd0 mm/pgtable-generic.c:249
-Code: 48 89 df e8 20 d1 13 00 48 8b 13 48 c7 c7 c0 89 76 8b 4c 89 f6 e8 6e 66 15 ff 4c 89 ff 48 c7 c6 00 8a 76 8b e8 1f c3 15 ff 90 <0f> 0b 66 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc90000007bb0 EFLAGS: 00010246
-RAX: de62a9f92d629d00 RBX: ffffea0005ca91e0 RCX: de62a9f92d629d00
-RDX: 0000000000000002 RSI: ffffffff8d9d1d2d RDI: ffff8881127ad700
-RBP: ffffc90000007e30 R08: ffffc90000007567 R09: 1ffff92000000eac
-R10: dffffc0000000000 R11: fffff52000000ead R12: dffffc0000000000
-R13: ffffffff81a82b37 R14: 0000000000000000 R15: ffffea0005ca91c0
-FS:  00007f66c98976c0(0000) GS:ffff88818e70c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f66c9896fc8 CR3: 0000000112a72000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xcab/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x286/0x870 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:723
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:739
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:clear_page_rep+0xe/0x20 arch/x86/lib/clear_page_64.S:23
-Code: cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa b9 00 02 00 00 31 c0 f3 48 ab <e9> 8d 46 04 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc90003cb76d0 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: fffa800000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8880123a2000
-RBP: fffa8000123a1000 R08: ffffea000048e847 R09: 1ffffd4000091d08
-R10: dffffc0000000000 R11: fffff94000091d09 R12: 0000000000000000
-R13: 1ffffffff1b404a6 R14: 1ffffffff1b404a4 R15: 0000000000000000
- clear_page arch/x86/include/asm/page_64.h:54 [inline]
- clear_highpage include/linux/highmem.h:240 [inline]
- shmem_get_folio_gfp+0xaad/0x1660 mm/shmem.c:2583
- shmem_fault+0x179/0x390 mm/shmem.c:2734
- __do_fault+0x138/0x390 mm/memory.c:5280
- do_read_fault mm/memory.c:5698 [inline]
- do_fault mm/memory.c:5832 [inline]
- do_pte_missing mm/memory.c:4361 [inline]
- handle_pte_fault mm/memory.c:6177 [inline]
- __handle_mm_fault+0x35e3/0x5400 mm/memory.c:6318
- handle_mm_fault+0x40a/0x8e0 mm/memory.c:6487
- faultin_page mm/gup.c:1126 [inline]
- __get_user_pages+0x165c/0x2a00 mm/gup.c:1428
- populate_vma_page_range+0x29f/0x3a0 mm/gup.c:1860
- __mm_populate+0x24c/0x380 mm/gup.c:1963
- mm_populate include/linux/mm.h:3451 [inline]
- vm_mmap_pgoff+0x387/0x4d0 mm/util.c:586
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f66c898efc9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f66c9897038 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-RAX: ffffffffffffffda RBX: 00007f66c8be6090 RCX: 00007f66c898efc9
-RDX: b635773f06ebbeef RSI: 0000000000b36000 RDI: 0000200000000000
-RBP: 00007f66c8a11f91 R08: ffffffffffffffff R09: 00000000e9ba1000
-R10: 0000000000008031 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f66c8be6128 R14: 00007f66c8be6090 R15: 00007ffcfaf828b8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:page_ptdesc include/linux/mm.h:2959 [inline]
-RIP: 0010:pte_free include/asm-generic/pgalloc.h:115 [inline]
-RIP: 0010:pte_free_now+0xc2/0xd0 mm/pgtable-generic.c:249
-Code: 48 89 df e8 20 d1 13 00 48 8b 13 48 c7 c7 c0 89 76 8b 4c 89 f6 e8 6e 66 15 ff 4c 89 ff 48 c7 c6 00 8a 76 8b e8 1f c3 15 ff 90 <0f> 0b 66 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc90000007bb0 EFLAGS: 00010246
-RAX: de62a9f92d629d00 RBX: ffffea0005ca91e0 RCX: de62a9f92d629d00
-RDX: 0000000000000002 RSI: ffffffff8d9d1d2d RDI: ffff8881127ad700
-RBP: ffffc90000007e30 R08: ffffc90000007567 R09: 1ffff92000000eac
-R10: dffffc0000000000 R11: fffff52000000ead R12: dffffc0000000000
-R13: ffffffff81a82b37 R14: 0000000000000000 R15: ffffea0005ca91c0
-FS:  00007f66c98976c0(0000) GS:ffff88818e70c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f66c9896fc8 CR3: 0000000112a72000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess):
-   0:	cc                   	int3
-   1:	cc                   	int3
-   2:	cc                   	int3
-   3:	cc                   	int3
-   4:	cc                   	int3
-   5:	cc                   	int3
-   6:	cc                   	int3
-   7:	cc                   	int3
-   8:	cc                   	int3
-   9:	cc                   	int3
-   a:	cc                   	int3
-   b:	cc                   	int3
-   c:	90                   	nop
-   d:	90                   	nop
-   e:	90                   	nop
-   f:	90                   	nop
-  10:	90                   	nop
-  11:	90                   	nop
-  12:	90                   	nop
-  13:	90                   	nop
-  14:	90                   	nop
-  15:	90                   	nop
-  16:	90                   	nop
-  17:	90                   	nop
-  18:	90                   	nop
-  19:	90                   	nop
-  1a:	90                   	nop
-  1b:	90                   	nop
-  1c:	f3 0f 1e fa          	endbr64
-  20:	b9 00 02 00 00       	mov    $0x200,%ecx
-  25:	31 c0                	xor    %eax,%eax
-  27:	f3 48 ab             	rep stos %rax,%es:(%rdi)
-* 2a:	e9 8d 46 04 00       	jmp    0x446bc <-- trapping instruction
-  2f:	90                   	nop
-  30:	90                   	nop
-  31:	90                   	nop
-  32:	90                   	nop
-  33:	90                   	nop
-  34:	90                   	nop
-  35:	90                   	nop
-  36:	90                   	nop
-  37:	90                   	nop
-  38:	90                   	nop
-  39:	90                   	nop
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	90                   	nop
-  3f:	90                   	nop
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Support system level interfaces for cache maintenance as found on some=0D
+ARM64 systems. This is needed for correct functionality during various=0D
+forms of memory hotplug (e.g. CXL). Typical hardware has MMIO interface=0D
+found via ACPI DSDT.=0D
+=0D
+Includes parameter changes to cpu_cache_invalidate_memregion() but no=0D
+functional changes for architectures that already support this call.=0D
+=0D
+v3:=0D
+  - Squash the layers by moving all the management code into=0D
+    lib/cache_maint.c that architectures can opt into via=0D
+    GENERIC_CPU_CACHE_MAINTENANCE (Dan).  I added entries to Conor's=0D
+    drivers/cache MAINTAINERS entry to include this lib/ code but if=0D
+    preferred I can add a separate entry for it.=0D
+  - Add a new patch 1 that drops the old IODESC_RES_ parameter as it never=
+=0D
+    did anything other than document intent.  With the addition of a=0D
+    flushing range, we would have to check the range and resource type=0D
+    matched. Simpler to just drop the parameter. (Dan)=0D
+  - Minor fixes and renames as per reviews.=0D
+  - Even if all else looks good, I fully expect some discussion of the=0D
+    naming as I'm not particularly happy with it.=0D
+  - Open question on whether is acceptable for the answer to whether=0D
+    cpu_cache_invalidate_memregion() is supported to change as drivers=0D
+    register (potentially after initial boot).  Could design a firmware=0D
+    table solution to this, but will take a while - not sure if it is=0D
+    necessary.=0D
+  - Switch to a fwctl style allocation function that makes the container=0D
+    nature of the allocation explicit.=0D
+=0D
+On current ARM64 systems (and likely other architectures) the=0D
+implementation of cache flushing need for actions such as CXL memory=0D
+hotplug e.g. cpu_cache_invalidate_memregion(), is performed by system=0D
+components outside of the CPU, controlled via either firmware or MMIO=0D
+interfaces.=0D
+=0D
+These control units run the necessary coherency protocol operations to=0D
+cause the write backs and cache flushes to occur asynchronously. The allow=
+=0D
+filtering by PA range to reduce disruption to the system. Systems=0D
+supporting this interface must be designed to ensure that, when complete,=0D
+all cache lines in the range are in invalid state or clean state=0D
+(prefetches may have raced with the invalidation). This must include=0D
+memory-side caches and other non architectural caches beyond the Point=0D
+of Coherence (ARM terminology) such that writes will reach memory even=0D
+after OS programmable address decoders are modified (for CXL this is=0D
+any HDM decoders that aren't locked). Software will guarantee that no=0D
+writes to these memory ranges race with this operation. Whilst this is=0D
+subtly different from write backs must reach the physical memory that=0D
+difference probably doesn't matter to those reading this series.=0D
+=0D
+The possible distributed nature of the relevant coherency management=0D
+units (e.g. due to interleaving) requires the appropriate commands to be=0D
+issued to multiple (potentially heterogeneous) units. To enable this a=0D
+registration framework is provided to which drivers may register a set=0D
+of callbacks. Upon a request for a cache maintenance operation the=0D
+framework iterates over all registered callback sets, calling first a=0D
+command to write back and invalidate, and then optionally a command to wait=
+=0D
+for completion. Filtering on relevance is left to the individual drivers.=0D
+=0D
+Two drivers are included. This HiSilicon Hydra Home Agent driver which=0D
+controls hardware found on some of our relevant server SoCs and,=0D
+mostly to show that the approach is general, a driver based on a firmware=0D
+interface that was in a public PSCI specification alpha version=0D
+(now dropped - don't merge that!)=0D
+=0D
+QEMU emulation code at=0D
+http://gitlab.com/jic23/qemu cxl-2025-03-20 =0D
+=0D
+Remaining opens:=0D
+- Naming.  All suggestions welcome!=0D
+- I don't particularly like defining 'generic' infrastructure with so few=0D
+  implementations. If anyone can point me at docs for another one or two,=0D
+  or confirm that they think this is fine that would be great!=0D
+- I made up the ACPI spec - it's not documented, non official and honestly=
+=0D
+  needs work. I would however like to get feedback on whether it is=0D
+  something we want to try and get through the ACPI Working group as a much=
+=0D
+  improved code first proposal?  The potential justification being to avoid=
+=0D
+  the need for lots trivial drivers where maybe a bit of DSDT interpreted=0D
+  code does the job better. (Currently I'm not hearing much demand for this=
+=0D
+  so will probably drop in a future version).=0D
+=0D
+Thanks to all who engaged in the discussion so far.=0D
+=0D
+Jonathan=0D
+=0D
+Jonathan Cameron (5):=0D
+  memregion: Drop unused IORES_DESC_* parameter from=0D
+    cpu_cache_invalidate_memregion()=0D
+  MAINTAINERS: Add Jonathan Cameron to drivers/cache=0D
+  arm64: Select GENERIC_CPU_CACHE_MAINTENANCE and=0D
+    ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION=0D
+  acpi: PoC of Cache control via ACPI0019 and _DSM=0D
+  Hack: Pretend we have PSCI 1.2=0D
+=0D
+Yicong Yang (2):=0D
+  memregion: Support fine grained invalidate by=0D
+    cpu_cache_invalidate_memregion()=0D
+  lib: Support ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION=0D
+=0D
+Yushan Wang (1):=0D
+  cache: Support cache maintenance for HiSilicon SoC Hydra Home Agent=0D
+=0D
+ MAINTAINERS                        |   3 +=0D
+ arch/arm64/Kconfig                 |   2 +=0D
+ arch/x86/mm/pat/set_memory.c       |   2 +-=0D
+ drivers/cache/Kconfig              |  22 ++++=0D
+ drivers/cache/Makefile             |   3 +=0D
+ drivers/cache/acpi_cache_control.c | 153 +++++++++++++++++++++++=0D
+ drivers/cache/hisi_soc_hha.c       | 187 +++++++++++++++++++++++++++++=0D
+ drivers/cxl/core/region.c          |   5 +-=0D
+ drivers/firmware/psci/psci.c       |   2 +=0D
+ drivers/nvdimm/region.c            |   2 +-=0D
+ drivers/nvdimm/region_devs.c       |   2 +-=0D
+ include/linux/cache_coherency.h    |  57 +++++++++=0D
+ include/linux/memregion.h          |  10 +-=0D
+ lib/Kconfig                        |   3 +=0D
+ lib/Makefile                       |   2 +=0D
+ lib/cache_maint.c                  | 128 ++++++++++++++++++++=0D
+ 16 files changed, 575 insertions(+), 8 deletions(-)=0D
+ create mode 100644 drivers/cache/acpi_cache_control.c=0D
+ create mode 100644 drivers/cache/hisi_soc_hha.c=0D
+ create mode 100644 include/linux/cache_coherency.h=0D
+ create mode 100644 lib/cache_maint.c=0D
+=0D
+-- =0D
+2.48.1=0D
+=0D
 
