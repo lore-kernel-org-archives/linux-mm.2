@@ -4,185 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4DDACCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:26:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5BF1CCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:27:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40C9C8E002E; Mon, 20 Oct 2025 10:26:11 -0400 (EDT)
+	id 23A798E000F; Mon, 20 Oct 2025 10:27:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E3F48E0002; Mon, 20 Oct 2025 10:26:11 -0400 (EDT)
+	id 2120A8E0002; Mon, 20 Oct 2025 10:27:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D2658E002E; Mon, 20 Oct 2025 10:26:11 -0400 (EDT)
+	id 128528E000F; Mon, 20 Oct 2025 10:27:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E4D8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:26:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB4131A01B4
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:26:10 +0000 (UTC)
-X-FDA: 84018717300.08.406865C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5A9814000E
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:26:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bvQV5ree;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760970368; a=rsa-sha256;
-	cv=none;
-	b=asVat1KUsx5qAg1zdZC1THgX3ATY9FLTRxLk9UvQGIOqGZqLLxqI4MqTLvLzDps2xzJYpc
-	qqzwi0OwVHS45RqMPPVjIFoHftZSegkfB3DJywGGZb2/EcsIq4FEQ5yXXUYnQitqbzFWHc
-	sROSE1QH4+V57O+BMgDgBw13yr0ky+U=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bvQV5ree;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F412C8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:27:40 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9F378566C2
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:27:40 +0000 (UTC)
+X-FDA: 84018721080.11.3E2F33E
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8A1B7140007
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:27:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="DTyneNx/";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf26.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760970368;
+	s=arc-20220608; t=1760970458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQyqqPVnzX80M9s6VBgWNHBBaztCyITJ++CqjP/sV5c=;
-	b=x8CEn8Dn68zr90cpks9A2v5N1zwal4Wi3yKcOENeFupe3fufRL/BMjVdtjfJybXlMnZCaO
-	YfYB0bnwbkuNrD+RD1jEwtAB6ENh50wbjnqZ6JR2ZuzvkI/1SX6LLguEZqpn0U9kLjG+Sm
-	PwovpWWABMJjnLzL9iNMI06r9NQvgDE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760970367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pQyqqPVnzX80M9s6VBgWNHBBaztCyITJ++CqjP/sV5c=;
-	b=bvQV5reeDITVvD5GR0dHTxfpab0PuPAJhWWGjRqBMyd4472FqdbWQydPbRsZMU+vXjuUWx
-	uF4B5eASoviQ0UZngUQUm4LTwI7hNXcd28se+HSKajIKOmDSXDccVsvuguLUIvtV1+bc3E
-	peXs4YcZCZwJRe+er/bGS+aHD+ljSC4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-9ZzDcytROWKRvlb-m0AIyQ-1; Mon, 20 Oct 2025 10:26:06 -0400
-X-MC-Unique: 9ZzDcytROWKRvlb-m0AIyQ-1
-X-Mimecast-MFC-AGG-ID: 9ZzDcytROWKRvlb-m0AIyQ_1760970365
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47113dcc15dso32657915e9.1
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:26:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760970365; x=1761575165;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pQyqqPVnzX80M9s6VBgWNHBBaztCyITJ++CqjP/sV5c=;
-        b=Trr2QTRblRP1wzFzmkmhfW7TkxEPhqWJuYmRNBJIEmzE72CqsTP25D92lmKHSwQ/mH
-         SA7cLkrxe7Ce91leK6HX7ho3IAtQZOV1FjaaflJRFf6leOhyfigt3KnzUoGVjvU2G+Ac
-         hIHSzmiCYnyc09Pzm5Il/Ei0j92pUWf19wEEWmRI1I0QZLS97lxM0jr5lPNJuGfALJxO
-         3TzWUXLaL72TdJULrgi5OGrS2WHdzLUsFSmWBL+yXxXFDAY6mJVj6w1xaodyaVbnSpSh
-         gsQg+xaCOggdPtRvALpRUxGTJbu/KOFbAGhe965lTpgxT31KTAO/TSMEzRP2d+LqZW8g
-         TBjg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0uZIz0TjEE3hS7RTumua3J3wzCRF/BBLq5py50+M4n4p78i5YB9wgUyRdOQUWyQ23ecC/Wvwu/A==@kvack.org
-X-Gm-Message-State: AOJu0YxqrY2GDvVswTHyo1JD4rSaBHbumtinPKtBtmCRRTg5ivPvsw0c
-	ZaRJiu/Dq473cfDUs+uwQR4KvBzzNB77OmGP/z5TjOJoYEO3elAsBNgkcY1o22MHu8cC8NrQ+IH
-	kJ/pKcYVytIrXb254LaqDh9DGbjO/b7uNzLE80KL5sz8+mMnlqB0d
-X-Gm-Gg: ASbGnctH/ys5XwcOfevpbKVzHZWmXzDmE9M4s4uGYN2qG0EAXJjHJvxA8e2AfOU2Yd9
-	ozYZD70J6I4QWcgbed/xgW/fBTYa7yWzqwKNzwlpo4bGSOzRZDN7j1PbRUbuK8N/lAFltED2f9y
-	llTlsfO2c7Zr65ThyJ0xxQ8USEpUbkgxKV4DV+c+WnWPYZMH2RApIUdA7X+0Al/1IxJsgMEkni8
-	xb9PPxR/Dd1C6kDcMMHNuNpXEobgJJuZCN9RLtnBoHVGWhL4+4vp5tvQ8V7VgImZ0LtADSL0awq
-	1sQYnvkfl+KGcdmUMUxRLXQo0od2eX36qVyfAOPk4Yowk2EgRfqLS9iHwhR6/BKHzQyWD4qXqom
-	nOJ/fk3Kf/PBm9ltDdOPv1vRmKKraIJ/gWHlGAcrip7n7PENaK0ogPqE4AcrHVSoYh+9ND7FfB+
-	SUMzG3CSclb3ApDYafxr7S4hC3YH4=
-X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr31713365e9.38.1760970364934;
-        Mon, 20 Oct 2025 07:26:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFivef5uKK4dO0bLoUG5afbj0PkGjj8ivIcoCqNvXGcEAdVc8Dd+wjfTpX6dFddxGB9NaRtjw==
-X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr31713105e9.38.1760970364447;
-        Mon, 20 Oct 2025 07:26:04 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715520d753sm148339825e9.13.2025.10.20.07.26.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 07:26:03 -0700 (PDT)
-Message-ID: <4f2066f8-f26e-4704-9f75-4652d4018cd9@redhat.com>
-Date: Mon, 20 Oct 2025 16:26:00 +0200
+	bh=FXmmWmCbBuhLtmr3MSjiWlBBVtXXoiDGsKJAlyK/wnw=;
+	b=rvtBNZHMZayVMolKq/Ln0uLtZB7yr4J+MD5rt7NwZj2qh3w47OljW9c7erhcIH0tWmuzBk
+	RUkT96y3UTNsDiblFoCrz14HJT3hDpaxpVX4nJvDSegKq+opAm7kIhlIU5MuFEBSWKye2e
+	6L75E02XrqEU4rj0Bxll+0vEcPpeEZk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b="DTyneNx/";
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf26.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760970458; a=rsa-sha256;
+	cv=none;
+	b=kcey72yV9a2UgYGengJz+s9NO0AuklU+kseFrg2A6JWQYNfvUL7QJbvIEkcEi1LoXTh7kB
+	C599BGyvqg0r/+5/85HccosIXWWkIL6gajTTgDN6PmzSIfOtvvTu5rSuX6R7sTqO9tuIEm
+	gvcvwCeMRRD8cRc+9pQohiJ0rvWWIYI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760970455;
+	bh=Z+Jk2n3KQE2PXcZ2LSy+OKXke9czfkMyq1d/vRHQvWM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DTyneNx/KHQy2qFPL/YkilQtY9GUGNh1gDJY1/46Wg8FGzsDPlqT2/gJbLtP57CcB
+	 YVnXKSeevBpyNtg/oK3TyBGdh3pcZwpB/iY4lRccPGS07iCMVIpRF4wePE0GzDKa/u
+	 LF8Sz5Yh6DGm3j+za8zBYh3+uvHLRTjI8M5dELv0TbwibS9+OnRbXKiKVTI6bnGHzF
+	 uTI71zBNOw3o9pnGCzJ9v/2A6BuzBntcWmXu88irLOMaYcyDKEupPcnSeyMNA+bOT7
+	 aJO42FEpScVdxPVeQuGgx3/4/ZOWBl9wvQu5Uh4uOieV9G9H8gNL96bRkkFHjW7zLc
+	 o18mw5+r79iOw==
+Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: loicmolinari)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E2CFC17E0E90;
+	Mon, 20 Oct 2025 16:27:34 +0200 (CEST)
+Message-ID: <85b2c930-54e3-4172-b46b-54bd408271ff@collabora.com>
+Date: Mon, 20 Oct 2025 16:27:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
-To: Baolu Lu <baolu.lu@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
- syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
- akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
- dave.hansen@linux.intel.com, iommu@lists.linux.dev, jannh@google.com,
- jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
- kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
- mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
- robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
- stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
- vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
- x86@kernel.org, yi1.lai@intel.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
- <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
- <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
- <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
- <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nmRo1dC2VHDDhqd8QS-GqaC3nMqh0qe5voTtlLcq5uA_1760970365
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
+Subject: Re: [PATCH v4 07/13] drm/v3d: Use huge tmpfs mount point helper
+To: Tvrtko Ursulin <tursulin@ursulin.net>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
+ <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
+ Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
+ <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christopher Healy <healych@amazon.com>, Matthew Wilcox
+ <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, kernel@collabora.com
+References: <20251015153018.43735-1-loic.molinari@collabora.com>
+ <20251015153018.43735-8-loic.molinari@collabora.com>
+ <0130b962-6cd7-4f2c-8fd0-809a21495e03@ursulin.net>
+Content-Language: fr
+From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
+Organization: Collabora Ltd
+In-Reply-To: <0130b962-6cd7-4f2c-8fd0-809a21495e03@ursulin.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 8niaaa7394zqjiugkm9h8nqx7gd931zm
-X-Rspamd-Queue-Id: 5A9814000E
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1760970368-401323
-X-HE-Meta: U2FsdGVkX19p8MBmlpIvc2DufheSWSc40AmSn0nsi5tF/jAhRZS53NWWj1jOUERTm/223CHLKozHpQ1g+esXI+VZ5UDyG4TeuAs/QKG11z6ZX8Vu49CZzwfAco/ss5fydDHdVSgOFBbY7BdYK9sXK9A6xj2VApOiBLhRi3frJlh35O4bLlhi+QyjzukmmOoP6TWI4Y0m6MQoPj/BSkqcUGNHmxKKtd1YsijMUz1XB2yQuo7VsVAU9HZDOs5fIFrX8Ql+OioON6FnlS7Pssf85ysqOAw/8m+gvPafb0oyuRKyLjtW8K6JDTFIGiLeqlFTolB1pCiFFPiKP89G2qHVBjl6xRYHZc5PYvaAIciiXSbGecH6kHTY6CHcQ2ny89hDgPQlECume2OUiy8qZQAU3/TucyVSW6BgXRZRz7q66YsGFCO6ut93bJcf10Rc1lLnJjYIkHRi2HSUCs7WjH1DrKixrRqhpr8XYS0vQYeofSudVF7Y6HMvvO8SkjjSBnQ2iSDRSxtewUqNeWfkM8hetFBmsJvOev+AIIEPtAszMWGufY7X0sbEjYhUB1gV63pgZdmjHSCIOtA7rZ+jOQVGD10xpYPj3/2BD/TSpbiofxJY2xvpujt47EjvyuInTA6ly8FMbqhBb5wf7tK+mW8+G5Af9sVY0D3gxtl+WtCRYIP8Y0UVW70Y03eDuGL+CWA3W1W25ZEavX9wE87UT1A+53LHF6G3rRAEvIJ2g/nGAUx5EZU2jJnP184LCzHJSLfelscfdNBwnduetWegERbtPv2CyCTzHldRCtqOftx6xg5V9z02Koi+PHpuleSk7Ia9UDEdkiXoCK3sJOJlDxjkmWihLysLojETpyawRiVjKJpRneK6Za8V8+mpXNz0wvPINKjGicLQl1ykCPpZdX7O2hD+ZO0Fq1O7mcY0V8tGUuLcdNA2ue7d2avgpu+PvaanQWxXUrmHNWQvBxjrFUs
- MYaymtJ+
- pPUp3ntWO39qCzqeCWUrtnBb2bf0R/mZbet7V5m0BF3qac/lTyTiyfrKyzQm8VU8HU/TzMZe4+wskBK9l5rSZ1uB7UkZmDst0uiChvo5eYKsK1ukFLtePnkAuotX+fYAXsk+H3tRoDZY+mRfhzBgrIC/u3bIxmxPY183KHM16hWZAzHwRiREr0djlJSlfOPrB2O+Zh8JlEmXdYPfRF1RZQlGeaAqYOtmQOaXxv7hEb2RpkILpaB2j+zgrkccXqysWSV0bPJoQi/kj84OxAC0lOxjeW+hrfYWcTwnds6kqZnGZRu/Kkt69k8bK0+Rkt07Uh3MEmPQjnLYJNeO1TPl/vrwi0OmGVWDw7ryU9P4nZZupfq+frkkKLIVjLmujKYJLiCpD8NYSs3HCHvaBaZn+/MEBx38fKiWEUxVThM0YXhmVPgCZbO0yypQ7Y9u9pIakeK6IzXl+pyuqiN5HDX5yTPw6LL3eTJlHhp3Oc9ZYI453ds4XyKgSWnsCP9/yo/a9Gs9Cf0Bo+YL1JBL1lsbf1zxDlXkcRHHE0661NokSm12qOIg=
+X-Rspamd-Queue-Id: 8A1B7140007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: u3kscicit39rbhskyfeynxufih1mmtwc
+X-HE-Tag: 1760970458-523529
+X-HE-Meta: U2FsdGVkX18kNwTJRPUABaXSbzWnzPjxHfiG8hUH0a/t8yqIoKzbLwDgmWzYiM86vVGC1iEPOAGrDETMbugvc37OFfCprjHsAZyuBnFQDBpL9RLYxj98wWeDwEPChT++C7dX5d1jVZ1DcvGFrMOHQkQ6P3WgcPnSmFRSWI87CAOVCJMQjtYEqfee2To00y04wb+Spv2RLsgeaTUSZp/dkSzdf1ENLRSnuCwsOQ/+DSpX5sZ885qL22wHdbqWovCQjSFq6+S5xkt7MWUoYt6UaNQcuz/bCTXZ982uUIv/BWt/evDeC9vhAj8+hlC5uQ43vz/BiblEBlTbTsDrSHz4Odf6EHcn4/DnjNLuFGIDhX51ILTSP+Q7vdQiloLUdNBC0zvSbWyMIrcYDkLzPC/Iuen42Ncuh7zV1MzdSGN7cZCkGje66aum9RhldXlYB9qMNk1nRVF0cjRaZBM6YtcSuRXsL+e6FVyJ6fFcU+aFSsceYTNCR3M+7BQNvD7Ij69CUk+3f7Ej1tv3yJFI2+L/MQK6WkwxVPyVZot9Htc506OfCIKyD1QWmaDMwE3zTqZUHEwO2qiRotQUhwkTixS//CmW2mGjaSOLqiUFhRdzq232wBsCagJXyF7LbV5O2t5GIdVHoCBsbjyfK91ddIw/TdZOldHS0l5dkblpnTNNjwj8c129CeCkMf0Djp/tzqf2YmeE/IrudKM1ju3QdJKBC0C3p5xm+msGRzVm6irFRGgAOordBtmDG48v7/22zXV09u0trUEwSOzO9gMZTG8pqGfeVIA0kJh6/xxFUZgY9i8VB6Wzgka1gxzJ39A6Knp7E2Q6ydRqL/tgy3w7fMvZ1p0zlcSeMqGtU/XVy20aoB2ugA0Z+bxRn12LsCUnAKMtb8uRVsbvj/jw17wEAOo3in/nZxxg9zHKtrKksRTlwJyLO+1mZexp1NMEFCzOPpUpIzTcMBjXbID5sAhWN27
+ EkHtN2aY
+ eC8Giu5vFoOGkQyH6v7WvF8Xzm5cZ6jadI3AaplvsCSG/OGBwYQIO9yFHe+n6Rc5D803vzX/lVmGQGAMzZdwve3Ap74c6CBsJ8HQatb4Z5cVy+95EgIoIYWBYVoRBUX2yk2cMp+hnaJSd8dt/fQVcD7ESbLIQi1N5GJdu8OE0gturqon2hwgNSR1ZEbOCDJ7g+HrY1NyoQvA5FXLLUTz3aZapMyW9lMyfpfodOHm5XyFN/Vm833Wp5tYPVQ4g883EPuggxR+npx9yM+SAaefq81O8gd5x1ghbYYCu3WhNkjY0LubBTUSDGeaeDtjg/KGbvXP0SJj6c3a7yo74XzQEY+wOcfUur0XH+v/RTeXWjjD6fU6wK+QcM2XsGdcuYc8ug00RFNXco8tydzFTTWybgAohsmAZvLF6RAk2CYNyxlwo2NVpqonRap9RdXoNn0+hKWDkQFsRcdYVuSPKrvygMJPoXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,67 +118,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20.10.25 07:34, Baolu Lu wrote:
-> On 10/18/25 01:10, David Hildenbrand wrote:
->> On 16.10.25 10:00, Baolu Lu wrote:
->>> On 10/16/25 00:25, Dave Hansen wrote:
->>>> Here's the part that confuses me:
->>>>
->>>> On 10/14/25 13:59, syzbot ci wrote:
->>>>> page last free pid 5965 tgid 5964 stack trace:
->>>>>     reset_page_owner include/linux/page_owner.h:25 [inline]
->>>>>     free_pages_prepare mm/page_alloc.c:1394 [inline]
->>>>>     __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
->>>>>     pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
->>>>>     vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
->>>> ...
->>>>
->>>> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
->>>> stuck around so that it *could* be used after being freed. It _looks_
->>>> like pmd_free_pte_page() freed the page, returned 0, and made
->>>> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
->>>>
->>>> But I don't know how that could possibly happen.
->>>
->>> The reported issue is only related to this patch:
->>>
->>> - [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
->>>
->>> It appears that the pmd_ptdesc() helper can't be used directly here in
->>> this patch. pmd_ptdesc() retrieves the page table page that the PMD
->>> entry resides in:
->>>
->>> static inline struct page *pmd_pgtable_page(pmd_t *pmd)
->>> {
->>>            unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
->>>            return virt_to_page((void *)((unsigned long) pmd & mask));
->>> }
->>>
->>> static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
->>> {
->>>            return page_ptdesc(pmd_pgtable_page(pmd));
->>> }
->>>
->>> while, in this patch, we need the page descriptor that a pmd entry
->>> points to.
->>
->> Ah. But that's just pointing at a leaf page table, right?
+On 20/10/2025 11:33, Tvrtko Ursulin wrote:
 > 
-> Yes, that points to a leaf page table.
+> On 15/10/2025 16:30, Loïc Molinari wrote:
+>> Make use of the new drm_gem_huge_mnt_create() helper to avoid code
+>> duplication. Now that it's just a few lines long, the single function
+>> in v3d_gemfs.c is moved into v3d_gem.c.
+>>
+>> v3:
+>> - use huge tmpfs mountpoint in drm_device
+>> - move v3d_gemfs.c into v3d_gem.c
+>>
+>> v4:
+>> - clean up mountpoint creation error handling
+>>
+>> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
+>> ---
+>>   drivers/gpu/drm/v3d/Makefile    |  3 +-
+>>   drivers/gpu/drm/v3d/v3d_bo.c    |  5 ++-
+>>   drivers/gpu/drm/v3d/v3d_drv.c   |  2 +-
+>>   drivers/gpu/drm/v3d/v3d_drv.h   | 11 +-----
+>>   drivers/gpu/drm/v3d/v3d_gem.c   | 27 +++++++++++++--
+>>   drivers/gpu/drm/v3d/v3d_gemfs.c | 60 ---------------------------------
+>>   6 files changed, 30 insertions(+), 78 deletions(-)
+>>   delete mode 100644 drivers/gpu/drm/v3d/v3d_gemfs.c
+>>
+>> diff --git a/drivers/gpu/drm/v3d/Makefile b/drivers/gpu/drm/v3d/Makefile
+>> index fcf710926057..b7d673f1153b 100644
+>> --- a/drivers/gpu/drm/v3d/Makefile
+>> +++ b/drivers/gpu/drm/v3d/Makefile
+>> @@ -13,8 +13,7 @@ v3d-y := \
+>>       v3d_trace_points.o \
+>>       v3d_sched.o \
+>>       v3d_sysfs.o \
+>> -    v3d_submit.o \
+>> -    v3d_gemfs.o
+>> +    v3d_submit.o
+>>   v3d-$(CONFIG_DEBUG_FS) += v3d_debugfs.o
+>> diff --git a/drivers/gpu/drm/v3d/v3d_bo.c b/drivers/gpu/drm/v3d/v3d_bo.c
+>> index c41476ddde68..6b9909bfce82 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_bo.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_bo.c
+>> @@ -112,7 +112,7 @@ v3d_bo_create_finish(struct drm_gem_object *obj)
+>>       if (IS_ERR(sgt))
+>>           return PTR_ERR(sgt);
+>> -    if (!v3d->gemfs)
+>> +    if (!obj->dev->huge_mnt)
+> 
+> Maybe it would be a good idea to add a helper for this check. Keeping 
+> aligned with drm_gem_huge_mnt_create() something like 
+> drm_gem_has_huge_mnt()? That would then hide the optional drm_device 
+> struct member if you decide to go for that.
 
-Right, so I guess there is no simplifying that.
+Sounds good. This would prevent cluttering code with ifdefs in drivers 
+while still removing the huge_mnt field in drm_device in builds with 
+CONFIG_TRANSPARENT_HUGEPAGE=n. I'll propose a new version doing so.
 
-Like we have in pte_lockptr():
+> 
+>>           align = SZ_4K;
+>>       else if (obj->size >= SZ_1M)
+>>           align = SZ_1M;
+>> @@ -148,12 +148,11 @@ struct v3d_bo *v3d_bo_create(struct drm_device 
+>> *dev, struct drm_file *file_priv,
+>>                    size_t unaligned_size)
+>>   {
+>>       struct drm_gem_shmem_object *shmem_obj;
+>> -    struct v3d_dev *v3d = to_v3d_dev(dev);
+>>       struct v3d_bo *bo;
+>>       int ret;
+>>       shmem_obj = drm_gem_shmem_create_with_mnt(dev, unaligned_size,
+>> -                          v3d->gemfs);
+>> +                          dev->huge_mnt);
+> 
+> Okay this one goes away by the end of the series.
+> 
+>>       if (IS_ERR(shmem_obj))
+>>           return ERR_CAST(shmem_obj);
+>>       bo = to_v3d_bo(&shmem_obj->base);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/ 
+>> v3d_drv.c
+>> index c5a3bbbc74c5..19ec0ea7f38e 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_drv.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_drv.c
+>> @@ -106,7 +106,7 @@ static int v3d_get_param_ioctl(struct drm_device 
+>> *dev, void *data,
+>>           args->value = v3d->perfmon_info.max_counters;
+>>           return 0;
+>>       case DRM_V3D_PARAM_SUPPORTS_SUPER_PAGES:
+>> -        args->value = !!v3d->gemfs;
+>> +        args->value = !!dev->huge_mnt;
+>>           return 0;
+>>       case DRM_V3D_PARAM_GLOBAL_RESET_COUNTER:
+>>           mutex_lock(&v3d->reset_lock);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_drv.h b/drivers/gpu/drm/v3d/ 
+>> v3d_drv.h
+>> index 1884686985b8..99a39329bb85 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_drv.h
+>> +++ b/drivers/gpu/drm/v3d/v3d_drv.h
+>> @@ -158,11 +158,6 @@ struct v3d_dev {
+>>       struct drm_mm mm;
+>>       spinlock_t mm_lock;
+>> -    /*
+>> -     * tmpfs instance used for shmem backed objects
+>> -     */
+>> -    struct vfsmount *gemfs;
+>> -
+>>       struct work_struct overflow_mem_work;
+>>       struct v3d_queue_state queue[V3D_MAX_QUEUES];
+>> @@ -569,6 +564,7 @@ extern const struct dma_fence_ops v3d_fence_ops;
+>>   struct dma_fence *v3d_fence_create(struct v3d_dev *v3d, enum 
+>> v3d_queue q);
+>>   /* v3d_gem.c */
+>> +extern bool super_pages;
+>>   int v3d_gem_init(struct drm_device *dev);
+>>   void v3d_gem_destroy(struct drm_device *dev);
+>>   void v3d_reset_sms(struct v3d_dev *v3d);
+>> @@ -576,11 +572,6 @@ void v3d_reset(struct v3d_dev *v3d);
+>>   void v3d_invalidate_caches(struct v3d_dev *v3d);
+>>   void v3d_clean_caches(struct v3d_dev *v3d);
+>> -/* v3d_gemfs.c */
+>> -extern bool super_pages;
+>> -void v3d_gemfs_init(struct v3d_dev *v3d);
+>> -void v3d_gemfs_fini(struct v3d_dev *v3d);
+>> -
+>>   /* v3d_submit.c */
+>>   void v3d_job_cleanup(struct v3d_job *job);
+>>   void v3d_job_put(struct v3d_job *job);
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/ 
+>> v3d_gem.c
+>> index bb110d35f749..635ff0fabe7e 100644
+>> --- a/drivers/gpu/drm/v3d/v3d_gem.c
+>> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+>> @@ -258,6 +258,30 @@ v3d_invalidate_caches(struct v3d_dev *v3d)
+>>       v3d_invalidate_slices(v3d, 0);
+>>   }
+>> +static void
+>> +v3d_huge_mnt_init(struct v3d_dev *v3d)
+>> +{
+>> +    int err = 0;
+>> +
+>> +    /*
+>> +     * By using a huge shmemfs mountpoint when the user wants to
+>> +     * enable Super Pages, we can pass in mount flags that better
+>> +     * match our usecase.
+>> +     */
+>> +
+>> +    if (super_pages)
+>> +        err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> 
+> If it is this patch that is creating the build failure then the two 
+> should be squashed.
+> 
+> Then in "drm/v3d: Fix builds with CONFIG_TRANSPARENT_HUGEPAGE=n" this 
+> ends up a bit ugly:
+> 
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>       if (super_pages)
+> #endif
+>           err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> 
+> Does this not work:
+> 
+>       if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && super_pages)
+>           err = drm_gem_huge_mnt_create(&v3d->drm, "within_size");
+> 
+> ?
 
-	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
+I've got a new version ready that does exactly that (after discussing 
+with Boris).
 
-So page_ptdesc(pmd_page()) is the way to go for now.
-
-Sorry for the confusion.
-
--- 
-Cheers
-
-David / dhildenb
+> 
+> Regards,
+> 
+> Tvrtko
+> 
+>> +
+>> +    if (v3d->drm.huge_mnt)
+>> +        drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+>> +    else if (err)
+>> +        drm_warn(&v3d->drm, "Can't use Transparent Hugepages (%d)\n",
+>> +             err);
+>> +    else
+>> +        drm_notice(&v3d->drm,
+>> +               "Transparent Hugepage support is recommended for 
+>> optimal performance on this platform!\n");
+>> +}
+>> +
+>>   int
+>>   v3d_gem_init(struct drm_device *dev)
+>>   {
+>> @@ -309,7 +333,7 @@ v3d_gem_init(struct drm_device *dev)
+>>       v3d_init_hw_state(v3d);
+>>       v3d_mmu_set_page_table(v3d);
+>> -    v3d_gemfs_init(v3d);
+>> +    v3d_huge_mnt_init(v3d);
+>>       ret = v3d_sched_init(v3d);
+>>       if (ret) {
+>> @@ -329,7 +353,6 @@ v3d_gem_destroy(struct drm_device *dev)
+>>       enum v3d_queue q;
+>>       v3d_sched_fini(v3d);
+>> -    v3d_gemfs_fini(v3d);
+>>       /* Waiting for jobs to finish would need to be done before
+>>        * unregistering V3D.
+>> diff --git a/drivers/gpu/drm/v3d/v3d_gemfs.c b/drivers/gpu/drm/v3d/ 
+>> v3d_gemfs.c
+>> deleted file mode 100644
+>> index c1a30166c099..000000000000
+>> --- a/drivers/gpu/drm/v3d/v3d_gemfs.c
+>> +++ /dev/null
+>> @@ -1,60 +0,0 @@
+>> -// SPDX-License-Identifier: GPL-2.0+
+>> -/* Copyright (C) 2024 Raspberry Pi */
+>> -
+>> -#include <linux/fs.h>
+>> -#include <linux/mount.h>
+>> -#include <linux/fs_context.h>
+>> -
+>> -#include "v3d_drv.h"
+>> -
+>> -void v3d_gemfs_init(struct v3d_dev *v3d)
+>> -{
+>> -    struct file_system_type *type;
+>> -    struct fs_context *fc;
+>> -    struct vfsmount *gemfs;
+>> -    int ret;
+>> -
+>> -    /*
+>> -     * By creating our own shmemfs mountpoint, we can pass in
+>> -     * mount flags that better match our usecase. However, we
+>> -     * only do so on platforms which benefit from it.
+>> -     */
+>> -    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>> -        goto err;
+>> -
+>> -    /* The user doesn't want to enable Super Pages */
+>> -    if (!super_pages)
+>> -        goto err;
+>> -
+>> -    type = get_fs_type("tmpfs");
+>> -    if (!type)
+>> -        goto err;
+>> -
+>> -    fc = fs_context_for_mount(type, SB_KERNMOUNT);
+>> -    if (IS_ERR(fc))
+>> -        goto err;
+>> -    ret = vfs_parse_fs_string(fc, "source", "tmpfs");
+>> -    if (!ret)
+>> -        ret = vfs_parse_fs_string(fc, "huge", "within_size");
+>> -    if (!ret)
+>> -        gemfs = fc_mount_longterm(fc);
+>> -    put_fs_context(fc);
+>> -    if (ret)
+>> -        goto err;
+>> -
+>> -    v3d->gemfs = gemfs;
+>> -    drm_info(&v3d->drm, "Using Transparent Hugepages\n");
+>> -
+>> -    return;
+>> -
+>> -err:
+>> -    v3d->gemfs = NULL;
+>> -    drm_notice(&v3d->drm,
+>> -           "Transparent Hugepage support is recommended for optimal 
+>> performance on this platform!\n");
+>> -}
+>> -
+>> -void v3d_gemfs_fini(struct v3d_dev *v3d)
+>> -{
+>> -    if (v3d->gemfs)
+>> -        kern_unmount(v3d->gemfs);
+>> -}
+> 
 
 
