@@ -4,182 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D45E2CCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF398CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 14:21:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D4498E0029; Mon, 20 Oct 2025 10:19:20 -0400 (EDT)
+	id 3B1598E002A; Mon, 20 Oct 2025 10:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3846D8E0002; Mon, 20 Oct 2025 10:19:20 -0400 (EDT)
+	id 362868E0002; Mon, 20 Oct 2025 10:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 225B08E0029; Mon, 20 Oct 2025 10:19:20 -0400 (EDT)
+	id 277C18E002A; Mon, 20 Oct 2025 10:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E3608E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:19:20 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B01991A01C4
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:19:19 +0000 (UTC)
-X-FDA: 84018700038.26.11AEDBE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 59BF9180006
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:19:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F2UlWDd3;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 112658E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 10:21:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B20748508A
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:21:04 +0000 (UTC)
+X-FDA: 84018704448.08.0CF8FD4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F30608000E
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 14:21:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J33kZ7Up;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760970063; a=rsa-sha256;
+	cv=none;
+	b=v+fA8SV42wLB9X6bB3cZqMPnYhJ88WiJGqKG3ROf6s2h1GDEuIf7+/8LGpyth5j6aCZnv/
+	eYPKdYrJJkZ+e5X/ewBZ248iKKiIjjsa176ZAGpN/OyjDToh9CokBomnyfKWpDCor+57+1
+	9BZr9eK7ONWUbhevOgYD99fhJKdXGho=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J33kZ7Up;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760969957;
+	s=arc-20220608; t=1760970063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=65btNgY1S+uFcA06CrNMMM0YWdZBYxuJXH6kRyOL5H4=;
-	b=3jn57ABzLuvpvyAR8fA8Z2oc3s7lLL8NT4z/FgLJQi/yzoRqxlznMR0ZCzrc1cYzd4pN5m
-	CHXJ0i3X3WliOyvi4FqlrtRBiptYGRIE7C/R7BHh4o32n/78KVUr+g5yaSH1ZJ4XVFD+s9
-	yG2Sb3K7iUpEp9nk0hTZumKaBs9ccgc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=F2UlWDd3;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760969957; a=rsa-sha256;
-	cv=none;
-	b=5w4NCa+dls/1zRD4Uv0YAe+TPLoYpvW19ltdKdgCbugDeWB6gg+wj92HVTIUXkpi4A0agh
-	y+qrFAPDm0fspzVn19+4amZvbn+qTb5bUVYp7K0rOP71wJArPhbKMHsH8SDdd4OD2XiHtt
-	qD8sbFWFZEzvuayaXAas+h6022dCegw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760969956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=65btNgY1S+uFcA06CrNMMM0YWdZBYxuJXH6kRyOL5H4=;
-	b=F2UlWDd33yHk3Dq9f92LIjJbSVW3FLaKBgV4Yr0IvAyuRk/rhUCU0ERgBnGyBaJs/0JhnO
-	ZEQjHl6PuPtuRyGuJLydhi4rhmrRSET9TLu6ev90fbbqbXIeXnx2SUKC24TUiDvFYgjCDz
-	oL/5rHZIivYiTyb5tKZ5HQPyna/4a00=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-424-AU19UJa7PEaHJhBv8E3Mtg-1; Mon, 20 Oct 2025 10:19:14 -0400
-X-MC-Unique: AU19UJa7PEaHJhBv8E3Mtg-1
-X-Mimecast-MFC-AGG-ID: AU19UJa7PEaHJhBv8E3Mtg_1760969953
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3f924ae2a89so5445225f8f.3
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 07:19:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760969953; x=1761574753;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=65btNgY1S+uFcA06CrNMMM0YWdZBYxuJXH6kRyOL5H4=;
-        b=azc+kaEzx1cQS3AiQwnSmLM0IgisEayEObEmtMbdDQQvrpWZnNnHMtWAgWIVUqdxfB
-         kBxEGHWlVQEldQi1mbFGZkzlGFOagSatBhk5alxwM/ibUjc9qihCi0f4aAgOfPwa0xcm
-         B8F+Pfrvl9XJrBWjdqpqiKtejDDgVWdrdXIdYiFftk22rDBwhY8fefmhg567GPe/YRjG
-         2l07Noq0m+GGpvVKPg5FBT/LaCs1/ZZDmtjCVqFHdW5hCQroE6EtwOO4GZJOebruw1FR
-         ng0B1NmH59iFDIiRQSCuiOpJ+DRaizlhrTKC0offPzPQ5MRrVk35ga6zMwMiHF71NdC0
-         HN4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUp2ZPJVxtb/eWlH40K/7bIBJ/LibmGRFi1j8y/+ecQ9aI9VyFJWqllVrS4yXkMSF+2a3v4aZbxww==@kvack.org
-X-Gm-Message-State: AOJu0Yy1syanj3wBV36+t/GN7+EoBZ/z80f/HOIyTTgBNnqzBOfsWxQl
-	vRqMEWPsbOqddv/OBpnG8T8M1V8UbJsi7nqN/WUNkus05kasGQiFtBO6jupBtd59VkMPaCZ1FLV
-	Y3wMK4PlkiNASWG8k1y9+cB36xNu5aliGJnF6Ntyn7DCe3KoHIL/N
-X-Gm-Gg: ASbGncsBTdd0KD0DOBA+6bzYAOBi/NsB9830uyHOKLO0XIXdTWqDNyYZk1payAwVx0q
-	Vm8EGgScTsHWHPqXuPVjcbfNpQXSWdeuuhmUyf9uDPUwjLqx40HC+GByyrdpjjA7dyBAApiU4Xb
-	ckjpYSkrSLSQx4g62IaODTR2tAfmwhWH/cSLI9iki4//M2YkrBmymuizmZfaM2quRGt1QShuQu4
-	4StLSv/ESK/QMLEUPRZFeW4kj8706JWPsS0phk6onE/c5fQiQQA9WLi4InctGnViEvgrWZnQxuK
-	foJyYhWERrKmtAy32mlK5aumvwZ7sfpVdF3tAlX+AW/TxSM+AfIy0K1z1TK/UBY/MAJUm4Y2OsR
-	XOboY9csSfMQXZoZBKy29RW0ccsPxDYOQkLO12ap88Q2MygGIIgseEpM5RmP24gt0Sp/a4JtNTO
-	jyMjFlLU9IKbmx7DReZNeRkhBB4pw=
-X-Received: by 2002:a5d:5d02:0:b0:3f7:b7ac:f3d2 with SMTP id ffacd0b85a97d-42704d9b22amr8367714f8f.43.1760969953321;
-        Mon, 20 Oct 2025 07:19:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHIQ86tVQBiVUCtXtty92ZgvqJuklg1r9FrAW/HfWuTtSRsNtewiudoCqYJbGF96Hka/1j4mQ==
-X-Received: by 2002:a5d:5d02:0:b0:3f7:b7ac:f3d2 with SMTP id ffacd0b85a97d-42704d9b22amr8367680f8f.43.1760969952867;
-        Mon, 20 Oct 2025 07:19:12 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5a0e9csm15752758f8f.5.2025.10.20.07.19.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 07:19:12 -0700 (PDT)
-Message-ID: <dc0587af-5054-4da0-adf2-20aa5a10d40f@redhat.com>
-Date: Mon, 20 Oct 2025 16:19:10 +0200
+	bh=2Ood1pgSd60hbkJmwFViyKQCTha8aHKgGXnIb0wfkAY=;
+	b=3JYJ/2rVAPKWYQz7+qQ+yA+BM7q7fxUSeM+XzbSC57161MxwL8gowA3gncHqOCQmHMh5ZV
+	vFU0SZf8SOi8EVx/Q/S5ov164gmbDS2zQzSDMxU8F+NLv1IvOYROvlsCw1NY/d4t4vLS7m
+	Te/6sa8pMtmxfdt5MYNgdYEqGzZdbj4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA4D044C18;
+	Mon, 20 Oct 2025 14:21:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C3DC4CEF9;
+	Mon, 20 Oct 2025 14:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760970061;
+	bh=MWtJ+mpol8+yVnzZuaWPr0ilzSGNIoshaV8ATYd24wQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J33kZ7UpK1kYx53YvkuMnchUUU2VJ+k/E9KevIEcuOA4bxT6fp2jPJtrhZecGPERn
+	 FJKvDzUWqM1vuz3JX47N9ZRM1e97PQ/zem/dxC5PD+sERJjdVbXigkWYjzEb8IltGl
+	 9cXi0UtO9dC0tpVF3yaFhX1y1ojvaBfb1JmdTyphLkkplys7hwy8D2JXqKPpaixn1t
+	 5IN6lo+TbDiTVVmsEQMY++GO9lUfM7nEKW0NHpyPola5hSVPUtU2Tz5TFOEsSwj6g5
+	 ZUicraVH06nuF0Wy5uVOpucM0rJ5cRaHHT2ZRQAYjXUX2Rbj6t4DJV1sWOjGTjXWNk
+	 MWaCY6a8Y6QCg==
+Date: Mon, 20 Oct 2025 17:20:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH 0/3] mm: treewide: make get_free_pages() and return void *
+Message-ID: <aPZFRJVEhSFlPDuE@kernel.org>
+References: <20251018093002.3660549-1-rppt@kernel.org>
+ <aPQxN7-FeFB6vTuv@casper.infradead.org>
+ <aPT0zNMZqt89cIXH@kernel.org>
+ <3301af1f-c24a-4e43-ad59-402e244d5552@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] mm/hugetlb: Support vm_uffd_ops API
-To: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Nikita Kalyazin <kalyazin@amazon.com>, Vlastimil Babka <vbabka@suse.cz>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Houghton <jthoughton@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Hugh Dickins
- <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
- Ujwal Kundur <ujwal.kundur@gmail.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <20251014231501.2301398-1-peterx@redhat.com>
- <20251014231501.2301398-4-peterx@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251014231501.2301398-4-peterx@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: sgzqV5JQbKJAqLi_NnOTzraFt9Zh6p9jXKzE1o6FOEM_1760969953
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 59BF9180006
-X-Stat-Signature: zuqsecpkp18zxu7nj7w1aox83z8n6d13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3301af1f-c24a-4e43-ad59-402e244d5552@suse.cz>
+X-Stat-Signature: dm6beft7inzy8i8dyf6bpdap158hb74f
+X-Rspamd-Queue-Id: F30608000E
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760969957-509766
-X-HE-Meta: U2FsdGVkX1+3N7Bhe6Z9WkvQWqcg8lUFc0QXpfV1uG4iSxjAkVZlU2g5pEWoUMHS7zFU1KtRQvWYCqiV3YnoVZuXGl6G8TlOCoeCYXmimZNXPjWi9TFVYpZ0oW2oMHqAk67tO8jJg3mGlX7y+sU7PfQAfW9PddiMvITY+/mj9RmeQ+PYD9ubbLeA5+lLoeFtLQ37Yr0DjnKnfIWQwy+6Aro0wlu3vN7WQ3KuGjjnych9AohQCd8QQQCQK7fYVaYvzOo9PNX3sE7OB7OxLx4nyX4f1KDKqtA8ZDgO1vaLgXVFkHqbIAGF/jgIqf0ZqHSQWxkmF/BceENeE9V5SG/UnRuRqzORgGq95Owx2WgNygVBd3Ipj+XEFV840u7XMK/dAz5C4ZGvBkHKYbJiAuH54eD8n/sBdAHeHNKS8IL1TS2KXTNWXZdAXK3yFTgxYOEmGCB2GeX5m1JbzlYLlZnpLEu+FXhEOqCycaZXiCTsY3KTu2HRUVj7gN49HzlYzyXNPKArMQvIyN1hGfhT48OyPXwTlNvyk7aRIdxcceGipkRyYzZMINgwcGT/jOcudIafFLG46dIZ/CgGySvxaY7mqabIo8Wnus7wtxi9HgGMi9+SYV3FRof/n20O5Eh+iRxN5j0kj+/SpDHaV5BoRHqaG97zIS7AfFSprQMxfXd9Kqm2yftFn5OprJavYtB3/IkmM0yi4dRfGQdPUsMSN992BeccJLwGKqDaZ51u1JnwfRB34xU/DJQifxBtO4jpKN0GeNuWhCmKlaXdu74eZpD98tyROHbt8Uop49oy9G45gyPS4lmVgkggXwZOuxJspYBpxgoaZYm46aiOHIWi++13Ke1POwodbGidVcJnfoDIxigK5oxIbYCjMBNkj7oRVjYLtEYIqHj1C1v/OAZEQDiBvkQPqbSyuan/Fvwtal1KKiOX0HnEt3AzzfvQYIEmcIga7DLVghVKTiw8gTRy6c7
- R/3WtmOF
- eO2AgaEhBS0WmOewBCqagGJuK17GN4UaNJy/q+JoiM/yhfc2m/uPf1cnHaMvLS9zr4LTel7ngfnIkjtYciK2dFlGdIRQxJPLpcj6Rh38PhQURO+t/uDTZi/pReDHe2s2IuKwDeWrr80YU4u+6zmQRL2G9RiaGqllH1WWZR81KPqms9WyPMUWyMTdscybUcWNW8Ke+bE5sUsP4yesy5z0VEP5nkL73acHqlbtf3DO/XtfBAl4tCtMHS3tCNNkMZPhZdIdAM4lxnRsk3DNljimFEmNJ1OxeQlMvGDIwGV29VrKIdiUDEH6qt4A5wI/0v9XJZjwkVCNFspuGQTBeyGlZkCBXH1kXjuUJ0lcdFWtzKnZGxskLJ7QBAe5TCAtpREK6gleZLSx0vHMJycCv75Xgp87HdkaeFPGQKRPJ5wWHy9pvCUupjSvBHhPbKb8gTh1r5UkdjtDc+2aym7AMZ8xWGyKBwYqK1cpE4unIWk3j1S0Dik3fp6BeQBpfwjvK8cJYrPEf+IAeHsOFu0R1o1ICotSPt3spyLNgkOx4rjJuobfkIcQBOFVhiS5gFg==
+X-HE-Tag: 1760970062-418245
+X-HE-Meta: U2FsdGVkX190wjoPfh0Pi4gz2NW6s44mW4PO3Wzr6Rb6sIgc/wDK47hocK9UnwkH5ZB68fw/JZXyLI4uvaJczce+5qHIGiFFyYvZ14RPlUdceFAchklbSQPwpS/FUOwx3jToZ1vEvh2zMorNIAEgm36Dydu8KeGFAf6LaNsuWsb18UG4Q0t8QUKaBT+6C6Dn9Hn2VNPBtp6+h5oi5LtgUYNCEXG3kK6ONEINtPOHXXe1nPbXXTQUqS2c0mV54FRfMqVxhNYgn8ExKORdhZnxqF36fBXhBMeIfrudSdVAKp/ys/p2d3FXscXD1BPy+9eZLEnn561v3lyvcnrANZAK9a8Qld5Qq89segUPDyDRCc1wMXYiAfUcryueT+slinZzfpPDjrMMEVILHHrAfec87TNU3B/8HwtnA1FHh04de6dT3QzZ7mZPEBgO9DVau7JtM/FPLKGpr0bnzR21leldbzrVSr7lOQ/AzPV+uzeHM+tcdF2kDgRi9C/4GIIwneHkcv+4FbqRjZSIlMG8/b4n65TnY/0tIMvrvIEEvF6v0iEahhCYHqCiEJABcIokZrPHeMTaQue4XCIetSgrzT4xq6IeOn5P/VPfxvg3CebdKQUUhWUuDT3bi3uHqTBCYP1WAdgykmQnNottP9/Qv+DzWvcw4OHRreKt++y8M7rXinS9NSI8rG/T6WOUhp1YDAa2COlyccDmda567FbgeAF4uimOZZ67wrawrG7uwCU9Fq2A0LSe/6TlpOo0U+z346EBmtI+UAUUlduMDCAdXvVt5M4Top9nSScqteEh0AF9i1yxPO6XiFaQECRxFw5aHWD8a+BKFZefjIcCa0+AkajobCdTSKHUAoRK67Q0RHkRFfaqGjM3hgc3xjmgFaOXFNpws2flLp5+aRen0aa29GMbQUmkV+GQysjf2yZtp6UYbskzBJ77cevaCKjh7NgmmABwmEhfBiPtD6/esilJsPB
+ 9ADf3rR/
+ uc0x3VizYH+4TkMnTxJiIwsMvvkIvaACOdlKIE/jWKVsNLWfrs6MXy+OfXCq2RVJeVmuyyo7VvzFoJbyvK479icWzPVR30g7QU1mgJujjtYePxEQhHpHsevt+95dIIJvuQ8uDsMaYztPfhBaOWl6BcMUgGKoepht2muMK/CT/l1vLN222I5u/S/b3Of8HX+8uV0qly5MTzBoJqXZdiTv41SqE+QpM2xo2xK1nE15nH3sV0UtKZ+O3sSihxHPImAzT3lu/prOhys61XxL13As2pIRNwKa8sWQgXP3LvcJ9Js3dj26+nUG10lpAFsm9XYqjWedkB3vouQCRi85YjF4acugtEkWjxVOgnoE5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,25 +106,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.10.25 01:15, Peter Xu wrote:
-> Add support for the new vm_uffd_ops API for hugetlb.  Note that this only
-> introduces the support, the API is not yet used by core mm.
+On Mon, Oct 20, 2025 at 10:54:27AM +0200, Vlastimil Babka wrote:
+> On 10/19/25 16:25, Mike Rapoport wrote:
+> > On Sun, Oct 19, 2025 at 01:30:47AM +0100, Matthew Wilcox wrote:
+> >> On Sat, Oct 18, 2025 at 12:29:59PM +0300, Mike Rapoport wrote:
+> >> > Vast majority of allocations that use get_free_pages() and its derivatives
+> >> > cast the returned unsigned long to a pointer and then cast it back to
+> >> > unsigned long when freeing the memory.
+> >> > 
+> >> > These castings are useless and only obfuscate the code.
+> >> > 
+> >> > Make get_free_pages() and friends return 'void *' and free_pages() accept
+> >> > 'void *' as its address parameter.
+> >> 
+> >> No.  Linus has rejected this change before.  I can't find it now, it was
+> >> a long time ago. 
 > 
-> Due to legacy reasons, it's still not trivial to move hugetlb completely to
-> the API.  But it will still use supported_ioctls properly on the API with
-> all the implementations still hard coded in mm/.
+> Here's a lore link
+> https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
+> > If it was a long time ago, he might not object it now.
 > 
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Acked-by: Mike Rapoport <rppt@kernel.org>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
+> Did the circumstances change in a positive way? Using a semantic patch might
+> make it less painfull to apply in a flag day manner, although depends on how
+> much is that "a bit of manual tweaking" you mention.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Semantic patch missed a handful of places, other than that tweaking was for
+formatting, e.g
+
+diff --git spatch/arch/s390/mm/cmm.c manual/arch/s390/mm/cmm.c
+index 980d2b302937..7212ab4f0eaa 100644
+--- spatch/arch/s390/mm/cmm.c
++++ manual/arch/s390/mm/cmm.c
+@@ -74,7 +74,8 @@ static long cmm_alloc_pages(long nr, long *counter,
+ 		if (!pa || pa->index >= CMM_NR_PAGES) {
+ 			/* Need a new page for the page list. */
+ 			spin_unlock(&cmm_lock);
+-			npa =__get_free_page(GFP_NOIO);
++			npa =
++				__get_free_page(GFP_NOIO);
+ 			if (!npa) {
+ 				free_page(addr);
+ 				break;
+ 
+> >> Most of them shouldn't be using get_free_pages() at all, they should be
+> >> using kmalloc().
+> 
+> Changing to kmalloc() would have to be careful, what if the callers rely on
+> doing e.g. get_page() later. It would however be useful to dintinguish "I
+> want a page-sized buffer" (note that it's guaranteed to be aligned by
+> kmalloc() these days, which it wasn't in 2015) from "I really want a page".
+> But many of the latter cases maybe want a struct page then and are using
+> alloc_pages()? 
+
+alloc_pages() users also not necessarily want a page, there are quite a few
+places where we have 
+
+	struct page *page = alloc_pages();
+	some_type *ptr = page_address(page);
+
+So ideally those also should use an API that returns void *. But again, as
+converting get_free_pages to kmalloc, it's a case-by-case audit.
+
+> > Don't know if most but some of them could. Still, we'd have a bunch of
+> > get_free_pages() users with needless castings.
+> > And converting callers that should use kmalloc() is a long and tedious
+> > process, while here we get an API improvement in a single automated change.
+
+> Maybe a more feasible way would be to rename to something more coherent,
+> while keeping the old interfaces alive for a while for easier backporting.
+> because __get_free_pages() / free_pages() is not really great naming.
+> If possible it would be nice to also make __GFP_COMP implicit in the new API.
+
+If we shorten "page-sized-buffer" to "p" we can do something like:
+
+void *__palloc(gfp_t flags, unsigned int order);
+void *palloc(gfp_t flags);
+void *pzalloc(gfp_t flags);
+void __pfree(void *ptr, unsigned int order);
+void pfree(void *ptr);
+
+I'd keep the order in __whatever_free() for the first step, because I'm not
+100% sure we can use __GFP_COMP for every existing caller of
+get_free_pages.
+ 
+Do we also want to rename gfp flags to something page-sized-buffer based? :)
 
 -- 
-Cheers
-
-David / dhildenb
-
+Sincerely yours,
+Mike.
 
