@@ -4,179 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42BCACCD1A5
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 19:46:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B536CCD1AB
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 19:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B808E000E; Mon, 20 Oct 2025 15:46:32 -0400 (EDT)
+	id 73BDE8E0005; Mon, 20 Oct 2025 15:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E4E98E0002; Mon, 20 Oct 2025 15:46:32 -0400 (EDT)
+	id 6EC838E0002; Mon, 20 Oct 2025 15:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D1D88E000E; Mon, 20 Oct 2025 15:46:32 -0400 (EDT)
+	id 58D488E0005; Mon, 20 Oct 2025 15:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB8A8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:46:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3638414013B
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:46:32 +0000 (UTC)
-X-FDA: 84019524624.07.EB2C675
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9B9D2A0007
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:46:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bg9nwUsU;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760989589;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 45FE68E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:56:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7FFA160294
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:56:07 +0000 (UTC)
+X-FDA: 84019548774.02.550336D
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011011.outbound.protection.outlook.com [40.107.208.11])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E0874180010
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:56:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Z62JvQN9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1760990165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/nsYu3sxWKw35kclt34jyQDkTPvyZmJq+s80Nd/F8dw=;
-	b=A2ccgKaZ4gI1XXr9CDhalerkicwvWQ7PhIDhrw/NfgZwUjw+yzXf4CJaoTrYEtQhIFtzlx
-	ms6/soH56KCzp0+cYpDtGg40Oj3Fx0D0YRMHBx7+31p7xgOdXuUdzGUrrkcZGbuTgWGMx6
-	IMHQGhOtb/VNCIOARNm0XE/g2mpkKfk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bg9nwUsU;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760989589; a=rsa-sha256;
-	cv=none;
-	b=EQqjEkVxp5+GOHw+Q/e026L0qXnICVYJQs9vQINp4STWWz6RuGjXMnVgPzw1YzqxNUi4xN
-	eP21EfiNEtmeXNmNbNaKD2PgEKIsrneewRp0i87kXmoUG5daMKazsafxNoOu34ae4l+Q33
-	jbcsfeU3kImS9bLeE7arBX8ANRYK1eM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760989588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/nsYu3sxWKw35kclt34jyQDkTPvyZmJq+s80Nd/F8dw=;
-	b=bg9nwUsU/5GSDwBW4k5zBqrxydMqhib5EHQR/f0KDl1Th4Dcq/YLIsMsHmysD+bLj6LqYi
-	iIRwmnRoMN8HuKl/ZIl+3PsfiTLmRKParP1qe+G57HA8q9yi/aijIgPJhB4zepfXICoqRp
-	4jNe4RwBdTQ0aYRJj2yGtOwcT3yd4Kk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-LP2Jb3L8MrGnHrnR-Dl4jg-1; Mon, 20 Oct 2025 15:46:25 -0400
-X-MC-Unique: LP2Jb3L8MrGnHrnR-Dl4jg-1
-X-Mimecast-MFC-AGG-ID: LP2Jb3L8MrGnHrnR-Dl4jg_1760989584
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso37048345e9.2
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:46:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760989584; x=1761594384;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/nsYu3sxWKw35kclt34jyQDkTPvyZmJq+s80Nd/F8dw=;
-        b=sPqdsbtkvAwsdBFC9YLhXmolgubBy3Yt+jwvrw1Sma7e63zJASuvGqmOjD89yzQCSf
-         RPXFE2rog/4VHNxTleXXeqPZvtdZmFvJLBdMvjtaH7X3zztZln6w4uuxVilEeLlsScoo
-         zNjKN/Csb1yjcyH1+TpEC1zFVnvvbjT9QHGJ/wDjtl3nyoAy+vHQuUi04DaW6jEw9TIH
-         jEM+3n3rdRmiatSWL3G3F25nQFAhc3SLzypfZhNhZp3emRrOtHOGcL78KgAOb+Y8ouVA
-         GeB8pDfDIkhYhVJFd1veWO8bDU6KhnLwsTi4ak7EFGMoqri+Kbz75QVkDrVaK37TXztw
-         TNlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDJt4cqgYnCqQvog6qkSy8gLfnfNUoPhtCR9TGQb1UDY0UW+xXB+fYWWozMvFalvLD3KU8VoIE0A==@kvack.org
-X-Gm-Message-State: AOJu0Ywavxrhzm4rzuvgpRdbAoynAWkp2xgMio4i/Q7knMuC4rEemYgI
-	gYJykFy+11yZ1LQruFWtLKYc1LPlTf7cCWhDs7JVD2DMOcJJqf5Vw6um21Lv/gUMTOpZ5jvZoRP
-	wP8FFXdSjeziasRIFgWpZG6gV5Obo0m7j9M4YekIVpx8xybGWgfvs
-X-Gm-Gg: ASbGnctaYRYsGrBZWwywjDq/wiqzW2bSx53j4OsJDT6kdnQDmK152uO0JtG4ZO6h3hl
-	5H1hUBIOLgMCWSgXs4ugRu0vN+qDgy/iU0Qv1UslFo64y5rzFzVqP/PCYDBY32Ku5WIITosIq5L
-	nI0bq5ZTuBaegF2hm3xxZ3Ls/PYbsmSJ8RWCuCCCNoh653c0yg9L1aJs9iFMUjCM6t3QpgzUDfk
-	/EJsewaa+ORtc6pA9RssTjKIkuUfwhlstqWHmroCKYVg1cVuKgUm4n8RPmLOrKgI8iQ5M9hxwfT
-	sOfmOumrys8WNLvocPcDJr5G1IYkpbn0SeAIj5KhoP7VC4GAFMx62YgRDQPR+sx3Uz87pmxDZkU
-	vpnJbanb2/XiVJiEZcgVtNnjpoLqKvYVLvH4CR1DjjiIvNhbuQMdxnRxtE6KyYs8eIZ+nSJZVgB
-	jxfr2SYcJQD1Rr1687RpTPfLMtC6Y=
-X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr35825875e9.38.1760989584108;
-        Mon, 20 Oct 2025 12:46:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG41dKtmg/MhiuPABusf+rU2NYthrO92PlcqVEvTG4DvE2u37hJDq3TNOCRz6ssCTvqSlBdHA==
-X-Received: by 2002:a05:600d:62b1:b0:46f:b43a:aef4 with SMTP id 5b1f17b1804b1-471b5341411mr35825745e9.38.1760989583729;
-        Mon, 20 Oct 2025 12:46:23 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715257d972sm163976505e9.1.2025.10.20.12.46.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 12:46:23 -0700 (PDT)
-Message-ID: <0d92a675-ab24-4b1c-be71-956f09a9e973@redhat.com>
-Date: Mon, 20 Oct 2025 21:46:21 +0200
+	bh=gP3xDs62LNe0sqQMlFcipHjwYzxPTeracwUxDgrojK0=;
+	b=lGFOAPqK5uO1XgT3QnGu8dKmCiJtFE82ppxQHI1T7YKPw5a0EZjQT7fAkgags+UWMJ+lOU
+	V6+nIRPx4mHoRWGELOlcIu66On+I1312Ag9bIjqqmBUbtp70GMxJDVyCmCtaOFXNRq8gI5
+	Cu6IJm/rRzU4u7SNSK2ty1dw/6gYZdw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1760990165; a=rsa-sha256;
+	cv=pass;
+	b=TQcYKAVgO00dtVMBYuQ6JJVi+uC8gxdSO0880EpCRAPDOQWPh4JilUo5CUx91F5fEL5Qi5
+	ELGRnqcWnswx4fg/aHZjXU9h5PGM8K404Bo1E3clFNJto8eeSTuhllFL8X8VZsJzWRcelM
+	Gek1ZCVlHroLv+//7Pe3d+BljJeNTNE=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Z62JvQN9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf06.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.11 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QV/hGYAzjPL2BC5XvQYg/qPeEnYDSNeRsc2DSXGVJTYPEA4J+e5PSKJ2XJDjrZ+ZKbuwzu/N56OiAfpcJEtHrHaU6qbSgipefyKMYTzwRarb8mXc6aVEUTFsBGup+GrB+Vo/BBG8CJfr/PHAOFdUBY3PlV2z9BfXkIdjqHhZWbpHOAJD3xR6868ySuz0n9Cr+YPI091hvdTSs6WXF7wbRTFAkhPO89cc6uI0Bl9OpmCMxwtDVLSEYVw1Tv75hla+2xpLM/tdGUWjK82TYzfkq+V0vklFnD+pJxybsagD/MZpaWaUX+rFnM9/Vz8mVqLMcIaaZHw6QaX7Dxz2ykMmwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gP3xDs62LNe0sqQMlFcipHjwYzxPTeracwUxDgrojK0=;
+ b=rs6M1WJz11cLjURKPefAzBAQ51qAjl87Rp+bxALPzlMl2W++w1cbXPRzRYZe+InKREsWFX5ufZ3AN/fk/XtEc934/fxvBZW1zk4m/mK6+Tr01xQXrGvrQV38uuTwtHSEBHbC/t05DNwRdZAMQtR+LpS6AtwZAw+8PyFEeo7OTo/7FgWPPv/MlvcwCYzKqhvoE/hfQ3TattVvd3sNBrMQXYS3O8Y8iCAftFGVDS3XQOj/LTjgnHQNJaBw4acBJlvVkadcR1i0JHChcSkx11avXfKnaMpnuc41Y3qg8Iciz/4CZ1xSV+YFyLdOWbKG2z24gKYB0wE/qn1X36NDvA5zxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gP3xDs62LNe0sqQMlFcipHjwYzxPTeracwUxDgrojK0=;
+ b=Z62JvQN9tm6crCkS2/FLqBwNSX6kzo2Vt6ntAQnvCeHXdLs7TY5qHv+vZnswbKRIdqWXZ6NKIHb/3Ad11Z0aap6Mvd0uw18cjhBzW/JOndlDGVxtZXqeS7yfYgcRIiW5YpGZ+pMMV7yDlxW8xMrR0bTuS6rfaWamOL9ST1iifH74kFyOJOSbbQsukKwgIIryW/CjLcQSyahOxhPE1PjJuEPHLc5uG3mPNqYZOnbhPXmGpqxvOAp+NS4khbKCndCgKfsz07ohcSia7j6P4GeKRJPoJ4WGhRf3jDpGdfpw6ic7SrTqbK+ZYJm/+bG20BAP7S1uBYubbQ7kdsX7sVJRKQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH3PR12MB8970.namprd12.prod.outlook.com (2603:10b6:610:176::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
+ 2025 19:55:59 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 19:55:59 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: jinji zhong <jinji.z.zhong@gmail.com>
+Cc: akpm@linux-foundation.org, feng.han@honor.com, hannes@cmpxchg.org,
+ jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ liulu.liu@honor.com, mhocko@suse.com, surenb@google.com, vbabka@suse.cz,
+ zhongjinji@honor.com
+Subject: Re: [PATCH v0] mm/page_alloc: Cleanup for __del_page_from_free_list()
+Date: Mon, 20 Oct 2025 15:55:56 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <7E6AC98B-29FC-4B92-BF72-56615D22CBF0@nvidia.com>
+In-Reply-To: <20251020150626.2296-1-jinji.z.zhong@gmail.com>
+References: <7B0DF4ED-FBB8-48E5-95B7-4C32B645F4A6@nvidia.com>
+ <20251020150626.2296-1-jinji.z.zhong@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN0PR04CA0140.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::25) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] page_alloc: allow migration of smaller hugepages
- during contig_alloc.
-To: Gregory Price <gourry@gourry.net>
-Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org
-References: <20251020170615.1000819-1-gourry@gourry.net>
- <487730c6-423a-4a03-a668-9b9ff92a5cfb@redhat.com>
- <aPZ0OKx_VnQ4H_w1@gourry-fedora-PF4VCD3F>
- <609E7E01-33A6-4931-AC89-1F4B2944FB64@nvidia.com>
- <272c425a-b191-4eef-af6e-2bca1db7a940@redhat.com>
- <aPaQNYsN_YPDOwQG@gourry-fedora-PF4VCD3F>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aPaQNYsN_YPDOwQG@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OhpeZ_Pv0Is_-7Nv7H9HrGMSE76DatHfYiGvJr7PKHg_1760989584
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uifma3p6tpguqiman7ixp98nuyta13d6
-X-Rspamd-Queue-Id: 9B9D2A0007
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB8970:EE_
+X-MS-Office365-Filtering-Correlation-Id: 581397ad-cf1a-4e92-2205-08de1012b060
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aFk4ZVk0SmQxVnNaSWN5R3B2L1NUSkhaejhmVjJLTlkzRzJMNkorVmYrSFho?=
+ =?utf-8?B?M0d1YkRPSE05amhSS2FVdU1OaDNLcGhFZk1kZzRZdjdjTWw0bDRuVVlibmlH?=
+ =?utf-8?B?ZGdZWldHSS9Ja0lvS2J3RzZKU1hxVXBBVEF2Z2pxUG14aWNHMkx2ZzB4S2hE?=
+ =?utf-8?B?b20yWDB6eEJwdGFHVkprTUtJQTJYOEVYbE5wTmxlcjIrYzQyMjF0ZWg0WHdr?=
+ =?utf-8?B?L0RwSFlJOWRGU25VMEpWSGZjWVBwc3hJQUxYcDNQM0kzVkFmdENLY00zUzE2?=
+ =?utf-8?B?NDN1aSt3K2dFVitoVnR2WFNaN084SkhDTENLeVVtejQyUG9DNDVzZHYrRkJr?=
+ =?utf-8?B?NVhseEZtV3QrSXA3SFREOFRmbm54VkRpd0VEM2NKWVMvWDNuMjN1U1JsNmxj?=
+ =?utf-8?B?SjN1YnczMDc5cEJqV1JtRTZOV1NaTHNYUU9tR293aXBTV1NCaFFZcjVWd3N4?=
+ =?utf-8?B?TTRlZUJpYXBDbHpQOU5WTkpKdlJKelZzZ1BNVThyTHhoVDZaVVM1UFdhYXpS?=
+ =?utf-8?B?WmdkOFVuc0JhOXh4ZTU5N0tZcnE0akdyaUZ1SUJkVkl0bXhaV0FJcEh6TTlI?=
+ =?utf-8?B?aDdNajQvenNxeFdDLzM4Wnh4OEJicVlUU1dtenhNZ05OQ2NBSGRiZVJJUWRv?=
+ =?utf-8?B?QW5DWHpCZUFiS2dsWlZRRzI2TkhzTXhxUU1mRXdkRnVNdHkreTdPNEJNcDVa?=
+ =?utf-8?B?bDdlTy91VUVsbjNvbnJ3dHZrQ3JJMzZmbVQwWGs2bTNZVW5QOFNJOXFVenJS?=
+ =?utf-8?B?ZG90S0tNaTU0UlFpV291ZkQ2aGJObnV5bVYwU05FeDNTdksyZXhvendscFgz?=
+ =?utf-8?B?a09rSXhyQStxNjJXRkEwY1kya1NKOXRhYTdnYURCNjdNOVYvWklqc1VUbGZT?=
+ =?utf-8?B?S1lZY2tLemM4RG9CYk5QcGQwS2NMZy9VNWYvYjZ4VUliL0tkenhFV1NzeXg4?=
+ =?utf-8?B?U2ZLcGVWZ3FDOXE1cVFNWDVKelJUbDBodWZmLzd6OEg0TWt1cTRVc1UwbU5C?=
+ =?utf-8?B?Yk5tbVc2dXdwVVZ5OW1uSlJWQk1ydUJvTDdvbW5WQW9lVXJ0QlRXOGhVN3hr?=
+ =?utf-8?B?N1lIMXNwNVNpSlNRNEhZWVYxTFNwNDArTVNyN0U3RGc5T3pHL0tVc2NzM1o4?=
+ =?utf-8?B?WTVHL1BKa291eEphMUxNbVBGOUZXNUJkNkswMDJzcVZlUkp3MlFsbFRwUXRr?=
+ =?utf-8?B?T0wwQkdsbE9xTGFFNTg4R0VPVGNlNHU5WXZDejVYcWFxUFpOakhBTEVlOHRo?=
+ =?utf-8?B?TWxXRlFNV1NTbG1aNDFpaFRjY3VQV293S3JhMGFWVkU0cVhjaDlPRFZHbGRq?=
+ =?utf-8?B?QjRMK0lrdFRGMXZ3Qk5peWVGM2VSZTZHRTYyTTRrNEhTMFphOTFsQWtFUFZU?=
+ =?utf-8?B?R3g1WnQ2d2NPdGF2djlOQ1NuMFJSM0xDY3VCUDNMQjk0Ylg2WmZoczYvdFE1?=
+ =?utf-8?B?cFloYitjN0hwMHd5UDRQcURKenl6cWlvS2hXUHQrVkl2RUwybTRKWlgxTkRy?=
+ =?utf-8?B?UDZPQW9UclJjR0FmanJmcmZnNFhTTExDS056UG50QzM1K25SSktCeWVlYWFF?=
+ =?utf-8?B?UXFuTGdBR1FWWU9MQWl4c1VvV2xzTlZGQW0yeldQeWZkYjZzVWVCSHlOaFoz?=
+ =?utf-8?B?TUlFbjYrWE5mYXM0bmI3RFZXUy9hR0UzQlIyYkZOKzRpQSt3d01VaFcrb1VE?=
+ =?utf-8?B?S2ZFN1ZHYTJ4SlhxN05Ec0JKb1huWTZHczVEK2ZYSzFheG4vT0pWcVlpUHpj?=
+ =?utf-8?B?ai80ZmFmVkZnakkwSnRyUGlRcGNwWXNjeEJOcTZDaHcvTG1pekd6ZVJRL2Zw?=
+ =?utf-8?B?QVI4T0k0T2cvWjBYTy9JaE4wd2pzcnBTYmpVVVl2QjZCcm9qbW5jcElGaDcw?=
+ =?utf-8?B?OG1taHNXK3c5UTJRM1ZrOEF2MWNhQ0tvb096YitWbndmd3NZRVRBaDgxSkZ1?=
+ =?utf-8?B?MUlGc2pVdFlMNlZjR0FZeFJvY21qSXRSeE5kRjdQbFBKTmx0WkhNcGwwdUIv?=
+ =?utf-8?B?N1BNakpTZnV3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RnYwMjZSVDNGRW9yYy9JT0pBdFdxVE51UTBicTdYR2xucDdacVJJNGlMWEY5?=
+ =?utf-8?B?WEh1K09XbldXSTdRVzVEVVUzTExNODVKRFhiSXpXNVFQbGh4VUx1UDFTcjhL?=
+ =?utf-8?B?REZkd1d1aGswRlpYd1pNQVZDN2hCL2ttWmU2M2JFWDhidTltQ21DdDhlemdp?=
+ =?utf-8?B?L2ZzM2xlRm1DZ1krdHhNMzV1cE5YRWdVK3VmdGhsWjRTT1BRenJWVkhEMFVD?=
+ =?utf-8?B?dWJ4WDFqS1NqM096SDlpSW1iTysremtVUHdzYytqejZiRXVYbHN4YmJOclJp?=
+ =?utf-8?B?bXhEQXlPRnUwWVNXTVpySXFxN2dnTXhiUHZON1gwYWR0b1liMFZhM2dFaGZM?=
+ =?utf-8?B?Um5aTkl4SlZxSk1nVkYreW1uTURxaURPd1hHc3p1YkdOekJOaDEyQzJlMEw4?=
+ =?utf-8?B?eXB1R3dJdzUyc2srV0JxTlVoenR6WkloWmVnR0xKN2NWMC9na1JFN2dPMVJL?=
+ =?utf-8?B?U1dFSTRLTFg2VEllWmVhWi9ZMTA2a3Rpa1pkWjZxaDZLVXNKY0ZscGVNUnl5?=
+ =?utf-8?B?RzJFcXAybHRMVXViTlpkUUxiL1dCcVJRUHE1S2JITVdFN0J1bkpZZW9LWnh1?=
+ =?utf-8?B?WXY0WXlvbGxpLzJ5SmR3K1FMZFNrSmU1WDNQVm0yQlZRY0tIZnZpV0EvUFds?=
+ =?utf-8?B?RXVTSEhxb1dVUlZLYklTZXlDZmFrUFFqOHd3U29qTDhmU1VWbG1UVEVVejhv?=
+ =?utf-8?B?cy9aTm1wNHFUTi9NUCtLbmk4RWp1cHp5VFlwQVNyM0JNaXBvS2lDeFpTQ0FV?=
+ =?utf-8?B?eHo5VlJIMjUybHZ3bENvOW9aZ0l0RlBuNmpMTndsYnNHbEJic2FIWWhILzhP?=
+ =?utf-8?B?U29nY21iSWNONC8vZDNjdit0VDdIeFYyYTFURTEwM0I4MWs2WmNFZjVoT0lX?=
+ =?utf-8?B?Vnp6NXlMbDFCTnFwMGI1QnlIc0F3VzlqVmJ3dVlZQjN0ang2OUZRM09lRFlv?=
+ =?utf-8?B?WkhxUERiOFRGek1qM2ZNU3ZYWDNyelBndi9IMzhVZWlrSm5aWVQrMUw0dFJv?=
+ =?utf-8?B?WDdzQWdXRkUxQjlUT0diNnVqUlFmK3lkTTliNzAyczBNTWlzQUp0Q2MzS1FT?=
+ =?utf-8?B?SWJ1QUkyVyt0ck1wRk9DSXE3QXBRcTVzQVRDdUF1ckZxend6UjcrUmVBMkVH?=
+ =?utf-8?B?VDdFT2Y0Wk5CcW96VkxCYy93cEp0RzdxdUhURXJIUFZiS2dIUjB1aWlEbWVN?=
+ =?utf-8?B?Rlhxdkp1bjFUZ0VmRXhaVUJ1ZXliL1N0SXhiSmJLMUUvZk5HR2NLZHc5cUla?=
+ =?utf-8?B?eDJ5SDA1eWdnTHFMY1l6dVQvaWsxMmRSck9OeXRtd21BRDV0d1hZa2dCZWFC?=
+ =?utf-8?B?aFBkcXVCTmEwZFRZWUdVZlZiOTk2VmtUZEQ4WjlWL2VvdldvL29rQU1MTmFX?=
+ =?utf-8?B?THo0aC80TU1JMDFROXNwSnRPekhrS3NmdGJsU1J6MzREd252NUdHYmcyRjQ1?=
+ =?utf-8?B?alVIU3kya3d2UnFBdlN2Z2V0TGlpS3Z2WTR3OTBRcFkwZVozYVRNeXpaclZE?=
+ =?utf-8?B?NEY3NjF3b3dSdXVhNGp5ZG8ycS9SZzFScStUb0V2QldVQ0JLby9UOExXY0w0?=
+ =?utf-8?B?aGtzRndBUjFnRmxnUXdrNngvS2pOWFE5VVBEMmd1cmhjQ2VVUnRCbEVrSDBW?=
+ =?utf-8?B?c1ZrR2VSZDN5ekEzRTVvWmtVL3ZJeFN0cGpKclI0VWlSWGgxM2VtVWs4R0Qy?=
+ =?utf-8?B?Y092THA4dHMyUjc3V29pWDNlY05oeWxlSVlXUEk1SUN1MEFweE8yV21Kc0pq?=
+ =?utf-8?B?N2l6eWNUY0tDWmFEUVg0MVpUVUpTY04xL0ppM2FQeXR0b2Uxa2d2dGRiTGQ0?=
+ =?utf-8?B?VW12bVFGeVZrZzhJOGR0SUc2cyttKy8xcGYvOXhWWVlHcWs1MmsvQmNyY29h?=
+ =?utf-8?B?Yk8zZGx0TTBQUWtybGRVVHhvZEtvYURFQStmRjFlMGE3bGNraTBscXQ2SUxB?=
+ =?utf-8?B?KzFpNk0xcU9NWDJSTmNoQUFPZGRZMEVxQXZ3bzhmSFE5c0ZiV3FMQW1RQTdJ?=
+ =?utf-8?B?MzZtMHJQeVZXeDFzZTRqbHBBSjdkRHlUQVh3cVpZVWNOYzJTV2hacEZPak1Z?=
+ =?utf-8?B?dXh3NVRSeGhieXFuc3QrcXZpSW5jMHIxdUZDTnVlYk0wREZYTXhLcStkUW9w?=
+ =?utf-8?Q?5ebr+eR3gsp11zpbUVE0BvbTv?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 581397ad-cf1a-4e92-2205-08de1012b060
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 19:55:58.9599
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bDlSVj2S1vqtwO/R1pPw+5Y1zR/pVkC3JT/KHR4czyFI02oJtjOWoRgOoZrjjvMx
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8970
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ratpt9eyrmj69pp6pkxuoyrb1mrqm7nt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760989589-894893
-X-HE-Meta: U2FsdGVkX1++k/0CQJCsy9LS0EdTQIIkkbcoNHh7XWJVqvZUFeHGvNS5CwvMo2g3hRQPd2jqbEQprqWyVyuIreenqHlhwf3LDDB+aNXTiRKV4pDkXSkE7pV56EF0mqiFJpuXKmS28G+OwqbNSzvprGrbXDdsgWVy3GXaz6rHa/z9Ch1RelCtPI+xaKeq2iigyJgnG58sjqBGb0oWRzdcgLbINPG3kkWyd7mimd87Bktz9CLC30d34g59CgEf8iOxBHcW55spN3PVk9WLkwE3mYEZkzsLk70JSCQ+1n/1N8/pbv/eQl0G3czCddGBBdeYo9euP1BX5i+x02c40rPOkxn7r8rTaIqCxEk4f3nThlmhbiD9rCDN1fiiME70AqhygNqIwnZuP7vOeKJbqPLTOvRmG2ZzqxK0J2HIXyt51BG3LlXepMjv6qJuLa6HDwNGudDgOn8ECYCdQfEMJ/ig/tk0rZKR2R6OXijvqtl9hxx84lnCLjToWkF+r5B/tGXd2CIKDrQBl4YtAyb9qu+Fry8ZGUUjpYF9suKou0vEXAnJcnG0cmPV1THwLPv8NSNvlDjFuvNlk8Q6D8qVgFWfaWP7Fvp8MPkYw/67pF4CvHl/7+WtJAlp4MVI4CsP1VoD4y4+BnUucscCK/kwPC0ogMYrnn+qHYt6tUIulpmBfqPi7FZ8IZCT2i0ekec2qUuLUyL3E68Fo5kjUEclYLh0d/aeuttFXL+mGaNueKR1NpaKxBa4OBfVqByx4DliSetaTnG0B+CBz2mu7AuTg9w8bpzWhorbJEuK9GkRNn9sek1bUkXzUgQ9/n8XxW5nFI4+9uwM4TnSvCSz2Ljk54bFk9AZd6LoY2JsMkn/fJViPGqs+Wn7A7MeLyxNd8Ww2XTfGgAqWVwAh7mbtCfwIe2hNEssB1TlsZ/78QsnG+6y8m7s9VmXESEc+sS38JHvZ2tYn2jklJtyRZ7im3rnu1o
- P/otyEF4
- mNCvsppapfFoN3UFlYvpveOx1V4dcfTjiFmeWFoyWXVFY/uWrBscBf9HuRL0FC+fIpaTO4WyNFIrmPrnVcUYuDSajl6caKA4s5S+doorE4GTrsBNUCcx2LLSPzqFlS2tw0HU1uZ147nzn6GALRdQSFsTuc6zG6yaGx2uDxUJTjly0iHBgpmXgDaL/JfWloPV3BxvqwzYzWnlinSemygRjr2NzpWtMPSWonrF0KhIUsM5z4pf79ovsb9ftdVWI1GLnS1allNpZ0A1LROC0Z6qpYM6C3iLPr+vxn5kt6y6OgjJIGqRrdokRXPsJRbMZA19USIjcIxkQRt9aYnimPHBlFmzVIxidvFejCGugdHTz1UONv9b9Vi1gq2adMpxkb41XftVLUJhClQKeaYB8xOZFq25GjA0lCiSjUu+ZuXc7zEpwxL0b/DY1wal9rFDp6OrHPXNP4SeN6ADf5aqXa7KhIwgt38+xOUqIEH+8
+X-Rspamd-Queue-Id: E0874180010
+X-HE-Tag: 1760990164-706223
+X-HE-Meta: U2FsdGVkX1+tuaSmvLB2944tXgeNokoaXHhp37uc3E+iAZArI+aO9EF/A3E+bGfeNV/+VOFPo3FBGHXakKF7sddGA/3H2nWHmPYoOOzwcyu941VBf3kCyEO3T88xAvsm/3XE5dazlyEc2q4HX4j9LUIa9EMoZyZO+rJWZMGVpvmIaVPRkSYNEvN8UpDFEhL0GCjU+9roiOxjOKSVbUJy/lzzndvDEPQ/Od0Ovn+01o5Tu9t89+CluERYl8fYoChZMCOkyvPas64W7k7ubYBdBIsi5xNd9ZZQa5A8BTrw4NIIYzLtIzho9mSjZf6H5mRQGgt1SKiHsITj3rW05gCeDs7nkR8Pzsj1wMU8CL0O60douqZ0IXuXRvn+5bsfOV0N4wf6WYSaOUO5vB3ctSZzyGSJj7uU+fLVJGClPJiv3iX2RCvRJjvkvvusn6Pov5iWH0R906DtoKzhPFYEZwiSgTEl1s4ksUqnKEEzgikpYzMuyAbCyuY+fVOP5rH9gL3i7/OEuFXzKKwGH8Wd/kTkKRi3igbEwBRMHEjc5VpcVgLcCrknatrG0QaUgfR1kQvtkKwT346i2pLtcOsNnPjUXtT0tuhFt3lLu7y9ngC2CsqGvHly+SdbQCopK5X9jvEAnPSabQEDCcos9it41191I6liLHDPjUkM2PakVaRGpkCLJ3eZ+OJ4ki5QWzM8hb1m+Bqsso1zdPs3UHjSLb1CjaVmaoyip1Vs9RHD50bFZ/cUizv5nc7V1QbCRtLo1AewBiJ1Fw1BjUVkEAapaX/b8QQ3g45Z4mURqqVOpO6tTgWLgIbwF/pEPpzWBb9xAzRhFi6OBMKF4fRnD+h3/PhSaiV01ufVTxCpuRfH6z/LxtH6j/PlrOutJ82QJD8QfGLNuxwEimgF1rfO/vCA+Mh4k+3AEyfBAu0Aw4xukZjNTVmqV+YD5TrHkdezWzITQG6XMv1I5FfSug4ALbTdZao
+ dseDiY8s
+ rTnE2W9lpgRelaUoYJx0q79HmbvlOJj8KT1BMlgn/pHLvFNs/qzFm9S1CSrykDA0EWZWABiwpKPpnUhtpuijswoK2nkxS008BdhZydOlRt2n2X0hZtYtA98y62jzgOPOYtIeUuFtRP/VqOIUq/6HWEC1ATi6ZcJ0QBuxvFbzWtfiQSYffrYhot3yBpyz9ntQps0m+OMLBQBW6ks6QV7AnFiVxTIy/vbLGvTEjx567HLvXEwHzgNVqzvJvq2GWx5SAvZL+NI64/a326pAbVoGm+ESt2VwNsQXLOYGWSxoSPRfPrqmzi9euw7q5BFsBblumwdvNYKCAH13zAF3E/qcf2adSpZsEuuCcLcEY6UeiXMJHMHjafAGmzDynporTOs2+3ANnz400K1zj39Q1eVLLPVrhvRxvFEhfGAqr8vJeDNEcOnDBbk5qRcoZ05Mso7U47YL4CNlciAHoY1iLsdDweLIDeqlsK027j9N43JkfVKV8r3dgKOfaHjns5Bh/33o1EM/8mSkN4U2Fi03XJSW4vLZwH2CLMJe5hHFA9uoC5uFJDPiDtzkm4+I1SdVFKhNpMd/w0WLj634lxt73BlHhlVEfWh0vXqnroK6oLC9pK9ftv04=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,58 +202,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20.10.25 21:40, Gregory Price wrote:
-> On Mon, Oct 20, 2025 at 09:18:36PM +0200, David Hildenbrand wrote:
->>>
->>> Basically, what is the right way of checking a folio order without lock?
->>> Should we have a standardized helper function for that?
+On 20 Oct 2025, at 11:06, jinji zhong wrote:
+
+>> On 1 Oct 2025, at 0:38, jinji zhong wrote:
 >>
->> As raised, snapshot_page() tries to stabilize the folio best it can.
-> 
-> is snapshot_page() even worth it if we're already racing on flag checks?
+>>>> On 30 Sep 2025, at 9:55, Vlastimil Babka wrote:
+>>>
+>>>>> On 9/25/25 10:50, zhongjinji wrote:
+>>>>>> It is unnecessary to set page->private in __del_page_from_free_list(=
+).
+>>>>>>
+>>>>>> If the page is about to be allocated, page->private will be cleared =
+by
+>>>>>> post_alloc_hook() before the page is handed out. If the page is expa=
+nded
+>>>>>> or merged, page->private will be reset by set_buddy_order, and no on=
+e
+>>>>>> will retrieve the page's buddy_order without the PageBuddy flag bein=
+g set.
+>>>>>> If the page is isolated, it will also reset page->private when it
+>>>>>> succeeds.
+>>>>>
+>>>>> Seems correct.
+>>>
+>>>> This means high order free pages will have head[2N].private set to a n=
+on-zero
+>>>> value, where head[N*2].private is 1, head[N*(2^2)].private is 2, ...
+>>>> head[N*(2^M)].private is M and head[0].private is the actual free page=
+ order.
+>>>> If such a high order free page is used as high order folio, it should =
+be fine.
+>>>> But if user allocates a non-compound high order page and uses split_pa=
+ge()
+>>>> to get a list of order-0 pages from this high order page, some pages w=
+ill
+>>>> have non zero private. I wonder if these users are prepared for that.
+>>>
+>>> Having non-empty page->private in tail pages of non-compound high-order
+>>> pages is not an issue, as pages from the pcp lists never guarantee thei=
+r
+>>> initial state. If ensuring empty page->private for tail pages is requir=
+ed,
+>>
+>> Sure. But is it because all page allocation users return used pages with
+>
+> Some users [2] do not reset the private back to 0. When the page is a tai=
+l
+> page, the non-zero private value will persist until the page is split.
+>
+>> ->private set back to 0? And can all page allocation users handle non-ze=
+ro
+>> ->private? Otherwise, it can cause subtle bugs.
+>
+> Yes, you are right. Some users(like swapfile [1]) cannot handle non-zero =
+private.
+>
+>>> we should handle this in prep_new_page(), similar to the approach taken=
+ in
+>>> prep_compound_page().
+>>>
+>>>> For example, kernel/events/ring_buffer.c does it. In its comment, it s=
+ays
+>>>> =E2=80=9Cset its first page's private to this order; !PagePrivate(page=
+) means it's
+>>>> just a normal page.=E2=80=9D
+>>>> (see https://elixir.bootlin.com/linux/v6.17/source/kernel/events/ring_=
+buffer.c#L634)
+>>>
+>>> PagePrivate is a flag in page->flags that indicates page->private is
+>>> already in use. While PageBuddy serves a similar purpose, it additional=
+ly
+>>> signifies that the page is part of the buddy system.
+>>
+>> OK. You mean ->private will never be used if PagePrivate is not set
+>> in ring buffer code?
+>
+> In the ring buffer code, it only uses the private field of the head page,
+> but I recently found that the swapfile [1] is assuming page->private is z=
+ero,
+> even if the page is a tail page, which seems a bit dangerous. Adding this
+> patch will make this situation worse.
 
-I think it tries to handle what compound_order() cannot easily handle, 
-as it will retry in case it detects an obvious race.
+Yeah, thank you for the detective work. The comment in [1] sounds really
+alarming, as the code relies on a specific behavior:
+    /*
+	 *Page allocation does not initialize the page's lru field,
+	 * but it does always reset its private field.
+     */
 
-> 
-> i.e. there's already a race condition between
-> 
-> 	pfn_range_valid_contig(range) -> compaction(range)
+We can revisit your patch when page->private is gone like Vlastimil suggest=
+ed.
 
-Can you elaborate how compaction comes into play here? I'm missing the 
-interaction.
+>
+> link: https://elixir.bootlin.com/linux/v6.17/source/mm/swapfile.c#L3745 [=
+1]
+> link: https://elixir.bootlin.com/linux/v6.17/source/mm/swapfile.c#L3887 [=
+2]
+>
+>> If you are confident about it is OK to make some pages=E2=80=99 ->privat=
+e not being
+>> zero at allocation, I am not going to block the patch.
+>>
+>>>
+>>>> I wonder if non zero page->private would cause any issue there.
+>>>
+>>>> Maybe split_page() should set all page->private to 0.
+>>>
+>>>> Let me know if I get anything wrong.
+>>>
+>>>>>
+>>>>>> Since __del_page_from_free_list() is a hot path in the kernel, it wo=
+uld be
+>>>>>> better to remove the unnecessary set_page_private().
+>>>>>>
+>>>>>> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+>>>>>
+>>>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+>>>>>
+>>>>>> ---
+>>>>>>  mm/page_alloc.c | 1 -
+>>>>>>  1 file changed, 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>>>> index d1d037f97c5f..1999eb7e7c14 100644
+>>>>>> --- a/mm/page_alloc.c
+>>>>>> +++ b/mm/page_alloc.c
+>>>>>> @@ -868,7 +868,6 @@ static inline void __del_page_from_free_list(str=
+uct page *page, struct zone *zon
+>>>>>>
+>>>>>>  	list_del(&page->buddy_list);
+>>>>>>  	__ClearPageBuddy(page);
+>>>>>> -	set_page_private(page, 0);
+>>>>>>  	zone->free_area[order].nr_free--;
+>>>>>>
+>>>>>>  	if (order >=3D pageblock_order && !is_migrate_isolate(migratetype)=
+)
+>>>
+>>>
+>>>> Best Regards,
+>>>> Yan, Zi
+>>
+>>
+>> Best Regards,
+>> Yan, Zi
 
-pfn_range_valid_contig() should be only called by alloc_contig_pages() 
-and not out of compaction context?
 
-> 
-> on some bogus value the worst that happens is either compaction gets
-> called when it can't compact, or compaction doesn't get called when it
-> could compact - either way, compaction still handles it if called.
-> 
-> We may just skip some blocks (which is still better than now).
-> 
-> --
-> 
-> on compound_order - from mm.h:
-> 
-> /*
->   * compound_order() can be called without holding a reference, which means
->   * that niceties like page_folio() don't work.  These callers should be
->   * prepared to handle wild return values.  For example, PG_head may be
->   * set before the order is initialised, or this may be a tail page.
->   * See compaction.c for some good examples.
->   */
-> 
-> Seems like the correct interface given the scenario. I'll poke around.
-
-Yes, avoiding folios altogether is even better. As documented, it can 
-result in crazy values due to races that must be handled (like 
-compaction, yes).
-
--- 
-Cheers
-
-David / dhildenb
-
+--
+Best Regards,
+Yan, Zi
 
