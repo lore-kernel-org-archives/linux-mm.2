@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF03CCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 19:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F59CCD1A5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 19:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9F248E0006; Mon, 20 Oct 2025 15:17:46 -0400 (EDT)
+	id 315CB8E000B; Mon, 20 Oct 2025 15:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B76848E0002; Mon, 20 Oct 2025 15:17:46 -0400 (EDT)
+	id 2ECAB8E0002; Mon, 20 Oct 2025 15:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64DF8E0006; Mon, 20 Oct 2025 15:17:46 -0400 (EDT)
+	id 1DBD58E000B; Mon, 20 Oct 2025 15:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9407F8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:17:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25FC113A463
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:17:46 +0000 (UTC)
-X-FDA: 84019452132.19.A38B156
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D4D08E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:18:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B2AE13A3B6
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:18:46 +0000 (UTC)
+X-FDA: 84019454652.24.C31A68D
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9076C1C000D
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:17:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gMem3QZ3;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 27422180009
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:18:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gBd8A/ht";
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760987863;
+	s=arc-20220608; t=1760987924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9k9/XI8CsiYqEmuX8HZnzEnBP7pXKRSVVKQWm8zHdm4=;
-	b=sX5zVtq2ZHOqp72OqDiQleKL+rBTMMDsG9rkK44zuNMfQ/YUK3Cv2pTpGPwl9Hza2FJcrb
-	xdH5Q/HskVwLsFXRd55Tx3NUWGZczlQyEk8pVb7VwWyiHH3SO3Qw+AYF9Xj58xVbn6Wdg4
-	I7H0sQo/hhVF9hC7jy4GqqxDD1naI1k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760987863; a=rsa-sha256;
-	cv=none;
-	b=kX3P5KhNNJxFRyOeilAxfs6Iu1zn3p7Rjmv17i3v4IT7V18bbwTUPnQQYe2xQog2HRPtF1
-	9fJu+/f5QScSZ04lylNtX5UwUVzC0o2ZDvoICw5vsvu3mO+fr5URHCMXPG+ARHV0glT+1y
-	QNMLA1xnhq0iiyv0/eJ++YSvccqYFS8=
+	bh=U3DQcRoLyYvhq2b3CfiotZ6Bx3GJ7cUvWYSw6ndhrIE=;
+	b=EkXz/41YeVmbA8D9TdGoWLFqSbzRPB48MV21hMnBIuxFakvZylUJImsvpkRloPaOp4ARCU
+	3zk37CHyGviAOIyk2i+6rPkU5WsgEyc5OHwiIojlk8OOcvnYZqmEEpQ+BXbREJIeZurLFS
+	tr++Cynt3ZAhTvQPyiSIFeKM0Dj512s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gMem3QZ3;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gBd8A/ht";
+	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760987924; a=rsa-sha256;
+	cv=none;
+	b=oPtb10leqxbeQvt2uDyuhCH40anWa4amm1dGdTL2BMM1iubfgTwOWUT21Ao2zrvWaAgtiR
+	qmSljZikVnS+QcWMk3DMLvaONfVsrnvHjHMgEXLkSdCWyR6BgmNsxh7xAY9Tvy+PMM1XiT
+	UOB8ABSRa7tNC/mrq1fqGl1I8cFpgps=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760987863;
+	s=mimecast20190719; t=1760987923;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9k9/XI8CsiYqEmuX8HZnzEnBP7pXKRSVVKQWm8zHdm4=;
-	b=gMem3QZ35bcoVmnkt0HY2au3AjeXwO4v1r+gCEM5HTrfxiRWFKDMlNPETT+5x5kgiblh6c
-	sStm0WPcXPnXuKEDvkSSauaPcypBHR+dl6H+wD986/wJOauR7vrgw1/+6xld7F6+N0wVG9
-	GQMxxmKZNpgaORO+rCh7jqaG89kHqRM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=U3DQcRoLyYvhq2b3CfiotZ6Bx3GJ7cUvWYSw6ndhrIE=;
+	b=gBd8A/htOdSfzUaC0ZUIix0kQ/LBPnD1qE5W3G1kIP/expAhiz4ohL1qGcHoytoSX3S2TX
+	ruU1O1ndv+TBBuhV1pYENoHN23cuW+3mrAH/GtlPUXYviRyTv9YYW8ZrymUOVfmtler5Pa
+	xD4DsJwiqHQY3mnW3YWzTquSK3SbNf8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-vj6V0cIVMQ6qxCRjeU5K6g-1; Mon, 20 Oct 2025 15:17:41 -0400
-X-MC-Unique: vj6V0cIVMQ6qxCRjeU5K6g-1
-X-Mimecast-MFC-AGG-ID: vj6V0cIVMQ6qxCRjeU5K6g_1760987861
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3f7b5c27d41so2830334f8f.0
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:17:41 -0700 (PDT)
+ us-mta-619-c3dKNPoKMN27FLhsENK_Ow-1; Mon, 20 Oct 2025 15:18:40 -0400
+X-MC-Unique: c3dKNPoKMN27FLhsENK_Ow-1
+X-Mimecast-MFC-AGG-ID: c3dKNPoKMN27FLhsENK_Ow_1760987919
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-470fd5ba449so16743375e9.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:18:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760987860; x=1761592660;
+        d=1e100.net; s=20230601; t=1760987919; x=1761592719;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9k9/XI8CsiYqEmuX8HZnzEnBP7pXKRSVVKQWm8zHdm4=;
-        b=ttH1NkeAiq2/M2+/r7jyoxZHr4W+mFmfwwDgNXKswMkhyLsVBnOllxj34U+AiHQ/Zt
-         hjvU0kZT5RM7+si/VW5X+ln7MlN8fD+6bPSaVz9zgi+AYibJk1an0UAwmXHtszNPDydb
-         FJoYIdYCbHglPppa5Gbm2HkqJPWu7cuoGJPzsP9ngZODJ/KbVEtWZ436bNm4Cw6RBRyb
-         YGON+sxqFg8O5L5gzdyy1NnWRXZN6d10ZJ3eNAfaZH2cE3F7KxWVPzhXvwX1326orORp
-         0o9P4QE/ESQOGTSyjWzBaYsWaR6dqyP1pyt8+01nz34/NOG8m1Yljtlz/6y5zlYO0Ogr
-         9LvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXF52ZKsyUsEY7fO4YXweWz5qAE2nLCFpjwtSLCSgZVzVVdtR0jiBrQ2yjaqrILQBgFTXk+nngxw==@kvack.org
-X-Gm-Message-State: AOJu0Ywk98u1j8a6xb+6QVJEsvb4HFjjqt64UAdTukYLS/ZPCIpwmyTy
-	juidsEP8htViPv6brG8TQhn2xi7xrgvCMrSJCtwMMk6UvKKz2NYO4odBnW3fW76JEhECZkMrvW+
-	qjHyBzJXGsgdygmDzjLQm7/PLat6/pPikHZfTQzV5s5IkuX7VGOkV
-X-Gm-Gg: ASbGncuE+NsTS2Gly45+PZf5PAIL9xqnepzgktyyZbkzqJsDJIcOI/n3F/zgbrR8KKY
-	6ZUxWwJ0trmG/5bIaTmPURfNrYoQaHI5z0cepAZgmqJs+MzkigxviIfXTLod4sdjHmH1SG5zBXt
-	lRbxFpj24G0iqXWbCP3EzL5H2+KM9CXT4rjkYcjDPsHEqgM/0f9VpIW3Hz5P20+LRauSvGOVfSK
-	Mx4aGH1cfjJwqsJthPbM6Ao03ysyRIcHeqTdXyOZjolXJ+ct42GyAjRqMOEBp9jTaY+/WSmHkyf
-	DJTeKEambMjItyH7clxrvd7DlF3Bo6M843IwrVYb34k/sDwmjNLXE5zwiPb3GkuuLyLIUR+fMAZ
-	Cj9Wk1thkb8qgEG9lCsyNBjkjhLvi2bVD8dDNn5wG88N/z22EPMZSOsgt0K9tQ1giTWIyHHSYkW
-	NOzMFUG6woi+f6V1mZyFu3YEX3Nn8=
-X-Received: by 2002:a5d:64e8:0:b0:425:82b4:a099 with SMTP id ffacd0b85a97d-426fb64fb3bmr13513374f8f.0.1760987860568;
-        Mon, 20 Oct 2025 12:17:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG981rLI5qROjih4tCXUS232eMtXMZElPCvd/sQ6LftPvcIGaIy/eNWcaPZ+/ZZMFOFmzOcxQ==
-X-Received: by 2002:a5d:64e8:0:b0:425:82b4:a099 with SMTP id ffacd0b85a97d-426fb64fb3bmr13513360f8f.0.1760987860154;
-        Mon, 20 Oct 2025 12:17:40 -0700 (PDT)
+        bh=U3DQcRoLyYvhq2b3CfiotZ6Bx3GJ7cUvWYSw6ndhrIE=;
+        b=KA98wH+qZitVjp0bqfQwUdJvK5QeJQJi8/54vuSZU9KjpHpOpO8VjfzEBmhnrr5KDc
+         BQQWm7UMSEoewMAbTZZqRN8NTqjxLvHhbrpy6Bn04h13EJ+eI1EvYT1rCxmx9lNFoiGX
+         FAOvWGP4fy+rkmq4ao1qiwob67TQ9Y3gYgZoiEKpo4rD4dbY5vZSryzcmIlF72hFXu4D
+         8/osn9uezMuELaH9H4MlZTcLgPqsNGi99kw1mCLRdSyen5BwkXPEzLiw27C/qXgZXWHq
+         ghuQYVC7v+wOPudkLO68SbOt51SkS0bPEtg5pqWe3FwSE12qEjwLIzY+ZigafJ5irBU3
+         lNhA==
+X-Gm-Message-State: AOJu0Yw4BovH3grqS5eLBgzw1og2KXu8IXg2JqdLqB3Fq5sJs4ah7UgK
+	rMmkey906IWavdzKmPFj+zeGeVolHiwGvTlDcp6Jf/AZhmKV84wPHlJUD9GiOkstXq02EBmKP53
+	9el7hucOsP0YiuQlhdjKdNHiDXpueKLFBi1C3iuDKy+dYfMxcuF2G
+X-Gm-Gg: ASbGncv3nojzylsJjqE+sOuFGxngKpSAmWgOdJZ+NKOC7l+DwL3Mk8VRfEMYeDN1spD
+	T0KdlgsNOEstRGB9uKHVEmhhUKK9gVL2LTU+ajNrmx8USqZk9eXbNRNSJWNJnmegGs9/gt2b5yJ
+	31U3sVNSutvFjJPw++8TGjkkdjI4+sC9t/XhTr6hSR8+H08BUwZw7OB5us579Bt8AUgnaN3pJEP
+	jCKUB61Ll9RAV3Q17I1oAhcTd6E27YLjtU9JbeSqzLDSqSkBOnYvHfXZ7ATSR2BOFo9bFVj49ZD
+	xkbWFkvQUyCgMY4fHnEfdEoY9RtDHGlrNbUL6N/bqEjEZlHTrtwDiVDd8YM30vzIEmIOo8AFYKu
+	Wc428HLiA0rWTsFX39MwTC7TZqBv81icA3kw7fNxgRyXokvykI1vdtjkww1ot6efi3XLc5Dsfb5
+	CzPkQ6UOP5TzmeNOWC1wvw7pKbLuc=
+X-Received: by 2002:a05:6000:2410:b0:426:fd2b:25b8 with SMTP id ffacd0b85a97d-42704bc0d90mr11819405f8f.17.1760987918990;
+        Mon, 20 Oct 2025 12:18:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYbOFgfXtsl4V+IXlQsTJKLseum2E9JtQa3IP+ennwBOv0bsTQGGaaKspULvmUG93wUYtq4Q==
+X-Received: by 2002:a05:6000:2410:b0:426:fd2b:25b8 with SMTP id ffacd0b85a97d-42704bc0d90mr11819380f8f.17.1760987918547;
+        Mon, 20 Oct 2025 12:18:38 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f009a993sm16658313f8f.24.2025.10.20.12.17.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce06bsm16367483f8f.45.2025.10.20.12.18.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 12:17:39 -0700 (PDT)
-Message-ID: <02686adb-7575-4eb4-8d60-c5374de60752@redhat.com>
-Date: Mon, 20 Oct 2025 21:17:38 +0200
+        Mon, 20 Oct 2025 12:18:38 -0700 (PDT)
+Message-ID: <272c425a-b191-4eef-af6e-2bca1db7a940@redhat.com>
+Date: Mon, 20 Oct 2025 21:18:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Gavin Shan <gshan@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Yicong Yang <yangyicong@hisilicon.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251015023712.46598-1-ying.huang@linux.alibaba.com>
- <aPKFmHg-FrkGJxWd@arm.com> <0e6d1f1f-a917-4e36-80de-03ba94c6d850@arm.com>
+Subject: Re: [RFC PATCH] page_alloc: allow migration of smaller hugepages
+ during contig_alloc.
+To: Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org
+References: <20251020170615.1000819-1-gourry@gourry.net>
+ <487730c6-423a-4a03-a668-9b9ff92a5cfb@redhat.com>
+ <aPZ0OKx_VnQ4H_w1@gourry-fedora-PF4VCD3F>
+ <609E7E01-33A6-4931-AC89-1F4B2944FB64@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -161,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0e6d1f1f-a917-4e36-80de-03ba94c6d850@arm.com>
+In-Reply-To: <609E7E01-33A6-4931-AC89-1F4B2944FB64@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5MC7Hob7y2Ar46z3L13Zrc7gOZ7ebFT_Ishq_UIVYaw_1760987861
+X-Mimecast-MFC-PROC-ID: _S3oMKN06FsrilSoqZnPQO2S-IaZq4welogssF3hmPY_1760987919
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: oau3zskept9ugaqtrnznw9ur5z6pg7pc
+X-Stat-Signature: jjph3dgbfinw3qm9bfa63g5myqg18ujn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9076C1C000D
-X-HE-Tag: 1760987863-844644
-X-HE-Meta: U2FsdGVkX19nKWhzjnMjbs9jKA4wbjxg3vZGGYCzbvCrXrrFNmPWioi31M9r/85w//kW7Gi6G4we4TIww5hChVf2jfONx9SlOe3Z5StwfzYOiG/rF1/QLKFSTnpr6PZdsN2tjoS8Bssey4IRmoB7j+27MgSNFapQpx8Xlif/+ML0dvYxI7XodDriQ0BA0ra3JCMPp0AUh4d4yg5gioN668OY4BMQ1ruOmYtb1e9gVuPyInYq+b170aAF1UX/RS64cUnFP19hlT8Qhd1GQOacMHJoI9bmtVMXjrHRZdRXzQyL6NkbT6v0EYsXMLjVuw7CMgHd+5RMZevnRAp4PloBE96Z1vPjqKIegZoF8/fLaMs1wz+pNT4zPjQ8W5Mj/e9KU9Io5jd73CwEZvYQE+fDVD0S6c4MXQOgBQV+btxLYVZ18pzwuheGKvYse663rx84t+NGR2HHQ2TZkEi1pivJsj0MJvryFoJ/u/s52z7oXHdBkyyyY5bpSkK9bc5utjqANhxxUUwBsLHeIToNNh7RFobBfqp4cEmVaEcR+fG49cRhu2VBQPs7hzrLq4Y2tuP5DJ11rdjDmNVZMfcXfO2r1OlPsouJj8zywyR/mdTjS9NQAKrLm8EL/7sE+0PwpjxNL1O5trjdQhVWNHcPJ3m17AtWbYjXXrlEu38fBT9Ij+7PxE4YKvTuo0eIG8WGVlmrjBm7BkC+2g6QKQyE73IGMR/kOe3Rcn0qGq5CnKbFVekg58Z7gBD2DQavwxzE87XDm4wf+5aWn8ZmDo0qs8heyM16e9iRTfjMNJ0qF5hJ2FoVgf07n2miuKcwMx28Bgvtd0vYQXArFxfIFDA9CBwh6NPPAN4UtYOahIaZGH/7UKTk8Uz1cNdmTesgJyjzeH8SmD5n7JmVRGyBcrZaP5bmvSSgWpMWzM+N82J0aHbx9kpVJGtsRNtxUbUda3XukJIZ2vVttQ8jo0jTMIDWFzc
- fFJGMreg
- X7Q4gDytgHOzavBzMG24bxwPVq3t02CaoBrmMm786pWTNI/hN2x5ibHaixnZI/e46UrA8m1U8s5cewlH5/zxLtNuDOMBOEvV+W+KISmBqPUhUXnlW9TRltQCu9UoOHqxM5ve5rV7JlkYH80nQo6uuHyfV5movCsY7olIMxCkZOfxfPm13QqsveRszZSOZ27Z8/YUB5QQFbZ2hezsVkVJ5Z6IdVr2z9q0qONMwMpIIF5ZLAcMT54OdVB5DE4TkHRRTIUa2YCs08KmrZJ0m/UKJX6DpPqXccU0fj2IZDyQNoMY4pAEP2/v61WeKmf50ZRRtvTKtWNQlJmAn2wyiMhAOgZ63Ig8/0s+kf9uvcSgxSqZepaiwQvpUdXgshC29HxcOmq4Y619oRvVZN49w83Euvrx58qyaDKa9Dp/m52XoKWhRVPqzDJLojQnwX8x3Y2RHsxlJyQieVYyqDV6FqwcTn7N9uWfb4wm9R4cW9a4aARIegWjGtx0K6cs6Pl0D1vIyx2lj62u+zewv5LyPTmimvNDUHXT+JwrFIActiOulY1pVQVjUiXrYqh78TpAkfQJ/YotvitMJQLbPfLeapvJEECaVD5UkW94Ugx/j+46hCUFsKWb0X3iPoQ7ms0ygJb6+wjuz1sY7b9C0HAYhKwvT2hhUFZlxaqwgaecrAeI41180Z+wvk841/0cbvw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 27422180009
+X-HE-Tag: 1760987923-451688
+X-HE-Meta: U2FsdGVkX1/xvqWp+UkO6UGl6j/uk5LqsdOnx3lNCcxGbG7Bmxg4u0T6XJ6ScwzjVV2cxc7Si8OoOfuZ0rbzEbmpHfvKDI3W+A39hdOdzCZIpCf9KQE6Js9qBeqDZ/Xal/wzvF8ha1Ud2+ajcf18+gsSv4e+rAadJFpe+A4PJdk0RvusS94SKVPeKqBlm/g+TLqYDXvbPOBM92EEq8ncteypL3X0L8vs9oZ/Eqwi9pX2Aokz5TOxChiWbrh1XnoN+S7OBQQaFHWHpxn1ozDR6JatbTfYpgkn8kyjpMLEujxEYWY34u9YlfhzBBqVhK7T7F5tkipJVY+nt8auc6dITyzoOfcrUk+roaSwL+jrVCHkkwEJ3bMbknpwx3LrF8wq9Yq0EYyyBzwe8caCC4IsyPAgqBzHI1TCcCLALRoPRieAwnd0b0ALsf1RieCY/e4X26E76RuISxyV8UX/NxOriS6FX7GsCQ64sqMS/0MNe0RdgaxC3ffw+AfL9sXjcBuQ0ewuDWfcBI26orgP17Pd82ImHtqD76USEpco3Vp8Fi0PdudcH8KJSMZRIbXribMi2Prs0RB/XUW3pD2Xmvj1sz0wmjAS6r2BDdCqf2BmA75JcMTO8ig6Mi1vyL3G3hU0hEzP1rIPdksHGDcIxI8eppeNganOHfBiRcEEFGUDeexK5G3o1Ek40avcTQs+EBeqbxaVYQi3K0hn3rA64B5mNHhAxcozC4gBEOnb7cohalSust5U+CDsDskqMpipuJTtRpjjit9YERjsexbR3IL3qKN+UqWeSLhFVB9Kf5nHr/zPOaeFaCviUbZeS3jchaP3cvcViQq4nNZ/eaiUkbwO5Ei7JSQ3pVqdaf6lWAyaDE2WMqmmumPq1nnBM2m+P8veIJiA6wN8WTPTUvhHchaxukCWle8L5PSs2kR7+6vXU8pUVIo2ThVEe2Yy/nPRePXM5tEYM9g4q4hU6YJ/wwl
+ O0gWhVNU
+ scTjfM4qOqD0PuHp0vsdXk6MNT0yt7TNWzGqDgsilYtkmgLc8Ru9QDZP3uV347azVv6Nx7ADGOf3sfofPHubal1FNdFoPYAs1M7VM9tJNQzFE+Rlo04jowkmjXUgj31z6SDZ3IZcRzH0Sf7Ywt8oLSaObXvl83HWY9tHT8sZFb2ogQbBHIvKFQK/+CHYehiyc32WOePm9UatFnRf51UcoJMCL3IUemo0Bo6CCIYw1LOsKu1Zs8a8Y0jyGZ5Ojo6kSqjMeJTH74Gcr57DlDNfWBIFcoKvhBlaUvN+2nOiqzwPEiNvwuU8OmyY9m2STaSShM+eX/4DrQs2J0qv+NAPYYpNqWWu1Kx6sFktJ9YKSPlloySMpZVHY0aMuCVzyqUVJekp2fgCR340CVEDHULO96I9jWPpzSXHCH9M6ZiQnoqcWnlzyJikR0XKCZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,134 +181,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20.10.25 04:09, Anshuman Khandual wrote:
+On 20.10.25 21:15, Zi Yan wrote:
+> On 20 Oct 2025, at 13:41, Gregory Price wrote:
 > 
+>> On Mon, Oct 20, 2025 at 07:24:04PM +0200, David Hildenbrand wrote:
+>>> On 20.10.25 19:06, Gregory Price wrote:
+>>>
+>>> Do we really need the folio_hugetlb_migratable() check?
+>>> This code is completely racy.
+>>
+>> My thought was it's better to check if any *one* folio in the bunch is
+>> non-migratable, it's better to never even call compaction in the first
+>> place.  But you're right, this is racy.
+>>
+>> In one race, the compaction code will just fail if this bit gets set
+>> between now and the isolate call in folio_isolate_hugetlb() - resulting
+>> in searching the next block anyway.  So that seemed ok?
+>>
+>> In the other race, the bit becomes un-set and we skip a block that might
+>> otherwise be valid.
+>>
+>> I can drop this check, it's just an optimistic optimization anyway.
+>>
+>> I should also probably check CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION here
+>> regardless, since we should skip compaction if migration isn't possible.
+>>
+>>>> folio_nr_pages() should be fine AFAIKT (no
+>>> VM_WARN_ON() etc), not sure about folio_test_hugetlb_migratable().
+>>
+>> will change, and will check/change based on above thoughts.
 > 
-> On 17/10/25 11:36 PM, Catalin Marinas wrote:
->> On Wed, Oct 15, 2025 at 10:37:12AM +0800, Huang Ying wrote:
->>> Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
->>> mark some pages that are never written dirty wrongly.  For example,
->>> do_swap_page() may map the exclusive pages with writable and clean PTEs
->>> if the VMA is writable and the page fault is for read access.
->>> However, current pte_mkwrite_novma() implementation always dirties the
->>> PTE.  This may cause unnecessary disk writing if the pages are
->>> never written before being reclaimed.
->>>
->>> So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
->>> PTE_DIRTY bit is set to make it possible to make the PTE writable and
->>> clean.
->>>
->>> The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
->>> Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
->>> pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
->>> clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
->>> are set.
->>>
->>> To test the performance impact of the patch, on an arm64 server
->>> machine, run 16 redis-server processes on socket 1 and 16
->>> memtier_benchmark processes on socket 0 with mostly get
->>> transactions (that is, redis-server will mostly read memory only).
->>> The memory footprint of redis-server is larger than the available
->>> memory, so swap out/in will be triggered.  Test results show that the
->>> patch can avoid most swapping out because the pages are mostly clean.
->>> And the benchmark throughput improves ~23.9% in the test.
->>>
->>> Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
->>> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
->>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>> Cc: Gavin Shan <gshan@redhat.com>
->>> Cc: Ard Biesheuvel <ardb@kernel.org>
->>> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->>> Cc: Yicong Yang <yangyicong@hisilicon.com>
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: linux-kernel@vger.kernel.org
->>> ---
->>>   arch/arm64/include/asm/pgtable.h | 3 ++-
->>>   1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>> index aa89c2e67ebc..0944e296dd4a 100644
->>> --- a/arch/arm64/include/asm/pgtable.h
->>> +++ b/arch/arm64/include/asm/pgtable.h
->>> @@ -293,7 +293,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
->>>   static inline pte_t pte_mkwrite_novma(pte_t pte)
->>>   {
->>>   	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
->>> -	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
->>> +	if (pte_sw_dirty(pte))
->>> +		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
->>>   	return pte;
->>>   }
->>
->> This seems to be the right thing. I recall years ago I grep'ed
->> (obviously not hard enough) and most pte_mkwrite() places had a
->> pte_mkdirty(). But I missed do_swap_page() and possibly others.
->>
->> For this patch:
->>
->> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->>
->> I wonder whether we should also add (as a separate patch):
->>
->> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->> index 830107b6dd08..df1c552ef11c 100644
->> --- a/mm/debug_vm_pgtable.c
->> +++ b/mm/debug_vm_pgtable.c
->> @@ -101,6 +101,7 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
->>   	WARN_ON(pte_dirty(pte_mkclean(pte_mkdirty(pte))));
->>   	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
->>   	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
->> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
->>   	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
->>   }
->>
->> For completeness, also (and maybe other combinations):
->>
->> 	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+> If it is racy, could folio_order() or folio_nr_pages() return a bogusly
+> large and cause a wrong result?
 > 
-> Adding similar tests to pte_wrprotect().
+> In isolate_migratepages_block(), compound_order(page) is used and checked
+> against MAX_PAGE_ORDER to avoid a bogus page order. I wonder if we should
+> use the same pattern here.
 > 
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 830107b6dd08..573632ebf304 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -102,6 +102,11 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
->          WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
->          WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
->          WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
-> +
-> +       WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
-> +       WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
-> +       WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
-> +       WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
->   }
-> 
->   static void __init pte_advanced_tests(struct pgtable_debug_args *args)
-> @@ -195,6 +200,9 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
->          WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
->          WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
->          WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
-> +
-> +       WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
-> +       WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
->          /*
->           * A huge page does not point to next level page table
->           * entry. Hence this must qualify as pmd_bad().
->>
->> I cc'ed linux-mm in case we missed anything. If nothing raised, I'll
->> queue it next week.
+> Basically, what is the right way of checking a folio order without lock?
+> Should we have a standardized helper function for that?
 
-Can we please send patches touching mm/debug_vm_pgtable.c properly to 
-linux-mm?
-
-I wrote tools/testing/selftests/mm/mkdirty.c a while ago. I wonder 
-whether that could also be expressed in these tests here.
-
-But my memory comes back: ARCH_HAS_DEBUG_VM_PGTABLE is not set by all 
-architectures (and in particluar not sparc64 which I fixed back then)
+As raised, snapshot_page() tries to stabilize the folio best it can.
 
 -- 
 Cheers
