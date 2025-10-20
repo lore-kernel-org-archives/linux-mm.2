@@ -4,104 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA72CCD195
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 02:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7BBFCCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 03:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A59FF8E0003; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
+	id AC8248E0003; Sun, 19 Oct 2025 23:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0AF78E0002; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
+	id A794A8E0002; Sun, 19 Oct 2025 23:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F9CB8E0003; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
+	id 967B18E0003; Sun, 19 Oct 2025 23:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 77F1B8E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D10D0BAB50
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:23:11 +0000 (UTC)
-X-FDA: 84016895382.07.7FB7D6E
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2512C1C0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:23:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P9HITLYs;
-	spf=pass (imf20.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 858D18E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 23:11:27 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0228713B9AC
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:11:26 +0000 (UTC)
+X-FDA: 84017017014.02.41D8C65
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0B7B040003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 03:11:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RG8OwEV3;
+	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760926990;
+	s=arc-20220608; t=1760929885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
-	b=W4bJiN2TG3R1RHJ1ivSHx2DaEz3baDWyNDYkVwgunG9GnZnTBV9vdq7fDYPB/EnpWH2gVj
-	bDTbTr/qgahn9EQQeZW8i6tBWfte9c/FPnyp/JHoZMUKNu76lJJFn1kBQSa8i1+K5mfB02
-	X37/2n/G6w1YV70gCkyVEdQjitzdG4s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760926990; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xCr9rmj82Cu8SetbEs3MjC8j0VxQVzvBm9b5LJ96KeU=;
+	b=o4Pp+PeIsf1ktW9cpMuU4L6bkvCoZv1Y4+L2P3jI8h87BhiXfvtQ9BOAtGrcTWJ7tE7uOB
+	fiEhp3iilzC8bdh5+7eNn6k0Lu/G19R8lhzVl9cnRHQcq8VKT1hGA2RrxPlNZ6Y2GhHsmP
+	nq4Ou61mSIDrk6WsRzxZ4mvyuxNUg3k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760929885; a=rsa-sha256;
 	cv=none;
-	b=whAwFdVqHV+ftmfvI1kX7x10kzqGgpduskk26IDxxIXmbzWdCP5rnv4MzX2QDF4YpzLlKx
-	MNYNkpTW+pyP/UEELzW1k1hs1Iu2ABXoRopjw3HGOgb+0ZDsaUGtRX2R7ak3BHyozhk7ub
-	FufXAA8jO+ddx3zXbfgNvmUXj+8mS5o=
+	b=gowBZfroELmdZwlmkTynTwtTGzoydYv8qC+kjD89fQrL7O7ytSmQseTeb9fWGeYzQVLLio
+	rBXqTKe/MYTRZBq5UWqVeTlAkHKFAuhnF/Hk+AX/0/FkJ65RXU51+XQfmRKCFtJqNlA+CQ
+	DZRTlu4741S0xvKLaCSfyg5SxLaIOco=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P9HITLYs;
-	spf=pass (imf20.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RG8OwEV3;
+	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6399328ff1fso6388196a12.0
-        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 19:23:09 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-26a0a694ea8so28404035ad.3
+        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:11:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760926988; x=1761531788; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
-        b=P9HITLYsdToOteeesCobCKf0NwvYRQZnhHd4KgSrwgh30fJ7VfUVpBb5BY9Y/d8mfC
-         b/hQUcBEl2eqtLJJRWatxmFPg9UUYX3ilWDUDxd1XL75Px1UH7dlBzrZAz5k5P3wJwVV
-         ItXEMIMnsQEXVc2BFaSxwUqdNB8ycDxrLHltwPo+i5N6kNmNwpCE1AggJtlqhTvDuiSe
-         mcT6wVJmjLg0PbHCly4/eWlxrB1iuKJ89MI9liDzRrnwGxFz8u9/178YB+s03zks/SH7
-         fBad/g3jU+fXGzzHpyY1/eszDvNIadLv4tM6GmusTVfqMRHSCP24nfyhnHtg0VJV6YNM
-         ulxA==
+        d=gmail.com; s=20230601; t=1760929884; x=1761534684; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xCr9rmj82Cu8SetbEs3MjC8j0VxQVzvBm9b5LJ96KeU=;
+        b=RG8OwEV3rWMDDFTJztqzdxyftDU6wUOJ/fsPknY29Og24obGgDGDaV6BTdkQEqfPhp
+         2HH8bqg7q69pR9WB3EdKMLBVDE5lhm8h8YGEylyQVRzXECFWjfQVjIoNTOzEtk5qiyoa
+         eQKWKSKiFjVyab4P6Zv2m8M2GcqaBjry8b3ZJXJPydGnpkp2txmYemYG99ZzRdlj385R
+         KyIzDxwvX78s+G5jEZWsLwoHCpedn062EpHrr4Wd93zpKh4Yja3Nq8Hg7AUm0wdFMNsq
+         7I+MWGpNZmOY4jC2DXyhMmVOCHvrndezKJlJVWikvYR1E8bkIh5pCqWFnLobUqOMKJcO
+         ejdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760926988; x=1761531788;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
-        b=v6GPa45Kr3PwpAWsllKMe0MJHnIfcACKD46KE1psj6GcrFtawN89TCTGBx6KJZxzmW
-         5xEFP/pnfEiNDOH12YKL5MteopxAvgia3CABAy7P5ZapZOS/TMz956k/2+SsYmLt8a2P
-         XcLo+Kxxm5T3KGuxdJ/u0h8HHLCNLRUig7v2h07u7+Y5vOxC6m17Xgi+bnXpPJjl5xsJ
-         uD9hYhFmZOITAsyd1AO4PkAyqxInzzAZGYzxsP82M8W+u5dkzKBCledK84wW0XDDlzP/
-         987PAW1paSPOa7O5ONUjuG/Dv8nZUzcl6QiYHajl+OiK0VcNOF99joN7246fLK8XTluf
-         Kovw==
-X-Gm-Message-State: AOJu0Yxd5b2cToaFlkylMt13IqIVzI3vXX7GAwO7GIDrG30uTlqqkr6/
-	umwZxW4y16rJec+4QL7/zZTf24vTknBYQ8znDBsWymO+piyILImsdNe1wCI6Q6KlZMScVqP7d4S
-	cOUCKEaGGEGFqnXVyNxguUJzEzfNOu5SFwEpIV7+15g==
-X-Gm-Gg: ASbGnctUYQUXSR4Bi/jFthmqUj6RFCYG1si8iqsmxS107jaSdkhvq8ZD62p40HTdlax
-	+HcsmxOqPTyvOz52zLYV9viyP71iiQ54GtdsQ3tpQ91/8surpTMMv7PYA5Qco9a0BVmq5WVA+md
-	0922tZ9DMoPjJKkrkRjzdReIenQecuOrdp+ZgTvuavQ89S+gbWZGt7RWEnKoWXdXTBSk/wt9JGN
-	oAuuZbFQjSc7PxD7IlBcdQTLyCFgQm16QV3Lmxz8zdxrxbiBB8JpgattohkLttY4AHOZkwB
-X-Google-Smtp-Source: AGHT+IFAnotMn1a+HkpQRSL9oMcAYj2bMv3VAIza4Bj7ZwRedHx85zohicwgxT+9kUq4T8N0L1yyDO1k21cOWoaI2vA=
-X-Received: by 2002:a05:6402:2813:b0:63b:f0b3:76d5 with SMTP id
- 4fb4d7f45d1cf-63c1f6f615emr11464055a12.35.1760926988174; Sun, 19 Oct 2025
- 19:23:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760929884; x=1761534684;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xCr9rmj82Cu8SetbEs3MjC8j0VxQVzvBm9b5LJ96KeU=;
+        b=Go8sMASh7zTTza+xkIrCrnjd7aluHh4gxr+4STYC7LTRhsPrCqASTocaK2MlYu/yu/
+         SDy7j8XF7+eSg/KOZcS8q2O5jwKLXR2vrWEi9duCvhuzcozB8CjMJNvDEqKGxwje4f79
+         D5yZetCSar3ofUvz0hTboWVpWtcg3oTZk440bxRBxyIRXXj+VnI6Wb04A5DJ06KjK27h
+         CnxAG9a1uKNAfo23mgU90wMUqpebP4Mni3g/+fIdNd7xHDTISyaty+wABL5VbIZ6z+vA
+         UQ5fUXGHxQTSrbzX+wGwvy6QyzfRgaq0ucQzg+VpJWiZc+rQHt4luwwgk1nx6nG29dwB
+         lcNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcrlcwbe3t4W/bnWtbs3w+Vuzo+qczYRR5VuCouuPwgyORQK1KByBN6Q0mLPzZdqfxOw/gzV5MUw==@kvack.org
+X-Gm-Message-State: AOJu0Yzkb12a8M/k3omKzr9je28exS3NtY+AdhHkO6fMJKjrtwTAKlp5
+	URNPFkFuf+d2lJLJPl0vRS1khWLo28YDeGQDlEioNmenTYkGppQz4D90
+X-Gm-Gg: ASbGncttqnVXKSvdsy4RYrCWsllP9s8c3fh7nU3KiFc6AGgK1Sq20Yda/qZior4qmez
+	bxy4ctHyNx2YL559jmZj6N2hV9VTr/uI2cfMPLkl6+g7PxZMW1NRjh4N9f8bcErely/xhIuvOzP
+	Ar9Wi2EOvA9Ce9glFFbJptAca46zIK+57qlhaKueBmuU5YZj5N9zayORRn7WTn0GHTOHGRW7QWG
+	ayV+tLYlvt+qLvowtXbsXbWZsPa6lXwzQGdrLkRCs96O5ReYU16O1OFSHOSixTKAZkKAghjvZrV
+	9foij5FgyaNIpiwiEdRR+rlK77895SQORUQpHvU7VChwNCrpoFIIlDIloVepaf4Dbt3uREKyrUz
+	fqQosBxtPeC+81Q7G50F0U2XTKA96uh++I+6F320UClHT+epe8CKptu3bHPrenM5M3zFpqshHek
+	PMKmlaKdskKdh2I2RZbt1aRX1UCf70ReqwTabm0CGKB3GHP1s6vqA=
+X-Google-Smtp-Source: AGHT+IHHl05n3TLFtJj32my6sFzllN0uFcX2pILWiDZXhCfi29R2Qu7xexBOSzpQjSrdAjNQLV1WvA==
+X-Received: by 2002:a17:903:1250:b0:290:dd1f:3d60 with SMTP id d9443c01a7336-290dd1f3fc8mr82869055ad.51.1760929883552;
+        Sun, 19 Oct 2025 20:11:23 -0700 (PDT)
+Received: from localhost.localdomain ([2409:891f:1da1:a41d:2120:6ebb:ce22:6a12])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5794sm66007245ad.53.2025.10.19.20.11.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 19 Oct 2025 20:11:22 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: akpm@linux-foundation.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	david@redhat.com,
+	ziy@nvidia.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	hannes@cmpxchg.org,
+	usamaarif642@gmail.com,
+	gutierrez.asier@huawei-partners.com,
+	willy@infradead.org,
+	ameryhung@gmail.com,
+	rientjes@google.com,
+	corbet@lwn.net,
+	21cnbao@gmail.com,
+	shakeel.butt@linux.dev,
+	tj@kernel.org,
+	lance.yang@linux.dev,
+	rdunlap@infradead.org
+Cc: bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [PATCH v11 mm-new 00/10] mm, bpf: BPF-MM, BPF-THP
+Date: Mon, 20 Oct 2025 11:10:50 +0800
+Message-Id: <20251020031100.49917-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 MIME-Version: 1.0
-From: Yifan Ji <412752700jyf@gmail.com>
-Date: Mon, 20 Oct 2025 10:22:57 +0800
-X-Gm-Features: AS18NWDq8BnkBA_kGouHvm8ol7P6_2jM2OSHoOqvgtwF2DRlPDa9YQaeEYFHm1E
-Message-ID: <CA+9cq0keWt5GP7=U_JrUEzw_wQzG_BHnM+n96vLwfMCK13r5Gw@mail.gmail.com>
-Subject: [DISCUSS] Proposal: move slab shrinking into a dedicated kernel
- thread to improve reclaim efficiency
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Matthew Wilcox <willy@infradead.org>
-Content-Type: multipart/alternative; boundary="0000000000009b0a2506418dc393"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Stat-Signature: emjp9rtftt8dc5n5usuu6rishqm8to7f
+X-Stat-Signature: tx9gmmyxopj95ojw7ydw5mkxods737u8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2512C1C0002
-X-HE-Tag: 1760926989-848114
-X-HE-Meta: U2FsdGVkX1/MrvRsICSDL5YHOULyj7MqDIAYEN+9Lx5JOqexx2vs4l8dMrqI2EcbzIkl8iUXf9rio8zo5CaWDdvAJEm7nAuvXGMlbQh9RXgzkt7P/ustuMu7A9+ufQECbi/x50LrbnzmcwyAy8xtWUzJB6E5DGQborSWz6IIvI1rAO0tOsLm3CJziqM7ujY5Wpez17pCfzAwJtydf4eYYwKekFuI6uIGwbMDwVNXxgOPcusO/6dajdaNe+d3IJ0cwxRxaghhgqoAN8bet5fMPHXit0MHKW5/Ch5vFsog25WJVvUYg59sVwvbRrfCuJcw1BKjnUbhAzk7QvF7YKCSa98ZQSXvSCIke8iV2j7IUV2qrQhs7l/fFo6+lmGoHWDVa0OyXm/mShfmTY/O2y1TJzCGAmK80yhXEW6ju6JgAY5eSNqFle+X/7iPnVB3kjQPSQ6N7ic5YRAd6CwABat3vGNbo/ccMGCw1pklm/BkIiTx1uThcbJX1jBErdHyMm40nB8/2xvlaKBccfBxdEorAzfr5wIluOEEIzL/uYYFLMyNr+l/0JM8cRNFdOX43EMB6BdYvYKrkOUfAusZKQduNMwWsoXk0KjhwthLlChZVNzC/MKbZRQQsPxzkWX4p3vPthxCJcZeGQEfSYTYrvkSk2pA7KIKQ8/VesHPRWxsWkpmhdxOsiSE9tZYM8TrjmwWIYLWX7CFOXUSRAMajlXWS37xDDimZgLf+BS5Z06OcQnLepZX6Y+oYxKcfq0Z0o0Z6bZsYFpr9xkM1lV3l/07XM+Azq/oTqtNmiK2PmmO0RceKNaiUMGCqWcvU2/8AGzKUEld+UxoxMQ1BKLLpAUgrZvNVAQlZAbflzgmFp2hy8eiUJ2KqCbTHb/sblGK0Qi0vrq6WqLb+5G5nFAvXjB8pbYtMpZun8AxpMrATHoLzaXFZEdEssUBEB4md0mNAUAnDRiX3j8JGD1kzWI37iq
- OjYlEwAq
- MxB/QRo7+O6oup5tD4Z7nlT6dCTGPYynBUOd8jealiBMTovH3PL7l2XHIGwwmK3KgwfSHeH2MnUDqbjBp419fRUB/t4C/+/j/EIm8dD8IGVjAQofK14IUv4XUe8MuN2yCqFlkgm8+TIYpmrOeXV9k4rv9MEudpHK24gVcBD9h3H7fzA1HlzifmN7QLvaep9fXVIewiD74E3VPMDqkX0YrOahardK6lwiyZTx4YKV9LGsWq9wFoRSlxe999O4m4ptxrCvTM8nib1z9G75F72xEW/P/3cRLD8ZEC3BarO7pnsE7u9mt1yr7Nph2fWLIQx8Mx1deMMHWppIAtEVJCqPuoSkvrSnG7kaIoaYnoxfHc2aOOSgOaUUk6LWslTN56xLqrgCbmWZdQwmr+FqQ6Fs5chzs9la1+L/stckgMxSXdm86GyVWHJb/YjdiOg==
+X-Rspamd-Queue-Id: 0B7B040003
+X-HE-Tag: 1760929884-447436
+X-HE-Meta: U2FsdGVkX1/MhKpvKo9dnC9w+12wXZVqgBr1Pb9+/IWWsq4DfC2zIcLan6Sf0jbF1cvX88V+3V34IfIHjdfWV3tnHk88YzVw9roBQLJFBfWTLlRSpK7wNGzHM9V9qRyl+d5iHRNfhMnE+aROZoXBZTr30VXTBBNj90j3YY22cG5JrrIIdioIWe7UsU2w4O3V8lrGRy4SGZnXSRD+8P/uZ0J3BMetlBj6k0fiVu2VKNVu7DpcTGyWDxFEIXEs086o4+p/GOTntd6aWVH5vutWU0btZOcl/y+yZ/vzXCvQJwIHMq+omhJqcdpaBUm+bswda0QDXQTJl0xNyZh1fZeAQByjbBcLinrKbEE1VrIZD/eqcnoSo/0Czo8FRPYEOxXeAqRz+w+7xY2xa67OPdAkVGBBfbMsE5D1KwlzaU8cASCbAUf/NzuXIvb5hxFWV3J5VlvmdkLgLDF4Uu3TxhxfKiu5NK5GiEn9tbrU0HRbPFv/TojCnQT2xcT3QIhusVSMxE6yLAV78oTQqZa4tPrK3+M8mTg/D83Mkmg3j5ngPg3UU57I24/s+67nuQXXrySb10eXR4SVmOEM1EJZJgNGX1x94XUxi8vcmb39uF+1zuPCYrx8q4bbjVIAVtpCRONMJTMyiGDtDjcyV+fjkYUgHNV5Mn3o3a7jWQv+vNS2jDzkYLiAX1OrfaO4b4OBk24SpOYX+yIG0YJUt2UC5djZkC5UDuqIZQ7D5ngpfi9tkDOyDdYDYR/QTiEhaWqEsZuhNzYceCD1js6wrtTLtW7UYW9XvpGgRaA4ixripz7uLPSU0xPuuZDm0EaWFCmrrCiim01ky7i9Xud2/FWaSw2EUBpGYZogQb/4IypmlmekLV99h75XPuCu5oFfdzAyGrjVuv2L2Nu7lxHlTEe7HlpT+ML1Z2iO5sdNmZWspyw3rlWKdjlmX3ch/i6afE2yMcUPwkgyQq05G8ZnYDA0eX3
+ X0DHJZWN
+ 0mGkas9DGxj04EjVR/KJ6Wggz3aFsdluoa15/uHrWSmNOdL8IFjCirACK8+UdsefwFDmRZNH0GnB7GFB2S0KqL6p4pQpKUTzYRluj6CUG9wq7aZDTIh/OQDZu95Byo9NUuBr0W8Sg7tjH83lt4R5LMsdTjD75csLyb7YbQh3wpAOYAV6Yd+rw7vQVBT+0ZfAf9+OD2Jm5s7eTz0Z0KfWQERGVdLes34bTLlnFuL2HKEWbQw6ygYV3vlYB+UJtX0PlpaRrV6E5QVn1E07K8Q4OtAJ6xL6G/2fwZQLTFmffkB00PfrUd/FKfK8EvOjCb0XFQ9LE2YpEjFxCpmdFb4GxYriIQolklE4Hog/PaBQa8/iXEbEUwWbaa9Elb5QGnAdUu/htMFbT3+mSb7QTVowIZiV4IXP0R/bOfjrmkPzSGzDRinQpFSKTgUYQrNy+6mNrl8Tudw2GJzJFUGnmiQJ4zXCuVN++J/4ayKz05meHKErCYZ9RvRUwiCUvYj1CzEf6ijABWdj5PRhqqLHuN8MCz+sjdMnAL/Wi9XfTkABEw4SNiIuhYlSO6QyfJE8P2RgytkpjEJDrkWxwknDksWfJfsXo0QbAsi2LNlSuUn0Bcnm7UQCq36nP5cGhX2qrxbEbbNoONXPax7kbldWPcA4IxyFHPZvbEQofHaUPSJIQtpwk9tNrpq7YIuGJbDFcS9ByUg/ORWB4NhQPGT6WxzRjndcAe7+2/vhfcn9TfgwA6KsCUWoSci8wDsdRuXF88jlAnqW7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,131 +151,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000009b0a2506418dc393
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+History
+=======
 
-Hi all,
+RFC v1: fmod_ret based BPF-THP hook
+        https://lore.kernel.org/linux-mm/20250429024139.34365-1-laoar.shao@gmail.com/
 
-We have been investigating reclaim performance on mobile systems under
-memory pressure and noticed that slab shrinking often accounts for a
-significant portion of reclaim time in both direct reclaim and kswapd
-contexts.
-In some cases, shrink_slab() can take noticeably long when multiple
-shrinkers are active, leading to latency spikes and slower overall reclaim
-progress.
+RFC v2: struct_ops based BPF-THP hook
+        https://lore.kernel.org/linux-mm/20250520060504.20251-1-laoar.shao@gmail.com/
 
-To address this, we are considering an approach to move slab shrinking
-into a *dedicated kernel thread*. The intention is to decouple slab reclaim
-from the direct reclaim and kswapd paths, allowing it to proceed
-asynchronously under controlled conditions such as system idle periods or
-specific reclaim triggers.
+RFC v4: Get THP order with interface get_suggested_order()
+        https://lore.kernel.org/linux-mm/20250729091807.84310-1-laoar.shao@gmail.com/
 
-*Motivation:*
+v4->v9: Simplify the interface to:
 
-   -
+        int thp_get_order(struct vm_area_struct *vma, enum tva_type type,
+                          unsigned long orders);
 
-   Reduce latency in direct reclaim paths by offloading potentially
-   long-running slab reclaim work.
-   -
+        https://lore.kernel.org/linux-mm/20250930055826.9810-1-laoar.shao@gmail.com/
 
-   Improve overall reclaim efficiency by scheduling slab shrinking
-   separately from page reclaim.
-   -
+v9->RFC v10: Scope BPF-THP to individual processes
 
-   Allow more flexible control over when and how slab caches are aged
-   or shrunk.
+RFC v10->v11: Remove the RFC tag
 
-*Proposed direction:*
+The Design
+==========
 
-   -
+Scoping BPF-THP to cgroup is rejected
+-------------------------------------
 
-   Introduce a kernel thread responsible for invoking
-   shrink_slab() periodically or when signaled.
-   -
+As explained by Gutierrez:
 
-   Keep the existing shrinker infrastructure intact but move the
-   execution context outside of direct reclaim and kswapd.
-   -
+1. It breaks the cgroup hierarchy when 2 siblings have different THP policies
+2. Cgroup was designed for resource management not for grouping processes and
+   tune those processes
+3. We set a precedent for other people adding new flags to cgroup and
+   potentially polluting cgroups. We may end up with cgroups having tens of
+   different flags, making sysadmin's job more complex
 
-   Optionally trigger this thread based on system activity (e.g.
-   idle detection, vmpressure events, or background reclaim).
+The related links are:
 
-We=E2=80=99d like to gather community feedback on:
+  https://lore.kernel.org/linux-mm/1940d681-94a6-48fb-b889-cd8f0b91b330@huawei-partners.com/
+  https://lore.kernel.org/linux-mm/20241030150851.GB706616@cmpxchg.org/
 
-   -
+So we has to scope it to process.
 
-   Whether decoupling slab reclaim from kswapd and direct reclaim
-   makes sense from a design and maintainability perspective.
-   -
+Scoping BPF-THP to process
+--------------------------
 
-   Potential implications on fairness, concurrency, and memcg
-   accounting.
-   -
+To eliminate potential conflicts among competing BPF-THP instances, we
+enforce that each process is exclusively managed by a single BPF-THP. This
+approach has received agreement from David. For context, see:
 
-   Any related prior work or alternative ideas that have been discussed
-   in this area.
+  https://lore.kernel.org/linux-mm/3577f7fd-429a-49c5-973b-38174a67be15@redhat.com/
 
-Thanks for your time and consideration.
+When registering a BPF-THP, we specify the PID of a target task. The
+BPF-THP is then installed in the task's `mm_struct`
 
-Best regards,
-Yifan Ji
+  struct mm_struct {
+      struct bpf_thp_ops __rcu *thp_thp;
+  };
 
---0000000000009b0a2506418dc393
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Inheritance Behavior:
 
-<div dir=3D"ltr"><p>Hi all,</p>
-<p>We have been investigating reclaim performance on mobile systems under=
-=C2=A0<br>memory pressure and noticed that slab shrinking often accounts fo=
-r a=C2=A0<br>significant portion of reclaim time in both direct reclaim and=
- kswapd contexts.<br>
-In some cases, <code>shrink_slab()</code> can take noticeably long when mul=
-tiple<br>
-shrinkers are active, leading to latency spikes and slower overall reclaim<=
-br>
-progress.</p><p>To address this, we are considering an approach to move sla=
-b shrinking<br>
-into a <strong>dedicated kernel thread</strong>. The intention is to decoup=
-le slab reclaim=C2=A0<br>from the direct reclaim and kswapd paths, allowing=
- it to proceed=C2=A0<br>asynchronously under controlled conditions such as =
-system idle periods or=C2=A0<br>specific reclaim triggers.</p><p><strong>Mo=
-tivation:</strong></p>
-<ul><li>
-<p>Reduce latency in direct reclaim paths by offloading potentially<br>
-long-running slab reclaim work.</p>
-</li><li>
-<p>Improve overall reclaim efficiency by scheduling slab shrinking<br>
-separately from page reclaim.</p>
-</li><li>
-<p>Allow more flexible control over when and how slab caches are aged<br>
-or shrunk.</p>
-</li></ul>
-<p><strong>Proposed direction:</strong></p>
-<ul><li>
-<p>Introduce a kernel thread responsible for invoking<br>
-<code>shrink_slab()</code> periodically or when signaled.</p>
-</li><li>
-<p>Keep the existing shrinker infrastructure intact but move the<br>
-execution context outside of direct reclaim and kswapd.</p>
-</li><li>
-<p>Optionally trigger this thread based on system activity (e.g.<br>
-idle detection, vmpressure events, or background reclaim).</p>
-</li></ul>
-<p>We=E2=80=99d like to gather community feedback on:</p>
-<ul><li>
-<p>Whether decoupling slab reclaim from kswapd and direct reclaim<br>
-makes sense from a design and maintainability perspective.</p>
-</li><li>
-<p>Potential implications on fairness, concurrency, and memcg<br>
-accounting.</p>
-</li><li>
-<p>Any related prior work or alternative ideas that have been discussed<br>
-in this area.</p>
-</li></ul>
-<p>Thanks for your time and consideration.</p>
-<p>Best regards,<br>Yifan Ji</p>
-</div>
+- Existing child processes are unaffected
+- Newly forked children inherit the BPF-THP from their parent
+- The BPF-THP persists across execve() calls
 
---0000000000009b0a2506418dc393--
+A new linked list tracks all tasks managed by each BPF-THP instance:
+
+- Newly managed tasks are added to the list
+- Exiting tasks are automatically removed from the list
+- During BPF-THP unregistration (e.g., when the BPF link is removed), all
+  managed tasks have their bpf_thp pointer set to NULL
+- BPF-THP instances can be dynamically updated, with all tracked tasks
+  automatically migrating to the new version.
+
+This design simplifies BPF-THP management in production environments by
+providing clear lifecycle management and preventing conflicts between
+multiple BPF-THP instances.
+
+Global Mode
+-----------
+
+The per-process BPF-THP mode is unsuitable for managing shared resources
+such as shmem THP and file-backed THP. This aligns with known cgroup
+limitations for similar scenarios:
+
+  https://lore.kernel.org/linux-mm/YwNold0GMOappUxc@slm.duckdns.org/ 
+
+Introduce a global BPF-THP mode to address this gap. When registered:
+- All existing per-process instances are disabled
+- New per-process registrations are blocked
+- Existing per-process instances remain registered (no forced unregistration)
+
+The global mode takes precedence over per-process instances. Updates are
+type-isolated: global instances can only be updated by new global
+instances, and per-process instances by new per-process instances.
+
+Yafang Shao (10):
+  mm: thp: remove vm_flags parameter from khugepaged_enter_vma()
+  mm: thp: remove vm_flags parameter from thp_vma_allowable_order()
+  mm: thp: add support for BPF based THP order selection
+  mm: thp: decouple THP allocation between swap and page fault paths
+  mm: thp: enable THP allocation exclusively through khugepaged
+  mm: bpf-thp: add support for global mode
+  Documentation: add BPF THP
+  selftests/bpf: add a simple BPF based THP policy
+  selftests/bpf: add test case to update THP policy
+  selftests/bpf: add test case for BPF-THP inheritance across fork
+
+ Documentation/admin-guide/mm/transhuge.rst    | 113 +++++
+ MAINTAINERS                                   |   3 +
+ fs/exec.c                                     |   1 +
+ fs/proc/task_mmu.c                            |   3 +-
+ include/linux/huge_mm.h                       |  59 ++-
+ include/linux/khugepaged.h                    |  10 +-
+ include/linux/mm_types.h                      |  17 +
+ kernel/fork.c                                 |   1 +
+ mm/Kconfig                                    |  22 +
+ mm/Makefile                                   |   1 +
+ mm/huge_memory.c                              |   7 +-
+ mm/huge_memory_bpf.c                          | 419 ++++++++++++++++++
+ mm/khugepaged.c                               |  35 +-
+ mm/madvise.c                                  |   7 +
+ mm/memory.c                                   |  22 +-
+ mm/mmap.c                                     |   1 +
+ mm/shmem.c                                    |   2 +-
+ mm/vma.c                                      |   6 +-
+ tools/testing/selftests/bpf/config            |   3 +
+ .../selftests/bpf/prog_tests/thp_adjust.c     | 357 +++++++++++++++
+ .../selftests/bpf/progs/test_thp_adjust.c     |  53 +++
+ 21 files changed, 1092 insertions(+), 50 deletions(-)
+ create mode 100644 mm/huge_memory_bpf.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c
+
+-- 
+2.47.3
+
 
