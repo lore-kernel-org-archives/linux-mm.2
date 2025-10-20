@@ -4,134 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2349CCCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1804CCCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 16:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A34E8E000A; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
+	id 3A65A8E000C; Mon, 20 Oct 2025 12:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67AE08E0002; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
+	id 37D048E0002; Mon, 20 Oct 2025 12:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7308E000A; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
+	id 292DD8E000C; Mon, 20 Oct 2025 12:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C93D8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:59:07 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2D791601EE
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:59:06 +0000 (UTC)
-X-FDA: 84018951492.27.3CDBF69
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 93A791A0014
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:59:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bnhi+g3V;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jmb7mHUP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eDSbH0dq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=P5WSTFPT;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 122018E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:05:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD55E1601DF
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:05:46 +0000 (UTC)
+X-FDA: 84018968292.21.C706624
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F026C40012
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:05:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DbP5S16h;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760975945;
+	s=arc-20220608; t=1760976345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
-	b=7f2+GVjSMHNnk8J9cKMuK/O+k0SEXmMf3SWMeqwsw6Z3IefVD1By3hhCHb1IvErcmBuCsH
-	OX4Oc/5hTPWPLKBhLosWV0BVxpDPWT5t65YmfBd8N4wDxwjOtEPeX5OzbFsrfz/Mu5kQB9
-	au63iIk5be1ZlbuzAKVXlY5c8dhXHP0=
+	bh=p4JsBaddaRYoEAs4W8WEBwtA+SYjh8zLzD82hzn+tek=;
+	b=GMu1HPzDEeOZP54qdkdPDTBbAYmZnOEKsKrmyvQiAYg0+98Nznw8KXA83UbR94tkIu0xHu
+	Ein2/RXNy+kIRzlDSRxGIUUbxMaUb23Hid/pm4M+ao4yofyIQOfMX4bF4ybrcbM0OLUYAp
+	wnGN1FbL405C2zT31T+rISxm1ID8AtI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bnhi+g3V;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jmb7mHUP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eDSbH0dq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=P5WSTFPT;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=DbP5S16h;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760975945; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760976345; a=rsa-sha256;
 	cv=none;
-	b=Pt5XZb1Ls2wbvjD9/0eASiE23cYt+eLHu0dv41oFNuDoahPqOXLGfmpqd9mNADyF3GR35b
-	AVJcGuAmmeyPTWM0uX5BT/Oad4uw3FU+/9nCTj8Ka32ZLuXVay+8K8TgbzLF71/VspwbZq
-	tQKXsvhOC/u+jZN3Jn2iRa7T3nQNMdY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B09F8211AD;
-	Mon, 20 Oct 2025 15:58:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760975938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
-	b=bnhi+g3V4guyjrFM7W2wvNQYgft8AKwfnrmdAJfYt+OshztZCGnA1OLjpJEGZIFD2RyIeB
-	0xCUTtvLxJmDGaz2Hjk5AUzrIJZ2m42QncakyNgpWMG5GRQloTyBkPAyCYSdl47ukrkEAh
-	Pxm1sV4k/jmAPJwphJBbggz9CK0Lt8g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760975938;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
-	b=jmb7mHUPVa8eqJyOkhrTMAJqcVl0YdILYwlGdaxHrB9Bg+CkElEHgd7V5CWs/1fw2LgFxM
-	7MiFG2FTf5cyVNAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1760975934; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
-	b=eDSbH0dqSfRA6WHKd9eLOdNQcxqexCI4JCFeyuSRhL4zpE3t9/I286H+RaDKonEHzKtgkm
-	s5JBwkXqBlXOmjwrbCT9ixRSjikaAiX5mfxrkXJwfZY38sixPiNF2z25ST6srKiIHUFz4Y
-	vqVvzvIQ0MkIc6GcPvVoNyvIm7A+OLk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1760975934;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A+T13MT5+DVqI4FOljyY2wyHe35kwNpItnKtnAfrs7U=;
-	b=P5WSTFPTevE66kkbFzbp2BlR5n8P+P85VjF6E9ukLw6GquJTeMbJVLmhe4KZGa+kJD0dNh
-	hn8X7c3dF213TYCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A1EB413AAC;
-	Mon, 20 Oct 2025 15:58:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id V4+DJz5c9mhJeAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 20 Oct 2025 15:58:54 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 536C2A088E; Mon, 20 Oct 2025 17:58:54 +0200 (CEST)
-Date: Mon, 20 Oct 2025 17:58:54 +0200
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
-	Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, djwong@kernel.org, 
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
-Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
- trust the bio from direct IO
-Message-ID: <xc2orfhavfqaxrmxtsbf4kepglfujjodvhfzhzfawwaxlyrhlb@gammchkzoh2m>
-References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
- <aPYIS5rDfXhNNDHP@infradead.org>
- <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
- <aPYgm3ey4eiFB4_o@infradead.org>
- <mciqzktudhier5d2wvjmh4odwqdszvbtcixbthiuuwrufrw3cj@5s2ffnffu4gc>
- <aPZOO3dFv61blHBz@casper.infradead.org>
+	b=wg5AQNKXBGsGXhGrpL6Fx22rC8YnGlnHnfD4+beUF+5NoYKFqn3y73iBGdZEL+9EYaGkGr
+	P1UxALoMX68Ye8rduM2aZqjLdk917kAxNjMhhtSPip0e7BwCClT0pKnzZGXoG6ygQtZC5G
+	kdK2ztH4FcA4CeI1gE7p4BL0n00/stI=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-87c1ceac7d7so69818546d6.1
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:05:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1760976344; x=1761581144; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p4JsBaddaRYoEAs4W8WEBwtA+SYjh8zLzD82hzn+tek=;
+        b=DbP5S16hulzoOHzfPCyulS90/T3RBYNMrcMdIhxdDfYdRJ+1NZh7fHK7l2EZ3eV2Zy
+         8WUm+gh9KyfvS+m+m90qver0ceqoRx3yZSdbB2H/wEVW+2ObZ4EkMASvEQ7kOg3DbTFE
+         9FZ5GZupjsH6LqVhotuwT+jSJclAlMImjqPLcPK3sGILvnpawg0k6HAApxoJ9RgJeF5B
+         zhqBlqJRZ/s4OrI0U6AOTmT+9T4cONLLVbaytfjATHM5nMsVJW+EOptIx6Rr0kA2dqFI
+         bvS5/Z5IbKKxU9iMnlDtzL0DCmwY1zHxASjAzCAN43lbJzDS2dcAp29QJjP2xqrWvFrb
+         ouKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760976344; x=1761581144;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p4JsBaddaRYoEAs4W8WEBwtA+SYjh8zLzD82hzn+tek=;
+        b=DqFO4hV5nGtGKdbVmFQ/wCNLb3WVJk/5U1a6Vwc+l0bUyTs/BEFpRVEkQ3sXNHv7lz
+         AD3dk2knBbBP2s1Cip7XVVLlpp6zK/TZAl0rqeNj2agWE3oHmewhiCLtKMLM/AiHQgK1
+         sbU0raPgLpxkwJ5vksBq7h8FFIMVrflqoQPomrOVjWFsQMQWDix2zapLiwMx5rPK6XUb
+         gNe+fFseelnrLXVcMnbh6XeindPFTkL5yNBv/3jE/Nw2YWi6Hxm6kmRJCcfO6kGsPqpG
+         gyPX/VDxNHCwJjUss00RHLH6FwBoAl18obSSt5zOXB8B7y+d2JViKKHj3V/trIIikJ2Y
+         WGPg==
+X-Gm-Message-State: AOJu0Yx9Zg26ZvXoot3bIlz4y6fCXFNFClRLyHCtGjK89PH/MEvtESot
+	EMGHSK07UiiT0sHj+Lh09d6KYihRPjjevgSwQsu6Im75GULzcl7Pt5iHoYa4njz53OI=
+X-Gm-Gg: ASbGncvBfQpUSoPYMfHBKRp/DAC/PLzHrhFaSLMlImL6WdAMI+ummPs0haemHcWIm/8
+	PY7j9kBsMnCmr+pJovIxTuvZ+xHS9u6b49t0DsDfWid8E0cW+B9MKXdZcxhlkkcABNbnToKvWhR
+	upKWRoIkSznaBcKdHklAAz2AHQ+p6ZGk2p4kGglaEMrgfH8Sd/X6IkaW1Ov7H3jGe/w/ymBQOSV
+	SNhp5n2rv/iSL2tbc4YwhoAYst/Vx+7Hzp4nDKGz1TfyAlxdDBlbjSdKajMfHS/tNtDSri57xGX
+	67DCxt0xU7g+860YICIkmTo/Hda3lekJMl+WUXO0Nmic9sKF22RJK0KNB9g4rqqI3Xj7zoiyQb6
+	cd1ia4SJGtSRC2t3+o3Zi+lMT9r6FvkRuTwjzb4N16ohzUsNPonuul6VG0rxF7AD32qbwzjj13s
+	RPdm4AeTy1sA/4fTousjNLXkCETN5IZK26Y1o9EQkDdGVKlZDynKAiQ8yd0dM=
+X-Google-Smtp-Source: AGHT+IFO0Fmmp1MECEFi2jzErsOgbxowWqJ/ySBor/huje/sLrMYVoPz/DTL50HIV6LVQv5D46sXow==
+X-Received: by 2002:a05:6214:230c:b0:87d:e2b:cdf7 with SMTP id 6a1803df08f44-87d0e2bd165mr123924826d6.66.1760976343811;
+        Mon, 20 Oct 2025 09:05:43 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf521be67sm53378076d6.16.2025.10.20.09.05.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 09:05:43 -0700 (PDT)
+Date: Mon, 20 Oct 2025 12:05:41 -0400
+From: Gregory Price <gourry@gourry.net>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-mm@kvack.org, osalvador@suse.de, corbet@lwn.net,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	hannes@cmpxchg.org, laoar.shao@gmail.com, mclapinski@google.com,
+	joel.granados@kernel.org, jack@suse.cz, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexandru Moise <00moses.alexander00@gmail.com>,
+	David Rientjes <rientjes@google.com>
+Subject: Re: [RFC PATCH] mm, hugetlb: implement movable_gigantic_pages sysctl
+Message-ID: <aPZd1dAIzAw7Ii8E@gourry-fedora-PF4VCD3F>
+References: <20251009161515.422292-1-gourry@gourry.net>
+ <6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aPZOO3dFv61blHBz@casper.infradead.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 93A791A0014
-X-Stat-Signature: pfaqjhyopsr5ez8psa4umb3uefpseb4c
+In-Reply-To: <6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com>
+X-Stat-Signature: s3g118mhzx6srt6zrzr3jfa3oi7t3t3r
 X-Rspam-User: 
-X-HE-Tag: 1760975944-545251
-X-HE-Meta: U2FsdGVkX18Dfhhwuj8V00wu7xOo60tBldeksL5ZuoM/08ha3yPYRpmh7QxWj35teDkNGkkfmnoqzbeOYjHNFfz1FI/MDW1OmpdViZFRKFRkfJwjt2TwpMD8WeisdWwKPO65A0sgyUbmMYJzIXq3h6hqhmPVoZ+eVnAizKmFWd5xidbfoSH9xKlKqILsCVJtBU9Ofg9+A1yO3cFzqfn9W2XmQT69m88xJW5qNuxQPOIMyE9zLwnUCr2ZXIurg1pEbbwNnSjjWykpXBYCaury39SANxyXF4eDMtIsn4V6+DDFHMCBd9e4Ckfwvv1cr5N8sHc+MJTol0zSTkE3J3MWGWGyoNAmwbD8A2d9tUV3izsfXch6n3eA7vSRIdWJxMM9OpCWS+rL64xv1NaSf4/j2wz5q78InkW606TPGfa1pU+nTfXAP4SI+ERwoUx4fHw6wtWSE/8MN9vOkF+3AiUajFWZHuLwsCyLONL8cQVzz+zq0MqNniZGOVoq4jZJ0qt/TtTpAbeZ0z5wMima+l4P8A7Y1Q759hG8lcW4Ht/s/vOuBJ8eVraj4UvN1V7x9x9Ne2lk8j6kE1k0obQJM5HgVdglgeARQ+SCl1TslgSL04/xq6d+34oBYsxZu2p/PbjNqu4E4WkqtcOFCvqlajK6Rf4CyOVJ773OtmGpjr59zppTk3K6UFf203yUyXbmqiWMTbe9sce+bbrDzlWDybv+C4Ko8LFE3BwAtcJJ9RhCN1dfyhv2SbtW2QqgD6xmizHyTz0BgohIjBCb7/ujzZ0Uj7RmNCT2HRsIPuxLvFy0edk9qpZeLMd0iL/VnDEKpwU3fu9fOfufnBqHt+Quq9wOIPHy9cydT8Hi3eT/54+BltzZ4chRrzruO1jHbBkdsQzk4YFzRU5S/rdOphDtq630J2KtatHLxfuUU4cPts2qWr+/uQgUaLAJW8Zmpj4BcXARk8Tb1kMn9nkLsjfer6L
- 0Xq1lADf
- M2B2WVbnUWp1xysYsZmAlZHvEXAkhaAB1b4myKnZmdJdhpy9Ms0M8TSB+t5PKz61O9mqYdTkqA+LLZCy7Kr/7Zm13xto8Jj16eid5VNPbUAyizPAkujkYPHzx2n43WRLLs+IIM2eoWpbxH7VLiQBzBz98NzdpuPSkxWguCc0W5MRa8DgG7OyfikNc6bp+AZ9bWMo3+bF/5HMI0kegEJMZPiNdwqefnFKKbJc3wj8IZKh9jyVOR87mIQFAAjPCfhYkROnR6ZSwjVNTaXZfRNF9PKjkO5c6hb93csiW6tT0KPFQ9oTgZqtNbbe+2ODcs5iLXZEcIl3XkSPHe7e3WQV99JL7JOMbQnvGb4Mx3/lsio1WA0asMha7rdfu3BGoZLoOvY0CcQumVW5Uv+o=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F026C40012
+X-HE-Tag: 1760976344-281552
+X-HE-Meta: U2FsdGVkX18GY+FUhnm++WGWyZud5AHRQpJIMuMwPz+uYh0C4xgfrlSnOpAqtf5PCJATJ9C7J0lnvW1wQ5vx6WpGy+SMPpax4du6zjtopnkw2oTutG57KcaV2B9DXXjHArXUrEXQs23Sud0EYwU1Ryhcp2HFc/zQHAaaZ9QdmwxGceKA740gXR93fUMQ8mT2QJwSej0ANLECvpjHMD30V4eMjlgW0BS2BZAfBii5hZXfAU5MnbzU+AfY6PKR0dZzp2B4jJHnoEw8eBdIYlXuYvjEQR0/82DYytuYv7rMz9dLHbvSYOsp2/OBwKlpWl3wnqzcN42Aa+0H7NC5OGtAQyEdV1dW4yqS/G+09WDWKqX3b2S0InvuRf3BWvfMnGIdI4rgzmckv6pKIAVClYZqSx68hM5ZX1BALDfbR2U5XkGllmO7QH3f7s9WgiwwOrcEqmh6KZgtmy/tO7HWFhfEYV0T7kqaM+mmWBtaGXRmsjrHCD+NEBRH1J7W9bVBNv19ziEAwM0DQ/2JRF1hYpp2KcY+ISKqNQgvrQDLrJtYqeNJFPjPJtCcH5UYWBjgAzQvimOj2fsfbd4cvDEM2hGzS6MU+eNODWgxPMwuPHT63n2mN47l75PU1HJ45jI4Rfoh9ePTBIzDLOWki4VNtuGb7sH+1X6Hz43gm0Dyv+ZUfN5J4Fu2acIDmZnhw4gZ+0LKBJRul9DyMhDtetV56lh1XD6zPfI8XqMzEJanhbuBSsMaqmDHg6j5aPgKiobYoTsiiI0cwZigRzxb7jIESEg/GQmAfCPaiUbRRawAoihWTliBYCOxVs2ySrv3NNZNzt5bVjHMCxtDjQEnQCO2pX0Ohs2KcnfC2yzISCZZgmHqmKDyefuRWTkCmy8STBE7eViowM3jXBB+R2R3TNZXmn8MmAVAs+mpaY6OkvAq0CqNlA8favxML0T0bCOhJOAOep2h2No+6dsMsoWfFXZZHUK
+ WdPqBs0t
+ 2xf5QvfCk0GRw6eGdkzEN3DxYavu6XQVQBjR0uj3VsoTkg/XTs4g4LCZkd6ibzxvo9PkhrEHvRrucK/igUNfxYM5N4ymiPFxKwa2iuQoYBw/cSzwdckkv1dWt0DMJHnqtUf2yCksyHMVBQ/LCcULXyUo6KEWcjzTmVSzPw2R3niuKKrKhe9wxiS/dsnO8S9EP8FTwMJkSi1IsiinEaKC66l3zVSFtAxmy2aZocGqnPmOg0C/UUberryFxS441XCAk9bsPudRyY34LOpyMrlDZZ66VIcyhHjhBZQFzg5g4GgLisjo5+co1HqH0mTUSvokvHJ9I8Ph9ZZlwN/ldVKrhNtb1292s7gBIg1qbAJnoQvX0/DKVvi05H1V5Q/g6kuEoXFdTVr64l81vz9mK5TFkIms7Kb3TlLgFwCDfyXV5xxUW8SGY52loyEUzvlbGI1BfEO1Yslyv0XovZhV3wQmUWQzpJoGjdGi/qOCesbwrT1YJbK4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,33 +124,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 20-10-25 15:59:07, Matthew Wilcox wrote:
-> On Mon, Oct 20, 2025 at 03:59:33PM +0200, Jan Kara wrote:
-> > The idea was to bounce buffer the page we are writing back in case we spot
-> > a long-term pin we cannot just wait for - hence bouncing should be rare.
-> > But in this more general setting it is challenging to not bounce buffer for
-> > every IO (in which case you'd be basically at performance of RWF_DONTCACHE
-> > IO or perhaps worse so why bother?). Essentially if you hand out the real
-> > page underlying the buffer for the IO, all other attemps to do IO to that
-> > page have to block - bouncing is no longer an option because even with
-> > bouncing the second IO we could still corrupt data of the first IO once we
-> > copy to the final buffer. And if we'd block waiting for the first IO to
-> > complete, userspace could construct deadlock cycles - like racing IO to
-> > pages A, B with IO to pages B, A. So far I'm not sure about a sane way out
-> > of this...
+On Mon, Oct 20, 2025 at 04:17:06PM +0200, David Hildenbrand wrote:
+> On 09.10.25 18:15, Gregory Price wrote:
+> That could be supported by allowing for moving hugetlb folios when their
+> size is small enough to be served by the buddy, and the size we are
+> allocating is larger than the one of these folios.
 > 
-> There isn't one.  We might have DMA-mapped this page earlier, and so a
-> device could write to it at any time.  Even if we remove PTE write
-> permissions ...
 
-True but writes through DMA to the page are guarded by holding a page pin
-these days so we could in theory block getting another page pin or mapping
-the page writeably until the pin is released... if we can figure out a
-convincing story for dealing with long-term pins from RDMA and dealing with
-possible deadlocks created by this.
+I think this is roughly what you'd be looking for?
+~Gregory
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+---
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 5549b32cdd31..5def2c53092e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6922,8 +6922,12 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+                if (PageReserved(page))
+                        return false;
+
+-               if (PageHuge(page))
+-                       return false;
++               if (PageHuge(page)) {
++                       /* Don't consider moving same size/larger pages */
++                       if (!CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION ||
++                           ((1 << compound_order(page)) >= nr_pages))
++                               return false;
++               }
+        }
+        return true;
+ }
 
