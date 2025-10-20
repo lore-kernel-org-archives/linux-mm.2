@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD44BCCD195
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C69CCCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 00:35:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5B878E0008; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id 657F28E0005; Sun, 19 Oct 2025 20:35:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBE588E0009; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id 5E1508E0002; Sun, 19 Oct 2025 20:35:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DC338E0008; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
+	id 4F73F8E0005; Sun, 19 Oct 2025 20:35:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 716D98E0005
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:17:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F73A8710C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:04 +0000 (UTC)
-X-FDA: 84016577568.12.CFEDC30
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 37FA58E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 20:35:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB0DDC069E
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:35:02 +0000 (UTC)
+X-FDA: 84016622844.15.B7D44D8
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2D14720003
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:17:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sMRhuMPt
+	by imf15.hostedemail.com (Postfix) with ESMTP id 474ADA000A
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:35:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=crQ0dLzz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760919422;
+	s=arc-20220608; t=1760920501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AEApLyQP/b3KWylzRVCY886fGhUNpEUKEq+AzuyUBmU=;
-	b=V8q4NJUtjsTnfgDZxzvmcse2ncj22NQlluwEHEXpygsq5DQNcWiZGGMUHQNe7u57SErOZf
-	r0IemzCWEwGzI3X9zB7prD9mX9Aj34Uf5WYTOAHir4T2DMFYO/9m3IYilrI/zSRiJK4mtB
-	ofo4Y8rEP8Xlez0sdikh/PuAsGnjHQ0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760919422; a=rsa-sha256;
+	bh=KnEUxlQ75LP1Ikf6IjcEIwk3pZQhxkEHvIBtAe/p70Q=;
+	b=H8/Q/0votbGTWjkFqHicdOy9o8VUJOS3w46upvL3KoK8as7dMmlBdlL5GEhTl2mjyLOK5W
+	ojU1KVu1tlKQsQNXaIOQApMAyKrdTB6Of7vbVb/CMMVtyydRbyWE00VGS/r4t/mdqY/Teh
+	g2nAwhs2e/2Fohhr5vrqEGQrQMJwwNo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760920501; a=rsa-sha256;
 	cv=none;
-	b=SEeDu/uVxGeOQGJOKpNW9AJkNrJWHQLUEi19bhEr7wEDVD1jIacftpnz3I5d0rh1F+FQf9
-	zEBg+014HUZPaz6MYQUycB1hQ4Nrpe5pX7kK7Ag3dSf0v+1U3AqCmu9HP+JDjKjrphOGA0
-	HYnx0rY1Eog3i27GVAX1bf/7upoVjes=
+	b=eN3Jn6UdmB1T85HJOcYIHcrBOatqnLfnz5+4E62LLOByOrHHc8KJ7jSQMBD4/yhkpCSrP9
+	qNhs8t1u9Nvx6SlIRq1Ummd7Mn4qaoW4SNsJhVCrz8EOGH0/ersx9kjY2Trd5dHkzuWvIi
+	lwSbzHAiP/E4r+RhxQI4eJMLks8CDpM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sMRhuMPt;
-	dmarc=none;
-	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=crQ0dLzz;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=AEApLyQP/b3KWylzRVCY886fGhUNpEUKEq+AzuyUBmU=; b=sMRhuMPtBd99Fstr6ealDP6E27
-	4DmeJ11xuYlvsEvnip2EyJrUQyshGco7faS8SIH8dIUjgbWlORPrH9GveSTqxCavf3AV3Sda7VGji
-	te70L+aOgzcOG4dXzEDBofD2RLfiirCMKskKfdX29Ahcy43Vo8oOhalDSxtRp8vWtkLVE5Rj2XJom
-	UpUPBiGmgpL471NooHBRp5rGAR5Kuv5/MRAlRFbuuODNXFuSwVyRI5YhJ+L7H0LBe2jVMrqp7aECA
-	k60WqotHCSGGf2w83Z0lm9zv3gPaUgwc4LSURK9+qDZsF8Tmpn5iNg1mxUTi9X9HBsbiRcq4pBdKd
-	SsjWE7KA==;
+	bh=KnEUxlQ75LP1Ikf6IjcEIwk3pZQhxkEHvIBtAe/p70Q=; b=crQ0dLzzgBf6jLQzsaINwk9ZcD
+	n6d8xkZ7MzW9b8z6NK8qkpg5v+ZUc6nrF355Vjz+WvzKseRRKzE/HgME8vhJSukG+ThQxNIV73nD4
+	Q0iwKRdoCOGE8kuoppqa5EyKpAEaG+6xZPS4L0LAq1aGC6E+e0FJPeJgoOy6BSfxkPA9GIDuaYPZv
+	PMZi8+OpSg7WHJvDSKqmq8whNIafGUVlPq2ysb71+Juc58uNF8K4egBUAM/xpffQSVw4Gkir+O1ld
+	9rRmw//lmdVIcEpK9etUpk7s8Rih5ksoeIE5C+/UqnR+phda5oJ0FfDMtlUcQ0p66Lc1MEjETx4vH
+	sknObrlw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vAda7-00000008tAc-0ZeH;
-	Mon, 20 Oct 2025 00:16:59 +0000
+	id 1vAda5-00000008t78-1EOD;
+	Mon, 20 Oct 2025 00:16:57 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Vishal Moola <vishal.moola@gmail.com>,
 	Johannes Weiner <hannes@cmpxchg.org>
-Subject: [RFC PATCH 5/7] x86: Call preallocate_vmalloc_pages() later
-Date: Mon, 20 Oct 2025 01:16:40 +0100
-Message-ID: <20251020001652.2116669-6-willy@infradead.org>
+Subject: [RFC PATCH 2/7] mm: Account pagetable memory when allocated
+Date: Mon, 20 Oct 2025 01:16:37 +0100
+Message-ID: <20251020001652.2116669-3-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251020001652.2116669-1-willy@infradead.org>
 References: <20251020001652.2116669-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: paifozasqizntzn4hjf1cs9si6x5sqg4
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7bstgii855sb9ehppfxt9a7jhr4bgh5m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D14720003
-X-HE-Tag: 1760919421-892980
-X-HE-Meta: U2FsdGVkX18l5N/0efiUWYtmDPobGsUE41n8zID556see3zKICerDDjY9YfNBjEB5g8eMIOMqiIq0fajq7E5vnvzEuwglbRwaZYcoDMDbu96brCq9kaRWvyY55zTN0iWir0boP4fi3CinqdH/ZqNC+5vT7WJXzkegl+F47vJtSCOD8VHL+zHeNkWJtkcjLvoANS2ZY0PvfbduOqjyoEfdXoSiMY/7PkdwFmzZVACkHVnMQx2tp+vjjtnWpyYRP2Li5SV9GW8am0gRkwz9QMSRcM8L0WmGz3/UqEM3fof39Q7xN4AWWoC4ACi/5IDInEzVF2mg0EWsOQ4xhZieomNnqKsZhe9vsLSSyAolpKZxomRd+0MTjFcv3nPyaIyfXVxEFpQGOU/9vKV/TeXMFQfG57BzDUY0ogCdnLDDAlAUvfCxmJx6hVGjipkqAA7i0nYlOSLSpE4fFU8RZMQo+vuE/O74rZfo3Lx5nln8xxkC08CANcBaIK216zsQS0/ZcXl4OAqTrogVgQuUJya4whx0d7hsaTBfWFf5hWyijJFNREYSZgHCumadrfjgI2Ptnw2/zb0KSzFwJcZ3lh6XhpKGZAERD86gmymzXvsxbKCtpRnyPuSt9+KMaFCnLOc7XdRQOkEJIFB4iIJKLdffsN7xhHE8PDz6OI8L2j45erMHNGcRk7PXgpdXzCNmhbGDgu5UXHI7dsO0gsY6Mueils7ohV4zEDElFOlWdKL7xU9D992DM5jGJCfUzoaDJAl3YP21gbqCymMdy8zF0YkEorEm1awlEwlZHsFl0rBOobYKIgmNHYBpr9sv0UxRDfwjk0kEkxXqykPBjZowqgrW882zO7Ft8qs2bY8IciFWwolllaYr1jae78PRUAHc7hpzg5C7mIPlJNHanquJpkDbjKsSCSba2nLcvqx4+PMFhaY9VqEWi727WoARUH+Lktpvo4z5OpUifpYAtrN9gn3/St
- iQL/nuCz
- pWSrvtDLG3WZjYTLHtogZ/GLyjd/9wNy3XFUqI2vC2wKY6a1DNDArxLhxMjiFlU1sOCS0Fha+AX2kewBfXdFi/aH8vLORgHDEJE/7P7PJNxq/QnOrJiqsljMbu333Z/hSTaqc0W5gQ0iPmzJTl8aR05XVcZCfF4Or7OcBZMzUwu9aW58KUxgGVwyyYlXGFPvAY9kkcN9u+kCFP0IzhKdGkcBDKs2CnmiWDdTDQ4WV3bUz6D1IZ1j8y834utc5pE/MxNIVozK6Uf7Gko6DnOD4pDCG/bUSEewj/gRcMDJEdkamJmHKi9Rm19LYrxeZg1r1qQ77Y6A3z9C6ICJJL6a917NCuw==
+X-Rspamd-Queue-Id: 474ADA000A
+X-HE-Tag: 1760920501-35704
+X-HE-Meta: U2FsdGVkX19XaFkHHFi1LGh/wKGx7UWgj/7RJeWUeCNO1SgCQGlI3OGJtXo55lermnJBc2Et5IHEKk9chodmHRhQTwYpIlZeSac9RVRamyra96s2mPrb9ctVNovbeVGjV2iRkmD3NgfOE0zpDUcsfhrT851yneZXQOfWuzW7S1eBBwx7dC1sYbrUcU/+xTiJS8nQ3tWZl0mKDC2LnMTevOM1Uxkv67zZpRyn+dyjnVz38aeJP6QHxnGE6k+sic5LAWrdVZ1C2RWBeUTJjlrloA3vnWTEA/xm8imFboLjInXPQyNBX6j5AHaprlFgsj3oe762zfga4IU2vDYK9TxO2g6tNoDXfWshB7yuetG7mG6k+1evRjXexLVcwEO2my8sAXjCJKjwsVys0iWN40MRWcOQKJkQutycHqGx7vCikNGjNx8bjuZpRDqGS3FSWKs0Wl6wl36NDWLnbVPtBvsFczb4c9arYwJlZ7EjvWKhP7W/83iNaEJ7Z1Ejjx2TcspTK/pr1Glgs3bV+vnPOaR0OUEzKK2pATruAIu68lR38E/GAzjppqwVPrD9Y5XiWG2ri183AZ7AmHgCR6WfduuCUIQVVCZ5o+VeVajEXS9P6reTpg68/cQ3YXjRBqYT7Td4NfgMCSGmxb8Oof76xWVuNG47HjEyqFCYg7DZyudXe1mSsZf0B/Bnwk51BJnzmn1bK0lLeqpOMpRWIzsNqLWInpXQ/7mWTo4i9p1iqL05NfJdNs763Qe17IB5/3OArDyETV4zUbljwg8UntjonG/AiFs+p2Ud6A8xcamFB2bFcq0ZUTqL1cehjqKhTf72puCVwwjxWXyf39LzMnuwlEU7R5lfPaQ/T4Ol/wZVwipUoaBNmgOHohym+0v1hz3Llpw/PygLG6wM9F5v/4vJl+jZC4hclMOlHl57h1nReUmOu2LgEqzGZ375Cumv2wm+k2MbJaJBC+nMpdVyDqfeYMb
+ QXYP4Lcp
+ QCGdRP5m682235HnXoHuNG6cqAfwC53bFbzPZqfg1EDgL4c8EP1kkezCeGpaCQ6f7kC/JR3mq1WG20Mg34vllpf4AWefrnwhPCdT9/pDeGtNKfPUhkt6d3UZ5C7ANsNtW8QvmaLAC7DqZh6xyPb14Z5l7dL7y7p1lpoArft+A051PkBbV8h1BymSNX6WxS2jAq4ZVa9XKi0bCIT9rk+jYYY+3lADdme2MiFvpcNc7MrxYab77jOJt5TZpg5/gMO5iaqsOoM671wMPEjM1X17cwYQlrG9cvXXdEUhTUXPgdOmF6tU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,116 +88,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When separately allocating ptdesc from struct page, calling
-preallocate_vmalloc_pages() from mem_init() is too early as the slab
-allocator hasn't been set up yet.  Move preallocate_vmalloc_pages() to
-vmalloc_init() which is called after the slab allocator has been set up.
-
-Honestly, this patch is a bit bobbins and I'm sure it'll be reworked
-before it goes upstream.
+Move the accounting from the constructor to the allocation site.
+Some of the architecture code is a little complex to reason about,
+but I think this is all correct (and slightly more efficient due
+to having 'order' as an argument instead of having to retrieve it
+from struct page again).
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- arch/x86/mm/init_64.c |  4 +---
- include/linux/mm.h    | 33 +++++++++++++++++++++++++++++++--
- mm/vmalloc.c          |  2 ++
- 3 files changed, 34 insertions(+), 5 deletions(-)
+ include/linux/mm.h | 11 -----------
+ mm/memory.c        | 11 ++++++++++-
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 0e4270e20fad..5270fc24f6f6 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1322,7 +1322,7 @@ static void __init register_page_bootmem_info(void)
-  * Only the level which needs to be synchronized between all page-tables is
-  * allocated because the synchronization can be expensive.
-  */
--static void __init preallocate_vmalloc_pages(void)
-+void __init preallocate_vmalloc_pages(void)
- {
- 	unsigned long addr;
- 	const char *lvl;
-@@ -1390,8 +1390,6 @@ void __init mem_init(void)
- 	/* Register memory areas for /proc/kcore */
- 	if (get_gate_vma(&init_mm))
- 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
--
--	preallocate_vmalloc_pages();
- }
- 
- int kernel_set_to_readonly;
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index edcb7d75542f..e60b181da3df 100644
+index ec9365375d9c..ade37df5ea2b 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -1160,6 +1160,12 @@ static inline int is_vmalloc_or_module_addr(const void *x)
- }
- #endif
+@@ -3044,26 +3044,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+ static inline void ptlock_free(struct ptdesc *ptdesc) {}
+ #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
  
-+#ifdef CONFIG_X86
-+void __init preallocate_vmalloc_pages(void);
-+#else
-+static inline void preallocate_vmalloc_pages(void) { }
-+#endif
-+
- /*
-  * How many times the entire folio is mapped as a single unit (eg by a
-  * PMD or PUD entry).  This is probably not what you want, except for
-@@ -2939,9 +2945,32 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
- }
- #endif /* CONFIG_MMU */
- 
-+static inline struct page *ptdesc_page(const struct ptdesc *pt)
-+{
-+	return pt->pt_page;
-+}
-+
-+static inline struct ptdesc *page_ptdesc(const struct page *page)
-+{
-+	memdesc_t memdesc = READ_ONCE(page->memdesc);
-+
-+	if (memdesc_type(memdesc) != MEMDESC_TYPE_PAGE_TABLE) {
-+		printk(KERN_EMERG "memdesc %lx index %lx\n", memdesc.v, page->__folio_index);
-+		VM_BUG_ON_PAGE(1, page);
-+		return NULL;
-+	}
-+	return (void *)(memdesc.v - MEMDESC_TYPE_PAGE_TABLE);
-+}
-+
-+/**
-+ * enum pt_flags = How the ptdesc flags bits are used.
-+ * @PT_reserved: Used by PowerPC
-+ *
-+ * The pt flags are stored in a memdesc_flags_t.
-+ * The high bits are used for information like zone/node/section.
-+ */
- enum pt_flags {
- 	PT_reserved = PG_reserved,
--	/* High bits are used for zone/node/section */
- };
- 
- static inline struct ptdesc *virt_to_ptdesc(const void *x)
-@@ -2957,7 +2986,7 @@ static inline struct ptdesc *virt_to_ptdesc(const void *x)
-  */
- static inline void *ptdesc_address(const struct ptdesc *pt)
+-static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
+-{
+-	return compound_nr(ptdesc_page(ptdesc));
+-}
+-
+ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
  {
--	return folio_address(ptdesc_folio(pt));
-+	return page_address(pt->pt_page);
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+-
+ 	__SetPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
  }
  
- static inline bool pagetable_is_reserved(struct ptdesc *pt)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 798b2ed21e46..9b349051a83a 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5264,6 +5264,8 @@ void __init vmalloc_init(void)
- 	struct vm_struct *tmp;
- 	int i;
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
+ {
+-	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+-
+ 	ptlock_free(ptdesc);
+ 	__ClearPageTable(ptdesc_page(ptdesc));
+-	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+ }
  
-+	preallocate_vmalloc_pages();
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+diff --git a/mm/memory.c b/mm/memory.c
+index de9f999ffcf6..033fc4e29232 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -7280,7 +7280,13 @@ long copy_folio_from_user(struct folio *dst_folio,
+ struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+ {
+ 	struct page *page = alloc_frozen_pages_noprof(gfp | __GFP_COMP, order);
++	pg_data_t *pgdat;
+ 
++	if (!page)
++		return NULL;
 +
- 	/*
- 	 * Create the cache for vmap_area objects.
- 	 */
++	pgdat = NODE_DATA(page_to_nid(page));
++	mod_node_page_state(pgdat, NR_PAGETABLE, 1 << order);
+ 	return page_ptdesc(page);
+ }
+ 
+@@ -7293,9 +7299,12 @@ struct ptdesc *pagetable_alloc_noprof(gfp_t gfp, unsigned int order)
+  */
+ void pagetable_free(struct ptdesc *pt)
+ {
++	pg_data_t *pgdat = NODE_DATA(memdesc_nid(pt->pt_flags));
+ 	struct page *page = ptdesc_page(pt);
++	unsigned int order = compound_order(page);
+ 
+-	free_frozen_pages(page, compound_order(page));
++	mod_node_page_state(pgdat, NR_PAGETABLE, -(1L << order));
++	free_frozen_pages(page, order);
+ }
+ 
+ #if defined(CONFIG_SPLIT_PTE_PTLOCKS) && ALLOC_SPLIT_PTLOCKS
 -- 
 2.47.2
 
