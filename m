@@ -4,93 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CD3FCCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 13:17:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37400CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 13:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3EF98E0017; Mon, 20 Oct 2025 09:17:11 -0400 (EDT)
+	id 9429B8E0017; Mon, 20 Oct 2025 09:23:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D520E8E0002; Mon, 20 Oct 2025 09:17:11 -0400 (EDT)
+	id 8F3478E0002; Mon, 20 Oct 2025 09:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C41018E0017; Mon, 20 Oct 2025 09:17:11 -0400 (EDT)
+	id 7BB098E0017; Mon, 20 Oct 2025 09:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B03788E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:17:11 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 78FF01A016C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:17:11 +0000 (UTC)
-X-FDA: 84018543462.27.01B9EA2
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4790F120005
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:17:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0VsxutGC;
-	spf=pass (imf29.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 656158E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:23:16 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14363138EA8
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:23:16 +0000 (UTC)
+X-FDA: 84018558792.25.FF809BC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 59978160005
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 13:23:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GK2r9mXe;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760966229;
+	s=arc-20220608; t=1760966593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tGywFmiSziGA+dzPphRNfH4Y/ZZUvdraDxQ2WUrBU/0=;
-	b=lKCdEVQdrunFZlablHnJlPL8p2VD2DX1LiYlIdN55dpOP65K23fMT4mkOdUHcWfyVcOb90
-	kTFj8+kLbEOEWyv4vrSYNKdRrNbwYM0SF6HFp0iMeTDopiJuskGXvSdGv2LthWZ2GJOWNl
-	Cx6ntCMxGJeIfA/u5VoI1g7MQbApghA=
+	bh=Q+wQ1gO69qnJ9RJYLFJUY5Ht9X2NoNAtaUt3TQ1G6MA=;
+	b=QeVZicfeqwA+U8u2oeN1q4fUtfXXyO3fw4dKg7NdTINiKsx1JJluoLtA+GYyUfcoQzc4E/
+	CaZbubX5xeKPgzwF/dUONS14pOPR3XrljclhK80bslkTJjgxBejI0PGe9O6IsUdUdC+DY4
+	Zt6NrFxVoS7j0u/MttWCgXrh4mbYxQc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0VsxutGC;
-	spf=pass (imf29.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760966229; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GK2r9mXe;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760966593; a=rsa-sha256;
 	cv=none;
-	b=rwwUB1BErmQR//3LTRELQB7IM31MfFBoBicsdBSAphPvyj6Qp3AXHNz/HSvNu8OA25iRhK
-	7w/rAVtmKLc8Yy5/HM9f9lDM7fyR1TAOGbybQfzP4qljVY+YDUmzMAtGZ2jZI+2YtSzTj9
-	z5SHRKX4JrbDUYQADLglSW41D1EmOcg=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=tGywFmiSziGA+dzPphRNfH4Y/ZZUvdraDxQ2WUrBU/0=;
-	b=0VsxutGCqGQW4jtqWjaZUUbbFGZPhdE86CgBoCtRq/pzPgRj5wzqb070klI1+qzeMNamfY5D0
-	s9J0SVX8Z8abFKU3zzzvke6TPPU3ylbZUpRsrJjbXoFbtorrlu/iyvM3pWBlRf31pfc6f1uIKg4
-	IzSe2duFzv0A+5Xn6dQoRRk=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4cqwtb1pl5zLlVc;
-	Mon, 20 Oct 2025 21:16:39 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id B27751400CB;
-	Mon, 20 Oct 2025 21:17:02 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
- (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Oct
- 2025 21:17:02 +0800
-From: Quanmin Yan <yanquanmin1@huawei.com>
-To: <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-Subject: [PATCH v2 1/2] mm/damon: add a min_sz_region parameter to damon_set_region_biggest_system_ram_default()
-Date: Mon, 20 Oct 2025 21:01:24 +0800
-Message-ID: <20251020130125.2875164-2-yanquanmin1@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251020130125.2875164-1-yanquanmin1@huawei.com>
-References: <20251020130125.2875164-1-yanquanmin1@huawei.com>
+	b=5sxftK8oF8FI7m2WUGxd+1yURqWiYfTj/MCtQx0Q6dS/PcJ5ufrhyKg9H0O1qc5hzBIUM9
+	XXkvpP3+1lXbW/MlNY/gV2Hg5zmLkENfwOyN3slhUktKc+RyDtjsZn6wvY0BAv4e5fHMTy
+	jtmlbp1UC2oS7vQLVmyFW6tVVFhw1KI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760966592;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Q+wQ1gO69qnJ9RJYLFJUY5Ht9X2NoNAtaUt3TQ1G6MA=;
+	b=GK2r9mXeHWUx4AfJj21VgLsn6Y/3YqjhIaYAIGnGDXJhpiokxp+5fx0yyRHGZJI+YYeIry
+	OekNn3GJ3iC5VFbcWbRhjfbEFE8JaU7Azc4rW2cPMwXoo7OuEE+6PBf76mT79QzUZuo9pz
+	82nYg4aU1SFCR+NVljbMFU7auNpaCCY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-pqYPJjVyNMS9Sy4Jb4n-hA-1; Mon, 20 Oct 2025 09:23:11 -0400
+X-MC-Unique: pqYPJjVyNMS9Sy4Jb4n-hA-1
+X-Mimecast-MFC-AGG-ID: pqYPJjVyNMS9Sy4Jb4n-hA_1760966590
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42814749a6fso1011145f8f.2
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 06:23:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760966590; x=1761571390;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q+wQ1gO69qnJ9RJYLFJUY5Ht9X2NoNAtaUt3TQ1G6MA=;
+        b=GESVSSEyKG5rIDpPI+1977h6G8L/j4g/i3q/eUMFuxwefFnu6HJZCnaIQwkW1JiEBs
+         uMrKJXWvScXx4ffW239bDWQYH64dIIHANYTjmREN/jvZxOs3bRGWA+/YjECSFvDkRRbW
+         Hb6/bclbxn1pIihu6sr8SdcFyIeH2Q4hfvZuH7Uddy0Up35oCQQx/gLp/sRissti43gn
+         YH3jnsyB6iA411qAlhDyyOiADbEcir7zWstsm98Ujf1NyBoFe3PACEfhrcT5MFl29qbx
+         L3Y2gNTRVhT9Y2/gkIvifScuU6GQg+/qcNN4raDWm2TWoq+HgJx9TEJKpiWUrA6ArK0B
+         0QkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXp05DeuNIeqWgZ77yrqGr9JZ7LzmZWJW/OyFrSPuhjCaeZ8FOt8qmTX5bOF1dyeWVC3oQec7LTFA==@kvack.org
+X-Gm-Message-State: AOJu0Ywo4nwq9Jc5K7oVyzkTeJrwSLCjOE9F0S1fLzIpSX0YCph1KM0D
+	CJqAfKU0JnO3XK533Rzukr5TIbu1f/Uf8N6w071gmvEoJcMhuuCKsc4vLYFNEwR4oAQTW/SLRjU
+	ZEgCzRAROI/5c72jo3advHW79p9coATI5r+Dgnsl83V2EYOKIy9rW
+X-Gm-Gg: ASbGncseRgB/u9mjisGTbYSj8/ODqZVt1u9LBQf3uVoRAGyEXB4mPhWlfGAkw9QFYgl
+	lR1C00+zt3O1pgAv2a4MmLyYfCcj53UiF0TmjBxUVxaZ6kEZrv1InHVEM+bfjMvDP8bjav1kad7
+	+6xcQ+qHBYFzL8PtihR+4V86FgvSKFPa9Tk1ZGpKZviRr6qwwujQL5jmXO3+4AjmF8fMMqrSKuL
+	uqPchgws08GayqVZ376RFP+8eS7Wsjk1HN38FUhyUqGl9P9JAqq4q9Q6MJDbt9+6XthxVsn1kWT
+	B5g0354kddhWsfxh1LpyO/AT0nsy6Ph54U5nXAPzGom0YPpG1EJWG1Ck5LXPt/FXuANPMtNfRk8
+	qhSp5qzGOSpgP1QN0SYABom8sSDagwWZBD980o+GOE4AQGlSDC8dw0sO4y+x7VzFY4PZrWpZ964
+	ys7omGM4ZOgL8R3x8/zFwX/ygYWYY=
+X-Received: by 2002:a05:6000:18a8:b0:427:7f5:2b8 with SMTP id ffacd0b85a97d-42707f50382mr6666062f8f.43.1760966590020;
+        Mon, 20 Oct 2025 06:23:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGGj6EeZCPDunx0oM/sBho+CkCZ4jnkWx4xDYGXMkdxuK9dT515/nF5U7EByTd8v3TC30PiLA==
+X-Received: by 2002:a05:6000:18a8:b0:427:7f5:2b8 with SMTP id ffacd0b85a97d-42707f50382mr6666045f8f.43.1760966589647;
+        Mon, 20 Oct 2025 06:23:09 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ce586sm15508606f8f.49.2025.10.20.06.23.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Oct 2025 06:23:09 -0700 (PDT)
+Message-ID: <a25e1292-1110-4534-b7ee-b3398b955236@redhat.com>
+Date: Mon, 20 Oct 2025 15:23:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Queue-Id: 4790F120005
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] mm: huge_memory: use folio_needs_prot_numa() for
+ pmd folio
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Liam.Howlett@oracle.com, Sidhartha Kumar <sidhartha.kumar@oracle.com>
+References: <20251020061845.3347258-1-wangkefeng.wang@huawei.com>
+ <20251020061845.3347258-5-wangkefeng.wang@huawei.com>
+ <4d9b5a05-5e1a-4a99-b8df-bd61b336392f@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <4d9b5a05-5e1a-4a99-b8df-bd61b336392f@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cLk8G1u-iHu_KG14BQ8GPeLCImkAK1OyrDX57j03KCk_1760966590
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ch9rfxiw94nuu1eqmwgjxbuxg9uz4g71
 X-Rspam-User: 
-X-Stat-Signature: ru39ohyszdcuwzrr48i78fq1o4wwuzkq
-X-HE-Tag: 1760966226-464496
-X-HE-Meta: U2FsdGVkX19NfqKrP2gLzgG+tQFEj12zbgZ+RQss5wUvTmy0+IXg/FEWydW1/VOvQLRepVdZexVYQa0R1NbPPiMtFWx43DLLYVi1VHPYveCTJd6EopTv15EYCvcNt1lCjYEU9PG1/uvI1KRwoYVErbo/VHB67nl4aRTpAUE8iuz8vZvqmvb9IRzV/wSVT4lmGRJDAx9TGlWg4f5KKSvLX+bu+hi7YQA0z95mQuxMvyLeqbmAyR6/2tcs4X6cElXN551nF6dKEI3gKgDgwxbSBx4W1fUSIJIs6t1FmrCdcz9+mAJAQQju0km9TL9KtOonhSIEnhuMn1lr7RbPR7T2/dZG8GFwFMYp9HcN2w/Nn3O6yxCCpEsKbMwXLqsrKsakdJqAcWbw+okvI+NdN6bpEjqzy1/atP7xfScxEcHx8PD/p45pqJnxY+3XyC+AVynOPqJVABcuf13AerWzQ6BBOs0ZtyoGBBpyQq1V8kfjRt5t40Soh9rB6j3iw6DomZRllifdFFRB4XVP0NiBu4RS0DLO7VIXtRHI3lEAArSPn0pV8bj9jXTQqrUW/IzBpx5cRULkAzJcHA3fayFcC/M+2TA65y9fNae6pdFmBEcpYGncwetRNMnwBw33cTAdiaLchHnxXFlRYLPAMxIaPG3cmyOdB8oncuROzNtCI7Bli8mGbutkQ5fP0IKV5GDcR9KDNSjLb2FCqVjhIwdjZx8SIBjm6H/kWNs03EE7ur9XmA+CXrVdxn7ID4Hr6sHa2B4jM+Sb/751LrU241KlI71CAM0Ug/HiWvte7QUBEj1eSxjYX0wbjMKsmMZAMDjyMDU3K2fL8m2EzXWguxJcE98jfsYGzLvES13RMLOX491HjB5JR5MEkD+E5/dxvk2DTLfJV7EMKaxw30EFg1IgP3BKENDiyDDiU7AuhnaZFksIwqkSBdVzJh0zC1xAC02wQ0YlXbJuoqyEjnkVMiBjaUJ
- sZndaLu1
- 8CAhKEvcelTHdX5eDvo1guCz1nY4mI71BE1FgSQv3kib8DFtVEsjT4lWbdbKzhpSXjoo/ZkphizKlwk82b3NsNAbnwudCOPhJxOuYaKpGKsUbuXkVz+uf9j4KP+mY9pAd1yh7V4POhSNb8q7HRAZAFvkrLU6y1yRkb7aPZd7w50QR7Jb41YWjuC7zKhY55goZ3MvCQcucT5758DVbXlzFaqqMXLercZ7ti+qoZYtKB0rdPP/h3KAjDIgOx1s9QA64qpKnQZ6R+xCNhRzGq05GUcxvGOpzioHQXa4dnbfZftUh8qE=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 59978160005
+X-HE-Tag: 1760966593-707645
+X-HE-Meta: U2FsdGVkX1+xv3zbDLENIyTkNCbHBB76CWce1Z2cCobaGq3PUiolFOSa86YbsF9y7+aOZYOQF5seCJ0NYeWK58fPK6x9g0JHaPI9H2T/OE4EidzsfNQVdCmmirV7GY7HJ1O/2OAkbrrT8mylQMDeWn2aYk82PjnNKyzvi7IeOdhiEeuWvVz/tQ07wjhG2P7PED22hlArBzdGt9iJUBHIZI3JytAefB3Ne1JarP3+AXwXPqU4i+qHJFYv+rhredJ/Qx7hUJ4azxvyeH1czN2yfzjDSz7TxZjfltuEqxpvoqvp7ErvnGo9PY7Xw1uxrHTS0uYQC6UN7ABAIfyW6n3rQeE7fxneNYl8RveY9ksnLl0WqETbx6TLuyRmCGJjXko0OluBf4UspdlWKogR71jFmDpyNC74h8AyG3snMQ9Z2LkUvvjxiYDxZq4BByM9mZdhFG0DePY7PHA82Jt70MMpKBAJE1hZjA3I3KWues9hWwjpQSWa5rGPNmubMa4i/gqF+QuFB8ulV4u89QXb8jk8L6/Mi0MIdiF0lKFqxYj8Ka7SZZcTBhy2uG6ClAZQjVit1PiFhz+mbnjeRdk0gJQgHQCax9/DqUkoBn36jtxe3/h1mQ5ko8awvdlftTRBzXSAupC9kZILv1WGm8Mjnd5LN0Q6ooyC51xN6JzCxP4MUOQ0eFaxNt1hxHMtEKf+NcVzDsFxR013tMbfllhuKqGX81uYC2vUgEMrR9DY6ObS8B2jacSjKI73uJHQrimSyEwxdR7GqlwCKaJwhbF0UMeDsDeWaLP4EI5lMglSD0kwJX0L30hvV7aFJcveLhBXFn7q4yhMmq7tnjIbSeOmGqxTt8sTJEOpkRHgeFlkw8yXURpimNvFYTeNn0XkdzohbcB/THRN7BZxEAxmWrB9V06tI7WuDrGdhccjjcoIE0rSXwXZ8kXRef6RhGpUy/1ab2+OsHuvz/6phqrWva38lZr
+ IKmNOlDV
+ eVmw7vpDHEVYe8LY9uQVDjJxuWQ6PfagR3gBZM0vRIXIEJEwr+Dqzz2D7ixbVaux9G6G5ZNGX1QsqGEmVt4q6KeFklm0OEXjkqi6y5xhYlFjHBhcVmnKB4/ftXZ0UFfXSAiqP773tB9ywv0qLZV0OQLZp48SBV/KxzXNgOlPHTpxMMunN3Mj4J8v0J33zAwKak2nNDst054yXTSolPtkmYqpHU+GVegjCJk1pSdpOjOAaKjrWVwpeQ66t1SV4C89eZe/kALTM7UJlW4nVtg4L1BZo45DwUpCBZjFh+62LQCJ3c59bQddPMzch5NgThH22sSWx/kf+ZiColA4BCjwsgk4QehyBhPZ1d9e4XQNwTa4i2rPuQAQgNVmNp1cw0JUVo4Xr3CLkUPR6w0Um145R60+F0BOtHd4GORmhfwjDe+PmU2PzFwzwQhne8VjVwQjS+3cTo4QYQ23a2EnJUg4a3Vf2xF2MZvyZ9ZiW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,123 +184,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In DAMON_LRU_SORT, damon_set_regions() will apply DAMON_MIN_REGION as
-the core address alignment, and the monitoring target address ranges
-would be aligned on DAMON_MIN_REGION * addr_unit. When users 1) set
-addr_unit to a value larger than 1, and 2) set the monitoring target
-address range as not aligned on DAMON_MIN_REGION * addr_unit, it will
-cause DAMON_LRU_SORT to operate on unexpectedly large physical address
-ranges.
 
-For example, if the user sets the monitoring target address range to
-[4, 8) and addr_unit as 1024, the aimed monitoring target address range
-is [4 KiB, 8 KiB). Assuming DAMON_MIN_REGION is 4096, so resulting
-target address range will be [0, 4096) in the DAMON core layer address
-system, and [0, 4 MiB) in the physical address space, which is an
-unexpected range.
+>>   		/*
+>>   		 * Avoid trapping faults against the zero page. The read-only
+>>   		 * data is likely to be read-cached on the local CPU and
+>> @@ -2490,19 +2490,13 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>>   		if (pmd_protnone(*pmd))
+>>   			goto unlock;
+>>
+>> -		folio = pmd_folio(*pmd);
+>> -		toptier = node_is_toptier(folio_nid(folio));
+>> -		/*
+>> -		 * Skip scanning top tier node if normal numa
+>> -		 * balancing is disabled
+>> -		 */
+>> -		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
+>> -		    toptier)
+>> -			goto unlock;
+>> +		/* Get target node for single threaded private VMAs */
+>> +		if (!(vma->vm_flags & VM_SHARED) &&
+>> +		    atomic_read(&vma->vm_mm->mm_users) == 1)
+>> +			target_node = numa_node_id();
+> 
+> This is duplicated in both callers, and only used by folio_needs_prot_numa(),
+> why not abstract this to the function also?
 
-To fix the issue, add a min_sz_region parameter to
-damon_set_region_biggest_system_ram_default() and use it when calling
-damon_set_regions(), replacing the direct use of DAMON_MIN_REGION.
+There was a discussion on that in v3 I think where I asked the same 
+question.
 
-Fixes: 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for DAMON_LRU_SORT")
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
----
- include/linux/damon.h | 3 ++-
- mm/damon/core.c       | 6 ++++--
- mm/damon/lru_sort.c   | 3 ++-
- mm/damon/reclaim.c    | 3 ++-
- mm/damon/stat.c       | 3 ++-
- 5 files changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index cae8c613c5fc..1ce75a20febf 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -947,7 +947,8 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
- 
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--				unsigned long *start, unsigned long *end);
-+				unsigned long *start, unsigned long *end,
-+				unsigned long min_sz_region);
- 
- #endif	/* CONFIG_DAMON */
- 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 109b050c795a..dbe48e43682b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2770,6 +2770,7 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
-  * @t:		The monitoring target to set the region.
-  * @start:	The pointer to the start address of the region.
-  * @end:	The pointer to the end address of the region.
-+ * @min_sz_region:	Minimum region size.
-  *
-  * This function sets the region of @t as requested by @start and @end.  If the
-  * values of @start and @end are zero, however, this function finds the biggest
-@@ -2780,7 +2781,8 @@ static bool damon_find_biggest_system_ram(unsigned long *start,
-  * Return: 0 on success, negative error code otherwise.
-  */
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
--			unsigned long *start, unsigned long *end)
-+			unsigned long *start, unsigned long *end,
-+			unsigned long min_sz_region)
- {
- 	struct damon_addr_range addr_range;
- 
-@@ -2793,7 +2795,7 @@ int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 
- 	addr_range.start = *start;
- 	addr_range.end = *end;
--	return damon_set_regions(t, &addr_range, 1, DAMON_MIN_REGION);
-+	return damon_set_regions(t, &addr_range, 1, min_sz_region);
- }
- 
- /*
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 42b9a656f9de..49b4bc294f4e 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -242,7 +242,8 @@ static int damon_lru_sort_apply_parameters(void)
- 
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
--					&monitor_region_end);
-+					&monitor_region_end,
-+					param_ctx->min_sz_region);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 7ba3d0f9a19a..e30811cafe90 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -250,7 +250,8 @@ static int damon_reclaim_apply_parameters(void)
- 
- 	err = damon_set_region_biggest_system_ram_default(param_target,
- 					&monitor_region_start,
--					&monitor_region_end);
-+					&monitor_region_end,
-+					DAMON_MIN_REGION);
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index d8010968bbed..6c4503d2aee3 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -187,7 +187,8 @@ static struct damon_ctx *damon_stat_build_ctx(void)
- 	if (!target)
- 		goto free_out;
- 	damon_add_target(ctx, target);
--	if (damon_set_region_biggest_system_ram_default(target, &start, &end))
-+	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
-+							ctx->min_sz_region))
- 		goto free_out;
- 	return ctx;
- free_out:
 -- 
-2.43.0
+Cheers
+
+David / dhildenb
 
 
