@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F784CCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEA3CCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 15:13:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B9628E000E; Mon, 20 Oct 2025 11:12:54 -0400 (EDT)
+	id A8A4C8E0013; Mon, 20 Oct 2025 11:13:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6912C8E0002; Mon, 20 Oct 2025 11:12:54 -0400 (EDT)
+	id A62508E0002; Mon, 20 Oct 2025 11:13:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CE328E000E; Mon, 20 Oct 2025 11:12:54 -0400 (EDT)
+	id 99F648E0013; Mon, 20 Oct 2025 11:13:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AACD8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:12:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDF67140119
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:12:53 +0000 (UTC)
-X-FDA: 84018835026.20.41B36BA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 538CB2000C
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:12:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mXt7VJL7;
-	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 897DE8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 11:13:21 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 363791399F8
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:13:21 +0000 (UTC)
+X-FDA: 84018836202.04.AE266BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8242AC0009
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 15:13:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIIIdDA9;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760973172;
+	s=arc-20220608; t=1760973199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xvKAWwjZc4rZ5ZTpePNy0vQY4XiImmDZkphbJHYlDc=;
-	b=cvoqw77WWWGOZBTKL++nECOR7Kq+VRbwxEZaMELfFGsGmQwc1CCPKRHFZbnP7eSIB+Tbv7
-	yD1ocliMS14cMdqkL9ay0beSoR01ZvPB7GXJrBb6rCPv03jzzHISv+C1MSpqHUO0qhSvV4
-	Ehu6tNnmuyyK82DZ8hxfMkII/sM9oIA=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mXt7VJL7;
-	spf=pass (imf03.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760973172; a=rsa-sha256;
+	bh=+B6RLSi7upe17nU/JwJyfBsdnsuSDAx2ZffC+5tLy/I=;
+	b=rxYMm8+zRn4seaJpdlq0KinA4v02hjsd3gMc0S6vVBkDXySKpHrNYPZG5Hf/20d+q87nNI
+	CUZnfK1pOo4AEF7f5kC3NVmfZhWtcMOha50lo4FlGJviAb2stPDNfkWVETx8GND9Cyq8RW
+	Gwa1XVOn00W0jce+nmGhqi6NCFSHnI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760973199; a=rsa-sha256;
 	cv=none;
-	b=bU/D7+lq2agEdeNuu7lMbUTT0KUbB9Mj8EMIy85pHIRDWc6ZUFGDj5oUJNDv4/6/RO1sg3
-	SaEhyMOWM1iFAGqP64OQ+REgEJ+vn9X9g0f/M8d5dRlsW05XFbFJ7/TKJtxsnBw4CCwEmd
-	sQqm/OXPTIYesYztRuT7nzIRYIIcfZg=
+	b=zYYn/OFVsOx5ikiscuJqHMxKOPT4PWtVkmv+uUtsfXp2f9nY5QKipWBKjSqYGZXF5/Nv3a
+	UT8ikDEVsnxXcZwfzUvKnMLQ0Oz6J4a1LsckrAhe9TXtbyND2Aovvz0laZxMeOQZz3iC7r
+	PJcaJuUzZNM1DVBMAlYFnFICToO5E2s=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VIIIdDA9;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADF2561FD6;
-	Mon, 20 Oct 2025 15:12:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E2CC4CEF9;
-	Mon, 20 Oct 2025 15:12:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760973171;
-	bh=xL2aZT3dND/IgpLCEUeVhydDyi+sqU+McY8Wwq4tBeQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mXt7VJL78UfUaR/x42reuxZo8R8etuEGJARMSiHnI4KAduwEJu8QZgDv6IQUxL3+6
-	 aA7UxGmNC+XKp5aHW5pI4gf5JW1gV2EIOttqSVdBNetKBRWI+XRMbFi4t3tDOlZqvH
-	 uRgF1QcnCLnL1hlM7/C2KfNSGX49lEXO8xYQWAM0=
-Date: Mon, 20 Oct 2025 17:12:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm, vc_screen: move __free() handler that frees a page
- to a common header
-Message-ID: <2025102026-unopened-equal-764c@gregkh>
-References: <20251020143055.407696-1-rppt@kernel.org>
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AEE0441DE;
+	Mon, 20 Oct 2025 15:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC74EC4CEF9;
+	Mon, 20 Oct 2025 15:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760973198;
+	bh=YqHSvPd7oXvJfa97f+UihKrYm4qSWMBIKneomnSlbWg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VIIIdDA9KQzEaz89j2hXJTZ67sI6wWiDy25wwwN0tp292Bec6F1OmUqRdYJBICquf
+	 GG1TmYy+LJdEP622X97TR3SCiL7iwhZYL9Oj40dzQgc+ZJS+c2VWv/RcAyVYThvRx1
+	 mVhSRu2avHN+FrR5uDg+XP6VsyrQym7sk7YKl2U8Jo3WnUlFGNfHeDNyeM4Ld6ZDxN
+	 Yc86V8EjMKY8agrMd2hJoJ9lUBE+HbDaStx59927+wNEWcyouoK3DcCa9rQknxGcul
+	 2vh5gbckgtelfWEPj+bFaYQR8ku0LTZsCg+jOowA9Wvrz6DsNS863lq0NeK2KFbEqN
+	 oVQ+8q/9v/tow==
+From: SeongJae Park <sj@kernel.org>
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev (open list:DAMON),
+	linux-mm@kvack.org (open list:DAMON),
+	linux-kernel@vger.kernel.org (open list),
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com
+Subject: Re: [PATCH] mm/damon/sysfs-schemes: Validate nid usage in nid_show()
+Date: Mon, 20 Oct 2025 08:13:15 -0700
+Message-ID: <20251020151315.66260-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251020112824.144391-1-swarajgaikwad1925@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020143055.407696-1-rppt@kernel.org>
-X-Stat-Signature: 7u4ng4pd3ar74t4ka97eeu5gypx6mfje
-X-Rspamd-Queue-Id: 538CB2000C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ue3yki8whn33m8a6z1xghgkis6p76r5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1760973172-962728
-X-HE-Meta: U2FsdGVkX1+tTtXNdut9dXI24EEsycr3Pit9qDWf1xeW06b5kNBNSN2NIpNBuPBSnzvYZ4mKOG3H+H97PX6SPyb8wSzvPqDlRG5Hc1id73bLZG5QS+XEUsN4Df0Oos8GWPDgDC3cAFYGFfGxKtb1X0HGXLLb9qun2+kJ4Xrc8R8p2ahwa4ErnK9A6vycfZ6wZepn8vjHaa8NG335KjfpjaouzD8h5n8XHkWlWWbEYeMVJLbJpCg0WhlYQy1DfKKXs4oMjwg8/gzeQraciUlOPt5vXM5fQgxyfzav6e6RJktzEYdGjsavmuIaLHSozTyLxQpGsljZOZDlsJBIhbp3dtsNTfrXuShM67Uj+uRAqqb23DH5qNF27Wu7ExN3SQcc8Orun1Ybp5KdawoaQBXi4Uxp9C2IOtWu7jqhUujNvL/9Bt1nmJuqNpVFm3WEwoNjahBYRT8IDbwXPeD6/A27Yl7IS41oC2RSFpgxU0G/iWExvmviYmdsdrjts5wT+UfeysJ1FGuc78sxkUdDZ64kPzQwB9LYV8PHijBJ2oVTOA4zc8b99DoCO3jfTNJ0Tx1ckDjXdwY8ktdfAbnDNaVotb3Cg/CswXOB70NolwCx9+yB6Tc3GYri+ulvF2yMyki+CJ2FHThnVLcYx9/x+OEXdLFrlibrsHutOavyByfm+UQIaEsfJJrqN33T0rItLVvQQ5zqfy+ajrJ9c9hxHRyjreISZH837I/0YaNWv0OYjwWzMLHcYQ4aDCbSr0MuC6Hl4euE7AocRGmoef/tTeHMRJ2mZ/o0SFnqU5uyz1fkapCRVg57CfEeue56JbbJDN6kmQfpVCLpfZyDD0mAZVipzJidlD8ln9OIUI3ED3Wi+hLVxBAGLYyK0nTenLKE9p6IRUvuleO5k9pFRp82x3eHxc5fv1/Pgwws/Z2dVRGwSJkCN+60f2FdqMytc5YHF0Wtxm5oC5GE5HVtFMrJGfx
- kznNw9L0
- mru36Zo/qH9+vTNGeV+0T8PHg1LnjKptgsmvirryPA1owTdOLrAe7F1mWmC/keaDHw9Uysq9OQy4+KMiCTx8+EqZmWplIYZrJI4iCRPhygEuiSvFFnwMp6NHvP3yZfbmKzXHIw1GBJQjdedqvbUROl8vc/JC6vkYEKSi2VMQt6AK5oeHXhpurO/S6NfjSI9xHn2XHtE1MChwMNeooUKzNxDjx44EtJfMct9jUfUH88xmGtiuGK/kUYI3W0aiC7h16W0/k0Q3xPf/iNHbDyYVjISglQQqT0Smqmv/3IHh3wipkkOYzcz5H9JO67D7iusrSfWWYH1ms/UHk2UltxLv/4ebadnvbwJn6oPrABtMbKPhjISvg29DAGyiVuFwKwIFCDD0MrDK/pFZixW8=
+X-Rspamd-Queue-Id: 8242AC0009
+X-HE-Tag: 1760973199-568586
+X-HE-Meta: U2FsdGVkX181vum8qRqyFo1bb4uKb18gno/yL102r39BeOZW/05ueG/nKqy3wqA9JKgcHlcHCtKBAgPIjOa6omF2TxSFcEjUWLbsfU5a8R0y4pnz8d4Z/mQF52qyhyXHnT5droOnDXxz2hAvYTvRKM3Ykkg8yBBok1D4wgGldr6ZGaIn1/oncGOGbrlVMuZdzuR+HlSyKda9jR7d61JZV5I2FjwFoZYZo1d78VqjCB35i5+Sqz6vq6BYnsP2w4k1AcsTsv/xoKFyGtzAobo7WT8K+tsTb8Ix5ds8HwVxOwClDFBsiJczyqog3i569+RdQwTtAOJ89ggOvWnyIHrfdp/REUPDjcMDLeCSkM/BLsf+4k+zNAKoo9UaitiveywtlOFod0Y5wKP06UjGeTSIWOIFv2Aq40bQxKAG5pTAF4d1V3qd/CBYGzx5aR8UQU4jqY9b5Nc3Q00VZMqdeLefOSh+kz2x0RrHHkvDL8fMnF+naDkrd7ACCsYqtCOjVPj+RLI/Jl/Y8I7CWYSQWphdqYuOiUnnLaR7U8wVtS/ft0nqxXEJy9k2GQyBlRVGBzycMNPYKZOxKTOdQv+vKDNX8Xalbx5tAf2UhymIT0Uv8yL1h2BXY6KnNpYEEZQuaZvWUBo4ujlhJgbJFbPNOvtjNFpRSKjlmbJPqLA2eBPAXzShJ7TR/oqBghVTfWz3TXdAlYB9mMSEBA5x6wjYQ37rTLOWymmNv1hjzPuBs1dr5a1/K4D+BEcLiDO5ztT1S3UO7OIf9IJ4CYrrC+9mO3+Ib5iJgsk3Zeo65cp5RNL7Zd9v6j0DRA4oM/l/cbRyc3g7IF8F0sg49Adq/XGvIxu5HEsRlvIhGqjr6B08BKRM+q27YFuyVtmcjXYXkN/8/3KGsfkBTOc+WYJqWrvtpgJRYBgYPCIPBoHiO/MSGpML1W+GpGWA4Zp6b7j6D64Usutp1FqtjWY6lcQjTamIoBS
+ 3nHK7i24
+ BwezH3XminWw9DXv1wnlQV/MnjCSklxHzTXfzRfDiUct+63n0rPeDnLlV6cqMm9qJS/4yG5S07CqN1nASMJ8Pgj4PrpWQ0Nrbs01lEIgeFKvI8dbkNKpSjIZZDNVGqklmZqApT6yV5op0lM/rBWso646c6OIPZtMZyBzSi4yhGdtiegj/cygdXSmBbiGgLx3Td+4YwE5UgWSI+xoKips7fUTqF8ztOUbBLW6KTjv0d374IYrB0E6B5OD1RJla9XpkEJMv2r7CLu0cnQ+T03Cgr0vkZ5caG7RUECPzm2FqY0PS2ZgJHeZrZpk7vg7gv4+Wu5nq+wAGoJy6xXNqFhYCf4cgWVJ3XcHtOc4aQzFa3AbSmMMI/fTQcmpNvHCUNvnnkdjN/4YSW68RhuE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,43 +96,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 05:30:55PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Hello Swaraj,
+
+On Mon, 20 Oct 2025 11:28:24 +0000 Swaraj Gaikwad <swarajgaikwad1925@gmail.com> wrote:
+
+> The nid_show() function previously returned the node ID (nid) without
+> verifying if the goal object of damos_sysfs_quota_goal was using a
+> node-based metric. This could lead to incorrect reporting when the
+> goal metric was unrelated to node memory.
 > 
-> vc_screen defines __free() handler that frees a page using free_page().
-> Move that definition to include/linux/gfp.h next to free_page() and
-> rename it from free_page_ptr to free_page.
+> This patch introduces a validation step to ensure that nid_show() only
+> returns the node ID for valid node-based metrics:
+> - DAMOS_QUOTA_NODE_MEM_USED_BP
+> - DAMOS_QUOTA_NODE_MEM_FREE_BP
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> For other metrics, it returns -EINVAL to prevent misleading information.
+> 
+> Tested with KUnit:
+> - Built kernel with KUnit and DAMON sysfs tests enabled.
+> - Executed KUnit tests:
+>   ./kunit.py run --kunitconfig ./mm/mm/damon/tests/.kunitconfig
+> - All 25 tests passed, including damon_sysfs_test_add_targets.
+
+So nice patch, thank you!  I have a comment below, though.
+
+> 
+> Based on commit 3a8660878839 ("Linux 6.18-rc1").
+
+Maybe this is better to be put under the below comment section [1].
+
+> 
+> Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
 > ---
->  drivers/tty/vt/vc_screen.c | 6 ++----
->  include/linux/gfp.h        | 2 ++
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  mm/damon/sysfs-schemes.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/tty/vt/vc_screen.c b/drivers/tty/vt/vc_screen.c
-> index c814644ef4ee..d2029f029de6 100644
-> --- a/drivers/tty/vt/vc_screen.c
-> +++ b/drivers/tty/vt/vc_screen.c
-> @@ -53,8 +53,6 @@
->  #define HEADER_SIZE	4u
->  #define CON_BUF_SIZE (IS_ENABLED(CONFIG_BASE_SMALL) ? 256 : PAGE_SIZE)
+> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> index 6536f16006c9..23a73b94fe53 100644
+> --- a/mm/damon/sysfs-schemes.c
+> +++ b/mm/damon/sysfs-schemes.c
+> @@ -1112,7 +1112,16 @@ static ssize_t nid_show(struct kobject *kobj,
+>  	struct damos_sysfs_quota_goal *goal = container_of(kobj, struct
+>  			damos_sysfs_quota_goal, kobj);
 >  
-> -DEFINE_FREE(free_page_ptr, void *, if (_T) free_page((unsigned long)_T));
-> -
->  /*
->   * Our minor space:
->   *
-> @@ -371,7 +369,7 @@ vcs_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->  	loff_t pos;
->  	bool viewed, attr, uni_mode;
+> -	/* todo: return error if the goal is not using nid */
+> +	switch (goal->metric) {
+> +		case DAMOS_QUOTA_USER_INPUT:
+> +		case DAMOS_QUOTA_SOME_MEM_PSI_US:
+> +			return -EINVAL;
+> +		case DAMOS_QUOTA_NODE_MEM_USED_BP:
+> +		case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +	}
 >  
-> -	char *con_buf __free(free_page_ptr) = (char *)__get_free_page(GFP_KERNEL);
-> +	char *con_buf __free(free_page) = (char *)__get_free_page(GFP_KERNEL);
+>  	return sysfs_emit(buf, "%d\n", goal->nid);
+>  }
 
-As per the other thread recently, why can't we just use kmalloc() here
-instead?
+According to 'git bisect', I in the past actually added the todo comment.  But,
+I of now cannot remember why I in the past did think that's something to do.  I
+now think this function is better to be simply show the value the user has set
+last time, since users could set the metrics after setting nid.  Other similar
+parameters also work in the way, to be wiring-order independent, so that simple
+behavior would be better for consistency, too.
 
-thanks,
+I'm sorry if the wrong todo comment was confusing you, Swaraj.  Would you mind
+sending a patch removing only the todo comment, without introducing any
+behavior change?
 
-greg k-h
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+
+
+Thanks,
+SJ
 
