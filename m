@@ -4,88 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF63DCCD199
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 04:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C251CCD193
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 05:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D563B8E0005; Mon, 20 Oct 2025 00:53:32 -0400 (EDT)
+	id 72E3A8E0005; Mon, 20 Oct 2025 01:38:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D06AD8E0002; Mon, 20 Oct 2025 00:53:32 -0400 (EDT)
+	id 6E49C8E0002; Mon, 20 Oct 2025 01:38:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C688E0005; Mon, 20 Oct 2025 00:53:32 -0400 (EDT)
+	id 5F4928E0005; Mon, 20 Oct 2025 01:38:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1C568E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 00:53:32 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 511C2C05B9
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 04:53:32 +0000 (UTC)
-X-FDA: 84017274264.09.87FDE6C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 859F7140007
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 04:53:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bVoQwAyu;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E3568E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 01:38:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8028E11A844
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:38:21 +0000 (UTC)
+X-FDA: 84017387202.06.387B8BC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B4D2F1C0003
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:38:18 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cReZxwaj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760938699; a=rsa-sha256;
+	cv=none;
+	b=m12Kwfy/udUDl0cvRvK0xwPJIF5EJqASo330b0hez0apmqmABbpNoqCkiLhYwlCC8RqL4D
+	NfMD8KcPnPikhm1E720nzQkPwDRWtprSo1u1kCnpVNB0PhiV//G8eUjWmaxsPKE9mS8HEt
+	igTXmkaPlgCSc8RcBsfHpOBr9kRfjx8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cReZxwaj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf20.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760936010;
+	s=arc-20220608; t=1760938699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+vF0NXxLpqUs1Cj4KKMjWaTT7mC88mvfP8fHi8s/Ew=;
-	b=rvNbKNzIXSRXQjU7VsyAAI2Wao7RfZlBSj2OOHR/ltXQzfS15fREMqHx3Gf+q0M+b2CRqa
-	NgwAfxd3oDyTO1rm8QOyvFWCOFwOaj0/QyqBUOEtqUOYRIRL0YgRtxuuiUGNr0P+8cK0aW
-	XQgIpGy2TElb1ybNo0BohwqrS5kWu0I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760936010; a=rsa-sha256;
-	cv=none;
-	b=nD7AYk9OwcyOmYSfn7T7WE/1z4lPH1Ssvh8hB/VrVpkL/1n4eTIaJCrObuuoisJjRpfbKl
-	c9EinKvDTSB6xRV83UXWjvoeA847zKNfTc8M0FkiiVrcr9TFLjZpQajDPZjE4Fc4esKm2o
-	+XcQ6JepHxkQpjIafEtX39/5ZZZu36g=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bVoQwAyu;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C58B360144;
-	Mon, 20 Oct 2025 04:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1507AC4CEF9;
-	Mon, 20 Oct 2025 04:53:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1760936009;
-	bh=xw6wua+9An7R6Pk+rGlLYtknBm2NgeItgTQplrPZ2hA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bVoQwAyuKyviRKF9fU9nSvYcvfJLo505wTKzAodqnmecEG25NtrUVsVVX3hh96TFO
-	 qAX90unR2OF/trDqqF+2U4dm7Ax7V7YeBxFFNf4t6HhBM88JzxEepXBjaCWr2/w+cG
-	 jmz/xn7/KEukpHBxvrIF2ExzXYjvu+d2Q6VxBUic=
-Date: Sun, 19 Oct 2025 21:53:28 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@redhat.com>, Matthew Wilcox
- <willy@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Kiryl
- Shutsemau <kas@kernel.org>, Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH] mm/filemap: Implement fast short reads
-Message-Id: <20251019215328.3b529dc78222787226bd4ffe@linux-foundation.org>
-In-Reply-To: <20251017141536.577466-1-kirill@shutemov.name>
-References: <20251017141536.577466-1-kirill@shutemov.name>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: k6fuijehc4aejsidp36euuqsoam3jeau
+	bh=p+T4HiC8T5Xao5e9CPsuaqFg4i3G6+1YBt+zAGdvVws=;
+	b=3cVhUUSqDQhy4z7wldYNNXKketj32wBknYEhNovOyKHqEv9ebFj4OE0tlKMPLUnT2V7BQZ
+	/vlKrFYgq6in97L0nwZwJno1BqiMt3Mo5C3wbvkBPfiX/oRK4CnBalODs3gthqdeSxtUB5
+	sGX2E4hsrr9hKufC012qJ16AseLw0eI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760938699; x=1792474699;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=34fldmSOk8nJAh4latVatdAliKdxeQL60mo7ncKT1OA=;
+  b=cReZxwaj29gsrAw0kIA1CtxPBoRd0r09aWgVG/Ko+qGMsnx+Zw0npjqT
+   HwGaZWf+ke4ippv02WffKV4U9crfdxZqPbZO1Wp2t79LJAzP4QOGTyWKR
+   RXNKh1Yc/uGNSNxDOUNX9crfgoBKOej45HPbRaJuLasGNczhl5WujsZhr
+   vYqgfVAqyty2gL0UmhdKmk9oWyI913OUsMmNt1wjpDLwLGd6XdqstI/3e
+   WCGZ5R5No4qlNwSPpVmzhEksccX/bwjY/obTfHfC8uBeFjZtu6lKhlFEh
+   GPcIw0UqwPpom8Hd5zBgcXxV188jEnZ42upr6IfRhazS/18ikUogkHYLh
+   Q==;
+X-CSE-ConnectionGUID: UP7A4EcnQRCbZ1AEjweVuQ==
+X-CSE-MsgGUID: HV+DT29RQpWRM1u5k6b8Ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11587"; a="65668766"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="65668766"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 22:38:17 -0700
+X-CSE-ConnectionGUID: 3+CThLmvSO6V5/F4GDCApA==
+X-CSE-MsgGUID: RsoVDXakTFCTuMkAqrRqsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="214214521"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2025 22:38:11 -0700
+Message-ID: <13d660ea-9bff-47dc-9cd7-ae74869edc5a@linux.intel.com>
+Date: Mon, 20 Oct 2025 13:34:22 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot ci] Re: Fix stale IOTLB entries for kernel address space
+To: David Hildenbrand <david@redhat.com>, Dave Hansen
+ <dave.hansen@intel.com>,
+ syzbot ci <syzbot+cid009622971eb4566@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, apopple@nvidia.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, iommu@lists.linux.dev, jannh@google.com,
+ jean-philippe@linaro.org, jgg@nvidia.com, joro@8bytes.org,
+ kevin.tian@intel.com, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
+ mhocko@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ robin.murphy@arm.com, rppt@kernel.org, security@kernel.org,
+ stable@vger.kernel.org, tglx@linutronix.de, urezki@gmail.com,
+ vasant.hegde@amd.com, vbabka@suse.cz, will@kernel.org, willy@infradead.org,
+ x86@kernel.org, yi1.lai@intel.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <68eeb99e.050a0220.91a22.0220.GAE@google.com>
+ <89146527-3f41-4f1e-8511-0d06e169c09e@intel.com>
+ <8cdb459f-f7d1-4ca0-a6a0-5c83d5092cd8@linux.intel.com>
+ <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <d1a6c65c-6518-4227-8ec3-f2af4f7724ad@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 859F7140007
-X-HE-Tag: 1760936010-400314
-X-HE-Meta: U2FsdGVkX1/e1fehs5dzvfzrwfbQ0kl9sZnFGS7ho6xSqaeQeZcQZeVVxBaFUiwYX8pT9kfBcoQKAF+TU/hQIpcWSS+0qB/7WqdcbuuZaFbzFCbzHaOO0sSe2lY7axEJgdH1NC3IKPNMYZmMfwlF/nakhFNo4Pb2EY5BBkG7eJvZ5s0s6aNqQxXolu0HzhirFtCJmLRNoYCZsbqBf6ML/ubjEUcYOcH4ZQdQARD3Fx3DE1HhAiDIKT4/2EIG5WFqIKGNUwpkKT6fj4RU2J1u1dHmsW6w7NRMPOEKeP2mWpz/kAAH4OpcGQrjA/SlMZBP7lu3v0ZgZdtxwP/ywop50Pao5WXeHJd8nCXTVQdiDUZc0o89fzykg1RcwfwblSkXJbXxwYc06AinNGf+U37OJolTBJJmvQY294kpDYMsjacPpUx3sQt/GxI1UJhJyLEzP0fOQnBSjUF5oUtBAwfoYH6ejVvSAY8Rc9Aw9bKtMXLTVPATDdidnZyMOAaox69wiFLZQ39oT48bvXp092ptHDCZ9Tv/NPiGpXneHs9X0DylsTotuFUYaE9PJK+wqzEcrfiJAYR0TDyer0Qv2vMoEt7jNpMdrKdtu6d3kDvx6r7WkUqWUAX0hrXqjQfiXVeiHGG/IMz9Yu5euQPmPdeWUpjJbAXXA6s4p7fhI8pIeAFS/d8AlthYGb7o1kx6kDDpJp5Vf7Jui+y1miI+0jAew8BnOdaaWpWqo7p+Nw8AnrHDhw+/qePciDmlt2emT/dJlmGSxpMkRTOtVgRnis3rwUs8uWl8VCYicuSJh6K2wnmVQ7YNllx4NnHKTpcnogwb5mkd336I+gHjaUvxVdTHQNQPIaSmau92wIwIzaDcaZh3uBb+EaRnVidakdwAm1ggb0BA7JXlgN5LFKocPUPv+JMpWievz6YUW45i+aZKoadr3xRo9JdROXsEcZUNCwbBxSie1oEv71n7CP/cnrO
- 8fvcRAff
- VDTEjZmXyDBn8Msxz2JW6Dx12oWN5hts/ruEyFp2IiiDIAJL/VZx2mcHHepgM8r93wxcSHzTJzb6z2IIQz6iek447nI4FNBbaHO2EjXYE+CTsMsWhBJTn+XKqU1rWihcWJl+ca2gxEgAr41eQ2HUEQV9hZ+/rU5zhiNuRj75Mtq8r4Iai3Vh0dTxr7oMDXtUpR22vVFv6nO7Y0EOACgtTqSpif0Kw3yqq2TkeOQi5P6dJVhN+Oa0JwD9x8MGMzzF9jdMRv8dPJ9E6wRvoiBTcDilChw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B4D2F1C0003
+X-Stat-Signature: 7jnxqs3fbj7nrhzda18jp5k1f9u1go1j
+X-HE-Tag: 1760938698-660241
+X-HE-Meta: U2FsdGVkX1/3SOIVRzzOyPuCnSCbRqdWj8S84dLmrUKaAHODvACNpg0NR94XfZs7onwsdX0RR3KvSvioMUWsa3ETg27Gvu8VT7+sGj7u8yo6brKJlwGtE3HdH0neJznTMeHmomzJRiJV+D93yqwaVpBgec7j62YFT5CGc5mhayd2Kl2oxORCHB5mkp+Z7OfDM0hYNVuNiH2+srkr8geXhbv4CYw8qHh7lhZQzuKu8ID729mOeWsRQt6Z+FfeAQ774YM5Fp2fNki8uS+JQvVCCKDQqoVdfIToSYG0Zpmj0zz/utG3Rwkrcul3+rirgowxOlYHILS72xNPdLEuuaD46E0hcZz762nD68+GX939qkAU8ldV6qUQiovuDFkb6H7KAdvZgXsIJxxZMvO/36FZ5ov7LoGKa3ixiS2Al7+bQohjZpuZ8DoYLe0v9nMFyKNVnIzB9Q/l1ZHOYqUfbYULK0vY+sqVz+4nOnSOVTKUqujeV8pUqbvSZzxB0UAKBaG4B1vdABylaZ++nzbUEAXpXn4R5qXehlCBtNCkoYhfiacd3V0jRqxnDFOsl6Ts0slZU35id5DBsdL3bRBRE2w2BvAJtU0o9X77JN0uIqrinGKJ0Di94U8i3ZVJSTisglBibo64MQwSurowCL+awzE5eF4QpaKwgX0SHn03cdG6cXs73nPo/tgINj6b6NzAhycgWufh/gRX8Yybk5H2ayg8wqWwI0AJqPorrW9qJtjJ6iwYQ+lqKtAZ1NF1do4BQaQWtR8cTp54NAmR1SPjsShlNw22n66NIzIp1cxrQOUFPZ9kSY/cfD0QgS+olJb89Dc5HTTtF+m9xq26c7ZJfSuboN/x55UCABvG2WDIFgojJI6j6eE3hx7KOEYXeQo1TLb5dc2vfJextjDhMThkLI8mm/uK72ntvO2xdGYf/abQaXETBIYhztYO8AgilG4nkYNiL1FeMwSQOLo/MnbeFyD
+ G5H7NGnI
+ hVy7+EggKAqKtBJq9BnETAQbH0is+Nt4BAYOZDOOt9r/dwlHxn6SqsAR+FaVsIfICHSHEyhL4xgCMDTov86U82o5BNt1JdKUOgjIAon2nmR1xzQjieUTJMS42K84KnCvwvWw3HEhE3mhd9E7MgZns38GXwvfO9wosyd1hg4/PYqTvMqyf3277wznw0NORvoRBn24o9aCwEFwI/DruslJJS4VQCumSY32FeOe6D1jaeIXyIjS6ro9EUKwBay5/soQjLD2pRilt4f/bP1xk1kct1o3NV9jce/2tfyNqi+s5ep9yrFmEkuigykgsfE4oJNzgnqbZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,235 +120,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Oct 2025 15:15:36 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-
-> From: Kiryl Shutsemau <kas@kernel.org>
+On 10/18/25 01:10, David Hildenbrand wrote:
+> On 16.10.25 10:00, Baolu Lu wrote:
+>> On 10/16/25 00:25, Dave Hansen wrote:
+>>> Here's the part that confuses me:
+>>>
+>>> On 10/14/25 13:59, syzbot ci wrote:
+>>>> page last free pid 5965 tgid 5964 stack trace:
+>>>>    reset_page_owner include/linux/page_owner.h:25 [inline]
+>>>>    free_pages_prepare mm/page_alloc.c:1394 [inline]
+>>>>    __free_frozen_pages+0xbc4/0xd30 mm/page_alloc.c:2906
+>>>>    pmd_free_pte_page+0xa1/0xc0 arch/x86/mm/pgtable.c:783
+>>>>    vmap_try_huge_pmd mm/vmalloc.c:158 [inline]
+>>> ...
+>>>
+>>> So, vmap_try_huge_pmd() did a pmd_free_pte_page(). Yet, somehow, the PMD
+>>> stuck around so that it *could* be used after being freed. It _looks_
+>>> like pmd_free_pte_page() freed the page, returned 0, and made
+>>> vmap_try_huge_pmd() return early, skipping the pmd pmd_set_huge().
+>>>
+>>> But I don't know how that could possibly happen.
+>>
+>> The reported issue is only related to this patch:
+>>
+>> - [PATCH v6 3/7] x86/mm: Use 'ptdesc' when freeing PMD pages
+>>
+>> It appears that the pmd_ptdesc() helper can't be used directly here in
+>> this patch. pmd_ptdesc() retrieves the page table page that the PMD
+>> entry resides in:
+>>
+>> static inline struct page *pmd_pgtable_page(pmd_t *pmd)
+>> {
+>>           unsigned long mask = ~(PTRS_PER_PMD * sizeof(pmd_t) - 1);
+>>           return virt_to_page((void *)((unsigned long) pmd & mask));
+>> }
+>>
+>> static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+>> {
+>>           return page_ptdesc(pmd_pgtable_page(pmd));
+>> }
+>>
+>> while, in this patch, we need the page descriptor that a pmd entry
+>> points to.
 > 
-> The protocol for page cache lookup is as follows:
-> 
->   1. Locate a folio in XArray.
->   2. Obtain a reference on the folio using folio_try_get().
->   3. If successful, verify that the folio still belongs to
->      the mapping and has not been truncated or reclaimed.
->   4. Perform operations on the folio, such as copying data
->      to userspace.
->   5. Release the reference.
-> 
-> For short reads, the overhead of atomic operations on reference
-> manipulation can be significant, particularly when multiple tasks access
-> the same folio, leading to cache line bouncing.
-> 
-> To address this issue, introduce i_pages_delete_seqcnt, which increments
-> each time a folio is deleted from the page cache and implement a modified
-> page cache lookup protocol for short reads:
-> 
->   1. Locate a folio in XArray.
->   2. Take note of the i_pages_delete_seqcnt.
->   3. Copy the data to a local buffer on the stack.
->   4. Verify that the i_pages_delete_seqcnt has not changed.
->   5. Copy the data from the local buffer to the iterator.
-> 
-> If any issues arise in the fast path, fallback to the slow path that
-> relies on the refcount to stabilize the folio.
+> Ah. But that's just pointing at a leaf page table, right?
 
-Well this is a fun patch.
+Yes, that points to a leaf page table.
 
-> The new approach requires a local buffer in the stack. The size of the
-> buffer determines which read requests are served by the fast path. Set
-> the buffer to 1k. This seems to be a reasonable amount of stack usage
-> for the function at the bottom of the call stack.
+These two helpers are called in vmap_try_huge_pmd/pud() to clean up the
+low-level page tables and make room for pmd/pud_set_huge(). The huge
+page entry case shouldn't go through these paths; otherwise, the code is
+already broken.
 
-A use case for alloca() or equiv.  That would improve the average-case
-stack depth but not the worst-case.
-
-The 1k guess-or-giggle is crying out for histogramming - I bet 0.1k
-covers the great majority.  I suspect it wouldn't be hard to add a new
-ad-hoc API into memory allocation profiling asking it to profile
-something like this for us, given an explicit request to to do.
-
-Is there really no way to copy the dang thing straight out to
-userspace, skip the bouncing?
-
-> The fast read approach demonstrates significant performance
-> improvements, particularly in contended cases.
-> 
-> 16 threads, reads from 4k file(s), mean MiB/s (StdDev)
-> 
->  -------------------------------------------------------------
-> | Block |  Baseline  |  Baseline   |  Patched   |  Patched    |
-> | size  |  same file |  diff files |  same file | diff files  |
->  -------------------------------------------------------------
-> |     1 |    10.96   |     27.56   |    30.42   |     30.4    |
-> |       |    (0.497) |     (0.114) |    (0.130) |     (0.158) |
-> |    32 |   350.8    |    886.2    |   980.6    |    981.8    |
-> |       |   (13.64)  |     (2.863) |    (3.361) |     (1.303) |
-> |   256 |  2798      |   7009.6    |  7641.4    |   7653.6    |
-> |       |  (103.9)   |    (28.00)  |   (33.26)  |    (25.50)  |
-
-tl;dr, 256-byte reads from the same file nearly tripled.
-
-> |  1024 | 10780      |  27040      | 29280      |  29320      |
-> |       |  (389.8)   |    (89.44)  |  (130.3)   |    (83.66)  |
-> |  4096 | 43700      | 103800      | 48420      | 102000      |
-> |       | (1953)     |    (447.2)  | (2012)     |     (0)     |
->  -------------------------------------------------------------
-> 
-> 16 threads, reads from 1M file(s), mean MiB/s (StdDev)
-> 
->  --------------------------------------------------------------
-> | Block |  Baseline   |  Baseline   |  Patched    |  Patched   |
-> | size  |  same file  |  diff files |  same file  | diff files |
->  ---------------------------------------------------------
-> |     1 |     26.38   |     27.34   |     30.38   |    30.36   |
-> |       |     (0.998) |     (0.114) |     (0.083) |    (0.089) |
-> |    32 |    824.4    |    877.2    |    977.8    |   975.8    |
-> |       |    (15.78)  |     (3.271) |     (2.683) |    (1.095) |
-> |   256 |   6494      |   6992.8    |   7619.8    |   7625     |
-> |       |   (116.0)   |    (32.39)  |    (10.66)  |    (28.19) |
-> |  1024 |  24960      |  26840      |  29100      |  29180     |
-> |       |   (606.6)   |   (151.6)   |   (122.4)   |    (83.66) |
-> |  4096 |  94420      | 100520      |  95260      |  99760     |
-> |       |  (3144)     |   (672.3)   |  (2874)     |   (134.1)  |
-> | 32768 | 386000      | 402400      | 368600      | 397400     |
-> |       | (36599)     | (10526)     | (47188)     |  (6107)    |
->  --------------------------------------------------------------
-> 
-> There's also improvement on kernel build:
-> 
-> Base line: 61.3462 +- 0.0597 seconds time elapsed  ( +-  0.10% )
-> Patched:   60.6106 +- 0.0759 seconds time elapsed  ( +-  0.13% )
-> 
-> ...
->
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
->
-> ...
->
-> -ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
-> -		ssize_t already_read)
-> +static inline unsigned long filemap_read_fast_rcu(struct address_space *mapping,
-> +						  loff_t pos, char *buffer,
-> +						  size_t size)
-> +{
-> +	XA_STATE(xas, &mapping->i_pages, pos >> PAGE_SHIFT);
-> +	struct folio *folio;
-> +	loff_t file_size;
-> +	unsigned int seq;
-> +
-> +	lockdep_assert_in_rcu_read_lock();
-> +
-> +	/* Give up and go to slow path if raced with page_cache_delete() */
-> +	if (!raw_seqcount_try_begin(&mapping->i_pages_delete_seqcnt, seq))
-> +		return false;
-
-	return 0;
-
-> +
-> +	folio = xas_load(&xas);
-> +	if (xas_retry(&xas, folio))
-> +		return 0;
-> +
-> +	if (!folio || xa_is_value(folio))
-> +		return 0;
-> +
-> +	if (!folio_test_uptodate(folio))
-> +		return 0;
-> +
-> +	/* No fast-case if readahead is supposed to started */
-
-Please expand this comment.  "explain why, not what".  Why do we care
-if it's under readahead?  It's uptodate, so just grab it??
-
-> +	if (folio_test_readahead(folio))
-> +		return 0;
-> +	/* .. or mark it accessed */
-
-This comment disagrees with the code which it is commenting.
-
-> +	if (!folio_test_referenced(folio))
-> +		return 0;
-> +
-> +	/* i_size check must be after folio_test_uptodate() */
-
-why?
-
-> +	file_size = i_size_read(mapping->host);
-> +	if (unlikely(pos >= file_size))
-> +		return 0;
-> +	if (size > file_size - pos)
-> +		size = file_size - pos;
-
-min() is feeling all sad?
-
-> +	/* Do the data copy */
-
-We can live without this comment ;)
-
-> +	size = memcpy_from_file_folio(buffer, folio, pos, size);
-> +	if (!size)
-> +		return 0;
-> +
-> +	/* Give up and go to slow path if raced with page_cache_delete() */
-
-I wonder if truncation is all we need to worry about here.  For
-example, direct-io does weird stuff.
-
-> +	if (read_seqcount_retry(&mapping->i_pages_delete_seqcnt, seq))
-> +		return 0;
-> +
-> +	return size;
-> +}
-> +
-> +#define FAST_READ_BUF_SIZE 1024
-> +
-> +static noinline bool filemap_read_fast(struct kiocb *iocb, struct iov_iter *iter,
-> +				       ssize_t *already_read)
-> +{
-> +	struct address_space *mapping = iocb->ki_filp->f_mapping;
-> +	struct file_ra_state *ra = &iocb->ki_filp->f_ra;
-> +	char buffer[FAST_READ_BUF_SIZE];
-> +	size_t count;
-> +
-> +	if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE)
-> +		return false;
-
-why?  (comment please)
-
-> +	if (iov_iter_count(iter) > sizeof(buffer))
-> +		return false;
-> +
-> +	count = iov_iter_count(iter);
-
-It'd be a tinier bit tidier to swap the above to avoid evaluating
-iov_iter_count() twice.  Yes, iov_iter_count() happens to be fast, but
-we aren't supposed to know that here.
-
-> +	/* Let's see if we can just do the read under RCU */
-> +	rcu_read_lock();
-> +	count = filemap_read_fast_rcu(mapping, iocb->ki_pos, buffer, count);
-> +	rcu_read_unlock();
-> +
-> +	if (!count)
-> +		return false;
-> +
-> +	count = copy_to_iter(buffer, count, iter);
-> +	if (unlikely(!count))
-> +		return false;
-> +
-> +	iocb->ki_pos += count;
-> +	ra->prev_pos = iocb->ki_pos;
-> +	file_accessed(iocb->ki_filp);
-> +	*already_read += count;
-> +
-> +	return !iov_iter_count(iter);
-> +}
-> +
-> +static noinline ssize_t filemap_read_slow(struct kiocb *iocb,
-> +					  struct iov_iter *iter,
-> +					  ssize_t already_read)
->  {
->  	struct file *filp = iocb->ki_filp;
->  	struct file_ra_state *ra = &filp->f_ra;
-
+Thanks,
+baolu
 
