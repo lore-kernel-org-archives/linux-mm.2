@@ -4,135 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D66DFCCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 09:10:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96070CCD1A5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 09:13:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DB278E0012; Mon, 20 Oct 2025 05:10:39 -0400 (EDT)
+	id C6C6B8E0013; Mon, 20 Oct 2025 05:13:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B2048E0002; Mon, 20 Oct 2025 05:10:39 -0400 (EDT)
+	id C1CFA8E0002; Mon, 20 Oct 2025 05:13:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7E98E0012; Mon, 20 Oct 2025 05:10:39 -0400 (EDT)
+	id B0C3E8E0013; Mon, 20 Oct 2025 05:13:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18F548E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:10:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD5F81A04AC
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:10:38 +0000 (UTC)
-X-FDA: 84017922156.10.85B9688
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A20AA160008
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:10:36 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=LKguxIPr
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760951436; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 99CFF8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 05:13:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4328BC0749
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:13:43 +0000 (UTC)
+X-FDA: 84017929926.05.B163D7B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BD6EA4000C
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:13:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H2mBd8BG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760951621; a=rsa-sha256;
 	cv=none;
-	b=6WOXPz4yzQUhLCjiJpjUTQ+givVdExEjfrHVRSduTLwrEqcLR2S3Z4sEnz4wN6ElkO1Ke4
-	My6sfe3iCecb1vun2n5PH43HpplJIkPaTN379U+onJVaO7inDyAfiVxAIImGUFFEF3nK7O
-	K0fRf2NFpVGrDWobLfV1mn52EO+dcYY=
+	b=MpSOeLk8b/xG/KhLdMzJqb9ZXQ8cfUJ50VjLnRdVNZur/EZAuwHiHkX4rzujPzeZYg7m60
+	uneTBZWmG7Lw4++Xr11JRDAAj0Z97XD+bi5y9bzTx0nQYNbPGKuqNTq2DJeUHuD4MKSJ2V
+	u5IQ2TsdzjDrfyXZtMh5oiWy3g640zk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=LKguxIPr;
-	dmarc=none;
-	spf=none (imf08.hostedemail.com: domain of tursulin@ursulin.net has no SPF policy when checking 209.85.128.48) smtp.mailfrom=tursulin@ursulin.net
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H2mBd8BG;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760951436;
+	s=arc-20220608; t=1760951621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b5tedAT73HO5ufC/WfszXWOSmLN+gIpMiv+Y/meRlwI=;
-	b=52zL+o6xYyPfosYTBawgo2710ZUS7IpktMdkfe06/Th8aNDwpmzd9VQ1ZMLzaWGKcNC6al
-	k8t79nBaY4cjP4f0V7n93BWpvVlt/7aQ82t0m0nh7wMnC/L83Zc2MBfFQJxJoYhc6KUxgP
-	A5fAXbI/vzWj7YgxClz1URr1HdEkeFM=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-471191ac79dso32846985e9.3
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:10:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1760951435; x=1761556235; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b5tedAT73HO5ufC/WfszXWOSmLN+gIpMiv+Y/meRlwI=;
-        b=LKguxIPrH/AnRYDXsho585XLqOwdMIyuHSZ6OXSp0FIbv7b3cLKGv3ywroC7P3sVAv
-         4KliYI0CAE8nvVzL0+gPBXPf0VL9AB4qjLZSbss6aNYD09h2/b35PWLS5dF2QmklBkT2
-         KAF2ziEmwDe7QJIsKAACoJWfvvXfrHl1xUkzJ6VZMTk4YYzdZxERAjPnLR8mrs5tGcSZ
-         1gS0mbYPv6AlV1RYT07+fQUEhwi/CNra5Yg1aHJkPUGZe6uVmDfQsq5N8jpT9eG8ePjd
-         vCMWpP2QJ3lDCgRtEsF/fQzKB2u1mwQ6OjciSmng/ko96Km28pN8wxqMofp+P3diHPha
-         V1SQ==
+	bh=Eh0wHwo2LU2FIRX9AhMX9fHbYdP7OvIPgfEQ71tVBzI=;
+	b=IE9tTwXgG8jLXd2oidIyf1nqYRNXL2FkkfCrk5fvPFSLZq7dAT6DK3Bij5Z7y3ybZ6mn8m
+	Sd1dvfG5katLlTQ5zaC9yk1C5VWwG67OcXWxYIevWpYs8UmW7NnyRU1EhQ0mxR276E0LQ8
+	mTHAg/vZeCfbY7HDD8TyN9lgaWLVhdg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760951620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Eh0wHwo2LU2FIRX9AhMX9fHbYdP7OvIPgfEQ71tVBzI=;
+	b=H2mBd8BGI+0Bh+38SCmJ1+oXxzxITNcbL+jg8R3MX0B31keBQU0aVoleJhusWmhb4tCVlI
+	Ij55qm7ZKncDLcMh9uMcPXglLsbYT2X9sXDyB2wq00nr1GQxUiGnxUkIP1ifK/fHMj1gI9
+	KTlRBm0k8GniLgLKuTijlmHNoP4YZLE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589--QAKsG4DOK6I-QBwOQ3Bjg-1; Mon, 20 Oct 2025 05:13:38 -0400
+X-MC-Unique: -QAKsG4DOK6I-QBwOQ3Bjg-1
+X-Mimecast-MFC-AGG-ID: -QAKsG4DOK6I-QBwOQ3Bjg_1760951617
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-46e4cb3e4deso14512555e9.1
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:13:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760951435; x=1761556235;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b5tedAT73HO5ufC/WfszXWOSmLN+gIpMiv+Y/meRlwI=;
-        b=aMLoNM/AJcTGJqrj2npdkeBRf+E1PmW3CRTUTtzpiI3eTH8ZkYE82LKdngMHlFos+T
-         iSRCetPI/CwR0JcMlRxyeiOS5WjUc5NYW8ruzGfPddU7HPlLB2dItMy+F+FUlSeRbcmy
-         k+3Pn2N6FhMbMmDlvR7l6W9mNC9UY46ttvxRCwLKfomvUCQfCz6W9/UGZQHcTe/6fmOu
-         neQzB79VmoQIodVMNCCna3zqfp+KvyIBHEG8ywJaPt5vXJ6yhOYVhqj6ELjzlwbJye4q
-         hyt7ltFnEKDsD1A8FMbJzHfBm0UKsaX8shVAuYxHD5zYE9vV4EXasNjZZZcHU7VIpiVV
-         toqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVWhRiow58Ci+ec7aHFxaYPN/YsLa+kVq1kZpCzcmz/sfSZdX5GKMXb3MiuqpZ9Caf789v++u+Tgw==@kvack.org
-X-Gm-Message-State: AOJu0YxtEdGbCZ+HuiX5MYplfxAm58M2cYaX3gSSRSfT+FjLfYESF3j0
-	SC0cS8FcKtEVpKLJca++gUMAXls1uJ+pNkP4JFY8LD3umgXRLhoXLqdfkIdfM9POTot0ytswkyE
-	7ZuzrdwY=
-X-Gm-Gg: ASbGncs4tnieR2ejtkwGXFvMpKGYIKevgKpQj5rC3bu0jsbFbbL1h9scUR7v8GEtmnH
-	3orc7IwEBbtrrjnhqEB4rJ6SN3NATajEgE20tbDHk5uPimtO/kicDw4Y7shAEs0DbEjvBpKMK4c
-	3QxV/bLcP0YhGECcwLdf0aTt0lz2xnzUqOw78rPsT56PoEDMdMu1zNGYiDNlc0OmHRJAVy5KakQ
-	JFeQlXuB1YygD+wgV6kIL77kFYjdYemTzigF++GfliEuu1XkpWqPxK8sMV9RGtCG2pCiIk9CkXL
-	5z4LOoDVtiZhZFoGNJ749vU3rxChPN97INYGdv44C7Fx/EeFIcEeVvuKdfsMkXFyuEr3iPiSWJY
-	T/WBmmE7ibz+7GqFdLlPJg1ptUDm8kx8pKjWBIpSswpDDHKFuM2HQ1HwSGeQjP0Z3aZt/Rdiqtd
-	gW4fh89MGlsHVTLQ4=
-X-Google-Smtp-Source: AGHT+IH3gXMi4edAZfP0WIQNa+oQTzYbMLse+FRL4oaUtLdeWvDJfxezX0KKAC3SgkQ3mXsP943ZWw==
-X-Received: by 2002:a05:600c:3b03:b0:46e:330a:1762 with SMTP id 5b1f17b1804b1-471179079dfmr97785585e9.22.1760951434703;
-        Mon, 20 Oct 2025 02:10:34 -0700 (PDT)
-Received: from [192.168.0.101] ([90.242.12.242])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715257d972sm137948265e9.1.2025.10.20.02.10.33
+        d=1e100.net; s=20230601; t=1760951617; x=1761556417;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Eh0wHwo2LU2FIRX9AhMX9fHbYdP7OvIPgfEQ71tVBzI=;
+        b=PQHgAdG2GtDlwnRwXaWfYW9QXX6Q9wtGzix7Yqy2be2oiF12Hbs609uIDPdTsPN9+3
+         mb57PW+GziTGmi+/i7NSimdDp1lU0eonDrx7R5VqHZ4W4brV4dH8ePrKS3QuHcj8h/ta
+         nz7eHfBhQo9nYjZI/xFzwOMs0hfLGC6z3F/eR5HI9ryLTeumPKY3LfMx1D/Vq6/3dXB/
+         0b8k0Wy7Ss1EAkyKDmweB8b+mjnaoSBbsr6kHknHeecqd55vLW1uJbACXicez1Qj0Ykj
+         uh42Ms6uIn9+Dqgz+DM6F3Kw2TP1jAUkFgT815s26TaVvBcvZai7Ud56lJr649s6nx2k
+         2vfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnjIbSyCFPBWa8H/G4XfqwUO3AoNH/RGXFlQDl+SX+C+u6iH2/iuy+2A3MOtKyBwhsxBzpF/uuOQ==@kvack.org
+X-Gm-Message-State: AOJu0YwwTU5XFbiLJACXdru7ikmUfOh8PRMDLqJvS9W8+s4PzxgWU/E7
+	B+C3Vb5Sq/G3ayhhcRAePH5l62dTalUBQoilf8qUTOqzh9Ffc1Bt8K4LtAULP42qjZSrbxeXg6S
+	EbWRoRfGkbBt7ndOt87awUzpUsjNpOJRK7VpMUM6G02s/e8WNGQrbTKBZkrZ/
+X-Gm-Gg: ASbGncsgsERKC8B59Y+WI2PI5wGSrga1yYzbX5cFk0zLTJZscOgrfqES/NHtg55ofWc
+	F4P/3HeYeERx8LwIxp14s4ufWDDJRl3wb9zaLi2psrBd44tr/zFa0Ms7Sg2+u3/BZ9iYCo+C+5M
+	cXTYiREAodLJd0C01K8ahBXkzhix6lS4BFcIWgzYEhMlwlEo1NSb1+ZXQ5XC1rOg6c98ZKWa8N9
+	YYFbnHfVhMRl0BUyQ+2sR8R07bBoPIqNfrm2brhZmxoivTm1V3cEhvF6rYCamcqZEVqOcIm4Qwr
+	ACNMF5SaP0XN/tod9nwj7VrsjGLAwdYqT90tQAJ2QN28MUCZZb+y8sMD1NbAh3JUcB4N6NOrf+s
+	8lyN/Au10Eetz0BTFe+EGLLbJD8kZcKmb9UF11GWz3S8yMBLjGZ3acteXHBkkA2GgvnsGpdg7E4
+	YrZ77KHvAyrxLvYJ1XjSp+fdjNn64=
+X-Received: by 2002:a05:600c:3b98:b0:46e:6339:79c5 with SMTP id 5b1f17b1804b1-4711724b354mr119191825e9.5.1760951617110;
+        Mon, 20 Oct 2025 02:13:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFME1ceOxJyPsxu5kjPbUdJ41bH4P8jCHFCQX4VPWwz7nZ35nqwnC6x0CCerHmtu/XFIG6fA==
+X-Received: by 2002:a05:600c:3b98:b0:46e:6339:79c5 with SMTP id 5b1f17b1804b1-4711724b354mr119191525e9.5.1760951616638;
+        Mon, 20 Oct 2025 02:13:36 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce? (p200300d82f0cc200fa4ac4ff1b3221ce.dip0.t-ipconnect.de. [2003:d8:2f0c:c200:fa4a:c4ff:1b32:21ce])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5b3c56sm14482749f8f.18.2025.10.20.02.13.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 02:10:34 -0700 (PDT)
-Message-ID: <7584abe7-0c3f-4022-b510-c2a57fd167bb@ursulin.net>
-Date: Mon, 20 Oct 2025 10:10:33 +0100
+        Mon, 20 Oct 2025 02:13:36 -0700 (PDT)
+Message-ID: <a95df2f2-5ecc-4d28-9bcc-1f9b457b04a5@redhat.com>
+Date: Mon, 20 Oct 2025 11:13:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/13] drm/gem: Add huge tmpfs mount point helper
-To: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, =?UTF-8?Q?Miko=C5=82aj_Wasiak?=
- <mikolaj.wasiak@intel.com>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, kernel@collabora.com
-References: <20251015153018.43735-1-loic.molinari@collabora.com>
- <20251015153018.43735-6-loic.molinari@collabora.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20251015153018.43735-6-loic.molinari@collabora.com>
+Subject: Re: [PATCH 0/3] mm: treewide: make get_free_pages() and return void *
+To: Jiri Slaby <jirislaby@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Julia Lawall <Julia.Lawall@inria.fr>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251018093002.3660549-1-rppt@kernel.org>
+ <aPQxN7-FeFB6vTuv@casper.infradead.org>
+ <3e798b9e-4915-404f-9197-ed3c32587141@kernel.org>
+ <85707316-3f2b-4e29-b821-a32f9097244e@kernel.org>
+ <635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com>
+ <3b97b754-890a-46c6-b892-a0324d529a3d@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3b97b754-890a-46c6-b892-a0324d529a3d@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nD14GXFbW93FIdmQ0g-NoVW9qfkreiB6MtTa-gSncGs_1760951617
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r4qwasfbmwc3113jh5bqo5co7c9cmqd8
-X-Rspamd-Queue-Id: A20AA160008
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fednmom5eg5bnphrrpcs4baqz1raqoid
+X-Rspamd-Queue-Id: BD6EA4000C
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1760951436-584092
-X-HE-Meta: U2FsdGVkX1+s+oO6LFUqZYSeVFLBTUNyTYs1UsMQXpGn4VpmMzztud7xSctI93LmDuWRssnKTaNHeRQBmwNT89zUU/WPSR8nWiylO2zmBHyaU2/vpOMsxYWir9jYTDS2ciCvXK7b34CKaDDAzWJXJja2R6MZFkidovZg9pi31nDt3U6sQM0PYfYFqUrWEyZsTXINRUTs5qMpPrK8Xo4qmWLLo3XMV6GtC0exhaV5zvmZSFg+UwMBleeGvrMbGGHuNASz7Ntl90YgW0ASsOVYBN38QSXkGy7iU4QTdK9SwoDwAvd6ERV+e7uFFKPl5itxh4oVXAcDZWzfthkCSwkPaCvJFAGWo98eOlbBba/eihhaUd0tQIUE0HGHBGi6k5lxd47G3qUrrmm53FIO/ThNJ2B7v1KtJ2DxbKdjVw/+yV9vjMsSfYhIsLJBsTT9DPs7kScgbPC4Xz6J6T6BH6wXukoC55Vc3F3yMu6e71rLQwz2CYSU+r5pVItE42dza0E3ZYXa6v/xzptOEFfz6W9XEmjjB1KOcNi/St8nZE+5+I6nZClyYxnprFiB3sA3UvaSM7D7ypVHpGTEWb/FfrEpYMAdeYOOnsRclUYwPMGSPCmZi8TDpBcHHzZbwuWjEP0a5OG4X6K/FIr4+doSGUTLSRuu0SQVZVfIRFH6c/xTaXP5sp0u6kgbN0AQO6luh4uULNY3ub2IuEKHQyzIGx2EMeohfH+AXAGXgYG84IvJqrmWg6Ydjn1RtClP14PewxYuzvdqCgWWG2cSTOru0v5NzwNBqeg5feQ9l0GRRoyQKgXzNIo3inb8jPe1a1VCh1rlkjzy9VgruaeCljQha+tfrNaH3AFx/4fxYZ+Ol6m20xm4MMSoB/Thq9CqE/puDT5JxFu0MmFrpGj57+Xf+1C781G/iQjErsVRXpmUX+Dl4wveJ0nLZwXazENzhzFg4p6WV0Mj9NJpa8T/noz4Nd6
- haSnQNWg
- B3DPvqVB8IHFtWA9HH97nTJF1rOGSCHwuCwxrm22lHKM9zbTykJJZvXKe9b4RRvW2BRtb6kBMJOjOAwHjO7/Ghz/JY00nsi6xuEz7+K7gGoheEzfLb72tqgbSxl79r2AaY/Q7c8P6Qe6+NKuH3MrMmKHWZ2S7Y8Nkn05dBp7A+xjJsIfglmdZRLo1hRsIZuWZgU0uMyCW4Ms4PHcqyM4u/qb4Fua8m+N93+xYWEmXG5K9Mst3402jpouyxYMNcMpXk/pk/7NXta9NfANEEFyAETjiczuw1AJQuYpheVe3PLst9hNwh+lp6m/EmuVhHXpIY0znjvuvlf8hLrpyMic2vqbpVG8xq3YRwtpDh2OB27+vB/5GzKoaoIiyBr2fAL83loijD04vB3235tpOKyxG63v/Px6TkBDbT09f
+X-HE-Tag: 1760951620-989306
+X-HE-Meta: U2FsdGVkX1+r5wvXNqNsHTv1SZfJ6EYD20/wWb5y39+4nBb2WeyM8JWGEz/h+fu80tDAKp/UsghXSdTf91imSG77CVdRvxbXC4sf7z8GlPAPHQA5JMyigahJg3g4mljgoiJoPaeBpTHfeE3I1rzEmWOxFNKZjLwyAeSLrl1zstU8L/AP+lsmAMAcc0WeV+NQEWnUuoKWjTpymMFgm7rvG8s/4PtoI2n6IaGPPf1vK7FL8zI+CoChBE338hUP5Ui6LQvsxy4BhCGtilLQ7OxMr5QzQJMpYz6e9hex5ncU6/tTlaq2bZAoKKkpHU3xiRGQqoDASD2pB+TaeWAg0SSyR65SrP+UIIqW9uNJQB7NRN/XFEoXRhBObEE3OjhkXfBOsB1m68IXf5cby6yFQs9ts5w5TES/oTsLOOLZrBmgE8StNj54QS54V396pqkLj6wl4oX5DPNty9wPswvpN7pRlkpqtTCNHNmMUzuhwtguXkw9kyvMgt9S7/Q0VBY737kxMqNS6PZvfc6UjOtvdR7mgGNppg+Yiaac+sm9IqH8KbTObhjEGqF82YWdD4hCyj1VVrjStZszHpp6P2LOP3m4Isu8JPkns591uNMWxpGOBnZuvhtrUb6npbRZEcspQoatnESgNSsVrvv0qaofdSgrcBS85oX0uplK6w16b/TJkijO8HqucIC9Iu3sE11m3meUnGH/UuqUf6X1Cn2E5y6FFbPgOmF7Us07gWCXdRAlflm/44FnSIV6SkCSRrSRtgoNETYdHDQtOZEi796V1d1eYtsBRp1z5w7Kyk4wQNHzaJXBNjAUpwzoDxLzyle+54hYPe/IuN1kW79Qf39dnFuL3SQomDkEK7IBkZjRWrMol56y+hhxAIaUKXSJ9wRO27yehd1uspRyKYC54v6TS4Up41Fhh0STJehSkbm6nltya62XkQA97/P0NWc81W3U353cQyYStY1NaysHjUEQmD7
+ 06372WFa
+ m79JtFUx3bSCvb37mzEzvJm+HOJ0J1K3RQ+1ybF2XlDvfz76vJrHChy+MKc9lSM/khQksZutQvELRj7nhMw6JlcVNl4o/TsYPNMuj0e7XnbtTJl1gn0Nlmy0pcED9ZCQ35N8hQVVKakgq3E3vuMkaAmnb0ePW6MT9cNr9OVU0nUAzdy6cEXPdspfztUibzJ+81iYJ6CM7IzFx+47RGZysrIvpQUpYIXRoAIznugOGPVx5lfE5zF1TjiP25LfZReJ1xc1AEOAt/e8O3nScGtKcznMTLqgTirJZTtBODyDE6BPponbSZ+N+V6zUzfuTvetm62i+ulWyPfSUSLMcCYGHWvRtKxumTKXX0otb2dWYIlUngq/mg2ddXNe6ZzWRj8H1Osnzp/jHqZKNS47ZeEDD3Uah65WMT2igS0o3fct9JrWfl0p5rvQRxgPBvez1rH1fVpDgb6DO0yVkePpSPoGwuAtJyoFzVnoWE5f7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,172 +190,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 15/10/2025 16:30, Loïc Molinari wrote:
-> Add the drm_gem_huge_mnt_create() helper to avoid code duplication in
-> the i915, V3D, Panfrost and Panthor drivers. It creates and mounts a
-> dedicated huge tmpfs mountpoint, for the lifetime of a DRM device,
-> used at GEM object initialization.
+On 20.10.25 11:08, Jiri Slaby wrote:
+> On 20. 10. 25, 11:02, David Hildenbrand wrote:
+>> Regarding the metadata overhead, in 2015 Linus wrote in that thread:
+>>
+>> "Long ago, allocating a page using kmalloc() was a bad idea, because
+>> there was overhead for it in the allocation and the code.
+>>
+>> These days, kmalloc() not only doesn't have the allocation overhead,
+>> but may actually scale better too, thanks to percpu caches etc."
+>>
+>> What's that status of that 10 years later?
 > 
-> The next commits will port drivers to this helper.
+> AFAI skimmed through the code, for allocations > 2 pages
+> (KMALLOC_MAX_CACHE_SIZE) -- if size is a constant -- slub resorts to
+> alloc_pages().
 > 
-> v3:
-> - store huge tmpfs mountpoint in drm_device
-> 
-> v4:
-> - return 0 in builds with CONFIG_TRANSPARENT_HUGEPAGE=n
-> - return 0 when huge_mnt already exists
-> 
-> Signed-off-by: Loïc Molinari <loic.molinari@collabora.com>
-> ---
->   drivers/gpu/drm/drm_gem.c | 58 +++++++++++++++++++++++++++++++++++++++
->   include/drm/drm_device.h  | 11 ++++++++
->   include/drm/drm_gem.h     |  1 +
->   3 files changed, 70 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> index a98d5744cc6c..db8c0a217add 100644
-> --- a/drivers/gpu/drm/drm_gem.c
-> +++ b/drivers/gpu/drm/drm_gem.c
-> @@ -29,6 +29,7 @@
->   #include <linux/export.h>
->   #include <linux/file.h>
->   #include <linux/fs.h>
-> +#include <linux/fs_context.h>
->   #include <linux/iosys-map.h>
->   #include <linux/mem_encrypt.h>
->   #include <linux/mm.h>
-> @@ -82,6 +83,63 @@
->    * up at a later date, and as our interface with shmfs for memory allocation.
->    */
->   
-> +static void drm_gem_huge_mnt_free(struct drm_device *dev, void *data)
-> +{
-> +	drm_WARN_ON(dev, dev->huge_mnt == NULL);
+> For smaller ones (1 and 2 pages), there is a very little overhead in
+> struct slab -- mm people, please correct me if I am wrong.
 
-I don't see a benefit of adding this check but maybe I am missing something.
+If it's really only "struct slab", then there is currently no overhead. 
+Once it is decoupled from "struct page", there would be some.
 
-> +
-> +	kern_unmount(dev->huge_mnt);
-> +	dev->huge_mnt = NULL;
+IIUC, I'm surprised that larger allocations wouldn't currently end up in 
+PageSlab() pages.
 
-Ditto - device is going away, no? So why bother clearing the pointer?
+-- 
+Cheers
 
-Also, is the compiler smart enough to not compile or complain this 
-function is unused in the !CONFIG_TRANSPARENT_HUGEPAGE case?
-
-> +}
-> +
-> +/**
-> + * drm_gem_huge_mnt_create - Create, mount and use a huge tmpfs mountpoint
-> + * @dev: drm_device a huge tmpfs mountpoint should be used with
-> + * @value: huge tmpfs mount option value
-> + *
-> + * This function creates and mounts a dedicated huge tmpfs mountpoint for the
-> + * lifetime of the drm device @dev which is used at GEM object initialization
-> + * with drm_gem_object_init().
-> + *
-> + * The most common option value @value is "within_size" which only allocates
-> + * huge pages if the page will be fully within the GEM object size. "always",
-> + * "advise" and "never" are supported too but the latter would just create a
-> + * mountpoint similar to the default one (`shm_mnt`). See shmemfs and
-> + * Transparent Hugepage for more information.
-> + *
-> + * Returns:
-> + * 0 on success or a negative error code on failure.
-> + */
-> +int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value)
-> +{
-> +	struct file_system_type *type;
-> +	struct fs_context *fc;
-> +	int ret;
-> +
-> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> +		return 0;
-
-Is there a specific reason why the !CONFIG_TRANSPARENT_HUGEPAGE path is 
-not implemented in the header as a static inline? That would enable 
-those builds to avoid the pointless function in text and function call 
-in the drivers.
-
-> +	if (unlikely(dev->huge_mnt))
-> +		return 0;
-
-Any special reason why it is allowed to call it multiple times with success?
-
-> +
-> +	type = get_fs_type("tmpfs");
-> +	if (unlikely(!type))
-> +		return -EOPNOTSUPP;
-> +	fc = fs_context_for_mount(type, SB_KERNMOUNT);
-> +	if (IS_ERR(fc))
-> +		return PTR_ERR(fc);
-> +	ret = vfs_parse_fs_string(fc, "source", "tmpfs");
-> +	if (unlikely(ret))
-> +		return -ENOPARAM;
-> +	ret = vfs_parse_fs_string(fc, "huge", value);
-> +	if (unlikely(ret))
-> +		return -ENOPARAM;
-> +
-> +	dev->huge_mnt = fc_mount_longterm(fc);
-> +	put_fs_context(fc);
-> +
-> +	return drmm_add_action_or_reset(dev, drm_gem_huge_mnt_free, NULL);
-> +}
-> +EXPORT_SYMBOL_GPL(drm_gem_huge_mnt_create);
-> +
->   static void
->   drm_gem_init_release(struct drm_device *dev, void *ptr)
->   {
-> diff --git a/include/drm/drm_device.h b/include/drm/drm_device.h
-> index 778b2cca6c49..352e3db402d7 100644
-> --- a/include/drm/drm_device.h
-> +++ b/include/drm/drm_device.h
-> @@ -3,6 +3,7 @@
->   
->   #include <linux/list.h>
->   #include <linux/kref.h>
-> +#include <linux/mount.h>
->   #include <linux/mutex.h>
->   #include <linux/idr.h>
->   #include <linux/sched.h>
-> @@ -168,6 +169,16 @@ struct drm_device {
->   	 */
->   	struct drm_master *master;
->   
-> +	/**
-> +	 * @huge_mnt:
-> +	 *
-> +	 * Huge tmpfs mountpoint used at GEM object initialization
-> +	 * drm_gem_object_init(). Drivers can call drm_gem_huge_mnt_create() to
-> +	 * create a huge tmfps mountpoint. The default tmpfs mountpoint
-> +	 * (`shm_mnt`) is used if NULL.
-> +	 */
-> +	struct vfsmount *huge_mnt;
-
-Maybe it would be nice to hide this in the !CONFIG_TRANSPARENT_HUGEPAGE 
-case? A bit ugly to add an ifdef but it is also a bit questionable to 
-force the member on everyone.
-
-Regards,
-
-Tvrtko
-
-> +
->   	/**
->   	 * @driver_features: per-device driver features
->   	 *
-> diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-> index 7c8bd67d087c..7285a62d9afc 100644
-> --- a/include/drm/drm_gem.h
-> +++ b/include/drm/drm_gem.h
-> @@ -492,6 +492,7 @@ struct drm_gem_object {
->   		DRM_GEM_FOPS,\
->   	}
->   
-> +int drm_gem_huge_mnt_create(struct drm_device *dev, const char *value);
->   void drm_gem_object_release(struct drm_gem_object *obj);
->   void drm_gem_object_free(struct kref *kref);
->   int drm_gem_object_init(struct drm_device *dev,
+David / dhildenb
 
 
