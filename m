@@ -4,132 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA77CCCD1A2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2417BCCD19F
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EE1F8E0005; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
+	id 367D98E0006; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C55A8E0002; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
+	id 33FF68E0002; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8021F8E0005; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
+	id 255A98E0006; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F09E8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:28:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F0A2119A4E
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:28:10 +0000 (UTC)
-X-FDA: 84020083140.09.4DC3CC8
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0B2B440009
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:28:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=STSep3YB;
-	spf=pass (imf11.hostedemail.com: domain of david@fromorbit.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+	by kanga.kvack.org (Postfix) with ESMTP id 108CA8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A17D3586A6
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:41:18 +0000 (UTC)
+X-FDA: 84020116236.24.E0622AA
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BF054100004
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:41:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fGwJhfWV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=shy828301@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761002888;
+	s=arc-20220608; t=1761003676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
-	b=j+Cc3olEW7eocWIsXdf1ioqsP7mTUvyHTISHbg0DrAzgMc4KnzHfxEgTGRdyA1wEF00NPX
-	RzFLRoNFck1OjhTWqGaoU4BixzDS/XOS6MHxkGyOQHpWW2GxjqGRtUTAA0VLTnEdlEPBZm
-	UrUljiidw0tx9Yb4K5ALY4P4YcQSS1E=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=STSep3YB;
-	spf=pass (imf11.hostedemail.com: domain of david@fromorbit.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761002888; a=rsa-sha256;
+	bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
+	b=iTk+W5Qt0E3VkM2w/48wQkgahQN0o2hP3lBR0z/WaKa18lgCaPKMLu4iKXIMvh9+EBIKPb
+	jpTOurXBpAbSXgmMR2apKgl8YsJN9ue90Uv+/KI/0H+cs82qYNDub6nFZHG7wCI0cFasqy
+	HyzFl++WPsWUXRI3iQcGCVGZDl2GtUY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761003676; a=rsa-sha256;
 	cv=none;
-	b=p7E1JcDP62VI2WYQKMeALt7FZCNrlgRXVZES9Z7lDUqS4rBMdXKSHi926qZ1NtyIdte5bc
-	joMArjHubG2A7EtKv49+XDkp2BCN+Ypj6WUhtozKA/rr+fwGhaW9fVkXaE0JnvfbrpjcWC
-	g62nbR1YY0hCANlpEe71r/zGNSG8YI4=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-339d7c4039aso4280161a91.0
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:28:07 -0700 (PDT)
+	b=a8Tzb994SRoEvoXIOpuBM0lRN6/sQEdV6+UFeO+HX9ULfT33f6uvS/wPJUCw73xWpFjUOV
+	QrSEzNbMF3KywIzFgHN0xPCuahL1SXk0ElYJ9ZIha8yi01MnDTf/RitlugZD1Nt/yNqv5u
+	EAl3iL5JWyn0BYRcua01wLCFYFv84r0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fGwJhfWV;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=shy828301@gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63c11011e01so7926104a12.2
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:41:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761002887; x=1761607687; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
-        b=STSep3YBRVuJKgcISFnKLoZ/dnbkSlwuDFWzvw0E0dnRZ1Y0hrF8p6PrNQJk5xMbL1
-         zs3bp5HBMPx5qmL9rVLJxZFIROUSrwcyaZ4HkO+k7iH6WTn2d1YmUaPYd33sAERaC3Cd
-         SxoZu4wa7nRAnLJe1NhXF3sY36F+vqQBvKmguH7xBM46ooB3zEzuyeCFyDtdl3u1Wq/n
-         8KuEiX3hwlVLfh6s4MEz7W3WEU832VT/1e8Bklnu6PbNzz0gCS1QRyU0BLtxS6ZWDo4r
-         2DdjIvWq2KpshXFTqiXofb6z3959WYlZYJOlRfhxLm8PcpJ7Xg7+dj4unFYcIKHfHQA3
-         dB/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761002887; x=1761607687;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1761003675; x=1761608475; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E5x+1UXqj8C++nudO2r6ht89eY6krRyEDQJSgyqLqDY=;
-        b=kUgI08sno7ZZckAgZrkjmKU8MtYB/ZjGDP2OEXQ/u4TswysOlJVROebySSD2/A5rR9
-         OnCAd5b+Sr7fCiSIdQyUdVgTbq+KvNWrsEZtBaQE3h6VHJ+zMMUweP24Rbj7t4+EGqWr
-         lrJpT2UQ4gB1NOSHTc8yiuOt+KU6SxBORwMWaqmbVj9zq/MnikfGheyuqO+4/vwZpdh0
-         aTDVysjpM93aJfCNc781RZ1lyCrfXjTVDJKm2eMFe0YHCOb/uXHuuYr+habfYmIUqIiv
-         bs5mYyH+kRuwYXtu+jnsax7831aL0411NLx0fG3FXFNgBAaFO+3lDFZSC0Gi37xqIGJZ
-         iVGA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8B9jizCGBbJXU83kugNiu0X6CC9yeTybWt4B0Z05XYORGa1/LmgDsq97aMHT9GYuoHaaXaMswfw==@kvack.org
-X-Gm-Message-State: AOJu0YyhKqkxhVJjY3NrKx8f6vSZjGJKUJQwNsdC61mjd81Kn0TpM4i/
-	PcMkYnyAoPn3g2kqOHjh4YoEODg+9A+ni/RTU4ZwBFC0Q4kDkcFfxUZbYMw1n1mLEtk=
-X-Gm-Gg: ASbGncuJaP6FmgwrBeN2d8o0+UdywahKw/QNpjBXbZ9Wyh936t74vL1K31BgyEx6mJH
-	ZMbd2QWZ2rJzYh3Av4Gxr5ZMYqcsrX853SJ/y9q4L5aSTQQuabSzjjVUvOooV+HfHPCzik0llUL
-	Hq583GiaIwqCF2iF4+6SRgLH1a13gNKkzPfW4oBuKpFjf0ekNXve8O59VzEAVE5I3rSk/jdn8aQ
-	T8Kh80e8G5wRQc2K6qpMTbxXboEdGro21kUiDqPJB5X/Dqb2nanwuRTttV+uAWQuAlaQXByMKO7
-	qLulTrDFLBlK1VpXAEyIj+PVPxM46EVTMTZKaFqmo/xwVMGLLMMdYgF/ZMkM2AejKHfjzrgQpbs
-	ng9DjB/PHxy58YJ0YYaHQ8mdk9tqQMpO1Dvq+RKqPWoHo+Oh3Lx15DdcWA0pTNEgYGeNi5MMwsu
-	xf4IB3IuypCSXoit4Ue93sbmLBmYPQqnFTNXgzjZtzWRbxQ9Rd0VXYntXYZ2s3zg==
-X-Google-Smtp-Source: AGHT+IHcdNH2fOOHB1cm0EXB4SOj6iMNk8Mq9qAcSjpJ0ejuGeU6N8u1EfzBX4tQCCgAhIt/5tgbDg==
-X-Received: by 2002:a17:90b:510a:b0:33b:6e60:b846 with SMTP id 98e67ed59e1d1-33bcf87478dmr19465934a91.11.1761002886592;
-        Mon, 20 Oct 2025 16:28:06 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33dff3f6c2esm192671a91.6.2025.10.20.16.28.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 16:28:05 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1vAzII-0000000HWu0-1ddK;
-	Tue, 21 Oct 2025 10:28:02 +1100
-Date: Tue, 21 Oct 2025 10:28:02 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
-Message-ID: <aPbFgnW1ewPzpBGz@dread.disaster.area>
-References: <20251020163054.1063646-1-kirill@shutemov.name>
+        bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
+        b=fGwJhfWVHZOfhQZCEVLGCFyeE8FrEe/u1LtqAgR9YPJTRca+aeDDizKGeyn3ch70GB
+         8B0VEzglGuQpL/nQzOyWVHAclfd0PszqyAj+BzJQtzqh2y6DT/1/UiQ4sHD61vWW+Y5b
+         9xCbSpfd+U05dLtgV4z4dOfgTqO/mfuHJuA2Z7L8/2KHoiHsjTEu1yAB3b+PsQBtK53N
+         J76f2VIOo8T/d8cknPHCl38eXDhFoyTmM7xdbWtgIYBJrirUNwwV7mH8K7jBVQgplB08
+         WQpAYvU5ICqAlDzVnFZAJE8AYrNbN3M7QZlRPOUh5/QAhsgG1k90+v6xd+MFeIaclrUu
+         hMQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761003675; x=1761608475;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
+        b=Dl1qf1Q96KV2o9p9X8re13TQpWyjkSHjBpZh/ggMRS1wcu0dbfMn+4Pe20AtY3e2LA
+         jcUpKjyY0P1wWPJw2ZYGbgq2xS3S3NEJCJ10I18mmwS/YW4ioA1DndklaMRaLb5ecKse
+         j1o7nBrIxfXXx6SITk9NfkV7jJ6/9d6I9KC/Jcc3a2aR1SMdr/PmtpqCY3nYeQFWC7b1
+         WuMlvqe6cOGrz0S9mEyC8EPPAA/IZGMPs5ufEzcIP4JODuTDiWt/Z9/jFhNiKzpS7g13
+         7BtKYGfIdkmwcSJdQyM0x4xQ4M/j4SMVTxtwFjvLs/bm288SVrvX+jeSdKaL6bYRIAWy
+         eyKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMM7iTg4iMsvY7kCdP0jrzfiB/o1d4t0gatxEHo2Ku+LiTBptH+HCxjHo7mFsbewb5ML5nIsfSxw==@kvack.org
+X-Gm-Message-State: AOJu0Ywp5Zb767NWc7SIA020wkctwaoDjv7TMkpn5VQKNmWqeemMLGiZ
+	nXDc0sX5dP9ALxF3Sx50htFB3iiatSviUNHbZLmWuBIg3f/Ph6ouQehWG3P0IA0MACErE7JzxZU
+	s4Ldz8kWkkh3zrhAGuRupFjuBWMNdJUA=
+X-Gm-Gg: ASbGncuPjUGv0jvDO3PCOn8d2ODozi5p99eO9THJSYgzcCyP9W9mjqW406Sx/jeujXE
+	IVeku1r3EMRHiFHQCc6YrIQQD9YAwi6aqagL0l52vGGxS0I2Wsiw/NIKxo13DK7c37zysp3pUrt
+	y0C3PRF6pcAdwUE5A2bWdi4zT8Eulstlbi3oVRWy3PLM/KMG3c7JIqnnpq23fLc/KiPqr8GgpUK
+	OqaP3YQ6rHlacb80r2vpt5kT1yQ52VUCAbCJeNV2sM77gp0fltOdxs2x8Et+KwAO7235PazKw==
+X-Google-Smtp-Source: AGHT+IGCVi7HkPALGAh50zQQO6fGSMOaI+jhXkh2/BsTg7hBG14q/tm4iEaZSqUMR+1QulKNUnpwT7IfU7bfzg9SJp0=
+X-Received: by 2002:a05:6402:84d:b0:63c:4537:75c0 with SMTP id
+ 4fb4d7f45d1cf-63c45377875mr9609309a12.38.1761003674815; Mon, 20 Oct 2025
+ 16:41:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020163054.1063646-1-kirill@shutemov.name>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0B2B440009
-X-Stat-Signature: rfeyfb8c7hfooa9q4ybhknefgubz1zuf
+References: <20251016033452.125479-1-ziy@nvidia.com> <20251016033452.125479-3-ziy@nvidia.com>
+ <CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com> <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com>
+In-Reply-To: <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Mon, 20 Oct 2025 16:41:02 -0700
+X-Gm-Features: AS18NWDW-oprtmdqoGZJo4Z4YsO1liFomysWIh3Edtsp-B4vhH9CkUZKlFk_O8w
+Message-ID: <CAHbLzkp8ob1_pxczeQnwinSL=DS=kByyL+yuTRFuQ0O=Eio0oA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/memory-failure: improve large block size folio handling.
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, jane.chu@oracle.com, david@redhat.com, 
+	kernel@pankajraghav.com, 
+	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
+	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1761002887-563103
-X-HE-Meta: U2FsdGVkX18kgzl0wvJuFCKP3uQ7wTfx8ycH3ec0RjAlGPwyNZdIrlUKznfaJp1nkz6+4Id8pLu26x964McEfhM89d4/iQkpN989ILlBPVabhKz9TLFLlyt1ZHt/mj6IVh4AdR3L1tVl1bevvF0Hp3WWzUJICA2GQS8Mssp/FkEXBcOZLIiS/9/7QvCRio6+qbQfyALZAgFipPB5LGk+p0Lzi2VvtTdo2ImRTeSkFTIBEIguADqArOc0UHgIZD9an0sCoQOXB/FNtoFZv64cAXx6Pr+J7LtzSljQz+YykStqacGIpITZUFacIuAYNBZb7lH+xaz7QHXesN9A0NBUIN0i2SH/9/v8QNGfhoh3OQF7eFFOn5ts6EM+zJHXMd6vbQ68BLpkSnMg4LomAyLZs+QMRGehMZzSLc7pxcoMKEM1PcxGI2Gvt60Mx5WMqfXaIOvGQ4P+rQZBJPEVh5x00oMHldMcBAYhumBVEQcSTaijMeJr7u1LLX1uSZJ1v+IQaLlWys0dmVzjYM73DhZnohO85zWqc8k6DsVkmqey5BcMFy3BpHoI8I2n3S9X1JA87zHsHIiLzWLM/lyu3HLUTBs0ODcsGQw+O7ugTNIssrV30FNpTPKnGFC3o1XN2136kbuelAUfSPSMXoo9l/qDhGfUz9nE2+YVrbmanLlH/66b4hLXbUzR0B7nhQN4amnptcwQ8wbXTNml7m5xEl63g3iW7MTg9C4L5Dp064qumVep8O5FPueoh9touYz4vlPl836WNcJ6uu3Cum4rF9uJL57ldXSuNen39B9WoFpWhiU8CMSMFzLLYFVXuII28fq09+riGzZXxHXuWpu2dBDVj1tJvysaKazK50E1kvMVsYef/L6houMbgwcz4YWTgKmcwNc1qMb20UCVILO3JgvIWYpZvCaeENEMM+KtTm6yqWMmYXFW8KxFrkn8XUJmYpvQ3WrVxSWChMQ68QhGAuX
- RZ9Suepb
- WiiKUaQzQCrgVzHHPg1WYqsAtJmZ16LsV9CQ/pCLVWI051psuNw36Onr+1M/sMA2t3UsyA7xY8IMALEWrD/B0P8Jgeu1kM++jcQ+FcvlNHLB7y/KFtjn5b/W0I5RbZsYTttyRr4T4EeVi0B4RlqcfIxqNThbQWzq8NgVcUjjA+zAB7jQUOxZywvjQX/GICjOZ2+ZDQc8/AZM71ZlicMhVXDY1gfRZrmFqbYClQQ1c2zcQkhoyzaFpArBqQ+/UtOCR86dxzoTYP06jIqZCSnCat113l7aWH7wU2idAniVyAsMnOMJuVMzSo1HAqLZADnJ6Pii5GQOwZtI2NgzLm1mtipqCBEIw7SceHBlx2TBNiTiRXbSQiAzhy+isB91tIfcXu+yGVvWrwQBJusjRYQpCoHxC6D9aWn2FuD2rued1t6a6FE3jc+IPCvSqQxpXbUMYXNqFZi89g+wk5eCclPQXGAHt8HzIZsb3qPv2
+X-Rspamd-Queue-Id: BF054100004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 59w6tbzetb9dkz4xyhzrufdoe9xq5i6n
+X-HE-Tag: 1761003676-261747
+X-HE-Meta: U2FsdGVkX1+gdafmgQ5963EMP11HCAYqkTioHgEAT1YHu2sB5XB7OifZ8MBJgmsaFOw5VDGEieoSSuom6p/dQ3maba1gsL+kfuukzlOkGeBsm/YccCVb0zv63kfsFmXo5QphShCVPmzbLdtbcVWVRwHcBGSQnB8JXw57NOgSzl/dRj1QWkNM7lOypZfe6GB5FtKRkJ12L9ckSclUp3+GJ2Y6tQddKTQrzn7yosS5PItCxgOBVmIopLpmPo9/uGuHntVHu1adzWK2bXWixtN0wi3ipj5b8FiUSh90QCst6MkWbun4T7cz6VFmYqIRa2wbxP2mEbS+SerNIDxhFHlUez1KIXSuZEqKhjBVjcWLlFcn8ZkvdTs8ziObWDwQZlivzJxk7NuuXWvwXFJh5GjvwNFF9i9BUeFLa9R3PT7IUtbUnnFylFX/rH6oD8B4mwEFIU89KueBQwZ4L+ZFNvWi9REnWuTEadjQ6Bg553afeIYe1WDZl2R7Y0VAk+ULryYbqJV93657CDEyjoJzJ7iNsWIIXji+ifebjFdyUgDs9fZljmLSK7+uNVgTdTnuYK2DvkTiIgmKbR+U2trmhhEtHG0p3+HMqfW8QeD/j94sHDgQxQ+/N+PjcD9EZjlB6LJgilKeoBi+IjJYYhiCUiyW8nH6MMqWKzpjfFxouG/Fm+4H6iBnCFDgYStZHjNSX6rFB+8xjJFdLjopp3+5z5FMaDMLaK2MkJA01L5jeFgm3YEzQB9sWg+v3VuPFrTHgI9v3uLitv/FgakaA4th9fk9I3xPA9j0iH/zBj5E85j0WzbBmmFi4bPtvGwtwU2yTwxUr9zkcp2IAIoWbx7eMsyc9e0gNuvtbUhYOohPizDjsrYH6DV6srkJ1ZeqWmLSVRcdJYG1n7TxtfCFAnAdbknagfaPATxXZA6nszOL3IPMo2g8qwxIh8dzu/CVwY0d4VptxHjjoUOGKWUzIUB1zCP
+ oX1HkA6/
+ ZCPfi4ricY2fhqY77F+l+YEbVh81bvvSViJfm5ug3ORS+x+TqF5j9NDp3s4Dnq0BAChHyBIoHe17m7y5Mh8bnXl0eaOg3jYOX8Kdpt5G/p92VSXmcNmOjBm7YNJ/oYSXMwkZZPbOFXz9eNEhiKuFScHMIxrFXheq2A4dXh+4Z4T8/27IGTHgWFeARQGHklTTqHkUKEUiL019UPBfs+js18q52pbPg6X4ZEv/nG3rznqB/mqdieQ15aLgMJJSoECGK1JIdLE+L896krotNEnJhuxyyYPY09aA2yluOcQe2nVRytIEL8aWPPVkQ2IekmJB720nFQSzuYdAz6etuzHfesGv+YauTx/tvLqy1FqLIFM9mvC4RLTXA/TMCaJGvFrZiP0t6INYYAGU/jGD2BSeMbvlYDUkORK1iNoZJJROrNxc2Cd6jX57/bPlSA4Wd+VTH6bTql6WXjVFRudMqRuUfLY6GEblX69dMKsZbEzlsrkIw2wXV/NljrukufyFrsFEq6IVYe3kvV3zxwbsG0JUMthf8ag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,99 +126,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 05:30:52PM +0100, Kiryl Shutsemau wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
-> 
-> I do NOT want the patches in this patchset to be applied. Instead, I
-> would like to discuss the semantics of large folios versus SIGBUS.
-> 
-> ## Background
-> 
-> Accessing memory within a VMA, but beyond i_size rounded up to the next
-> page size, is supposed to generate SIGBUS.
-> 
-> This definition is simple if all pages are PAGE_SIZE in size, but with
-> large folios in the picture, it is no longer the case.
-> 
-> ## Problem
-> 
-> Darrick reported[1] an xfstests regression in v6.18-rc1. generic/749
-> failed due to missing SIGBUS. This was caused by my recent changes that
-> try to fault in the whole folio where possible:
-> 
-> 	19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
-> 	357b92761d94 ("mm/filemap: map entire large folio faultaround")
-> 
-> These changes did not consider i_size when setting up PTEs, leading to
-> xfstest breakage.
-> 
-> However, the problem has been present in the kernel for a long time -
-> since huge tmpfs was introduced in 2016. The kernel happily maps
-> PMD-sized folios as PMD without checking i_size. And huge=always tmpfs
-> allocates PMD-size folios on any writes.
+On Mon, Oct 20, 2025 at 12:46=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 17 Oct 2025, at 15:11, Yang Shi wrote:
+>
+> > On Wed, Oct 15, 2025 at 8:38=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+> >>
+> >> Large block size (LBS) folios cannot be split to order-0 folios but
+> >> min_order_for_folio(). Current split fails directly, but that is not
+> >> optimal. Split the folio to min_order_for_folio(), so that, after spli=
+t,
+> >> only the folio containing the poisoned page becomes unusable instead.
+> >>
+> >> For soft offline, do not split the large folio if it cannot be split t=
+o
+> >> order-0. Since the folio is still accessible from userspace and premat=
+ure
+> >> split might lead to potential performance loss.
+> >>
+> >> Suggested-by: Jane Chu <jane.chu@oracle.com>
+> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> >> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> >> ---
+> >>  mm/memory-failure.c | 25 +++++++++++++++++++++----
+> >>  1 file changed, 21 insertions(+), 4 deletions(-)
+> >>
+> >> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> >> index f698df156bf8..443df9581c24 100644
+> >> --- a/mm/memory-failure.c
+> >> +++ b/mm/memory-failure.c
+> >> @@ -1656,12 +1656,13 @@ static int identify_page_state(unsigned long p=
+fn, struct page *p,
+> >>   * there is still more to do, hence the page refcount we took earlier
+> >>   * is still needed.
+> >>   */
+> >> -static int try_to_split_thp_page(struct page *page, bool release)
+> >> +static int try_to_split_thp_page(struct page *page, unsigned int new_=
+order,
+> >> +               bool release)
+> >>  {
+> >>         int ret;
+> >>
+> >>         lock_page(page);
+> >> -       ret =3D split_huge_page(page);
+> >> +       ret =3D split_huge_page_to_list_to_order(page, NULL, new_order=
+);
+> >>         unlock_page(page);
+> >>
+> >>         if (ret && release)
+> >> @@ -2280,6 +2281,7 @@ int memory_failure(unsigned long pfn, int flags)
+> >>         folio_unlock(folio);
+> >>
+> >>         if (folio_test_large(folio)) {
+> >> +               int new_order =3D min_order_for_split(folio);
+> >>                 /*
+> >>                  * The flag must be set after the refcount is bumped
+> >>                  * otherwise it may race with THP split.
+> >> @@ -2294,7 +2296,14 @@ int memory_failure(unsigned long pfn, int flags=
+)
+> >>                  * page is a valid handlable page.
+> >>                  */
+> >>                 folio_set_has_hwpoisoned(folio);
+> >> -               if (try_to_split_thp_page(p, false) < 0) {
+> >> +               /*
+> >> +                * If the folio cannot be split to order-0, kill the p=
+rocess,
+> >> +                * but split the folio anyway to minimize the amount o=
+f unusable
+> >> +                * pages.
+> >> +                */
+> >> +               if (try_to_split_thp_page(p, new_order, false) || new_=
+order) {
+> >
+> > folio split will clear PG_has_hwpoisoned flag. It is ok for splitting
+> > to order-0 folios because the PG_hwpoisoned flag is set on the
+> > poisoned page. But if you split the folio to some smaller order large
+> > folios, it seems you need to keep PG_has_hwpoisoned flag on the
+> > poisoned folio.
+>
+> OK, this means all pages in a folio with folio_test_has_hwpoisoned() shou=
+ld be
+> checked to be able to set after-split folio's flag properly. Current foli=
+o
+> split code does not do that. I am thinking about whether that causes any
+> issue. Probably not, because:
+>
+> 1. before Patch 1 is applied, large after-split folios are already causin=
+g
+> a warning in memory_failure(). That kinda masks this issue.
+> 2. after Patch 1 is applied, no large after-split folios will appear,
+> since the split will fail.
 
-The tmpfs huge=always specific behaviour is not how regular
-filesystems have behaved. It is niche, special case functionality
-that has weird behaviours and, as such, it most definitely does not
-set the standards for how all other filesystems should behave.
+I'm a little bit confused. Didn't this patch split large folio to
+new-order-large-folio (new order is min order)? So this patch had
+code:
+if (try_to_split_thp_page(p, new_order, false) || new_order) {
 
-> I considered this corner case when I implemented a large tmpfs, and my
-> conclusion was that no one in their right mind should rely on receiving
-> a SIGBUS signal when accessing beyond i_size. I cannot imagine how it
-> could be useful for the workload.
+Thanks,
+Yang
 
-Lacking the imagination or knowledge to understand why a behaviour
-exists does not mean that behaviour is unnecessary or that it should
-be removed. It just means you didn't ask the people who knew wy the
-functionality exists...
-
-> Generic/749 was introduced last year with reference to POSIX, but no
-> real workloads were mentioned. It also acknowledged the tmpfs deviation
-> from the test case.
-> 
-> POSIX indeed says[3]:
-> 
-> 	References within the address range starting at pa and
-> 	continuing for len bytes to whole pages following the end of an
-> 	object shall result in delivery of a SIGBUS signal.
-> 
-> Do we care about adhering strictly to this in absence of real workloads
-> that relies on this semantics?
-
-We've already told you that we do, because mapping beyond EOF has
-implications for the impact on how much stale data exposure occur
-when the next set of truncate/mmap() bugs are introduced.
-
-> I think it valuable to allow kernel to map memory with a larger chunks
-> -- whole folio -- to get TLB benefits (from both huge pages and TLB
-> coalescing). I value TLB hit rate over POSIX wording.
-
-Feel free to do that for tmpfs, but for persistent filesystems the
-existing POSIX SIGBUS behaviour needs to remain.
-
-> Any opinions?
-
-There are solid historic reasons for the existing behaviour and for
-keeping it unchanged.  You aren't allowed to handwave them away
-because you don't understand or care about them.
-
-In critical paths like truncate, correctness and safety come first.
-Performance is only a secondary consideration.  The overlap of
-mmap() and truncate() is an area where we have had many, many bugs
-and, at minimum, the current POSIX behaviour largely shields us from
-serious stale data exposure events when those bugs (inevitably)
-occur.
-
-Fundamentally, we really don't care about the mapping/tlb
-performance of the PTE fragments at EOF. Anyone using files large
-enough to notice the TLB overhead improvements from mapping large
-folios is not going to notice that the EOF mapping has a slightly
-higher TLB miss overhead than everywhere else in the file.
-
-Please jsut fix the regression.
-
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+>
+> @Miaohe and @Jane, please let me know if my above reasoning makes sense o=
+r not.
+>
+> To make this patch right, folio's has_hwpoisoned flag needs to be preserv=
+ed
+> like what Yang described above. My current plan is to move
+> folio_clear_has_hwpoisoned(folio) into __split_folio_to_order() and
+> scan every page in the folio if the folio's has_hwpoisoned is set.
+> There will be redundant scans in non uniform split case, since a has_hwpo=
+isoned
+> folio can be split multiple times (leading to multiple page scans), unles=
+s
+> the scan result is stored.
+>
+> @Miaohe and @Jane, is it possible to have multiple HW poisoned pages in
+> a folio? Is the memory failure process like 1) page access causing MCE,
+> 2) memory_failure() is used to handle it and split the large folio contai=
+ning
+> it? Or multiple MCEs can be received and multiple pages in a folio are ma=
+rked
+> then a split would happen?
+>
+> >
+> > Yang
+> >
+> >
+> >> +                       /* get folio again in case the original one is=
+ split */
+> >> +                       folio =3D page_folio(p);
+> >>                         res =3D -EHWPOISON;
+> >>                         kill_procs_now(p, pfn, flags, folio);
+> >>                         put_page(p);
+> >> @@ -2621,7 +2630,15 @@ static int soft_offline_in_use_page(struct page=
+ *page)
+> >>         };
+> >>
+> >>         if (!huge && folio_test_large(folio)) {
+> >> -               if (try_to_split_thp_page(page, true)) {
+> >> +               int new_order =3D min_order_for_split(folio);
+> >> +
+> >> +               /*
+> >> +                * If the folio cannot be split to order-0, do not spl=
+it it at
+> >> +                * all to retain the still accessible large folio.
+> >> +                * NOTE: if getting free memory is perferred, split it=
+ like it
+> >> +                * is done in memory_failure().
+> >> +                */
+> >> +               if (new_order || try_to_split_thp_page(page, new_order=
+, true)) {
+> >>                         pr_info("%#lx: thp split failed\n", pfn);
+> >>                         return -EBUSY;
+> >>                 }
+> >> --
+> >> 2.51.0
+> >>
+> >>
+>
+>
+> --
+> Best Regards,
+> Yan, Zi
 
