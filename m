@@ -4,85 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5CD3CCD195
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 02:10:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA72CCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 02:23:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E5648E0003; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
+	id A59FF8E0003; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496A98E0002; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
+	id A0AF78E0002; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ABFF8E0003; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
+	id 8F9CB8E0003; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AABE8E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6D9188899
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:10:00 +0000 (UTC)
-X-FDA: 84016862160.01.84C786C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9AB114000B
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:09:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 77F1B8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:23:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D10D0BAB50
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:23:11 +0000 (UTC)
+X-FDA: 84016895382.07.7FB7D6E
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2512C1C0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:23:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P9HITLYs;
+	spf=pass (imf20.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760926199;
+	s=arc-20220608; t=1760926990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h48VKldYNtXa/MN00+NnYPBXV8HoPhBppMeXQUpPGoA=;
-	b=wKSu9Ukndsn8wlShbQsuLdUycLKSPbUE8aBDadj5lwP/30bdydG6QZFmczjGdRGc/KYHvY
-	4rkzO5AMO+RyvP3pEkBrC8rWJJ520eVON3T4gBEaBRpRfTdIv9XK3/rd++yzXXxtBm1dI7
-	kRJnYjolp8F3XR7OtTrKS38JCdFZOv8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760926199; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
+	b=W4bJiN2TG3R1RHJ1ivSHx2DaEz3baDWyNDYkVwgunG9GnZnTBV9vdq7fDYPB/EnpWH2gVj
+	bDTbTr/qgahn9EQQeZW8i6tBWfte9c/FPnyp/JHoZMUKNu76lJJFn1kBQSa8i1+K5mfB02
+	X37/2n/G6w1YV70gCkyVEdQjitzdG4s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760926990; a=rsa-sha256;
 	cv=none;
-	b=UA8jwvTmoMsr9zqKDw6Fjtb0+oy7R51cdfvRe9zY5Wpv3UiZrpYKAreTq0bnZbjrkdBqgv
-	x9wH7BJamaiFba7N/PuiFbY2uMY9Y9FMqVk/isUcboVc3SCM4SLCCYMA/xr56AcJddoPNZ
-	Du8Y9S3X2KmPsH0dzeaZLafcCAQEebo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBE071063;
-	Sun, 19 Oct 2025 19:09:49 -0700 (PDT)
-Received: from [10.163.38.187] (unknown [10.163.38.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 995013F7A6;
-	Sun, 19 Oct 2025 19:09:54 -0700 (PDT)
-Message-ID: <0e6d1f1f-a917-4e36-80de-03ba94c6d850@arm.com>
-Date: Mon, 20 Oct 2025 07:39:51 +0530
+	b=whAwFdVqHV+ftmfvI1kX7x10kzqGgpduskk26IDxxIXmbzWdCP5rnv4MzX2QDF4YpzLlKx
+	MNYNkpTW+pyP/UEELzW1k1hs1Iu2ABXoRopjw3HGOgb+0ZDsaUGtRX2R7ak3BHyozhk7ub
+	FufXAA8jO+ddx3zXbfgNvmUXj+8mS5o=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P9HITLYs;
+	spf=pass (imf20.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6399328ff1fso6388196a12.0
+        for <linux-mm@kvack.org>; Sun, 19 Oct 2025 19:23:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760926988; x=1761531788; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
+        b=P9HITLYsdToOteeesCobCKf0NwvYRQZnhHd4KgSrwgh30fJ7VfUVpBb5BY9Y/d8mfC
+         b/hQUcBEl2eqtLJJRWatxmFPg9UUYX3ilWDUDxd1XL75Px1UH7dlBzrZAz5k5P3wJwVV
+         ItXEMIMnsQEXVc2BFaSxwUqdNB8ycDxrLHltwPo+i5N6kNmNwpCE1AggJtlqhTvDuiSe
+         mcT6wVJmjLg0PbHCly4/eWlxrB1iuKJ89MI9liDzRrnwGxFz8u9/178YB+s03zks/SH7
+         fBad/g3jU+fXGzzHpyY1/eszDvNIadLv4tM6GmusTVfqMRHSCP24nfyhnHtg0VJV6YNM
+         ulxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760926988; x=1761531788;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bgp43BYkKjjjKSTHmt3Hs9T9t92+4A5IAgPpLT+lZBw=;
+        b=v6GPa45Kr3PwpAWsllKMe0MJHnIfcACKD46KE1psj6GcrFtawN89TCTGBx6KJZxzmW
+         5xEFP/pnfEiNDOH12YKL5MteopxAvgia3CABAy7P5ZapZOS/TMz956k/2+SsYmLt8a2P
+         XcLo+Kxxm5T3KGuxdJ/u0h8HHLCNLRUig7v2h07u7+Y5vOxC6m17Xgi+bnXpPJjl5xsJ
+         uD9hYhFmZOITAsyd1AO4PkAyqxInzzAZGYzxsP82M8W+u5dkzKBCledK84wW0XDDlzP/
+         987PAW1paSPOa7O5ONUjuG/Dv8nZUzcl6QiYHajl+OiK0VcNOF99joN7246fLK8XTluf
+         Kovw==
+X-Gm-Message-State: AOJu0Yxd5b2cToaFlkylMt13IqIVzI3vXX7GAwO7GIDrG30uTlqqkr6/
+	umwZxW4y16rJec+4QL7/zZTf24vTknBYQ8znDBsWymO+piyILImsdNe1wCI6Q6KlZMScVqP7d4S
+	cOUCKEaGGEGFqnXVyNxguUJzEzfNOu5SFwEpIV7+15g==
+X-Gm-Gg: ASbGnctUYQUXSR4Bi/jFthmqUj6RFCYG1si8iqsmxS107jaSdkhvq8ZD62p40HTdlax
+	+HcsmxOqPTyvOz52zLYV9viyP71iiQ54GtdsQ3tpQ91/8surpTMMv7PYA5Qco9a0BVmq5WVA+md
+	0922tZ9DMoPjJKkrkRjzdReIenQecuOrdp+ZgTvuavQ89S+gbWZGt7RWEnKoWXdXTBSk/wt9JGN
+	oAuuZbFQjSc7PxD7IlBcdQTLyCFgQm16QV3Lmxz8zdxrxbiBB8JpgattohkLttY4AHOZkwB
+X-Google-Smtp-Source: AGHT+IFAnotMn1a+HkpQRSL9oMcAYj2bMv3VAIza4Bj7ZwRedHx85zohicwgxT+9kUq4T8N0L1yyDO1k21cOWoaI2vA=
+X-Received: by 2002:a05:6402:2813:b0:63b:f0b3:76d5 with SMTP id
+ 4fb4d7f45d1cf-63c1f6f615emr11464055a12.35.1760926988174; Sun, 19 Oct 2025
+ 19:23:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Gavin Shan <gshan@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Yicong Yang <yangyicong@hisilicon.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251015023712.46598-1-ying.huang@linux.alibaba.com>
- <aPKFmHg-FrkGJxWd@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <aPKFmHg-FrkGJxWd@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9AB114000B
-X-Stat-Signature: gajees6wngscpygnknrztutotz6we4cm
+From: Yifan Ji <412752700jyf@gmail.com>
+Date: Mon, 20 Oct 2025 10:22:57 +0800
+X-Gm-Features: AS18NWDq8BnkBA_kGouHvm8ol7P6_2jM2OSHoOqvgtwF2DRlPDa9YQaeEYFHm1E
+Message-ID: <CA+9cq0keWt5GP7=U_JrUEzw_wQzG_BHnM+n96vLwfMCK13r5Gw@mail.gmail.com>
+Subject: [DISCUSS] Proposal: move slab shrinking into a dedicated kernel
+ thread to improve reclaim efficiency
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Matthew Wilcox <willy@infradead.org>
+Content-Type: multipart/alternative; boundary="0000000000009b0a2506418dc393"
+X-Rspamd-Server: rspam05
+X-Stat-Signature: emjp9rtftt8dc5n5usuu6rishqm8to7f
 X-Rspam-User: 
-X-HE-Tag: 1760926198-799934
-X-HE-Meta: U2FsdGVkX1/ThzwdHFgFYxzO3y0Vkv4QkxUsFsh366BG1FRYXGh11ywKaEhzDlP6cCqAUMPKotzvOIQvK0BI92kv4h9hiVuGJum6UXlfeNP83PoqxBt9+SxO8uV5hNmm1f51RRneRYCwA+GsSWfFNOnsz5+ClvBIcQKyRcwZJNJ8YQ8OyXXbwl8MYRYI9CJcHgCNnR2Edc3BNeFQJwB3tVFcgDCWszrrmCKNnML7RMJ7Htpdri6rGh+aFiH8rNKVt3jFLxgsmZ/jQ0dWOZYohfJ8nJUeBfsXJliXMopUSxO5BDFEeqqqMgiMjfpt+qk0DmQKtEcvasVFpmgjGGOymldN+voAL7UlR4f5BLLDLtYn05BtaeIPAzxeuyjXZbmzsU72xnsJ611kyQ8ONVAwW86P8OSFuQlcBDGk7k9wCFDMzdvbb8AG3rwDdyz/Xdvqlu+lNWONLPILZ11oTR1jaQchhZBCY8iFi3LsJGWr4MiBvTPrAUiEHXix/Bz1U6XjJYTUl39WRUgN2Qr0YwunDO9zTXBI7NqKgiUhHpqbgPjVOu+YfL+uNUmjTGiGv8a9cSFS53ZGOxsIJleGnqltobmfYFg6WFCcVT0BjVSiXdximqdwayv8UCNk4XOiYMxVyY2uHRxAs+lPkJv1ekaOlD76FmsYSW69bQDgxuiVTnLlf+m7Ao0ooTv9LcEsw33lN7dSlMA1CV2W+FpdaDVrBKsmdWgc+lEyCN8h1HkTQfzYj/uJu7spODDNmAAnZNRjTJcmiO3HAvg1PuvPVuTO7VVyIyX03cOVrakrNbw2QkM0E9MoSjsVqYFSFxrAU/Nz6ihkFIFob5Udm+0LLYWaKBkR9HJ3eqVvJ+alZ/8Pwii2JvKiDgPwqggKnw/QQXawRF4VCnCSBvs+Uhph6vGUpAv2R/NVp77iTgMZr+LfKmgIHoY2y3HJt1qbKBIp8RZWe/vFbEymW3/XoEb7alE
- WSJgi+KG
- VPzi5LQ8InQYd4Tm47+sDcVtKn0FmOQ7ghpJW5JinRXSWkfFRMPrHcjebuoeP8Kr6wxU66WUSGZJkrfn6DdaAyadu4CvLsyvPWMcc5mZkLj7jGhkWIWAzgcXqT1A5YjN9wdW9vqbY4yEAfZJePMZy0DuKgxptU1S1rrkXHNQda1zmfqRzMPHQ1neFGcPOjema08R5CDhc4eFBunparN83jkp9yBZhQnlqUNq3CjCax11sJNEJ23EMnNHtj6pSelg6JmtU43aMF+6ru/ntopH59t6w7/EllJMnzdKO0fE+2xDEkdqgjgHXKyNGXrPoToYb8BGDddSctdmx3SWpw639AvbVJt8wg4MuytgMuul0X43w6cref7YhbaS30lEhBRTBhHlkvnpS1kaLINfE9ekG4vsOUQj3j0Ak6UL+9OvQk0uKaFCX6q6cBJekHQ==
+X-Rspamd-Queue-Id: 2512C1C0002
+X-HE-Tag: 1760926989-848114
+X-HE-Meta: U2FsdGVkX1/MrvRsICSDL5YHOULyj7MqDIAYEN+9Lx5JOqexx2vs4l8dMrqI2EcbzIkl8iUXf9rio8zo5CaWDdvAJEm7nAuvXGMlbQh9RXgzkt7P/ustuMu7A9+ufQECbi/x50LrbnzmcwyAy8xtWUzJB6E5DGQborSWz6IIvI1rAO0tOsLm3CJziqM7ujY5Wpez17pCfzAwJtydf4eYYwKekFuI6uIGwbMDwVNXxgOPcusO/6dajdaNe+d3IJ0cwxRxaghhgqoAN8bet5fMPHXit0MHKW5/Ch5vFsog25WJVvUYg59sVwvbRrfCuJcw1BKjnUbhAzk7QvF7YKCSa98ZQSXvSCIke8iV2j7IUV2qrQhs7l/fFo6+lmGoHWDVa0OyXm/mShfmTY/O2y1TJzCGAmK80yhXEW6ju6JgAY5eSNqFle+X/7iPnVB3kjQPSQ6N7ic5YRAd6CwABat3vGNbo/ccMGCw1pklm/BkIiTx1uThcbJX1jBErdHyMm40nB8/2xvlaKBccfBxdEorAzfr5wIluOEEIzL/uYYFLMyNr+l/0JM8cRNFdOX43EMB6BdYvYKrkOUfAusZKQduNMwWsoXk0KjhwthLlChZVNzC/MKbZRQQsPxzkWX4p3vPthxCJcZeGQEfSYTYrvkSk2pA7KIKQ8/VesHPRWxsWkpmhdxOsiSE9tZYM8TrjmwWIYLWX7CFOXUSRAMajlXWS37xDDimZgLf+BS5Z06OcQnLepZX6Y+oYxKcfq0Z0o0Z6bZsYFpr9xkM1lV3l/07XM+Azq/oTqtNmiK2PmmO0RceKNaiUMGCqWcvU2/8AGzKUEld+UxoxMQ1BKLLpAUgrZvNVAQlZAbflzgmFp2hy8eiUJ2KqCbTHb/sblGK0Qi0vrq6WqLb+5G5nFAvXjB8pbYtMpZun8AxpMrATHoLzaXFZEdEssUBEB4md0mNAUAnDRiX3j8JGD1kzWI37iq
+ OjYlEwAq
+ MxB/QRo7+O6oup5tD4Z7nlT6dCTGPYynBUOd8jealiBMTovH3PL7l2XHIGwwmK3KgwfSHeH2MnUDqbjBp419fRUB/t4C/+/j/EIm8dD8IGVjAQofK14IUv4XUe8MuN2yCqFlkgm8+TIYpmrOeXV9k4rv9MEudpHK24gVcBD9h3H7fzA1HlzifmN7QLvaep9fXVIewiD74E3VPMDqkX0YrOahardK6lwiyZTx4YKV9LGsWq9wFoRSlxe999O4m4ptxrCvTM8nib1z9G75F72xEW/P/3cRLD8ZEC3BarO7pnsE7u9mt1yr7Nph2fWLIQx8Mx1deMMHWppIAtEVJCqPuoSkvrSnG7kaIoaYnoxfHc2aOOSgOaUUk6LWslTN56xLqrgCbmWZdQwmr+FqQ6Fs5chzs9la1+L/stckgMxSXdm86GyVWHJb/YjdiOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,126 +110,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--0000000000009b0a2506418dc393
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-On 17/10/25 11:36 PM, Catalin Marinas wrote:
-> On Wed, Oct 15, 2025 at 10:37:12AM +0800, Huang Ying wrote:
->> Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
->> mark some pages that are never written dirty wrongly.  For example,
->> do_swap_page() may map the exclusive pages with writable and clean PTEs
->> if the VMA is writable and the page fault is for read access.
->> However, current pte_mkwrite_novma() implementation always dirties the
->> PTE.  This may cause unnecessary disk writing if the pages are
->> never written before being reclaimed.
->>
->> So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
->> PTE_DIRTY bit is set to make it possible to make the PTE writable and
->> clean.
->>
->> The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
->> Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
->> pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
->> clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
->> are set.
->>
->> To test the performance impact of the patch, on an arm64 server
->> machine, run 16 redis-server processes on socket 1 and 16
->> memtier_benchmark processes on socket 0 with mostly get
->> transactions (that is, redis-server will mostly read memory only).
->> The memory footprint of redis-server is larger than the available
->> memory, so swap out/in will be triggered.  Test results show that the
->> patch can avoid most swapping out because the pages are mostly clean.
->> And the benchmark throughput improves ~23.9% in the test.
->>
->> Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
->> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
->> Cc: Ryan Roberts <ryan.roberts@arm.com>
->> Cc: Gavin Shan <gshan@redhat.com>
->> Cc: Ard Biesheuvel <ardb@kernel.org>
->> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Cc: Yicong Yang <yangyicong@hisilicon.com>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> ---
->>  arch/arm64/include/asm/pgtable.h | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index aa89c2e67ebc..0944e296dd4a 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -293,7 +293,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
->>  static inline pte_t pte_mkwrite_novma(pte_t pte)
->>  {
->>  	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
->> -	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
->> +	if (pte_sw_dirty(pte))
->> +		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
->>  	return pte;
->>  }
-> 
-> This seems to be the right thing. I recall years ago I grep'ed
-> (obviously not hard enough) and most pte_mkwrite() places had a
-> pte_mkdirty(). But I missed do_swap_page() and possibly others.
-> 
-> For this patch:
-> 
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-> 
-> I wonder whether we should also add (as a separate patch):
-> 
-> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 830107b6dd08..df1c552ef11c 100644
-> --- a/mm/debug_vm_pgtable.c
-> +++ b/mm/debug_vm_pgtable.c
-> @@ -101,6 +101,7 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
->  	WARN_ON(pte_dirty(pte_mkclean(pte_mkdirty(pte))));
->  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
->  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
-> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
->  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
->  }
-> 
-> For completeness, also (and maybe other combinations):
-> 
-> 	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+We have been investigating reclaim performance on mobile systems under
+memory pressure and noticed that slab shrinking often accounts for a
+significant portion of reclaim time in both direct reclaim and kswapd
+contexts.
+In some cases, shrink_slab() can take noticeably long when multiple
+shrinkers are active, leading to latency spikes and slower overall reclaim
+progress.
 
-Adding similar tests to pte_wrprotect().
+To address this, we are considering an approach to move slab shrinking
+into a *dedicated kernel thread*. The intention is to decouple slab reclaim
+from the direct reclaim and kswapd paths, allowing it to proceed
+asynchronously under controlled conditions such as system idle periods or
+specific reclaim triggers.
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 830107b6dd08..573632ebf304 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -102,6 +102,11 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
-        WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
-        WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
-        WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
-+
-+       WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
-+       WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
-+       WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
-+       WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
- }
+*Motivation:*
 
- static void __init pte_advanced_tests(struct pgtable_debug_args *args)
-@@ -195,6 +200,9 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
-        WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
-        WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
-        WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
-+
-+       WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
-+       WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
-        /*
-         * A huge page does not point to next level page table
-         * entry. Hence this must qualify as pmd_bad().
-> 
-> I cc'ed linux-mm in case we missed anything. If nothing raised, I'll
-> queue it next week.
-> 
-> Thanks.
-> 
+   -
 
+   Reduce latency in direct reclaim paths by offloading potentially
+   long-running slab reclaim work.
+   -
+
+   Improve overall reclaim efficiency by scheduling slab shrinking
+   separately from page reclaim.
+   -
+
+   Allow more flexible control over when and how slab caches are aged
+   or shrunk.
+
+*Proposed direction:*
+
+   -
+
+   Introduce a kernel thread responsible for invoking
+   shrink_slab() periodically or when signaled.
+   -
+
+   Keep the existing shrinker infrastructure intact but move the
+   execution context outside of direct reclaim and kswapd.
+   -
+
+   Optionally trigger this thread based on system activity (e.g.
+   idle detection, vmpressure events, or background reclaim).
+
+We=E2=80=99d like to gather community feedback on:
+
+   -
+
+   Whether decoupling slab reclaim from kswapd and direct reclaim
+   makes sense from a design and maintainability perspective.
+   -
+
+   Potential implications on fairness, concurrency, and memcg
+   accounting.
+   -
+
+   Any related prior work or alternative ideas that have been discussed
+   in this area.
+
+Thanks for your time and consideration.
+
+Best regards,
+Yifan Ji
+
+--0000000000009b0a2506418dc393
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p>Hi all,</p>
+<p>We have been investigating reclaim performance on mobile systems under=
+=C2=A0<br>memory pressure and noticed that slab shrinking often accounts fo=
+r a=C2=A0<br>significant portion of reclaim time in both direct reclaim and=
+ kswapd contexts.<br>
+In some cases, <code>shrink_slab()</code> can take noticeably long when mul=
+tiple<br>
+shrinkers are active, leading to latency spikes and slower overall reclaim<=
+br>
+progress.</p><p>To address this, we are considering an approach to move sla=
+b shrinking<br>
+into a <strong>dedicated kernel thread</strong>. The intention is to decoup=
+le slab reclaim=C2=A0<br>from the direct reclaim and kswapd paths, allowing=
+ it to proceed=C2=A0<br>asynchronously under controlled conditions such as =
+system idle periods or=C2=A0<br>specific reclaim triggers.</p><p><strong>Mo=
+tivation:</strong></p>
+<ul><li>
+<p>Reduce latency in direct reclaim paths by offloading potentially<br>
+long-running slab reclaim work.</p>
+</li><li>
+<p>Improve overall reclaim efficiency by scheduling slab shrinking<br>
+separately from page reclaim.</p>
+</li><li>
+<p>Allow more flexible control over when and how slab caches are aged<br>
+or shrunk.</p>
+</li></ul>
+<p><strong>Proposed direction:</strong></p>
+<ul><li>
+<p>Introduce a kernel thread responsible for invoking<br>
+<code>shrink_slab()</code> periodically or when signaled.</p>
+</li><li>
+<p>Keep the existing shrinker infrastructure intact but move the<br>
+execution context outside of direct reclaim and kswapd.</p>
+</li><li>
+<p>Optionally trigger this thread based on system activity (e.g.<br>
+idle detection, vmpressure events, or background reclaim).</p>
+</li></ul>
+<p>We=E2=80=99d like to gather community feedback on:</p>
+<ul><li>
+<p>Whether decoupling slab reclaim from kswapd and direct reclaim<br>
+makes sense from a design and maintainability perspective.</p>
+</li><li>
+<p>Potential implications on fairness, concurrency, and memcg<br>
+accounting.</p>
+</li><li>
+<p>Any related prior work or alternative ideas that have been discussed<br>
+in this area.</p>
+</li></ul>
+<p>Thanks for your time and consideration.</p>
+<p>Best regards,<br>Yifan Ji</p>
+</div>
+
+--0000000000009b0a2506418dc393--
 
