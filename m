@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5238ACCD195
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 02:02:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5CD3CCD195
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 02:10:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 214CB8E0003; Sun, 19 Oct 2025 22:02:28 -0400 (EDT)
+	id 4E5648E0003; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ECB28E0002; Sun, 19 Oct 2025 22:02:28 -0400 (EDT)
+	id 496A98E0002; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A238E0003; Sun, 19 Oct 2025 22:02:28 -0400 (EDT)
+	id 3ABFF8E0003; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 01D568E0002
-	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:02:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 87E488869E
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:02:27 +0000 (UTC)
-X-FDA: 84016843134.11.6F72236
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 873731A0010
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:02:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hGc9e1Ii;
-	spf=pass (imf19.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AABE8E0002
+	for <linux-mm@kvack.org>; Sun, 19 Oct 2025 22:10:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6D9188899
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:10:00 +0000 (UTC)
+X-FDA: 84016862160.01.84C786C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9AB114000B
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 02:09:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760925745;
+	s=arc-20220608; t=1760926199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wvw6EEcLVS321+82zeKA5qCqsquigv/cxrzA5Vq7LGo=;
-	b=ZHFAjHEwZjwS8e2FrXXC5YmgBN69Q7LlCZZHkotIZyaX0AvqBSi7n98jxK1+C3e9XegwOg
-	BwAPUBCkDRm+cLRolYEXL1vrMNrGoTkZDscK9Od6t5Ojphq0OtrrbYFF9C0NBrPbZb9L+M
-	O0eegieBPr5y8hTUySCe3ChGrVEklHw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hGc9e1Ii;
-	spf=pass (imf19.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760925745; a=rsa-sha256;
-	cv=none;
-	b=05hESLw4afkhDAl/iR6nze4zYg6fRjtU0atkwv06lR1O5aSHu/LrrHUF7WNNR5Jk+FbW9A
-	kLc8fZx3l+ITW6bC+w7KPvB1/aNrtYeKlPyuOBXbiYxA9GCc878FpmohlU/1x5SzosT1R4
-	ajKG7QuDnt1GgtjvjnRrbBe4EkOapl0=
-Message-ID: <3efc2a94-54c7-48a8-a804-c231d06b5ed5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760925743;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Wvw6EEcLVS321+82zeKA5qCqsquigv/cxrzA5Vq7LGo=;
-	b=hGc9e1IiLST/psAYvB/aakCsP4XWX8OkVLTCEs0D0o0PKzJbXKei56mJzB8lGov+Y3y6o7
-	Dag7c4YvbxLjuBbfOKPzW9XAxDi9ovSSPNYx1a9bDt5F6iiq0yqlCPxGeo+EshhCkcvhkk
-	qdozeyfCimZd3viWAswm9uEhGE4jHBA=
-Date: Mon, 20 Oct 2025 10:01:27 +0800
+	bh=h48VKldYNtXa/MN00+NnYPBXV8HoPhBppMeXQUpPGoA=;
+	b=wKSu9Ukndsn8wlShbQsuLdUycLKSPbUE8aBDadj5lwP/30bdydG6QZFmczjGdRGc/KYHvY
+	4rkzO5AMO+RyvP3pEkBrC8rWJJ520eVON3T4gBEaBRpRfTdIv9XK3/rd++yzXXxtBm1dI7
+	kRJnYjolp8F3XR7OtTrKS38JCdFZOv8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf07.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760926199; a=rsa-sha256;
+	cv=none;
+	b=UA8jwvTmoMsr9zqKDw6Fjtb0+oy7R51cdfvRe9zY5Wpv3UiZrpYKAreTq0bnZbjrkdBqgv
+	x9wH7BJamaiFba7N/PuiFbY2uMY9Y9FMqVk/isUcboVc3SCM4SLCCYMA/xr56AcJddoPNZ
+	Du8Y9S3X2KmPsH0dzeaZLafcCAQEebo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBE071063;
+	Sun, 19 Oct 2025 19:09:49 -0700 (PDT)
+Received: from [10.163.38.187] (unknown [10.163.38.187])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 995013F7A6;
+	Sun, 19 Oct 2025 19:09:54 -0700 (PDT)
+Message-ID: <0e6d1f1f-a917-4e36-80de-03ba94c6d850@arm.com>
+Date: Mon, 20 Oct 2025 07:39:51 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH] slab: Avoid race on slab->obj_exts in alloc_slab_obj_exts
-To: Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>
-References: <a9ca7cc6-f4d1-4fba-a9aa-2826b9a604bc@suse.cz>
- <8F4AE1E9-7412-40D6-B383-187021266174@linux.dev>
- <7791b2b8-5db8-458c-89e2-49a0876c13a3@suse.cz>
- <CAJuCfpEWGujJe3JOjmiKLOUr49Hw_3smT6iatY7kaRBPPCWpNg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64, mm: avoid always making PTE dirty in pte_mkwrite()
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Gavin Shan <gshan@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Yicong Yang <yangyicong@hisilicon.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20251015023712.46598-1-ying.huang@linux.alibaba.com>
+ <aPKFmHg-FrkGJxWd@arm.com>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpEWGujJe3JOjmiKLOUr49Hw_3smT6iatY7kaRBPPCWpNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: e8amyoagzxersims3pb6cce94wm4mh1d
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <aPKFmHg-FrkGJxWd@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9AB114000B
+X-Stat-Signature: gajees6wngscpygnknrztutotz6we4cm
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 873731A0010
-X-HE-Tag: 1760925745-417138
-X-HE-Meta: U2FsdGVkX1/A3cdCcgK285m5Rl0HlyjKCOwYnETdLSOWbDE/9vzM134f/WdirPdNWHtbTYGn8qibgYaa+sLIbiOAanAHVcNntdWlpSjcaY0cpNoffdgzTlVfHeL0mOJrLbkL3o8kIQCUBjrfzOLAr3bA0YiQgi2GaLZ1wQd/5dQEudAIKbPMHlNmhW0uN+ntM8b6bUnesysfBhPhOcxJSszfgqmCQx1Bkub7tcr6+dBlG1uWkP9zxW2UkGta6gpazB22ThoAIdQcg1icZpQkzcwFkSajqKcsd5U3KnQlgwnS/+7UBOyKWpyiUT4skqOIq757WBqw2Ud9K6bWPDHmJi2vsHACrzZ16NLxhAFccRrbXu2lCt/uaczdEEpO2cndJJUtKYEfapkfZBbMG+5MDyKrk5+zgwIUfQ6ngvHeuKGWqewqjpJGtcwLybMJ/6fzD/cEDxyhc6z0kLSt0Pyv0M1UdZVC8Gwa5UA2vIQYJ56x3+s38qlFs6y6KF7TuzVWvwEkyeL8bzmiChT6+SbRmGgPyVHLpXbHYigt3ln1dPBD5VkZuEBeEpbA/2I+86ySqvHzA3mCtjmPg/baQ0HgC95Fg4f2f5q2qiOtXQ6enoacWZim6ow8Yx3YUv0uwmcIIbLKlYi8YYwM238LWcltY0Q1bqatN/oIrhEjDoWw+wOMuUR1gMxJJ/rp0+kZ83vX0sauqM9lN3lf++0dMyuo95rgzyglbqtBXOhZJ9Ez/qRl6DJSirEncnFtLKCg+spwHetyXVvT5kRvQ03s0eFKQ944+4W1Iq8o9456NwB8A0Qwxb6CvgnEzYE+TOrx1YhL3SHd8V4pKoZ96hpyyeNAkxcqghbvaaFJVOhx4/TUxMhV013r4JHQ8Q8JH3tE9I/9NGRykXAqqmVXqb7EU5s2bAIdPAHh+RiS9XTIwuIc/8ULn5wXxqjaPKHxAzl6ux07IREA0pkCPIHMVxQMdt4
- QvskZOqq
- ER1xryEWqunoKRF1YoAMXXwXm/oT16gbrKejuhKdoqATDamY7XtbwxjZ2pctvjvtacViJiwXelm3UllUJ0qWV56xcN6s/IgrVyJbNqtPb/QPAKoQeou0cIFoCXwwQv3/L8Tc/O57Bwo0XCeQJwDPkeVDISfM8zz9oX59dEzXIUeMsiBXJI7gwih1bGXKAvBElJQeicCArIlFESDBr/BIe06w3CHB97QIdcKLdDM8T8ctzvOnS1JxYJfDU/qnQyDLNr6FkOKzglhdaq5o10B6d2N5EIA==
+X-HE-Tag: 1760926198-799934
+X-HE-Meta: U2FsdGVkX1/ThzwdHFgFYxzO3y0Vkv4QkxUsFsh366BG1FRYXGh11ywKaEhzDlP6cCqAUMPKotzvOIQvK0BI92kv4h9hiVuGJum6UXlfeNP83PoqxBt9+SxO8uV5hNmm1f51RRneRYCwA+GsSWfFNOnsz5+ClvBIcQKyRcwZJNJ8YQ8OyXXbwl8MYRYI9CJcHgCNnR2Edc3BNeFQJwB3tVFcgDCWszrrmCKNnML7RMJ7Htpdri6rGh+aFiH8rNKVt3jFLxgsmZ/jQ0dWOZYohfJ8nJUeBfsXJliXMopUSxO5BDFEeqqqMgiMjfpt+qk0DmQKtEcvasVFpmgjGGOymldN+voAL7UlR4f5BLLDLtYn05BtaeIPAzxeuyjXZbmzsU72xnsJ611kyQ8ONVAwW86P8OSFuQlcBDGk7k9wCFDMzdvbb8AG3rwDdyz/Xdvqlu+lNWONLPILZ11oTR1jaQchhZBCY8iFi3LsJGWr4MiBvTPrAUiEHXix/Bz1U6XjJYTUl39WRUgN2Qr0YwunDO9zTXBI7NqKgiUhHpqbgPjVOu+YfL+uNUmjTGiGv8a9cSFS53ZGOxsIJleGnqltobmfYFg6WFCcVT0BjVSiXdximqdwayv8UCNk4XOiYMxVyY2uHRxAs+lPkJv1ekaOlD76FmsYSW69bQDgxuiVTnLlf+m7Ao0ooTv9LcEsw33lN7dSlMA1CV2W+FpdaDVrBKsmdWgc+lEyCN8h1HkTQfzYj/uJu7spODDNmAAnZNRjTJcmiO3HAvg1PuvPVuTO7VVyIyX03cOVrakrNbw2QkM0E9MoSjsVqYFSFxrAU/Nz6ihkFIFob5Udm+0LLYWaKBkR9HJ3eqVvJ+alZ/8Pwii2JvKiDgPwqggKnw/QQXawRF4VCnCSBvs+Uhph6vGUpAv2R/NVp77iTgMZr+LfKmgIHoY2y3HJt1qbKBIp8RZWe/vFbEymW3/XoEb7alE
+ WSJgi+KG
+ VPzi5LQ8InQYd4Tm47+sDcVtKn0FmOQ7ghpJW5JinRXSWkfFRMPrHcjebuoeP8Kr6wxU66WUSGZJkrfn6DdaAyadu4CvLsyvPWMcc5mZkLj7jGhkWIWAzgcXqT1A5YjN9wdW9vqbY4yEAfZJePMZy0DuKgxptU1S1rrkXHNQda1zmfqRzMPHQ1neFGcPOjema08R5CDhc4eFBunparN83jkp9yBZhQnlqUNq3CjCax11sJNEJ23EMnNHtj6pSelg6JmtU43aMF+6ru/ntopH59t6w7/EllJMnzdKO0fE+2xDEkdqgjgHXKyNGXrPoToYb8BGDddSctdmx3SWpw639AvbVJt8wg4MuytgMuul0X43w6cref7YhbaS30lEhBRTBhHlkvnpS1kaLINfE9ekG4vsOUQj3j0Ak6UL+9OvQk0uKaFCX6q6cBJekHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,185 +92,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 2025/10/18 05:52, Suren Baghdasaryan wrote:
-> On Fri, Oct 17, 2025 at 3:40 AM Vlastimil Babka <vbabka@suse.cz> wrote:
->> On 10/17/25 12:02, Hao Ge wrote:
->>>
->>>> On Oct 17, 2025, at 16:22, Vlastimil Babka <vbabka@suse.cz> wrote:
->>>>
->>>> ﻿On 10/17/25 09:40, Harry Yoo wrote:
->>>>>> On Fri, Oct 17, 2025 at 02:42:56PM +0800, Hao Ge wrote:
->>>>>> Hi Harry
->>>>>>
->>>>>>
->>>>>> Thank you for your quick response.
->>>>>>
->>>>>>
->>>>>> On 2025/10/17 14:05, Harry Yoo wrote:
->>>>>>> On Fri, Oct 17, 2025 at 12:57:49PM +0800, Hao Ge wrote:
->>>>>>>> From: Hao Ge <gehao@kylinos.cn>
->>>>>>>>
->>>>>>>> In the alloc_slab_obj_exts function, there is a race condition
->>>>>>>> between the successful allocation of slab->obj_exts and its
->>>>>>>> setting to OBJEXTS_ALLOC_FAIL due to allocation failure.
->>>>>>>>
->>>>>>>> When two threads are both allocating objects from the same slab,
->>>>>>>> they both end up entering the alloc_slab_obj_exts function because
->>>>>>>> the slab has no obj_exts (allocated yet).
->>>>>>>>
->>>>>>>> And One call succeeds in allocation, but the racing one overwrites
->>>>>>>> our obj_ext with OBJEXTS_ALLOC_FAIL. The threads that successfully
->>>>>>>> allocated will have prepare_slab_obj_exts_hook() return
->>>>>>>> slab_obj_exts(slab) + obj_to_index(s, slab, p), where slab_obj_exts(slab)
->>>>>>>> already sees OBJEXTS_ALLOC_FAIL and thus it returns an offset based
->>>>>>>> on the zero address.
->>>>>>>>
->>>>>>>> And then it will call alloc_tag_add, where the member codetag_ref *ref
->>>>>>>> of obj_exts will be referenced.Thus, a NULL pointer dereference occurs,
->>>>>>>> leading to a panic.
->>>>>>>>
->>>>>>>> In order to avoid that, for the case of allocation failure where
->>>>>>>> OBJEXTS_ALLOC_FAIL is assigned, we use cmpxchg to handle this assignment.
->>>>>>>>
->>>>>>>> Thanks for Vlastimil and Suren's help with debugging.
->>>>>>>>
->>>>>>>> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
->>>>>>> I think we should add Cc: stable as well?
->>>>>>> We need an explicit Cc: stable to backport mm patches to -stable.
->>>>>> Oh sorry, I missed this.
->>>>>>>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->>>>>>>> ---
->>>>>>>>   mm/slub.c | 2 +-
->>>>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>>
->>>>>>>> diff --git a/mm/slub.c b/mm/slub.c
->>>>>>>> index 2e4340c75be2..9e6361796e34 100644
->>>>>>>> --- a/mm/slub.c
->>>>>>>> +++ b/mm/slub.c
->>>>>>>> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
->>>>>>>>   static inline void mark_failed_objexts_alloc(struct slab *slab)
->>>>>>>>   {
->>>>>>>> -    slab->obj_exts = OBJEXTS_ALLOC_FAIL;
->>>>>>>> +    cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->>>>>>>>   }
->>>>>>> A silly question:
->>>>>>>
->>>>>>> If mark_failed_objexts_alloc() succeeds and a concurrent
->>>>>>> alloc_slab_obj_exts() loses, should we retry cmpxchg() in
->>>>>>> alloc_slab_obj_exts()?
->>>>>> Great point.
->>>>>>
->>>>>> We could modify it like this, perhaps?
->>>>>>
->>>>>>   static inline void mark_failed_objexts_alloc(struct slab *slab)
->>>>>>   {
->>>>>> +       unsigned long old_exts = READ_ONCE(slab->obj_exts);
->>>>>> +       if( old_exts == 0 )
->>>>>> +               cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->>>>>>   }
->>>>> I don't think this makes sense.
->>>>> cmpxchg() fails anyway if old_exts != 0.
->>> Aha, sorry I misunderstood what you meant.
->>>
->>>>>> Do you have any better suggestions on your end?
->>>>> I meant something like this.
->>>>>
->>>>> But someone might argue that this is not necessary anyway
->>>>> if there's a severe memory pressure :)
->>>>>
->>>>> diff --git a/mm/slub.c b/mm/slub.c
->>>>> index a585d0ac45d4..4354ae68b0e1 100644
->>>>> --- a/mm/slub.c
->>>>> +++ b/mm/slub.c
->>>>> @@ -2139,6 +2139,11 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>>>>         slab->obj_exts = new_exts;
->>>>>     } else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
->>>>>            cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
->>>>> +
->>>>> +        old_exts = READ_ONCE(slab->obj_exts);
->>>>> +        if (old_exts == OBJEXTS_ALLOC_FAIL &&
->>>>> +            cmpxchg(&slab->obj_exts, old_exts, new_exts) == old_exts)
->>>>> +            goto out;
->>>> Yeah, but either we make it a full loop or we don't care.
->>>> Maybe we could care because even without a severe memory pressure, one side
->>>> might be using kmalloc_nolock() and fail more easily. I'd bet it's what's
->>>> making this reproducible actually.
->>>  From my understanding, it only affected the obj_ext associated with this allocation, which was subsequently deallocated, leading to the loss of this count. Is this correct?
->> Yes.
 
-In that case, we may really need to handle this situation and require a 
-full loop.
+On 17/10/25 11:36 PM, Catalin Marinas wrote:
+> On Wed, Oct 15, 2025 at 10:37:12AM +0800, Huang Ying wrote:
+>> Current pte_mkwrite_novma() makes PTE dirty unconditionally.  This may
+>> mark some pages that are never written dirty wrongly.  For example,
+>> do_swap_page() may map the exclusive pages with writable and clean PTEs
+>> if the VMA is writable and the page fault is for read access.
+>> However, current pte_mkwrite_novma() implementation always dirties the
+>> PTE.  This may cause unnecessary disk writing if the pages are
+>> never written before being reclaimed.
+>>
+>> So, change pte_mkwrite_novma() to clear the PTE_RDONLY bit only if the
+>> PTE_DIRTY bit is set to make it possible to make the PTE writable and
+>> clean.
+>>
+>> The current behavior was introduced in commit 73e86cb03cf2 ("arm64:
+>> Move PTE_RDONLY bit handling out of set_pte_at()").  Before that,
+>> pte_mkwrite() only sets the PTE_WRITE bit, while set_pte_at() only
+>> clears the PTE_RDONLY bit if both the PTE_WRITE and the PTE_DIRTY bits
+>> are set.
+>>
+>> To test the performance impact of the patch, on an arm64 server
+>> machine, run 16 redis-server processes on socket 1 and 16
+>> memtier_benchmark processes on socket 0 with mostly get
+>> transactions (that is, redis-server will mostly read memory only).
+>> The memory footprint of redis-server is larger than the available
+>> memory, so swap out/in will be triggered.  Test results show that the
+>> patch can avoid most swapping out because the pages are mostly clean.
+>> And the benchmark throughput improves ~23.9% in the test.
+>>
+>> Fixes: 73e86cb03cf2 ("arm64: Move PTE_RDONLY bit handling out of set_pte_at()")
+>> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Gavin Shan <gshan@redhat.com>
+>> Cc: Ard Biesheuvel <ardb@kernel.org>
+>> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+>> Cc: Yicong Yang <yangyicong@hisilicon.com>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> ---
+>>  arch/arm64/include/asm/pgtable.h | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index aa89c2e67ebc..0944e296dd4a 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -293,7 +293,8 @@ static inline pmd_t set_pmd_bit(pmd_t pmd, pgprot_t prot)
+>>  static inline pte_t pte_mkwrite_novma(pte_t pte)
+>>  {
+>>  	pte = set_pte_bit(pte, __pgprot(PTE_WRITE));
+>> -	pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+>> +	if (pte_sw_dirty(pte))
+>> +		pte = clear_pte_bit(pte, __pgprot(PTE_RDONLY));
+>>  	return pte;
+>>  }
+> 
+> This seems to be the right thing. I recall years ago I grep'ed
+> (obviously not hard enough) and most pte_mkwrite() places had a
+> pte_mkdirty(). But I missed do_swap_page() and possibly others.
+> 
+> For this patch:
+> 
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> I wonder whether we should also add (as a separate patch):
+> 
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 830107b6dd08..df1c552ef11c 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -101,6 +101,7 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>  	WARN_ON(pte_dirty(pte_mkclean(pte_mkdirty(pte))));
+>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+>  }
+> 
+> For completeness, also (and maybe other combinations):
+> 
+> 	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
 
-In theory, this scenario could occur:
+Adding similar tests to pte_wrprotect().
 
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 830107b6dd08..573632ebf304 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -102,6 +102,11 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+        WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+        WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+        WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
++
++       WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
++       WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
++       WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
++       WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+ }
 
-Thread1                                                 Thead2
+ static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+@@ -195,6 +200,9 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+        WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+        WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+        WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
++
++       WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
++       WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
+        /*
+         * A huge page does not point to next level page table
+         * entry. Hence this must qualify as pmd_bad().
+> 
+> I cc'ed linux-mm in case we missed anything. If nothing raised, I'll
+> queue it next week.
+> 
+> Thanks.
+> 
 
-alloc_slab_obj_exts                               alloc_slab_obj_exts
-
-old_exts = READ_ONCE(slab->obj_exts) = 0
-
-mark_failed_objexts_alloc(slab);
-
-  cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts
-
-kfree and return 0;
-
-alloc_tag_add---->a panic occurs
-
-
-Alternatively, is there any code logic I might have overlooked?
-
-> I think retrying like this should work:
->
-> +retry:
->           old_exts = READ_ONCE(slab->obj_exts);
->           handle_failed_objexts_alloc(old_exts, vec, objects);
->           if (new_slab) {
-> @@ -2145,8 +2146,7 @@ int alloc_slab_obj_exts(struct slab *slab,
-> struct kmem_cache *s,
->                    * be simply assigned.
->                    */
->                   slab->obj_exts = new_exts;
-> -        } else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
-> -                   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +        } else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
->                   /*
->                    * If the slab is already in use, somebody can allocate and
->                    * assign slabobj_exts in parallel. In this case the existing
-> @@ -2158,6 +2158,8 @@ int alloc_slab_obj_exts(struct slab *slab,
-> struct kmem_cache *s,
->                   else
->                           kfree(vec);
->                   return 0;
-> +        } else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +                goto retry;
->           }
-
-Agree with this. If there are no issues with my comment above,
-
-I will send V2 based on Suren's suggestion.
-
-Additionally, I believe the "Fixes" field should be written as follows:
-
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to 
-mark failed slab_ext allocations")
-
-Am I wrong?
-
->
->>>>>         /*
->>>>>          * If the slab is already in use, somebody can allocate and
->>>>>          * assign slabobj_exts in parallel. In this case the existing
->>>>> @@ -2152,6 +2157,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->>>>>         return 0;
->>>>>     }
->>>>>
->>>>> +out:
->>>>>     kmemleak_not_leak(vec);
->>>>>     return 0;
->>>>> }
->>>>>
->>>>>>>> --
->>>>>>>> 2.25.1
 
