@@ -4,119 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D37AACCD193
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 16:35:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED2EFCCD199
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 16:45:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378FC8E000E; Mon, 20 Oct 2025 12:35:32 -0400 (EDT)
+	id 31A838E0006; Mon, 20 Oct 2025 12:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3292A8E0002; Mon, 20 Oct 2025 12:35:32 -0400 (EDT)
+	id 2F2748E0002; Mon, 20 Oct 2025 12:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218938E000E; Mon, 20 Oct 2025 12:35:32 -0400 (EDT)
+	id 22F048E0006; Mon, 20 Oct 2025 12:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E6488E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:35:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B34251DECDC
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:35:31 +0000 (UTC)
-X-FDA: 84019043262.25.6CB5323
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C4A0D4000D
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:35:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Nor6K7x+;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1125B8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 12:45:06 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5803140183
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:45:05 +0000 (UTC)
+X-FDA: 84019067370.07.C9D3FF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 31D03160008
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:45:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uwACY+gA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760978704; a=rsa-sha256;
+	cv=none;
+	b=V+sFLEb7HRbf7djqhAGC8KQ/F/dhWL/D9LQvhCFWGDMW5LFWa2iPQMCaZsnxZQpH4IuE5W
+	qeRi7Vgn2hjnzNqCCuCjmUnAJM03GfZ/S7aYEq5w7D5/xvv8EipLel+oaZIXFh94kh3e65
+	o17o75zhCTFBKotWEFZiBZ2JjFmlsE4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uwACY+gA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1760978128;
+	s=arc-20220608; t=1760978704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6jVHb7ezLC5hsANkudCILXiAJL70RDGwYPCifMHsG4=;
-	b=CMccRahYPXxwbbMck4XRUKu0u8zRdum5rw9rwjY2YtZoXIn9WfsoqRfsHN8ZCQCRncfnND
-	v53OwPtjGyDRLWZSMqsfkJ+c3ZmyAWC8S0V8tVibLgGV4T3okE5iUnDuIGZbmuDcbOfQ39
-	PVnFLoq00Jk+gyA9L9nSdKQvAtVkymA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1760978128; a=rsa-sha256;
-	cv=none;
-	b=KraOxSOqEBUUMojhfLw5H+LyefRpWDt85BKXNiDK0ncy7jrvnuCTcFzel7gu3cnflWsZaX
-	Qi1eNgNzSnpOKNMX6xiU2GnyohhcbwqvuFD/gMkz9RZihhIw+RBPdTYVCNXBdmH9lZvivx
-	ywiR/Y2LF0qze8s4sgm4yI0pShEJIWI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Nor6K7x+;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-87c1ceac7d7so70385256d6.1
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 09:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760978128; x=1761582928; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6jVHb7ezLC5hsANkudCILXiAJL70RDGwYPCifMHsG4=;
-        b=Nor6K7x+OhM1bFfpVd3c3lr4vEGQNePN0qs3VTfy67xgh/xoTnsPJhabtfAzY97Ay6
-         m5iCJWQ13XN1+RIzaQ7O1u2MLO3Xkk0IrbkOeCBNtXpyWtnguWugumh7Jq/FSYtr9wsb
-         eK09UDGIq8YOM1BC28ji33dDb5DKdvyHD+d1jMKYewC8/u8KJPeEm226esEQl77P8GCR
-         J7SPj2+VOgvK0KHnfFwjpPz2k5hdY9IQ2fyVE2jTzO+OGApRTjbIgBSE5XuTdW6s+OwY
-         lkuKFyVFHn8QfL+o4xlhfU+oCuu12gIfCojwt0vRzYraRb7rOma+r7KcJ1Vaygmte7eA
-         x1IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760978128; x=1761582928;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6jVHb7ezLC5hsANkudCILXiAJL70RDGwYPCifMHsG4=;
-        b=lxEbwmF7LjQrKhDL9JKyi5uun3ysbitItBwbnYp73dVrdnwKG3iMyGR37qPz5Q8e8w
-         8mfnfk7zVyaa3iSYCDphZwchKcap1uJHsSvHYOgMVDU/J7/RwA/diz4Is2XS8XCfSCrY
-         4tGqqzcykz7NI1CUXPbEPf5W7+kkwzXO5+knMgYKHGIHnwptWfp5MyEGPWeKxrolUREz
-         6FCkjHejd6ay9Zlnizl39IBU9O9A5Lw8gU0oo8KDXhIwKXj1q53u4iU2clOuLu5crTeo
-         NTTmjpUM+2o5dK5uot9gsI1Z8FA/eFTF0G/aQleLiBbWXJtVnSpTKY81o9H7O2I0twAm
-         YPQQ==
-X-Gm-Message-State: AOJu0Yxj45aOd2wAjr63CW40BxCpUheiGd+6wahtY4shdbJPUr5Z8g36
-	j399NjRl+dCHIW+g9jhPjS7f3lpKSDRs1Fubh4cC6nOAtfojF5SXwtl4oihG9+1Pvcg=
-X-Gm-Gg: ASbGncttiUkF49uK4G/+z1Vv2rR7xvOoDv3kU5ubfs83cnuFU7+yZ7OYu3u6XNpljdg
-	I/tSoTC1KmqeZ29MPz16Pl/t1UnQoj+h8svt4QdFbmAcc0SJxRnnanAh30x600jWbeUILd4OhdF
-	cSRerpgNjRtLCh2xsB++Wh5K+wjqHPQV1MQ+lLIabbtSWc3Obhax/xoRjwnhal2qDwu8wQRkFY5
-	vweJRoGGbiHjV1XTsv7J53c8+xf7pOT/Y3MJT/7KMr73x1TXJrWxWA7v4Vfw6sHAjC3lZavNhW8
-	UW2wY4z54SPkqZy9OorlGYLp4vwPCAhBgWB79xublQt3I7MiJHS8xqgXx/jY8Hx7KI1PtOsfCTe
-	KKf9qaN1tHOjUThZrxfbs2rC6/Okt89sZPElrslmCqBjD0LL2Ofl/54gc9IV6nLEYTcJUpvAfH4
-	YnH9ndDv7bmFMbF97aVhI20089mfxZbUs1Tb5FIGpJ3lREDcoQ5GpCHAyTsus=
-X-Google-Smtp-Source: AGHT+IGyom00LhOrlga+gwQAQ7ZtNc5cObbKCtXH8k1bXmEvQN3xISJWYitE42OrQ56dVinEXqIIkA==
-X-Received: by 2002:a05:6214:4e83:b0:87c:2213:ee81 with SMTP id 6a1803df08f44-87c2213f473mr139696046d6.33.1760978127833;
-        Mon, 20 Oct 2025 09:35:27 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87d028b4316sm53736976d6.53.2025.10.20.09.35.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 09:35:27 -0700 (PDT)
-Date: Mon, 20 Oct 2025 12:35:25 -0400
-From: Gregory Price <gourry@gourry.net>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, osalvador@suse.de, corbet@lwn.net,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	hannes@cmpxchg.org, laoar.shao@gmail.com, mclapinski@google.com,
-	joel.granados@kernel.org, jack@suse.cz, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexandru Moise <00moses.alexander00@gmail.com>,
-	David Rientjes <rientjes@google.com>
-Subject: Re: [RFC PATCH] mm, hugetlb: implement movable_gigantic_pages sysctl
-Message-ID: <aPZkzY6cGfdKo8K8@gourry-fedora-PF4VCD3F>
-References: <20251009161515.422292-1-gourry@gourry.net>
- <6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com>
- <aPZd1dAIzAw7Ii8E@gourry-fedora-PF4VCD3F>
+	bh=cPV9japE8Q7i/VrM2EyftZIZ+EuUryIZ+nlJNHT4Xh4=;
+	b=DUVS45Qxiywndb+SxYIQLETVNsK4nkgN0mPdBnqDJbkRmj7ecpim5ZfUKpk9UPCPGtXkB/
+	xPOOLlinOUyzTUBIrUR7sDUV/fJX9iD6D5MAdVgTuvF5z3FOfp12UPNgCEPkjvJFN8C3bI
+	PFcg8y8rsTvRebqRKpqGPOEh6DyJ+dw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5DE5A62093;
+	Mon, 20 Oct 2025 16:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E34C116B1;
+	Mon, 20 Oct 2025 16:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760978703;
+	bh=TIx5NRTP5K3pYgUiu6kQ2tFh50oiXo0JG1oS7oaLLgM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uwACY+gAAHVeDRNLQa9LhoH9lcVFnZPzXatywkYG646bVhvuqsRPN14g1g/VNKLes
+	 WYNJREIXrJtYT7QbloBWC3KAb3tT4a4woiFgInEG+Q1ETN0Ps+qgi6JaeRCyXnfGma
+	 5sgxwKokkXII1oj9idvsCFH+xzxFf+ctHebO0Crf8NoevzUCnORlmsx2c38BzGnEu/
+	 s3EFcu5YRpFtIlMTjRKfKi1EEzzIFI6u24tuPRov6TF1nceX6GqjYmDq7yRyORhFLg
+	 hFkabH/anV7vAMpIABZ7pHq33jQbOvDbCcvoCX9x7Rpe/xWcFSBpnYpbbJKwrjEhRF
+	 yB30+vyIw7ITg==
+Date: Mon, 20 Oct 2025 19:44:57 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251020164457.GQ6199@unreal>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <20251017130249.GA309181@nvidia.com>
+ <20251017161358.GC6199@unreal>
+ <20251020161516.GU316284@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aPZd1dAIzAw7Ii8E@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: tfke5n1tzwkpskdpc49hw6mczc9a5suz
+In-Reply-To: <20251020161516.GU316284@nvidia.com>
+X-Stat-Signature: 81ak5qo9hi9ccs7wb7tjfi9hjfaoxwur
+X-Rspamd-Queue-Id: 31D03160008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4A0D4000D
-X-HE-Tag: 1760978128-700751
-X-HE-Meta: U2FsdGVkX19dhDKZsxhzbzEmNxavrJUgLLWF7n7mtMBy0b+XiH5FQYoKvjrRciQ8PvSKsvITILXi80gQntkeXZsomrNwg4oblgTUQwUGDPAosvulXIISv61lJcbrlRgLgmx+F83Lx0fmFF5F8Z/j1jwuh4HH9OpzF4pL4xtN6IWCu7eQXlxhFE+xQJ79bcMfdOPTVNxiYuYeI32fn/2N70i5egskLfgZqTNFO+W93gsKUET6uxBON5B/P8wTbVdjnqgWOgvK7gqaAEpvrjbclFd6JjU5FneR5XvbGaDuIUaQaMxsuj9ALiVhwtFS8ebjMZhxQ7P/0Q73waEpQiibjUPvAcyHzPiuDiKl6p+mNOHEFQDltg/Ur7mN9RJ1dWtCGFviprgIYNPhfnSbIJgDFBZ+XvppRwNz8jEHPq4gX+IvPPorXSA9ljCFE60CgLyr3B082ZuNksVgx00zd7PdCtBARX5joRI2Rh3vhee9v76ET3ft4EZG+A4WlfZlL3Q4PtZ7D6UFEteG37s9r/32JRPf6UF7wV8O9QXFk9039Jozs1dkhB0Yjf6RyLE+UoPIRWSg+PvUxnQKe+06GmK8nqkDq3P3GIV2Vv4VbRTz3xyQmXsibR+dNAJEBZjESuKLJIoZOJQzBdvY3wA0vhO8Kwg+vJHMJW79IFTXX4cI3hhHyxJrgYk4dZXXdI8DL6dFryRdRfMUZYs65qVE+WBwdDw8n9hFhe908mpwvGn/3MGKKjJCTrDzCOdPYQHdYxmEMdXkozp3s1an3nXrvcRc0qx1UAgQHgpiKgtGhTnDfgqAFs67KbpNITyV4XZFnv135lZP+cZ3TozeNFpL9rDH6yRUVhoYpPp6ecj+YSb/PtosDYfh3MjtZnBbZtpIu8Ak/CazKB7CxcB0HqrOG9vuuTd0JLjqTV9T61mlKf6JLXycp+o980oWox9yHv768XbV3gSeibgPbRltNFjfO/1
- xVsJvP2j
- 6ySCKmv/7f/w81vTg6TOe3m8ZytAuM/f0lI9nOvctW6LXM1LRiu4e5Y35FJ4fujMgHjRQOGGy1tHyVCgvOhff0v6AlYmWQQGDvdmG2w8NPBcD1cpqlQrShWg8mdLNKA6BBf/t+QFJ6ryLahi89cR5K9GadMCQ2fXIRvy2aVgIKE+obH+dSMNY6Q629T5wRvo9Bb6nh2fuy3rltd9eriT6ecBMfLB6hFatKNWuwa05pkXQv3msMPCkwvhdBX5iTgnYUf2LlqwBJlFDXvmC0JHrKOdbUqlEyJnq9p2zfSYOPXyt5qTZaEeh3l0NFJIgjafd0dpLUcgtYD070A5fvOjYyAAkC69iovh2gP1TrcnqUaYYWZy54xTa6eWNePaHwy3zcOk2eWkf+m2e3zZe8nuSUEkhjzDrzqNzCHPssJt4CRLm5oqIwRuFfkyXwHaX4/lW6T6S
+X-HE-Tag: 1760978704-624678
+X-HE-Meta: U2FsdGVkX1/1CjgkG9l6aWKMLLol3s9RHm41YRGPpZP3oOyUvnK1N6jcuzNAigofnrMn0WX+xPx3ZHzEFdF1cnaL+RK7ZaQHMDWJdv1yMnLDPe0rZST8lmx377+GNSyMEfa5+P4mU5SR/Jx41D189qEvAGzOLA9hyDZYefwpw/Krkj2C/lm6LMaZGNn+r3MgU6gGpp0Ty+HG4WqmOmBvwcFndJessHgQ87wdn5HXrIGTP/0RSZZQIkLR4AXOH8+8GAXhcypCPZArSCYBzjXANDyANijG4kYzmPl0LHAJl8rncd/sZaL5/LpZDqZvAteKSadzJORp3Lgy2UuWwM/q7Qxz9yMXAR5hwX6BmeoHfCh5Ge7pqmCK4PbRLiioSiywIdmowlug0CZ4q+3RDfASIAbaiOoS84J6lHsWdr6luX1gf5PE15UO+8hrB0wt1DqSBAG8jYu0wA7iPvjK8oPFGNppmfx+jfgGBVaTlSxzQyPxralLb0j0jFkNWhu3KxX3vmjTf1GimMiqRP89pvQ9kDoQ1oVr9B6Xh2XnlF7Xmzmso6ohtFkVMmnG5yo8LBCVd8X1aMC4WOGLLu+o0QauN450yl/O7Fgft3GN+ISzyk5om5CYH+LsJhjkJg5m/QJKfRj5cG4P4M9IHf7YACgspfwqs0IIoPgsupHQ/8+tyIIwiJsdPP6SR9gFAs+euL42YxJAkGjMqhtSrbfPfBw19gTRUc+3RXN92VdY07U/emL54bT7lYWp7CL0kpkqk3lyyE9rJ5v+5+5DdwoWl+B2q04gsSJ78j+QM8qgsLy7wGCqsuQoD/vR9h0XD+EN12Q54ojDCgRM3ab649JPOf8xsZopTBXwV5zJV9LKEZpl/isD+PGt+mt6sD7tu7bawh2V6UtvO0XsXuOGN3lv/FCru1m0md5YnJMmMOXKQKnnrEYkoof4SnZU8MQFYHmcPJkmIllbfo8plGFF1JjPEdN
+ XhpSjwg0
+ Mw7UA3KSedbDtybRJYecPT7d3AzLc6YMzCcxj7iqsMTQN+C86llccqvp+28U3iIjHn710luSMrBGMeb9LN/687RqTo5C6dO5+2kQu1+paYxsG5pZV1N7tGeqSCpPPBuxMuni/MoorTORwpq1fmV5aPJrVXiA0Jc/bxOkxoG1K2uZahpDmiaOpjopO3Fcy4/stbKW9et8b4ZGmt4r1zi1KuH4Gpq/WXlKK6xaAmQwVjZkkm/pYAXOu9Pv+JZTgHNMrNpg5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,77 +109,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 12:05:41PM -0400, Gregory Price wrote:
-> On Mon, Oct 20, 2025 at 04:17:06PM +0200, David Hildenbrand wrote:
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 5549b32cdd31..5def2c53092e 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6922,8 +6922,12 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->                 if (PageReserved(page))
->                         return false;
+On Mon, Oct 20, 2025 at 01:15:16PM -0300, Jason Gunthorpe wrote:
+> On Fri, Oct 17, 2025 at 07:13:58PM +0300, Leon Romanovsky wrote:
+> > > static int dma_ranges_to_p2p_phys(struct vfio_pci_dma_buf *priv,
+> > > 				  struct vfio_device_feature_dma_buf *dma_buf,
+> > > 				  struct vfio_region_dma_range *dma_ranges,
+> > > 				  struct p2pdma_provider *provider)
+> > > {
+> > > 	struct pci_dev *pdev = priv->vdev->pdev;
+> > > 	phys_addr_t len = pci_resource_len(pdev, dma_buf->region_index);
+> > > 	phys_addr_t pci_start;
+> > > 	phys_addr_t pci_last;
+> > > 	u32 i;
+> > > 
+> > > 	if (!len)
+> > > 		return -EINVAL;
+> > > 	pci_start = pci_resource_start(pdev, dma_buf->region_index);
+> > > 	pci_last = pci_start + len - 1;
+> > > 	for (i = 0; i < dma_buf->nr_ranges; i++) {
+> > > 		phys_addr_t last;
+> > > 
+> > > 		if (!dma_ranges[i].length)
+> > > 			return -EINVAL;
+> > > 
+> > > 		if (check_add_overflow(pci_start, dma_ranges[i].offset,
+> > > 				       &priv->phys_vec[i].paddr) ||
+> > > 		    check_add_overflow(priv->phys_vec[i].paddr,
+> > > 				       dma_ranges[i].length - 1, &last))
+> > > 			return -EOVERFLOW;
+> > > 		if (last > pci_last)
+> > > 			return -EINVAL;
+> > > 
+> > > 		priv->phys_vec[i].len = dma_ranges[i].length;
+> > > 		priv->size += priv->phys_vec[i].len;
+> > > 	}
+> > > 	priv->nr_ranges = dma_buf->nr_ranges;
+> > > 	priv->provider = provider;
+> > > 	return 0;
+> > > }
+> > 
+> > I have these checks in validate_dmabuf_input(). 
+> > Do you think that I need to add extra checks?
 > 
-> -               if (PageHuge(page))
-> -                       return false;
-> +               if (PageHuge(page)) {
-> +                       /* Don't consider moving same size/larger pages */
-> +                       if (!CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION ||
-> +                           ((1 << compound_order(page)) >= nr_pages))
-> +                               return false;
-> +               }
->         }
->         return true;
->  }
+> I think they work better in this function, so I'd move them here.
 
-Quick spot-check of the compaction code suggests this is handled
-essentially the same way - and in fact compaction expects
-alloc_contig to be sending compaction requests w/ hugepages.
+The main idea for validate_dmabuf_input() is to perform as much as
+possible checks before allocating kernel memory.
 
-So I'll go ahead and submit this separately for discussion.
+Thanks
 
-~Gregory
-
----
-
-->isolate_migratepages_range()
-->isolate_migratepages_block()
-{
-...
-	if (PageHuge(page)) {
-		const unsigned int order = compound_order(page);
-		/*
-		 * skip hugetlbfs if we are not compacting for pages
-		 * bigger than its order. THPs and other compound pages
-		 * are handled below.
-		 */
-		 ...
-		/* for alloc_contig case */
-		if (locked) {
-			unlock_page_lruvec_irqrestore(locked, flags);
-			locked = NULL;
-		}
-
-	 }
-...
-	/*
-	 * Regardless of being on LRU, compound pages such as THP
-	 * (hugetlbfs is handled above) are not to be compacted unless
-	 * we are attempting an allocation larger than the compound
-	 * page size. We can potentially save a lot of iterations if we
-	 * skip them at once. The check is racy, but we can consider
-	 * only valid values and the only danger is skipping too much.
-	 */
-	if (PageCompound(page) && !cc->alloc_contig) {
-		const unsigned int order = compound_order(page);
-
-		/* Skip based on page order and compaction target order. */
-		if (skip_isolation_on_order(order, cc->order)) {
-			if (order <= MAX_PAGE_ORDER) {
-				low_pfn += (1UL << order) - 1;
-				nr_scanned += (1UL << order) - 1;
-			}
-			goto isolate_fail;
-		}
-	}
-}
+> 
+> Jason
 
