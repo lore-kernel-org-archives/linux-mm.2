@@ -4,186 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5366FCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 11:55:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA40BCCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 11:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12CC8E0019; Tue, 21 Oct 2025 07:55:02 -0400 (EDT)
+	id 0E2EC8E0027; Tue, 21 Oct 2025 07:58:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEAC98E0002; Tue, 21 Oct 2025 07:55:02 -0400 (EDT)
+	id 093238E0002; Tue, 21 Oct 2025 07:58:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2568E0019; Tue, 21 Oct 2025 07:55:02 -0400 (EDT)
+	id E9CC18E0027; Tue, 21 Oct 2025 07:58:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 878BF8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:55:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18FA113B032
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:55:02 +0000 (UTC)
-X-FDA: 84021965244.06.D187DAE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9060840005
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:54:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zh7EGHoW;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D4E508E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:58:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 565D1160473
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:58:40 +0000 (UTC)
+X-FDA: 84021974400.08.5D1247B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E508A1C000B
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:58:37 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/+neJoD";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sMxtdMZz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yu86RcU8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ibScNkF;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761047699;
+	s=arc-20220608; t=1761047918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UjhTzDfDRfRTb0ujoYWqdsfQUJ32BJBRRtMqD14uvto=;
-	b=bab8ZpPzLLgAYE5TaooMEZG1CARp5+s18BfmNCi7rhmWk/GceWOWXhpPkSOx4sbtGbdcjr
-	/1TERz2qwpSMYwwld0LG7n7OptO+w7IOEZwb9hgAmPcuUmw0YcV3OO82ypy/qtIvjzHMtj
-	i5u36UgkuDr3BegAerlRR+fnOq/RE3Q=
+	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
+	b=s2MoJlS39jgKCxEPYrsPkDEyIIIl3GY+Rm8/jbDkHupGa3qR8qYzsMIjyXKdlZR1yLEHlO
+	1jKxHYq82yyG9fFzM2GbILtzgp5A9hE3Q3nquevAtYyT5mXkUJJ9rzt+SAjZ0HL9r95Yfx
+	xYKaOE1qcSjiZ3TKbgAv9ES5NuMq3/Y=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Zh7EGHoW;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761047699; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/+neJoD";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sMxtdMZz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yu86RcU8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ibScNkF;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761047918; a=rsa-sha256;
 	cv=none;
-	b=zfEI2DOWY0atgZ1p3C7xAEtHELYp6srEbHRqxEmsBTccFLkMjgD/Kud+B18W7aReuuPfrr
-	VHqwqux+lmy1wPe8+urPsWHHVZdpUhg4INYSMFCJ5JPaLeoVWIJFpugW6SVRKduM5WnjE2
-	q/H0VmBtBJy8rbmLCWC+c+zaPsysvIc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761047698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UjhTzDfDRfRTb0ujoYWqdsfQUJ32BJBRRtMqD14uvto=;
-	b=Zh7EGHoWE1QNyEc7Lqpt6Z8fJ4HXKBHAt7wTzpI3/1TK6KkcRG1aLB5MYnHTIY3SBpdL8I
-	viRB2+9diLEcwRyfRkE5tGos1uZ481mpNW6/FeHhrR6B77tycany0md+uzQJPnVnRFGxXk
-	3PRPZNxGn2MHEbUf0PaU8u+ijSmc7u8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-rQFe0yHTMr2y_J_U9_pA-w-1; Tue, 21 Oct 2025 07:54:55 -0400
-X-MC-Unique: rQFe0yHTMr2y_J_U9_pA-w-1
-X-Mimecast-MFC-AGG-ID: rQFe0yHTMr2y_J_U9_pA-w_1761047694
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-427091cd689so1978736f8f.2
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 04:54:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761047694; x=1761652494;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UjhTzDfDRfRTb0ujoYWqdsfQUJ32BJBRRtMqD14uvto=;
-        b=UMulWtHFNqPKwLV2eXMR4XUSWnmlCbK7c+3/9i//O/ji+cvuQg3QZwuVRTlFJ/tz9t
-         dSHbcAaTd+YGvVsYof1p3P5M4xdmgc7DV3kbwlPrDp1WBKFPKg6F4EaUXBPVVY17Jiz7
-         6G1+gKroQSeWnby9YkDAdMqxXa4QuiTkXvP69tlThhj3QoFK+BNfU0s8WMB1eZ43uyqI
-         Ja7fvEGfw3FPK+MG7fBZ28BFRfVmvrDh0mdouQv/AOg5wHK21PCKkx/+6Fi/nbNtR9dD
-         TaMMir1XaC6bBU/6MOTIzExaBQqhPvKXlLoFR9buoaztOlw6yxuv6nkHMLuA6GqtZ2yC
-         rFSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcd0NkK2BAlm/7jnauOkPOc6um0GRkI5ZW8P8VC9ZtO03TBsbr1PwtIJent5GwUHHL21/aOA3IfQ==@kvack.org
-X-Gm-Message-State: AOJu0YyZ6ZQujOEjEll/CtwQ/KCsemZZWUAGu0AdA1UaPQTWOv4TkWmo
-	rwqTAOXiHD7uMJhQlP0XClP9PrgmdMnfJwXebETobdhT9tfh25wNnfa6xvnqONeyBmAzXtnbUDb
-	c+S9emui8HrVXRolkCR8qhiR+bDMWyZ0/0orZjqi6PhDpG3NYm6BN
-X-Gm-Gg: ASbGncvNc5KH+pZ/pAOIYBNSXFZIJC7n+u1zlLhxeCsymtAByDhSch6Ys5x0hQjc2YR
-	k1Pa+OxN9MJQhCYNpe3476DBCfTUrvxwOWMsHxO73JjXEvAmQYCElhzKSpbEdrsXjE274uXPp+n
-	d5Es4GCU3e+kyzYU3r2jN9Ywx/+OkDRvtkr9WK932RZ/PEziEJvocyYIW2wGj3rjqGml0XaVdrn
-	uibigFermc51DDJCXSE5O/7pun6aL5T7MZezaKbWvYVuHBzTPTZDoBMF4ah+emPKQsvhmYVHpRH
-	hHGGaogmOhJyb+YkK9yUjTVlXo8U/wcl/gceUz4wXVJmmch3Kp/2YoBHaEmU744cKPQaQEuvgzk
-	8y+EGVYf2QmJ3lSor4RtrZidwBL1zr1cIue2K9A3cMiW7rE/7eki6W1a2SQ1zKRszoYVpFjxjrr
-	XZ490yXLoacRRQDufwfJckugdSidk=
-X-Received: by 2002:a05:6000:3105:b0:427:64c:daaa with SMTP id ffacd0b85a97d-427064cdaecmr11329367f8f.44.1761047694116;
-        Tue, 21 Oct 2025 04:54:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4hoS405o7SL+OX0J5tYiis8Ib15FCEt5fy5LSf9ht7t7QJikfAXYAkg1xAnP6qrMgvDH/9g==
-X-Received: by 2002:a05:6000:3105:b0:427:64c:daaa with SMTP id ffacd0b85a97d-427064cdaecmr11329329f8f.44.1761047693656;
-        Tue, 21 Oct 2025 04:54:53 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5a0f88sm19307889f8f.7.2025.10.21.04.54.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 04:54:53 -0700 (PDT)
-Message-ID: <e4349d5a-33e8-4b8d-b1ad-6192ba00ff66@redhat.com>
-Date: Tue, 21 Oct 2025 13:54:51 +0200
+	b=YB0cQE7fISFcVO/Etv02wriIU9zttvRkmC5N6pN/jvlol0ZFBYRO17qbLE9S7iTf2+uVlH
+	f4kC2wiuyCchpDuc6yRLMtiKafEB0JWAUccbwJcD9jBAcvmmG7ASdB2PvwQejlRBUD9EsX
+	wrBCYW9xm9fQofb9UJ+n1yTLxBl88TE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id BE0231F80A;
+	Tue, 21 Oct 2025 11:58:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761047911; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
+	b=p/+neJoD7KoCtxs8pIRmXmFUD1fj6h56bLZid3spXVpwharkjHE+pbTk1OwZrd7H1EW5dO
+	caNqMovRzswwIvdTut8ufB6+iRH5TV8hSWrk6frIlaJBzabC5Z6vh8bF5+wB8smCdy89LH
+	DI6St98SPttCmxVqLiGVORnyjvOJhew=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761047911;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
+	b=sMxtdMZzRSuyEWY7c33DhYcPpK5f+LhGESlgz9TLbEe4F7dsF47dTrOaC3SijrcIZtpIRO
+	Jb0MrFRBEe3VmKBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761047907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
+	b=Yu86RcU8X3HgjkfWtFKr+9wbl0XnSkqSIwowKYNi9zWWz/Dmk35DsVgpt1p3/2jvse1ovF
+	Sy5fvFh1ln/L27ybVy///25Q17Zd8RIzm2F7+G5ereBrb21oERr5W28EC5XjX4FPUTykwT
+	xQl1UEd2aKwIHIm5HQv6OkBogkdUkSg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761047907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
+	b=8ibScNkF0lHsQyxTRT2H/t+/PKopVVGOYY12f/SBRnQqcNPipm4uHYTTd76Pohde/Pwjv0
+	CwDAzU4drECX3wBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF61F139B1;
+	Tue, 21 Oct 2025 11:58:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TQ7PKmN192ihWwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 21 Oct 2025 11:58:27 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6368FA0990; Tue, 21 Oct 2025 13:58:19 +0200 (CEST)
+Date: Tue, 21 Oct 2025 13:58:19 +0200
+From: Jan Kara <jack@suse.cz>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com, 
+	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org, willy@infradead.org, 
+	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com, amir73il@gmail.com, 
+	axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com, djwong@kernel.org, 
+	dave@stgolabs.net, wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	linux-mm@kvack.org, gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com, 
+	joshi.k@samsung.com
+Subject: Re: [PATCH v2 04/16] writeback: affine inode to a writeback ctx
+ within a bdi
+Message-ID: <p7mc3a7upsebbipxrredqhtazwt3tvyn4qt5jtsn3wb43orew2@6jzeodvk4tli>
+References: <20251014120845.2361-1-kundan.kumar@samsung.com>
+ <CGME20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0@epcas5p3.samsung.com>
+ <20251014120845.2361-5-kundan.kumar@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/truncate: Unmap large folio on split failure
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
- <hughd@google.com>, Matthew Wilcox <willy@infradead.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251021063509.1101728-1-kirill@shutemov.name>
- <20251021063509.1101728-2-kirill@shutemov.name>
- <a013f044-1dc6-4c2c-9d9a-99f223157c69@redhat.com>
- <37ceab54-c4b2-449e-aa46-ffaefe525737@redhat.com>
- <eokncpih37zm7ypt6gn5xyetx6jlemhvvfdzpmdlxleqlsqcr4@45h5w5ahwugs>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <eokncpih37zm7ypt6gn5xyetx6jlemhvvfdzpmdlxleqlsqcr4@45h5w5ahwugs>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: q9CHk7-NNqtXtYlFdRzEIcvD9YlPxpoaKjEVd4w2318_1761047694
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9060840005
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014120845.2361-5-kundan.kumar@samsung.com>
 X-Rspam-User: 
-X-Stat-Signature: 4f644qk5xo5873ixe4ufbm4fyeghffw8
-X-HE-Tag: 1761047698-35134
-X-HE-Meta: U2FsdGVkX1+t26uAVr02Q9CLA664V5XYPtEldKS16vvSx98ARWNOuwbPv2SoMJBFgZ//6lisPu1ehvUO1tMZW1O41RdqHgDLbMFgor5cCI8ApXC6oIpvDWfx4q+2V443vF1TdTmtKInfZU7CMyXMTrm0uWgjICvTI+YS6WcpHSZBiqbN9nkHZHX/XZkAhLDwclKrFXkGgN4z552JOjkqhDtcEkFsgVDoMXTU1zD5fQPhjGpIp8LCyBvoXjeKQRM+9qklL3wvTc4U4HU8741+uSSlQDP3VOpybcbNytADNGIvX+rJwyNWANP4eGoEoeAErzi35ECkfet1+h4vrvFW5HXD34X4SBKgY7TJSfQnSwkLgblv641U7HrR1rFXTpSC/MfnMA/Q+TXPZutEXWyJ4nbcwMfPacw6tUP3kYJpb5lQRJzD1XZv8gST2Lc0LKphvaIAIA4Q0oDg9on+O+RxCAUK8PxwMSSsIEcG3uIZ6al+s0nRWes2xyd7nWstZP9iS6MrEP3l+/jtGLBzc7mLtFENxHSu+8DDf0K5Tl5olU9iHbAsRqPG/dGFlH9bML/iY3k0wdifsdZbsodfj4Xlf+mLux6oFKgPCigocqRJS+iuyt7uc8tQIeOLUsO1Avm32EwS+xaZsXIkjwcFNFElhgXPkXvwms7Uhjdi5ptDKH5iG7SzKIhJf48+X4iabiRLWVge4CYzXqfymrUcfPHgizKa84clRvJG7GrXRiwFane60M5E5TSnrSCMCTaFsNpLQ28fuI8I9w4CMPpCu5jA8iSf3cZCTdCz1SQgZMGZYDyEFVf2oFSNU2Y6QZeOoumQYpMsP3Qhy6fboGCYU2d+Xux4ZPWFOATQCSDgjm/uuC/hT93+4k7DvdBHrPLXEummjqkljasz9W4qQ7TGHprKu56fxQ0C50mwlLjKfD7JCnpmMc46grIiZNW7WcJiqUgPqzKxhSj7EeH+m18yC6m
- 7q4Gp8j/
- U3muGp2Dr8Xyf1icBKXaily6vJzFwr1XQ/HUAOFfb/8qeCcEbF5D4Y1isMJtSlLQ0rRb0i3AqhOqJSK58lnkDY4LfJti8EscGB/+KDhvBD4VbtNmvWSgP26nWxnF1xwdPgiWgI1ugurOD16DpfKTCxHXA97iicCsQqcBTObUgi1EbNM+lxSFJh+Mzc84B5OeqoIFIcFHS8EHJDkjKqbjOqQ/xo6qB8q/UXRuFiflYf7WlnsuJpxO7oZXwbdRKjiQHIuEqAyfhxC6TtTezw6t71R39+60gkNSqcdXQqHEq6EXDxh3u/NbX4sf6ff4Kulbxk6v8L+LQFwp3lIYGydsnphyOqzqrj5pVzujDhnQKtOjItJo344Sbe6WLjT/1QTNMlRNW1L41Ys5u37faInQHFl4hXZ1+ptDBB9uk1RPI4I2+YlJeOXBWj0E6g18qJ5WHRDtyPmxJ7xepRgo=
+X-Rspamd-Queue-Id: E508A1C000B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bnhmcwh48dp6t5ffwky5hbm7czsdj9qo
+X-HE-Tag: 1761047917-745210
+X-HE-Meta: U2FsdGVkX18mmlcqxEBkgY/MhaA9/wmxTs+3kcItldt+7gku8gfP03/PXGsIQc/7JJdWX3lNvNpO+L2lbv5FA3xRlfl7Ff8tSNFI/xlwlSQuMyKYcZnf4w945/agM0G2I7cprlx43Nahm5EGArbHUUwi0+cJY5W0tAWEo+/WZ0HGloBELdwaY2PcD1/xiX7hfnF5HwqiF+xVjbOwe1N2cWb/zYKx4r/z0Fv2JjFH6Z47NB93V55BuDC5tFcp0xJfQIiQvtgVsHc0sXqVWtBQUrXqx1vNyZfHn54gfQHUZB6kOpg73WNFIv+x2PvO++0DoozEx+qbdL9CpJBtxkADRWe/JrtjpvVTxpYvbnVx3htvONu9SEeABS+6DFbcbzZAVRj14i7yrpepwcZPW0Espb1ccYMR1w6CU71lV8icbikgU6j3W5I4UyOvjaPPRA57kEAjkDRZhE90ld4pZPLSnzfMoc2UFcdBVfBPaIGDBVpR8ZjE1zYDuPwdHHH4ZC2LNTjujq6j4vp6O0i/3nsS7kjHp0VCQ0Zz9b5Gmi/Ps0S9TV7v+tniKiQn7noMg2Gd0IhLDg6GKAVQkv10nuwmPyl5coBgQJJabH4ipa+S4x7HK8GbUbJhYiQMA+yv7WGqHQI4qFZKbrMmN9nltkfBSTqRM4b9shuELtDHHsD+rnALMysdmiO6iU4ky2g1tUWaq4TneUtHKAQHIecJ0LsnpOWH9d0qMpbkBM2zSzBSES4y7OVpDhOcm47gVmuh0bYbRybpWMEyYlW3/OyCHnm/dR+YWozRO+YGtcPcstBpmZsweJkgDkfmmo1f5Hxl7yxJSpJrPgK3xHVFU2rEW+xwAloUpu0wFwNym9DyKhdPRdCtiY8ZN8lIqNC7GgW0aDhKmv9mMU+wf1YkXF++0yPVm014GPzJwzQZRHCsfD1rKhQH7kGrcdA6ITE90DF6CCBw69Xjwwqy0rFMRBeOxAB
+ woCXlWv0
+ HR4ovCW4wVi03eEqj6zKWU7kffhtIvNx9QYeRbEKG76lEiph231nxGddqODuPuu8TzQDt6UcgMk05YasGYkd+4FTiwlleNTT772eERbGQ+jMBhdCBr/gdGDKH8CsPrGW8JOiP8dIxcqYhPDF6vl9Q+aImbdjGrcCRwLzi1UnyFisbBZav1olZmzF7+kPu5kJXwJmhOKtAeYQQvDZWUfUwffuJYb+2roFYTvFxYTeNUC+u/mQyLxQJ8IY0iamMIa7UoipdrXQ4xoXa6ATFtyqlLZcif2AzdQn6d1p9vsyHQBi71iRXJy73CWLv349vHnrnve71b1378WeEvt7qjbHDF6KOZ8Gx+KrrwfB8Hxr3gj6/RzP7KJVniyUvujwTCvzZR2jZ1p9LvPIwc/+NQUGuOCVgLb4vRzpT6btMJIDhv1wDXJs2cAdfBxN8k+Qyt+0wmgGDiyPN6fWxvHQAjghCdOm+Ng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,59 +142,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21.10.25 13:31, Kiryl Shutsemau wrote:
-> On Tue, Oct 21, 2025 at 11:47:11AM +0200, David Hildenbrand wrote:
->> On 21.10.25 11:44, David Hildenbrand wrote:
->>> On 21.10.25 08:35, Kiryl Shutsemau wrote:
->>>> From: Kiryl Shutsemau <kas@kernel.org>
->>>>
->>>> Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
->>>> supposed to generate SIGBUS.
->>>>
->>>> This behavior might not be respected on truncation.
->>>>
->>>> During truncation, the kernel splits a large folio in order to reclaim
->>>> memory. As a side effect, it unmaps the folio and destroys PMD mappings
->>>> of the folio. The folio will be refaulted as PTEs and SIGBUS semantics
->>>> are preserved.
->>>>
->>>> However, if the split fails, PMD mappings are preserved and the user
->>>> will not receive SIGBUS on any accesses within the PMD.
->>>>
->>>> Unmap the folio on split failure. It will lead to refault as PTEs and
->>>> preserve SIGBUS semantics.
->>>
->>> Was the discussion on the old patch set already done? I can spot that
->>> you send this series 20min after asking Dave
+On Tue 14-10-25 17:38:33, Kundan Kumar wrote:
+> Affine inode to a writeback context. This helps in minimizing the
+> filesytem fragmentation due to inode being processed by different
+> threads.
 > 
-> Based on feedback from Dave and Christoph on this patchset as well as
-> comments form Matthew and Darrick ont the report thread I see that my
-> idea to relax SIGBUS semantics for large folios will not fly :/
-
-Then I was probably misreading the last email from you, likely the 
-question you raised was independent of the progress of this series and 
-more of general nature I assume.
-
+> To support parallel writeback, wire up a new superblock operation
+> get_inode_wb_ctx(). Filesystems can override this callback and select
+> desired writeback context for a inode. FS can use the wb context based
+> on its geometry and also use 64 bit inode numbers.
 > 
-> But if you want to weigh in...
-
-No, I think this makes sense. It's a regression that should be fixed.
-
+> If a filesystem doesn't implement this callback, it defaults to
+> DEFALT_WB_CTX = 0, maintaining its original behavior.
 > 
->> Also, please send a proper patch series including cover letter that
->> describes the changes since the last RFC.
+> An example implementation for XFS is provided, where XFS selects the
+> writeback context based on its Allocation Group number.
 > 
-> There is no change besides Signed-off-bys.
+> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
 
-Then point that out, please. It's common practice in MM to send cover 
-letters for each new revision.
+As Christoph asked in other patch. Please introduce generic writeback
+changes in one patch and then provide xfs implementation of
+xfs_get_inode_wb_ctx() in another patch. Thanks.
 
-For example, Andrew will usually incorporate the cover letter into patch 
-#1 when merging.
+								Honza
 
+> ---
+>  fs/fs-writeback.c           |  3 ++-
+>  fs/xfs/xfs_super.c          | 13 +++++++++++++
+>  include/linux/backing-dev.h |  5 ++++-
+>  include/linux/fs.h          |  1 +
+>  4 files changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> index 0715a7617391..56c048e22f72 100644
+> --- a/fs/fs-writeback.c
+> +++ b/fs/fs-writeback.c
+> @@ -265,7 +265,8 @@ void __inode_attach_wb(struct inode *inode, struct folio *folio)
+>  {
+>  	struct backing_dev_info *bdi = inode_to_bdi(inode);
+>  	struct bdi_writeback *wb = NULL;
+> -	struct bdi_writeback_ctx *bdi_writeback_ctx = bdi->wb_ctx[0];
+> +	struct bdi_writeback_ctx *bdi_writeback_ctx =
+> +						fetch_bdi_writeback_ctx(inode);
+>  
+>  	if (inode_cgwb_enabled(inode)) {
+>  		struct cgroup_subsys_state *memcg_css;
+> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> index bb0a82635a77..b3ec9141d902 100644
+> --- a/fs/xfs/xfs_super.c
+> +++ b/fs/xfs/xfs_super.c
+> @@ -53,6 +53,7 @@
+>  #include <linux/magic.h>
+>  #include <linux/fs_context.h>
+>  #include <linux/fs_parser.h>
+> +#include <linux/backing-dev.h>
+>  
+>  static const struct super_operations xfs_super_operations;
+>  
+> @@ -1294,6 +1295,17 @@ xfs_fs_show_stats(
+>  	return 0;
+>  }
+>  
+> +static struct bdi_writeback_ctx *
+> +xfs_get_inode_wb_ctx(
+> +	struct inode		*inode)
+> +{
+> +	struct xfs_inode *ip = XFS_I(inode);
+> +	struct backing_dev_info *bdi = inode_to_bdi(inode);
+> +	xfs_agino_t agno = XFS_INO_TO_AGNO(ip->i_mount, ip->i_ino);
+> +
+> +	return bdi->wb_ctx[agno % bdi->nr_wb_ctx];
+> +}
+> +
+>  static const struct super_operations xfs_super_operations = {
+>  	.alloc_inode		= xfs_fs_alloc_inode,
+>  	.destroy_inode		= xfs_fs_destroy_inode,
+> @@ -1310,6 +1322,7 @@ static const struct super_operations xfs_super_operations = {
+>  	.free_cached_objects	= xfs_fs_free_cached_objects,
+>  	.shutdown		= xfs_fs_shutdown,
+>  	.show_stats		= xfs_fs_show_stats,
+> +	.get_inode_wb_ctx       = xfs_get_inode_wb_ctx,
+>  };
+>  
+>  static int
+> diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+> index 951ab5497500..59bbb69d300c 100644
+> --- a/include/linux/backing-dev.h
+> +++ b/include/linux/backing-dev.h
+> @@ -148,6 +148,7 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
+>  	return inode_to_bdi(mapping->host)->capabilities & BDI_CAP_WRITEBACK;
+>  }
+>  
+> +#define DEFAULT_WB_CTX 0
+>  #define for_each_bdi_wb_ctx(bdi, wbctx) \
+>  	for (int __i = 0; __i < (bdi)->nr_wb_ctx \
+>  		&& ((wbctx) = (bdi)->wb_ctx[__i]) != NULL; __i++)
+> @@ -157,7 +158,9 @@ fetch_bdi_writeback_ctx(struct inode *inode)
+>  {
+>  	struct backing_dev_info *bdi = inode_to_bdi(inode);
+>  
+> -	return bdi->wb_ctx[0];
+> +	if (inode->i_sb->s_op->get_inode_wb_ctx)
+> +		return inode->i_sb->s_op->get_inode_wb_ctx(inode);
+> +	return bdi->wb_ctx[DEFAULT_WB_CTX];
+>  }
+>  
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 754fec84f350..5199b0d49fa5 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2379,6 +2379,7 @@ struct super_operations {
+>  	 */
+>  	int (*remove_bdev)(struct super_block *sb, struct block_device *bdev);
+>  	void (*shutdown)(struct super_block *sb);
+> +	struct bdi_writeback_ctx *(*get_inode_wb_ctx)(struct inode *inode);
+>  };
+>  
+>  /*
+> -- 
+> 2.25.1
+> 
 -- 
-Cheers
-
-David / dhildenb
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
