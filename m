@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9157ACCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 12:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB1FCCD1AA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 12:59:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EACA38E0023; Tue, 21 Oct 2025 08:59:39 -0400 (EDT)
+	id C150D8E0024; Tue, 21 Oct 2025 08:59:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5DA08E0002; Tue, 21 Oct 2025 08:59:39 -0400 (EDT)
+	id BC6288E0002; Tue, 21 Oct 2025 08:59:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D24EA8E0023; Tue, 21 Oct 2025 08:59:39 -0400 (EDT)
+	id A3F238E0024; Tue, 21 Oct 2025 08:59:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B75318E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 08:59:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57873B9AAB
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:59:39 +0000 (UTC)
-X-FDA: 84022128078.02.17A46EA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 48487A000A
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:59:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aG9ukBQj;
-	spf=pass (imf25.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B6B98E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 08:59:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53B2D88516
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:59:40 +0000 (UTC)
+X-FDA: 84022128120.26.A8D424C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 24DEC1C000A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:59:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WvCAyCu2;
+	spf=pass (imf20.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761051576;
+	s=arc-20220608; t=1761051578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=omAB84zm1ZJJGkhLo0LBcnP4dZPVDNNrUkrD6enlyeI=;
-	b=c854G3Euv3i7lNeIoS8fT7wRAsZCY5Kc7BwOaUg7XS6Fo46bSuEzRHZdcPzqeLRBHeyySw
-	KaVj9Fr0b1tsNMgJVokgieiNDZDLTcq9QYCWHoEU5GBpzGGVQZtYe6ulIxTbl6k60wuw6w
-	V8DVo6Va42bGxhHYjt4/vnpZCK35Kws=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aG9ukBQj;
-	spf=pass (imf25.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761051576; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aJ8O3oI3PxPdSYdHMVP+xUJdXO9FbTcv+rg9gD/qHfE=;
+	b=UZvuHKsuk0djWl0c0Bw3u9MCJbp/dvIZ6W7gApOfYPYArQgt/9/0FJQTh8FKEWZF7y4qpH
+	lzzDBGPdNgE+pHkDm+d3xxaB5yvYYHQqfSyYx2andW38fRg9WQDmrsABMJm62CGEolXYyD
+	nO4HfrBc+2FTRB/qzI3/vz6gbXfouzg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761051578; a=rsa-sha256;
 	cv=none;
-	b=xe5rfkiIOAy2qPo/h5UpciaWny1i8G/Ajh0+aCb8tx1t2fRZxpFc9pZE6qkbWjr+kMfWBF
-	S6Kr7jVd4Z0yzXRfxYZJfCbQrl8HN5ZjtbKOdcg59TJtsnVqsP8zHaHOzWysfYV4vq3y+K
-	ipSS7m7wn3MmIJgThXlbhcASWIajKGM=
+	b=EB/e75juMmxh9+BaPffmbR7VUEdsY++Z3Dsx4rdf6idXfhHZGTPrSRhZD7ep6BEC8hH9Rh
+	PizpkYkwNGK33bDDfcNk9KjHrNOXSs3u2cikiIk43Ifb02z2/AnDWjPHQofvcEADoj9RtQ
+	yIiTXybkKtbsmssZ7XAm0SuRiqhZuKk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WvCAyCu2;
+	spf=pass (imf20.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051575;
+	s=mimecast20190719; t=1761051577;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=omAB84zm1ZJJGkhLo0LBcnP4dZPVDNNrUkrD6enlyeI=;
-	b=aG9ukBQjBk5GKfZEJ5+4xJWqUb4xddeh+AAm/v8I1t3d+n3EzI7AuyDL3CCZkXxB5VpF67
-	eyR/ZgKVxiUYe8h+bhmMCZENyhmJKoHxiikL08QUN2wCJLKYayYH1Xa0M4E6P77a80xhD2
-	e6X3C/Wc2QUa1HKuVnHAqzTmIdQ6HCg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aJ8O3oI3PxPdSYdHMVP+xUJdXO9FbTcv+rg9gD/qHfE=;
+	b=WvCAyCu2B1oAwKJ1eP6FVYWtHDeiVj7d+FCPG5MZDmyglZ1mVAxnJ+fZm2zTpg/opVLIHu
+	/gw/4x43FTl0kCVC7ht5JVegOizAL1ZRH7VIfw4X4NHf97TaKuYHKkKfILK71biSO6Tl6G
+	D6bOVso8PBOC6mjrdm4q8QKBGldBkBU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-x1gQEQuwMZea_gnvaqLYhA-1; Tue, 21 Oct 2025 08:59:34 -0400
-X-MC-Unique: x1gQEQuwMZea_gnvaqLYhA-1
-X-Mimecast-MFC-AGG-ID: x1gQEQuwMZea_gnvaqLYhA_1761051573
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e39567579so33467815e9.0
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:59:33 -0700 (PDT)
+ us-mta-277-rnwEaQyWNtmcsNWE8uegUg-1; Tue, 21 Oct 2025 08:59:36 -0400
+X-MC-Unique: rnwEaQyWNtmcsNWE8uegUg-1
+X-Mimecast-MFC-AGG-ID: rnwEaQyWNtmcsNWE8uegUg_1761051575
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-40cfb98eddbso3170820f8f.0
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:59:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761051573; x=1761656373;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=omAB84zm1ZJJGkhLo0LBcnP4dZPVDNNrUkrD6enlyeI=;
-        b=H1mMpH5rNN1HZMl8ezOxuX5C3MJ6YwmUZVgxWUFHhGBd71dU3u36hE9N/iSreIQDCa
-         3wEgsfDFXP7nJX9XH1c34aVduc95iTEazo7/WsnwhwiN8ElsTZp6IJFgeXUbT9YDAGdb
-         7BYiQRmbceeHOT5xNrHbg9xwvETIa4GpFBACbS8FoJOpZsIOanmHn25feV5X4HSZWPOF
-         S0P2eCcfrkfESNjMMII8yxsdsMTKTut+igAncmGh3y08tDSD2wtcgleFL6Tr5dR5J6Yr
-         MU3eX0OaRzVptSv7fP/wCC+k5XiOB64UR527wgwlkuJ4DWsf6667mxoDKnKIbefsqocq
-         QmdQ==
-X-Gm-Message-State: AOJu0Yw1vP+Tr+/ciwrRWFZgbYLyWWVN/mA/K97i0dY5w1oc2BEon4ci
-	3komDiDrxe23TqtNwoNswDHXprG5tItOEmXBKCOH+AQmy8imJeUjmwuxCWptSiHm479POLjkaXD
-	uXdLgChgLqm0SJ1/ZfjjT26BtvhRMV8D137h3HFOELqLopqVRVLks
-X-Gm-Gg: ASbGnctvYKmutYc0dl77fohnjkx31E5HIS/6q85zSAkgsC9Ox1WwGNO6pcpbn0ph0Al
-	QpHgavYckpZd5J7v4cS8M3NVQb1iQ3+2tCsOh8byZtJ9ClZ+LcZ11wtAO0X411vgm0DY0WSEB5g
-	1HTEXIFH+ETvdsJIDXLE5gnNjCJl2ECnfTitekUA78Oq0/Vd00cDdEmadwuerZAB+zBYxS/Yr4X
-	2S4MnM2Jb3d8oj7oYScKO3ND1P3TNAypsi4pa2UFlTYJIXT+5YoOn1Ljramo2jlho6PJjWkr8Xk
-	iW2LuP0qbe6MKuwCR/4eFtWK0V6bJrfEMgYGsmTLNPhFfZMGFRLsyazUnynAjmfju+DXSdnsMF2
-	166vrjI41Hgh++pM3Yt84Hx3IDBbmD5XMfBd6S1guVVUUfZTLLXzmnpGwTiIU
-X-Received: by 2002:a05:600c:3b03:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-471178a3ff6mr120309765e9.18.1761051572782;
-        Tue, 21 Oct 2025 05:59:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGN1EuUZZ8R3FSSnr8qb9y2RESEr9jR6C/rPmGSz5JIIAcste2ucC0iMZFWCPlNIaKu6Wi9QA==
-X-Received: by 2002:a05:600c:3b03:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-471178a3ff6mr120309195e9.18.1761051572222;
-        Tue, 21 Oct 2025 05:59:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761051575; x=1761656375;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aJ8O3oI3PxPdSYdHMVP+xUJdXO9FbTcv+rg9gD/qHfE=;
+        b=EfeMAD1mpl1IobeoI5Bndd0Qwog4cnNefn9o4WBs6d0NUwvvhO3A+1PGJZVEf7KrXg
+         pFsxLMu0x5LtZihX928u3816fZW2808FwUHS0f5k5ccMSdJ68shIUnlZLcx+Zw60I4s0
+         7VYGrnCzwFjSKL+KZgQ3eL4WKu0b2r2707ks1wloZ2jjqkTiRLAqMx3b7AH6hQCBDkp6
+         QaFN2GuBUFnHKlZ/2gu2H9orj7FtGS7M/I3nQWYsGuax6bg4dwh/I2hR5/0i2300MCiG
+         0Dy2m9BhTSGydMOBweaNHSU+qNCQHUVoDvSYjKb0tgm1TZak4aOhBpkWvZP7ZB4blBRR
+         rEPg==
+X-Gm-Message-State: AOJu0YycvejO2DZXISSU2M1MArUe6cmPK0HIU9vG6giJvbANbEs3+MPp
+	ucUbkhcojR84pH0y4SJsClxz31zaskEckhEvsmcbzor/TuXI0PnI5RlPQ0WLOv9FUVZlOkH7Rdi
+	nd1tQXqmrELAw/GNtotRIUjCGdxP+npIqKyE1Ic/v+hJpKtsf6yEf
+X-Gm-Gg: ASbGncuNmfyKTOjBEWppvTnLijFlTTpDc87FB/9M/rfHY0TKMvjS9vsRFN/IPrXPdYq
+	Q8WQPC43rw9f9Vx6m7N+/n4ohGNKRADf4gyB4G8d/06O2zM0KdeXV6daWs1gem/TqXnL/EcMYMg
+	p1l6d9VlnbN9Q4geowNqzjsDOgWupdpzqR9Yq5ALe12ijCWJgpnS0SYeapPjAg2k6tEHwDABkBq
+	llZVMnqpRlMe8LiGOoO7eVvtSS5uGSxIyDQnNMNcDiOHNunTcOvZ2ujuGxasFBpKfOdegsiVAAD
+	9wq+SArqQ58YFl1z9NWgHAvH93NFnYqRrrbVu7Z3HgXVVs5Zf9t/YIzlyLeX0zrH+ORmwmOTl6T
+	fUu8GO7XsOrCmG48guWmpaQxi53WKrdcQZwzUcVxfYBnYgFiYV2yY6wrxpWru
+X-Received: by 2002:a05:6000:2287:b0:425:7e33:b4a9 with SMTP id ffacd0b85a97d-42704a62705mr14069868f8f.0.1761051574838;
+        Tue, 21 Oct 2025 05:59:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECa0A/SeCpIiHVmJluGV/YpnUcjGB4T+0tmg/6h2iDdcNEnR83hKR+rxH2jY97xv4J3P/Z8A==
+X-Received: by 2002:a05:6000:2287:b0:425:7e33:b4a9 with SMTP id ffacd0b85a97d-42704a62705mr14069824f8f.0.1761051574412;
+        Tue, 21 Oct 2025 05:59:34 -0700 (PDT)
 Received: from localhost (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427ea5b3dabsm21210821f8f.16.2025.10.21.05.59.29
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427f00ba01bsm19979250f8f.41.2025.10.21.05.59.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 05:59:31 -0700 (PDT)
+        Tue, 21 Oct 2025 05:59:33 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -124,26 +126,26 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 00/23] mm: balloon infrastructure cleanups
-Date: Tue, 21 Oct 2025 14:59:05 +0200
-Message-ID: <20251021125929.377194-1-david@redhat.com>
+Subject: [PATCH v1 01/23] vmw_balloon: adjust BALLOON_DEFLATE when deflating while migrating
+Date: Tue, 21 Oct 2025 14:59:06 +0200
+Message-ID: <20251021125929.377194-2-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251021125929.377194-1-david@redhat.com>
+References: <20251021125929.377194-1-david@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5BdEornjLwxJjMfJ5kH86weFFUNpPXkPk3B6GduPN-s_1761051573
+X-Mimecast-MFC-PROC-ID: gC3-Sk7F_V8hI4PpmyGFVRR38Yqqrmx9PB-2USksm3w_1761051575
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: o6p5rryxu5cz39b73ioxndgpty439zx9
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tp44qoue9m663rineyigk4uuzm48u63z
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 48487A000A
-X-HE-Tag: 1761051576-543091
-X-HE-Meta: U2FsdGVkX19VXoWJNAEszzAkRgxsf1eo19fqQ/dXfMpJwj2m7cN67T11syzgOVWV8l+dNi8l+Nug8eT9D773xTdvseEQzqj88cp6NLmgZ1lEM0IXO18UxiBb0BSZrK9+bR+Gd2XcNK1+0AcDNlUGYeMJmrPEcH1ug/aTIdJjDSQy2crPlAeKfjCUOJcwyRypIYC0JmyN/RXPVkcHbAPOH6lhU7djuvX3yY20fkWjn297BXbBu0WyJOtcc6M3aVvC16OpNOTB39Qm/m6oOAnAh206i8R3BqgmcLb7u+MVbDXSvWc6Imligm/i969kr1/kuFxfstVTnSuwu/pV0PFYc/D8T9FzJCsoW+DqHFKBfDmzj4qacRIdKHSGC8sqYciY6VSkYnsOQ+FPe7nILa3qrIo2akzXMTxz+85kYqXNn5vjvWrgB+bwt7Co0PQKifQ9gX19MFutk3Y7mPpacDMBuLB7zgGYPJe7dj1z3r8k1zVLFqy43ppwwtB5h1Mfq25Z441fV2TtpkOTpP2XuAYJJuS5Jf79hMEEo1MbuQh0e61oLt44O6+NyEJqC3r0nRgGGuFxJGKoeZNDrVFUQUahaIzw4AP0cJYdTgGGQf5C1tujfbk4mL9FgW6jWn5EYZwLsYZS3SAMT434ylqUaMEDq6Y5NPD7yv/ebq7zmOWHizF6029dssH9mvdeSWPW9O+HzfCVKZHGb1YL8zdSuuwEy2g52GyXH4/gjjnY2MaytvOeUDDmE4tB8eLasS7qXdq3aZEgZImrua/kgmEcQ28/aBANjoYZ/0DrXpTNKya8lxmsAlpLlYA7+9esC70tFfYllve244KytKTwdlN0Ejxw88dPx+N4Eklo2VEVvswiiOPPZJbo9Bt3iaro4a7m7P5hYPHkZj8BMY1618/Ss3lnrfuhoYDcWD6p+rUOL0XNtsKmPDxJYKWeH2fmEprxJX0fm0P1XOKnc1ZHUXLf1G+
- /F1acZao
- JiNCMucGo1Pe9/UTT/SrsoINHCCUp3vaV4znHWI6AnD3mHhFPLRBWF2AuM3WiqQ+pIPTIOo7tyerTzW+//CM9Wbnr9wG81AfxgztyXLaa+C2pjH8S14SKh6iTH17ymiBE/tmiBTXRAbvci/0yaf1ShNjWtfaQNKeM/QLCtr43j+9IShxZc8DjV5b/q32WLRLHdV4oeKibgx/R1yZkAZ91hXZBUa9PU1GREhEyOnXYW7XhVNfVD4rRdsECcOsaIaY/Teqy3II8Fe/vC3XlF6cbBRnaBDo3jqD8XCY5huD0IA8oImqpQS95d19qfT3hnaSVGAGt+HvmBRIEg1D9PiyqwNJts+5MhOYT006avbRLBhtjNRoD25/N1evT1B7o4OKTMoJFz6zc+P+//o09rTC1jeW/MUf1/X4/nkwHMg6g+jDDbNvIJKu+UQB/1wURlmtFRX/ACxOldqYNME6XDR3pTlG426X1g3i/Liv0NHe+tHI76Uql6Ry9R9ugCzLZc5FSw3Xtk0Nx6JomYg3M/kwWgZjsHRfkIIUpT3Wo9MGe16d5SpUPaFOJgAhKrW/U0QzXpTbtqfRgo1oY5niLlJUp42/8UZW7/adqduIWfVwa3+k5x94rc5H9P7wK0M58TgJLCr9wDGCPuWEUL8w/oob/qy6xTDDTQZRZfl7o2JBShE+jk55V/UNqTa6QdZJMq8Al0DBek+PO9FSrUMX48/WEzC3nPniWjkrw5kuD+Q9/BR0TqGiQnxorwJ42od8wSSqC7BfKBONQi0fztveT22+AmNTWNRzlRqW92nmdGzNQi7dxlyeS7aBK/K1H1uMlQkLfwIyY+au+hiToauw0zOPW2U7xnoguZKycsJu5qu4NsJXf37uvwARyDvophdaWnrIN3pyz/agjKyRt+eBuqzo4E7oz1afRCtfr2FlT679thPrOiXOFBlBqb/v10/UzoFA/STQJ/0j/ytQwbYcdtdFrpDMj6iIj
- rFODikqj
- qeJtll0+SWSTs08Ffq+pJdGuCULv3VS/NK4XowOBHG8=
+X-Rspamd-Queue-Id: 24DEC1C000A
+X-HE-Tag: 1761051577-193959
+X-HE-Meta: U2FsdGVkX1+zg2H4+bo/6klWdykQe8anthajMl8qs+yQ8LAI839gdbzFB+QAIRHSsOmiyKxajW2o+ZNywEyq5Y0gM+j9v0Eme/uFZYh7RDR7s7FIlU10dxVVp9bDC/ONSzGccgXjX3LjQXNHtsbc78HshqRFTfMPptql+vnSThM8yr9hl0yF5Jg1Y9P8S+xLyzRUCDkqZOFf0pR4Hl7+bKh/RUGmWYhOfk6+NeSADj9zDEbWfqStiKSfpBcRJHvMbRol/h8wT2ap0V65TZvMVHugSZ0kbykRF+BobAU/+7/UbUTr9q7myMk7MTPoCwa65BrX7b7HrhSir+CSBjtlG9eUOWnfzt4g2uQ0qIKkT0B6gSEN+h0bNPIc6nxdEdRiMa5Mbs1m2DDnlbFiaF58aqShB+okGbgCYbBgPCaF3xnHrhwTq7Mj5Up5/M2CEhUT8DaKW0p8pyzdF2YvW/hR3iqghoutpsiygqspHjmXEHci3K7KTBF0j5/xAic4k/7OPSytr+xlUva4z9miiBPZYIw1rckchS5oXwbU3GjKOVHrKJgx+VD5JbV5iumtfeJI+PJrLay3ofCxc0GkfNLvbb2GWtszSZ8Eg5X/ytt6c4zCMS+7/qH6op9SILHx8s6GL4llo+UG42jXVAQFaBoxGtTHD0QMOQWidZ7UfQCRvdikG62DVLL1CmQdSW+F+AtqiXK/7Tc7HvpE79brGayZc7KV0+rS15ClXn2m4jytBCbqsakBhdTgqIdU4winxRIT/k8WTosDPGNEMwbzJhpVp0WfYd3jY29D7rrx1bQfx7TV4C1HZPgK55wKaQ9PLrh3v6ycsrGRGWzBsgu0kNFYakqd/xUfLOeT2qyVo1fp8oL0OH8k/TRhR0Xyzg7rntrWlbQyx2GM2hLs/ArZ7XhilIzlRHQEjzD2OBccSfneHc/CrLqRzZJ+Vt1ZRjmdwQikjIibev37ttFgJiQPpf/
+ WvxtcWJ1
+ 5V+bbduej2zIffkSmoV6Z25CpNGyIa9B1G9ZDLmKxE4TW4oO2CsWnlAJy/fEa01vv3Tjo4davCgFQfjV9IXaYxzrl2TkJ6Ylnggybu5YDysa5lbyGMXWUp9mCpvrp7HqgjU0OrCbWNt9XBBQSMwMxuWKhK2R9S62nJwLBE0b+YLbFeIoT8IR802Ax2ymJ5lAV/DPhLFt1xnHdRfxZe2Bb8rDbSK421lfYe0skOKkOR8N3x3uHzDmRY8iiDm+3MVlwGAKECtWhG86K7mKhZgF4BUFT8Sh/CK8qzuOEhuXj3jLhTrcwzDvBMH4KSTSQWvian7qHrXHtqqigM4THZeqsZTW6lVPWx45SdjsM1FMe/02HbyrjosmXIMF9nK4zFUarX8MkYzxxGBu16bBZFs9uoUdmePgWDOK5XZBPaUW1mLXOIL0Lj5tE8yCl7UGlTB+disFZtSiInSM2e0+81yT3tzCabbND8f+i61CBOCIcpsGpXcOXKP11Fy8z2le/wiW36FFkkK5ioBzbATRBZym7ygByx4Fg19KNppOo9hVu/WzgkwFq9URrihhY1Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,110 +154,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is based on mm/mm-unstable with two PPC CMM fixes I sent out
-separately earlier today [1] applied first.
+When we're effectively deflating the balloon while migrating a page
+because inflating the new page failed, we're not adjusting
+BALLOON_DEFLATE.
 
-[1] https://lkml.kernel.org/r/20251021100606.148294-1-david@redhat.com
+Let's do that. This is a preparation for factoring out this handling to
+the core code, making it work in a similar way first.
 
+As this (deflating while migrating because of inflation error) is a
+corner case that I don't really expect to happen in practice
+and the stats are not that crucial, this likely doesn't classify as a fix.
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
+ drivers/misc/vmw_balloon.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I started with wanting to remove the dependency of the balloon
-infrastructure on the page lock, but ended up performing various other
-cleanups, some of which I had on my todo list for years.
-
-This series heavily cleans up and simplifies our balloon infrastructure,
-including our balloon page migration functionality.
-
-With this series, we no longer make use of the page lock for PageOffline
-pages as part of the balloon infrastructure (preparing for memdescs
-where PageOffline pages won't have any such lock), and simplifies
-migration handling such that refcounting can more easily be adjusted
-later (long-term focus is for PageOffline pages to not have a refcount
-either).
-
-Plenty of related cleanups.
-
-Heavily compile-tested and heavily runtime-tested with virtio-balloon.
-PPC CMM and the VMware balloon are untested and I'd appreciate a helping
-hand from people that have suitable environments.
-
-Not CCing maintainers for the vmscan.c and migrate.c change as they
-are rather trivial and I don't want to patchbomb them.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: "Eugenio Pérez" <eperezma@redhat.com>
-Cc: Zi Yan <ziy@nvidia.com>
-
-David Hildenbrand (23):
-  vmw_balloon: adjust BALLOON_DEFLATE when deflating while migrating
-  vmw_balloon: remove vmballoon_compaction_init()
-  powerpc/pseries/cmm: remove cmm_balloon_compaction_init()
-  mm/balloon_compaction: centralize basic page migration handling
-  mm/balloon_compaction: centralize adjust_managed_page_count() handling
-  vmw_balloon: stop using the balloon_dev_info lock
-  mm/balloon_compaction: use a device-independent balloon (list) lock
-  mm/balloon_compaction: remove dependency on page lock
-  mm/balloon_compaction: make balloon_mops static
-  mm/balloon_compaction: drop fs.h include from balloon_compaction.h
-  drivers/virtio/virtio_balloon: stop using balloon_page_push/pop()
-  mm/balloon_compaction: remove balloon_page_push/pop()
-  mm/balloon_compaction: fold balloon_mapping_gfp_mask() into
-    balloon_page_alloc()
-  mm/balloon_compaction: move internal helpers to memory_compaction.c
-  mm/balloon_compaction: assert that the balloon_pages_lock is held
-  mm/balloon_compaction: mark remaining functions for having proper
-    kerneldoc
-  mm/balloon_compaction: remove "extern" from functions
-  mm/vmscan: drop inclusion of balloon_compaction.h
-  mm: rename balloon_compaction.(c|h) to balloon.(c|h)
-  mm/kconfig: make BALLOON_COMPACTION depend on MIGRATION
-  mm: rename CONFIG_BALLOON_COMPACTION to CONFIG_BALLOON_MIGRATION
-  mm: rename CONFIG_MEMORY_BALLOON -> CONFIG_BALLOON
-  MAINTAINERS: move memory balloon infrastructure to "MEMORY MANAGEMENT
-    - BALLOON"
-
- .../admin-guide/mm/memory-hotplug.rst         |   8 +-
- Documentation/core-api/mm-api.rst             |   2 +-
- MAINTAINERS                                   |  12 +-
- arch/powerpc/platforms/pseries/Kconfig        |   2 +-
- arch/powerpc/platforms/pseries/cmm.c          |  53 +----
- drivers/misc/Kconfig                          |   2 +-
- drivers/misc/vmw_balloon.c                    | 105 +++-------
- drivers/virtio/Kconfig                        |   2 +-
- drivers/virtio/virtio_balloon.c               |  64 ++----
- include/linux/balloon.h                       |  77 +++++++
- include/linux/balloon_compaction.h            | 160 ---------------
- include/linux/vm_event_item.h                 |   8 +-
- mm/Kconfig                                    |  23 +--
- mm/Makefile                                   |   2 +-
- mm/{balloon_compaction.c => balloon.c}        | 194 +++++++++++++-----
- mm/memory_hotplug.c                           |   4 +-
- mm/migrate.c                                  |   2 +-
- mm/vmscan.c                                   |   1 -
- mm/vmstat.c                                   |   8 +-
- 19 files changed, 314 insertions(+), 415 deletions(-)
- create mode 100644 include/linux/balloon.h
- delete mode 100644 include/linux/balloon_compaction.h
- rename mm/{balloon_compaction.c => balloon.c} (59%)
-
+diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+index cc1d18b3df5ca..2cc34c4968fac 100644
+--- a/drivers/misc/vmw_balloon.c
++++ b/drivers/misc/vmw_balloon.c
+@@ -1818,6 +1818,8 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+ 	if (status == VMW_BALLOON_SUCCESS) {
+ 		balloon_page_insert(&b->b_dev_info, newpage);
+ 		__count_vm_event(BALLOON_MIGRATE);
++	} else {
++		__count_vm_event(BALLOON_DEFLATE);
+ 	}
+ 
+ 	/*
 -- 
 2.51.0
 
