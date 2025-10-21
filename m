@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D887DCCD1A7
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 15:43:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18046CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 15:44:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 465568E001F; Tue, 21 Oct 2025 11:43:04 -0400 (EDT)
+	id 7751D8E0020; Tue, 21 Oct 2025 11:44:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43CD48E0002; Tue, 21 Oct 2025 11:43:04 -0400 (EDT)
+	id 74CD88E0002; Tue, 21 Oct 2025 11:44:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 352DD8E001F; Tue, 21 Oct 2025 11:43:04 -0400 (EDT)
+	id 63C508E0020; Tue, 21 Oct 2025 11:44:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2220F8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:43:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF1DC16052B
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:43:03 +0000 (UTC)
-X-FDA: 84022539846.06.06BE79A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3635F140005
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:43:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="TR/vQEBF";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761061381; a=rsa-sha256;
-	cv=none;
-	b=0bLN3K03ehAp7K30XgOYnjDymU4x3hBrDSXo82t0IiVsiMfjjIH9kpoXgg+gdb1TInCne2
-	ssB2Zu1j58a3WwLv839E538r1Fk5cBT7UCuLR7f7r5UpeEBfqJr1DEQHJq9jEPthp6u05h
-	/29s0ARHOJCGWNUJv9eTaBydQnNtMLs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="TR/vQEBF";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 529BE8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:44:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E8AF6160545
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:44:18 +0000 (UTC)
+X-FDA: 84022542996.27.FFB772A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8DF14A0016
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:44:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LRnI/rX7";
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761061381;
+	s=arc-20220608; t=1761061456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jNcno7kT0irEzub8Roey9W2mYI7FYUplQutZ5yVhFdg=;
-	b=Y7XQcbTU3eidweCyOnAUusr4ukyZ0Vy0a0bzlK0YugW4PGaffEqGv8qgySz0InyljAxlRt
-	cCUtBM6AH8K09enQCvPOK8vrYpVnJnVN/0OMuqE9ukBuKuEGC2XKn0uK3gi8AcXxm97Mq1
-	O5HFH/zHd4UOLqeYFill8x2/P9TJIys=
+	bh=83AP2pcUZVkXSATkF5eTHL6M4I08IXBIdo5h/3fKK+w=;
+	b=z0Vpq8h3s8iu+S13Vgw8F5LFujO7q59E9g7m+wD6+oiwzOJfuP8NfRfyEFOHhFOP8iaegQ
+	MPy9Fqn4PPaX3vdkqnH78t3AYOecQk6uTkhcIdtcoFtJzOuOmcghy5gyPjpiSbCC/eYYfV
+	Yd7DGn6wezy6FnV4p5vCFwV24isfTJQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LRnI/rX7";
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761061456; a=rsa-sha256;
+	cv=none;
+	b=ld05JYYb7RGW8jtcwSiwjroKpyZm8MvS1Cg7ygUrdY9N2TOA4Xn3Yw3It4ZkdZeuKtmv69
+	wfkKMBDHe2JTWZLBa5rFQFRCvpZ+usN1D4buwg5CRMPJbC0t8SS5/LX+HkKGXoofVxDXqs
+	XClsHAWte+8DmDadg+JqqUJ2Gpfc2GA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761061380;
+	s=mimecast20190719; t=1761061455;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jNcno7kT0irEzub8Roey9W2mYI7FYUplQutZ5yVhFdg=;
-	b=TR/vQEBFnwU3Wf41alTEwRvP8eRVSe85fnIjwFPPmDZbmVveI09QohhokQqthnj4IkylP9
-	vl9nbt3Bf80ezgGOaRyCobqZhjkwafgjjSblKXvTf4xDa7tXp2/MZmv8mg1k0Nns95oMq1
-	KTpWC01j9eJPI9rPL6f1M6OBCVPzrak=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=83AP2pcUZVkXSATkF5eTHL6M4I08IXBIdo5h/3fKK+w=;
+	b=LRnI/rX7J9vm4DZalzSjL6ZKNEv91QguNZwMAR1J/pRWCHrNqLPJqN2UEahEpXht/GcVaz
+	kJFl16i/MzfUNkaaTFBSn81aLy8VyLeyrHWbvhUX9rS2VE5caRARYqyQ9BNXAUOu2UAcUY
+	74+EbaG8Nyf+q9xSPKm6M9asUrenUUI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-AteTPlnzPGmfpJqyDCmo7Q-1; Tue, 21 Oct 2025 11:42:57 -0400
-X-MC-Unique: AteTPlnzPGmfpJqyDCmo7Q-1
-X-Mimecast-MFC-AGG-ID: AteTPlnzPGmfpJqyDCmo7Q_1761061376
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso44347205e9.2
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 08:42:56 -0700 (PDT)
+ us-mta-398-uLiO3mS5NCqE0ElL0RHWEg-1; Tue, 21 Oct 2025 11:44:11 -0400
+X-MC-Unique: uLiO3mS5NCqE0ElL0RHWEg-1
+X-Mimecast-MFC-AGG-ID: uLiO3mS5NCqE0ElL0RHWEg_1761061450
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-46e39567579so34567125e9.0
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 08:44:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761061376; x=1761666176;
+        d=1e100.net; s=20230601; t=1761061450; x=1761666250;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jNcno7kT0irEzub8Roey9W2mYI7FYUplQutZ5yVhFdg=;
-        b=VNBSG/I1QeQwTMS40GwxrhzRjlYTfuZeYXj/zAwUZxful5VZgZwUOi5Bv1MkCqt7tw
-         rPaeCFy9885DpM5qLuD9gXvm73KA7lODJKY/CCSjMLxu+yo76vAIuJnzE7a3yBusJwn/
-         Ea2ywowCnu+PduJSbFTDymsajmeRoDlLLkplIl3hlkzxwN+TF9DbiCdRZZNKE59ONbzU
-         XiDsudmqDw1exAF0T0Dxf8wb8W0OXNJLxQvqwrJPYFuhVaFHzS534VAOMvpqg4gy3J/x
-         IqsmVCvh8yuny/zCaORkcJW/Id6aesF/UMog6ioYMdLvw91/+tZtYaCB5eQ11zNk64oC
-         VUsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSLY4hfvOVXsr7F+ba0ORYBOBWTE4GZn50PJOq6U5xBKxP1+8XsBw9huH3smQnsK75XIO4JrhIfA==@kvack.org
-X-Gm-Message-State: AOJu0YyZmLLHA486DvMWEyjXCqX+k0j0r0mSSlHhSeWTBYNyGHA4blh6
-	ntEOm3zYA6tKvO3NCqVXpWZQRY/VU6VF6KGkakUbOICuaf2vNJngpNKHP5qyaoeE8tOZIpS+54T
-	2dCXYKCGNn6CCEevzXl+ytL03XBH13s4DOr1YeNMIdj6t1Lq8dk7k
-X-Gm-Gg: ASbGncsmWwgPa2MI2GYqYz7XuS4UDsFVZVa+TFDzKwagbGg1DJ/TqPdlzAGEct2jFS7
-	hODi6VdNqyJ7SN5b/UsnAXFEsTp/3795C1bv9+an3hl5ngLjg+/w/Fqj/KSAVMZSuF038UyMnAj
-	5yloNUJN2lHlFvYlXeyKms4IhsDeJCV5RonbCSaug7chvO9STsefbebZ+nswnFBWXTwmnARyX0N
-	BuNQJKvFeJ11kcGFJv5ENUiof98rh2StbClKJVBgzJj62Rh03kXt4465iI6PoZ+cQZiPv0jI5bA
-	H9gX5AkjOv/lDe6LOm2eUnp9xKj5vCZYRiCxa9Qomu0oesLzMd7siNEachFXuJSYrYQzs9+DBm3
-	nhAR+pO4+HqQnY4PeSRXWuXIz4Plr+Ts84JWu/RcCV3EkrfX8BBpwYAm8M8tzRnwhiB1GJT9Vx4
-	i1y+BNfd0no9EZIDH02tj6k77qh5s=
-X-Received: by 2002:a05:600c:870b:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-4711791fa34mr125576335e9.40.1761061376004;
-        Tue, 21 Oct 2025 08:42:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAXCpx0sJcyJNfRiKm2dYACcXvFmWjsvuh2uNond6HHIL7tB74zy8IJxnnZIUjSnynaOrehQ==
-X-Received: by 2002:a05:600c:870b:b0:46f:b42e:e366 with SMTP id 5b1f17b1804b1-4711791fa34mr125575985e9.40.1761061375574;
-        Tue, 21 Oct 2025 08:42:55 -0700 (PDT)
+        bh=83AP2pcUZVkXSATkF5eTHL6M4I08IXBIdo5h/3fKK+w=;
+        b=Atumvjn2LxecMBXwybN5oNCH0gswNE5rmh5Ur3A+TVub98HZht8Sa0IKtJmXqi8VhA
+         xoTvMDVnAZyGBRzcXOt9sbZQvmjvwj8PULYcmSUrYnJlvtCPcTDgbZcrX+JDRA8YXGjk
+         WRXj9nvXwGrw2AhflcPSgddzcuJV6Cq7UZn22zxrsNQBzVeHAB5ZmPB3KgkzLDzjNc2F
+         FkvAhHclmLCgVG3TN6sU4bTgLzefMuQTOgRf3cA6LdLvsCAjQ0s8J/YD4Qw/BHfeqmzK
+         S9Q0MMi7mGMy/lqPOjn9tG2TFhFic5wSao6mMKCdQTjY7yw/eHPpCpMzm2XLnHySGFBW
+         um0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXHA1Gy766jw1mnP3KQnRvN1XVuNOTk1vwCjI+w340qpa+TQB3xjkdkcA0I7eZTsjY/k6sUD9ATQw==@kvack.org
+X-Gm-Message-State: AOJu0YywZlpcbikucQRjSS8N7Rfn9z3tZTSql6/6kYw2wMVWBUJJ70Ow
+	YEN0mMNwvOMLOcPA897zyWWeQcYxWbHI7y+qbTfxhwQ/UijbTbnE4BNm4YrRoN7LgG2nq3iufKX
+	xROKSqxJJ6iQ/YHnylmNYLShyBzWroHo3wLM8ElP2TWbSDw1M2OOU
+X-Gm-Gg: ASbGncuEtHg63tBkoCHWU5tQkeKLgWiIirb51n7nlC2s9NvgXDGSRoYn3UqkvyZSstn
+	Uff2Sb4doFMkO0AjCULvBvYNGbxBzJLF89a0KooNQzgZPOn1HkqJio4UlihJqWcSorLsBmL22D+
+	+HduxF25iiqyC1BIMK92HAPGFG4UdTGPyQfsG2zn1D3Sl8K5kfyXxDqul8Inf5k++uGpiplk7i3
+	0BpRshboIve0qq5LhYspwiKmgk36REXDSP8m5StSvttfMhOIPOwvnCX6mJSnArER+lsJU75Sd8a
+	qwNb2+12dOLtYAqZFk9zlm2ESpDyG9QkXW8skt0vsEOYifdMlj/dib1oWodysU1+CStoJ9GCYGv
+	5dt6Gsu4PVNnipYpuFae++6EUlehJU8yhMW/45cWywNFT0VNbEHcraB72TFV5nrh1R67rKTeyqW
+	5/zA2IpCSwBv72AoWThpLMhIirML8=
+X-Received: by 2002:a05:600c:474b:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47117877525mr130856435e9.15.1761061450429;
+        Tue, 21 Oct 2025 08:44:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGaIH2bO/ck6gwXdnqS8Ypxq8Yv23OSCidYjsq98DaSka5gGo9ipZvZfYK6JfQASLqPXM6hqA==
+X-Received: by 2002:a05:600c:474b:b0:46e:4e6d:79f4 with SMTP id 5b1f17b1804b1-47117877525mr130856175e9.15.1761061449963;
+        Tue, 21 Oct 2025 08:44:09 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4714fb1b668sm232749515e9.0.2025.10.21.08.42.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47114423862sm289821585e9.1.2025.10.21.08.44.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 08:42:55 -0700 (PDT)
-Message-ID: <88f8477b-5898-4d7e-8583-9d769a34645f@redhat.com>
-Date: Tue, 21 Oct 2025 17:42:52 +0200
+        Tue, 21 Oct 2025 08:44:09 -0700 (PDT)
+Message-ID: <b353587b-ef50-41ab-8dd2-93330098053e@redhat.com>
+Date: Tue, 21 Oct 2025 17:44:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/huge_memory: do not change split_huge_page*()
- target order silently.
-To: Zi Yan <ziy@nvidia.com>, linmiaohe@huawei.com, jane.chu@oracle.com,
- kernel@pankajraghav.com,
+Subject: Re: [PATCH v2 2/3] mm/memory-failure: improve large block size folio
+ handling.
+To: Zi Yan <ziy@nvidia.com>, Yang Shi <shy828301@gmail.com>
+Cc: linmiaohe@huawei.com, jane.chu@oracle.com, kernel@pankajraghav.com,
  syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com,
- syzkaller-bugs@googlegroups.com
-Cc: akpm@linux-foundation.org, mcgrof@kernel.org, nao.horiguchi@gmail.com,
+ syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org,
+ mcgrof@kernel.org, nao.horiguchi@gmail.com,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
@@ -118,9 +118,13 @@ Cc: akpm@linux-foundation.org, mcgrof@kernel.org, nao.horiguchi@gmail.com,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Wei Yang <richard.weiyang@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- Pankaj Raghav <p.raghav@samsung.com>
-References: <20251017013630.139907-1-ziy@nvidia.com>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20251016033452.125479-1-ziy@nvidia.com>
+ <20251016033452.125479-3-ziy@nvidia.com>
+ <CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com>
+ <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com>
+ <CAHbLzkp8ob1_pxczeQnwinSL=DS=kByyL+yuTRFuQ0O=Eio0oA@mail.gmail.com>
+ <A4D35134-A031-4B15-B7A0-1592B3AE6D78@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -166,21 +170,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251017013630.139907-1-ziy@nvidia.com>
+In-Reply-To: <A4D35134-A031-4B15-B7A0-1592B3AE6D78@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: m5_9mFTGsfvHeirvuWRwmHoImZAf2qF-fC44bnTUxkk_1761061376
+X-Mimecast-MFC-PROC-ID: vpv--qF9LXCfu8NObJw2gGY9zof1fyI3PV-6laNKdNI_1761061450
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1f3nue9npr8ke4wpansuuxx4iao8ft7u
-X-Rspamd-Queue-Id: 3635F140005
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6n3xs7ed5jtm8nxq4tctw7mwud3haczw
 X-Rspam-User: 
-X-HE-Tag: 1761061381-368940
-X-HE-Meta: U2FsdGVkX18SkLODKb3+065c6V/DeUPrRuHWLZD0bTnugQbLHXytZbpcTgky9eHppaTFsFaCFS9sErVZAGAwy32crFD4ThEIXkDnVymD/SdqOqrFnhJZqpmP36lv7mzHIxn+btNonjG++15/5YXK2lD5Rb21xBuLwW4shwe6ks/WzQWYQs6vfs3vfr3alR0tJfFGdbzBSAJU7VX4OILpg+ZAGB8P92wRmGXsYA2Aa4bB0ZUNGFawOZYtIW77zikQjglc4g2WrUphxj8vXBe9P/X3+/hdXwmABgNUYOi2ZZF71wzmyjyn6rw1l7a/Hnk0GTLXjg33FFEpkI61PJuXCkJVZmlWmkXS3rZiDAtVYJiWe6hUilvw18gTrwmvnxQiVEPVi5F52gAV1gnv7RXIEv456+wO0LUFijrJtD4Co1CQa19XQaoz3oSho+xmaTvSXI2AeWqrfZ0wtuwNQm+shmEJC98AVw/lLUV8PngJOQk8QncmBSVYUf4NPT2SPL5belS1kfPq2ZzZdLp83G7RzBJEqCUX9LoG5k5BtKK3v+TARgH6zn4e8xlPZONtfxA9u8n3W95m32kT8fyBkZz08qQZWnhdvkZh2Y8CH+kquhGPUrBxrq4pGVCUdNfpnUuEQHalWjPzCWspP+GkDkuLqEpXMiCPJU7lRo8I0ToRlAMsl9QXlqaF5M3dYIMmLi9yz/C3weS2y7gmk4eEOuPjMo8wQtwYxwFSiIzgn5NxyZdn043Y8i/Cx3aJn//b6JtYsWAXNNp+tZI4OMd+VmTAypSIkoX9b4VlNQNv9sIJcrADLpM5HZMzaKhabnQkbSepfJPkrsM+3WS/V6O7mEcP8WdRV9Qc4rfbpyO5xkQAI6OXWDQFBK9IXQIejxyZpU1QUYumHH7zK2Y0QEWhRizwWNCGI9acU3FoDhVclzVZUzJppwvimOVqIPLEcs8aGam8oFocA8WOVoCw7s0m9Uc
- vwgAJ8HE
- Bl2U9BteCwFxZbNe7flrcU3Ez3t8J8NJyWHc8NFbAVyriQvTA/ZgHq6/UPhauS03Dc5wmhvPMFZDK27zaKiE/7G+KX/vJJj25c9CBu6t2+sgmswofSiTAgqtqjCYchT8mVHC/+i4wO5ji8q4IqCQtKeXYe80b3Eff0y8ULZPHZ+Mp8zYfcnu5qenNr/JWznPMx04jKUMVE2bxWsNhVnIzHf3ERkOG+yUlKeevc6L5a3lK5sgv+l9b8+zX+hpnCj8Uko5J+g7DDycyLlPafedj5Kr4w3c/hqvTPLWwnAHUqmcnnbntxuCQSalUuCSeC15SzlzX4/RQTuY7U28Yx8M9aF4KjBoO8cs8R74LtuGXy3ilLxt0pbpeHsFejwY3ninwI155WkplMO9UP39qJGJU9NbLfY0q6zYzZDiY+4Pwrf3nsvreUHSIFs0/Ef87qLfrOXAmrKRhhDxjPY0ip7muz+AWBuluW+Z6Sgy7CF4w0m5SxleY8FkVthzs44PjpLvLnZ9p/SO+qoOEaV/+puPardvY9W8UhPSGxlowHUK9++DWmEmJS56OQpJ4Prv8st/JL+VQ0Lco4yEsV9CYEmYbvdaytPEbrT8QbPAH4QNQ+qhYfRuOlaOIA/dRrGfpX0mEHogDNCxLqDdxKLFgxcmsOXKtB1QoHmEi3WcVoBbiRQgBsKvNIYh7RfpqAbZC4EHxfRf+0M4AkojUWH/cMwYVAfuKrwnkApLB8F9SpvlxHvE+snlDyyurEgnHc7DpyMbsuyIffrW7CgayM0zgDyHAV5pW79ydKTZzyPQQVdu1xVQEflS7rtq+rvySI6avNYRFOAbQc7bFuV0R+Z4W9fMDHtgFOXv0VZonaeOc
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8DF14A0016
+X-HE-Tag: 1761061456-861380
+X-HE-Meta: U2FsdGVkX1/rW6S79iIdfbPuVRDGf85c5sK+NDLuMMrd2RjZnPjOzB8gf0RV0OOPrbFHLJGw4cxj7EExiv8CMfwQ7qNQKFsZQHi3r6BMC0mheKFde3C+vOTWlQ6UtYYvGl38bDlNY2L6rCb7eHUs7qOWnY+E0z+gk57Z4pDOSVR7sLNR77tqU4b1ZlnzrxANVEqztvPmnVV5UeLQCIJGtM6BEYgzcS+pK+XtlbvFqeJLDEvYWgNIqnZf3jA0yZwGqIJR/nYWyYdMPwQEiyYmoEYeFkzy2MRamxzEARLLuG8IyWW0o1U7WJyDgQII45jUwyRCbropZdlHhm6ggrg4uPGeDWpYTBF6FQkHtxQUgZudc5TIHl4RgHWu3zDT0DDfyH2ReMykOFWWy6JuiLiAcY8/zwEZWTkLoKdhbD2iMHTqHfkRof/659m4i4j9Ef/N32M6fXy0oaiXrvC2uZzx7FZtgX3RzYFHcD4oA/X+weHoCZAf5mDx2AsoikEaZgm3yBHsSTItZO7jXTqEJIdtUUS+RF5hWhr81HnVk/UoIw+gWdyOfRwSl/o+szNB9gqHF7v94PRQm0/NHvfLCE+AHoMK62JEcae7SAr67Hxvm5PcKNfR3ASqNOUYbUW0UXshIzMyfBf0Vd1cqOLVWQ3IM9zEkCE3dwFj8/PCW/oTMx4ZAZak1GtKbJVnGczgVbWheg8oRGZ9RfoHfGIZ0fXjHAeIh4i3YQhFLbY1Yh2LY/arsK/9cogsRXoF3rqtzhq5IDbdRBUjjXuDPswvauQyuvgHweORVQN+vMu7h9bVg50TtTYVhYOkeRCeEUDxM4mq3Nh6DcNDDfympxpprWcLmWXSKav6BNS++wqJzt07gibSZB4SefnMICbE2IPxjLqXzaZlSp3iY6IKpmQidlqra/ODPo3eKZHUEh3CxflEPwNsSjFv5HIf7fKBAtqtM9SJksI9fqT34pYVIdxiysk
+ u5n8Vzmo
+ WsiyQmV6l+Ba0f9QjwMSbJGU18Vgpp46ZECngF7pOLKnBGIMWGHxSFBklhfMM0fjAW3QF1hqwMjhby3yze/dqM9/JkmkzUcLIHagk2Igww6u1cCyizhZZy8ZQBZaau1UErAq/DfxHqT4Wkxny6Nn3ViLsz1xG3jcYDhbTNexdypirWNZfpvjdGoZQrzUzjraY8TAOAqW/EvWSxVGgmFmLktfFurZ1eBndyTurUnKa4he/yNg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,39 +193,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17.10.25 03:36, Zi Yan wrote:
-> Page cache folios from a file system that support large block size (LBS)
-> can have minimal folio order greater than 0, thus a high order folio might
-> not be able to be split down to order-0. Commit e220917fa507 ("mm: split a
-> folio in minimum folio order chunks") bumps the target order of
-> split_huge_page*() to the minimum allowed order when splitting a LBS folio.
-> This causes confusion for some split_huge_page*() callers like memory
-> failure handling code, since they expect after-split folios all have
-> order-0 when split succeeds but in reality get min_order_for_split() order
-> folios and give warnings.
+On 21.10.25 03:23, Zi Yan wrote:
+> On 20 Oct 2025, at 19:41, Yang Shi wrote:
 > 
-> Fix it by failing a split if the folio cannot be split to the target order.
-> Rename try_folio_split() to try_folio_split_to_order() to reflect the added
-> new_order parameter. Remove its unused list parameter.
+>> On Mon, Oct 20, 2025 at 12:46 PM Zi Yan <ziy@nvidia.com> wrote:
+>>>
+>>> On 17 Oct 2025, at 15:11, Yang Shi wrote:
+>>>
+>>>> On Wed, Oct 15, 2025 at 8:38 PM Zi Yan <ziy@nvidia.com> wrote:
+>>>>>
+>>>>> Large block size (LBS) folios cannot be split to order-0 folios but
+>>>>> min_order_for_folio(). Current split fails directly, but that is not
+>>>>> optimal. Split the folio to min_order_for_folio(), so that, after split,
+>>>>> only the folio containing the poisoned page becomes unusable instead.
+>>>>>
+>>>>> For soft offline, do not split the large folio if it cannot be split to
+>>>>> order-0. Since the folio is still accessible from userspace and premature
+>>>>> split might lead to potential performance loss.
+>>>>>
+>>>>> Suggested-by: Jane Chu <jane.chu@oracle.com>
+>>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>>>> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+>>>>> ---
+>>>>>   mm/memory-failure.c | 25 +++++++++++++++++++++----
+>>>>>   1 file changed, 21 insertions(+), 4 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>>>> index f698df156bf8..443df9581c24 100644
+>>>>> --- a/mm/memory-failure.c
+>>>>> +++ b/mm/memory-failure.c
+>>>>> @@ -1656,12 +1656,13 @@ static int identify_page_state(unsigned long pfn, struct page *p,
+>>>>>    * there is still more to do, hence the page refcount we took earlier
+>>>>>    * is still needed.
+>>>>>    */
+>>>>> -static int try_to_split_thp_page(struct page *page, bool release)
+>>>>> +static int try_to_split_thp_page(struct page *page, unsigned int new_order,
+>>>>> +               bool release)
+>>>>>   {
+>>>>>          int ret;
+>>>>>
+>>>>>          lock_page(page);
+>>>>> -       ret = split_huge_page(page);
+>>>>> +       ret = split_huge_page_to_list_to_order(page, NULL, new_order);
+>>>>>          unlock_page(page);
+>>>>>
+>>>>>          if (ret && release)
+>>>>> @@ -2280,6 +2281,7 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>          folio_unlock(folio);
+>>>>>
+>>>>>          if (folio_test_large(folio)) {
+>>>>> +               int new_order = min_order_for_split(folio);
+>>>>>                  /*
+>>>>>                   * The flag must be set after the refcount is bumped
+>>>>>                   * otherwise it may race with THP split.
+>>>>> @@ -2294,7 +2296,14 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>>                   * page is a valid handlable page.
+>>>>>                   */
+>>>>>                  folio_set_has_hwpoisoned(folio);
+>>>>> -               if (try_to_split_thp_page(p, false) < 0) {
+>>>>> +               /*
+>>>>> +                * If the folio cannot be split to order-0, kill the process,
+>>>>> +                * but split the folio anyway to minimize the amount of unusable
+>>>>> +                * pages.
+>>>>> +                */
+>>>>> +               if (try_to_split_thp_page(p, new_order, false) || new_order) {
+>>>>
+>>>> folio split will clear PG_has_hwpoisoned flag. It is ok for splitting
+>>>> to order-0 folios because the PG_hwpoisoned flag is set on the
+>>>> poisoned page. But if you split the folio to some smaller order large
+>>>> folios, it seems you need to keep PG_has_hwpoisoned flag on the
+>>>> poisoned folio.
+>>>
+>>> OK, this means all pages in a folio with folio_test_has_hwpoisoned() should be
+>>> checked to be able to set after-split folio's flag properly. Current folio
+>>> split code does not do that. I am thinking about whether that causes any
+>>> issue. Probably not, because:
+>>>
+>>> 1. before Patch 1 is applied, large after-split folios are already causing
+>>> a warning in memory_failure(). That kinda masks this issue.
+>>> 2. after Patch 1 is applied, no large after-split folios will appear,
+>>> since the split will fail.
+>>
+>> I'm a little bit confused. Didn't this patch split large folio to
+>> new-order-large-folio (new order is min order)? So this patch had
+>> code:
+>> if (try_to_split_thp_page(p, new_order, false) || new_order) {
 > 
-> Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
-> [The test poisons LBS folios, which cannot be split to order-0 folios, and
-> also tries to poison all memory. The non split LBS folios take more memory
-> than the test anticipated, leading to OOM. The patch fixed the kernel
-> warning and the test needs some change to avoid OOM.]
-> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-> Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> ---
+> Yes, but this is Patch 2 in this series. Patch 1 is
+> "mm/huge_memory: do not change split_huge_page*() target order silently."
+> and sent separately as a hotfix[1].
 
-With Lorenzos comments addressed, this looks good to me, thanks for 
-taking care of this!
+I'm confused now as well. I'd like to review, will there be a v3 that 
+only contains patch #2+#3?
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Thanks!
 
 -- 
 Cheers
