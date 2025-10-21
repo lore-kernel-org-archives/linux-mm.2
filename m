@@ -4,148 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54845CCD1AB
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 22:43:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2F1ECCD1AB
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 23:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B03C78E000F; Tue, 21 Oct 2025 18:43:10 -0400 (EDT)
+	id DEDDD8E0011; Tue, 21 Oct 2025 19:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADB5C8E0002; Tue, 21 Oct 2025 18:43:10 -0400 (EDT)
+	id DC57E8E0002; Tue, 21 Oct 2025 19:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F18A8E000F; Tue, 21 Oct 2025 18:43:10 -0400 (EDT)
+	id D02468E0011; Tue, 21 Oct 2025 19:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1208E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 18:43:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 365E3C0552
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:43:10 +0000 (UTC)
-X-FDA: 84023598540.21.A06CED2
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A2E09180006
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:43:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DKEiOlVc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF9958E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:07:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3FA3E1A047E
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:07:22 +0000 (UTC)
+X-FDA: 84023659524.22.4213059
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 288A280005
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:07:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k35APQ7J;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761088040; a=rsa-sha256;
+	cv=none;
+	b=Q+9wjEi26v3EYjUTg7Au5jBW7om8r/PnNV7JQ88bMW2s+k7tUl4bonp6d5kvhNn95Kt+GW
+	fvaUvOCE1BurYEAKhCe+kvnu3QeF//AipXqA6fd9eMZNC3lHPdW6fJoKIjeQ3Htjhe9h8F
+	/UunuBNx5MtZTOQ9b5gp6Wm5qV0XFaw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k35APQ7J;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761086587;
+	s=arc-20220608; t=1761088040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1ufi8hzAWdR5ZvtubHPkIBiveTzx8KWYjOx6TAX45A=;
-	b=GK7PYOm//agNfEgrMt4aDSUxmLxRoPw2p6MRiAUNBPeGL1PRqnHl1sC+8kf77/e0UJ9XU0
-	+u43uhf2FMg7M+IMDMipCHPdMklnx/PKvCZT5LkXe6r1rHt25mH7v7MyGVEMQvUAKp4NK8
-	BrYN5gVyGgk7G1kYgqgcQuhyUe+5fNM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761086587; a=rsa-sha256;
-	cv=none;
-	b=cXSXJQt7BQC2ZOSDQWYY8vvcqrDd6Sqz49GlPFHL+6d3Cro5ML8h+iY4zJsn3xptBkh7GQ
-	QmZqe/6Ro3QmoqlQLLumgzWXKJ5wlSmr51uDZK4yVdhYiTrwc3G+In37AOAB8txEFnjCtJ
-	CmexjeDWfhS/8c0jPgPTpUQCBrk9xoc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DKEiOlVc;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761086587;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J1ufi8hzAWdR5ZvtubHPkIBiveTzx8KWYjOx6TAX45A=;
-	b=DKEiOlVc1L9iYUu4dx6LNuIQjc3KlCr1jeKhOO1wyccVH9QXieVfwD51HScDdb7SrV4LLx
-	IxdgDJZ4jy4WgN+IZ9+hDOqlP+xgFhMyM6pXahotAy/v6jyMcIdqAnvz5Nbuw1ma90ksqD
-	G1w5+y0NEde18zrzsOg0YjOhahdLcCU=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-AmE_y9P1N_GNtwgSeJIa1A-1; Tue, 21 Oct 2025 18:43:05 -0400
-X-MC-Unique: AmE_y9P1N_GNtwgSeJIa1A-1
-X-Mimecast-MFC-AGG-ID: AmE_y9P1N_GNtwgSeJIa1A_1761086585
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-88f81cf8244so3566611585a.0
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:43:05 -0700 (PDT)
+	bh=TUs/wuT0kfUsxmbimw3WNKm4HpGep0rE6iJ3jKWwffE=;
+	b=PVqN3XlCUVmebGFGbAuXXPX527oyfcLJinvGxBO/ekL0w40hSO6yAsdM95YVYnizzg9oSK
+	EHQSM2y/vrQ3ejRbjg/gy90M0CJEsx6JEyrXuFiMBsKKPoHlXKC+/1LlSXE1K6iZ/ZQny1
+	DnsOCH26DYZaw1yPePr92LATRVG/Q84=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4283be7df63so1882628f8f.1
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:07:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761088038; x=1761692838; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TUs/wuT0kfUsxmbimw3WNKm4HpGep0rE6iJ3jKWwffE=;
+        b=k35APQ7JG4CcbLd3LZNP5E102LOf8hvikEskzyUt5nGqYPHW9/kzYGFgwt1dRX549D
+         I2l7iiaqqYFR5Pye44pCbarRkn9DB6rWwrOUeTv3QTcb1VjfsdrjxKszsb89G8d/VSkF
+         MUdFfT6N7gU5aO+VcpIRt9yMDx2CNtkhq5lYAEU9JjrFbDr3H5XJbgdzPshXHtvN0rY+
+         N1bwnWtiurXgu+qybSQVLYmnY0KEr8CgrPV3dVo8IqNvMzFQasIvUaIRONYx/oV3LztH
+         UQ3TRTcdC81Igfdfbaf4kWt4CYCd6rR6b6gko9Jd0jPW8nT8/AO1T8AjXOyUXKx/xCDu
+         9uQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761086585; x=1761691385;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J1ufi8hzAWdR5ZvtubHPkIBiveTzx8KWYjOx6TAX45A=;
-        b=sFjpT52Zmy0FISaJ/B+n7fV4iwgApjFMuhPb2gUWMvYN4D9Lccwrcqb3QsPi2x5xBm
-         r0eJybQ79XAtUYzNcIIjU1D/EFcXgkVSaT23+mx+Qjm1R4O/O3NgYLGlsKN0Ub/g5e2t
-         p8W+NQrRkW1783fT35o2vXLIJMkJTrcLeoLVVOxRarXgFWFxaZ17JcgeC3ajKhQ5zP6A
-         Na1PJnL1YjHu33otHvadrU1XsfFzA7o4B9CjxahRVjD+0JhBwBW4q3dKBDydijazqz7X
-         N2e9nvEarB820vXdsl00XqftwfrayRbN9tAo2YqOZdwfQSmVn1pMcISqZuRoP5cZCBfw
-         0w3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVuEs08YBUno3+HHYooGfR/8sNZs81D2BA63s7vae1T9a4NpAxnYyM1q9JanR/IMLm1r5yXNWGhuQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywh7k7nmX35YDPCFU3pPcrhccG8qSoSaaT60bDf9UDsus1Xk/Xw
-	dt7K7s07p3ww4yQZHBY3zbBioXX7UozFtqNJb9+aq+gWhoxDmrztrcwt6ZBOtQWqbepS2KEPEad
-	mkmEX9RCQWmwtalmJlrmU8erd/K2ii3z2f9aNrEuweoVSR2fwOfif
-X-Gm-Gg: ASbGnctBb5tL+BX8GRd3jBkfLlcYDg9Tm847PtDeV1brVpcTucmQz8vhe1qNEYjXnrX
-	eY70DFXTMXbyCNEtAAJngYtw03hCpkbiva4tpYX+dmBH0NZJ8vD/gX9z4fblRtfYIrEFucXFfw7
-	a1OW1zqKL3E5bZ8EHngPFxt+g2XobLgucxQiT7/Pqg9LN8odCKNoZ+LTBRYfMn3XFTHerGMS5v/
-	LjA0btUhFfAcZwZe8MXQeKePkWXja1YfynDG8mThao6c7P9g83hswPPRMsUIYkMgCW1FDru2qER
-	nhiraLVi/wNuhdPM2rJU6xzwED+GVThpgZj0ajEEFyINSb0VbV4ADYCpaEuQeQO1ca1ETgiu4PD
-	YZ4el342Gjtrn3rdDvaGcXsKCHTmxlH7lZj89IZx3qNZOtQ==
-X-Received: by 2002:a05:620a:2892:b0:886:ea5d:9273 with SMTP id af79cd13be357-8906e6ba4b1mr2387618385a.28.1761086585036;
-        Tue, 21 Oct 2025 15:43:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKKo/21Swm4z17XlE0/ydMbQxCAbbChu7Z8fNIxB6CZQJ6hcePBsIiw2WUviotKsZ3CeiiMA==
-X-Received: by 2002:a05:620a:2892:b0:886:ea5d:9273 with SMTP id af79cd13be357-8906e6ba4b1mr2387614585a.28.1761086584536;
-        Tue, 21 Oct 2025 15:43:04 -0700 (PDT)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cefba728sm848019085a.38.2025.10.21.15.43.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 15:43:03 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <ba437129-062a-4a2f-a753-64945e9a13ff@redhat.com>
-Date: Tue, 21 Oct 2025 18:42:59 -0400
+        d=1e100.net; s=20230601; t=1761088038; x=1761692838;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TUs/wuT0kfUsxmbimw3WNKm4HpGep0rE6iJ3jKWwffE=;
+        b=kFH3oxnJkDY9A1es9C+JCkUD459I1Hioal/ZVParri2eqOEQgYpPdlyxmAD7qXeaS4
+         +wORdqZKcPmJzP7fGnWpCAetZ+vh87p41a87iuxS7YauEZqWzLuD7kBxXOW/Mspxe72V
+         LxsUMqvNMlBvCVpmM/Xo+cy9ERrD9YoV4Y3MuBGJ6ta/nD1LnViYYvEelUQLVt0wpll3
+         quhbobiROABMZcqqKSQqhCv1dyu/3x62cuqJPSI02EL0MTVs5NMcW1ga6cW6m+1orDDD
+         gqXqnxN2g77BWiJAe0+FRJBKqAp6tYtEva0fNu4M+w9tL0IIOD1sQ/sAQ95yPPrsquPn
+         PP0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX5eGgRa9zuaw/BoPzQfP0DF8wYEqsmOAbi+YAh0v8Qs68ApadT7nBGN7osjDdB9Zf8jwaTpFiiVw==@kvack.org
+X-Gm-Message-State: AOJu0Yx/HEkCDCt6qJ+OGWeSeHUFCpbEeKe9msfVer+5ectaRp4Lp/fj
+	EABiKezV7qBNU2gVz4h2sUzk7U7NakFalSmkba6KipvhNxrfe37UM5Pa+rwmEdF6LKYcWlqgAUY
+	jS8uU2I/V5Pp1X9eSNTnWafEkfOMZfgc=
+X-Gm-Gg: ASbGncuLWKLPXwHYP3vCMLKtEGn4tljn1By81PqofcvdNFugy/xUDHYKgkFuLEwU7ue
+	x9fsIu+jc8nRmLxY2JQ4E6fTqNsa7T1vQ8n5l5LrC8AFr9tMH6WOgNHYmbHjtybZ7LpGXIWA8fz
+	a2rI5NKMSHzEE0wDcrX0iQYUTUck+1MxdMTx93Ya2MoTWM5xMcdYCnfAtbbIhs/NmKfh5FVq2Da
+	m2p59VW1yYUQGZo9YHipqy414yoj4MawqVvBQWi+JiH/hd2Sd621D+SK2ni+0rY3Bs8yRy50I2c
+	R/CVPwOlXk75WfYUnADbn5YhCTXBav9psbFD7I6l
+X-Google-Smtp-Source: AGHT+IGQHFZvIWqZUrqUsZZZ+Q/stC/g2UdHpo6nn0sLp1JYS0sru3nHrLYk6NYzKyTl+sxTOdX9V4AdnflXA+OxrLY=
+X-Received: by 2002:a05:6000:4703:b0:427:690:1d84 with SMTP id
+ ffacd0b85a97d-42706901d9fmr10929644f8f.32.1761088038428; Tue, 21 Oct 2025
+ 16:07:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 22/33] kthread: Include unbound kthreads in the managed
- affinity list
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
- <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-23-frederic@kernel.org>
-In-Reply-To: <20251013203146.10162-23-frederic@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YuVY5Ca8M6zqbBy6FHGNajaz-tcXKxt75hEtR1v91KE_1761086585
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 1z1soe38bzwxfecsfjtujm5gms9ankua
+References: <20251009155403.1379150-1-snovitoll@gmail.com> <20251009155403.1379150-2-snovitoll@gmail.com>
+In-Reply-To: <20251009155403.1379150-2-snovitoll@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Wed, 22 Oct 2025 01:07:07 +0200
+X-Gm-Features: AS18NWCmo3ddiV-eCF44oMWKYeYFjMfIoy4ZgUCJRQ4FNMTlti9w47Jhqig1JNY
+Message-ID: <CA+fCnZfwPU0_LJQsCbatD3kd8vLE-ep06vZikNaR0W6-6UrkDQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] kasan: remove __kasan_save_free_info wrapper
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
+	vincenzo.frascino@arm.com, akpm@linux-foundation.org, bhe@redhat.com, 
+	christophe.leroy@csgroup.eu, ritesh.list@gmail.com, 
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: imjq5fus86s9ajfoxrxb3phhs755q394
+X-Rspamd-Queue-Id: 288A280005
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2E09180006
-X-HE-Tag: 1761086587-736393
-X-HE-Meta: U2FsdGVkX1/8dD9jsuanUoEpB0D13ylXssFcOnYbBSi4g7SmdTJsuOKrPLi3QJshJHgJZO4V6eAlise/4YGjTOEeHZgMjMFveQsBcF64C26RSqo3dPFF8nYQ9qCalqS1XDfZLjtkUd7WHMT39eloIpsb6k9SfnSvGm0M4BHD6HVzL9cVABLJ0QHzvF0r2750zxiVZApMgg958BogGK4HKLUPO6B6lghym2tPHRgzBXmVea/cciRAtycrJ3iDJ5dIq/nEwoF+6tmL5v/aQUrrNUsX2iy/mTee7YlUY8BLEKgadlIbjgU4v2MDd7aQAkNsdwEgrlE24tSgFwse9/4TqpSlTzx7YCiXncWpRXS9iqZSmrwH6pVwkyQo6KWOCJJ9am2U2wSUdwkVqL2/CbJcEIPRaa9ujp7C5CW1NNYgaX4dAz9gEjHdwos0HguP55bS6hTUFNOtE/BmIxQax1yDI32ZblAr0xl2o9jiBflERPhip0W3LNEjnDXlwRx+YDGwOt7lAwchWvg4Xa76lV+b7KqhFebLUoISC1AjJM/3nOmGqy+FXcGoAXTqyen/Y1TQAF+Il6wxkhaxgKiV2FyI3JvI+Wd21XAvtgWopNwt9PNW/TKXHWaZ9kxoLtOxk8FT5hIa/kPY5DAtA5f0/Q3IvcE1AH8vQMian2/c0z3CmTcsWa/S79R8tUgG48weB2Sc9nem/TTr1CWVrN1e0hlceMvgUygs46kVKYfpdwcSKRSXjDD/7bvt7FTH/BkEIyFDBnOSyXzC72eGDDOcOUvOlS+hpPMlFwLp6y4qoeFVc6Nis4cdYCl7aEqWsMsaYg1Lgy4jBE6wvysRcFLOYjp78jj/95tXWrraQmReXL4FcEqJwu8qTp4PkQX6JxLnvq7ds6Z0TH2plLvmm9fscToY5Z1n2kqGhdPpmiYBGTKdWbsoHb9kjHESagfXdjB/4WMI0c+o7SgwgkWuS9szfkF
- 906RFair
- YKz8EVzU3WnR8zIBPEn2N0Scce9x9l9TfrAvJ7AYpLzdUCmFo0LsGPxbeBUWBK5QYcUWlHaZUqt1M/I+CWBwWCkdUkMBbGtBGJ9DJh5Ti4KHoyh2v+zdeOumoih2kfx0oaUNoRiHojJutRIDcLvFzVFxaIvUc/Hc/1UEVR5Yb2/Dyhi6WlMtUiKYlAETw/xMk5+UdgRyEWFYM+sTtw35NZxL9x8w/4Zik26FDJGfqKVWmMuN9sXnezRhy8FWlN59rxahxAiM89K+fc76VpLDpcOGUXUflTB2p8AbSNbSNN6aSDwmmPmKH9rX0Ny5j9IRVUE3BvjeG1IU/tApswYdJ76LctiewTTUaLibnPxganVw7U64D3KlQbPGi3IKRSyJwjTu/OUEguC9ReLCqAP8w+sHIIgALZ1VSaF350XPYfrcyi3rLTl0qPOQEwUmlZtVfkPw2bNeQvKKY5GVoDw8rQ6uizJ0J8nqC4mvGmM3W1SI6okZKFzy08XBqVSvDw1w7nIG4VrSJwBjyyTsAN7r+Uto8hwA1ZcTlUe21YaNk0dwCJFs=
+X-HE-Tag: 1761088039-891678
+X-HE-Meta: U2FsdGVkX1+T959d1a1qqIgXpMLLt8SmGWuPpAvJ3JEnkpcpD0gaBwoCTqnS7ePlvirx9WmZBI5+kRyp7TafFsdZ4tn7TzB8BpuhMVA+lT6peViSxLCba1JNzVBtL9sAGCUI3FpZVCm0r6ivNdT4FUS6nZiGCqe4iHEsULLu1fZDGUH5wZPQBOulyO6KfLYmfi2iHbBLNhFz/lt6ihndq7GZPihv9VsCQH7JZnGNAZTpRswicMiE87VfTM99AoYh5On/+Ph5bJ3KX79J1O8pyymr4jIa2LBV8IQkAkMMW8JYYn6fxFZn1Dm26kVhg13M22Hr0QY3zNDC8B99wunkO596LnSyE28XZhwX1NsmW2ffUyFKsrdPJFQMPJux2LbJpW86YjRGAVK+9Gxn+zwlpY6GpD00/PpTrezP4IDf9tqi5PMtjINoKCuLkiPirEqBesuvuZC+Jefdnr5giCxD4w41G4XUltJ9w0//D/bsSuqUv2cetrxVaoaSQxXvq4+lC8HruWn0UTBK2DBbMulLGjc/So0CuuSafoBkj3GC1MQusejbVbTUulElqDNetAzXVqEAfAttZrFXNKd6Chqx1mleBzB3sZiOf04DaBJaTksRE1XjxK04uf/r5lf2+5oXfdLQm+XQrhx9aJYYYt5P4moDm9DQYR1RhOi9XWb7T+9dZ3KZS+k+940LYKaXTU+qwCFoJlnfT1Bx286W3hv+/IzFHssCMn4+Qa6/4Fm1YTY9LxFAlvQUZkSc5VpeKLSqopXvvSibwoPsn8vW4loH1uteQ3cTgL5Rq7d6p9UYOxyGxBp6ovr18KAlINMefZXeLgzwwRW77M9ejktTtx8ZJKKGZ4cMdqI42KW92PCPynP4rbaKMx+wIebOnh7mIyHqAX+gwtOOMRa8CiP50USiDN0vHj+IAmsmyjCDnV+oyRxPaQk3BBWOr4/PEchvb4tqVnmSJo9YJGBj39dZjDd
+ fMzNGO6Z
+ FynBgbw0mkMfqCe/GX0ZoIC6QaIKhhBk/mbjH+dv7yiJovSrxIDHVs4hZcjGOzwkMzsItDIxzu3GgSUyCAWlV56EMF4TrcURhTPoXAIUoG2iME9/aAnYwIf3bzjO8y8Hx/0JAuM+Myscg9lE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,120 +119,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
-> The managed affinity list currently contains only unbound kthreads that
-> have affinity preferences. Unbound kthreads globally affine by default
-> are outside of the list because their affinity is automatically managed
-> by the scheduler (through the fallback housekeeping mask) and by cpuset.
+On Thu, Oct 9, 2025 at 5:54=E2=80=AFPM Sabyrzhan Tasbolatov <snovitoll@gmai=
+l.com> wrote:
 >
-> However in order to preserve the preferred affinity of kthreads, cpuset
-> will delegate the isolated partition update propagation to the
-> housekeeping and kthread code.
+> We don't need a kasan_enabled() check in
+> kasan_save_free_info() at all. Both the higher level paths
+> (kasan_slab_free and kasan_mempool_poison_object) already contain this
+> check. Therefore, remove the __wrapper.
 >
-> Prepare for that with including all unbound kthreads in the managed
-> affinity list.
->
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> Fixes: 1e338f4d99e6 ("kasan: introduce ARCH_DEFER_KASAN and unify static =
+key across modes")
 > ---
->   kernel/kthread.c | 59 ++++++++++++++++++++++++------------------------
->   1 file changed, 30 insertions(+), 29 deletions(-)
+>  mm/kasan/generic.c | 2 +-
+>  mm/kasan/kasan.h   | 7 +------
+>  mm/kasan/tags.c    | 2 +-
+>  3 files changed, 3 insertions(+), 8 deletions(-)
 >
-> diff --git a/kernel/kthread.c b/kernel/kthread.c
-> index c4dd967e9e9c..cba3d297f267 100644
-> --- a/kernel/kthread.c
-> +++ b/kernel/kthread.c
-> @@ -365,9 +365,10 @@ static void kthread_fetch_affinity(struct kthread *kthread, struct cpumask *cpum
->   	if (kthread->preferred_affinity) {
->   		pref = kthread->preferred_affinity;
->   	} else {
-> -		if (WARN_ON_ONCE(kthread->node == NUMA_NO_NODE))
-> -			return;
-> -		pref = cpumask_of_node(kthread->node);
-> +		if (kthread->node == NUMA_NO_NODE)
-> +			pref = housekeeping_cpumask(HK_TYPE_KTHREAD);
-> +		else
-> +			pref = cpumask_of_node(kthread->node);
->   	}
->   
->   	cpumask_and(cpumask, pref, housekeeping_cpumask(HK_TYPE_KTHREAD));
-> @@ -380,32 +381,29 @@ static void kthread_affine_node(void)
->   	struct kthread *kthread = to_kthread(current);
->   	cpumask_var_t affinity;
->   
-> -	WARN_ON_ONCE(kthread_is_per_cpu(current));
-> +	if (WARN_ON_ONCE(kthread_is_per_cpu(current)))
-> +		return;
->   
-> -	if (kthread->node == NUMA_NO_NODE) {
-> -		housekeeping_affine(current, HK_TYPE_KTHREAD);
-> -	} else {
-> -		if (!zalloc_cpumask_var(&affinity, GFP_KERNEL)) {
-> -			WARN_ON_ONCE(1);
-> -			return;
-> -		}
-> -
-> -		mutex_lock(&kthread_affinity_lock);
-> -		WARN_ON_ONCE(!list_empty(&kthread->affinity_node));
-> -		list_add_tail(&kthread->affinity_node, &kthread_affinity_list);
-> -		/*
-> -		 * The node cpumask is racy when read from kthread() but:
-> -		 * - a racing CPU going down will either fail on the subsequent
-> -		 *   call to set_cpus_allowed_ptr() or be migrated to housekeepers
-> -		 *   afterwards by the scheduler.
-> -		 * - a racing CPU going up will be handled by kthreads_online_cpu()
-> -		 */
-> -		kthread_fetch_affinity(kthread, affinity);
-> -		set_cpus_allowed_ptr(current, affinity);
-> -		mutex_unlock(&kthread_affinity_lock);
-> -
-> -		free_cpumask_var(affinity);
-> +	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL)) {
-> +		WARN_ON_ONCE(1);
-> +		return;
->   	}
-> +
-> +	mutex_lock(&kthread_affinity_lock);
-> +	WARN_ON_ONCE(!list_empty(&kthread->affinity_node));
-> +	list_add_tail(&kthread->affinity_node, &kthread_affinity_list);
-> +	/*
-> +	 * The node cpumask is racy when read from kthread() but:
-> +	 * - a racing CPU going down will either fail on the subsequent
-> +	 *   call to set_cpus_allowed_ptr() or be migrated to housekeepers
-> +	 *   afterwards by the scheduler.
-> +	 * - a racing CPU going up will be handled by kthreads_online_cpu()
-> +	 */
-> +	kthread_fetch_affinity(kthread, affinity);
-> +	set_cpus_allowed_ptr(current, affinity);
-> +	mutex_unlock(&kthread_affinity_lock);
-> +
-> +	free_cpumask_var(affinity);
->   }
->   
->   static int kthread(void *_create)
-> @@ -924,8 +922,11 @@ static int kthreads_online_cpu(unsigned int cpu)
->   			ret = -EINVAL;
->   			continue;
->   		}
-> -		kthread_fetch_affinity(k, affinity);
-> -		set_cpus_allowed_ptr(k->task, affinity);
-> +
-> +		if (k->preferred_affinity || k->node != NUMA_NO_NODE) {
-> +			kthread_fetch_affinity(k, affinity);
-> +			set_cpus_allowed_ptr(k->task, affinity);
-> +		}
->   	}
+> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> index b413c46b3e0..516b49accc4 100644
+> --- a/mm/kasan/generic.c
+> +++ b/mm/kasan/generic.c
+> @@ -573,7 +573,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, =
+void *object, gfp_t flags)
+>         kasan_save_track(&alloc_meta->alloc_track, flags);
+>  }
+>
+> -void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+> +void kasan_save_free_info(struct kmem_cache *cache, void *object)
+>  {
+>         struct kasan_free_meta *free_meta;
+>
+> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> index 07fa7375a84..fc9169a5476 100644
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -399,12 +399,7 @@ void kasan_set_track(struct kasan_track *track, depo=
+t_stack_handle_t stack);
+>  void kasan_save_track(struct kasan_track *track, gfp_t flags);
+>  void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t=
+ flags);
+>
+> -void __kasan_save_free_info(struct kmem_cache *cache, void *object);
+> -static inline void kasan_save_free_info(struct kmem_cache *cache, void *=
+object)
+> -{
+> -       if (kasan_enabled())
+> -               __kasan_save_free_info(cache, object);
+> -}
+> +void kasan_save_free_info(struct kmem_cache *cache, void *object);
+>
+>  #ifdef CONFIG_KASAN_GENERIC
+>  bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
+> diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
+> index b9f31293622..d65d48b85f9 100644
+> --- a/mm/kasan/tags.c
+> +++ b/mm/kasan/tags.c
+> @@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, =
+void *object, gfp_t flags)
+>         save_stack_info(cache, object, flags, false);
+>  }
+>
+> -void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+> +void kasan_save_free_info(struct kmem_cache *cache, void *object)
+>  {
+>         save_stack_info(cache, object, 0, true);
+>  }
+> --
+> 2.34.1
+>
 
-My understanding of kthreads_online_cpu() is that hotplug won't affect 
-the affinity returned from kthread_fetch_affinity(). However, 
-set_cpus_allowed_ptr() will mask out all the offline CPUs. So if the 
-given "cpu" to be brought online is in the returned affinity, we should 
-call set_cpus_allowed_ptr() to add this cpu into its affinity mask 
-though the current code will call it even it is not strictly necessary. 
-This change will not do this update to NUMA_NO_NODE kthread with no 
-preferred_affinity, is this a problem?
-
-Cheers,
-Longman
-
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 
