@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C28ACCD1AA
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 13:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5988CCCD1AA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 13:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DCDC8E0038; Tue, 21 Oct 2025 09:00:11 -0400 (EDT)
+	id 4C3AD8E0039; Tue, 21 Oct 2025 09:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 166E88E002F; Tue, 21 Oct 2025 09:00:11 -0400 (EDT)
+	id 49ABC8E002F; Tue, 21 Oct 2025 09:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5F168E0038; Tue, 21 Oct 2025 09:00:10 -0400 (EDT)
+	id 363B78E0039; Tue, 21 Oct 2025 09:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D53A78E002F
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:00:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CC5F11A2EA
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:00:10 +0000 (UTC)
-X-FDA: 84022129380.26.A003E5B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 22AF88E002F
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:00:12 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB3471404A1
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:00:11 +0000 (UTC)
+X-FDA: 84022129422.15.5717E21
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2E5A120003
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:00:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iEMvARI9;
-	spf=pass (imf03.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761051608; a=rsa-sha256;
-	cv=none;
-	b=6WL7cD1RD1BcXp4lqfBsPVWDwhg1JHSLKaEQf985uq1l1auujk70OztNVyAEYKygxvKy0Z
-	ZlAagQi3WaRouMY+kbnjj6Dq9WlRlFhSB/TVyswEdZleZ3VZIGQPRo+8dHc+P9dnnEAE/1
-	RVbu5nuXNrbdgm39SKIxCyJZj91CopE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iEMvARI9;
-	spf=pass (imf03.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id AB9DD140005
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:00:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UfLuGWHV;
+	spf=pass (imf23.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761051608;
+	s=arc-20220608; t=1761051609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O+OTVNr68Ud6e3V7gLc8dmSyyby2S+Q4hsUbFdDpNzM=;
-	b=aKk0V5CcmD0FpMOk8LofCflxzJmkAWvzSwk81g85i1ClRbOpyqgI0Vww/3Uoh41nAp1jmR
-	QwB7sCI84xAooqeaHfhKjNtbEpX84kBqapnZRT7p58KTshwmH9W9IqITJ+CeSf4zJ7OqDM
-	WUsD5pFjjgdZV0rfBFc0K1pRiXOmekA=
+	bh=qyA8pCV8ZcD9NKgO0LjiJR2j4wGQSpAi/OG88VVUt3A=;
+	b=AbBUHh7vBuJb9gE9tMdACB49d6N2lJrVzMhaX6BuuV411NbCa8rCAUgO7iUJV450zv1m6D
+	Qo7HGh8T8QVdUERHW/MSTAuGLzIukTAERbZPk1S53Q+e1sXT4fiKwPaYh8mwll2bqwiF2p
+	8tDvg5u6e7y+alSLIvIPG4JMV+H4Qfo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761051609; a=rsa-sha256;
+	cv=none;
+	b=PTrs5t9wCdeGP+gMRfLUPEt6qlEbvsJRRgxN68We4tGAgOk+EVk4HGnLrs8dWdkkxzsqax
+	RSF3ncniipodadXFBKViCkvn8MFzFkRv4PwltJcElu/e9LzquMPt+F8tYjPMd0wZ9repl5
+	+QhURoDFD+Ro80JdhlirvCTMBc7gGic=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UfLuGWHV;
+	spf=pass (imf23.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761051607;
+	s=mimecast20190719; t=1761051609;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O+OTVNr68Ud6e3V7gLc8dmSyyby2S+Q4hsUbFdDpNzM=;
-	b=iEMvARI9agmC+cqmZQoZbJxUO/81U5XQgw4LqxmeZp+BDqXgBZ/NqM7IUlMiyShjikxJZL
-	YEnMRmcexBCo+Y42d/tZLcebNEBXmP0h2QW2enDlqDdBDwIzmRYt11rp75w7uCAlkoSSRC
-	JCrYGA379Ca7SNEj8/dSKNzSkUdn6YY=
+	bh=qyA8pCV8ZcD9NKgO0LjiJR2j4wGQSpAi/OG88VVUt3A=;
+	b=UfLuGWHVVI4j3OAL4UlOjsi326icFXDrQ+ldKy8FudYW0csDT2nzCRNvH+GCFX6YY81Mxx
+	E6YAkfjCtMsaFtlH+QbimJwjKj6BZ/WnrkSgcM8WZWHHMrXptlH/GL2G8/XIYIboddjEBQ
+	61ItdreV5H5YLvML7QskmIq/bQVu3tE=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-ksSi-HgFOuiZJzCzpxOTcA-1; Tue, 21 Oct 2025 09:00:05 -0400
-X-MC-Unique: ksSi-HgFOuiZJzCzpxOTcA-1
-X-Mimecast-MFC-AGG-ID: ksSi-HgFOuiZJzCzpxOTcA_1761051605
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so61195835e9.3
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:00:05 -0700 (PDT)
+ us-mta-117-IvBnNLQ6P82__MQpQNxmRQ-1; Tue, 21 Oct 2025 09:00:07 -0400
+X-MC-Unique: IvBnNLQ6P82__MQpQNxmRQ-1
+X-Mimecast-MFC-AGG-ID: IvBnNLQ6P82__MQpQNxmRQ_1761051607
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so61196195e9.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:00:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761051604; x=1761656404;
+        d=1e100.net; s=20230601; t=1761051606; x=1761656406;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O+OTVNr68Ud6e3V7gLc8dmSyyby2S+Q4hsUbFdDpNzM=;
-        b=TWpCXU6aUAvfO3wGdQgGCluDd8qHPTBaAFewSuFjOcIvGAM8flUeslP7Oo4UcumBJq
-         UZ8oFWAmhvZbhHUlaz6NAQVKCrbsosN841VUVo+2f9Q1isyern2I8rQkQYq46o1vxq4N
-         a9MkWPDDC7PImroms8hfS8LhCPUk3Zru3eEkLxHbM8mXwn41lXZWb5KOTtXgaB7tR0hG
-         900L3sXrq8RKEXNcEod1xFocIAT0F0XupRuDrf4LCq59VZiCG0CvyjPfHS19sVrezY0b
-         8eaQo9kFLhBSvwXDppeQG7qdfVqA7C4UYX5Dn4blLrp76GkJE9os4CfK1vc+zWtX5bqi
-         ILBQ==
-X-Gm-Message-State: AOJu0YwGQTWmTrWm5JcNCGPbdtuksTD9EUuU12R1aVsyxCWHR29NrYlb
-	SXZy793fEQ15WkAqhj1SqrVcqAmECxq0Vg0n7OgllmtZVNOsgsCk0lTEjCixF2ZENhKHxv7f6CH
-	46XspXG+qdKhvhynMx6FXy4JYdASZJJFzXSLnMSGEpwYct36/79nT
-X-Gm-Gg: ASbGncsM3UfNGx3fB9SKh6TBfrjqvkyqRgZwyl+8AYzvQSz33WCEP2kjciVPVJb7EMO
-	DBXC6SbY/b+wuDarpvSlO2HjnhGQOrVZnj6xAMEeLSpuCsUrd8r9wfZeUj1VNOt1KtMigC3BxX/
-	bYmzM9Mp30f6VZXaBQD6mhqOQCf4oOQn/0j0Y2JrkTndu7qhULsKoWo1N9Y7s3xFGnPTZdMsRmE
-	S3CW0kPL2QeyTMe9i+03Fi9muIfg8XtBMDpRNqT3MbXRRwTixP4IxHWXQYtsWYo5uSpn1AiJ2Mq
-	FV4eUIgNVqsKXEBYwC6Xn6p0rm+VA/xt4TPv0S1FRY+zTyRIVrHJa4+Kq4DliUNFzoQFJs0yk71
-	R04YeRaGXX8AtAb3TfvqmPBkQMpK8Lc5uEzoCKYr20V6MBMH3OjB/mdnTPmlO
-X-Received: by 2002:a05:600c:3b8d:b0:46d:27b7:e7e5 with SMTP id 5b1f17b1804b1-47117917572mr150179045e9.32.1761051604293;
-        Tue, 21 Oct 2025 06:00:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZFp/NfFGh9nzvdan/GtiYx6zHPVXBd5PXGxqlBj7uT7XLqj1hdDZYgamMo86fNe5GicJaNA==
-X-Received: by 2002:a05:600c:3b8d:b0:46d:27b7:e7e5 with SMTP id 5b1f17b1804b1-47117917572mr150178725e9.32.1761051603807;
-        Tue, 21 Oct 2025 06:00:03 -0700 (PDT)
+        bh=qyA8pCV8ZcD9NKgO0LjiJR2j4wGQSpAi/OG88VVUt3A=;
+        b=X6YRtHZdgaWDEFlVLZjBBUwg38a2/QaOaXpS4eRtN7t74e/EydlgEVFb3x3LOZXN3T
+         eMJRo3+8AY/3Y4hpCWgTvRhVCDwVXluY2SMhBD1OZ6tBu9p2QmhnUNWC69E1fv58LI77
+         48h4WQvdEnB1kNEKUDMc65tNfEfYWLzqKmCVioiUx0NSvJ845ViVVeihBfWs9W8GZOjS
+         vQkhIH+ztwuQk91kxwHMLwKEkaFQaEd4MO3qLpyb0JSTseyPW8Vvo0wUM3NNQJuf+ctr
+         bzzdrRQOH7IsGnJZe+/rIBiIhOzsq1+jIO69GVmgDmtRVfyQYrMZj4umWyZSSR5VjGCu
+         2WzQ==
+X-Gm-Message-State: AOJu0YykuPbmShN58NPSQUC6LIBldDX+SFQsSFfcbqL4ZV8vr4EBc+jT
+	b95dRkIZ1ZsVIQnd4VCoHLrB3hUTFPsS5R2759Bz0+p2LiPaNle1MFbwHN3QAhgmgt8kgM0pz6u
+	+nb41k6n4X0VGV7LtB2sS5EyLvglTzJ9Xo+8veqfsdaNfx/Qn4ZLI
+X-Gm-Gg: ASbGncvWf68AZT0IDZ8DG8Q13hgpvQMKpwNQy3gchE2xr3Kmdi7HE0VU2rB/HjurHPC
+	NNwG41zFc//Y4T9YmMR0nF4xnuew/eTe8b85W+PCU0of8IUimAFXEou32bWEdUJ5aV626BrtdPC
+	VVXS4TVyW1NqGyUBNzA0enGgE8GkRKy5KhZortsd3zdwclduWvli4pT62A5xsrtQBjQAbX9A7zV
+	1k10nrU2MsPzpMuKHK37ibeBF095fad0Rp9ybkQwXA6US0vCufIHIhek5MIfIhmdmsXNzvrfkrA
+	SP5WSSzF5twUxycK+yZfExr+jIH2NDHrghXn8LfDcz1vNDntOPWPbE8ZIJFTDhA5dTmOUPwRa2J
+	LrbatFFn4lAJQ5ETcXR/59vrtJ1E3wxeq1AAapCqhdO0hm2EPZyK+H3Fh+YHy
+X-Received: by 2002:a05:600c:64cf:b0:46e:3b81:c3f9 with SMTP id 5b1f17b1804b1-471178a80f7mr116647365e9.17.1761051606584;
+        Tue, 21 Oct 2025 06:00:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbkCxQxFQj6JOplMg8GsGSdkTVrb2edAU/Gb4AKN0gQYX2xa+Zptcgj0djfMLZWDQvHioQbg==
+X-Received: by 2002:a05:600c:64cf:b0:46e:3b81:c3f9 with SMTP id 5b1f17b1804b1-471178a80f7mr116647115e9.17.1761051606167;
+        Tue, 21 Oct 2025 06:00:06 -0700 (PDT)
 Received: from localhost (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47114423862sm283718595e9.1.2025.10.21.06.00.02
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471144d17cdsm278222645e9.18.2025.10.21.06.00.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 06:00:03 -0700 (PDT)
+        Tue, 21 Oct 2025 06:00:05 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -126,26 +126,26 @@ Cc: linux-mm@kvack.org,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 14/23] mm/balloon_compaction: move internal helpers to memory_compaction.c
-Date: Tue, 21 Oct 2025 14:59:19 +0200
-Message-ID: <20251021125929.377194-15-david@redhat.com>
+Subject: [PATCH v1 15/23] mm/balloon_compaction: assert that the balloon_pages_lock is held
+Date: Tue, 21 Oct 2025 14:59:20 +0200
+Message-ID: <20251021125929.377194-16-david@redhat.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251021125929.377194-1-david@redhat.com>
 References: <20251021125929.377194-1-david@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SkIUK7ZBa_h8FsSI3fDUJKZZkU-cu_JHAqA9QVrlhG4_1761051605
+X-Mimecast-MFC-PROC-ID: csTVVPvF4BXGtO-Y2VCeSGD9JaW47PAETrH_oCi0reA_1761051607
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam05
+X-Stat-Signature: oqsc8rn89y43j1rwnigydqfbdg8y78ys
 X-Rspam-User: 
-X-Stat-Signature: a91en4rhtbhc5bafpy5dy8bwhpwgwugk
-X-Rspamd-Queue-Id: 2E5A120003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761051608-855057
-X-HE-Meta: U2FsdGVkX1/9b9Z2FEQ1owOwBGFybY/H0SobyyZ429dfUGA2F36MlrAvGKS5c3hwRURpqRsTUJ5NYNs3/OzCNhNgvSgQJCbjf6lD82iSqyN8IzWrERGxbvTjZEkTFswJrUY7zJ8b1NgvWCSwNF5YbTGmlfVJp5pAt+ymi5AAGWcVzsXbusw5gS8pvCPVg8r2MTzT75c3YVbGntxeoNem2ETN3UTKl2MWDxVm79v/HZHxIHZaADEo4e8BS8dE5xhWl1uKtT5RV8eC2+8wrjUZLHs2FLu52inG9KeEc9ljsZX5p/sbffA5A+av8pBH5wTMusmIHmO0DhRkky0HM/HofPRpNH8/zqi10dLueMxw8Kb5fWk8NKYD+gfqmP417byl5vtVJYbXBE8dTTnf+PWIg7s2cEIS+biYdIQWwSRH6pUeDCXWzjYDfuILqwQq1EJnA9KfFqJRf/5tCWanG+IItCfzxaSSm5WVczzlKtA5T7tK0UK7FnHi4/uaBVHr/KprVOQtAR/ZZQCgTdcbkqrtuX+iAGo4ejcqEvbqJUX/UGoT9eMDAIQAzDXmdxXPclwKTJtFZTOIbh3UqG2jAaeWK24BErGmLDww7iIN1jn1BpuMzVbwETYtilZ9UuJXJGsxFz4KCR1A2UBl4E5Qn0EbOa0P4QBx91bf9zOO6tSGdHocYWnhnf/l9Uc54/hh3bv1uedQjbkcbOAmDU5tPufPWUzBP06kn0eVqkE6hvqkAowFsh8TZ6yCCycX6FpBrUhmwfBb22bH7voBNKmi7mpomfXL+iREezwMg4UcsdHqgleAIsScl45/RAoK8ZbdW752iUHfjXabNl6RF3uRlTsqJSom+/kGwDedokzvLeDiM1p2j40cC8KXujv52Pp0k5iKm+nLzGMGseZSHUdWix0Nqwz2rJ2EZXevp+6D97qj27j4tiXmczChMue7NMcAOvGM1a3cc+QIeX+I8jIVa8s
- /7LC0jqh
- HwVtmLK0fXdDLN1WPACU46Zl0Vn4QCd0shBkyoUZnskVTv1OHPvtfbCDdJF2+/QGvut9Lrjf72UcVO+Q64SL4kZXK/mROD+t3eG1SmCHxGixfiKe1GhNULOTggyyGHRDwRk43YG26dY1ZrsLN9KGa2CzpMx95T0VRGC3RORsNkLokbqxDtZi7e6eJ5QbgupDK3LoFiASjmXoD5zgisY19zgBXjgQfX64x4M+mUVDE21UG/tjwdWwxeRYwCNzMOIlccJs+/Rmspz5vHppg9f0a1+tM/mzj8BIQ7ypHPPjq5wrvJ0yNRygRCexQ/uUY0Wl355HiSj5l1rtKd+HN5d2h2n+C2ht7hupukv/sWFX3ktkwI7l/47/vhYf3Sl+O6vTcm3r9D1Pu8psueDG6IbiMP1M4P3HgW8PTxTygsO2fSetrBYDTHJfKpQ6XYRrbLrKbWBJYskybNc5VzOcVjFkjz1/K4UX1YN9Qhm9Cespx1ZZ+AZvt5hirS8IOgDr3Oqxh9bSx7KVJ2+D53wZ1zlQaKN2+9V/MuK2eBBSdMKs9B9xBIcqOnu8ETRj3DReyR1D58IZZzf+IUqcOjIb6LjhonfU7Pg==
+X-Rspamd-Queue-Id: AB9DD140005
+X-HE-Tag: 1761051609-100619
+X-HE-Meta: U2FsdGVkX1/MQ7PC1v9xZZzFasNi2nsQO2A/D1gFE071J7/V3HlcayGYgsLrUWBcfA1HjaUGA60nY9KKtbS7vJX3kfbN6Y61xL4j9VU+3yrK+Wlaw+mi4KUJDbv4Xihbkp64/kNeUOybeTZR8V9pkMsx3JKiLf53FwVHS1o1fAc8VdM4C2CAeRROwLKw9hIIMppOWdY0mGOS+4u6mQq5N/7AQLHZ2SCITINXlpGnmIMdoCISJqFXeMPixaZRpQpU9hvN3+5w0KXOZdv7JzcYkEMxQ0MJdNftrFx4Tcj6E/lNRVBGGJLI5rAA3aip18CnaFnxySqeNvsz2wF0/tkhPJe+yjRSy2lLsV+6hU2fVgQGL72tooMD3BLRnAgZCDEUOjdS8DZEAFRrY4441JqcdlI2R7gnI85udjfWxTSEI1VlVzyZKPbP4D9RVCXgxUmr/gUmuimJageKjJ20Ta4d77AOxUDjeqPHyXQmsHio2Z91nUR6leM8q/AgSSMRtD8MUrP7MnqGA8gNevQ1nES8fd5C9hYTvqwDJl+T3rIqRNif36wCBWpTdf0bVNVJ74hOb56AxpKL2DDnsfJGZUcN9EHp5WLxFEMUWDM6k35tKBjSwi+++I5Xoen4qKUJVt/YbCRWdalcN2MBPK56Mqku8AXW6d3lWWrjW42rtWUy4w+YKjNgOwLQrGq/lHuJJiyKIv1AfBpBRl02GnyZBb/PtslDQ69LWEBnh73t4mqB4H/joUcj6v3xvt3tnvO+Hx4nQQ2acbJYCIlOsrsHGC2ZnL8V8vNfYhLkH8bBcd8fIZqQmI0IPGrZ8GDTuYK7EtNaRRnHyU93FnZMjobUR3H3Fc/M0BN/gpxtL3TFeqZvA18Esy5abHeFXglZQVq8YM9ewQRsWRqOvt4ElpS0WqBOqQqtPcTA/FpLm7Imx2Oo79dCMKmB5e0yDJ4iI3YLt5zBXrfBFwFpvQiOg/lEVJ5
+ i6BCTpcl
+ Am5PrVgV9Z4kXfk5MhgoZOgjP3bzE/v6XYh6/hAlAsOYABEe1GjdUXqsD2+GcgQfvr+tUTYJFrmVefcKAyrrTAnXor9Ks6Ri6E0dUEHJqLFHAgx5hzMIOQDxnWgMMDxhGySl3Xx+u1pc1CYEICTT1vbI0L+2REEILWqooyBVJEVWK7Tdt/lt3C6KfL9Y2xXTbVi2eD75OtcKUS1yjwE0qpUqmuS+0rlD55MuV3PC9cy8kBiSKbgGD4m8qmb7YZXZI54nWynHbcqpyfMKxZ+FOTv+/6sUl5E+BJuOA3lkv6Bvz4IjrnxRyLtF1Ft577+CzlejK2hKcCRC2ovU9oiJsUhQXQFjTe+a1VXflF+yp5vrCySV4lGKrixGM3Z7mYsB8Sc3JQZo/oB38bHNz+m5X5wcWK0SpJnmBLT+VwB3eYEjB06WEJ3C5SfbdZNOYB/fs1z3vgDLuZXYBAt7yIxVb47XGrtTHC+fM7fLNaHobqQKqm7Pq/8vWSiSVj7Zt/SgA746Z/rVzYipOzq7QujJiEqrZn0Xl9uu3ghtOjT4HQorhJEvMbKdUCC/RYcPnMfUw3y5F4ZRZ9vEt88Pu1YdMQrwHPg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,118 +154,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's move the helpers that are not required by drivers anymore.
-
-While at it, drop the doc of balloon_page_device() as it is trivial.
+Let's add some sanity checks for holding the balloon_pages_lock when
+we're effectively inflating/deflating a page.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/balloon_compaction.h | 44 ------------------------------
- mm/balloon_compaction.c            | 38 ++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+), 44 deletions(-)
+ mm/balloon_compaction.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index d1d4739398978..eec8994056a44 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -75,48 +75,4 @@ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
- 	balloon->migratepage = NULL;
- 	balloon->adjust_managed_page_count = false;
- }
--
--#ifdef CONFIG_BALLOON_COMPACTION
--/*
-- * balloon_page_device - get the b_dev_info descriptor for the balloon device
-- *			 that enqueues the given page.
-- */
--static inline struct balloon_dev_info *balloon_page_device(struct page *page)
--{
--	return (struct balloon_dev_info *)page_private(page);
--}
--#endif /* CONFIG_BALLOON_COMPACTION */
--
--/*
-- * balloon_page_insert - insert a page into the balloon's page list and make
-- *			 the page->private assignment accordingly.
-- * @balloon : pointer to balloon device
-- * @page    : page to be assigned as a 'balloon page'
-- *
-- * Caller must ensure the balloon_pages_lock is held.
-- */
--static inline void balloon_page_insert(struct balloon_dev_info *balloon,
--				       struct page *page)
--{
--	__SetPageOffline(page);
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
--		SetPageMovableOps(page);
--		set_page_private(page, (unsigned long)balloon);
--	}
--	list_add(&page->lru, &balloon->pages);
--}
--
--/*
-- * balloon_page_finalize - prepare a balloon page that was removed from the
-- *			   balloon list for release to the page allocator
-- * @page: page to be released to the page allocator
-- *
-- * Caller must ensure the balloon_pages_lock is held.
-- */
--static inline void balloon_page_finalize(struct page *page)
--{
--	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
--		set_page_private(page, 0);
--	/* PageOffline is sticky until the page is freed to the buddy. */
--}
- #endif /* _LINUX_BALLOON_COMPACTION_H */
 diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
-index 709c57c00b481..717bc43732d09 100644
+index 717bc43732d09..f6e0582bd7ffe 100644
 --- a/mm/balloon_compaction.c
 +++ b/mm/balloon_compaction.c
-@@ -17,6 +17,44 @@
-  */
- static DEFINE_SPINLOCK(balloon_pages_lock);
- 
-+static inline struct balloon_dev_info *balloon_page_device(struct page *page)
-+{
-+	return (struct balloon_dev_info *)page_private(page);
-+}
-+
-+/*
-+ * balloon_page_insert - insert a page into the balloon's page list and make
-+ *			 the page->private assignment accordingly.
-+ * @balloon : pointer to balloon device
-+ * @page    : page to be assigned as a 'balloon page'
-+ *
-+ * Caller must ensure the balloon_pages_lock is held.
-+ */
-+static inline void balloon_page_insert(struct balloon_dev_info *balloon,
-+				       struct page *page)
-+{
-+	__SetPageOffline(page);
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-+		SetPageMovableOps(page);
-+		set_page_private(page, (unsigned long)balloon);
-+	}
-+	list_add(&page->lru, &balloon->pages);
-+}
-+
-+/*
-+ * balloon_page_finalize - prepare a balloon page that was removed from the
-+ *			   balloon list for release to the page allocator
-+ * @page: page to be released to the page allocator
-+ *
-+ * Caller must ensure the balloon_pages_lock is held.
-+ */
-+static inline void balloon_page_finalize(struct page *page)
-+{
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+		set_page_private(page, 0);
-+	/* PageOffline is sticky until the page is freed to the buddy. */
-+}
-+
- static void balloon_page_enqueue_one(struct balloon_dev_info *b_dev_info,
- 				     struct page *page)
+@@ -33,6 +33,7 @@ static inline struct balloon_dev_info *balloon_page_device(struct page *page)
+ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
+ 				       struct page *page)
  {
++	lockdep_assert_held(&balloon_pages_lock);
+ 	__SetPageOffline(page);
+ 	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
+ 		SetPageMovableOps(page);
+@@ -50,6 +51,7 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
+  */
+ static inline void balloon_page_finalize(struct page *page)
+ {
++	lockdep_assert_held(&balloon_pages_lock);
+ 	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
+ 		set_page_private(page, 0);
+ 	/* PageOffline is sticky until the page is freed to the buddy. */
 -- 
 2.51.0
 
