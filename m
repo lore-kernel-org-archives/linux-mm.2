@@ -4,141 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A831ACCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 09:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E7F1CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 09:22:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DA148E0016; Tue, 21 Oct 2025 05:21:26 -0400 (EDT)
+	id 9B69B8E001B; Tue, 21 Oct 2025 05:22:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1B68E0002; Tue, 21 Oct 2025 05:21:26 -0400 (EDT)
+	id 966728E0002; Tue, 21 Oct 2025 05:22:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F09058E0016; Tue, 21 Oct 2025 05:21:25 -0400 (EDT)
+	id 87CBD8E001B; Tue, 21 Oct 2025 05:22:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DEC0F8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:21:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C32711A020
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:21:25 +0000 (UTC)
-X-FDA: 84021578130.22.33F03A9
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 04F39180007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:21:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Lm7ZDnRm;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf06.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761038483; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7743C8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:22:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 237F31A03FD
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:22:33 +0000 (UTC)
+X-FDA: 84021580986.25.D8E6EEF
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B956712000F
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:22:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wIo5oCUa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZUGe23PS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="zknEK/zc";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kPU+3C/Y";
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761038551; a=rsa-sha256;
 	cv=none;
-	b=wlz5N3Hz1w1xkgAw9PYJRrtIMEAjT4CKX4km/9DBuTM2YPy2UlaZm1e/R8pocNSxcbbrmz
-	ZwluG8qkpOOMMJWdulDeWrMM4+fKqL2AdwrbA6xxuqP77Q5Xp6LQJb+jGPcwVwLcmqxNfU
-	tHsVS3bOW93ztPO2i78tDNmqwXKPx+U=
+	b=M0TKp7g9UPlFyvRICLAiuGUay9kdoKbDY/0fS5DgFXWquJ2Iltz8rXHHaFkPnkfyPnQMaV
+	1P907QmzjNv2KCcyljarpBeAisu27sofe6RJFZEl5JS+xKJkWSLV16xuaHJylLbyLf0UhR
+	LWSXAbZSVkkpuLeW6Zbm9Lep9YnKQTE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Lm7ZDnRm;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf06.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wIo5oCUa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZUGe23PS;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="zknEK/zc";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="kPU+3C/Y";
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761038483;
+	s=arc-20220608; t=1761038551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s437rTzYUnWFi33s/IAzTngxdxGHleg4CrKG5h21jWU=;
-	b=nLb6jCRe7IK2SFI03HtEtFlhPjlWGc0zxoitGBuD8/7xr5vpUFqAdpwLtSvzyWIoow4/G/
-	P9/IjBbHdtWROTOYKSO8q2nk9rg1eRD5i8ePn5uHAnFJuRdA1fpIZfP9oMoLvGQeOzl7Vf
-	NwrobNsKj8D3pAryowtblD1Z/VtW7lE=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L7Tll7015154;
-	Tue, 21 Oct 2025 09:21:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=s437rT
-	zYUnWFi33s/IAzTngxdxGHleg4CrKG5h21jWU=; b=Lm7ZDnRmEm8Asih1h3HfR9
-	GlYeecRoFSzxB+kD2w8Gmo3FsZEW7tbB9mBHGeWY1ShXrkl91lQzhxHU67vI0C+7
-	VhrUfLTVoJqrV/RYAH4xEEEkvDOirIBy8wY/ApffZQRtsZi/eDsqixytmW7fNztK
-	R7AOjlO56+UbfpP67ubVIznpayfyjexyiPXrPJdzBw0yxxb7L6EbrkmvrWPzHXJj
-	PBRVe72iF4XjCkvJ+vgk2i6/vt0LogFIKgcJOImUBWwiKpGqIkuBPIqZlKXL4fL5
-	7IWIUW8wVKNKNsNHsFwQX/0nb87vEO9PnuwqJYLLTY8XORxySnsmc4zV/1y0FqZQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rx5dp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 09:21:19 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59L95vJl018148;
-	Tue, 21 Oct 2025 09:21:19 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31rx5dj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 09:21:19 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59L9KIZ7002281;
-	Tue, 21 Oct 2025 09:21:18 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqej9sv0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Oct 2025 09:21:18 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59L9LH5E21234242
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 09:21:17 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8128C58066;
-	Tue, 21 Oct 2025 09:21:17 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B1F358061;
-	Tue, 21 Oct 2025 09:21:13 +0000 (GMT)
-Received: from [9.39.24.41] (unknown [9.39.24.41])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Oct 2025 09:21:13 +0000 (GMT)
-Message-ID: <8a8ba27c-f924-4feb-a63b-565f385dd60f@linux.ibm.com>
-Date: Tue, 21 Oct 2025 14:51:11 +0530
+	bh=aAlZsLpmZR4ppbAmqbxDqov94GN0TMQzZ5ttVOeE6Qg=;
+	b=uTePaRFPFPYBcfyIVqKSRcs1OQmGbhVDRcVMWBYDzUYvvHr3tw+RZqy+efbp8HAAjS94O3
+	JnW1pRWFPOMANjgPqootvtQyN0eQorcxMGoHHQaj+y0kJR01eeE+vTJseaaZMUtAXRO8nG
+	TkBL/7icQ/3tj8G/yFk/iq68mEGybME=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 14C5A1F445;
+	Tue, 21 Oct 2025 09:22:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761038545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAlZsLpmZR4ppbAmqbxDqov94GN0TMQzZ5ttVOeE6Qg=;
+	b=wIo5oCUa2Zf6G/b0DE8QuyA+165ilNoG6Td2Qi4HjGX9sJzbMwWLg/e2M+kyyGbM6Ds07f
+	cSfr7fAh8edu7gMHsAzEAJWI+d74RfJ7DFit0Z2j6difanldXOGRK9casSAWZBWrGOVlLs
+	8UxQ+xl1xFvdecu9KYCrVB6XFkAYOyg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761038545;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAlZsLpmZR4ppbAmqbxDqov94GN0TMQzZ5ttVOeE6Qg=;
+	b=ZUGe23PSGWx1vK7/4Jv6B2vxq/TLQ7rOdCDZIKb1LmySP/5zaStEv4m1wLAa0kzyGtcd6d
+	VaHXSCps+TFIy2Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761038541; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAlZsLpmZR4ppbAmqbxDqov94GN0TMQzZ5ttVOeE6Qg=;
+	b=zknEK/zc7CEYMwKxbENGVk7jGMw3bjyuGtCZn9IcWRGlybq7iQmHt5lN58n4/OMjuNou5W
+	HVtTO+f7TsnPkfgFyllmcwRa65KdqqnXvoZNPGg/j4wYkZG/wUz0VVcsoO9UQV+Ui3CTDP
+	DBsyHI7OST7PQifcontK6lwoUXHBvOk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761038541;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAlZsLpmZR4ppbAmqbxDqov94GN0TMQzZ5ttVOeE6Qg=;
+	b=kPU+3C/YjFWWX0UvEImfaygoAOL4KZLRLoIVZmxPI41j8uiYELf8HzIepXlft+4PX0ZqlJ
+	8+YAZu8pue5iQLAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F2222139D2;
+	Tue, 21 Oct 2025 09:22:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5JsZO8xQ92joQgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 21 Oct 2025 09:22:20 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 979FEA0990; Tue, 21 Oct 2025 11:22:20 +0200 (CEST)
+Date: Tue, 21 Oct 2025 11:22:20 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>, Jan Kara <jack@suse.cz>, 
+	Matthew Wilcox <willy@infradead.org>, Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, 
+	djwong@kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
+Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
+ trust the bio from direct IO
+Message-ID: <rlu3rbmpktq5f3vgex3zlfjhivyohkhr5whpdmv3lscsgcjs7r@4zqutcey7kib>
+References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
+ <aPYIS5rDfXhNNDHP@infradead.org>
+ <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
+ <aPYgm3ey4eiFB4_o@infradead.org>
+ <mciqzktudhier5d2wvjmh4odwqdszvbtcixbthiuuwrufrw3cj@5s2ffnffu4gc>
+ <aPZOO3dFv61blHBz@casper.infradead.org>
+ <xc2orfhavfqaxrmxtsbf4kepglfujjodvhfzhzfawwaxlyrhlb@gammchkzoh2m>
+ <5bd1d360-bee0-4fa2-80c8-476519e98b00@redhat.com>
+ <aPc7HVRJYXA1hT8h@infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: Fix indentation in fold_diff function.
-To: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, jinnasujing@gmail.com
-References: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VKfjcMz3bHcS-Ai5IZ4jR_yl8h3-KwmI
-X-Proofpoint-GUID: PMGkBWgGzlnpISJrr7OazhVD0nUf9Q_T
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXzKYg+W7wkVe+
- ZXaeyILcadj83zh2g2OBfsHgPQuD4l9rCifJRWlFP5XRXKRRPmwSLQja0zoOec6gqz3Y14f1DdG
- GwVufDdEtMlVvp+Ty5wObJa8uA9pAykulIvwmPdySsd1fcr+DLC3qreb+IXMqsIukyhdqsxoSrF
- h4Qe/yxEZViGd19UrrWTcHzWdDpZsnMkqK2lA9LjVP+Le0xThRPBRLVL4ZNp1HLt5Uic4KvYC3E
- cbb56slDMtkykNepEH1ouYYNNhhSFlnnBGyNLvhvwrlD0k0QdXr4y4g9G0/94UPsitzZiBZkcDd
- Z125HvGQs30hj1N10t++oXRYNn2a0xExjKgcPHjq4+j4eau6bOQLdhfwCjfLohXjPlBm8H2zXi0
- DQNwg8GKfAYDmykJtGuYmjTOjNmLMA==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f7508f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=DyMV3BnNAAAA:8 a=VnNF1IyMAAAA:8 a=2ecftfDPbqYspBDr8a8A:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPc7HVRJYXA1hT8h@infradead.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 04F39180007
-X-Stat-Signature: jfj3inzasp8h694geif36q1b7xrnhjtm
-X-HE-Tag: 1761038482-551854
-X-HE-Meta: U2FsdGVkX1/GxMHxV1EbTZyffjNlYUiqCr/wiaRBrKCNaLnNQ0Ol66EL9HaePcUW2TnVwTxTZVsfrslO3/Kfl3tEEt1UHeK5SgLGrM9iXwsjA0Tk2vF4KGAoXorqokhOGVhTOHjNtFpIgm5Ng2uCYjebUh7eWO9Dfk0iDIfX7rff39RZ9+v59uJ9kEF9NQC9BQEtd8LpR7yHWq+hGQy94Fy/EnYeTR7V4INdfgpg0U+ls3pupqb6bE/ZMBi2SPEgGYsRVwug9omBhsQYGIZ/DoNHMDxaKx6Mh9JNw4qiXtpGVEEWZf4I/jfSWay87ixXOzzcPUGtrfyLEaZKfhT/jTW4DG5rZLm4xWgryIhAQQIhW+f0LEdk7nFhok5o/orbu9s6/XEhvjCsxGHhknlgf95sNnixu6b3I/fr8wCvMK35TiTsmvzGLi377a95nRerMNX/S99qLaMXoc6Dbu2QSrsitYAmgUed8GsMLnKy6Xhb3Zvr2HpxK4fyHkdR2cwm7+3vtzTPerI7zgIZ1uOPzHGIPfGLhKFWC2USv1blppQKP32vwZN3UobhgQekO0L2tst00rioOMTWTQppRx+k4suMLprJk/fYRr7tzuNXsqGLLyYiY2bk3Sf4h1eSghoTT3QIq6p+q47IUUv4M3AX8njXbk8T4OViEb4J2zhamS3gxhcPf5BYke9Qg/GoHKFMAsHRVPqJvD0NjttT87J3jEP01YnganbB7xIhGlaaEMoeauGz94CXSxfzwVQHiJ1pV5v6FfRI7aMpxzbxfJezYEjGFDD3ANKEoSCs1auj9x+Izsu1PXtIprp/WDrwHn9NDtgb7qoAfzIzsf/B9gmWdRKCraHcyTx/gzFfOnNm6tYjO//Yf5F+pTc1rPmhXstepaECVF2qdb9lO00g8qVMnHxGezRVkvsfEfEOVDZnc/Oz0JqRUNf6jdgzX3Jk43tiRqmPcPi4ffDj5TMRhKU
- hT5jMkaO
- x9Ag1dNqDbBgdUKUjUxy5lhT3r6el7IdN35+NLHbwhcwraEW14P6VNEzKN/u7HaPQ7KCWGTx3flHui5qnOtCua+G9nsv6O0GlTU8L5f5VrWuvcclSJbJs/XTXG0840Odbg30QPIOG/fJlImnMp0f/G4dgJGf7KcI8r5Whd4ZXDt6l2UK7h+By9je1KbhtBkgWFlVrdGwo8xIizN6hPlHAREbLGMcyPNulSQN3wLkMNUdRbzIHNAUKGUPf7eSEIACIXXzr5Br/PbaOk+F1swrdrQYe1tqy8X+aYhQuLS9k/xW2QhX2knh9PEU8Ep5gaS1Gi/1ZX2Z8ns/RvcPPdHDo1HyCN4QCjMj3lVTuuvinvBFlAdgCclv7ubkO8p1Ry6DuLPsg2Q3xlLQGwFe3x2BB+cVZPqeaiLDm1uoy5WMmTK4WE75ij/eUL55HytEMk3GNiSA5
+X-Stat-Signature: zzsr16ffff6jsqpab1ssaaiwd9iysf1m
+X-Rspamd-Queue-Id: B956712000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761038550-556341
+X-HE-Meta: U2FsdGVkX1/haym0YW/mA7CpGgEujSrxapcNiPR7qKy8BV0595k9nhtGUWvW2c5io2eiK408SxSHAOX7n4TVURkH4NHcY9FI7Uy4EV6UCAXVH6xjAaYD/UXp03Wnwwba4c0G4lQiBBDTKrpH5PRXWPhmqJNYvQlXPPd3lYn1sllD4qUVgdcmIt0qYL+gShdjctkzpZXgq+lXuwGznyGznty78Czx5HynN5AJZZMm37bBH3kUzuewmAjRXb+VLSJOHnzpJ1I2UJaNIQoVUoY1+v6HUH2y5pFvOmpasZ5Qyet7nqyFmR1g1gntLcmxIfbVHvlWaHMpYgnLiceXI6v0PzJjdn2kHUomVNeEnTx4gA1d4jVn0DciNwSzr66Blaw/u9Isx1yfrN2s9kdOsdM6HaKq36HSQiQHCQTQFSRRNLpdQJEb6J1qIRd2lSUmUVEwWJYS5tJ2iqHsm1lFcqw4mDIpO1OGCCARE9VGkL2et3ECdBkL7MxBxyVY7UaDH+0QR6fGxNqZygALRp7WIcsVyyYERm0L1TrxDhreha3Je2MCmI0/eIzRQrPDp16xtml0nh+gadnZJ+BirrQ/vSyUr79dNp7tORVK6xNghK8LfW6PJ754bCMP9FoBx8KEmrTeXZfYgRRfVQjx9jRazTdi0xKq1mSxxsRZk+t7SwtkyZjxti1gL5UY+OKxDdZgzpGginFaJR85DN8y0kmiZoSn/TJjZH5/2mTLITxlIotPCVxSiCDzHya5rDlgHP0O2AAfy2RIhbiisdiygmkPHMjhTheuXY8FCp8MIZXQ6sCcM+MO2cIFJkByn7TBbeRz/izu+ndq93HwKY2lPo3RgZfoDw8hfHkCWdPWWFwLEegabC5tpG1Gtb4tSR8CclAtIaj81q7kZEcyatnEv2xQ1G8uou/p3rEnZaawsMvd/dE7xvz/TiEWZHxUTsYjEqze8p7Shvh+h4WJFL3hioyJ8dS
+ 6r6b4qZV
+ RqNuxkn7aLP/FAmaG/vR2ryLWsObdHn3oj9ExP82B9dZ+Yd3cBzhgqZtthFdhsWVFXcF13inaI3mWZB4DnUgBTL4dgmNMMIFce7yisFcLatS92ot6gyiwK5QMAZOoMdff7pf5eHAbNLYe56KiQEIdZCh9h31oij4GgFm2w9U2uy6f5vgx+EOe8HSOdxz4a7Jz2Mm9FOIyNRUSbJMSfBA0bEUzVUD3k++L488LtWV2FoQAsdeF5qHP1iITdNyiAXsJpAiMBOAbitTPjp0paLze54H76NszSzz2wWuUz0GpDNPtZjmKlPyxXr+hGmPKnTNrMzQTlJ79b983NNWykcsNrE9r7cWArvmSCk2MT0FDdO/vj4WsKcLVWa3dfjwgXtWMYgrMammXBY7vup0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,40 +144,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue 21-10-25 00:49:49, Christoph Hellwig wrote:
+> On Mon, Oct 20, 2025 at 09:00:50PM +0200, David Hildenbrand wrote:
+> > Just FYI, because it might be interesting in this context.
+> > 
+> > For anonymous memory we have this working by only writing the folio out if
+> > it is completely unmapped and there are no unexpected folio references/pins
+> > (see pageout()), and only allowing to write to such a folio ("reuse") if
+> > SWP_STABLE_WRITES is not set (see do_swap_page()).
+> > 
+> > So once we start writeback the folio has no writable page table mappings
+> > (unmapped) and no GUP pins. Consequently, when trying to write to it we can
+> > just fallback to creating a page copy without causing trouble with GUP pins.
+> 
+> Yeah.  But anonymous is the easy case, the pain is direct I/O to file
+> mappings.  Mapping the right answer is to just fail pinning them and fall 
+> back to (dontcache) buffered I/O.
 
-On 10/21/25 1:07 PM, Jing Su wrote:
-> Adjust misaligned braces in the fold_diff function to improve
-> code readability and maintain consistent coding style.
->
-> Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+I agree file mappings are more painful but we can also have interesting
+cases with anon pages:
 
+P - anon page
 
-LGTM
+Thread 1				Thread 2
+setup DIO read to P			setup DIO write from P
 
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+And now you can get checksum failures for the write unless the write is
+bounced (falling back to dontcache). Similarly with reads:
 
-> ---
->   mm/vmstat.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index bb09c032eecf..63860c3d22e6 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -782,13 +782,13 @@ static int fold_diff(int *zone_diff, int *node_diff)
->   		if (zone_diff[i]) {
->   			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
->   			changes++;
-> -	}
-> +		}
->   
->   	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
->   		if (node_diff[i]) {
->   			atomic_long_add(node_diff[i], &vm_node_stat[i]);
->   			changes++;
-> -	}
-> +		}
->   	return changes;
->   }
->   
+Thread 1				Thread 2
+setup DIO read to P			setup DIO read to P
+
+you can get read checksum mismatch unless both reads are bounced (bouncing
+one of the reads is not enough because the memcpy from the bounce page to
+the final buffer may break checksum computation of the IO going directly).
+
+So to avoid checksum failures even if user screws up and buffers overlap we
+need to bounce every IO even to/from anon memory. Or we need to block one
+of the IOs until the other one completes - a scheme that could work is we'd
+try to acquire kind of exclusive pin to all the pages (page lock?). If we
+succeed, we run the IO directly. If we don't succeed, we wait for the
+exclusive pins to be released, acquire standard pin (to block exclusive
+pinning) and *then* submit uncached IO. But it is all rather complex and
+I'm not sure it's worth it...
+
+For file mappings things get even more complex because you can do:
+
+P - file mapping page
+
+Thread 1				Thread 2
+setup DIO write from P			setup buffered write from Q to P
+
+and you get checksum failures for the DIO write. So if we don't bounce the
+DIO, we'd also have to teach buffered IO to avoid corrupting buffers of DIO
+in flight.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
