@@ -4,107 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C479CCD1A7
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7196CCD1A7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:35:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DE428E0006; Tue, 21 Oct 2025 02:35:19 -0400 (EDT)
+	id 205D88E0007; Tue, 21 Oct 2025 02:35:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 196E48E0002; Tue, 21 Oct 2025 02:35:19 -0400 (EDT)
+	id 168558E0002; Tue, 21 Oct 2025 02:35:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0566B8E0006; Tue, 21 Oct 2025 02:35:18 -0400 (EDT)
+	id 008D58E0007; Tue, 21 Oct 2025 02:35:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E542E8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:35:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 675A2481F1
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:35:18 +0000 (UTC)
-X-FDA: 84021159516.07.440CA27
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E369D8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:35:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D2C3140403
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:35:21 +0000 (UTC)
+X-FDA: 84021159642.01.572C11A
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8929614000F
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:35:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=Kc7ML6Oz;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=rzctUJE4;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761028516; a=rsa-sha256;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 84D9940004
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:35:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Q XCCh+w";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=xFp2uNtT;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761028519; a=rsa-sha256;
 	cv=none;
-	b=m7TmatG4QAPbzTfle44x88HmUyv+RCydu5djOvXYe75nNJyl7xz22Kx/c6UVDLGO1RYDcL
-	3/ci1Re2zCmkuIqBsWr6syyy2zb/ggmJLWqokgiDXSfrn7KHlJ3w5wItUG6w43j6VT+Jxc
-	iAhk1W7uKnkj+yWpWFpywt/txX4XQrY=
+	b=zi/92aeXmhwAZPVgG7ZmQb+bBEUqToZxjhE9RJQbPH7NnzFkzOyo3yzxnCFFdTdpYtj88A
+	CGF/fJrPJ/eINHS+cF51OSFWCb+EJy/0W1BK0gWQ2YNwhrQLHd3Hv9p1KoSNR+1Zl4py7j
+	W37vox83UM3bRZPLRJzlYP+DwquNEt4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=Kc7ML6Oz;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=rzctUJE4;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf11.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Q XCCh+w";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=xFp2uNtT;
+	spf=pass (imf11.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761028516;
+	s=arc-20220608; t=1761028519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=68FepKZWROEYwLH0Rl0RnJf4ml5dmtT6xp2LmJZMNHA=;
-	b=DGbJ5MZFtArFV/yrEmIRyKODmfPO85vz5axSibw1Z5lpyDnabsGfrBkUtGX3XsbjMd213X
-	10zysHdXtqwp/t90fB0DM5kvFzMvWhZqCYYooRNO3JZeg4GGqopsPxgUkllmi7HyRBj0Hu
-	aKxym7N3rEyLsmML0VlGlSOXHAfOhi4=
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id 4227D1300B91;
-	Tue, 21 Oct 2025 02:35:15 -0400 (EDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kouMDpsaKBTceLHHuEwo+6TiQxOHciskzTrX3DfsJ3o=;
+	b=duws0WKs/b8ZVfG4ZhaAcbGrr/chPejFt3Lby08+9m92xFBhK7voepzPYbvPFOjiMNyKXJ
+	+QMbshXchJ/8eR5MJTsY3qaJjvfS8+/7hXbCarFSZOuQHnlGrCsAivwl54r4MH9UpRrBfH
+	ywyOHYFApZj1Fv+H+EQmNccVEmTskwA=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 5BAD31300B96;
+	Tue, 21 Oct 2025 02:35:18 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 21 Oct 2025 02:35:15 -0400
+  by phl-compute-04.internal (MEProxy); Tue, 21 Oct 2025 02:35:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm1; t=1761028515; x=1761035715; bh=68FepKZWRO
-	EYwLH0Rl0RnJf4ml5dmtT6xp2LmJZMNHA=; b=Kc7ML6OzkYTFIRg1OCSIY0jKna
-	XReQ300hPs/UAqCHio63qvQTQJfl0fjRPVu4hDgOdHOOhU54puaJO7fHFwWKgUH4
-	qdYdmK34Gk1D4j7nAy7wqPYmF2JT+QWG0tqo0W3UVTqPkc+nQ6vdPClIl+AF0Lwl
-	v1+YArgs7q2/SAOJ1gY8rb8qZToAwczpICuypr5Rq1Or81fXoaad8tD0uvYXsp7s
-	bgoGDkcgrY8ad6aCH/dzFlnenI4LA/4Sa8bPYNJ1zhqOoz7/8WIWP6C8frILuH+F
-	ceScIQQwvnp5exoaImoKyc2l2HywvyUNAFa8TkOnPc+d8FSYoqfK1bCHblmg==
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1761028518; x=
+	1761035718; bh=kouMDpsaKBTceLHHuEwo+6TiQxOHciskzTrX3DfsJ3o=; b=Q
+	XCCh+wlD3svjomR7bq/ZXyKCTAllt0sB6rnGPRh6WbpAUaLqYqn7grdgZDhn6okE
+	bwew6ngIvP8YShoHzhnu5JgSDdbpSs5ffGwKkWv2aa/miiJtrq+Vu+Ohkbmf47IC
+	17As1WXT+KUkyeSVNIB1oKijJLKzMFaXZWLEEVn+1nYH2DiBcEdJfYPtOz2k0q6I
+	PdjT+1UuD7Y6OfR4EIZSlwC1A6Iv5+IwHm9TjZ+j0iKxSuA+HgMni92AeOOLC+LB
+	mAJTJeXI13/CL1vg2g9jBlc+gQwgPJ1Wz08Lm7rGN+7wYnUKNBB398QywOlHlvtk
+	RyZUcjDvnws1sIOdrtpVg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761028515; x=1761035715; bh=68FepKZWROEYwLH0Rl0RnJf4ml5dmtT6xp2
-	LmJZMNHA=; b=rzctUJE4uQWWwnL5mJTmYXf5d+g5wWEbwXBz6eR2OT7aoVCIGWB
-	PMVf4UHM2ud/OUcV2p9mUDYxJFbBk0SEwN9XOhyeR91aPFlynDjlK+D6pyS5b7UL
-	Imu30J/PCz/I6MdRne/aO2Er+4L/RovoB/iw/cyHlSwNBZGF/yAN7kdazYE5nAGD
-	A+nKTm/E/GEXmD4F2rE8UXwBK0XXR3rfkTGSPgi0edwHRCD0wn2gS/55aSzL8cZj
-	z8VE9bS49876wooOTqYuA0vwnOBunPdYcqW+WDTw963M9mfCQOhhblK1UOwyrccS
-	2PWMYAU/m59Tj5OJ+jbWVUHPIRzKA8SAhMA==
-X-ME-Sender: <xms:oCn3aKnXvikA90oRHwL242u0vgNNyRSC1ABH3jw9gSeGfZNl9NQjmg>
-    <xme:oCn3aPD_B7CNf-SD-i4LqdDoaNQ4RKdWpDnxy9vMGI7H9xeTYgwkv621-nuQRJIx1
-    olIYXnkQ9DwGcMNUaj6sZ7UaP2Jwl2oX7_l2yozS7GXIZPSaj_Ljg>
-X-ME-Received: <xmr:oCn3aNIRUSy_CcdwKKPdBwGmYWzPdmIGzuMdO-ASPxXf-HnxAbBXPV6NDWde1g>
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1761028518; x=1761035718; bh=k
+	ouMDpsaKBTceLHHuEwo+6TiQxOHciskzTrX3DfsJ3o=; b=xFp2uNtTRo2P0y3Ox
+	MfRvo7pja/nXrVqr6GeQqZ6u6LKRlHRTVoChkL8TncaavvtNonkDt7jyVAj1EA79
+	rgzFCGrMQUbzyPhdxis8JVuTQvCMPoeN8ly8hzUDYuiDCdB46WCOQacRdL4mEg4r
+	1sNgCG8Zlh9llLxFj6iglEi/jnnrHfgQXEPZ6l2uSLMkyrjZbL/IRzgtjp31b/zo
+	oZ7GZgbN5ATWKMYKxUobrRkwr+Esv8uqewKGLaKWjOaLDY01Gdrkx0K0NTlYVgvC
+	THXbgSalMTvkW5+POLb5oAQjVi0NlAVc4zSN+lw4V/fl8cB37mG7fjd7aw0H1gZZ
+	tc3Yw==
+X-ME-Sender: <xms:pSn3aHyVwJ3duZ9SATxnHz8siDK50UyVPwck5MkjbGH7NJlht6KQoQ>
+    <xme:pSn3aMdk1Z3ihI-LiHOzD2EyJiog1ReQZrKiooyvbOCvR4igvIhmvYuoXrYakiCfN
+    RwkAGldnBrMfnsUBlTUJxKWEjGZ0n51WtGloaTM_1-y7oaf5VENcsrt>
+X-ME-Received: <xmr:pSn3aF0rkl1CVJy9STbeSQUVKvkPPV5NDYOXmLUKle0jOMGXGOY5x949vUKBIA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeelleelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
-    grthhtvghrnhepteffudduheevjeefudegkedttdevtdfhheefheetffelteeiveehvdef
-    gedtheefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvvddp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdp
-    rhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllh
-    ihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhvrdhl
-    ihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtgho
-    mhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtg
-    hpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:oCn3aKxJ6FO9TUu-3ba83zv9MpLJmi3OstrRZ92bp_e5DGvOEbkUmg>
-    <xmx:oCn3aJzLaeWc5eEuX-mIRuKmujFnRw44ep-SrkBX2oUAt_1iBmW3kw>
-    <xmx:oCn3aE2A23wqec4rQDP8lBf--vH8HNO8DsNHv3dyhVX6ca1y1NN0tQ>
-    <xmx:oCn3aDVrsTk59h40S695CVWupObQd6JgLw9MCvUgEIWUqr4ZBZehEg>
-    <xmx:oyn3aOZwqVn97uMIi7gPu4Kvu4eSwwWdn9XQc3om2x1Galq8MiPgXTJl>
+    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepgeevhedtgfdvhfdugeffueduvdegveejhfevveeghfdvveeiveet
+    iedvheejhfejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedv
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfoh
+    hunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifih
+    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
+    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:pSn3aNsLt991mStyAV0HAgJWyIXtq7Kp_lMdmpYRGsLrWdig0p_CJA>
+    <xmx:pSn3aJ-zPPQsw54nKraZa_jW03DOnuxF85pX8IWvx2R7GLmR1BTkDA>
+    <xmx:pSn3aJT73sUt3Z5xvP8XdmPBGPj5p29zjkRrSoYwrXSuoavZB0jSfQ>
+    <xmx:pSn3aHCyYqhXC2Z69UJPa_cLsp_D3g4t7ogYt1ES723cUEXy7UiUSw>
+    <xmx:pin3aO3o6sgLVZt7w08b4lGkV3xJRri3v-9zh2GIh6SqIG7GW1FkK4GP>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Oct 2025 02:35:12 -0400 (EDT)
+ 21 Oct 2025 02:35:16 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
@@ -128,20 +130,22 @@ Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH 1/2] mm/memory: Do not populate page table entries beyond i_size.
-Date: Tue, 21 Oct 2025 07:35:08 +0100
-Message-ID: <20251021063509.1101728-1-kirill@shutemov.name>
+Subject: [PATCH 2/2] mm/truncate: Unmap large folio on split failure
+Date: Tue, 21 Oct 2025 07:35:09 +0100
+Message-ID: <20251021063509.1101728-2-kirill@shutemov.name>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251021063509.1101728-1-kirill@shutemov.name>
+References: <20251021063509.1101728-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8ss569whbhztfza4434mjpx67zqn3iq4
-X-Rspamd-Queue-Id: 8929614000F
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761028516-934652
-X-HE-Meta: U2FsdGVkX1+2jhx7+O/+P0d7Vbs693MI8X0Ooe63R1zdfphroUmHviqWjVZ2ZlNL/JJcOgPoXwDUkX5/Tjg0R6kUX1ncFB3h1VzxjzHaYvOsiyQK2+2u7fGWSXk+/aySibSHbkI9r7gD2sQfqnxP/qKSbYerssawVow+00UrOH+I1mrLyaVkcnXYrjLRIivbSNvQ/xk2pPs/lp2BKZ+8H10naftd9pYLSZQxqPLqV7W7lpG8lMysrAQNuwrkc33xorpWdjPLsyOOSSmAX3zXjhRywDf0wZw8B95lFtJvJ0vaPij+WN+3rBBaUqygxqtlpeuGnRRmLqkH4dFsJVJMm0gWZXXz3fa9yx24ytO/lVzLDCBvTQRQ65/sZF7YsJUAeVMBWlZVGS/3sj7gIvAM/Tvt7lAnYWRkHXNryaex4C6+/fQLAY/chrfCvnNEK7u0z/PNsAmT4QYR01qV6AH2CVPa4QRAcO54KZ64Hq7bNyBnn9MbAWboRCdNDxW8T5SyPwaRxrmQQhPCjsCi0cbG2dRfCLyzB2UlFI2a8mqA5UDMpqpWAmBa69z1aHO39DB31u9RKJOzVPZKflRv/HWjMI7pDUl4uwmHncGUDUa04M1LrhUipEt7qmDxT5FUK+nb9QMGzEXqCC2+bynABBLqL214cK25fTjP/iP9VHi/gmbIBCeerGDnK6i3jEYjilbmbMTsJgg7MjLMTb+yIkJBkqaCBcKhAXwEe6kZ7J6XMwwhPy0mN2cdFb7QqeCMFuWOIa7jgnFxhx2S7ueopqdeUQv6EuhRIP5oxodMvuxXS0toNsKo2Vfqcrx55nOv2benfXKXQx/+TfvF9vI+uWS4MRz91rjy5Z0V8rJU4aAUhqbODigt4ppsxTicYbj6PdkUPRK2BValAJbjTfK8B6Rp4YG1LyktOKNsyAI1Kcz3VJI+MM6JvZBMDeqZLOiktXubIIKq8CbPcLaeX5nnSbT
- aUyLhuMu
- dcclFhoX0wj8UdpoSk/TE1sxHbzN406eOknxite2u5GQJgW+/Yqej3hn/VJWkO90nCg1sacA6KDV+FeRa+kB74gaSovyKS0Bg1LMp+CSFjL5M3YlcVL7djX9cmxIRAVwQJlIsHD34aJDP1yOdKNNvucrjMKN4y05PepYxc7hly70fBJEEfRdhpxtmWigmLWQlMcD9LKAeTC7rT1KmF6RwvnMAeBhqkB0CShuVAJNXSBKxEF2ZGvGiMdFKGXxkyUyaJRT/rjIzHXUbC7Q9Yi/zVMzYJhEDEeCzWMvSbI+xhAW5buU7Rupx6kWCVNqE0VwN/ZfxGfC6Dg+0E7NTOVelb6YZ8egYSrwU6UxrXoJ2fyZCvRTREREIa6PyioQ2/emzN0UwMF4Ja6hVBAVrFx9iSewLIKE5/SFzNE39nqvWOa3Tv5AjK0kq1+ggT4WhQFwjge5hQSm6X4GWY+c=
+X-Stat-Signature: eui5sae9osyoaxjjy5so53ynb5ejndua
+X-Rspamd-Queue-Id: 84D9940004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761028519-693134
+X-HE-Meta: U2FsdGVkX19WXLFqz2G7J0eDHCnaVSLnXLBfSo2fQOzY/wzvSTchQ4WUVtMCciPVOPuva2jYxWITEzFijjl+FcNxda0dxwIu10fqMLrDhO3gmw6MzrLQnb77ZUl581ttNTkr0ikl2jR3acB00Wm59R24eqScoB8WslGAhMdUw5BfWtSFiN9MNXNRu/hlGaluSTUSGlD3wBVeNifUnMwnBNJAu9mEuZKia2fj5Q/hDw3rQGmLLAjqkEMJmOSqtYlCltTYsl57jpbrzVG51Yd467OHNfqw+YGBkxIYJwf5a/dfGjp+YTDgIwGCuFTlz2HQKRtbdPEWyAV+EnOWcjiO/gEaGvG+0wcoRgmf6p4gweDSDdQ2C7/G9GaV0erHjnVtDenP2jW5PyVq9NjaLEHI62w7l271nPk8xTz9qf7F2/V9IobsxKgKZwmsAPfsh56mstfp5DJFUgcvRGTELn3yPh93gcUJocW4AcnHBvB7TtK5suN9glkBBrlHb66fvRkmeNi/9FZGgGnFVT4kylgvpfEccybehqCzx++ej5AvMHu8t9zHCjoYLCe4PocjDLZ96lW/7/iXzSh0CHkrc56nzDR7Ru7lGxr61EZNhe5p/HGq0GH0CH2G8DQJcJV/y/PiCB1eNBC88CobgxmLSHZ5AiFFo3g0qfSoH6m6YfaHKHBFCPvDOo06Wtz7d/y9xzDCu9n0iH3hp4YnY628RQRmUy9el/cZ34AvEaIyGsmdE98ljOIXq9o9Q/dqorivnfiuBbs5d/puR9175A9W/iLI6PqTd2cMLIOlu4Yl+ar8n9GUfGexpCiriajENSu3D1p66gdSZmLnnCqxJCN3A21Zej0dIB1sqBAigzqRnFKOSgR6Kk5A/pXhXjWmaVHcw/COBn0iDjSXCP2ajLyG5dQYXSrNFaVw2NZ08bJKR8gaIzYbDv0cDAKfDD2Zaom5SEo4EsHscehHQ97lQtFYNmS
+ d6T9wnov
+ 8+Gl/1fMM353oiQYGLA+Vy9i4DSqv3M5rjNUdVNXVrp6V3YDcS07VtUVJFsw8Mh2ICLzigkRPJYhSa63GAUQhT7GRgQ/NhRFNxOUJRI/njFnKeU5ffWwuUtGfdpkt8+ZuGhlUPQwMQaUWi/+dapt5M9vUBGQ/ncTFiD0jg/jkes+rmRCtugfzEWgaLytkaavtlDWypR/BKxs7JCeWs2N4LDIpQftHAA5XEjJEvvHh1rdjTFm/gysz+YTKSfTeW/qsq/alYAZmwfOUR3xS9WFh6qaOc58M/8b92oBOH4GqrpGTupcmM857enRo3Q9XzftZefiMRXc8I+R1QSk3T/LQDg5aBbjKeq9OKfQTYkS3U+Lzj6To/nhdRTtuB7jEwz0JoWn8Kji3kToxGn58YkSNU3LhLNElvUZXsOdX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,125 +159,82 @@ From: Kiryl Shutsemau <kas@kernel.org>
 Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
 supposed to generate SIGBUS.
 
-Recent changes attempted to fault in full folio where possible. They did
-not respect i_size, which led to populating PTEs beyond i_size and
-breaking SIGBUS semantics.
+This behavior might not be respected on truncation.
 
-Darrick reported generic/749 breakage because of this.
+During truncation, the kernel splits a large folio in order to reclaim
+memory. As a side effect, it unmaps the folio and destroys PMD mappings
+of the folio. The folio will be refaulted as PTEs and SIGBUS semantics
+are preserved.
 
-However, the problem existed before the recent changes. With huge=always
-tmpfs, any write to a file leads to PMD-size allocation. Following the
-fault-in of the folio will install PMD mapping regardless of i_size.
+However, if the split fails, PMD mappings are preserved and the user
+will not receive SIGBUS on any accesses within the PMD.
 
-Fix filemap_map_pages() and finish_fault() to not install:
-  - PTEs beyond i_size;
-  - PMD mappings across i_size;
+Unmap the folio on split failure. It will lead to refault as PTEs and
+preserve SIGBUS semantics.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
-Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- mm/filemap.c | 18 ++++++++++--------
- mm/memory.c  | 12 ++++++++++--
- 2 files changed, 20 insertions(+), 10 deletions(-)
+ mm/truncate.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 13f0259d993c..0d251f6ab480 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3681,7 +3681,8 @@ static struct folio *next_uptodate_folio(struct xa_state *xas,
- static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 			struct folio *folio, unsigned long start,
- 			unsigned long addr, unsigned int nr_pages,
--			unsigned long *rss, unsigned short *mmap_miss)
-+			unsigned long *rss, unsigned short *mmap_miss,
-+			pgoff_t file_end)
- {
- 	unsigned int ref_from_caller = 1;
- 	vm_fault_t ret = 0;
-@@ -3697,7 +3698,8 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 	 */
- 	addr0 = addr - start * PAGE_SIZE;
- 	if (folio_within_vma(folio, vmf->vma) &&
--	    (addr0 & PMD_MASK) == ((addr0 + folio_size(folio) - 1) & PMD_MASK)) {
-+	    (addr0 & PMD_MASK) == ((addr0 + folio_size(folio) - 1) & PMD_MASK) &&
-+	    file_end >= folio_next_index(folio)) {
- 		vmf->pte -= start;
- 		page -= start;
- 		addr = addr0;
-@@ -3817,7 +3819,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 	if (!folio)
- 		goto out;
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 91eb92a5ce4f..cdb698b5f7fa 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -177,6 +177,28 @@ int truncate_inode_folio(struct address_space *mapping, struct folio *folio)
+ 	return 0;
+ }
  
--	if (filemap_map_pmd(vmf, folio, start_pgoff)) {
-+	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
-+	end_pgoff = min(end_pgoff, file_end);
++static int try_folio_split_or_unmap(struct folio *folio, struct page *split_at)
++{
++	enum ttu_flags ttu_flags =
++		TTU_RMAP_LOCKED |
++		TTU_SYNC |
++		TTU_BATCH_FLUSH |
++		TTU_SPLIT_HUGE_PMD |
++		TTU_IGNORE_MLOCK;
++	int ret;
 +
-+	if (file_end >= folio_next_index(folio) &&
-+	    filemap_map_pmd(vmf, folio, start_pgoff)) {
- 		ret = VM_FAULT_NOPAGE;
- 		goto out;
- 	}
-@@ -3830,10 +3836,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 		goto out;
- 	}
- 
--	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
--	if (end_pgoff > file_end)
--		end_pgoff = file_end;
--
- 	folio_type = mm_counter_file(folio);
- 	do {
- 		unsigned long end;
-@@ -3850,7 +3852,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 		else
- 			ret |= filemap_map_folio_range(vmf, folio,
- 					xas.xa_index - folio->index, addr,
--					nr_pages, &rss, &mmap_miss);
-+					nr_pages, &rss, &mmap_miss, file_end);
- 
- 		folio_unlock(folio);
- 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
-diff --git a/mm/memory.c b/mm/memory.c
-index 74b45e258323..dfa5b437c9d9 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5480,6 +5480,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	int type, nr_pages;
- 	unsigned long addr;
- 	bool needs_fallback = false;
-+	pgoff_t file_end = -1UL;
- 
- fallback:
- 	addr = vmf->address;
-@@ -5501,8 +5502,14 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 			return ret;
- 	}
- 
-+	if (vma->vm_file) {
-+		struct inode *inode = vma->vm_file->f_mapping->host;
-+		file_end = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
-+	}
++	ret = try_folio_split(folio, split_at, NULL);
 +
- 	if (pmd_none(*vmf->pmd)) {
--		if (folio_test_pmd_mappable(folio)) {
-+		if (folio_test_pmd_mappable(folio) &&
-+		    file_end >= folio_next_index(folio)) {
- 			ret = do_set_pmd(vmf, folio, page);
- 			if (ret != VM_FAULT_FALLBACK)
- 				return ret;
-@@ -5533,7 +5540,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		if (unlikely(vma_off < idx ||
- 			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
- 			    pte_off < idx ||
--			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
-+			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE ||
-+			    file_end < folio_next_index(folio))) {
- 			nr_pages = 1;
- 		} else {
- 			/* Now we can set mappings for the whole large folio. */
++	/*
++	 * If the split fails, unmap the folio, so it will be refaulted
++	 * with PTEs to respect SIGBUS semantics.
++	 */
++	if (ret)
++		try_to_unmap(folio, ttu_flags);
++
++	return ret;
++}
++
+ /*
+  * Handle partial folios.  The folio may be entirely within the
+  * range if a split has raced with us.  If not, we zero the part of the
+@@ -224,7 +246,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 		return true;
+ 
+ 	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+-	if (!try_folio_split(folio, split_at, NULL)) {
++	if (!try_folio_split_or_unmap(folio, split_at)) {
+ 		/*
+ 		 * try to split at offset + length to make sure folios within
+ 		 * the range can be dropped, especially to avoid memory waste
+@@ -249,12 +271,13 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+ 			goto out;
+ 
+ 		/*
++		 * Split the folio.
++		 *
+ 		 * make sure folio2 is large and does not change its mapping.
+-		 * Its split result does not matter here.
+ 		 */
+ 		if (folio_test_large(folio2) &&
+ 		    folio2->mapping == folio->mapping)
+-			try_folio_split(folio2, split_at2, NULL);
++			try_folio_split_or_unmap(folio2, split_at2);
+ 
+ 		folio_unlock(folio2);
+ out:
 -- 
 2.50.1
 
