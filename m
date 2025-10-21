@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA40BCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 11:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD16CCCD1AA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 12:05:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2EC8E0027; Tue, 21 Oct 2025 07:58:41 -0400 (EDT)
+	id 0EF168E0024; Tue, 21 Oct 2025 08:05:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 093238E0002; Tue, 21 Oct 2025 07:58:41 -0400 (EDT)
+	id 09FB88E0002; Tue, 21 Oct 2025 08:05:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9CC18E0027; Tue, 21 Oct 2025 07:58:40 -0400 (EDT)
+	id EA9E88E0024; Tue, 21 Oct 2025 08:05:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4E508E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:58:40 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 565D1160473
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:58:40 +0000 (UTC)
-X-FDA: 84021974400.08.5D1247B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D5A4F8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 08:05:49 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 821D987A9B
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:05:49 +0000 (UTC)
+X-FDA: 84021992418.04.30B10BB
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E508A1C000B
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 11:58:37 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/+neJoD";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sMxtdMZz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yu86RcU8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ibScNkF;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2A47D40003
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:05:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="stj/Mbe+";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IKov9Km0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V3/CNZYa";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K9ZOwBEY;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761047918;
+	s=arc-20220608; t=1761048347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
-	b=s2MoJlS39jgKCxEPYrsPkDEyIIIl3GY+Rm8/jbDkHupGa3qR8qYzsMIjyXKdlZR1yLEHlO
-	1jKxHYq82yyG9fFzM2GbILtzgp5A9hE3Q3nquevAtYyT5mXkUJJ9rzt+SAjZ0HL9r95Yfx
-	xYKaOE1qcSjiZ3TKbgAv9ES5NuMq3/Y=
+	bh=ceJbKSzKfwLTY9oVjq75SsrcC00Yrx2qzu9C8Sz+9mY=;
+	b=V7yYlJBsp3Qr2ZQYF1+WL4fAXHnxvP7SNW4XGtoCLJ+0fOuXdhzK8FkhrfSZDmZiNgbA5V
+	FMT75ReTX73jW/8UNRdkJGDEsuIKMzXbSGU4dywnlcXgfyg/Nh9QOYQNZPMbHP3PivTcLh
+	Fzl3QAJNQVt2+OgWDKdoT8iqe+B67C4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="p/+neJoD";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sMxtdMZz;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Yu86RcU8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8ibScNkF;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761047918; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="stj/Mbe+";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IKov9Km0;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="V3/CNZYa";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=K9ZOwBEY;
+	spf=pass (imf17.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761048347; a=rsa-sha256;
 	cv=none;
-	b=YB0cQE7fISFcVO/Etv02wriIU9zttvRkmC5N6pN/jvlol0ZFBYRO17qbLE9S7iTf2+uVlH
-	f4kC2wiuyCchpDuc6yRLMtiKafEB0JWAUccbwJcD9jBAcvmmG7ASdB2PvwQejlRBUD9EsX
-	wrBCYW9xm9fQofb9UJ+n1yTLxBl88TE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=OK0yCRt8urDP3ibq0s7ICRN50HfSevFmyZ9t7bvf2e9y8PMyxLYsNRV1Vz9clcbm9T5feL
+	6a8zlm/ayJdMxeSu6lU/ZhYYo9Tf5BdT9PiE3SIVIJNqggxICaA6icyfmMwCZ2zFgD+7T5
+	bzAOgC3NgIW/IsuUzFgaMI1XFcR2Ybo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BE0231F80A;
-	Tue, 21 Oct 2025 11:58:27 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 74C1C1F78F;
+	Tue, 21 Oct 2025 12:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761047911; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761048341; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
-	b=p/+neJoD7KoCtxs8pIRmXmFUD1fj6h56bLZid3spXVpwharkjHE+pbTk1OwZrd7H1EW5dO
-	caNqMovRzswwIvdTut8ufB6+iRH5TV8hSWrk6frIlaJBzabC5Z6vh8bF5+wB8smCdy89LH
-	DI6St98SPttCmxVqLiGVORnyjvOJhew=
+	bh=ceJbKSzKfwLTY9oVjq75SsrcC00Yrx2qzu9C8Sz+9mY=;
+	b=stj/Mbe+6r2rUr/tvdKO5hySyKd5RmpIXuQ7aXJ3HWP+U74Cb54fgwUdSV4bhkTy56aeoB
+	D5NdbulzXUTgsTutzUf2OlLRFIZ8IqzC+LqHTmOYiJBot0Ofs6uzN/LWnGHPkksUD3KkSs
+	kkqI4JuQJYvK81qUN3qYfoHs/WvQaZI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761047911;
+	s=susede2_ed25519; t=1761048341;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
-	b=sMxtdMZzRSuyEWY7c33DhYcPpK5f+LhGESlgz9TLbEe4F7dsF47dTrOaC3SijrcIZtpIRO
-	Jb0MrFRBEe3VmKBA==
+	bh=ceJbKSzKfwLTY9oVjq75SsrcC00Yrx2qzu9C8Sz+9mY=;
+	b=IKov9Km0o1N1o3ILTPYyFXew/n/UtiynTAtvNDo0UFsb/cZwcNZk+JVFysx2s+AwTGJK0X
+	z/2Q8F17ZSzaVRCQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761047907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761048337; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
-	b=Yu86RcU8X3HgjkfWtFKr+9wbl0XnSkqSIwowKYNi9zWWz/Dmk35DsVgpt1p3/2jvse1ovF
-	Sy5fvFh1ln/L27ybVy///25Q17Zd8RIzm2F7+G5ereBrb21oERr5W28EC5XjX4FPUTykwT
-	xQl1UEd2aKwIHIm5HQv6OkBogkdUkSg=
+	bh=ceJbKSzKfwLTY9oVjq75SsrcC00Yrx2qzu9C8Sz+9mY=;
+	b=V3/CNZYaxRAjiSulkmeeU8UEjq7b3lhR0d4F00ykyOjsMiiSnzYFC6mms2ojCl/Hd9hLbM
+	coQfSRywd5tfOZEujy2jXCI6nkGt6UAGYLi72eX3mUVR4fQe1KMcLy8XiSWA2guRPl+2aG
+	NVT2HlElAR06YOFbUNyIAlltGlLkJn0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761047907;
+	s=susede2_ed25519; t=1761048337;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tEww2G9x0lKOM7ivqmlX5OtWAigQPdROrOD7TaZz5TA=;
-	b=8ibScNkF0lHsQyxTRT2H/t+/PKopVVGOYY12f/SBRnQqcNPipm4uHYTTd76Pohde/Pwjv0
-	CwDAzU4drECX3wBg==
+	bh=ceJbKSzKfwLTY9oVjq75SsrcC00Yrx2qzu9C8Sz+9mY=;
+	b=K9ZOwBEYR606q7TpYxTUVmas8J+sWi0rNh29oDd2kPYUJBgVHUP7w1CILoXhAeOQPNvReh
+	PwYgJob5oFN462BA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF61F139B1;
-	Tue, 21 Oct 2025 11:58:27 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 671A0139B1;
+	Tue, 21 Oct 2025 12:05:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TQ7PKmN192ihWwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 21 Oct 2025 11:58:27 +0000
+	id aEsqGRF392hgYgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 21 Oct 2025 12:05:37 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6368FA0990; Tue, 21 Oct 2025 13:58:19 +0200 (CEST)
-Date: Tue, 21 Oct 2025 13:58:19 +0200
+	id 25CF4A0990; Tue, 21 Oct 2025 14:05:33 +0200 (CEST)
+Date: Tue, 21 Oct 2025 14:05:33 +0200
 From: Jan Kara <jack@suse.cz>
 To: Kundan Kumar <kundan.kumar@samsung.com>
 Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk, 
@@ -116,24 +116,25 @@ Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
 	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, 
 	linux-mm@kvack.org, gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com, 
 	joshi.k@samsung.com
-Subject: Re: [PATCH v2 04/16] writeback: affine inode to a writeback ctx
- within a bdi
-Message-ID: <p7mc3a7upsebbipxrredqhtazwt3tvyn4qt5jtsn3wb43orew2@6jzeodvk4tli>
+Subject: Re: [PATCH v2 05/16] writeback: modify bdi_writeback search logic to
+ search across all wb ctxs
+Message-ID: <64svwwe2zosyjibtzmhxj4fvffhzlmntrf2fsxlh7jhj33c5wl@h3vqsl74fihv>
 References: <20251014120845.2361-1-kundan.kumar@samsung.com>
- <CGME20251014121031epcas5p37b0c4e23a7ad2d623ba776498f795fb0@epcas5p3.samsung.com>
- <20251014120845.2361-5-kundan.kumar@samsung.com>
+ <CGME20251014121036epcas5p17c607955db032d076daa2e5cfecfe8ea@epcas5p1.samsung.com>
+ <20251014120845.2361-6-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014120845.2361-5-kundan.kumar@samsung.com>
+In-Reply-To: <20251014120845.2361-6-kundan.kumar@samsung.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: d8o4rpapoememb489ndatrrqk9xxz73t
+X-Rspamd-Queue-Id: 2A47D40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E508A1C000B
-X-Rspamd-Server: rspam03
-X-Stat-Signature: bnhmcwh48dp6t5ffwky5hbm7czsdj9qo
-X-HE-Tag: 1761047917-745210
-X-HE-Meta: U2FsdGVkX18mmlcqxEBkgY/MhaA9/wmxTs+3kcItldt+7gku8gfP03/PXGsIQc/7JJdWX3lNvNpO+L2lbv5FA3xRlfl7Ff8tSNFI/xlwlSQuMyKYcZnf4w945/agM0G2I7cprlx43Nahm5EGArbHUUwi0+cJY5W0tAWEo+/WZ0HGloBELdwaY2PcD1/xiX7hfnF5HwqiF+xVjbOwe1N2cWb/zYKx4r/z0Fv2JjFH6Z47NB93V55BuDC5tFcp0xJfQIiQvtgVsHc0sXqVWtBQUrXqx1vNyZfHn54gfQHUZB6kOpg73WNFIv+x2PvO++0DoozEx+qbdL9CpJBtxkADRWe/JrtjpvVTxpYvbnVx3htvONu9SEeABS+6DFbcbzZAVRj14i7yrpepwcZPW0Espb1ccYMR1w6CU71lV8icbikgU6j3W5I4UyOvjaPPRA57kEAjkDRZhE90ld4pZPLSnzfMoc2UFcdBVfBPaIGDBVpR8ZjE1zYDuPwdHHH4ZC2LNTjujq6j4vp6O0i/3nsS7kjHp0VCQ0Zz9b5Gmi/Ps0S9TV7v+tniKiQn7noMg2Gd0IhLDg6GKAVQkv10nuwmPyl5coBgQJJabH4ipa+S4x7HK8GbUbJhYiQMA+yv7WGqHQI4qFZKbrMmN9nltkfBSTqRM4b9shuELtDHHsD+rnALMysdmiO6iU4ky2g1tUWaq4TneUtHKAQHIecJ0LsnpOWH9d0qMpbkBM2zSzBSES4y7OVpDhOcm47gVmuh0bYbRybpWMEyYlW3/OyCHnm/dR+YWozRO+YGtcPcstBpmZsweJkgDkfmmo1f5Hxl7yxJSpJrPgK3xHVFU2rEW+xwAloUpu0wFwNym9DyKhdPRdCtiY8ZN8lIqNC7GgW0aDhKmv9mMU+wf1YkXF++0yPVm014GPzJwzQZRHCsfD1rKhQH7kGrcdA6ITE90DF6CCBw69Xjwwqy0rFMRBeOxAB
- woCXlWv0
- HR4ovCW4wVi03eEqj6zKWU7kffhtIvNx9QYeRbEKG76lEiph231nxGddqODuPuu8TzQDt6UcgMk05YasGYkd+4FTiwlleNTT772eERbGQ+jMBhdCBr/gdGDKH8CsPrGW8JOiP8dIxcqYhPDF6vl9Q+aImbdjGrcCRwLzi1UnyFisbBZav1olZmzF7+kPu5kJXwJmhOKtAeYQQvDZWUfUwffuJYb+2roFYTvFxYTeNUC+u/mQyLxQJ8IY0iamMIa7UoipdrXQ4xoXa6ATFtyqlLZcif2AzdQn6d1p9vsyHQBi71iRXJy73CWLv349vHnrnve71b1378WeEvt7qjbHDF6KOZ8Gx+KrrwfB8Hxr3gj6/RzP7KJVniyUvujwTCvzZR2jZ1p9LvPIwc/+NQUGuOCVgLb4vRzpT6btMJIDhv1wDXJs2cAdfBxN8k+Qyt+0wmgGDiyPN6fWxvHQAjghCdOm+Ng==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761048346-245826
+X-HE-Meta: U2FsdGVkX19fd3UgC46G/7StQeXE6tPNPMNddYqtR7/VdmvoM2zB/V632MpDYxdOemLw5KwE04EM3hnOnnTlIHL5iNoNWm7PYJO/ONNFVqbexE360ldFXcmbXKBahLfAk8pXvilpZZ6gn5Vj9GpPPSxKQ/U54/1tyhojULHWFUJRWQkMi+kv1m+HPdLno30xtlJ8MAmg4fZR2HWh1XC8mr77oV+oRY3gR/pHvv3WRczTEFw0x+DvXA1xPf/pptR6P6yo8KxGTwW/Oy5kwOObJ81uQeni7BAsghqH0Szl4E6V++h61bZvR6QP7S7BEjkIxNfWzRt7oY6RoyoHt6L/uTXIxd0t8C1nKjBfN35nBc3oQ12le4LAoI3ux9N+XY9yZ6Ppf0Tx2Yak3fElIP25I9vO55iHd2o33hJ0j015I6yp8vsKRCRtLw4JCOZxGJ9m2d0wPJfkZleUL9TS0LjePoFF1LwNjA7XwKigKAeTg/Gb2uXKr/h/Cbz/+c1HBVRjSVpQ6l51Q9B3S7vmhEzQmTjldcmxv/oJS+YSDjMmjP2Y1pVtZjnDQc23HNYy3DXGm/cfDG4cwQJ54Yn46eBCreLl9nWXjUZ6e5S2zEcgbfxo0nyiCh6wpl6cafi+hzmnTayu6FnWUkJuUP0S8i5ZjzBlXfwqQQQuenHzxOB3sYT/PkpcBYpWKqvv07wlBWOkYlrfV45CAd+v7Il1ShbjOwBquOfIlOUcYMqTq/S91ljDkve4xKOZrmH27436kDU+1FWMeiQM5OKCzoZeoofwD3kX7WIeutCrArin5ZMILF1Y1BNxt33hpDEn6RaCP/Q2/u6Q9x1w8wcnOKlqNDQ6QKW1uNFj29Mdo8Bpz8YCgQ/AYTDed/MyeraJEXadcN4Jzo7ZbujR6miTJHkpgyH6maVo8aiRplg0vqGGINC0dYMElsHxAYypuG/JpR2MUcS00dJbNRwoTLV1O49W1vb
+ ubJvVPCk
+ WSpGc5+wSmuA4OnV9AIqkkGpLqHJuyVJIy2xi3Pirr5e4YmpDoE2NsVEnNpvypsi9DX/Whl0EE+przaU9FV14Id4JM0S5oAjzqHVfJXt9WkVtu1s/FJ2gMmIyFi/CWSzAVA767AYa7qX6IrvORw8yl5UcbcZcmh02LK9IUsyaEo/6S64D1ERbMJ1wMHCZ5SK7aWJNVV40T278pKPDMR2EohnbgG4dJWXdOuxrJTzcuKoWNA/HwLy8XvNAi4JWTraH61hi0GgkGWLCLOUbKHyybSErve5tymrAg4BXXRf8Arm46JSspXgGap/ljaHzQRTH02lMuzzekzH6bpgLhviEI7pSF7Y7s8chr3wtWRsw2ZLNVGDM9H6BUJ4EPl7+HRHbYinvrX8v+Pjel9rC72fbnjOaJ1QGaFKpDjsh52g62zTMmmUD/HuHNIOk3SfN0VzQBlJ0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,128 +143,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 14-10-25 17:38:33, Kundan Kumar wrote:
-> Affine inode to a writeback context. This helps in minimizing the
-> filesytem fragmentation due to inode being processed by different
-> threads.
+On Tue 14-10-25 17:38:34, Kundan Kumar wrote:
+> Since we have multiple cgwb per bdi, embedded in writeback_ctx now, we
+> iterate over all of them to find the associated writeback.
 > 
-> To support parallel writeback, wire up a new superblock operation
-> get_inode_wb_ctx(). Filesystems can override this callback and select
-> desired writeback context for a inode. FS can use the wb context based
-> on its geometry and also use 64 bit inode numbers.
-> 
-> If a filesystem doesn't implement this callback, it defaults to
-> DEFALT_WB_CTX = 0, maintaining its original behavior.
-> 
-> An example implementation for XFS is provided, where XFS selects the
-> writeback context based on its Allocation Group number.
-> 
-> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 > Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-
-As Christoph asked in other patch. Please introduce generic writeback
-changes in one patch and then provide xfs implementation of
-xfs_get_inode_wb_ctx() in another patch. Thanks.
-
-								Honza
-
+> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 > ---
->  fs/fs-writeback.c           |  3 ++-
->  fs/xfs/xfs_super.c          | 13 +++++++++++++
->  include/linux/backing-dev.h |  5 ++++-
->  include/linux/fs.h          |  1 +
->  4 files changed, 20 insertions(+), 2 deletions(-)
+>  fs/fs-writeback.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
 > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 0715a7617391..56c048e22f72 100644
+> index 56c048e22f72..93f8ea340247 100644
 > --- a/fs/fs-writeback.c
 > +++ b/fs/fs-writeback.c
-> @@ -265,7 +265,8 @@ void __inode_attach_wb(struct inode *inode, struct folio *folio)
+> @@ -1090,7 +1090,8 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
 >  {
->  	struct backing_dev_info *bdi = inode_to_bdi(inode);
->  	struct bdi_writeback *wb = NULL;
-> -	struct bdi_writeback_ctx *bdi_writeback_ctx = bdi->wb_ctx[0];
-> +	struct bdi_writeback_ctx *bdi_writeback_ctx =
-> +						fetch_bdi_writeback_ctx(inode);
->  
->  	if (inode_cgwb_enabled(inode)) {
->  		struct cgroup_subsys_state *memcg_css;
-> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-> index bb0a82635a77..b3ec9141d902 100644
-> --- a/fs/xfs/xfs_super.c
-> +++ b/fs/xfs/xfs_super.c
-> @@ -53,6 +53,7 @@
->  #include <linux/magic.h>
->  #include <linux/fs_context.h>
->  #include <linux/fs_parser.h>
-> +#include <linux/backing-dev.h>
->  
->  static const struct super_operations xfs_super_operations;
->  
-> @@ -1294,6 +1295,17 @@ xfs_fs_show_stats(
->  	return 0;
->  }
->  
-> +static struct bdi_writeback_ctx *
-> +xfs_get_inode_wb_ctx(
-> +	struct inode		*inode)
-> +{
-> +	struct xfs_inode *ip = XFS_I(inode);
-> +	struct backing_dev_info *bdi = inode_to_bdi(inode);
-> +	xfs_agino_t agno = XFS_INO_TO_AGNO(ip->i_mount, ip->i_ino);
-> +
-> +	return bdi->wb_ctx[agno % bdi->nr_wb_ctx];
-> +}
-> +
->  static const struct super_operations xfs_super_operations = {
->  	.alloc_inode		= xfs_fs_alloc_inode,
->  	.destroy_inode		= xfs_fs_destroy_inode,
-> @@ -1310,6 +1322,7 @@ static const struct super_operations xfs_super_operations = {
->  	.free_cached_objects	= xfs_fs_free_cached_objects,
->  	.shutdown		= xfs_fs_shutdown,
->  	.show_stats		= xfs_fs_show_stats,
-> +	.get_inode_wb_ctx       = xfs_get_inode_wb_ctx,
->  };
->  
->  static int
-> diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-> index 951ab5497500..59bbb69d300c 100644
-> --- a/include/linux/backing-dev.h
-> +++ b/include/linux/backing-dev.h
-> @@ -148,6 +148,7 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
->  	return inode_to_bdi(mapping->host)->capabilities & BDI_CAP_WRITEBACK;
->  }
->  
-> +#define DEFAULT_WB_CTX 0
->  #define for_each_bdi_wb_ctx(bdi, wbctx) \
->  	for (int __i = 0; __i < (bdi)->nr_wb_ctx \
->  		&& ((wbctx) = (bdi)->wb_ctx[__i]) != NULL; __i++)
-> @@ -157,7 +158,9 @@ fetch_bdi_writeback_ctx(struct inode *inode)
->  {
->  	struct backing_dev_info *bdi = inode_to_bdi(inode);
->  
-> -	return bdi->wb_ctx[0];
-> +	if (inode->i_sb->s_op->get_inode_wb_ctx)
-> +		return inode->i_sb->s_op->get_inode_wb_ctx(inode);
-> +	return bdi->wb_ctx[DEFAULT_WB_CTX];
->  }
->  
->  #ifdef CONFIG_CGROUP_WRITEBACK
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 754fec84f350..5199b0d49fa5 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -2379,6 +2379,7 @@ struct super_operations {
+>  	struct backing_dev_info *bdi;
+>  	struct cgroup_subsys_state *memcg_css;
+> -	struct bdi_writeback *wb;
+> +	struct bdi_writeback *wb = NULL;
+> +	struct bdi_writeback_ctx *bdi_wb_ctx;
+>  	struct wb_writeback_work *work;
+>  	unsigned long dirty;
+>  	int ret;
+> @@ -1114,7 +1115,11 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
+>  	 * And find the associated wb.  If the wb isn't there already
+>  	 * there's nothing to flush, don't create one.
 >  	 */
->  	int (*remove_bdev)(struct super_block *sb, struct block_device *bdev);
->  	void (*shutdown)(struct super_block *sb);
-> +	struct bdi_writeback_ctx *(*get_inode_wb_ctx)(struct inode *inode);
->  };
->  
->  /*
-> -- 
-> 2.25.1
-> 
+> -	wb = wb_get_lookup(bdi->wb_ctx[0], memcg_css);
+> +	for_each_bdi_wb_ctx(bdi, bdi_wb_ctx) {
+> +		wb = wb_get_lookup(bdi_wb_ctx, memcg_css);
+> +		if (wb)
+> +			break;
+> +	}
+
+This is wrong. We need to run writeback for all bdi_writeback structures
+for given memcg_css. Not just for the one we found first. Otherwise
+cgroup_writeback_by_id() wouldn't properly relieve the dirty pages pressure
+from a foreign dirtying of a memcg (see the big comment before
+mem_cgroup_track_foreign_dirty_slowpath() for more background on why
+cgroup_writeback_by_id() exists).
+
+								Honza
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
