@@ -4,75 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C4DFCCD19F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 02:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F633CCD19F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 03:00:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98CE88E000C; Mon, 20 Oct 2025 22:56:47 -0400 (EDT)
+	id 885078E000E; Mon, 20 Oct 2025 23:00:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9646B8E0002; Mon, 20 Oct 2025 22:56:47 -0400 (EDT)
+	id 835238E0002; Mon, 20 Oct 2025 23:00:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C86C8E000C; Mon, 20 Oct 2025 22:56:47 -0400 (EDT)
+	id 7241F8E000E; Mon, 20 Oct 2025 23:00:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F32E8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:56:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6020A8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:00:43 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1550F58935
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:56:47 +0000 (UTC)
-X-FDA: 84020608854.28.F50BF12
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9E375100002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:56:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3F3AB8ADC
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:00:42 +0000 (UTC)
+X-FDA: 84020618724.28.2BA9B21
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DD9984000E
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:00:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BX2PxFbT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761015405;
+	s=arc-20220608; t=1761015640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=yOM1PN5czx7scwUKwUhx6A2SYy7dvS5ZXaKI/E17uTQ=;
-	b=PpJ3KPf0J41DMbo6HrmSLgDLybhxNqoSypJ2pL1vkdhx3JxgbcRgLREZ/k+PVkeZOtfq5q
-	osgF4soCZKag9QMNYO3RVECwsGQjUezrk36mNe+F2WcLwaZ913N9U5vMTr0q9LUEN5r5it
-	A5db1tdB1w44ukVll8ieD4oAeDBTXoc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761015405; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wolrO6K5Gpk5E6HmjujtcKuYSzTD6g4tns2SCtq/Y9Y=;
+	b=kbrBIgZ9PN/ym7s8Ks6YXy9056McBcfu59J1icL+yoPotHphIJNy88+9mj9KLw/S6nKY0t
+	AwPSNUHVC/B6tckXDcXdwCU2hOvUHv9sL4OKcSCvn6qCE2o3Ad85mKz3IHNsYCwIOz8o+O
+	r5eX295++XZpv67XZY3EYWgdeTwM1Qo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761015640; a=rsa-sha256;
 	cv=none;
-	b=130FDzIrN5XZohQU/TPmUzMuy+Ynw1ozoPHa42IQUxNFUSKz4brj8lj1TY7y9bVInBM9FL
-	5uTHDiYi3kAzqY/v2f+2hyFPM+CAhY8j2HBBiDEjIGImkJw1nUSUMiL+z+hddVbbMbWgCa
-	HdullIhVZW3XgwTjqpfZtvnIjgOpU/w=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D39371063;
-	Mon, 20 Oct 2025 19:56:36 -0700 (PDT)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 852D03F59E;
-	Mon, 20 Oct 2025 19:56:43 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-s390@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	virtualization@lists.linux.dev
-Subject: [PATCH] mm: Make INVALID_PHYS_ADDR a generic macro
-Date: Tue, 21 Oct 2025 03:56:38 +0100
-Message-Id: <20251021025638.2420216-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
+	b=bNCIFELqEvb2UpZWmlBEA4fPVm5nIkD7ZCZEkwvQVkH52/BwtRYQwwE2WYt8qgqe/aAO+e
+	dG8h20Jk9U9sa2TDYiWaO179vMEZM5HXP7ayP51iR59+FCKasnMHxAuJLiIamRW8l2aqz6
+	Krhx+7lOLmgFuejPyRdbnGKR+/on7GI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BX2PxFbT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-33255011eafso4717379a91.1
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761015640; x=1761620440; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wolrO6K5Gpk5E6HmjujtcKuYSzTD6g4tns2SCtq/Y9Y=;
+        b=BX2PxFbTWgXlCL/W5i0ZC4WwthAk1y97xJYH9A0DSa47AUABncBXkNOQMGfURT7fAl
+         uJa1AqMbzpSe61WI/ifSE3D7NpZ6+6xHWn4a/ov7G0jLkM+rvx4oqeH7SoXcoT7hxDIs
+         Eymp8P32qeO4Hi+TvNF1CBw9CUbvdFmxJqdDMRacGDJS/PMkkIRbf+5iFenN+orbClsn
+         1DroBKUE5EWOs0D4zj1ExAGeiSTYyZuBBa8sNZ0GQas7K4cTBIC+jETcSw57B3jdngGH
+         hMD87tUykamhH6tUbPdVxwMhduZScMZZTb2raZ90Un7RlPm8yBEJo7ZdxMYIVNm5tT5V
+         4TQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761015640; x=1761620440;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wolrO6K5Gpk5E6HmjujtcKuYSzTD6g4tns2SCtq/Y9Y=;
+        b=qbQFObbdKL6BudNuh1BlkF2QILNYyzhQ1Kr3RMkpe7PTN+XYH14KM9mT53wWh9D66G
+         UNJLoNI3lFfaRWhfjf03vBZcHlNY/UYMZ6GNx5V7hRWVb0PWz9kdd/GFCBS7STaf9pV3
+         EGsB9JjuspjurMtr8/M3W/BZI2gQjO5CCjHp6KcLELV2A8iX6Xll5bj/Juzkytygl8zJ
+         tQun1c6R+8bQUQq10LWrmJy38t1/Vwo608xEXiKjMwplJV5DGjfmomaEoxAhq18M2mmT
+         UyZkobqiovLjwnctPGDHYvIZ/eZppOIxyv2qZqZ4R1ejvChGTBxvdfCTr+AxaC92P4dV
+         gPiw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYfgsty9uhYSk0UqfJJspv8DEq5QZKGsDZmiv+uPULZGMIoPo93wddowJWZtHDV0WMZpCQUHOQxA==@kvack.org
+X-Gm-Message-State: AOJu0YyfPcu0knuLwvsrIVuF4m7aTu7Ipp2cKDvCUhe8lXEYOrlPARmu
+	SFCVylzIrr0k2DA0AXPV+7wRc4eV2eF1hjU8iZPG+5wnElPcVcfTsVpl
+X-Gm-Gg: ASbGnct7AAsqDfisj87AT3hMbvZmwcpWB3AWj5k7Oklx6T9vqZpdg4aMXu5j/cx5uU6
+	P0Rvlfn4AvE2mIk/jS+pJiFn06cD1BHPa1SeuIEWP2IwJNr+SfuSF4rM96TLy9nPfkIozisz40s
+	sVT9/uZslWwnzJKlv6PFUQA3bZ+XVl/eGZn509yuRk8oFdRO3AmfyNgoZGWU2VcsL1CL/DFS7xx
+	3m8LLCAjqUJ3Ghv+SRw0aOHmCehwgy0ZZN8nWSGHFc1yTfkgTLby8tGWOj0qSeJiktu9h3gfuXy
+	M1fbu5cHsh1+9G4kI/4xy19tCEGvZmYSSFfwgxDjGffu/VB/mlaYbPKagE4zQgkI2c3vh/3MpoO
+	rBaC1rfQRoT6TFArCIhhBsg90MxPZk1dtQRd0ymxNEcc5moz+cGJzBH28UYCldHYv0xBfwKa0mN
+	hHKm9lAVoYPitV7X+U8+URYQsUQsA7dVWBICzzpmUHzXVnZ2tILSK/HbHfKKC8o3Vtlg==
+X-Google-Smtp-Source: AGHT+IEyWb6zUgAua3fez8vWhCKNdZw46wjWRLvNKVjsaqlwsezQ/r2XFrxgG+mEgkBHLIH21+GT1A==
+X-Received: by 2002:a17:90a:ec8b:b0:32b:6145:fa63 with SMTP id 98e67ed59e1d1-33bcf860229mr23990816a91.4.1761015639670;
+        Mon, 20 Oct 2025 20:00:39 -0700 (PDT)
+Received: from ?IPV6:2804:14c:5fc8:8033:532d:24bf:bd5f:fd3e? ([2804:14c:5fc8:8033:532d:24bf:bd5f:fd3e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff34adasm9716472b3a.19.2025.10.20.20.00.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Oct 2025 20:00:39 -0700 (PDT)
+Message-ID: <2d0cbd23-83e9-460b-a82a-d006a14fa9fb@gmail.com>
+Date: Tue, 21 Oct 2025 00:00:36 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ksm: use range-walk function to jump over holes in
+ scan_get_next_rmap_item
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>, craftfever <craftfever@airmail.cc>,
+ Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251016012236.4189-1-pedrodemargomes@gmail.com>
+ <844af749-374e-49b3-91f0-a72e951981c8@redhat.com>
+Content-Language: en-US
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+In-Reply-To: <844af749-374e-49b3-91f0-a72e951981c8@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jgyngj3fxx3fcjmc4uwx3m9yho6ngynx
-X-Rspamd-Queue-Id: 9E375100002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761015405-982432
-X-HE-Meta: U2FsdGVkX18J63xz7SyZMxpTUSUVzmMa1tw056jNzo5FqEvvhUf0tCV1VrQH1w6+2myGU3lYjmeI5+OaRFC9J/GpmBZ/8/SrA1E3f9NguoqsWkrCttPXlpZyDsWU4Aqa6q4tyVeSAKvBNemUc7ck/l6yab2qXa5J2uVH/dh0/2vl4+RlHVIKHslEqddqAD+m8FHSJWSnWU7PHNiAZNj5ivaFe5RWriBnkwi8KKR8TnfXxAXcNF5LRYvSWWRFgmz6OZqLsnF6OPYGwI20HkbDBeM9MJJk2lgM4KsalTNI/AuRi7q8bW23TsOq8AaY7YBXoE1F8TiwGSbMrEN4mDT9YoY+0O+qRniKwBXgnLak7VE1nVlmvySV7Wzs/cmPrWaQ7VWuB84dJJzSKFyFOPsrSnSm58F3qaRiypMOaKspIgrcG+1AirqlIwcR85BAcm8iYdJy3gVsksVRqxI3nLm4KvqqBLG+s+3nkC6w5B+XwspGz+EhmYlODyh7Vjdr93mRHs4v0/xOncF1lex7ODT7Nu5sHzwviQnKWVFA/WgGXvn/A1mFze1i8gCaoVr5J+TfJxCqFLy7VmdhGNJWvE+6auRqMzT3tbddYfMGm+JB/edPLnORYZGu6jptigk7UnxBEXxlptGoXvPYRj44jBN+OooSP7JqIz0zQR5cIMEHaAD+G1+qE9uViw46PdNiMZhE0KezKpAWwmRnTYvnYhkyLB/CYSRH1VXoXoD7zNOdwleutwbAHPedmodRb3Y7CfrXQZQAyE1lI2Up8Vuk6uvl2ndmXp4y1gZ1jCPmTvS1p2Ss+ztcocH8UJS9mMkgjFe8ypETA9IQGf61QDWVml4fEzDMNtol9y6rwLaePuTZmsp/C7g9UuM2dlIW1HI4ZPZealTGCwfvgl97GaPoX662lOlWDyxxwU+TetcitKDGucM=
+X-Rspamd-Queue-Id: DD9984000E
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 47qqdpe9s9k9qq7ditx34bnmo5unnwbr
+X-HE-Tag: 1761015640-68959
+X-HE-Meta: U2FsdGVkX18jZ3Zvd4I61BLtFol/ap/LiY9/cEUTQaZjPD2fq0IXb4gt1KS9Wb61kYhoAskdxf1jBWEEdxM8pvaO1CltiWPAt6xzX1xAMkvN/iVNwEmMB/rcn74q/O1B54d06LNMbVU3EWdqbZq3phA4hgpEThSO65zFpoDZvBwhWNYE9TdAKfNMOSxKMDdkD0lefhNHmrXhd61IqQaY2ZqVIFIa0u005IEl1z5gJndufYTVGrPTr5yze5jK0ZCHuW86FC9rUvnR044L3gmjjwLLT/R7U99l5rHz19/SKwCemt4VydjQyBNqgqUUmf6ICO/JzTq6NQ9EHZWc/xRXjlzVcq+Am9EZYF7vOeUzesLW/tAYEeyBydpx1cgqjcCKDtALSmzerCLO/DMSiAgpF6NyeCY0zoCPOsEVawEPR0iHtJfeA+adHSKNi1rO4iws5IZq4W7rAukdISdB06AB6ZEnn5FggDYeJA+cWNG1AvmMPu9KOvamQwd3WL6MUK2UouPX9c39SWKAwzU+6jIgtT8mVHzd9t/vqR+XCZQkFWx7TtgNsTfTq61IMGrD7o890K8EcCNUMGQq48XDcFL2S/HgDL17EAFkZFpMOyZbj0dmtzIdE7LDbST1WYd+EjtVJnIzyYkWEZ2GxECfXaUf/6VDg6KdXs+AKleBxG+aVSXPt3cGiTUMr/1oiyAf1iec9lcYQQ8cPbkMS+hHpGg+G+PofabKVHIfPQ5E022rmzUVsDI/PlnenNKgSkGtIYl57MHlf4hlbh4MLYbluz6QtL7u0GllbC95sYKxyOSBX7w9qdtxyfpKgevmSjp6cbvNrk+eyoZMbfx1UJcIZQ5AX1Rptl1OsTvnMs5Oyotj0VmatsXID13Ttsnc9/MWZ0rChixB/X3xPMoOiWF6dPlygwRBMXxKoIqFXE3HRK8ShFIOC6r3+H6CW/S64iuRHIfP77HBXgn8wM6WoCoVP69
+ bFqQPc8h
+ DCuN4F+CKnDzjxBzNa1HatyId3V097eh42wUSAi62mh48Bbb6KuDaegD49Qxjxjf8B5aZh9UTKUhrO0tCt9WJzdi2Cpr2NeAP8Cwgw66vhrPaqRPlbzGl0c0bWR5RzyJbGXRHX5x+49OBYGjyWhwOu2N4LUEeFneAFH7GH6WCTp3ZS5Oa3PBudZrw7pQKbZFr87sMUSlYHf0A8WX+NfyLvycxN3PBPHAIsgnlZDYbtX/Xd/iJKsljIzPirlmjhztDBVOaM2+RxGhyLKYKWbDFTcDj3cFqTKsMNMqkRfhrhZ2fmucsXfVyWtEIS90c+haNhIIayWhcmRoUW9h40KvOdGG16saU/b61g126nL47T+otMDC1o+R/mUnEUN3prcSe9f3QTbA+QROJX6m3Og3niZpPMPEwfQqmU+nOBgEEGXxMwDpEu66NwkOzgBbTMj8h2uj1IA/7uzx8WpeGM9qi/gZboLKwLk7F/IvsmbhA4uwnp+CHkgrbh1GUVY422R7DwMDgT9T5/wTtXPs/tE3fs2GUWNRwApKRMA2I7/L+3/nTfjo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -81,90 +126,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-INVALID_PHYS_ADDR has very similar definitions across the code base. Hence
-just move that inside header <liux/mm.h> for more generic usage. Also drop
-the now redundant ones which are no longer required.
 
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: iommu@lists.linux.dev
-Cc: linux-s390@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: virtualization@lists.linux.dev
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/mm/mmu.c                  | 2 --
- arch/s390/boot/vmem.c                | 1 -
- drivers/vdpa/vdpa_user/iova_domain.h | 2 --
- include/linux/mm.h                   | 2 ++
- kernel/dma/swiotlb.c                 | 2 --
- 5 files changed, 2 insertions(+), 7 deletions(-)
+On 10/17/25 19:23, David Hildenbrand wrote:
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index e80bb623ef53..1da02d908c30 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -470,8 +470,6 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
- 	mutex_unlock(&fixmap_lock);
- }
- 
--#define INVALID_PHYS_ADDR	(-1ULL)
--
- static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm, gfp_t gfp,
- 				       enum pgtable_type pgtable_type)
- {
-diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
-index cea3de4dce8c..fbe64ffdfb96 100644
---- a/arch/s390/boot/vmem.c
-+++ b/arch/s390/boot/vmem.c
-@@ -16,7 +16,6 @@
- #include "decompressor.h"
- #include "boot.h"
- 
--#define INVALID_PHYS_ADDR (~(phys_addr_t)0)
- struct ctlreg __bootdata_preserved(s390_invalid_asce);
- 
- #ifdef CONFIG_PROC_FS
-diff --git a/drivers/vdpa/vdpa_user/iova_domain.h b/drivers/vdpa/vdpa_user/iova_domain.h
-index 775cad5238f3..a923971a64f5 100644
---- a/drivers/vdpa/vdpa_user/iova_domain.h
-+++ b/drivers/vdpa/vdpa_user/iova_domain.h
-@@ -17,8 +17,6 @@
- 
- #define IOVA_START_PFN 1
- 
--#define INVALID_PHYS_ADDR (~(phys_addr_t)0)
--
- #define BOUNCE_MAP_SHIFT	12
- #define BOUNCE_MAP_SIZE	(1 << BOUNCE_MAP_SHIFT)
- #define BOUNCE_MAP_MASK	(~(BOUNCE_MAP_SIZE - 1))
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32..543a5f780874 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -105,6 +105,8 @@ extern int mmap_rnd_compat_bits __read_mostly;
- # endif
- #endif
- 
-+#define INVALID_PHYS_ADDR (~(phys_addr_t)0)
-+
- #include <asm/page.h>
- #include <asm/processor.h>
- 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 0d37da3d95b6..a547c7693135 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -61,8 +61,6 @@
-  */
- #define IO_TLB_MIN_SLABS ((1<<20) >> IO_TLB_SHIFT)
- 
--#define INVALID_PHYS_ADDR (~(phys_addr_t)0)
--
- /**
-  * struct io_tlb_slot - IO TLB slot descriptor
-  * @orig_addr:	The original address corresponding to a mapped entry.
--- 
-2.30.2
+> This patch does to much in a single patch which makes it
+> rather hard to review.
+>
+> As a first step, we should focus on leaving most of
+> scan_get_next_rmap_item() alone and only focus on replacing
+> folio_walk by walk_page_range_vma().
+>
+> Follow-up cleanups could try cleaning up scan_get_next_rmap_item()
+> -- and boy oh boy, does that function scream for quite some cleanups.
+>
+> This is something minimal based on your v3. I applied plenty of more
+> cleanups and I wish we could further shrink the pmd_entry function,
+> but I have to give up for today (well, it's already tomorrow :) ). 
 
+Should I send a v4 to be applied on top of your minimal patch? This
+v4 would eliminate the need of the for_each_vma using the test_walk
+callback like the previous versions.
+Thanks for your patience.
 
