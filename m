@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB55CCD1A5
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 21:10:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15B9DCCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 21:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 571828E0010; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
+	id 453068E0011; Tue, 21 Oct 2025 17:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 549808E0002; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
+	id 403448E0002; Tue, 21 Oct 2025 17:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 486768E0010; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
+	id 2F2FB8E0011; Tue, 21 Oct 2025 17:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 30D328E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3D1CBA49A
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:10:51 +0000 (UTC)
-X-FDA: 84023365902.22.B17C381
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E18ED2000E
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:10:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sxuh6gdZ;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 191818E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:22:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC85148829
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:22:19 +0000 (UTC)
+X-FDA: 84023394798.01.6A06FBA
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 17B0FC0006
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:22:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZCkQ92NA;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761081050;
+	s=arc-20220608; t=1761081738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2rWnAwrzm8A9V62GaFabWYZ0BgD3yXEcNaO0orf0JZk=;
-	b=Haidzg6SdkR9n/QeUt0Yl3r8EzohyebonXlzXCQYOht4paSt7naYNlXE3phlvAtVWyVJ3o
-	mUY/DJEj9NmPZN20/dRSva70Cuz8OJIcZu99SKR1OETnYGTHB4iXwesJCsaROU7Qyh4EvE
-	2kGNy+mW/LUnZhUAiIgFi4sRXOZ6eac=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sxuh6gdZ;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761081050; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=cXIFDeQWnub4h2NG/T1RFeyMBXuEyOQzNVu9o94NDmM=;
+	b=wvi2W3r/FDBi5dJXaH1TT/+Fy1mWk8gpdDqE9FpCrx+1nhEbtgoiiNSeVxCOYIpJBaTyii
+	Oc9FEZzHFH6ds9qsHm5FFXP/E3ZytQ5nORJGTQYSMFaInrQJGFtTwXioLnKTUR+JR+XOtw
+	oDDhkhbaeX88/NDCRIn5O9FP+uMfNUI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761081738; a=rsa-sha256;
 	cv=none;
-	b=zz4Ghjq2HhmxDhkG4A4YF8/11ikmprJ2RxgizCET1YRyc5x/FoA1TUjwWy2mkSMKdtFIm/
-	Sek+ClHh196gJ/zyZrjBM1IQAn501Y1nNtA+azGOypdtNNjkDvOvbPjiqdfVwVvcePieWZ
-	aQ9LBawyCgZFoi843bknnkHYbdE2LvI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6567401CE;
-	Tue, 21 Oct 2025 21:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F431C4CEF1;
-	Tue, 21 Oct 2025 21:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761081048;
-	bh=CyjoCB+nOz0XloI/00jaAfTOPYcrftUYJkwBXkzSnRU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Sxuh6gdZ8tBwi/FrddVvT6zN/S0xQu3CcZiR4deQfvK2CEmOAWnhlV6otHUg2G+Me
-	 4bVTKWRgfLsUgPo5eBXVGtvk+HYc4988REnbdEPfC5xVCmfjZqiqJnGkjOQsIxYzvi
-	 rLggorjf66h1/4Z5DRmHyf0slgeeXXfNWVFLRAIU=
-Date: Tue, 21 Oct 2025 14:10:47 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>, muchun.song@linux.dev,
- osalvador@suse.de, david@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com,
- Aishwarya.TCV@arm.com, torvalds@linux-foundation.org
-Subject: Re: [PATCH v2] hugetlbfs: skip VMAs without shareable locks in
- hugetlb_vmdelete_list
-Message-Id: <20251021141047.532542aecdb0dc5fdb95696a@linux-foundation.org>
-In-Reply-To: <9d20e689-c06e-43f8-811f-3e66f3e86d2b@sirena.org.uk>
-References: <20250926033255.10930-1-kartikey406@gmail.com>
-	<7a1d0eb0-ab08-4fa8-bdab-b193b69a8c9d@sirena.org.uk>
-	<9d20e689-c06e-43f8-811f-3e66f3e86d2b@sirena.org.uk>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E18ED2000E
-X-Stat-Signature: 3xwr85gofwk3pcwu4de8ftfuez67s65i
+	b=7xeue/Fsv9ZPsAYP4HgsnvPqEOdnb6Ckcu0zEYqKrLy+0XgKns0ayelWLdi5oAGRqBl9WT
+	fFK1N1cRk/w0mdV+t6xOJOp16TwpeSglTCRVJ0A/EGe4r+59/H7GsbwyQAS6Llz7gu+HEV
+	xkAmJYqoFGOWz0Z8QPMTfTxneBycmyI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZCkQ92NA;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b5e19810703so992837466b.2
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 14:22:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761081736; x=1761686536; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cXIFDeQWnub4h2NG/T1RFeyMBXuEyOQzNVu9o94NDmM=;
+        b=ZCkQ92NA1j8e/qKhTVqw1PQfxOL28PIm/k10xrOIs4etIe74xkcogI+1T6D89LtpgE
+         ugFOpRKKWTAMsKxCJdXJm6eBaa4B9HifOABCtDy3bmpDvrCL7dO1VleVgrcIxwpyZtbV
+         NDdbjpIJmqAy3LqJEm1vn34aerk0WwtkdxdYQp9rk1HfctXTRnQZGRC+j3VWlbwt2YG+
+         ZoH/kly4CE5BuwPTh7r04LEHyYJhLhRn7iLovHuku9VxzXrhp3Em/U0Qjv8D1l+xytjp
+         HgOcfV85oWnZBR3eBlFQzevIZTT953rULRZltyZxrMKbMoMc2HVnPk3/Q0KZC0Pncq3i
+         Mgkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761081736; x=1761686536;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cXIFDeQWnub4h2NG/T1RFeyMBXuEyOQzNVu9o94NDmM=;
+        b=jI3dkv7JISdgDBvwdUg2VHn2+92L8SSkodSjcYhGVMEDkQBEhvD7Wg30CTMczc8CwG
+         T575y+pdsiH8y0LqsHL0q1giHq/2WNE45kChQNX9qBDKlG5BBD+aoTCKY9LIcfQLBIQO
+         hsr/bh8nap9aZmBhg7zai+LuxMhMLcepQFcHy3yNZQZcVrUn0J5scCHoe+EhnlRW8u3o
+         GnY2SUOsZP/OXacvmTYZ+m9qJy3iuRjBRbAPILGlDo3u0lhvC7EcQOHJ/1Tskf1FMAEt
+         xgNOlOXQlBgocV/B3BN9WBBFQW0PZkUV0AuGiPjAQ1V9qLPYiiqKAv3OpiIGPVmdbRBe
+         wYsQ==
+X-Gm-Message-State: AOJu0YxoHE+9q/f5riRLJ5laOtPoSQV6dFKRr7xZMX0i7cxJc1iuiyRT
+	XMD/XwSiplHYW62oww4qEGi2TFB/CDK075mWBejZ7dGeoQVZwtrG2F8z
+X-Gm-Gg: ASbGnctDYYlBYkOUpvTwupEsE+duLIqPgKJid5NmfbZO7koWJbkAF3e3JChOA1Q/hhf
+	e5yyqhrCiUL+qfcCbv1CCslpNm0mOghWpmugw4anBleZoS52N84Q/tlN25cpvgKD7IZPm03arTa
+	yUpoqvJToir/uRDq6yEfKIZ0QYz+cV3WD7vr4Wg/oM+2yFD/TZWO6ElSUwMSIWromgh5gsQK5e3
+	utYAvXdrZcJ1X+DtzBwylOReCpAL0AdjBwimNkP/iIwCo+RRTWBEegShufgC9b1T7+aXV4VRJx3
+	823vRnxyPI3IWoB2BUKDhLw/V3+k2t657ChCA5hpCVjGTTmhZjENKpJk3YOf93m4IBjGbyXI9Nz
+	5vzbExdN519xx3fEL3Cm64qsL8mC3OgMSOTBP8oTgi0fxcFENAMwEDyYkjfnhFLmY5AZ9xgUzkx
+	I=
+X-Google-Smtp-Source: AGHT+IFPA4frdNInE08OEPmGZi6SHjKdqmYchzpTtJev6eBcMNQJIE0dQVOY8/iPEshvEv7GoHvMQg==
+X-Received: by 2002:a17:907:7fa5:b0:b2d:a873:3a4 with SMTP id a640c23a62f3a-b647254f787mr2213891266b.2.1761081736226;
+        Tue, 21 Oct 2025 14:22:16 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65e83914d0sm1154829266b.21.2025.10.21.14.22.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 21 Oct 2025 14:22:15 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v3 0/4] mm/huge_memory: cleanup __split_unmapped_folio()
+Date: Tue, 21 Oct 2025 21:21:38 +0000
+Message-Id: <20251021212142.25766-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam05
+X-Stat-Signature: chr6h8fw3n1g5ukxpcfrq6c6otnjt8ac
 X-Rspam-User: 
-X-HE-Tag: 1761081049-895017
-X-HE-Meta: U2FsdGVkX1/GqxF2M4kC038DZVDf0MOp0BWZNmO8rlwUb1+SDC2VUzdMtXsEzTxJZYXSsTSMrLKnjEef0usZKj7SZEbvVBH9F1qkcRyV6C9jYJESwNQBS9yEgCzeuPJ2KIUx8yQoYJJvJSj0WL5v2h1FfAfxdCv1I5sK38EY3mfJ3K6nYLiLYb9Z8HkFv6cTEnoD7lfTR8OgPRsIouFqbOgGOuOKdOpVhjbPK0BCSMp+wXO0ZPcK3ahPH0SafwvthIAJaZ2BhCojMx/MJzw4A2wKJXiMHv+ZveUhHPq3W/8tjtF4iCknEw5kjJPdJxet5PzbXU1On+4q/hfh3euppiyXO06yKAAkS67aXSYyjqgU4APk4ZBDKco31nMbupbYuRcGcsNBMUrJKOtgfQVZirpMmB+fzdjn871eH0RbqkjC8JQi9FJFF7Vo0oFtPnHvLD1SKpSGZ293tN4qdbXdZd5rFAvNmaVkmLGB2DzmYijCuJ1WbI9f8yRhG1yA0n++mnkcXUpBfZ0EPzKT6eMSLKV0qkRWgE0sLZ73ATod3WuGC2lyu10YvmmOPVemTivJMhNW5tMVfdg+hzepUwnD0/foI7yIjdkX1bXHG/CiA7KoqLJu3pRlr6e43c5Ka6Gjh0DWrJDx3jAWLgiORYjc1ezcUHkDcN8O8rJyJAQHxCrEH769Qe9YXjPFvrZHFAeU5rnk+Fk2Gtw7WH+UVDbXkslOCHPNT0hHZRnlC8VGXlXP6aS0NOctARLamMe5vLeuXwd/K/G5UBpzhoTCBMEzZNR4rlK89B0Hm3qu5ZHjknq0ku7M90BrPKlCQeUgXXT2OLqmAjNFBMNkSlGGHiM9Ykw3XI23EWcBd0uI/dxGKvV2WqseEN7alPoRSgvRsprLyp6f8EWjKQHRC8PLPhT9OvDz2W54REP8XYfg8/2PNn6Ptp/JZPx/4oPnxZng1S3AlpqhCFTL2H5HJwtOPhL
- ylnoLaO8
- 97ZO6WKTu0Zsv9anEdj2/lmkV4kxN2+eNDHzb9GiigrA8pSUTJSyvnxko5PTYA63lBSegtTzJ6xXaUWt5mXxThH115VkrOB2N+S7CbYEAXmfl6tRBS0l7hnCA9yrPAioIXWlTmanvD6ttdU67q69pZVLTydWZWn2CU9rohy5BF2zm/zqIVNAaPHcKFzq+22rG4jpbMDD9h1AqVU6ed5iW4JaQE2943i3N19Fl3Ej//DR9moQQKAvyFRDHW0fYbcRzE47R4/CBpsNUagsNEv/f2fu6Zlg/LdoXQZQYmA/mNEzf9e3rDOBEEA8O1svxng6iJn1PZYrK89zAXBnP5O+WmZmjPYfXKO/ORHQx8urXO6vig1ec5Uq193aj+eyXaIpOAjPc4aTNrfoO+oHJtZBytvfm7HAQ//2Gzc4sfHfYnWxkODLkXo2Y3WhSFSdP0wqQ0Q6uwGuSVKyj+2iebKstM9CWUtZ1SNYwQEmgQbNjpLnk7VWPSJu6m0gRVlUYf7cUUevpJZT27D52WFf26kP8YUcbZy36DeCSrdVaZ30mBlq3wsESFt+ZQhXcoW0qCGXD869SBWLKChfQSl9cUiuq0Y1kYBJrRFr0xUQWCyLrEvDmyOETOvFu66+F3xnrpOaSgdieEW2TjdA6VSwqVddR/WVhVH6doMz0hkJwolafPlRDZRVzDeQRL+jjPvGqB6emWjR9
+X-Rspamd-Queue-Id: 17B0FC0006
+X-HE-Tag: 1761081737-481961
+X-HE-Meta: U2FsdGVkX19Gyz+B+Fq0nYU7MebzlURaJVUBe3/4qEBQO6uU/9rWYXSiGB+q2JImf1B0gGDv9xarAi61qMZZlhF1NpkEEvFQNZyKDEHvb4iDYhSU46ct/iqRiY1h8nakwOcqZ7Ip1GoPMTz1SY6d5ctmYH1EOoypA1f/LPMYIQQWIgiaDk3HtFdLXNo0flY3mCHlnmRr2BH+akO4pgvFVV7Vd69deYMItImhWNtvlkqkZVEMyqPBkO9YdFOt7NWJtrfXFskgsR4GfliqY/G6XVrj8fAKjBOxG3EmjlYniKehCOFeVZiCOjz1Ypd/7tTECSk4Va5K1+WfD5098JSv+4lzzGH7yaANnlk7iyD4XT9OXTD4GDYQkQOeVmQ0kkgd7aaW0QkchNkHBU2SZ9LYu7JP8kkbt9/X98bpyfATSxcJmMjlkI0bfMFRkYVSTH4z5GzcSYNFk9nLijLU7nOU/8hUNdSKD634XLsVGMJTVbc6mV9zKIp/pPkLgZ9/lKlrstfm6PmMwWI6vzjuHKqPqeReioDOk+M96/ZlHYcytpjWcSn25GJ4qxR0FT4+TWcubDRVY7ZklEecag/El+ps0QftcMynflXLBZvl0HCnhs495v05NLgf8LXOyrTBUBrOeRBcsbdbI/aedyLg6L/PPYf0tFLi2WX5z0fUAHn9rbTihHaFDtsHb/UkxF7oaA46gYH2sjqpcOG3BsHQfTgfjtu+VWzlHRw/8FInwKUJtTmU3ocTSCklksTmpW/cPXsoEwz60axhe+YzClQrWRhDjUdYBxCgpShXCeeU//jSHhRJVo81Z5/KukD/LmfQZ+mndYEVWCb9vhnKYAJ+5qCGIZWYJf7em/r++BPrS8qZ4GWY3bOiFD+x0f0KyjqESYYxshgEYgG7ebI2MmfZvlzxJ7x2i+s3TeNzQk51lwoi9MH9F2mSi0m1i6oMlcWz4TwZz9H/C2WrzDLEfHZVge/
+ NvJNtWW4
+ LWWVNjCmtvdqO/sU4EVmHecL6CPi23xKEYfGtvzZg+UayqFC9vuLpGjPAJtCUb8gHt7D8cJGaKKRi53J5xKTiKMnXe9sRPhScFpeeEuYGJ5ZVT0RtCzjAyvog1idelqgdZJW+2uLYC/gOxk9Kux3N6jBYV1+QuMtgHrvFmE+F7+379XBhzTGbIYoepjz5n1fbovZ4wJMePVtt7sozL3Y6KtobnQ+OeUB8X0pyUD6lCHzjGTFJv2rQGUlBU8NScJpi1Nk6z9vhvNGqYB0cVSapn5KQ0RCGkvWKCzL1JSQOTMs7Ung4KFqQWiFB/GeyAwyuF0AFrNGBY2BhUmn6vvJ4MqnqoEW6Cayohv68F9lDvH0hMyFCNPVs1sQW+eUOtmh4RoUootWGKac+bsBgmkd4UB6q0nYNRLLhMsmUoJbTNvec4FJ0gj38Y6W2ynVHpxWkOxEpHg+8XB1pikkFlvGxunM0a/C6A1nYC7RFMDr9zoaz3q3mUiWn0j1B9aMnvHCCCxCxriqpNAFEOEAliWhLeVMN2UdUbVNdXLRVKbyPdeTBO+lqYiq8WU1+9/159e6jCu4kHuhvpkHbTiXFQIoJzlrpKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,116 +121,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Oct 2025 18:52:11 +0100 Mark Brown <broonie@kernel.org> wrote:
+This short patch series cleans up and optimizes the internal logic of
+the __split_unmapped_folio() function.
 
-> > For the past few days I've been seeing failures on Raspberry Pi 4 in
-> > the hugetlbfs-madvise kselftest in -next which bisect to this patch.
-> > The test reports:
-> > 
-> > # # -------------------------
-> > # # running ./hugetlb-madvise
-> > # # -------------------------
-> > # # Unexpected number of free huge pages line 252
-> > # # [FAIL]
-> > # not ok 6 hugetlb-madvise # exit=1
-> 
-> This issue is now present in mainline:
-> 
-> Raspberry Pi 4: https://lava.sirena.org.uk/scheduler/job/1976561#L1798
-> Orion O6:       https://lava.sirena.org.uk/scheduler/job/1977081#L1779
-> 
-> and still bisects to this patch.
+The goal is to improve clarity and efficiency by eliminating redundant
+checks, caching stable attribute values, and simplifying the iteration
+logic used for updating folio statistics.
 
-Thanks.  Were you able to test the proposed fix?
+These changes make the code easier to follow and maintain.
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
-Date: Tue, 14 Oct 2025 17:03:44 +0530
+The split_huge_page_test selftest pass.
 
-When hugetlb_vmdelete_list() processes VMAs during truncate operations, it
-may encounter VMAs where huge_pmd_unshare() is called without the required
-shareable lock.  This triggers an assertion failure in
-hugetlb_vma_assert_locked().
+v3:
+  * only merge 4&5 in v1
+  * refine the comment
 
-The previous fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without
-shareable locks in hugetlb_vmdelete_list") skipped entire VMAs without
-shareable locks to avoid the assertion.  However, this prevented pages
-from being unmapped and freed, causing a regression in
-fallocate(PUNCH_HOLE) operations where pages were not freed immediately,
-as reported by Mark Brown.
+v2:
+  * merge patch 2-5
+  * http://lkml.kernel.org/r/20251016004613.514-1-richard.weiyang@gmail.com
 
-Instead of checking locks in the caller or skipping VMAs, move the lock
-assertions in huge_pmd_unshare() to after the early return checks.  The
-assertions are only needed when actual PMD unsharing work will be
-performed.  If the function returns early because sz != PMD_SIZE or the
-PMD is not shared, no locks are required and assertions should not fire.
+v1:
+  * http://lkml.kernel.org/r/20251014134606.22543-1-richard.weiyang@gmail.com
 
-This approach reverts the VMA skipping logic from commit dd83609b8898
-("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
-while moving the assertions to avoid the assertion failure, keeping all
-the logic within huge_pmd_unshare() itself and allowing page unmapping and
-freeing to proceed for all VMAs.
+Wei Yang (4):
+  mm/huge_memory: avoid reinvoking folio_test_anon()
+  mm/huge_memory: update folio stat after successful split
+  mm/huge_memory: optimize and simplify folio stat update after split
+  mm/huge_memory: optimize old_order derivation during folio splitting
 
-Link: https://lkml.kernel.org/r/20251014113344.21194-1-kartikey406@gmail.com
-Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: <syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com>
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
-Suggested-by: David Hildenbrand <david@redhat.com>
-Suggested-by: Oscar Salvador <osalvador@suse.de>
-Tested-by: <syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+ mm/huge_memory.c | 70 +++++++++++++++---------------------------------
+ 1 file changed, 21 insertions(+), 49 deletions(-)
 
- fs/hugetlbfs/inode.c |    9 ---------
- mm/hugetlb.c         |    5 ++---
- 2 files changed, 2 insertions(+), 12 deletions(-)
-
---- a/fs/hugetlbfs/inode.c~hugetlbfs-move-lock-assertions-after-early-returns-in-huge_pmd_unshare
-+++ a/fs/hugetlbfs/inode.c
-@@ -478,14 +478,6 @@ hugetlb_vmdelete_list(struct rb_root_cac
- 		if (!hugetlb_vma_trylock_write(vma))
- 			continue;
- 
--		/*
--		 * Skip VMAs without shareable locks. Per the design in commit
--		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
--		 * called after this function with proper locking.
--		 */
--		if (!__vma_shareable_lock(vma))
--			goto skip;
--
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
- 
-@@ -496,7 +488,6 @@ hugetlb_vmdelete_list(struct rb_root_cac
- 		 * vmas.  Therefore, lock is not held when calling
- 		 * unmap_hugepage_range for private vmas.
- 		 */
--skip:
- 		hugetlb_vma_unlock_write(vma);
- 	}
- }
---- a/mm/hugetlb.c~hugetlbfs-move-lock-assertions-after-early-returns-in-huge_pmd_unshare
-+++ a/mm/hugetlb.c
-@@ -7614,13 +7614,12 @@ int huge_pmd_unshare(struct mm_struct *m
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
- 
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
- 	if (sz != PMD_SIZE)
- 		return 0;
- 	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
- 		return 0;
--
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	hugetlb_vma_assert_locked(vma);
- 	pud_clear(pud);
- 	/*
- 	 * Once our caller drops the rmap lock, some other process might be
-_
+-- 
+2.34.1
 
 
