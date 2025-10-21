@@ -4,123 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB0ACCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:57:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32734CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:58:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30D9F8E0015; Tue, 21 Oct 2025 03:57:17 -0400 (EDT)
+	id 9025C8E0016; Tue, 21 Oct 2025 03:58:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BDFD8E0002; Tue, 21 Oct 2025 03:57:17 -0400 (EDT)
+	id 8DA788E0002; Tue, 21 Oct 2025 03:58:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186028E0015; Tue, 21 Oct 2025 03:57:17 -0400 (EDT)
+	id 7C9378E0016; Tue, 21 Oct 2025 03:58:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02F058E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:57:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F9CB1403B0
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:57:16 +0000 (UTC)
-X-FDA: 84021366072.09.3F759A4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B8D08E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:58:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B6A8160349
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:58:02 +0000 (UTC)
+X-FDA: 84021368004.18.387FCEF
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 26AC940007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:57:13 +0000 (UTC)
+	by imf12.hostedemail.com (Postfix) with ESMTP id E3A0340003
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:57:59 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ayr+HPDm;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JlE9O/NO";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761033479; a=rsa-sha256;
+	cv=none;
+	b=walyEcUzGSWW5aCkJRZNXGhumV5OMBv9hj9ZlaUglE16E9+CfbBc1oSBBP+Ip+F2NC+ilh
+	lsMDQRZzoWLHfTvWj99PpIR/wgTbqY0jEmZ/FuVcM7esKUCCNLfv1/EPAeR9ua5sgV1TZs
+	j5S1zkWaAd/DxuK8wc2VghNbzyh9pkM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JlE9O/NO";
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761033434;
+	s=arc-20220608; t=1761033479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUep2F5lenxxRi6fdUvVCk4rNKrfMBfN9N3PQW5oVLs=;
-	b=L6i1/SvbJ6euqCdKWkUQoSObEgrtWjUQMPGOgpSq+UJPcD0+FwLKl1lGekI2buEOLlRTfZ
-	vOw/IzVoj3eyJf5lk188H0hKfLTDWnH0pLeSRitbIbDQ0wiEdr2l//WhO2tTfbQWP97ZTy
-	RCiL6K5bHMWwxlkb3EuTUUnbCStuzCk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761033434; a=rsa-sha256;
-	cv=none;
-	b=L0Oiump8IAkB6hO6WyeH7aioK6tTZswVDcg4JykG2Xh5qeqtQIZBIeQ1ElOR2xe6g20VW3
-	8MNk/ixT8HAaZvPsd2e+qFJI0yjNgoS+iZ8jEd1whdTbhrpyyR2MdNqfbhLtrjL5+MpEnD
-	3VaFYbxnDyESN25YqVbgianh/kHo73Q=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ayr+HPDm;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	bh=B6eMKFbej+QUBomIM39UwXetYGWu9Y7arv53CZP2AtM=;
+	b=7R4T3lwupQxW8ug2n+xw1cJZ5QLCcx6OQmJc5e721Rt109Pzp2yDpWG69Ry8l0m4n1bvvp
+	gA0vIiiSFxz/S2lm6KD+wYo8wP/wxaGgiDbxxwZE47j6T+D0uUWwIZ/JMwz9Hft9flB/1+
+	18yPqi3NsUw24TFMA/nr+XD3F/hy8uw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761033433;
+	s=mimecast20190719; t=1761033479;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fUep2F5lenxxRi6fdUvVCk4rNKrfMBfN9N3PQW5oVLs=;
-	b=Ayr+HPDmgDXCXU6zQzqozqZBbKq/HGxQA84Wl0T+TergI4cV/IeSmCe2jrR2xUUE34A8oq
-	a7PmXeku6w8lFGbpUA0prhmlMf5qlHaQYP+CZ+GKZBryGEkdMLAC7YYWFo94ZZhgHSEWj5
-	vjZk6NeAASHH9aR1wp4fkNdEnshdTjA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=B6eMKFbej+QUBomIM39UwXetYGWu9Y7arv53CZP2AtM=;
+	b=JlE9O/NOx5QReqs+mSU0sIGmWphyGP6BJKIlMzHFbpzqiDSyzV4YfxgGeN8xT3NsaxSdi9
+	ypEH6h45HZuVy3/s35nMYl4lVGXbIikC+HPsGzXGDB6Ml2RPrDJwTQjOmdgciu0DaEyk2M
+	3mMCxSHlMnpF7FD9162aHD4+zct6wzA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-gYK7ZIHAO-yw_CAJQw897Q-1; Tue, 21 Oct 2025 03:57:12 -0400
-X-MC-Unique: gYK7ZIHAO-yw_CAJQw897Q-1
-X-Mimecast-MFC-AGG-ID: gYK7ZIHAO-yw_CAJQw897Q_1761033431
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-427015f63faso2715264f8f.0
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 00:57:11 -0700 (PDT)
+ us-mta-313-uEUoHzJZMpullh0lQiQXOg-1; Tue, 21 Oct 2025 03:57:58 -0400
+X-MC-Unique: uEUoHzJZMpullh0lQiQXOg-1
+X-Mimecast-MFC-AGG-ID: uEUoHzJZMpullh0lQiQXOg_1761033477
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so58818345e9.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 00:57:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761033431; x=1761638231;
+        d=1e100.net; s=20230601; t=1761033477; x=1761638277;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fUep2F5lenxxRi6fdUvVCk4rNKrfMBfN9N3PQW5oVLs=;
-        b=Hmoz/I2Ldg/He+yXeV9wOzQfLCkaXqMnqEYZZKupg3+J0X9OI5bMBcoDjIzi6oH801
-         T3V1IwDuXUEfs6k78Zq+v/TALpn1SkOoJNz30bKOX7QjdskES/9PxHZedZZO2kweI57b
-         7vsR6+45SR9CmsgQ6cYmLK2+zm+d/1RJImjI6deR4JfEGBl7HUL3r84mX/6xfGxrkEVQ
-         p6t6dxCMGNtSK2cIKrrmAli8KNx30mfULaVce/MOSeIy0X8ja2xBEBo45l/NCpe1XRa0
-         TZMwHC+Qw+r39VfaEThqF5gaziC5lOL70yHpf08YxThO79bHsI2J6acPfFm1u/DbBZTv
-         2fTA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7PUO9tIpR3lBaCJqZGB+Lk8N7ErpuW2TmsF7FPy/TBzTS9QQhJE3j691IYTcdrSE3SGAqDZURtA==@kvack.org
-X-Gm-Message-State: AOJu0Ywugey7FOPE4/I7XhEIn6tiT9QMXzGOXGNUzvSVzslHBZK2CQtG
-	CbhzPf8Tib3MTzT7TpAIAVJmmN7o4pOIrq49+M7RnOGoMmFHFEtSK6K9LnmlwQtekQBC+M8ejD5
-	NJchnEuEMkHcmSGiMRkApTqEhsuU9Y9IOhTsBaUUYR0K2jT4cHPAm
-X-Gm-Gg: ASbGncsP1AisxWd8BDPfRbYGs+1DpHCATi541vfyQst8LqM25OlHJfDeuwCnISDGUkz
-	iXq/MTfBFNmm/44gGyqZylSZtoB/QzPepw/QooKbNI6o2mMaWEUlCkyTdwRfVjL1myPHDe4GOAG
-	2403zGdzzOh44n/01jE9wi9ryhVn6OIsBa18ybcEQEFe229OeQyCQKdAn1J4DdV34DnXtAyt6C4
-	qzcNKfLdjyyJYw3qv4Q80BW2hZ1NcJ58SdGftfsBVrCcuaqaLngkpNvOZTCiNDscLf1gf7KYigd
-	dtjcI+TnuiYi0El1OoMbhxPCSGWDRSvzkyRevA/IXtTVyjNgP+CGexUvqWGxfzrr2CrNxaToTSk
-	9mHls8usV+Rlf2/d2MQwRkz0VnfXerlE5sjiRloS2G035SP1DF/Zs9cIRhnOQRv6DpKJSnfIfeB
-	5PXxdhmDuCfXm3myuHw0jQo3gQhMw=
-X-Received: by 2002:a05:6000:2507:b0:414:6fe6:8fa1 with SMTP id ffacd0b85a97d-42704d95645mr11202336f8f.38.1761033430879;
-        Tue, 21 Oct 2025 00:57:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBqz1uZsEY1jCmnK5iipnnYUKFUGDAKuTU7UXJ/g7OrVHjIjgtlWv7fVh/TELjD+hkmZZH6Q==
-X-Received: by 2002:a05:6000:2507:b0:414:6fe6:8fa1 with SMTP id ffacd0b85a97d-42704d95645mr11202325f8f.38.1761033430520;
-        Tue, 21 Oct 2025 00:57:10 -0700 (PDT)
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B6eMKFbej+QUBomIM39UwXetYGWu9Y7arv53CZP2AtM=;
+        b=CKAxlXAcVFwx3sM/8iCZCljI3AW2lY/JU6V0ulNkZHmRTFOkh1um1KbMbXBfZN7A4E
+         Do6uyf2dmvVnFypnPCpaKhuyddDLt2t/wxu+nZPteUrBwzpEez2BwojbfM/NP8K0yPza
+         joE9kl25Mfmms6D9/5C5T9D/AHfEtsZuNzG/DVci2N/UNSm4YTL8Zygl0EtPdWyvCZqQ
+         5+NcOZwGN0kYaN3ws3FIDLifPg5IA5yxjwtDXC6iVmx1wbq/+4O6IyZgjdSnuxtA3SaF
+         iUwiC0Xa3eUKYlENByDFDV0Swa70zAUe3BP1LLLTYJ5bCsF5KA+Apbp488i5UY6bWVgJ
+         fbKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhpxTfIgbrV6tUJVmpy6eK9nVHWyPiTjA1O98hCIQohl4Cf85cgTwCFvemj3IY9x+P88eaLrwYTA==@kvack.org
+X-Gm-Message-State: AOJu0Yza9bF2Syy4bzq+BfFUswS9H8/lg/sIEcRnRUMy+fckA/mWkrcB
+	wiKPvrpfHnwBneUVL8i6EZDNcS8WPyor3DSL0mI639PLzD2YHQcZq8kzCeyUXMDc81B5XaLppJJ
+	k7SAa1AY8ucsZFMZ3vcT4aZYtBMTm5gP69EqVty9nktZDASkpnW/P
+X-Gm-Gg: ASbGncvJtvxIQwMk2+dJ2mbBV2ijxIqT1zJQMp5jBqZF2bZCb3OMw7pmB8wxTPblNIK
+	ZdGdiohV44jx+mpwlKZqPs6rkOKOeTdhD/pO9V7fS5BlcwtRl/aoJWIDfe/iwqoiIOG1ntyhgrW
+	/MWYdoVz0zt0tuAYRZNB+UM2pH0gFM98LIqyr6k0F2wx2MXvJoHrgXDTt41UfDnAr7DMe/PUL7f
+	kR3nd0GoThlGe09f3TMik2WNElUw+zgIX5pvDAJ/rfad8/RKK3DB94Ojie9bCyLje2/JWpbSlFt
+	5H9JqyLaCtwI35gn51VSgA4S2kEziSFSV6I9kl6rH/aRjpyMRmQtgj558etmwP2+VPUmkTEaL0G
+	5WBoEW6R8dF7F5mdo/SGYoqXGkI4Msw2a6mcFOEsDvPXZECmqGnOwlZTWKdfZv+5jb0cA7BpNbq
+	+kgHqvBtb2Yqgp3GwXZFcluckZRso=
+X-Received: by 2002:a05:600c:548a:b0:46e:6d5f:f68 with SMTP id 5b1f17b1804b1-4711787a2cdmr108346615e9.12.1761033476772;
+        Tue, 21 Oct 2025 00:57:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDJFbjuB3mwrwyYzqrJL+fmfXcjBy5U7Nf/cnLxTGYNtC8FgM9hOpaN1CYcynMUVdb2OhGfg==
+X-Received: by 2002:a05:600c:548a:b0:46e:6d5f:f68 with SMTP id 5b1f17b1804b1-4711787a2cdmr108346535e9.12.1761033476398;
+        Tue, 21 Oct 2025 00:57:56 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5a0f7dsm18728294f8f.4.2025.10.21.00.57.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144c831asm259795265e9.13.2025.10.21.00.57.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 00:57:10 -0700 (PDT)
-Message-ID: <32a9b501-742d-4954-9207-bb7d0c08fccb@redhat.com>
-Date: Tue, 21 Oct 2025 09:57:08 +0200
+        Tue, 21 Oct 2025 00:57:55 -0700 (PDT)
+Message-ID: <99148386-52d5-4d22-a9f3-48dbc9d77273@redhat.com>
+Date: Tue, 21 Oct 2025 09:57:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
- trust the bio from direct IO
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
- Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, djwong@kernel.org,
- linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, martin.petersen@oracle.com,
- jack@suse.com
-References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
- <aPYIS5rDfXhNNDHP@infradead.org>
- <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
- <aPYgm3ey4eiFB4_o@infradead.org>
- <mciqzktudhier5d2wvjmh4odwqdszvbtcixbthiuuwrufrw3cj@5s2ffnffu4gc>
- <aPZOO3dFv61blHBz@casper.infradead.org>
- <xc2orfhavfqaxrmxtsbf4kepglfujjodvhfzhzfawwaxlyrhlb@gammchkzoh2m>
- <5bd1d360-bee0-4fa2-80c8-476519e98b00@redhat.com>
- <aPc7HVRJYXA1hT8h@infradead.org>
+Subject: Re: [PATCH] mm/vmstat: Fix indentation in fold_diff function.
+To: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ jinnasujing@gmail.com
+References: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -166,21 +154,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aPc7HVRJYXA1hT8h@infradead.org>
+In-Reply-To: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _5UBEVlqtdMPop7XyqPCSO9EMZjGT8n2jlQOtnSogiA_1761033431
+X-Mimecast-MFC-PROC-ID: jcTFHOI37fKj20Do_izVV7Zi9IH5jSNh4rvsnwFZ-fA_1761033477
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: s9d5mhkrosi9mkcp3ngzoa8aqwh8zz7i
+X-Stat-Signature: tuubzo6winm37zdj8xtww13ipmonuskq
+X-Rspamd-Queue-Id: E3A0340003
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 26AC940007
-X-HE-Tag: 1761033433-499347
-X-HE-Meta: U2FsdGVkX19dzbLZCAkzmneYoOlS60sTiYTi9Y4pXWZkmTnj1bSsVxT1/PuMA8VKL31/A0CZv985KSB9gMqoa2/HAcOYI5NbBMP/ElNYpXFrQCqdytzxybi/zpkY9j+CnuwLNSZVpQrFMAUA94tVPi12cr1hC5UCkOw0OjY+MyNRZBoDdBnA5Ne7mZzPdAJvXu8Z/OlJvGS/ZiVATQsKu3PDxJZEwJgGbzoHVODzENIDRfAL6TDYmRQDDhB2EvvaX2auGFeWTsq0bjG0xiuSRrV0tj7PyWdfFozLTQAP6uNoY3KUfW3WZgmLRyGEY3hojhsz/jsEvWvkmj6NDKEHCOeEpCUVsGM9eDhg6Lp+G32JP3fhca3zRiRL7WCaWxrJ6Btca33XcvC7d3DfVfvTDz/hiNBrWqNu7u+kgej+o5KP7Lwsj8L7AuMByh78IlC1Cm3BNwTJbr2xeA9TiY5j07M851e+RQ5bWLCGvDq1qRJqDzUHd57UYIaaGnXERpdX4riBsnyW4jH+7eUeRzVrjltcdojADuOFdJNmpC+qU10wyIYVQm8tJr7PKzpXzj2RUzF75VnN85vDHVYITUR4gwX1hi8WQYCHRmKbBjKT0ZRfi+oAepJDFY1DpUmFLGly6wMf+vbjqwDZ1/AUv8ug0JLKovMDFt1q14DMSlzze5T2oTJ8dJXRd3000KDGm1kINuulrww5M4ThVAD1mjW/M904IGgRdAn88mI7bE3yfIydfuym/eD11FZqIVZbzVCErqjka7uFBku9gbehmVjTBbgF/r71uc0lzRjz8bi5rm5LLH+wNv9yarwHQV5O3LUzEFnGGE88Ev2udPsFVKjdAlmTo3BjtisoX14CIACAyvODEdGe6QzJNxj9olBq1WEqAqEwc8TKfueG+3UT8IJWKDtNwU2i0AXZTXuFB2q0s8QwSN5ie7BTI3oN786ngppyuhEG1F5YrOoGd2S4MsE
- BcAkQzc0
- Pz1+yRcfGixcGPvrsR/LWjBU7ccVmaq/D0kKDqV5UMWTZeHOzpg05/z9Q8B1aFjEovYvOjGCZ2Y6OlFmGnt032PoIoa3p6317SRIxf6HYioOuFoHvQa1t5S27dw/yELIxgd7//KqG+cHG7bQgnb55TVe1IlzzflyZoTTcF1FEa+LC/2SLWOJLNXyIugVPwRO+glQH/5mzyU00o4aRAKMxrhjGde/Z5QLkJpJ372cE/fyjlHYb+zvrL0Jx/AtKDl+m7PoaKPDX7KeDHZdcByIV8u5eQn1daRAE1z6AfZgzbR6GAkQ8gsGCrk/6gS7y2x3VeE+P/QFTobpleAzk/HBGlkFY7E9ozX+WELD98ghoknj2M6E50yxsdsqXmUgyxIvHOa6S4d5NspK7FMjYXVDFSPYIeXT/ox8YSw5+XoBAjeM9tEtOxXkw1f0yS9Nd+5fqa5czqSQw4hj2PghxGdNrlKi+BvfOJP+KICuN
+X-HE-Tag: 1761033479-367641
+X-HE-Meta: U2FsdGVkX19sQ02wChC2kBlMm+Yv4ZD8b7NupBER7Z6U1IsxRb6RT52DKcESdJdC7/yJy8HtdW7+UHxSk35Nntg/D7jXiXdVvqGw00G89y9GpxNYk387u4tCTWSWR/bFmrUtlUg/J3cgO1CJ4NGDZWHMe80AxVrXgYASKWTpZGSCMCFjR8ED7ccJFATwWRiVefJ51e2b5s5P7oiQ7tz5TWbteuwGN5RUqDh6w1olKXyyL8T5rE9ox/hkEchiEaaiCwRoI8kXh2mvzIhY4N1sOwtZF6nrpzCYZMIo+EJgKji3Y2+v9rcVefs60fDyu7xP17DW3E+Xj+F/DUnq3s9DTdc078XuVfs8mFZD7tajfBe8hucLe7ldjTcpT8+A+bmA0WACmbgTA2+yfywx1J3u5E+8IU7FGbfGurmNVwmqdSPyNajSS72cxZE0KsvZEPW293IPlt/MNgcjSOSbpjBFnUkMLTgKb+uNGmUp4U/YDbAQgHqG2yamx6FNMEEEnFs2utswH9ZLo7IBEagCqPuTHSxR3J4DtY0h2e+RAsjAmWB6YXwlgLxoYNnzBwOVJQIn9sKGS46PqolP8FBggSPQWs1im5R+G4D4jkOn5K/mv9+vG9Ucx8/Z7QW2hfR882vzRjHik/xxeEHWQ2cLSWUEON5zfaP4jRgj7PBOKcq43xCy/Ck/5Dfc89H4fqe1UDIFt+IFpyDyYDLuFcRKOGWtNTBnF2OxoJL2puQlHTRvKvSz/ljARLnX1wXIl1EuJwvS71VYwLWxM7wn2Ob/4PlINDOzkb5mHtotE3BDKA/+Bd6QKGneVwTGItfRJE8dEZSiAMT2LmpO08t2z1u8k/608rLVLaJUv/hSgM3QffOsLuYANmimwuf99Y8nM62Zlf4w9iGYthF+LJHzHuLEZATff7G9IDc15HZOT9bgKHFuH3YKA/LhDTJ3LcGDCOkEn1vRjRijc5GZLcpnGVxwq3z
+ kl+V0Obn
+ XiDtnD8AED6W8AP2XwJ9oy3ydty7/3DPVn2ogZyPh/SorRvJdk/i0Q/SRsnAWMDmElT+cYzTFMF3Vhxrb6pDs6fS6ZudZf3A4Mgy9An4igG+x/UXTOi9dSs7XxOGg3cbPgY/F7OsHUOTsUR0zV3Cb9MC19lNXIo2GsiIHEHX3rZZAtCWQOi48irONCXYZ/p5QhtkDvMa8TVy1a9pcYwPJhBRrBt3wJfvXzTdILoZ6LHVEa4PFenYyqspPwPuAPsYDAx21Pe2+Md+0EiGBAqAxMyD2C9gRt6sQKPgisHMUEX+yPfVTTLfGV6EtBMlSOZaQ1vtv5MnywAmXQsV1shT2aSFjB3KcFRk3Y7iLEoe7Bz8c8AtJqWOUg4Xy3SCv+1e3AkjKFqvRl05Sq3w2N2wJi9lkUrYESIuZJsZd3j/o4I6+1trr5SLBqQlbJEG3Ep2VuL3P86U0iLFtJdJL7DGq11wccXC53RsYdEje9kBfAP83VXM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,35 +177,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21.10.25 09:49, Christoph Hellwig wrote:
-> On Mon, Oct 20, 2025 at 09:00:50PM +0200, David Hildenbrand wrote:
->> Just FYI, because it might be interesting in this context.
->>
->> For anonymous memory we have this working by only writing the folio out if
->> it is completely unmapped and there are no unexpected folio references/pins
->> (see pageout()), and only allowing to write to such a folio ("reuse") if
->> SWP_STABLE_WRITES is not set (see do_swap_page()).
->>
->> So once we start writeback the folio has no writable page table mappings
->> (unmapped) and no GUP pins. Consequently, when trying to write to it we can
->> just fallback to creating a page copy without causing trouble with GUP pins.
+On 21.10.25 09:37, Jing Su wrote:
+> Adjust misaligned braces in the fold_diff function to improve
+> code readability and maintain consistent coding style.
 > 
-> Yeah.  But anonymous is the easy case, the pain is direct I/O to file
-> mappings.  Mapping the right answer is to just fail pinning them and fall
-> back to (dontcache) buffered I/O.
+> Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+> ---
+>   mm/vmstat.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index bb09c032eecf..63860c3d22e6 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -782,13 +782,13 @@ static int fold_diff(int *zone_diff, int *node_diff)
+>   		if (zone_diff[i]) {
+>   			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
+>   			changes++;
+> -	}
+> +		}
+>   
+>   	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+>   		if (node_diff[i]) {
+>   			atomic_long_add(node_diff[i], &vm_node_stat[i]);
+>   			changes++;
+> -	}
+> +		}
+>   	return changes;
+>   }
+>   
 
-Right, I think the rules could likely be
-
-a) Don't start writeback to such devices if there may be GUP pins (o 
-writeble PTEs)
-
-b) Don't allow FOLL_WRITE GUP pins if there is writeback to such a device
-
-Regarding b), I would have thought that GUP would find the PTE to not be 
-writable and consequently trigger a page fault first to make it 
-writable? And I'd have thought that we cannot make such a PTE writable 
-while there is writeback to such a device going on (otherwise the CPU 
-could just cause trouble).
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
