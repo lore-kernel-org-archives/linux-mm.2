@@ -4,149 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B38DCCD1AB
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 19:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3715CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 19:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99B5C8E0006; Tue, 21 Oct 2025 15:28:54 -0400 (EDT)
+	id 15D078E0007; Tue, 21 Oct 2025 15:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94C5A8E0002; Tue, 21 Oct 2025 15:28:54 -0400 (EDT)
+	id 0BFEE8E0002; Tue, 21 Oct 2025 15:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 861D98E0006; Tue, 21 Oct 2025 15:28:54 -0400 (EDT)
+	id EA22B8E0007; Tue, 21 Oct 2025 15:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7457A8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:28:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12C7588954
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:28:54 +0000 (UTC)
-X-FDA: 84023108988.13.1A2FD39
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8AF71140004
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:28:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PgrniAbq;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761074931; a=rsa-sha256;
-	cv=none;
-	b=UrhS5pn0lJTuympMUloDmyXWm78Br7LeknW13AyfdIIgLxAm/rK87iKKsPFiOQ5h5Og+UX
-	J/LCPD9z91ZRxovLnrD1CC/z9jTjZgwSWMlc56irwLT2hrHo5mC612sxyrbY2KcVHjq5rb
-	qk2doifaJiBYAvYfT/bKOcFL/CePBj8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PgrniAbq;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D4F668E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:46:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C93913B3BE
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:46:16 +0000 (UTC)
+X-FDA: 84023152752.03.35435C4
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6DC7714000E
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:46:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bs8OTV67;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761074931;
+	s=arc-20220608; t=1761075974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OAcllF9nVIfCniwCIoLGKjAXFJuJdiDQqFfGC/k/Yfk=;
-	b=JuTe/+T+ZQUNbfwPDDCZOPg7s59vBgf+qUbWC6ezu2fcgcVgZVFQp/lV4QmJQpmLdPu7xn
-	+lCqKOOGEyFTf9BYUW5whU7P7QkQT0X852paH5lbrPwH90yKy3c02bOFtrWShE8BS5MxE7
-	4euSDEbkmiTuMlYw7e7EdRCtN4YBATY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761074930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OAcllF9nVIfCniwCIoLGKjAXFJuJdiDQqFfGC/k/Yfk=;
-	b=PgrniAbq6A8Ta+KQ1dpnmaF1fFvTyAjBLjGFPcaTqIBLTWMMgeaQdpZAkqqb2iNY5flQMR
-	T/S+JYIv9pRdQJILeM/Fsig91O9lAB8JddQ9mHbVQ/mKMi8ewWA3hFJY1CC3Rc+RX3bLjc
-	1YtZodE2nJ8+vYDkX28nwfsfCI+2yzU=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-4JVRHp3uMlGFGK57OEDxRA-1; Tue, 21 Oct 2025 15:28:47 -0400
-X-MC-Unique: 4JVRHp3uMlGFGK57OEDxRA-1
-X-Mimecast-MFC-AGG-ID: 4JVRHp3uMlGFGK57OEDxRA_1761074927
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-88ea6169a96so403234585a.2
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:28:47 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
+	b=UciSde8dwL44Q9zYbILAkcT8kDiWFW9GgEu20pcjah/tRyBzSRSASfWTZkWpyub7zY0+s2
+	arCCsqfOQj7QtGd3o5JM16A+XRxu/G0uErdHTTWmltfu8Laz2L8Ksi68nqZHFduZ86xmzz
+	8MCWF9UygxvBGDHeEsXwSS0++51qPXg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bs8OTV67;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761075974; a=rsa-sha256;
+	cv=none;
+	b=GM5Shft5XCPI0C4g992K+yQ0s0yn/SB2DmeWR9WyiTkulEHcYtRaMq13yBTT4/YlEG8Qrp
+	H6hEq6dNRj6db2Oo7EgKGJyud2fAommDqz7qautXMPhwcu7hlsvoSak0acj6BBmImdMO4K
+	cljXya+CpRu4bxjIwd6hi1P2iMsiVMI=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4270a0127e1so2906330f8f.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761075972; x=1761680772; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
+        b=Bs8OTV67R2cawpXXMd1FjkXxqjo5rmnSMB8Hd5l/3K2yGPSU2Su03EKDPneXLVE/WD
+         k1ADPwof0ZeYl6TwAUZMC8udInQemoBcV9woGd0GZfPnXIZpQd2BnOQVT4uylmE86hRH
+         tLDXf8LTq481+kPmygAxE4Jb9P0BTMRp6XNJBMWabCBJRMgcouUQdcTF3mq26TwJVZCu
+         CyCVUNIJzapUFwxaqEqcAqb094mmCvuImByICQawmrM3VXwNya9lwgeiTQidba3eqsVb
+         OWqaSjluhHH/3cfVanvd9PHJwAMaYsRW8/bISjShxaqxuLY0WguNQzR8qpCsCsEcO9Z2
+         gM3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761074927; x=1761679727;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OAcllF9nVIfCniwCIoLGKjAXFJuJdiDQqFfGC/k/Yfk=;
-        b=ZRgn+UBgx77MJir5sCNb0gcbLpMPyj4ru3Xjjtmqbe3Wok4u5RcT328dfb7TvMOKLz
-         WLG4KSPqI/fY+nQOHBMBhG+qrcUps3XnBkyOHwzFHjYPsY6WpkVfhEtGqy59DlATjlOx
-         BeyMD5wsaPJRZZ09iPN6W1qIctRWcboSbdeglMAzOaxIaunVPhMGRwy6v0NinTmU5jfv
-         i9XGMOHSi8xGKqcVCsGNISTY4G2TQdopfoAHJSWPzWli7MfyyDujyfToxW4DCwW4P6iw
-         InhYn8ksviuwc8adp9xIPA2VngrxzzQtv4Joomd+uurcWy7qy5tAYfzi8u2RwDHY+eeO
-         jNOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNclK83Y+6D4SG8tk7NAr06Kir1FAlGPAR6e5QPbVHwHy9InZ9Ax/r5M3SQcg93VueYCKGX8frXg==@kvack.org
-X-Gm-Message-State: AOJu0YxNi+o1alfdx4fiiJ7s/GLSDrTNwLAwk15TEgzv242ZeMX4iOyP
-	VIO70DhPE/BvqDejBMDgGT6tOZZ9l7lB9/3RtClf4+Od0VrXuOmA6zw4awOQDx6+KhEWd4DDffT
-	ydByb74psp61HZOxROeBaH+e9/IxRMHUYzzfV//Q0LQ6kTkK6p66t
-X-Gm-Gg: ASbGnctFAad7BllN6jU+WMayCZb86Zo7hJL8LIfMhAMBHU298misqoPeHrD1y8vmvW7
-	m8/dJCNgVnQb94IIeqVyTu+d1tSGeFBpMMmIxUb1k/E6ttpFOn0fW46NNZg8qwG8H5yG+7ZgCM6
-	9VtdmCXZKVlbfuewLe0Rl4e9Ip1YBolbLoimBknZokCflkMbsx+Q+iJLTQS2B8UJ2NLHZ651Vkf
-	Mqxbx0UsNI5GKAfLkgMArDR4ldBZ6yKgqECCxOQLQLERUq1GSVy4+SHFrbey3M8ghDllJhf10f+
-	IhzV3br+GCBivubVD7tjiiM6u9iNgxXK/1U9j3aTR+0HoUBIyCFNWNbiBm9nOwX0+Y2VJNKC4q7
-	aF1oktkvJEYTLXO4nobRmBNh9OQR4q0hrgwlHPxWmQFbeDg==
-X-Received: by 2002:a05:620a:488e:b0:7e8:67b8:476 with SMTP id af79cd13be357-89070114f94mr2346435585a.57.1761074927202;
-        Tue, 21 Oct 2025 12:28:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+u+8bH+lrXiYca/LtZ13ni/QSfiNRKtdF54+j0jtBiSwDvm50yRps0a3A4dxIJsM4iefKKw==
-X-Received: by 2002:a05:620a:488e:b0:7e8:67b8:476 with SMTP id af79cd13be357-89070114f94mr2346432285a.57.1761074926666;
-        Tue, 21 Oct 2025 12:28:46 -0700 (PDT)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-891cefba8f0sm817018785a.40.2025.10.21.12.28.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 12:28:46 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <a01172d1-d902-4d55-bc1e-c8234985e65a@redhat.com>
-Date: Tue, 21 Oct 2025 15:28:42 -0400
+        d=1e100.net; s=20230601; t=1761075972; x=1761680772;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
+        b=Tlq0cxR4TM/lJJmVWIxqkK4q8zJNCzKjzymJzHT7f2hZUKAh0rz2Uw4q6VOjDV7Z3S
+         HNVSHQ4Bj08L50XYgzyrqbm3yRR1vEmAJC9MDOKtRr020rwdsu2N5wnb3OlX2Wpk/Q39
+         tr+uYXR84VV8eithGtQJO/yRxcnJR4aihbn1iNB0RcrjSRSU4IwLbp41yApUyNK4JHqf
+         49anWXuOgR5GVJk+jJi2XFl1k/KleUI6VftipNwTRfJLXbyITo3RGC5SUK4vQ8fQvGTn
+         d3ypXyQ9TZL2er9cfj2T2ZjlIxqQSpJQZFh9NzZMcCroLFUCRXwdFiDup/M3/qzIEpCG
+         5F6Q==
+X-Gm-Message-State: AOJu0YzA0/SFbL84lpSdSOdYyCc9eo1TQDQXlnNCCAsOkJ3CoeMCrtBF
+	PHMi7Zd/3wtcTy5KWlEet1tZqYi3YtvbJWGMUOXU99YLg2NIA1EjjLfjjJHCM1wd+IUnNA==
+X-Gm-Gg: ASbGncuUGHqkrg6lcewEouxwYMAKKBmAocAswaW+pXfzQMScicYqpdlOB1wk7LVD5Vv
+	GnLcHWQQ76+m+iqrWm8QmONdgqcwphOWWPyBx5VawJmNiDeskZWTfTHlU6Uj7klvubeTlOwsB96
+	EVUYWKiGmnuK5GBi9ylbRt+UV4pph5YJLiYMfUVMXrnIPEyCffZZDV7aw+1SL8sWUSyNenjN1lK
+	j8dNO5r0InnlUnwn+JBCJZhBiw039SO2xyMFQHs2x/GwQn67PlIT3nNqNDHkkL9tyT1+UlT9fao
+	bTIkKycJXuG0npYUgHdEMT/vIqsIOoyxcLbTUg5/7wkmg2PeW82Uf45nWUTqNvpk0rVQ25IdTv7
+	dixHl/uJd8UvNsC9/t83KmMp+g1Rf7QGLwh6F4rpSBZNE9k5tgwB1zMVFHoS/ErdM4gNiYpTTOd
+	3yAfa1qs36hZY57eIoCHV4deKMHJrlXwR0uNGD7yhGXw==
+X-Google-Smtp-Source: AGHT+IGa66oK1Ku/F3PiZN50n0zTqmr5IA7b19DfK2SzeLpd1kEHYq8mnoX0k3rpIbXU5X4W0Hzr1w==
+X-Received: by 2002:a05:6000:2005:b0:427:9d7:8715 with SMTP id ffacd0b85a97d-42709d788b9mr9713022f8f.34.1761075972252;
+        Tue, 21 Oct 2025 12:46:12 -0700 (PDT)
+Received: from fedora.customer.ask4.lan ([31.205.15.105])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-427ea5a0febsm21667227f8f.6.2025.10.21.12.46.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 12:46:11 -0700 (PDT)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: [PATCH] mm/vmalloc: request large order pages from buddy allocator
+Date: Tue, 21 Oct 2025 12:44:56 -0700
+Message-ID: <20251021194455.33351-2-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/33] sched/isolation: Flush memcg workqueues on cpuset
- isolated partition change
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
- <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-15-frederic@kernel.org>
- <364e084a-ef37-42ab-a2ae-5f103f1eb212@redhat.com>
-In-Reply-To: <364e084a-ef37-42ab-a2ae-5f103f1eb212@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wyZ8_6XQQpgYEkazefKG42DXC6a9J4f1y8cO4WnSPZ8_1761074927
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8AF71140004
-X-Stat-Signature: 7g6zetnnxawqbr16onza7ppu9yg9gf35
-X-HE-Tag: 1761074931-321824
-X-HE-Meta: U2FsdGVkX19f/Gp0Hfld/gANpCboENJ5cqVXSoHfuxs/CiG0EA3w1bRGoacfbC0+/fIdFmrGcfs5fof9pvDInEWzDvPtgpFioUyBbO3oCKVMmP/ncjJcHNbjszEw+lbKlTN45+foQpBJai3K0rrwfqsjqO4rrYFKPSBwbAqalGltbrwlkPtSXlpz7HyuGMJIo1yey8G8Vhqx6gItEvzSU0AJQ0dq9TyN1BBANh/VF1iI68bPoSPTBC77hQ0lxsc/yUSLi8hoRlj4GwTa0qdjz/MFamXxpbrK1PgYPBrmpUkeV5rKxUfcmURjZbh4PCdlbqzHSlhuhFq2NxYVsQNzcC9TxElvZ26xlf7YXbMz/s8NbbkZ02YMyInhl8mSe3HkNLKE8KSq6aVPBpdxuTSHnJi6sA+R5h9rg2MlJMzisdMXuCqYyTt3Od5vFHbCpWOa5Y63OxDocTmGU/WV2c51u/+igOmCasGiZ5SwNJ+8oC2KBrQoXHEytVROtP2Cegl9Wmsp4pZwX35f7RgRGVI8sHiUv9BzkPa4K1iDkHsRKd1rBWsPkqHHXQvhK0hEKDK2mj+z0g9iSu9N0Nwl+vcn3/pO1k+gVtunrH2BcTAmxbrjopDoFFmWX3RbyZHLHL1lTYhj+jlEgWs3CT26vh4K7/+Wegb6hlyMLr9sWFU/ruQaqsGkE2pu8/ubHXBym3N18cXoYrpVzdOpFjj8lE3X9xwFuuAEGbxajJ+636uWYWfK5vo665YdC/9hDVbU1GaLXsm2LUiO7Hx1OCiJE3TlisdND+muLIWMy5aTWXbXs39Z6v1Fix2ds1DtJETWOzNH///Aegjwf3h83f22YGQ55AN9IctXHy0lv0oTvB96U38D564JtHDb/jqU4/0zuKFa5/BeWNVEnYSANYErk8Ooqtj6460D80Z/GMt4LThgdmmJQC1x7FrFD58JNkWHbN2/XRD+f3/9j3qPccbhH2P
- uqO/CAVV
- Mi9wcqNSekEYEcLvhhuPKb5nLG3bhYfRjL1jnNHKCJaJBbF9J/NsW0Q7pEKgLOMof8b8+8fyQUltg2umdS86Vo8nGdBJ2I8e2+8KxmkmnhNSnYk8zU/xE7DxErIyc1SLTQJ2gBopa+qbNIwaovxm8WzpSIHXTF5F0oiM3RBlUmTAYy/kFCVfUR5CANA/xn4q6kweE6Pe6CR1tI2psn+36xU0HxrtgPEgO7/6T4SAxbu8DGmee5s/ZRtCSUfCmEM+45d7EPEwSXCX+2wylTkach1MGVDzqF2fJuZs5gPjbn2F/Z+pdk6XClYYbjJTkwFN/Q0ss2z3aibvW8SyNVtVB2I087FmzTn6oMwHAY8RqnHXsJJlWjY16a8FYweF+IaexYDcBYeAbCbZlXMh3HRQdd7vz/799ruYlKMCXe1MzuW23lgNDq8h7nA8cSoM2g5RiCRoFayFcrh7S+g3nE6bRhHagr9Ody61JQEo9oYQunMwUxgTExXr3fsOt+b9BFUOtBkZ8hz/S4Q3p6dvSEoSuPX6JXtgYacsv11y+UXEUH6pjD9AmUCA+u5PjoUmz9sAUKbkqR+l4JARisDn+aHLvuLe0BQbIH4j3CdfCl04olpkbWJM=
+X-Rspamd-Queue-Id: 6DC7714000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: i1w5u5hfq9bohgtsh5k3ok6usnmyaqjx
+X-HE-Tag: 1761075974-958903
+X-HE-Meta: U2FsdGVkX1/jeEMvv13sPO8yavJsJxu0OHNDU1msk0ktPqxXhwXjsxaV8RTnnlMuBzolRitUfb3C//n0dL/4+2v7cQAhuBKpJYYmVqcVcZdNZlICGTbQKttDKgGasdF1Iag0Wflx/C3l+0616hMb0ukSvyhXyO0luZU8MbrlMSpGj2Z73Dy3dkz1I+vDqsEXfxSXQZtTlXvuv3VjsBEKn2uZARxfVNd1Qn35ILZqcV6lvKhHx6gs8qg5d76guA0ujznjPUMfeGv0alDTkfSP35MYnHT4vyUmrPr9L1qAEjh6fq0e8ULRDTsmKpWf2N0/M3H9qpgpapwAZpR/3XX+vEsVB6dy8JT850Y72BDP2oCjKewc0GRavKxKhYplc8qa0ZPa8EhxH4tMM+PZD+9lZR+66angsiVAeFb7bUknBFFLQxfehwkQDke3eO0RWsnlFI2fRIOiksHitimEvHpU7LMp7G4oezU0Q4/83bc1Ngpl+kwLI+ha/89vHsgb22Q/40CS67HbP9ROZrXQkSX/tUWdVuZ+ByG8/QPwnSXTCs2DKTfkvrV3r/qedE7gsFHfcrbQ72ysTD1sSBJb88CCnpVdbDG5B/xwoxsjzUm15g5Wlom44MVxJziuIyYf0SIoq/EDv8tJkHKy9N48X1WZKOoY7qwMl8hQtbfivTkuc1IHfZ4wlRuR2zWS+AqizwGA7ktr2P6d92H6FS1pdDoXqysOdq/i4T1yGVR6q15cGhncgKLtuQ3D/LoFMAmZfA56cAj/2lWew8XVQOLJgZXq0UXYgbw32Do9veycafhjk4AlNhPoMw2QCq5MQuC/sHN1XvqZjiCpGPXwcgR2SY0WZDxOWTh2mLRYePzNESOn8xFTPR0csM2v7tzlbAvR6HtrTsUyvoqRlqWSp2eb+rY/9rSloFu4hMXoQXXGEw8/l+8FvSRr1qNwKlmIzqD3vRpELQx/shEXExVzXnxqJZC
+ wLdgt/ky
+ A/ZC9znriFuMax60Ig51+kICRBHp3otxUdWwf2VEcZ1n73kZPL+v6B7GsAufis8SvOpAqL4d480vcuM6qDY2CAfhGP/f88iMvmGNXtx4o2edAbsdLe7AO/POsANIrfmDfN7BA0LkmJfhj0/5o9BJBnzmqa7NR1fM1Wm97t5M9wT6AKhvlN31P2vA9LBc1/vcf/vcPs7PDa+J105pxfItsyNroqiDs9PyjDiQjrdHrmyxmEAaN5gnjVgEBfj74UjQU4miKSPg9wGwmn9znokBgLmygHWG+0PGccurU0dVrGDngrVNE3VWtyvRyI2nGLMO6neW1XDmVpe/GzgufO+N5q+zSmNHi0DeL9dVe6zuVLK9sPlb6gidpeLOWWuEn8LE1X2BeGAHsUTVLiTW8zHnSWateb1Owz3zFUOGyxPNi38smjYQeZN6ZiUSrUwQ7It+MPIXsjMKxbrRnzcE5rbWZzNPhdB4M7rIovmcf9NSZq5bEPukGLdJ1XW1DEVUvvvtDRTzSfrv0WiUga8Fzae5I4k9LJihSNo8HaaH9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,119 +117,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/21/25 3:16 PM, Waiman Long wrote:
-> On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
->> The HK_TYPE_DOMAIN housekeeping cpumask is now modifyable at runtime. In
->> order to synchronize against memcg workqueue to make sure that no
->> asynchronous draining is still pending or executing on a newly made
->> isolated CPU, the housekeeping susbsystem must flush the memcg
->> workqueues.
->>
->> However the memcg workqueues can't be flushed easily since they are
->> queued to the main per-CPU workqueue pool.
->>
->> Solve this with creating a memcg specific pool and provide and use the
->> appropriate flushing API.
->>
->> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->> ---
->>   include/linux/memcontrol.h |  4 ++++
->>   kernel/sched/isolation.c   |  2 ++
->>   kernel/sched/sched.h       |  1 +
->>   mm/memcontrol.c            | 12 +++++++++++-
->>   4 files changed, 18 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index 873e510d6f8d..001200df63cf 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -1074,6 +1074,8 @@ static inline u64 cgroup_id_from_mm(struct 
->> mm_struct *mm)
->>       return id;
->>   }
->>   +void mem_cgroup_flush_workqueue(void);
->> +
->>   extern int mem_cgroup_init(void);
->>   #else /* CONFIG_MEMCG */
->>   @@ -1481,6 +1483,8 @@ static inline u64 cgroup_id_from_mm(struct 
->> mm_struct *mm)
->>       return 0;
->>   }
->>   +static inline void mem_cgroup_flush_workqueue(void) { }
->> +
->>   static inline int mem_cgroup_init(void) { return 0; }
->>   #endif /* CONFIG_MEMCG */
->>   diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
->> index 95d69c2102f6..9ec365dea921 100644
->> --- a/kernel/sched/isolation.c
->> +++ b/kernel/sched/isolation.c
->> @@ -144,6 +144,8 @@ int housekeeping_update(struct cpumask *mask, 
->> enum hk_type type)
->>         synchronize_rcu();
->>   +    mem_cgroup_flush_workqueue();
->> +
->>       kfree(old);
->>         return 0;
->> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
->> index 8fac8aa451c6..8bfc0b4b133f 100644
->> --- a/kernel/sched/sched.h
->> +++ b/kernel/sched/sched.h
->> @@ -44,6 +44,7 @@
->>   #include <linux/lockdep_api.h>
->>   #include <linux/lockdep.h>
->>   #include <linux/memblock.h>
->> +#include <linux/memcontrol.h>
->>   #include <linux/minmax.h>
->>   #include <linux/mm.h>
->>   #include <linux/module.h>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 1033e52ab6cf..1aa14e543f35 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -95,6 +95,8 @@ static bool cgroup_memory_nokmem __ro_after_init;
->>   /* BPF memory accounting disabled? */
->>   static bool cgroup_memory_nobpf __ro_after_init;
->>   +static struct workqueue_struct *memcg_wq __ro_after_init;
->> +
->>   static struct kmem_cache *memcg_cachep;
->>   static struct kmem_cache *memcg_pn_cachep;
->>   @@ -1975,7 +1977,7 @@ static void schedule_drain_work(int cpu, 
->> struct work_struct *work)
->>   {
->>       guard(rcu)();
->>       if (!cpu_is_isolated(cpu))
->> -        schedule_work_on(cpu, work);
->> +        queue_work_on(cpu, memcg_wq, work);
->>   }
->>     /*
->> @@ -5092,6 +5094,11 @@ void mem_cgroup_sk_uncharge(const struct sock 
->> *sk, unsigned int nr_pages)
->>       refill_stock(memcg, nr_pages);
->>   }
->>   +void mem_cgroup_flush_workqueue(void)
->> +{
->> +    flush_workqueue(memcg_wq);
->> +}
->> +
->>   static int __init cgroup_memory(char *s)
->>   {
->>       char *token;
->> @@ -5134,6 +5141,9 @@ int __init mem_cgroup_init(void)
->>       cpuhp_setup_state_nocalls(CPUHP_MM_MEMCQ_DEAD, 
->> "mm/memctrl:dead", NULL,
->>                     memcg_hotplug_cpu_dead);
->>   +    memcg_wq = alloc_workqueue("memcg", 0, 0);
->
-> Should we explicitly mark the memcg_wq as WQ_PERCPU even though I 
-> think percpu is the default. The schedule_work_on() schedules work on 
-> the system_percpu_wq. 
+Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+allocator. Rather than making requests to the buddy allocator for at
+most 100 pages at a time, we can eagerly request large order pages a
+smaller number of times.
 
-According to commit dadb3ebcf39 ("workqueue: WQ_PERCPU added to 
-alloc_workqueue users"), the default may be changed to WQ_UNBOUND in the 
-future.
+We still split the large order pages down to order-0 as the rest of the
+vmalloc code (and some callers) depend on it. We still defer to the bulk
+allocator and fallback path in case of order-0 pages or failure.
 
-Cheers,
-Longman
+Running 1000 iterations of allocations on a small 4GB system finds:
+
+1000 2mb allocations:
+	[Baseline]			[This patch]
+	real    46.310s			real    0m34.582
+	user    0.001s			user    0.006s
+	sys     46.058s			sys     0m34.365s
+
+10000 200kb allocations:
+	[Baseline]			[This patch]
+	real    56.104s			real    0m43.696
+	user    0.001s			user    0.003s
+	sys     55.375s			sys     0m42.995s
+
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+
+-----
+RFC:
+https://lore.kernel.org/linux-mm/20251014182754.4329-1-vishal.moola@gmail.com/
+
+Changes since rfc:
+  - Mask off NO_FAIL in large_gfp
+  - Mask off GFP_COMP in large_gfp
+There was discussion about warning on and rejecting unsupported GFP
+flags in vmalloc, I'll have a separate patch for that.
+
+  - Introduce nr_remaining variable to track total pages
+  - Calculate large order as (min(max_order, ilog2())
+  - Attempt lower orders on failure before falling back to original path
+  - Drop unnecessary fallback comment change
+---
+ mm/vmalloc.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index adde450ddf5e..0832f944544c 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3619,8 +3619,44 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		unsigned int order, unsigned int nr_pages, struct page **pages)
+ {
+ 	unsigned int nr_allocated = 0;
++	unsigned int nr_remaining = nr_pages;
++	unsigned int max_attempt_order = MAX_PAGE_ORDER;
+ 	struct page *page;
+ 	int i;
++	gfp_t large_gfp = (gfp &
++		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
++		| __GFP_NOWARN;
++	unsigned int large_order = ilog2(nr_remaining);
++
++	large_order = min(max_attempt_order, large_order);
++
++	/*
++	 * Initially, attempt to have the page allocator give us large order
++	 * pages. Do not attempt allocating smaller than order chunks since
++	 * __vmap_pages_range() expects physically contigous pages of exactly
++	 * order long chunks.
++	 */
++	while (large_order > order && nr_remaining) {
++		if (nid == NUMA_NO_NODE)
++			page = alloc_pages_noprof(large_gfp, large_order);
++		else
++			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
++
++		if (unlikely(!page)) {
++			max_attempt_order = --large_order;
++			continue;
++		}
++
++		split_page(page, large_order);
++		for (i = 0; i < (1U << large_order); i++)
++			pages[nr_allocated + i] = page + i;
++
++		nr_allocated += 1U << large_order;
++		nr_remaining = nr_pages - nr_allocated;
++
++		large_order = ilog2(nr_remaining);
++		large_order = min(max_attempt_order, large_order);
++	}
+ 
+ 	/*
+ 	 * For order-0 pages we make use of bulk allocator, if
+-- 
+2.51.0
 
 
