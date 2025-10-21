@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39BCCCD19F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 01:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAC57CCD19F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 01:46:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5388E0010; Mon, 20 Oct 2025 21:29:22 -0400 (EDT)
+	id DA62F8E0009; Mon, 20 Oct 2025 21:46:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456178E0002; Mon, 20 Oct 2025 21:29:22 -0400 (EDT)
+	id D4FF78E0002; Mon, 20 Oct 2025 21:46:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31DF68E0010; Mon, 20 Oct 2025 21:29:22 -0400 (EDT)
+	id C3E6F8E0009; Mon, 20 Oct 2025 21:46:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FAD48E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:29:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B155347E11
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:29:21 +0000 (UTC)
-X-FDA: 84020388522.30.5946CFA
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A1C6840003
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:29:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FpBblKX7;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ABD758E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 21:46:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 55E85160363
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:46:40 +0000 (UTC)
+X-FDA: 84020432160.29.1948BF6
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7AD5612000A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:46:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761010159;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761011198;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XbAeAhvigMJAS3c2tXoCnvk4KAjUZ+kOzf4CO+MJDfc=;
-	b=2E5Hq+vVfTH3qkkV726GNs3TwNgJ7M9kzdalZE5GrkXq1mc8Shn62MOPWaqVr0ouYPFtap
-	ofhIdpVWV4Q7l5dr+xZCvve4EfQLZi61O1wg4jYtxtMYq+oG2JcZaAg5QS6DtH2vfjMmrj
-	38AnoUTSlUiKI1ptINLZw+Z0hPov004=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O0ZJ5duNdTflkbBvVh2wuF1GyoUX5wgF5uwEeWUicSY=;
+	b=44CBOsqnTZM/R8IbfBV1PO/cttZknRSumSvQlyuZ7fjJL+NvTY9KjcwliDbmCe+se/PnAe
+	TSJbJsg/Dz7kDZdSBTO0ygwKJrJaKNADfto6BYuJ8HmfXoAbDuCNy+0LR9BVJD5JV8a0VD
+	/HC+g0PZE8Gc/jw3UV7zvGJuiTwamVk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FpBblKX7;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761010159; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761011198; a=rsa-sha256;
 	cv=none;
-	b=VxvLWUSe7MpuSakcHkeKckzxoMu7Q2eCjflgG7BP6IVIYGcfh+ovoZFmU9RfZAPhIWdaMi
-	RvKSmk3XQtxpVpbj4YK8BOYpyts9qfCQAMn5wxitZ5WDwLIJ1W45V0Yy1W8RrodRXO6RYY
-	ehVfGKogwcfRaLPtwY/CUtdCywGMQxE=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b5c18993b73so816399966b.0
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 18:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761010158; x=1761614958; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XbAeAhvigMJAS3c2tXoCnvk4KAjUZ+kOzf4CO+MJDfc=;
-        b=FpBblKX7imwETQoCGk81H6hYuUUDQbChTQuBvi+tYA7Yi+gZoTagyeINO065UZt0nB
-         ERa4zm8mGI1DSbB23GCqgI7/CjtIqnJSzPKnIZCCTOjGlevt1YeSPduf3sMDv71pXrph
-         woXsS+N6GpWL745B8zywfPihJKVBxfOBYnp28k2kHpSKJYu6i1nGc3wolBa3S1yi94OC
-         juiIAGQl+eJjJi+FNiuZsIt19GqYen1eDEsG2lrzV1d8MMmxKL9uEDJ+yUPWsAkS9las
-         UpYGyrtuOX7IFN+FgX+DQUaFfJVvfBmZuBcTZpheDwmUIZes7Qdl84PndqQzd/xim0Ng
-         BcZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761010158; x=1761614958;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XbAeAhvigMJAS3c2tXoCnvk4KAjUZ+kOzf4CO+MJDfc=;
-        b=YPA59JSTf0IdgOXtYqizsZ8cv/mUyz2idxdg5KiOhZxDXqWOyMcGz5gIhb9w+jJS6l
-         cFnQCnSGamptCcVTIKo+/cIRaa4X5ivG1SMZ2viOWgyGqWxZhtJhUA3i/d2b4HiVp+kx
-         j34wJJchAMYrSCvQ+0235z+ijQmE9OvQD9CG/xZCKH1KqtSnoFGhOO0jvjlL/LS29SR7
-         kItt0LIkGQJu2A8BQRiQS8k9aTXZ7pYgFQ7lYA0mUg6BwH8j/00q3QOZC9W4kC/4DY7C
-         8D8CCOh6knywAzidjIuS/UVaq0h0SQrBcOVdA5QnnlKvKSt3W3BQXwNf9hMXpCDiZzNf
-         oHZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWM8Ibys52CPYD6C9QEaGPFMaDswe5J6hX16AtOXv9S86iyfsc7B/ZcSZo2jDzqhGx7aisaxsaoFw==@kvack.org
-X-Gm-Message-State: AOJu0YxY2yEGCmdj6ZLa3CYmbBu96TGIMQI3E6dFiRkSFiMBnMB80mPk
-	NnQqqT43CUmmRJiAWESVDOvCKyqjB/OoH84OaNYvhfMefDm8JGLptgeK
-X-Gm-Gg: ASbGncvoI7J6UMfGXItZVLOww/l+M+dXehHiFJd8dGQ2jEY18hkM8HwB65Junpdhd3p
-	Jc2YGbanz6ZpaEVfszZRNiuy4EoGxVOIuTiwewZw6nywJbVsE6+iK0QMGRg0Nxqz1PLYvw999aX
-	8Xcalro0fDSTy0IC2th2In63yZg8zphaD6Yg1mh2hmk5KguPvg9lZ/CpbGxUeFqbaGIDWhBJYZ/
-	eEHcxfFwFZpwjJpQVh8U5ApG/eOpHqtoJvwr8nf614dJAyTLQ5TUpRi/dRB/sZguX5PCUY5lfaf
-	JdhDOxN4yuk7xd09q/t9YXUTOdLD+pQcwnpM4dZ/0K5hS/balv/WVUqKMsXHh9TrGZnWLaH3D0L
-	bUqZsK3tS6xwj41kWWAjPz8vwy0yJndEqQLt5UtToaVIeHRhTctkFZ8tC6IA5CmRiA68XuI5cSd
-	c=
-X-Google-Smtp-Source: AGHT+IEaH2H2LgvLbz87krnRsRO92Pl4X1QpotTP6cukUX3DXB/2xHYU+4teR4vU4XoGFAF40rZTFw==
-X-Received: by 2002:a17:907:7203:b0:b1d:285d:185d with SMTP id a640c23a62f3a-b646ff7d658mr1804922266b.0.1761010158071;
-        Mon, 20 Oct 2025 18:29:18 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c48ab45b8sm7990881a12.9.2025.10.20.18.29.16
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 20 Oct 2025 18:29:17 -0700 (PDT)
-Date: Tue, 21 Oct 2025 01:29:16 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, David Hildenbrand <david@redhat.com>
-Subject: Re: [RFC PATCH v2] page_alloc: allow migration of smaller hugepages
- during contig_alloc.
-Message-ID: <20251021012916.gkxh6cenjivwj455@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251020210816.1089910-1-gourry@gourry.net>
- <20251021012533.56rdl6v76plkw4nl@master>
+	b=wI37L9BqBZfKgM2OyRAkju0SroFzlfDR2BU6f2xaLYcvJzRpn2k4S2BDgm2dq36w/HeNOX
+	BuRxI1+25GAR2/AV/l7PcEz/yr/biJRSoaWdlZjTYvi2YX7y04l5zbfkD9EID1buu6n+8P
+	EK9ax5vJz1Mpag1OSbrjLDu7CaVeTRc=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4crFVy0tCfzKHMQG
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:45:46 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id D88FB1A131F
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:46:31 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP1 (Coremail) with SMTP id cCh0CgB36Uz25fZoPxk8BA--.39058S2;
+	Tue, 21 Oct 2025 09:46:31 +0800 (CST)
+Message-ID: <bb9a75dc-8c34-41da-b064-e31bf5fe6cb2@huaweicloud.com>
+Date: Tue, 21 Oct 2025 09:46:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021012533.56rdl6v76plkw4nl@master>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A1C6840003
-X-Stat-Signature: 6d6bkecwzi3cza66h1ffzrfes4rk7pk7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/33] sched/isolation: Convert housekeeping cpumasks to
+ rcu pointers
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-13-frederic@kernel.org>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251013203146.10162-13-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgB36Uz25fZoPxk8BA--.39058S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3WF43tF17Ww17Gr4xXF43Wrg_yoW3Jw4kpr
+	Z8W3y3GrWkXr1fG398ZwnrAry5Wwn7Arn2yas3Ww4rCFy7uw1kZry09FnxXryUu3s7Cry7
+	Zas8tw4F93Wjy37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	j6a0PUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7AD5612000A
+X-Stat-Signature: 6w87ym3bbi6s6j71koaxecswpodhzu87
 X-Rspam-User: 
-X-HE-Tag: 1761010159-128967
-X-HE-Meta: U2FsdGVkX19ypqWgbJpYBNbDK27TtElDKi5kA7vcpV6qjChmr9YL0Uk8l5mmMQyB2+2ptBZTL2J9yjhDTO5t+JwA4voGdh6y3yf1HZIlyjuffx9qCTH8UDaQTWgXZxLN7O9CkmeyP8SGBz6N1tqknV/5Aou5sjpcr4zdcSDVXOFEhQQBtVtGhwyr3NGBHxtiIku6bNU3IXhNV5RiUmDkQ/nwsLyrQIquuOrHjvaoqubYZPQNACHdIzX1Y2rr9b8oBZPOhcqP96TZpqtUnHB8etRBcTRON13Mz361mXxwA2STtykDALE6UJGDaYtrmdgcp6p8kZpDdlvJ/VQrgNMRVbMj9e20JnwU5p2WJFZjEkhoggTviSVIwVbXP6O+f4Wlh3JDfWvotyIaup/BAcaaFZwC2erfDrUo4QJa0s5C8fRbL7t3s3BP6Bb/4Krj8wYjKb496KH82Y5uZJZ7BxRXqz5FQAyUSXZ47je9E1naKuecPx629NyCfX2OIXUGy7NfUUq3Gtg142M9zdAtAGeDS+4mYQcmK/cfyJcmtDnQevEvjFpo+pz/1S2iGAfnOQmWTaJCfa7n/TMzc/V4LVlsFg3NyXpJmSAzsARMMK5mxvoWgyaPaSqcwgTfisNVTUNPsTODDtAY7F2yjiRb6PDnU+Ehnz3kqI3+eBsuajM42nNXn+nv+hC4LzpUKqMQw5ZnxVKhC8hI1QJ8uMfwlJmPKzt9AgEf4OLXMnWiwk9OG88gvyEyyt4uzGq3iUMeXQimn72d1okSAs85BsxzYli4c4mSqaFoS2VgwKm/tmQXXM8OK/GRNm43oqz2bKskIIZiKNIw1bQNtYArrPXb/VWZy0nPWrTbUAJDPt5p6bRXx6vhy3KEI9opq+3ypczbCiFKH3/n1a8tXlB+HwTJYAYv/ovOLjNfpzGF5L/BdAWXrcykg5HXPm5q9kmxKzWgqMrUuZxeXkRNG06RvcGo6A9
- NDJ5aMj4
- 78R6eWwkVYMA9LwVtPw7MXgfzq0CVwqLXxAkjY/OupSUyvwZoDnDoAjzYCAMgKdhj8I500FO8J8BQ9jkdybu0OKPFAI3FvOTSdSADDwq7IicPIlw8T+XLjaTqMYkj8aD7Lj5K105KFrehLNXjWsnY4dQ7tBlBaW7rEbmr4rHZVTHQLyKiyIjyLJ+l0zRhb82N22Z9iCZUXFvV0n6COdSEOIM9obKcP4tdG01DENWPa+wAP/Oymk3E2qEjch5uUwRdiuvaSpZbNnMDhuXNuwXYFGTEhA5Qj738Yab0CtbJA0R/HIaNbZ9Kxv0GmmgrVJpKoq1N7IGOelcu6TcqL+VFDybU5IgERyfnHQX1/cYgn2ayoPohWeT4ZD4RTyx5FkzvrYGkWGhACDkDoSpaBueqpxUK6mBvVZwgS0dPcQqgPoXvQnqfxplQJ08SWsegoFNmtYc/Ok5mN2AqdUDEzT9cfciRO1ShXqJHSyYJvWnV7h8H9nVXyxq8XHplkaikaHGDdNsrC8j0Tr6ahyaD3LO4DPQKUfErpMnYndN/4nFom7y7Q6hor0Vkc/yQGrQNBPmoQrwZg8nlZGjpF0+lYwZSLS/vucDw9INiUjb79a8ommqnMiz1xge2Qm65IAyEf0FTqvzI7MSYUAZYwnwuMJ+zy3ZjRH70EqfmMnuOcYD35LLR+p/LEpXWlU8swTz4Ejv6yOcXjL86Abn/xzaJKB1zBE6elSQWWPiL9iYo/AOu4cG92SiKHfph8cBGPySDG1jK0GiQjlfKKr/U970we1HEQBMRUcSphzrcH01Y3SZdM3Q6ZLQ6AGMEjmGpSszRCHMymhurjKPFJTgE6Jv1whSP2pry7RUdRDg6NHJ03m8QMs7fnrc=
+X-HE-Tag: 1761011196-65846
+X-HE-Meta: U2FsdGVkX1/wF8hvDDFvSixOSSIwP3ZHNIKtMkuO8phgrc2/JvCa9Rm+Mz7telGqOCbqt5NsEqPVfbG7fdNnf2UVxtyyMlIaAMlG3HcPChaXvuXeFmCV3yKpbOQ58Aeeb39Wb8bmc2qduWn0E7WJZxLUnXejDsDgpw9sfW2AO1qCS9qQInFYQNYRPvSoRr/jrY69sOaoTbWOSsYtMy9qo2D3TqNPuPZr1Y3LzJ+eN2+NsA485U2UGwPe4xFF+4buhQAPerVBb5swWG4EER+uYIsPoBGlJ9mo9KhlNJa9gLqex5jyYGb/qB7mEGIDDeB6qvlyquQknEI0HwI65N3MMHzW9aLH4ZK4+35N/TmgNOt0fsHE4x0r7mCcsAbBdru1bKlwYVUNYwNaoT4ghHkSItEAlOrVzdVymIua8+jTbBdTuZJkAzle0Q7qV1Ps1DvHL8g2qSusbbaXhpR9/5wV9gdRKR4xGyBC+wTLFjWo8Qv0V24CUa/aqgtmxTzgMxyph75euGt2cUCaZeUWMc9HqGnnFqnVk4Ssksu8ziCX5BE1eh0g1qympVVQAJ1CiRHevovAlzHomvTjcyYeBasdXCAi79TgsK3cN3IW9NPofi3jJgG/PuvQ5H+KTR18SswNOOfGpxwiJijQwVhpLmArZKcFkpF0NalLdhXaeDP6GREO7XBO6WazuiFvdy0IvxXqqWsVcO/vaoTHpstNrvTxDnaJ1w8iqo4nQRuG9iIWYi3Grcloqh7HhcraiW6OAUfe5iu/66NFoTLHS606zHqEZ79BMCDqup6tnj75u4Z5Q+wwd9L0L0051FP3faoVdLoMc423z3EHFuE613Ki0AVH8QtP4SsVl2ic3X0S9ENrwbGATiot/OhMt8295dXESYkVQt7+k0J8vUzXo6bq+rjsbeVlDtxwGH9jlApINEGaYIXRUwl/sFlZq/MJerdIxdsNeExWBhqoczv1ePh1xAx
+ t3K3sOH7
+ mC+DhRg3zOW+qjHiZKKLZZ/DKoUv8Zq7UZgtg61TFjdjHcVdq7XIerwTHxg7prB09/ZuY+S0sYWoYnBonh1Cdk4fjqKFGR6jeglgKuEgmdVG0CZs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,70 +126,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 01:25:33AM +0000, Wei Yang wrote:
->On Mon, Oct 20, 2025 at 05:08:16PM -0400, Gregory Price wrote:
->>We presently skip regions with hugepages entirely when trying to do
->>contiguous page allocation.  Instead, if hugepage migration is enabled,
->>consider regions with hugepages smaller than the requested allocation.
->>
->>Compaction `isolate_migrate_pages_block()` already expects requests
->
->isolate_migratepages_block() ?
->
->>with hugepages to originate from alloc_contig, and hugetlb code also
->>does a migratable check when isolating in `folio_isolate_hugetlb()`.
->>
->>Suggested-by: David Hildenbrand <david@redhat.com>
->>Signed-off-by: Gregory Price <gourry@gourry.net>
->>---
->> mm/page_alloc.c | 15 +++++++++++++--
->> 1 file changed, 13 insertions(+), 2 deletions(-)
->>
->>diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>index 600d9e981c23..da2e65bf63e3 100644
->>--- a/mm/page_alloc.c
->>+++ b/mm/page_alloc.c
->>@@ -7048,8 +7048,19 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
->> 		if (PageReserved(page))
->> 			return false;
->> 
->>-		if (PageHuge(page))
->>-			return false;
->>+		if (PageHuge(page)) {
->>+			unsigned int order;
->>+
->>+			if (!IS_ENABLED(CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION))
->>+				return false;
->>+
->>+			/* Don't consider moving same size/larger pages */
->>+			page = compound_head(page);
->>+			order = compound_order(page);
->
->How about using folio_large_order(page_folio(page)) ?
->
 
-Hmm... I see the discussion. Forget about it.
 
->>+			if ((order >= MAX_PAGE_ORDER) ||
->>+			    (nr_pages < (1 << order)))
->>+				return false;
->>+		}
->> 	}
->> 	return true;
->> }
->>-- 
->>2.51.0
->>
->
->Generally LGTM
->
->Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
->
->-- 
->Wei Yang
->Help you, Help me
+On 2025/10/14 4:31, Frederic Weisbecker wrote:
+> HK_TYPE_DOMAIN's cpumask will soon be made modifyable by cpuset.
+> A synchronization mechanism is then needed to synchronize the updates
+> with the housekeeping cpumask readers.
+> 
+> Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
+> cpumask will be modified, the update side will wait for an RCU grace
+> period and propagate the change to interested subsystem when deemed
+> necessary.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>  kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
+>  kernel/sched/sched.h     |  1 +
+>  2 files changed, 37 insertions(+), 22 deletions(-)
+> 
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 8690fb705089..b46c20b5437f 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
+>  EXPORT_SYMBOL_GPL(housekeeping_overridden);
+>  
+>  struct housekeeping {
+> -	cpumask_var_t cpumasks[HK_TYPE_MAX];
+> +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
+>  	unsigned long flags;
+>  };
+>  
+> @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>  
+> +const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> +{
+> +	if (static_branch_unlikely(&housekeeping_overridden)) {
+> +		if (housekeeping.flags & BIT(type)) {
+> +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+> +		}
+> +	}
+> +	return cpu_possible_mask;
+> +}
+> +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+> +
+>  int housekeeping_any_cpu(enum hk_type type)
+>  {
+>  	int cpu;
+>  
+>  	if (static_branch_unlikely(&housekeeping_overridden)) {
+>  		if (housekeeping.flags & BIT(type)) {
+> -			cpu = sched_numa_find_closest(housekeeping.cpumasks[type], smp_processor_id());
+> +			cpu = sched_numa_find_closest(housekeeping_cpumask(type), smp_processor_id());
+>  			if (cpu < nr_cpu_ids)
+>  				return cpu;
+>  
+> -			cpu = cpumask_any_and_distribute(housekeeping.cpumasks[type], cpu_online_mask);
+> +			cpu = cpumask_any_and_distribute(housekeeping_cpumask(type), cpu_online_mask);
+>  			if (likely(cpu < nr_cpu_ids))
+>  				return cpu;
+>  			/*
+> @@ -59,28 +70,18 @@ int housekeeping_any_cpu(enum hk_type type)
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_any_cpu);
+>  
+> -const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> -{
+> -	if (static_branch_unlikely(&housekeeping_overridden))
+> -		if (housekeeping.flags & BIT(type))
+> -			return housekeeping.cpumasks[type];
+> -	return cpu_possible_mask;
+> -}
+> -EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+> -
+>  void housekeeping_affine(struct task_struct *t, enum hk_type type)
+>  {
+>  	if (static_branch_unlikely(&housekeeping_overridden))
+>  		if (housekeeping.flags & BIT(type))
+> -			set_cpus_allowed_ptr(t, housekeeping.cpumasks[type]);
+> +			set_cpus_allowed_ptr(t, housekeeping_cpumask(type));
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_affine);
+>  
+>  bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>  {
+> -	if (static_branch_unlikely(&housekeeping_overridden))
+> -		if (housekeeping.flags & BIT(type))
+> -			return cpumask_test_cpu(cpu, housekeeping.cpumasks[type]);
+> +	if (housekeeping.flags & BIT(type))
+> +		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
+>  	return true;
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+> @@ -96,20 +97,33 @@ void __init housekeeping_init(void)
+>  
+>  	if (housekeeping.flags & HK_FLAG_KERNEL_NOISE)
+>  		sched_tick_offload_init();
+> -
+> +	/*
+> +	 * Realloc with a proper allocator so that any cpumask update
+> +	 * can indifferently free the old version with kfree().
+> +	 */
+>  	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
+> +		struct cpumask *omask, *nmask = kmalloc(cpumask_size(), GFP_KERNEL);
+> +
+> +		if (WARN_ON_ONCE(!nmask))
+> +			return;
+> +
+> +		omask = rcu_dereference(housekeeping.cpumasks[type]);
+> +
+>  		/* We need at least one CPU to handle housekeeping work */
+> -		WARN_ON_ONCE(cpumask_empty(housekeeping.cpumasks[type]));
+> +		WARN_ON_ONCE(cpumask_empty(omask));
+> +		cpumask_copy(nmask, omask);
+> +		RCU_INIT_POINTER(housekeeping.cpumasks[type], nmask);
+> +		memblock_free(omask, cpumask_size());
+>  	}
+>  }
+>  
+>  static void __init housekeeping_setup_type(enum hk_type type,
+>  					   cpumask_var_t housekeeping_staging)
+>  {
+> +	struct cpumask *mask = memblock_alloc_or_panic(cpumask_size(), SMP_CACHE_BYTES);
+>  
+> -	alloc_bootmem_cpumask_var(&housekeeping.cpumasks[type]);
+> -	cpumask_copy(housekeeping.cpumasks[type],
+> -		     housekeeping_staging);
+> +	cpumask_copy(mask, housekeeping_staging);
+> +	RCU_INIT_POINTER(housekeeping.cpumasks[type], mask);
+>  }
+>  
+>  static int __init housekeeping_setup(char *str, unsigned long flags)
+> @@ -162,7 +176,7 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+>  
+>  		for_each_set_bit(type, &iter_flags, HK_TYPE_MAX) {
+>  			if (!cpumask_equal(housekeeping_staging,
+> -					   housekeeping.cpumasks[type])) {
+> +					   housekeeping_cpumask(type))) {
+>  				pr_warn("Housekeeping: nohz_full= must match isolcpus=\n");
+>  				goto free_housekeeping_staging;
+>  			}
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 1f5d07067f60..0c0ef8999fd6 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -42,6 +42,7 @@
+>  #include <linux/ktime_api.h>
+>  #include <linux/lockdep_api.h>
+>  #include <linux/lockdep.h>
+> +#include <linux/memblock.h>
+>  #include <linux/minmax.h>
+>  #include <linux/mm.h>
+>  #include <linux/module.h>
+
+A warning was detected:
+
+=============================
+WARNING: suspicious RCU usage
+6.17.0-next-20251009-00033-g4444da88969b #808 Not tainted
+-----------------------------
+kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by swapper/0/1:
+ #0: ffff888100600ce0 (&type->i_mutex_dir_key#3){++++}-{4:4}, at: walk_compone
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-next-20251009-00033-g4
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ lockdep_rcu_suspicious+0x148/0x1b0
+ housekeeping_cpumask+0xaa/0xb0
+ housekeeping_test_cpu+0x25/0x40
+ find_get_block_common+0x41/0x3e0
+ bdev_getblk+0x28/0xa0
+ ext4_getblk+0xba/0x2d0
+ ext4_bread_batch+0x56/0x170
+ __ext4_find_entry+0x17c/0x410
+ ? lock_release+0xc6/0x290
+ ext4_lookup+0x7a/0x1d0
+ __lookup_slow+0xf9/0x1b0
+ walk_component+0xe0/0x150
+ link_path_walk+0x201/0x3e0
+ path_openat+0xb1/0xb30
+ ? stack_depot_save_flags+0x41e/0xa00
+ do_filp_open+0xbc/0x170
+ ? _raw_spin_unlock_irqrestore+0x2c/0x50
+ ? __create_object+0x59/0x80
+ ? trace_kmem_cache_alloc+0x1d/0xa0
+ ? vprintk_emit+0x2b2/0x360
+ do_open_execat+0x56/0x100
+ alloc_bprm+0x1a/0x200
+ ? __pfx_kernel_init+0x10/0x10
+ kernel_execve+0x4b/0x160
+ kernel_init+0xe5/0x1c0
+ ret_from_fork+0x185/0x1d0
+ ? __pfx_kernel_init+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+random: crng init done
 
 -- 
-Wei Yang
-Help you, Help me
+Best regards,
+Ridong
+
 
