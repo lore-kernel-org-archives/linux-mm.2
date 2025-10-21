@@ -4,121 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A70CCD19F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15057CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734258E0009; Tue, 21 Oct 2025 03:26:13 -0400 (EDT)
+	id 720588E0011; Tue, 21 Oct 2025 03:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FC8E8E0002; Tue, 21 Oct 2025 03:26:13 -0400 (EDT)
+	id 6F87C8E0002; Tue, 21 Oct 2025 03:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D35E8E0009; Tue, 21 Oct 2025 03:26:13 -0400 (EDT)
+	id 635008E0011; Tue, 21 Oct 2025 03:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 494EA8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:26:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B24916039C
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:26:12 +0000 (UTC)
-X-FDA: 84021287784.04.C76980E
-Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 65A1C1C0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:26:10 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZCgbvwYg;
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=382e81130=mngyadam@amazon.de" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=382e81130=mngyadam@amazon.de"
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 52A5D8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:34:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCF19119DCC
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:34:52 +0000 (UTC)
+X-FDA: 84021309624.16.4CEE5A8
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7358814000C
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:34:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761032091; a=rsa-sha256;
+	cv=none;
+	b=NxX7+4trDSIVVRgMc6h7tKRYh6qQ+FU4e1AXLN+hhfZ6b6g2K/P0W5Fw5xMfc1NeD9QDI8
+	hs/r6Esp+dlFaB+ALSvKsiVaH32tHhHNAtX98f6hAFWxd9q9Bw4XBUW090DTut7nJaE4nP
+	27EgXn8A46EGi+E79G/IpMM8PSFrQkg=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761031570;
+	s=arc-20220608; t=1761032091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8+t9A0kZYWOlwZbL/Kjits3Uw62fi4VAwF1SOn82uzw=;
-	b=fcI705hlt/2x2Kdbi1hjnP8D06GZYJhBDnwAra02FBQo6BoPkz9x4CXFw1A3QfIARlItyl
-	cGi6iEWYEaWxomywS+5aXwg16fmizZYpjc5Xt6wRnjUZOICcVpnPOcWJ7vOHcRVkIdkinF
-	jnu5HyZm3AwRwASFIm3U2y8/xjh36QA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761031570; a=rsa-sha256;
-	cv=none;
-	b=OSrXxJ/lsO6m5p+olvMgClPGVjX9GumCJbbpldEi9+HZ6RLWiOCpmdD0KB+ZOpgNomZHMh
-	ULnrsdsa5z20euwp2zb6+GS4RC75QN6W9vywTdBdCgXYxGfrZ8Lpn15YNyZHbS38jadFN8
-	QF2ezqiPX8xRwSNTVhsngRXMXIrR1c0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=ZCgbvwYg;
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=382e81130=mngyadam@amazon.de" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=382e81130=mngyadam@amazon.de"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1761031570; x=1792567570;
-  h=from:to:cc:in-reply-to:references:date:message-id:
-   mime-version:subject;
-  bh=8+t9A0kZYWOlwZbL/Kjits3Uw62fi4VAwF1SOn82uzw=;
-  b=ZCgbvwYgLny8t3apG1Yk4z0iVGf7BaCXLjNf9sZplbO/8vy42aG8mW33
-   rx/CXD9iijfVHdKovfqOOppEZyam+/zrKCySaKrqw8a+ai/zSYccSHw/o
-   aKaOv/elYzwf8b1GJQ6jJhLLfIhZ7ySwya6GDwfAMpfH/D+kwYrKRh+vf
-   9sOF+DgZwo7WywzyRiYPmCQSdr1bpCBUZXCkyP11+adeXXgqc687TBG16
-   2TGUm0ZWcHnvwh8g9MLRJODDlzFjMdO6vxSd8t5IESig8Fqg1XIU9xu+r
-   QhqbaMzRpi2O3/zf4/bruTPtUN70RgICGH7znLDhpB2N+UP5ma/4G15WK
-   Q==;
-X-CSE-ConnectionGUID: TYAeHBJkTkyfK88JJgTexA==
-X-CSE-MsgGUID: BLPocVkKTgeQ6UWeWe47Mw==
-X-IronPort-AV: E=Sophos;i="6.19,244,1754956800"; 
-   d="scan'208";a="3819608"
-Subject: Re: [PATCH 6.1 0/8] Backporting CVE-2025-38073 fix patch
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:25:52 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:2836]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.38.159:2525] with esmtp (Farcaster)
- id 06137168-4ab5-48ee-b858-30f80bdf9b8c; Tue, 21 Oct 2025 07:25:51 +0000 (UTC)
-X-Farcaster-Flow-ID: 06137168-4ab5-48ee-b858-30f80bdf9b8c
-Received: from EX19D013EUB004.ant.amazon.com (10.252.51.92) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 21 Oct 2025 07:25:49 +0000
-Received: from dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com.amazon.de
- (10.253.107.175) by EX19D013EUB004.ant.amazon.com (10.252.51.92) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 21 Oct 2025
- 07:25:40 +0000
-From: Mahmoud Nagy Adam <mngyadam@amazon.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <nagy@khwaternagy.com>, Jens Axboe
-	<axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
-	<idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>, Alexander Viro
-	<viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
-	<adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
-	<chao@kernel.org>, Christoph Hellwig <hch@infradead.org>, "Darrick J. Wong"
-	<djwong@kernel.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, "Anna
- Schumaker" <anna@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Hannes Reinecke <hare@suse.de>, Damien Le Moal
-	<dlemoal@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>,
-	<linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
-	<linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
-In-Reply-To: <2025102128-agent-handheld-30a6@gregkh> (Greg KH's message of
-	"Tue, 21 Oct 2025 09:16:18 +0200")
-References: <20251021070353.96705-2-mngyadam@amazon.de>
-	<2025102128-agent-handheld-30a6@gregkh>
-Date: Tue, 21 Oct 2025 09:25:37 +0200
-Message-ID: <lrkyqms5klnri.fsf@dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=47t0eoimZExNfbLR29YMNL3nVAbeYOLaNpy9TQkE1eA=;
+	b=ogcKnwWrJUIwbkifomtfwntBMzTP4xLNMyLm6YkL8UphgkYbrEKOflFxywx4NjljCD1I/L
+	Wo+QXOMvmh4uDT1niWPyCCtFcL9tY5FFSGRQkKT7A5FQQTLpTUj+AnYBLFZ6rBPHU1Bd09
+	ky+EVeWNHUdb0m5+Hxbo66cLxsOs3uU=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 21 Oct 2025 16:34:46 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 21 Oct 2025 16:34:46 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during
+ allocation
+Message-ID: <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
+References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
+ <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
+ <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
+ <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
+ <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
+ <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
+ <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
+ <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.253.107.175]
-X-ClientProxiedBy: EX19D042UWA004.ant.amazon.com (10.13.139.16) To
- EX19D013EUB004.ant.amazon.com (10.252.51.92)
-X-Rspamd-Server: rspam01
-X-Stat-Signature: u8nf1zcpb73e1tpk35w4mneb35ziuzpd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 65A1C1C0002
-X-HE-Tag: 1761031570-331547
-X-HE-Meta: U2FsdGVkX19GvORnn7ixf/W0JzzfxkXTW0FrCShe9IYpZLbALiG3c+B3d60WgLuKxPSmbmGzA1WQEf3Rtx3bvlgVTyKgHactwt+XzrzArllWAMt6AvDsXeHA2S2jxESwlNNDK22ESC2ELa+R90+tk2AohM63SeQOMUUdmGkZfvdT4nMsl86hO+Cs5Qy5iWyZ2ugrRalOu8OOX2ZBUTBxrKKbmUsSyLgxBaqW4k+Gw6CdcBWn/af9JrhdSzCyCFRFF5lyVDjbXEAsSXIugJHqic6+fWQpoQwbOvzG4zM0h5j9gmxj/3uBAEQ9Wb/3pNe+KmyhKBridl1XE8j+LvxmGubo92nRYEafxaYvbRC83hNStn4PLLQbIsjE6XykBNNuJtIN0hf+KIsiJ4teSh21AnvlG/dfYDaKUdB0nV54B5ejHSbtA8ka50eXcorLEqIjVLGqLiIsI3TdC4SPLcQYE1VkN+3gvO6TwP1egPXpEP9zruPA1BXWa1eQWsq71HhePZS6Xl1NYLGP4yWtumP3Ro8Z6Cb/EBZOS61XoN4M0eEEZrP172b8LOi2mFQafctu56pwko30bURGDPi11F+U/x56MUZvCHQpO3+ApFTs+6g0M07jMAfd2vFFwxGLbTk1rJXwe/XDRXkVZQddgJ93YEInlLv4QUiJb2dYncjD4WYMkPpBWZh7HeysjOOFM5iUatUGVbFI1OxfkoMKODaCO7Kyg60RsCTun1/w3cMefKreqaTZyWsbWu1bZIfsb5Zt1OkypotPVjhsxjF6DENo9L10OCgquqAzLUyQLf9WnV6EwGQ84mRzRAIr2mzIp2bInLUwoxHudaWU6dONTdzNVPdJ+4YLf8D7ah6j+WU0mkSTtsXVzz6hlSJ1Qqbed3TYnrHAWg60y3zjqgYRKJKNbTQH2BgYtZu3up4XT5vJjXb3gK5sAn9Lpc5C/VKiHuBA4I5f/ntO7rxac9zOR57
- J2OyW/MJ
- u6rGY7e+4Vu2WoLGEkkQdwjspzpiPOoZQAt5RsV3gI09pk2QyTj5P8vh4coyatyrpLh5p84/YkBRUkqEXQdXOzkpdHcfraV9AL8re5Z3UyYw07ab4HFM49MBYyQXQP89p+pakSSBkr7wLvKerWiF6i+0SW3xwUpBIXVGc/UHNYI9OMXU8hGfy5Uqv048xWRGO+ZvnDQI++5LSROM7VLvXpcTGZTxJOSGmtRJPDkjMYdw2LoQMhLQ6K6r1yJ0J96z4AJAUEHB/928a2zoK/R1Us7U1QPU4g2Yyr1n72vR6FVg0LJyBHIcuWbA8bztjvE0jNbcAu8hgUmj91HESDyW6kPQsit49aLFXE8xr03ti6WCHfDVMqrsRMJzHS9J6pMlKPKMz/LVeWBAhHO/Z77/wgY96zo2aRPVjiqhWBfWzsv5yKWEXb/97BOkIkfx+VelUw6edsicrfHaR7i8X5FwtKLcBhM778Wk2aWwlT1hfhWqq2RfBoPTo0RgzFIh6u7rHy2Z3GhfP2YWrK0MtuIGNYIIYu4iyRawU8R37KDdCl0a8l0ehkamdWwPUnprIEpWgVI4h0bSqhMr9hqD4mDqPrHcwfD90cawc6Pc+hIYoaW8oYwMTdqrVM7R30w==
+X-Stat-Signature: ptkx8aba5cysg4r8oapwk6jhffgbgiuh
+X-Rspamd-Queue-Id: 7358814000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761032089-429815
+X-HE-Meta: U2FsdGVkX19thD/D/e3JzKXC5qzveTu3Et9KkdLEeUKCKMF+Mj9K8+y52brIBCQoCWW+q7RQ9G2nCt5L4LVpeiyjLkzyPqrobcQHsg8MKBv6CRIjG294ILE4Gowb89sp/lygsKGoq0K44zcHxQ1J+GFL6TAVeVofgI+OWCmeeSd1klkAZQoqqF7PyJ9c4BbdUh7X3X1sxt7U2jvEYarcUiz9mhdpyYumqhFhyTeBEqm/F3uGupzLIhjnS1o6pW7fl34YuV9zfvHOcIFdY4MNitAC5PrXCO/9T1PYkmYAGx2CiosjZtwikIpCn5LbwmB0QRS2WPRL+iWFTQ4vIctV7cwfw5cNPZK+059h0IFz9hvkiWegk8MrBOQ+FB+ZQ7jXIYIUj8DmJWK0Xz/6ANwvWaBYEgqJU+EZJQWqowLgZB9Hj9+qHDIZlCl54vwXXM4RZS6JYrEYJ6ncJlm+mYpchltkRO6nE/natd6MmfewB067DfJhl7Oi9KQIqRtK/QkqccgFx/J8LVTX79SDu7gMflD2PlFw8CipE2g9kORf7nEPSniPuPb3wOKMzk7+c1UMJIcpThIgVm06ZG6hRW1xgETgyVuYI07iCyLbWfKmuaYMohEOYPjRHn/7cyJQwKxGbeaKtt9fgnsafZCqgjEtYxm8t4i1pn1oaG4fLtn+tWoft6htHhJ9pJKfBmea4919TFUcRPZFDshQSuLHBV9fXkka1eYtIBdlI96YQwIqsmBbsuT2lhvVO/lyegemURrxifyD2bykDmXRGAitlLh0WQYlmcebP4qJFYZO7p+KfqRC1AFICm7TGifT9+IXYnTpRpq7x0NL+NI7LX8rFZRkLGTmfTkG2Q/8zvfkR0v8aQsTv45PjntzHS30PJe0i0wqS1+VHCszRQn5dTBBJtNeorLAqz2OLY+B+GbitgFm2pecn5sbwb99giVgG8zeq1E7fdK2uI1dsIHc0eM+Akb
+ M9i12bTX
+ 363S5xEQfg/M4PHICsFSxYblO16Cpvz8FBO8j8/VuQRd0lWXF3kGT0T1fNae4Z56psPRHppSRmaXzbvlV+PgiHN+VT5idPEknPGG42fae3NMchllmQjQuuK4+NF5mcWl6R2Z32pP/CBV9Jfv+wkkOtt7osXsZCBdaCeI2E4H8qG0hUcS+xR3FdY9LGbczKn1KzodduLJHiuhKXTLrtFt8w+gcpmZ0JAbap0TmipI3dXw126N3Nh/5Th2ufw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,32 +98,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Greg KH <gregkh@linuxfoundation.org> writes:
+> > Thanks, I was composing a reply on this and just saw your new comment.
+> > I agree with this.
+> 
+> Hmm, it turns out modifying V1 to handle non-order 0 allocation
+> failure also has some minor issues. Every mTHP SWAP allocation failure
+> will have a slight higher overhead due to the discard check. V1 is
+> fine since it only checks discard for order 0, and order 0 alloc
+> failure is uncommon and usually means OOM already.
 
->
->
-> On Tue, Oct 21, 2025 at 09:03:35AM +0200, Mahmoud Adam wrote:
->> This series aims to fix the CVE-2025-38073 for 6.1 LTS.
->
-> That's not going to work until there is a fix in the 6.6.y tree first.
-> You all know this quite well :(
->
-> Please work on that tree first, and then move to older ones.
->
+Looking at the original proposed patch.
 
-Yup, I've already sent a series for 6.6 yesterday:
-https://lore.kernel.org/stable/20251020122541.7227-1-mngyadam@amazon.de/
+ +	spin_lock(&swap_avail_lock);
+ +	plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail_lists[nid]) {
+ +		spin_unlock(&swap_avail_lock);
+ +		if (get_swap_device_info(si)) {
+ +			if (si->flags & SWP_PAGE_DISCARD)
+ +				ret = swap_do_scheduled_discard(si);
+ +			put_swap_device(si);
+ +		}
+ +		if (ret)
+ +			break;
 
-- MNAdam
+if ret is true and we break, 
+wouldn’t that cause spin_unlock to run without the lock being held?
 
+ +		spin_lock(&swap_avail_lock);
+ +	}
+ +	spin_unlock(&swap_avail_lock); <- unlocked without lock grab.
+ +
+ +	return ret;
+ +}
 
+> I'm not saying V1 is the final solution, but I think maybe we can just
+> keep V1 as it is? That's easier for a stable backport too, and this is
+> doing far better than what it was like. The sync discard was added in
+> 2013 and the later added percpu cluster at the same year never treated
+> it carefully. And the discard during allocation after recent swap
+> allocator rework has been kind of broken for a while.
+> 
+> To optimize it further in a clean way, we have to reverse the
+> allocator's handling order of the plist and fast / slow path. Current
+> order is local_lock -> fast -> slow (plist).
+> We can walk the plist first, then do the fast / slow path: plist (or
+> maybe something faster than plist but handles the priority) ->
+> local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
 
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+I think the idea is good, but when approaching it that way, 
+I am curious about rotation handling.
 
+In the current code, rotation is always done when traversing the plist in the slow path.
+If we traverse the plist first, how should rotation be handled?
+
+1. Do a naive rotation at plist traversal time. 
+(But then fast path might allocate from an si we didn’t select.)
+2. Rotate when allocating in the slow path. 
+(But between releasing swap_avail_lock, we might access an si that wasn’t rotated.)
+
+Both cases could break rotation behavior — what do you think?
+
+> too I think). That way we don't need to rewalk the plist after
+> releasing the local_lock and save a lot of trouble. I remember I
+> discussed with Youngjun on this sometime ago in the mail list, I know
+
+Recapping your earlier idea: cache only the swap device per cgroup in percpu, 
+and keep the cluster inside the swap device.
+Applied to swap tiers, cache only the percpu si per tier, 
+and keep the cluster in the swap device.
+This seems to fit well with your previous suggestion.
+
+However, since we shifted from per-cgroup swap priority to swap tier, 
+and will re-submit RFC for swap tier, we’ll need to revisit the discussion.
+
+Youngjun Park
 
