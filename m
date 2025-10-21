@@ -4,77 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539AACCD1A2
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 02:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC95CCD1A2
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 02:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 886688E0009; Mon, 20 Oct 2025 22:44:39 -0400 (EDT)
+	id 0F9038E0009; Mon, 20 Oct 2025 22:52:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 836C78E0002; Mon, 20 Oct 2025 22:44:39 -0400 (EDT)
+	id 082A58E0002; Mon, 20 Oct 2025 22:52:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 773A38E0009; Mon, 20 Oct 2025 22:44:39 -0400 (EDT)
+	id F01D68E0009; Mon, 20 Oct 2025 22:52:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 654DF8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:44:39 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D39B3119C46
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:44:38 +0000 (UTC)
-X-FDA: 84020578236.02.4D5BF78
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E0D7A140007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:44:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6708E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:52:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 721BB8779A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:52:57 +0000 (UTC)
+X-FDA: 84020599194.23.4F94FB1
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AE55540003
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:52:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EWl2UJUY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761015175; a=rsa-sha256;
+	cv=none;
+	b=bO5Oo56l3c0nG7S8krYHTK0aV9UhLBSWcdxMRCZmdYOMkumpZhzMTymg733ZX27LsdIB99
+	wWW8DO5fDUQMZkyMUToGwpWdoeTcyp6AOFg3cw8WKjndvNEzK/HmimGEp7r4Ci0IzhIHD5
+	fUB8EQdtGv97VLitm8WIUE52ayJLIPA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EWl2UJUY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of 412752700jyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=412752700jyf@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761014677;
+	s=arc-20220608; t=1761015175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=riflaN3sTi+fCQ0hYe4quH3jFY2KRyiWt7VxXNkxkfg=;
-	b=PffBUDLoWTqMVXmhnuZR1WVQ0erSVppxkdqKOyAa4e77EJty0+CjNYQBFMswfNgvs+t04w
-	IMyYSaanIjYo4G8BoK1rS/+AuJ9V5puG4Uwo3x/bvxQC2DHva5xNzSomp7Y8A86dU404IX
-	BIOPo7mXYwcPNlW0n9Jk5Eg6LidfcnU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761014677; a=rsa-sha256;
-	cv=none;
-	b=b9fFNn/LtHgEnc8Waw+fBnbU6QTQS5RvFuNRniUufCGLdKi5HBSMaIqAqX2jGs8HRE7Kqy
-	IfqAp3rROFZnmzE2uVh/q9vz82qixPQ4b+DnjUY9dCVc5IjCTdjm3zIe5K1XSKUJM5yyIl
-	fkiYTapMKlxWkQ3E7gJ//B3bfOX6GnI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB5C61063;
-	Mon, 20 Oct 2025 19:44:27 -0700 (PDT)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6D0203F63F;
-	Mon, 20 Oct 2025 19:44:34 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma() tests
-Date: Tue, 21 Oct 2025 03:44:24 +0100
-Message-Id: <20251021024424.2390325-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+lFg2ZFUpdrT2R4DPUThE/HcpQLiTAgd/CFeS6J0Ohc=;
+	b=CHL7lA01JOTyDQ7bPtDP/qDL9kRFFmfqd4/vqI0mDhXaTedpZQB2zFiKCh83lzAiLwp2It
+	a86e2v53b7YDJidgc8wk9Blpv+SZwG1H76MXYRXicSJPsOjqqP2q85nWqx1Gz8E1nanwO4
+	NL9gRz63pJQEDfV/EbJbwM+meFUxBMc=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-63c12ff0c5eso10210604a12.0
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761015174; x=1761619974; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+lFg2ZFUpdrT2R4DPUThE/HcpQLiTAgd/CFeS6J0Ohc=;
+        b=EWl2UJUYXB2vrYy8RjeH2aJ5vUDDqvtMJTVb+zeCsk2Hlxf9CfelybEJOo4O21h9XC
+         DU6Y1PhEH+ECoDjzt5vpwUQNkm4nT7hiwTbF3OVM2sME3tFwxANT7X5STG/brcm/tvVS
+         VpnYf6j8LmgJSMyVUYPzS53LSAyC7q86E/SOUaoHijnxcD8hiVQoWA+FW1o+vp84DpYP
+         ewREonE6Lh16zGxLFBhkUW+eO6EeLsCTKU9kRorIuV1nKoaxl+6uSG9E5NBZceVs5Ajw
+         JDT8mwkMeCMjM1zaSMNKF/JLkAEdrVxOSM4pAgAEIBY11wz/2AWeqAsUrevEp8MJXygN
+         Iw0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761015174; x=1761619974;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+lFg2ZFUpdrT2R4DPUThE/HcpQLiTAgd/CFeS6J0Ohc=;
+        b=rBBtxQMGLCJSdTsWoe+tlQs1H+OK1juWyC5Y87M5ktuYauvDUnPYBH536kNRTkYO8A
+         b79u/NoRFvZymP6gjgbD8s7J85q8Uzw9/ChAvaa1z3VKFxFp4FW3sx4cCnBWJovBaHyl
+         +tVTMPA6KlPtrnUqFOJy4xE7kdPOhNxUpyhKQx94IPuy2hHm8AF+zcEQOf0pq2CttouP
+         qegotmHZr5gM6k3fVcsPOmosF0Q7iYsqYAl9Xbj7nauaXZ1/L4JImehOfqzoAgPGs1TF
+         3oRoSeNQGqcLe3riOj2u1OYvvUQ/yauqsac2CPVE/VXGRKt5ze07NnX79SurQIHgPHcO
+         /oFw==
+X-Gm-Message-State: AOJu0YzB/OoSg6i6ZlmAxseG+4KBd9NMyUlh6k/VZZ2CLI6ifS6UTKIw
+	tuyMaGNQn83EZsWpKmfUro0Cx8H0WFoZfw8o1wrBxWXcBYrQNL0axxmTejV7BqiCZoGn9VWqa6z
+	5y+SMmHxI77KVwbBEPZESyXGMWJyhWiYWK94lhI8=
+X-Gm-Gg: ASbGncuESERubAEtK/iucF1hegNRO4ICKHQsT0dlO21J/ponpPL/Zp0uH3kUbL50ETf
+	C99B7IJ+F/HGvY3UDY8sNFFGScVXwWwmHSrkCTL+Fdj/bPAFctY8YXYiAJ3t90BUqzA9I/4KyOI
+	vnsAqYzLBGVjsj/tDksbUbPE7iiIewqsiG/j7jtr0mzLYFPsDqCbPkORoKCCB+UGAcdEkmIS0Eh
+	od09Gp5gOwnckuWiMLN8rfalTfLBnOcobki39fLEMDZ3xO5UlrGCrNqKzmMFQDWKG7hvr3w
+X-Google-Smtp-Source: AGHT+IEmq7X3S/Gb3U/bOPvAZXYKCAyEkGncY5qcyaz9gTXkjFXnlbM9PS002rsTbgYJyJkq7Sa21/nx9Lpmt8pl2Cg=
+X-Received: by 2002:a05:6402:2713:b0:639:e5da:637e with SMTP id
+ 4fb4d7f45d1cf-63c1e1f212fmr14885424a12.6.1761015173539; Mon, 20 Oct 2025
+ 19:52:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ytraxbkue4asgsoo5g7uhgwps4uqefch
+From: Yifan Ji <412752700jyf@gmail.com>
+Date: Tue, 21 Oct 2025 10:52:41 +0800
+X-Gm-Features: AS18NWAm93w4E1HR9wlOqKTla8-E3h1y0PBY8xr1ipyO95k053_X_h4pbXOyqw4
+Message-ID: <CA+9cq0kkbk2Bpgyah=9bU2+=QNM2L1GfYLgMK6OuRhda-B80cg@mail.gmail.com>
+Subject: [DISCUSS] Proposal: move slab shrinking into a dedicated kernel
+ thread to improve reclaim efficiency
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Matthew Wilcox <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E0D7A140007
-X-HE-Tag: 1761014676-273833
-X-HE-Meta: U2FsdGVkX18Fd4DYvH0w/SbQSlm+e5gMYhphRl5aAD7BSK9wzEX6koJ6vYY+cJMASQR15jhCvCZu/9Mvkk2w0e+B0T1Mt0kCUOIOPdYoGfwBG+1ST06F+GYpTDgO6Rkx/9sIzCZ6hGCe8Yu1ar3gp+FeGtLSrcjiDjy+jdMxTLCnTvu5LTtOhL6sWMDBSK5TmUw29JbD+Or55kQOfXDeMYHneEi8F4NiV8VAjZOLxZLG1Szcq1VRFcwuFoQ/dZT8IPr3i6SJ/D3gqaEQEG3FdPnAevo5HkHrQwQOV+7vvPw4iBdFboYJltrt2uiQuk2vW2DMKxLpiEj/x8vfWERIz+DFDyYYTlLqeUldAbu1ipo8iV5gXOJSxlw6+J72TACiFdcbEat/EU29EkIc0155/Pzrjn9sRJIUoRl20fb7Elek6WRAOpT83LB+55HG+5hoO+Upj4b3z467aCdqvAhfYSepXOgi78/DduQ9ZRFCY+lBqIuXA63CY0K1tfwcsbPfJHN8Gu/Stycm1yZ8yXO1Q3/5vfgvp3yrjMsUxF2j6CD0TbKPMNZfpGPTs8jh/Cv4Bx5HFueRr6Cdtm/vAiM662Ygx3JKv42Kdr8JVp9/9Wb3TYbyey7Q8TTasjiPRE344d9FsctuElrtg+P1fHYivV7Dv2uscgHoyOFkodwLdg63E6lEWXM7jp8NRHkRFQ1EP2J599GGcYNgIMs7EiM93hpNvrmPu4uHf5Kj+H7O3eyatFhw3HSQUcKYki+ocQ7Uh5zqaqUjqcRB35UPQodzQWOYO2yk3S8+qXCbN9nUFXCEftPZ5LeLFAczKQ0YKCWMRVba9o0fXiZplusj5qwqz7tIDx9X4Ow7lD/M3VomfWDkHRze/8I5/Z7H2csFStgKyZN65+dwTdPzib8ouxaftZjVTw4DInWtWj0YtxcqB/UR0sd7IPA94CgPF9zNmnfgypX+0yxdLsYn1ELS4Sj
- dbsghZ8f
- TNl8uvnZaWsQ5aVDnEL5Nf4Q9wcIiaPk3gOCpLoSPrC/jFXNJumiVLQvQaBFNNxv09H9EfW3SjxOKRArnIRObyXosQl9mM/ykgsWfzfaMLsn5CGFO+6B1MPW6IyCysnBCuJryWgRPTxts+Vg9EiJezdxbjoDdFoLeXKi8So+FRabDArRX+MXpEwVaso3d2seioOqs3oLLv02ZfFJiyQo+hbWQzuxX93g0R0gbHo80lrKEdgDgxoYOiiTPcKV5E9ETMki+DHvvCBME91uKzWd+2mYoMOhcQZlwoyh8jKPrpRK4T5LQ3XEXxiMChxfgMLS1iilTJAITMUcqa7cAtOJj4WsWc38sothflEcX
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE55540003
+X-Stat-Signature: pak3rcosscqpt1pbgiecheh84bbtew96
+X-HE-Tag: 1761015175-115697
+X-HE-Meta: U2FsdGVkX1/Uy/hi8Xhl7s+NlOFK5cXB+vjbsvHjVjKLKEPB6Mo62TWjtC/cXYnxScpLcSaQGuhZ5cSknfZYpBA2BR1+qXSYE/WJ4EXmIctpGOxNXSbFleoEmhqVyRlXDzsg7/xEJaH4vFwA6frhocmGz4fKsyHpXMN3PbrUWvCGQjRBglDhxOS0oW7LuAbuL3PS78bknsIMEWFdQF8kGV3fS0RFhzXjqnTxQS11LTt7/mbpDhf2dYumRrB+PH/UPZLk2CBp5faTSNWRsfRDvfD5R/uBA6+9mTplzS0NspKl9kXepEbmX2/GIStzjrdLHzqbGoqdQl4ihRAHc7sqassyts5ouUNcqMcOWP86f74ZbRXN8Z0BS2dl8SJPU57+i833+YFdFYWH2eroHt6qI+IdUwaivKZDxnWaV0it9LORFql7aWh8QArXhHQSYXUIYUsCQ60Knoc+bfHbDt2i7vrW7bxvhELMTDz0rcoycrUmxMJD1JartE2z0IHfUyJfMuM8j1Q1DDYKHyX389DyftCs452Ve5mv0L6ftn8CoH4otm/ghHJtnEus8Whg74W3S15DLvs9WINRTSx1OJ3e+li4JEToT26g5/r/7f9u4ILay7csYDMOtJCLALYIrEIaY3FOK+Tj1JAXg59//J+6LG6g51CdzUJITom6dCRVggGSEPyrydIoZssOEL6R1SxJMbXRzuNk8K1bXzNr2gvJoHLJcFdPjU9JUU/M/ftHp1Z1o/mp6INuyLHC0VLQtbgxS954F8q1uMWdwbKMSVWaV1xmNZHPm9k3O9mKdCaYtJXOZw6M16uTY/7kBStWWaNAGFPwRn8wtmfrfXJmhuQhUTsDjz7DjVj3wQ/cCWG/1uYtg1H7s+I9TmLNNzu/qWfWQ+A0djellrUpIkB263A6uCGQFtYFogsV/o/865khi1erAMJ3wfiT0e5AIJpgBxXlw5KQlOi6WU7Iqid8rts
+ FQEeAKpH
+ z9mJIrnDNxPOfe2LN6hCN3eRjIZfQPRCwhKat9Jfukp0kyIeqpuNEt0/wAN73HdxjzgV0FieC7a53vu2Bl/N3cBW4ZAjrrdEESYghQgsJLMm1FWI9cXv6+gCyqAqWTHbjZNfazVMLh9lXNsn/URTDijLCEsIDluqXe5ulArDCjE59VL6m55JlF3Kb+IXw5xUcVSKJdB453rCVvXPeWZ30/heLSNInb5cMR24kzGvzE6mi00hLnE4AZqCRqi89AOt7afLJn+rCRFVnvTomCTcaEg78Fwi3JTMKAC1NKBFLuHEPRS/x6eNqNcClZRkmFIjTXe2rS+tkrh4myl0NgFHzB4ZauspU6wqLFFU9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,52 +110,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add some [pte|pmd]_mkwrite_novma() relevant tests.
+Hi all,
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-These tests clear on arm64 platform after the following recent patch.
+We've been profiling memory reclaim performance on mobile systems and found
+that slab shrinking can dominate reclaim time, particularly when multiple
+shrinkers are active. In some cases, shrink_slab() introduces noticeable
+latency in both direct reclaim and kswapd contexts.
 
-https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+We are exploring an approach to move slab shrinking into a dedicated kernel
+thread, decoupling it from direct reclaim and kswapd. The goal is to perform
+slab reclaim asynchronously under controlled conditions such as idle periods
+or vmpressure triggers.
 
- mm/debug_vm_pgtable.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Motivation:
+ - Reduce latency in direct reclaim paths.
+ - Improve reclaim efficiency by separating page and slab reclaim.
+ - Provide more flexible scheduling for slab shrinking.
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 830107b6dd08..b9cae1580782 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -102,6 +102,11 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
- 	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
- 	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
- 	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
-+
-+	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
-+	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
-+	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
-+	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
- }
- 
- static void __init pte_advanced_tests(struct pgtable_debug_args *args)
-@@ -195,6 +200,11 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
- 	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
- 	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
- 	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
-+
-+	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
-+	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
-+	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
-+	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
- 	/*
- 	 * A huge page does not point to next level page table
- 	 * entry. Hence this must qualify as pmd_bad().
--- 
-2.30.2
+Proposed direction:
+ - Introduce a kernel thread that periodically or conditionally calls
+shrink_slab().
 
+We'd appreciate feedback on:
+ - Whether this decoupling aligns with the design of the current reclaim model.
+ - Possible implications on fairness, concurrency, and memcg behavior.
+
+Thanks for your time and input.
+
+Best regards,
+Yifan Ji
 
