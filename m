@@ -4,232 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4762CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CCB8CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:12:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9CBB8E0003; Tue, 21 Oct 2025 02:10:07 -0400 (EDT)
+	id F18428E0007; Tue, 21 Oct 2025 02:12:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4D3F8E0002; Tue, 21 Oct 2025 02:10:07 -0400 (EDT)
+	id EEF888E0002; Tue, 21 Oct 2025 02:12:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEDD98E0003; Tue, 21 Oct 2025 02:10:07 -0400 (EDT)
+	id E2CD88E0007; Tue, 21 Oct 2025 02:12:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BB13C8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:10:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 173B4119F66
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:10:07 +0000 (UTC)
-X-FDA: 84021096054.04.C1E4428
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B00CB12000C
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:10:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="ht/NPOrP";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=W5xpT5k4;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761027003;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF84C8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:12:54 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63D551A0434
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:12:54 +0000 (UTC)
+X-FDA: 84021103068.23.92C92C9
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1263320003
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:12:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ShKdqzOl
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761027172; a=rsa-sha256;
+	cv=none;
+	b=2zuwPSkn48YFkLrHduty5GdBitR/n0rGGUTIwa2hkAaNfac4IP5pVNBsqbCvIFEMjneLay
+	L1Z5m/AT9rNyXsW3gNL2IB9AMUhdzUGBMw7ZuN9pX9YveQatLnyGxDy8sibqFfjhoITMhq
+	5j0BFK3RKHwgyFvvQf8S3VkAZrD2PhM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ShKdqzOl;
+	spf=none (imf13.hostedemail.com: domain of BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761027172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M357IoKeVOKQvjdbhz0y4cYqIS3QyFWXAhgc90NYJEc=;
-	b=brOwmVVl/Ev3lwBN27rcpW9OyTK/uSH0OpJwchdDHcYlU/2F1Fv9F7cuU6VlLZhQyFgkZj
-	m97bUzIvvaTwo6aDWqk/kYXRr4OE1TlFaUS8lwng1ZiHmNX52cL8GNrds0BiRxUdOkewtB
-	H3FdqbixOKxZzn+/VXha15VJMVgtfa8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761027003; a=rsa-sha256;
-	cv=pass;
-	b=rxK34S83PXQmYQKK7TFcveH8vKcSvtUeXONwaDOQ5owcIOjU4lHbE9zcFQYhA3cGFBChEN
-	+IloGkdAmG0tuexUGgVJqt+jHvdqevRqoggP4iMOkOX1nOD26ghOGhEraxGCHigu7/4El7
-	P1Ymgc9D/3lt00rGxXvA+Ku0PS3hCvA=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="ht/NPOrP";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=W5xpT5k4;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59L5odWc025694;
-	Tue, 21 Oct 2025 06:09:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=M357IoKeVOKQvjdbhz
-	0y4cYqIS3QyFWXAhgc90NYJEc=; b=ht/NPOrPMNIpmvT9zm3J+SvvMknARJoAgg
-	uTn79oPwoQFwobh4glkGz8AWWbP0AiQ6r0nb+ilUUHHyms4UY1LjttcMfqhSiBpt
-	DF/yuHr+Y5cs9qdCMJDVKM7DzfwdfjJQNijFrqr8nErmVNjHqYLWegCXZ74H2YvZ
-	LZwtZ+ThNPTIlu1fH9lUMCb5xGTOzaMwc5YX/UZ0z7H0FQsx7OhcOG8tt5S/Rf+y
-	JoR8KF4vCd9HkauigeRPzHoG2Oec3NLSxQoAuJbvhcCzmGWGGi+B4wg0S5u40q76
-	X3xIK1pe/pg2FIf9eF2rfa7GRo3BIbM6i0K1j/HyR/CDWx/OCnAA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49v2wav0ca-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 06:09:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59L63Z5X035192;
-	Tue, 21 Oct 2025 06:09:44 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013035.outbound.protection.outlook.com [40.107.201.35])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49v1bchgas-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Oct 2025 06:09:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J9M79E/XS6AiHwxhAxhsBYNA2zmatha6m8iMIs02/4gSI8cRlK6wJ3Y04k8uSw+mvArvA83GvMSLskArKS3ml+lh3xCjVBe+2QMvroYCS94xWnUqCiB4/IVxj65br+7TCd3a4DclGOa2xXOcnXnTOsgO3LSYb1yHXNRCq7yFXFoMubbqC7+QBX5pqVYBcM+lPCGzW8wVIFpfLQkCUqodGGMtEIZfuO2Zom3upHB4o8FWO8bNLz2AvdblgDJIsZS4xPnkqyitlr3+JV5kKUcTMxYqybh82HWKC6+QHfkSYEUNMkJp1yWGeqwwtg4l4SOzZlZCY/ZYCVVjwCZq6KbfRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M357IoKeVOKQvjdbhz0y4cYqIS3QyFWXAhgc90NYJEc=;
- b=YBITxl8lCSuj19hJblRF+8MHeKNyKB7P5o9ont0QKXKUQVT3mtn+TS6GEa8mkKNnOKjGnLx4vJU4hxH7TCqrM6agg7cwAAI7FNP7Cr4ZwAk1vY+wOAckP1ZrDZg239GKXzPeHS3VT+fIkurmiB3vUR+8uzJ6v0TB4XoQk0nkyLosPElcLU1L5TY9KyiIMACiaALmVILhJLf49wy45KjQeQtZf0lrz+CJqcTlGSoAPZYN8JHf0Ctw+8gtzmKw+NSHOh3r/ykljccTSB7fuWGT/WX6hy5XT8AnkV1B1D9jBf4pJBYDV/2tseRZDjlzecSQZ0txmtH6y+CbJfa5rdZOgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M357IoKeVOKQvjdbhz0y4cYqIS3QyFWXAhgc90NYJEc=;
- b=W5xpT5k4x7rdoMU5q5bXWf/31TyPD2ZktlFD+l4FnLg8GdOmrLl9mb/EeSqOhbHJTR6kcTZDIdhzP+rfJgyXJdrXiHJqNYPoaHoahEdvI+5d3w8+bUGFQpJ42PzWWMxYYvGdBqxhkybAyqLUULGN6fzglz7WLgH6/VKwdWO1WC0=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.15; Tue, 21 Oct
- 2025 06:09:42 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9228.016; Tue, 21 Oct 2025
- 06:09:42 +0000
-Date: Tue, 21 Oct 2025 15:09:32 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
-        roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        muchun.song@linux.dev, david@redhat.com, lorenzo.stoakes@oracle.com,
-        ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-        baohua@kernel.org, lance.yang@linux.dev, akpm@linux-foundation.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 4/4] mm: thp: reparent the split queue during memcg
- offline
-Message-ID: <aPcjnKAapap5jrK-@hyeyoo>
-References: <cover.1760509767.git.zhengqi.arch@bytedance.com>
- <645f537dee489faa45e611d303bf482a06f0ece7.1760509767.git.zhengqi.arch@bytedance.com>
+	bh=32WXsKzxggeOILJADAf0lJ/XcojNDUkG87T7LB0uMmU=;
+	b=O7UfJW4g2/LEdrc+Ns1TCZxWttWbt4FljAGYuv/KvqJV/l0k2fgZeNex4YJZ70+/PQ6sod
+	dizTPioQbFF04XZjMMQfIRFyEbk/0rHYYGhzY35viwbT3Zd7eqz0TkiMMq3f8S4riFnigX
+	qSYi843cYnSVITXCzQJbFAyS5y2dvHg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=32WXsKzxggeOILJADAf0lJ/XcojNDUkG87T7LB0uMmU=; b=ShKdqzOlsJZJ5PGyNK+WPgm08w
+	YG05J6HLCcDbwjPvnI2QKbkgv/jKp9ozm4cWjoblrSDJhZ0TR5nkyWesExrjXvzpM5nGgaQuqd7V1
+	rvdQqa2snXe2hDLHng9fXY1sngvgapiVGUyprKX0IWXegzyi4+aXuZzyermYeCXnmCFdpp6bV3QWw
+	jmh71KufOM6iT9U0CiMBHCGz2dLUYPXWZXk/5EZwARAimiB+s6wR5K0TATS6/PXzPHCVaGsqYJ1xL
+	pgs4ZgTZum8hJdzxZYaGmGzcbeZaXKkXgzvEnVgYuB/0TWX9ayxP052nFyV78namlJzodSv305bya
+	CnN0oLeg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vB5bs-0000000FuQQ-39F3;
+	Tue, 21 Oct 2025 06:12:40 +0000
+Date: Mon, 20 Oct 2025 23:12:40 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Dave Chinner <david@fromorbit.com>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
+Message-ID: <aPckWHAGfH2i3ssV@infradead.org>
+References: <20251020163054.1063646-1-kirill@shutemov.name>
+ <aPbFgnW1ewPzpBGz@dread.disaster.area>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <645f537dee489faa45e611d303bf482a06f0ece7.1760509767.git.zhengqi.arch@bytedance.com>
-X-ClientProxiedBy: SL2P216CA0206.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:19::9) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DM4PR10MB6886:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1182f5e-1cf0-4d82-9a9d-08de10686c8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RBnbngbxXImTUGaxR8EVcMIKz+q/b4jid3DBn83sB/kCtJTfpfBwfh9gnnRz?=
- =?us-ascii?Q?2O9mNW9b8U65aYn5C+zuoXKrZj5WqvuhqrPNJgrxwrkCwCKpsVZkrPGBIMyd?=
- =?us-ascii?Q?93l6B+qxH5EddZIGVpGOZSHPSqIqO1qUa1ellBkTIN9/o1lV2ys4P8uLH2md?=
- =?us-ascii?Q?q6OHODO+JdWp2v4PghFRzqv3H9ocuuK7Wn8ifT20LquPU1OUgHjZLZWzxFwS?=
- =?us-ascii?Q?a/gSLJYb/4iI2mCrCv/M+DVlGm24bxd4uKD2qP5BLKQk1x5O7P4EkA8BHdd1?=
- =?us-ascii?Q?5HutIMmqatHke0c3oZXg2lcTvebc5wrjhdvl8CcrRQS8hhQFAuRrFQdlK//h?=
- =?us-ascii?Q?G3nBgQHZLPQqq6Mr1W6iI+s9RnVxYtRhM/sijt5ICs1Q3pRKMz7mZkjyKBC0?=
- =?us-ascii?Q?NGvhHrDtLvYbFGAsPDNBXCS8AgmoyxU+jNU03u8Zm+RZHamm0ZBvkSdsDf/4?=
- =?us-ascii?Q?SVx18xq9c8Q+nHbXtgN6vLa9JeZov+6X2n1IdHHG/p/5cQfm8kAwTUsWgfNR?=
- =?us-ascii?Q?z6x9egaolI/ipinjond/2aNZEubI1dzDhx/UC7MIM/aJ+r9sJRBqy5qNNDwi?=
- =?us-ascii?Q?m7sH0xA7o/RYQPr0+S368kIUPKOB3RJbGxmNLuKJIHiUAmNpHEc/saJQhsr6?=
- =?us-ascii?Q?f3Pv+gFp3jXDLZK7s4jfrcmQWdO/Zgmd9OTRvkEvwg/uB8ImaYHHppZGTT1R?=
- =?us-ascii?Q?AMq8lC8t++YFya5C8Z39TdneGLqDB1HTR2HDI1oqDSzSxa9ygSh94Wrhh9hb?=
- =?us-ascii?Q?OK22YMlMyejXkKVQpYLR+YudPIpKSg3QZlEXrJ/FnVwrD9NyoapWNnKjduhl?=
- =?us-ascii?Q?7SnzbRx22mFqVs9D5SNzANCmVEyHtzcdXoGsZ1QRE3Wu9jQ+cLZagqfVtK9/?=
- =?us-ascii?Q?NnvrqHmCnDHNOo1NfCu8+Y+gRgjWVm6YCyIIvCK+zzTiQ67xH1zrHdyWTd8t?=
- =?us-ascii?Q?bvdMrNT8+zJPXpwrni9CfxER4M7hmIBJTDwkfr6YZjmLjagU02PSZbLmcBZt?=
- =?us-ascii?Q?suVC7zunmUQ1WxQhHBPFk5LghADVfhTJkPCkUlQCafbEw5115s3QN9mmJJJ0?=
- =?us-ascii?Q?IGJK+40R5UNrmelbox+Pr/sfCtErccMJZkUPKOazOSbVU3EV/oU7fcnBehad?=
- =?us-ascii?Q?OzUJ3DPOQ+T93J+fnzimvByubSZBvJL5fSCSSXZucqMg3cCDhFb1en/isNQf?=
- =?us-ascii?Q?LeVby+Gz/F7OjTJnVoeYFL5n+UAUAAnG0Uin8baeOUbAgkYnUix27CM1U1VL?=
- =?us-ascii?Q?7k5gIiGNTPQwGMni9+uXNq84Vq1ix8Gi3XfX76fW4AfxqDPA+X0rfiBGxLa0?=
- =?us-ascii?Q?K2rjpUvgxJ+GTVEtM+Wzu6mUEnhLIXHs9KZ6HYyKsTb+G6caS23BfHJGclJY?=
- =?us-ascii?Q?U/1BCzl3qvbn2BT6ePMlc0tbeIW9NypbrtR3rbX6PDkV71cQx9WvlbowlyC0?=
- =?us-ascii?Q?XA9IMhgD4PKozKE9KbyRU7BV0wuTreq/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BsriPNXoe/Bre7NH4ur0utEtMhBBz+cYyP2o2aBMbxknHxw3hDSvKhJzOjch?=
- =?us-ascii?Q?HGup+bDrRwENNIjXOZqNHeXwC3YJPLDYhJkhprG0mUbA+sSbZzTm8zkWcksK?=
- =?us-ascii?Q?C0fuJqA3bELfgd4i3cZ537dCMGYDd5S38OOXrE+NEkk31EU8pAtmg8qlwtWr?=
- =?us-ascii?Q?2fixu9rZLQAdBIw5juQno2k7IT9xQrT0DGBFSl20YBZQH7RXctTf6GHeanBa?=
- =?us-ascii?Q?WyNAlZgFSkIj9lTKO1JCXYV+drUb4ZMZcwVrYMBGfUHgNKv/NHP/2ETX5KTI?=
- =?us-ascii?Q?cxM6wZp869wdgNhPwptB27bQGonMyGzj8iWj/4ODfEyra2YZtvDm+T9a2VIp?=
- =?us-ascii?Q?+oPOGZfUP93Wwv99+3EB/OxtwGObVipBVxtY1sdcp3HafrH/KnHNOR/SpAvH?=
- =?us-ascii?Q?/B8faY2LrTAEIWz2guyuWXvxLFaTPpetk5JBloenf7tUXjTEumElJx/wDDj0?=
- =?us-ascii?Q?XnS3JTrLntyPdLsRrBYy10ONo3lN0EvZIyiwakJojw2E8ynjnTO00eiTA5LS?=
- =?us-ascii?Q?cy8stgwDMXfqcHwkp5GutAqGE4lea7BEX+sHHy4OtSq5f29FYOYY4UqlR2zk?=
- =?us-ascii?Q?BY4tBGZqQM3IYDcTyAyLrfhnSDWs1NKv+0eNpbyChzO0uMwyZeqDPF2Oe6HH?=
- =?us-ascii?Q?hIZfZV6OZA9H+7e1AwHw11c2GKh/NBpM73K6uYBhpqejvrSC/RQ9BbTCAsk9?=
- =?us-ascii?Q?ZKQ1fxvYFuTtbDxAYKQTiNquIzfnqAelq7MbNYipgmlGpb4MKo8JwadS9kYW?=
- =?us-ascii?Q?gBJkNCCz2JVaSexYaZ4TXIVJtA+3zFUjyVXDpo8dE4gVPhhkuFTbjIrmKgCx?=
- =?us-ascii?Q?6aVgNKCzbbQ3ADySHIK3d7CMOvaYEJOZXyuEBfWPCBmIlVbo8wNZvIa0eJdN?=
- =?us-ascii?Q?XWZ4u+Jn8Ctk+yleifYXCAeVM4+cranVBDCkL79OypAFJv4oISDnEFHQ8OB5?=
- =?us-ascii?Q?lbvqnTHqrvtI8vY1RNKpbHh9o4Wc3jcGAbQMoY5+M1pwRa+s9Kkely2wWrOZ?=
- =?us-ascii?Q?7p/PwmcnKaqMa2+iZYoPtIkIuwvXyJns0WhTSxB0jF2CznbgL17dy9XEAuCv?=
- =?us-ascii?Q?AJgwVqtL8J5oLyk6Y+8ZlDI3fH6kNtaSLv4SRFDDxfdaRSfABcQ1tuiOyFsn?=
- =?us-ascii?Q?1YGWSylZLioCkW0LUyhGwGK4ssXNI2ODKivNj8+7iddkJ3yJk2eOGqkCLxJC?=
- =?us-ascii?Q?vOp74xfc4Te1kwQee2U97XxeKwhtjVcgO1pvyhiBxcpoBKEggdXlF9qW8EST?=
- =?us-ascii?Q?2oCOMZlHhEq4TRDD7JJQn52fySXSBBYkMMLXa6sDo+Q/IhpAKIcrmQj1ecb2?=
- =?us-ascii?Q?lCbiaSZeYo0nQvJAsHGoEtHKN1+25t7alrr5RijhtyhfLQacy7AHhR8vFtH/?=
- =?us-ascii?Q?V9gpSUtok5krh9TLgPWfLk2hVkjeOx3hYQhbzXBEYd2ZEJwx+RsMlbvmjMNs?=
- =?us-ascii?Q?y4NHM4dfZ+xh96a0PTBtdSBJzVM9k3A2lDW9uV996h3tmnLxdfnbdnLc2tg6?=
- =?us-ascii?Q?Bs9Px3o+aJnJMMxs9ySTxuk+0h4CxeFgDUEucpynAWqAEdG73j670/bM2vpM?=
- =?us-ascii?Q?/H4D2aWRt7dWu3Da/hzqGSR/ex5TOOwN+qx4R34K?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	EzOlY2/F7rUD11CbYV/Kd9jjMNM43AQCCutb+Tvf7DrFkBN30sekSBplCrdw/Ln+qtGo344iL86U7g6dF90A1Gyg/qCsT+fP9fb0UUxaYS05SXzcDiGpCUNVUtHd1erWJfdtjuB/DKMOb28HwZj61sZ1oiJLGYLpcKR6aM2ZmlvIgYZ9gdV4cyx6tNVuTWaQGEGV6+lywSbFfmCZb/0x6ghN8227/6QbaKhWJ7edLBxDOHh0k20uEFG9yhVel+uDi6UiP+aElwHE2bp8dlsRJ4uBEZrSKqU7L9Wz110224YQ77kxeLGhVjrcknHXMKewxqpD7Daw2KH9eWNdg2F3cOezKDDDIk3Ow1UWrmvTpXp4FK4hpgy8uf2ACyE/5cFJHURUWhu4MengPX9XioWWEPoMO7nZHH6T7emfiGbw+wsAIXAP6NXKeUszxK7Y7H8cP+uFT9z+6aahGsKeVk7D12HnkVMU5Kwg4XMYaZvD3ei8rpmDI/pl3Jm3k772SqCKhLI1pJY3EpjdHa1ikSjUhKXuDqzmarF15ZKg4IJPwqawcChqmQvZQus5nySSEhbFaOFMNGljkUToz7R4uqSqq2Df/8hapsQpUVRdlcHA4uM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1182f5e-1cf0-4d82-9a9d-08de10686c8d
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 06:09:42.0110
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e/ejkhPQdKCmBnn/WGJ/Dsa1S4gem4ffwy6oD/fXkIbtRdmimbNcoxJGK2r0D9XYcfQsCIazg/sECNQV8XmOeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6886
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- adultscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510210047
-X-Proofpoint-ORIG-GUID: 7risCcktNpQ5iwlNymdXbLq2ZKMgG8ZC
-X-Authority-Analysis: v=2.4 cv=Pf3yRyhd c=1 sm=1 tr=0 ts=68f723a9 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=968KyxNXAAAA:8 a=Ikd4Dj_1AAAA:8 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=BBR-Z9LqnkxWtvKk0KAA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12091
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX1z2uwJFfUvBq
- 53ewoy91MUPMtE2bbBAJYtooXdNyRAT7hu0bDyB+4foob338OAYnPYWNdsSFh2+XhW2Vt+Jya5Z
- m4hnscTQwPBvNZeLpfuqZI/kcj7d5s/MpMFHF53x1jfSaBnT+9/ooIz5sWfJ2DYIQLFWdc7uVSF
- laD9RAxW6HLujIV9e8MlhpGSeCArILKytVi7tW06IvpdR/AFdPG+/NaoiZ/QOdeP4qWmGMqB0YA
- n2laPkhMI/uFT3jDk+Y+p8dFiuj9rn+wog7daFUSjGDnROLD4keXN/Hf+0Q9rlBABSAoSF/VP5u
- yXhus8PH6DNXo/9+nKF1X6iQRpQ44ve2t3R4AEnDM9i2GoAzBuh8HbkQKT3s8yxQp+igeTcywez
- faaGiEJAb+8OWlZGgkCGUz1TWOLvxXjh9CpLRCZ+Wkhe5W5NDfE=
-X-Proofpoint-GUID: 7risCcktNpQ5iwlNymdXbLq2ZKMgG8ZC
-X-Rspamd-Server: rspam05
-X-Stat-Signature: tpup47y9fdjai4qfinr9zjimoiec5hjy
+In-Reply-To: <aPbFgnW1ewPzpBGz@dread.disaster.area>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B00CB12000C
-X-HE-Tag: 1761027003-699946
-X-HE-Meta: U2FsdGVkX19ijpIWNOx6yXJ2vfMtQHpm3YFQD8nYjt9/lbvy5uLjt24lKhq+nyRffzTa777JLLcICFQ+1z+dGayyVp8JYaQx+1unYjJry3qsNdKkZU0GYoXlRozGiOrar8LdlN9Pz38PGgwTfxu6BUIqoYg92Ihy+cf3V2rt9AyA3BNZf2kMKicS9nlIJr2SdjMyvtxjTzinouNiJnDR+LwDYCAWYDu03yy6bJYtj/2cRyLBCO3cFH27WoudqXgIqpWuR8K5Ok7NrQGvbpxqSVX7vIz/yC/d8mDjNfwNMKMeollifrdLqVh3rUpQn63Y3p0fvQT6H25IfC0shSgE4x59ZuXCDEMqEAnuaKiI3tmrsvJj84wWSlHl5+qjbReIdfusS7nCMJAarieLX5yfptw6Xal3KOymw6cbQlNYKozOzHaihwGhn2XvyFR0yUnfP+KihxUjdgpqLQqPE9NQw/SN51bDJAxamQPmp1/03s8FZGe3Ua9noNLaP/EsaeoGbt2r6addfPcJFIAoPo7y1uKD9uQ5jFeLQjJElsY/xUQKhy51osry4NIRwGYSR2cgMADBndQwY4IzONij4FEgqRswwD7emgLFRpK0ie0SMIBXjLCpmkEt3X/QVP0QcXFplpqrf19LV/qt0WwkFGVEmrLXss+7S9QXVzMZPkSroPAexDku1j/vl4WyhBF53CX2kg4Z8YKHNjP+SIFhVY+1fthdMY1kJRrp0OhMd6AQI3Gwd2EqcYGwNgkQDV7FzQJGbMDg2vTQ6ui1y9P3Phj4CukVOMqPhgkVuOxo2uJ/Md68KX5JNs2bWtf9w8GxvPX4L/CZrRca4FSllhrAa3/EJos/n11KXY8fyQAQexCDkWRUy+H1jJWD9i2XTf6M/sAWo1TGDMbSQZ1AwmfVCqH4y4TW3AUO2PZqX22+LLmIEYPeXTymv0Mja7RErXatIaolu+4wnI3naRP4dmqP9HY
- LVfsC/pi
- E/skSGkc0x0WWTWzlCmkdKln3IpJe0A3pXMT1oKLQYjH1ZxrVUl7NB1Tu2wUoNFN5P3YUCzol3XMfPKK6H5zzwRNvqaNIys2KMNOzXLRU68MVw1bIaK7xuqJdt620oaDM/tCEoC9DqsxUQ+aLRUoBICoPo3CPQjgkaA5DFqyIuoI/ocHizP1IEhpYF3xTkbfPVcXjrqNJTHcUZ0G0i1AqJnYfkUv+KkyaBtQVh3BYXNkfuA1qfyx7RG9KV/fb2R8buLTZRUWm7z/UUt06/UR+kdFUPL6UVIsTYOdSPjVmXmzwKeO/85JkzNx8ua7OiUMLC+zqs+cQrZl32NmTJNwi1p73U467/uO0nVMNfXK2GG3kr4wqcE0eXAYfAadQOzfQkXeUtOdA2PHEgL0NPF60WfRjjY1GDJQy/ry7ae2q9WA9HetR+6MRcr5W+puKfHc2qwUKigHzm4pmlG+nHHN49yS5p62Xrf8UmENa+4ULjjtABdVYS0vU5dzYmFRt9E3MYZ0oiLZFoocqaEOCc8gge4xNR2kqdH70SKpvR+r+ezk5lbgRp5a539uRdzkvrRqFHP8NMBFB/BnsxeyHdpDhF6pgr8CDuAdmU7DINUEQxZeo0l9/3JduWKITcnQ1TWs8TWAa/9wFPeibP/B7jzd+3ZFRYczsiuIyLKSewTBOeIuJui3mZqF5MkASb8ziSScMMinffY/bFEJtZ/we0A0JFQY8mliKvCAGetduJpoDfU/mJT4wxlvrP1Pg9S3DfNsivTeq
+X-Stat-Signature: 3965nnhx48mg4qh15fzsca5intecgf5u
+X-Rspamd-Queue-Id: 1263320003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761027171-146339
+X-HE-Meta: U2FsdGVkX19AB1YCFjVVJKBn+u0TOyo/NPHU6nELhupNxHxxLepvMU8HvCIwvfkbTRa0QJ7aR+YsmlAJ9bff8r3BCHgmEQ183E+cFOkTUBnj6tWs5cUvPZ8/CBG6MRsd/6JxbHSvqu2C1Qbqgh1+3YteWRpGXxWJJpNRhT7R2UeVBUwGTnOD+9Do4PfeqBZqyF9R6wq1pCJLTnJJezy7Rq8hSV3LkeWb5/g0JzAI8L+nYEVaCCowUeK1KTHlr61VK/eY+FBsEH7Rqf3QOhBFMk2649y7wx02K5pr3R/CplMAUvJDjqh12UzMIcP3TyZHHqNw15Mq067V67xXkvJt7d90lWaUbQB+5IAtYW65enFy2ycNdQyKlMX0mxNsm0RXa8zvsVV7wfdtihA41JsV/C+lDiicELFMGZ/Af3EYxZbdQnYRdhO8jLi042Uj4/+bD+mcKn7WlpTXiJcxA2H99qG3aT3myzG7Qq4R4To4vl1ygsFHbQuVtsl605QB2dscFTUqmaqQZvZzUBVzqu27ikdU6Uq6sl3iDzDJbwO2eEqay23w7YuQaEpFpRqbJngEGX+YueMr+1dnWj1pMtBstxJH6I7GlqWjsonQ26koaJLOrBsrMBj39T+0GyGqBGZHM/UC/3lbM/iEAM72ZcWwcSVuN+GKMtlim5DLi1P3J8cWUSAaiEVaDOw/6eouC9tOA6MLkfkHJjEz/XEJWItvvU5aFcniLjZPPXChIQMWIEIRUk55kos3kUDiQ6AaArgKDIByISVTMq84/obnF27nEUSFyRv/1Qtv5fPkcAOzKoRwC9mqvY4NcY5mKHdGmtZILCy4UbYCW9GCNdadNEMX/R+K07+gKYFs8BZjVAGGgpvIUKhH4rrH6f3nRDp9tig0XpeAqX9Y084uXzvwohvVYSkIZceT5zVCFvgK+GaCRYHFp/ntC1ivRi7WBomjgjXAj/niUPkxkPAOkxS/Poy
+ Y0uxsKhB
+ gXfw5raot2fVMm4z8LDr9NGzQvJMzrPm+b36jnFqye6RwngdTa6SNcgTpS3NMFUBOB3Z1DxVXGCc4CwZfUD1SS8DGJR3DN3aOiFdPm1gMGU4q7qiPNUOLVtusFjZzdys4hPSDWZsiHHb+H3+ssmarcjhCYHFJgWrxyhQndnu+pbjSSi3tvUDVmwnVtpp6LR6c9aUZIW77Yhll9IF/Nve5k+TDzn8o+/lP8QjDsO6x+cc8D2KOYfhMs4o71Dg4VLtEdqy02Ao8OJl100CBnquX8KhmuOrPs3xblMUrOXmTexfHCl+eFhlMd+SxQNlGJfj0CFRCpW7sedShYVXA0bQrJMWHei1D1vruqdwKbPuBt2LOtXAIPHptoqTYL8Q1hYletRoZcL7TFsLp11Zo136xDFxlWN2lRzlow3b1t5vznXpYGig=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,58 +106,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 02:35:33PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On Tue, Oct 21, 2025 at 10:28:02AM +1100, Dave Chinner wrote:
+> Fundamentally, we really don't care about the mapping/tlb
+> performance of the PTE fragments at EOF. Anyone using files large
+> enough to notice the TLB overhead improvements from mapping large
+> folios is not going to notice that the EOF mapping has a slightly
+> higher TLB miss overhead than everywhere else in the file.
 > 
-> Similar to list_lru, the split queue is relatively independent and does
-> not need to be reparented along with objcg and LRU folios (holding
-> objcg lock and lru lock). So let's apply the similar mechanism as list_lru
-> to reparent the split queue separately when memcg is offine.
-> 
-> This is also a preparation for reparenting LRU folios.
-> 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
+> Please jsut fix the regression.
 
-Looks good to me,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Yeah.  I'm not even sure why we're having this discussion.  The
+behavior is mandated, we have test cases for it and there is
+literally no practical upside in changing the behavior from what
+we've done forever and what is mandated in Posix.
 
-with a question:
-
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index e850bc10da3e2..9323039418201 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1117,8 +1117,19 @@ static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg
->  {
->  	struct deferred_split *queue;
->  
-> +retry:
->  	queue = memcg_split_queue(nid, memcg);
->  	spin_lock(&queue->split_queue_lock);
-> +	/*
-> +	 * There is a period between setting memcg to dying and reparenting
-> +	 * deferred split queue, and during this period the THPs in the deferred
-> +	 * split queue will be hidden from the shrinker side.
-> +	 */
-
-You mean it will be hidden if the shrinker bit is not set for the node
-in the parent memcg, right?
-
--- 
-Cheers,
-Harry / Hyeonggon
-
-
-> +	if (unlikely(memcg_is_dying(memcg))) {
-> +		spin_unlock(&queue->split_queue_lock);
-> +		memcg = parent_mem_cgroup(memcg);
-> +		goto retry;
-> +	}
->  	return queue;
->  }
 
