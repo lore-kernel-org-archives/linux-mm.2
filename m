@@ -4,139 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33824CCD19F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:17:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA52ECCD1A7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:22:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E1F88E0009; Tue, 21 Oct 2025 02:17:19 -0400 (EDT)
+	id 40A938E000B; Tue, 21 Oct 2025 02:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 891528E0002; Tue, 21 Oct 2025 02:17:19 -0400 (EDT)
+	id 3E1FC8E0002; Tue, 21 Oct 2025 02:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 788798E0009; Tue, 21 Oct 2025 02:17:19 -0400 (EDT)
+	id 3216F8E000B; Tue, 21 Oct 2025 02:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 639B78E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:17:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09C791A0430
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:17:19 +0000 (UTC)
-X-FDA: 84021114198.07.F2DE18D
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1A999140007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:17:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="j BkDXb9";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=SwGlFmQy;
-	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B8518E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:22:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD5F511A019
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:22:23 +0000 (UTC)
+X-FDA: 84021126966.18.2AE94AD
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8A1004000A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:22:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QM6xEaXQ;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761027437;
+	s=arc-20220608; t=1761027741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ThkdY/C21GPPtmJaBNezXHfzXuqV664YAK8ByLyyrfs=;
-	b=BH3E4yOfQgNuJ8W8fDjQvit+9Q+y7JKedRMs/AUfufft+SPpjvuxtY/k379qBZcb5uulyd
-	B2HPIwwOBc4tIlVqoYYXcXv9tsSQYpZgNnPpF+4q9bZC9I4Gwk/PWEXyzb9ZG/Zu4zXJVK
-	GdvqyiZOsCH03dUB9xngLLZBmPQAqX0=
+	bh=kya1JAQmVRbw00lv1IpjiwWxKFwn52KaWMDi202LPPQ=;
+	b=gniJW0m2braaeL1yERiqSPRxJ1IoiRt50g0JQNRgr8l135jxKCOgfPIL8/k8EkRekEvldV
+	X0jSTnxvspNJDPAjqcpvQ+TuSCbpjhoo2nS+y0oVrjg7Pa+lApvMJB0QBAyGPPHWLGjQoF
+	cIHmnzTqZrR0kpZP1YQhj6CrXDOu/i8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="j BkDXb9";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=SwGlFmQy;
-	spf=pass (imf26.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761027437; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QM6xEaXQ;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761027741; a=rsa-sha256;
 	cv=none;
-	b=E+MfIfZ8C/3n+xY2dptA/pjVpAUXXaymTcwU/mkVD89Eg/ueIhkm/O5Y2sgR/gBkwC1dC2
-	49BN+b73LKnxXClLzTJdUlQAdsotTbWKyfvzBU463JbL5D0zZp4UxWE5Aq1TQSUoqsLRBr
-	Uq2ZLzM4kzfNjAMGfAZl2opHieljFd0=
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id 0887A1300ACC;
-	Tue, 21 Oct 2025 02:17:15 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 21 Oct 2025 02:17:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1761027434; x=
-	1761034634; bh=ThkdY/C21GPPtmJaBNezXHfzXuqV664YAK8ByLyyrfs=; b=j
-	BkDXb9FTfW5u1Pbb6r2Zr3VIG72LKLw9nP9YQOlOupyXBz0s755d9Um35dkpZN63
-	I0Uef+OM6YOOlLsIcEoJtikl3xyLapw96UV1ssVhuz5QXCPo2hIR3HHuq7tMDGY2
-	58mQjV9AmE9WkO5v87YTKv3WvXTH0Mzuv6GrHXpLrn5wVp+uHl9G/UtGuSCPnuZw
-	vwEQaWyTRz1KV5apsZKdY+Fq3glU/Km7NFtk1WlTD7H88AOGfKkXC/iENwUf2PPx
-	jtjeK0o5qqx8Kh9PGTS744xDLujWknV2MNIOIHRFXPn3GPDa9C4CFI1NHQ1lvMBt
-	CSb12LPEGkaw74oFKuCyg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761027434; x=1761034634; bh=ThkdY/C21GPPtmJaBNezXHfzXuqV664YAK8
-	ByLyyrfs=; b=SwGlFmQyJV/PUgWB9SDj8yguYqU6M02H/iwHNvXmSHlFlJWSi3H
-	kIShHsNjDTPJvlQR1G0NkOXLVQQnarKseCczRENjeW4f2/jTVqqrDnx99y1xAXwD
-	7aH71MEqkok1ZR86ML/9a7+bnbqZxsxDD4Xbuf7+uJ3iNt30RCnrRiFrixypWMZJ
-	7hn4PFxDdp3x9LU/kfyTjNnUxVFPdp5+uxLLuMNV+oqpqgVqdelQ8yCOFQoMS+Bx
-	tQVgcSObMnUNEKS/RRs639uYCuVsXuAy8goq318P6gQSvQsVxv6C6Ev8BEbF13qc
-	QtR7z9k+yFXihMGqPAq3DbMQTPF9AoL+qhg==
-X-ME-Sender: <xms:aiX3aKJUQ4w9jII6ojRPfsoLw8bmWwE-vMOPiDCVSmdCc_Ma17RgmQ>
-    <xme:aiX3aDqx03n7NVDXm4A-71ZXHDANSiXBKGt83n_YX-1pOKqaX2_bd89uKQH9X5lqa
-    8rTARffDzmTe9-t-m3BrYAlGNlLG-N5AIfFDyslM2xEczBFctud>
-X-ME-Received: <xmr:aiX3aDUg7XIAOg7-dyN3dlAFXSuQfRptLP4PiBaTif9kcg3A516IjBkhKedgew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeelleeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhgthhesihhnfhhrrgguvggrug
-    drohhrghdprhgtphhtthhopegurghvihgusehfrhhomhhorhgsihhtrdgtohhmpdhrtghp
-    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
-    hopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtthhopehhuhhghhgusehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpd
-    hrtghpthhtohepvhhirhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphht
-    thhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhrvghnii
-    hordhsthhorghkvghssehorhgrtghlvgdrtghomh
-X-ME-Proxy: <xmx:aiX3aBZnG-ZV_4luYvFZpInhDnYtfDRG7P0tDbPX9MWlT8uXaFOc-w>
-    <xmx:aiX3aEviEPwclsfWJ_0iXO_8_Aa55qLyoEWI7vz1M23KTlSqCEu7zw>
-    <xmx:aiX3aIoBf-j0YZ_FDUN6TmK2qmANbmPNVQmdG3dyGIdOKBUNaBAt2w>
-    <xmx:aiX3aEKaDNlUXOJmV5ONHKDtWHioydnBD5JTyYQJOwskcyh9ar4HbA>
-    <xmx:aiX3aOz0zFfSTrsVWO04AryR85bzqMmoIOXlNHl2tcwU4ZwddTs2TMLq>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Oct 2025 02:17:13 -0400 (EDT)
-Date: Tue, 21 Oct 2025 07:17:11 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Dave Chinner <david@fromorbit.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
-Message-ID: <cas6g5sw6bffqo5e634tmyivdamcagoynztic7s53634mv2kwk@6a552oryikew>
-References: <20251020163054.1063646-1-kirill@shutemov.name>
- <aPbFgnW1ewPzpBGz@dread.disaster.area>
- <aPckWHAGfH2i3ssV@infradead.org>
+	b=OkTNx9XW25RMhv8PUrMUIuDDiHcpkCaxnimThN5n+LeWSDQeU+eCDeMDjAscXgwG4Dtx3P
+	PR3c04Bedz6du3WyuH1E4CjHY0mOJh6ly6DI4WRG3Q6fr+4pS4VxaumjPjDQeVnBRUAz3U
+	lCiW2sYyZ6LBzf/7mUm1rk0q7uDBQyc=
+Message-ID: <3acbf7df-b890-4679-bbbe-959bd45fdef3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761027739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kya1JAQmVRbw00lv1IpjiwWxKFwn52KaWMDi202LPPQ=;
+	b=QM6xEaXQ1k9fTRzqU35722oyvtkjOhFRFUn6hv7F15sVNnUzXmeTTn2sd0kuiqZ03eqLb3
+	yeUPqfOeX+rbw3/za/8SnDe/EQgKFudCqn0bA8eG/3HY1aYPpOdEgHLGz3PCveOq0oGoVK
+	1/6Xk2/3qrqGrJgsLddULhG7FS2cUmc=
+Date: Tue, 21 Oct 2025 14:21:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPckWHAGfH2i3ssV@infradead.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1A999140007
-X-Stat-Signature: ahsq1iforyh4bdopmkc13kqrfsyf3941
+Subject: Re: [PATCH v5 4/4] mm: thp: reparent the split queue during memcg
+ offline
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1760509767.git.zhengqi.arch@bytedance.com>
+ <645f537dee489faa45e611d303bf482a06f0ece7.1760509767.git.zhengqi.arch@bytedance.com>
+ <aPcjnKAapap5jrK-@hyeyoo>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aPcjnKAapap5jrK-@hyeyoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: bmewb3wr6bsg9qggciq6545n8qhco7zm
+X-Rspamd-Queue-Id: 8A1004000A
 X-Rspam-User: 
-X-HE-Tag: 1761027436-929442
-X-HE-Meta: U2FsdGVkX184F9ymUgw9jnsrwYz1jbhQj7ai02rYYsWtIgZBl9pVkuB04BpOixSFf1ggp7YQJH1ZR6/uHYSteD+t5+X/1jWKcQUnZJPKmW+FYn4Smmy57ppq5A5c9biIRLhGQCQpVSsI8Lnnq+iQ7cznGnTRfNc5A3OltC9Pv8vA1q9beoyTadPDy6GK3boWjLoz+CFwgjb49ciKkpbLdpwDs7V/z+13ktr05t4kR3lavZ945SrX+dhyqdUuD3dy2qqApUO2matdz2MvOBibUA+A8/sC4DVCHPvcL0q25g5CWZymzBxKHiGDTX269dS9PC9JGP/fRUS0lYuBtiEpRkfFQLEjTpEjdqcLBjOXT/p3Y3YhzYbIicW8O0jjv4JOll9rJv8OgZyX4HjjRh654WQDYWdBF9e53eK74ktaMBEZ+a+7cTxV2PgExcpRxOukErXhfDENl2LLS72u2Wp0uWa/CFInGqaKUgK4Z8XqUlWIybF+n1oMQMnPMZxxNTcqTPR1vgIgUvtXw545lQsjMksMIyHSOZ+rgPT3fJqNct3dnuLQQgRmw2imwpRtTuzuX4jit/IxMIn8McimDLE6bshztc72wuhLhzWT53jhKtX6neslhmRlIzcFf/qqC/0o7xDVPejs76fwBSCjQUvwBP1BT7fUmj60AU/MWbus0wnYN83BryuODxSbV24NAvPgxzhnufRfcuUlfYDzlwxFZc9vP45E8s02YLz60XTwnEoReuXg19FZs4iX9b6c8R5x63VAD/XM7B/VGZREmK1BBtc/PfQ+G3E/VfRSanfOs0qQtpGXIVzmB3Ftv+UlPl4Om3DLd3VKDc0ezeqVdT1UYitxEm5l0OCIhlukxls+81i5jGzl2xIfAF/FLPVp28IbIHR7RvCBIkWLyTZEzh+IIcKHiYPgTyT03k4/w/zPjPCbegetPvSU5MJxoFVMLlHv4/fD6TvsivPbtpMhTb0
- q5QE5Hhb
- e5ib3OIxLvocfvbIZ/O237M/h/e33r1fvk48MggrNX5Zt2kQmph5qIGwDCGnnOK5PkmDu06iFtBHLvvNsTjzHnH0oLE9LesXSgJD+GvHsJuXf/0FigWpM9FoF/fQ/Y4dSqm6VxMUT8N0weLRUbdNiFaLWWEAE/qCkmMe5cNHhTbu8/IcsyON0Eeud/wbxMQLxQvRDBOBqZyIjtnqmru4jPYD0DM6bqOU9SDak3/85dBS1ysiRI4y+7D5zh7CyjBq8C4slo1N7COI10ZQ4sVUeaMs5CUoR7owUvZ8c+EMrWMqfBTWwlq9S20OfotGPv0Nj3etNGvTAjb8T2vP8lqmMo8saZNgedrBgG+3kzFG810XgMRKGwvF2P0sw0RYeoGimoE1EZ/X67iXZlUrlmPMfnRiVComFn7mqZN7XXqiYCFOBShiv5mdXDZ/DDqhGVBo6n9om
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761027741-304880
+X-HE-Meta: U2FsdGVkX18fMjqK+mKIcwyrmHGRp92eGWiJD/vn3NVlno4I29yn17hEDBHUySc+9zlHEc/5jV5ZF3Fp+Fk7N4/zk+HxSzK17EnbI5Sccc1o4/n8eFoExEIv1rXheGHeg9SKsU1UCnuu9Eh8E3jDpT/WAA23nkxvPRTk5oJoTSOiOquGqRs88NNb4IWDyGFLWPdstMSNGGoGAmUSNQ91ZUmbGMaGCpWGKy01vffXXIz9hT7omPxpvgsc1od+lwNo5107XT4OO09zhVv5q+v3XvWSIh9l8qpSJHN+me5UqvfW8mWDzun/IEg+snXMGHfyMJRyAC2o2JC7zoburVAlDsRaE6oIHBp5wOVHNut80lV6ChQ8OSu2+MArDtAS/1nSC98ewLx3O8nw8g2++ePSaTUhSxg79kTgqnFs24/sE/HL6hZR2zmzCK71SVegIvMLNhUsss4HOE7XyOavuqKmrMVEmDiHrYAXS2Ellx35Wnz6lbBPcFgqTZnkyVr4b8KGsjhZYjSlzudo2O/sU6+z59KVC9oVE5KeA4TPwb1+Kv25jRelFZVimhaBlv35QORkJhjRpWrqDSa5qdA5xAzwHOIjwkvsHPtigvnyS4TRG+NdLJL49inYJbS4Kt+fUZUY20qdeaOHTMKrO3RCGhI1Q8tVlIycBq64LZS6yavNFbsk2Qr+CJCZlPCoJd80w032QJPuWdZr2egfXf+0zm1/2V64/WJnMpVLP3vfyTUjL9XsDQ7JW9ep13IDEWq9ZFzk+RswOAiJVvbShXCuIH3WeEy+EnudSgXmAwTGYdqiMVqYGWgiKCFPS/ydePmcJLTDVXOtRHsCSaEaJO3o/gsxsyTHGiWEeuC1Oi2To7KcER87nTqSUQAPsOoAa04OVl1YgN7wKHGnAAzXt0MBUwnbnDg9QRpjfQoO4YJmPZsRyudjzJitJFINlVgAr823ge7RGlNzaX6X08llXuy4/Zl
+ ZWykuOs+
+ jPaKON+8q0X+Xxvv4VsG9gulgVKCQ9TA8aJNHYr3pHmjBkDplZC1hZ4zl5EsiuWiVlUgxsKGRvPNuw3N6z/FGFkJ4HyRlDoCz2rHUaC0vF6VgXoYpOuMCNgcTUlq5RqIN9uxrF1B4r3sMj0yvSk4s+Zmrzih/V264v98TrshsYxWvQghnrS+DKI28ncq2VP8IXEEKrh2OFmaQv2cghiPBWd/oLSRuMLeUkP2DdbFnYLdpcBC0UyZ7GSbRl4g8IPp9kpctvWgpdhUb4320NOc9N86QqN3l9Ctfusb7sloC2/ZQ4XGI+ZZk5vmPoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,23 +98,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 11:12:40PM -0700, Christoph Hellwig wrote:
-> On Tue, Oct 21, 2025 at 10:28:02AM +1100, Dave Chinner wrote:
-> > Fundamentally, we really don't care about the mapping/tlb
-> > performance of the PTE fragments at EOF. Anyone using files large
-> > enough to notice the TLB overhead improvements from mapping large
-> > folios is not going to notice that the EOF mapping has a slightly
-> > higher TLB miss overhead than everywhere else in the file.
-> > 
-> > Please jsut fix the regression.
+
+
+On 10/21/25 2:09 PM, Harry Yoo wrote:
+> On Wed, Oct 15, 2025 at 02:35:33PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Similar to list_lru, the split queue is relatively independent and does
+>> not need to be reparented along with objcg and LRU folios (holding
+>> objcg lock and lru lock). So let's apply the similar mechanism as list_lru
+>> to reparent the split queue separately when memcg is offine.
+>>
+>> This is also a preparation for reparenting LRU folios.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> ---
 > 
-> Yeah.  I'm not even sure why we're having this discussion.  The
-> behavior is mandated, we have test cases for it and there is
-> literally no practical upside in changing the behavior from what
-> we've done forever and what is mandated in Posix.
+> Looks good to me,
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 
-Okay, will fix.
+Thanks.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> 
+> with a question:
+> 
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index e850bc10da3e2..9323039418201 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -1117,8 +1117,19 @@ static struct deferred_split *split_queue_lock(int nid, struct mem_cgroup *memcg
+>>   {
+>>   	struct deferred_split *queue;
+>>   
+>> +retry:
+>>   	queue = memcg_split_queue(nid, memcg);
+>>   	spin_lock(&queue->split_queue_lock);
+>> +	/*
+>> +	 * There is a period between setting memcg to dying and reparenting
+>> +	 * deferred split queue, and during this period the THPs in the deferred
+>> +	 * split queue will be hidden from the shrinker side.
+>> +	 */
+> 
+> You mean it will be hidden if the shrinker bit is not set for the node
+> in the parent memcg, right?
+
+Look at the following situation:
+
+CPU 0                   CPU 1
+-----                   -----
+
+set CSS_DYING
+                         deferred_split_scan
+                             /*
+                              * See CSS_DYING, and return the parent
+                              * memcg's ds_queue. But the pages on the
+                              * child memcg's ds_queue has not yet been
+                              * reparented to the parent memcg, that is,
+                              * it is hidden.
+                              */
+                         --> ds_queue = split_queue_lock_irqsave()
+
+reparent_deferred_split_queue
+
+Thanks,
+Qi
+
+> 
+
 
