@@ -4,122 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BA45CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 17:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B462ECCD1A7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 17:42:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40B238E000C; Tue, 21 Oct 2025 13:40:31 -0400 (EDT)
+	id 19F7B8E0010; Tue, 21 Oct 2025 13:42:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E29C8E0002; Tue, 21 Oct 2025 13:40:31 -0400 (EDT)
+	id 177038E0002; Tue, 21 Oct 2025 13:42:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8788E000C; Tue, 21 Oct 2025 13:40:31 -0400 (EDT)
+	id 08D968E0010; Tue, 21 Oct 2025 13:42:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1980F8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:40:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C13B11A056C
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:40:30 +0000 (UTC)
-X-FDA: 84022835820.29.768B0EF
+	by kanga.kvack.org (Postfix) with ESMTP id EA35C8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:42:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFBC14868B
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:42:48 +0000 (UTC)
+X-FDA: 84022841616.03.58AAFAB
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5196AC0006
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:40:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZPkS8vdn;
-	spf=pass (imf10.hostedemail.com: domain of acarmina@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=acarmina@redhat.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 450B220005
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:42:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B7pOF8pE;
+	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761068428;
+	s=arc-20220608; t=1761068566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6mtgo3pPCytVhVXZFHBeLsifkDHzSLEpkyjN1cf7zc=;
-	b=t194l0XqFNGgwVQLvDHuNSBcps7gmMEBfn6SNQNmDE/1zjv72kYZ8UaSUX5bx/fb7cdnHS
-	mRxDv5wGfIP38D1//dptDRLvXNP5kQHFBCDz4lL6E20qOqBcFAkUWkpilCfdoOOUZZc+s4
-	ouXJ0b3fVbj0u/g/W+suRgoqB51Wdkc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZPkS8vdn;
-	spf=pass (imf10.hostedemail.com: domain of acarmina@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=acarmina@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761068428; a=rsa-sha256;
+	bh=HKohHX5PQdAgp4BuzOw5sJB5TQe1jmIOtleJ46IHraQ=;
+	b=elgb+JZtVJG91Zd3D0jhXN6F8yHrpQRojp/uxrfY7aJkaoIQgwYx/tjnKRLJVecbZKQ758
+	tkHhCrbKXjY6pBIC6YTpjo8JW0ykZpzIkvB7tOqe46N7eajb+UqEAfgkIwf1fU3W8ewwKu
+	50yttWDd07Cpy2aWXfPbxuRBmXDKTbY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761068566; a=rsa-sha256;
 	cv=none;
-	b=HTL/GMbeYA5sQiNuNeoPxKfV44sSjrMuXCDSqqJ5KtJaf8DaTs/42tQ5+Orex8TyvMbiBK
-	VzfiXumBzXrd4HhmYXd+fI/zmrDapuRXWK95kWIT1nVjnuyIBB4/KavPMDBIOAqWqo8eDK
-	pjBX3w8emzzbDBLz/vZjugB1Aq/77+4=
+	b=arM9TFfe9Oyy3228eC3uZXluTW3ZpqGSkgpwrck86RupHn9WyaPCm89XHSTxFF1NgQT5dK
+	3mPDS00G6eCXkFGrlC/T+0mrtdM8qwuMpWJDAcShoGZyj84GZa5q/VOaSjhRCoNztMsqXG
+	QHwGzbdQGFNjoAcSLXxdt1lKJvC7OsE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B7pOF8pE;
+	spf=pass (imf03.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761068427;
+	s=mimecast20190719; t=1761068565;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X6mtgo3pPCytVhVXZFHBeLsifkDHzSLEpkyjN1cf7zc=;
-	b=ZPkS8vdn9YXYHMFl5jsP/6e/FNrCEv2cFoumPD9pODoU8wG7PoScVGmDLIP1mUDoeUdi56
-	WjDFObW2KNpEJlf9o+FLmAU5yI2Ueb8zpSVDeDD1dpgtxB0P/NvYGrwoVRT3EH14ZkD1eU
-	RetPzCYU4yXNugxEQ/xSyg/Y/GHAcQg=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=HKohHX5PQdAgp4BuzOw5sJB5TQe1jmIOtleJ46IHraQ=;
+	b=B7pOF8pEEHWPUVvAP5nkrjowckIrvsF0pOZaDwUKAnayuhD8QUjcnG3GbvtBfFdhhKQ00Y
+	vGAVH2C/QsRHBJLdsYKr9llUPV+svUYY8DyZUzlKQGoXAKhB+xv/OnkKBnDgMLv1Ly4aWi
+	N+43Hgxu+gYtJEodJ2RA0YgbOk6B+Bk=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315-JZ_xVBkhM_WM_M8IrmXmPw-1; Tue, 21 Oct 2025 13:40:21 -0400
-X-MC-Unique: JZ_xVBkhM_WM_M8IrmXmPw-1
-X-Mimecast-MFC-AGG-ID: JZ_xVBkhM_WM_M8IrmXmPw_1761068420
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-27ee41e062cso74897725ad.1
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 10:40:20 -0700 (PDT)
+ us-mta-67-oXiRLWj7NQW1BztAd_Y-kg-1; Tue, 21 Oct 2025 13:42:44 -0400
+X-MC-Unique: oXiRLWj7NQW1BztAd_Y-kg-1
+X-Mimecast-MFC-AGG-ID: oXiRLWj7NQW1BztAd_Y-kg_1761068563
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-780d2956a2fso72379167b3.0
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 10:42:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761068420; x=1761673220;
+        d=1e100.net; s=20230601; t=1761068563; x=1761673363;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X6mtgo3pPCytVhVXZFHBeLsifkDHzSLEpkyjN1cf7zc=;
-        b=bWWuGYRbqo8TTWMMqIsZQHqA6bWMithfmmFuZm2PiuiTtoyOO6ke4+naVB1neUOvzC
-         r9IOVacqc3uvkdbH0e2uUI6knFLMu6WRGqUdrWRkIxrXdqHdUyLYXkiagTc7VDGLIfyZ
-         xyHgrUN5Ux249xBfUzpjqt3wd+roI0Ij7vKTVjCcX8w+pU46ACIa2sMpQAIu71L0dnDz
-         H0DRIaLvytnhpexwTqKb2pZY4QS2+R5ufS9CtQh0q/Tqi88bWMbBUfYZMP7qwbjJigvT
-         nSIm5j+gzyKudZwPOTNxdBzNqvqQQ0T9FKJnT4OSERDkKCI6FNGF/SyivDvq9LHoBdGb
-         ZiOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUj4SVYff9xIHJx37GAVdZqIkU+6C2eUBm9p40x4calbYSoFeVh2dFrOc0Oj7jT82fzU8yL0vqiLg==@kvack.org
-X-Gm-Message-State: AOJu0Yy5rYeemhkeGJBSW6CmKEwIj7Nfx2/kXHduAKxSm6IteLw6beBl
-	rjx0VJfRoZl0RpGPUisrcrnYJFjSh3fvf3SrlSfFTkBYn/idQww1DojeNiUPY+z28/13QWTJJDd
-	4D8rW+LCY6ZODeNStXx3KfwcG67l2N3gT/KjphcEZHY7y2flWQrDZRH7uOu2SR7aBd+Mo3pUUws
-	GZk+0z/zKLb7SO1S08k89vxilq1Qc=
-X-Gm-Gg: ASbGncsUWJkPSR4s4ezDeaE54AR8aDvIKfhpw+fdruUyJXwMuViLUYkWIcFaTvhTFwc
-	cyV84Ns73/A+OOl5xqOjAxSWECYzC6wWyjy+ryGnbn0a5gXDMqNGSkBYGc7l5wWv0daAoRtJu4p
-	OVOrTD4LojWwSlqZDd1OqDMjWLXgzVlnAJ9JR7YWMv4AEuhz96sBNK/w==
-X-Received: by 2002:a17:903:2445:b0:25c:25f1:542d with SMTP id d9443c01a7336-290ca1219e1mr241861705ad.36.1761068419830;
-        Tue, 21 Oct 2025 10:40:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGNBRXbNnmPSpLYEnXFkENFI/1M+gqvKIYCVJm9fI2lS0fXYAVI+gy+WgMJVWOy3YBjG5e8is9uJ+k/OC1HrY0=
-X-Received: by 2002:a17:903:2445:b0:25c:25f1:542d with SMTP id
- d9443c01a7336-290ca1219e1mr241861165ad.36.1761068419241; Tue, 21 Oct 2025
- 10:40:19 -0700 (PDT)
+        bh=HKohHX5PQdAgp4BuzOw5sJB5TQe1jmIOtleJ46IHraQ=;
+        b=ihTnLCf6bolNulTdKiGPIDozhXWlRdSgHBNVJKcvzeLp/raNFEo9OjHzTrMjl7HKvZ
+         ocMoF/OuhZHIt23y3iXI6RCJlCSy2Ptx487A7jPozTglrolggbLxT3qC+Ovvf/XVZLo6
+         0Hx/njikYb7ld3VYcwyAH7wYSfhMlb14od/BwxuZRbeXjcVRMFxTOS7SCilIKGClyGDC
+         M6qyyWlKoo9ASqa/654OWhbhE2W1zV8PfXWp8s/jkPMV3JVMQxApUr7e1mObzWpJqkEa
+         bnyDXbOujY6S7hG2V31pNZzzwfLXYpWBukbbox/SGy1h34ytRY6bcAo3Eebc0dBfS2Zo
+         187Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUwIx1KK0pQJf0fYG9kuAxvayhenUlAYX79gACXplvMmHPxxm2CU0b4ga3l1ZSBUPcw5nBDSg24Eg==@kvack.org
+X-Gm-Message-State: AOJu0Yx/PCF0xUwvR/kwvDEPrIlZaN8haVhfRMsoNvjCIWg7y3yy3kkE
+	Y3mOK0aMYwK1afPAshdCm2x7+1Fvt8IlrYHrLZfxKlUvEBYMviZjzCRFCeDD+ZntNs7tH4OmvlD
+	OxsYXsIyhiRUHK9GbUJpHQ14v+pMwcxPKCxulOdKA3UY5LBkay0gOwFU9E6b+B/YIC/B+xLStF+
+	n9DNR8GlPYFE/h4E0dW0Mxnm/dbUU=
+X-Gm-Gg: ASbGncuCHny4UpT2zOlY1/qGNOQN5Zg6o43lLsVsft1bgumW0PuUKqwj2/9+2iTUX5S
+	U/24LyquTCZSQLFPlK1VSxDQN710LDP0pdvpvCBFZw0DjyfD9TrBGV7VABFIHBridzHRwTO/uDl
+	RuR5RfZPt1g/1n0clK5ylauav3QGH1nAZhwd4/9FovNiFTMM1C4CcxGRp+NtQsYUTlf/Ra9w==
+X-Received: by 2002:a05:690e:118e:b0:63e:27cf:8350 with SMTP id 956f58d0204a3-63e27cf848bmr9752786d50.51.1761068563413;
+        Tue, 21 Oct 2025 10:42:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPeGWBwa5Vswr2rx8OIJkKxxwANwfGdn0lP1anQB7PC3Rr8+J3MWt2Uu35saaXOFAM5Burzjh2O4us/ANDTeA=
+X-Received: by 2002:a05:690e:118e:b0:63e:27cf:8350 with SMTP id
+ 956f58d0204a3-63e27cf848bmr9752759d50.51.1761068562975; Tue, 21 Oct 2025
+ 10:42:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250910170000.6475-1-gpaoloni@redhat.com> <20250910170000.6475-4-gpaoloni@redhat.com>
- <2025102151-distill-operate-a748@gregkh>
-In-Reply-To: <2025102151-distill-operate-a748@gregkh>
-From: Alessandro Carminati <acarmina@redhat.com>
-Date: Tue, 21 Oct 2025 19:40:07 +0200
-X-Gm-Features: AS18NWBEOONK7dBiVq2lvIZx05dnm_RrfOSuk8LGx_c67bshALzcxq1srb2jgM8
-Message-ID: <CAGegRW7qKAPre7EAh8JLkUuA4Wi0-cKs7q3_qxHAE0nJs6VHEw@mail.gmail.com>
-Subject: Re: [RFC v2 PATCH 3/3] selftests/devmem: initial testset
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Gabriele Paoloni <gpaoloni@redhat.com>, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, safety-architecture@lists.elisa.tech, 
-	kstewart@linuxfoundation.org, chuckwolber@gmail.com
+References: <20251021134431.26488-1-leon.hwang@linux.dev>
+In-Reply-To: <20251021134431.26488-1-leon.hwang@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 21 Oct 2025 11:42:16 -0600
+X-Gm-Features: AS18NWAATySbKWIjDNiNWbHZ1s7hUwaBcjhshia5Gj7faitPCJK3Mblb9Kitkrc
+Message-ID: <CAA1CXcAgjZ2o44ifY_Ay9MjgGT6q0vfrRBy=vxyecH68YcMYtQ@mail.gmail.com>
+Subject: Re: [PATCH mm-new v2] mm/khugepaged: Factor out common logic in [scan,alloc]_sleep_millisecs_store()
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: y8eVuIG2ADqwCKsG_sHT1NdnI7GRcise0D9Y-4f5OGc_1761068420
+X-Mimecast-MFC-PROC-ID: oybPlLs76GRY3W2GW7gVJ4lSESdrepvsUJyOQqwn48M_1761068563
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: t7oi6o5keoi7wjyob6hzshafc67b58p7
-X-Rspamd-Queue-Id: 5196AC0006
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1rdosadro3robn6kkf5e1j51nzosirgo
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761068428-24882
-X-HE-Meta: U2FsdGVkX1/IjuGVmgJbCN+uKMIs4OGZ8A06czNMIfPMOVAmBKgopdVQRwqopKlYM7Ohkjue3XfrkpWAp+sVUbEZLJ8do072OMfVMlnPXzj2LNtAQs6jydHcM6mn13XVwGh3Bb9/tOzSdtsJGuLtQqAL3m8L9WsnB+e9jpPhIj0MfrDGuzu1YDDYQVlhlqSsvLEiEFHkCDznts3fMld6PU6E9veWlEMFTG8x8f3Nfbt6amzMmbwuG7mCsyx39NOWamuhCOXRbL69y5V2tnar0eE2x0+e8wa+F7/4NdIvdYD/+D8IkRiSmwn8K8OAQdtd+GmPpkhwA2/IMcCUi2qxExY2HnUxVWGep2RkxgK0gAuCJjC0GqAocVhQ6aklTP/EgYlUz40dNfPNFIEh/17ZjgnpjfdHMbfLJiT0ujdA8HPCVTsqBf5BVt1PNMHEq9aJpf/TsCtg5XTUo62MXdzSHfP/vMO06rULZTdJ+QmFCR/CqJaO4B3I1N6oNk9AmkJGE9fuvDLnDBY+0o7FilPAeUJ8WumLnY7F6ZezNl3CE9QIgXzWO/5L7NTWxGt2Kvu0viF/rjlU8Xk6wjUKSgSKGwRePvZUPbROvehc4i8/0ORAZejgieojsZjzvqns5xQIcVVc1+4/oGUtgPgwZ6V3ZU2e37vTMgXwueETLVfa2LJr7RrYE6L+eO8Ae+yFwQ4kOm08pN8t+ti5uzyVDl8xEAESqrqeUFnsALaYocJ1Q7YO40FJyLYgpiN+oQ67YS6/fyYg5s4wBCzzIdLnJFMyuNeWqJIf5kEmORLLVBIda2MCT2rzjGCqlZYQ3OQ5+vPY3HcaEetHkC0Zx5PFkT8UHUM4gm0W/paDukeYc3rAU2DUfdk67fSjtwRSh4BDVgDyaOhwJusAkNvS1kWMSZrngkYjSM/F4aYLyV8yQzX4rNI1udn8ssN70zuw8JKcgNB2l2PlQlQOf/L6r0ROZZd
- M8NNf5GJ
- e5JuVrL2GGadu67lkAhi0WxZBZrXxPZVD7y1GitLmufLaqEGx//LDDDTzlPEEh3dxCOin6F97kcHSRyVNPBgIhryMBb4ybktHcK+XMG1zipdHdR2M8IZVdG3lkjS4rPiV7I13IEwQZNUwblVIdGyV04ZQdJaoF/cx7t1NrEu5Qcwc2p0WbaHdXlFueKC+u0Lxuunh/SawYKdPZ3rgUUCVPTN97pplU4u+eeXLdq2h9hTJy9CZI48NjFfBJVMaSu+VCBpKQkGyudFnNJKjBBB/V4us0Ywe2EB+JLq+e8WwmAxULn17uorkBdCUwNMCQlX2qNeSN3GFry4DV6oQB2QfLL9Q5dBJ50Wxao42JX0Me3eK8qw=
+X-Rspamd-Queue-Id: 450B220005
+X-HE-Tag: 1761068566-583091
+X-HE-Meta: U2FsdGVkX18Ozw/nba9QtCSadM/KeEOg0zPHX8tjAE6AUtklGiGhna+THlYlmbWbqE8nNkh4d7EJ74VVQfUNdJHaABJJI2Xnd+U7zJZkcQJy5yIJMHc7CpJywd7lliXxU/Kj6gmkzjEt+ly0IGecup9MCL8E8NG08L3xiBdQTNIR0WmJrpyLB52FwQyiDgGbpkufG2rEnLY2cdqoayM3VopuIQrEIvFEpzcTHE//nFDvv/m7/2ZTARVayhW7vFEwQ8BvSfJrNl5scrJiqDKZ1DD9i+LlLbzNJADGkWT4JoD3CheX8OBaroNnqUzSS6ml3TWHDa7Mi/8pGwx0/asDaGwEFFV7TNNWqoADvYaFsBAdoodCMIYfEwgdGDo03B7PjAHmIZPxHULEUf5LrdR+zrdY62ewN4DnqreZJWYZvHAjFT22TtirgcoOoCtz17YvyCNubO0R9AsBkF0XxjH0f/ZL4rrplVq02M3icBLoqk2wbJ/zczgVMNCb7MGXnBux/K+2vGPTCrGGA9mUScqZo8he6ulr8QQV51O3BOHUTCrTtE8k9KUn2y1e7Q4Le0bGHbK16jgJ7pEcWmRXVfYtv0mxT9mJ1/C0WcvVzEqkNpKmk+U0sPbEieNlV5l1cPYPCytqMyakChRKewDH7x5M3FES3Jnf+rLdvG3wO5Uz0tTN8Meeg2u9TKh6Ox1j9gCYOR7G3vONQxtbiM+J6zYHN5X2gmKe4ppuaFXSFkzhT/2ImNSPttGq8Iw39WdG6wBptcYj6khhx2qNTJDga1wDHKfZFdN46AHhnJxyp7OjR6FZsOhzpgxBHJp8CMzxW1xzP5dHX7SHFJ8RTjXrGogxfRWvZA8CwxecaW7dz+zVMYhcJqieoVKh6lK+EnbL1Z2d7SAOy38WukQwxywrY9+a9AQIPCxrvrlXqZ+7LPaI219YqmrCZh0q7hEv1Vj/lrWTkL21n16slcnjIkJpOtb
+ iCGcB49k
+ SWSRx86D3yhD7s8Ig7um3XVBN2wHJ3yl3ChVJEDmHww9pVtn+7J3uVI+s+ThVLOm6a61iVwX7FCzUngmxeMgn+WA9/TYo2Wrue17z99r/711PK0xU3C+1wrSqMNTuMfRJuDwbEuj8XDspqqTn+5IAlQT+wAnm6pkky/7jiaFFpqwxCyzbbhrY0elVem6qq46bcxJ1Gb1kBjvAP6Zhd73VUjsykxTyOVUkYL5zzNAyrfZjprcQ+x29MI8x9oWY+rsW6KMaqDHBiXKgNLHksCTGO61aK+4ohHv9rIfdHTiQJqwAQwsunGUvkZoRS37lwmIR819B3lMCAbkAisCHkOtXTjha7R7auGdZjKfCHuvdk/0AELO4vz8u3t5sxJFJMUWmQyhPlEWUxPNe1U4BxQHz2QMHfGHpMJRfLh7VEbFMr/9sRXd1RZy6h01TTALklG1iRIdHkGsgyzJMflhyh0KRA824sT4n3muzThUPO467ypHOj0fTLRtqDAFetNHuT4kLJdLH30VBoyY5zt0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,137 +127,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Greg,
+On Tue, Oct 21, 2025 at 7:45=E2=80=AFAM Leon Hwang <leon.hwang@linux.dev> w=
+rote:
+>
+> Both scan_sleep_millisecs_store() and alloc_sleep_millisecs_store()
+> perform the same operations: parse the input value, update their
+> respective sleep interval, reset khugepaged_sleep_expire, and wake up
+> the khugepaged thread.
+>
+> Factor out this duplicated logic into a helper function
+> __sleep_millisecs_store(), and simplify both store functions.
+>
+> No functional change intended.
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
 
-On Tue, Oct 21, 2025 at 9:41=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Sep 10, 2025 at 07:00:00PM +0200, Gabriele Paoloni wrote:
-> > From: Alessandro Carminati <acarmina@redhat.com>
-> >
-> > This patch introduces a new series of tests for devmem.
-> > Test cases are mapped against the tested Function's expectations
-> > defined in /drivers/char/mem.c.
->
-> Cool, but:
->
-> >
-> > Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-> > ---
-> >  tools/testing/selftests/Makefile         |   1 +
-> >  tools/testing/selftests/devmem/Makefile  |  13 +
-> >  tools/testing/selftests/devmem/debug.c   |  25 +
-> >  tools/testing/selftests/devmem/debug.h   |  14 +
-> >  tools/testing/selftests/devmem/devmem.c  | 200 ++++++++
-> >  tools/testing/selftests/devmem/ram_map.c | 250 ++++++++++
-> >  tools/testing/selftests/devmem/ram_map.h |  38 ++
-> >  tools/testing/selftests/devmem/secret.c  |  46 ++
-> >  tools/testing/selftests/devmem/secret.h  |  13 +
-> >  tools/testing/selftests/devmem/tests.c   | 569 +++++++++++++++++++++++
-> >  tools/testing/selftests/devmem/tests.h   |  45 ++
-> >  tools/testing/selftests/devmem/utils.c   | 379 +++++++++++++++
-> >  tools/testing/selftests/devmem/utils.h   | 119 +++++
->
-> That's a lot of files for a "simple" test.  Doesn't LTP have tests for
-> this api already?  Why not use that here instead?
-Indeed, at first glance the test may look simple.
-However, despite the high-level concept being straightforward, there
-are several corner cases and peculiar aspects that needed to be
-covered, that=E2=80=99s why the test grew larger than expected.
-For this RFC, my intent was mainly to share the full picture of what I
-had in mind.
-I fully agree that it can be refined and streamlined in the next iterations=
-.
-When I started working on this, I wasn=E2=80=99t aware of any existing LTP
-tests for this interface.
-After your comment, I double-checked, but I couldn=E2=80=99t find any relev=
-ant coverage.
-As far as I can tell, neither LTP nor the upstream kernel selftests
-(kselftest or KUnit) currently include tests specifically targeting
-/dev/mem.
+Nice cleanup!
 
->
-> Also, this is userspace testing, not kunit testing, right, is that
-> intentional?  You are documenting internal apis and then writing
-> userspace tests for those apis, which feels a bit odd.
-Yes, that=E2=80=99s intentional.
-The main reason is that all the interactions happen from userspace,
-and the internal helper functions aren=E2=80=99t meant to be consumed by ot=
-her
-kernel components.
-So I chose a kselftest-style approach.
-That said, this is still an RFC, I=E2=80=99m happy to adapt it based on
-community feedback and direction.
+Acked-by: Nico Pache <npache@redhat.com>
 
+> ---
+> v1 -> v2:
+>   - Simplify callsites of __sleep_millisecs_store() (per Lorenzo).
+>   - Collect Reviewed-by from Lorenzo, Zi and Lance - thanks!
+>   - https://lore.kernel.org/linux-mm/20251020115350.8175-1-leon.hwang@lin=
+ux.dev/
 >
-> Also /dev/mem should not be used on "modern" systems, so how was this
-> tested?
-That=E2=80=99s indeed one of the nuances I mentioned earlier.
-Access to /dev/mem is often restricted for security reasons, so the
-test is designed to detect and adapt to the environment, only
-performing operations that are actually allowed.
+>  mm/khugepaged.c | 27 +++++++++++----------------
+>  1 file changed, 11 insertions(+), 16 deletions(-)
 >
-> > +// SPDX-License-Identifier: GPL-2.0+
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 6f2ae2238b5b..5b7276bc14b1 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -129,9 +129,8 @@ static ssize_t scan_sleep_millisecs_show(struct kobje=
+ct *kobj,
+>         return sysfs_emit(buf, "%u\n", khugepaged_scan_sleep_millisecs);
+>  }
 >
-> Are you _sure_ you want GPLv2+?  I have to ask, sorry.
-Yes, I used GPLv2+ deliberately, but I=E2=80=99m open to changing it if the
-consensus is that GPLv2-only is more appropriate here.
-
+> -static ssize_t scan_sleep_millisecs_store(struct kobject *kobj,
+> -                                         struct kobj_attribute *attr,
+> -                                         const char *buf, size_t count)
+> +static ssize_t __sleep_millisecs_store(const char *buf, size_t count,
+> +                                      unsigned int *millisecs)
+>  {
+>         unsigned int msecs;
+>         int err;
+> @@ -140,12 +139,19 @@ static ssize_t scan_sleep_millisecs_store(struct ko=
+bject *kobj,
+>         if (err)
+>                 return -EINVAL;
 >
-> > +/*
-> > + * devmem test debug.c
-> > + *
-> > + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-> > + * Written by Alessandro Carminati (acarmina@redhat.com)
-> > + */
-> > +
-> > +#include <stdio.h>
-> > +#include <stdarg.h>
-> > +
-> > +#define DEBUG_FLAG 0
-> > +int pdebug =3D DEBUG_FLAG;
+> -       khugepaged_scan_sleep_millisecs =3D msecs;
+> +       *millisecs =3D msecs;
+>         khugepaged_sleep_expire =3D 0;
+>         wake_up_interruptible(&khugepaged_wait);
 >
-> That's a funny define that is never used elsewhere.  I'm guessing this
-> was cut/pasted from some other userspace code somewhere?
-It wasn=E2=80=99t copied, but I agree it looks unnecessary in its current f=
-orm.
-I can remove or rework it in the next version.
+>         return count;
+>  }
+> +
+> +static ssize_t scan_sleep_millisecs_store(struct kobject *kobj,
+> +                                         struct kobj_attribute *attr,
+> +                                         const char *buf, size_t count)
+> +{
+> +       return __sleep_millisecs_store(buf, count, &khugepaged_scan_sleep=
+_millisecs);
+> +}
+>  static struct kobj_attribute scan_sleep_millisecs_attr =3D
+>         __ATTR_RW(scan_sleep_millisecs);
 >
-> > +
-> > +void deb_printf(const char *fmt, ...)
+> @@ -160,18 +166,7 @@ static ssize_t alloc_sleep_millisecs_store(struct ko=
+bject *kobj,
+>                                            struct kobj_attribute *attr,
+>                                            const char *buf, size_t count)
+>  {
+> -       unsigned int msecs;
+> -       int err;
+> -
+> -       err =3D kstrtouint(buf, 10, &msecs);
+> -       if (err)
+> -               return -EINVAL;
+> -
+> -       khugepaged_alloc_sleep_millisecs =3D msecs;
+> -       khugepaged_sleep_expire =3D 0;
+> -       wake_up_interruptible(&khugepaged_wait);
+> -
+> -       return count;
+> +       return __sleep_millisecs_store(buf, count, &khugepaged_alloc_slee=
+p_millisecs);
+>  }
+>  static struct kobj_attribute alloc_sleep_millisecs_attr =3D
+>         __ATTR_RW(alloc_sleep_millisecs);
+> --
+> 2.51.0
 >
-> Who is "deb"?  You have more letters, always use them :)
->
-> Also, why debugging for just this one set of tests?  Don't kselftests
-> already have debugging logic?  if not, why is this unique to require it?
->
-> And am I missing something, or does this new tool not tie into the
-> kselftest framework properly?  I see lots of printing to output, but not
-> in the proper test framework format, am I just missing that somewhere?
-You=E2=80=99re right, this was a small custom debug I left in place, mainly
-because I needed a way to include additional information that isn=E2=80=99t
-normally part of the standard selftest output, such as references to
-specific requirements in the code.
-My intent was to make it easier to correlate test results with those
-requirements.
-That said, I fully agree that the implementation isn=E2=80=99t aligned with
-the kselftest framework style, and I=E2=80=99ll look into integrating this
-need in a more standardized and consistent way in the next iteration.
-
->
-> thanks,
->
-> greg k-h
->
-Thanks a lot for the detailed feedback, it=E2=80=99s very helpful.
-I=E2=80=99ll revise the test accordingly for the next round.
-
-Best regards,
-Alessandro
-
-
---
----
-172
 
 
