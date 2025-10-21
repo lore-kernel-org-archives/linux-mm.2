@@ -4,124 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701E5CCD1B9
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 19:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 610A9CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 19:16:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 994128E000C; Tue, 21 Oct 2025 15:08:06 -0400 (EDT)
+	id A6B378E0006; Tue, 21 Oct 2025 15:16:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96B1D8E0002; Tue, 21 Oct 2025 15:08:06 -0400 (EDT)
+	id A42C38E0002; Tue, 21 Oct 2025 15:16:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 881328E000C; Tue, 21 Oct 2025 15:08:06 -0400 (EDT)
+	id 9583E8E0006; Tue, 21 Oct 2025 15:16:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 781C18E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:08:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EBCDFC0501
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:08:05 +0000 (UTC)
-X-FDA: 84023056530.28.35AEF1F
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 17D59120014
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:08:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=if4Z4kQ5;
-	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 854D58E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:16:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2687313B1FD
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:16:56 +0000 (UTC)
+X-FDA: 84023078832.13.4208146
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 90C19160010
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:16:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HZRa1ReN;
+	spf=pass (imf08.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761073684;
+	s=arc-20220608; t=1761074213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ih1Ch3iw7RIxA9JcjZCICBR9PPRDjzjVXI5AMkESEI0=;
-	b=yZFZ/Sg+PyhL5yqhCuTl1mObxWGPYl6Cw317DNjXFVb/d4O73iOdQX74zfQUrY5fHGxpIb
-	kGlg3nf4/HWwn2cen8BebDZ5I6Kj/BhCpRfvKmvsYZY0ZjZzEle7c/VlueshNr+bCtiwsM
-	KRtlCgYrlJvq25ArFk9eUsb+NSGzin8=
+	bh=Av2zs3MEbcbLC7aMwacLFVSODjPRb5hpuHHxAZIybWo=;
+	b=TF5HA2KS1IM+AZlBuTSmzn/M2a++JhPeG4D3hXdLF6qRdqWwe8S9Blv3xhpCHqHRVQdXnL
+	FRtXGjgVH+8lud+KIXStdZyRMaQ0zO1srL3Xp1rALMt1DCEPlmL6YimcACej/L/tgKyjy8
+	DE0E2yo1S01A2UVcGNTyP+E1m4/8igg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=if4Z4kQ5;
-	spf=pass (imf29.hostedemail.com: domain of shy828301@gmail.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761073684; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HZRa1ReN;
+	spf=pass (imf08.hostedemail.com: domain of llong@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=llong@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761074213; a=rsa-sha256;
 	cv=none;
-	b=YCIaRMFTbPbm5fVyFtyJlERlJfXIHoUwTh3pLRy0uD3nhIsNhg0gFSQw6xjainN509MzjS
-	7DtucL9g4kCGEp8QPwYqo8+ws6GmYg9bKBqx8ujp8oPF/3oEImEfcABAJajn29ezG2odzX
-	dG8pOeQVJHNPFVpf56iJ8KdF9wljPVs=
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5a3511312d6so3011791137.3
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:08:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761073683; x=1761678483; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ih1Ch3iw7RIxA9JcjZCICBR9PPRDjzjVXI5AMkESEI0=;
-        b=if4Z4kQ5a5ZB/7dROUKX91qkcw87HvEQn7P4o1ktdjZpyqp+Q0F/lBzrIyviGIFriz
-         AYbq4oFKLdOLaU2O96l/vNcwjS5Y06IwwrDWz1Voszrq1Ug0iOoiUAdEFWhzel4IUwJ6
-         9UzG6BQ/2pyExEEC57e6OsJxKLdlNWLd2H1AwS6aEWAHb4V/0U5o6ioXYRyYCZyuWUSI
-         gX2RGLBOB08bPCkK63ZUIhQdhQbxHbaQ6v1t7zjX6WK69E+INSukJdCDWO13VHt44XzD
-         5klmrK2VYeggmEOeaIwFbDAwQ/ZpKOVkGPEI57nIGdXXPKsWO016WNSHYQ/fhx8my63G
-         VPsA==
+	b=13yTCvmmvuIH/BUAeBHezLgCOgEU0D8oJiPv/429QZ+JczME9bgS0/5NPth4EIwqwgR+ah
+	fAHqWtfLGdwSrK/k3B+21JEGxxnLNfEyyebCFp5u1sD4gJ+iJpVIRb75hUkrw6gJ1BH219
+	uHJPpNzmV6vTf5vmtZNPG31s2eHrl3Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761074213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Av2zs3MEbcbLC7aMwacLFVSODjPRb5hpuHHxAZIybWo=;
+	b=HZRa1ReNbhDfZrPah/o+D4GJ0PRHjwngJYdUAGraqVRa/bHqxVPk5peX5pNffKDp6x8h4U
+	aVqA8WLGpxKoHiTKR7xW2w7EQdN0uEnU+v8nR8Xm0rwA2gBQl7BGRerJ2bT4kfFGH3eDf/
+	DqO/p49nwJMRHR5RbIR2hoXNvJPdXbU=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-3Kb-C-lbOviqWouu3Q_4gA-1; Tue, 21 Oct 2025 15:16:51 -0400
+X-MC-Unique: 3Kb-C-lbOviqWouu3Q_4gA-1
+X-Mimecast-MFC-AGG-ID: 3Kb-C-lbOviqWouu3Q_4gA_1761074211
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-79e48b76f68so297309416d6.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:16:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761073683; x=1761678483;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ih1Ch3iw7RIxA9JcjZCICBR9PPRDjzjVXI5AMkESEI0=;
-        b=i4tEgzXwceZrtUYeSJHN7Mdr9Z7dFY/lPr6OwlCCgoGVke97vJnz+26ffwJcdM5BxI
-         ggenSot2e7CKQ1+WlYqvFH+RgGgywFDViTMFwZtRmGMBCdHGBEyskeXWGVN11Nc4rCIj
-         I3vbbZr8H8Wa8dmlaRFFwA9nXn/qS2FAlalYLXjHLfaePEoQ+6FMMDHAo4hZSMuMsR7c
-         1V8R4pfCUhxtM7CI9xrL7ri3T1F0ZvHUutK6qeuZbLhWp43iEFPN0RUPcJCUMZ1cetGb
-         kDxupWnJfZcyw5o0M2jM0tzXbT9405DkmZjEhaRk3mbLYRP1Zm0Wc4KZY0jfszDfNckn
-         ywMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWho3l8/d03RYpMKypWdkzmbIymX0gIl9fxpUNOKbzTkj/Dh06ltMZ2KqchaxKPDEpQ0yURqXjCpg==@kvack.org
-X-Gm-Message-State: AOJu0Yw2p78fotce3jIxsWt7CMxFgwf0kKKJorR7eGpC0YmKlqflxPyc
-	wYL5tf0R/dKfYTNwwzopQQJZFwzgRZFYS2v8rXO+Tuia1++yEpqR6lzNuX18rQVJ6cIIA+4GBy9
-	RIC+C6kbpzJumeHWVqs2zdGkT4Rgmo+c=
-X-Gm-Gg: ASbGncvx8xXIy4czIJ7+pEYNtb00Xw3kna1VsNWoAiG63p7XUzSON6YF8vC1Ig6FRe3
-	AGJGXg0JTcUlJv0NyAKySzTEGWsMIgYkRJCoLqif2XXhAbFI83LHCnW3+w5isZ2P/MeuHC2Nv3H
-	gpcg6xoz51eAro1R90DdJNEXPtreoFdWJUTR/eODHX0lCaBKZ2L/Kml4yOzxhAMTCASEWXlnqK4
-	u47QzcwSmAh+2LSFb3fZPcHt8WYHSOnw/4HC3/mJX5oXw+KnmE19ZPA+w2jEQa0Dmsl5fQRFg==
-X-Google-Smtp-Source: AGHT+IFlj4r2CIdxYmWU/Zi9ZOv/Fra2dbdRQSIRCL+DLRP4lrjPe1dkhMd8vBIZJF7+BrBOdoskf6mJVBs9ZM2ndC0=
-X-Received: by 2002:a05:6102:512b:b0:5d7:bc22:f9af with SMTP id
- ada2fe7eead31-5d7dd6a5227mr4503063137.25.1761073682915; Tue, 21 Oct 2025
- 12:08:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761074211; x=1761679011;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Av2zs3MEbcbLC7aMwacLFVSODjPRb5hpuHHxAZIybWo=;
+        b=o9+wLXnI5QMgLBuSZ+62glKsFTKZE+oEB4hNGSGGuWJXITMYJLLAt/Rtz21QSsNgt/
+         vSb9cLYu1Nz2dz1Oy/mE7I08T/3B4Efp1MwZ3j4oFk/VBx669N+eufFlUW2kx9DWJr43
+         xZtEevsgdSGpeZrlH5Ia5z9Wk+gEwhI4Zj4y9zPVEzi1pmcxzc2QXkFbnrAMzhvm6prt
+         INBEcozGEtD894l2IgzhmokFT8xSB8OlZo0JkQPeTehXjG2NhnzsN144OR22N7d4p9Bj
+         u5ctXF2dPT+mBtj62kdLR98VYjVNmIVYFDYkXXJ6rYiv/mgC86MHplAwKYfmikGwx7N6
+         M1Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCVeVg/Cufcy9KVnmp7oTr7idCdtEg5//QHs3AE6rVFo8nxiQ85qR+d6DzZDU8FBuhxSS5pT2BBEKA==@kvack.org
+X-Gm-Message-State: AOJu0YzxQTXDg4PW9Kif3CzglOF4UFRMFUrh9R0D1vsC6Yz7o3AnexT9
+	DjnRTGZJ5ZBXpKiHFVhKmYZio49Hj48cgK5bEwgbvz6mUm3SKGZu2/0XPppJDQWEXIIc8Z5tpjT
+	ZOapj5z6VRlpcvvCMBC7pPvymMWz6iecoXHV8e+yTfuJLH/BHc/js
+X-Gm-Gg: ASbGncu0S76UMtg9szV+KOtE066i+8C+/QDlIrmMfjvE3ADzbGK46i7T+C46Ekdb/h7
+	fzwiEr+XYDBoMpWMOGNCa5b2AHQilf0LeFm2wquW95mHD8w28Wa7WnwHXDyzpAiFRLMPyW7H8ja
+	7BQTlzMbfPMngljz8v5G4r3Bp3Tl2lC9WxSXCkmyyhUJCb03f6i4QoqMxbw2653+HIuIt1EC6SN
+	yZgmtxJNUiH4YW3J0a3ddGHAV1IFvjN4t22jeJ2Y7zXvygOT4xDNTEgO2lDN0qfkFotZG4VHgo2
+	ZNEz1nH2Opmn3EQSUyWtTulcKpMs4i7H5gFwAc/Wzma73QPrtzlhTWKhljKeowI23d+b1VsyEfB
+	2iK/McDEuRKS5CMHzdMsOKWEsvOX2EWg/fboolyZ4jfXRgQ==
+X-Received: by 2002:a05:6214:4012:b0:87d:8fa7:d29e with SMTP id 6a1803df08f44-87d8fa7d3a7mr172807686d6.35.1761074211049;
+        Tue, 21 Oct 2025 12:16:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMN3DCL5z77zrF4an/kPQngsHh4Dl7HI0jLtCtPSfq0EP/4XoCKRGCEKlYnjWxZgcz1y0y9w==
+X-Received: by 2002:a05:6214:4012:b0:87d:8fa7:d29e with SMTP id 6a1803df08f44-87d8fa7d3a7mr172807136d6.35.1761074210482;
+        Tue, 21 Oct 2025 12:16:50 -0700 (PDT)
+Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf521c2c7sm74369666d6.19.2025.10.21.12.16.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 12:16:49 -0700 (PDT)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <364e084a-ef37-42ab-a2ae-5f103f1eb212@redhat.com>
+Date: Tue, 21 Oct 2025 15:16:45 -0400
 MIME-Version: 1.0
-References: <20251016033452.125479-1-ziy@nvidia.com> <20251016033452.125479-3-ziy@nvidia.com>
- <CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com>
- <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com> <CAHbLzkp8ob1_pxczeQnwinSL=DS=kByyL+yuTRFuQ0O=Eio0oA@mail.gmail.com>
- <A4D35134-A031-4B15-B7A0-1592B3AE6D78@nvidia.com> <b353587b-ef50-41ab-8dd2-93330098053e@redhat.com>
- <893332F4-7FE8-4027-8FCC-0972C208E928@nvidia.com> <595b41b0-428a-4184-9abc-6875309d8cbd@redhat.com>
- <6ACA0358-4C83-430A-892C-F0A6CC1DC8EA@nvidia.com>
-In-Reply-To: <6ACA0358-4C83-430A-892C-F0A6CC1DC8EA@nvidia.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Tue, 21 Oct 2025 12:07:49 -0700
-X-Gm-Features: AS18NWBQm40401R-3eSStXerP5YpXnZxigPk8j1z8V14Yb_RrXNCxRz1tuxoYTs
-Message-ID: <CAHbLzkqDt0FfNaG7-rxqz4y=3Wu8yiL38FQiH6hVEsAfRBRvuw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/memory-failure: improve large block size folio handling.
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>, linmiaohe@huawei.com, jane.chu@oracle.com, 
-	kernel@pankajraghav.com, 
-	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
-	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tewkhyubsn6yoisco1z7dgtgzxtg9xfw
-X-Rspamd-Queue-Id: 17D59120014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/33] sched/isolation: Flush memcg workqueues on cpuset
+ isolated partition change
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-15-frederic@kernel.org>
+In-Reply-To: <20251013203146.10162-15-frederic@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LDLCIh1ryB9GFoWGiP4lo0TB90fQcBn5xKAC6wut5DE_1761074211
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 90C19160010
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761073683-312971
-X-HE-Meta: U2FsdGVkX18FdmJvTQbBc/NirkmprpPv4wxo+y8/ADOPPpQ92RpUXG7ijax7TYMIM3HYQNJCqbV3T08SRCcKpiaaRdhzlLkSbPQ898UwVLCR/ZZTWEu9nQobk+c4fFg7RbnmKB+nM3pBt6XodgyRAX5cZJBV/ydYWnWo7HmL5oDzaz+WhxRyB59YUNyv0+BQghAcXh2moYB+vg+NRbacw9jE+NT70DY91WyNAEGM/SDh+5A9LeT9S+WqEJWeoQ1v3Ky+e/fHjGglnkZBo9Z5tJ+2KRHap4vSrQb/WK2/fftkCKPv0HjFZwBgLYFvnsx/g1AbVfg4AcYi6J+VJH5tbsICYUnwokdfBx+1kxjoNVqJrVnyoyT/qGWGCY1vWtFxqnuZJx1T4xsKYFytMZY+l192QrLy2vsvlwtSHREermAq9iLc5cvL6Hhmci+eXSyAlocAnBmS6p7BPt4NhxODfIChizBTcLOn+/9R4s47WVmBIvdIvHsiFIHtr/b/ywrIR0Da9TOyvlyH1bbraFGvnvFpCHhA5WjSrbxs5p7/yki/ZCkr+MMMU1pV3YNid26TA3WMPon67oGHl9oDmQmJqOEhVT80fg39cxtLZsgy9vAB/8/qc4NtfuFvEYTLVXh8GOJdIVowzIhUXuh2XCA8271PaJdYJUwa/1+7SX9D3hbTfv35AuwNkd4yulQsqF/7CpSulD2BRMmNuummxrDRe0HooM4EN/3gubEvLnTCl2CuYWx+oduKOJtoxq70Egr5jNjaffjrm0JfikUDAhUY5wk5t40EiiQ83UOEmv+M3fQfDrXLuM4Dc5+XtZeimfpJ2VWjrovQmiNwB7SJquCmkwW3JrLTCJ83BI5jyaVyXToeiDAgUETjt5iBOpITAqdl4KPcbWh6pOIwcP15Bw/SAFokAn+ZKwfFVJHUkaspuw+85o2y/ifNGXvkLA5aal0RwrqHQicubxwCk77O2GQ
- ZKWaL19k
- 4OCkv6RoFUBfrkSC9vRIklxa3LTIrqW+U2JBBqFmyA03EBm0+woFzY0JieCcMIplf3bjinD45YYClWfXYlUEq4VZODuYEah2x/dxsdbtxmfxkr0WG08FcYEF86C5JLi1umfR/nJ3Xph58EdkjPDTo6uqAqNy6oSdVG9MvtpLZo+/atyUIrWT2e4rSp74he1Xb7W91q6WkA16NwLH+V5z9Df79sLKl5PYwSMQeqCczcXpu3aUQpKVL8uZ68Dy6H21rSOGRlC10W3FMhE64eSiNFfqpLRpaew5KKE+GTksUb+xX7lfJ6NEGVCLMfVvNnBKc/ccucC5Iu5Z2GY8SleAkirez6ZIhpa5aiHgdAWE0EvhWJGh2yRwEZ2b4E57AqPfvr9/+v0qkflsshghthXVPjDRJDaFjSmvgBWfVU/qToPXKWlDSEph7+Ub6MDmU18wsxLxI06KMySu5vQ8QTPyE7iKwyeVEuaSsaLVd/Lw/DOter6Qh9lS3B47KGNevQsv8UFnpWd8PYHBED2MyrYvatGfTIg==
+X-Stat-Signature: opfokri74c4zr9ay9kzyo439uzn4gdu3
+X-HE-Tag: 1761074213-81110
+X-HE-Meta: U2FsdGVkX19D+wBMjUUDFfrTQmHnxZzZlxJ9YRS6YQexl4b3jpBCnO4CUx5vD0JVClTMGLbFD3qil1VKZinz2F16886YP6/8gY6jRjlngpZgpLIJi3bp+NOFZB8clwc758+W7j//vdU/P39ke3ijK7iAJoPuAtGmTZcMrEj5eDQZMESkH5Eb+TsS/Drb/fAPYShZKHKJNt5xFY8CA4mnMK+H/URWjlny5Z5n+iaqKYzBsm3Hbx3GP8lGUmba4uEnu1nTAUYfi0CN4wTLdhnSMkvAX/XEuQXE0VH1xZn3h5FaZ2O9vTlzNLXxyhyWa2+ebWLnKPk5KgOnRHQTdwuG3uDilL8L72Z5ELQ3nlaLMf9vBv2wWQUKCSCIM0mCKtZ4hy51BizN+HZzupCpaPaIcm7tTfiv0pXZg5M0I0MR8f8CVda/4kr8US/Rto4GjOr+keHzOivfqRxJl7jjJRFcZ/b9JgP/0praxeNyTL/i36Qh/jakeN22luq06T9Oc2Fnb1gbQFZfIDJTmXCEzep/ZUmizOgwAK2+dAh5xdqHZJQCG4rrqpuZhS17Ry9QKTOX/z0wzjWOGLSSLrj9jx7IXRD06HF2Xd+1VLyoMXl/Mj1StL8ucZyA4pMONkbi/7cJbk1iPldupAb7IFIvi3K+/1fzLGfMe2oh0xeXkd7tZrO6w2eEoJDvDnmDUnHwd1p2xQTcQkC2kIPdq+ruCgDfOfqX+5pZBHHKc0lgZ0nQwb2zidmfnii93ml8WDMRojq5xStJ6bPnJYqQF3c6DWw5L7SdxGWwWfFWouiOV7BGe74Rl5nx/awgbGBVTFXA9MPtwy/JOpRmmbGwVwC26MTmy9EQeHwNxWm1xoAn3OZcYT4Ya84T1yt59CR0wDpPWX3y89U33ljD/xBXbHK32BPbErz9yn0NvHboupjl1bTqsI/2eEkMinuT8YnLdeljv7E0qwktdsGZaxaa8tNipom
+ T+rEfMHl
+ VCiEoMA5y3CY2mafztk3acUDa7kmhP2LlGoX1y1IbHhGZ2D6trZ3sCgQ5ITIybM33gD3NfPj5o83PahP21DOrmJngE00so8+S/Ji1I1VU85u2vdf8jBp3iOcIBr+SHo3zacYYMNWpebk5n2AEL6OSGd5jUq5n1lBYHV5qYwaKCSe6zxqc01LBgYkgQzBYEzpTB9evlYyr3roUB84URgmgc4U2ctRZM4nvUN6nl71CIsljJWJ2kE1cbYsyF+PEJZoergJ/itDUNTX5vz+30qFeSWbmwuVdhdIciY3G/A7VLohU9Jg/pB96YoL9kynJ4Lmytlqcff7Ugz+sY7RnTCZvY+eCKPzIRo35KAlgWhEwcdkTL9NfHl1XIMA1C1SwcPJYlv2myWL50zVUx1ZY4XJYqEvIY/t4/IR+798EApcg75GA+KHL6jh5Y7OiLYaIpvROCS/MUESkiIVmb52DxKmopW0VV06pcj+/xd1GmwKvV9TH32yCNLz69cYE183PlyhkD668yNz72nWoV8v1D6Sf8WQCGfQrvYH25uRBZkdZwza/T8S1JaLbIxLzFoutBKNn+BXbAUBsf3ly7v4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,206 +154,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 11:58=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
+> The HK_TYPE_DOMAIN housekeeping cpumask is now modifyable at runtime. In
+> order to synchronize against memcg workqueue to make sure that no
+> asynchronous draining is still pending or executing on a newly made
+> isolated CPU, the housekeeping susbsystem must flush the memcg
+> workqueues.
 >
-> On 21 Oct 2025, at 14:28, David Hildenbrand wrote:
+> However the memcg workqueues can't be flushed easily since they are
+> queued to the main per-CPU workqueue pool.
 >
-> > On 21.10.25 17:55, Zi Yan wrote:
-> >> On 21 Oct 2025, at 11:44, David Hildenbrand wrote:
-> >>
-> >>> On 21.10.25 03:23, Zi Yan wrote:
-> >>>> On 20 Oct 2025, at 19:41, Yang Shi wrote:
-> >>>>
-> >>>>> On Mon, Oct 20, 2025 at 12:46=E2=80=AFPM Zi Yan <ziy@nvidia.com> wr=
-ote:
-> >>>>>>
-> >>>>>> On 17 Oct 2025, at 15:11, Yang Shi wrote:
-> >>>>>>
-> >>>>>>> On Wed, Oct 15, 2025 at 8:38=E2=80=AFPM Zi Yan <ziy@nvidia.com> w=
-rote:
-> >>>>>>>>
-> >>>>>>>> Large block size (LBS) folios cannot be split to order-0 folios =
-but
-> >>>>>>>> min_order_for_folio(). Current split fails directly, but that is=
- not
-> >>>>>>>> optimal. Split the folio to min_order_for_folio(), so that, afte=
-r split,
-> >>>>>>>> only the folio containing the poisoned page becomes unusable ins=
-tead.
-> >>>>>>>>
-> >>>>>>>> For soft offline, do not split the large folio if it cannot be s=
-plit to
-> >>>>>>>> order-0. Since the folio is still accessible from userspace and =
-premature
-> >>>>>>>> split might lead to potential performance loss.
-> >>>>>>>>
-> >>>>>>>> Suggested-by: Jane Chu <jane.chu@oracle.com>
-> >>>>>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >>>>>>>> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-> >>>>>>>> ---
-> >>>>>>>>    mm/memory-failure.c | 25 +++++++++++++++++++++----
-> >>>>>>>>    1 file changed, 21 insertions(+), 4 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> >>>>>>>> index f698df156bf8..443df9581c24 100644
-> >>>>>>>> --- a/mm/memory-failure.c
-> >>>>>>>> +++ b/mm/memory-failure.c
-> >>>>>>>> @@ -1656,12 +1656,13 @@ static int identify_page_state(unsigned =
-long pfn, struct page *p,
-> >>>>>>>>     * there is still more to do, hence the page refcount we took=
- earlier
-> >>>>>>>>     * is still needed.
-> >>>>>>>>     */
-> >>>>>>>> -static int try_to_split_thp_page(struct page *page, bool releas=
-e)
-> >>>>>>>> +static int try_to_split_thp_page(struct page *page, unsigned in=
-t new_order,
-> >>>>>>>> +               bool release)
-> >>>>>>>>    {
-> >>>>>>>>           int ret;
-> >>>>>>>>
-> >>>>>>>>           lock_page(page);
-> >>>>>>>> -       ret =3D split_huge_page(page);
-> >>>>>>>> +       ret =3D split_huge_page_to_list_to_order(page, NULL, new=
-_order);
-> >>>>>>>>           unlock_page(page);
-> >>>>>>>>
-> >>>>>>>>           if (ret && release)
-> >>>>>>>> @@ -2280,6 +2281,7 @@ int memory_failure(unsigned long pfn, int =
-flags)
-> >>>>>>>>           folio_unlock(folio);
-> >>>>>>>>
-> >>>>>>>>           if (folio_test_large(folio)) {
-> >>>>>>>> +               int new_order =3D min_order_for_split(folio);
-> >>>>>>>>                   /*
-> >>>>>>>>                    * The flag must be set after the refcount is =
-bumped
-> >>>>>>>>                    * otherwise it may race with THP split.
-> >>>>>>>> @@ -2294,7 +2296,14 @@ int memory_failure(unsigned long pfn, int=
- flags)
-> >>>>>>>>                    * page is a valid handlable page.
-> >>>>>>>>                    */
-> >>>>>>>>                   folio_set_has_hwpoisoned(folio);
-> >>>>>>>> -               if (try_to_split_thp_page(p, false) < 0) {
-> >>>>>>>> +               /*
-> >>>>>>>> +                * If the folio cannot be split to order-0, kill=
- the process,
-> >>>>>>>> +                * but split the folio anyway to minimize the am=
-ount of unusable
-> >>>>>>>> +                * pages.
-> >>>>>>>> +                */
-> >>>>>>>> +               if (try_to_split_thp_page(p, new_order, false) |=
-| new_order) {
-> >>>>>>>
-> >>>>>>> folio split will clear PG_has_hwpoisoned flag. It is ok for split=
-ting
-> >>>>>>> to order-0 folios because the PG_hwpoisoned flag is set on the
-> >>>>>>> poisoned page. But if you split the folio to some smaller order l=
-arge
-> >>>>>>> folios, it seems you need to keep PG_has_hwpoisoned flag on the
-> >>>>>>> poisoned folio.
-> >>>>>>
-> >>>>>> OK, this means all pages in a folio with folio_test_has_hwpoisoned=
-() should be
-> >>>>>> checked to be able to set after-split folio's flag properly. Curre=
-nt folio
-> >>>>>> split code does not do that. I am thinking about whether that caus=
-es any
-> >>>>>> issue. Probably not, because:
-> >>>>>>
-> >>>>>> 1. before Patch 1 is applied, large after-split folios are already=
- causing
-> >>>>>> a warning in memory_failure(). That kinda masks this issue.
-> >>>>>> 2. after Patch 1 is applied, no large after-split folios will appe=
-ar,
-> >>>>>> since the split will fail.
-> >>>>>
-> >>>>> I'm a little bit confused. Didn't this patch split large folio to
-> >>>>> new-order-large-folio (new order is min order)? So this patch had
-> >>>>> code:
-> >>>>> if (try_to_split_thp_page(p, new_order, false) || new_order) {
-> >>>>
-> >>>> Yes, but this is Patch 2 in this series. Patch 1 is
-> >>>> "mm/huge_memory: do not change split_huge_page*() target order silen=
-tly."
-> >>>> and sent separately as a hotfix[1].
-> >>>
-> >>> I'm confused now as well. I'd like to review, will there be a v3 that=
- only contains patch #2+#3?
-> >>
-> >> Yes. The new V3 will have 3 patches:
-> >> 1. a new patch addresses Yang=E2=80=99s concern on setting has_hwpoiso=
-ned on after-split
-> >> large folios.
-> >> 2. patch#2,
-> >> 3. patch#3.
-> >
-> > Okay, I'll wait with the review until you resend :)
-> >
-> >>
-> >> The plan is to send them out once patch 1 is upstreamed. Let me know i=
-f you think
-> >> it is OK to send them out earlier as Andrew already picked up patch 1.
-> >
-> > It's in mm/mm-new + mm/mm-unstable, AFAIKT. So sure, send it against on=
-e of the tress (I prefer mm-unstable but usually we should target mm-new).
+> Solve this with creating a memcg specific pool and provide and use the
+> appropriate flushing API.
 >
-> Sure.
-> >
-> >>
-> >> I also would like to get some feedback on my approach to setting has_h=
-wpoisoned:
-> >>
-> >> folio's has_hwpoisoned flag needs to be preserved
-> >> like what Yang described above. My current plan is to move
-> >> folio_clear_has_hwpoisoned(folio) into __split_folio_to_order() and
-> >> scan every page in the folio if the folio's has_hwpoisoned is set.
-> >
-> > Oh, that's nasty indeed ... will have to think about that a bit.
-> >
-> > Maybe we can keep it simple and always set folio_set_has_hwpoisoned() o=
-n all split folios? Essentially turning it into a "maybe_has" semantics.
-> >
-> > IIUC, the existing folio_stest_has_hwpoisoned users can deal with that?
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>   include/linux/memcontrol.h |  4 ++++
+>   kernel/sched/isolation.c   |  2 ++
+>   kernel/sched/sched.h       |  1 +
+>   mm/memcontrol.c            | 12 +++++++++++-
+>   4 files changed, 18 insertions(+), 1 deletion(-)
 >
-> folio_test_has_hwpoisoned() direct users are fine. They are shmem.c
-> and memory.c, where the former would copy data in PAGE_SIZE instead of fo=
-lio size
-> and the latter would not install PMD entry for the folio (impossible to h=
-it
-> this until we have > PMD mTHPs and split them to PMD THPs).
->
-> The caller of folio_contain_hwpoisoned_page(), which calls
-> folio_test_has_hwpoisoned(), would have issues:
->
-> 1. shmem_write_begin() in shmem.c: it returns -EIO for shmem writes.
-> 2. thp_underused() in huge_memory.c: it does not scan the folio.
-> 3. shrink_folio_list() in vmscan.c: it does not reclaim large hwpoisoned =
-folios.
-> 4. do_migrate_range() in memory_hotplug.c: it skips the large hwpoisoned =
-folios.
->
-> These behaviors are fine for folios truly containing hwpoisoned pages,
-> but might not be desirable for false positive cases. A scan to make sure
-> hwpoisoned pages are indeed present is inevitable. Rather than making
-> all callers to do the scan, scanning at split time might be better, IMHO.
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 873e510d6f8d..001200df63cf 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1074,6 +1074,8 @@ static inline u64 cgroup_id_from_mm(struct mm_struct *mm)
+>   	return id;
+>   }
+>   
+> +void mem_cgroup_flush_workqueue(void);
+> +
+>   extern int mem_cgroup_init(void);
+>   #else /* CONFIG_MEMCG */
+>   
+> @@ -1481,6 +1483,8 @@ static inline u64 cgroup_id_from_mm(struct mm_struct *mm)
+>   	return 0;
+>   }
+>   
+> +static inline void mem_cgroup_flush_workqueue(void) { }
+> +
+>   static inline int mem_cgroup_init(void) { return 0; }
+>   #endif /* CONFIG_MEMCG */
+>   
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index 95d69c2102f6..9ec365dea921 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -144,6 +144,8 @@ int housekeeping_update(struct cpumask *mask, enum hk_type type)
+>   
+>   	synchronize_rcu();
+>   
+> +	mem_cgroup_flush_workqueue();
+> +
+>   	kfree(old);
+>   
+>   	return 0;
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 8fac8aa451c6..8bfc0b4b133f 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -44,6 +44,7 @@
+>   #include <linux/lockdep_api.h>
+>   #include <linux/lockdep.h>
+>   #include <linux/memblock.h>
+> +#include <linux/memcontrol.h>
+>   #include <linux/minmax.h>
+>   #include <linux/mm.h>
+>   #include <linux/module.h>
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1033e52ab6cf..1aa14e543f35 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -95,6 +95,8 @@ static bool cgroup_memory_nokmem __ro_after_init;
+>   /* BPF memory accounting disabled? */
+>   static bool cgroup_memory_nobpf __ro_after_init;
+>   
+> +static struct workqueue_struct *memcg_wq __ro_after_init;
+> +
+>   static struct kmem_cache *memcg_cachep;
+>   static struct kmem_cache *memcg_pn_cachep;
+>   
+> @@ -1975,7 +1977,7 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
+>   {
+>   	guard(rcu)();
+>   	if (!cpu_is_isolated(cpu))
+> -		schedule_work_on(cpu, work);
+> +		queue_work_on(cpu, memcg_wq, work);
+>   }
+>   
+>   /*
+> @@ -5092,6 +5094,11 @@ void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages)
+>   	refill_stock(memcg, nr_pages);
+>   }
+>   
+> +void mem_cgroup_flush_workqueue(void)
+> +{
+> +	flush_workqueue(memcg_wq);
+> +}
+> +
+>   static int __init cgroup_memory(char *s)
+>   {
+>   	char *token;
+> @@ -5134,6 +5141,9 @@ int __init mem_cgroup_init(void)
+>   	cpuhp_setup_state_nocalls(CPUHP_MM_MEMCQ_DEAD, "mm/memctrl:dead", NULL,
+>   				  memcg_hotplug_cpu_dead);
+>   
+> +	memcg_wq = alloc_workqueue("memcg", 0, 0);
 
-Yeah, I was trying to figure out a simpler way too. For example, we
-can defer to set this flag to page fault time when page fault sees the
-poisoned page when installing PTEs. But it can't cover most of the
-cases mentioned by Zi Yan above. We may run into them before any page
-fault happens.
+Should we explicitly mark the memcg_wq as WQ_PERCPU even though I think 
+percpu is the default. The schedule_work_on() schedules work on the 
+system_percpu_wq.
 
-Thanks,
-Yang
+Cheers,
+Longman
 
->
-> Let me send a patchset with scanning at split time. Hopefully, more peopl=
-e
-> can chime in to provide feedbacks.
->
->
-> --
-> Best Regards,
-> Yan, Zi
+> +	WARN_ON(!memcg_wq);
+> +
+>   	for_each_possible_cpu(cpu) {
+>   		INIT_WORK(&per_cpu_ptr(&memcg_stock, cpu)->work,
+>   			  drain_local_memcg_stock);
+
 
