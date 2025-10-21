@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1708DCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68440CCD19F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:08:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFD058E0003; Tue, 21 Oct 2025 02:01:11 -0400 (EDT)
+	id 744D58E0006; Tue, 21 Oct 2025 02:08:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EABF58E0002; Tue, 21 Oct 2025 02:01:11 -0400 (EDT)
+	id 6F52E8E0002; Tue, 21 Oct 2025 02:08:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1508E0003; Tue, 21 Oct 2025 02:01:11 -0400 (EDT)
+	id 5E4248E0006; Tue, 21 Oct 2025 02:08:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C62F68E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:01:11 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 4924C8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:08:06 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 70ECB13AC56
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:01:11 +0000 (UTC)
-X-FDA: 84021073542.26.DB205D8
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E2E1C1A0418
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:08:05 +0000 (UTC)
+X-FDA: 84021090930.26.60BFFDD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CD81080010
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:01:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="D/YtPR7h";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5A13B100006
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:08:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRELKDno;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761026469;
+	s=arc-20220608; t=1761026884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlOudwXbTuKZP+65to2yB8CDDxaRkCIlLFB+OW1i+Kw=;
-	b=HoEd0NzLiFeUa7LtBd8byVNeDqOtpXG9otTKcgVm9y8yo3gHrDy3siJV+SXaX3f6LMjk1L
-	P3qWPYAPQKIXL7+hjxIUTbUsFv+U7PWlEimdpI4yNQ9qUBeeEshSHt5jB8YJKBJITF+NxQ
-	cp8CuCFvObI9rAoY7Knf2vgleNKt4cQ=
+	bh=DCWE6hNFexufbkWR8smCeK+2Vm4TzkJhkNbu759JgZc=;
+	b=XP7ruDmBE5PLTweIgN4UwKjI9IjafPOZ9wtEwUvD0ZChK2DAPq8KCb+e6p3YrSAvlpsbe2
+	sD2vtChz2vax3m2O1u+YEaz1TVFYe/pzBwUDyGdT3IxJVbju0hTAyi/Rdc4tdcPioIx6cG
+	stw6m5RzkSzNaz0zJ5xwInc4gWeb+UA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="D/YtPR7h";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lRELKDno;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761026469; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761026884; a=rsa-sha256;
 	cv=none;
-	b=BL9wh3zhUu+bvz4jGN9NcGEUTHL3og8YELJtni5R0jcsPB8vpmJzC6wkiWOWR/lOz9Yd1a
-	10j6YBZrC9um8XqoW1kAo/o+KSL2jkWswab0ZMNlVLIQHGXjHBMILrLKk7UJzmyl2QySjC
-	g/XHQ+h6cniii1tuGozUfdq6Z/lcN8o=
+	b=qzRNjX3SnEckCAqRYtkZFLkawhOaFw6APfDCrX0GvQ4F82zAMgxIayq471VUCUHnYgC8zj
+	GVCu6ujUegBy+CnwzsPt8HDnprvdZnysKRYnOx+O0jQIBI1vvK+LGLLgA1ZqJCSydGT4yk
+	TOxPFNUPUO94mzCH0dZeGamoMwCeTD0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3793B6227B;
-	Tue, 21 Oct 2025 06:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF29C4CEF1;
-	Tue, 21 Oct 2025 06:01:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CFC3160376;
+	Tue, 21 Oct 2025 06:08:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC12C4CEF1;
+	Tue, 21 Oct 2025 06:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761026468;
-	bh=leVGy3m3C0ox1KihNTxl75c7yMvX5DhCdvZGegMEpSE=;
+	s=k20201202; t=1761026883;
+	bh=KX+JYKF1y0Dvw2h+Mz2I5TfkQfSSqKYj/0y4E0pO12E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D/YtPR7hXr7HDYt3kwPIwQPPNZ6foZPGaPyKfbiAINADLKI5mwi4LlejBVPhcUBwu
-	 bKaR25r+8BksQ8fC1qOhTsdzRK1slwhQmhp+ixg7UWtAGcLi1Dfn93utOJZm3TW4z7
-	 dT7Mk1jvCUk3ylCAkaMWSBW2NAQHWMd5ctkBjmxHWPGyywMiDgrmFGWL7ApjX7hNHZ
-	 x6iFh5GR6qfZxk44boaJTNw/qwT/GhlVuof5/JMnSy+FC/Ocq7lIpWEACwFFClYMRL
-	 l1Dagf7YKFTg7HOh+3/5j6tdi6k6m3L+sjM2u6l+FvIYMVt5t+Srji/bLytBb6WkT8
-	 ox893izM8aQvw==
-Date: Tue, 21 Oct 2025 09:00:59 +0300
+	b=lRELKDnoWkRV9xEm8QzW+zCDnlJvcMIKB/wq+0XilgXo6YixAy0V4nqwPQuvlc0wP
+	 jR4vi6ygz5NzIzL30l50of4pIRqEpkcm9SNGj1xyFWavoSdJMPk+qPHLbP4qvN+N+y
+	 TN+DrzWCGi7OHfA7HGPXujE03LZ5rZjDAK4dZH8/jjWQGh4MAzVOHYZPPW6MCBZtLL
+	 Km9v+O2ZvdD0v7FfchZLTxSdTVYqr24TYdXWbMoVjEqgvcxuZgnt2uskC173awwanx
+	 FJM5cuokbtizUMfwBOUroprhu6A7coUGHHFTyoF/sDgE9NWbrLFGh0Xk06mK8Tu8NQ
+	 L5lXifxoDmZUQ==
+Date: Tue, 21 Oct 2025 09:07:55 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org, jasonmiu@google.com,
-	dmatlack@google.com, skhawaja@google.com
-Subject: Re: [PATCH v3 0/3] KHO: kfence + KHO memory corruption fix
-Message-ID: <aPchmxfh4ACM0vY2@kernel.org>
-References: <20251021000852.2924827-1-pasha.tatashin@soleen.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
+Subject: Re: [PATCH V1 2/2] treewide: include linux/pgalloc.h instead of
+ asm/pgalloc.h
+Message-ID: <aPcjO6pCHZCZiRZ1@kernel.org>
+References: <20251019072509.9488-1-harry.yoo@oracle.com>
+ <20251019072509.9488-3-harry.yoo@oracle.com>
+ <aPZKuOKlb87yX0du@kernel.org>
+ <aPcVlz2Auk4JK2ds@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251021000852.2924827-1-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CD81080010
-X-Stat-Signature: tuy174xz9yonmfadoxmapos6xuhjgkfs
+In-Reply-To: <aPcVlz2Auk4JK2ds@hyeyoo>
+X-Rspamd-Queue-Id: 5A13B100006
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761026469-986810
-X-HE-Meta: U2FsdGVkX1+luYHdMIl23880IYZiy+lDbuuf9c5JhtCVYcl13xPWx7CqPf9kzfZ22DV4m/Sq0gxrR09mnYFnQPtcpOU+0DXEjbo/vOVWdXdBuJx5gsj05OrHeT/x/zWZlw8spvXwwHUQDXMSbQZfH826Lctqw/JAxYT9+5ehqZYesaXyTIF0rK0JzW0zalKQzjCo/r65N95H9JnpHU5uKXEkRrLuZxhATwc0eKzHKh0Iqmsuilcrz3tcIi3aWxZgsnbx8UF5dWu4zljUq8WMjYb59NDRNyE5vD5O2HyosI7zw4bVbTKVdIhbfokoCn1WfppJwdw5zbOgaOXXdrge+oGKj3ZurpAXNQR0Wl542DVautlw4URv45hplMVghWLn3WAfasAisQOI/SHewaWrvgPTOxl9NgBnCArY9/8d6kTvsuY6wkqMTuHeDD1MAPd7oI32H4eTdJPAt0hMwIFY3h3ymrAnVT/hTtkiFDuETLAwRiV4taN7xsAi5YhOAshz8z+b0Kz8YhG4au3qtmcDqYntJHW1wmbtf2miwVgYeZtEoFvoM+MPgiaFswFUxtzvGF5Uj8KbfJulFbdno/3J2SKTSTynFSYgNariT3bsRF/wPyi424ww1qsqRMfPn+yMqX5sDeH1cMm7WhRD7Udfm4FE73jl4yYGr/RFHTJd8QTwftrkz9XVvlW46pvdkHsBNhU1Q4XPumZYrikZysvsFhtwS6MpAwDqlFr9EJtecDQaCWDTr2RaSrYNbCZcmxujTT7wVZppZpfWe3ClmcnmRc2qWX2YpNJrfYGQ/fVJbBIiGYoc0svnxZB5eNZU+jg5wPrmpdV0uLXI4CDHCJj+3f4TCBY5av3SjX6mIVXY0UdI/usxQRgvyBCT97Bqc9n7Tg1tGmd+TGDCYrooM7ly+0ea4QLxMeMaQvGz34+6H8ccsLAwH1HZfncPRFebeWd+MSq6eY555/oLiSWZTMD
- vSUKzMS4
- /oAY/wi9ofFXKnQyZn3aYCy+ogjjCE2wze3eYWtINvEqoTjACGTg0weEwBv/NSlce9XA1XJZ6gPlsjAqdsv1eq6VvcKcMVMBhSC2M9uvXuiyemhrHLJWKKr0pzvjhrIs3aJ4q82ip2Yi30BclOxiUTdpaYQruvws/fh2PTtty/B54YAcVIg0ZwixJob2KcF85l5kOCT2VGMmCZxVcyeQAxeoKLFDaTJ8eAFH28t4lJVp2EoiSnGwDAN5u2alUqlijX7FaPZ3IjubcKZxDXChEyH9Q2Q==
+X-Stat-Signature: 3yqx64ri9how8ji1b9c7axywxiwydpcr
+X-HE-Tag: 1761026884-198624
+X-HE-Meta: U2FsdGVkX18cIfeV0ophvkq19IvoVMB4hvPURaVTkqIcAWWTyrV0qNYpXz3f8jP99HobsCdEtsHX8nJVfYmT3jDxYL8SwSIc9LO61zZQT5hu5pQb/WAXCjG7Pi7aDOfqiZ6nzqUJlUWxaUg9owEdosp2c/R8IWszmT1rETmrEGoh9vcMWspqljEJb65NpW0CxdBm9ONtsmUdQlPuYtFzxOXiw5YZM/2kjnaMHmc5j9PDLJKtXxvkKQ0XrEWNYVPgXIWrhm+mJdPlzvvIz8FVBD65ojGYqHY3jOWgRPQCmTLlHI5htlIKetP4NxyOs7WteeWWBe6VOg6/yG4o2RHE7xSby/DiifKWTadNSyl0zPDncKdkKe8eXqHGG18Bam7Z/IwZW7s6P5gjACDzU4JZMpXIrHbWqWLhnZcTzQhf5DH0F9fGVWvOx6Oll1DFlC3CqiQXPcEIw8GcnHMXBRuGvDjbYoe+mgQSjrgJSQiaq1ruJu8MRqI41UNV8lVKq4WOHFCeQIoTJtZ6nl5CJT51446h3FKnedly9gUoGXAhReKXyR/PcSPOnJdu28/75kS81p8xIHImU/4h0aNm2wTg73tRjVsyU4P/Ja3vKn6JR1Evh5I8S5n0qV7nWeoZOvlXQ+YNH4JI1hHRmBaPFDnH2gE3ovcW9BOeYEHHiTqTO5tiRrjbrdTyWffGvRmNy5ti61oCPW+nqIi/7AzU+Nc+V31DlKh93M4bdiveOyRC5Y2rrwKtXF6/E3LXfqkeSjX2p3pcvk3QL/Y12Mbyhq+Ad5SNHH/MZ8la5mzNR0q95zI1sXChIEzUHbfFvDARSDbakqztQmM0fHkpYq7jNkS4fWPTCpR0YcdAvJp1e091I4YtyVDPEIBJwR7/bASYNu9rbSe+Wp8kmqTWXQJiVzTE8XAg8H9yRBjCXd8Avfl46YYPPescaFEwLw/AW3YCyjVk7j7qgvhVJFRXLafYZEL
+ 4ORiWrWh
+ usVvatD9dZl38xMeLU1BGN90O4hsqKTHX9d4wvcymFhDK/ae2PEcLC4NfB8Mv5xQmGRw+xdlowzeZlt3koPXZjF50kcVNleiHwklALXkhnhNlD2cNpWujaLTO04cC1jK0dwWuXa22r9fanDTZvByjCr3QX1I9TOHwYDDynYB/OQEo8LGFK6Uds2veJYK/WHmrTznq2TeQg97M21LRUt7IQoEiuE8OcHKXOIc5GRxAiCMmMqZb14/KDGhDsKlWPtrLrLtWCHoLhR1m9KR+GkMVtTDsBhI0QIm2hm5k
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,54 +100,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 08:08:49PM -0400, Pasha Tatashin wrote:
-> This series fixes a memory corruption bug in KHO that occurs when KFENCE
-> is enabled.
+On Tue, Oct 21, 2025 at 02:09:43PM +0900, Harry Yoo wrote:
+> On Mon, Oct 20, 2025 at 05:44:08PM +0300, Mike Rapoport wrote:
+> > > diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
+> > > index 7e9455a18aae..ec6fe4eb2644 100644
+> > > --- a/mm/pt_reclaim.c
+> > > +++ b/mm/pt_reclaim.c
+> > > @@ -1,7 +1,7 @@
+> > >  // SPDX-License-Identifier: GPL-2.0
+> > >  #include <linux/hugetlb.h>
+> > >  #include <asm-generic/tlb.h>
+> > > -#include <asm/pgalloc.h>
+> > > +#include <linux/pgalloc.h>
+> > 
+> > Please move it before include <asm-generic/tlb.h>
 > 
-> The root cause is that KHO metadata, allocated via kzalloc(), can be
-> randomly serviced by kfence_alloc(). When a kernel boots via KHO, the
-> early memblock allocator is restricted to a "scratch area". This forces
-> the KFENCE pool to be allocated within this scratch area, creating a
-> conflict. If KHO metadata is subsequently placed in this pool, it gets
-> corrupted during the next kexec operation.
-> 
-> Patch 1/3 introduces a debug-only feature (CONFIG_KEXEC_HANDOVER_DEBUG)
-> that adds checks to detect and fail any operation that attempts to place
-> KHO metadata or preserved memory within the scratch area. This serves as
-> a validation and diagnostic tool to confirm the problem without
-> affecting production builds.
-> 
-> Patch 2/3 Increases bitmap to PAGE_SIZE, so buddy allocator can be used.
-> 
-> Patch 3/3 Provides the fix by modifying KHO to allocate its metadata
-> directly from the buddy allocator instead of slab. This bypasses the
-> KFENCE interception entirely.
-> 
-> Pasha Tatashin (3):
->   liveupdate: kho: warn and fail on metadata or preserved memory in
->     scratch area
->   liveupdate: kho: Increase metadata bitmap size to PAGE_SIZE
->   liveupdate: kho: allocate metadata directly from the buddy allocator
+> Will do, and in this case no empty line between #include <asm*/*.h> and
+> #include <linux/*.h>, right?
 
-With liveupdate: dropped from the subjects
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
- 
->  include/linux/gfp.h              |  3 ++
->  kernel/Kconfig.kexec             |  9 ++++
->  kernel/Makefile                  |  1 +
->  kernel/kexec_handover.c          | 72 ++++++++++++++++++++------------
->  kernel/kexec_handover_debug.c    | 25 +++++++++++
->  kernel/kexec_handover_internal.h | 16 +++++++
->  6 files changed, 100 insertions(+), 26 deletions(-)
->  create mode 100644 kernel/kexec_handover_debug.c
->  create mode 100644 kernel/kexec_handover_internal.h
-> 
-> 
-> base-commit: 6548d364a3e850326831799d7e3ea2d7bb97ba08
-> -- 
-> 2.51.0.869.ge66316f041-goog
-> 
+Won't hurt :)
 
 -- 
 Sincerely yours,
