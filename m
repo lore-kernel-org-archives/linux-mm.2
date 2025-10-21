@@ -4,114 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC85BCCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 05:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C487CCD19F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 05:25:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20B5E8E0006; Tue, 21 Oct 2025 01:14:22 -0400 (EDT)
+	id 558AE8E0007; Tue, 21 Oct 2025 01:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 195408E0002; Tue, 21 Oct 2025 01:14:22 -0400 (EDT)
+	id 508F18E0002; Tue, 21 Oct 2025 01:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 034B78E0006; Tue, 21 Oct 2025 01:14:21 -0400 (EDT)
+	id 445B38E0007; Tue, 21 Oct 2025 01:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D91428E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:14:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F9B4140394
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:14:21 +0000 (UTC)
-X-FDA: 84020955522.30.09CBB49
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0A501C0007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:14:18 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fdSEKF4K;
-	spf=pass (imf10.hostedemail.com: domain of zlang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=zlang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 329F28E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 01:25:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AFCFC13AB76
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:25:57 +0000 (UTC)
+X-FDA: 84020984754.22.B19A3A1
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3911214000B
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:25:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kONxEFw+
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761024356; a=rsa-sha256;
+	cv=none;
+	b=2dtkxl48lP8arlswKk1PJRIax/S+oKtTADVIKkB8XzbBsjI5woL+D73bnmCf68umgdNDE4
+	gThx5NBgfyhhh7JEPQ9bOufZvQq7qq9vTQtXQIwCS59iKkfNrXpgvVaO8zG61bqS3P8KWi
+	TAXwqzl/z2M+4tArTV2cR4HZ1imY29Q=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kONxEFw+;
+	dmarc=none;
+	spf=none (imf09.hostedemail.com: domain of BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761023659;
+	s=arc-20220608; t=1761024356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=/GNufL/iv227GCXYMT45Yee3o+crF7z2SUMI71qmNww=;
-	b=ARE7pfvLtBJujU6COqBqwQjrykHvGtCLY+eTe6GgUHmAflKnA93NzweqkYL5usU3X1yV94
-	us/dRQBxfl1SCIWMCZ3xqb5dgeo5pVq7WQy+Wb3S4LkpB0VKhJMcyA2ULP1+zZAOY33RXe
-	5HzWOUk92cKMW+2e61At71IPWby7v3Q=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fdSEKF4K;
-	spf=pass (imf10.hostedemail.com: domain of zlang@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=zlang@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761023659; a=rsa-sha256;
-	cv=none;
-	b=uVCQbKEUDEk2K6pl6lHvwWm3j0XGPeFaVMz019IvZt7HtL1EfnZy+jkMPTNxx9pzXhXptf
-	zKgT3voz3qLdg/z7YTyF71IP/6Rms+Jl5eCorQyav3MXKo2XWHKrxxxp3HU+xes8AoX0gt
-	hjOWZ19ly9F97IpOa0ZZIMhCcw24TrM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761023658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=/GNufL/iv227GCXYMT45Yee3o+crF7z2SUMI71qmNww=;
-	b=fdSEKF4KJrseOQ4OOWgIu/wwmbzESE0gnDeQWmr3940LtYSR6u9u19Hrk0TUtk30YGt68t
-	MkmRXsBkse4FFMpkaiVLq5s6T4qJ69+HJp8xlLYPELYwSHfa03jOVK4Kcq4d1Kax/0r9Ie
-	btTujqeizwFZf8fER1bhTk0YujK3hTM=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-TKNaA5hXNG6fAg4c0PU-hw-1; Tue, 21 Oct 2025 01:14:16 -0400
-X-MC-Unique: TKNaA5hXNG6fAg4c0PU-hw-1
-X-Mimecast-MFC-AGG-ID: TKNaA5hXNG6fAg4c0PU-hw_1761023655
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-269880a7bd9so54931745ad.3
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 22:14:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761023655; x=1761628455;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/GNufL/iv227GCXYMT45Yee3o+crF7z2SUMI71qmNww=;
-        b=DoaJ2F8CUubJdiPw6QrUGJMSEIdDQfT8xsb6d22h/KGwVanRMJAGKAe/lLHoAj3h9/
-         lmZWoFOdBkyJM2J/J8LWU5bspWO9XzpTpcKu3mWNnzmoErdhBgMm3mw+S47d8lggzL4h
-         9EmjYb3hcGAxeS0ebKVI+iemZrbeAPKGVD3rrnIOHAyk6kEZQ/E3iZ/Xafb8fokQtNFf
-         FIBoAxNBmj2CcWX2RcPXiovt2EI5HuYlO6DzYfJEZY2+dFMuxLy2FJ2Xv0tUUS0zy//0
-         7Dw3ZJanRP9RNG4t8SUJ8QhXxCDfvFkiy6tBMu4t/NgZThsFBWBvhu7iZZx6Vx4Gumh8
-         T+JQ==
-X-Gm-Message-State: AOJu0Yw1NGpd25TqdVSb6a6NtJCPr0ICt+2rqwxCUbgXlIMMBkyOg7e8
-	c0QsgdhQd3um3tMjG9T5lEx7kDSPPPbWJGKnG/Gz0uGWcrhuR7qXTt0lU2y4V0Y/0qePrINL5/I
-	pyt7o96maLqU7iCf3jmnrvfUDOJ4myCKMpsVTzDrFbMDinJx/g6rVHZ/8y1uyPIQ=
-X-Gm-Gg: ASbGncufHlXxu6sgwueD2aHOiCa11SejibJHyR7S666Wx7kgavWKTlh3Sg4ALZmgdNI
-	pR9i5EivITB8/1kzuALy6vbGFlwk3+HtVogDNhspzbkdkSCa/DHwdp+YXqOQCeVR8iSCdXu800x
-	kXOcQEn+9iExrD1MPUTVnqd35P/B3DXwyt/T36qsCv2bhXbQk7wc31skSSD1xyXsuikc/ijR0iR
-	ar3wo9UipgECbwNYksTIal61iFj7iwtuLPeaDSYuuagipQ/jvHN7TtMozCkuPoaXBJ3w8+EiZsB
-	NTJSXWDLzcK6OQHTHsXrgCdvkrBEPoI9ZVqcID687C9Sp08BvaEPC+ZwVYTXQCFdRfdqiokz+Lq
-	TY9GUFlMXHIgFDgFHdEOOAXnEucbhXLqa68eMn+M=
-X-Received: by 2002:a17:902:e944:b0:290:b14c:4f36 with SMTP id d9443c01a7336-290cba4edaemr178932345ad.31.1761023653789;
-        Mon, 20 Oct 2025 22:14:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETHgi5IoFWAuUiIvtpv/cL6l7l1xkUYnxJCQTaZG3P0fIUbGA0WZV7sqrrz/qBQtmLgfX1Wg==
-X-Received: by 2002:a17:902:e944:b0:290:b14c:4f36 with SMTP id d9443c01a7336-290cba4edaemr178932005ad.31.1761023652985;
-        Mon, 20 Oct 2025 22:14:12 -0700 (PDT)
-Received: from dell-per750-06-vm-08.rhts.eng.pek2.redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33dfb55fda8sm478224a91.1.2025.10.20.22.14.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 22:14:12 -0700 (PDT)
-Date: Tue, 21 Oct 2025 13:14:08 +0800
-From: Zorro Lang <zlang@redhat.com>
-To: linux-nfs@vger.kernel.org
-Cc: linux-mm@kvack.org
-Subject: [Bug report][xfstests generic/751] hang on nfs writeback
-Message-ID: <20251021051408.lv7dye5wywxhl3dg@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vfhA1ZYpQWFjqWYb4xJjbR8w9o0oM9AxIrBG8WbsVnw=;
+	b=vC3AhYkNpxC24dvBe0z+vCVLm4rRJsrYAwhpls0vJrajEuP9F3IcMLgPuiMYdjTB4izuBI
+	Oakus6NUAxXPxp/h6YnCVBzSOj1fNdgCCTedE5fGTprLMnmKPxGE9gzVB+4oF+dVMyKyMv
+	mzv7bmpPkz4c7lGurpuElSzIx9HqzpI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vfhA1ZYpQWFjqWYb4xJjbR8w9o0oM9AxIrBG8WbsVnw=; b=kONxEFw+jXtYeR126YKcVcN18o
+	nYaR/VhcKRS2pVgSjp8KGtL3Rbi89WT/pZ8t/x/Yhrgf5AZHh+7CF4Wh/2tsklZJgh8T2XJT3/vbI
+	Cc0jdxx8cgtT2f3lkO2wuL7W7hp6s6LBdNTE3vuLPAtkkmZRc6uUkPWOpzaLrwv4P5GZgZPp/hHRZ
+	7a1N723E6VmpRRMq+XXZl7zItxZVAWJum+Ym/A4k5Fg5pu+qHfTzdGvM1nC6Q4nkQeKdrJnhrzGp3
+	63bmiCcuh9MoQtqhClhi8VbprSK3dXChd92d8C1e47RKWnAjh9ggVtpx43Z7Efs6V4JAS2N4GFOGl
+	2jN1i+6A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vB4sZ-0000000Fqk4-2SXW;
+	Tue, 21 Oct 2025 05:25:51 +0000
+Date: Mon, 20 Oct 2025 22:25:51 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Yifan Ji <412752700jyf@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Dave Chinner <david@fromorbit.com>
+Subject: Re: [DISCUSS] Proposal: move slab shrinking into a dedicated kernel
+ thread to improve reclaim efficiency
+Message-ID: <aPcZX9dabaEqTBdG@infradead.org>
+References: <CA+9cq0kkbk2Bpgyah=9bU2+=QNM2L1GfYLgMK6OuRhda-B80cg@mail.gmail.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5uIY7OnKaj6YWLW5cnXlYk6au1K346PYrnic34CWvys_1761023655
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: ew9sxexomb8spfgkfp9ju7cc3assqqyw
+In-Reply-To: <CA+9cq0kkbk2Bpgyah=9bU2+=QNM2L1GfYLgMK6OuRhda-B80cg@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: gdk4e4gqdrd89y5g5nmpsj11prdz6eyx
+X-Rspamd-Queue-Id: 3911214000B
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0A501C0007
-X-HE-Tag: 1761023658-701173
-X-HE-Meta: U2FsdGVkX19VVPbrnR44Q3x8r9W4hyiHy0MIioiX4CntOb3/dS7JnyCfKuJCCwV7O6cV7xik83uDFAyOgqNDGzAPrhDJkHtiFJXYza6zp+0aM8QiOJXx8O31WAhapc+l86j+U9nVgRG3S09zFDLhBka55XHvzi+vhlQbnXsRghTn7QaLBuHYYDOnoOXpbumaM/pArKA1UIof3JZ/kPLyclm0Ww5o0vkwL/IdWQkvwZaiCIT9GyzmnuTykGHAavy+KfBqrYGNgsRGYOsWEWqX2TzZJgnTOr5LZc4JuTz3qOpCqdjv/5bSNtBDrIDu/g97R3wfi1ZqDiJEIuaYcXrnJyXXAi8NsVswg0vX8iuJdVT1zHRSmQVa2JR/9s+SUmdEr5Mw+xkrlS0cjH7WDgxDqcHvH/Vbk609/iOn0joDt/xur9nzmPlMalgpQfhdJffMeC20tN80zLXypXrPPwjXcNheVxN2mc/gqDFjFmlocK53PjGNoNpKisWTr4W6Qgg2VwZoUyZOO19Ckf8ohuPqNuL5Wtbc2v4dA3P4f9b1kCOCUk/TxFt4xAF9USdz90fg7lqEItM4HYWDfUYubZ1+FRCRI5nn55AaSkPBf0R+c5AiA+kDPOuRQf21GrWSnrnKZLCeQDPVVA545u5CuXWll2cw9rrTSiInF0NiguCPgFk/RQCt/CHS8KduKECmZZTsOLbNSQw4r436gxGx7YhGqBHMvvAuriMIwE4dT1TGjgUrg8iw1KeQROIpJSpX8XzNG7we2chBXirllJr3psr9xoypH4EoBl32JztxNcltc9ajO0ps4BkCBPOL1FL75xZ1iRgUGgNXXRc2JEN1jIsZ45dFw0prMl4sGyEei+x0pjr3rK50lBGWDCwcD6ah/cbjGYLVk4hy2mo0zipj42obWswTYAYPFk4+21OLbf750kl0aLD604CpFFW77Z/darhgHcYyuQsMNweOaKg3AOQ
- 5rhld39S
- jbIRKcvr3Gk1MPDjmuiTeO3pv4W47eyr9i6hKtFnqUyyCbtl5EeJFabuNHaacxejMlz+zwYqYpKNK7edFISVWHS0EVorwNDpiseEDETtPzqewwvxf5RHS+7aDpudc8pWxCkdiPHlUkA9WJ7xgcWpzNj9rs1xp4gkD2Syc/9sIS2QXhvc3+Cm5Fz48ounR5OcE4sIoASlXVbu9Yvw1Bn1MehLzU+F2ELXulBM/gvRoEkhgQidC4JNCBTbStRpWgsyEuyBqFmZoSCSS7cQ6wmbNoagkr49c+tqOfXw5RZlB10ZvfekQTg4PbFbdTK7NlHqLV45adQhjF3v6so+N2bWS7+nRbii41bOxZGumQXXzVo6tHsCpkJJbdiuh1/HpEEYekFDh
+X-HE-Tag: 1761024355-943823
+X-HE-Meta: U2FsdGVkX1+3N5QJXus4rX2UO274CzH5SxqqPzDOHlTazXWt2A2GGD104bthCx0JfXkK27+0BIKha0SFfzuHcTny6I3I7nNz18HYg+XUINVTVD2vePgStCvppaps4oajvAhreyqSEWH4JJb9pZqx9v5DiXJgwU5sXg7B7/anIuH15NG5iHqAgLzZlT1iE/MpEY9SGPRF4lPiuQVZEd8N3+sQ4Ki2UI4vef89lUpcvoO5x9oHotLb+OcXf1WEGqJn3/SvVICO19fN6mYk0xlaTfJ3YYdM0YpSETpuZad/kBB7nPNOUUQxXjadxKItYWvhLf/SOXPZeWjDgY6a7RAFIiXCEPJ02AGxWGmE/CwQIVJc0pVoFK3iNvdO92aw1vETVphl1W0H6IFVWpZq4mqCTjZxsFdcpc/gcERX6+bOeBurX9dnbI+1STz1k8t2gZf1fSM1YNflwc4j9tISutsnrjpp8c8sbmRHPO6uvz48okSLg9csKA6veeqIpPgQ1yf9VHTZ1wWjMMNg/8zc3dJ9uRAfmrh+svtJDogQuxM/nLaVLysdHL+5ACCH1uxlpspp7xbac7gRucjCdNIS+oJ1JNaOvSzxIN/5Kpo/vDD2fbMPBbSvE7I34unzZ1gbleG0AgqZGsvsEoQOylW3SZfa6NJB8s4J8XRbz9e4K8h7Gbhiu2hZubB+wOgtV0Acaut1q6GFW4BRScu4CU6C3Hh3rbUGWFmSXPdNzYjaaqUwz2bH5xH5XMtEG3+5AOabHfrJ9meCOgCxI3PjksS00vIcCKJ8ehFiJbzLzEU8QKgwzSsCpxRs+qNs3Y9GxgouqtyKb1qvCO09eCZayGVH7VVDbfdsQUSfqwucJr40QIuc1iUGhkf0VNKklcrsUHcR3tFx4CPLZnybZ/yFxBAI5DVVmibe9rTWkR/u5X62tS/ATTm7jqXudhhoZBdbVjegJ6lXPudwIsWLMbmb9Vpq4ue
+ DWQKSSPV
+ VCMBKpib6zQNLxV/af8/uzHbZcH1ZU1t8CGkZuJCxFFwKAaQxFv84kcDwN5x+gdEYMYShizvEm8b9OS6+Y8Ku5VkwankDrtDTDCH362Zy4m1PYzFkPrB5PGbvX3Sqmi0GeXBuVgkogLqmvU3kooWGY06Ve0QiwtUHsYLqmPFPluj7wEqWln1VgJlAkVExUA7ux79PBAo+r0qj09TM1d1/1gJiBBnH+7/iDNQ4oFT4bP/PYWt4hgjrkbsHHC9DJ7N1gHecWVh8lJIawCFLSWMgZNzxeOuSPSi4FmduGuHmspLiQdWX8klguEZfvH2CBn2w5WGKLNv3r8QUnxcOR8K/LhO/970LHcQ/ztYKXsRR/gD8zX+cUYgwpIaiJRX+9KKkPoyjb0HWyVMQlvSDQ83GvTXZxcsTtB3BXOABg0j3gz+H9Ek=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,870 +93,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+[adding Dave who has spent a lot of time on shrinkers]
 
-When I did xfstests regression test on nfs, it hang on generic/751 many times,
-refer to [1](on x86_64) and [2](on aarch64). I've hit it 8 times until now.
+On Tue, Oct 21, 2025 at 10:52:41AM +0800, Yifan Ji wrote:
+> Hi all,
+> 
+> We've been profiling memory reclaim performance on mobile systems and found
+> that slab shrinking can dominate reclaim time, particularly when multiple
+> shrinkers are active. In some cases, shrink_slab() introduces noticeable
+> latency in both direct reclaim and kswapd contexts.
+> 
+> We are exploring an approach to move slab shrinking into a dedicated kernel
+> thread, decoupling it from direct reclaim and kswapd. The goal is to perform
+> slab reclaim asynchronously under controlled conditions such as idle periods
+> or vmpressure triggers.
 
-I tested on latest linux v6.18-rc2. My underlying test device isn't loopback device,
-it's general disk, and make xfs on it:
-  meta-data=/dev/sda5              isize=512    agcount=4, agsize=983040 blks
-           =                       sectsz=4096  attr=2, projid32bit=1
-           =                       crc=1        finobt=1, sparse=1, rmapbt=1
-           =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
-           =                       exchange=0   metadir=0
-  data     =                       bsize=4096   blocks=3932160, imaxpct=25
-           =                       sunit=0      swidth=0 blks
-  naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
-  log      =internal log           bsize=4096   blocks=54324, version=2
-           =                       sectsz=4096  sunit=1 blks, lazy-count=1
-  realtime =none                   extsz=4096   blocks=0, rtextents=0
-           =                       rgcount=0    rgsize=0 extents
-           =                       zoned=0      start=0 reserved=0
+That would mirror what everyone in reclaim / writeback does and have the
+same benefits and pitfalls like throttling.  I'd suggest you give it a
+spin and report your findings.
 
-Two xfs are mounted on /mnt/xfstests/test and /mnt/xfstests/scratch seperately,
-then export as:
-  # cat /etc/exports
-  /mnt/xfstests/test/nfs-server *(rw,insecure,no_root_squash)
-  /mnt/xfstests/scratch/nfs-server *(rw,insecure,no_root_squash)
-
-The nfs mount option is only "-o vers=4.2". BTW, nfs server and client are
-in same machine/system.
-
-# cat local.config
-export FSTYP=nfs
-export TEST_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/test/nfs-server
-export TEST_DIR=/mnt/xfstests/test/nfs-client
-export SCRATCH_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/scratch/nfs-server
-export SCRATCH_MNT=/mnt/xfstests/scratch/nfs-client
-export MOUNT_OPTIONS="-o vers=4.2"
-export TEST_FS_MOUNT_OPTS="-o vers=4.2"
-
-
-[1]
-[23369.572660] run fstests generic/751 at 2025-10-20 23:15:24 
-[-- MARK -- Tue Oct 21 03:20:00 2025] 
-[-- MARK -- Tue Oct 21 03:25:00 2025] 
-[-- MARK -- Tue Oct 21 03:30:00 2025] 
-[-- MARK -- Tue Oct 21 03:35:00 2025] 
-[-- MARK -- Tue Oct 21 03:40:00 2025] 
-[25069.500900] INFO: task kworker/u9:73:825900 blocked for more than 122 seconds. 
-[25069.501484]       Not tainted 6.18.0-rc2 #1 
-[25069.501822] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25069.502385] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25069.503258] Workqueue: writeback wb_workfn (flush-0:48) 
-[25069.782725] Call Trace: 
-[25069.787191]  <TASK> 
-[25069.787368]  __schedule+0x838/0x1890 
-[25069.799533]  ? __pfx___schedule+0x10/0x10 
-[25069.799852]  ? __blk_flush_plug+0x27b/0x4d0 
-[25069.800617]  ? find_held_lock+0x32/0x90 
-[25069.801292]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25069.801639]  schedule+0xd4/0x260 
-[25069.801902]  io_schedule+0x8f/0xf0 
-[25069.802162]  folio_wait_bit_common+0x2d9/0x780 
-[25069.802919]  ? folio_wait_bit_common+0x1dd/0x780 
-[25069.803324]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25069.803684]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25069.804254]  ? __pfx_wake_page_function+0x10/0x10 
-[25069.804602]  ? __pfx___might_resched+0x10/0x10 
-[25069.805160]  writeback_get_folio+0x3f9/0x500 
-[25069.806221]  writeback_iter+0x136/0x720 
-[25069.806628]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25069.807100]  ? mark_held_locks+0x40/0x70 
-[25069.807403]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25069.807846]  ? virtqueue_notify+0x68/0xc0 
-[25069.808346]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25069.808925]  ? __lock_acquire+0x57c/0xbd0 
-[25069.809295]  do_writepages+0x21f/0x560 
-[25069.809576]  ? __pfx_do_writepages+0x10/0x10 
-[25069.809953]  ? rcu_is_watching+0x15/0xb0 
-[25069.810587]  __writeback_single_inode+0xe2/0x5f0 
-[25069.810982]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25069.811373]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25069.811815]  ? writeback_sb_inodes+0x416/0xd00 
-[25069.812194]  writeback_sb_inodes+0x535/0xd00 
-[25069.812533]  ? __pfx_stack_trace_save+0x10/0x10 
-[25069.814193]  ? local_clock_noinstr+0xd/0xe0 
-[25069.814506]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25069.814910]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25069.815407]  ? lock_acquire+0x10b/0x150 
-[25069.815703]  ? down_read_trylock+0x4b/0x60 
-[25069.816077]  __writeback_inodes_wb+0xf4/0x270 
-[25069.816441]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25069.816864]  ? queue_io+0x329/0x510 
-[25069.817148]  wb_writeback+0x70a/0x9c0 
-[25069.817448]  ? __pfx_wb_writeback+0x10/0x10 
-[25069.817831]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25069.818264]  wb_do_writeback+0x5d4/0x8e0 
-[25069.818575]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25069.818975]  ? set_worker_desc+0x16e/0x190 
-[25069.819313]  ? __pfx_set_worker_desc+0x10/0x10 
-[25069.819669]  wb_workfn+0x7c/0x200 
-[25069.819997]  process_one_work+0xd8b/0x1320 
-[25069.820342]  ? __pfx_process_one_work+0x10/0x10 
-[25069.820694]  ? assign_work+0x16c/0x240 
-[25069.821053]  worker_thread+0x5f3/0xfe0 
-[25069.821364]  ? __pfx_worker_thread+0x10/0x10 
-[25069.821697]  kthread+0x3b4/0x770 
-[25069.822122]  ? kvm_sched_clock_read+0x11/0x20 
-[25069.822457]  ? local_clock_noinstr+0xd/0xe0 
-[25069.822790]  ? __pfx_kthread+0x10/0x10 
-[25069.823079]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25069.823430]  ? rcu_is_watching+0x15/0xb0 
-[25069.823729]  ? __pfx_kthread+0x10/0x10 
-[25069.824035]  ret_from_fork+0x393/0x480 
-[25069.864794]  ? __pfx_kthread+0x10/0x10 
-[25069.865076]  ? __pfx_kthread+0x10/0x10 
-[25069.865371]  ret_from_fork_asm+0x1a/0x30 
-[25069.879905]  </TASK> 
-[25069.880145]  
-[25069.880145] Showing all locks held in the system: 
-[25069.889550] 1 lock held by khungtaskd/37: 
-[25069.889886]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25069.890603] 2 locks held by 751/825733: 
-[25069.890942]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25069.891589]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25069.892449] 3 locks held by kworker/u9:73/825900: 
-[25069.892818]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25069.893530]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25069.894333]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25069.895056] 2 locks held by kworker/u10:2/826054: 
-[25069.895418]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25069.896123]  #1: ffffc90001e1fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25069.896952]  
-[25069.897085] ============================================= 
-[25069.897085]  
-[-- MARK -- Tue Oct 21 03:45:00 2025] 
-[25192.380157] INFO: task kworker/u9:73:825900 blocked for more than 245 seconds. 
-[25192.380707]       Not tainted 6.18.0-rc2 #1 
-[25192.381042] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25192.381605] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25192.382516] Workqueue: writeback wb_workfn (flush-0:48) 
-[25192.382914] Call Trace: 
-[25192.383126]  <TASK> 
-[25192.383304]  __schedule+0x838/0x1890 
-[25192.383586]  ? __pfx___schedule+0x10/0x10 
-[25192.383888]  ? __blk_flush_plug+0x27b/0x4d0 
-[25192.384228]  ? find_held_lock+0x32/0x90 
-[25192.384527]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25192.384880]  schedule+0xd4/0x260 
-[25192.385150]  io_schedule+0x8f/0xf0 
-[25192.385416]  folio_wait_bit_common+0x2d9/0x780 
-[25192.385816]  ? folio_wait_bit_common+0x1dd/0x780 
-[25192.386196]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25192.386572]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25192.387045]  ? __pfx_wake_page_function+0x10/0x10 
-[25192.387400]  ? __pfx___might_resched+0x10/0x10 
-[25192.387742]  writeback_get_folio+0x3f9/0x500 
-[25192.388092]  writeback_iter+0x136/0x720 
-[25192.388389]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25192.388788]  ? mark_held_locks+0x40/0x70 
-[25192.389102]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25192.389530]  ? virtqueue_notify+0x68/0xc0 
-[25192.389831]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25192.390255]  ? __lock_acquire+0x57c/0xbd0 
-[25192.390574]  do_writepages+0x21f/0x560 
-[25192.390861]  ? __pfx_do_writepages+0x10/0x10 
-[25192.391200]  ? rcu_is_watching+0x15/0xb0 
-[25192.391502]  __writeback_single_inode+0xe2/0x5f0 
-[25192.391848]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25192.392210]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25192.392596]  ? writeback_sb_inodes+0x416/0xd00 
-[25192.392935]  writeback_sb_inodes+0x535/0xd00 
-[25192.393286]  ? __pfx_stack_trace_save+0x10/0x10 
-[25192.393628]  ? local_clock_noinstr+0xd/0xe0 
-[25192.393940]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25192.394310]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25192.394731]  ? lock_acquire+0x10b/0x150 
-[25192.395048]  ? down_read_trylock+0x4b/0x60 
-[25192.395360]  __writeback_inodes_wb+0xf4/0x270 
-[25192.395698]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25192.396081]  ? queue_io+0x329/0x510 
-[25192.396355]  wb_writeback+0x70a/0x9c0 
-[25192.396645]  ? __pfx_wb_writeback+0x10/0x10 
-[25192.396963]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25192.397314]  wb_do_writeback+0x5d4/0x8e0 
-[25192.397622]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25192.397950]  ? set_worker_desc+0x16e/0x190 
-[25192.398272]  ? __pfx_set_worker_desc+0x10/0x10 
-[25192.398628]  wb_workfn+0x7c/0x200 
-[25192.398886]  process_one_work+0xd8b/0x1320 
-[25192.399222]  ? __pfx_process_one_work+0x10/0x10 
-[25192.399574]  ? assign_work+0x16c/0x240 
-[25192.399861]  worker_thread+0x5f3/0xfe0 
-[25192.400176]  ? __pfx_worker_thread+0x10/0x10 
-[25192.400497]  kthread+0x3b4/0x770 
-[25192.400747]  ? kvm_sched_clock_read+0x11/0x20 
-[25192.401089]  ? local_clock_noinstr+0xd/0xe0 
-[25192.401401]  ? __pfx_kthread+0x10/0x10 
-[25192.401684]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25192.402046]  ? rcu_is_watching+0x15/0xb0 
-[25192.402343]  ? __pfx_kthread+0x10/0x10 
-[25192.402629]  ret_from_fork+0x393/0x480 
-[25192.402910]  ? __pfx_kthread+0x10/0x10 
-[25192.403208]  ? __pfx_kthread+0x10/0x10 
-[25192.403493]  ret_from_fork_asm+0x1a/0x30 
-[25192.403808]  </TASK> 
-[25192.403994]  
-[25192.403994] Showing all locks held in the system: 
-[25192.404474] 1 lock held by khungtaskd/37: 
-[25192.404774]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25192.405487] 2 locks held by 751/825733: 
-[25192.405779]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25192.406385]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25192.407092] 4 locks held by kworker/u10:40/825850: 
-[25192.407443]  #0: ffff888103ec5158 ((wq_completion)nfslocaliod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25192.408175]  #1: ffffc9000b0cfd10 ((work_completion)(&iocb->work)#2){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25192.408924]  #2: ffff88815c2c2440 (sb_writers#13){++++}-{0:0}, at: process_one_work+0xd8b/0x1320 
-[25192.409579]  #3: ffff8881a1324b58 (&sb->s_type->i_mutex_key#13){++++}-{4:4}, at: xfs_ilock+0x360/0x460 [xfs] 
-[25192.410660] 3 locks held by kworker/u9:73/825900: 
-[25192.411026]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25192.411724]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25192.412518]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25192.413237] 4 locks held by kworker/1:1/826103: 
-[25192.413576]  
-[25192.413706] ============================================= 
-[25192.413706]  
-[25315.259312] INFO: task kworker/u9:73:825900 blocked for more than 368 seconds. 
-[25315.259973]       Not tainted 6.18.0-rc2 #1 
-[25315.260324] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25315.260894] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25315.261752] Workqueue: writeback wb_workfn (flush-0:48) 
-[25315.262153] Call Trace: 
-[25315.262369]  <TASK> 
-[25315.262551]  __schedule+0x838/0x1890 
-[25315.262840]  ? __pfx___schedule+0x10/0x10 
-[25315.263150]  ? __blk_flush_plug+0x27b/0x4d0 
-[25315.263493]  ? find_held_lock+0x32/0x90 
-[25315.263794]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25315.264151]  schedule+0xd4/0x260 
-[25315.264425]  io_schedule+0x8f/0xf0 
-[25315.264694]  folio_wait_bit_common+0x2d9/0x780 
-[25315.265100]  ? folio_wait_bit_common+0x1dd/0x780 
-[25315.265473]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25315.265856]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25315.266332]  ? __pfx_wake_page_function+0x10/0x10 
-[25315.266692]  ? __pfx___might_resched+0x10/0x10 
-[25315.267040]  writeback_get_folio+0x3f9/0x500 
-[25315.267393]  writeback_iter+0x136/0x720 
-[25315.267693]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25315.268106]  ? mark_held_locks+0x40/0x70 
-[25315.268425]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25315.268861]  ? virtqueue_notify+0x68/0xc0 
-[25315.269168]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25315.269597]  ? __lock_acquire+0x57c/0xbd0 
-[25315.269921]  do_writepages+0x21f/0x560 
-[25315.270212]  ? __pfx_do_writepages+0x10/0x10 
-[25315.270555]  ? rcu_is_watching+0x15/0xb0 
-[25315.270864]  __writeback_single_inode+0xe2/0x5f0 
-[25315.271212]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25315.271584]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25315.271975]  ? writeback_sb_inodes+0x416/0xd00 
-[25315.272336]  writeback_sb_inodes+0x535/0xd00 
-[25315.272675]  ? __pfx_stack_trace_save+0x10/0x10 
-[25315.273018]  ? local_clock_noinstr+0xd/0xe0 
-[25315.273354]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25315.273713]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25315.274107]  ? lock_acquire+0x10b/0x150 
-[25315.274426]  ? down_read_trylock+0x4b/0x60 
-[25315.274743]  __writeback_inodes_wb+0xf4/0x270 
-[25315.275083]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25315.275470]  ? queue_io+0x329/0x510 
-[25315.275749]  wb_writeback+0x70a/0x9c0 
-[25315.276046]  ? __pfx_wb_writeback+0x10/0x10 
-[25315.276389]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25315.276729]  wb_do_writeback+0x5d4/0x8e0 
-[25315.277042]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25315.277401]  ? set_worker_desc+0x16e/0x190 
-[25315.277713]  ? __pfx_set_worker_desc+0x10/0x10 
-[25315.278072]  wb_workfn+0x7c/0x200 
-[25315.278352]  process_one_work+0xd8b/0x1320 
-[25315.278678]  ? __pfx_process_one_work+0x10/0x10 
-[25315.279034]  ? assign_work+0x16c/0x240 
-[25315.279346]  worker_thread+0x5f3/0xfe0 
-[25315.279650]  ? __pfx_worker_thread+0x10/0x10 
-[25315.279980]  kthread+0x3b4/0x770 
-[25315.280229]  ? kvm_sched_clock_read+0x11/0x20 
-[25315.280577]  ? local_clock_noinstr+0xd/0xe0 
-[25315.280899]  ? __pfx_kthread+0x10/0x10 
-[25315.281183]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25315.281551]  ? rcu_is_watching+0x15/0xb0 
-[25315.281886]  ? __pfx_kthread+0x10/0x10 
-[25315.282176]  ret_from_fork+0x393/0x480 
-[25315.282480]  ? __pfx_kthread+0x10/0x10 
-[25315.282770]  ? __pfx_kthread+0x10/0x10 
-[25315.283058]  ret_from_fork_asm+0x1a/0x30 
-[25315.283401]  </TASK> 
-[25315.283585]  
-[25315.283585] Showing all locks held in the system: 
-[25315.284041] 1 lock held by khungtaskd/37: 
-[25315.284360]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25315.285066] 2 locks held by 751/825733: 
-[25315.285370]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25315.285974]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25315.286683] 3 locks held by kworker/u9:73/825900: 
-[25315.287039]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25315.287744]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25315.288534]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25315.289261] 2 locks held by kworker/u10:2/826054: 
-[25315.289612]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25315.290324]  #1: ffffc90001e1fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25315.291064]  
-[25315.291199] ============================================= 
-[25315.291199]  
-[25438.138585] INFO: task kworker/u9:73:825900 blocked for more than 491 seconds. 
-[25438.139167]       Not tainted 6.18.0-rc2 #1 
-[25438.139486] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25438.140085] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25438.140963] Workqueue: writeback wb_workfn (flush-0:48) 
-[25438.141360] Call Trace: 
-[25438.141576]  <TASK> 
-[25438.141757]  __schedule+0x838/0x1890 
-[25438.142043]  ? __pfx___schedule+0x10/0x10 
-[25438.142347]  ? __blk_flush_plug+0x27b/0x4d0 
-[25438.142689]  ? find_held_lock+0x32/0x90 
-[25438.142987]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25438.143349]  schedule+0xd4/0x260 
-[25438.143622]  io_schedule+0x8f/0xf0 
-[25438.143891]  folio_wait_bit_common+0x2d9/0x780 
-[25438.144263]  ? folio_wait_bit_common+0x1dd/0x780 
-[25438.144639]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25438.145021]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25438.145479]  ? __pfx_wake_page_function+0x10/0x10 
-[25438.145854]  ? __pfx___might_resched+0x10/0x10 
-[25438.146205]  writeback_get_folio+0x3f9/0x500 
-[25438.146561]  writeback_iter+0x136/0x720 
-[25438.146860]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25438.147265]  ? mark_held_locks+0x40/0x70 
-[25438.147582]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25438.148015]  ? virtqueue_notify+0x68/0xc0 
-[25438.148319]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25438.148749]  ? __lock_acquire+0x57c/0xbd0 
-[25438.149072]  do_writepages+0x21f/0x560 
-[25438.149364]  ? __pfx_do_writepages+0x10/0x10 
-[25438.149705]  ? rcu_is_watching+0x15/0xb0 
-[25438.150014]  __writeback_single_inode+0xe2/0x5f0 
-[25438.150362]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25438.150731]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25438.151123]  ? writeback_sb_inodes+0x416/0xd00 
-[25438.151466]  writeback_sb_inodes+0x535/0xd00 
-[25438.151825]  ? __pfx_stack_trace_save+0x10/0x10 
-[25438.152171]  ? local_clock_noinstr+0xd/0xe0 
-[25438.152504]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25438.152864]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25438.153262]  ? lock_acquire+0x10b/0x150 
-[25438.153577]  ? down_read_trylock+0x4b/0x60 
-[25438.153894]  __writeback_inodes_wb+0xf4/0x270 
-[25438.154231]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25438.154622]  ? queue_io+0x329/0x510 
-[25438.154899]  wb_writeback+0x70a/0x9c0 
-[25438.155193]  ? __pfx_wb_writeback+0x10/0x10 
-[25438.155536]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25438.155877]  wb_do_writeback+0x5d4/0x8e0 
-[25438.156190]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25438.156554]  ? set_worker_desc+0x16e/0x190 
-[25438.156865]  ? __pfx_set_worker_desc+0x10/0x10 
-[25438.157225]  wb_workfn+0x7c/0x200 
-[25438.157486]  process_one_work+0xd8b/0x1320 
-[25438.157830]  ? __pfx_process_one_work+0x10/0x10 
-[25438.158185]  ? assign_work+0x16c/0x240 
-[25438.158478]  worker_thread+0x5f3/0xfe0 
-[25438.158800]  ? __pfx_worker_thread+0x10/0x10 
-[25438.159129]  kthread+0x3b4/0x770 
-[25438.159382]  ? kvm_sched_clock_read+0x11/0x20 
-[25438.159730]  ? local_clock_noinstr+0xd/0xe0 
-[25438.160049]  ? __pfx_kthread+0x10/0x10 
-[25438.160335]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25438.160703]  ? rcu_is_watching+0x15/0xb0 
-[25438.161010]  ? __pfx_kthread+0x10/0x10 
-[25438.161303]  ret_from_fork+0x393/0x480 
-[25438.161605]  ? __pfx_kthread+0x10/0x10 
-[25438.161892]  ? __pfx_kthread+0x10/0x10 
-[25438.162184]  ret_from_fork_asm+0x1a/0x30 
-[25438.162521]  </TASK> 
-[25438.162705]  
-[25438.162705] Showing all locks held in the system: 
-[25438.163161] 1 lock held by khungtaskd/37: 
-[25438.163461]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25438.164190] 2 locks held by 751/825733: 
-[25438.164483]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25438.165101]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25438.165820] 3 locks held by kworker/u9:73/825900: 
-[25438.166177]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25438.166895]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25438.167703]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25438.168412] 2 locks held by kworker/u10:2/826054: 
-[25438.168783]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25438.169473]  #1: ffffc90001e1fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25438.170230]  
-[25438.170364] ============================================= 
-[25438.170364]  
-[-- MARK -- Tue Oct 21 03:50:00 2025] 
-[25561.017812] INFO: task kworker/u9:73:825900 blocked for more than 614 seconds. 
-[25561.018375]       Not tainted 6.18.0-rc2 #1 
-[25561.018694] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25561.019310] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25561.020172] Workqueue: writeback wb_workfn (flush-0:48) 
-[25561.020573] Call Trace: 
-[25561.020786]  <TASK> 
-[25561.020966]  __schedule+0x838/0x1890 
-[25561.021254]  ? __pfx___schedule+0x10/0x10 
-[25561.021560]  ? __blk_flush_plug+0x27b/0x4d0 
-[25561.021906]  ? find_held_lock+0x32/0x90 
-[25561.022200]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25561.022560]  schedule+0xd4/0x260 
-[25561.022833]  io_schedule+0x8f/0xf0 
-[25561.023102]  folio_wait_bit_common+0x2d9/0x780 
-[25561.023475]  ? folio_wait_bit_common+0x1dd/0x780 
-[25561.023844]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25561.024216]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25561.024686]  ? __pfx_wake_page_function+0x10/0x10 
-[25561.025050]  ? __pfx___might_resched+0x10/0x10 
-[25561.025389]  writeback_get_folio+0x3f9/0x500 
-[25561.025711]  writeback_iter+0x136/0x720 
-[25561.026014]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25561.026402]  ? mark_held_locks+0x40/0x70 
-[25561.026698]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25561.027155]  ? virtqueue_notify+0x68/0xc0 
-[25561.027462]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25561.027894]  ? __lock_acquire+0x57c/0xbd0 
-[25561.028213]  do_writepages+0x21f/0x560 
-[25561.028507]  ? __pfx_do_writepages+0x10/0x10 
-[25561.028849]  ? rcu_is_watching+0x15/0xb0 
-[25561.029154]  __writeback_single_inode+0xe2/0x5f0 
-[25561.029608]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25561.029982]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25561.030374]  ? writeback_sb_inodes+0x416/0xd00 
-[25561.030715]  writeback_sb_inodes+0x535/0xd00 
-[25561.031072]  ? __pfx_stack_trace_save+0x10/0x10 
-[25561.031420]  ? local_clock_noinstr+0xd/0xe0 
-[25561.031761]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25561.032121]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25561.032516]  ? lock_acquire+0x10b/0x150 
-[25561.032832]  ? down_read_trylock+0x4b/0x60 
-[25561.033149]  __writeback_inodes_wb+0xf4/0x270 
-[25561.033487]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25561.033881]  ? queue_io+0x329/0x510 
-[25561.034157]  wb_writeback+0x70a/0x9c0 
-[25561.034452]  ? __pfx_wb_writeback+0x10/0x10 
-[25561.034794]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25561.035134]  wb_do_writeback+0x5d4/0x8e0 
-[25561.035443]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25561.035796]  ? set_worker_desc+0x16e/0x190 
-[25561.036105]  ? __pfx_set_worker_desc+0x10/0x10 
-[25561.036463]  wb_workfn+0x7c/0x200 
-[25561.036724]  process_one_work+0xd8b/0x1320 
-[25561.037065]  ? __pfx_process_one_work+0x10/0x10 
-[25561.037422]  ? assign_work+0x16c/0x240 
-[25561.037718]  worker_thread+0x5f3/0xfe0 
-[25561.038035]  ? __pfx_worker_thread+0x10/0x10 
-[25561.038355]  kthread+0x3b4/0x770 
-[25561.038603]  ? kvm_sched_clock_read+0x11/0x20 
-[25561.038951]  ? local_clock_noinstr+0xd/0xe0 
-[25561.039272]  ? __pfx_kthread+0x10/0x10 
-[25561.039555]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25561.039921]  ? rcu_is_watching+0x15/0xb0 
-[25561.040221]  ? __pfx_kthread+0x10/0x10 
-[25561.040511]  ret_from_fork+0x393/0x480 
-[25561.040813]  ? __pfx_kthread+0x10/0x10 
-[25561.041101]  ? __pfx_kthread+0x10/0x10 
-[25561.041392]  ret_from_fork_asm+0x1a/0x30 
-[25561.041707]  </TASK> 
-[25561.041908]  
-[25561.041908] Showing all locks held in the system: 
-[25561.042365] 1 lock held by khungtaskd/37: 
-[25561.042662]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25561.043384] 2 locks held by 751/825733: 
-[25561.043677]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25561.044296]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25561.045009] 3 locks held by kworker/u9:73/825900: 
-[25561.045362]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25561.046085]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25561.046895]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25561.047600] 2 locks held by kworker/u10:13/826064: 
-[25561.047970]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25561.048657]  #1: ffffc90001e9fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25561.049410]  
-[25561.049538] ============================================= 
-[25561.049538]  
-[25683.897277] INFO: task kworker/u9:73:825900 blocked for more than 737 seconds. 
-[25683.897831]       Not tainted 6.18.0-rc2 #1 
-[25683.898182] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[25683.898754] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-[25683.899587] Workqueue: writeback wb_workfn (flush-0:48) 
-[25683.900001] Call Trace: 
-[25683.900200]  <TASK> 
-[25683.900379]  __schedule+0x838/0x1890 
-[25683.900663]  ? __pfx___schedule+0x10/0x10 
-[25683.900967]  ? __blk_flush_plug+0x27b/0x4d0 
-[25683.901308]  ? find_held_lock+0x32/0x90 
-[25683.901609]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25683.901964]  schedule+0xd4/0x260 
-[25683.902235]  io_schedule+0x8f/0xf0 
-[25683.902507]  folio_wait_bit_common+0x2d9/0x780 
-[25683.902874]  ? folio_wait_bit_common+0x1dd/0x780 
-[25683.903256]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-[25683.903636]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-[25683.904111]  ? __pfx_wake_page_function+0x10/0x10 
-[25683.904469]  ? __pfx___might_resched+0x10/0x10 
-[25683.904819]  writeback_get_folio+0x3f9/0x500 
-[25683.905170]  writeback_iter+0x136/0x720 
-[25683.905469]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-[25683.905878]  ? mark_held_locks+0x40/0x70 
-[25683.906194]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-[25683.906631]  ? virtqueue_notify+0x68/0xc0 
-[25683.906936]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-[25683.907368]  ? __lock_acquire+0x57c/0xbd0 
-[25683.907691]  do_writepages+0x21f/0x560 
-[25683.907999]  ? __pfx_do_writepages+0x10/0x10 
-[25683.908325]  ? rcu_is_watching+0x15/0xb0 
-[25683.908635]  __writeback_single_inode+0xe2/0x5f0 
-[25683.909013]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25683.909368]  ? __pfx___writeback_single_inode+0x10/0x10 
-[25683.909756]  ? writeback_sb_inodes+0x416/0xd00 
-[25683.910118]  writeback_sb_inodes+0x535/0xd00 
-[25683.910459]  ? __pfx_stack_trace_save+0x10/0x10 
-[25683.910807]  ? local_clock_noinstr+0xd/0xe0 
-[25683.911138]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-[25683.911500]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25683.911896]  ? lock_acquire+0x10b/0x150 
-[25683.912211]  ? down_read_trylock+0x4b/0x60 
-[25683.912532]  __writeback_inodes_wb+0xf4/0x270 
-[25683.912869]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-[25683.913259]  ? queue_io+0x329/0x510 
-[25683.913540]  wb_writeback+0x70a/0x9c0 
-[25683.913832]  ? __pfx_wb_writeback+0x10/0x10 
-[25683.914174]  ? get_nr_dirty_inodes+0xcb/0x180 
-[25683.914516]  wb_do_writeback+0x5d4/0x8e0 
-[25683.914831]  ? __pfx_wb_do_writeback+0x10/0x10 
-[25683.915185]  ? set_worker_desc+0x16e/0x190 
-[25683.915501]  ? __pfx_set_worker_desc+0x10/0x10 
-[25683.915860]  wb_workfn+0x7c/0x200 
-[25683.916139]  process_one_work+0xd8b/0x1320 
-[25683.916465]  ? __pfx_process_one_work+0x10/0x10 
-[25683.916822]  ? assign_work+0x16c/0x240 
-[25683.917133]  worker_thread+0x5f3/0xfe0 
-[25683.917437]  ? __pfx_worker_thread+0x10/0x10 
-[25683.917767]  kthread+0x3b4/0x770 
-[25683.918037]  ? kvm_sched_clock_read+0x11/0x20 
-[25683.918368]  ? local_clock_noinstr+0xd/0xe0 
-[25683.918687]  ? __pfx_kthread+0x10/0x10 
-[25683.918969]  ? __lock_release.isra.0+0x1a4/0x2c0 
-[25683.919334]  ? rcu_is_watching+0x15/0xb0 
-[25683.919640]  ? __pfx_kthread+0x10/0x10 
-[25683.919929]  ret_from_fork+0x393/0x480 
-[25683.920234]  ? __pfx_kthread+0x10/0x10 
-[25683.920523]  ? __pfx_kthread+0x10/0x10 
-[25683.920815]  ret_from_fork_asm+0x1a/0x30 
-[25683.921152]  </TASK> 
-[25683.921333] Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings 
-[25683.921921]  
-[25683.921921] Showing all locks held in the system: 
-[25683.922392] 1 lock held by khungtaskd/37: 
-[25683.922698]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-[25683.923423] 2 locks held by 751/825733: 
-[25683.923720]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-[25683.924331]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-[25683.925045] 3 locks held by kworker/u9:73/825900: 
-[25683.925398]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25683.926121]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25683.926918]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-[25683.927641] 4 locks held by kworker/u9:143/826036: 
-[25683.928022]  #0: ffff888103ec5158 ((wq_completion)nfslocaliod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-[25683.928743]  #1: ffffc90001cc7d10 ((work_completion)(&iocb->work)#2){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-[25683.929514]  #2: ffff88815c2c2440 (sb_writers#13){++++}-{0:0}, at: process_one_work+0xd8b/0x1320 
-[25683.930175]  #3: ffff8881a1324b58 (&sb->s_type->i_mutex_key#13){++++}-{4:4}, at: xfs_ilock+0x360/0x460 [xfs] 
-[25683.931255]  
-[25683.931391] ============================================= 
-[25683.931391]  
-[-- MARK -- Tue Oct 21 03:55:00 2025] 
-[-- MARK -- Tue Oct 21 04:00:00 2025] 
-[-- MARK -- Tue Oct 21 04:05:00 2025] 
-
-
-[2]
-[12082.409406] run fstests generic/751 at 2025-10-20 19:04:12 
-[-- MARK -- Mon Oct 20 23:05:00 2025] 
-[-- MARK -- Mon Oct 20 23:10:00 2025] 
-[-- MARK -- Mon Oct 20 23:15:00 2025] 
-[13023.321998] INFO: task kworker/u17:206:858774 blocked for more than 122 seconds. 
-[13023.322058]       Tainted: G    B               6.18.0-rc2 #1 
-[13023.322062] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13023.322064] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13023.322077] Workqueue: writeback wb_workfn (flush-0:56) 
-[13023.322089] Call trace: 
-[13023.322091]  __switch_to+0x1e0/0x488 (T) 
-[13023.322098]  __schedule+0x748/0x1430 
-[13023.322103]  schedule+0xd0/0x240 
-[13023.322107]  io_schedule+0xb4/0x120 
-[13023.322112]  folio_wait_bit_common+0x2c4/0x708 
-[13023.322117]  __folio_lock+0x24/0x38 
-[13023.322120]  writeback_get_folio+0x37c/0x480 
-[13023.322125]  writeback_iter+0x128/0x6d0 
-[13023.322130]  nfs_writepages+0x504/0x930 [nfs] 
-[13023.322194]  do_writepages+0x204/0x4c0 
-[13023.322198]  __writeback_single_inode+0xec/0x4f8 
-[13023.322204]  writeback_sb_inodes+0x4a4/0xab8 
-[13023.322296]  __writeback_inodes_wb+0x104/0x260 
-[13023.322301]  wb_writeback+0x840/0xce0 
-[13023.322305]  wb_do_writeback+0x69c/0x940 
-[13023.322308]  wb_workfn+0x80/0x1c0 
-[13023.322312]  process_one_work+0x774/0x12d0 
-[13023.322318]  worker_thread+0x434/0xca0 
-[13023.322322]  kthread+0x2ec/0x390 
-[13023.322326]  ret_from_fork+0x10/0x20 
-[13023.322409] INFO: lockdep is turned off. 
-[-- MARK -- Mon Oct 20 23:20:00 2025] 
-[13146.212082] INFO: task kworker/u17:206:858774 blocked for more than 245 seconds. 
-[13146.212109]       Tainted: G    B               6.18.0-rc2 #1 
-[13146.212120] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13146.212125] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13146.212141] Workqueue: writeback wb_workfn (flush-0:56) 
-[13146.212160] Call trace: 
-[13146.212165]  __switch_to+0x1e0/0x488 (T) 
-[13146.212175]  __schedule+0x748/0x1430 
-[13146.212182]  schedule+0xd0/0x240 
-[13146.212189]  io_schedule+0xb4/0x120 
-[13146.212196]  folio_wait_bit_common+0x2c4/0x708 
-[13146.212203]  __folio_lock+0x24/0x38 
-[13146.212209]  writeback_get_folio+0x37c/0x480 
-[13146.212217]  writeback_iter+0x128/0x6d0 
-[13146.212222]  nfs_writepages+0x504/0x930 [nfs] 
-[13146.212287]  do_writepages+0x204/0x4c0 
-[13146.212291]  __writeback_single_inode+0xec/0x4f8 
-[13146.212294]  writeback_sb_inodes+0x4a4/0xab8 
-[13146.212298]  __writeback_inodes_wb+0x104/0x260 
-[13146.212302]  wb_writeback+0x840/0xce0 
-[13146.212306]  wb_do_writeback+0x69c/0x940 
-[13146.212309]  wb_workfn+0x80/0x1c0 
-[13146.212313]  process_one_work+0x774/0x12d0 
-[13146.212318]  worker_thread+0x434/0xca0 
-[13146.212321]  kthread+0x2ec/0x390 
-[13146.212325]  ret_from_fork+0x10/0x20 
-[13146.212360] INFO: lockdep is turned off. 
-[13269.082400] INFO: task kworker/u17:206:858774 blocked for more than 368 seconds. 
-[13269.082553]       Tainted: G    B               6.18.0-rc2 #1 
-[13269.082557] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13269.082559] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13269.082570] Workqueue: writeback wb_workfn (flush-0:56) 
-[13269.082581] Call trace: 
-[13269.082583]  __switch_to+0x1e0/0x488 (T) 
-[13269.082591]  __schedule+0x748/0x1430 
-[13269.082596]  schedule+0xd0/0x240 
-[13269.082600]  io_schedule+0xb4/0x120 
-[13269.082604]  folio_wait_bit_common+0x2c4/0x708 
-[13269.082610]  __folio_lock+0x24/0x38 
-[13269.082613]  writeback_get_folio+0x37c/0x480 
-[13269.082618]  writeback_iter+0x128/0x6d0 
-[13269.082622]  nfs_writepages+0x504/0x930 [nfs] 
-[13269.082749]  do_writepages+0x204/0x4c0 
-[13269.082754]  __writeback_single_inode+0xec/0x4f8 
-[13269.082758]  writeback_sb_inodes+0x4a4/0xab8 
-[13269.082762]  __writeback_inodes_wb+0x104/0x260 
-[13269.082766]  wb_writeback+0x840/0xce0 
-[13269.082769]  wb_do_writeback+0x69c/0x940 
-[13269.082773]  wb_workfn+0x80/0x1c0 
-[13269.082777]  process_one_work+0x774/0x12d0 
-[13269.082782]  worker_thread+0x434/0xca0 
-[13269.082785]  kthread+0x2ec/0x390 
-[13269.082789]  ret_from_fork+0x10/0x20 
-[13269.082805] INFO: lockdep is turned off. 
-[-- MARK -- Mon Oct 20 23:25:00 2025] 
-[13391.972505] INFO: task kworker/u17:206:858774 blocked for more than 491 seconds. 
-[13391.972535]       Tainted: G    B               6.18.0-rc2 #1 
-[13391.972549] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13391.972555] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13391.972571] Workqueue: writeback wb_workfn (flush-0:56) 
-[13391.972585] Call trace: 
-[13391.972587]  __switch_to+0x1e0/0x488 (T) 
-[13391.972595]  __schedule+0x748/0x1430 
-[13391.972600]  schedule+0xd0/0x240 
-[13391.972605]  io_schedule+0xb4/0x120 
-[13391.972609]  folio_wait_bit_common+0x2c4/0x708 
-[13391.972614]  __folio_lock+0x24/0x38 
-[13391.972618]  writeback_get_folio+0x37c/0x480 
-[13391.972624]  writeback_iter+0x128/0x6d0 
-[13391.972628]  nfs_writepages+0x504/0x930 [nfs] 
-[13391.972700]  do_writepages+0x204/0x4c0 
-[13391.972704]  __writeback_single_inode+0xec/0x4f8 
-[13391.972708]  writeback_sb_inodes+0x4a4/0xab8 
-[13391.972712]  __writeback_inodes_wb+0x104/0x260 
-[13391.972716]  wb_writeback+0x840/0xce0 
-[13391.972720]  wb_do_writeback+0x69c/0x940 
-[13391.972724]  wb_workfn+0x80/0x1c0 
-[13391.972727]  process_one_work+0x774/0x12d0 
-[13391.972733]  worker_thread+0x434/0xca0 
-[13391.972736]  kthread+0x2ec/0x390 
-[13391.972740]  ret_from_fork+0x10/0x20 
-[13391.972761] INFO: lockdep is turned off. 
-[13514.852712] INFO: task kworker/u17:206:858774 blocked for more than 614 seconds. 
-[13514.852737]       Tainted: G    B               6.18.0-rc2 #1 
-[13514.852749] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13514.852756] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13514.852768] Workqueue: writeback wb_workfn (flush-0:56) 
-[13514.852779] Call trace: 
-[13514.852781]  __switch_to+0x1e0/0x488 (T) 
-[13514.852790]  __schedule+0x748/0x1430 
-[13514.852795]  schedule+0xd0/0x240 
-[13514.852808]  io_schedule+0xb4/0x120 
-[13514.852812]  folio_wait_bit_common+0x2c4/0x708 
-[13514.852818]  __folio_lock+0x24/0x38 
-[13514.852822]  writeback_get_folio+0x37c/0x480 
-[13514.852827]  writeback_iter+0x128/0x6d0 
-[13514.852831]  nfs_writepages+0x504/0x930 [nfs] 
-[13514.852897]  do_writepages+0x204/0x4c0 
-[13514.852901]  __writeback_single_inode+0xec/0x4f8 
-[13514.852905]  writeback_sb_inodes+0x4a4/0xab8 
-[13514.852908]  __writeback_inodes_wb+0x104/0x260 
-[13514.852912]  wb_writeback+0x840/0xce0 
-[13514.852916]  wb_do_writeback+0x69c/0x940 
-[13514.852919]  wb_workfn+0x80/0x1c0 
-[13514.852923]  process_one_work+0x774/0x12d0 
-[13514.852928]  worker_thread+0x434/0xca0 
-[13514.852932]  kthread+0x2ec/0x390 
-[13514.852936]  ret_from_fork+0x10/0x20 
-[13514.852955] INFO: lockdep is turned off. 
-[-- MARK -- Mon Oct 20 23:30:00 2025] 
-[13637.723028] INFO: task kworker/u17:206:858774 blocked for more than 737 seconds. 
-[13637.723055]       Tainted: G    B               6.18.0-rc2 #1 
-[13637.723067] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13637.723072] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13637.723086] Workqueue: writeback wb_workfn (flush-0:56) 
-[13637.723099] Call trace: 
-[13637.723101]  __switch_to+0x1e0/0x488 (T) 
-[13637.723110]  __schedule+0x748/0x1430 
-[13637.723115]  schedule+0xd0/0x240 
-[13637.723119]  io_schedule+0xb4/0x120 
-[13637.723124]  folio_wait_bit_common+0x2c4/0x708 
-[13637.723129]  __folio_lock+0x24/0x38 
-[13637.723133]  writeback_get_folio+0x37c/0x480 
-[13637.723138]  writeback_iter+0x128/0x6d0 
-[13637.723142]  nfs_writepages+0x504/0x930 [nfs] 
-[13637.723210]  do_writepages+0x204/0x4c0 
-[13637.723213]  __writeback_single_inode+0xec/0x4f8 
-[13637.723217]  writeback_sb_inodes+0x4a4/0xab8 
-[13637.723221]  __writeback_inodes_wb+0x104/0x260 
-[13637.723225]  wb_writeback+0x840/0xce0 
-[13637.723229]  wb_do_writeback+0x69c/0x940 
-[13637.723232]  wb_workfn+0x80/0x1c0 
-[13637.723237]  process_one_work+0x774/0x12d0 
-[13637.723242]  worker_thread+0x434/0xca0 
-[13637.723246]  kthread+0x2ec/0x390 
-[13637.723250]  ret_from_fork+0x10/0x20 
-[13637.723271] INFO: lockdep is turned off. 
-[13760.603116] INFO: task kworker/u17:206:858774 blocked for more than 860 seconds. 
-[13760.603144]       Tainted: G    B               6.18.0-rc2 #1 
-[13760.603158] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13760.603163] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13760.603180] Workqueue: writeback wb_workfn (flush-0:56) 
-[13760.603199] Call trace: 
-[13760.603203]  __switch_to+0x1e0/0x488 (T) 
-[13760.603214]  __schedule+0x748/0x1430 
-[13760.603221]  schedule+0xd0/0x240 
-[13760.603228]  io_schedule+0xb4/0x120 
-[13760.603234]  folio_wait_bit_common+0x2c4/0x708 
-[13760.603242]  __folio_lock+0x24/0x38 
-[13760.603248]  writeback_get_folio+0x37c/0x480 
-[13760.603341]  writeback_iter+0x128/0x6d0 
-[13760.603349]  nfs_writepages+0x504/0x930 [nfs] 
-[13760.603421]  do_writepages+0x204/0x4c0 
-[13760.603427]  __writeback_single_inode+0xec/0x4f8 
-[13760.603434]  writeback_sb_inodes+0x4a4/0xab8 
-[13760.603440]  __writeback_inodes_wb+0x104/0x260 
-[13760.603447]  wb_writeback+0x840/0xce0 
-[13760.603453]  wb_do_writeback+0x69c/0x940 
-[13760.603459]  wb_workfn+0x80/0x1c0 
-[13760.603465]  process_one_work+0x774/0x12d0 
-[13760.603472]  worker_thread+0x434/0xca0 
-[13760.603478]  kthread+0x2ec/0x390 
-[13760.603485]  ret_from_fork+0x10/0x20 
-[13760.603507] INFO: lockdep is turned off. 
-[13883.483295] INFO: task kworker/u17:206:858774 blocked for more than 983 seconds. 
-[13883.483320]       Tainted: G    B               6.18.0-rc2 #1 
-[13883.483340] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[13883.483343] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[13883.483356] Workqueue: writeback wb_workfn (flush-0:56) 
-[13883.483368] Call trace: 
-[13883.483371]  __switch_to+0x1e0/0x488 (T) 
-[13883.483379]  __schedule+0x748/0x1430 
-[13883.483384]  schedule+0xd0/0x240 
-[13883.483388]  io_schedule+0xb4/0x120 
-[13883.483392]  folio_wait_bit_common+0x2c4/0x708 
-[13883.483397]  __folio_lock+0x24/0x38 
-[13883.483401]  writeback_get_folio+0x37c/0x480 
-[13883.483406]  writeback_iter+0x128/0x6d0 
-[13883.483411]  nfs_writepages+0x504/0x930 [nfs] 
-[13883.483477]  do_writepages+0x204/0x4c0 
-[13883.483481]  __writeback_single_inode+0xec/0x4f8 
-[13883.483485]  writeback_sb_inodes+0x4a4/0xab8 
-[13883.483489]  __writeback_inodes_wb+0x104/0x260 
-[13883.483493]  wb_writeback+0x840/0xce0 
-[13883.483496]  wb_do_writeback+0x69c/0x940 
-[13883.483500]  wb_workfn+0x80/0x1c0 
-[13883.483504]  process_one_work+0x774/0x12d0 
-[13883.483509]  worker_thread+0x434/0xca0 
-[13883.483512]  kthread+0x2ec/0x390 
-[13883.483517]  ret_from_fork+0x10/0x20 
-[13883.483538] INFO: lockdep is turned off. 
-[-- MARK -- Mon Oct 20 23:35:00 2025] 
-[14006.363497] INFO: task kworker/u17:206:858774 blocked for more than 1105 seconds. 
-[14006.363521]       Tainted: G    B               6.18.0-rc2 #1 
-[14006.363542] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[14006.363545] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[14006.363557] Workqueue: writeback wb_workfn (flush-0:56) 
-[14006.363569] Call trace: 
-[14006.363571]  __switch_to+0x1e0/0x488 (T) 
-[14006.363579]  __schedule+0x748/0x1430 
-[14006.363584]  schedule+0xd0/0x240 
-[14006.363588]  io_schedule+0xb4/0x120 
-[14006.363592]  folio_wait_bit_common+0x2c4/0x708 
-[14006.363597]  __folio_lock+0x24/0x38 
-[14006.363601]  writeback_get_folio+0x37c/0x480 
-[14006.363606]  writeback_iter+0x128/0x6d0 
-[14006.363610]  nfs_writepages+0x504/0x930 [nfs] 
-[14006.363676]  do_writepages+0x204/0x4c0 
-[14006.363680]  __writeback_single_inode+0xec/0x4f8 
-[14006.363684]  writeback_sb_inodes+0x4a4/0xab8 
-[14006.363687]  __writeback_inodes_wb+0x104/0x260 
-[14006.363691]  wb_writeback+0x840/0xce0 
-[14006.363695]  wb_do_writeback+0x69c/0x940 
-[14006.363699]  wb_workfn+0x80/0x1c0 
-[14006.363702]  process_one_work+0x774/0x12d0 
-[14006.363707]  worker_thread+0x434/0xca0 
-[14006.363711]  kthread+0x2ec/0x390 
-[14006.363715]  ret_from_fork+0x10/0x20 
-[14006.363735] INFO: lockdep is turned off. 
-[14129.243869] INFO: task kworker/u17:206:858774 blocked for more than 1228 seconds. 
-[14129.244026]       Tainted: G    B               6.18.0-rc2 #1 
-[14129.244030] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-[14129.244033] task:kworker/u17:206 state:D stack:23184 pid:858774 tgid:858774 ppid:2      task_flags:0x4208060 flags:0x00000210 
-[14129.244045] Workqueue: writeback wb_workfn (flush-0:56) 
-[14129.244059] Call trace: 
-[14129.244061]  __switch_to+0x1e0/0x488 (T) 
-[14129.244070]  __schedule+0x748/0x1430 
-[14129.244075]  schedule+0xd0/0x240 
-[14129.244079]  io_schedule+0xb4/0x120 
-[14129.244084]  folio_wait_bit_common+0x2c4/0x708 
-[14129.244089]  __folio_lock+0x24/0x38 
-[14129.244092]  writeback_get_folio+0x37c/0x480 
-[14129.244097]  writeback_iter+0x128/0x6d0 
-[14129.244102]  nfs_writepages+0x504/0x930 [nfs] 
-[14129.244173]  do_writepages+0x204/0x4c0 
-[14129.244176]  __writeback_single_inode+0xec/0x4f8 
-[14129.244180]  writeback_sb_inodes+0x4a4/0xab8 
-[14129.244184]  __writeback_inodes_wb+0x104/0x260 
-[14129.244188]  wb_writeback+0x840/0xce0 
-[14129.244192]  wb_do_writeback+0x69c/0x940 
-[14129.244195]  wb_workfn+0x80/0x1c0 
-[14129.244199]  process_one_work+0x774/0x12d0 
-[14129.244205]  worker_thread+0x434/0xca0 
-[14129.244209]  kthread+0x2ec/0x390 
-[14129.244213]  ret_from_fork+0x10/0x20 
-[14129.244217] Future hung task reports are suppressed, see sysctl kernel.hung_task_warnings 
-[14129.244242] INFO: lockdep is turned off. 
-[-- MARK -- Mon Oct 20 23:40:00 2025] 
-[-- MARK -- Mon Oct 20 23:45:00 2025] 
-[-- MARK -- Mon Oct 20 23:50:00 2025]
-
+> Motivation:
+>  - Reduce latency in direct reclaim paths.
+>  - Improve reclaim efficiency by separating page and slab reclaim.
+>  - Provide more flexible scheduling for slab shrinking.
+> 
+> Proposed direction:
+>  - Introduce a kernel thread that periodically or conditionally calls
+> shrink_slab().
+> 
+> We'd appreciate feedback on:
+>  - Whether this decoupling aligns with the design of the current reclaim model.
+>  - Possible implications on fairness, concurrency, and memcg behavior.
+> 
+> Thanks for your time and input.
+> 
+> Best regards,
+> Yifan Ji
+> 
+---end quoted text---
 
