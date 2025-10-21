@@ -4,190 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72E1CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 16:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BEB0CCD1A7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 16:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4043F8E0023; Tue, 21 Oct 2025 12:44:53 -0400 (EDT)
+	id 78AED8E0010; Tue, 21 Oct 2025 12:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B4B18E0002; Tue, 21 Oct 2025 12:44:53 -0400 (EDT)
+	id 762F08E0002; Tue, 21 Oct 2025 12:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27CD08E0023; Tue, 21 Oct 2025 12:44:53 -0400 (EDT)
+	id 69F2F8E0010; Tue, 21 Oct 2025 12:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 13D498E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:44:53 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA958486A1
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:44:52 +0000 (UTC)
-X-FDA: 84022695624.18.C26DC27
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011038.outbound.protection.outlook.com [52.101.52.38])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3462F180002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:44:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G3OywV6G;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.52.38 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761065090;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 549FD8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:46:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0936EC0631
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:46:51 +0000 (UTC)
+X-FDA: 84022700622.04.D9160B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 56C854000D
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:46:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="gsG/gyUz";
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761065209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FmclFeSsQOy5huWmB7q+RdCdpXfVwwdw2drxxCT0Q6I=;
-	b=73mdPMn6lNFeyQn7N4V+yt+xOc9u+ziGozczVjb9xYUNreYgWHNX01d9ihd0bMTEvlbElz
-	Qzo0iQo30T0US0kkb5PRepOLbIfPjWvfzB00+4HqAkmBTkwI2nfXuxtwaIl4TDc4oBX0s0
-	XB9LS6v+U+MgELsWhmagVU1Hkr+aCf4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761065090; a=rsa-sha256;
-	cv=pass;
-	b=LGFKokOz+QMyPGgGQRcFe1N/rb3JfS/JvilS/hz16fzsOFyW1LSWAj2Vp+hKkpgIY56pLR
-	WiSfB6GHP/wOkcwwybqMN/an4MmGmylVOjLKL5h2BB3JMCjSXhbDuqM0JQ+isIh5rWfcPG
-	RqpC/aU66Vz+sTi7XVgl/GmMNKIXBOE=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G3OywV6G;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf16.hostedemail.com: domain of jgg@nvidia.com designates 52.101.52.38 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y3D5Od73+fUWcD39vK5Eipq4s6Dn3foI1PlXpp0OY5JVBXZerrkqzI+Qs+uRK/stYFYpVl+QZnMkOBb388B2lXYHYWBpziOeONS7uC1egOkrZAzAOaLe51zDZf3XhmjMt2YnmwYuzqgKbY8dUGkxGIuZPuT9te3//eKGhP5TKlVoeWfFmWVFY/M6HY+lry+gMx9im1BGl8cCzZh4/n/NLeiu2x/cascqlBN7W5Kf/X0AcJGI23wb4vbgqqUAIsapso3wpvpW+92I7izsuOYkiP6x8uFlecsFeo7iqJMItti60Mjs/Ms0SuYqSeJUG04kAZM3md62ET1fOf2FhJda3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FmclFeSsQOy5huWmB7q+RdCdpXfVwwdw2drxxCT0Q6I=;
- b=ieX3JI02plriIKdTxamWBep7/Ch+MKamHxj2jvISlH6supKLfgWZouQdunfjkOWVSH7MC1rD5tzOhK7szHNt7eAxX5UDHND84uwDfnSIM1PEkNEkrRH5VGthGvUUITTQZxyHenrpZr1XTdNGKz90rRjgv9dGwneGG/Q3jpP9qbFTpq36l9aINsRzy7dHHMV377ScD/mD0iOcIVfe5HU9B07Zx36WOU8NnRPww9l+5o5aVjjcERTPhdEmN2m6D90mTnk61+L/NI/wLnVzSjHXXTsOurJZZ8tMixSDpy6MjI2grmRE1ftOA0hJmem9ZZ6+POvN+dWHgkHjlt4QuECupw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FmclFeSsQOy5huWmB7q+RdCdpXfVwwdw2drxxCT0Q6I=;
- b=G3OywV6GSE0y4/oenDxdyNbtsWyprFmvqhfTVxI9cwzuSRiRzc39Tmdnx9Fy4PJxYEfY62PPLrSIE1vNgvm0ozr/ThquA+V8OJ9oFltev2jBGrFxOWpeRx1Vv+BYTnNXQmlHz8R/4bAM1xdgLZUDvxg4/YwT2wE5o5MW5lipPRMKyRZ0SyA7ES3HD6FYy4+5TiTIc/xWhP+F0X43hcZk2y1wPtOhYBphk76rpcHs0Y1DrfZEj+nxGRcSShpX4NYAbkERoo5VNnX1oOWIUOKRLpoqrMPVYBlRrO/ImJcjOlDgDS9FeeaJpYrMMjt5W+PZDNqyVs6/XCPy1v92OxHgyg==
-Received: from BN8PR12MB3604.namprd12.prod.outlook.com (2603:10b6:408:45::31)
- by LV3PR12MB9186.namprd12.prod.outlook.com (2603:10b6:408:197::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 21 Oct
- 2025 16:44:47 +0000
-Received: from BN8PR12MB3604.namprd12.prod.outlook.com
- ([fe80::9629:2c9f:f386:841f]) by BN8PR12MB3604.namprd12.prod.outlook.com
- ([fe80::9629:2c9f:f386:841f%5]) with mapi id 15.20.9228.015; Tue, 21 Oct 2025
- 16:44:46 +0000
-Date: Tue, 21 Oct 2025 13:44:44 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, ankita@nvidia.com,
-	aniketa@nvidia.com, vsethi@nvidia.com, mochs@nvidia.com,
-	skolothumtho@nvidia.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	tony.luck@intel.com, bp@alien8.de, rafael@kernel.org,
-	guohanjun@huawei.com, mchehab@kernel.org, lenb@kernel.org,
-	kevin.tian@intel.com, alex@shazbot.org, cjia@nvidia.com,
-	kwankhede@nvidia.com, targupta@nvidia.com, zhiw@nvidia.com,
-	dnigam@nvidia.com, kjaju@nvidia.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-edac@vger.kernel.org,
-	Jonathan.Cameron@huawei.com, ira.weiny@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	u.kleine-koenig@baylibre.com, peterz@infradead.org,
-	linux-acpi@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] mm: Implement ECC handling for pfn with no struct
- page
-Message-ID: <20251021164444.GB699957@nvidia.com>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <hbk4hqrdaz7qipkpb5g2znhva63sghwsiqwlyf6pb6xccjtp47@vci5e4vbkjqo>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <hbk4hqrdaz7qipkpb5g2znhva63sghwsiqwlyf6pb6xccjtp47@vci5e4vbkjqo>
-X-ClientProxiedBy: SA9PR13CA0162.namprd13.prod.outlook.com
- (2603:10b6:806:28::17) To BN8PR12MB3604.namprd12.prod.outlook.com
- (2603:10b6:408:45::31)
+	bh=6tV7T5OengZRGLMLGopc7dmtJtAh/cFAgs+ry0/4uRg=;
+	b=pyeAntizPyDwD+bS3JM9OxOg7tze04zQLhA3xV/3ZJS2x9/+L/2YdRvWe9e4hkaBv+dWS7
+	WJ2/ycm+JON97Yn7vdTeU4oX3SZ3o7iw2q/QSxZfxWG90IkmCFpqwAhPpjCPvGUlPhOe3S
+	Iyz45IHTT10IAPbkDNpXRFEbl7BgOdk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="gsG/gyUz";
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761065209; a=rsa-sha256;
+	cv=none;
+	b=ESyuQjDRjehRczYPymXvfqFkuZoD1ea09G0mREy29yABWdRVl+neujuedckY0+/62RZF5w
+	rGeDv2erTyemY46T6Mieg5uYg6vHydvGKnLCkLR3x4Y5mydWhiZr3Ml172SsgKPvYu788u
+	SznywtA8ZBtC4gxWasxYHkyqNi8iDvI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B5D1601BA;
+	Tue, 21 Oct 2025 16:46:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3D6C4CEF1;
+	Tue, 21 Oct 2025 16:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761065208;
+	bh=arHrvou9uQqGbHOB/p6IMtkA2TNGKttCri6QEWXzjxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gsG/gyUzuDKYqVOuHlctFQ/BUjwTW8253Q/OoKIbt8mKs/yJaITjMj3rQBa+JAdBX
+	 LVtTd8QQm91N5li/9P0LkppGSfZPs5ib5VMM+6C4hFggchYFS9xviUSlWZgEt6KWtm
+	 mkaP3Qaoi7DjgfO5kNC5Z8otPquVU9IvBZcuvBbg=
+Date: Tue, 21 Oct 2025 18:46:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gabriele Paoloni <gpaoloni@redhat.com>
+Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, corbet@lwn.net,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	safety-architecture@lists.elisa.tech, acarmina@redhat.com,
+	kstewart@linuxfoundation.org, chuckwolber@gmail.com
+Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
+Message-ID: <2025102124-punctuate-kilogram-da50@gregkh>
+References: <20250910170000.6475-1-gpaoloni@redhat.com>
+ <2025102111-facility-dismay-322e@gregkh>
+ <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3604:EE_|LV3PR12MB9186:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec39f1cf-d737-4659-f96e-08de10c1247c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cB9wuZ/5OSJWpw7vlRvPmXMRLLhDPzAVxDFQiOAtJ9Bydw2ombw3nQAHnCNT?=
- =?us-ascii?Q?ZEHwGIYJ5Qb367lHLQCuMFVdBHck+qYR091fSQfO3DhGYIk6vIJD+4P5BVUN?=
- =?us-ascii?Q?DV/rYasFnMa0gOMhdvw2YsJWkAjSexGqi3aWMV7eipUfxB3tee23n+yjgZjE?=
- =?us-ascii?Q?7pmuux6mTjSkEmiHE07+aQCrq9h0aDQZdAOmXs/RXh1HfpXxhvyxl8wiw2OE?=
- =?us-ascii?Q?ySBDJj7LVTOY4kYhNVA7iI2VpvnVEsEQ+RIK3LdV0lYCh3hcraWHotjMYx6S?=
- =?us-ascii?Q?hSwHnSAOOANOBOTMZHF+VfEfPa0cxq1cn2eeLJfDyM3r6BDNqCBQSqcpfRzJ?=
- =?us-ascii?Q?YGt1Pu/OM7skExdy4dTVJV2IYgTKeLkqcw9qQYTwb7NbZP3OBzkMnjSxKjta?=
- =?us-ascii?Q?uv3tspkxM4cWTI9CbZiHRANDXOl8FTPMx25luQlKprWcxJK+o8NvuiOgOu59?=
- =?us-ascii?Q?61TVViMdnuWyS3tzp1K8kZR249o7V/Gem8Q2OIpQYQVq8CYiCKa/S54HPB5L?=
- =?us-ascii?Q?2LlNKOdlBwRRHqu6zJxn4RcfU/H6+Bt5W9lvwCoJcNBnXepcjiFkQiOSRnx4?=
- =?us-ascii?Q?2t4qv5A0E/VSc2uSnaMvoW4JSk/ur8f18WsLH4a4m8dkklfQf+HROsn5wpVS?=
- =?us-ascii?Q?Rer2mtEJmYMX3BXxHZDfXyUwPp5ELaWO4+ri0mdfEYVvQvB0jD2Bu6BAnP8K?=
- =?us-ascii?Q?DrfIiEqY+inT8fYPWp+9O1TTH+8w2zwaxD0uXpbwGGIiudI11CzEyXEJllUm?=
- =?us-ascii?Q?L+JeTNE/m5QrgSapKLwe/Bacjqinw4FvdEY727Xh4Faafxx03JLohbBehVQ/?=
- =?us-ascii?Q?G20PL+E+uYsdEcBukYFAga+pEhZ2kGpQJ28LAf3nXILq/df7XtBvfU7OPy73?=
- =?us-ascii?Q?VX84Nw79YAIhjw+Uc6EJoRGfBZWnidMqgE/9CTBX8i9qTRTye+pyzrBY2J+X?=
- =?us-ascii?Q?oUs1Ynq/Nwjvq1wiQyKDlCYX/rVKwE8vJYWagSk1FoiNwsSlhZtZDd7Drry0?=
- =?us-ascii?Q?0YCRQmW/z7RRHO8Iq3dFCx2JCQzYdJr5VaUzNt7fHUpidNzABGLWkdTNgrNf?=
- =?us-ascii?Q?VkLx+/I+DsJGtoJFC8jA7w2oOFjZCqo/5Boj4ktFcGdl6Gp9es/RxSqfkqnp?=
- =?us-ascii?Q?0BeN+wVt8Y5yrwBdx1rUEoUUzFYdZgAe2NIb4NIX3Lpai1kZiC1lKneB7FK0?=
- =?us-ascii?Q?oSXNdgNWQJuyH7Mge3MNLY3vocFGq3wWsjIb2QU5zLwbe++c8r0nLn59lJMy?=
- =?us-ascii?Q?4j5kCgfFR50Qlu77jDILtsc/qY8H71o5A0vfB2/9D72EJ7/XARmIWzHPHC7k?=
- =?us-ascii?Q?Lo7DL94sDED+KqCBV1Uzw4suCfYPnzRDgRkm5jufrxpo9N/2fqoRr4ukYWFw?=
- =?us-ascii?Q?vjGubwj7KFTeYikAlJUHnL8VLHFhcUQcyq7I4N+3SsY7Hce4XbmlsR8rKLED?=
- =?us-ascii?Q?6Yo6MRvCoxjwDL4KvnJrbmqR6pS9TSiZR64gFA+9o1/0bX1y12QwNJ8KL7hJ?=
- =?us-ascii?Q?jl47DgeOfwYzqlI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3604.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bg35q5ht5xmIkQ5LCgykjLrwvO7/lNW0ncsqvLtlixTLVODt2wUr83N78PhH?=
- =?us-ascii?Q?lnQ6RmEFrulglGRX+zuFcUnUPMf3Ll6X62daG1KsxR4Sl9VrE3mZe6wOdo0A?=
- =?us-ascii?Q?ZbYxvyeQ4sNOK4KHsm+EgVdkXpOBk9slrfm+7gQTKky39FGZLTsVV2aWso5R?=
- =?us-ascii?Q?Pyo3UjKgYuCRKIX0UG732hSunlCHyQ6G61Ei9EmhCVN8LCNIg+aPiFArMF1N?=
- =?us-ascii?Q?5iSithVBJ82cfbdIgQgztjD9cV0lvyLhZqbTDsjAqnbJM6AZpb4RbNYvysnX?=
- =?us-ascii?Q?AMn6YCR72JREyvdMZeaT3Qv1PDOJtlrVUw0fErPRPMd6OASK8N8I6b+Xpwx5?=
- =?us-ascii?Q?mni8vALq8I9nKMy+cYQFhktZ3OJZFPBI2JtbC7QKpiyyj8TtX+28XB81lbXQ?=
- =?us-ascii?Q?kQt6Q5dFeQRAWM4d+8fFYZmNG4SM+AzVjBwUDlXNmPZYrIywMbln3t0S9Mid?=
- =?us-ascii?Q?7XSoSjnuE0Xi0wI1XOUw8NS7CMDZ71umC7PMMcmnAANz3v9waRbjbawoOgz+?=
- =?us-ascii?Q?dwke91KRcf4OrkiyziEbny/sRfXyWyBgDEINPd1hMcEzKhIRs7R5UfP8p9/0?=
- =?us-ascii?Q?0ygsWeBtp+XWPTCKEAv9ryXAEZdTADij/mRCCM7EshMMLuY9kiaAkrpQKUEF?=
- =?us-ascii?Q?s1vCQ36jAtmjMWcijaf8pEjpzLqplguaov4L3Xs5lmSKntea6WGX1sYuf6pn?=
- =?us-ascii?Q?OcE/zdy4BzRKB6XTVgTPcM4DB6rKtcNllhQW2wQNJLWeBz5Yfx+rJCpc0qa7?=
- =?us-ascii?Q?yd626cznJB1iOUn4MGPcYIZJcUZpdGGuU3HKp94db2c4WKzBQ7zPgJxTju+6?=
- =?us-ascii?Q?RPAHXtxGZc/LRs2TEwzmowXv5pJwSxgP2mwbwWUfIMiIx7RU2XgfLePHIRXk?=
- =?us-ascii?Q?YBpoxvrD7pXD3Xp9po1A39xLliL6zTQ5/TdhgSCgyUz72JVuxIg9uicIDI4I?=
- =?us-ascii?Q?C1A7eVCO5lot4AMAMQgRxiSn+o/lH6mYWuGCR+myAv7AzTwp18Ub+lXMA3sI?=
- =?us-ascii?Q?a4PEfQMTnFWfKKkILSivoYSMUdso1RCK4x2nKlwQtoi4Fvp77z8Fkqz/1bPj?=
- =?us-ascii?Q?4NnywcVhf2csaUJK2x2O3rJtzfRm90rKeP05OIT4LdRWWwOU0yyuNu4p5uMV?=
- =?us-ascii?Q?48UrMrxemlsiZTizc93f3rzWixKYo8TFihERo8oIHcleaH9pDb27/YUSb+da?=
- =?us-ascii?Q?Q9j4zFCvOSSjAEAHmdXs89V0F6xsnUFHncwoqP0GV2RJvgeO31UIssZyG2e3?=
- =?us-ascii?Q?u7moPJwEFj5vcPOyagaXO7Jn92NZZGZtXiGJkvJI2wcOTAbJjGOfiKq52Un2?=
- =?us-ascii?Q?zVHLCq/lSzi7l7TyJtzpwbSbhcvNrhJp+C8dcqXNp5chqxBDIWo6TxA8b/AQ?=
- =?us-ascii?Q?WW2LBOyxU3tOBQEMHiBAhBkWO8ZWiw+bRIrvno81DK6vQN1HWVrv1FYk3WaP?=
- =?us-ascii?Q?D5AXtlnx6K8KCQ55grT1vrzySultB7O1lB49NscrdbGLOZ6EHxqAS5hfZ72z?=
- =?us-ascii?Q?FpWNhENG8lJ9bp2QRxIh2cvu/4nNWJCn/ByMLl2gDTacNLEBIZVh3wGQGx8A?=
- =?us-ascii?Q?kQOIfeGUWcxZ55/ZKP9IBpM8j+6tNs2UALFFMMCn?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec39f1cf-d737-4659-f96e-08de10c1247c
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3604.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 16:44:46.5083
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IOBvRI6DnFjZBK6F5IKzBoeGrEFnobBLU3/CRUbTCV2EKyi4NSVEl+0+CoBhvUoj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9186
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com>
+X-Stat-Signature: hqoriphe8zcrxr5hdrextu9sngkyeqrd
+X-Rspamd-Queue-Id: 56C854000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3462F180002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hsqggy4fm8yxc9dox5yuqxgahpexo5jt
-X-HE-Tag: 1761065090-629731
-X-HE-Meta: U2FsdGVkX1/fG/UsBqQs0iXbn85yFVVWb3nCgWvgc2opiGx4qvF2RkXXmmzX02imCl3sfyF5nr5WMX29cBoAm90eUVaDZm/kPQUlhN8QcNbtRn8Lk5LBlF5HaPuZz2xVjNnIlXUziZzUHOxkA5q0lpuwaximLyecvkQHk8mMkYIvvUm0Tl++JB1bxJjRmR4xY2/1NikAFQFTFuuBxtATe2VfmAhZhsvuI0FaNP54/9MAVl7ggkYhA322BHKv8guTQgQfXe24tUGXCSfyosjh3b3SgiiH8mh6717+1Spc77++LDx1VekYQOuCrZ350Bja+moF5/XCKcvsU7DtNMajbtPotHkl9dKdjZGbzMJSXvMgcbTVxeJTfUbSe+SalxPq7kuNXulcewjucmyI+P8fDPAYk32uCMOEboYRD13pZltXmjoDhY7+zYC2vonfJ4c0JtkGUfwjgEOCD8J+k9CzRGY5MklBMWYZfKKaTbXxIdo7Tg6nynzUU7kKcxXPVW/jkOI/EK0tMI3SR9Y2BIWtLSCu502AlK7S8zwZ7Hc0RMZTS7VyrfaSDt8NkidzBoJ0ZR5QrWmIZ23oSZL30qUhK/SfQgh02XxhWRuNxQ4NQvVNiCJRwU13T05yl8s10pfMzzYfaYkG2RxWauShR7sPrwQccIgYK2JrHHcAO+6pkzWQjbIMKYMkGc7+uPmzrb1p7C11Lm4ZNPV+5VakvcfAe33VbmgDv0B0sGYALHvxEuT+4C+NBnWKNGm8PzyusOUoQvqO8aXTva3kV6/Ar+s/G/gzhwXZySswZSDPRClF8hbJsRPTjMIxMjumWFAvyOLQtoVxu4I/VATS4K44HIw+/k426pDd6IrbonvcNYSnFuSTIk+YW+DZFpNC1tVO8//3/qXmPrvvXiDUjuqNHcB33tR4IoUoK6vhbCCn/BNVi/naCW1O4bViN3Tq0ooZT++Hap6wHS9VyfKpx8YM5xx
- yi5ASSh+
- Srtjq3jPFw3YN1LBhIcntSThsrmXybGb/U0iy3UyhUgGlgGwgsyvY5MnWTQDpdwM9kJ1tLmdLJKMECQqAD6bVFbtHYt60wR0mX40JQ6zy2t3NOd8MZeEBd7HHJAH9KBIGX6AwXt5YJ1/kc1H4/xGVFoGIf4huvWXPIbmxj/UTJByhQqBdTYB/dTXLdqLEICufSNfvG+x329RIooKixSS8CPkmEyRRDoqgg5Kf0XT2rcrD3UNjl2EGbaQal9i0A2YXKEyNm1cThSolSk8zzRznBs/YFRdXOSI+w7ljZrr8XYJviGhcpxWdVXVQ+hRES6SAGKd8rZXhTkNgQV/7NIKQB0DrLvVecOOCKtqFrbhiQ2UM5/c74B1y2QlOcrJiGntZFynDdQdiags1hCOYmD+bf3yujSxX/hOy8561pWO0D2xp31y0TyP8FHmS4V1XXpnBov1xrQmVS88yVRnpp8odMtIaInEz2SUUJnMg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761065209-223361
+X-HE-Meta: U2FsdGVkX1/mPhBOyxbgjNt6wiGo9iaU1e5BJ0jIqlVwUwftGC9dp5izIo+DRMFSqXNxWFDXD2aW8SeF+mooELpUOraAfuwUYTAXzv0xQnJMMu4QcGV0ftX4d2qpMcgWoWwkd/k7HyoDgRP6GnnPYB2yUopshUItXckBBVPrkaqnPjLh3JGBPMvCEi87M7V9zlVWzwYD34NFaFGZoDdHnxwdgOiAIA8eP1SqhTuN9t3XktLABW9q+k5lxdBjR++qZJTDV5cIhi3eAIw/rA6Gr2/1dT6gS9i96xyDIhsCifx9YSwJxCxPI8cddcPlQ+SMCW2XLtFSybnZvVwSPEv+EtQMfb9+mWeb5YZxMOCcudtJLJROo7IBB7e5x3f1IOC6wKHZ1YZ22QcsUbrm0IDGQz0VYcLfk2hjIWrds2+XqheyR56biQ9tk9xQo4ywmWyhu/CxJzfF4KheqvXKAZg9X7JHHHRnXCXspCViROPIadP0H/ubDOUXwL1zL3rU6I/x86UZ/gySDzaL76uPcDOnNCOqcEfz8A7HSRUck272EuJOCdTLTZHgAjgXpz0yzRsOz/eqMhB8PvhOuKHJrqWnbDYlI3wHeqDj+y1xE5DZL/L8stqEcPtdTeXu7RIwOPK1vJJ+c6n/YmgVi6rE+4HUkvzu69hgC8+TVZAQCyX5VnU4kDvNbHr+jWQqvDxE21pi9SU/OuQNT72tYWn9tMSqQA2kAVWyI5gPAbwFyLst8AHJ9uJEHxw9bVdxHCp6mO8p+Q5Yh2MamfoTvclPv5SsBstvaZ8oP7jMBXf75GAIjjWqdXm50eDRcHZc+gAvzHB98jdRBpG7T+qMKCnQyPi8L3EriL1GvVT/MD6autVfoHWK9T2PW0Grw6K+UT4MpYcPeMwo61xsovI9469X+urwiCRr1vQdscFmyNim5hgUIVrmpbE8sXKmt6wtk1Or9eezF14aYO4HDLjNsT9vmIe
+ 8CXrydyP
+ NrIQvk4WxCN+74l4IGzuIyOdIOMhXJEwNoyMs4QAe0zvmLwxXXBC028zwr/PBu2k5m9Lo+hitlpZyA1NUob80Q9z9tgsDI6sJ29vbMpJiYzn1LBrgCjojDoySM0yUjw9geAXCQm4L4w8FPLQO89mzwT7CKt3/WCk1fWXpX10XNyBERygtasaRzML1tkhe4XmraLB6B+pUXLi3s5QqglCPlRS4Q2hGOgVFzspMvgWT597CWXEbJe+e3B3+xPujTSxV80c4QfQYt353BL0rFpZnmcFmrRqSe4yMCQ6sWYWw9a8mMuYF2x9ktRuS7eW/ua0o2mxlZngEZKcpxuEjuMq91IQtJbZFaesjXDsg9dL+VEU/9kpVUF5VFaFdwhVn3GFDcOXkDwg9acLosi8hmkAd8o6kw6ixeGwTk+NgdbqqmhoF355FLWr3TDfjIlz0pjGsh4sS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,28 +95,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 12:30:48PM -0400, Liam R. Howlett wrote:
-> > enables VM_PFNMAP vmas to map at PMD level. Otherwise, a poison to a PFN
-> > would need breaking the PMD mapping into PTEs to unmap only the poisoned
-> > PFN. This can have a major performance impact.
+On Tue, Oct 21, 2025 at 11:42:24AM +0200, Gabriele Paoloni wrote:
+> Hi Greg
 > 
-> Is the performance impact really a concern in the event of failed
-> memory? 
+> On Tue, Oct 21, 2025 at 9:35 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Sep 10, 2025 at 06:59:57PM +0200, Gabriele Paoloni wrote:
+> > > [1] was an initial proposal defining testable code specifications for
+> > > some functions in /drivers/char/mem.c.
+> > > However a Guideline to write such specifications was missing and test
+> > > cases tracing to such specifications were missing.
+> > > This patchset represents a next step and is organised as follows:
+> > > - patch 1/3 contains the Guideline for writing code specifications
+> > > - patch 2/3 contains examples of code specfications defined for some
+> > >   functions of drivers/char/mem.c
+> > > - patch 3/3 contains examples of selftests that map to some code
+> > >   specifications of patch 2/3
+> > >
+> > > [1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@redhat.com/
+> >
+> > "RFC" implies there is a request.  I don't see that here, am I missing
+> > that?  Or is this "good to go" and want us to seriously consider
+> > accepting this?
+> 
+> I assumed that an RFC (as in request for comments) that comes with proposed
+> changes to upstream files would be interpreted as a request for feedbacks
+> associated with the proposed changes (what is wrong or what is missing);
+> next time I will communicate the request explicitly.
+> 
+> WRT this specific patchset, the intent is to introduce formalism in specifying
+> code behavior (so that the same formalism can also be used to write and
+> review test cases), so my high level asks would be:
+> 
+> 1) In the first part of patch 1/3 we explain why we are doing this and the high
+> level goals. Do you agree with these? Are these clear?
 
-Yes, something like the KVM S2 is very sensitive to page size for TLB
-performace.
+No, and no.
 
-> Does this happen enough to warrant this special case?
+I think this type of thing is, sadly, folly.  You are entering into a
+path that never ends with no clear goal that you are conveying here to
+us.
 
-If you have a 100k sized cluster it happens constantly :\
+I might be totally wrong, but I fail to see what you want to have happen
+in the end.
 
-> Surely it's not failing hardware that may cause performance impacts, so
-> is this triggered in some other way that I'm missing or a conversation
-> pointer?
+Every in-kernel api documented in a "formal" way like this?  Or a
+subset?  If a subset, which ones specifically?  How many?  And who is
+going to do that?  And who is going to maintain it?  And most
+importantly, why is it needed at all?
 
-It is the splitting of a pgd/pmd level into PTEs that gets mirrored
-into the S2 and then greatly increases the cost of table walks inside
-a guest. The HW caches are sized for 1G S2 PTEs, not 4k.
+For some reason Linux has succeeded in pretty much every place an
+operating system is needed for cpus that it can run on (zephyr for those
+others that it can not.)  So why are we suddenly now, after many
+decades, requiring basic user/kernel stuff to be formally documented
+like this?
 
-Jason
+In the past, when we have had "validating bodies" ask for stuff like
+this, the solution is to provide it in a big thick book, outside of the
+kernel, by the company that wishes to sell such a product to that
+organization to justify the cost of doing that labor.  In every instance
+that I know of, that book sits on a shelf and gathers dust, while Linux
+is just updated over the years in those sites to new versions and the
+book goes quickly out of date as no one really cares about it, except
+it having been a check-box for a purchase order requirement.
+
+That's business craziness, no need to get us involved in all of that.
+Heck, look at the stuff around FIPS certification for more insanity.
+That's a check-box that is required by organizations and then totally
+ignored and never actually run at all by the user.  I feel this is much
+the same.
+
+So step back, and tell us exactly what files and functions and apis are
+needed to be documented in this stilted and formal way, who exactly is
+going to be doing all of that work, and why we should even consider
+reviewing and accepting and most importantly, maintaining such a thing
+for the next 40+ years.
+
+> 2) In the rest of the patchset we introduce the formalism, we propose some
+> specs (in patch 2) and associated selftests (in patch 3). Please let us know
+> if there is something wrong, missing or to be improved.
+
+I made many comments on patch 3, the most important one being that the
+tests created do not seem to follow any of the standards we have for
+Linux kernel tests for no documented reason.
+
+The irony of submitting tests for formal specifications that do not
+follow documented policies is rich :)
+
+thanks,
+
+greg k-h
 
