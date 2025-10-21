@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92497CCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C37CCD184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD7F98E0012; Tue, 21 Oct 2025 03:35:11 -0400 (EDT)
+	id F39F18E0013; Tue, 21 Oct 2025 03:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D88748E0002; Tue, 21 Oct 2025 03:35:11 -0400 (EDT)
+	id F10698E0002; Tue, 21 Oct 2025 03:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5BD8E0012; Tue, 21 Oct 2025 03:35:11 -0400 (EDT)
+	id E4D5F8E0013; Tue, 21 Oct 2025 03:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B922E8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:35:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76A50480F8
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:35:11 +0000 (UTC)
-X-FDA: 84021310422.20.E236833
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5C288E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:35:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 893E01403B0
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:35:52 +0000 (UTC)
+X-FDA: 84021312144.17.53CE345
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CE7261C0010
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:35:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oGm9Zg6Q;
-	spf=pass (imf21.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id E3A4420004
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:35:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZF3m40Jn;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761032151; a=rsa-sha256;
+	cv=none;
+	b=gkhoxFlDhAbKBrWNhCF2sZKmIDN+Va7w3Ao7NQLqSigo/5C5ZlejmfnwanijyTe9kHmL2/
+	8L7khaLx7BQV5D/9IFf6FwTER2CrlWJ4wqAr3paUDIlzirXvJHrm5d5Oa5ADn8yqcA3Z2r
+	GLe1jsJ/bPQonB61Rz1fjbTcgTk+bnk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZF3m40Jn;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf13.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761032110;
+	s=arc-20220608; t=1761032151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=25o7WWHA5S2HB9VWqZSJvidUjoO4V602Cgi4E9Pb6CI=;
-	b=jXAS7PGR8T7v2VIi4H3tBLGqDJhtNhsMB5rsrSDpKKPACQW02JlMk+9Ckm3HJTj+lTnp6O
-	uhyIEbX6+tS/2zJUlG2ySZ5aUBI/2hlrk6v4KT4/VKXeW4SpgADMaH5SD6itfgSGdagzdX
-	1TJ2R1X1BV5iEZo2lpzuHHvsMUIk3ys=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oGm9Zg6Q;
-	spf=pass (imf21.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761032110; a=rsa-sha256;
-	cv=none;
-	b=iS29cML0nkyZ2aJm97NjGWreHAi/VWhh3CThGfL4MTq6Q8+KzLXL+4ztu3cAIevm1v+snq
-	TncYwOIcygYWEtL3ETV42Xpo198CAbxgGfgA56UgHzSlrbghPRzdksjWIOQ7CL7JzCpIoQ
-	KaI4yXjTvPZ6NRUT2rJMrR2NhGjztoo=
+	bh=7B4EG+GYERNCpjX1n0M46GkpBfwPZdXIm4EbDU6ZSzw=;
+	b=2TpeAmnGTCMDkCcQ99nB8qda1vkuDI7GDEGJhYJDNULESoC2XaWMQj+sV/J/dXwM/HH0Ya
+	kLrWUeYKBmx2r5DVFPpW/54q2Q19GaQ8sk9LpjrLGacut/qmk0Mvj0qsi8mndoG7uQdn7d
+	eAa6CNPb9uipbSxt4k10XJj2rx0cm7Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE08E43C34;
-	Tue, 21 Oct 2025 07:35:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B579C4CEF1;
-	Tue, 21 Oct 2025 07:35:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C703A458E4;
+	Tue, 21 Oct 2025 07:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296C3C4CEF1;
+	Tue, 21 Oct 2025 07:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761032108;
-	bh=OwWy/3ZyBvLhFE9XTope3GptLHE7g08KOIFUWZ8LOy0=;
+	s=korg; t=1761032149;
+	bh=X7cRHSjXRGJM7wUbMm04IaWm8HIAEs4IU/+DZbQNmmY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oGm9Zg6QNmBnyYDKSNuh+6126gcu3ZMM6EpoP1L1PuAkqeV8G/boG3UPhStUiPMZ1
-	 8E2dt2anosX9UlipJg6yUoon4DMlSs/l/I7K0/PjFpojYP0UpFuPGxN7KiYP8emIwx
-	 a9kvCFnBDWMfKrg3pTa6raPQNOUAMunC4qrf/cgQ=
-Date: Tue, 21 Oct 2025 09:35:05 +0200
+	b=ZF3m40JnrkJq0Zzlrd/gSWdkTrS+ITLiIJ3P7bgYMqVPXjZmxslmq6eQr0R+IjNVK
+	 zFgBRM+8jrLmktKUGfCZLDORZcoyLGjuVDE1ufeVf0dvCe1wWXfFIZn2WuZ6HaYoMN
+	 CncWuoeFy18c5UJIW8HASO+lmdYsqxmBBotPfVtY=
+Date: Tue, 21 Oct 2025 09:35:46 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Gabriele Paoloni <gpaoloni@redhat.com>
 Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org,
@@ -68,22 +68,21 @@ Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-mm@kvack.org,
 	safety-architecture@lists.elisa.tech, acarmina@redhat.com,
 	kstewart@linuxfoundation.org, chuckwolber@gmail.com
-Subject: Re: [RFC v2 PATCH 3/3] selftests/devmem: initial testset
-Message-ID: <2025102151-distill-operate-a748@gregkh>
+Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
+Message-ID: <2025102111-facility-dismay-322e@gregkh>
 References: <20250910170000.6475-1-gpaoloni@redhat.com>
- <20250910170000.6475-4-gpaoloni@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250910170000.6475-4-gpaoloni@redhat.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CE7261C0010
-X-Stat-Signature: 9oeh5msjfg5833beqbpsdetf6fqcy1qq
+In-Reply-To: <20250910170000.6475-1-gpaoloni@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1761032109-886564
-X-HE-Meta: U2FsdGVkX1916ZpEj+hJ+6otVnJs1K/i9swaMLwi5sIRDUPEjYUc1WoB3ilHwerigbORSNBmkEnCZuXSSvqo1n3Scg+8bgzMVTheOsfYfaCdlflNZUnpqQSbOg9CDbTFKfzJA50QB47MIhYXp20p04GRESuX6Fn2ZLKLStefMDW8QkhVRbongY2jczOTXftdQsg+OiL4PNormmENs6LRjzlBLqqty8fUlgWJmD/YvGMnszx7f2lTDfORn/gd6W8/uLI9cv4r3NwJ3gqMF2rd2Rrf6pDuZDG7ulZjl3iDns7f1bFU/LRBU2vruNGpQESTCe9COR0Ie4MUDfLdvc00R6qkPVKrtlKvqACaxpqRUOT3S1RscaGX16RZiIr4MdmfurOboN51zWWY1wm939kFiQB1NnzFJWNtAXDZdtHSzGBWWS8r1wE+dT+NtWHvZuf6iqS3sCPZ2EjB+5Yc3KD2BpVPFY05Hh+I/mLnoYY+lb5flQ0HKXMa72FQ7HjWTa9Ivj1NMJZo2OexNRP+eSuNCKqrOlMik3VF4XCxC1hXX54XoixsrzTHYjT1YV4JelMwDQZhGNo6deUl56rS8m3RoCMUpPFxCan7naX8IbvmsTAiSQMbdeSYTozGQk+2t2CWzzd+2HIop/xUytBlIwjme0ihXVObYgOQZWEtYAAiZ6AFBvPkhM3peCqFP1zdWkOuAz0A+NybFxpV4zl4+2DaSQdzsICHAomZerglZNzDwkuAuxBcWMq5+gIsmmrFlN0iacFIm4FmhZGjehxnBA4DORC3SUEmUkOe/eJAsJQoQDAThAn2jnZMaL/5j4OgN54TaiDN9ZIZBD3sg6xY7/b6bCcNWqCAtrc1MNi9/A0tny2bLIwzO1V4j9IKiPuIUk4tmAt/hGVYP1JPyC0HPwFd5QDDkkXBGNmmkI41XEVYSNmKZwgNCB4MdvNz0E3ufWcxWa6EYYvesuF0NjeNoO4
- +n1o9l3h
- vxjuH/PCCCANVimDl+4k/p+bcnw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E3A4420004
+X-Stat-Signature: 4dp47ram348ga7m71gpo38mm4oc8op1n
+X-HE-Tag: 1761032150-435848
+X-HE-Meta: U2FsdGVkX1852DkpIU8aA7juTqgAp3oQl10f9QhoAMSVg7lXDwUpvj4YKTPIx2lpMJuYQImMmW8egSY3Imm9AAM8F75clTl9SaBGwkHxmx8d1MG0CgG0vFwriv7Kl1jp/KuPnpVTOI6BDTK0UF6DdloIS9erxcq5UNlww1Nbj1OdsW4JWqFewD8BNI3Cq0Z5S7uVlu66LWMKEwyJDZeFgj9LIvOrC36a5SLTWIK0+DkdPqJJs1Gn71zZtfN4XApXZ8sCchrkyvRbfvdt+spFlskRYvgog2e0O+UC+xbfqBDUhnvdH5t8sxtc0m9fsNCIPBthT8Vlg09Ib6eI+ubcVJVGS0ueZd8DnMGbWTSaFJi7kCYcNYSIQeT/nn2WR332YALBTpJAQkxLf1awSuWm29EN4MMxZ9TQwcn0tWoCDsTS5gMXWiAFLcTINFPnEHxnhZSxEeKCC41bldENMrlYd0R86bA79dgsCt2Yg7EOANgKoiBh6+WIAhRQuNankX+ZxETwyIfM7Z4SjXOpwHSS+TY93aZGJyXZ+rO3U8XNNzKdtvPmHh+Amnf+8POzbmyTA9KisWoBxgNlM1va+rndVuStKWqzVWelValgPTCMB7osDIIKYzEvSdMTqkyOA6NKLLFsqI9BVCBiCpm+dD24y5I+lpx/50nqGZ3Oe39cPyPtqZnMYs8Hv8U64/5/8uFip/AXhaTdvY5KVtMu1eXfduHFaUVc9fPnkCiq3bdNmp06YTvconcwYUbMRULjDo84TtO3OmLKbHahclDlCkuWxzNNbjdrW0C7lT9PxXoNbuf5XA6V8RjLafsAYc0nMR+SUOgZF1sXZ5FkGjJ1dzVyOC+Bi4/094nTf3nZhhbOcemFk34DDRcQlmLn4lhoYuO4nfNDEblFcD0hkq6KFUc0RrhSut3zzuUuRofc5iW1X/BjKCRqof10vxa6BiU8Gxhooh4CUqmByW1SP4rhjYc
+ NVuSZr5j
+ CiVwHo9nb4fE1h9gBZTOAFauPEyuqHBB4OrGX9n8TTX6XJr7UdqbhqcGeDed65/TjK4T2k+txfGIVKFBFEEn7bNSTw+xFW2maZ7NImPouUNY4NKzHMlPUWSGWAWzTlwu0bE9y7Tm+aTNOaDIlneOaj5179EtrwPNLwFNCA3cxYnBvV55ZVF+SNB2k4KIgzcQjDmahlZXMxHADdhK8BVUtfTL846jWb4W287dJIvXUAzXeBbM6Vx/RoUqBxtWHq9+4BRlb5h3W0BhpCyHt2gaV+lhn9zgAp1EOQI5g2lnMk52MbhXUTRepsr5yIieHlQ5/OFOZ9cQFsHaFjynZyV+p4OGtKf8wjODqWt8UNJmoa1e3BhF0gkdLDervzA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,73 +91,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 10, 2025 at 07:00:00PM +0200, Gabriele Paoloni wrote:
-> From: Alessandro Carminati <acarmina@redhat.com>
+On Wed, Sep 10, 2025 at 06:59:57PM +0200, Gabriele Paoloni wrote:
+> [1] was an initial proposal defining testable code specifications for
+> some functions in /drivers/char/mem.c.
+> However a Guideline to write such specifications was missing and test
+> cases tracing to such specifications were missing.
+> This patchset represents a next step and is organised as follows:
+> - patch 1/3 contains the Guideline for writing code specifications
+> - patch 2/3 contains examples of code specfications defined for some
+>   functions of drivers/char/mem.c
+> - patch 3/3 contains examples of selftests that map to some code
+>   specifications of patch 2/3
 > 
-> This patch introduces a new series of tests for devmem.
-> Test cases are mapped against the tested Function's expectations
-> defined in /drivers/char/mem.c.
+> [1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@redhat.com/
 
-Cool, but:
-
-> 
-> Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-> ---
->  tools/testing/selftests/Makefile         |   1 +
->  tools/testing/selftests/devmem/Makefile  |  13 +
->  tools/testing/selftests/devmem/debug.c   |  25 +
->  tools/testing/selftests/devmem/debug.h   |  14 +
->  tools/testing/selftests/devmem/devmem.c  | 200 ++++++++
->  tools/testing/selftests/devmem/ram_map.c | 250 ++++++++++
->  tools/testing/selftests/devmem/ram_map.h |  38 ++
->  tools/testing/selftests/devmem/secret.c  |  46 ++
->  tools/testing/selftests/devmem/secret.h  |  13 +
->  tools/testing/selftests/devmem/tests.c   | 569 +++++++++++++++++++++++
->  tools/testing/selftests/devmem/tests.h   |  45 ++
->  tools/testing/selftests/devmem/utils.c   | 379 +++++++++++++++
->  tools/testing/selftests/devmem/utils.h   | 119 +++++
-
-That's a lot of files for a "simple" test.  Doesn't LTP have tests for
-this api already?  Why not use that here instead?
-
-Also, this is userspace testing, not kunit testing, right, is that
-intentional?  You are documenting internal apis and then writing
-userspace tests for those apis, which feels a bit odd.
-
-Also /dev/mem should not be used on "modern" systems, so how was this
-tested?
-
-> +// SPDX-License-Identifier: GPL-2.0+
-
-Are you _sure_ you want GPLv2+?  I have to ask, sorry.
-
-> +/*
-> + * devmem test debug.c
-> + *
-> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-> + * Written by Alessandro Carminati (acarmina@redhat.com)
-> + */
-> +
-> +#include <stdio.h>
-> +#include <stdarg.h>
-> +
-> +#define DEBUG_FLAG 0
-> +int pdebug = DEBUG_FLAG;
-
-That's a funny define that is never used elsewhere.  I'm guessing this
-was cut/pasted from some other userspace code somewhere?
-
-> +
-> +void deb_printf(const char *fmt, ...)
-
-Who is "deb"?  You have more letters, always use them :)
-
-Also, why debugging for just this one set of tests?  Don't kselftests
-already have debugging logic?  if not, why is this unique to require it?
-
-And am I missing something, or does this new tool not tie into the
-kselftest framework properly?  I see lots of printing to output, but not
-in the proper test framework format, am I just missing that somewhere?
+"RFC" implies there is a request.  I don't see that here, am I missing
+that?  Or is this "good to go" and want us to seriously consider
+accepting this?
 
 thanks,
 
