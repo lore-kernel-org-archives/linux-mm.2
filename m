@@ -4,111 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3715CCD1A5
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 19:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB353CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 20:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15D078E0007; Tue, 21 Oct 2025 15:46:17 -0400 (EDT)
+	id DCDDC8E0003; Tue, 21 Oct 2025 16:14:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BFEE8E0002; Tue, 21 Oct 2025 15:46:17 -0400 (EDT)
+	id D57878E0002; Tue, 21 Oct 2025 16:14:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA22B8E0007; Tue, 21 Oct 2025 15:46:16 -0400 (EDT)
+	id C1F228E0003; Tue, 21 Oct 2025 16:14:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D4F668E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 15:46:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C93913B3BE
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:46:16 +0000 (UTC)
-X-FDA: 84023152752.03.35435C4
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6DC7714000E
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 19:46:14 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bs8OTV67;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD31B8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:14:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1F5CA889FA
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:14:19 +0000 (UTC)
+X-FDA: 84023223438.09.AA1DE52
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 78CE9100010
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:14:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gxLKS5lV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="YW/qRPUi";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="m/o/PBYg";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJti93ZY;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761075974;
+	s=arc-20220608; t=1761077657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
-	b=UciSde8dwL44Q9zYbILAkcT8kDiWFW9GgEu20pcjah/tRyBzSRSASfWTZkWpyub7zY0+s2
-	arCCsqfOQj7QtGd3o5JM16A+XRxu/G0uErdHTTWmltfu8Laz2L8Ksi68nqZHFduZ86xmzz
-	8MCWF9UygxvBGDHeEsXwSS0++51qPXg=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X80t4PTeyaiF1GwIIRh3Q3fJlZo/HhmWMgJCqgv08nk=;
+	b=v+EdBsh9X7CmEVNq79VGuzMN6g43HRBRFzwRtE+CJXCdZ1yidD9ChuGmq+pjWMTBAJFxIu
+	Wbs5o3f6uNgZjXf+fAHLuF2sPEelzEO93t0voSEPerWB3FhmMjiOGm5Nv9pfTneLzvvP6J
+	Bh+YdFxm031aaoskaTIfaxOBti5K6bc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bs8OTV67;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761075974; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gxLKS5lV;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="YW/qRPUi";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="m/o/PBYg";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cJti93ZY;
+	spf=pass (imf14.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761077657; a=rsa-sha256;
 	cv=none;
-	b=GM5Shft5XCPI0C4g992K+yQ0s0yn/SB2DmeWR9WyiTkulEHcYtRaMq13yBTT4/YlEG8Qrp
-	H6hEq6dNRj6db2Oo7EgKGJyud2fAommDqz7qautXMPhwcu7hlsvoSak0acj6BBmImdMO4K
-	cljXya+CpRu4bxjIwd6hi1P2iMsiVMI=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4270a0127e1so2906330f8f.3
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 12:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761075972; x=1761680772; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
-        b=Bs8OTV67R2cawpXXMd1FjkXxqjo5rmnSMB8Hd5l/3K2yGPSU2Su03EKDPneXLVE/WD
-         k1ADPwof0ZeYl6TwAUZMC8udInQemoBcV9woGd0GZfPnXIZpQd2BnOQVT4uylmE86hRH
-         tLDXf8LTq481+kPmygAxE4Jb9P0BTMRp6XNJBMWabCBJRMgcouUQdcTF3mq26TwJVZCu
-         CyCVUNIJzapUFwxaqEqcAqb094mmCvuImByICQawmrM3VXwNya9lwgeiTQidba3eqsVb
-         OWqaSjluhHH/3cfVanvd9PHJwAMaYsRW8/bISjShxaqxuLY0WguNQzR8qpCsCsEcO9Z2
-         gM3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761075972; x=1761680772;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qFcHRErR3E6NpM+7IUll+f8tDVmMlaLL6Mv+17zBFxY=;
-        b=Tlq0cxR4TM/lJJmVWIxqkK4q8zJNCzKjzymJzHT7f2hZUKAh0rz2Uw4q6VOjDV7Z3S
-         HNVSHQ4Bj08L50XYgzyrqbm3yRR1vEmAJC9MDOKtRr020rwdsu2N5wnb3OlX2Wpk/Q39
-         tr+uYXR84VV8eithGtQJO/yRxcnJR4aihbn1iNB0RcrjSRSU4IwLbp41yApUyNK4JHqf
-         49anWXuOgR5GVJk+jJi2XFl1k/KleUI6VftipNwTRfJLXbyITo3RGC5SUK4vQ8fQvGTn
-         d3ypXyQ9TZL2er9cfj2T2ZjlIxqQSpJQZFh9NzZMcCroLFUCRXwdFiDup/M3/qzIEpCG
-         5F6Q==
-X-Gm-Message-State: AOJu0YzA0/SFbL84lpSdSOdYyCc9eo1TQDQXlnNCCAsOkJ3CoeMCrtBF
-	PHMi7Zd/3wtcTy5KWlEet1tZqYi3YtvbJWGMUOXU99YLg2NIA1EjjLfjjJHCM1wd+IUnNA==
-X-Gm-Gg: ASbGncuUGHqkrg6lcewEouxwYMAKKBmAocAswaW+pXfzQMScicYqpdlOB1wk7LVD5Vv
-	GnLcHWQQ76+m+iqrWm8QmONdgqcwphOWWPyBx5VawJmNiDeskZWTfTHlU6Uj7klvubeTlOwsB96
-	EVUYWKiGmnuK5GBi9ylbRt+UV4pph5YJLiYMfUVMXrnIPEyCffZZDV7aw+1SL8sWUSyNenjN1lK
-	j8dNO5r0InnlUnwn+JBCJZhBiw039SO2xyMFQHs2x/GwQn67PlIT3nNqNDHkkL9tyT1+UlT9fao
-	bTIkKycJXuG0npYUgHdEMT/vIqsIOoyxcLbTUg5/7wkmg2PeW82Uf45nWUTqNvpk0rVQ25IdTv7
-	dixHl/uJd8UvNsC9/t83KmMp+g1Rf7QGLwh6F4rpSBZNE9k5tgwB1zMVFHoS/ErdM4gNiYpTTOd
-	3yAfa1qs36hZY57eIoCHV4deKMHJrlXwR0uNGD7yhGXw==
-X-Google-Smtp-Source: AGHT+IGa66oK1Ku/F3PiZN50n0zTqmr5IA7b19DfK2SzeLpd1kEHYq8mnoX0k3rpIbXU5X4W0Hzr1w==
-X-Received: by 2002:a05:6000:2005:b0:427:9d7:8715 with SMTP id ffacd0b85a97d-42709d788b9mr9713022f8f.34.1761075972252;
-        Tue, 21 Oct 2025 12:46:12 -0700 (PDT)
-Received: from fedora.customer.ask4.lan ([31.205.15.105])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-427ea5a0febsm21667227f8f.6.2025.10.21.12.46.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 12:46:11 -0700 (PDT)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [PATCH] mm/vmalloc: request large order pages from buddy allocator
-Date: Tue, 21 Oct 2025 12:44:56 -0700
-Message-ID: <20251021194455.33351-2-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	b=wi4E/taPQYJ9AdGI81VrSMZ38UpByzynvZHtZqh+0/nKEj5ji6ZvxgiS5l0tECw0sTQz4K
+	ZGaYEzyaLL0Gp4M9XAp6MLlbyknEH+uU+74wzsFECkr210oNWbm/u1DkwwbzzFnxd/tvPP
+	37CwfO4Bj/wcVb70uz2TQV8wPlGdN6g=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 84A701F38D;
+	Tue, 21 Oct 2025 20:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761077650; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X80t4PTeyaiF1GwIIRh3Q3fJlZo/HhmWMgJCqgv08nk=;
+	b=gxLKS5lVMkF8Mn/lYdQIe2P5kjop4LLkWUFBp3+tg74dU1Erdvbt9kiBErcyUkr8GhPjm2
+	/Dkg6Rph7bJl6hL0+rfkP/DkvVxs3Pbw9z6z3gdeIXi5xMVAvZynK99SwOUNsIEiIwV3q2
+	PaE+SSj5EBpMrZx2vpBOpyGvEyPwZsA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761077650;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X80t4PTeyaiF1GwIIRh3Q3fJlZo/HhmWMgJCqgv08nk=;
+	b=YW/qRPUifuq99yW2pPkvIes3WOFd6WC0mQN+abz9RhVeh07sX9YsiAIdMMWTBGvIeLqXs8
+	FRoRGeSOEY5hCYBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761077646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X80t4PTeyaiF1GwIIRh3Q3fJlZo/HhmWMgJCqgv08nk=;
+	b=m/o/PBYgKg2geRaXYvtpGouwo78djKEftEe01eZenTU/MVzdsU8zxgSXtL9ECK3hPc1KjW
+	bONDP2CuI4RS4PpV9xhHFGvVpGGYIn5T125vZHmgWTb6sodiAYo7REOoojF1dW31OKUh3v
+	C80B0nPld45RaR3SmtXFpvz8sBbubIU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761077646;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X80t4PTeyaiF1GwIIRh3Q3fJlZo/HhmWMgJCqgv08nk=;
+	b=cJti93ZYPlCz+bDlE3jAO1p5UBTHUby/74EcmIJ2kqU8udNWkVPgct+NR3plOxIjL0R0ir
+	PsOjBji1D4d6aEDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 63ABA139B1;
+	Tue, 21 Oct 2025 20:14:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5RyPF47p92h4NQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 21 Oct 2025 20:14:06 +0000
+Message-ID: <78f746b4-24a4-4006-883b-a8a0c341dc72@suse.cz>
+Date: Tue, 21 Oct 2025 22:14:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmstat: Fix indentation in fold_diff function.
+Content-Language: en-US
+To: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ jinnasujing@gmail.com
+References: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 78CE9100010
+X-Stat-Signature: a17a6g1nfx4q3jkisqgnqz7k9gmhn4dz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DC7714000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: i1w5u5hfq9bohgtsh5k3ok6usnmyaqjx
-X-HE-Tag: 1761075974-958903
-X-HE-Meta: U2FsdGVkX1/jeEMvv13sPO8yavJsJxu0OHNDU1msk0ktPqxXhwXjsxaV8RTnnlMuBzolRitUfb3C//n0dL/4+2v7cQAhuBKpJYYmVqcVcZdNZlICGTbQKttDKgGasdF1Iag0Wflx/C3l+0616hMb0ukSvyhXyO0luZU8MbrlMSpGj2Z73Dy3dkz1I+vDqsEXfxSXQZtTlXvuv3VjsBEKn2uZARxfVNd1Qn35ILZqcV6lvKhHx6gs8qg5d76guA0ujznjPUMfeGv0alDTkfSP35MYnHT4vyUmrPr9L1qAEjh6fq0e8ULRDTsmKpWf2N0/M3H9qpgpapwAZpR/3XX+vEsVB6dy8JT850Y72BDP2oCjKewc0GRavKxKhYplc8qa0ZPa8EhxH4tMM+PZD+9lZR+66angsiVAeFb7bUknBFFLQxfehwkQDke3eO0RWsnlFI2fRIOiksHitimEvHpU7LMp7G4oezU0Q4/83bc1Ngpl+kwLI+ha/89vHsgb22Q/40CS67HbP9ROZrXQkSX/tUWdVuZ+ByG8/QPwnSXTCs2DKTfkvrV3r/qedE7gsFHfcrbQ72ysTD1sSBJb88CCnpVdbDG5B/xwoxsjzUm15g5Wlom44MVxJziuIyYf0SIoq/EDv8tJkHKy9N48X1WZKOoY7qwMl8hQtbfivTkuc1IHfZ4wlRuR2zWS+AqizwGA7ktr2P6d92H6FS1pdDoXqysOdq/i4T1yGVR6q15cGhncgKLtuQ3D/LoFMAmZfA56cAj/2lWew8XVQOLJgZXq0UXYgbw32Do9veycafhjk4AlNhPoMw2QCq5MQuC/sHN1XvqZjiCpGPXwcgR2SY0WZDxOWTh2mLRYePzNESOn8xFTPR0csM2v7tzlbAvR6HtrTsUyvoqRlqWSp2eb+rY/9rSloFu4hMXoQXXGEw8/l+8FvSRr1qNwKlmIzqD3vRpELQx/shEXExVzXnxqJZC
- wLdgt/ky
- A/ZC9znriFuMax60Ig51+kICRBHp3otxUdWwf2VEcZ1n73kZPL+v6B7GsAufis8SvOpAqL4d480vcuM6qDY2CAfhGP/f88iMvmGNXtx4o2edAbsdLe7AO/POsANIrfmDfN7BA0LkmJfhj0/5o9BJBnzmqa7NR1fM1Wm97t5M9wT6AKhvlN31P2vA9LBc1/vcf/vcPs7PDa+J105pxfItsyNroqiDs9PyjDiQjrdHrmyxmEAaN5gnjVgEBfj74UjQU4miKSPg9wGwmn9znokBgLmygHWG+0PGccurU0dVrGDngrVNE3VWtyvRyI2nGLMO6neW1XDmVpe/GzgufO+N5q+zSmNHi0DeL9dVe6zuVLK9sPlb6gidpeLOWWuEn8LE1X2BeGAHsUTVLiTW8zHnSWateb1Owz3zFUOGyxPNi38smjYQeZN6ZiUSrUwQ7It+MPIXsjMKxbrRnzcE5rbWZzNPhdB4M7rIovmcf9NSZq5bEPukGLdJ1XW1DEVUvvvtDRTzSfrv0WiUga8Fzae5I4k9LJihSNo8HaaH9
+X-HE-Tag: 1761077656-362755
+X-HE-Meta: U2FsdGVkX1+EmW8efYiSjnTEVAwY1thrhSYUrd6clbNtOOt7jw0ppKnX9ga1J1nqL7eTInnKMTnHHdwjIxND1k9jQfkFQuuFUEr1IrSuXY9mSbfqralWqNmxmzoaho9E/141EmS3WbCD6sw+IUbaftu1BnvTCDPMb1OUBHoek9q0o/3fK1D3hUrrLLD8+9L6CU7lcfNB184BxlfrUJhMMFQCJpVZeLQ2Ox60BwU90WjQkKJcA4F77mF01gIX3cc3OfdlHsgVehZgWIYRVkcPWMSTL5lKiWFhUBimB0ZwouaDWu9tHkZF7P7cM0RElctZmuvdiHaa1GAfCa8vTLcg9hVKhxWq32j+cYgRguyxPBGXcpFXbm27/jD6Opjizdde6L+U0MaT2177ydDzkkeSwdbqwcbX0jcgra0brSp/oFg7ig8ZAVWUV8PuDg/bNl+Wj4QfQKPFjjfIwzyOmxbLBQr6QuqVEedUwcPTO2vsWWrnAKAE5crsB0V9yysuEVeWsx5NXFROZsQhgVWORZeQC4jV+oKLHj442alN7s8HFp9GZfWgZwS42u9FKmPOqtbZz7bKoCual0LUkWmhIyoOILclCCi32w79g6lzT0ZSw784RBk8MnWIRc2ttoL0GzRSpQ8iPHaMG7AeLrBOf3RuoeoJZg8Htmzc45dkU2NGcPLR7Bc81XVUpGCE+kVySqS365eymY7gWaWHU+w7CTbDxvWGktdZbblNrLXXV/guqZJZK7enIwz+YQuURNa0UZQyhGWsyY+9PcFKI4wbE4kVB2xHLj+lUmVr95Kpz6Wlsnl6ITdiPdbH+UIHTUE91scKLz+d/WkdAmC8tOqJO21GwgXykd3r0/nQi65djQJR0Z9MgjXFi0nIf1bzRupiF1vhTP8MXr/muC+1XYXcCHlG8qjndgZeNqrHSglUuM1oanu3Hd3HW9GzdvzaeaOkRVhoHQlKwQwUHEaWNqDvVSn
+ I5k+HC/1
+ ZbrnQn2ES60UzDPzfJSAbcN9aROI5Ymlz5GgRasHPGgq0DUdUz203BgH9feyLGOeBwQ16tQD8wldPkfxGuvn+uHo6qHE8x5S6KgWWGn0nNe0Vfr6JuuVM9E8Z45nI/Us7FfKt/t/chPdb7V5ndyaub92OGzhsNERpW8+yA8qxslZsps5tZqhf1D7YlN+6WXn9FhToQY2dEEV5o6zy5ZNwwQkbPthSUUk564+ElyJwwYUo99SKgpKwy7NefW/cR/KKa89hVeYZd3YVJbydDOiqwgt3uaPBiziYuJDeS2mlWpgMK6ywfsh1jYZ6CS0xtXbcUD1Tp0aHR+a19bjeVVKsY61hyFiUnJ3/w/jk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,99 +177,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sometimes, vm_area_alloc_pages() will want many pages from the buddy
-allocator. Rather than making requests to the buddy allocator for at
-most 100 pages at a time, we can eagerly request large order pages a
-smaller number of times.
+On 10/21/25 09:37, Jing Su wrote:
+> Adjust misaligned braces in the fold_diff function to improve
+> code readability and maintain consistent coding style.
+> 
+> Signed-off-by: Jing Su <jingsusu@didiglobal.com>
 
-We still split the large order pages down to order-0 as the rest of the
-vmalloc code (and some callers) depend on it. We still defer to the bulk
-allocator and fallback path in case of order-0 pages or failure.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Running 1000 iterations of allocations on a small 4GB system finds:
+Thanks Andrew for adding extra brackets fixup.
 
-1000 2mb allocations:
-	[Baseline]			[This patch]
-	real    46.310s			real    0m34.582
-	user    0.001s			user    0.006s
-	sys     46.058s			sys     0m34.365s
-
-10000 200kb allocations:
-	[Baseline]			[This patch]
-	real    56.104s			real    0m43.696
-	user    0.001s			user    0.003s
-	sys     55.375s			sys     0m42.995s
-
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-
------
-RFC:
-https://lore.kernel.org/linux-mm/20251014182754.4329-1-vishal.moola@gmail.com/
-
-Changes since rfc:
-  - Mask off NO_FAIL in large_gfp
-  - Mask off GFP_COMP in large_gfp
-There was discussion about warning on and rejecting unsupported GFP
-flags in vmalloc, I'll have a separate patch for that.
-
-  - Introduce nr_remaining variable to track total pages
-  - Calculate large order as (min(max_order, ilog2())
-  - Attempt lower orders on failure before falling back to original path
-  - Drop unnecessary fallback comment change
----
- mm/vmalloc.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index adde450ddf5e..0832f944544c 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3619,8 +3619,44 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 		unsigned int order, unsigned int nr_pages, struct page **pages)
- {
- 	unsigned int nr_allocated = 0;
-+	unsigned int nr_remaining = nr_pages;
-+	unsigned int max_attempt_order = MAX_PAGE_ORDER;
- 	struct page *page;
- 	int i;
-+	gfp_t large_gfp = (gfp &
-+		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
-+		| __GFP_NOWARN;
-+	unsigned int large_order = ilog2(nr_remaining);
-+
-+	large_order = min(max_attempt_order, large_order);
-+
-+	/*
-+	 * Initially, attempt to have the page allocator give us large order
-+	 * pages. Do not attempt allocating smaller than order chunks since
-+	 * __vmap_pages_range() expects physically contigous pages of exactly
-+	 * order long chunks.
-+	 */
-+	while (large_order > order && nr_remaining) {
-+		if (nid == NUMA_NO_NODE)
-+			page = alloc_pages_noprof(large_gfp, large_order);
-+		else
-+			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
-+
-+		if (unlikely(!page)) {
-+			max_attempt_order = --large_order;
-+			continue;
-+		}
-+
-+		split_page(page, large_order);
-+		for (i = 0; i < (1U << large_order); i++)
-+			pages[nr_allocated + i] = page + i;
-+
-+		nr_allocated += 1U << large_order;
-+		nr_remaining = nr_pages - nr_allocated;
-+
-+		large_order = ilog2(nr_remaining);
-+		large_order = min(max_attempt_order, large_order);
-+	}
- 
- 	/*
- 	 * For order-0 pages we make use of bulk allocator, if
--- 
-2.51.0
+> ---
+>  mm/vmstat.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index bb09c032eecf..63860c3d22e6 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -782,13 +782,13 @@ static int fold_diff(int *zone_diff, int *node_diff)
+>  		if (zone_diff[i]) {
+>  			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
+>  			changes++;
+> -	}
+> +		}
+>  
+>  	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+>  		if (node_diff[i]) {
+>  			atomic_long_add(node_diff[i], &vm_node_stat[i]);
+>  			changes++;
+> -	}
+> +		}
+>  	return changes;
+>  }
+>  
 
 
