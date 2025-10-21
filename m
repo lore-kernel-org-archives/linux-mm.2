@@ -4,176 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1D2CCD1A5
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25702CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:09:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5AC48E0003; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
+	id 4767E8E0006; Tue, 21 Oct 2025 03:09:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C324D8E0002; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
+	id 425DC8E0002; Tue, 21 Oct 2025 03:09:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21508E0003; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
+	id 314B98E0006; Tue, 21 Oct 2025 03:09:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A0D528E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02A3913ABC6
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:04:47 +0000 (UTC)
-X-FDA: 84021233856.01.8907FF5
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5BD43C000A
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:04:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nJUF1Sii;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CDFaaZ1U;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JRo30k8r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UY6yhdWy;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC038E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:09:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0FC4B8C9B
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:09:12 +0000 (UTC)
+X-FDA: 84021244944.11.24A59E3
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 913C41C000A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:09:10 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=R8skiern;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=382e81130=mngyadam@amazon.de" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=382e81130=mngyadam@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761030285;
+	s=arc-20220608; t=1761030551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=ATOd+yS1nu+B7Ev+4pI5OokTgmzEdA9WryqOyQgwihknNqt8s8Eb4o7EnLQfwBxl2CYpib
-	k96etP9YF7nfr/znGpwemDofa5qyNfQgWrnLyy24VGDziNjuU0Z6ajVOjR20gMSO80jnEJ
-	rF0p9wWz9g6JGfXn6KTJXVNOG+4nrc0=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4aKg8jaea9UUgjVGAZ9pvPl/2rw7Jg81FmzroUsdh8U=;
+	b=oomRj/K45vQHNKKU7+cSHiVrjDJS8z8co+56wvFJR9uvFYqC4ysYMa1Ug6+452RKAwuesG
+	IU6JelR6CwyBLB05FdL96w+aj4wamCDV36K0Gv3Oi5lKsp2TnBajVAepa0IUXcQmJJDhYF
+	xKHSqo8mXqNz0ppthI9epWcuQy5DJfI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nJUF1Sii;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CDFaaZ1U;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JRo30k8r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UY6yhdWy;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761030285; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=R8skiern;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=382e81130=mngyadam@amazon.de" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=382e81130=mngyadam@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761030551; a=rsa-sha256;
 	cv=none;
-	b=Tr49YWSJtxVHMvUoGMaiCB51UWXg49J3Yol3tCXNsISx6cQOTmG3r4xPqcfR7+9ODa4imF
-	AmJvzTqGSsSiW+FP8vgYGizqsITMo1R+gl53tt86wCXpV4SZEPJmOPCHyhXG+PwBNJw9Y4
-	qw/GyXC5Q86w97oaAyeCYJWzjWiWKJ0=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 669F6211E9;
-	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761030279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=nJUF1SiiczGXdcJgqVdI10l5W3jAiIMIz/vFLGByHgcgBR1Fb76iL33fLu1/t2yL8DGw2i
-	A8oYP5lEGXkxJM/Eddlst0M+/f6CRN/eBvSy2zuPn64/pAUIG9KIyO7N8z80jCASAQsVwV
-	z4rzqZOHdJ2+1+fRfF8pzE4nqUsF7Lo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761030279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=CDFaaZ1U4RVA4MONSr3k68hzq23fEQIPc481aV7/8k6aBmmEOlYMOcquhB9mxR5Vl7LSS+
-	agiGUBVWJP8mXxCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761030275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=JRo30k8rYa3bP1bS2eHkjrV16N81bi+ALvbpYx7eVyroiHV+TQBR/s5GvDqmV3CbY9yBb5
-	WjjXAXYK/czIxA3raAMTRliYok2qrqzZ9DqUntHjlXCiysMs+zdtrZ+GZopY4Og/kahyY8
-	c3Tg/TpZoxmOO12OqQWFl1eknt3OBFw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761030275;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
-	b=UY6yhdWykkfCRRy6ZK+k+gNZnRHDbGZoS0fdr/1JW+GyCqSE81lGzy8Qag0A9z1RALUzXW
-	6Z7z4QJlNfYtq8Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B696139D2;
-	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id owgTEoMw92h/OwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 21 Oct 2025 07:04:35 +0000
-Message-ID: <1e1376fd-1d38-4dde-918a-d4e937d4feac@suse.cz>
-Date: Tue, 21 Oct 2025 09:04:35 +0200
+	b=Vc4b/T1g6/Eej+anqOOfRyEBzBeeZd/4/HAKN15vXIFPqi3+SGekcDa5Tr0rR1/53u0aw3
+	8b/joxy2uaIC51vjrovbK6VSNwqEylBwvhKhdXVL9K4gxO1ZumB/V+QXXamkKf9pp8Seff
+	oSAs3tyE9IY2ED7/L4n6jRP6re8M/gQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1761030550; x=1792566550;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4aKg8jaea9UUgjVGAZ9pvPl/2rw7Jg81FmzroUsdh8U=;
+  b=R8skiernNdS+JZmqa+x+tKyWalVpR0S7v/5t1NjSoI8hh6BAR8lMhfoK
+   QL5XzRqrqxQv+g6uEgE9vb+N3gK4vd3u8wCln+qIIOsyElANGyLAW63AU
+   PXpX/RcaHf0zws6bzcKRd+crOYdd+8LxIAVymbRr4VaOWxdIK2Ik2n7Ns
+   lQvrO9tPTLgqas3XTWwT+gSWQZ9+oVp1p1MlGDIev5s5FMW1SB4RGhGjB
+   nm3w6/U4omZanaObOJvllnevhLVTWySYmPFdZvfGXjCFUo42mJnaBwpAe
+   pueO5DNtq0OpZyhkt6czLXwSVDJK225maGSUxrtboZ7mCjFoac52of8kW
+   w==;
+X-CSE-ConnectionGUID: xhZ9wZyxSpmrCzcqqePl8A==
+X-CSE-MsgGUID: 8WykqeV0SPuRFwAH0TlCVw==
+X-IronPort-AV: E=Sophos;i="6.19,244,1754956800"; 
+   d="scan'208";a="3934174"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:08:59 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:10631]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.22:2525] with esmtp (Farcaster)
+ id 3750a0e3-50a3-4ee5-985b-1ddb7d86a82d; Tue, 21 Oct 2025 07:08:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 3750a0e3-50a3-4ee5-985b-1ddb7d86a82d
+Received: from EX19D013EUB004.ant.amazon.com (10.252.51.92) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 21 Oct 2025 07:08:58 +0000
+Received: from dev-dsk-mngyadam-1c-cb3f7548.eu-west-1.amazon.com
+ (10.253.107.175) by EX19D013EUB004.ant.amazon.com (10.252.51.92) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Tue, 21 Oct 2025
+ 07:08:50 +0000
+From: Mahmoud Adam <mngyadam@amazon.de>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Jens Axboe
+	<axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov
+	<idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>, Alexander Viro
+	<viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
+	<adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
+	<chao@kernel.org>, Christoph Hellwig <hch@infradead.org>, "Darrick J. Wong"
+	<djwong@kernel.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, "Anna
+ Schumaker" <anna@kernel.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Hannes Reinecke <hare@suse.de>, Damien Le Moal
+	<dlemoal@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>,
+	<linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>,
+	<linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [PATCH 6.1 0/8] Backporting CVE-2025-38073 fix patch
+Date: Tue, 21 Oct 2025 09:03:35 +0200
+Message-ID: <20251021070353.96705-2-mngyadam@amazon.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] slab: Avoid race on slab->obj_exts in
- alloc_slab_obj_exts
-To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>,
- stable@vger.kernel.org
-References: <20251021010353.1187193-1-hao.ge@linux.dev>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251021010353.1187193-1-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+X-Originating-IP: [10.253.107.175]
+X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
+ EX19D013EUB004.ant.amazon.com (10.252.51.92)
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5BD43C000A
-X-Stat-Signature: tqaicyoz1mxh7o5d816nu7kb45abgwd5
+X-Rspamd-Queue-Id: 913C41C000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761030285-51382
-X-HE-Meta: U2FsdGVkX1806iUl24RUclWsukLxzcroZrDsIlTI6cCnjB/NbRIYGjAUXdVww1Tsmm4ja6F5cRwp0OiNvZ33XHePpTSL2EdKrr8Om8eNrM6ToXTXVA6Ck1XLzDqhq/dOH4z1lu35W61U51eMJoRE52JRDyW2d7PYNQR8/mb6buxCxrum9CiBzSMxj1559oTW5umeDPK/UfwTz1Q3DuqP+9Ts25LTS1w+5WQ+5CzhLaatai+62AGz0QOn/oOOAA4D6kBXXFz05VGt/1QZL4KSCeMG/eqSOmqSeJaoYiXrMrEuhbf5U6Lq1t/FdZZR0F3GZuNUqbUWzgEHBSzvDvGJNyL5SJ3kfdJCZ/uJdburve5riJnAI87Pi7n7WtBQegudO48grk2icHCGPhOtRa8rsl50hn0xKipdbh0MMg4/5GrNIHX6AZUegR7Z+v6FHlffbNtFeuSW/jWRktz30jA1/7y9NCb5VT2TtMZgyIN+6R1Qk4jCAUJGTHbhzF2tYDwNqK1Wdi/nfFtC+aZGXRx3Tp5GsrmyWzNTQvXivIXmjKw/BaTxtZuhgnUhamRZxijTscpS9Zoys1xk5jA2w5dR9yGzW7fJ0FecJtJ8j+g5NvkRNvCt5m3tjR21nSDdyIbAsxVzrhDWP8fkKKT3tLJV09EeUbq+R3nONnn/tNu2k+Z+8sRsP86NJNQFe2zqgSejSVgnzxHC0KKDBtLsO+7CApAYDne0ewOUKYUppd3YNzYBPV+jkgx5yXsBuMwyRhdS4CW2d7kbbCwoCof2rWSfE4i/mtsWbcJ3MC8b9x6TP0spd4iXYA5i33m62/4nE66GSRL348z5Ynm9pf9o5Gs9r8/k6mKtoGU20NBIkIkX2UhJBrPWd8MyEusjYJORl1VTPspcc5N7EK32lA5vqhAZH7ieDekowt6pQrpZAQD+KkbdbdF9fiQdEKAnHzPvVI1A+z/LVgUSNCmMBspkkCv
- 0dVXrzV1
- /Lu2a5Sf6M7XaKExanCnXnx/NYlIrTuT0/VZivc/APmMXAPCpR2N82Oli4bhtXnbjPLzJhy8oLEQXTyECl8rRvJ09HmxSlGKzPQmyq3Q7S9B7/r3RsfCPrlT0YXzcGjzg5UPSIY3BAsH2zFIOsCiNdX+JKyl7xq5IxVMN12kEHRoc1xviF9sSkzH2ousMwLsxfLKpH5ihtjm07EtRNQPX6CuYuTK1DbPM+exl3smTfIK22tXDoH5OmWfXi1LVlfRoCUY0QBotVIY9zj6OVCBfOKkXuglieWv1N2b7QaBC9OcX7d3gSUOLNJ8wdh/6+47u9kGqh3RHZe+1gW4z0f5k4wfBs1fp6D0LuN4Rqw9xW8MfFO3WUigKQ7FZujKRKcxO535N
+X-Stat-Signature: 9khfqu4i6hu365zku7e9rx9kfwoemyzg
+X-HE-Tag: 1761030550-119906
+X-HE-Meta: U2FsdGVkX1/BPVFjc0Kd+DQUO8dfaaORgeqY4sl50ceJJ83O29aTt8d6Xlb8OEODeAPHTTkNM+F6kzZtmSAAZo78Dz1RIhj7FRF+rhrtl9J89yHFBlrFSGOFWcxjns8Tnuxv2k6/oD179ZjL6xeOu+T53FbLXNG5T7U0iHyQuJR3OXoLL5q8YNIAjz4Qs0GOoh96jHXgwIduceBZm0otIX/l83Fn84j2YbbwVvtCveFB68atsIczMdV0MczZWymTQP/A3ixRi+FJcGo/URa1d/IKAsHaMQ4MW7tmfVCWwi6178TzyEkuqth8miJXlm8N5+r90X6XYCRk8GZHS5b7HfE6rVuVC5fhBbwdMYGBWIAVQaYH3SYFgNofwmbIEGx8iyluTFDnbnQSCoY03YcSlnnmaK5/1IGtV0IR7N6RQa1wExx9CerLrXy3JrAtywDWPIwS+r+t5SE7sabRnv7NWBjptFhmqDyYQi11sa7I8JMJ7yEsItclJYbUI3Sa03KeozatijUjpZIqP3gC5G6jU1W50b+Qi1S4QPzxuq21+ajFPWldsuQ+UmIJisRYFwEA72nrJLMALj1CubvHX6tL+gmS0lA4qAyYA8kYR15XGHHTWTYph/M0tl1HsO8dR3twg4xQHSJkq04W+SoLmZIw8LKuC3O0BIg0vBS36ZddzGQC+ejioFX9EZWhxOK09AM5/Dt2LqgwH2Wd+6sDTDhsOoiybvMgnvqtrsleEngXpDa6QtxR1cnxpjmmGtcSNbjXvd1y7Cv5aOEwtH3hT8ZF9EpLcbQbL4RDpL2xtT852Z2o+DBOgsK9/FTxvPHGsyPlReprP7jDykST1o3MefOYcOMGvzUEkfKmAax49QRxz1dBOTlrFIl0esgBvGJOim40uPd2pI4W+iivHYY+iaCdYu6mWRtc0mXb+jPmFbqEY1IjXizL+EAIxI/WalwePtq2wq6WDgLlcQe1KJMHU5Q
+ J67jK+fc
+ dCPt+Cl1ksCeDXF9NC71XJICClNxSrSrQth4W8mzCikNdkiiPeQ6JRnIfmAbFQUZ6QjnuGG18VDD6qGKOc9DQVyo4zzsDHEcukSi1QxGr5XBMf7ph210owtGsZCYXuRR6Ox20SVscHNhsajQ8YyvXHLgQcT7XmEjnpHryRT+04xWYkEbKUSufUq1rY02YZ8kePUvokfi6RufYF+Xt08GEWaSZWsupJoapPBZ6u5lToE4vKRkCSBJwkslVt3Bp3D7nIdnJ6kYUF3FpLJqYLd/ZLdQAibfyp6qHNEF77cWSvoOxmQDGL/suTJqw2+HEpKAcUz27XGm2Nr+dqFoXpUFcVkyu8iMwMRnvKzZDQF224gF9MpstXwR7BMW5Wuvgk2REDlvfg0PkTudkWhPyLXVxSREffGBF79Hz/PwwsyIUBD4tWPgZE4RkXX1BRaMKJMiV65aTf/BI7r/f6CuhXioEPy1Kv4l+370rziXkN6IjUSp6vG4HpfAbTnzALbyTuk4Y7MIBL4xz0q3S9RIY9QWP6u0tMc39t98RSkfXoMq3wtMK1YuJSwXfCTyqk9jl78fxLjTzLELzd1KfiEOz2Q8d6IMvhT3g1+aHmHookOSMLzHdubQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,78 +124,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/21/25 03:03, Hao Ge wrote:
-> From: Hao Ge <gehao@kylinos.cn>
-> 
-> If two competing threads enter alloc_slab_obj_exts() and one of them
-> fails to allocate the object extension vector, it might override the
-> valid slab->obj_exts allocated by the other thread with
-> OBJEXTS_ALLOC_FAIL. This will cause the thread that lost this race and
-> expects a valid pointer to dereference a NULL pointer later on.
-> 
-> Update slab->obj_exts atomically using cmpxchg() to avoid
-> slab->obj_exts overrides by racing threads.
-> 
-> Thanks for Vlastimil and Suren's help with debugging.
-> 
-> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
-> Cc: <stable@vger.kernel.org>
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+This series aims to fix the CVE-2025-38073 for 6.1 LTS. Which is fixed
+by c0e473a0d226 ("block: fix race between set_blocksize and read
+paths"). This patch is built on top multiple refactors that where
+merged on 6.6. The needed dependecies are:
 
-Added to slab/for-next-fixes, thanks!
+  - e003f74afbd2 ("filemap: add a kiocb_invalidate_pages helper")
+  - c402a9a9430b ("filemap: add a kiocb_invalidate_post_direct_write
+    helper")
+  - 182c25e9c157 ("filemap: update ki_pos in generic_perform_write")
+  - 44fff0fa08ec ("fs: factor out a direct_write_fallback helper")
+  - 727cfe976758 ("block: open code __generic_file_write_iter for
+    blkdev writes")
 
-> ---
-> v3: According to Suren's suggestion, simplify the commit message and the code comments.
->     Thanks for Suren.
-> 
-> v2: Incorporate handling for the scenario where, if mark_failed_objexts_alloc wins the race,
->     the other process (that previously succeeded in allocation) will lose the race, based on Suren's suggestion.
->     Add Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  mm/slub.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 2e4340c75be2..d4403341c9df 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
->  
->  static inline void mark_failed_objexts_alloc(struct slab *slab)
->  {
-> -	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
-> +	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
->  }
->  
->  static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> @@ -2136,6 +2136,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  #ifdef CONFIG_MEMCG
->  	new_exts |= MEMCG_DATA_OBJEXTS;
->  #endif
-> +retry:
->  	old_exts = READ_ONCE(slab->obj_exts);
->  	handle_failed_objexts_alloc(old_exts, vec, objects);
->  	if (new_slab) {
-> @@ -2145,8 +2146,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		 * be simply assigned.
->  		 */
->  		slab->obj_exts = new_exts;
-> -	} else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
-> -		   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +	} else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
->  		/*
->  		 * If the slab is already in use, somebody can allocate and
->  		 * assign slabobj_exts in parallel. In this case the existing
-> @@ -2158,6 +2158,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		else
->  			kfree(vec);
->  		return 0;
-> +	} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
-> +		/* Retry if a racing thread changed slab->obj_exts from under us. */
-> +		goto retry;
->  	}
->  
->  	if (allow_spin)
+Also backport follow up fixes:
+- fb881cd76045 ("nilfs2: fix deadlock warnings caused by lock
+  dependency in init_nilfs()").
+- 8287474aa5ff ("direct_write_fallback(): on error revert the ->ki_pos
+  update from buffered write")
+
+Thanks,
+MNAdam
+
+Al Viro (1):
+  direct_write_fallback(): on error revert the ->ki_pos update from
+    buffered write
+
+Christoph Hellwig (5):
+  filemap: add a kiocb_invalidate_pages helper
+  filemap: add a kiocb_invalidate_post_direct_write helper
+  filemap: update ki_pos in generic_perform_write
+  fs: factor out a direct_write_fallback helper
+  block: open code __generic_file_write_iter for blkdev writes
+
+Darrick J. Wong (1):
+  block: fix race between set_blocksize and read paths
+
+Ryusuke Konishi (1):
+  nilfs2: fix deadlock warnings caused by lock dependency in
+    init_nilfs()
+
+ block/bdev.c            |  17 +++++
+ block/blk-zoned.c       |   5 +-
+ block/fops.c            |  61 +++++++++++++++-
+ block/ioctl.c           |   6 ++
+ fs/ceph/file.c          |   2 -
+ fs/direct-io.c          |  10 +--
+ fs/ext4/file.c          |   9 +--
+ fs/f2fs/file.c          |   1 -
+ fs/iomap/direct-io.c    |  12 +---
+ fs/libfs.c              |  42 +++++++++++
+ fs/nfs/file.c           |   1 -
+ fs/nilfs2/the_nilfs.c   |   3 -
+ include/linux/fs.h      |   7 +-
+ include/linux/pagemap.h |   2 +
+ mm/filemap.c            | 154 +++++++++++++++++-----------------------
+ 15 files changed, 205 insertions(+), 127 deletions(-)
+
+-- 
+2.47.3
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
