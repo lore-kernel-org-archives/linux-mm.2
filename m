@@ -4,108 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4298ACCD19F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 06:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1D2CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88BF98E0006; Tue, 21 Oct 2025 02:48:36 -0400 (EDT)
+	id C5AC48E0003; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83CA08E0002; Tue, 21 Oct 2025 02:48:36 -0400 (EDT)
+	id C324D8E0002; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 704748E0006; Tue, 21 Oct 2025 02:48:36 -0400 (EDT)
+	id B21508E0003; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B4948E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:48:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 001B758AAF
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:48:35 +0000 (UTC)
-X-FDA: 84021193032.28.2CBB0CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 13C7A180007
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc9pCGe4;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A0D528E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:04:48 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02A3913ABC6
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:04:47 +0000 (UTC)
+X-FDA: 84021233856.01.8907FF5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5BD43C000A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:04:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nJUF1Sii;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CDFaaZ1U;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JRo30k8r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UY6yhdWy;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761029314;
+	s=arc-20220608; t=1761030285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=huVkyxFpCB69gJ+klCkiZ2S/86uNPLmp0mdGVNQt13Q=;
-	b=8jKpr8W4fGXkHJ1bZpJTifr43qNRJS4UehUd4ygck5JRvkaSN8EqYOxhUz2N8chW66qZyQ
-	qbcwBSBngE5Y4Je+28d6tiLlQa8IQIFe4E9MVi5zmy/7oSmoqKKdj0ZHlf/qUUUrIzurjC
-	mBJ1/fhvhzQ27eUUen346wn0QJyWpTg=
+	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
+	b=ATOd+yS1nu+B7Ev+4pI5OokTgmzEdA9WryqOyQgwihknNqt8s8Eb4o7EnLQfwBxl2CYpib
+	k96etP9YF7nfr/znGpwemDofa5qyNfQgWrnLyy24VGDziNjuU0Z6ajVOjR20gMSO80jnEJ
+	rF0p9wWz9g6JGfXn6KTJXVNOG+4nrc0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc9pCGe4;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761029314; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nJUF1Sii;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CDFaaZ1U;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JRo30k8r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UY6yhdWy;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761030285; a=rsa-sha256;
 	cv=none;
-	b=1XImU/hwSSvebCusVkOzsKBk0UgJX68+sA79WFW1MDFpjjPwt2v3Sjwcf6CqTY43NC76lp
-	MEYVG6unTq8U7Q3dXM1nC5gKk/spqHxk71v9c9BQ/UC9PPuz7moAzJpHLcHarCR3T2wPtw
-	zVutoz6G9LRhfDOeOI/M71gdQAfckfY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4AA4A6036E
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:48:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B63C116C6
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 06:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761029312;
-	bh=Yao5CLBIZBpqI8yZPYhEq0pLUsEI2cplrdc+D5Sg0x0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Lc9pCGe4de/NwZfnpRTSrjSrKhtCdrPT4YYHAJFqrg7l3b+HCjOL2xUTsC+YZni87
-	 XlfP8OpuLa6fhm8tWD1oVyg2z+yr8Takyigtfu44Vo+xaCE1JuSCVugB1GfQMZ1r7R
-	 o3Q36IPGOLcbhaubcq90aAIXwiyl0dgPctB8YjK0U5nDiB8Qh5Fc/o5yhI2T3BvI6j
-	 rQmhMaMkaNCNncYuFTkINepfNHB+CLc4F9hT+nGESeNP1MqRqDRns7t5KpJFJ2N0G8
-	 Gi148MiT4/+DSp2DP8twIsy1akWq/dVe+HNPzFB0F88M6XR9GOYXnuS3FX+JIrvwUD
-	 eXapKOM/0+g5w==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78485c4146bso27859257b3.2
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:48:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXHb53gtGLkC8XuBdsjOtHlq1iH/47jbtJCaKu9R0+TRFxEzdy4DLr+JnifgIbRksawwKMi0FuYHg==@kvack.org
-X-Gm-Message-State: AOJu0YzUbepUD7X43yT3UeDwKlfF45bVgj2vCBsPIPUBGKm6EcfJuVaY
-	shzIUkjtdytkunmL2s57CsFimh2BeccAjTTnpYZPi9O9XNuubH5z0r4GzdNP+bYwSc85OY856qT
-	inKde0VEiR1vtMuyKQPc85yxdZ6r0pJfRO70+xNPvDQ==
-X-Google-Smtp-Source: AGHT+IEKwgU/k6+a6m9j5wLqPHqWi37Ymmn/fXH4mZwMQ6tpYpjsC1ZwqJENF/v+P8dGntZXlSsHbAcNq1qNWQU/s6E=
-X-Received: by 2002:a53:edc2:0:b0:63c:f5a6:f2de with SMTP id
- 956f58d0204a3-63e1626c69amr9740357d50.64.1761029312099; Mon, 20 Oct 2025
- 23:48:32 -0700 (PDT)
+	b=Tr49YWSJtxVHMvUoGMaiCB51UWXg49J3Yol3tCXNsISx6cQOTmG3r4xPqcfR7+9ODa4imF
+	AmJvzTqGSsSiW+FP8vgYGizqsITMo1R+gl53tt86wCXpV4SZEPJmOPCHyhXG+PwBNJw9Y4
+	qw/GyXC5Q86w97oaAyeCYJWzjWiWKJ0=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 669F6211E9;
+	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761030279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
+	b=nJUF1SiiczGXdcJgqVdI10l5W3jAiIMIz/vFLGByHgcgBR1Fb76iL33fLu1/t2yL8DGw2i
+	A8oYP5lEGXkxJM/Eddlst0M+/f6CRN/eBvSy2zuPn64/pAUIG9KIyO7N8z80jCASAQsVwV
+	z4rzqZOHdJ2+1+fRfF8pzE4nqUsF7Lo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761030279;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
+	b=CDFaaZ1U4RVA4MONSr3k68hzq23fEQIPc481aV7/8k6aBmmEOlYMOcquhB9mxR5Vl7LSS+
+	agiGUBVWJP8mXxCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761030275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
+	b=JRo30k8rYa3bP1bS2eHkjrV16N81bi+ALvbpYx7eVyroiHV+TQBR/s5GvDqmV3CbY9yBb5
+	WjjXAXYK/czIxA3raAMTRliYok2qrqzZ9DqUntHjlXCiysMs+zdtrZ+GZopY4Og/kahyY8
+	c3Tg/TpZoxmOO12OqQWFl1eknt3OBFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761030275;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=UKa23txq5VZUcJ3KpkIgUf0mRuHZ2KAGGjulu7Eo99s=;
+	b=UY6yhdWykkfCRRy6ZK+k+gNZnRHDbGZoS0fdr/1JW+GyCqSE81lGzy8Qag0A9z1RALUzXW
+	6Z7z4QJlNfYtq8Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B696139D2;
+	Tue, 21 Oct 2025 07:04:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id owgTEoMw92h/OwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 21 Oct 2025 07:04:35 +0000
+Message-ID: <1e1376fd-1d38-4dde-918a-d4e937d4feac@suse.cz>
+Date: Tue, 21 Oct 2025 09:04:35 +0200
 MIME-Version: 1.0
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
- <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
- <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
- <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
- <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
- <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com> <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
-In-Reply-To: <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 20 Oct 2025 23:48:20 -0700
-X-Gmail-Original-Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
-X-Gm-Features: AS18NWDK_5ydoR83ck7SoROtH9BUHSuIRVHk1u1H4KWAOIdgu6-tq2E-NYuReAE
-Message-ID: <CACePvbWn1pAJg8xGfJFrWxpkJDakJA0GfgJc0W80EUYS6YhBAg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: YoungJun Park <youngjun.park@lge.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] slab: Avoid race on slab->obj_exts in
+ alloc_slab_obj_exts
+To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20251021010353.1187193-1-hao.ge@linux.dev>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251021010353.1187193-1-hao.ge@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 13C7A180007
-X-Stat-Signature: bjfuxwwuykxfq7w15w11o59m1yafdzgq
+X-Rspamd-Queue-Id: 5BD43C000A
+X-Stat-Signature: tqaicyoz1mxh7o5d816nu7kb45abgwd5
 X-Rspam-User: 
-X-HE-Tag: 1761029313-608665
-X-HE-Meta: U2FsdGVkX1/matQfuum8QotmgvRiNZKiuzQyWb0NFuDUYc76x86tn4GO5fzGF9cv0l4I2HsljiE3QwP3Apd3VD35iMJ+rfz1m+CUAc2Sw2W+9gu4jdpLK8skr1T/YXrJ8fMcDrINmWHRRPlHLdQi4EpJDH1/x444hwxsJ8144wTqJw9smqUldC8yB4JGDNfJ7/CxuvBytMWp6ngrSH66Mn552k3w3bd6ag5KOx8oQTjH8YzoZUxxJm+yXK1m/heXN2H/JT/1VOs193maEbXgrhgsdKqpQjVOhJ/UNlg/dIrpsrwamH5uAzQz9M/SJ7V7iAqAe6jn9hGGxys2CWvxAChmzTyP32GtWCsiONEpo+FX/K9hEvrvZVngIfFQpfcBa59GukFT1ynB74i+BQxIw7WalWLMFzzIyCe+FF1dyl+r3jycYR77/M/J+wLB6WOfTXWWNRk4kzcbHBsB3KC6952DIeDJEhQEH/N7C3IONZir/ZRu19dcbGP1mW0LsqZkFrFgI9BcngRR3ZGWffLUc8P/Mei+9ForD5FTZKSKKgkPxYkBp/YWPEkNBffqbo48AOtd7BPKcG6JCURFRofyTyv9Z4WsG/B9k3MnS7lNX60kMPLPIfXkNA7CIvmbOljxf0xUkf29rASL3525nrVLBmBzStLoQwYgw0QvfxqMuWI8DI5kihZiq4s67jMPgZ1Yx8FMUIMIGCJwo4PDFAhWVdtZUttUN5W1lOomesGeiMuLNdnNkgt73nyBjiy+Z6geFZN0NHjdzc3RNzark7oPRwR2DOLHUUE892bvUFiTAJPBpNqd49cWcWNdIC0Crd++3Mmej7YxkpH7HdCfEiLgnpC5tDDY0fZrTSV8uBD8ZRqQDWndsu357p6FDISHZSBEg2I9m6TwsJF2sI7kwGnAU7qkUVxfkw3/rvOB2nqkGpuAYI6kUJjAiLY2/WHhxeVf4875I9IXgkieoHNv6bt
- yK0mN/ba
- C0DlriOGZReOlgIFtR8G02z6Et17w1Sfxk0+rljMqnhjSbDV9L8u1ILI82MBoGPqNVTJ0yKwsZ2kLCeYrBDvzjRNYrv8M2iPF5kxK266BUU8qh4k50ov5xHTO1kjeIuWwB8VW4NOgtE7LRjOEfCXJrq0N062v0zpEp6dI71qIpecAfvjM+hpznGWSed52DBkA8R7DCyM9DhPrkKT81QVFGHZkRMY7S8Z5Mm5nHHKDGSftEPpjSapt1Fdv77tHx9zStCiSs8NhgKmEuH+9PYZf2onMatCNFKjUaY36KtFeaZXhMOlD4U7yIM+ZhrwqNo4TPSE4ZZT0MpkNbfQ=
+X-HE-Tag: 1761030285-51382
+X-HE-Meta: U2FsdGVkX1806iUl24RUclWsukLxzcroZrDsIlTI6cCnjB/NbRIYGjAUXdVww1Tsmm4ja6F5cRwp0OiNvZ33XHePpTSL2EdKrr8Om8eNrM6ToXTXVA6Ck1XLzDqhq/dOH4z1lu35W61U51eMJoRE52JRDyW2d7PYNQR8/mb6buxCxrum9CiBzSMxj1559oTW5umeDPK/UfwTz1Q3DuqP+9Ts25LTS1w+5WQ+5CzhLaatai+62AGz0QOn/oOOAA4D6kBXXFz05VGt/1QZL4KSCeMG/eqSOmqSeJaoYiXrMrEuhbf5U6Lq1t/FdZZR0F3GZuNUqbUWzgEHBSzvDvGJNyL5SJ3kfdJCZ/uJdburve5riJnAI87Pi7n7WtBQegudO48grk2icHCGPhOtRa8rsl50hn0xKipdbh0MMg4/5GrNIHX6AZUegR7Z+v6FHlffbNtFeuSW/jWRktz30jA1/7y9NCb5VT2TtMZgyIN+6R1Qk4jCAUJGTHbhzF2tYDwNqK1Wdi/nfFtC+aZGXRx3Tp5GsrmyWzNTQvXivIXmjKw/BaTxtZuhgnUhamRZxijTscpS9Zoys1xk5jA2w5dR9yGzW7fJ0FecJtJ8j+g5NvkRNvCt5m3tjR21nSDdyIbAsxVzrhDWP8fkKKT3tLJV09EeUbq+R3nONnn/tNu2k+Z+8sRsP86NJNQFe2zqgSejSVgnzxHC0KKDBtLsO+7CApAYDne0ewOUKYUppd3YNzYBPV+jkgx5yXsBuMwyRhdS4CW2d7kbbCwoCof2rWSfE4i/mtsWbcJ3MC8b9x6TP0spd4iXYA5i33m62/4nE66GSRL348z5Ynm9pf9o5Gs9r8/k6mKtoGU20NBIkIkX2UhJBrPWd8MyEusjYJORl1VTPspcc5N7EK32lA5vqhAZH7ieDekowt6pQrpZAQD+KkbdbdF9fiQdEKAnHzPvVI1A+z/LVgUSNCmMBspkkCv
+ 0dVXrzV1
+ /Lu2a5Sf6M7XaKExanCnXnx/NYlIrTuT0/VZivc/APmMXAPCpR2N82Oli4bhtXnbjPLzJhy8oLEQXTyECl8rRvJ09HmxSlGKzPQmyq3Q7S9B7/r3RsfCPrlT0YXzcGjzg5UPSIY3BAsH2zFIOsCiNdX+JKyl7xq5IxVMN12kEHRoc1xviF9sSkzH2ousMwLsxfLKpH5ihtjm07EtRNQPX6CuYuTK1DbPM+exl3smTfIK22tXDoH5OmWfXi1LVlfRoCUY0QBotVIY9zj6OVCBfOKkXuglieWv1N2b7QaBC9OcX7d3gSUOLNJ8wdh/6+47u9kGqh3RHZe+1gW4z0f5k4wfBs1fp6D0LuN4Rqw9xW8MfFO3WUigKQ7FZujKRKcxO535N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,171 +182,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 15, 2025 at 9:46=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Wed, Oct 15, 2025 at 2:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > On Wed, Oct 15, 2025 at 12:00=E2=80=AFPM Chris Li <chrisl@kernel.org> w=
-rote:
-> > >
-> > > On Tue, Oct 14, 2025 at 2:27=E2=80=AFPM Chris Li <chrisl@kernel.org> =
-wrote:
-> > > >
-> > > > On Sun, Oct 12, 2025 at 9:49=E2=80=AFAM Kairui Song <ryncsn@gmail.c=
-om> wrote:
-> > > > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > > > > > index cb2392ed8e0e..0d1924f6f495 100644
-> > > > > > > --- a/mm/swapfile.c
-> > > > > > > +++ b/mm/swapfile.c
-> > > > > > > @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swa=
-p_entry(struct swap_info_struct *si, int o
-> > > > > > >                         goto done;
-> > > > > > >         }
-> > > > > > >
-> > > > > > > -       /*
-> > > > > > > -        * We don't have free cluster but have some clusters =
-in discarding,
-> > > > > > > -        * do discard now and reclaim them.
-> > > > > > > -        */
-> > > > > > > -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_schedul=
-ed_discard(si))
-> > > > > > > -               goto new_cluster;
-> > > > > >
-> > > > > > Assume you follow my suggestion.
-> > > > > > Change this to some function to detect if there is a pending di=
-scard
-> > > > > > on this device. Return to the caller indicating that you need a
-> > > > > > discard for this device that has a pending discard.
-> > > > > > Add an output argument to indicate the discard device "discard"=
- if needed.
-> > > > >
-> > > > > The problem I just realized is that, if we just bail out here, we=
- are
-> > > > > forbidding order 0 to steal if there is any discarding cluster. W=
-e
-> > > > > just return here to let the caller handle the discard outside
-> > > > > the lock.
-> > > >
-> > > > Oh, yes, there might be a bit of change in behavior. However I can'=
-t
-> > > > see it is such a bad thing if we wait for the pending discard to
-> > > > complete before stealing and fragmenting the existing folio list. W=
-e
-> > > > will have less fragments compared to the original result. Again, my
-> > > > point is not that we always keep 100% the old behavior, then there =
-is
-> > > > no room for improvement.
-> > > >
-> > > > My point is that, are we doing the best we can in that situation,
-> > > > regardless how unlikely it is.
-> > > >
-> > > > >
-> > > > > It may just discard the cluster just fine, then retry from free c=
-lusters.
-> > > > > Then everything is fine, that's the easy part.
-> > > >
-> > > > Ack.
-> > > >
-> > > > > But it might also fail, and interestingly, in the failure case we=
- need
-> > > >
-> > > > Can you spell out the failure case you have in mind? Do you mean th=
-e
-> > > > discard did happen but another thread stole "the recently discarded
-> > > > then became free cluster"?
-> > > >
-> > > > Anyway, in such a case, the swap allocator should continue and find
-> > > > out we don't have things to discard now, it will continue to the
-> > > > "steal from other order > 0 list".
-> > > >
-> > > > > to try again as well. It might fail with a race with another disc=
-ard,
-> > > > > in that case order 0 steal is still feasible. Or it fail with
-> > > > > get_swap_device_info (we have to release the device to return her=
-e),
-> > > > > in that case we should go back to the plist and try other devices=
-.
-> > > >
-> > > > When stealing from the other order >0 list failed, we should try
-> > > > another device in the plist.
-> > > >
-> > > > >
-> > > > > This is doable but seems kind of fragile, we'll have something li=
-ke
-> > > > > this in the folio_alloc_swap function:
-> > > > >
-> > > > > local_lock(&percpu_swap_cluster.lock);
-> > > > > if (!swap_alloc_fast(&entry, order))
-> > > > >     swap_alloc_slow(&entry, order, &discard_si);
-> > > > > local_unlock(&percpu_swap_cluster.lock);
-> > > > >
-> > > > > +if (discard_si) {
-> > > >
-> > > > I feel the discard logic should be inside the swap_alloc_slow().
-> > > > There is a  plist_for_each_entry_safe(), inside that loop to do the
-> > > > discard and retry().
-> > > > If I previously suggested it change in here, sorry I have changed m=
-y
-> > > > mind after reasoning the code a bit more.
-> > >
-> > > Actually now I have given it a bit more thought, one thing I realized
-> > > is that you might need to hold the percpu_swap_cluster lock all the
-> > > time during allocation. That might force you to do the release lock
-> > > and discard in the current position.
-> > >
-> > > If that is the case, then just making the small change in your patch
-> > > to allow hold waiting to discard before trying the fragmentation list
-> > > might be good enough.
-> > >
-> > > Chris
-> > >
-> >
-> > Thanks, I was composing a reply on this and just saw your new comment.
-> > I agree with this.
->
-> Hmm, it turns out modifying V1 to handle non-order 0 allocation
-> failure also has some minor issues. Every mTHP SWAP allocation failure
-> will have a slight higher overhead due to the discard check. V1 is
-> fine since it only checks discard for order 0, and order 0 alloc
-> failure is uncommon and usually means OOM already.
->
-> I'm not saying V1 is the final solution, but I think maybe we can just
-> keep V1 as it is? That's easier for a stable backport too, and this is
+On 10/21/25 03:03, Hao Ge wrote:
+> From: Hao Ge <gehao@kylinos.cn>
+> 
+> If two competing threads enter alloc_slab_obj_exts() and one of them
+> fails to allocate the object extension vector, it might override the
+> valid slab->obj_exts allocated by the other thread with
+> OBJEXTS_ALLOC_FAIL. This will cause the thread that lost this race and
+> expects a valid pointer to dereference a NULL pointer later on.
+> 
+> Update slab->obj_exts atomically using cmpxchg() to avoid
+> slab->obj_exts overrides by racing threads.
+> 
+> Thanks for Vlastimil and Suren's help with debugging.
+> 
+> Fixes: f7381b911640 ("slab: mark slab->obj_exts allocation failures unconditionally")
+> Cc: <stable@vger.kernel.org>
+> Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Hao Ge <gehao@kylinos.cn>
 
-I am fine with that, assuming you need to adjust the presentation to
-push V1 as hotfix. I can ack your newer  patch to adjust the
-presentation.
+Added to slab/for-next-fixes, thanks!
 
-> doing far better than what it was like. The sync discard was added in
-> 2013 and the later added percpu cluster at the same year never treated
-> it carefully. And the discard during allocation after recent swap
-> allocator rework has been kind of broken for a while.
->
-> To optimize it further in a clean way, we have to reverse the
-> allocator's handling order of the plist and fast / slow path. Current
-> order is local_lock -> fast -> slow (plist).
+> ---
+> v3: According to Suren's suggestion, simplify the commit message and the code comments.
+>     Thanks for Suren.
+> 
+> v2: Incorporate handling for the scenario where, if mark_failed_objexts_alloc wins the race,
+>     the other process (that previously succeeded in allocation) will lose the race, based on Suren's suggestion.
+>     Add Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  mm/slub.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 2e4340c75be2..d4403341c9df 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2054,7 +2054,7 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+>  
+>  static inline void mark_failed_objexts_alloc(struct slab *slab)
+>  {
+> -	slab->obj_exts = OBJEXTS_ALLOC_FAIL;
+> +	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
+>  }
+>  
+>  static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+> @@ -2136,6 +2136,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  #ifdef CONFIG_MEMCG
+>  	new_exts |= MEMCG_DATA_OBJEXTS;
+>  #endif
+> +retry:
+>  	old_exts = READ_ONCE(slab->obj_exts);
+>  	handle_failed_objexts_alloc(old_exts, vec, objects);
+>  	if (new_slab) {
+> @@ -2145,8 +2146,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		 * be simply assigned.
+>  		 */
+>  		slab->obj_exts = new_exts;
+> -	} else if ((old_exts & ~OBJEXTS_FLAGS_MASK) ||
+> -		   cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
+> +	} else if (old_exts & ~OBJEXTS_FLAGS_MASK) {
+>  		/*
+>  		 * If the slab is already in use, somebody can allocate and
+>  		 * assign slabobj_exts in parallel. In this case the existing
+> @@ -2158,6 +2158,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		else
+>  			kfree(vec);
+>  		return 0;
+> +	} else if (cmpxchg(&slab->obj_exts, old_exts, new_exts) != old_exts) {
+> +		/* Retry if a racing thread changed slab->obj_exts from under us. */
+> +		goto retry;
+>  	}
+>  
+>  	if (allow_spin)
 
-I like that. I think that is the eventual way to go. I want to see how
-it integrates with the swap.tiers patches. If you let me pick, I would
-go straight with this one for 6.19.
-
->
-> We can walk the plist first, then do the fast / slow path: plist (or
-> maybe something faster than plist but handles the priority) ->
-> local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
-> too I think). That way we don't need to rewalk the plist after
-> releasing the local_lock and save a lot of trouble. I remember I
-> discussed with Youngjun on this sometime ago in the mail list, I know
-> things have changed a lot but some ideas seems are still similar. I
-> think his series is moving the percpu cluster into each device (si),
-> we can also move the local_lock there, which is just what I'm talking
-> about here.
-
-Ack. We will need to see both patches to figure out how to integrate
-them together. Right now we have two moving parts. More to the point
-that we get the eventual patch sooner.
-
-Chris
 
