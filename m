@@ -4,116 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85C65CCD1A5
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 09:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA873CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 09:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3D588E001E; Tue, 21 Oct 2025 05:33:19 -0400 (EDT)
+	id 45E298E001A; Tue, 21 Oct 2025 05:38:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E158F8E0002; Tue, 21 Oct 2025 05:33:19 -0400 (EDT)
+	id 40F248E0002; Tue, 21 Oct 2025 05:38:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2A838E001E; Tue, 21 Oct 2025 05:33:19 -0400 (EDT)
+	id 2AF2D8E001A; Tue, 21 Oct 2025 05:38:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C3ACF8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:33:19 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89CE01A0342
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:33:19 +0000 (UTC)
-X-FDA: 84021608118.10.5ECAC37
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 408B910000D
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:33:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vsxheCdR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1XLWtYVd;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cT5C10Rg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dA7tqWQ0;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 132638E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 05:38:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B51AB1A042E
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:38:06 +0000 (UTC)
+X-FDA: 84021620172.01.6789551
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3E90A160008
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 09:38:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jSrjCmp6;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761039197;
+	s=arc-20220608; t=1761039484;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l6jrOugP6myyf/5E3eorz/pv7W1Npv0nq8xpovchIB0=;
-	b=GzoxnHR9Gy7zbI0UeQuvPwU/8dBfUEuU9egKFBBCqLmt61rDjnpp+o3MXZOH/WhXs7MkD/
-	ELCD5AFaXM6SJyMQBT8x+zZTrfAriouiPeC9OBR99KFCB1a7fsxa7uWelHx31Fy5843iDo
-	/EUQfY8QEkblvYfVohCZASf/Ujg4vE8=
+	bh=Q29DhQwTAK6dd4ZAsLxjzERt3jbFaX1obxxBjr33yAU=;
+	b=tJX/O+N50+zAmKDWu8swKx5IYC4SpkNXMDi4FSiC8gEvH/0kEuqlQ8tTMtcVlU8Tlvxbup
+	DPbGoK84dEZkMntw8Qh0X+S7RXqOjIkMYjiIay58yF+eeolJ2pB+huACuBSu+XPNeBqzjp
+	gv3Kg4G3Cja/PDSsdwcuPkygTab6fx0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vsxheCdR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1XLWtYVd;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cT5C10Rg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dA7tqWQ0;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761039197; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jSrjCmp6;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761039484; a=rsa-sha256;
 	cv=none;
-	b=4e11JLL+3Vrh7tCgkD4b1ipnH5e8qpOao8TOdl/5RSByB4PFYsmKsz+zOP17Pckbp7+guW
-	uryT25ptPSp1ZKoxXc2jssOD3z9VGlEhpAu822Nok3S1VHpxFLpXEhMeA1SJhDJ9423jz8
-	dqlhQ4+FDgP9HI1AcAcZR5XdR8dbTdA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 838F81F789;
-	Tue, 21 Oct 2025 09:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761039191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6jrOugP6myyf/5E3eorz/pv7W1Npv0nq8xpovchIB0=;
-	b=vsxheCdRjrOHhnzU9sliWiF4N1NvoOQhIr4hyVbo6LiXsDs0Hkk9+OOkVI/H+JyMTFvXBE
-	BaByXhHFIUJ0GznoGxDdH/9GOuS7Zm2MMgZQo3boWzU4G03jizOIuqNu9FrnwEDV3Iy/S5
-	WXpNfyOV6nkfcoivEHiCH0398uo2qaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761039191;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6jrOugP6myyf/5E3eorz/pv7W1Npv0nq8xpovchIB0=;
-	b=1XLWtYVd7w2SRA+Gd1uEk/ACLhQAyAR1CPT1894L0N4uV5JF0eEZS1tRZN/cCM3+KE85P+
-	tc9mKrOAfVU8dYAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761039187; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6jrOugP6myyf/5E3eorz/pv7W1Npv0nq8xpovchIB0=;
-	b=cT5C10RgzTrCqIKTEejIt3D16fqA5h0XfPqNjSWvFPHszuWGmEqQYe15/q6wRAXg8kewy+
-	GbVaVYp5occgadJn+pv2rgZw9wwV7CUsTTvNC3spv4W5x0JBTzj2Ct4ZCRF272ve0v/pjx
-	LZucASHxDmUeJpj+6TU0RIOu2lR8IJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761039187;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6jrOugP6myyf/5E3eorz/pv7W1Npv0nq8xpovchIB0=;
-	b=dA7tqWQ0sKLRQ7FfVYSjol2Z/XT2xHVSi0VoLKONvL3WlMMwsLpcdBrpuzwlVsJ2aRUXlE
-	bJ9NN2iW0zzeDvDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7164813A38;
-	Tue, 21 Oct 2025 09:33:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kCaqG1NT92hITQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 21 Oct 2025 09:33:07 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 159C1A0990; Tue, 21 Oct 2025 11:33:03 +0200 (CEST)
-Date: Tue, 21 Oct 2025 11:33:03 +0200
-From: Jan Kara <jack@suse.cz>
-To: David Hildenbrand <david@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Matthew Wilcox <willy@infradead.org>, Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, 
-	djwong@kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
+	b=ZH/1Lit/DbllNS6LhDofsaKzYw+zxtkV+JRSHvNey+XdzySsLTesdceBSiChMAGxLo6kXL
+	Piw5ENb1kBYIa/gn1JrNG57ZzyX5B2g71bzBNyOVCDJ6N2ud3MU12/yBFsWipgeinDvgTJ
+	ljgqYdEHcU2OKAYa/AyJyfzjfO8Xc9s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761039483;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Q29DhQwTAK6dd4ZAsLxjzERt3jbFaX1obxxBjr33yAU=;
+	b=jSrjCmp66Rt/Zd6RcY7cr660wKbHeW293RBAnksNP7JEpU1hAHx5nPn9soPAC2HdULNjZK
+	fRCP5hNPq1x+50NOK8Hs8NvELcwNKAMRci391TTQEq3fKZDyvMxcE7vsLGyK5KGT+Qqzhu
+	r3/bAnAvGrikxGU+xS2dwCvqFTL/PE0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-BUUwhXYvMUWPWo4DA60IHQ-1; Tue, 21 Oct 2025 05:38:02 -0400
+X-MC-Unique: BUUwhXYvMUWPWo4DA60IHQ-1
+X-Mimecast-MFC-AGG-ID: BUUwhXYvMUWPWo4DA60IHQ_1761039479
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3f924ae2a89so6198980f8f.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 02:38:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761039479; x=1761644279;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q29DhQwTAK6dd4ZAsLxjzERt3jbFaX1obxxBjr33yAU=;
+        b=i28hiw5fCSB3pjuzquNFjNRx321/8S0GUBYaWEB6QJE3GqDqQCwhcSI/IfYy6Saa0z
+         Z6w3X9MlzvMXyzRq6VJk35lF6MzYDNrKT4wN8XHPbAg0exlIjbj/WSM48+CNP85jDexw
+         P/KkyzqlAIBYjNU5YJiajSz0euPJV3GfskNlc5UmFA1BoV/sABfrnLSSSNwhnBFFYMEV
+         9pQ0xen42p61yBe8a6fsV+euw8reTNrwlBpoV3aRYKswUPNvqLTPyW39KrR1QYaHByjt
+         /8WMcR8Of1glpCAD1GD832VOmKgpfaSK9qXdfURZ2m166aVy8FD+J3iIRSe40iLIYxqf
+         so/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUafbYCMTnmBegv7L3UX1YEz0FLdQpI/0+IPGED5TzUdyXUNlTi5fnWoSFfFWa+MRE0NoYK20VcAA==@kvack.org
+X-Gm-Message-State: AOJu0YzVv6sAU5j9YG2QlkP0EwIdl26OTtWeb0PdleIFhyciQiJXpu0Q
+	0vPTRSppNaw7n3djJlcpG1qKLoG6OsJLLLSnSwUppngpxMrXpO88FDb0cyF+wjU2aIjiWQikDKl
+	ULEg8P3+fhYjAI9ASf4Pr52W9r4L4KHOeIQsvNJYlopU4nmAYy+3A
+X-Gm-Gg: ASbGncuKZdUh8w3TznskWk76nWfW0Khh2UgRVQ6xN99qlD5hgsmrvcDVC1wz/08lfvJ
+	dDIzyb6Xq1XI9yJj+Jf0K/LOW8GY1nQj8cR9djr3gY7B4IjDF1fnD3dn+UO7rUq2nw8EvFCi/W9
+	RCq+hsKM+Uz1boMbl2hvRRBbH1scNiRpI7qbRv4VBezZrc0tXftSb8paXvmWlIR/6VbeIX80PU7
+	TyAwdYV3Cfh/zjeZeHR0CfdDnHRuNk6PUu7uA596c9vC73tS7Y5sird3f/ddqq5ZgYKwIHLMRlB
+	3P6JzFPH4EeVQxSTBld7C9aTWksSqE/C5hQy3qKLQYxlOgOi5jhM1x1IGAT2+myCDzZ3a8NTngQ
+	YRMddfuRBQp8/txqIDs4/DLTBccOhA6yiH/N4waqnemuTw/lydzfHwreL8vauCmMu0xl/dQ/vsA
+	vnKTvDNKrKzoOEDE78qMrz8WLVZEo=
+X-Received: by 2002:a5d:64c4:0:b0:40f:5eb7:f234 with SMTP id ffacd0b85a97d-42704d442f9mr12220838f8f.5.1761039479074;
+        Tue, 21 Oct 2025 02:37:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKruvi/TAKluPv6cz2boZrb3dbhZ+r79GGju1INC+ReltJyDrEtS+cBV3xo2qL/hT92CNu2g==
+X-Received: by 2002:a5d:64c4:0:b0:40f:5eb7:f234 with SMTP id ffacd0b85a97d-42704d442f9mr12220818f8f.5.1761039478657;
+        Tue, 21 Oct 2025 02:37:58 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5a0f19sm19610031f8f.9.2025.10.21.02.37.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 02:37:58 -0700 (PDT)
+Message-ID: <750cfcac-e048-4fee-bba9-6e84edb7bbe0@redhat.com>
+Date: Tue, 21 Oct 2025 11:37:57 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
  trust the bio from direct IO
-Message-ID: <rizci7wwm7ncrc6uf7ibtiap52rqghe7rt6ecrcoyp22otqwu4@bqksgiaxlc5v>
+To: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Qu Wenruo <wqu@suse.com>,
+ linux-btrfs@vger.kernel.org, djwong@kernel.org, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, martin.petersen@oracle.com, jack@suse.com
 References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.com>
  <aPYIS5rDfXhNNDHP@infradead.org>
  <56o3re2wspflt32t6mrfg66dec4hneuixheroax2lmo2ilcgay@zehhm5yaupav>
@@ -123,19 +120,67 @@ References: <1ee861df6fbd8bf45ab42154f429a31819294352.1760951886.git.wqu@suse.co
  <xc2orfhavfqaxrmxtsbf4kepglfujjodvhfzhzfawwaxlyrhlb@gammchkzoh2m>
  <5bd1d360-bee0-4fa2-80c8-476519e98b00@redhat.com>
  <aPc7HVRJYXA1hT8h@infradead.org>
- <32a9b501-742d-4954-9207-bb7d0c08fccb@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <32a9b501-742d-4954-9207-bb7d0c08fccb@redhat.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 408B910000D
-X-Stat-Signature: 8swgro79m6kxsdf4rcm36y53smdjff77
+ <rlu3rbmpktq5f3vgex3zlfjhivyohkhr5whpdmv3lscsgcjs7r@4zqutcey7kib>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <rlu3rbmpktq5f3vgex3zlfjhivyohkhr5whpdmv3lscsgcjs7r@4zqutcey7kib>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: enhxxV243-eyYWCdjSZCVS9inwttiJzvLGjhcsnHBcQ_1761039479
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: x3cfkffbjtdw6scqbyop7ra5z6sxg4gt
+X-Rspamd-Queue-Id: 3E90A160008
 X-Rspam-User: 
-X-HE-Tag: 1761039197-713657
-X-HE-Meta: U2FsdGVkX18Ch6Atq8tQvPBkHxYbKsr2RbV7R9w4mziMNqbIj99V9huS94a7pzjwbfEsT2IN9GP0Zwqpx0mN/BEoMZyDFbqhOyHfuh81T4BddAV6P+Cx0tv5FFBzS+T8GzIX34r2qMmxmIrdtzXKEygGMzGW0NueAdS4diyprZDkJ9JjMnLPIrUyG8rBg8TOxpAlv9Wbq5sGvOSJrVMtEU1lcB43/VU/hnD3MeeYJWV50uV1WsuACav6aiw8sUPPx/a2dblMPiULHeOLYvvVjvJXZ7JlU+fWtCAlZcfWdq5VHyru6kBcXE2Bx5i8owPbWpwLoxqCFaIH9KFVmpWXsPaqPJgRjbGiZJR1mF2EW33gYs+0C2AYctHIla8cjFlVS6jlZ1VX+jp0Yk/4iIpZ071d7mloJ2ybSOsRzKs2zkj6DfULm8S4tiQ6P+zfYhq4AZBTwei++qS6+bRktJenkb7ITqBi6i5crlMvkFhhT94acmhM/ci3ZY4+VPFjnurLlbvzwI2K6psV3YxliC6ISnFfETkaM+bzHRmFaSfSq7pfhDiZNgF03Wys8hgzQcNy3WWJz8jGJlTgyzMiFecoUzVffql04Smr/1leLUjmu+dVGUPZ1ye1jhQWEuRt05aBZVgaGLC2pwPeOHHzeYI14ZGD46Ho8WEZOW6IcBVCBdkMryxJ4Drl0buMwB0VQ+VCO0RSyEM330DTr3cYG3xmHzDMaz8KFDQEsj42Q/JhCimxrMgBrMnqQFZI0fgu5muBaTzA2hPy8GCgKK8pgD5YsGDar6LhHptxvY0DA4bSkqRLvXYS/+o14RV8IqKAGcm2gxp+oMpcf9ZEgAgiOnFuOHWBPzRtqho6FBbu+MyXMNYq2X2wlgoGOmfm+4cRemVaFqcI3oXPcI/Jrbfw07YBHakMvgSwxOj20IxlE2d7ZioPLS9jMc+sdLV/3zi2cmKgBxfsez8ZAsnEpzrY7Ue
- 3SECZOMx
- p8NYnoTYHwKhEwDpqQ76Qs5crYqzQhEOoCepSK2KR5gOkqMZ/7Tknv+EUtEADPH6hJgYHM9mhnmOpUXsqlrfwoUnAwN3oe+0oloaVEf7CbnS9lNvv1NovmquauQ1w6oJPCijRXScZcXnXZkmrc1Gdw2NCqGa8JUAQRC+czknZDLgqLLErWCMU4mct+xKCqv1LIR+HA9TXzGxsrsCr4j+cs1MKMSMZpG9RTD+mWcVOtYK81pVjWEOeCL5ioYUpb7IoKyIs5dpm/OcCSF9Scj3zWVNdsaW5k7ApWlXL3GeAEFerxJi5L0vRNi07fShK/d5spe/mWpnRIJYQ83jK7WVzXzlX7EmrKV0jBzxQ8jsPAF59cBfjgTkiNr5dMj5x7Q20y6ZPg5+9mDB6Rrc=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761039484-335849
+X-HE-Meta: U2FsdGVkX1++X5WRigmTXCJ3ZiZliv2wv353N9D/VDU9YRk/WyvlGpurNqdwk+8PhET2l2lHs70A3NpIG3udiRnxEWuMgaywa43YPfLWspdiJ7U/Hz3PzwpHKkyPsDBa90EMXFriJ3uomtoUSJK0LyqZr4U1gL12kgxga1CATc+vZgZglmOde9F7BInaRYbecM5o3tlR1CK9KAfsEouEKTlLD71mH9Yx/QX88d0llhgSDAfmvQ+M6DC48FSPBstHTqCzrXhAYKmWtC0YduCGxUxZ1nzZnm4JZ9JKI6NFjoNpdy9mg96AHf/GAKi3VNyRh/dPkzF0NNXnfR0ZokXtZ91ewIXbnsGLT/jgfAgiC1W3Lz2MJOV22uxtFvQ/0+w4JVCA4nhFDA1oapUOMci6FONRX8i98kJckZTTzpI5lcF1+Sn577F6BIP47azAJYsPFc4PyZSZVgJz9Nrh1pTLu6R4mUDL6BTZSEr0CBxRDCH4KIuVMZxk9ogch4x04GR+ym0infPc4ixfmiQl80XkU69gbzP2wnBBuHS5JMgk735HxckWi55zNOWvxRZqaytiEpsWpn11JEUPhDnYIvDbKJDmrFtbtIllaraVolAMFXmuknQF93a44ynW6i+LHXrk/WGg0AoBbn0zLuEhCOox+MMg74+oF2uPJSwHZnyVQeVThFpbNyJc+OO92TlMYuG2tb1leJTaW1HEElJVzFCeCdryMYfDX8OU0h7PJFbpDCZoab2ZcBQZ2ryYrvXgSPdDGinZebUf8TWYZmn4VxTZh27naF5frwKqYSpRf3UoqQeyUN3H1lMPisHSQAQrxrIMrQyjXnZJeTZjuLa4kMzoEhch42zeEilSP52oxHrBieqqlBzjNBt/rmF7deYihAmX5XqA4t33cMBMBHr9bahd9Mh8M/ie2ZfMiq2qLtJjD/c2MMY+7sMSfyNLH4wgOgx1sDY3tYnJpJue08jV+4C
+ JmsPwxTH
+ S4D4eBE0RMZmZAq4zD1xI9g+r0jMBsfEmrFOcmX6v3f5+Gfedvn43S/hh1X6QVey0IMF3eX81hE1e5tvPh1a+FDLwS044UBFnWkKykaibWUOp00fEn51FIlU/qfYUptGwrLLX84NM6ldce4fRyEjSR4A3VzY/pbRF7oFhNrVD2kEIUfQfzQlywzPZDoIQvBIM3Ct/eZ0cosHVmC8OhqZmSgSU2/b4hsBFl5i6Phr28rgHu9tH3mYteHU/iVz281tG1t5PZMmX6P8dni6WYK405IHD+mwt5J61so+JBSBYeglBX6SF88YqrSiAzo5oWvdD8iGntqOBm7QvH1xGzeRyA0VKHYKTI18UrbAzI9ieQaZYFCExyybHKpIRVBsmrzMVWJqbIO0O+qj50nGeR3uSVlbRAbJfoK+i4ypa2iyCMDs1wlM+GNDgMseoe4XLTY6zWfPB2v7YQHuqWxuxtObKCifCEzvjyPfxDxN4di6AVjVx9nJf6DiyN6alNr9DnhBZp47xw9JFEHfF0GonTRBwNMjeChBqUPPvdZR5a8mRUr3SoJvT7kxNCg0I3KrB66/sfZeBcUdhHwiyK8kdSq9MzX7nD0cb3NiSQ00m
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,49 +189,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 21-10-25 09:57:08, David Hildenbrand wrote:
-> On 21.10.25 09:49, Christoph Hellwig wrote:
-> > On Mon, Oct 20, 2025 at 09:00:50PM +0200, David Hildenbrand wrote:
-> > > Just FYI, because it might be interesting in this context.
-> > > 
-> > > For anonymous memory we have this working by only writing the folio out if
-> > > it is completely unmapped and there are no unexpected folio references/pins
-> > > (see pageout()), and only allowing to write to such a folio ("reuse") if
-> > > SWP_STABLE_WRITES is not set (see do_swap_page()).
-> > > 
-> > > So once we start writeback the folio has no writable page table mappings
-> > > (unmapped) and no GUP pins. Consequently, when trying to write to it we can
-> > > just fallback to creating a page copy without causing trouble with GUP pins.
-> > 
-> > Yeah.  But anonymous is the easy case, the pain is direct I/O to file
-> > mappings.  Mapping the right answer is to just fail pinning them and fall
-> > back to (dontcache) buffered I/O.
+On 21.10.25 11:22, Jan Kara wrote:
+> On Tue 21-10-25 00:49:49, Christoph Hellwig wrote:
+>> On Mon, Oct 20, 2025 at 09:00:50PM +0200, David Hildenbrand wrote:
+>>> Just FYI, because it might be interesting in this context.
+>>>
+>>> For anonymous memory we have this working by only writing the folio out if
+>>> it is completely unmapped and there are no unexpected folio references/pins
+>>> (see pageout()), and only allowing to write to such a folio ("reuse") if
+>>> SWP_STABLE_WRITES is not set (see do_swap_page()).
+>>>
+>>> So once we start writeback the folio has no writable page table mappings
+>>> (unmapped) and no GUP pins. Consequently, when trying to write to it we can
+>>> just fallback to creating a page copy without causing trouble with GUP pins.
+>>
+>> Yeah.  But anonymous is the easy case, the pain is direct I/O to file
+>> mappings.  Mapping the right answer is to just fail pinning them and fall
+>> back to (dontcache) buffered I/O.
 > 
-> Right, I think the rules could likely be
+> I agree file mappings are more painful but we can also have interesting
+> cases with anon pages:
 > 
-> a) Don't start writeback to such devices if there may be GUP pins (o
-> writeble PTEs)
+> P - anon page
 > 
-> b) Don't allow FOLL_WRITE GUP pins if there is writeback to such a device
-> 
-> Regarding b), I would have thought that GUP would find the PTE to not be
-> writable and consequently trigger a page fault first to make it writable?
-> And I'd have thought that we cannot make such a PTE writable while there is
-> writeback to such a device going on (otherwise the CPU could just cause
-> trouble).
+> Thread 1				Thread 2
+> setup DIO read to P			setup DIO write from P
 
-See some of the cases in my reply to Christoph. It is also stuff like:
+Ah, I was talking about the interaction between GUP and having 
+BLK_FEAT_STABLE_WRITES set on the swap backend.
 
-c) Don't allow FOLL_WRITE GUP pins or writeable mapping if there are *any*
-pins to the page.
+I guess what you mean here is: GUP from/to anon pages to/from a device 
+that has BLK_FEAT_STABLE_WRITES?
 
-And we'd have to write-protect the page in the page tables at the moment we
-obtain the FOLL_WRITE GUP pin to make sure the pin owner is the only thread
-able to modify that page contents while the DIO is running.
+So while we are writing to the device using the anon page as a source, 
+the anon page will get modified.
 
-								Honza
+I did not expect that to trigger checksum failures, but I can see the 
+problem now.
 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers
+
+David / dhildenb
+
 
