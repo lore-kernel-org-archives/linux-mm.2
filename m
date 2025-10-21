@@ -4,120 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2417BCCD19F
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Oct 2025 23:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18A66CCD19F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 00:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 367D98E0006; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
+	id DDFB98E0006; Mon, 20 Oct 2025 20:08:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33FF68E0002; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
+	id DB7A08E0002; Mon, 20 Oct 2025 20:08:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255A98E0006; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
+	id CCCFB8E0006; Mon, 20 Oct 2025 20:08:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 108CA8E0002
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 19:41:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A17D3586A6
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:41:18 +0000 (UTC)
-X-FDA: 84020116236.24.E0622AA
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BF054100004
-	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 23:41:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fGwJhfWV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=shy828301@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BBEEB8E0002
+	for <linux-mm@kvack.org>; Mon, 20 Oct 2025 20:08:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A1C2119A6D
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 00:08:59 +0000 (UTC)
+X-FDA: 84020185998.25.3761009
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AD103C0006
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 00:08:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HP8nUGAr;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761003676;
+	s=arc-20220608; t=1761005337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
-	b=iTk+W5Qt0E3VkM2w/48wQkgahQN0o2hP3lBR0z/WaKa18lgCaPKMLu4iKXIMvh9+EBIKPb
-	jpTOurXBpAbSXgmMR2apKgl8YsJN9ue90Uv+/KI/0H+cs82qYNDub6nFZHG7wCI0cFasqy
-	HyzFl++WPsWUXRI3iQcGCVGZDl2GtUY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761003676; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fMeUvazcqYNdgA2hGT8nnzdOzY6TaJPwIdfsW5qe5JI=;
+	b=zJZ2iIOxvrNJbYVDbG1Q4DlFmzTndALbkFDO0lrM3g4ELiXfUqK7wtfAssqWguC3BXcGyE
+	eXJ7zJiWK3ro7kS9yQ+O/MkptC9SHF/fh/6sCKv8Ui5utVHE2dkClUi7GT3wiFCXRgODqr
+	SEVF+m4iA2ukHGacJ5f7jpm5IQLaRjc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761005337; a=rsa-sha256;
 	cv=none;
-	b=a8Tzb994SRoEvoXIOpuBM0lRN6/sQEdV6+UFeO+HX9ULfT33f6uvS/wPJUCw73xWpFjUOV
-	QrSEzNbMF3KywIzFgHN0xPCuahL1SXk0ElYJ9ZIha8yi01MnDTf/RitlugZD1Nt/yNqv5u
-	EAl3iL5JWyn0BYRcua01wLCFYFv84r0=
+	b=Bl+hC7HB1aCLbKP5Yokir9XJtcaCeEB4Ee5mgUyNnlOexZuQlK3/X4Ld5MpIXppk9wjD2U
+	iqiMOEZsyVqmwqU7XaePze6R39xIR5XA1Mk01Hz4mkGwV1ZLpaZESiFyvD+ctV6iqeIeK0
+	lsb9ymiME5K9MYpl85oeSxnhQymVsuc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fGwJhfWV;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=shy828301@gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63c11011e01so7926104a12.2
-        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 16:41:16 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=HP8nUGAr;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-932bced8519so2465569241.1
+        for <linux-mm@kvack.org>; Mon, 20 Oct 2025 17:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761003675; x=1761608475; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
-        b=fGwJhfWVHZOfhQZCEVLGCFyeE8FrEe/u1LtqAgR9YPJTRca+aeDDizKGeyn3ch70GB
-         8B0VEzglGuQpL/nQzOyWVHAclfd0PszqyAj+BzJQtzqh2y6DT/1/UiQ4sHD61vWW+Y5b
-         9xCbSpfd+U05dLtgV4z4dOfgTqO/mfuHJuA2Z7L8/2KHoiHsjTEu1yAB3b+PsQBtK53N
-         J76f2VIOo8T/d8cknPHCl38eXDhFoyTmM7xdbWtgIYBJrirUNwwV7mH8K7jBVQgplB08
-         WQpAYvU5ICqAlDzVnFZAJE8AYrNbN3M7QZlRPOUh5/QAhsgG1k90+v6xd+MFeIaclrUu
-         hMQg==
+        d=soleen.com; s=google; t=1761005336; x=1761610136; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fMeUvazcqYNdgA2hGT8nnzdOzY6TaJPwIdfsW5qe5JI=;
+        b=HP8nUGArSBnN4b3yH0d2JKxhjcOulLaaVWxu+lozk2KLC1KHbEUHdvIYAcjUsGNYVz
+         mcYSaR96iYd0pHKiYbOsojDp54tMZ3aT1rCeiXd9S9yokDzlg/3ycnfyY53s0QieSd5/
+         0gH7nfPsz55TlNRfOuHGepI5QeZVw7iW9Bbpp+5IvpkPcN2U76peYn84dqgu9s1n72O7
+         TgKwgduVhQBuRvwwrfz/rEdDJoD1JD9l2aOs9XcluNVNidENpN2vDnHdTl7jisI5hUR4
+         /HuDrSyVZUAoO4/Oc9szyXO5lvQpplv5tCfRP+IykmyD6mMQySL4J4uMSS7ogvzKQL16
+         vWzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761003675; x=1761608475;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NVHGg12fLQlilE+T8MY9DYY29gRCesjGg0Rsi3pSnR8=;
-        b=Dl1qf1Q96KV2o9p9X8re13TQpWyjkSHjBpZh/ggMRS1wcu0dbfMn+4Pe20AtY3e2LA
-         jcUpKjyY0P1wWPJw2ZYGbgq2xS3S3NEJCJ10I18mmwS/YW4ioA1DndklaMRaLb5ecKse
-         j1o7nBrIxfXXx6SITk9NfkV7jJ6/9d6I9KC/Jcc3a2aR1SMdr/PmtpqCY3nYeQFWC7b1
-         WuMlvqe6cOGrz0S9mEyC8EPPAA/IZGMPs5ufEzcIP4JODuTDiWt/Z9/jFhNiKzpS7g13
-         7BtKYGfIdkmwcSJdQyM0x4xQ4M/j4SMVTxtwFjvLs/bm288SVrvX+jeSdKaL6bYRIAWy
-         eyKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMM7iTg4iMsvY7kCdP0jrzfiB/o1d4t0gatxEHo2Ku+LiTBptH+HCxjHo7mFsbewb5ML5nIsfSxw==@kvack.org
-X-Gm-Message-State: AOJu0Ywp5Zb767NWc7SIA020wkctwaoDjv7TMkpn5VQKNmWqeemMLGiZ
-	nXDc0sX5dP9ALxF3Sx50htFB3iiatSviUNHbZLmWuBIg3f/Ph6ouQehWG3P0IA0MACErE7JzxZU
-	s4Ldz8kWkkh3zrhAGuRupFjuBWMNdJUA=
-X-Gm-Gg: ASbGncuPjUGv0jvDO3PCOn8d2ODozi5p99eO9THJSYgzcCyP9W9mjqW406Sx/jeujXE
-	IVeku1r3EMRHiFHQCc6YrIQQD9YAwi6aqagL0l52vGGxS0I2Wsiw/NIKxo13DK7c37zysp3pUrt
-	y0C3PRF6pcAdwUE5A2bWdi4zT8Eulstlbi3oVRWy3PLM/KMG3c7JIqnnpq23fLc/KiPqr8GgpUK
-	OqaP3YQ6rHlacb80r2vpt5kT1yQ52VUCAbCJeNV2sM77gp0fltOdxs2x8Et+KwAO7235PazKw==
-X-Google-Smtp-Source: AGHT+IGCVi7HkPALGAh50zQQO6fGSMOaI+jhXkh2/BsTg7hBG14q/tm4iEaZSqUMR+1QulKNUnpwT7IfU7bfzg9SJp0=
-X-Received: by 2002:a05:6402:84d:b0:63c:4537:75c0 with SMTP id
- 4fb4d7f45d1cf-63c45377875mr9609309a12.38.1761003674815; Mon, 20 Oct 2025
- 16:41:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761005336; x=1761610136;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fMeUvazcqYNdgA2hGT8nnzdOzY6TaJPwIdfsW5qe5JI=;
+        b=VZodrylDK9PfcJYi5NOi3mEtBLfLmsIcm+2wjRMkre2TjpS9ZKgEABLkGBDxEYUnZM
+         u7e+dCv3HUshBdRUUBBx/stIdPXkzAj0xmWqXaZQsgW5P2Iguy84p5A7ppt1sQXxWKHi
+         4NV5MxWPsYcvywH28E77ofWPlEck080meAM6XZQeR9hlL2gbhTl673A0X+YlwbwDQaXA
+         JDWOHau25BWoloubF4CwDeL3aXKIBBEr5MDKlWbQKQBV5otgvoJ80SQeDQnKxeI3pbjf
+         Y0BL3SpMbHstKLwY90WI7eRXnJbYPF2osMnTIjl2UYknCuE4Z+GysUwoTU4GGzDlqQMe
+         HzZg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3Y5+v3mhK+Vm/QZmyTtobT+6q6LEO4nEKK4M9TncXsfLeXrc47/oEhWEBXT4oLDVfcWI7/WMZ2A==@kvack.org
+X-Gm-Message-State: AOJu0Yy/eA6a32GzSFEF9247yLwW1Wc8JhXb9VZeaMIMgJKy3ZBMsQBl
+	/mFxtQG4cw6psRAjktDVu6tHcbONpP25Ihj/7r3ExFfgqD9a03IxbZyotU+Ru0IRYdg=
+X-Gm-Gg: ASbGncvPv0iOHXHo1r4SSiqi0jIG/i9mZw/cwnrhyQgjB1LOHNW9uK6lUTe6l5kKF3j
+	KuxIyIEE+3jjBBsiOEcmxYCmX5GgycBtxQRJL1ZHZPQ2+OJefmLSIs9L9QxQedx/yNs6aZSHdGx
+	EmlNTQjHRN7efx++PFY96IxxVMVdA8rlCjS2stgISr9sl644QYXpIKEFQA14sc9ThzGXoz9s7jd
+	B4G9+WgsVlPdFXkm09LjVxDxTwtIH3RT1cmV0Al2KDAQuqqlB4ds5vRdcqMIu8GRsKYqsCvyEZw
+	v0+PRF5AqkwXqHDgI2XpOFBTECkk22hXBup7NTrMGXRrn3ry7FvwRquFe8WE5uwsnMPfyX4terp
+	7AEWqXN3iG93Mn7RHNAUids4+7OoYbDf3Hesjs5onfeSqnyibAJ4x9fVqthllEbxYdtdPvIJrlm
+	PeAYOHxxUhFumKn2CuhOSyoXdnJPUfpo9EJPirEPzxn76NcE+4JhYe48nzK0apSPOA2Vc4WIbeF
+	t0HelUrx13+kFCCdSdfgevctm36oSXg
+X-Google-Smtp-Source: AGHT+IHQnFwZNsQY3u2ASdTone7Vpn+Mv12WF26BhqGJWj8KVskl7uPN3iDlEwuykCnl85OEi5PdLw==
+X-Received: by 2002:a05:6102:94f:b0:5a4:69bc:a9e with SMTP id ada2fe7eead31-5d7dd5b8b89mr5352453137.22.1761005336583;
+        Mon, 20 Oct 2025 17:08:56 -0700 (PDT)
+Received: from soleen.us-east4-b.c.cloudtop-prod-us-east.internal (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55661f6e351sm2822882e0c.4.2025.10.20.17.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 17:08:55 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	brauner@kernel.org,
+	corbet@lwn.net,
+	graf@amazon.com,
+	jgg@ziepe.ca,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	masahiroy@kernel.org,
+	ojeda@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	rdunlap@infradead.org,
+	rppt@kernel.org,
+	tj@kernel.org,
+	jasonmiu@google.com,
+	dmatlack@google.com,
+	skhawaja@google.com
+Subject: [PATCH v3 0/3] KHO: kfence + KHO memory corruption fix
+Date: Mon, 20 Oct 2025 20:08:49 -0400
+Message-ID: <20251021000852.2924827-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.51.0.869.ge66316f041-goog
 MIME-Version: 1.0
-References: <20251016033452.125479-1-ziy@nvidia.com> <20251016033452.125479-3-ziy@nvidia.com>
- <CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com> <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com>
-In-Reply-To: <5EE26793-2CD4-4776-B13C-AA5984D53C04@nvidia.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Mon, 20 Oct 2025 16:41:02 -0700
-X-Gm-Features: AS18NWDW-oprtmdqoGZJo4Z4YsO1liFomysWIh3Edtsp-B4vhH9CkUZKlFk_O8w
-Message-ID: <CAHbLzkp8ob1_pxczeQnwinSL=DS=kByyL+yuTRFuQ0O=Eio0oA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/memory-failure: improve large block size folio handling.
-To: Zi Yan <ziy@nvidia.com>
-Cc: linmiaohe@huawei.com, jane.chu@oracle.com, david@redhat.com, 
-	kernel@pankajraghav.com, 
-	syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
-	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF054100004
+X-Rspamd-Queue-Id: AD103C0006
 X-Rspamd-Server: rspam02
-X-Stat-Signature: 59w6tbzetb9dkz4xyhzrufdoe9xq5i6n
-X-HE-Tag: 1761003676-261747
-X-HE-Meta: U2FsdGVkX1+gdafmgQ5963EMP11HCAYqkTioHgEAT1YHu2sB5XB7OifZ8MBJgmsaFOw5VDGEieoSSuom6p/dQ3maba1gsL+kfuukzlOkGeBsm/YccCVb0zv63kfsFmXo5QphShCVPmzbLdtbcVWVRwHcBGSQnB8JXw57NOgSzl/dRj1QWkNM7lOypZfe6GB5FtKRkJ12L9ckSclUp3+GJ2Y6tQddKTQrzn7yosS5PItCxgOBVmIopLpmPo9/uGuHntVHu1adzWK2bXWixtN0wi3ipj5b8FiUSh90QCst6MkWbun4T7cz6VFmYqIRa2wbxP2mEbS+SerNIDxhFHlUez1KIXSuZEqKhjBVjcWLlFcn8ZkvdTs8ziObWDwQZlivzJxk7NuuXWvwXFJh5GjvwNFF9i9BUeFLa9R3PT7IUtbUnnFylFX/rH6oD8B4mwEFIU89KueBQwZ4L+ZFNvWi9REnWuTEadjQ6Bg553afeIYe1WDZl2R7Y0VAk+ULryYbqJV93657CDEyjoJzJ7iNsWIIXji+ifebjFdyUgDs9fZljmLSK7+uNVgTdTnuYK2DvkTiIgmKbR+U2trmhhEtHG0p3+HMqfW8QeD/j94sHDgQxQ+/N+PjcD9EZjlB6LJgilKeoBi+IjJYYhiCUiyW8nH6MMqWKzpjfFxouG/Fm+4H6iBnCFDgYStZHjNSX6rFB+8xjJFdLjopp3+5z5FMaDMLaK2MkJA01L5jeFgm3YEzQB9sWg+v3VuPFrTHgI9v3uLitv/FgakaA4th9fk9I3xPA9j0iH/zBj5E85j0WzbBmmFi4bPtvGwtwU2yTwxUr9zkcp2IAIoWbx7eMsyc9e0gNuvtbUhYOohPizDjsrYH6DV6srkJ1ZeqWmLSVRcdJYG1n7TxtfCFAnAdbknagfaPATxXZA6nszOL3IPMo2g8qwxIh8dzu/CVwY0d4VptxHjjoUOGKWUzIUB1zCP
- oX1HkA6/
- ZCPfi4ricY2fhqY77F+l+YEbVh81bvvSViJfm5ug3ORS+x+TqF5j9NDp3s4Dnq0BAChHyBIoHe17m7y5Mh8bnXl0eaOg3jYOX8Kdpt5G/p92VSXmcNmOjBm7YNJ/oYSXMwkZZPbOFXz9eNEhiKuFScHMIxrFXheq2A4dXh+4Z4T8/27IGTHgWFeARQGHklTTqHkUKEUiL019UPBfs+js18q52pbPg6X4ZEv/nG3rznqB/mqdieQ15aLgMJJSoECGK1JIdLE+L896krotNEnJhuxyyYPY09aA2yluOcQe2nVRytIEL8aWPPVkQ2IekmJB720nFQSzuYdAz6etuzHfesGv+YauTx/tvLqy1FqLIFM9mvC4RLTXA/TMCaJGvFrZiP0t6INYYAGU/jGD2BSeMbvlYDUkORK1iNoZJJROrNxc2Cd6jX57/bPlSA4Wd+VTH6bTql6WXjVFRudMqRuUfLY6GEblX69dMKsZbEzlsrkIw2wXV/NljrukufyFrsFEq6IVYe3kvV3zxwbsG0JUMthf8ag==
+X-Stat-Signature: bctk8pydr39kpqgt3ns1xiwsfk3i9ucj
+X-HE-Tag: 1761005337-648718
+X-HE-Meta: U2FsdGVkX1+ro1q4j5xbgeRUWzJ/ZOWUNilT6qLefPr4oLdYGiAxjHjucKuc8xJUsmRrzSCFyBJuj2YogUL4vDbRlPL6OORx1hoUosIDB/OlQR6D9dkqyMqAtRbHpvyrfiGQvwXokpW9Nxa1SIdOjnigqcTZyx/Knxct/HVPJgbthHZWEIjYjLcmRCAswuUU4VvZ4t8HIC+ppYuPclmR2xkoBEPAZihm5GUliWzoqdcM8U28NDc8xtLdgYi09nfLj+sFTViQOR37+iBil6OAxfqcgoxgRqLN6ONzgCH0Ty2JZXx1RTJWqhOrMFzLdIkRqBOyXpSjkjOxc9jsvmBUjBBRAVL7duLn7B927DN2ykMiFIST4d33rSN5oFsSJbGXM7+d5oyLxEmwlGFWHpIi9GQbEVdiZsoO6eQRz+E2D90r5/7/AVqrf5CxVQS1WXvJGpNZ2MPXoBJXCNmozamW+6zbfFCFrmXo+Fo5xkC/KHFwPrdkL+Izio9VTJLXUMus/FEN3uBOtig8ijtalCud7zZiGazA1gH1iKM/M62LNyHmI5AFDPhv5tHvszwSYNJZ4Nl/ayKjmr5YeSaxAk4uxskIxkf+uvvaRqruXmbIELsxqWUCqZFQHzfCKszbrrbcWt8+XNVZQX1ZSjHVRwCo9NN5rK+ocIMde3PkN5o6PJXHDuPWDR+sTeJtCTlepbxAzb0iKluhWzCatUkq+zAM8bukx6pj+Aa7eHHdITaMHOeomKOScKy5dKTkHp1uYTZQ4NQ1jVKXIw4e44ymhCm+rORPTvKSmVEc/2/qQsnbJi0oZFrWKEU+9ZcV7Tt9JWvVoH8Tk90GTqzIhm2Er1S+OHfQZXFNqKgX2FrAmGRATrhtSfqlUncxu9p4NTHGRGD9lkKzIXDx2XcFaZkqvUrVevrITi6Ag5d5sUsg6mrDpQDt38m7LQX32e2ZpD2OuuBmMt6VQBU+OU8Wqpkh274
+ cY3mZ5hd
+ Si2ItB8CWkAC1NmsSbRpOVMv1Yoc5/OG/zTRCrOQxUbOB5DOf59b+4GFY/X7WC7x2Zj2ObgJvwIq+qdjD9Z/hs/7e2ADZ9HQbjjPsDlydhRK3nZ1BfqGGgI5cfUCs/vcFtKqZ2ALYW8kQs0CfuB3NMXFWr6Au1xn9n0T73mtUqe8ziSsHOu4VnG6xusPm0QwttpfTtT9Z4tTK/aa1gTLcLB8Qm4SNQZ4/lgVzOjUC5XAmEPBiD//q1OF7QuKLx3NnCL2mJN/It3X1X3A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,166 +130,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 12:46=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On 17 Oct 2025, at 15:11, Yang Shi wrote:
->
-> > On Wed, Oct 15, 2025 at 8:38=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
-> >>
-> >> Large block size (LBS) folios cannot be split to order-0 folios but
-> >> min_order_for_folio(). Current split fails directly, but that is not
-> >> optimal. Split the folio to min_order_for_folio(), so that, after spli=
-t,
-> >> only the folio containing the poisoned page becomes unusable instead.
-> >>
-> >> For soft offline, do not split the large folio if it cannot be split t=
-o
-> >> order-0. Since the folio is still accessible from userspace and premat=
-ure
-> >> split might lead to potential performance loss.
-> >>
-> >> Suggested-by: Jane Chu <jane.chu@oracle.com>
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-> >> ---
-> >>  mm/memory-failure.c | 25 +++++++++++++++++++++----
-> >>  1 file changed, 21 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> >> index f698df156bf8..443df9581c24 100644
-> >> --- a/mm/memory-failure.c
-> >> +++ b/mm/memory-failure.c
-> >> @@ -1656,12 +1656,13 @@ static int identify_page_state(unsigned long p=
-fn, struct page *p,
-> >>   * there is still more to do, hence the page refcount we took earlier
-> >>   * is still needed.
-> >>   */
-> >> -static int try_to_split_thp_page(struct page *page, bool release)
-> >> +static int try_to_split_thp_page(struct page *page, unsigned int new_=
-order,
-> >> +               bool release)
-> >>  {
-> >>         int ret;
-> >>
-> >>         lock_page(page);
-> >> -       ret =3D split_huge_page(page);
-> >> +       ret =3D split_huge_page_to_list_to_order(page, NULL, new_order=
-);
-> >>         unlock_page(page);
-> >>
-> >>         if (ret && release)
-> >> @@ -2280,6 +2281,7 @@ int memory_failure(unsigned long pfn, int flags)
-> >>         folio_unlock(folio);
-> >>
-> >>         if (folio_test_large(folio)) {
-> >> +               int new_order =3D min_order_for_split(folio);
-> >>                 /*
-> >>                  * The flag must be set after the refcount is bumped
-> >>                  * otherwise it may race with THP split.
-> >> @@ -2294,7 +2296,14 @@ int memory_failure(unsigned long pfn, int flags=
-)
-> >>                  * page is a valid handlable page.
-> >>                  */
-> >>                 folio_set_has_hwpoisoned(folio);
-> >> -               if (try_to_split_thp_page(p, false) < 0) {
-> >> +               /*
-> >> +                * If the folio cannot be split to order-0, kill the p=
-rocess,
-> >> +                * but split the folio anyway to minimize the amount o=
-f unusable
-> >> +                * pages.
-> >> +                */
-> >> +               if (try_to_split_thp_page(p, new_order, false) || new_=
-order) {
-> >
-> > folio split will clear PG_has_hwpoisoned flag. It is ok for splitting
-> > to order-0 folios because the PG_hwpoisoned flag is set on the
-> > poisoned page. But if you split the folio to some smaller order large
-> > folios, it seems you need to keep PG_has_hwpoisoned flag on the
-> > poisoned folio.
->
-> OK, this means all pages in a folio with folio_test_has_hwpoisoned() shou=
-ld be
-> checked to be able to set after-split folio's flag properly. Current foli=
-o
-> split code does not do that. I am thinking about whether that causes any
-> issue. Probably not, because:
->
-> 1. before Patch 1 is applied, large after-split folios are already causin=
-g
-> a warning in memory_failure(). That kinda masks this issue.
-> 2. after Patch 1 is applied, no large after-split folios will appear,
-> since the split will fail.
+This series fixes a memory corruption bug in KHO that occurs when KFENCE
+is enabled.
 
-I'm a little bit confused. Didn't this patch split large folio to
-new-order-large-folio (new order is min order)? So this patch had
-code:
-if (try_to_split_thp_page(p, new_order, false) || new_order) {
+The root cause is that KHO metadata, allocated via kzalloc(), can be
+randomly serviced by kfence_alloc(). When a kernel boots via KHO, the
+early memblock allocator is restricted to a "scratch area". This forces
+the KFENCE pool to be allocated within this scratch area, creating a
+conflict. If KHO metadata is subsequently placed in this pool, it gets
+corrupted during the next kexec operation.
 
-Thanks,
-Yang
+Patch 1/3 introduces a debug-only feature (CONFIG_KEXEC_HANDOVER_DEBUG)
+that adds checks to detect and fail any operation that attempts to place
+KHO metadata or preserved memory within the scratch area. This serves as
+a validation and diagnostic tool to confirm the problem without
+affecting production builds.
 
->
-> @Miaohe and @Jane, please let me know if my above reasoning makes sense o=
-r not.
->
-> To make this patch right, folio's has_hwpoisoned flag needs to be preserv=
-ed
-> like what Yang described above. My current plan is to move
-> folio_clear_has_hwpoisoned(folio) into __split_folio_to_order() and
-> scan every page in the folio if the folio's has_hwpoisoned is set.
-> There will be redundant scans in non uniform split case, since a has_hwpo=
-isoned
-> folio can be split multiple times (leading to multiple page scans), unles=
-s
-> the scan result is stored.
->
-> @Miaohe and @Jane, is it possible to have multiple HW poisoned pages in
-> a folio? Is the memory failure process like 1) page access causing MCE,
-> 2) memory_failure() is used to handle it and split the large folio contai=
-ning
-> it? Or multiple MCEs can be received and multiple pages in a folio are ma=
-rked
-> then a split would happen?
->
-> >
-> > Yang
-> >
-> >
-> >> +                       /* get folio again in case the original one is=
- split */
-> >> +                       folio =3D page_folio(p);
-> >>                         res =3D -EHWPOISON;
-> >>                         kill_procs_now(p, pfn, flags, folio);
-> >>                         put_page(p);
-> >> @@ -2621,7 +2630,15 @@ static int soft_offline_in_use_page(struct page=
- *page)
-> >>         };
-> >>
-> >>         if (!huge && folio_test_large(folio)) {
-> >> -               if (try_to_split_thp_page(page, true)) {
-> >> +               int new_order =3D min_order_for_split(folio);
-> >> +
-> >> +               /*
-> >> +                * If the folio cannot be split to order-0, do not spl=
-it it at
-> >> +                * all to retain the still accessible large folio.
-> >> +                * NOTE: if getting free memory is perferred, split it=
- like it
-> >> +                * is done in memory_failure().
-> >> +                */
-> >> +               if (new_order || try_to_split_thp_page(page, new_order=
-, true)) {
-> >>                         pr_info("%#lx: thp split failed\n", pfn);
-> >>                         return -EBUSY;
-> >>                 }
-> >> --
-> >> 2.51.0
-> >>
-> >>
->
->
-> --
-> Best Regards,
-> Yan, Zi
+Patch 2/3 Increases bitmap to PAGE_SIZE, so buddy allocator can be used.
+
+Patch 3/3 Provides the fix by modifying KHO to allocate its metadata
+directly from the buddy allocator instead of slab. This bypasses the
+KFENCE interception entirely.
+
+Pasha Tatashin (3):
+  liveupdate: kho: warn and fail on metadata or preserved memory in
+    scratch area
+  liveupdate: kho: Increase metadata bitmap size to PAGE_SIZE
+  liveupdate: kho: allocate metadata directly from the buddy allocator
+
+ include/linux/gfp.h              |  3 ++
+ kernel/Kconfig.kexec             |  9 ++++
+ kernel/Makefile                  |  1 +
+ kernel/kexec_handover.c          | 72 ++++++++++++++++++++------------
+ kernel/kexec_handover_debug.c    | 25 +++++++++++
+ kernel/kexec_handover_internal.h | 16 +++++++
+ 6 files changed, 100 insertions(+), 26 deletions(-)
+ create mode 100644 kernel/kexec_handover_debug.c
+ create mode 100644 kernel/kexec_handover_internal.h
+
+
+base-commit: 6548d364a3e850326831799d7e3ea2d7bb97ba08
+-- 
+2.51.0.869.ge66316f041-goog
+
 
