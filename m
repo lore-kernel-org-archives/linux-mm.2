@@ -4,87 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 598CECCD184
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97107CCD1AF
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 07:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 961108E0015; Tue, 21 Oct 2025 03:48:13 -0400 (EDT)
+	id EB9578E0016; Tue, 21 Oct 2025 03:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911D88E0002; Tue, 21 Oct 2025 03:48:13 -0400 (EDT)
+	id E69AC8E0002; Tue, 21 Oct 2025 03:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827C08E0015; Tue, 21 Oct 2025 03:48:13 -0400 (EDT)
+	id D7FFD8E0016; Tue, 21 Oct 2025 03:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7147B8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:48:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 247C0B908F
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:48:13 +0000 (UTC)
-X-FDA: 84021343266.06.41A149C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id BB41214000B
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:48:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=S1F3uxSV
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761032891; a=rsa-sha256;
-	cv=none;
-	b=LEnbUu8HHTqfIXpA8xtcRyZTfIgOSMOeA3JomF8RV9XC0VOSrmUr6/wCDPqbpCNiPAxUhA
-	jWsXsPQaKW0aBiXkDNYlO6ZtT8ahN+wlKvpQmy6IoFoaDXbG2H3NHlA05akoKbLmQhiKhA
-	C5kelfY60jbHt/pis0Cep1vnuA+VK08=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=S1F3uxSV;
-	dmarc=none;
-	spf=none (imf09.hostedemail.com: domain of BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+5669af1c49f76a6ebb22+8094+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C4D418E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 03:48:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80CD9B904A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:48:28 +0000 (UTC)
+X-FDA: 84021343896.09.5D477C0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2098540008
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 07:48:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761032891;
+	s=arc-20220608; t=1761032906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yalo9SiRMGqaQ57Tjo01PZAvDxSGipcok0E7dyv6KxY=;
-	b=OMaaNz46gnywWyxth8RN8hU03DQjzovLfJcItqKxlUyYZhOxlfZvdtwH71oySddBUw1Ewx
-	csV7muctttd9j7eEwN0zVZMxwvLoAsArPfM+3J15u4UmJoXkrysPU++s1jKZLawHVsQQW7
-	MLxcgAFFuZyYvaJwHFk8yKErj4pBe5E=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yalo9SiRMGqaQ57Tjo01PZAvDxSGipcok0E7dyv6KxY=; b=S1F3uxSVDM2G8R0EL9JyjwN4LD
-	T3bAgqcuJQcRn2FQRZ9433Vc9KUz36fT2u2LN3A9pSSrBe/aricGB+em1DnnLpjO7heKE6tjvN/mr
-	Ef2FK7rp90zlJ67vXe2PLQxmDHdSkVwOulHs86nkwEYQaL42Oe8FFZ9UxCK7ZypCHt7uFFrUnff2c
-	MUQm8lfeRPk+sFn3/7EjOu/stzK/lSTG45Hr1KBCrjWikJaPKQydLw8Uji8QKXd+9+XaKRtN7rHJA
-	8JSDrnlOaqQGXW9oK6pRYtdQPeon+5tFCLdEaVjjk5aYa1k9LZvTqAX3SXcCR+5dsHWfhA7/zeW33
-	QLd6+eOQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vB76G-0000000G9Fq-0mBQ;
-	Tue, 21 Oct 2025 07:48:08 +0000
-Date: Tue, 21 Oct 2025 00:48:08 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Qu Wenruo <wqu@suse.com>,
-	linux-btrfs@vger.kernel.org, djwong@kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	martin.petersen@oracle.com, jack@suse.com
-Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
- trust the bio from direct IO
-Message-ID: <aPc6uLKJkavZ_SkM@infradead.org>
-References: <aPYIS5rDfXhNNDHP@infradead.org>
- <b91eb17a-71ce-422c-99a1-c2970a015666@gmx.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=olDPgqQofSZ28TETuqHxhx6/FvLnh4130JzGH+wmONA=;
+	b=xoZ5sgXGJvpuuGK5U2qAX0trtA4/Dg3hi1MQ9MIZpd+LFsNCg0UBNFVIdtzItt5OhxefgU
+	WfFLNTLXFUaT4WL8+OxteL4T90c78WN6plxSTuG44AUpttMNHKM1hgnlqXb7QKmBL0v8oM
+	6TMEUb86s62PKKg+3HlnAJI/952TpfE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761032906; a=rsa-sha256;
+	cv=none;
+	b=oYsW2OWdbE+jDoBf9yfA7kFZHanDF51kxb2aMC8LYOV/+d57c4kVywFQZdtPZQUax2/Rdl
+	+oLcc0Hf3vq5+CIg0Dxjws8frveEdJbk74+7U7isJquRZIuCf5dVdo6FEmIPY6Kg4eOFKV
+	Fk2KIVVtoxcSQwuLM1e9ibtoF9btTmY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 16DD71063;
+	Tue, 21 Oct 2025 00:48:17 -0700 (PDT)
+Received: from [10.164.18.45] (unknown [10.164.18.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B5C13F66E;
+	Tue, 21 Oct 2025 00:48:22 -0700 (PDT)
+Message-ID: <5face11f-2e04-4f28-b474-7c22a10d05e0@arm.com>
+Date: Tue, 21 Oct 2025 13:18:20 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b91eb17a-71ce-422c-99a1-c2970a015666@gmx.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma() tests
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>
+References: <20251021024424.2390325-1-anshuman.khandual@arm.com>
+ <875xc8ap0k.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <875xc8ap0k.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: jnpks8tgw8g98eacqmz76z4es9q7cxnr
+X-Rspamd-Queue-Id: 2098540008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BB41214000B
-X-Stat-Signature: dxy8r67m49asnbq666bopcmhct9rboyo
-X-HE-Tag: 1761032890-188187
-X-HE-Meta: U2FsdGVkX1/H/GngMwS1Wtzx7M06/xDNSLTqv9rl8QLzi750VGf8WDaOazn1/AExbr/HvwTPkC9t4E9j5r2W1cP9AbCxoSRnT0B2CHk7xCHwtp3izDVYJnn1ZNXrytvRBSyGMYaDrW31ARiBaLaAvwHf9RiPSkTnrp9lYDXv1mx7g/z98RQWwDYNLxP36d36QPXx71P1JnXYssgGRMQ2Yx7v7ek1lLB/xhRdByrfwBS+5oSd8JnZauKlTJZtzuyVgl339Q1AUDGy3//klyOH/qv5Wu1IIo/Uka6xn4DlmdNpI6+QRUCBPTacB/ydh4pybRCpLzJJUtAMDnCNqWhZ6FujgioKI83UEoYxcsJGnuO3JMgpTNNGpLKoWXnbE1DWFEK/AoFAJGASg0nqkrnkEUZUtFU53F5ugy7r2L/DtIsMDU/gpjo+H2WJffEuvnPm6i27+Iy3r2MQ26bhwcWFSIeGmVxePOjLfIMlXOkgxLexCP6X8gfN4MOlFMFytOpG0S0tZF6kCfnbg/J6EDRMWULTbYLugu8/RIu/V0aTJd+zxWpH3QEDvnlW0rM7bdxmHZ5xLWMUnzS9KrBdEWEAkMIWWlFKkn9uMyq+BLexnIUsBBy+RDLx9XjtM+syj923pnfu5O0/pKP7W/5kFOrzly1+OO2Cc6qk4CXbpGcEQRc93mXpof76yn2ydb5CP3gz2ydeOAO8zdtHue2gVSAIAgMyZ/8HBX+RVla6L9xbDx8vMH5vdLFYSX59lFRfg74J0wo9ipinXEhN7Tw3GC1Dd5WfvvFPl8/RJs/68BpSi25h6kh96yUIcbrm20JBoqUMQtM3DyaQ5gy0rhmDFRUvvfTMu7s/ctssmY1OQcBsIEzjflYwFy31aA7I9imEkShutBxru2npbGWuVSnqQ9oQcFfEQ70XCrwQo98N8bfXAmDP6j6liiWgYPlVptBt8C3YSqDN3slprJFI8HZCSJv
- /bBL4ONq
- /hnLh9mYz5AojoNCJZszCqWkXk2YTtznxXDip7iKEYw/qwFKZnbi+Aumhm2xi6cWpAECbEGZsUWXrVqPZEx6dj4oEbWS4K7McasPYvFP4YYquPmJir4aOZaUH09HFf7V9bF8TXLP6FSZ/IP8845TJphRhDd9PgsyU1UPMYTn5tUA1RAxMsr+TXLMORHDLm4b1W0+T0g+4AhSqXHoANNEm11tx3/BLQUZUIcGafDkE+eYf1lVvv8EfSd7AiSbWRfCJlC/H6h8s5OSdLQbNWw38y0a8aeQAX1tdLwkPb9xeT15QW78KH9hJ88nuFs27BoMuauDMbbEPiaB9spkDv2ecOzHJrjBaJbSvfwKMDd7+JH3GiwexCdkRdsNM8AKChPBAJ+Tb/KbhA4lJaXV7X/uM/5wtBF1hrWICG6/fKEGIzFoqdPFluJdL59WcUFLvDpqhICx2tNJFUfM/vfoKBU+WYGjRL0s9UtpfK6z4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761032905-862899
+X-HE-Meta: U2FsdGVkX18gOehMVixzGdGIAIDrb819VcoBNlEbk7qlnHyN57InzhgY2oy8eNfjLk8aBCnZd0FelhPcfwa1h/mIHArCQdmOGUzIfYwCNZR08WbUhwDNd9ts03BAwY6eEwhNBR+Pc5+4OTAhuc5FYIiu7jrcZ7P89/4n97SQuZNv1DHz6YtSrN2nair67eRYfiQ34Asd+OV6XrCTpSJ1b6jRWXBt9z3J08HrCYUXf1jJgQiAKdqfbNl7UqEQ2o9JoM7TtxIRXzE3TQTA5PoD82L7lfp8WGB8grg/ImftZMp5XljBZsRFNxIDnCHzqhKFtmCmj4tfMsBqaz/ySMhhO8ZNQygMQPnSa+UDrylIRgXV80cpL9GYWfYUp2Ihu3cV/nvDZwhjPw6laWMJrwjQbLAl1yQXzqJ5kkumhJW3Ei0nFuLnXgaQXPHp5T20MyZ9kUvazh+40gzIR5HsRkHEOvCO8z+M4XPjerU1lp+hqeO9KsQiOBs4SrHlFP7IZPUFWNXiCqrEVgmmd9rfdWjsPP5QbTjDONAMBpUQnjC/kUqa5hE4Dv8zqXzifNkSQyGll8peT+0D/k4B8EGIKaNv/30r4V2ye9U6g0XY4Kolm9g/qZJF0UQi6BQ4Lh0vzXtCCYTgpfVr2l1UlPOCFhxdrvs7p1ZrPjoHMH1VUSw69/KW4YrXIdOS+G2v9zmj0E+6pkuvhXQxcpMfcP9GfG8Jc/A+ytoE12OOYVQm9LaHDiSw+Sr9qOczrkbH390pEC5zDYZ1zFiTlGs+Takb/pAnj0HyN53BCCxWEGOO8tFMH4xPGojTC3urk6YQubbu0wVh4v5OO2AiJk796yFaeVphox588GJCdY7+Cy+jlUgMd7K2hS2rLxeE+aZOWchUlsCDdLlpjx/WNapmE+7bSv3Lz4CC+Xm6y4NfxuZDszYOvdc4z14mNj3y4LR8UnztB8ii7eSUyvPdJa1fKOMlU05
+ 5hDjSWBb
+ A7K/O0CHA30INZOO3UOapqAKbYXDC4zTFRrtuxFfcMG08d9Mf17q0PXTs8QCVJxZu91pOIaIYDynjf0GmfsYPewB+nZGtlqeAMr9cNSkkCU0/jlJqb9KgQyBVEx0OJoeQrLYy5TS3S/RVUFr1z03EpSiDkdSn0ObVa7LrbnNQ9Bf3bHcThxansRd/Ow82HaEr6htwK0mZiVdXr15eQGqcY7hYct2qUWdk05YRo2RMdAvc/1mdCg36djWl+4hSgE93nNnaBCKtLvzhHauuQNmLWw1ngtmxSB4Fnh3IzHs6ze8Ydl03P6Elr+dAEsYQVZmmI0VNGZBX4Ex9l0H+lFYRFeCIm1jZHSM7OVHNtGoBAFdWb9KfQJgXB9U2taT4DT0RgxFDZ050UvZRo/pzrvTk/cSniDU2IzEILxpgghh7dUwvSYA9AcFKzxr5iA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,23 +87,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 01:47:03PM +1030, Qu Wenruo wrote:
-> Off-topic a little, mind to share the performance drop with PI enabled on
-> XFS?
 
-If the bandwith of the SSDs get close or exceeds the DRAM bandwith
-buffered I/O can be 50% or less of the direct I/O performance.
 
-> With this patch I'm able to enable direct IO for inodes with checksums.
-> I thought it would easily improve the performance, but the truth is, it's
-> not that different from buffered IO fall back.
+On 21/10/25 9:24 AM, Huang, Ying wrote:
+> Anshuman Khandual <anshuman.khandual@arm.com> writes:
+> 
+>> Add some [pte|pmd]_mkwrite_novma() relevant tests.
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> These tests clear on arm64 platform after the following recent patch.
+>>
+>> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+>>
+>>  mm/debug_vm_pgtable.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index 830107b6dd08..b9cae1580782 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -102,6 +102,11 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+>> +
+>> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+> 
+> Why not use: pte_mkwrite(pte, args->vma)?
+> 
+> Maybe add
+> 
+>         WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
 
-That's because you still copy data.
-
-> So I start wondering if it's the checksum itself causing the miserable
-> performance numbers.
-
-Only indirectly by touching all the cachelines.  But once you copy you
-touch them again.  Especially if not done in small chunks.
+Sure, will add the above test as well.
+> 
+>> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+>> +	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
+>> +	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+>>  }
+>>  
+>>  static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+>> @@ -195,6 +200,11 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+>>  	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+>>  	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+>>  	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
+>> +
+>> +	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
+>> +	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
+>> +	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
+>> +	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
+>>  	/*
+>>  	 * A huge page does not point to next level page table
+>>  	 * entry. Hence this must qualify as pmd_bad().
+> 
+> ---
+> Best Regards,
+> Huang, Ying
 
 
