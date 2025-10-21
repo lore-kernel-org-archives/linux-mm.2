@@ -4,142 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93569CCD1AF
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 20:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB55CCD1A5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Oct 2025 21:10:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 000AE8E000F; Tue, 21 Oct 2025 16:59:21 -0400 (EDT)
+	id 571828E0010; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1AAF8E0002; Tue, 21 Oct 2025 16:59:20 -0400 (EDT)
+	id 549808E0002; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E309E8E000F; Tue, 21 Oct 2025 16:59:20 -0400 (EDT)
+	id 486768E0010; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D513D8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 16:59:20 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B173711AA83
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:59:20 +0000 (UTC)
-X-FDA: 84023336880.30.5F865FC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4C4491C000B
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:59:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ak2MiQod;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761080358; a=rsa-sha256;
-	cv=none;
-	b=7Mz/Ni+nhP98jVRc4XTOJGQOdmsAxAXxggG8PRn6NRHPr5hUQUtm5WT35pAoPjJ+YexTtw
-	+iW/KJIpJX/q0PSYAptEFqg6XF03yvgJU47CJqpausf0OclF3rR2PpSngE1+CjLHU/QBHA
-	cqvcp4ciMAh7nxx7iRmDa19c4ViNmlc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ak2MiQod;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 30D328E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:10:52 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3D1CBA49A
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:10:51 +0000 (UTC)
+X-FDA: 84023365902.22.B17C381
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E18ED2000E
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:10:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sxuh6gdZ;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761080358;
+	s=arc-20220608; t=1761081050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
-	b=cWIBSQP4uhZMdYuTg3iByF9bHef2+kpCr+OvK4YCjUZs7Hfp5TDqA2FSHgqTJgiIXkOMvv
-	MsUcTqrtFrMKSsqJep73TgzgOJId76XxGR4iwmkCt5QlvTpREht2Z0gPL3j2gjNc4QLKnV
-	WFJPWx64uObA4m7iN83HBm+tJqViH28=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761080357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
-	b=ak2MiQodYy8PrtoUF/ePZHXkPB0d+5eMBbTCj72J5WDRY4auwyLmXitX0JFIwKG6dcAXyN
-	nFJVpNOnQARhHTZl1tjUNyLNmUNZyqFXKGybcNAiibogmkGMG/jB1k4RmgpfSjnSl1iE55
-	rvJ6LeMNpIRwP5tZz8AabrR+ZYXzxWI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-Tta_1LWYMa6qOpelxe1LYA-1; Tue, 21 Oct 2025 16:59:16 -0400
-X-MC-Unique: Tta_1LWYMa6qOpelxe1LYA-1
-X-Mimecast-MFC-AGG-ID: Tta_1LWYMa6qOpelxe1LYA_1761080355
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-426ff59a320so7527864f8f.3
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 13:59:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761080355; x=1761685155;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JKaU+TdmcHMrV3dqR9kS3A74O+yRTxyeV7YGtEGdpzU=;
-        b=hDAPWxPcSEPTOx3yTkl/36JGFPENS1ImWkxfNomW3XJRlH6CjSJgAnor2sojHRcKz6
-         ilvn6lDj5OwQQnQa2NebkSpVyK06Lf9Juqv+60r7aMmnsPZlIbYWkd+0bBstfskDRrKB
-         YXQMGSL+vEF+VFmUO6BPVRCx0/ZhKmtjRMCFEGWgCJyK6o6spZBTTUY4m+Kr0sJ7/jzT
-         dj83ItT9NXhlKnEIPwqL7dHZpRLws8muLaEvHfe/fbUZSejDiJUIpRrGLCdn48XWyj1u
-         t5JAaVkZJaBFyYNhxtvV4Fwkv6ZDz69Lw4ISvUpLsg/mH8MPXnVOGecPDsS/9zBIN08a
-         Bmow==
-X-Forwarded-Encrypted: i=1; AJvYcCWR+WxZ0bmno2PqCI/+OuEXHEsTrddCIWjZ7fSBBqOi/NQVecJYtZvRvfLp5nxLT23caznTkJNxEQ==@kvack.org
-X-Gm-Message-State: AOJu0YzX+RlE8ACu3x+VTSa4SAr3elJ8sTMNDYTqUlhByyFXxfyMh68B
-	Hy3lnqL/2zMXGhGPHq54NyIrt/LN0qS27DM1MSgr5ZofgKBGlBN7WXx4MqfVK0ZhOydBAumM2m5
-	bcNCzwx9Z51IwwZEiUtIKWyakTgeK+jBT5ndFctXjwgPgYsv0gEyU
-X-Gm-Gg: ASbGncvJ3//aUtCKM40tLZqWATs1a9Gld/bDU0q8Mpvzac5J42EkPqWRhT3xtPrppNT
-	mLckumXQon9ZAVKqKhvys952pvjbBYQitHp/2tZyVXCYKe044D4bttVDLyZGnWruMuDVVhUtOap
-	WAL5nv4efaEe9Fowj6PtHgwKbJE9xod3dAzvB3h8HDl+ljSPn/Dl/qMR+ZR8zCpKQ9DZOuPbeqr
-	Ja//N9MAXlxN+SuU8clNYfeUiou/W68zVAZGBFI4A8pNQoKUR+SsDtoutaax3FvXF0KJEkbfEDN
-	KuJ6sF6ISsE+Iyy6G6fHtelU6ZoZ6siNyW+ksphdK27fUVn52gjnAe+NBXoi+XOJc7D7
-X-Received: by 2002:a05:6000:25c7:b0:427:854:787 with SMTP id ffacd0b85a97d-4270854085bmr11773166f8f.51.1761080354933;
-        Tue, 21 Oct 2025 13:59:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFm6nUHK4Q2KcRAx2gRXyZZ7eczPX8h4ab+8B0PRAUXehLh5qUDHKRiFzbQIJWCndKqsBf56w==
-X-Received: by 2002:a05:6000:25c7:b0:427:854:787 with SMTP id ffacd0b85a97d-4270854085bmr11773131f8f.51.1761080354419;
-        Tue, 21 Oct 2025 13:59:14 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:152d:b200:2a90:8f13:7c1e:f479])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4369b33sm9493345e9.14.2025.10.21.13.59.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 13:59:13 -0700 (PDT)
-Date: Tue, 21 Oct 2025 16:59:10 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-doc@vger.kernel.org, virtualization@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v1 11/23] drivers/virtio/virtio_balloon: stop using
- balloon_page_push/pop()
-Message-ID: <20251021165854-mutt-send-email-mst@kernel.org>
-References: <20251021125929.377194-1-david@redhat.com>
- <20251021125929.377194-12-david@redhat.com>
-MIME-Version: 1.0
-In-Reply-To: <20251021125929.377194-12-david@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wgQ78cIL3Q-1yyoe7wUhD6WqhOtfioYrmvaADzkfsnk_1761080355
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+	bh=2rWnAwrzm8A9V62GaFabWYZ0BgD3yXEcNaO0orf0JZk=;
+	b=Haidzg6SdkR9n/QeUt0Yl3r8EzohyebonXlzXCQYOht4paSt7naYNlXE3phlvAtVWyVJ3o
+	mUY/DJEj9NmPZN20/dRSva70Cuz8OJIcZu99SKR1OETnYGTHB4iXwesJCsaROU7Qyh4EvE
+	2kGNy+mW/LUnZhUAiIgFi4sRXOZ6eac=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Sxuh6gdZ;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761081050; a=rsa-sha256;
+	cv=none;
+	b=zz4Ghjq2HhmxDhkG4A4YF8/11ikmprJ2RxgizCET1YRyc5x/FoA1TUjwWy2mkSMKdtFIm/
+	Sek+ClHh196gJ/zyZrjBM1IQAn501Y1nNtA+azGOypdtNNjkDvOvbPjiqdfVwVvcePieWZ
+	aQ9LBawyCgZFoi843bknnkHYbdE2LvI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D6567401CE;
+	Tue, 21 Oct 2025 21:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F431C4CEF1;
+	Tue, 21 Oct 2025 21:10:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761081048;
+	bh=CyjoCB+nOz0XloI/00jaAfTOPYcrftUYJkwBXkzSnRU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Sxuh6gdZ8tBwi/FrddVvT6zN/S0xQu3CcZiR4deQfvK2CEmOAWnhlV6otHUg2G+Me
+	 4bVTKWRgfLsUgPo5eBXVGtvk+HYc4988REnbdEPfC5xVCmfjZqiqJnGkjOQsIxYzvi
+	 rLggorjf66h1/4Z5DRmHyf0slgeeXXfNWVFLRAIU=
+Date: Tue, 21 Oct 2025 14:10:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>, muchun.song@linux.dev,
+ osalvador@suse.de, david@redhat.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com,
+ Aishwarya.TCV@arm.com, torvalds@linux-foundation.org
+Subject: Re: [PATCH v2] hugetlbfs: skip VMAs without shareable locks in
+ hugetlb_vmdelete_list
+Message-Id: <20251021141047.532542aecdb0dc5fdb95696a@linux-foundation.org>
+In-Reply-To: <9d20e689-c06e-43f8-811f-3e66f3e86d2b@sirena.org.uk>
+References: <20250926033255.10930-1-kartikey406@gmail.com>
+	<7a1d0eb0-ab08-4fa8-bdab-b193b69a8c9d@sirena.org.uk>
+	<9d20e689-c06e-43f8-811f-3e66f3e86d2b@sirena.org.uk>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E18ED2000E
+X-Stat-Signature: 3xwr85gofwk3pcwu4de8ftfuez67s65i
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4C4491C000B
-X-Stat-Signature: hoamkngbfmngann3j9zy69r1az7wh1te
-X-HE-Tag: 1761080358-736049
-X-HE-Meta: U2FsdGVkX1/3LnrV6DVhASUvf3Rf59UM0OhjTml5RNYgZe7nb1TvZoSJEhL4dez5fR7ruuiE3EiYcT7FR1qAifkfJSMQ5pNyxDesSTSK+MqYgsIBkifG0fyzcskQWGChtQRC31XgnXgvpT+39go/XI31kQ8jTDKdlDqpMTIRWkrjWbDPe1Zv7srAXsGfjatiUZoMCMWWt7N4p+QwdMTA3f5Fo0uKNxnftEezhiw0j1qr5rT51dk3t2OHlMrk6iKEjL7d2kg0mI4vEAdX+HIsR4XOhUk6luat++bH4FOM5MLfHRWwLCC7ZKIUVr3GlSql1BsRHrmSGXrDNnOA5PF/2+kDPHOqg+zCbiaTmGsCKQzpuAzUnwycPhwr3lb7r9Hs/hRQUTQox1YtwcEtIiLFd61z3sYRNZFiEEPh6m9Z/BELCEqL3wCEoogQvSuuYKwM4mH+C3tiEb9C3sYMeydPA8uxkYyt+3lj/8FQoauONKHLwuLH4OexDK/GA3/DMKJhcYMVQq8P5bAi1Y1EfuDQn///mhheqplAq85BiC4DD5Xk5rXzL/7BynBcq/Qq+U1p9YSd4xP/FVRD68TygOQAaIXwmSqZYlCKhmd95sIUMVStdr8/CQbapdv2dCd61tokVpVzTDsLm9geE19RAA+vPiBweVZTyQUd87lg4PhHwMorfJ1zzq/pXy3kjLv1zLGZfishKLY0ZOOe74d3BpGskwvRxszNFPnQG0L0snvebadGkJ/CJiGVF4J0uFsQyduN1jlp3AlsIUOvy98jKbsiZmvsTqxpZrSlh3CKWy5YRD+iDnMRNpSMMOsgYf5rHJagTc31vuWg2YbTsiVNBOEMawP9N52i6yNRizhwVy1AyeWOgReWxSe2MzlIuNZQSSwhNnuHB7hWc/tp3CoLJ7OkA7VF4qGNLKp02p4K9X6B27NvNrlkzRA2brl+nZtYU0sPm5yPIj1oKEyUc4di6JV
- 0/lqwtVv
- w4vQprzkhCSJi3fXyU3zctyU02h/MVwA0RMRg7O8i0m92UhiTz0xXVDo8nIu6YlWX+uO23WOBbglfRrl8UFJtoFAzFUnWgIW3n2uGchxAd1poVsS0lpSi8Tny8KFgidnz6VubP6rOMjvir0Mg1gtA08yDvwBa/9QRjEV9Sy3rVXv7vtccOiaBSkMy5y962Mdt0Y4xNRsE1mlST7gVHWaBNMwnX+sLaB21N8b81JsgYBBPyeGXlEYD6xYzdPdepnphe26rH1tjKn3MeGPL9eOxF+HqHJLE9n1R2FPkjSZgjMNy4Xd8M6tY1gE8lZj2pKV+u3hAP6hrzK/MRi47UC/QpVwSZImiMQBNMe7sG5Rc8rjRBET7plupmgGDj+Iq85dcRWiWVdC9rQ4iSVI97LPYzcvXYis9bGiuRTh9W4E9qBAkwf816ISt95IvAE0VJ7hG/Mz17ByBR1YFi4Q=
+X-HE-Tag: 1761081049-895017
+X-HE-Meta: U2FsdGVkX1/GqxF2M4kC038DZVDf0MOp0BWZNmO8rlwUb1+SDC2VUzdMtXsEzTxJZYXSsTSMrLKnjEef0usZKj7SZEbvVBH9F1qkcRyV6C9jYJESwNQBS9yEgCzeuPJ2KIUx8yQoYJJvJSj0WL5v2h1FfAfxdCv1I5sK38EY3mfJ3K6nYLiLYb9Z8HkFv6cTEnoD7lfTR8OgPRsIouFqbOgGOuOKdOpVhjbPK0BCSMp+wXO0ZPcK3ahPH0SafwvthIAJaZ2BhCojMx/MJzw4A2wKJXiMHv+ZveUhHPq3W/8tjtF4iCknEw5kjJPdJxet5PzbXU1On+4q/hfh3euppiyXO06yKAAkS67aXSYyjqgU4APk4ZBDKco31nMbupbYuRcGcsNBMUrJKOtgfQVZirpMmB+fzdjn871eH0RbqkjC8JQi9FJFF7Vo0oFtPnHvLD1SKpSGZ293tN4qdbXdZd5rFAvNmaVkmLGB2DzmYijCuJ1WbI9f8yRhG1yA0n++mnkcXUpBfZ0EPzKT6eMSLKV0qkRWgE0sLZ73ATod3WuGC2lyu10YvmmOPVemTivJMhNW5tMVfdg+hzepUwnD0/foI7yIjdkX1bXHG/CiA7KoqLJu3pRlr6e43c5Ka6Gjh0DWrJDx3jAWLgiORYjc1ezcUHkDcN8O8rJyJAQHxCrEH769Qe9YXjPFvrZHFAeU5rnk+Fk2Gtw7WH+UVDbXkslOCHPNT0hHZRnlC8VGXlXP6aS0NOctARLamMe5vLeuXwd/K/G5UBpzhoTCBMEzZNR4rlK89B0Hm3qu5ZHjknq0ku7M90BrPKlCQeUgXXT2OLqmAjNFBMNkSlGGHiM9Ykw3XI23EWcBd0uI/dxGKvV2WqseEN7alPoRSgvRsprLyp6f8EWjKQHRC8PLPhT9OvDz2W54REP8XYfg8/2PNn6Ptp/JZPx/4oPnxZng1S3AlpqhCFTL2H5HJwtOPhL
+ ylnoLaO8
+ 97ZO6WKTu0Zsv9anEdj2/lmkV4kxN2+eNDHzb9GiigrA8pSUTJSyvnxko5PTYA63lBSegtTzJ6xXaUWt5mXxThH115VkrOB2N+S7CbYEAXmfl6tRBS0l7hnCA9yrPAioIXWlTmanvD6ttdU67q69pZVLTydWZWn2CU9rohy5BF2zm/zqIVNAaPHcKFzq+22rG4jpbMDD9h1AqVU6ed5iW4JaQE2943i3N19Fl3Ej//DR9moQQKAvyFRDHW0fYbcRzE47R4/CBpsNUagsNEv/f2fu6Zlg/LdoXQZQYmA/mNEzf9e3rDOBEEA8O1svxng6iJn1PZYrK89zAXBnP5O+WmZmjPYfXKO/ORHQx8urXO6vig1ec5Uq193aj+eyXaIpOAjPc4aTNrfoO+oHJtZBytvfm7HAQ//2Gzc4sfHfYnWxkODLkXo2Y3WhSFSdP0wqQ0Q6uwGuSVKyj+2iebKstM9CWUtZ1SNYwQEmgQbNjpLnk7VWPSJu6m0gRVlUYf7cUUevpJZT27D52WFf26kP8YUcbZy36DeCSrdVaZ30mBlq3wsESFt+ZQhXcoW0qCGXD869SBWLKChfQSl9cUiuq0Y1kYBJrRFr0xUQWCyLrEvDmyOETOvFu66+F3xnrpOaSgdieEW2TjdA6VSwqVddR/WVhVH6doMz0hkJwolafPlRDZRVzDeQRL+jjPvGqB6emWjR9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,91 +96,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 02:59:16PM +0200, David Hildenbrand wrote:
-> Let's stop using these function
+On Mon, 20 Oct 2025 18:52:11 +0100 Mark Brown <broonie@kernel.org> wrote:
 
-these functions
+> > For the past few days I've been seeing failures on Raspberry Pi 4 in
+> > the hugetlbfs-madvise kselftest in -next which bisect to this patch.
+> > The test reports:
+> > 
+> > # # -------------------------
+> > # # running ./hugetlb-madvise
+> > # # -------------------------
+> > # # Unexpected number of free huge pages line 252
+> > # # [FAIL]
+> > # not ok 6 hugetlb-madvise # exit=1
+> 
+> This issue is now present in mainline:
+> 
+> Raspberry Pi 4: https://lava.sirena.org.uk/scheduler/job/1976561#L1798
+> Orion O6:       https://lava.sirena.org.uk/scheduler/job/1977081#L1779
+> 
+> and still bisects to this patch.
 
-> so we can remove them. They look like
-> belonging to the balloon API for managing the device balloon list when
-> really they are just simple helpers only used by virtio-balloon.
-> 
-> Let's just inline them and switch to a proper
-> list_for_each_entry_safe().
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/virtio/virtio_balloon.c | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index f7d6a4a6e54f5..4b22de6a5f845 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -242,8 +242,8 @@ static void set_page_pfns(struct virtio_balloon *vb,
->  static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
->  {
->  	unsigned int num_allocated_pages;
-> +	struct page *page, *next;
->  	unsigned int num_pfns;
-> -	struct page *page;
->  	LIST_HEAD(pages);
->  
->  	/* We can only do one array worth at a time. */
-> @@ -262,14 +262,15 @@ static unsigned int fill_balloon(struct virtio_balloon *vb, size_t num)
->  			break;
->  		}
->  
-> -		balloon_page_push(&pages, page);
-> +		list_add(&page->lru, &pages);
->  	}
->  
->  	mutex_lock(&vb->balloon_lock);
->  
->  	vb->num_pfns = 0;
->  
-> -	while ((page = balloon_page_pop(&pages))) {
-> +	list_for_each_entry_safe(page, next, &pages, lru) {
-> +		list_del(&page->lru);
->  		balloon_page_enqueue(&vb->vb_dev_info, page);
->  
->  		set_page_pfns(vb, vb->pfns + vb->num_pfns, page);
-> @@ -474,15 +475,19 @@ static inline s64 towards_target(struct virtio_balloon *vb)
->  static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
->  					     unsigned long num_to_return)
->  {
-> -	struct page *page;
-> -	unsigned long num_returned;
-> +	unsigned long num_returned = 0;
-> +	struct page *page, *next;
-> +
-> +	if (unlikely(!num_to_return))
-> +		return 0;
->  
->  	spin_lock_irq(&vb->free_page_list_lock);
-> -	for (num_returned = 0; num_returned < num_to_return; num_returned++) {
-> -		page = balloon_page_pop(&vb->free_page_list);
-> -		if (!page)
-> -			break;
-> +
-> +	list_for_each_entry_safe(page, next, &vb->free_page_list, lru) {
-> +		list_del(&page->lru);
->  		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +		if (++num_returned == num_to_return)
-> +			break;
->  	}
->  	vb->num_free_page_blocks -= num_returned;
->  	spin_unlock_irq(&vb->free_page_list_lock);
-> @@ -717,7 +722,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
->  		}
->  		virtqueue_kick(vq);
->  		spin_lock_irq(&vb->free_page_list_lock);
-> -		balloon_page_push(&vb->free_page_list, page);
-> +		list_add(&page->lru, &vb->free_page_list);
->  		vb->num_free_page_blocks++;
->  		spin_unlock_irq(&vb->free_page_list_lock);
->  	} else {
-> -- 
-> 2.51.0
+Thanks.  Were you able to test the proposed fix?
+
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: hugetlbfs: move lock assertions after early returns in huge_pmd_unshare()
+Date: Tue, 14 Oct 2025 17:03:44 +0530
+
+When hugetlb_vmdelete_list() processes VMAs during truncate operations, it
+may encounter VMAs where huge_pmd_unshare() is called without the required
+shareable lock.  This triggers an assertion failure in
+hugetlb_vma_assert_locked().
+
+The previous fix in commit dd83609b8898 ("hugetlbfs: skip VMAs without
+shareable locks in hugetlb_vmdelete_list") skipped entire VMAs without
+shareable locks to avoid the assertion.  However, this prevented pages
+from being unmapped and freed, causing a regression in
+fallocate(PUNCH_HOLE) operations where pages were not freed immediately,
+as reported by Mark Brown.
+
+Instead of checking locks in the caller or skipping VMAs, move the lock
+assertions in huge_pmd_unshare() to after the early return checks.  The
+assertions are only needed when actual PMD unsharing work will be
+performed.  If the function returns early because sz != PMD_SIZE or the
+PMD is not shared, no locks are required and assertions should not fire.
+
+This approach reverts the VMA skipping logic from commit dd83609b8898
+("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+while moving the assertions to avoid the assertion failure, keeping all
+the logic within huge_pmd_unshare() itself and allowing page unmapping and
+freeing to proceed for all VMAs.
+
+Link: https://lkml.kernel.org/r/20251014113344.21194-1-kartikey406@gmail.com
+Fixes: dd83609b8898 ("hugetlbfs: skip VMAs without shareable locks in hugetlb_vmdelete_list")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: <syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com>
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://syzkaller.appspot.com/bug?extid=f26d7c75c26ec19790e7
+Suggested-by: David Hildenbrand <david@redhat.com>
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Tested-by: <syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    9 ---------
+ mm/hugetlb.c         |    5 ++---
+ 2 files changed, 2 insertions(+), 12 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~hugetlbfs-move-lock-assertions-after-early-returns-in-huge_pmd_unshare
++++ a/fs/hugetlbfs/inode.c
+@@ -478,14 +478,6 @@ hugetlb_vmdelete_list(struct rb_root_cac
+ 		if (!hugetlb_vma_trylock_write(vma))
+ 			continue;
+ 
+-		/*
+-		 * Skip VMAs without shareable locks. Per the design in commit
+-		 * 40549ba8f8e0, these will be handled by remove_inode_hugepages()
+-		 * called after this function with proper locking.
+-		 */
+-		if (!__vma_shareable_lock(vma))
+-			goto skip;
+-
+ 		v_start = vma_offset_start(vma, start);
+ 		v_end = vma_offset_end(vma, end);
+ 
+@@ -496,7 +488,6 @@ hugetlb_vmdelete_list(struct rb_root_cac
+ 		 * vmas.  Therefore, lock is not held when calling
+ 		 * unmap_hugepage_range for private vmas.
+ 		 */
+-skip:
+ 		hugetlb_vma_unlock_write(vma);
+ 	}
+ }
+--- a/mm/hugetlb.c~hugetlbfs-move-lock-assertions-after-early-returns-in-huge_pmd_unshare
++++ a/mm/hugetlb.c
+@@ -7614,13 +7614,12 @@ int huge_pmd_unshare(struct mm_struct *m
+ 	p4d_t *p4d = p4d_offset(pgd, addr);
+ 	pud_t *pud = pud_offset(p4d, addr);
+ 
+-	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+-	hugetlb_vma_assert_locked(vma);
+ 	if (sz != PMD_SIZE)
+ 		return 0;
+ 	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
+ 		return 0;
+-
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	hugetlb_vma_assert_locked(vma);
+ 	pud_clear(pud);
+ 	/*
+ 	 * Once our caller drops the rmap lock, some other process might be
+_
 
 
