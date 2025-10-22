@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0737CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:37:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1302CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7801E8E001C; Wed, 22 Oct 2025 04:37:25 -0400 (EDT)
+	id ED4EF8E0006; Wed, 22 Oct 2025 04:38:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 730FA8E0002; Wed, 22 Oct 2025 04:37:25 -0400 (EDT)
+	id E84E48E0002; Wed, 22 Oct 2025 04:38:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F84D8E001C; Wed, 22 Oct 2025 04:37:25 -0400 (EDT)
+	id D4D5C8E0006; Wed, 22 Oct 2025 04:38:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 42A7C8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:37:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA8CF1402CC
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:37:24 +0000 (UTC)
-X-FDA: 84025096008.30.B87D114
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C34088E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:38:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71FAC88C25
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:38:05 +0000 (UTC)
+X-FDA: 84025097730.15.2838D19
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7F121120005
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:37:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FtU5Xkae;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761122242; a=rsa-sha256;
-	cv=none;
-	b=75edufanwYgZr9HypyxxLCRHkjtTitiR0LgqeOzmVUcToRz/pS9LX3JXk5EaVqmt+G8NdX
-	PzsKwcjQcN10E8hlII0jJENJAG1VUjkMbGOJsfJyXH97zbTzl9Swz19fiNcC8aaSnHchhL
-	tr/10+thGx8l9CVxh2GXmXt8RWJvnx8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FtU5Xkae;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1BFCB4000F
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:38:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ln9gJ4X6;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761122242;
+	s=arc-20220608; t=1761122283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
-	b=EnWNDBvddO1vPmk3HZ6VLHZD7f8bCTe3Ai7nmHFes67HZkifFha999Ep/dyMpBa4Cp+B2S
-	6UFnAIHvsNrC2Aqyxugh96Qf7C1e1fYH9TXcHmj5pF2lBUzWCOIO395fE+RqGqkbhDYo3U
-	ixJzE8GwlQnC1K90t4wJYjJ6C7JxMR8=
+	bh=HORYs91dLQQexQDsveH7tAbNx9ev00vg3VpMbAGTK3I=;
+	b=h7FOvSLvpD34Wz1me3xxPkIUgE1ZzhPbTGjsG0IfT6ino8H2Q/XbZpyevdvxi7F8fDpEhr
+	MP/CbIek6MEYac483EwmYfJxvBm5xWVfrDcFNQLHq7K4I0ri13+CiKRRnIGZkuUhhBn+1y
+	E8FVE1xHmEMpV2/B8L1wytFPuDLt4Hg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761122283; a=rsa-sha256;
+	cv=none;
+	b=5Y5eT7nNLnnYWtlTXyRDcHtJ+hR6dMu4LDa2S5Hu6sKhQd89pqoUjh3epznDl3Omi/kPx6
+	l/PCkzCpUQP23X0pAC3iTMuNAdW8KbjUX8QUcL9tYvzcvU4+i4VbSLI6rmA0NFBHm8WqdQ
+	8Q8Q+hgMFbh+Nyb5OuQJQby0e6PWTkE=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ln9gJ4X6;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761122241;
+	s=mimecast20190719; t=1761122282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
-	b=FtU5XkaeAcjnLZdR94lu1NRNyINDfjxxlJ9/yWsXVB52I+mR0SN9w/mdlMwdACqjjJUYdA
-	zCmKuc2J34r6U7yD5uwZS9mW2/35ARC2P0fX7xT2O6DiXvLIINQHRhorZKz8aYcHUs61P0
-	ivet16WysLelO0cUzK3VG/kc8RZtTqw=
+	bh=HORYs91dLQQexQDsveH7tAbNx9ev00vg3VpMbAGTK3I=;
+	b=Ln9gJ4X6O8IMGvpDRX2rxiZy+5hp2YlPlkl2NfGbXgC1CjcQqgmc2s1P0voQhFkHSVic0O
+	ZVojtXYO0u3pLtJz7JIQfX7V7dUyxQUETrMJcjh9Arb/0SNWPL232Ot9ho6h0EAX0qbAGl
+	chv416zvOMwG+KlL+VRLT+PuMsaYs7o=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-OvwF32FGOqy_0mXNHwH9cg-1; Wed, 22 Oct 2025 04:37:20 -0400
-X-MC-Unique: OvwF32FGOqy_0mXNHwH9cg-1
-X-Mimecast-MFC-AGG-ID: OvwF32FGOqy_0mXNHwH9cg_1761122239
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-470fd92ad57so130570385e9.3
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:37:20 -0700 (PDT)
+ us-mta-562-qKUqI1KrOduS3ZBXLqduqg-1; Wed, 22 Oct 2025 04:38:00 -0400
+X-MC-Unique: qKUqI1KrOduS3ZBXLqduqg-1
+X-Mimecast-MFC-AGG-ID: qKUqI1KrOduS3ZBXLqduqg_1761122276
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47111dc7c5dso3601305e9.0
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:38:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761122239; x=1761727039;
+        d=1e100.net; s=20230601; t=1761122276; x=1761727076;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PowtbTWFPJpvinHpTKYrok9CuCgmG5go5XaSSmfJb6o=;
-        b=IJepfB2iKnZEGi3PXO6Y9o8M+Mh69GkW5U+JXSQdMbibNEqQuoPqTWJJOv0fTQ2A7n
-         62dFgeyQeitrIc6uq1aC10ust14UeMSpOEmGsUMh3UaxzyU/lfbKi0OBAo7OnpwZ01Gh
-         +eS2jOvP2H3ZduK+sWhFo2AI203LoqjcbFxCFpYZUOnCojMGeywsaxqa/GQXV7KT/dpS
-         ULZGAkWqer9w4Ma7ZibgTFB2F/Uqg2uIu9gZOlsZgKjp15dc5NV3SfWvJN4AM8lfoQwi
-         jKcxE9Dv/8kO6LHD1BM0tX9zfgTyzgmSruUznGPXKq/0Qt0JbV7ldXb0JBbh7PDKpmiD
-         LJ/g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7wfbP4FlpVk27ksmi2/W+mf8FhpjlR82+Poz1g0/9M/5k/l8GgmTPtU1rLqAZqbgTNmyMOFpRnA==@kvack.org
-X-Gm-Message-State: AOJu0Yz1b31uoM4Pre+wotzHJcDSKXFc4LvKmwWmZmrKvoiUeChAKS32
-	G/azYaPw76Lk0WVNyZQTvd7hJsGGMHcBFJNT7qQXdxZuo3kbjNG3azzbcysHLhn+83kHq2kdsb1
-	kitzYMAtgXEhqCYt4zRZCvO81n+141yE8fCDdKXAWRyUyLc1uNR9d
-X-Gm-Gg: ASbGncs6WXf7ZaYQ1V8Hi0aW0b+RkCNhJse3I6OfNXQpy1WWJ5G/ZXJZVeEw6SX1uYR
-	EBU3P7FK0+FPIwq0XNXgzrGXVQ0Vzpq+I7O5ZTndLQZW91MlUPMeRsN96ZnPLCGCKQeQp61sAHQ
-	lkZO7/PTSnsrOvt0EUx0Rt6bCUJA/65YyLNnLf6qHN4d2iQa/ETAdypkPNQXeJ2sRT+tdQSggoi
-	dzuRu+Iyr6Bk+jBfaidNLIxYLh0SXmI6duP4DD1iAoc+fddFfVKKIrHmRSV+/VCF9OvLO29nbjC
-	HscAzcLLghB2HGFXWBtkZK12+hntC5sNsZ055M7D5wh54RACjcUfEzCAuR5lr0XwxgDdFvBJUxo
-	bwPcI3X8tT3Hn+m8yRPj0mXKiKgnuFH6BZ2ACPCoQDCr4GNIGZ/KTxiK2blGRXl3V/kWbpMksIR
-	ZNcYdWGJCKWKe0FOwag94Kg4A6Kds=
-X-Received: by 2002:a05:600c:64cf:b0:471:12ed:f698 with SMTP id 5b1f17b1804b1-4711786c793mr157782555e9.8.1761122239141;
-        Wed, 22 Oct 2025 01:37:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFItCI5iZhW1a4GMCfGAtG97A/+uLrq+f4lTV3/dPOqU9C5XR4W+DY4bimzCkihYZ5ekVZbVw==
-X-Received: by 2002:a05:600c:64cf:b0:471:12ed:f698 with SMTP id 5b1f17b1804b1-4711786c793mr157782285e9.8.1761122238693;
-        Wed, 22 Oct 2025 01:37:18 -0700 (PDT)
+        bh=HORYs91dLQQexQDsveH7tAbNx9ev00vg3VpMbAGTK3I=;
+        b=jZBkEZyztIMBPoeOi7lluePGSroXALZEFIDwBw6PvVY+yeDjhfI0wejvRDY+0oQWJH
+         M2xJYySKC8t35sE1yOF09dU0kH/4KYQbSefSRMha/CxhIfsT1vVdrnbuAqYqr8DDDDFb
+         0xZgua0thR4Sbk83FQYorY8gj3rKPOqI3xpl922vEJTx07kaenb97d7B3IwrSkep8MnW
+         fDAGDhvd31DJWCn1Ko7Syx5Qp7iOAUop1pKIJRAIz6IkH8MHq1PekO+zV7+y1m1hSF2D
+         cWvSE4RLSzfK9nWBcZGiD9JKrV4N+oJoM0oU6zIX6zy5tvP/uu4bohCZzUIWCXE2vMB6
+         g4Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJYObBH2S1YrNLPQEloQB46trg77rZHVZNIfKZTgorQibKJ2BYhib6bngWtO/r+4qq9duQ1DLNbg==@kvack.org
+X-Gm-Message-State: AOJu0YzxceNHX+e52nfM3jrKkXzxCBxiOPH38TPBz4ewHxaWk4qEfTuB
+	MJrDA5Fd35CwRSqfnWR1/tM1130HEdThWceQBQF2QaD4eA6pN1CwzRMVW+pH/ZFtRqRRZxU9wNI
+	BPjMG57NhkonKkwjTEhFnOS6oX9nAC5Hdo6JIj1FJkvj3d99CM8Q7X1Dp9UTw
+X-Gm-Gg: ASbGncvPvNpTjNVFaV3gIvwqV7oJf5U7WezfE5p+/jEcaIP3+xJui2sY6IvEEhKDt2z
+	65RnV2Uk/eZEtuImU568DJR2oVr3zRte//C2MDufJv07BI1pC5Zewyhbs4SZJIyMUMCI6guREVN
+	kBik6UzsDdcYe3O5hr13Z7AtaijKo24S/on0S5k5g1zubW8wyJl5hlf1yfrTKhmn63jSv/ES1L+
+	J7o2D5h2z+Iq4Hya1P6peuvhldgADdsozYiL3xj2XDD7SkSL68dNp5d5CTRi863av8k0L/E6QYl
+	fogK/zxYH2eIqklu0YuewkWpC4hBzpBYjpWzaMCvQui0Ro4lIXt36+SVFRRfLuvt2X5b6O+tYKb
+	oCviYOCQvkUXNQQ6AZOYbLVgoaKp+vsdU7U1l2bJqwJgKaocch31TlWsAjMJsS9EivyPnGMmxPE
+	zFkRf0rsl0U6cBtZtZ/n3ntEmYXN4=
+X-Received: by 2002:a05:600c:8b17:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-475c3fe35f4mr18215355e9.16.1761122276475;
+        Wed, 22 Oct 2025 01:37:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZox5bLuD2Cm8JqdEWshafSicQuJ3K5TI0WpKQPM9/qTM/uKldxHeAV/RdhcTW+7Drr2Molg==
+X-Received: by 2002:a05:600c:8b17:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-475c3fe35f4mr18214965e9.16.1761122276037;
+        Wed, 22 Oct 2025 01:37:56 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c427c3bfsm37040815e9.3.2025.10.22.01.37.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c428a534sm37256955e9.6.2025.10.22.01.37.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 01:37:18 -0700 (PDT)
-Message-ID: <5be0d531-aa15-4852-b29d-cc3d71334894@redhat.com>
-Date: Wed, 22 Oct 2025 10:37:16 +0200
+        Wed, 22 Oct 2025 01:37:55 -0700 (PDT)
+Message-ID: <2fa9f196-12e4-4c1a-a1f7-cfdded93cc94@redhat.com>
+Date: Wed, 22 Oct 2025 10:37:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 03/23] powerpc/pseries/cmm: remove
- cmm_balloon_compaction_init()
+Subject: Re: [PATCH v1 04/23] mm/balloon_compaction: centralize basic page
+ migration handling
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org,
@@ -125,8 +125,8 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
  =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Zi Yan <ziy@nvidia.com>
 References: <20251021125929.377194-1-david@redhat.com>
- <20251021125929.377194-4-david@redhat.com>
- <20251021164220-mutt-send-email-mst@kernel.org>
+ <20251021125929.377194-5-david@redhat.com>
+ <20251021164916-mutt-send-email-mst@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -172,21 +172,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251021164220-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20251021164916-mutt-send-email-mst@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: feKBYn3krpmyIlM69XnCGvlQVuqqtdLJDCuZDBO2PS8_1761122239
+X-Mimecast-MFC-PROC-ID: EUX31vQB345Hy5C5G94Am4S6b92_enGFuNdQmu7lQTQ_1761122276
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6ko13s8myirbiu5yy913gbnw1499j7cw
 X-Rspam-User: 
-X-Stat-Signature: ehiagp889wy8mg4d7yyrcxpz91trsh1r
-X-Rspamd-Queue-Id: 7F121120005
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761122242-842006
-X-HE-Meta: U2FsdGVkX19VsUTZ6QOOAjAQos3O8PT6RX1kr/+EgEjLDIq+R+eUeglqlwP2wvx1DZwEj7SOPP/rmPZRvp5rFuMvFXWcRAY6oteXMyc+dYOx/i3tsLikK3p+2ak4lhlkwDeYENOsU8G33u0gLscBXUKeWBMOUVAKr/hG8YvStE5W1oWblzq5GeeVxaGS7iLKUyaSYR6rhxgTjihIs1j3QKC4roltFHWHNYCVsgEHtac8ijopIbuHbIJ8elfwU8IXIKDA+1uEJMXZgd8MKJ9ohUJJmnVZEhb5KtWfU5zawTo6FwlSRcx9XWDUK24Pypk0JyfXWI2KaXC7HxTu2hEU6ARQe2zzmJ06AmpmOLwMKadHap/kEabM8nv/8oLNlURXGO0lo9M7/ZycJFK1/ZAwe4xd1y2a/OozB5FE4pLs+pOlLs48nv3IWhSbFqUlSCt53FvoQTdq6RefRz5l0FTLOKF33s8PKtfaT3fL3KGO8Sl9I5/WrF7T0C1EbPCn9DRFJ1dr4Dbccb437B1bGtO5nxnhiX5CQTrTWQ+hy3+QDxchUFqbbPiqnrRBpkvjQ0M3e0RSAICAaYSCMwgG9nT3/igA3+2sw7jjO3o2KNO2qaLdUXiqMe6xAR/EDuPi4RLGtdKmy6GdqrG4O9yQ0ie7zLdjLjT/7f+lKuhW6MpHicy1VAX2QYd3BVkq9VlbXUTX2CufV1L8yz/PDpKL01b3ZBBtLcdvizAmqeL7Jd+LGnu/BaUA7o3mJdG2prGgxzVPBXyRuwNJA3+yzCcAxGaLk0zlKGlg9wFtwf8Cr3meKbY/LyZcjgFjXD8ybOk5Hy+7dqxVCUMSS8d7CRJ5d+D2W/DW8QAC5zAEuwBl4+gtgqSKNJAqNmnQl8PpQBvB4PHIzKB7YQe0yLySGR7Ad9w/LrkrxUICicAMM8Byik1Oe7ClLjZU88PC6zUhNOpN+W4o+DNyBHUNZM09honylro
- furg8I5B
- R+jQfEUhBrJbJdAw8f3rIhqJAuiGl5rH2SaEyakiSIyytNRs+hzD7cAqg7h8tSDBwfejZ+0A3vq3szwrceuUgXTg1aDdVmdhR8SggtISkOOyR5N5PzkDSHZ+O/niaiYSiax/v9nTXSKoLfwo442VSY8HbsGHO0x75/iJtluFHhL/281/msqXB83SI2hs2Ix4s3Y14+pObm9V3EgTKKUPqjorKm7jMbV27cbI5lN2yQJHF8HPKNOVwaU/mtdEWcWprNfoGhNR+ASPz8besXm03ZLoGuwaieysJYlc8KU7/z5BWMqaDA6yQ95jAN5/1Lw5oaTsJXZXdXwmAWIMuLeccJjXJQ3LJD6BpEeF3cFgEhwTAjNXw4xhhUimDzgQS/3RaG5jP6UKofFYq4S27QoG0t/oHOaNPx+FffHyqXXYXAPfPCA4x3kqDcmlnQVJlOaV306q5GhSKeLsnK0DJQ4WCP7b8q9KoNw9GVEWQoWqQt1F5hNKZu3SDSBm8ypnK6Ti6KooMPDkG39raqSFMK3C9EPlIuNWE8H9vaaErk6hseoyT2r5uu9pkwE2do0acD68dtRcJ/k8N46iwh5b7OWO/uOtP0AQ+bKGwCzi9lCKzKBMvvK/tjqxQ0edyQQ==
+X-Rspamd-Queue-Id: 1BFCB4000F
+X-HE-Tag: 1761122282-393572
+X-HE-Meta: U2FsdGVkX18wxs0PIp09fYAjpN7D3gFLo++Pil0JXPCiGq6/gZfOxxEo+YTtOj62siHlevruJGSZ/MmrsOpQwgF94yGBI0RukGHV9RANB7xw3/dXv3geiW0L4dfA6t2I6K3vWLNlSxZkGFFxXWvDbyFw8rGxTXaGxBTWe7/ZQyha/Pvan7TULvPRRJLYFVQe51/BznlUDDVbCUhiziH2Q1zBZttKT3JdEHaeIzOzDbqrrrocXhUnbNz8LmYjT/qtN6IDn1bstB/S+GaS4fmJLGJSWmChgTZz8YH9sM8jkuEfgiuqwjpN/HLfWGFNj7nANPu6UiWYr/MKQkQHfnCykgbJQviTIJp1sYUKpKGRTAsKmuLrUyxUEXmQeDpUowaDHz/5MTYb9HCMm3MuL5Az/B/yTGBGT6sFAFJa7IjYWsOgHBybrxgI2IKHMY3qZPIoCHxGOttll8PZL8gluRbbjolOHGHfx+lzdqTmTB7LmPEpZ+ryGNiRq4eivtpB9jkxiPQJR/v9wH7knidTdvb7PcLYPaCzRkvjcmjv9yIXjLDtmaWNvKCNvMSySBLDZyqH0WjJkPTjXNSxXHFLOy1c4jeOPI/BlDF5mwTvIXnQLN6kX/1GTDacKFe4IF8x9E2e2CO8ETFNXBgF3d/yhbrx9NxRQ3PI89nTjOOSc2v0JfnCAp4i2iGNOiqu4IVovpDxsXmtQN3OZKEhzRzPuxpzOZA/yt+6oywm65L4XUBIlDsWxyK5YhFVcQaXgVUSb+shd1YXtwYTssPGYDjnH/Vs/EEtR8yB0Upc7aRpWC2vTrPSgWFDVi9xykFW24JIsgp7+hbjEBFpyw9kVa7cASJdn6IuOukA1J79D1T6NIDts8nRKf5kAqNXKGhbe9TLUcyRNxhwrUTLT5PYw+2xnhUmdBpRuLzyraY3Aa2H6mXSvNpDaGHH/Hy04rROkSSkBH8wAykMZj1r0EUdOyhgQKr
+ ztTeD8V2
+ KPEC+5iJ41EtfYySDR6vJck3e06Mayaf8jUuAQqSFiHpgyRO0P1ZZJhSpQ+vmZ2XlmPQmCWbFtIulCrCIcirMMKxuuwMBJI9x5QyUpSlvBTooY+lsM/O0erYiMR88HQLt/oY0owpP5UFKf1vFPD35dKsUK4BXhxIV2Olf0wwl448taplq9PM3cx4xG/NjgwA4QE06EvijoEYJbHpu2aEt+r2LrOEZJZErCbsl+Nnr50kkDT9Q1fn+7l8v+ZmJJEsQH318Cx8JoRYluU6Xhm/pwVtpkHB4ohDVG2XjkTIvBE9vqflC0rOhbl0jIXOu80x/ywtMX78EM0b6cHmgbvz3OXYDljKy7YriJRXWkY5BbT8KeYwD6dAQlVAAFAdu39i7MwurGafEon/yeJSBL80fAxYCs+W9TdpiSzqxoEzBNYS5YALvs6loyTfLx2vtBfkyM2W0gDH60nyLoVOoq433OiGJGaRhBy/EWbchchWQKsN7ePRZRQPDLzYQdhJQGb4+3I3PuYWZOCJhgofH/0jj05bSgwqoSAp03YEo8vDX2g5ZRFGpKU+7a4L32n0Bo52QZ3paDeO8sgIJ9sDwl8OqqJtdKonqpni+EhAy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -195,21 +195,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21.10.25 22:43, Michael S. Tsirkin wrote:
-> On Tue, Oct 21, 2025 at 02:59:08PM +0200, David Hildenbrand wrote:
->> Now that there is not a lot of logic left, let's just inline setting up
->> the migration function.
+On 21.10.25 22:50, Michael S. Tsirkin wrote:
+> On Tue, Oct 21, 2025 at 02:59:09PM +0200, David Hildenbrand wrote:
+>> Let's update the balloon page references, the balloon page list, the
+>> BALLOON_MIGRATE counter and the isolated-pages counter in
+>> balloon_page_migrate(), after letting the balloon->migratepage()
+>> callback deal with the actual inflation+deflation.
 >>
->> To avoid #ifdef in the caller we can instead use IS_ENABLED() and make
->> the compiler happy by only providing the function declaration.
+>> Note that we now perform the balloon list modifications outside of any
+>> implementation-specific locks: which is fine, there is nothing special
+>> about these page actions that the lock would be protecting.
 >>
->> Now that the function is gone, drop the "out_balloon_compaction" label.
->> Note that before commit 68f2736a8583 ("mm: Convert all PageMovable users
->> to movable_operations"), now not anymore.
+>> The old page is already no longer in the list (isolated) and the new page
+>> is not yet in the list.
+>>
+>> Let's use -ENOENT to communicate the special "inflation of new page
+>> failed after already deflating the old page" to balloon_page_migrate() so
+>> it can handle it accordingly.
+>>
+>> While at it, rename balloon->b_dev_info to make it mach the other
 > 
-> What does this sentence mean?
-
-Should have been "... we actually had to undo something, now not anymore."
+> match
 
 Thanks!
 
