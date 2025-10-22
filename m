@@ -4,194 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 607F1CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 02:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 823A8CCD1A5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:00:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D2608E0006; Tue, 21 Oct 2025 22:59:41 -0400 (EDT)
+	id DDD3A8E0009; Tue, 21 Oct 2025 23:00:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A95A8E0002; Tue, 21 Oct 2025 22:59:41 -0400 (EDT)
+	id DB41B8E0002; Tue, 21 Oct 2025 23:00:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 770DB8E0006; Tue, 21 Oct 2025 22:59:41 -0400 (EDT)
+	id CF17F8E0009; Tue, 21 Oct 2025 23:00:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 62E718E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:59:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C325160702
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:59:41 +0000 (UTC)
-X-FDA: 84024244962.27.3C6EB98
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011014.outbound.protection.outlook.com [40.93.194.14])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1928080002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:59:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VwD9PNM0;
-	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761101978;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B93AE8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:00:34 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 628CB1406F7
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:00:34 +0000 (UTC)
+X-FDA: 84024247188.29.C57B15F
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A5A0416000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:00:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf08.hostedemail.com: domain of 3z0j4aAkbAJACIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3z0j4aAkbAJACIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761102032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sS+yFnA0r5ZMDATdUIqJMHILjurXJFBo0Ua0OVW3ZIc=;
-	b=fRrkPRBZ/S37F/0xDhOcJO7LgwN/mgwc5lHN2I9g4BFGTAhcsB7HkRRRRfEXk+iAWxVbVW
-	Rkn7T1kr956mGPikSm9t9U7bfnewkESixYj2J0KG1MW1MYdtlwVM431jrVjob0mS189ifW
-	jZgtUZozWQsf6BnOPrFOObR3zmq/wgE=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=VwD9PNM0;
-	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761101978; a=rsa-sha256;
-	cv=pass;
-	b=YMByJOJP1bb1Ra37S8KxyK2EpK68CjKHIVl5XqQBIOUyynv3dfCRAJuildyoVCk+pbSdAJ
-	VZOfvrJealUOIQ+7ahCrwOL4/ZC/pFDgbUGgOXhuM5uDWd7akFcsVJ/dvNcUUyF8obg767
-	qvW2q/fW1HpIhoO6EI8oaPXCVnT0Zwg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iyhZ1cVmUK45wpk7ZAajE2n5Is4pc6KBeTI5fNrLAWTJdD0ksCGU8DAuRrFHvPy1FFYW73j5OiUouKhNtexlmPj4XltLVZviUYgUKOqR8E1uGVFgMHFzMHJC6WRKO6dfLFpTEDDgsDgFT0ffOsFzMJ6zCF5H3bAdtuJxQD688u++lCKRof/iw1i6CBfsZ3pqG3WfMPBha8WziXC987N4K6EthLBbGQi3u4VE9QiXypYiYcQkgIqdF2Wf7Sbrrr9T0+aNR1DxfRGEfu+M0HTuYxVZwKGL2+Z4SMM7vTNyA0f9egwJKbsfHjM8WZLJgt0Lma7fKHcoGYn+LGVxg8tG7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sS+yFnA0r5ZMDATdUIqJMHILjurXJFBo0Ua0OVW3ZIc=;
- b=EVdtDkiRWeTZXvfgC33kJf/lQ8XwgeEMM2Q9dPD6d0YJSkuPWJAmyfU1Kl+wNTOGZ8Mg7CaZhFPLv6Lwi6ZD6Q7o7CerwNFu9eQLwiwcQqq3ov+B9PBGMbMYtyEwfRUerCtAbLJ3dzcNkdI4b+x1PfHeR+tMQc4hsdzyoPW9xgHy7ZXInFPKOLcn6yHZpx+okErjuix7mEc4UfsmMZHWt2Ef93TqlPeZqN1bvyQjQDkBzn8vpnZ2uqBbrKAL0j0M0mrWi4N+Yg5oNjJdnPxNeUr4aPARJLunRprmIaRlhxzAB1AsnMRhIQDbalGTnLLG7vpUmZIV4hBmd/fxc12e+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sS+yFnA0r5ZMDATdUIqJMHILjurXJFBo0Ua0OVW3ZIc=;
- b=VwD9PNM0eX9XoYAPBx83h8r/ESBKGJCN7z3QCk5CcHJjlsSpapikCQZ10GDCSAjvj9rhyoAIkdtY7Sd68ih2vVgiCGXfz3uA3NOrP1zZNizdkz4L6j4lKZgM4kfn31Y0TtLB9cKrjqwbc20+2Dphr11vN1nchKLoUgsSm7/iJUz0ROo5vh9y1H05/moOhroDB0TW+AKB5P3dyMl/VSKwwUDy0Ld0T2RypxUjrxUqqDEKa8CA6VzwzHcFcjWS5Y3w9rmTfCKjsRieQpl4jO3FruwRwVEAXJ3mQwJpQLjrtsw9NT4NslEuve8GLFeBQ8jiTljvCltTLTCoRWf4c73LXQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB7827.namprd12.prod.outlook.com (2603:10b6:8:146::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.12; Wed, 22 Oct 2025 02:59:32 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 02:59:32 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?utf-8?q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: Re: [v7 11/16] mm/migrate_device: add THP splitting during migration
-Date: Tue, 21 Oct 2025 22:59:29 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <D00196E8-E812-41CF-A2F8-A38251161ACA@nvidia.com>
-In-Reply-To: <debc988e-45cc-481d-b688-a5764647f3e5@nvidia.com>
-References: <20251001065707.920170-1-balbirs@nvidia.com>
- <20251001065707.920170-12-balbirs@nvidia.com>
- <20251019081954.luz3mp5ghdhii3vr@master>
- <62073ca1-5bb6-49e8-b8d4-447c5e0e582e@nvidia.com>
- <97796DEE-E828-4B12-B919-FCA2C86756DE@nvidia.com>
- <debc988e-45cc-481d-b688-a5764647f3e5@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAPR03CA0091.namprd03.prod.outlook.com
- (2603:10b6:208:32a::6) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=ieAViPf1Cjp8Yvqm3V8jZXNAgEwXfb8cCWdBiX+2hF4=;
+	b=Zyl2XI2DLXqXuXrUfZb4BpGdILgeNU1MByWSOCglyVNYGtMFQRQr3PH1V0fUUPSiccm+yr
+	oRu0Qk89ebTFJV3pTjdifgAdcH7yJUPu5ZzO1BFmnXryfvqxbrb/MMIjorqaspNRlHLXNS
+	Fe537MRS8DpiuOZaO1ASmTC1B8YymGs=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf08.hostedemail.com: domain of 3z0j4aAkbAJACIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3z0j4aAkbAJACIJ4u55yBu992x.08805yECyBw87Dy7D.w86@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761102032; a=rsa-sha256;
+	cv=none;
+	b=fWJCEAazzXSiee/FME5lCfIEm6X7JVOGLq3WzlZXlH66MxLReIkXqddmP4HQAZ+xi3b3EX
+	a2NQx20Ry6KCpCA60sQB3x3n0GoxcxWPYFbZC/O13R+eAp5S2Nw1fn1OnF+EZCq8iEDjKx
+	tOchpXkaqTt2FCrc0wvOYOT/S/apWPk=
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-430d83d262fso132004085ab.2
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:00:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761102031; x=1761706831;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ieAViPf1Cjp8Yvqm3V8jZXNAgEwXfb8cCWdBiX+2hF4=;
+        b=dAwbkIKlN8L7Pma/7oyo5WLY9sFRYbcfuT+WxyZ1iwB1bOhIdNsfdylDytlbYOJqta
+         dOOBfhfVxswwLMB5v4rCVLF/vt83zmQjPl36FlWhlYqrBRzXv8sErAB2VRCtFnBViqEe
+         /CCEqUwIMfWsNg+64zY+ZWhzC8Jy4XANQAdkq5w7bz9AUweZgYFAB4V6qdXy3NvJwJV4
+         Na9FWN7o/Iz2Fqxr4P6LCsj8CnWEmHZThUPUnqBuC1HKu432kuqwvaQ3toh+vEdg9zKs
+         +QDy0oywoNIwCffa7AKG2hb9Mhuj43KBYmCrLpL4znsPDLl2YjtFm47QZHFxQiEXboy6
+         MGrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWO7mJ7IKaW+Cj1IHwMJHePK22PvUUmtwv2f3826GNe1V/VCzB8oc18llj7OLyndz98FjW911i8jA==@kvack.org
+X-Gm-Message-State: AOJu0YygxkdKx+tKr+w2ZK3soeARI/OxyXC24ueNDSiXjH9tHFpN9vPX
+	9WTecnhSMT5VeM5eb+cBzzPs0Z0gs8sp4nbUXljYuOefaEoxkeXRZQQ4fcGQSRG6YC6/954ULAP
+	YA4HhhWMS+T/6TNZGYN4aaT5nUAQIuLoVrQkGP/ZdMpdBsR7MQLaEyzwY5Ts=
+X-Google-Smtp-Source: AGHT+IGKMts0+aawtOa6cO6m6ONnPPPam6chhEtV+f5xZz2dI8X/Gi6Bp21k+KffzXFdsNr5Pj4lPO9atnDtOWSB8OKGTmESnGk8
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2feb80b4-6234-49fd-f6cd-08de11170638
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?670HepFklGDwbpRPItYjOBQI4uCQjiPDHbUan/LS9YLvH/UjOK51Qlvtb4ou?=
- =?us-ascii?Q?lATGaXfe7k4P0tnkPUNry3Wi/XIVWgRGwezScJo1qzG7H8Dw62rYF+zjTTFN?=
- =?us-ascii?Q?7bhFeuL3slnF4J5pEk/gmllZjMYMn48eVbwMNBvLo/IaNe339+mZHxlcp6Me?=
- =?us-ascii?Q?ECeGsZngwvxqmqVX0DBr65Eb0ZZdVezKy03F4qyshbeMc9IRLxomKnkLpwLU?=
- =?us-ascii?Q?wcX9bek51vefaEovETRfDMJKo+254W81lgxDxQyy+s5D8TqFzFpG0YqHm74O?=
- =?us-ascii?Q?2s8W8tmcAS8FqIMVHoex87K8GaKDfrLGVS8PQI/VqR2t0Jthhc5ENAvSn03b?=
- =?us-ascii?Q?ud6NkSViwciEnNT3HYDK4BbR8RYCWV0HU+m5z2shIwwINS+wkKlA1vamonJJ?=
- =?us-ascii?Q?Cyycp4vTJxVMdTaD19qXiLOnVm6Su/JW9NeLubTSKkXfjgFpdr/BSzPTNdzw?=
- =?us-ascii?Q?x7Y9YWV4cPZBHjT7rA6JKMp8Zlcv6f+gEgUW/QrHA1bB86zLmgCaABi/xDgp?=
- =?us-ascii?Q?otkqDb4Bju9kJ2fN0SNS28cXxFAGsHDheGoLi9iqplTUpdsgqn53zLxDt+Ku?=
- =?us-ascii?Q?nU3uiDOR0B/Sk9NYSoZF2TqNobqWd8hL8zWlXnX2pykm/RgOulh92c7xIkJM?=
- =?us-ascii?Q?VZN4Rq0bACb4fxo8iZeMG4VZu5bTo6AheQQBz2OVQt31PE8ktKNFAiJpYF67?=
- =?us-ascii?Q?zHE61tZp3g3Y4PRaTGrfjxvOflunJSCTvx2XeON7e2XzfPW2QoJMwCKSG5t4?=
- =?us-ascii?Q?jSyFTrypv2i2R7/SCYDimmmpEl6J3PkAz0xPVtdw3jq8GBvM5Xviuw4R2dgh?=
- =?us-ascii?Q?9dsLbJkO3mDg5pagDreAP99MIrGtIZEupwapWzdV8d9vJ/TtkIpHDjlAO+QY?=
- =?us-ascii?Q?jp3q6myHIa6lNOHHiu9azBePaQTeGRbFfcy4+hAZt09SndhzA+p+qTUHZXsC?=
- =?us-ascii?Q?8H+tOkcwkXbx0PWQpcN/QG5jPf/fxdjRsOOulpHZV+W1nq5GVoGCiRi4Li/a?=
- =?us-ascii?Q?uGYB8Vgh44ZH8vhSYdXxcw+a3yxG2FkX6w1udg1X4WpN5hX8qHMOB37+TyxC?=
- =?us-ascii?Q?IOtDJuSZI0tOuKV8EPpzg2ePPAaXqPyK8Wi59c9MTAxccx+Rky/KLSft8Ohm?=
- =?us-ascii?Q?i3ilpgxI/ypJq2RnUs9ROstdiFLwryBAkSg40LqQO7mFve8g+kUsD84/5577?=
- =?us-ascii?Q?lCs3C2oB/cIqX2ZOyCGxRaVbTyXnyPz6Pc0/ygFhH7HXW77HDz1Vjyg8ciKW?=
- =?us-ascii?Q?JDezrO77RIuWwKvrunqJS/WGiJjOYrnpA2srzKbXSQdjZYtQ/GSKi1zcQGLa?=
- =?us-ascii?Q?UdxryMTY1G50MRuWR0VvE645Fa5+a93d1KBI6Mtd2In3o7zsGbkIwqzi4uPL?=
- =?us-ascii?Q?VnXD/vbFEeMgNg4cEahCG522tVZaD7XzWAfwnyk+ha88lejn3U/O542wvApA?=
- =?us-ascii?Q?BYrBz0Vhc75bl3iEmycbxnhP1R63svcF?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jTEKS+eS0FbQJcXSs3Fezt79l4WUKFPaiwTNIWnnXe9zc6B4jWfFiLgP+zj8?=
- =?us-ascii?Q?Nlurn++VU3z2rFdMJYw8rM05jR37BwBeWZtxcODDLWxYsm16BxziI+/Urhvs?=
- =?us-ascii?Q?GplarxIeO7dt3GgmsJx5QGIjJVv5LwvMPXqNmdmk4eGhqWIlo3y92oZ92+jW?=
- =?us-ascii?Q?jUoQpCWSpuYtE6BMlJGM83z4kEELNLpKmJDZprQ78SjIXiHVE1zL73ogkL7L?=
- =?us-ascii?Q?cZPxRSQVTrsiqwWGGups75NRTzD7Vh/lhZDxgivjvB1XZdnX7wnSmzw71yzS?=
- =?us-ascii?Q?VTBUoGw8HYWHfLFHqMSjLjLqVEfymtgFcosUSaQyCkriDlI7NX5i08AGtRst?=
- =?us-ascii?Q?g9Kcub/MiIYMY6BPIAcxFwAQ15+gWdde5gCC6JKe/DNsHuxKSBeMRgL2XjWO?=
- =?us-ascii?Q?TUIAScdeWk2CZMWo/BYtSJTyfmmHlsZLI50hSlB2Ano5R+T3m29Jr/kr1V5j?=
- =?us-ascii?Q?RwC8U1a6iMZw8YucZ1lEYHDYkdYvSO52eyFmvC8ussCUkk0hyPju+YeCsHP1?=
- =?us-ascii?Q?f435yjnAdVQtUiAVPEMO6eqmHQNolXz0cc1Y5BmIkyembM9sGk9hYYgf8H5/?=
- =?us-ascii?Q?AcaW2Te7xwgnl2VIUAn2uKI1I/+oKvDmI4ciPd4nVbVnFvOoxjSHMtW91Goj?=
- =?us-ascii?Q?PEYbmsHPPriIH08m4WmjtAZ4shl58mmVMSKUIXeJA35+QxtyrdIzTQ4PDPfo?=
- =?us-ascii?Q?+fanFxnFV6oRhJikajGSZXXGu3JF50u8piZKQDp44AghfbmIWLa/Z9InGbyZ?=
- =?us-ascii?Q?J2KgX22nhPf+T7XUcVSU4ZGFNPHLmPjG8aePVE/rQCkIcZdQY3S0Z7wu8cVL?=
- =?us-ascii?Q?C4eNSaV0p0apgHatQagDpMRnAtIn70H8+lmweN6mrdP4HKyGqKzP7sPl1wiq?=
- =?us-ascii?Q?moWv2MfKppd0cQAK4e/uvIOe2B4UqnNAtjnyHNVuagmc4nHjN4mgTaUcYMyR?=
- =?us-ascii?Q?AuPYk43JnXyWXclu6t7yzqfzVP0lZhR4fIRqDh2N0J/LgDVbwMOCVAkAiVW2?=
- =?us-ascii?Q?4S+bKc4qqqE92u+IFNw6IV/kh0PIZADE9DhZMulLh+2V4/IyZUNAEcqCvN4O?=
- =?us-ascii?Q?RMLCw9BWTfxY+0NMdQdcGyPaOUnSt02lGmLfcl8040S9+HiCmhfEFXoTlYrL?=
- =?us-ascii?Q?J3Ec/a9L/XVK/5730KxO7spfhvhDNMXSlS0/YnFI0O2nFqFT5NUMA3wf4T/5?=
- =?us-ascii?Q?ZAZwV/TVd90fvnHyiXOhMbcDUKcAVkTqfaTL8rB9dSdSIpSZSho3U6kx0lre?=
- =?us-ascii?Q?rSHVdO+WlB1UPNPcAk1fDgU9wPEOx/C5Luv7g/zA4FuecQ6L5TwNt9xaEDy7?=
- =?us-ascii?Q?wBXYDxMLmzzvItIg6RyhQfK7/IUiackuw7XkwaPkvcV6ZcpNaNE0uFG6jKn6?=
- =?us-ascii?Q?4vNsae/L0IsrY4gsuOs0EdZ34P5AeMfyyq1ZFH+Ybab1JcuOfQw9eevIFFp/?=
- =?us-ascii?Q?uULaUf2FZOwO2kgRUzJ8Xsu1jpiBa52IX/bqr0nlLpFRA8eask/J5OCym123?=
- =?us-ascii?Q?5Lo2x6WmCmBY9SVbj/aNKHyHYQ9HZIms2VJj8UoYxvRRyrEwxtaCZB8tAwIM?=
- =?us-ascii?Q?JC2fZ1m8DQwDikccGAMukrf0zhnxyVK+S4kNFqkk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2feb80b4-6234-49fd-f6cd-08de11170638
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 02:59:32.1294
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z79gzoPhCoUpWLALKrff0b04ux8IvsIwYrwvHJ99uDNSRd+gE7X1uN9UbcMcBGNf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7827
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1928080002
-X-Stat-Signature: 5mdw954sikyk3pb3p5431xq3oxi8ozrg
+X-Received: by 2002:a05:6e02:2506:b0:430:ad76:a5d3 with SMTP id
+ e9e14a558f8ab-430c522d94dmr300290875ab.11.1761102031674; Tue, 21 Oct 2025
+ 20:00:31 -0700 (PDT)
+Date: Tue, 21 Oct 2025 20:00:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68f848cf.a70a0220.3bf6c6.000e.GAE@google.com>
+Subject: [syzbot] [mm?] INFO: rcu detected stall in shmem_file_write_iter (3)
+From: syzbot <syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: i4oh9in7nfp7p9ya1h8mjhacsenidgfr
+X-Rspamd-Queue-Id: A5A0416000A
 X-Rspam-User: 
-X-HE-Tag: 1761101977-450900
-X-HE-Meta: U2FsdGVkX1/Zjq+USFdII5RyyKHq0FwKVG1HyeBNyEp4bGMv7Wt5ellv+RG3SA4dwSKrHWLwxKikPZEdK0twrZ0MWu4qFoQRCqgNk0COCSYgNwNi8S15mFkyG4PyhFUFlvWG1V0DrlsHPg8tXJjKTYJqiEYhGBwEVzBcPciKbt3GpkjzXDGIJdVn7erePJZQjd3ib7Y27vBzNOnPpHiHAtGsiOALw4BybmOngZ1eMJYZ0uEuTkwdwepkEk+S2n8S1XEcDCbyjg/qgkx+nHmna7FTsmFnOVHUNoy8DXfbu9ccM5oyQ8isOWt6RYBoLXvYK1wdqGTlqgxr3NNvo9Tbk2sth5RrRx6+mx41w43WaZrsQcMx7V0bM31YvLQa+xT1dDWHktAKR3dQnWb9sDADB2kVDHaZVrw1np63KvoLi+orsY/5ldZBI2HAAf/yCEbeoxmUGjVzmhNwOmr0keWsOX4tr+NPCTYxnUh0LfJQeAQyNVUoNPv0mNBNgPGjXw87xHnjA9UNrVnod4o28zljeoJPcnNR9R4bAyUFs4k1YtIqUZEVNJ8ST7Zb38yPV/MaYY/NlKVDym6uLBx0MeJnlTMQ6clHnEskC1Slx/QD8ky71BEzugWY69p4dzRrArUXD9+ZQG2oE5igbxForqkPJ5ck5Nu4ds5/ibvo+thZJjTwWRN9qPlIUa+hu+VOt1gq52XzCi9OT4jmfmu/X1drUpgz6zqfAuPNahv7O/YAZVSWmX6ZOMouanIrsaQTnfZ8n6tpJ7YurqnKdd5CF8I2rJRjW9h+Ar1uPZ39njloRR2KBjcdlqJkddbZRWPxzwtuxsMD3ZsppZRQH7KZNSHh0JyFM0bG6eJsZ2pcsjXyTDzt70ifzFlDbz+oMRZAgYzNlSa9n1Q/e8pPhtFT8ox4wiGZyZCAWkEfz4q/kqBXCFogImESYs2itzTyeIy1Dy/pHiWnkxGsRaXjSdNo+et
- BNEtnR+B
- EguRCITPJjhvh9HRp1CrlymYGOOURH8XnUHRS4iyz9IzWFPeuxrHTEBlzeLrQ7FTQpxBNdB/yGE40Nk81l2AydHfYM7/12vbVJdgmeTyQEDts2Qd5prnTT09qOKE7I7DTztJDVidP9f7QwDzScpLSGWU7zaLVAHX9AqKzyugXHCH9/YXVp+WYPfPJw6sjxWemHIMiozoZXp3V/dol8wBPeXLPqa3zYPrDh/0hC32VTAB7T1W/dQsJwPmnL4YJm83FZsWXe8N/S8VqeNXALG6W1LxUer23ppGO0U+r9Cn+5gaVMQFMXy/DkQksjB3j99APQ/WbCb6UKwnzrgb2lVow6QvOXcx9LQOTPBAmXeqKMp9VIvaIlkg0/7hY9iPlPEJhtYw7TLYX+wzB+KdtMoorDNE8r7OoBOeJWUcuYrTLA5YtpblqjwVk1TDyW7UUIREpJEeRgmWhZbGnG+TpmQE0cR/hfANiXi8Y4ujO
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761102032-554304
+X-HE-Meta: U2FsdGVkX19QSXiKpi9dJJP3a0ZyBHPsZ8PRfatZ1B22ns+PDJLQSGhDN+06Cxyu+4Hncx+nOKwGXQOAMZx4G9xXf0JNTh6dw5uBJR5m23+4zXKVTKDlUyzHTR8o2hVm94o0XMdbQhRVpK4KoYT31W5BhMr92UNtGjL4ijTYJIgVmR1wkJ4LnHpL94TrUxokOETftUNc0bSl1TPHumcKIYlMx3OfoIeLeekOZCAWdraeQxBaUFzCCehBYypBz9D+fUpR6Ge/rWj/Ywp6B0PB0o42PRHQN9LrW7iOzXmgmCk6tmNf25DIu8bl2SFuZjlML4labGx0vnmDCsCl7als/A37+CMPcvov/NURVynDW6u27yJ84UEwqDPdBA6CsHuDLLXL26XmrK7oU//Z50NiYb8UJba78Xw59pxP8KfRyoe4HVEr3T/YtG3Lk/pRbzsfRGgfUHnYU+0oc13HckLReKUOt3IuYi2Ld+uAG+QCxAB2/0g6gwZ7BYLKpFF0nhKxbQCXTsJrNAL9r4Y02VKwFg2f4DHMisWOWqDlg2o1fS+ZaeiY0P/ygAjY1CXYPjEVuVvwlD+iEyZoXDgfW83CL/njBKgJKlHAUDF4exwqPx3FsRh51y1dvhZ/nf27E0dq4qWbSQGg1EKD569MfFtc6XXzL4Pb3jfOEa4xd271jnL3lUKAUf/ELq8mBhDJnzrvZJVmcwbzNwkfFJaEEwIVsLfP0o0CQB0gI8aD5m+v/wUOApbrlqpcaNyVJ98FR+TR1D10V4xxI60ZYbd/ZHjbDfzTtYs/UUpe/2eU0eXjCuJvJEg1dPXPKnc9Tj48hvtaKWRg1j4RNssnwK39uuB0yC6Gxi9saQL6LyX7D1/ucOpKE8WABzCOqwU2FMsqrUhmLqEIpIydBBs/lqUuzuJEIx9ByXV7P6lQ9XFQtK/F60LkdgnEjC3FaGTUU7kkDUitF0mr+qBg5f0Ld6pAYG1
+ OR13ep+p
+ vdBhEMAcoGSYnmDFkGBLcDzB/8x/H0s0pf3b7FHHDgvyZBbI21ZBTu/q6kuRJpZlqM63DcgzzzwHbZbQ4c8wAMg/Mf4ORFVyOve/eCFAqgml7a0O37MH9t29+oGU86vIJwLLY70Wf1RBDVh62Xeio1dpiGnJVCNg65KoacDQxvu0vlw6OdKSwpNicN66ggVeW4crxC9X15Vxj9TKCuzDSVIh3CNIU0N3VMiQmY3qjxVQZ852sELEkU/ku3TQEZHH2OcyfT4wc5sqTQloPkPd3Pa00VxNZuh7MZ8dMBRhBqz2d17siVuaSz5lTLnfIgoNlED1HRzCDd1Grp/zrPpy/qp753QJ/jgW4xP/D0rlVRezDKfzu2b+jld316UkDVoxceeo3CuoMaD4pnPAeArOD85s1DdGx19PgdkOLTpDQ3hf1CMMkagLc24f47LExB1ZkdvG7KkicokGrVGYyJfdm2wfaqR9G5cZs2yuhMLUW/Xf633CxhXPGm3hAghqtjv+bFXYI4Vy2ngHmAcHwQcgBU6sqjFK/K2D6LM8GMzqtTYuY89U0xbDC9xBj7dP2ERgnGQ3cE+oRid8flMhYdp0U5MBzE8/QIR2gCVO4C7Stuk7aijZcQHxywJGjz8YNWIMj8XJRat5H9fxNB2H5G/+kaluDQgdeyqAxchrFjQndRBzDeXmABe7choBZERjvlqHQKHKzBtjAYT6qQnl6aUQhUHOXvWfi2W2ITRB7ipmibEKOaU3JDqpIYi7qlpI2F9kWKQ8GON+FRbFDYRum3GKXaeu7UMcsmDvhgxI6fmstMwze1zvn+lwNBg2paaaSVsW2Kf+fuhNoazMzFTCw5p0oldU4ZJ5+0pY+X7trOKyEx5SevnJGa/+6C5XmLo9dNOKxq157myakF3CpRc+zCYguQ67f+HzTi2/vb7TO0a2a2i0wMG22avqFnsVg0zwvZzbW/ZxP0KoWc29EXwwtYDRSzSFvWO44
+ 4s4qzaE3
+ tb/TtD1GtOmCIrQDjabYTka8FkPT2eOvynQ1olR4SmTXV8ve+8eMpVLLBgIf+SeziatW+0jWoQ2ap/RTBdIKeMomHdp9fE9Ad39eY6qfD9z5Qhrv4JzurhRy7XqD6pJNzqf2JJg1JvFerS6jaPK+Cy1GbHA2XQb4yeegxclR1T7MJ49gzQcjIG1t43+8FhycSfB6vbxUdNS4VOZ5JYcAP5gb9DUctMq6DaA7s6KtQ5DrEP5yRIORX6CmA/n872KfcwkFUwHFSEeSaJLzINXllvdd5hBKfE31AnJjfT1QmIha/vZRm4CUYUfyBGgQ+uf0sb0G+AMA9CSJUOq6jpI9AgOzF36q6AhyNO4edeRVWOP4cBzbSgqQlsc+QJne3PeLfVDNwamzTMqlHyVbfnJLHNzdyqa2jfNPLtF+ffNs0Q3nPIRCFnsuDSXdmvliia6wyNwM6l1EB7eeiI9nrC+N2+knFkbytg6NP9bGImOWE+/cBtKLuHRnKLgvRa6XzLyY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,421 +98,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21 Oct 2025, at 17:34, Balbir Singh wrote:
+Hello,
 
-> On 10/20/25 09:59, Zi Yan wrote:
->> On 19 Oct 2025, at 18:49, Balbir Singh wrote:
->>
->>> On 10/19/25 19:19, Wei Yang wrote:
->>>> On Wed, Oct 01, 2025 at 04:57:02PM +1000, Balbir Singh wrote:
->>>> [...]
->>>>> static int __folio_split(struct folio *folio, unsigned int new_orde=
-r,
->>>>> 		struct page *split_at, struct page *lock_at,
->>>>> -		struct list_head *list, bool uniform_split)
->>>>> +		struct list_head *list, bool uniform_split, bool unmapped)
->>>>> {
->>>>> 	struct deferred_split *ds_queue =3D get_deferred_split_queue(folio=
-);
->>>>> 	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
->>>>> @@ -3765,13 +3757,15 @@ static int __folio_split(struct folio *foli=
-o, unsigned int new_order,
->>>>> 		 * is taken to serialise against parallel split or collapse
->>>>> 		 * operations.
->>>>> 		 */
->>>>> -		anon_vma =3D folio_get_anon_vma(folio);
->>>>> -		if (!anon_vma) {
->>>>> -			ret =3D -EBUSY;
->>>>> -			goto out;
->>>>> +		if (!unmapped) {
->>>>> +			anon_vma =3D folio_get_anon_vma(folio);
->>>>> +			if (!anon_vma) {
->>>>> +				ret =3D -EBUSY;
->>>>> +				goto out;
->>>>> +			}
->>>>> +			anon_vma_lock_write(anon_vma);
->>>>> 		}
->>>>> 		mapping =3D NULL;
->>>>> -		anon_vma_lock_write(anon_vma);
->>>>> 	} else {
->>>>> 		unsigned int min_order;
->>>>> 		gfp_t gfp;
->>>>> @@ -3838,7 +3832,8 @@ static int __folio_split(struct folio *folio,=
- unsigned int new_order,
->>>>> 		goto out_unlock;
->>>>> 	}
->>>>>
->>>>> -	unmap_folio(folio);
->>>>> +	if (!unmapped)
->>>>> +		unmap_folio(folio);
->>>>>
->>>>> 	/* block interrupt reentry in xa_lock and spinlock */
->>>>> 	local_irq_disable();
->>>>> @@ -3925,10 +3920,13 @@ static int __folio_split(struct folio *foli=
-o, unsigned int new_order,
->>>>>
->>>>> 			next =3D folio_next(new_folio);
->>>>>
->>>>> +			zone_device_private_split_cb(folio, new_folio);
->>>>> +
->>>>> 			expected_refs =3D folio_expected_ref_count(new_folio) + 1;
->>>>> 			folio_ref_unfreeze(new_folio, expected_refs);
->>>>>
->>>>> -			lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>> +			if (!unmapped)
->>>>> +				lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>>
->>>>> 			/*
->>>>> 			 * Anonymous folio with swap cache.
->>>>> @@ -3959,6 +3957,8 @@ static int __folio_split(struct folio *folio,=
- unsigned int new_order,
->>>>> 			__filemap_remove_folio(new_folio, NULL);
->>>>> 			folio_put_refs(new_folio, nr_pages);
->>>>> 		}
->>>>> +
->>>>> +		zone_device_private_split_cb(folio, NULL);
->>>>> 		/*
->>>>> 		 * Unfreeze @folio only after all page cache entries, which
->>>>> 		 * used to point to it, have been updated with new folios.
->>>>> @@ -3982,6 +3982,9 @@ static int __folio_split(struct folio *folio,=
- unsigned int new_order,
->>>>>
->>>>> 	local_irq_enable();
->>>>>
->>>>> +	if (unmapped)
->>>>> +		return ret;
->>>>
->>>> As the comment of __folio_split() and __split_huge_page_to_list_to_o=
-rder()
->>>> mentioned:
->>>>
->>>>   * The large folio must be locked
->>>>   * After splitting, the after-split folio containing @lock_at remai=
-ns locked
->>>>
->>>> But here we seems to change the prerequisites.
->>>>
->>>> Hmm.. I am not sure this is correct.
->>>>
->>>
->>> The code is correct, but you are right in that the documentation need=
-s to be updated.
->>> When "unmapped", we do want to leave the folios locked after the spli=
-t.
->>
->> Sigh, this "unmapped" code needs so many special branches and a differ=
-ent locking
->> requirement. It should be a separate function to avoid confusions.
->>
->
-> Yep, I have a patch for it, I am also waiting on Matthew's feedback, FY=
-I, here is
-> a WIP patch that can be applied on top of the series
+syzbot found the following issue on:
 
-Nice cleanup! Thanks.
+HEAD commit:    f406055cb18c Merge tag 'arm64-fixes' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=123fede2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9ad7b090a18654a7
+dashboard link: https://syzkaller.appspot.com/bug?extid=f172d48953db0cf91855
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
->
-> ---
->  include/linux/huge_mm.h |   5 +-
->  mm/huge_memory.c        | 137 ++++++++++++++++++++++++++++++++++------=
+Unfortunately, I don't have any reproducer for this issue yet.
 
->  mm/migrate_device.c     |   3 +-
->  3 files changed, 120 insertions(+), 25 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index c4a811958cda..86e1cefaf391 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -366,7 +366,8 @@ unsigned long thp_get_unmapped_area_vmflags(struct =
-file *filp, unsigned long add
->
->  bool can_split_folio(struct folio *folio, int caller_pins, int *pextra=
-_pins);
->  int __split_huge_page_to_list_to_order(struct page *page, struct list_=
-head *list,
-> -		unsigned int new_order, bool unmapped);
-> +		unsigned int new_order);
-> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int ne=
-w_order);
->  int min_order_for_split(struct folio *folio);
->  int split_folio_to_list(struct folio *folio, struct list_head *list);
->  bool uniform_split_supported(struct folio *folio, unsigned int new_ord=
-er,
-> @@ -379,7 +380,7 @@ int folio_split(struct folio *folio, unsigned int n=
-ew_order, struct page *page,
->  static inline int split_huge_page_to_list_to_order(struct page *page, =
-struct list_head *list,
->  		unsigned int new_order)
->  {
-> -	return __split_huge_page_to_list_to_order(page, list, new_order, fals=
-e);
-> +	return __split_huge_page_to_list_to_order(page, list, new_order);
->  }
->
->  /*
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8c82a0ac6e69..e20cbf68d037 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3711,7 +3711,6 @@ bool uniform_split_supported(struct folio *folio,=
- unsigned int new_order,
->   * @lock_at: a page within @folio to be left locked to caller
->   * @list: after-split folios will be put on it if non NULL
->   * @uniform_split: perform uniform split or not (non-uniform split)
-> - * @unmapped: The pages are already unmapped, they are migration entri=
-es.
->   *
->   * It calls __split_unmapped_folio() to perform uniform and non-unifor=
-m split.
->   * It is in charge of checking whether the split is supported or not a=
-nd
-> @@ -3727,7 +3726,7 @@ bool uniform_split_supported(struct folio *folio,=
- unsigned int new_order,
->   */
->  static int __folio_split(struct folio *folio, unsigned int new_order,
->  		struct page *split_at, struct page *lock_at,
-> -		struct list_head *list, bool uniform_split, bool unmapped)
-> +		struct list_head *list, bool uniform_split)
->  {
->  	struct deferred_split *ds_queue;
->  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
-> @@ -3777,14 +3776,12 @@ static int __folio_split(struct folio *folio, u=
-nsigned int new_order,
->  		 * is taken to serialise against parallel split or collapse
->  		 * operations.
->  		 */
-> -		if (!unmapped) {
-> -			anon_vma =3D folio_get_anon_vma(folio);
-> -			if (!anon_vma) {
-> -				ret =3D -EBUSY;
-> -				goto out;
-> -			}
-> -			anon_vma_lock_write(anon_vma);
-> +		anon_vma =3D folio_get_anon_vma(folio);
-> +		if (!anon_vma) {
-> +			ret =3D -EBUSY;
-> +			goto out;
->  		}
-> +		anon_vma_lock_write(anon_vma);
->  		mapping =3D NULL;
->  	} else {
->  		unsigned int min_order;
-> @@ -3852,8 +3849,7 @@ static int __folio_split(struct folio *folio, uns=
-igned int new_order,
->  		goto out_unlock;
->  	}
->
-> -	if (!unmapped)
-> -		unmap_folio(folio);
-> +	unmap_folio(folio);
->
->  	/* block interrupt reentry in xa_lock and spinlock */
->  	local_irq_disable();
-> @@ -3954,8 +3950,7 @@ static int __folio_split(struct folio *folio, uns=
-igned int new_order,
->  			expected_refs =3D folio_expected_ref_count(new_folio) + 1;
->  			folio_ref_unfreeze(new_folio, expected_refs);
->
-> -			if (!unmapped)
-> -				lru_add_split_folio(folio, new_folio, lruvec, list);
-> +			lru_add_split_folio(folio, new_folio, lruvec, list);
->
->  			/*
->  			 * Anonymous folio with swap cache.
-> @@ -4011,9 +4006,6 @@ static int __folio_split(struct folio *folio, uns=
-igned int new_order,
->
->  	local_irq_enable();
->
-> -	if (unmapped)
-> -		return ret;
-> -
->  	if (nr_shmem_dropped)
->  		shmem_uncharge(mapping->host, nr_shmem_dropped);
->
-> @@ -4057,6 +4049,111 @@ static int __folio_split(struct folio *folio, u=
-nsigned int new_order,
->  	return ret;
->  }
->
-> +/*
-> + * This function is a helper for splitting folios that have already be=
-en unmapped.
-> + * The use case is that the device or the CPU can refuse to migrate TH=
-P pages in
-> + * the middle of migration, due to allocation issues on either side
-> + *
-> + * The high level code is copied from __folio_split, since the pages a=
-re anonymous
-> + * and are already isolated from the LRU, the code has been simplified=
- to not
-> + * burden __folio_split with unmapped sprinkled into the code.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/37fd0378c30b/disk-f406055c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f26ca5f11670/vmlinux-f406055c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/145dd878db42/bzImage-f406055c.xz
 
-I wonder if it makes sense to remove CPU side folio from both deferred_sp=
-lit queue
-and swap cache before migration to further simplify split_unmapped_folio_=
-to_order().
-Basically require that device private folios cannot be on deferred_split =
-queue nor
-swap cache.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com
 
-> + *
-> + * None of the split folios are unlocked
-> + */
-> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int ne=
-w_order)
-> +{
-> +	int extra_pins;
-> +	int ret =3D 0;
-> +	struct folio *new_folio, *next;
-> +	struct folio *end_folio =3D folio_next(folio);
-> +	struct deferred_split *ds_queue;
-> +	int old_order =3D folio_order(folio);
-> +
-> +	VM_WARN_ON_FOLIO(folio_mapped(folio), folio);
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> +	VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
-> +
-> +	if (!can_split_folio(folio, 1, &extra_pins)) {
-> +		ret =3D -EAGAIN;
-> +		goto err;
-> +	}
-> +
-> +	local_irq_disable();
-> +	/* Prevent deferred_split_scan() touching ->_refcount */
-> +	ds_queue =3D folio_split_queue_lock(folio);
-> +	if (folio_ref_freeze(folio, 1 + extra_pins)) {
-> +		int expected_refs;
-> +		struct swap_cluster_info *ci =3D NULL;
-> +
-> +		if (old_order > 1) {
-> +			if (!list_empty(&folio->_deferred_list)) {
-> +				ds_queue->split_queue_len--;
-> +				/*
-> +				 * Reinitialize page_deferred_list after
-> +				 * removing the page from the split_queue,
-> +				 * otherwise a subsequent split will see list
-> +				 * corruption when checking the
-> +				 * page_deferred_list.
-> +				 */
-> +				list_del_init(&folio->_deferred_list);
-> +			}
-> +			if (folio_test_partially_mapped(folio)) {
-> +				folio_clear_partially_mapped(folio);
-> +				mod_mthp_stat(old_order,
-> +					MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
-> +			}
-> +			/*
-> +			 * Reinitialize page_deferred_list after removing the
-> +			 * page from the split_queue, otherwise a subsequent
-> +			 * split will see list corruption when checking the
-> +			 * page_deferred_list.
-> +			 */
-> +			list_del_init(&folio->_deferred_list);
-> +		}
-> +		split_queue_unlock(ds_queue);
-> +
-> +		if (folio_test_swapcache(folio))
-> +			ci =3D swap_cluster_get_and_lock(folio);
-> +
-> +		ret =3D __split_unmapped_folio(folio, new_order, &folio->page,
-> +					     NULL, NULL, true);
-> +
-> +		/*
-> +		 * Unfreeze after-split folios
-> +		 */
-> +		for (new_folio =3D folio_next(folio); new_folio !=3D end_folio;
-> +		     new_folio =3D next) {
-> +			next =3D folio_next(new_folio);
-> +
-> +			zone_device_private_split_cb(folio, new_folio);
-> +
-> +			expected_refs =3D folio_expected_ref_count(new_folio) + 1;
-> +			folio_ref_unfreeze(new_folio, expected_refs);
-> +			if (ci)
-> +				__swap_cache_replace_folio(ci, folio, new_folio);
-> +		}
-> +
-> +		zone_device_private_split_cb(folio, NULL);
-> +		/*
-> +		 * Unfreeze @folio only after all page cache entries, which
-> +		 * used to point to it, have been updated with new folios.
-> +		 * Otherwise, a parallel folio_try_get() can grab @folio
-> +		 * and its caller can see stale page cache entries.
-> +		 */
-> +		expected_refs =3D folio_expected_ref_count(folio) + 1;
-> +		folio_ref_unfreeze(folio, expected_refs);
-> +
-> +		if (ci)
-> +			swap_cluster_unlock(ci);
-> +	} else {
-> +		split_queue_unlock(ds_queue);
-> +		ret =3D -EAGAIN;
-> +	}
-> +	local_irq_enable();
-> +err:
-> +	return ret;
-> +}
-> +
->  /*
->   * This function splits a large folio into smaller folios of order @ne=
-w_order.
->   * @page can point to any page of the large folio to split. The split =
-operation
-> @@ -4105,12 +4202,11 @@ static int __folio_split(struct folio *folio, u=
-nsigned int new_order,
->   * with the folio. Splitting to order 0 is compatible with all folios.=
-
->   */
->  int __split_huge_page_to_list_to_order(struct page *page, struct list_=
-head *list,
-> -				     unsigned int new_order, bool unmapped)
-> +				     unsigned int new_order)
->  {
->  	struct folio *folio =3D page_folio(page);
->
-> -	return __folio_split(folio, new_order, &folio->page, page, list, true=
-,
-> -				unmapped);
-> +	return __folio_split(folio, new_order, &folio->page, page, list, true=
-);
->  }
->
->  /*
-> @@ -4138,8 +4234,7 @@ int __split_huge_page_to_list_to_order(struct pag=
-e *page, struct list_head *list
->  int folio_split(struct folio *folio, unsigned int new_order,
->  		struct page *split_at, struct list_head *list)
->  {
-> -	return __folio_split(folio, new_order, split_at, &folio->page, list,
-> -			false, false);
-> +	return __folio_split(folio, new_order, split_at, &folio->page, list, =
-false);
->  }
->
->  int min_order_for_split(struct folio *folio)
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index c869b272e85a..23515f3ffc35 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -918,8 +918,7 @@ static int migrate_vma_split_unmapped_folio(struct =
-migrate_vma *migrate,
->
->  	folio_get(folio);
->  	split_huge_pmd_address(migrate->vma, addr, true);
-> -	ret =3D __split_huge_page_to_list_to_order(folio_page(folio, 0), NULL=
-,
-> -							0, true);
-> +	ret =3D split_unmapped_folio_to_order(folio, 0);
->  	if (ret)
->  		return ret;
->  	migrate->src[idx] &=3D ~MIGRATE_PFN_COMPOUND;
-> -- =
-
-> 2.51.0
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P9351/3:b..l P5822/1:b..l P9346/1:b..l
+rcu: 	(detected by 1, t=10502 jiffies, g=30189, q=343 ncpus=2)
+task:syz.4.823       state:R  running task     stack:25608 pid:9346  tgid:9345  ppid:5831   task_flags:0x400040 flags:0x00080001
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5325 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
+ preempt_schedule_irq+0xb5/0x150 kernel/sched/core.c:7256
+ irqentry_exit+0x6f/0x90 kernel/entry/common.c:211
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:lock_acquire+0x175/0x360 kernel/locking/lockdep.c:5872
+Code: 00 00 00 00 9c 8f 44 24 30 f7 44 24 30 00 02 00 00 0f 85 cd 00 00 00 f7 44 24 08 00 02 00 00 74 01 fb 65 48 8b 05 fb bc f3 10 <48> 3b 44 24 58 0f 85 f2 00 00 00 48 83 c4 60 5b 41 5c 41 5d 41 5e
+RSP: 0018:ffffc900188bef98 EFLAGS: 00000206
+RAX: 8c7b37c73e5bc200 RBX: 0000000000000000 RCX: 8c7b37c73e5bc200
+RDX: 0000000000000000 RSI: ffffffff8d9d1f00 RDI: ffffffff8bc07de0
+RBP: ffffffff8173cd25 R08: 0000000000000000 R09: ffffffff8173cd25
+R10: dffffc0000000000 R11: ffffffff81ac6cd0 R12: 0000000000000002
+R13: ffffffff8e13d2e0 R14: 0000000000000000 R15: 0000000000000246
+ rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ rcu_read_lock include/linux/rcupdate.h:867 [inline]
+ class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
+ unwind_next_frame+0xc2/0x2390 arch/x86/kernel/unwind_orc.c:479
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
+ save_stack+0xf5/0x1f0 mm/page_owner.c:156
+ __set_page_owner+0x8d/0x4a0 mm/page_owner.c:329
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x240/0x2a0 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3884
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5183
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
+ folio_alloc_mpol_noprof+0x39/0x70 mm/mempolicy.c:2435
+ shmem_alloc_folio mm/shmem.c:1871 [inline]
+ shmem_alloc_and_add_folio+0x447/0xf60 mm/shmem.c:1910
+ shmem_get_folio_gfp+0x59d/0x1660 mm/shmem.c:2533
+ shmem_get_folio mm/shmem.c:2639 [inline]
+ shmem_write_begin+0xf7/0x2b0 mm/shmem.c:3289
+ generic_perform_write+0x2c5/0x900 mm/filemap.c:4242
+ shmem_file_write_iter+0xf8/0x120 mm/shmem.c:3464
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x5c9/0xb30 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f32a238da7f
+RSP: 002b:00007f32a31d6df0 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000001000000 RCX: 00007f32a238da7f
+RDX: 0000000001000000 RSI: 00007f3298000000 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000004431
+R10: 0000000000000002 R11: 0000000000000293 R12: 0000000000000003
+R13: 00007f32a31d6ef0 R14: 00007f32a31d6eb0 R15: 00007f3298000000
+ </TASK>
+task:syz-executor    state:R  running task     stack:20904 pid:5822  tgid:5822  ppid:5817   task_flags:0x400140 flags:0x00080001
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5325 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
+ preempt_schedule_common+0x83/0xd0 kernel/sched/core.c:7113
+ preempt_schedule+0xae/0xc0 kernel/sched/core.c:7137
+ preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
+ __raw_spin_unlock include/linux/spinlock_api_smp.h:143 [inline]
+ _raw_spin_unlock+0x3f/0x50 kernel/locking/spinlock.c:186
+ spin_unlock include/linux/spinlock.h:391 [inline]
+ copy_pte_range mm/memory.c:1329 [inline]
+ copy_pmd_range+0x7630/0x7f00 mm/memory.c:1389
+ copy_pud_range mm/memory.c:1426 [inline]
+ copy_p4d_range mm/memory.c:1450 [inline]
+ copy_page_range+0xc14/0x1270 mm/memory.c:1538
+ dup_mmap+0xf4c/0x1b10 mm/mmap.c:1834
+ dup_mm kernel/fork.c:1489 [inline]
+ copy_mm+0x13c/0x4b0 kernel/fork.c:1541
+ copy_process+0x1706/0x3c00 kernel/fork.c:2181
+ kernel_clone+0x21e/0x840 kernel/fork.c:2609
+ __do_sys_clone kernel/fork.c:2750 [inline]
+ __se_sys_clone kernel/fork.c:2734 [inline]
+ __x64_sys_clone+0x18b/0x1e0 kernel/fork.c:2734
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f07d7f85713
+RSP: 002b:00007ffca17e20f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f07d7f85713
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000001
+R10: 0000555592a5e7d0 R11: 0000000000000246 R12: 0000000000000000
+R13: 00000000000927c0 R14: 00000000000495e1 R15: 00007ffca17e2290
+ </TASK>
+task:syz.0.826       state:R  running task     stack:25624 pid:9351  tgid:9348  ppid:5832   task_flags:0x400040 flags:0x00080001
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5325 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
+ preempt_schedule_common+0x83/0xd0 kernel/sched/core.c:7113
+ preempt_schedule+0xae/0xc0 kernel/sched/core.c:7137
+ preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
+ __raw_spin_unlock include/linux/spinlock_api_smp.h:143 [inline]
+ _raw_spin_unlock+0x3f/0x50 kernel/locking/spinlock.c:186
+ spin_unlock include/linux/spinlock.h:391 [inline]
+ filemap_map_pages+0x1621/0x1c60 mm/filemap.c:3858
+ do_fault_around mm/memory.c:5656 [inline]
+ do_read_fault mm/memory.c:5689 [inline]
+ do_fault mm/memory.c:5832 [inline]
+ do_pte_missing mm/memory.c:4361 [inline]
+ handle_pte_fault mm/memory.c:6177 [inline]
+ __handle_mm_fault+0x347e/0x5400 mm/memory.c:6318
+ handle_mm_fault+0x40a/0x8e0 mm/memory.c:6487
+ faultin_page mm/gup.c:1126 [inline]
+ __get_user_pages+0x165c/0x2a00 mm/gup.c:1428
+ populate_vma_page_range+0x29f/0x3a0 mm/gup.c:1860
+ __mm_populate+0x24c/0x380 mm/gup.c:1963
+ mm_populate include/linux/mm.h:3471 [inline]
+ vm_mmap_pgoff+0x387/0x4d0 mm/util.c:586
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faa11f8efc9
+RSP: 002b:00007faa12e69038 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+RAX: ffffffffffffffda RBX: 00007faa121e6090 RCX: 00007faa11f8efc9
+RDX: b635773f06ebbeee RSI: 0000000000b36000 RDI: 0000200000000000
+RBP: 00007faa12011f91 R08: ffffffffffffffff R09: 0000000000000000
+R10: 0000000000008031 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007faa121e6128 R14: 00007faa121e6090 R15: 00007ffc1db85d48
+ </TASK>
+rcu: rcu_preempt kthread starved for 10330 jiffies! g30189 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:27288 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5325 [inline]
+ __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
+ __schedule_loop kernel/sched/core.c:7011 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:7026
+ schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+RIP: 0010:pv_native_safe_halt+0x13/0x20 arch/x86/kernel/paravirt.c:82
+Code: 5e c3 c3 f5 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 33 b1 1b 00 f3 0f 1e fa fb f4 <e9> 33 c3 c3 f5 cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90000197de0 EFLAGS: 000002c6
+RAX: 82b01eb804bc8c00 RBX: ffffffff8196bc07 RCX: 82b01eb804bc8c00
+RDX: 0000000000000001 RSI: ffffffff8d7e8bf1 RDI: ffffffff8bc07de0
+RBP: ffffc90000197f10 R08: ffff8880b8732fdb R09: 1ffff110170e65fb
+R10: dffffc0000000000 R11: ffffed10170e65fc R12: ffffffff8f9e1e70
+R13: 0000000000000001 R14: 0000000000000001 R15: 1ffff110038d5b58
+FS:  0000000000000000(0000) GS:ffff888125e0b000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6547b7915e CR3: 00000000306ab000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/include/asm/paravirt.h:107 [inline]
+ default_idle+0x13/0x20 arch/x86/kernel/process.c:767
+ default_idle_call+0x73/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:190 [inline]
+ do_idle+0x1e7/0x510 kernel/sched/idle.c:330
+ cpu_startup_entry+0x44/0x60 kernel/sched/idle.c:428
+ start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:315
+ common_startup_64+0x13e/0x147
+ </TASK>
 
 
---
-Best Regards,
-Yan, Zi
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
