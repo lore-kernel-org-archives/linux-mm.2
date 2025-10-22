@@ -4,113 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A274CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 17:50:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DF0CCCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:00:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66A168E000D; Wed, 22 Oct 2025 13:50:28 -0400 (EDT)
+	id AECE88E000E; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3CD8E0003; Wed, 22 Oct 2025 13:50:28 -0400 (EDT)
+	id AC4848E0003; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2968E000D; Wed, 22 Oct 2025 13:50:28 -0400 (EDT)
+	id 98BC68E000E; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 37FE48E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 13:50:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D103F1A090D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:50:27 +0000 (UTC)
-X-FDA: 84026489694.24.57C9990
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CD7C220010
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:50:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G1795VAp;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761155425; a=rsa-sha256;
-	cv=none;
-	b=b93s5iynTaxnnU7ODZyI7WpQMd7hgxwswnnLsyOVmI66qspobkBzPzg5jRUxNtAU/yscPZ
-	OwK+uCOwYXGHMfcCpomfL0iXpRCCrq4XeG6IM6ZiqeqzfydvXwzaze4NGVf4E/kqnS/mAm
-	19sqpyOW4HY9DYVZrtH9Rq7e+G39DPU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G1795VAp;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 865238E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2339D1608B8
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:00:02 +0000 (UTC)
+X-FDA: 84026513844.27.57FE2E0
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9E1F11C0007
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:59:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S5Ws6VZD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h8uIG2fp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fVjNoCkz;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oPGTYGUM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761155425;
+	s=arc-20220608; t=1761156000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gj7KPYHen4iD4FElTa0Z8YdaUj+MGLwuw15fxyPIN/c=;
-	b=dmpLMqw5xhziYJIC6Oe81gVE0LnAQ5fwUpOuj7zbQpUA6tDCgFVg/dIi8Q+YPBCSNY1yN+
-	UAgasIjZrPOkjoCXUSQTzVnbew98WFhOU3LWVFux207oivGVdQEUd4MSykrNiKec/I3YWB
-	0jAauZdiED5DkR1zrByNerty0JMPibI=
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59054fc6a45so8252205e87.3
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761155424; x=1761760224; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gj7KPYHen4iD4FElTa0Z8YdaUj+MGLwuw15fxyPIN/c=;
-        b=G1795VApGhorBaPyXW9L+Cc2vWvP7yMCcLo+McMq5rD8ZILrRZXj3pd9eu0Y45QTTH
-         w6TMviH6HUMKlsyWXLL2VAubnQ0a01GNJN0e6dxJrdlY+7Iua9/cXeozV+xtKnOxqaG8
-         oEj2MV3pIJA/Oxj95drJadJZrSyNoCiKsri0J/Vz+dEKOdv5sjL4n3pu46zDaZVD+7cm
-         2NNm/5y+UxV3lTzpBpYlO93HekQl9U/cIrPSJOqyuEova9jJBqxNuw93yG9Qa95lSI8D
-         rh9+W9fPeRs/XqJWOuMrVSIdH7pH9QPrr2UTps0NYBz6wPy9KzqhlClqObe7A0CuXEFu
-         VSvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761155424; x=1761760224;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gj7KPYHen4iD4FElTa0Z8YdaUj+MGLwuw15fxyPIN/c=;
-        b=mDx7kaYBu0blf1TYcQEKwPyuEClJHBNOTHZXgofLAtWtixnSqYpwaGko3aztYJfCEC
-         1Zo9D/P3o5hCmC1SOPvO4/v4pfvB2w7FKWEoNP7lMdFT6dg+dEPjFkrnUEj61ovhzcwN
-         CUi9n2qtmH50xGzISR/uhkRKIwRU9W/sLrn/M3QRLC9o1qk/KwFE/jgVfGeMOFysXv32
-         c8GEc6MOMjuIpIkZgx2M+QBfZhqy4jlnsUESoRRC2JsWM4qTBw+AoU8fExq33BY4RZdf
-         haYZMMt/mqfAb9QXCHsA7DV3h+JHa/p1BlxUjBsULb06sRVynTBdT2hjlOrldKGM4xix
-         5N4A==
-X-Gm-Message-State: AOJu0Ywf12vWY36Skssmthmg3Lr5ZEv4UcEcRwOT+OTT95tv3n64Wxwi
-	+yVv32uG4UrqxECDgKbDOLAbcKgB55BAewxoF/pPrjhOYkPKgoFh4eU/
-X-Gm-Gg: ASbGncvgR4XcgPSeavzcsx4RBKMCFaiKKgtohC68zEElZNYjhpK6De1ZBvV+OQKHlR7
-	abrtRaVbliLItGsJJnIp2jOgTKgpMQ+z56HgUNPA9WNmfjqxByVNmegeXcCgNkU04WczmoYXn2V
-	SFvoHMzzYJPjARU6yKqCUI9oarCqMeYiYbVO7w4+WFq9ouqreaY2bJLM/CaBBmN7OtwX6sshkWa
-	lDCKAV8utnmipB3KCpsDdVkQ+ODwy53OiTuZvjoUckGXL0hP15YoWg13kvOxVyhqoyMRM91LPfB
-	DhaM7sTIV7eIInsu0po/xX30gaY4lHJoE4STcQFdH5pEycT8tuhAR87rgbYwYPmNOpRNRaisrEU
-	1UlJd7EbR+4jRjFnuJv0e2M4Ub0p7hfUURIH0ut/8UYw=
-X-Google-Smtp-Source: AGHT+IHWyRJq6tFiZtAn35KR7NImL9zjR4bm4p1s04aULCvEQT/pY7P8N/svSK90+dOJQatGcRCt+Q==
-X-Received: by 2002:a05:6512:3f1f:b0:57e:f60:2330 with SMTP id 2adb3069b0e04-591d854accdmr6241116e87.21.1761155423561;
-        Wed, 22 Oct 2025 10:50:23 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-592ddc3662fsm1193388e87.84.2025.10.22.10.50.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 10:50:22 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Wed, 22 Oct 2025 19:50:21 +0200
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
- allocator
-Message-ID: <aPkZXbUON37M59As@milan>
-References: <20251021194455.33351-2-vishal.moola@gmail.com>
+	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
+	b=V7yNTktNjUIlLI6oHhvYjcRe8/VMLYOFUX1xPHBv6GOG3PF9mOPNcZNF6OPcOohBP+8GUH
+	s9kd+LT/GONh+CvCcXaiyswsmp3FO03k9Gmi6bjqjiHP9blyJsdn7iS6Fet5gsmuLdeZlO
+	1LOR0Yh9C5QIVh4o7yk2vSmGbKX3IQo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761156000; a=rsa-sha256;
+	cv=none;
+	b=iU+ibWkXYwXjdH5Uy+heT8LJ6ROASFuljg9a+X/EF6WFWS9Tg8djkJos2GaWbNNRU9sPaG
+	eBfqLDjZ92EYJxi9H48te9HtfVlc5UH7GZ0elVvffV/LFILnfmP9myX3aQXFYTgKqvuJu8
+	TLHKvB9ebuvUTLWFvc1O3roZlaFUrd8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S5Ws6VZD;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h8uIG2fp;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fVjNoCkz;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oPGTYGUM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C0B0B211EF;
+	Wed, 22 Oct 2025 17:59:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761155993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
+	b=S5Ws6VZDQpXUs8hKP+1klrluTXUmm6/DbdW1+GWKalcN8mugpKRJKMO7hoANcuhEVb+Ff2
+	Zr0wH7ArFZWUm7ROsBMAMofen30N1jABYTSr451WX/Mms4BahGeve5g9F9crkSFQDEFITT
+	SEGzNqv7vMK4D6EPsC7RGAdeS/4i+bE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761155993;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
+	b=h8uIG2fpLajdmf8JJafwm4+maTWMS3GAbkprZ80DGDcJpkLjAJZVvXTWfYGE9S2Q2NQSTy
+	StjMcAkVMdsremDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761155989; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
+	b=fVjNoCkz/IH+9cRgyV5by3uyVhZZPW5zcsdv7lWndUrJtcEHk/utbOXmCYmJnmLcvT+n0w
+	H7zrcE+CdCSr+UV38CT4S/ErNBVXCnnbfjf1pFiRArbcD/IM8B3r6OaC+pvwX9NDdl0+GC
+	Ig5qytRywayPc7jZ6sqyvbUJlD3JQzg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761155989;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
+	b=oPGTYGUMgMXb5U22xD4oi3PE9iIkNU0DqZgGrjK3t0ll2b8jAbu/Y79cvyr7oEwQ9rRAuR
+	knhdYvyyGyry0UBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD30213A29;
+	Wed, 22 Oct 2025 17:59:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id B3ruKZUb+WhebAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 22 Oct 2025 17:59:49 +0000
+Message-ID: <53f0cc42-e19a-4b84-8631-390cc5b178f5@suse.cz>
+Date: Wed, 22 Oct 2025 19:59:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021194455.33351-2-vishal.moola@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: perform inc_slabs_node() as part of new_slab()
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251022-fix-slab-accounting-v1-1-27870ec363ce@suse.cz>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <20251022-fix-slab-accounting-v1-1-27870ec363ce@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Stat-Signature: nwrb1rsrrbsbrc45z5ae7oh5pbqdt379
 X-Rspam-User: 
-X-Stat-Signature: 4yw7baoc7k55ny569escfwhnr7fgm1kc
-X-Rspamd-Queue-Id: CD7C220010
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761155425-649267
-X-HE-Meta: U2FsdGVkX18318Q3+OqZebkRwnPPsQM72b0RAjKyPQWksnrlqA65+Zq3sB8+82h4xYwHHbkFbgV1pLW0XQU1ztS8k2eewajhDopXKFWL8wnUppdUI57cWdgErpOiUx3d1Ytv46B4Bda0pGgC4I8kQzb/TKskV5DptZLY23FRCYkjnElPgsDUqIKtHZ+7vlq3JybnhyvFL9Tf54NgqFMcClj9lJdWBAxd/vMBF5omrUJvumhp3xt9yCyl2DDu83qbN2Dbk9hlKN3Cmk3uDVbtG8Dwz1ejKRnh5UgrNHCt+rSLIireqhBwEgfnGjhA1zdIwOaOC5nB3j/NRK4RyKuWk7tyqEI0koJjB9ZNNFU3uVDfxqCRaLl0nPfMb1GFmmLrWX9Fg5DnsuijGQedmmUNUF86t3yCWu1TDkyqAVDSyGdDuEM962Bj4adpjRW+VTe2fo0ZCDzUTqLj0qYo+htSFyCSliQXXJM9fC+7eZ1O5NA/mPoORasOkqGo3PsfPcMGWyquw5uYz127doV6l88NOOVClFZVb1jn5jTgTErUdY2Um1dSFCYFI/AbL6tzhkW+kxztzXwYdSiq030ykqh4hd//MogXDQ9Wsy+UXISueyFiicdtDlfryIVXH2QC7oOTltab5v9AwV4ke1TA832fLGsNZFf+PEdowcq2Em8Zef+vqdWDMuS4fVcgdT1vaSKqUqUCPAfWKryPbggnI43cRjh7WKbNsv/brJuFHMeJd90XzALhVDr444QoVLfvW8/GYj6OiR3vPfiAVIkrohXwtyOsFSjJnOgedv7NNC0EODtqG8r9MyA9e6SEucKEDDXobWqc9zXGbE6eQBiC3xXKb4FTl08qZHsG9FJgdkfhacrP3vjnIdW/UgyOUWPCDab3Kyg7zc0qRrYhwwfxZkqDzEM39qXT+1xHrnZLZhoyTaJ0laDwj4sgDGWKRoRF1lku4/MQf4Meu7oT86ksjy6
- WK/M2nrp
- jP2CBxarhfXbHQevkZn2UVEb1ELRx8wvTy2KOhScqxWfaPve/nEfJG5Qg1bPC4FOq1IX3DbBWEknBczmEF3wpFcmCy0+30s/fE8BUim5MaQrNfyCprcmj9o5CKfKTDqFIhcwnGIog/QbOiD0nm807kt8lv+Qu7L/f8mJrW6YuFOcbMiIkRJ1+tXI2axD6kmxy6jJPEyrOjkQphup8zu64gzQ6MFvVNnZJ7o8JTEg6melDIkayTZ+BMv0jLuXNTrQvHY6oslCs29b0UIjdQj5X12LxXUy3b0QVZhuue4MVwBU2O0jLrvpdmFRIYLIuZcZXgYqH6Iaj+/2/g9+ZEcRaSFwLypfgeLfMdRnMOVMN6hpSJeqc4jmmP9zO6nP4z4a5TzGKJA21WIQpRdKtNGZiDEczPQj0ZU/W/t9VhInH3qfUe3KFL4QOL91X9HO5NOdWAG5dDOg+EUl4HON6yDolIVcw4ao5kzSQYoWmSYHz24+Z6qo1875SWb0tQu6UUNkFZU4Hov9ZUs5FW3TlQzz3RKmPQ7fd+tiDzSgDQjlcBd8+MNg=
+X-Rspamd-Queue-Id: 9E1F11C0007
+X-HE-Tag: 1761155999-158137
+X-HE-Meta: U2FsdGVkX18Fnqg0NSYI/MR0CBSMVF8cTATGz+j3dF8iD476ClfUU0VF8MbOlCQbmaafxllGEp9GAA3kipQ1JENVghykEfp7oYROYS2eAYi5ToNMtMwRztfhhk6kUQRylAL7UAaDfDadgxH+KepaxO+k1pv0bwdmLRNe7Eah3N8XxJtEqwufDz6+CI6dE2IMhA29xa7090z7rZgnwn3pH6sftrjYuZ/Ld1NNM8fSWLYxSIY8f5/3cL+yqw/tkTdC1T1WgEcoxbfR3JLxlwaIS2h68/z2MuepPkwvGMOZcc+0XhK/y8sQUhLdVM6TNZ5X1rjRhW2hcj6njbP9sTjHKcPhHI64YELicpW4vnigjKJLeFW7yX+g1MWZGBWKgx4I+lCbnW4IYnMEpfV0aRa7I0gg5y3VxJuHYxGBxvS8Rqulwf+p4rtqucXBJpbPyVW8C/SFb+aqC6keoz8Oo8Chrl2RSmdrH6vhm/UJ70FZ3vAAl0IngpvNn1PdBabDOqVBDXYRWBqgWW790as5q2UIeV6a8aywBLV5Mu42OZAcSarZ8DJxLGuZgZJLnl4LdZY9QbnBDkKwC1bSpQFURnla1jYPA7wejH406ANWVz78+EEAw2E4Dfh1a66hDoMwc7L4AV8Hzw/psocqHg7dKhl+Jgll2zyYMaciOAXzi+Gni7ZsPyEiWW+PBvK1mGIRmHPbJL6m0xWVH5+dIK3IbjVFbkBSIiMPvVd9nOOKGnbYWMswluSyLLLh/IcCvHuQyrn9s2jUsSrIqLfBgfsyNddEbaQTS67mQfSPodUbYEnfLrutADFqkeSN0RSo6LhtzdN622kG51KXKAKXYpRDOXGtktRLGe918/UWXjjRGlKxz6zIDa9dblfSVorcphLwq+ohBPcEvPL0Uwghe28GwwdOHqLnsWJI6Z5FoEeA5JuEH/ItLrFD8LBlcovsAGhohXLGphAxYrQr/ZNZkGv7OrD
+ blu5Tf5m
+ UUKduCDR/Tkn3j0hybrZ3arx1hbX5CXM9Y9SVqj5d/9TJ7oS0XscVGRgTXclf+nls30SoCzAWIVW/b6lEsJgKKL9DTKr/xfR9dHfyAMimfeuKoF3JbEJBzepdXKD5mhHcRID2nejr0eYrbWMo/t8eQq0XwvG+RXIoaABMVi3thwG/s22RibkVqKAPuz/KJe9y5Y/MqlMOxhDZCWJThPZjs988WxT/xLWg6JMEuL0rF1jUip3Dsu9XTiUfmRzgTdZkIeTX0rPdQwazg9IwWGb4QVQp/OOub2gGOYF8GBhiAzkxpKpJx+zesGLT5C3GXzmBRam2qvHmmuOn+N0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,106 +179,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 12:44:56PM -0700, Vishal Moola (Oracle) wrote:
-> Sometimes, vm_area_alloc_pages() will want many pages from the buddy
-> allocator. Rather than making requests to the buddy allocator for at
-> most 100 pages at a time, we can eagerly request large order pages a
-> smaller number of times.
+On 10/22/25 19:23, Vlastimil Babka wrote:
+> Since commit af92793e52c3 ("slab: Introduce kmalloc_nolock() and
+> kfree_nolock().") there's a possibility in alloc_single_from_new_slab()
+> that we discard the newly allocated slab if we can't spin and we fail to
+> trylock. As a result we don't perform inc_slabs_node() later in the
+> function. Instead we perform a deferred deactivate_slab() which can
+> either put the unacounted slab on partial list, or discard it
+> immediately while performing dec_slabs_node(). Either way will cause an
+> accounting imbalance.
 > 
-> We still split the large order pages down to order-0 as the rest of the
-> vmalloc code (and some callers) depend on it. We still defer to the bulk
-> allocator and fallback path in case of order-0 pages or failure.
+> Fix this and also make the code more robust by performing
+> inc_slabs_node() in new_slab() itself, and removing it from its callers.
+> As a side effect, in the theoretical case where the new slab is
+> immediately leaked due to debugging consistency check failure, it will
+> be accounted (as full) in /proc/slabinfo anyway, which is not wrong.
 > 
-> Running 1000 iterations of allocations on a small 4GB system finds:
+> The exceptional caller is early_kmem_cache_node_alloc() where the node
+> for stats is not yet initialized. We can handle it by using
+> allocate_slab() there as the gfp flags are known and fixed and we don't
+> need need new_slab()'s fixups.
 > 
-> 1000 2mb allocations:
-> 	[Baseline]			[This patch]
-> 	real    46.310s			real    0m34.582
-> 	user    0.001s			user    0.006s
-> 	sys     46.058s			sys     0m34.365s
-> 
-> 10000 200kb allocations:
-> 	[Baseline]			[This patch]
-> 	real    56.104s			real    0m43.696
-> 	user    0.001s			user    0.003s
-> 	sys     55.375s			sys     0m42.995s
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> 
-> -----
-> RFC:
-> https://lore.kernel.org/linux-mm/20251014182754.4329-1-vishal.moola@gmail.com/
-> 
-> Changes since rfc:
->   - Mask off NO_FAIL in large_gfp
->   - Mask off GFP_COMP in large_gfp
-> There was discussion about warning on and rejecting unsupported GFP
-> flags in vmalloc, I'll have a separate patch for that.
-> 
->   - Introduce nr_remaining variable to track total pages
->   - Calculate large order as (min(max_order, ilog2())
->   - Attempt lower orders on failure before falling back to original path
->   - Drop unnecessary fallback comment change
-> ---
->  mm/vmalloc.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index adde450ddf5e..0832f944544c 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3619,8 +3619,44 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
->  		unsigned int order, unsigned int nr_pages, struct page **pages)
->  {
->  	unsigned int nr_allocated = 0;
-> +	unsigned int nr_remaining = nr_pages;
-> +	unsigned int max_attempt_order = MAX_PAGE_ORDER;
->  	struct page *page;
->  	int i;
-> +	gfp_t large_gfp = (gfp &
-> +		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
-> +		| __GFP_NOWARN;
-> +	unsigned int large_order = ilog2(nr_remaining);
-> +
-> +	large_order = min(max_attempt_order, large_order);
-> +
-> +	/*
-> +	 * Initially, attempt to have the page allocator give us large order
-> +	 * pages. Do not attempt allocating smaller than order chunks since
-> +	 * __vmap_pages_range() expects physically contigous pages of exactly
-> +	 * order long chunks.
-> +	 */
-> +	while (large_order > order && nr_remaining) {
-> +		if (nid == NUMA_NO_NODE)
-> +			page = alloc_pages_noprof(large_gfp, large_order);
-> +		else
-> +			page = alloc_pages_node_noprof(nid, large_gfp, large_order);
-> +
-> +		if (unlikely(!page)) {
-> +			max_attempt_order = --large_order;
-> +			continue;
-> +		}
-> +
-> +		split_page(page, large_order);
-> +		for (i = 0; i < (1U << large_order); i++)
-> +			pages[nr_allocated + i] = page + i;
-> +
-> +		nr_allocated += 1U << large_order;
-> +		nr_remaining = nr_pages - nr_allocated;
-> +
-> +		large_order = ilog2(nr_remaining);
-> +		large_order = min(max_attempt_order, large_order);
-> +	}
->  
->  	/*
->  	 * For order-0 pages we make use of bulk allocator, if
-> -- 
-> 2.51.0
-> 
-I like the idea of page allocation using larger-order :)
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Pushed to slab/for-next-fixes for testing.
 
---
-Uladzislau Rezki
+Note I haven't seen the imbalance happening. During the ongoing development
+work I caused a very deterministic underflow elsewhere, decided to make the
+code more robust by creating this patch, and when going through new_slab()
+callers I realized it fixes an existing issue.
 
