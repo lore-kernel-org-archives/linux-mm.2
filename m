@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61843CCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 06:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62FF7CCD1BE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 06:24:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B51EC8E0013; Wed, 22 Oct 2025 02:20:38 -0400 (EDT)
+	id A23838E0014; Wed, 22 Oct 2025 02:24:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B29B68E0002; Wed, 22 Oct 2025 02:20:38 -0400 (EDT)
+	id 9D4538E0002; Wed, 22 Oct 2025 02:24:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A673A8E0013; Wed, 22 Oct 2025 02:20:38 -0400 (EDT)
+	id 8C3498E0014; Wed, 22 Oct 2025 02:24:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 98DEE8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:20:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 26CC013BB66
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:20:38 +0000 (UTC)
-X-FDA: 84024751356.03.5A63CC2
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1E19520004
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:20:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MUtAQiMY;
-	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 783888E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:24:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1023B5ACE9
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:24:54 +0000 (UTC)
+X-FDA: 84024762108.05.AA1D848
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 75A821C000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:24:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RX7a1AXW
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761114036;
+	s=arc-20220608; t=1761114292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xGUMpWlS5ys3I2gYM86ycziVMk+GyFsNzyypjhrbYGw=;
-	b=GLOqs+x8FwGyw0rPq7IzXl8nvwPt+fncBdGrrHCPIOu+aFKdPDAm8ERItv5pkBAIBZAfSR
-	cXJXIINYnimtZgLe9gjU+y2FThhfCgnlXaW88RRxY84ah6L9L0lPZWirwz0zzOdVfA6z6E
-	IBezex8x05VroTkRi331ANHga/yhXLA=
+	bh=1XhDE1BELRWX5YDOcVl25kQ97WNQSKEMx7NE0+Z0zfs=;
+	b=gWaByNUywESvHc3fDwq56pP7oXGot0AmB+BwOPOGTlojJt1TJRh9QxOqdWJDZ1dNNL6Nkn
+	f2m06vC4/D1hpk7uN6k1ZIrsusl+3YDt1PyFTYNJvb4HpnX+tlJDbghjUHZfzUtiasckMx
+	T2RGmDhy3hcrcFWV1zjbpttz908nex4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MUtAQiMY;
-	spf=pass (imf03.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761114036; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RX7a1AXW;
+	dmarc=none;
+	spf=none (imf18.hostedemail.com: domain of BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761114292; a=rsa-sha256;
 	cv=none;
-	b=mcR4p7W7cVnr+630H3R10TYLDjGeTcglUE4LVUFdI+eNxUdbof6Bt4ijQivHBWc8y/mQYe
-	OZ85IweqeHopTCBa+fgJxJ02wzNo0cnC4yeULHWH5wuGVfWrhXBoSueFC4Kiswm/fWkdVx
-	qqZlqkGiCb+Sjqbtp9k+AfrP+JOo/eI=
-Message-ID: <ab0c5257-bbb3-4202-bac8-3e74176fe34c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761114033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xGUMpWlS5ys3I2gYM86ycziVMk+GyFsNzyypjhrbYGw=;
-	b=MUtAQiMYKqmCmhCP9Q7CICf7/5jxigvDv1UgTtfRqFsQf91LkfNUkhPHzgdForHgB4CEQd
-	vISRBTMd938WDVd5nMoItNdvfbbT2CJ5ZBsGQ9LD53KreOYKXKHlXXJCTEvVjox21Xp0xr
-	VDjJ42plJloM8KBpUOONoledtci/moA=
-Date: Wed, 22 Oct 2025 14:20:26 +0800
+	b=LVESMYAbURDaEjAmyDZeOSutb69eojGKjKgxbcOTSPRG79wEPQQnxE/VTzPkall/SgXjsk
+	pOcMbnKufAjoS7ELaSgDwFyycuIJkDzzCl/RqGkcIu8n9cs5KAnC5Mplq7G6HsXadrM7OX
+	35j/thedAUQ9xBAGzBDVpm3tz7D2tNQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1XhDE1BELRWX5YDOcVl25kQ97WNQSKEMx7NE0+Z0zfs=; b=RX7a1AXWTILfx/vttsD6ASD5QM
+	nm39/Tj4XmpGD53ez9zf4QpAZwF67Zia4CQzhS9732EWS8EPh2m8ojSGgnoJs+ttrmJRmrRTMPhRi
+	jt9Me0ujkGJNrMfLgoTCR5PgmzW3b8SlrnGxZ4pz/+jVDasdZsUWCAqzQ0ae3gmPoSxHkqQ/q19xI
+	RYkBGdEhA6XkBkYrGAoXPT+y9kz1RXrhJ3UCNIW1WFCR3np8xaonuIeoPL7+Mp6mH+7Pnppq8Qvxt
+	gfbhjptNvEJ0BDuMiJWCcyQYvs5SNAKh9t7u6juA0NeJcsmSSGnr1ZY9pemg6FZaqGbLYAb1E/y07
+	Yqg5E91w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vBSHA-00000001eTW-3aoM;
+	Wed, 22 Oct 2025 06:24:48 +0000
+Date: Tue, 21 Oct 2025 23:24:48 -0700
+From: "hch@infradead.org" <hch@infradead.org>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: "hch@infradead.org" <hch@infradead.org>,
+	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+	WenRuo Qu <wqu@suse.com>,
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+	"djwong@kernel.org" <djwong@kernel.org>,
+	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"jack@suse.com" <jack@suse.com>
+Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
+ trust the bio from direct IO
+Message-ID: <aPh4sJ8eFJeMCAHx@infradead.org>
+References: <aPYIS5rDfXhNNDHP@infradead.org>
+ <b91eb17a-71ce-422c-99a1-c2970a015666@gmx.com>
+ <aPc6uLKJkavZ_SkM@infradead.org>
+ <4f4c468a-ac87-4f54-bc5a-d35058e42dd2@suse.com>
+ <25742d91-f82e-482e-8978-6ab2288569da@wdc.com>
+ <f13c9393-1733-4f52-a879-94cdc7a724f2@gmx.com>
+ <aPhl7wvyZ8b7cnLw@infradead.org>
+ <3677cfe8-00cd-466d-b9e3-680c6d6d8c73@gmx.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>, Lance Yang <lance.yang@linux.dev>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
- <49bfd367-bb7e-4680-a859-d6ac500d1334@linux.dev>
- <2025102245-backstage-sprain-76fe@gregkh>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <2025102245-backstage-sprain-76fe@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1E19520004
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3677cfe8-00cd-466d-b9e3-680c6d6d8c73@gmx.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: 593yih68rwfmzruhxeqzhuomhac76hub
-X-HE-Tag: 1761114035-712493
-X-HE-Meta: U2FsdGVkX19fDNs93bcIPqgl4F65w21SuR8WTYFT685ZfoNZ71BgaEtnPTfM9wiRxNL5u3YLfeMeTgtluauYBspdV9wlAd1c3fGuszk7WRpz8hFiFFERtZN3qo4plAzTzaWWCPo/VC0kqWXzUruxM35A4KQKLgtG5ZrcS++InGz0ADpAc7C/e8RS8wER7YSlXneTHRauFJUI9to1qFxmAMKc54RR1iz0gE4i35OiHONCo4wdP/wPUkMPfxa/hSt4RM2kIBgFc9Wb5+v845PZEX1qoreGvg5KCKvjLuta+WoFKu+FR+XO9dKoHmuz3/vP/wRZ9is3gNQpw5621lDex8sqEUxBFeE3Vsy8gDpewaoVmDL0mGXk0Zmg80VHZOSe0rYZhTektkDR3XCvVzsOcIVGfKSqbsMUdxZwbJZAnCmb7+oU/2nYRFgawgg3ALripW6OVEnsUcwdss565UQfBgktb79GJRkEfHqmR5gzi5DX3XqPr8zA0YWZztMd5H7SXpUObipdKaSF7NrURMI44SixQI8iUOVaxU9ux/+J1MbN/rVsB9R4cFuVpzMisH9DhxvoGYfZY7bgAtldlGVQxEyTBXL3hIp8Znj09kEjG6grSghS1ws2r9mjD7GgE8E4Wi2xZkIHfLbLliiFYrU9HNhFw62PMGBdJNqtibhjt8XOhnPE0GhR+QM+oA5f7HRO0G7ttSTCWe1acK87KBi4CVta1sK8wQ+T5mOfDjHqX96SIPZ8JTxT9+Urbe38zdz15zzzH6aabjhMlUutj8S7/CX2pgajvm+kIFfXxqzCeoezZUgVZ5CHv2191nIn28lHHJCdWOK5dOhjch8Bw9L+/448kho1WzrM6X/Hk8w3jNzQs6MKLFGygGSgYrQ8MMkI4GEcpYsNOPvQ1E4mGIe55u6IqLi9aEi89JrcctR07EOMJwAk9opIp8KuZEX9lUenBDedXhpaL1Bi7Y8wcpi
- 2TtIo6gD
- VO6VJDmN4hXIP3eFRsMcwQSyasSWmIf5RPhGwxtQkuXu0eEAZYSbJMY58Zlwk3OEJpD6A+KdQI2jc4PQOwiQt03Qq2+BrciXVzBenbWOguXeL18Oh5bY2yhA/z0elY3hAwkFaz/QfsGrxlcDZ8/pIiQUXHtjrU0tIqNI07kxF89XsZBzc44i7HTQ1tTDVwMFlQw4f8PS5aem27UF1btTB1PBwee3qaz9a5E+NT9m4VZ9kWinElYEqMBLQwMOaZx7oGHKC
+X-Rspamd-Queue-Id: 75A821C000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: zt9b39mdw3nkqimbejriniaz1gtympwz
+X-HE-Tag: 1761114291-801512
+X-HE-Meta: U2FsdGVkX189OTndlTgg4JSIDjaQ3bQmLEe30jFKaKbUK7KnaxLRsb4a9Trod3BmdUeYOy8Ftu+zzor2tpCOYGakAMgV+a+KDVtFJix1gyujVWW0xXiBWzwKZRBVJoEuG46PCq1/nEjc1qudFyYIqwWTFV/queSxKScX7lc4Latp87QqUVvnVu2ONIiN71fT8r/BzX7kcQYUABrAVkgabw9c8wtvAAPFK5QORdauMw3GQy0JdHbuYxH1sWCCYJtuE9d7PQdygnEc7rLZDVRfB91jjq2WeTKiMDjU6BOpLivxDd1dgKQAPcc4H6l2AdyO74N3bErJJmIjm+PgvBc+0NEvPldw7aVmkJuxOOAuI/biBybaVF4LaOV09gyfZNNRWJL8NeZ+cOw5nSI6Fg4Een1NRNYf946u6DSXjQwbzYvHhOM+A2ZK9PsxIbL/x6o8TpdcbO9kxhuVxJXza7osWH1qCw7uGEkjkrBDk/UKXGisazjkwFwRtpXlz8/eQ3KBagWKs2v17gME/K9boXm75DnEMnxIhV/UB/1TxJJO3/LHpFNa8SOf2CXDPafcXACebhHz/xlx8mkTobdAzIVlDuNPQwYWvyy0yOIsEJchgEuWBCENxPmk29txL6sqOpLRe6q+RNjQYDLZTUHQ5j9yeOLkJywdsTfktvuwm6GMu415ds5WocBAqf1juXUYTwkeg+Nl5fkUlzDjYOURYE6MIxkgy2BJYAtWWu3kPE61SgX6y6UKbLX9CueeUbMnDdeSkTaMfV2ijUTTwi3TUwUuabWuc7PpgxtbZUkpfrXF6V45cKN/N98HgQCXLz3X/rmTytcOkf6nWjjt20mWx0Sr/PcJ/FDi7HzCDzXkgsYYlU0nF/MycpyNaFW24Pa6yaM9JIQvWqOYNjRUnUq7vYLkOLekMz7gt5I6qC1lj/v1GXa6QFKsPKhLqZc8uQuKtnECMF3+pl0GwrCU74QarZP
+ rp7PqqQF
+ wkUno0Fnp+7PSorAXKZ62V5Bm20tVvNlrBXO0eHtGiG6iyErztrOkHVO1bug+ko+OC3Iec9BoGSSidaUiixIiOKnW6dcrfs8w/DrA7wjlDjqO3QaJ9362+bcwOLTTOdiKfDfJPq6+OJxJUn1Eo5YdP/trbhLXW5oF6wdutqsSHNKqeIgSYlhCg9PVaAgFeeWcIraxoJgXP8nFXV6JP5q9cSMLu0Rt8Ddi5LWEoDsbsreohvufQVWBxdYehaLSRyMIS4t4exbsQUKYB1PJ1aDOmVSK+U1cBXPEuArnBBzYZsNN3sTEAC/hS90dhkf2tukq8wWouGci8cURtWfLz1fvE7vvhj4/FJertwe6G55w1EhvqZ7K4hbvCav+Y2QtGtjUvRhV/YwLUl//5dgMSuESbn6AjM38BYXvZ/2hngLjrbG4bV6fp/l7UYAcvQ9EnmY+qt+pPT2OIljChDL8xHqveBQ58yxmuV1KbEwo875hU+APM0eDW0z0Ik0oHoobusOCeTyXsLwTE1OQIu4xHn0n8fWTZXsPbY9vlhl37oLionuRcp8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,22 +105,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 22, 2025 at 04:47:56PM +1030, Qu Wenruo wrote:
+> So far it looks like the bounce pages solution is wasting a lot of code for
+> almost nothing, it's not any better than falling back.
 
+That was my expectation, but I wasn't entirely sure from your wording
+if that's what you measured.
 
-On 22/10/25 14:07, Greg KH wrote:
-> On Wed, Oct 22, 2025 at 02:01:26PM +0800, Lance Yang wrote:
->> +Cc: Greg
-> 
-> I have no context here at all :(
+> Since we always fallback to buffered IO for checksums, the content should
+> not change and we can do the submission and checksum calculation in
+> parallel.
 
-Hi Greg,
+Yes.
 
-This patch fixes a build error in the 6.1.y tree.
+> Already got a prototype, results around 10% improvement inside my VM.
+> Will fix the bugs related to compression and send an RFC for it.
 
-The mm selftests failed to build, likely because some patches were
-missed during backporting. I believe it's better to fix it directly here.
-
-Thanks,
-Leon
+Nice.  I've also started looking at my PI backlog for the XFS version.
 
 
