@@ -4,91 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C412BCCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 15:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DA0CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 15:36:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 137DC8E0008; Wed, 22 Oct 2025 11:35:23 -0400 (EDT)
+	id 000AF8E0014; Wed, 22 Oct 2025 11:36:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E9548E0003; Wed, 22 Oct 2025 11:35:23 -0400 (EDT)
+	id EF3E18E0003; Wed, 22 Oct 2025 11:36:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F407E8E0008; Wed, 22 Oct 2025 11:35:22 -0400 (EDT)
+	id E09A28E0014; Wed, 22 Oct 2025 11:36:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E5D4E8E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:35:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B21661608A1
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:35:22 +0000 (UTC)
-X-FDA: 84026149284.15.2DE79BE
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2B768C0015
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:35:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YziLEkxW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CC5708E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:36:01 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8471E1608A1
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:36:01 +0000 (UTC)
+X-FDA: 84026150922.23.FA497E1
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 01E5B40013
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:35:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=f5TZwoIS;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761147321;
+	s=arc-20220608; t=1761147359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8iYpTFR7g26YCYkL8ooNPprAkKOl1jlVIj+zsrDxsYk=;
-	b=lahXIBN78ZM5IyAw5wYkPNvuK0k9bLbZHs60KHzGYBHC+SqS/RFNjv9LWYYxCTGE7GrZRB
-	GRRPACVjaxxiv9dVQ7Y7ggM3fpeDcUqQxbRfIUdP6AaBYRN1ZbngG5TWqlBZ5a0z+q3M/a
-	QzaMQUiqC6pgEP3ke032HN+H2hDThy0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761147321; a=rsa-sha256;
-	cv=none;
-	b=egVkEi72vlq187fMQRorNmL5Tw4OJ97ASrjMrwSQi8YpElAz3S50RI/8+CA24zSEzLTklh
-	6l+wpKKmj1KdtPxNpZzSFjTfVZZdS9xXZKmdJyYcjnSyQp9xGuJSb4JMNkTVn/fiL8vLcS
-	tgMXlBJSi4XNCGarvmKUIph0zUIiphk=
+	bh=8pU1t8+OZGCbm/4GfWKVYxxWdEox+s43rd+Fn+dHSqA=;
+	b=Xp9Q4hSw2o9UlvzDahL+QVQoycwaPN628hpSWaMuWTjSQ3R6X5BBE8Vu8dgunj+QFtvW2A
+	E2Ety65Xsw3nvvudSlL88E+W3rGHIKF1j7eo/KPK/zei20o1WuGDd4kC93R756jbTZG+9q
+	Frpcz7VFPNJZGQdbA+CaQn5188f+LRI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YziLEkxW;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
-Message-ID: <f1e5a58b-f5a5-4acb-85ea-59a7f43c060f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761147317;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8iYpTFR7g26YCYkL8ooNPprAkKOl1jlVIj+zsrDxsYk=;
-	b=YziLEkxWruWwReycddBdGYvvFQvSScqhH4PRwz5NsTxfUgA5M2Ik2/DOYJ2msrqta3lwRo
-	VOUyIzGYF0ntgG0DnOQvf1j22qXsR+0dwVanf3QPMHHTnWVNtybgtQ1rDkb69NKNISvEfO
-	hXFo+H36RfsB5BL5IWxNrSau7VJIxc0=
-Date: Wed, 22 Oct 2025 23:35:05 +0800
+	imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=f5TZwoIS;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761147359; a=rsa-sha256;
+	cv=none;
+	b=iE+hByeuzcLw83gn0c2b3mTA9zvj/f83cL/RVltPQxx6Xi4kQsP8dWKwAe8hcUUASNLwbB
+	Ey+6u9ITzZYTveQMBW3LtPnpIGUX52/NWzquQE6JSjM0ItsohgzZd0Ga5TSzw+qStH5+LN
+	05jUE5JYC0XlHidU2H3mUlaLJTNivpg=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M63vZp023364;
+	Wed, 22 Oct 2025 14:43:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=8pU1t8+OZGCbm/4Gf
+	WKVYxxWdEox+s43rd+Fn+dHSqA=; b=f5TZwoISFXVPttk/zhnO/fploadwjYkE3
+	FaltPpwb9PkUNoz4j2/W+xJu1F8tGoXAv/wtj9w2yzklGDgIILUTXKtwoqKCo1Bx
+	iwivfXS9IRCWhjx30hO3ADHSZ5tmiFqjCuSvkf6PHlvS949o8vKSk/vnFp+2duoZ
+	uKZT3wkfFjA7H6gDFt6aAnwrFdQjmnk4YGhw22A6bJoo1mucckI6joN7Ttn16wJY
+	oKLx3OSWgtqvAb+fvY9F94oZJrHS3c+OM2JfSFA0J/bD0/xVJXWi0/uuV/yJLEP4
+	saKbFQ5FmcLvLa+KYndySfuZcvCWf/PNAL2/J09FqBvV8Sjn4qYBA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuy0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:36 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MDjhtC001212;
+	Wed, 22 Oct 2025 14:43:35 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuxr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:35 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MECtQU024690;
+	Wed, 22 Oct 2025 14:43:34 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk0smr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:34 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhUY239190978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Oct 2025 14:43:30 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34BA420043;
+	Wed, 22 Oct 2025 14:43:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B89222004B;
+	Wed, 22 Oct 2025 14:43:29 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 14:43:29 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v11 04/15] unwind_user/sframe: Store sframe section data in per-mm maple tree
+Date: Wed, 22 Oct 2025 16:43:15 +0200
+Message-ID: <20251022144326.4082059-5-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251022144326.4082059-1-jremus@linux.ibm.com>
+References: <20251022144326.4082059-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-To: Greg KH <greg@kroah.com>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
- <2025102230-scoured-levitator-a530@gregkh>
- <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
- <2025102210-detection-blurred-8332@gregkh>
- <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
- <2025102241-clubbed-smirk-8819@gregkh>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <2025102241-clubbed-smirk-8819@gregkh>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nIhJEtAcddpVwhWnBT4RaVqYmzDBq9ml
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXwUg3i40WydWX
+ T3Bo51wAbnrnxyF1Ev2ww0lywyLQfbPDp67Uw7IAsQqk5XhQMit3EdBMvHRULIw8ID3Fx4epJ3l
+ fMY2aJfK0bXdN5DaM6J8zhBRV35vC0SmJ+bTmEPl5IAhPWVrg24sHO+uH8kTptxuo6zeM2pqo0m
+ En7Y875bFqczryFtV+ndFQcRZK90xEo8LT2jbIWzIUjykExWW5BOG50W0iaBpvB4fPiJ30eVoCx
+ InM/xUB7VvUQ4gpTDKRna+2k1FUsuY1n8taT6zH9uX0Aba2c8DgbYeZeO0ivE6XNEO2nJpKl94r
+ UYo5y5jcGu2igi3+Oss4cJzDqhJuRlQt4+AFIuGmqLLFAchMS4f/6Ts0TrszRkFtKcRfVnEGlYq
+ iPF/CKYURtqOJWWPAkJK+p8/GXuXrg==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8ed98 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=7d_E57ReAAAA:8
+ a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8 a=yMhMjlubAAAA:8
+ a=VnNF1IyMAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
+ a=QyXUC8HyAAAA:8 a=oGMlB6cnAAAA:8 a=1XWaLZrsAAAA:8 a=iox4zFpeAAAA:8
+ a=37rDS-QxAAAA:8 a=meVymXHHAAAA:8 a=R_gIsfqCWP6Q5LBCYFIA:9
+ a=jhqOcbufqs7Y1TYCrUUU:22 a=1CNFftbPRP8L7MoqJWF3:22 a=HkZW87K1Qel5hWWM3VKY:22
+ a=wa9RWnbW_A1YIeRBVszw:22 a=NdAtdrkLVvyUPsUoGJp4:22 a=WzC6qhA0u3u7Ye7llzcV:22
+ a=k1Nq6YrhK2t884LQW06G:22 a=2JgSa4NbpEOStq-L5dxp:22 a=DXsff8QfwkrTrK3sU8N1:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: -sDaNGLuTBEGSMsz-U19vFw1Wh_ZrCeZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B768C0015
-X-Rspamd-Server: rspam02
-X-Stat-Signature: jp4tf9k3hufa37x73tqi1b3ycjzfzjns
-X-HE-Tag: 1761147318-702551
-X-HE-Meta: U2FsdGVkX1/JAUBAeYb/TIqaIlIndKEa5FHe8pvzUMJJ7HAq9vp5YZ0iNFQyxyP4NjTO5eprfbqHIdqdgwaEIYuT1Du8s9mN2BwuZrXmAlZVWGpSaIF6kvTOf2FQiy5OeQYAv12VRNEsGqX6cnCnPQ1WsO93JNKJ/NxRAfgj316L1/+QFiUAEaK7Jah/bSbrklj7mvYtl37/TA7F98Z+CeJzVT7siGDQL7wbpjKaiK+OPZGl7PkdowOXex0Rih6F4PMkgIJzqAqO5dRbUr0OuRk0RWdHRlzz+mkjHSQO1V9Pk1lY0GV+a5HcUrUDazQ9ps2cOVlq5C80D6fH0K3nzARCtgKGzwgxy8IVMfTyNCSaEgARwriSFWL9LIBGumf4Sly6vWBLJEwdEFiHRZa6yGDIU/4WkBAINloeIHSgzcDzsClHEEWE7vbWg2ZEmB8pn0wcBsP3nvRcSjlNSduzSFwQ+zWNllCitT0Y2jfBL915NmZ1Jofa5ZqN+CS1DqJ/BhPiRU9/usI13QIMN2B/Ffi3xw/lOYEZY7aW1vUEeEsL8oYj3YwCboFqEkFfVZZYiLkV79cZbD16CWKr8Fm5Y/WHK0PVMLJQ7dbsSJGn6+r0OPkoiAsM75oSayMF7qzRnFqMZmLWLz5UvNeMJW1Bk9e1ruiwFupYLt72j4nFb2/NVuWN+XJMpv+8nY+ZQcutBCUtp5NyuhbfNSUyo3cbEv00rfgsS5jhSn3gdmzctus5lZSL2dyCSa6fBBCahliNRXBwoS13NwBvt5coo+ZInAQzmkeiPXgUklw+SqT90fuYHDdvNPIYeOnKtvCUZwzK8ZM5mvquzaAGQYTQ6IdyM6OaWXs95sh427R81xBB1kTVwTsYJxTBzfO1DMBM1w5c9YNTJvnkNYuclhyZ4x3/n3WKlkNtkigjO4PgljrejHWynFogXuni1Q1nNn3EgRL61//x8sz4X7PkmC4hHfh
- ots4+eCc
- 4ADO3Yj/HlSGSDf+HE7YN48Fak8gUyMn7YhsgKr3bC+4rbmmmTgT9KB4pCMYfRAQMc1khUlO9L/QHma6blxI9Vl+Ytgw3xr4jZ5niSgnTFM9f1PKTXN/JEGzhq0nDh3lztIxQRCKxAV26TKN+9Htm2JgHd5VW7UK+lW5FHdUqfUNIGKAZV5axy5fH9D5tq4uozrjw9KhSQvnzo0grkKR65bYkzotcpY20JmoFcgDIwJSaJisQ5RHmN5bo2n4mLwhHMY52RQKcuhOeWjROIVlhfnzteA==
+X-Rspamd-Queue-Id: 01E5B40013
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 5gpo3pcutjhb5sudo6jqmrempw6f6ztz
+X-HE-Tag: 1761147358-120625
+X-HE-Meta: U2FsdGVkX197LPm5w8Jjb9/8ckSvtdCt3urfCkBNstCQ37AgDHK7xe2w83xhBAVQs+diQktbwS/IGFgRL39nzcWsrpNFAAfEe70CvBlOgK75MloJjYX+fZDnHDWBHkwUdlZOmJK5JrsDwu/XRuRlxJ2jbaw5e15umWAAWeIShfgkiciGBYAALSLiisQQwsIDlKrhyGiCojrPhsai8JJOsWhom5LtqtwhPB6mux5HCxrR+lp6sDWLSpwEkvC/VCvkUlvllPHMM+fQbfjLgAENCQkPuD4woZ2aDslpD12BQeJQZipkv1PZePo9mrpV7VUp64wVqwofuzTt1+OJePyLkRp7gf5lxTJ2yYUrJnYoCt/7lMVhwXzElLe+lq+jjyWP4fkJMECw2vDC1KQK+CRxDBAh2o8Z8JD9imgWc9BiUoiCR94w63+BCMeflkEy404ITquLiJEmKM4gJ1t/SlwQ5pyNWvbUc/7Tu42iXpBtVID+x8TsqQjz0hj1CzUNdJhq+4BztbnXxR13++0OA1RdwkTeiE+A7ac7cuewzncvM4jZw2WFqRZGsmvxf1qYUlplWFlFcbIZmbL5ZtLK2OBdW7kRwZ7M2f6HqOmXGc4xRxOLa8NQ57zKFfzth5D7MDVRO5u59V+Q10Otrx/+q47o34S/dbu/6kXQLBx9akUdSqIjkx8Z53TCko7CueFdfxE8937DDMd5FLJ2bN0fOceOy/XDm8Fyk1KdZ/sijZhanlgq8DmsX6WvuknrvhC0i4GUVD2Qhc8rmMlrkgKBZRmFKTOY2Iif8hju4Dt7qVpqBUT0ZgVXee1hR08oZ/aZRC1IEmtI4N61SB1lNMMZkOBB5lWpoj9mCddsTEbvYHImJD9Rnkg/4rN9yXMIekrqeqcRfLyDMYsPms6wSO1DwuXyYsme+TbEXm/Kkf/3tLJFVOVv325YD9IDukyo5GEtuqelfeRjaY5716ja+5Oj7Kw
+ rvklILQ0
+ h/b7Lz7KSeCj3qbM0sFFzjU0lexhQinw+J2SekSDwf26frzWLObmUKSp4l4Ec2UrXNMn2IOUNIqrXocrDY0BIAjUVJcOoT+Mhk4i+wbf63Fy/gUFrTmwiJ7NO8cYRtd4EJCS3WSiIPrLn7MOZjZCZxUaw3Llk8SbJ4pWW4qyZvxcU9/PrIaGWEPNciXiXRmnSb5+gbeYjblIspXOyHsI5ppGkcWzSqS5WUvTqZmRceblkQwDxMLX5FM/OSqAK2vua/WNCYx/uD1KP+NGGse0DtW0Dop8ZJTdzO4vFJV5jT4hkrhqlZlgpPjCTDT55wMf+wbPoHRKKnHeJlcvFsIK8vjv59qTAPWSd4Dv04nqiYC3D6JJhYbJZf2h16z1HyBxH4Hd5/yQiDPURmWtydFXyPjectfKnKz1Xzoto0m0ElmT4nA08rX1cd4w4oKixXywobpmD6ANTMx/XMXf8k/7n/FdN4rNpJuL4d495usg+qH+u6eus8ak8K+Pcpcj3WkqCOw6Fd4/bCMAVZQ+rj4Vn3dA1mvKIkD8qVG0LMhQEjnJBeO+pt3PIj/SCwBsPKVndOXphORooX+qMAc/nHWbTnmbBmxUN0+a7S2ZvEBOxSqI3XPqV35cr7Lidq8G137s3CIVHNtqqgP3GNzj6bi2Q509H4KQzaE4NMciHbtA8K8WYTXyRnjwEI9p/ObjBylKrD4oKmy+Iw1tlcqwugFNBMIhRKKCC1Ba4Rl/5jXrK81V8osXHehYhdFwwvbdEcA7bPr4sEH6APTz02fGXkQ+SXqAhY/pjAf0/761NtOTelqZfcRswBjk0nUIIqseUwOSkipS4cccdkHPKPTyVuEAmjwdK66Air5mkrzcSAvyfPr0g4wu3DYGcDS61ZZN3g5WOMDGjgMgCM+H2SR249/Tsb9NW4QQ/x/ztdS8V5l8g9mDPjhM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,50 +174,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
+Associate an sframe section with its mm by adding it to a per-mm maple
+tree which is indexed by the corresponding text address range.  A single
+sframe section can be associated with multiple text ranges.
 
-On 2025/10/22 22:26, Greg KH wrote:
-> On Wed, Oct 22, 2025 at 09:34:52PM +0800, Leon Hwang wrote:
->>
->>
->> On 2025/10/22 16:20, Greg KH wrote:
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Indu Bhagat <indu.bhagat@oracle.com>
+Cc: "Jose E. Marchesi" <jemarch@gnu.org>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: Jens Remus <jremus@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: Sam James <sam@gentoo.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Carlos O'Donell" <codonell@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: x86@kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ arch/x86/include/asm/mmu.h |  2 +-
+ include/linux/mm_types.h   |  3 +++
+ include/linux/sframe.h     | 13 +++++++++
+ kernel/fork.c              | 10 +++++++
+ kernel/unwind/sframe.c     | 55 +++++++++++++++++++++++++++++++++++---
+ mm/init-mm.c               |  2 ++
+ 6 files changed, 81 insertions(+), 4 deletions(-)
 
-[...]
-
->>
->> Hi Greg,
->>
->> After checking with 'git blame map_hugetlb.c', the issue was introduced
->> by commit a584c7734a4d (“selftests: mm: fix map_hugetlb failure on 64K
->> page size systems”), which corresponds to upstream commit 91b80cc5b39f.
->> This change appears to have caused the build error in the 6.1.y tree.
->>
->> Comparing several stable trees shows the following:
->>
->> - 6.0.y: not backported*
->> - 6.1.y: backported
->> - 6.2.y: not backported*
->> - 6.3.y: not backported*
->> - 6.4.y: not backported*
->> - 6.5.y: not backported*
->> - 6.6.y: backported
->> - 6.7.y: backported
->>
->> Given this, it might be preferable to revert a584c7734a4d in 6.1.y for
->> consistency with the other stable trees (6.0.y, 6.2–6.5.y).
-> 
-> Ah, yeah, it looks like this commit was reverted from other stable
-> releases, as it shows up in the following releases:
-> 
-> 	4.19.310 4.19.315 5.4.272 5.4.277 5.10.213 5.10.218 5.15.152 5.15.160 6.1.82 6.6.18 6.7.6
-> 
-> So a revert would be fine, want to submit it?
-> 
-
-Got it. I'll send a patch to revert it later.
-
-Thanks,
-Leon
-
+diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
+index 0fe9c569d171..227a32899a59 100644
+--- a/arch/x86/include/asm/mmu.h
++++ b/arch/x86/include/asm/mmu.h
+@@ -87,7 +87,7 @@ typedef struct {
+ 	.context = {							\
+ 		.ctx_id = 1,						\
+ 		.lock = __MUTEX_INITIALIZER(mm.context.lock),		\
+-	}
++	},
+ 
+ void leave_mm(void);
+ #define leave_mm leave_mm
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 08bc2442db93..31fbd6663047 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1210,6 +1210,9 @@ struct mm_struct {
+ #ifdef CONFIG_MM_ID
+ 		mm_id_t mm_id;
+ #endif /* CONFIG_MM_ID */
++#ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
++		struct maple_tree sframe_mt;
++#endif
+ 	} __randomize_layout;
+ 
+ 	/*
+diff --git a/include/linux/sframe.h b/include/linux/sframe.h
+index 0584f661f698..73bf6f0b30c2 100644
+--- a/include/linux/sframe.h
++++ b/include/linux/sframe.h
+@@ -22,18 +22,31 @@ struct sframe_section {
+ 	signed char	fp_off;
+ };
+ 
++#define INIT_MM_SFRAME .sframe_mt = MTREE_INIT(sframe_mt, 0),
++extern void sframe_free_mm(struct mm_struct *mm);
++
+ extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 			      unsigned long text_start, unsigned long text_end);
+ extern int sframe_remove_section(unsigned long sframe_addr);
+ 
++static inline bool current_has_sframe(void)
++{
++	struct mm_struct *mm = current->mm;
++
++	return mm && !mtree_empty(&mm->sframe_mt);
++}
++
+ #else /* !CONFIG_HAVE_UNWIND_USER_SFRAME */
+ 
++#define INIT_MM_SFRAME
++static inline void sframe_free_mm(struct mm_struct *mm) {}
+ static inline int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 				     unsigned long text_start, unsigned long text_end)
+ {
+ 	return -ENOSYS;
+ }
+ static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
++static inline bool current_has_sframe(void) { return false; }
+ 
+ #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
+ 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index d827cc6c5362..9eb9b9a5d022 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -106,6 +106,7 @@
+ #include <linux/pidfs.h>
+ #include <linux/tick.h>
+ #include <linux/unwind_deferred.h>
++#include <linux/sframe.h>
+ 
+ #include <asm/pgalloc.h>
+ #include <linux/uaccess.h>
+@@ -690,6 +691,7 @@ void __mmdrop(struct mm_struct *mm)
+ 	mm_destroy_cid(mm);
+ 	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+ 	futex_hash_free(mm);
++	sframe_free_mm(mm);
+ 
+ 	free_mm(mm);
+ }
+@@ -1028,6 +1030,13 @@ static void mmap_init_lock(struct mm_struct *mm)
+ #endif
+ }
+ 
++static void mm_init_sframe(struct mm_struct *mm)
++{
++#ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
++	mt_init(&mm->sframe_mt);
++#endif
++}
++
+ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 	struct user_namespace *user_ns)
+ {
+@@ -1056,6 +1065,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 	mm->pmd_huge_pte = NULL;
+ #endif
+ 	mm_init_uprobes_state(mm);
++	mm_init_sframe(mm);
+ 	hugetlb_count_init(mm);
+ 
+ 	if (current->mm) {
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+index b28ec77bc9a8..149ce70e4229 100644
+--- a/kernel/unwind/sframe.c
++++ b/kernel/unwind/sframe.c
+@@ -123,15 +123,64 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 	if (ret)
+ 		goto err_free;
+ 
+-	/* TODO nowhere to store it yet - just free it and return an error */
+-	ret = -ENOSYS;
++	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
++	if (ret) {
++		dbg("mtree_insert_range failed: text=%lx-%lx\n",
++		    sec->text_start, sec->text_end);
++		goto err_free;
++	}
++
++	return 0;
+ 
+ err_free:
+ 	free_section(sec);
+ 	return ret;
+ }
+ 
++static int __sframe_remove_section(struct mm_struct *mm,
++				   struct sframe_section *sec)
++{
++	if (!mtree_erase(&mm->sframe_mt, sec->text_start)) {
++		dbg("mtree_erase failed: text=%lx\n", sec->text_start);
++		return -EINVAL;
++	}
++
++	free_section(sec);
++
++	return 0;
++}
++
+ int sframe_remove_section(unsigned long sframe_start)
+ {
+-	return -ENOSYS;
++	struct mm_struct *mm = current->mm;
++	struct sframe_section *sec;
++	unsigned long index = 0;
++	bool found = false;
++	int ret = 0;
++
++	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX) {
++		if (sec->sframe_start == sframe_start) {
++			found = true;
++			ret |= __sframe_remove_section(mm, sec);
++		}
++	}
++
++	if (!found || ret)
++		return -EINVAL;
++
++	return 0;
++}
++
++void sframe_free_mm(struct mm_struct *mm)
++{
++	struct sframe_section *sec;
++	unsigned long index = 0;
++
++	if (!mm)
++		return;
++
++	mt_for_each(&mm->sframe_mt, sec, index, ULONG_MAX)
++		free_section(sec);
++
++	mtree_destroy(&mm->sframe_mt);
+ }
+diff --git a/mm/init-mm.c b/mm/init-mm.c
+index 4600e7605cab..b32fcf167cc2 100644
+--- a/mm/init-mm.c
++++ b/mm/init-mm.c
+@@ -11,6 +11,7 @@
+ #include <linux/atomic.h>
+ #include <linux/user_namespace.h>
+ #include <linux/iommu.h>
++#include <linux/sframe.h>
+ #include <asm/mmu.h>
+ 
+ #ifndef INIT_MM_CONTEXT
+@@ -46,6 +47,7 @@ struct mm_struct init_mm = {
+ 	.user_ns	= &init_user_ns,
+ 	.cpu_bitmap	= CPU_BITS_NONE,
+ 	INIT_MM_CONTEXT(init_mm)
++	INIT_MM_SFRAME
+ };
+ 
+ void setup_initial_init_mm(void *start_code, void *end_code,
+-- 
+2.48.1
 
 
