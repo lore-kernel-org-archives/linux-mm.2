@@ -4,99 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F20ECCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:58:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 272FBCCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 04:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 734FC8E000F; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
+	id 3C4BF8E000A; Wed, 22 Oct 2025 00:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E49C8E0002; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
+	id 39C558E0002; Wed, 22 Oct 2025 00:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D3B18E000F; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
+	id 300208E000A; Wed, 22 Oct 2025 00:07:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A1238E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9A631DF6A4
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:51 +0000 (UTC)
-X-FDA: 84024394062.24.3C6F0D7
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 07D131A000A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hEgpd6Jw;
-	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761105530; a=rsa-sha256;
-	cv=none;
-	b=BkVI/lNhPDj5BWvM5jayBLB9LvLhVWVvS6V66aKpIXyTQwKDsQYi+lzr396163J1bWnsnl
-	iAgAR+glm1SrYPsF75zRpJnz+0V6L3B5IWnqrGVofIARIQ8Pa46/O2jZ7WhqEA0XBm1X2y
-	bkSOnMnxgbVH7pjcT7Ptzz+y1mpT+1Q=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hEgpd6Jw;
-	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 220348E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:07:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67EE75A91A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:07:01 +0000 (UTC)
+X-FDA: 84024414642.14.B3757C8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A78D3140002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:06:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761105530;
+	s=arc-20220608; t=1761106019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=km+g0XPH4yDDwLqQ/6BpIJliLoLcAkSlxXyzmPgqKOY=;
-	b=eA6Qs9ZWJ8B+DjMkdByS4siEs+gw7trdB3pK2uWgCUDaLchcp6Ypy6bPNVXEmd8ZQdGyGO
-	s2XymAxbWVkvD9WsgMmONVmLffrbSYzMJEF0NTOTtlInh3BpDaPa3yuuH7CJhqbNc95u58
-	yHjUZdhrck5laGffjWeRTOBzu5ovb1k=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=km+g0XPH4yDDwLqQ/6BpIJliLoLcAkSlxXyzmPgqKOY=;
-	b=hEgpd6JwJZ9quWIenfHDoy8zHH1ttczMOU8UzFAFadDe/tw5k8si5ua5TPmAOYpWIWbDBeUYg
-	kpi6IRBrHAwfVRscLYxugeW6yhGaVr6NTN63WUwwypBSiV8YywDevppMYx4VTaYhlNDNBpAX1S3
-	Nm0SURSZqZT7deMLCWopl/Q=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4crwPR6f9PzLlVs;
-	Wed, 22 Oct 2025 11:58:19 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5D710140155;
-	Wed, 22 Oct 2025 11:58:44 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Oct 2025 11:58:43 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <linux@armlinux.org.uk>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
-	<rmk+kernel@armlinux.org.uk>, <ardb@kernel.org>, <nathan@kernel.org>,
-	<ebiggers@kernel.org>, <arnd@arndb.de>, <rostedt@goodmis.org>,
-	<kees@kernel.org>, <dave@vasilevsky.ca>, <peterz@infradead.org>
-CC: <will@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
-Subject: Re: [RFC PATCH 1/2] ARM: mm: support memory-failure
-Date: Wed, 22 Oct 2025 11:58:37 +0800
-Message-ID: <20251022035837.1915-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250922021453.3939-1-xieyuanbin1@huawei.com>
-References: <20250922021453.3939-1-xieyuanbin1@huawei.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=eDo12jpZfo1MaXqNALR/lKe5SxuZgvzVORvf1Ka/xt4=;
+	b=549ABd7Lh19816yY+0AjBqlRncJALqO9jQJq/TJZl10ebO4sIp3DrvTermIRuJN0Auni+0
+	uYNkF7Tr+dL/Nn9D9KaXmI6SiFaS+ooF+XcpIVLkQAQ7cBmjMmd5X1NuiUJmhKM9BQUNLG
+	M6Q/Sq3g6ewTMKehiR1bLQhZsdObst0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761106019; a=rsa-sha256;
+	cv=none;
+	b=IAEBAz9sd5bLtDKdntBRWmEr1kcr+YAL96/gVlUeHKbBGzG1BZcuEwYej/kxRJn/Ij+mhr
+	XyrxCmgKPxAeeMxRoSislD1U/hbLhBbaCf3qwAvcbFnTihOrPeY3y6yxG+8G0JLnISRyTD
+	P6CqeMgRcVI7oyn4cs4lwulDqdSbr4I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02FBB1063;
+	Tue, 21 Oct 2025 21:06:51 -0700 (PDT)
+Received: from [10.163.68.114] (unknown [10.163.68.114])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8581D3F66E;
+	Tue, 21 Oct 2025 21:06:54 -0700 (PDT)
+Message-ID: <5ba26eec-9b76-4561-bd8c-8798af7b2c15@arm.com>
+Date: Wed, 22 Oct 2025 09:36:51 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemj100009.china.huawei.com (7.202.194.3)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v2] mm/khugepaged: Factor out common logic in
+ [scan,alloc]_sleep_millisecs_store()
+To: Leon Hwang <leon.hwang@linux.dev>, akpm@linux-foundation.org,
+ david@redhat.com, lorenzo.stoakes@oracle.com
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251021134431.26488-1-leon.hwang@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251021134431.26488-1-leon.hwang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: pf8ehxz8363ibr6gg4ixudajwa6aq8ug
-X-Rspamd-Queue-Id: 07D131A000A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761105528-411957
-X-HE-Meta: U2FsdGVkX19sWC2jRkvvSq2xsID8jlsnFGaeDEuS7NPhplALrGw9/OJ338zq3jrg8muSZbnYnnkjGRT2GotuzJk8M/8e6BJLiFoceFGHw8CKPfKl82Rl+mj5pa55Dv/Umu5GvmU+2CoVf6iMx+pvYXG1BdDVLr6xf4Zn3eMlb2bwdJm5ZHS+TOI2RFSjun+55TSDsi9wsVh+jawitUtYRcYnYa8fDCjdUMNatPFZGDDMjN1eSehmHly+AX9BnaaRqhhKW7oOeXbLOPGY6Fjm/FaM03DHrRO8RBzX/z30kxJzB3mdfHQ7y18RV+QHk2pb4W/bsgX7Qxd4nz9w7I3aACwMxrOVFFdvURoZEzM3AUWk73kYukpKMV7cnC6pFcR9w7IYzyGQYuzZttyKzDoogIRDzp+lkRAmxw7g9RQcG6mdagrO+rczHkLxa+Jyqk7mK7s8A91vXiCwlaXaaJxgNp0ltlQm1FiMltcM9UIoFsFsJ1SeM37ZCMcZ0DX4dqKtq33bS28Cba3UWX/dPDWERqfn3KXKnqoTvf6C+LB7rmpk1RJq8aKRmd9VmDeuIM4jd2kzq2SsVQXX1lUCE2J3v4uVd2uSI1gQjR3/wavWzCZNbJeb5/uo9GG+8ePYvk5TPd3sFHeCwEwcDjjnAuciS4aP2pB1mo4DQGQYzWB13Es1W+pSRMezShbq1zpG7pBGyPXeCqfgBJ1zN8f/n/tUw1CDx5Sov9uvN5c9eCk19WUVLehe0tEpz86tFXRQ7imkjzYSzNTPxFY70H8CsOrmqLPHVPzB0hFoKnIOErIn4nQLCoJgvr+JK3Nojvd8jKHG5++uYeIaQhUqx/+MvlR8HA5Uip9EUmrd+ezJEnQmquJK/FY58xxGpIIztsJ69l+AbPEC28yT7LM0mTFUdo7JJeh8G4GRVj373tApGLevXFGyJQfL0ys70EzqBYE3EmZdhNRtLDpjV2iOVmKYRFR
- cHn2WaLO
- IBd+ou6BVkfuhwqWg4kju1o6Dw+jy6mdFHV2mlI+Lg3P74ctLKPGYJCvizIKeeZnreXbGXqIimffRhgb7T9DFXlzgF/qVYtSdo9QmsCrkZBA7UVelsfGoMY9YMfGnGXiBX50ZqNGlqdgE/bUmK4FxmTnwQjZZO8DeoQFz/MoiwvkHkaxfiqQXFaAzZalEJwx1FQmdgJg9KaepFvCB7POAywWEgrtLUi41IgclqjvyrWeks9XNMzLPtstS9HdQU2XEwWW6hSogMtAbTvXkgJBeH9HtPZRy+hq3dxl2ocWbF2eAMuUXCjGWRfNxgEacU7aqTBQOMME6KzBcoGXqs6ayr0l+cgWyMY2A8FojAeR9Bh/arP0ozMhhrAu3i86ZoUOAflrx8pyrdqNZ14lh+WL7/AXpAAbVG/uC/fDA
+X-Rspamd-Queue-Id: A78D3140002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: tmj4948m1w1hx76d8ypbwoohkbsgmhb6
+X-HE-Tag: 1761106019-845489
+X-HE-Meta: U2FsdGVkX1/MoMk5k46LmsA7bbG4bH6GBuZzhR77Sc74H7CZQVldLB2dJ4C9u4Vk0hWns0KOkZeYS3+mXS/p496OxqGo4+bhJZcB614m4RQeYpWjdPg4aKfGxFaer8je++mEEe0NFfjXl+IuhCns9+rpE9i00l+NOMS6yW0GDR2vWcyGaxALFL80QnHodeHRZKcUJRG7MpB2L6fMRffbeT05xBih55QqyTZ4yAKyLofflttP31WDDI41+4pJfx0++y4qxPn/sJzsBWxemSwn5Nv5+RHQqf/2Nrdn8CcYcW/0XOAzTf3F6NbGJHwnlBzgEkQpr98Fw49iuSvJJR6vhSR9ny9aHuzq7ef06orrDqdJ0QSl2fVKhec6IoKphc+IBm48GEu3S32oLWtuctB0kD7SWQvNfi4CGOCsZ8hSxXdErhdBjbGVXfoEg194vk67cGBU3pmFLjL9bk1W8o5yEI78VTAM//jpkW6NJxznGayzeV0AxM8YL/e58QKlJbkMGCYNxLP14iPqlmUAEtmd8ayxYpGXzftxapsxJyDe7UEC9BZIEydtKIqNxAbef5gkyQlZOErv3rbP3RRiHeJSmLJE0OdZ08mgfAS1YJ04YgCf7XG4BaTv3+q2q8GxuGCiRddrNHRX7WyuzNV3Hkhr0xBWFyzlsFlahVt+hKeXfkQN9lue9hjRizqW1244v8o3iMTfpk+ZBNVXYz1jQpV2AgQZOUsDJKlSBZTddmEXPeMsT/6s2AF1qklJamb2VU6QjJghMF+Ieplq4ZwGxd7O2+SDZU41SMLCg7IG81BCQFRdh0B9ICB67AvAxuaun/uOem7WX/Jqkhref3sRk8l27QW9pd9F6tOxpAcxtwXEX9MrOQCuDbY4dfcsKEBiXcBELpMmjzfF0AdOtUzZ1psRLQgu58E13wybqenAq2tyRO9FA1SH6qyEuOgLf1/cX5lnHmwSupRroySple0SpdL
+ SHjAMeiq
+ OnW9pRtrYi2I2PSlC7+/K8005S1eRMMcmUp9ij65NyX4LvawCA5ak2rZ047rDA585lbBz/RqBn98oSFeePn/+2LCUmTVel+ShsYC3i3Pw34C3W3VKcI76I07LFOpMLj8+KsgcynoAu6Cb7Szs4Sp6lcGyV0hR95HLMK3txR8xZZ9ZyxMqIfH+Byduitln5paAGcnBQvD66P6zbRv9ZtcPQJwltkJfYX1oj2iXJKZ1P5Ke3cythl4SvO4RUTMy/Ry5pbr9w3islVhmx4G0j0dTUTsLuEqD85hU0uoLUIf80xRVf0w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,12 +88,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello
 
-These patches seem to have not been discussed for a month.
-Does anyone have any other opinions?
+On 21/10/25 7:14 pm, Leon Hwang wrote:
+> Both scan_sleep_millisecs_store() and alloc_sleep_millisecs_store()
+> perform the same operations: parse the input value, update their
+> respective sleep interval, reset khugepaged_sleep_expire, and wake up
+> the khugepaged thread.
+>
+> Factor out this duplicated logic into a helper function
+> __sleep_millisecs_store(), and simplify both store functions.
+>
+> No functional change intended.
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> ---
+>
 
-https://lore.kernel.org/all/20250923041005.9831-1-xieyuanbin1@huawei.com/t/#u
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-Xie Yuanbin
 
