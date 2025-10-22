@@ -4,93 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D7CCCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 11:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F291BCCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 11:39:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B4FE8E001A; Wed, 22 Oct 2025 07:37:04 -0400 (EDT)
+	id 5B9718E001B; Wed, 22 Oct 2025 07:39:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 566168E0017; Wed, 22 Oct 2025 07:37:04 -0400 (EDT)
+	id 56A3C8E0017; Wed, 22 Oct 2025 07:39:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2678E001A; Wed, 22 Oct 2025 07:37:04 -0400 (EDT)
+	id 431CA8E001B; Wed, 22 Oct 2025 07:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ACA18E0017
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:37:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9B7188C47
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:37:03 +0000 (UTC)
-X-FDA: 84025548726.03.73657DC
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1CFB0C0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:37:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf22.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761133022; a=rsa-sha256;
-	cv=none;
-	b=BhzWyF5xSR3Hzg221g1oCNwMByvQ4pHHtnWryyq2kE/NSWjDvnVqZr+0SSTaeNHSR8TVlB
-	+voObJRTUvwWWTjKWSOK4e9HXh0NTpK2vY7DyIrg+OaEfxLXPexXBrjrR3dzjk4eS9wXWh
-	7t4L64qBvd6LBYcf12Ia9lp2WG5WjKY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf22.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761133022;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A1A88E0017
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:39:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E32C41407AA
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:39:07 +0000 (UTC)
+X-FDA: 84025553934.22.0892417
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011052.outbound.protection.outlook.com [40.107.208.52])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E30CD40008
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:39:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OCWFBLFF;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.52 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761133145; a=rsa-sha256;
+	cv=pass;
+	b=YW7dqBT7/PUOXflYdobVN4rEpqgN0UzPON0S7xAQrrX8VX2Kj5OSvZ24gOn4lWi//S18YO
+	Oa6JtEElE5UCRsrZtQGkuIWYn0ehaXSkQgzXGMRyuPyFCIQoezsQ+mTsuE41FM9zAOOAAo
+	XKi77LOw1hKhAEzw/xdMmz/nKjJ4cDo=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=OCWFBLFF;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf01.hostedemail.com: domain of jgg@nvidia.com designates 40.107.208.52 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761133145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i2sf19SBYH+chFftvHjhQrXA6l/7+iR0w1SCMLs7oDc=;
-	b=l7VVYY63iIwajXvgL16zAAOSkF9HINOoMA/w8CLk37dhAG4FqZhX5HnXbbt6pstIxl+0o5
-	SfNlFfoJhhnqfkTkDL8Dh4JQIs2D10npN5uPEypluikW/9g6DkWbUx6F6qFXd6F+5QtN+x
-	qpI8VWCZNBnFRO1+zocj4WPnOzJWF+I=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cs6W0016lz6GDMq;
-	Wed, 22 Oct 2025 19:33:48 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 769971402FC;
-	Wed, 22 Oct 2025 19:37:00 +0800 (CST)
-Received: from SecurePC-101-06.huawei.com (10.122.19.247) by
- dubpeml100005.china.huawei.com (7.214.146.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Oct 2025 12:36:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Conor Dooley <conor@kernel.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Andrew Morton
-	<akpm@linux-foundation.org>
-CC: <james.morse@arm.com>, Will Deacon <will@kernel.org>, Davidlohr Bueso
-	<dave@stgolabs.net>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
-	<luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH v4 6/6] cache: Support cache maintenance for HiSilicon SoC Hydra Home Agent
-Date: Wed, 22 Oct 2025 12:33:49 +0100
-Message-ID: <20251022113349.1711388-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cTtVOw2VIMWaeIE4dqsLwPxGHKwqdsL8xGT9i4GE9zE=;
+	b=YR5KOIMjAAigKIa1jKqiIr3jBSsopHZYBcg3pT9fl394zS92iXzRvHko/0pu0JeHzDziZ1
+	DODoCHrpAe550SF2WwZzTkJYw6VqCyr/uJ2AVD6OCPUVIMATMhBncN1j5/+SLbln3TL7tm
+	sAkfAysNROi016KLAaHln7G1SlqxuzE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aLKXpbgDB+BpZjjvsMpwKh2k7u+wjda9dcfPV+AeVCIDTk1MF8qmxxmTPpAZWAqu6fZwQ3ZX2Hba7e0PRYLmmUmNUmPHgKnQn9ixORhqhEZc5icHlaDQ6KE4fyrO6KFMBsaohjCqqk1AC2V6ubdp+Fgb2MUH5KDPBVqoeCqt9JQyFdAqiwYDDtvmANWyl+yHLdAt6wW4wUsWXZWYnFjTCxPmiNQQhD3N3jkdax36B7n6qn/kO2ipIwpY9m2oZ1Jb+ebKp2Fe/TzJoMyFmRehWeaAvQcqsMyBkcacem42BDUaXFKUe+vMbNdeIsIDcQlrs08hXqlGh0iLHnuUW18dGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cTtVOw2VIMWaeIE4dqsLwPxGHKwqdsL8xGT9i4GE9zE=;
+ b=a2ZvGoBa+xRrjTc/v1F8IX3zxPSLogpT4fQW/bleWRzrH6S+pHzcjnLbgUstYAcSt489PlKEMJMrcTxO2fzCuWCOKi5f9Pt72/20Lq3w6qL3Rms3MEdJr1HE0i3fxteo1GBacilOFNlBdgg0w/047Sr1p1iCgao6bjCCLY+iGUPf99W9FqBfNkE1nNv2NNgmbvo2mvk7J7TLLDeE9Oo/1S6kCsZ0cB9uSjcdac0c4QrcmunA42rB5iNSmZUSGy8pM9HV5IrG7uSQZ5LfFMN108chEzaUqeC+/PjuCOHaKxZOeUkK67OU1ET18oJa3PIbXphXZc20VvX1fsTrACk7vw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cTtVOw2VIMWaeIE4dqsLwPxGHKwqdsL8xGT9i4GE9zE=;
+ b=OCWFBLFFIjQ4wkj9rtX9dBLGVFPQEU6eHPc4TVgl3V8I3gWQpeoqBbNg+OILssVzTCRQ4shOKl9er/oGJA8tN19Ww1jBDoIDByPwJ6t1qN+MvfaiKBmb2nl2DgziU4P/J4WgwLgogC87IaMZFBE/cbHhE5l01FwKt79wX3QgwFiJm8+aEvXIX9Yqude7/4AE1r8Yhf9iucuJOcglSCLYEIBLuRCu6h/ETkWSbuh1MTPRRAcSCQjBVXWXP+nPJ8e4Mpi7Znb2tr6GOAlZsbNB1wb29LYsGYnuLal0BLwlO+XjATfzRsIRuu8MSlfym1fu7/0uq6XU9XYGDBQbq5nB8A==
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
+ by MN6PR12MB8491.namprd12.prod.outlook.com (2603:10b6:208:46f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Wed, 22 Oct
+ 2025 11:39:00 +0000
+Received: from MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
+ ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
+ 11:39:00 +0000
+Date: Wed, 22 Oct 2025 08:38:59 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 8/9] vfio/pci: Enable peer-to-peer DMA transactions by
+ default
+Message-ID: <20251022113859.GC21107@nvidia.com>
+References: <cover.1760368250.git.leon@kernel.org>
+ <a04c44aa4625a6edfadaf9c9e2c2afb460ad1857.1760368250.git.leon@kernel.org>
+ <aPHjG2PS5DVgcG93@infradead.org>
+ <20251017115524.GG3901471@nvidia.com>
+ <aPYq0jQZOrn-lUJW@infradead.org>
+ <20251020130855.GM316284@nvidia.com>
+ <aPiDACJHZY7Gu4y1@infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPiDACJHZY7Gu4y1@infradead.org>
+X-ClientProxiedBy: BL0PR02CA0071.namprd02.prod.outlook.com
+ (2603:10b6:207:3d::48) To MN2PR12MB3613.namprd12.prod.outlook.com
+ (2603:10b6:208:c1::17)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|MN6PR12MB8491:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31b0f1f5-ddd0-4ed7-193d-08de115f97a9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WMFVrojgk1zDebrVlDS8NJyKw1YfCDj574XDv5e9S00BAUwEas1ta8n83in6?=
+ =?us-ascii?Q?mzgx/51yxz3FtlistESu4M5u/zBwzLpYo6E9A8xXTuMzHGNm429Eg5BC/9wK?=
+ =?us-ascii?Q?igTta7zj6flTAHlEHGls3sycZ84Ff9ugAjQB6ekPt5f+fwqTp8PecbqUkFoK?=
+ =?us-ascii?Q?zf8nczicMTF8yqexx7Dnrg2Xt/TdPtsUPz6d1LVyloCBONZtCLUiJIxNpgKl?=
+ =?us-ascii?Q?Vla+4Cw2AWDqOcFIqxQF3HbY3DYBOg0oqKuV4Bj3J/n8H+pmPGQeeJAAk0Fi?=
+ =?us-ascii?Q?/mp/CyqpvbhJNLJZE9FzWFiE5ryjBGnvNBluUklkjKqfB+VJbbt7Z5Xg4bl/?=
+ =?us-ascii?Q?3WRH/3Oqe2I1IxCIPQQQYZYqgykDjcxuJsBAY8QAVzpoQfaC66q83aDtfcIh?=
+ =?us-ascii?Q?HZJ4y1pp692Q86q/WrsxUEIVztUk0pJFlKE6bCjOE3Dfum2FmrxTOwQwYqcO?=
+ =?us-ascii?Q?fCZJRNCedycl6ZewV4amCHs0dtY5FosB8WukI61QZs4BMl9O9K2sG7uydk2/?=
+ =?us-ascii?Q?uIinxSi4FhAqt3PHVuZNs/A1yABeFxNszTg2UrhwACseB184/Q6rTTi8WAFq?=
+ =?us-ascii?Q?t0x63mk53TdHgtD+ebjXbiTpALYKTi5+rTEJUsDEFjh82K1yADzS4ZDIZcop?=
+ =?us-ascii?Q?MOoYoegc3h/S5g7O4tR8yMjZH157yL9fR9eIsR1Zw34cTuchELN29urNqcD2?=
+ =?us-ascii?Q?DBOG8jqHZBK/8dNLLYnZo1tGW/w/dzy9ukg9j0el3ADog88FnK43fV5lNddf?=
+ =?us-ascii?Q?c2M171KxOZ/AsKGDyg5mwjWM/5/sa8X1yExkUu7lwvmaWBISdi6J7NqSI7mN?=
+ =?us-ascii?Q?v/YF8R3xfqlNfxhRso7NtrNVlICI47nSvmWM+7l7ZIGcivf0Nhze1uYQns+v?=
+ =?us-ascii?Q?ve+CRRm+hu1TNYnGsXipuGa4SozBZW6ZiypaHONpuuZ/iyOCv4P/9mIkTKAr?=
+ =?us-ascii?Q?k4Mu5pKWly9imK3M4I+hZV7Hu1RMjAmpzMvXXqHFemGZXFuXxlz3kKb3z8yE?=
+ =?us-ascii?Q?Vy41Q4PJhUrMPmAIY8WYlQHBlS0ZvAHQg6J92D/DEEzUXssNswmi8YIfF5mT?=
+ =?us-ascii?Q?RLYXX3lGYchr29xbGPfJffOVbLnMkbWSXPvZmaEzW8tPlQkxpdNbH+ZTjMyv?=
+ =?us-ascii?Q?ODbjJfQpsHqdbc+VR6gjKcvweQvwsqVFgNu0Z5D03s76ULFdXGRmGFbg0Qsr?=
+ =?us-ascii?Q?S4SjfRu7cmUeQBy5Iag4E13lpbU6kDKWoqTj8KgzJJU+cM4bXDhse0aT917a?=
+ =?us-ascii?Q?0EbaO3jSh/d4ovL+PQo4nbeW8gz2msIqhzlQK6FpM8h2ETAaDpoMDWL1rLkK?=
+ =?us-ascii?Q?TdliszJZ2gQp2sJJ1tl2lYFjTwmgeC710DHEQd6lPUdjchwNgbZYXAHNb5jW?=
+ =?us-ascii?Q?0ZnRgdLZf4SBOFPlK5iZM6y+EXMZPpGLgPkkiFHFssFaMI2jh1r1BrujNVU/?=
+ =?us-ascii?Q?jxkTyCT8grAKwg7vCI05zlrs6z57hgix?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JAp/cLBxMF3eGCTANBuxo3pwIRjMinlOdttteNo+BHFFFPqFijjyghIWEQX3?=
+ =?us-ascii?Q?OGyufYZ07tTO74JmoLiCMZ9KcIuL4yjZDfPb0bqyBvwqX+KxAhlOcI9OJeqh?=
+ =?us-ascii?Q?JdpaFu5fHvXJlrkp8RtlFFpDQH5b/4wbNMxZBcjhIktisq3mZh8ZjjInq7ip?=
+ =?us-ascii?Q?uN34OPqAs1eOXh6sFiyiuJXtKgS1fWQgqt9/XdYg40q8kuVL0NVXpFQ+PTpP?=
+ =?us-ascii?Q?HN55GIyvfFQWks54S/tZudvQT5+tpqY8pTWXQEA6of2fGZsWIsqRbLHiSycC?=
+ =?us-ascii?Q?/CVk8L0rdi0/H9dQnPehSu51+nCKCU48GIJZOYqXx+0ch5/5Z0iQ0QbqcKBc?=
+ =?us-ascii?Q?pfTd1tGxY3JBNWaeoSvyiVmvmWTz/d4dlWNveFl7AdqIN3QVZxMFz6TfbOdj?=
+ =?us-ascii?Q?i1ThSWJmtMnENi0Du2Wp1qq9Y5GFnxq94mwg51L29O2jLwYQWtFW7Uc2kxDR?=
+ =?us-ascii?Q?3VK75rvX/aNhLxhA3Ll3oWswdlLTkCeGF/a/OBiwUhGK9/XWlooUBwx6k6Pg?=
+ =?us-ascii?Q?bLzpUVpHoIucIn+JVVJ4/a+Qb/rjWwHLnA6kSYi99W59WXe3sAcpeZqWZBhI?=
+ =?us-ascii?Q?5Svn/NjSeA7tFw3pwwtMFcpRTrHCjQULq5cAS2NYqEY4/EC08H+Qrk6WH1Jb?=
+ =?us-ascii?Q?HkwZHLF78lNrxbO8ZKlmggmUnA5GT+dq+SnDWLcEugRyfZjVTswQ4/EE2abN?=
+ =?us-ascii?Q?PJANte8FmFgzibkcv3q/JQJQ3D4NV2CDu0B88dwCh/URreBXBRFbWpTEc5zB?=
+ =?us-ascii?Q?AX3F9nRaTrkW0t4qP1+LUNAp90gZVG21vtVtHSBHnw6PkBiW5Nuy/5NGmpLp?=
+ =?us-ascii?Q?joQTWzLYF9t7W2k0qdDZoJXk0s8U+pF4bIodSZsKl/Xk+UF0rj83oXDMZC4f?=
+ =?us-ascii?Q?LL+7w90NR2dDRa23J64AIOOGv5RBQH4qOxhwZ307Qawub3d/TVW0xXM7fyXd?=
+ =?us-ascii?Q?jxwolhBt0kRuWLirg2Yw7jH1qASgSesX5Zi9LikJgN31lIVPBCKB5dtJcw3K?=
+ =?us-ascii?Q?WgK87jWb5H8mkeWeY1PS6/ZGSne3mfzFhmFN1m8+OOHwcOqa42tiTK5uJzP1?=
+ =?us-ascii?Q?D+skafbLBsjF0ZjudgCnpQeXpxG6bMNfEwK7G8G8MR3r37rrdZz3jocxS7ee?=
+ =?us-ascii?Q?70TDXAydA6nwtOahD0L+5dg5xNPVshN7yw3CmdWVDhJKKys7IcG1xMMLH7be?=
+ =?us-ascii?Q?ylM9e6bJhcz+ChKIDpFPb0Wpvmw0bo3h9qVqO8uiEbnQTUbD7NUm/M4CRK/j?=
+ =?us-ascii?Q?JIvKULXrKFVmLRrbgHFlD2plx8ylbXkfuSmnrnaq0BNr/Hh8Ca8VoEVyX5WN?=
+ =?us-ascii?Q?LuLtXiQ0434+ayMgDySOLGRz2oBC6DQzx0tAWvEZF157E8JQzDHrvX1OpHMx?=
+ =?us-ascii?Q?RVTvpDKk5gDQybiObaXfs1sOg+vPArOy5I90QhmQ8MPHgpjy/tsru1PnIFf2?=
+ =?us-ascii?Q?Q5lEz2/JbP3az3ysVQma3hz6ED646KYo2rmxNEbn1fOtw+G+zHyrjRKb9k6K?=
+ =?us-ascii?Q?FZuro+8oJbIdw0Ow9WMflXZm0+80aXLoI6XExt4/lZfTEcPI/qt9UEYcFeNM?=
+ =?us-ascii?Q?Kq2R+IL95pthnwY/yO4=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31b0f1f5-ddd0-4ed7-193d-08de115f97a9
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 11:39:00.2985
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AwVvZjaUxHfam7TjsvxTg8wT8OApxG23hlxOU7s69X5Z6j8su1yaRymRsM12q/cJ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8491
+X-Stat-Signature: 5z36y98zuk5rgxbqjrph5xoro3kctibm
+X-Rspamd-Queue-Id: E30CD40008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1CFB0C0006
-X-Stat-Signature: zu8wt1u8remqn6csuwgn5oygsaukorg4
-X-HE-Tag: 1761133021-762518
-X-HE-Meta: U2FsdGVkX19VNK6gX9VMqipXSRA6/X0XVsIVXoRA7zWz+fxbpZdc+djFn5SqeYMnlED+isGy5nuwxT9v1+KjSPHrxgZn24oH5cXh09yBkmyPsr5StEmHiotYtsaXi8UG+SZpBH4wjq0oGGMP5QGtKUTHsKlSPduhZub40sA7IhqTeQsMS92aiggkUva7UbSd9rdoJg6QRdUUUE3ZBgk0SZGiUT9FsAdnz9SCJ60TCmNVOhAlk7F33MNsL9CKd5FcjC1s6s1MIDj20Y8fm2l5MQX3rRcK/tOP2mPrPegJoevCZc8E8MRM5ny3mwnRmXWbhlrF9mU6r8L5hKLrqyMCy8/aNoMoT76o3X5dtF45pkKVKt4PGIJSrT6z0CR6yPRLmRY0pLKHX3sUQWW56EEBp3r72rkN9inqWiIHLq1DRLARJwesDcVFD7gwB/Xcqxt1YrS3MW5us2N2+sr/3ZOfAfNMARttsuBhr4TTjXOWiTfmZDKaMnZXeFr1/XzQlsq4rQPzCdJDAcK1YkTlwzlhBaedAui6oZwaP4fWq62bQ6bVlgvhCvYcvjfy1XUYtANoGofIqepebO+9Gy7eA1tK3HzjiSUXRUVEYs96jv40cMadLAT9bhss78l2eiOZJMblSW6WEW+mcZx76zzJX1SRj25+fhrx0r4GG3TkSf/CQXMF2kcvVop51YAdkVZS0Os+BcY4D3SsAew5DEN+qFQTDiEZvURBcW5wAfufM2PLBN3JQgiVEbGILOK+Nf7xkW1WvX8oCcnHjczhXrx20j8fO1C5IFt1Uu+3RByJOGZosP9MljAB29ue415YiGEcM50XKcs1Jjx6XG7hiXUg6VbgMu1TBZUDDmgUW8razln+8r/Dkq6AJKrRK/7iHYxUv22DImYm3yLNjCwgyrD0zjICZPxBI0s1mWosPL/2z8GXs7k=
+X-HE-Tag: 1761133144-852269
+X-HE-Meta: U2FsdGVkX18PPF2p0mZTvlPWMNRK2jPc40hpaETXBHWHl+nNaH3KH5N32e/utwzdz0k9LQXGJIL47QmWi7YsJ9PuBt+bVwO+V/CJM8wi4NcpCfW4r/ow5z2ZKRBU6ProOewLEMGW0u7w2Umrc7JOrNZu3VJt8L82I/6iksosRld9hz6xFrZCNhPo6NgTwofO+D5EBRg8+0i7OWzEHN1e29vfyJg4+KOnfUUj1jq43I3KIL+qBjrwphUSrDvheHcFP1tBmBmFqUIlskJlfuiAUI37DnH0MkXjlGVv9/5Rgx2MJMtjbjnpWeRcQ3qACddMbi0iQY9Cicpxyb3DnhKK0JQqMYpaqtcJzaaqKfmZtxFeJxiuxEoPM95R9hTOFLNQ1Y5kQ/1Vk1w+j/upW/y+Fy8Ug2c7NgYyMmW005w+R7bTuCu1IgemfmRLbK9ZWtiw68yOJVdgyR+BgU6U2fu5tm+FYskdAXbmyEpFLN3jOd5iWYj0Ig8azRpAdI94nElfvq2s1EqKs+oR2vSBP9jwJapH+1y+GKLqYYFLBY6XQ46caqHLg2/8nQgXsqoQVGICKhjDWpuHz7IxfT0Rj3DnsNvy3TZ7ERjaAZ7uoExynFzZtjjVsLhWMCngkKZZlgSIxTILZerEve/QoBWPryxb3FAUlYYieXjjIoisZvH2Dn4HIUIyB7ZN8wvV3v4B97wR1ZWZWFtJd+ri7+d5ZS3IdT6071LUN9ctdf7LryOVEdQE1GnyWu5kWTJi0kOAbjkjTV+d06ku83GRif79XjRsWhO9KMoLMB2zPel62QhrkE09QaZ/u2sZDYd0ePRAqGwsdmaAMgIoUEvXgnkB0ns28706CV0fYzk/0Awm9z0up3cCgu7f3qAX1/ZqGIEnU4U2gDDVNEdinNoVisPQ3aMz4Ay26LJ8UblNJswViEO6/o1ICVf+gxv+jNDC5FofAOpkeDrmLFgYj8N0TEeFR9Z
+ bbXC6FIx
+ 6WmIU1hD+D94r8j836S4rMVr7g2bS9tK1QxKFRKnRYaAwslGltCk7CKXcP5Cdw/tT9TRWGz9eiZ8ROKymOb3r1p/GFGlXT+3s22hL/9+rEmC/SFmbooGHuYqc9tU35REumWnaX401k6SyTvJOA2K2/O9PMGLVg1uXhOy7j1synp8H/7mOSvDfDT95DFXKLnnAp5XB8bS2Llg35OrCXHXAKTg3gv7fVBK7PmmriRYpNcyVieiX+QOsGpIZhgaKNAYWJZ9rMqdWztFTDrYuZG9eO1qY7mZH7zvZFf5yWmZhnWGNpUdIBEy+Kh4tpfW4LL707gZkJr5XZQKhSSdNRgCP7Gi11Iki5QYBg3/HrrNzDszJiy8CDznDCzS9yRgaJ7SAJznB/nE4er0k4U67XJfFKMR4EA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,263 +201,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yushan Wang <wangyushan12@huawei.com>
+On Wed, Oct 22, 2025 at 12:08:48AM -0700, Christoph Hellwig wrote:
+> On Mon, Oct 20, 2025 at 10:08:55AM -0300, Jason Gunthorpe wrote:
+> > Sure, but this should be handled by the P2P subsystem and PCI quirks,
+> > IMHO. It isn't VFIOs job.. If people complain about broken HW then it
+> > is easy to add those things.
+> 
+> I think it is.  You now open up behavior generally that previously
+> had specific drivers in charge.
 
-Hydra Home Agent is a device used to maintain cache coherency, add support
-of explicit cache maintenance operations for it.
+It has always been available in VFIO. This series is fixing it up to
+not have the lifetime bugs.
 
-Memory resource of HHA conflicts with that of HHA PMU. A workaround is
-implemented here by replacing devm_ioremap_resource() to devm_ioremap() to
-workaround the resource conflict check.
+> > IDK where Intel GPU lands on this, but VFIO has always supported P2P
+> 
+> How?
 
-Co-developed-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+It uses follow_pfnmap_start()/etc to fish the MMIO PFNs out of a VMA and
+stick them into the iommu.
 
----
-v4: Update for naming changes around device / instance.
-    Switch to kref put based freeing via helper.
----
- drivers/cache/Kconfig        |  15 +++
- drivers/cache/Makefile       |   2 +
- drivers/cache/hisi_soc_hha.c | 191 +++++++++++++++++++++++++++++++++++
- 3 files changed, 208 insertions(+)
-
-diff --git a/drivers/cache/Kconfig b/drivers/cache/Kconfig
-index db51386c663a..4551b28e14dd 100644
---- a/drivers/cache/Kconfig
-+++ b/drivers/cache/Kconfig
-@@ -1,6 +1,21 @@
- # SPDX-License-Identifier: GPL-2.0
- menu "Cache Drivers"
- 
-+if GENERIC_CPU_CACHE_MAINTENANCE
-+
-+config HISI_SOC_HHA
-+	tristate "HiSilicon Hydra Home Agent (HHA) device driver"
-+	depends on (ARM64 && ACPI) || COMPILE_TEST
-+	help
-+	  The Hydra Home Agent (HHA) is responsible for cache coherency
-+	  on the SoC. This drivers enables the cache maintenance functions of
-+	  the HHA.
-+
-+	  This driver can be built as a module. If so, the module will be
-+	  called hisi_soc_hha.
-+
-+endif
-+
- config AX45MP_L2_CACHE
- 	bool "Andes Technology AX45MP L2 Cache controller"
- 	depends on RISCV
-diff --git a/drivers/cache/Makefile b/drivers/cache/Makefile
-index 55c5e851034d..b3362b15d6c1 100644
---- a/drivers/cache/Makefile
-+++ b/drivers/cache/Makefile
-@@ -3,3 +3,5 @@
- obj-$(CONFIG_AX45MP_L2_CACHE)		+= ax45mp_cache.o
- obj-$(CONFIG_SIFIVE_CCACHE)		+= sifive_ccache.o
- obj-$(CONFIG_STARFIVE_STARLINK_CACHE)	+= starfive_starlink_cache.o
-+
-+obj-$(CONFIG_HISI_SOC_HHA)		+= hisi_soc_hha.o
-diff --git a/drivers/cache/hisi_soc_hha.c b/drivers/cache/hisi_soc_hha.c
-new file mode 100644
-index 000000000000..bf403f711c6b
---- /dev/null
-+++ b/drivers/cache/hisi_soc_hha.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for HiSilicon Hydra Home Agent (HHA).
-+ *
-+ * Copyright (c) 2025 HiSilicon Technologies Co., Ltd.
-+ * Author: Yicong Yang <yangyicong@hisilicon.com>
-+ *         Yushan Wang <wangyushan12@huawei.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/cache_coherency.h>
-+#include <linux/dev_printk.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
-+#include <linux/kernel.h>
-+#include <linux/memregion.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
-+#include <linux/platform_device.h>
-+
-+#define HISI_HHA_CTRL		0x5004
-+#define   HISI_HHA_CTRL_EN	BIT(0)
-+#define   HISI_HHA_CTRL_RANGE	BIT(1)
-+#define   HISI_HHA_CTRL_TYPE	GENMASK(3, 2)
-+#define HISI_HHA_START_L	0x5008
-+#define HISI_HHA_START_H	0x500c
-+#define HISI_HHA_LEN_L		0x5010
-+#define HISI_HHA_LEN_H		0x5014
-+
-+/* The maintain operation performs in a 128 Byte granularity */
-+#define HISI_HHA_MAINT_ALIGN	128
-+
-+#define HISI_HHA_POLL_GAP_US		10
-+#define HISI_HHA_POLL_TIMEOUT_US	50000
-+
-+struct hisi_soc_hha {
-+	/* Must be first element */
-+	struct cache_coherency_ops_inst cci;
-+	/* Locks HHA instance to forbid overlapping access. */
-+	struct mutex lock;
-+	void __iomem *base;
-+};
-+
-+static bool hisi_hha_cache_maintain_wait_finished(struct hisi_soc_hha *soc_hha)
-+{
-+	u32 val;
-+
-+	return !readl_poll_timeout_atomic(soc_hha->base + HISI_HHA_CTRL, val,
-+					  !(val & HISI_HHA_CTRL_EN),
-+					  HISI_HHA_POLL_GAP_US,
-+					  HISI_HHA_POLL_TIMEOUT_US);
-+}
-+
-+static int hisi_soc_hha_wbinv(struct cache_coherency_ops_inst *cci,
-+			struct cc_inval_params *invp)
-+{
-+	struct hisi_soc_hha *soc_hha =
-+		container_of(cci, struct hisi_soc_hha, cci);
-+	phys_addr_t top, addr = invp->addr;
-+	size_t size = invp->size;
-+	u32 reg;
-+
-+	if (!size)
-+		return -EINVAL;
-+
-+	addr = ALIGN_DOWN(addr, HISI_HHA_MAINT_ALIGN);
-+	top = ALIGN(addr + size, HISI_HHA_MAINT_ALIGN);
-+	size = top - addr;
-+
-+	guard(mutex)(&soc_hha->lock);
-+
-+	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
-+		return -EBUSY;
-+
-+	/*
-+	 * Hardware will search for addresses ranging [addr, addr + size - 1],
-+	 * last byte included, and perform maintain in 128 byte granule
-+	 * on those cachelines which contain the addresses.
-+	 */
-+	size -= 1;
-+
-+	writel(lower_32_bits(addr), soc_hha->base + HISI_HHA_START_L);
-+	writel(upper_32_bits(addr), soc_hha->base + HISI_HHA_START_H);
-+	writel(lower_32_bits(size), soc_hha->base + HISI_HHA_LEN_L);
-+	writel(upper_32_bits(size), soc_hha->base + HISI_HHA_LEN_H);
-+
-+	reg = FIELD_PREP(HISI_HHA_CTRL_TYPE, 1); /* Clean Invalid */
-+	reg |= HISI_HHA_CTRL_RANGE | HISI_HHA_CTRL_EN;
-+	writel(reg, soc_hha->base + HISI_HHA_CTRL);
-+
-+	return 0;
-+}
-+
-+static int hisi_soc_hha_done(struct cache_coherency_ops_inst *cci)
-+{
-+	struct hisi_soc_hha *soc_hha =
-+		container_of(cci, struct hisi_soc_hha, cci);
-+
-+	guard(mutex)(&soc_hha->lock);
-+	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
-+static const struct cache_coherency_ops hha_ops = {
-+	.wbinv = hisi_soc_hha_wbinv,
-+	.done = hisi_soc_hha_done,
-+};
-+
-+static int hisi_soc_hha_probe(struct platform_device *pdev)
-+{
-+	struct hisi_soc_hha *soc_hha;
-+	struct resource *mem;
-+	int ret;
-+
-+	soc_hha = cache_coherency_ops_instance_alloc(&hha_ops,
-+						     struct hisi_soc_hha, cci);
-+	if (!soc_hha)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, soc_hha);
-+
-+	mutex_init(&soc_hha->lock);
-+
-+	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!mem) {
-+		ret = -ENOMEM;
-+		goto err_free_cci;
-+	}
-+
-+	/*
-+	 * HHA cache driver share the same register region with HHA uncore PMU
-+	 * driver in hardware's perspective, none of them should reserve the
-+	 * resource to itself only.  Here exclusive access verification is
-+	 * avoided by calling devm_ioremap instead of devm_ioremap_resource to
-+	 * allow both drivers to exist at the same time.
-+	 */
-+	soc_hha->base = ioremap(mem->start, resource_size(mem));
-+	if (!soc_hha->base) {
-+		ret = dev_err_probe(&pdev->dev, -ENOMEM,
-+				    "failed to remap io memory");
-+		goto err_free_cci;
-+	}
-+
-+	ret = cache_coherency_ops_instance_register(&soc_hha->cci);
-+	if (ret)
-+		goto err_iounmap;
-+
-+	return 0;
-+
-+err_iounmap:
-+	iounmap(soc_hha->base);
-+err_free_cci:
-+	cache_coherency_ops_instance_put(&soc_hha->cci);
-+	return ret;
-+}
-+
-+static void hisi_soc_hha_remove(struct platform_device *pdev)
-+{
-+	struct hisi_soc_hha *soc_hha = platform_get_drvdata(pdev);
-+
-+	cache_coherency_ops_instance_unregister(&soc_hha->cci);
-+	iounmap(soc_hha->base);
-+	cache_coherency_ops_instance_put(&soc_hha->cci);
-+}
-+
-+static const struct acpi_device_id hisi_soc_hha_ids[] = {
-+	{ "HISI0511", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, hisi_soc_hha_ids);
-+
-+static struct platform_driver hisi_soc_hha_driver = {
-+	.driver = {
-+		.name = "hisi_soc_hha",
-+		.acpi_match_table = hisi_soc_hha_ids,
-+	},
-+	.probe = hisi_soc_hha_probe,
-+	.remove = hisi_soc_hha_remove,
-+};
-+
-+module_platform_driver(hisi_soc_hha_driver);
-+
-+MODULE_IMPORT_NS("CACHE_COHERENCY");
-+MODULE_DESCRIPTION("HiSilicon Hydra Home Agent driver supporting cache maintenance");
-+MODULE_AUTHOR("Yicong Yang <yangyicong@hisilicon.com>");
-+MODULE_AUTHOR("Yushan Wang <wangyushan12@huawei.com>");
-+MODULE_LICENSE("GPL");
--- 
-2.48.1
-
+Jason
 
