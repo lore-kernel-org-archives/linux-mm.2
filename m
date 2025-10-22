@@ -4,88 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2600CCF9E0
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D82CDCCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:58:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16ED28E000D; Wed, 22 Oct 2025 03:47:37 -0400 (EDT)
+	id 1AF6C8E0005; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11F3C8E0002; Wed, 22 Oct 2025 03:47:37 -0400 (EDT)
+	id 187758E0002; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00DC68E000D; Wed, 22 Oct 2025 03:47:36 -0400 (EDT)
+	id 0C4B18E0005; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E05258E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:47:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 78A9B1A04A0
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:47:36 +0000 (UTC)
-X-FDA: 84024970512.07.A577F6A
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C61440007
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:47:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gYHUrw+E;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F08248E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9044813BA1D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:58:51 +0000 (UTC)
+X-FDA: 84024998862.09.A44CC10
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 98C2F180002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:58:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761119254;
+	s=arc-20220608; t=1761119930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H+qvTFZ8jw1vc9BmwmZE7CbJfZv05rrBieJVcIWZoxI=;
-	b=vL+mZIL3fh66CeOHY0zBDap1PFtdCxabvwo37evLTWc/EKMQqsUqsvhfl8lZZUQWeiT4to
-	al6AkRAb/8b/VTjuQs0kHW6YliDCdgo8QJR+qDV7aQ+T5oU2clmfQD12VIgLAb2/cOUK0r
-	L1P7sK/lJ6APLuzzPkiAP9F1s8IXRrk=
+	 in-reply-to:in-reply-to:references:references;
+	bh=iz62cHlVvJrUCfZyete/eVuTH0uggulS4hgXpv/KDQQ=;
+	b=Yv6YN8B4TMQTsWO4S51nG8ftKg9mPKj96DxCVx9Lp8t5/mhcLlkiB/cdc5UfAXN1nWpSRT
+	YBK3NV99sVp9clkoMJ/nncnCfWlaJktOtQ4HDabb2Z9/ZrF9VEfJ/GPKPuM2yjat+kckks
+	6nbDmJmYBOhs0j2MLJSVH8Krz+ZpS+4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gYHUrw+E;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761119254; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761119930; a=rsa-sha256;
 	cv=none;
-	b=v8Z7QtNjkLbc1yQA/TqLDVdsEge5cZKHumB31HdWW+mImQHL6ebHeU+YQ6u1I+/yHglGZi
-	XbzUdOxvkTDzQKWf74PXMVwJ2OiMe6aO4u9veYr5z/LB9C0bzMlnrmKA653QlTVzZfjvDI
-	zN3NtJJsZ7LZseEGKp7wfozxqf3lhD0=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761119250; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=H+qvTFZ8jw1vc9BmwmZE7CbJfZv05rrBieJVcIWZoxI=;
-	b=gYHUrw+EOv0Qwen4ZbP71MLbCn23m6DO7FQo6cDrxEpMgM6O/0UGoKGDazipr7Q+/Q6h/bFMuf58gkS+A0ffL5CNR/o1G594vEuxckejMQNMk21CSgmH2LXALEfv5r/cpXCczDnO8UUZKgv9WVagSIhAlvUfrOLZXn5o34WQ40U=
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wqm-W--_1761119248 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Oct 2025 15:47:28 +0800
-Message-ID: <6d67cbbf-a609-491e-a0c3-a3d5fd782966@linux.alibaba.com>
-Date: Wed, 22 Oct 2025 15:47:27 +0800
+	b=SeApk6wTqCfrvayRgf2w8NTs2qT1XUMZil+/JSfxL4KtCYpd0PEThB+saxoM7GvxIANdgn
+	1MjP51WN/uNAz1nyowYE0VhC/marG/kcAr3fq4wipD31qstQ+IXbf4R7bXc8dmHi1EVwXB
+	MDY2UbVMdmh4lQD+SA4dlxse6PxHpuo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE4201063;
+	Wed, 22 Oct 2025 00:58:40 -0700 (PDT)
+Received: from [10.164.18.45] (unknown [10.164.18.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9864A3F63F;
+	Wed, 22 Oct 2025 00:58:46 -0700 (PDT)
+Message-ID: <b5a1b52c-75ef-4915-a254-a502b9f78eeb@arm.com>
+Date: Wed, 22 Oct 2025 13:28:43 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
-To: Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
+ tests
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Hugh Dickins <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
- David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>,
- Liam Howlett <liam.howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20251021190436.81682-1-ryncsn@gmail.com>
- <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
- <CAMgjq7D_G=5bJe_Uj11sHV2qCyu-Z-3PZu7QuZyPEhuFiE63wQ@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7D_G=5bJe_Uj11sHV2qCyu-Z-3PZu7QuZyPEhuFiE63wQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3C61440007
-X-Rspamd-Server: rspam11
+ David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>
+References: <20251022032951.3498553-1-anshuman.khandual@arm.com>
+ <87ecqve6gg.fsf@DESKTOP-5N7EMDA>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <87ecqve6gg.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 98C2F180002
+X-Stat-Signature: 9i8jaerc67ncfbpz9z6uqrrhd4jbkzfs
 X-Rspam-User: 
-X-Stat-Signature: tjykg79wb16a8rtuanwy3tq4hkjeh7h9
-X-HE-Tag: 1761119252-84547
-X-HE-Meta: U2FsdGVkX1+LwZ+nQUqgIKFphg337TuLJfITBEcShly8qQts1wlxzd3HMlminSvdOplbY+u8BqEQNshXgk3mocBD+M0CkD+Cld+GSiFHLoZNkP8l0RE+CNKw9gOIwQNwqapLJoSBKNU59CF0vAscvitKPOO+E11FFc1m1m5j+k9Q7JTsLmmbFMlv42hBW+7+r/6vfCmeC0LKWvEnJ1iBgluibseJ/Np1GNjtwG51AwcZOzDtxMR8Dw/KRp0AMJRBKXc1TzUfDW5LM490XrWrixZXImyUnKv4y4NX8Qo3Yz+JDaKh5848EXLncApv2U0BXexRZu4GEnMK0YR1AzGYc7iv6Cr0jElhEF2MLCfIzhFZivz3MAV1eoU3g1SfqGVmuPS0RKqf1UmwJaNB/lSA6D2BuJDWS99wkT/k7GFRlTbOnJhuUgFbgTJSAvdKP0Ii37fRbVw+qo1QadOz1FqdmMQS9hIsM4dAO3EKXryKT1WUZHg9eP/G5VJm+yqgYDwRNs+cs19munlNGVzlqeLEt3gVrqTFIciIkEPIVZ/dVJ31ClsHO3LzS5+7NL87cyS8z4yiDklzgnbGgCXcZS2SOHs7VG/GRgGI0nE3iiZFEbYMk7cfm1m90s5O1wWoGYIJGHDiY31tjIexB4qfVlO4YByp0zGgSrBsQFfPEwqSDq3ipEX/YZ68Ix0WpKTPN5GouyvCFnyyrbOXdjBwlxKMtnTjnMDfdVOcgdXiklB/XqgBWMgfLsz7Nfmas5FMlN5RHOx3Ql8xw4ekcAHWweNP7lLM5VwdxEYbdzAp2vEhMH8kFknWPj6rkBJXHwrxBxWci2EyijN5zNtC0Cw5YH1iynjo3oaQMkrMNnK6C+meGC4Dq3LyNbvo38qOkF+6z90FY45XFzvZflcq2EpqnzQp5g053k/vDesiRgvc40DeRCE0KpE3NHOb87aOi6pXfPt+rWXPleWzZPxjKdNTHwj
- /SbLpgMp
- XMUf+Y1w/Ig+7b6CmVKWMMT/taVoq8Agx50/fo7K6FsFeJg8cs2kRlu6JASOX5jnf/Ji0Z24WcWxHgRhczVI9SAY8zguY4SUGMH4yQayEnhpy3bjVjfeVn81pcyL5vNltOn5rcFv3xqKwncvi/pPcfOTvrXCbCheBKMNeEoWUbstwEGFTvRI3RYXy2YWVnYkqaoSuJQXeFO/TB68Rr2rwftzP2TRh3z8UFVdlp7agApyfJ9OzirG/TLwK8MYlu14yR3JurkzuVmse3V8Zu+zXfEj+nQKmnFznj8FPjGl3nCjd3MibUIplF2K/6IR4j0+GSobeMsJsJtlYwgKdGJ7nuBLgglVUV4WiTHDR
+X-HE-Tag: 1761119929-900760
+X-HE-Meta: U2FsdGVkX18GkhWA+4raI6PEZyU8Ce73DmwteJ+JTHdUsKfEXhbFHXv8qJYo8I38AHDp65sJ90GbzIETPRW5w1T3KBps29yfP1uVKJkO0yQrrauzs2dIrxwmL5U0DUVJhZ99/LAop6+gv7rTmdkHIbOuwxBFIz7pRhGfcIMSkNwRLEb5gTzceq0n3o+1N2/8G6P/jIDwRje92Ez9p+D0AAMDAAPpjJbdM6zWaYKZ/HDvz7rbxO7YpzjRJNplb3Pgch/qCuusOjPO5qPZIvmQOE/yGwciVf2vs88pHT79MhImdrVMqPS5ECRIlQsCuPTaM5cQWAkriehr2k3bGcUkvky/TIdLD/GkoECIgIN9n9jFdbY6rjEbZE2LFYs9BLonOqUpe2l7XXgHsYrzJpXxyy/pLHYBZucHb82uRS3SVG7+EKUxeBH2Q7ZjyN1XgF8cNz0DeMX1Me+kVAuqMaVOiSLo4lsnIo70eTxUxaowVApyWYJJCeuVAuu84EzcO7wQXjI787oGyEQFJrdm97fyY0N3qFn0jGxlmlbnyGsVbAqOMsl/ofHdE8KuaUFS9AdzUuzYf+DQ+/BxuHz2aOgKPm2m/9dpmOqDpb4f3IcZnAGBRZ6IQz+Bo1jqb85MypyhLcw0gdrNZnjDcBgvm+0He/yzWw6yMWJba2wBUc/xKp1LoXCI3lYOsL9OJrGLARVBa8cCP+KQuvajtSxRq6aGM/0z+0mAbeelfC472xC4Z/M3RIvixgrTHyBIi6RDTm1E84c0TReSAQTrs0R9H7oEBLX8lsXpBpolw3Iu9HI8sG0o2Gpl0yESI6FlzGwxm0dHqk0u+LPm6vOw6ZYK6dN/cZrE7soNZCO/hPk9Hfe3pDMKAEkQXJYWyv3JiH6hyTu8JcT1XAsuhsRGpdd1zzYaETPEpeyOos2oZTeuT4uc6R3btMsHAuP/TMgiE87UBgSwppd7uImc0uB312uPtqw
+ wwmiZZGZ
+ hZjsd4R6pQkKI2dXuBTioalVl8w9NvDULJ2Q4yPBJVvi4dgWEUSQ1lvFZR/OyT+Ew9RU7WmPR7L8OLiV9zrkEALjjd2gZslIEN8c2UxHijTTjoDQ31u2O6zIQahEZwXzRUESCjFnP2dwwx5WiusJaTRDpXdbVnp2lV/r48npI0seg6KWJZvUffByvOYj25qSiSO/1DYYDjJ47bTG3GqfH85ywHP10PYiD48b9jhcDqTngG7XG2gHdbVA5Z2J66o7c7v0bHJrKH2qlzNZPyePx/5qoFigLwGok1A9dZ0SlhbnfsvyFFLkIQ7sSMUx/js3YRayitt0b3gfZFv7qpJi8R//n614OumhkYAZ7Xw+X4B0HyC/zCHENfyXsvFyhCmVWO5cBKUFwnSoKr08=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,81 +88,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/10/22 13:48, Kairui Song wrote:
-> On Wed, Oct 22, 2025 at 9:25 AM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 2025/10/22 03:04, Kairui Song wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> There are some problems with the code implementations of THP fallback.
->>> suitable_orders could be zero, and calling highest_order on a zero value
->>> returns an overflowed size. And the order check loop is updating the
->>> index value on every loop which may cause the index to be aligned by a
->>> larger value while the loop shrinks the order.
->>
->> No, this is not true. Although ‘suitable_orders’ might be 0, it will not
->> enter the ‘while (suitable_orders)’ loop, and ‘order’ will not be used
->> (this is also how the highest_order() function is used in other places).
+On 22/10/25 1:03 PM, Huang, Ying wrote:
+> Anshuman Khandual <anshuman.khandual@arm.com> writes:
 > 
-> Maybe I shouldn't mix the trivial issue with the real issue here,
-> sorry, my bad, I was in a hurry :P.
-> I mean if suitable_orders is zero we should just skip calling the
-> highest_order since that returns a negative value. It's not causing an
-> issue though, but redundant.
-
-I think compiler can optimize this(?).
-
->>> And it forgot to try order
->>> 0 after the final loop.
+>> Add some [pte|pmd]_mkwrite_novma() relevant tests.
 >>
->> This is also not true. We will fallback to order 0 allocation in
->> shmem_get_folio_gfp() if large order allocation fails.
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> These tests clear on arm64 platform after the following recent patch.
+>>
+>> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+>>
+>> Changes in V2:
+>>
+>> - Added a new test combination per Huang
+>>
+>> Changes in V1:
+>>
+>> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
+>>
+>>  mm/debug_vm_pgtable.c | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index 830107b6dd08..def344bb4a32 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+>> +
+>> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
+>> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+>> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
 > 
-> I thought after the fix, we can simplify the code, and maybe reduce
-> the call to shmem_alloc_and_add_folio to only one so it will be
-> inlined by the compiler.
+> Why do you use
 > 
-> On second thought some more changes are needed to respect the
-> huge_gfp. Maybe I should send a series to split the hot fix with clean
-> ups.
-
-Yes, I've considered simplifying this, but it would require more 
-changes, making it less readable compared to how it is now. Of course, 
-if you have a better approach, feel free to try cleaning it up in 
-another thread.
-
-> But here the index being modified during the loop do need a fix I
-> think, so, for the fix part, we just need:
+> pte_mkwrite_novma(pte)
 > 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 29e1eb690125..e89ae4dd6859 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1895,10 +1895,11 @@ static struct folio
-> *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->                  order = highest_order(suitable_orders);
->                  while (suitable_orders) {
->                          pages = 1UL << order;
-> -                       index = round_down(index, pages);
-> -                       folio = shmem_alloc_folio(gfp, order, info, index);
-> -                       if (folio)
-> +                       folio = shmem_alloc_folio(gfp, order, info,
-> round_down(index, pages));
-> +                       if (folio) {
-> +                               index = round_down(index, pages);
->                                  goto allocated;
-> +                       }
+> instead of
 > 
->                          if (pages == HPAGE_PMD_NR)
->                                  count_vm_event(THP_FILE_FALLBACK);
-
-Good catch. I've fixed one similar issue with commit 4cbf320b1500 ("mm: 
-shmem: fix incorrect aligned index when checking conflicts"), but I 
-missed this part. Please resend the bugfix patch with a correct commit 
-message and remove the cleanup changes.
+> pte_mkwrite(pte, args->vma)
+Just wanted to have more coverage for pte_mkwrite_novma() helper which was missing
+till now in this test. But just wondering is there a specific reason for replacing
+this with pte_mkwrite() helper instead here ? Also we could probably add tests for
+both these helper variations if that is preferred.
 
