@@ -4,92 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F64CCD1A5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:03:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B900CCD1A5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:27:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30EF68E000A; Tue, 21 Oct 2025 23:03:50 -0400 (EDT)
+	id 7B0118E0009; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6408E0002; Tue, 21 Oct 2025 23:03:50 -0400 (EDT)
+	id 788068E0002; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222E98E000A; Tue, 21 Oct 2025 23:03:50 -0400 (EDT)
+	id 69DC38E0009; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 10FB28E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:03:50 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA88B48448
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:03:49 +0000 (UTC)
-X-FDA: 84024255378.10.00DA0A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D6FD20004
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:03:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j2Q0iTku;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 584C28E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BEB948901
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:27:18 +0000 (UTC)
+X-FDA: 84024314556.02.E37F3E2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3D6EA4000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:27:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MFHqnYTB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761102228;
+	s=arc-20220608; t=1761103635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZE2B58x1fd9+uScJ88B3iTwTcHnPI9yX7gy9i8nW1Y8=;
-	b=pHG62BYU2pKzYpVy4mcDjryS4hQzxPSgTV8NW21McLRo74eQN0sOLHr6B22JJPwgAjG7oZ
-	RbQuDfLy+/CNeAki6wlBO192M1oH3wqxsXWO3uR2bJG3Sc4B/bTCBsJocJZzWxi7BB1QD9
-	dPr7ycXjdq/UDjW/suZCVk9SCU53IHM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761102228; a=rsa-sha256;
+	bh=AZdfXWSZhef5WqLXCBdbu964pFLqYb1NG4mazyJho74=;
+	b=IooJtGRiadv8wlD53xwwJmqTjJm29zFfqSMO28jXt4TFYHZirKW1mJZfrPGzmoNZH5cz/v
+	nJqkXkFn1MNBZIkvgeoM13k9ufkhE1IuCPJl+N45ESqtTx951bgGQ49/nbp41sjUKmOh8+
+	QyBbNvH4xnzx+JX32c9+DtNX02dKyCc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761103635; a=rsa-sha256;
 	cv=none;
-	b=oxfCrxTGHPyyrMYvv7Q75+fRVUUXXH2sPGGUcrB3TFM0WNchUjXJ13zq91+Xbg6f9WY3np
-	RO/SF98LaRv5F6ehEb6x14wetJ4VrHwr7R1/Xzw8hfrdPDMcmUpCSdjSfoMtOsLoFQQf3E
-	oFjG1vA1stgZK5FjYjpFZ93DneVyfPI=
+	b=jWW6Z1lEnkF5E75ueV6UunEEZxSaEpOm3wdS/pr0VphA+cQl0ArBDPyXhVtJvVHXd7j/zF
+	ZV0UfvseqXoy74VoTMCXotJjInt2IC8UYl7ZeTVwecie+tRM3Om3RX1Ewc/nVXrm/59uzN
+	Qg6rBfHsZFnCIci4qs4JQtS/ucCUnO8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j2Q0iTku;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5718560325;
-	Wed, 22 Oct 2025 03:03:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6658C4CEF1;
-	Wed, 22 Oct 2025 03:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761102227;
-	bh=GNknf7cAYZM4vHLwFSMCKH/cU4Cxaok774v4n0rDamM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j2Q0iTkuDZE51Vg1wpvY8r3vZgKmfxvkzLKY+rweO+ZNQGSI97g8xU7/hnAlch1cR
-	 CvyUqLGtdSAC9Kdw85mOGJte+awVvvTfPwRJguLmt7o1onqTRSnc2Mo3STs3AnB8Bo
-	 AVZyZBgjFz3nnjkm/2Hw/ew/YjaLoLN0sFR/EJsnY09FfPeMKUn+w4qypO7Go7E/cc
-	 878c1xWcphXL0P4UYgwUs9TMTXY6c1rKo6qeBH4NNKUZ4uWcBKJcHfXQIPbdLF6q4B
-	 yrECQz9L1Ua/mQ8F67x23e2fwVsQYBjQDqG3SZms00B9AcFSuFwrHBWpZLnQ5fGfSO
-	 aVD1YnzjN1nMg==
-Date: Tue, 21 Oct 2025 20:02:13 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [PATCH] mm/kmsan: Fix kmsan kmalloc hook when no stack depots
- are allocated yet
-Message-ID: <20251022030213.GA35717@sol>
-References: <20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com>
- <20251008203111.e6ce309e9f937652856d9aa5@linux-foundation.org>
- <335827e0-0a4c-43c3-a79b-6448307573fd@linux.ibm.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MFHqnYTB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761103635; x=1792639635;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=8070DwsbZV3/pdL9u+Z6F5R9lIi4i2kvgareiNlnUV0=;
+  b=MFHqnYTB2NXqMLHMaqmm3JVOU3FJ0+j0ordGK+5QwAqCTV4YwCsRiAJz
+   se5L11kuglKgDHTEbBH9l3ctOLbNSw9Fcu3tBjyimICzJ1bRsxtB1SMHE
+   HOwYQjbblJG+KJdwkS4c2JHbMh9qdYkt57+RabKtw/qe3NJjIM8kMsVBc
+   aj0TGLMqzQ18aTzaBMn2kW242hcZOxF2bL20u6HFDjfNh4RQ2xna4d+ns
+   9iiQrerbUoZwWBpbbgA0bos5VPfjPu65KAQl27CDpvWFlEK5m1rMw81KX
+   mrP2EZfYgzch6eOG6nCkpntHRhK7VCrc97Cc9XIXRSLoW1b6nBAtPj1CU
+   w==;
+X-CSE-ConnectionGUID: LoUfNLB9T2ON0BIB4VQ+cQ==
+X-CSE-MsgGUID: 5wdnoD8BTCScCBhQ4RP+ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80865879"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="80865879"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 20:27:13 -0700
+X-CSE-ConnectionGUID: Qw31trbgTLWbZLnZdXZCBw==
+X-CSE-MsgGUID: dPYj7/ylReC8zLJtllPJGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="187797373"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 21 Oct 2025 20:27:07 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vBPV2-000Bxh-1F;
+	Wed, 22 Oct 2025 03:26:58 +0000
+Date: Wed, 22 Oct 2025 11:25:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christopher Healy <healych@amazon.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
+Message-ID: <202510221301.wU3TSqMg-lkp@intel.com>
+References: <20251021113049.17242-7-loic.molinari@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <335827e0-0a4c-43c3-a79b-6448307573fd@linux.ibm.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ud1jxgr5xgbykwkix4mc4orzstwrg7y1
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251021113049.17242-7-loic.molinari@collabora.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D6FD20004
-X-HE-Tag: 1761102228-927977
-X-HE-Meta: U2FsdGVkX19h1fyAuq5xgA1UY6hKZDBv1LZNt++vuLLswIlI+djFTzaBn3TfX21rzgdpdPsVO4pPBZWoqalmd++RSv/NQ4HCHIZmi8XSHclhZF5nl1BcnUfUW9VUbDoKC0Kdxjy3wsQsqrumTPoLfJCxPe9bKArQLT9nLtXpQ1y5zVMkRIbwxCvi+5O0Ufsw88WtiyLH8N3zX26e/QawGACdocVtBo0UeEHq7uNVuGG8AxpXpPR4AGGHzw1acDHvvMqm1rI8cj6G+4eloRZ+ucI1b5bUF1YPw9iD3ePBceHo8nIm9ry+ZnkxolDiTcz9dRsrtJUDwskPdhYMYATRuvZUO8y0gxkGMONX3hHQgqrcv7NbvL7Z/yEOnJ+h4aCLMod5kAlFxunXcQEWc7wCOx7L2XAjULkiPNKnwkfvg5E68hwCzFbtCZ50y8RbPZHKgT2EalJwi+q7Z7drFqxXlhXzqZkghyduiyng4AWsllhIkCoEx3Ng0F4zcIrybZxMJfs4bOw6GtmpOFiMqMuqyRIqtduMHZHGR+fJ/mwwJUlfXwj5sRMiu3fg7wcThfhDG/dnVVNjP6a1zA7vWxUKHh1+vIf8Hjw48mtFb33PfjKDrlK5hf/djMOUpOW+A3+yzfpHdi+orpSaQIV0gQzLb1fDkjbT55U1in0QSmMwHnxG7GNMe/jL0Jd/MFCM5K4jMnewYRJjIosZsm5m60I0QxRwNNgvaqEGj2bcRD69it9E+G/jrFXyCVHPPkD32rpiGU67YvwmcuIpSLKtd1fueaESooni4WrQfyi28kgDktLCLU5xLPCVFLxNNbhOZ5R0KgEK4tUgTA5YzSFy/gqugW+NAmQwktQe0j0hKQHFr4xJa7JaFpaXL8kTTLH+XdSzyGh2oCuXevfX/j2qQdaQXSeYj1s7NXL6UqnYKOdNvZdHzwPDI5tImdwouJoU/9mMv/+Ksiwcb5qO0G9FFX2
- a9uHVPvH
- inZ5q357XtcLPflmg/bOSak9rJiaWXjSQvZ895gXoA3oXc5hcTeG/XBhQtCSQqt0C7Qvetp4VZ67CZyWvUylcZBIbEheDRzVdNMa9UHbl6/eKwl2BYCRGu8XUzy45ytBMZY+uuLXtL5FDzkkRoMPxZHL0n+9xlUR8+gOA9gqylf9cgW3EVXaYGdMvWl9/fzbZaWNLo7ZEee7QP2WgMrErDrNWVXUTKigI/JzCIDvep4jEurOI2JLZwTIlKVS7Hfiybv2Jzas47rdcmEyeSaspJzzAiV9WEVDaPJUvqxrZ0rEoYSE=
+X-Rspamd-Queue-Id: 3D6EA4000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: h68zj88t88nhrkiqb19o6dcswpfcpwao
+X-HE-Tag: 1761103635-252555
+X-HE-Meta: U2FsdGVkX18Hb73N8WJrydWjZVTXCNmEWPc6yCgU66maERT44VMBvkwTRtP+MrkASj1CJk01ZCNNLyErHw0Mvj9vht5CrxDRt0uY0X+zyOe1Li0drt8IP33BR3bzzlHPXgmn8EgIE711iQDlQublnGH9pLr8lFrL8/GtltiFaxIryQ8AJoaGZUmUDvxBp0XOwFCTFQO18O4U+FJrr2T+1YiO8L8iQnZCTQAIpbDcxoGxhOHtIO9AYqMC8yZ4YS1jVSFnAUt0GdNKaHMTcMgeG/el++P58J1bImVbiTn5uuWKsjbDsEkC6y1GpP6BHsjlw6HvBsAdIon+oCRQByIAcvemf+IzKFMT8GzgPF/AzbR7Jnk0/zCTgkEMvhTq6+yuCRdyPQLNrfsXVqle+4G7N8rUpC7twHQJmJ24/AwrcGnLBA/fSAncVtOJehk+IxcZgSFzzseLpFYlYG8c6oOkXUbpOvaG0RCdOQF/JAAibr1R0Y+M6mJ2+E3MBGUIDBzLRHMyymkLH1luxARDSnr2DG2U93um/tA+5MYQiVNGu65GXiJ3JsAJLEvB7W0i+vFh30LXu4w7oHSmWCUzpe3N/OBquhcTjg+2Lq4J9LJuajg+TcA9bjGNp9kyQtzmg7JkjHQ/umCemedS1/zIdmk9jcAMjbNMcn8lk0eppxXVTIsmyQLe1wWm1gfMyFDmZ5h78ghDzQZosV1D/dcTsg08phEITBfT8g5QhbJgwEonUAOT173Gt6WaGOhOVaPSV2yRDHEGsQAcsDRwfTCrAqupCGmrfMkbpAKX9E40HH9aoJWCE7gAjU3B9U8n+WKxUM1pGtWxjQe+PlT+oswXze+oKwQEm0Y/6IUjDPIUIrzB8XbJihiUts4eb8C+3hqM1nFnjuvFQIYAx4NYVbcOdUL5c2SljCGrO0VhGpaXg6l68QaGFkXQNGICXgkFn3WvXjmZJZtlusSsJxKW7AbSAZJ
+ r9039S2F
+ h3GTn4GrNqqQZGWkHVBFeFI4tVtCr8DwcTVyhNA62iBtDZXt5RZysfj832cRET7PYqFIwKozh2yCSHSci5nCS24IvqwYB09d9WW9AkA9vvetF2bRF8wpOJFQJE212QEJD1MSAAtRgt6ZvKxGSb5nj8O6ABarjiE4t/6U8V9iJ0kasENVRfl7CheL0kNlvN1ALogNzhnwOvylQMPNJmKjmlybXtZnj0W8s7lg3sObcrTdJTJ15oFpehYKnkfAf3dLC7/g+2EGc4e++h0I7NDL8f8DDM/zYQ8DWBV3gxwPCaAHn4OWdkICNvlKX5tYewIR/63aVuaB4uflaHFJ4Sezy8ou/gqo8pINVOCueYMCYs/xp1WCY0WFKucMoEQV4md6vGkY06/DqopfEl7XntC+TAcisC7iaWJgM9H26hSr6oU/WBa39Pz4VKIkTzQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,58 +133,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 10, 2025 at 10:07:04AM +0200, Aleksei Nikiforov wrote:
-> On 10/9/25 05:31, Andrew Morton wrote:
-> > On Tue, 30 Sep 2025 13:56:01 +0200 Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com> wrote:
-> > 
-> > > If no stack depot is allocated yet,
-> > > due to masking out __GFP_RECLAIM flags
-> > > kmsan called from kmalloc cannot allocate stack depot.
-> > > kmsan fails to record origin and report issues.
-> > > 
-> > > Reusing flags from kmalloc without modifying them should be safe for kmsan.
-> > > For example, such chain of calls is possible:
-> > > test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
-> > > slab_alloc_node -> slab_post_alloc_hook ->
-> > > kmsan_slab_alloc -> kmsan_internal_poison_memory.
-> > > 
-> > > Only when it is called in a context without flags present
-> > > should __GFP_RECLAIM flags be masked.
-> > > 
-> > > With this change all kmsan tests start working reliably.
-> > 
-> > I'm not seeing reports of "hey, kmsan is broken", so I assume this
-> > failure only occurs under special circumstances?
-> 
-> Hi,
-> 
-> kmsan might report less issues than it detects due to not allocating stack
-> depots and not reporting issues without stack depots. Lack of reports may go
-> unnoticed, that's why you don't get reports of kmsan being broken.
+Hi Loïc,
 
-Yes, KMSAN seems to be at least partially broken currently.  Besides the
-fact that the kmsan KUnit test is currently failing (which I reported at
-https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed
-that the poly1305 KUnit test causes a KMSAN warning with Aleksei's patch
-applied but does not cause a warning without it.  The warning did get
-reached via syzbot somehow
-(https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.1761026343.git.xiaopei01@kylinos.cn/),
-so KMSAN must still work in some cases.  But it didn't work for me.
+kernel test robot noticed the following build errors:
 
-(That particular warning in the architecture-optimized Poly1305 code is
-actually a false positive due to memory being initialized by assembly
-code.  But that's besides the point.  The point is that I should have
-seen the warning earlier, but I didn't.  And Aleksei's patch seems to
-fix KMSAN to work reliably.  It also fixes the kmsan KUnit test.)
+[auto build test ERROR on next-20251021]
+[also build test ERROR on v6.18-rc2]
+[cannot apply to akpm-mm/mm-everything drm-misc/drm-misc-next linus/master v6.18-rc2 v6.18-rc1 v6.17]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I don't really know this code, but I can at least give:
+url:    https://github.com/intel-lab-lkp/linux/commits/Lo-c-Molinari/drm-shmem-helper-Simplify-page-offset-calculation-in-fault-handler/20251021-193355
+base:   next-20251021
+patch link:    https://lore.kernel.org/r/20251021113049.17242-7-loic.molinari%40collabora.com
+patch subject: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
+config: x86_64-randconfig-003-20251022 (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/config)
+compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/reproduce)
 
-Tested-by: Eric Biggers <ebiggers@kernel.org>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510221301.wU3TSqMg-lkp@intel.com/
 
-If you want to add a Fixes commit I think it is either 97769a53f117e2 or
-8c57b687e8331.  Earlier I had confirmed that reverting those commits
-fixed the kmsan test too
-(https://lore.kernel.org/r/20250911192953.GG1376@sol).
+All errors (new ones prefixed by >>):
 
-- Eric
+   drivers/gpu/drm/i915/gem/i915_gem_shmem.c: In function '__create_shmem':
+>> drivers/gpu/drm/i915/gem/i915_gem_shmem.c:511:59: error: 'struct drm_device' has no member named 'huge_mnt'
+     511 |                 filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
+         |                                                           ^
+
+
+vim +511 drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+
+   486	
+   487	static int __create_shmem(struct drm_i915_private *i915,
+   488				  struct drm_gem_object *obj,
+   489				  resource_size_t size)
+   490	{
+   491		unsigned long flags = VM_NORESERVE;
+   492		struct file *filp;
+   493	
+   494		drm_gem_private_object_init(&i915->drm, obj, size);
+   495	
+   496		/* XXX: The __shmem_file_setup() function returns -EINVAL if size is
+   497		 * greater than MAX_LFS_FILESIZE.
+   498		 * To handle the same error as other code that returns -E2BIG when
+   499		 * the size is too large, we add a code that returns -E2BIG when the
+   500		 * size is larger than the size that can be handled.
+   501		 * If BITS_PER_LONG is 32, size > MAX_LFS_FILESIZE is always false,
+   502		 * so we only needs to check when BITS_PER_LONG is 64.
+   503		 * If BITS_PER_LONG is 32, E2BIG checks are processed when
+   504		 * i915_gem_object_size_2big() is called before init_object() callback
+   505		 * is called.
+   506		 */
+   507		if (BITS_PER_LONG == 64 && size > MAX_LFS_FILESIZE)
+   508			return -E2BIG;
+   509	
+   510		if (drm_gem_has_huge_mnt(&i915->drm))
+ > 511			filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
+   512							 size, flags);
+   513		else
+   514			filp = shmem_file_setup("i915", size, flags);
+   515		if (IS_ERR(filp))
+   516			return PTR_ERR(filp);
+   517	
+   518		/*
+   519		 * Prevent -EFBIG by allowing large writes beyond MAX_NON_LFS on shmem
+   520		 * objects by setting O_LARGEFILE.
+   521		 */
+   522		if (force_o_largefile())
+   523			filp->f_flags |= O_LARGEFILE;
+   524	
+   525		obj->filp = filp;
+   526		return 0;
+   527	}
+   528	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
