@@ -4,83 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39712CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD33CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E7A18E0003; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
+	id DB5788E0005; Wed, 22 Oct 2025 10:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 797F08E0002; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
+	id D8CF48E0002; Wed, 22 Oct 2025 10:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4F18E0003; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
+	id CCA008E0005; Wed, 22 Oct 2025 10:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D16B8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09653BBB41
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:33:49 +0000 (UTC)
-X-FDA: 84025994178.27.EB99176
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7880D1C001D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:33:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lt9seIbK
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143627; a=rsa-sha256;
-	cv=none;
-	b=PQCe3MDMhRBTM378Ndb79wnLxZleeJS783gIsIGNVlsvlUGke/ufaX/Zy1KISc3vz4l1Ci
-	0E/qAbmrzTjdIwheFsivCyitYj/IyQgP+YktzYCEVuf1G8ngf52+2T9LUsz7wDHhMe57Xc
-	8/4l4vB+rfIVWojRPqZjwxtOEMYzGPs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lt9seIbK;
-	dmarc=none;
-	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB7288E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:34:18 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50B671608A7
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:34:18 +0000 (UTC)
+X-FDA: 84025995396.22.E784975
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B558540019
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:34:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cP9wbkEh;
+	spf=pass (imf27.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761143627;
+	s=arc-20220608; t=1761143656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+de7953ZHDTGM7dYRP0GLBq06V9zfPM2j99l94lng0=;
-	b=SzqpbxVEwc78laldvFr+z2B4HVe614HZCgKofFf8GXYdkxvMJ8ZEd5spCSesih8/9g1KHU
-	ubqoNnPBSrkfT/nmnQT4uJoEA//Z8708JjW1t6Lca+U97feQwI7o7UJ4uYVJ0qbeHi/Kt4
-	nWMIpKmM8gIkJIMhetKykohB0ylvAus=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=S+de7953ZHDTGM7dYRP0GLBq06V9zfPM2j99l94lng0=; b=lt9seIbKzVzPgKtHKuRghpfJLg
-	OqaNfpgAdosaB6hE9Dr4VxUYzadKi6BwoyRrZsAX821vsQuzBXpK24YZyAUUBHFuXuKT2arpgK/gq
-	yn8Ycgid8qQMkxXgvlBWQWll29Di4yiK6nN5cLj/+TsP7sIdc5REyaZ9QOM9YSAjo1Of1bPaw2uqf
-	IdfQdCpWQR0Gal4si6VFeOwnzLj0+47bjC4XuhB+4PjTnJ+ejO59i7pnkFWCltomMseMDMoP9rW6g
-	QGhr5a/CMB/sSH70SB3dR5vZ1DacD43UwVS9X7G+Vv1zqezYHbHTjk7/9S1qW+zFg+MxEe9NhffG7
-	96wkyhug==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBZuI-000000088vn-3Hov;
-	Wed, 22 Oct 2025 14:33:42 +0000
-Date: Wed, 22 Oct 2025 15:33:42 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
- allocator
-Message-ID: <aPjrRkjiIt6HmXmT@casper.infradead.org>
-References: <20251021194455.33351-2-vishal.moola@gmail.com>
- <20251021142436.323fec204aa6e9d4b674a4aa@linux-foundation.org>
+	bh=FpBfRTO33XtypxhWUjwr2ejpXaMgdddmGsbGr8vv50E=;
+	b=llCIoHSf/LpOLwzbJEWVBWM+A3h/MlKTWtHSwzQrULAkdV23wFv3E4wsozNQT1jQb1cX2M
+	2w6SoZr9ki2bgU0F6ecyDZshXOttaQXdpn+HdUWe7/sDBR1IyLHyp7BsWcJc8pMKiuupQu
+	v64lz/asGzqUAssbGfon2CEvMl25tBs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cP9wbkEh;
+	spf=pass (imf27.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143656; a=rsa-sha256;
+	cv=none;
+	b=d3qFTv1mw+4KsxRRzv6oP4gIMQODfEv1fqA4jr7br5xF6hZF3Kbbhhl2rkp+AU4NPRGjLv
+	/VG4rEtLAZVoXQurmBB78JXn6UhEbXB5aiM6S4mlSHRU9GA39YvS55RpuwvykxsWjsmNcn
+	+LIXGVoGYEOO8cMpfsOh+mhK6xEefDk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 79A3140309;
+	Wed, 22 Oct 2025 14:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96649C4CEE7;
+	Wed, 22 Oct 2025 14:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761143655;
+	bh=PE0w9weBA06UY1ADMvuQ7RDRF1VFjwoEQh225hRpYZc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cP9wbkEhPM5LIDakVffo66AHNLBN+38mt7kw0Nz1jjGM2DTXe/G7XuJ/6OFlVBDOR
+	 13ysGZEgl7Yl6Kk7OLgtMXAGd+Rc/TAHxOWT5ohaXNSYIWzV1lGviaTtyV/yQXdjhq
+	 kh6G0Dujl3w7LOIfgQW/e/jH/m9lfkPmqFaif4OrMHSPse4klWA1BdT76iUoBIHvKL
+	 qkzYWKIk6slN1bfOqe+4G2oUCFmRrjagLn1fpxjjhAFqCvjDzlIZd/Jpt7HIfH+a/D
+	 XkxNnpKeeolCDTKG2t0QQK573TSGGgDAGoOHy62RkvYg1tvs9a4RfHZbeRybsew7qp
+	 NBpmfpZajkRGA==
+Date: Wed, 22 Oct 2025 15:34:10 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+f26d7c75c26ec19790e7@syzkaller.appspotmail.com
+Subject: Re: [PATCH v8] hugetlbfs: move lock assertions after early returns
+ in huge_pmd_unshare()
+Message-ID: <080b64d6-7bc3-4ba6-ab76-e1fe728bff88@sirena.org.uk>
+References: <20251014113344.21194-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="A/QWAtEIee2YEtfF"
 Content-Disposition: inline
-In-Reply-To: <20251021142436.323fec204aa6e9d4b674a4aa@linux-foundation.org>
+In-Reply-To: <20251014113344.21194-1-kartikey406@gmail.com>
+X-Cookie: Thank God I'm an atheist.
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B558540019
+X-Stat-Signature: 1dzf9rxcwju73euion9q13s1kmqs949x
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7880D1C001D
-X-Stat-Signature: ixcswgi9bnjejoiadm3a3r7s8yq8zmgd
-X-HE-Tag: 1761143626-281752
-X-HE-Meta: U2FsdGVkX1/tRsby4XobtH2u423rnc2heSxGGrrppcM1tpo/HxDF/fkjx1HYbTGueLrxoRudr16kB76ifTMxnDuyP2atiF20JE7h/SMhMybswERBRnoTkW4jxVd41zGAtJmd09Gggo+wcne4j/mh8opewPQS/wRhFMefn4NIh3FO93WSZhqWnW8GXv2ZHXEJbYFKKXD40xMQfOoz3anMAPBxPeWRrEZKkS0+TBy3ScOtjMaA93u2XCnGK7vhpmgW2a1roINqZmONDgcmI+G+F9Zg23HheIdYKWgxSktzjW9dQYCAp4sfRf7H8zzfbHjbzeMjUXz6ka+7bbJ/JlgKO7De48s9vsXe/7bt7/bXbyneGTPusEZcnSpFA7223O1b3lktLHw8ubKcJXDPGTUp7dZx6zhjB7xgjE6Z/ncLEds+s/sqnRWebtvyI/fxUfAaZ17coCYBZ1SqggYwmF1lRmiQQDTpn7hLXOFkQ6esrH9w1lQf3Q54zhVYoIIHKkCwDHr0ZvljWcASYG21RDnUjuRYFbjvcpJTO6A4rW9hAld1PD2iSsVmcgTa1AUmm6pyVBU7tDy3bv+gXpNWsyVnzpp/kw8kazZm3sUL82I+YJaNQNu0bCxy+Iwyyf2uMOhL3KVCOIBnajohU6qOmZ3vJ+a+3zvSOZTxvUgS+c6RVOsAzHODIW6GuXoL8Ly/uPL31JcULoR8u7pFvhRv++z11n/6wpt8p/7Zg7myyLPIRXCpDiAqXRpWsPJgpb+xobmQVlShCpYBayQ7KwEEmpR6VPyuwaJRNyI7KMVMFh5oOeqzdVTcNlGWnDSd3pInzRpMGPWY7WTj0DVfg0OvNXTsi8485l/ce9azB2CR4UISu45R56e1auvK2WjGageaTP27Bpl9UfWzBDZLorgPdhb2kQtfpDoIEVpRkBJW+T6HZSmJjduia87Nu3VM5Yi/Dw8db9AbbJ+xLyjOtn178yx
- 5xDVNCFy
- Gs0rzm8dEHGBYCAO7ZTY9TvRClqO54S/pGqR/V04PcwgBOO0cobmXNK9FwE1dk2urWvyMW59+IbQjLSXnrpQmrU/4rGXAWXL0BqkCTwW9Yr6yLZyCOBFGVFdpWsBSRmCz+txlMQwQNGrfDwAmzMWSGL+D2xzT0w8qee7Z0oLxOp6ZW0jhq+KAnqBvuK5n//rioTRpQWKJxWW9UkdeScKQ7qLjToozxzzb9aI4KnQrtuIU2IW32AKeLDiIbx1FlLAbXw+xAmu3HsQJ9Ys=
+X-HE-Tag: 1761143656-223421
+X-HE-Meta: U2FsdGVkX19LyiYMEqxDsZU+3Ti3D5yGz1BIpo58B6gvv60D8vGTjQ/QjxfUlQ7w3b7R1xNuMS49O5emYW4HN1QuSeQ4xuHLkb0wA5CQG69ADbZT9JtN39aoknetNUWs5YPBbQs+6Le3eFU1vRerP/WYnZUJZIeCBYlJ1yaZRMkpO7+oao8w4cy0rnYYsEltKZfgkMecNu51JewljLXH9TypBQT4zDkmptYJo0odCil8BfDNwWJiY3LCV/7yhf6zBgWdBr1Syalr2aAIbILLXwKQaiPqgnBAdZ2PhyOI+B1/pXEcAXr5j+KCiJYvDUqjNQ6scByOFdr1QeWLQEytHe4gBNnTqdDZA7VnUsJVntR5EoCFGGeei4Z0QptjCbnd+70EMXPpuquxUrayaWU5A0aQ7H/QTRuB48nWtPe1iX/3FyM5FZSfYf5Ah7CEPeNd2rilb48UXiqlZW0opbYVD6SHyQpL17JJJFcMZFyX30ratpb0RYH4cX1/jZKRqc2FlIy+1uAyrGt3h4bUUh9ASRRcTg9q2BMDSgcsyqZE2W0lDhHtEdbv4ygjoWiiB6z2E5xrbZyLjcflQGUO/eG/9l4soWSPnHdFrvHI1EHKajd48PgGTxD+mRhQAXW5AGSCAei4PS4hcB24gzeFYhvh8oDe82RNxO652nHGPKrTQ/IUFydPHwJiFCZkZwwePdjv5IvH8Sw14zK18noeRPax9OABCDr93LECgstRpZP8R0cM6a8vGwI+sOXt6B1CkBFbMlv2WOgpDkuufolfkOnjtspcxr0eByOJjiaVgd8YxAlpmMaMMnmxcicrejLwS8LPRpwc7v+vhbYMKal1RfsQdOizUi43XAwK51eDvex2FsMROBwEWWuOYtSH84qcHNxq05/x1QaStvc57aLIg8ePxaryVpaV9X050oVPB/GjMa1hmW0fLUrvF8dicAmQ+rdF8k9ALlrzWFfB4ItDBI6
+ Y7/+9QuY
+ r6eY8JnsP2EtEZlR6CsEgiJsHm3BDZ9QD8NU6oh5Um3R/Wa+jKCvAAqABFXU+9SSVGZsI3EXHq1t9mDyXYwKWC7CKJHjQ7ijt3Nft0evuu+pOeOXcC3mARv/5r2Wko//KwyHJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,59 +96,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 02:24:36PM -0700, Andrew Morton wrote:
-> On Tue, 21 Oct 2025 12:44:56 -0700 "Vishal Moola (Oracle)" <vishal.moola@gmail.com> wrote:
-> 
-> > Sometimes, vm_area_alloc_pages() will want many pages from the buddy
-> > allocator. Rather than making requests to the buddy allocator for at
-> > most 100 pages at a time, we can eagerly request large order pages a
-> > smaller number of times.
-> 
-> Does this have potential to inadvertently reduce the availability of
-> hugepages?
 
-Quite the opposite.  Let's say we're doing a 40KiB allocation.  If we
-just take the first 10 pages off the PCP list, those could be from
-ten different 2MB chunks, preventing ten different hugepages from
-forming until the allocation succeeds.  If instead we do an order-3
-allocation and an order-1 allocation, those can be from at most two
-different 2MB chunks and prevent at most two hugepages from forming.
+--A/QWAtEIee2YEtfF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > 1000 2mb allocations:
-> > 	[Baseline]			[This patch]
-> > 	real    46.310s			real    0m34.582
-> > 	user    0.001s			user    0.006s
-> > 	sys     46.058s			sys     0m34.365s
-> > 
-> > 10000 200kb allocations:
-> > 	[Baseline]			[This patch]
-> > 	real    56.104s			real    0m43.696
-> > 	user    0.001s			user    0.003s
-> > 	sys     55.375s			sys     0m42.995s
-> 
-> Nice, but how significant is this change likely to be for a real workload?
+On Tue, Oct 14, 2025 at 05:03:44PM +0530, Deepanshu Kartikey wrote:
+> When hugetlb_vmdelete_list() processes VMAs during truncate operations,
+> it may encounter VMAs where huge_pmd_unshare() is called without the
+> required shareable lock. This triggers an assertion failure in
+> hugetlb_vma_assert_locked().
 
-Ulad has numbers for the last iteration of this patch showing an
-improvement for a 16KiB allocation, which is an improvement for fork()
-now we all have VMAP_STACK.
+On current mainline this translates the test from a fail to a skip on
+the Raspberry Pi 4:
 
-> > +	gfp_t large_gfp = (gfp &
-> > +		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
-> > +		| __GFP_NOWARN;
-> 
-> Gee, why is this so complicated?
+# # -------------------------
+# # running ./hugetlb-madvise
+# # -------------------------
+# # [SKIP]
+# ok 6 hugetlb-madvise # SKIP
+# # hugepages not supported
 
-Because GFP flags suck as an interface?  Look at kmalloc_gfp_adjust().
+due to:
 
-> > +	unsigned int large_order = ilog2(nr_remaining);
-> 
-> Should nr_remaining be rounded up to next-power-of-two?
+[    0.000000] Kernel command line: console=ttyS1,115200n8 root=/dev/nfs rw nfsroot=172.16.0.2:/var/lib/lava/dispatcher/tmp/1991635/extract-nfsrootfs-9ik0m73w,tcp,hard secretmem.enable hugepagesz=32M hugepages=0:4 default_hugepagesz=2M hugepages=0:128 hugepagesz=64K hugepages=0:4 kpti=off ip=dhcp
+[    0.000000] Unknown kernel command line parameters "hugepagesz=64K hugepages=0:4 default_hugepagesz=2M", will be passed to user space.
 
-No, we don't want to overallocate, we want to precisely allocate.
-To use our 40KiB example from earlier, we want to satisfy the allocation
-by allocating a 32KiB chunk and an 8KiB chunk, not by allocating 64KiB
-and only using part of it.
+which used to DTRT but I doubt is due to this specific patch...
 
-(I suppose there's an argument for using alloc_pages_exact() here, but
-I think it's a fairly weak one)
+--A/QWAtEIee2YEtfF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmj462EACgkQJNaLcl1U
+h9C5YQf8DzoRtaemjFkXnj0s/9uWQGFbpRQHBXfRESoB/flbWhlkLXd4iI9D82Nc
+Aaeg06+b4foXvsPsacRLjZTnd65mH73P5gFN35MInqU2RvSb1RCNP8/8eJJyieeu
+s+r+EaPtFciPovmHxXaHkA4xvBVUz0q5Fty7Ndz2perwfPSWryAXyonZyw1cqJFk
+e7gtvXR7FwlZs2KyRl7XPq6RJBpN+jTHUJPMtlNsdlYgaV9n/8LyKAqL6YBHL3QT
+w9wYuSt1ijYYYCcH/xhMbUk02MD+ntabLMMTFs/4kefCvvFCDVZB9u2ucfJ0pE9e
+9oLnPQ3QJ2uo91+tvTbJWhsAEWHsfQ==
+=5pOg
+-----END PGP SIGNATURE-----
+
+--A/QWAtEIee2YEtfF--
 
