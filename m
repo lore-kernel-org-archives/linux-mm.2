@@ -4,129 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F993CCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA95CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 975868E000F; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
+	id 35DD78E0011; Wed, 22 Oct 2025 03:41:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FF0E8E0002; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
+	id 30E288E0002; Wed, 22 Oct 2025 03:41:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EDE28E000F; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
+	id 1D5AC8E0011; Wed, 22 Oct 2025 03:41:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A4418E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1728788950
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:40:56 +0000 (UTC)
-X-FDA: 84024953712.06.7F6184C
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0D40D40006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:40:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kroah.com header.s=fm2 header.b=S2CX+9xO;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="DU/wXHAj";
-	spf=pass (imf27.hostedemail.com: domain of greg@kroah.com designates 103.168.172.151 as permitted sender) smtp.mailfrom=greg@kroah.com;
-	dmarc=pass (policy=none) header.from=kroah.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0656D8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:41:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B75D95B57B
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:41:55 +0000 (UTC)
+X-FDA: 84024956190.19.881E158
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 64466C0009
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:41:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N4qfcI6r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=X0RTACQM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K83XgDro;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+6wW0A1s;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761118854;
+	s=arc-20220608; t=1761118913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9u/6AOHdyJKLm2MAVj/gg3WnnXnpnA5iTO0PKfyo/5U=;
-	b=skqFMF9CKWg0v4l2XI4RMc2qolSHcJpolLxhiNrJVlNU/nHQFqgClXSxsHt/rczKD5++bI
-	qsYNEBQuckPTPMnTptHbqoobf/r+bWweTdC50KAq02RLcGdokBgRcNmCP6ElUncbkVERh6
-	wWSuvmmX5HwrHcdBD3U4AHQxB0Hxuo8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118854; a=rsa-sha256;
-	cv=none;
-	b=SwyE0T26q//IHUZzqglHmyZNd5jCVYVbCw9D0TVuzJQzP4u/rTFygwDy4g4D9YVymclcll
-	klSILxSlLEHkJsmWZkGWKue9nUZTqkSB8ZGUVmTZtUIs81S/mq0IWgwqXSG6PKtszZY3AA
-	qII3dkMDwlfEcFIsE1qWYKohnC9dbhU=
+	bh=IyMepcd4W5MPP+4gvZWdITUoUK6eWB4LJfO2TGYih3A=;
+	b=moA+8gcpv//2lA9tweJiCPNm7rJB/iFnNXbhkUz1ll3Q2pw8oU8DKP4jxUHNuq894cXfOF
+	28PG8+KQWnArB3lM1qmrGt3vy8JJZBirNUuymzYC9lRzLoWx4kKXOfpFa4MVAF1HqLNdOl
+	YPQTHkX8xuDV0DJGgdg5CHCeGrsi7ZA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kroah.com header.s=fm2 header.b=S2CX+9xO;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="DU/wXHAj";
-	spf=pass (imf27.hostedemail.com: domain of greg@kroah.com designates 103.168.172.151 as permitted sender) smtp.mailfrom=greg@kroah.com;
-	dmarc=pass (policy=none) header.from=kroah.com
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 42678EC0183;
-	Wed, 22 Oct 2025 03:40:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Wed, 22 Oct 2025 03:40:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1761118853; x=1761205253; bh=9u/6AOHdyJ
-	KLm2MAVj/gg3WnnXnpnA5iTO0PKfyo/5U=; b=S2CX+9xO+lB5b8QIcajBhxlNP9
-	B6S0lIMXmIEIHLe0mBNFn53EkW9n3eRhfYHhGyW6Q8HTO2V4HJKSYkXqUSGPpSOS
-	mX7L0xZ+YAsYs6GU9T5KSu8wSHcB4zXguoOe+DpboeDuYh9qYO3Daznip60lTbyB
-	pXe2flQNFYvMEEj2+YEd/OpC68yX2Ei8bG0LQueWg+93vvwZPmVv6rWKiZXjZJx1
-	jb5aDkcBjo/8TSYZUAQv1BSxoYQ7P1l117xNRhFcTJzewh17ZIsCJC8zXBbD/c7J
-	mkritEo8EsTxvYU7j+MXUwJt0AnWQPD7Rdz8tQPXX1lE2Db+QuvCZ8LGYjOg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761118853; x=1761205253; bh=9u/6AOHdyJKLm2MAVj/gg3WnnXnpnA5iTO0
-	PKfyo/5U=; b=DU/wXHAj0AuA/qtjvo2fDScseQKQ4OMji/CnkC7szRlxmbbDWCv
-	rGNG16shMn0eboV1GejawCJ3DBb98pWeLiFmkfUyxOuG3L8XMcGd6WKwC5xoQxM/
-	N89Dxj1/wOVspufdjh/9QFCP8Hs17ncM+JS8omOD8YATEfOXdBD9pHkJs4HhITAp
-	nzdBxUPedvEersg9PedjWUqtfbqApJP8tyXeX0kE+0/nQTBTvN1M2zT8j9g1/8rW
-	/2aZ/Dn1xSC9yFM4c8Xsa/QjGC9celo4R4dwI3rZ6d/5G9j0dDu1I04AGBfppGy4
-	Fvp8WZ3ryPfGRX+A4sBCn3fmnGMi6vESRtg==
-X-ME-Sender: <xms:hIr4aLlAkY4zwtHdoPYzDEThSSYDKiJbNeqGUBF3uWGWfisNuhE-tQ>
-    <xme:hIr4aHlgs-mwtp1Qbf5F5Vbx43rgjXqeLQponxF18l-tPIyAk6l2KAXQQslts92Io
-    Y8i2RWO00reWipJGVCjvMca-mJWS611MmQjkILGISo0w0VZmg>
-X-ME-Received: <xmr:hIr4aAXpN9J0gX4tRVJFrMqBBVZeMpM2bqQwB9Uajdzv4o5A9N1MIWtK>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeeftddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheplhgvohhnrdhhfigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslh
-    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhig
-    qdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrth
-    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
-    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghntggvrdihrg
-    hngheslhhinhhugidruggvvh
-X-ME-Proxy: <xmx:hIr4aF9M30XQygfl7U-P6vIcPnB5h_FMk1MekPlYvg2aVh15tPH9og>
-    <xmx:hIr4aNqd-8PMwOlgRSJEGQjZ-7PiXKIFBW3N7mIj5-3_hXb4R48Jjg>
-    <xmx:hIr4aHnI4hZqJrIurvlLueaonGwfj55DByZl4_l256-hg_KTCc_0Fg>
-    <xmx:hIr4aBYb3lFJsPbTSmNmiGw_1_Q0jffZuO2XT91gIVjladboH6cvqw>
-    <xmx:hYr4aC1uwQoSH2P8BZR-2V4Ltoxt1wCMWv6d1hEpg4nNI-tMkewhJZof>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Oct 2025 03:40:52 -0400 (EDT)
-Date: Wed, 22 Oct 2025 09:40:49 +0200
-From: Greg KH <greg@kroah.com>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Message-ID: <2025102230-scoured-levitator-a530@gregkh>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N4qfcI6r;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=X0RTACQM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K83XgDro;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+6wW0A1s;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118913; a=rsa-sha256;
+	cv=none;
+	b=SDMjM2npMC1HxX9e6GXbAdfCUaCCq7Qw7F3RdR7yXvd6kjDj452iJxLPEeuS7sWjt29QKr
+	0v4kAMZeirDaZ9UE3c3RLIQczKiZkiXE0BO7muieEr6ibYqdlAabwzjn5cxaseUklHFDAf
+	/JoOdgEaW3K+6FVI9uFwLkZnCRuyoq4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C0B4E1F391;
+	Wed, 22 Oct 2025 07:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761118907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IyMepcd4W5MPP+4gvZWdITUoUK6eWB4LJfO2TGYih3A=;
+	b=N4qfcI6rt57CUtIaQc6nrgU0p7OzqAlREmluxXMM6nL9oA5XSUP1hDS6h3vHCBxu64jGG1
+	xxdh+9l3wG7RmbnvZEvo6PtaXi6oYld9nBejctIGjxVtwxH9n2djsC8FVpQvUL5ztFc9qA
+	hJ58uKabubYS7C88yJ70cnulg0k9gGk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761118907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IyMepcd4W5MPP+4gvZWdITUoUK6eWB4LJfO2TGYih3A=;
+	b=X0RTACQMH1wVYG6SLYNXbD7nYU3lhCSDd49BoZUCtxAtlmE0j/1QmVygCjUgcLKVTLlboF
+	cFRYkEbJdMxoN5Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761118903; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IyMepcd4W5MPP+4gvZWdITUoUK6eWB4LJfO2TGYih3A=;
+	b=K83XgDro23x0GxnfL0xB7ImodBzV6YWr1ypYTLcC2zcS8qX4RGBBTRRURTbHVj5uEbxWKf
+	ver6b5ICUFcrPYqiwAro8sXhs5Iws1yFOz2ypjJ8xOkx9VrMH0kYarEFS/gaYtd1IwOuPF
+	HqwYRzirDVsrly4kcckvp6M7mcFJZmA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761118903;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IyMepcd4W5MPP+4gvZWdITUoUK6eWB4LJfO2TGYih3A=;
+	b=+6wW0A1s5sffs4tcTetxyvMthnyqjI2fmi17/znVHyopXAqHbtfU+qXe4M5ExETTig3n5l
+	NocvmL0zZLD2paAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 99D401339F;
+	Wed, 22 Oct 2025 07:41:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cMrEJLeK+Gj0HwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 22 Oct 2025 07:41:43 +0000
+Message-ID: <1ed60558-cd6d-43c4-b8e2-e9492e5aac2e@suse.cz>
+Date: Wed, 22 Oct 2025 09:41:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022055138.375042-1-leon.hwang@linux.dev>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8yi77ocx93fuo6znne3drng6guc3qgy3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: Consider PCP pages as part of
+To: jinji zhong <jinji.z.zhong@gmail.com>, joshua.hahnjy@gmail.com
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ axelrasmussen@google.com, david@redhat.com, feng.han@honor.com,
+ hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, liulu.liu@honor.com, lorenzo.stoakes@oracle.com,
+ mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
+ weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com,
+ zhongjinji@honor.com, ziy@nvidia.com
+References: <20251021145427.3580609-1-joshua.hahnjy@gmail.com>
+ <20251021180435.11789-1-jinji.z.zhong@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251021180435.11789-1-jinji.z.zhong@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b64fyaeawez8u54nqpta1zemdbp3iaso
+X-Rspamd-Queue-Id: 64466C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D40D40006
-X-HE-Tag: 1761118853-922985
-X-HE-Meta: U2FsdGVkX18+6zxgvewc5pOS3+AnMQ7sp4T/sBnXzziYRE46PkdVZffViftbFMwkFB16eZmswtuFNuuER6KxqRFFr4WJw2UzEf8BwiPEwpHnQLD0esqhPGQSd3GSt17ony7VEZZib2bT35zUbGE7bFCXgFK3rMB2vjGuT/iJjnHWh3HjkhVC9qnPoxsHSCrCX+FKcu9vVnltO6CggpGOD1yLaOvnlyncqQlOMaMoO1HH6L5O692hKn/+OPllfzq7PXl7KUaf9LXnGQCyc0YrVG5c/31nfFcnOozibnfo4h5rvXPp4GwF9Hbmj480YkJSbmqNJa3tnwl+E6eStGC5EU+oCbZhOYoKMb15fsHoZ2WCe0IZ/lkCOeyYGRkJ+J6BMppe6EhlKNdDKi2xyEvm1Az+Toyi4n0Wr9KYTDnf1fc8sI+o3xVi9oJajFxe0v2m6BFzQsVmn1OQID4AVON14JAXvRrMo9KHqf/DIZ4lLqkPENFXe9XsE2WwLqEribeqnLn5AeiLjEyDmwGjRoSXp5tDlMHawJ2fs42a4b2uOcGP9IFXlJRKhoKJ5kmSfLn5B4rwUs3zM8+uuTYPYASJX94bHBw5g+IRp4nLfXqGu5OplyC+O/4+qEhWeUdAvAKpMJ86TRvrfFNIdyclkzyoag3gUfwMEksAeq7P7a8/5kaADHWNACdTs523qjj/MrFUY73qJhxQhPC2VHQm+WMC4zy3rOBG+pRJ5sZn0Ot3+8yk9wM+zys9FdLsUhe4Ojh2xLx2d+wy4CQr+HSqny0FXNUpeiUxTmo8Db9Ubm6/Hhp0/gZJ4yZM70ztxkkreKwBaxAXLfO6ZGfDdD9DOuq1Xs0WHUSwH6nNqgZGK3mO6BcoREkA+9B7kHjzurHHP+LAMEvjDonY2LMGde8z8eOS3IJ0aaTMpyTG2PthLISw21upn40AjFfEQ3/F1VeeuKQo8N/1S3cU4+NkS0OxNCz
- KPTsSAkZ
- S9A8D6+KyvNYfMsi4FzINtE7k8vbJyixtkRdElgUFI13r2BAhWBRetXqDkbS1ZRt7vShJA+97cp2RwecgJRDGicd4ena1SuFN15ntNjrP+16oz3X5R28e2K8I6C5XWho2vn9Yhvn/jJccFNckIklgMNgXua3O+hccjQjKJIrrG7Tt1EtGC3RjuCKvrXjoPHo0w5TA2nYCb3UfVRV6qFxkik+UXZJR75hBHSqkERaX3rsCvPxATo7DonqV/COcW4TzBxBkf5Czyu/EF623SQ8Vp0/BJnlSb0rIi1R+d7mx0ZH1BsPjOLdu5KZlPZO2vyhio3W1TT2iZm1GONnxeLsv7fzyFyQ48VGQNeqYJxXpwYnJO2aB2BSrsBt55QIjW8VpRYrSOlRSKKPy8k0=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761118913-981223
+X-HE-Meta: U2FsdGVkX1/jot3x5XUQQh/lohUc2ZFUlmmGjfhqq1PuolY20FAaVRmZebudLYfpM+J6kLO8SZG5ye+TyzzcyDW0qSTvOqaxdc3emfU0Z4VwkAM73nB/Wdd9iOSLD2eWMLiaJZXJZ5jYOg7+Vt+m41yxM9o0xz/vzvp1VASwZmF3MY+j9YUF3vrmt62FJmJ/xBhAg+MxbaN2Cv925/WNfqooAOGrQeT63hZFN0fH2ItU7Dl7qYA9QpV5csdNi0fMStzRaiakp/dFZJqe6RKB2p0A3gKdeMo3oNos7dGoz58NCn4y156qF/cjZILYWKMh0va1HQq7Arzjq4JB5/KsK+6rqymiVdGkfpaiEf/iLsXdoRg/ybL6KrJ8CclmhRtNfTPWfT1VSnVxnwxoyRWb9TdP+/JjG9HLVyvc79sZJQD7372y/HjuTOXo9L3ztA0U7tH8fus1WooPygLxgGQc3HgYJtR1C6dz2fXSipqXnbMWSeyjYAt9XIS7SXn0yx2jVSps3o3INUHSxD9O4/0DAdAsKo6XiQxrlUH7NOBBg19T4/Mvvkq1zwIzcfyn9K3JLyFv4yZYEaYDwPlS26sWYDptrtBIJlCBabNwKZEX22bkq0Y5SdUJvHptSffXJrhKan4oZH1oFiYq6TwuOTHlUMHmrVG+r1HB/ml4AF6FhZx34PVQA1j2SDYompFoksf9HPg4RW+AqqJ9nIHibMOSckVO4VwxjwxZ3hP6S8m4VTjfw87fXibTuBHEe8osfNjkXdutnhWyLyKdjVVEnGM4beiYIptLGGflpS7ep1Uwdk4VWieqXepNlEjIIVxFzt+DD88MiDhJAEUP2sL13UFQeHNdgyx8MOVIRN1cjZTC9vziiH8oqjQUt8bMsmVGfvamjnebg2jbEPOydb8BW8U+P/lze0BYoU8uZDXn50AO1Akf2rwAw8L6AGLzNssR4/dVZV7UP6XRIgY2wUBcDI9
+ JDDM2+l9
+ SAqnIgpt4HI67IDGM/N2T17r1C+P11y/aISE4MpXt9ljRKc0j/WAM9gdG/Dy5Y+ec+C1YQj9BMTdQoNvT2jRgL2T3iQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,33 +182,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
-> Fix the build error:
+On 10/21/25 20:04, jinji zhong wrote:
+>> Zhongjinji, thank you for your patch!
+
+Hi,
+
+>>> When free_pages becomes critically low, the kernel prevents other tasks
+>>> from entering the slow path to ensure that reclaiming tasks can
+>>> successfully allocate memory.
+>>> 
+>>> This blocking is important to avoid memory contention with reclaiming
+>>> tasks. However, in some cases it is unnecessary because the PCP list may
+>>> already contain sufficient pages, as freed pages are first placed there
+>>> and are not immediately visible to the buddy system.
+>>
+>>Based on my limiting understanding of pcp free pages, I had a concern here
+>>on whether this would really provide the desired effect. That is, the pages
+>>in the pcp are not available to the buddy allocator unless we drain the pcp
+>>lists (and this operation is not free), I was unsure if there was a clear
+>>benefit to allowing the system to go unblocked.
 > 
-> map_hugetlb.c: In function 'main':
-> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
->    79 |         hugepage_size = default_huge_page_size();
->       |                         ^~~~~~~~~~~~~~~~~~~~~~
-> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
-> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> The purpose of this patch is to account for the memory in the pcp list
+> within memalloc_reserve, which would allow more tasks to enter the slow
+> path. For critical tasks, entering the slow path represents a better
+> alternative than being throttled until kswapd wakes up.
+
+Were you able to measure the benefits of the patch? What are the "critical
+tasks"? Usually such task use mlockall() to avoid allocating memory during
+operation. Maybe we should instead extempt some task priority classes from
+being throttled?
+
+>>If we are already at the point where we need the pcp pages to have enough
+>>free pages to go over the watermark, perhaps it makes sense to just block
+>>tasks for now, and enter direct reclaim? Allowing more allocations might
+>>lead the system to be in a worse state than before, and will have to
+>>go through direct reclaim anyways.
+>>
+>>Please let me know if this makes sense!
+>> 
+>>> By accounting PCP pages as part of pfmemalloc_reserve, we can reduce
+>>> unnecessary blocking and improve system responsiveness under low-memory
+>>> conditions.
+>>> 
+>>> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+>>
+>>[...snip...]
+>>
+>>> +int zone_pcp_pages_count(struct zone *zone)
+>>> +{
+>>> +	struct per_cpu_pages *pcp;
+>>> +	int total_pcp_pages = 0;
+>>> +	int cpu;
+>>> +
+>>> +	for_each_online_cpu(cpu) {
+>>> +		pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
+>>> +		total_pcp_pages += pcp->count;
+>>
+>>Could this be racy? What is stopping the pcp count from decreasing while we
+>>are iterating over each online cpu, over each managed zone? Under the
+>>memory pressure conditions that this patch is aiming to fix, I think that
+>>there is a good chance the numer we get here will be very outdated by the time
+>>we try to take action based on it, and we may require the system to be
+>>further stalled since we don't take action to reclaim memory.
 > 
-> According to the latest selftests, 'default_huge_page_size' has been
-> moved to 'vm_util.c'. So fix the error by the same way.
+> Thank you, Joshua. Indeed, the pcp->count might be outdated by the time. 
+> And kswapd will fail to allocate memory if the pages in the pcp lists are
+> on other CPUs. While drain_all_pages() may be triggered by direct reclaim
+> on other CPUs, some hard-to-predict scenarios might still exist.
 > 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> ---
->  tools/testing/selftests/vm/Makefile      |  1 +
->  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
->  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
->  tools/testing/selftests/vm/vm_util.h     |  1 +
->  4 files changed, 23 insertions(+), 24 deletions(-)
+> Perhaps performing drain_all_pages() before actually calling
+> throttle_direct_reclaim() would be better.
 
+Draining makes more sense indeed. But it should be backed by data showing
+improvement. As you say, draining is probably already happening via direct
+reclaim.
 
-What commit id does this fix?  And again, why not just take the original
-commits instead?
+> Like the following code.
+> 
+> @@ -6535,6 +6535,7 @@ static bool allow_direct_reclaim(pg_data_t *pgdat)
+>  static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+>  					nodemask_t *nodemask)
+>  {
+> +	bool drained = false;
+>  	struct zoneref *z;
+>  	struct zone *zone;
+>  	pg_data_t *pgdat = NULL;
+> @@ -6570,6 +6571,7 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+>  	 * for remote pfmemalloc reserves and processes on different nodes
+>  	 * should make reasonable progress.
+>  	 */
+> +retry:
+>  	for_each_zone_zonelist_nodemask(zone, z, zonelist,
+>  					gfp_zone(gfp_mask), nodemask) {
+>  		if (zone_idx(zone) > ZONE_NORMAL)
+> @@ -6586,6 +6588,12 @@ static bool throttle_direct_reclaim(gfp_t gfp_mask, struct zonelist *zonelist,
+>  	if (!pgdat)
+>  		goto out;
+>  
+> +	if (!drained) {
+> +		drained = true;
+> +		drain_all_pages(NULL);
+> +		goto retry;
+> +	}
+> +
+>  	/* Account for the throttling */
+>  	count_vm_event(PGSCAN_DIRECT_THROTTLE);
+> 
+>>[...snip...]
+>>
+>>Please feel free to let me know if I am missing something obvious. Again,
+>>I am not very familiar with the pcp code, so there is a good chance that
+>>you are seeing something that I am not : -)
+>>
+>>Thank you for the patch, I hope you have a great day!
+>>Joshua
+>>
 
-thanks,
-
-greg k-h
 
