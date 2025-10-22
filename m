@@ -4,180 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12201CCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 20:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4EB3CCD1BE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 20:47:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736E48E000F; Wed, 22 Oct 2025 16:47:21 -0400 (EDT)
+	id 143F08E0010; Wed, 22 Oct 2025 16:47:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70EC38E0002; Wed, 22 Oct 2025 16:47:21 -0400 (EDT)
+	id 0F52F8E0002; Wed, 22 Oct 2025 16:47:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FD6B8E000F; Wed, 22 Oct 2025 16:47:21 -0400 (EDT)
+	id 0318E8E0010; Wed, 22 Oct 2025 16:47:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 503568E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:47:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D833BBC25A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 20:47:20 +0000 (UTC)
-X-FDA: 84026935440.05.A10678E
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012032.outbound.protection.outlook.com [52.101.43.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 243B81C0011
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 20:47:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SnS8CVSb;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761166038;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E60908E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:47:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FEC616096D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 20:47:30 +0000 (UTC)
+X-FDA: 84026935860.11.346F242
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DBFAE80002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 20:47:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eMDWLrfV;
+	spf=pass (imf02.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761166049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1CCrx5pYo1hay+wJxBadJsZ55Bkhhe8umxERUCDNgVs=;
-	b=ab37ReDvhNyPeTL3O2n8REoC0sOmDr0FHXv08b6qS+efrcFrnHLDH5i6+MbezwAjDhW8QP
-	0XbqjYJwkPNXJ/X70BVEx9+8td9FpB6nz02VmXl1wn3DmHIMvRqRxJV1mteHZ3gMGtwMe3
-	z2qsAsLyuKEutao4Xcr1mnPepwO4T2s=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SnS8CVSb;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.32 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761166038; a=rsa-sha256;
-	cv=pass;
-	b=4Z8qEGprwFiL+GVKY1LT+7axh+PM5EBJLM3LPhPCyN8BY1+oBvU6ozH/6P2nwxaFaK1t/D
-	myIJFd0hmywndl2fyIL4Aq/5y+L5MuVwj9y9/dPxl+IAaTOhrY9XaVnHtKUecEEle6ifw3
-	mcX0j1X+xETxT0aJCwqmoMu6MV0GvWg=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oohCNjs4i7rSCMTsRbRh+rTFDjEh2o63qfLrqwOkvhOwV3OOaUWwpQjf37Uj/oY6+0Zt38rX0XLSKuSP4YrlRDzk80v+4O3NwwdnSmE+nHPRe4XiNPuVQWzJfFNaxzaooBJZeZtI2Lzj4A49QqOD5qNpmNS+9vLZJRmCzPhWhTZq7PSYc+Rxf9N9cFGH9f3Eo8haBRa/n8b4ebUKU6rKuZFPGzDpSp/dEmY5IeCTV2/vmgemamYGCoSs9vxGvTir40uzuIbYmSM992yoTUNFGiJP5kn0uqfYNTswq+zovu5+FMuy0BNg8xfbkm+fBevNybxfk6+DHvQRaFMcnow/Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1CCrx5pYo1hay+wJxBadJsZ55Bkhhe8umxERUCDNgVs=;
- b=vE3boC24DzrOJv/iltHR5RVwh63RvevnbMT9H1Ohwd0ZRlwRBROQ60TWNqjqDkITunCXPNdwpXbSmdVw70bSDiXqIXUAvmucClTC6UOnv/Bo++akfjRPiXe7vJdNKobrIkWw/zTPlRgLU3r3BI3yp8H6OFxrkh8V9emA8SohGH8gB2AQ549uyN3gE5upnvq54m1aC3/3TB1aePTzK8eWAljrXIlhTKGb9f9GmmIG96ow0Tt3l8cj88tyqfwV6zkxySLHDKXzxordWZTuDYAcjKsfE2C+79knuF3gwYE06ZcxuzpuiXY3FtxABgayDv6DWmaQcWgjdSx87a7SeICqeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1CCrx5pYo1hay+wJxBadJsZ55Bkhhe8umxERUCDNgVs=;
- b=SnS8CVSb/2DoKvlE77dEpVISA+RIJLbeiI3gk+cwl2FXkf8k3jWwyRHz/M1NxJVAC1IC/sS1o1iF0a8jUjoxG0nN0CdgaqNTdk/vNQ0RNfTLNJilruYHSwEfGdLpxm3e59umQJ2i7CuRU2KsYDvTrKEDpiddPSnK1qggWXeyv52qz1VhjoYkGwdSaBDvCTCCT5plF5OeS2VfbRFU0CaPek96xnnH3GqbTrDRKxWm7NvNf1FSyqFVpoOOOo0Tr8qD0r6fzkggepR5edSbjyF7QVxvakO2IcO5z4Sb6+LpssI4oGoHAr+A85oNvbBvTe23VA6WJrodsYgq1P2WDIyloQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH7PR12MB6955.namprd12.prod.outlook.com (2603:10b6:510:1b8::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.13; Wed, 22 Oct 2025 20:47:12 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 20:47:11 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: <linmiaohe@huawei.com>, <david@redhat.com>, <jane.chu@oracle.com>
-Cc: <kernel@pankajraghav.com>, <ziy@nvidia.com>, <akpm@linux-foundation.org>,
- <mcgrof@kernel.org>, <nao.horiguchi@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
- <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH v3 0/4] Optimize folio split in memory failure
-Date: Wed, 22 Oct 2025 16:47:08 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <1AE28DE5-1E0A-432B-B21B-61E0E3F54909@nvidia.com>
-In-Reply-To: <20251022033531.389351-1-ziy@nvidia.com>
-References: <20251022033531.389351-1-ziy@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR01CA0037.prod.exchangelabs.com (2603:10b6:208:23f::6)
- To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
+	bh=amyp0bQQLpeK8dKZTAb4WHpNFpX9yDj0u1UHnTXihyk=;
+	b=8RNW44xF7Upibpl6Gs9eRnXrjkxMsNwKF3V9Jj8LDrSZY2YSH1FBi/jqBrZHrHGBBrXvtF
+	gOGyCbF4V8zznXovvV+lLyJ4j2ejUTD4Kf+N883rrjsauTuo5rOT8eOTdmXDnPx6Mc9bB7
+	zleiXs0EAi9r1vrHTBUA2eWz0jEZf2w=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eMDWLrfV;
+	spf=pass (imf02.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761166049; a=rsa-sha256;
+	cv=none;
+	b=PDdEFofNwdEBJfGLf/AFPxrj/K2bMrDveqMdrjpmU7BrEm4imlcJhid6K79fg23FVZbKIN
+	xef87WXgyLE3kR1lX6ktx4eelaRMCfATuiaG1tkRke9ECehrwB09rBw5bUy6W9C9N80YTT
+	J8StloD+JY7klUa9uPgXQpeeynBo184=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D513A4533F;
+	Wed, 22 Oct 2025 20:47:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F71BC4CEE7;
+	Wed, 22 Oct 2025 20:47:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761166047;
+	bh=e4wpAeuwnWxwPsv6xR22bTAFdrGhHjpoATj1khsZ/3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eMDWLrfV+vZznUoPf7CPswB3dBThpbX2cO+2bWvkQ50o2TCrvoCdE1Cd8xXrUFRoi
+	 4RQOPMKhr+0tnSOK+DiKcMtj1oDkCTxPA4mHmnI44BotWVAjb9ldTnLMyTQjyS1Glb
+	 ijl24xdpzSdzrCZEKhn++IHDQPpZbUdTkCvlJsrAxJb/YRqToadM7K56X3TBjl4HEM
+	 Kyj7DofAye5roHM4RI4hcbcHBS9HAWzaMufkLYbmgqUo5c4mw2HV49+ecHPYhV766I
+	 BEuFIsEhcM7FbKPeKnO/YdST5KXQbtfPvLsfWmyESS1GnxaOKoG42xaOoXjHPKwp4J
+	 2Yalv6aXeJwRQ==
+Date: Wed, 22 Oct 2025 21:47:21 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>, james.morse@arm.com,
+	Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v4 0/6] Cache coherency management subsystem
+Message-ID: <20251022-harsh-juggling-2d4778b0649e@spud>
+References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+ <20251022122241.d2aa0d7864f67112aa7691bf@linux-foundation.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB6955:EE_
-X-MS-Office365-Filtering-Correlation-Id: 610a1f13-e2d1-4176-5af2-08de11ac2cd6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JHwIP0+O3owETpTC6aim5ihriO+tMgqnX7Tj3vmdTvuz5wlXtdxCUUCJdmP4?=
- =?us-ascii?Q?swCCSppUOvYVhMJLl0LJ4AMYC7Yl5wIZALsr71nFC/JpzAGQUPaO6F+kS+oT?=
- =?us-ascii?Q?UManKFfSZgfaEo2hOD0e1CieIB3fw0aw0JoA02UWTUjVqZXb1VvFcVLODbig?=
- =?us-ascii?Q?gSfcCD2rLCaI90l+KN/LH4kKI99VkCJJ8erRz3Ss/Qi4644DxUFMC6ydprrf?=
- =?us-ascii?Q?rO1ejRYuNqkONwuJyCH8c6ajIsE2ZMZYgesNx3wmyzpEplRCDab/wBIQhLT4?=
- =?us-ascii?Q?Oc33vcXIjd5+o1sjQ4hTRis96v8cCxEhBDhR4d9SQhglBalKhVOYGlIJJzFV?=
- =?us-ascii?Q?F8zh0R9W9AfVrPrHw379lgpTF9jGQ6j0aBGwrGqJz6jJeLk8ylwNnBhWK4hS?=
- =?us-ascii?Q?c9T+uMHDmwxFxapE6r0haOe413V+Ecj4250dBhDBxbl4juxMlOcHfDccO8UN?=
- =?us-ascii?Q?HWqMuIEqRxHxBsP5dxElWdXVYOKF94NZtZ885ge6BWjjMJgzRwe2eF4hPgAY?=
- =?us-ascii?Q?fLtJsM0bYhtyhrn+L3KAqnWNEreWaTx9xybddQe+1XEFe7izXDBbcDLzJm85?=
- =?us-ascii?Q?oesSWE3llf8x4U4R2n9a/O6IDRr1MoUWBh7c959xUbXt/H2llyefLu7E51yY?=
- =?us-ascii?Q?NbhY5zddqvg74SKawizalLnh+SDTwt56IODVCoeJnINKJoAjhkXypffAa/0t?=
- =?us-ascii?Q?A2gmbGTktKZbYHNCE9aqG6KNQegdGBsQviQJEGHZ66wN62EmXb138O9jmwY3?=
- =?us-ascii?Q?mNYbaS6rrNh1cuMTTC33mRdqzjldt4KiDldjsPtZQqe3pf71lBQbiN+ThoO/?=
- =?us-ascii?Q?7gqShepPTGPY12PRJupppsS8OpBcbRXGs6BXvd5t+HOvq7JlICMf4jpeXdYd?=
- =?us-ascii?Q?Uskh/mYTnmlEV1eYC9mVHvb8GHpA9+PbwOEmXH5VZwBsEuNNwngoyH350Kb1?=
- =?us-ascii?Q?Ra4Po8mJyuxJu0ZdyN5YbE7FLEHzPe7gt2Jm3wfKv6CDSSt5Id2z6oAWiZ6U?=
- =?us-ascii?Q?hnWjmJNM1zj0g+gzMvC3tBdrici+l+BOrsDb1Wpi5E9A5/sl5xGSqDeTEwfV?=
- =?us-ascii?Q?eO0JIMye7j5GR4mgYR1wI2YLNgk+RjvZ8k6tjViveApb9M5reK6iuG9gclxF?=
- =?us-ascii?Q?nM37OiUN1jKQ5LXWx7F+AAPZ5ol9EG2vOfQJiVDNqloFBGuxJWCusDNJVxhm?=
- =?us-ascii?Q?ew6vEwMBMIntOIvHdniKFbBEQpxJqQqBSLEIZrM14Pzqar84i1xDEjoY/Hd3?=
- =?us-ascii?Q?DXRH5mO/SsoTCAHODTKxo/ZtMAlilb7rjc60M5k8bTvfElh7vw0FCgbOnbrt?=
- =?us-ascii?Q?LPPCz5FP63F7AVWTPr3h7EeUCwjfkFxZRz9zbHkUY3yhB1kzswFwLE28J0nI?=
- =?us-ascii?Q?Pad/yEJ8cSFInTJfSol9d0jHbl1d3Wp+A0WA1dTXixwaivoy/jRV3tTVaLEW?=
- =?us-ascii?Q?D5UX6nRYwIzJs/pp+LLobpmzDGCXQHZygII/WN/yf3kvcZeu9/SDQg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p2NpbQwUSdBkk4SS4rf8nn8TIdgKUxaJOTrJYX8JuByhNBnnfBMsFhRxilc9?=
- =?us-ascii?Q?+fwiBA2Ew+bTfiDv4aKFffKQJMfUs34TZf4EmkKCQBxjAHy0hcZlAF8TUa+J?=
- =?us-ascii?Q?syHWkHPSmWW/t9mSbfQhOD+6xgHsY+sxdu3azZYIkWnS7iUQi9lf6Qy4KvMR?=
- =?us-ascii?Q?D9iDCwTS/Aau61Bwda78fUPJVcoYhAuli1PtlebSgNXnYvEnl71n4G4O8L1F?=
- =?us-ascii?Q?3uh4/aGK1Wg4H7tPh1triylIW4a8ep0cvWX8bFyO//fdnb09jAD6C/CNyw/p?=
- =?us-ascii?Q?DN1AAEhKdHT0aSoQFi8hnRhVkKI3lVbyxbw+wqic/JR1jLxkvSI6AEvblMb/?=
- =?us-ascii?Q?bcKWZysEz/kVCpFgJlImbv2gG5KaopPokFVU+RQptNfX29OUBhDuaLx+bkEK?=
- =?us-ascii?Q?sD3QKAFRS2ygF7hodS/WQILxiM8es+Ja74NVhyNzpBH1gfeSqDVvfYXpW1MQ?=
- =?us-ascii?Q?SKUBYwRmZJySWtm6pgzcnSkV1nmK1v6DdZ2F4mILhmOKmaZHKkee3mi2lUpg?=
- =?us-ascii?Q?vAotSlGUU60A4TV0pgYcmE+oGkegQcv9P/Hu7YLBdiA50tPWyriI5GHvizhx?=
- =?us-ascii?Q?DJJB7jlMYCBxCKeNaLz/ztgAze5Dfia5mebYgFpbojs7ibG4IJyC6ustP6wI?=
- =?us-ascii?Q?LmfRsDQhz6kAeGWGURlqPGjVPO/nip+dGLZn8dtAYD79C3LoqChXDkX5XMfx?=
- =?us-ascii?Q?RGnYB7pSkN3BjLX0d3Lvn7eU1cmD5yTAh1fleSCtfkQ8pevKKL7xLsBJQgSQ?=
- =?us-ascii?Q?vM1WNiwDOmOxyrRix2yhK5A0EArc7syUMyvlvCW58Hr1eO97wH5yLcuM5Ol6?=
- =?us-ascii?Q?mtH0U59x/R8KSBbsdCnCLLpOEGQoOKcWLJ7I2w0c9Um1tkQ530xNNy5eX/Vb?=
- =?us-ascii?Q?/0WrKTku9UA3cGUCE8XC6lvF8jV4wtQRpSa/toz392pFwI72KusmBzMlioLm?=
- =?us-ascii?Q?nciNazeR1yKJTVJeuUA9WNkonVZyPqJA7/GNma6kgnrQCAZyev2otvOGnoJv?=
- =?us-ascii?Q?EdEKwW8Ec4akbsq/l6VQ5KpUVvMRSM4IqXc6XLp3gvSBUIvwIj0OGjNPhy8F?=
- =?us-ascii?Q?TYfT1B4RgzTHemMUs1icpztHOsY7cuZyJhbwK+tBA9Pfq8yNZwH8drizGeHN?=
- =?us-ascii?Q?5G98J6Yg64KqkVV2pJAOfCWoAVWIl4l1C1AfpE18H2A4T8ScAXO8d0RrcroM?=
- =?us-ascii?Q?KQJD3Fge31dGHqPz8fKmncl1cB4yQ4PEUtoHRkZDimFF22/llfY7yzn9E+WI?=
- =?us-ascii?Q?MbDEenUL7ozCX9qX407Hk8rY1gE7GYquxQgk4tTPbc0KCtqnuiulZW0jrFQm?=
- =?us-ascii?Q?hbZKw1TKYINWNqXy0TwS8/6W5vm3/hcr/zw5O4t3Ouk2al4CcHXTmCrHTcdK?=
- =?us-ascii?Q?yBxiggxSgbwPFg/QoCA6pi4/i4B4FlaAdJjmxJtRc7vXiebRhsIt37LkxtOj?=
- =?us-ascii?Q?8w00eAp7jyqG5b3yStw2eQFxmmaCeMzWcdP6mrPLyMdDwy+Zto3sSBmQx84K?=
- =?us-ascii?Q?p6eaJ+A4uiYgWl+TfD3UHwNPxXFpGzuYiDWt0LUCKNQCCFuUi8Dq2j3Rvf1/?=
- =?us-ascii?Q?XJcxENYj05tRVoCdyi4jwPtuWzExHscpIAL4CEZK?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 610a1f13-e2d1-4176-5af2-08de11ac2cd6
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 20:47:11.8943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hPPaHmB+nNS6GuSZyPqf45++3JBG9FjKDg1ZkHSmin2wN4iP0XQ6mp1PvOfsJl39
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6955
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 243B81C0011
-X-Stat-Signature: go4qxt65rduzfozsoxi83m4o6j65engc
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="S6HWZzkHmuKfgcDz"
+Content-Disposition: inline
+In-Reply-To: <20251022122241.d2aa0d7864f67112aa7691bf@linux-foundation.org>
+X-Rspamd-Queue-Id: DBFAE80002
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761166037-173579
-X-HE-Meta: U2FsdGVkX1/rpGUljhBZOJkGWOhLOm3LEtIL0/fKZ1WUocUCsTSJQqa7CK3XP5RkdH1RqIFOvHF5qynra0Gid5bAAIeRirlK0X9YJRepdnQg5EsaZmuG3qqrQ5PexsYToShFVLhFtSbBsAbKZUTzHZZYSNBmnZYJK3rkMVzZxR7fZrVSA/uZU8D5vpLQ+tdF5p8Brs2iOCYjDwynP6b+fUEAKS3M0fDRGeoVWPSf7o0hwjM2FnpnmhywR8/c/B2heBju4nrZshWGL+UPLb3Y3mfH6rQkyAc8eQyQe+k6etmFzxdV5+sYyDOc4nbGS9QMrdKQmWOpX3Da62braBf5fDD8fe0hLy0ReK2rmrLJNPK/OHskcZDc4uZLYXuLZw+pfQwSP8qsrAVef3P63M2qDX3yw1/Ad9iBBm1miIE3qPg6Z9W2BqlwzJiW6DmtsiUdzGCrokbx8oIXxDnQZmROldL5IH+/hhoYkJAWdm7eWMRrPQP/mcPXLZVLpgqv68+ezBVhgsRObWoud2Jvr6eqevQpel/B9+90NZr1tN0ahog7wQRd2l0OmT6IgzbxDwhPmozDuYtrFK+Nhz5zBTtAPcUfV5TDiM2eXZtHIm4VaLaFFBKBdBTtfJvT+f2EY2m9y6KM2kpS5pY7sO49bBaCGNdr0lWYo53taaSa7wzhcVeS8uxor6PUvKc+1EMkhab9WMzojgqpAh681FwJf2nIpc2BCov8UGKpInxbjDk6XOnjg7FnCSTokcsgHqkEVfr9xE5PuzTc737D6tS3GTjUPwAJ8aOOhp0pzZq0m2M5NQvZJPk9q8/K+Bsk4G+dANHAMozMIwFlKMxQe8d2CF8jf4lQa1EzyGOgI147ARY/PKLj7ImqEzFQ+1jGs6S1+THCd0HFEEOpiL18DId9AFxcPmgem8zUhTuBUTsrq3uWuPZjJ/w9ttKRg+GowUJYRGDysSlvK6jWagmUzNaMp5v
- IChf6Ddd
- uooQO+L6TQHm6ixxSC8siqxk5W2g42JReIElJ5sn6BScETAbHM/ibjbDFfnuTlRtgwfzatHndYKIEAEEVnG3//gLM7xspOwDkCrdN46RfCK4qboTo7IWq3LknH8Q8S3RUYohRpy/jlMYZR+yb27fdGqhSZSv3nI+mWDKpxTelMfjpHIz71NcUu0tPGu9iH+wyUMxYr4o21r1EeQ44XFOttN7ODGd27CpRPGTH6roo4pVxzK8Elh2TnbUkohTcWFvmf9d4DHIf3viVH0EhW0nafw2dHY67y6dc1o+pzxmERtEyLsRrm/K97tcP1gr5LBU3dlDOwJXWMuvazDMHrwvAiEcb/owbODrJo4CBdjogx5xU+R2soda63BlT0FUJZgQFmkzfhbqVP+Vf0FQ1L4uHKzFV5a2WFxqMaUtsbClzrsNz+JNfEwWYLPQJ0Aj09hks8Bsp2Bki73q9U5OofRUUwewNYg==
+X-Stat-Signature: ozapq69rxb5u79ydnfguxmmxjxwr8qdm
+X-HE-Tag: 1761166048-211490
+X-HE-Meta: U2FsdGVkX19xIMVMKFcayrgEdGAElIHXKnG55MP70Vl40tkx3jX1vmRrHe+sPpSWDCVOd/oW/hfVICwzZB1Oe7r2JaaYLT7GIsWSvY1kVCK8gydaly5YN5vKQQTj0056GFdxfo0t6cX7FCtuNMDNMcVj18fY9t8s/QuZSJ9kz2oNy+OyjZLRxTrEdiw+ih5OVoYIdrnwK2y3CQYMINInbjfv8Dp+YRrZLiykQYY/qgcmOpErQDFf6UhGLxOOKMp6v0s5tcFxwL1W9El85Vk/nrwRFUFx2DckRaaEkpAIAzO9nhPXIOpQYVI/Z0L/bFLnxibs5FTO4VP76FXL2ewb8PnUVKK9sTd3VcJbWokSWyvWcJFZPttvsuYKwlChLuzUCuXP5kRwGyb99XDEbODM3DG27+rTmxPKVA79HGa55Cp6Fx0EUFuui2gYHyQqC/j9bF18d0v+hpJx3QpEWQbnXA8+vSSigOxFWfjz9atdMetUJy20iPhAonykhPuyzkbzED7QgSKcoLkgCPBvR8GAGzybMSbg7emO37wyJ3G5QR/DvrsJBSM5of5b3Yr4BWXXppdBKbdErPTcADRE+dc9KVTCRaqlm+cF+0SmRrDCHbbPauGAA+i02p6vedphsKxQWnB72RH0QMfCUYkbT5Jr3c6Fg8Y7GRkRf5F2h25BLQrJjozQVITxdnezMecYDgMFi0P6n0bYc1rWFB7MAaX6i2hoo/ugesL15hnBe7LfK2/T5jD0AHzG0K9+T1mptT3BdgKMva8PDW6QJdmWhw4NcWasQIMjo8C5RgMCa9DGcBFEbf7ThfNQXbb9x2QYY41SwlII+a7Eu7N7g4D3XcWv0N46S96LmrTo4UZeYJCwP09Z4zk7RZkqd2Rlmon5L5yZ81vYVsOnfqyRP6mlG1rrlVEvGKQKWfLATJpUkRSnTilOcB2zKJqwOmDwUv0vF5joGD25X+VKP6JKKap/Bqz
+ NluTBfBy
+ 8rpj+JQjRCZI4qRsF0P6sFmqYu+kcfnCt37lDpb8Dm/cRxZ0AZNJbyLqeMDrCL/soARjbyER+u66q6pAYqQa9TXF9h3ZF4B9nscOjFlmAXWctw/19cSaMZOQwDWLtXbwmry0KlZK71XAbMSJ8qO8peX+9QUh92EAkYDvPh5YA0485l2JItWcXCInmB5D3Z+OBlj5tC6v1adrEdeIeKCvEoWE+uL3CPavBhIFQ5TvuEF4w/gPeJ2ny/6jnWHS6rQ4jfZwdeE8cc94svKNfetjDLSqrfPt4fbbYtum2cB8L9KA4RMQEnHBDCjSaiA8btMdTxrxW3Q6bHkn8vFy/STwefb254Ut0iXPe+KEigpva7W8ueLz4WVScXjfvJRejg87h5GCU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,70 +107,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21 Oct 2025, at 23:35, Zi Yan wrote:
 
-> Hi all,
->
-> This patchset is a follow-up of "[PATCH v3] mm/huge_memory: do not change
-> split_huge_page*() target order silently."[1]. It improves how memory
-> failure code handles large block size(LBS) folios with
-> min_order_for_split() > 0. By splitting a large folio containing HW
-> poisoned pages to min_order_for_split(), the after-split folios without
-> HW poisoned pages could be freed for reuse. To achieve this, folio split
-> code needs to set has_hwpoisoned on after-split folios containing HW
-> poisoned pages.
->
-> This patchset includes:
-> 1. A patch sets has_hwpoisoned on the right after-split folios after
->    scanning all pages in the folios,
+--S6HWZzkHmuKfgcDz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Based on the discussion with David[1], this patch will be sent separately
-as a hotfix. The remaining patches will be sent out after Patch 1 is picked
-up. Please note that I will address David's feedback in the new version of
-Patch 1. Sorry for the inconvenience.
+On Wed, Oct 22, 2025 at 12:22:41PM -0700, Andrew Morton wrote:
+> On Wed, 22 Oct 2025 12:33:43 +0100 Jonathan Cameron <Jonathan.Cameron@hua=
+wei.com> wrote:
+>=20
+> > Support system level interfaces for cache maintenance as found on some
+> > ARM64 systems. This is needed for correct functionality during various
+> > forms of memory hotplug (e.g. CXL). Typical hardware has MMIO interface
+> > found via ACPI DSDT.
+> >=20
+> > Includes parameter changes to cpu_cache_invalidate_memregion() but no
+> > functional changes for architectures that already support this call.
+>=20
+> I see additions to lib/ so presumably there is an expectation that
+> other architectures might use this.
+>=20
+> Please expand on this.  Any particular architectures in mind?  Any
+> words of wisdom which maintainers of those architectures might benefit
+> from?
 
-[1] https://lore.kernel.org/all/d3d05898-5530-4990-9d61-8268bd483765@redhat.com/
+It seems fairly probable that we're gonna end up with riscv systems
+where drivers are being used for both this and the existing non-standard
+cache ops stuff.
 
-> 2. A patch adds split_huge_page_to_order(),
-> 3. Patch 2 and Patch 3 of "[PATCH v2 0/3] Do not change split folio target
->    order"[2],
->
-> This patchset is based on mm-new.
->
-> Changelog
-> ===
-> From V2[2]:
-> 1. Patch 1 is sent separately as a hotfix[1].
-> 2. set has_hwpoisoned on after-split folios if any contains HW poisoned
->    pages.
-> 3. added split_huge_page_to_order().
-> 4. added a missing newline after variable decalaration.
-> 5. added /* release= */ to try_to_split_thp_page().
-> 6. restructured try_to_split_thp_page() in memory_failure().
-> 7. fixed a typo.
-> 8. clarified the comment in soft_offline_in_use_page().
->
->
-> Link: https://lore.kernel.org/all/20251017013630.139907-1-ziy@nvidia.com/ [1]
-> Link: https://lore.kernel.org/all/20251016033452.125479-1-ziy@nvidia.com/ [2]
->
-> Zi Yan (4):
->   mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0
->     order
->   mm/huge_memory: add split_huge_page_to_order()
->   mm/memory-failure: improve large block size folio handling.
->   mm/huge_memory: fix kernel-doc comments for folio_split() and related.
->
->  include/linux/huge_mm.h | 22 ++++++++++++-----
->  mm/huge_memory.c        | 55 ++++++++++++++++++++++++++++++-----------
->  mm/memory-failure.c     | 30 +++++++++++++++++++---
->  3 files changed, 82 insertions(+), 25 deletions(-)
->
-> -- 
-> 2.51.0
+> > How to merge?  When this is ready to proceed (so subject to review
+> > feedback on this version), I'm not sure what the best route into the
+> > kernel is. Conor could take the lot via his tree for drivers/cache but
+> > the generic changes perhaps suggest it might be better if Andrew
+> > handles this?  Any merge conflicts in drivers/cache will be trivial
+> > build file stuff. Or maybe even take it throug one of the affected
+> > trees such as CXL.
+>=20
+> Let's not split the series up.  Either CXL or COnor's tree is fine my
+> me.
 
+CXL is fine by me, greater volume there probably by orders of magnitude.
 
---
-Best Regards,
-Yan, Zi
+--S6HWZzkHmuKfgcDz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPlC2QAKCRB4tDGHoIJi
+0tdvAQDJHGwCvxYrXGJs6nPPk7w5pV6+UajlzpKhldIVtCgm2QD/XrQK+qDLbAJA
+ymsJdZLdZoCSVVQ542yRJc4RjGzDnA8=
+=4U3B
+-----END PGP SIGNATURE-----
+
+--S6HWZzkHmuKfgcDz--
 
