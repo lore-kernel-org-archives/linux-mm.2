@@ -4,89 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D84A5CCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 17:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16739CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 17:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5E28E0006; Wed, 22 Oct 2025 13:13:28 -0400 (EDT)
+	id 5D7DE8E0008; Wed, 22 Oct 2025 13:20:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE728E0003; Wed, 22 Oct 2025 13:13:28 -0400 (EDT)
+	id 5AF588E0003; Wed, 22 Oct 2025 13:20:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3CE48E0006; Wed, 22 Oct 2025 13:13:27 -0400 (EDT)
+	id 4C5458E0008; Wed, 22 Oct 2025 13:20:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E3CDC8E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 13:13:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B6581408A1
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:13:27 +0000 (UTC)
-X-FDA: 84026396454.01.A9794E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BC81B180011
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:13:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fM26tfZs;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761153205; a=rsa-sha256;
-	cv=none;
-	b=EUMCvBnLdH/4kttPqooQoKEDwb+/c40iiW8g07XnJv7sj+mgCX0qnGAm/7jzkUXpTd6fbh
-	xH4Qt00ahLqpdM3+ZM/NL652w1YqM3UvCc5nKCPTscP6MQmvhGgVLr7oQ98pYduv+Voj41
-	fX8jkIi40VOMjR4QWtCUAajMysuynJ0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fM26tfZs;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6D68E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 13:20:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8FF313BED2
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:20:24 +0000 (UTC)
+X-FDA: 84026413968.06.D15C12B
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 725B020003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:20:22 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=T7yLoRyW;
+	spf=pass (imf13.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761153205;
+	s=arc-20220608; t=1761153622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LUO+eclc0lznNKUH1RT4OMIbI0woMdjn+ZOXEPO2Om4=;
-	b=lCfYsJwgU6oDIVnZSXP27DLFutjIqYhKAZdmZXmV3ln/8cP5tZrd56dswL71nyi01b1C+6
-	E+E7lEN8aCTAbN6NLdNLPKOrgkItnvbF4ixZG1jjlbOmVxUEEiCezNNoILiHUHk7iVIHKE
-	jLliPpHbMvQTq1eYB55lhe7WeHXirwE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 234BE62165;
-	Wed, 22 Oct 2025 17:13:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FAAC4CEE7;
-	Wed, 22 Oct 2025 17:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761153204;
-	bh=Oc5cL4PM3GS59XiGaVYHm7x2QglMaN7Tq26+NOil5DE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fM26tfZs84ldeAddOmNXArn5RbP7iEp+oNUSPg92OafLdEp2A2CltfwxTYDTDbSBt
-	 yhtDIrkROBstCq84hJRIv0uvNE852TNVAVBfnIvhjfb5K+f+sBF1WJ88PbKKep8MPs
-	 rsTBFdIzM2FKvPUMhlYOGddUPz2hWCETV98K98SI=
-Date: Wed, 22 Oct 2025 19:13:19 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Gabriele Paoloni <gpaoloni@redhat.com>
-Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, corbet@lwn.net,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	safety-architecture@lists.elisa.tech, acarmina@redhat.com,
-	kstewart@linuxfoundation.org, chuckwolber@gmail.com
-Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
-Message-ID: <2025102211-wolverine-cradling-b4ec@gregkh>
-References: <20250910170000.6475-1-gpaoloni@redhat.com>
- <2025102111-facility-dismay-322e@gregkh>
- <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com>
- <2025102124-punctuate-kilogram-da50@gregkh>
- <CA+wEVJajSGzb85YTiv98yAY3bcJFS0Qp_xjLc++wnU8t=wDAOg@mail.gmail.com>
+	bh=gkQW+eYOPmwcM3sAdAGa+/x+v8dfhv64s4mwT6r5ybc=;
+	b=gFLpbUXsg7a9bPZ2mFfnMs96UPTOOBFuvA/apF/V6KCrV5SmZ3N81F3jqCNwnWe0AQgMhh
+	qM3J9hWFUmGyclYbLBvmJ5deMYiVyKMqL0gzBuYk7dDtyW8fbP78SFXxZaIb3EW7L+NKQ4
+	PnL1Fu/U5jNhGigodcucZcF554nJUic=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=T7yLoRyW;
+	spf=pass (imf13.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761153622; a=rsa-sha256;
+	cv=none;
+	b=N5E+8s2dy0PHqdO3H42znTEvueMqgG5T731kysVTqcJLMkt5FbLLGrPHD5jiMhRlQDRVTU
+	mH1FvSsxS9QkDJg4HpDzLSwEzEPcHIRR700R8cy0Xk5SDMeBG2cDYL00WukFrIPB4AiLSD
+	14N9gz4J+nCrA0LEaftSKjnlMp/H/ZU=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7t08g006623;
+	Wed, 22 Oct 2025 14:43:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=gkQW+eYOPmwcM3sAd
+	AGa+/x+v8dfhv64s4mwT6r5ybc=; b=T7yLoRyWlOu2Si50qQrIPnT9QXTsdaq0Q
+	AwdUBozUwICVGsL8Yr4j/r54D1gYleJpCBLZoeXqKTPhdwc/1vhqhDbr7MWlToxD
+	M5cADJW/RStasMo7tk1dpQ2erEfSukTsZTg0WtKNbQaPkLMMDTXGtUEGrrXW2z5u
+	BkNhAd67nK22n/5L49DyfZusMikapcJC7+mNb1iHJIyU5KSGyO4ZDCiJnjqTbim4
+	gUouWdFMsnWqrrMACqhfnXxOyoXsETdQk400sg0wbUTykV0VdS/57BsgMK6k8p/z
+	Fj8iWjmOTol0/4motea2AB+4DFZps8P3ki8fAOpBw3FnEo8HAH+tw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuye-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:40 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEhdHZ015894;
+	Wed, 22 Oct 2025 14:43:39 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuyb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:39 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MDbdua017072;
+	Wed, 22 Oct 2025 14:43:38 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vnky0yk5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:38 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhYUB6357280
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Oct 2025 14:43:34 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 566AF20040;
+	Wed, 22 Oct 2025 14:43:34 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DACD120043;
+	Wed, 22 Oct 2025 14:43:33 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 14:43:33 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v11 13/15] unwind_user/sframe: Show file name in debug output
+Date: Wed, 22 Oct 2025 16:43:24 +0200
+Message-ID: <20251022144326.4082059-14-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251022144326.4082059-1-jremus@linux.ibm.com>
+References: <20251022144326.4082059-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+wEVJajSGzb85YTiv98yAY3bcJFS0Qp_xjLc++wnU8t=wDAOg@mail.gmail.com>
-X-Stat-Signature: ecw3m6wytawy4cshkmy33gdhsanw3qaq
-X-Rspamd-Queue-Id: BC81B180011
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rtHXrH2eN70zs9auQQr1YBdLWm62ERFj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX3c8tnlsreEy/
+ Con0RpxsbePMBMTSF4oAo7LIPrZCopCPOhvnrJARPRRDiHxHFczOhD8otf/Z+u9TNte0jRURx7c
+ 1suEdhIrbLzeqtw3pqQ8mquXKHL9i1Wgscd6TYt41kHjJspVtEqqTQ2XLWn7PlWAK5XtJNIFA6E
+ 35tPwTgk/HuYB+yH/TJNL+Nc9aShYJq6KueqEJ24eZukzz2MioOVwW9K9TonqYqbeO3CicvgaSU
+ buZ3yovPW+QhWpddlMROAGqfyxrOHbDpQNmc1Fw3JSjB8LZ7gkThuemOotyS57gDg5r4+w3SSBJ
+ 2lv3ekDfd+4fnpAAbg6n9nChtNVrtdL9BhlLnkLI1wtZ/fIhYUzJ9/RJ2LLaOrTY1A0ldm5lwxB
+ 4wU92xb4+ab12VgZUHsydpGUFU10hw==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8ed9c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=7d_E57ReAAAA:8
+ a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8 a=yMhMjlubAAAA:8
+ a=VnNF1IyMAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
+ a=meVymXHHAAAA:8 a=ZGhggJSn0wbQYAgsgMcA:9 a=jhqOcbufqs7Y1TYCrUUU:22
+ a=1CNFftbPRP8L7MoqJWF3:22 a=HkZW87K1Qel5hWWM3VKY:22 a=wa9RWnbW_A1YIeRBVszw:22
+ a=2JgSa4NbpEOStq-L5dxp:22 a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: dtlitkvYqoa9ESUzD-Y7r3YM5QDW7Rnw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 725B020003
+X-Stat-Signature: g4eyrc5hcyi3nyaeb67sezqmrnjsxwoy
 X-Rspam-User: 
-X-HE-Tag: 1761153205-961130
-X-HE-Meta: U2FsdGVkX1/jJ/06KWfcsAroeRD8LnRnCzidDIr5iRtTDLEkULNK+aIR5GhJx85uFWos+I2qH4i2Ti3DEn2XL0M+wccrn6fUQ5GI6eRZ83sCaHy3xiy8UK3qiamhLRs5+1CJrcrme3l05NLHdyxNvbUeB8fAtzAaB6qdAqbHe/grLw6uggNFjqjfsjFVbCgWE0rqV2ecsZFTXzCEFDGwhfwmPtNi6oX2wYdbWEDOcmGNgXG7A3XflBWvEue5sm7ir2CBKXFWhpJh3Q4q5ykcqVddD71pB9p9XcAWqf4ywL2CG9Q+MRDpcPEF8uv72CHf5q8t9zhi72B6IZgQEGVQgYgFEoqyKMaPXVmQ0YA1DikVa/poRWCP8jCzcdbcFmHx4YguGHM5qsNzEuGak72u7adGcTJG6TPon78l2kT8F4X0oAnlmr1px68UH5r2jHY9NaldTeNxoM0ctMtC7mYd7JBVky8fEzj5X4vY/OmhFVQ904GEnVaZRenj7Y4ZZdDozYITEUhWgGkb+tDjZwSngVcrbtQtetr6B9QQPUWt4VAzl47Flrs5TTQMIpej0S2Dg4zOLd+hXtVwmbsh9s58voaVWHpGKEYXGYXlj4MrYeabVmKw5faxk0qg/VHmqJJBzgF4LN/Yk7SR3hIPg5mdTPYQvpsNniHtXskslYK4oniWv6RkxCy7UACMJelmGHud6SuObFsIyMji8kslr+314aVksGEG1T1UJCrxhBMR02Ub4EgEjGwGpwXk7ocHFcRSyrHfy9f1dJIv+rcKK9zkIr6ZgJs/mcAiqVUwikcCKcIiVBQsUmAKvv5ND2oS7lZRWKfRy/iJSGEe+Rozmu1+WCDXdWZtqTvDux4opKNidX6YPAYcbWmEO3us2Pvx0+uzGlWLe7k9TTd1o7evfMSKojYi7YgSsDeJpZjH6gET2f3CV0DeZQZ4lwN7cmIAcuQew0F/yiaHWiO63pstXnA
- PwJWjJh6
- xzFwgaSASBc5zWgodmNeBe5xLeaTVfMHikjBLumzdzC/6fllMUEzb1a4sS/YOpQk1fOm8RxnaNFPuKw0Ci1UdTLMS258gExWMdqw2txtYDrk/hjRLZbYn06sxXx2NzSvKPGoVcElmYkdAB8fX8Y7QirIkkqZACaGBGlj0j7Lh/XLsak3yG/fabHy2usNZPm4XSNmFL4hYdaVJS3oXedZtmXZ81gM6MnXwRkClvreY3o7G86H9dZTIMDihk2s5Cz4JdDsxumvFxilZKfWuIkkgtRKI305uOSTETGRlfETohR3RKDagPYG55u0sEnDYAIQOLTG6
+X-HE-Tag: 1761153622-865816
+X-HE-Meta: U2FsdGVkX19KF12NfbaA6ab3QwBFRvhydSHQDKA/tCwm58Y2T9c8j6rmleaizVJ759HMXjlUtM2yae3idOK/hZSoqFlBQd0tC0Q8UNig6W7Au2DwlyNLpDouX5NnNF28jda5XknHJjRISbtJip+exklYEDl/5ppVs/mHfPcCc7j3oHoEufjfRNUNI5cenYWHy9id+KWOoNUS2ookFO2lPjX7KNxoXDOY38nNVEkmyViY8R1qI45qw3ZI/CnSKNYk7jY5ga9/RmMfpx0UWnpI6GQJoREUZDWcw3KYTaIxMIXJTW8F8EXS9DlGLOmqnnU+DDr5iK3UoW6ETzgDapmoT/2cybFRK0HZttwhNUP0vdCAwCrEwo1jH8a9W41YJKTQysGbUMgyKiCky8Gd2UQ8HTZ5EyVqWe/4W0r4CIs5Seax+tLnMPkFQdOazimgkUirKBhjBJKymRRy95DbGEhA37pGGeQxQUyrkVcPGSKYKcTE1aiJwft5kUaRvqppAn4B4hJPRjjTR1DYsTVQy+U50bAXnmpdvm5F/FghtZlpHOomHX5fPgKg9YwrNbYGYw1WKQACi8DIcP7iH9D64RdbMyV+YFwfWAaYOlrJb9MaGXmovlgORE3I7pJ7Xunbi0LhVbsao6vkKwydcEa9DTnM25GzT7B4XKd3PIaSnUr6tJBLV3UGI/8+CMLGf3WuvnWj5qlTjVzEFTLdo2qu7eB1FOFkLt5ER9awPoH8QHFnDN5Kvk4upcP8qrMx4CNip7WxNZua28oApt7C4bIYm7VRwL54b2jdYCdk6YcEDsbFSqOeojP+4IxriLJdjWlnovylnMTFSat9KqeVkixnGsk4rB4C8GnDJlCHcCQkpcsFRsANVRqlaoRMCRGOEEbQcGLMXx2FauXd7TYWjRpTal5v6D+W53++/V+ElmBd4OcpOemqgiI1jyElpbceAdZvd7chqTzSHEZ1KyAgGjiXeo3
+ R3owClmH
+ LZB35RMs7/BPk5ZNNwQJlYFP+eQncLd9BBQkhWhulRI+ACk3KlKU5ZJrQTcSz6ohoMrKJiKlK8H9vIZeEn14ile6IDIsmPGbH0OV/GR8+6/srJRs7le/xe30kMyEwTtDaNqtv5nncLmI7MrgJ37HVY/YS00Tw/tjmtOSaOtxaB+hAd2T4TQ/KZkBPDVH+s8K+sxoCF5AnzrLrofMLIPwjsydf7R65wIdUC/xJqeT8efwZhPhf/ufphlpg0P8ocV9z5jAi54VScj0gMz82ZU6YrK94kptxz1ezKR4NcruVSeDMApXgwUMvFz3957QOPySXAPshnKJFanESIrYV7qFOoU79WIctMVxYfoVOuCNrY6pK9Eigef6R3k/EXLJtJA9FHsehetrv+I6ddNBto4PRRNNuKh3Vn4lX+HRNXR7kWHK4SblactMMJY/AC66ZignY/p6FEaBCK5+NC2HyZRY+8BHCe9RxVdMkXgPx9kqt/woXH5mt0HjnpxRYwmlnEi+h5E/9HZvkjDpHL0CjQarm9vsYSRsZaKBgnj0TJMCJo0d9HwyrH/6Fsp6cmTasdYf8Uz0KucMiW4L85bGyM60KOK9/H4mg/m55BjVwp+iP00uaSrHNACJMmYF6oKMfTfNrwkRonSUpeYHSBH7sfYqpsXRL5hcvGKS5uEXCfqNoEIHunvZDU+4M81aLaiqHTMzNN7F/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,49 +172,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 04:06:10PM +0200, Gabriele Paoloni wrote:
-> > Every in-kernel api documented in a "formal" way like this?  Or a
-> > subset?  If a subset, which ones specifically?  How many?  And who is
-> > going to do that?  And who is going to maintain it?  And most
-> > importantly, why is it needed at all?
-> >
-> > For some reason Linux has succeeded in pretty much every place an
-> > operating system is needed for cpus that it can run on (zephyr for those
-> > others that it can not.)  So why are we suddenly now, after many
-> > decades, requiring basic user/kernel stuff to be formally documented
-> > like this?
-> 
-> Let me try to answer starting from the "why".
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Let's ignore the "why" for now, and get to the "how" and "what" which
-you skipped from my questions above.
+When debugging sframe issues, the error messages aren't all that helpful
+without knowing what file a corresponding .sframe section belongs to.
+Prefix debug output strings with the file name.
 
-_Exactly_ how many in-kernel functions are you claiming is needed to be
-documented in this type of way before Linux would become "acceptable" to
-these regulatory agencies, and which ones _specifically_ are they?
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Indu Bhagat <indu.bhagat@oracle.com>
+Cc: "Jose E. Marchesi" <jemarch@gnu.org>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: Jens Remus <jremus@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: Sam James <sam@gentoo.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Carlos O'Donell" <codonell@redhat.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ include/linux/sframe.h       |  4 +++-
+ kernel/unwind/sframe.c       | 23 ++++++++++--------
+ kernel/unwind/sframe_debug.h | 45 +++++++++++++++++++++++++++++++-----
+ 3 files changed, 56 insertions(+), 16 deletions(-)
 
-Without knowing that, we could argue about the format all day long, and
-yet have nothing to show for it.
+diff --git a/include/linux/sframe.h b/include/linux/sframe.h
+index 9a72209696f9..b79c5ec09229 100644
+--- a/include/linux/sframe.h
++++ b/include/linux/sframe.h
+@@ -10,7 +10,9 @@
+ 
+ struct sframe_section {
+ 	struct rcu_head	rcu;
+-
++#ifdef CONFIG_DYNAMIC_DEBUG
++	const char	*filename;
++#endif
+ 	unsigned long	sframe_start;
+ 	unsigned long	sframe_end;
+ 	unsigned long	text_start;
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+index 77ef1f0bb9c5..82eaf3c5d6b0 100644
+--- a/kernel/unwind/sframe.c
++++ b/kernel/unwind/sframe.c
+@@ -331,14 +331,17 @@ int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
+ end:
+ 	user_read_access_end();
+ 
+-	if (ret == -EFAULT)
++	if (ret == -EFAULT) {
++		dbg_sec("removing bad .sframe section\n");
+ 		WARN_ON_ONCE(sframe_remove_section(sec->sframe_start));
++	}
+ 
+ 	return ret;
+ }
+ 
+ static void free_section(struct sframe_section *sec)
+ {
++	dbg_free(sec);
+ 	kfree(sec);
+ }
+ 
+@@ -349,7 +352,7 @@ static int sframe_read_header(struct sframe_section *sec)
+ 	unsigned int num_fdes;
+ 
+ 	if (copy_from_user(&shdr, (void __user *)sec->sframe_start, sizeof(shdr))) {
+-		dbg("header usercopy failed\n");
++		dbg_sec("header usercopy failed\n");
+ 		return -EFAULT;
+ 	}
+ 
+@@ -358,18 +361,18 @@ static int sframe_read_header(struct sframe_section *sec)
+ 	    !(shdr.preamble.flags & SFRAME_F_FDE_SORTED) ||
+ 	    !(shdr.preamble.flags & SFRAME_F_FDE_FUNC_START_PCREL) ||
+ 	    shdr.auxhdr_len) {
+-		dbg("bad/unsupported sframe header\n");
++		dbg_sec("bad/unsupported sframe header\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (!shdr.num_fdes || !shdr.num_fres) {
+-		dbg("no fde/fre entries\n");
++		dbg_sec("no fde/fre entries\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	header_end = sec->sframe_start + SFRAME_HEADER_SIZE(shdr);
+ 	if (header_end >= sec->sframe_end) {
+-		dbg("header doesn't fit in section\n");
++		dbg_sec("header doesn't fit in section\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -381,7 +384,7 @@ static int sframe_read_header(struct sframe_section *sec)
+ 	fres_end   = fres_start + shdr.fre_len;
+ 
+ 	if (fres_start < fdes_end || fres_end > sec->sframe_end) {
+-		dbg("inconsistent fde/fre offsets\n");
++		dbg_sec("inconsistent fde/fre offsets\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -437,6 +440,8 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 	sec->text_start		= text_start;
+ 	sec->text_end		= text_end;
+ 
++	dbg_init(sec);
++
+ 	ret = sframe_read_header(sec);
+ 	if (ret) {
+ 		dbg_print_header(sec);
+@@ -445,8 +450,8 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 
+ 	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
+ 	if (ret) {
+-		dbg("mtree_insert_range failed: text=%lx-%lx\n",
+-		    sec->text_start, sec->text_end);
++		dbg_sec("mtree_insert_range failed: text=%lx-%lx\n",
++			sec->text_start, sec->text_end);
+ 		goto err_free;
+ 	}
+ 
+@@ -468,7 +473,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
+ 				   struct sframe_section *sec)
+ {
+ 	if (!mtree_erase(&mm->sframe_mt, sec->text_start)) {
+-		dbg("mtree_erase failed: text=%lx\n", sec->text_start);
++		dbg_sec("mtree_erase failed: text=%lx\n", sec->text_start);
+ 		return -EINVAL;
+ 	}
+ 
+diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
+index 055c8c8fae24..7794bf0bd78c 100644
+--- a/kernel/unwind/sframe_debug.h
++++ b/kernel/unwind/sframe_debug.h
+@@ -10,26 +10,59 @@
+ #define dbg(fmt, ...)							\
+ 	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
+ 
++#define dbg_sec(fmt, ...)						\
++	dbg("%s: " fmt, sec->filename, ##__VA_ARGS__)
++
+ static __always_inline void dbg_print_header(struct sframe_section *sec)
+ {
+ 	unsigned long fdes_end;
+ 
+ 	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde));
+ 
+-	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
+-	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
+-	    "ra_off:%d fp_off:%d\n",
+-	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
+-	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
+-	    sec->ra_off, sec->fp_off);
++	dbg_sec("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
++		"fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
++		"ra_off:%d fp_off:%d\n",
++		sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
++		sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
++		sec->ra_off, sec->fp_off);
++}
++
++static inline void dbg_init(struct sframe_section *sec)
++{
++	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
++
++	guard(mmap_read_lock)(mm);
++	vma = vma_lookup(mm, sec->sframe_start);
++	if (!vma)
++		sec->filename = kstrdup("(vma gone???)", GFP_KERNEL);
++	else if (vma->vm_file)
++		sec->filename = kstrdup_quotable_file(vma->vm_file, GFP_KERNEL);
++	else if (vma->vm_ops && vma->vm_ops->name)
++		sec->filename = kstrdup(vma->vm_ops->name(vma), GFP_KERNEL);
++	else if (arch_vma_name(vma))
++		sec->filename = kstrdup(arch_vma_name(vma), GFP_KERNEL);
++	else if (!vma->vm_mm)
++		sec->filename = kstrdup("(vdso)", GFP_KERNEL);
++	else
++		sec->filename = kstrdup("(anonymous)", GFP_KERNEL);
++}
++
++static inline void dbg_free(struct sframe_section *sec)
++{
++	kfree(sec->filename);
+ }
+ 
+ #else /* !CONFIG_DYNAMIC_DEBUG */
+ 
+ #define dbg(args...)			no_printk(args)
++#define dbg_sec(args...	)		no_printk(args)
+ 
+ static inline void dbg_print_header(struct sframe_section *sec) {}
+ 
++static inline void dbg_init(struct sframe_section *sec) {}
++static inline void dbg_free(struct sframe_section *sec) {}
++
+ #endif /* !CONFIG_DYNAMIC_DEBUG */
+ 
+ #endif /* _SFRAME_DEBUG_H */
+-- 
+2.48.1
 
-And then, I have to ask, exactly "who" is going to do that work.
-
-I'll point at another "you must do this for reasons" type of request we
-have had in the past, SPDX.  Sadly that task was never actually finished
-as it looks like no one really cared to do the real work involved.  We
-got other benefits out of that effort, but the "goal" that people
-started that effort with was never met.  Part of that is me not pushing
-back hard enough on the "who is going to do the work" part of that
-question, which is important in stuff like this.
-
-If you never complete the effort, your end goal of passing Linux off to
-those customers will never happen.
-
-So, try to answer that, with lots and lots of specifics, and then, if we
-agree that it is a sane thing to attempt (i.e. you are going to do all
-the work and it actually would be possible to complete), then we can
-argue about the format of the text :)
-
-thanks,
-
-greg k-h
 
