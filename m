@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68418CCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:32:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D001ACCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E1AD8E0009; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
+	id E943F8E000C; Wed, 22 Oct 2025 03:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B91C8E0002; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
+	id E6BAF8E0002; Wed, 22 Oct 2025 03:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F6D28E0009; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
+	id D81F88E000C; Wed, 22 Oct 2025 03:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F4658E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7825248B13
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:32:06 +0000 (UTC)
-X-FDA: 84024931452.08.038F2C2
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 646CD40015
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:32:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=InR5naqE;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C9FD28E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:33:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8226B47DA5
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:33:43 +0000 (UTC)
+X-FDA: 84024935526.03.07AFC57
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2894A1C000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:33:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=R7nLqGZT;
+	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761118324;
+	s=arc-20220608; t=1761118421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QtY8PxEyIubqCZUk80T4fMo0woyvuu6eo6/vRZ5dv8s=;
-	b=aCxNbFZE+XDO2AroTFi01KBK7A20VS6Hl27q2uTYdqSTAw8FYxp6IWdqm2n/TdxTueUjL9
-	2EuFgO0iMmYCGy/hg1hTgKtHXySdwrZOqeOEFF67JaRrMCDEn4nhbZNDTzZBjX5a5HU/Ti
-	T1X2y0yBFSA8p3Slmfv2pZLCGi0Uv9o=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=InR5naqE;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118324; a=rsa-sha256;
+	bh=CqsGVZ4SyFVwjVPf+wFK4DLy89I6GDvi6h9PlM5oYdg=;
+	b=W0wDCcKGXPdebX2mP6bhVb8fhM9Jj0ldDGg+yCJuDd/XAKBmP5CY5w8F+Z/Ntt3x3+XFMB
+	eW9SPl0kgp1tM97Gbp4jgWI4I2m1OXjxm49TXfIHRYYuH2WKcmlGKLmtbCwuSI3Bb+Ca+I
+	hnyP4iTyHah2rlrK/sdZxUe/Ap/haxo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118421; a=rsa-sha256;
 	cv=none;
-	b=k7Qvjq+STcZrbIs9RT6KKT4zMBNCAz0DSlPdPyFHEnadLzIcF0k1L6sBwu//PshDjHiDPe
-	Oai99rDOq7A1RccRWSID3AktHRO5lBRgv8+lENm4pqtRbi+ly1ybTYkoD1mQCE9j55H+NB
-	k6z0aCZUcYVSX4zGlg1UVB/u+PBlryE=
+	b=K6dnTJzoQ8PxjRf1N4Hu3tRTx76kNK8wtRibrRrdfZlEV4O6sCJFqm6gNeQ2Aa2528upLb
+	IiyX6gKWIAaiifdiSfuVj8yQGWtYrcHMnLinr2GJwg2EeW4U9FZCBwjxoQLhgHdHqStJP4
+	nnNdeZzF8SJAPvlpaGfy6hzs2oif8Bo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=R7nLqGZT;
+	spf=pass (imf21.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1761118320; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=QtY8PxEyIubqCZUk80T4fMo0woyvuu6eo6/vRZ5dv8s=;
-	b=InR5naqE12shqKfMuSggTZgD8usHpAbCp1sy5++MvTHKbokmqqvBVUH0YwBcyTKGnZafGjaEYwQ0raeIVC62P8rvxIfV1tipTAe2Yl9TgkzL/x8zpphMGNC897AMkyDndkVG1Vk3jUrShQ0iSxOhuQBq5DQFJd9UoKsgBKC/HAs=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WqlxQu6_1761118300 cluster:ay36)
+	t=1761118418; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=CqsGVZ4SyFVwjVPf+wFK4DLy89I6GDvi6h9PlM5oYdg=;
+	b=R7nLqGZTOo7CWCFIKqmF+y5Y1Tn8frZ93TuMKKel6Eszs3p/ggXwigbLf5jJS7XoVOcTHpxrKFJW5PURcQrWiOufwVGG1yglVUo5pCQzo2u7Z7QTmqKmqnTlQaHcPC9EzGddeYL5boQfZ1YVmpDlGyM8Q/6vPhEEGWAPWcDUjp8=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wqm1la1_1761118416 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 22 Oct 2025 15:31:58 +0800
+          Wed, 22 Oct 2025 15:33:36 +0800
 From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
- <will@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  David
- Hildenbrand <david@redhat.com>,  Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Zi Yan
- <ziy@nvidia.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Ryan
- Roberts <ryan.roberts@arm.com>,  Yang Shi <yang@os.amperecomputing.com>,
-  "Christoph Lameter (Ampere)" <cl@gentwo.org>,  Dev Jain
- <dev.jain@arm.com>,  Anshuman Khandual <anshuman.khandual@arm.com>,
-  Yicong Yang <yangyicong@hisilicon.com>,  Kefeng Wang
- <wangkefeng.wang@huawei.com>,  Kevin Brodsky <kevin.brodsky@arm.com>,  Yin
- Fengwei <fengwei_yin@linux.alibaba.com>,
-  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH -v2 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-In-Reply-To: <CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
-	(Barry Song's message of "Wed, 22 Oct 2025 17:08:47 +1300")
-References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
-	<20251013092038.6963-3-ying.huang@linux.alibaba.com>
-	<CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
-Date: Wed, 22 Oct 2025 15:31:39 +0800
-Message-ID: <87a51jfl44.fsf@DESKTOP-5N7EMDA>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  David
+ Hildenbrand <david@redhat.com>,  linux-kernel@vger.kernel.org,  Catalin
+ Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
+ tests
+In-Reply-To: <20251022032951.3498553-1-anshuman.khandual@arm.com> (Anshuman
+	Khandual's message of "Wed, 22 Oct 2025 04:29:51 +0100")
+References: <20251022032951.3498553-1-anshuman.khandual@arm.com>
+Date: Wed, 22 Oct 2025 15:33:35 +0800
+Message-ID: <87ecqve6gg.fsf@DESKTOP-5N7EMDA>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 646CD40015
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 66ezikqzn11e1tgq6gwo4zi3a8bthqrp
 X-Rspam-User: 
-X-Stat-Signature: gf1aamdbjp9q5h81q5d68skhzx8t8x3o
-X-HE-Tag: 1761118323-635326
-X-HE-Meta: U2FsdGVkX18X+2gOcdxAag3U7mZ+32Ph7bcJ4+Qe53AijmqHKdUQPnYNiRMNqtsuyyql5OAm08bL+iLZFzxymjOSgmmziBQXYnqiQjNMvz8Z2Emc824uwsrE/xCVVTHp4V1t023JrOg2BmSQQBVR6YbeB+GX1jLP40yylIrD5VqgzhMeuqU0UqQO7iZCPAkAKc5eau/3Je69Prq4F46LLZ6w3I2fKZw1BE8BelyuJiKSN5r8vejMRpJpiMQ3v/E4Uj2o9LfxPlmDLem7r4lO9bRaswCSLUL+YvKGA7/2i+foUcTqD+OxbtQcuwb0QUM5cPW11ATc4U/+Tm6G5s7brPRoJJFa53KguL56dfjT2mPfFFf1tByC3u0ylzixdLSmCG+wSJ8Ap6q58XAeSCZmLQW59LyAQnI9BMVTxAY08GhkRf+2//Kh2oOaRNm2TV7aHFe4uuDyDFIlZxQLBjt6xTzYeeGaNiBidtAsrkIb7DsVAUPplOteXr8MXyWAFzscpZZqorvQzdnRchNcAE599soZsCzsgSzIdfAynabzuKr13HpEBKFmfk+i+CT4DyupRQ+2//f20kk9R5ohWQMEENMe5ZeXt1rbZKIejQnK8Wb76aYB/STJSLgiiX61jyIrlze5u7NAg3gk3jnvV8nxBnSCsIVf24fD/2LSeHngK6msTDHjp78xSIZGvoiBc6OYPXGB/D5Tz1wDVubLSekOoGiAJvJsYVqVV5oC9h/6RxKMmR/B6BbSG68jL1wU5D5Ke4s3ytouUiekfB9wDWuHc6YsHDkcvZgr1Un5iIGR60qlWdwL7MRZBy2h1661qgddrDlE2Vt6iGC3O4HPTR10jlQH85cmGSt1Wob7Ejs0abFYjKD9u3wTFGrZ6v1mIgOJ8MLFeSgsrAY6q1yrvD1blwdkRC27vH0/EWCuq3Gw/rupfhlv6IDv9NCfUAA1ViywIduKBX8nmpm4fpQP0qK
- PUgNXXxU
- g+suSIF23uWB+VzqsmZn0GmR3/aNScSUNud2GSvPfsV0dbiq+0g6ZfmkIka9jV2aBHTjqPBG3PBRqd74nEcYe5LXDnYMm1UFIqfP0RSJvwvNqTwlJymkZ/BIzS4oRyGL2wGvzhLepVeUmnZ9H5lHIoD9QUU6JfsHiROsyXNyC+r/HHlbd1i8Qr1MURYtZZSxCVnF4fmbAHSRyDpU/x2NfFLYeUuENgpvmfYCB8W4D9JXSMXK6dy9+kyEpplqeaC50qPcY5WmCVJ2xD+RlqmQH+axF+9BL8o1F0A0IS/3c/nVjS4Y=
+X-Rspamd-Queue-Id: 2894A1C000C
+X-HE-Tag: 1761118420-927942
+X-HE-Meta: U2FsdGVkX1/26RyE+Rhl8wVcpOgkJ+sf3Fa4dwaHm1q4USx38BfuaJ61vIRwn/TYVpNqgFZFsERbUzNoeX8OQFrQgqwV6s3SymuJytWdr2lMyiIyvNAOLwI/m3ozEqHWezjz13gDX47L/nSeEGscxL6X2NfLgyE7T3jReBawAnH/YrAx+JkgWZOrqmRKQDys+c6xlFu2TIKEVD8f2txJHryYYfwWGp8BiHm81/mwFiqg8rl84acDRYX6f4jwqpcjfqCUXgK4voZATDw3Ecge/4O/6+tHRMCTgcedzjcUk5JIyw0EwojmGBHX9e9/9sPg8v/FqORqmLQAWdrlUbO76x/WsH5UO78Nncc35Ry9dMt2KAyBx9Vb44kE6vWVBT40yfv9EOgUW3TfXllZOk5nYJKXPsJk9xJGDpObTTIjlzRS9aMzTP5pwoHrHr6Dgrw09trJr4xXqMb6JUgm3B/Hw8cJkw8tcdFgzuyM6Lp5LIB04+qM1QVMoN3MW1F5wETr6T/hcbeFAzx12UhdvF1/v32mjBI1oz+YbM6Ty1fZK2EqnYydLx/CZ0+2OFrRCpwkJbyeZheSI/R80XzA2SXBvTxdecRGZTbF2xMvMaZSZgkzCj7DRAGambmKQNW9+CkxS2/z+0pwrQFAQKWsaUNrI2bR5qY9pLjbg+WiB5RB+4lJJR49WIJc/I7Y4QP2ZHCTcdMDfYrFie9P2Sclti/lhwIahXTVRiAp0njVE6b4g3dDAQuylqiwapt1ZnF71yGOz+a1RtU2hv1Ma4ly36f15emmp7qn1zuYjkt145pmxdUhUVPaITJ/dFiGKmgI2eIPGejnTURTpRw3x8wEWptj52Dm6155+2qcohKvV5AzOjL9LQ/fi9GdA2PsCh9rJM+mX3iqNfXQa1zJRdw5jwcAKF035XPuL6IeIcIi/vkjvtz51bS52rDFzdD0wOG3GtvTyzrtLH74VGG/0gEqPvg
+ SGxU5u09
+ kCL6jUqmDgf7IQrda356Q4Xvp68+ukSk6mx7rW52VrGpm/6bYoWg+9gDHzqk+H0tzXKzIGHnf/2O6nzGeiTp/PXSQhGEP/yMkQdCXO0LMXs6xquSbIiCdmaGPiR0IZAmeWo2PzMo1DfVhMCaGfKvoW2CmKNbFOXQVz7pfpaNu2aU8voEKeFu92h3EH3ESpKeSnK6K4lvBgliM4qEti+KZJghl1EzV0xtWax6RxjCtPsx5MKqo+ZILNrjMBuCVfvph/emGSxkogo3ZiLnQvkgM5yFpbMmFaUvKK9fsLvWyfwo4yPD9ezR6D3xHm0imMJbSCXLG4+AwQzYFzZ5iv8hWXMLqT10+VKkGIvyFIWAjTC8gNP8a9P9SQ03IuG4KQe5Ob878ksQY+lJ6GAYjI0DXzPqekdQc78YcjvNeFQkL1bLHbLyxzeo1bStQRGesh/CIjXM7vrLgNwX96g+O2cFrgNoio7GkFPloHdO+oYMzWUOqjLBqZTlvm487lv7U3HUo32FzVDtPkk+YnGksx5TN6ztyQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,159 +87,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Barry,
+Anshuman Khandual <anshuman.khandual@arm.com> writes:
 
-Barry Song <21cnbao@gmail.com> writes:
-
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/p=
-gtable.h
->> index aa89c2e67ebc..35bae2e4bcfe 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
->>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->>
->>  /*
->> - * Outside of a few very special situations (e.g. hibernation), we alwa=
-ys
->> - * use broadcast TLB invalidation instructions, therefore a spurious pa=
-ge
->> - * fault on one CPU which has been handled concurrently by another CPU
->> - * does not need to perform additional invalidation.
->> + * We use local TLB invalidation instruction when reusing page in
->> + * write protection fault handler to avoid TLBI broadcast in the hot
->> + * path.  This will cause spurious page faults if stall read-only TLB
->> + * entries exist.
->>   */
->> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (=
-0)
->> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)       \
->> +       local_flush_tlb_page_nonotify(vma, address)
->> +
->> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)   \
->> +       local_flush_tlb_page_nonotify(vma, address)
->>
->>  /*
->>   * ZERO_PAGE is a global shared page that is always zero: used
->> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/=
-tlbflush.h
->> index 18a5dc0c9a54..651b31fd18bb 100644
->> --- a/arch/arm64/include/asm/tlbflush.h
->> +++ b/arch/arm64/include/asm/tlbflush.h
->> @@ -249,6 +249,18 @@ static inline unsigned long get_trans_granule(void)
->>   *             cannot be easily determined, the value TLBI_TTL_UNKNOWN =
-will
->>   *             perform a non-hinted invalidation.
->>   *
->> + *     local_flush_tlb_page(vma, addr)
->> + *             Local variant of flush_tlb_page().  Stale TLB entries may
->> + *             remain in remote CPUs.
->> + *
->> + *     local_flush_tlb_page_nonotify(vma, addr)
->> + *             Same as local_flush_tlb_page() except MMU notifier will =
-not be
->> + *             called.
->> + *
->> + *     local_flush_tlb_contpte_range(vma, start, end)
->> + *             Invalidate the virtual-address range '[start, end)' mapp=
-ed with
->> + *             contpte on local CPU for the user address space correspo=
-nding
->> + *             to 'vma->mm'.  Stale TLB entries may remain in remote CP=
-Us.
->>   *
->>   *     Finally, take a look at asm/tlb.h to see how tlb_flush() is impl=
-emented
->>   *     on top of these routines, since that is our interface to the mmu=
-_gather
->> @@ -282,6 +294,33 @@ static inline void flush_tlb_mm(struct mm_struct *m=
-m)
->>         mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
->>  }
->>
->> +static inline void __local_flush_tlb_page_nonotify_nosync(
->> +       struct mm_struct *mm, unsigned long uaddr)
->> +{
->> +       unsigned long addr;
->> +
->> +       dsb(nshst);
+> Add some [pte|pmd]_mkwrite_novma() relevant tests.
 >
-> We were issuing dsb(ishst) even for the nosync case, likely to ensure
-> PTE visibility across cores. However, since set_ptes already includes a
-> dsb(ishst) in __set_pte_complete(), does this mean we=E2=80=99re being ov=
-erly
-> cautious in __flush_tlb_page_nosync() in many cases?
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> These tests clear on arm64 platform after the following recent patch.
 >
-> static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->                                            unsigned long uaddr)
-> {
->         unsigned long addr;
+> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
 >
->         dsb(ishst);
->         addr =3D __TLBI_VADDR(uaddr, ASID(mm));
->         __tlbi(vale1is, addr);
->         __tlbi_user(vale1is, addr);
->         mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
->                                                 (uaddr & PAGE_MASK) +
-> PAGE_SIZE);
-> }
-
-IIUC, _nosync() here means doesn't synchronize with the following code.
-It still synchronizes with the previous code, mainly the page table
-changing.  And, Yes.  There may be room to improve this.
-
-> On the other hand, __ptep_set_access_flags() doesn=E2=80=99t seem to use
-> set_ptes(), so there=E2=80=99s no guarantee the updated PTEs are visible =
-to all
-> cores. If a remote CPU later encounters a page fault and performs a TLB
-> invalidation, will it still see a stable PTE?
-
-I don't think so.  We just flush local TLB in local_flush_tlb_page()
-family functions.  So, we only needs to guarantee the page table changes
-are available for the local page table walking.  If a page fault occurs
-on a remote CPU, we will call local_flush_tlb_page() on the remote CPU.
-
->> +       addr =3D __TLBI_VADDR(uaddr, ASID(mm));
->> +       __tlbi(vale1, addr);
->> +       __tlbi_user(vale1, addr);
->> +}
->> +
->> +static inline void local_flush_tlb_page_nonotify(
->> +       struct vm_area_struct *vma, unsigned long uaddr)
->> +{
->> +       __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +       dsb(nsh);
->> +}
->> +
->> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
->> +                                       unsigned long uaddr)
->> +{
->> +       __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +       mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & =
-PAGE_MASK,
->> +                                               (uaddr & PAGE_MASK) + PA=
-GE_SIZE);
->> +       dsb(nsh);
->> +}
->> +
->>  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->>                                            unsigned long uaddr)
->>  {
->> @@ -472,6 +511,23 @@ static inline void __flush_tlb_range(struct vm_area=
-_struct *vma,
->>         dsb(ish);
->>  }
->>
+> Changes in V2:
 >
-> We already have functions like
-> __flush_tlb_page_nosync() and __flush_tlb_range_nosync().
-> Is there a way to factor out or extract their common parts?
+> - Added a new test combination per Huang
 >
-> Is it because of the differences in barriers that this extraction of
-> common code isn=E2=80=99t feasible?
+> Changes in V1:
+>
+> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
+>
+>  mm/debug_vm_pgtable.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 830107b6dd08..def344bb4a32 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+> +
+> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
+> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
 
-Yes.  It's a good idea to do some code clean to reduce code duplication.
-Ryan has plan to work on this.
+Why do you use
+
+pte_mkwrite_novma(pte)
+
+instead of
+
+pte_mkwrite(pte, args->vma)
+
+?
+
+> +	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
+> +	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+>  }
+>  
+>  static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+> @@ -195,6 +201,12 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+>  	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+>  	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+>  	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
+> +
+> +	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
+> +	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
+> +	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
+> +	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
+> +
+>  	/*
+>  	 * A huge page does not point to next level page table
+>  	 * entry. Hence this must qualify as pmd_bad().
 
 ---
 Best Regards,
