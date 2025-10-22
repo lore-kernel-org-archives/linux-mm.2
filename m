@@ -4,107 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE847CCD1A5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 00:51:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8C72CCD1A5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 00:57:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368538E0007; Tue, 21 Oct 2025 20:51:52 -0400 (EDT)
+	id 263138E0007; Tue, 21 Oct 2025 20:57:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318BA8E0002; Tue, 21 Oct 2025 20:51:52 -0400 (EDT)
+	id 23A3E8E0002; Tue, 21 Oct 2025 20:57:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2069C8E0007; Tue, 21 Oct 2025 20:51:52 -0400 (EDT)
+	id 177358E0007; Tue, 21 Oct 2025 20:57:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BC318E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:51:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AAEA5C06DF
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:51:51 +0000 (UTC)
-X-FDA: 84023922822.04.A499498
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7CAD5C0005
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:51:47 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=g9FX1901;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761094310; a=rsa-sha256;
-	cv=none;
-	b=tG8YlSBEBBhJXtIFQscnp/mIwn91gq+yOCynMX0lZuTIrX2Eu4f6w1At0ZtdF0zDwzLbD/
-	QfEoZXDpeHGnOF8m2Cnkxt+nol6geBJ8JLXnoFM8VsN9vATCIMkrKOyU8nPZB+hNFs2QXp
-	b+lqqtGZOCdana+CgEYeHpb+GHrMEjk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=g9FX1901;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 08E678E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:57:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95E7211AB38
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:57:23 +0000 (UTC)
+X-FDA: 84023936766.19.3D9B67E
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf07.hostedemail.com (Postfix) with ESMTP id D83B740008
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:57:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QYcRfZIE;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761094310;
+	s=arc-20220608; t=1761094641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NhNODGEGAf1PMqtVEQW9+WwQAwcAtyxiYl+I3YMmWwU=;
-	b=j9vn+yCr1A1tSC9YGEet+jxoVX6M30FN2odDTm7gCp3F9VilRJdwGQGZRnTJc/5BsiZDSu
-	+6btwuIHCtw30QkA3Vzr64zzHLjliKR9ErBa/4Qk2ErAdDkbGMebb/ojAUUuJmDoMpRdam
-	DJZOyEmLMt5Kt9QJbMEHdpNJLGwwGBA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=NhNODGEGAf1PMqtVEQW9+WwQAwcAtyxiYl+I3YMmWwU=;
-	b=g9FX1901rtMnwqzXkvwB30GdrOlb4EnNVKWQYb+lUSv1B52ipXGKILnzjIoZLauuqIb+5O15E
-	BYNtWQYEWPAKwbpBn/M/bElA4e3EqamFQl65RP70NYo3cfpWKiH1Gu8UriIxDSkP8ynRGiAZvnI
-	reH0E/gYofaANOfwCupYllc=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4crrFH5S4MznTW3;
-	Wed, 22 Oct 2025 08:50:59 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 22C851A0188;
-	Wed, 22 Oct 2025 08:51:41 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Oct 2025 08:51:40 +0800
-Message-ID: <f9f19e32-f14b-4835-b804-6e8a60927d04@huawei.com>
-Date: Wed, 22 Oct 2025 08:51:39 +0800
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=V6rRIjCz5N1D5Ed0cxws3QbJ+B4MJ09ZUi0KecBqWPM=;
+	b=IPG8dIdfMApFImd8cSFw0lFMqVhmf8w3AKYQbflM1L0ZeLyRmsPrzSyKWJ3WgjDhPiRBKW
+	3I7gysjA0RZmy14zUygf32b8AKxDYD7yG6xgtPA1uzMWMwEsQ5zbOTmoqpc8k+SbsnQVTz
+	axuC5N7OKontr+fvCdT9DtdIn60Yo4M=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QYcRfZIE;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761094641; a=rsa-sha256;
+	cv=none;
+	b=aCZxXaFCzRId50xPrFLBCw7BCzfmyUoVj5fpUOlUEnXbMkBZ6eHYYCHzM9pwkDmVEWejkB
+	B6ueBUxQxfNkq+rAC0BAi/QOlt2LGhNY12tXsQCoK/W7Wd97G2/R/0ATkmtxULaVJRCv8z
+	hf5SMaOPullayAybMKqp5z7/ROPWiAc=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4e8b4e4ce70so6032501cf.3
+        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1761094641; x=1761699441; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V6rRIjCz5N1D5Ed0cxws3QbJ+B4MJ09ZUi0KecBqWPM=;
+        b=QYcRfZIEWXKnhBXHx0sSEKmYgaiK1KQYOIGLT5fbIWo6Jjz6Y1V2Hh5ClrXi4lHGIg
+         fiWtYuU3eE1s2x0mHYPSR1lchTnUQntUiABB4mTgQauwibPLQU6yaxvK5WXicjWV4YkF
+         18M+oPygpRbuzDJmS5olFnQW2Eiysw0sU+UJ7Oj7lx4J0VD5CsTtrqs5+ydBqqMHZGFU
+         RGm/EvgwilBVYJujRyrsGV+a9uCLUce6CW29ZMCFKbI5yvEA761PD54RvF02GMYCdp4C
+         5XRj51fOwsmYqKIixbPMe79XLrv6refIftX99pKIqQ7yIy/lpRBEpBZGi3T8T2Y9hktk
+         YkGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761094641; x=1761699441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V6rRIjCz5N1D5Ed0cxws3QbJ+B4MJ09ZUi0KecBqWPM=;
+        b=Fr7eKprWhPSWt2dcQAHJIahdhF0+VPKdjm2de1BfcyzP72sZh4rBynqGP9pAd5mDZZ
+         4B/e7vlYRhpeif0V+YGitF4prqnyb9M2/yygEz1yX51Ym49wHkf4LSbLXjkTHpU+JROi
+         lmG7FDCM2rCGoSFCOnHzl+9ywi8KZpRbDuMSWzHv4n19bVE3jfumxPg9RjAoUaxuI6dd
+         4U5/5oy+HYVD4pX0XWyLZVpB3197rZXfj+86EdwTxTUgbpGhQ6WhU7wH7J4uKlaLpW0i
+         xz0BdI2aG3pEIkqfbM2HBG7iHARTTmtrIzR8LPF+yzoMQQm3pVHGhJbSDx+yuJogkVAd
+         tbzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCB75+VRLa6XJpdPc5SlcCNl1iKOFfIKnhX7cCRnyccmSqpn/TVvA27hefreu7gXMnbAlV93YTHw==@kvack.org
+X-Gm-Message-State: AOJu0YzY0yBposMOOaj+WQSdtqEQQ6QJIf5FC7LsfzamWELCmwdaga2V
+	t0ljtejgVzydAkxfW5qhZSfGLGq2grzI6R2C/5cTzmrn74crk7mayU2/a0hSu4Rp67s=
+X-Gm-Gg: ASbGncsq3TQJGMJ1Mgw5s1bkb1rJch0mU41l3rdLbQvesscNzrKQIC71iBHG5MU/ieY
+	pYAGsV/VOkcbDg7ykQtWlXkfS0cMJJxiMuswjrhmzXE9kpUH4udMLTZUcd3LpL/zsn1CvaALNc2
+	4yH22MzG028VQKcGb0/LqCXN2Qe00qzUrM/1SfL4bPhPB6xHCva+eBJKNIQtNRwH30EWXJUF8qq
+	rrorb1Bp0Epww9r4eM5mFlU0bPlnA5S7u8b6Yt5aWNOFTLo7OtA/w/kLZ3uYrLhE9oJDBhAB9L4
+	C479oHEJSYRRVuNwBjmBiWRpUWku58PlaiVf5E9jQkiDw+qMVMysfTFr5IXDYwLGfFhWeRQhkry
+	lgJ2YbThn2Lm3YALpP6K5+QAuvicfQQ3NhKFjQjNN5drbOSgB8YFPBF/TryAfYUrPzrwNckhWP/
+	cxMEBK50PsZjamJAeHAM3UAjVVzdj/icnJNkQkwDMOFJ1jMnSyKWehwVHl8m91UMALLedyCRkY0
+	LocCfeBx3iCoGKZ1xgJkziUCB5Fm+g5
+X-Google-Smtp-Source: AGHT+IEIQnd/1fvDkk54xuNCdb61dv8JtlPct/U8dUFU7qNizs881GaUOM4iAn8ujhSbADE1PGNtYg==
+X-Received: by 2002:ac8:58ce:0:b0:4e8:96ed:2e63 with SMTP id d75a77b69052e-4e89d2bb2f9mr209505651cf.34.1761094640840;
+        Tue, 21 Oct 2025 17:57:20 -0700 (PDT)
+Received: from soleen.us-east4-b.c.cloudtop-prod-us-east.internal (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8aaf3432dsm84169501cf.2.2025.10.21.17.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 17:57:20 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	brauner@kernel.org,
+	corbet@lwn.net,
+	graf@amazon.com,
+	jgg@ziepe.ca,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	masahiroy@kernel.org,
+	ojeda@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	rdunlap@infradead.org,
+	rppt@kernel.org,
+	tj@kernel.org
+Subject: [PATCHv7 0/7] liveupdate: Rework KHO for in-kernel users
+Date: Tue, 21 Oct 2025 20:57:12 -0400
+Message-ID: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.51.0.915.g61a8936c21-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] mm: mprotect: convert to folio_needs_prot_numa()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, David Hildenbrand
-	<david@redhat.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>, Zi Yan
-	<ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts
-	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>
-References: <f1d3d11b-6ac8-4747-b2e7-952d4fc3e09b@lucifer.local>
- <719c8df8-b4c9-4a6a-bedf-d62becdb09d2@redhat.com>
- <759578b3-d582-48cc-90af-491210ecd90f@lucifer.local>
- <3ee89484-9cdf-4c50-a5db-79b9f2ca6886@huawei.com>
- <967f61db-0ee3-4257-a44e-69ef15ced012@redhat.com>
- <944fe458-6391-4cb9-8719-dbaf69f3958d@lucifer.local>
- <72e2f6b9-d241-43aa-9a3b-2f13c763bef8@lucifer.local>
- <3554c866-5087-4beb-8d63-6a3cea02d431@huawei.com>
- <16ca4c3d-7c18-4cb9-bc04-d2eccb5d9b67@lucifer.local>
- <5703e7e6-f037-4b4d-be74-8c256e7a3e10@redhat.com>
- <36e1f03d-1acf-4a2f-aa29-0bc0c14ee1fd@lucifer.local>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <36e1f03d-1acf-4a2f-aa29-0bc0c14ee1fd@lucifer.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: 9uiwh43yr6i7hoq186hyh8cdmr8x5xdz
-X-Rspamd-Queue-Id: 7CAD5C0005
-X-Rspamd-Server: rspam06
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1761094307-819915
-X-HE-Meta: U2FsdGVkX1/Q2kpjadrw4V+qTWb0hgCW/IDT6Q6q3tegt1qne3NtWBv5RBo0+ZFaEwawX1Yz9MRQnPziDNwPUZKXiEbKIOPbLzeEWaQ02EY83UfxakCn4VgZKFGmloIjAfMqqq6eTH7HF6kMbJkjTIL5X14UM3BOL+TKvWWAYpmtAJlzdaYa3hiHkTWZZfuOlF2cJol19Dy8oqE7mW9X5uzP1Ul1dJAAYmq9Vx8uNEMHTIjGjVyxd20NbM4jCKCbNgFnshBa8o6yUSgoWGiWaJdrJ6k8S47k6Co0seLPqtWdMv8aVuSy8xrm/I4ACbH74kKBtOcKCWgWbV2fasnTQWhjKzy4YQQZJYQgkyCjGHKrlqVpXz+UkOtfsmNMqoCUNceFfnrbY0KJWmoL1y27P1dKGZDXpVysiNew1MntttUZ0S5FSXxQUpNq5F6AZN2UVoHlUNgoz+9FMEfB0aO1PGHUwU86axw8Lgsme/NUfDFlZ3CILguJUTtMTFbaf6sjWYrIZYmW/MGfiMWk0zmZWexTmCwroVvkCJVrIGD5Ru3eM9v+Jd6+72zSo8j/MyfA99zpchIGytrKaBy+AYaVNDm8ODzg1RRlE1SuGu0QytOllW+wPgBCPa+NgE8jBFZZudhLLQrbnNxcdJRG0Yspenv7utF9zwfzMF4c06RQVCUczeGn5FRPP3pD/NEINqZAhcuiLWanzngMXJHkiS+11S9go5WY8I2BLCz4gDw7ozWciOGuXJvkuHycDlfXw3G1EQta/1H4yoOO8BUxn9Ul9T54rUw5cKUQS4/ypsDgt2f2Ghym77CRw4BPBEcWrCqaGNoxoBgraMQRVTF9MwgIM/SaoF2NuO2NI9J4+lF/09ofhUsWWS8p4kwHABR3OXAXRC7uIjzZB/DlNbYiMRjCh4OoF+l5iXjTqqfl4LFz6LUQQtroXmd0XeenQpLJRU62pyiavKw4/BJxKIvIrjB
- 1q5Q8xAR
- qfDGzLvDszIl7S1+ODgXnQ2E6wuvkjTzkZk8xhycz5sJz1eCHbdSvrAvaqVkG/ugzEtXA/sYr3CKEnJh7vbxRy8hWE/CJd4/Ur/vB0xpMQNoxBIeOP6NwImGeK4hdUr6sdG+XI0R61hO4+kaf6kuz1WzK5BR2zI44S5EOFJtYtAnexc7odNfxPBAOJjSWhKi7n1z3yBKRxPw9wdLoadhID4NpgajOa8dr+Mx/IDGF2W7hLZ8+hXCmPU0OfnbBEv+FXsNrUc3qEyiPIQavBN6/RDc1Is7MH2QAa3Ftf4sH1Jj2PFjREl2qwDYXClAVFJ8B7jn8QQJkwV60j5NXxam/+u9tae5XFguCtbfogRZSjKCLXRQ=
+X-Rspamd-Queue-Id: D83B740008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: pcpwfmxdfaga93uhawbcaouzpesy9jx8
+X-HE-Tag: 1761094641-614088
+X-HE-Meta: U2FsdGVkX1/3d/qoEoXiMtCQ2QpslYg/WzFnIQ3pD25vSbV/4n4QSIdK+urdtK6gd+W+ZhUdgB/n1L150DF4Rl0spx3AIp82R0Oto/mTxKO8yWA8aotM+RD86Kk+nkivugRfaV/56X2e8YB8hhLBK8QFx53rnnqwiqtvsrLHAjkZ0qvfRTtTiALTsk8OS3ydrUgAS03MbOmlGyYBXDIR1Itlt5JJmUw00egRoxn2JhDklPko9O97dtNtGeMyGM1dxGVvSIlJJxjovQ/AnQNA14aEGkLfATNWS5VHyTL2jup4cMQ/fJTvoEbwnDSw6iSriX6r0EBZr0HQ2cuCoO1o5VZINzp2uY4Nqjyzfpzra9hrpV9nz/w1X1Cxa/AxfojVnjGiNXkfpt+seDQ2UeV3KekmLYYk8+GWi8eyGwi8fuBgbmcgTYScvUF45b9Fkc8+qr4jYhVXoKLL/2JUKH/yEvCSlJG5FIQr0S160NGbDbCMfy/Sd8UKTMGBBKsqcT3r8D/Tj5iFZ7BfutCHwNNG+YEV9H9Ji8AHK5gWMm3gZHh7qyZtpYqP3y8XuMA/31H8uH+Q6XCua3sUbjFsYT/dPAzKaYfitQbn9BGqZeqaz8iX+eoBuJFeJ0WgIWzwiFUwlbk/+C2FNAbZfwd10CvH1HNCGr7U8dKVmaJVnVqfGc4cOu9JmlCfgA8urLK/ZJOmHDQmOLB+8aYrpO2L6FoSd/TGpx/BMkIGqf25P9TKnVEjTX2nSSwnugn+qKuU59C9hUibP8zDkPqKg5sdJniMgEt3L36EgINAvsira33WTMzK7shDUVaRVh83eBIzGV4EM/zTFTZs3eC3BBCsHF/YPfm9k4meUcw0xezTaJfLqbkCaCnTLOZyH7ADjUADTnKQRDrV5JhQij1AtsoV6U5ezCH+Iks6uE7XeskNhUBVw6AtXNCEs/BB8vS6E1s8LjP8MY2lTEW95GE5bM00y0m
+ Q7+RICCm
+ K6Yspar1oMyP2xTKAnSa3aVKAlWL3LxWTEGim+ZTAn7PrhpYADj5KNlbXf2PuAh/VOTzx01jdQPqSEXH71/UTO8GqgGDzZl97Hg1Fs6b2K3+a8zYQaR7QqyLFjqhhfWqmTtoV81VpKadQ6lqws5cU/vH1ufwO08bsKbKeDaILZu607u6lLsM/SdbTHCgS7akAuxeuXVt9GOgfrXnAHqSx4E0gicsEMGOfDdbINMiftWTMXGh9XuhqV4Xtl6WYnmwZKHANnXUkruJ/JRel011D08dskLdZu3yE/WBzBjqTfAYFRqcsPge2aU07MPOjrzHOip64Jyz8YTQDGgu/p5vxOqDfxhEHT3NN1PqWB38/gGmLKTbXenDZ0yX+1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,49 +127,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+These patches are taken from the LUOv4 series [1] and address recent
+comments from Pratyush.
+
+They apply onto mm/mm-nonmm-unstable.
+
+This series refactors the KHO framework to better support in-kernel
+users like the upcoming LUO. The current design, which relies on a
+notifier chain and debugfs for control, is too restrictive for direct
+programmatic use.
+
+The core of this rework is the removal of the notifier chain in favor of
+a direct registration API. This decouples clients from the shutdown-time
+finalization sequence, allowing them to manage their preserved state
+more flexibly and at any time.
+
+In support of this new model, this series also:
+ - Exports kho_finalize() and kho_abort() for programmatic control.
+ - Makes the debugfs interface optional.
+ - Introduces APIs to unpreserve memory and fixes a bug in the abort
+   path where client state was being incorrectly discarded. Note that
+   this is an interim step, as a more comprehensive fix is planned as
+   part of the stateless KHO work [2].
+ - Moves all KHO code into a new kernel/liveupdate/ directory to
+   consolidate live update components.
+
+[1] https://lore.kernel.org/all/20250929010321.3462457-1-pasha.tatashin@soleen.com
+[2] https://lore.kernel.org/all/20251001011941.1513050-1-jasonmiu@google.com
+
+Mike Rapoport (Microsoft) (1):
+  kho: drop notifiers
+
+Pasha Tatashin (6):
+  kho: allow to drive kho from within kernel
+  kho: make debugfs interface optional
+  kho: add interfaces to unpreserve folios and page ranges
+  kho: don't unpreserve memory during abort
+  liveupdate: kho: move to kernel/liveupdate
+  liveupdate: kho: move kho debugfs directory to liveupdate
+
+ Documentation/core-api/kho/concepts.rst       |   2 +-
+ MAINTAINERS                                   |   3 +-
+ include/linux/kexec_handover.h                |  53 +-
+ init/Kconfig                                  |   2 +
+ kernel/Kconfig.kexec                          |  24 -
+ kernel/Makefile                               |   3 +-
+ kernel/kexec_handover_internal.h              |  16 -
+ kernel/liveupdate/Kconfig                     |  39 ++
+ kernel/liveupdate/Makefile                    |   5 +
+ kernel/{ => liveupdate}/kexec_handover.c      | 513 +++++++-----------
+ .../{ => liveupdate}/kexec_handover_debug.c   |   0
+ kernel/liveupdate/kexec_handover_debugfs.c    | 219 ++++++++
+ kernel/liveupdate/kexec_handover_internal.h   |  56 ++
+ lib/test_kho.c                                |  30 +-
+ mm/memblock.c                                 |  62 +--
+ tools/testing/selftests/kho/init.c            |   2 +-
+ tools/testing/selftests/kho/vmtest.sh         |   1 +
+ 17 files changed, 576 insertions(+), 454 deletions(-)
+ delete mode 100644 kernel/kexec_handover_internal.h
+ create mode 100644 kernel/liveupdate/Kconfig
+ create mode 100644 kernel/liveupdate/Makefile
+ rename kernel/{ => liveupdate}/kexec_handover.c (80%)
+ rename kernel/{ => liveupdate}/kexec_handover_debug.c (100%)
+ create mode 100644 kernel/liveupdate/kexec_handover_debugfs.c
+ create mode 100644 kernel/liveupdate/kexec_handover_internal.h
 
 
-On 2025/10/22 0:36, Lorenzo Stoakes wrote:
-> On Tue, Oct 21, 2025 at 05:01:30PM +0200, David Hildenbrand wrote:
->> On 21.10.25 16:56, Lorenzo Stoakes wrote:
->>> On Tue, Oct 21, 2025 at 08:54:08PM +0800, Kefeng Wang wrote:
->>>>
->>>>
->>>> On 2025/10/21 17:45, Lorenzo Stoakes wrote:
->>>>> On Tue, Oct 21, 2025 at 10:25:08AM +0100, Lorenzo Stoakes wrote:
->>>>>> On Tue, Oct 21, 2025 at 11:13:32AM +0200, David Hildenbrand wrote:
->>>>>>> On 21.10.25 10:41, Kefeng Wang wrote:
->>>>>>>> Maybe folio_needs_protnone_mapping()?
->>>>>>>
->>>>>>> I think prot_numa should be in the name one way or the other, because we
->>>>>>> also have ordinary PROT_NONE unrealted to NUMA faults.
->>>>>>
->>>>>> folio_can_map_prot_numa() semes to me to be the best choice.
->>>>>>
->>>>>
->>>>> I don't want to hold up the series so if you guys feel strongly, leave it
->>>>> as-is. But this reads better to me.
->>>>
->>>> Let's keep things as-is for now.
->>>
->>> It'd be nice to have an argument as to why (I did say if you guys had
->>> strong opinions...), but never mind.
->>>
->>
->> folio_can_map_prot_numa() works for me, so we can just use that and call it
->> a day :)
-> 
-> Thanks!
-> 
-> Kefeng - Since we need a respin anyway, and if you don't have any specific,
-> strong, objection to this, can we just change the function name to this please?
-> 
-
-Sure, will adjust the naming.
-
-Thanks
-
-> Cheers, Lorenzo
-> 
+base-commit: 4d90027271cfa0d89473d1e288af52fda9a74935
+-- 
+2.51.0.915.g61a8936c21-goog
 
 
