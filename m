@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD56CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED5A4CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B258E000F; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
+	id 20EEC8E000E; Wed, 22 Oct 2025 10:44:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7A378E000D; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
+	id 0AD438E0011; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE5308E000F; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
+	id CB9878E000E; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BAEC8E000E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A737F8E000D
 	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:44:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C4EABBB64
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61B4AC087D
 	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:44:14 +0000 (UTC)
-X-FDA: 84026020428.29.ED09436
+X-FDA: 84026020428.16.9894425
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BC79340009
+	by imf03.hostedemail.com (Postfix) with ESMTP id E820820011
 	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:44:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CCeT+hGJ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761144252; a=rsa-sha256;
-	cv=none;
-	b=g3yTGBvPbS15aqb8+ccLLIXTGNtsAaWdNw/2UOX7jkQrTtkz667icbXlY5Bn3wbVD6Mwal
-	k1Srrf5+PKib8cqgpv7Fy/PFbBCJ9rPVKH+8HkjSIdi9UddFOlG5U914wk2JhRPeSH9wEV
-	Z7uuJqDq8PKIAxYBSZN7+xYIM1/2/8Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=CCeT+hGJ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qsuNQObJ;
+	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761144252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/lt/fdSztGs9CzhO0ADut9nIa/5/tzFiPI0zEfiuzw=;
-	b=YQftk6MPGqBMiGVWAfhOTdAIQUCvG50EzfITAtkVkxqefY/kqhI0KrGqX9ZKuGaAG0qggn
-	1h5sn3ICLAUhDOe4QQ84TK+AALlunqyS2J6Qr4GDqeEQ8bk5adDDV5KP3pviAatFjra1qC
-	yEpRNSuuJWv2M/LiHMjtvcTazy7+ugs=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7lJIT014602;
-	Wed, 22 Oct 2025 14:43:38 GMT
+	bh=cXlde5G6jmGICfH+IvNFLqIN/VF/dZEF2CEBSvY29xA=;
+	b=SrvzNitd+TtZc13AGZoPHoy/lxgY+u0Ib3E21XtnQ9RxMYub/U16SMjfwpI5Xrh/KLqX2D
+	n3npB9Dy0hdr8d1geNndtTjKtsQE9gtSKYfadz7X+zxixN3u8LS1/j4x5/CFWBgIEIJ9Nj
+	7I6IccJ/DP+QQqa2BMMavYcPnqNMdzE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=qsuNQObJ;
+	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761144252; a=rsa-sha256;
+	cv=none;
+	b=YarlE/wwN4oT4ZGAqbwYI9FKPehCQl+LVfAilslYJuRLQN/v4Gr3KgntO+J1k9Ban9FO+m
+	RO/UeHcKWhdt68u8VHove8Uie9qvJsor4hPq5tzLPourrNExHPSGY7UOajSvl9VkYFhuxZ
+	xgwc/Han5Jq0KQnW/ftYXaVmYx5vk7w=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M9vo51018780;
+	Wed, 22 Oct 2025 14:43:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Z/lt/fdSztGs9CzhO
-	0ADut9nIa/5/tzFiPI0zEfiuzw=; b=CCeT+hGJ1U7kkf3w8AfdeUHApJDddFXbg
-	e40Gj3ze2MOM2JJaqrmWrWorK81PhPI4UitzIu4CphoIIlKK5lJiGYFzsq7JE5i0
-	wjnZbid32SM9g8Ka5FfLOPtjMvZZN7E36uoH+OXxt8UMhckgBPz849Gs1U1Jf4xp
-	wShWNREPRqQZSeCwSl9dNl2Z2DPq8bn6RuVYayAGoYZKbvZOg7SJKTRGCEi2mgfK
-	FcTXffMtlf4LW6lE3bSt4VtI1XdvHYZUXtlMiH033XJqc8ply2jX0a6Bvv5MPtf4
-	jmcFxWfM538mpGkB+SzLZSABRpO5M9J7VCi2TP6z6/am311P+AY4w==
+	:mime-version:references:subject:to; s=pp1; bh=cXlde5G6jmGICfH+I
+	vNFLqIN/VF/dZEF2CEBSvY29xA=; b=qsuNQObJ1NAXD1te7LIW36S69yB2hZVYk
+	RRKBU9wLEkef3GMsCwz9hL60CJDjOHXysyD6krhpN/ecXUnlyWzPr/OxV7/b4hVq
+	O23cK2Gc6HZrfEgGCBm0vG3lvzd3J1v/2XymJsGeKO4mo06b5mlvmC/lQ2e/Ko2P
+	fuNSVVoALQM7BKFnklM05tQX3XvY9wjWHqrY6t9RcAZzrdjMH5vi9jgQkklFXr9x
+	BPhLdZjbFZo41U9K6dz0XYAEqrFgvmIWqR9OTaJCahWd1LKX0dlI3tuQ8MyD4hfi
+	KMqcnwBqK3SEJlmJ1FxvbcOc5mb4TZ5iM8jPecvw7idaHQtOvKZmw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s5aer-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326w91x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 22 Oct 2025 14:43:37 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEacIi012746;
-	Wed, 22 Oct 2025 14:43:37 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v31s5aem-1
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEIlQP016840;
+	Wed, 22 Oct 2025 14:43:36 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v326w91r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 14:43:37 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MBa2ew002324;
+	Wed, 22 Oct 2025 14:43:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MESOqe024687;
 	Wed, 22 Oct 2025 14:43:35 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqejgnrk-1
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk0sms-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 22 Oct 2025 14:43:35 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhWiT6226200
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhVos56361258
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 14:43:32 GMT
+	Wed, 22 Oct 2025 14:43:31 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 101CF20043;
-	Wed, 22 Oct 2025 14:43:32 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C46B2004B;
+	by IMSVA (Postfix) with ESMTP id 2655E20043;
 	Wed, 22 Oct 2025 14:43:31 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AA61F2004B;
+	Wed, 22 Oct 2025 14:43:30 +0000 (GMT)
 Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Oct 2025 14:43:31 +0000 (GMT)
+	Wed, 22 Oct 2025 14:43:30 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
@@ -121,49 +121,49 @@ Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
         Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v11 08/15] unwind_user/sframe: Wire up unwind_user to sframe
-Date: Wed, 22 Oct 2025 16:43:19 +0200
-Message-ID: <20251022144326.4082059-9-jremus@linux.ibm.com>
+Subject: [PATCH v11 06/15] unwind_user/sframe: Add support for reading .sframe contents
+Date: Wed, 22 Oct 2025 16:43:17 +0200
+Message-ID: <20251022144326.4082059-7-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251022144326.4082059-1-jremus@linux.ibm.com>
 References: <20251022144326.4082059-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hT2qzmen98LSG-_MrR_dlDGv94phHIA8
-X-Proofpoint-GUID: i2qQ7OWg0AFtrloNwHIBMnoC0O74RIEK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXxPzmLODWGUxy
- OpDpVqsxK7sFCj3+KUMkB7Zq7eemdJClmtuUx6uFW3M/eC5WsARfHnGRxBJia65Q91xlzxYsiss
- KLzjcpZbxmfRxLaIyB9uFJ5qHPdSnkhtdTFjP+uIFLaWqV6lrdJNAlORmhPIEUMjZaTTmKTuNUv
- 6f6su26fantOOKw584ILNFfiTH7v/a0astZDCtVtM4++3+nEmFbFwBpCfe864Fcuw3/JNWbmDAu
- XICbWZIZkGHDtAh+acVO4s5+0GvN19vUGqz732a44u4wwmtDZXTiRoFKlcuIjzDCYpgTU+gPr5Y
- 4CdSXpdPNbsMnmlGgNC79ESU8DPWsXWhiLiT/e5bCRY/HXc1DHEOABI+0mt0PkzXkjLQFkOjimS
- D5BdrRIjc8p2DaOuCJxkILFCZFC7tg==
-X-Authority-Analysis: v=2.4 cv=IJYPywvG c=1 sm=1 tr=0 ts=68f8ed99 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=7d_E57ReAAAA:8
- a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8 a=yMhMjlubAAAA:8
- a=VnNF1IyMAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
- a=meVymXHHAAAA:8 a=JQQRa4MxmZcFC8vMKkMA:9 a=jhqOcbufqs7Y1TYCrUUU:22
+X-Authority-Analysis: v=2.4 cv=EJELElZC c=1 sm=1 tr=0 ts=68f8ed99 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=7d_E57ReAAAA:8 a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8
+ a=yMhMjlubAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
+ a=meVymXHHAAAA:8 a=2Z4KygL9ylUhUcV8ucUA:9 a=jhqOcbufqs7Y1TYCrUUU:22
  a=1CNFftbPRP8L7MoqJWF3:22 a=HkZW87K1Qel5hWWM3VKY:22 a=wa9RWnbW_A1YIeRBVszw:22
  a=2JgSa4NbpEOStq-L5dxp:22 a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
  a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX4b5K6kVAzn9K
+ YIjQdgPx+/XdNPH9vhL8hn1rnAhUiXvEJuT8l1bPF/jSfk8QlUEOIgTavIYQxuJiV3wnwMcZYI7
+ 6lrlyDW9F3bu4+Q7SgwIUC8qEfflt6DZQ8Zmf6F8IFVwu5TCNOFBL26FlRcEJYxtvkHLavKrbS9
+ CcyWMEUlpHk1w2p6E5U7mvkzhROgWNZVCSFRw8EVLXuMG8rX5Vmga70fXWpVOf17Su+D3xcnK0k
+ UM+Thk4A0TJAsjcnoepvFVcke9x3d+9hFr3havLekhAGg9U/eXYug+wvDRgaUCjfDSEYQbzC/Wo
+ kAkbdX9XoWh/HHRMBfx/G1EaewfSRNv9wqh+5fwVKClKt0HB+/OsayW5nTBUiYA4oDUySEsT7LY
+ orIfzv8YDN2bLpI/p0Um+XMqpXAjZg==
+X-Proofpoint-GUID: Sp8t-oyzxDz9_x6VVPC19oZTWuOsSXD4
+X-Proofpoint-ORIG-GUID: uY1jsJwayyNxW31iO9sW2HluTUGwGr8p
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E820820011
+X-Stat-Signature: d3xzpgq5xquhdwgzrntqozemjzf3nryh
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BC79340009
-X-Stat-Signature: 54b5e5538dwrim7atmqz6chnmdigxqc5
-X-HE-Tag: 1761144251-310216
-X-HE-Meta: U2FsdGVkX189Sml00q2KqFh+IQ2BHvZAhX+Vry5n7rMtK6URmWMsHovymDF6HOU0ymV8mGBhGW2AO34rXRrWL83XJapMr9QPAYAq5dwDjz1QyVotJ0kRWQBSo6fn3J4wu/t88ktR+2YtF8DOt2QD/kVQg9nBvD9nGko4lFlBkc4VxwcMsCCwgtwIYJHcdYK4bEvtFaNdeS6uhWv5wLvUiU/A+NX3WdraCRWyWBmVNXRcBOv6AVQCRdy9NbB7eVrcNSQNXbyzg2j8dCJL41NNi2TiDIzGKEt2V+dCmf/kL+aaGy4mo6ILwIam0fCrn7EAZndcgp+LLYIyR2oJCNTWJhDqI57/8NIKFgVYp4uOt1GuwbVqQGfrh69ezArb279p8O4p2Z2vByATNV4vD7R/Yy/TUk2XSEsDNMPb8L70KpTCxU7GYy3YWx3rHbLEGEDrfKO/Ruws/YHr1zpm93iWpyvlcmGorxWwi2v6ajE+BPZqZMwM8SS4b04ikTTYvynubEDUBOTLXoZtoayATiif8lE9cyYKLgr2TunGk6lGnx9SQ8KvDz8bu5WrQoW027rRxz0V5BYr5VWaeNv4tXXPU3nRB1LNO3SUN0MexerVykMnSztKZfOztd3dD46QQ/odi35Hsx3JvBLql6eRI58o8jOX4aa0XxTkTYY6zMJtzCgsCRTpCE2vE4muBl4xNTwztVlfA0+bWzi+fKtszZH0gZSrDO4kTOHb1G+TxXDzcbB037Wgab1AsGmCjVTDjheoPZJ9TeCmkyFgfkBFIoLSssbnbkIWTCbF+StpPMDsKzW/dO9YRddLXtqFdyC/ccUbs1cOt//L1Y5FfqZlahzVWtj1eeZd9sztHyB5AW+leXIBVuS1lG58bqkXSdt7/jMwllUeXwIERglrP6cgMzvPUrEY1F+m/4VWXJIlEHh84Aog2rPAmf+hj30rPM/xvHvdgPC8ssRi8feA+IERwU0
- P5dwVWDC
- hOYheSricPDe0yKAVIxF1IkzYMa7xeTN1+g7Uz1TRsuGiyAR4ZY6vSHexskHwErp8NobRTbZeaCuv5pqTQjvdIdUXLYL6ZFu2riyC4RpmporNrFIKKfWjdSB+lbZd0E74eB2nIsbnFZAEe+UjElK5GGkNZNb9YTvHvWxaum5gFIpSL0RKtLssR1dPStcQvMbixHeXlGDNPA0Vi2hZttYwaNLIPZXViomqMj1AJZjFFHVTy/37IfjyGw6v808GeVbsauaoPPntSd7TmNAvD6xNST9b66z8JCxpjr3dW8jlemhCXYy9Pb9NFTs16+wACW77FuqcKplj1yIHkPeWsmeoHHjWksHn62VfaT2cIvsE8aMIXedvZZwhoEAVDwS9/GNE/nNv3gLdURyVKNzjP6qN69VgGYZQ0r0B2pfCtZeorAvtT1AmepM1cKsaC5VcTq/AqoZ0B7Jf9UJHdrBGeUGlNikx6BaMYPXH1Qj5Q+c3o20Uvv5LtWMtYZigYVNJ/e7eKo/9GZ3mlGiw6pvl6gGT5GW+P//o89xQKTHzHq90CaTkkL131TZ8wvKFHPJcVBc3pYowSX5tnfBqGpXD/sydu5FU8NhZlNomC4A2fxJ6nc6A9S9hTB5FfVxK0ZWJ3tTRbN4g/74q0scz8MRPk/pyNOmGsJERU5hkME3L
+X-HE-Tag: 1761144251-38737
+X-HE-Meta: U2FsdGVkX1+b/oCD7PTPTNoOGm7oMFsf5pypRg1Ut8XE8rqZvK28IACQpzfNX+t2hqETchX8xeIqJqMdhi16VviydrY7j5uc+pfcxgGr6EnOOVJcY1o4eb6o9xvCKTdPKPq63b2kEgfK8DpTQ6lHa8Hsy84aywJdYGuJNQhVbF1xSGTrDOeaayMzgAU4DDgJeklC3IltXZdaHpxnqdNDfOPDtza4N0hYPLvys3Ufz8LSMZby42KoWm8B2irBCSEYZ1UMWA6d47v8GEg3pcNXwXrLoKRTmHUMXlErzTclXkngWa9TZ29eSKWzNJcwC08gIFZ51H2onaVYmeFSINvJ5BudzNARZIKL95eiq0jz5SUohi/fM65+uW7GwssTiR90g3e5heiv1ZxeFpx9v8Xo+dtkip5ZR36YynuR+ZWS47C1r96uEAe2lizh1c0k9BW/oEfsY0tJ2UvNt+78QCAl9enX4qRwqReFljg/e5tTPz5n+0mWu+BH1l5ePNkKJD23WHBAIBkW5Ux3mf68AEceshONgRuqUGSkuNrA/b97niYG96n+LbXbs8fdJHdaeqHU3qZNnyLjokm74rppwb7e1rpGUA+pMVsPJCv4z451W/J/1Cpyjf/7KlqtM9/WT7qf8tckE//5U4M+bbrKKt6j3tTRuiOoBRzKn/JtPjZikEyBQkrWpJ/lhRdkM847Ogjue+dbml6TND++7iHrPxHC0X2TgH6lERFcAxsujljuhYEjH3gz+DmMSp9H3fZ0hGG91V0CYVdyWXBkLivs/5RuZdFhOrLmdOJUOHq1rCBwMXjB0tgtpMZb9woGQIFZFKDBtUSZut4SieVc3aNvAJauBBBIbq8dXnQwZaUzSdgbhSqpc5SQ+HyPxN5+OQawEow499VgK20sDSyqkujTPcfG33Gr17gAwSqYxxZRjvb+9dxzrQjmwTVFcECIJQ/FdP5+PFmoOkm/GIlVO4dcCI/
+ 0Da3V/uG
+ YqCziSX54Sv/V8myeRlJ29jsyBWZqiiuv+sWVsDE0W3h71n2aZZbWrRtRr+Kil93BSZ1fo+lyB4/PQAGaRlQa9VfLFrLTjAZ68QL9JvdOfNKFstSxvBnvhBzXTg3mqyV63mjHy1xxrIvmcv4jIdYY35Nd+YZfblGCCSi/aP6yjDO5Fv4t/wECGD8tPpSQfgqIAFFynd7wEHRK4ojtfh0bEKM7PowpOs6TxrrBgSfRjGHdEcVz1IRZnBKcel7r4yOSRFJB7ePrsvEypOlw/53TJQmpWHygagVFdZPlbFOVU/7GT7/ZsYbjIdpiIMtA+8Z4PL0vsjj6ee8OY1w6DjyMUGtbJeyNquCTdLdJVWqqk4qfO+zXTGYaXZDipoqMfjvL4FNFpMKftPZCKcqZGCcva3wRyZmX6E2W5qV4O/qmMWQSQGBP1asBWd5GrpuKip2Y+nOm1vaIMB4ucQu/HKKfm1SmhWpfBXI/SLc9eud2ghKgpRl1u36+tOpy3i0ej0QczR0CH/ul8qR/Bg2a9Xyq80oSZOEc5kpLOKXPId6noz/8B6xJddWGODShIOx6V9gwwjz9kwhtEe1Gue9hX5DZDm9dsfq6FaE6+UgZleQsJfS71YwqX9DcPgqCXGTpn+se7MkOe40GZnCW4LtHJR8rUArYc5MJAulYqFWfIKg+V2qH2bVSzgZwxJwxbDrh6SJ/d9lE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,8 +174,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Now that the sframe infrastructure is fully in place, make it work by
-hooking it up to the unwind_user interface.
+In preparation for using sframe to unwind user space stacks, add an
+sframe_find() interface for finding the sframe information associated
+with a given text address.
+
+For performance, use user_read_access_begin() and the corresponding
+unsafe_*() accessors.  Note that use of pr_debug() in uaccess-enabled
+regions would break noinstr validation, so there aren't any debug
+messages yet.  That will be added in a subsequent commit.
+
+Link: https://lore.kernel.org/all/77c0d1ec143bf2a53d66c4ecb190e7e0a576fbfd.1737511963.git.jpoimboe@kernel.org/
+Link: https://lore.kernel.org/all/b35ca3a3-8de5-4d32-8d30-d4e562f6b0de@linux.ibm.com/
+
+[ Jens Remus: Add support for PC-relative FDE function start address. ]
 
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
@@ -200,126 +211,445 @@ Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/Kconfig                      |  1 +
- include/linux/unwind_user_types.h |  4 ++-
- kernel/unwind/user.c              | 41 +++++++++++++++++++++++++++----
- 3 files changed, 40 insertions(+), 6 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 69fcabf53088..277b87af949f 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -453,6 +453,7 @@ config HAVE_UNWIND_USER_FP
+Notes (jremus):
+    Changes in v11:
+    - Support for SFrame V2 PC-relative FDE function start address. (Jens)
+
+ include/linux/sframe.h       |   5 +
+ kernel/unwind/sframe.c       | 318 ++++++++++++++++++++++++++++++++++-
+ kernel/unwind/sframe_debug.h |  35 ++++
+ 3 files changed, 354 insertions(+), 4 deletions(-)
+ create mode 100644 kernel/unwind/sframe_debug.h
+
+diff --git a/include/linux/sframe.h b/include/linux/sframe.h
+index 73bf6f0b30c2..9a72209696f9 100644
+--- a/include/linux/sframe.h
++++ b/include/linux/sframe.h
+@@ -3,11 +3,14 @@
+ #define _LINUX_SFRAME_H
  
- config HAVE_UNWIND_USER_SFRAME
- 	bool
-+	select UNWIND_USER
+ #include <linux/mm_types.h>
++#include <linux/srcu.h>
+ #include <linux/unwind_user_types.h>
  
- config HAVE_PERF_REGS
- 	bool
-diff --git a/include/linux/unwind_user_types.h b/include/linux/unwind_user_types.h
-index 938f7e623332..ee0ce855e045 100644
---- a/include/linux/unwind_user_types.h
-+++ b/include/linux/unwind_user_types.h
-@@ -9,7 +9,8 @@
-  * available.
-  */
- enum unwind_user_type_bits {
--	UNWIND_USER_TYPE_FP_BIT =		0,
-+	UNWIND_USER_TYPE_SFRAME_BIT =		0,
-+	UNWIND_USER_TYPE_FP_BIT =		1,
+ #ifdef CONFIG_HAVE_UNWIND_USER_SFRAME
  
- 	NR_UNWIND_USER_TYPE_BITS,
- };
-@@ -17,6 +18,7 @@ enum unwind_user_type_bits {
- enum unwind_user_type {
- 	/* Type "none" for the start of stack walk iteration. */
- 	UNWIND_USER_TYPE_NONE =			0,
-+	UNWIND_USER_TYPE_SFRAME =		BIT(UNWIND_USER_TYPE_SFRAME_BIT),
- 	UNWIND_USER_TYPE_FP =			BIT(UNWIND_USER_TYPE_FP_BIT),
- };
- 
-diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
-index 696004ee956a..f6c543cb255b 100644
---- a/kernel/unwind/user.c
-+++ b/kernel/unwind/user.c
-@@ -7,6 +7,7 @@
- #include <linux/sched/task_stack.h>
- #include <linux/unwind_user.h>
- #include <linux/uaccess.h>
-+#include <linux/sframe.h>
- 
- #define for_each_user_frame(state) \
- 	for (unwind_user_start(state); !(state)->done; unwind_user_next(state))
-@@ -26,12 +27,10 @@ get_user_word(unsigned long *word, unsigned long base, int off, unsigned int ws)
- 	return get_user(*word, addr);
- }
- 
--static int unwind_user_next_fp(struct unwind_user_state *state)
-+static int unwind_user_next_common(struct unwind_user_state *state,
-+				   const struct unwind_user_frame *frame,
-+				   struct pt_regs *regs)
- {
--	const struct unwind_user_frame fp_frame = {
--		ARCH_INIT_USER_FP_FRAME(state->ws)
--	};
--	const struct unwind_user_frame *frame = &fp_frame;
- 	unsigned long cfa, fp, ra;
- 
- 	if (frame->use_fp) {
-@@ -67,6 +66,26 @@ static int unwind_user_next_fp(struct unwind_user_state *state)
- 	return 0;
- }
- 
-+static int unwind_user_next_sframe(struct unwind_user_state *state)
-+{
-+	struct unwind_user_frame _frame, *frame;
+ struct sframe_section {
++	struct rcu_head	rcu;
 +
-+	/* sframe expects the frame to be local storage */
-+	frame = &_frame;
-+	if (sframe_find(state->ip, frame))
-+		return -ENOENT;
-+	return unwind_user_next_common(state, frame, task_pt_regs(current));
+ 	unsigned long	sframe_start;
+ 	unsigned long	sframe_end;
+ 	unsigned long	text_start;
+@@ -28,6 +31,7 @@ extern void sframe_free_mm(struct mm_struct *mm);
+ extern int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 			      unsigned long text_start, unsigned long text_end);
+ extern int sframe_remove_section(unsigned long sframe_addr);
++extern int sframe_find(unsigned long ip, struct unwind_user_frame *frame);
+ 
+ static inline bool current_has_sframe(void)
+ {
+@@ -46,6 +50,7 @@ static inline int sframe_add_section(unsigned long sframe_start, unsigned long s
+ 	return -ENOSYS;
+ }
+ static inline int sframe_remove_section(unsigned long sframe_addr) { return -ENOSYS; }
++static inline int sframe_find(unsigned long ip, struct unwind_user_frame *frame) { return -ENOSYS; }
+ static inline bool current_has_sframe(void) { return false; }
+ 
+ #endif /* CONFIG_HAVE_UNWIND_USER_SFRAME */
+diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+index 149ce70e4229..5536374e2a22 100644
+--- a/kernel/unwind/sframe.c
++++ b/kernel/unwind/sframe.c
+@@ -15,9 +15,310 @@
+ #include <linux/unwind_user_types.h>
+ 
+ #include "sframe.h"
++#include "sframe_debug.h"
+ 
+-#define dbg(fmt, ...)							\
+-	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
++struct sframe_fre {
++	unsigned int	size;
++	u32		ip_off;
++	s32		cfa_off;
++	s32		ra_off;
++	s32		fp_off;
++	u8		info;
++};
++
++DEFINE_STATIC_SRCU(sframe_srcu);
++
++static __always_inline unsigned char fre_type_to_size(unsigned char fre_type)
++{
++	if (fre_type > 2)
++		return 0;
++	return 1 << fre_type;
 +}
 +
-+static int unwind_user_next_fp(struct unwind_user_state *state)
++static __always_inline unsigned char offset_size_enum_to_size(unsigned char off_size)
 +{
-+	const struct unwind_user_frame fp_frame = {
-+		ARCH_INIT_USER_FP_FRAME(state->ws)
-+	};
-+
-+	return unwind_user_next_common(state, &fp_frame, task_pt_regs(current));
++	if (off_size > 2)
++		return 0;
++	return 1 << off_size;
 +}
 +
- static int unwind_user_next(struct unwind_user_state *state)
- {
- 	unsigned long iter_mask = state->available_types;
-@@ -80,6 +99,16 @@ static int unwind_user_next(struct unwind_user_state *state)
- 
- 		state->current_type = type;
- 		switch (type) {
-+		case UNWIND_USER_TYPE_SFRAME:
-+			switch (unwind_user_next_sframe(state)) {
-+			case 0:
-+				return 0;
-+			case -ENOENT:
-+				continue;	/* Try next method. */
-+			default:
-+				state->done = true;
-+			}
++static __always_inline int __read_fde(struct sframe_section *sec,
++				      unsigned int fde_num,
++				      struct sframe_fde *fde,
++				      unsigned long *fde_start_base)
++{
++	unsigned long fde_addr, ip;
++
++	fde_addr = sec->fdes_start + (fde_num * sizeof(struct sframe_fde));
++	unsafe_copy_from_user(fde, (void __user *)fde_addr,
++			      sizeof(struct sframe_fde), Efault);
++
++	ip = fde_addr + fde->start_addr;
++	if (ip < sec->text_start || ip > sec->text_end)
++		return -EINVAL;
++
++	*fde_start_base = fde_addr;
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++static __always_inline int __find_fde(struct sframe_section *sec,
++				      unsigned long ip,
++				      struct sframe_fde *fde,
++				      unsigned long *fde_start_base)
++{
++	unsigned long func_addr_low = 0, func_addr_high = ULONG_MAX;
++	struct sframe_fde __user *first, *low, *high, *found = NULL;
++	int ret;
++
++	first = (void __user *)sec->fdes_start;
++	low = first;
++	high = first + sec->num_fdes - 1;
++
++	while (low <= high) {
++		struct sframe_fde __user *mid;
++		s32 func_off;
++		unsigned long func_addr;
++
++		mid = low + ((high - low) / 2);
++
++		unsafe_get_user(func_off, (s32 __user *)mid, Efault);
++		func_addr = (unsigned long)mid + func_off;
++
++		if (ip >= func_addr) {
++			if (func_addr < func_addr_low)
++				return -EFAULT;
++
++			func_addr_low = func_addr;
++
++			found = mid;
++			low = mid + 1;
++		} else {
++			if (func_addr > func_addr_high)
++				return -EFAULT;
++
++			func_addr_high = func_addr;
++
++			high = mid - 1;
++		}
++	}
++
++	if (!found)
++		return -EINVAL;
++
++	ret = __read_fde(sec, found - first, fde, fde_start_base);
++	if (ret)
++		return ret;
++
++	/* make sure it's not in a gap */
++	if (ip < *fde_start_base + fde->start_addr ||
++	    ip >= *fde_start_base + fde->start_addr + fde->func_size)
++		return -EINVAL;
++
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++#define ____UNSAFE_GET_USER_INC(to, from, type, label)			\
++({									\
++	type __to;							\
++	unsafe_get_user(__to, (type __user *)from, label);		\
++	from += sizeof(__to);						\
++	to = __to;							\
++})
++
++#define __UNSAFE_GET_USER_INC(to, from, size, label, u_or_s)		\
++({									\
++	switch (size) {							\
++	case 1:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##8, label);	\
++		break;							\
++	case 2:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##16, label);	\
++		break;							\
++	case 4:								\
++		____UNSAFE_GET_USER_INC(to, from, u_or_s##32, label);	\
++		break;							\
++	default:							\
++		return -EFAULT;						\
++	}								\
++})
++
++#define UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label)		\
++	__UNSAFE_GET_USER_INC(to, from, size, label, u)
++
++#define UNSAFE_GET_USER_SIGNED_INC(to, from, size, label)		\
++	__UNSAFE_GET_USER_INC(to, from, size, label, s)
++
++#define UNSAFE_GET_USER_INC(to, from, size, label)				\
++	_Generic(to,								\
++		 u8:	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 u16:	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 u32:	UNSAFE_GET_USER_UNSIGNED_INC(to, from, size, label),	\
++		 s8:	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
++		 s16:	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label),	\
++		 s32:	UNSAFE_GET_USER_SIGNED_INC(to, from, size, label))
++
++static __always_inline int __read_fre(struct sframe_section *sec,
++				      struct sframe_fde *fde,
++				      unsigned long fre_addr,
++				      struct sframe_fre *fre)
++{
++	unsigned char fde_type = SFRAME_FUNC_FDE_TYPE(fde->info);
++	unsigned char fre_type = SFRAME_FUNC_FRE_TYPE(fde->info);
++	unsigned char offset_count, offset_size;
++	s32 cfa_off, ra_off, fp_off;
++	unsigned long cur = fre_addr;
++	unsigned char addr_size;
++	u32 ip_off;
++	u8 info;
++
++	addr_size = fre_type_to_size(fre_type);
++	if (!addr_size)
++		return -EFAULT;
++
++	if (fre_addr + addr_size + 1 > sec->fres_end)
++		return -EFAULT;
++
++	UNSAFE_GET_USER_INC(ip_off, cur, addr_size, Efault);
++	if (fde_type == SFRAME_FDE_TYPE_PCINC && ip_off > fde->func_size)
++		return -EFAULT;
++
++	UNSAFE_GET_USER_INC(info, cur, 1, Efault);
++	offset_count = SFRAME_FRE_OFFSET_COUNT(info);
++	offset_size  = offset_size_enum_to_size(SFRAME_FRE_OFFSET_SIZE(info));
++	if (!offset_count || !offset_size)
++		return -EFAULT;
++
++	if (cur + (offset_count * offset_size) > sec->fres_end)
++		return -EFAULT;
++
++	fre->size = addr_size + 1 + (offset_count * offset_size);
++
++	UNSAFE_GET_USER_INC(cfa_off, cur, offset_size, Efault);
++	offset_count--;
++
++	ra_off = sec->ra_off;
++	if (!ra_off) {
++		if (!offset_count--)
++			return -EFAULT;
++
++		UNSAFE_GET_USER_INC(ra_off, cur, offset_size, Efault);
++	}
++
++	fp_off = sec->fp_off;
++	if (!fp_off && offset_count) {
++		offset_count--;
++		UNSAFE_GET_USER_INC(fp_off, cur, offset_size, Efault);
++	}
++
++	if (offset_count)
++		return -EFAULT;
++
++	fre->ip_off		= ip_off;
++	fre->cfa_off		= cfa_off;
++	fre->ra_off		= ra_off;
++	fre->fp_off		= fp_off;
++	fre->info		= info;
++
++	return 0;
++
++Efault:
++	return -EFAULT;
++}
++
++static __always_inline int __find_fre(struct sframe_section *sec,
++				      struct sframe_fde *fde,
++				      unsigned long fde_start_base,
++				      unsigned long ip,
++				      struct unwind_user_frame *frame)
++{
++	unsigned char fde_type = SFRAME_FUNC_FDE_TYPE(fde->info);
++	struct sframe_fre *fre, *prev_fre = NULL;
++	struct sframe_fre fres[2];
++	unsigned long fre_addr;
++	bool which = false;
++	unsigned int i;
++	u32 ip_off;
++
++	ip_off = ip - (fde_start_base + fde->start_addr);
++
++	if (fde_type == SFRAME_FDE_TYPE_PCMASK)
++		ip_off %= fde->rep_size;
++
++	fre_addr = sec->fres_start + fde->fres_off;
++
++	for (i = 0; i < fde->fres_num; i++) {
++		int ret;
++
++		/*
++		 * Alternate between the two fre_addr[] entries for 'fre' and
++		 * 'prev_fre'.
++		 */
++		fre = which ? fres : fres + 1;
++		which = !which;
++
++		ret = __read_fre(sec, fde, fre_addr, fre);
++		if (ret)
++			return ret;
++
++		fre_addr += fre->size;
++
++		if (prev_fre && fre->ip_off <= prev_fre->ip_off)
++			return -EFAULT;
++
++		if (fre->ip_off > ip_off)
 +			break;
- 		case UNWIND_USER_TYPE_FP:
- 			if (!unwind_user_next_fp(state))
- 				return 0;
-@@ -108,6 +137,8 @@ static int unwind_user_start(struct unwind_user_state *state)
++
++		prev_fre = fre;
++	}
++
++	if (!prev_fre)
++		return -EINVAL;
++	fre = prev_fre;
++
++	frame->cfa_off = fre->cfa_off;
++	frame->ra_off  = fre->ra_off;
++	frame->fp_off  = fre->fp_off;
++	frame->use_fp  = SFRAME_FRE_CFA_BASE_REG_ID(fre->info) == SFRAME_BASE_REG_FP;
++
++	return 0;
++}
++
++int sframe_find(unsigned long ip, struct unwind_user_frame *frame)
++{
++	struct mm_struct *mm = current->mm;
++	struct sframe_section *sec;
++	struct sframe_fde fde;
++	unsigned long fde_start_base;
++	int ret;
++
++	if (!mm)
++		return -EINVAL;
++
++	guard(srcu)(&sframe_srcu);
++
++	sec = mtree_load(&mm->sframe_mt, ip);
++	if (!sec)
++		return -EINVAL;
++
++	if (!user_read_access_begin((void __user *)sec->sframe_start,
++				    sec->sframe_end - sec->sframe_start))
++		return -EFAULT;
++
++	ret = __find_fde(sec, ip, &fde, &fde_start_base);
++	if (ret)
++		goto end;
++
++	ret = __find_fre(sec, &fde, fde_start_base, ip, frame);
++end:
++	user_read_access_end();
++	return ret;
++}
+ 
+ static void free_section(struct sframe_section *sec)
+ {
+@@ -120,8 +421,10 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 	sec->text_end		= text_end;
+ 
+ 	ret = sframe_read_header(sec);
+-	if (ret)
++	if (ret) {
++		dbg_print_header(sec);
+ 		goto err_free;
++	}
+ 
+ 	ret = mtree_insert_range(sframe_mt, sec->text_start, sec->text_end, sec, GFP_KERNEL);
+ 	if (ret) {
+@@ -137,6 +440,13 @@ int sframe_add_section(unsigned long sframe_start, unsigned long sframe_end,
+ 	return ret;
+ }
+ 
++static void sframe_free_srcu(struct rcu_head *rcu)
++{
++	struct sframe_section *sec = container_of(rcu, struct sframe_section, rcu);
++
++	free_section(sec);
++}
++
+ static int __sframe_remove_section(struct mm_struct *mm,
+ 				   struct sframe_section *sec)
+ {
+@@ -145,7 +455,7 @@ static int __sframe_remove_section(struct mm_struct *mm,
  		return -EINVAL;
  	}
  
-+	if (current_has_sframe())
-+		state->available_types |= UNWIND_USER_TYPE_SFRAME;
- 	if (IS_ENABLED(CONFIG_HAVE_UNWIND_USER_FP))
- 		state->available_types |= UNWIND_USER_TYPE_FP;
+-	free_section(sec);
++	call_srcu(&sframe_srcu, &sec->rcu, sframe_free_srcu);
  
+ 	return 0;
+ }
+diff --git a/kernel/unwind/sframe_debug.h b/kernel/unwind/sframe_debug.h
+new file mode 100644
+index 000000000000..055c8c8fae24
+--- /dev/null
++++ b/kernel/unwind/sframe_debug.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _SFRAME_DEBUG_H
++#define _SFRAME_DEBUG_H
++
++#include <linux/sframe.h>
++#include "sframe.h"
++
++#ifdef CONFIG_DYNAMIC_DEBUG
++
++#define dbg(fmt, ...)							\
++	pr_debug("%s (%d): " fmt, current->comm, current->pid, ##__VA_ARGS__)
++
++static __always_inline void dbg_print_header(struct sframe_section *sec)
++{
++	unsigned long fdes_end;
++
++	fdes_end = sec->fdes_start + (sec->num_fdes * sizeof(struct sframe_fde));
++
++	dbg("SEC: sframe:0x%lx-0x%lx text:0x%lx-0x%lx "
++	    "fdes:0x%lx-0x%lx fres:0x%lx-0x%lx "
++	    "ra_off:%d fp_off:%d\n",
++	    sec->sframe_start, sec->sframe_end, sec->text_start, sec->text_end,
++	    sec->fdes_start, fdes_end, sec->fres_start, sec->fres_end,
++	    sec->ra_off, sec->fp_off);
++}
++
++#else /* !CONFIG_DYNAMIC_DEBUG */
++
++#define dbg(args...)			no_printk(args)
++
++static inline void dbg_print_header(struct sframe_section *sec) {}
++
++#endif /* !CONFIG_DYNAMIC_DEBUG */
++
++#endif /* _SFRAME_DEBUG_H */
 -- 
 2.48.1
 
