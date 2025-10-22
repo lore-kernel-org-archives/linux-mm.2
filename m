@@ -4,86 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1815CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80EDACCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:38:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4400E8E0002; Wed, 22 Oct 2025 14:38:29 -0400 (EDT)
+	id BE09D8E0011; Wed, 22 Oct 2025 14:38:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EFF18E0010; Wed, 22 Oct 2025 14:38:29 -0400 (EDT)
+	id B91148E0010; Wed, 22 Oct 2025 14:38:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3058C8E0002; Wed, 22 Oct 2025 14:38:29 -0400 (EDT)
+	id A596A8E0011; Wed, 22 Oct 2025 14:38:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A72C8E0010
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:38:29 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B15FB1A08D8
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:38:28 +0000 (UTC)
-X-FDA: 84026610696.11.6469BDA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C2F3C0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:38:27 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xdxcVq5i;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158307; a=rsa-sha256;
-	cv=none;
-	b=M1vFU193FOzIfFHgrKq1/zMly8KPNjDoKb/ILht5T/y2Rgb2/BlJDoNY2GCiRwd2QvpV6q
-	qqXCWRwd6eRrF5Lel1yaorf2iOeGCfiA2hzQ0a+t6WdqrNXmvGc7osIYdQAHKmoVrs+BpG
-	fEtBRTUEhynik2IjFZzuZqQACwkNQV4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xdxcVq5i;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 90F9A8E0010
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:38:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39BBA1408A1
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:38:33 +0000 (UTC)
+X-FDA: 84026610906.21.6DDFD90
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 571F840003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:38:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IIAmPaos;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761158307;
+	s=arc-20220608; t=1761158311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KD8NfF+EBusv5OZy9MH4ENQVGQk8W3mam3rfe9vKT1M=;
-	b=t+4FXZu9SOLdCE+DS611Ib/8nwFwIvWgTTEQmilzGStaAmI1TBqHf0uN/1oNTwkbkGQnGh
-	r42FmQgG/mEAAKN5R5t20+hRwuxAqZN5jH+wtWqp3RVkE4E2t4mhj4amxI3WR00IvCkkWc
-	FdrgY4vdxeSeIBqT6Ohx/oOU+d3IzjE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94B5863DB4;
-	Wed, 22 Oct 2025 18:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5A1C4CEE7;
-	Wed, 22 Oct 2025 18:38:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761158306;
-	bh=RqQlQORqCXLRUiL3vVHJ9CCKwIACu95r35ar8HrBFHk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=xdxcVq5ibAI/IsUG0H8rVpGBwxOnQMNU7VqKSG7xATvkS/+qPe3WUCQBIASqQ0H0T
-	 w/9dnj+Iidsy4zJM9DUPzjdnpM+mqQ4BLeH0R3gkfB4+Kv6DvvWJmiWOvYGneKiyq3
-	 JG5YgmHEHV4rOSDrvoIt293Mfutg55DryndAMF3E=
-Date: Wed, 22 Oct 2025 11:38:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Carlos
- Maiolino <cem@kernel.org>, willy@infradead.org, dlemoal@kernel.org,
- hans.holmberg@wdc.com, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-xfs@vger.kernel.org
-Subject: Re: allow file systems to increase the minimum writeback chunk size
- v2
-Message-Id: <20251022113825.f9d0a2f3143929f9e1f2967d@linux-foundation.org>
-In-Reply-To: <20251022053434.GA3729@lst.de>
-References: <20251017034611.651385-1-hch@lst.de>
-	<20251022053434.GA3729@lst.de>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rszakxmd3gmmsb5prrtbzbnhkztkqydx
-X-Rspamd-Queue-Id: 4C2F3C0006
-X-Rspamd-Server: rspam06
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sGrCfbpJbLZ7HRMa9iPXf+hCVuEsHMIDx0PfwK6yFh0=;
+	b=Glav1upYWEE9gMDoYk7pyW91xNuZXTdyaPg2QEDo6MGXIr2Vpg229R24VGLJY8QQOT//K6
+	07MjqNAU21JyyrjQ0gJw8gtptoSKxGvUBs3IsSU1HL1wZBOGS+UyfNAkXoydkuNmcA/ues
+	yudQwe/pt6p8+O+z8+fX/oHdbL8FAVE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158311; a=rsa-sha256;
+	cv=none;
+	b=Q215a0M6rOtfHsdSG1i+3ldejpfUvT/SukfjpTuMhWvxDqBWHdy0t3HUz9RxcGxcu9G+Qe
+	3bSYhj+rBElP1nysKGIFZe2TeRKvoW3eRJvvO8CM1SlCLDM364VU2ZxvEFvvpV3UF+vzhS
+	aMHwzHvabhSYmrvIA0uFAobs2uM3mV4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IIAmPaos;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761158310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sGrCfbpJbLZ7HRMa9iPXf+hCVuEsHMIDx0PfwK6yFh0=;
+	b=IIAmPaosN0F3hNsbIV0jqPunIBjQdelQFan/EqwcL8SD5b3Oz6rNM1UD1Us0hnCysAYmaQ
+	ooNak1CGywtHa36E5rF/kw7oKHjP5gqazy9HInT25plLIVaL93lNMoUFzjl+iuzCULX7hr
+	LgPmjPRoBCalqgz8I3ya1cgx3wwOEsM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-1eKGJ1J5OM-DligeSKwWCQ-1; Wed,
+ 22 Oct 2025 14:38:27 -0400
+X-MC-Unique: 1eKGJ1J5OM-DligeSKwWCQ-1
+X-Mimecast-MFC-AGG-ID: 1eKGJ1J5OM-DligeSKwWCQ_1761158300
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EAE2418002C9;
+	Wed, 22 Oct 2025 18:38:15 +0000 (UTC)
+Received: from h1.redhat.com (unknown [10.22.64.41])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D1EB219560A2;
+	Wed, 22 Oct 2025 18:38:02 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org
+Cc: david@redhat.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	corbet@lwn.net,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	willy@infradead.org,
+	peterx@redhat.com,
+	wangkefeng.wang@huawei.com,
+	usamaarif642@gmail.com,
+	sunnanyong@huawei.com,
+	vishal.moola@gmail.com,
+	thomas.hellstrom@linux.intel.com,
+	yang@os.amperecomputing.com,
+	kas@kernel.org,
+	aarcange@redhat.com,
+	raquini@redhat.com,
+	anshuman.khandual@arm.com,
+	catalin.marinas@arm.com,
+	tiwai@suse.de,
+	will@kernel.org,
+	dave.hansen@linux.intel.com,
+	jack@suse.cz,
+	cl@gentwo.org,
+	jglisse@google.com,
+	surenb@google.com,
+	zokeefe@google.com,
+	hannes@cmpxchg.org,
+	rientjes@google.com,
+	mhocko@suse.com,
+	rdunlap@infradead.org,
+	hughd@google.com,
+	richard.weiyang@gmail.com,
+	lance.yang@linux.dev,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de
+Subject: [PATCH v12 mm-new 00/15] khugepaged: mTHP support
+Date: Wed, 22 Oct 2025 12:37:02 -0600
+Message-ID: <20251022183717.70829-1-npache@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Rspamd-Server: rspam01
+X-Stat-Signature: dif1tsk78sctytg5kweigqsyftw6ushx
 X-Rspam-User: 
-X-HE-Tag: 1761158307-674044
-X-HE-Meta: U2FsdGVkX19RrEXr5su5ySthPpLdCwJYkwQ/o9VFPlgwuZsGUa9O66YO+e+bmrRrWtL8BwMiGN4FmkItzFAp16CAoueEx7QU79m9r0YPUyt7sXDzJx4Igwdro/CVadwbDqmerGY81nk+ygL633mc9kLIh/cFdnCTmXeahPNmyRskm7zHxDJVJh1NGDpd0NNDSI89LcnxdA0z0DPf3ylp3Vq/hK9b1gjlbLi+JrafJ2wIPRrIz73tD3O1u0Oyt//P5sTRO4b9TtKS8QVGRxzE4hKLq65Kjom0Ohx9v7gtvPY5bSobNdC6eqbNIffThGlEhQYnBRmjcyFY824usCVExAzNK92EsLqdgwGRGg38AvnDdKugDOJnxB0yn7hFY+YI1s7uwXtI7EI7PeNhYOjLalaklZkAUiFzm1o+KP0NSwWIViVZzB2dtwc9H2Z3LE/O+01w35ml2Jmj4sBkJ3JxubxWFgSb4w+m19kP4RV/QPH9FxhPhcsj3zVoL6yUOmb4LC6qCvmE8nMEv5QZltgx/uSl+382+NEAbZUQwKyS3ZQFwCxfX/ROzSHaRbz71WvW11xm23GjmfL0ZuJHiIzyaPRF/+EmyFm1QUtMS6XmQ1lcHlOoQLbnF5X6FMr3rxSIkiyzvQiRoymnM0uIUa92+rXh93UbKi1VwEwwH0Rp9Mu2+I3VXRsfmQh+pvq4LUgt7IlTV4OIS1DnCbaVmaN9zjdRE+7ynu8sKTtAHuLlJIdfcGiD/3h8rGfWzAm3Gmk8RpOzPvidFyIAliR/SdnuK+yaURFBuo4RoVjUJCep62s+O2+ngo8ffYRl0JEOffR6shUXkWcwkiCRkqxIiaIJ8+7K7NaX0EfQfXt7gKJpRmWm/SQJK1imBcR9y8S4UEUGKdhfc1hotiFA2WAEyz8j3EQPmW0PXwfD5961r31ntXo=
+X-Rspamd-Queue-Id: 571F840003
+X-HE-Tag: 1761158311-808776
+X-HE-Meta: U2FsdGVkX1+XV6j5wn5/e919s3FVggIYxUVMUqw4BRaz6NUyw/zJ73hLD5sRyKJazTuydXgjI+Uem6p2avWwAhy3h7tTmoYmHvSZxt3xV2WmdnN9W79J9oz0y29KGxr42BIT+uoEoA2ESjTvLiMaxzfDMaDa7cYk3vyluAwsRV3aPBJPx0p4LvqUf46Eomaqo5mEPPbWlISgAwsHEF21TTRCQZiqCku79sudgY3plo9P10PBum9GS6JThwnW8TxiR2xUAZny9dOSh3p4ZxudbXrzcvnZz+V1NKdVNQlnUjLKa49yqSSOMGIeihqtd0/iXXftUHSzU35hNkC44bj69mEplw3APEUYaMXo9O2/2WwvfO40FfBR4WWhoNTw8+xhcO1VDHgkjXbRI7XnEFgZGW8W9QBmmzkPEoY9cKj6AV1XZVLNtW9WWqGutyIaaWIQTNIR+tL6gU4rq4P1gUjHClwBNjK6j3gSxiYOaMhCWu5/ByYKsOFF7SX4RZBB2YxQ3ehlsAni5+/uCxnxIXl0Adqw9j/76NVm3bTI8ysX5bkY2JmevLeyZv15QlUIJHA3rBs1Zn9KiDnL/QSE8LUlZtrJ6UgvuwHo8PLOpJsEmCZOTQT0ye3idW6WTw97ZxNFWqa+yKLOlHiprJqRpBEFF3hZiB04ihkimp4qEQi8XZqRAvY82YyzGQRwg03cV/P3XqFR3d6IcjieoP1rJCUwdkK8v1mNrv6uIL9c6PxnmAsfbueSZU2CTAphiroE2zY+enP6dv4Muha5WCHrrlxjXNubW+U5CR2SootFXLiraRL091fgZx1osB78+/ZJgJJfqoxJs+DCT9s/H+ssR+UssHYOjYZ4LrUitFITv/OHGQZGCmv0LrC4va+FO3wSowc6VFNcuPIwzJM0ddQGfGjljh2NEqk7+QGFKJhmw1C1IP7WgqvRpIWHgQcqgB6N0G3Cds4sMVceaLR5ovpRwaZ
+ TgHeAD7G
+ K8aJsKN1M8wuIKOT6WsFdhoF0JPG1OFekqZzHUHRtU3spE+zRTY+Mx5zbng1xw4udtbxIKchzjCVi3RqNsiWkFVp/lbyZYXmgQBZ84/XkmW5b9J4K+0asZahlZolM71gnWkQVzBRDQB2ujslTgs4OlQNgcZJRAiiAGOGGooXd7/sB0bwaajCYDFK3EITyfApKGe2TE59kY9zcRBdhSB20AccZbhvj9B7taEi/y/zwHUrF2xo8LbAK2Wi3bQr+bMBvlTOLT4zq+kzAFXtFtLpWM3foXagcEhTzKjRMLej5yKavaYurOV5xdvywqoPGD5k0WqyPeEWQq8dJfMIaDH3FOc09F+mCSkrO23BtNcMrdCaqhwq7e/kiJgCWXZnXrXuvAc4SIGY2QcYzYpzisWUmtMtc7C9K0Oxud/4iTIWZnXve0HSKH8GHU4IeMATWoOWR1g7Q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,28 +145,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Oct 2025 07:34:34 +0200 Christoph Hellwig <hch@lst.de> wrote:
+The following series provides khugepaged with the capability to collapse
+anonymous memory regions to mTHPs.
 
-> Looks like everything is reviewed now, can we get this queued up
-> as it fixes nasty fragmentation for zoned XFS?
-> 
-> It seems like the most recent writeback updates went through the VFS
-> tree, although -mm has been quite common as well.
+To achieve this we generalize the khugepaged functions to no longer depend
+on PMD_ORDER. Then during the PMD scan, we use a bitmap to track individual
+pages that are occupied (!none/zero). After the PMD scan is done, we do
+binary recursion on the bitmap to find the optimal mTHP sizes for the PMD
+range. The restriction on max_ptes_none is removed during the scan, to make
+sure we account for the whole PMD range. When no mTHP size is enabled, the
+legacy behavior of khugepaged is maintained. max_ptes_none will be scaled
+by the attempted collapse order to determine how full a mTHP must be to be
+eligible for the collapse to occur. If a mTHP collapse is attempted, but
+contains swapped out, or shared pages, we don't perform the collapse. It is
+now also possible to collapse to mTHPs without requiring the PMD THP size
+to be enabled.
 
-mpage, writeback, readahead, filemap, buffer.c  etc have traditionally
-been MM tree things (heck, I basically wrote them all a mere 20 years
-ago).
+When enabling (m)THP sizes, if max_ptes_none >= HPAGE_PMD_NR/2 (255 on
+4K page size), it will be automatically capped to HPAGE_PMD_NR/2 - 1 for
+mTHP collapses to prevent collapse "creep" behavior. This prevents
+constantly promoting mTHPs to the next available size, which would occur
+because a collapse introduces more non-zero pages that would satisfy the
+promotion condition on subsequent scans.
 
-They're transitioning to being fs things nowadays, and that makes sense
-- filesystems are the clients for this code.
+Patch 1:     Refactor/rename hpage_collapse
+Patch 2:     Refactoring to combine madvise_collapse and khugepaged
+Patch 3-7:   Generalize khugepaged functions for arbitrary orders
+Patch 8:     skip collapsing mTHP to smaller orders
+Patch 9-10:  Add per-order mTHP statistics and tracepoints
+Patch 11:    Introduce collapse_allowable_orders
+Patch 12-14: Introduce bitmap and mTHP collapse support
+Patch 15:    Documentation
 
-But please do keep cc'ing linux-mm and myself on this work.
+---------
+ Testing
+---------
+- Built for x86_64, aarch64, ppc64le, and s390x
+- selftests mm
+- I created a test script that I used to push khugepaged to its limits
+   while monitoring a number of stats and tracepoints. The code is
+   available here[1] (Run in legacy mode for these changes and set mthp
+   sizes to inherit)
+   The summary from my testings was that there was no significant
+   regression noticed through this test. In some cases my changes had
+   better collapse latencies, and was able to scan more pages in the same
+   amount of time/work, but for the most part the results were consistent.
+- redis testing. I tested these changes along with my defer changes
+  (see followup [2] post for more details). We've decided to get the mTHP
+  changes merged first before attempting the defer series.
+- some basic testing on 64k page size.
+- lots of general use.
 
-> >  fs/fs-writeback.c         |   26 +++++++++-----------------
-> >  fs/super.c                |    1 +
-> >  fs/xfs/xfs_zone_alloc.c   |   28 ++++++++++++++++++++++++++--
-> >  include/linux/fs.h        |    1 +
-> >  include/linux/writeback.h |    5 +++++
+V12 Changes:
+- variable cleanups & minor nits
+- Documentation updates to be less specific about the internal workings
+- Added Review by Baolin (thanks!)
+- Improved readability of the collapse_max_ptes_none function
+- Improved collapse_scan_pmd max_ptes_none logic using the helper
 
-VFS tree, please.
+V11: https://lore.kernel.org/lkml/20250912032810.197475-1-npache@redhat.com/
+V10: https://lore.kernel.org/lkml/20250819134205.622806-1-npache@redhat.com/
+V9 : https://lore.kernel.org/lkml/20250714003207.113275-1-npache@redhat.com/
+V8 : https://lore.kernel.org/lkml/20250702055742.102808-1-npache@redhat.com/
+V7 : https://lore.kernel.org/lkml/20250515032226.128900-1-npache@redhat.com/
+V6 : https://lore.kernel.org/lkml/20250515030312.125567-1-npache@redhat.com/
+V5 : https://lore.kernel.org/lkml/20250428181218.85925-1-npache@redhat.com/
+V4 : https://lore.kernel.org/lkml/20250417000238.74567-1-npache@redhat.com/
+V3 : https://lore.kernel.org/lkml/20250414220557.35388-1-npache@redhat.com/
+V2 : https://lore.kernel.org/lkml/20250211003028.213461-1-npache@redhat.com/
+V1 : https://lore.kernel.org/lkml/20250108233128.14484-1-npache@redhat.com/
+
+A big thanks to everyone that has reviewed, tested, and participated in
+the development process. Its been a great experience working with all of
+you on this endeavour.
+
+[1] - https://gitlab.com/npache/khugepaged_mthp_test
+[2] - https://lore.kernel.org/lkml/20250515033857.132535-1-npache@redhat.com/
+
+Baolin Wang (1):
+  khugepaged: run khugepaged for all orders
+
+Dev Jain (1):
+  khugepaged: generalize alloc_charge_folio()
+
+Nico Pache (13):
+  khugepaged: rename hpage_collapse_* to collapse_*
+  introduce collapse_single_pmd to unify khugepaged and madvise_collapse
+  khugepaged: generalize hugepage_vma_revalidate for mTHP support
+  khugepaged: generalize __collapse_huge_page_* for mTHP support
+  khugepaged: introduce collapse_max_ptes_none helper function
+  khugepaged: generalize collapse_huge_page for mTHP collapse
+  khugepaged: skip collapsing mTHP to smaller orders
+  khugepaged: add per-order mTHP collapse failure statistics
+  khugepaged: improve tracepoints for mTHP orders
+  khugepaged: introduce collapse_allowable_orders helper function
+  khugepaged: Introduce mTHP collapse support
+  khugepaged: avoid unnecessary mTHP collapse attempts
+  Documentation: mm: update the admin guide for mTHP collapse
+
+ Documentation/admin-guide/mm/transhuge.rst |  84 ++-
+ include/linux/huge_mm.h                    |   5 +
+ include/linux/khugepaged.h                 |   2 +
+ include/trace/events/huge_memory.h         |  34 +-
+ mm/huge_memory.c                           |  11 +
+ mm/khugepaged.c                            | 614 +++++++++++++++------
+ mm/mremap.c                                |   2 +-
+ 7 files changed, 539 insertions(+), 213 deletions(-)
+
+-- 
+2.51.0
+
 
