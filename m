@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8D38CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:29:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EE18CCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54DD78E000B; Wed, 22 Oct 2025 04:29:20 -0400 (EDT)
+	id 796E78E0012; Wed, 22 Oct 2025 04:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525298E0002; Wed, 22 Oct 2025 04:29:20 -0400 (EDT)
+	id 7478D8E0002; Wed, 22 Oct 2025 04:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 461778E000B; Wed, 22 Oct 2025 04:29:20 -0400 (EDT)
+	id 636CA8E0012; Wed, 22 Oct 2025 04:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 389528E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:29:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7DF8160759
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:19 +0000 (UTC)
-X-FDA: 84025075638.16.FD0360B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BFCF84000A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HO48mn1E;
-	spf=pass (imf17.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EFC18E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:29:28 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0E8FBAA9A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:27 +0000 (UTC)
+X-FDA: 84025075974.07.4E5ABFF
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CC1A9C0005
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DHdvt5Gv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761121766; a=rsa-sha256;
+	cv=none;
+	b=dzreB08XZ9aXojH/JfHS4FZUqX3UDvqtnuq7J6cnjPOBZtg3e3OKK3wrz7c5a2Ervrc+u4
+	gw4pP9tlgujLZ5jCXFcWCavCWPKngmPYCkqbs+gjsix6QA/eTNrK07x4LDbBcH4Mzzro3+
+	hJOU4GpPbbJrIpfFa29AaDFUVPEI7n8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DHdvt5Gv;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf28.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761121758;
+	s=arc-20220608; t=1761121766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gzj4mNk1lBwNFeTIdeQPZxe+g4WElHt7bL5S6CjgLhY=;
-	b=ZELiPjaSf35V8yPK7AK9nBNa0kGwT5Spul28WrZnafPSoYRHhjHPaB+TnVunKwtpYX5jHA
-	SOxYIJwVGKsM/UqTaSmHFkE6xpT0lMGoU+EqjEIuvE58A6pkYO63hWbSykPK2NkfstJECX
-	DzGaPMPvVrcguraYB40iUVAbdej36pI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HO48mn1E;
-	spf=pass (imf17.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761121758; a=rsa-sha256;
-	cv=none;
-	b=bMVwW7GIJC7JE7Jr8FYiDBqm1t9KIZZtUUaND+AW1Yc9vA3r0g8vZ/TsTn9adQ26taocnW
-	CyqmgoxvChiA16pA9jdhv+7aEzBhgIrhavI4pHciextY01BCU0yCjjPZrllsdkqHxhTD+P
-	ug6LHuKYeZmwEgX7v9cmxqjrPGe3Occ=
+	bh=JQsh9ULOkP1Nv9A6ASUL8IdXOZfQ2/XyDb+3LK/NYAU=;
+	b=XESTPIzlLK8JQW8FZMpQSx/5T4oqN5oh4Cd4hETJXw1MbfBZt6iQuhfD2gmw7cL+/+CVpH
+	LFD2NiVZF1c7KHerEoT1igWob8T4NJ0xjB2E7juzb0Ckm+eRVbKqO1yMigJdu4lk/mLCzs
+	iHtpBxn05rChveLZfHeW59bdUFWONfg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761121758; x=1792657758;
+  t=1761121766; x=1792657766;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=X8hpluMqUjHyF3NnFKeki1ZNOZ9A7wW3hfxRIst9gNk=;
-  b=HO48mn1EaWM6bikVLYXswOm+wWf7J103gcxVuf89BePxwmBPzfryGGhY
-   2rbWBd4ETjBOHyBQyJfUu+INYn8s4yuIn5EHnrdIPcooZQDmLm9SyjLge
-   HdRc1l/jDECz46SOKUkKLNokuBcyZ4r6QKYkd75jOUiYAgnTOs6QAH80z
-   cZww6i/czqqYexvB4gBBWukEsw8KQ54YgA7yJZZYfXWHpQp8VkurB2966
-   XXr7LF27vBNOQMdC8sylTIdnTkHnUgtA/VxA6SB5aPR3xKN+An0GDR0Xs
-   GeSdnv/EbyFYgR8ZZuojsjPoIy4R5U+LJ0JfStu/3yCX+90Hz+RqpUjis
-   g==;
-X-CSE-ConnectionGUID: nWSx7mg/QvK+RM5KJutoxg==
-X-CSE-MsgGUID: 9lfGXzq2SGCANkKGEgdQ7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62292573"
+  bh=PamdCW5SIExW2MSTVmRrUvcUix6foLzr9uopaA+M2pw=;
+  b=DHdvt5GvntYwXG382FUR7XpyQeSFxu8yCWt0dY0XuK/r9574wRhz8zmd
+   Sq+ZPp5ERcTjQXPL5wWc8wBbuDcfX1Y075gA3QtgtpjqewFh9hNwOgHcy
+   OLfFPfu9Ik4R0Km9GwQv8NnLtyXdmXEC6ffXzAJvKAcTKA+2lmPDThPEz
+   6Uw0AWztDTsXSV4NoCGgpYY31LSWPFZNnHLKiKMdt/AgsP789J5PAzfLM
+   qfUZeMWOhahvOPnfure01VNILrc8nGa2NfJTs4NtubhuYRnajqOPVnZXt
+   fl/88YwDHpxiFDju4HKBe6oaNwD7i2qZ1XGO8AhB6f6nNA4m+hzs8/NS3
+   A==;
+X-CSE-ConnectionGUID: e1gf97u7SF2iRfsb5SybvA==
+X-CSE-MsgGUID: JoQh2fHASsyLnOGc85imeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67126987"
 X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="62292573"
+   d="scan'208";a="67126987"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:29:17 -0700
-X-CSE-ConnectionGUID: V+b1HRBlR6SJ4CzEl3BbxA==
-X-CSE-MsgGUID: akeshMYnSd64ObPki9LPvA==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:29:24 -0700
+X-CSE-ConnectionGUID: uYNe54tGQT2jRkTDg8M2GQ==
+X-CSE-MsgGUID: 96m6+PNSSlueQgOErfr6UA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="183516218"
+   d="scan'208";a="183516242"
 Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by fmviesa007.fm.intel.com with ESMTP; 22 Oct 2025 01:29:11 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 22 Oct 2025 01:29:17 -0700
 From: Lu Baolu <baolu.lu@linux.intel.com>
 To: Joerg Roedel <joro@8bytes.org>,
 	Will Deacon <will@kernel.org>,
@@ -107,22 +107,24 @@ Cc: iommu@lists.linux.dev,
 	x86@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v7 1/8] iommu: Disable SVA when CONFIG_X86 is set
-Date: Wed, 22 Oct 2025 16:26:27 +0800
-Message-ID: <20251022082635.2462433-2-baolu.lu@linux.intel.com>
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH v7 2/8] mm: Add a ptdesc flag to mark kernel page tables
+Date: Wed, 22 Oct 2025 16:26:28 +0800
+Message-ID: <20251022082635.2462433-3-baolu.lu@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
 References: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5t4jmw8i61c4ut57tk7k3d1p88butkin
-X-Rspamd-Queue-Id: BFCF84000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761121757-70175
-X-HE-Meta: U2FsdGVkX18dKJ5+hAFMEwNsRxGvRW+EhJXN3G5maGWJ9Jbbm2EqptP/rTRtSXK1HvUZ/KpuxgkES0EtHXWJWarcOM6SRZL3grUkIzfcWbJFSHdjffdS8TvDOrL9Zs5RpPq61G8ssFNjl5/c6BJhyszcTRJyVSlr+CC7PNbJhEMKb6+TgV18kBZe66D6vCFex1yzZa2VPftjrHZJNd7ZETrbV27jztqFcsM78V8YrM24J9BoQNfbDmq6pSwQlTtYUEMt93mk+LGshtepg0V4xmXfweB+RN5Gh9EBKBHGgatWhhBJYrWOjlXIgZdFKbhe/A5U5D11TpITzsGr6dZPNxSW5hQIQo8J+Xkf7KVSAfZO05Ghw5H+n5GXMTmtOJ4/0zYjeyUxNJWJvV7ueN09BGl3wf4PyCJBs3VuQq82943W5dlt6+Fs59lWppR6dHiX0dKgEEqSxy0c88Uplj4Z7tlqVt/wHnMRdPEyjQxWb102QWZrMRhQlYoSxQ2805o/NwNrP++KuFIlRIIItzZPETk7b4CfGyP2dNyI+BqSE0STeVQUk7QbSmOJsSe+fZM90a6GZsxLB3gFKOZFgS520BmCevsaVbZ1eypyjdJ8g3Oy15a3BkF4KvUlat3h709mBHVmf0qkuo9x1mL34eTe8sKSWCdGpfbiCTX40maAE2wkU8iBid2aiX2yIoShR5awUkZYvwH4H/gH6C+PIU0ABfu54oEy6w9rwadGNSxAScCu3p1imJcIXZ342WiSdaL2AQciialP9t1CbovFxKyuDTARB9usvhmQu5eG5kJri4PlSW+9C/3bB/gQYejfxdxBVdz1FDDaKHPWp2W+vR3zpB1ErgbqWsMA96A5nQlrZHjlVWYJRsZqrcmtq84O5SjJ+LMKTsUnBwoO1Twipmd5/yuLtYZhlhxX+Wu5EPRANwtgB1grMvcm7Q==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CC1A9C0005
+X-Stat-Signature: 7375yjggozjktcq4g7yqu63fewwaqrtb
+X-HE-Tag: 1761121765-443327
+X-HE-Meta: U2FsdGVkX186hIjBXlIsXncfBDUfi4tgwSpuNxsn+Ok1Jr3JYYUAZGcisdxlcibmAyJdtZuq+nyC1y0Ic8LqWEt/B7679W7fpC6u3dQUwMez5518MsObUvZj42KkwCZAw69cFioz+RejCieoABGaqdCHmcD8KYkvcXqDJMH5Ur++FYVGw1qbEYDtDBNPahLRKMM45qb9eLUenAuNhX2V7NlLXbc2oWncnqTtbAUegBBM8YqtS5XOO6obOHa3pS/Y9JOIcLY0sV6Tanv7Npv7irgL+H/H6RoSol063dO5ryWcYTmJXhiJufek1X24Qx2erAFXBD5F+3VqS5iPEIIhFG5qbsJ+5MuAcYWd09tsPA8J4p7DISG+Mm7sW++aUW5uuFM6o/GbRA4xF1N4SNWoGfQCEQte2vMtd61Jg+fhinV0VDzbYpYQGwRFTluKP12W5wE4c5ukfpYZiV+TrUcCNB9+DdI81gH9j1rauzcpZxoEsfbGIDsL41zFfTo1+Zerz7VyUfiE86wZ4PqPPqTdJQTFf49yN+fc8G1BxK2TpPGK2SXpiTUb7pjgxLJdfJ01LOOM2QwI9XGIOvfwKGi8IcmfkepuA9OjjkX5hLWn8hYnTCSrFUpgsEB+b+k7Yl6i6Xu/sj/ew1+YdPr9oCfUL9EFLSK223FN23yd/+pKe1AAXfzMnUZMHCpY2LatIycrMu7buD6OSQS++CQWzdfT0/xYtr6Li1Y3vyyTaoPS20ZVPtRq2gFb8VQf+0sRxORRn/8CskWVZ7s+pa8lqKwMMPNZuVccyD9/2h8HIdRgb3OsLjYvbQR5w/P/qwHU603cJSr3LzHIKzI3EiK7ZnM5nnxlcx9xu1/dhKFZHS4DD+kZBe+inYZtatrGxWUXgG02qneAHOBpOaQzMuGToOJl4nFGgYsIuU9NGjXxoPM4e7uDgF19jr2L/10vpMX5Q5+haC5U4bNy7UWi1TxxT2a
+ yxYnedAP
+ mhlTvLyqEoTJS3S7J5OY8I3wZcuxM1ZAip9db5wImmLx0Brcfk/dW7aMqDRPRGx0vMxmEupyICMRKm2bZW3oTGaSwOBxQFc8nwsrDSns9MRj649EB7eY/kmVkCCgff6AK8G6F0HtbBanvTCaWvveuc1Mhl44yNsyBvquW5XvSYcR043x4BRFEkF5i5som1HKAiG1B4hAnkZxXvPewNBDfckfCO3P+jzP8+Y7rqPr/JLzKhzlKS9xFPyOwZN6pItDOt8Wm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,58 +133,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
-shares and walks the CPU's page tables. The x86 architecture maps the
-kernel's virtual address space into the upper portion of every process's
-page table. Consequently, in an SVA context, the IOMMU hardware can walk
-and cache kernel page table entries.
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-The Linux kernel currently lacks a notification mechanism for kernel page
-table changes, specifically when page table pages are freed and reused.
-The IOMMU driver is only notified of changes to user virtual address
-mappings. This can cause the IOMMU's internal caches to retain stale
-entries for kernel VA.
+The page tables used to map the kernel and userspace often have very
+different handling rules. There are frequently *_kernel() variants of
+functions just for kernel page tables. That's not great and has lead
+to code duplication.
 
-Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
-kernel page table pages are freed and later reallocated. The IOMMU could
-misinterpret the new data as valid page table entries. The IOMMU might
-then walk into attacker-controlled memory, leading to arbitrary physical
-memory DMA access or privilege escalation. This is also a Write-After-Free
-issue, as the IOMMU will potentially continue to write Accessed and Dirty
-bits to the freed memory while attempting to walk the stale page tables.
+Instead of having completely separate call paths, allow a 'ptdesc' to
+be marked as being for kernel mappings. Introduce helpers to set and
+clear this status.
 
-Currently, SVA contexts are unprivileged and cannot access kernel
-mappings. However, the IOMMU will still walk kernel-only page tables
-all the way down to the leaf entries, where it realizes the mapping
-is for the kernel and errors out. This means the IOMMU still caches
-these intermediate page table entries, making the described vulnerability
-a real concern.
+Note: this uses the PG_referenced bit. Page flags are a great fit for
+this since it is truly a single bit of information.  Use PG_referenced
+itself because it's a fairly benign flag (as opposed to things like
+PG_lock). It's also (according to Willy) unlikely to go away any time
+soon.
 
-Disable SVA on x86 architecture until the IOMMU can receive notification
-to flush the paging cache before freeing the CPU kernel page table pages.
+PG_referenced is not in PAGE_FLAGS_CHECK_AT_FREE. It does not need to
+be cleared before freeing the page, and pages coming out of the
+allocator should have it cleared. Regardless, introduce an API to
+clear it anyway. Having symmetry in the API makes it easier to change
+the underlying implementation later, like if there was a need to move
+to a PAGE_FLAGS_CHECK_AT_FREE bit.
 
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Cc: stable@vger.kernel.org
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/iommu/iommu-sva.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/mm.h | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
-index 1a51cfd82808..a0442faad952 100644
---- a/drivers/iommu/iommu-sva.c
-+++ b/drivers/iommu/iommu-sva.c
-@@ -77,6 +77,9 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..354d7925bf77 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2940,6 +2940,7 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
+ #endif /* CONFIG_MMU */
  
-+	if (IS_ENABLED(CONFIG_X86))
-+		return ERR_PTR(-EOPNOTSUPP);
+ enum pt_flags {
++	PT_kernel = PG_referenced,
+ 	PT_reserved = PG_reserved,
+ 	/* High bits are used for zone/node/section */
+ };
+@@ -2965,6 +2966,46 @@ static inline bool pagetable_is_reserved(struct ptdesc *pt)
+ 	return test_bit(PT_reserved, &pt->pt_flags.f);
+ }
+ 
++/**
++ * ptdesc_set_kernel - Mark a ptdesc used to map the kernel
++ * @ptdesc: The ptdesc to be marked
++ *
++ * Kernel page tables often need special handling. Set a flag so that
++ * the handling code knows this ptdesc will not be used for userspace.
++ */
++static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
++{
++	set_bit(PT_kernel, &ptdesc->pt_flags.f);
++}
 +
- 	mutex_lock(&iommu_sva_lock);
- 
- 	/* Allocate mm->pasid if necessary. */
++/**
++ * ptdesc_clear_kernel - Mark a ptdesc as no longer used to map the kernel
++ * @ptdesc: The ptdesc to be unmarked
++ *
++ * Use when the ptdesc is no longer used to map the kernel and no longer
++ * needs special handling.
++ */
++static inline void ptdesc_clear_kernel(struct ptdesc *ptdesc)
++{
++	/*
++	 * Note: the 'PG_referenced' bit does not strictly need to be
++	 * cleared before freeing the page. But this is nice for
++	 * symmetry.
++	 */
++	clear_bit(PT_kernel, &ptdesc->pt_flags.f);
++}
++
++/**
++ * ptdesc_test_kernel - Check if a ptdesc is used to map the kernel
++ * @ptdesc: The ptdesc being tested
++ *
++ * Call to tell if the ptdesc used to map the kernel.
++ */
++static inline bool ptdesc_test_kernel(const struct ptdesc *ptdesc)
++{
++	return test_bit(PT_kernel, &ptdesc->pt_flags.f);
++}
++
+ /**
+  * pagetable_alloc - Allocate pagetables
+  * @gfp:    GFP flags
 -- 
 2.43.0
 
