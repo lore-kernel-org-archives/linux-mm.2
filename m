@@ -4,111 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87811CCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:28:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C69CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:29:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFE738E0005; Wed, 22 Oct 2025 04:28:11 -0400 (EDT)
+	id 76FEB8E000A; Wed, 22 Oct 2025 04:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD59D8E0002; Wed, 22 Oct 2025 04:28:11 -0400 (EDT)
+	id 746D78E0002; Wed, 22 Oct 2025 04:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D11F78E0005; Wed, 22 Oct 2025 04:28:11 -0400 (EDT)
+	id 684538E000A; Wed, 22 Oct 2025 04:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C12438E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:28:11 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C9BF13BA81
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:28:11 +0000 (UTC)
-X-FDA: 84025072782.14.1CD8F50
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 69E8C10000D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:28:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=GLezp4tR;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf05.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 558A38E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:29:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F72811ABEC
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:14 +0000 (UTC)
+X-FDA: 84025075428.26.BFA66FD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B2EA340005
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:29:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SCgJ0xqg;
+	spf=pass (imf17.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761121689;
+	s=arc-20220608; t=1761121752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0owC0yjeYFWq5hM4a8PLkbslQ/Mn0NfnuO6/15Z7lAY=;
-	b=WJSvwexQYhp8x61U+lXndwZnavOE/84oqZKed/EkT5qdfA/118l6wYItUnLFZuzEqW+QMA
-	MNH1+8EyGWxKsy38JUldTkTf+ttX//+Knhg5QxjWQ3hhTF/qC8T0BDVW0kNKCoDATkHAks
-	NDyng0VEKQJ+5g65rufry7l9Ba+eceM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=AH5xpBsUQZMkaXj4mLEuDBYBp01G2IiteB022DXD2+o=;
+	b=P1VnB8E6IDr5dgvDAbG8p4VDtuIg04Sdi3qMPjdbmm74ZVakdnc9gYJqP80uAJepNlRM7s
+	DGFMND/LH0oaDxyaP42vkHNw7//AHTa7ytm236Q5mhadCqccy3bq/99UhhEhWgwxX0YDpI
+	JsxsqsQEaqvFCV6txGhZfqvLez4p+yY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=GLezp4tR;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	spf=pass (imf05.hostedemail.com: domain of loic.molinari@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=loic.molinari@collabora.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761121689; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SCgJ0xqg;
+	spf=pass (imf17.hostedemail.com: domain of baolu.lu@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=baolu.lu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761121752; a=rsa-sha256;
 	cv=none;
-	b=YI70mR9hyYfkG9RSS1A3iw0oJL7By7HCMqjST2+Qm8nEUt7BFJdqqjgmdpoffF/ZqN5G6d
-	eI8wQtY2m5ilTb/TJpdOSpt7/hr61GgHoHOBBIE9Zh1PtY/ApkWcNtaLQ30jWTuIu03xJl
-	P2z4ft7POCob1+f422rtRnFiuLMAJm8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1761121686;
-	bh=+qDTriJL1I8TlNCkThOTTjYJGjDQws6OfKtI9VmLqYU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GLezp4tR0VrbO4ufLefY9gSD9aFklgbAX1ncNafEdBljwnmLzVoZ/n2P6arETT3yx
-	 BhDYxIDpnFVx0OuZ4Mxenaamq9C93PodBccJx9kPbcbs1V8jdmH0gqROMaU4VCMCjR
-	 y2TXGUxy8dzqtvY+WuuJrFW0L+TS1ayxAghS1NF8GVPnZn2xA9Nc+haDd+RSGiwDuM
-	 LZnycgx5dmSetFT4S7nnM1Ej8gVvXyoIvRWgFP66pzUQpRKN/JumjSzNayA8tQBl4r
-	 MQ/R99lq4mQaQ2a2JC+feu3/QSC+AVCkC6LCBRyTA//kwxaRPMb1uVCtAod8qf2zA0
-	 zYZIzAL/bm0Ag==
-Received: from [IPV6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa] (unknown [IPv6:2a01:e0a:5e3:6100:7aed:fe0e:8590:cbaa])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: loicmolinari)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id A862E17E00B0;
-	Wed, 22 Oct 2025 10:28:05 +0200 (CEST)
-Message-ID: <64040015-2840-4210-8019-a39e605d87a0@collabora.com>
-Date: Wed, 22 Oct 2025 10:28:04 +0200
+	b=K7Difh1+5EZRVGDf20CMTeoBdjuJgYX3H6G5u5SOraRjgtRjgojO6B1BN6yoDEm5k/LrsG
+	BkCsYebcvG1KiOteKNz6/wCXg7a7Ldi/5TDI/L/mmJUNlJOLpcEu6dwDm3kruLgRfvo0H8
+	6UTlikbp6TUHFZNxL+m3Om7LticDynQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761121752; x=1792657752;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DQWIuIaP4G7L2QkOxVyAjoDdXex0u4FBjhfXyNZJ/DA=;
+  b=SCgJ0xqg3JZcqI1NUcLxkpMy2RCADFdCg7Xtx2h8xrWFnvKUXlMtapzZ
+   cdkmZl2DWmQuNHISi/4D4PzRqS6bcWd9gwC/3x37wRKQjrAx3Gv+LBApQ
+   +2MjA2AQ1fH0+WXiyrsRGjsP5cpv7gsBLOUH+LXsFxdK3aMqWedu2Xrg4
+   k/eY2IbNfw3MaZFBiH2M37hyqm5rJ5UJRoXqpm0PmrNKZkMDh+59XCbMb
+   O8j2S66gfnk+F5h+a220pN14Tdr+jzVWbL9peEeAtYtw0Y5b6I5VC7izN
+   qbs2Cy8+SvYMJvPR1LOk1276izWdC89twhVkWd4lRi3oMyV7o8Sj+PO/l
+   Q==;
+X-CSE-ConnectionGUID: 4qV39vfxT6apECENYUGCTA==
+X-CSE-MsgGUID: lIZy0c5TS4uE7KAxvx4hdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62292568"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="62292568"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 01:29:10 -0700
+X-CSE-ConnectionGUID: 40GuBpibRF6wTTdn6B50PQ==
+X-CSE-MsgGUID: zG1sKX4NTcOFJ+1kV6INVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="183516208"
+Received: from allen-box.sh.intel.com ([10.239.159.52])
+  by fmviesa007.fm.intel.com with ESMTP; 22 Oct 2025 01:29:04 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jann Horn <jannh@google.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: iommu@lists.linux.dev,
+	security@kernel.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH v7 0/8] Fix stale IOTLB entries for kernel address space
+Date: Wed, 22 Oct 2025 16:26:26 +0800
+Message-ID: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
-To: Boris Brezillon <boris.brezillon@collabora.com>,
- kernel test robot <lkp@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Boris Brezillon <bbrezillon@kernel.org>,
- Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Nitin Gote <nitin.r.gote@intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- Christopher Healy <healych@amazon.com>, Matthew Wilcox
- <willy@infradead.org>, Bagas Sanjaya <bagasdotme@gmail.com>,
- oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org
-References: <20251021113049.17242-7-loic.molinari@collabora.com>
- <202510221301.wU3TSqMg-lkp@intel.com> <20251022100548.4dee241e@fedora>
-Content-Language: fr
-From: =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>
-Organization: Collabora Ltd
-In-Reply-To: <20251022100548.4dee241e@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 98p9no617acs1rao9kkj93eyospj3b8u
+X-Rspamd-Queue-Id: B2EA340005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69E8C10000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: irzi7119o5asoyzfiwo5njaxyi1mzdim
-X-HE-Tag: 1761121689-287200
-X-HE-Meta: U2FsdGVkX1/i1BUBauY/m5SwMg0kuUzgFstDcg6LZovxxZYT04INvff5X+52esdEaOvmO1yK0UysQR+um+xoAsf61eVAM/kXIXqYNIfOs0D56xw2uVz901YV4nIOGde+1r/MKWE5LxNr8g1fSxN8gRECAgwNo3SnRGzgUfWbGadkEfQyX02+VDsY3usUQ0priIhAUxjyD5sgcEQDzgRCyDUi2MFSWgf6hDcZOze5b3CGadc+uAlYaI6Ma9h5BrRZI+a/MQ/URlsncTdHkZXMKcQN+9hOIsPHzsYoWINbHjH4kjgWP/M9rWf57B/jffnvX183JRZkGeyu/d7H13Y8cvR1mKvDX/N7vRWhuK4jULjPcSEZKkpWiqaR7gMlcGOCu1+4yXOwjAr6sLc4XXF6mEArdsqSrrCA0LdI4hS+C0jSZOa6LPEsfaQfDaFymNRGSZCi3hPvLrdquH54T1wD7YTbZtIss7AMqFoM6qfPYIad2X1S2m9h227gj2ayvcIUD5gAt8qbOrSjBRIiOw5QbHBf03kA3uvsldGatg4oIU7cl15VXgObdYv1qrBLPzoodiwE1voTOR9mPwneU2+ISk8YLBo9SnOIuBQfBuIT0+QCVaVx9/qvSz1cCx9vukGn8fKMorCP/sgS8UYaHYwmDglUaKIKQYIHFPpSfZnnCtU6Enuf2iTnJbVEqVOOJoC9KdPE6AgOgDf8cH0bM/neYJVlXJ3jUj+1Sbp/qzs9IeNzdvB/jLlG7j3qX27wjp6Uvwew/oXDB1gvA2myp1q619HtboxGR+44WYQnu4RSFZrSZH3z65XmOQ8UgI5vQKBat6+Bbpwl3F8nigzxVj/y4TqCXPbWIiGEeynaV4iIOX8idj9TZycRyGYKM4oBUeAyKh+FbfLlC/F3/BaHtKnfT5z/5soIYsddgRKGcWLowzQCFLklyz6RPXq6hk5SH/o75IZ/YyzinOGLgUYP92M
- 4vIAXQ5t
- djoem6CggtVSvYB1Dlrd70FAlvcgkAfXIBItb79Ygm4FSTK2WJhssiUev6SjB3zkM2usRBRuNF+rQhOcsQmcy7o9IWrzejWrxUDk+PuF2XuahbqskNtZXjkJMkjG2xrysPZO7GAjyw/8/Mns6li0MuZFFliEwDMeHa1wLnNiLbGp9U8Mf+dunAx031RNXoFiGkbag3db8c4MpkbecC1BgSSfNBUkr24l3sQCBWZD2D3z9/Txv0oLwsgq2ZKuH5mf5KMQvXIxOuGnvVHROS7PlCb/0Lzgo9Zn4MnYb7TU8lhwOvPK94KxX6QlGDJ0P8fE6tr2I4ClzvTkGvRyc0JDHSZVVM731l4aEGuqH+EA9Po8y54E4rP/4tUAq+URkBGhqnK04F6pWt4JSeqcC44pmzgZ9T/dpdZLkmeBSFSodl87MDpuy//KnYmu/0vpxDV/xMRV+Aa9uRHCyhoguMeTW5/9ReFHtCM4PYAh4WblwTXwhsuWRPyR/ARhuihrQIwOJD5h4lynwrzLIUMfFnyAcAOYA4y8MP2MVJ8xkE+WvBAe1Pf2NyNQrJLsZX2P8MyFTeNpKK1G3WCMO3/HnoV4Rfbqctk4v/44czThQcTY7qI2YSbY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761121751-257959
+X-HE-Meta: U2FsdGVkX1/8xmY+dWLCgMicm0HPuJWcuL3XBIDiWM2R8IuyXrxOCqAVb1Bn+n+R6yIvAWsKgJUGLDo3QqrQGr8hAHzLueEZVvkrKlSbeSvwPRYvsaCvr4132efcLMTLKznw/emsXggv0JsKNsLlCedkoZjlgnK2mkEmVVTHatOiLQIl0N4ZKeGaIeO1Leoyk5KImeSH2INGh3UkegxnUyJr83tr2k4+NvKUKN3IZJM6Q3LJa75BjJUjse0Q9/6AqoljNMyYEjvHjY8g5vq5Yyunl+tTCaPS2gvU3MrUbr3RQaDpOGqj64o2wnydgzuBcJ+O4IC54KhCIEamL3haLjTllceuO4agodwRJK03qRGgNpTWsm/3CflenaCC+rTTHnNWp3JrqarOOJDJ+CBAb2C5Lbz/PwMBhKvU60lvW2m2BdY5NrdH9bGq79bgbrP/0pcqbuTrkTXQXI9cI7CHjx0zR7NiP9f1VqTZab4H5agSl0PrdYHGMP8ABnd+GaHx/PxOMbb22LzGty6SAUJzcxMLVj8B8Q1NvQn+D8fO3u1BBSUNOHAJTnMNewPXqFm2T93IsKqlqEGP6GcFdDrkUIxPdlVFsZouXw8ts/5AcAmI/SCi0WiHqh7Sgd5wORMndiF3tMCzd5Yrg+RST1/WtvUXljdcaMWR9gtIKSkHm1INlTFFam6qK27huqHX0mW7XLYflLuRVn4MxEy0UiI80tVYckeZxCNXmY6OmSi1QB6RLyo8efI0wDUwmkUwTy+G5dLIlmT3q2Mn4P44o00o3gflZyIMvWAJM+uwAzFVbc1s1f2ZMO7IkwltuX4qxD8F1L9tzzYajXs30w7UbyUM6ThLrRcla03di+Tx2Fhw2fL78Q3FZZIxUvdwLrUOuusc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,105 +128,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Boris,
+This proposes a fix for a security vulnerability related to IOMMU Shared
+Virtual Addressing (SVA). In an SVA context, an IOMMU can cache kernel
+page table entries. When a kernel page table page is freed and
+reallocated for another purpose, the IOMMU might still hold stale,
+incorrect entries. This can be exploited to cause a use-after-free or
+write-after-free condition, potentially leading to privilege escalation
+or data corruption.
 
-On 22/10/2025 10:05, Boris Brezillon wrote:
-> On Wed, 22 Oct 2025 11:25:10 +0800
-> kernel test robot <lkp@intel.com> wrote:
-> 
->> Hi Loïc,
->>
->> kernel test robot noticed the following build errors:
->>
->> [auto build test ERROR on next-20251021]
->> [also build test ERROR on v6.18-rc2]
->> [cannot apply to akpm-mm/mm-everything drm-misc/drm-misc-next linus/master v6.18-rc2 v6.18-rc1 v6.17]
->> [If your patch is applied to the wrong git tree, kindly drop us a note.
->> And when submitting patch, we suggest to use '--base' as documented in
->> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/Lo-c-Molinari/drm-shmem-helper-Simplify-page-offset-calculation-in-fault-handler/20251021-193355
->> base:   next-20251021
->> patch link:    https://lore.kernel.org/r/20251021113049.17242-7-loic.molinari%40collabora.com
->> patch subject: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
->> config: x86_64-randconfig-003-20251022 (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/config)
->> compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202510221301.wU3TSqMg-lkp@intel.com/
->>
->> All errors (new ones prefixed by >>):
->>
->>     drivers/gpu/drm/i915/gem/i915_gem_shmem.c: In function '__create_shmem':
->>>> drivers/gpu/drm/i915/gem/i915_gem_shmem.c:511:59: error: 'struct drm_device' has no member named 'huge_mnt'
->>       511 |                 filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
->>           |                                                           ^
->>
->>
->> vim +511 drivers/gpu/drm/i915/gem/i915_gem_shmem.c
->>
->>     486	
->>     487	static int __create_shmem(struct drm_i915_private *i915,
->>     488				  struct drm_gem_object *obj,
->>     489				  resource_size_t size)
->>     490	{
->>     491		unsigned long flags = VM_NORESERVE;
->>     492		struct file *filp;
->>     493	
->>     494		drm_gem_private_object_init(&i915->drm, obj, size);
->>     495	
->>     496		/* XXX: The __shmem_file_setup() function returns -EINVAL if size is
->>     497		 * greater than MAX_LFS_FILESIZE.
->>     498		 * To handle the same error as other code that returns -E2BIG when
->>     499		 * the size is too large, we add a code that returns -E2BIG when the
->>     500		 * size is larger than the size that can be handled.
->>     501		 * If BITS_PER_LONG is 32, size > MAX_LFS_FILESIZE is always false,
->>     502		 * so we only needs to check when BITS_PER_LONG is 64.
->>     503		 * If BITS_PER_LONG is 32, E2BIG checks are processed when
->>     504		 * i915_gem_object_size_2big() is called before init_object() callback
->>     505		 * is called.
->>     506		 */
->>     507		if (BITS_PER_LONG == 64 && size > MAX_LFS_FILESIZE)
->>     508			return -E2BIG;
->>     509	
->>     510		if (drm_gem_has_huge_mnt(&i915->drm))
->>   > 511			filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
->>     512							 size, flags);
-> 
-> Maybe instead of this drm_gem_has_huge_mnt() (or in addition to), we
-> should have a drm_gem_get_huge_mnt() helper, so we don't have drivers
-> dereferencing drm_device::huge_mnt directly and we can get rid of it on
-> non THP configs.
+This solution introduces a deferred freeing mechanism for kernel page
+table pages, which provides a safe window to notify the IOMMU to
+invalidate its caches before the page is reused.
 
-Yes, drm_gem_get_huge_mnt() should be enough. This would prevent build 
-errors like that for builds with CONFIG_TRANSPARENT_PAGE=n without 
-having to insert ifdefs and would also just compile to a single 
-shmem_file_setup() here. The few places which actually need a boolean 
-value can simply do !!drm_gem_get_huge_mnt(dev).
+Change log:
+v7:
+ - The use of pmd_ptdesc() introduced a bug reported at
+   https://lore.kernel.org/linux-iommu/68eeb99e.050a0220.91a22.0220.GAE@google.com/.
+   Fix this by replacing it with page_ptdesc().
+ - Discussed the approach of backporting and reached a consensus that we
+   need an extra patch to disable SVA for x86 arch and re-enable it after
+   the kernel page table free callback is done.
+ - Use "const struct ptdesc *ptdesc" as the parameter for
+   ptdesc_test_kernel().
+ - Move "select ASYNC_KERNEL_PGTABLE_FREE" to the last patch.
 
-> 
->>     513		else
->>     514			filp = shmem_file_setup("i915", size, flags);
->>     515		if (IS_ERR(filp))
->>     516			return PTR_ERR(filp);
->>     517	
->>     518		/*
->>     519		 * Prevent -EFBIG by allowing large writes beyond MAX_NON_LFS on shmem
->>     520		 * objects by setting O_LARGEFILE.
->>     521		 */
->>     522		if (force_o_largefile())
->>     523			filp->f_flags |= O_LARGEFILE;
->>     524	
->>     525		obj->filp = filp;
->>     526		return 0;
->>     527	}
->>     528	
->>
-> 
+v6:
+ - https://lore.kernel.org/linux-iommu/20251014130437.1090448-1-baolu.lu@linux.intel.com/
+ - Follow commit 522abd92279a to set/clear/test a flag of struct
+   ptdesc.
+ - User pmd_ptdesc() helper.
+ - Squash previous PATCH 6 and 7.
+ - Rename CONFIG_ASYNC_PGTABLE_FREE to CONFIG_ASYNC_KERNEL_PGTABLE_FREE.
+ - Refine commit message.
+ - Rebase on top of v6.18-rc1.
 
-Regards,
-Loïc
+v5:
+ - https://lore.kernel.org/linux-iommu/20250919054007.472493-1-baolu.lu@linux.intel.com/
+ - Renamed pagetable_free_async() to pagetable_free_kernel() to avoid
+   confusion.
+ - Removed list_del() when the list is on the stack, as it will be freed
+   when the function returns.
+ - Discussed a corner case related to memory unplug of memory that was
+   present as reserved memory at boot. Given that it's extremely rare
+   and cannot be triggered by unprivileged users. We decided to focus
+   our efforts on the common vfree() case and noted that corner case in
+   the commit message.
+ - Some cleanups.
+
+v4:
+ - https://lore.kernel.org/linux-iommu/20250905055103.3821518-1-baolu.lu@linux.intel.com/
+ - Introduce a mechanism to defer the freeing of page-table pages for
+   KVA mappings. Call iommu_sva_invalidate_kva_range() in the deferred
+   work thread before freeing the pages.
+
+v3:
+ - https://lore.kernel.org/linux-iommu/20250806052505.3113108-1-baolu.lu@linux.intel.com/
+ - iommu_sva_mms is an unbound list; iterating it in an atomic context
+   could introduce significant latency issues. Schedule it in a kernel
+   thread and replace the spinlock with a mutex.
+ - Replace the static key with a normal bool; it can be brought back if
+   data shows the benefit.
+ - Invalidate KVA range in the flush_tlb_all() paths.
+ - All previous reviewed-bys are preserved. Please let me know if there
+   are any objections.
+
+v2:
+ - https://lore.kernel.org/linux-iommu/20250709062800.651521-1-baolu.lu@linux.intel.com/
+ - Remove EXPORT_SYMBOL_GPL(iommu_sva_invalidate_kva_range);
+ - Replace the mutex with a spinlock to make the interface usable in the
+   critical regions.
+
+v1: https://lore.kernel.org/linux-iommu/20250704133056.4023816-1-baolu.lu@linux.intel.com/
+
+Dave Hansen (5):
+  mm: Add a ptdesc flag to mark kernel page tables
+  mm: Actually mark kernel page table pages
+  x86/mm: Use 'ptdesc' when freeing PMD pages
+  mm: Introduce pure page table freeing function
+  mm: Introduce deferred freeing for kernel page tables
+
+Lu Baolu (3):
+  iommu: Disable SVA when CONFIG_X86 is set
+  x86/mm: Use pagetable_free()
+  iommu/sva: Invalidate stale IOTLB entries for kernel address space
+
+ arch/x86/Kconfig              |  1 +
+ mm/Kconfig                    |  3 ++
+ include/asm-generic/pgalloc.h | 18 ++++++++++
+ include/linux/iommu.h         |  4 +++
+ include/linux/mm.h            | 65 +++++++++++++++++++++++++++++++++--
+ arch/x86/mm/init_64.c         |  2 +-
+ arch/x86/mm/pat/set_memory.c  |  2 +-
+ arch/x86/mm/pgtable.c         | 12 +++----
+ drivers/iommu/iommu-sva.c     | 29 +++++++++++++++-
+ mm/pgtable-generic.c          | 39 +++++++++++++++++++++
+ 10 files changed, 163 insertions(+), 12 deletions(-)
+
+-- 
+2.43.0
+
 
