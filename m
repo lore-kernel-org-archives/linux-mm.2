@@ -4,92 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F21CCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 19:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 150EBCCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 19:45:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3932B8E000B; Wed, 22 Oct 2025 15:22:45 -0400 (EDT)
+	id 3788D8E000C; Wed, 22 Oct 2025 15:45:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 342EB8E0005; Wed, 22 Oct 2025 15:22:45 -0400 (EDT)
+	id 34FB28E0005; Wed, 22 Oct 2025 15:45:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 258A18E000B; Wed, 22 Oct 2025 15:22:45 -0400 (EDT)
+	id 28CD78E000C; Wed, 22 Oct 2025 15:45:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 13AE88E0005
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:22:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B51EDBC0C9
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:22:44 +0000 (UTC)
-X-FDA: 84026722248.26.69B1402
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3F32740012
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:22:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YFN8csLz;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12EB48E0005
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:45:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6F23513BF27
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:45:52 +0000 (UTC)
+X-FDA: 84026780544.01.E75A1B3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BDCFB140011
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:45:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tmDh3B5Q;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761162350; a=rsa-sha256;
+	cv=none;
+	b=abPLlNNe/9YiwcOgyZAHkuX3POWlJ8tNsoWcT79kUNoGL9PtdKckSdDwZ5OdcFjUmiI0ay
+	6egWhTrMyrROunPTEec7WA3hb6PjidYSz+IS2PDIHtcKswHIn/SbRXZSnxEw/LdRjh0bad
+	kSEKaIiEdNa/i0xQKQ9ZYgBEmfFhG+I=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tmDh3B5Q;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761160963;
+	s=arc-20220608; t=1761162350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UbBBeYBFZH5ophEa2nhxznXN91y7nH+iWW5dUK79ZfM=;
-	b=Qsiq2pYzefFzDymG2pHVeL932HuYAsBUg4aogylfLJxcCnsXeIcJh3zDCdygE8vwWtHujD
-	fAKovwVuYs0B4rAmxVrBQriZ4ejYvEDVDJbQ86ETKZ1TxQpqptVbKkEG2MILoXyUT5Up0b
-	OdE6wofI13bWBHRdtC3pN5qhp+TnLp8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761160963; a=rsa-sha256;
-	cv=none;
-	b=mzeB0Yy3yRBAh0vpXQ4Prl94AJFSF33SavYbQXEt+hOF4ULpwOUWcuucvqLTl0oRvlAERq
-	VYjNM3YOgJOG7lDA8ZMsEzCejkkJQaYolqTSWLCmHevaHAk+3jktnCcm7/i1II3zAeojOc
-	RdniPtzeSEFvPJzGyp8H/2F1l9vy40A=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YFN8csLz;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6+wdlb+rMjyEPEhuErTElI/Clk1IdfbS/ZYe3Bmqz1I=;
+	b=XATqeSBMYh3fnK2ZrR/S3knVFxZuP9vNpCVjZXZ4YWyNXaDu9YsKbH2BrNcXU4UZxiVRrN
+	p0xxyZGo3iBMAMtoggV833eUNL6ERUpy1KoBIdsFmUCgBbWz398G8aa8om2ulWD7iIhZUX
+	vf+aWocwaKKSc13pOjJqHl4APaQDgrE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C6386057F;
-	Wed, 22 Oct 2025 19:22:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E000C4CEE7;
-	Wed, 22 Oct 2025 19:22:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BEAF4A094;
+	Wed, 22 Oct 2025 19:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F574C4CEE7;
+	Wed, 22 Oct 2025 19:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761160962;
-	bh=hQnzupzHHgSi4cofh0YJDQqv3isCGVIcYStvBh1mYXM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YFN8csLzGHpCp1X+A3OFEYYmru95A84qxriKEZDIvqcO9DbY03YYDjGxsPFDMcyug
-	 SH7fQU7WKReNKK+KIvM+6V3tHyX97UI34YaBI4kETmkAkXpexe4hFaeA4+09VR0TmH
-	 ufb727p9iiRS6WiIKFXSVtYb8KTDO/LRkUoJLPEc=
-Date: Wed, 22 Oct 2025 12:22:41 -0700
+	s=korg; t=1761162349;
+	bh=BhrdWlrWjrxxxCFVIJZR3Y5rtQjATk4Iozogb7pSrYU=;
+	h=Date:From:To:Cc:Subject:From;
+	b=tmDh3B5QWQdj9aWhhJA+vZ20tQwAVdcPPo6xtHJ6xsW7/J04SUP3vLa3DKNptpTki
+	 Gvf9v0TkTvCQ9G8TkWH2ooOqhtCLRMOzqPZvGidP+Tdc6Wj7tw9EN9zN4bf7X9dno1
+	 +sRvxc9OFqpko3NnQa4mATd6SMmXdwimegArOGok=
+Date: Wed, 22 Oct 2025 12:45:48 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Conor Dooley <conor@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
- <linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
- <james.morse@arm.com>, Will Deacon <will@kernel.org>, Davidlohr Bueso
- <dave@stgolabs.net>, <linuxarm@huawei.com>, Yushan Wang
- <wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
- <luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v4 0/6] Cache coherency management subsystem
-Message-Id: <20251022122241.d2aa0d7864f67112aa7691bf@linux-foundation.org>
-In-Reply-To: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL]  hotfixes for 6.18-rc3
+Message-Id: <20251022124548.a2bd1335de33d5d2b7b2fcb2@linux-foundation.org>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3F32740012
-X-Rspamd-Server: rspam02
-X-Stat-Signature: hesbei4sr9131ywjocuh97csijj6bz9i
-X-HE-Tag: 1761160963-973953
-X-HE-Meta: U2FsdGVkX19pKmDJMl2BYYHluBWh5+SHPhhON7TLEGOi+f0fol+wH+8A3CZ29o/bI4yChXoavlcuJpyrJSszTx5KWm0ClJ9s/sm72mX2a56vQWyk75GPVAm+rov3c+qbjhe4jqbQ+u2JFVHjFitRQm9Z+q5DS5ypu2YiB3fKCOpTYy+9I2tBJy3BBZFkWiYn2jZKd0OMSEfUUgoLDFge90In1g8e4azmQN4CtDKqvl7t5PKd5nCT/XebQhW/1yYQjJJah/y8YYOUyL2XmX4qlVAYiP3ksy+jAZTlO7eGFgiYIk26o14VlRRoeamShjBsdq3iZjzMhpM0ATmbf6xwg2Qy0pmK3JuSbtDP8n1+NbW322ujIHgtYESZM7rh7CIgXaQa7KqicabdA6O52h2T+JOx2pku47wQfNcBdWku4fG4+Xh+Ey38+KNJq+yFmWvyOLvUqx2t+SwWxnQStQoPIg/sUSIF4oom+BQ3Ew1zMsBu8m4x0MSZEgYUIjgjQvUU1ZcCcMSLbJJynLkZG25sHC1dP7gwbEXg2jNKMNnTQxnaNOwIzWx52Q06w3iYgkSFLq2Fdm/pbznROKownY2wQhwUh0JLhIyQyOlLZ44t6Ky3baqjf35iEyYPAwTuglGka8+6CvB6JWKwTmzaCZoIqR3m11J77d4VfUlubnPawdqSEYKh+VldlrtSZY86mi/V0MDvZTkQdo3kFPTmip8iDnpJC/kJity5mEPj9ppb3/o8y9zw5rOUX8tkeYVirYXYy2HAJwj6iySHEW0v6bgLShPvYW4GMgDUb1XSP3qhT/5i49MxZctlXC4/G0iyLvWvrOS/IgsBgYju028sQfYUkA6LYAItRyjryhduiCXiZk3cKSUmM7ZROv035wb5+EBGkk9wU6D4YCQujunHwRXTJo10VFIMx/Z4KCdfk5J/XTY=
+X-Stat-Signature: gwtbawqw9szs6yhujp7njczwa389ophs
+X-Rspamd-Queue-Id: BDCFB140011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761162350-555930
+X-HE-Meta: U2FsdGVkX1+IZLY3IgTyXbTCuek3O32lMIi3OuC6B+QLLmfXQws0Bn6JnqRQAI0bqfQ7Ew6ODHQwl1Hz1oTfxhj8aBstNLcbdlSwGo276G0DnCSY8bTgGJnhebUx3s+D6BRKsToHYZaddNT8KskFxG5oMIOMiF+NJvHZAZ+UuYTU01UQ2Tx4yL4RbEmlZeKMLu1TJASVbdGne6LKUR/BC+B5pl9it7Pe1JVD1IOwz6a/0FBcodFUgJp2bA5w6V96bkyuo1BJyfHNQCXG1asg1B6BuEPb5dWz0iVwrD1V1H+4MdtOit30nFyxBdkjBofaPkOISMuKzn4XOGSCIXvzQc8nNk/0A0guIDTusETRdtvn3bt2b9e3YlXR7vVbb1bO9GovjAboefCC2it/PLum1LmY1ZuPMXiinqb7XOrdKdWJk9XkWrtJZNiqqW3eV9HUMBlhJGSxNeGhPcmdplRiSr110knb6D9OBwbaGQ5ABrmfTT3rTqekPOXSKArw/H7LTmCbTvpzVsGnrLxZOTwyqWHgzB+HxecsuEv+EQ/3afngn+H7AVxCYc8rVsThxpf+aGzsXjCl/eOlAiFRHDrMFYxSIK3lr7IjsmesLvhilzTnh1lV+VPNMs1NA6conDC3luPGLNX3QBLDepVvaB/TBtcsJgZ+1zY1SqBHYrXQnrhhWlvuofuucMJiE2sOQijkaV84E7FA56zfA8LeI/2SeomMDiNdy5JGj/KIlwAUS31GBD6cvWUhMRqUjiblXWKWmidYfMJ6/5LpX7EcDk9n9ri7k8ZawyYWu2ZzPwSvee1aV/hEk5N2oDYHgR9AwI/5tm+4zshdOAG2H0E7Zds89PX26VJfd9+wS9eLI1tvRGpLEJLBFItalK3c+RiO3x34nnk7BOUTE8C7moEda/wwKrKLRCB6Z4L7q//vPDwWvx4xs9cPnyPQ0kMiSivAGhndm9yb4+Vjz5FmvuhmNCs
+ dcElu9jT
+ kKOJtT63IjlLCIJmbxFjPt2+Bq/2z3aR58CDPaYVqAHgWAkMVVyV6IIRmsKd/znqDcIS68g3sWjCiCHd4Gq18F2WObMedBGBMwE5SrgvDZW0zXrnFJopItkXzfTRQ6W4glAFRZ+DDibAc6Sgn6h/8sFvBWjmqrvYoIVMEz4J2fzSVV4MOOav1009iHdtwM8ymANHB0/sYuTjx+sxIHTrsGYgBnB423nc9zxWE1e40x1wX6l+oHbW8cib78kQ2lE5BP/6JoURZ5/PwFxqwPt/TyZBOBg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,32 +87,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Oct 2025 12:33:43 +0100 Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> Support system level interfaces for cache maintenance as found on some
-> ARM64 systems. This is needed for correct functionality during various
-> forms of memory hotplug (e.g. CXL). Typical hardware has MMIO interface
-> found via ACPI DSDT.
-> 
-> Includes parameter changes to cpu_cache_invalidate_memregion() but no
-> functional changes for architectures that already support this call.
+Linus, please merge this batch of hotfixes for the current -rc cycle,
+thanks.
 
-I see additions to lib/ so presumably there is an expectation that
-other architectures might use this.
+The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
 
-Please expand on this.  Any particular architectures in mind?  Any
-words of wisdom which maintainers of those architectures might benefit
-from?
+  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
 
-> How to merge?  When this is ready to proceed (so subject to review
-> feedback on this version), I'm not sure what the best route into the
-> kernel is. Conor could take the lot via his tree for drivers/cache but
-> the generic changes perhaps suggest it might be better if Andrew
-> handles this?  Any merge conflicts in drivers/cache will be trivial
-> build file stuff. Or maybe even take it throug one of the affected
-> trees such as CXL.
+are available in the Git repository at:
 
-Let's not split the series up.  Either CXL or COnor's tree is fine my
-me.
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-st=
+able-2025-10-22-12-43
+
+for you to fetch changes up to 9aa12167ef1149d9980713b120ddcb31cf17222d:
+
+  csky: abiv2: adapt to new folio flags field (2025-10-21 15:46:18 -0700)
+
+----------------------------------------------------------------
+17 hotfixes.  12 are cc:stable and 14 are for MM.
+
+There's a two-patch DAMON series from SeongJae Park which addresses a
+missed check and possible memory leak.  Apart from that it's all
+singletons - please see the changelogs for details.
+
+----------------------------------------------------------------
+Alexei Starovoitov (1):
+      mm: don't spin in add_stack_record when gfp flags don't allow
+
+David Hildenbrand (1):
+      vmw_balloon: indicate success when effectively deflating during migra=
+tion
+
+Deepanshu Kartikey (2):
+      ocfs2: clear extent cache after moving/defragmenting extents
+      hugetlbfs: move lock assertions after early returns in huge_pmd_unsha=
+re()
+
+Enze Li (1):
+      mm/damon/core: fix potential memory leak by cleaning ops_filter in da=
+mon_destroy_scheme
+
+Lance Yang (1):
+      hung_task: fix warnings caused by unaligned lock pointers
+
+Lorenzo Stoakes (1):
+      mm/mremap: correctly account old mapping after MREMAP_DONTUNMAP remap
+
+Marek Szyprowski (1):
+      dma-debug: don't report false positives with DMA_BOUNCE_UNALIGNED_KMA=
+LLOC
+
+Qiuxu Zhuo (1):
+      mm: prevent poison consumption when splitting THP
+
+SeongJae Park (4):
+      mm/damon/sysfs: catch commit test ctx alloc failure
+      mm/damon/sysfs: dealloc commit test ctx always
+      mm/damon/core: fix list_add_tail() call on damon_call()
+      mm/damon/core: use damos_commit_quota_goal() for new goal commit
+
+Thomas Wei=DFschuh (1):
+      csky: abiv2: adapt to new folio flags field
+
+ arch/csky/abiv2/cacheflush.c         |  2 +-
+ arch/csky/abiv2/inc/abi/cacheflush.h |  4 ++--
+ drivers/misc/vmw_balloon.c           |  8 +++-----
+ fs/hugetlbfs/inode.c                 |  9 ---------
+ fs/ocfs2/move_extents.c              |  5 +++++
+ include/linux/hung_task.h            |  8 +++++---
+ kernel/dma/debug.c                   |  5 ++++-
+ mm/damon/core.c                      |  7 +++++--
+ mm/damon/sysfs.c                     |  7 ++++---
+ mm/huge_memory.c                     |  3 +++
+ mm/hugetlb.c                         |  5 ++---
+ mm/migrate.c                         |  3 ++-
+ mm/mremap.c                          | 15 ++++++---------
+ mm/page_owner.c                      |  3 +++
+ 14 files changed, 45 insertions(+), 39 deletions(-)
 
 
