@@ -4,144 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8116ACCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 23:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30556CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 23:30:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 375268E0013; Wed, 22 Oct 2025 19:30:10 -0400 (EDT)
+	id 7479B8E0014; Wed, 22 Oct 2025 19:30:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 326158E000D; Wed, 22 Oct 2025 19:30:10 -0400 (EDT)
+	id 71EC28E000D; Wed, 22 Oct 2025 19:30:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 151538E0013; Wed, 22 Oct 2025 19:30:10 -0400 (EDT)
+	id 65C878E0014; Wed, 22 Oct 2025 19:30:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF59F8E000D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:30:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC86148DD1
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:30:09 +0000 (UTC)
-X-FDA: 84027345738.01.50532E5
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C506D80008
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:30:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=AXQhfC67;
-	spf=pass (imf30.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761175807; a=rsa-sha256;
-	cv=none;
-	b=YcwmLB/9GLDFvQp9dXDF73dxoE3pwejSa3RCDIoy1i9ZNOssKtO916ty0spLiB+glyYCVv
-	oGW8ZUhYjrjKAUryXkhiWkjOz8/ECy+6EFIdS5Wrgy9wGyvBPPEHSjbzmuDNyUtyHnklb4
-	UhDWTnO5juQMdR3R0VmbRGJ1uBt3xyY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=rivosinc.com header.s=google header.b=AXQhfC67;
-	spf=pass (imf30.hostedemail.com: domain of debug@rivosinc.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
-	dmarc=pass (policy=none) header.from=rivosinc.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 56E938E000D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 19:30:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 08E8548D04
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:30:55 +0000 (UTC)
+X-FDA: 84027347670.09.F5198DE
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B57E48000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:30:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=o59tJVYl;
+	spf=pass (imf02.hostedemail.com: domain of 3K2n5aAYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3K2n5aAYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761175807;
+	s=arc-20220608; t=1761175852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ujHqL1CkFocnxfBg/TilHgsDv7qqfxACnquN+j6SpiE=;
-	b=mATCTBQMrlBpptqSstPfpa0dqrE3G80MZCHvKcoSs8DcBMUpPp7yX/10Q4z75709QkhM6t
-	K6tuWg5/uG/nTpW9pwfB+Apofu+A0dSRlS2WjeFAwYGVetfb9r/7d8hhmMYvad6490Wnsl
-	n+UdXYxrfclPmJ2l+/RA6e06TpcUrPM=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-77f5d497692so246091b3a.1
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:30:07 -0700 (PDT)
+	bh=3jEiO6iBxzy6fxnsgwrsRYGtWZsrwu6A5X9ZJxUc05s=;
+	b=1kBfElY3BjfIX7srOL8Rkl1/kHVYoZ3LaUz2k7y8oRjOSCHL3c7m6Z7hY42dOvQPtL++sg
+	X60y7AEsIuDB0Wef+ut38FlfVerkq4NQtTJGOkg3DdXeDj0RU6Ut9LWZXaLrAWBXlRxkz5
+	BT7rqgnb0rtI2ZkBJoK5oeUmrCCnBUg=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=o59tJVYl;
+	spf=pass (imf02.hostedemail.com: domain of 3K2n5aAYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3K2n5aAYKCDIgSObXQUccUZS.QcaZWbil-aaYjOQY.cfU@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761175852; a=rsa-sha256;
+	cv=none;
+	b=AuST/FabIzmL0otStF4Nrk+qFLqAxK55qKtezcbmNqw4tg88Ao0VCs1GQb+RngUdDzOuQ0
+	J6Dryy74V9yb8GIMTbsFZpWuurIaSDsiz0BZCLYskSXVuaCbdJf5qb5lhATR/A+/mP9YIK
+	SnYszvGbPt11aPKUVZRx7+V4vJyeHBA=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6097ca315bso292848a12.3
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:30:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1761175807; x=1761780607; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ujHqL1CkFocnxfBg/TilHgsDv7qqfxACnquN+j6SpiE=;
-        b=AXQhfC67LFIsrSZG6YCYUOl6JeLN/vKJfLjYrt9gEFrSzzGHKTBsu2469CPdveUDBo
-         r5OxBEBZ5Sk+Gh56NzXkMuRT8yzT3AX0F6oNOqZFrJ03aKnQeBYh0lSG6mt/kNltfMVa
-         Jfsh55WBu9f1UgDSu1guC0ezEkv6Jjf6BBaKA/95QjR+ckzsEKuz2ysG5m8u58vXY7yY
-         VgrpIRkD/HTpkb6OQJKRO4k0z5bDJ437PyR7bFYAQAKLRQDHt2WJhdbFkri1dfcyQhz8
-         nemXUKbQrjNK9+Hnxm9A56Tr/eowzujFnitYsHRmUeePRXt8XkZ3CpxwO2cu15QIXaky
-         RqRw==
+        d=google.com; s=20230601; t=1761175851; x=1761780651; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3jEiO6iBxzy6fxnsgwrsRYGtWZsrwu6A5X9ZJxUc05s=;
+        b=o59tJVYlmth2ObleqmffeoSWumTX+HNCFLW3ncdFvXhw5Rxi1JwxuS3TE59KTND+mr
+         NwGaefOvaD/RrZg51u0JLzkeHjRUvTseq/WB6P8B/mj+e2RbKa/GCqqmJznQqriKdgUQ
+         XZuIVb2mpdWvZzutB4ZaezhAbSLlJyT+E7rdfe1uWt4jXc4O/c29Vc9qQd+dDmF8j8RA
+         aGRZuXQz15Aqa4gayMNcGFekKgIIVZD7sMjgWPHH2hpftjjjzON7cnvPq3ZmF6F7Rq5q
+         G2LBsrg3pIXjcy5W2gQYG1bqBO+HKJ9unRaD2fOjGMKwWfEMAsRWHfVeViAMhtxju9HQ
+         +lfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761175807; x=1761780607;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ujHqL1CkFocnxfBg/TilHgsDv7qqfxACnquN+j6SpiE=;
-        b=PeYIxgsWsC78wrnUFNXcZuCqHfdgSWFW1AD5kvy/uNxD0HvsJEquhFxoQkXgeaUhh7
-         0cHt224Gagq7To7Waj2ytcCJZsp7YfMIV0iCSz9pEEl/zfLmQwzh1so1Y/x0IX8sYmps
-         3H6Fnrm4eeeOlgun+I32GwhnV7fnfRE/yRfWs0hgrUEO1BI4KF/8wAMnKNvQId2EhZIG
-         D0kT0ZWB4Aqzr0p3VbFmu3fhnKB4r/wsZInp0bvHnoNxihJrWwU3SxHZBiLYwWBirYLp
-         vJy9H3MWiVzsAtW6ufM8Dn/FEcCDn97d1hzAJIA1Qe/xtZ7tn9ElQcgilxAPrKgliHGC
-         nH7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXRhyBUolrt1ZjBoQfYmCIJgN+ANdSXCGMvluiyMB6lv/YKYbJguM+RrZ8QTo792Ztk4vwwujJs1Q==@kvack.org
-X-Gm-Message-State: AOJu0YwQawtZxQK0dreAoJcIiZJ+NfrE2dl0cIXd0V6g6pQPIBU76ja6
-	rpJ8Yv3hoW86PRVUOc8fnqIKT64DOKUnOWQRuK2gNrawNeGrnV1XWe11u3GzjM9Uk9c=
-X-Gm-Gg: ASbGncsUq+4Uu7ony3rtEa7hKhUln7rTT8MBemrIrSkYH8RWAeXEkFIVa9kqml4RhEN
-	cZS+Q4sHnZ6Zh610k1AAC49HETSGsFaL1bA/h6KsodQxUZvhQKqDElZmmuwwp2OpcV6XweqeyOk
-	Eh7uee5fPe20IFHT0RFE/B+PpPGMVcjZbaBFVvNV11WdVuFHzGCEmp65+wO8vVqpp3LKy9tIQtw
-	A3VRK8gSuS59Q+JfEuvBOALlApC66BzAmS8IY3iZ5TlWVj9qcp8ztMvGQvYAvOnlWitYQhmaLwF
-	Hc7QczeLAkAApujTQS8Vna7R/NqKxFTDXz9dYPR7Zj/ffxnRK8g7gsGgmRA29aO+MpJEMOzWK1Q
-	RCZ3ncqTMFrj7FlmrXJYrGpUGqpbVKWtek9hZ0h0nTEpgxv/0vC0HIazU35aw3ytvMBX/IOcT8Z
-	65g+9V5kPsEJL7OofTt//a
-X-Google-Smtp-Source: AGHT+IF6gkZs32tv0Sc+yHY/6hVbkvNJoMtqK+eojdM3VMRuuvu79OFo4jjiqTiRVOGksRWCeTn0Nw==
-X-Received: by 2002:a05:6a00:2e03:b0:7a2:6b48:535f with SMTP id d2e1a72fcca58-7a26b487089mr3870490b3a.12.1761175806653;
-        Wed, 22 Oct 2025 16:30:06 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a274dc12b2sm392646b3a.67.2025.10.22.16.30.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 16:30:06 -0700 (PDT)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Wed, 22 Oct 2025 16:29:39 -0700
-Subject: [PATCH v22 13/28] prctl: arch-agnostic prctl for indirect branch
- tracking
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251022-v5_user_cfi_series-v22-13-fdaa7e4022aa@rivosinc.com>
-References: <20251022-v5_user_cfi_series-v22-0-fdaa7e4022aa@rivosinc.com>
-In-Reply-To: <20251022-v5_user_cfi_series-v22-0-fdaa7e4022aa@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
+        d=1e100.net; s=20230601; t=1761175851; x=1761780651;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3jEiO6iBxzy6fxnsgwrsRYGtWZsrwu6A5X9ZJxUc05s=;
+        b=t3b463rS+aPil5OmSXdqgxVKWEordqfjciG2pNTBgeQmkd1LmVDrFgwG8uHyFR0eyP
+         jAc4LHv1TzBbUeLsWkoIwB/Lyo26N8FXIJ5wi2dm+xwG0JTNIigoljyBkzR83Vy4Liqs
+         JacC8rLnjT+EqlDVmqDu+LnCDIrHTvnf180Qc2jm8/CGeGwutdkIw+JMcx6yObLDm/3L
+         FnWu3RDvj9xjGBSw0pjUsWTXlOpinIaQEdkuDFL8C3tCBf+kT8b9FxEsQMu8Lu2Fyc+c
+         X9HNb1WGH3vE5rL4lQ6e0QtMM89lxsrE++V6QiAMI9GSlgZE1D83FaUECIm/yclA5mj9
+         sAiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVqroxgsH9LaRN4YrxCY0KEDR2vTCkWr5qgPUqflwcg14ZDx1dtnEIgI/JNlgtksrB2OwgClRXATw==@kvack.org
+X-Gm-Message-State: AOJu0YxQ2vZSWq2OkCQvSYlsB413aqPI9vp1hReWAdfvKY8lZ7YOcz4t
+	iHuf2a5pA59symwTblp/fA9VMaJRTG+u7JqWwCGNA540GvmNMrAmCCukcfwtee64Sb789NyrN3f
+	oJPJ+Bg==
+X-Google-Smtp-Source: AGHT+IFg265zLGl2bQmWCvkKPU4u2q3qfh913c9juw3tQPbolW7ChzJ4nSIfXk8wuAQ4jQwhmqRekZFnQlI=
+X-Received: from pjnj13.prod.google.com ([2002:a17:90a:840d:b0:329:7261:93b6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d84:b0:2f9:39b0:fd88
+ with SMTP id adf61e73a8af0-334a84da4b1mr29081038637.21.1761175851395; Wed, 22
+ Oct 2025 16:30:51 -0700 (PDT)
+Date: Wed, 22 Oct 2025 16:30:49 -0700
+In-Reply-To: <diqzy0p2eet3.fsf@google.com>
+Mime-Version: 1.0
+References: <cover.1760731772.git.ackerleytng@google.com> <8ee16fbf254115b0fd72cc2b5c06d2ccef66eca9.1760731772.git.ackerleytng@google.com>
+ <2457cb3b-5dde-4ca1-b75d-174b5daee28a@arm.com> <diqz4irqg9qy.fsf@google.com> <diqzy0p2eet3.fsf@google.com>
+Message-ID: <aPlpKbHGea90IebS@google.com>
+Subject: Re: [RFC PATCH v1 07/37] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Steven Price <steven.price@arm.com>, cgroups@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org, 
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, 
+	hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com, 
+	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
+	jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com, 
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com, 
+	keirf@google.com, kent.overstreet@linux.dev, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
+	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
+	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
+	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, 
+	shakeel.butt@linux.dev, shuah@kernel.org, suzuki.poulose@arm.com, 
+	tabba@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, 
+	vannapurve@google.com, vbabka@suse.cz, viro@zeniv.linux.org.uk, 
+	vkuznets@redhat.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
+	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
+	yuzenghui@huawei.com
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: pkeqmhxbg7h5rga5xwfs4rfwujou4f4k
 X-Rspam-User: 
-X-Stat-Signature: i4fbgckff745u9snordsru6g4ew8zayc
-X-Rspamd-Queue-Id: C506D80008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761175807-922668
-X-HE-Meta: U2FsdGVkX18bT+cdSDZ2UlWhDfBrJcqDF9Edbz6xV8ZSkh0p3nv1CwNYOprRkYW8Kml2c6zWk9zVcKwAm1a42re6KYzyKVGv4cBb5mPU1iGsbFoRNGh17ZYFF0DhLBsFaoN2Rvit0bs3r2SwHPdmGwq7oehphySX93MMS2KzUOiAxcd9AeIvLxtvpps/Nm9h5h5hltY3nCoB48onC9PaJvdwE2GJeo78Y5q80Q/t4XzDtRHR2O0Z/IjKx8pPrEZCn645LNdHAvrXi+arXboGEPdKGfzgiIvCDx/om5ckw+skCYc+RXzf/QsKOvnEs21Re9Di9pzqHDwxhWZ9SJwXkaNKicKIFvmmN0D2rjBBlSsTjE3HZu+9IU9O8zOlC0afIBy7CRL1/EtxF2kmZZ2pacos8Bozzj/Vwm8YsV2LHn9ol7FjDi+mgSGOjBpLGWnSQFZ3tOMm0m1oU+8+gEy7Wztr+Bga6vp9thUXRuJtf4JyOTOTIm9jfLPFWVOtIQ9IL5jykP/dp8BJ7e04RimDJ5LjTh52DJzkVge0nKG61HcDyXfuf4RNve8UGj1fSle3gMR2wlK06ggbybHjong1b/VH5Oib3kbmMHlPNcYoh8QumVI6lxce5DQfWxe8yEQpd/5GHlxnIMCGIeakMRS9d2U/1DLsIU2M1RNgO//6lo5qmUKnXLdgpDOZxUFyCJMWbsgs7RJhG8LH7JFnmeqhsuygXwVfXOmKGaKJopTuxeM0uDow6Gzmnp797jTWzZqshPOlLAhHY8wB//vRslouUn3bM81aeDfRpmRaMmFeOBRdbK38HcENacHTB8FYiWcm9uSRgPRady4ypKy3LXRFroVFPglx7mVQS/D5+qNwrCbmzqtRLrmcb8YhAbFzN1dDC+osFJqbVhaev79RBWxpA4GTsT/WgkjasiPQERgsdP0UZlHpjr7CTceUmc8l3uLSr2vC+ph2A6o+OHGki/g
- OEyoxjIQ
- IQ1THCj49YaUeo7Dcq/GOWfOtYz4sOc4NPkjj9ceU7yH5qlBlu8aGbJcYaQn1AvY/xfeKchwYXKQKHYz0B7R4gAVGvnwfC7DIJ4sEh3+cAenc64af/JB4A59OtpyEGB1vABdY/PGlMUvWxh80f70LjfYvc3bOaMj71rQE5MTcONpoAYWDd5G2a0/1NEFGCqiRja3tFtehdLJwMcZPVcbNOb1Eb0LA4AtW8UlsvY7JKFn6BMujVQR6P+M5mYvP+gKVDR7LnoLMNxk5Zqo/lMzX9MrBPZdcxfMG6Fdkd2OuL01INLDT3wJ9c5HqP5nJmkKijPgVJxA0fUS6OtmsoM1ueJV/F34u/5oDSPCokaHWFq6oGNfRHvgkW7czO8/jSQJ98OZErIn6d/ARbQaYgFzi+LYq3B+8YVM0+URChWfToImLso07H/JtkS/AEBgy248oqloAmPhft8z/K6dbGKY68qyJmqb+wYen0U6SH81e8kuWAeK65Y3byFur6g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B57E48000C
+X-HE-Tag: 1761175852-971090
+X-HE-Meta: U2FsdGVkX1+GIo/l1S3YYNhd136ZOEWKOAMZ2XB8h/MtSDwkwXAEgYoB/VUpueJG5WLlsx2xj9dTEFNvWVKteLgjh5rYMqBoAQ+Ae0AWOM6CpgCutu9uHUku8QLlrxAn+GID2h+lmii8EO1HitNE+aGH+3aU7T6zD/I2IT7FIlLEp2M+73SG2O8939AccXxFBgFYWZ+6lHzUwWnkUk6MDySnEKEiy3GoOibaHXosFk+lmyoxvBdRbYU31yytCREY66wl0IQ6Sfxg4WFuE3qkPBi8oJeN+NV8QD/7/MTmlB5qKUV1sg5BWRWL3Oqx9pfYhVa5rVNVbvAeD2MC49qQhGqovdfC5D71FW2uKgtqppSQTdnppeoIQDC/yMPpfTyv6jNEPlzr0DmbX0cpX4lNT9FwKKQk16ZYTqqlq478H6sAmMBEu2s354VDNNDevFVjwpZAuFy5BJxZ15ss8192/RRP1MEM6l7K0WhDF+hfSFcrcOGcqcy1Sqqfv2rZLMW0Uo/PWx0iWp7C5UY/z15bHzgkbyT9yKc/GXgIwirOMiJqxNSb5oNxQE3Y18tOLYxgNAWrqNA+RZKVjmrljSBQEHQDHE+E62L1lkbR2GAYuwgcM8KRDWOlVrOqX6hWNWdJ+IzQnjX3idoX2q/WhgJMdYzxXun3F7NAjL1UD8HY4Al8pONZBb1y33jlCxDFA96rh3EFswfPd72g175RvA2Kjt9aokU8TYaCWuHZvGLt4qcrXSjQAxQkAiOjBKhRnoUzkyS5oSpndxYmTJa1isUWN09Rpj+ENivBof6ifNEIPl1fHLExUbJyjtF3bQmdn/GhhPmnYxq7y0Q+0HwYDOzH5Idq+JRxgSSbcgJI+30/ZGTf6yMQjOvNTDFrglPJfpEmszg3m8teaSB2F0rjsGGo3ZGNFUEBEKSJsnX0XfQ9U3jAh6xxqeAi/TiVP+0CRad5hvuurVtr2jrIsSdidlo
+ VsyiPt3u
+ gHyG0flHKIfmj577qJ2tvLUXCVWoZaNRl1WMN8p7YpkXONrz8QCp60wKlu+luYCiQ0+dx4wFu7qGAUhLmXe0T9yOHoSyBDj+d382xTCbjwdYenrbHpLtNPI5yhAVflzQc9kfaoJMn0ftW1hAYTWVBueB2lBLBFYnt8L/8U2hdJaDScDhQAd8zX4CZT1UnKJPkAjDegxkl5n9q7zcjQ+F1Mn+5s8PDaBsQLimYxv+Ds0meeSvPzEHzQldIo0Qd08n1A3pD/nd+ZCG1b5etVR3zNW3ci41K3vDsM+14h4YCND2x8uoOezdA1tqElBZ8ldyKnqxYNfcoextBCGXonbAf5zflDICYand/C6jhUlYdfvJtmG4gT/f6iQM3TMpeTfC86yO8k9whHYilpXO3dBJGsigMbTvde5rrDG1nPHdFHVT+DGpgSeXBYJDROdgmPP+Mdo9uQYXRYc1pLyw6efFEWBixcavxGjDc8P7fUbN6UYjNz7sJZarZOid/N6iO1QGLCimjE52KCndNKF9MwWhVOf3tC7+c1jtyPmjFpw/tJmLekHdbzuDE5L2ATJVwYx0WfP9JvpKn2our+QyNmza7tmSD1kCEtrr/9+2JfKuh8KCJuiD6Ze5e6FJpVHfG7WcCHse9mwIG+4nLTqNlZ9yMfJlwCLW9MRxEvQ7ldN0tn1SZwDr3FrhXSrFnLfHv8j6rp2YE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,143 +137,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Three architectures (x86, aarch64, riscv) have support for indirect branch
-tracking feature in a very similar fashion. On a very high level, indirect
-branch tracking is a CPU feature where CPU tracks branches which uses
-memory operand to perform control transfer in program. As part of this
-tracking on indirect branches, CPU goes in a state where it expects a
-landing pad instr on target and if not found then CPU raises some fault
-(architecture dependent)
+On Wed, Oct 22, 2025, Ackerley Tng wrote:
+> Ackerley Tng <ackerleytng@google.com> writes:
+> 
+> Found another issue with KVM_CAP_MEMORY_ATTRIBUTES2.
+> 
+> KVM_CAP_MEMORY_ATTRIBUTES2 was defined to do the same thing as
+> KVM_CAP_MEMORY_ATTRIBUTES, but that's wrong since
+> KVM_CAP_MEMORY_ATTRIBUTES2 should indicate the presence of
+> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2.
 
-x86 landing pad instr - `ENDBRANCH`
-arch64 landing pad instr - `BTI`
-riscv landing instr - `lpad`
+No?  If no attributes are supported, whether or not KVM_SET_MEMORY_ATTRIBUTES2
+exists is largely irrelevant.  We can even provide the same -ENOTTY errno by
+checking that _any_ attributes are supported, i.e. so that doing
+KVM_SET_MEMORY_ATTRIBUTES2 on KVM without any support whatsoever fails in the
+same way that KVM with code support but no attributes fails.
 
-Given that three major arches have support for indirect branch tracking,
-This patch makes `prctl` for indirect branch tracking arch agnostic.
+In other words, I don't see why it can't do both.  Even if we can't massage the
+right errno, I would much rather KVM_SET_MEMORY_ATTRIBUTES2 enumerate the set of
+supported attributes than simply '1'.  E.g. we have no plans to support
+KVM_SET_MEMORY_ATTRIBUTES on guest_memfd, and so returning simply '1' creates an
+unwanted and unnecessary dependency.
 
-To allow userspace to enable this feature for itself, following prtcls are
-defined:
- - PR_GET_INDIR_BR_LP_STATUS: Gets current configured status for indirect
-   branch tracking.
- - PR_SET_INDIR_BR_LP_STATUS: Sets a configuration for indirect branch
-   tracking.
-   Following status options are allowed
-       - PR_INDIR_BR_LP_ENABLE: Enables indirect branch tracking on user
-         thread.
-       - PR_INDIR_BR_LP_DISABLE; Disables indirect branch tracking on user
-         thread.
- - PR_LOCK_INDIR_BR_LP_STATUS: Locks configured status for indirect branch
-   tracking for user thread.
+> @@ -1617,4 +1618,15 @@ struct kvm_pre_fault_memory {
+>  	__u64 padding[5];
+>  };
+>  
+> +/* Available with KVM_CAP_MEMORY_ATTRIBUTES2 */
+> +#define KVM_SET_MEMORY_ATTRIBUTES2              _IOWR(KVMIO,  0xd6, struct kvm_memory_attributes2)
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- include/linux/cpu.h        |  4 ++++
- include/uapi/linux/prctl.h | 27 +++++++++++++++++++++++++++
- kernel/sys.c               | 30 ++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+Please use the same literal number, 0xd2, as
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 487b3bf2e1ea..8239cd95a005 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -229,4 +229,8 @@ static inline bool cpu_attack_vector_mitigated(enum cpu_attack_vectors v)
- #define smt_mitigations SMT_MITIGATIONS_OFF
- #endif
- 
-+int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status);
-+int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status);
-+int arch_lock_indir_br_lp_status(struct task_struct *t, unsigned long status);
-+
- #endif /* _LINUX_CPU_H_ */
-diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
-index 51c4e8c82b1e..9b4afdc85099 100644
---- a/include/uapi/linux/prctl.h
-+++ b/include/uapi/linux/prctl.h
-@@ -386,4 +386,31 @@ struct prctl_mm_map {
- # define PR_FUTEX_HASH_SET_SLOTS	1
- # define PR_FUTEX_HASH_GET_SLOTS	2
- 
-+/*
-+ * Get the current indirect branch tracking configuration for the current
-+ * thread, this will be the value configured via PR_SET_INDIR_BR_LP_STATUS.
-+ */
-+#define PR_GET_INDIR_BR_LP_STATUS      79
-+
-+/*
-+ * Set the indirect branch tracking configuration. PR_INDIR_BR_LP_ENABLE will
-+ * enable cpu feature for user thread, to track all indirect branches and ensure
-+ * they land on arch defined landing pad instruction.
-+ * x86 - If enabled, an indirect branch must land on `ENDBRANCH` instruction.
-+ * arch64 - If enabled, an indirect branch must land on `BTI` instruction.
-+ * riscv - If enabled, an indirect branch must land on `lpad` instruction.
-+ * PR_INDIR_BR_LP_DISABLE will disable feature for user thread and indirect
-+ * branches will no more be tracked by cpu to land on arch defined landing pad
-+ * instruction.
-+ */
-+#define PR_SET_INDIR_BR_LP_STATUS      80
-+# define PR_INDIR_BR_LP_ENABLE		   (1UL << 0)
-+
-+/*
-+ * Prevent further changes to the specified indirect branch tracking
-+ * configuration.  All bits may be locked via this call, including
-+ * undefined bits.
-+ */
-+#define PR_LOCK_INDIR_BR_LP_STATUS      81
-+
- #endif /* _LINUX_PRCTL_H */
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 8b58eece4e58..9071422c1609 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2388,6 +2388,21 @@ int __weak arch_lock_shadow_stack_status(struct task_struct *t, unsigned long st
- 	return -EINVAL;
- }
- 
-+int __weak arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *status)
-+{
-+	return -EINVAL;
-+}
-+
-+int __weak arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
-+{
-+	return -EINVAL;
-+}
-+
-+int __weak arch_lock_indir_br_lp_status(struct task_struct *t, unsigned long status)
-+{
-+	return -EINVAL;
-+}
-+
- #define PR_IO_FLUSHER (PF_MEMALLOC_NOIO | PF_LOCAL_THROTTLE)
- 
- static int prctl_set_vma(unsigned long opt, unsigned long addr,
-@@ -2868,6 +2883,21 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 	case PR_FUTEX_HASH:
- 		error = futex_hash_prctl(arg2, arg3, arg4);
- 		break;
-+	case PR_GET_INDIR_BR_LP_STATUS:
-+		if (arg3 || arg4 || arg5)
-+			return -EINVAL;
-+		error = arch_get_indir_br_lp_status(me, (unsigned long __user *)arg2);
-+		break;
-+	case PR_SET_INDIR_BR_LP_STATUS:
-+		if (arg3 || arg4 || arg5)
-+			return -EINVAL;
-+		error = arch_set_indir_br_lp_status(me, arg2);
-+		break;
-+	case PR_LOCK_INDIR_BR_LP_STATUS:
-+		if (arg3 || arg4 || arg5)
-+			return -EINVAL;
-+		error = arch_lock_indir_br_lp_status(me, arg2);
-+		break;
- 	default:
- 		trace_task_prctl_unknown(option, arg2, arg3, arg4, arg5);
- 		error = -EINVAL;
+  #define KVM_SET_MEMORY_ATTRIBUTES              _IOW(KVMIO,  0xd2, struct kvm_memory_attributes)
 
--- 
-2.43.0
+The "final" ioctl number that userspace sees incorporates the directionality and
+the size of the struct, i.e. KVM_SET_MEMORY_ATTRIBUTES and KVM_SET_MEMORY_ATTRIBUTES2
+are guaranteed to be distinct even if they both use 0xd2 as the "minor" number.
 
+> +
+> +struct kvm_memory_attributes2 {
+> +	__u64 address;
+> +	__u64 size;
+> +	__u64 attributes;
+> +	__u64 flags;
+> +	__u64 reserved[4];
+
+Maybe be paranoid and reserve 12 u64s?
 
