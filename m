@@ -4,119 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE165CCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C116CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E35898E0006; Wed, 22 Oct 2025 10:39:11 -0400 (EDT)
+	id 8E9718E0007; Wed, 22 Oct 2025 10:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0CCE8E0002; Wed, 22 Oct 2025 10:39:11 -0400 (EDT)
+	id 89A238E0002; Wed, 22 Oct 2025 10:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D49D38E0006; Wed, 22 Oct 2025 10:39:11 -0400 (EDT)
+	id 761B78E0007; Wed, 22 Oct 2025 10:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C5A6F8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:39:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B681488D1
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:39:11 +0000 (UTC)
-X-FDA: 84026007702.19.70E334D
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8909E4000D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:39:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eW3saa1K;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DAA38E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:44:03 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 309C1C088C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:44:03 +0000 (UTC)
+X-FDA: 84026019966.10.8CA8113
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CCAF5A000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:44:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oxC3ThjI;
+	spf=pass (imf25.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761143949;
+	s=arc-20220608; t=1761144240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iUx6gdNdTYzzjqltaNY50WEDVxdUw+Z6zLWtzDzW/es=;
-	b=LNnjAu5RIl2Gqd46qg4QXnT/V9e82gbjVyUEKUbfOEHeOlqYv8YATAxR0szCYRI2sNffEo
-	YalGOJKKYSHExrPExjC8jy+q7uXETN11YWofWRP1LuO2MCGR7KhLiVer3J5q4Ju8obCzpO
-	MM3jDF3Bmu5Wxe/mXBvs468ydS/2JNs=
+	bh=xhX8DUNoBhomPVY5+1YgQ4tvspnUYjXPFPmuzkX3zCI=;
+	b=MU5QNIkMUpNLq2YU6w0Oild+LPvfVrseVmjE4m+zHMkqraUgmW+70i/XslabaLsfCdc26s
+	+uAoJQd6CIuvzgWeOEE+Br6pOohyYi2UVAiQT5wStTtT0yHup7Cxk4pTeF2U/uv6p67Iae
+	ya99mNlJoWLh/XZpeNV8iikqxykxm68=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eW3saa1K;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143949; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oxC3ThjI;
+	spf=pass (imf25.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761144240; a=rsa-sha256;
 	cv=none;
-	b=Olw0kjwVLXN0wKMIcO5Chok/ghhNpg8PyZGHAMxbgni6IRtPLlaiJ6BaNQ+GSTIc67KZbS
-	/ncc2YVRnMu2jCs8cR+UmNZxkZpbhBN/tr6/n1aqgFZGWog6SKUYu7kRQwORXzLlPfkKhk
-	ISdiX4eZ0ZMTSj4OnKUqNFGdMLY6FCU=
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63e3804362cso3491183d50.2
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761143948; x=1761748748; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iUx6gdNdTYzzjqltaNY50WEDVxdUw+Z6zLWtzDzW/es=;
-        b=eW3saa1Kz+HD/ontC/dX8HKcqZeYI7DTLQIgsrNhb22LVHSCpYyNXD2sJuxFfOp1Ah
-         QR1Lc+N62Yhe3D74A4uACe0mWbomk0JCjnlFy8XhrHjlZ2ccS9f367vg3ejX7kNuCacb
-         X+QSS0NXGhFytbSnNyxnCleyGXwoStjWD1ODKY6r0+5ZY1LxhXEZfcf/SjYdA7O0t9aI
-         Rer/6ZNRpu88D0JpiUs9whuGgarG6J4tvPH7CCb4M24lwLJ5IkSeT/Zj2jI9wCpKxDE7
-         Dm1eNU9uxSdNq3P7QfYpjE7ZOXvBOfv58iJwXdtLALW7YAXUtcYYFnqHauAjMcnYFTeq
-         5ZUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761143948; x=1761748748;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iUx6gdNdTYzzjqltaNY50WEDVxdUw+Z6zLWtzDzW/es=;
-        b=njZ6wRM5Kfw6VkRLuImwq0MhOPsccv5HFDU7o03vXe7d9kV/npJkFEUKX9sRJha4XR
-         p1mbINdf6d7zLtifiWmh+UQeF1DxquEjhiu/Jp7kzTaNIBSJ8G2eUxDt09AhfvKzi+SH
-         vjNpyS/Gu6hhpJ0W9D3kDiJ86DIMpWUhnLzdZgshkjQW14XtwD/UVDIOO0WBjEsU8WUZ
-         m5csmmbfqKJ4RhLXi5GsZJwx6S9NrXB4NbR+eskqXOKOEy6gGbvrmfp2moESO2aSsJJX
-         ya1f05uVWMjgdCK1r1EIEeFTx2KL53lC9oUAhbw+bNjfPEakXWGUnxnTCOEgvQfRwLIh
-         Yd3g==
-X-Gm-Message-State: AOJu0Yxfrj0/1T80D6KzAbO7f9K90mxIqTcQoJ2U+iX3HFxPlAU06PId
-	3eVuyTyreuXs6+k5folhuQESY8v4Y6bwrtkA4VSaCd1zPWGp5snK4nc9
-X-Gm-Gg: ASbGncvTPqZhW15T5ug7cniR29Png+EWQz82rep+t577rQQuB1OlW4fTzzm5e4tMyCD
-	LBWHNlHCGAYhJ/fjziuw003ZXaraWd/walE46bSmE0YcK/P3lVRdL5jsZ31Uw+0W69J5dSk4oTL
-	QsmvPnD88WPTYynEEXDFXnT21w8wsbNVGRtqCdYgP4P/reLu6+Y4evJxx7RRABN1wcP6cd+A/0D
-	K+iunOlefx5NFxtzwJXXHJeJboAJREb5UpvIENgP9s5o9wH4pGC0LT1SFz0RJPuUHY+PuP3HAGd
-	oMhwscHtRC2zPXtGxvaad17sMC5LsIm8X5dok1kRnZRM49T8iL8zi9sGidnKKIV2+3pCw3yUYmb
-	I64Agag3Fi+YWWN2lIozsPonIMLQInS4V5xa1OXdNs3QgH3vHExok5dK7mXp+35px+ShbXbDBQF
-	4rHV1dZjjLbiw2mkzIwUsKHrCY7WYc9nKeK/IVdgSIDZ3Lhgg4YiMB5g==
-X-Google-Smtp-Source: AGHT+IGbdjGLYpbL0qlMetPGFIIVPkWMLPYZ5C7pSeuTMnOttPQxgvRO/yT23wLL3ahh/7calwEKmg==
-X-Received: by 2002:a05:690c:2c01:b0:784:94d5:847b with SMTP id 00721157ae682-78494d58aa3mr158818427b3.20.1761143948445;
-        Wed, 22 Oct 2025 07:39:08 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63e2680dcb5sm4073067d50.25.2025.10.22.07.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 07:39:08 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	vivek.kasireddy@intel.com,
-	jgg@nvidia.com,
-	nicolinc@nvidia.com,
-	nathanc@nvidia.com,
-	mochs@nvidia.com
-Subject: Re: [PATCH] mm/hugetlb: Fix incorrect error return from hugetlb_reserve_pages()
-Date: Wed, 22 Oct 2025 07:39:05 -0700
-Message-ID: <20251022143906.2780172-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251022102956.245736-1-skolothumtho@nvidia.com>
-References: 
+	b=RUyYt4o3/NQDi6Y1yXP0DJAeN8o+3pBnWoMiZ6+O9KHcymBCZDwg+Tw7+MSeKFs1oIt8I3
+	s9wcW7dhzfy1jipbFoKsHCOF4+WIOExiJgKInxuFJJJbLMX+fh/2rC61Bl0CbTJDv4T2oU
+	+Q0pp1cn1QXrWH8mIK5lIglD6B7mRI8=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M7oagA013852;
+	Wed, 22 Oct 2025 14:43:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=xhX8DUNoBhomPVY5+
+	1YgQ4tvspnUYjXPFPmuzkX3zCI=; b=oxC3ThjIeGs6rwgQAlclwwNp1wQY2J1y6
+	cKidPU3LDVOUxBy9396OFgl133nuYRAAUC5qmY39Qpk9MhhlWidnrSIk0U0mpaBn
+	hZI9rdUziYPJlBHXMHOBJUrzrmuHIr2RTblbuIEK4NK20KTq1b7CPzkHUQ1s1NqL
+	L2HVCwoZ+hSXQXEro2HET5SwXjvloi7alvMY/7yEoIYL+7DqFpb5xfE0zxwf6GvT
+	UzzQ3mNCKlHsmNY5RKe2O1FsvsTq2FRtVnEfJXGmCynEqodVMi4VhBXR2GVubYji
+	UyHtRRx4y8cilkdFrdRFieHCU0q+m7/7JZGYkGKPkRq6c4ou+KszQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuy6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:38 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEaAwd028211;
+	Wed, 22 Oct 2025 14:43:37 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuy2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MC1cJ4011030;
+	Wed, 22 Oct 2025 14:43:36 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx18jv7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:36 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhWOL6226202
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Oct 2025 14:43:32 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C7F120043;
+	Wed, 22 Oct 2025 14:43:32 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16F892004D;
+	Wed, 22 Oct 2025 14:43:32 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 14:43:32 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v11 09/15] unwind_user: Stop when reaching an outermost frame
+Date: Wed, 22 Oct 2025 16:43:20 +0200
+Message-ID: <20251022144326.4082059-10-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251022144326.4082059-1-jremus@linux.ibm.com>
+References: <20251022144326.4082059-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AGX7kRANlnwklcfxxXI_3EamEqLjBtaY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX5n6eDBHsj5GN
+ kV7brKhM7II9kF9AVfv+/gecOrQx/3h7n7h/yV69Y2qCMFfT5RtB6nk97l9WSzVktxemwJ9nHP/
+ 7Z0iFp0z6irrxULT6+AcNBEq9O8G7LwIVuHWUAtWy2dVKQ5rm9hxoVFJ+hTXkNPHgJ0rUmfQ9OZ
+ 2tQZu5d1UiGg/DaRr1mc8qC8QDCmInH4sY7EiXffdUXfUwNDvtNNut/nT4oXJrFLBZrUuB5npP2
+ zLlhuSUWJsdWEVCBEctMzofal5Uj9QDcDc8o5C5L6FooKysRd8KP5+Yw5/o2svCHzaXs90BU/Jq
+ U76iEel8xtm1aSJ0cK6snbuNzJlAbkvhVhcLq0bkuGheoBEI5V9pvuGK4gpNPjCLixxPNyz9j/2
+ PM30Lrka8Uj2eFxyWvhfix6VEkZT4Q==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8ed9a cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=7d_E57ReAAAA:8
+ a=JfrnYn6hAAAA:8 a=yPCof4ZbAAAA:8 a=mDV3o1hIAAAA:8 a=yMhMjlubAAAA:8
+ a=VnNF1IyMAAAA:8 a=Z4Rwk6OoAAAA:8 a=20KFwNOVAAAA:8 a=7mOBRU54AAAA:8
+ a=_1qlYuAciRtwIPuEvDgA:9 a=jhqOcbufqs7Y1TYCrUUU:22 a=1CNFftbPRP8L7MoqJWF3:22
+ a=HkZW87K1Qel5hWWM3VKY:22 a=wa9RWnbW_A1YIeRBVszw:22 a=DXsff8QfwkrTrK3sU8N1:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: Ieoa7oZhDiD0PHF60cjlNj87b-vbuB_T
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+X-Rspamd-Queue-Id: CCAF5A000C
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8909E4000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 3t9jqpe13q3mr6hbyh9ozxngcq6rtbwb
-X-HE-Tag: 1761143949-421608
-X-HE-Meta: U2FsdGVkX18ngcmMOThb2C5JFdnD9Dn/Js7BW1k7vo13hmH+9KrwUt1O2o0lmkKeac/FmMaUpvl8mQjxPAztuDi++2XIjDSY3rtvJuzbljCzhzZ8j1w2lnlzyVKNsWoXxkmPDvEY4T2qY0QM0oU/jCODz2TFQ+RksAQc5uLht0uNc/c99bqscq1S/Lkx1xMZoDCwFryy38vZ4HQ3szpSK41cKVROB2b3B2PdEhPO/09o1xHWx/VF7np/SMwR/p41hz+NWWHDGSihixZpprKOs5UA+Tj4TXBNqyOEqNgPvC9fjR6brGJIA1xO6Uxb7axH1g38eT52casE+/wTMaEyTVnhrMqzjdrew3LS23/AXT+HVNwms5wTNBrVWgyzz3PTDhJ3jLr5nWXvI8IXxuKls8uCX5q8+RiHjSFyBk9DFIt1pklrnJHT9UyUhxK9Z2IHNVXuGKrLMRdNzCXiiYaMZwOQw1ba3wAB1f1TaH53Ctwwvmrr3uU2aMr8V++wk8/r5utglY5pt3ydXyi2EBaXfQR78elRMpCT1VkZgnWVg/BMvRmMgybxoPFUb3YMRGvl+5fKS0SYCqExOiYQGOGtEYXKYVd2UWRtHuXzabjyLi0RUMFomrhBUDNFnt424/m82M5RNvpYjh8l0N0GQdMxiBgTEMuTwGi3vm/bVxXyN9m2/dozkuH9ARf6POBShAYfiO06ZJhZTMfQFnzpx7bFSpOuPMJhpqooBZFF5nZm1Vv0Ti3iG6ni5LMXP9mlG7pRWR39p2p2GFYuRt0AXk8WiWIAd0Mz694y0J2gMsl4M++CWnUxhNh4kjCwBFgC+giw8gEkWAS7eRbcDkzLA4j3y1fi3tpzSVMJR0rLD1pjcLqJxpPPaAkgJHiYIxaRIEn4QGDRL+oZT+mMMomzwRX9Xg5v0b2WCKFRnatUVJ04CZxCrkqecSkZbXVnEtIVjKA8kh+hhdyXqeaNqYzFrXF
- GR6wMTrp
- 4315+9pa17qbh6rPAsua0Yv4dcWb+dOVnki6YoE/85anR0xE9RdTla4uH7dP2gwGAmTou3ft6+FZ0hx+vl/8W3ssLbTlOOQNONFFZ/B4wcd+1Bay9cYmCJ8XNelhF0qj5YeD71RMEz6oq1BQnkqqdJDgW9kAsMAcBscff6VbrB7PGp0upTOPIdD6eLRI68GG4plFpAY1fbR1lJEdDadvUjUH8xQ5mrnACz1n9awYjkMduxXTsi6cqZOtLm9Pv+eaUZHLbcpwHGxZzsvD3KaEqu700anJt6Da219SnX0YCwe8dyPOd2kUj1dpaiOZfXGAHSmRjjOVPMbvtLu5QsIoGqLybvrnSZLuW19xzwvzvxbLF5nViXgy9eh4dp0873xYvZ2zHXbSZc6+xATa34SI6xgXU75AxTJGbagBg40GeqxnsB/fNu6kWK5MHlIdHScrlzpBCVgCSQ20hpzwzF51UZNvKLIyySrpOA+pSKdUhkotcFGlP0Ge2WrpE8mPtZgchSRxfdk+AYItVRsANzcBwYp3LLJoRbDesYoqhzAgDOMQJGYBocKGPPVKkMngVMpeAmAYgZF2sL0X5+yk=
+X-Stat-Signature: 18mgr5gkttjtakpr8wyj4hbwb6pkx4dz
+X-HE-Tag: 1761144240-932603
+X-HE-Meta: U2FsdGVkX19CPrHJI+E3IFcTfiQuhePd43MpKIzHcoFnCDIC36cLqsvY5BmL6C0uX4kqLUa1zBZpf8jpy9NbWcOanYXa8gipNWvV2XuntEkyuF1yhLtwhomQ/p0rcFo73ax1AO9FKAulYk2Bd5Wx2c4qUblKi06tw0cc/Pjfk7mYXpd7PTbI2j0aalsCk4UQtkemmTB4uE/bw6D1Lvz/SigY/omuRDiI6601udWA9s9yYcTBxcu9bEPMdP+huoaTXUpzB2wwEz+5tGvAPmbrQ9iyZJ+5KuFUp6FXMzdT0FJxfkJ7Qn1SeQIAWqUeymRyo2JsYUl2KBO/fUtyty284AuBxVfqYXi9A4fqVwODZ6KscN0M0/uOkObH17JSFQDbiuiJvdFZ6dYCAerGk5YScae4DD6Hoof8w/5g5lUWdhHJcYWvOWyn7sW8++HNeRGDvXE8VcHiWJ+d6LZWcwgR3S+HO8ega3sNjgEfo+pG83elNdmPQ1fjIyou7vAOQ/xbC50XbJn5b6vJtZjeoJk6Ux/k+4TWZrf0TSZrskgAhTiyq3klwQ972ZA3jNvuy9mJIGqVQzyL4FCnsr8K06Wdk24yNV6Mo9BouZIrHvtMPWdFhATyu/hpLrkIAqhOWEC3d/V6kkCgLGALHcxLkS6lVSKBPq4gOM1KBN1onylU1gqSY+NhtCML1vkS6XH8QicDILU+JG6u2RwSkiBdCIlGiZu6IBMvax9sVrRgsRyf7qMGXljD8bRg8lKMxcDONSkQ2J5AAwrt3x/7mIod//rFhhWdNCLpz9dQsFEN1RP7LD+cv2Cfm3ziRwvzk5QbQHkJhifJ3DM5A2DNjPbWz5WvJj+f9ZSLRhKSeOVaO3XRkcYeTXK81Z0+vP1YLxXPwK7jihbqEuEPzQ/o00PNfplx3cMktbZ0IzE2yZgkbAeUraWvfgTe3B5t9AGCco5fNkbliOorqZ5rgCit0bOAqm6
+ xldR9SJ1
+ MGE1eivZLQLorYo5jN/KjxjZJ9UzGtWUVJTkuTBZEtBM6fCxiXKdAMCjR7D+x5vUDUlB/ktH3VXLqOxXEDkCff8Zw9e6rKCL3Dt5fmNtzmQmpwbDv9vGdi7vN2x0pVCfevxp+qeS4WtLp3KoTpdsZRd5Ubs/mUs/eO7IxCXNyQhwickeq/TrEQYWZA/1qhXNOixS8kv3hC6MEd7O/cPPnGafL5DfAv8JRvPTiY36HtYKFawsHakemNsGeqzqEct1RPa4JmL1j4nET5e8Sx1SQD8TZ6bMNsL7gqS/ijmFsr4m4vzecd7k5ZK3JLGt23a69olqlAtVzs/vM7m18aAVzVf2LCSupReuRxrCGhzUZjk2NPR0MLwsDFVs+Oq07d6zXta6kvesMmTauYPX0Bqo0+JGFmTeaRhNrazX+FCdMkTRhFpwv3LU6yz2QDje6ZXiQbUau4uYdHRIKml3YImOTgTSxmaTwn79waoUS48xvHFJU/4JMbwes9Y+suQzKl/2VYgZpkmI+PFMbo7MNFRu9Bj02hkk+C4eL7QIVlKlg/5JJdTRF5q6kBsxBRhLEBJtgLqfZ47YtlLoTHE5DaUPAVOOJf443JucO6wyp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,161 +170,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Oct 2025 11:29:56 +0100 Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+Add an indication for an outermost frame to the unwind user frame
+structure and stop unwinding when reaching an outermost frame.
 
-> The function hugetlb_reserve_pages() returns the number of pages added
-> to the reservation map on success and a negative error code on failure
-> (e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
-> directly.
-> 
-> For example, a failure at:
-> 
->     if (hugetlb_acct_memory(h, gbl_reserve) < 0)
->         goto out_put_pages;
-> 
-> results in returning -1 (since add = -1), which may be misinterpreted
-> in userspace as -EPERM.
-> 
-> Fix this by explicitly capturing and propagating the return values from
-> helper functions, and using -EINVAL for all other failure cases.
+This will be used by unwind user sframe, as SFrame may represent an
+undefined return address as indication for an outermost frame.
 
-Hello Shameer,
+Cc: Steven Rostedt <rostedt@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Indu Bhagat <indu.bhagat@oracle.com>
+Cc: "Jose E. Marchesi" <jemarch@gnu.org>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: Jens Remus <jremus@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: Sam James <sam@gentoo.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Carlos O'Donell" <codonell@redhat.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
 
-Thank you for the patch! The goal of this patch makes a lot of sense to me.
-I just have a few comments:
+Notes (jremus):
+    Changes in v11:
+    - New patch. (Jens)
 
-> Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> ---
->  mm/hugetlb.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 795ee393eac0..1767f7599f91 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -7269,6 +7269,7 @@ long hugetlb_reserve_pages(struct inode *inode,
->  	struct resv_map *resv_map;
->  	struct hugetlb_cgroup *h_cg = NULL;
->  	long gbl_reserve, regions_needed = 0;
-> +	int ret;
->  
->  	/* This should never happen */
->  	if (from > to) {
-> @@ -7308,8 +7309,10 @@ long hugetlb_reserve_pages(struct inode *inode,
->  	} else {
->  		/* Private mapping. */
->  		resv_map = resv_map_alloc();
-> -		if (!resv_map)
-> +		if (!resv_map) {
-> +			ret = -EINVAL;
->  			goto out_err;
+ arch/x86/include/asm/unwind_user.h | 3 ++-
+ include/linux/unwind_user_types.h  | 1 +
+ kernel/unwind/user.c               | 6 ++++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-NIT: What if we just initialize ret = -EINVAL in the declaration? Then we
-can just preserve the original code and goto out_err here.
+diff --git a/arch/x86/include/asm/unwind_user.h b/arch/x86/include/asm/unwind_user.h
+index 5e0755ea3086..08684bbeff0c 100644
+--- a/arch/x86/include/asm/unwind_user.h
++++ b/arch/x86/include/asm/unwind_user.h
+@@ -6,6 +6,7 @@
+ 	.cfa_off	=  2*(ws),			\
+ 	.ra_off		= -1*(ws),			\
+ 	.fp_off		= -2*(ws),			\
+-	.use_fp		= true,
++	.use_fp		= true,				\
++	.outermost	= false,
+ 
+ #endif /* _ASM_X86_UNWIND_USER_H */
+diff --git a/include/linux/unwind_user_types.h b/include/linux/unwind_user_types.h
+index ee0ce855e045..e07fee69d315 100644
+--- a/include/linux/unwind_user_types.h
++++ b/include/linux/unwind_user_types.h
+@@ -32,6 +32,7 @@ struct unwind_user_frame {
+ 	s32 ra_off;
+ 	s32 fp_off;
+ 	bool use_fp;
++	bool outermost;
+ };
+ 
+ struct unwind_user_state {
+diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
+index f6c543cb255b..c8034a447c16 100644
+--- a/kernel/unwind/user.c
++++ b/kernel/unwind/user.c
+@@ -33,6 +33,12 @@ static int unwind_user_next_common(struct unwind_user_state *state,
+ {
+ 	unsigned long cfa, fp, ra;
+ 
++	/* Stop unwinding when reaching an outermost frame. */
++	if (frame->outermost) {
++		state->done = true;
++		return 0;
++	}
++
+ 	if (frame->use_fp) {
+ 		if (state->fp < state->sp)
+ 			return -EINVAL;
+-- 
+2.48.1
 
-> +		}
->  
->  		chg = to - from;
->  
-> @@ -7317,11 +7320,15 @@ long hugetlb_reserve_pages(struct inode *inode,
->  		set_vma_resv_flags(vma, HPAGE_RESV_OWNER);
->  	}
->  
-> -	if (chg < 0)
-> +	if (chg < 0) {
-> +		ret = -EINVAL;
-
-Is there a reason we set ret = -EINVAL here? I think it makes sense to
-preserve what chg would have been returned here. There are two ways this value
-gets set; for shared mappings, we have chg = region_chg(), and for private
-mappings we have chg = to - from.
-
-For shared mappings, region_chg() may return -ENOMEM, and I think this is
-something that we would like to propagate, as the commit message of this
-patch suggests. For private mappings, it does make sense to set it to 
--EINVAL, since we don't want to return a random negative value there. 
-
-So maybe something like this? (Including the initialization of ret to -EINVAL
-from above)
-
-if (chg < 0) {
-	if (chg == -ENOMEM)
-		ret = -ENOMEM;
-	goto out_err;
-}
-
-I'm sure there is also a more elegant way to handle this : -)
-
-Although, there is a rare case that region_chg returns -ENOMEM because
-add_reservation_in_range returns a negative value equal to -ENOMEM. In that
-case we want to overwrite it with -EINVAL but will return -ENOMEM instead.
-
-But this seems too rare : -) Maybe it makes sense to change region_chg or
-add_reservation_in_range to check for a negative chg, and return -EINVAL
-there instead as well. 
-
->  		goto out_err;
-> +	}
->  
-> -	if (hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
-> -				chg * pages_per_huge_page(h), &h_cg) < 0)
-> +	ret = hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
-> +						chg * pages_per_huge_page(h),
-
-NIT: Should we just unindent this line once and include &h_cg on the same
-line? It seems like the original line also pushed the chg * pages... to
-before the open parenthesis in the first line anyways.
-
-> +						&h_cg);
-> +	if (ret < 0)
->  		goto out_err;
->  
->  	if (vma && !(vma->vm_flags & VM_MAYSHARE) && h_cg) {
-> @@ -7337,14 +7344,17 @@ long hugetlb_reserve_pages(struct inode *inode,
->  	 * reservations already in place (gbl_reserve).
->  	 */
->  	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
-> -	if (gbl_reserve < 0)
-> +	if (gbl_reserve < 0) {
-> +		ret = gbl_reserve;
->  		goto out_uncharge_cgroup;
-> +	}
->  
->  	/*
->  	 * Check enough hugepages are available for the reservation.
->  	 * Hand the pages back to the subpool if there are not
->  	 */
-> -	if (hugetlb_acct_memory(h, gbl_reserve) < 0)
-> +	ret = hugetlb_acct_memory(h, gbl_reserve);
-> +	if (ret < 0)
->  		goto out_put_pages;
->  
->  	/*
-> @@ -7363,6 +7373,7 @@ long hugetlb_reserve_pages(struct inode *inode,
->  
->  		if (unlikely(add < 0)) {
->  			hugetlb_acct_memory(h, -gbl_reserve);
-> +			ret = -EINVAL;
->  			goto out_put_pages;
->  		} else if (unlikely(chg > add)) {
->  			/*
-> @@ -7423,7 +7434,7 @@ long hugetlb_reserve_pages(struct inode *inode,
->  		kref_put(&resv_map->refs, resv_map_release);
->  		set_vma_resv_map(vma, NULL);
->  	}
-> -	return chg < 0 ? chg : add < 0 ? add : -EINVAL;
-> +	return ret;
-
-We only return ret in the error case. If I understand the function correctly,
-this part is only reached if there is an error somewhere. Should we rename
-the 'ret' variable to 'err' instead? I think that will actually
-add some clarity to this code path, since it's not immediately obvious that
-this portion is just error handling & propagation otherwise.
-
-I hope all of my comments make sense. Please feel free to correct me if
-I've misunderstood any of the code or your intent with the patch as well : -)
-Have a great day!
-
-Joshua
 
