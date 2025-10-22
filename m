@@ -4,130 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A27CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F993CCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:40:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE1E58E000E; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
+	id 975868E000F; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB92B8E0002; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
+	id 8FF0E8E0002; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACEF28E000E; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
+	id 7EDE28E000F; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C3D58E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5063088B73
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:38:45 +0000 (UTC)
-X-FDA: 84024948210.01.550B380
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EC95110000C
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:38:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KukVtGGW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=veJQOarc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RBDxyTiE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QYPrHAhn;
-	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 6A4418E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:40:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1728788950
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:40:56 +0000 (UTC)
+X-FDA: 84024953712.06.7F6184C
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0D40D40006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:40:53 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=S2CX+9xO;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="DU/wXHAj";
+	spf=pass (imf27.hostedemail.com: domain of greg@kroah.com designates 103.168.172.151 as permitted sender) smtp.mailfrom=greg@kroah.com;
+	dmarc=pass (policy=none) header.from=kroah.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761118723;
+	s=arc-20220608; t=1761118854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
-	b=4dskNqWq/VaKpGoOKvknrMTWkSIEmW2wH7ohaFVT/6UJOZv1BoKDs0rDI8kGpgfwjAiWhl
-	T+3SMZ/DEc09WqNXqXXO/m9TlgUZo1kbCo3kY/By0Xtu0PZJMzrYGPBpH/yZCtq6BRBOzT
-	YUcAcH5ul6r9wQfPLqAr0tamMoLj7EU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KukVtGGW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=veJQOarc;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RBDxyTiE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QYPrHAhn;
-	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118723; a=rsa-sha256;
+	bh=9u/6AOHdyJKLm2MAVj/gg3WnnXnpnA5iTO0PKfyo/5U=;
+	b=skqFMF9CKWg0v4l2XI4RMc2qolSHcJpolLxhiNrJVlNU/nHQFqgClXSxsHt/rczKD5++bI
+	qsYNEBQuckPTPMnTptHbqoobf/r+bWweTdC50KAq02RLcGdokBgRcNmCP6ElUncbkVERh6
+	wWSuvmmX5HwrHcdBD3U4AHQxB0Hxuo8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118854; a=rsa-sha256;
 	cv=none;
-	b=RCdDePa9M7Hpcpnr0dwgCP/YC2iYqRdJZrY5GowouJtixnMbgSd/d2348VsT5GMFwJ9MjF
-	QNSO606vsWsFtlPJ94PXxejKwFf+YXzLvdfm2Loh+VweItuhaiQUDIqlhmxLyz29BOOpVw
-	05Qan2v7k9eJNLWesHgSNXoLEqaB0h8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 399731F391;
-	Wed, 22 Oct 2025 07:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761118717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
-	b=KukVtGGWqSuem/LJklYW0q+zc5HKvfxVuJPkcHLDHZx8D7vROffVpcP73HtODiay68RRay
-	QN8gAZIdga1NdvQUAg3k1InyPvsKc8O7qNSsf4EgjVJ16tMsksmsvaU2nwQFvt7Qgs1Awz
-	hTNqcp+LKLH6PpY5Cijtjh1i7w05Wyg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761118717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
-	b=veJQOarcKigKf26sRa6IuzSsBqRioFdBls/D4dmszIC6X38QE3qFdg7IZiEegurQGVUvZ9
-	Yc7a8PLBih3CcJCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761118713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
-	b=RBDxyTiEJNM7tQqrsbbtjGRrg2f1678Z4QNrLli+dxOSiPMBbJgnOL8ogYjvPpA6JvLqqD
-	yK8Ix6a2uHQgo2neTu596fnX7CxdF645RlJCn2YJFFp6LQAr5Asv4zyQYAE+nCLOxOLnoN
-	d4pY55cHObJe9y2OsWBtn4s8B+V6D10=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761118713;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
-	b=QYPrHAhnO5Xk2QgbkFCm383lUU/0V5g5zF/efIyre3pCxn7kENc2pz342o23/KhxzU8tTe
-	4Xg11GUsOf/GhqDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6651F1339F;
-	Wed, 22 Oct 2025 07:38:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7gOsFfiJ+GiKHAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 22 Oct 2025 07:38:32 +0000
-Date: Wed, 22 Oct 2025 08:38:30 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCH] mm/filemap: Implement fast short reads
-Message-ID: <2dyj6zrxbd2wjnor2wswis5p5z7brtfgzjnhbexhjsd3kqnvx2@y6i2wnvr6gdr>
-References: <20251017141536.577466-1-kirill@shutemov.name>
- <zuzs6ucmgxujim4fb67tw5izp3w2t5k6dzk2ktntqyuwjva73d@tqgwkk6stpgz>
- <CAHk-=wgw8oZwA6k8rVuzczkZUP26P2MAtFmM4k8TqdtfDr9eTg@mail.gmail.com>
+	b=SwyE0T26q//IHUZzqglHmyZNd5jCVYVbCw9D0TVuzJQzP4u/rTFygwDy4g4D9YVymclcll
+	klSILxSlLEHkJsmWZkGWKue9nUZTqkSB8ZGUVmTZtUIs81S/mq0IWgwqXSG6PKtszZY3AA
+	qII3dkMDwlfEcFIsE1qWYKohnC9dbhU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=S2CX+9xO;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="DU/wXHAj";
+	spf=pass (imf27.hostedemail.com: domain of greg@kroah.com designates 103.168.172.151 as permitted sender) smtp.mailfrom=greg@kroah.com;
+	dmarc=pass (policy=none) header.from=kroah.com
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfout.phl.internal (Postfix) with ESMTP id 42678EC0183;
+	Wed, 22 Oct 2025 03:40:53 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Wed, 22 Oct 2025 03:40:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1761118853; x=1761205253; bh=9u/6AOHdyJ
+	KLm2MAVj/gg3WnnXnpnA5iTO0PKfyo/5U=; b=S2CX+9xO+lB5b8QIcajBhxlNP9
+	B6S0lIMXmIEIHLe0mBNFn53EkW9n3eRhfYHhGyW6Q8HTO2V4HJKSYkXqUSGPpSOS
+	mX7L0xZ+YAsYs6GU9T5KSu8wSHcB4zXguoOe+DpboeDuYh9qYO3Daznip60lTbyB
+	pXe2flQNFYvMEEj2+YEd/OpC68yX2Ei8bG0LQueWg+93vvwZPmVv6rWKiZXjZJx1
+	jb5aDkcBjo/8TSYZUAQv1BSxoYQ7P1l117xNRhFcTJzewh17ZIsCJC8zXBbD/c7J
+	mkritEo8EsTxvYU7j+MXUwJt0AnWQPD7Rdz8tQPXX1lE2Db+QuvCZ8LGYjOg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1761118853; x=1761205253; bh=9u/6AOHdyJKLm2MAVj/gg3WnnXnpnA5iTO0
+	PKfyo/5U=; b=DU/wXHAj0AuA/qtjvo2fDScseQKQ4OMji/CnkC7szRlxmbbDWCv
+	rGNG16shMn0eboV1GejawCJ3DBb98pWeLiFmkfUyxOuG3L8XMcGd6WKwC5xoQxM/
+	N89Dxj1/wOVspufdjh/9QFCP8Hs17ncM+JS8omOD8YATEfOXdBD9pHkJs4HhITAp
+	nzdBxUPedvEersg9PedjWUqtfbqApJP8tyXeX0kE+0/nQTBTvN1M2zT8j9g1/8rW
+	/2aZ/Dn1xSC9yFM4c8Xsa/QjGC9celo4R4dwI3rZ6d/5G9j0dDu1I04AGBfppGy4
+	Fvp8WZ3ryPfGRX+A4sBCn3fmnGMi6vESRtg==
+X-ME-Sender: <xms:hIr4aLlAkY4zwtHdoPYzDEThSSYDKiJbNeqGUBF3uWGWfisNuhE-tQ>
+    <xme:hIr4aHlgs-mwtp1Qbf5F5Vbx43rgjXqeLQponxF18l-tPIyAk6l2KAXQQslts92Io
+    Y8i2RWO00reWipJGVCjvMca-mJWS611MmQjkILGISo0w0VZmg>
+X-ME-Received: <xmr:hIr4aAXpN9J0gX4tRVJFrMqBBVZeMpM2bqQwB9Uajdzv4o5A9N1MIWtK>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeeftddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheplhgvohhnrdhhfigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslh
+    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhig
+    qdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrth
+    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghntggvrdihrg
+    hngheslhhinhhugidruggvvh
+X-ME-Proxy: <xmx:hIr4aF9M30XQygfl7U-P6vIcPnB5h_FMk1MekPlYvg2aVh15tPH9og>
+    <xmx:hIr4aNqd-8PMwOlgRSJEGQjZ-7PiXKIFBW3N7mIj5-3_hXb4R48Jjg>
+    <xmx:hIr4aHnI4hZqJrIurvlLueaonGwfj55DByZl4_l256-hg_KTCc_0Fg>
+    <xmx:hIr4aBYb3lFJsPbTSmNmiGw_1_Q0jffZuO2XT91gIVjladboH6cvqw>
+    <xmx:hYr4aC1uwQoSH2P8BZR-2V4Ltoxt1wCMWv6d1hEpg4nNI-tMkewhJZof>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Oct 2025 03:40:52 -0400 (EDT)
+Date: Wed, 22 Oct 2025 09:40:49 +0200
+From: Greg KH <greg@kroah.com>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
+ vm_util.c
+Message-ID: <2025102230-scoured-levitator-a530@gregkh>
+References: <20251022055138.375042-1-leon.hwang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wgw8oZwA6k8rVuzczkZUP26P2MAtFmM4k8TqdtfDr9eTg@mail.gmail.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: m95nabrub41i7mwr4sahwm1ihighmmj8
+In-Reply-To: <20251022055138.375042-1-leon.hwang@linux.dev>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8yi77ocx93fuo6znne3drng6guc3qgy3
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EC95110000C
-X-HE-Tag: 1761118722-572615
-X-HE-Meta: U2FsdGVkX19FOMogrjQuNYP4ruJ27TpH34Fg5MJgF7mLFl2CJ4tzdjyuwXoQxVJMWSWw3ByIEbE23qmYlHYpTx1cDNneNNWkk08lrpa8pG3oQZta0aa/uWuta6YYPioDxIWir0eycwofMEwuZGaekTkNHZt5tL7UTRAaypDx/jtVCAiMUq+T7z5bSPpNcVIrL/8egSMFfx9zHB+y46sMCo5VP6YVE00kZbQLxwCxXa1zuYxMu7I2l7PXGqTxPqs2XTfyc4v1r2+SQWLXCxeXpk5ESUltraOLHM26FuWby/gwN+5jDXrM9JOmguGuvY2GGoYU6Qj3M399YAtcq4ZqfIEPGPyf+MZOy0YB3A8Ro4muCo/8CwnZszhV/NXNEPIn1lMCosPBIZnIv3ZWMQmeuFskwUw2WliwJNfX8v9vB8kLvzs9L3gyA4DO5JwMWrnC9hX86dgF/7x0Zvy+yXDUDjypz7iOTzPG9Dslu5pQi1Pb0AhjppcMBwhA1jaRaRlRjQLR2MGlSgKMbB+89ALX9JVsdx/WiVRdV5+DYArX7YiDW0lRbpQ/+yH0YbVxzUq75zdhvZNYJlw1Cj9uN7Zrqic1DFkiFOBIaUIrkdEN9/DOjq3SA3mhpIYpFVeWAstKu/Ourp6jYrByFJml1wVQezS2h3haUeIO//TxxYeTn3P2nDUfq8KXbISADhWWsSwkFp7iKaumSTrikzMM5yOIYCuOojq+zl2xeQoNjbG+J8nHdEkW+fgLgseN9eswUm9Qc8qn9msvlmLzn+uQ+lbTQ/u+3ugL13zr+LpMGGk2ygquGSjpitR2p3QJXr9Uv74RnslVQd0fbvpCkBCActsh/3Mx/IeyQakp0j/Jt2JcE972uVZCbZTIrjZ/cyACIhc7+NvF/Ad2LYAWq92nlJw89nH8Be7rN5cOhWgvlyRImR6Acks+FfjoumVtRuK/+XIWylbyGXfwScZKvP/Hlnk
- 4VUp40D9
- wG9pY5afr/kla4yAaMAbjTUcjLfCJJv40yDogNsqmKzzq795iFdHT5kW1lqyWxoKy004Z9HvbeMdaJv+ou+m/A8T8QD6j2VpHFyIbVeg+GF/XrIffmFDCK5tvfKOdfPbwfwk87BTp4WNbnFUpKfSnpL9Dz0gO0BfQ91kTviFEwEgKAR6sMa9ykTejeCIuP5fSni1X2Gxs5VlUAoGrZUZB37VrbC6usERgdprdBZCahj8CbtF/H48Xb7BVma9pa/cg4q76HFLr6cafv1CGHRs8YAVJI3by/blp1rEiJeQ85S2Gpus=
+X-Rspamd-Queue-Id: 0D40D40006
+X-HE-Tag: 1761118853-922985
+X-HE-Meta: U2FsdGVkX18+6zxgvewc5pOS3+AnMQ7sp4T/sBnXzziYRE46PkdVZffViftbFMwkFB16eZmswtuFNuuER6KxqRFFr4WJw2UzEf8BwiPEwpHnQLD0esqhPGQSd3GSt17ony7VEZZib2bT35zUbGE7bFCXgFK3rMB2vjGuT/iJjnHWh3HjkhVC9qnPoxsHSCrCX+FKcu9vVnltO6CggpGOD1yLaOvnlyncqQlOMaMoO1HH6L5O692hKn/+OPllfzq7PXl7KUaf9LXnGQCyc0YrVG5c/31nfFcnOozibnfo4h5rvXPp4GwF9Hbmj480YkJSbmqNJa3tnwl+E6eStGC5EU+oCbZhOYoKMb15fsHoZ2WCe0IZ/lkCOeyYGRkJ+J6BMppe6EhlKNdDKi2xyEvm1Az+Toyi4n0Wr9KYTDnf1fc8sI+o3xVi9oJajFxe0v2m6BFzQsVmn1OQID4AVON14JAXvRrMo9KHqf/DIZ4lLqkPENFXe9XsE2WwLqEribeqnLn5AeiLjEyDmwGjRoSXp5tDlMHawJ2fs42a4b2uOcGP9IFXlJRKhoKJ5kmSfLn5B4rwUs3zM8+uuTYPYASJX94bHBw5g+IRp4nLfXqGu5OplyC+O/4+qEhWeUdAvAKpMJ86TRvrfFNIdyclkzyoag3gUfwMEksAeq7P7a8/5kaADHWNACdTs523qjj/MrFUY73qJhxQhPC2VHQm+WMC4zy3rOBG+pRJ5sZn0Ot3+8yk9wM+zys9FdLsUhe4Ojh2xLx2d+wy4CQr+HSqny0FXNUpeiUxTmo8Db9Ubm6/Hhp0/gZJ4yZM70ztxkkreKwBaxAXLfO6ZGfDdD9DOuq1Xs0WHUSwH6nNqgZGK3mO6BcoREkA+9B7kHjzurHHP+LAMEvjDonY2LMGde8z8eOS3IJ0aaTMpyTG2PthLISw21upn40AjFfEQ3/F1VeeuKQo8N/1S3cU4+NkS0OxNCz
+ KPTsSAkZ
+ S9A8D6+KyvNYfMsi4FzINtE7k8vbJyixtkRdElgUFI13r2BAhWBRetXqDkbS1ZRt7vShJA+97cp2RwecgJRDGicd4ena1SuFN15ntNjrP+16oz3X5R28e2K8I6C5XWho2vn9Yhvn/jJccFNckIklgMNgXua3O+hccjQjKJIrrG7Tt1EtGC3RjuCKvrXjoPHo0w5TA2nYCb3UfVRV6qFxkik+UXZJR75hBHSqkERaX3rsCvPxATo7DonqV/COcW4TzBxBkf5Czyu/EF623SQ8Vp0/BJnlSb0rIi1R+d7mx0ZH1BsPjOLdu5KZlPZO2vyhio3W1TT2iZm1GONnxeLsv7fzyFyQ48VGQNeqYJxXpwYnJO2aB2BSrsBt55QIjW8VpRYrSOlRSKKPy8k0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,46 +135,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 09:13:28PM -1000, Linus Torvalds wrote:
-> On Tue, 21 Oct 2025 at 21:08, Pedro Falcato <pfalcato@suse.de> wrote:
-> >
-> > I think we may still have a problematic (rare, possibly theoretical) race here where:
-> >
-> >    T0                                           T1                                              T3
-> > filemap_read_fast_rcu()    |                                                    |
-> >   folio = xas_load(&xas);  |                                                    |
-> >   /* ... */                |  /* truncate or reclaim frees folio, bumps delete  |
-> >                            |     seq */                                         |       folio_alloc() from e.g secretmem
-> >                            |                                                    |       set_direct_map_invalid_noflush(!!)
-> > memcpy_from_file_folio()   |                                                    |
-> >
-> > We may have to use copy_from_kernel_nofault() here? Or is something else stopping this from happening?
+On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
+> Fix the build error:
 > 
-> Explain how the sequence count doesn't catch this?
+> map_hugetlb.c: In function 'main':
+> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+>    79 |         hugepage_size = default_huge_page_size();
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~
+> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
 > 
-> We read the sequence count before we do the xas_load(), and we verify
-> it after we've done the memcpy_from_folio.
+> According to the latest selftests, 'default_huge_page_size' has been
+> moved to 'vm_util.c'. So fix the error by the same way.
 > 
-> The whole *point* is that the copy itself is not race-free. That's
-> *why* we do the sequence count.
-> 
-> And only after the sequence count has been verified do we then copy
-> the result to user space.
-> 
-> So the "maybe this buffer content is garbage" happens, but it only
-> happens in the temporary kernel on-stack buffer, not visibly to the
-> user.
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> ---
+>  tools/testing/selftests/vm/Makefile      |  1 +
+>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+>  tools/testing/selftests/vm/vm_util.h     |  1 +
+>  4 files changed, 23 insertions(+), 24 deletions(-)
 
-The problem isn't that the contents might be garbage, but that the direct map
-may be swept from under us, as we don't have a reference to the folio. So the
-folio can be transparently freed under us (as designed), but some user can
-call fun stuff like set_direct_map_invalid_noflush() and we're not handling
-any "oopsie we faulted reading the folio" here. The sequence count doesn't
-help here, because we, uhh, faulted. Does this make sense?
 
-TL;DR I don't think it's safe to touch the direct map of folios we don't own
-without the seatbelt of a copy_from_kernel_nofault or so.
+What commit id does this fix?  And again, why not just take the original
+commits instead?
 
--- 
-Pedro
+thanks,
+
+greg k-h
 
