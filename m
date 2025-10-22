@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82536CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D967FCCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:40:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBB048E001F; Wed, 22 Oct 2025 14:40:42 -0400 (EDT)
+	id 41DA98E0020; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6AF58E0010; Wed, 22 Oct 2025 14:40:42 -0400 (EDT)
+	id 3F5438E0010; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32E28E001F; Wed, 22 Oct 2025 14:40:42 -0400 (EDT)
+	id 30B758E0020; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8648E0010
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:40:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6A6E7C0912
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:42 +0000 (UTC)
-X-FDA: 84026616324.13.ED03212
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 220BE8E0010
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DEF3813BECF
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:49 +0000 (UTC)
+X-FDA: 84026616618.25.CD8A42F
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7DE87C0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C3SqrYvR;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158440; a=rsa-sha256;
-	cv=none;
-	b=ctGR2wiLcp4Qu/ZluziomUMQAq4XXcaBDwho1LmiBtCondeA3O/93GE0tW2nPYF0bVZmdH
-	TGmkmkRHNQEleCiCfkI/YEsgkgE2d+HlPE54Lp9RBEsdTm3kGwnAAd6iTmsaJkcst4PR1i
-	edCKCHVniMYUqTh9w79fSEZpx6KuG9M=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=C3SqrYvR;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 23DE140002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aS1+A/D7";
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761158440;
+	s=arc-20220608; t=1761158448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+jXNuiQ5bHnX5LcOt47Wp1opTjuPzrwwutPcN/KCqFQ=;
-	b=tEbDVT/+AYjoFOeGtei6F+oTH5bAEfMSuKV7A2YXotQuOBwmpRd+uUNS5ktggKpR2Vw2Hh
-	eme/Q6Ce6cKN6RlDYOC8iG//gejAHMEHVLSyLuAXbC01OE91ZmAyyzOIGBM0zquzzDtP4y
-	KhdAowvZrgaz36jcLJ/ZfAElX28MPJc=
+	bh=dpo4OOErIXDyCuGHV4XGlNq4YibnjiOhk8e0KAy/EpM=;
+	b=SYvInvoDjW/7GXh/vubrxKFAh58WOVMLPW+yxDHfHnQLR/GCdheWQcK/ZUwWOB8OYTwwXT
+	Fk7PfRNmivEK0jIhImg7L8rbxoyxTSIP2X8gtOUk9Z8fsnfaDmAB5IB7uCLF0kd1v/oujt
+	U8kOSOIe3ihyOIK1ZrcKcR3Znxc403s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158448; a=rsa-sha256;
+	cv=none;
+	b=dx38Y0pnX3BIAhSFHraZJI9JVCYdFLSntfdcslvGo4OMUugAFieV1HW7Boca0B66mFmYri
+	XELNYRMXekJ24MuB4xrIaZ4WAKrTD3+G30vf/+eEqMVKF4ymXebYlR6tfKrn3IzftbsHBu
+	8s6xZ90f6PBhEeXtIY28aJRw3yzStt4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aS1+A/D7";
+	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761158439;
+	s=mimecast20190719; t=1761158447;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+jXNuiQ5bHnX5LcOt47Wp1opTjuPzrwwutPcN/KCqFQ=;
-	b=C3SqrYvRtl2QnLR/+4sldXQD5rg1eMXwA0zXWz1OtjfUBewMlP2bY4hAWaibu/0Kav1Zk+
-	hoDLJBenB5a8HlOj+Bfh2TjCFqlONdXmTPHxFGNrLIayO04QbA2453PSsSxxyUmvVkFUyr
-	nGIlqw3MRcdcVOQOobZS93VyI9QxudU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=dpo4OOErIXDyCuGHV4XGlNq4YibnjiOhk8e0KAy/EpM=;
+	b=aS1+A/D7NRvdBezJrhYz/668aR24E7TSUC1y9JhATxes1U/U+jA6HHAleQoskD0OTEVeo+
+	0meNWsMJNjLXgR+yVhu/zbl2iRWrMvMMsN9x2IiUB2O1ar4AXL9BAOw8OJp7mFAMXArEqx
+	E8fuEd7TP/+5LZJ2FOnvjrFf1Ic39Rs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-668-IY3uYX_EMg2HzlP-YAxfIw-1; Wed,
- 22 Oct 2025 14:40:35 -0400
-X-MC-Unique: IY3uYX_EMg2HzlP-YAxfIw-1
-X-Mimecast-MFC-AGG-ID: IY3uYX_EMg2HzlP-YAxfIw_1761158430
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-lmfCQv3oM16wwZNJ6JgoEA-1; Wed,
+ 22 Oct 2025 14:40:45 -0400
+X-MC-Unique: lmfCQv3oM16wwZNJ6JgoEA-1
+X-Mimecast-MFC-AGG-ID: lmfCQv3oM16wwZNJ6JgoEA_1761158440
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A54B819560A7;
-	Wed, 22 Oct 2025 18:40:30 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C9D01956087;
+	Wed, 22 Oct 2025 18:40:40 +0000 (UTC)
 Received: from h1.redhat.com (unknown [10.22.64.41])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79C9F19560B4;
-	Wed, 22 Oct 2025 18:40:21 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 00BD419560A2;
+	Wed, 22 Oct 2025 18:40:30 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
@@ -124,22 +124,22 @@ Cc: david@redhat.com,
 	rppt@kernel.org,
 	jannh@google.com,
 	pfalcato@suse.de
-Subject: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP collapse attempts
-Date: Wed, 22 Oct 2025 12:37:15 -0600
-Message-ID: <20251022183717.70829-14-npache@redhat.com>
+Subject: [PATCH v12 mm-new 14/15] khugepaged: run khugepaged for all orders
+Date: Wed, 22 Oct 2025 12:37:16 -0600
+Message-ID: <20251022183717.70829-15-npache@redhat.com>
 In-Reply-To: <20251022183717.70829-1-npache@redhat.com>
 References: <20251022183717.70829-1-npache@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 49zn1um46g3m614e8psadbpqs6zsq176
 X-Rspam-User: 
-X-Stat-Signature: wrn63ig7yd5mxyr6hkzbdac3d5wcw5us
-X-Rspamd-Queue-Id: 7DE87C0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761158440-251344
-X-HE-Meta: U2FsdGVkX19i7B3yjc7lfpqpelbZKQp7BrednSreSvTZIBuwE3e+XL7NnHUB9ogR7nc6H28h/KJz7SMbkeSE12DPlCUQ7R9uK9a5P7nHqPvwneaZ3bq0nddJsi8g2G4Ud8UlX3cUJX0Nm8i4N1f1pMFEe/96A+DqxHETuxJNrkQI5Sb3zwTWCnR/kEnkL0NGrtF7cZrAOiF2EcLkMbgdifP2+vH7GE01a85cmdL7Z8NAVlkkoA+ZakySmDWa/aoKS+CZCpnm2u4Btnx/v7KU8UZjtVwsuKpWtHjDo22WIEnbIELRuoN6l+m13riA+2R4+sO0NM52mfSni4LUVh0Rk7PBM1451bpOvnZkIIRx5mmK02juvZx4kLKzUajG7BP8MJul9TOxAw8zQZ21qdQYyVB6TvXJxNqWMLeUiYtqov37h1/DOov3eWIS37vtnPCNEq+c5dY+o8IBvJal3EV1xqB4kj2vxUjjQYILyyeUXLUbPliit+2nt6jxng1Zo1XtQCv34YD/Ma70z1QlL2hFS5QmdFPqc6Szwx7UiNIPODCRueTtf/GBTmaPUK1+isNSgF9iQwnT2sym/rUwmzTF3El/bvKW4JrPlCiuQqtBcMXfJwxKpvT4aLZE9SJ7KZHFCpE4IrGpJAlU58ubzMI63T57+98lJmGgEDwz2URtlKs6QquWPMYg+1swxklod6vnlkEZL/qQnx6DPf87vsbm3RMR7kg5P+uVvzG1EqU2XR30uweB2utgZo35YXmOpITxifzif2i2qx191+/oaNTD9+v+JWbrfNYZDuES+hcFRYdJlHio4wQdKTKf4IpuyZlFY0G6raRv0ufzFa+ornplL6jxnrxm8lflKrxE93QRCklR2zmK2fyOZLpv7kDeoPbV5ZtdHoNQT3+aer/xd7mTKmkkqhdF9S2B7J5yFPCoEY2GaU6o60p5LQuNGh46ot27xr8bJASYtHJSlQx8IaO
- 0v4iD8M7
- GaqxZN4ZAkfJALgz0+r93UHxY9xzD8U3BEcSzF8jqj1kDTSJl9Sh7x78LK2MYDHkqXuzOwZjB47P6RFzTOuiYbUSNf1PQ0apIMgHqcngJ8ymswMeStsB0vQvLQelyE6sSby/2gqLt6UBeMY7nsOio/AvaxzYmlHx5eq3StsWQAvf4vpenYRVf3Y4SzkCE1Qq4nH9+XwpC+G/hFiSuPjPmJDipdCQbD2/tkAGTxPFxozisUZDCfhmM6AeY7s/Y2iNsYdrVOyubVthN6NmsIPlaGkL/EPKqZbvSytpDE4/4hn753+xhlnKRdO2HoHyopBR7KTKlZJn4Kug4FEgr71aDY1vrVLRow6E+f1DyqImUHCvobRkQupmgl4ObLHqxafSu7v4mwF+EL5YErFsRuwbnfAIXTA==
+X-Rspamd-Queue-Id: 23DE140002
+X-HE-Tag: 1761158447-293540
+X-HE-Meta: U2FsdGVkX1+/y0GnrxTGXqOoUUT0QSt9g8hRpcde4BXPaafePl0heyXxnAdPV7iJf+VkkRsV8dxTbKDlYB1q8IUbZlL6Z/c+ZYliqt/2QNj+w9gsf1UGxuCcl+AJh6Uw2iz9S+ERpclot8pLvphK9p/4oHR4rE7AoDCKTXSJExv7H6sAF34tjwHg3NtIWj8UbiXRYbJFndUGlqSqJwSJtlnjPYpSjJFY3ZTRGav8v4OrJLCtuH4dD2ariU7YcaDLXDcUpOO5q5Uy6qadNjZ3AVUM8uKRiJgJml8qujIfDwnpeSNcxX9hoMM+NzKKhMtJn+3K5TEGvUDI/WZpkLSOTywdygiTaIAgJzMiTEvTlxdaHs+44bZfZabDSJ0dbVT2q00MnAfulVCseoATubec1vdNn1U7FY1/BzFhExH7bw5/uZm7wzoVlqdoS1EHIA4RJcyIU8y7mucA21en6sg2LWpsxaSB5LITBtF75tMg9to3o0GqUgw/jt7QAbjxm8E07vTORCFf1o/yJf6OPb/CVmQ24sSBeKN4r2Xe6A58SjvhvzWon1R5I74M6Mmkhk6O/daa2qAQ5nYDPJYEpwUvUOXOpPQm364MYaNzORGBhj4s//NaQb3zpcGcfvhLt3Mnt0yDQk4RIJNLkUECwtezcL+25NT5ICpkS6R7/aMZjaqm/C0TbZRsiMopfeubAQqsRjOe8MnN1PVh9pzEr8m3dyTz5y7ko2Sv6ORCL4OXWWkFfVqKEujiUw0BuDkB31BlWYPtr7dIoX5nFMJ3RG5hYxqeAHl3qXN+Ij0v78LHuXQFFVlzjUkXvRfMcCo4XpeBXgtzfP512bgaAcMEgrcLIEjQaJgUs+do++X0CPUYRbxS0mcfJZiBcnvOl3jl6LXUB6LEA8Zfhn4hWl5TiZ1H5DgnrbxMDsde5/DZx9zyBI/iGkX5U5q32xjgNDXCwpEogSrjIJciPWQJMP6gCXk
+ IDyTWjk4
+ yCvIC33buXLaMor5iLfQEDo3fZ0HsVcpdi2iE340Bm2dSjHJpM/THh/SOC3eKIbRC9QO8lTfaKSOmeEzfmrzsWK8mynAxrfgck+mlidGMIXzq3PNud3OlRQtObJZfEo2vFZ4bsmAXx8nY+HWQ1uw2PUj6PCLLX4ieuqY8MmaRxF8OD5AFUDGQ6WWaeupWkiL23lntyQJz6uwplc69bwflql9AGKK2y+DCdb9++U9237PR1ijcKRRrwZznyLZTlPhRr50s04kPVUvEbFUHm5vA4JNOhlfe04NJlAeBTmGHRskGZEq41oDIbVYd69SpJctDZ0FPVHylXSpoT9AKhievbDyJ2ba8FhZJfAAmMqBNhqs/xzTiTwB85BzSTT71WOzXzvpXYauolBtXRZ3YpEUK6HepDVLSYpXxmYSXNyVaXiwXrhE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,60 +148,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are cases where, if an attempted collapse fails, all subsequent
-orders are guaranteed to also fail. Avoid these collapse attempts by
-bailing out early.
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
+If any order (m)THP is enabled we should allow running khugepaged to
+attempt scanning and collapsing mTHPs. In order for khugepaged to operate
+when only mTHP sizes are specified in sysfs, we must modify the predicate
+function that determines whether it ought to run to do so.
+
+This function is currently called hugepage_pmd_enabled(), this patch
+renames it to hugepage_enabled() and updates the logic to check to
+determine whether any valid orders may exist which would justify
+khugepaged running.
+
+We must also update collapse_allowable_orders() to check all orders if
+the vma is anonymous and the collapse is khugepaged.
+
+After this patch khugepaged mTHP collapse is fully enabled.
+
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ mm/khugepaged.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index e2319bfd0065..54f5c7888e46 100644
+index 54f5c7888e46..8ed9f8e2d376 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struct *mm, unsigned long address,
- 			ret = collapse_huge_page(mm, address, referenced,
- 						 unmapped, cc, mmap_locked,
- 						 order, offset);
--			if (ret == SCAN_SUCCEED) {
-+
-+			/*
-+			 * Analyze failure reason to determine next action:
-+			 * - goto next_order: try smaller orders in same region
-+			 * - continue: try other regions at same order
-+			 * - break: stop all attempts (system-wide failure)
-+			 */
-+			switch (ret) {
-+			/* Cases were we should continue to the next region */
-+			case SCAN_SUCCEED:
- 				collapsed += 1UL << order;
-+				fallthrough;
-+			case SCAN_PTE_MAPPED_HUGEPAGE:
- 				continue;
-+			/* Cases were lower orders might still succeed */
-+			case SCAN_LACK_REFERENCED_PAGE:
-+			case SCAN_EXCEED_NONE_PTE:
-+			case SCAN_EXCEED_SWAP_PTE:
-+			case SCAN_EXCEED_SHARED_PTE:
-+			case SCAN_PAGE_LOCK:
-+			case SCAN_PAGE_COUNT:
-+			case SCAN_PAGE_LRU:
-+			case SCAN_PAGE_NULL:
-+			case SCAN_DEL_PAGE_LRU:
-+			case SCAN_PTE_NON_PRESENT:
-+			case SCAN_PTE_UFFD_WP:
-+			case SCAN_ALLOC_HUGE_PAGE_FAIL:
-+				goto next_order;
-+			/* All other cases should stop collapse attempts */
-+			default:
-+				break;
- 			}
-+			break;
- 		}
+@@ -418,23 +418,23 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
+ 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+ }
  
- next_order:
+-static bool hugepage_pmd_enabled(void)
++static bool hugepage_enabled(void)
+ {
+ 	/*
+ 	 * We cover the anon, shmem and the file-backed case here; file-backed
+ 	 * hugepages, when configured in, are determined by the global control.
+-	 * Anon pmd-sized hugepages are determined by the pmd-size control.
++	 * Anon hugepages are determined by its per-size mTHP control.
+ 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+ 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+ 	    hugepage_global_enabled())
+ 		return true;
+-	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
++	if (READ_ONCE(huge_anon_orders_always))
+ 		return true;
+-	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
++	if (READ_ONCE(huge_anon_orders_madvise))
+ 		return true;
+-	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
++	if (READ_ONCE(huge_anon_orders_inherit) &&
+ 	    hugepage_global_enabled())
+ 		return true;
+ 	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
+@@ -508,7 +508,8 @@ static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
+ 			vm_flags_t vm_flags, bool is_khugepaged)
+ {
+ 	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
+-	unsigned long orders = BIT(HPAGE_PMD_ORDER);
++	unsigned long orders = is_khugepaged && vma_is_anonymous(vma) ?
++				THP_ORDERS_ALL_ANON : BIT(HPAGE_PMD_ORDER);
+ 
+ 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+ }
+@@ -517,7 +518,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 			  vm_flags_t vm_flags)
+ {
+ 	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+-	    hugepage_pmd_enabled()) {
++	    hugepage_enabled()) {
+ 		if (collapse_allowable_orders(vma, vm_flags, true))
+ 			__khugepaged_enter(vma->vm_mm);
+ 	}
+@@ -2791,7 +2792,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+ 
+ static int khugepaged_has_work(void)
+ {
+-	return !list_empty(&khugepaged_scan.mm_head) && hugepage_pmd_enabled();
++	return !list_empty(&khugepaged_scan.mm_head) && hugepage_enabled();
+ }
+ 
+ static int khugepaged_wait_event(void)
+@@ -2864,7 +2865,7 @@ static void khugepaged_wait_work(void)
+ 		return;
+ 	}
+ 
+-	if (hugepage_pmd_enabled())
++	if (hugepage_enabled())
+ 		wait_event_freezable(khugepaged_wait, khugepaged_wait_event());
+ }
+ 
+@@ -2895,7 +2896,7 @@ static void set_recommended_min_free_kbytes(void)
+ 	int nr_zones = 0;
+ 	unsigned long recommended_min;
+ 
+-	if (!hugepage_pmd_enabled()) {
++	if (!hugepage_enabled()) {
+ 		calculate_min_free_kbytes();
+ 		goto update_wmarks;
+ 	}
+@@ -2945,7 +2946,7 @@ int start_stop_khugepaged(void)
+ 	int err = 0;
+ 
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_pmd_enabled()) {
++	if (hugepage_enabled()) {
+ 		if (!khugepaged_thread)
+ 			khugepaged_thread = kthread_run(khugepaged, NULL,
+ 							"khugepaged");
+@@ -2971,7 +2972,7 @@ int start_stop_khugepaged(void)
+ void khugepaged_min_free_kbytes_update(void)
+ {
+ 	mutex_lock(&khugepaged_mutex);
+-	if (hugepage_pmd_enabled() && khugepaged_thread)
++	if (hugepage_enabled() && khugepaged_thread)
+ 		set_recommended_min_free_kbytes();
+ 	mutex_unlock(&khugepaged_mutex);
+ }
 -- 
 2.51.0
 
