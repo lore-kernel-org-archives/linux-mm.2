@@ -4,127 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B900CCD1A5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91D6BCCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:30:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B0118E0009; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
+	id CE7038E000C; Tue, 21 Oct 2025 23:30:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 788068E0002; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
+	id CBE2E8E0002; Tue, 21 Oct 2025 23:30:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69DC38E0009; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
+	id BFB128E000C; Tue, 21 Oct 2025 23:30:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 584C28E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:27:18 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BEB948901
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:27:18 +0000 (UTC)
-X-FDA: 84024314556.02.E37F3E2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3D6EA4000A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:27:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MFHqnYTB;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ABB0F8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:30:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3DAA35A877
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:30:02 +0000 (UTC)
+X-FDA: 84024321444.03.1F08F1D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 37A6040006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:30:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761103635;
+	s=arc-20220608; t=1761103800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZdfXWSZhef5WqLXCBdbu964pFLqYb1NG4mazyJho74=;
-	b=IooJtGRiadv8wlD53xwwJmqTjJm29zFfqSMO28jXt4TFYHZirKW1mJZfrPGzmoNZH5cz/v
-	nJqkXkFn1MNBZIkvgeoM13k9ufkhE1IuCPJl+N45ESqtTx951bgGQ49/nbp41sjUKmOh8+
-	QyBbNvH4xnzx+JX32c9+DtNX02dKyCc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761103635; a=rsa-sha256;
-	cv=none;
-	b=jWW6Z1lEnkF5E75ueV6UunEEZxSaEpOm3wdS/pr0VphA+cQl0ArBDPyXhVtJvVHXd7j/zF
-	ZV0UfvseqXoy74VoTMCXotJjInt2IC8UYl7ZeTVwecie+tRM3Om3RX1Ewc/nVXrm/59uzN
-	Qg6rBfHsZFnCIci4qs4JQtS/ucCUnO8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=CAm5ZGmC8Qsdp70DZ6RKusfWMt/sRA8dfOuFyVV6Bf8=;
+	b=FQd4b4n//fyX0vZ0KkZKiHoi/yOLWZPFgbwg12sN8RLNV4NPzaIhe+Kd/xDvtrhf1l/Ilo
+	OMLEc0S7lS1BV0zuhceAzv69BBttJFg5e/7WfPD5xvxEvhXcS2GT1JtEbYzCMOHbNvKI+j
+	1gVpzA/7xattM3NDzowiuB6DJIh/NnU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MFHqnYTB;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761103635; x=1792639635;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=8070DwsbZV3/pdL9u+Z6F5R9lIi4i2kvgareiNlnUV0=;
-  b=MFHqnYTB2NXqMLHMaqmm3JVOU3FJ0+j0ordGK+5QwAqCTV4YwCsRiAJz
-   se5L11kuglKgDHTEbBH9l3ctOLbNSw9Fcu3tBjyimICzJ1bRsxtB1SMHE
-   HOwYQjbblJG+KJdwkS4c2JHbMh9qdYkt57+RabKtw/qe3NJjIM8kMsVBc
-   aj0TGLMqzQ18aTzaBMn2kW242hcZOxF2bL20u6HFDjfNh4RQ2xna4d+ns
-   9iiQrerbUoZwWBpbbgA0bos5VPfjPu65KAQl27CDpvWFlEK5m1rMw81KX
-   mrP2EZfYgzch6eOG6nCkpntHRhK7VCrc97Cc9XIXRSLoW1b6nBAtPj1CU
-   w==;
-X-CSE-ConnectionGUID: LoUfNLB9T2ON0BIB4VQ+cQ==
-X-CSE-MsgGUID: 5wdnoD8BTCScCBhQ4RP+ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80865879"
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="80865879"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 20:27:13 -0700
-X-CSE-ConnectionGUID: Qw31trbgTLWbZLnZdXZCBw==
-X-CSE-MsgGUID: dPYj7/ylReC8zLJtllPJGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="187797373"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 21 Oct 2025 20:27:07 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vBPV2-000Bxh-1F;
-	Wed, 22 Oct 2025 03:26:58 +0000
-Date: Wed, 22 Oct 2025 11:25:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Lo=EFc?= Molinari <loic.molinari@collabora.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Rob Herring <robh@kernel.org>, Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>, Melissa Wen <mwen@igalia.com>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761103800; a=rsa-sha256;
+	cv=none;
+	b=ybMLyezYyP9lXTLyX2GXCQijSwUrGCdDN6HDkzj3lxblpoPHwptoRV7w3V2TFRtveXEZch
+	H/4/lm0K+bXaxkr5itEZn+WgSgMaQp9Gx2G9nI+AiW7hfTWM1X+rkS6jXsHfYQVPR0XebG
+	527m4KuxlXO/+68B2AIcic64zGVSEiY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CE531063;
+	Tue, 21 Oct 2025 20:29:51 -0700 (PDT)
+Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B50563F59E;
+	Tue, 21 Oct 2025 20:29:57 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christopher Healy <healych@amazon.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
-Message-ID: <202510221301.wU3TSqMg-lkp@intel.com>
-References: <20251021113049.17242-7-loic.molinari@collabora.com>
+	David Hildenbrand <david@redhat.com>,
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma() tests
+Date: Wed, 22 Oct 2025 04:29:51 +0100
+Message-Id: <20251022032951.3498553-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251021113049.17242-7-loic.molinari@collabora.com>
+X-Stat-Signature: ho7img3yzb5jh99thkzgoufm3eqxzdag
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D6EA4000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: h68zj88t88nhrkiqb19o6dcswpfcpwao
-X-HE-Tag: 1761103635-252555
-X-HE-Meta: U2FsdGVkX18Hb73N8WJrydWjZVTXCNmEWPc6yCgU66maERT44VMBvkwTRtP+MrkASj1CJk01ZCNNLyErHw0Mvj9vht5CrxDRt0uY0X+zyOe1Li0drt8IP33BR3bzzlHPXgmn8EgIE711iQDlQublnGH9pLr8lFrL8/GtltiFaxIryQ8AJoaGZUmUDvxBp0XOwFCTFQO18O4U+FJrr2T+1YiO8L8iQnZCTQAIpbDcxoGxhOHtIO9AYqMC8yZ4YS1jVSFnAUt0GdNKaHMTcMgeG/el++P58J1bImVbiTn5uuWKsjbDsEkC6y1GpP6BHsjlw6HvBsAdIon+oCRQByIAcvemf+IzKFMT8GzgPF/AzbR7Jnk0/zCTgkEMvhTq6+yuCRdyPQLNrfsXVqle+4G7N8rUpC7twHQJmJ24/AwrcGnLBA/fSAncVtOJehk+IxcZgSFzzseLpFYlYG8c6oOkXUbpOvaG0RCdOQF/JAAibr1R0Y+M6mJ2+E3MBGUIDBzLRHMyymkLH1luxARDSnr2DG2U93um/tA+5MYQiVNGu65GXiJ3JsAJLEvB7W0i+vFh30LXu4w7oHSmWCUzpe3N/OBquhcTjg+2Lq4J9LJuajg+TcA9bjGNp9kyQtzmg7JkjHQ/umCemedS1/zIdmk9jcAMjbNMcn8lk0eppxXVTIsmyQLe1wWm1gfMyFDmZ5h78ghDzQZosV1D/dcTsg08phEITBfT8g5QhbJgwEonUAOT173Gt6WaGOhOVaPSV2yRDHEGsQAcsDRwfTCrAqupCGmrfMkbpAKX9E40HH9aoJWCE7gAjU3B9U8n+WKxUM1pGtWxjQe+PlT+oswXze+oKwQEm0Y/6IUjDPIUIrzB8XbJihiUts4eb8C+3hqM1nFnjuvFQIYAx4NYVbcOdUL5c2SljCGrO0VhGpaXg6l68QaGFkXQNGICXgkFn3WvXjmZJZtlusSsJxKW7AbSAZJ
- r9039S2F
- h3GTn4GrNqqQZGWkHVBFeFI4tVtCr8DwcTVyhNA62iBtDZXt5RZysfj832cRET7PYqFIwKozh2yCSHSci5nCS24IvqwYB09d9WW9AkA9vvetF2bRF8wpOJFQJE212QEJD1MSAAtRgt6ZvKxGSb5nj8O6ABarjiE4t/6U8V9iJ0kasENVRfl7CheL0kNlvN1ALogNzhnwOvylQMPNJmKjmlybXtZnj0W8s7lg3sObcrTdJTJ15oFpehYKnkfAf3dLC7/g+2EGc4e++h0I7NDL8f8DDM/zYQ8DWBV3gxwPCaAHn4OWdkICNvlKX5tYewIR/63aVuaB4uflaHFJ4Sezy8ou/gqo8pINVOCueYMCYs/xp1WCY0WFKucMoEQV4md6vGkY06/DqopfEl7XntC+TAcisC7iaWJgM9H26hSr6oU/WBa39Pz4VKIkTzQ==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 37A6040006
+X-HE-Tag: 1761103800-792604
+X-HE-Meta: U2FsdGVkX18t9T8xcVgla+5T6ksWXpqUeOVdEoKVorIk7PFZsnLEvjB5QoZsmUE8l5CvIM61eUEdgKKkb0IEM/zszuDmxPDaHSxvsS5dtYXo4W1QNJHWfLZrGFZ6B5w8GYCeJAGrNtBAvGwBPcLHpq3nQe0Z0U1IdJOcJp266JQxxBL6E7UNo3OPNJnIL1FKuz7kPY9AlQhZEk+RzioyYG7ca+cxFjtJusru/yHs6CBcui+U612x9Rr8nMQbDzW7zvaV5lC/HpN9Nirtd+1Mf93EuyOM7iakJwVnG2YV2674NWqfQPAAcRP5VK5Ek/a1zBmLFjlqutNQbhxc7slLkbZbgTDPwix9Y1hhdn9Vy7PWWLQQydWCv4lFb3g+CWNTkyAGbluRa7QBp0O0C2W9IPXToLMn4PV3nojcXas+l3LxBKK4pW8nA/+I6pKbvob0KlK3GatOg5+mZ/XogKsMa8jmj16ozUowYl2mx40abTAlv89VvETq6Goxnf6mJYq8dPHSWE90a66dJkiaVLWr2tPB7fl8BwGZdj6bTLRByIU4QrFXNt5Grmsyg2Nxog8RNoxxLcftADT4frn46sEoQ39Av47nPkKIUnckNGP8PCpXBawydUrxKSfUF4GWOstyI1Pt+kX5HHNLoUhv7pXWq+nv3+U9IvT2IJ4xV3rGWrJvvqZQmALK1IYLZKpTxNM2IVESnMB5m8qxwFvi9yBFrR4u1N67TODJCxnB+ue4wrkp2AwSBsrvRVARx96ZEExPejhxaPjVe44jJt24eYrx3LSINz5eQOEby7spTGrdMp3IUbqKR9Xprq0lNZLp4rpKOA+P62Cd7vgpnNixeQqJiB/po0edAc8tyhpKt6PskfzV9jr+IB1/f2MS3al2g3Gfq6S0udXtGT8+xJ05KoYDujOG6+e9V/6w9WN52Ze9QopAiZ+KOnDmemH0ittcJRMxXoz/lOjqy+5+Fxvsm6v
+ IMiLxaQJ
+ SuzkPHOsU9+HbKdX3tRleJAdNdLB+ppTGs2+/v+tK+UTCg2QGC3gSp7rJoYYYfmiORALSw+82b6HRSTWVSEfiQiTYdt2RjDWsBMfp9v3Mn2J4j8gpTHa9p6N5Q7HYVXFgf3u0z/XRyoAVlHNbYwNPdwlxh4y9in8PSwkMvZP0IL9mxbbQMNZCXfEnJcbiSU+wqqBfMiN3hHWbNo2SyNutDy6qz236IkWCo1vXFQLS2/XxK9DSLR5Psm6erH+LfrR/JwbCAlkKJT4SFlyqjdtTGr7Lgb2M7nFnp6su5hDdLtIklQGTk6zHfs/9iUbIemXs1l6wH2E+7GfbyYouOPBinRTUKeldHeyMJomlwoZPfXhtP+AiaG/JZZ3W4me8+4KeLSPt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,85 +83,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Loïc,
+Add some [pte|pmd]_mkwrite_novma() relevant tests.
 
-kernel test robot noticed the following build errors:
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+These tests clear on arm64 platform after the following recent patch.
 
-[auto build test ERROR on next-20251021]
-[also build test ERROR on v6.18-rc2]
-[cannot apply to akpm-mm/mm-everything drm-misc/drm-misc-next linus/master v6.18-rc2 v6.18-rc1 v6.17]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lo-c-Molinari/drm-shmem-helper-Simplify-page-offset-calculation-in-fault-handler/20251021-193355
-base:   next-20251021
-patch link:    https://lore.kernel.org/r/20251021113049.17242-7-loic.molinari%40collabora.com
-patch subject: [PATCH v5 06/12] drm/i915: Use huge tmpfs mountpoint helpers
-config: x86_64-randconfig-003-20251022 (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/config)
-compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251022/202510221301.wU3TSqMg-lkp@intel.com/reproduce)
+Changes in V2:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510221301.wU3TSqMg-lkp@intel.com/
+- Added a new test combination per Huang
 
-All errors (new ones prefixed by >>):
+Changes in V1:
 
-   drivers/gpu/drm/i915/gem/i915_gem_shmem.c: In function '__create_shmem':
->> drivers/gpu/drm/i915/gem/i915_gem_shmem.c:511:59: error: 'struct drm_device' has no member named 'huge_mnt'
-     511 |                 filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
-         |                                                           ^
+https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
 
+ mm/debug_vm_pgtable.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-vim +511 drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-
-   486	
-   487	static int __create_shmem(struct drm_i915_private *i915,
-   488				  struct drm_gem_object *obj,
-   489				  resource_size_t size)
-   490	{
-   491		unsigned long flags = VM_NORESERVE;
-   492		struct file *filp;
-   493	
-   494		drm_gem_private_object_init(&i915->drm, obj, size);
-   495	
-   496		/* XXX: The __shmem_file_setup() function returns -EINVAL if size is
-   497		 * greater than MAX_LFS_FILESIZE.
-   498		 * To handle the same error as other code that returns -E2BIG when
-   499		 * the size is too large, we add a code that returns -E2BIG when the
-   500		 * size is larger than the size that can be handled.
-   501		 * If BITS_PER_LONG is 32, size > MAX_LFS_FILESIZE is always false,
-   502		 * so we only needs to check when BITS_PER_LONG is 64.
-   503		 * If BITS_PER_LONG is 32, E2BIG checks are processed when
-   504		 * i915_gem_object_size_2big() is called before init_object() callback
-   505		 * is called.
-   506		 */
-   507		if (BITS_PER_LONG == 64 && size > MAX_LFS_FILESIZE)
-   508			return -E2BIG;
-   509	
-   510		if (drm_gem_has_huge_mnt(&i915->drm))
- > 511			filp = shmem_file_setup_with_mnt(i915->drm.huge_mnt, "i915",
-   512							 size, flags);
-   513		else
-   514			filp = shmem_file_setup("i915", size, flags);
-   515		if (IS_ERR(filp))
-   516			return PTR_ERR(filp);
-   517	
-   518		/*
-   519		 * Prevent -EFBIG by allowing large writes beyond MAX_NON_LFS on shmem
-   520		 * objects by setting O_LARGEFILE.
-   521		 */
-   522		if (force_o_largefile())
-   523			filp->f_flags |= O_LARGEFILE;
-   524	
-   525		obj->filp = filp;
-   526		return 0;
-   527	}
-   528	
-
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 830107b6dd08..def344bb4a32 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+ 	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+ 	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+ 	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
++
++	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
++	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
++	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
++	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
++	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+ }
+ 
+ static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+@@ -195,6 +201,12 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+ 	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+ 	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+ 	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
++
++	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
++	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
++	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
++	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
++
+ 	/*
+ 	 * A huge page does not point to next level page table
+ 	 * entry. Hence this must qualify as pmd_bad().
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.30.2
+
 
