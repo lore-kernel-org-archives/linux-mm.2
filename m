@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D195CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 09:58:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AAE2CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 10:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2F028E000B; Wed, 22 Oct 2025 05:57:59 -0400 (EDT)
+	id D68C68E0006; Wed, 22 Oct 2025 06:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A07028E0002; Wed, 22 Oct 2025 05:57:59 -0400 (EDT)
+	id D411B8E0002; Wed, 22 Oct 2025 06:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943FE8E000B; Wed, 22 Oct 2025 05:57:59 -0400 (EDT)
+	id C56CE8E0006; Wed, 22 Oct 2025 06:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 823608E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:57:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DBB4BB6AF
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 09:57:59 +0000 (UTC)
-X-FDA: 84025299078.04.5010300
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B1FC88E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:00:18 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5FF3D1A076E
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:00:18 +0000 (UTC)
+X-FDA: 84025304916.26.CBDFADA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9881820004
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 09:57:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by imf11.hostedemail.com (Postfix) with ESMTP id BD3464000D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:00:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf13.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761127077; a=rsa-sha256;
-	cv=none;
-	b=smH3ssXQVVQawqhweadf8gGPROBCswI9v3Yjjj056UEQv8emx5Y2mYmG3kEtTogKYFw0BP
-	34mVa+9ZrP+dvny3UCbHYVOkBm/FZWFBZ4M/0f8E3+Q1Tyq5jyIgpsEEV42wbd+Y+afjuq
-	1TiiSZnvg/cLYRkPxqrNtNdOZv1CoWo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf13.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761127077;
+	s=arc-20220608; t=1761127216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=caZZFGjSl0HauoREUr8sdpmyd8rmYIzTl3VncLuUe00=;
-	b=CFJRL44c++W90zv/JBvcCh7L0DPn0Ne1AxHOfwRw5FtQHI36n/BsmzhsW4hGyFpAd/pztR
-	Ys3GPK4j26tX6mLEVL8KzmSI8k2NIIx5rahT1YdIeDk9rMCHH3zGsdZBGs3h9tZGOdu1IF
-	sB8K3YLxCmceXVN4RI6acGKMHAqg4WU=
+	bh=vB9mXiKGH//ZjNPXu2UbFkQNzxkm6NBQrA35JISHdMI=;
+	b=CzITVa+jrvv7VEO5mGUI+qYcZf9pk4mmtOslClv2H22H8xhtfzuhyG8vtjzBqWHmdq71Fy
+	kEl3Gqs1WlZToi6fdcEir7OPgOtFzy25J3UTqdI62hfh59i5NfyIONf0/yLD1u9wIvhAcl
+	EAFK3OQ6ndP79ipgoOiyAD7PYM8n6zI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761127216; a=rsa-sha256;
+	cv=none;
+	b=LfED6+RyoNXvC9j/uTtbHaJECdAoOfsb4NRaKZi1VjCgEiJO5P0Pmk2xA1NtW++VJNUvwR
+	8wHRtJ3izaAVlGlzTVcOGU/It/zyk1dYlL8UtBiV0Gyu3wOuRrL+dOjbF3JwxEuHf5kp4r
+	amer4dN8lE4uVKiwxxKnCX2FnVEFZU0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf11.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6863602D7;
-	Wed, 22 Oct 2025 09:57:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031A3C4CEFF;
-	Wed, 22 Oct 2025 09:57:54 +0000 (UTC)
-Date: Wed, 22 Oct 2025 10:57:52 +0100
+	by tor.source.kernel.org (Postfix) with ESMTP id 1783361D03;
+	Wed, 22 Oct 2025 10:00:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D775C4CEE7;
+	Wed, 22 Oct 2025 10:00:14 +0000 (UTC)
+Date: Wed, 22 Oct 2025 11:00:12 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Yang Shi <shy828301@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Yang Shi <shy828301@gmail.com>, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
 	syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com,
-	Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>
 Subject: Re: [PATCH] arm64: mte: Do not warn if the page is already tagged in
  copy_highpage()
-Message-ID: <aPiqoGyCmj7bA37C@arm.com>
+Message-ID: <aPirLHXGEQ2AUzzy@arm.com>
 References: <20251021181353.3842660-1-catalin.marinas@arm.com>
  <CAHbLzkpd8awNe=bZVv9fTux+Fx-HT8qL4ENZ-uC4YcPjf9e=KQ@mail.gmail.com>
+ <b9520113-9236-4157-a4ab-fd6908f1b577@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHbLzkpd8awNe=bZVv9fTux+Fx-HT8qL4ENZ-uC4YcPjf9e=KQ@mail.gmail.com>
+In-Reply-To: <b9520113-9236-4157-a4ab-fd6908f1b577@huawei.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: k4xqbgcmdd7byfs75c8gx95d3wbw4f7d
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9881820004
-X-Stat-Signature: 93uhdffiqekgtod5dxiu9i99jwncpwgb
-X-HE-Tag: 1761127077-448506
-X-HE-Meta: U2FsdGVkX1+H8DDBOR1jhB7CEg5h3yF988RqSo2vWckJo+6SBb55KyqIu2A12VM3idHOKx6lKL4G7RjYslpzI2yfwpT/dhhdS/U4k4TTCdZ6ncXZ6016e7THKcRdfMFJBhaD85y6Vt2csP4C807JkQtXDGHW1G1CZxIGk74ONEBQiU7p5aduuhXWi0/F6yFQ7Y+8oObXqpytBCZihUZEpOlOv8GizJd6mbwIvuT5fC4fbVJ86kTwWhtYpzDeHmJT4+naOJc86xrzD1pCnYHXCR9TXj5zfzjnTwShZk/XP3nDeaK8l38Ms5cNn2t9azp33tim+YP6l/FrHO73smja4pRRewTjhFYPux20e4/mZaX4MKdl6To0NkY12qRwoE/Y+fAy7M5nVQYUYXr3VSTyQ+dO6mtqpUftzzv3XiDJ0cQpAYZvP8Xg55t4k8ZFDjhS22skAm5Sb4RO7MFMmdyl+vD55WcfeLOXvPJR1Ue9bMoeIBTnEoW0x9mGWxFATC+ujGy9wq5g7LIbiiHoYAxiC7YZZujRLTgLp9hp0kVhV59usR6KWw6frYPpPZ7tv9q/zHID4OMxRdo7DMIyrrunk5pP9OVzDizkex2bXSZJEPWz3Bw/bXxotZYVmMEJP01Hwgw9jxgH4GqHYnuuI/F0Z8b6zCoTlg6MjHhKclsEf3kkoXPD6qdaiXgugJh7BLRTeEbdTqhlax+wHhc7nhs91+5cE8Fd5brJhFuLhiC/YpoUI5Sqbq9GLWFlBYANuL353h/348Jf7sV099CH7VdKNWFwA0WKoxy+AVRriJ3cRYe2+I8sm2ESbU1WtEMkJcP8TLaB1K/oqlrSRCkw5zXB0Alh7NLWQha5KaItL4dWbKBEGuGtl7hduSzDU2pGPvG5sk/EOrdftyNACPhpzzrEEc2J9HzwThR2VJg8jddrPVNCE9wa4hAJsc3zjZMIuCXn6LZHYFWZB77UZTytPX4
- wX92gXLl
- QR3iRKqTohy6SMbtD5hd/bdkYE5vLDJ7NoIw0tnID6qRyGCHXHmRXpE6CtxfUCDXm85C+Rmp52c178QJq+7cAHk9i+m/fg4+6IC+7ZLg9a42YJdjMrNj+XEIq1ysMtwgCz+Ongy9dRUE544AxBUEuQ9W3VjeKGs6EUUJVm8wUpYlO7kLT+aLj0HQYi1OnqGJZ6HrVgLwe55HR7UTI9hyIeTC6Aw==
+X-Rspamd-Queue-Id: BD3464000D
+X-HE-Tag: 1761127216-4940
+X-HE-Meta: U2FsdGVkX19GnA0vDkX2fgzCVlMbpdOfNA6Zq3eBURijzBfdlrZ48/9NqJioEXpA5cNmw8HsTomIc934t+ABABBrJ6WhAJyXjsxAmnAaococAfqv5f4sNoJ5eh7LPsEExLzpi3ypEC3J+41mXPwajizTMsEgiBBGp+GxpxoEZjRVDC5w5AS4TLjLOKvRJ3lUkXuTKa4ICsvWkKhsBVbslIvPYyVsChVNMS5m5ugA5LdeeZH2B/5msbtBwk06FWlal9t6AgM1eqP9HEO6B/VBGrPv5b/UqRBgXnBMHic2hDJ1WP8uyAN+0MmN2lryQJWT/MEpn4o2/INRlZtoKBzhe5mqkGE+6XoMh78KGCqyBcW/kKjV5uKV9gHosZKEKSB38QXqm00fYg68FVwUHr6Q0fgrnvvaw3/a4njqhI0Qb9VMfTw9sKD0vpo1hd9sEV0QIg7UK6dGZ2wyFwAXQhrEFAb8GXbTnaBgqqedjsh+JpiKwtI9yqgjpjligi84xfmNspDmJuaKCwC86G54BwTV0chksaKWqXxXdX3LUTJrnXS6R9UJ3aivN9RecJnuzDHmpAFrfKfq8zwcQtjT7e1ESxTRwDm4BLXRv1FwNT+nEvDwUrlGx69Ug8cEn2RCmYXb7kKlEeAmPmlnlhYn88LJNX2EZXGbwppUqCbWHgBfPBAiY9eE8xUPJHJJaTqu0Fxlq348oTFWJ3Fqd6Nor/xtti7LWGLzknxrTl6PdUiGIoWu2MAd1RPtiikpkG2xP+W5NSegB0OFsgaPa+AcCcCrBOq2OYcrnmIL46yv/UkliQGV8PvtsNlB/4evcmmtecYMq0FVmqLPYOZoc5Rx9vsg5uHgH55AmeHPtameWYw1hyhIYXvKChr8ygjxGxsB00nOBIbMmsh/Q2vXP1kOFip2Kc5SctWNvXOm1eEw9mNKfdVXsfae87yM0JXkP4AuOEmknoePo6+OUMu1xB2QCkU
+ IBtzEPyB
+ H4qnPkiIfCgZn384D14qYDQ2giXFgbt/QPshqJOXOBN7XiBPHAUTWB34Ab4b6hygF6/yrwo5UFGuHLftdp3luc4qb6aJokExnvYUcFLshbvqN209CvDrLlpyq8sbvCxHRu9O6cWgkl99bLkcP7G4CKtwZPSf7nviCzkrU8XEV8jhiNCaMCPj/OLHgPKj0Rtk71os8tbONRmqTXaP9jWJQBebKTuioTp0ycxGQJSO6yHe+KelnOngyIMVWF/TKU/IEjoBwuvuB28wsiXRuHuYxkMZFjTyc/B1bd057nW4BPuB4LtV7wGth1lUOeKfgKO8SXUKnsCra7jTK8EJ/2yy8QzIq3a0uI/0H7Ps86y6vwKbjexO7CnTVFs+N73TmIqMmYtY50lSpKGnKKef/ppdtcCQoU6XRncuRKltktMITidvTBXxlhB4XoHpq4lJtLTnMGzEX6vK+lJlap/EGaHW7EOK1MefRcemI/nB/MHhEo/Iy297gm+KEBEORSUJsmbqqCSCUx7gVY2SzRIvaPFmahCbJPvf7GKd7nJ0O2sW1R1uMSg4FgC6GDY4kzt6Rhvs/fZOok4NJZgrtIBx+fui9qYVteziwk0HRlB3D
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,47 +88,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 12:00:04PM -0700, Yang Shi wrote:
-> On Tue, Oct 21, 2025 at 11:14 AM Catalin Marinas
-> <catalin.marinas@arm.com> wrote:
-> > The arm64 copy_highpage() assumes that the destination page is newly
-> > allocated and not MTE-tagged (PG_mte_tagged unset) and warns
-> > accordingly. However, following commit 060913999d7a ("mm: migrate:
-> > support poisoned recover from migrate folio"), __folio_mc_copy() is
-> > called before __folio_migrate_mapping(). If the latter fails (-EAGAIN),
-> > the copy will be done again to the same destination page. Since
-> > copy_highpage() already set the PG_mte_tagged flag, this second copy
-> > will warn.
-> >
-> > Replace the WARN_ON(page already tagged) in the arm64 copy_highpage()
-> > with a comment.
-> >
-> > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
-> > Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.com
-> > Cc: <stable@vger.kernel.org> # 6.12.x
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> > ---
-> >  arch/arm64/mm/copypage.c | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
-> > index a86c897017df..40749d0a385c 100644
-> > --- a/arch/arm64/mm/copypage.c
-> > +++ b/arch/arm64/mm/copypage.c
-> > @@ -51,8 +51,13 @@ void copy_highpage(struct page *to, struct page *from)
-> >                 }
-> >                 folio_set_hugetlb_mte_tagged(dst);
-> >         } else if (page_mte_tagged(from)) {
-> > -               /* It's a new page, shouldn't have been tagged yet */
-> > -               WARN_ON_ONCE(!try_page_mte_tagging(to));
+On Wed, Oct 22, 2025 at 02:19:19PM +0800, Kefeng Wang wrote:
+> On 2025/10/22 3:00, Yang Shi wrote:
+> > On Tue, Oct 21, 2025 at 11:14 AM Catalin Marinas
+> > <catalin.marinas@arm.com> wrote:
+> > > The arm64 copy_highpage() assumes that the destination page is newly
+> > > allocated and not MTE-tagged (PG_mte_tagged unset) and warns
+> > > accordingly. However, following commit 060913999d7a ("mm: migrate:
+> > > support poisoned recover from migrate folio"), __folio_mc_copy() is
 > 
-> I think you should remove the WARN_ON_ONCE in the above hugetlb chunk
-> too IIUC. migrate_huge_page_move_mapping() does the similar thing.
+> no "__" prefix
 
-Good point. Thanks!
+Yes, I got lost in underscores. Thanks.
 
 -- 
 Catalin
