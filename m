@@ -4,114 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F54BCCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 05:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CAC2CCD1BE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 05:52:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B4838E000C; Wed, 22 Oct 2025 01:49:38 -0400 (EDT)
+	id 82F4D8E000E; Wed, 22 Oct 2025 01:52:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7655C8E0002; Wed, 22 Oct 2025 01:49:38 -0400 (EDT)
+	id 806C98E0002; Wed, 22 Oct 2025 01:52:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A8648E000C; Wed, 22 Oct 2025 01:49:38 -0400 (EDT)
+	id 743828E000E; Wed, 22 Oct 2025 01:52:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 596568E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:49:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 178D91407A3
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:49:38 +0000 (UTC)
-X-FDA: 84024673236.03.7AE2B50
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 40253140004
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:49:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bKrxyP7G;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 640BC8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:52:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A2DE48AB4
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:52:11 +0000 (UTC)
+X-FDA: 84024679662.14.6D87192
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 13BC2100004
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:52:08 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EiZaeGwM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761112329; a=rsa-sha256;
+	cv=none;
+	b=V7RXGBZf6VWJ4H2+OuiWr7QBIAMWCVoZNZS5yxy5mivWMh2+RUAoRnAjSwStORinKADo1b
+	S0ixMN88cLcQeDZBBZUqkMRuqNKtxf12Xf5hd8G2Tdi2FA0t9vgKJ6mEeCCRoV6z8/o1kN
+	Z3vOoyoqwnV62jOGxp3txO8ExDuUUJU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EiZaeGwM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf05.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761112176;
+	s=arc-20220608; t=1761112329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QF6I12cmNwQJIE2Ooh/PoCg5Zdy7/MLhY3n+XRHHRpU=;
-	b=dTYe8Aku3CeLZxMxUutxM0Q2hDwZCNPHgcL/NHQKAg2qHUyNFBh0HbxePMWUDx06ioDqAR
-	03hr4IDciRgw5naUp1M9U21r5O08n+cfMuSHXx401SHFKPtlYgm7wD/LjLng2PKtYhC6zt
-	s5r+W9bkIqDWxyLK+rT/vhgq1BQwDy8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bKrxyP7G;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761112176; a=rsa-sha256;
-	cv=none;
-	b=Vy9T3gGB4UtRdJk9Evpj9WIt6OuKF/om6OIKHVw/TJrvnTfIm5Wng15UDtHeGYjSGNfcOM
-	sAzldZv3eZBW5SZTVUnFOcicmmFUMTNKWv8PeJg/SLikg88e1LObb8BVAppeLCxUz+O3sl
-	4+y+DCCAYveklGPE8U/1OIw2dB2MdJI=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63c4f1e7243so6148122a12.3
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:49:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761112174; x=1761716974; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QF6I12cmNwQJIE2Ooh/PoCg5Zdy7/MLhY3n+XRHHRpU=;
-        b=bKrxyP7G/RX38RJ6GfKUIgxpdbM3L4IiahA/Uzxeh5ZErtfoEEZUhEU6v5I1eJnICk
-         O789D5KPVUiiqSzVgkwyVl1qBRysRrRZFGSsJ3PtUJox1OogXqi/IX3MjcGBCGOFgn1/
-         MvaloRKIc+hZn25t+OvtIMjQXJfxAYklRWpqQ1N/XiYWY1faagUxkqUC51kMQzouIKyb
-         oxBJBF5SXOljTmVKyNRXTwdkZAnTwv6Wp+jS0gyABOJU8PlLcOfyjsQXlpg8eEKyNod5
-         IIbxy04eH3LdmcYDuLs9KnszM2Hq7psPoxMh+BFlem50D/7MYbfcpQp6bI1rc3adOTqu
-         WWVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761112174; x=1761716974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QF6I12cmNwQJIE2Ooh/PoCg5Zdy7/MLhY3n+XRHHRpU=;
-        b=BWTiqRmTay/cVSo+8hF44Gr8TN+QRfaMwhl2ECTgIhnq52wAv/xjWORrVLTb0iufjD
-         AexgC40dWo3bTrDZ0AENZUMoKq5u2k40IzzZ0CJd9K0UaQl6mShBXGVgHI9GT/JMA+eq
-         4LA+V3uBH6HWNj2/Q1jVQWo8nzrWOjrbxs335+S7Fh5+SgJbW5+MAEOzS1IiPlsKvMcR
-         FC2sfntQiBZ5YRLE3fZn4IHjlpU8ALzQjWeB4OhmQNxxYdZzL0xcnxkrItGeCaudrT8K
-         8I6gpQ/qqhwIE7GZzZcJBJzU6wIWWxxzNNNN0EDsBfcol3BYmjetKHAgrJBAihAgu+qx
-         BWtw==
-X-Gm-Message-State: AOJu0YypXv+GS1dZImzgTyA0/Ps/3K7e8OXnXQiv1cdcr6LyGg9eXUZq
-	X8WZqOKKiDEQYtTM9UArTqnTZBocQC9UcbZGtIT8KhvGX293y/W2rCMN1e9f9grt2TaY6G8Dh87
-	SOsA3DT0yM+0rXkC/LHXNYqVDqV+z1GQ=
-X-Gm-Gg: ASbGnct5tOh6ElMOTZojrGd5gJALv8W3LMcIJqb288drXh/7+hRgQFR79rURzfjs6AM
-	5/JV3zjZSzjkoCV/xnkjP3BUOGjEUAthOMNAnPdizoyF8fEtUwlxge2LzePQhIk3ZihNZVRkmIZ
-	FnQcbU8ZG6AtCH+z8yAY2vClRfhwY4GOzGSXseRw681CJZRZez3gJSZtgqfkzmnTANcHVEzdgcJ
-	lXgwP+WX46xUrbAdncKjD81ocLrmELAFw2GHCPlNtVKebd2YEsa1H9plWhQ4lHuwuEOS9g=
-X-Google-Smtp-Source: AGHT+IEL4L/n0/KZ2//izEt50x/P7vjrecEoRquGYRoVdQ4a49sx5DhBJ0rYUtgsnqQLisHd/Or3m5ShhudEHx4+ThI=
-X-Received: by 2002:a05:6402:5189:b0:63c:3efe:d970 with SMTP id
- 4fb4d7f45d1cf-63c3efeee6emr14892034a12.31.1761112174303; Tue, 21 Oct 2025
- 22:49:34 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/qxx1k5IYLmQZumkvBGkcglkCRUo8y4lQwXOlsBbvoQ=;
+	b=leI+hlDTQRLeT5n55otKH6pG3tJ7RujrJGsr8N5Fsp7aco3xu1TL2z9r0pudnM6xTaPr8k
+	fKY1+dw0umUTQyFHmv28lCmqAqOG1t1yM2JmszuXY/hu5aySL6ULxduJZGQU94rfWDWXOM
+	WWzJAFavdnPxUVNtJDgzxERJb+aBugc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761112325;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/qxx1k5IYLmQZumkvBGkcglkCRUo8y4lQwXOlsBbvoQ=;
+	b=EiZaeGwM0IaQbYj3RL0f+9OQnELa6Cz8Qt3JwAgQs/8//eTvERyrPNoPhMUfo3MIssIRs2
+	SJ057rN9lPNxmnqwGbeG8+5T4HlW5meSdvXrJiDqOS7t7eodyPjHfBk7s2bdt8yzlFRtSp
+	Etvfrkd3MKIst4K5QgeCwdTa4TKULG0=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: stable@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to vm_util.c
+Date: Wed, 22 Oct 2025 13:51:38 +0800
+Message-ID: <20251022055138.375042-1-leon.hwang@linux.dev>
 MIME-Version: 1.0
-References: <20251021190436.81682-1-ryncsn@gmail.com> <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
-In-Reply-To: <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 22 Oct 2025 13:48:57 +0800
-X-Gm-Features: AS18NWDTFF1efA6O66Kmu5sZvMNxApkc4VVj3WyF2eIjSrA0fBYB7cddYTfIxRE
-Message-ID: <CAMgjq7D_G=5bJe_Uj11sHV2qCyu-Z-3PZu7QuZyPEhuFiE63wQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Hugh Dickins <hughd@google.com>, Dev Jain <dev.jain@arm.com>, 
-	David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 7m8j7ycd7s3kw8eihez9xmuatq3jy1aj
-X-Rspamd-Queue-Id: 40253140004
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761112176-549122
-X-HE-Meta: U2FsdGVkX18Tto7Aa3oq1/KQVdEdmsmR/PWi6Y/Smh4v2DvN44SJGLhCC9RRzA7WxsxHiNqcErJUUaEaYhB72FVTIUhQk9LQ7zFbXvJIV2Cz9pNV2Jwb1GCrZ/DdyvEbIrCscCYQSkFqf47tzTeyEBGleEJ/WmjNp8YIGGL4HSEkuhIXjwnCer5AIUYgvyv6XCCBITPDLw0DliMc59xpvZaQAJp7zLOCgGi9vlIrVjxnVCnVqyiUvhs6IBs9WngtqEDV+3GhRMa3ays5BqvTwYCEOgjlWP22oZmBbK0kl2BICgwj/FpgSBBMaoTj2PUh7BljmBRjIFmFNyNmyIJ2VkrZf5OijiyXQU9ey78my2ytiXccTDapAyx/e46fdmIbkCdjFSMZ+cjTeZNPmPTPfNotX0beNHroLuG8kaTUGwKQAxNOSGTl6Ugw3S+to4tHclIokDmbrwpVcabCK4P3+E/l/W8kVt5Bc+FoVhjwrwMMJNJwD+HBcgglBdapvYVIq4lXwMMRtNmxRwm3uXzN874WLNJt+GjGLH3n2qftBuhwTORhN4fNb9Hssr+9BE8Y053ZD6tDLL4Q7Naj1f7+4/mr06Hvv57MD6fqd9zrwHkVToz8TYY5aTnsv9yEMy4pG1ermi06nG9DZwoFTpbwk3BbxaFiMBtTqxcJ2uON5pMrHaf47YekWqEUHfmzQEKCqNxf+Dax/Ef5JQ0I6eTNA3ZWl2NiHCPUIlJvi6BiCG2xHWOaiqpnQroLKs49AGufH9H14z1yT2hKl9JtlSEPw8y/e4KBhq7jNimLkhf6kkpdbJk2PhTDO6OFDrANBIl5z+Mps+K5irlkC5li9OpjyxYj4hxelCF0T4F2lHA2Nn4gbeWjK3062DOGPefwiMFfEsDyFnbvQAK9YgLDwIq8mxta05rqF21dh6M+LYpYVwvuTtxNNaZ2z74+PjaLL6YJX0nYJywrJ5GbDBahoo1
- LJyesQny
- VlWx9fvzKiqR/n78Q+5v7ms3oMMnrKQasTCi/QFoLPJkz6iiap0TS/ebzxYQsMfqEf5QBplT/50Ec8N5WQuRlUyzIfP7+O2k8C/hUzfzvMyYyj60FU/0t2g7MCG9XWpJIaJ3/ejRmaX2aNDzdbHl50LBqwtKBfYW5ia0hcXFE115jLcH6pHv6W5rc4IUTSQuWOs9SYTGET+hHnzscik2bOQfsbTfclMDfZL7xSpcVtVsyM4724eHS5h7wfV0BRJM7POuBryA8KnOJSejdkekVKounJN13Re8d4lzW4jCC2v5Bh3CsZmTi7B7NNDT2fa3ajPQFUTff29VOKto/9bPuxYvNO+kIUkhGH/daQJ+/tJondfEhLYS5sQdR5CTvHaN2xUq1kKEAJvhachiJ1HMGP1xURQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 13BC2100004
+X-Stat-Signature: 6uzcewi9eyjtwz48wy3q8tffea8jb6y3
+X-HE-Tag: 1761112328-869462
+X-HE-Meta: U2FsdGVkX18xWOnL0/kwR6TNc0EUCqoGe3mNdry3jf6RuQTH5qdVMWwFFUrX77ciIXYhPYKb7fWN7ecEIaNEABmZi93CBKsXPLJpV3j7tiehaNP1z1Epu45qrzBaBzyX+DmAiUdtK2thxmp/aFKXzpr8XJ+DKnSFpxJHvJ5lKCMdfc+VXMaANY/keid1INKXl3Vc/SIBOBBxrs3fA5peyEqqsxqgeTL0p9h+DudsuRji+cynG7P9ukJCq5sU9nWzciGjOUGfivSQvS15lBuRoC6k/4uzrK2muzTDwe2z9P0WY+7VTpBJ9A+/Hm6AprNBNK5XxwTZWPj77UKB8lFM1pbnFWehS6lA3k9P4HvAdELBNLpPeIMVEkazOhxQWtMuBojhikUuiqN9LOaG84pAEFFB9On0XEshwjUL5VI20k+uREKrVd0hf4w3NTirNGbi62w/BoxJ7C08xJWuKbI3zVJxhfpzIe7k9GxSGqaCx2wi8jLdtyLTlxA5phm/KEZMQfwXf7e1mNmtMjnJJNgWKRoc5TLPVQfWjVGaUGQCBZfhGcWUP/FhTK9fM+b8m9Q3CwuF7SKCca6TSHyLKsVqfgmGl6zPT+57OtbY9K87m3W76FI+Hs4rFLrgxaSsF8NxGOH+9tuORB1QMWmtti1v49DlK5ngMA+D4nXraaLh8fWxtM1zklbJc1be9QrSQQlbuDtIeiEjDUnzwQ+hVF5ABkZTVOxRk4Lq3BlPHDSlEAosugWGeBBqt1Kn1k/Rw6GsZLPbBcWM1ldhmFN9vDPVKfQ4VCIf0YaXK5u7/VH74SbfVdwKXXmK9nr1CofqfXTUXx9sYWEyNI3WrgmVWDCeaDQyT4KXNz3RUYIxEnqxk6g2zvFXDLjDcW287yRZqBE0IEIs4TPKe2pbfam79aDr7i1BAutdCB4MOXs1le3JhiBYlkNG2O4HzrXmOT1DJ1HlqD6IZIBbWFpzuVaesRh
+ GBH821AK
+ Qhus4I8dwKTanUWo2rRUgUECjpf4gT8YI5iYbDUHPgzEHYGQYZn9pNzUqa3aZwa0gtLKXUBdfZmjMis+g93IKFhuxxSiAGvwjJKw5L/3PYE5ltROFiGM9SwR5EqVNzuqmeC/Y4Ty5BsxdjpjM07GMF0Hu2Npsa37Dy9LNczUyCYDH8XdVIGMTNL2ZJi2jpcZGjnPyxmnsW80M+jWURX60oMFbJZZ+r7wSUrtAy7lQr6jhgwZTPp1t1gwsJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,111 +90,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 9:25=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2025/10/22 03:04, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > There are some problems with the code implementations of THP fallback.
-> > suitable_orders could be zero, and calling highest_order on a zero valu=
-e
-> > returns an overflowed size. And the order check loop is updating the
-> > index value on every loop which may cause the index to be aligned by a
-> > larger value while the loop shrinks the order.
->
-> No, this is not true. Although =E2=80=98suitable_orders=E2=80=99 might be=
- 0, it will not
-> enter the =E2=80=98while (suitable_orders)=E2=80=99 loop, and =E2=80=98or=
-der=E2=80=99 will not be used
-> (this is also how the highest_order() function is used in other places).
+Fix the build error:
 
-Maybe I shouldn't mix the trivial issue with the real issue here,
-sorry, my bad, I was in a hurry :P.
-I mean if suitable_orders is zero we should just skip calling the
-highest_order since that returns a negative value. It's not causing an
-issue though, but redundant.
+map_hugetlb.c: In function 'main':
+map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+   79 |         hugepage_size = default_huge_page_size();
+      |                         ^~~~~~~~~~~~~~~~~~~~~~
+/usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
 
->
-> > And it forgot to try order
-> > 0 after the final loop.
->
-> This is also not true. We will fallback to order 0 allocation in
-> shmem_get_folio_gfp() if large order allocation fails.
+According to the latest selftests, 'default_huge_page_size' has been
+moved to 'vm_util.c'. So fix the error by the same way.
 
-I thought after the fix, we can simplify the code, and maybe reduce
-the call to shmem_alloc_and_add_folio to only one so it will be
-inlined by the compiler.
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+---
+ tools/testing/selftests/vm/Makefile      |  1 +
+ tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+ tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+ tools/testing/selftests/vm/vm_util.h     |  1 +
+ 4 files changed, 23 insertions(+), 24 deletions(-)
 
-On second thought some more changes are needed to respect the
-huge_gfp. Maybe I should send a series to split the hot fix with clean
-ups.
+diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
+index 192ea3725c5c..ed90deebef0d 100644
+--- a/tools/testing/selftests/vm/Makefile
++++ b/tools/testing/selftests/vm/Makefile
+@@ -100,6 +100,7 @@ $(OUTPUT)/madv_populate: vm_util.c
+ $(OUTPUT)/soft-dirty: vm_util.c
+ $(OUTPUT)/split_huge_page_test: vm_util.c
+ $(OUTPUT)/userfaultfd: vm_util.c
++$(OUTPUT)/map_hugetlb: vm_util.c
+ 
+ ifeq ($(MACHINE),x86_64)
+ BINARIES_32 := $(patsubst %,$(OUTPUT)/%,$(BINARIES_32))
+diff --git a/tools/testing/selftests/vm/userfaultfd.c b/tools/testing/selftests/vm/userfaultfd.c
+index 297f250c1d95..4751b28eba18 100644
+--- a/tools/testing/selftests/vm/userfaultfd.c
++++ b/tools/testing/selftests/vm/userfaultfd.c
+@@ -1674,30 +1674,6 @@ static int userfaultfd_stress(void)
+ 		|| userfaultfd_events_test() || userfaultfd_minor_test();
+ }
+ 
+-/*
+- * Copied from mlock2-tests.c
+- */
+-unsigned long default_huge_page_size(void)
+-{
+-	unsigned long hps = 0;
+-	char *line = NULL;
+-	size_t linelen = 0;
+-	FILE *f = fopen("/proc/meminfo", "r");
+-
+-	if (!f)
+-		return 0;
+-	while (getline(&line, &linelen, f) > 0) {
+-		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
+-			hps <<= 10;
+-			break;
+-		}
+-	}
+-
+-	free(line);
+-	fclose(f);
+-	return hps;
+-}
+-
+ static void set_test_type(const char *type)
+ {
+ 	if (!strcmp(type, "anon")) {
+diff --git a/tools/testing/selftests/vm/vm_util.c b/tools/testing/selftests/vm/vm_util.c
+index fc5743bc1283..613cc61602c9 100644
+--- a/tools/testing/selftests/vm/vm_util.c
++++ b/tools/testing/selftests/vm/vm_util.c
+@@ -161,6 +161,27 @@ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size)
+ 	return __check_huge(addr, "ShmemPmdMapped:", nr_hpages, hpage_size);
+ }
+ 
++unsigned long default_huge_page_size(void)
++{
++	unsigned long hps = 0;
++	char *line = NULL;
++	size_t linelen = 0;
++	FILE *f = fopen("/proc/meminfo", "r");
++
++	if (!f)
++		return 0;
++	while (getline(&line, &linelen, f) > 0) {
++		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
++			hps <<= 10;
++			break;
++		}
++	}
++
++	free(line);
++	fclose(f);
++	return hps;
++}
++
+ static bool check_vmflag(void *addr, const char *flag)
+ {
+ 	char buffer[MAX_LINE_LENGTH];
+diff --git a/tools/testing/selftests/vm/vm_util.h b/tools/testing/selftests/vm/vm_util.h
+index 470f85fe9594..a4439db0d6f8 100644
+--- a/tools/testing/selftests/vm/vm_util.h
++++ b/tools/testing/selftests/vm/vm_util.h
+@@ -11,4 +11,5 @@ uint64_t read_pmd_pagesize(void);
+ bool check_huge_anon(void *addr, int nr_hpages, uint64_t hpage_size);
+ bool check_huge_file(void *addr, int nr_hpages, uint64_t hpage_size);
+ bool check_huge_shmem(void *addr, int nr_hpages, uint64_t hpage_size);
++unsigned long default_huge_page_size(void);
+ bool softdirty_supported(void);
+-- 
+2.43.0
 
-But here the index being modified during the loop do need a fix I
-think, so, for the fix part, we just need:
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 29e1eb690125..e89ae4dd6859 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1895,10 +1895,11 @@ static struct folio
-*shmem_alloc_and_add_folio(struct vm_fault *vmf,
-                order =3D highest_order(suitable_orders);
-                while (suitable_orders) {
-                        pages =3D 1UL << order;
--                       index =3D round_down(index, pages);
--                       folio =3D shmem_alloc_folio(gfp, order, info, index=
-);
--                       if (folio)
-+                       folio =3D shmem_alloc_folio(gfp, order, info,
-round_down(index, pages));
-+                       if (folio) {
-+                               index =3D round_down(index, pages);
-                                goto allocated;
-+                       }
-
-                        if (pages =3D=3D HPAGE_PMD_NR)
-                                count_vm_event(THP_FILE_FALLBACK);
-
->
-> > This is usually fine because shmem_add_to_page_cache ensures the shmem
-> > mapping is still sane, but it might cause many potential issues like
-> > allocating random folios into the random position in the map or return
-> > -ENOMEM by accident. This triggered some strange userspace errors [1],
-> > and shouldn't have happened in the first place.
->
-> I tested tmpfs with swap on ZRAM in the mm-new branch, and no issues
-> were encountered. However, it is worth mentioning that, after the commit
-> 69e0a3b49003 ("mm: shmem: fix the strategy for the tmpfs 'huge=3D'
-> options"), tmpfs may consume more memory (because we no longer allocate
-> large folios based on the write size), which might cause your test case
-> to run out of memory (OOM) and trigger some errors. You may need to
-> adjust your swap size or memcg limit.
->
-
-I'm not seeing any OOM issue, and I tested with different memory
-sizes, the error occurs with all different setup.
-
-If I compared the built object with the ones before 69e0a3b49003, I
-can see that the build object is corrupted:
-
-Compare using hexdump & diff on any .o generated by gcc:
---- GOOD        2025-10-21 12:17:44.121000287 +0000
-+++ BAD 2025-10-21 12:18:01.094000870 +0000
-@@ -3371,425 +3371,7 @@
-... <summary: whole chunk of data & symbols missing> ...
-
-GCC compile didn't fail because the problem occurs when writing the
-objects, so instead LD failed and not due to OOM.
-
-The reproduction rate is very high with different setup, not sure why
-it didn't occur on your setup, I suspect it's related to how different
-gcc handles write (not fault)?
-
-Revert 69e0a3b49003, the build is OK. 69e0a3b49003 isn't the root
-cause but triggered this.
-
-The minimized fix posted above also fixes the problem just fine.
 
