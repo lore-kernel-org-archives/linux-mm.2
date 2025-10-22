@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B902FCCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 11:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3520CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 11:10:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C2878E0009; Wed, 22 Oct 2025 07:01:16 -0400 (EDT)
+	id 4BE878E0003; Wed, 22 Oct 2025 07:10:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19A5F8E0002; Wed, 22 Oct 2025 07:01:16 -0400 (EDT)
+	id 495CC8E0002; Wed, 22 Oct 2025 07:10:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B04D8E0009; Wed, 22 Oct 2025 07:01:16 -0400 (EDT)
+	id 3D2718E0003; Wed, 22 Oct 2025 07:10:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5EE8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:01:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6BC3111AC1A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:01:15 +0000 (UTC)
-X-FDA: 84025458510.14.2DAB21E
+	by kanga.kvack.org (Postfix) with ESMTP id 2EF2E8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:10:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFE87BB163
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:10:33 +0000 (UTC)
+X-FDA: 84025481946.02.3C4CF33
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AC61D40020
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:01:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvnXwdWu;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1E0754000F
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:10:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s2x9nB+t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761130873;
+	s=arc-20220608; t=1761131432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9IKDocIonTGJ6x6lBKJ0HKvy10iMYiiRuYtNZTosRkA=;
-	b=S4iqQOhcnymCBFU5zntDNODNx5f90eDrekVWL/lluMgtMgQIJN2GDYURb0/5KOrUmdkbMt
-	KEBK8k/mbMxyJjuY8gkVdz8Ih4bJQ5Y6WjIiSmh6grBxO9yn/IxmyJAuPWXm5nH1ErQbNh
-	Kbu8F45+cEvvgUR4FRbxv34najPwyu8=
+	bh=pJV7mcDwRnQ/N9m6adp++R7526QHpIu0spjao9Gw8Jc=;
+	b=ADdOyc1IHpVD2MCSECdnkynv5ksiAMAMk20eoCfAKRekJO1RkG7jrQMFm5qTSbwY6BhckP
+	013lw1IuyMat085V/zlDBgYieQVrbhz0gIcHgusIPSe6dhl/HqT00+K/h7EBJhnwHd4Jeu
+	ObLWw+54RWHPluw2dSfXaFSqO86Se1w=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RvnXwdWu;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s2x9nB+t;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761130873; a=rsa-sha256;
+	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761131432; a=rsa-sha256;
 	cv=none;
-	b=NBmDAi0qAqJr3e1ph/t/gmmLqWzurBoaW9gU2EKBJ/hZtLHIhUEwDSwe6LsCDeH5eYcxFD
-	Xeeb26EF6E+aZ4xRH3NtzVhAQAQMGfqbprv0xuW24E5o4q4CzAhaJez4IsNd1463NmGSXD
-	pGYAieA97g6hvzUAIBqQRH7cWJS5b5o=
+	b=jlz1UamyLDcZCT77gpBeWg9rU20aAlTrQhru4zbJMeqTaT4e1GETTAmeFfvm0l4kEmgV9t
+	t9SbQ695lEDWi/CFAxv7QpDs7kQLtyAvpYaqHbuLfUH54+++OmhD4Elk7/7Fth8294s3s1
+	VFW3t760I1WpRKCJ+2Ew0CshQBmS234=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9078743955;
-	Wed, 22 Oct 2025 11:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1771DC4CEE7;
-	Wed, 22 Oct 2025 11:01:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 242324A482;
+	Wed, 22 Oct 2025 11:10:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5DAC4CEE7;
+	Wed, 22 Oct 2025 11:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761130872;
-	bh=Yf44YQjwS506f0nDuFRAKJDlycZiHrFmP7pf4HMYL3o=;
+	s=k20201202; t=1761131431;
+	bh=giaDzXJ7amEHAt5NKhtODhVh96Dnm7DoUD4EN0sU/+k=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RvnXwdWuQ4mf52KjByvvZ6Su+HMImUkI9XKWdjbe1obOxhxYjlQKfIb5IXRMOXMJs
-	 VLp8APzJDzqGXaohy+BZadeuOdoafj0EuDqAw1Un4VfyrUViJ4x5+q43BnMkRO5TZN
-	 SpIUX8mmP2umQwXBUyRpkrAl384ybrns54mKQp3+Eixb2+ZXjh8FjdHTDB0xDtiCNP
-	 ZlE8tIyo6qeJdSkcuGUPoLpBMLRxKMjmV7bZ9X17BN2jD1d2TeCmtPiPYHUK2UKBn1
-	 Ao79BMi1gXS5r38pJxKbeDsb7JfCFvYq9l4Ath3Lxne+hQJK3qjmPEfrwaQzFfq1ZI
-	 1Aoax4wK9+ysg==
+	b=s2x9nB+tMQXedvK2A3nU6LG3ZS3Zwaf9Lhc69LHbXA+sz0XqRD7W4846RILATPcdL
+	 c3hd2gGd8XGhz9pEkHOdzPHaE9y1VKHC3hsyj/NKDzCKfYGeHmyHgsViixRFSkWUm0
+	 4/1IXFJoFaYn2P4KYwsVZD3tRdhBwmB7xY3ygFeCAtjtSa0zwMojKW9Q+Iz+ti5i7e
+	 PHSpqW5McRd/l/pjinSq86xSNDSh2jBCs8INTzgAb+pLYdKfMnwrvQGgmKlGrWQxFe
+	 WziF4GRnncev9IXdlEYaov3ZEyGsXh4rEJdtv9JtlYHWierxqAyqU8hVUN3evQPcWr
+	 hDn8Ya6YwT4Mg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
@@ -70,24 +70,25 @@ Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
   linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
   masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
   rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org
-Subject: Re: [PATCHv7 3/7] kho: drop notifiers
-In-Reply-To: <20251022005719.3670224-4-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Tue, 21 Oct 2025 20:57:15 -0400")
+Subject: Re: [PATCHv7 4/7] kho: add interfaces to unpreserve folios and page
+ ranges
+In-Reply-To: <20251022005719.3670224-5-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Tue, 21 Oct 2025 20:57:16 -0400")
 References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
-	<20251022005719.3670224-4-pasha.tatashin@soleen.com>
-Date: Wed, 22 Oct 2025 13:01:08 +0200
-Message-ID: <mafs0ikg7fbez.fsf@kernel.org>
+	<20251022005719.3670224-5-pasha.tatashin@soleen.com>
+Date: Wed, 22 Oct 2025 13:10:27 +0200
+Message-ID: <mafs0ecqvfazg.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC61D40020
+X-Rspamd-Queue-Id: 1E0754000F
 X-Rspamd-Server: rspam03
-X-Stat-Signature: k55cd4iokhciamd3j1c8j91g9n3hquuu
-X-HE-Tag: 1761130873-520481
-X-HE-Meta: U2FsdGVkX18LXOdnNOsLsPc3jVyhlMzo8PCkcP1HmjLpIR18fTwnFQYz1EnMEclXVxcnFOQzl1+ex+Icuya6PSmQSxgcDxWAK733CamXmBBwTFfRmPJPXU4ryKio/HjBPPaekQyxTvjy88dsICRX73BJzl8kMNxMTHQ7pSTscl2ZCLzMRjIApvJaZ/+gC13UW1pZaQOUWe+HRVQg2OaZnl4AoFEKBU9wcUfoCu/5pN067IUrkVGvEFIcN5cpALWfP+ayws7Vd7dcTG2ylXmqxkc3x/YxVHZRRfRSW904mjjlGGwBh1d9QhcPNEHaHiIe32PfJ2KwZM8MX0AS97tdz2yVgTE361/zwTaBVmkNjucnKYUogWV8pcYyNO8fAZSYto5v+ojL3cbLSCzbPP2eMnpwGu8O4P7VPnnwbzN0B/YgSFdQR4iws/mLoLBUjnRB2APEaN5rVbj/gkTCqWSP2fNX40zBcdqTgB6yrpByBuBNfxZZVzJc4uuiCU+DNpeJOnXZ3etnLm0wwKXK5JqH0Z10DuVWv4JYp8dSCOl/rz6zd0z1KnS5TQ1x6srUXEO8ZHicKqDTmu30JrXeAi+RVXOA8JYT2KFZ2YY5e7TbXn3dmGDyTaWTh82JpajIESXkGFwkW7otYsBZeIZ+9Ss5pF5cEGJ5yJ/zCA5zrv8GufjC0Uo0jqXmqQ+VIL6vj9KKFgZzJ6eTv37HkjlvU4ob1pli0P1WfMerme3W3gPAjC4rs84GgQcDVFM8fxGF1YYIZmuKGKwYSkNGxcz7ApGpRRmeCTWA1hKb0DBQH4OxM3lGbhCtRqWQBGcBtXZrzmJSQD1tnEHZMruHYe/ED/oFECcM2rxfKdUZLCnzKsYr2456ZEl/7d7laPVLcNNj+XKa3Iv6vBDpRHkIM5xZxwvjkS6YKR1XdTLGK6akTZwIAiea4PJJkOyA0kShGUeCsxGRWF5i4iPe3C4qPJ+PHoO
- 2DxsP2By
- nLU5upw9MgMxReazWjPJMVz92tCpSxf1TvsZnZy+r/z+TJ6Pp3oUDbzXliGXWdH11eU5VJct1vW+Ts43punbJ9ZpaODUTd3DWKw1I1XFg8vBUkuCtT/OsYoV+QBnU434+3Af8ZxwXD9XjJfXMueVARfaaMEC315v0k307WqspLjN+2iHO4g7tvedstytq4gBso48XDd2rmruKFXOJzUDacbkXMDshef08EPZB7S9MeVOqS2K4mvy7BeuZ0fSX4rjQTpkPn3bHM0mogaS0+s2n4XSWr2BrDuZNY/WL
+X-Stat-Signature: qokwnifejuszgoophshrhqsg15d1depx
+X-HE-Tag: 1761131431-332221
+X-HE-Meta: U2FsdGVkX1/45oBF35Uzlbz5RaBmnDrttsuZJs87me1YxVOlU7qVlmuhUSMEQBVHlmRSdgWNIn62GAHMjKFtNDWkywG4AZ/T5q0Y4LJFdpiil1fKmmriNcd2PDZeqT7qoLp/6Gl81aiF4KuHzdIoUVeHa6HhjbhcERGNj9diYWlj4Vb79h82ejyAuHm0kDFASoHwFLyQuxNiqopic6eio2vT7cm5ugaVi2+NasXfkZ2Pc+x+tESTOWf1bRcdF1R9u2KMuED7P369VoeRAvgqg31DCf8bu/y1/mZ8MPwFcOmPauU+xzuzXZpGqLrZNNq39RQpD0BhahKFRA67ug890rWC2Tdt/t3xpa2vsV+SNMufq6CnLO3Ga8Io7bOTqG9gqKsGQcWUrWjcFTPHRB0KchqCtpMwBrcQwVlNIVEnaF895RECv9KagSI5nq2KudveuwD3WDdfP3p0RV8yS2moZbRdShxSvUIhuvD1229ZemDD4jwZuO0+go9sqbJFKWTXsHxqMz7MtKHPQ1BZoIPPe+M5c5EBpHxe4/EWvL0kl1ZwMj9OauUfD8dB7bgbfG43e4mmQW47mpUQp4FcEoCTIG1C+9zOU+LPGSxXMKjrpTCceCapqZAiIOcnUXdVxRq49YIDw2ScjGxPWCNjMKcBQscQwP/+GERXBREZuqMrRFtqxRbTQiOpkJxJXYDnkyCbmcUIobLlp7zGyX+5wxBjJ3QyiqwtbBYHbuaggYIincOqM93jODAud2dkqd3Ww4e/IHwZ5CzJlBqMNGkzqSIr3uY8R0XVTwJZRDcRer1wpuN2izlndfZSOsR6frD7O1MNu3wkYk+oAl+TtXOqBq+YqQYYqb6SMRitGRX5fj7RVXkva31wRuwrcglonl62PTg5hVDMpFWYAJH1k8wg3vksdG0zovKCgih35h2pxyuaJiHReGmP2zvmGlO5IoX9q3utf3Hgsr2FnCp5Ar5Aywi
+ gXS27XFQ
+ e94g02uTtJglcOx6BbxhBffx7mwgFVsg+z5s/l8sv0dSiNNdXM5bIk8mHTNZP53tJCr5+tpfjR8XFDgAFfvf/uQn1M8yN3Dh8CA+WmWaP8W/pLzVFsU1L4smalpSOveEMBP5hp4IxIXCo7yigOd9D+i536cvcfxvSgRlGryHkdICHUYgo8wyUi415PLCDLKVs5fY+yu2dUQD1CoFZ2Yaw/RpkV+81dElPck+FLkssy6HC8oI3t1fxyj4wWv6nWJ1vHBUE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,719 +97,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
 On Tue, Oct 21 2025, Pasha Tatashin wrote:
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> Allow users of KHO to cancel the previous preservation by adding the
+> necessary interfaces to unpreserve folio and pages.
 >
-> The KHO framework uses a notifier chain as the mechanism for clients to
-> participate in the finalization process. While this works for a single,
-> central state machine, it is too restrictive for kernel-internal
-> components like pstore/reserve_mem or IMA. These components need a
-> simpler, direct way to register their state for preservation (e.g.,
-> during their initcall) without being part of a complex,
-> shutdown-time notifier sequence. The notifier model forces all
-> participants into a single finalization flow and makes direct
-> preservation from an arbitrary context difficult.
-> This patch refactors the client participation model by removing the
-> notifier chain and introducing a direct API for managing FDT subtrees.
->
-> The core kho_finalize() and kho_abort() state machine remains, but
-> clients now register their data with KHO beforehand.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > ---
->  include/linux/kexec_handover.h   |  28 +-----
->  kernel/kexec_handover.c          | 164 +++++++++++++++++--------------
->  kernel/kexec_handover_debugfs.c  |  17 ++--
->  kernel/kexec_handover_internal.h |   5 +-
->  lib/test_kho.c                   |  30 +-----
->  mm/memblock.c                    |  62 +++---------
->  6 files changed, 127 insertions(+), 179 deletions(-)
+>  include/linux/kexec_handover.h | 12 +++++
+>  kernel/kexec_handover.c        | 85 ++++++++++++++++++++++++++++------
+>  2 files changed, 84 insertions(+), 13 deletions(-)
 >
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index 04d0108db98e..2faf290803ce 100644
-> --- a/include/linux/kexec_handover.h
-> +++ b/include/linux/kexec_handover.h
-> @@ -10,14 +10,7 @@ struct kho_scratch {
->  	phys_addr_t size;
->  };
+[...]
 >  
-> -/* KHO Notifier index */
-> -enum kho_event {
-> -	KEXEC_KHO_FINALIZE = 0,
-> -	KEXEC_KHO_ABORT = 1,
-> -};
-> -
->  struct folio;
-> -struct notifier_block;
->  struct page;
->  
->  #define DECLARE_KHOSER_PTR(name, type) \
-> @@ -37,8 +30,6 @@ struct page;
->  		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
->  	})
->  
-> -struct kho_serialization;
-> -
->  struct kho_vmalloc_chunk;
->  struct kho_vmalloc {
->  	DECLARE_KHOSER_PTR(first, struct kho_vmalloc_chunk *);
-> @@ -57,12 +48,10 @@ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
->  struct folio *kho_restore_folio(phys_addr_t phys);
->  struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
->  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
-> -int kho_add_subtree(struct kho_serialization *ser, const char *name, void *fdt);
-> +int kho_add_subtree(const char *name, void *fdt);
-> +void kho_remove_subtree(void *fdt);
->  int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
->  
-> -int register_kho_notifier(struct notifier_block *nb);
-> -int unregister_kho_notifier(struct notifier_block *nb);
-> -
->  void kho_memory_init(void);
->  
->  void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t scratch_phys,
-> @@ -114,23 +103,16 @@ static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
->  	return NULL;
->  }
->  
-> -static inline int kho_add_subtree(struct kho_serialization *ser,
-> -				  const char *name, void *fdt)
-> +static inline int kho_add_subtree(const char *name, void *fdt)
->  {
->  	return -EOPNOTSUPP;
->  }
->  
-> -static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
-> +static inline void kho_remove_subtree(void *fdt)
->  {
-> -	return -EOPNOTSUPP;
->  }
->  
-> -static inline int register_kho_notifier(struct notifier_block *nb)
-> -{
-> -	return -EOPNOTSUPP;
-> -}
-> -
-> -static inline int unregister_kho_notifier(struct notifier_block *nb)
-> +static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
->  {
->  	return -EOPNOTSUPP;
->  }
-> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> index da071277d85e..0a4234269fe5 100644
-> --- a/kernel/kexec_handover.c
-> +++ b/kernel/kexec_handover.c
-> @@ -16,7 +16,6 @@
->  #include <linux/libfdt.h>
->  #include <linux/list.h>
->  #include <linux/memblock.h>
-> -#include <linux/notifier.h>
->  #include <linux/page-isolation.h>
->  #include <linux/vmalloc.h>
->  
-> @@ -103,29 +102,34 @@ struct kho_mem_track {
->  
->  struct khoser_mem_chunk;
->  
-> -struct kho_serialization {
-> -	struct page *fdt;
-> -	struct kho_mem_track track;
-> -	/* First chunk of serialized preserved memory map */
-> -	struct khoser_mem_chunk *preserved_mem_map;
-> +struct kho_sub_fdt {
-> +	struct list_head l;
-> +	const char *name;
-> +	void *fdt;
->  };
->  
->  struct kho_out {
-> -	struct blocking_notifier_head chain_head;
-> -	struct mutex lock; /* protects KHO FDT finalization */
-> -	struct kho_serialization ser;
-> +	void *fdt;
->  	bool finalized;
-> +	struct mutex lock; /* protects KHO FDT finalization */
-> +
-> +	struct list_head sub_fdts;
-> +	struct mutex fdts_lock;
-> +
-> +	struct kho_mem_track track;
-> +	/* First chunk of serialized preserved memory map */
-> +	struct khoser_mem_chunk *preserved_mem_map;
-> +
->  	struct kho_debugfs dbg;
->  };
->  
->  static struct kho_out kho_out = {
-> -	.chain_head = BLOCKING_NOTIFIER_INIT(kho_out.chain_head),
->  	.lock = __MUTEX_INITIALIZER(kho_out.lock),
-> -	.ser = {
-> -		.track = {
-> -			.orders = XARRAY_INIT(kho_out.ser.track.orders, 0),
-> -		},
-> +	.track = {
-> +		.orders = XARRAY_INIT(kho_out.track.orders, 0),
->  	},
-> +	.sub_fdts = LIST_HEAD_INIT(kho_out.sub_fdts),
-> +	.fdts_lock = __MUTEX_INITIALIZER(kho_out.fdts_lock),
->  	.finalized = false,
->  };
->  
-> @@ -369,7 +373,7 @@ static void kho_mem_ser_free(struct khoser_mem_chunk *first_chunk)
->  	}
->  }
->  
-> -static int kho_mem_serialize(struct kho_serialization *ser)
-> +static int kho_mem_serialize(struct kho_out *kho_out)
->  {
->  	struct khoser_mem_chunk *first_chunk = NULL;
->  	struct khoser_mem_chunk *chunk = NULL;
-> @@ -377,7 +381,7 @@ static int kho_mem_serialize(struct kho_serialization *ser)
->  	unsigned long order;
->  	int err = -ENOMEM;
->  
-> -	xa_for_each(&ser->track.orders, order, physxa) {
-> +	xa_for_each(&kho_out->track.orders, order, physxa) {
->  		struct kho_mem_phys_bits *bits;
->  		unsigned long phys;
->  
-> @@ -409,7 +413,7 @@ static int kho_mem_serialize(struct kho_serialization *ser)
->  		}
->  	}
->  
-> -	ser->preserved_mem_map = first_chunk;
-> +	kho_out->preserved_mem_map = first_chunk;
->  
->  	return 0;
->  
-> @@ -670,7 +674,6 @@ static void __init kho_reserve_scratch(void)
->  
->  /**
->   * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
-> - * @ser: serialization control object passed by KHO notifiers.
->   * @name: name of the sub tree.
->   * @fdt: the sub tree blob.
->   *
-> @@ -684,34 +687,45 @@ static void __init kho_reserve_scratch(void)
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -int kho_add_subtree(struct kho_serialization *ser, const char *name, void *fdt)
-> +int kho_add_subtree(const char *name, void *fdt)
->  {
-> -	int err = 0;
-> -	u64 phys = (u64)virt_to_phys(fdt);
-> -	void *root = page_to_virt(ser->fdt);
-> +	struct kho_sub_fdt *sub_fdt;
-> +	int err;
->  
-> -	err |= fdt_begin_node(root, name);
-> -	err |= fdt_property(root, PROP_SUB_FDT, &phys, sizeof(phys));
-> -	err |= fdt_end_node(root);
-> +	sub_fdt = kmalloc(sizeof(*sub_fdt), GFP_KERNEL);
-> +	if (!sub_fdt)
-> +		return -ENOMEM;
->  
-> -	if (err)
-> -		return err;
-> +	INIT_LIST_HEAD(&sub_fdt->l);
-> +	sub_fdt->name = name;
-> +	sub_fdt->fdt = fdt;
->  
-> -	return kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false);
-> +	mutex_lock(&kho_out.fdts_lock);
-> +	list_add_tail(&sub_fdt->l, &kho_out.sub_fdts);
-> +	err = kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false);
+> +/**
+> + * kho_unpreserve_pages - unpreserve contiguous pages.
+> + * @page: first page in the list.
+> + * @nr_pages: number of pages.
+> + *
+> + * Instructs KHO to unpreserve @nr_pages contigious  pages starting from @page.
 
-I think you should remove sub_fdt from the list and kfree() it on error
-here. Otherwise we signal an error to the caller and they might free
-sub_fdt->fdt, which will later result in a use-after-free at
-__kho_finalize().
+s/contigious/contiguous. Also drop the extra space after it.
 
-> +	mutex_unlock(&kho_out.fdts_lock);
-> +
-> +	return err;
->  }
->  EXPORT_SYMBOL_GPL(kho_add_subtree);
->  
-> -int register_kho_notifier(struct notifier_block *nb)
-> +void kho_remove_subtree(void *fdt)
->  {
-> -	return blocking_notifier_chain_register(&kho_out.chain_head, nb);
-> -}
-> -EXPORT_SYMBOL_GPL(register_kho_notifier);
-> +	struct kho_sub_fdt *sub_fdt;
-> +
-> +	mutex_lock(&kho_out.fdts_lock);
-> +	list_for_each_entry(sub_fdt, &kho_out.sub_fdts, l) {
+> + * This call must exactly match a granularity at which memory was originally
+> + * preserved by kho_preserve_pages, call with the same @page and
+> + * @nr_pages). Unpreserving arbitrary sub-ranges of larger preserved blocks is
 
-list_for_each_entry_safe() here since we delete.
+Stray closing parenthesis here. Perhaps a rewording to: "This must be
+called with the same @page and @nr_pages as the corresponding
+kho_preserve_pages() call. Unpreserving arbitrary..."
 
-> +		if (sub_fdt->fdt == fdt) {
-> +			list_del(&sub_fdt->l);
-> +			kfree(sub_fdt);
-> +			kho_debugfs_fdt_remove(&kho_out.dbg, fdt);
-> +			break;
-> +		}
-> +	}
-> +	mutex_unlock(&kho_out.fdts_lock);
->  
-> -int unregister_kho_notifier(struct notifier_block *nb)
-> -{
-> -	return blocking_notifier_chain_unregister(&kho_out.chain_head, nb);
->  }
-> -EXPORT_SYMBOL_GPL(unregister_kho_notifier);
-> +EXPORT_SYMBOL_GPL(kho_remove_subtree);
->  
->  /**
->   * kho_preserve_folio - preserve a folio across kexec.
-> @@ -726,7 +740,7 @@ int kho_preserve_folio(struct folio *folio)
->  {
->  	const unsigned long pfn = folio_pfn(folio);
->  	const unsigned int order = folio_order(folio);
-> -	struct kho_mem_track *track = &kho_out.ser.track;
+Other than this,
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+> + * not supported.
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+> +{
 > +	struct kho_mem_track *track = &kho_out.track;
->  
->  	if (WARN_ON(kho_scratch_overlap(pfn << PAGE_SHIFT, PAGE_SIZE << order)))
->  		return -EINVAL;
-> @@ -747,7 +761,7 @@ EXPORT_SYMBOL_GPL(kho_preserve_folio);
->   */
->  int kho_preserve_pages(struct page *page, unsigned int nr_pages)
->  {
-> -	struct kho_mem_track *track = &kho_out.ser.track;
-> +	struct kho_mem_track *track = &kho_out.track;
->  	const unsigned long start_pfn = page_to_pfn(page);
->  	const unsigned long end_pfn = start_pfn + nr_pages;
->  	unsigned long pfn = start_pfn;
-> @@ -848,7 +862,7 @@ static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_chunk *cur
->  
->  static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk)
->  {
-> -	struct kho_mem_track *track = &kho_out.ser.track;
-> +	struct kho_mem_track *track = &kho_out.track;
->  	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
->  
->  	__kho_unpreserve(track, pfn, pfn + 1);
-> @@ -1030,11 +1044,11 @@ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
->  
->  static int __kho_abort(void)
->  {
-> -	int err;
-> +	int err = 0;
->  	unsigned long order;
->  	struct kho_mem_phys *physxa;
->  
-> -	xa_for_each(&kho_out.ser.track.orders, order, physxa) {
-> +	xa_for_each(&kho_out.track.orders, order, physxa) {
->  		struct kho_mem_phys_bits *bits;
->  		unsigned long phys;
->  
-> @@ -1044,17 +1058,13 @@ static int __kho_abort(void)
->  		xa_destroy(&physxa->phys_bits);
->  		kfree(physxa);
->  	}
-> -	xa_destroy(&kho_out.ser.track.orders);
-> +	xa_destroy(&kho_out.track.orders);
->  
-> -	if (kho_out.ser.preserved_mem_map) {
-> -		kho_mem_ser_free(kho_out.ser.preserved_mem_map);
-> -		kho_out.ser.preserved_mem_map = NULL;
-> +	if (kho_out.preserved_mem_map) {
-> +		kho_mem_ser_free(kho_out.preserved_mem_map);
-> +		kho_out.preserved_mem_map = NULL;
->  	}
->  
-> -	err = blocking_notifier_call_chain(&kho_out.chain_head, KEXEC_KHO_ABORT,
-> -					   NULL);
-> -	err = notifier_to_errno(err);
-> -
->  	if (err)
->  		pr_err("Failed to abort KHO finalization: %d\n", err);
->  
-> @@ -1077,7 +1087,8 @@ int kho_abort(void)
->  		return ret;
->  
->  	kho_out.finalized = false;
-> -	kho_debugfs_cleanup(&kho_out.dbg);
+> +	const unsigned long start_pfn = page_to_pfn(page);
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
 > +
-> +	kho_debugfs_fdt_remove(&kho_out.dbg, kho_out.fdt);
->  
->  	return 0;
->  }
-> @@ -1086,41 +1097,46 @@ static int __kho_finalize(void)
->  {
->  	int err = 0;
->  	u64 *preserved_mem_map;
-> -	void *fdt = page_to_virt(kho_out.ser.fdt);
-> +	void *root = kho_out.fdt;
-> +	struct kho_sub_fdt *fdt;
->  
-> -	err |= fdt_create(fdt, PAGE_SIZE);
-> -	err |= fdt_finish_reservemap(fdt);
-> -	err |= fdt_begin_node(fdt, "");
-> -	err |= fdt_property_string(fdt, "compatible", KHO_FDT_COMPATIBLE);
-> +	err |= fdt_create(root, PAGE_SIZE);
-> +	err |= fdt_finish_reservemap(root);
-> +	err |= fdt_begin_node(root, "");
-> +	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
->  	/**
->  	 * Reserve the preserved-memory-map property in the root FDT, so
->  	 * that all property definitions will precede subnodes created by
->  	 * KHO callers.
->  	 */
-> -	err |= fdt_property_placeholder(fdt, PROP_PRESERVED_MEMORY_MAP,
-> +	err |= fdt_property_placeholder(root, PROP_PRESERVED_MEMORY_MAP,
->  					sizeof(*preserved_mem_map),
->  					(void **)&preserved_mem_map);
->  	if (err)
->  		goto abort;
->  
-> -	err = kho_preserve_folio(page_folio(kho_out.ser.fdt));
-> +	err = kho_preserve_folio(virt_to_folio(kho_out.fdt));
->  	if (err)
->  		goto abort;
->  
-> -	err = blocking_notifier_call_chain(&kho_out.chain_head,
-> -					   KEXEC_KHO_FINALIZE, &kho_out.ser);
-> -	err = notifier_to_errno(err);
-> +	err = kho_mem_serialize(&kho_out);
->  	if (err)
->  		goto abort;
->  
-> -	err = kho_mem_serialize(&kho_out.ser);
-> -	if (err)
-> -		goto abort;
-> +	*preserved_mem_map = (u64)virt_to_phys(kho_out.preserved_mem_map);
+> +	if (kho_out.finalized)
+> +		return -EBUSY;
 > +
-> +	mutex_lock(&kho_out.fdts_lock);
-> +	list_for_each_entry(fdt, &kho_out.sub_fdts, l) {
-> +		phys_addr_t phys = virt_to_phys(fdt->fdt);
->  
-> -	*preserved_mem_map = (u64)virt_to_phys(kho_out.ser.preserved_mem_map);
-> +		err |= fdt_begin_node(root, fdt->name);
-> +		err |= fdt_property(root, PROP_SUB_FDT, &phys, sizeof(phys));
-> +		err |= fdt_end_node(root);
-> +	}
-> +	mutex_unlock(&kho_out.fdts_lock);
->  
-> -	err |= fdt_end_node(fdt);
-> -	err |= fdt_finish(fdt);
-> +	err |= fdt_end_node(root);
-> +	err |= fdt_finish(root);
->  
->  abort:
->  	if (err) {
-> @@ -1149,7 +1165,7 @@ int kho_finalize(void)
->  	kho_out.finalized = true;
->  
->  	return kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
-> -				   page_to_virt(kho_out.ser.fdt), true);
-> +				  kho_out.fdt, true);
->  }
->  
->  bool kho_finalized(void)
-> @@ -1232,15 +1248,17 @@ static __init int kho_init(void)
->  {
->  	int err = 0;
->  	const void *fdt = kho_get_fdt();
-> +	struct page *fdt_page;
->  
->  	if (!kho_enable)
->  		return 0;
->  
-> -	kho_out.ser.fdt = alloc_page(GFP_KERNEL);
-> -	if (!kho_out.ser.fdt) {
-> +	fdt_page = alloc_page(GFP_KERNEL);
-> +	if (!fdt_page) {
->  		err = -ENOMEM;
->  		goto err_free_scratch;
->  	}
-> +	kho_out.fdt = page_to_virt(fdt_page);
->  
->  	err = kho_debugfs_init();
->  	if (err)
-> @@ -1268,8 +1286,8 @@ static __init int kho_init(void)
->  	return 0;
->  
->  err_free_fdt:
-> -	put_page(kho_out.ser.fdt);
-> -	kho_out.ser.fdt = NULL;
-> +	put_page(fdt_page);
-> +	kho_out.fdt = NULL;
->  err_free_scratch:
->  	for (int i = 0; i < kho_scratch_cnt; i++) {
->  		void *start = __va(kho_scratch[i].addr);
-> @@ -1280,7 +1298,7 @@ static __init int kho_init(void)
->  	kho_enable = false;
->  	return err;
->  }
-> -late_initcall(kho_init);
-> +fs_initcall(kho_init);
-
-Is this change related to this patch? Also, why fs_initcall?
-
->  
->  static void __init kho_release_scratch(void)
->  {
-> @@ -1416,7 +1434,7 @@ int kho_fill_kimage(struct kimage *image)
->  	if (!kho_out.finalized)
->  		return 0;
->  
-> -	image->kho.fdt = page_to_phys(kho_out.ser.fdt);
-> +	image->kho.fdt = virt_to_phys(kho_out.fdt);
->  
->  	scratch_size = sizeof(*kho_scratch) * kho_scratch_cnt;
->  	scratch = (struct kexec_buf){
-> diff --git a/kernel/kexec_handover_debugfs.c b/kernel/kexec_handover_debugfs.c
-> index a91b279f1b23..46e9e6c0791f 100644
-> --- a/kernel/kexec_handover_debugfs.c
-> +++ b/kernel/kexec_handover_debugfs.c
-> @@ -61,14 +61,17 @@ int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
->  	return __kho_debugfs_fdt_add(&dbg->fdt_list, dir, name, fdt);
->  }
->  
-> -void kho_debugfs_cleanup(struct kho_debugfs *dbg)
-> +void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
->  {
-> -	struct fdt_debugfs *ff, *tmp;
-> -
-> -	list_for_each_entry_safe(ff, tmp, &dbg->fdt_list, list) {
-> -		debugfs_remove(ff->file);
-> -		list_del(&ff->list);
-> -		kfree(ff);
-> +	struct fdt_debugfs *ff;
+> +	__kho_unpreserve(track, start_pfn, end_pfn);
 > +
-> +	list_for_each_entry(ff, &dbg->fdt_list, list) {
-
-list_for_each_entry_safe() here too.
-
-> +		if (ff->wrapper.data == fdt) {
-> +			debugfs_remove(ff->file);
-> +			list_del(&ff->list);
-> +			kfree(ff);
-> +			break;
-> +		}
->  	}
->  }
->  
-> diff --git a/kernel/kexec_handover_internal.h b/kernel/kexec_handover_internal.h
-> index 28c0e971613d..17ae101dc6ae 100644
-> --- a/kernel/kexec_handover_internal.h
-> +++ b/kernel/kexec_handover_internal.h
-> @@ -30,7 +30,7 @@ void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
->  int kho_out_debugfs_init(struct kho_debugfs *dbg);
->  int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
->  			const void *fdt, bool root);
-> -void kho_debugfs_cleanup(struct kho_debugfs *dbg);
-> +void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt);
->  #else
->  static inline int kho_debugfs_init(void) { return 0; }
->  static inline void kho_in_debugfs_init(struct kho_debugfs *dbg,
-> @@ -38,7 +38,8 @@ static inline void kho_in_debugfs_init(struct kho_debugfs *dbg,
->  static inline int kho_out_debugfs_init(struct kho_debugfs *dbg) { return 0; }
->  static inline int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
->  				      const void *fdt, bool root) { return 0; }
-> -static inline void kho_debugfs_cleanup(struct kho_debugfs *dbg) {}
-> +static inline void kho_debugfs_fdt_remove(struct kho_debugfs *dbg,
-> +					  void *fdt) { }
->  #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
->  
->  #ifdef CONFIG_KEXEC_HANDOVER_DEBUG
-> diff --git a/lib/test_kho.c b/lib/test_kho.c
-> index 60cd899ea745..8d57049e8c8c 100644
-> --- a/lib/test_kho.c
-> +++ b/lib/test_kho.c
-> @@ -39,33 +39,17 @@ struct kho_test_state {
->  
->  static struct kho_test_state kho_test_state;
->  
-> -static int kho_test_notifier(struct notifier_block *self, unsigned long cmd,
-> -			     void *v)
-> +static int kho_test(void)
->  {
->  	struct kho_test_state *state = &kho_test_state;
-> -	struct kho_serialization *ser = v;
->  	int err = 0;
->  
-> -	switch (cmd) {
-> -	case KEXEC_KHO_ABORT:
-> -		return NOTIFY_DONE;
-> -	case KEXEC_KHO_FINALIZE:
-> -		/* Handled below */
-> -		break;
-> -	default:
-> -		return NOTIFY_BAD;
-> -	}
-> -
->  	err |= kho_preserve_folio(state->fdt);
-> -	err |= kho_add_subtree(ser, KHO_TEST_FDT, folio_address(state->fdt));
-> +	err |= kho_add_subtree(KHO_TEST_FDT, folio_address(state->fdt));
->  
->  	return err ? NOTIFY_BAD : NOTIFY_DONE;
->  }
->  
-> -static struct notifier_block kho_test_nb = {
-> -	.notifier_call = kho_test_notifier,
-> -};
-> -
->  static int kho_test_save_data(struct kho_test_state *state, void *fdt)
->  {
->  	phys_addr_t *folios_info __free(kvfree) = NULL;
-> @@ -102,6 +86,9 @@ static int kho_test_save_data(struct kho_test_state *state, void *fdt)
->  	if (!err)
->  		state->folios_info = no_free_ptr(folios_info);
->  
-> +	if (!err)
-> +		err = kho_test();
-
-This name is very undescriptive. Also, not the right place to add the
-subtree since the FDT isn't finished yet. I think it should be done from
-kho_test_save() instead. This patch is also missing removing the subtree
-at exit, and that can cause a UAF.
-
-I sent you a patch earlier with my take on how it should be done. I
-still think that is the way to go:
-https://lore.kernel.org/all/mafs0347woui2.fsf@kernel.org/
-
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
 > +
->  	return err;
->  }
->  
-> @@ -203,14 +190,8 @@ static int kho_test_save(void)
->  	if (err)
->  		goto err_free_folios;
->  
-> -	err = register_kho_notifier(&kho_test_nb);
-> -	if (err)
-> -		goto err_free_fdt;
-> -
->  	return 0;
->  
-> -err_free_fdt:
-> -	folio_put(state->fdt);
->  err_free_folios:
->  	kvfree(folios);
->  	return err;
-> @@ -326,7 +307,6 @@ static void kho_test_cleanup(void)
->  
->  static void __exit kho_test_exit(void)
->  {
-> -	unregister_kho_notifier(&kho_test_nb);
->  	kho_test_cleanup();
->  }
->  module_exit(kho_test_exit);
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index e23e16618e9b..e3bef9b35d63 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2444,53 +2444,18 @@ int reserve_mem_release_by_name(const char *name)
->  #define MEMBLOCK_KHO_FDT "memblock"
->  #define MEMBLOCK_KHO_NODE_COMPATIBLE "memblock-v1"
->  #define RESERVE_MEM_KHO_NODE_COMPATIBLE "reserve-mem-v1"
-> -static struct page *kho_fdt;
-> -
-> -static int reserve_mem_kho_finalize(struct kho_serialization *ser)
-> -{
-> -	int err = 0, i;
-> -
-> -	for (i = 0; i < reserved_mem_count; i++) {
-> -		struct reserve_mem_table *map = &reserved_mem_table[i];
-> -		struct page *page = phys_to_page(map->start);
-> -		unsigned int nr_pages = map->size >> PAGE_SHIFT;
-> -
-> -		err |= kho_preserve_pages(page, nr_pages);
-> -	}
-> -
-> -	err |= kho_preserve_folio(page_folio(kho_fdt));
-> -	err |= kho_add_subtree(ser, MEMBLOCK_KHO_FDT, page_to_virt(kho_fdt));
-> -
-> -	return notifier_from_errno(err);
-> -}
-> -
-> -static int reserve_mem_kho_notifier(struct notifier_block *self,
-> -				    unsigned long cmd, void *v)
-> -{
-> -	switch (cmd) {
-> -	case KEXEC_KHO_FINALIZE:
-> -		return reserve_mem_kho_finalize((struct kho_serialization *)v);
-> -	case KEXEC_KHO_ABORT:
-> -		return NOTIFY_DONE;
-> -	default:
-> -		return NOTIFY_BAD;
-> -	}
-> -}
-> -
-> -static struct notifier_block reserve_mem_kho_nb = {
-> -	.notifier_call = reserve_mem_kho_notifier,
-> -};
->  
->  static int __init prepare_kho_fdt(void)
->  {
->  	int err = 0, i;
-> +	struct page *fdt_page;
->  	void *fdt;
->  
-> -	kho_fdt = alloc_page(GFP_KERNEL);
-> -	if (!kho_fdt)
-> +	fdt_page = alloc_page(GFP_KERNEL);
-> +	if (!fdt_page)
->  		return -ENOMEM;
->  
-> -	fdt = page_to_virt(kho_fdt);
-> +	fdt = page_to_virt(fdt_page);
->  
->  	err |= fdt_create(fdt, PAGE_SIZE);
->  	err |= fdt_finish_reservemap(fdt);
-> @@ -2499,7 +2464,10 @@ static int __init prepare_kho_fdt(void)
->  	err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
->  	for (i = 0; i < reserved_mem_count; i++) {
->  		struct reserve_mem_table *map = &reserved_mem_table[i];
-> +		struct page *page = phys_to_page(map->start);
-> +		unsigned int nr_pages = map->size >> PAGE_SHIFT;
->  
-> +		err |= kho_preserve_pages(page, nr_pages);
->  		err |= fdt_begin_node(fdt, map->name);
->  		err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
->  		err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
-> @@ -2507,13 +2475,16 @@ static int __init prepare_kho_fdt(void)
->  		err |= fdt_end_node(fdt);
->  	}
->  	err |= fdt_end_node(fdt);
-> -
->  	err |= fdt_finish(fdt);
->  
-> +	err |= kho_preserve_folio(page_folio(fdt_page));
-> +
-> +	if (!err)
-> +		err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
-> +
->  	if (err) {
->  		pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
-> -		put_page(kho_fdt);
-> -		kho_fdt = NULL;
-> +		put_page(fdt_page);
->  	}
->  
->  	return err;
-> @@ -2529,13 +2500,6 @@ static int __init reserve_mem_init(void)
->  	err = prepare_kho_fdt();
->  	if (err)
->  		return err;
-> -
-> -	err = register_kho_notifier(&reserve_mem_kho_nb);
-> -	if (err) {
-> -		put_page(kho_fdt);
-> -		kho_fdt = NULL;
-> -	}
-> -
->  	return err;
->  }
->  late_initcall(reserve_mem_init);
+>  struct kho_vmalloc_hdr {
+>  	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
+>  };
 
 -- 
 Regards,
