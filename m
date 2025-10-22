@@ -4,137 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B99CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39712CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:33:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BE148E0003; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
+	id 7E7A18E0003; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1954F8E0002; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
+	id 797F08E0002; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 084308E0003; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
+	id 6D4F18E0003; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC3B8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:26:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 863B513BD66
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:26:57 +0000 (UTC)
-X-FDA: 84025976874.17.66D0B79
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6C826A000A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:26:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kroah.com header.s=fm2 header.b=XBtN2lNj;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w i8ZyAI";
-	spf=pass (imf25.hostedemail.com: domain of greg@kroah.com designates 202.12.124.156 as permitted sender) smtp.mailfrom=greg@kroah.com;
-	dmarc=pass (policy=none) header.from=kroah.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5D16B8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:33:49 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 09653BBB41
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:33:49 +0000 (UTC)
+X-FDA: 84025994178.27.EB99176
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7880D1C001D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:33:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lt9seIbK
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143627; a=rsa-sha256;
+	cv=none;
+	b=PQCe3MDMhRBTM378Ndb79wnLxZleeJS783gIsIGNVlsvlUGke/ufaX/Zy1KISc3vz4l1Ci
+	0E/qAbmrzTjdIwheFsivCyitYj/IyQgP+YktzYCEVuf1G8ngf52+2T9LUsz7wDHhMe57Xc
+	8/4l4vB+rfIVWojRPqZjwxtOEMYzGPs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lt9seIbK;
+	dmarc=none;
+	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761143215;
+	s=arc-20220608; t=1761143627;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=;
-	b=3j0BGGjBLyt1H40VxO79K67SFceZ6GCAuxLFbSuxeoTdol1z+FQ8yKYgx12amRJYVlROU4
-	BYSprrUth8dzn4N5cOvyQMbARfKEaLvFDxH8Trj5tm/x+tii7QPXv0QHzID00McpH+GVq5
-	71KfBfpwueDSst2/zk98Pjxh0in7ubg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kroah.com header.s=fm2 header.b=XBtN2lNj;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w i8ZyAI";
-	spf=pass (imf25.hostedemail.com: domain of greg@kroah.com designates 202.12.124.156 as permitted sender) smtp.mailfrom=greg@kroah.com;
-	dmarc=pass (policy=none) header.from=kroah.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143215; a=rsa-sha256;
-	cv=none;
-	b=ClP7OO5+b9feNGH1Z8ph/YWldDMu1KkCWCzAqzB8yJVrTpe9GlnM1+p3QIp2Vaw89nCLXl
-	swzWL1hV7/aY9gvhs5KVdZzE4ohC5qC4hEZNPqym7cJE0r11oxpNIRTwy4YF5zTB7lu6zj
-	jT7NHDiVAir/ks1b60xTkf/2ZHQlpOo=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 400357A00B5;
-	Wed, 22 Oct 2025 10:26:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 22 Oct 2025 10:26:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761143213;
-	 x=1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=
-	XBtN2lNjCSSfXGaqXi0gx/hlO8WnexR6tUKWFw0W+Esl1w0VoLdaeTBIpl3+3SRt
-	8k0rusGVLaZzq6WMIbQuyM0WTeGOvKbmHJjwdrvEfb9GrR896b9a+9tEVP/3sdpf
-	paxsxPUnRdTFFnAtOtM07XbRfRVrG5HBEzRZC5uKdExsyRB/Bzp5lpOMbS7BkPih
-	KmI1toWj9g8kClgqlGVd7rtTlylfX4nulaysdLtdZfm6WvkOnT4eDZOEZObwlbIe
-	XvmLXVmfvHix8i5HNxPGoT1+fXs0nagnK9AITqKPBowKP+EmQHFKGhEf++nGCMZe
-	YxA9ggHBJsJm8bv/iF/7zA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761143213; x=
-	1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=w
-	i8ZyAIsZtLOryR2GGVNqeGZtf8OTyPOHf6pua9/Bnpk4edYPEghboe7XrCsnRwis
-	WBKNNK16wl9riG2ABWUcXXmkWKAM1IVvWIdcAv7TTPWO+dumAHiiNHlmQnNI1YKU
-	DrtJyS7tlvRrHh0MzxA3OGVC1hODIFU6Vuvuj1ilxlG9EMHHWOVZKI2iojCk4VWJ
-	TG3TEuoKd1Iytp3ITeBTdouGLMRhifNM27Ck0KHTFXWf2Xmm+dlkq+dxEeUJ+jRh
-	8OWM26Faoey1nPrM5mbxb0xSgnGKfPzk1lS/4MV0eBfqNl4q02z1X8mlKKLvd3yf
-	2xr2nypxaOlNK4P7Xi2AA==
-X-ME-Sender: <xms:rOn4aFjhzhWf5UKFXIQngaoA8wC5xpsjfdgvdKyzQz3Uj3wIGjqYUA>
-    <xme:rOn4aCye09H1Qqwat59MyRiZ4WtcMmBzXAYGpX5Dv_8ePeV4HZsSBFpgnQhSeQNHN
-    3hVy940u5n_SnfyubajrMH9x33xXWTfWkjLF6aOEp0l3DasAQ>
-X-ME-Received: <xmr:rOn4aDwAZbrOopB1xYax-VhcTT1OpzDw9qNkcnPY-NQn_rQEMd01G0at>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeefkedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgkeffie
-    efieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomhdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehlvghonhdrhhifrghngheslhhinhhugidruggvvhdprhgtphhtthhopehsthgrsg
-    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhu
-    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrg
-    htrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
-    rdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    eplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
-    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgrnhgtvgdrhi
-    grnhhgsehlihhnuhigrdguvghv
-X-ME-Proxy: <xmx:rOn4aMqYobzJeKegfjkTb2Jig2imGUptMSQ-WOJVeXy52dqRTzyJLQ>
-    <xmx:rOn4aGlJAiIhljC8Jzc8Rlme4sPAFf5x2PVyh9nJ_wFCv19LEn15gw>
-    <xmx:rOn4aFxOsEdEjF2cBNW6DFm5xJ1ZddlhJYnaYAxsI3aZNGWcNn7iMw>
-    <xmx:rOn4aL0O7gaLZH54F7WEnqsoInBzvSTsUEWRZEg_V-XeXCFJ2g7Eog>
-    <xmx:ren4aATnIlNrUwkxxcWac1tUEZMNUOouhUXC6W31CVSQFSaRLN_PrAxB>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Oct 2025 10:26:52 -0400 (EDT)
-Date: Wed, 22 Oct 2025 16:26:50 +0200
-From: Greg KH <greg@kroah.com>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Message-ID: <2025102241-clubbed-smirk-8819@gregkh>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
- <2025102230-scoured-levitator-a530@gregkh>
- <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
- <2025102210-detection-blurred-8332@gregkh>
- <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
+	bh=S+de7953ZHDTGM7dYRP0GLBq06V9zfPM2j99l94lng0=;
+	b=SzqpbxVEwc78laldvFr+z2B4HVe614HZCgKofFf8GXYdkxvMJ8ZEd5spCSesih8/9g1KHU
+	ubqoNnPBSrkfT/nmnQT4uJoEA//Z8708JjW1t6Lca+U97feQwI7o7UJ4uYVJ0qbeHi/Kt4
+	nWMIpKmM8gIkJIMhetKykohB0ylvAus=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=S+de7953ZHDTGM7dYRP0GLBq06V9zfPM2j99l94lng0=; b=lt9seIbKzVzPgKtHKuRghpfJLg
+	OqaNfpgAdosaB6hE9Dr4VxUYzadKi6BwoyRrZsAX821vsQuzBXpK24YZyAUUBHFuXuKT2arpgK/gq
+	yn8Ycgid8qQMkxXgvlBWQWll29Di4yiK6nN5cLj/+TsP7sIdc5REyaZ9QOM9YSAjo1Of1bPaw2uqf
+	IdfQdCpWQR0Gal4si6VFeOwnzLj0+47bjC4XuhB+4PjTnJ+ejO59i7pnkFWCltomMseMDMoP9rW6g
+	QGhr5a/CMB/sSH70SB3dR5vZ1DacD43UwVS9X7G+Vv1zqezYHbHTjk7/9S1qW+zFg+MxEe9NhffG7
+	96wkyhug==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vBZuI-000000088vn-3Hov;
+	Wed, 22 Oct 2025 14:33:42 +0000
+Date: Wed, 22 Oct 2025 15:33:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>
+Subject: Re: [PATCH] mm/vmalloc: request large order pages from buddy
+ allocator
+Message-ID: <aPjrRkjiIt6HmXmT@casper.infradead.org>
+References: <20251021194455.33351-2-vishal.moola@gmail.com>
+ <20251021142436.323fec204aa6e9d4b674a4aa@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
-X-Rspamd-Queue-Id: 6C826A000A
-X-Rspamd-Server: rspam11
+In-Reply-To: <20251021142436.323fec204aa6e9d4b674a4aa@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: 9mq5sg1xauqcpxgnu8phc56dji61boup
-X-HE-Tag: 1761143214-430216
-X-HE-Meta: U2FsdGVkX1+f65kRSm/wuW+rLGsJlS7dyxa6ZTLhOwKhV05Qby8XPmsMmSN3uRKhVksxhXo80N9cWfgt6PZUlsaAaQ4wGsencn71g2DMEfQGYxSC7eE5nOYLopzvq2RP0aYyIqeDlaCed5WgEpTNHM5Y8qCj44wZnOAoe+RwrLo4mrkQm41EU8yq2q0d2MkjcvFm2JCc34352oUGPFf2MeUX6rQNHhuxwwjuSA0H7D1hYjgSbQBS+Gjt9Gz0GJUGZHRyNDIYzvncj4oOskvAqfMpNkoDb6Jwar7HieWOnmWdA0Euib5DOL4QGdmP4nUKCqUARMXwqiv/tuUyD51UhcgNlkM+PTYk1JoY2wjDJ3J1O+Yt5XmXNOjHh+JasAWq6nUTuyy3qMahMRAYZ65D9qcRyXg47A9QI9yKlCH7p2oYgAfrPb1nFgtbHmMKgoo0hQbqd0w71OggoNTs8fF95oZqciPtgmSyFKdSngT8JZDQ1lzSgeeTyu+7Mr9y8zlHHxZMxawJ6lg6+ChOCqUDwmBY3p3WFWBKHNrl+Ws6Pt6RkG27TUQvgUUT1PUCWY8AAL3t10BMC8XTumLPMVh/Lq9v92pTHvgsfuuYxCPMy7wrupisesN+Ifnzw6Airk9m43l1th8ScLq+5ppzdkzclLjrNUQ3441VpqqaO3P4KZesYySGWJIZ/S5jCutYU8SX3g3EbnjLkzOzwLYOj7sy4be7C8gJi3uMUQ40eC3VQO8gxGymgCz+jvfTUigqSWNeIo8qu+8p1vVCspp7sm3D3robovkB/GZPzW0OnTdsF12HBoTlNdepbJZ7yaeeuyv/vMd9nPYogXqlC+58EhEpbW2m/blbyT9l2z4aOAF5DAy4dhm99tV9ZtYWFQJALjlook88xNL2h1+6Pp7WGIe/50xiuybH+88NEtvi7HlNMXY2/piOQxr0jxxsnNBoIXXDe0zRPpWEX63s+vs7iCs
- at6wB5MQ
- Q7LN7w63Y/JmtuGfxoQrnsVXWMM5UXyB5WV/sNW9QAV48C4Aacu4MLXXN9njHpEM3fYuKZSCsuDNd87e4KzROyurd1OdMuJvuWsWDknylI/cm7XQhMkwWiboMq/d5oN/QQ3N7Mxr5XReTy3i///4qOkvlgkSOrVbckxP8pReLqJAZytB1VVwlAwR+uEpNb/YQUIPJEuyQNu1QHcphevj/oh8vNriYXgrcAFN5iylS5E+06dSGsCnhorqEUMvEkhO73bXNaxoCRTUiQ8uW4DnCasUlgxdlC19naj6IbJIlDRJsjst9BFZiU4ZooGC4U5BHrVP6kE4IZk1tlOhdY/N/u5/RGTSUg/gSV+34VqwRwaMnyzeYIqa/qHXfhYtx1QOh3hLMXO5vMqW+xuxRWKVCE8lI4+6D9eiv/UbSX51uVOvVIm4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7880D1C001D
+X-Stat-Signature: ixcswgi9bnjejoiadm3a3r7s8yq8zmgd
+X-HE-Tag: 1761143626-281752
+X-HE-Meta: U2FsdGVkX1/tRsby4XobtH2u423rnc2heSxGGrrppcM1tpo/HxDF/fkjx1HYbTGueLrxoRudr16kB76ifTMxnDuyP2atiF20JE7h/SMhMybswERBRnoTkW4jxVd41zGAtJmd09Gggo+wcne4j/mh8opewPQS/wRhFMefn4NIh3FO93WSZhqWnW8GXv2ZHXEJbYFKKXD40xMQfOoz3anMAPBxPeWRrEZKkS0+TBy3ScOtjMaA93u2XCnGK7vhpmgW2a1roINqZmONDgcmI+G+F9Zg23HheIdYKWgxSktzjW9dQYCAp4sfRf7H8zzfbHjbzeMjUXz6ka+7bbJ/JlgKO7De48s9vsXe/7bt7/bXbyneGTPusEZcnSpFA7223O1b3lktLHw8ubKcJXDPGTUp7dZx6zhjB7xgjE6Z/ncLEds+s/sqnRWebtvyI/fxUfAaZ17coCYBZ1SqggYwmF1lRmiQQDTpn7hLXOFkQ6esrH9w1lQf3Q54zhVYoIIHKkCwDHr0ZvljWcASYG21RDnUjuRYFbjvcpJTO6A4rW9hAld1PD2iSsVmcgTa1AUmm6pyVBU7tDy3bv+gXpNWsyVnzpp/kw8kazZm3sUL82I+YJaNQNu0bCxy+Iwyyf2uMOhL3KVCOIBnajohU6qOmZ3vJ+a+3zvSOZTxvUgS+c6RVOsAzHODIW6GuXoL8Ly/uPL31JcULoR8u7pFvhRv++z11n/6wpt8p/7Zg7myyLPIRXCpDiAqXRpWsPJgpb+xobmQVlShCpYBayQ7KwEEmpR6VPyuwaJRNyI7KMVMFh5oOeqzdVTcNlGWnDSd3pInzRpMGPWY7WTj0DVfg0OvNXTsi8485l/ce9azB2CR4UISu45R56e1auvK2WjGageaTP27Bpl9UfWzBDZLorgPdhb2kQtfpDoIEVpRkBJW+T6HZSmJjduia87Nu3VM5Yi/Dw8db9AbbJ+xLyjOtn178yx
+ 5xDVNCFy
+ Gs0rzm8dEHGBYCAO7ZTY9TvRClqO54S/pGqR/V04PcwgBOO0cobmXNK9FwE1dk2urWvyMW59+IbQjLSXnrpQmrU/4rGXAWXL0BqkCTwW9Yr6yLZyCOBFGVFdpWsBSRmCz+txlMQwQNGrfDwAmzMWSGL+D2xzT0w8qee7Z0oLxOp6ZW0jhq+KAnqBvuK5n//rioTRpQWKJxWW9UkdeScKQ7qLjToozxzzb9aI4KnQrtuIU2IW32AKeLDiIbx1FlLAbXw+xAmu3HsQJ9Ys=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,82 +89,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 09:34:52PM +0800, Leon Hwang wrote:
+On Tue, Oct 21, 2025 at 02:24:36PM -0700, Andrew Morton wrote:
+> On Tue, 21 Oct 2025 12:44:56 -0700 "Vishal Moola (Oracle)" <vishal.moola@gmail.com> wrote:
 > 
+> > Sometimes, vm_area_alloc_pages() will want many pages from the buddy
+> > allocator. Rather than making requests to the buddy allocator for at
+> > most 100 pages at a time, we can eagerly request large order pages a
+> > smaller number of times.
 > 
-> On 2025/10/22 16:20, Greg KH wrote:
-> > On Wed, Oct 22, 2025 at 04:08:45PM +0800, Leon Hwang wrote:
-> >>
-> >>
-> >> On 22/10/25 15:40, Greg KH wrote:
-> >>> On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
-> >>>> Fix the build error:
-> >>>>
-> >>>> map_hugetlb.c: In function 'main':
-> >>>> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
-> >>>>    79 |         hugepage_size = default_huge_page_size();
-> >>>>       |                         ^~~~~~~~~~~~~~~~~~~~~~
-> >>>> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
-> >>>> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
-> >>>>
-> >>>> According to the latest selftests, 'default_huge_page_size' has been
-> >>>> moved to 'vm_util.c'. So fix the error by the same way.
-> >>>>
-> >>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> >>>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> >>>> ---
-> >>>>  tools/testing/selftests/vm/Makefile      |  1 +
-> >>>>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
-> >>>>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
-> >>>>  tools/testing/selftests/vm/vm_util.h     |  1 +
-> >>>>  4 files changed, 23 insertions(+), 24 deletions(-)
-> >>>
-> >>>
-> >>> What commit id does this fix?  And again, why not just take the original
-> >>
-> >> Let me check which commit introduced the fix.
-> >>
-> >>> commits instead?
-> >>
-> >> I agree that taking the original commits would be preferable.
-> >>
-> >> However, it might involve quite a few patches to backport, which could
-> >> be a bit of work.
-> >
-> > We can easily take lots of patches, don't worry about the quantity.  But
-> > it would be good to figure out what caused this to break here, and not
-> > in other branches.
-> >
-> 
-> Hi Greg,
-> 
-> After checking with 'git blame map_hugetlb.c', the issue was introduced
-> by commit a584c7734a4d (“selftests: mm: fix map_hugetlb failure on 64K
-> page size systems”), which corresponds to upstream commit 91b80cc5b39f.
-> This change appears to have caused the build error in the 6.1.y tree.
-> 
-> Comparing several stable trees shows the following:
-> 
-> - 6.0.y: not backported*
-> - 6.1.y: backported
-> - 6.2.y: not backported*
-> - 6.3.y: not backported*
-> - 6.4.y: not backported*
-> - 6.5.y: not backported*
-> - 6.6.y: backported
-> - 6.7.y: backported
-> 
-> Given this, it might be preferable to revert a584c7734a4d in 6.1.y for
-> consistency with the other stable trees (6.0.y, 6.2–6.5.y).
+> Does this have potential to inadvertently reduce the availability of
+> hugepages?
 
-Ah, yeah, it looks like this commit was reverted from other stable
-releases, as it shows up in the following releases:
+Quite the opposite.  Let's say we're doing a 40KiB allocation.  If we
+just take the first 10 pages off the PCP list, those could be from
+ten different 2MB chunks, preventing ten different hugepages from
+forming until the allocation succeeds.  If instead we do an order-3
+allocation and an order-1 allocation, those can be from at most two
+different 2MB chunks and prevent at most two hugepages from forming.
 
-	4.19.310 4.19.315 5.4.272 5.4.277 5.10.213 5.10.218 5.15.152 5.15.160 6.1.82 6.6.18 6.7.6
+> > 1000 2mb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    46.310s			real    0m34.582
+> > 	user    0.001s			user    0.006s
+> > 	sys     46.058s			sys     0m34.365s
+> > 
+> > 10000 200kb allocations:
+> > 	[Baseline]			[This patch]
+> > 	real    56.104s			real    0m43.696
+> > 	user    0.001s			user    0.003s
+> > 	sys     55.375s			sys     0m42.995s
+> 
+> Nice, but how significant is this change likely to be for a real workload?
 
-So a revert would be fine, want to submit it?
+Ulad has numbers for the last iteration of this patch showing an
+improvement for a 16KiB allocation, which is an improvement for fork()
+now we all have VMAP_STACK.
 
-thanks,
+> > +	gfp_t large_gfp = (gfp &
+> > +		~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL | __GFP_COMP))
+> > +		| __GFP_NOWARN;
+> 
+> Gee, why is this so complicated?
 
-greg k-h
+Because GFP flags suck as an interface?  Look at kmalloc_gfp_adjust().
+
+> > +	unsigned int large_order = ilog2(nr_remaining);
+> 
+> Should nr_remaining be rounded up to next-power-of-two?
+
+No, we don't want to overallocate, we want to precisely allocate.
+To use our 40KiB example from earlier, we want to satisfy the allocation
+by allocating a 32KiB chunk and an 8KiB chunk, not by allocating 64KiB
+and only using part of it.
+
+(I suppose there's an argument for using alloc_pages_exact() here, but
+I think it's a fairly weak one)
 
