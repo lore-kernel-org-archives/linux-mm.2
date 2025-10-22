@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3DC5CCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 21:36:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E0ECCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 21:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9C2D8E0003; Wed, 22 Oct 2025 17:36:09 -0400 (EDT)
+	id BCB3C8E0005; Wed, 22 Oct 2025 17:39:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B73FC8E0002; Wed, 22 Oct 2025 17:36:09 -0400 (EDT)
+	id BA2D28E0002; Wed, 22 Oct 2025 17:39:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A89D18E0003; Wed, 22 Oct 2025 17:36:09 -0400 (EDT)
+	id ADF9A8E0005; Wed, 22 Oct 2025 17:39:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 949368E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:36:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 345AF14092D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:36:09 +0000 (UTC)
-X-FDA: 84027058458.27.FF56048
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 425D1160010
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:36:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="YD/zEhKO";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761168967; a=rsa-sha256;
-	cv=none;
-	b=6dNhFHGhentEN2Wo0uBnbXJVZtp1lfXcjnLD5KbmMWGhQDnSdIgvm/TKzGAgaZdBdzKKGw
-	j8iO38AwA8fTRrZBTW2JWogEFdXmFtILVJnQwMeDIfvpW18NbaWIbEfHtyN1hD1OPIWM0/
-	5JrG0tgcufME1s5zH5dStL8ou7Aig6g=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="YD/zEhKO";
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0768E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:39:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F03F160988
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:39:38 +0000 (UTC)
+X-FDA: 84027067236.13.9B3DA25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 959B8C0009
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:39:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNWwA7uT;
+	spf=pass (imf22.hostedemail.com: domain of conor@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761168967;
+	s=arc-20220608; t=1761169176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QS/wDVWg/99dm/YWlTuIw+3X1HjWCfQCG/YUCbH1ck0=;
-	b=i/6IQU9vXazE7IyFKacXoBXferBNtY0c8CTn85ff8Al4FibMBPvQ1KJqqnseXjYzAJTYpf
-	MGuuXg1u4S5f956zNQn/U6Wow/Btqdkm7KVJZ6UFVI9G5D0Paby/4wFg5RnL6aH1I2yYnA
-	5MtP0kO1Xx2k9Exm4KiO5ns5bLU6DPs=
+	bh=wc5x1Gwl3C0XgAlO395LUopwk5B3TtKZafU21IA+ndQ=;
+	b=FAPKO0gvB3TWGXi9qgW4TZ/KB1GaX7Zb+jmRcvBK2PZn7Uq55qRqkfp065nvSt8Ibz3xkU
+	HoRfXIdbBVPt9ejSEgOJeGqexeRSkcXNr154CMF6yrPg2aDsvJkW1wBgghkjqN8OLaUszR
+	E8hwc8SVGyOiHvYbdyn8MEu+iz56MEI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNWwA7uT;
+	spf=pass (imf22.hostedemail.com: domain of conor@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=conor@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761169176; a=rsa-sha256;
+	cv=none;
+	b=pnyCjoH5CxiKq5NK0h6YK/v0r9OK2d9Gr7XFxuvA/lGFe4s3+7tAU8nEJAzuW5wWzb374n
+	jahaKeBHehx1fWH7+4Ui7tR3sg2Ywll8Roa6hKBlz1w9nBwK+qCwYr1mpLjRsFrW3XBYO+
+	0HRm7pu3JLYgh8v/1XyYW69KekBIBF0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 010D2402AB;
-	Wed, 22 Oct 2025 21:36:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81401C4CEE7;
-	Wed, 22 Oct 2025 21:36:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761168965;
-	bh=xzJFHS05vq/gzblbNJCK/TcArYaZ4JncDoxITCAkLaY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YD/zEhKOHgEYpglKaPhtMClD31p30giEdTFT17IwmiXfer+aiI+vhBszRJP0giJZJ
-	 eG2wyFYkb0Ca9YMP19vLrq8LvCIie8zJLDpkh81fViVa+wJVVggvnJmvqxkvU2mAoL
-	 KpvHzFeQSLVqxbnRE+K1StBZGaU930yoNKcxhxQ4=
-Date: Wed, 22 Oct 2025 14:36:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>, Alexander Potapenko
- <glider@google.com>, Marco Elver <elver@google.com>, Dmitry Vyukov
- <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>, Alexei
- Starovoitov <ast@kernel.org>
-Subject: Re: [PATCH] mm/kmsan: Fix kmsan kmalloc hook when no stack depots
- are allocated yet
-Message-Id: <20251022143604.1ac1fcb18bfaf730097081ab@linux-foundation.org>
-In-Reply-To: <20251022030213.GA35717@sol>
-References: <20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com>
-	<20251008203111.e6ce309e9f937652856d9aa5@linux-foundation.org>
-	<335827e0-0a4c-43c3-a79b-6448307573fd@linux.ibm.com>
-	<20251022030213.GA35717@sol>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z1qe4pckwwngwayo65ir3oo69b6scq4c
-X-Rspamd-Queue-Id: 425D1160010
-X-Rspamd-Server: rspam06
+	by tor.source.kernel.org (Postfix) with ESMTP id C104663E1E;
+	Wed, 22 Oct 2025 21:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0F7C4CEE7;
+	Wed, 22 Oct 2025 21:39:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761169175;
+	bh=fMnDUsh++hTRlW5dn4gfNo7HgWB7+StricBM3MTmevE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HNWwA7uT41H1QeC3nDJKzxGOAYopyZyz8wtaReHnMFNDClB7pEowhjPcwr/h555lQ
+	 jVxtk2LwgDfOBrV2C1kpcI5K4L/QQTXZdNgUl0O4FXSwDIIJZ6hxJeud2yNdpiq/+M
+	 8EJBosY1IHyBF2qbURoZ+X8CZjQ1U95UUYYKemkTqV1JzCIfJyset7oaAlrfKF4mF4
+	 WbVDphXvbnCpZ3IipJhwoV0ZsefssffeUcgsW59U02F+Q8u5G2n+rXOzbnD6+eMX57
+	 jtCI+BMlMh63VWOMWxICaIOtULATYu3+pTOojxsVyRsl+O/sHbxAPjROCsiuLpTAhk
+	 +aIwx9oysP7iA==
+Date: Wed, 22 Oct 2025 22:39:28 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-cxl@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>, james.morse@arm.com,
+	Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [PATCH v4 6/6] cache: Support cache maintenance for HiSilicon
+ SoC Hydra Home Agent
+Message-ID: <20251022-kite-revert-2c2684054d05@spud>
+References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+ <20251022113349.1711388-7-Jonathan.Cameron@huawei.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Hs5fF3jxcDKPxATt"
+Content-Disposition: inline
+In-Reply-To: <20251022113349.1711388-7-Jonathan.Cameron@huawei.com>
+X-Rspamd-Queue-Id: 959B8C0009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761168967-590745
-X-HE-Meta: U2FsdGVkX1+t5jqDSpMeqc3XQe8sp3lXsHhSxDMt0vl3rC9FnQEuxaCyx4JlmGQK3eFPTzeGrzcPFhW4c1WVUBzdEmmWMUPn2B8Yu2j+vAuQfytddU7j0dN7tbFw4b86amJdWPC2+abZsZEUe+0Khz9ovJnC7N+fP5ZN4gjJcgPm4mA1EbTqH0UoNvIa9Cnnz7sIwhsPxLt8kcVmUjAr8qEDQPLqT2tdbXyCc6g9ihYqOUcgYEYgN2Emyh9DtVYyzWujSN2CmgBzEehonFOZynChs0a166m/apXsIhfnVmsMnunH77WsBLd0W7fcRgaSl21SP7HnMYGPHa66iljjZG2wUY0GYoqDzPE+Tx5X8ZVhmWJJWR8SwpB+6r4mO+FcMOBb4ZzDWWENVwtY8M3LgWHqW7pnkzdq6QhaZeKm36P/Y+JKIjGXLH4epcxB9t8w3FNXL1/6NNaV6H8UP0Cw7B8fdkPsVNZRXLIUkfuoB/g7QJO10od3VObDA0376jhE/eghWAy1CHFUpfSeJum1EcE49/FdLRdCxfRDdeCSQy/+YmJWgNFu/8MmJIkvPPonjMg56CdyF7InSU51wk1ucHUfzE+/SW6yUXGThvGSL8fr7kxlKFIaswkJQYGl0S5fIWXul1Cj+36zehlxZirj2CfnORwEk9sjBdI90TIBWFD2knDvMMMWmU9CrdSdrZoVPpMga5i3nLVifQuQ0gKWTduKHZYj73kOkUKL+xS6SCGrZFT6ngXfNJGmzU46ctumo1dfBHR8IpD7q9AMRrA7sKiSZB/RbZKR7QMEtLi/b5/oFyY36S/baGZozXdiBY293v96jwBH3z9tF+MWPa7WIUiB/S4zHUVIskjxVpFlMotLO5j74jeyz6OmKTMPSQF9zvbPFcmevsg85JN6ij7uxPVayI+RZxd9xIPlykYFU0kEm2jYQkw7EGY9rHuJ2dYZfZq3BQ2/sT+XJt2IpHO
- 7P/8R3JZ
- q9XNzCN4A/hgVh+lSz4O/AlsbhdKxj25Lkv4FX70R3xDwc+i4gKWEfMYbnW+Ca08F2N1QFfQEwBhQHr6wNU0MfmPxEd+B3BMNA69XLUzU6tcjCGtc+P5QkYhipY8z/uhUFBKZH+178VrqFYNGwPHrPVTGburz9Zz8degvpwgMNv6reohN359jiEw0by7E5WkXzVm7vQ1pQUFgjTnwwVh/lVcJbzA62x2m8uq4SMNyS63ogxoIqpbv81xjbWJdH9dCM4+uiQTBBpOyQGCUjsHiSnGLzyC6/kX07sTfUb3pUtH69SAh01eLfidaLt21x6a5qPpE68tp6QNm7qCJf/d/jE3QYojQ9QJM6rXrnuMNbmW6jvIFuc5HF6GMJEDiOmQoh3fM
+X-Stat-Signature: 5ktp5mywhiedy6e3afqyytdah9ic8npw
+X-HE-Tag: 1761169176-599517
+X-HE-Meta: U2FsdGVkX1/sRkZuSi/ene04BT3JZDcD6G0z4Ps/iblhtwnK5i0I0axRG3BbabYSK+sakvEh5V11eonOvREq66Pq/YD8audhwJ6GjHYrLp3xiSLzo4WmYhn1927CWilyOgLogG+VR1+peknFL0b1kqKlEm43HtJSVOj3LHJbgxf1Ypq0WtIi+398m51wExY97fVVhesVnbS1FyTfeEIX1GOt2oriuH57Kq8mdKlmtMcgRxAyFDqsirKMfO8x1M7pXxgsppxSFgLqrvOxt784ko/MGoUgmPw6DXY8xTyy2NJOB5aFdUw0iJ7gdMTZ9N9nSl9YtKjGB+P7sQwOb8T/3kNY8+x3Mp4sUW+6uEaWgdPrhsbcoI9M0lrNgd44r6xsvh4tnnA7nxPwRSfKehevwx4ClZtn2VVrIbSNXHRLrtmlQBm5uPFyjJDQL6hge/kTJuy805lWlLxjEzx3XyMwtG87TXSZRVFLiwwer3p4JqHuv2WkYHQYGoSK8N+2G1npxthDbPerIn1k6/lcdHdG/trNqfZfOLdNVYMwdGZWnkiMAemLo2w9BOA7+I81uvCopct2aJTXgM932UG9BmdM7FlXd3+Bb4wg3/RbvrfmhR7G9yw1qEnWalFmjYteqQjsEKsxdAgCn0MWoWr4AyymZ0BXDcAXgVHwqCNn4LTbu4x9bd3DOaGx2vdh9N4sFxX0be8mxaePeSy9dJLF2yiGD8tV+zHWxYaXe0q0exKKWw/47I+CWgO7zoy6Xf1v4teYUYYmJa85USFiST/HEgtTwWGZcKHnjGemXrf/axW/lHTPFXH76nSxzEq6ZGWn46cSEaIBz7lfXXD/zxVSqznR/AkycH4zZ4dOIVZ9hGfXR4MQSGruy4jj1ebt3j3K7qwkw9dpCrEqGskgIRiDUUIlnAtyTSVmveVu6so/jF01yEi+GIWjJ2giEpUZEUwSEw7x4EXNdkdTs5xa3Tw6qhX
+ vvi2PDCs
+ Ee9juc2++KTZdYGyCVhKAMJE6PRoXV00E6aWrIeDGU3itfvyqBqD6t/mREosFcL42Gh2XXj9dQKrBEEz0KHnN/boNkCp92mAfIk9c76J/I9QPGysfFDchuQmfarlB9dHbe0jcZB00OF/8X+eMhbyWDb1VXnPW7v38XLSo1cexqSbljgmeAYzPuvpGieBBXH+25pW1VeSDJcbyH0lid2HlEhqjwgZ4RxSKIwt0ZFAZyQlrcpx/V/YZiUH/iDjYq6dQbMraVEPUULv5XyKjPQt0hDVvZHrnLl5BFTrUnN+bc2oUdRmIY0J0nVDSfWKSmaCAuf9P/mCILGH3Jtxsv6gv7sL2MMdlrcnkba86
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,168 +107,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Oct 2025 20:02:13 -0700 Eric Biggers <ebiggers@kernel.org> wrote:
 
-> On Fri, Oct 10, 2025 at 10:07:04AM +0200, Aleksei Nikiforov wrote:
-> > On 10/9/25 05:31, Andrew Morton wrote:
-> > > On Tue, 30 Sep 2025 13:56:01 +0200 Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com> wrote:
-> > > 
-> > > > If no stack depot is allocated yet,
-> > > > due to masking out __GFP_RECLAIM flags
-> > > > kmsan called from kmalloc cannot allocate stack depot.
-> > > > kmsan fails to record origin and report issues.
-> > > > 
-> > > > Reusing flags from kmalloc without modifying them should be safe for kmsan.
-> > > > For example, such chain of calls is possible:
-> > > > test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
-> > > > slab_alloc_node -> slab_post_alloc_hook ->
-> > > > kmsan_slab_alloc -> kmsan_internal_poison_memory.
-> > > > 
-> > > > Only when it is called in a context without flags present
-> > > > should __GFP_RECLAIM flags be masked.
-> > > > 
-> > > > With this change all kmsan tests start working reliably.
-> > > 
-> > > I'm not seeing reports of "hey, kmsan is broken", so I assume this
-> > > failure only occurs under special circumstances?
-> > 
-> > Hi,
-> > 
-> > kmsan might report less issues than it detects due to not allocating stack
-> > depots and not reporting issues without stack depots. Lack of reports may go
-> > unnoticed, that's why you don't get reports of kmsan being broken.
-> 
-> Yes, KMSAN seems to be at least partially broken currently.  Besides the
-> fact that the kmsan KUnit test is currently failing (which I reported at
-> https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed
-> that the poly1305 KUnit test causes a KMSAN warning with Aleksei's patch
-> applied but does not cause a warning without it.  The warning did get
-> reached via syzbot somehow
-> (https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.1761026343.git.xiaopei01@kylinos.cn/),
-> so KMSAN must still work in some cases.  But it didn't work for me.
+--Hs5fF3jxcDKPxATt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-OK, thanks, I pasted the above para into the changelog to help people
-understand the impact of this.
+On Wed, Oct 22, 2025 at 12:33:49PM +0100, Jonathan Cameron wrote:
 
-> (That particular warning in the architecture-optimized Poly1305 code is
-> actually a false positive due to memory being initialized by assembly
-> code.  But that's besides the point.  The point is that I should have
-> seen the warning earlier, but I didn't.  And Aleksei's patch seems to
-> fix KMSAN to work reliably.  It also fixes the kmsan KUnit test.)
-> 
-> I don't really know this code, but I can at least give:
-> 
-> Tested-by: Eric Biggers <ebiggers@kernel.org>
-> 
-> If you want to add a Fixes commit I think it is either 97769a53f117e2 or
-> 8c57b687e8331.  Earlier I had confirmed that reverting those commits
-> fixed the kmsan test too
-> (https://lore.kernel.org/r/20250911192953.GG1376@sol).
+> +static int hisi_soc_hha_wbinv(struct cache_coherency_ops_inst *cci,
+> +			struct cc_inval_params *invp)
+> +{
+> +	struct hisi_soc_hha *soc_hha =3D
+> +		container_of(cci, struct hisi_soc_hha, cci);
+> +	phys_addr_t top, addr =3D invp->addr;
+> +	size_t size =3D invp->size;
+> +	u32 reg;
+> +
+> +	if (!size)
+> +		return -EINVAL;
+> +
+> +	addr =3D ALIGN_DOWN(addr, HISI_HHA_MAINT_ALIGN);
+> +	top =3D ALIGN(addr + size, HISI_HHA_MAINT_ALIGN);
+> +	size =3D top - addr;
+> +
+> +	guard(mutex)(&soc_hha->lock);
+> +
+> +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
+> +		return -EBUSY;
+> +
+> +	/*
+> +	 * Hardware will search for addresses ranging [addr, addr + size - 1],
+> +	 * last byte included, and perform maintain in 128 byte granule
+> +	 * on those cachelines which contain the addresses.
+> +	 */
 
-Both commits affect the same kernel version so either should be good
-for a Fixes target.
+Hmm, does this mean that the IP has some built-in handling for there
+being more than one "agent" in a system? IOW, if the address is not in
+its range, then the search will just fail into a NOP?
+If that's not the case, is this particular "agent" by design not suitable
+for a system like that? Or will a dual hydra home agent system come with
+a new ACPI ID that we can use to deal with that kind of situation?
+(Although I don't know enough about ACPI to know where you'd even get
+the information about what instance handles what range from...)
 
-I'll add a cc:stable to this and shall stage it for 6.18-rcX.
+> +	size -=3D 1;
+> +
+> +	writel(lower_32_bits(addr), soc_hha->base + HISI_HHA_START_L);
+> +	writel(upper_32_bits(addr), soc_hha->base + HISI_HHA_START_H);
+> +	writel(lower_32_bits(size), soc_hha->base + HISI_HHA_LEN_L);
+> +	writel(upper_32_bits(size), soc_hha->base + HISI_HHA_LEN_H);
+> +
+> +	reg =3D FIELD_PREP(HISI_HHA_CTRL_TYPE, 1); /* Clean Invalid */
+> +	reg |=3D HISI_HHA_CTRL_RANGE | HISI_HHA_CTRL_EN;
+> +	writel(reg, soc_hha->base + HISI_HHA_CTRL);
+> +
+> +	return 0;
+> +}
+> +
+> +static int hisi_soc_hha_done(struct cache_coherency_ops_inst *cci)
+> +{
+> +	struct hisi_soc_hha *soc_hha =3D
+> +		container_of(cci, struct hisi_soc_hha, cci);
+> +
+> +	guard(mutex)(&soc_hha->lock);
+> +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
+> +		return -ETIMEDOUT;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct cache_coherency_ops hha_ops =3D {
+> +	.wbinv =3D hisi_soc_hha_wbinv,
+> +	.done =3D hisi_soc_hha_done,
+> +};
+> +
+> +static int hisi_soc_hha_probe(struct platform_device *pdev)
+> +{
+> +	struct hisi_soc_hha *soc_hha;
+> +	struct resource *mem;
+> +	int ret;
+> +
+> +	soc_hha =3D cache_coherency_ops_instance_alloc(&hha_ops,
+> +						     struct hisi_soc_hha, cci);
+> +	if (!soc_hha)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, soc_hha);
+> +
+> +	mutex_init(&soc_hha->lock);
+> +
+> +	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!mem) {
+> +		ret =3D -ENOMEM;
+> +		goto err_free_cci;
+> +	}
+> +
+> +	/*
+> +	 * HHA cache driver share the same register region with HHA uncore PMU
+> +	 * driver in hardware's perspective, none of them should reserve the
+> +	 * resource to itself only.  Here exclusive access verification is
+> +	 * avoided by calling devm_ioremap instead of devm_ioremap_resource to
 
-The current state is below - if people want to suggest alterations,
-please go for it.
+The comment here doesn't exactly match the code, dunno if you went away
+=66rom devm some reason and just forgot to to make the change or the other
+way around? Not a big deal obviously, but maybe you forgot to do
+something you intended doing. It's mentioned in the commit message too.
 
+Other than the question I have about the multi-"agent" stuff, this
+looks fine to me. I assume it's been thought about and is fine for w/e
+reason, but I'd like to know what that is.
 
+Cheers,
+Conor.
 
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Subject: mm/kmsan: fix kmsan kmalloc hook when no stack depots are allocated yet
-Date: Tue, 30 Sep 2025 13:56:01 +0200
+> +	 * allow both drivers to exist at the same time.
+> +	 */
+> +	soc_hha->base =3D ioremap(mem->start, resource_size(mem));
+> +	if (!soc_hha->base) {
+> +		ret =3D dev_err_probe(&pdev->dev, -ENOMEM,
+> +				    "failed to remap io memory");
+> +		goto err_free_cci;
+> +	}
+> +
+> +	ret =3D cache_coherency_ops_instance_register(&soc_hha->cci);
+> +	if (ret)
+> +		goto err_iounmap;
+> +
+> +	return 0;
+> +
+> +err_iounmap:
+> +	iounmap(soc_hha->base);
+> +err_free_cci:
+> +	cache_coherency_ops_instance_put(&soc_hha->cci);
+> +	return ret;
+> +}
+> +
+> +static void hisi_soc_hha_remove(struct platform_device *pdev)
+> +{
+> +	struct hisi_soc_hha *soc_hha =3D platform_get_drvdata(pdev);
+> +
+> +	cache_coherency_ops_instance_unregister(&soc_hha->cci);
+> +	iounmap(soc_hha->base);
+> +	cache_coherency_ops_instance_put(&soc_hha->cci);
+> +}
 
-If no stack depot is allocated yet, due to masking out __GFP_RECLAIM
-flags kmsan called from kmalloc cannot allocate stack depot.  kmsan
-fails to record origin and report issues.  This may result in KMSAN
-failing to report issues.
+--Hs5fF3jxcDKPxATt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Reusing flags from kmalloc without modifying them should be safe for kmsan.
-For example, such chain of calls is possible:
-test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
-slab_alloc_node -> slab_post_alloc_hook ->
-kmsan_slab_alloc -> kmsan_internal_poison_memory.
+-----BEGIN PGP SIGNATURE-----
 
-Only when it is called in a context without flags present should
-__GFP_RECLAIM flags be masked.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPlPEAAKCRB4tDGHoIJi
+0n5pAQCCL4y7CHzVqNXyyDfhRrqw9BjDlYs8MpqKde1NNQMUgwEAqS1sE14/IdwM
+Du1yl5LVFN+kra14elaLoO7/NifKDQg=
+=PAly
+-----END PGP SIGNATURE-----
 
-With this change all kmsan tests start working reliably.
-
-Eric reported:
-
-: Yes, KMSAN seems to be at least partially broken currently.  Besides the
-:_fact that the kmsan KUnit test is currently failing (which I reported at
-:_https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed that
-:_the poly1305 KUnit test causes a KMSAN warning with Aleksei's patch
-:_applied but does not cause a warning without it.  The warning did get
-:_reached via syzbot somehow
-:_(https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.1761026343.git.xiaopei01@kylinos.cn/),
-:_so KMSAN must still work in some cases.  But it didn't work for me.
-
-Link: https://lkml.kernel.org/r/20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com
-Link: https://lkml.kernel.org/r/20251022030213.GA35717@sol
-Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunistic page allocation")
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kmsan/core.c   |    3 ---
- mm/kmsan/hooks.c  |    6 ++++--
- mm/kmsan/shadow.c |    2 +-
- 3 files changed, 5 insertions(+), 6 deletions(-)
-
---- a/mm/kmsan/core.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-depots-are-allocated-yet
-+++ a/mm/kmsan/core.c
-@@ -72,9 +72,6 @@ depot_stack_handle_t kmsan_save_stack_wi
- 
- 	nr_entries = stack_trace_save(entries, KMSAN_STACK_DEPTH, 0);
- 
--	/* Don't sleep. */
--	flags &= ~(__GFP_DIRECT_RECLAIM | __GFP_KSWAPD_RECLAIM);
--
- 	handle = stack_depot_save(entries, nr_entries, flags);
- 	return stack_depot_set_extra_bits(handle, extra);
- }
---- a/mm/kmsan/hooks.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-depots-are-allocated-yet
-+++ a/mm/kmsan/hooks.c
-@@ -84,7 +84,8 @@ void kmsan_slab_free(struct kmem_cache *
- 	if (s->ctor)
- 		return;
- 	kmsan_enter_runtime();
--	kmsan_internal_poison_memory(object, s->object_size, GFP_KERNEL,
-+	kmsan_internal_poison_memory(object, s->object_size,
-+				     GFP_KERNEL & ~(__GFP_RECLAIM),
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
- }
-@@ -114,7 +115,8 @@ void kmsan_kfree_large(const void *ptr)
- 	kmsan_enter_runtime();
- 	page = virt_to_head_page((void *)ptr);
- 	KMSAN_WARN_ON(ptr != page_address(page));
--	kmsan_internal_poison_memory((void *)ptr, page_size(page), GFP_KERNEL,
-+	kmsan_internal_poison_memory((void *)ptr, page_size(page),
-+				     GFP_KERNEL & ~(__GFP_RECLAIM),
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
- }
---- a/mm/kmsan/shadow.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-depots-are-allocated-yet
-+++ a/mm/kmsan/shadow.c
-@@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page,
- 		return;
- 	kmsan_enter_runtime();
- 	kmsan_internal_poison_memory(page_address(page), page_size(page),
--				     GFP_KERNEL,
-+				     GFP_KERNEL & ~(__GFP_RECLAIM),
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
- }
-_
-
+--Hs5fF3jxcDKPxATt--
 
