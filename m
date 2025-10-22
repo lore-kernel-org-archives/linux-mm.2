@@ -4,173 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DF0CCCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63016CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AECE88E000E; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
+	id B753D8E0003; Wed, 22 Oct 2025 14:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC4848E0003; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
+	id B4CCD8E0002; Wed, 22 Oct 2025 14:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98BC68E000E; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
+	id A62B28E0003; Wed, 22 Oct 2025 14:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 865238E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:00:02 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 960828E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:08:18 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2339D1608B8
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:00:02 +0000 (UTC)
-X-FDA: 84026513844.27.57FE2E0
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9E1F11C0007
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 17:59:59 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S5Ws6VZD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h8uIG2fp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fVjNoCkz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oPGTYGUM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49DBC1408AB
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:08:18 +0000 (UTC)
+X-FDA: 84026534676.27.AFEF26A
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5001240015
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:08:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="gPbH2/kH";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=shy828301@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761156496; a=rsa-sha256;
+	cv=none;
+	b=Z7nKzefjHgzTC2zwLr2Uu8B1DEfPoJctLeCCjJ4qoLGLc8+LFwC9lg1m9gHsJ0xG38ufzr
+	IhT1eKKkL/DKgtZC9OL7Qi5EDWeJ9tULsNoQ52YMuZuvnWzWnhlh4JcGdiQ99g4Bs7P5fS
+	ptXRtEoeCCa61DPae9370DTJz0RV5H4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="gPbH2/kH";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of shy828301@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=shy828301@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761156000;
+	s=arc-20220608; t=1761156496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
-	b=V7yNTktNjUIlLI6oHhvYjcRe8/VMLYOFUX1xPHBv6GOG3PF9mOPNcZNF6OPcOohBP+8GUH
-	s9kd+LT/GONh+CvCcXaiyswsmp3FO03k9Gmi6bjqjiHP9blyJsdn7iS6Fet5gsmuLdeZlO
-	1LOR0Yh9C5QIVh4o7yk2vSmGbKX3IQo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761156000; a=rsa-sha256;
-	cv=none;
-	b=iU+ibWkXYwXjdH5Uy+heT8LJ6ROASFuljg9a+X/EF6WFWS9Tg8djkJos2GaWbNNRU9sPaG
-	eBfqLDjZ92EYJxi9H48te9HtfVlc5UH7GZ0elVvffV/LFILnfmP9myX3aQXFYTgKqvuJu8
-	TLHKvB9ebuvUTLWFvc1O3roZlaFUrd8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=S5Ws6VZD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=h8uIG2fp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fVjNoCkz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oPGTYGUM;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0B0B211EF;
-	Wed, 22 Oct 2025 17:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761155993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
-	b=S5Ws6VZDQpXUs8hKP+1klrluTXUmm6/DbdW1+GWKalcN8mugpKRJKMO7hoANcuhEVb+Ff2
-	Zr0wH7ArFZWUm7ROsBMAMofen30N1jABYTSr451WX/Mms4BahGeve5g9F9crkSFQDEFITT
-	SEGzNqv7vMK4D6EPsC7RGAdeS/4i+bE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761155993;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
-	b=h8uIG2fpLajdmf8JJafwm4+maTWMS3GAbkprZ80DGDcJpkLjAJZVvXTWfYGE9S2Q2NQSTy
-	StjMcAkVMdsremDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761155989; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
-	b=fVjNoCkz/IH+9cRgyV5by3uyVhZZPW5zcsdv7lWndUrJtcEHk/utbOXmCYmJnmLcvT+n0w
-	H7zrcE+CdCSr+UV38CT4S/ErNBVXCnnbfjf1pFiRArbcD/IM8B3r6OaC+pvwX9NDdl0+GC
-	Ig5qytRywayPc7jZ6sqyvbUJlD3JQzg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761155989;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=L1yHQMqazpboWI+TSW3xPU/Qy5qrxJsWnX2WlOm+nFI=;
-	b=oPGTYGUMgMXb5U22xD4oi3PE9iIkNU0DqZgGrjK3t0ll2b8jAbu/Y79cvyr7oEwQ9rRAuR
-	knhdYvyyGyry0UBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AD30213A29;
-	Wed, 22 Oct 2025 17:59:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B3ruKZUb+WhebAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 22 Oct 2025 17:59:49 +0000
-Message-ID: <53f0cc42-e19a-4b84-8631-390cc5b178f5@suse.cz>
-Date: Wed, 22 Oct 2025 19:59:49 +0200
+	bh=FMQtFFxEEsqRDxbkrZxdDgeMxhSRyhXbpWRw8AN98fY=;
+	b=m1L8igL7JBWWLA9gHg3vJXuh+hVeNQW948SCwbS8Dp1cG5nVTwExMsCBA/h2NmjKtfMgdI
+	ggtPNdw4q+PpcIvNt7XEV9x7yd/lX7+Nx+pfEJ6J2cgIOSEwSsLMNvk43p1pqjlrRmApH6
+	KAzoEMunSUuuTbRxkb5tmL5ZulG/Uzc=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b64cdbb949cso1212103666b.1
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761156495; x=1761761295; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FMQtFFxEEsqRDxbkrZxdDgeMxhSRyhXbpWRw8AN98fY=;
+        b=gPbH2/kHGX/LjDLmPv68Xs6MezdA7cqw/kvtLaXUkcXyWhem47oVIRdJsGHrh+O081
+         nzM4x2rjIoNWEAmmDNGurLBznPAg5uhV6JittitoGoP11lM6YKq7fUYmfvMhoHs5s0Pi
+         ocBJ8h437Dxl4QAFJkM/bZVXpVV0NXMTlK2G0sg3ii751TPT5Ezcyz+BFEJeROjZRA+E
+         a4ilMT1R+cPFumKsdKf9iWLP2EwZSw+Zqp0bij0KV0eKSOiMyI36GzR5rMgibJh1y39v
+         1Edkk9ra9Xx7Zaer+TPfcUPaWZemt+bzbmKgDN02vb1PudpGUhD7X3n3uX6pgPVfeTfm
+         NPag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761156495; x=1761761295;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FMQtFFxEEsqRDxbkrZxdDgeMxhSRyhXbpWRw8AN98fY=;
+        b=mrNgipgJtKHRP2KsVZXqQosQi9R8CICIiOEBvUNXLL7UmekE/UDoMPq2SdCXMxlfH4
+         b+n5cxkZyDTTAf1sbYMDKMT/3/3HY2En59LJ28zGDVr+uQT0pdVBHFs9y0aibybOVxMd
+         KFLuQyNp7FEWMW5cA4GCXTljjJxf11PBfvab5Tb/eqGkhF316FUJx6xMtbrraIeZjexz
+         Zug8toUzmXHrb5nsmi/YJt53LdJBuafammpV5gVQKSEC/pIYXnARD+w8WVtSPhXv2djY
+         JE/QhpHdZmhHVVuWg07WuB6yFdzpOv/8ZPtyIU629kaLsy+qT9NmYvetmcuNxvuAJoKg
+         74pw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNwgScSPWmrq07K0nO6mxsYVhL/nNrQg85//3G76fSKp6QFnNoDJfOXs6pmJcNKV1XQ1Jt4e4M8Q==@kvack.org
+X-Gm-Message-State: AOJu0YzvzulGHgZ0wCnbLvm3fbL1LdkKVOHC+RlSjrQMElIXl9Khwt7r
+	bBE97rrkqdLrsGLTEq4LCohM+rlOOu+bwnDYG1TGzew3vnxM33rNIBoMd/wlFR9lZlQHYVR1vru
+	VWNfSLvoqJqIErrcoJEY6RXc5zohpFWk=
+X-Gm-Gg: ASbGncvap3mdgbJyHV8F7bJDD4KsWy1qgIIoE0OrLboUd3390NnIpNJ1hCxF3/ZS7Ob
+	/YfhShpKVziuXVkoPe4J4m223Gorvrk6BHoq+NGtQMw64Bq1x+tfOwb+iD1bL/y8/o9KqwSFRi9
+	Ghdib20fGqR4VBCwx3jl4z0mL1wDpsnywDqQnzEYsddx1W8jS2/nBjuedtz+FJQmO1ju0/WMnD3
+	dme/s0fv3R0w+Zsx2zrgo+5gltZX8MlwsqSrv53ZOHUrhorTxdpJ6YhV79LPyfaIaLfif9wCQ==
+X-Google-Smtp-Source: AGHT+IH7M+imCkUPIEM0gojaqd/rG3Zx43O7A6mvp4uWZ0+fXegjfowMFGF2jPMC9fA+q+PtLYZiTxzhKO7/x560Dos=
+X-Received: by 2002:a17:907:25cc:b0:b40:c49b:710 with SMTP id
+ a640c23a62f3a-b6475129316mr2333654966b.47.1761156494265; Wed, 22 Oct 2025
+ 11:08:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slab: perform inc_slabs_node() as part of new_slab()
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251022-fix-slab-accounting-v1-1-27870ec363ce@suse.cz>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251022-fix-slab-accounting-v1-1-27870ec363ce@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Stat-Signature: nwrb1rsrrbsbrc45z5ae7oh5pbqdt379
+References: <20251022101704.4015055-1-catalin.marinas@arm.com>
+In-Reply-To: <20251022101704.4015055-1-catalin.marinas@arm.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Wed, 22 Oct 2025 11:08:02 -0700
+X-Gm-Features: AS18NWC2FvbWTzA8C7rrkZW5hEdgmLMERlEUwWO1avl88qM2ea0eHvXPjFT8k2c
+Message-ID: <CAHbLzkoG7zXHubYoh3gSWkdmsLEsMDrBzdAuViRzTEwQNHkpNw@mail.gmail.com>
+Subject: Re: [PATCH v2] arm64: mte: Do not warn if the page is already tagged
+ in copy_highpage()
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
+	syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com, 
+	David Hildenbrand <david@redhat.com>, Will Deacon <will@kernel.org>, 
+	Kefeng Wang <wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6ifg65qk4oc3fgdx91adug78nnrs3yzc
+X-Rspamd-Queue-Id: 5001240015
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E1F11C0007
-X-HE-Tag: 1761155999-158137
-X-HE-Meta: U2FsdGVkX18Fnqg0NSYI/MR0CBSMVF8cTATGz+j3dF8iD476ClfUU0VF8MbOlCQbmaafxllGEp9GAA3kipQ1JENVghykEfp7oYROYS2eAYi5ToNMtMwRztfhhk6kUQRylAL7UAaDfDadgxH+KepaxO+k1pv0bwdmLRNe7Eah3N8XxJtEqwufDz6+CI6dE2IMhA29xa7090z7rZgnwn3pH6sftrjYuZ/Ld1NNM8fSWLYxSIY8f5/3cL+yqw/tkTdC1T1WgEcoxbfR3JLxlwaIS2h68/z2MuepPkwvGMOZcc+0XhK/y8sQUhLdVM6TNZ5X1rjRhW2hcj6njbP9sTjHKcPhHI64YELicpW4vnigjKJLeFW7yX+g1MWZGBWKgx4I+lCbnW4IYnMEpfV0aRa7I0gg5y3VxJuHYxGBxvS8Rqulwf+p4rtqucXBJpbPyVW8C/SFb+aqC6keoz8Oo8Chrl2RSmdrH6vhm/UJ70FZ3vAAl0IngpvNn1PdBabDOqVBDXYRWBqgWW790as5q2UIeV6a8aywBLV5Mu42OZAcSarZ8DJxLGuZgZJLnl4LdZY9QbnBDkKwC1bSpQFURnla1jYPA7wejH406ANWVz78+EEAw2E4Dfh1a66hDoMwc7L4AV8Hzw/psocqHg7dKhl+Jgll2zyYMaciOAXzi+Gni7ZsPyEiWW+PBvK1mGIRmHPbJL6m0xWVH5+dIK3IbjVFbkBSIiMPvVd9nOOKGnbYWMswluSyLLLh/IcCvHuQyrn9s2jUsSrIqLfBgfsyNddEbaQTS67mQfSPodUbYEnfLrutADFqkeSN0RSo6LhtzdN622kG51KXKAKXYpRDOXGtktRLGe918/UWXjjRGlKxz6zIDa9dblfSVorcphLwq+ohBPcEvPL0Uwghe28GwwdOHqLnsWJI6Z5FoEeA5JuEH/ItLrFD8LBlcovsAGhohXLGphAxYrQr/ZNZkGv7OrD
- blu5Tf5m
- UUKduCDR/Tkn3j0hybrZ3arx1hbX5CXM9Y9SVqj5d/9TJ7oS0XscVGRgTXclf+nls30SoCzAWIVW/b6lEsJgKKL9DTKr/xfR9dHfyAMimfeuKoF3JbEJBzepdXKD5mhHcRID2nejr0eYrbWMo/t8eQq0XwvG+RXIoaABMVi3thwG/s22RibkVqKAPuz/KJe9y5Y/MqlMOxhDZCWJThPZjs988WxT/xLWg6JMEuL0rF1jUip3Dsu9XTiUfmRzgTdZkIeTX0rPdQwazg9IwWGb4QVQp/OOub2gGOYF8GBhiAzkxpKpJx+zesGLT5C3GXzmBRam2qvHmmuOn+N0=
+X-HE-Tag: 1761156496-841116
+X-HE-Meta: U2FsdGVkX1/LQiczwtCdwZTziM7EJY0+/duzK5/notc/dSFwbA/SUaOXpAxy3osVEGiOkDFoi7jxHgnurKWa6n5MQKqx2VhrnahqNQZzMTTkTjnBgVFoSTjojZhlCBhSqqgAmCkuRyI4mRAx28+/2auoJwLzk/VMhJVIsYCZVaalE8oZU3gH6GQmH0hEWnlXsiNe6XPAvFGAEKfZa0b0pfEusmYjVtYMSBJy8ZVK9zbacWdTfZO1uHRO8sQPIVZQ1JT0J/qOa7dTMC11+a3GWG7U7x5D23LmJOmK15KW0UCYtG3Tpx64NSujKcBuaLPswKFkm1tYpCYquFNCBXnaMsXthfntUh9gjo5e9xd7yMfuX5jVPu87f8tHEeVaw4mYJuGz/AdBnO39Xal+IawRodpU3Ip9vWGEbxQeg8ZC9p0ZGGyPTsUffcl/gy/1GdbZY29NN7XkIGrL7ysixUpu6B2wWDf27UKq9a8VuYP5hWVljbbRL4HZ0xxNXPYarDx33/EPZsAFSRCLIjG4qh8gVe97ALKURAMZGQSk/LqhGKJtIwprWJndWffzjsAF6vqE4wH0eTibTdDaKfnEyqEPkmouhASX+p/pUkFUIQz2MTbFDQv8Jp/q1jBju1vrpUQH+OmsP/snmuwC9fZQJDI9z8+pEhEsvGCKBGTgAzblt+bIuxF+PJ681nqUsadkTWK4aHGygYUBJAcYpzx8QN9TH6e7ULuIU7sqNOfCpIU0o/BfSUzEvp2rut5+vdexj5lZDCuoXCgrnYwRlktbC4OPsZpNrqwbjguE4frgqJQIXwsgci/08rLEyn7KL+73iKccHiijjAZCyC+5iexThCNuho+EndWYSknC7NXfXsJY/68E/b0qZpDMVV5yMoE+WEhLnjx0B48897bCPMfgq2J/bHbIpBtYKNAOc9Yap6MRConZPt6zK6NQ9zZBm/bpzaArJyHYJK6Yj3DyyYnXpT0
+ hgGaXXyj
+ uXhCR4bl3RvscaybIU6cOgcbsTrK+Oitl7MTNLbo4Z/fAhyX3mA2gZ0xyy2P8Vnb7UTjGZQP6iQATAhDsMS9qUt9cE7C4zn2sMiWxO9D+Y8zhH+Rm9n2h0sUaE6x70SogXanoR8kVisQ9e2mFWuv7WBsp+cAHqkv3J9HTHpXROwtfK571Duc7kMdrPmgdeXXl/Qe+BiAwIbvekfOaAxhCLOOtpgvK7PTowJoAAWPfXUv6W5qJbZj8gAakqK6VrPUk0bfAG/kTimM3uXyLiQffvGW3F+xWS8V6pPK3uE6iMpn2ndclwTX2BSLkhL9C6iN38DA21w3azfBzYJwJh24UtV5J8wcnuVg/ToDDeBCDDi0rMdKtip5A+w1C8pl9wKZm5wd7A2O8XI/b4/ouiMCFxi9ZM/hoXfW2vSaJGAl6z/AoFL58tBldUxLxbK21KE03xPJjSvH2Tm5V7c3Cjd/OxSNDTpj3U0l6ldX6sFquyIqfXP+B69i7pzI0j7MzAkLd7Mn4J/oWMkL9zUJqnGepoNJRmjfg4z4wQC5BYUD55xVmEsCNknThZW8/lux6TAJfwyduEt7GvcpEqyZaJHqQl8bBLnOypp0rZei93hDBPpPCZ4XANdxXdavFcBWqlI0Z4UtGLLeQ9vm+jEw0V89X/A/9UiV9vOyRmdWXRhRUWXEX7E8BWcsDTXBzORzUYa8Yms8Q96PZgsg7hpcmJELXDX5aqZ4+UMirsfCND7R3qPL1Ut6DIvK9cqTXWdFfte0nPMOQznWXgEhfNELi14bb5+hI7CMZKzPqteIdpA4T+a2S0ak=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,34 +119,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/22/25 19:23, Vlastimil Babka wrote:
-> Since commit af92793e52c3 ("slab: Introduce kmalloc_nolock() and
-> kfree_nolock().") there's a possibility in alloc_single_from_new_slab()
-> that we discard the newly allocated slab if we can't spin and we fail to
-> trylock. As a result we don't perform inc_slabs_node() later in the
-> function. Instead we perform a deferred deactivate_slab() which can
-> either put the unacounted slab on partial list, or discard it
-> immediately while performing dec_slabs_node(). Either way will cause an
-> accounting imbalance.
-> 
-> Fix this and also make the code more robust by performing
-> inc_slabs_node() in new_slab() itself, and removing it from its callers.
-> As a side effect, in the theoretical case where the new slab is
-> immediately leaked due to debugging consistency check failure, it will
-> be accounted (as full) in /proc/slabinfo anyway, which is not wrong.
-> 
-> The exceptional caller is early_kmem_cache_node_alloc() where the node
-> for stats is not yet initialized. We can handle it by using
-> allocate_slab() there as the gfp flags are known and fixed and we don't
-> need need new_slab()'s fixups.
-> 
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+On Wed, Oct 22, 2025 at 3:20=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
+m.com> wrote:
+>
+> The arm64 copy_highpage() assumes that the destination page is newly
+> allocated and not MTE-tagged (PG_mte_tagged unset) and warns
+> accordingly. However, following commit 060913999d7a ("mm: migrate:
+> support poisoned recover from migrate folio"), folio_mc_copy() is called
+> before __folio_migrate_mapping(). If the latter fails (-EAGAIN), the
+> copy will be done again to the same destination page. Since
+> copy_highpage() already set the PG_mte_tagged flag, this second copy
+> will warn.
+>
+> Replace the WARN_ON_ONCE(page already tagged) in the arm64
+> copy_highpage() with a comment.
+>
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reported-by: syzbot+d1974fc28545a3e6218b@syzkaller.appspotmail.com
+> Link: https://lore.kernel.org/r/68dda1ae.a00a0220.102ee.0065.GAE@google.c=
+om
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: <stable@vger.kernel.org> # 6.12.x
+> ---
+>
+> v2:
+> - Also remove the WARN_ON_ONCE for hugetlb pages
+> - Drop a double-underscore in the commit log
 
-Pushed to slab/for-next-fixes for testing.
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
 
-Note I haven't seen the imbalance happening. During the ongoing development
-work I caused a very deterministic underflow elsewhere, decided to make the
-code more robust by creating this patch, and when going through new_slab()
-callers I realized it fixes an existing issue.
+>
+>  arch/arm64/mm/copypage.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
+> index a86c897017df..cd5912ba617b 100644
+> --- a/arch/arm64/mm/copypage.c
+> +++ b/arch/arm64/mm/copypage.c
+> @@ -35,7 +35,7 @@ void copy_highpage(struct page *to, struct page *from)
+>                     from !=3D folio_page(src, 0))
+>                         return;
+>
+> -               WARN_ON_ONCE(!folio_try_hugetlb_mte_tagging(dst));
+> +               folio_try_hugetlb_mte_tagging(dst);
+>
+>                 /*
+>                  * Populate tags for all subpages.
+> @@ -51,8 +51,13 @@ void copy_highpage(struct page *to, struct page *from)
+>                 }
+>                 folio_set_hugetlb_mte_tagged(dst);
+>         } else if (page_mte_tagged(from)) {
+> -               /* It's a new page, shouldn't have been tagged yet */
+> -               WARN_ON_ONCE(!try_page_mte_tagging(to));
+> +               /*
+> +                * Most of the time it's a new page that shouldn't have b=
+een
+> +                * tagged yet. However, folio migration can end up reusin=
+g the
+> +                * same page without untagging it. Ignore the warning if =
+the
+> +                * page is already tagged.
+> +                */
+> +               try_page_mte_tagging(to);
+>
+>                 mte_copy_page_tags(kto, kfrom);
+>                 set_page_mte_tagged(to);
+>
 
