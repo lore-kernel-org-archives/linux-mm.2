@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D967FCCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2E18CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 18:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41DA98E0020; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
+	id 52F9F8E0021; Wed, 22 Oct 2025 14:41:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5438E0010; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
+	id 4E0458E0010; Wed, 22 Oct 2025 14:41:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30B758E0020; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
+	id 3A8118E0021; Wed, 22 Oct 2025 14:41:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 220BE8E0010
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:40:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DEF3813BECF
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:49 +0000 (UTC)
-X-FDA: 84026616618.25.CD8A42F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 294C88E0010
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:41:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D247311B09F
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:41:00 +0000 (UTC)
+X-FDA: 84026617080.01.536FF4E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 23DE140002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:47 +0000 (UTC)
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1B4F44001B
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:40:58 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aS1+A/D7";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YzcgMnB4;
 	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761158448;
+	s=arc-20220608; t=1761158459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpo4OOErIXDyCuGHV4XGlNq4YibnjiOhk8e0KAy/EpM=;
-	b=SYvInvoDjW/7GXh/vubrxKFAh58WOVMLPW+yxDHfHnQLR/GCdheWQcK/ZUwWOB8OYTwwXT
-	Fk7PfRNmivEK0jIhImg7L8rbxoyxTSIP2X8gtOUk9Z8fsnfaDmAB5IB7uCLF0kd1v/oujt
-	U8kOSOIe3ihyOIK1ZrcKcR3Znxc403s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158448; a=rsa-sha256;
-	cv=none;
-	b=dx38Y0pnX3BIAhSFHraZJI9JVCYdFLSntfdcslvGo4OMUugAFieV1HW7Boca0B66mFmYri
-	XELNYRMXekJ24MuB4xrIaZ4WAKrTD3+G30vf/+eEqMVKF4ymXebYlR6tfKrn3IzftbsHBu
-	8s6xZ90f6PBhEeXtIY28aJRw3yzStt4=
+	bh=KZLhkE0tfvLtP0azQsjBMMtMMpcq+a++94oUT8h+PFI=;
+	b=M4mu5faicMPJJzVSa0GmTFpc/rpACiRRJw5E29j00obUx3dagJ//YmYshn8LKnWG1Ozhu5
+	qMkqZnPCEQwa1NGLTMWtUFFu6tWW886lD0kItrPLUzqaZbM7quCz3/jtsWOSxdZnkLIBe0
+	SLenQ53wfgteAiBUtZBGxCtflRYcP7c=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="aS1+A/D7";
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YzcgMnB4;
 	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761158459; a=rsa-sha256;
+	cv=none;
+	b=R+sCFWFPnt7gDKJobkkx41eAowCARylzce8BvMgNN29tRvBLmEFyewpHKvdd0TelC5tPeE
+	64tmCRf2JWntlf+RxepYfCzxTx3oxmpQnJ4HLKzlMpAjI4PDVaa6tITEOwkyjeNKA0iupV
+	33UNMELkkP37xeY0O+UfrwLnWgS/Uws=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761158447;
+	s=mimecast20190719; t=1761158458;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dpo4OOErIXDyCuGHV4XGlNq4YibnjiOhk8e0KAy/EpM=;
-	b=aS1+A/D7NRvdBezJrhYz/668aR24E7TSUC1y9JhATxes1U/U+jA6HHAleQoskD0OTEVeo+
-	0meNWsMJNjLXgR+yVhu/zbl2iRWrMvMMsN9x2IiUB2O1ar4AXL9BAOw8OJp7mFAMXArEqx
-	E8fuEd7TP/+5LZJ2FOnvjrFf1Ic39Rs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=KZLhkE0tfvLtP0azQsjBMMtMMpcq+a++94oUT8h+PFI=;
+	b=YzcgMnB48hrCLa00MKVbrxgQ2sQOH8ONIDrsgvQgcvtefuq9BF3IhyOKUf9fow3MD5Agqg
+	ZJPe+YKv0MNzbd2zwv+RBzxYhXI75Yd0+wiYwwA18/7Zh7y/1yXzHNqFsQ6ECIwCLxYFlQ
+	ujXjlSH/dMYqJsMU0deaAkQOa9nOQIg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-lmfCQv3oM16wwZNJ6JgoEA-1; Wed,
- 22 Oct 2025 14:40:45 -0400
-X-MC-Unique: lmfCQv3oM16wwZNJ6JgoEA-1
-X-Mimecast-MFC-AGG-ID: lmfCQv3oM16wwZNJ6JgoEA_1761158440
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-6_gU97YVOxOADa4ba5YPVA-1; Wed,
+ 22 Oct 2025 14:40:54 -0400
+X-MC-Unique: 6_gU97YVOxOADa4ba5YPVA-1
+X-Mimecast-MFC-AGG-ID: 6_gU97YVOxOADa4ba5YPVA_1761158450
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4C9D01956087;
-	Wed, 22 Oct 2025 18:40:40 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EC4A41956067;
+	Wed, 22 Oct 2025 18:40:49 +0000 (UTC)
 Received: from h1.redhat.com (unknown [10.22.64.41])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 00BD419560A2;
-	Wed, 22 Oct 2025 18:40:30 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C55119560B4;
+	Wed, 22 Oct 2025 18:40:40 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
@@ -123,23 +123,24 @@ Cc: david@redhat.com,
 	vbabka@suse.cz,
 	rppt@kernel.org,
 	jannh@google.com,
-	pfalcato@suse.de
-Subject: [PATCH v12 mm-new 14/15] khugepaged: run khugepaged for all orders
-Date: Wed, 22 Oct 2025 12:37:16 -0600
-Message-ID: <20251022183717.70829-15-npache@redhat.com>
+	pfalcato@suse.de,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH v12 mm-new 15/15] Documentation: mm: update the admin guide for mTHP collapse
+Date: Wed, 22 Oct 2025 12:37:17 -0600
+Message-ID: <20251022183717.70829-16-npache@redhat.com>
 In-Reply-To: <20251022183717.70829-1-npache@redhat.com>
 References: <20251022183717.70829-1-npache@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 49zn1um46g3m614e8psadbpqs6zsq176
+X-Rspamd-Queue-Id: 1B4F44001B
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23DE140002
-X-HE-Tag: 1761158447-293540
-X-HE-Meta: U2FsdGVkX1+/y0GnrxTGXqOoUUT0QSt9g8hRpcde4BXPaafePl0heyXxnAdPV7iJf+VkkRsV8dxTbKDlYB1q8IUbZlL6Z/c+ZYliqt/2QNj+w9gsf1UGxuCcl+AJh6Uw2iz9S+ERpclot8pLvphK9p/4oHR4rE7AoDCKTXSJExv7H6sAF34tjwHg3NtIWj8UbiXRYbJFndUGlqSqJwSJtlnjPYpSjJFY3ZTRGav8v4OrJLCtuH4dD2ariU7YcaDLXDcUpOO5q5Uy6qadNjZ3AVUM8uKRiJgJml8qujIfDwnpeSNcxX9hoMM+NzKKhMtJn+3K5TEGvUDI/WZpkLSOTywdygiTaIAgJzMiTEvTlxdaHs+44bZfZabDSJ0dbVT2q00MnAfulVCseoATubec1vdNn1U7FY1/BzFhExH7bw5/uZm7wzoVlqdoS1EHIA4RJcyIU8y7mucA21en6sg2LWpsxaSB5LITBtF75tMg9to3o0GqUgw/jt7QAbjxm8E07vTORCFf1o/yJf6OPb/CVmQ24sSBeKN4r2Xe6A58SjvhvzWon1R5I74M6Mmkhk6O/daa2qAQ5nYDPJYEpwUvUOXOpPQm364MYaNzORGBhj4s//NaQb3zpcGcfvhLt3Mnt0yDQk4RIJNLkUECwtezcL+25NT5ICpkS6R7/aMZjaqm/C0TbZRsiMopfeubAQqsRjOe8MnN1PVh9pzEr8m3dyTz5y7ko2Sv6ORCL4OXWWkFfVqKEujiUw0BuDkB31BlWYPtr7dIoX5nFMJ3RG5hYxqeAHl3qXN+Ij0v78LHuXQFFVlzjUkXvRfMcCo4XpeBXgtzfP512bgaAcMEgrcLIEjQaJgUs+do++X0CPUYRbxS0mcfJZiBcnvOl3jl6LXUB6LEA8Zfhn4hWl5TiZ1H5DgnrbxMDsde5/DZx9zyBI/iGkX5U5q32xjgNDXCwpEogSrjIJciPWQJMP6gCXk
- IDyTWjk4
- yCvIC33buXLaMor5iLfQEDo3fZ0HsVcpdi2iE340Bm2dSjHJpM/THh/SOC3eKIbRC9QO8lTfaKSOmeEzfmrzsWK8mynAxrfgck+mlidGMIXzq3PNud3OlRQtObJZfEo2vFZ4bsmAXx8nY+HWQ1uw2PUj6PCLLX4ieuqY8MmaRxF8OD5AFUDGQ6WWaeupWkiL23lntyQJz6uwplc69bwflql9AGKK2y+DCdb9++U9237PR1ijcKRRrwZznyLZTlPhRr50s04kPVUvEbFUHm5vA4JNOhlfe04NJlAeBTmGHRskGZEq41oDIbVYd69SpJctDZ0FPVHylXSpoT9AKhievbDyJ2ba8FhZJfAAmMqBNhqs/xzTiTwB85BzSTT71WOzXzvpXYauolBtXRZ3YpEUK6HepDVLSYpXxmYSXNyVaXiwXrhE=
+X-Stat-Signature: 4rh6d3mk84wrea3yjhgxmr9qg6zc8tut
+X-HE-Tag: 1761158458-71294
+X-HE-Meta: U2FsdGVkX1+uWuzkFRZk4AmGFTyIr/dS2OmZSKcJ+IR2See602+uEWCiEXWYHdNCBFCTwa/yFyq7hYd8b2sS+8CDBqj4dj3Iie/WOK842HtxX+QA1pa90E2ixLKJDQIvY3OJeYTjdb+O7g7fdrZasJmmRu/AbAjkR4mbPSsOyA+FuZHkRZP/kit31jZvY7jSiA7S/gIq4EbBEDRkVoekjbARDpmCHUrl7JVh6GjuWZdKs9maEdxkxSy2dUb1Y4XPc7RrxLdBGh1LKhvMONG8liJ77dReEuAVXzsjm/4NGIpu7zT02ANk75n7OwZv+eD4QAzcN45Rj+PcmaSbasIMEg3QXudyYYsFhZVU6z1iqDgWRrt9TcJwYhrz73Y8mqLQJvw4f20WNoWj1UBdaf3nfxdDWz4s7swsgmEN07aS17ifV0dV8AB3S3d4FifpRnC6Iz42dINRhb2az5PH/sbHf/AAHgawNqwTIPgR5LZAPVPBFHEsmeJktwvG/GRpJcBETftOmLnqfRthwLFUEdEc2c9NHcUkYiOAL7zWDD7GOoh1rRtrKT+Z9EN8GjrrOCSugjQ0ShHCK/2ajHbOM+OzFurn1n5+uwHQWoCduNL35iwe8JbDKast8F0Vrk1bpyDd8KFMp1waL8JZyJTMoXM1U7JAsAH9Z4RAZS0F0Z8+DQJFJkKsBzg9L0e4TJ6O4klTaG56D+mj+5ILNeNfBgclV03HqcDJEfowmP67RC0zuQB0HiCzCUr+bfD5G8b5TfucwMtS5cL2yAbXif17OIKpSAGGQoe5Jpwfnm2Ff01gnKoyZd9eS2sjv8dXorBm5x1mzMMtay5yDsNdafzuNcYskd23+zOHfr7lFlD+BK7vbZizjKUS6jfo+TGoZmHb4oLz/BWE8Rve2dA990r1xp0GnlSaYpaIU40itMfbLZ8A+fMQ9JgoIkjsj6Q9wdKRhvws2u2DAosFvYapDIZPqlz
+ xAWknIqo
+ EhwYfSl+opBewzgsVLgM1iT3NIeh/rRdvPgulJI1FT5pvPTld1rwcH6/FQ+aOLm/LZTdYdDMJ6hXmQER8lxsntAHAB48EiEiBKDO2uqcQ/qxeJX5AU4Tlk+p7ZXSIPZsIkLfBEmRvVDncnGVsFJ4YeGN6612nKzMZ2vWy7PlkNiYWrkJkzgumd6yqI8DzGZMs1mlCO9tHidqmFMvmbHfeAgsRC4DtL44ZtWSb6xSMMf0tss4i8+KJ4ray3qa2UPa5KNordm5JKJOmydpr52KXEH/AJHxDC8XV5zdkzfRbYV8bNgiAsW8crKcHjes+J8TlRh81J9yhsZagJs/+Y8qX4WZGmvVibtM4EuGJYzpvR3tKkkL4qJyLkwvpWWmWODsI38efS1gCGyrb6Ac3rBL2icOSkay7RM0kKhuNxWPz3miTyOw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,126 +149,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+Now that we can collapse to mTHPs lets update the admin guide to
+reflect these changes and provide proper guidence on how to utilize it.
 
-If any order (m)THP is enabled we should allow running khugepaged to
-attempt scanning and collapsing mTHPs. In order for khugepaged to operate
-when only mTHP sizes are specified in sysfs, we must modify the predicate
-function that determines whether it ought to run to do so.
-
-This function is currently called hugepage_pmd_enabled(), this patch
-renames it to hugepage_enabled() and updates the logic to check to
-determine whether any valid orders may exist which would justify
-khugepaged running.
-
-We must also update collapse_allowable_orders() to check all orders if
-the vma is anonymous and the collapse is khugepaged.
-
-After this patch khugepaged mTHP collapse is fully enabled.
-
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/khugepaged.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ Documentation/admin-guide/mm/transhuge.rst | 53 ++++++++++++----------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 54f5c7888e46..8ed9f8e2d376 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -418,23 +418,23 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
- 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
- }
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index 7c71cda8aea1..2569a92fd96c 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -63,7 +63,8 @@ often.
+ THP can be enabled system wide or restricted to certain tasks or even
+ memory ranges inside task's address space. Unless THP is completely
+ disabled, there is ``khugepaged`` daemon that scans memory and
+-collapses sequences of basic pages into PMD-sized huge pages.
++collapses sequences of basic pages into huge pages of either PMD size
++or mTHP sizes, if the system is configured to do so
  
--static bool hugepage_pmd_enabled(void)
-+static bool hugepage_enabled(void)
- {
- 	/*
- 	 * We cover the anon, shmem and the file-backed case here; file-backed
- 	 * hugepages, when configured in, are determined by the global control.
--	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-+	 * Anon hugepages are determined by its per-size mTHP control.
- 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
- 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
- 	 */
- 	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
- 	    hugepage_global_enabled())
- 		return true;
--	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
-+	if (READ_ONCE(huge_anon_orders_always))
- 		return true;
--	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
-+	if (READ_ONCE(huge_anon_orders_madvise))
- 		return true;
--	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
-+	if (READ_ONCE(huge_anon_orders_inherit) &&
- 	    hugepage_global_enabled())
- 		return true;
- 	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-@@ -508,7 +508,8 @@ static unsigned long collapse_allowable_orders(struct vm_area_struct *vma,
- 			vm_flags_t vm_flags, bool is_khugepaged)
- {
- 	enum tva_type tva_flags = is_khugepaged ? TVA_KHUGEPAGED : TVA_FORCED_COLLAPSE;
--	unsigned long orders = BIT(HPAGE_PMD_ORDER);
-+	unsigned long orders = is_khugepaged && vma_is_anonymous(vma) ?
-+				THP_ORDERS_ALL_ANON : BIT(HPAGE_PMD_ORDER);
+ The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
+ interface and using madvise(2) and prctl(2) system calls.
+@@ -212,17 +213,17 @@ PMD-mappable transparent hugepage::
+ All THPs at fault and collapse time will be added to _deferred_list,
+ and will therefore be split under memory presure if they are considered
+ "underused". A THP is underused if the number of zero-filled pages in
+-the THP is above max_ptes_none (see below). It is possible to disable
+-this behaviour by writing 0 to shrink_underused, and enable it by writing
+-1 to it::
++the THP is above max_ptes_none (see below) scaled by the THP order. It is
++possible to disable this behaviour by writing 0 to shrink_underused, and enable
++it by writing 1 to it::
  
- 	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
- }
-@@ -517,7 +518,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
- 			  vm_flags_t vm_flags)
- {
- 	if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
--	    hugepage_pmd_enabled()) {
-+	    hugepage_enabled()) {
- 		if (collapse_allowable_orders(vma, vm_flags, true))
- 			__khugepaged_enter(vma->vm_mm);
- 	}
-@@ -2791,7 +2792,7 @@ static unsigned int collapse_scan_mm_slot(unsigned int pages, int *result,
+ 	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
+ 	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
  
- static int khugepaged_has_work(void)
- {
--	return !list_empty(&khugepaged_scan.mm_head) && hugepage_pmd_enabled();
-+	return !list_empty(&khugepaged_scan.mm_head) && hugepage_enabled();
- }
+-khugepaged will be automatically started when PMD-sized THP is enabled
++khugepaged will be automatically started when any THP size is enabled
+ (either of the per-size anon control or the top-level control are set
+ to "always" or "madvise"), and it'll be automatically shutdown when
+-PMD-sized THP is disabled (when both the per-size anon control and the
++all THP sizes are disabled (when both the per-size anon control and the
+ top-level control are "never")
  
- static int khugepaged_wait_event(void)
-@@ -2864,7 +2865,7 @@ static void khugepaged_wait_work(void)
- 		return;
- 	}
+ process THP controls
+@@ -264,11 +265,6 @@ support the following arguments::
+ Khugepaged controls
+ -------------------
  
--	if (hugepage_pmd_enabled())
-+	if (hugepage_enabled())
- 		wait_event_freezable(khugepaged_wait, khugepaged_wait_event());
- }
+-.. note::
+-   khugepaged currently only searches for opportunities to collapse to
+-   PMD-sized THP and no attempt is made to collapse to other THP
+-   sizes.
+-
+ khugepaged runs usually at low frequency so while one may not want to
+ invoke defrag algorithms synchronously during the page faults, it
+ should be worth invoking defrag at least in khugepaged. However it's
+@@ -296,11 +292,11 @@ allocation failure to throttle the next allocation attempt::
+ The khugepaged progress can be seen in the number of pages collapsed (note
+ that this counter may not be an exact count of the number of pages
+ collapsed, since "collapsed" could mean multiple things: (1) A PTE mapping
+-being replaced by a PMD mapping, or (2) All 4K physical pages replaced by
+-one 2M hugepage. Each may happen independently, or together, depending on
+-the type of memory and the failures that occur. As such, this value should
+-be interpreted roughly as a sign of progress, and counters in /proc/vmstat
+-consulted for more accurate accounting)::
++being replaced by a PMD mapping, or (2) physical pages replaced by one
++hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
++or together, depending on the type of memory and the failures that occur.
++As such, this value should be interpreted roughly as a sign of progress,
++and counters in /proc/vmstat consulted for more accurate accounting)::
  
-@@ -2895,7 +2896,7 @@ static void set_recommended_min_free_kbytes(void)
- 	int nr_zones = 0;
- 	unsigned long recommended_min;
+ 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
  
--	if (!hugepage_pmd_enabled()) {
-+	if (!hugepage_enabled()) {
- 		calculate_min_free_kbytes();
- 		goto update_wmarks;
- 	}
-@@ -2945,7 +2946,7 @@ int start_stop_khugepaged(void)
- 	int err = 0;
+@@ -308,16 +304,18 @@ for each pass::
  
- 	mutex_lock(&khugepaged_mutex);
--	if (hugepage_pmd_enabled()) {
-+	if (hugepage_enabled()) {
- 		if (!khugepaged_thread)
- 			khugepaged_thread = kthread_run(khugepaged, NULL,
- 							"khugepaged");
-@@ -2971,7 +2972,7 @@ int start_stop_khugepaged(void)
- void khugepaged_min_free_kbytes_update(void)
- {
- 	mutex_lock(&khugepaged_mutex);
--	if (hugepage_pmd_enabled() && khugepaged_thread)
-+	if (hugepage_enabled() && khugepaged_thread)
- 		set_recommended_min_free_kbytes();
- 	mutex_unlock(&khugepaged_mutex);
- }
+ 	/sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
+ 
+-``max_ptes_none`` specifies how many extra small pages (that are
+-not already mapped) can be allocated when collapsing a group
+-of small pages into one large page::
++``max_ptes_none`` specifies how many empty (none/zero) pages are allowed
++when collapsing a group of small pages into one large page::
+ 
+ 	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
+ 
+-A higher value leads to use additional memory for programs.
+-A lower value leads to gain less thp performance. Value of
+-max_ptes_none can waste cpu time very little, you can
+-ignore it.
++For PMD-sized THP collapse, this directly limits the number of empty pages
++allowed in the 2MB region. For mTHP collapse, the kernel might use a more
++conservative value when determining eligibility.
++
++A higher value allows more empty pages, potentially leading to more memory
++usage but better THP performance. A lower value is more conservative and
++may result in fewer THP collapses.
+ 
+ ``max_ptes_swap`` specifies how many pages can be brought in from
+ swap when collapsing a group of pages into a transparent huge page::
+@@ -337,6 +335,15 @@ that THP is shared. Exceeding the number would block the collapse::
+ 
+ A higher value may increase memory footprint for some workloads.
+ 
++.. note::
++   For mTHP collapse, khugepaged does not support collapsing regions that
++   contain shared or swapped out pages, as this could lead to continuous
++   promotion to higher orders. The collapse will fail if any shared or
++   swapped PTEs are encountered during the scan.
++
++   Currently, madvise_collapse only supports collapsing to PMD-sized THPs
++   and does not attempt mTHP collapses.
++
+ Boot parameters
+ ===============
+ 
 -- 
 2.51.0
 
