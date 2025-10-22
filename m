@@ -4,88 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6369DCCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:36:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A27CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:38:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7B318E000D; Wed, 22 Oct 2025 03:36:03 -0400 (EDT)
+	id BE1E58E000E; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2BBD8E0002; Wed, 22 Oct 2025 03:36:03 -0400 (EDT)
+	id BB92B8E0002; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9687A8E000D; Wed, 22 Oct 2025 03:36:03 -0400 (EDT)
+	id ACEF28E000E; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88B728E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:36:03 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B38F8865E
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:36:03 +0000 (UTC)
-X-FDA: 84024941406.20.63A505E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D698F1C000C
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:36:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rxtTJvaC;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C3D58E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:38:45 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5063088B73
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:38:45 +0000 (UTC)
+X-FDA: 84024948210.01.550B380
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EC95110000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:38:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KukVtGGW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=veJQOarc;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RBDxyTiE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QYPrHAhn;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761118561;
+	s=arc-20220608; t=1761118723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+oldKmoUhl57kDL3iXqTExYjKIke+virT4Li29A3sRk=;
-	b=7LvyS28wYcWIi9JWKvywcmls9oWECnW8rjLZcauqUAABsl7pQpB69DbCPDJpfzU/pbk6OV
-	AnJPaqalRXorYrV/AVesMhkpN+TKMVNJuCTBtWQjMj4hH8zEjfDhANMzCZjR6JPo4b73at
-	wqGS9OW5cqIzt0KDuqSZpox5Fdaxt7Q=
+	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
+	b=4dskNqWq/VaKpGoOKvknrMTWkSIEmW2wH7ohaFVT/6UJOZv1BoKDs0rDI8kGpgfwjAiWhl
+	T+3SMZ/DEc09WqNXqXXO/m9TlgUZo1kbCo3kY/By0Xtu0PZJMzrYGPBpH/yZCtq6BRBOzT
+	YUcAcH5ul6r9wQfPLqAr0tamMoLj7EU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rxtTJvaC;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118561; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KukVtGGW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=veJQOarc;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RBDxyTiE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QYPrHAhn;
+	spf=pass (imf05.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118723; a=rsa-sha256;
 	cv=none;
-	b=nyv7DeuJtxvBQ8s7kEhD7wKYIsUOWIQi66EDhqlAZHo7G/BbcXKMM7c52aocNEvKP9LUqS
-	GVF6RewbdjuIGZ7yCj7DcVqkPN9gmJOSOI7Bdp6mJWOAfbqInrOSLU5TJ1k1HNizirAuKq
-	a+g4Dnl0Zl7yQCnacFFCd9qDzfM7kF8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD1FE60362;
-	Wed, 22 Oct 2025 07:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42432C4CEE7;
-	Wed, 22 Oct 2025 07:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761118560;
-	bh=zsndchJOPqaYYKkkXyTd1ldUAO9IBYagYpJiLPpm+Oc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rxtTJvaCvcWu5yS0t2wcS96hIPCq3xbTohSIMFJ4Vc1o+B6KW7G3qA7ZoGId1mrqM
-	 fcPmQdUDPx7LTVBf3DrZAXNLx+9SLiq1ARZCqZtf9fAB1OONfjmWZj10ip7U4QAt+E
-	 aIuSeU06HDDNFKQ6OIljMkl4fAJM52QPdKyfDGcA=
-Date: Wed, 22 Oct 2025 09:35:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: Lance Yang <lance.yang@linux.dev>, stable@vger.kernel.org,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
- vm_util.c
-Message-ID: <2025102236-dismiss-liability-4e6a@gregkh>
-References: <20251022055138.375042-1-leon.hwang@linux.dev>
- <49bfd367-bb7e-4680-a859-d6ac500d1334@linux.dev>
- <2025102245-backstage-sprain-76fe@gregkh>
- <ab0c5257-bbb3-4202-bac8-3e74176fe34c@linux.dev>
+	b=RCdDePa9M7Hpcpnr0dwgCP/YC2iYqRdJZrY5GowouJtixnMbgSd/d2348VsT5GMFwJ9MjF
+	QNSO606vsWsFtlPJ94PXxejKwFf+YXzLvdfm2Loh+VweItuhaiQUDIqlhmxLyz29BOOpVw
+	05Qan2v7k9eJNLWesHgSNXoLEqaB0h8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 399731F391;
+	Wed, 22 Oct 2025 07:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761118717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
+	b=KukVtGGWqSuem/LJklYW0q+zc5HKvfxVuJPkcHLDHZx8D7vROffVpcP73HtODiay68RRay
+	QN8gAZIdga1NdvQUAg3k1InyPvsKc8O7qNSsf4EgjVJ16tMsksmsvaU2nwQFvt7Qgs1Awz
+	hTNqcp+LKLH6PpY5Cijtjh1i7w05Wyg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761118717;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
+	b=veJQOarcKigKf26sRa6IuzSsBqRioFdBls/D4dmszIC6X38QE3qFdg7IZiEegurQGVUvZ9
+	Yc7a8PLBih3CcJCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761118713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
+	b=RBDxyTiEJNM7tQqrsbbtjGRrg2f1678Z4QNrLli+dxOSiPMBbJgnOL8ogYjvPpA6JvLqqD
+	yK8Ix6a2uHQgo2neTu596fnX7CxdF645RlJCn2YJFFp6LQAr5Asv4zyQYAE+nCLOxOLnoN
+	d4pY55cHObJe9y2OsWBtn4s8B+V6D10=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761118713;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Myzl7tA1DnESjNsonDhfQ1k0YqDE7S12DaYO8n4h//c=;
+	b=QYPrHAhnO5Xk2QgbkFCm383lUU/0V5g5zF/efIyre3pCxn7kENc2pz342o23/KhxzU8tTe
+	4Xg11GUsOf/GhqDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6651F1339F;
+	Wed, 22 Oct 2025 07:38:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7gOsFfiJ+GiKHAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 22 Oct 2025 07:38:32 +0000
+Date: Wed, 22 Oct 2025 08:38:30 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCH] mm/filemap: Implement fast short reads
+Message-ID: <2dyj6zrxbd2wjnor2wswis5p5z7brtfgzjnhbexhjsd3kqnvx2@y6i2wnvr6gdr>
+References: <20251017141536.577466-1-kirill@shutemov.name>
+ <zuzs6ucmgxujim4fb67tw5izp3w2t5k6dzk2ktntqyuwjva73d@tqgwkk6stpgz>
+ <CAHk-=wgw8oZwA6k8rVuzczkZUP26P2MAtFmM4k8TqdtfDr9eTg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ab0c5257-bbb3-4202-bac8-3e74176fe34c@linux.dev>
-X-Stat-Signature: da75qcdtr674hz6rezmobkt4wq8do5o9
-X-Rspamd-Queue-Id: D698F1C000C
+In-Reply-To: <CAHk-=wgw8oZwA6k8rVuzczkZUP26P2MAtFmM4k8TqdtfDr9eTg@mail.gmail.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: m95nabrub41i7mwr4sahwm1ihighmmj8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761118561-490085
-X-HE-Meta: U2FsdGVkX19vvAGdHWKHP9f2ws82qB7ubU5u1GXzUiMJsf3aKv6AGdhvYxz2Qopx8oI3rRsGNCZ/GJf7D+NLuqgFAQ25Z7d2xKULzFSnm1ttnpTt6VmZ2IY7+aXBLqK9hhaI7Xi0lwHvUiIc8NS4gJggymZXzaFWKdtHkDof7txdFoH6te0OWSJpD7ThC487nT+jimSjwFEfNLcAX6AQTlQ3dTVaf7wUR8GCDlEpng4wOsDQstHM1qn5H6Tp1YC7L6kokWdo2Q9VDcQdc8SdpJr8RtKVZR5WnTh8ipstLJqMilvkYnhVhcJgAJMtJSr0a3hFt0kwrTkJoedxy65HfJ8AjtjW9g62fYF+M57QXCSbEnklhs6AHi+bRjaxiLtkNBMNE5BkL0uVVzZ3sCKmZuH1Xo8myqJltfXTjNinP2X+ML6dN2FwZ68oQtv4ejbFpm0pzE2rzCBadf/if2JRzJ5MXwhS0/sxzxsTypi2WmucVB/sVwtYqQJQghkm9/UkzVhzQYS/OkPtB94/EczRIocMjcfw0vdH/12PLY3jFWmhmKIQM87/kr1Hg5E/k29IuUjR8gG8EI0NuyUQXPQ2ByTjDdGqoevA7AS0X+gv0OTTLj5yj8hs4YT18PjkXi8grfDV++GnupXyEpg/0G8Dzx/rG9HnzjCjyVMPcN6qVP5TN6lK4mYxUaqU5c/kSwDC2WgnOPJ2TKMh0rrLx4egb0hA3voxVi1Xn9d0pMPkwYRp7yWHYJFuU7VAlcxjo2d2lakB8a93uHxpXjoy3miNkfM9yVFRKUHnGAPhEnsXEfnAsLTkUDkg6x300TkayBCxC2otbGSjmbfUWwS/GMZ90Mv3WKAarSeNJj5AkcFj+8lFOKf2wVaozoMqQ4q7VXFI1zHgd79b9vRJ4gGdO/JTQSlIWs1wkDE+kLiOxioWwKieBrkY8EKrFj3rUMrU3+/kr17XZgUnUvoGAzrHmII
- n3Dpv95H
- tbvG+WE1gwzutSdwssABVzYUbGvmehtEGJQiX8NhpDl/8NXYY+OfamDaM1/V9uGYGkkT0
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EC95110000C
+X-HE-Tag: 1761118722-572615
+X-HE-Meta: U2FsdGVkX19FOMogrjQuNYP4ruJ27TpH34Fg5MJgF7mLFl2CJ4tzdjyuwXoQxVJMWSWw3ByIEbE23qmYlHYpTx1cDNneNNWkk08lrpa8pG3oQZta0aa/uWuta6YYPioDxIWir0eycwofMEwuZGaekTkNHZt5tL7UTRAaypDx/jtVCAiMUq+T7z5bSPpNcVIrL/8egSMFfx9zHB+y46sMCo5VP6YVE00kZbQLxwCxXa1zuYxMu7I2l7PXGqTxPqs2XTfyc4v1r2+SQWLXCxeXpk5ESUltraOLHM26FuWby/gwN+5jDXrM9JOmguGuvY2GGoYU6Qj3M399YAtcq4ZqfIEPGPyf+MZOy0YB3A8Ro4muCo/8CwnZszhV/NXNEPIn1lMCosPBIZnIv3ZWMQmeuFskwUw2WliwJNfX8v9vB8kLvzs9L3gyA4DO5JwMWrnC9hX86dgF/7x0Zvy+yXDUDjypz7iOTzPG9Dslu5pQi1Pb0AhjppcMBwhA1jaRaRlRjQLR2MGlSgKMbB+89ALX9JVsdx/WiVRdV5+DYArX7YiDW0lRbpQ/+yH0YbVxzUq75zdhvZNYJlw1Cj9uN7Zrqic1DFkiFOBIaUIrkdEN9/DOjq3SA3mhpIYpFVeWAstKu/Ourp6jYrByFJml1wVQezS2h3haUeIO//TxxYeTn3P2nDUfq8KXbISADhWWsSwkFp7iKaumSTrikzMM5yOIYCuOojq+zl2xeQoNjbG+J8nHdEkW+fgLgseN9eswUm9Qc8qn9msvlmLzn+uQ+lbTQ/u+3ugL13zr+LpMGGk2ygquGSjpitR2p3QJXr9Uv74RnslVQd0fbvpCkBCActsh/3Mx/IeyQakp0j/Jt2JcE972uVZCbZTIrjZ/cyACIhc7+NvF/Ad2LYAWq92nlJw89nH8Be7rN5cOhWgvlyRImR6Acks+FfjoumVtRuK/+XIWylbyGXfwScZKvP/Hlnk
+ 4VUp40D9
+ wG9pY5afr/kla4yAaMAbjTUcjLfCJJv40yDogNsqmKzzq795iFdHT5kW1lqyWxoKy004Z9HvbeMdaJv+ou+m/A8T8QD6j2VpHFyIbVeg+GF/XrIffmFDCK5tvfKOdfPbwfwk87BTp4WNbnFUpKfSnpL9Dz0gO0BfQ91kTviFEwEgKAR6sMa9ykTejeCIuP5fSni1X2Gxs5VlUAoGrZUZB37VrbC6usERgdprdBZCahj8CbtF/H48Xb7BVma9pa/cg4q76HFLr6cafv1CGHRs8YAVJI3by/blp1rEiJeQ85S2Gpus=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,26 +136,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 02:20:26PM +0800, Leon Hwang wrote:
+On Tue, Oct 21, 2025 at 09:13:28PM -1000, Linus Torvalds wrote:
+> On Tue, 21 Oct 2025 at 21:08, Pedro Falcato <pfalcato@suse.de> wrote:
+> >
+> > I think we may still have a problematic (rare, possibly theoretical) race here where:
+> >
+> >    T0                                           T1                                              T3
+> > filemap_read_fast_rcu()    |                                                    |
+> >   folio = xas_load(&xas);  |                                                    |
+> >   /* ... */                |  /* truncate or reclaim frees folio, bumps delete  |
+> >                            |     seq */                                         |       folio_alloc() from e.g secretmem
+> >                            |                                                    |       set_direct_map_invalid_noflush(!!)
+> > memcpy_from_file_folio()   |                                                    |
+> >
+> > We may have to use copy_from_kernel_nofault() here? Or is something else stopping this from happening?
 > 
+> Explain how the sequence count doesn't catch this?
 > 
-> On 22/10/25 14:07, Greg KH wrote:
-> > On Wed, Oct 22, 2025 at 02:01:26PM +0800, Lance Yang wrote:
-> >> +Cc: Greg
-> > 
-> > I have no context here at all :(
+> We read the sequence count before we do the xas_load(), and we verify
+> it after we've done the memcpy_from_folio.
 > 
-> Hi Greg,
+> The whole *point* is that the copy itself is not race-free. That's
+> *why* we do the sequence count.
 > 
-> This patch fixes a build error in the 6.1.y tree.
+> And only after the sequence count has been verified do we then copy
+> the result to user space.
 > 
-> The mm selftests failed to build, likely because some patches were
-> missed during backporting. I believe it's better to fix it directly here.
+> So the "maybe this buffer content is garbage" happens, but it only
+> happens in the temporary kernel on-stack buffer, not visibly to the
+> user.
 
-Why not take the original patches instead?  That's almost always the
-proper thing to do.
+The problem isn't that the contents might be garbage, but that the direct map
+may be swept from under us, as we don't have a reference to the folio. So the
+folio can be transparently freed under us (as designed), but some user can
+call fun stuff like set_direct_map_invalid_noflush() and we're not handling
+any "oopsie we faulted reading the folio" here. The sequence count doesn't
+help here, because we, uhh, faulted. Does this make sense?
 
-thanks,
+TL;DR I don't think it's safe to touch the direct map of folios we don't own
+without the seatbelt of a copy_from_kernel_nofault or so.
 
-greg k-h
+-- 
+Pedro
 
