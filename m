@@ -4,131 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37EFBCCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 16:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D2C4CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 16:53:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596B78E0006; Wed, 22 Oct 2025 12:51:55 -0400 (EDT)
+	id 9B9308E0007; Wed, 22 Oct 2025 12:53:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56E9C8E0003; Wed, 22 Oct 2025 12:51:55 -0400 (EDT)
+	id 9905F8E0003; Wed, 22 Oct 2025 12:53:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 483DA8E0006; Wed, 22 Oct 2025 12:51:55 -0400 (EDT)
+	id 8A6118E0007; Wed, 22 Oct 2025 12:53:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 37B578E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 12:51:55 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D73A4BB778
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:51:54 +0000 (UTC)
-X-FDA: 84026342148.13.A4BA692
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1B94AC0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:51:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kU/K+aOZ";
-	spf=pass (imf22.hostedemail.com: domain of 3pwv5aAsKCPASUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3pwv5aAsKCPASUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761151913; a=rsa-sha256;
-	cv=none;
-	b=G4V9KPvqpxUyfOQFmag1QXgTPIyVcul4v/M+gCgM3mZq9NzuUpkDeOZFDyyym0fE21930N
-	Vuth6rDPpoDHf3iW+N7rB552NJJylUxxjh6vnQEUux/l9iOc6eXjZY2GfYKQSHPsqyzA+m
-	46DMl/YpDYP0cwqi0T9Rc/qah1OxFYk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="kU/K+aOZ";
-	spf=pass (imf22.hostedemail.com: domain of 3pwv5aAsKCPASUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3pwv5aAsKCPASUcWjdWqlfYYggYdW.Ugedafmp-eecnSUc.gjY@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79DEF8E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 12:53:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2C97E88D60
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:53:26 +0000 (UTC)
+X-FDA: 84026346012.22.268AC89
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E5C98C0006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:53:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=miff2ZbB;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761151913;
+	s=arc-20220608; t=1761152004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lR6q3Jz4wEvNB1U/dBjL6AFCbuh1MpNj7/+QxukudLk=;
-	b=6WoBaqjmrfkyPyo075aj7LASjA5qspo+ugvMS81kCy0apJSmAPM2Ru/w8qlUdk07Pr9Z4a
-	xGin046GJ/IetAq2J0Zl6Aq1A0J82SshAhFoFbdSoN/OHHLzsRSa1htjbMSBTJpqnsvFH1
-	1KVLjI98tR6y4DAYoc1xYFZnHHpzz6E=
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3324538ceb0so12109612a91.1
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 09:51:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761151912; x=1761756712; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lR6q3Jz4wEvNB1U/dBjL6AFCbuh1MpNj7/+QxukudLk=;
-        b=kU/K+aOZXZGoNL508v594UXwUmotArQapl7mypStH7DvDkzulOrJ8knydtDm/rX/1u
-         +Zaz+y7o9OLsB8g4mzcXlO3E+8tFj4/NgPdiShydH4geo+1UKgD+Je1F0HxwkOOLq+gO
-         KFSlMZJ79yrCpflEjWPXnAm1JPBA6VOXyevAucNdlyL84m4OJz6ZhIcjulPI6Lu0As6d
-         peaiEmNlkFpy6KoE+6+mhNvVSXKS6zcSwH+Vif1TO9yf/VWF1tokvHiWQt7GJjAEFMMI
-         sgTcLihlbTHpJ6p+pJeV0VE2D2CZ+ITCDbGyJ0Zjo0mA3R38RMdNXFMG4qjmmYswPhcq
-         q6Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761151912; x=1761756712;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lR6q3Jz4wEvNB1U/dBjL6AFCbuh1MpNj7/+QxukudLk=;
-        b=jXXuljLJjqb/3Rt73nj+2JIgn8VEfomlTnxIsNjnWY9VQxLl7BA7JlYQ7ZnywAvd5W
-         yDFaavh6sEMFe/z9RSeOG38Iklsaliq1ZsfT+fN9SWokRV0rCvfgmBlvu4gpHFkY3JAz
-         EvMIc9h+iumcEOklWBZR7xDQSarlCHEaTuFjCzFHnZVfVzDQVUtlJynicKivy3qihPM9
-         kF6Y5L/OTd9LwfTxijOtiHOhSgtrnydEbhMcZi2kLUrRP/olH2dfvwH/Wm3VEEqACC0h
-         mpCpc7W5+uACDVQXocdoEAX7hCYs+ewCbSTBUaYGvCNGjXvhdeXEivArU/DqpHZAxOqA
-         yjcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLcglJi3vaOcxXcj81aDRSGMggTCfaOUxBXJuMufc9/eds9L9BRYctVV8G0GFK9xQ6vN7mF9eDRQ==@kvack.org
-X-Gm-Message-State: AOJu0YyyESAFDldkTqzOJlPQBQPwCqaJyF9SGIy1JZKNknvoOW3ZqeMs
-	z2876s1hLHAHtSeYiDE2lQK4tsu7bNeNwOIa6VHJFBwNiQfPzQWgFoX7aXUSPGQ6zThuG0UsRhW
-	HXG1CgLvfeMDJfhnj+u0G5kcdjQ==
-X-Google-Smtp-Source: AGHT+IGwxAeNTPtzLvu/Zk8STiamMAryG8fKxvXZatC28J4mfBlAiSQlIt+hBpVpayKRInn/obOZc8kpR+KnyIdqIw==
-X-Received: from pjbiq12.prod.google.com ([2002:a17:90a:fb4c:b0:32b:ae4c:196c])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2d8b:b0:32e:23fe:fa51 with SMTP id 98e67ed59e1d1-33bcf867404mr28930141a91.9.1761151911659;
- Wed, 22 Oct 2025 09:51:51 -0700 (PDT)
-Date: Wed, 22 Oct 2025 09:51:49 -0700
-In-Reply-To: <2457cb3b-5dde-4ca1-b75d-174b5daee28a@arm.com>
-Mime-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com> <8ee16fbf254115b0fd72cc2b5c06d2ccef66eca9.1760731772.git.ackerleytng@google.com>
- <2457cb3b-5dde-4ca1-b75d-174b5daee28a@arm.com>
-Message-ID: <diqz4irqg9qy.fsf@google.com>
-Subject: Re: [RFC PATCH v1 07/37] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
-From: Ackerley Tng <ackerleytng@google.com>
-To: Steven Price <steven.price@arm.com>, cgroups@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org, 
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, 
-	hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
-	jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com, 
-	jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com, 
-	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
-	mail@maciej.szmigiero.name, maobibo@loongson.cn, 
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org, 
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	peterx@redhat.com, pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, 
-	qperret@google.com, richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, rostedt@goodmis.org, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shakeel.butt@linux.dev, shuah@kernel.org, 
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
-	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
-	yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=wqeUxUX92Y1HayYdw7nIIpheb1/j2cuOnyvCmmL8BRE=;
+	b=lMy+Li0Qm0V9yt7d844SrXJRraNBSjv66sbRLHytvo8FlJgA7ORNUwWd8ybps6ZKKFhIaE
+	9blEti/hJJ0mi2P2sZZU/fsloTGD1UTd7jwn/rSSrd36PLyCuKnN4oJgPkZFAh4WrhJCWj
+	GPmswlTw4DmW93XOeoGo0dSMVf3FjbE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761152004; a=rsa-sha256;
+	cv=none;
+	b=otdEsT4VQZcTRpV5v8bB5mm4K+QWjScY9R0HbTm/qHGthN5dHL/5dBaE2uJ+RFAgphygFt
+	xpJ1q5kNWGh0M+lPCiWJ+6YoiJPuVpcGabh+SfJav+pOtJan0uCgU7YNQliWP+8ceauqkX
+	htvywwYjPaAiHTdkRwz1pcbWEiYsmpk=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=miff2ZbB;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59M9ufCp017502;
+	Wed, 22 Oct 2025 14:43:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=wqeUxUX92Y1HayYdw7nIIpheb1/j2cuOnyvCmmL8B
+	RE=; b=miff2ZbBKvd90piC615SLJE94VxM9gAhJZOr4WjvIEfE5kXlFR+1L2p++
+	cduoqipi8SgxE3Ryv8K9saq/PzlGm6LZUzqw4AE4B0n46RYgV9N/iBu48HbPN5i6
+	5TNlGasmcq8SzexPIx43JQL+/clQnJRmPfH1AxLV50LOwGJsONfG+DTWGBCPmW0C
+	0AloowVmOvZlLDP73Cforxhhcgct5np54EGGGXJVKjRB7VeP8CWBjMpzoZm9jGqB
+	s69QATfPxwQ4kIZZpl6T5MHc46Mcgf5hx2/8pL9AEQd+lZKVUziZFj6pJIShqktl
+	BMezNu2bSXcN/nUz0RA02VIxNxqEw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuxh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:34 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEgv8p013427;
+	Wed, 22 Oct 2025 14:43:33 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:33 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MBhucP011015;
+	Wed, 22 Oct 2025 14:43:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqx18juu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Oct 2025 14:43:31 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhSF749873198
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Oct 2025 14:43:28 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F54620040;
+	Wed, 22 Oct 2025 14:43:28 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CCA1C2004D;
+	Wed, 22 Oct 2025 14:43:27 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Oct 2025 14:43:27 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v11 00/15] unwind_deferred: Implement sframe handling
+Date: Wed, 22 Oct 2025 16:43:11 +0200
+Message-ID: <20251022144326.4082059-1-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GgtjZ29_6xWj039oWr2J0c-Uv8vu4kva
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX42N1c30jQ+g0
+ XAxt8+bY8ekXIGErvlpFBJk/bfAG+dFER49ApCJ8PIN9HvmIVcLeB8mjDqoHoDT7tI4pNcYBCuu
+ pvCQOGw4vZZJDspVVU/8lXtf8icXBi5A91knuSQoQAczV8qRB99+E5HH8xmy1q7x3YLHVcSxorx
+ +fj5HHQ3BY86xuPlu8JXKmvcTQvUZXPB+Ca7dLXXZw16MScQMxmQAe7yNQIqrpA8Bgct2ZmWqN8
+ Zui7GN4J0jI2K4nN41mU+01rCv+8OrX+nKxahQF6cMb821Fk1a4LnYrPZyh+WfKq1L1BWAwXdEH
+ 7odE96skzucO5IO7yJrNvPiD+y7kzi9D6OmcbTsvE7P7o3El680fsrKDuyK0Gpc2Rd0egAQEMVW
+ KePGQmQFh4FKsxZ1AOBA6lYR+JwH5Q==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8ed96 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=CCpqsmhAAAAA:8
+ a=JfrnYn6hAAAA:8 a=W3Ibw5UVuYrs5_yFpHwA:9 a=ul9cdbp4aOFLsgKbc677:22
+ a=1CNFftbPRP8L7MoqJWF3:22 a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: c_DPn-LZtCSMJRVuAxrTcXSg7ydCxI6c
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 X-Rspam-User: 
-X-Stat-Signature: w49fdmsx7y8b9xmhcmrad69d983jfbkd
-X-Rspamd-Queue-Id: 1B94AC0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761151912-433273
-X-HE-Meta: U2FsdGVkX19B+YIXlLnP4sDsoCjo+PuUqPVy+PbZRrDbfaHq7WPJJjAqai9LfE67hqcPhXjx6b/HctatKsEfpn2MQ5RW07PraRdND7vYpWxaXLg63ftZAkPWFfwSwkJ46CeEDvXGqTMcD/pOkwvnZDIx84hqYJ5zsZPf3WNyPcU/6B5v/Rcu2I2t8bHJyiz9Sb5wWX+LYmrsfTaBCtsaihP5OL/pkCsiwV68N3BhPPUusCXbaMx6grvOvyUimdOB4GWe7koXWo5lpUOWOaQXocIQcqNMy6oP9qd7eyRgWM4fGeBt+Y1aazxsgc+bihBJNQEW9lROwVfMKv9kSBk8urHVGOep0+uDlDUygqroyABpd7G43hwNWSXA03+ghQvkUCEC539Dg+LfqGzOpuXGo24MKWksC9+0U6T3GzoIVdDYvEFD5+pSChn6hkF1zShyf3+4Djpri0FA3RIJyrDsd03k88kCmHB/zOWrRPG1CVoTRwq+DV5VJlIS/X+1u0YcLOgKMq5j8A3RisIav1IkLuuivWeGm+Fq++skmM1LLbWYvq9MP/jHBRDFMlv1PZ7vARsTbtUecTiIXEmUsgLo9xqv0DEk4xB+ORypRELUBF3eA1shnLCpbXr+Vmos5ZzPvCwTtyJ7vMewOqoEu4kPo5RdRPCXvDaYr4YAEtG/nl5DwpmgyNIjmj7nQUV30Sp75xVC/IA0nQwtkS4j4mbJyo4vQm6cFomgukvrIQRL5mMHoYh2T8L6zDxnPUXVErzbGjOYCQ5W2n+lWwgS/21zeJ6DOs+t/LqXNG4EIdcRIstA7J8wyfg4m2+vTT+ZwbfY/zmx5DrlqvBAlTBGnmXXQNf8WP1nnLtzeQKc1lLNzsBB9Qh/p7DnMEkWqi7eGP3Re/RG99MbUswmmzVG1OzPMbqE+MbR5WdxTg1Ac/rrmCuh/FxYMMi1DB2vIPwUkjVpKKiw1hX7CWIQf6DnUGG
- 0g7HHkav
- fiaenemyFFtOBB6hvwmxYjmU6FqlJ8HjraD0kI+FuaMjoAPBtUCa5/8RBzSRtq0Bk5QqtqwSafOO6RUIcFGG4aPx6wWc4+OCSgQpXEf093ivRFyTE3oqYS+Iw0lle9O7rFFuDkHuOWA4P/MHBx2J+RQQWXRr+X5GhM+sxbSq7/nA+D+X8sJeFuVg/qYW7gGPJklwJ/Xl/ycIA6vMdOYCrKM71/Gdq5mmEguLfK0We0pEzR91el6MA0lNSj3B44fpdDkHGzApnEbNSOSd9Orfp3Z4No36w+PMikcl+RSOqWDcB/FK8U8pEpRb/tvK9ZHv349h619FMPINUg6cUEHO6ogY4y2ps5hhPZqtCb9mjWvjb3BK977fTj4vQBAjRRz/VVu9EbnxMZTxhE8iSt1bt5aynZuCOneh/eghoFqPG+95Im5cQy6FhAUL8m4qVLml+ofvS5kvKI+U+dT1dmyF/huWWsmHzrIEACGUjaDcRz+V8nmPmbFONS4lBVrq5R+I3ICwNancJDgVNdVBrTkvQe6oBzGQAkBpbDs66uV3Bk8Bxz9lj/DPc7kbo6C2uGvfrS98MzQrxetEZEukthgqcwoG3b+UtCnejchh97GAvdNIb3oWJvYBD02prEiZjdtk7q5dFt48Vdm0dXmAvJe5jE0u6qcsGASWafXWagA89PmGNG97siwgXMypWBoYulxC+kkO/2jKV9C3lB0AZCWc1e9UD41cqZmW/0wpcHbNw3C3VrIbR8zoNpPp6bdEai9AQ5s/3tg2VA3RLE1BvbWoT+EM+aJPJyDtW1R/M
+X-Rspamd-Queue-Id: E5C98C0006
+X-Rspamd-Server: rspam02
+X-Stat-Signature: cin9w1w5tms8er6og7w4pj545i8sczpt
+X-HE-Tag: 1761152003-981735
+X-HE-Meta: U2FsdGVkX18AhlLe1BV/e51pUJ1rUGhvFCgFWljnCb7pGmIt9jOGQrTyMNBx+AypUa6WH+hiN7P4zjZ0g1uBeEimz3CVsgsfE+cPo0owSPY8nu2hkDopIJ40QAzbYyHVRKl1V83Y2i+gyrtCDECviIWwfhnXuJwAm/+/seSEktLKOR6eRqLVYPnefY1n6s3w/PxjFputs0cSs+oeqAiyJwdqnm1CdVOYBHrA6/ACaz23aGNBbqSz3hWxd1ZhwMMPhot6IcC9aRfGeHvhMwQcOKIACzTBaWKnO1a8jM4URLdewZhqwa8z08+a3wbvX3cSmsLmjwPlQP1VnxJu4WfzHTLMNR0W7Va74LFPfZGLHNPgcF1cZrf4pf8utQdXiqGoRHg9KGAp3EXLB8BynmOEeVMxNYTPrGe548HrJziFpiF0fX8Y/XOsSVYtczZSnDl9pvQL0atS2yx6+PCuNqg/1xJPucAPoKHFcOQp6hjnNuXXaSezsJmpdjwLhlvqvHMivAboJ2pFb3wttj+K6jM9U21Bw8B/lc5ZV+U/LR+2dw9peNO70NsWdRTZqWIHa35y9yREH4mhmq3tiX1OzR75bt/gSL46Apg6KliRkG+6fnRJutIw2CTZLvzDG1qtnzB6Kj0EeYQUCVSmvVTQOOskEMXSgBMVi9lb1sUpr+lS9V6lY35YCu+7gaeooRwFPe1qkx5TWuFkR7261nHB+ra/dWtrCz2QDdbPhHJO6sR63sIk5Ojl5YMakRfRlxSHiSlR5LBZx870x0AoIXJp8jmUSCzhvZwGnYfz09r5R+b5yq6fF8J1/QFRYYUtJJAwfoyj23QxUHCXEO00rK6/JVyoGBPY/wKs2ocipIKY5TATrSScsw4JECtr2G9P2bWV1ddz4nIoUP+M0N7rkkYI/DCFPjxUBS6F1nFsZa0qN9ZS9MXw66/97lVxseNUudPp/b9fuy8k3HKVq4bfV+IzSuS
+ 3g8/qJEf
+ a3tzDxUt52HN5z9bJZCD8xpdYCfk/0WVGjX0kByFNaop5o6HatQw1m5wUcHFNWozwqzHFOOcIwlWsIlWZQ+Y/2v76UXw0ecoHHv0JBLOrCexCev4CyV/X0FQcObPz3svnTs757Lec2t77ktDFpU6/3AJHlVpLScdxNjmmIXifZLlcpcGZy+hxTztTvMNkVXeDHVzPc+EMusZZz1bRS9D40AeV+r8SuJrmyEESRMOOQ7ZGj+OYRk0gpTIH8wc6ZJ1C2D0c3RDLmfFdGksH2z2QI33so7YzkhuEuwy833Yg0DFbcGONwwKXlLJQJrzwfz5s4CWu2SXxUV0/+gOa6sfCGlTuwLvt4EHLPg2G6B9Bzt9RAFlV48SfnYeBsUfERRU968iUAv9imfnHPl2KFhnUCUb2eEYgGrTdQfoVzfgG7jS1zpP2AO559U+dv0hwqYOxHqGU0C3piG3sIBshsqujvuwxPxfFcymASa54iynY9zvYGgg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,260 +166,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Steven Price <steven.price@arm.com> writes:
+This is the implementation of parsing the SFrame section in an ELF file.
+It's a continuation of Josh's and Steve's last work that can be found
+here:
 
-> On 17/10/2025 21:11, Ackerley Tng wrote:
->> 
->> [...snip...]
->> 
->> @@ -5366,15 +5375,35 @@ static long kvm_vm_ioctl(struct file *filp,
->>  	}
->>  #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
->>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->> +	case KVM_SET_MEMORY_ATTRIBUTES2:
->>  	case KVM_SET_MEMORY_ATTRIBUTES: {
->> -		struct kvm_memory_attributes attrs;
->> +		struct kvm_memory_attributes2 attrs;
->> +		unsigned long size;
->> +
->> +		if (ioctl == KVM_SET_MEMORY_ATTRIBUTES) {
->> +			/*
->> +			 * Fields beyond struct kvm_userspace_memory_region shouldn't be
->> +			 * accessed, but avoid leaking kernel memory in case of a bug.
->> +			 */
->> +			memset(&mem, 0, sizeof(mem));
->
-> s/mem/attrs/g
->
->> +			size = sizeof(struct kvm_set_memory_attributes);
->> +		} else {
->> +			size = sizeof(struct kvm_set_memory_attributes2);
->
-> s/kvm_set_memory_attributes/kvm_memory_attributes/ (on both sizeof lines
-> above and in the SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD macro).
->
->> +		}
->> +
->> +		/* Ensure the common parts of the two structs are identical. */
->> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(slot);
->> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(flags);
->> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(guest_phys_addr);
->> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(memory_size);
->> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(userspace_addr);
->
-> The fields are:
->   * address
->   * size
->   * attributes
->   * flags
->
-> The list you've got appears to match struct kvm_userspace_memory_region
-> - copy/paste error?
->
+   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+   https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
 
-Yes I did copy/paste this from KVM_SET_USER_MEMORY_REGION2.
+Currently the only way to get a user space stack trace from a stack
+walk (and not just copying large amount of user stack into the kernel
+ring buffer) is to use frame pointers. This has a few issues. The biggest
+one is that compiling frame pointers into every application and library
+has been shown to cause performance overhead.
 
-Thanks for catching this! I missed out build-testing this with
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+Another issue is that the format of the frames may not always be consistent
+between different compilers and some architectures (s390) has no defined
+format to do a reliable stack walk. The only way to perform user space
+profiling on these architectures is to copy the user stack into the kernel
+buffer.
 
-I've done that and here's a replacement patch.
+SFrames[1] is now supported in gcc binutils and soon will also be supported
+by LLVM. SFrames acts more like ORC, and lives in the ELF executable
+file as its own section. Like ORC it has two tables where the first table
+is sorted by instruction pointers (IP) and using the current IP and finding
+it's entry in the first table, it will take you to the second table which
+will tell you where the return address of the current function is located
+and then you can use that address to look it up in the first table to find
+the return address of that function, and so on. This performs a user
+space stack walk.
 
-> Thanks,
-> Steve
->
->> 
->> [...snip...]
->> 
+Now because the SFrame section lives in the ELF file it needs to be faulted
+into memory when it is used. This means that walking the user space stack
+requires being in a faultable context. As profilers like perf request a stack
+trace in interrupt or NMI context, it cannot do the walking when it is
+requested. Instead it must be deferred until it is safe to fault in user
+space. One place this is known to be safe is when the task is about to return
+back to user space.
 
-From 31283972574bde2ffa1960d30c80286f8467c594 Mon Sep 17 00:00:00 2001
-From: Ackerley Tng <ackerleytng@google.com>
-Date: Thu, 16 Oct 2025 11:48:01 -0700
-Subject: [PATCH] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+This series makes the deferred unwind code implement SFrames.
 
-Introduce a "version 2" of KVM_SET_MEMORY_ATTRIBUTES to support returning
-information back to userspace.
+[1] https://sourceware.org/binutils/wiki/sframe
 
-This new ioctl and structure will, in a later patch, be shared as a
-guest_memfd ioctl, where the padding in the new kvm_memory_attributes2
-structure will be for writing the response from the guest_memfd ioctl to
-userspace.
+Changes since v10:
+- Rebase on v6.17-rc1 with Peter's unwind user fixes and x86 support
+  series [2] and Steve's support for the deferred unwinding infrastructure
+  series in perf [3] and perf tool [4] on top.
+- Support for SFrame V2 PC-relative FDE function start address. (Jens)
+- Support for SFrame V2 representing RA undefined as indication for
+  outermost frames. (Jens)
 
-A new ioctl is necessary for these reasons:
+[2]: [PATCH 00/12] Various fixes and x86 support,
+     https://lore.kernel.org/all/20250924075948.579302904@infradead.org/
+[3]: [PATCH v16 0/4] perf: Support the deferred unwinding infrastructure,
+     https://lore.kernel.org/all/20251007214008.080852573@kernel.org/
+[4]: [PATCH v16 0/4] perf tool: Support the deferred unwinding infrastructure,
+     https://lore.kernel.org/all/20250908175319.841517121@kernel.org/
 
-1. KVM_SET_MEMORY_ATTRIBUTES is currently a write-only ioctl and does not
-   allow userspace to read fields. There's nothing in code (yet?) that
-   validates this, but using _IOWR for consistency would be prudent.
+Patches 1 and 2 are suggested fixups to patches from Peter's unwind user
+fixes and x86 support series.  They keep the factoring out of the word
+size from the frame's CFA, FP, and RA offsets local to unwind user fp, as
+unwind user sframe does use absolute offsets.
 
-2. KVM_SET_MEMORY_ATTRIBUTES, when used as a guest_memfd ioctl, will need
-   an additional field to provide userspace with more error details.
+Patches 3, 6, and 14 have been updated to exclusively support the recent
+PC-relative SFrame FDE function start address encoding.  With Binutils 2.45
+the SFrame V2 FDE function start address field value is an offset from the
+field (i.e. PC-relative) instead of from the .sframe section start.  This
+is indicated by the new SFrame header flag SFRAME_F_FDE_FUNC_START_PCREL.
+Old SFrame V2 sections get rejected with dynamic debug message
+"bad/unsupported sframe header".
 
-Alternatively, a completely new ioctl could be defined, unrelated to
-KVM_SET_MEMORY_ATTRIBUTES, but using the same ioctl number and struct for
-the vm and guest_memfd ioctls streamlines the interface for userspace. In
-addition, any memory attributes, implemented on the vm or guest_memfd
-ioctl, can be easily shared with the other.
+Patches 9 and 10 add support to unwind user and unwind user sframe for
+a recent change of the SFrame V2 format to represent an undefined
+return address as an SFrame FRE without any offsets, which is used as
+indication for outermost frames.  Note that currently only a development
+build of Binutils mainline generates SFrame information including this
+new indication for outermost frames.  SFrame information without the new
+indication is still supported.  Without these patches unwind user sframe
+would identify such new SFrame FREs without any offsets as corrupted and
+remove the .sframe section, causing any any further stack tracing using
+sframe to fail.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Change-Id: I50cd506d9a28bf68a90e659015603de579569bc1
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- Documentation/virt/kvm/api.rst | 32 ++++++++++++++++++++++++++++++++
- include/uapi/linux/kvm.h       | 12 ++++++++++++
- virt/kvm/kvm_main.c            | 34 +++++++++++++++++++++++++++++++---
- 3 files changed, 75 insertions(+), 3 deletions(-)
+Regards,
+Jens
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 754b662a453c3..a812769d79bf6 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6355,6 +6355,8 @@ S390:
- Returns -EINVAL if the VM has the KVM_VM_S390_UCONTROL flag set.
- Returns -EINVAL if called on a protected VM.
- 
-+.. _KVM_SET_MEMORY_ATTRIBUTES:
-+
- 4.141 KVM_SET_MEMORY_ATTRIBUTES
- -------------------------------
- 
-@@ -6512,6 +6514,36 @@ the capability to be present.
- 
- `flags` must currently be zero.
- 
-+4.144 KVM_SET_MEMORY_ATTRIBUTES2
-+---------------------------------
-+
-+:Capability: KVM_CAP_MEMORY_ATTRIBUTES2
-+:Architectures: x86
-+:Type: vm ioctl
-+:Parameters: struct kvm_memory_attributes2 (in/out)
-+:Returns: 0 on success, <0 on error
-+
-+KVM_SET_MEMORY_ATTRIBUTES2 is an extension to
-+KVM_SET_MEMORY_ATTRIBUTES that supports returning (writing) values to
-+userspace.  The original (pre-extension) fields are shared with
-+KVM_SET_MEMORY_ATTRIBUTES identically.
-+
-+Attribute values are shared with KVM_SET_MEMORY_ATTRIBUTES.
-+
-+::
-+
-+  struct kvm_memory_attributes2 {
-+	__u64 address;
-+	__u64 size;
-+	__u64 attributes;
-+	__u64 flags;
-+	__u64 reserved[4];
-+  };
-+
-+  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
-+
-+See also: :ref: `KVM_SET_MEMORY_ATTRIBUTES`.
-+
- 
- .. _kvm_run:
- 
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 52f6000ab0208..c300e38c7c9cd 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -963,6 +963,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_RISCV_MP_STATE_RESET 242
- #define KVM_CAP_ARM_CACHEABLE_PFNMAP_SUPPORTED 243
- #define KVM_CAP_GUEST_MEMFD_FLAGS 244
-+#define KVM_CAP_MEMORY_ATTRIBUTES2 245
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-@@ -1617,4 +1618,15 @@ struct kvm_pre_fault_memory {
- 	__u64 padding[5];
- };
- 
-+/* Available with KVM_CAP_MEMORY_ATTRIBUTES2 */
-+#define KVM_SET_MEMORY_ATTRIBUTES2              _IOWR(KVMIO,  0xd6, struct kvm_memory_attributes2)
-+
-+struct kvm_memory_attributes2 {
-+	__u64 address;
-+	__u64 size;
-+	__u64 attributes;
-+	__u64 flags;
-+	__u64 reserved[4];
-+};
-+
- #endif /* __LINUX_KVM_H */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 35166754a22b4..95aa51b334a70 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2621,7 +2621,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	return r;
- }
- static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
--					   struct kvm_memory_attributes *attrs)
-+					   struct kvm_memory_attributes2 *attrs)
- {
- 	gfn_t start, end;
- 
-@@ -4959,6 +4959,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_DEVICE_CTRL:
- 		return 1;
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+	case KVM_CAP_MEMORY_ATTRIBUTES2:
- 	case KVM_CAP_MEMORY_ATTRIBUTES:
- 		if (!vm_memory_attributes)
- 			return 0;
-@@ -5184,6 +5185,14 @@ do {										\
- 		     sizeof_field(struct kvm_userspace_memory_region2, field));	\
- } while (0)
- 
-+#define SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(field)				\
-+do {										\
-+	BUILD_BUG_ON(offsetof(struct kvm_memory_attributes, field) !=		\
-+		     offsetof(struct kvm_memory_attributes2, field));		\
-+	BUILD_BUG_ON(sizeof_field(struct kvm_memory_attributes, field) !=	\
-+		     sizeof_field(struct kvm_memory_attributes2, field));	\
-+} while (0)
-+
- static long kvm_vm_ioctl(struct file *filp,
- 			   unsigned int ioctl, unsigned long arg)
- {
-@@ -5366,15 +5375,34 @@ static long kvm_vm_ioctl(struct file *filp,
- 	}
- #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+	case KVM_SET_MEMORY_ATTRIBUTES2:
- 	case KVM_SET_MEMORY_ATTRIBUTES: {
--		struct kvm_memory_attributes attrs;
-+		struct kvm_memory_attributes2 attrs;
-+		unsigned long size;
-+
-+		if (ioctl == KVM_SET_MEMORY_ATTRIBUTES) {
-+			/*
-+			 * Fields beyond struct kvm_userspace_memory_region shouldn't be
-+			 * accessed, but avoid leaking kernel memory in case of a bug.
-+			 */
-+			memset(&attrs, 0, sizeof(attrs));
-+			size = sizeof(struct kvm_memory_attributes);
-+		} else {
-+			size = sizeof(struct kvm_memory_attributes2);
-+		}
-+
-+		/* Ensure the common parts of the two structs are identical. */
-+		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(address);
-+		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(size);
-+		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(attributes);
-+		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(flags);
- 
- 		r = -ENOTTY;
- 		if (!vm_memory_attributes)
- 			goto out;
- 
- 		r = -EFAULT;
--		if (copy_from_user(&attrs, argp, sizeof(attrs)))
-+		if (copy_from_user(&attrs, argp, size))
- 			goto out;
- 
- 		r = kvm_vm_ioctl_set_mem_attributes(kvm, &attrs);
+
+Jens Remus (4):
+  fixup! unwind: Implement compat fp unwind
+  fixup! unwind_user/x86: Enable frame pointer unwinding on x86
+  unwind_user: Stop when reaching an outermost frame
+  unwind_user/sframe: Add support for outermost frame indication
+
+Josh Poimboeuf (11):
+  unwind_user/sframe: Add support for reading .sframe headers
+  unwind_user/sframe: Store sframe section data in per-mm maple tree
+  x86/uaccess: Add unsafe_copy_from_user() implementation
+  unwind_user/sframe: Add support for reading .sframe contents
+  unwind_user/sframe: Detect .sframe sections in executables
+  unwind_user/sframe: Wire up unwind_user to sframe
+  unwind_user/sframe/x86: Enable sframe unwinding on x86
+  unwind_user/sframe: Remove .sframe section on detected corruption
+  unwind_user/sframe: Show file name in debug output
+  unwind_user/sframe: Add .sframe validation option
+  unwind_user/sframe: Add prctl() interface for registering .sframe
+    sections
+
+ MAINTAINERS                        |   1 +
+ arch/Kconfig                       |  23 ++
+ arch/x86/Kconfig                   |   1 +
+ arch/x86/include/asm/mmu.h         |   2 +-
+ arch/x86/include/asm/uaccess.h     |  39 +-
+ arch/x86/include/asm/unwind_user.h |  11 +-
+ fs/binfmt_elf.c                    |  49 ++-
+ include/linux/mm_types.h           |   3 +
+ include/linux/sframe.h             |  60 +++
+ include/linux/unwind_user_types.h  |   5 +-
+ include/uapi/linux/elf.h           |   1 +
+ include/uapi/linux/prctl.h         |   6 +-
+ kernel/fork.c                      |  10 +
+ kernel/sys.c                       |   9 +
+ kernel/unwind/Makefile             |   3 +-
+ kernel/unwind/sframe.c             | 615 +++++++++++++++++++++++++++++
+ kernel/unwind/sframe.h             |  72 ++++
+ kernel/unwind/sframe_debug.h       |  68 ++++
+ kernel/unwind/user.c               |  56 ++-
+ mm/init-mm.c                       |   2 +
+ 20 files changed, 1004 insertions(+), 32 deletions(-)
+ create mode 100644 include/linux/sframe.h
+ create mode 100644 kernel/unwind/sframe.c
+ create mode 100644 kernel/unwind/sframe.h
+ create mode 100644 kernel/unwind/sframe_debug.h
+
 -- 
-2.51.0.915.g61a8936c21-goog
+2.48.1
 
 
