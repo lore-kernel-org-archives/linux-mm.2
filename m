@@ -4,93 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0AB9CCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 02:15:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6C3CCD1A5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 02:28:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F249D8E0003; Tue, 21 Oct 2025 22:15:55 -0400 (EDT)
+	id 444648E0003; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFC3B8E0002; Tue, 21 Oct 2025 22:15:55 -0400 (EDT)
+	id 41BBF8E0002; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E39E38E0003; Tue, 21 Oct 2025 22:15:55 -0400 (EDT)
+	id 30A708E0003; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D4B498E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:15:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7708B5A759
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:15:55 +0000 (UTC)
-X-FDA: 84024134670.30.BAF397E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DC19BA0009
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:15:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z9sc0WbR;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761099353; a=rsa-sha256;
-	cv=none;
-	b=0ZFO0eYDMyqS44zFj0NJo7Bsd4Tev2v7RqFa9LoSPtFA7ZoQ5RSLUjmT/Z4YiuQMw5Yj/Y
-	nurRSOnQEgStNHsAOHblfvoRVOhnoSNuzzo5czrQlq5UeZ6PVqOMK98CKwVURfDrO8kcTC
-	vbxHC+QlF8js0+BZWL+3B3WKf507y64=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z9sc0WbR;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9988E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B695911AB87
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:28:07 +0000 (UTC)
+X-FDA: 84024165414.27.D355210
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4CBE41C0006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:28:05 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmx.com header.s=s31663417 header.b=tku4TThP;
+	dmarc=pass (policy=quarantine) header.from=gmx.com;
+	spf=pass (imf18.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.21 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761099353;
+	s=arc-20220608; t=1761100085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eFAbcLrFQsd63pDILnMR73sN62PanFgBkD1x9WceHsc=;
-	b=xV+XBrQnPCXjXL/7KyOe5PohkqmLJoEUISk/TjQdACCdT4NHFb4x1+32AxFNHLiCSRgUIE
-	Vox03P28sX7J7cZu8V5K0+jUUaicNNyBmZr0unWcVvAH6EITYb5E8/QFPsDY0HcdNxKi/A
-	eeHe+GzxG675vIo2XysvOVUFC2ezDq8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 36B9160322;
-	Wed, 22 Oct 2025 02:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA5EC4CEF1;
-	Wed, 22 Oct 2025 02:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761099352;
-	bh=K8KyPpuWFb8QcJ7XXOwUi5j8hUUNg/w4R0Rxk5mqPqg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9sc0WbR5vWlhZcCkAalZUcE8a6choXCT7cZiw3CKT+J/5fC9T7v5u8AnSqXnYbsV
-	 P7P2b6ik+JssEgaNDkNe2XnMW4PsoELzAWa2A70O8bYwKlVoCYveujBcfn2DN4GtuH
-	 MtHpRjUE6qp40ZhvgbtLft0TF6MRQ4LrPNFHLLcWBElzO1sWuP5sZDzcxyqfyB6kKd
-	 elTIYyj9yvVuubI/W/MSif1lULq9VXO5m4e9ogOmWMceGRX4NKD8H9fwlcT7ds2NBq
-	 W+tjZ3+hUcvB8bsnj7q6LbFpYZppFs72qrTfn98svYFY45qzgLUFnjHr+RByRQO4aA
-	 r1dgolbERzVsQ==
-From: SeongJae Park <sj@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
-Date: Tue, 21 Oct 2025 19:15:49 -0700
-Message-ID: <20251022021549.129413-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <3h26sozqgksxn4fvh7i6qjhtbnrtzit6eluyieyhsvycs3fbs5@ddblsq2crkit>
-References: 
+	bh=UVX0nmd056i0xmICe0q2++vUyjyuTAipoKbvlzs47VU=;
+	b=04I9FQwG0r9vaJv2yQeDXF0cZQ0yIGiE3S0gIS5IqzAREcA/6NnhLfzlmcAfc91TohKj1d
+	FEmJ+jElC8AHlOWf3i2KlTWajc6euHZlLTRkjmvOb5cPKlBzhO+3Dil+nmgMfX2oofQUqO
+	gIwOJv6Z3nbPRemMBvw/dsabIblfecg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761100085; a=rsa-sha256;
+	cv=none;
+	b=Z2haU2v4YSRf4lV/p42MWRP1BAJVAVLKM+aBO2/mpkGyn7tIg2HjWhXq5gCLcnOrZmaWzT
+	FxvH1IF2iwNhOBUIfLaCKwNcH6YkpsPCzw6YksOB1R48RDTIZyr0NHkOD74qrY7X27l7w7
+	6xlTMRWQG178jBEOSj2XxyhvsYElvHw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmx.com header.s=s31663417 header.b=tku4TThP;
+	dmarc=pass (policy=quarantine) header.from=gmx.com;
+	spf=pass (imf18.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.21 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1761100079; x=1761704879; i=quwenruo.btrfs@gmx.com;
+	bh=UVX0nmd056i0xmICe0q2++vUyjyuTAipoKbvlzs47VU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=tku4TThPnv94EjxWD1brO8rmGeXvI3vIF68TXT0bhqte5Y6YALmvMOAMBFQYe7p/
+	 OE7fRyW5867frAdcDw9hbzYK6Ffxibgt7qpQytocBy1mQhnLwfzdv9UT6I61AoLrq
+	 o4cPS7U09usXg5Lh6cyffXKE6nBSVzZ8Edqcl7L4nJpaI+Ut9TSjQDCpc5nX5Jkfd
+	 UXcFY1w/lMvE4KMD+5qoz2/GIuYMGu6TNEX11CuS1pHFlz0XByTyGS3kr5Q6cRTKc
+	 dcn/9R4r0h19myoSd1w1/LaDQ+PqPWxAzFIIMBv2CyTWnET+GUWov0Eo0vkFf9YEG
+	 w97YcFO6xWERKPN5TA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.229] ([159.196.52.54]) by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MXXyJ-1ugJrV3N0x-00Hqcj; Wed, 22
+ Oct 2025 04:27:59 +0200
+Message-ID: <f13c9393-1733-4f52-a879-94cdc7a724f2@gmx.com>
+Date: Wed, 22 Oct 2025 12:57:51 +1030
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
+ trust the bio from direct IO
+To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, WenRuo Qu
+ <wqu@suse.com>, "hch@infradead.org" <hch@infradead.org>
+Cc: "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
+ "djwong@kernel.org" <djwong@kernel.org>,
+ "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "jack@suse.com" <jack@suse.com>
+References: <aPYIS5rDfXhNNDHP@infradead.org>
+ <b91eb17a-71ce-422c-99a1-c2970a015666@gmx.com>
+ <aPc6uLKJkavZ_SkM@infradead.org>
+ <4f4c468a-ac87-4f54-bc5a-d35058e42dd2@suse.com>
+ <25742d91-f82e-482e-8978-6ab2288569da@wdc.com>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
+ sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
+ xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
+ naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
+ tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
+ 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
+ VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
+ CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
+ B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
+ Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
+ +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
+ HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
+In-Reply-To: <25742d91-f82e-482e-8978-6ab2288569da@wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:DMNhgb+bRQv1CGCFUdNbrLUjyIg09hD8em/oI4ZEtuEJAP6dRrS
+ vHfT4/Ty2j6KsYnIjSVZ4BFbSPQYltbPsVaDAIQzykluPsBWsQyMXaAZXduEDXS53ZlFwI4
+ zCziieGDXEwkr0dUvncdNKSxH3Ymh8LUG0V6/zZlkfBQZF+fMxiDidqdH5RRrymEesbXz6A
+ S6U5r78Wdbl0EVzQdCtFw==
+UI-OutboundReport: notjunk:1;M01:P0:WvNsCEW7dMA=;4HqMlMWFPrSDZxAImQYjHuskv+C
+ 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
+X-Rspamd-Server: rspam01
+X-Stat-Signature: zmcgxto5qzadakj3x9h9fjw5bjsxp7n4
 X-Rspam-User: 
-X-Stat-Signature: i67pe5gz8fr9dqzijk1fujuc8xpzi5ti
-X-Rspamd-Queue-Id: DC19BA0009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761099353-73050
-X-HE-Meta: U2FsdGVkX19kqBOkopfJBe88lX57sNZPwFh8frVNpjYmQSLHxzXFnLWk0Tpk80h6EycA4k66Gi8CA6KpXiEI5T5sjna0OsyMLMG6PG+W8BYa8Uv3ASUGG4K0WG8uTLJXjHxN2V0CUZ/4JejPfWZ0lM/W/9JD69bn6ZcAYkrHQ85XSxzerHdgCFSmoSmDyoQg1zzjJ36rqxeXOkZce9b1rIbaYfzHV8VAIhuhT4WRxKEWued3pMR4TUffLE/zQdq97jHccL94m/uslvEuusW+YrYTRZPiB6xctSjfa9Oxd99M6p56ZdD7Phel+jy9Jh/LrIjPiySTkJ6eV6rn9Vb98a2/cjb22IfQTdv8KSU6ObDlCkuaIvgFSabC1i1uGQiax4idPEtccppg0ukpN9GYL4C8fxP39tZPg9vZTXgFY6SpvyQNy4yLVtW0VZRBwUfokUoKQo1mM7ubbkcvpXWAuHssztWzVCPhDxDmx7DRfShCGGSxBW5egE8XOlNHS4zEM1EGLmlf7itVI4chyXu0grSf55wo/Lq6+ss8sjzWZ/jTEAzvX43hax7ex6IHlEmcsDgKsNz312qKPFlVMwfXreYmdmcP1D5W4AEIDrp7mi6rjNjOce+23D5D+hzfPiRIU3LcM3eWv65GjFHGUmfjoRgyajVNEabTnWvywrjkSkdp1lGSzKMXdj0aiw9zc3N3IjIF9k8fb+V9DsacSPWS25d0RV34OBTHoRgB18xTWzfdmK3uKXJNGb89NCEtES2c+q+mmDejy+k9w0dv64yXLhpjK+G7PQUJ3VT7+g0kPij7oaJ3BIrhZ6dv3oS24U4SINPAXVjdp3IYwZLA5miewbv4tpODIYd4kWiHO4QZsMFFRn5W0X6tI6HE4yxiKdnctyIBdkRsJ67JVLh7zArsNRMJ46gmfyQRUohhRory91ve7Di18qaJdaBEDWtYLWLe963a65E6x5QYOmez2hy
- WM1QQtj8
- wO19B3ziMDvX0A8jDskteNOaFJ3yCd8v0JTGRRgKmcceYsVixAz6d9hjjz3rQxQ9uZQZ1HckV/x+dK4lnOXouJiehEU1tB7yT5aSbA6r4XmRzEawN8iHihGWCwiizwpI0YNH2AUPZPNSxj8x+WWXbGdroGuAYgExfJh79CyP+gK9CKYajdZftpAeGApDdQE/vj4E9rd5x1OfY5f799rNMnPKQSyEAHPvbyvc7eEObmBZAYDJr72+N9EUe2vPJxEcLCgWEw24UEFXO/ZeL06OKepsPhw1R5elPTwwfA93xbQSRXL67t4VWojLv2A==
+X-Rspamd-Queue-Id: 4CBE41C0006
+X-HE-Tag: 1761100085-829175
+X-HE-Meta: U2FsdGVkX1+VapTWwUFv/2BpjPCbCogLAMzdF4Z17qjABybHQ5ia94Pz3xgHWtCPZMgBFBD1TdZ8id7MUXAomRkpGm1elQhRveJiUTHV8z8F61ylhkTCcrxGpNQZiIEFMDo5sXizBohmHFNAdtGEpnnvMC331y8fYIjl/LEkTMbEx6Ie6RliSvyoZbaIoW7/D+HeQUgwb+twkCgwFPML7HDRjnjKIFIr1zHcuXT2hlZFRFn5wFoTTScohqeVCMyDPuFpC/JcpbJvOC9RR0l9GMRSYOa1pCfxWdaDSpCW+mAM6GrAtN6VzRbgSSjrf2V45NRLnjHb+WPICMZCASLcvdANZZm8jWiwAStIgovUDiimh2OEURzqwFdFe9ty007fVuVPm3sc954pb5pA41buSrBodJ19B1A7dtCaMqUif9d+dJJKfxz/DG5yXi/FMuPuFTkvgWlfC3qdCtYh6aP0G4DGMuX2vFKuNdBaxDFvS5GaHkHx04QPiqgE/bG/4F/j02rm1au76CKQ+Xi4kQCyeLGmVOM8RS0B+BmFbBzllZFI/CvKeqPrBc2M830a2rQuXXWqasi3DA4Xs1F1vpifkjf8r8tVbONfw6bNDCMg5WEZTL4bWYfoZ90Lsl8HHZq6asA22LCWiCVb+99JYF04ADgVWIcCC/qA2H9wy5nyiz7d/8NyBfvYJ8oYfWrl1YK0vYusFBpCKW/K8Lj5cGNpR1/OQ9QT6QgoZ6LJ7Pj6/srvsrke5Brp0MOXX1yTYpfHh0GxvbzYuVJBzrL/COwkGK6Z7lfNyLSqmDdvXy8nLdwMpsD+/cohU7c5yP+f+FbIXtqfqO5zWYMTINYjTXBKOeOkQLTOOeGNxBHiCfbIxV+NoOHlzRm21fwrIug4RJZQas0YR8fsVi8JDjdnt6xJA25NjqcbEi7o4RVyiJoon/0DmySvpe0i9LedP5nQRNO1uX4epJDs4mMW06+styk
+ STs48RJW
+ 7ONDVwuYvt9jL3u6GVGW74EYHnh3RvVLoBkwo1W+EluEkhvfyZ8i4VWoCE3+mxGe+Vqg4uhYBmabUWsUF8NfyMDenfWrn/VLvEHCtlhBHTpsQZ1z/zl1yGp/a9s1cM2dyV3zpgvkjFpGslUb5mHl+hjRUg4MrO9khyrmsWLZnh9mBHMoPkpicE/l1l+v05qHMJUBUUERk3pZ1bBavkm5LcHJwsAlT7ICBeZMnFh29XAsWgQPLhBQ6+5QNYFJXqs0WropPPK6ASjMfpxLi0BUvQWfWpXLYdbrkKzD/NkcZjk85YemI/bixfZOGjbCjtDZxt0buAyEL9AJDUs+NyRknoQwG+7jq2K+wJG42b1TIXxcVOkIUPVXS+r4UqVPVXcjYb9H0XAyWonLtlYNJ1NyR9dTLdNkdHUN3CugdzzxEISmNsxMuqP99aNspxgNRlu4vCDRvV26Kf+b3vJrKqxbBBeeWg2fQ2MAw7Um6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,143 +209,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Oct 2025 18:28:02 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 
-> On Tue, Oct 21, 2025 at 05:58:00PM -0700, SeongJae Park wrote:
-> > On Tue, 21 Oct 2025 16:44:25 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> > 
-> > > The function __memcg_memory_event has been unnecessarily marked inline
-> > > even when it is not really performance critical. It is usually called
-> > > to track extreme conditions. Over the time, it has evolved to include
-> > > more functionality and inlining it is causing more harm.
-> > > 
-> > > Before the patch:
-> > > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
-> > >    text    data     bss     dec     hex filename
-> > >   35645   10574    4192   50411    c4eb mm/memcontrol.o
-> > >   54738    1658       0   56396    dc4c net/ipv4/tcp_input.o
-> > >   34644    1065       0   35709    8b7d net/ipv4/tcp_output.o
-> > > 
-> > > After the patch:
-> > > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
-> > >    text    data     bss     dec     hex filename
-> > >   35137   10446    4192   49775    c26f mm/memcontrol.o
-> > >   54322    1562       0   55884    da4c net/ipv4/tcp_input.o
-> > >   34492    1017       0   35509    8ab5 net/ipv4/tcp_output.o
-> > > 
-> > > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > ---
-> > >  include/linux/memcontrol.h | 32 ++------------------------------
-> > >  mm/memcontrol.c            | 31 +++++++++++++++++++++++++++++++
-> > >  2 files changed, 33 insertions(+), 30 deletions(-)
-> > > 
-> > > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > > index d37e7c93bb8c..8d2e250535a8 100644
-> > > --- a/include/linux/memcontrol.h
-> > > +++ b/include/linux/memcontrol.h
-> > > @@ -1002,36 +1002,8 @@ static inline void count_memcg_event_mm(struct mm_struct *mm,
-> > >  	count_memcg_events_mm(mm, idx, 1);
-> > >  }
-> > >  
-> > > -static inline void __memcg_memory_event(struct mem_cgroup *memcg,
-> > > -					enum memcg_memory_event event,
-> > > -					bool allow_spinning)
-> > > -{
-> > > -	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
-> > > -			  event == MEMCG_SWAP_FAIL;
-> > > -
-> > > -	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
-> > > -	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
-> > > -
-> > > -	atomic_long_inc(&memcg->memory_events_local[event]);
-> > > -	if (!swap_event && allow_spinning)
-> > > -		cgroup_file_notify(&memcg->events_local_file);
-> > > -
-> > > -	do {
-> > > -		atomic_long_inc(&memcg->memory_events[event]);
-> > > -		if (allow_spinning) {
-> > > -			if (swap_event)
-> > > -				cgroup_file_notify(&memcg->swap_events_file);
-> > > -			else
-> > > -				cgroup_file_notify(&memcg->events_file);
-> > > -		}
-> > > -
-> > > -		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> > > -			break;
-> > > -		if (cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_LOCAL_EVENTS)
-> > > -			break;
-> > > -	} while ((memcg = parent_mem_cgroup(memcg)) &&
-> > > -		 !mem_cgroup_is_root(memcg));
-> > > -}
-> > > +void __memcg_memory_event(struct mem_cgroup *memcg,
-> > > +			  enum memcg_memory_event event, bool allow_spinning);
-> > >  
-> > >  static inline void memcg_memory_event(struct mem_cgroup *memcg,
-> > >  				      enum memcg_memory_event event)
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index 1a95049d8b88..93f7c76f0ce9 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -1626,6 +1626,37 @@ unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
-> > >  	return page_counter_read(&memcg->memory);
-> > >  }
-> > >  
-> > > +void __memcg_memory_event(struct mem_cgroup *memcg,
-> > > +			  enum memcg_memory_event event, bool allow_spinning)
-> > 
-> > Seems this function is called only from memcontrol.c.  Why not making it a
-> > static function?
-> 
-> There is a recent code where this is called (indirectly) from networking
-> stack for MEMCG_SOCK_THROTTLED.
 
-Thank you for enlightening me.  Apparently the code is from
-https://lore.kernel.org/20251016161035.86161-1-shakeel.butt@linux.dev.
+=E5=9C=A8 2025/10/21 22:00, Johannes Thumshirn =E5=86=99=E9=81=93:
+> On 10/21/25 10:15 AM, Qu Wenruo wrote:
+>>
+>> =E5=9C=A8 2025/10/21 18:18, Christoph Hellwig =E5=86=99=E9=81=93:
+>>> On Tue, Oct 21, 2025 at 01:47:03PM +1030, Qu Wenruo wrote:
+>>>> Off-topic a little, mind to share the performance drop with PI enable=
+d on
+>>>> XFS?
+>>> If the bandwith of the SSDs get close or exceeds the DRAM bandwith
+>>> buffered I/O can be 50% or less of the direct I/O performance.
+>> In my case, the DRAM is way faster than the SSD (tens of GiB/s vs less
+>> than 5GiB/s).
+>>
+>>>> With this patch I'm able to enable direct IO for inodes with checksum=
+s.
+>>>> I thought it would easily improve the performance, but the truth is, =
+it's
+>>>> not that different from buffered IO fall back.
+>>> That's because you still copy data.
+>> Enabling the extra copy for direct IO only drops around 15~20%
+>> performance, but that's on no csum case.
+>>
+>> So far the calculation matches your estimation, but...
+>>
+>>>> So I start wondering if it's the checksum itself causing the miserabl=
+e
+>>>> performance numbers.
+>>> Only indirectly by touching all the cachelines.  But once you copy you
+>>> touch them again.  Especially if not done in small chunks.
+>> As long as I enable checksum verification, even with the bouncing page
+>> direct IO, the result is not any better than buffered IO fallback, all
+>> around 10% (not by 10%, at 10%) of the direct IO speed (no matter
+>> bouncing or not).
+>>
+>> Maybe I need to check if the proper hardware accelerated CRC32 is
+>> utilized...
+>=20
+>=20
+> You could also hack in a NULL-csum for testing. Something that writes a
+> fixed value every time. This would then rule out all the cost of the
+> csum generation and only test the affected IO paths.
+>=20
 
-> 
-> > 
-> > > +{
-> > > +	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
-> > > +			  event == MEMCG_SWAP_FAIL;
-> > > +
-> > > +	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
-> > > +	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
-> > > +
-> > > +	atomic_long_inc(&memcg->memory_events_local[event]);
-> > > +	if (!swap_event && allow_spinning)
-> > > +		cgroup_file_notify(&memcg->events_local_file);
-> > > +
-> > > +	do {
-> > > +		atomic_long_inc(&memcg->memory_events[event]);
-> > > +		if (allow_spinning) {
-> > > +			if (swap_event)
-> > > +				cgroup_file_notify(&memcg->swap_events_file);
-> > > +			else
-> > > +				cgroup_file_notify(&memcg->events_file);
-> > > +		}
-> > > +
-> > > +		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> > > +			break;
-> > > +		if (cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_LOCAL_EVENTS)
-> > > +			break;
-> > > +	} while ((memcg = parent_mem_cgroup(memcg)) &&
-> > > +		 !mem_cgroup_is_root(memcg));
-> > > +}
-> > > +EXPORT_SYMBOL(__memcg_memory_event);
-> > 
-> > Also, seems there is no reason to export this symbol?
-> 
-> The networking code needs this export.
-> 
-> Thanks for taking a look.
+It turns out to be checksum, and particularly my VM setup.
 
-Again, thank you for clarifying.
+My VM is using kvm64 CPU type, which blocks quite a lot of CPU features,=
+=20
+thus the CRC32 performance is pretty poor.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+I just tried a short hack to always make direct IO to fallback to=20
+buffered IO, the nodatasum performance is the same as the bouncing page=20
+solution, so the slow down is not page cache itself but really the checksu=
+m.
 
+With CPU features all passed to the VM, the falling-back-to-buffered=20
+direct IO performance is only slightly worse (10~20%) than nodatasum cases=
+.
+
+Really sorry for the noise.
 
 Thanks,
-SJ
-
-[...]
+Qu
 
