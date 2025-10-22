@@ -4,161 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D81CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 15:53:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE690CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 16:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E5698E000B; Wed, 22 Oct 2025 11:52:59 -0400 (EDT)
+	id 56BB28E000D; Wed, 22 Oct 2025 12:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BD438E0003; Wed, 22 Oct 2025 11:52:59 -0400 (EDT)
+	id 5437B8E0003; Wed, 22 Oct 2025 12:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D3518E000B; Wed, 22 Oct 2025 11:52:59 -0400 (EDT)
+	id 459348E000D; Wed, 22 Oct 2025 12:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B6928E0003
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:52:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EEBC88BFD
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:52:58 +0000 (UTC)
-X-FDA: 84026193636.03.B510113
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3769E40014
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:52:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=tMDA5rzf;
-	spf=pass (imf12.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 325AA8E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 12:00:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D86B81408A8
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:00:29 +0000 (UTC)
+X-FDA: 84026212578.09.74BADAF
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C2500C000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 16:00:27 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Z3MXi9nJ;
+	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761148827; a=rsa-sha256;
+	cv=none;
+	b=bfVcJofL5vsjAmJDqJ3pD3JiTJD44jGLWFcIShpiHsl/uuMBw2f5JjCeUjEIRo3TMDjXlR
+	Dz22FzP/u+hVqtPZv3kt0xaA5x6ZkaMUsWTnmYIsnDZfn8DcKKyuHdN9hHQU6fNBCLUvo5
+	RmooYy/EP3r4dGHmABM+xZ1RG+Xmq0o=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Z3MXi9nJ;
+	spf=pass (imf10.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761148376;
+	s=arc-20220608; t=1761148827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DDHL76OkYT1/0d+aGsHSUPmnkAR1wiVZ3o8d2Ik7EL0=;
-	b=VjJyvSFF8afNk4v1CD+La6+E262uDa67n9TwV1fbR2sUrdD5OcjKN3bAvfmFP6620nZgMN
-	HV1BiCvAWcCm0gZnmB4LM1sx3eaBNnoN3RAoToy5Bk8pXsePfq3sRHA96AI4YAZs3dzx8o
-	ceHLdusF/JE7T1hsbrvpfo3xusammB0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=tMDA5rzf;
-	spf=pass (imf12.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761148376; a=rsa-sha256;
-	cv=none;
-	b=mZgoDY8wmp0GsLzTrGy1cRA5caPQ7JOLMUbG6YZkeawRKAQD0FQ43EN7Jc5CEHo2663Gj3
-	Pxm1avkUtyw+r8ssalvMhtEG/J2aGbom8ZuwxQQrfdbe0iFio/f7KdiymFYclnGAmDVR9n
-	QQe6HTDWT2yWaRegUkQtbqO9sZb0dm4=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MDas6h003010;
-	Wed, 22 Oct 2025 14:43:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=DDHL76OkYT1/0d+aG
-	sHSUPmnkAR1wiVZ3o8d2Ik7EL0=; b=tMDA5rzfIyYw61aavANqY5dtPQ6/O/Wzm
-	fkmwKcHgfCOQvrDRTZPfrhTIx8qGv3yrJ/qc4KMDTQog725tSK0JdeD1n5XxmHyq
-	mRk5bn+zP5gwB4Z77mGCvSkpNOwQ9H370qRgDGpnB1Gbj3K8XHHO0vvjQZRLJW1L
-	9QBBMOaqwTdodq4LVLJaTiFXoKf7DwJkjlVxs/I/n1gafb3O12MZzTwbttEqm/k7
-	q8dyWyveHzNiZ1xDZyxwyLv1NGaADRh6UgnFqCiMryfZ0tHlEzVn79yZvQzHUMDL
-	9LYCQdQFb9IAJlY0j97H5CQpzkrw/NfW8EfaMexIwg/eDiioMyRtA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuxn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 14:43:34 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MEdCHb004523;
-	Wed, 22 Oct 2025 14:43:34 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30vuuxf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 14:43:33 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MEGC56024303;
-	Wed, 22 Oct 2025 14:43:33 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vpqk0smq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 14:43:32 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MEhSuX49873200
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 14:43:28 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C09D42004D;
-	Wed, 22 Oct 2025 14:43:28 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 552282004B;
-	Wed, 22 Oct 2025 14:43:28 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Oct 2025 14:43:28 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v11 01/15] fixup! unwind: Implement compat fp unwind
-Date: Wed, 22 Oct 2025 16:43:12 +0200
-Message-ID: <20251022144326.4082059-2-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251022144326.4082059-1-jremus@linux.ibm.com>
-References: <20251022144326.4082059-1-jremus@linux.ibm.com>
+	bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
+	b=EvFVJCuWFwriJkoqvgGNCWgTc5BTwJ7yidPHqnLfw8nwsNxZ6M1L6Rbq8M3vQkmw65//6h
+	YT9hvC3W3k7ximLmdbBhp7MHXnKMsG7HQWoyf68HKJfFOCrEqtphQlqqU7eLSLBGFN4H+V
+	xafByNWdbyoWGHR1THir30hSQxNGtBY=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-471005e2ba9so68215e9.1
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 09:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761148826; x=1761753626; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
+        b=Z3MXi9nJyz++kO0nLpcU2z7DNKB9ZKRHhydnBKkDmr+E0/72wZEzJOPDBZlAZPy0fc
+         ROUDKPV7gGsd73vnLl83bVvADg/hZ8i5QuJE+Jzlir8VI6+Jgx6bBmye1c4CspylkO7m
+         /a1MMqUdg6oiGCZUVBV2/FVSY69s1ELsUw1i0xIU/Aa8fci1RWaWbwc4aIDzHszvX70p
+         gKPUexH69nUsrrQKleQjhCJ930wImW6id0X9LI0iW1EqcZ/cHi8RDM43oD39nWknWy4z
+         0v2WFAdtMQqa9uw1+KVj7AQ15sWzjLPeO5R45qgCaxboKXw/ZzeuzVvrsHNx8M7h87iT
+         EYxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761148826; x=1761753626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nrE4Qz7SJRI1Enuhm5FI5J4QD5PmBoz82eoX+T/eGMU=;
+        b=CGpSb7gzcLhLWaB9bngwMabvudR7h4BM7yX6/2Brkbp/j+6rcrQceTcAg2vk8o5GbV
+         oH0JaZLpdWAFrQjf9lQ2j1XhMj6dXNCx/X1xiaXx36mKVJPWr05qth6xvx3LnGT0a4JG
+         Z/gSbgE7WjEen9rkHp7yRQOqOF0G+FVLO6fcqMccN1Vrx/iGmNEs8nGtOJzfs54w+jqx
+         LDYnRXFWKcXr0hd6qJtho0YTcomkK1VTWl3Ul7RCguZcXBEv/ydZhtyVcUxwhcoBUTZj
+         Fx+MB26XZFm3PVE0wjS/Ji1JIFxAaVThbhSEhF6T3pKFoA3Bm/pV/4jh3p9tyqBDtJTr
+         Q4oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV37UvbqpvaMmGV2kakIeSU7z/46p0TnVrAWQkun9n62AVCyH2N76ep6kgydOKeZRiqu+BkD5IVqw==@kvack.org
+X-Gm-Message-State: AOJu0YyE1JBhkXcD981kg9K5qpQ805PsZegvxYCpHlot7xaGwarFEuMI
+	Cqroek5A8cUhDH/JZPgCHLEvp27oq0ZZH2oFuTqZPvSswoUkRpq5Zun5EAAWsNVB0JRymRck8mj
+	Yijs2COMQ81AYOyJ1+Bacx4XQ3xslBPwN9WwmjS7N
+X-Gm-Gg: ASbGncue5IKFPSQ1Vlk+S8DTSWYLU9b37ZXZQgFG84Hbvuk6gGP7PBmNxikhViNFlKr
+	eUF7ZI+riLmgvo7cLVo7QHELmsBeC1yYCn2GaD4Y9sF4bDtOx3/AEHwQ+8b2UUjmd3tR85/4SFO
+	Jn7HiBtORR3tuAWJKbSsX10VBY5cJPN0Xg23OhglCI9zEobdW2TpVq00q3OMaUK+nkE4o88gelN
+	Nan8+tH/JKFkQv9BiFS9JN46lwblP0vG/XHuPrIdjlQ0BIuwIW3lN1sA1tVOmgMEUL/xbmpXmcs
+	hMtyt3Mp6bO0PROLaQ==
+X-Google-Smtp-Source: AGHT+IGQ5urEAQ9m57T3Tr0rBInJl1kxrVgo9aZA5J1ni84q+HbgDwPfJxL7EgSHQYRd3sVOQI4JW1ylUbWl3BXuheM=
+X-Received: by 2002:a05:600c:c04b:10b0:46f:c587:df17 with SMTP id
+ 5b1f17b1804b1-475c5138edbmr772405e9.1.1761148826010; Wed, 22 Oct 2025
+ 09:00:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7R42UHwINrLNnxXhS1YO1T4b33MfRlsl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfXy4bqe94vf7xv
- H8A1u+70jZoJVpd6CC1YGdhTOyEqeo7x/MKLlgo27jTFX/Sh5MWw3b86yw21sP4lUXgNUOtX60V
- jMsWnW1S5VDMEWy+tBXBkUKu+KTsGyxWG8CVX3+0fBFNLVH4oCyXJlkkM0P7huaLPujquFpBSmy
- Q0Rj4kmes304GqjZab3CXrjbL+gV0ZNsgLc2j0w+x6fIsi34bHQRdTC+Gg/q+HaYT4fyOrqNusH
- 7hpT+ZTqWNjwzRcVpeb9CZ/DMJfusTIYKxlC3NqPjhf8qr88z4YcftnHcWBzJB23oJ8ZNuVEkqB
- 6jHOTE3G0YlhyMjJuZHXDStTDmfietm2KhYUbtfpGVE+BOfyxmRaS4xyeuFf1D4NNa94vPElAFB
- ApvtgKTNaq75CeGzHfLeF75+dSslVw==
-X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68f8ed96 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
- a=VnNF1IyMAAAA:8 a=Dulmdrgfa1N6jiOmfnUA:9 a=1CNFftbPRP8L7MoqJWF3:22
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-ORIG-GUID: w9233WmVEFQ_ZMBLXM2HZ9AkeZQJa3UH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_05,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
-X-Stat-Signature: dc1m76gih35eoyqatxiriagrbqx1jpow
+References: <20251021102327.199099-1-ankita@nvidia.com> <20251021102327.199099-2-ankita@nvidia.com>
+In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Wed, 22 Oct 2025 09:00:13 -0700
+X-Gm-Features: AS18NWCpMHMP31ZSlN1pMxGifJCs7kl9OgsJ-oSyN2IYIPEyac80DDLNqIbtKlQ
+Message-ID: <CACw3F5036Kfs_j8np+_+YejC02ADeLoCNYaQVhmBRzQF32NAgA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
+To: ankita@nvidia.com
+Cc: aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com, mochs@nvidia.com, 
+	skolothumtho@nvidia.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, tony.luck@intel.com, bp@alien8.de, rafael@kernel.org, 
+	guohanjun@huawei.com, mchehab@kernel.org, lenb@kernel.org, 
+	kevin.tian@intel.com, alex@shazbot.org, cjia@nvidia.com, kwankhede@nvidia.com, 
+	targupta@nvidia.com, zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-edac@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, ira.weiny@intel.com, 
+	Smita.KoralahalliChannabasappa@amd.com, u.kleine-koenig@baylibre.com, 
+	peterz@infradead.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3769E40014
-X-HE-Tag: 1761148376-273304
-X-HE-Meta: U2FsdGVkX1/f7jXkwv1yRYdb1bXNHDG2zpbSdnox9VbCom1onEh9vEZOC22Ld316HgOgsqrhFHcwkt1LlqSZQJaKHzrszSxc07bLb0e3RItlrTgGCGw3OD5c2m+TnnaxA6h9DhzJvl+yeFqVnCw677MnqtKMeEatKlA0bxZeZ78t7qMEUPJXAPc9J6ZTCcKVHLuYVxww03k4GRVtnL3MWgAL6lEkozfrkX/mn99jDQ4leba5oY0y7FWka/AvP2CAkxxd9LQyAcRCnNITkXuKX/7l4ks5unDa6scuUgV7PUC9v4aORc3gdFqvao5I1yXCgrxPwa8bCkN+PRmv/AQVPROnDrD86VI6F8U6U7xpGggHMSgUb99FxaHN4SYRaSwCceq5KLty1TcPJ4aBtSqTKBf8ZE59lgeE2WEtb+NZYzMBlys76euiMhP8etFYdJPuGPnyDJTfh7nyOXKQ6aB5+xSzfIhkaNKWLGwP3FjgzimRnsbP5iBMyL1Bt+L3HqwjaM/dlzHHeW1PnQX9XlMoVER5FCorwbuvAPmm21r5af+eeXOOWl9oeiz9UptzYps9wNzScnqDRs+e/UYjddJtbl1uVbOOolUM7ur89NkALsLUA/H461bzkvSwr4fWdzKevDVB7xAFNWA8dw7Ke446Bn4lEdJupaPwJTTsh0YygFDF5xUThfVVEPVr7NV+/OtYQKqN0nCQwoOdur/U4me0DOEhdoinD+Hv5wPkAgDiScYgR3aH9qw02NkuIdhVUASNKJBToKts5ifGN7dF0b8DdtDwDyf43NcyskQYJJ6p3DzKWWGU+nKElEMgeHESzCFDvtRjjzRqPKdX3gMFR9pbmXR+mMynrGfgsTZl+OPpvbwCypwF0baIdjENP3W+47mZf9PdrJYilXM+SYMG1nKkMHeQrLnd5GYM5xUafDTLDhmIQep0uKgaZ22+SPipalwPlfTCLI1eaaLMs5r/q5K
- uSOAA+OQ
- CzZsl7sxCGiC6MmffbAGMUC0yfxQDryQCmSK8OZHODvodRo701TWyCn7GLuj6oXntuujTxEayltXlIIsa91eZrOPvDzLifLtnxS1yK8mLeoPUcE6g/z99sLiRqcMakPUBRvoaIJ0HeU8gLGJFd7pCtvIwQOWxQtdRfS99hlxrpHjqRw7yL6LqEewW7sGVPXqMy3SXRpHIuT9hNUCwGnhqFzLN4rvW50b7XB57Xk5hdWNOHUJEGSs47IkFI4ZFXJtwE2nkIlcBT6AcrrClnvXPAVQwVWtffLN3qbtK2UHtirkIUjvuduzjCdm6Ke72/viJF9dARBY2MOEcWzo=
+X-Stat-Signature: 6u6hqcnsaxwty9mpz664ghcogj7sbpcz
+X-Rspamd-Queue-Id: C2500C000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761148827-63082
+X-HE-Meta: U2FsdGVkX1+5oD04PSwmy0xzmFKffJizYiQkoYnvqF/k8DK076V465b/kZ7/OWt4gOhC17ehpSykj+qoz/GbGiVP2FToF0noKq5uNHlEuhE0BY9gOaP0felhue1hPbLNCrxA8M0P03SITus3+/0v8mLjP7CxoZKsktHbvUYVIWcjAPPvU+ZHI/Tnu+bkIa5X8s0LzCem1WOv7CdAYShQ9D8zexuVZgdwYBlkSLD7/PFEGYw8tHtrF3UlP44o+3WZA6w1JospgHTg66mIimZ/b2r0k048mZ0PQ/IQLYbJOp3ZJyhK79AZ1f/yt6483Oc5u4Wfc5ERQwEfNljFc0cExCZUM/3SmVfJw3d3ld9sQKOHqvcjQp0hvV+RN9c2gV+0iki2uyXdCPTatT1Or4DEYM5I4AGvHSzIkJAC2pwO++MzttUsxE3XxY/0o60foO5tvWcrrmTArR1s+NqB38NKVgRUqtGCaoxFkZcxGRHfJOco/hQbxS0EYTqeUw9YfhPDiNXwpU4Q+TY95zpT9GyvlrteZVyN7uDc+Tdj1T/EgGVg8ArGgzkE134HlA/s0iR0525iZDB8by81c9TEJsWVL+m9XEopFS1NmFeBYfIsv/NJaVydkI6+QUaEs+tNtQHDDVXnaTSCuEz3DcVZKdHhMRcp4JBBp76E1xo/zlJOfdfVs+04FRro9nVeIWsJhkxNt5JZy94Jz2rsUwnI9zlgvd/nvGzN2fcVVaVm4kFuOJwaORdg4pLJXNUH5/+805azGMRQp4vBTP0pGDlm/a1mlGNv13zpg4DiWXyFtqhd+KWbXFfjoRyEJ7vJ9IYAMcpZwnQp3fbcVLmyBjafO4WMFFzIM2u8nSxnKTIxxTtbVtUDeV3zG1ysEVxgry/xifQy9LQE05D6jXtuLZliMAAfShKxBHuv0zbdiI+pttqLi5R/EDClgawlzOB1yjVGJ+llmB9GovULLMtCh7i3R0n
+ 89F16j9v
+ rMhnH2B2UeGx2gji5jzQIateLeoZdjmbZqBXPSl9ApJJess6k0g+t3THPTH6YNwO0T2mfwxAkEXNQOQdV6YZWov6MxTsvo2JEuFjmi5bl2+O2PU8bpoN+1D92nFAN4+j50ZQLmUK+Q4YYily4gcSBPbkoZfvDM2iNNZPwAkIt8oNP/w/c/ZJf8hTDsX+N9pNh/CWVYIwnkLpMbj7QYKnXClvJZIehUUhDaKrv093o/+4PG27dMkRMteLAV9qFW2iA0riFpTzFpVsx4HrkCffYdxWoRumaCnq5GKCLAUQSER6rILiRPQvklq7eFhKIAx7XiY2c0MnydnnwKIUKOLgf22zngEFeEi9CUxSfm2zDh8uwchaw967IyLwh9rKwCuuHIeFRzFDLZehIdMjOHafK5PBZu1IT80HrXI7aUlRmpgFC4cyLo14ZqSO6jg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,77 +127,319 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
+On Tue, Oct 21, 2025 at 3:23=E2=80=AFAM <ankita@nvidia.com> wrote:
+>
+> From: Ankit Agrawal <ankita@nvidia.com>
+>
+> The kernel MM currently does not handle ECC errors / poison on a memory
+> region that is not backed by struct pages. If a memory region mapped
+> using remap_pfn_range() for example, but not added to the kernel, MM
+> will not have associated struct pages. Add a new mechanism to handle
+> memory failure on such memory.
+>
+> Make kernel MM expose a function to allow modules managing the device
+> memory to register the device memory SPA and the address space associated
+> it. MM maintains this information as an interval tree. On poison, MM can
+> search for the range that the poisoned PFN belong and use the address_spa=
+ce
+> to determine the mapping VMA.
+>
+> In this implementation, kernel MM follows the following sequence that is
+> largely similar to the memory_failure() handler for struct page backed
+> memory:
+> 1. memory_failure() is triggered on reception of a poison error. An
+> absence of struct page is detected and consequently memory_failure_pfn()
+> is executed.
+> 2. memory_failure_pfn() collects the processes mapped to the PFN.
+> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
+> poisoned PFN using kill_procs().
+>
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
+> to a PFN would need breaking the PMD mapping into PTEs to unmap only
+> the poisoned PFN. This will have a major performance impact.
+>
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.=
+com/ [1]
+>
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>  MAINTAINERS                    |   1 +
+>  include/linux/memory-failure.h |  17 +++++
+>  include/linux/mm.h             |   1 +
+>  include/ras/ras_event.h        |   1 +
+>  mm/Kconfig                     |   1 +
+>  mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
+>  6 files changed, 148 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/memory-failure.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 520fb4e379a3..463d062d0386 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11359,6 +11359,7 @@ M:      Miaohe Lin <linmiaohe@huawei.com>
+>  R:     Naoya Horiguchi <nao.horiguchi@gmail.com>
+>  L:     linux-mm@kvack.org
+>  S:     Maintained
+> +F:     include/linux/memory-failure.h
+>  F:     mm/hwpoison-inject.c
+>  F:     mm/memory-failure.c
+>
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failur=
+e.h
+> new file mode 100644
+> index 000000000000..bc326503d2d2
+> --- /dev/null
+> +++ b/include/linux/memory-failure.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_FAILURE_H
+> +#define _LINUX_MEMORY_FAILURE_H
+> +
+> +#include <linux/interval_tree.h>
+> +
+> +struct pfn_address_space;
+> +
+> +struct pfn_address_space {
+> +       struct interval_tree_node node;
+> +       struct address_space *mapping;
+> +};
+> +
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space);
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space);
+> +
+> +#endif /* _LINUX_MEMORY_FAILURE_H */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..0ab4ea82ce9e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4006,6 +4006,7 @@ enum mf_action_page_type {
+>         MF_MSG_DAX,
+>         MF_MSG_UNSPLIT_THP,
+>         MF_MSG_ALREADY_POISONED,
+> +       MF_MSG_PFN_MAP,
+>         MF_MSG_UNKNOWN,
+>  };
+>
+> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+> index c8cd0f00c845..fecfeb7c8be7 100644
+> --- a/include/ras/ras_event.h
+> +++ b/include/ras/ras_event.h
+> @@ -375,6 +375,7 @@ TRACE_EVENT(aer_event,
+>         EM ( MF_MSG_DAX, "dax page" )                                   \
+>         EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )                        \
+>         EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )              \
+> +       EM ( MF_MSG_PFN_MAP, "non struct page pfn" )                    \
+>         EMe ( MF_MSG_UNKNOWN, "unknown page" )
+>
+>  /*
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e443fe8cd6cf..0b07219390b9 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -777,6 +777,7 @@ config MEMORY_FAILURE
+>         depends on ARCH_SUPPORTS_MEMORY_FAILURE
+>         bool "Enable recovery from hardware memory errors"
+>         select MEMORY_ISOLATION
+> +       select INTERVAL_TREE
+>         select RAS
+>         help
+>           Enables code to recover from some memory failures on systems
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..acfe5a9bde1d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -38,6 +38,7 @@
+>
+>  #include <linux/kernel.h>
+>  #include <linux/mm.h>
+> +#include <linux/memory-failure.h>
+>  #include <linux/page-flags.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+> @@ -154,6 +155,10 @@ static const struct ctl_table memory_failure_table[]=
+ =3D {
+>         }
+>  };
+>
+> +static struct rb_root_cached pfn_space_itree =3D RB_ROOT_CACHED;
+> +
+> +static DEFINE_MUTEX(pfn_space_lock);
+> +
+>  /*
+>   * Return values:
+>   *   1:   the page is dissolved (if needed) and taken off from buddy,
+> @@ -957,6 +962,7 @@ static const char * const action_page_types[] =3D {
+>         [MF_MSG_DAX]                    =3D "dax page",
+>         [MF_MSG_UNSPLIT_THP]            =3D "unsplit thp",
+>         [MF_MSG_ALREADY_POISONED]       =3D "already poisoned page",
+> +       [MF_MSG_PFN_MAP]                =3D "non struct page pfn",
+>         [MF_MSG_UNKNOWN]                =3D "unknown page",
+>  };
+>
+> @@ -1349,7 +1355,7 @@ static int action_result(unsigned long pfn, enum mf=
+_action_page_type type,
+>  {
+>         trace_memory_failure_event(pfn, type, result);
+>
+> -       if (type !=3D MF_MSG_ALREADY_POISONED) {
+> +       if (type !=3D MF_MSG_ALREADY_POISONED && type !=3D MF_MSG_PFN_MAP=
+) {
+>                 num_poisoned_pages_inc(pfn);
+>                 update_per_node_mf_stats(pfn, result);
+>         }
+> @@ -2216,6 +2222,121 @@ static void kill_procs_now(struct page *p, unsign=
+ed long pfn, int flags,
+>         kill_procs(&tokill, true, pfn, flags);
+>  }
+>
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
+> +{
+> +       if (!pfn_space)
+> +               return -EINVAL;
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +
+> +       if (interval_tree_iter_first(&pfn_space_itree,
+> +                                    pfn_space->node.start,
+> +                                    pfn_space->node.last)) {
+> +               mutex_unlock(&pfn_space_lock);
+> +               return -EBUSY;
+> +       }
+> +
+> +       interval_tree_insert(&pfn_space->node, &pfn_space_itree);
+> +       mutex_unlock(&pfn_space_lock);
+> +
+> +       return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(register_pfn_address_space);
+> +
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space)
+> +{
+> +       if (!pfn_space)
+> +               return;
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +       interval_tree_remove(&pfn_space->node, &pfn_space_itree);
 
-Notes (jremus):
-    This fixup resolves the following issue for unwind user sframe, that
-    got introduced by Peter Zijlstra's patch "[PATCH 11/12] unwind:
-    Implement compat fp unwind" [1]:
-    
-    Peter factored out the word size (i.e. 4 for 32-bit compat or
-    8 for 64-bit) from the frame CFA, FP, and RA offsets.  This is an
-    issue for unwind user sframe for two reasons:
-    1. SFrame provides absolute offsets, which would require to be
-       unnecessarily scaled down only to get scaled up again prior to use.
-    2. Factoring out the word size from those offsets requires that all
-       architectures/ABIs guarantee, that these offsets are always aligned
-       to the word size.
-    
-    Limit the down-/upscaling by word size to unwind user (compat) fp.
-    
-    [1]: https://lore.kernel.org/lkml/20250924080119.613695709@infradead.org/
+IIRC removing something not in interval tree will panic kernel. If I
+am not mistaken, should here do something like
+interval_tree_iter_first before interval_tree_remove, to avoid
+driver's ill behavior crash the system?
 
- kernel/unwind/user.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
-index bc1bf1e83d65..696004ee956a 100644
---- a/kernel/unwind/user.c
-+++ b/kernel/unwind/user.c
-@@ -8,19 +8,15 @@
- #include <linux/unwind_user.h>
- #include <linux/uaccess.h>
- 
--static const struct unwind_user_frame fp_frame = {
--	ARCH_INIT_USER_FP_FRAME
--};
--
- #define for_each_user_frame(state) \
- 	for (unwind_user_start(state); !(state)->done; unwind_user_next(state))
- 
- static inline int
--get_user_word(unsigned long *word, unsigned long base, int off, int size)
-+get_user_word(unsigned long *word, unsigned long base, int off, unsigned int ws)
- {
--	unsigned long __user *addr = (void __user *)base + (off * size);
-+	unsigned long __user *addr = (void __user *)base + off;
- #ifdef CONFIG_COMPAT
--	if (size == sizeof(int)) {
-+	if (ws == sizeof(int)) {
- 		unsigned int data;
- 		int ret = get_user(data, (unsigned int __user *)addr);
- 		*word = data;
-@@ -32,6 +28,9 @@ get_user_word(unsigned long *word, unsigned long base, int off, int size)
- 
- static int unwind_user_next_fp(struct unwind_user_state *state)
- {
-+	const struct unwind_user_frame fp_frame = {
-+		ARCH_INIT_USER_FP_FRAME(state->ws)
-+	};
- 	const struct unwind_user_frame *frame = &fp_frame;
- 	unsigned long cfa, fp, ra;
- 
-@@ -44,7 +43,7 @@ static int unwind_user_next_fp(struct unwind_user_state *state)
- 	}
- 
- 	/* Get the Canonical Frame Address (CFA) */
--	cfa += state->ws * frame->cfa_off;
-+	cfa += frame->cfa_off;
- 
- 	/* stack going in wrong direction? */
- 	if (cfa <= state->sp)
--- 
-2.48.1
-
+> +       mutex_unlock(&pfn_space_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(unregister_pfn_address_space);
+> +
+> +static void add_to_kill_pfn(struct task_struct *tsk,
+> +                           struct vm_area_struct *vma,
+> +                           struct list_head *to_kill,
+> +                           unsigned long pfn)
+> +{
+> +       struct to_kill *tk;
+> +
+> +       tk =3D kmalloc(sizeof(*tk), GFP_ATOMIC);
+> +       if (!tk)
+> +               return;
+> +
+> +       /* Check for pgoff not backed by struct page */
+> +       tk->addr =3D vma_address(vma, pfn, 1);
+> +       tk->size_shift =3D PAGE_SHIFT;
+> +
+> +       if (tk->addr =3D=3D -EFAULT)
+> +               pr_info("Unable to find address %lx in %s\n",
+> +                       pfn, tsk->comm);
+> +
+> +       get_task_struct(tsk);
+> +       tk->tsk =3D tsk;
+> +       list_add_tail(&tk->nd, to_kill);
+> +}
+> +
+> +/*
+> + * Collect processes when the error hit a PFN not backed by struct page.
+> + */
+> +static void collect_procs_pfn(struct address_space *mapping,
+> +                             unsigned long pfn, struct list_head *to_kil=
+l)
+> +{
+> +       struct vm_area_struct *vma;
+> +       struct task_struct *tsk;
+> +
+> +       i_mmap_lock_read(mapping);
+> +       rcu_read_lock();
+> +       for_each_process(tsk) {
+> +               struct task_struct *t =3D tsk;
+> +
+> +               t =3D task_early_kill(tsk, true);
+> +               if (!t)
+> +                       continue;
+> +               vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn=
+) {
+> +                       if (vma->vm_mm =3D=3D t->mm)
+> +                               add_to_kill_pfn(t, vma, to_kill, pfn);
+> +               }
+> +       }
+> +       rcu_read_unlock();
+> +       i_mmap_unlock_read(mapping);
+> +}
+> +
+> +static int memory_failure_pfn(unsigned long pfn, int flags)
+> +{
+> +       struct interval_tree_node *node;
+> +       LIST_HEAD(tokill);
+> +
+> +       mutex_lock(&pfn_space_lock);
+> +       /*
+> +        * Modules registers with MM the address space mapping to the dev=
+ice memory they
+> +        * manage. Iterate to identify exactly which address space has ma=
+pped to this
+> +        * failing PFN.
+> +        */
+> +       for (node =3D interval_tree_iter_first(&pfn_space_itree, pfn, pfn=
+); node;
+> +            node =3D interval_tree_iter_next(node, pfn, pfn)) {
+> +               struct pfn_address_space *pfn_space =3D
+> +                       container_of(node, struct pfn_address_space, node=
+);
+> +
+> +               collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
+> +       }
+> +       mutex_unlock(&pfn_space_lock);
+> +
+> +       /*
+> +        * Unlike System-RAM there is no possibility to swap in a differe=
+nt
+> +        * physical page at a given virtual address, so all userspace
+> +        * consumption of direct PFN memory necessitates SIGBUS (i.e.
+> +        * MF_MUST_KILL)
+> +        */
+> +       flags |=3D MF_ACTION_REQUIRED | MF_MUST_KILL;
+> +
+> +       kill_procs(&tokill, true, pfn, flags);
+> +
+> +       return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
+> +}
+> +
+>  /**
+>   * memory_failure - Handle memory failure of a page.
+>   * @pfn: Page Number of the corrupted page
+> @@ -2259,6 +2380,11 @@ int memory_failure(unsigned long pfn, int flags)
+>         if (!(flags & MF_SW_SIMULATED))
+>                 hw_memory_failure =3D true;
+>
+> +       if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
+> +               res =3D memory_failure_pfn(pfn, flags);
+> +               goto unlock_mutex;
+> +       }
+> +
+>         p =3D pfn_to_online_page(pfn);
+>         if (!p) {
+>                 res =3D arch_memory_failure(pfn, flags);
+> --
+> 2.34.1
+>
+>
 
