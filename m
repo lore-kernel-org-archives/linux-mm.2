@@ -4,116 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1F6DCCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 06:53:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04A51CCD1BF
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C39EF8E0016; Wed, 22 Oct 2025 02:53:23 -0400 (EDT)
+	id 5BE8C8E0017; Wed, 22 Oct 2025 03:02:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEAA28E0002; Wed, 22 Oct 2025 02:53:23 -0400 (EDT)
+	id 5963E8E0002; Wed, 22 Oct 2025 03:02:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADA0A8E0016; Wed, 22 Oct 2025 02:53:23 -0400 (EDT)
+	id 4D2BB8E0017; Wed, 22 Oct 2025 03:02:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1698E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:53:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F3D688B42
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:53:23 +0000 (UTC)
-X-FDA: 84024833886.02.4C974E2
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 01E88180007
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:53:19 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FTwnnr0N;
-	spf=pass (imf24.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3959A8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:02:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D477C1407C9
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:02:05 +0000 (UTC)
+X-FDA: 84024855810.19.3E696D1
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E49C52000D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:02:02 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hLYeRF9L;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761116524; a=rsa-sha256;
+	cv=none;
+	b=4tiRVw/vemU0Qvm9kOxj77voi+0pEcySpZbM8OErpxEjVrcIvIw4L+DLcNzKFX6rM4r4By
+	vAHB1m1JpliiY8ZWV/eF6+VyvHWGy/IrWECljjXiEv5LofY3/6lHTiaO8RJeeq2YQOhXtc
+	gx8EHttlEF1oMMzyjstUH2WxKaXc2qs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hLYeRF9L;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761116001;
+	s=arc-20220608; t=1761116524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lQL6SeVGx4c1D991//YZKaa0cyRKwryW27KFK0xeilY=;
-	b=r+tBb0atvOVyoudONWm4xLjhN0LqnhcKCMOk5BKizGguEt6H0p8Jjg3NtRiczazbHvyKO0
-	U8Rknw/WUAJz3oKLdlBdfzFREnjc8qsmsRLWEi+hKVQNqjj0/58hna+5xEMC41OOJ7h6ZJ
-	X+/iFGufSThwZFYfcic2iqbKmDwnugU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FTwnnr0N;
-	spf=pass (imf24.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761116001; a=rsa-sha256;
-	cv=none;
-	b=RJg/Ds8/jSHpKBdnvgHbNLUc5xX+vhjJDOV3XT6zARCRZJgPXAljPEL0mrZGOj2RRmRyAo
-	reos8XkSwuxh8BaLAV/jy/rkuGYj0wrQOsVKDgzEi9FKxKmL7ZBYgVgtLkBQPqnDsmX4wn
-	v6GvFqNfjIrVGSBSslZrglURuUlOPqI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761115995; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=lQL6SeVGx4c1D991//YZKaa0cyRKwryW27KFK0xeilY=;
-	b=FTwnnr0N+YHQ/tBs+S2lYWBtSpcJnr6LuoLAShI4lBmq5lkFgBSl80WWxUegvi+GazI3oEmVWPqY0ko+eEjvcZkSdpmWwnY9aXHGxTY/SArSdPzcCEt2cIvWDM+GTAGmXD4vsoZEs2ktnFkTw9tyBFS/k9XFA9K3hxvIDnzbXcg=
-Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqlkw1q_1761115990 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Oct 2025 14:53:12 +0800
-Message-ID: <81b1f1c6-4308-41bb-9f65-f158d30f27bd@linux.alibaba.com>
-Date: Wed, 22 Oct 2025 14:53:09 +0800
+	bh=EHRP3uMAXDZCSqG6N+1vlxdAszjhwtbW5deaNWABMWQ=;
+	b=s33JtNU7yhXIMBO0mn8UEpl9d81R3HpJJMJaF9IlrYrzaduZGlh0kR7qrzIddJxkTBk9Fn
+	RdFnSNa2giUmXIWQ8//XBe5aFUgIHJHlQ+0KMdJcx9fbVBD3Mps50Eh1HEEvsiYgalkwRA
+	z81tjmgcgfTFpMi60yjtn/pNCeEbqT4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=EHRP3uMAXDZCSqG6N+1vlxdAszjhwtbW5deaNWABMWQ=;
+	b=hLYeRF9L/tbm9BwldRUCM0HeZZginJ4h9+WkMWqRPxsH4LOMDzdz4E90zWmQoRNClMEbzpw6P
+	HhjKSYDkRwZ2uCj7ymzFT6szIKGDFnNRZM+ap2hGY40M4HwKRxDqZ/Ya2/Isgg0s0kqfxqwWzTv
+	pfyvUnykgL7dyh/ykueDH9I=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cs0Ss0Xn4zmV66;
+	Wed, 22 Oct 2025 15:01:33 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8B80A18001B;
+	Wed, 22 Oct 2025 15:01:57 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Oct 2025 15:01:57 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Oct 2025 15:01:49 +0800
+Subject: Re: [PATCH v3] mm/huge_memory: do not change split_huge_page*()
+ target order silently.
+To: Zi Yan <ziy@nvidia.com>
+CC: <akpm@linux-foundation.org>, <mcgrof@kernel.org>,
+	<nao.horiguchi@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
+	<ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, "Matthew Wilcox
+ (Oracle)" <willy@infradead.org>, Wei Yang <richard.weiyang@gmail.com>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <stable@vger.kernel.org>, Pankaj Raghav
+	<p.raghav@samsung.com>, <david@redhat.com>, <jane.chu@oracle.com>,
+	<kernel@pankajraghav.com>,
+	<syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com>,
+	<syzkaller-bugs@googlegroups.com>
+References: <20251017013630.139907-1-ziy@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <73c5557a-bc84-e1aa-d5d0-ad0ae57b55bb@huawei.com>
+Date: Wed, 22 Oct 2025 15:01:48 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: Change ghes code to allow poison of non-struct
- pfn
-To: "Luck, Tony" <tony.luck@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
- "ankita@nvidia.com" <ankita@nvidia.com>,
- "aniketa@nvidia.com" <aniketa@nvidia.com>, "Sethi, Vikram"
- <vsethi@nvidia.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "skolothumtho@nvidia.com" <skolothumtho@nvidia.com>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
- "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@redhat.com" <david@redhat.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "guohanjun@huawei.com" <guohanjun@huawei.com>,
- "mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "Tian, Kevin" <kevin.tian@intel.com>,
- "alex@shazbot.org" <alex@shazbot.org>
-Cc: "cjia@nvidia.com" <cjia@nvidia.com>,
- "kwankhede@nvidia.com" <kwankhede@nvidia.com>,
- "targupta@nvidia.com" <targupta@nvidia.com>,
- "zhiw@nvidia.com" <zhiw@nvidia.com>, "dnigam@nvidia.com"
- <dnigam@nvidia.com>, "kjaju@nvidia.com" <kjaju@nvidia.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "Smita.KoralahalliChannabasappa@amd.com"
- <Smita.KoralahalliChannabasappa@amd.com>,
- "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <20251021102327.199099-3-ankita@nvidia.com>
- <68f7bf2d6d591_1668f310061@iweiny-mobl.notmuch>
- <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 01E88180007
-X-Rspamd-Server: rspam11
+In-Reply-To: <20251017013630.139907-1-ziy@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Stat-Signature: frrq8uw1gpykisnbhr7q1g48po7hkzx1
-X-HE-Tag: 1761115999-42749
-X-HE-Meta: U2FsdGVkX1/DuWcS+aov7+TJjhbbLyGKKjztBYEZNfqqlSbTit+q/495rivH2dOMXgwBpjYO2EhpPM7jEesDLmpJPBc9MU2pW9bKuAG/HYkV5yItVpoVQt2WfB6DSJIH0K1AJEw0uc33MgpwrklbSAXKWXkOpqHdykOwMD+TWP7ZcBHApApx43YbRi0OqGvN2pnW/LryhlJ4aK5YGnPV4fIsYpTU3vBuAwp0FHnt+PPFFD50cHnyunDMRcftmBj6FU3BmihUBIW3Eq/OSE89qOouf5HDNajiJgWuFtxEMZVjEX5il0MV48WS07FiJlp8/IzQv5NNdioxLtmgYc7A7jkdMcIKwbKqfj10pgW8ewTUeld9ivgAZh6pTEm4n41nUkm9Fm72gKBBkKsRvI5ZvRmmFx4RJEvE3aD7KahBP4aEv1kzOHUxtTmQFBFvxol6VIj4eZZD2qs9sug2keARxLWvizftnaNfznhjhiTHtxlKvaObO7+FPxeceX7QxZXkM4BQMs8AoWzVYTBiJdaEJES8Hl17PglTx3Tbg9eaEjLIY+iuwug1UUrZPqEclfH0KP1Pw3HMDOSgYNu1gw9S+oVxFHVzjrfrCZp3wl3Cdiz0bSv4HSIShtOLQrl0Q08uHQPbx98iSRi72z9q7jLd0oJG5YGi4MAnVhnIoncjli14mLrAXF9cZ3Jiz4yeSazJI0hH5PlHfkogmdMCNfOYVEw8dCnITc0K4GGkkRBTpEaIAf2aH663IgaOW+n3DqouE7eGAA4SKCa8M+rTUcBI2bOVw1JyNidgZYVC8BYhGLolOtWPUo73AcuPr8ByHqfyHCAHhXLLV+xR6J+5xHB2vInwMtSPWxPya5cvtctkeHPyoPD4oC297is0V5fvzudgImBNPM59aHZG+q+bGyXGhfdjHMgBt7rNo/r13k+yNmTj/D3jltpINmUZxwLXJALUBLWjidqEPQFEFbI/7PL
- TICQWG7u
- aYCx/R2TivU8AqGJAB2wZRc7Y4m/RsDVOTmWvvavlLPGGGkWJZAcMsRc0QeAGYkGQ5xhGktwIbOi3M41COB6Y+uPs0oyi3+gUdMdxkFy9e6FghtqydqrmBg1vYwbtJyK8ZowbiiEBCNZiOyWC0mNuXJY+AdX6qeG2SpzBhuHZBXnrFhrpxlr+wepooiOLq81k+y2FFYeGdWTHtDyyx/5ZM5lHtwef9Iwo7j+M7qEe8mtiRQ8oz0zsDP2XOjylBmasda3EI7eiu545B8o+veH5eZ/+piNwWV++hE+M3mltjjReqnyIqMNNK2TsJ0nWlFYxnUgCHNFspdYk5WZNXBE7uXiWtlGisrXS6y1UGqI6IWgPjm2eOh9OYIcSHFDoKRzEFkndv8VAvJ9HayIgB9VOy4VlDPltegfAGsXtUzOkhb1mM/9eC1UCDGVQ2HlSDao2Jy6aa3PCRXyodnQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E49C52000D
+X-Stat-Signature: yeewe8656juj1byrh7bx7hgw1awhqqf1
+X-HE-Tag: 1761116522-402666
+X-HE-Meta: U2FsdGVkX193FPWA/jsNNQG3JyKD26opn+7iLbbQtH9vXfHkAdZCWf+qBcwLiaYtW7yG0zFYZLVBe9doNIAE4C+6xxNrTVX8LsAAArWHzrsQ8wsuIb8Nj/pNvLi+IPV3vJ4M+RibR9zRqVqtFqA6BDPbPbnaJi+w3kgmglkCKCXO73qXQUVRekIzaumjyvhDgyCvpEajyh5Yo5erGe6N4WCcGd4J7D2uSYrmYVYSitq3rhc54wQfxH1tbmaxdIBWMLVIhH8lVR1SrRPCumwelzKq9IDqoXGq3SSEOMVvtd5j+M31gE7gezkYWVQY91zVafV1v1FDa9KfuX2pe//KLBL0TybyrwdugCDqh1cz8G2jTskWpYvFZRz5FzZAheeDSn+NHOQ6hbAyqLrgP+SmotUU/NMs6ZbAPW3t//95Yra8WKGx9Flh0hdI98dSF6OyYwWhgFwbiJ57ywb224nrxtk1zbxO1z6rZccssZAjgD14Ldb7DCIbhhWYii+j3bI5WS64GaWMKT9mLbohk2u3teEGZVuqNRoCgb4hOo4gwX83fAGAeN36zjX4cMRxJ/FX6/SwGCTpnYZChlO9Kl81vNGAujhcw4coYiaj7rPbUb3zVu+DnOy/1gOWjLIeSs4siNP7GvLyP+cA9D5IQVJIUGYclFvmqHARpQjF3ELBxVClSY2gAqx8gZdGlMZaULUc5HISeVZWlJty/dyHFz5bRjB25kmjJUrmd+O1cppanRdbLf3OY4p0IyldNZHb2xKX9iBvmMWNehkZuIEZ22h1CSRvVaknd8zcOtJL3jz5pRXD4Kv825Pz9GY69fn8woNNdh+KbkJuO4mjPClDYRVaVr1rgYatARJFh0udW4XTvHoJswUd6T9Aj7PgkM/TyJJIL33XSARNL9ihcfW8421mZZlD6nmK5uQ/ddBl0bNxLriZylRAqFjNXb2VrbeXz2EwF8TtoJ29qSVIeUEgHmz
+ bjN8IDWn
+ 0KmJLokkNBbXOJQtQ88pnUGp4NsN34u4T8dTZ9C+Uy5SjslxEfnyUPV47jpUti+3jQYHqpt5vCMTKVftsZPrxyRBc/tSPwuAjCq+MBNjVqdPhcBBmzAewPLguUPsTAWjPqU/hiMVvqiHM2+y4VMSAN7nIdCsASzDZIZIW8mTFzrVZPc6XmRHohBeUvr59P+MHmCBcLJAfjmctByEYLkXWjMzLdcnEIASoEQ2wsTeZnPmshULcxJEGiTs0EsP0iEUbFTlWI6+v5nuDPzXPBzWKrNHtqAvAiKQXjMS1QN2J0CjE8Zj2EJzoDlaUwEdv080oQUKrDZR2zwb+SPX728WtrKoTnNZxArS3eXyqa2kf1qtCQQROm84mtkVI2PyezzRmy9qZI6S3ZYpq/NkFpaoBRGBfE1zFpcU+CMWzGpAkojulZ3sYzne8PFTo5XKPtErAMTrRZAf1TkcVABx8VQNTmaOcJ5oTRrsPdkjYtVc4xq7K1nwq9PuNocND7CJ9UxNZQKR+1KNhr0wNyzU/SW8/xJ9GLzgvZmKC4kBz+fMXBg56EmLIWXCZuZSpdgA5PHiIWEcDDrkt6k+roDrg2xYjJQvNLu5+CkzOOvEIkptidJSFPqo86fkpNkHXNg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,50 +116,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2025/10/22 01:19, Luck, Tony 写道:
->>>      pfn = PHYS_PFN(physical_addr);
->>> -   if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
->>
->> Tony,
->>
->> I'm not an SGX expert but does this break SGX by removing
->> arch_is_platform_page()?
->>
->> See:
->>
->> 40e0e7843e23 ("x86/sgx: Add infrastructure to identify SGX EPC pages")
->> Cc: Tony Luck <tony.luck@intel.com>
->>
-> Ira,
+On 2025/10/17 9:36, Zi Yan wrote:
+> Page cache folios from a file system that support large block size (LBS)
+> can have minimal folio order greater than 0, thus a high order folio might
+> not be able to be split down to order-0. Commit e220917fa507 ("mm: split a
+> folio in minimum folio order chunks") bumps the target order of
+> split_huge_page*() to the minimum allowed order when splitting a LBS folio.
+> This causes confusion for some split_huge_page*() callers like memory
+> failure handling code, since they expect after-split folios all have
+> order-0 when split succeeds but in reality get min_order_for_split() order
+> folios and give warnings.
 > 
-> I think this deletion makes the GHES code always call memory_failure()
-> instead of bailing out here on "bad" page frame numbers.
+> Fix it by failing a split if the folio cannot be split to the target order.
+> Rename try_folio_split() to try_folio_split_to_order() to reflect the added
+> new_order parameter. Remove its unused list parameter.
 > 
-> That centralizes the checks for different types of memory into
-> memory_failure().
-> 
-> -Tony
+> Fixes: e220917fa507 ("mm: split a folio in minimum folio order chunks")
+> [The test poisons LBS folios, which cannot be split to order-0 folios, and
+> also tries to poison all memory. The non split LBS folios take more memory
+> than the test anticipated, leading to OOM. The patch fixed the kernel
+> warning and the test needs some change to avoid OOM.]
+> Reported-by: syzbot+e6367ea2fdab6ed46056@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68d2c943.a70a0220.1b52b.02b3.GAE@google.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Hi, Tony, Ankit and Ira,
+Thanks for your patch. LGTM.
 
-Finally, we're seeing other use cases that need to handle errors for
-non-struct page PFNs :)
-
-IMHO, non-struct page PFNs are common in production environments.
-Besides NVIDIA Grace GPU device memory, we also use reserved DRAM memory
-managed by a separate VMEM allocator. This VMEM allocator is designed
-for virtual machine memory allocation, significantly reducing kernel
-memory management overhead by minimizing page table maintenance.
-
-To enable hardware error isolation for these memory pages, we've already
-removed this sanity check internally. This change makes memory_failure()
-the central point for handling all memory types, which is a much cleaner
-architecture.
-
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
 Thanks.
-Shuai
+.
 
