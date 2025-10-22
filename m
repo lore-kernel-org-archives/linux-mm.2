@@ -4,80 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7A35CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F20ECCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 03:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 114E18E000E; Tue, 21 Oct 2025 23:56:31 -0400 (EDT)
+	id 734FC8E000F; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C6178E0002; Tue, 21 Oct 2025 23:56:31 -0400 (EDT)
+	id 6E49C8E0002; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1D5D8E000E; Tue, 21 Oct 2025 23:56:30 -0400 (EDT)
+	id 5D3B18E000F; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E070C8E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:56:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 793655A9BD
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:56:30 +0000 (UTC)
-X-FDA: 84024388140.06.5B2CAA9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B2C9014000F
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:56:28 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A1238E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 23:58:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9A631DF6A4
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:51 +0000 (UTC)
+X-FDA: 84024394062.24.3C6F0D7
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 07D131A000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hEgpd6Jw;
+	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761105530; a=rsa-sha256;
+	cv=none;
+	b=BkVI/lNhPDj5BWvM5jayBLB9LvLhVWVvS6V66aKpIXyTQwKDsQYi+lzr396163J1bWnsnl
+	iAgAR+glm1SrYPsF75zRpJnz+0V6L3B5IWnqrGVofIARIQ8Pa46/O2jZ7WhqEA0XBm1X2y
+	bkSOnMnxgbVH7pjcT7Ptzz+y1mpT+1Q=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hEgpd6Jw;
+	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761105388;
+	s=arc-20220608; t=1761105530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B9yDBSZbtu3S8SA3yE2NSAwua43sKWyr0w1HZMmIGEE=;
-	b=RFiiBNjDRzOeB7/mwG5aZLjqJuhmfHDMYnBVod3zAWKPypdZ2g3hvqTKi+ElOmZJcU7K0M
-	gJCIGKxsXFFJRqlggB54mzjRZ6e7Idl210uYOWnNOUd/0g9kfVFdWW3maMtUkF4XO5KzM8
-	p38Nnjl3MU/hPu6te3FzW/2fjPAN+ko=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761105388; a=rsa-sha256;
-	cv=none;
-	b=6TXtkWTnjEnLMUyeTVW9ZR2hhsOU0kahMKOORLMLbKdt2OeycofDwcGDLd7PRt48XHV+q4
-	965y4zXqJyazAI2s6wHlnJyQ7/Uve8d7+w7Hh8gnGRsptfc5sNcbTetj8rSB7yZJOSFbaS
-	LvkOwu7zsqyLIECpFxIgeTvs6BEBgNc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C20CC1063;
-	Tue, 21 Oct 2025 20:56:19 -0700 (PDT)
-Received: from [10.163.68.114] (unknown [10.163.68.114])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B81B33F66E;
-	Tue, 21 Oct 2025 20:56:23 -0700 (PDT)
-Message-ID: <873b6b5a-1c44-4cfd-a36e-adaa171077b8@arm.com>
-Date: Wed, 22 Oct 2025 09:26:20 +0530
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=km+g0XPH4yDDwLqQ/6BpIJliLoLcAkSlxXyzmPgqKOY=;
+	b=eA6Qs9ZWJ8B+DjMkdByS4siEs+gw7trdB3pK2uWgCUDaLchcp6Ypy6bPNVXEmd8ZQdGyGO
+	s2XymAxbWVkvD9WsgMmONVmLffrbSYzMJEF0NTOTtlInh3BpDaPa3yuuH7CJhqbNc95u58
+	yHjUZdhrck5laGffjWeRTOBzu5ovb1k=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=km+g0XPH4yDDwLqQ/6BpIJliLoLcAkSlxXyzmPgqKOY=;
+	b=hEgpd6JwJZ9quWIenfHDoy8zHH1ttczMOU8UzFAFadDe/tw5k8si5ua5TPmAOYpWIWbDBeUYg
+	kpi6IRBrHAwfVRscLYxugeW6yhGaVr6NTN63WUwwypBSiV8YywDevppMYx4VTaYhlNDNBpAX1S3
+	Nm0SURSZqZT7deMLCWopl/Q=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4crwPR6f9PzLlVs;
+	Wed, 22 Oct 2025 11:58:19 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5D710140155;
+	Wed, 22 Oct 2025 11:58:44 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Oct 2025 11:58:43 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <linux@armlinux.org.uk>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>,
+	<rmk+kernel@armlinux.org.uk>, <ardb@kernel.org>, <nathan@kernel.org>,
+	<ebiggers@kernel.org>, <arnd@arndb.de>, <rostedt@goodmis.org>,
+	<kees@kernel.org>, <dave@vasilevsky.ca>, <peterz@infradead.org>
+CC: <will@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <liaohua4@huawei.com>,
+	<lilinjie8@huawei.com>, <xieyuanbin1@huawei.com>
+Subject: Re: [RFC PATCH 1/2] ARM: mm: support memory-failure
+Date: Wed, 22 Oct 2025 11:58:37 +0800
+Message-ID: <20251022035837.1915-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250922021453.3939-1-xieyuanbin1@huawei.com>
+References: <20250922021453.3939-1-xieyuanbin1@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: Fix indentation in fold_diff function.
-To: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- jinnasujing@gmail.com
-References: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aPc4I/8zXCGyiapN@pilot-ThinkCentre-M930t-N000>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 18pwqdq88sxwxb6bprw9jawpyfn8ibka
-X-Rspamd-Queue-Id: B2C9014000F
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761105388-88304
-X-HE-Meta: U2FsdGVkX1+sDDZxb9XSYpyFMLZ77T66zZ6oc+I9YamAq35w34UIysZVxypy1VELHR+ksg3dmCsrL/n5hr3wS+i5fg3PKS0/nJ8o1OWGoXr4uJu/pnhnTMJ96Sfv7ucrFJ06EcrZbLf6azm1CuJZL8PqwWVug6Pt6IpMnNvkRCTxsNM++83WTev2pfS56CQVkuVbOpOqAT1YgP7GiLQdRtK6jNNDXY0por5Xsass0kV8geEt7uUH8z81lIK47mOV6oLvAa1Fc9O3swaEe9iE+Bx3GyhCwvFYrOn7KVl//8lQamkpEl33drL2q6oEXnkbODQZ3HkmLzrsWZHHsaoCSQzNdv2tcfqGd4EhFArmjCKE3g3deZKuKH77c66tx1chacX1oshPTQWxNqGTPW/4z0O8EuOEe7/AYvX9kqmaJz+3fCYlz37UiBXSR74mXS4DYvZtxJAE3vW/EnaniK89p0lOwsswjF9hL7dnQy98k4GL2sg5YVefz+1Hss4evXJh8oaEDHQBwbZPlQIazCIGqRc6TZPE0Fa5HlMF6LsturWs7HopUB1RckjWJIQcqyvel0QbQUBiu3bvWLAjMwceWMKCtP9hJmaZdFliuprNvYgLGJKs8Jy+4/H4wiu+LdHLMroq5gBlIDV7fO7E0pmE+p9H/v2fykBTC7/UaaPPMuIbwvoOVPI6Dy8wIuynmsj0UiAtlbKmvhXq3CFuGlneKxvNowkNGF0SKA9IWQs31vyusxzxelvSWff7H/agncmpRP+siH1yrvv2cyw93SLn6B9L2bgItahpmUGwZyWgwW3Ckcm1efsUTwLajcC8F7VlM6Liw3YUzqb42ONxyx7OGk9OZxbOWmJZOiCkWGqwT5pMqdS7tx8sDRPSZ5zTG+jLhxluIKdkgDjdnF57wgr9ZaGO2wS/wcpU3iBbrDNMWJvSRFGJcTX63k9Dgv6ZDkJAL8nwC/P5BZN5/A4EM9A
- bS4QdliQ
- 4a6JD0gNBWK47OsJGt+i5N5qOAiMnMuWfWKVN71ejcXvsbps/ig8OUun7wQ7Es7gghr5oFYp/IDpcn2jDtGf0YTAGaaNbw3U2cv46sh9FWR+e+Cmu0XWeiK3Z0VQ4yH6MzLbfnfQwZluMQfL3LP+bfwem5g2nrvHQK1BmR7F5wkHTL5qeUTSuXiXJyVXPQgOde1ZtzfOx3Tm3yIp71dwywnnFIYMS6x9tX2z9EHhcWQAdxRLI0Axff86/nJle6DGCS1eMKJPQlMUbK6MCam6bXqi744L/hCGdkwrmtGC7knjtlLw=
+X-Stat-Signature: pf8ehxz8363ibr6gg4ixudajwa6aq8ug
+X-Rspamd-Queue-Id: 07D131A000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761105528-411957
+X-HE-Meta: U2FsdGVkX19sWC2jRkvvSq2xsID8jlsnFGaeDEuS7NPhplALrGw9/OJ338zq3jrg8muSZbnYnnkjGRT2GotuzJk8M/8e6BJLiFoceFGHw8CKPfKl82Rl+mj5pa55Dv/Umu5GvmU+2CoVf6iMx+pvYXG1BdDVLr6xf4Zn3eMlb2bwdJm5ZHS+TOI2RFSjun+55TSDsi9wsVh+jawitUtYRcYnYa8fDCjdUMNatPFZGDDMjN1eSehmHly+AX9BnaaRqhhKW7oOeXbLOPGY6Fjm/FaM03DHrRO8RBzX/z30kxJzB3mdfHQ7y18RV+QHk2pb4W/bsgX7Qxd4nz9w7I3aACwMxrOVFFdvURoZEzM3AUWk73kYukpKMV7cnC6pFcR9w7IYzyGQYuzZttyKzDoogIRDzp+lkRAmxw7g9RQcG6mdagrO+rczHkLxa+Jyqk7mK7s8A91vXiCwlaXaaJxgNp0ltlQm1FiMltcM9UIoFsFsJ1SeM37ZCMcZ0DX4dqKtq33bS28Cba3UWX/dPDWERqfn3KXKnqoTvf6C+LB7rmpk1RJq8aKRmd9VmDeuIM4jd2kzq2SsVQXX1lUCE2J3v4uVd2uSI1gQjR3/wavWzCZNbJeb5/uo9GG+8ePYvk5TPd3sFHeCwEwcDjjnAuciS4aP2pB1mo4DQGQYzWB13Es1W+pSRMezShbq1zpG7pBGyPXeCqfgBJ1zN8f/n/tUw1CDx5Sov9uvN5c9eCk19WUVLehe0tEpz86tFXRQ7imkjzYSzNTPxFY70H8CsOrmqLPHVPzB0hFoKnIOErIn4nQLCoJgvr+JK3Nojvd8jKHG5++uYeIaQhUqx/+MvlR8HA5Uip9EUmrd+ezJEnQmquJK/FY58xxGpIIztsJ69l+AbPEC28yT7LM0mTFUdo7JJeh8G4GRVj373tApGLevXFGyJQfL0ys70EzqBYE3EmZdhNRtLDpjV2iOVmKYRFR
+ cHn2WaLO
+ IBd+ou6BVkfuhwqWg4kju1o6Dw+jy6mdFHV2mlI+Lg3P74ctLKPGYJCvizIKeeZnreXbGXqIimffRhgb7T9DFXlzgF/qVYtSdo9QmsCrkZBA7UVelsfGoMY9YMfGnGXiBX50ZqNGlqdgE/bUmK4FxmTnwQjZZO8DeoQFz/MoiwvkHkaxfiqQXFaAzZalEJwx1FQmdgJg9KaepFvCB7POAywWEgrtLUi41IgclqjvyrWeks9XNMzLPtstS9HdQU2XEwWW6hSogMtAbTvXkgJBeH9HtPZRy+hq3dxl2ocWbF2eAMuUXCjGWRfNxgEacU7aqTBQOMME6KzBcoGXqs6ayr0l+cgWyMY2A8FojAeR9Bh/arP0ozMhhrAu3i86ZoUOAflrx8pyrdqNZ14lh+WL7/AXpAAbVG/uC/fDA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,15 +105,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello
 
-On 21/10/25 1:07 pm, Jing Su wrote:
-> Adjust misaligned braces in the fold_diff function to improve
-> code readability and maintain consistent coding style.
->
-> Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+These patches seem to have not been discussed for a month.
+Does anyone have any other opinions?
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-  
-  
+https://lore.kernel.org/all/20250923041005.9831-1-xieyuanbin1@huawei.com/t/#u
 
+Xie Yuanbin
 
