@@ -4,123 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B4E7CCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B99CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:26:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEFE48E0005; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
+	id 1BE148E0003; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9FCB8E0002; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
+	id 1954F8E0002; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB56A8E0005; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
+	id 084308E0003; Wed, 22 Oct 2025 10:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 986328E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D09B88CE1
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:06:29 +0000 (UTC)
-X-FDA: 84025925298.26.85DB5F9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 84C93C000C
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:06:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lvk83wxY;
-	spf=pass (imf22.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EBC3B8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:26:57 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 863B513BD66
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:26:57 +0000 (UTC)
+X-FDA: 84025976874.17.66D0B79
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6C826A000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:26:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=XBtN2lNj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w i8ZyAI";
+	spf=pass (imf25.hostedemail.com: domain of greg@kroah.com designates 202.12.124.156 as permitted sender) smtp.mailfrom=greg@kroah.com;
+	dmarc=pass (policy=none) header.from=kroah.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761141987;
+	s=arc-20220608; t=1761143215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
-	b=Xn3efz7tWkHWRj1hxcDtu7c7/D67r5oOBohXHPt7XR4i5EADJ/7rcZfrpaedLvujlco28y
-	ICteZ6e9pwGpt9Zgzn1Z7rMgEs4mP6HMt6A4Qj/cyYhsmD/X97/92Dd38z3vv8uvy1nPtR
-	6rYCYld8LY7t4uunNYbTnEZImgmkWU0=
+	bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=;
+	b=3j0BGGjBLyt1H40VxO79K67SFceZ6GCAuxLFbSuxeoTdol1z+FQ8yKYgx12amRJYVlROU4
+	BYSprrUth8dzn4N5cOvyQMbARfKEaLvFDxH8Trj5tm/x+tii7QPXv0QHzID00McpH+GVq5
+	71KfBfpwueDSst2/zk98Pjxh0in7ubg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lvk83wxY;
-	spf=pass (imf22.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761141987; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=XBtN2lNj;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="w i8ZyAI";
+	spf=pass (imf25.hostedemail.com: domain of greg@kroah.com designates 202.12.124.156 as permitted sender) smtp.mailfrom=greg@kroah.com;
+	dmarc=pass (policy=none) header.from=kroah.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761143215; a=rsa-sha256;
 	cv=none;
-	b=5R5IffUinYY91O6dWZ3A2g5LpOxETWwrjf4F64GEpVJ9gz+Sx5qAbxMCps6qK2Du4VfXfL
-	J/bjGlyr6VaY6t3nBZRgUm+YqgXd2dT4JAWVNqOlvRM+Wm8DEYUfdUqTXR4r71YuYLs7Ba
-	wDmVfzi0QBI8i59Lm6QwkFDeKm9mN0A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761141985;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
-	b=Lvk83wxYi4pk99ioCbACeoxU0lBmsNANC5rBC1o4fhjvjwOrzni5E/tFpmHRuaDbgPvbpf
-	j2ePEbimjeQ6FWwLgR09aCVJNkypLTZAgdXLcWfX1Ad5gDTlMz0eiSsCufZAZOULwXb8fE
-	J4su10kJMlYebTP8HQA60Ay7T3u2or0=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-389-g_CuqDnBPOSi7I7X1tGGQw-1; Wed, 22 Oct 2025 10:06:23 -0400
-X-MC-Unique: g_CuqDnBPOSi7I7X1tGGQw-1
-X-Mimecast-MFC-AGG-ID: g_CuqDnBPOSi7I7X1tGGQw_1761141982
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4e88a5e70a7so37720321cf.1
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:06:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761141982; x=1761746782;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
-        b=kMzFp6VLnpZihzz83FPqv7YAtp1owAthJvbysjjgcfb7pAq6nYFHQAAXODO4LDut6W
-         EyNZqfAZwdhM5vNlwsewSFEm/yF5ZVlotmzqj6DsrzYH1bFYqXeh9VIS8Ew4NnMmn0UJ
-         I0KahB+LB/sutXKD96e6bvSeOlxwq4iPjg0C4cFeLwK6c69PvqhqKWSxe5rhyxYH14rZ
-         +BpMbQzmjjsiQDWW4/lyncEzXAi+qEXQgpanE0pvVPqxHga9n1qrcBXHZSRAeNYZKyBr
-         vDpnZ39YJnyEvOBLofXhtG2GNgMoX5H8Dhcbp6Q/gim0DTxtk8UwHzgsZzynDPkou508
-         o0/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVtDj0+1Kc1cWBi1VY97mRNUUMz3RIpnh9iUpOB90FCRRPooLEK9Go6PMCsTsfAZSp8XSIHuUnfOA==@kvack.org
-X-Gm-Message-State: AOJu0YynqYgog/Zal9kLFcBSwDFkrOlljhF/a1iG4VdkRrM2H3olhRkH
-	Sv0q7Rqn/7cRI1L/ije1qJDp3vjolLQ6c7BukTScW5Xx3/tlpnegLBcuJsJ6tpLQplWbgzEf5Bg
-	24x60NFCokJ6KrlSbjSEo0ukbHygoWByT+h9yFDRKgEUvH5TL6jVaVp94OjnI5UudPd68d1F9kK
-	hYLsF+kgdrJ32wXJANDH5RQrPVelc=
-X-Gm-Gg: ASbGncu1QMjtLbSfyP4KiXz/zrE13jeBrNTblyEGCMCTRee61Ywl+jN0P4vu4Bousiu
-	MVQiw24D57TRruJKUniSfS7NjPWKRV6SEgxCABRsvfaa7U6lIBlP66JpqL0moRcGwJzLJTSdpCc
-	T9R95OI9xRpqcsnEoIXZjJSCCBV8pujzECGj2lHWShd55hH6nNEqLmrANJw35QJLR1yarxw0mJg
-	DZE7CMWKT6Bs+D9
-X-Received: by 2002:a05:622a:13cd:b0:4b2:d40b:997 with SMTP id d75a77b69052e-4eb784b5ddcmr17972991cf.11.1761141982115;
-        Wed, 22 Oct 2025 07:06:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFiy688lq0byckzl7pGXnvWhZZPJXPo0bl3cEscD1D5tdzpAQ54kYl/qCOsifbFz5e/sCUwL37uFix9NhXMCD8=
-X-Received: by 2002:a05:622a:13cd:b0:4b2:d40b:997 with SMTP id
- d75a77b69052e-4eb784b5ddcmr17972311cf.11.1761141981436; Wed, 22 Oct 2025
- 07:06:21 -0700 (PDT)
+	b=ClP7OO5+b9feNGH1Z8ph/YWldDMu1KkCWCzAqzB8yJVrTpe9GlnM1+p3QIp2Vaw89nCLXl
+	swzWL1hV7/aY9gvhs5KVdZzE4ohC5qC4hEZNPqym7cJE0r11oxpNIRTwy4YF5zTB7lu6zj
+	jT7NHDiVAir/ks1b60xTkf/2ZHQlpOo=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 400357A00B5;
+	Wed, 22 Oct 2025 10:26:53 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 22 Oct 2025 10:26:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1761143213;
+	 x=1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=
+	XBtN2lNjCSSfXGaqXi0gx/hlO8WnexR6tUKWFw0W+Esl1w0VoLdaeTBIpl3+3SRt
+	8k0rusGVLaZzq6WMIbQuyM0WTeGOvKbmHJjwdrvEfb9GrR896b9a+9tEVP/3sdpf
+	paxsxPUnRdTFFnAtOtM07XbRfRVrG5HBEzRZC5uKdExsyRB/Bzp5lpOMbS7BkPih
+	KmI1toWj9g8kClgqlGVd7rtTlylfX4nulaysdLtdZfm6WvkOnT4eDZOEZObwlbIe
+	XvmLXVmfvHix8i5HNxPGoT1+fXs0nagnK9AITqKPBowKP+EmQHFKGhEf++nGCMZe
+	YxA9ggHBJsJm8bv/iF/7zA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1761143213; x=
+	1761229613; bh=jOvRrxLI/PxVSWmhxM2KgyJk/X+u6+/Vmaw9PuxY40k=; b=w
+	i8ZyAIsZtLOryR2GGVNqeGZtf8OTyPOHf6pua9/Bnpk4edYPEghboe7XrCsnRwis
+	WBKNNK16wl9riG2ABWUcXXmkWKAM1IVvWIdcAv7TTPWO+dumAHiiNHlmQnNI1YKU
+	DrtJyS7tlvRrHh0MzxA3OGVC1hODIFU6Vuvuj1ilxlG9EMHHWOVZKI2iojCk4VWJ
+	TG3TEuoKd1Iytp3ITeBTdouGLMRhifNM27Ck0KHTFXWf2Xmm+dlkq+dxEeUJ+jRh
+	8OWM26Faoey1nPrM5mbxb0xSgnGKfPzk1lS/4MV0eBfqNl4q02z1X8mlKKLvd3yf
+	2xr2nypxaOlNK4P7Xi2AA==
+X-ME-Sender: <xms:rOn4aFjhzhWf5UKFXIQngaoA8wC5xpsjfdgvdKyzQz3Uj3wIGjqYUA>
+    <xme:rOn4aCye09H1Qqwat59MyRiZ4WtcMmBzXAYGpX5Dv_8ePeV4HZsSBFpgnQhSeQNHN
+    3hVy940u5n_SnfyubajrMH9x33xXWTfWkjLF6aOEp0l3DasAQ>
+X-ME-Received: <xmr:rOn4aDwAZbrOopB1xYax-VhcTT1OpzDw9qNkcnPY-NQn_rQEMd01G0at>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeefkedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgkeffie
+    efieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomhdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehlvghonhdrhhifrghngheslhhinhhugidruggvvhdprhgtphhtthhopehsthgrsg
+    hlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhu
+    gidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrg
+    htrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgv
+    rdgtohhmpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
+    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgrnhgtvgdrhi
+    grnhhgsehlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:rOn4aMqYobzJeKegfjkTb2Jig2imGUptMSQ-WOJVeXy52dqRTzyJLQ>
+    <xmx:rOn4aGlJAiIhljC8Jzc8Rlme4sPAFf5x2PVyh9nJ_wFCv19LEn15gw>
+    <xmx:rOn4aFxOsEdEjF2cBNW6DFm5xJ1ZddlhJYnaYAxsI3aZNGWcNn7iMw>
+    <xmx:rOn4aL0O7gaLZH54F7WEnqsoInBzvSTsUEWRZEg_V-XeXCFJ2g7Eog>
+    <xmx:ren4aATnIlNrUwkxxcWac1tUEZMNUOouhUXC6W31CVSQFSaRLN_PrAxB>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Oct 2025 10:26:52 -0400 (EDT)
+Date: Wed, 22 Oct 2025 16:26:50 +0200
+From: Greg KH <greg@kroah.com>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
+ vm_util.c
+Message-ID: <2025102241-clubbed-smirk-8819@gregkh>
+References: <20251022055138.375042-1-leon.hwang@linux.dev>
+ <2025102230-scoured-levitator-a530@gregkh>
+ <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
+ <2025102210-detection-blurred-8332@gregkh>
+ <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
 MIME-Version: 1.0
-References: <20250910170000.6475-1-gpaoloni@redhat.com> <2025102111-facility-dismay-322e@gregkh>
- <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com> <2025102124-punctuate-kilogram-da50@gregkh>
-In-Reply-To: <2025102124-punctuate-kilogram-da50@gregkh>
-From: Gabriele Paoloni <gpaoloni@redhat.com>
-Date: Wed, 22 Oct 2025 16:06:10 +0200
-X-Gm-Features: AS18NWBUEXjvL5a7yuhDD9EBuivsDI4OlQF-1ILxjqzVH4-eCsEPHeuZ9-Q2Dr0
-Message-ID: <CA+wEVJajSGzb85YTiv98yAY3bcJFS0Qp_xjLc++wnU8t=wDAOg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, safety-architecture@lists.elisa.tech, acarmina@redhat.com, 
-	kstewart@linuxfoundation.org, chuckwolber@gmail.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fq2z3vtz6EyhlGCTsqfzn3xVcwb8tzpq5gng2pe_Q_s_1761141982
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 84C93C000C
-X-Stat-Signature: 3c3xon3rr6auujyut6c3qrjbz1fjpzwz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70f8c6a1-cbb5-4a62-99aa-69b2f06bece2@linux.dev>
+X-Rspamd-Queue-Id: 6C826A000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761141986-922830
-X-HE-Meta: U2FsdGVkX1+noa23n9JTXn4zf+B3OnvazB5aF7yH7FgsZVV6rb8mR6ytM15peY283QP+Mfr9Npa/huQC9puiQ3p0UYWFAqY9Cx5k98FUMh1EDbMmgpjy/u2MBda5+nOryi9hPEe3C+CgV/5VSP4nMzwe4L0b6E9Mzq4ypUTsXIaGNZAKLvhKOQJNK1vpYAUqmC4xchJF0H6L6YCX6SNRuraMZnf3KY1fG4JC9mTg9R7VXXoApuPSwMg3e25eU9GqRvMwEZI1U7a98RMNiZzYWcQ8r+0g1Vt8RQux0706JyxlFndPNzR3fmoJzhCzk/6wLXOT7la91jpTLIaWrtoVqu0vUJbW5w9IOPLhUFdmsw4cou/vxqKqbJnAzke9en1ZLBlTKjImC7T1B5YlG+3ta023g1X2vhD5Vol86Qo8nmkwv9iEsrv5U3A/ImDl/NNmCtjUi0g++EfT0erPk0nK1AfPVMQMhLiYhD64DR1VqAcBLcCym+9PA79Ggd94ACfa/80cHlxOeT3/AqLqStb8qMmLWwkY1R9I26VyVDDiDjTg1xJE9c8iBj/7C2ndeLFattGIWFZAcaPEcOOfTjQsAreoLCU/1XXnZfgT1aJjyqAtef1YIRtdjS7y85RQau/ILBF2ZodfRUD1H14EIsDVagfJu5ntBu6W+b/GqdE0Kgy0crIKAtyFk+y0XyoYA5sfp7ZKHqrsZbPL94iukNkzMyt8xlhC7RV7m8iX99GCvpOqtv/Fgm9h9xCNnMPjAJAzeTu4wpuV/xlzQYhp7fs5VJdcqmzmCalM5USIOyEqS7oonWfpIcPr6LFTPyHqg8PCndjRskgdDeOBvT5SMEKpZn0GnrJc+CqyG8Gtdz05cxUeunQc4Qb1zhmBeK7Q+J0yhssxn8631ND71eqp7u9JrDVswN8YBY3g/He22y7AaPhXw/u6eDhH4W69z9h3exMeZKheQEE9dOPflNyouY8
- LBPXQVgv
- iBIbpNsUahbn66D8UGgd0yKiAmmHZZVtAjRRa7Pe4dmYk8hlvjzaDapLxLTcuN/nHRq2Gyg1iFvG9s6l8jqU5+v+JPAgoqzOjX5nehcv4avWAG5uVpFrdydgGJz1biFjS4pjZkfCHRSK3NQzKQpBUlcqFn+CIMo9Y4uqHkzOUd4Hqr10zU8B5yPKpoG9fyiKi/8nq9zNH/PzUKCJ4oq75P7NHuih1wg8cU995L0g5Qz1+lrUJx0Y9RgzpXqEWWb92NG1iwTe3GVKXFsOZEzIZ3wj1Mb+409NONbot1wlicfVNeLz96eALiRSzg9WmNT3ZdY455FwybA5rXHTPaRvSbHu+PljqQ50Gw3oZ54ASbMuTT0PBaJKe7+rOOOo1xqZ/8iRidSjnnxoaLS5d3+aA912FcQlvIieuiFeaR9CUs5Vym1lR+rg9E0BDbtak0/BQXzfONyuwmLARysjfBy2tyYBSxg==
+X-Stat-Signature: 9mq5sg1xauqcpxgnu8phc56dji61boup
+X-HE-Tag: 1761143214-430216
+X-HE-Meta: U2FsdGVkX1+f65kRSm/wuW+rLGsJlS7dyxa6ZTLhOwKhV05Qby8XPmsMmSN3uRKhVksxhXo80N9cWfgt6PZUlsaAaQ4wGsencn71g2DMEfQGYxSC7eE5nOYLopzvq2RP0aYyIqeDlaCed5WgEpTNHM5Y8qCj44wZnOAoe+RwrLo4mrkQm41EU8yq2q0d2MkjcvFm2JCc34352oUGPFf2MeUX6rQNHhuxwwjuSA0H7D1hYjgSbQBS+Gjt9Gz0GJUGZHRyNDIYzvncj4oOskvAqfMpNkoDb6Jwar7HieWOnmWdA0Euib5DOL4QGdmP4nUKCqUARMXwqiv/tuUyD51UhcgNlkM+PTYk1JoY2wjDJ3J1O+Yt5XmXNOjHh+JasAWq6nUTuyy3qMahMRAYZ65D9qcRyXg47A9QI9yKlCH7p2oYgAfrPb1nFgtbHmMKgoo0hQbqd0w71OggoNTs8fF95oZqciPtgmSyFKdSngT8JZDQ1lzSgeeTyu+7Mr9y8zlHHxZMxawJ6lg6+ChOCqUDwmBY3p3WFWBKHNrl+Ws6Pt6RkG27TUQvgUUT1PUCWY8AAL3t10BMC8XTumLPMVh/Lq9v92pTHvgsfuuYxCPMy7wrupisesN+Ifnzw6Airk9m43l1th8ScLq+5ppzdkzclLjrNUQ3441VpqqaO3P4KZesYySGWJIZ/S5jCutYU8SX3g3EbnjLkzOzwLYOj7sy4be7C8gJi3uMUQ40eC3VQO8gxGymgCz+jvfTUigqSWNeIo8qu+8p1vVCspp7sm3D3robovkB/GZPzW0OnTdsF12HBoTlNdepbJZ7yaeeuyv/vMd9nPYogXqlC+58EhEpbW2m/blbyT9l2z4aOAF5DAy4dhm99tV9ZtYWFQJALjlook88xNL2h1+6Pp7WGIe/50xiuybH+88NEtvi7HlNMXY2/piOQxr0jxxsnNBoIXXDe0zRPpWEX63s+vs7iCs
+ at6wB5MQ
+ Q7LN7w63Y/JmtuGfxoQrnsVXWMM5UXyB5WV/sNW9QAV48C4Aacu4MLXXN9njHpEM3fYuKZSCsuDNd87e4KzROyurd1OdMuJvuWsWDknylI/cm7XQhMkwWiboMq/d5oN/QQ3N7Mxr5XReTy3i///4qOkvlgkSOrVbckxP8pReLqJAZytB1VVwlAwR+uEpNb/YQUIPJEuyQNu1QHcphevj/oh8vNriYXgrcAFN5iylS5E+06dSGsCnhorqEUMvEkhO73bXNaxoCRTUiQ8uW4DnCasUlgxdlC19naj6IbJIlDRJsjst9BFZiU4ZooGC4U5BHrVP6kE4IZk1tlOhdY/N/u5/RGTSUg/gSV+34VqwRwaMnyzeYIqa/qHXfhYtx1QOh3hLMXO5vMqW+xuxRWKVCE8lI4+6D9eiv/UbSX51uVOvVIm4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,197 +143,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Greg
-
-On Tue, Oct 21, 2025 at 6:46=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Tue, Oct 21, 2025 at 11:42:24AM +0200, Gabriele Paoloni wrote:
-> > Hi Greg
+On Wed, Oct 22, 2025 at 09:34:52PM +0800, Leon Hwang wrote:
+> 
+> 
+> On 2025/10/22 16:20, Greg KH wrote:
+> > On Wed, Oct 22, 2025 at 04:08:45PM +0800, Leon Hwang wrote:
+> >>
+> >>
+> >> On 22/10/25 15:40, Greg KH wrote:
+> >>> On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
+> >>>> Fix the build error:
+> >>>>
+> >>>> map_hugetlb.c: In function 'main':
+> >>>> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+> >>>>    79 |         hugepage_size = default_huge_page_size();
+> >>>>       |                         ^~~~~~~~~~~~~~~~~~~~~~
+> >>>> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+> >>>> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> >>>>
+> >>>> According to the latest selftests, 'default_huge_page_size' has been
+> >>>> moved to 'vm_util.c'. So fix the error by the same way.
+> >>>>
+> >>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> >>>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> >>>> ---
+> >>>>  tools/testing/selftests/vm/Makefile      |  1 +
+> >>>>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+> >>>>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+> >>>>  tools/testing/selftests/vm/vm_util.h     |  1 +
+> >>>>  4 files changed, 23 insertions(+), 24 deletions(-)
+> >>>
+> >>>
+> >>> What commit id does this fix?  And again, why not just take the original
+> >>
+> >> Let me check which commit introduced the fix.
+> >>
+> >>> commits instead?
+> >>
+> >> I agree that taking the original commits would be preferable.
+> >>
+> >> However, it might involve quite a few patches to backport, which could
+> >> be a bit of work.
 > >
-> > On Tue, Oct 21, 2025 at 9:35=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Wed, Sep 10, 2025 at 06:59:57PM +0200, Gabriele Paoloni wrote:
-> > > > [1] was an initial proposal defining testable code specifications f=
-or
-> > > > some functions in /drivers/char/mem.c.
-> > > > However a Guideline to write such specifications was missing and te=
-st
-> > > > cases tracing to such specifications were missing.
-> > > > This patchset represents a next step and is organised as follows:
-> > > > - patch 1/3 contains the Guideline for writing code specifications
-> > > > - patch 2/3 contains examples of code specfications defined for som=
-e
-> > > >   functions of drivers/char/mem.c
-> > > > - patch 3/3 contains examples of selftests that map to some code
-> > > >   specifications of patch 2/3
-> > > >
-> > > > [1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@red=
-hat.com/
-> > >
-> > > "RFC" implies there is a request.  I don't see that here, am I missin=
-g
-> > > that?  Or is this "good to go" and want us to seriously consider
-> > > accepting this?
+> > We can easily take lots of patches, don't worry about the quantity.  But
+> > it would be good to figure out what caused this to break here, and not
+> > in other branches.
 > >
-> > I assumed that an RFC (as in request for comments) that comes with prop=
-osed
-> > changes to upstream files would be interpreted as a request for feedbac=
-ks
-> > associated with the proposed changes (what is wrong or what is missing)=
-;
-> > next time I will communicate the request explicitly.
-> >
-> > WRT this specific patchset, the intent is to introduce formalism in spe=
-cifying
-> > code behavior (so that the same formalism can also be used to write and
-> > review test cases), so my high level asks would be:
-> >
-> > 1) In the first part of patch 1/3 we explain why we are doing this and =
-the high
-> > level goals. Do you agree with these? Are these clear?
->
-> No, and no.
->
-> I think this type of thing is, sadly, folly.  You are entering into a
-> path that never ends with no clear goal that you are conveying here to
-> us.
->
-> I might be totally wrong, but I fail to see what you want to have happen
-> in the end.
->
-> Every in-kernel api documented in a "formal" way like this?  Or a
-> subset?  If a subset, which ones specifically?  How many?  And who is
-> going to do that?  And who is going to maintain it?  And most
-> importantly, why is it needed at all?
->
-> For some reason Linux has succeeded in pretty much every place an
-> operating system is needed for cpus that it can run on (zephyr for those
-> others that it can not.)  So why are we suddenly now, after many
-> decades, requiring basic user/kernel stuff to be formally documented
-> like this?
+> 
+> Hi Greg,
+> 
+> After checking with 'git blame map_hugetlb.c', the issue was introduced
+> by commit a584c7734a4d (“selftests: mm: fix map_hugetlb failure on 64K
+> page size systems”), which corresponds to upstream commit 91b80cc5b39f.
+> This change appears to have caused the build error in the 6.1.y tree.
+> 
+> Comparing several stable trees shows the following:
+> 
+> - 6.0.y: not backported*
+> - 6.1.y: backported
+> - 6.2.y: not backported*
+> - 6.3.y: not backported*
+> - 6.4.y: not backported*
+> - 6.5.y: not backported*
+> - 6.6.y: backported
+> - 6.7.y: backported
+> 
+> Given this, it might be preferable to revert a584c7734a4d in 6.1.y for
+> consistency with the other stable trees (6.0.y, 6.2–6.5.y).
 
-Let me try to answer starting from the "why".
-IMO There are 2 aspects to consider.
-The first one is that requirements/specification and associated tests
-are valuable in claiming that Linux can be used in safety critical industri=
-es
-(like automotive or aerospace).
-The second one (that goes beyond the business need) is that the duality
-of specifications and tests VS code increases the dependability of the
-code itself so that its expected behaviour and associated constraints
-are clear to the user and there is evidence of the code behaving as specifi=
-ed
-(I already tried to address this point in [1]).
-Some evidence of improvements can be found in the experiments we did.
-E.g.:
-- this [2] is a bug found in __ftrace_event_enable_disable()
-- this [3] is a code optimization that came as we looked at the
-specifications of
-  __ftrace_event_enable_disable()
-- here [4] we have documented assumptions of use that must be met when
-  invoking event_enable_read(), otherwise there could be a wrong event stat=
-us
-  being reported to the user.
+Ah, yeah, it looks like this commit was reverted from other stable
+releases, as it shows up in the following releases:
 
-Finally the need for having specifications/requirements associated with Ker=
-nel
-code has been already discussed at LPC'24 last year ([5]) and we got a thum=
-b
-up from some key maintainers with initial directions (hence we started
-this activity).
+	4.19.310 4.19.315 5.4.272 5.4.277 5.10.213 5.10.218 5.15.152 5.15.160 6.1.82 6.6.18 6.7.6
 
-[1] https://lore.kernel.org/all/CA+wEVJatTLKt-3HxyExtXf4M+fmD6pXcmmCuhd+3-n=
-2J_2Tw8A@mail.gmail.com/
-[2] https://lore.kernel.org/all/20250321170821.101403-1-gpaoloni@redhat.com=
-/
-[3] https://lore.kernel.org/all/20250723144928.341184323@kernel.org/
-[4] https://lore.kernel.org/all/20250814122206.109096-1-gpaoloni@redhat.com=
-/
-[5] https://lpc.events/event/18/contributions/1894/
+So a revert would be fine, want to submit it?
 
-Now I'll try to answer about the goals.
-I do not expect to have all Kernel APIs to be specified according
-to the format that we are proposing; my initial goal is to have such
-a formalism to be available in the Kernel so that developers that
-need to write such specifications have a guideline available.
-For example today we have a guideline to write kernel-doc comments,
-however (AFAIK) patch acceptance is not gated by these being
-present or not.
-I think that developers having a direct interest can write such
-specifications and associated tests and these could be reviewed and
-eventually accepted by maintainers.
+thanks,
 
->
-> In the past, when we have had "validating bodies" ask for stuff like
-> this, the solution is to provide it in a big thick book, outside of the
-> kernel, by the company that wishes to sell such a product to that
-> organization to justify the cost of doing that labor.  In every instance
-> that I know of, that book sits on a shelf and gathers dust, while Linux
-> is just updated over the years in those sites to new versions and the
-> book goes quickly out of date as no one really cares about it, except
-> it having been a check-box for a purchase order requirement.
-
-I agree and in fact a key ask from maintainers, as we discussed at
-LPC'24 in [5], was to have the code specifications sitting next to the
-code so that they could be maintainable as the code evolves (and they
-would be even more maintainable if specs come with tests that can flag
-regressions as the code evolves).
-
->
-> That's business craziness, no need to get us involved in all of that.
-> Heck, look at the stuff around FIPS certification for more insanity.
-> That's a check-box that is required by organizations and then totally
-> ignored and never actually run at all by the user.  I feel this is much
-> the same.
->
-> So step back, and tell us exactly what files and functions and apis are
-> needed to be documented in this stilted and formal way, who exactly is
-> going to be doing all of that work, and why we should even consider
-> reviewing and accepting and most importantly, maintaining such a thing
-> for the next 40+ years.
-
-Putting business needs aside, I would expect maintainers, today, to
-happily accept kernel-doc compliant code documentation as well as kunit
-or selftests associated with the code; simply because they add technical
-value.
-If my assumption here is correct, having these kernel-doc specifications
-clearly formalised should be an improvement for the maintainers (since
-it would be easier to verify incoming patches when specs and tests are
-in place and also it would be easier for a developer to write such
-patches).
-
-WRT the scope of code to be documented, I expect that to depend on
-the vested interest of companies contributing to it.
-The directions from the LPC24 session were to start with some pilot
-drivers/subsystems first to define 'how' to specify the code and later
-focus on what and scale...
-
->
-> > 2) In the rest of the patchset we introduce the formalism, we propose s=
-ome
-> > specs (in patch 2) and associated selftests (in patch 3). Please let us=
- know
-> > if there is something wrong, missing or to be improved.
->
-> I made many comments on patch 3, the most important one being that the
-> tests created do not seem to follow any of the standards we have for
-> Linux kernel tests for no documented reason.
->
-> The irony of submitting tests for formal specifications that do not
-> follow documented policies is rich :)
-
-Thanks for your comments and sorry for the mistakes, I see that Alessandro
-replied so we'll pay more attention in writing tests in the next revision.
-
-Kind Regards
-Gab
-
->
-> thanks,
->
-> greg k-h
->
-
+greg k-h
 
