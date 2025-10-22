@@ -4,121 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25208CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7969CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EE588E0008; Wed, 22 Oct 2025 04:15:02 -0400 (EDT)
+	id 42AE08E000C; Wed, 22 Oct 2025 04:20:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C6088E0002; Wed, 22 Oct 2025 04:15:02 -0400 (EDT)
+	id 402688E0002; Wed, 22 Oct 2025 04:20:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DC6D8E0008; Wed, 22 Oct 2025 04:15:02 -0400 (EDT)
+	id 318B28E000C; Wed, 22 Oct 2025 04:20:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF188E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:15:02 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 101841A0601
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:15:02 +0000 (UTC)
-X-FDA: 84025039644.19.9D11EC8
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 32B291A0016
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:15:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NxOOObbV;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 206F48E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:20:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6A5714043E
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:20:53 +0000 (UTC)
+X-FDA: 84025054386.02.FFA411B
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9C836180002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:20:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=RQyNv3R1;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=sR7qicZ9;
+	dmarc=pass (policy=none) header.from=kroah.com;
+	spf=pass (imf16.hostedemail.com: domain of greg@kroah.com designates 103.168.172.156 as permitted sender) smtp.mailfrom=greg@kroah.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761120900;
+	s=arc-20220608; t=1761121251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kc+KKthH3EZzvZbA3/zNivfsabMNFBxOZip1Q8c96nE=;
-	b=J0X48TZcDGJ+8N2he0drKbRiLKnhOY2NB2V8KlAsOBWT8aP3oWpJfw/lfMKf4nFYXWr8Mj
-	k6EhPFftplA0vIFUiqBhY1BdJ2uBiSX48LgCKYfBFB5N/C3pY9eee2KaKjOpe0MBhfR1pm
-	lu0u3Z3acS9ewokEAcDccTpkNpfr7dA=
+	bh=uPC4ZvWHoZpQ0FA8oprvgTzvGpj3Enck39VjaaCP7LI=;
+	b=LpONRv3PurPt5NDtzybICK3229LfjWSSG3F4wM9bYYLygKaHt74uA8RQdKwtBjDtFZ58Op
+	fsi8uBmpC8HunaYJcz79p1dBBfUDt0+NjgC+Yl48GlnJroHiOdMpvxLz5hYbwVzkrVeTWx
+	VcUbzypQzrFU6U5f+++31sQpxrbOYLE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=NxOOObbV;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761120900; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kroah.com header.s=fm2 header.b=RQyNv3R1;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=sR7qicZ9;
+	dmarc=pass (policy=none) header.from=kroah.com;
+	spf=pass (imf16.hostedemail.com: domain of greg@kroah.com designates 103.168.172.156 as permitted sender) smtp.mailfrom=greg@kroah.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761121251; a=rsa-sha256;
 	cv=none;
-	b=MOjkWtzr7fygXPVFKlrhahZJYNuRIPITcfKuEEG/DW14ggblccx0YbaSUxak796hh0MpwG
-	7/LDNtcETzkRlAM7tUyKEbVB+EV0Nm8NbHIN1M+i4kMir5wfyDok5V1mgfQh4nJcGi/gkf
-	pX+EGTbhn0Lk91sg9JgeAf6Ewuf6vhA=
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8906eb94264so888885385a.0
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761120899; x=1761725699; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kc+KKthH3EZzvZbA3/zNivfsabMNFBxOZip1Q8c96nE=;
-        b=NxOOObbVQsQQZ/dP+/7F34LBEiqTK4/8OzESxIaDiIuDYveoQptApgwlkimTGeX658
-         Boexq18rsQd6J0xHdBQhhYRQsX702j46qNqoyaEMkjFGJT5v6KggHY+TKoOFqdeBDccF
-         JYc5fMUv55lJ/admSjRn12LjP5rHEEaVWufobTl7L2TWOF4bGnlx/rtyqiVRcYIgGXAo
-         ISmNJL0EXIL8titruS8DI5CXSaJrU0MQdP+DzjVwnbcem7ClLEIqPuFGIKUADUUWETOc
-         UBEF0waKhW/tfqtK07ONQfXD8qcYt/CMywIPtEeGANrq1U4rYvudS6dRRApPe0ET86Kt
-         7ymw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761120899; x=1761725699;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kc+KKthH3EZzvZbA3/zNivfsabMNFBxOZip1Q8c96nE=;
-        b=tkJxCpqoa7jzQCn5FIbEgejLiqMUdOuN+XGsF46UYwW4/mJWjvZPI2Zzog0xzpyOqQ
-         kYLinp8Ae0YRXlq6f4G2ODrBvM86NeKI2vl/QXep2CNfecKqHHUFlRVYs5d79261d/x8
-         NFcgmLZHqbeF1U9B8urDt9mOSayyaxjvd2z0lw3vQ43iPKPYc8RfrUojcv1X841dAOAn
-         8Jk7CaVTvTZs4whmsVPsKaVthfGmypueQs73mKP0XUqZnzRAv7SxllnoY4bmkjAte5ea
-         nTlJmxbNhE3E1IIYuTiNqePrB1bRezUzfu76YEyalXKLjUDQ7UHa/nWEKsx3gzCFHji4
-         QRAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtDUFXiDi+jjmWRU0xPKE0Uds/clqWXzEbF4f6aNQDPChmF0dcFNYuu3DoKaZ7UBI4ZRNW7liDqA==@kvack.org
-X-Gm-Message-State: AOJu0Ywl3WFqEATFizUvfTuNJbrfnWWQUdrGoazsxbT7NM3l7ySWIPuT
-	vR4peuYiXUjTkFIFe+QH/M7oh7SMPvyHU+hBQeGDffPfD7mkGHMMpQHy85XmHk35NVLvV1u1U8K
-	ygyxO13E80YGMrvcLvFVzXeS468WqHI4=
-X-Gm-Gg: ASbGncs0rpNFeNstFe2U1xTsoZFzvqocMxuTMKBW4RJp6htkW6/0jxbkQ6hYFmx+tIW
-	gLqA85hQc7821qB+kf0zkwTzNu5YD1i+QgyO5q2GH18X57Ycq/P3ANEM0bXF77oAd8UTBuRMOrD
-	5j2Qj/G5pQxX01CATZFNFwDRTvlsAPVwIWWfVHKNtkpKf/vReCyu3oEJkbhjcElXNpAyzy9H8Zd
-	ySMznsikr8scwvFK8lMGa9rqsv6R0+S2C7HZJr3Xvjw+cXgZoW1cvfSG0a1FiKocq1sexVboehS
-	jU99K0CDP9BO5kwg
-X-Google-Smtp-Source: AGHT+IEhER7MQg3744Yoz4/uML1arKqJYpMl8e42fCr1hdvltEI2c6JTn5tM+Uei72z9xIzjCvWCn/SXFXsGhGVB7zM=
-X-Received: by 2002:a05:620a:471e:b0:892:624f:7f71 with SMTP id
- af79cd13be357-892624f82b4mr1714089585a.88.1761120899131; Wed, 22 Oct 2025
- 01:14:59 -0700 (PDT)
+	b=chFkpF1uJ6g4EWznj7bwc6RZIPEQn7JvqliBv3X44wLdChICPpLMG5+RyMQsF5gzQ687V8
+	3Id3Ln8IJHHbyUldOtORkYYToAhUt4tIK0vpRaVE5t+nIHJiQEcy1XMgRbKsI+uZwalIOE
+	7qP5cf4GZFBdQtK47L4LAZmgYlMSiWs=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F27DE14001C9;
+	Wed, 22 Oct 2025 04:20:50 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 22 Oct 2025 04:20:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1761121250; x=1761207650; bh=uPC4ZvWHoZ
+	pQ0FA8oprvgTzvGpj3Enck39VjaaCP7LI=; b=RQyNv3R1jkBd77W7ENqFkirfuU
+	cvaWR7yqOgTuIVWKZUutJi41URla8X8U405KaHff63bl/kFDHR7io4U4s1gQqEz1
+	dmjmv57cZIRMdOaSxMGRArYAubdpv6NwxdYL6jp/2/4AzSSQqVTmp4g/5hl/jFRi
+	JsZWOKUyZryxPp09q0MK4Cj60gkntJG2D0F2u+lRIwe4T3oJ7PAeHMcq774KhkBK
+	bEXUFu9TlgcBr9zAbFXxZQY3hnRaj7dzLEdXtQN69yfeTsRU3CT4P76RHXaBgWpm
+	RWLqhWg1vl+y6COKrLoJFJkNTb7Tx1lbeSrI/OwUcWG6rpCmUsL/XpFBeNmg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1761121250; x=1761207650; bh=uPC4ZvWHoZpQ0FA8oprvgTzvGpj3Enck39V
+	jaaCP7LI=; b=sR7qicZ9c5PnxW+VxYyhsnP9XcLrBfbc/awGfiyJDlmZ4UHqarU
+	KozeOSwbOBDi+3zkskfFYy5+zJLG9OTChHYr0/4cv+83vAKFg3suBTzr5ghxGS3n
+	RLnhXtUVXnAH9h7dlmqYwJIoIFH0k3LriH2f38vLnyZPnPtUBJBFSFCXoKYOgNmO
+	jBmqBJDmqZq10y7vSKwTOyYafFD/GA3DsZWE0xlAB7eCssbWF+omWyQx3smsw5HD
+	AZ4uwvFcyAtjUQVQOdXscwtROzO2218zvdjUWt+DmZibLqGKW6xsx5O3ePlDD8qV
+	3cNAhZdHyJPGg6OZTcAiMaw5z5ohIwkFIQQ==
+X-ME-Sender: <xms:4pP4aK8jqEfwKOq4EFFZBmz3K-FD3wSscM260pKPItpWa-DaRmxcew>
+    <xme:4pP4aDcHI9eeDxqEs8dpejYouV14ZemsU65zAqAo0eoAD-I-ann5s7HGASFKmG_MP
+    011lZQSNc1MgNsJIxhkVCLtnW0kctQEQK1D0_MmMsUqwXA0JQ>
+X-ME-Received: <xmr:4pP4aOubuLV5MWkdsyEWlQONJmp9r48lo7ydBE012OtTVvQ8XfNNCC_I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeeftdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheplhgvohhnrdhhfigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslh
+    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhig
+    qdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrth
+    drtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrghntggvrdihrg
+    hngheslhhinhhugidruggvvh
+X-ME-Proxy: <xmx:4pP4aE0cbiTkhkpo-euO6Vi41z_T7p0U3KfwGWeBTBGyi-kv0Rvi7A>
+    <xmx:4pP4aDD6AekSYOMRUnqF6CarAHHdSQ0FrRTSh433D9lMfKOvhRCeRw>
+    <xmx:4pP4aBdd1US3YSz3iNE9mnIDaovo72ekHpXk7QR5YMlYQJaQ92jPPA>
+    <xmx:4pP4aFxWVdmYuQJJMnATsZurVvtofp8g5wbEo6ATVLcQSLvA_2prXg>
+    <xmx:4pP4aFM5tPcaZAiYWSNb-vGqUe1nU82BwY6lkKdReyMjRZp6sGJauPjH>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Oct 2025 04:20:49 -0400 (EDT)
+Date: Wed, 22 Oct 2025 10:20:48 +0200
+From: Greg KH <greg@kroah.com>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: stable@vger.kernel.org, akpm@linux-foundation.org, david@redhat.com,
+	lorenzo.stoakes@oracle.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 6.1.y] selftests/mm: Move default_huge_page_size to
+ vm_util.c
+Message-ID: <2025102210-detection-blurred-8332@gregkh>
+References: <20251022055138.375042-1-leon.hwang@linux.dev>
+ <2025102230-scoured-levitator-a530@gregkh>
+ <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
 MIME-Version: 1.0
-References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
- <20251013092038.6963-3-ying.huang@linux.alibaba.com> <CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
- <87a51jfl44.fsf@DESKTOP-5N7EMDA>
-In-Reply-To: <87a51jfl44.fsf@DESKTOP-5N7EMDA>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 22 Oct 2025 21:14:48 +1300
-X-Gm-Features: AS18NWBLKZ7qT2Y1R89WO7GO8UtVmSMjKHbsauP0TH-Q88ewqIZQTW6sMd0AXws
-Message-ID: <CAGsJ_4zPH0fwBOLQwh1y6jG3tCXHLGRCTyVVSCWb+NfLCEMV0Q@mail.gmail.com>
-Subject: Re: [PATCH -v2 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Yang Shi <yang@os.amperecomputing.com>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 32B291A0016
-X-Stat-Signature: iwxyyiswjdo9ksnjq6p68aomcg8jp7nh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff0b2bd4-2bb0-4d0b-8a9e-4a712c419331@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1761120900-505511
-X-HE-Meta: U2FsdGVkX18MDOm6nH8v3Kc7lSsYH/UwnXcvMni6JjhtXxjl9OcMWvDdIuNvZoQUUCmODpA5wWzhBaVaCZWaK56L3hZN5yiWNmzjT1cJGsjUJfoHTiZHv51xJhDn2GvzDshBpNCqIyzKaqWmVp9vQSh6FV+vnqa1JRODXiDqhXmHfoWCd6Rd1xUR+EvSUswwYDxKjXSU72GTHzLXTI6t9hRTJyP/AUbhrSY1KtBnMd6aFpmcp4owSi770K+v5cO5vDxoh9Vx345igu0oBo9XwIymYtlrwIqhDEzAH16A7+3fQMcxBZ1JMg+7iqP2TweVh4Nm1W2mfemctkuMDcDcP9QztzoMzIYHAgPf+BLyOouHD3Xd+s+fDmKT4umnyKBvmPvaPKd3JzIktFRIWi4ljm9Acy+JEDF3dJS6jlnfWFjOEpmaWxze5gWslpNylCfFhEIgRPQOqZrbNXrjUz75GPTfz88x6hjEzNzFvXNAY2L58lILhrbf15ndoRBlp0BJTWDqdwI/+Fd/f5lMU5TVc717aNNstiHmstI/C59TzXdNn/oSDFHc+PiIQLqidY20o9zKf3C7tfykjdcIFNSRh1PyGV9J7E5mBDATLy1B7ng4dnm+EweJTuHva1BVXE4w5y/Kwy4Mqs7Ye+RR4UR3NcaWaXzqUS9YZEnHkVakiiXjYfutiQ+aZA1WnBjhkaxfvVAoZDBtGgTbv0On1YvHhdPrCSrr9LqkA+UW+XY7aope6qHT7MuHjjBBi/ZSSP9Rvouov1ORrUCh7Gf3tMPS0IPXzsIFs1f9N6uLBu033ynKVWyeDJN2k+R8x2aNF62F3cRRRPBhgz05Y9FhlKVD5JGr3yz5C+gdpFU7Y3uqTSVDgZxoIO+ys6lC5QebS2XjmwPy2EpSrMWM7NsSD/vbYNGVD3Qqq3ve3XLFzcB2oEaG4p4DIfMwg054MMAH44xUOTcNnz6jvJA7bQ0gUzB
- SsOCVUja
- yYs1B73Y0V+vK0V6gopP+CyvSG0u27xDUdYbq2R1YjTSycNBWn1Z+T7l1wIK9w8pimdO3fM6dJXhe0a+bKhhvtLgogNZxxcRcQxYZjzBWmtzhJI0XBv4D5HWsRC2vmpmbPZ0Ce2f3kmk2wRJ2acuFJxckztEL50i5XclN4iRJOy+Bx93hBMIzQZDIM+xNnH5k257BzDmpRMCWO6JHJHdh1HnHIhPGyzc1cgcJ3Aqy2j/wEzn/oPqCEV3O8vNTEEvsDMd/Ouk+hUy2lohp30V5Q0/igQ5Yt6ujNlj8x8k+x7Q46txykZPahWEM/Um9A48tMHbtIMCN0CNTYkQBVjA2MH1RnOVLXsNo6sxEzq5PPK4cFAc=
+X-Rspamd-Queue-Id: 9C836180002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: pp8q3d4bcq51mjm6swaw31mutrwgmc5t
+X-HE-Tag: 1761121251-164630
+X-HE-Meta: U2FsdGVkX19mgClDXdbMgPHtkmNHtllXjEeRgH2MKAWByKts6zs6vD/ZK1mtrvFcBQvxLCmhJ4/HGB++tFf9E2ZcXACh39siRXqeBA090epCC61Rxr8hzCah1a2PjiYu8jl9/r5w0Ck31yHc9tqkA7mEEva5wJy1SRtPDnmy+x6Il2u+EyP0RfJyF3pSZ1kyQ7ob1fk0/+XFn4VCULEVROncDPKo5KKkiZK1b8wkAJJKrP80me80YbNaosrz+sdWcQtd03KTlDHEjgUHKW3RGV95h7U4x+CXz8c8MaffDKZO3bWO9WBt++UzBzKV5IY7HkzG01tiihz2+akDkyLchId+Rb2LnEEvFjOMbBzYVqWrDgC+p5t6aQBt1Hy2lQVnDoX5IvsNzvfxgxrZfsNflMaZBkdGrYDbpgQfIVOck+2x0SjeKLn8o+d/b8wMxYidFzg4KmwHhtPVnm0Qh37tDShBJVqluFr79L7pZjZUAG37fkdzLYEVv8w1R5tUoQ9p3WEI5hqH/gsCA7qETXNDHBqVPT0K1DDvY2LYN/FbwqLJZGQcvgIhTKxY3ucAV6KtAU/IJUiQLQJqAUsVicVnnl3HXw2MgAwbqJskejYhM6Qnq5t0JKErnN6c8T7vlRY9s3OAF2qtA+oJwswbBB//7pe2giCvt6sGDph2PyF3TfNyW0PVHbFaJN8sDlsFFeP9bs4SNDxmod7vovB+jW3DBjNqVas5XrFO284j0lmSw61NB7S+EWGRTHviBDyGt/fsEw2SJcDUHhMbtpNGUkBeiIrugL+snRpIzsOjZ8BVmourJLUuW2ysVCFu6sBX4xjd+9EIRGfPfH0tliVx2KmwAwxcBLPt6KoMPHDH1YbjXxifARfcv7KLZF0IBlwTgtan3fhqzpTfBl7sDycUZlXitGdFruBADm+l6JmNi+A3AXmbsyI1BlGucP+Fdqf+wY8rmmEBNAHURvu1HTBFKOO
+ wO3ML05V
+ cF/OIwpRHEXGb2Yo1dsC7IRZ/lT8MKGOKUFPlEDBVMknAupucUC3nG36iyOuaEg1ayFJr77kSKZjMrw3c6lfmxBEcR8faXv2rFuvWsNCWte1IIR7Z+2JZ7QklTqtcapwDfyP+s6tEqtKY0Rfs4h9++ovAz35cmdapVQMPbgvJ1LvkeMFCYvYp/CtwsoTbeHi1izB2uHXLFHFGBmP3zBhRbgJk+x/0Zc3R7X/JTw694NFN4tKdTxY9Az+EWvUI/Tk/0IHkKQg5+JWk1B3G4/kglU9G8pLKm86hbUns+33La10RQSLsUh9l7f745IvCy3zpBpEzmE2QnHEeTMKIK9AuUKvhmz3BnlWjHgqyqNvzHzwqkMn+FMoHshpNKEeyxrJ6+v0iAIKR8+xxLgw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,48 +137,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
-> >                                            unsigned long uaddr)
-> > {
-> >         unsigned long addr;
-> >
-> >         dsb(ishst);
-> >         addr =3D __TLBI_VADDR(uaddr, ASID(mm));
-> >         __tlbi(vale1is, addr);
-> >         __tlbi_user(vale1is, addr);
-> >         mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MA=
-SK,
-> >                                                 (uaddr & PAGE_MASK) +
-> > PAGE_SIZE);
-> > }
->
-> IIUC, _nosync() here means doesn't synchronize with the following code.
-> It still synchronizes with the previous code, mainly the page table
-> changing.  And, Yes.  There may be room to improve this.
->
-> > On the other hand, __ptep_set_access_flags() doesn=E2=80=99t seem to us=
-e
-> > set_ptes(), so there=E2=80=99s no guarantee the updated PTEs are visibl=
-e to all
-> > cores. If a remote CPU later encounters a page fault and performs a TLB
-> > invalidation, will it still see a stable PTE?
->
-> I don't think so.  We just flush local TLB in local_flush_tlb_page()
-> family functions.  So, we only needs to guarantee the page table changes
-> are available for the local page table walking.  If a page fault occurs
-> on a remote CPU, we will call local_flush_tlb_page() on the remote CPU.
->
+On Wed, Oct 22, 2025 at 04:08:45PM +0800, Leon Hwang wrote:
+> 
+> 
+> On 22/10/25 15:40, Greg KH wrote:
+> > On Wed, Oct 22, 2025 at 01:51:38PM +0800, Leon Hwang wrote:
+> >> Fix the build error:
+> >>
+> >> map_hugetlb.c: In function 'main':
+> >> map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+> >>    79 |         hugepage_size = default_huge_page_size();
+> >>       |                         ^~~~~~~~~~~~~~~~~~~~~~
+> >> /usr/bin/ld: /tmp/ccYOogvJ.o: in function 'main':
+> >> map_hugetlb.c:(.text+0x114): undefined reference to 'default_huge_page_size'
+> >>
+> >> According to the latest selftests, 'default_huge_page_size' has been
+> >> moved to 'vm_util.c'. So fix the error by the same way.
+> >>
+> >> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> >> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> >> ---
+> >>  tools/testing/selftests/vm/Makefile      |  1 +
+> >>  tools/testing/selftests/vm/userfaultfd.c | 24 ------------------------
+> >>  tools/testing/selftests/vm/vm_util.c     | 21 +++++++++++++++++++++
+> >>  tools/testing/selftests/vm/vm_util.h     |  1 +
+> >>  4 files changed, 23 insertions(+), 24 deletions(-)
+> > 
+> > 
+> > What commit id does this fix?  And again, why not just take the original
+> 
+> Let me check which commit introduced the fix.
+> 
+> > commits instead?
+> 
+> I agree that taking the original commits would be preferable.
+> 
+> However, it might involve quite a few patches to backport, which could
+> be a bit of work.
 
-My concern is that:
+We can easily take lots of patches, don't worry about the quantity.  But
+it would be good to figure out what caused this to break here, and not
+in other branches.
 
-We don=E2=80=99t have a dsb(ish) to ensure the PTE page table is visible to=
- remote
-CPUs, since you=E2=80=99re using dsb(nsh). So even if a remote CPU performs
-local_flush_tlb_page(), the memory may not be synchronized yet, and it coul=
-d
-still see the old PTE.
+thanks,
 
-Thanks
-Barry
+greg k-h
 
