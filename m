@@ -4,111 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF5E4CCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 13:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B4E7CCD1BB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 14:06:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06A288E0003; Wed, 22 Oct 2025 09:58:09 -0400 (EDT)
+	id BEFE48E0005; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01AD78E0002; Wed, 22 Oct 2025 09:58:08 -0400 (EDT)
+	id B9FCB8E0002; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E72F28E0003; Wed, 22 Oct 2025 09:58:08 -0400 (EDT)
+	id AB56A8E0005; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D1AF88E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 09:58:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F6225B92C
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 13:58:08 +0000 (UTC)
-X-FDA: 84025904256.01.81A805C
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 91EA21A001A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 13:58:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W6cVu4fm;
-	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761141486; a=rsa-sha256;
-	cv=none;
-	b=kMRot8KRdkPjPGJWL1S+YpEK5LemyTU4tINl0cy9uX3eIFqxpMGhetrKnk4+IPPDFEp33z
-	Iv+MtGSugfgsA/VP+gfh8lv39JsFzyXqt0pLiA6M5DYjZ7de8Zj1npYylgXhq/WcmLEiZ4
-	T7ZYwAGQ/RijIaPymhpvlY4SrKcWhXI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W6cVu4fm;
-	spf=pass (imf19.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 986328E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:06:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D09B88CE1
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:06:29 +0000 (UTC)
+X-FDA: 84025925298.26.85DB5F9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 84C93C000C
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 14:06:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lvk83wxY;
+	spf=pass (imf22.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761141486;
+	s=arc-20220608; t=1761141987;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Kp0mM9JFdY1qcqdgJXC1k4Ghi8aDtWlI8grf4712vk4=;
-	b=6gTqy1tthJgvw324r31EWtXNKojHmfQ3/8EnlRfCuT808AaipWIPo+9dY/7jwSMbpkeNX/
-	lIqwgi1ZaymuVuv2DyBnBZfcipi4GnRAh4qfxCqsXcsx/5YSZRm11+hEHQG3W2VfxiYaR4
-	F7ZebQH6JnpL+9cVgGiLrmrlYtqoa50=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a23208a0c2so3327014b3a.0
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 06:58:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761141485; x=1761746285; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kp0mM9JFdY1qcqdgJXC1k4Ghi8aDtWlI8grf4712vk4=;
-        b=W6cVu4fmVYTjE7dneN6LjR55jU8jf+OHFu8ZwmRnvPbFxrAGkpcoHFZHhoM8WxUmwm
-         /nvvc94J/exODBGh1lMR5ogMyW2jtRoKpS2VLuKZfI0eFSVnbbdZVpqGf5jLNvY5bWWv
-         Yn36imNpxL7TV9U9CqH74ouqwOa2LCDxn6fQo383oxWp7+9JIB5awTDs1CbV1ZHwk+rG
-         uJqF+OrOyttFHjn41erPRdnqb91qXkRZaQY0HiwyCbTLEjk6tPpUbsEdrw9PhxcuFmNc
-         pOPheBBgaL1pvBldcpujeLhfTMUnu80mdtuphwWjycw5TjuPmpLzlwGhedqiGn1yEykw
-         wcHg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
+	b=Xn3efz7tWkHWRj1hxcDtu7c7/D67r5oOBohXHPt7XR4i5EADJ/7rcZfrpaedLvujlco28y
+	ICteZ6e9pwGpt9Zgzn1Z7rMgEs4mP6HMt6A4Qj/cyYhsmD/X97/92Dd38z3vv8uvy1nPtR
+	6rYCYld8LY7t4uunNYbTnEZImgmkWU0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Lvk83wxY;
+	spf=pass (imf22.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761141987; a=rsa-sha256;
+	cv=none;
+	b=5R5IffUinYY91O6dWZ3A2g5LpOxETWwrjf4F64GEpVJ9gz+Sx5qAbxMCps6qK2Du4VfXfL
+	J/bjGlyr6VaY6t3nBZRgUm+YqgXd2dT4JAWVNqOlvRM+Wm8DEYUfdUqTXR4r71YuYLs7Ba
+	wDmVfzi0QBI8i59Lm6QwkFDeKm9mN0A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761141985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
+	b=Lvk83wxYi4pk99ioCbACeoxU0lBmsNANC5rBC1o4fhjvjwOrzni5E/tFpmHRuaDbgPvbpf
+	j2ePEbimjeQ6FWwLgR09aCVJNkypLTZAgdXLcWfX1Ad5gDTlMz0eiSsCufZAZOULwXb8fE
+	J4su10kJMlYebTP8HQA60Ay7T3u2or0=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-g_CuqDnBPOSi7I7X1tGGQw-1; Wed, 22 Oct 2025 10:06:23 -0400
+X-MC-Unique: g_CuqDnBPOSi7I7X1tGGQw-1
+X-Mimecast-MFC-AGG-ID: g_CuqDnBPOSi7I7X1tGGQw_1761141982
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4e88a5e70a7so37720321cf.1
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:06:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761141485; x=1761746285;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kp0mM9JFdY1qcqdgJXC1k4Ghi8aDtWlI8grf4712vk4=;
-        b=cRB8incGshqBy+RX138yCGUxl6JiicF3jXVCO6prgnNFOsJwHUw2dXXcR+Q07jdNnf
-         VUXTgzReMcZ9WRSI57g7akUIQsGnfUuwUTrwFoGd3F0ZgvEe03lCc8IbDVUaa3/MpkzH
-         OJr2ReM9LcpP6IZuUSxF0RKSTwYsuTYk1xVvUs/eyk1etCd/Wgl7RaJpmNz9bE/B1Gq/
-         fDBwZlmeIPuSC/xRVwTo+UJd4pkeWEJt1gBi4g3pbn8DM8bGlYPFz25FS86D629Wh8Cz
-         4h6J0Hi4FSsrlKIrrXsGQIwROdGb59rDWxECYuFVri5eW46VZXKNH5RorRcA/Y7M/jqH
-         p0hg==
-X-Forwarded-Encrypted: i=1; AJvYcCWH/JXnsS2Ae9vf3QNlmnQ2FL/fpmrpro1e0hqr6x0cObJdCX6JyVeHxB+8o6lfVYwbE7OSRUcLcQ==@kvack.org
-X-Gm-Message-State: AOJu0YzThV38WA2VrW4PqheGTW3IEVb9d5OkYZrjpMdLEj5vPo21MHqA
-	0L7DujZz3DmLeJfRxf1MG2HMKIxQ4slTHgu3QhquDzckep31h3Ozpytd4sChuA==
-X-Gm-Gg: ASbGncuv/XclrBkbnP4mhLnFhywjyw/8n27fwf/PgYBc9Q370izOl8JOO/RG1hriy+e
-	4A3Rpgo95UR/ZJJRlHfeyJMZGYxKfkdnkZFhYtC3+sPC/0ntwiNwvVdKJ0L9fait6MckWmdXDNr
-	fOXxTJEvBc+o8BgQAEOSj6SEgD5R7lc7ex4TKnl7TxPA8e+Tuq+G0J15gAgW9eRMrjhk0gliSc1
-	cBZOfh5NZ/7S9gHUbPwsgo+kaB1Aafs7rdzqC223n2BURKF6brOgA76LcXKBlpM8fBe4wtsSNp+
-	3A1LOTXoda6CUGfbwCtUF/1WoHoBDqBRLbCLeZoBwpa2Krx7hDHqMdVhktS2rE6lPFblJTivDqW
-	ZYQilThl2caZYowdMbJd7L+Ai4i2UGiv9bFxlstn2T9SlgQskIXikimFA8aCTiwuFwT2C3QrJVn
-	U/jNApeWPra6+Aucs=
-X-Google-Smtp-Source: AGHT+IGjLidG7JODwnkAIkbP1GeDN8MYzPHhkFYBEqm9cXg1a5wgXqHHcQ6Qv3vY8mGO1EtlTtwdtQ==
-X-Received: by 2002:aa7:888e:0:b0:77f:4f3f:bfda with SMTP id d2e1a72fcca58-7a220b25969mr24268270b3a.31.1761141485168;
-        Wed, 22 Oct 2025 06:58:05 -0700 (PDT)
-Received: from localhost.localdomain ([240f:34:212d:1:671f:870c:96dd:31d0])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff15985sm15047365b3a.5.2025.10.22.06.58.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 06:58:04 -0700 (PDT)
-From: Akinobu Mita <akinobu.mita@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-cxl@vger.kernel.org,
-	linux-mm@kvack.org,
-	akinobu.mita@gmail.com
-Subject: oom-killer not invoked on systems with multiple memory-tiers
-Date: Wed, 22 Oct 2025 22:57:35 +0900
-Message-ID: <20251022135735.246203-1-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1761141982; x=1761746782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VpAlIpSy8C909YLuQA//DQkPxxMEs4xSi+qjURZtgFE=;
+        b=kMzFp6VLnpZihzz83FPqv7YAtp1owAthJvbysjjgcfb7pAq6nYFHQAAXODO4LDut6W
+         EyNZqfAZwdhM5vNlwsewSFEm/yF5ZVlotmzqj6DsrzYH1bFYqXeh9VIS8Ew4NnMmn0UJ
+         I0KahB+LB/sutXKD96e6bvSeOlxwq4iPjg0C4cFeLwK6c69PvqhqKWSxe5rhyxYH14rZ
+         +BpMbQzmjjsiQDWW4/lyncEzXAi+qEXQgpanE0pvVPqxHga9n1qrcBXHZSRAeNYZKyBr
+         vDpnZ39YJnyEvOBLofXhtG2GNgMoX5H8Dhcbp6Q/gim0DTxtk8UwHzgsZzynDPkou508
+         o0/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVtDj0+1Kc1cWBi1VY97mRNUUMz3RIpnh9iUpOB90FCRRPooLEK9Go6PMCsTsfAZSp8XSIHuUnfOA==@kvack.org
+X-Gm-Message-State: AOJu0YynqYgog/Zal9kLFcBSwDFkrOlljhF/a1iG4VdkRrM2H3olhRkH
+	Sv0q7Rqn/7cRI1L/ije1qJDp3vjolLQ6c7BukTScW5Xx3/tlpnegLBcuJsJ6tpLQplWbgzEf5Bg
+	24x60NFCokJ6KrlSbjSEo0ukbHygoWByT+h9yFDRKgEUvH5TL6jVaVp94OjnI5UudPd68d1F9kK
+	hYLsF+kgdrJ32wXJANDH5RQrPVelc=
+X-Gm-Gg: ASbGncu1QMjtLbSfyP4KiXz/zrE13jeBrNTblyEGCMCTRee61Ywl+jN0P4vu4Bousiu
+	MVQiw24D57TRruJKUniSfS7NjPWKRV6SEgxCABRsvfaa7U6lIBlP66JpqL0moRcGwJzLJTSdpCc
+	T9R95OI9xRpqcsnEoIXZjJSCCBV8pujzECGj2lHWShd55hH6nNEqLmrANJw35QJLR1yarxw0mJg
+	DZE7CMWKT6Bs+D9
+X-Received: by 2002:a05:622a:13cd:b0:4b2:d40b:997 with SMTP id d75a77b69052e-4eb784b5ddcmr17972991cf.11.1761141982115;
+        Wed, 22 Oct 2025 07:06:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiy688lq0byckzl7pGXnvWhZZPJXPo0bl3cEscD1D5tdzpAQ54kYl/qCOsifbFz5e/sCUwL37uFix9NhXMCD8=
+X-Received: by 2002:a05:622a:13cd:b0:4b2:d40b:997 with SMTP id
+ d75a77b69052e-4eb784b5ddcmr17972311cf.11.1761141981436; Wed, 22 Oct 2025
+ 07:06:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250910170000.6475-1-gpaoloni@redhat.com> <2025102111-facility-dismay-322e@gregkh>
+ <CA+wEVJZEho_9kvaGYstc=5f6iHGi69x=_0zT+jrC2EqSFUQMWQ@mail.gmail.com> <2025102124-punctuate-kilogram-da50@gregkh>
+In-Reply-To: <2025102124-punctuate-kilogram-da50@gregkh>
+From: Gabriele Paoloni <gpaoloni@redhat.com>
+Date: Wed, 22 Oct 2025 16:06:10 +0200
+X-Gm-Features: AS18NWBUEXjvL5a7yuhDD9EBuivsDI4OlQF-1ILxjqzVH4-eCsEPHeuZ9-Q2Dr0
+Message-ID: <CA+wEVJajSGzb85YTiv98yAY3bcJFS0Qp_xjLc++wnU8t=wDAOg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/3] Add testable code specifications
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, safety-architecture@lists.elisa.tech, acarmina@redhat.com, 
+	kstewart@linuxfoundation.org, chuckwolber@gmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fq2z3vtz6EyhlGCTsqfzn3xVcwb8tzpq5gng2pe_Q_s_1761141982
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84C93C000C
+X-Stat-Signature: 3c3xon3rr6auujyut6c3qrjbz1fjpzwz
 X-Rspam-User: 
-X-Stat-Signature: niww3cjcc3731y9b7gey9tnh15i1fsab
-X-Rspamd-Queue-Id: 91EA21A001A
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761141486-576932
-X-HE-Meta: U2FsdGVkX1/82PBwyLi2EyOtZ2Uvtdpc2GOY3ZkjrdXPK4+Ivl8QuS1GodUJhy1qgtOoicp5zhsHPIXJeqOubgKm9ROAAYWRCMz8ugzVIiQB1BZzftlCNtUZPA24F16/Mc/MNNtcyEipkZOJ4Kuuu91j2jYrkCAnEtEFyyVV1YiYLvVQeQ+W2vIYqmv4Ql/aWsmHnL/gS3tz+UOuJ6/sEjxzWO+otZY9kRnTOMstf4ieJVFkNbCAKX7ZOl32Zv0zqBphMd///l68elRkoHw75LrnMtWbxHiiLkceee2U7sygENHjtlGrDMHEjN4ZL5ty2Qvm7VyiGq/s8IKD2MmK5Rw+tKXJ5fifitK3R5nuVo6y8ekajmycqbkN9cTjAk8sgJ97NBFJD7/DiCc/N0JQGQAUmAGVudjPLCCsFW+1mY4lflpQp8daDAesZWzT6fUhP+lWMeGYgELcl1xm59AlqBaMlnIAWK2vGys4pDObPs0m9kNu1GYfnhHzQNs4zqGk8TtVu0zw+RM4k+8K0CvwgWSyoYQ3CujsvcvtMy7JHg6wTdBgSQE/k2pa2d81ZTfQnf87NXFJULnvYYRzWupfasLewIC6FlExGbuNRsPTXH60pgMVAlp1mvzdJqZDPnvpRlpXrJzNJDkLSQWrv05dEIDixKDspE2NjyB9PQPFoQH1umB/ZadpFSTmXrQPah08iFLW0rqP/lwj2EPpD9WDXhRU5nZilhwj9IIWvaaFH1cLE0k1Jx7qemj0SaAOTvDFUkEgnCjg1eFhtgzVckf87HJPGNlNvCyozg43B5rP9PFYDU84Q3fQgjg7aM8S9Olgq4U4rsvXvDSFSMpyRCARzqo7E7ELM+Bu0RVE+b7mlAYLR1kMLcPOQQNNjk3feGuQmSYuIcgYaHcHu4R7EsHtdmNdYYFILvi2qgEYA6oMuNohucrpj8fR3pZRRP4FGqZUVfK78lHa7uvcoRk4bSE
- DaK//Ltc
- jFbprUPHmssgXfHze6Gdv+kjt/ye69vHkC4yhbTUW7czGExXVUXRXEI+DBv4yEshcb+f1U6I0bbdn4vppL7aEJbWfdbzWtimsJFVS7c+uyJ+vOSJ89RQO/XdQoc/KLvC0v+FmIqsD7y7Xjj+qKNNsYEuF/wongwV3cr9SHMbxe/1RWcmU4si7mC8vgGUuMVvQSGbLQiiBkSYvZxBO/Afx0MOhf1aoQcA5YcO0hJRSmUPMO0rnNMpFVlT1Y8Aog20tN9YOzcmL126ZMesjSQjcASUZI7B9JdQQ0TmbxNxZCx5faqOhZoXv/cQPGUMiJQLOLGkKExyhctRHhAaS39BLIcfxkKLOReHxu2zEI58nS1UClGSf959FcfL5JeigfLZu7db4hoegeCAO2f4Hlnv0sFuo8mXibkZyF+72ziRoQh47m8cqdkhVw+kijaPhfjCc85KEtHllpTiFmgk=
+X-HE-Tag: 1761141986-922830
+X-HE-Meta: U2FsdGVkX1+noa23n9JTXn4zf+B3OnvazB5aF7yH7FgsZVV6rb8mR6ytM15peY283QP+Mfr9Npa/huQC9puiQ3p0UYWFAqY9Cx5k98FUMh1EDbMmgpjy/u2MBda5+nOryi9hPEe3C+CgV/5VSP4nMzwe4L0b6E9Mzq4ypUTsXIaGNZAKLvhKOQJNK1vpYAUqmC4xchJF0H6L6YCX6SNRuraMZnf3KY1fG4JC9mTg9R7VXXoApuPSwMg3e25eU9GqRvMwEZI1U7a98RMNiZzYWcQ8r+0g1Vt8RQux0706JyxlFndPNzR3fmoJzhCzk/6wLXOT7la91jpTLIaWrtoVqu0vUJbW5w9IOPLhUFdmsw4cou/vxqKqbJnAzke9en1ZLBlTKjImC7T1B5YlG+3ta023g1X2vhD5Vol86Qo8nmkwv9iEsrv5U3A/ImDl/NNmCtjUi0g++EfT0erPk0nK1AfPVMQMhLiYhD64DR1VqAcBLcCym+9PA79Ggd94ACfa/80cHlxOeT3/AqLqStb8qMmLWwkY1R9I26VyVDDiDjTg1xJE9c8iBj/7C2ndeLFattGIWFZAcaPEcOOfTjQsAreoLCU/1XXnZfgT1aJjyqAtef1YIRtdjS7y85RQau/ILBF2ZodfRUD1H14EIsDVagfJu5ntBu6W+b/GqdE0Kgy0crIKAtyFk+y0XyoYA5sfp7ZKHqrsZbPL94iukNkzMyt8xlhC7RV7m8iX99GCvpOqtv/Fgm9h9xCNnMPjAJAzeTu4wpuV/xlzQYhp7fs5VJdcqmzmCalM5USIOyEqS7oonWfpIcPr6LFTPyHqg8PCndjRskgdDeOBvT5SMEKpZn0GnrJc+CqyG8Gtdz05cxUeunQc4Qb1zhmBeK7Q+J0yhssxn8631ND71eqp7u9JrDVswN8YBY3g/He22y7AaPhXw/u6eDhH4W69z9h3exMeZKheQEE9dOPflNyouY8
+ LBPXQVgv
+ iBIbpNsUahbn66D8UGgd0yKiAmmHZZVtAjRRa7Pe4dmYk8hlvjzaDapLxLTcuN/nHRq2Gyg1iFvG9s6l8jqU5+v+JPAgoqzOjX5nehcv4avWAG5uVpFrdydgGJz1biFjS4pjZkfCHRSK3NQzKQpBUlcqFn+CIMo9Y4uqHkzOUd4Hqr10zU8B5yPKpoG9fyiKi/8nq9zNH/PzUKCJ4oq75P7NHuih1wg8cU995L0g5Qz1+lrUJx0Y9RgzpXqEWWb92NG1iwTe3GVKXFsOZEzIZ3wj1Mb+409NONbot1wlicfVNeLz96eALiRSzg9WmNT3ZdY455FwybA5rXHTPaRvSbHu+PljqQ50Gw3oZ54ASbMuTT0PBaJKe7+rOOOo1xqZ/8iRidSjnnxoaLS5d3+aA912FcQlvIieuiFeaR9CUs5Vym1lR+rg9E0BDbtak0/BQXzfONyuwmLARysjfBy2tyYBSxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,121 +129,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On systems with multiple memory-tiers consisting of DRAM and CXL memory,
-the OOM killer is not invoked properly.
+Hi Greg
 
-Here's the command to reproduce:
+On Tue, Oct 21, 2025 at 6:46=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Oct 21, 2025 at 11:42:24AM +0200, Gabriele Paoloni wrote:
+> > Hi Greg
+> >
+> > On Tue, Oct 21, 2025 at 9:35=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Wed, Sep 10, 2025 at 06:59:57PM +0200, Gabriele Paoloni wrote:
+> > > > [1] was an initial proposal defining testable code specifications f=
+or
+> > > > some functions in /drivers/char/mem.c.
+> > > > However a Guideline to write such specifications was missing and te=
+st
+> > > > cases tracing to such specifications were missing.
+> > > > This patchset represents a next step and is organised as follows:
+> > > > - patch 1/3 contains the Guideline for writing code specifications
+> > > > - patch 2/3 contains examples of code specfications defined for som=
+e
+> > > >   functions of drivers/char/mem.c
+> > > > - patch 3/3 contains examples of selftests that map to some code
+> > > >   specifications of patch 2/3
+> > > >
+> > > > [1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@red=
+hat.com/
+> > >
+> > > "RFC" implies there is a request.  I don't see that here, am I missin=
+g
+> > > that?  Or is this "good to go" and want us to seriously consider
+> > > accepting this?
+> >
+> > I assumed that an RFC (as in request for comments) that comes with prop=
+osed
+> > changes to upstream files would be interpreted as a request for feedbac=
+ks
+> > associated with the proposed changes (what is wrong or what is missing)=
+;
+> > next time I will communicate the request explicitly.
+> >
+> > WRT this specific patchset, the intent is to introduce formalism in spe=
+cifying
+> > code behavior (so that the same formalism can also be used to write and
+> > review test cases), so my high level asks would be:
+> >
+> > 1) In the first part of patch 1/3 we explain why we are doing this and =
+the high
+> > level goals. Do you agree with these? Are these clear?
+>
+> No, and no.
+>
+> I think this type of thing is, sadly, folly.  You are entering into a
+> path that never ends with no clear goal that you are conveying here to
+> us.
+>
+> I might be totally wrong, but I fail to see what you want to have happen
+> in the end.
+>
+> Every in-kernel api documented in a "formal" way like this?  Or a
+> subset?  If a subset, which ones specifically?  How many?  And who is
+> going to do that?  And who is going to maintain it?  And most
+> importantly, why is it needed at all?
+>
+> For some reason Linux has succeeded in pretty much every place an
+> operating system is needed for cpus that it can run on (zephyr for those
+> others that it can not.)  So why are we suddenly now, after many
+> decades, requiring basic user/kernel stuff to be formally documented
+> like this?
 
-$ stress-ng --oomable -v --memrate 20 --memrate-bytes 10G \
-    --memrate-rd-mbs 1 --memrate-wr-mbs 1
+Let me try to answer starting from the "why".
+IMO There are 2 aspects to consider.
+The first one is that requirements/specification and associated tests
+are valuable in claiming that Linux can be used in safety critical industri=
+es
+(like automotive or aerospace).
+The second one (that goes beyond the business need) is that the duality
+of specifications and tests VS code increases the dependability of the
+code itself so that its expected behaviour and associated constraints
+are clear to the user and there is evidence of the code behaving as specifi=
+ed
+(I already tried to address this point in [1]).
+Some evidence of improvements can be found in the experiments we did.
+E.g.:
+- this [2] is a bug found in __ftrace_event_enable_disable()
+- this [3] is a code optimization that came as we looked at the
+specifications of
+  __ftrace_event_enable_disable()
+- here [4] we have documented assumptions of use that must be met when
+  invoking event_enable_read(), otherwise there could be a wrong event stat=
+us
+  being reported to the user.
 
-The memory usage is the number of workers specified with the --memrate
-option multiplied by the buffer size specified with the --memrate-bytes
-option, so please adjust it so that it exceeds the total size of the
-installed DRAM and CXL memory.
+Finally the need for having specifications/requirements associated with Ker=
+nel
+code has been already discussed at LPC'24 last year ([5]) and we got a thum=
+b
+up from some key maintainers with initial directions (hence we started
+this activity).
 
-If swap is disabled, you can usually expect the OOM killer to terminate
-the stress-ng process when memory usage approaches the installed memory size.
+[1] https://lore.kernel.org/all/CA+wEVJatTLKt-3HxyExtXf4M+fmD6pXcmmCuhd+3-n=
+2J_2Tw8A@mail.gmail.com/
+[2] https://lore.kernel.org/all/20250321170821.101403-1-gpaoloni@redhat.com=
+/
+[3] https://lore.kernel.org/all/20250723144928.341184323@kernel.org/
+[4] https://lore.kernel.org/all/20250814122206.109096-1-gpaoloni@redhat.com=
+/
+[5] https://lpc.events/event/18/contributions/1894/
 
-However, if multiple memory-tiers exist (multiple
-/sys/devices/virtual/memory_tiering/memory_tier<N> directories exist),
-and /sys/kernel/mm/numa/demotion_enabled is true and
-/sys/kernel/mm/lru_gen/min_ttl_ms is 0, the OOM killer will not be invoked
-and the system will become inoperable.
+Now I'll try to answer about the goals.
+I do not expect to have all Kernel APIs to be specified according
+to the format that we are proposing; my initial goal is to have such
+a formalism to be available in the Kernel so that developers that
+need to write such specifications have a guideline available.
+For example today we have a guideline to write kernel-doc comments,
+however (AFAIK) patch acceptance is not gated by these being
+present or not.
+I think that developers having a direct interest can write such
+specifications and associated tests and these could be reviewed and
+eventually accepted by maintainers.
 
-If /sys/kernel/mm/numa/demotion_enabled is false, or if demotion_enabled
-is true but /sys/kernel/mm/lru_gen/min_ttl_ms is set to a non-zero value
-such as 1000, the OOM killer will be invoked properly.
+>
+> In the past, when we have had "validating bodies" ask for stuff like
+> this, the solution is to provide it in a big thick book, outside of the
+> kernel, by the company that wishes to sell such a product to that
+> organization to justify the cost of doing that labor.  In every instance
+> that I know of, that book sits on a shelf and gathers dust, while Linux
+> is just updated over the years in those sites to new versions and the
+> book goes quickly out of date as no one really cares about it, except
+> it having been a check-box for a purchase order requirement.
 
-This issue can be reproduced using NUMA emulation even on systems with
-only DRAM. However, to configure multiple memory-tiers using fake nodes,
-you must apply the attached patch.
+I agree and in fact a key ask from maintainers, as we discussed at
+LPC'24 in [5], was to have the code specifications sitting next to the
+code so that they could be maintainable as the code evolves (and they
+would be even more maintainable if specs come with tests that can flag
+regressions as the code evolves).
 
-You can create two-fake memory-tiers by booting a single-node system with
-the following boot options:
+>
+> That's business craziness, no need to get us involved in all of that.
+> Heck, look at the stuff around FIPS certification for more insanity.
+> That's a check-box that is required by organizations and then totally
+> ignored and never actually run at all by the user.  I feel this is much
+> the same.
+>
+> So step back, and tell us exactly what files and functions and apis are
+> needed to be documented in this stilted and formal way, who exactly is
+> going to be doing all of that work, and why we should even consider
+> reviewing and accepting and most importantly, maintaining such a thing
+> for the next 40+ years.
 
-numa=fake=2
-numa_emulation.default_dram=1,0
-numa_emulation.read_latency=100,1000
-numa_emulation.write_latency=100,1000
-numa_emulation.read_bandwidth=100000,10000
-numa_emulation.write_bandwidth=100000,10000
+Putting business needs aside, I would expect maintainers, today, to
+happily accept kernel-doc compliant code documentation as well as kunit
+or selftests associated with the code; simply because they add technical
+value.
+If my assumption here is correct, having these kernel-doc specifications
+clearly formalised should be an improvement for the maintainers (since
+it would be easier to verify incoming patches when specs and tests are
+in place and also it would be easier for a developer to write such
+patches).
 
----
- mm/numa_emulation.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+WRT the scope of code to be documented, I expect that to depend on
+the vested interest of companies contributing to it.
+The directions from the LPC24 session were to start with some pilot
+drivers/subsystems first to define 'how' to specify the code and later
+focus on what and scale...
 
-diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-index 703c8fa05048..b1c283b99038 100644
---- a/mm/numa_emulation.c
-+++ b/mm/numa_emulation.c
-@@ -6,6 +6,9 @@
- #include <linux/errno.h>
- #include <linux/topology.h>
- #include <linux/memblock.h>
-+#include <linux/memory-tiers.h>
-+#include <linux/module.h>
-+#include <linux/node.h>
- #include <linux/numa_memblks.h>
- #include <asm/numa.h>
- #include <acpi/acpi_numa.h>
-@@ -344,6 +347,46 @@ static int __init setup_emu2phys_nid(int *dfl_phys_nid)
- 	return max_emu_nid;
- }
- 
-+static bool default_dram[MAX_NUMNODES];
-+module_param_array(default_dram, bool, NULL, 0400);
-+
-+static unsigned int read_latency[MAX_NUMNODES];
-+module_param_array(read_latency, uint, NULL, 0400);
-+
-+static unsigned int write_latency[MAX_NUMNODES];
-+module_param_array(write_latency, uint, NULL, 0400);
-+
-+static unsigned int read_bandwidth[MAX_NUMNODES];
-+module_param_array(read_bandwidth, uint, NULL, 0400);
-+
-+static unsigned int write_bandwidth[MAX_NUMNODES];
-+module_param_array(write_bandwidth, uint, NULL, 0400);
-+
-+static int emu_calculate_adistance(struct notifier_block *self,
-+				unsigned long nid, void *data)
-+{
-+	struct access_coordinate perf = {
-+		.read_bandwidth = read_bandwidth[nid],
-+		.write_bandwidth = write_bandwidth[nid],
-+		.read_latency = read_latency[nid],
-+		.write_latency = write_latency[nid],
-+	};
-+	int *adist = data;
-+
-+	if (default_dram[nid])
-+		mt_set_default_dram_perf(nid, &perf, "numa_emu");
-+
-+	if (mt_perf_to_adistance(&perf, adist))
-+		return NOTIFY_OK;
-+
-+	return NOTIFY_STOP;
-+}
-+
-+static struct notifier_block emu_adist_nb = {
-+	.notifier_call = emu_calculate_adistance,
-+	.priority = INT_MIN,
-+};
-+
- /**
-  * numa_emulation - Emulate NUMA nodes
-  * @numa_meminfo: NUMA configuration to massage
-@@ -532,6 +575,8 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
- 		}
- 	}
- 
-+	register_mt_adistance_algorithm(&emu_adist_nb);
-+
- 	/* free the copied physical distance table */
- 	memblock_free(phys_dist, phys_size);
- 	return;
--- 
-2.43.0
+>
+> > 2) In the rest of the patchset we introduce the formalism, we propose s=
+ome
+> > specs (in patch 2) and associated selftests (in patch 3). Please let us=
+ know
+> > if there is something wrong, missing or to be improved.
+>
+> I made many comments on patch 3, the most important one being that the
+> tests created do not seem to follow any of the standards we have for
+> Linux kernel tests for no documented reason.
+>
+> The irony of submitting tests for formal specifications that do not
+> follow documented policies is rich :)
+
+Thanks for your comments and sorry for the mistakes, I see that Alessandro
+replied so we'll pay more attention in writing tests in the next revision.
+
+Kind Regards
+Gab
+
+>
+> thanks,
+>
+> greg k-h
+>
 
 
