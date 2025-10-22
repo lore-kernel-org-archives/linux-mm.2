@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26AF3CCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA7F4CCD1BE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:10:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1147D8E0006; Wed, 22 Oct 2025 03:09:00 -0400 (EDT)
+	id 535C38E0008; Wed, 22 Oct 2025 03:10:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4F18E0002; Wed, 22 Oct 2025 03:08:59 -0400 (EDT)
+	id 50D998E0002; Wed, 22 Oct 2025 03:10:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD1738E0006; Wed, 22 Oct 2025 03:08:59 -0400 (EDT)
+	id 44A1F8E0008; Wed, 22 Oct 2025 03:10:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C266B8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:08:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84190BB27C
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:08:59 +0000 (UTC)
-X-FDA: 84024873198.28.F70812F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 339138E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:10:43 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD9965B473
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:10:42 +0000 (UTC)
+X-FDA: 84024877524.04.4AC4C61
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E228240002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:08:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SdNtRvN9
+	by imf16.hostedemail.com (Postfix) with ESMTP id 20024180006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:10:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=LA0EsnIv
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761116937;
+	s=arc-20220608; t=1761117041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v9tFlJ2fSBgWVG5dQp+BqV6oOUweYHcntX3sRf6YFKM=;
-	b=3Xg1G9FttW/6iTuGx+HUfDRiKNI0KWKkU/WqMsmfRRVDlyWtU8saHkxFbORn7LqQ2jI27/
-	/9Pk5rodlqJLzWcZd5E7ticZPnWdT5nvfkpU+UkNx+bdjo22RllSH6OtWBE9EL9skYexin
-	hjmWcnIIivcp9zp0rksT9m77NxjqLnQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761116937; a=rsa-sha256;
+	bh=XKoyGCto+Kn0HeCK5i87kYlf6+Be8yWE+pzHWLeDEO0=;
+	b=1Sdaq5IMmuVjo3HU/0lD8DpWl+YO/5FGM4ZCLNy81UoC9ZLY4C5192eFsXr1/0ojvwC9hB
+	CBkc2eGrMjtvTqKKlU26YEX5AGd2zMqYsvO6590Pt6oL3XjvjYuNOxSEnJEWeb0LRQRdIN
+	nTaT3asYJpwwifQg/hck9o237uhFmEQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761117041; a=rsa-sha256;
 	cv=none;
-	b=XDmRBDjRcmSfm7IqTqVd2WbcK7I5vBJ2UZf0Q+qmcG4GuLvY4dBrL3JKd891SRNOIC67iZ
-	W7pAgc55SwHKLedsyxarYxjk0ROFB3HWv3NHQrDb0WaLYQatZFLNxIFFf90lWUJzECYca2
-	lqwcKFj4l5DGMD0MuMjlJwbV+RG6Jcg=
+	b=4q/t/eJiXDcrOWJMiHcbPqYAp8xqHlJL/1EeQZRGBf/U9B52NFHN5ZEItfBMiZCYMNr9Ly
+	xpIOhPf+iqOorU0FUzPdjWhKsaJNoPk/LSy8ujcJOKwhk4LtNV45PvLdBwLzi1Ekgzxxet
+	z14FWFRWI+rNIEUz9ClZeXSaxrmcP5s=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=SdNtRvN9;
-	spf=none (imf01.hostedemail.com: domain of BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=LA0EsnIv;
+	spf=none (imf16.hostedemail.com: domain of BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+21c3bf232c3b55be12f8+8095+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=v9tFlJ2fSBgWVG5dQp+BqV6oOUweYHcntX3sRf6YFKM=; b=SdNtRvN9ECbH+6Wq5VOUBng1tV
-	rbcoTW7YrrfUGP/4J4whwouG1kDyvf3Lmdfi7LbnRPq89BMYv58xbUTBmXgSPXZVYRb6mJhJAPQU1
-	ZIA0/wC+S1RJMhiGYJjhCAdfm4FEwCrzY3g3l4cgwQjuPypeTpyBjpkFiGnJ3/MzMXNCCwCjSZrzm
-	n6BBFOL61exQBTv/xlQB1DwMELcEAU2ArzUgD/NYvkI2kZUkmNNPseZu9Lnk8f+brxHeHjW+o2OQa
-	50dWmbeHSHNr0vGLwBLSjUlfEwJXoZAmppaRqh0WNeM+hhzaF/nXElPtxtD2OmafhI0Tejkvpb775
-	0PevGOYA==;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=XKoyGCto+Kn0HeCK5i87kYlf6+Be8yWE+pzHWLeDEO0=; b=LA0EsnIvPmdhyAlKnWiGNmOL5l
+	dPh0nZUevEw5pwm6HBBuRxpL+2yfoJmbOBQlWDuYglG8QtuSjZzDWUqtSadQ1OFRPkGGDZwk02eQl
+	Bu+qOaq4hhb9Bd5VhP+RGw6wG8tKjt+oR0eO64ab5IIneyp3/JhLSsBpmjpjM5a/ycj97uOgmYi+/
+	Y1cRAulWoHfCg1kdfl5Alide/1gYw2Rn+VvkITIlqp8loD9nJTP6eJ8kMFPCR/UpvZDtjb6axkHGz
+	ZZPEPI9OgbKn0k/f8YRe21WllooKBtsnBOVhBULD9Jfr3RGKlOgLor3ceNm20eilmCX59TC4cQ8TU
+	Mj/Wx7eQ==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vBSxk-00000001oCQ-0f7W;
-	Wed, 22 Oct 2025 07:08:48 +0000
-Date: Wed, 22 Oct 2025 00:08:48 -0700
+	id 1vBSzT-00000001oYi-2Iys;
+	Wed, 22 Oct 2025 07:10:35 +0000
+Date: Wed, 22 Oct 2025 00:10:35 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: Christoph Hellwig <hch@infradead.org>,
@@ -80,28 +81,29 @@ Cc: Christoph Hellwig <hch@infradead.org>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 8/9] vfio/pci: Enable peer-to-peer DMA transactions by
- default
-Message-ID: <aPiDACJHZY7Gu4y1@infradead.org>
+Subject: Re: [PATCH v5 1/9] PCI/P2PDMA: Separate the mmap() support from the
+ core logic
+Message-ID: <aPiDa-QruoHC3alk@infradead.org>
 References: <cover.1760368250.git.leon@kernel.org>
- <a04c44aa4625a6edfadaf9c9e2c2afb460ad1857.1760368250.git.leon@kernel.org>
- <aPHjG2PS5DVgcG93@infradead.org>
- <20251017115524.GG3901471@nvidia.com>
- <aPYq0jQZOrn-lUJW@infradead.org>
- <20251020130855.GM316284@nvidia.com>
+ <1044f7aa09836d63de964d4eb6e646b3071c1fdb.1760368250.git.leon@kernel.org>
+ <aPHibioUFZV8Wnd1@infradead.org>
+ <20251017115320.GF3901471@nvidia.com>
+ <aPYqliGwJTcZznSX@infradead.org>
+ <20251020125854.GL316284@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251020130855.GM316284@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251020125854.GL316284@nvidia.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspamd-Server: rspam05
-X-Stat-Signature: nty6z9b8oydtisi45wa7pa8yhe5c4fso
+X-Stat-Signature: heajppn95otx8ow78y9k4cbjxsw74cj4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E228240002
-X-HE-Tag: 1761116937-688321
-X-HE-Meta: U2FsdGVkX19vEYnGrY7m2HRlAej3cFonjrRk6COBD1/gaqniLK0YHzSSX0NnLlfDGHO8b1W7lkiQPBs/M7WH5AGz31weTZLfcbMvUvvyzo1nCtnlIxgwVy/BGFO0jvWsNpUaU+k7CxxoYWVAYiwgvY5owHeVRDWo8q/P9hrLd4BJA3yAZE4hnuQBmTyP1YbTRd1+Tj/vzcQRq+Rwk02vS0l6frv+KmMl5ZoODccfoY3hoNzn0cJCM7ZbAuE0i0nCz7A1wUCINXpmKUMdvX0UC/SHp1xhYG+7rMPHWPvv3DS0HTNp/yjaOy/ZFFpu/F5EF+cPAC+ybWHo/lYyc78v14ZJnxDM7agwP+zL7wJYKdJGLM47jhY5T/qyTw2I25Gj74PHoPOj4VNjJ3Yk+vgeGg46Qe0+wDkh3Yu67N65sTAm5lJcnaSua87PBk/1/ktDmG/hN6oI8kULO7ZbSfU+qsxki1wZpaLnvJfecRKRfRgojuMgDZtxew/tsl2hQhkJPtaDnwgsAlNE9ktWfyqmdkqeUo9N1Hzj87qh9phDRx3aLwD8fuSk4dNejw85MJ9EtTn5+QXJazgNW7sEaEQqSgr4tHkVjNKuAhkVuW95ViPTsi1OMs3ttUvc6lBDd7quZj/0JKilVfETeR1U0+FhD01cgXfa7OrEtzy4/VShVi9TxqlJiCe7KgLxDekQiLnxCEYl2i2KsaDD95HD2XrdfJxT+gpdFeJdSFFv+FnSl1wgWYnJ4zzD4/lhWk+lBCAuVSoU4Kh5EBx5TCz0fOQ3Cnx6GkoBoWGXfGaKqoumQrQ3h0jE/cGtkDYaErSUNBI7li5bcG0rxEZDY4PJNf6gqLN1T5wwEUtyMtLN+q3eDFctYr5hMXxkSTo3jlhLmdN9tzbSb2IsJTj+PNOksO0Q8ZQk/4/IZNX718JawtyA+wAZQ8ULN/Ag5xJLhbk8DmaSmqGObmA/KLexHc6PwXl
- K3QKsTJU
- ldChYOlFPCoVLyaWJeAOW5RWZGdGydu5QClW5cK0FDWQh4zn+Ma6uGkBhc7nvcyEQrLMYbHvDWfdg4f4Z4U82HU6Dfr2qQCNV+qZ4meoxRJHj8VHjC1cFPP6pzbAvUWiriROeEz/s3eQfWzCPMOldTntkmUHbiexdDa7ZnKWgT/VEpgjSggw/HsVMaB5eTQzsC0G+q8TLIrMKiAMbOwi8CoSdmpQmcU8PMsVkfbT+uy20eHgrifJmsbXGUYHQa/fz8t4radACI9I/zKxNZ2wjyQHk9m2iYr3qCIB4mTQiNxahWdXcM05x50pPf3AxPSHGuZGOuA2NhBDcczkXal0M9/7Zu1d+YTlPUbZCkoC8FYlF13SGa3JBGsJNfe9XbqPsviR7i4qmehvvrPFcYIGgj8dxfhL5D/PmIL2NStLR3T2ss64=
+X-Rspamd-Queue-Id: 20024180006
+X-HE-Tag: 1761117040-450763
+X-HE-Meta: U2FsdGVkX1/i2O246dZ27Gm1xYolBd/GQIWjUiRvYnFueoh6ZaoVu1P75s/DYOf1yLxnssCQPxwVUJXfyVOZ0/IqUigQGyuKXEIeCBKVEIfT65Ie4o/Hj+JlGdAu1iZxpD+hgVpqQEGqlis7kijbGXbVVKY+sW2zRMN/g1p6D/kAGbsx6pBw2kPCC2bVgjFtWz6TkVnGy3c7r+Ngl9waNytc7Ij4d1UufRJNGACUBkMY2KCzy/bx0eZ87jhZ3sLQ4AMcVaJHpqYqJHNrgTttlrWLIz9fX6KEo+yKm0utsnRN2oTiFSAMvOfNDi+EK0wNleR1K22qOMgMGkzGpjQt2N8HOq8kxhCzB9nOZJCPTutZGfGgLNHrSpR1jpKmwiQRHSMn6ayXl87tRPGUjL1hq6U9oc+B9FfHuf/pCqd4/dY2l1ZTYKG5rAcnuwv2ENID/uJHj6vcIGas0TGCPM0nim8bb7Sqta3v5X3ahWFyPZhu9HXk+q9G+Z1I9XF5MHD+k3MaB2U858LwlDcsKCL9xlZrftky7uttA9AaapV487LzF5vT17i61J1YT+TxVkt5Q+fGa1nTopRs130z9TP3fX10cbC+3kGo4tsmqLO8KnQ5gMjquKX0GUxBNZLYj6MZhjQ8yfOSeogi1f04iTxy2C0h1SyP3t+BdcPgRjhtzqLexS40qvNZu96kW6pOCh9WwtwSECqE0vRr2B+SOKoNpMH+4WBr3UkJKVi6YLr/cV84zJ7fQK15j/lu1retJ+gVLo5jVtdryILU4MxNjx732bGQCUvk4ntDK8/ZVRS79riHB+2kZm+T2YEKM6wvgMv9QnI0yFUilsFl3PLo+62Cbd8je1kxni6tc+157Do9ktUQONXF88KEhM2w6IHT6agfXSr7O7FLB3exD6xveRpD+VjlQ0LsrwpiIOKdmIDnlCKxpxrCQh4x139gWckn5+CwAjhMYCi2JD0Cr42Ve49
+ ziIGN4cz
+ TixgLdzSaCipHWQOvd9Bmh706Fbpuz7RgqTGNBxFGKFfGPEFry3TPGrIGg189SptlsRGCYolHErehpI+ER6UCkRly2wrRTWMJeMggienGoU1N57za1gZ/LFm15kqRxem/PhSejYvXRxXpUdBcLHNcv+sVC7xXYJnJzFyvTvYw6mOu9YpUzy2AerSSpRhbjLDHC6DkqpU6s2fmY9h0lDcL6Xpw3RMBSzRdtZTf7Bejij60StkAdxohTtlmsgEjZ8LPhq15yPo2ZNCF+/HcXRoKkgtINZzBs0tjLGxyNRHMt84eaoAYSzYwsTna4hAGAokhCSM640HbMtv1tDDGDYF6WeFdKO0wNMwx/t4XbedLUPY2hGyY+fJ4rBFVzZ9MyRC8Zq79X0WWma6x30nwJQ81T2/TRXE5kstdqMDjzClBzuv+B0w97kiz1h63jccxBNGoKGC5qo1wmpzKTinFaiehJuR+19Bs8nq95Zfq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,16 +112,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 10:08:55AM -0300, Jason Gunthorpe wrote:
-> Sure, but this should be handled by the P2P subsystem and PCI quirks,
-> IMHO. It isn't VFIOs job.. If people complain about broken HW then it
-> is easy to add those things.
+On Mon, Oct 20, 2025 at 09:58:54AM -0300, Jason Gunthorpe wrote:
+> I explained it in detail in the message you are repling to. If
+> something is not clear can you please be more specific??
+> 
+> Is it the mmap in VFIO perhaps that is causing these questions?
+> 
+> VFIO uses a PFNMAP VMA, so you can't pin_user_page() it. It uses
+> unmap_mapping_range() during its remove() path to get rid of the VMA
+> PTEs.
 
-I think it is.  You now open up behavior generally that previously
-had specific drivers in charge.
+This all needs to g• into the explanation.
 
-> IDK where Intel GPU lands on this, but VFIO has always supported P2P
+> Instead the DMABUF FD is used to pass the MMIO pages between VFIO and
+> another driver. DMABUF has a built in invalidation mechanism that VFIO
+> triggers before remove(). The invalidation removes access from the
+> other driver.
+> 
+> This is different than NVMe which has no invalidation. NVMe does
+> unmap_mapping_range() on the VMA and waits for all the short lived
+> pgmap references to clear. We don't need anything like that because
+> DMABUF invalidation is synchronous.
 
-How?
+Please add documentation for this model to the source tree.
 
 
