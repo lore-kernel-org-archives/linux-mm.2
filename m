@@ -4,82 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D82CDCCD195
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:58:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAB5FCCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 08:00:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AF6C8E0005; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
+	id 360B68E0005; Wed, 22 Oct 2025 04:00:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 187758E0002; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
+	id 311748E0002; Wed, 22 Oct 2025 04:00:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C4B18E0005; Wed, 22 Oct 2025 03:58:52 -0400 (EDT)
+	id 227748E0005; Wed, 22 Oct 2025 04:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F08248E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:58:51 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12A5E8E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 04:00:36 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9044813BA1D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:58:51 +0000 (UTC)
-X-FDA: 84024998862.09.A44CC10
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 98C2F180002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:58:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C57CEBAFBB
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:00:35 +0000 (UTC)
+X-FDA: 84025003230.09.3652B1B
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BF21D80007
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:00:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=hsgzNtAA;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
+	spf=pass (imf02.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=david@fromorbit.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761119930;
+	s=arc-20220608; t=1761120033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iz62cHlVvJrUCfZyete/eVuTH0uggulS4hgXpv/KDQQ=;
-	b=Yv6YN8B4TMQTsWO4S51nG8ftKg9mPKj96DxCVx9Lp8t5/mhcLlkiB/cdc5UfAXN1nWpSRT
-	YBK3NV99sVp9clkoMJ/nncnCfWlaJktOtQ4HDabb2Z9/ZrF9VEfJ/GPKPuM2yjat+kckks
-	6nbDmJmYBOhs0j2MLJSVH8Krz+ZpS+4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761119930; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vi75g88dnn+ezywzRSA2gvfzEVMFz+4qzKUpyRCo3Yc=;
+	b=CWuIwg7+N/fL3TYuu3GmsCe2YXbDdg6FHtFHspxokkVsv7VU73qdhIIqVFwpq1bykyIAJx
+	0ow8Np0yKhYnZq7ZpL0ko+wvUusqlLi1TG/JLjQ0rdX1MTwhZnt8Sm9D+q1/DmvwJGhuhh
+	tnVK5aORGSj8EYxeYGSZq1e+qRnMlOo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761120033; a=rsa-sha256;
 	cv=none;
-	b=SeApk6wTqCfrvayRgf2w8NTs2qT1XUMZil+/JSfxL4KtCYpd0PEThB+saxoM7GvxIANdgn
-	1MjP51WN/uNAz1nyowYE0VhC/marG/kcAr3fq4wipD31qstQ+IXbf4R7bXc8dmHi1EVwXB
-	MDY2UbVMdmh4lQD+SA4dlxse6PxHpuo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE4201063;
-	Wed, 22 Oct 2025 00:58:40 -0700 (PDT)
-Received: from [10.164.18.45] (unknown [10.164.18.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9864A3F63F;
-	Wed, 22 Oct 2025 00:58:46 -0700 (PDT)
-Message-ID: <b5a1b52c-75ef-4915-a254-a502b9f78eeb@arm.com>
-Date: Wed, 22 Oct 2025 13:28:43 +0530
+	b=j65gTpib5WJxvh2zZz6pi6ivWzMCYWCwnVs1rBrH5XUK+9dAdistqbYNoCTCIyUuy1YVme
+	UAoEKJIUmVClGWBSuIILfS+AAN8Ye40QNaZos+qf2V5YAn3YcoK5YVGDy6qUq48eRTXhaO
+	td+KbAAH8dZfiyD+VrU4tAx/4mqAzuU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=hsgzNtAA;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
+	spf=pass (imf02.hostedemail.com: domain of david@fromorbit.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=david@fromorbit.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-273a0aeed57so8506525ad.1
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:00:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761120032; x=1761724832; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vi75g88dnn+ezywzRSA2gvfzEVMFz+4qzKUpyRCo3Yc=;
+        b=hsgzNtAA1sXojSZn9pY26x5VblQDX4GF2o/l627PCNJpabPbVTfWGcZeENWjYVfUpz
+         UzN4YJfVqqZwy7r8FvVG7jCSebF3Wz3u6VaIEBNKZUxHdTASlovnJicuUYW42hfeTOvY
+         ZeCkTduNbtbNwD3i3JizOnQjGsDJtRbH4QTb5c9bxLHN1TuWI+yMytQI/eQAbBoDezVf
+         QTG9tDkDKkHZT47P5VleMi9AGKVBS5q8S7Eocpq32qd1qGAPmnKr3dDWUyOZuSP4Tut2
+         FzXDin+V9jKIHF+2p9XOuW9NMCEsj7UnBXKlOypypyEMVaVbC1v665mAZ7aZulpJHSAS
+         izOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761120032; x=1761724832;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vi75g88dnn+ezywzRSA2gvfzEVMFz+4qzKUpyRCo3Yc=;
+        b=tFnTnPaGi1tNs9sQdIJTb13XfmCOSUMjHe+PQKpvk656JYRraeruvs6n98Y1hYOlK0
+         3YS+g8x1MUEBnu8TJrQsBFnCQVIRQo7C3psiVvAGkSlBFsgly1SI8qgqJQTyWVMEgYwK
+         rn4ydFx0GEuFZRpwTUTDC1y1n2ziAuP+gUKfL/vxTOu15IFJ2ea3tgfBKUl1vyO8yloM
+         Behlkssg0LaSvq1vqczkXjDhXQgi4BZs/yqKQFmpxU56qFPwDzA4UNR7r1D5K7GQM/g8
+         zdaCohb91J4gJw1ZXMU2epiTsAk6DIcpln9HwpSo7hBB/Mwoy0qirXCF8AEz7HIa1xSe
+         ejHg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5ayonhro71XzETOIPwBaNm317gtYN8I8LhArriNMdMF/0DMGJDdgRIocQIyL5k+cLViQnDgkeBA==@kvack.org
+X-Gm-Message-State: AOJu0YwWRLbxHQfZC3vkXpDCWmZFMR83Dh34z++DpWGZuUztaRBaL5Rr
+	wRrLG8HilLhnSkGmLbCdNYmbGlxDaxfiVrqXfgZYJXh0snrbD/UmX6bApzHIrr2NaqQ=
+X-Gm-Gg: ASbGncu98Kpgyu8XRE+XAJEyDoDCN0ATZ+40L0cfke2poZNQsgChuDigqrbz/lT28Hr
+	NffTWL+CTI8mqkLVlVOlgxUjjxt+AYkxS12VgDlZC+m4qgx3LYL7tiDX01iVyXmFdK0R33tY3KG
+	LZI59/kJwhNSbsBfgKk0ns7EGFK67gAxbqoXdBSJF77PklpWfEV4vCx9FMbNL6h1bs3PhbBohi6
+	721sxlpfBxKVrCDx7h34nUqCiwR2Lg7iQX10cAg3DKfXKECWvOJ2mlWzzWT9qzzhmdLKFgxkzLD
+	B8zV1LfjCKisHM2hiFvbTGkFQn9+IlGiA3VbsMFvLxJiX8xrdsElWxwQcBqQQ3YD3FPeguDTbAR
+	cd9aDpKVOSMJ5ndXkL5xD4yU6OlvaPkx8PppeBaVTPOvICn3c24gC2xwUUS7GfZlyGH6quxbGFO
+	zMPqSpHoFgJEGtSVrlU2rEnXtUYeMYFactWcohfAtEDsEQ5uzzLP5u0VfoTfhFVP7oTAP6m4YQ
+X-Google-Smtp-Source: AGHT+IGduvry/wYzrkfuxXUxa8wdplbLIidGYgQBi3n47WTXCWsmsGQK5w2XtRr8wN1GQkSurJM/mw==
+X-Received: by 2002:a17:903:245:b0:279:373b:407f with SMTP id d9443c01a7336-2935b50852amr7825425ad.5.1761120032249;
+        Wed, 22 Oct 2025 01:00:32 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471fdee2sm131384155ad.92.2025.10.22.01.00.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 01:00:30 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1vBTlj-00000000Wcc-3XuP;
+	Wed, 22 Oct 2025 19:00:27 +1100
+Date: Wed, 22 Oct 2025 19:00:27 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH] mm/filemap: Implement fast short reads
+Message-ID: <aPiPG1-VDV7ZV2_F@dread.disaster.area>
+References: <20251017141536.577466-1-kirill@shutemov.name>
+ <20251019215328.3b529dc78222787226bd4ffe@linux-foundation.org>
+ <44ubh4cybuwsb4b6na3m4h3yrjbweiso5pafzgf57a4wgzd235@pgl54elpqgxa>
+ <aPgZthYaP7Flda0z@dread.disaster.area>
+ <CAHk-=wjaR_v5Gc_SUGkiz39_hiRHb-AEChknoAu9BUrQRSznAw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
- tests
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>
-References: <20251022032951.3498553-1-anshuman.khandual@arm.com>
- <87ecqve6gg.fsf@DESKTOP-5N7EMDA>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <87ecqve6gg.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98C2F180002
-X-Stat-Signature: 9i8jaerc67ncfbpz9z6uqrrhd4jbkzfs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjaR_v5Gc_SUGkiz39_hiRHb-AEChknoAu9BUrQRSznAw@mail.gmail.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: iqidc13tj4ifh8rwbn4yg5jidmx4k5ea
 X-Rspam-User: 
-X-HE-Tag: 1761119929-900760
-X-HE-Meta: U2FsdGVkX18GkhWA+4raI6PEZyU8Ce73DmwteJ+JTHdUsKfEXhbFHXv8qJYo8I38AHDp65sJ90GbzIETPRW5w1T3KBps29yfP1uVKJkO0yQrrauzs2dIrxwmL5U0DUVJhZ99/LAop6+gv7rTmdkHIbOuwxBFIz7pRhGfcIMSkNwRLEb5gTzceq0n3o+1N2/8G6P/jIDwRje92Ez9p+D0AAMDAAPpjJbdM6zWaYKZ/HDvz7rbxO7YpzjRJNplb3Pgch/qCuusOjPO5qPZIvmQOE/yGwciVf2vs88pHT79MhImdrVMqPS5ECRIlQsCuPTaM5cQWAkriehr2k3bGcUkvky/TIdLD/GkoECIgIN9n9jFdbY6rjEbZE2LFYs9BLonOqUpe2l7XXgHsYrzJpXxyy/pLHYBZucHb82uRS3SVG7+EKUxeBH2Q7ZjyN1XgF8cNz0DeMX1Me+kVAuqMaVOiSLo4lsnIo70eTxUxaowVApyWYJJCeuVAuu84EzcO7wQXjI787oGyEQFJrdm97fyY0N3qFn0jGxlmlbnyGsVbAqOMsl/ofHdE8KuaUFS9AdzUuzYf+DQ+/BxuHz2aOgKPm2m/9dpmOqDpb4f3IcZnAGBRZ6IQz+Bo1jqb85MypyhLcw0gdrNZnjDcBgvm+0He/yzWw6yMWJba2wBUc/xKp1LoXCI3lYOsL9OJrGLARVBa8cCP+KQuvajtSxRq6aGM/0z+0mAbeelfC472xC4Z/M3RIvixgrTHyBIi6RDTm1E84c0TReSAQTrs0R9H7oEBLX8lsXpBpolw3Iu9HI8sG0o2Gpl0yESI6FlzGwxm0dHqk0u+LPm6vOw6ZYK6dN/cZrE7soNZCO/hPk9Hfe3pDMKAEkQXJYWyv3JiH6hyTu8JcT1XAsuhsRGpdd1zzYaETPEpeyOos2oZTeuT4uc6R3btMsHAuP/TMgiE87UBgSwppd7uImc0uB312uPtqw
- wwmiZZGZ
- hZjsd4R6pQkKI2dXuBTioalVl8w9NvDULJ2Q4yPBJVvi4dgWEUSQ1lvFZR/OyT+Ew9RU7WmPR7L8OLiV9zrkEALjjd2gZslIEN8c2UxHijTTjoDQ31u2O6zIQahEZwXzRUESCjFnP2dwwx5WiusJaTRDpXdbVnp2lV/r48npI0seg6KWJZvUffByvOYj25qSiSO/1DYYDjJ47bTG3GqfH85ywHP10PYiD48b9jhcDqTngG7XG2gHdbVA5Z2J66o7c7v0bHJrKH2qlzNZPyePx/5qoFigLwGok1A9dZ0SlhbnfsvyFFLkIQ7sSMUx/js3YRayitt0b3gfZFv7qpJi8R//n614OumhkYAZ7Xw+X4B0HyC/zCHENfyXsvFyhCmVWO5cBKUFwnSoKr08=
+X-Rspamd-Queue-Id: BF21D80007
+X-HE-Tag: 1761120033-509682
+X-HE-Meta: U2FsdGVkX1//Z+H0GUJCiz6dU+Rx1QOYsNCV5Z1E9NFjaOugcXSXQo0jR/gRMeEgABcpMiR5dayMAWMVh3kWzz1kr+umU41UfXXKRb605X/G/wyxxI14Kb+ObrGcGU+CpP0tUqX9/ojuLR0iQx9LjdACidbtp36F96ExsKo+ZFyc6sYhALgfrfreaXKUmrdKO9AdYIs+kOSeFBaayQPQbPjjn086a9+JGfzbEC5lqt0DmmGeyrQCbEZA3fboCISTZQQxP6p4YHXAUdNZO/pCl8VmZhz9pWLhDIDANqBKmxWcmHA8GW0JPiJbETgjoZUWH3uRD8U9m/Ng5crXQnAr7Tc0HqciAtt1ZEE8H0S88uW+ZcH0uahuHBQZ1QCt/mkzPOtY+XUerrGpsFYvWjuo3Gtog/s8s0z0Fh1Xql14M2m6UVTqNRDYXxotNqXJoawwrX2dM+dcJYcmHRRHMbV+ULcen8pj9QY1Oga7gPTk8mbd1evP2fWVaAjdQeM9q+0jOuAQc0RTfaF3l3+lS6iPlinfw07DMvMNSRYnfpdwvW6E6BD2BOUCdAz0V+LfUZChrq9EpWaf/wAdKFypeUQaB1MzJWevs6hgLhUBjaPNeBfe7jveAuYOZs84qa1Z1rOHzYkfTO8BY8vm8SAXkAgjQrPlLGEDHktxX7NyiP6H44k27kNsmp/KdjgzTpKdVWsFecu00wwaGjfE9CKydEWyWLKwspWuucvqGtsdSzHPqV9LIosbQqndhtDf5DJ/Y8ZH7qG762rJWL364c8IrgS8simHEvq8Eqcj+tLCuxAXUqm/cyWNCsmhPYJGDFDTjYuL/nhMXa45iwjJAasf3UmDzf4IiV/fadlMp2T4ZoVOuM5KcaXQHkk4LkE0eVNVHAguU+dbHbSM/JROF1nVNvAoVukiWr6XpFSOB2R2kFF8ORoS13f28pArjJRT03IdP+KomgmkpZc1vs2TBbKMs+n
+ 5dnrqLxq
+ NnI/9ACbETX6EUodStO/wA5StfqEmVq0WBFz9/rh1Y56zQsK7AKJ0/NjWNJaedBY2J8q9mZTHExQ9DbJOF379OZA2GAbRt2Kpvt5fW+4M9yk98C/i38t0BDwaAGw4xvECfC9eq0NqDf3zSMGDo8n7oiPk0Dz1VtlP5stuyHbXocwI+ClnSLJL24TP3P9A/+xgLzRnHVgu788S+cTfddMyktSEaItEcc7sbqYO/W+x0yNyRWHje/YaY7I5cMLIZExfQHMuEBac3xGVrV6aRjEqqpbC4IoQhkEFl/ST8h+f/8ubZ8nh6qwBMocsTh+qxRGi5Pgjxr8BF9ULWN876FGWHHQlABPajdWhgasoYSI6OodTus1Y+AhRXETCqJ5JwersoBVwYyZdd1r2AMT3skhAysyJLmwLHsMn4T2P+sQ/Q3vZBhmklI9jIhnlQw4PK3B/NsLGpz6dPFMbwPM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,56 +133,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/10/25 1:03 PM, Huang, Ying wrote:
-> Anshuman Khandual <anshuman.khandual@arm.com> writes:
+On Tue, Oct 21, 2025 at 06:25:30PM -1000, Linus Torvalds wrote:
+> On Tue, 21 Oct 2025 at 13:39, Dave Chinner <david@fromorbit.com> wrote:
+> >
+> > > > >   1. Locate a folio in XArray.
+> > > > >   2. Obtain a reference on the folio using folio_try_get().
+> > > > >   3. If successful, verify that the folio still belongs to
+> > > > >      the mapping and has not been truncated or reclaimed.
+> >
+> > What about if it has been hole-punched?
 > 
->> Add some [pte|pmd]_mkwrite_novma() relevant tests.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Huang Ying <ying.huang@linux.alibaba.com>
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->> These tests clear on arm64 platform after the following recent patch.
->>
->> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
->>
->> Changes in V2:
->>
->> - Added a new test combination per Huang
->>
->> Changes in V1:
->>
->> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
->>
->>  mm/debug_vm_pgtable.c | 12 ++++++++++++
->>  1 file changed, 12 insertions(+)
->>
->> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->> index 830107b6dd08..def344bb4a32 100644
->> --- a/mm/debug_vm_pgtable.c
->> +++ b/mm/debug_vm_pgtable.c
->> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
->>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
->>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
->>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
->> +
->> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
->> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
->> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
-> 
-> Why do you use
-> 
-> pte_mkwrite_novma(pte)
-> 
-> instead of
-> 
-> pte_mkwrite(pte, args->vma)
-Just wanted to have more coverage for pte_mkwrite_novma() helper which was missing
-till now in this test. But just wondering is there a specific reason for replacing
-this with pte_mkwrite() helper instead here ? Also we could probably add tests for
-both these helper variations if that is preferred.
+> The sequence number check should take care of anything like that. Do
+> you have any reason to believe it doesn't?
+
+Invalidation doing partial folio zeroing isn't covered by the page
+cache delete sequence number.
+
+> Yes, you can get the "before or after or between" behavior, but you
+> can get that with perfectly regular reads that take the refcount on
+> the page.
+
+Yes, and it is the "in between" behaviour that is the problem here.
+
+Hole punching (and all the other fallocate() operations) are
+supposed to be atomic w.r.t. user IO. i.e. you should see either the
+non-punched data or the punched data, never a mix of the two. A mix
+of the two is a transient data corruption event....
+
+This invalidation race does not exist on XFS, even on this
+new fast path.  We protect all buffered reads with the
+inode->i_rwsem, so we guarantee they can't race
+with fallocate() operations performing invalidations because
+fallocate() takes the i_rwsem exclusively. This IO exclusion model
+was baked into the XFS locking architecture over 30 years ago.
+
+The problem is the other filesystems don't use this sort of IO
+exclusion model (ext4, btrfs, etc) but instead use the page cache
+folio locking to only avoid concurrent modification to the same file
+range.
+
+Hence they are exposed to this transient state because they rely on
+folio locks for arbitrating concurrent access to the page cache and
+buffered reads run completely unlocked. i.e. because....
+
+> Reads have never taken the page lock, and have never been serialized that way.
+
+... they are exposed to transient data states in the page cache
+during invalidation operations. The i_size checks avoid these
+transient states for truncation, but there are no checks that can be
+made to avoid them for other sources of invalidation operations.
+
+
+The mapping->invalidate_lock only prevents page cache instantiation
+from occurring, allowing filesystems to create a barrier that
+prevents page cache repopulation after invalidation until the
+invalidate lock is dropped. This allows them to complete the
+fallocate() operation before exposing the result to users.
+
+However, it does not prevent buffered read cache hits racing with
+overlapping invalidation operations, and that's the problem I'm
+pointing out that this new fast path will still hit, even though it
+tries to bounce-buffer it's way around transient states.
+
+So, yes, you are right when you say:
+
+> So the fast case changes absolutely nothing in this respect that I can see.
+
+But that does not make the existing page cache behaviour desirable.
+Reading corrupt data faster is still reading corrupt data :/
+
+Really, though, I'm only mentioning this stuff beacuse both the
+author of the patch and the reviewer did not seem to know how i_size
+is used in this code to avoid truncate races. truncate races are the
+simple part of the problem, hole punching is a lot harder to get
+right.  If the author hasn't thought about it, it is likely there
+are subtle bugs lurking....
+
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 
