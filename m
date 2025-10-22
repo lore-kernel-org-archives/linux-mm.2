@@ -4,134 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C78CCD1BB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 15:05:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76ADFCCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 15:22:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12A808E0010; Wed, 22 Oct 2025 11:05:26 -0400 (EDT)
+	id AE25E8E0008; Wed, 22 Oct 2025 11:22:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 102158E0008; Wed, 22 Oct 2025 11:05:26 -0400 (EDT)
+	id ABA368E0003; Wed, 22 Oct 2025 11:22:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0179D8E0010; Wed, 22 Oct 2025 11:05:25 -0400 (EDT)
+	id 9CFF98E0008; Wed, 22 Oct 2025 11:22:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E59EE8E0008
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:05:25 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5A7ABBC52
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:05:25 +0000 (UTC)
-X-FDA: 84026073810.23.51AB706
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B9A234000D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:05:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uQDHaWIr;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 87E158E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 11:22:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22317140887
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:22:01 +0000 (UTC)
+X-FDA: 84026115642.01.521503D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D87E21C000F
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 15:21:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761145523;
+	s=arc-20220608; t=1761146519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lkfsrx+l4jlC21dncenmKeHGGdvtV/ZkD7EyQedUCLY=;
-	b=RUjHfJLIHsVvuATnQ5GmtcFc7W5jd7Ms4fTXL94oweOPvmN9+/RwUCiWYEIyMpKYpdDLh9
-	ByjyNamrKfSTDhqQIFz7v66n+hH8yzgvbnwTgp47Fal3AD5jxeHL72JFCSWOMzeX2SnAMT
-	38FLuvStFn5HHNN29zgEGwU9xt62lkE=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uQDHaWIr;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761145523; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xOvP6p8fDxJZxRn6mak24yEgOLkEOy92ZYrjUeNyxV0=;
+	b=pBlU0kgLRzpKyAKInmAGcNSGwSj2EPTUKdJT/DGOq0FObDEqpJy023EY+Ny6mYqPSbMP4g
+	8yTDoSPF1m0Xrq8fwp7UcZvs7axt+SYTjh7eUlddT2F4ol9G2ROLcZy5CWST5ufTf88r54
+	fbo0GbVJ5u/wxmW7eBCpruLIFs/OE38=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761146519; a=rsa-sha256;
 	cv=none;
-	b=jCXbDh4x0Crecy5VNzj1NPmZtfPOsFMUfm0Vd1xXZJdcPfnsWiuUVfUnZCSJl3PsWtHqf3
-	bensn08Q2NpsZ6x+2AsafAqbFyhwR/8YQJW0IVhYz3O/7eKS6NVQgxzH5vYbkCV3GX64+p
-	tB+60oU+XQPBVSTQhgiZWLALV5kyrwg=
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9231a251c01so1940885241.1
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 08:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1761145523; x=1761750323; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lkfsrx+l4jlC21dncenmKeHGGdvtV/ZkD7EyQedUCLY=;
-        b=uQDHaWIrVnDbTTlloGmJh5tWOelWLK9FdqvhDdSwGLUf90LcvbkZt9BAElb65eqCjT
-         7PSTzVvyrbxbhe3B2DDTAHi4QrDbxhJaO4Ggp8z8tr6fFGX8DDrTkItvn/c2n2pI95Oz
-         4vfYyhV1T1VF8P8AtlP3ur51dl0zSyBmCLRwLAeE0RBct4BALMrXwP914VL0B9AN1iXv
-         NscJ6uDTuqWTftiiZraraJ1c6UOc8RjIuXr6ZEaacgIBbkYzMewRb2Sf+znvtVWOxQn/
-         GDVFzXh2tSaJ2QX7awoR4nTtJc55FmOSzjomdlu5FXwr3EXtGbmmpSxzEe4hxZ0+T8/S
-         IRBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761145523; x=1761750323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lkfsrx+l4jlC21dncenmKeHGGdvtV/ZkD7EyQedUCLY=;
-        b=aL0P4NmmTSE8XG7gQAHEAQ82fTmJ39wFhp7Z3bOGk0xG6N3zTK3q2TBGWynCFSCfTl
-         jc5rJMsY+sfJTofJ3mEieWL+FVbBpEHcHkwz966iMAQHrxY92d2WM+vWVRJ3J+bj7RLJ
-         TVzyP4HV8wt/gX+fZoVsngc+7NkPIhUtavZVm6Do1/yWrOM+UgwX7YrcRFURsnfiQe6h
-         H59Eh46Cl8Gbixc4hFHSn+s8FqPhRVT6Fb5JRzM1Ah3Tm03Hb34LsC4Roa6FKuQLBwBB
-         NQbGIea8kh+ZMcMk0QXKrEigTJEaYWF2ZqZwa2IgYKWx3+7uR6Nl6hzZN6ul/xdEz/Rw
-         uXwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQpHM/jgTGH+6j0g/3d9xv6q15KWHyi2d1XXk1D/SeZRs7EIExfGx+ubEGxPa42h4sccUL+Cgz1g==@kvack.org
-X-Gm-Message-State: AOJu0YzIx3JeOK4+J56QMPUX7byy+79Z0rJAIk1ztEjHDcRKrioWSv5o
-	QpzXF67fcAXtEYPMk+wU5kre7bptQrs+jvVdwbQnprXnKBc9F1WC62h4wAaT8zeeTaY=
-X-Gm-Gg: ASbGncvDD8ch8P9uKB3hQqXloKnKp31XiplulDe3QFv3+1Z90KpjyA/P04dbt+l96hy
-	m4Rz26OMVENabQ/IHkRdsNj4GKnIzp+unClH8e3lixdp/Aat6UHbhAn4l2blEsoU2L1Of9/239K
-	Kz5+hZQX6DkdwBfzsL6BaI6mbuabWqQhBJo7bpzSFKKJRezJqcwWdmDfU+KNNL7OZEheYyeW1p4
-	274GDMiukzXS1xgYil8+H7/vTXABKpgK4+1KHv3Oc7tX+65Y4AspRphtHMz1E+6ki1abYG9AKch
-	dycIq2gj7Xic4B8FE1gSSC3kYFDOvqxcANfmIIUlWBe+pOggyFrSTT4azmGPxmCKLkfWAMB7SaH
-	bEHIiAvzAPO4qOS1QghtHUJ1fMV87OtlGv7DtSAu/UVp9e3qXVRIaZHLjN0UQTwCvpqRTCvol+U
-	BfF1g2pCYY/WfvOYmVRcHUET0tD2n6guqB5mwGCRo6Mnhja+/vK1a9XLChwRQ=
-X-Google-Smtp-Source: AGHT+IHMiHw+ozU+ptUdJ1d41xCzcfvQEjYcMBu/Kjjs0exhxm6ev7st/P+2mBHa/ufJLrkmED76uQ==
-X-Received: by 2002:a05:6122:1d8d:b0:54c:da0:f711 with SMTP id 71dfb90a1353d-5564eeeb319mr5696564e0c.7.1761145522360;
-        Wed, 22 Oct 2025 08:05:22 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf5235384sm91023196d6.28.2025.10.22.08.05.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 08:05:19 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:05:16 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: hannes@cmpxchg.org,
-	Yiannis Nikolakopoulos <yiannis.nikolakop@gmail.com>,
-	Wei Xu <weixugc@google.com>, David Rientjes <rientjes@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, dave.hansen@intel.com,
-	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-	raghavendra.kt@amd.com, riel@surriel.com, sj@kernel.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com,
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, yiannis@zptcorp.com,
-	Adam Manzanares <a.manzanares@samsung.com>
-Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <aPjyrAo5LdC5pAqv@gourry-fedora-PF4VCD3F>
-References: <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
- <aNzWwz5OYLOjwjLv@gourry-fedora-PF4VCD3F>
- <CAOi6=wTsY=EWt=yQ_7QJONsJpTM_3HKp0c42FKaJ8iJ2q8-n+w@mail.gmail.com>
- <aPJPnZ01Gzi533v4@gourry-fedora-PF4VCD3F>
- <20251017153613.00004940@huawei.com>
- <aPJZtQS4wJ1fkJq-@gourry-fedora-PF4VCD3F>
- <20251020150526.000078b6@huawei.com>
- <aPfWePBq8d3v979f@gourry-fedora-PF4VCD3F>
- <aPfXloRQgplusnce@gourry-fedora-PF4VCD3F>
- <20251022100950.00002785@huawei.com>
+	b=uhqEbQLj1hpg4zwjtXyRrX52gDD1jTXTvE23hCc0E1gW46upJs4c7tWE66hBXQoJs2N9N4
+	eA3Lp1tW0wXrFoBHQzoK09CJcbUhQPY0eOrn5feRqJk6HyvdVB0v+dKSN+U6ApxXXmiC/+
+	oy19ZSyEnkevsd+mcwyQXfDDrwIw8Og=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of steven.price@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=steven.price@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE29E1063;
+	Wed, 22 Oct 2025 08:21:49 -0700 (PDT)
+Received: from [10.57.33.187] (unknown [10.57.33.187])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C94A13F63F;
+	Wed, 22 Oct 2025 08:21:37 -0700 (PDT)
+Message-ID: <2457cb3b-5dde-4ca1-b75d-174b5daee28a@arm.com>
+Date: Wed, 22 Oct 2025 16:21:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022100950.00002785@huawei.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B9A234000D
-X-Stat-Signature: uggyjauddnedwbosbp9fa5wfthew9apd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 07/37] KVM: Introduce KVM_SET_MEMORY_ATTRIBUTES2
+To: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org
+Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+ brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+ corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+ david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+ fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org,
+ hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
+ isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
+ jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com,
+ jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com,
+ kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev,
+ liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+ mail@maciej.szmigiero.name, maobibo@loongson.cn,
+ mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+ mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com,
+ mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev,
+ nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
+ palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
+ pbonzini@redhat.com, peterx@redhat.com, pgonda@google.com, prsampat@amd.com,
+ pvorel@suse.cz, qperret@google.com, richard.weiyang@gmail.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org,
+ roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
+ shakeel.butt@linux.dev, shuah@kernel.org, steven.sistare@oracle.com,
+ suzuki.poulose@arm.com, tabba@google.com, tglx@linutronix.de,
+ thomas.lendacky@amd.com, vannapurve@google.com, vbabka@suse.cz,
+ viro@zeniv.linux.org.uk, vkuznets@redhat.com, wei.w.wang@intel.com,
+ will@kernel.org, willy@infradead.org, wyihan@google.com,
+ xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com,
+ yuzenghui@huawei.com, zhiquan1.li@intel.com
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <8ee16fbf254115b0fd72cc2b5c06d2ccef66eca9.1760731772.git.ackerleytng@google.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <8ee16fbf254115b0fd72cc2b5c06d2ccef66eca9.1760731772.git.ackerleytng@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: cxi4jbp5zrou8omrwfrow3x1n7qpj6ra
 X-Rspam-User: 
-X-HE-Tag: 1761145523-861577
-X-HE-Meta: U2FsdGVkX1/M2hz0TgiUwf/sYwsNJDBfebGuEhpRBWwrcYb2zonGhIxbzHa71YOnfhKZ1qfFOZPEJMhkKpt6IMvFOwkLBV0307I46Sa7bREHcWoGb1rQnjvtfzWTcKP0audJTUrWyNWOn1ryvCnW5De2BKR8Lv5CQEmqz5BrQ3wZJLmHs5Ges5pJAdlp4i/RN3giBiIlRz0dXQHhqAZaN8joW5Qsx7XSvpIKxopslwuEkBC5nQgEFtMRej+06tYY2G/ig100yYvpGtytbnGVjl8APOL8x48Dz5ABEM9xonkFkFKi68DkGveiCQmeQThwxB5FA7dEKR438hFWwb+E3pGBmrefnDj7FVttkxg7GH00X5XD6NSwrquinINpLpmVLZ7VjD4EBYwZ+2lu+IGCZYK6piMBFElgXR7pE1apZP0yHQjvmG4xtigxmQi6Pntn4VRSkzAR7rXDso7tdXxn5xmMqZsnOKAqxFCarPcuxFNOjLM1ofz1VIZd4PTxnGcdq1EPYyyD7NG3UxvdZCqCfXSdhKpwu20M0V/I+leG+/RnNju0FMq8XY3IQE3cadfRQeMqBnlxJ3SBe7e9XEq+FWctZg5URwWzwAfh03owO27z1hqHMOtREfJlqG4meDyq4Fd9Ym1+ouAxExdCIT8x+wKyG6dPjfByOCTnoX1mVrmPZUSSOCQWMey9cyaxk134oIT1KENP+uD+EB0+quSbcuhm/jRYGt+OJg8QAT7AKEcoLioG8VlXLstQu5HSgiz5GMNSyLXOWk9Dr/ds2ALF5zt22b3ueh7I2Mq4FwkhuNM1rIDIDasFsgMvSGN4Lw+zqDLMwuqqN+WB3e/1UFmicp2f+6zko+TUBmMDeHIJxpQXMNhIFqmL6aIhylM63cgdhut1L627Kk2yAKCW7ZKOCMCjh7mbIIMIMxqIpDUnjGewN4gnB/tksWGSMoNFv97vTfCh+6bMwdonbKgSkUf
- EPTCmAVU
- AXjQCTQf09Bsk6IcGhoo3veWCKTucdiegzubFGb8j2KO9vSRxN4XL/X9JmhYJ+KReClquN2pGKnv6nQVy60bc9l6EDs6fLn+M8cqQ
+X-Rspamd-Queue-Id: D87E21C000F
+X-HE-Tag: 1761146518-907444
+X-HE-Meta: U2FsdGVkX1/4HKJdipFeKsmqxJaPze0pxzBtM7JqGG3Ys7LD+Pnyds2J0gDw2hJ5wZqDCc/7896Vf1AVTCZR6yrJQLa8CTJYmoou+2+sKUAwF9ppTfFGhMP4Zpj5inuK07bVwH+qJcAA9+2zSHfyHKOiEencHbBmh4cHHnryTaM9wmOke0vt6Dgm8YAVsn40BFqMAGovOi4sTTKJ2IXmT2PZPsYbGgKFyCcJ0NFFJVXps7Iy4bW+IywjtZcIBK1Ax+KUyABZ+3aWtaoqqFgJwtQQBeE15PI9V/rN5GwCDwWNlRw0ogPsG3LpzF/xWu4nMoHGz46dXwKgjrDdtucD8OCMmuU5eBscF17R3Jlw+GgYazJYZ5yPGAEbyAqhwYOHdhz4Ik5Td+GfnnEeBzaJ9esPsy//tUS/4bpCjfeIrK2Jenjp9/rTIvKRMnm+Fo0SHu6Nk7hXrSS4ZcNj2oOjmyYuc9H05dS0wRNLflOjSvZYAxCCzVg3kz/Bw5kMi1dbLy8hc2Xm+kIWK1ms3lrSlkbhxWldVmaw3JEYl+pPzr2TzdS31wlhj02esanOT3pWb8dKuN1bZePkdOWnzLxx8Fx4RlAmgJs28fo7plcx/ut7otwy39X64BD9diyp4N0mceQoUrci9JieKjFqgtQSW10Fldm7INEaiyw2CV6C6DjFD3nVwHCsQG0EtKB//AYg+hw+IGWYSJRjfha0dESXqy4NGeoq/NiISBBxfwqpoZRvW0GOM/h0FUGQ/kE3uv1F8r5z8S6mrboNIaYzCQO4trojG33pO3aGfraoYYhI98phffb7HZfYUZsO6aFJPX1+DJrsfZbyLaQzzFTWhh5fnty2HFg/6Pf4STVYCBvFttMoKvtJbT6xUve60LwtkvLo5yJg11yYe4MkowdgYUmj/1jAuR0kUBRoWK0+eDuzbzHAR1QC38plieuIZs2anyXXKAFqOWp47NakXlcMIrI
+ cll4Qgq1
+ MGlA0CmTI5RUx5wkP2rLqpEjvu86oNpYgT8+jXdIHzD4p9j1zjuFvZdv/na+d06ZBU5JTEwIpKKdqIeG/jK0hilNl5ETO6JY/N0Gkm+si6qvQiM01FPe2Y7yajwdJ0e0qiBSEiKYMlNP5pVTe+QebDQIaDFLX8plFgfsiC2tAq3iMEx5iSmeXpa6fuPIvwjlCcgwErLQUcW9M/iqVcLEuksc10KMPFH4Mmy18L1Du/0f+UQbjn5Pvd21pV/yc7F8BZ91Z+hWys98XLaZJMt5w8rejtJUfBEgxMql3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,31 +116,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 10:09:50AM +0100, Jonathan Cameron wrote:
+On 17/10/2025 21:11, Ackerley Tng wrote:
+> Introduce a "version 2" of KVM_SET_MEMORY_ATTRIBUTES to support returning
+> information back to userspace.
 > 
-> My gut feeling is the need to do dynamic NUMA nodes will not be driven
-> but this but more by large scale fabrics (if that ever happens)
-> and trade offs of host PA space vs QoS in the hardware.  Those
-> trade offs might put memory with very different performance
-> characteristics behind one window.
+> This new ioctl and structure will, in a later patch, be shared as a
+> guest_memfd ioctl, where the padding in the new kvm_memory_attributes2
+> structure will be for writing the response from the guest_memfd ioctl to
+> userspace.
 > 
-
-I can't believe we live in a world where "We have to think about the
-scenario where we actually need all 256 TB of 48-bit phys-addressing"
-is not a tongue in cheek joke o_o
-
-That's a paltry 2048 128GB DIMMs... and whatever monstrosity you have to
-build to host it all but that's at least a fun engineering problem :V
-
-Bring on the 128-bit CPUs!
-
-What do we name those x86 registers though? Slap the E back on for ERAX?
-
-> Meh. Let's suggest people burn host PA space for now.  If anyone hits
-> that limit they can solve it (crosses fingers it's not my lot :)
+> A new ioctl is necessary for these reasons:
 > 
+> 1. KVM_SET_MEMORY_ATTRIBUTES is currently a write-only ioctl and does not
+>    allow userspace to read fields. There's nothing in code (yet?) that
+>    validates this, but using _IOWR for consistency would be prudent.
+> 
+> 2. KVM_SET_MEMORY_ATTRIBUTES, when used as a guest_memfd ioctl, will need
+>    an additional field to provide userspace with more error details.
+> 
+> Alternatively, a completely new ioctl could be defined, unrelated to
+> KVM_SET_MEMORY_ATTRIBUTES, but using the same ioctl number and struct for
+> the vm and guest_memfd ioctls streamlines the interface for userspace. In
+> addition, any memory attributes, implemented on the vm or guest_memfd
+> ioctl, can be easily shared with the other.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  Documentation/virt/kvm/api.rst | 32 +++++++++++++++++++++++++++++++
+>  include/uapi/linux/kvm.h       | 12 ++++++++++++
+>  virt/kvm/kvm_main.c            | 35 +++++++++++++++++++++++++++++++---
+>  3 files changed, 76 insertions(+), 3 deletions(-)
+> 
+[...]
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 52f6000ab0208..c300e38c7c9cd 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+[...]
+> @@ -5366,15 +5375,35 @@ static long kvm_vm_ioctl(struct file *filp,
+>  	}
+>  #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +	case KVM_SET_MEMORY_ATTRIBUTES2:
+>  	case KVM_SET_MEMORY_ATTRIBUTES: {
+> -		struct kvm_memory_attributes attrs;
+> +		struct kvm_memory_attributes2 attrs;
+> +		unsigned long size;
+> +
+> +		if (ioctl == KVM_SET_MEMORY_ATTRIBUTES) {
+> +			/*
+> +			 * Fields beyond struct kvm_userspace_memory_region shouldn't be
+> +			 * accessed, but avoid leaking kernel memory in case of a bug.
+> +			 */
+> +			memset(&mem, 0, sizeof(mem));
 
-+1
+s/mem/attrs/g
 
-~Gregory
+> +			size = sizeof(struct kvm_set_memory_attributes);
+> +		} else {
+> +			size = sizeof(struct kvm_set_memory_attributes2);
+
+s/kvm_set_memory_attributes/kvm_memory_attributes/ (on both sizeof lines
+above and in the SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD macro).
+
+> +		}
+> +
+> +		/* Ensure the common parts of the two structs are identical. */
+> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(slot);
+> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(flags);
+> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(guest_phys_addr);
+> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(memory_size);
+> +		SANITY_CHECK_MEMORY_ATTRIBUTES_FIELD(userspace_addr);
+
+The fields are:
+  * address
+  * size
+  * attributes
+  * flags
+
+The list you've got appears to match struct kvm_userspace_memory_region
+- copy/paste error?
+
+Thanks,
+Steve
+
+>  
+>  		r = -ENOTTY;
+>  		if (!vm_memory_attributes)
+>  			goto out;
+>  
+>  		r = -EFAULT;
+> -		if (copy_from_user(&attrs, argp, sizeof(attrs)))
+> +		if (copy_from_user(&attrs, argp, size))
+>  			goto out;
+>  
+>  		r = kvm_vm_ioctl_set_mem_attributes(kvm, &attrs);
+
 
