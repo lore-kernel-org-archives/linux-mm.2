@@ -4,203 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6C3CCD1A5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 02:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 751F8CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 02:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 444648E0003; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
+	id 705FC8E0006; Tue, 21 Oct 2025 22:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41BBF8E0002; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
+	id 6B6F58E0002; Tue, 21 Oct 2025 22:46:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A708E0003; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
+	id 5CCA28E0006; Tue, 21 Oct 2025 22:46:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9988E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:28:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B695911AB87
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:28:07 +0000 (UTC)
-X-FDA: 84024165414.27.D355210
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4CBE41C0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:28:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C45D8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 22:46:57 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD831C06FF
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:46:56 +0000 (UTC)
+X-FDA: 84024212832.18.E3FCF68
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 462421C000A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 02:46:51 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=tku4TThP;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf18.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.21 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
+	spf=pass (imf18.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761101215; a=rsa-sha256;
+	cv=none;
+	b=t/k6BlpkWSXtMYkOq6wXwSp5xj+FOBxwP1KBH9HEZcfdV+eUWzhXm6D306ZTZyFMY/8Aly
+	E4AKxFtCu/hIyR3PuZknzyyTlLOGbQFU4LOWFJTchKEAFsQU0v0480G7/HI7dkBKebXrYp
+	4/Z2Y3fUPeWNvlFivVYzpUF5/1fGpNE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761100085;
+	s=arc-20220608; t=1761101215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UVX0nmd056i0xmICe0q2++vUyjyuTAipoKbvlzs47VU=;
-	b=04I9FQwG0r9vaJv2yQeDXF0cZQ0yIGiE3S0gIS5IqzAREcA/6NnhLfzlmcAfc91TohKj1d
-	FEmJ+jElC8AHlOWf3i2KlTWajc6euHZlLTRkjmvOb5cPKlBzhO+3Dil+nmgMfX2oofQUqO
-	gIwOJv6Z3nbPRemMBvw/dsabIblfecg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761100085; a=rsa-sha256;
-	cv=none;
-	b=Z2haU2v4YSRf4lV/p42MWRP1BAJVAVLKM+aBO2/mpkGyn7tIg2HjWhXq5gCLcnOrZmaWzT
-	FxvH1IF2iwNhOBUIfLaCKwNcH6YkpsPCzw6YksOB1R48RDTIZyr0NHkOD74qrY7X27l7w7
-	6xlTMRWQG178jBEOSj2XxyhvsYElvHw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmx.com header.s=s31663417 header.b=tku4TThP;
-	dmarc=pass (policy=quarantine) header.from=gmx.com;
-	spf=pass (imf18.hostedemail.com: domain of quwenruo.btrfs@gmx.com designates 212.227.17.21 as permitted sender) smtp.mailfrom=quwenruo.btrfs@gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1761100079; x=1761704879; i=quwenruo.btrfs@gmx.com;
-	bh=UVX0nmd056i0xmICe0q2++vUyjyuTAipoKbvlzs47VU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=tku4TThPnv94EjxWD1brO8rmGeXvI3vIF68TXT0bhqte5Y6YALmvMOAMBFQYe7p/
-	 OE7fRyW5867frAdcDw9hbzYK6Ffxibgt7qpQytocBy1mQhnLwfzdv9UT6I61AoLrq
-	 o4cPS7U09usXg5Lh6cyffXKE6nBSVzZ8Edqcl7L4nJpaI+Ut9TSjQDCpc5nX5Jkfd
-	 UXcFY1w/lMvE4KMD+5qoz2/GIuYMGu6TNEX11CuS1pHFlz0XByTyGS3kr5Q6cRTKc
-	 dcn/9R4r0h19myoSd1w1/LaDQ+PqPWxAzFIIMBv2CyTWnET+GUWov0Eo0vkFf9YEG
-	 w97YcFO6xWERKPN5TA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.229] ([159.196.52.54]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MXXyJ-1ugJrV3N0x-00Hqcj; Wed, 22
- Oct 2025 04:27:59 +0200
-Message-ID: <f13c9393-1733-4f52-a879-94cdc7a724f2@gmx.com>
-Date: Wed, 22 Oct 2025 12:57:51 +1030
+	 in-reply-to:in-reply-to:references:references;
+	bh=kX28FULpXXteXswyK2F1UaoY9EZgpGq74AYIMFzLytU=;
+	b=g7+t2oy3i8sAPfbEL2hRd1+GBqcWdpeANwureDcvqe1fCtQw5Q9UCPy0L6vlpxsY4NVazu
+	9usqIs9BFUtehOFMmaQuQICSx2odJcXCjJ2Dpd1FLXZzW/rZtHYnIvkzivfJ4PZVpn/WYI
+	s5nz04DIihQyfzHGuDSjXDjXVChu+AU=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4crtns6hPHzYQtdR
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:45:53 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 91E8F1A1991
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 10:46:47 +0800 (CST)
+Received: from [10.174.178.152] (unknown [10.174.178.152])
+	by APP2 (Coremail) with SMTP id Syh0CgBXrESVRfhoiRrABA--.7417S3;
+	Wed, 22 Oct 2025 10:46:47 +0800 (CST)
+Message-ID: <0fec500c-52ea-473d-b276-826c0f4dd76f@huaweicloud.com>
+Date: Wed, 22 Oct 2025 10:46:45 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: O_DIRECT vs BLK_FEAT_STABLE_WRITES, was Re: [PATCH] btrfs: never
- trust the bio from direct IO
-To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, WenRuo Qu
- <wqu@suse.com>, "hch@infradead.org" <hch@infradead.org>
-Cc: "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
- "djwong@kernel.org" <djwong@kernel.org>,
- "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
- "jack@suse.com" <jack@suse.com>
-References: <aPYIS5rDfXhNNDHP@infradead.org>
- <b91eb17a-71ce-422c-99a1-c2970a015666@gmx.com>
- <aPc6uLKJkavZ_SkM@infradead.org>
- <4f4c468a-ac87-4f54-bc5a-d35058e42dd2@suse.com>
- <25742d91-f82e-482e-8978-6ab2288569da@wdc.com>
+Subject: Re: Possible regression in pin_user_pages_fast() behavior after
+ commit 7ac67301e82f ("ext4: enable large folio for regular file")
+To: Karol Wachowski <karol.wachowski@linux.intel.com>
+Cc: tytso@mit.edu, adilger.kernel@dilger.ca, linux-mm@kvack.org,
+ linux-ext4@vger.kernel.org
+References: <ebe38d8f-0b09-47b8-9503-2d8e0585672a@huaweicloud.com>
+ <20251020084736.591739-1-karol.wachowski@linux.intel.com>
 Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <25742d91-f82e-482e-8978-6ab2288569da@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DMNhgb+bRQv1CGCFUdNbrLUjyIg09hD8em/oI4ZEtuEJAP6dRrS
- vHfT4/Ty2j6KsYnIjSVZ4BFbSPQYltbPsVaDAIQzykluPsBWsQyMXaAZXduEDXS53ZlFwI4
- zCziieGDXEwkr0dUvncdNKSxH3Ymh8LUG0V6/zZlkfBQZF+fMxiDidqdH5RRrymEesbXz6A
- S6U5r78Wdbl0EVzQdCtFw==
-UI-OutboundReport: notjunk:1;M01:P0:WvNsCEW7dMA=;4HqMlMWFPrSDZxAImQYjHuskv+C
- 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
-X-Rspamd-Server: rspam01
-X-Stat-Signature: zmcgxto5qzadakj3x9h9fjw5bjsxp7n4
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <20251020084736.591739-1-karol.wachowski@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgBXrESVRfhoiRrABA--.7417S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxGF1DCr1Dtr4kWrWkJw1kKrg_yoWrArW7pF
+	W3Gw4ayFWfXrn7try7Ca1kur4Iyws8G3yUGFy0qr1UAwn8CFySvF4kKay5Ary3Kr48Ar4v
+	qr4jgr98ZF4UCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
+	I48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7IJmUUUUU
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CBE41C0006
-X-HE-Tag: 1761100085-829175
-X-HE-Meta: U2FsdGVkX1+VapTWwUFv/2BpjPCbCogLAMzdF4Z17qjABybHQ5ia94Pz3xgHWtCPZMgBFBD1TdZ8id7MUXAomRkpGm1elQhRveJiUTHV8z8F61ylhkTCcrxGpNQZiIEFMDo5sXizBohmHFNAdtGEpnnvMC331y8fYIjl/LEkTMbEx6Ie6RliSvyoZbaIoW7/D+HeQUgwb+twkCgwFPML7HDRjnjKIFIr1zHcuXT2hlZFRFn5wFoTTScohqeVCMyDPuFpC/JcpbJvOC9RR0l9GMRSYOa1pCfxWdaDSpCW+mAM6GrAtN6VzRbgSSjrf2V45NRLnjHb+WPICMZCASLcvdANZZm8jWiwAStIgovUDiimh2OEURzqwFdFe9ty007fVuVPm3sc954pb5pA41buSrBodJ19B1A7dtCaMqUif9d+dJJKfxz/DG5yXi/FMuPuFTkvgWlfC3qdCtYh6aP0G4DGMuX2vFKuNdBaxDFvS5GaHkHx04QPiqgE/bG/4F/j02rm1au76CKQ+Xi4kQCyeLGmVOM8RS0B+BmFbBzllZFI/CvKeqPrBc2M830a2rQuXXWqasi3DA4Xs1F1vpifkjf8r8tVbONfw6bNDCMg5WEZTL4bWYfoZ90Lsl8HHZq6asA22LCWiCVb+99JYF04ADgVWIcCC/qA2H9wy5nyiz7d/8NyBfvYJ8oYfWrl1YK0vYusFBpCKW/K8Lj5cGNpR1/OQ9QT6QgoZ6LJ7Pj6/srvsrke5Brp0MOXX1yTYpfHh0GxvbzYuVJBzrL/COwkGK6Z7lfNyLSqmDdvXy8nLdwMpsD+/cohU7c5yP+f+FbIXtqfqO5zWYMTINYjTXBKOeOkQLTOOeGNxBHiCfbIxV+NoOHlzRm21fwrIug4RJZQas0YR8fsVi8JDjdnt6xJA25NjqcbEi7o4RVyiJoon/0DmySvpe0i9LedP5nQRNO1uX4epJDs4mMW06+styk
- STs48RJW
- 7ONDVwuYvt9jL3u6GVGW74EYHnh3RvVLoBkwo1W+EluEkhvfyZ8i4VWoCE3+mxGe+Vqg4uhYBmabUWsUF8NfyMDenfWrn/VLvEHCtlhBHTpsQZ1z/zl1yGp/a9s1cM2dyV3zpgvkjFpGslUb5mHl+hjRUg4MrO9khyrmsWLZnh9mBHMoPkpicE/l1l+v05qHMJUBUUERk3pZ1bBavkm5LcHJwsAlT7ICBeZMnFh29XAsWgQPLhBQ6+5QNYFJXqs0WropPPK6ASjMfpxLi0BUvQWfWpXLYdbrkKzD/NkcZjk85YemI/bixfZOGjbCjtDZxt0buAyEL9AJDUs+NyRknoQwG+7jq2K+wJG42b1TIXxcVOkIUPVXS+r4UqVPVXcjYb9H0XAyWonLtlYNJ1NyR9dTLdNkdHUN3CugdzzxEISmNsxMuqP99aNspxgNRlu4vCDRvV26Kf+b3vJrKqxbBBeeWg2fQ2MAw7Um6
+X-Stat-Signature: bedwadbxm9tkcd487yst3f45jmto7x97
+X-Rspamd-Queue-Id: 462421C000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761101211-674716
+X-HE-Meta: U2FsdGVkX19tUJjuEfdx1dEZEmv375UxpzY8w3I06fcXT/1I+mnfWFc8MIvmFpdwC2jcbPqGey6RmAVYIUxZOFeYwBKteBRcJFoMGH2Ii9f5kDn4nlGBY0NaxVrq1kNPQK6mg0fxWM1BIUdaXVveQmMHhubhYWCKbH+wvgUfsIlOyIzSXEKsaBsbuC/6TZCiLu5UZcFTQ4a7yUmVjd0cSJ6F1iEqqs1ovXzhQJG/czxojYXbtJbSaKBJUeNffkvLRwo1R1twGiM0eO9ALXMKqDL0T/JQZM4MEnBdhraiy/0GkYpQakAx/fDALYz8ow3flCGX6V9bO29YWaxCdNv8bxmpm6Ob+w++7kAxqkycBQIJ3+FxkSF4VqPljMpZBZuOeKQhuVTUboFNxvNZtzVIz+yM2fikxW+1SR6w7exIcK+m2JzCxseP6/v4lN9iFY8IBd55ruqRIB216o7aIcJ7GigTfMgIvbOUHPyzo0/H4WItWZxwiGY4pkkpdCV0ExT0rQatVzojxVY1Uxxn7ifeEG/UT5mV5PheuITqkdYEtxLtkM0Jl4FDRvydjS7Sv+3WgWg0RxB0GCSpeWPlRskRp4NMi97xBknRyNhHDuBdL1P6mv5kGKESLLWk+vDZDYjboLg2ZJ43jbsmXXzn1rkkpmy4aYNcmYgIrHs0jIU58ZGON1RudQ7uL8/dHUTZpcOlA4PjWx8BE19mZpnmWmokyestXYMjDwnFtUD4dTtyx5zbbzttiS4tVNiore4qoRI7q+IjsroiXmthMuhbwund40A/Zrol5LRdVsqQ8sgR+IWzPsVh8OsD46ofcksb+Dd6ZgS5AnxUaEfX6snwZAA7tESP0DCA1/EGYjI0MvyWBy5KckAlYqUWZKIoiorAgYTfvI48p3kYPLsvIKCHMEV6mVCbW6IiDeJoFbfU64Uh8wPboLykB8UJnv9dDAFemt1e0Ic3AdHRJBUrsQje4AP
+ OOHTjzz8
+ M+YJvkwq9HARrALVZIdj9mfoBQAyfcwg9Hi5ng4KsxeweA6CZ6/eO4/zVuTwYJHd2R1OKjsfkrqoHxIyL9r5jmEvHIB9lg1bVwk4w1TjMs9d+XO8o+/Ojqf0E8hqJfiFSa1+no0syCkN+KjrAEN2ihnGkXTW+0hGtHoQ6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -209,68 +105,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+[add mm list to CC]
+
+On 10/20/2025 4:47 PM, Karol Wachowski wrote:
+> Hi,
+> 
+> I can reproduce this on Intel's x86 (Meteor Lake and Lunar Lake Intel CPUs
+> but I believe it's not platform dependent). It reproduces on stable.
+> I have bisected this to the mentioned commit: 7ac67301e82f02b77a5c8e7377a1f414ef108b84
+> and it reproduces every time if that commit is present. I have attached a patch at the
+> end of this message that provides a very simple driver that creates character device
+> which calls pin_user_pages_fast() on user provided user pointer and simple test application
+> that creates 2 MB file on a filesystem (you have to ensure it's location is on ext4) and
+> does IOCTL with pointer obtained through mmap of that file with specific flags to reproduce
+> the issue.
+> 
+> When it reproduces user application hangs indefinitely and has to be interrupted.
+> 
+> I have also noticed that if we don't write to the file prior to mmap or the write size is less than
+> 2 MB issue does not reproduce.
+> 
+> Patch with reproductor is attached at the end of this message, please let me know if that helps or
+> if there's anything else I can provide to help to determine if it's a real issue.
+> 
+> -
+> Karol
+> 
+Thank you for the reproducer. I can reproduce this issue on my x86 virtual
+machine. After debugging and analyzing, I found that this is not a
+filesystem issue, we can reproduce it on any filesystem that supports
+large folios, such as XFS. However, anyway, IIUC, I think it's a real
+issue.
+
+The root cause of this issue is that calling pin_user_pages_fast() triggers
+an infinite loop in __get_user_pages() when a PMD-sized(2MB on x86) and COW
+mmaped large folio is passed to pin. To trigger this issue on x86, the
+following conditions must be met. The specific triggering process is as
+follows:
+
+1. Call mmap with a 2MB size in MAP_PRIVATE mode for a file that has a 2MB
+   folio installed in the page cache.
+
+   addr = mmap(NULL, 2 * 1024 * 1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
+2. The kernel driver pass this mapped address to pin_user_pages_fast() in
+   FOLL_LONGTERM mode.
+
+   pin_user_pages_fast(addr, nr_pages, FOLL_LONGTERM, pages);
+
+  ->  pin_user_pages_fast()
+  |   gup_fast_fallback()
+  |    __gup_longterm_locked()
+  |     __get_user_pages_locked()
+  |      __get_user_pages()
+  |       follow_page_mask()
+  |        follow_p4d_mask()
+  |         follow_pud_mask()
+  |          follow_pmd_mask() //pmd_leaf(pmdval) is true since it's pmd
+  |                            //installed, This is normal in the first
+  |                            //round, but it shouldn't happen in the
+  |                            //second round.
+  |           follow_huge_pmd() //gup_must_unshare() is always true
+  |            return -EMLINK
+  |   faultin_page()
+  |    handle_mm_fault()
+  |     wp_huge_pmd() //split pmd and fault back to PTE
+  |     handle_pte_fault()  //
+  |      do_pte_missing()
+  |       do_fault()
+  |        do_read_fault() //FAULT_FLAG_WRITE is not set
+  |         finish_fault()
+  |          do_set_pmd() //install leaf pmd again, I think this is wrong!!!
+  |      do_wp_page() //copy private anno pages
+  <-    goto retry
+
+Due to an incorrectly large PMD set in do_read_fault(), follow_pmd_mask()
+always returns -EMLINK, causing an infinite loop. Under normal
+circumstances, I suppose it should fall back to do_wp_page(), which installs
+the anonymous page into the PTE. This is also why mappings smaller than 2MB
+do not trigger this issue. In addition, if you add FOLL_WRITE when calling
+pin_user_pages_fast(), it also will not trigger this issue becasue do_fault()
+will call do_cow_fault() to create anonymous pages.
+
+The above is my analysis, and I tried the following fix, which can solve
+the issue (I haven't done a full test yet). But I am not expert in the MM
+field, I might have missed something, and this needs to be reviewed by MM
+experts.
+
+Best regards,
+Yi.
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 74b45e258323..64846a030a5b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5342,6 +5342,10 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+ 		return ret;
+
++	if (vmf->flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE) &&
++	    !pmd_write(*vmf->pmd))
++		return ret;
++
+ 	if (folio_order(folio) != HPAGE_PMD_ORDER)
+ 		return ret;
+ 	page = &folio->page;
 
 
-=E5=9C=A8 2025/10/21 22:00, Johannes Thumshirn =E5=86=99=E9=81=93:
-> On 10/21/25 10:15 AM, Qu Wenruo wrote:
->>
->> =E5=9C=A8 2025/10/21 18:18, Christoph Hellwig =E5=86=99=E9=81=93:
->>> On Tue, Oct 21, 2025 at 01:47:03PM +1030, Qu Wenruo wrote:
->>>> Off-topic a little, mind to share the performance drop with PI enable=
-d on
->>>> XFS?
->>> If the bandwith of the SSDs get close or exceeds the DRAM bandwith
->>> buffered I/O can be 50% or less of the direct I/O performance.
->> In my case, the DRAM is way faster than the SSD (tens of GiB/s vs less
->> than 5GiB/s).
->>
->>>> With this patch I'm able to enable direct IO for inodes with checksum=
-s.
->>>> I thought it would easily improve the performance, but the truth is, =
-it's
->>>> not that different from buffered IO fall back.
->>> That's because you still copy data.
->> Enabling the extra copy for direct IO only drops around 15~20%
->> performance, but that's on no csum case.
->>
->> So far the calculation matches your estimation, but...
->>
->>>> So I start wondering if it's the checksum itself causing the miserabl=
-e
->>>> performance numbers.
->>> Only indirectly by touching all the cachelines.  But once you copy you
->>> touch them again.  Especially if not done in small chunks.
->> As long as I enable checksum verification, even with the bouncing page
->> direct IO, the result is not any better than buffered IO fallback, all
->> around 10% (not by 10%, at 10%) of the direct IO speed (no matter
->> bouncing or not).
->>
->> Maybe I need to check if the proper hardware accelerated CRC32 is
->> utilized...
->=20
->=20
-> You could also hack in a NULL-csum for testing. Something that writes a
-> fixed value every time. This would then rule out all the cost of the
-> csum generation and only test the affected IO paths.
->=20
 
-It turns out to be checksum, and particularly my VM setup.
-
-My VM is using kvm64 CPU type, which blocks quite a lot of CPU features,=
-=20
-thus the CRC32 performance is pretty poor.
-
-I just tried a short hack to always make direct IO to fallback to=20
-buffered IO, the nodatasum performance is the same as the bouncing page=20
-solution, so the slow down is not page cache itself but really the checksu=
-m.
-
-With CPU features all passed to the VM, the falling-back-to-buffered=20
-direct IO performance is only slightly worse (10~20%) than nodatasum cases=
-.
-
-Really sorry for the noise.
-
-Thanks,
-Qu
 
