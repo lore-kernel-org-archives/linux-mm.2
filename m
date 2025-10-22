@@ -4,94 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D61ADCCD1BE
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 05:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CFC9CCD1BE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 05:34:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A28C8E0008; Wed, 22 Oct 2025 01:18:13 -0400 (EDT)
+	id 80AB08E0009; Wed, 22 Oct 2025 01:34:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37A108E0002; Wed, 22 Oct 2025 01:18:13 -0400 (EDT)
+	id 7E2B08E0002; Wed, 22 Oct 2025 01:34:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B6198E0008; Wed, 22 Oct 2025 01:18:13 -0400 (EDT)
+	id 71F908E0009; Wed, 22 Oct 2025 01:34:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AC968E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:18:13 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A721288B39
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:18:12 +0000 (UTC)
-X-FDA: 84024594024.25.D456496
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8D65A100004
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:18:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=RV870c22;
-	spf=pass (imf05.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761110290; a=rsa-sha256;
-	cv=none;
-	b=DqzYcVziQ3nlMRp9AYo6iGahnuvvKKBDgLmCK6Nml9TnKY5l6gYMSgaH9J2gGmHce6VMKR
-	kSWLzsBeHyTN+s2cPfFN/8T7TupGYSQKv5vbTBRecAVZVj9ji1hBTnnzMHmuCDT+CD/Md7
-	TSwmpBeBrW5nFV/YvWG+X98rSWtyb8U=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=RV870c22;
-	spf=pass (imf05.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CEE98E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:34:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EC2855B1CE
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:34:41 +0000 (UTC)
+X-FDA: 84024635562.14.75F9E49
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 27E7DA0008
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 05:34:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf25.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761110290;
+	s=arc-20220608; t=1761111280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teAud6Qwz333bGc0PlLBgP477zERkOpdS5svpKstPXc=;
-	b=U3GoxWZVfpGJC+u/hhKfHCZM6PlG3onz7G121k0EGcNFzzZfPWNjFTpaW3mJn2HN2vhoCR
-	X46tnwDAmAZ91QexKwLfR+cSmc7EwLFXMf89zf+UcmRrY4b8v5buwXr3zO0z2OF5/3vDxK
-	0/kOgRglxuazk+8eraWsCtTLVOXJLcY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=teAud6Qwz333bGc0PlLBgP477zERkOpdS5svpKstPXc=; 
-	b=RV870c22xWI6DFospbqA4RVRtdgkSEHUB66rwzVxh1Cfc1sI+tPinmLxrriKO5sm7DkWPvpxCo8
-	9ni6ZE4zfFEWDsDWmw5mqQuS4kGbfQ5GR35b2EMi0WTyl2ec8uHgC8HV/ljsotwCQIzhG5dP9ORU1
-	rivMuii4PfZum4OnODRcq1xxaEl9ykaEgiqPq/G8oQ8ZlaUhVw0yK+m4J7aBP322jc4OmwsB5um7h
-	FBogF8hysqml/AbbqM/5J7CZroniiZEuZkEan/HDAa01PLJ37e2SYuZlb81seDVpMbpZMAmKoxGTn
-	DJPFhNVriLG7pSd1JzmqAC9p067Jk6PK7/FQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vBREW-00EaFJ-2z;
-	Wed, 22 Oct 2025 13:18:02 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 22 Oct 2025 13:18:00 +0800
-Date: Wed, 22 Oct 2025 13:18:00 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	usamaarif642@gmail.com, ryan.roberts@arm.com, 21cnbao@gmail.com,
-	ying.huang@linux.alibaba.com, akpm@linux-foundation.org,
-	senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com,
-	linux-crypto@vger.kernel.org, davem@davemloft.net,
-	clabbe@baylibre.com, ardb@kernel.org, ebiggers@google.com,
-	surenb@google.com, kristen.c.accardi@intel.com,
-	vinicius.gomes@intel.com, wajdi.k.feghali@intel.com,
-	vinodh.gopal@intel.com
-Subject: Re: [PATCH v12 23/23] mm: zswap: Batched zswap_compress() with
- compress batching of large folios.
-Message-ID: <aPhpCGz1dWoZsMeH@gondor.apana.org.au>
-References: <20250926033502.7486-1-kanchana.p.sridhar@intel.com>
- <20250926033502.7486-24-kanchana.p.sridhar@intel.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=exc0vXxxryLCp7bACvAzEjAp+33QUmtzL0ZfKM/6Tpk=;
+	b=yS6nIhcygpzi56Rn/UZzLooqRslBCBhSqEFTqUGMgrTZAGVF5hIi2dKOwk6Doe/y2HMVEY
+	qP9LYhn79ILeR7pUFm9rPiqErgMF+Y2sm6fI1NO4cKl4S+46ymFrwfBfbQfc2kBXWzeRwH
+	xsLYd44CW0BdlBHn8tolUWbJvA5m96k=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf25.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761111280; a=rsa-sha256;
+	cv=none;
+	b=6Aqtlw1SrtztZ9dhN8Sx1xjrHDc2RGoe1G+cPm+B9OC9lB5VA2e8R6fM9W21S3bVArn2/4
+	nhH/i/lyoIUyQMs7SdfMpoq9laLTb20BlU0OZegwQxEMWFfiv5ceZKlSNUAwbEgR066itI
+	lIQ9FyDJOPxuQ1IkryafY15zmfK1wAU=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 0582A227A88; Wed, 22 Oct 2025 07:34:35 +0200 (CEST)
+Date: Wed, 22 Oct 2025 07:34:34 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Carlos Maiolino <cem@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org,
+	dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: allow file systems to increase the minimum writeback chunk
+ size v2
+Message-ID: <20251022053434.GA3729@lst.de>
+References: <20251017034611.651385-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250926033502.7486-24-kanchana.p.sridhar@intel.com>
+In-Reply-To: <20251017034611.651385-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: eaw8dpukiisy9ntcbcbbcusbfnd3kxzb
+X-Rspamd-Queue-Id: 27E7DA0008
 X-Rspam-User: 
-X-Stat-Signature: nczfrr9wrnh7k43uhd4gy5heuq9coa9e
-X-Rspamd-Queue-Id: 8D65A100004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761110289-843853
-X-HE-Meta: U2FsdGVkX19F1/o0qHK17UF8lc0ViizSlhWf1CUItUROgcLk+maZ2Q57DvUER317N+JTDt96jLD84Y5HgqiJsy0i2ERCPSx34LbIw631uhKqQc023Ro85rYJyuir03M2mWYzH1Y3/OvYAgbPHZGWldBDb5BRgbvF5L6tKW0Cj8n2ysWEFh7E+ityb9E8j0soUk3GqjYZrQbxEK2MqLGPcalfy6y13J9TJRWRDknyCHAbADXz6+kmiYM8UA/zuwJxhHOBhukboNpSHAls4ytFHCatFwCVakURNnKmfxUefL5y2fdkHtspI2fK91dkqetlFV7JCW+Bg+Iqdyw5l2FOw1tcZLmTOgaoNGN9D9BCn2sclHvrViHWCq1VgrxSVsEQOZjMCZyBowxDk39uzYd9eebWTNx4WwDQrl6qN1pKekqLmp4UeRrwJBRLdxFkyw+F41+Xv0HHTSdPbjsJ1r3m/mxGyLyoBZtpZyEXJ/68MlVsqSNFTYXzAGbbatZMEt6yvKhQGZN9v3ZsDUMKEszxHPD4t/e+CI1JId3W07aB0nwWpW5YSTQBScXFGmfrD+PqZ+oAscUalFYZr2UHHKLONjBIaa1JhkgCnj4e3Perrw8aB6r46ClJEyGspJpUW0tREluFmg97NBoUDPVV3UkFH8tQOIHt23VUnPQLZ93lgaxb8E1DOyxRn2sdVvq4gFY/tbC48ukztSRx8BA8iPM0aBYfpCnyOrTAadK+0ZU1g2NhAl0AWag7pPymb2oAAIkO0C9Nx/OYxg0L6qk/UvUNSdBasmQ1zvUsv+Id8gSNO474aoWpW7lUtXW3g4OTF48cOV8Iq4oTBvsjY6+gptXevP7DzjuhuS0ryUls8+u0f3+Ll4eo0hICEuWq6FSQGz/WF3M31qF+eVMW1ac4IeVP1I0eaSSsRlKqdwSVM8H+PISAEbqruSKlQDUeSpCygqvG2UD1o3nDlE2KckgDsPL
- xuSGefuX
- EJZNmKvmwndNSQ5lJNVpxAwX3034hM1wCGX4RwyEU0mFWVyQ15U21g2ePAdgwH6xFMMd1ip1AwqSqgoqvWS2qP+KB88JKr5neOLEU8dSDPBbd50h++Cc2UHEfm9xD9zCmdWE5Kktuctccc7sdIWu9c5NdLewP1zpYH86Fkb2m2yPQQYXk20eeGW0STZ3e5elh+/y7YtOLLJjkS/lCl8OQe8pdYxXQ/hI3F1+mYZsvAxsZJKxcEunieyw3Vz7LBVKgMosCS7EyU4qbaU6ucaKpv1yZ1ckUZcWA6EBDoRKKJum+5dxT7pUwfSDh5+102BjjhbkMbrx9JXDKuhLf5C2BeaROAP/aye50bHJ/y8xFqh85BME=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761111279-555724
+X-HE-Meta: U2FsdGVkX1+d3Kp7kFyQOmIfNXLaBkqNey6bRVlH5jLxYEVjZnKb3q7AM0U7+eFgQ5gDDvcQi14ZRosTevZvHfl8fD6LYd7pQSIeCzuxrqY5Rd1rV9OomJh4yhNUqZD3mCT8Xs38DMt8+vOIxwL6PFEJQqrTNIPb0y5Z4LscAMVuWq6jTHvs26PSSbye/ptncKBeWvFXH2mWnHhYHQy8LPU1TqymF3LDJcU1d2M92sLNZh4Ea9trUEmJbSgN1MXxrC+sveiQ8fqSgg+CiK/zDClY/X96BEZ4c8QtVHDUB9RRkeeDsBoYAfsyAQOwSqy+LgNUGlm1F1JsqzZy7AXtrStxJssGkVkAPt4R04nODKcW3kACivPrVCe1zZuHiI+jjv71zqSDLahN3BC6qYNnLzqlgafeZtjviDA2wUWVI0IVKLwV9CG09cZF2O7XyAB26KQM0qYasnBp7R6GHon22hYXoYYHFPlyDlc7/bcKXXyFMxju6RB9UHff8IaOdqyjivS3vCvz1Q9Ak/EjgbnXRU6D82mPsqHNxHRBEW7gMkJ9m4y1Ji0uRJ+QnqM8qYIQemy8Nn0WJdHuB9+MX18DioY0IDySW+wD7q6HkgDbdDHS46bYKkSXsFcZeeENRPRPiGZ/jUz8ObeV9gUIzwlfeULUK4EI3Af8+ZdAFB0UCqnKkj/01uh8W+ENxYho01g3P4xELzXQ7e2fuE3XgCevMp04w41Mhl1UXcMtIdYvfMdGHVwsGh0q5vgHh9nD6lOo+Hh9DAE2sKZSeYIMeualLB4cq9SlRIu4WJ61fjkEDPYkn1XBiZd0jXlOw7nf5Z+Jv79iQmzKJHFjvrZVlhRUH1nUr7JXNGWG7ffp9PQ9n5vcVzLMLTKSm1CvxeLtzJG2axVD6TnNVVbWK9BE4mGdbuGdR9m8V19s3rViDzLgmBpBSrOzVyTD+5ISaFnPhrmh7q81wrIrwij8YVVEFKV
+ A1r/8PP0
+ CwdWKjWW093s+GKZnWl0tpSEgOA8uXe/9HZYgr7zHD1yhfMl9CoXDM4FdkhhUHfYXEt3NPj3EhevkjtB6rxUoATRNMAxe5zj4DfVp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,24 +82,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 25, 2025 at 08:35:02PM -0700, Kanchana P Sridhar wrote:
->
-> Another initialization level optimization that happens in
-> zswap_cpu_comp_prepare() is, only for batching compressors, we allocate
-> extra memory for "batch-size" int pointers in the
-> @acomp_ctx->req->__ctx[] that are statically set to track the output SG
-> lists' lengths. This optimization was necessary to avoid the latency
+Looks like everything is reviewed now, can we get this queued up
+as it fixes nasty fragmentation for zoned XFS?
 
-There is no need for this allocation.  Just store the output lengths
-in each destination scatterlist entry.
+It seems like the most recent writeback updates went through the VFS
+tree, although -mm has been quite common as well.
 
-Before the call to acomp, the destination SG list should contain as
-many elements as the number of units.  On return, the dst lengths
-should be stored in each destination SG entry.
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+On Fri, Oct 17, 2025 at 05:45:46AM +0200, Christoph Hellwig wrote:
+> Hi all,
+> 
+> The relatively low minimal writeback size of 4MiB leads means that
+> written back inodes on rotational media are switched a lot.  Besides
+> introducing additional seeks, this also can lead to extreme file
+> fragmentation on zoned devices when a lot of files are cached relative
+> to the available writeback bandwidth.
+> 							         
+> Add a superblock field that allows the file system to override the
+> default size, and set it to the zone size for zoned XFS.
+> 
+> Changes since v1:
+>  - covert the field to a long to match other related writeback code
+>  - cap the zone XFS writeback size to the maximum extent size
+>  - write an extensive comment about the tradeoffs of setting the value
+>  - fix a commit message typo
+> 
+> Diffstat:
+>  fs/fs-writeback.c         |   26 +++++++++-----------------
+>  fs/super.c                |    1 +
+>  fs/xfs/xfs_zone_alloc.c   |   28 ++++++++++++++++++++++++++--
+>  include/linux/fs.h        |    1 +
+>  include/linux/writeback.h |    5 +++++
+>  5 files changed, 42 insertions(+), 19 deletions(-)
+---end quoted text---
 
