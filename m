@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD41CCD1A5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 00:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3238ECCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 01:25:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AA088E0014; Tue, 21 Oct 2025 20:59:45 -0400 (EDT)
+	id 562858E0003; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85A7C8E0002; Tue, 21 Oct 2025 20:59:45 -0400 (EDT)
+	id 5392E8E0002; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 798A58E0014; Tue, 21 Oct 2025 20:59:45 -0400 (EDT)
+	id 476248E0003; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 68D348E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 20:59:45 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32FB61406B7
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:59:45 +0000 (UTC)
-X-FDA: 84023942730.14.960DEF4
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4658340005
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 00:59:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iKBLyhYA;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of jasonmiu@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jasonmiu@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761094783; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 38C668E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB6EA5A5E9
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:25:18 +0000 (UTC)
+X-FDA: 84024007116.26.86E52A0
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 57EC44000B
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:25:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w6L5g+CS;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761096317; a=rsa-sha256;
 	cv=none;
-	b=agKnC2M8OMkwu4MwpMBOerW1qbqOIhtd1wMChP4fsWt4yf3tJu7+CN0o8oU1zjalOPsts8
-	CtoOCrTQYclN3BTsd7/XVyuF7ffd0CQB4Hcp5QfWlyGILoF98fnnLAlGWrdFt3nv9t7qcI
-	7ZcDLPOoivjTQYsG8RxgKuJSYcMLEVk=
+	b=v3ESJ2sxorLimL1wEFPCq3+JrEJJYNiUfT+9scxaDk0cffjL6tfsOGexlBZI7QhtDJNjXc
+	PiGRMJUsR7MaItVvF5Ohrsg+lRCCuHknCv+bVhOH9YBIVnT3aQlWIRhGKR9Y48kwo1j6Hi
+	VJSticBNIhQvf38eGBeGKuhQwsd8/bA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=iKBLyhYA;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of jasonmiu@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jasonmiu@google.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w6L5g+CS;
+	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761094783;
+	s=arc-20220608; t=1761096317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0xEV8oP7/LJpDk2U5jLeRfggXS9CoYgLq/Xr9trinnw=;
-	b=ei/bTAmI68hiHklT+3HtGP6C5gCzYNlueUKgsoSfN3hbMHcZ037o9JgkvE54K1rQ1sdK5v
-	1v3Lu+bFeS5MiEmSrWg19uZhOaJRQYrolhk/T2jmPiItEDY84hCLaVxfpTiIXvnBjsjE4V
-	XY2oXKyllYV+Co1pVfrb0XYHL6HO25Y=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4711810948aso43334625e9.2
-        for <linux-mm@kvack.org>; Tue, 21 Oct 2025 17:59:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761094782; x=1761699582; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0xEV8oP7/LJpDk2U5jLeRfggXS9CoYgLq/Xr9trinnw=;
-        b=iKBLyhYAdMv3elqraW6wOz2QXxhp6vSZPcMxxRFR24T+sN0lDtNsxmGEgQRDRc5I67
-         elzyttRQaLqOuP6RmNs7ApUSHTf+Y1ItajBeK036ddFQc0u3Hlzq0BACv04+diHJZXB9
-         OT8hGYro5UcChouXB/2vmK6XmJ+Um21oQ3KiKC5yCpu8nLgiqvW9jmhPnrTO1kt98xUy
-         SrhmYaxM/ba8Oo3WybUBQ85r2wIl3yjUw9b2D79kM1TWKwUpC+E7FM5nSgg1OJHemFOM
-         s98W58EuGonSkZ7daY65vQ28tltWdWLlyYjND5OyMj2nejptQSCCNN9PwHURu+6y6lCE
-         7T4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761094782; x=1761699582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0xEV8oP7/LJpDk2U5jLeRfggXS9CoYgLq/Xr9trinnw=;
-        b=rBtHsK27eMNdcAYlORtEjeCKUhBQlGbKhOJKURmm9di+4dmu90VZ0/uunBPyZG4+Bx
-         iJLFpq9Un3wK/x5E5c5r2pGuUIjqsPNaFMlTh+RZBrcbDawChi/gKpYUrFK0+75YiW7J
-         AmdcW9fXl1xrlvLAiL4tkAwVw4gXwoTLnb+Ur8pjqodayykvzpPLX2AKU3eL1Ojms4fc
-         lxUZpoEoaaGq76Wi8VdHVXbjRghYWm4o135LbnkChRZHOmV+upcBIyOdlN+7avan5MZw
-         ue8YiZXzWvAjVB0zBUPO2TMY2kCi3yHMIRrWePZzSUZsUxhdnDDVK6kAgVH/Atk/v2+o
-         3Xpg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFRjDLCTBi9dngte7SY4V4W3b47cRn1o7pHf9ylVaK6mdcXj+CQ0Dlmz+TUkAIoCVum6gcGqdPfg==@kvack.org
-X-Gm-Message-State: AOJu0YzZ50fCHSS+0ZHke6AJd4SEKN3kVzoADKFf9d2j8aWL04DTC27O
-	PQVvuy4emWc80dCLuN5UdqHzAwTCE0s5d/5DGmXZijoqZWQTSDl+QxqetnH86RXofHy0eC9vxkD
-	Q5CD3pWoRP0Bbiz7H8XjAbmPps/DSs3Ru9h5ZwUXw
-X-Gm-Gg: ASbGncvsa7DxoK454uVJoyaAo511GmTkjV//8lMS7bEx2b24uFGoSkLW2XRhKbcWH/B
-	V+ngNrNse8cs0gVJKyxHLI+0epLFlsMWNm/MAnm5cj/bmK50an5kVzF4MCxza7OOMfeQhl9ANWE
-	dQuVeXKIyA68AMlcF9JdWnq0nw49qBorGKmiB9kIcWXrU7b1g+hwomG2K/xFDtBwV42kexvP8GI
-	Yk74WYrnCkdXdXLPyeaU9NA4ns5KEVjVTPeTnASWDkNJhi7QEv7jfRMZh4=
-X-Google-Smtp-Source: AGHT+IGx3Qzgr+9yTFCdhHfzYJR0ao2Q/u8VvpEx6LPIGJlsEQvV8faBYF79WSejez6shY/tdzi/USdR7Q8GO8tc8zg=
-X-Received: by 2002:a05:600c:4507:b0:46e:376c:b1f0 with SMTP id
- 5b1f17b1804b1-47117876744mr147970965e9.7.1761094781549; Tue, 21 Oct 2025
- 17:59:41 -0700 (PDT)
+	bh=mMBGLFybuvXPMK2gINIMRD6FATE14CDq9nXmqTlEp6I=;
+	b=7PWJCww5SkveXbH/jr5mN5sb1BYonH2MBsc8zWsPbpNJ7vA5NPgDyDw103U/ZyL49qABmT
+	55hsAXzv17v9nnTYjcautssLjmCsCckN0t73nxO0fzM1zwi69MqNuCLXvq2Q7SmeZ6dur3
+	USUJWKPQFvt8vj1HpavnmWyfLPjc/Kk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761096312; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mMBGLFybuvXPMK2gINIMRD6FATE14CDq9nXmqTlEp6I=;
+	b=w6L5g+CSpDmTK0lGQZ8vQhX9tSx4IrSWgy/kHQT0Ps0qtuwwu9xjodx7533htnW0Kicq8G3d9vtvU4ZlanxrVS/SaRXUQEJn4/8peBzsqr8WQzLKKYQkkqlTCA1qn1jZmVXuvM8f7LBOQlHxy3IiHE2L2Et03Z6X3E7jhWsxWas=
+Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqkgTKQ_1761096310 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Oct 2025 09:25:10 +0800
+Message-ID: <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
+Date: Wed, 22 Oct 2025 09:25:09 +0800
 MIME-Version: 1.0
-References: <20251001011941.1513050-1-jasonmiu@google.com> <20251001011941.1513050-2-jasonmiu@google.com>
- <20251006141444.GN3360665@nvidia.com> <CAHN2nPKjg6=0QTcSoptxvQW9MpP0YwGUTx_gQDBxgCtSzxY5Pg@mail.gmail.com>
- <20251009175205.GB3899236@nvidia.com>
-In-Reply-To: <20251009175205.GB3899236@nvidia.com>
-From: Jason Miu <jasonmiu@google.com>
-Date: Tue, 21 Oct 2025 17:59:29 -0700
-X-Gm-Features: AS18NWCV7ujd1_nk4jzUplOGzOVRDyy3XvJOMidHbQL4TGXpAjE_MJA9mRNpbHA
-Message-ID: <CAHN2nPJbXeSzLuznWcV+vo80rtk5odd+2GDW_NVDUGPG1KO-Gg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] kho: Adopt KHO radix tree data structures
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
+To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
+ <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
+ David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>,
+ Liam Howlett <liam.howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ stable@vger.kernel.org
+References: <20251021190436.81682-1-ryncsn@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20251021190436.81682-1-ryncsn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4658340005
-X-Stat-Signature: pjozmerqge349thmsxwhtbyjdotietuo
-X-HE-Tag: 1761094783-437334
-X-HE-Meta: U2FsdGVkX1+dkP48SAzO59mLLy6dQlZ4q2mcoYRJB+bTrCk3XNNgw7z4kE7mssLDe1nNKuHd+oCdd8ur/17TKfDRudr7tsCKHGa4AYrUA4bnhS0Jry9AqP6WfJIM+Hh8PCjVxOP5vsD5zm4Z+qYKilVmRxjHGjnFLdsRZ3DDliZv/fsc1q6VQ/IragvL0p8SqHmAs3MMcsau+Tv9t4q1GWX0ouu5mTaf1AdY0IJ6BKyvewH9p2cm6CErfGeYzRXSSIe7FWN0+g8eufcv5plNgYDvk2P2Gny7ofnW6rTq6quy4EwnbC6UO2seclRc0n37OHjwxhe0okIKocFT4Tt9gJYUrBxM42i3zy7I4DTtfqygRCi662oEvqUWwv/5u4/4dVjLsxwKKxmBAuXp2SRIMtROtpMHQ66eGpv8mcx0zgefnIMxxB511enqR8io9WNMWOZwavGOJ8dMZbwbuzaJ1X22SlHtzGP0qOI2twqhAjibAkzSBueELdrtKO6/H5M52A/rln09cptNWVwgLYAsGQpVVGif7oebicj41Fgs8/awFLTq4JgBdZZxXFvr7CPc/S07mpicvR03l/bsAj8/dmQi1U96rQo/UPMzBeGDFpqzwnvFkME1S+Aq3gY2mRa/spkYN3s5fO3qW/RHRiEG69CBZaHQ+Zr5c/nOXqG4C+abOVU513Ormp8iWK/1Evb71uRlg05I0KR1eV6kM06BRBuG6fMoEFnCBsQn15nykGIvRptIIt/f8TV2Vai+9s7+KF514Qn32Q9/noWoGZf0v7Cvryyqm7971OYtua/w/H7HDY39ef2n9xKgsrQTn8OxO3bwGpIcWRax3qRUCZ+eEWNH9CDjczr+qz2y6e3sh5rpeb9Q8xIMXd3j5VGH97oHDYJ5ysdESQ291GsXpoRV2WpQ0CBi8zOWpeaiRvXK9tb2PKg9pQjQTb2Tohdi9DHImLppHDS5K945ctLJ8ud
- Le7jVqzj
- J2doI5IKts1ouningfKYT5I55emTdwBvBpMXMr5bpA6G/V0aemVxdwxvUG41i5gsZrm4zAHyM/B8Q1T8NqmC34JzZ5Kvmbp9MGgDotcULzKX8qJL8aorzUPFGLh/liR86zoiE/QLUo7OgtWlOjU/cxV9lWy3lO6TLZug800dI36lcHfzMZeGu5ZnA5Egt9L/oU1DR33DatdVeer40V62OYshedDwyeGD1Pdmx
+X-Stat-Signature: s1ax9oshz534tnr948uugumszeaainhs
+X-Rspamd-Queue-Id: 57EC44000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761096314-231224
+X-HE-Meta: U2FsdGVkX18OtSuUjvS8NmobRbXCwQZBEX5VEO1XV1KzxfWv6VkAlqEKLpDb0ADsFdq2xuryO9FDTgwC28LrWBP/No8W1afOEZeSHZvhsZz78YYkgNH8xPLz1BW8h9mOcUAfD683kkjcXFSY/TUW89TeC/vUAVVnOAqawhPdnW8edfSb3ekf0u8NcNqeH3QPc61CEE6aRvKAo55aNV78efb2kdG2+jJa8UciPM3ofyUkk2kga3faqb/EWQ/umtzSuB21hBZwR5/h0Bem8+3O04fvYOyus9Te4jf5gh/IvQ/zG0R2u7xelSgk9COL9+S+HlPnBe5H/bqIKZWM2+Rg4HyEhP4oRoA09P7Um9Ok1hOB/4qWytz9SHSR7YmcGPSXx6vvtRI5DbO1PKc4IpZ2e4wuEBttNrUomufrrQTfKtxlPkeoNC27d7yWPJFvZnN+FUe+rRChfO48v/yJcynVKOFXz/Xke5hw7+BE+DDAtAawYLlwxJE/riqHyQa0k/nqNFk3wJxhhGgAn5Q6YIqHqr9pQrog14aPPzu9/OlHrysUt57OqnGD8jMAAO/0o78JpXulnvK6OG4YUApTlpL1L4DgdHQJoIS6e1lgO/DCWHQoB+n+hsu6b/S/j5FqSaoe4ArQ+ubwXD/EHb5AvQkl/o69x2jjQvBLrO7P6Xcdzti5Gvh3oEpC+d1W6WpBBEgD4d6/Iw8AvYmP/0mJBeUzSLqLAoOSyTpeAbD/TR4Yuj7LQqGSb+DEDLjr4mf/Bl7KG0adcxZqjZceo7Z9dHaNeQ16WVuLu1D2fzIb1l1feke2ekIjou+kI6VTrjJSozzdT6PBZ5PGAYQA605nRrV6lQcaBYqCK69sM+wqaysyGkS/RIS5ROAya3n4vRCb1Pyl3hmvr3FNPdMs0A4FL0D26tSi18UjTHaLm10JHihrUhmK28IyY9abDSj2alQGp8asqG0KfYgAGNZaQPQ/OxM
+ 0aJK6G0V
+ z7ZTPClTYVz5PlbP7y/nqnk8jWMh/bBmUlSZ0mWe5xmA3EWakbqXqqryb+hSBWSykn47gXIUMZUFrERz837DbuQC7/Z1lnm9WsCAewVkxBAKYu+4q4pH5oOJSFu1buHb1a2G6BA8c3JA+SG9chDdZnIPKxc1EIygZg1G9OqgrfLj/c2HGMZ0FsVtUDU9VU1aeemApB3WtR/hq7cFy3j63kNdbjF/r5WlFrjtDyO4EkT8YtZbcq7u2zCEMxKs3ar4woliiF0jI1WoBKeOB2SEaxGFf8Yvast2Oa1UNcVraEha3ssCWuyvhvh7jI/kr6Gg8hXFARnkXM1UVU9tNQhfsrbPMruVB3GwSM4doLMXDKkcJWsDrFo6VgAyNuWPh5j2ke2BPDp4yW3B3DTMeM1zEOJIdx18mJmsALiZO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,176 +93,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks Jason, I uploaded the patch v2 according to your feedback.
 
-On Thu, Oct 9, 2025 at 10:52=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> > > > -#define PROP_PRESERVED_MEMORY_MAP "preserved-memory-map"
-> > > > +#define PROP_PRESERVED_PAGE_RADIX_TREE "preserved-page-radix-tree"
-> > > >  #define PROP_SUB_FDT "fdt"
-> > >
-> > > I'de really like to see all of these sorts of definitions in some
-> > > structured ABI header not open coded all over the place..
-> >
-> > Do you think `include/linux/kexec_handover.h` is the appropriate
-> > place, or would you prefer a new, dedicated ABI header (e.g., in
-> > `include/uapi/linux/`) for all KHO-related FDT constants?
->
-> I would avoid uapi, but maybe Pasha has some
-> idea.
->
->  include/linux/live_update/abi/ ?
 
-Yes, moved to include/linux/live_update/abi/.
+On 2025/10/22 03:04, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> There are some problems with the code implementations of THP fallback.
+> suitable_orders could be zero, and calling highest_order on a zero value
+> returns an overflowed size. And the order check loop is updating the
+> index value on every loop which may cause the index to be aligned by a
+> larger value while the loop shrinks the order. 
 
->
-> > Agreed. Will change `u64` according to Pasha's comment. And we use
-> > explicit casts like `(u64)virt_to_phys(new_tree)` and `(struct
-> > kho_radix_tree *)phys_to_virt(table_entry)` in the current series. I
-> > believe this, along with the `u64` type, makes it clear that the table
-> > stores physical addresses.
->
-> Well, the macros were intended to automate this and avoid mistakes
-> from opencoding.. Just keep using them?
->
+No, this is not true. Although ‘suitable_orders’ might be 0, it will not 
+enter the ‘while (suitable_orders)’ loop, and ‘order’ will not be used 
+(this is also how the highest_order() function is used in other places).
 
-Sure, added two inline functions `kho_radix_tree_desc()` and
-`kho_radix_tree()`  back for converting.
+> And it forgot to try order
+> 0 after the final loop.
 
-> > > > + */
-> > > > +static unsigned long kho_radix_encode(unsigned long pa, unsigned i=
-nt order)
-> > >
-> > > pa is phys_addr_t in the kernel, never unsigned long.
-> > >
-> > > If you want to make it all dynamic then this should be phys_addr_t
-> >
-> > Should this also be `u64`, or we stay with `phys_addr_t` for all page
-> > addresses?
->
-> you should use phys_addr_t for everything that originates from a
-> phys_addr_t, and u64 for all the ABI
->
-done
+This is also not true. We will fallback to order 0 allocation in 
+shmem_get_folio_gfp() if large order allocation fails.
 
-> > > > +{
-> > > > +     unsigned long h =3D 1UL << (BITS_PER_LONG - PAGE_SHIFT - orde=
-r);
-> > >
-> > > And this BITS_PER_LONG is confused, it is BITS_PER_PHYS_ADDR_T which
-> > > may not exist.
-> > >
-> > > Use an enum ORDER_0_LG2 maybe
-> >
-> > I prefer `KHO_RADIX_ORDER_0_BIT_POS` (defined as `BITS_PER_LONG -
-> > PAGE_SHIFT`) over `ORDER_0_LG2`, as I think the latter is a bit hard
-> > to understand, what do you think? This constant, along with others,
-> > will be placed in the enum.
->
-> Sure, though I prefer LG2 to BIT_POS
+> This is usually fine because shmem_add_to_page_cache ensures the shmem
+> mapping is still sane, but it might cause many potential issues like
+> allocating random folios into the random position in the map or return
+> -ENOMEM by accident. This triggered some strange userspace errors [1],
+> and shouldn't have happened in the first place.
 
-Lets pick LG2. =3D)
+I tested tmpfs with swap on ZRAM in the mm-new branch, and no issues 
+were encountered. However, it is worth mentioning that, after the commit 
+69e0a3b49003 ("mm: shmem: fix the strategy for the tmpfs 'huge=' 
+options"), tmpfs may consume more memory (because we no longer allocate 
+large folios based on the write size), which might cause your test case 
+to run out of memory (OOM) and trigger some errors. You may need to 
+adjust your swap size or memcg limit.
 
->
-> BIT_POS to me implies it is being used as  bit wise operation, while
-> log2 is a mathematical concept
->
->   X_lg2 =3D ilog2(X)  &&  X =3D=3D 1 << X_lg2
->
-> > > > +                             kho_radix_tree_walk_callback_t cb)
-> > > > +{
-> > > > +     int level_shift =3D ilog2(PAGE_SIZE / sizeof(unsigned long));
-> > > > +     struct kho_radix_tree *next_tree;
-> > > > +     unsigned long encoded, i;
-> > > > +     int err =3D 0;
-> > > >
-> > > > +     if (level =3D=3D 1) {
-> > > > +             encoded =3D offset;
-> > > > +             return kho_radix_walk_bitmaps((struct kho_bitmap_tabl=
-e *)root,
-> > > > +                                           encoded, cb);
-> > >
-> > > Better to do this in the caller  a few lines below
-> >
-> > But the caller is in a different tree level? Should we only walk the
-> > bitmaps at the lowest level?
->
-> I mean just have the caller do
->
-> if (level-1 =3D=3D0)
->    kho_radix_walk_bitmaps()
-> else
->    ..
->
-> Avoids a function call
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
+> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   mm/shmem.c | 26 +++++++++++++++-----------
+>   1 file changed, 15 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b50ce7dbc84a..25303711f123 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1824,6 +1824,9 @@ static unsigned long shmem_suitable_orders(struct inode *inode, struct vm_fault
+>   	unsigned long pages;
+>   	int order;
+>   
+> +	if (!orders)
+> +		return 0;
+> +
+>   	if (vma) {
+>   		orders = thp_vma_suitable_orders(vma, vmf->address, orders);
+>   		if (!orders)
+> @@ -1888,27 +1891,28 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>   	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>   		orders = 0;
+>   
+> -	if (orders > 0) {
+> -		suitable_orders = shmem_suitable_orders(inode, vmf,
+> -							mapping, index, orders);
+> +	suitable_orders = shmem_suitable_orders(inode, vmf,
+> +						mapping, index, orders);
+>   
+> +	if (suitable_orders) {
+>   		order = highest_order(suitable_orders);
+> -		while (suitable_orders) {
+> +		do {
+>   			pages = 1UL << order;
+> -			index = round_down(index, pages);
+> -			folio = shmem_alloc_folio(gfp, order, info, index);
+> -			if (folio)
+> +			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
+> +			if (folio) {
+> +				index = round_down(index, pages);
+>   				goto allocated;
+> +			}
+>   
+>   			if (pages == HPAGE_PMD_NR)
+>   				count_vm_event(THP_FILE_FALLBACK);
+>   			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
+>   			order = next_order(&suitable_orders, order);
+> -		}
+> -	} else {
+> -		pages = 1;
+> -		folio = shmem_alloc_folio(gfp, 0, info, index);
+> +		} while (suitable_orders);
+>   	}
+> +
+> +	pages = 1;
+> +	folio = shmem_alloc_folio(gfp, 0, info, index);
+>   	if (!folio)
+>   		return ERR_PTR(-ENOMEM);
+>   
 
-I see. Done.
-
->
-> > > > +     for (i =3D 0; i < PAGE_SIZE / sizeof(unsigned long); i++) {
-> > > > +             if (root->table[i]) {
-> > > > +                     encoded =3D offset << level_shift | i;
-> > >
-> > > This doesn't seem right..
-> > >
-> > > The argument to the walker should be the starting encoded of the tabl=
-e
-> > > it is about to walk.
-> > >
-> > > Since everything always starts at 0 it should always be
-> > >   start | (i << level_shift)
-> > >
-> > > ?
-> >
-> > You're right that this line might not be immediately intuitive. The
-> > var `level_shift` (which is constant value 9 here) is applied to the
-> > *accumulated* `offset` from the parent level. Let's consider an
-> > example of a preserved page at physical address `0x1000`, which
-> > encodes to `0x10000000000001` (bit 52 is set for order 0, bit 0 is set
-> > for page 1).
->
-> Oh, weird, too weird maybe. I'd just keep all the values as fully
-> shifted, level_shift should be adjusted to have the full shift for
-> this level. Easier to understand.
->
-> Also, I think the order bits might have become a bit confused, I think
-> I explained it wrong.
->
-> My idea was to try to share the radix levels to save space eg if we
-> have like this patch does:
->
->   Order phys
->   00001 abcd
->   00010 0bcd
->   00100 00cd
->   01000 000d
->
-> Then we don't get too much page level sharing, the middle ends up with
-> 0 indexes in tables that cannot be shared.
->
-> What I was going for was to push all the shared pages to the left
->
->   00001 abcd
->   00000 1bcd
->   00000 01cd
->   00000 001d
->
-> Here the first radix level has index 0 or 1 and is fully shared. So eg
-> Order 4 and 5 will have all the same 0 index table levels. This also
-> reduces the max height of the tree because only +1 bit is needed to
-> store order.
->
-> Jason
-
-Thanks for the clarification. I updated the logic by keeping the
-encoded value fully shifted and adjusting the `level_shift` according
-to the current level.
-
-And yes we are having the shared pages on the left side (zeros in the
-encoded prefix) while having the order bits shift to right when the
-page order increases. I hope the updated code makes this more clearer.
-
---
-Jason Miu
 
