@@ -4,216 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE1FCCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68418CCD195
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 07:32:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2367E8E0008; Wed, 22 Oct 2025 03:16:26 -0400 (EDT)
+	id 3E1AD8E0009; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E6678E0002; Wed, 22 Oct 2025 03:16:26 -0400 (EDT)
+	id 3B91C8E0002; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05FEA8E0008; Wed, 22 Oct 2025 03:16:25 -0400 (EDT)
+	id 2F6D28E0009; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E13BD8E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:16:25 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F2BC13BB6B
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:16:25 +0000 (UTC)
-X-FDA: 84024891930.03.B307891
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012030.outbound.protection.outlook.com [40.107.209.30])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 904E34000A
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:16:22 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="JaqMkq4/";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.30 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761117382;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4658E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 03:32:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7825248B13
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:32:06 +0000 (UTC)
+X-FDA: 84024931452.08.038F2C2
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 646CD40015
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 07:32:03 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=InR5naqE;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761118324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yIwSNbbYQh5xTE41IAzvsv3oTGPOKvqQtfc+W82GRtc=;
-	b=kHcHRD6CSZ/ymIttd1j6mDXFXnDb/wntLGeXsaytSg9MaxQ6L25v//KH3tw5d48tnHJmXt
-	kpB9r2e5CrW8cJfPFTsDGoRKE4jBNDMueaeRjiL6yiYk6yZMjH/P4tBq9pzRpwkbz8H/BM
-	Un5wbGZCIHi1hnAG0eWUqDQi2wb1aR8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761117382; a=rsa-sha256;
-	cv=pass;
-	b=exzYettHghdKMKwbAaG3tPLLBGlNSm8CMD3e2AvWX+v8TmEmqZRk6LK5dK+Kxnwk5rOGSy
-	aXNRPfMuX7DuuuVQZGJN7vL0um6zTeopCAKE9S08z7OLKSUCn1SqgvPafwqAMif5XQ+Zf2
-	hg+otka9f1gII0iiyznFtT4bxBPB5Lo=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="JaqMkq4/";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 40.107.209.30 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v9S7UYWOS4lwNCJWm91C04FR+cF/zm7ckqUj2P6JqY9bIJuZ/5hC7qx35pARxbMh4+oBv5R5FyY63iAEamAjnEcyHcIiAMUymhUAUujZFNNen4zJjrMdZCXLTwUCClyK4fNMIa6O8+CJXz5iZwrux0k/BQKYoQffEQMY4YY0BLYi9MswQa/+MDAGHo2fbAjLOyFY2PJ6fqV0mw9OfJ0ANOw9ETh81G+jPaBgoKwb4DfXhCT9Fr8VtFnpBbVoDHXgXd6kAuUbg3PsNHpwAXURa4Jpdj4s2K02tdGWUY8tBrjOUNNO6gLY2z5wm6Ud41h+PoEfuMqkCoFqPerX+6E5Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yIwSNbbYQh5xTE41IAzvsv3oTGPOKvqQtfc+W82GRtc=;
- b=JwkRnSMZNtGFHycWbuwUnryIFK87uKriu4V0MI64O4L/pdB1Wn/988cBqnTVFPBR4XUnRnmNOsE6nJ422Cu0RNdX8uSLl9+pX4Kh6EjeGH0lmTnkYSo1YFUfUm05mdmBhBmwJ0Ub+EDwmWIogtHr5omKSm3y4amNJEIeRlwTkntzDjgitL4hMzrgOvfsTzOUoOtcRTu/xbda7R21HBNC8AhxNSa1wvD/bhMOw4dXdwcJPh+MTorl8LpyYknu2He2eiPQ9jqzKa5UtFBIMQDP366kE7gdDeKCZl9990jo9TcQ+c+ws0Mzu7ayqXUmCgRajiYihGVAbbA/9yFsgGMheA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yIwSNbbYQh5xTE41IAzvsv3oTGPOKvqQtfc+W82GRtc=;
- b=JaqMkq4/Krg0otKBh6U3r4rXjGyuLR7vLOaiEq4X8/uqTLl3kv/JcouEl8r1M+QxTGAtr/8VESzGJ43TDLlwDNhulXv6xyXKMhxZpQpV5FP/Os4NiWFzDrD1ZRc4BwyNtg8vE1JhnKa9u1SvJh/bJioETf2MpppeKQbNi4Ni0uj8VZKfk3H9gcDM1oHp2urkIwehevZtbuxam6TfdifxbfpY7bgbtlMJK1day96fqmllxztcHdLNwfOlSMAXuG9WDmlCH52eqq8upR0dpaSTHNQpLvI4VU9aa/w7PHxZNpiGEdpJaYvSAqyXMJa0F5Kg0VvdvmsD9L8uDA4bFcY4zQ==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SN7PR12MB7021.namprd12.prod.outlook.com (2603:10b6:806:262::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Wed, 22 Oct
- 2025 07:16:16 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 07:16:16 +0000
-Message-ID: <3d58b839-a24a-4481-9687-3083541b80a1@nvidia.com>
-Date: Wed, 22 Oct 2025 18:16:08 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v7 11/16] mm/migrate_device: add THP splitting during migration
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251001065707.920170-1-balbirs@nvidia.com>
- <20251001065707.920170-12-balbirs@nvidia.com>
- <20251019081954.luz3mp5ghdhii3vr@master>
- <62073ca1-5bb6-49e8-b8d4-447c5e0e582e@nvidia.com>
- <97796DEE-E828-4B12-B919-FCA2C86756DE@nvidia.com>
- <debc988e-45cc-481d-b688-a5764647f3e5@nvidia.com>
- <D00196E8-E812-41CF-A2F8-A38251161ACA@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <D00196E8-E812-41CF-A2F8-A38251161ACA@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR05CA0019.namprd05.prod.outlook.com
- (2603:10b6:a03:254::24) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=QtY8PxEyIubqCZUk80T4fMo0woyvuu6eo6/vRZ5dv8s=;
+	b=aCxNbFZE+XDO2AroTFi01KBK7A20VS6Hl27q2uTYdqSTAw8FYxp6IWdqm2n/TdxTueUjL9
+	2EuFgO0iMmYCGy/hg1hTgKtHXySdwrZOqeOEFF67JaRrMCDEn4nhbZNDTzZBjX5a5HU/Ti
+	T1X2y0yBFSA8p3Slmfv2pZLCGi0Uv9o=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=InR5naqE;
+	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761118324; a=rsa-sha256;
+	cv=none;
+	b=k7Qvjq+STcZrbIs9RT6KKT4zMBNCAz0DSlPdPyFHEnadLzIcF0k1L6sBwu//PshDjHiDPe
+	Oai99rDOq7A1RccRWSID3AktHRO5lBRgv8+lENm4pqtRbi+ly1ybTYkoD1mQCE9j55H+NB
+	k6z0aCZUcYVSX4zGlg1UVB/u+PBlryE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761118320; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=QtY8PxEyIubqCZUk80T4fMo0woyvuu6eo6/vRZ5dv8s=;
+	b=InR5naqE12shqKfMuSggTZgD8usHpAbCp1sy5++MvTHKbokmqqvBVUH0YwBcyTKGnZafGjaEYwQ0raeIVC62P8rvxIfV1tipTAe2Yl9TgkzL/x8zpphMGNC897AMkyDndkVG1Vk3jUrShQ0iSxOhuQBq5DQFJd9UoKsgBKC/HAs=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WqlxQu6_1761118300 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Oct 2025 15:31:58 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
+ <will@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  David
+ Hildenbrand <david@redhat.com>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Zi Yan
+ <ziy@nvidia.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Ryan
+ Roberts <ryan.roberts@arm.com>,  Yang Shi <yang@os.amperecomputing.com>,
+  "Christoph Lameter (Ampere)" <cl@gentwo.org>,  Dev Jain
+ <dev.jain@arm.com>,  Anshuman Khandual <anshuman.khandual@arm.com>,
+  Yicong Yang <yangyicong@hisilicon.com>,  Kefeng Wang
+ <wangkefeng.wang@huawei.com>,  Kevin Brodsky <kevin.brodsky@arm.com>,  Yin
+ Fengwei <fengwei_yin@linux.alibaba.com>,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH -v2 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+In-Reply-To: <CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
+	(Barry Song's message of "Wed, 22 Oct 2025 17:08:47 +1300")
+References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
+	<20251013092038.6963-3-ying.huang@linux.alibaba.com>
+	<CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
+Date: Wed, 22 Oct 2025 15:31:39 +0800
+Message-ID: <87a51jfl44.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SN7PR12MB7021:EE_
-X-MS-Office365-Filtering-Correlation-Id: 739ba5e0-4c8b-4705-1d5b-08de113ae3c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SEpBZS9EbE95OUR3dkh0SU9oYUJwdTBDZFhHQUdlRklzbHZibjhjbXlhT3k5?=
- =?utf-8?B?UGxCTmtPUHo3VG1lVWZ6MjNEdkxoaWdHc0U4SnhzL2Y0bkFKZlExVVdUMEJx?=
- =?utf-8?B?UnIwcFlyRlZBTDBhaldMbEtnWFl1VGNmZExIVzBMdFMzanpnRXBGTkRjVUts?=
- =?utf-8?B?a1BleEwwOFdteW11c0pmK3B5Y3JIYXQrbXZtQTdhWEh1ZGYzWFNKeTB3ZExJ?=
- =?utf-8?B?OVJYMGlPc1NkUTNwd20vUVpyaVE4R0p2ZFF1MWsxZmhybnVtM0ZEK2VnZXVM?=
- =?utf-8?B?SVNhTEdSQzBXRlNyRkc2dElNQ3doYU5zbkp2UzlXdDQvL1Y0eHYwWWI5UC9C?=
- =?utf-8?B?SWQzQUF1eXc2WDlvUTFtWEZsSDJXRnJINDVIcGFOcmNiOUlHOHJUeDMxUUpo?=
- =?utf-8?B?SW1YbW5jYmhCN21kdTFScWZYQnBIWVVSckVta0hJb3NyeUVieVZ0ZWJjak5s?=
- =?utf-8?B?NFJTQVlERmFqNDlLUWcvbzEzRFBpblE3MmJhUVJ1VEJmaFRyR3FZaUdXWGl6?=
- =?utf-8?B?R2FKU3lkUUN3Q01hWHFrWSs4UnMyTWJVNWJ5YWtGYTh0K2ViZis1SUUrUlBv?=
- =?utf-8?B?SzhYa1Q1NnlUTEViWmxDNGhxMTRJQnZOSU1Uamc0aW1FN0UzSmpVREZoRS9w?=
- =?utf-8?B?N0V6KzVVMEFvdE9XNlNVdkdoQnM1R25VY1haUEdUU3o5L2VRZHhNZk5VTnpy?=
- =?utf-8?B?YXc5YjM4NDFsMkJlcnB4Yk5EYmk5UlluOFppRWxLbElPSUU1R2RDdWZDTFlD?=
- =?utf-8?B?RHMvZ0xmeGJEaWlaeUszSFNjQjk0Z25uVzlBd29kem5JMHo2clVBVDZjUWFY?=
- =?utf-8?B?ZkNsckY3aU9jM2t5aXUxeG1xRXZOTGRUSVR3VENaVHVQUU4yQnRqVWVQbVE4?=
- =?utf-8?B?L01XYVBGV2h4VjMremo1VjdiOXZzSUhNaGNHcDgyOGJHUzFsNHQzS0JkTVly?=
- =?utf-8?B?S05KY1A2NGRoeklVYmVJd1k0K1NDWkkrZnk4U0tSUStOK3J4emV3S1NjcVRN?=
- =?utf-8?B?dzJqOEVVUzJRaE9OTXk4VnZ1dVlJUnlseDA5Z3dkcDQxN2QrNldtYnl5TnRx?=
- =?utf-8?B?RUMySTF1QzZxbTl6RnpaKzNGNnRtajJsU2xuRHdyb2trZnVKcVVwd2xBcGt1?=
- =?utf-8?B?dE9LUlJYWFBVU043bEFZdU1NVE5TY005cS9aSnFNOXFDNUxRREFtN25SV2g5?=
- =?utf-8?B?dC9CcGkzQ0phbncxUFllQ0duRy9wOVJpb0VhUHkvZzUxS0djWVpLalUrN2VT?=
- =?utf-8?B?dy9sSklMbm9zTW5LZzcweC9VZ3FMRG9yd0VjZEN6YUJZdDhqWjRndENva3FB?=
- =?utf-8?B?SzNIRW9mb2ZrTFZ5WDliWGN6YkFkZmc5TWoyREtlcHJlNlIwS0NEZHhUUFFE?=
- =?utf-8?B?NXNXSkdUUGxZejVrTWRNNGdQekNQZDcwcXU2RS9PNURkdFordTNPRE1wUDBu?=
- =?utf-8?B?aDBqM3I1THdDbUpCc2NLbjdnVWNyWmlMaTE4WHh3SXBkcXlCaGN5N2FpY1Uv?=
- =?utf-8?B?YTdHQ1ZzdjBtZE5MK3U5YVkyaFEvTTRBNUJ4L3ArbXdadDF6WWdLeEVvdmNX?=
- =?utf-8?B?RjZ0bTJNdWVEUytRV2J1NXBxdlBjQitEazZFRWlXNDBzTnlmV04zYXNPaGhT?=
- =?utf-8?B?aWlmQTBqcnZ4NmV2WGFoRWFyeGcxT0dCZzkrWlluSDhZYmYxbkxTR0FBTXVL?=
- =?utf-8?B?alFFS3hncUs5QlhvL2Q2V29wYlh3NW9yN2VKNkt5Smo5bUNGU1J3Y2F0UVlk?=
- =?utf-8?B?MW53dU13U0tabHY4aldpU1NCb01JdENCNmFJQjFuY0RENXFiMkNVaC9YVks1?=
- =?utf-8?B?UzJrbUxMbzZOdEx1MENwU29RZC9CSldHR2l3U3BiNE9tZmtWMzUwMUJUamtv?=
- =?utf-8?B?QldFMmRDZEVWQm1JV2xhTHNqc0J1UURJenczanF0dy9BWDlNUmZTR1RyZEtF?=
- =?utf-8?Q?W8A0n0qgHhPoKZPMstsTD6jdz+ZPK3ae?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RlVhNTZjOFBZaStQRmtKZlpZVUVFODU1all4aHFvRWc5eGg3ZmRIbzNoOERv?=
- =?utf-8?B?b2hkeWdtYkJURFBCbGJVb2duNXJ5b0djbHlOejk0NnpZa2w4dE82a0Z3NDNu?=
- =?utf-8?B?UzdBVkhEc0RXNDB1cVkyT1l1VVI4Q2ozeXlrdmtUTktyM1l0U1NvaFFyS0h2?=
- =?utf-8?B?N3NvMVpzNDVhU0NhOUU5WnNSVE9VREdHMjZRWnpMK09UTWdxeCtPN1ZGT1Nj?=
- =?utf-8?B?L3JSazFIWDBnbFcyMGJsOGI4YStwSm0waTNqdTFuWmp5Q0J2VjBMQmhRTUxO?=
- =?utf-8?B?a25LbmtwNEhQL2hmNW9pY2xHeGVmakFSbVlTaUladEF6TlZEc2N4K3V4S09E?=
- =?utf-8?B?VmlDYlBhbElReWt2VXcvSnkvRm5PSlBHeGVkQWFyakMvMlpEczlkWXFRMWZx?=
- =?utf-8?B?QytTeE15L25VNENteWpkUmdheFdObTgzclNuUG9GOVF0ZzBLNVBMdUlSQmVs?=
- =?utf-8?B?RDVHUTRnZG9wb0hvdkl3Sk9PTUJWaG4yb2Q2RlMzN1EvWjRZN1JhaytjZUFH?=
- =?utf-8?B?cGNiVVJKOGg1dXY5NlNJM1AvM2I5T2swWk1vY0o5aVFMSHZ5K0g0SU56NkhC?=
- =?utf-8?B?M1dwdGV0ZFg4Z3IrRUlqcVJ2UWo0KytpcG95S2dndjR5bmpUSjhvSUgySkJv?=
- =?utf-8?B?WHhTVVJqb3lQTGxiZ21JSlBybEtsdVh5UE8rM3FvL3BobjVweWRud1JRdXQ5?=
- =?utf-8?B?YTBTNjd0TDlscTVxRW5UeXY0UjU4alZoNThkWnRacnRIblQ3T0pPMW4zQVpi?=
- =?utf-8?B?R1VjdDFtSmFFbUt5UnJqNUd3U1FubXdhaUFyaUEwc2NWdStUaTJmd1FOeFVn?=
- =?utf-8?B?ditGN0NZVEpJb3E3Y09BS2M5TmhSN3dkRUFOaTh0cnJVRUd6aXI0dlY0bzRO?=
- =?utf-8?B?RjRRR2JKcCtsVUlZZTFGWUtFOHgzTW1yTnNya3lUZkZ3TmVTMHBVaUd4VVZV?=
- =?utf-8?B?VFN2UEF6aHRaZm8zeWVkYlpiZGRndnFySnRtTERUakJGMDlaOHRXbGRRTVZC?=
- =?utf-8?B?VG9rczJwTzVXVFVlRjk2NE5kOVpWdVBkdTZLanVxQzNZVVUxd0RDSXM1V3cy?=
- =?utf-8?B?dFlEcGNOTHRWSGNGejY3c3NSZ0NQZnhIZzdiTUxrUnJBdDJIaW1WdlRkMkg0?=
- =?utf-8?B?Wkd1clJ4dDQ5UklndmMzRW9wMWVlV0VuQXhEeW9WdVJKVGNrV0toM0Juekxm?=
- =?utf-8?B?QzlBUUMrUVVma2RGZFdWTmt6dFhvckNNNUoveFNHamZSdE0zMENiRXdpSEZX?=
- =?utf-8?B?c1R0OEdOTllmaU4wanRZQmFqemFUQS84RVBRSjZQbnVPNDI3R1FobnlNeHVu?=
- =?utf-8?B?VFRJL1VDWVBoWTJHYXRTUnVVNExKdXRhZE5QTXBUc3ZsbVdaRFhTQnF5Wmkx?=
- =?utf-8?B?WEJFanQ4M3dEUW1iYzZDcXlwcFUzQ1FvS1hjbzB6L3lqc1kxM1RncFl1NzVv?=
- =?utf-8?B?Vm1HWHh4ZXIySVU3d2EyT0xIMWlHejZMYVNYajNYdk5VaklGTUhlVk5sYnM3?=
- =?utf-8?B?b2d4ZkZUcGZ5ajJTY09ScStZajlsdm9iSXNpSDVJT1NsZHRjYXVBV1VMWEFi?=
- =?utf-8?B?TVJ2dkRiRS9lRlRja1NlbzRGcjAvdUFMSlFlbmE4ckg1aGUxWnRJWXl5L3Zp?=
- =?utf-8?B?T3VVMkNDS3k4cEhpeER4SVNnT05USmE5MmpoSDdLcW16TEdnNnBKU2Z1bnBz?=
- =?utf-8?B?SXZIRE1rK2tua0pOekpRQU1NVjJxTnhxanBQalJvSitXcitmN3V2eHRoOXcx?=
- =?utf-8?B?dk5GT2E2ZDlNamZ6QmU0VHhablZqMmhaaUVJOEl4Mlg0VDhmTkdQRVlJeDBI?=
- =?utf-8?B?TjVrTVEzTVM0VCtZblB6bzJMTzdPZk15NUtkWTlOeTJiMEd6YWhjd3ZQOGkr?=
- =?utf-8?B?b2dhVm9CNUFyTDJXMzh6RXdMdXQwbWlIamNlanQ4UDFxSVhJTmZiZXJtbGQw?=
- =?utf-8?B?RUdaeVVvNCthRnFSdFJLdFllWWVIYkh0VXpWYXFpdHduVHdPNTVrcWxWL2Y5?=
- =?utf-8?B?NzM0dWZZY3k5ZmYzNU9FQUhteXdzZUhJaHkrSHRKMUp4Szk5ZmxScXcwREE5?=
- =?utf-8?B?NHUrcVVVV2R4ZzhzVlFSL0RVOFNlMHFLQ3g5U0hYWEp0Zkk5ejdRZGIyWUFs?=
- =?utf-8?B?eDhKM2Z1NEVzSnBlSWRaNG1wMFlaVnBxandmOFViNUtibDRQSFBDSkhVd0pz?=
- =?utf-8?Q?5XcI+8kSR4SzZOrYbAWXUa3mdio81tHxmxtojetiZlfS?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 739ba5e0-4c8b-4705-1d5b-08de113ae3c1
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 07:16:16.1854
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YIt80NPbtiw0Zx6VfB4TiH9TDq8uFYFYmQ45bFANdGW+AEd3JxK4GhvkxdA3PPKiGamQGyOUwPBwOYnI80JrSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7021
-X-Rspamd-Server: rspam01
-X-Stat-Signature: g3t9f9m9xcjknu73hssmyggsd8zmby9g
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 646CD40015
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 904E34000A
-X-HE-Tag: 1761117382-516857
-X-HE-Meta: U2FsdGVkX19mvBx/bLcFA4nOupa5CGplHzZ+zXshGipXbkpp7z/GZZmbNjOHa3eX1AnBl8IucY0mhdhq6/ZEi2HsJaIfREXxoneEbeSL96phIqjmK2cKQSXDDWIvWE4YlDeHluV9zvE4EnO/FXf72V8Hq248qTlttmzDet4LVS0H2kYQFS9UoPiOHAuKSKaduRmwU00xbbTGYYGdnQNgDecim7F9NgquAQnI/Tbfu9I+QJu7KAaRG4lNlgcxioPCqFOa9rfJ7NfG5HbSZy6bVDN/YxCed97Pt7ej5FGgHrBlGBGIdYLcUMUqx+S1zOZNVbTAdPA4wmQViJZ5ADmnCnHbJenc99MpfWIgrFHd6MZ1GXBo+3sW5BtkHovUkOtO/wOlgbOc+RfIB42vnfMpSJVEc3qQJjviebEN8QQj07lWbeR743dLJhVBh11FvwzDsw2E42q5OiCMUzJ5UkD1MvgWLqhoZaHF2mdQndjO9jW5k3f2haLdYDvncupLLQv+Ub0JD8JFkwGgIwSH7jcZQhJXQZo6YXs47wqpRgng81OOF9WSEkB0Dv5YlOkixRMRObEMNPNDMPIYWOdI633uSXItD9hjEMeuMi0yO9XYiw/8Fmsf0tlhgCdvgb9Xt6CnL3F1o2xlx5HLxE+f7I5HFF9tFpX7EMKtuSOwzvw2wDt+5LeFoGcUa5P5CBomEhhPfIPYG6THgOWota9L/Xo0S7F62tXeFpLSUJ+/Co8XSu0RmTyYOoj2tuR1B7DY1f/l3/ULJgZ0lc7nVuaLBXDLQjHtKPnnIklwD55NC1eYhALFczGYQe62VD+zc0MrDxUg5x4ENQcflSWO/JwBqrwYTd8T0IsOlOJ3HGIIB2Y3l3D0RGNrxeAG+8sXBCVYK5gGJD1cFQ3rFjePj+jTCG7PNcZqy2SMgU5QFjBXJ73bA+PgIAGxRhvnrnsSb2ikaU4oijTvgBhSwGjyJsq38Sb
- YQgR7dNF
- QoQ2NhPHDgbsjjeoKjeS8yr3HpaI6+2errm/50Ky2kmERw1Cd2H2EHpoVisYOutiQataJ9KO9MWa+kj2B3q6ar/6SvffFU/+S/LZ0kOEGyMSgR7iJXwmXLj5RMTTiO3GxbdyjEBvpnLxvXa5RUILQWPQjBQxOMwe01gYxQkwzTCK6tjnXY2NRPHUNBS5YXGQ98upRufQksh9jlEYCN8IV34CuSTB0LketdBqkL55tbX2Td5NzK/J0MqpFxKDQbnGxmN2cdf3bTvE3lpb2+Nqzl4e+FivkzoOfsXwLsFivDHt/ay4Z8hq9sCThdeYnYtaq+dNfqXHSUvP8uTkm4P4lkeQqdaBTcclVF65WAz+0QGLtmTIuDjPrlrwJ4vh9In00hHIK7DH/Ak635mJ2wYzCkVrWTNlFgbNOibQHVyBC5+fgoM0SN+3JCzSjxwLEKARgGhdmwz7RLHRt46n2+s5Qr6h3Fst5V5/MctHlYpWJ3ZFu0RLWSmpGpbpjwex/usqu6JX7/9z3b2jlVHUninDUsRbTIA==
+X-Stat-Signature: gf1aamdbjp9q5h81q5d68skhzx8t8x3o
+X-HE-Tag: 1761118323-635326
+X-HE-Meta: U2FsdGVkX18X+2gOcdxAag3U7mZ+32Ph7bcJ4+Qe53AijmqHKdUQPnYNiRMNqtsuyyql5OAm08bL+iLZFzxymjOSgmmziBQXYnqiQjNMvz8Z2Emc824uwsrE/xCVVTHp4V1t023JrOg2BmSQQBVR6YbeB+GX1jLP40yylIrD5VqgzhMeuqU0UqQO7iZCPAkAKc5eau/3Je69Prq4F46LLZ6w3I2fKZw1BE8BelyuJiKSN5r8vejMRpJpiMQ3v/E4Uj2o9LfxPlmDLem7r4lO9bRaswCSLUL+YvKGA7/2i+foUcTqD+OxbtQcuwb0QUM5cPW11ATc4U/+Tm6G5s7brPRoJJFa53KguL56dfjT2mPfFFf1tByC3u0ylzixdLSmCG+wSJ8Ap6q58XAeSCZmLQW59LyAQnI9BMVTxAY08GhkRf+2//Kh2oOaRNm2TV7aHFe4uuDyDFIlZxQLBjt6xTzYeeGaNiBidtAsrkIb7DsVAUPplOteXr8MXyWAFzscpZZqorvQzdnRchNcAE599soZsCzsgSzIdfAynabzuKr13HpEBKFmfk+i+CT4DyupRQ+2//f20kk9R5ohWQMEENMe5ZeXt1rbZKIejQnK8Wb76aYB/STJSLgiiX61jyIrlze5u7NAg3gk3jnvV8nxBnSCsIVf24fD/2LSeHngK6msTDHjp78xSIZGvoiBc6OYPXGB/D5Tz1wDVubLSekOoGiAJvJsYVqVV5oC9h/6RxKMmR/B6BbSG68jL1wU5D5Ke4s3ytouUiekfB9wDWuHc6YsHDkcvZgr1Un5iIGR60qlWdwL7MRZBy2h1661qgddrDlE2Vt6iGC3O4HPTR10jlQH85cmGSt1Wob7Ejs0abFYjKD9u3wTFGrZ6v1mIgOJ8MLFeSgsrAY6q1yrvD1blwdkRC27vH0/EWCuq3Gw/rupfhlv6IDv9NCfUAA1ViywIduKBX8nmpm4fpQP0qK
+ PUgNXXxU
+ g+suSIF23uWB+VzqsmZn0GmR3/aNScSUNud2GSvPfsV0dbiq+0g6ZfmkIka9jV2aBHTjqPBG3PBRqd74nEcYe5LXDnYMm1UFIqfP0RSJvwvNqTwlJymkZ/BIzS4oRyGL2wGvzhLepVeUmnZ9H5lHIoD9QUU6JfsHiROsyXNyC+r/HHlbd1i8Qr1MURYtZZSxCVnF4fmbAHSRyDpU/x2NfFLYeUuENgpvmfYCB8W4D9JXSMXK6dy9+kyEpplqeaC50qPcY5WmCVJ2xD+RlqmQH+axF+9BL8o1F0A0IS/3c/nVjS4Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -222,238 +101,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/22/25 13:59, Zi Yan wrote:
-> On 21 Oct 2025, at 17:34, Balbir Singh wrote:
-> 
->> On 10/20/25 09:59, Zi Yan wrote:
->>> On 19 Oct 2025, at 18:49, Balbir Singh wrote:
->>>
->>>> On 10/19/25 19:19, Wei Yang wrote:
->>>>> On Wed, Oct 01, 2025 at 04:57:02PM +1000, Balbir Singh wrote:
->>>>> [...]
->>>>>> static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>> 		struct page *split_at, struct page *lock_at,
->>>>>> -		struct list_head *list, bool uniform_split)
->>>>>> +		struct list_head *list, bool uniform_split, bool unmapped)
->>>>>> {
->>>>>> 	struct deferred_split *ds_queue = get_deferred_split_queue(folio);
->>>>>> 	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
->>>>>> @@ -3765,13 +3757,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>> 		 * is taken to serialise against parallel split or collapse
->>>>>> 		 * operations.
->>>>>> 		 */
->>>>>> -		anon_vma = folio_get_anon_vma(folio);
->>>>>> -		if (!anon_vma) {
->>>>>> -			ret = -EBUSY;
->>>>>> -			goto out;
->>>>>> +		if (!unmapped) {
->>>>>> +			anon_vma = folio_get_anon_vma(folio);
->>>>>> +			if (!anon_vma) {
->>>>>> +				ret = -EBUSY;
->>>>>> +				goto out;
->>>>>> +			}
->>>>>> +			anon_vma_lock_write(anon_vma);
->>>>>> 		}
->>>>>> 		mapping = NULL;
->>>>>> -		anon_vma_lock_write(anon_vma);
->>>>>> 	} else {
->>>>>> 		unsigned int min_order;
->>>>>> 		gfp_t gfp;
->>>>>> @@ -3838,7 +3832,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>> 		goto out_unlock;
->>>>>> 	}
->>>>>>
->>>>>> -	unmap_folio(folio);
->>>>>> +	if (!unmapped)
->>>>>> +		unmap_folio(folio);
->>>>>>
->>>>>> 	/* block interrupt reentry in xa_lock and spinlock */
->>>>>> 	local_irq_disable();
->>>>>> @@ -3925,10 +3920,13 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>
->>>>>> 			next = folio_next(new_folio);
->>>>>>
->>>>>> +			zone_device_private_split_cb(folio, new_folio);
->>>>>> +
->>>>>> 			expected_refs = folio_expected_ref_count(new_folio) + 1;
->>>>>> 			folio_ref_unfreeze(new_folio, expected_refs);
->>>>>>
->>>>>> -			lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>>> +			if (!unmapped)
->>>>>> +				lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>>>
->>>>>> 			/*
->>>>>> 			 * Anonymous folio with swap cache.
->>>>>> @@ -3959,6 +3957,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>> 			__filemap_remove_folio(new_folio, NULL);
->>>>>> 			folio_put_refs(new_folio, nr_pages);
->>>>>> 		}
->>>>>> +
->>>>>> +		zone_device_private_split_cb(folio, NULL);
->>>>>> 		/*
->>>>>> 		 * Unfreeze @folio only after all page cache entries, which
->>>>>> 		 * used to point to it, have been updated with new folios.
->>>>>> @@ -3982,6 +3982,9 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>
->>>>>> 	local_irq_enable();
->>>>>>
->>>>>> +	if (unmapped)
->>>>>> +		return ret;
->>>>>
->>>>> As the comment of __folio_split() and __split_huge_page_to_list_to_order()
->>>>> mentioned:
->>>>>
->>>>>   * The large folio must be locked
->>>>>   * After splitting, the after-split folio containing @lock_at remains locked
->>>>>
->>>>> But here we seems to change the prerequisites.
->>>>>
->>>>> Hmm.. I am not sure this is correct.
->>>>>
->>>>
->>>> The code is correct, but you are right in that the documentation needs to be updated.
->>>> When "unmapped", we do want to leave the folios locked after the split.
->>>
->>> Sigh, this "unmapped" code needs so many special branches and a different locking
->>> requirement. It should be a separate function to avoid confusions.
->>>
->>
->> Yep, I have a patch for it, I am also waiting on Matthew's feedback, FYI, here is
->> a WIP patch that can be applied on top of the series
-> 
-> Nice cleanup! Thanks.
-> 
->>
->> ---
->>  include/linux/huge_mm.h |   5 +-
->>  mm/huge_memory.c        | 137 ++++++++++++++++++++++++++++++++++------
->>  mm/migrate_device.c     |   3 +-
->>  3 files changed, 120 insertions(+), 25 deletions(-)
->>
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index c4a811958cda..86e1cefaf391 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -366,7 +366,8 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
->>
->>  bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->>  int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->> -		unsigned int new_order, bool unmapped);
->> +		unsigned int new_order);
->> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int new_order);
->>  int min_order_for_split(struct folio *folio);
->>  int split_folio_to_list(struct folio *folio, struct list_head *list);
->>  bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->> @@ -379,7 +380,7 @@ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
->>  static inline int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->>  		unsigned int new_order)
->>  {
->> -	return __split_huge_page_to_list_to_order(page, list, new_order, false);
->> +	return __split_huge_page_to_list_to_order(page, list, new_order);
->>  }
+Hi, Barry,
+
+Barry Song <21cnbao@gmail.com> writes:
+
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/p=
+gtable.h
+>> index aa89c2e67ebc..35bae2e4bcfe 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 >>
 >>  /*
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 8c82a0ac6e69..e20cbf68d037 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3711,7 +3711,6 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->>   * @lock_at: a page within @folio to be left locked to caller
->>   * @list: after-split folios will be put on it if non NULL
->>   * @uniform_split: perform uniform split or not (non-uniform split)
->> - * @unmapped: The pages are already unmapped, they are migration entries.
->>   *
->>   * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
->>   * It is in charge of checking whether the split is supported or not and
->> @@ -3727,7 +3726,7 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+>> - * Outside of a few very special situations (e.g. hibernation), we alwa=
+ys
+>> - * use broadcast TLB invalidation instructions, therefore a spurious pa=
+ge
+>> - * fault on one CPU which has been handled concurrently by another CPU
+>> - * does not need to perform additional invalidation.
+>> + * We use local TLB invalidation instruction when reusing page in
+>> + * write protection fault handler to avoid TLBI broadcast in the hot
+>> + * path.  This will cause spurious page faults if stall read-only TLB
+>> + * entries exist.
 >>   */
->>  static int __folio_split(struct folio *folio, unsigned int new_order,
->>  		struct page *split_at, struct page *lock_at,
->> -		struct list_head *list, bool uniform_split, bool unmapped)
->> +		struct list_head *list, bool uniform_split)
->>  {
->>  	struct deferred_split *ds_queue;
->>  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
->> @@ -3777,14 +3776,12 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>  		 * is taken to serialise against parallel split or collapse
->>  		 * operations.
->>  		 */
->> -		if (!unmapped) {
->> -			anon_vma = folio_get_anon_vma(folio);
->> -			if (!anon_vma) {
->> -				ret = -EBUSY;
->> -				goto out;
->> -			}
->> -			anon_vma_lock_write(anon_vma);
->> +		anon_vma = folio_get_anon_vma(folio);
->> +		if (!anon_vma) {
->> +			ret = -EBUSY;
->> +			goto out;
->>  		}
->> +		anon_vma_lock_write(anon_vma);
->>  		mapping = NULL;
->>  	} else {
->>  		unsigned int min_order;
->> @@ -3852,8 +3849,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>  		goto out_unlock;
->>  	}
+>> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (=
+0)
+>> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)       \
+>> +       local_flush_tlb_page_nonotify(vma, address)
+>> +
+>> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)   \
+>> +       local_flush_tlb_page_nonotify(vma, address)
 >>
->> -	if (!unmapped)
->> -		unmap_folio(folio);
->> +	unmap_folio(folio);
->>
->>  	/* block interrupt reentry in xa_lock and spinlock */
->>  	local_irq_disable();
->> @@ -3954,8 +3950,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>  			expected_refs = folio_expected_ref_count(new_folio) + 1;
->>  			folio_ref_unfreeze(new_folio, expected_refs);
->>
->> -			if (!unmapped)
->> -				lru_add_split_folio(folio, new_folio, lruvec, list);
->> +			lru_add_split_folio(folio, new_folio, lruvec, list);
->>
->>  			/*
->>  			 * Anonymous folio with swap cache.
->> @@ -4011,9 +4006,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>
->>  	local_irq_enable();
->>
->> -	if (unmapped)
->> -		return ret;
->> -
->>  	if (nr_shmem_dropped)
->>  		shmem_uncharge(mapping->host, nr_shmem_dropped);
->>
->> @@ -4057,6 +4049,111 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>  	return ret;
+>>  /*
+>>   * ZERO_PAGE is a global shared page that is always zero: used
+>> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/=
+tlbflush.h
+>> index 18a5dc0c9a54..651b31fd18bb 100644
+>> --- a/arch/arm64/include/asm/tlbflush.h
+>> +++ b/arch/arm64/include/asm/tlbflush.h
+>> @@ -249,6 +249,18 @@ static inline unsigned long get_trans_granule(void)
+>>   *             cannot be easily determined, the value TLBI_TTL_UNKNOWN =
+will
+>>   *             perform a non-hinted invalidation.
+>>   *
+>> + *     local_flush_tlb_page(vma, addr)
+>> + *             Local variant of flush_tlb_page().  Stale TLB entries may
+>> + *             remain in remote CPUs.
+>> + *
+>> + *     local_flush_tlb_page_nonotify(vma, addr)
+>> + *             Same as local_flush_tlb_page() except MMU notifier will =
+not be
+>> + *             called.
+>> + *
+>> + *     local_flush_tlb_contpte_range(vma, start, end)
+>> + *             Invalidate the virtual-address range '[start, end)' mapp=
+ed with
+>> + *             contpte on local CPU for the user address space correspo=
+nding
+>> + *             to 'vma->mm'.  Stale TLB entries may remain in remote CP=
+Us.
+>>   *
+>>   *     Finally, take a look at asm/tlb.h to see how tlb_flush() is impl=
+emented
+>>   *     on top of these routines, since that is our interface to the mmu=
+_gather
+>> @@ -282,6 +294,33 @@ static inline void flush_tlb_mm(struct mm_struct *m=
+m)
+>>         mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
 >>  }
 >>
->> +/*
->> + * This function is a helper for splitting folios that have already been unmapped.
->> + * The use case is that the device or the CPU can refuse to migrate THP pages in
->> + * the middle of migration, due to allocation issues on either side
->> + *
->> + * The high level code is copied from __folio_split, since the pages are anonymous
->> + * and are already isolated from the LRU, the code has been simplified to not
->> + * burden __folio_split with unmapped sprinkled into the code.
-> 
-> I wonder if it makes sense to remove CPU side folio from both deferred_split queue
-> and swap cache before migration to further simplify split_unmapped_folio_to_order().
-> Basically require that device private folios cannot be on deferred_split queue nor
-> swap cache.
-> 
+>> +static inline void __local_flush_tlb_page_nonotify_nosync(
+>> +       struct mm_struct *mm, unsigned long uaddr)
+>> +{
+>> +       unsigned long addr;
+>> +
+>> +       dsb(nshst);
+>
+> We were issuing dsb(ishst) even for the nosync case, likely to ensure
+> PTE visibility across cores. However, since set_ptes already includes a
+> dsb(ishst) in __set_pte_complete(), does this mean we=E2=80=99re being ov=
+erly
+> cautious in __flush_tlb_page_nosync() in many cases?
+>
+> static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>                                            unsigned long uaddr)
+> {
+>         unsigned long addr;
+>
+>         dsb(ishst);
+>         addr =3D __TLBI_VADDR(uaddr, ASID(mm));
+>         __tlbi(vale1is, addr);
+>         __tlbi_user(vale1is, addr);
+>         mmu_notifier_arch_invalidate_secondary_tlbs(mm, uaddr & PAGE_MASK,
+>                                                 (uaddr & PAGE_MASK) +
+> PAGE_SIZE);
+> }
 
-This API can be called for non-device private folios as well. Device private folios are
-already not on the deferred queue. The use case is
+IIUC, _nosync() here means doesn't synchronize with the following code.
+It still synchronizes with the previous code, mainly the page table
+changing.  And, Yes.  There may be room to improve this.
 
-1. Migrate a large folio page from CPU to Device
-2. SRC - CPU has a THP (large folio page)
-3. DST - Device cannot allocate a large page, hence split the SRC page
+> On the other hand, __ptep_set_access_flags() doesn=E2=80=99t seem to use
+> set_ptes(), so there=E2=80=99s no guarantee the updated PTEs are visible =
+to all
+> cores. If a remote CPU later encounters a page fault and performs a TLB
+> invalidation, will it still see a stable PTE?
 
+I don't think so.  We just flush local TLB in local_flush_tlb_page()
+family functions.  So, we only needs to guarantee the page table changes
+are available for the local page table walking.  If a page fault occurs
+on a remote CPU, we will call local_flush_tlb_page() on the remote CPU.
 
-[...]
+>> +       addr =3D __TLBI_VADDR(uaddr, ASID(mm));
+>> +       __tlbi(vale1, addr);
+>> +       __tlbi_user(vale1, addr);
+>> +}
+>> +
+>> +static inline void local_flush_tlb_page_nonotify(
+>> +       struct vm_area_struct *vma, unsigned long uaddr)
+>> +{
+>> +       __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+>> +       dsb(nsh);
+>> +}
+>> +
+>> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+>> +                                       unsigned long uaddr)
+>> +{
+>> +       __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+>> +       mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & =
+PAGE_MASK,
+>> +                                               (uaddr & PAGE_MASK) + PA=
+GE_SIZE);
+>> +       dsb(nsh);
+>> +}
+>> +
+>>  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>>                                            unsigned long uaddr)
+>>  {
+>> @@ -472,6 +511,23 @@ static inline void __flush_tlb_range(struct vm_area=
+_struct *vma,
+>>         dsb(ish);
+>>  }
+>>
+>
+> We already have functions like
+> __flush_tlb_page_nosync() and __flush_tlb_range_nosync().
+> Is there a way to factor out or extract their common parts?
+>
+> Is it because of the differences in barriers that this extraction of
+> common code isn=E2=80=99t feasible?
 
+Yes.  It's a good idea to do some code clean to reduce code duplication.
+Ryan has plan to work on this.
 
-Thanks for the review!
-Balbir
+---
+Best Regards,
+Huang, Ying
 
