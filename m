@@ -4,87 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3238ECCD1AB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 01:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15847CCD1AB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Oct 2025 01:28:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 562858E0003; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
+	id 5B6B08E0006; Tue, 21 Oct 2025 21:28:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5392E8E0002; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
+	id 567A08E0002; Tue, 21 Oct 2025 21:28:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 476248E0003; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
+	id 4A4678E0006; Tue, 21 Oct 2025 21:28:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38C668E0002
-	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:25:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB6EA5A5E9
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:25:18 +0000 (UTC)
-X-FDA: 84024007116.26.86E52A0
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 57EC44000B
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:25:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w6L5g+CS;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761096317; a=rsa-sha256;
-	cv=none;
-	b=v3ESJ2sxorLimL1wEFPCq3+JrEJJYNiUfT+9scxaDk0cffjL6tfsOGexlBZI7QhtDJNjXc
-	PiGRMJUsR7MaItVvF5Ohrsg+lRCCuHknCv+bVhOH9YBIVnT3aQlWIRhGKR9Y48kwo1j6Hi
-	VJSticBNIhQvf38eGBeGKuhQwsd8/bA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w6L5g+CS;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3C70C8E0002
+	for <linux-mm@kvack.org>; Tue, 21 Oct 2025 21:28:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0ECB211AB6A
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:28:19 +0000 (UTC)
+X-FDA: 84024014718.10.38B17C6
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E5349A0006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 01:28:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gBNL3dOQ;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761096317;
+	s=arc-20220608; t=1761096497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mMBGLFybuvXPMK2gINIMRD6FATE14CDq9nXmqTlEp6I=;
-	b=7PWJCww5SkveXbH/jr5mN5sb1BYonH2MBsc8zWsPbpNJ7vA5NPgDyDw103U/ZyL49qABmT
-	55hsAXzv17v9nnTYjcautssLjmCsCckN0t73nxO0fzM1zwi69MqNuCLXvq2Q7SmeZ6dur3
-	USUJWKPQFvt8vj1HpavnmWyfLPjc/Kk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761096312; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mMBGLFybuvXPMK2gINIMRD6FATE14CDq9nXmqTlEp6I=;
-	b=w6L5g+CSpDmTK0lGQZ8vQhX9tSx4IrSWgy/kHQT0Ps0qtuwwu9xjodx7533htnW0Kicq8G3d9vtvU4ZlanxrVS/SaRXUQEJn4/8peBzsqr8WQzLKKYQkkqlTCA1qn1jZmVXuvM8f7LBOQlHxy3IiHE2L2Et03Z6X3E7jhWsxWas=
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqkgTKQ_1761096310 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Oct 2025 09:25:10 +0800
-Message-ID: <65f4dd0b-2bc2-4345-86c2-630a91fcfa39@linux.alibaba.com>
-Date: Wed, 22 Oct 2025 09:25:09 +0800
+	bh=cbZbIYaArDkWKOuqj+k7VxfsSO/LaVRV6EW0i8CqmOI=;
+	b=ukibMeWB+NZNShEWV020mK8KPyNB6TRgjNuV9RKA4ijP78Jvz/jsfCWMt93YWRJAb4XNco
+	m/sK346S8/LUBUzGxPEZ0mH8rQB5pf+2iA7+1vay95du2JA9pQMvs+ZKPcc5THP6ewrCL3
+	o3yDbkVewFuLyv3wI6RnlVf9xOvtxIw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gBNL3dOQ;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761096497; a=rsa-sha256;
+	cv=none;
+	b=f+yEaIwF+GOjsOaF4UTG9RNxBL4YgJ+1ZeEgJJAu8u7/0g4YWxzETiFH0Ee/+JCh/KS+0F
+	xgunpHyJGYsaDpR3OyMWxEUUt8XxvEFruQm2LmG0wxBdO1zigHxJnCYBU5Mb8yYKFd4WE4
+	U4r8uECGN+IqJ3rvQ1lpNCDGsgGS5SQ=
+Date: Tue, 21 Oct 2025 18:28:02 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761096494;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cbZbIYaArDkWKOuqj+k7VxfsSO/LaVRV6EW0i8CqmOI=;
+	b=gBNL3dOQAR7TzV0Wvx3oL5xWfRBqCvgcdlTkhXXM6WB3p1zSQjOZ5d6mpbXrf9Mamy8tlG
+	htlYBhABwh0jdKIY3/hV3Mp+Y0/esz2qacnO0Az2oxEcYKivo+DJ2l3WXF5FD4kUa9/t+O
+	rRCR9XWbRsPGDdc+IXNmPV/V7tDUuRM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
+Message-ID: <3h26sozqgksxn4fvh7i6qjhtbnrtzit6eluyieyhsvycs3fbs5@ddblsq2crkit>
+References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
+ <20251022005801.120250-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: fix THP allocation size check and fallback
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins
- <hughd@google.com>, Dev Jain <dev.jain@arm.com>,
- David Hildenbrand <david@redhat.com>, Barry Song <baohua@kernel.org>,
- Liam Howlett <liam.howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- stable@vger.kernel.org
-References: <20251021190436.81682-1-ryncsn@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20251021190436.81682-1-ryncsn@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022005801.120250-1-sj@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E5349A0006
+X-Stat-Signature: yqjh8aps8qiyz7dccqjdhmuaoeq5udpe
 X-Rspam-User: 
-X-Stat-Signature: s1ax9oshz534tnr948uugumszeaainhs
-X-Rspamd-Queue-Id: 57EC44000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761096314-231224
-X-HE-Meta: U2FsdGVkX18OtSuUjvS8NmobRbXCwQZBEX5VEO1XV1KzxfWv6VkAlqEKLpDb0ADsFdq2xuryO9FDTgwC28LrWBP/No8W1afOEZeSHZvhsZz78YYkgNH8xPLz1BW8h9mOcUAfD683kkjcXFSY/TUW89TeC/vUAVVnOAqawhPdnW8edfSb3ekf0u8NcNqeH3QPc61CEE6aRvKAo55aNV78efb2kdG2+jJa8UciPM3ofyUkk2kga3faqb/EWQ/umtzSuB21hBZwR5/h0Bem8+3O04fvYOyus9Te4jf5gh/IvQ/zG0R2u7xelSgk9COL9+S+HlPnBe5H/bqIKZWM2+Rg4HyEhP4oRoA09P7Um9Ok1hOB/4qWytz9SHSR7YmcGPSXx6vvtRI5DbO1PKc4IpZ2e4wuEBttNrUomufrrQTfKtxlPkeoNC27d7yWPJFvZnN+FUe+rRChfO48v/yJcynVKOFXz/Xke5hw7+BE+DDAtAawYLlwxJE/riqHyQa0k/nqNFk3wJxhhGgAn5Q6YIqHqr9pQrog14aPPzu9/OlHrysUt57OqnGD8jMAAO/0o78JpXulnvK6OG4YUApTlpL1L4DgdHQJoIS6e1lgO/DCWHQoB+n+hsu6b/S/j5FqSaoe4ArQ+ubwXD/EHb5AvQkl/o69x2jjQvBLrO7P6Xcdzti5Gvh3oEpC+d1W6WpBBEgD4d6/Iw8AvYmP/0mJBeUzSLqLAoOSyTpeAbD/TR4Yuj7LQqGSb+DEDLjr4mf/Bl7KG0adcxZqjZceo7Z9dHaNeQ16WVuLu1D2fzIb1l1feke2ekIjou+kI6VTrjJSozzdT6PBZ5PGAYQA605nRrV6lQcaBYqCK69sM+wqaysyGkS/RIS5ROAya3n4vRCb1Pyl3hmvr3FNPdMs0A4FL0D26tSi18UjTHaLm10JHihrUhmK28IyY9abDSj2alQGp8asqG0KfYgAGNZaQPQ/OxM
- 0aJK6G0V
- z7ZTPClTYVz5PlbP7y/nqnk8jWMh/bBmUlSZ0mWe5xmA3EWakbqXqqryb+hSBWSykn47gXIUMZUFrERz837DbuQC7/Z1lnm9WsCAewVkxBAKYu+4q4pH5oOJSFu1buHb1a2G6BA8c3JA+SG9chDdZnIPKxc1EIygZg1G9OqgrfLj/c2HGMZ0FsVtUDU9VU1aeemApB3WtR/hq7cFy3j63kNdbjF/r5WlFrjtDyO4EkT8YtZbcq7u2zCEMxKs3ar4woliiF0jI1WoBKeOB2SEaxGFf8Yvast2Oa1UNcVraEha3ssCWuyvhvh7jI/kr6Gg8hXFARnkXM1UVU9tNQhfsrbPMruVB3GwSM4doLMXDKkcJWsDrFo6VgAyNuWPh5j2ke2BPDp4yW3B3DTMeM1zEOJIdx18mJmsALiZO
+X-HE-Tag: 1761096496-905347
+X-HE-Meta: U2FsdGVkX1+7odFPZYLF7Q6ECTBvrh2P20TEHy5tjPovvWhBx9WGboju9WbKwp6dwys5gde1ggtO+Be64T/OsEGuHy71iDErZWQnrBP33CQgBkQXyzLISsHnlsJecFrldiIEn3W68DHnal6pbd3amM/ju7G7AXDHMJMHCZaVpCw6ZDDLQ56LAzEcFA9V7xz+MUu4TCz8JV7tNwqmFhk0OtS8CGeLuu7NmYb4qC5v5rjN2MBz1+XgmdaZ7hUZO5ZmxwKY2n4yeCAlCYpfyDAUP3/HSSgOLrym25QKnrw5lJOoUmV+3cs9OuBVdIUIuSMe9unv4cNMZKP7vHUb5b4VioMnY2Ccmidh6n4OZCVwuac5lrKSggpapXF44ZORp0nyGBRBiL/VrN2lhnXZvHr5YSJBsLbXpMlN59bjsjCH1OUplCW5TXEhn0gQVLCYrv+I5vgSznVxVwb1tsfuMWztmL1evjav/nvJjWLlER9SBXUwq57XraZKH/RflQy0/GYbkpjM4kEQzCFp2c6sfPMq42df7xpFx5VWF2WcqcsAslJCE0MPYF2YbzpGmgytMOUlMzMLZHfMdaPAq72bOkrybHRvHarhAI+6nQ66+nJA9U7swcQWzvyrX4/nDW/tBgkxs04K/Rvv/HqghOBOWCIkTqjQufYAb8fUJWJajM13np92W7zoJWaw5kts0KeOzgSwtowOLMgPotTdb86MrNYqyXahNe2zOfUq7nmIBcwejIYaVbhhNRcXwLO4/a1x/6y9OuNTph55RgC24qogu59+rUJcwqhw9EnAMxQxCcXYA6NMykYmIfD8aeymr8hFXjIvogmEH0iYnWcxChktQ4BNzH45Jg20+BQszFhPc2e3JPsCtTUgvA9Hqrn6TEu18IGgdNZlJhBHNQDE6kHem4/HdnTEkljrsqK9kchVsQfoEOsVKOoH/HfboG8HzxseTdAgw45EetMSvBBHY6IwJE3
+ rX8+6Pr7
+ B6d0DJxRsSn4Hs8+UYSxNPwHKU/z3TwJtUvQbKv8DIz0apsLrpJcP1IIQ+mz3l5gShdAbM5w3qSTu2b90paIosfu/rMWz/934EHe7V+7WJAoBYNQkWkOP1QCO00i8NPmRfpEh0L31TrmrYdUUmWOJolyAcg7ZNMwgnxFLXVihwdr6o3m4RQw/mLYXDlo1M168klNyWFoa5uoUEWJVo09x6dh8tlINM4NlYAimvoqPI4DpXi5OoYc+n2FzjjJXTfklyKQ6/LUjbsQvEgdDl0t33eyS3F63WXAF/YjI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,102 +91,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/10/22 03:04, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
+On Tue, Oct 21, 2025 at 05:58:00PM -0700, SeongJae Park wrote:
+> On Tue, 21 Oct 2025 16:44:25 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > 
-> There are some problems with the code implementations of THP fallback.
-> suitable_orders could be zero, and calling highest_order on a zero value
-> returns an overflowed size. And the order check loop is updating the
-> index value on every loop which may cause the index to be aligned by a
-> larger value while the loop shrinks the order. 
-
-No, this is not true. Although ‘suitable_orders’ might be 0, it will not 
-enter the ‘while (suitable_orders)’ loop, and ‘order’ will not be used 
-(this is also how the highest_order() function is used in other places).
-
-> And it forgot to try order
-> 0 after the final loop.
-
-This is also not true. We will fallback to order 0 allocation in 
-shmem_get_folio_gfp() if large order allocation fails.
-
-> This is usually fine because shmem_add_to_page_cache ensures the shmem
-> mapping is still sane, but it might cause many potential issues like
-> allocating random folios into the random position in the map or return
-> -ENOMEM by accident. This triggered some strange userspace errors [1],
-> and shouldn't have happened in the first place.
-
-I tested tmpfs with swap on ZRAM in the mm-new branch, and no issues 
-were encountered. However, it is worth mentioning that, after the commit 
-69e0a3b49003 ("mm: shmem: fix the strategy for the tmpfs 'huge=' 
-options"), tmpfs may consume more memory (because we no longer allocate 
-large folios based on the write size), which might cause your test case 
-to run out of memory (OOM) and trigger some errors. You may need to 
-adjust your swap size or memcg limit.
-
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/linux-mm/CAMgjq7DqgAmj25nDUwwu1U2cSGSn8n4-Hqpgottedy0S6YYeUw@mail.gmail.com/ [1]
-> Fixes: e7a2ab7b3bb5d ("mm: shmem: add mTHP support for anonymous shmem")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/shmem.c | 26 +++++++++++++++-----------
->   1 file changed, 15 insertions(+), 11 deletions(-)
+> > The function __memcg_memory_event has been unnecessarily marked inline
+> > even when it is not really performance critical. It is usually called
+> > to track extreme conditions. Over the time, it has evolved to include
+> > more functionality and inlining it is causing more harm.
+> > 
+> > Before the patch:
+> > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
+> >    text    data     bss     dec     hex filename
+> >   35645   10574    4192   50411    c4eb mm/memcontrol.o
+> >   54738    1658       0   56396    dc4c net/ipv4/tcp_input.o
+> >   34644    1065       0   35709    8b7d net/ipv4/tcp_output.o
+> > 
+> > After the patch:
+> > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
+> >    text    data     bss     dec     hex filename
+> >   35137   10446    4192   49775    c26f mm/memcontrol.o
+> >   54322    1562       0   55884    da4c net/ipv4/tcp_input.o
+> >   34492    1017       0   35509    8ab5 net/ipv4/tcp_output.o
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
+> >  include/linux/memcontrol.h | 32 ++------------------------------
+> >  mm/memcontrol.c            | 31 +++++++++++++++++++++++++++++++
+> >  2 files changed, 33 insertions(+), 30 deletions(-)
+> > 
+> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> > index d37e7c93bb8c..8d2e250535a8 100644
+> > --- a/include/linux/memcontrol.h
+> > +++ b/include/linux/memcontrol.h
+> > @@ -1002,36 +1002,8 @@ static inline void count_memcg_event_mm(struct mm_struct *mm,
+> >  	count_memcg_events_mm(mm, idx, 1);
+> >  }
+> >  
+> > -static inline void __memcg_memory_event(struct mem_cgroup *memcg,
+> > -					enum memcg_memory_event event,
+> > -					bool allow_spinning)
+> > -{
+> > -	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
+> > -			  event == MEMCG_SWAP_FAIL;
+> > -
+> > -	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
+> > -	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
+> > -
+> > -	atomic_long_inc(&memcg->memory_events_local[event]);
+> > -	if (!swap_event && allow_spinning)
+> > -		cgroup_file_notify(&memcg->events_local_file);
+> > -
+> > -	do {
+> > -		atomic_long_inc(&memcg->memory_events[event]);
+> > -		if (allow_spinning) {
+> > -			if (swap_event)
+> > -				cgroup_file_notify(&memcg->swap_events_file);
+> > -			else
+> > -				cgroup_file_notify(&memcg->events_file);
+> > -		}
+> > -
+> > -		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+> > -			break;
+> > -		if (cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_LOCAL_EVENTS)
+> > -			break;
+> > -	} while ((memcg = parent_mem_cgroup(memcg)) &&
+> > -		 !mem_cgroup_is_root(memcg));
+> > -}
+> > +void __memcg_memory_event(struct mem_cgroup *memcg,
+> > +			  enum memcg_memory_event event, bool allow_spinning);
+> >  
+> >  static inline void memcg_memory_event(struct mem_cgroup *memcg,
+> >  				      enum memcg_memory_event event)
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 1a95049d8b88..93f7c76f0ce9 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -1626,6 +1626,37 @@ unsigned long mem_cgroup_size(struct mem_cgroup *memcg)
+> >  	return page_counter_read(&memcg->memory);
+> >  }
+> >  
+> > +void __memcg_memory_event(struct mem_cgroup *memcg,
+> > +			  enum memcg_memory_event event, bool allow_spinning)
 > 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b50ce7dbc84a..25303711f123 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1824,6 +1824,9 @@ static unsigned long shmem_suitable_orders(struct inode *inode, struct vm_fault
->   	unsigned long pages;
->   	int order;
->   
-> +	if (!orders)
-> +		return 0;
-> +
->   	if (vma) {
->   		orders = thp_vma_suitable_orders(vma, vmf->address, orders);
->   		if (!orders)
-> @@ -1888,27 +1891,28 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->   	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->   		orders = 0;
->   
-> -	if (orders > 0) {
-> -		suitable_orders = shmem_suitable_orders(inode, vmf,
-> -							mapping, index, orders);
-> +	suitable_orders = shmem_suitable_orders(inode, vmf,
-> +						mapping, index, orders);
->   
-> +	if (suitable_orders) {
->   		order = highest_order(suitable_orders);
-> -		while (suitable_orders) {
-> +		do {
->   			pages = 1UL << order;
-> -			index = round_down(index, pages);
-> -			folio = shmem_alloc_folio(gfp, order, info, index);
-> -			if (folio)
-> +			folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
-> +			if (folio) {
-> +				index = round_down(index, pages);
->   				goto allocated;
-> +			}
->   
->   			if (pages == HPAGE_PMD_NR)
->   				count_vm_event(THP_FILE_FALLBACK);
->   			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
->   			order = next_order(&suitable_orders, order);
-> -		}
-> -	} else {
-> -		pages = 1;
-> -		folio = shmem_alloc_folio(gfp, 0, info, index);
-> +		} while (suitable_orders);
->   	}
-> +
-> +	pages = 1;
-> +	folio = shmem_alloc_folio(gfp, 0, info, index);
->   	if (!folio)
->   		return ERR_PTR(-ENOMEM);
->   
+> Seems this function is called only from memcontrol.c.  Why not making it a
+> static function?
 
+There is a recent code where this is called (indirectly) from networking
+stack for MEMCG_SOCK_THROTTLED.
+
+> 
+> > +{
+> > +	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
+> > +			  event == MEMCG_SWAP_FAIL;
+> > +
+> > +	/* For now only MEMCG_MAX can happen with !allow_spinning context. */
+> > +	VM_WARN_ON_ONCE(!allow_spinning && event != MEMCG_MAX);
+> > +
+> > +	atomic_long_inc(&memcg->memory_events_local[event]);
+> > +	if (!swap_event && allow_spinning)
+> > +		cgroup_file_notify(&memcg->events_local_file);
+> > +
+> > +	do {
+> > +		atomic_long_inc(&memcg->memory_events[event]);
+> > +		if (allow_spinning) {
+> > +			if (swap_event)
+> > +				cgroup_file_notify(&memcg->swap_events_file);
+> > +			else
+> > +				cgroup_file_notify(&memcg->events_file);
+> > +		}
+> > +
+> > +		if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+> > +			break;
+> > +		if (cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_LOCAL_EVENTS)
+> > +			break;
+> > +	} while ((memcg = parent_mem_cgroup(memcg)) &&
+> > +		 !mem_cgroup_is_root(memcg));
+> > +}
+> > +EXPORT_SYMBOL(__memcg_memory_event);
+> 
+> Also, seems there is no reason to export this symbol?
+
+The networking code needs this export.
+
+Thanks for taking a look.
 
