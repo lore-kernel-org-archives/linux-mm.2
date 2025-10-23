@@ -4,91 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361F7CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 03:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 879D0CCD1AB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 03:32:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C27F8E0009; Wed, 22 Oct 2025 23:12:59 -0400 (EDT)
+	id 9B57C8E0009; Wed, 22 Oct 2025 23:32:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8737E8E0006; Wed, 22 Oct 2025 23:12:59 -0400 (EDT)
+	id 93E418E0006; Wed, 22 Oct 2025 23:32:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AFE98E0009; Wed, 22 Oct 2025 23:12:59 -0400 (EDT)
+	id 82CCE8E0009; Wed, 22 Oct 2025 23:32:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 68AE18E0006
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:12:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17444BC7D5
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:12:59 +0000 (UTC)
-X-FDA: 84027907278.27.6BC57AA
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 285EF20008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:12:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="SJMdsd/v";
-	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6E1DC8E0006
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:32:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EFC981A09CE
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:32:43 +0000 (UTC)
+X-FDA: 84027957006.13.C723501
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BD0F61C0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:32:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761189177;
+	s=arc-20220608; t=1761190362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFkWNTRoB/vWjqG2R3wUjVcnbHUc9YIZUBF8y0lylxA=;
-	b=kuoGWPYNJ22t9mXxioI2lVRnfBi7lt/qUrPVNsblFYvkph1J7J7ax8TRZVtdjuNQQPUTxQ
-	GTAZpZe1QxqDOdyen3aMOKCNKK3pmxBiSJKCAvo0ErW4LYKb87refJwffwnZ6qY1zeHlr+
-	ozUfxQHmH+xpxMVcOpChDAdHi5fwvaM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="SJMdsd/v";
-	spf=pass (imf03.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761189177; a=rsa-sha256;
-	cv=none;
-	b=xlfhWxhXG1qB5VRKo+Ds72nR9Apw9G0JvWjATJbHL3QIYWFKs/IivitYh9cpf/sdS5iUXq
-	gYzyXSw+1GWLVIOGCJSxQnm5GlgROhNelwM+n/8hbDlnJBisTSX2l7HrQueQGhuKBZRA/O
-	tnBzJ09No2yQclIIR1I39jF3sip2SSY=
-Message-ID: <b8c90552-7be6-45bb-b586-ee21f63499c8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761189174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LFkWNTRoB/vWjqG2R3wUjVcnbHUc9YIZUBF8y0lylxA=;
-	b=SJMdsd/v/n7qYpNMD0GsCkMe2XJR8wOEzvSvdCFiCAlKhs6jakoNH86bSAuk2ZTSAVA1yr
-	mcpeQWoWfK0diJ92k0LlQzJPP7wRBJpvB7HdKx/kYWSEsmUfrX5aLKxZp1WMlBzEH+RFZO
-	OI9eYVdTtQKpPqONpyuPavmZfqmz8AM=
-Date: Thu, 23 Oct 2025 11:11:56 +0800
+	bh=Nh3hshQ+ysIn5MUGT4KGHVcRBUUeXdFaGOkh3qi4U6A=;
+	b=49rbQlwhpUbUfVGYxfQLULGu5Go30f+Ewr3gkU/oT4lF7/esH/wB2abBEQUS6pRQ+b4QsE
+	3nxBSjCwRc/CxSOSCNkklnZP4oWUxg1LBkMeVg6JIfqMfi8h0FKQgtCI58bzUQQNeILlTr
+	M4nJ/vDWiLq1Wn4cCQIYbVbB1jUUGSw=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761190362; a=rsa-sha256;
+	cv=none;
+	b=ZgQenzDruSoNjDUQIqjSq2ddnFjBbY/agISZwSU0XbUSh0FQKaP3K88QzYm4jP0bXWZ34z
+	X68yWFiCre6deGGchKY4NABsIOH8C4+R500sfaByaFDgoUuqFsRYmbx6BspFD1hhcdLWAB
+	JQjdsb7UVDiCbXS3jmltzvzpBJJrUNk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AAAD31516;
+	Wed, 22 Oct 2025 20:32:32 -0700 (PDT)
+Received: from [10.163.71.44] (unknown [10.163.71.44])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 930813F63F;
+	Wed, 22 Oct 2025 20:32:38 -0700 (PDT)
+Message-ID: <f9104ef2-8ff2-4111-9a44-33f4d361a416@arm.com>
+Date: Thu, 23 Oct 2025 09:02:35 +0530
 MIME-Version: 1.0
-Subject: Re: [PATCH] slab: Fix obj_ext is mistakenly considered NULL due to
- race condition
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Hao Ge <gehao@kylinos.cn>
-References: <20251023012117.890883-1-hao.ge@linux.dev>
- <aPmR6Fz8HxYk4rTF@hyeyoo>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
+ tests
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>
+References: <20251022032951.3498553-1-anshuman.khandual@arm.com>
+ <87ms5i2z8t.fsf@DESKTOP-5N7EMDA>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <aPmR6Fz8HxYk4rTF@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <87ms5i2z8t.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 285EF20008
-X-Stat-Signature: p3funwigqq6x1m1yue154shyckwxk5ti
+X-Rspamd-Queue-Id: BD0F61C0007
+X-Stat-Signature: x54so16kc1zh3fmjbha9x5x6gm14c91r
 X-Rspam-User: 
-X-HE-Tag: 1761189176-360665
-X-HE-Meta: U2FsdGVkX18UxZqX1HyJ5L/51uWc2QTkUIrCN4F1gfg6wIHXDmFGhwLBrOlZ3yePW3BechOBLFUXpDvGMM1qblMfo+b3e52x/V1R9iHm5y7Xyl1Cw2e4cjLdXsyDhsKChSulum6DRQa4olg/Adv2E1qK2BRdO0RCH5v418pvo+R4Oarm7bknk7AwQZ50e3jKP6DssIWuFNeedXd01c4HU8JQC0hPvI4E0lXIr5PQ1bPTbfI3J7HINs0xtdsF5Wyi8td7RCEAW8ia+4YDUquvMoTq3MzsR/O/ckDly6F48s9+JW+eMym5gNY6UOdzQNzpsno6kuZBhyLwvQNZI9Ui1DxkArhZAI0wwGE7nzugxld0IujAr8E4cxdGkVZFnT9ZDlKQOr81TxhBoWgVti3EZy55W71sadNfn3wokiXhP4g5JhIl3PzLTVxUVcDXrwF87nD3bSC5wAVvT5UI/H5dTYFeoxu0jQnKm5JpiPJUIHdnjfB3t+7yJxUMKLIfSX2wRmV32Gt7vep76LHgxY70+9B72TlvHscr+HZ7FB9g/g6OQoBsSA1GA4REg6IG3QC2EnJHyGW7XQDn7PZgRgop/1rRSTIx1Pq4MC3Gb7D3Nk0Xad9r7zew3DJxb/BnxQYTdNpFWSi2INGCpWrlye3VFf9kNVQ7v68ClkwblfOf/+O4UXfsG0QG+qaizZQha3ZSxvMHEO+NAbnkvp81hpuFmM5iSsZIoWL/A2xvdc0xss6gxS4BLyu6ENwC3nav7D0zIWaenO/ddyczUewOMyioFK7OwgwWBXpEOcqtNuz/QMNx/OI2bf4yQOhrQkoRRvlyp8iH2yMs79C2H9/WjkeqMSaKmRXIpCsEvbFmvsmGD6f8r80xSvuWzU8Zbd/H5ggM0KSefJjXmU29qIJon8U0cbE/MC9N/b2iZjKhtUw0rAwkjKJ+IdrUNIayUMSU+PmA9DyKJiDfNbyQubKbPxW
- ho+GBk13
- O31DxpKjKLknWcdiUHizOzhItiQrHnatkN49UTC/DjkqAtrDvSoXdfcv5HO7BmAMcviBDyyMJP+e5h3Jwhu094up8mQCtRUy3cMJKOeakspC/KTzrl9NtWCsTvUd6CL2L1TdC7BG9LMnU821EsbLrDtApuJHZK4fQjqvv8mKTvBsQKlx4fIqbxPpbrhf46qwyZzdQM0+q2NfprBVjVj5r+1dzm97/iGE/sURyLYEPsb3i98y1cOyWpOmc/TA/of0TKleSnjeOebBWwb/S3BhWD1J3HbzdAXhHZXvS
+X-HE-Tag: 1761190361-152911
+X-HE-Meta: U2FsdGVkX18kqm4HE/mBZLy/UtnGSiKEqBEx3EmJQKHcBiONmSlVawIVzFTCt+n0uAiEf6qcGKaggNxVb7V8lllcj+Qwe/4pN47UIx+UyE8o+Tsev4iZ+x98eb+bgKapwJAF0G2B1GqXZFFNPqX/NxNb6s4Eg0v6AA7COm3OGKdpnWgj4vOLY3JNxSh7MbhlrZsUMOrgDswXAUSB2MSG8HmmmRyL48SUTS+zOo1aE2ue7zUeWOIgURvNm7VuehXZ+uMSBRSQGhUX9Q9Ym1zXeHT5DUVKz/CBRcfCcUPA6wB8fIOJhEDeYCKdeAtwHJ3X8IZzEadNrs7VJRRChPFidPCRhqlH5N4WOcSRYwW6SKkqYfsBsMTetyv5iamyrF1ks3B1pJK4w5fDHTR52aPVOgPgb6LHPg3VQw1nKptH3MZRugRom6e/wjeVoMRiS01RqmZzxONS/QfFPr1NUnjjaCjGij5OYpL/O3sAtxGdOEU3l41Wn7uecpk/N7vUgZVjZ6ZzCuaP4Gj64p8gf9dcLRIdyXEBokH8w+WW0jbbpJiBCH8tDW4OGpQdB4TTP+30zvOSJDmTKLmtOQkVJMvCGHAFItBwRIs4cPgQquUeedVjOfnEYLBdvpRWtHR5Dc90ViBEXn7/S6PRiYkA2lENBsJ2hphQpaYxqcrk8M5eMfD7BHSbg4k3EBUkoAo9FkjchNQ1q669Syn1I8N6OPqGfhOvEVY5Ub0JFO0b5Q1ltKk1vB//5B6T8vh/cOn+MLY8IzbUrC8i2O4ELYtzqjSvkFr+PqVBnT8u0RBwMF65kmMumVOWpQQ1EO5uUlQrjYK9xbL/CIAWf8AVcyt96LYruZ6EFFd5PQ4k0poLy2mJB8XDnRXYhi4OKoAMrpjckk4PCjRE27GK1TQ1bTR/W6l85So20DMZp9jfuNP++oPh/D0ntlJFiEAUQZkVYTybdY6pwgRYA47TCVSaberPPsL
+ 1yCE61qT
+ 66hpNpJELjjJws29+S0QgtRMWV+xLz1w4Bby9f9C8klqQRauxdjGHAnPJ4ypvRmNhphWqx2RM3WcUMhh5s2/rulo3XUbkguagu+9gPJN/rA+YK1ziFuMx2wMH1WpdgCTWBbF50ZNX4rBt8FSaGLvuwkzLwc5ecPB6FXLXCgBZRwJb8wQoxsoLubkTfh50zUeFxQqnKe5EX0VIiFzlX9Jq8KpRbFMmOwHBHXzwbHxAVc9yZ1NataIYYtvJfB29K3GxRoYJweZX527BjMhYYbiQIdlPkMB4pYrFGSHqP62hBU09mssebW9ABxpgrghCiAPwyuhjH52EVyIJ0KDmx9/OW//EAxO+VtF30qPB+uI9jAbs5nVxf9XciBFVG5e5qPPq/u4jpAvSmg8RFvXouVPbNZChoI6pE+84x6cREA5EljtJ0r9uApdXiA5uwQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,93 +88,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry
 
 
-On 2025/10/23 10:24, Harry Yoo wrote:
-> On Thu, Oct 23, 2025 at 09:21:17AM +0800, Hao Ge wrote:
->> From: Hao Ge <gehao@kylinos.cn>
+On 23/10/25 6:47 AM, Huang, Ying wrote:
+> Anshuman Khandual <anshuman.khandual@arm.com> writes:
+> 
+>> Add some [pte|pmd]_mkwrite_novma() relevant tests.
 >>
->> If two competing threads enter alloc_slab_obj_exts(), and the
->> thread that failed to allocate the object extension vector exits
->> after the one that succeeded, it will mistakenly assume slab->obj_ext
->> is still empty due to its own allocation failure. This will then trigger
->> warnings enforced by CONFIG_MEM_ALLOC_PROFILING_DEBUG checks in
->> the subsequent free path.
->>
->> Therefore, let's add an additional check when alloc_slab_obj_exts fails.
->>
->> Signed-off-by: Hao Ge <gehao@kylinos.cn>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 >> ---
->>   mm/slub.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
+>> These tests clear on arm64 platform after the following recent patch.
 >>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index d4403341c9df..42276f0cc920 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2227,9 +2227,12 @@ prepare_slab_obj_exts_hook(struct kmem_cache *s, gfp_t flags, void *p)
->>   	slab = virt_to_slab(p);
->>   	if (!slab_obj_exts(slab) &&
->>   	    alloc_slab_obj_exts(slab, s, flags, false)) {
->> -		pr_warn_once("%s, %s: Failed to create slab extension vector!\n",
->> -			     __func__, s->name);
->> -		return NULL;
->> +		/* Recheck if a racing thread has successfully allocated slab->obj_exts. */
->> +		if (!slab_obj_exts(slab)) {
->> +			pr_warn_once("%s, %s: Failed to create slab extension vector!\n",
->> +				     __func__, s->name);
->> +			return NULL;
->> +		}
->>   	}
-> Maybe this patch is a bit paranoid... since if mark_failed_objexts_alloc()
-> win cmpxchg() and then someone else allocates the object extension vector,
-> the warning will still be printed anyway.
+>> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+>>
+>> Changes in V2:
+>>
+>> - Added a new test combination per Huang
+>>
+>> Changes in V1:
+>>
+>> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
+>>
+>>  mm/debug_vm_pgtable.c | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index 830107b6dd08..def344bb4a32 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+>> +
+>> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
+>> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+>> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+>> +	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
+>> +	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+>>  }
+>>  
+>>  static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+>> @@ -195,6 +201,12 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+>>  	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+>>  	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+>>  	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
+>> +
+>> +	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
+>> +	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
+>> +	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
+>> +	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
+> 
+> Why not add
+> 
+>         WARN_ON(!pmd_dirty(pmd_mkwrite_novma(pmd_mkdirty(pte))));
+> 
+> too?
 
-
-The process that successfully allocates slab_exts will call 
-handle_failed_objexts_alloc, setting ref->ct = CODETAG_EMPTY
-
-to prevent the warning from being triggered.
-
-
-> But anyway, I think there is a better way to do this:
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index dd4c85ea1038..d08d7580349d 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2052,9 +2052,9 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
->   	}
->   }
->   
-> -static inline void mark_failed_objexts_alloc(struct slab *slab)
-> +static inline bool mark_failed_objexts_alloc(struct slab *slab)
->   {
-> -	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
-> +	return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) == 0;
->   }
->   
->   static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-> @@ -2076,7 +2076,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
->   #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
->   
->   static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
-> -static inline void mark_failed_objexts_alloc(struct slab *slab) {}
-> +static inline bool mark_failed_objexts_alloc(struct slab *slab) { return true; }
->   static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
->   			struct slabobj_ext *vec, unsigned int objects) {}
->   
-> @@ -2125,7 +2125,9 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->   	}
->   	if (!vec) {
->   		/* Mark vectors which failed to allocate */
-> -		mark_failed_objexts_alloc(slab);
-> +		if (!mark_failed_objexts_alloc(slab) &&
-> +			slab_obj_exts(slab))
-> +			return 0;
->   
->   		return -ENOMEM;
->   	}
->
+Sure will add the above test which will also be symmetrical with a
+similar PTE test being proposed here.
 
