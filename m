@@ -4,126 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B228CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 05:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED69CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 05:51:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D158E0003; Thu, 23 Oct 2025 01:39:54 -0400 (EDT)
+	id 71F388E0003; Thu, 23 Oct 2025 01:51:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBD958E0002; Thu, 23 Oct 2025 01:39:54 -0400 (EDT)
+	id 6F6EF8E0002; Thu, 23 Oct 2025 01:51:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AACDD8E0003; Thu, 23 Oct 2025 01:39:54 -0400 (EDT)
+	id 60C238E0003; Thu, 23 Oct 2025 01:51:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 955558E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:39:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 493D348DFC
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 05:39:54 +0000 (UTC)
-X-FDA: 84028277508.17.FA4A948
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 73365140006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 05:39:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lVbAATW1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761197992; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EDCD8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:51:35 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF46F5C24B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 05:51:34 +0000 (UTC)
+X-FDA: 84028306908.24.093309F
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 08D6B40008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 05:51:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gxARgeDH;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761198693; a=rsa-sha256;
 	cv=none;
-	b=14/Iq5ppzuCh9hjMkBRaQOMi8LZNPLGXH5s6/Mtj3ScjBxWXKoSXsTsxph4z+41RjcxGD7
-	/mAvG5khGN7tZsaTxYBe3+W/vIlUZohNYhkOzCkgOJbzCtpSC/FEwNMicOBN/cU0h8mBS8
-	2CECVOeHF+uOYCprcj589Ad1gJ7b468=
+	b=wfVc/4IuzcLfWXw1Fet6jcOrc7s8XCYGGm98pclx5etLJwS3TF4Yx9OOKMpgrQVLxvK1/T
+	OzOXtg9Zem6gRETkWleIGK2wNM6fIfwedAvSYY8XXJsKACmPSCZfdk0IsjKK1kuzb69g2D
+	y5qjomj7jGLuymmQG5Qf7T8SM36r4VA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lVbAATW1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gxARgeDH;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761197992;
+	s=arc-20220608; t=1761198693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FsKIh8Sr2YempVn4RfoujlQjHMyiuNGVB5flJcwQHSo=;
-	b=TfvNPgw7AA3rSw2sMPEQAGqRwV8E7JRRqHb0wnnJEPJ4embq+HTyAJ14XST91OtNKdgHli
-	hoTcG8F1RD2KmsmVmbZXZ26dR4qGmvNpIMOC5HP64LdLht3ewsChoTPzzEV1Y+CiYv792J
-	76P9cSr8sm0rD+lqYVTIjFf8NnNlDrQ=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-88f239686f2so42399285a.0
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 22:39:52 -0700 (PDT)
+	bh=+c+NbgHrZN7bWRSFiex5X5KJePzhxA+ZHYyLdwSqtl4=;
+	b=4Z+AzrmLbRsHcVAzCFpZEUT6ZnmrciFNNVilgVbF8HyGj4S7rjb4OluTEzezR3A74oKhhG
+	Wpf1n6BPDRt43n97Xi47J6oN3TC9PiGvsRCCp0nKMAjHsIi70BEqJ/fFVttUBDIXiVwlrw
+	0gEOVny1aeHuLoe/l0RhaKtfW1MxupI=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4e89183fe47so4101461cf.2
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 22:51:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761197991; x=1761802791; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FsKIh8Sr2YempVn4RfoujlQjHMyiuNGVB5flJcwQHSo=;
-        b=lVbAATW1j6dqnhW1OZa6VZY8pxkW/P7VymDb5xu2doJHodalWJpLE3tL7sUBAc4n+Q
-         ewQib6yHGWYwtwsSt6mTZz1b6r7G+K75NOXD05VSlMRoBjAAmqPsD5U+xM5RObse5bq6
-         fUevsBXq9mVI3j0yoanrqRLXbTG6FdJ/VpU68mzdA+NQB9OqlI2icDFWoxBzG4+tIIgp
-         u6WtKK4tB6U9PDxHSr8ApC6fgCIwHu12HFN0ggYmzGs1+IjyGgXv/nDqy/Y8xzSsoUNt
-         kr6kDEkCF6FnJnOyoAoon1epHezmrW0iQK5lrHMfQYQuFSkToWp7fcCzOBrtlUTDaYJE
-         IVbg==
+        d=gmail.com; s=20230601; t=1761198692; x=1761803492; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+c+NbgHrZN7bWRSFiex5X5KJePzhxA+ZHYyLdwSqtl4=;
+        b=gxARgeDHlyGDIcGpMLZEO9F/+buCy5nVMZzTapW3UlipLknkNw/LlfO0Lb2po2qmGl
+         Xd86s5VQmNRDTl6CkxnZLSCzGNL+19qU8IBiFi7MD9JrMe08VMSgLF+1omI4wJaPFn0z
+         i3KkXGx7QW8M83PnILiHlMKcbnsKp/qqmnP9+htUCqdlrNwD6aJxYZQzuaIzpvQv/wBE
+         xohlE39KJvXQW1R/cH6VK01sSDRaSnF59+IUvdZ5sL2D+udr0jwrK5mh65gG+1kQ9T6M
+         oc+MizUuaF8XMzao9uAUweGuemMCXRs1+N1A+ZzfbrrsThyqLwZa3uBacQDtmImG0zwi
+         Kg2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761197991; x=1761802791;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FsKIh8Sr2YempVn4RfoujlQjHMyiuNGVB5flJcwQHSo=;
-        b=fY6W1Ji7pGwVeg5zIw112ta5AUMcYLnImlFw5B67hWATcdLpztc4eiWu69mdVDmSvt
-         Ytf+40qhEdRLUVsf1M/XHPudFtwu57PQ/q543O4LFADaWzKSfJClnFohHBXE6w6kyR3n
-         FLqk6e8UA27B+AFGC+8A8uiShGm07PNZT4/hCE5ZeMTHb2hVLW11KpWalkQcvyj8w0oN
-         h4AFwE02de0ZL5xMFjQ7x/QnXui34USgsJRe6G+gCieoMPn5VyLCsEAB2mZPFtWEPlT5
-         i4ffhkJk15NXa+5nCj9GtWSVq7O88ofMydMLn+noTIyRuSXJq9U5gnGKLzZpQau8IBKZ
-         eQkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJwRis6axrQyBkMbRkuZhpuc2mKImSpLckSuEHLKhl/fQw+8ZmUIdjS6royHskhHGyOUgNXrO4LQ==@kvack.org
-X-Gm-Message-State: AOJu0YzDji9eH+SE3alG9N4x8o+uWeqqAk006zsMpiEQLaBlEHaU0z+G
-	DjLmmYsoorJQo6HbhzXAZFQNLMxUkaukNqMwDW81PFJU7VjAPQwkgx8gJIKBlrC7aQYMfIDfsug
-	cPc68m6fWOTHLoc0+p+6+Rtv1MkGQyoA=
-X-Gm-Gg: ASbGncuPt8zNlRhMjMC5s9wT2JW4IUdT0LF2jZXtG3lasCVaWO+LvlH9tCKlfNrKz+6
-	KzCQPs1bjwbU6RF6dfdIIVnqptr++LzBiRhTA8OdKZIccOLeMYm6a6dcpaA1DIfKCtvpI0RdWJP
-	OG9TZjQr7pq9hpnq/KKPUiJX6Oq6Sb7A3MiQj51dKFoylV0wqI9Ekah5j5dujEJ/5HjlrwUQqgO
-	fSPME3bFyVgs+qLpfZV19ixqai6s+zlHtg+OMm8OyzJbh+d2qMFEQizADmKKxQEiG5xEI2lYnnE
-	tBabA0l1lNjxMk4l
-X-Google-Smtp-Source: AGHT+IFTcAOtXGOZhl7XZO47Jw5as7yHXv1okWMKdwokC78k4R5PlQjBIcNv/sxneXQntHqjozJlsExm4jwJsJf+GKs=
-X-Received: by 2002:a05:620a:2990:b0:82e:ce61:f840 with SMTP id
- af79cd13be357-89070fc102bmr2871005985a.84.1761197991234; Wed, 22 Oct 2025
- 22:39:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761198692; x=1761803492;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+c+NbgHrZN7bWRSFiex5X5KJePzhxA+ZHYyLdwSqtl4=;
+        b=BWs3Dz+Z71aTtsUVqYZsT7JPkWGKm3eU2zrpZ8vbeKowl/3nNJ+O3hCU4Mxnu27H62
+         YpPf5R+mCO+KRoSwwHR3WM/FOrpmfigs6uvy/9EoczouMFd54asHSqTW+35Sis7daOBp
+         SyngITHsn3v2GQ/jd0/AXzby8LxaCNs3eMrrx46qzbKTp+gIgPGJZA36MyOor+0e7Ckw
+         1KvX+/kVv8h/B2NsMlCnwLf/sP4sVfrtBJYngqrPnkAyo7gtPpsvj+JLJlEkfaax7lrU
+         FmMl2pkR3B7QUJXYP4ErpcYpRdfLan18xMfj11wBPU0nrX0t4wm1Pc3ZDzGVa7lIIx3b
+         tjog==
+X-Gm-Message-State: AOJu0YxGxMSBmGzLVEpjnYiUkJRssufLr3V+A2cY5odDwNqXQ8krQU2s
+	9UTE/hg/ZscQD3pBUP7dwukrhlYaGu5svMkQ4nJKtco7PMakYq3aygBGjMOuaBsRTlMsyrCfFMb
+	fU4z4MNTna0I96cmym9mkYst8MGEcU7I=
+X-Gm-Gg: ASbGncu0Pc6zsR6Hwl6KzrKuKo66OTv1YKAOGEbHxLWGBJWYi/MzPGVFYquNa2RGwGX
+	gnKsDK/YiFjymRsdcSScueM7cMWAf4YXkqPGQmpbOgOZZDLI/NC7Oy20sdaBnVgKrJAb5RIu4RK
+	Hq5vjwVq6Pqb1mfv5rjsMoWKATAxGXlPIyDsFRsxSomN0BNLRuBHfg9vzK81UbL+l37QygZzTEd
+	IlzWyXoi9Ah1O1VQCelhdBmIenuxRSgznaf+14Mh/exiFs4OmOl1WAv3D5r6CP2fxZWHCxuqeVY
+	sndRZa/yLqehpoLG
+X-Google-Smtp-Source: AGHT+IG2Mi7vqdQCnyt6kuAmhI1WiYtd9JowlwNahGI5Sn/aHmlC3Vnbemadnf9/Q0GK32HOEsS1UsxfrANhNicTuQg=
+X-Received: by 2002:a05:622a:8d:b0:4e8:a621:7912 with SMTP id
+ d75a77b69052e-4e8a6217a5fmr273669031cf.84.1761198691860; Wed, 22 Oct 2025
+ 22:51:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
- <20251013092038.6963-3-ying.huang@linux.alibaba.com> <CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
- <87a51jfl44.fsf@DESKTOP-5N7EMDA> <CAGsJ_4zPH0fwBOLQwh1y6jG3tCXHLGRCTyVVSCWb+NfLCEMV0Q@mail.gmail.com>
- <871pmv9unr.fsf@DESKTOP-5N7EMDA> <CAGsJ_4zW6ogVdi=t9JCuvGD9N21mA_ORXRCakw4Av68d9n+DDw@mail.gmail.com>
- <875xc78es0.fsf@DESKTOP-5N7EMDA> <CAGsJ_4zKGS-Xd-58ufXGoyRfaZWd8wTgv0b6ibHJ2aS14mQqtw@mail.gmail.com>
- <87a51j6zg7.fsf@DESKTOP-5N7EMDA> <CAGsJ_4y32i3aNYPum=8J3_Kt6vOSisr_jg6btB-YG1uQBqHG7Q@mail.gmail.com>
- <87ms5j4444.fsf@DESKTOP-5N7EMDA> <CAGsJ_4xhJSLnXOZy4kPmnif5Paq+OPN_Ww+rPk2WO4-ADSC0Yw@mail.gmail.com>
- <87qzuu1kg2.fsf@DESKTOP-5N7EMDA>
-In-Reply-To: <87qzuu1kg2.fsf@DESKTOP-5N7EMDA>
+References: <20251022105719.18321-1-ryncsn@gmail.com>
+In-Reply-To: <20251022105719.18321-1-ryncsn@gmail.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 23 Oct 2025 18:39:39 +1300
-X-Gm-Features: AS18NWDKv8WT7U0pZbWb-8Jorrgh3QZSKh6u4PKNw3UoBHBCpCMmg3gw3nK3q9o
-Message-ID: <CAGsJ_4z7SASir4gWThfePdnvw82TB8E6rXnzJ=CieaFnJpJt7g@mail.gmail.com>
-Subject: Re: [PATCH -v2 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Yang Shi <yang@os.amperecomputing.com>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Kevin Brodsky <kevin.brodsky@arm.com>, 
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Date: Thu, 23 Oct 2025 18:51:20 +1300
+X-Gm-Features: AS18NWB1yQIOT_rwx8pqsyu31KsQcKncmHw5kIG8Uc-XrpaBEO8kE7dzlBnI0ZI
+Message-ID: <CAGsJ_4zKcxO-Tacy0jCZSs83+fGsgqQYNib9nCXoLTuL+hdLxQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/shmem: fix THP allocation and fallback loop
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	Dev Jain <dev.jain@arm.com>, David Hildenbrand <david@redhat.com>, 
+	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: q67bs6krkjkorz9eeh6khorxzxow18my
-X-Rspamd-Queue-Id: 73365140006
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761197992-522408
-X-HE-Meta: U2FsdGVkX1+UaQ4fiUJapV4Q96CN3TmldIs1ixObkEBEKxk3OL4yM8RQX4lW7XAh2dTEP/FCeQduuipQVCKkj2NnZYs/38CKn1AzOiwJSVqGUNCSyWdYWXPUv/KdH7Ftngmar5ppwVOzSIxsKRuaEegJUyqW/OpSStyAt9cc6e3fXkKTfYICy0M36LNrwmey2nzZu4YABe81O/jnupUpCcN7+MMboaJ/mlNqGhu6SUQjsdjWQl/aDfghm9FZzcVst+z+aLpMXBQsyTqALydU2cqNuMpImWXPdGMnP8nlCbSxH63H02OQ/YZyyrwfvY380gL+3ORCidzsYJdf5uWcA9XMoIA/ZxqJH1T6Jb8Lr8Urkx+KS3Pmw+brusCycHnrlqdiE1gI965FxPw+WEAN84XSvpcorZ1kNUPqc7hvs1WEQkotrLGn7coitNM+7uIdcg15ERYyZ4Ror672XCZtfyVBvnreYuZ5/pLYqChISL/1d3sR+iyZEC7XNF0O27PAwU/o6MISB14tkXZohlsqNL8KlXJHbwnXckOLkNp832rvvh0FkbVY3Ch/u5e9Zc4wYihbr40EtuzprD4E3qf4yu0jw9/dk+1KKR3aePXGnS9YdijSQ1ZAZT15Rk0FfbzFxbXGyXVdEoaGshqkml77gHUSxV0erDe+QbSoDdeWnaHcVpkl3RXkyjkjZDEMVUA/+f70x76w+EdNO8Pmuvlqqddw7DfNS7CP1xBwEWSWMkkemNOXCarrdWzjfmj6JlFA40GqWTaN1x1QImt60/umy+z4jO9CVCmb93qCrfn/xbF7qoEY+D1AsGLA0/MbRnjc/IaIUUNUoGXTLPI3tUNJ5RFijaWyrnmkaWGm7M+tRD4Kbfw5UwLQE3M9tpLVPYTXU5dWtv5E8G0Na9P33cS9m5Ks1D77D3kijAIyKzR03dB9Lrs01+41mfutpY9RT16L+CzUFkx/ssyO1S2l+eA
- sAsd5HeH
- nVKhwYuL7jOcivkJonXnK5IW7bYVBeCyVND42vhypyFEMxLvsaEroWa9CQxZ9fxzjDlTkr77e+uY3/PibgFx2r78BXlFgiaM0hH1Fe5EAyiBqsGVvr2LkqmsfHHk/V0M+rWII94hOsLxMqWsSVwiVedEFYzok40iv4b/HOZIRzih6RN92cNDjXw2kbbmO32AeDP7KKle2LwawqglKg0XY3DL9MFcpCMQNUqOFGe4XsdOey8VWjr0tT+D8jWut2PVgi2NA3FHSsvBJidDQKKU0/equQXEqcDnR3g0XX9SornrgvnrSoNkQs2mWvKeDJzF/zPoDJzBCG74SrAZmX0JI+eySSrAssPmJ2eY9
+X-Stat-Signature: gmo4x15kjzkb6xt9gqzjd4chykcyh7b3
+X-Rspamd-Queue-Id: 08D6B40008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761198692-944819
+X-HE-Meta: U2FsdGVkX19ULiD+o7Si4nN94ni63NnPS9wUD1aX402E/Q21Hy63MYCTiSJxUNRkePzSqe5ViEjNZi080pNNF+b9kJoiJMoDdr+VcVFwsNFNjq9Gmuo3gpU7JrPV640ADUU1oqsaxh4x7Z0xh7s2vcszkp2EqbJfC+Dh5cBXE4Qcqp2a7+m2KUhRG9Fp9lptblyMeuWg/V7e857RBhXt0uj11xmFtyZEQKnbelqxUtuDiuxTcWSspZq/HSpMgC8IBAjij/WJz2IfzWKn2SVInQ0oNfwREkVYM5j+yjLEKyM465T1Nrg9MPyBJ9q7oJdIcz0CC7OAq7Iz9hNdXkGCXRjI5wlstxs/lD6yqc/v9jhiH8nqi+V+Fc8paxhBYBVjrlXOPNeyy1y8eLm0GnzIxjGQMInavcWL22bHqF4+7WqcK6XnZN86wTSXA84Dd1ZxRFD+lbhN8lI4fvtGV/E5sQdFLnqfI65JQ88XcTRVOtHL3/b7+Bslwnc1HUjMD1SDXaXtaorLtcjKudUAQkEQKDS/FD/ZwemZrGJCeVjk3lhzjbiSsd/D//wQN1Ue87OSn43+Lag8LqbQeUa6o9W484NoQ08zRSiqgEo6ckpIfboFI/7209UDAzixB4UQd8hIkdjW2SnLUCI5bBrZvWfCr4kxGFN6UoRSRe7M0nBlucD2qJyFA7l1HCBA/47FeAXu9aDT6G5wwrZudGkmIxQs7OtqMQCkjugKgPzWoidURCBdZJoLgbbBUFDQVnILZrNwJk+3CdEs1DITZaB0/i/vI8d2QFlz/ubw1wvc10x7aeI3LCUjqdVkQM3wtPqfLZaiBnQpHUQ/kCpwYxwvyotc+ryc9oFYGRl+yTfqNTw1K/nW/IzXx+gDQtr7kXE8QrIr6vkW/o5Hx+lHv5W/5wW1Bnt3sVzE39l9dsn5yDlddI2eCz5M/GPgbq+AnDMu1iZd7x3AvZrstuLTbUUKb6y
+ R9I3Hs+K
+ EVvRuG+CGpVZBUa8C39KB6UqLZLSX06HnesPkffECs3+KEiI0H9QltRUCRT3qcZTJSJAAhgWfP1DnO2cbdgkk8eRsBHRoIUojlKDtJIX2G4H3kI64eZFrZUOgC+MKEOdQzlJIpN53L0wWjGO8/2sWTuodHv/jn4iI0BNLRi1jaM4o50mOSKBp51yyDgvk/G94cyK194yRgeyK1WkEwXVlOowrqMIwayMShK/MgyLaH5bHPicAyMmSa8rPyfYS26rbhwszsnH53saCWWTxuggmkqdv/doWILevGxBUz9VSUB9qenZI5aS74ED4gjaJqqOM0KssIi9tg4dmo17bzdPMdodbNeFxyHUhWkBtaT9hQ2mrqF6DKa/rIFJ7p9hdrAnJnwHPEWTKMD5TBTk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,48 +118,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >
-> > A:
-> > write pte
-> > don't broadcast pte
-> > tlbi
-> > don't broadcast tlbi
-> >
-> > with
-> >
-> > B:
-> > write pte
-> > broadcast pte
 >
-> I suspect that pte will be broadcast, DVM broadcast isn't used for
-> the memory coherency IIUC.
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b50ce7dbc84a..7559773ebb30 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1895,10 +1895,11 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>                 order = highest_order(suitable_orders);
+>                 while (suitable_orders) {
+>                         pages = 1UL << order;
+> -                       index = round_down(index, pages);
+> -                       folio = shmem_alloc_folio(gfp, order, info, index);
+> -                       if (folio)
+> +                       folio = shmem_alloc_folio(gfp, order, info, round_down(index, pages));
+> +                       if (folio) {
+> +                               index = round_down(index, pages);
+>                                 goto allocated;
+> +                       }
 
-I guess you=E2=80=99re right. By =E2=80=9Cbroadcast,=E2=80=9D I actually me=
-ant the PTE becoming visible
-to other CPUs. With a dsb(ish) before tlbi, other cores=E2=80=99 TLBs can l=
-oad the new
-PTE after their TLB is shoot down. But as you said, if the hardware doesn=
-=E2=80=99t
-propagate the updated PTE faster, it doesn=E2=80=99t seem to help reduce pa=
-ge faults.
-
-As a side note, I=E2=80=99m curious about the data between dsb(nsh) and dsb=
-(ish) on
-your platform. Perhaps because the number of CPU cores is small, I didn=E2=
-=80=99t see
-any noticeable difference between them on phones.
+Could this be a temporary variable to store round_down(index, pages)?
 
 >
-> > tlbi
-> > don't broadcast tlbi
-> >
-> > I guess the gain comes from "don't broadcat tlbi" ?
-> > With B, we should be able to share many existing code.
->
-> Ryan has some plan to reduce the code duplication with the current
-> solution.
-
-Ok.
+>                         if (pages == HPAGE_PMD_NR)
+>                                 count_vm_event(THP_FILE_FALLBACK);
+> --
 
 Thanks
 Barry
