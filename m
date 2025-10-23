@@ -4,100 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E0ECCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 983A5CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:51:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BDD38E0008; Thu, 23 Oct 2025 12:40:38 -0400 (EDT)
+	id 9FFC58E000E; Thu, 23 Oct 2025 12:51:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 995BB8E0005; Thu, 23 Oct 2025 12:40:38 -0400 (EDT)
+	id 988C68E000D; Thu, 23 Oct 2025 12:51:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AB748E0008; Thu, 23 Oct 2025 12:40:38 -0400 (EDT)
+	id 84FFF8E0005; Thu, 23 Oct 2025 12:51:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 791DB8E0005
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:40:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12D6D13C194
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:40:38 +0000 (UTC)
-X-FDA: 84029942556.14.0E1C9FC
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 71A0040010
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:40:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D85B8E000D
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:51:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3128D129D4D
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:13 +0000 (UTC)
+X-FDA: 84029969226.10.B5AADF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2698C40004
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SUn7ybvs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761237636;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761238271;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dS/kHyn2rSYrZDIWLh4sztc1+FksVkunul6FLLyz6VY=;
-	b=GmseYoWUDCVerab1hOV+sF+hwDYKCcZAFxVTcMevPlaWUFAHPHsuX94LFm47uyCORl9rrD
-	MHfT1YSezVPnQBKkdvz4Y+1qpIf9q5ixnyLjEeb7BSMlVpUNhP74LJcQe2QIoCOfVFV6cY
-	CxeqItVRc+n09mIQgqbORzkUhmVM5Cc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IqLXlUHCdrJc9SIAhad47PFB8nBD1ikmT2vr+1Fgc3I=;
+	b=2+p4dn5RnspfMAF0XdVUjcwI/D2HeCcmP8QjahfGVdxz/iPkeevEeDXN2VPn8Eloz0IVVT
+	6TELOCFkgw16c7+XwnhptSOW8OOIUFMwSMGuyVZnFNsdb0Ea9/4plDnzPeyfrEkn3BIdUB
+	xT3HmQQ5IV7h6IQXhp5qV2UAFgdhjYY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761238271; a=rsa-sha256;
+	cv=none;
+	b=8Wvu8fC3Jjxe9IWjiaf+hJxlTiO/d0VIgEdJE/UNcpgNWvQN77GvlcLAThUTcft4iTUl8x
+	hh8sX90XT1JVuVG2sM9+b5UV4k52c3/a70XntTWL9BdiETDkCqpiOOxC7j9NTi8mTnxi+0
+	s8R8GbhZsnMu6b9jaKtKpUF6TShZFs0=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761237636; a=rsa-sha256;
-	cv=none;
-	b=hnBK0izckNMIUwn4YCG7yC9tZlgxm6SMV9sUfJNEiyVHohg/RkiaBOUPgEtKPLePSjoHmA
-	TbJqDOAMhm2DYZq36hcjRr1fk3n0hjL/EHbmtmc+CWoAJfyYnhtPk2zDjCBV4fyMn0SkVC
-	p0v1/GyHjhkBXAOEcOR9HOy1fpYjiX8=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cssDh5Wmgz6L57c;
-	Fri, 24 Oct 2025 00:39:00 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id D77761400CB;
-	Fri, 24 Oct 2025 00:40:28 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
- 2025 17:40:27 +0100
-Date: Thu, 23 Oct 2025 17:40:26 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
-	<james.morse@arm.com>, Will Deacon <will@kernel.org>, Davidlohr Bueso
-	<dave@stgolabs.net>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Mark
- Rutland" <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
-	<luto@kernel.org>, Dave Jiang <dave.jiang@intel.com>, Arnd Bergmann
-	<arnd@arndb.de>, Krzysztof Kozlowski <krzk@kernel.org>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, Linus Walleij <linus.walleij@linaro.org>,
-	Drew Fustini <fustini@kernel.org>
-Subject: Re: [PATCH v4 0/6] Cache coherency management subsystem
-Message-ID: <20251023174026.00005b42@huawei.com>
-In-Reply-To: <20251022-harsh-juggling-2d4778b0649e@spud>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
-	<20251022122241.d2aa0d7864f67112aa7691bf@linux-foundation.org>
-	<20251022-harsh-juggling-2d4778b0649e@spud>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SUn7ybvs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D57B64AFD4;
+	Thu, 23 Oct 2025 16:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 93E59C113D0;
+	Thu, 23 Oct 2025 16:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761238269;
+	bh=a58bONVF1hEXJcHKI9R0Y6L9RqhnS7srP5e66tDrhlU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=SUn7ybvsW2sSbfh5QDyOqiYItuRrVMBBoik2oR/X6jSwcw8xCzZNSyAH3kJuYQvAZ
+	 fIo6KUEZadxQPinmEALJmDOm3rVfShb47JolGUfcf+te3d9xJlswn8jZeW/8O8wLVy
+	 qVDuoLA3cNRlJnw5iW+8sXbg9y111abFquceknyyEmquq+BHDWZUCJyEbncq8Lp7FY
+	 DBOSPEacPYHcs2qLyHELmI5eHiRMdbV2uafK8wtCt+/1zu7kM9h7uIwxJ8RrozD936
+	 GUnXMp5w67haXA84AA0J+Tq1l4mt6rPFB7Oxr28WLlSg8fSnsYBNt5BX2iiOeYJtvm
+	 K15fjqJq3qDhQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A904CCD1BE;
+	Thu, 23 Oct 2025 16:51:09 +0000 (UTC)
+From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
+Date: Thu, 23 Oct 2025 09:51:06 -0700
+Subject: [PATCH v22 01/28] mm: VM_SHADOW_STACK definition for riscv
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 71A0040010
-X-Stat-Signature: dkd5jjtfxioarr5rcioxtdjkbyeeahc7
+Message-Id: <20251023-v5_user_cfi_series-v22-1-1935270f7636@rivosinc.com>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
+In-Reply-To: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+ Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=815;
+ i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
+ bh=pkBAvc0IieGGas1vvYQtOkKUWHcQF724uRmRqVMGgPs=;
+ b=VUBVVTDAkz7jwJ2C3jgClL9f8HO15z25YA/BhpcXvfbmCfho9WWkdfrHc1G5gnRgD+BziikYB
+ zc+am72yislC9qPgWwy1p1oGuBPGxvwQo3I2eAaQqJILROv5diw4iqI
+X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
+ pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
+X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
+ auth_id=553
+X-Original-From: Deepak Gupta <debug@rivosinc.com>
+Reply-To: debug@rivosinc.com
 X-Rspam-User: 
-X-HE-Tag: 1761237635-22575
-X-HE-Meta: U2FsdGVkX1/hc6xI8ajBKUqNpEMNq53neyxpY/Q3t1kBPXobyVTYXLntmTg2oQExWOkgyjpx1I6QKF6lV8pJqnFKhmUAfpdwiCKzEUiR6z19yEmzlgfD1wm9YggKQAXGb1CkiG3K+fuEvevx8Wcv8yhxRso8ZU8hK1sQlUMke6Tirae75/AXq/XyOvAvCEBZTRSp8xHkZvX1N7vzfhT1W1TuDR+JHCMEhkMhaC5EG+IvE/2MS0ccT83Syw59mY17/NhyX4fk0xI8ojgfxFPv7lwEFGAEMlputOVfNC58ASzZHoTjpOLpu8UrEfud9Uy2OUXcV/qsw+dJUHkHyfI8NkfMRRF616pUV5fDwBWiQv2+xijd+eDXCTeRpilUlIXdRUln0YHaNfS8UoD3XrUxo52STTDUBNaGzknj5hsy6662wt/O8C66sGm8Sz/oTxouzngwFjS4DSt3N2edMlqD6CEP4TdtfWAnO1SzGoLRWgY3TNsrdGoFmImm7GzN1aUYPK5ZeyDsxPqtlljG60bko7ETfVxuheobCxcL0lKU9Wd1pHTztvV4n24KHFch69D+AZHj18R8z44bMDeiTYqCvLNBm+k2c5sKhQ4e5RAtjhzHlQRhwFRLyix1HcoGR0cxSvI+Vi6cDtdNLBw8frGNZbK29GTw/HEI6ssH5ar3HEbb+zW+9KgyvbC85sKHhjbgPmj1cZbrIi41ayDIZxkDmRluP6wV7DnwhxHIc1cMClTnnDMlrqOxG4O1jEoJxYSvhXmxkMyqz28o2E4nTdlattj3jZG97JOB/t+wLp2hXm/c3/wgnIa2dL99sTtrMqOg7qokrqaYunsUJvxj0SGk6J+uKnDl914YKrovJRSdJH1zBYdcKn3hHJhVnJzCFIOiFPfjRfModx3da4Pb0p6pTtoN6+CcGWd6iXeh710oJs0WdJmAAmmKWAgCUax2FsL85vmflAAIw2U4f95JZ5S
- XrmMn0Nt
- iG8OeqhOJGWAY9rKaVutRBj7FRE/99S4jjo0cMQgnFmDOif0vYRQkXUavwaFa/KNDNW/1MTEegaMYfz1qf9SLczpe2E8tLDi3W1SHahHX2zqA6BuCDgGSGL4ihGSmxWYYWFVlmmFc0MqwcDhw+XzAxM1R/wBKoosyqTe1LgcDAMo/orKqH+/zk2qKRfijBZizDUOEIQk0aD1OPrTKNxGk0vmipKxtsK9P83aeLf1cP9L7EfSQF88IgG+0XqP5y2h00LxWylEUCcceCOk=
+X-Rspamd-Queue-Id: 2698C40004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: burfmd3jkww4xy8degmcf6wbgucu793p
+X-HE-Tag: 1761238270-262534
+X-HE-Meta: U2FsdGVkX19YzRhpHDcI+5PBTM39wl3UHI14GCs4IanW6Ok1CXKKT7NpiOElVybBX4BHZJEhqr8c2Aoq/gDkot2InC6KJORvzsynl5iGPENL3yG52Rq6L2LuO37oThXp3cXL+EE6GLMsOjSLS2gHfSWLwnJQoiqw1a6oLorR8Nm395IbN+8tZtXCuTJMpprUnV0FAfoI5HNGWPyj+dGBcgyzEyVDp452XSSUmZDOspGM0pNFr1Gw+dhiEllVEbFZCtDLU86d/x3wIiyEmWdRSBThjeh6V86TGXi9aSGKjTq9urcCOonTaERjP6QA0bvXvjnbKwHUST1rQ5lEdQTAOhyEenNbrkXtkFLAATHNEd5oF3wrXfm4NhuAa1FzZQFqTkP06sEPkLjU2O9RIPceUJdT1xzkV0BfMlo7kUDvDvn9A5RGO2WVml82brTtJdC/V1fl0DtGHh6y+uqniet98rCmVA49IX554n+KTUVSc+99ozLqQIdSU3QivOsrmG/CskyO5qwR3WR6/eeUwgvgrbqFAA9SoNs0H9DuD1qnqxz2s/7nRPZKxnLxc13qGKiXxxkBxluwdbv562ZD++yQ42QSzPL2d13e5Gk41EXvIVQUGgve/WB52gIqRyrpwmF1QBBnhwn7RpJw/VG1OmiJlojtDQJthJT9U3H572a4RHmmeZH2vmfzxPWcCmXQqMCdB8oc1vLMx3JehWhiehAEWSW5p51FFgBkY5LDHHpnqCOCj1UH5KbYyOiir0J25CS9OchVzLwvxBFwrEbTVzRwOr6BhAbuHXm477a2YDGsL4EEbBi5ctA1a/O12/0dtqup64DJqPzc4gIpofVYTBd6DBoqw+Hi4+oHVdoh4XMw0t0ZtXK6uvGzUENxoZpkRcliHJrEUo9Oss91LXzThjvtMV9DrCOZSDacpSnTqiKCWpR7OPpH6m7R0dGvSz/XftumBSJqj8eMfucrLRBaFHt
+ EqMZg6SD
+ V3TRHFBD5LBSCPmA2PUU4FNeuqfisKu+vv9xyv4ds4S1cHGB3Pr3qNglyIEbn90Ni3rlYDVj8L+R43BU355ttjAS7bMi4+AEY5gAzSOcJDPR6D+Owtht/Nx+ElG2ApohjhTr/GQ1qCeN7mNYTfthZ0/S+ZS+WlNau4NeJ+qtgQZ1TxQlZgVqhD/S0bJC0dvLCzaADTKcFiODXMJQNOXE8jEwmSs9TL6TA/B/LpfZCHRyvGe5YN2mwUDoMguInA/CdK1YwPt8XWYG+bgeUeFUmnzrxzSK9hwMUdz9UvBMj2xY+xn1hNtpC7xLCelqF8YmHVMKvAo5B17sXsAmVfTU1Lipfk0P71rp/dsDJ5HkJDcrlL8Tee75ZO7YmDIYhaiThvOlgOKIxiF7xawuJkR2t+08oe7Zri29oW2xAsFi+UBiKMbzd9JLzaDibiW3RZzAbYXKXtMfOZ/LhhFbiTsOvB428Cn7xjqrYvDfQaWv2FARqn0arRomELFNwS0BPf+723XpiIBp8oGqf08dVyHZ0qrF00Pk6r/3Tv0ryjlJBVMbIrJXccxOLtwJDnlC3b6jH+ZTwAezj+cPjdBZ2TGTcXZqKViqNyRGpjpwJFGi/H5GZCkOoV/bzCrIdlGDk+TIcSdnvGUn14PoVjbc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,67 +136,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Oct 2025 21:47:21 +0100
-Conor Dooley <conor@kernel.org> wrote:
+From: Deepak Gupta <debug@rivosinc.com>
 
-> On Wed, Oct 22, 2025 at 12:22:41PM -0700, Andrew Morton wrote:
-> > On Wed, 22 Oct 2025 12:33:43 +0100 Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> >   
-> > > Support system level interfaces for cache maintenance as found on some
-> > > ARM64 systems. This is needed for correct functionality during various
-> > > forms of memory hotplug (e.g. CXL). Typical hardware has MMIO interface
-> > > found via ACPI DSDT.
-> > > 
-> > > Includes parameter changes to cpu_cache_invalidate_memregion() but no
-> > > functional changes for architectures that already support this call.  
-> > 
-> > I see additions to lib/ so presumably there is an expectation that
-> > other architectures might use this.
-> > 
-> > Please expand on this.  Any particular architectures in mind?  Any
-> > words of wisdom which maintainers of those architectures might benefit
-> > from?  
-> 
-> It seems fairly probable that we're gonna end up with riscv systems
-> where drivers are being used for both this and the existing non-standard
-> cache ops stuff.
-> 
-> > > How to merge?  When this is ready to proceed (so subject to review
-> > > feedback on this version), I'm not sure what the best route into the
-> > > kernel is. Conor could take the lot via his tree for drivers/cache but
-> > > the generic changes perhaps suggest it might be better if Andrew
-> > > handles this?  Any merge conflicts in drivers/cache will be trivial
-> > > build file stuff. Or maybe even take it throug one of the affected
-> > > trees such as CXL.  
-> > 
-> > Let's not split the series up.  Either CXL or COnor's tree is fine my
-> > me.  
-> 
-> CXL is fine by me, greater volume there probably by orders of magnitude.
-> 
+VM_HIGH_ARCH_5 is used for riscv
 
-On CXL discord, some reasonable doubts were expressed about justifying
-this to Linus via CXL. Which is fair given tiny overlap from a 'where
-the code is' point of view and also it seems I went too far in trying to
-avoid people interpreting this as affecting x86 systems (see earlier
-versions for how my badly scoped cover letter distracted from what this
-was doing) and focus in on what was specifically being enabled rather
-than the generic bit. Hence it mentions arm64 only right now and right
-at the top of the cover letter.
+Reviewed-by: Zong Li <zong.li@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+---
+ include/linux/mm.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Given it's not Arm architecture (hence just one Kconfig line in Arm
-specific code) I guess alternative is back to drivers/cache and Conor which
-I see goes via SoC (so +CC SoC tree maintainers).
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..2032d3f195f1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -380,6 +380,13 @@ extern unsigned int kobjsize(const void *objp);
+ # define VM_SHADOW_STACK	VM_HIGH_ARCH_6
+ #endif
+ 
++#if defined(CONFIG_RISCV_USER_CFI)
++/*
++ * Following x86 and picking up the same bitpos.
++ */
++# define VM_SHADOW_STACK	VM_HIGH_ARCH_5
++#endif
++
+ #ifndef VM_SHADOW_STACK
+ # define VM_SHADOW_STACK	VM_NONE
+ #endif
 
-Given there will be a v5 I'll rewrite the cover letter to make it less
-specific whilst still calling out that for now the only driver happens to
-be in an Arm SoC. Will leave some time for additional review first though!
-
-Thanks,
-
-Jonathan
-
-
+-- 
+2.43.0
 
 
 
