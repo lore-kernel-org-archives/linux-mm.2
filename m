@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64F1CCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7492ECCD1BF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:39:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 907F28E0021; Wed, 22 Oct 2025 21:35:57 -0400 (EDT)
+	id D4B698E001E; Wed, 22 Oct 2025 21:39:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8878A8E001D; Wed, 22 Oct 2025 21:35:57 -0400 (EDT)
+	id D23318E001D; Wed, 22 Oct 2025 21:39:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5542A8E0021; Wed, 22 Oct 2025 21:35:57 -0400 (EDT)
+	id C394F8E001E; Wed, 22 Oct 2025 21:39:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E6D48E000B
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:35:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C333848F35
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:35:56 +0000 (UTC)
-X-FDA: 84027662712.29.A77C4C2
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 802C2180006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:35:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S3cKaMM2;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761183355; a=rsa-sha256;
-	cv=none;
-	b=nysvCP/iWA9QYNBCVFCBVnnEa6MyQFqon9gudEw1bgvqn+ingHCaLEoJdpBaw1lcIV/Hui
-	tHy5fYDE0lQjvbTlDlxAr36d5fIz7A/thDIsoiwEYat+Fiy5lvCsLsscAWQeOYe5U1xPUl
-	l5z+VNfriURuMd4S/VLZRaU94TVfUH0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=S3cKaMM2;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B38558E001D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:39:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69F7D48E8B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:39:46 +0000 (UTC)
+X-FDA: 84027672372.04.4D5B0CF
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 793ADC0006
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:39:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b7rmU2yr;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761183355;
+	s=arc-20220608; t=1761183584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xZoFZJoxb9y1LZCkJZmtsvoXzYL6A98kvYGf4H0CrGo=;
-	b=sfmiO6JUAyUrUm/xWchYalxBJ/2rPIb3KNvnmRgA+lO+KcAqN1hmnPnQ1wR1pip2eTaprZ
-	+4nYpOHTzEnKxmpH+sMb2/S78zWtNma96kcuf5/IFi6QOy59fhP9MzcdeYe+eH9ecQNCAt
-	FFIN8Ht9e+muolYx1O9XwjouZCa3uGo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761183351; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=xZoFZJoxb9y1LZCkJZmtsvoXzYL6A98kvYGf4H0CrGo=;
-	b=S3cKaMM2tt1+ZEXKfeT+R5KCrldqOtm90skSeFXrnP9FpErDMnrBc2PCv0tYfl52D3fSvQm19i68kM9ffhcWTRNKp5XOskp/Gd62D2x0jwoZAhSHZUbry57qqd9OshagSKDnLohTnmiV33u47G03AZFKjQPVDUVLkK6R1IwH8NU=
-Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WqogSiG_1761183350 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Oct 2025 09:35:51 +0800
-From: Huang Ying <ying.huang@linux.alibaba.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>
-Cc: Huang Ying <ying.huang@linux.alibaba.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH -v3 2/2] arm64, tlbflush: don't TLBI broadcast if page reused in write fault
-Date: Thu, 23 Oct 2025 09:35:24 +0800
-Message-Id: <20251023013524.100517-3-ying.huang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251023013524.100517-1-ying.huang@linux.alibaba.com>
-References: <20251023013524.100517-1-ying.huang@linux.alibaba.com>
+	bh=aCgsnRi7DdXq+4PeoxX5w1Bin2sJADD0GjGW6qb07u4=;
+	b=Xu9BYsDdJCGhxA9rJTxbe2vTErKQwSDrkbtJdD8qMs7T/VYlXcnlrQIHhsX7TCBz/+0MUj
+	sXlaX8SbvHCUNkbF7/Px6LxidWsMJcbwy/Nybos/GZftDA3ohTDfpiIIia0cy+rWgg9eUB
+	gkNrj7hLFyJwWXgqDiA4+i2nxkQ4Mlk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=b7rmU2yr;
+	spf=pass (imf22.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761183584; a=rsa-sha256;
+	cv=none;
+	b=SvbpODrxVD86U/MCx7NX2BEq+knV9ShilcSlwd90BC+hlk/f+tzpqLtYotk0SUu43eoPaE
+	vIg6Nl27gBvubzdzsqpgDEJgAXsb4AjLweS9vwNjhLQuku4YSv3T14CqxGK3NdeXElf921
+	tYPo3VrNZ+9rorWFSYcawzWqAbYdwQE=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47117e75258so1552785e9.2
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:39:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761183583; x=1761788383; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aCgsnRi7DdXq+4PeoxX5w1Bin2sJADD0GjGW6qb07u4=;
+        b=b7rmU2yrrIMYCpX++1LIzEahlpThifK0rzxIiQ+EGlkXqALcph72la3aocW+m5lorx
+         EqsWHxW3jtPZXkx0YDYl0uTZhzcSv2eRdWtjsvP/pgaDY9NAVyrqLS2VtvV9aVZvaBb2
+         f0LHygY/mAtEdryHLlKAiSm2hFbnNfjP26WzNZOJ2ynkW8esxCyWaEBjjIysve0S5eJ2
+         RdcHTOIk+FI5oMQwevByMBiwN0nOZLdT/s7JVsOElFZnQETz17k1K31g5WwPxku2GVem
+         A7nSUw1oxaB6ROYbB09EpeZKA1aT89sksbyW3z16TDmBmSRcky8OSPLsMev3IsT1ZSqB
+         7jfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761183583; x=1761788383;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aCgsnRi7DdXq+4PeoxX5w1Bin2sJADD0GjGW6qb07u4=;
+        b=TSTvNvNK1Fr/cJdOuJLTUX0CEMfMae2/Gz/MCQh+we0MBkLYxoQiPvuc5dgWB5spGi
+         enTXIGszk9jOOOk3F6MTT8X6RZjcdo/a3n4OcMBhSobyX7zvCRHqT9t998No/+M4cE93
+         8oKnVxBE6D731/1WXoApJr11fII9chScqCqUaQYRv7JZPvKfWrcv+Th6lHevh+iqpJTT
+         /G0KFpSgLINjeXwQH9So1F0ocKD0PFQpjZY76K5+9pk6qGuojuzT7yEG1URg18zUB4Ov
+         6+sIpJYgFOqT4mrWspq1F59hs3TYXiLR1cH1VtfZV7wRbdUhmaqWnTpKyanBAsisYcI2
+         VWlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjhkD1oay8+3hqa6pK2UQH/P2klL/wP0I0a0iQUnVicApen8X9l5+oyKWeA72aIXeQej3byZnz7w==@kvack.org
+X-Gm-Message-State: AOJu0YxfZ5rw6OcSeIkEBq6vscKfiJXks2ooMzOxq11y7mm3MKXSj883
+	EYzs2Vj2Zrn98L/rEPqn6lrGM2lXs0a/eN4NZSjjSH3Mytqh3PejgjVgzfwiQxDeoMPWWR7rVjI
+	qvAxNHki892Yy2FbLNW62SW/Ofbe3XKU=
+X-Gm-Gg: ASbGncvw4RDV7MzfIk00bVKuGpo7ViNQUGL7LlQnaLfVbslF9ZPREffgIJB8M/I4NuZ
+	gmn+52X3kPTZ05GqdpWToJCFi5iytxOcrEYgHY27Vu0TVSlTxiS/YYpknh1AqVngg9v0ltk+sVw
+	/CDPG5WY8tv8zGoWLvvip7Na9vVdlHHgv0pCoq4KdWD/BkCXZP7mCZlYLQkNFlW1niLGVgzMrPp
+	ZQEf8yfC6JN8A4OLfTi/VTeGlJmDk2+NNPo6N2OrvJpmXgE2WP/lnphEQP7o3Rq+7LOJROvKAfZ
+	iNdY7np8xi1Uzim0QVlFuJC8ddn+
+X-Google-Smtp-Source: AGHT+IHaoIGDfmHhdkPRo4MNsgmOBYeFnVuSgdjaRFMt6OjYkcbtKdwZsGshPjXi1FZxU1k9s1QNF+wMZKYGxIIs7as=
+X-Received: by 2002:a05:600c:34d0:b0:46f:c0c9:6961 with SMTP id
+ 5b1f17b1804b1-475cafae8b8mr3068325e9.14.1761183582636; Wed, 22 Oct 2025
+ 18:39:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cqbq3qno8m4op3nxgdpyfu955ggccdo7
-X-Rspamd-Queue-Id: 802C2180006
-X-Rspamd-Server: rspam06
+References: <20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com>
+ <20251008203111.e6ce309e9f937652856d9aa5@linux-foundation.org>
+ <335827e0-0a4c-43c3-a79b-6448307573fd@linux.ibm.com> <20251022030213.GA35717@sol>
+ <20251022143604.1ac1fcb18bfaf730097081ab@linux-foundation.org>
+In-Reply-To: <20251022143604.1ac1fcb18bfaf730097081ab@linux-foundation.org>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 22 Oct 2025 18:39:31 -0700
+X-Gm-Features: AS18NWCpy-eVIKqwjq3HvvI-t1t4YZx5136aumXfPGuarDyJS0x745rdekxcgMU
+Message-ID: <CAADnVQ+o4kE84u05kCgDui-hdk2BK=9vvAOpktiTsRThYRK+Pw@mail.gmail.com>
+Subject: Re: [PATCH] mm/kmsan: Fix kmsan kmalloc hook when no stack depots are
+ allocated yet
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Harry Yoo <harry.yoo@oracle.com>, Michal Hocko <mhocko@suse.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Eric Biggers <ebiggers@kernel.org>, 
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>, 
+	Alexei Starovoitov <ast@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 89q8bpz991rpjo8zb3ujqzm4opi5qhha
 X-Rspam-User: 
-X-HE-Tag: 1761183354-560357
-X-HE-Meta: U2FsdGVkX1+i53+Qs8QXkPB+5N59q12KBc8d8nIFQU0X9qhaD0HwkJhyJUw5NEp1zW2/u0W9CEmDiaYGjIUSo4uybgqfIWODywCH8AOhEuJZ7cdRgmIFh4iPuAr66+5dj/ae2hPBoaybX1WuuhOdxvo3KFXZp/N9r+ojDNYPhZNy9vg9RtJCs07AcNEDJB/pB2mWYLISJHAiD6s8TZNeJdQ08KvGW1QlHhmWdF2t+pkAoFWRmwHFmZPntZmvqz5Hw3OarLY7V3erhCp9EdhTPMzWPgxTTX8ptM7CE81PNFFxIZYEHaCDfZUdaVELT6chQn9PvIMvFF85H0NuSpD2oCXmiKwuaWjLfikI96O+6Ymnk57e/oHvRLT/XjFrzne4iGpXfOU5LwaMTjPMGFcpYggeyHCUTN2HJDRvNxcN+BXqbGnRTtgUn5pVJsT+dNJ1p+jZPiq4P3EZ4JiSaVM9SOzMk7vMl+jGs82W4lyb6FySaGmdIS3oYDrsy2tp4VgSUmNNHQkIWvA4l/bTvksMsJzGGxKqKxWBhtJaT7+Mp4FHEBYglwqwn3qdznfdoMHij87sJp3slkt0hh+uc0tpxiZxrR+fjchSdBCFfNLvS747lAavbOBPVRM4d+Ims68KFvAGoRQUXLZhbZWtrrm1L+YhpX3PwZD+PZei4eauyvx8WQCUDtJmIuuaLT2rEczXcS+xonzJofCQyWbPHs0bi/bvptkbjSAZpGzmIeIAHrzueSTtpacsba87hYRHCI/jH37osEX5pyVSxT18ID5+fmG5Z5tLw0o+q4bA2ETYt6XNXDpE92MYpPqLAmxWmY+loJnLS+WfoumnqVNdDiaRNyn4rg8FfZfP3z8TREkUPS1KLLxOCwICCkscmOkZ8LsObV9/8Ds7tE920BlVp9qKuC8ElknuoL59aj3oO2GYPPsZ1LabfC4u2PrATlDqGkyxPTF4e9+hJypRj3XCA+V
- +LkWkbE1
- EOpP6gnq35EKtZieKiHezPuAYfHD6JOX28JW4l6zaggHcem2m20qI/k0rkrGxrj7qgjEp5hzBUILkXuMYBGBLLJvPsdVYPFwAKZibnWcjRqOxo/z1lTJeBheYUq+dDcTZzLQne3QBDK/9gYii6nBCRXIuwqSh2/FDH/vsCVwuI5lsse5+gHyFZ2R/lY0H0QaU/PJZ/OY8U4Rvqjc44jCbARHZ7P87FsKyBW8eUVTUA8j7GPMtnQah4S5y94cIxNRx2Bv5JUgGFQLJyb6Wo07ERa75IyiO+JUHLmkBRRirgru9hd3QUxSHYY6LcJvub8LbFQvPTb5OBYxj+dfz5rcnOKcucZXB8wCHEpwXxJGGR8gytruEu1KoSSGQ4FoC635VLi0ix+Z7z0psae2tD0MAbPV4RhaO9RrdDHneNTWFuLEs3ffUe0EqFsn172uU3ruhRV2dDwEk/M2PFDJQ82AbilN4sKF++vI0P3XwZ5OMW/rnDjCtUcOOl9Yn7jm5mYLezC+/xTDbFVJ4voNOMjspbHvcHCtGaodPoWCoRQ/AgZIOx8CfKActXirvcnhLbtwvF915IvbGC1fY9DMegaXy4O2e+i5OjIYqq9T1aTmKl6XRZ9+b8NLcwPBMcM1Y83ValbTH07mNU8cqXPyu4O2IG8hXdfc+wqfkU0GEGk1s954volQ0Qx23yl2FpL2KzPnZUDn4ZEwtp24It+4jM1tWkTgR5haXGL5SWW4O
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 793ADC0006
+X-HE-Tag: 1761183584-775276
+X-HE-Meta: U2FsdGVkX1/2OIxRdTKUzebS1KLCPyBPPAWPeDd9IAPIRIIInn19XHxa4ImG9K7kbBbsiiRL2KAMOG0YW2ZzTRxP3q2F5Tc+adcT4rC/n4+n08i1I/dQpunFiaAUarW+wRpKEceeUZyc4MUW7YkvTL+ZGyDxFspY+sFib8no2EisX1x1D6zOuFM2pgkC89MU7M4u5iTQkFDMzhEpr0bi1ZVW+/JE759+qKc+laSjjYFjGJYs9EBQcRUJefAIZVUhTy8YWs9D8xwCO3b4ejZSnxLb3bcE0jrPHFZs6wOUCyHJ1lqPrWSL5WRHRc+ebQCRL31BHLlaGBt+LN9n487ss73OAhbvSGkcL4cFpD225m5QDpmfDRCymeIFIfWsDDU6WL4jBPRlQlEN/YsPXx0P25+c8cMymGo6ennAv8USUvDWEG0TuzsE8SPzlZ3gPbl/FV8HUidgGQ/9+CIIO7Qfsz7FVAaOZfRqYPABve6zCGaB7oPfqxZ9uTZnmst865tMXtYk0p0MKn2KTu7zl4LydNTHNP64+LgsAoh78UQXyma8I+F4W546O29cQyBU72F+ukRhPMCTCBGD6kS7Mm99ow9G0WAop3FAtzUxiOESlyDTsoM5qlFFfkrikg9G6efDYi+35qjjPh0lpS3ZwGtXKddKzn+5UEBoy7G70NQgxiT9KFyQHasL+aRqXgtOTJtsXqx1DvF675R0M9aeA2AQjtenHHJVn5kKIEkrcK0cEloEIwwFvw4/LVZPmRXCpVmC419XacFM1gy9qz0lWv4kjYqV4RyddUR90lh+v8eEmlRV3/KWDJflGiuaTXBGtebKbjEFpDmjqRPbJ/sTa9bd1buVLExQgOjicNNRVQE+LHlsWq6L82garoMGrlqUCE9RiRxvXk4IE4NDc3SCXE91j1vd7TG3DQt1oawdZH77GMMzs23cSLovj3sShfQAk/9EnMzafbGn6Mbz+4UnLHv
+ QjUxBc2k
+ oY2TD4ZzP1egMCXu78I2Iei/MXDDyrUbevmTn8u6rs2LtAdUx+/e/wpjuRaHIfw6zCkNKiOD8u2DtQZMhEsW65tBfVsWGJNX5Gs/hzU9nhCwlugGuWFFiEsep0Q70iQks67CAOVQdoFuCIuBenRj91pAZ70Dyyb/PX9ho8rszuwH/+/5t+xpOvUiiaBsCipNy+V5Nv7wEKatQp+2VDjcuDlmjePHmmnatZ+dPYTfH+VcDL4VAIauh5NXawd2u+sR/QTnwhsF/kaCE58qsEwaFeB52rLoMRMcHBgdyTmRcZ50OUB1Rnim1XuyYqeUxpeHmbXouiY1He7nb41sc4rdMQCBtSoHlaXKFH4r6tZA3iGXO3XNIvcdvD2pdwHeLAgq1kAtS3NwgCOoftoQpjwUiJnuTRoy2VsGnODaENZ2ejaV+fY0wOnYcyVvapcieTXylgYoSeBY8/Su9ZUhTY6vFRmKOIPwckAVHrnXu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,204 +127,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A multi-thread customer workload with large memory footprint uses
-fork()/exec() to run some external programs every tens seconds.  When
-running the workload on an arm64 server machine, it's observed that
-quite some CPU cycles are spent in the TLB flushing functions.  While
-running the workload on the x86_64 server machine, it's not.  This
-causes the performance on arm64 to be much worse than that on x86_64.
+On Wed, Oct 22, 2025 at 2:36=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Tue, 21 Oct 2025 20:02:13 -0700 Eric Biggers <ebiggers@kernel.org> wro=
+te:
+>
+> > On Fri, Oct 10, 2025 at 10:07:04AM +0200, Aleksei Nikiforov wrote:
+> > > On 10/9/25 05:31, Andrew Morton wrote:
+> > > > On Tue, 30 Sep 2025 13:56:01 +0200 Aleksei Nikiforov <aleksei.nikif=
+orov@linux.ibm.com> wrote:
+> > > >
+> > > > > If no stack depot is allocated yet,
+> > > > > due to masking out __GFP_RECLAIM flags
+> > > > > kmsan called from kmalloc cannot allocate stack depot.
+> > > > > kmsan fails to record origin and report issues.
+> > > > >
+> > > > > Reusing flags from kmalloc without modifying them should be safe =
+for kmsan.
+> > > > > For example, such chain of calls is possible:
+> > > > > test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
+> > > > > slab_alloc_node -> slab_post_alloc_hook ->
+> > > > > kmsan_slab_alloc -> kmsan_internal_poison_memory.
+> > > > >
+> > > > > Only when it is called in a context without flags present
+> > > > > should __GFP_RECLAIM flags be masked.
+> > > > >
+> > > > > With this change all kmsan tests start working reliably.
+> > > >
+> > > > I'm not seeing reports of "hey, kmsan is broken", so I assume this
+> > > > failure only occurs under special circumstances?
+> > >
+> > > Hi,
+> > >
+> > > kmsan might report less issues than it detects due to not allocating =
+stack
+> > > depots and not reporting issues without stack depots. Lack of reports=
+ may go
+> > > unnoticed, that's why you don't get reports of kmsan being broken.
+> >
+> > Yes, KMSAN seems to be at least partially broken currently.  Besides th=
+e
+> > fact that the kmsan KUnit test is currently failing (which I reported a=
+t
+> > https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed
+> > that the poly1305 KUnit test causes a KMSAN warning with Aleksei's patc=
+h
+> > applied but does not cause a warning without it.  The warning did get
+> > reached via syzbot somehow
+> > (https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.176=
+1026343.git.xiaopei01@kylinos.cn/),
+> > so KMSAN must still work in some cases.  But it didn't work for me.
+>
+> OK, thanks, I pasted the above para into the changelog to help people
+> understand the impact of this.
+>
+> > (That particular warning in the architecture-optimized Poly1305 code is
+> > actually a false positive due to memory being initialized by assembly
+> > code.  But that's besides the point.  The point is that I should have
+> > seen the warning earlier, but I didn't.  And Aleksei's patch seems to
+> > fix KMSAN to work reliably.  It also fixes the kmsan KUnit test.)
+> >
+> > I don't really know this code, but I can at least give:
+> >
+> > Tested-by: Eric Biggers <ebiggers@kernel.org>
+> >
+> > If you want to add a Fixes commit I think it is either 97769a53f117e2 o=
+r
+> > 8c57b687e8331.  Earlier I had confirmed that reverting those commits
+> > fixed the kmsan test too
+> > (https://lore.kernel.org/r/20250911192953.GG1376@sol).
+>
+> Both commits affect the same kernel version so either should be good
+> for a Fixes target.
+>
+> I'll add a cc:stable to this and shall stage it for 6.18-rcX.
+>
+> The current state is below - if people want to suggest alterations,
+> please go for it.
 
-During the workload running, after fork()/exec() write-protects all
-pages in the parent process, memory writing in the parent process
-will cause a write protection fault.  Then the page fault handler
-will make the PTE/PDE writable if the page can be reused, which is
-almost always true in the workload.  On arm64, to avoid the write
-protection fault on other CPUs, the page fault handler flushes the TLB
-globally with TLBI broadcast after changing the PTE/PDE.  However, this
-isn't always necessary.  Firstly, it's safe to leave some stale
-read-only TLB entries as long as they will be flushed finally.
-Secondly, it's quite possible that the original read-only PTE/PDEs
-aren't cached in remote TLB at all if the memory footprint is large.
-In fact, on x86_64, the page fault handler doesn't flush the remote
-TLB in this situation, which benefits the performance a lot.
+Thanks for cc-ing and for extra context.
 
-To improve the performance on arm64, make the write protection fault
-handler flush the TLB locally instead of globally via TLBI broadcast
-after making the PTE/PDE writable.  If there are stale read-only TLB
-entries in the remote CPUs, the page fault handler on these CPUs will
-regard the page fault as spurious and flush the stale TLB entries.
+>
+>
+> From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+> Subject: mm/kmsan: fix kmsan kmalloc hook when no stack depots are alloca=
+ted yet
+> Date: Tue, 30 Sep 2025 13:56:01 +0200
+>
+> If no stack depot is allocated yet, due to masking out __GFP_RECLAIM
+> flags kmsan called from kmalloc cannot allocate stack depot.  kmsan
+> fails to record origin and report issues.  This may result in KMSAN
+> failing to report issues.
+>
+> Reusing flags from kmalloc without modifying them should be safe for kmsa=
+n.
+> For example, such chain of calls is possible:
+> test_uninit_kmalloc -> kmalloc -> __kmalloc_cache_noprof ->
+> slab_alloc_node -> slab_post_alloc_hook ->
+> kmsan_slab_alloc -> kmsan_internal_poison_memory.
+>
+> Only when it is called in a context without flags present should
+> __GFP_RECLAIM flags be masked.
 
-To test the patchset, make the usemem.c from
-vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
-support calling fork()/exec() periodically.  To mimic the behavior of
-the customer workload, run usemem with 4 threads, access 100GB memory,
-and call fork()/exec() every 40 seconds.  Test results show that with
-the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
-flush functions reduces from ~50.5% to ~0.3% in perf profile.
+I see. So this is a combination of gfpflags_allow_spinning()
+and old kmsan code.
+We hit this issue a few times already.
 
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
----
- arch/arm64/include/asm/pgtable.h  | 14 +++++---
- arch/arm64/include/asm/tlbflush.h | 56 +++++++++++++++++++++++++++++++
- arch/arm64/mm/contpte.c           |  3 +-
- arch/arm64/mm/fault.c             |  2 +-
- 4 files changed, 67 insertions(+), 8 deletions(-)
+I feel the further we go the more a new __GFP_xxx flag could be justified,
+but Michal is strongly against it.
+This particular issue actually might tilt it in favor of Michal's position,
+since fixing kmsan is the right thing to do.
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index aa89c2e67ebc..25b3c31edb6c 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- /*
-- * Outside of a few very special situations (e.g. hibernation), we always
-- * use broadcast TLB invalidation instructions, therefore a spurious page
-- * fault on one CPU which has been handled concurrently by another CPU
-- * does not need to perform additional invalidation.
-+ * We use local TLB invalidation instruction when reusing page in
-+ * write protection fault handler to avoid TLBI broadcast in the hot
-+ * path.  This will cause spurious page faults if stale read-only TLB
-+ * entries exist.
-  */
--#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
-+#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
-+	local_flush_tlb_page_nonotify(vma, address)
-+
-+#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
-+	local_flush_tlb_page_nonotify(vma, address)
- 
- /*
-  * ZERO_PAGE is a global shared page that is always zero: used
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 18a5dc0c9a54..5c8f88fa5e40 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -249,6 +249,19 @@ static inline unsigned long get_trans_granule(void)
-  *		cannot be easily determined, the value TLBI_TTL_UNKNOWN will
-  *		perform a non-hinted invalidation.
-  *
-+ *	local_flush_tlb_page(vma, addr)
-+ *		Local variant of flush_tlb_page().  Stale TLB entries may
-+ *		remain in remote CPUs.
-+ *
-+ *	local_flush_tlb_page_nonotify(vma, addr)
-+ *		Same as local_flush_tlb_page() except MMU notifier will not be
-+ *		called.
-+ *
-+ *	local_flush_tlb_contpte(vma, addr)
-+ *		Invalidate the virtual-address range
-+ *		'[addr, addr+CONT_PTE_SIZE)' mapped with contpte on local CPU
-+ *		for the user address space corresponding to 'vma->mm'.  Stale
-+ *		TLB entries may remain in remote CPUs.
-  *
-  *	Finally, take a look at asm/tlb.h to see how tlb_flush() is implemented
-  *	on top of these routines, since that is our interface to the mmu_gather
-@@ -282,6 +295,33 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
- 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
- }
- 
-+static inline void __local_flush_tlb_page_nonotify_nosync(
-+	struct mm_struct *mm, unsigned long uaddr)
-+{
-+	unsigned long addr;
-+
-+	dsb(nshst);
-+	addr = __TLBI_VADDR(uaddr, ASID(mm));
-+	__tlbi(vale1, addr);
-+	__tlbi_user(vale1, addr);
-+}
-+
-+static inline void local_flush_tlb_page_nonotify(
-+	struct vm_area_struct *vma, unsigned long uaddr)
-+{
-+	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-+	dsb(nsh);
-+}
-+
-+static inline void local_flush_tlb_page(struct vm_area_struct *vma,
-+					unsigned long uaddr)
-+{
-+	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-+	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
-+						(uaddr & PAGE_MASK) + PAGE_SIZE);
-+	dsb(nsh);
-+}
-+
- static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
- 					   unsigned long uaddr)
- {
-@@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
- 	dsb(ish);
- }
- 
-+static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
-+					   unsigned long addr)
-+{
-+	unsigned long asid;
-+
-+	addr = round_down(addr, CONT_PTE_SIZE);
-+
-+	dsb(nshst);
-+	asid = ASID(vma->vm_mm);
-+	__flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
-+			     3, true, lpa2_is_enabled());
-+	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
-+						    addr + CONT_PTE_SIZE);
-+	dsb(nsh);
-+}
-+
- static inline void flush_tlb_range(struct vm_area_struct *vma,
- 				   unsigned long start, unsigned long end)
- {
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index c0557945939c..589bcf878938 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
- 
- 		if (dirty)
--			__flush_tlb_range(vma, start_addr, addr,
--							PAGE_SIZE, true, 3);
-+			local_flush_tlb_contpte(vma, start_addr);
- 	} else {
- 		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
- 		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index d816ff44faff..22f54f5afe3f 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
- 
- 	/* Invalidate a stale read-only entry */
- 	if (dirty)
--		flush_tlb_page(vma, address);
-+		local_flush_tlb_page(vma, address);
- 	return 1;
- }
- 
--- 
-2.39.5
+The fix itself makes sense to me. No better ideas so far.
 
+What's puzzling is that it took 9 month to discover it ?!
+and allegedly Eric is seeing it by running kmsan selftest,
+but Alexander couldn't repro it initially?
+Looks like there is a gap in kmsan test coverage.
+People that care about kmsan should really step up.
+
+> With this change all kmsan tests start working reliably.
+>
+> Eric reported:
+>
+> : Yes, KMSAN seems to be at least partially broken currently.  Besides th=
+e
+> :_fact that the kmsan KUnit test is currently failing (which I reported a=
+t
+> :_https://lore.kernel.org/r/20250911175145.GA1376@sol), I've confirmed th=
+at
+> :_the poly1305 KUnit test causes a KMSAN warning with Aleksei's patch
+> :_applied but does not cause a warning without it.  The warning did get
+> :_reached via syzbot somehow
+> :_(https://lore.kernel.org/r/751b3d80293a6f599bb07770afcef24f623c7da0.176=
+1026343.git.xiaopei01@kylinos.cn/),
+> :_so KMSAN must still work in some cases.  But it didn't work for me.
+>
+> Link: https://lkml.kernel.org/r/20250930115600.709776-2-aleksei.nikiforov=
+@linux.ibm.com
+> Link: https://lkml.kernel.org/r/20251022030213.GA35717@sol
+> Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunis=
+tic page allocation")
+> Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+> Reviewed-by: Alexander Potapenko <glider@google.com>
+> Tested-by: Eric Biggers <ebiggers@kernel.org>
+> Cc: Dmitriy Vyukov <dvyukov@google.com>
+> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+> Cc: Marco Elver <elver@google.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>  mm/kmsan/core.c   |    3 ---
+>  mm/kmsan/hooks.c  |    6 ++++--
+>  mm/kmsan/shadow.c |    2 +-
+>  3 files changed, 5 insertions(+), 6 deletions(-)
+>
+> --- a/mm/kmsan/core.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-depot=
+s-are-allocated-yet
+> +++ a/mm/kmsan/core.c
+> @@ -72,9 +72,6 @@ depot_stack_handle_t kmsan_save_stack_wi
+>
+>         nr_entries =3D stack_trace_save(entries, KMSAN_STACK_DEPTH, 0);
+>
+> -       /* Don't sleep. */
+> -       flags &=3D ~(__GFP_DIRECT_RECLAIM | __GFP_KSWAPD_RECLAIM);
+> -
+>         handle =3D stack_depot_save(entries, nr_entries, flags);
+>         return stack_depot_set_extra_bits(handle, extra);
+>  }
+> --- a/mm/kmsan/hooks.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-depo=
+ts-are-allocated-yet
+> +++ a/mm/kmsan/hooks.c
+> @@ -84,7 +84,8 @@ void kmsan_slab_free(struct kmem_cache *
+>         if (s->ctor)
+>                 return;
+>         kmsan_enter_runtime();
+> -       kmsan_internal_poison_memory(object, s->object_size, GFP_KERNEL,
+> +       kmsan_internal_poison_memory(object, s->object_size,
+> +                                    GFP_KERNEL & ~(__GFP_RECLAIM),
+>                                      KMSAN_POISON_CHECK | KMSAN_POISON_FR=
+EE);
+>         kmsan_leave_runtime();
+>  }
+> @@ -114,7 +115,8 @@ void kmsan_kfree_large(const void *ptr)
+>         kmsan_enter_runtime();
+>         page =3D virt_to_head_page((void *)ptr);
+>         KMSAN_WARN_ON(ptr !=3D page_address(page));
+> -       kmsan_internal_poison_memory((void *)ptr, page_size(page), GFP_KE=
+RNEL,
+> +       kmsan_internal_poison_memory((void *)ptr, page_size(page),
+> +                                    GFP_KERNEL & ~(__GFP_RECLAIM),
+>                                      KMSAN_POISON_CHECK | KMSAN_POISON_FR=
+EE);
+>         kmsan_leave_runtime();
+>  }
+> --- a/mm/kmsan/shadow.c~mm-kmsan-fix-kmsan-kmalloc-hook-when-no-stack-dep=
+ots-are-allocated-yet
+> +++ a/mm/kmsan/shadow.c
+> @@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page,
+>                 return;
+>         kmsan_enter_runtime();
+>         kmsan_internal_poison_memory(page_address(page), page_size(page),
+> -                                    GFP_KERNEL,
+> +                                    GFP_KERNEL & ~(__GFP_RECLAIM),
+>                                      KMSAN_POISON_CHECK | KMSAN_POISON_FR=
+EE);
+>         kmsan_leave_runtime();
+>  }
+> _
+>
 
