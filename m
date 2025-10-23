@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4DF8CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F1BCCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:34:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C67798E0003; Thu, 23 Oct 2025 03:32:42 -0400 (EDT)
+	id 8C1A68E0005; Thu, 23 Oct 2025 03:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C18388E0002; Thu, 23 Oct 2025 03:32:42 -0400 (EDT)
+	id 872DB8E0002; Thu, 23 Oct 2025 03:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2DF28E0003; Thu, 23 Oct 2025 03:32:42 -0400 (EDT)
+	id 761728E0005; Thu, 23 Oct 2025 03:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E4A88E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:32:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65D64BCB16
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:32:42 +0000 (UTC)
-X-FDA: 84028561764.16.93C5A19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B2A0D40004
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:32:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sSVEX1BB;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 619A88E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:34:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 305A51299B1
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:34:23 +0000 (UTC)
+X-FDA: 84028566006.07.DA76848
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 9639CA0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:34:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761204760;
+	s=arc-20220608; t=1761204861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P9qKyvCICXiMFj2pY1R/TTIeWn9g2fNIwZn/seenBJk=;
-	b=cOsVnWhfhXQWKdIBcNY6j9iN9fKRjcGM+SX2rGl6D1nISYQzAtcbdR5ok7Tq5etVlMwhAE
-	JGpBJ5WCcyyJWlQkEPV7dpw7pSOxmPgkewsM9NsGobU/Sq8lhleRRPdB8hBjHVjy8gxHqS
-	NFzAUBv4X09Us4B10sjKrxWQFRCNR1I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761204760; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ydTan2Yqqf0jF7M32u7pmGcI//Wt1lU1AlQ2SuuqbAQ=;
+	b=Faxl+2B/mAGWJWl9lOEVbVFNEcmx7qHlaYbf17O9d25Lf9nEEWCN/OOKHrpKXMBJCoJB2F
+	qMEpKQl13cyX7fHwsCpzHanzknfuekLSdeGV9Lv0CDdwUARGdp71cT851VGU/Y8bDfWi9b
+	1X1p41VAljG1OAToiDD46lRp1K+LXNs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761204861; a=rsa-sha256;
 	cv=none;
-	b=Ef5x5mKKEtFvM+IbwCJTlTp0RIIxhW3AVLLU5t2Sb6FoAW73yOcRsJGMpH1eR2FMoyGiM0
-	n7r4/uuP20Oq2md4CSI/qMDHqw/EcJUmoo4DcAcB3lXuJs/QBUnW70/kiy0mGtSmhOl0l7
-	ZZ4GH3YjxJSZt8b+qRuLIBfg8zAVXyo=
+	b=csGkacMIpjG+GH+NdNyiJZ9S0Rz+M/3Zm88+4sCdMuTjuBWDRCQQUnLnIGGkEKCHBMIrYv
+	KuuVbvhS7YT3lAjZyBvCZ9HvwHNBaMFjUQlEBrpxI5QTkDcLUQR0w+VJHYY6r6wD3SofoP
+	XA1JHq3VgtOFIEJaGmIFmq21g73q8Eo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sSVEX1BB;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86918438B0;
-	Thu, 23 Oct 2025 07:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE07C4CEE7;
-	Thu, 23 Oct 2025 07:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761204759;
-	bh=xRBUS1TSJmYzQmrk1wiwXar89QSiUa7yMM1lGDC//6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sSVEX1BBZL4EYdbXIK7/OYABoeTs33pNLOL4VV35XeFw/ynPTswqUL5/NiYHEtnm5
-	 KsI4LwXerl2sJJDuGj3B4MZcs7PJy0PW3UKfBWjAUVYrr3BckXvbH/QEbg8Yttq27x
-	 yIkzONzrDTTft0S55AHtDG+rhA52K8r7D2fq+KFT33X3hGPBEIMwc8utSoiFtot6Y2
-	 k86br29Ap5DZaKWQ4yyfxuTMG9U4DFTGSDtrKKp25sEL6AwmYMsSylxMQTrAI/Ac5L
-	 fkwJhYwjN0wgEQKOXwsyeZ7Hr+1VDsTM7XEQfzR8CaZ52eWi7hP5YxJv96liuba/n5
-	 Dh3mwCE04ANGQ==
-Date: Thu, 23 Oct 2025 10:32:31 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCHv7 7/7] liveupdate: kho: move kho debugfs directory to
- liveupdate
-Message-ID: <aPnaDxwkvEKAFlRO@kernel.org>
-References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
- <20251022005719.3670224-8-pasha.tatashin@soleen.com>
+	imf25.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4csd706lG2zYQtjn
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:33:16 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 8C15D1A01A1
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:34:12 +0800 (CST)
+Received: from [10.174.178.152] (unknown [10.174.178.152])
+	by APP2 (Coremail) with SMTP id Syh0CgBHnERy2vlo6FxJBQ--.49363S3;
+	Thu, 23 Oct 2025 15:34:12 +0800 (CST)
+Message-ID: <f718868a-563f-41b0-bdef-b0a2a98877ce@huaweicloud.com>
+Date: Thu, 23 Oct 2025 15:34:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022005719.3670224-8-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1br5tzebme6a66mqersfok4m9jfwr4pk
+User-Agent: Mozilla Thunderbird
+Subject: Re: Possible regression in pin_user_pages_fast() behavior after
+ commit 7ac67301e82f ("ext4: enable large folio for regular file")
+To: David Hildenbrand <david@redhat.com>,
+ Karol Wachowski <karol.wachowski@linux.intel.com>
+Cc: tytso@mit.edu, adilger.kernel@dilger.ca, linux-mm@kvack.org,
+ linux-ext4@vger.kernel.org
+References: <ebe38d8f-0b09-47b8-9503-2d8e0585672a@huaweicloud.com>
+ <20251020084736.591739-1-karol.wachowski@linux.intel.com>
+ <0fec500c-52ea-473d-b276-826c0f4dd76f@huaweicloud.com>
+ <43cc7217-93bc-4ee6-99d2-83d9b26eb31a@redhat.com>
+ <610d89e2-6970-4924-824b-f27a2424979b@huaweicloud.com>
+ <41f30998-e498-4c33-a4b4-99b9f7339fd7@redhat.com>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <41f30998-e498-4c33-a4b4-99b9f7339fd7@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgBHnERy2vlo6FxJBQ--.49363S3
+X-Coremail-Antispam: 1UD129KBjvdXoWrur4xZF17ZF17Jr43CF4UArb_yoW3ZrXE9r
+	4rZr92kw1DCF4DtrZ8KFWkGrWqgFWYqF4agry7ur1rJw1DJFyfCFnrGwn7uF1Fga9rtrn0
+	vrnIqF17WF9IkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbz8YFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4y6nhqqsctjc8js7zo7nrekgrt93mu84
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B2A0D40004
-X-HE-Tag: 1761204760-704287
-X-HE-Meta: U2FsdGVkX1/Kwz00UVWNtx4Q4cVVZAW0lhEHt8eH7KMzmTeaGsNmpa8uZmwg4lOYw37/C90UEHBYhQwXH3Yx65AI3NQ5XQrfd7EBZ5+cr2Zg8G1qX3LWSENU0v5agm9uzS0GmTc57qFHP3tQefZbmvK+rpB8JIwiIjc1dcevZi4+ucVQb9enh5SsYjhOq501Js+L2qHDPBr3uyasKEEUwGgiW6urE0J+xvUVXJoVaTSYPFwCRFrjnELiA1VbFA9Du0ZjxJVy6NlIhrBaDxViQdlJEvr6MsEZds09xJne+et+0yqp+P19g1UXt3JeVpCcH0ZYesPltlChxpA9Ts+Aui/1A6isvcwS72URmtZRvEwPbOB+x265J1NVHridLPC4eHuy9FFf0vau10s5g4664JZvrxOMR3AkiU2VapkKFOAJgTkn8MBTXENdOCndVRYHGmXasdgCj/4QQAi8X0AtM4sdLgxVqFGGtxXK/6d8OXLw/fIerS/s7GaRQxmTJkqfJ/IFh/lKbz+iqRq+1ro4Ql0EzNCSfdssn9FOnrVmUepcpjqdizB8zusKlqiN5oyOT9/kP1m4lKpTyOqSNs1WRH635NBz7lAE2CtBmddlTf1bj8+fubNBaNHenTmDwCU+565nCxLuqFI/IBo2x4XJy9wqajBmsCRfUApvXeJD31gpwxXfv2UeMOFIEUllNgiprZoYrmodppMZC5ZHqYn4tJxIq6Dcmi3jteplyOsqabo0h4oGDFp/OI6VqJN7b2X7A2cDraGg4NQbC0tmJZ3SMwIG2taiuRt2wlkqJ/p+2tzDbjPfxUVIafgnhFrcyphf2lTNiUBpLcJ4+dQ/gXy5lrT0XzCU20uj4lTapFBJ2Q2eV/GiMLCl/wvFDET/wl+n/BROyYM/cQ7xAglAACrs819qQFNbnGGleJHuZ4Alea80jcAVgdA9BKysiI9T0EXp5WBikQRet3pfIAQm3DY
- rrmIWUSi
- BXy17/vdYVx00JkVOISSFWZSLMxqND1vnLbHBNeBkC8dDb7bRNjPBgSIoxmNd4mNzkz5RJ7NYrADIaAtcVe9RYbj0NIVnVagTtgEROCl4jde0flkvH63d8vy6hC2yj0eGrDGcLU5EV5fXfrgIxGCk5WTEv4GK78xFeZ2Bef3WkLDJ5y83iENhk91SD+hqb6P+JK9nnU16VcqsJAOzkYrlgTD/YSm/+BGX8A/e1BqTKHyJkwei4TO4qa67YsQBdYSknUtT
+X-Rspamd-Queue-Id: 9639CA0007
+X-HE-Tag: 1761204857-349421
+X-HE-Meta: U2FsdGVkX19DR/84QTCGbJ7lnmLnCOYj0agLa/dg/ZMQHALF+QSHEFpBs2s2YO9OuUp9hHzZMhq952LXI8y67gqMeGLziYm1bHPhBpHV4Obkhtr55RG7y6OM8HBqP3UxBK6R1iJpg49wQAMmAAh6XBG+cgQ1AUQEtA4Be4VJo7e9leLs7W306IrMFJ8XmZZ0B+SjbcDMi5GEAlhH5ECfrsd1pEDaZLQxI4mRCODSefFmqwRfx/KmS3OtjCJ6SB2Q9sOhs2chAJ6ZEoOtXzBHGsmMW6ZKtFfBzmJwk8gK1+qSNEN9mw1jP6/ddWTYIvlew/sYRSPI7oEtTkjMVvnd7TBuixC9lOgdeubCDe4VleImCHtxiTObo4cvpyQG01+2snExjbWHDA4QIWR02BPIm4372tFYJx6Pw7a/tM/OOvhslJ7csgeCphWMquL2Y1BaccDmxIct4aS/flkOU+H+PRzffbSyRONpFNcSYvhYlB2GsiOFKvktgMoPadWK6rNg7C/Y11uyAi67MU/0jfwG8syXBRn+1d4ro0qwKL1RMb1zGXsM2KkPo2TRHNIzbiCI2ypPku3Ykj7pHAB3Fe6KQ3ja+SLkzpqXp5vtN3MISA+tHMprRnHAA4gFmDkPQsQDiIRL7qy244z9suvvthuzzJdWqsGBIiNNyvqQNnp5KaCNTAw8eEmswqBMA+47BSnB4/+d2BudJoNSC1PUpdhlNGHGNOAoEX9H5fyEfzwkmne9xvPHZLsyfRhnMUKRzpupEIVdwsXfYrbpQgAtxvuki8k31+xHWl6nUJvbVPpZCR6jQwNyaPicJPmXrS3iY0Vy8otLkJxzp812jb9J7QZoLmOdcaSFljQCdECiv1vcPMqmRGCxgrFFslKMnirx993YT8CX45H34nyCY70Z+GUokMJlZHzRDNcx7d8lyU20bbq+exCF9TWEV82a6rRGN6WauwjFY5T5VFipTd1JIro
+ oSU5A7L9
+ U+gqS47A+kcZGxHTIchvnWWr/2w/T0ZyvpITcAd3a3+Jm1bmLI6M/cC0t6acJi2PnCuIGM8QGQNS3itrakhTRi1nSwm8YW3/SuzOjvVIx1vN/0e1xQ2/j5aLSwTMgBDNGAHYjPrarVt2nEzeFXWNNvYpKqzLduCbz613CEoz9kGXw/jrbfa91sbDMQEcN7CrsSg8d
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,31 +110,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 08:57:19PM -0400, Pasha Tatashin wrote:
-> Now, that LUO and KHO both live under kernel/liveupdate, it makes
-> sense to also move the kho debugfs files to liveupdate/
-
-But we don't have LUO yet :/
- 
-> The old names:
-> /sys/kernel/debug/kho/out/
-> /sys/kernel/debug/kho/in/
+On 10/23/2025 3:24 PM, David Hildenbrand wrote:
+>>> __split_huge_pmd_locked() contains that handling.
+>>>
+>>> We have to do that because we did not preallocate a page table we can just throw in.
+>>>
+>>> We could do that on this path instead: remap the PMD to be mapped by a PTE table. We'd have to preallocate a page table.
+>>>
+>>> That would avoid the do_pte_missing() below for such faults.
+>>>
+>>> that could be done later on top of this fix.
+>>
+>> Yeah, thank you for the explanation! I have another question, just curious.
+>> Why do we have to fall back to installing the PTE table instead of creating
+>> a new anonymous large folio (2M) and setting a new leaf huge PMD?
 > 
-> The new names:
-> /sys/kernel/debug/liveupdate/kho_out/
-> /sys/kernel/debug/liveupdate/kho_in/
+> Primarily because it would waste more memory for various use cases, on a factor of 512.
 > 
-> Also, export the liveupdate_debufs_root, so future LUO selftests could
-> use it as well.
 
-Let's postpone this change until then.
-TBH, I don't see anything wrong with KHO and LUO selftest debugfs files living at the top
-level, i.e
+Ha, I got it, that makes sense! :-)
 
-/sys/kernel/debug/kho/
-/sys/kernel/debug/luo_selftest
+Thanks,
+Yi.
 
--- 
-Sincerely yours,
-Mike.
 
