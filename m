@@ -4,94 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23C9DCCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 20:56:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17AF7CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 21:26:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF828E0012; Thu, 23 Oct 2025 16:56:48 -0400 (EDT)
+	id 2AB078E0013; Thu, 23 Oct 2025 17:26:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796DF8E0002; Thu, 23 Oct 2025 16:56:48 -0400 (EDT)
+	id 25B3B8E0002; Thu, 23 Oct 2025 17:26:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D3B78E0012; Thu, 23 Oct 2025 16:56:48 -0400 (EDT)
+	id 198148E0013; Thu, 23 Oct 2025 17:26:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A30A8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:56:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BE5B13C23A
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:56:48 +0000 (UTC)
-X-FDA: 84030588096.28.F9BBD4C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B183310000C
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:56:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WA2jRvTN;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761253006; a=rsa-sha256;
-	cv=none;
-	b=lT16gQ0QjZVrQVHRvv2xwZEsg7yofaO/NcSW6FY3fEGLDbzlDusnLIiViL6un8lMGjjPEt
-	EiQMac8bmO0Ias6Anr8fjW59m1CqtFuuRm06O7VErC+Xag/dqGJzePC8562Qv8JTErpaBr
-	JEso8h8Hy3rTAmunMngoj9Y6HKYOWsY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WA2jRvTN;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 083CF8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 17:26:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7F577BDEFD
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:26:15 +0000 (UTC)
+X-FDA: 84030662310.24.4D1DAE8
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 823FD4000B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:26:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wYV2zcmB;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761253006;
+	s=arc-20220608; t=1761254773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oxQ2job5mlItSZlTQWRzQAXT927Szdl2DDDXhAhg9jo=;
-	b=Ns3YJSHnmmqJ1Q5XVcmmecOdVJ52Ta0JiDGloxMtXO/D+AtSCUTRCfXyxsBuRW+9c5urLi
-	WY6JR4QRMrJKWmZEFEbW7KYbOfMVJkt26MQud/GD30bc92sAaHsr+f8qcEO1UsINMxleB+
-	RoRlYmQ5Mfd3AnPRj0i6L3r3pkmf5zw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2E44611D2;
-	Thu, 23 Oct 2025 20:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC457C4CEE7;
-	Thu, 23 Oct 2025 20:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761253005;
-	bh=5xFDg5dV3Epc9fNs6C4u+qbcFy3cR4rqvZ/TDFw19JI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WA2jRvTNVXhYF2sqTdUzvcRexXVGZOrqy9HS26PolLf2B1UwhdHbxe2zqsQwzhZLk
-	 bQk/8YO1Vi4UUK8GfsMdiiqJMIfzRIGxe2a+XTeyefQ7XQZg3AEZMTflztcj/0xptQ
-	 nvOlbfef51ri/UG4OhO1137SbjsCpj/EIgTYUjrc=
-Date: Thu, 23 Oct 2025 13:56:44 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
-Subject: Re: [PATCHv2 2/2] mm/truncate: Unmap large folio on split failure
-Message-Id: <20251023135644.f955b3aa4b4df23f621087c4@linux-foundation.org>
-In-Reply-To: <20251023093251.54146-3-kirill@shutemov.name>
-References: <20251023093251.54146-1-kirill@shutemov.name>
-	<20251023093251.54146-3-kirill@shutemov.name>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fecru5ayqqxcie17gi6xp8jk3rgf64zg
-X-Rspamd-Queue-Id: B183310000C
-X-Rspamd-Server: rspam06
+	bh=CVbxmFxkl5Gkpe0F49DlJZc2pZ5lmn7pCYA6JciiN2A=;
+	b=RhgaMLFs+D5v7Aev4SBHrMFuMjpVg0NWYOBj7u7XIcS6cq8Xt/UMzCna+fDvch6JddRL3m
+	fWKreFQbtdrTHlnKtc9/NULgECW9OrUhcXf9VRyIRc+QmdrB1etq4TtABoeBuGSPkDuuAr
+	oqNQ+RV0lOWXv75/wwcv/qwIFVci740=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wYV2zcmB;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761254773; a=rsa-sha256;
+	cv=none;
+	b=FiYuQYuJEpM9cs1m6eMMUKyxXO4CnET4UgEhqP9elBMM3chjmnIqVOjotJB6FtfMdbJ6Qe
+	u0Sa5WpWMxwlnZBtFL8YEllkckfdJBLzZ6yaDMkHFVfVH95RdNbbqni7IcvIDEop7tP0+q
+	SZ5KmLqySFpIHDeZsqAw+/I9ZOkwnRs=
+Date: Thu, 23 Oct 2025 14:26:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761254771;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CVbxmFxkl5Gkpe0F49DlJZc2pZ5lmn7pCYA6JciiN2A=;
+	b=wYV2zcmBHINwgvFe5hylpssfqut5+tSqdMSSDkNybl3VoXsDgkxkxs1ry9cBMJxmIycOsl
+	qKxv/pCm6HltrpbLM7Pj/D0LJWRiRYTmuZeKMiqgs692fHvXuG5g7+rxYWOPRP70H5az0j
+	TIVT3vVLFcGjo4sdBN6Lnw+dY2ztErE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+Message-ID: <qjqtaukb3yw36eiwktayyv4zhihgz32yy2yolpqvxn5yaeuo3i@fvznetjxhker>
+References: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 823FD4000B
+X-Stat-Signature: r8hi1p81po6mtq1qzhd1x5dxfsahbhqp
 X-Rspam-User: 
-X-HE-Tag: 1761253006-960846
-X-HE-Meta: U2FsdGVkX19lBNJCLqe7ZSL5410+GrDrPkiKlNXJ4QS6j2iVgzGhRMj4u+Q1+7C0udC+s+5E9uazETb59oc9dXSpb3YwzOEHCaS3uWA/kL1J4HTeyxnHDB+3FFPFkDGDSFBJiH9RQLsuxSgScktIk//rskG8+2pD4wa46pyuajGx4Xs8gvJq16u3lPYL+n67RuJgZB2mZKue/TZjZBwAfncwotGQaX1Ca6/nuy5c9qZ7/suaruL0OTQe1lEQ8+MrCBWg3rPSlkfGeYpgPOir/4y/Our+YLq5f4jvpnUSXLtpCdosrDxH7sjsNoDLfyxgU8Qg1YMJxIOS+rNQ1NdcT2ABVJevTJPGZGT+DB3fnEGjZRMiqtcaKGWMdxcTy/FA4sBJnYKVT4OROXvTmSB5q6FhSEtlh6L7pee0/ZHLIG59YEi3WlKVjsfE/L+GnqoaCr3T8ZAXPTgAbUswYpQd43sMnbT0CNn6qvxKUDOIRffzTRf1Va3WZdhdW5zU+sMXWUy3y3rcjnnxNMxQm15JF5n7Tt841+2YaHGrtnoIL1H2RAjBZjVuUdfRC29C7W8lP2y9dW6hsv8nfcAOJOFi/42542CxiFyGYUjWdmTZMwivslmiQB1qKFBDuupbi75OjGAx88nhm6hf9tC3qZnzA8wT8xo2JtsFK7e/J35z10nzY4I41JSegEAn6/DLH9HsGrU/Xnbu6BtUjXdgfIN95fZEUL4L0s3W7VkHFjhhxsjqcR+e6VHckKujuzH9tIIczGCiDHPv38p7IUb3Q3kQP9R4+vNhcKBvTw4k7b1avmEQrBeNxxPdG58u66uicuCHiWAVV5+rbMLEyF295aoZpgscoIgK+SuPgL+epHeIiWj/snxkAya/aZ5jn7ptYixlLxGLZfbvlQvtPCc3f1L7cG69jctPslc4kQiEepQndOgR1gmRXzixjMQNICpBuT7Y+ob3/c10olO0Ev3lu4h
- VnA==
+X-HE-Tag: 1761254773-39142
+X-HE-Meta: U2FsdGVkX1+AimibAG9k7jL6O8MvdHsaxpBvGKztlKlGuq8+IXvAFeQZQBYz5QpQh39wzifsiiRAy8P9DDTJnZIWyCpWYYoFl3tTpcB3KP9w99B12MnRfmlfqqXbXQYMZ81uobMMQ7NYz9vKEnq6H1+QAz4zs8dqbitgqMCCnoC0RUtlu1B74j8XwV87W4fXefmiXK6CHMc1DMHYLXQ8QKFyYo0g8dHTMj65Hdk0BUT14Ne7CR1vMJN3pnlWyEdIp8itqjBtw3LU0o2G2/4dwvlSKOkTnzGmxh2VxUV6lWmNqdSTDy/94nK7HJI/HX7sj6LMmxc7LVAllR0pGw3s1CQdlgzkCJQiljMKUcn3M7Kd6SsjAGBUqGfl1GKEOaXp+gyvRAzwAq0dNLI2hi4IsRe3+aJ0H1//DaZ5amNWUMTWUCYfwXxdFhviUO4dMdHJsKi2WpjZIHVJKFCP69We4eWeCq5c8tSpAjoko0xY1rQOFVvWnNzQ09TwtgYH9Ah0FcJvnGd+XcWyo4xLuGytIt2/sts+2pI1uVBaGaCwVIx/LzoHil9saXuucJXO/DkrmDKavw9Y8hj2w9jla1mFxzbIB6rPScq7P2fhbBpcw/9sTjfp3nWkUoYhER1EbxXA4fpZxuztNDfeS1whd8TvqwfDnrL/SY7Aqxhr/TQKTUAxMAu8YKpPSLiuVnXe5NWSZ4fEDY+miseV6n0cNa3BpThmZGcvOBkxKLsPbhEejtwY2s/05zKAk4D0A4KP+Qb1cMkZP12No9LRHWOdF6X6G36rQB1XdkubaZsPWcTPU/Gmh3RFbDoESx3guy0N7mQnpU6PFIAV3JDZqFHIImW11Yt80aGF+6Gt0iGqPVKJ6bKMLmaLd8RKdf5mjxu7j0s3eFhO3W2NDvfWvZtq4E0bZlQH7ixR3IwtHFdGDmAVGwuy994dZo2mmayLdjj3CvFXfdpk5kAA2Ccuty3ZlNW
+ RTScQ2oJ
+ jAFq8h68JgWV18UTzYAqdHqevRWcFV1axPJjw1aM0sgYHaWkmrbuYkI1p/wA93PF/8FlX7r1bplb1nPdCB1kyxPa+ClKFnt7sxlaE30FmLV9v99zSwxKSy3UtvA+wtFXhU9Ep97//E7zDTnE0sFbRRSq49Y9gA5CZFDXgf/fsFqwqmV+lGX+sPsfxWQ2uWOcWKP+f88hXRoKciSGHNSrJocFpMG9RcpVZc68Dm9B7YUivqzFMmcP1yBMC6wTBMZbWN5IOtvsnrlJW2aU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,27 +92,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 10:32:51 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+On Thu, Oct 23, 2025 at 06:12:02PM +0000, Dmitry Ilvokhin wrote:
+> Allow to override defaults for shemem and tmpfs at config time. This is
+> consistent with how transparent hugepages can be configured.
+> 
+> Same results can be achieved with the existing
+> 'transparent_hugepage_shmem' and 'transparent_hugepage_tmpfs' settings
+> in the kernel command line, but it is more convenient to define basic
+> settings at config time instead of changing kernel command line later.
+> 
+> Defaults for shmem and tmpfs were not changed. They are remained the
+> same as before: 'never' for both cases. Options 'deny' and 'force' are
+> omitted intentionally since these are special values and supposed to be
+> used for emergencies or testing and are not expected to be permanent
+> ones.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-> Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> supposed to generate SIGBUS.
-> 
-> This behavior might not be respected on truncation.
-> 
-> During truncation, the kernel splits a large folio in order to reclaim
-> memory. As a side effect, it unmaps the folio and destroys PMD mappings
-> of the folio. The folio will be refaulted as PTEs and SIGBUS semantics
-> are preserved.
-> 
-> However, if the split fails, PMD mappings are preserved and the user
-> will not receive SIGBUS on any accesses within the PMD.
-> 
-> Unmap the folio on split failure. It will lead to refault as PTEs and
-> preserve SIGBUS semantics.
-
-This conflicts significantly with mm-hotfixes's
-https://lore.kernel.org/all/20251017013630.139907-1-ziy@nvidia.com/T/#u,
-whcih is cc:stable.
-
-What do do here?
+This looks good. I would recommend to also update
+Documentation/admin-guide/mm/transhuge.rst with this build config
+information.
 
