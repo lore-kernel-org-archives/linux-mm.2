@@ -4,139 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C79A5CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 10:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9B6CCD1BF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 10:54:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C0978E000E; Thu, 23 Oct 2025 06:35:15 -0400 (EDT)
+	id DE6B98E0002; Thu, 23 Oct 2025 06:54:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 071B38E0002; Thu, 23 Oct 2025 06:35:15 -0400 (EDT)
+	id D968F8E0008; Thu, 23 Oct 2025 06:54:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA1D38E000E; Thu, 23 Oct 2025 06:35:14 -0400 (EDT)
+	id CD3FF8E0002; Thu, 23 Oct 2025 06:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D2B888E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:35:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72AA44913A
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:35:14 +0000 (UTC)
-X-FDA: 84029021748.19.6C43928
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A05D04000E
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:35:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Y 2TNMu1";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=bkGTLclj;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761215712; a=rsa-sha256;
-	cv=none;
-	b=L4lZyKYQUugq/nrDRHXP/azJbXSXHLVL1K5uG9XlgFb55TVdTJF+ZoZKcpXTN+tPgHPt27
-	g5wICSsokjenTTFrMVjkBPeCm67LQhw3s7CIPRgD+UYBu+Br925akHcT3iNWTt9JF/S2Zx
-	AsQ55ns1kMKRZPwaRQZOX149XYmMjRo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Y 2TNMu1";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=bkGTLclj;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.139 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F868E0003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:54:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E961140AA0
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:54:45 +0000 (UTC)
+X-FDA: 84029070930.14.21E4FB6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9103F140005
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:54:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761215712;
+	s=arc-20220608; t=1761216883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bYmq2ugvpkpXSrVwqUBpprPYISDR+qbKwRgzp5kUFsU=;
-	b=lP7lUxoZcZ7VGoyvQvYIFmsHmCR0xWYZp2bRv7lhE4Y9SJMlR6ICzolhsR7ulKiwgOEfEu
-	251N7he4L9ak+G269LcrVYw3bHYWlQPoenF+Atx6t2VCTAJV/9FAgVS5JXXYkcf+BFxqg+
-	E0BOyf5JpGLVTn3L3ysgp996YUi+v04=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id B3F211300A8F;
-	Thu, 23 Oct 2025 06:35:10 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 23 Oct 2025 06:35:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1761215710; x=
-	1761222910; bh=bYmq2ugvpkpXSrVwqUBpprPYISDR+qbKwRgzp5kUFsU=; b=Y
-	2TNMu1R/Hmaxixa7EY9KFKJn7u9r7hsO+JQ5asjhvqpcB46WSh3NNlgph4rDacf6
-	t8KM0o7BdHtBNDPB9oZthNfJ6FPpGAz82uOtOiGrqJnjCC6LcsPXjJGbQ/jfg1OG
-	H68EfJeTwjAx06MJoqNTply+A5OgftFdEDieXOG7xbiYYdzmWyU7rKPrEclNf6XG
-	+9e449UpGPkJMs0ybRbPEmAgdyeiiVPKJ32HH9jXnQ93cLfa6MHBnH4PbP2gFTca
-	TYOC8wdC7nwtqGYnfwtNaE2IymNCC3sG17+zTUELRe3CXMGNQnejWEB7WcNwQtV4
-	wkGaTMqOy1AO7ZGG9wHlA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761215710; x=1761222910; bh=bYmq2ugvpkpXSrVwqUBpprPYISDR+qbKwRg
-	zp5kUFsU=; b=bkGTLcljrPmX4vdyZOKSSNoYkIcFwE89tt6AJEXq6lmrM6pm+8m
-	FHY+XlvDM/lU+lgNd+u/lBo46MuFbFVua907mZFqRTI0EFJO+GWVwn5QY5LXQa8P
-	99tqgFzZn3vFhkCPnveTuhgRwg55IwlNxox7iKuh5WyeFdTjgvxoY+iPo5MlV0lx
-	kl1znRafVbu6k5KHQBMhavXxq7tYpJn3Gpd6B/IJ8o5hrD+/YvGHBQyliZTO1rGh
-	4P1ZV7czuMwqgQv0G6eQwJShWQsiB2M5KzI3oPhwU1iYF0lkLEC/oaUT6nFLrkXq
-	gKpx2sM3pJc74HKyEY7XX1/4wjRq9ch+13w==
-X-ME-Sender: <xms:3QT6aDgv3Xg8jV1cRGYBv2byRNBlDfxiZNTnYKqRsj2026byvJzSeA>
-    <xme:3QT6aBiHAAgUxITThuMDB2_jMTdSUBo4qN1ZLu_WvxQ5UBHpryXYun8R1rvzo4yca
-    ebRlfi_-zuHMBT4UHGjS0tFyY11c9Y_nQpmoFJcg4lIva1jvx22wQs>
-X-ME-Received: <xmr:3QT6aLuj0fAmu5U_e8ZOKYsXnJnyfFmOvNEMqGDocytIYTTyoHV-8e1O57wWxQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeeivdefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugesfhhrohhmohhrsg
-    hithdrtghomhdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopegr
-    khhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepuggrvh
-    hiugesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhughhhugesghhoohhglhgvrdgt
-    ohhmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtth
-    hopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepsghr
-    rghunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhorhgvnhiiohdrshhtoh
-    grkhgvshesohhrrggtlhgvrdgtohhm
-X-ME-Proxy: <xmx:3QT6aCTLGULRLFLKch7HbZR4TKR9zTiyjLngH7649pjWnJ2k1Agl2Q>
-    <xmx:3QT6aEEQLhacD3wRELmrGgrBxzKQU8aJK1m0APZ5MhYVX7LI870guw>
-    <xmx:3QT6aEiX_vBkQ4dzeoH32eZgFFhm5d_pjAhMCiEJDDsHDgS-8a2ZHw>
-    <xmx:3QT6aCgQEOejXwzF0EJlnh_6rx8N6289dCUVp_oSVPIRU-Ti6ao_kA>
-    <xmx:3gT6aGrl_OOIC_ym-3o_L0rAdx9CNBYWTKFTHCmpPaqJKiK-E8avBF_A>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Oct 2025 06:35:08 -0400 (EDT)
-Date: Thu, 23 Oct 2025 11:35:06 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
-Message-ID: <lv74va34dbeyacenvdzulfudgsvntuu2u7jutpjjysfl42kkro@vvkzmctnilnp>
-References: <20251020163054.1063646-1-kirill@shutemov.name>
- <aPbFgnW1ewPzpBGz@dread.disaster.area>
- <d7s4dpxtfwf2kdp4zd7szy22lxrhdjilxrsrtpm7ckzsnosdmo@bq43jwx7omq3>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8iWglKbjLiBlAchDZDLWS4BlIu2BiQFtL8QdLRBPGf4=;
+	b=29MnfWE/NPGgN7cVt05wJ9SEmnNLhxsqC4xDxPbje20W9H8zLuqeCIh5UCFOBYiywy2vb2
+	6XHFiFmA2GlzJadVoSVzIwqOoZBykpEmF6zzRXeU5nvEJnWDFsUYefclJCJJRnDII47hy5
+	yc1BTB6jRUjf/ULeQY17GDDHIqiRV5k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761216883; a=rsa-sha256;
+	cv=none;
+	b=L8fWvnqXwmuzEf6c11T/FNB021Vo9AyaRV6ZzeRa4a74RNWlzcwUHitE0D+1G4diJ2ZdIB
+	igjk3eGy3atlDjqaLsrCVpMelu10F5F3cVa+RE6LW9JFMver8U9uqUsLKn+U54Exy3stdQ
+	LPScWv5LO1Uojh/BXPTn2bUPTELWIA0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA4891516;
+	Thu, 23 Oct 2025 03:54:34 -0700 (PDT)
+Received: from [10.1.31.176] (XHFQ2J9959.cambridge.arm.com [10.1.31.176])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C02393F63F;
+	Thu, 23 Oct 2025 03:54:39 -0700 (PDT)
+Message-ID: <fb633059-9b5b-49ea-848a-7537bb13559d@arm.com>
+Date: Thu, 23 Oct 2025 11:54:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7s4dpxtfwf2kdp4zd7szy22lxrhdjilxrsrtpm7ckzsnosdmo@bq43jwx7omq3>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -v3 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+Content-Language: en-GB
+To: Huang Ying <ying.huang@linux.alibaba.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Anshuman Khandual
+ <anshuman.khandual@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20251023013524.100517-1-ying.huang@linux.alibaba.com>
+ <20251023013524.100517-3-ying.huang@linux.alibaba.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20251023013524.100517-3-ying.huang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tyiueeer57jhdktusmhmnpau8i6mrut7
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A05D04000E
-X-Stat-Signature: 5gawqt6ac3e5hjrwidmhgpj5o7yjhk6z
-X-HE-Tag: 1761215712-907632
-X-HE-Meta: U2FsdGVkX1/4A88ppVDQSlF3PRk+P0UaVjHrX6zjNWBjLEk3W5xjESzcR0MMG9Vuqa03JKA1Wz3k0GdwxRQ3qlyp1htV/x6/9NWoutiJP7yV5/gET5Tbux1fzHNyBL1gWUlOMatvCx8JoyX0/dESBV7bCSl/MZr7tCUCM4MEunbTOYroNDv3Tyes+u7jsGZWt6EpyQgRSuoYey/3Vofn6xuZErG/vdMtxdhw4lDPiO2MUu4IB5FPAO9MjF99S1mazgc4Mcma3etJaevpAutNoqCS70kylPrtvLjRGtPrF0ep/EfMnJZvgvdrJAb0gFY4DzfqAHfv00ICWfbmYxvet7c1U4TnhSBIhyzoJWRhfVphHA+kTfx2fMyHKzfia1mGwdMomezxfwdUL+1xnHy2p9Tbyum+FnPMNSIwTyc/9EE5nwkNsAxtZz+/o+Hz/HZXGp9HLlTM4pCP6Kj0MBezWaCPxt7xgTnx7/naJH1YxWxXFvb8AmjDPGrceQKccR8jfv++hkMUO2x6e65qLZLFletJQhxSQoqpmJGs3y8Abi31XVXKOhI7QT0DjjDdXPz5vINJN0gds4FrYoEH7mDs7j9QezXRPn/8pf3Uj3MciHlQjhDKFlJwU6B8qivBJX2++8W2jhzxRQ5BMeOX4R3ae29ly0wcn89EkRFbI10Gvmbqe2Nh2Oy6hmu6mQ3e6T0R404l3xAZQKw/L4zr7IN0XR4cYqKiYN24p2Y8LPsmCxfd43eRvbullLp3hOC2OSMzKQVKZqUo0xwbLI8G031FscR2vIn4DwpTwtGSOakm5UhZijAQu+Nsd8VIWQ85TwT2hYzDPagr7P1f5fsDxFCPdSNAxpQXQcQa0sDe6aKx9xlz2KEz5mtwzRkxxz/R7FORrKs0oJgR6NGtS2lAK07/13U+oQ63JpkKXNg2dgr5YNZmUYxJPjsZMJJTNNRoAVTyrUTOvYBxxx2gEZJjeQ4
- GyuASBCJ
- GFoD3
+X-Rspamd-Queue-Id: 9103F140005
+X-HE-Tag: 1761216883-498030
+X-HE-Meta: U2FsdGVkX19EhkC137BkhFyqYoEQd6XkNPfBpEQjHQdSsLMVjAYc1w2n+DEQF0g0LhxOIx28STAIzbGJ7yeEaKmF8scdDI0fbKqCiXNmmn+sE2PC55TqSuN69kLlTp4eUzHhp/X0pfkNliUcjl6j6w8G5Axn4xB8n4dFYbt93anxZeDIeMrlqu1iiAqFto6WxLWcJrchNEmTrb8XWiknL5WlN1jd3TANLoElaRMAjBK6lKLjw4IO2s7elDAyOzoQK5OC0KUPmIGqSYMx2eyZlwKElBAXYmlDIK6hd6v8rI9KujqOCDqGOphYa+01JwiWJevJKtqq22d0izYlprfT7xnO95fIY0RoOCvp+Oa398IK5fWu0bzPGT3hNASkSYBJfn/Sq4/7UwFSnW8Coow1kZwcSP1DMLWqa+9lTC9lsUAA+/gYBesRTn2WI2XImOKxjgqTsP384bHvQ2bIKojZnZ9qB5TH5P43wnKfKfClz+Ves8R4okrCtq1pUZjt4a7xsuHanmC+9x14PUQnMEMjHrq09SsPytyk95x+fylWFnAKu8lrzrWAYGEKzRGVymQCnAn8RGPVK0pvGLKQZJsSswaRJiKs5WbXXeM5gjZUa06dIBOVofp1YbieT4UPjvniCx0L6aT8OsOxCxLjBBOshYPUEU8npVUbvarHiqaZM1ZoqTYAX8mQmik4ACSwbRC8Viz8VEzRLqSBZK8fqtFH6qR5d6i59ziWgzth1StYDKZyoPsFfr+xKBP5EIY3vYhm0ICHESnQoIc77wIn1cRkr8hmZwwr/C7FXbA3uY0lGIUpjQbXJO90iUvLhekUTPBnW1ApHBAZLsoFrXhakKwlzJxIZmPel4y/ItrZ1Etj47yGFsToM7+rIuhD6hQ/G5P5Ccxx9Mzjen/khCZ4creuUBAq+ayoyeFsgp6m9fPbZxicbJblaGR5p/QnPQmNEt9fHoCJvfkd32zWlXq+nk1
+ nRaSl9cY
+ CkYNPc5mSpXXmUUshJAOlrvgysm5ILH8Od/VmxjNIU92F/kNolcb0yOOyC4Lw5MU9qFAdIoc5Cv2z2GcWK9rVHLlX1Nlz/R09ZMq0i7EVLm7s9uPrSpyazkxU6dauybZAMmehP4jswAhd2sVxgY11rUFYB7btp0fg6sa0U/Rc8u+iZqLlVOjK32EeKt9CVDCAebwJPwYWEPe33LKvoQXnDNE05BLt55uOGNWnTnKial52aq7AE2VlFqxKUrToSMZndIvIYk6bHxRv7DPNFQerUMbPYXkay9U6vICTjRbyYb2sbH3cycccvpM1WC1S/hZ6G1hUt8eVvntDBHvT6jLi9+NCSboLLjvP8fnx7ja89GjMJjT0bb+w8wK0h+GZl9QipdQz5W0lP0NWLf1ne6H/nH0O69/d2E0iCPMKV/zQUNXiK3tnNaAt0WL/8DmQ/38f8urFj58GHj08lZ+Oxx0e3Ch8IRRRJDI8iIYJA0FOE688ls+QLHGLkcLSwNJj/XnZKFAyDLC9xTdQKOiapGHhLlukW5FPS78zS6cRMVU7uC1G0th5s7k/ct4giIrA7kibssx1Si8+nFUQwGJT2KFnehIeOfvKSsuKN4zQ/lrPlvdzLw68fUb1NKb+jGCPO9sQMHje
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,45 +99,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 07:16:33AM +0100, Kiryl Shutsemau wrote:
-> On Tue, Oct 21, 2025 at 10:28:02AM +1100, Dave Chinner wrote:
-> > In critical paths like truncate, correctness and safety come first.
-> > Performance is only a secondary consideration.  The overlap of
-> > mmap() and truncate() is an area where we have had many, many bugs
-> > and, at minimum, the current POSIX behaviour largely shields us from
-> > serious stale data exposure events when those bugs (inevitably)
-> > occur.
+On 23/10/2025 02:35, Huang Ying wrote:
+> A multi-thread customer workload with large memory footprint uses
+> fork()/exec() to run some external programs every tens seconds.  When
+> running the workload on an arm64 server machine, it's observed that
+> quite some CPU cycles are spent in the TLB flushing functions.  While
+> running the workload on the x86_64 server machine, it's not.  This
+> causes the performance on arm64 to be much worse than that on x86_64.
 > 
-> How do you prevent writes via GUP racing with truncate()?
+> During the workload running, after fork()/exec() write-protects all
+> pages in the parent process, memory writing in the parent process
+> will cause a write protection fault.  Then the page fault handler
+> will make the PTE/PDE writable if the page can be reused, which is
+> almost always true in the workload.  On arm64, to avoid the write
+> protection fault on other CPUs, the page fault handler flushes the TLB
+> globally with TLBI broadcast after changing the PTE/PDE.  However, this
+> isn't always necessary.  Firstly, it's safe to leave some stale
+> read-only TLB entries as long as they will be flushed finally.
+> Secondly, it's quite possible that the original read-only PTE/PDEs
+> aren't cached in remote TLB at all if the memory footprint is large.
+> In fact, on x86_64, the page fault handler doesn't flush the remote
+> TLB in this situation, which benefits the performance a lot.
 > 
-> Something like this:
+> To improve the performance on arm64, make the write protection fault
+> handler flush the TLB locally instead of globally via TLBI broadcast
+> after making the PTE/PDE writable.  If there are stale read-only TLB
+> entries in the remote CPUs, the page fault handler on these CPUs will
+> regard the page fault as spurious and flush the stale TLB entries.
 > 
-> 	CPU0				CPU1
-> fd = open("file")
-> p = mmap(fd)
-> whatever_syscall(p)
->   get_user_pages(p, &page)
->   				truncate("file");
->   <write to page>
->   put_page(page);
-> 
-> The GUP can pin a page in the middle of a large folio well beyond the
-> truncation point. The folio will not be split on truncation due to the
-> elevated pin.
-> 
-> I don't think this issue can be fundamentally fixed as long as we allow
-> GUP for file-backed memory.
-> 
-> If the filesystem side cannot handle a non-zeroed tail of a large folio,
-> this SIGBUS semantics only hides the issue instead of addressing it.
-> 
-> And the race above does not seem to be far-fetched to me.
+> To test the patchset, make the usemem.c from
+> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
+> support calling fork()/exec() periodically.  To mimic the behavior of
+> the customer workload, run usemem with 4 threads, access 100GB memory,
+> and call fork()/exec() every 40 seconds.  Test results show that with
+> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
+> flush functions reduces from ~50.5% to ~0.3% in perf profile.
 
-Any comments?
+LGTM:
 
-Jan, I remember you worked a lot on making GUP semantics sanish for file
-pages. Any clues if I imagine a problem here?
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> 
+> Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Yang Shi <yang@os.amperecomputing.com>
+> Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+> Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> ---
+>  arch/arm64/include/asm/pgtable.h  | 14 +++++---
+>  arch/arm64/include/asm/tlbflush.h | 56 +++++++++++++++++++++++++++++++
+>  arch/arm64/mm/contpte.c           |  3 +-
+>  arch/arm64/mm/fault.c             |  2 +-
+>  4 files changed, 67 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index aa89c2e67ebc..25b3c31edb6c 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -130,12 +130,16 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+>  /*
+> - * Outside of a few very special situations (e.g. hibernation), we always
+> - * use broadcast TLB invalidation instructions, therefore a spurious page
+> - * fault on one CPU which has been handled concurrently by another CPU
+> - * does not need to perform additional invalidation.
+> + * We use local TLB invalidation instruction when reusing page in
+> + * write protection fault handler to avoid TLBI broadcast in the hot
+> + * path.  This will cause spurious page faults if stale read-only TLB
+> + * entries exist.
+>   */
+> -#define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
+> +#define flush_tlb_fix_spurious_fault(vma, address, ptep)	\
+> +	local_flush_tlb_page_nonotify(vma, address)
+> +
+> +#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp)	\
+> +	local_flush_tlb_page_nonotify(vma, address)
+>  
+>  /*
+>   * ZERO_PAGE is a global shared page that is always zero: used
+> diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+> index 18a5dc0c9a54..5c8f88fa5e40 100644
+> --- a/arch/arm64/include/asm/tlbflush.h
+> +++ b/arch/arm64/include/asm/tlbflush.h
+> @@ -249,6 +249,19 @@ static inline unsigned long get_trans_granule(void)
+>   *		cannot be easily determined, the value TLBI_TTL_UNKNOWN will
+>   *		perform a non-hinted invalidation.
+>   *
+> + *	local_flush_tlb_page(vma, addr)
+> + *		Local variant of flush_tlb_page().  Stale TLB entries may
+> + *		remain in remote CPUs.
+> + *
+> + *	local_flush_tlb_page_nonotify(vma, addr)
+> + *		Same as local_flush_tlb_page() except MMU notifier will not be
+> + *		called.
+> + *
+> + *	local_flush_tlb_contpte(vma, addr)
+> + *		Invalidate the virtual-address range
+> + *		'[addr, addr+CONT_PTE_SIZE)' mapped with contpte on local CPU
+> + *		for the user address space corresponding to 'vma->mm'.  Stale
+> + *		TLB entries may remain in remote CPUs.
+>   *
+>   *	Finally, take a look at asm/tlb.h to see how tlb_flush() is implemented
+>   *	on top of these routines, since that is our interface to the mmu_gather
+> @@ -282,6 +295,33 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+>  	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+>  }
+>  
+> +static inline void __local_flush_tlb_page_nonotify_nosync(
+> +	struct mm_struct *mm, unsigned long uaddr)
+> +{
+> +	unsigned long addr;
+> +
+> +	dsb(nshst);
+> +	addr = __TLBI_VADDR(uaddr, ASID(mm));
+> +	__tlbi(vale1, addr);
+> +	__tlbi_user(vale1, addr);
+> +}
+> +
+> +static inline void local_flush_tlb_page_nonotify(
+> +	struct vm_area_struct *vma, unsigned long uaddr)
+> +{
+> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+> +	dsb(nsh);
+> +}
+> +
+> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+> +					unsigned long uaddr)
+> +{
+> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
+> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
+> +	dsb(nsh);
+> +}
+> +
+>  static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>  					   unsigned long uaddr)
+>  {
+> @@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
+>  	dsb(ish);
+>  }
+>  
+> +static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
+> +					   unsigned long addr)
+> +{
+> +	unsigned long asid;
+> +
+> +	addr = round_down(addr, CONT_PTE_SIZE);
+> +
+> +	dsb(nshst);
+> +	asid = ASID(vma->vm_mm);
+> +	__flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
+> +			     3, true, lpa2_is_enabled());
+> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
+> +						    addr + CONT_PTE_SIZE);
+> +	dsb(nsh);
+> +}
+> +
+>  static inline void flush_tlb_range(struct vm_area_struct *vma,
+>  				   unsigned long start, unsigned long end)
+>  {
+> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+> index c0557945939c..589bcf878938 100644
+> --- a/arch/arm64/mm/contpte.c
+> +++ b/arch/arm64/mm/contpte.c
+> @@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>  			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
+>  
+>  		if (dirty)
+> -			__flush_tlb_range(vma, start_addr, addr,
+> -							PAGE_SIZE, true, 3);
+> +			local_flush_tlb_contpte(vma, start_addr);
+>  	} else {
+>  		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
+>  		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index d816ff44faff..22f54f5afe3f 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
+>  
+>  	/* Invalidate a stale read-only entry */
+>  	if (dirty)
+> -		flush_tlb_page(vma, address);
+> +		local_flush_tlb_page(vma, address);
+>  	return 1;
+>  }
+>  
+
 
