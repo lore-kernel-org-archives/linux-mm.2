@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66E39CCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:29:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6248FCCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:32:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C23C18E0020; Wed, 22 Oct 2025 21:29:39 -0400 (EDT)
+	id ACB848E0015; Wed, 22 Oct 2025 21:32:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFB6D8E001D; Wed, 22 Oct 2025 21:29:39 -0400 (EDT)
+	id AA34B8E0003; Wed, 22 Oct 2025 21:32:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B116D8E0020; Wed, 22 Oct 2025 21:29:39 -0400 (EDT)
+	id 9B8CA8E0015; Wed, 22 Oct 2025 21:32:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A09D98E001D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:29:39 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65A5F1609E8
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:29:39 +0000 (UTC)
-X-FDA: 84027646878.19.BF7A057
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 874AB20004
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:29:37 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A4EE8E0003
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:32:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 435F448F5F
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:32:54 +0000 (UTC)
+X-FDA: 84027655068.04.1682B35
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 61E1C20008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:32:52 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmQfe4Vf;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SKPxaRi4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761182977;
+	s=arc-20220608; t=1761183172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4RIiEQbuKSxiwjeneYaNeE7brucAMNW0pT9fdMXWYs=;
-	b=Yj1NXfBgbIR7gup9Oe6I7/bo4aKjyPZBKWReczthFyBbdmDA9/lcGcussny12rVs6HmHKR
-	n+Gb7yZ4aai9ivXFuGbj4jpySiuDZoyKZ0jlCAELllePsaXn0P+w2sY2PnzkxBH3P1iTh6
-	iLYGO4iR1ekLDATa027J98iGHnzfkbc=
+	bh=j86jwHtPD86pmpaBp5nseJBGX8AehGcyI4u33V1+rbQ=;
+	b=HmwM0LNHKPUD5g151D4jIk6uTCTa5Z66cVku08jnHmTVM2S9KlJTujDPS8HyFo9j3sbe7s
+	YAKNn+aILbhSaxbYrDPAC9kCPurJ7/EULWiK3Gitl3rZaatPE+FVbAB0VQjPq05+KBIF/X
+	9wbNOm+SVWJF3gBaYvGA1+mEnEOyT/g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761183172; a=rsa-sha256;
+	cv=none;
+	b=lsjL9aCHBxqHPQ0NUF9Kh0EtIG8370TlQOat777YpYkQrh6jU99MhSL1HtJw7VnnraBSFT
+	AGIyAdvc8A0B/5l8Pv+ZkQ5HXrCtjwwdUwQ7qVxszjHv09UcYmLYex4T9wFbpRkYTsMnF5
+	H/CKBPgYSDJGdopvFRYdTtxp2o2eIxs=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmQfe4Vf;
-	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182977; a=rsa-sha256;
-	cv=none;
-	b=eCfS4Xeb6kZsJqk0TKILvfC8A1foc7piJkOznA6hEBIn0AhL31brOov4f4Tc/QD3V6wEEB
-	5MQel61u3nL6ZDIVbbUHDaLx1FgiuWJsvpNAb8A7DevZx/WCgdNenEsqzDGOGcQkYDce7M
-	tBb1J+08Qie9xIYN1hJkcsJMa2fItHk=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7833765433cso364106b3a.0
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:29:37 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SKPxaRi4;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-782e93932ffso241889b3a.3
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761182976; x=1761787776; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761183171; x=1761787971; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h4RIiEQbuKSxiwjeneYaNeE7brucAMNW0pT9fdMXWYs=;
-        b=LmQfe4VfmDLIzj486pidiIXnjiMSZppe8iwnOTuzVA/Ud+H0ZzMqee3QftzzBnMYXZ
-         r0z01sP5Lk7SgSvPiX7ia4CXb3Mr1p3FHqKkFTe0pPwfN/7tzeWB701ntGtjTd7nyVUI
-         +V3KfgCQZYhcIIOiV4sBCxzmK26WyVPeLUwgVjjsCYs5Z66rvIM8vHkoDGHtmj1BhI4q
-         dda17rD/npaCQ9poltCJvzHX40HlQjGSiHfOWxIpsaGeavbl7xSd9HL0iEbiDP8NwTTg
-         9Fu0Fo77Me12xNU8QQVVRsoQW8/Lc/lBv5QreOTrLuI5+OZnjQQzT/ieaFT/sFxV1L8J
-         aquA==
+        bh=j86jwHtPD86pmpaBp5nseJBGX8AehGcyI4u33V1+rbQ=;
+        b=SKPxaRi43RizFUA1wkXZNgepfOhEn6p/rW+Wp2dWZ5tpRi7aEwYEcYd3HRIXJK1Xqv
+         OB0w5lqDuO2rDih54IAgR6zQZanCBwpHIDM8Xv5XgHhBQw8pkNR5eVcbuNrNMOEvrxQB
+         TrGQcWG/esoTL0C10rmb2+bByQOPyl87CoBpDiip8uMuuwaFH4YZRdsXqN/clRTvpbBL
+         246D9S6o657d32fjDa3FUuVTWSMZCW1y+Vj6UMoHiAR0+4csZEMwrPIrYT8Ge5eMu0+T
+         lww1vfsL7oG7ELJNSP28tFwFqzhMIpcfGYLboEbN6PeLRiiKrWdRc75iOmD7XE/9zWZi
+         2oOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761182976; x=1761787776;
+        d=1e100.net; s=20230601; t=1761183171; x=1761787971;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h4RIiEQbuKSxiwjeneYaNeE7brucAMNW0pT9fdMXWYs=;
-        b=t/RcPVMEMDxAwqftWPGxAB79LDPXZ7r4P+lAyN5XdMkGS9shum8Ej/H3nbvuvYAw0/
-         I/oOEiAZw+nEEQFNVKqpJoEumigM6iAPQ0czdrhxWpDsPkA+6QK/eOY9wy5SivsRnm5v
-         EjSxZpBHE3krgx2ASjEjUToaqIxtHCSyndMReTVspDaCBOs/hEuc2WDHWr8lwQlu7Hxf
-         h/We97opyqRHkr0SGYpwuV1EnzcYK2l1Ni4UDaX9UCoZlAlhkewVsw4ugX96+Iqw5v5E
-         TTWvwnWtSiuKUjykdEXtr1lXukseObtFwvtjd9qAoqW012q6GUHD/HuD46rl816IG+Jd
-         /CHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVAxnnF0YE/UHgTTZVrq2nU1juFZkUZ2++ueij0QzBCiykSJlx8+GU2DJ8vyCwidEK+zcrStCx3A==@kvack.org
-X-Gm-Message-State: AOJu0YwMhxO8qM/vItZmtVHFozw5UsCkXrTaGO2cdB+n+Xs4BsMuFF57
-	vca+6y6G9hYpG8tycmBUoFLyDPlAJnC/MmQJtlXOxIBbP1UVEH9mzZiX
-X-Gm-Gg: ASbGncvSlLXEfaNmGDdz9vjvD5HliRfFt8vatlKd25qvzmMWsuvvab4VNxlgC+YY3Mg
-	VFCRmZFfGmTinKFPmCou4DlYr2bxFdbMP0gOQNSvB/cswBpO+vYyWDCv1uIn9+JxAiA4Aec9Mep
-	f6gf6yjYAZAfgL+WcZtvIKaiADbd62ONCf5xxP/uZx3ALMKzvx7y3gCNyeaLrV2IbWG6W6I5URi
-	kmwSYiNX33lD+HeLl3YfHZwCSVi3UK7kzzqxfTA8kv+gS640B0x/S0oEYiYFGmpkO+SgpxlPQS1
-	kG1kghAv3GQSlJVkb0W/VCXHbtGomaO2GQHV3imdQP4zlkGkmTqaLm+ZpG81YYJegRfZO7sqF03
-	hwFE2kw3S/P+WHXCagN6dlxJjysZeupHLh3i9uZcU3wC9JrIMpfxUA3jppRGegIwpspUxp7lQvS
-	0nVCUTv5o1aIWqT1gLmUyCEpa2Vfqbtywmb9RBJvh+EX/Gm+3qfA==
-X-Google-Smtp-Source: AGHT+IHVMR51lOF6X4jmIHDgdKsD6hguBJeZJYSWPOrAlhszymF6v64FcenSCMnCR/bRDw8+ZFYqNQ==
-X-Received: by 2002:a05:6a00:84a:b0:78c:985b:8d3b with SMTP id d2e1a72fcca58-7a220b29d75mr23211144b3a.23.1761182976363;
-        Wed, 22 Oct 2025 18:29:36 -0700 (PDT)
+        bh=j86jwHtPD86pmpaBp5nseJBGX8AehGcyI4u33V1+rbQ=;
+        b=a+XkoO3Y/S2KGu9B3e211H6rz/x9HK8Up+yAbnSa38spz12O0v8O5gHRMlTXIgnKjH
+         Sm35YNLBitjuP1ayAiKyyRXyQUEQ/6KyD8ArlWvFIqYTwJCgv3IhIvR2LMnVrAbWwdmy
+         JGCCmrEgn2bVyh1Fv5/3FdwQ2zg59xyrK7S/vsyNWsAiV24lEP3mAYc772kRm4McVTJq
+         wbDeu0o+2dKP/VX7LwqPmPnlFVoMJOef03NjfmZzZry4LJrR3NZQQBF5JH+wl077OICG
+         7x1Qyq6EoZWghwmvsnC7yXy4IT6vQasX8rnT9b0COUsOrw34yXvLgLAQOllBNoaWYrNp
+         2zpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVN15Aa8N4OJe8doUGfmdYb8TtNCbJobIrbgCGyHNUUrQfeysyFXU3a5x7hP59is/4z6yRcb45DVw==@kvack.org
+X-Gm-Message-State: AOJu0Yzuevu/D69UulktBhPl4/mOfScTS+1rpnEI67Mjkcko2pbpZog+
+	5IdHCI5bFqrw3XVCx5Bmb4IzUloVl+St49krKX7opt4BOsznB9P+ENc5
+X-Gm-Gg: ASbGncsikUclSvj4YB0kRdu8LXOUXph/6eI/O8zwtRyN4kzJMirM6i3rQf3eK5cfm1m
+	v0YxwyqIbMQjKJFr2gNsckFE4cKN5I+/uUwjR2qq2TCxnkhS4kPECLgFixXDXwBjDTzGV8qjtQR
+	bYjbLihtJ81a8aDJ99A3ulk/RPFhIdaSkKLsOeuzMle9o2KpUF5exGDjyy6mzvQufA5Ee9yEMXe
+	eo9js34OR5ArWkqUf0dNa1c5RHQctIozTs2YonDerpYNyeT1AGhH69Oq1xh1SCC8EuApvrbCT2n
+	huxnBHUP15hAmCxGGXk/+vn0uQBQjleG9a2K9KlQ340hiPKNRNWNbBHe+GRuja7xJU4lk3qIZyM
+	9suI9JLyV7cSRujogJkiPIn9wLvGFg1viGTRruUJnbDiJ9fjoBR5iOLbPzOhZIIdRzulSex0FoA
+	1DoQdJIwb+tViWczO/avMvKynwnfKbbVMcABhqHDw=
+X-Google-Smtp-Source: AGHT+IFtkuqL3vdT+8fOnBnbZS7nzMrmBPoZYj9xImrZortW980zhCGEK9IviI3syufSwNYAtSokCA==
+X-Received: by 2002:a17:903:2c10:b0:278:daab:7940 with SMTP id d9443c01a7336-290c9d31115mr259693205ad.17.1761183171264;
+        Wed, 22 Oct 2025 18:32:51 -0700 (PDT)
 Received: from localhost.localdomain ([2409:8900:1af1:e76d:71f3:4e0f:3054:cd47])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a274bb22f6sm613128b3a.56.2025.10.22.18.29.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946de1739bsm4988055ad.51.2025.10.22.18.32.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 22 Oct 2025 18:29:35 -0700 (PDT)
+        Wed, 22 Oct 2025 18:32:50 -0700 (PDT)
 From: wang lian <lianux.mm@gmail.com>
 To: richard.weiyang@gmail.com
 Cc: Liam.Howlett@oracle.com,
@@ -106,23 +106,23 @@ Cc: Liam.Howlett@oracle.com,
 	npache@redhat.com,
 	ryan.roberts@arm.com,
 	ziy@nvidia.com
-Subject: Re: [Patch v3 3/4] mm/huge_memory: optimize and simplify folio stat update after split
-Date: Thu, 23 Oct 2025 09:29:21 +0800
-Message-ID: <20251023012922.15460-1-lianux.mm@gmail.com>
+Subject: Re: [Patch v3 4/4] mm/huge_memory: optimize old_order derivation during folio splitting
+Date: Thu, 23 Oct 2025 09:32:36 +0800
+Message-ID: <20251023013236.16142-1-lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251021212142.25766-4-richard.weiyang@gmail.com>
-References: <20251021212142.25766-4-richard.weiyang@gmail.com>
+In-Reply-To: <20251021212142.25766-5-richard.weiyang@gmail.com>
+References: <20251021212142.25766-5-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 874AB20004
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam01
+X-Stat-Signature: zf7kt9choyf5um14d4yhw98sffcz3qmj
 X-Rspam-User: 
-X-Stat-Signature: sycsfaot5njyngx3must1xznkz6tyqni
-X-HE-Tag: 1761182977-144357
-X-HE-Meta: U2FsdGVkX1+BuPdCQutCvFntWnjToPxEiNVKpm2bBGfqwv1hkkWo6JTpJpSC1KbTOdTQDS2QESTF+ZrurqReKk+jvlgkXJL/b5vFWEdGwtx0eFvf2rk8Tms3AnbrM2UQWKF9FoAwjPW8C/pNwBL+J7TULOMGysbtSbvqYxPB/Rded48t8nkmrj0voHgGLheGaP9+1C4SUfO+wVyUJfQk3Z99uMTXpL/xHRVX5CLFZeXQKswZ+wEM0uIDfRagqGiL9Loj7D7Itcb+NcqSEzTo4BCCftb7e+LE/6W0eULKX5jRJshbSYcTCQLImititvGc1fM6eXb6IyMqv6EBZ3VT7HhotgrsO96Nw7N09ZXYXj6FAMk+iKj3P3lotzgblSZLUW+83cgSTn1EYspgx6b2Cc5z7hGUM/zrRiT4zwakBplmerm+dzz0avSzqHpkj5vy64kn9E1l+RmSGhtH14uXnv3IcAsJyKVVuNBOyErfRDaO2B771N1J4/8ZQ41ImrKEGgitgwLhTd1Uw7oAkjmC7VNyRv2N1LsPxOHRSPwvvqA2JgZW29ZHZ0IzJ13nAPCxK6SyiQ5JX1UjlruwZ3+U3HFGos7yrgV902L3WZrXIihLTyhv1iNU57VvtTBDOlgFOEwX1zWYjf86JgjAwanPn+EtJMoV/EAHi2oOVuUJMSdcPPpEqTSoPDtKIweVXGWZ/TT1RPpHWfEJ5sVe686tEBW8AjfzoWYILKjkRFOigFm8qAaw89PEBULFw4aDbBVFtyoLRUhgNu/jvL0vC1DNApDIplhOWK1hCtq2vOFzK9W3UtFPeQfUN6dyvFr//0EVEncxi6JstMRAtmXEE+f+I5k5jI/wrxD2LJz1Ju3q/QBG/H9mW963C94m3+7CJI73r5mPEufdpZMHc2RFiQPJxHH7rtd+IGDpDjj1rwXv763c7TgM8DE1nLm69eXi59H38NmdHQuSHKkYN8fdgLr
- 44Msa3Ln
- /Hpc7OCZhu3sfu6cFlk0Olp+LDsqWLZ5Qu6PZTHYvLjE/AWooz0fOA2HnXiXmomJmfENDJ7KLOJne5V2VWhXQmucIbPV3OQb9yEwOq7VLgptIlz6quyDOGWTkL5GrE0ZLVa5yTB+NEDo6YwbNSJYhLH4cUkrz17SZP26kQur13uICoicCNPE1r1dVfRS7F0X7JIgQTqPkSLX/HXeCpp1LUegTkZKPF2CqNUtNSPnFzaeoTGPIpdk+SqDk4DpNw/pE4fOAxQaESBy5tpX5GlBnpP4lCZotuDkptWYAr15V3agDJNBhIG+hjOc3ePYARVBtmHOPKOPER2mmMq3kCWxZPteradwgltCTH02dKtcgP1kRqEnbMmNjcJeMM/39774vr7aoFmmk0AJnMi2A70GZr/vk5zL2t765LvoKJES5xP5JxWlyKB/sAPOJjfQ83gze9oKYxmuh8EznrFqbCc9gj9ZfZ0ZwuRdzxuk7zLbmEmAlyMKIhUO1oPyWS9eyLwe/qdfdpy0IHkJD7YATNidIFL/BVDhHKGt3y8asC+cW5Ci3zioFrH7rpLeYaw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Queue-Id: 61E1C20008
+X-HE-Tag: 1761183172-995065
+X-HE-Meta: U2FsdGVkX18Z00ApUjSyAawqyQSAFH1DndFnldIrkmOwzHu/20sDxixyCduE5YGtKAe3sH3quX0yUWMZLqCnsSz7p8tQZjD/ch0cPeDrn0ugSX+biL8c4ov2fcUYA7lfkbSlBfoZhMYb4HW+LWzcO6wot9aI47fmSYz9hnWEwTxL18QGa90Z04bKO4KkZ3PEGkLlVh8Uq8yF08uO8LqWxHC+8lswVSEREQ992wvnsuBxL4ngqFPV1CINVCOvG89VMZ9BDxn6LWPjLBQV3DUtULVlSmsIvs3m1eHmT1kVPfgQTVtgEvebU3U3FZI6Sxw5SDTOh5eOadAhzCcbRNP8YOqrnerpk3n+3OdajeXOmKQqyASUFkCy6KLfJ+OW6hPw+TozH9jo41ZNCTsJrD5oKfmd1f4MHZBuexxowbYtyehysxMt9BYsSAD4mvnefun94wgNxiMlJK1usXDeJvfzHiIDc63QvILI0k073XB9QLZRWCgJv+tabfJcTGc8PYFot3oZSHGYja5axPQqmptnKLb0XPdDlQRsgQOsIaBFxnGvY7Xr/bxWSoJvYLIugFrz2y/vBzbpBOkD4O9HjX5OFSjmaQurpA4leKiVB1mkw7r19G5/kI0fTpjwiUR6FsZYDuMuTX4fWA9eNFvKN4iYvQyaZGBoosX3D4IRDJulZf5EN10GNg6hrg8puveg1UvPYDPD5B11ZTxDzV0ZtHt/dIdZUSBI+wsqnFeTNkybIvfsODE+d4uKxCKJCTOY9Dc6vcvYEsMgGNBlYoJjnnTa0AVIT0wJ9UaGrBm+7i+6BNGOrEhMX5IhI/cX/4gONYmSLGW6iiO+cD5s18/BziEGBV1o8BVZIxdKFcLSemJTXQszcSmCAkhkOf2IVbNZdziDF4/Xga5upxXUhZ+md7vCEV3vn4PWgHXNcxdL5G43vyj0vuND/8vn7rLt731s4ZHiS22TYINN2wZ6prRafk1
+ 3WtNgMaD
+ elfog32KRwK3pT6yfWXDuvtkL33ojfa1NhtHHuBZKGF4qozQZmAiyY+5CAVBgzR9QbP2jRRK6x8uWld+U2lf/+b9+MLsywhAGcsualp6B5S8CInkbYg5XkCxDFGwh2V/e9Pc0i7+vC0SGDzr+2iUWGoURuOYeIjQf/fyuv5q4TakNZusNuQgCsoLGF5mcFml6EWLffIcNCKj/8l9AwmZKryfFzfb0bgwD/WnSbylTPT1y23wLpHm7+LKSRuYGzc1mFYig5YPlbBhXkDInYL9NdaVo/fA7wLar8/5LQ1qgAZfrvVpOMEID2/R3Zm4MZ8DNuIg1N4tr8mAoi6RAvDfDGB+C0y36WsGYbGSnxm7q/lHcddtGqKp32Ma8pZ5XVon2b00/CROvk5kiqkvtqesveYiAKxnHak9aGJ++J9zyqVDIUpq1r0BasR0U9EmjWziJ8PpXWut4VriQBFILXgyBmWtbX0QoR4PwukPA57ANjCIkzUPL/mc3pcvtt71K8wllOmkn/Yl6T4sRlxU/SCA2z1EBxpboa8Gy1QUENHqtemvOi7uNflRBvykUp8uCXNf/cbBRWrUzyWuvaxALx5ddkxn89A==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,25 +130,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The loop executed after a successful folio split currently has two
-> combined responsibilities:
 
->  * updating statistics for the new folios
->  * determining the folio for the next split iteration.
+> Folio splitting requires both the folio's original order (@old_order)
+> and the new target order (@split_order).
 
-> This commit refactors the logic to directly calculate and update folio
-> statistics, eliminating the need for the iteration step.
+> In the current implementation, @old_order is repeatedly retrieved using
+> folio_order().
 
-> We can do this because all necessary information is already available:
+> However, for every iteration after the first, the folio being split is
+> the result of the previous split, meaning its order is already known to
+> be equal to the previous iteration's @split_order.
 
-> * All resulting new folios have the same order, which is @split_order.
->  * The exact number of new folios can be calculated directly using
->    @old_order and @split_order.
->  * The folio for the subsequent split is simply the one containing
->    @split_at.
+> This commit optimizes the logic:
 
-> By leveraging this knowledge, we can achieve the stat update more
-> cleanly and efficiently without the looping logic.
+>  * Instead of calling folio_order(), we now set @old_order directly to
+>    the value of @split_order from the previous iteration.
+
+> This change avoids unnecessary function calls and simplifies the loop
+> setup.
+
+> Also it removes a check for non-existent case, since for uniform
+> splitting we only do split when @split_order == @new_order.
 
 > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 > Cc: Zi Yan <ziy@nvidia.com>
