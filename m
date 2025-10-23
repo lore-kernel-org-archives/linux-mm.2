@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2995CCCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 20:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A748ECCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 20:03:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746168E000A; Thu, 23 Oct 2025 16:02:37 -0400 (EDT)
+	id 0DF618E000B; Thu, 23 Oct 2025 16:03:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71DA38E0002; Thu, 23 Oct 2025 16:02:37 -0400 (EDT)
+	id 0B7168E0002; Thu, 23 Oct 2025 16:03:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60C778E000A; Thu, 23 Oct 2025 16:02:37 -0400 (EDT)
+	id EE7D88E000B; Thu, 23 Oct 2025 16:03:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 50B818E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:02:37 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC91E1A0C60
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:02:36 +0000 (UTC)
-X-FDA: 84030451512.29.572FCEA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DFBCC8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:03:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DAE58914E
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:03:13 +0000 (UTC)
+X-FDA: 84030453066.26.6276545
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 60B87180006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:02:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E2XGvs29;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 339C640009
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:03:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1q1VHhU;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761249754;
+	s=arc-20220608; t=1761249791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y4TTOO2cgFz3W+ccXXdCSitozQat0wJ24BVv7Ue1CUk=;
-	b=ectfknZwfptL0U8wO0hX/eHUXW2lObyonaUvAYY9HNhqA2tLND+F0jVMW8GI6UVrx1EUmz
-	y3L4IYak3V0/vYsKeAwf+kuRV2uklZARjO5ZESksMPLNyqAhWzDh0aGCwFChoDinBz3c0e
-	k2Z/SFUKtyXh8cEkre2N32PXhJJbAWY=
+	bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
+	b=hy714jTFnQIjP/CPWVy0zmZHunu5WLaWfdIKnsvq/V9NWQpOjGb2eLxfuxC0eI5r2XUKwK
+	jTdF0QfPO+BjHoDgNqPdHaxqx0P9MRg0TNf/G6WErkkoAyQ2piZhz1U/MnKoex5K4rJMnu
+	2PV08LfJEpz9tNI8K+FAUAYjKwkO7q8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E2XGvs29;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Y1q1VHhU;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761249754; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761249791; a=rsa-sha256;
 	cv=none;
-	b=klc4lZmMXadt0GVRIHmUsDXwS6M5mTaXncVhuyGqNNjD3GeBN4JrntHC3ky/+/ZtL1E0CP
-	AG5H0xLTC+3uyt1ueo/MtiiUFSuJGbkfFadhEm3/hKCTWfuM2CDWh9HjrGrZyAiBw9Pa1S
-	BSSyFOxqhoZjbpD93pPCollkzQNeRi8=
+	b=oURjwQq49mgZVHurnVaONgjPaou1TmV4c/b7xRPUCXJahBQxkgpAY42APpRJ2nHHCImFHP
+	qwO/jSV0ksE/2mMSGQw8EFL8F5Kd4K1AtTGbHMpOWepvfrVLF8BFNlGkFBffSu6292TKUY
+	HpJbvdFn/A9wIGFavWET8MvyuFfC56M=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761249753;
+	s=mimecast20190719; t=1761249790;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=y4TTOO2cgFz3W+ccXXdCSitozQat0wJ24BVv7Ue1CUk=;
-	b=E2XGvs2959tlE5Irc7FxY3Kz5vPem/jgKlW0/qAtNOKQNCR7NELGDJD5+ix/sm5Wg5mvwn
-	13+Lmht31QdnUsafjOImbOL+Z8hv2Zvt00e8tq4dx4AEGR+SaT0QBgKqVQyxly/I26eep4
-	z+ae2Ga4vUDp3pIdJ69F8W7oxv7Tzdk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
+	b=Y1q1VHhUnUtbAfsLtetVtzpxjabLV1NTsI4fNMxCML9j6ZN1Un2/vK5KOp7SKSEklK+Czx
+	DyO80aqMXpClMQhHVgHJ7ZqC2anbauKAnhqchE15JCQhNnaFkLuItd06kx1GDdyWpQBOjG
+	CqChN+k32fMElHxmy8kacz88TWjjcC0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-Jdtjt24JOX2JXDYko0WN5A-1; Thu, 23 Oct 2025 16:02:32 -0400
-X-MC-Unique: Jdtjt24JOX2JXDYko0WN5A-1
-X-Mimecast-MFC-AGG-ID: Jdtjt24JOX2JXDYko0WN5A_1761249751
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-471168953bdso14435815e9.1
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:02:32 -0700 (PDT)
+ us-mta-303-5Ob8HuWLPryxSL2vdOkxvg-1; Thu, 23 Oct 2025 16:03:09 -0400
+X-MC-Unique: 5Ob8HuWLPryxSL2vdOkxvg-1
+X-Mimecast-MFC-AGG-ID: 5Ob8HuWLPryxSL2vdOkxvg_1761249788
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4270a61ec48so796596f8f.1
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:03:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761249751; x=1761854551;
+        d=1e100.net; s=20230601; t=1761249788; x=1761854588;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=y4TTOO2cgFz3W+ccXXdCSitozQat0wJ24BVv7Ue1CUk=;
-        b=Q6tL7oOPIBftIQtxDtitzW3Wlebdr2JEJMpxVOy8u/uz2EsWIWBNN4qx7qf8tgiTw6
-         ozKMujFYzHhYsCwcZTuoEhjshWsM4gfNuMN5VcQyykmKzwoFFEJ9P67yAj84TJ2gnhIN
-         AZyJx0YMgD6S3wWMoKtFn8+VQoEI6RAS/cwWJIQawGevg31n1bs2eC3EEWXP2J+IDUuj
-         PhnegewtyhZkyt0SL3MRVQnBI2vX8nedHLJefNq9aQ74TIGjK+wovlLrIkISo39dG/tT
-         c1B18JUduS53PXZdSMfw9cRXBMC37wcL863bA+JRNGccLB9Nk5nusKaQO3Q2dcTT9Sy4
-         Qj3w==
-X-Forwarded-Encrypted: i=1; AJvYcCXt53TMkxhebt0oJMg3TXNXe/CkAKtE3ut95VWSL4omM12oCudomA9JI8eobWUrHb1u71BwnpcdTg==@kvack.org
-X-Gm-Message-State: AOJu0YzGD2Wm4uo7rSMQZkILkKb54mI1MJp57j0I7i17tcu9BTyGwP5t
-	biZgC/0rTeR9mNE9+ZBgPwlHcO4AQadjQRU8iJ83dLtkt3rfSHcpmP4CuCBLmHMXrD1YPcrpJwN
-	o8R7nZkWmLQn2eSGLaB+M8ni2EtLZI8qoR/JW8RZDZYEX3En4IIsY
-X-Gm-Gg: ASbGncsqaAG4b5a6py9r6ruj+EDb6G9aTB5/Fkfye6lpdNd+5+q4lLK5wK1NEbBOuy8
-	JQd97HKclVykzfz8iQJCCOqM2ZDeOtCpUXoxDpUnN3K8o3pC/TDaiaJMx3scpYDln5Hve8r/2LO
-	jRLDp0uGjETLk3Jyx5k4duDIZ461c7ZjC2Em5tnDc1tI2mbRPNCjDzcQ5xy5aPP/YgqhfVVYT7I
-	p9uiSObKWNKe924gmRFDvMiUVNHCJgCB4fWfjB3WaG1llYQBTCl/oN8ZTSli2dR5e57yaGopmBC
-	r+DaacOMHSjBKh5mV9OeEaBvGFGv3SCQSIhHByP2R66C9nqkEFXy1cqbrM3iWxPEy10k4+yRKnr
-	vgO1kOU/LCLzMoRhQEL8Q7tLWzfT1FpY8PTGRYR6ch9gSdw/Dv5iYPKsInF5pELritVpPSZQ0mZ
-	bYLLE0+wJO3cSL9h8QnSAQQLACC8U=
-X-Received: by 2002:a05:600c:1f13:b0:46e:3b58:1b40 with SMTP id 5b1f17b1804b1-475d24125f6mr1089685e9.4.1761249751047;
-        Thu, 23 Oct 2025 13:02:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMw+Op04CJGmhD/YPV6zz3oVUY6+u4w9wry9vJKgjouN71r54k9F5kFdt15tjjDg/5cU58MA==
-X-Received: by 2002:a05:600c:1f13:b0:46e:3b58:1b40 with SMTP id 5b1f17b1804b1-475d24125f6mr1089255e9.4.1761249750674;
-        Thu, 23 Oct 2025 13:02:30 -0700 (PDT)
+        bh=QPUi1jKCUzNIqjtqTEITsV04BJ5RU7P6py+r44ygz4A=;
+        b=CuPT961hcc7uivVe21fwAq0K9d9Cxf8mRk6C/ArQvgYCsaefEW0yxMeWCEM/WOdFQb
+         j5FAT8UuWQgsG94ByfeDH968f6xnln7zIc8yDrI0z8CXyQbVV6kGxZyK626352/BHzp/
+         LqIkqZ1Tc3MKV6rzi6l1Vctttb+Kepw1p7/DhNhC8xFew9ZvWs9i1X6Fpc1uLQzTgqTl
+         vrxV+yMiDNvK+5+iXWR8O/yxdwkaEbi71ERMjhsbZhBnKPR4sTs4bxTpoA724q0tP/Q9
+         s/5TumMECLyS0hNp3UJ7XJSCcaTgxXQeS4D87/T6NWpoFhR51BGc0m7l1Oen2lNcfkcK
+         fnJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3FLC8KevWHxeRrv6hxpGtKMS0aUA2kRVQDqdBd5LstclsFISm9XEize2wpctHPmDvpAFP71X77g==@kvack.org
+X-Gm-Message-State: AOJu0YwO3RHl29qyHB6Z4zxeL+cubwHqlEQV31DTnll99+OuACE23uSz
+	nNQqg5q5g21eX2socC2n3kympByT9Mr6JRP4W3P7tne189OOrge99eP1D5pOXJtZKmn2ijZmVqD
+	N0hem7LE7ejFW+ML1kkPCBQ2F+5zZ+QjZybCCPFEF0hnYPbmjsEH8
+X-Gm-Gg: ASbGnctSd+fXDN52KX2rsZlo9rGIzCHPUTgnzQRvypR5uzEuQHto6IYGJtVyfLJFJpU
+	WWyjPPIWONdbl5zakltOd5Tz+a1b4qXe1ZEBQ/C9w3KWzd2n+/pxpXcxgUT44+5s8hNBjHG+7nj
+	dWoZeCMJWAX9o4FDd0zFPjI0SHR51h3fprlElhXxlmFUXSHG7IC+ubaEFtzVRzeW6fB+MtetQz7
+	WxKn6VW/TiihuLE3AZIuStaYhupcAc7iqQ2JeEk/P5O2CI8lrEkBg7lyuZFS2Gc7v0EkH/JmeJX
+	tHsrSkeDFypq0+0BwHxmVvFJOOk6RvmFaDBtMfRVbyCJWrL2TpepmsUkt5sD1r8N1NzqNkJnxz2
+	5sN8p/igLthwAhpym39cmtVeYcheN6srLjzg8+nizXKgYYDv1oa5OiYu+1FhgmUKnB5qBxx1NrF
+	Jt5ZtrH8Fl/Zs0oiHtraXjkfBp9LQ=
+X-Received: by 2002:a5d:5f54:0:b0:428:3e62:3220 with SMTP id ffacd0b85a97d-4283e6236ebmr11705611f8f.30.1761249787944;
+        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGVpW2WfIyt9mGiyfA1hGoENq2TIdXWY1dpXbpJHoGGtaDtHStMqMHIOiYdTKz+oFfHpZxtMw==
+X-Received: by 2002:a5d:5f54:0:b0:428:3e62:3220 with SMTP id ffacd0b85a97d-4283e6236ebmr11705579f8f.30.1761249787533;
+        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caea0468sm54964965e9.8.2025.10.23.13.02.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429897f57d9sm5671794f8f.20.2025.10.23.13.03.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 13:02:30 -0700 (PDT)
-Message-ID: <8d5243ec-3edd-49a6-ab51-16643a709d84@redhat.com>
-Date: Thu, 23 Oct 2025 22:02:28 +0200
+        Thu, 23 Oct 2025 13:03:07 -0700 (PDT)
+Message-ID: <e8d31a8d-ad4b-4365-951a-dff0bc9535a5@redhat.com>
+Date: Thu, 23 Oct 2025 22:03:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/13] powerpc/mm: replace batch->active with
+Subject: Re: [PATCH v3 10/13] sparc/mm: replace batch->active with
  in_lazy_mmu_mode()
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -128,7 +128,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-10-kevin.brodsky@arm.com>
+ <20251015082727.2395128-11-kevin.brodsky@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -174,21 +174,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251015082727.2395128-10-kevin.brodsky@arm.com>
+In-Reply-To: <20251015082727.2395128-11-kevin.brodsky@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dq_unbzhLl8S96zyRSVUimuXXU6RjrWefjucAZgPhyc_1761249751
+X-Mimecast-MFC-PROC-ID: wCxiRXEQcSUE_a7lkg9mFy4V_2jTbZ94AYzzOI9v7Ho_1761249788
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 60B87180006
-X-Stat-Signature: e6mxd8nmbgkjpadttdgx7gbcpw3ntwp5
+X-Rspamd-Queue-Id: 339C640009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761249754-993144
-X-HE-Meta: U2FsdGVkX1/GBtd56sIZt5m/CWYl8aChEDp/FG4FpUYSA3Jrlh9+TI7n3U6PEiYtzXc6GLEu5OPnGTqg3n4hIOBfqY+zr4bXL7Ab1D74MnIU/iuE3x4UEufYufMkrhYzOkIkvreyDgZ698I17DLb/pVy5vEVNbrElcLMqvI4ukY3GA+dvRYV9ERqohMrg6zfgTcBI1FGcBuWwW4iryR8gS1t7jkO2eX/zvv7XmjRb5TU8PGVl8uFMc6PyTCd1ch4ssFSDjdHfIiHdbs0Bux/4gBfLdlWrF8s6F/IR17jd5Yfvt8bdHxE3gZXO+rz0b7qIkhqDwjvx4PyeKaYgL1ZFquWFbJoaxt5qZENrECEaM/MljIjBKdt5M0n/cVg2JJ5i88FbxBjJeJmjTJp4fGLJFKQdyaJiAhBlHcxQpWZqT2Twxb94ki2lTzYkmqiUuONfScask++rqIQJkF/2Gcf15CL/XIoq9gS7/N7LOhTIImFLtlr6QejzQw6uCRne/b5N//qkqkgHZaHx8Se0kuUSVAk4LaF/iRIkkSroIQhuVN0dDOLmD2jNwwFsVuEzNelEAtPUhFtSWd5toiQzllKNHCxPG/lFZvDXz3kgrx9QxuBfEtbRJ9VGhnSeiBO33a/q284F77isFINIKuDvPgcVK2XnE41x+NquFvi/kmdDerNJKB+Dj1vTBqFX8rE6zjSEo21KPGKRjDRlG7FB9vPcBsdnNltOhKv40mPZwXwnNbb7I2hdJpPLAyYzRtzysSHU0nm1igcKy2pRc+7UV3zCf5ok0Vst6GBLOLDZnbCfRKnNDLIlPi7oAcqI+AtyTzHEkkGtg8hXBObfdoju/RP2So07qx9zGg1mIoN5x0bpOaLFz/T4+KtdrJWmoauJ7+O4YBkoabcDt6HhoYaFWdK/zb1kVWg/Y+3/369o9Ozi+IOqjjk58r9dbeHuubAR/WXv/CL548IsIgx0U/zPnW
- F/9bDpHv
- qfUHeOGj9F3+cx8cqxLtJ6ye4IJTKJRQa6tLPox1+somnbaSNLBTLp/p7QKVooYkt15vKwCHYxJxFlKGQrpLbvVhfbCNVy/0MxX4x2wOIc2Ryckz524SZVrWJGwOMn++02X4n4Z5cNerbhqgABZrM67R+cKAi/fT7VXlsIYcVNRSGwEXqhZr0fL3FUHAOtSpfPR0danFjVphnbVMJ2YshBeU8pWKZt6ikdZYHW+OVwBio2CQjk8F0/XSNfmYdaiuwModohGWoHtpxnkrAmZZjzivmlHxzXhSqjDNcxRYwyeTIyGAOErKMuGvSmim1iSAHirR/dyGut8rCZqhjDjqENULv845GSBTFjLGZR07IKYsMGqNXdfExQHK9UbWNleBklS+1bAQPjUOcUn3ettVWQwK6nQEnhTJy34t5HFncMaVmVbwNm37Pa/AVzBDvdKz2WJzF64hMM5mNG3v+jWEpB7/Y5pjZ7W12GDqD
+X-Stat-Signature: h8h1i9zzxrs4gxabzum9nwszgt1bqpki
+X-HE-Tag: 1761249790-825915
+X-HE-Meta: U2FsdGVkX1/xvfpA7Be1+Onv3AZjU6KLMM6wEZHbzg/gisz0gbJ1pWQ5RyTewG1+zlZG+T5VkxcmeNGk5ScvcqRXm3cVdVrxyMgfj4ISWIIOli8nRTdJYN5E50shCA3Mtl2kP4O9QhYwkyJzuedjWsfQqUs18TI9Q5rMJ2R+Aq+347cnhaSlaN6+wWmADyfVRKhlJtPhtU11ObsmGyXjSx17pSd2xvAEgXDqVMgnB5hEDjtcT49sFPxYaYv7iBrs7qe5nSDo0vKqAqCHAh5mu4N0c2HbSSodHi0TAxMVbLIzEZ3DKkzxyhNqAzsNH0Vsiuq6Bn7nI5gtiyzXhOYA6NrEEeIE7JcQ07xYnW1MKn9Trnk3oZjq2aB6bUFV1GUMd+G2K7+n76S7rql762hm3S6IOnXjWT4UeKTD9I+yeedmC7dtwDZHTE4aXzpSzvcgWBlTI+tFnmbYy3Dr2ScRZ5DjZ0NuL0BVqCpwYi6SomfxoZ4O13NEdizGzbIo+t+iFTqGuWzF8117dRVc9/CAuj6EIbwP62dzMMZV8RMBBAihEutP+KMkSFtLBdXWiBb8LVFDkw8n/KcIINdyXgiBdEFtGN+OSmqi0cB0FXpP+spf1lE9l4QJEsWrIosfhtkVHb3sHVUGayhL2cxAt1I1cMokqVDXNxvlFwULddMbS/89NBaCViRjktlohVueIeXmEmLbxM7gkW2x54cj7O/SkfVqqg0qPYVgXDVRslpWMrbHOWSAhwrlua2vqp4lwHUtAw+0Vjn4ysam8kvsAqvv7w7eEqNh4Rw3RYwZDfsdEm9mLxpA9rR4Lkdl98KxpzUJCLyssqPXSnHCc0HmFJqn4d9CpstWx1+YUCa+Cc5ysc5Ey/nEA+Pz6JrDJokqttfE0k6TQoJwdfCWU1FOTCvrfNIaVEsSt7RlQHuULsjBvoMg3AXhwN+Adu4+lyzozSauTRTb1Jg5WCVPzc92/p9
+ G9EMwIGV
+ upCkSUBXGk5dyuSPs2xGc60gIDRcUr+9sJYXz9EWBrY16IhdZlMGUIPjpLMzJ07xJ9PN0u9+7rTBwmCVl4Hbt358SA2LEWiv276XHOdAVoJe1UfxjCTTuYTGMDfXjzXgVHHCqnQ1vXn/ISxW/NvpD0FGCmqFRRKpEyhwGbWs2gC0UmYjZSjjFKGr0REIvol8Z/igVsuhe8i7FTVzAFQ9D6SpA2EfYpSudp5UcHv5M/vL1psZzQOFJmepRXYDzXPMpbU5tHbELgIa/4SE2VeE67GGh+R5TBoYoCvRI5OJ6ui54r7sC3fzdp5PhrAEG2+03eLmRQ8/bOUiZtndcv/GXakvn3ysylWAfF/C9TeOUT6xMuaib1lznR/TnNDhZyCAuU+23/00K7GTgbUi/Z6lghKxfLDPN3zWvfMbvDvF60rt1KhXbqOu6KZxFTrEPUF144CvMyQfwhJzu9jLE3wZ4ldVcTqSWFw2nrhq1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -203,10 +203,7 @@ On 15.10.25 10:27, Kevin Brodsky wrote:
 > batch struct is active - we know it is if in_lazy_mmu_mode() returns
 > true.
 
-It's worth adding that disabling preemption while enabled makes sure 
-that we cannot reschedule while in lazy MMU mode, so when the per-CPU 
-TLB batch structure is active.
-
+Same here, document the dependency on disabled preemption.
 
 -- 
 Cheers
