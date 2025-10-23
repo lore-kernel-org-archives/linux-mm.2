@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F301CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:11:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A2CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 449218E000A; Thu, 23 Oct 2025 07:11:02 -0400 (EDT)
+	id A8C9D8E0008; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D1328E0014; Thu, 23 Oct 2025 07:11:02 -0400 (EDT)
+	id A14518E0015; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2997E8E0012; Thu, 23 Oct 2025 07:11:02 -0400 (EDT)
+	id 8B4BF8E0008; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 04E488E0013
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:11:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ABB9E1A0AAA
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:11:01 +0000 (UTC)
-X-FDA: 84029111922.22.E157535
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 18EACA0006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:10:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0jg3bgH;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FD308E0008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F66E490FD
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:11:53 +0000 (UTC)
+X-FDA: 84029114106.24.B7A1F1C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B0A461C0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:11:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pj4iGvGB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761217910; a=rsa-sha256;
+	cv=none;
+	b=192guCmhYWA+WGaLmsi5JHgEIx9aUeeTS/87eycfrCl9jbSH5zhTPZdJhCzuo8tHdySRsf
+	FwnKueiGMK+88MDOTVDSC+UrWvOgt99r8C5aobze87lMBUVt/d26ivvAPGoUkvZCcNauz6
+	8QPJsrUK9Hh/0mkDFs8oot44SUwKaP8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pj4iGvGB;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761217859;
+	s=arc-20220608; t=1761217910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l2IWmYgTn+axyHlrNGOBe1eg6QF+Mro5+LjrFCWT2pI=;
-	b=YeWiHcumxIIYLIyQ1SPc9BZX6RMmFTFnl4nn1f6w8Yivb5UOPX51bYDPYnNCIRcN60AvaA
-	NJfDd+j56Hni2A03x5ikOCPofzB4itbegroxuVT6FWlXVgLbNp+TdrAnYKQveCe0ZUvSs6
-	NITZdr3GKc4Ff/8ceiam4nfLllkmnIY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0jg3bgH;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761217859; a=rsa-sha256;
-	cv=none;
-	b=FG3K+Dd3ODrVzLKfyobQGi7FskzY7yv6+s4stt8PoMdf58tkz47Yf3c0ArDo+HUnW3wicb
-	7/yJbgg+7T2kBDNp0i55mN4D7wpQr+CTx6DAEG9HfJgM2PJflx3euIyY0UxrRIItzIz6dJ
-	jqAL7/Wji8u82K9M6iDZTrqogWJzlsI=
+	bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
+	b=pprJMwN/x/Q4tLo1gNhC+GE6CK8vkpwVy8HP/IHyKt3AhlxW/Af+EuTBh/ZPit5zRHrf5C
+	1hVvEFUv3aKUx4qPxan4rzlcXeSezIRu+D58yew0d/xX1C4aBK8mWM38DHeXAQyYS5Nawm
+	KwLLz0UTAf2MtrGZnjRxIvwSH/iIEXI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761217858;
+	s=mimecast20190719; t=1761217910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l2IWmYgTn+axyHlrNGOBe1eg6QF+Mro5+LjrFCWT2pI=;
-	b=A0jg3bgHs7yAdsKJ8TDbhWrWMyiWm6kMao8xvtlKp2B+AWILkE4ud2Ky+Jhi2KBcy3LLbA
-	4ued469gO2TNPvDoydG9UEKgCiY0g1G0P8hE8OMtyDnGI+8h8j2clGczy89JpQi5nJKWnf
-	LcinJoiJxsbubnDUZlB0afKrzuprFIk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
+	b=Pj4iGvGBNgRzCw260I8RILBaitSRBQEVNhJzLOuPNzVMKUSGaHYl/Xm4e3EOswMHFCjhtL
+	fEHgqeHIpNCO+j9AgKp8Qqv6AHWEs4zTYNOPsI+OcWD7cHkSsR6TaY5lriIFg+4Oo4NtIQ
+	J1qGDQWYgT0srIWBsLBleY3HOERRIrs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-OhPkeF79OS21pScPY-ipVA-1; Thu, 23 Oct 2025 07:10:56 -0400
-X-MC-Unique: OhPkeF79OS21pScPY-ipVA-1
-X-Mimecast-MFC-AGG-ID: OhPkeF79OS21pScPY-ipVA_1761217856
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47111dc7c35so5442715e9.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:10:56 -0700 (PDT)
+ us-mta-682-VuirbT6gMQWoSNOJmDGYDg-1; Thu, 23 Oct 2025 07:11:46 -0400
+X-MC-Unique: VuirbT6gMQWoSNOJmDGYDg-1
+X-Mimecast-MFC-AGG-ID: VuirbT6gMQWoSNOJmDGYDg_1761217905
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-472ce95ed1dso4207655e9.3
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:11:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761217855; x=1761822655;
+        d=1e100.net; s=20230601; t=1761217905; x=1761822705;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l2IWmYgTn+axyHlrNGOBe1eg6QF+Mro5+LjrFCWT2pI=;
-        b=eID95XmihD8Yd1v1We582EOXvFShmyo/uj6U92Z50ob3+I7YXimSVz1odDU1N48ijN
-         PwkYjdReZnbtyPR9JQoNdnTQ2zGnXnE9UErNk0jY1wSb3Z7T0kQpFC86PTIfy2QR3SRN
-         i84BeIKk5aM+e+sylumkvCc8lmcL9ulKr2MLm6yjlm6OxqCNozcdfJhfnosYlmEd18tq
-         o/L8CFtvbgLAW4P2q4xhvg6rfBbF+g/U0VtYof+MGTnL1JPxU7vH4ma0xzz90QMekUi0
-         PD4f+fokcdkAi1yz9yVBigWNYj7D0qKL6A6arjR7utf1I3edwfZ60iyPG0Ze/QUJUQVx
-         U3Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvcIYGNPuuiNe9YpN4z/xF80u2PMC85z2cHKuyUS7BONeZQFhFnQ2ubmMdi5yqNaUiKZ5u5fUJZw==@kvack.org
-X-Gm-Message-State: AOJu0Yx2YGH34bZNEVZ7N+I6Kq5hiAKUsoigRBJJD5xMDYuIJ8B+3L6S
-	g7YKye0szP72IHUxlw5TuQpti1eCnWeWjv9PN/aWIxGY37UcJV18fWqsUmsXKFgq4hc201MA3e6
-	tblBjUZ1rDLL4lC6TZ8ZURf8JcpYF+dh7ITlC5HpyX3oAPXsOAkj2
-X-Gm-Gg: ASbGncv7f4LO9ZG9yrqAV8/uDyVntFd+dPevDg3xQrPfo/fFLLSwDGmTCUeIqJYjaXt
-	R1V50oLTbuf1wsSLY9sMkyw/J/rScsyk9ip2UrDtMwpq2EBeGcoSttNDzEY8cRZSV0eo8AD58Pg
-	wnZDcvKD3Uy/w+mi26P9ja+IQY2AdtEnJ8kM1LA0XiRspcQH2jdrewI4YrWZFA4RYM6y3AHWbqv
-	B2mEw/L2UJL7bIt7fPCLqLBpnJpGIb1WTrJMZUrw96/XQQ+noXX7QXzEfzFUApmD4YSOZxufnN9
-	IyUSLLATQhZPp/cZqBzAn5Esy43OLoA2AlFRP8Z9+KSHcXnyu3nL28L7Hz1hImP+qXgOmbNjcz8
-	idTp5K9fQgz+GAXh6GMJ6KqYcQvddGc06jWpkTdvEtSLALqC3/vDv2yCbAWMf6o4gSzvaeUyi8a
-	qV4glTFjMqqwE0zl9Kd5vEXFW77uk=
-X-Received: by 2002:a05:600c:3b8d:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-471179174cfmr180135075e9.27.1761217855570;
-        Thu, 23 Oct 2025 04:10:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEV7ydI7xyOszLDErCC9LpAr/vyTCsbXL1MuG3tRXSBfXfhqfoS0SRo1a/LWhqon2FVwTNCGA==
-X-Received: by 2002:a05:600c:3b8d:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-471179174cfmr180134835e9.27.1761217855132;
-        Thu, 23 Oct 2025 04:10:55 -0700 (PDT)
+        bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
+        b=P8BDMZ/mC8Jtn9LgqqMrmCUOMnhte3LrEhjgWnK4Pp6dhNtTsGzh7lsvZf2XSxbW6c
+         RoZrp0UQiN547mCUv96nmI4VmiUDoQzyL7GpOtal0ThQ5gPMygfKihGrtW7DfC8geH7R
+         XqLn6Yief8HdoNJZ7X7qiMxC4Ttwcm2iDB4LgnLoHcJwabDf1szKIcIuF2tKj7eg/GjL
+         tkzoRkje9Axz+4xELllheeCy7psiGg37a1Oun8GBmG1VridWVqhdJD+669N0+0d/Wa+h
+         DZjR8bKUd2cL9u0bcIbb9nD7C7WtrJJBM4jSMtMjVz5VIZzEgQq90/NE//oA7bT/TGpf
+         FVvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXzw2LcOUqJQUHdSVmGdvRj6c2Vwqzv3YCLBfdB6Xy++xUKYXDkA4K4yZloTw4R27dTjpaNWWG2w==@kvack.org
+X-Gm-Message-State: AOJu0YxxylWTJzdTi2pAfZPMIUqzhqNrH3Y3USSAHwhO7SSrkLT2v4H4
+	YPIDrSCTQ3ulTvukqQAYEWtQ/0tzh/pi5QbjqJdsr3JuuYVtVZJKUOwlCxr7ixpSJS9gKIvVvhF
+	6iwxZWZj9G6d7JI5dh/OhZF3V9BfejcWflOSIDDhyAc/pVgDEA/ho
+X-Gm-Gg: ASbGncsYBoQSU62APBDGo6b3X3QjoHLjhPkdTHsmGxRBXg2LUFwDn0mKB9Py/qB2/1J
+	ddNrc9qqlqDObJOLMiVC1QRMLnN26ejRLsdbomJ5W0ht5mH8UuO4m+uQUXEIl0jqlvR5xIC80ZG
+	QnGfNFgTJdwTgZLDphD4U+rMM0Udhaxg/Q3ZvSJwx7ScV2Ue99e2yn+vH6ZEG3SvCpj6BZWJRUg
+	3U8a8WyI80rI6UT/N4qIx5J41ukrR3ZF9q2r65n/54UHa/hurpn5/s+4MZc/Xunb1FLy/REQD1/
+	PlgIaqusWiRdgo+i0lg8DT0ja7PUAquQr+YvBsmDXPd5MWcBkcrUFcmLlILZn2foT72h5vSe+DL
+	u4jvzhiCq/tuGNVKFEbYKjDn88Rh0PAui1VuI9hGf6OhcdT9gx6Uf55rUCHP/aeb12CF5Q+UCSB
+	Xx5+7cNM4BGdwcErGPzpQdliO5+7U=
+X-Received: by 2002:a05:600c:a02:b0:46e:477a:f3dd with SMTP id 5b1f17b1804b1-475cb064926mr13576485e9.36.1761217905503;
+        Thu, 23 Oct 2025 04:11:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjOTIGLdchiCXBCt7631vjjgeG9GW8BcZLSQPY9hw9ONCdFryCE3QwKhyQwOYvrWIr0Y7WWQ==
+X-Received: by 2002:a05:600c:a02:b0:46e:477a:f3dd with SMTP id 5b1f17b1804b1-475cb064926mr13576225e9.36.1761217905063;
+        Thu, 23 Oct 2025 04:11:45 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c43900e1sm106702345e9.17.2025.10.23.04.10.54
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-474949e0a3csm60171795e9.0.2025.10.23.04.11.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 04:10:54 -0700 (PDT)
-Message-ID: <56d9f1d9-fc20-4be8-b64a-07beac3c64d0@redhat.com>
-Date: Thu, 23 Oct 2025 13:10:53 +0200
+        Thu, 23 Oct 2025 04:11:44 -0700 (PDT)
+Message-ID: <5b33b587-ffd1-4a25-95e5-5f803a935a57@redhat.com>
+Date: Thu, 23 Oct 2025 13:11:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/filemap: Implement fast short reads
@@ -118,6 +118,7 @@ References: <20251017141536.577466-1-kirill@shutemov.name>
  <dcdfb58c-5ba7-4015-9446-09d98449f022@redhat.com>
  <hb54gc3iezwzpe2j6ssgqtwcnba4pnnffzlh3eb46preujhnoa@272dqbjakaiy>
  <06333766-fb79-4deb-9b53-5d1230b9d88d@redhat.com>
+ <56d9f1d9-fc20-4be8-b64a-07beac3c64d0@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -162,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <06333766-fb79-4deb-9b53-5d1230b9d88d@redhat.com>
+In-Reply-To: <56d9f1d9-fc20-4be8-b64a-07beac3c64d0@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NHOUAHYklUMstEB3yqDlwdHKWWpYb_oWAsyJhlHkK4U_1761217856
+X-Mimecast-MFC-PROC-ID: 20jfsZ5oo4unnbYihv1qSIMfcPuWWE3VWUJ-oSHWOKA_1761217905
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gox1f5cgbcih3syzp33igej7uksh8ch7
-X-Rspamd-Queue-Id: 18EACA0006
+X-Stat-Signature: iiu45cye83pgaf15xuzm6qodaiqcmwy3
+X-Rspamd-Queue-Id: B0A461C0007
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761217858-870131
-X-HE-Meta: U2FsdGVkX19bPJ7r6Eauhx1BQQnwYg9P40TC5UiEH06sznChnuVmjMqLGlAGa0odkukQIyUv/ZC9Vk8SaoP8wohHlx/JSCVNnGyT2xtSXLZzjcyukNseHJEnq4BweKY56j/kgjAxX5gY43Bl5Jn8cR6BGoIkNkDMcbgZ36HrQW3ltRvyyPzCX04T5PAosA298SoddYpnN+xqnthgqBpkSm5irl2EAWi7xRTBq5dwPKMls/bhK+1X6j0iCgMXRR9GeEM3GNbJ0RL0i8x0ApkWtu88721jMaSqDaRm33DUU0I6PWEzr6jcWKKbgMX3FgNDGcszGrGBaptxN5LlFhaMUrgM8ZyVWe5mXFMKmJkA+fQU1gEny67lS2Ns05/kdR9FE0Kyo+o+Fu5v0f/KK5xa8pMN8/SrnNORPgNCLfchKkVOXsnfd8XfKAVTLDslmuJUHQOLc5DvJ30VIy7teFWFxZi3nvBEXNxofQ0oIdrjUnMwdbQ6LExershgN2QRelwCvW9JbPSkySJ+AWfAlW+aFrffALEEcOdpGs2Zu1yYDLjTqi9GOkR4PRggQGUM1Aqpum5g1Pe8YreLEbfi1agYO1nZrYXh9Cxpf286UJ79+6Tzze6o8x22iwQxJ65j+geVOQYTai4Zg4zZ8OdgebXQ7fnRjbov+TOMBKfGQyrgLcGTLEFtjEXRFn0dOQETTKhidKolo76LDxleAju9KcaLsSRMWRd1BHNHKPOEW6CaqH16st5bNpMlv/13u2zWOURQIdFMQcOBZNqyDr211LMLGpqC38TfrdvWodX4dDAkLXOmdJMpdI6Ccj2l3zNyhJfmPcB4iH5xHC66imH8E0BAgnaZUhMW2QJQWPTOu/zAT1iUFVU6zMHJpZXnwHmHVJZRajzCAh/I9hJeIvPWWpuuT/tz0aZYSHF4wIh1RFqP879wPthDpZL03uATczR4d4+vA5vbYiMwpYCuVISqIic
- L7aEzpWJ
- aqdDu8w3LELHNK0bBvfSc6K67Tqw44QChRVrZpaNVHsp++oLJsrHlgvu0Ra1zEoCqp62MBY1CnGtcXOSwp/b6CJaq2qM2XJPqtKMO9dw2Z3TGHWILeaRJEh/zixXueWG203qstlCRGgCYLPX7Ie9G1pmakYnK3i9US9aELPPr7kDzke2I+SqxW2opBfMjCEKgSwnhnMpxsBtv0FG1cOU93G4hWzaxkPh0Q8OTG0AWqBqqQZLMcX3Vy3fKLKYwLnYCoSkiLqSeWIYg/7AmkQUEnGA+2Nl48BZ6dF8Wv+a/3BwwXd5iaK339CDATCioRJtzUGU6QgUhkzgPn+OWcZb5Ju5FoA7Cr+BsigMWcDbHxFOC/CuFy44c2twmCT5/xUWWVySA10OAJ4PdMuB1nIAQXXQrZZybX2xWQtYQzWd6NiOElp7o+Vuaj7u4n2ThpPQUEXJWWC/5sReNvXRMvlx0yfnwCcWjg+Gtms2tE4Gzcb4DzPtBiTJC0OpyDT7WGyp+iuT4aT8czjoKpSs=
+X-HE-Tag: 1761217910-102944
+X-HE-Meta: U2FsdGVkX1+i9rfc4XQNiYNXIF/Y4/KqTgmzmGhoCOHXBWtfT3ezsLL3VEYp0vxsKYeqdiiOwPLi022Aud1Brp3IdBmMc8Nq2IlQJ6nIw7TaO/wgLPccYQkOiT3bJBbOj0ii4EkSXBm83NKG971lmQoFepJlaiCcY8l2ClDBZuYMnmq3Myya2axXsnOmdfEeUtQaGgaOIm80owmN4J1NaHyp6Nr2bi2l2/VyHvd0CFjRlbQMqtfeNN0girsivYClj5Qqxb35rWK2KdcGJfOGJrjTKiifYOqwMD0p3z9CHBL9E++yzd+k7eMpCnesJi7TYivmfMZFdqtWTkEI9EjnCZhAaFsPnemiiy3o7FWk3REksoXHIgPU3GRY/lgxRXfk/rbUN/0sMfo80baAr0MXWKwe/yINdoCLnBLl7B0x6V6KwIrrR9IsEEKBoWMJF3V8GKeoCvba+V2mF1Gy0I6s2Mk8KegA4oBIbrG7OJYoEO6gbwo4F9cl0P70TDzIJGD7F1xhKSzxAR3hbk3Q0YcboN/dlrkyPXINVzqejc6q+7ulA5O6Zx2X3q1TOJu0wfjMzjwLxO0evgTzDXvqrwR0pL2xq1ZnL2rsCzYp1N9NVTT8cD+g2+a8FE93kUWmXMqTgwcOcNxYnuahCdnZP7+NdLo/iqQIgUQ+ioOCNVm+ZTcwXI7lDkQQtaMU7ApYuGd/Z0qVbuQO9RvaWM+sGp7CQW625f/WCmQbm75BrGRfOVq9wJSs9Pdz6bqw86fBuAzFpEPjbuKk++2jc6wh9Y1EDJejymzpjCAWHCCEREbz93rfgIbB4xxz/fE/eVImKxU5LelVSLhlV/+6Gk//4ydl0/okI5D5WFtXPNvnbOo1sQFveCJh7/qqLbr1WhdDUAPTYpMkglYVTth8XRqJHdrCI9oYkhPOItYYwsYBUg4asRg3dKJO01+pEcEsizIT/8vUULTE0AR6kwhcVxjM1cW
+ PQveJxlg
+ jDNJIM2Pj9Nm7XN/FB9lswBu43d2QTYAcwlHG8B7jQNQOcQnN/lGYFkgBoHlhtpr+czaPHNjuG9VMNFhMa5EhjgxBc3bz2ngplkycK2fXC8phm1ld7JAOg0EAt7E7O6AhhaW4zMpa6XkyEbV7RJg0SFOgdceRpxc4IdgCNPBhsug8NzYF2IsQfgAbsiKAsrjo8c9SHrhA0VNCWlb6gEmxJVEoH522RLpIligv2deTqt9gETZUXx6WFE4H12RjKaXHRwPnyFWRwXRJnKaYhHBIWVnlUih6lcH++3RyhFfJU+KqcKCZLdxqnp+jsZZG9fR3pSNRF0Sseb3z4F7CFemzB9t0EvqjCTzSCEV9He3ORc6HKi1wWfwu9wXJffJxjqrr+PrH7hE3fGcG9ERP+vNhBF0V+14jxRvSoWOBiZXsHGdkMQErZ6RRIqV5bc01OJ7lToS5843/PPy5mK/YOZK8MguzBvMhsyDwJXOVDjDDRfb1C5zqYuOdRP7o+E3Yf27uFsSrZwIVjPu2zDA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,56 +186,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.10.25 12:54, David Hildenbrand wrote:
-> On 23.10.25 12:31, Kiryl Shutsemau wrote:
->> On Wed, Oct 22, 2025 at 07:28:27PM +0200, David Hildenbrand wrote:
->>> "garbage" as in pointing at something without a direct map, something that's
->>> protected differently (MTE? weird CoCo protection?) or even worse MMIO with
->>> undesired read-effects.
+On 23.10.25 13:10, David Hildenbrand wrote:
+> On 23.10.25 12:54, David Hildenbrand wrote:
+>> On 23.10.25 12:31, Kiryl Shutsemau wrote:
+>>> On Wed, Oct 22, 2025 at 07:28:27PM +0200, David Hildenbrand wrote:
+>>>> "garbage" as in pointing at something without a direct map, something that's
+>>>> protected differently (MTE? weird CoCo protection?) or even worse MMIO with
+>>>> undesired read-effects.
+>>>
+>>> Pedro already points to the problem with missing direct mapping.
+>>> _nofault() copy should help with this.
 >>
->> Pedro already points to the problem with missing direct mapping.
->> _nofault() copy should help with this.
-> 
-> Yeah, we do something similar when reading the kcore for that reason.
-> 
+>> Yeah, we do something similar when reading the kcore for that reason.
 >>
->> Can direct mapping ever be converted to MMIO? It can be converted to DMA
->> buffer (which is fine), but MMIO? I have not seen it even in virtualized
->> environments.
+>>>
+>>> Can direct mapping ever be converted to MMIO? It can be converted to DMA
+>>> buffer (which is fine), but MMIO? I have not seen it even in virtualized
+>>> environments.
+>>
+>> I recall discussions in the context of PAT and the adjustment of caching
+>> attributes of the direct map for MMIO purposes: so I suspect there are
+>> ways that can happen, but I am not 100% sure.
+>>
+>>
+>> Thinking about it, in VMs we have the direct map set on balloon inflated
+>> pages that should not be touched, not even read, otherwise your
+>> hypervisor might get very angry. That case we could likely handle by
+>> checking whether the source page actually exists and doesn't have
+>> PageOffline() set, before accessing it. A bit nasty.
+>>
+>> A more obscure cases would probably be reading a page that was poisoned
+>> by hardware and is not expected to be used anymore. Could also be
+>> checked by checking the page.
+>>
+>> Essentially all cases where we try to avoid reading ordinary memory
+>> already when creating memory dumps that might have a direct map.
+>>
+>>
+>> Regarding MTE and load_unaligned_zeropad(): I don't know unfortunately.
 > 
-> I recall discussions in the context of PAT and the adjustment of caching
-> attributes of the direct map for MMIO purposes: so I suspect there are
-> ways that can happen, but I am not 100% sure.
+> Looking into this, I'd assume the exception handler will take care of it.
 > 
+> load_unaligned_zeropad() is interesting if there is a direct map but the
+> memory should not be touched (especially regarding PageOffline and
+> memory errors).
 > 
-> Thinking about it, in VMs we have the direct map set on balloon inflated
-> pages that should not be touched, not even read, otherwise your
-> hypervisor might get very angry. That case we could likely handle by
-> checking whether the source page actually exists and doesn't have
-> PageOffline() set, before accessing it. A bit nasty.
+> I read drivers/firmware/efi/unaccepted_memory.c where we there is a
+> lengthy discussion about guard pages and how that works for unaccepted
+> memory.
 > 
-> A more obscure cases would probably be reading a page that was poisoned
-> by hardware and is not expected to be used anymore. Could also be
-> checked by checking the page.
-> 
-> Essentially all cases where we try to avoid reading ordinary memory
-> already when creating memory dumps that might have a direct map.
-> 
-> 
-> Regarding MTE and load_unaligned_zeropad(): I don't know unfortunately.
+> While it works for unaccepted memory, it wouldn't work for other random
 
-Looking into this, I'd assume the exception handler will take care of it.
-
-load_unaligned_zeropad() is interesting if there is a direct map but the 
-memory should not be touched (especially regarding PageOffline and 
-memory errors).
-
-I read drivers/firmware/efi/unaccepted_memory.c where we there is a 
-lengthy discussion about guard pages and how that works for unaccepted 
-memory.
-
-While it works for unaccepted memory, it wouldn't work for other random 
-accesses as I suspect we could produce in this patch.
+Sorry I meant here "while that works for load_unaligned_zeropad()".
 
 -- 
 Cheers
