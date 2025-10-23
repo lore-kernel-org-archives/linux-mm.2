@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28F40CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1BECCF9EA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:51:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F6A68E001D; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
+	id C97648E001E; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 458F48E0019; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
+	id C48498E0019; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3480A8E001D; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
+	id A74038E001E; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 075148E0019
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 84EEF8E0019
 	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:51:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8E47EC0C13
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:21 +0000 (UTC)
-X-FDA: 84029969562.20.DDE7DF2
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33386BDB6B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:22 +0000 (UTC)
+X-FDA: 84029969604.21.BB376C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6C132140005
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1A7A02000D
 	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:19 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VpHjf79W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ll1nOhcH;
+	spf=pass (imf03.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761238279;
+	s=arc-20220608; t=1761238280;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MUJDTdpommSU3AQCmCpeVpPgs31SjSTjJ62gKwluv2U=;
-	b=hty9+6IFqlpYU4/243UDlS/dFB908a5JePlQHWhlsFg6UJ/u0dywzum9TO895Ieq9DzakB
-	pTW896qXDkQz2wax15pKNHgWyP0DWWoUlj0SQEn3fu8fvbpaOLaD4FuO8LLaypUxVLQqzO
-	/OicRHBCp+TEt8zCxT9voISpGqQHTjE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761238279; a=rsa-sha256;
-	cv=none;
-	b=YWGaaXE3lkBiiuxm9QRNzdq3b2hKmt6r/jz053c2/D8Z4E2bS4TPB1jIfY160a24bb8Smh
-	E3wGZIXJ815lZttIbxgqFXFMjC6mRdKcw/waP9sElNTxan9v5lRi9xwFBGPjgNEM2CJshH
-	2uw93CRwU4MrcGTBXunJM7VXEF0A/rw=
+	bh=Z7mqmvp4qHGKQdbAY5xXRef4U1rroaCrQF5ZBjvUPr8=;
+	b=DaRb632Hj8+pYns5lV5Lj5pX3x7nWuSF9KSDQ5kBgEVzRh5zgA1G3G27n0B+BNj/P/XAOB
+	j/5AZgqmw1OeNdUImwzNx/1p2ZoiJ0r4o1csITw/uus8crRfF5FN2SbDjz9VzsAAzfYhwt
+	b4jgmYLIdg1bKSIvo7Gdm3UL0trP1/c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VpHjf79W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ll1nOhcH;
+	spf=pass (imf03.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761238280; a=rsa-sha256;
+	cv=none;
+	b=S7y+9286lO9uGCTdt2WD9vGZGZXmephd/eidEKotqeZFrz/fRn1aRHjso5yPyXrfO2BKcA
+	t0s3fVgL/w5PqU0lMmkMhRhieZbofmsWN5QyC2Qia7kwLAsQgUDO/744vJDU977R9F3NTA
+	cWy99bnod72l5mwJTcpfqpN/jnaPurc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 969814AFFB;
+	by sea.source.kernel.org (Postfix) with ESMTP id C2BAE4B0D6;
 	Thu, 23 Oct 2025 16:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 657AEC2BCB5;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C196C2BCB0;
 	Thu, 23 Oct 2025 16:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761238271;
-	bh=PQvU5xoVu9xdabKrvJjMn/h8KvGLMR4b4TqTR/qjjvs=;
+	bh=qtzfTIDLQudHuwJbPQKZOmfk4VQHfbiISADd/7PYHv4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VpHjf79W1Nd1DGg4M/OK+I1qWqE68LELXZTxP6ouvId65DRQMMccPJN7zI5VR2NE8
-	 GmphBxw7dpFZpKIYZGXWh3ZdMhbrdyTavu7ULGl6pL0pzaanmixzvYW2gDPPRDHI6L
-	 CVqsh9kjGXe1hBei4gwAYicv4DUm7h1+0hR4hD1LytCtRnSyRsbMS+BP/U1GzIAQVZ
-	 LHJ+EMe5hhrYVsBBq41cxk8LPcngJb5ImWe9jUuTp7ASXEEc0qlopvvoMQ1uF+Bi/1
-	 pqbDXSQTiKBT+vORMMSS5o/vHmsoQ7foWn94mGgWSlNS5sriqj5rXCnIl3oszr5jOm
-	 Nj9mBotTZ9x0Q==
+	b=ll1nOhcHYOrNY+XAKUhJxZde0l92pEu1y+HSMdfYPM3TJjPBAeryAkvR19RXk2SAu
+	 37aTLm7pFKYx+6mDVU9UvJ0T3OZaMeIshrJ2usXwHAE2Ai2zLAItb5Bcm0LgbIjnro
+	 aEQfqjeUQfjHoM5SQK7tGLyexbCbY12903xe6XG1lKE9gIr+T1EtL7zOpFnDA9pSvH
+	 LU7O/94ss6d7gZad9LB1g1gvLJyaRTJz+Jtohdgm0q3gxrG3Bok+L+8WpJOvS99eve
+	 qCMhKye7F4LkNAF5QNq2uwNdn3dAJOADawFDQdmNOGFInN375rgHdddAJUz/ifqEAG
+	 fcbHJLOYsA0qQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46AB2CCF9E5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6830ECCD1BC;
 	Thu, 23 Oct 2025 16:51:11 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Thu, 23 Oct 2025 09:51:20 -0700
-Subject: [PATCH v22 15/28] riscv/traps: Introduce software check exception
- and uprobe handling
+Date: Thu, 23 Oct 2025 09:51:21 -0700
+Subject: [PATCH v22 16/28] riscv: signal: abstract header saving for
+ setup_sigcontext
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-v5_user_cfi_series-v22-15-1935270f7636@rivosinc.com>
+Message-Id: <20251023-v5_user_cfi_series-v22-16-1935270f7636@rivosinc.com>
 References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 In-Reply-To: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -106,28 +106,27 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
  atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=5526;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=5523;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=cLWo2uhDyVt9R1FCZMW60Uodtrv8YQrfhgpUR4+sGS4=;
- b=ShYWs2ZFBHyYvh+a2IqZjOc7Eu6Ff3RNZVEK9nlVPjLL3zscDmC0bX3g7Q18htFuN8JIPS2oC
- M3nPHqw++taALlxHiLalac0BGKjR/bvH5JjUj0WeM+l3EmZ2ypyS/Fj
+ bh=dExd/Izz/D7h0D55LYL2T1f4YGSOKQzNdmSpGgskn9Y=;
+ b=QgQTfB2eNI0QYcfrnurHQIJGNKVcsYThxrj1bDCZwBl88dFrH+7Jbdd0RU1NDoKAViMFI5YOs
+ jiYNmXQLPGuCh9z1zp6WkxjqL1loxigsdW9DRAq1TOlSVRAOiPBN95V
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
+X-Stat-Signature: nuf44u1bgz6qbtyx4jgxyuaddoooso9f
+X-Rspamd-Queue-Id: 1A7A02000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6C132140005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: ibdsgkj6iebz91poesiqib7s565r9u8e
-X-HE-Tag: 1761238279-138936
-X-HE-Meta: U2FsdGVkX18VnB4F+wbtDcul5oLAsgvKQWfEA1xavFfRyHPGBZlDS7UMnPm11EtnM0sNtVV2HShG1uMNv5KDG2soJMHk+ZCES8cyrpDcBxULnlkty+F4/DY3JejZxJVyYTlY/GJiA52eekhh3Lhsd22Gjv74iK9sL7h2FfeVaxBrsVT7mCQQ3R1VV5Gjvinsexg5/5vqouT8kGajZlnBRpgNuqnNMELxa1Ic8DhVBoTAxQYYOPxpblDLRufkuvES7gLr4A9u3Kc9sZbmrPQ4H2htuvOn8ghRNhAuW9YXK06L097XpGObPDKQ+ZoWx6wLsSvjZjjQYlSbK9G0w0qkd0i/nIfyiCajk3tsRLGOqFtzw+r+608qDo0JKTLKKkSfQO4LDhUto6CcmI++y61FPx6Ydo/rFhWz+j2ziiVFaoxJ8+ccBJV4q1wifmesItguV9vkPFBduYeoGiu6Qhs5fbjNZmiRG5gtlT3rNOZe8bMdlu/jIZ4qF5b1Lb+p1Wg/Z1NpgGCeQvKG1wsEshIQM2YbT4WYg4UFW818pzn2zzjrPHioqnK7UULGSwQCIogdYkm8mZx1p8Wzlw1FWAUylZUhq00d/xervCPTDPI+oyAaQq/iLBFNDjLkqb4XLDVhJdHd9dG2ipiHCtePnWBmjLq8wqtkuD80FNy2LfuEKKHT0nvCJWu6okCl70NQDMifgwZa2owXeRoldYWgSbaKkPgXAOM6SMirRoCLSfbxpRdVnaG0E4aitpAmUarnIqZ6y/3P+XXiqyWf7oEtPlUuUyPtFKw44pVI1C8JQAESWPigz4nY6ZNbBG953tvnI5Mwlpow7QMXKUyWSpni18VtN6qIWtVJ7aUAB9gdemAk2bk67eXFAlrc55Ut5WgAwZ9gGbcVdCld4ffKwenzld9HzxBf/qq2nlnG7kTVTATaqp/5Pvtp4pkkBlTC9iMDka6T2LvJhj2TEVSSyQaMtF2
- zhBTaSTN
- KiZRg0cq5kOUJ36oXV3oU9NYq0XOoehgYQ0NVxBai3twfgQfGj1MN7B9h+1Qvvu4ELmoFCE/Ou8flUGMMllwCCF9/o5RZdPyFsdGPo0uLg5XzX5x6/mbfUxF0PIg3qq8paO+mRYWYhptBOCIST0uMxYUFDzPjLkVkNlWi4qW4K2J7bbQjmULoGQj+zsOe4R9mnb4UrHeZmnO/vQD2/P487RBZ13uCn//ArC1x9yCijq5el1GcjKBnMaTNnr6PRvEzBzvUmQCb6KkJ2kD45NK/V8d1Id0FoGSWcZpF580Fkdy8BOTlqgqxvP2ZE+tLutuQeyhoaHBjAGiDio49+tIjOQ8HhCCSDHzRVWMFjEB2G2uAb9TFZSwshddNLrsfLP9GM90O9WwQT1T5G6pSQMsH31yy0XDS682MPQBkCfT5EbY4NMU0M1RhmKmRjT/YdrjmYIFK3tuAbqDncRyAj+p0096Ars0vcHACpHaWuy0NKpupgy5eV80M+dolVPLDeRUqQeuD3lIpteegBv27+Sa3zeNGUK+KsE3/egl9
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761238279-510837
+X-HE-Meta: U2FsdGVkX19uBg+LyZMgXB8aeD0o8C48Uli2bUBiU8Cn0MpPDC6My6Y+7b2s3LTYMs34J5IRKaZZ6C6fPrtIIWPghkhxLG//bmmYUqt4kopoOKAqnak6Ts6CdcsU7HCvEqF0Kj9opFBLrfIrZyywbE2l/TYD8FLHxS0t8eZD7r+Bz+396c9JbrNh6Tkbt1xU54uU9JAPeJCgbxaNrXJlkRCqTky8XuyP/n4eAQ+YQUNDJSGk53qG8m1DzD7DY9Pi++Mv23C7HbcQ4wND3apOfIaqrNrEdkE6g2y3GO/VJamaKACLu2SvrxJ2alPsokPF8ZT/G4wrRuKLJrcr44WNHPJ7NtsA2b0Ko6rd5yuEPcNspBQtxVVRt4HHpYE6ZRGuOXiKsa4yACm1LkfAbzRNDTvoCDWYrNLSvRJWC5GWnv7qg2sxQcgI5UERwRXwwQMMPm0xDRLD17ajmafZVCmhthWvrTAi4Cetw+Bdfu2J6G2ShQelWojUC1N0YqCtm7IoxB1dt1JRo/0B8azpw6Dr7q+h8i2UtwhDtUWvBM2VKwRy5QyXUVVP1E7FU1g+Wei+w1oi8onL7GpeX7IWKgzP8mqon+QNil0VRj84egkQKu3sOBPEQHlG548PaxEuABTWc5IuldAmxvF+RGdxQgItjPILn+VgPEvqlV4rYhy/66rbyeiSd1hNWlYJUCeQ87Sy0JemmESKF0U0AgSgiSwrqw42/XxJzNw8wRK2GqFVP1lkXoyviPhhNR6MhM3uqvMPNGwkoPfsNg6um+w5WTCSCZF0oo1pCJ042521ZnX+XukZeoogZSJLkoLexP8xLc9cUci2VCGNxXyy4CkEi7jdpnvUgFVRQ4xi56S3fDokG6n8qANjnnWk5VXGxkjdbg/GPdNFPaQB4fS+KmaGTUD/zDExYoJWffWw4mvDRhjRk7bCcivh0R0a89OuiiKInVW94ePceV4BHPhFoN/ekBL
+ RvKNQfzL
+ Bud/CmnHuFzpUzxwt2Bylu3cpOz8ep3by1OdwAnLRP+mtfwahnozz8lGUenAVdpgeeR/SUwTzBx8KHiMsYG9ADHGL2u08RRPZ8dgOa1g+v3xviFNlg7cgdVc+faNtwebqvPXcWiYs1P8biCvJNffMnU4IQE85BiQseqc/lrTvQcCBW1umrchRvIiVtYH0KbwIj788avyWQRLbhi8/E1AUUVpeF+Tsj4WqY0vKNvH2p9oVoDbAmoTg6zhSmUqLRBM8SkMCrg3XB1bujISO75O6henCIDoYlmyfKZdm7zc0f7NRtEG0Xym4POlR7UVy3Koq2slJzwY3t8hN/s2v93EKF1kmKhBnCYnYtxxyspwbguEYe6G3sA5K1HChC983oCjchq+cx2tozZxwHqcxT5ZNF27i/aFtXrmsC3HpwCYtkKScj9QqR6QC/TCiH1T2K8TyFYOA8/8M7I8FiBxGo2drpb9KiGqO7PeYAkiVDN76EWm+Ly8eRZEk7WJcJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,143 +135,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Deepak Gupta <debug@rivosinc.com>
+From: Andy Chiu <andybnac@gmail.com>
 
-zicfiss / zicfilp introduces a new exception to priv isa `software check
-exception` with cause code = 18. This patch implements software check
-exception.
+The function save_v_state() served two purposes. First, it saved
+extension context into the signal stack. Then, it constructed the
+extension header if there was no fault. The second part is independent
+of the extension itself. As a result, we can pull that part out, so
+future extensions may reuse it. This patch adds arch_ext_list and makes
+setup_sigcontext() go through all possible extensions' save() callback.
+The callback returns a positive value indicating the size of the
+successfully saved extension. Then the kernel proceeds to construct the
+header for that extension. The kernel skips an extension if it does
+not exist, or if the saving fails for some reasons. The error code is
+propagated out on the later case.
 
-Additionally it implements a cfi violation handler which checks for code
-in xtval. If xtval=2, it means that sw check exception happened because of
-an indirect branch not landing on 4 byte aligned PC or not landing on
-`lpad` instruction or label value embedded in `lpad` not matching label
-value setup in `x7`. If xtval=3, it means that sw check exception happened
-because of mismatch between link register (x1 or x5) and top of shadow
-stack (on execution of `sspopchk`).
+This patch does not introduce any functional changes.
 
-In case of cfi violation, SIGSEGV is raised with code=SEGV_CPERR.
-SEGV_CPERR was introduced by x86 shadow stack patches.
-
-To keep uprobes working, handle the uprobe event first before reporting
-the CFI violation in software-check exception handler. Because when the
-landing pad is activated, if the uprobe point is set at the lpad
-instruction at the beginning of a function, the system triggers a software
--check exception instead of an ebreak exception due to the exception
-priority, then uprobe can't work successfully.
-
-Co-developed-by: Zong Li <zong.li@sifive.com>
-Reviewed-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Signed-off-by: Andy Chiu <andybnac@gmail.com>
 ---
- arch/riscv/include/asm/asm-prototypes.h |  1 +
- arch/riscv/include/asm/entry-common.h   |  2 ++
- arch/riscv/kernel/entry.S               |  3 ++
- arch/riscv/kernel/traps.c               | 54 +++++++++++++++++++++++++++++++++
- 4 files changed, 60 insertions(+)
+ arch/riscv/include/asm/vector.h |  3 ++
+ arch/riscv/kernel/signal.c      | 62 +++++++++++++++++++++++++++--------------
+ 2 files changed, 44 insertions(+), 21 deletions(-)
 
-diff --git a/arch/riscv/include/asm/asm-prototypes.h b/arch/riscv/include/asm/asm-prototypes.h
-index a9988bf21ec8..41ec5cdec367 100644
---- a/arch/riscv/include/asm/asm-prototypes.h
-+++ b/arch/riscv/include/asm/asm-prototypes.h
-@@ -51,6 +51,7 @@ DECLARE_DO_ERROR_INFO(do_trap_ecall_u);
- DECLARE_DO_ERROR_INFO(do_trap_ecall_s);
- DECLARE_DO_ERROR_INFO(do_trap_ecall_m);
- DECLARE_DO_ERROR_INFO(do_trap_break);
-+DECLARE_DO_ERROR_INFO(do_trap_software_check);
+diff --git a/arch/riscv/include/asm/vector.h b/arch/riscv/include/asm/vector.h
+index b61786d43c20..75d8bd417797 100644
+--- a/arch/riscv/include/asm/vector.h
++++ b/arch/riscv/include/asm/vector.h
+@@ -423,6 +423,9 @@ static inline bool riscv_v_vstate_ctrl_user_allowed(void) { return false; }
+ #define riscv_v_thread_free(tsk)		do {} while (0)
+ #define  riscv_v_setup_ctx_cache()		do {} while (0)
+ #define riscv_v_thread_alloc(tsk)		do {} while (0)
++#define get_cpu_vector_context()		do {} while (0)
++#define put_cpu_vector_context()		do {} while (0)
++#define riscv_v_vstate_set_restore(task, regs)	do {} while (0)
  
- asmlinkage void ret_from_fork_kernel(void *fn_arg, int (*fn)(void *), struct pt_regs *regs);
- asmlinkage void ret_from_fork_user(struct pt_regs *regs);
-diff --git a/arch/riscv/include/asm/entry-common.h b/arch/riscv/include/asm/entry-common.h
-index b28ccc6cdeea..34ed149af5d1 100644
---- a/arch/riscv/include/asm/entry-common.h
-+++ b/arch/riscv/include/asm/entry-common.h
-@@ -40,4 +40,6 @@ static inline int handle_misaligned_store(struct pt_regs *regs)
- }
+ #endif /* CONFIG_RISCV_ISA_V */
+ 
+diff --git a/arch/riscv/kernel/signal.c b/arch/riscv/kernel/signal.c
+index 08378fea3a11..a5e3d54fe54b 100644
+--- a/arch/riscv/kernel/signal.c
++++ b/arch/riscv/kernel/signal.c
+@@ -68,18 +68,19 @@ static long save_fp_state(struct pt_regs *regs,
+ #define restore_fp_state(task, regs) (0)
  #endif
  
-+bool handle_user_cfi_violation(struct pt_regs *regs);
+-#ifdef CONFIG_RISCV_ISA_V
+-
+-static long save_v_state(struct pt_regs *regs, void __user **sc_vec)
++static long save_v_state(struct pt_regs *regs, void __user *sc_vec)
+ {
+-	struct __riscv_ctx_hdr __user *hdr;
+ 	struct __sc_riscv_v_state __user *state;
+ 	void __user *datap;
+ 	long err;
+ 
+-	hdr = *sc_vec;
+-	/* Place state to the user's signal context space after the hdr */
+-	state = (struct __sc_riscv_v_state __user *)(hdr + 1);
++	if (!IS_ENABLED(CONFIG_RISCV_ISA_V) ||
++	    !((has_vector() || has_xtheadvector()) &&
++	    riscv_v_vstate_query(regs)))
++		return 0;
 +
- #endif /* _ASM_RISCV_ENTRY_COMMON_H */
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 036a6ca7641f..53c5aa0b6a16 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -495,6 +495,9 @@ SYM_DATA_START_LOCAL(excp_vect_table)
- 	RISCV_PTR do_page_fault   /* load page fault */
- 	RISCV_PTR do_trap_unknown
- 	RISCV_PTR do_page_fault   /* store page fault */
-+	RISCV_PTR do_trap_unknown /* cause=16 */
-+	RISCV_PTR do_trap_unknown /* cause=17 */
-+	RISCV_PTR do_trap_software_check /* cause=18 is sw check exception */
- SYM_DATA_END_LABEL(excp_vect_table, SYM_L_LOCAL, excp_vect_table_end)
++	/* Place state to the user's signal context spac */
++	state = (struct __sc_riscv_v_state __user *)sc_vec;
+ 	/* Point datap right after the end of __sc_riscv_v_state */
+ 	datap = state + 1;
  
- #ifndef CONFIG_MMU
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 80230de167de..d939a8dbdb15 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -366,6 +366,60 @@ void do_trap_ecall_u(struct pt_regs *regs)
+@@ -97,15 +98,11 @@ static long save_v_state(struct pt_regs *regs, void __user **sc_vec)
+ 	err |= __put_user((__force void *)datap, &state->v_state.datap);
+ 	/* Copy the whole vector content to user space datap. */
+ 	err |= __copy_to_user(datap, current->thread.vstate.datap, riscv_v_vsize);
+-	/* Copy magic to the user space after saving  all vector conetext */
+-	err |= __put_user(RISCV_V_MAGIC, &hdr->magic);
+-	err |= __put_user(riscv_v_sc_size, &hdr->size);
+ 	if (unlikely(err))
+-		return err;
++		return -EFAULT;
  
+-	/* Only progress the sv_vec if everything has done successfully  */
+-	*sc_vec += riscv_v_sc_size;
+-	return 0;
++	/* Only return the size if everything has done successfully  */
++	return riscv_v_sc_size;
  }
  
-+#define CFI_TVAL_FCFI_CODE	2
-+#define CFI_TVAL_BCFI_CODE	3
-+/* handle cfi violations */
-+bool handle_user_cfi_violation(struct pt_regs *regs)
-+{
-+	unsigned long tval = csr_read(CSR_TVAL);
-+	bool is_fcfi = (tval == CFI_TVAL_FCFI_CODE && cpu_supports_indirect_br_lp_instr());
-+	bool is_bcfi = (tval == CFI_TVAL_BCFI_CODE && cpu_supports_shadow_stack());
+ /*
+@@ -142,10 +139,20 @@ static long __restore_v_state(struct pt_regs *regs, void __user *sc_vec)
+ 	 */
+ 	return copy_from_user(current->thread.vstate.datap, datap, riscv_v_vsize);
+ }
+-#else
+-#define save_v_state(task, regs) (0)
+-#define __restore_v_state(task, regs) (0)
+-#endif
 +
-+	/*
-+	 * Handle uprobe event first. The probe point can be a valid target
-+	 * of indirect jumps or calls, in this case, forward cfi violation
-+	 * will be triggered instead of breakpoint exception. Clear ELP flag
-+	 * on sstatus image as well to avoid recurring fault.
-+	 */
-+	if (is_fcfi && probe_breakpoint_handler(regs)) {
-+		regs->status &= ~SR_ELP;
-+		return true;
-+	}
++struct arch_ext_priv {
++	__u32 magic;
++	long (*save)(struct pt_regs *regs, void __user *sc_vec);
++};
 +
-+	if (is_fcfi || is_bcfi) {
-+		do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->epc,
-+			      "Oops - control flow violation");
-+		return true;
-+	}
++struct arch_ext_priv arch_ext_list[] = {
++	{
++		.magic = RISCV_V_MAGIC,
++		.save = &save_v_state,
++	},
++};
 +
-+	return false;
-+}
-+
-+/*
-+ * software check exception is defined with risc-v cfi spec. Software check
-+ * exception is raised when:-
-+ * a) An indirect branch doesn't land on 4 byte aligned PC or `lpad`
-+ *    instruction or `label` value programmed in `lpad` instr doesn't
-+ *    match with value setup in `x7`. reported code in `xtval` is 2.
-+ * b) `sspopchk` instruction finds a mismatch between top of shadow stack (ssp)
-+ *    and x1/x5. reported code in `xtval` is 3.
-+ */
-+asmlinkage __visible __trap_section void do_trap_software_check(struct pt_regs *regs)
-+{
-+	if (user_mode(regs)) {
-+		irqentry_enter_from_user_mode(regs);
-+
-+		/* not a cfi violation, then merge into flow of unknown trap handler */
-+		if (!handle_user_cfi_violation(regs))
-+			do_trap_unknown(regs);
-+
-+		irqentry_exit_to_user_mode(regs);
-+	} else {
-+		/* sw check exception coming from kernel is a bug in kernel */
-+		die(regs, "Kernel BUG");
-+	}
-+}
-+
- #ifdef CONFIG_MMU
- asmlinkage __visible noinstr void do_page_fault(struct pt_regs *regs)
++const size_t nr_arch_exts = ARRAY_SIZE(arch_ext_list);
+ 
+ static long restore_sigcontext(struct pt_regs *regs,
+ 	struct sigcontext __user *sc)
+@@ -270,7 +277,8 @@ static long setup_sigcontext(struct rt_sigframe __user *frame,
  {
+ 	struct sigcontext __user *sc = &frame->uc.uc_mcontext;
+ 	struct __riscv_ctx_hdr __user *sc_ext_ptr = &sc->sc_extdesc.hdr;
+-	long err;
++	struct arch_ext_priv *arch_ext;
++	long err, i, ext_size;
+ 
+ 	/* sc_regs is structured the same as the start of pt_regs */
+ 	err = __copy_to_user(&sc->sc_regs, regs, sizeof(sc->sc_regs));
+@@ -278,8 +286,20 @@ static long setup_sigcontext(struct rt_sigframe __user *frame,
+ 	if (has_fpu())
+ 		err |= save_fp_state(regs, &sc->sc_fpregs);
+ 	/* Save the vector state. */
+-	if ((has_vector() || has_xtheadvector()) && riscv_v_vstate_query(regs))
+-		err |= save_v_state(regs, (void __user **)&sc_ext_ptr);
++	for (i = 0; i < nr_arch_exts; i++) {
++		arch_ext = &arch_ext_list[i];
++		if (!arch_ext->save)
++			continue;
++
++		ext_size = arch_ext->save(regs, sc_ext_ptr + 1);
++		if (ext_size <= 0) {
++			err |= ext_size;
++		} else {
++			err |= __put_user(arch_ext->magic, &sc_ext_ptr->magic);
++			err |= __put_user(ext_size, &sc_ext_ptr->size);
++			sc_ext_ptr = (void *)sc_ext_ptr + ext_size;
++		}
++	}
+ 	/* Write zero to fp-reserved space and check it on restore_sigcontext */
+ 	err |= __put_user(0, &sc->sc_extdesc.reserved);
+ 	/* And put END __riscv_ctx_hdr at the end. */
 
 -- 
 2.43.0
