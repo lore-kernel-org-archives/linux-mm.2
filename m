@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9564ECCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 18:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31560CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 18:02:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F35A48E0017; Thu, 23 Oct 2025 14:02:02 -0400 (EDT)
+	id 91C038E0018; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE6AC8E0007; Thu, 23 Oct 2025 14:02:02 -0400 (EDT)
+	id 8CCA98E0007; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23F38E0017; Thu, 23 Oct 2025 14:02:02 -0400 (EDT)
+	id 809618E0018; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D36478E0007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:02:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9ABD112988D
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:02 +0000 (UTC)
-X-FDA: 84030147684.07.C5B440B
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AA2F7120004
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N6QvkmBD;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7373A8E0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38D4912988E
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:07 +0000 (UTC)
+X-FDA: 84030147894.08.F2FA27A
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C73EC0021
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:05 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F706njO3;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761242525; a=rsa-sha256;
+	cv=none;
+	b=yDDs8AruEFpMLGpbNwek9dLz2MpKUHgv89QK0bzmsqT4rKdSMOxm9mdhj1nAN+elyZULAQ
+	0cGpJT19DyuKg4kkqSQB9pFAdyrQDuw9W0B2V1rGLtflAhVX5AFpl1fxvlFedLvi9F53X5
+	79fgvsraXelvqlP6/0v7ESr7lahXdD0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F706njO3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761242520;
+	s=arc-20220608; t=1761242525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B8OOEgLIxH1NP/inV/C2VhgTfQW+nHNY1mF4Le01HUg=;
-	b=ioCkHUm1Bl3vyIeNxE5Tf6FfVDdYAA/Dzk5MM2s6oPuNLOjdmVN1fyF6WGww52trMI9oyH
-	EgX+7AVOFnTjPdrjcRCRK55Xks/OzMxmjbKcdaJCS03p0unbIDKglwAy8ZL8efbDK7+e9k
-	5/ot/8OsXupse+bg0D8Ew5ZvqDiTUV8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761242520; a=rsa-sha256;
-	cv=none;
-	b=3pwoMIBOx9wuiiM49fIvELGq/gufUrtjfMRQugf0fzNzw9HBd0iQaEu3hR1c02nG/WA3pn
-	Q3VnnjWPQozzOGXHxflSG28ajtQ/yMbAOrn2vSSNarx2m4vAYh5x9rrX/EFdy+nxDrZrnE
-	2oT/I35TTcBZbyx191M+jNCrXgQNJzE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=N6QvkmBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-791c287c10dso851358b3a.1
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:02:00 -0700 (PDT)
+	bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
+	b=4Bl10KI09GRsmE/w5oHb9sFUzpsjY431SjokE6piIRcGRaTpygtLPLYrxdAeafudRF0Jrk
+	xm9XVcX0Vfmwri5MisN5p8zCcC+E+crL13oHqSciQW4K+g4jvmM9CkDa9x4bD3bhL3Makw
+	bsFk0mrbOJNKuWo4MxayVWDsU4SiaGI=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7a26b9a936aso741870b3a.0
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761242519; x=1761847319; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761242524; x=1761847324; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=B8OOEgLIxH1NP/inV/C2VhgTfQW+nHNY1mF4Le01HUg=;
-        b=N6QvkmBDHR0itXaTOcnOFq1VDBkcbeGowvwQnSn51Ftfrw2KfFGWCf8JHrnwA3LZy+
-         JoNZ2wMMZ2KHK5YTyJJIJWrERYyhh+eTVgC2M8vvq0MvFObfGPpFPnEIKIENvs9rTVnF
-         dbE11Q30RnZegbbqJPWZi2LxmGq3kWWoCR14t0hwYc7TU/kvDsGHD6BL5BUJvkTx+jGJ
-         DLDEa1iqPCDItlkX+LUxxEmifyluiUliNeng39ic+BX1FQ9aQWG5JDIylpAIr1QO1j0o
-         gjbIDld3pQ8+wCeB79ZY7ylhV2Zcx28tlNntWRnxVU5ZG9OT859r+z4uVwRSuZXUmTcx
-         2wcg==
+        bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
+        b=F706njO3CTj+EgwTJOvNmmEP/KekqJOa+w3g5bepZxo8LMlsjP7k1W4oW5lubeWQ77
+         j4aldEbl/76B4e3j/yw9ZyGqT5GNWLIqF357p2lHv40DuUJLypaQXXJ6ErByC8fiMaFc
+         ksoeCAUwvVk6hoQvYChr2ioBxtzblNxTafmcS2coonyz7FfnoUOCq0YyoDBzz66HIDgD
+         WCGwkFArTP4aUY7BWdSGIZSXvjUQxcoWqqIN2PU7BeX9TgIo+tls4Q1XNL9IPGq4fNhR
+         KrFje6/75NEsOE0dRDVMbHjbBs59FkFQI/C+N4cgfxg4/O0D06cvYpbMMCwMnsQabMGD
+         rCCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761242519; x=1761847319;
+        d=1e100.net; s=20230601; t=1761242524; x=1761847324;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B8OOEgLIxH1NP/inV/C2VhgTfQW+nHNY1mF4Le01HUg=;
-        b=gsQwdplBFZNENLkl146ppwgq6qPAfv2UJfQtlm1rzgym9UihgoIH4wUpW5kF7jQDpB
-         d6e6A0cTCbTkcGdeJ31fPTdLLzFR08InCuyYXRWNn4MrhGyMLHe5tSSjZNSuT7RBdv6q
-         M0znWMF+Kg/0xpj9xHjeYQVwgTD9CXTyHgjg9mEjCaAKFG93sOs4wtBl9uHVZ+L9ju47
-         h5phZg8a1LVJH1BTnIGZjeu9J06CCpAlB6QtPCi1R81PoluO5BnIzU+VmcGAS+1PRnjz
-         ZhxDW4+iw1UOIMlWeJG7uCO0y315hNY7H6cVskO025cfvT7SdVO3qkfzTlj1txl3ydEN
-         v7ww==
-X-Gm-Message-State: AOJu0YxHmZxN9A+h8t3zuD7xmxkISgPLqrZuCoA6AW/5MVLTINYMi4bz
-	NSIv/jGeayPAVI+v7Zh47PtWZ0phE1h2jJWcmx0uJwCuEdU8xkwdk5Hz
-X-Gm-Gg: ASbGnctXJgQkPOZSEwbstqhoyr7j1O+8spLjdytYydAlJZDiYCk8Ut+qsrYVIn7nJKZ
-	StLzO+/EhhHhPwE4bkOgQNUowDVFMcO95TtTxGut8ejVJzMMKaBqjn+oCoVYWx9B9IMELQCN8wH
-	khk3vFHOkwFJMuknvwVZYbP2q+x60+bBUtyI4p0Z/MdJtTKOaqLB08fgVVSX2276/wfntAdLAVf
-	MM2uhAMnwwhRg/mRxZzAXnePM9j5G9xZZnstTUjABdgEuCYNEcjSs1QKRR8UNQbbcE8rhMv5ovS
-	lgctHpaXIwK9T7I3wYHTCpnqvJk2jnSdCPyoJbWpSkHyTeC0Ikmsz0951nV4C58qv+WLYQhQu1g
-	EwPlRPYLmPnEixIPjXAg3MvzvIKiYkVbW3vAuJRCj/8gOhapLIpd5Xz/jBPUjHdy5AjG01C1BTN
-	k8Som1U+Pis6biSjXT
-X-Google-Smtp-Source: AGHT+IGJ4P1IHhrkZ11jp4ofxibE3zNJrn7WkMQs8xkK7LYMPI1X94S1q0ADRNnxQSfN5CffRahrAQ==
-X-Received: by 2002:a05:6a21:998f:b0:334:a3fc:7998 with SMTP id adf61e73a8af0-334a85859c2mr32604097637.23.1761242519371;
-        Thu, 23 Oct 2025 11:01:59 -0700 (PDT)
+        bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
+        b=g9cy8wNf8uGr6beuJz7vHDRxb5DUYczKxfLBaR/IMdW5MgcsRtR03sv0z45E+BNwpX
+         sClwSnVrVLCSbKuTgYO7s0O/qaGRXHcpeV0SPPABLQ+pnLCa1F7Q2+ZTh5iEUv1EGQcw
+         rfFHDMntQ7VvoG9UDhCyp9COy14wI7AoXTKF0p9qOSEv5kehJ4nDKojqHSi+huClAOtr
+         DvwuptVRUm5zPokBJ8sQAZZk8mbGLOKNFCgZwz1+ztW7HVmZKKobS3ZO7bQxOsT5e4JZ
+         G+Gt+FBgtg94yz6C3AFPPY7ihfo16oCfnoDQHMl3knd5wyYVZ4pKDxujtQ4r2Gz+99rD
+         gwzg==
+X-Gm-Message-State: AOJu0YwQNWKCwDLLTV9Iywb73qSYvDlC7qR9uL38Z1aJqCn9VY/RHRI5
+	UGe4uL/+DxiTTZdrNXecdE6nuRBcNqueNATpadH8G2XDN5i83+O+yJq8
+X-Gm-Gg: ASbGncuVtNuvuLfXxs6Or2zLTDGZOtHpkFsTllbXgvoNQUxGgt3IuEZ1bxjrdbXu3S7
+	VlQy2QRoFRHf2Z64upcWGTfqI9RuuDRVM1sZM6Vg/GERn7t/06j30OAcbIE+144LKfHQzPkg8NV
+	/fvAATP9Rf+UmfFHUlVfzwSycS90oImErvmXGHxXXcfPNgAdyD4ZmxruM9IKI7KNv75eD8earB4
+	gc5K4YW2u7LfX4enKdEkTJX7jryxENPYDXzce8xx9MROeVhTfBFNvVS3daswveKPsq6shjLrhqE
+	Xsp3wJEilXPCjYbVec9Hn8QIqw9KvU7Frf9fT3CAcb1rOTJXaf3/wepHYmVtoQ7orzzWIRJlwQh
+	ooycBDu2MahZO5uLe/pN8ovdbnIStt4XdpdxdDjYushn5d4wuYpoibWnLHOywBKXSRUgUa/28SI
+	7TgRx8Cw==
+X-Google-Smtp-Source: AGHT+IFPUrlbvn8DuW25skZvpIHzGvxrGeq0n5tQxV88E3xMkZ9FaMz7plJmoiS9eWwPcZAFgSQvBw==
+X-Received: by 2002:a05:6a21:4613:b0:334:adbe:752a with SMTP id adf61e73a8af0-334adbe757emr30117578637.31.1761242523824;
+        Thu, 23 Oct 2025 11:02:03 -0700 (PDT)
 Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6cf4c4d83dsm2734532a12.18.2025.10.23.11.01.53
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6cf4c4d83dsm2734532a12.18.2025.10.23.11.01.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 11:01:56 -0700 (PDT)
+        Thu, 23 Oct 2025 11:02:02 -0700 (PDT)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Oct 2025 02:00:42 +0800
-Subject: [PATCH v2 4/5] mm/migrate, swap: drop usage of folio_index
+Date: Fri, 24 Oct 2025 02:00:43 +0800
+Subject: [PATCH v2 5/5] mm, swap: remove redundant argument for isolating a
+ cluster
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-swap-clean-after-swap-table-p1-v2-4-a709469052e7@tencent.com>
+Message-Id: <20251024-swap-clean-after-swap-table-p1-v2-5-a709469052e7@tencent.com>
 References: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
 In-Reply-To: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
 To: linux-mm@kvack.org
@@ -113,13 +114,13 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA2F7120004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 9b3p7rexx5m96jmhoqkwaza5n1eihtzi
-X-HE-Tag: 1761242520-84915
-X-HE-Meta: U2FsdGVkX18RtDvWROOORo9o20ANfzZ4EyPdztQ6VIgFr0r3tAVW8hOd6WRbN5BLIXubulnNeLzVbk4t8TOo36POYlv2ZXkcfwdW9/25AFFYPLERI5Kv9RKWsBb+LxPdInelLjrR7IautxTZIIF3RT5d/xH2aDuncTHFug9flcnB3uXY318Xy2GirsAV1XPMc3HDFPVeQCWLO3BVsveZ75qoXnAsYfQ5kx9rYJO/97a+djPFNe+j38+KXAqqTz0MzxHuT7XpKNzqk5x2n7zT8mCR+W1zf3eFaQtt4XVzGwZa7YXQ77xh+DxHdSfEc7i9qRLk56GsOGGHMzk0Sp3OhyIb3sMSNP/nrKcYwy6RuK8EXR90awGhft1Kdzuw64lDewH2vRfcmcOmGG8N6J/M6gPmXnN2a1XzmsJdRLypsOtuJheCeoyubruiWxAd4Kd+TEj0gYLt7qGYdDcgrkO3YCiqyefQDkidIYoC93jJqCB3V0TH0y2CoPXeCzf1CP5erKLObnW2Ir4UKmzSBeAPgy8stQxx9V8wQvzwX5UaFun6GRuDWqNP57K9OXTK32HlmDZ5lX99EgoWUf2+dT+PxWoXRErghIro5O8RNQ0ThGS2B6u18RGsGwByEVAwl6wkm2FbxP+snHD35qCVwTQGv/3piod8bqBX+s+Of2w3x+yjUm5Atm7gI01Q/eK70dAbiepSPHxcipXl/uCRgsUx4qIIRjyLTAZthKKOqCiwAKfjMlDel7TjpyM8QR1jFAxXJzq4DewmV4Vg93jh5AW1mh2BAm1PGJA9M2WBdLRHQvos0rRFQuY45xFt3Je3mJEwFbOWL4Csu/8a3OrutMLzrgIfbY8LbCbTH1bLNmh6Xxlw9UQCTq134MRj8u1Dy3HCuJVs3/irss5TGVHgK6XR6ItwFMZpN8roKSuURwcL/6TuSPthabL59xL3UKavkHHEzqhKLsLG59oL+Ci68A5
- W/keZ/Kt
- +G3KN0MrL3YklTGUAMI2feVC6J2iM1+H3+hUYw0UGOfAv7c2c373kSHmLCEFG8e/sP5WCcvRGK59ZuSamLyvCXSs+ITgIY65t1MKteWxAPWZQCBCdEASD+elxPh5z8kr1Dlcb5CpiOS5eD5gIi//RfZSSVR79xDsu38SMbLFVP8ekz9YUzgQMYwfL2ECbdcRhRstOn6qf9NFuTSu76LNbobWyYK8Aa36tDNdBvxp+6Hb2461ZorA5D2P8KzVT1cLT8ckejqz1akbdKtyKSjLBziQembHMUJG6goAreC1MDkFzSrBVFZuRsXwJJNtmhEZVvtq/yncmfbqN3IZL1Jm2h2KocVSN1pGy/jEUATaxSHtbQ+1vxCkgWW9g+HQWnaR9ErkjoQUy1FA5a2c1w67C0Ebzr5CY27jNXsC2wyUdF7PoN+/MwrLhOUcWVDH1+90VEVlW7zsZiRC0HDU8FSruosW0Mhnvk1Dysb8lHPZh3EtSt89rev6JuMOrpqBHtdTqbMn1i8sEekguhSM0Rwb+P+odc3P+T5B+oTkeKwev2y2QR7g=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2C73EC0021
+X-Stat-Signature: 5jkp4x8ezao7g96zaj5k7tye9biozwoi
+X-HE-Tag: 1761242524-383220
+X-HE-Meta: U2FsdGVkX19aciVbIaYIeGryjktuhX8QAW3zPy5TDpK8sXR4xbL16QqF1UtjjDvZ7pfaZhcVyVRhW9049LRrS7FeFr7lp/uye+n6wZ5TUyJtyni5wLaU6en3YUTUDpyfHJvQt1oIYGiyC0GDuBxrRz5gF8pgf8/BRsj9NCkAqd+SHk3H6+Igqy4vguPqRWCS1Zq224JGswSC5zzgysD1S/5tZOMs2sSpi4fdckMeHYRcbmrFI2VwxuxwMZBndQCopViBij4WFOyHPj6AF899pktOUxO59riyk9CO+tIsBtCuO91WDUkgjfiSgUDWfRpZPrVaSgg6iZpFwMM0kW+YHqUJB8FT8oTPKCULOsuZA9UKt+/RZjxtHPJP9oeejLILNvxxburn9DNST3HBC5t6d7Uq7a2f6heMPELEnFy/48eE5H7dCLwd6dyZnMiFTWFBD0+bt75Z8uX7oVqjp7US6elsUy8iX5UHtZsLVDiJljaK2rjYQjek2DXGATTxDJhA/WDZ8lMM0nEgxCXilSJAFq+ogV7WMWNT7USBeK60mikoycegYbkG6H1gWwkt7EXIxG+rM9Qc0TPStwMTDS380ELmBD5S5G5H/pVOOqKfdR51638sXv8DGT52UAIt2GLQMsFJt3WxGIOd+BrwoUBuKv2TCCERBK6+cH312yphc8CaziwEa8xmHldRIuEV520/0N4YIPkDWWQIzPKyZGbbm7S97YbkVPRZ2NemZLvRMuWTqFLL1aH4sfKKatk2IOwsbkKzbCVKQYXj5nXWT02DP1n0cdzfnIoVWoHAB/TL83baML1EQJWdc44t31ZPm/xqeEfkKlRUKSRcC1nyKniUNa2p3B9mrC3WYz6T/640efqCUDH5jzIOOTHS3ziY0Ns1WFwLlhf+Dpy/ZpzrnX5QrTMWPhHTdSW0exBgAtglmlzQbqrLq9dNd8Ki3Zq0JcrZFhJFQxkefx3MiiS2UHn
+ 9djP8DI3
+ GbQwpWWPPIND02TvRYg9/d/FEmsqxpxVMWGakkrduHnUX60BrZC/Zs2KKAjdNE4FUkmId/QBs36OnidJH+RpJlWkPkh+aPkrAlhzyF8tN9IbCpCE8rV1be2pOUTZvlTsOElwySSl+ggZdPT4JI8D6Wrl35oOXG28lNssvb0RvY45cQYEsoSuMKhE5nMH+qRhJ70M2wI5f+0XrXLOCUwD8myfzHB35orI5oDDrJFyPmY5j/YaOl+m4x9YoeyTF7ts55D85NMQo+0jFQvzUDZJxCFkszWl6ComvIK+8t9Bi/SMrMfzW5oYX8IwjvbJEEgpsXU1tn/HSZf3LZ+W0JeNuKtkjUJJL410tb6bBDa8cBy6EQgtyJgjzhtx13vGkRisuC9vz74qgX13xjoHlD8Qn2EaIYvr31grYrn011xzX4qbXdBY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,74 +131,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-This helper was used when swap cache was mixed with page cache. Now they
-are completely separate from each other, access to the swap cache is all
-wrapped by the swap_cache_* helpers, which expect the folio's swap entry
-as a parameter.
+The order argument was introduced by an intermediate commit and was then
+never used, just remove it.
 
-This helper is no longer used, remove the last redundant user and drop it.
-
-Acked-by: Chris Li <chrisl@kernel.org>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/migrate.c |  4 ++--
- mm/swap.h    | 21 ---------------------
- 2 files changed, 2 insertions(+), 23 deletions(-)
+ mm/swapfile.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 4324fc01bfce..ceee354ef215 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -563,7 +563,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
- static int __folio_migrate_mapping(struct address_space *mapping,
- 		struct folio *newfolio, struct folio *folio, int expected_count)
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 42e2b2759240..214ccd1f69cd 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -594,7 +594,7 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
+  * this returns NULL for an non-empty list.
+  */
+ static struct swap_cluster_info *isolate_lock_cluster(
+-		struct swap_info_struct *si, struct list_head *list, int order)
++		struct swap_info_struct *si, struct list_head *list)
  {
--	XA_STATE(xas, &mapping->i_pages, folio_index(folio));
-+	XA_STATE(xas, &mapping->i_pages, folio->index);
- 	struct swap_cluster_info *ci = NULL;
- 	struct zone *oldzone, *newzone;
- 	int dirty;
-@@ -716,7 +716,7 @@ EXPORT_SYMBOL(folio_migrate_mapping);
- int migrate_huge_page_move_mapping(struct address_space *mapping,
- 				   struct folio *dst, struct folio *src)
- {
--	XA_STATE(xas, &mapping->i_pages, folio_index(src));
-+	XA_STATE(xas, &mapping->i_pages, src->index);
- 	int rc, expected_count = folio_expected_ref_count(src) + 1;
+ 	struct swap_cluster_info *ci, *found = NULL;
  
- 	if (folio_ref_count(src) != expected_count)
-diff --git a/mm/swap.h b/mm/swap.h
-index 8d8efdf1297a..d034c13d8dd2 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -445,25 +445,4 @@ static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
- 	return 0;
- }
- #endif /* CONFIG_SWAP */
--
--/**
-- * folio_index - File index of a folio.
-- * @folio: The folio.
-- *
-- * For a folio which is either in the page cache or the swap cache,
-- * return its index within the address_space it belongs to.  If you know
-- * the folio is definitely in the page cache, you can look at the folio's
-- * index directly.
-- *
-- * Return: The index (offset in units of pages) of a folio in its file.
-- */
--static inline pgoff_t folio_index(struct folio *folio)
--{
--#ifdef CONFIG_SWAP
--	if (unlikely(folio_test_swapcache(folio)))
--		return swp_offset(folio->swap);
--#endif
--	return folio->index;
--}
--
- #endif /* _MM_SWAP_H */
+@@ -957,7 +957,7 @@ static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
+ 	unsigned int found = SWAP_ENTRY_INVALID;
+ 
+ 	do {
+-		struct swap_cluster_info *ci = isolate_lock_cluster(si, list, order);
++		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
+ 		unsigned long offset;
+ 
+ 		if (!ci)
+@@ -982,7 +982,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 	if (force)
+ 		to_scan = swap_usage_in_pages(si) / SWAPFILE_CLUSTER;
+ 
+-	while ((ci = isolate_lock_cluster(si, &si->full_clusters, 0))) {
++	while ((ci = isolate_lock_cluster(si, &si->full_clusters))) {
+ 		offset = cluster_offset(si, ci);
+ 		end = min(si->max, offset + SWAPFILE_CLUSTER);
+ 		to_scan--;
 
 -- 
 2.51.0
