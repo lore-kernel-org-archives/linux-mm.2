@@ -4,117 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF0BACCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E80CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3550A8E0015; Thu, 23 Oct 2025 07:41:53 -0400 (EDT)
+	id 80FBC8E0011; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 303838E0011; Thu, 23 Oct 2025 07:41:53 -0400 (EDT)
+	id 7C03E8E0016; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17DBF8E0016; Thu, 23 Oct 2025 07:41:53 -0400 (EDT)
+	id 6FDFB8E0011; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0262D8E0015
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:41:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A826B140A9B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:41:52 +0000 (UTC)
-X-FDA: 84029189664.02.78F78C8
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5563D2000C
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:41:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=CQZ66iSY;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf03.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FD498E0014
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A353C0AF6
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:36 +0000 (UTC)
+X-FDA: 84029191512.30.5FB584B
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DE0FF4000C
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761219710;
+	s=arc-20220608; t=1761219754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N+oN6QIkhg+yxG+jofXiwToGHW0SdPwLgjc3KiwgdQg=;
-	b=xUDA7mc7yK5kEppPjfKNdajoPSZOw9xetNM6jjw8LT5rw1M/bB8D06GcBLcJwsQ55sFiPL
-	XZ/aSzz4VGHxtcm3zXu91ozDnyH2iKH2SJWXa4WkQBGFAQpaS0OowKX9u/t1otStlfv+nC
-	HNwflGQ3lzOyIzhT0qYGnxtt1bv9H8M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219710; a=rsa-sha256;
-	cv=none;
-	b=rKsR+pq75VNYa/oScyzQHb/S7XhpyFQ3kWefzcBS1eKXAD4CshzZ8lDop4rbZIw1NBHymP
-	M7kIm1qJzZoSlQNaDPunamMpVoOZ8+XdsKVsB2mpzXBnUps7bRO0lLsMhJzwYenlHxssBi
-	DrTQAkjsSQRRV6mZafsm84EFMqvvIYQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=NhnQnYAfSfbm5MRq2tRIxdEVAoikqJk+V2mZCxLyu+E=;
+	b=AflewLJ5nzNdCUIKPwPo3kxkHsjwu+Gg/2j4M8PSyXoAtut6N/9WvTN/hc9IWHAuClolZm
+	eQZ7TYxBjVqSdwIOPlQYNulyFiMmFMLturoAv4bS9VzHOCyz7m5qrOxbPthna9YGG3wuP8
+	wNPbu4zIS4e09ckkTPp4GnataBR/DuQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=CQZ66iSY;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf03.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251023114145epoutp02c68f2afa8f062cd86679664211734b64~xG-2hl8PB1530115301epoutp02S
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:41:45 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251023114145epoutp02c68f2afa8f062cd86679664211734b64~xG-2hl8PB1530115301epoutp02S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1761219705;
-	bh=N+oN6QIkhg+yxG+jofXiwToGHW0SdPwLgjc3KiwgdQg=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=CQZ66iSYqNmHIJkk+0ZfYZ6mI08ULjkdlQ2Gb9uroSSh4A/ksYaZoznFo38EuldpN
-	 Pmev3HPm6H3BdGroe6RJS8mWtP3FGeyhi9EH8wCaMFqggcHAjUosc196egoDvoXfOW
-	 1d/8tMTtEuQQIK5VON5bdvQ9G1SER5CLfXjMrlvI=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20251023114144epcas5p4915a81068b8c2110682c4ce6ea36272e~xG-157QXg0607706077epcas5p41;
-	Thu, 23 Oct 2025 11:41:44 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.88]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4cskdg5VR5z2SSKZ; Thu, 23 Oct
-	2025 11:41:43 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20251023114142epcas5p10a1abeff9e1326fc9c846001906c9986~xG-0B0nat0254002540epcas5p1U;
-	Thu, 23 Oct 2025 11:41:42 +0000 (GMT)
-Received: from [107.111.86.57] (unknown [107.111.86.57]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251023114136epsmtip1a3b96a88ae62950abac3f8a8a7dd3abc~xG-uRBGdX1343713437epsmtip1Q;
-	Thu, 23 Oct 2025 11:41:36 +0000 (GMT)
-Message-ID: <81330754-1aee-4807-a982-1fed37c016af@samsung.com>
-Date: Thu, 23 Oct 2025 17:11:36 +0530
+	imf07.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf07.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219754; a=rsa-sha256;
+	cv=none;
+	b=bnCDl56DHvNRQNu/eVl65uQKYLfEbvn3rzW5mQ5B8ND7+q+/3l3Ogl3Aaq6i1CpKcTwzQZ
+	j4fV1Kjkk6nL/6vFRxS/VGg9fDSBy57yrvcPEZVmBFoa/9dmX1o8yJlFRNmRAWy4nyYk4m
+	NrlUPs6yrDV/BQaSVPbFWiEw9+/LvKU=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cskdw0c89zvX4b;
+	Thu, 23 Oct 2025 19:41:56 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id DFBBC18006C;
+	Thu, 23 Oct 2025 19:42:28 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 23 Oct 2025 19:42:28 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	<linux-mm@kvack.org>
+CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH v5 0/4] mm: some optimizations for prot numa
+Date: Thu, 23 Oct 2025 19:37:33 +0800
+Message-ID: <20251023113737.3572790-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Content-Language: en-US
-To: Jan Kara <jack@suse.cz>
-Cc: Dave Chinner <david@fromorbit.com>, jaegeuk@kernel.org, chao@kernel.org,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, miklos@szeredi.hu,
-	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
-	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
-	clm@meta.com, amir73il@gmail.com, axboe@kernel.dk, hch@lst.de,
-	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
-	wangyufei@vivo.com, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-From: Kundan Kumar <kundan.kumar@samsung.com>
-In-Reply-To: <bfpv6jrjo4avzk76ex77dwpzaejglu5gsf2pqpmmgwrmqdkkk3@imsbtnrcelee>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20251023114142epcas5p10a1abeff9e1326fc9c846001906c9986
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
-	<20251014120845.2361-1-kundan.kumar@samsung.com>
-	<aPa7xozr7YbZX0W4@dread.disaster.area>
-	<6fe26b74-beb9-4a6a-93af-86edcbde7b68@samsung.com>
-	<bfpv6jrjo4avzk76ex77dwpzaejglu5gsf2pqpmmgwrmqdkkk3@imsbtnrcelee>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE0FF4000C
+X-Stat-Signature: u6mw66oujdijztwoixhjfiw6xad1mfwb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5563D2000C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: nff7pqix1nzk6wzuhz9rn1hqi76cc3ix
-X-HE-Tag: 1761219708-173461
-X-HE-Meta: U2FsdGVkX1801LcyO6Ny7X8eqJdKbO6e/umzM8IpOV5nFRqjKT/VYROllVvZfeX/0cdGBtAUTx0QrkZRGkGqDsOR44eJ0cv73GQE098QmhklFURDeJ9MdP/gz6wI217FyyWt5dbUX/Dt4lqHeRhP1H+VWfiurerouf03HcbScH10IsS75JvKiG+ew7BFHLU/hXibPfgsvh9THpU8Ov827M1gckTzaLv2OtSEE9GqRF8HakEoffIROLovaDgWz2VG8SCz8kImzpdbwPAzyrqA+mT5vdeWsl19ONp5tXZQstY3njbPfCVdL4LkdYkThNs1i+2Iw4zm9cZ7Wur13sUpqQgchJq0KjJNmKRg5++72IO6L5llvBFfE+YDOujFdcTg7oRX9J4HKY2Vo11Qp2OpO7j8xGu3l5Aq4jARpxlFljuIiFfCuVWVEnxxyITcaM2nIQQ7ipJEgq/N4dCGJ38xovfu475uPueWGfLGq3A/v44u74QI/hF65Z/xobR/z0eBl0TcNgHlvhqJSUdKB8RYUCdDtWwYtrtR8fvZs8qry4+XZek5hVJh5glBEIUASoZT+j4xDJkt3Yb31yW9UIM5Ln/wBQ1T0XcTSPx16EyD8ox3BfGvueSn4+kDSViBFmQ9os/stxSoTIIB491jy8BmAxUrmSHBoSLr6wKoegwQQ0YMH+M3396fzB0fl58iCiZby/4asSjO8tKeoz4roopFkXO/TRTQepvw5Q3dfmNSLmElXwYIYaDbSnMzYjw5lq+HVx3KxDjwSTHjlTdidIQ6wEJJ+b0hQYevuQMjVNUqo2HVtcdmfQ1Ra2oBZjxyL2F47dUMuHy/e7YtAtDnadF6BMlJ8oWGc5tKq8doOctue0mxLXXV3XHlqV/edRR4P98O6I19/hi5U1ca59BrYoo27INpD5qvDVFK6jICXn0ZjUcpn0MSlwOSe9dAGOTg5002S70hXsVdOpsDG7irJMI
- f23VSio2
- u3RK/x5tMP8cZo7nMjLj8KbPWBN+w9XDoHDZaWkGZ1gq1IkOHXkJ1rBNt+OYuaZ4sMqp6yLKResLk/FvQa1Qb6lkrTG7y6j0xNqZUS7zAVDjrStU9NiwGAK2zb21EfJLALdKixdASV8Uo/Ojau+jcMWXt95zWZ2E/yNGBOh05FBCTRIRXDNhsvwiXOtMKFPLJ1BWHEcKQmnmOEqs=
+X-HE-Tag: 1761219753-915327
+X-HE-Meta: U2FsdGVkX19pBKPQI5n+1TBK2ye2ks40LLBjyXRQ2e6t99i8xocEnGlbPTwrVlfLv+KRcImdKUthBkg91/FFA4iExQLR4tY+gws/nW2fZ/+Cnlya/nvvnbPNpquOZF6MekyIDL4+YDD12g3u49i5u/8vFBzRsSnLsyJwl0L9Nwc9CKbbJNiqoOvmndbIB9R4w1AIHwEpOrTZdxQIS2Y/WtYSR39xl+fWwAiZ90uLg53pFa5dgDcpBvP4TgdCoH8KLfH9aE7Ox4+STr2WhIwVge4i+AONre9KphYWB+AqS1wvl17x+T2eBK/BnlOL+AWKx9GDNFG1NlfM1ASrHmIhQYB/WAOGSDihIBHHYJeus6lf3/O1mrQg/2QfDVlnbcIB6N9GEKBp2a+R7stidLF9D+2Bh99+u1bNanDGsWRtyMxbkX8CWTS8LMoWjG2KzQNEq3zrfXd8aJvpZirr4j4SOfdOsqS6TpSFgRSEUJpOi6a/KMbQX+N2TSDMkhqroXFtgsmirGYWmiRWm7CfbbQlb18/57FVS5mTV2kfydaa1t1Q0QzSROkEQK9SHynb0tU0wO/KfhhTP9/xpEBBcdCoEi55UGFdxl3QdlOtTz2cuATj4TlHAAumsmK8eJOxWb1NLO85LC0EcUQUZYoq6FmI+jdVUy6RHKPBmtbmes6P0Zs8OzNK11WsA6XoTRDoa0HYUYdk7IO3HkauWmynN12DA3su0qE8Useu27OiipoHOCysaFwMwAhBSjzfZGc0nTks17/R1itON8R+TzURiiBTjg9gvIq4TFXJjUgH88BUo5fs+FLQE4GmS7/bXR9oy6YMNi8bHZxSvWS6MXt63MmGbJHDh2QOsFe7Yit5GLj5WjoijJIhlVNW+u+ZvIsQwroU0GlIJjAH05ING0SgsVUy80zru7up7bugmNQ9DMa4oyDYPA+fxrIvW51IUjm7qUWeBEOJcQhcRckReuTTdPv
+ qHQLyJTz
+ EsMn4BLL7JyJ4GBln0ad1dFBtWEdoV4HyiKYOagkZxpOmE3IvJgU9E2B+XgWyJcrK5jIqqha7MmIoxvc6jW6VBnQJUU+B8c9i9Fme42V9Ws1DAnL23KXTiBTmZSUB4n/1W8LUgHweZ/KEtitFpEjTLe+Tr8zs3nciXJhk3AMpQbBnnTA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,50 +92,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/21/2025 5:41 PM, Jan Kara wrote:
-> On Tue 21-10-25 16:06:22, Kundan Kumar wrote:
->> Previous results of fragmentation were taken with randwrite. I took
->> fresh data for sequential IO and here are the results.
->> number of extents reduces a lot for seq IO:
->>     A) Workload 6 files each 1G in single directory(AG)   - numjobs = 1
->>           Base XFS                : 1
->>           Parallel Writeback XFS  : 1
->>
->>     B) Workload 12 files each of 1G to 12 directories(AGs)- numjobs = 12
->>           Base XFS                : 4
->>           Parallel Writeback XFS  : 3
->>
->>     C) Workload 6 files each of 20G to 6 directories(AGs) - numjobs = 6
->>           Base XFS                : 4
->>           Parallel Writeback XFS  : 4
-> 
-> Thanks for sharing details! I'm curious: how big differences in throughput
-> did you see between normal and parallel writeback with sequential writes?
-> 
-> 								Honza
+v5:
+- add vma_is_single_threaded_private() to remove code duplication,
+  per Lorenzo
+- rename folio_needs_prot_numa() to folio_can_map_prot_numa(), and
+  move it into mempolicy.c, also update kerneldoc, per Lorenzo
+- correct the changelog of patch4, per David
+- collect ACK/RB
 
-Thank you for the review, Jan.
+v4:
+- update changelog for all patches, per Lorenzo, David
+- split the rename/refactor into a new patch, per Lorenzo
+- collect ACK/RB
 
-I found that the IOPS for sequential writes on NVMe SSD were similar
-for both normal and parallel writeback. This is because the normal
-writeback already maxes out the device's capacity. To observe the
-impact of parallel writeback on IOPS with sequential writes, I
-conducted additional tests using a PMEM device. The results, including
-IOPS and fragmentation data, are as follows:
+v3:
+- use "&&" instead of "&" in patch2
+- rename folio_skip_prot_numa() to folio_needs_prot_numa()
+  and add kerneldoc
+- add RB
 
-A) Workload 6 files each 1G in single directory(AG)      - numjobs = 1
-     Base XFS           : num extents : 1 : 6606 MiB/s
-     Parallel writeback : num extents : 1 : 6729 MiB/s - No change
+v2:
+- update comments for pte_protnone() in patch2
+- rename prot_numa_skip() to folio_skip_prot_numa() and
+  cleanup it a bit
+- add RB/ACK
 
-B) Workload 12 directories(AGs) each with 12 files of 1G - numjobs = 12
-     Base XFS           : num extents : 4 : 4486 MiB/s
-     Parallel writeback : num extents : 5 : 12.9 GiB/s - +187%
+Kefeng Wang (4):
+  mm: mprotect: always skip dma pinned folio in prot_numa_skip()
+  mm: mprotect: avoid unnecessary struct page accessing if
+    pte_protnone()
+  mm: mprotect: convert to folio_can_map_prot_numa()
+  mm: huge_memory: use folio_can_map_prot_numa() for pmd folio
 
-C) Workload 6 directories(AGs) each with one 20G file    - numjobs = 6
-     Base XFS           : num extents : 7 : 3518 MiB/s
-     Parallel writeback : num extents : 6 : 6448 MiB/s - +83%
+ mm/huge_memory.c | 17 ++--------
+ mm/internal.h    | 20 +++++++++++
+ mm/mempolicy.c   | 61 +++++++++++++++++++++++++++++++++
+ mm/mprotect.c    | 87 +++++++++---------------------------------------
+ 4 files changed, 99 insertions(+), 86 deletions(-)
 
-Number of CPUs = 128
-System RAM = 128G
-PMEM device size = 170G
+-- 
+2.27.0
+
 
