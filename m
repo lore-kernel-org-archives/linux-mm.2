@@ -4,116 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352E0CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 06:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C125CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 06:16:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E9AB8E0006; Thu, 23 Oct 2025 02:05:23 -0400 (EDT)
+	id 2BDE78E0007; Thu, 23 Oct 2025 02:16:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89ACA8E0002; Thu, 23 Oct 2025 02:05:23 -0400 (EDT)
+	id 295868E0002; Thu, 23 Oct 2025 02:16:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B0148E0006; Thu, 23 Oct 2025 02:05:23 -0400 (EDT)
+	id 1AB238E0007; Thu, 23 Oct 2025 02:16:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E0DC8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 02:05:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 164D51409EC
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:05:23 +0000 (UTC)
-X-FDA: 84028341726.12.17B1927
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 38B4F40004
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:05:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GIQcj2La;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0607D8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 02:16:06 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F577BC9C0
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:16:05 +0000 (UTC)
+X-FDA: 84028368690.10.65C78A3
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 396AEC0010
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:16:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Oz7tDJwM;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761200163; a=rsa-sha256;
+	cv=none;
+	b=0pNLp4DZjDh/MpGj0DOAVuWJjOXu3xNMfodnH+EsUeGQQi/ScR34csFLSgti+VJlwxXO0t
+	q9WDrm3uJuYjB0uXMjVZe5l+NQLqBFVomlTy/Sq1NiDN5R1yqbRj0WacA8jK79mMGj1Ln6
+	2uWNlGUDC7gQksGw9IzVNUIsm/5LMcw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Oz7tDJwM;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761199521;
+	s=arc-20220608; t=1761200163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v3IvAY1bPgzmMFy0d5igGjN36rYPGH8m3qPfHMEgRd4=;
-	b=np9E9TpdZBWNrb6tZovxEP7q9j4TqL3NVqMkYL81H4fFWDOAheKgAgdIfOIboNDRlRDJdO
-	QWucZgk9/NHU9nOidyg7uD8BmiwJkvH8HjsCCWy29PhOHLLxJI7gB5MQ5ml4Cmjxmm7Cqd
-	DTGSecVPlU27a9vCBxRifccuGKwKLAc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GIQcj2La;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761199521; a=rsa-sha256;
-	cv=none;
-	b=FcW5im9uuAP7tcsknQDuu4os+GO0DN1IQXX8ZRQYKGDS6o9HnMZOI8Q09C2vMkQaRysgNW
-	+Q2q+ea0hn3/hyA2GZpRNUtgHAZZiLvt/EER1uALwlBTHaMtH8SQp4UrOdb+q15GcJ/cM2
-	D2qWri+wpGKnKKkFVQIn8YDWWWpwJWI=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-88e51cf965dso65847985a.2
-        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 23:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761199520; x=1761804320; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v3IvAY1bPgzmMFy0d5igGjN36rYPGH8m3qPfHMEgRd4=;
-        b=GIQcj2LaI5ZKqjBpbRqVZsrKxLgyvgjLA+fvds9uUcVYXu3GepIE/y5cSrf2LWH6rw
-         UVXhG0IS/VS1u7EdAe01vJQOUE3IVL2rg+DUQHKMzfLzzjGsiA/0VcC0W5UCeSS99Q9Q
-         nX0waSjnvJyKtBygClkdn269B8qtotJZi48Nb78/G7pgn8R26db5UpOJWyV954dUxNk7
-         veiDg5FbYvBw9crwRbfTsIvBWHFDYAjkP0GNR8m3Lscc4lcFQtvcYt32QMBqd4y4CM5Q
-         JsgrgAnD8HaUr+9E/UBlw89XtListUsrZyBT/xCcJGErJKqq6b6ZUEaicFB49Yx0w1LU
-         1FQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761199520; x=1761804320;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v3IvAY1bPgzmMFy0d5igGjN36rYPGH8m3qPfHMEgRd4=;
-        b=MVw6Uuu131EwKpARnHoWmV29bsEXiLu2RTyO6pmivu2B9Jg4X2X0tn6jpy5u0mRgLm
-         FuGS14EJ4rjqkQASPCyou2CbE1qYpPsCqarMY4nrG+I5/bq4upKvz7LFdWRUQK/ImKLj
-         oF0vVgih/z0kZTOleeFhjFGPLpjNU27E2zV+QiL0mtduky7zl3fDHXhmPP+JeglpuRrZ
-         PQmCKLfzyteUP/A6VYRquZCyNRC93Be9R1nLJi63+kMq9KZioG/4zV65+qILD5lCRVtu
-         u0KOCdyJ0Y+OAPecGIxsIQO1QctQ+FN4bK8MqH6VW5lxw/UT3PpBwTE9rKrkqkpQrOe1
-         URJQ==
-X-Gm-Message-State: AOJu0Yz3UR2NZCaxgLUwrX2sKcm7mzZ39X4iyTk1wgxnkSWQRZp9teQ+
-	aov+jntGo+VmNGCjNbfrwE9f4LYoEsoP7Z/CekFPoJ/qfCfKD2AlTQKjjI/s80t8XIfveKBwKMG
-	h3l5fHMi96iQ+hK29MYByMcQfK6tHNaU2xbF8
-X-Gm-Gg: ASbGncs7EFSXPjCB/tkBeaIRlODI5zA5rFvG5M+tgo5MI7RQ+O4XIWf6tYXuZ2Kg/m2
-	KGRqdap8waD1bIqQxaktKv6Od6wDFcJPBSLyi3boiEKQfEpGlGid65RMkt9tmMi3XuqUiXrk7Z/
-	BL43vMfy0DqxfqeLAhVyPvGkajwc/bEbvlgWE/uAx7X9epEf2Mk+6Fr7XgqtmdEsNrUUdqwkV3J
-	bsNMpUsc1ADdp8jkdJAFqWsx573gmmKOcfeR0oC950bUy7ZHg/qKawUL6EGyS9GPB23VNG+3CFr
-	lpfFhkBZjp7xisMOcN8EIXLuhck=
-X-Google-Smtp-Source: AGHT+IGsEfu1WKq3O1sDXpXzxhRNtjQgAHS0IeqKxtmtdBTBKwbMP0JMEIOGBFyK/RlUYPuqFMLN0h8xpTTy4rHsfAA=
-X-Received: by 2002:a05:620a:2911:b0:84b:e14f:18c9 with SMTP id
- af79cd13be357-89070114c39mr2580157285a.47.1761199520141; Wed, 22 Oct 2025
- 23:05:20 -0700 (PDT)
+	bh=hhj1VLtSYO+AfqlDWQL1li1LYgXwZ69chK1m/bx772o=;
+	b=cQSo8TSjSM/uKUzA7+Vmq0pXAFQEiPyShVboa8pBO2RJABJT4keUu33sSc96kVbfiWNXMA
+	HvsXfMoGNxHRSe2J9UN9VuWFuXiYE//eTJrQFOEACnUlBUG3y88eGxgZSkINJR54uTc7Od
+	ABIkcPVceetmQ8l2fX7wGFE2sGCY30M=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761200157; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=hhj1VLtSYO+AfqlDWQL1li1LYgXwZ69chK1m/bx772o=;
+	b=Oz7tDJwMASc/sBnzb8tuijEStdyfAngNV7W0jgMMEw5yZHgP4K8C2bo2rZXy3Pae18TIesBs/egYEa3HTkIleGO+WwTE0UV3w/QgDxvMneRVMNfABZjvRdePww0M2hw+odYE7Eq4hAUk8rvKYhPwK6ZcdiJWeUILpFm519+PKeM=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wqq5ZkD_1761200155 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Oct 2025 14:15:56 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
+ <will@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  David
+ Hildenbrand <david@redhat.com>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Zi Yan
+ <ziy@nvidia.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Ryan
+ Roberts <ryan.roberts@arm.com>,  Yang Shi <yang@os.amperecomputing.com>,
+  "Christoph Lameter (Ampere)" <cl@gentwo.org>,  Dev Jain
+ <dev.jain@arm.com>,  Anshuman Khandual <anshuman.khandual@arm.com>,
+  Yicong Yang <yangyicong@hisilicon.com>,  Kefeng Wang
+ <wangkefeng.wang@huawei.com>,  Kevin Brodsky <kevin.brodsky@arm.com>,  Yin
+ Fengwei <fengwei_yin@linux.alibaba.com>,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org
+Subject: Re: [PATCH -v2 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+In-Reply-To: <CAGsJ_4z7SASir4gWThfePdnvw82TB8E6rXnzJ=CieaFnJpJt7g@mail.gmail.com>
+	(Barry Song's message of "Thu, 23 Oct 2025 18:39:39 +1300")
+References: <20251013092038.6963-1-ying.huang@linux.alibaba.com>
+	<20251013092038.6963-3-ying.huang@linux.alibaba.com>
+	<CAGsJ_4xaA8QRjP9H=n1hQfEfGop7vOd5Y=J+KQzuOyfa8GK-kQ@mail.gmail.com>
+	<87a51jfl44.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4zPH0fwBOLQwh1y6jG3tCXHLGRCTyVVSCWb+NfLCEMV0Q@mail.gmail.com>
+	<871pmv9unr.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4zW6ogVdi=t9JCuvGD9N21mA_ORXRCakw4Av68d9n+DDw@mail.gmail.com>
+	<875xc78es0.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4zKGS-Xd-58ufXGoyRfaZWd8wTgv0b6ibHJ2aS14mQqtw@mail.gmail.com>
+	<87a51j6zg7.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4y32i3aNYPum=8J3_Kt6vOSisr_jg6btB-YG1uQBqHG7Q@mail.gmail.com>
+	<87ms5j4444.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4xhJSLnXOZy4kPmnif5Paq+OPN_Ww+rPk2WO4-ADSC0Yw@mail.gmail.com>
+	<87qzuu1kg2.fsf@DESKTOP-5N7EMDA>
+	<CAGsJ_4z7SASir4gWThfePdnvw82TB8E6rXnzJ=CieaFnJpJt7g@mail.gmail.com>
+Date: Thu, 23 Oct 2025 14:15:53 +0800
+Message-ID: <874irqywh2.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20251022105719.18321-1-ryncsn@gmail.com> <CAGsJ_4zKcxO-Tacy0jCZSs83+fGsgqQYNib9nCXoLTuL+hdLxQ@mail.gmail.com>
- <CAMgjq7CdQK_k_oGfOwCtMm18uAXrGwfwUz93pt7kaN-S64G0Cg@mail.gmail.com>
-In-Reply-To: <CAMgjq7CdQK_k_oGfOwCtMm18uAXrGwfwUz93pt7kaN-S64G0Cg@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 23 Oct 2025 19:05:09 +1300
-X-Gm-Features: AS18NWAOFgLxB_h9QT8-CzNEtRzSIFKqRBnAEOGu-CloGyTvPo1b8C9gv-cX6nE
-Message-ID: <CAGsJ_4yidWp9BqJbTa44uLWpJU-d5A+76r8QeErtL+Au+CEqZw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/shmem: fix THP allocation and fallback loop
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	Dev Jain <dev.jain@arm.com>, David Hildenbrand <david@redhat.com>, 
-	Liam Howlett <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Mariano Pache <npache@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 38B4F40004
-X-Stat-Signature: jqaahzqyyxnkzegz9ewwxwaq7a8xxsxt
+X-Stat-Signature: kxc97oq9zorbfasiqanpmetmfbepdqhf
+X-Rspamd-Queue-Id: 396AEC0010
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761199521-163536
-X-HE-Meta: U2FsdGVkX1+xCOuRg+LO4RnluQAyqpDwfd5Csoz0V5IGfCi0GfghkVQ1UvgEXoZLtbgIS3rhmXGlti78xQoUnc1wwFrE05/DK6HgGeLalfAvfO4nb3iIs+j+hvHwvT3UMmDIHUgjV3ac4ZVZM38K/Y9rNGVoGSaLavGPN9U/qAJQY/Xa2u7239z95La/wg/1wndr44OIm5HMTVI1zrW4jEannAA3ZRbL2IhHT4ws+4PWl6Yd8Y1CjobS7w2mpXdYdyShNlh3Sgv53BfafM0TmAdCL/l9drlF9raBhqQg56JRB42kadn0zot0HKp4r8QcMgdJw1+22nCtBlVsPlibk24PcE8vIR4ExPbLlPTbTX/SNNcQziwOJyIfECwZ4i8e3Y3fl/t4ypn+P7H3o36z/42uajYFaKf2MNpKHTtM8+MtGupill0Sggf1BwJaJrbw1GWTYIq/hcJiO2ZIH3erXLkzcSTXHhsHGtuq1GHJjRZ7Wx5FtoPlXxQza7XMvGiHj0miRLG/+xwsTahKuVksojpIV0BlhCg6ISC/JepJqf3iz5amF+pRDhwOnH4fyvMBb5SuxB3gi2BopYbvfF3aO/vuSmpZmZrUzgyr0xTfKUR/Wc4V8Rlp1Z58zSFQRjvVZCLVwJm/uetkcbvH3m09JcNpkU4+Iec0KKT0PhaDclxNfyzpmtRh5tWAUcs6XkV6P0w7uV9J3lOEzm2cwY8V+io06hY9dyiG8Fi5epyFEb4rbaJhYYk3LspZhPIS5JlZ02A4lm55qaKjx07JxRM0YvwdDVoOMsnmp2SgcGRPMSWnAAKvIUxEwT/CzvXHu3HOGv9K88nAjq/STy5BVBGiP0L/Xtf3mcb0WjOkSgVu7bkcVAutM0ZbOxpeXNZ7Z3vFFIm16DMOnH/PML6wTGdJ/3lp791qJOZE2EgGLHbcRrOBZb+lEikLmDbfSO5nIfvluzmWnvMXTh7sCsNBxXV
- S98IK5S6
- 04bi3N6wTG20cBAc0SAi09alHWmRzSY46pQA3r+zZ5/J2dh5f/h7qIMIY2kf9Unjsa24yQrbrLL/0Y6b2hJVnPBtCLBSbPZyxkm8A49ALa4a0xlgMssE5yBbGTWeB3+FfUhrRSwh/xw16I+meyuR2PlzGFf27YTXYK3q1B6XiqQa5+QY+6iaV1H4gVc9KZ4EZ7D2fLYmAFL46PAGds6ySdsIiS5Fcg7nU1pLFtW8oljosem9zidIlnmsRuRMwKJ1Nh83an4OMBPFDhDuFcBD+JtqP1O/a6uRx+BkSr9/jxO4Lrq83btR8nSqrNy9jHWFP+LIWxz7c4by8zYg+bCA/fVYB+2mol6X6dbiWkrT4l+y5poqDZ+bPMi3LebaS36n01ulg
+X-HE-Tag: 1761200161-34180
+X-HE-Meta: U2FsdGVkX19oFwXKIhwH3auaozx2E0LgbLKAPdovHyS5luJtkPNWGZR36KpJMzc7giHuNk45FUrHh7WIKqlJPZ7B6qMUxlo5O1M2lzBm+ubsP+HOJLK56ynu5Ub4ZuyP6S/tkNgigwSPwJowPRHdPRS0bFf4IAnANG3XBdT+1vTQlOxFOtqjnBHBcpi7mASHz5XJak6DVH2RCr+jOUen7rIHTUeHu5bW6pShmlSXXSvAR+83vjTHd8joryZvmECdbwUwN8cIfixgbA/VoHSEwD1BgjSJahIivonUZG0nyg/fCTjyptqpLbeBg1HfA8UtR7/cikp7DHOaNDcq4rnm+NrMKWXvEJm1ioprH3OssJc6ogW87J2Wkux4ghjcaxLQK38JBRTvvA//MMZUxiES2NgoJ3O7x+IqZjjSLwKb6b065uJi3/NNi90lLkJtxCJoWuEzv+k4DZ2sqn8Y6oPiv9cHAYDPJxlHRQhcYjE8uiv2jfJI92P97G4KXQk5PHuY2HcaoYk2hOjGmgOt3Olz4/mW4kdcF5/R32Sy2fcyiytjzE980/wxuO3gO1pxfrtriZeGK90FOa5wpXX673Q1t2ANmV+4n22/DA5/q4txW88xAUDjDQ0VyZMA0WJCdxxeT+yyhTKjmGwJCzESQgkFRztXe4nlT0kEs1Ulw6SXqajo7++ivRdgVwB5iFcYdQc3kWFz4ulXHfzpFzi81qyxP0xhN+zWx5G3xl9TOQx6h/v6PZfHYMwxzVwvGOlgpgMelM03xLF9yDre1tPBppc+H+3Rrvkrb73bWPb1AfQTQnBuAO70Ww0P8C3NltoApQa/nNjRiRudKfiebUYv5mhrZDmINWlXVbi2Pjb7XzP+j7vPPsWMDnTH08GBjn9S73hTY6vqqMHpmun3u67XBDIQ6A1E1pWCdhY6nb3WSsLfKqOdSwte4lrtxnkaRAzMn7WOTyrA1EqsjcyagGvTbeb
+ ibmb7Pas
+ I4RHbRvwIn0rCCFi0/NNhcl0OB1JVT06XryhQGYPopjKgKH83H/pxNrun55r8if9G0gLpeYUtjcHEKG3xxwy1I7pq0lPK66zcM9vXvSMYAsffPyXfdwkaqIbVNTBglTXvm9S33Ikm14gIPNn8RUT6K0yr/BF/7M8B6eC1ZdzoR+yDahfG8D9eFL16G38Ihybt1gJ/eyftTry1VKc5b/5Mr9C2VERRMyaa0T+8rL2y+YSrOD37kWcMXTkpscTDWwfHD/04VYkOOqj1hMETioOzoMNPcYhC81S5PeHn9SM669miIfc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,46 +113,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 6:58=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Thu, Oct 23, 2025 at 1:51=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> > > diff --git a/mm/shmem.c b/mm/shmem.c
-> > > index b50ce7dbc84a..7559773ebb30 100644
-> > > --- a/mm/shmem.c
-> > > +++ b/mm/shmem.c
-> > > @@ -1895,10 +1895,11 @@ static struct folio *shmem_alloc_and_add_foli=
-o(struct vm_fault *vmf,
-> > >                 order =3D highest_order(suitable_orders);
-> > >                 while (suitable_orders) {
-> > >                         pages =3D 1UL << order;
-> > > -                       index =3D round_down(index, pages);
-> > > -                       folio =3D shmem_alloc_folio(gfp, order, info,=
- index);
-> > > -                       if (folio)
-> > > +                       folio =3D shmem_alloc_folio(gfp, order, info,=
- round_down(index, pages));
-> > > +                       if (folio) {
-> > > +                               index =3D round_down(index, pages);
-> > >                                 goto allocated;
-> > > +                       }
-> >
-> > Could this be a temporary variable to store round_down(index, pages)?
->
-> Right we can do that, but the generated code should be the same, the
-> compiler is smart enough, I just checked the generated code with gcc /
-> clang.
->
-> Do you think the code will be cleaner with a temporary variable? I can
-> send a V3 if anyone suggests, it's really a trivial change.
+Barry Song <21cnbao@gmail.com> writes:
 
-Personally, I think a temporary variable makes the code cleaner, but I don=
+>> >
+>> > A:
+>> > write pte
+>> > don't broadcast pte
+>> > tlbi
+>> > don't broadcast tlbi
+>> >
+>> > with
+>> >
+>> > B:
+>> > write pte
+>> > broadcast pte
+>>
+>> I suspect that pte will be broadcast, DVM broadcast isn't used for
+>> the memory coherency IIUC.
+>
+> I guess you=E2=80=99re right. By =E2=80=9Cbroadcast,=E2=80=9D I actually =
+meant the PTE becoming visible
+> to other CPUs. With a dsb(ish) before tlbi, other cores=E2=80=99 TLBs can=
+ load the new
+> PTE after their TLB is shoot down. But as you said, if the hardware doesn=
 =E2=80=99t
-have any strong preference.
+> propagate the updated PTE faster, it doesn=E2=80=99t seem to help reduce =
+page faults.
+>
+> As a side note, I=E2=80=99m curious about the data between dsb(nsh) and d=
+sb(ish) on
+> your platform. Perhaps because the number of CPU cores is small, I didn=
+=E2=80=99t see
+> any noticeable difference between them on phones.
 
-The fix looks correct to me.
+Sure.  I can git it a try.  Can you share the test case?
 
-Thanks
-Barry
+>>
+>> > tlbi
+>> > don't broadcast tlbi
+>> >
+>> > I guess the gain comes from "don't broadcat tlbi" ?
+>> > With B, we should be able to share many existing code.
+>>
+>> Ryan has some plan to reduce the code duplication with the current
+>> solution.
+>
+> Ok.
+
+---
+Best Regards,
+Huang, Ying
 
