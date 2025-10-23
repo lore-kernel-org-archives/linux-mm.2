@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC9FCCCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E09CCD1AB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 453DC8E0016; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
+	id DF1478E0018; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CC6A8E0012; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
+	id D79EA8E0012; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11D758E0016; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
+	id C689C8E0018; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3A968E0012
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B0EA514096F
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:43 +0000 (UTC)
-X-FDA: 84027636966.11.1F61BCD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2E621180002
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B72298E0012
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75AFF5C0C2
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:44 +0000 (UTC)
+X-FDA: 84027637008.13.BFCFB3D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BBB4714000B
 	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HM8SFIS3;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hiqf8kaM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182742; a=rsa-sha256;
 	cv=none;
-	b=bxEMpFhTBO2+jZ270bphT45Pr8kbvbPJNTnEiMFmsOHSBKT6KuWrYBWyrcfD/zDFBHMAgl
-	pedjBFqy8UkJyxMIjvI9m6aJuYEWAEjdk+XEyJ6lSTItjyfbS3V2sKnWLPLUZKiOBvWZCZ
-	EfgMolAY11xNGtUwHPLs3cQjpW+FrJs=
+	b=RxamsByvfjGbenoCANIT/sX0WCM1or0SxEpWDm8rtUqXMe8TQ8/c/iYHZlHJHSsq22Z5Dz
+	RF411LO0Znjf/AxjZZlyUanQyL8bL5tVtwpCDvfoB9e1hLWygaNKgvEKb+PjoR2KQDVRkc
+	9CPTOyjEpj90c+B7pF+JNGTobLkhXwM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HM8SFIS3;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hiqf8kaM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761182742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhgnbVdma+C1uN2sxR7Bem5A7NQgdVD3COKmQo4zXW4=;
-	b=VD6WhkZprODyO5SlngA9uInkivJmZxsHdQwjAnJikUycmq8JtuWwuVjU8T24vTKI3QfjsO
-	RrceL1er3z8OCtoPNxAvNLb0nvQxx5SpbG7GWjsG1Fl3COE2TUbo3c/WmHYZ2mDgvGCY5z
-	wTB1wmiYfoFCY2LdSiaIBa0gE4e9s8Q=
+	bh=UBmdMcxFtZX/k+GuToq4QGpejk8/ZkvayDS0bTDI7NY=;
+	b=mvrTF/X71u9/FRrA+ljNcV7P7F/dZEQXna6lqUNVpued7uTswAhtBnUEFDKv8SwKLYcP7R
+	Msb5CWGtG6Wns/B5nTeZSm7g/c9Io5xKx/B/I63mOSqVmRvZfcjZYVAfzdklrHos/PyvFs
+	a0BWbM/H3vUHBBPpMseRtgpDVt7dAO0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 89CD360569;
+	by sea.source.kernel.org (Postfix) with ESMTP id F2AB74A8D9;
 	Thu, 23 Oct 2025 01:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC371C4CEE7;
-	Thu, 23 Oct 2025 01:25:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDABC4CEFF;
+	Thu, 23 Oct 2025 01:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761182741;
-	bh=sIveTxFAmrzddRKi8UGGyF1J97Zrb1cqOFDFiER9cSY=;
+	bh=oyDZN9oCVEaeb/3UXPzhIKvg1TDMd2tTbJ81AbOf+E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HM8SFIS37glHiSpFmmcjCYxkGIzcWJLAW1xXOKGA6QvV+lu7JWqE/pP/VgPmP49c1
-	 ahyGOwmevRjt+r98YKnnHji/x5qUPLSP95ulLqbUr7LQaE2usaeQ2a7Y83tGITrAsZ
-	 vsKqP6aVMRPcGiKwPl6N8P7BovPpJiEv1rfiEdqoqPZAm1K8PBvoDa2uwVwmDz/rQQ
-	 j8dx444E5ElZgZI7wc9zeZAxwKL35uZ7csTMiR+e9bFEEA1JmH0GHRbb1IdxOe9rpz
-	 ERIydzLaZ9sKGH/8hbTFm7Mx1Nv24LB+b6m2rXyXMBJmErGf9niof/gritKIxTl6s/
-	 OCS7QhFL0mQYg==
+	b=hiqf8kaMA6/9WJy1wPmi1bMps3cEPFsKyAgqTYZtSH9LZaIsFeuSE+PsB7I/2yRzM
+	 Ofhu7Edk3uQjgYLqGHd/BpkpGL5fRqXQLb5EwOiLp95Tk+W6wV7UD+F3bEfiazBpRi
+	 /aN1+5J6pFnC4cQ6mAQG0COQacc+raCK0J6MtaXacibc/RPZUf3XlDitDADNzvNPUL
+	 I8W0HIkAdboT4LIxSd9GbHbr9LzfP280XIzy5dCUDAWAb78TU5k7wMianWWtAVSUXt
+	 pB3qyNyvR5OtOu0Xy3JUPXK9Tv2cxVUW79Bi6O+v41+bAM8+jfljm0OhJP3Les/Rx7
+	 zfSk7fUZ/69CA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/9] mm/damon/sysfs: test commit input against realistic destination
-Date: Wed, 22 Oct 2025 18:25:26 -0700
-Message-ID: <20251023012535.69625-3-sj@kernel.org>
+Subject: [PATCH 3/9] mm/damon/sysfs: implement obsolete_target file
+Date: Wed, 22 Oct 2025 18:25:27 -0700
+Message-ID: <20251023012535.69625-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251023012535.69625-1-sj@kernel.org>
 References: <20251023012535.69625-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: zkmwtzrjepw7a86gbkie8g3enbnqy88h
-X-Rspamd-Queue-Id: 2E621180002
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761182742-955000
-X-HE-Meta: U2FsdGVkX1+5h3RKv+LCt3qrIZ52rMDYJpBGq0HV5cKvnqx8VkgWuRAt037995x8mNBGdgwKAO0ms8OL4eQVMIQ3UowoWYHfbaSnN+PNAb/r7tA8xNtEaheFv/KQSv2jr8UUDuSpELCMA681OULIcNlsIbYOGkFHHMQDfY+l6bgdK6DPx20WWwqEFWuQHae2rDg2Lvf1oX0/1UcO2UnrCCUsEmycMmOV7zHJYYQxtnH9fCZ5n7Ot0PJFDimjDeoETDvv18mRIAzg8sqIM5fWjWaj+8Xn7fpwcLk1YwTF/w86SOo4w7lZhhVIfpaY0oWE96Q48W6ngiqqZDb5U1UghYkgWI3NQSiGyOTHMrDT8JowRXJHQhtQ5SA6sqqv6J6WMFcQvZUBacOd5gl2P4+NyxDTtgWdO61+B6LBO6fWwRRYX+YruLC1VwEyHP9tiw28Ge52cC/LsbSQDDyijnhzpt7forustrZykYTce3TVxFFZD4JKGlQIz4FsMWZ+QOxPNd70jS/jO05XIT/HdAQ/rmvrgN6xKzom8iNH6P9OrIH5bkFl7hJ1aTBsum3SJJlu+QcCJ+92lQTXgNNyjxvAjpE4mz+PfmolHMrZMXc2LkJ93nXxDD60xgWSo8XRJ7Jz8fwSlVBi2Sgo2L6U5ZdxpAXv7YIcin/0Xeim/v18tdCw7qI6d/c8jOHnhyuWSTgqpL+0Li/LfdGmlbrf70LZy7YtNN/HlVDul5XM8ZH34Q2NbTBHh9brOH5WMnAt/5q8tjyG3GMzbRCrzSVQzKBBmXskeJnNovLO2GmOujaneYWUBZ69EuTMYJ6PGodHWok67hOwfMQIPED6u8uoW5fn2ainqYpJzoVUjDFeujl+Y0ijIWVnUm1T28EXus7+LsU6LDtUwFVeGPMDW8CxCaAlqWLibyk9XGFIa7RSqoXWGnnlbOU8zeRrBAF03IrNeDVEEWhEexXPwr/h0+HeiTv
- gz7KULx2
- 4ay+fKIEIRNwh0Q5koALuq2cY4oviPZs4J8VEk6V4Y21LNDRUEXyFFAdEjGYa1mrRuqOBN0FkIj5Q0wCuroOYND4llh2x6SpA/xxmSwL17W0/e75wnfeGFL+8fI9XnZdIUQ/4ksEPu7uJ1LpR01giQGnfBVwDAjXeRhhnxZDxg3EGuFccCkN8drfriRWRYu+Kwj5y7hXaM1QdiUtIyGyAZs6pk389A2h+KH1FbCR4Egs9BUKGMiKhw2qPkqsgFS9e+XOV
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BBB4714000B
+X-Stat-Signature: pb7w4pgzo8oh9x35zxd491uphqaomj3q
+X-HE-Tag: 1761182742-625893
+X-HE-Meta: U2FsdGVkX19i8CjWexYCUpuukMCqVbuVaI96DPLN+tDSsR4TdCxFPzj79aN3I6ni+ZfvsmRsk2TkBjaWAq2egYcXL7GPuEyzwYLyKOJGALrJnt0EDYR1U0WCajMHA8ddfL3HIX7e5tMVKX0MPF2WxsYYs55NoO/LdcdcdbyBV2IImKghj58wY0RUXIFTF7vRxnHbklOcHFM+6O0pLIljgW6D3RZAKX5IZYexuNdfotMfEyNWpZZ0u4VUeQEe8rMIqTMGfKsSrHL39jNHKp7nzAduTcvKxJFZGeAlFn1hjzcTq+EAA34CDuZGdihAnC6Ua0k9A9EckgBOxYqjLKg62f3CVYsfXE181maI4YtZWkEgo/MvbqurCGOHXLYh9kl4OvgFStyr5bKiSLAE4ZzXOB1C717I6jT3tbt0fO7wxgkO2pkFVMWNnXlNbvaCKqsNvPdLdKNsaTN59mLSH4jU78qSpAQcf0UjtHHSkl2VtEL47etloKAWA29bryLjcUBGr27GMinJa/U7aYKZ368vV+USe0FbRrC5Nolq7ULendsCfZocgtZcovMREYg3D3JrcFw2eKMJ35U40Ywi3opw5vr9kiC2CVb/En519z6bJs5rDOXgL5dEZksqu7layBLzK2kEZjDicu3q1S+eOgnorY3Zi9STDTUfTsoEUgTV3G5WykXGYBTdxkakRW+RHjHRZ4Yr2aCEoigiyofpRaR917SWB1xOzv/XSFF2ESHtRJcaiiu9IAUGQPXXjRHgpUuzVY+eYZ/xGB27kZQKi+nMMAJH1x/Vash4GLi66Z9O38sRVUIzoj34V+I7aj3Zp+28I9KebwiNQlak+TQupvqFk0s0Lfs5Ey6cG2A4dqMRHc3W18+Z6maDg4i0Mbor+eGRgjihbZhOP167DQoKJrSsK2bsscCRqSUtA69Qzs87Fy3nNsnkvJQQM7HxYYKr1ngnTObCbeRgGVtlk7JAMF5
+ Ov//yG3t
+ fCieecwIzrfl/+TtzXesv+RGoadkhrSBR3luNeSHGOYOksBtpiNOl/pxm58w9EiL9SyDpCQDGgdxZ/XiOUs5WdgNNjPObUnC/7yDdfcne/0QS3Ew+WNlO1K9FZNkjEngQ4TA5s3PDcwN6p+w7fJ1Kq8OURazw/F8UmKk+E3I/e8WhgEIOA5hL9pdKBAZ17yCPu2qYhG+FfPlONhHQ1dRirqqoIqEAprCXRwtmIEWRbKRrEr3TOiDo5rIokkOBopKrvd0TNVbGK+k7raJ50zhDroy7WbZyhd0DQPxuQ/wp22K+dztZy6CZp8BvslDwOntJHurP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,69 +94,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs interface tests if given online parameters update request is
-valid, by committing those using the DAMON kernel API, to a test-purpose
-destination context.  The test-purpose destination context is
-constructed using damon_new_ctx(), so it has no target, no scheme.
+There is no good way to remove DAMON targets in the middle of the
+existing targets list.  It restricts efficient and flexible DAMON use
+cases.  Improve the usability by implementing a new DAMON sysfs
+interface file, namely obsolete_target, under each target directory.  It
+is connected to the obsolete field of parameters commit-source targets,
+so allows removing arbitrary targets in the middle of existing targets
+list.
 
-If a source target has the obsolete field set, the test-purpose commit
-will fail because damon_commit_targets() fails when there is a source
-obsolete target that cannot find its matching destination target.  DAMON
-sysfs interface is not letting users set the field for now, so there is
-no problem.  However, the following commit will support that.  Also
-there could be similar future changes that making commit fails based on
-current context structure.
+Note that the sysfs files are not automatically updated.  For example,
+let's suppose there are three targets in the running context, and a user
+removes the third target using this feature.  If the user writes
+'commit' to the kdamond 'state' file again, DAMON sysfs interface will
+again try to remove the third target.  But because there is no matching
+target in the running context, the commit will fail.  It is the user's
+responsibility to understand resulting DAMON internal targets list
+change, and construct sysfs files (using nr_targets and other sysfs
+files) to correctly represent it.
 
-Make the test purpose commit destination context similar to the current
-running one, by committing the running one to the test purpose context,
-before doing the real test-purpose commit.
+Also note that this is arguably an improvement rather than a fix of
+broken things.
 
+Reported-by: Bijan Tabatabai <bijan311@gmail.com>
+Closes: https://github.com/damonitor/damo/issues/36
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Reviewed-by: Bijan Tabatabai <bijan311@gmail.com>
 ---
- mm/damon/sysfs.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index ccfb624a94b8..0fe6ea68d311 100644
+index 0fe6ea68d311..43ee9ce4dd84 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1451,6 +1451,26 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- static struct damon_ctx *damon_sysfs_build_ctx(
- 		struct damon_sysfs_context *sys_ctx);
+@@ -212,6 +212,7 @@ struct damon_sysfs_target {
+ 	struct kobject kobj;
+ 	struct damon_sysfs_regions *regions;
+ 	int pid;
++	bool obsolete;
+ };
  
-+/*
-+ * Return a new damon_ctx for testing new parameters to commit.
-+ */
-+static struct damon_ctx *damon_sysfs_new_test_ctx(
-+		struct damon_ctx *running_ctx)
+ static struct damon_sysfs_target *damon_sysfs_target_alloc(void)
+@@ -263,6 +264,29 @@ static ssize_t pid_target_store(struct kobject *kobj,
+ 	return count;
+ }
+ 
++static ssize_t obsolete_target_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
 +{
-+	struct damon_ctx *test_ctx;
-+	int err;
++	struct damon_sysfs_target *target = container_of(kobj,
++			struct damon_sysfs_target, kobj);
 +
-+	test_ctx = damon_new_ctx();
-+	if (!test_ctx)
-+		return NULL;
-+	err = damon_commit_ctx(test_ctx, running_ctx);
-+	if (err) {
-+		damon_destroy_ctx(test_ctx);
-+		return NULL;
-+	}
-+	return test_ctx;
++	return sysfs_emit(buf, "%c\n", target->obsolete ? 'Y' : 'N');
 +}
 +
- /*
-  * damon_sysfs_commit_input() - Commit user inputs to a running kdamond.
-  * @kdamond:	The kobject wrapper for the associated kdamond.
-@@ -1472,7 +1492,7 @@ static int damon_sysfs_commit_input(void *data)
- 	param_ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
--	test_ctx = damon_new_ctx();
-+	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
- 	if (!test_ctx)
- 		return -ENOMEM;
- 	err = damon_commit_ctx(test_ctx, param_ctx);
++static ssize_t obsolete_target_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_target *target = container_of(kobj,
++			struct damon_sysfs_target, kobj);
++	bool obsolete;
++	int err = kstrtobool(buf, &obsolete);
++
++	if (err)
++		return err;
++	target->obsolete = obsolete;
++	return count;
++}
++
+ static void damon_sysfs_target_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_target, kobj));
+@@ -271,8 +295,12 @@ static void damon_sysfs_target_release(struct kobject *kobj)
+ static struct kobj_attribute damon_sysfs_target_pid_attr =
+ 		__ATTR_RW_MODE(pid_target, 0600);
+ 
++static struct kobj_attribute damon_sysfs_target_obsolete_attr =
++		__ATTR_RW_MODE(obsolete_target, 0600);
++
+ static struct attribute *damon_sysfs_target_attrs[] = {
+ 	&damon_sysfs_target_pid_attr.attr,
++	&damon_sysfs_target_obsolete_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_target);
+@@ -1377,6 +1405,7 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
+ 			/* caller will destroy targets */
+ 			return -EINVAL;
+ 	}
++	t->obsolete = sys_target->obsolete;
+ 	return damon_sysfs_set_regions(t, sys_target->regions, ctx->min_sz_region);
+ }
+ 
 -- 
 2.47.3
 
