@@ -4,98 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95A7CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE0ECCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DE698E0002; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
+	id 906A88E0012; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B4C08E0013; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
+	id 88F0A8E0015; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A52D8E0002; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
+	id 72F988E000D; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E82CD8E0012
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:13:50 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D20E1A0AFB
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:13:50 +0000 (UTC)
-X-FDA: 84029119020.22.BB64ACC
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4A63D4000F
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:13:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A45C8E0014
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02F34160B03
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:29:27 +0000 (UTC)
+X-FDA: 84029158416.19.7E4CE5E
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3070F180006
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:29:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kjwYAecU;
+	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761218028;
+	s=arc-20220608; t=1761218966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4BOW5hxTfLOmIVdIDox+jTV1yxmuQmFgSZvwUrdXBZ0=;
-	b=7+uhSq/bAWhU1yjVAy/xoPU6g1QRpvCXsPHSUBXHOsr3V68984j6IAweRTLZp/0qU1ceGf
-	1AbtCXSsza1esA6eUUdcu5k5Li6gsJBHj8xLB2FZMWxja3R7AkeFwArKWPR6fF2v0yTNOU
-	s6OAARNCbVeqRi+LF08sMZTLDfHPM6w=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
+	b=nH0Al7XvlpFfN2tCuW5XN6bsRDQN4ssnoVOcM8uimX/cMumPTqakDBHR46vawoELeEA5tB
+	V3gMMloQiekfmkOI3oGY3RNnEoTS9XSX4A4CJ0X3XCt+s74oJsfOhtcBD1ks1VwQaJICDI
+	/jgWUihjMuBfV7rqdZQhcbnaSqgX6cc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761218028; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kjwYAecU;
+	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761218966; a=rsa-sha256;
 	cv=none;
-	b=kVgvxnP4C9iCOE6NZ0Ikw895+zbx2eL+502WjJebP7et5ruhzRaiIGzN+X30ONlceORlDO
-	gQ1gmTWK7O2y1JlJ48r7Ry/Ue9+XmJgsdFYGGLX1V37AJDKiGM2O7k7Jrab7FUSlRZSG+q
-	hMShcZ0BHcBn7i9yC049wNmGXP0GRc0=
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4csjx65rM2z6M4gf;
-	Thu, 23 Oct 2025 19:10:02 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 42B8B140279;
-	Thu, 23 Oct 2025 19:13:44 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
- 2025 12:13:43 +0100
-Date: Thu, 23 Oct 2025 12:13:41 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Catalin Marinas <catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, <james.morse@arm.com>, Will Deacon
-	<will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, "Lorenzo
- Pieralisi" <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	<x86@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Dave Jiang"
-	<dave.jiang@intel.com>
-Subject: Re: [PATCH v4 3/6] lib: Support
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <20251023121341.0000765c@huawei.com>
-In-Reply-To: <20251022-tried-alright-752fa98ff086@spud>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
-	<20251022113349.1711388-4-Jonathan.Cameron@huawei.com>
-	<20251022-tried-alright-752fa98ff086@spud>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	b=4BjodfmTLrSkneZ1g6nRw/nKP1/tEv0eLZpMTY/LE6xmNodz4SzwaRo1yDIUU6SfkL1hH3
+	Nd1Ka5IZOMecXrW9aoqeU21CxDLS3X7o3ESu5olzTPI8/aNjjkpDeR1xO2/9Z6LWTv+GTQ
+	loZ4hiUUzn3fgXcFub9VN4e8wKhHsHU=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b6d5c59f2b6so54699366b.2
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:29:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761218964; x=1761823764; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
+        b=kjwYAecUQcmN6elcmYOPK6AFbXDSn0Osn4nK94DHzA8amCX+7Z412zvdrhA724OLFA
+         EaS9p84WpQPx8F+y+/nPNXNpRhCjyIoCm47w/EOJ2Ib0GI0D5CYEIQ9SbJ04TYOhtKfM
+         lY5OU7PquTwYFO5IxqdYNmHQtxxM69cKV9Ntr8bA1YPOK0xeeJduBun/0IaIVZOUTOXf
+         iWmUFz4ICYslSynJP0Iqp2vy6AOkj8j9xF+YIQTKGShC87ki437SLjTtM/pO8yXiX3ra
+         Dfyz/c7x9qvTQ9MZMq+24GuF2Bd2ng9I1/yx8lcpnNoLOkSeuwsHWSg5otQlrsIdFCgz
+         yXmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761218964; x=1761823764;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
+        b=RJsHq68wc4Wtow5YQoGpjL4XZgjUv4KUf9mLtat/fU9DFL8G+4GlerWLr3GfGtel9w
+         tsx3Nk0LLWAm0uL+LyIBNwhyOMryYEFsotqRpTJO+2A0pPcugGo2UeN1ATtRm4r5XVis
+         peHSlAX7LKRpC6GZcP/nCYYsOyWrvLkTuSl8m4tiWE723y3qnLOVMQPQrA2mmbhMCbtY
+         NUyPNofg5vsAv5m8KyCVaXbZJmusdOoXuEDwI08/L4nf91Bdnd7pInRnvDmkviIEyezp
+         JzfO7nC7cZUc5caqOw9JzoLznOO3uMw6c6bczTIf2DuJIwrWaSyUOHHenuzO2nqfeZob
+         Fkdw==
+X-Gm-Message-State: AOJu0YxpS5rgBdMv9wdxDMcJw62WJ2mOjSuKnVbR90gGTFq2DXN/4olG
+	E6D3iNJDVixkEITUUNJiyWIVmurH0ZghWGiZXmeSBX6k60r08yNWUXsuubFrCsEB
+X-Gm-Gg: ASbGncsmi7UsjaAQifl4KDEK1PEoZ3jnWFDrj7CzFGkeQAYC0MpqD3nugFAA2eWtC5k
+	ci40xLzROyKLdxmx283AIBeyMBn9ASVtvEvHoEn1zNMzGbFnUXWy1eb0C5TcNxcL9fVk2hAoxJt
+	bO3OyKY0a6LNiWtb8+7+QzdjrzPh8T1Qc/f849gUFhzi0Pof5mApllRv/QTPyU3+6rila0/bX66
+	4Ni2rCp6Uaah3iYcwOs0bvUjsjeWCwygx9RWK3Oj+xqoej+r2eUveza+oHeDsPtpmmyAdIYZnhZ
+	Fj5fjbmoOgzy8BuuN/kWYpanrIVIPEORPCAwlhWo6MmCatoUBtOg+j4MgDdVy5cD8b7fxGiX6P+
+	F82HjsLcdzrQo4Jw7f4yJXvqmWIyhzrn3ph3MJ8jlQ7rOCthp7akm8ln05rPre9CnPdpxReduXF
+	3W
+X-Google-Smtp-Source: AGHT+IGVcD+OUFGiPRHpX8Zf9AyspMjR70F5rNVEqM4+m7vN8XE7B3HIHBPjz9kYyXDPcdhsgkufaQ==
+X-Received: by 2002:a17:907:1b06:b0:b6d:2f3f:3f98 with SMTP id a640c23a62f3a-b6d2f3f4014mr685674566b.41.1761218963986;
+        Thu, 23 Oct 2025 04:29:23 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6d51471ef6sm182393366b.72.2025.10.23.04.29.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 04:29:23 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-lvm@lists.linux.dev,
+	lvm-devel@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	"DellClientKernel" <Dell.Client.Kernel@dell.com>,
+	dm-devel@lists.linux.dev,
+	linux-btrfs@vger.kernel.org
+Cc: Nhat Pham <nphamcs@gmail.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	=?UTF-8?q?Rodolfo=20Garc=C3=ADa=20Pe=C3=B1as=20=28kix=29?= <kix@kix.es>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Lennart Poettering" <mzxreary@0pointer.de>,
+	Christian Brauner <brauner@kernel.org>,
+	"Linus Torvalds" <torvalds@linux-foundation.org>
+Subject: dm bug: hibernate to swap located on dm-integrity doesn't work (how to get data redundancy for swap?)
+Date: Thu, 23 Oct 2025 14:29:13 +0300
+Message-ID: <20251023112920.133897-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-X-Rspamd-Queue-Id: 4A63D4000F
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3070F180006
+X-Stat-Signature: uiyxk7b9jiqa8qj7tbffoer3emmox1mw
 X-Rspam-User: 
-X-Stat-Signature: ogau9ubec9be41ed6recof1rppc6w8rx
-X-HE-Tag: 1761218028-133563
-X-HE-Meta: U2FsdGVkX1+WwNwLbf1txJDjJL6QyNL8aS27AFBNO+wOLJTIDs0uQIFmlV8up+l9ddhatp1vjOKg4K3yDTVbuF3YZ0ftM30YnHsWunD/2VvkQVIcEA+Ewap27BQavqEjZhwPH0Wros6R/Erq3wXchOv3ByPUwyj5zWToI4II0UOk5+OEpqHrVQ72jj1/1ttfzqyDqDZxL7BX8POyCUSlVsNqtL6OTM4b0sroQkfLNJSIc2spLr7XFtBrHI+vtL0a+a+06u8vK1RzJZYrpCz4o95RvkJ+bT5OvyPwlLmY2bkxMklXq6KbeoctNIEwn+7/AhygdRX4IhwAs4+CMK7JioPsLdBj5uE0HIQeUbfDj5aZ0+cR2nPr3YaBZH+7G7mEnAypdfjdoIxdYM8tW9QYQIajw65c56sS47JEUN4qkLYDBqR4JvBV8XwVNvc0p/n4zrz8V4JW5pDG4RjPe6Wt4yr0oBNMzVCVTPIb6jV1Gs9vcerrh040rKLwnjx0FfXvl6NLMht8xbCyKKBOwX1GTsunU1E+SfmcaHFu659vS9tuxa1JnhbYIDZGb1UrPK53anH+He4dWRBfaSPEz4GxuQyEW12bOxxm7BA3PZJlVI3eoq/VPmBxHiguNgMyNunxLPf3ck2O1V2vf/utWIa4jYoVie0nXQ0YHL1LJDg9YXj+QlehLPy4ResyjjzGURA3ymSyPBY7DoSYGPWHvz7Q0geKGt3bx2kNbQ5LZl/kIK7930u8ZZTMzzBSp/rMsVtB2uqa0pb4mO5rwA1JkHDiwRovdZdkeUnB2ZTfOU69TMw5wI+8X0Y3iV4d9hkv/iwkwiW6ZePfZ/e144S3iugp7eoEgUyUYSdtwDVK4qTfr/09TYE6i68nZP0Hiw7tmTJYmMaC85VFH0Ore0RR37OgOja0+EsVWNYjw00l8D640PjxG8GZtShzSbEkM6n+2Lmjn/D0ZA2gx8VZ/4jIAWA
- Q2AOXVVv
- IS1rZdROwJZjQlRMUfaiBw/Y5wyXVKDHMm608RaGUoX4lByfuV8x/jaJC0pveQ3SNG3YyrWiWg8XAHBYQ2S7GbHTwG4x58dRu2pB3FNgklzF1zGL/ZMowcqWBfXldfmw7ZtpbjukdM+zbz2fDej+GGH91Ee4QbboVhBprhVajGZEPMFhtrMuw+sVvo4VdSw3iRY28pCBCkcZfkOPzc511K60olbGhZzkW28YmbOBXZ4RPhN7wtGrlD4iaGuHq1wbVHhnOM8UDio++8RbC5v9xjzlrcYv0lDMAH8AENb/poXe+IGRwIaZyB9fRI2AG1gJu3J7YHGS+C7ZswD4C1HuyErWwF+R0ew7y68nIQusK30iwpCAV18Icp/VfRBuUse+6OkGlm3+0q056ZeK1ljyeHwLEHg8fIdvu7te4k4b87eIqVrH0r0FARJHddg==
+X-HE-Tag: 1761218965-623395
+X-HE-Meta: U2FsdGVkX18QBaIaJl3WDGTcN0ti3i8cQwhn6CUVZhEJ7bUFvuQLgwY+j9wUnARfe/W82oNdXsMgVho4MDM1tEdZBVHGmnDPD/snybVd6xaMkBQWE3YKYsc93RAnJlmWNH4iW0x99wEYbuTzRJuEBdTSPTor0qYLgsKXT6/4XeWnR3rWZQXnHYqArDAvoliDdcsbu9RoTScDLU9VivAG/bMyBNw1801SoG9FLz1fcGFC3+q2qJdX7nq44oFMUmI5ZvaqmeQlTLhCY8KjHZf583L8Ln15I9ysa0qUb7za2dM9FXRQr+D0NmmF6+ilINfdsm/rmnkB4p3f9IenbaCXOyPJ6vYqw7j7RTzIi4NnmqsGAlNXMf0PV76ASbCyWACNNidJNKhjb3bm8vOAp3FphFfSL1cyDNryQsWx/5BuKPUImtMkvDOAk01Wxumt7QVixp+zYs5M2h4YydYYrMktnNJlC2yjMFgQEXIG1LN9iVf+/FiRJdmrkN29LF6eP29Ee23k16dw9LeiNcGWHjtLMXg55cBNLdtJiU8kpI0pXTYkOsmvHTlc7M40g5BotNrHybKJFGo3QiWBwLB2v4CBuzR8O/g5iWg/HJhSQVdsDTiX3QIxwals31GE8lIR8uY2U2pNC/e1tq0UNNER1uDyK76DUMqP6A6v0aFoY9iULfdbwRIwIOX1oWTc/FCdeEApB+Ib/7ZD8x7vrcAiB8QndiDawwwMvfu4Zz/BwmN9/2MHATG1fVH+EgOMgU8NMs7Cr1r4xTn/Cmy5fO81+bGuHZ7Qwnm9jPi0vxLMKg+wGjClmE4acdwLLeMG3TdL8epCOKCMbOHJtzBWG6cKC4eHVvM6lwVbz8fEgNVYeESjIhFXv7XKVH6pMJV+BddPzveazwlHgCDI63lWORxrls+y28ej2EmxDMwlFNItUx6L43mdzPNC2SKptjboNdGBHBpi0JTZr40sdLGVYqp/388
+ Z3gjhv5+
+ YzDryBeaKSD/nSaFPjqo0PNchv++dLxA1lZJOpXUDpMBNGq/hD59tHJP+gMnf+OpAYbApjzsHKT0v5ACV/2mbSbe5QdjR/MzOQrg0hoxs8SoHrVGGRfaoBc5CevRom6uAeOK8+jLY+4NpzS6BRWqVvjTVtlRdI8T44yLJnagH1vJ/9t79y9oq9MBRyUk6VrNMUaRkyeSLYO33Eq5QdV4G2Du10fOHX7BdAwszFekKmmsbREuz3x1Gbb+y2NYahVOEggfBTVGa6u0o7fQZuiEOg4/bsj8U1KRt1RU534H1AUyA6FMLx0d6pZ28zsU7T7sfLC1kaYE6gEdNRMCDoOS2FVTNG5EvKxvVFb7xgoTb3Jn61fxPUnp0FToK7u/G1ZXoO0ha8ElmoLw9JvPJzAg7P12aUPju7VfYURgFD0lXgXjjhPr+EUAcYKOLWQDMSPALJ4QbGQ4O6XP1HW27JYnCy2k2rMpl3mgjudJbIOqmsnULT99HPKH+5twUA9BRUrqyWM1meRYW8MIGzd8bCj6O6A2JYmo900Vw5GcN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,58 +131,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Oct 2025 22:11:12 +0100
-Conor Dooley <conor@kernel.org> wrote:
+Hi.
 
-> On Wed, Oct 22, 2025 at 12:33:46PM +0100, Jonathan Cameron wrote:
-> > From: Yicong Yang <yangyicong@hisilicon.com>
-> > 
-> > ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
-> > invalidating certain memory regions in a cache-incoherent manner. Currently
-> > this is used by NVDIMM and CXL memory drivers in cases where it is
-> > necessary to flush all data from caches by physical address range.
-> > 
-> > In some architectures these operations are supported by system components
-> > that may become available only later in boot as they are either present
-> > on a discoverable bus, or via a firmware description of an MMIO interface
-> > (e.g. ACPI DSDT). Provide a framework to handle this case.
-> > 
-> > Architectures can opt in for this support via
-> > CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
-> > 
-> > Add a registration framework. Each driver provides an ops structure and
-> > the first op is Write Back and Invalidate by PA Range. The driver may
-> > over invalidate.
-> > 
-> > An optional completion check operation is also provided. If present
-> > that should be called to ensure that the action has finished.
-> > 
-> > When multiple agents are present in the system each should register with
-> > this framework and the core code will issue the invalidate to all of them
-> > before checking for completion on each. This is done to avoid need for
-> > filtering in the core code which can become complex when interleave,
-> > potentially across different cache coherency hardware is going on, so it
-> > is easier to tell everyone and let those who don't care do nothing.
-> > 
-> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> 
-> I'm fine with this stuff. I do wonder though, have you actually
-> encountered systems with the multiple "agents" or is that something
-> theoretical?
+Hibernate to swap located on dm-integrity doesn't work.
+Let me first describe why I need this, then I will describe a bug with steps to reproduce
+(and some speculation on cause of the bug).
 
-Yes to multiple agents. There are a multiple instances in the HiSi platform.
-The multiple heterogeneous agents case is more theoretical today.  Similar
-components for other purposes are heterogeneous so I'd be surprised if it
-doesn't surface at some point. Our initial internal driver for the
-hisi_hha wrapped up the multiple instances in a fake front end, but it
-meant we ended up with multiple levels of registration and it was just
-simpler to relax assumption that they were all handled by one driver.
+I want a personal Linux laptop fully protected from data corruption (cosmic rays, etc).
+And even if data corruption does happen, I want reliable indication of that,
+so that I know that I need to restore from backups and replace faulty hardware.
 
-Jonathan
+So I did this:
+- I bought a laptop with ECC memory: Dell Precision 7780. It seems to be one of
+the few laptop models in the world with ECC memory. And probably the only model
+in the world, which DOES HAVE ECC memory, but DOES NOT HAVE nvidia card
+- I set up btrfs raid-1
 
+So far, so good. I'm protected from both memory errors and disk errors.
 
+But my swap partition stays unprotected. And yes, I need swap. I have 64 GiB of RAM,
+but this still is not enough for zillions of Chromium tabs and vscode windows.
+
+And, according to btrfs docs, if I put swapfile to btrfs, it will be exempt from raid-1 guarantees.
+
+It seems that the only solution in this case is to put swap partition on top of dm-integrity.
+
+Note: I don't need error correcting code for my swap. I don't need a self-healing swap.
+The only thing I need is reliable error detection.
+
+There is discussion on Stack Exchange on exactly the same problem:
+https://unix.stackexchange.com/questions/269098/silent-disk-errors-and-reliability-of-linux-swap .
+I think it reached the same conclusion: the only solution is dm-integrity.
+
+Also, as well as I understand, md raid is not a solution: when reading, it reads
+from one disk only, and thus doesn't detect all errors. It can detect remaining errors
+during scrub, which is too late (wrong data may be already consumed by some app).
+
+Also: I don't need encryption.
+
+(Also: there is other solution: "cryptsetup --integrity", but it uses dm-integrity anyway. We will
+get to it.)
+
+Okay, so I put swap partition to dm-integrity, and it worked!
+
+But then hibernation stopped to work.
+
+And here come steps to reproduce.
+
+Okay, so I have Dell Precision 7780. I bought it year ago, so I don't
+think my hardware is faulty. Also, I recently updated BIOS.
+
+My OS is Debian Trixie amd64. My kernel is Linux 6.12.48-1 from Debian.
+I created swap partition so:
+
+integritysetup format --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7
+integritysetup open --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
+mkswap /dev/mapper/swap
+swapon /dev/mapper/swap
+
+When I need to activate swap, I do this:
+
+integritysetup open --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
+swapon /dev/mapper/swap
+
+When I need to hibernate, I do "systemctl hibernate".
+
+And hibernate appears to work.
+
+Then, when I need to resume, I boot to my hand-crafted initramfs.
+That initramfs does this (I slightly simplified this script):
+
+==
+busybox mount -t proc proc /proc
+busybox mount -t devtmpfs devtmpfs /dev
+busybox mount -t sysfs sysfs /sys
+modprobe nvme
+modprobe dm-integrity
+modprobe xxhash64
+sleep 1
+integritysetup open --integrity xxhash64 "$LOWER_SWAP_DEV" early-swap
+sleep 1
+# The following "blkid" command should detect what is present on /dev/mapper/early-swap
+TYPE="$(blkid --match-tag TYPE --output value /dev/mapper/early-swap)"
+if [ "$TYPE" = 'swsuspend' ]; then
+  echo "got hibernation image, trying to resume"
+  echo /dev/mapper/early-swap > /sys/power/resume
+elif [ "$TYPE" = 'swap' ]; then
+  echo 'got normal swap without hibernation image'
+  integritysetup close early-swap
+  # proceed with fresh boot here
+fi
+==
+
+And this doesn't work. Hibernate works, resume doesn't. :)
+"blkid" reports swap as "swap" as opposed to "swsuspend".
+
+I suspect this is because hibernation doesn't flush dm-integrity journal.
+
+Also I tried to add "--integrity-bitmap-mode" to "format" and "open".
+Resume started to work, but when I try to shutdown resumed system,
+I get errors about corrupted dm-integrity partition. (Of course, I
+did necessary edits to initramfs script above.)
+
+Also I tried to add "--integrity-no-journal" to "format" and "open".
+It didn't work, either. (I don't remember what exactly didn't work.
+I can do this experiment again, if needed.)
+
+Then I tried to do "cryptsetup" instead of "integritysetup". I created
+swap partition so:
+
+cryptsetup luksFormat --type luks2 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 /tmp/key
+cryptsetup open --type luks2 --key-file /tmp/key /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
+mkswap /dev/mapper/swap
+swapon /dev/mapper/swap
+
+And, of course, I did all necessary edits to initramfs.
+
+And this time everything worked. This proves that I didn't do any mistakes in my setup
+(i. e. I got initramfs right, etc), and this is actual bug in dm-integrity.
+
+Unfortunately, LUKS created such way doesn't have any redundancy. So this is not solution for me.
+
+So I did this:
+cryptsetup luksFormat --type luks2 --integrity hmac-sha256 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 /tmp/key
+cryptsetup open --type luks2 --key-file /tmp/key /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
+mkswap /dev/mapper/swap
+swapon /dev/mapper/swap
+
+And this time everything stopped to work, again. I don't remember what exactly went wrong.
+As well as I remember, that "blkid" again returned "swap" instead of "swsuspend".
+I can run experiment again, if needed.
+
+The commands above use dm-integrity internally. So we clearly see: if dm-integrity is involved, then hibernation
+doesn't work.
+
+Here is a user with exactly same problem:
+https://www.reddit.com/r/archlinux/comments/atg18t/hibernation_wipes_swap_and_my_system_hangs_on_boot/ .
+I. e. "hibernation doesn't work if swap is on LUKS with integrity protection".
+
+So, please, fix this bug. Or say me how to solve my original problem (i. e. achieving full reliable error
+reporting). I'm available for testing. Send me experimental patches. I can provide more info, if needed.
+
+There is yet another potential solution: uswsusp ( https://docs.kernel.org/power/userland-swsusp.html ).
+In short, this is hibernation driven from userspace. I. e. uswsusp allows for finer control of hibernation.
+Thus, I can write my own userspace util, which will do hibernation, and execute "integritysetup close"
+after writing image. Assuming that original problem is what I think (i. e. lack of journal flush after writing of image),
+this may work. The problem is... latest commit to userspace implementation is dated 2012-09-15
+( https://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git/ ). Do I really need to use such ancient
+technology? I didn't test this yet, I will test it in coming days. Even if it works, this will still mean that dm-integrity
+is buggy with kernel-based hibernation.
+
+-- 
+Askar Safin
 
