@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D15CCF9E0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:14:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F537CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:17:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BE0D8E0009; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
+	id 00F288E0006; Thu, 23 Oct 2025 03:17:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 695398E0002; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
+	id F28B18E0002; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D2008E0009; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
+	id E3EE48E0006; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 484478E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFAC55C336
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:14:00 +0000 (UTC)
-X-FDA: 84028514640.25.D6A84E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2377E140007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:13:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OODg5w6E;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D24618E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54688C0A7B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:17:15 +0000 (UTC)
+X-FDA: 84028522830.17.2BBB0D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 91C8BA0008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:17:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+22Ya4t;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761203639;
+	s=arc-20220608; t=1761203833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=liZBE+jq2bIDFokfeq3Cv57vjgsPhqKmbYOJ1XMUPpg=;
-	b=rr7jzVosk/YlOmpuXE+X6O4DNc5mZSAKN7dG2e7R0nZpZC1ErH+aN2DJd0eEgVjcSVSaPD
-	JxDXV0tj0V/2+LgH+MT1HSmjW0Cg5J3/1MFuQZR69OEWC5Nq/oxv1LOlbgYJKaxoTQjYzV
-	Nd56AdLswVttjmSx2UggHrADCk3ACak=
+	bh=kWmnBT5ngvr9njtbSftjLam5zRLuE1USc4qEDs4FVqE=;
+	b=2y04SNpT+fo77cd5IGVx9+0jDqh9CFMoHKi3uKORZ94oFT8ZAjwSVngkQEHvBPtwyqcF+e
+	vag6ayoK2lqUgchN2ahh23SRx0kOzA2Qu7ePqrzLorYBUnFcFaAApvDrSygP3BQy9+lgV2
+	cZ9mEyAuAuoHVoYMRO5XusXFRJLlTK8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OODg5w6E;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+22Ya4t;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203639; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203833; a=rsa-sha256;
 	cv=none;
-	b=vr9PYAstkq3b5XEQgYWwBEorlf+aeRfHI4lR+js5oDvGn5mknfEZrFwdt9k4awmHaU7gJr
-	pko061B0/hH9HpYmZapSQdpEaI7x9wUUCyuUcBfdRoG5X557eJTauvWwLog3dXFCw4sbF1
-	gsyf4KLFEq7LBzXbxFKWB6uTnYpHl8w=
+	b=N0v6+TVm+Dl6jcQTFFDAHxTus7X4yH7ddrx+TV5DJY3sAbrYrK99+sxaimMdUUGCp8BfrB
+	0x9gxfx/mxz/OLvvWb0AiBQda9WVAgc2Ron4JWfyT1PXo9TjSOTxNyKLl1Qx/FVir5Es9R
+	2vQ15Hit9A3nCyAKYvjNszvr1gskQ38=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C9DB605F3;
-	Thu, 23 Oct 2025 07:13:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24502C4CEE7;
-	Thu, 23 Oct 2025 07:13:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 54784404F2;
+	Thu, 23 Oct 2025 07:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0099C4CEE7;
+	Thu, 23 Oct 2025 07:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761203637;
-	bh=2Z6faUlpxxg8NJ99mOXDv3nxN6IIqbuwazngqBJ2agg=;
+	s=k20201202; t=1761203832;
+	bh=aJYcehfYwCvCUDaOKLROIKDPOq2/3yfyKeSUDbsb094=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OODg5w6EFB/hjsGbHVp2Vq9m7F+hBZgNtIuU5LNZe2mYTpdNyCVCbIXUA3Vdvyk52
-	 ErhoZo9K7Z89GKXdanMvWKrAWUrbXY67tNn6zxtWL+7BzQSgaPo52fDLmUpan2VWdD
-	 rE2qNVF+7AsYdvGZDRWtc/a8+uxAsg54+3aw866XKzV9gBQuY2ujGksVFsgziH3ktL
-	 opVRerWZOfIvj8VhNQRP2iKDKInrAtXVwvVYm96tdy08q1RKVcXFwAqP524kuC2LgX
-	 DtWdWbTC1YhHlmVgdTf6JFxr4NPdwQYSVh2DnnrfeRw81pRGpc9vwOUINW3WpTOZVf
-	 BlAC0rtfGtWXA==
-Date: Thu, 23 Oct 2025 10:13:49 +0300
+	b=X+22Ya4tF4cs0PyG5qMCz9ZDJ5xI4RUMHO2k5YjnMwo/ncjwP3h8Lelvmdag4gBJx
+	 0qlqSyk4jej73GsN0F96Jenh90MjO8BJReLdJ9j65POtT/4LB8Ve/s4vVumK3pXaCb
+	 red9qoBGMqbSmvv/PfsJT2KkzkbDrlF7CNAn22IGKhrVAsVLz6cUWJgUbfcu865P+V
+	 WDt6cdkd+Tl9nArdND+mKUCLV6eHE1sGb/tizDO69lcG00W1d6O08UtPJhJlaqsapL
+	 jJWxp/LTkIKLfmArPg4Og52A9sEGFygDdVEdFqQ7oNxc5nTLALOh/GQ3UGdkPRFH0N
+	 ZQnAgxyiGHL3g==
+Date: Thu, 23 Oct 2025 10:17:03 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
@@ -71,22 +71,23 @@ Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
 	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
 	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCHv7 1/7] kho: allow to drive kho from within kernel
-Message-ID: <aPnVrZC4Fz273lLn@kernel.org>
+Subject: Re: [PATCHv7 4/7] kho: add interfaces to unpreserve folios and page
+ ranges
+Message-ID: <aPnWbzytZ3I0heDb@kernel.org>
 References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
- <20251022005719.3670224-2-pasha.tatashin@soleen.com>
+ <20251022005719.3670224-5-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022005719.3670224-2-pasha.tatashin@soleen.com>
-X-Stat-Signature: e3z9xeo8ip7haar6w6wquwoachampkcm
+In-Reply-To: <20251022005719.3670224-5-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 91C8BA0008
+X-Stat-Signature: gjxudxnstwfe75ghhsey5gcits1hdyim
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2377E140007
-X-HE-Tag: 1761203638-628561
-X-HE-Meta: U2FsdGVkX1+jI853Ru5olMNQ6hgL0hDHC/vHeuQ83GGdD+aWFylqlKLhrIQhtTQwBTJBl1bynDDEYVMmEk8oBq1bj37mBhmSYk6SWadLXOYDsEFVhTXvjLJEc4goL1pNOaGF6xLpZb3z0VF70QDyL0kvR8FXDOWWGEHRn1BelV5eLdvmTHLgdV4FihTUUnsmx5wT8J2XCZAK11ysb06n0OzvpbSqet8Bv5a2hasP4OQKL8kwZK+Kozczaekib8GxnE8NuG1dJlOzIFfWDDtLC3lqm/kqkLcvDWvmjQfyDja/h7ZYii8MMWutoD01tKKF/q0Is/l/OpIc0/8kN8ItmXObGnMPrIRfE+1a18BXfphNkjUWxS+KrIBIUWHx3/O723GyXy8qkdDlo1EFeyaVXc6PEZzcnY/PhNR5nb7rwSoE251i0EMeUrSkBfh8SkUU1smRFj9sXryly8UX5dynWmNvjfTC8ZPPcWD6EHOn8AL072w+xijRssFWGqeF3zNZibM7EvmwOsUHF591EvjgAFfJQhvpkdTQUk5gtGAGjGYEpQsMYcnc7eVXcDz7udBvoAJ3ByKtNaup/Y9K7M3BLQaL9tlqDXiRK54M7KTbgWPn6VZWNf1wlGS8yB3a4brCdyWJVuBlHhxsUR0eSmD3uuMqcW2r8Q+oG+qSGH1w7Dr+JwrnLfTJlNQjnq+ZL2DscnmXrw+ASoF5KMu15lX1p/5p54+vPv5yQrqjKWENKuzv+xtT7nELms129YXEkRLA+AVl6Q8xlcDoE/x3hW60YGTj0si1uV+XGZ0EFgyQ1Hc0KDcU41dACEWewoa5q2CtkzyITxVBgse+isaQyWXg8N+9J31dNgXllCNdBMFo+2bD/N6jMVu3qflXBydEmsTDC3YEUTdga3QjFzWYWaRgEhOWs6iH1p9atX9Cv42F0OfWLx0eBca5Z6vDCKZV0szmbcQdgz7wiUq9aXP6F73
- MiI+OaM9
- Quv64FRA4PhD+NCdFFDVdgLnkbtBB+seWnesqvv8UZiZCOyhWAtcHZ+hTF29zTgjjMotAZb9TJV0pG3qM1jewCHTg7Y8N29xlHTiVilinNFDN87oo/bXZiVewE8cPZ2acyXOmXQ4/eochFUScWGIfi+nnxx7sp0My281Wv/QzSJVz3r5UOgk6U0jt+PaeotyoaGOdXX+s2fetuSY6ZeL4tv89tUMiiuWllW/Sr4B0nJ+Q3IVWy05eIMvnwK0FaXuH57025g+9iZIrxYOiHvsIR2ES5T+flyqk3bnsBBZittGBQd+pILia3BZDwjeTfoNxp2M1ZolGjl94s96WA8f/CHCYD7IvAEHrwvNlTaDSy0NlsTnyLAcT5MrJaw==
+X-HE-Tag: 1761203833-786101
+X-HE-Meta: U2FsdGVkX19LPzglWXOKeWSMSuWRZ7Z3h92qmDA3Jv03qtFHe9s2PzqWBF29/ltUo797qtwIpeRH179QLiPxzPE0ageeg7JjEjbCI8H8QrFeFKxy0lfgrlt9J9nv66csP43iwzs51yt5mLvDFn1g6tvsMV0JqaNGRwz4CAYjyMOOeN2sgQ+2QUTj2d2/0t6oUUXbE0Qa8GeuxR0+Sr05Np3vC7WqByhq3qaqSOFL2E5OtBgF+BD8qxpNi1jDm/TB/zBGRjnkA4RDrdIFve3ywzP2QuJqB0lrPU3uZoGmcD83opPg24EQrkpGBKamjhhk1klm8Os7bzRjTg5fPl43JvCmA96eSN/7ksEvgsOvHxvAckMvMo+ml2gA/9sUFs9U3DQkXXB4yCnaZWfLhm2VzVolmAOexN7c+L5ls0Hc9oHbIGwxv4VZlSc4itPHPhw8JhplY9OneclLx+EunKf69dGsCoTOWN1w7ABhQiskeMutW2nZ3pqQzSVd3hBjyjTw9c2i0hP6d6uBU/2svoNqocw34au44v+C+VZbuHxRU8j7JElEn5tBd7D2J/Q0xh/Bt/f6yqrZsztfqUVwSCviwrhDVC5+0m/CBXAosB4geWUkE0tBHLfVT/4GHn6XC4V/luH8/xYdC00ped9+mLtOpgFoaG4VvgGDPhEg/CyUh9TfRai+U0Kmg6N/LYhhctepASfHumeP9TJRhdg1rvzHNfPRkzYKmFlmIA0+UB50ACDacDrSWhQuYBPhS3nGgTGUmHVxsSbTGRD/9u5UbkyfAIY0sQkUTbflbuc1TeUeAVuUsYdEkLu/ko2cpE3j/350HKfH7V6faHzqvCdAuCSFV01WFaFFG/5AtCZtInIGhO8Gy8jHV82/8BUUg59U30KhLY0uxFldx6p33VJ0wqUsQgYujSNdaxbwUFsZiW5LnlP5BUrBaUHv+oYEuZOwX36glKto55vgrTu8mEXhBdE
+ 7PIq3jbi
+ Zk2Qu9Wt49bigC3NVKomcZANonR3bT3ztJ3V24sOixtYd77H9L8KZ/ibJb+0jl/7Ito/r7KK9YLtXIjqh/HOTxvZDvR0mqGNBKO370UGUH1gP3sAXnOntcsxoao1ga9r+yr24YiXpP35Ud0uNi7ii1ybCNzq753ep6rIOy4LmgJNLnVeStNxvAFUwSxdbuTFBDVMNgEOn9VqgRpQNV92sDbHkqOxRY6wOuUpBO3PNin0N2mGLqCEd5Ozh+i1A9xaICkWHQtm1MIReaSKK99e9cMNPepN+Bzj4CXFzNgI6rcFfqrE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,168 +96,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 08:57:13PM -0400, Pasha Tatashin wrote:
-> Allow kernel to drive finalize and abort without requiring triggers
-> from the userspace.
+On Tue, Oct 21, 2025 at 08:57:16PM -0400, Pasha Tatashin wrote:
+> Allow users of KHO to cancel the previous preservation by adding the
+> necessary interfaces to unpreserve folio and pages.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/kexec_handover.h | 15 +++++++
->  kernel/kexec_handover.c        | 75 +++++++++++++++++++++-------------
->  2 files changed, 61 insertions(+), 29 deletions(-)
+>  include/linux/kexec_handover.h | 12 +++++
+>  kernel/kexec_handover.c        | 85 ++++++++++++++++++++++++++++------
+>  2 files changed, 84 insertions(+), 13 deletions(-)
 > 
 > diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index 25042c1d8d54..04d0108db98e 100644
+> index 2faf290803ce..4ba145713838 100644
 > --- a/include/linux/kexec_handover.h
 > +++ b/include/linux/kexec_handover.h
-> @@ -67,6 +67,10 @@ void kho_memory_init(void);
+> @@ -43,7 +43,9 @@ bool kho_is_enabled(void);
+>  bool is_kho_boot(void);
 >  
->  void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t scratch_phys,
->  		  u64 scratch_len);
-> +
-> +int kho_finalize(void);
-> +int kho_abort(void);
-> +
->  #else
->  static inline bool kho_is_enabled(void)
->  {
-> @@ -139,6 +143,17 @@ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->  				phys_addr_t scratch_phys, u64 scratch_len)
->  {
+>  int kho_preserve_folio(struct folio *folio);
+> +int kho_unpreserve_folio(struct folio *folio);
+>  int kho_preserve_pages(struct page *page, unsigned int nr_pages);
+> +int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
+>  int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+>  struct folio *kho_restore_folio(phys_addr_t phys);
+>  struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
+> @@ -76,11 +78,21 @@ static inline int kho_preserve_folio(struct folio *folio)
+>  	return -EOPNOTSUPP;
 >  }
-> +
-> +static inline int kho_finalize(void)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline int kho_abort(void)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
->  #endif /* CONFIG_KEXEC_HANDOVER */
 >  
->  #endif /* LINUX_KEXEC_HANDOVER_H */
+> +static inline int kho_unpreserve_folio(struct folio *folio)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +static inline int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  static inline int kho_preserve_vmalloc(void *ptr,
+>  				       struct kho_vmalloc *preservation)
+>  {
 > diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> index de4466b47455..6458f369a346 100644
+> index 0a4234269fe5..8412897385ad 100644
 > --- a/kernel/kexec_handover.c
 > +++ b/kernel/kexec_handover.c
-> @@ -1087,7 +1087,7 @@ static int kho_out_update_debugfs_fdt(void)
->  	return err;
+> @@ -157,26 +157,33 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index)
+>  	return no_free_ptr(elm);
 >  }
 >  
-> -static int kho_abort(void)
-> +static int __kho_abort(void)
+> -static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
+> -			     unsigned long end_pfn)
+> +static void __kho_unpreserve_order(struct kho_mem_track *track, unsigned long pfn,
+> +				   unsigned int order)
 >  {
->  	int err;
->  	unsigned long order;
-> @@ -1120,7 +1120,27 @@ static int kho_abort(void)
->  	return err;
->  }
+>  	struct kho_mem_phys_bits *bits;
+>  	struct kho_mem_phys *physxa;
+> +	const unsigned long pfn_high = pfn >> order;
 >  
-> -static int kho_finalize(void)
-> +int kho_abort(void)
-> +{
-> +	int ret = 0;
+> -	while (pfn < end_pfn) {
+> -		const unsigned int order =
+> -			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+> -		const unsigned long pfn_high = pfn >> order;
+> +	physxa = xa_load(&track->orders, order);
+> +	if (!physxa)
+> +		return;
 > +
-> +	if (!kho_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	guard(mutex)(&kho_out.lock);
-> +	if (!kho_out.finalized)
-> +		return -ENOENT;
-> +
-> +	ret = __kho_abort();
-> +	if (ret)
-> +		return ret;
-> +
-> +	kho_out.finalized = false;
-> +
-> +	return kho_out_update_debugfs_fdt();
+> +	bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+> +	if (!bits)
+> +		return;
+>  
+> -		physxa = xa_load(&track->orders, order);
+> -		if (!physxa)
+> -			continue;
+> +	clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
 > +}
 > +
-> +static int __kho_finalize(void)
->  {
->  	int err = 0;
->  	u64 *preserved_mem_map;
-> @@ -1163,12 +1183,32 @@ static int kho_finalize(void)
->  abort:
->  	if (err) {
->  		pr_err("Failed to convert KHO state tree: %d\n", err);
-> -		kho_abort();
-> +		__kho_abort();
+> +static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
+> +			     unsigned long end_pfn)
+> +{
+> +	unsigned int order;
+>  
+> -		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+> -		if (!bits)
+> -			continue;
+> +	while (pfn < end_pfn) {
+> +		order = min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+>  
+> -		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
+> +		__kho_unpreserve_order(track, pfn, order);
+>  
+>  		pfn += 1 << order;
 >  	}
->  
->  	return err;
+> @@ -749,6 +756,30 @@ int kho_preserve_folio(struct folio *folio)
 >  }
+>  EXPORT_SYMBOL_GPL(kho_preserve_folio);
 >  
-> +int kho_finalize(void)
+> +/**
+> + * kho_unpreserve_folio - unpreserve a folio.
+> + * @folio: folio to unpreserve.
+> + *
+> + * Instructs KHO to unpreserve a folio that was preserved by
+> + * kho_preserve_folio() before. The provided @folio (pfn and order)
+> + * must exactly match a previously preserved folio.
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +int kho_unpreserve_folio(struct folio *folio)
 > +{
-> +	int ret;
+> +	const unsigned long pfn = folio_pfn(folio);
+> +	const unsigned int order = folio_order(folio);
+> +	struct kho_mem_track *track = &kho_out.track;
 > +
-> +	if (!kho_enable)
-> +		return -EOPNOTSUPP;
-> +
-> +	guard(mutex)(&kho_out.lock);
 > +	if (kho_out.finalized)
-> +		return -EEXIST;
+> +		return -EBUSY;
 > +
-> +	ret = __kho_finalize();
-> +	if (ret)
-> +		return ret;
-> +
-> +	kho_out.finalized = true;
-> +
-> +	return kho_out_update_debugfs_fdt();
+> +	__kho_unpreserve_order(track, pfn, order);
+> +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
 > +
->  static int kho_out_finalize_get(void *data, u64 *val)
->  {
->  	mutex_lock(&kho_out.lock);
-> @@ -1178,35 +1218,12 @@ static int kho_out_finalize_get(void *data, u64 *val)
->  	return 0;
+>  /**
+>   * kho_preserve_pages - preserve contiguous pages across kexec
+>   * @page: first page in the list.
+> @@ -793,6 +824,34 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
 >  }
+>  EXPORT_SYMBOL_GPL(kho_preserve_pages);
 >  
-> -static int kho_out_finalize_set(void *data, u64 _val)
-> +static int kho_out_finalize_set(void *data, u64 val)
->  {
-> -	int ret = 0;
-> -	bool val = !!_val;
-> -
-> -	mutex_lock(&kho_out.lock);
-> -
-> -	if (val == kho_out.finalized) {
-> -		if (kho_out.finalized)
-> -			ret = -EEXIST;
-> -		else
-> -			ret = -ENOENT;
-> -		goto unlock;
-> -	}
-> -
->  	if (val)
-> -		ret = kho_finalize();
-> +		return kho_finalize();
->  	else
-> -		ret = kho_abort();
-> -
-> -	if (ret)
-> -		goto unlock;
-> -
-> -	kho_out.finalized = val;
-> -	ret = kho_out_update_debugfs_fdt();
-> -
-> -unlock:
-> -	mutex_unlock(&kho_out.lock);
-> -	return ret;
-> +		return kho_abort();
->  }
->  
->  DEFINE_DEBUGFS_ATTRIBUTE(fops_kho_out_finalize, kho_out_finalize_get,
+> +/**
+> + * kho_unpreserve_pages - unpreserve contiguous pages.
+> + * @page: first page in the list.
+> + * @nr_pages: number of pages.
+> + *
+> + * Instructs KHO to unpreserve @nr_pages contigious  pages starting from @page.
+> + * This call must exactly match a granularity at which memory was originally
+> + * preserved by kho_preserve_pages, call with the same @page and
+> + * @nr_pages). Unpreserving arbitrary sub-ranges of larger preserved blocks is
+> + * not supported.
+> + *
+> + * Return: 0 on success, error code on failure
+> + */
+> +int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
+> +{
+> +	struct kho_mem_track *track = &kho_out.track;
+> +	const unsigned long start_pfn = page_to_pfn(page);
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
+> +
+> +	if (kho_out.finalized)
+> +		return -EBUSY;
+> +
+> +	__kho_unpreserve(track, start_pfn, end_pfn);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
+> +
+>  struct kho_vmalloc_hdr {
+>  	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
+>  };
 > -- 
 > 2.51.0.915.g61a8936c21-goog
 > 
